@@ -2,6 +2,7 @@ import { appendItems } from "./collections.ts"
 import type { ErStatement } from "@mmd-toolkit/ast"
 import type { KeptLines } from "./kept-lines.ts"
 import {
+  completeKeptLines,
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
   becomesCommentLineOnItsOwnLine,
@@ -138,6 +139,20 @@ export function findErKeptLines(source: Source): KeptLines {
   }
   keptLinesBySource.set(source, kept)
   return kept
+}
+
+/** The kept lines of each source as `printBlock` takes them, found once. */
+const completeKeptLinesBySource = new WeakMap<Source, KeptLines>()
+
+/** Whether the line that holds `offset` is a kept line of the ER diagram. */
+export function isErLineKept(source: Source, offset: number): boolean {
+  let kept = completeKeptLinesBySource.get(source)
+  if (kept === undefined) {
+    kept = completeKeptLines(source, findErKeptLines(source))
+    completeKeptLinesBySource.set(source, kept)
+  }
+  const line = lineStartOf(source, offset)
+  return kept.joined.has(line) || kept.verbatim.has(line)
 }
 
 /** The body of the ER diagram of a source. */

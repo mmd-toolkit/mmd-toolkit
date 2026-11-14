@@ -32,6 +32,7 @@ import {
   findSubgraphHeaderEnd,
   hasAttributeBlock,
   isBlockAfterJoinedLine,
+  isEmptyBlockAfterTilde,
   isEmptyAttributeBlock,
   touchesKeywordWithDash,
   layoutAttribute,
@@ -108,6 +109,9 @@ export function printEr(
         depth,
       )
     case "entity":
+      if (isEmptyBlockAfterTilde(source, classified.statement)) {
+        return printAsWritten(source, node.range[0], node.range[1])
+      }
       if (hasAttributeBlock(source, classified.statement)) {
         return printAttributeBlock(
           path,

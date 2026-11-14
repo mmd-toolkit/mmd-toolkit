@@ -32,6 +32,7 @@ import {
 import {
   followsSplitKeyword,
   isDirectionBroughtToTheColon,
+  isErLineKept,
 } from "./er-kept-lines.ts"
 import type { Source } from "./source.ts"
 import { printedToken } from "./spelling.ts"
@@ -136,6 +137,29 @@ export function hasAttributeBlock(
   if (statement.attributes.length > 0) return true
   const { opening, closing } = findAttributeBraces(source, statement)
   return source.text.slice(opening.range[1], closing.range[0]).includes("\n")
+}
+
+/**
+ * Whether an entity statement has an empty attribute block over several lines
+ * and stands on a kept line with a `~` before its `{`. The `{ }` that it is
+ * printed as would put the `}` and what follows it on the closing line on that
+ * line, and the rule that mermaid.js 10.9.8 reads such a line with takes the
+ * longer, the longer the text after the `~` is, so the statement stays as
+ * written (docs/er.md, Attribute blocks).
+ */
+export function isEmptyBlockAfterTilde(
+  source: Source,
+  statement: ErEntityStatement,
+): boolean {
+  if (!hasAttributeBlock(source, statement)) return false
+  if (!isEmptyAttributeBlock(source, statement)) return false
+  const { opening } = findAttributeBraces(source, statement)
+  return (
+    isErLineKept(source, opening.range[0]) &&
+    source.text
+      .slice(lineStartOf(source, opening.range[0]), opening.range[0])
+      .includes("~")
+  )
 }
 
 /**

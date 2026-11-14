@@ -17,8 +17,7 @@ import {
   isDroppedSemicolon,
   lineEndOf,
   lineStartOf,
-  withJoinedLines,
-  withUnusualStyleEnds,
+  completeKeptLines,
 } from "./kept-lines.ts"
 import { toAsciiLowerCase } from "./layout.ts"
 import type { Line } from "./lines.ts"
@@ -430,13 +429,10 @@ export function printBlock<Statement extends Positioned>(
   rules: BlockRules<Statement>,
 ): PrintedBlock {
   const { statements } = bounds
-  const kept = withUnusualStyleEnds(
+  const kept = completeKeptLines(
     source,
-    withJoinedLines(
-      source,
-      rules.kept,
-      rules.joiningRegionsPrintedAsWritten !== true,
-    ),
+    rules.kept,
+    rules.joiningRegionsPrintedAsWritten !== true,
   )
   const lines: Line[] = []
   let headerTrailing: ItemRun | null = null
@@ -666,6 +662,23 @@ export function printBlock<Statement extends Positioned>(
   }
 
   /**
+   * Whether a statement starts a stretch where it stands on its own: it ends
+   * on a kept line, or it holds no statements and starts on one. A statement
+   * that holds statements and starts on a kept line without ending on one
+   * prints that line as the opening line of its block. This is the one
+   * decision of which statements a kept line holds together: the stretch of a
+   * statement that is attached to the line before it by its gap, the stretch
+   * of one that starts a line, and where a stretch ends before a statement
+   * (`endsStretchBefore`) all ask it.
+   */
+  function startsStretchAt(statement: Statement): boolean {
+    return (
+      isKept(rules.printedEnd(statement) - 1) ||
+      (!rules.holdsStatements(statement) && isKept(printedStartOf(statement)))
+    )
+  }
+
+  /**
    * The stretch that starts at `start`, with the statements from `first` to
    * before `after` and the text up to `end`: while the line it ends on is
    * kept, it extends over the rest of that line and every statement that
@@ -691,7 +704,7 @@ export function printBlock<Statement extends Positioned>(
       }
       if (
         rules.endsStretchBefore?.(following) === true &&
-        !isKept(rules.printedEnd(following) - 1)
+        !startsStretchAt(following)
       ) {
         return { start, end: stretchEnd, first, after }
       }
@@ -894,18 +907,18 @@ export function printBlock<Statement extends Positioned>(
     const index = next
     const statement = statements[index]
     const end = rules.printedEnd(statement)
+    const startsStretch = startsStretchAt(statement)
     if (rules.writtenGapBefore?.(statement) === true) {
       // The gap is part of the unit's lexical boundary, including whitespace
       // across removed trivia. Preserve it before ordinary line selection
       // (docs/eventmodeling.md, Common boundaries).
       const previous = lines.pop()
-      // A statement that holds statements and ends on a kept line is part of
-      // the stretch of that line, as it is where it starts one (see
-      // `startsStretch`): the stretch is printed after the gap.
-      const stretch =
-        rules.holdsStatements(statement) && isKept(end - 1)
-          ? findStretch(printedStartOf(statement), index, index + 1, end)
-          : undefined
+      // A statement that starts a stretch where it stands on its own is part
+      // of the stretch of its line also after a gap: the stretch is printed
+      // after the gap, so that the rest of the line stays on the line.
+      const stretch = startsStretch
+        ? findStretch(printedStartOf(statement), index, index + 1, end)
+        : undefined
       const printed = stretch === undefined ? undefined : printStretch(stretch)
       pushLine({
         ...(previous ?? { blankBefore: false }),
@@ -929,9 +942,6 @@ export function printBlock<Statement extends Positioned>(
       }
       continue
     }
-    const startsStretch =
-      isKept(end - 1) ||
-      (!rules.holdsStatements(statement) && isKept(printedStartOf(statement)))
     if (
       !startsStretch &&
       bounds.isTopLevel &&

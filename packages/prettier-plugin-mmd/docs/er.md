@@ -103,15 +103,22 @@ to the `{` stays as written, see
 [Multi-line statements](#multi-line-statements)), what follows the `{` on its
 line stays as written, and the attributes after it and the `}` stand as those of
 any entity. An empty block over several lines ends the line with ` { }`,
-whatever stands after the `{` (spaces, a tab, a U+2028) or between the braces. A
-block whose `}` stands on a line that stays as written, as in `A {`, a line
-break, and `}1b`, stays as written with that line, whether it holds attributes
-or not. A line that holds a `;` and stays as written for no other reason is
-formatted, and so is the line of a subgraph header that holds an empty
-description block and the line of an `accTitle` or `accDescr` whose text goes to
-the `:` and then holds `direction`; the statements of such a line stay together
-on it: a block on it is printed as a block, an attribute on the line of its `{`
-stays there, and the spaces and tabs after the `{` are dropped. [fixture:
+whatever stands after the `{` (spaces, a tab, a U+2028) or between the braces,
+but not where a `~` stands before its `{` on a line that stays as written: the
+`}` and the rest of the closing line would join the line of the `{`, and the
+oldest versions that count read the rest of a line that holds a `~` with a rule
+that takes the longer, the longer the line is, so a line that they draw could
+become one that they do not draw. [fixture:
+attribute-blocks/written-line-tilde-line] [fixture:
+attribute-blocks/written-line-tilde-line-closing-remainder] A block whose `}`
+stands on a line that stays as written, as in `A {`, a line break, and `}1b`,
+stays as written with that line, whether it holds attributes or not. A line that
+holds a `;` and stays as written for no other reason is formatted, and so is the
+line of a subgraph header that holds an empty description block and the line of
+an `accTitle` or `accDescr` whose text goes to the `:` and then holds
+`direction`; the statements of such a line stay together on it: a block on it is
+printed as a block, an attribute on the line of its `{` stays there, and the
+spaces and tabs after the `{` are dropped. [fixture:
 attribute-blocks/written-line-number-name] [fixture:
 attribute-blocks/written-line-tilde-line] [fixture:
 attribute-blocks/written-line-unclosed-directive] [fixture:
@@ -661,8 +668,8 @@ as in [Attribute blocks](#attribute-blocks): the statements of the line stay
 together, with the whitespace between their units formatted as usual where it
 does not decide how mermaid.js reads the line, what follows the `{` on its line
 stays as written, and the attributes and the `}` stand as those of any entity,
-so that `1A`, a line break, `{`, a line break, and `}` end with `1A { }`.
-[fixture: attribute-blocks/written-line-number-name] [fixture:
+so that `1A {`, a line break, and `}` become `1A { }`. [fixture:
+attribute-blocks/written-line-number-name] [fixture:
 attribute-blocks/written-line-tilde-line] [fixture:
 attribute-blocks/written-line-unclosed-directive] [fixture:
 attribute-blocks/written-line-closing-brace] [fixture:
@@ -679,12 +686,32 @@ statement that starts with U+2028 and a comment line] [test: an empty attribute
 block over several lines of an entity after a statement that starts with U+2028
 and a comment line] The entity after an `end` that stays on the line of the
 `end` keeps the gap before it as written, and its block is printed as in any
-other line: [test: an attribute block over several lines of an entity after the
+other line. [test: an attribute block over several lines of an entity after the
 end of an ER subgraph and U+2028] [test: an empty attribute block over several
-lines of an entity after the end of an ER subgraph and U+2028] And a line that
-holds a kept `;` keeps its statements together: the line rule of mermaid.js
-reads the text of a line, and moving text to another line changes which line
-matches the rule and which `;` it ignores (see
+lines of an entity after the end of an ER subgraph and U+2028] A statement that
+keeps the gap before it as written in this way stays on its line with the text
+that follows it, and does not go to a line of its own, where that line stays as
+written, whatever makes it stay: a comment line after U+2028 that joins the next
+line to it, a `;` in a name in quotes, an entity `1` that touches a letter, a
+pair of `~` in an attribute block on one line, or a directive that is not
+closed. A block on the line is printed as above. [test: an ER statement attached
+to a class name after U+00A0, and a comment line after U+2028 and a statement]
+[test: an ER statement attached to a class name after U+00A0, and a comment line
+after U+2028 and an attribute block on one line] [test: an ER statement attached
+to a class name after U+00A0, and a comment line after U+2028 and an empty
+attribute block over several lines] [test: an ER statement attached to a class
+name after U+2028, and a comment line after U+2028 and a statement] [test: an ER
+statement attached to a class name after U+00A0, and a name in quotes that holds
+a semicolon] [test: an ER statement attached to a class name after U+00A0, and
+the entity 1 that touches a letter] [test: an ER statement attached to a class
+name after U+00A0, and an attribute block with a pair of tildes on one line]
+[test: an ER statement attached to a class name after U+00A0, and a directive
+that is not closed] [test: an ER statement after the end of a subgraph and
+U+2028, and a comment line after U+2028 and a statement] [test: an ER statement
+that touches the end of a subgraph with a dash, and a comment line after U+2028
+and a statement] And a line that holds a kept `;` keeps its statements together:
+the line rule of mermaid.js reads the text of a line, and moving text to another
+line changes which line matches the rule and which `;` it ignores (see
 [Styles and classes](#styles-and-classes)). [fixture:
 statements-one-per-line/semicolon-line-kept] [fixture:
 statements-one-per-line/ignored-semicolon-line-kept] The `}` of an attribute

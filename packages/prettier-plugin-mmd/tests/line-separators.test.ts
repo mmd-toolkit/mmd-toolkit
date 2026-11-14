@@ -2506,6 +2506,56 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "erDiagram\nX A {\nint id\n}\u00a0\n%% c\nQ\n",
     "erDiagram\n  X\n  A {\nint id\n}\u00a0\n  %% c\n  Q\n",
   ],
+  [
+    "an ER statement attached to a class name after U+00A0, and a comment line after U+2028 and a statement",
+    "erDiagram\n\u00a0class A \nX \u2028%% c\nB\n",
+    "erDiagram\n  \u00a0class A \nX \u2028%% c\nB\n",
+  ],
+  [
+    "an ER statement attached to a class name after U+00A0, and a comment line after U+2028 and an attribute block on one line",
+    "erDiagram\n\u00a0class A \nX \u2028%% c\nB { int id }\n",
+    "erDiagram\n  \u00a0class A \nX \u2028%% c\nB { int id }\n",
+  ],
+  [
+    "an ER statement attached to a class name after U+00A0, and a comment line after U+2028 and an empty attribute block over several lines",
+    "erDiagram\n\u00a0class A \nX \u2028%% c\nB {\n}\n",
+    "erDiagram\n  \u00a0class A \nX \u2028%% c\nB { }\n",
+  ],
+  [
+    "an ER statement attached to a class name after U+2028, and a comment line after U+2028 and a statement",
+    "erDiagram\n\u2028class A \nX \u2028%% c\nB\n",
+    "erDiagram\n  \u2028class A \nX \u2028%% c\nB\n",
+  ],
+  [
+    "an ER statement attached to a class name after U+00A0, and a name in quotes that holds a semicolon",
+    'erDiagram\n\u00a0class A \nX "x;y"\n',
+    'erDiagram\n  \u00a0class A \nX "x;y"\n',
+  ],
+  [
+    "an ER statement attached to a class name after U+00A0, and the entity 1 that touches a letter",
+    "erDiagram\n\u00a0class A \nX 1b\n",
+    "erDiagram\n  \u00a0class A \nX 1b\n",
+  ],
+  [
+    "an ER statement attached to a class name after U+00A0, and an attribute block with a pair of tildes on one line",
+    "erDiagram\n\u00a0class A \nX T { int a List~int~ b }\n",
+    "erDiagram\n  \u00a0class A \nX T { int a List~int~ b }\n",
+  ],
+  [
+    "an ER statement attached to a class name after U+00A0, and a directive that is not closed",
+    "erDiagram\n\u00a0class A \nX %%{wrap foo\nB\n",
+    "erDiagram\n  \u00a0class A \nX %%{wrap foo\nB\n",
+  ],
+  [
+    "an ER statement after the end of a subgraph and U+2028, and a comment line after U+2028 and a statement",
+    "erDiagram\nsubgraph S\nend\u2028X \u2028%% c\nB\n",
+    "erDiagram\n  subgraph S\nend\u2028X \u2028%% c\nB\n",
+  ],
+  [
+    "an ER statement that touches the end of a subgraph with a dash, and a comment line after U+2028 and a statement",
+    "erDiagram\nsubgraph S\nend-A \u2028%% c\nB\n",
+    "erDiagram\n  subgraph S\nend-A \u2028%% c\nB\n",
+  ],
 ]
 
 /**
@@ -3368,6 +3418,11 @@ const timelineLineSeparatorExamples: readonly (readonly [
     "U+2029 and a space between the title keyword and a hash",
     "timeline\ntitle\u2029 # c\n  2004 : a\n",
     "timeline\n  title\u2029 # c\n  2004 : a\n",
+  ],
+  [
+    "a line separator and a comment line after the closing brace of a description block that starts on the line of the timeline header, before a period",
+    "timeline LR accDescr {\nalpha}\u2028%% joined\nPhase : done\n",
+    "timeline LR accDescr {\nalpha}\u2028%% joined\nPhase : done\n",
   ],
 ]
 

@@ -106,6 +106,12 @@ mermaid.js は属性ブロックを改行に関係なく読むので、同じ属
 ほかの実体と同じに置きます。
 そのため、複数行にまたがる空のブロックは、`{` の後ろに何があっても（空白、タブ、
 U+2028）、波括弧の間に何があっても、行の終わりが ` { }` になります。
+ただし、書かれたまま残る行で、`{` の前に `~` があるときは別です。
+`}` と閉じる行の残りが `{` の行につながるからです。
+数える版のうち最も古いものは、`~` を含む行の残りを、
+行が長いほど時間がかかる規則で読むので、その版が描ける行が、
+描けない行になりかねません。 [fixture: attribute-blocks/written-line-tilde-line]
+[fixture: attribute-blocks/written-line-tilde-line-closing-remainder]
 `}` が、書かれたまま残る行にあるブロックは、`A {`、改行、`}1b` のように、
 属性があってもなくても、その行と一緒に書かれたままにします。
 `;` を含み、ほかに書かれたまま残る理由がない行は整形します。
@@ -669,7 +675,7 @@ U+FEFF などが 1 つか複数）の文が、同じ行のほかの文の後に�
 mermaid.js が行をどう読むかを決めないかぎり通常どおり整形します。
 `{` の後ろにあるものは書かれたまま残り、
 属性と `}` はほかの実体と同じに置きます。
-そのため、`1A`、改行、`{`、改行、`}` は、`1A { }` で終わります。
+そのため、`1A {`、改行、`}` は、`1A { }` になります。
 [fixture: attribute-blocks/written-line-number-name]
 [fixture: attribute-blocks/written-line-tilde-line]
 [fixture: attribute-blocks/written-line-unclosed-directive]
@@ -688,6 +694,23 @@ mermaid.js が行をどう読むかを決めないかぎり通常どおり整形
 その前の隙間だけを書かれたままにし、ブロックはほかの行と同じに印字します。
 [test: an attribute block over several lines of an entity after the end of an ER subgraph and U+2028]
 [test: an empty attribute block over several lines of an entity after the end of an ER subgraph and U+2028]
+このように前の隙間を書かれたままにする文は、その行が書かれたまま残るとき、
+後ろに続くテキストと一緒にその行に残り、単独の行には移りません。
+行が書かれたまま残る理由は、何であっても同じです。
+次の行をつなぐ U+2028 の後のコメント行、引用符つきの名前の中の `;`、
+文字に接する実体 `1`、1 行の属性ブロックにある一対の `~`、
+閉じていないディレクティブがその例です。
+その行にあるブロックは、上と同じに印字します。
+[test: an ER statement attached to a class name after U+00A0, and a comment line after U+2028 and a statement]
+[test: an ER statement attached to a class name after U+00A0, and a comment line after U+2028 and an attribute block on one line]
+[test: an ER statement attached to a class name after U+00A0, and a comment line after U+2028 and an empty attribute block over several lines]
+[test: an ER statement attached to a class name after U+2028, and a comment line after U+2028 and a statement]
+[test: an ER statement attached to a class name after U+00A0, and a name in quotes that holds a semicolon]
+[test: an ER statement attached to a class name after U+00A0, and the entity 1 that touches a letter]
+[test: an ER statement attached to a class name after U+00A0, and an attribute block with a pair of tildes on one line]
+[test: an ER statement attached to a class name after U+00A0, and a directive that is not closed]
+[test: an ER statement after the end of a subgraph and U+2028, and a comment line after U+2028 and a statement]
+[test: an ER statement that touches the end of a subgraph with a dash, and a comment line after U+2028 and a statement]
 また、保持する `;` がある行は、その文を一緒に残します。
 mermaid.js の行の規則は行のテキストを読み、テキストを別の行に動かすと、
 規則に合う行と、規則が無視する `;` が、
