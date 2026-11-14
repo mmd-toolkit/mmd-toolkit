@@ -27,29 +27,37 @@ pin した版は mermaid 12.3.0 です。
 
 gitgraph の定義は、
 [構文](./diagrams/gitgraph.ja.md) と [木](./ast/gitgraph.ja.md) にあります。
+
 [fixture: gitgraph/header-only] [fixture: gitgraph/gram-all-fields]
 
 info の定義は [構文](./diagrams/info.ja.md) と [木](./ast/info.ja.md)
-にあります。 [fixture: info/header-lf] [fixture: info/common-all]
+にあります。
+
+[fixture: info/header-lf] [fixture: info/common-all]
 
 packet の定義は、
 [構文](./diagrams/packet.ja.md) と [木](./ast/packet.ja.md) にあります。
+
 [fixture: packet/gram-mixed] [fixture: packet/spec-packet-c4580507]
 
 architecture の定義は、[構文](./diagrams/architecture.ja.md) と、
-[木](./ast/architecture.ja.md) にあります。 [fixture: architecture/header-beta]
-[fixture: architecture/db-mixed]
+[木](./ast/architecture.ja.md) にあります。
+
+[fixture: architecture/header-beta] [fixture: architecture/db-mixed]
 
 radar の定義は、
 [構文](./diagrams/radar.ja.md) と [木](./ast/radar.ja.md) にあります。
+
 [fixture: radar/header-colon-inline] [fixture: radar/gram-written-tree]
 
 treemap の定義は、
 [構文](./diagrams/treemap.ja.md) と [木](./ast/treemap.ja.md) にあります。
+
 [fixture: treemap/gram-written-tree] [fixture: treemap/header-beta]
 
 railroad の定義は 4 方言を扱い、
 [構文](./diagrams/railroad.ja.md) と [木](./ast/railroad.ja.md) にあります。
+
 [fixture: railroad/ir-gram-written-tree]
 [fixture: railroad/ebnf-gram-written-tree]
 [fixture: railroad/abnf-gram-written-tree]
@@ -57,18 +65,22 @@ railroad の定義は 4 方言を扱い、
 
 wardley の定義は、
 [構文](./diagrams/wardley.ja.md) と [木](./ast/wardley.ja.md) の文書にあります。
+
 [fixture: wardley/header-only] [fixture: wardley/db-all-fields]
 
 cynefin の定義は、
 [構文](./diagrams/cynefin.ja.md) と [木](./ast/cynefin.ja.md) にあります。
+
 [fixture: cynefin/header-only] [fixture: cynefin/db-all-fields]
 
 eventmodeling は、[構文](./diagrams/eventmodeling.ja.md) と、
 [木](./ast/eventmodeling.ja.md) の文書で定義します。
+
 [fixture: eventmodeling/header-only] [fixture: eventmodeling/gram-written-tree]
 
 treeview の定義は、[構文](./diagrams/treeview.ja.md) と、
 [木](./ast/treeview.ja.md) の文書にあります。
+
 [fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]
 
 ## 元にしたもの

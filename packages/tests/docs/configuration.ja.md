@@ -64,10 +64,17 @@ pin した mermaid.js に同梱された js-yaml 4.3.0 がその JSON
 
 - YAML の構文エラーがあると、mermaid.js は入力を `YAMLException` で拒否します。
   同じキーを 2 回持つマッピングと、YAML の文書を 2 つ以上含む本文は、
-  構文エラーです。 [fixture: common/frontmatter-yaml-error] [fixture:
-  common/frontmatter-duplicate-key] [fixture: common/frontmatter-two-documents]
+  構文エラーです。
+
+  [fixture: common/frontmatter-yaml-error]
+  [fixture: common/frontmatter-duplicate-key]
+  [fixture: common/frontmatter-two-documents]
+
 - 本文がマッピングでない場合（例: 単なるスカラー）は、
-  空のマッピングとして扱います。 [fixture: common/frontmatter-scalar]
+  空のマッピングとして扱います。
+
+  [fixture: common/frontmatter-scalar]
+
 - 引用符付きのスカラーは文字列です。
   引用符のないスカラーは、次の種類のうち、その形を持つ最初のものとして読み、
   どれでもなければ文字列として読みます。
@@ -115,42 +122,54 @@ pin した mermaid.js に同梱された js-yaml 4.3.0 がその JSON
   `title: <b class="x">T</b>` はタイトル `<b class='x'>T</b>` になります。
   一方、`title: "<a b=\"c\">"` のタグには `="` がないので、
   タイトルは `<a b="c">` です。
-  [fixture: flowchart/frontmatter-title-html-attribute] [fixture:
-  common/frontmatter-title-escaped-quotes-in-tag]
+
+  [fixture: flowchart/frontmatter-title-html-attribute]
+  [fixture: common/frontmatter-title-escaped-quotes-in-tag]
+
   引用符のないスカラーでは、`0x1F` は `31`、`017` は `17`、
   `TRUE` は `true` になり、`1e400` は文字列 `1e400` のままで、
-  `~` は null なのでタイトルはありません。 [fixture: common/config-title-list]
-  [fixture: common/config-title-number] [fixture: common/config-title-mapping]
-  [fixture: common/config-title-hex] [fixture: common/config-title-leading-zero]
-  [fixture:
-  common/config-title-bool-uppercase] [fixture:
-  common/config-title-float-overflow] [fixture: common/config-title-null-tilde]
+  `~` は null なのでタイトルはありません。
+
+  [fixture: common/config-title-list] [fixture: common/config-title-number]
+  [fixture: common/config-title-mapping] [fixture: common/config-title-hex]
+  [fixture: common/config-title-leading-zero]
+  [fixture: common/config-title-bool-uppercase]
+  [fixture: common/config-title-float-overflow]
+  [fixture: common/config-title-null-tilde]
+
 - フロントマターのマッピングの `config` が空でなければ、
   それが**フロントマターの設定**です。
   そうでなければ、フロントマターの設定は空のマッピングです。
   書いたとおりに適用されます。
   たとえば、その中の `flowchart` のマッピングは flowchart を設定します。
+
   [fixture: flowchart/config-inherit-dir-frontmatter]
+
 - フロントマターのマッピングの `displayMode` が空でなければ、
   その文字列形をフロントマターの設定にコピーします。
   - フロントマターの設定が文字列、数、真のどれかなら、
     mermaid.js は入力を `TypeError` で拒否します。
     空でない `displayMode` がなければ、
     そのようなフロントマターの設定も mermaid.js は受理します。
-    [fixture: common/frontmatter-display-mode-primitive-config] [fixture:
-    common/frontmatter-primitive-config]
+
+    [fixture: common/frontmatter-display-mode-primitive-config]
+    [fixture: common/frontmatter-primitive-config]
+
   - フロントマターの設定がマッピングなら、まずその `gantt` の項目が、
     ないか空であれば、空のマッピングに置き換えられます。
     その後 `gantt` が文字列、数、真のどれかであれば、
     mermaid.js は入力を `TypeError` で拒否します。
     そうでなければ、`gantt` の `displayMode` に文字列形を入れます。
+
     [fixture: common/config-display-mode-gantt-primitive]
+
   - フロントマターの設定がリストなら、何もコピーされず、
     そのリストは何ももたらしません（[テキストの設定](#テキストの設定) を参照）。
     `config: null` と `displayMode` の組は受理されます。
     null の `config` は空だからです。
-    [fixture: common/config-display-mode-list-config] [fixture:
-    common/config-display-mode-null-config]
+
+    [fixture: common/config-display-mode-list-config]
+    [fixture: common/config-display-mode-null-config]
 
 ### 設定の走査
 
@@ -164,6 +183,7 @@ mermaid.js は、図を設定するディレクティブを、
 このうち、見つかるディレクティブを変えうるのは 2 番目だけです。
 
 1. 先頭と末尾の空白を取り除きます。
+
 2. すべての**閉じ記号の行**を取り除きます。
    閉じ記号の行は、直後に `}%%` が続く `%%` から始まり、
    次の行終端までを含みます。
@@ -172,8 +192,10 @@ mermaid.js は、図を設定するディレクティブを、
    後に行終端がない `%%}%%` や、
    次の行終端までの間に U+2028 か U+2029 がある `%%}%%` は、
    閉じ記号の行を始めません。
+
 3. すべての `'` を `"` として読みます。
    そのため、単一引用符のキーや文字列を使った引数も、正しい JSON になります。
+
    [fixture: common/directive-single-quotes]
 
 その結果の中で、
@@ -181,14 +203,17 @@ mermaid.js は、図を設定するディレクティブを、
 と同じようにディレクティブを見つけます。
 この走査はコメント行を見ないので、コメント行の上のディレクティブも、
 他のディレクティブと同じように図を設定します。
-[fixture: common/directive-in-comment] [fixture:
-common/config-directive-in-comment]
+
+[fixture: common/directive-in-comment]
+[fixture: common/config-directive-in-comment]
+
 一方、閉じ記号の行の上のディレクティブは、行と一緒に取り除かれます。
 `%%}%% %%{init: ...}%%` は、何も設定しないコメント行です。
 ディレクティブと `%%}%%` の間に U+2028 があると、行は取り除かれず、
-ディレクティブが適用されます。 [fixture: common/config-closing-marker-line]
-[fixture:
-common/config-closing-marker-line-u2028]
+ディレクティブが適用されます。
+
+[fixture: common/config-closing-marker-line]
+[fixture: common/config-closing-marker-line-u2028]
 
 ディレクティブの**引数の値**は、引数が語であればその語の文字列で、
 ディレクティブに引数がないか、自由テキストの引数が空であれば null です。
@@ -204,40 +229,53 @@ common/config-closing-marker-line-u2028]
 完全に一致するかで比べます。
 `init`、`initialize`、`myinit`、`reinitialize` は init ディレクティブで、
 `INIT`、`Init`、`init2` は違います。
-`wrap` やその他の名前も違います。 [fixture: common/config-init-name-suffix]
-[fixture:
-common/config-init-name-reinitialize] [fixture:
-common/config-init-name-uppercase] [fixture:
-common/config-init-name-capitalized] [fixture:
-common/config-init-name-digit-after] [fixture: common/directive-unknown-name]
+`wrap` やその他の名前も違います。
+
+[fixture: common/config-init-name-suffix]
+[fixture: common/config-init-name-reinitialize]
+[fixture: common/config-init-name-uppercase]
+[fixture: common/config-init-name-capitalized]
+[fixture: common/config-init-name-digit-after]
+[fixture: common/directive-unknown-name]
 
 init ディレクティブはソースの順に取ります。
 そのどれかの引数が正しい JSON でなければ、走査はそのディレクティブで止まり、
 init の設定はまったくありません。
 それより前の init ディレクティブも適用されません。
-mermaid.js は入力を受理します。 [fixture: common/directive-bad-json] [fixture:
-common/config-bad-json-drops-other-inits]
+mermaid.js は入力を受理します。
+
+[fixture: common/directive-bad-json]
+[fixture: common/config-bad-json-drops-other-inits]
+
 閉じる `}` の前のカンマも正しい JSON ではありません。
 `%%{init: {"flowchart": {"inheritDir": true},}}%%` は init の設定を与えません。
+
 [fixture: common/config-init-trailing-comma]
+
 正しい JSON を持つ閉じた init ディレクティブは、
 `flowchart LR` と `A-->B` の前の `%%{init: {"theme": "dark"}}%%` のように、
-図のテキストの読み方を何も変えません。 [fixture: common/directive-init-theme]
+図のテキストの読み方を何も変えません。
+
+[fixture: common/directive-init-theme]
+
 そうでなければ、**init の設定**は次のとおりです。
 
 - init ディレクティブがなければ、ありません。
+
 - init ディレクティブが 1 つなら、その引数の値です。
   ただし、それが空なら、ありません。
   値はマッピングでなくてもかまいません。
   語の引数は文字列なので、`%%{init: 5}%%` は文字列 `5` になります。
+
 - 2 つ以上なら、マッピングです。
   各引数の値にまずキーの絞り込み（[テキストの設定](#テキストの設定)
   を参照）を適用し、その後、値をソースの順に、
   深さを限った合成（[有効な設定](#有効な設定)
   を参照）で空のマッピングに合成します。
   入れ物でない値は何ももたらさず、リストはその要素を 1 つずつもたらします。
-  [fixture: common/config-two-inits-merged] [fixture:
-  common/directive-two-primitive-inits-wrap]
+
+  [fixture: common/config-two-inits-merged]
+  [fixture: common/directive-two-primitive-inits-wrap]
 
 init の設定があるときは、mermaid.js は検出器をもう一度、
 専用のテキストで試します。
@@ -253,16 +291,18 @@ mermaid.js は入力を `UnknownDiagramError` で拒否します。
 その前に init ディレクティブがあると、mermaid.js は拒否します。
 ここでは `%%` の後に改行がないので、`%%` の除去はそれを残すからです。
 この仕様は、この 2 回目の検出を行いません。
-[fixture: common/error-trailing-comment-line] [fixture:
-common/config-init-detection-rejects]
+
+[fixture: common/error-trailing-comment-line]
+[fixture: common/config-init-detection-rejects]
 
 検出器が一致し、init の設定が `config` の項目を持つマッピングであれば、
 その項目は、検出された id の名前のキーに移り、そこにあった項目を置き換えます。
 キーは id そのものですが、`flowchart-v2` は `flowchart` になります。
 init ディレクティブが 2 つ以上のときは、
 キーの絞り込みがすでに `config` を取り除いているので、何も移りません。
-[fixture: common/config-key-moves-to-diagram] [fixture:
-common/config-key-dropped-with-two-inits]
+
+[fixture: common/config-key-moves-to-diagram]
+[fixture: common/config-key-dropped-with-two-inits]
 
 ### wrap ディレクティブ
 
@@ -289,9 +329,10 @@ mermaid.js は入力を `TypeError` で拒否します。
 そのため、mermaid.js は、`%%{init: 5}%%` と `%%{wrap}%%` の組を拒否し、
 `%%{init: 5}%%` と `%%{nowrap}%%` だけなら受理し、
 `%%{init: 5}%%` と `%%{nowrap}%%` と `%%{wrapper}%%` の組を拒否します。
-[fixture: common/directive-primitive-init-wrap] [fixture:
-common/directive-primitive-init-nowrap] [fixture:
-common/directive-primitive-init-two-wrap-substrings]
+
+[fixture: common/directive-primitive-init-wrap]
+[fixture: common/directive-primitive-init-nowrap]
+[fixture: common/directive-primitive-init-two-wrap-substrings]
 
 ### テキストの設定
 
@@ -319,9 +360,10 @@ common/directive-primitive-init-two-wrap-substrings]
 テキストの設定そのものにリストを合成すると、キー `0`、`1` などができ、
 キーの絞り込みがそれらを取り除きます。
 そのため、フロントマターの設定やディレクティブの設定がリストだと、
-何ももたらしません。 [fixture: common/config-directive-after-frontmatter]
-[fixture:
-common/config-primitive-replaces-frontmatter-mapping]
+何ももたらしません。
+
+[fixture: common/config-directive-after-frontmatter]
+[fixture: common/config-primitive-replaces-frontmatter-mapping]
 
 その後、テキストの設定を 3 つの段階で処理します。
 
@@ -343,6 +385,7 @@ common/config-primitive-replaces-frontmatter-mapping]
   値を
   [`config.schema.yaml`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/schemas/config.schema.yaml)
   と既定のテーマの変数から取ります。
+
 - 値が入れ物なら、それにも絞り込みを適用します。
   キー `nodeColors`、`filenameIcons`、
   `extensionIcons` は別の方法で絞り込みます。
@@ -357,6 +400,7 @@ common/config-primitive-replaces-frontmatter-mapping]
   `filenameIcons` と `extensionIcons` で許される形は、
   語の文字か `-` である文字が 1 個以上並び、その後に省略可能な `:` と、
   同じ種類の文字の 1 個以上の並びが続くものです。
+
 - 値が入れ物でなく、キーが `themeCSS`、`fontFamily`、
   `altFontFamily` のどれかを含む（完全に一致するかで比べます）とき、
   値は文字列でなければなりません。
@@ -365,7 +409,9 @@ common/config-primitive-replaces-frontmatter-mapping]
   テキスト `{ /* ERROR: Unbalanced CSS */ }` に置き換えられます。
   文字列の `{` と `}` の数が違うとき、
   または文字列のある先頭部分で `}` が `{` より多いとき、
-  波括弧は**つり合っていません**。 [fixture: common/config-css-key-not-string]
+  波括弧は**つり合っていません**。
+
+  [fixture: common/config-css-key-not-string]
 
 項目の後で、マッピングが空でない `themeVariables` を持つなら、
 `themeVariables` の中の文字列のうち、空であるか、ASCII の英字、ASCII の数字、
@@ -374,6 +420,7 @@ common/config-primitive-replaces-frontmatter-mapping]
 対象は、マッピングの項目の値と、リストの要素です。
 `themeVariables` そのものが文字列で、そのような文字を含むときは、
 mermaid.js は入力を `TypeError` で拒否します。
+
 [fixture: common/config-theme-variables-string-rejected]
 
 **2. フォントファミリー**
@@ -399,6 +446,7 @@ mermaid.js は入力を `TypeError` で拒否します。
 は、`secure`、`securityLevel`、`startOnLoad`、`maxTextSize`、
 `suppressErrorRendering`、`maxEdges` です。
 `secure` 自身が含まれるので、テキストはこの一覧を変えられません。
+
 [fixture: common/config-secure-key-ignored]
 
 その結果がテキストの設定です。
@@ -447,6 +495,7 @@ mermaid.js は入力を `TypeError` で拒否します。
 どちらも入れ物でなく置き換えるときだけです。
 `%%{init: {"flowchart": {"inheritDir": {"a": 1}}}}%%` は、
 `flowchart.inheritDir` を既定値のままにします。
+
 [fixture: common/config-mapping-does-not-replace-default]
 
 有効な設定からは、テーマやその他の見た目の設定も導かれます。
@@ -455,6 +504,7 @@ mermaid.js は入力を `TypeError` で拒否します。
 mermaid.js は `themeVariables` から色の値を読み、
 解析できない値があると入力を拒否します。
 `%%{init: {"themeVariables": {"primaryColor": "notacolor"}}}%%` がその例です。
+
 [fixture: common/config-theme-colour-rejected]
 
 [`renderDiagram()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/mermaidAPI.ts#L477-L682)

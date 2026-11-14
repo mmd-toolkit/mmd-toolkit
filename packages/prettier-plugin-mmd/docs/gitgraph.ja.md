@@ -32,17 +32,23 @@ mermaid.js はコロンのない `gitGraph LR` を拒否するためです。
 コロンの前の隙間に空白はないので、
 `gitGraph %%{x}%%:` は `gitGraph%%{x}%%:` と印字します。
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)の規則に従います。
+
 [fixture: gitgraph/header/header-directive-before-colon-kept]
+
 閉じていないディレクティブが後にあるコロンも、次の行に文が続く場合は残します。
 ディレクティブが改行を取り、コロンがないと文が `gitGraph` に直接続くため、
 行を分けられません。
 `gitGraph:%%{x y` と次の行の `commit` は書かれたまま残します。
+
 [fixture: gitgraph/header/header-colon-unclosed-directive-joins-next-line-kept]
+
 隠れた YAML ブロックが前にあるコロンは、ほかのコロンと同じく除きます。
 対象にする版は、コロンの有無にかかわらず見出しを同じに読むか、
 どちらも拒否するためです。
 `gitGraph ---`、ブロック、`--- :` は、`---` のままコロンなしで印字します。
+
 [fixture: gitgraph/header/header-yaml-before-colon]
+
 ブロックの後の、単独の行にあるコロンは、その前の改行と一緒に除くので、
 空の行は残りません。
 ブロックとそのコロンの間のコメントやディレクティブは、ブロックへの接続か、
@@ -50,6 +56,7 @@ mermaid.js はコロンのない `gitGraph LR` を拒否するためです。
 コロンを除いても空行は残りません。
 閉じていないディレクティブや、
 その引数内のディレクティブがコロンの前にある場合も同じです。
+
 [fixture: gitgraph/header/yaml-colon-after-comment]
 [fixture: gitgraph/header/yaml-colon-after-inline-directive]
 [fixture: gitgraph/header/yaml-colon-after-directive]
@@ -57,6 +64,7 @@ mermaid.js はコロンのない `gitGraph LR` を拒否するためです。
 [fixture: gitgraph/header/yaml-colon-after-unclosed-directive]
 [fixture: gitgraph/header/header-yaml-colon-on-its-own-line]
 [corpus fixture: gitgraph/header-hidden-before-colon]
+
 隠れた形の隙間と保護された見出し・本文の境界は保持します。
 
 `gitGraph` と方向の間にある隠れた形は、直後の改行を取り、
@@ -66,11 +74,10 @@ mermaid.js はコロンのない `gitGraph LR` を拒否するためです。
 を参照）。
 その前の隙間は通常の隙間で、空白 1 つになります。
 `gitGraph  %%{}%%  LR:` は `gitGraph %%{}%%  LR:` と印字します。
+
 [fixture: gitgraph/header/hidden-before-direction]
 [corpus fixture: gitgraph/header-hidden-before-direction]
-
-固定例: [fixture: gitgraph/header/header-absent]
-[fixture: gitgraph/header/header-colon]
+[fixture: gitgraph/header/header-absent] [fixture: gitgraph/header/header-colon]
 [fixture: gitgraph/header/header-colon-comment]
 [fixture: gitgraph/header/header-colon-hidden-statement]
 [fixture: gitgraph/header/header-colon-directive-line]
@@ -101,7 +108,7 @@ gitgraph の列に文法上の意味がないため、`tabWidth: 0` は空白 0 
 `useTabs` は幅 0 でもタブ 1 個です。
 その他の値の続きの列・隠れた形の閉じ・保護部分は変えません。
 
-固定例: [fixture: gitgraph/indentation/indent-two]
+[fixture: gitgraph/indentation/indent-two]
 [fixture: gitgraph/indentation/indent-four]
 [fixture: gitgraph/indentation/indent-zero]
 [fixture: gitgraph/indentation/tabs-normal]
@@ -129,7 +136,7 @@ gitGraph
 gitgraph に区切りのセミコロンはありません。
 不正な隣接文やブロック後のセミコロンはコーパスで拒否を検査し、修復しません。
 
-固定例: [fixture: gitgraph/statements-one-per-line/eol-header-inline]
+[fixture: gitgraph/statements-one-per-line/eol-header-inline]
 [fixture: gitgraph/statements-one-per-line/eol-title-owns-text]
 [fixture: gitgraph/statements-one-per-line/eol-values-semicolon]
 
@@ -171,7 +178,7 @@ gitGraph
 
 [fixture: gitgraph/blank-lines/hidden-header-blanks]
 
-固定例: [fixture: gitgraph/blank-lines/blank-collapse]
+[fixture: gitgraph/blank-lines/blank-collapse]
 [fixture: gitgraph/blank-lines/blank-comment]
 [fixture: gitgraph/blank-lines/blank-string-kept]
 [fixture: gitgraph/blank-lines/block-and-directive]
@@ -196,7 +203,7 @@ gitGraph
 コメント・大域的なディレクティブ・隠れた形を含む隙間は、
 接触と物理境界を保持します。
 
-固定例: [corpus fixture: gitgraph/gram-commit-glued-options]
+[corpus fixture: gitgraph/gram-commit-glued-options]
 [fixture: gitgraph/operation-spacing/gap-branch-quoted]
 [fixture: gitgraph/operation-spacing/gap-branch-bare]
 [fixture: gitgraph/operation-spacing/gap-merge]
@@ -226,7 +233,7 @@ gitGraph
 大域的なディレクティブや選ばれたセミコロンも含めて残します。
 その位置の通常の空白は不正です。
 
-固定例: [fixture: gitgraph/option-colons/colon-commit]
+[fixture: gitgraph/option-colons/colon-commit]
 [fixture: gitgraph/option-colons/colon-order]
 [corpus fixture: gitgraph/lex-option-global-before-colon]
 [corpus fixture: gitgraph/lex-selected-semicolon-option-word-colon]
@@ -250,7 +257,7 @@ gitGraph
 解決後の履歴からは作者の出現列が失われ、
 スカラー・tag・文の順序は Db にも影響します。
 
-固定例: [fixture: gitgraph/order-and-repetitions/order-reverse-id]
+[fixture: gitgraph/order-and-repetitions/order-reverse-id]
 [fixture: gitgraph/order-and-repetitions/order-reverse-type]
 [fixture: gitgraph/order-and-repetitions/order-reverse-tags]
 [fixture: gitgraph/order-and-repetitions/order-dedup-tags]
@@ -275,7 +282,7 @@ gitGraph
 導入の形は作者の構文です。
 Db の要約にメッセージ本文がなくても、一致を理由に変更や削除はしません。
 
-固定例: [fixture: gitgraph/messages/message-forms]
+[fixture: gitgraph/messages/message-forms]
 [fixture: gitgraph/messages/message-empty]
 
 入力（エスケープ表記）:
@@ -299,7 +306,7 @@ gitGraph
 それ以外の再エンコードにはエスケープと前処理の新たな判断が必要で、
 作者の書き方も失われるためです。
 
-固定例: [fixture: gitgraph/quotes/quotes-one-form]
+[fixture: gitgraph/quotes/quotes-one-form]
 [corpus fixture: gitgraph/lex-string-escapes]
 [fixture: gitgraph/quotes/single-quote-option]
 [fixture: gitgraph/quotes/single-quote-sensitive-kept]
@@ -339,11 +346,11 @@ mermaid.js の文書の例と同じく引用符なしで印字します。
 ほかの参照は引用符を残します。
 文字列は引用符のとおり `"` で囲んで印字します。
 空・空白のみ・Unicode・予約語・数字風の引用名もそのままです。
+
 [fixture: references/plain-names-without-quotes]
 [fixture: references/names-next-to-a-keyword-without-quotes]
 [fixture: references/names-that-need-quotes]
-
-固定例: [fixture: gitgraph/references/reference-forms]
+[fixture: gitgraph/references/reference-forms]
 [corpus fixture: gitgraph/lex-reference-reserved-quoted]
 [corpus fixture: gitgraph/lex-reference-integer-quoted]
 [fixture: gitgraph/references/reference-empty]
@@ -370,7 +377,7 @@ HTML、entity を保持します。
 変換後の Db から再構築せず、エスケープを JavaScript として解釈しません。
 物理 CR の変換は別途埋め込み先が行います。
 
-固定例: [fixture: gitgraph/authored-values/inner-padding-change]
+[fixture: gitgraph/authored-values/inner-padding-change]
 [fixture: gitgraph/authored-values/inner-runs-change]
 [fixture: gitgraph/authored-values/inner-case-change]
 [fixture: gitgraph/authored-values/inner-escape-spelling]
@@ -395,7 +402,7 @@ order の符号なし整数は、0、精度を失う整数、桁あふれも書�
 order を使って branch を並べ替えません。
 不正な符号・先頭 0・小数・指数形はコーパスの拒否例です。
 
-固定例: [corpus fixture: gitgraph/number-zero]
+[corpus fixture: gitgraph/number-zero]
 [corpus fixture: gitgraph/number-precision]
 [corpus fixture: gitgraph/number-overflow]
 [fixture: gitgraph/order-numbers/precision-digits]
@@ -415,7 +422,7 @@ gitGraph
 操作語・見出しと `NORMAL`・`REVERSE`・`HIGHLIGHT` を正確な綴りで保持します。
 他の大小文字は拒否されるので、別名を作りません。
 
-固定例: [fixture: gitgraph/keyword-case/type-uppercase]
+[fixture: gitgraph/keyword-case/type-uppercase]
 
 入力（エスケープ表記）:
 `"gitGraph\ncommit type:NORMAL\ncommit type:REVERSE\ncommit type:HIGHLIGHT\n"`
@@ -438,7 +445,7 @@ gitGraph
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 未知の branch はどちらの語でも拒否します。
 
-固定例: [fixture: gitgraph/checkout-aliases/alias-one-form]
+[fixture: gitgraph/checkout-aliases/alias-one-form]
 
 入力（エスケープ表記）: `"gitGraph\nbranch b\nswitch main\ncheckout b\n"`
 
@@ -460,7 +467,7 @@ cherry-pick の id・parent・tag を原順序で残し、
 `id` は元コミットを指し、空 tag の削除は既定 tag を復活させ Db を変えます。
 マージ元のコミットの `parent` の条件は受理側の責務です。
 
-固定例: [fixture: gitgraph/cherry-pick-options/cherry-spacing]
+[fixture: gitgraph/cherry-pick-options/cherry-spacing]
 [corpus fixture: gitgraph/gram-cherry-pick-repeated-options]
 [corpus fixture: gitgraph/gram-cherry-pick-merge-parent]
 [corpus fixture: gitgraph/gram-cherry-pick-empty-parent]
@@ -492,12 +499,15 @@ gitGraph
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+
 [fixture: title-and-common-values/title-directives-end-blanks-dropped]
+
 共通のアクセシビリティ配置で `accTitle: value`・`accDescr: value`、
 空ブロックは `{}` と印字します。
 これらの行の値の終わりのディレクティブは、
 題の終わりのディレクティブと同じように印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+
 [fixture: title-and-common-values/acc-directives-end-blanks-dropped]
 
 1 行の説明ブロックは、
@@ -512,8 +522,10 @@ Db で LF 後の字下げが取り除かれるためです。
 ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
 空白だけの内側は、囲む空白を要する本文がないため `{}` と印字します。
 タブ、改行、Unicode の空白も同じです。
+
 [fixture: title-and-common-values/empty-whitespace-interiors]
 [test: gitgraph Unicode and tab interiors]
+
 コメントやディレクティブだけのブロックも注釈類を残します。
 フロントマターの代替の扱いを含む反復・空値・出現位置を保持します。
 固定した文法では、空行・コメント・ディレクティブを挟んでも、
@@ -528,7 +540,7 @@ Db で LF 後の字下げが取り除かれるためです。
 コロン後の波括弧は行値のままです。
 同じ意味の外端だけを詰め、説明の内容と字句上の所有は変えません。
 
-固定例: [fixture: gitgraph/title-and-common-values/title-trim]
+[fixture: gitgraph/title-and-common-values/title-trim]
 [fixture: gitgraph/title-and-common-values/acc-value-on-next-line-kept]
 [fixture: gitgraph/title-and-common-values/acc-title-percent-gap-kept]
 [fixture: gitgraph/title-and-common-values/block-then-comment-kept]
@@ -565,7 +577,7 @@ gitGraph
 説明本文は前述の共有の字下げを使い、
 隠れた形が消費した LF の隙間は専用の保持規則に従います。
 
-固定例: [fixture: gitgraph/multiline-values/long-kept]
+[fixture: gitgraph/multiline-values/long-kept]
 [fixture: gitgraph/multiline-values/multiline-string]
 [fixture: gitgraph/multiline-values/block-columns-fixed]
 
@@ -592,7 +604,7 @@ gitGraph
 共通の削除領域は完全な原文の範囲を保持します。
 保持する前置部分は通常の配置に優先します。
 
-固定例: [fixture: gitgraph/comments/comment-placement]
+[fixture: gitgraph/comments/comment-placement]
 [fixture: gitgraph/comments/comment-bare-triple]
 [fixture: gitgraph/comments/comment-in-values]
 [corpus fixture: gitgraph/comment-string]
@@ -630,7 +642,7 @@ gitGraph %% header
 
 [fixture: gitgraph/global-directives/header-to-body]
 
-固定例: [fixture: gitgraph/global-directives/directive-sides]
+[fixture: gitgraph/global-directives/directive-sides]
 [fixture: gitgraph/global-directives/directive-lines]
 [corpus fixture: gitgraph/directive-commit-id]
 [corpus fixture: gitgraph/directive-in-string]
@@ -662,7 +674,7 @@ yaml-ブロックの `GitgraphIgnoredText` は、
 先に始まった文字列・ブロック・行値の所有も変えません。
 境界の移動や両端の空白の除去は受理を失わせるためです。
 
-固定例: [corpus fixture: gitgraph/lex-yaml-invalid-body]
+[corpus fixture: gitgraph/lex-yaml-invalid-body]
 [corpus fixture: gitgraph/lex-hidden-yaml-before-option-value]
 [fixture: gitgraph/hidden-yaml/yaml-close-indent-invalid]
 [corpus fixture: gitgraph/lex-hidden-yaml-commit-closing-space]
@@ -728,7 +740,7 @@ opaque
 分類を変える境界は足しません。
 必須部品が欠けた入力は拒否します。
 
-固定例: [fixture: gitgraph/hidden-directives/hidden-directive-body]
+[fixture: gitgraph/hidden-directives/hidden-directive-body]
 [corpus fixture: gitgraph/lex-option-before-type-value-hidden]
 [corpus fixture: gitgraph/lex-hidden-directive-commit-closing-space]
 [corpus fixture: gitgraph/lex-hidden-directive-commit-spare-lf]
@@ -804,16 +816,17 @@ gitGraph
 行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
 書かれたまま残します。
 それ以外の複数行の文は、1 行の文と同じように整形します。
+
 [fixture: semicolons/stretch-kept-rest-formatted]
 [fixture: semicolons/no-stretch-formatted]
+
 保護された見出しと最初の文を分けません。
 style・classDef の走査、コロンとハッシュ記号の空白、大小文字、反復、
 ディレクティブが再結合する条件を満たす語と LS/PS の境界を残します。
 選ばれたセミコロンの削除は別の選択を起こして Db を変えます。
 単位の途中での分断は拒否します。
 
-固定例: [fixture: gitgraph/semicolons/native-commit-value]
-
+[fixture: gitgraph/semicolons/native-commit-value]
 [fixture: gitgraph/semicolons/semicolon-header-protect]
 [corpus fixture: gitgraph/style-both-words]
 [corpus fixture: gitgraph/style-colon-space]
@@ -841,7 +854,7 @@ gitGraph title style:#a;b
 続きの行の末尾は原文を保持します。
 隠れた形の閉じの余白は必要な EOL を可視に保つため、EOF でも残します。
 
-固定例: [fixture: gitgraph/trailing-whitespace/trailing-safe]
+[fixture: gitgraph/trailing-whitespace/trailing-safe]
 [fixture: gitgraph/trailing-whitespace/trailing-string-kept]
 [corpus fixture: gitgraph/lex-hidden-directive-commit-eof]
 [fixture: gitgraph/trailing-whitespace/hidden-eof-padding]
@@ -869,7 +882,7 @@ gitGraph
 構造上の非 ASCII 区切りは拒否を保ちます。
 先頭 BOM は埋め込み先の Prettierの扱いに従い、バイト同一は保証しません。
 
-固定例: [test: gitgraph/line-terminators-and-unicode/eol-cr]
+[test: gitgraph/line-terminators-and-unicode/eol-cr]
 [test: gitgraph/line-terminators-and-unicode/eol-crlf]
 [test: gitgraph/line-terminators-and-unicode/eol-string-crlf]
 [test: gitgraph/line-terminators-and-unicode/eol-block-cr]
@@ -897,7 +910,7 @@ YAML は `tabWidth` 0 でも共有の正の最小字下げを使います。
 先頭 LF の削除は隠れた YAML を有効な title や設定に変え、Db を変えます。
 隠れた形は YAML 整形処理に渡しません。
 
-固定例: [fixture: gitgraph/frontmatter-yaml/frontmatter-safe]
+[fixture: gitgraph/frontmatter-yaml/frontmatter-safe]
 [fixture: gitgraph/frontmatter-yaml/prefix-promote-change]
 [fixture: gitgraph/frontmatter-yaml/prefix-retained]
 [corpus fixture: gitgraph/detect-block-after-real-frontmatter]
@@ -934,7 +947,7 @@ EOF に達する大域的なディレクティブ、隠れた形の閉じの余�
 保持する前置部分の境界は残し、閉じた隠れた形には終端 LF を足せます。
 共通のファイル終端を使いながら、消費 LF の境界を守ります。
 
-固定例: [corpus fixture: gitgraph/header-eof]
+[corpus fixture: gitgraph/header-eof]
 [fixture: gitgraph/final-newline/final-commit]
 [fixture: gitgraph/final-newline/final-comment]
 [fixture: gitgraph/final-newline/final-block]

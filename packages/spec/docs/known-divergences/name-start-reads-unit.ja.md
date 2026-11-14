@@ -21,8 +21,10 @@ classDiagram
 
 バッククォートの名前は、`` ` ``、`` ` `` 以外の文字、`` ` `` で、
 ジェネリクスの型のテキストは、2 つの `~` の間の `~` 以外の文字です。
+
 [fixture: class/spec-class-diagram-c327a7be]
 [fixture: class/lex-generic-plain-type]
+
 [文字列、バッククォートの名前、ジェネリクスの型](../diagrams/class.ja.md#文字列バッククォートの名前ジェネリクスの型)
 を参照してください。
 
@@ -33,8 +35,9 @@ classDiagram
 mermaid.js もこの仕様も同じに読みます。
 `` class `x note` `` と `` class `notex` `` は、
 どちらでもクラス `x note` と `notex` を宣言します。
-[fixture: class/lex-backquote-keyword-later] [fixture:
-class/lex-backquote-keyword-prefix]
+
+[fixture: class/lex-backquote-keyword-later]
+[fixture: class/lex-backquote-keyword-prefix]
 
 ## 差異
 
@@ -92,16 +95,19 @@ class/lex-backquote-keyword-prefix]
 | 6   | ノート `x`                 | 拒否                         |
 
 表で比較した読みを次の fixture が記録します。
-[fixture: class/div-backquote-keyword-escaped] [fixture:
-class/div-backquote-starts-with-quote] [fixture:
-class/div-generic-starts-with-keyword] [fixture:
-class/div-backquote-around-string] [fixture: class/div-generic-around-string]
+
+[fixture: class/div-backquote-keyword-escaped]
+[fixture: class/div-backquote-starts-with-quote]
+[fixture: class/div-generic-starts-with-keyword]
+[fixture: class/div-backquote-around-string]
+[fixture: class/div-generic-around-string]
 [fixture: class/div-backquote-around-keyword]
 
 バッククォートや `~` がなければ、どちらも同じに読みます。
 `A "1" --> B` は、A の側に多重度 `1` を持つ A から B への関係で、
-`note "x"` はノートです。 [fixture: class/gram-cardinality-before-arrow]
-[fixture: class/gram-note-plain]
+`note "x"` はノートです。
+
+[fixture: class/gram-cardinality-before-arrow] [fixture: class/gram-note-plain]
 
 つまり mermaid.js は、テキストがこれらの単位のどれかで始まると、
 名前や型の代わりにその単位を読み、
@@ -111,6 +117,7 @@ class/div-backquote-around-string] [fixture: class/div-generic-around-string]
 バッククォートや `~` のないテキストが表す文を読みます。
 この仕様は、バッククォートや `~` の間のテキストを、
 何で始まっても名前や型として読みます。
+
 [fixture: class/div-backquote-starts-with-double-less-than]
 [fixture: class/div-backquote-starts-with-double-greater-than]
 [fixture: class/div-generic-starts-with-double-less-than]
@@ -120,6 +127,7 @@ class/div-backquote-around-string] [fixture: class/div-generic-around-string]
 [fixture: class/div-backquote-keyword-link]
 [fixture: class/div-backquote-keyword-click]
 [fixture: class/div-backquote-keyword-href]
+
 例 6 では、クラスの名前に文字列が続くものは文ではないので、
 この仕様はテキストを拒否します。
 
@@ -179,6 +187,7 @@ mermaid.js は 2023 年に、文字列について同じ順を替え、
   [Generic Types](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L219-L221)
   でジェネリクスの型を説明しています。
   どちらも、テキストがキーワードで始まれないとは書いていません。
+
 - [Issue #4590](https://github.com/mermaid-js/mermaid/issues/4590) 「Note "note"
   throws an error」は、文字列が `note` のノートが拒否されることを報告しました。
   contributor が、字句解析器は文字列の中でも、どの状態でもキーワードを読む、
@@ -190,7 +199,9 @@ mermaid.js は 2023 年に、文字列について同じ順を替え、
   notes identical to keywords」で閉じられました。
   この pull request は、文字列のテキストの規則を共有の規則より前に動かしました。
   固定した版は、そのようなノートを書かれたとおりに読みます。
+
   [fixture: class/spec-class-diagram-61cad801]
+
 - [Issue #6076](https://github.com/mermaid-js/mermaid/issues/6076) 「Allow
   puncutation in class names」は、2026-10-02 の時点で open で、
   ラベルは `Type: Enhancement`、`Status: Approved`、`Contributor needed`、

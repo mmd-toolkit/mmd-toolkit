@@ -17,8 +17,9 @@ C4Container
   Container(a, "A")
 ```
 
-The example starts with `C4Container`. [fixture:
-common/detect-minimal-c4-container]
+The example starts with `C4Container`.
+
+[fixture: common/detect-minimal-c4-container]
 
 In mermaid.js the detector of C4 looks for `C4Context` at the start of the text
 and for the other four keywords anywhere in the text remaining for detection.
@@ -27,40 +28,51 @@ text (see [Diagram detection](../common.md#diagram-detection)), so it looks for
 all five at the start only. The divergence is the texts whose header is another
 diagram's and whose remaining detection text holds one of the four keywords
 after it. mermaid.js tries the detector of mindmap before that of C4, so a
-mindmap has no such texts: `C4Container` is a node text in both. [fixture:
-mindmap/lex-c4-keyword-as-node-text]
+mindmap has no such texts: `C4Container` is a node text in both.
+
+[fixture: mindmap/lex-c4-keyword-as-node-text]
 
 In kanban, the four words in a node id, a label, or data content are read in
-their kanban positions. mermaid.js selects C4 and rejects the input. [fixture:
-kanban/lex-c4-c4component-id] [fixture: kanban/lex-c4-c4component-label]
-[fixture: kanban/lex-c4-c4component-metadata] [fixture:
-kanban/lex-c4-c4container-id] [fixture: kanban/lex-c4-c4container-label]
-[fixture: kanban/lex-c4-c4container-metadata] [fixture:
-kanban/lex-c4-c4deployment-id] [fixture: kanban/lex-c4-c4deployment-label]
-[fixture: kanban/lex-c4-c4deployment-metadata] [fixture:
-kanban/lex-c4-c4dynamic-id] [fixture: kanban/lex-c4-c4dynamic-label] [fixture:
-kanban/lex-c4-c4dynamic-metadata]
+their kanban positions. mermaid.js selects C4 and rejects the input.
+
+[fixture: kanban/lex-c4-c4component-id] [fixture:
+kanban/lex-c4-c4component-label] [fixture: kanban/lex-c4-c4component-metadata]
+[fixture: kanban/lex-c4-c4container-id] [fixture:
+kanban/lex-c4-c4container-label] [fixture: kanban/lex-c4-c4container-metadata]
+[fixture: kanban/lex-c4-c4deployment-id] [fixture:
+kanban/lex-c4-c4deployment-label] [fixture: kanban/lex-c4-c4deployment-metadata]
+[fixture: kanban/lex-c4-c4dynamic-id] [fixture: kanban/lex-c4-c4dynamic-label]
+[fixture: kanban/lex-c4-c4dynamic-metadata]
 
 A kanban node named `C4Context` changes no detection in either reading.
-[fixture: kanban/lex-c4-c4context-id] `C4Container` inside a removed comment or
-frontmatter changes no detection in either reading. [fixture:
-kanban/lex-c4-c4container-comment] [fixture:
+
+[fixture: kanban/lex-c4-c4context-id]
+
+`C4Container` inside a removed comment or frontmatter changes no detection in
+either reading.
+
+[fixture: kanban/lex-c4-c4container-comment] [fixture:
 kanban/lex-c4-c4container-frontmatter]
 
 In venn, `C4Container`, `C4Component`, `C4Dynamic`, and `C4Deployment` in a bare
 or quoted set name, label, bare or quoted style value, or title are read in
-their venn positions here. [fixture: venn/lex-c4-c4container-identifier]
-[fixture: venn/lex-c4-c4container-label] [fixture:
-venn/lex-c4-c4container-style] [fixture: venn/lex-c4-c4container-title]
-[fixture: venn/lex-c4-c4component-identifier] [fixture:
-venn/lex-c4-c4component-label] [fixture: venn/lex-c4-c4component-style]
-[fixture: venn/lex-c4-c4component-title] [fixture:
-venn/lex-c4-c4dynamic-identifier] [fixture: venn/lex-c4-c4dynamic-label]
-[fixture: venn/lex-c4-c4dynamic-style] [fixture: venn/lex-c4-c4dynamic-title]
-[fixture: venn/lex-c4-c4deployment-identifier] [fixture:
-venn/lex-c4-c4deployment-label] [fixture: venn/lex-c4-c4deployment-style]
-[fixture: venn/lex-c4-c4deployment-title] mermaid.js selects C4 and rejects the
-input. [fixture: venn/lex-c4-c4container-identifier] [fixture:
+their venn positions here.
+
+[fixture: venn/lex-c4-c4container-identifier] [fixture:
+venn/lex-c4-c4container-label] [fixture: venn/lex-c4-c4container-style]
+[fixture: venn/lex-c4-c4container-title] [fixture:
+venn/lex-c4-c4component-identifier] [fixture: venn/lex-c4-c4component-label]
+[fixture: venn/lex-c4-c4component-style] [fixture:
+venn/lex-c4-c4component-title] [fixture: venn/lex-c4-c4dynamic-identifier]
+[fixture: venn/lex-c4-c4dynamic-label] [fixture: venn/lex-c4-c4dynamic-style]
+[fixture: venn/lex-c4-c4dynamic-title] [fixture:
+venn/lex-c4-c4deployment-identifier] [fixture: venn/lex-c4-c4deployment-label]
+[fixture: venn/lex-c4-c4deployment-style] [fixture:
+venn/lex-c4-c4deployment-title]
+
+mermaid.js selects C4 and rejects the input.
+
+[fixture: venn/lex-c4-c4container-identifier] [fixture:
 venn/lex-c4-c4container-label] [fixture: venn/lex-c4-c4container-style]
 [fixture: venn/lex-c4-c4container-title] [fixture:
 venn/lex-c4-c4component-identifier] [fixture: venn/lex-c4-c4component-label]
@@ -74,35 +86,42 @@ venn/lex-c4-c4deployment-title] [fixture: venn/div-c4-bare-identifier] [fixture:
 venn/div-c4-bare-style-value]
 
 `C4Context` after the venn header and C4 words in removed comments or
-frontmatter change no detection in either reading. [fixture:
-venn/lex-c4-c4context-identifier] [fixture: venn/lex-c4-c4context-label]
-[fixture: venn/lex-c4-c4context-style] [fixture: venn/lex-c4-c4context-title]
-[fixture: venn/lex-c4-c4container-comment] [fixture:
-venn/lex-c4-c4container-frontmatter]
+frontmatter change no detection in either reading.
+
+[fixture: venn/lex-c4-c4context-identifier] [fixture:
+venn/lex-c4-c4context-label] [fixture: venn/lex-c4-c4context-style] [fixture:
+venn/lex-c4-c4context-title] [fixture: venn/lex-c4-c4container-comment]
+[fixture: venn/lex-c4-c4container-frontmatter]
 
 In Ishikawa, `C4Container`, `C4Component`, `C4Dynamic`, and `C4Deployment`
 anywhere in node text, including quoted-looking text and a suffix inside a
 larger word, stay Ishikawa text here. When the C4 word remains in the text used
-for detection, mermaid.js selects C4 and rejects the input. [fixture:
-ishikawa/detect-c4-container-text] [fixture: ishikawa/detect-c4-component-root]
-[fixture: ishikawa/detect-c4-dynamic-quoted] [fixture:
-ishikawa/detect-c4-deployment-suffix] `C4Context`, C4 words in frontmatter, and
-words removed as common comments or directives change no detection in either
-reading. [fixture: ishikawa/detect-c4-context-text] [fixture:
+for detection, mermaid.js selects C4 and rejects the input.
+
+[fixture: ishikawa/detect-c4-container-text] [fixture:
+ishikawa/detect-c4-component-root] [fixture: ishikawa/detect-c4-dynamic-quoted]
+[fixture: ishikawa/detect-c4-deployment-suffix]
+
+`C4Context`, C4 words in frontmatter, and words removed as common comments or
+directives change no detection in either reading.
+
+[fixture: ishikawa/detect-c4-context-text] [fixture:
 ishikawa/detect-c4-frontmatter] [fixture: ishikawa/detect-c4-comment] [fixture:
 ishikawa/detect-c4-in-directive]
 
 Inline `R %% C4Container` is accepted by both when a physical line terminator
 follows its percent suffix (see
 [Line terminators](../common.md#line-terminators)): detection removes that
-suffix, while Ishikawa keeps the whole node text. [fixture:
-ishikawa/detect-inline-comment-c4-text] [fixture:
+suffix, while Ishikawa keeps the whole node text.
+
+[fixture: ishikawa/detect-inline-comment-c4-text] [fixture:
 ishikawa/detect-inline-comment-c4-cr]
 
 At EOF, including when only U+2028 or U+2029 follows the suffix, detection does
 not remove it. mermaid.js selects C4 and rejects the input; this specification
-accepts the Ishikawa text under this identifier. [fixture:
-ishikawa/div-c4-inline-percent-eof] [fixture:
+accepts the Ishikawa text under this identifier.
+
+[fixture: ishikawa/div-c4-inline-percent-eof] [fixture:
 ishikawa/div-c4-inline-percent-ls-eof] [fixture:
 ishikawa/div-c4-inline-percent-ps-eof]
 
@@ -162,10 +181,11 @@ Each example is a whole diagram.
 | 5       | a flowchart with the vertex `C4Context` | the same                                             |
 | 6       | a flowchart with the vertices A and B   | the same                                             |
 
-The fixtures record the readings compared in the table. [fixture:
-common/detect-c4-anywhere] [fixture: flowchart/div-c4-keyword-in-label]
-[fixture: class/div-c4-keyword-as-class-name] [fixture:
-state/div-c4-keyword-as-state-id] [fixture:
+The fixtures record the readings compared in the table.
+
+[fixture: common/detect-c4-anywhere] [fixture:
+flowchart/div-c4-keyword-in-label] [fixture: class/div-c4-keyword-as-class-name]
+[fixture: state/div-c4-keyword-as-state-id] [fixture:
 common/detect-c4context-only-at-start] [fixture:
 flowchart/detect-c4-keyword-on-comment-line]
 
@@ -204,6 +224,7 @@ tried.
 For detection, an inline `%%` suffix is removed only when LF terminates it; at
 EOF it stays visible to the detector
 ([`stripAnyComments()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagram-api/regexes.ts#L43-L75)).
+
 [fixture: usecase/lex-c4-inline-percent-with-lf] [fixture:
 usecase/div-c4-inline-percent-eof]
 
@@ -229,8 +250,10 @@ behavior accepts the same inputs as usecase. The tree needs no missing-text
 node. The existing reverse pipeline-order criterion selects the header's grammar
 without rejecting any Mermaid-accepted input for this reason. C4Context and
 words removed with frontmatter, directives or comments are controls, not
-divergences. [fixture: usecase/div-detect-c4-label] [fixture:
-usecase/div-c4-component-label] [fixture: usecase/div-c4-dynamic-json] [fixture:
+divergences.
+
+[fixture: usecase/div-detect-c4-label] [fixture: usecase/div-c4-component-label]
+[fixture: usecase/div-c4-dynamic-json] [fixture:
 usecase/div-c4-deployment-stereotype] [fixture:
 usecase/gram-detect-c4-context-label] [fixture:
 usecase/gram-detect-c4-frontmatter] [fixture: usecase/detect-c4-directive]
@@ -241,7 +264,9 @@ Usecase keeps inline `%%` in labels. When LF terminates the line containing
 usecase; its label still contains the whole written text. At EOF, detection
 leaves that suffix in place, selects C4 and rejects the input. This
 specification accepts that same label as usecase under the existing reverse
-criterion. [fixture: usecase/lex-c4-inline-percent-with-lf] [fixture:
+criterion.
+
+[fixture: usecase/lex-c4-inline-percent-with-lf] [fixture:
 usecase/div-c4-inline-percent-eof]
 
 ### Pie
@@ -254,8 +279,9 @@ Mermaid.js instead selects C4 for one of the four unanchored words that remains
 in the text detection sees and rejects these inputs. These are reverse-direction
 divergences: this specification accepts what mermaid.js rejects; this rule
 rejects no accepted pie input. A C4 word in the removed directive of the control
-fixture is not seen by the detector and does not receive a mark. [fixture:
-pie/div-detect-c4-label] [fixture: pie/div-detect-c4-title] [fixture:
+fixture is not seen by the detector and does not receive a mark.
+
+[fixture: pie/div-detect-c4-label] [fixture: pie/div-detect-c4-title] [fixture:
 pie/div-yaml-body-c4-hidden] [fixture: pie/detect-c4-directive-control]
 [fixture: pie/div-detect-c4-acctitle] [fixture: pie/div-detect-c4-accdescr-line]
 [fixture: pie/div-detect-c4-accdescr-block] [fixture:
@@ -267,6 +293,7 @@ the inline percent suffix and select pie, while the label keeps its entire
 written text. At EOF the suffix remains in detection's text, so Mermaid selects
 C4 and rejects; this specification accepts the same pie label under the existing
 reverse criterion. `C4Context` alone inside a label does not select C4.
+
 [fixture: pie/lex-c4-inline-percent-with-lf] [fixture:
 pie/div-c4-inline-percent-eof] [fixture: pie/lex-c4context-label]
 
@@ -277,6 +304,7 @@ words as written. Apply detection only at the header under reverse reason 2:
 `C4Container`, `C4Component`, `C4Dynamic` or `C4Deployment` in later text can
 reject in Mermaid but accept here. This rule rejects no Mermaid-accepted input.
 `C4Context` later in text and LF-terminated comment controls do not differ.
+
 [fixture: gitgraph/div-detect-c4container-id] [fixture:
 gitgraph/div-detect-c4component-branch] [fixture:
 gitgraph/div-detect-c4dynamic-message] [fixture:
@@ -296,10 +324,12 @@ The existing reverse pipeline-order rule selects the header grammar: four
 unanchored C4 words later in detection text can reject in Mermaid but accept
 here as info. This rejects no Mermaid-accepted input. C4Context, removed
 frontmatter/directives and LF-terminated comment controls agree; an otherwise
-invalid info body still rejects. [fixture: info/div-c4container-title] [fixture:
-info/div-c4component-acctitle] [fixture: info/div-c4dynamic-line] [fixture:
-info/div-c4deployment-block] [fixture: info/div-c4container-header-comment-eof]
-[fixture: info/div-c4component-flag-comment-eof] [fixture:
+invalid info body still rejects.
+
+[fixture: info/div-c4container-title] [fixture: info/div-c4component-acctitle]
+[fixture: info/div-c4dynamic-line] [fixture: info/div-c4deployment-block]
+[fixture: info/div-c4container-header-comment-eof] [fixture:
+info/div-c4component-flag-comment-eof] [fixture:
 info/c4container-header-comment-lf] [fixture: info/c4component-flag-comment-lf]
 [fixture: info/div-c4-hidden-yaml] [fixture: info/div-c4-hidden-directive]
 [fixture: info/div-c4-retained-yaml] [fixture: info/div-c4-retained-directive]
@@ -311,12 +341,13 @@ info/c4container-header-comment-lf] [fixture: info/c4component-flag-comment-lf]
 Strings, common literals, ignored text and Comments already hold C4 words.
 Header-only selection under reverse reason 2 accepts later C4 words that switch
 Mermaid to C4 and reject. It rejects no Mermaid-accepted input. LF-terminated
-suffixes and detection-passed retained YAML are nondiffering controls. [fixture:
-packet/c4container-label] [fixture: packet/c4component-title] [fixture:
-packet/c4deployment-block] [fixture: packet/c4dynamic-header-comment-eof]
-[fixture: packet/div-c4-hidden-yaml] [fixture: packet/div-c4-hidden-suffix-eof]
-[fixture: packet/c4-hidden-suffix-lf] [fixture:
-packet/c4-retained-preheader-yaml]
+suffixes and detection-passed retained YAML are nondiffering controls.
+
+[fixture: packet/c4container-label] [fixture: packet/c4component-title]
+[fixture: packet/c4deployment-block] [fixture:
+packet/c4dynamic-header-comment-eof] [fixture: packet/div-c4-hidden-yaml]
+[fixture: packet/div-c4-hidden-suffix-eof] [fixture: packet/c4-hidden-suffix-lf]
+[fixture: packet/c4-retained-preheader-yaml]
 
 ### Radar
 
@@ -325,19 +356,22 @@ contains C4Container, C4Component, C4Dynamic or C4Deployment. First ask whether
 the tree can preserve the reading: RadarLiteral, StringLiteral and Identifier
 can hold those authored values without resolving them as C4. No new ignored-text
 node or rejection is needed. The remaining reverse acceptance difference is the
-direct header-selection rule in place of C4's earlier anywhere scan. [fixture:
-radar/c4-container-title] [fixture: radar/c4-component-axis-label] [fixture:
-radar/c4-dynamic-reference] [fixture: radar/c4-deployment-line]
+direct header-selection rule in place of C4's earlier anywhere scan.
+
+[fixture: radar/c4-container-title] [fixture: radar/c4-component-axis-label]
+[fixture: radar/c4-dynamic-reference] [fixture: radar/c4-deployment-line]
 
 C4Context does not perform that anywhere match. An LF-terminated leading comment
 containing one of the four other words is a detection control, distinct from a
 comment whose missing terminator exposes it to C4 detection. The same shared
 identifier records the differing radar inputs, with their accepted specified
-result. [fixture: radar/c4-context-title] [fixture:
-radar/c4-container-header-lf] [fixture: radar/c4-container-header-eof] [fixture:
-radar/c4-component-header-lf] [fixture: radar/c4-component-header-eof] [fixture:
-radar/c4-dynamic-header-lf] [fixture: radar/c4-dynamic-header-eof] [fixture:
-radar/c4-deployment-header-lf] [fixture: radar/c4-deployment-header-eof]
+result.
+
+[fixture: radar/c4-context-title] [fixture: radar/c4-container-header-lf]
+[fixture: radar/c4-container-header-eof] [fixture: radar/c4-component-header-lf]
+[fixture: radar/c4-component-header-eof] [fixture: radar/c4-dynamic-header-lf]
+[fixture: radar/c4-dynamic-header-eof] [fixture: radar/c4-deployment-header-lf]
+[fixture: radar/c4-deployment-header-eof]
 
 ### Treemap
 
@@ -348,6 +382,7 @@ needed. The remaining difference is the direct header rule instead of C4's
 earlier anywhere match. A leading/native header comment ending in LF is a
 nondiffering control; without its terminator the C4 scan may instead select C4.
 Keep the existing accepted specified readings and distinguish those controls.
+
 [fixture: treemap/c4-container-section] [fixture: treemap/c4-component-leaf]
 [fixture: treemap/c4-dynamic-title] [fixture: treemap/c4-deployment-block]
 [fixture: treemap/c4-component-header-eof] [fixture:
@@ -358,18 +393,22 @@ treemap/c4-component-header-lf]
 The selected railroad header chooses IR, EBNF, ABNF or PEG even if later diagram
 text contains C4Container, C4Component, C4Dynamic or C4Deployment. C4Context
 alone is an ordinary value here too. The marked examples have accepted specified
-railroad results where Mermaid instead selects C4. [fixture:
-railroad/ir-c4-container-terminal] [fixture: railroad/ebnf-c4-component-special]
-[fixture: railroad/abnf-c4-dynamic-string] [fixture:
-railroad/peg-c4-deployment-predicate] For the first question, written rule
-names, strings, metadata and special sequences retain these words naturally; no
-ignored-text node is required. What cannot be represented as that source tree is
-switching the entire diagram to C4 despite its header. The second answer is
-reason 2: use the direct header-selection rule rather than detector registration
-order. The four ids still share one RailroadDiagram node. [fixture:
-railroad/ir-c4-container-terminal] [fixture: railroad/ebnf-c4-component-special]
-[fixture: railroad/abnf-c4-dynamic-string] [fixture:
-railroad/peg-c4-deployment-predicate]
+railroad results where Mermaid instead selects C4.
+
+[fixture: railroad/ir-c4-container-terminal] [fixture:
+railroad/ebnf-c4-component-special] [fixture: railroad/abnf-c4-dynamic-string]
+[fixture: railroad/peg-c4-deployment-predicate]
+
+For the first question, written rule names, strings, metadata and special
+sequences retain these words naturally; no ignored-text node is required. What
+cannot be represented as that source tree is switching the entire diagram to C4
+despite its header. The second answer is reason 2: use the direct
+header-selection rule rather than detector registration order. The four ids
+still share one RailroadDiagram node.
+
+[fixture: railroad/ir-c4-container-terminal] [fixture:
+railroad/ebnf-c4-component-special] [fixture: railroad/abnf-c4-dynamic-string]
+[fixture: railroad/peg-c4-deployment-predicate]
 
 ### Wardley
 
@@ -380,6 +419,7 @@ header-selection rule selects Wardley from its leading header instead. Later
 C4Container, C4Component, C4Dynamic or C4Deployment can therefore make Mermaid
 reject where this specification accepts. Ordinary LF-terminated comments removed
 before detection remain nondiffering; an EOF comment is not the same control.
+
 [fixture: wardley/c4-component-component] [fixture:
 wardley/c4-dynamic-flow-label] [fixture: wardley/c4-container-title] [fixture:
 wardley/c4-component-header-eof] [fixture: wardley/c4-component-header-lf]
@@ -389,9 +429,11 @@ wardley/c4-component-header-eof] [fixture: wardley/c4-component-header-lf]
 Select cynefin from its header even when a later value contains a C4 detector
 word. The value has a Cynefin node, but the same tree cannot also have the
 displaced C4 diagram kind. An ordinary LF-terminated comment removed for
-detection is a nondiffering control. [fixture: cynefin/c4-component-item]
-[fixture: cynefin/c4-container-title] [fixture: cynefin/c4-component-header-eof]
-[fixture: cynefin/c4-component-header-lf]
+detection is a nondiffering control.
+
+[fixture: cynefin/c4-component-item] [fixture: cynefin/c4-container-title]
+[fixture: cynefin/c4-component-header-eof] [fixture:
+cynefin/c4-component-header-lf]
 
 The
 [pinned grammar](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/cynefin/cynefin.langium#L4-L30)
@@ -399,8 +441,9 @@ and
 [public adapter](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
 read the result of the common preprocessing/detection pipeline. The
 [Cynefin syntax](../diagrams/cynefin.md) states the direct rule and
-[tree](../ast/cynefin.md) retains its authored forms. [fixture:
-cynefin/db-all-fields]
+[tree](../ast/cynefin.md) retains its authored forms.
+
+[fixture: cynefin/db-all-fields]
 
 ### eventmodeling
 
@@ -411,7 +454,9 @@ would replace the written header's diagram rather than change those nodes.
 Follow header selection instead: the marked cases reject in Mermaid but accept
 in the specified eventmodeling reading. LF-terminated percent-comment controls
 do not exhibit this detection difference, and no mark is added when both
-readings reject. [fixture: eventmodeling/c4-container-data] [fixture:
+readings reject.
+
+[fixture: eventmodeling/c4-container-data] [fixture:
 eventmodeling/c4-component-identifier] [fixture: eventmodeling/c4-dynamic-gwt]
 [fixture: eventmodeling/c4-deployment-reference] [fixture:
 eventmodeling/c4-component-header-lf] [fixture:
@@ -431,7 +476,9 @@ header under the existing direct detection rule. The specified treeview readings
 record the comparison, including an unterminated percent-comment control that
 the earlier detector can still see. The
 [syntax](../diagrams/treeview.md#detection) separates detection from its own
-grammar acceptance. [fixture: treeview/c4-container-bare] [fixture:
+grammar acceptance.
+
+[fixture: treeview/c4-container-bare] [fixture:
 treeview/c4-component-header-eof] [fixture: treeview/c4-dynamic-title] [fixture:
 treeview/c4-deployment-block] [fixture: treeview/c4-component-header-lf]
 
@@ -463,7 +510,9 @@ treeview/c4-deployment-block] [fixture: treeview/c4-component-header-lf]
   [PR #8501](https://github.com/mermaid-js/mermaid/pull/8501) and
   [PR #8504](https://github.com/mermaid-js/mermaid/pull/8504), which propose
   anchoring all C4 keywords to the start. The pinned detector still matches four
-  keywords anywhere. [fixture: venn/lex-c4-c4container-identifier] [fixture:
+  keywords anywhere.
+
+  [fixture: venn/lex-c4-c4container-identifier] [fixture:
   venn/lex-c4-c4component-label] [fixture: venn/lex-c4-c4dynamic-style]
   [fixture: venn/lex-c4-c4deployment-title]
 

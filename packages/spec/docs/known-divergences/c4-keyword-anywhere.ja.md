@@ -18,6 +18,7 @@ C4Container
 ```
 
 この例は `C4Container` で始まります。
+
 [fixture: common/detect-minimal-c4-container]
 
 mermaid.js の C4 の検出器は、`C4Context` をテキストの先頭に、
@@ -30,11 +31,13 @@ mermaid.js の C4 の検出器は、`C4Context` をテキストの先頭に、
 mermaid.js は mindmap の検出器を C4 のものより先に試すので、
 マインドマップにはそうしたテキストはありません。
 `C4Container` は、どちらでもノードのテキストです。
+
 [fixture: mindmap/lex-c4-keyword-as-node-text]
 
 kanban ではノードの id、ラベル、データ本文の 4 つの語は、
 kanban の位置で読みます。
 mermaid.js は C4 を選び入力を拒否します。
+
 [fixture: kanban/lex-c4-c4component-id]
 [fixture: kanban/lex-c4-c4component-label]
 [fixture: kanban/lex-c4-c4component-metadata]
@@ -48,15 +51,20 @@ mermaid.js は C4 を選び入力を拒否します。
 [fixture: kanban/lex-c4-c4dynamic-metadata]
 
 kanban のノード名 `C4Context` は両者で検出を変えません。
+
 [fixture: kanban/lex-c4-c4context-id]
 
 除かれるコメントとフロントマターの中の `C4Container` は、
-両者で検出を変えません。 [fixture: kanban/lex-c4-c4container-comment]
+両者で検出を変えません。
+
+[fixture: kanban/lex-c4-c4container-comment]
 [fixture: kanban/lex-c4-c4container-frontmatter]
 
 venn では、裸か引用の set の名前、ラベル、裸か引用の style 値、
 タイトルの中の `C4Container`、`C4Component`、`C4Dynamic`、`C4Deployment` を、
-ここでは venn の位置で読みます。 [fixture: venn/lex-c4-c4container-identifier]
+ここでは venn の位置で読みます。
+
+[fixture: venn/lex-c4-c4container-identifier]
 [fixture: venn/lex-c4-c4container-label]
 [fixture: venn/lex-c4-c4container-style]
 [fixture: venn/lex-c4-c4container-title]
@@ -73,6 +81,7 @@ venn では、裸か引用の set の名前、ラベル、裸か引用の style 
 [fixture: venn/lex-c4-c4deployment-title]
 
 mermaid.js は C4 を選び、入力を拒否します。
+
 [fixture: venn/lex-c4-c4container-identifier]
 [fixture: venn/lex-c4-c4container-label]
 [fixture: venn/lex-c4-c4container-style]
@@ -92,6 +101,7 @@ mermaid.js は C4 を選び、入力を拒否します。
 
 venn の見出しより後の `C4Context` と、
 除かれるコメントか frontmatter 内の C4 語は、どちらの読みでも検出を変えません。
+
 [fixture: venn/lex-c4-c4context-identifier]
 [fixture: venn/lex-c4-c4context-label] [fixture: venn/lex-c4-c4context-style]
 [fixture: venn/lex-c4-c4context-title]
@@ -102,6 +112,7 @@ Ishikawa の節点のテキスト内の `C4Container`、`C4Component`、`C4Dynam
 `C4Deployment` は、この仕様では Ishikawa のテキストです。
 引用されたようなテキストや、より長い語の中でも同じです。
 その語が検出するテキストに残ると、mermaid.js は C4 を選んで拒否します。
+
 [fixture: ishikawa/detect-c4-container-text]
 [fixture: ishikawa/detect-c4-component-root]
 [fixture: ishikawa/detect-c4-dynamic-quoted]
@@ -109,6 +120,7 @@ Ishikawa の節点のテキスト内の `C4Container`、`C4Component`、`C4Dynam
 
 `C4Context`、frontmatter 内の C4 の語、
 共通のコメントや directive として除かれる語は、どちらの検出も変えません。
+
 [fixture: ishikawa/detect-c4-context-text]
 [fixture: ishikawa/detect-c4-frontmatter] [fixture: ishikawa/detect-c4-comment]
 [fixture: ishikawa/detect-c4-in-directive]
@@ -116,6 +128,7 @@ Ishikawa の節点のテキスト内の `C4Container`、`C4Component`、`C4Dynam
 行内の `R %% C4Container` は、`%` の接尾部の後に物理行終端があれば、
 両者が受理します（「[行終端](../common.ja.md#行終端)」）。
 検出ではその接尾部を除きますが、Ishikawa は節点のテキスト全体を保ちます。
+
 [fixture: ishikawa/detect-inline-comment-c4-text]
 [fixture: ishikawa/detect-inline-comment-c4-cr]
 
@@ -123,6 +136,7 @@ EOF では、接尾部の後が U+2028 や U+2029 だけの形も含め、
 検出で接尾部を除きません。
 mermaid.js は C4 を選んで拒否しますが、
 この仕様はこの識別子の下で Ishikawa のテキストとして受理します。
+
 [fixture: ishikawa/div-c4-inline-percent-eof]
 [fixture: ishikawa/div-c4-inline-percent-ls-eof]
 [fixture: ishikawa/div-c4-inline-percent-ps-eof]
@@ -184,6 +198,7 @@ mermaid.js は C4 を選んで拒否しますが、
 | 6   | 頂点 A と B を持つ flowchart      | 同じ                                           |
 
 表で比較した読みを次の fixture が記録します。
+
 [fixture: common/detect-c4-anywhere]
 [fixture: flowchart/div-c4-keyword-in-label]
 [fixture: class/div-c4-keyword-as-class-name]
@@ -227,6 +242,7 @@ C4 の検出器は、`flowchart-elk`、`mindmap`、`architecture`、`agentflow` 
 EOF では、
 [`stripAnyComments()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagram-api/regexes.ts#L43-L75)
 のとおり、その接尾部が、検出器に見えるまま残ります。
+
 [fixture: usecase/lex-c4-inline-percent-with-lf]
 [fixture: usecase/div-c4-inline-percent-eof]
 
@@ -253,8 +269,10 @@ UsecaseLiteral、UsecaseJsonDataBlock にそのまま保てます。
 既存の pipeline 順序の逆方向の基準によりヘッダーの文法を選び、
 この理由で mermaid が受理する入力を拒否することはありません。
 C4Context と、frontmatter、directive、コメントと共に除く語は、
-差異ではなく対照例です。 [fixture: usecase/div-detect-c4-label]
-[fixture: usecase/div-c4-component-label] [fixture: usecase/div-c4-dynamic-json]
+差異ではなく対照例です。
+
+[fixture: usecase/div-detect-c4-label] [fixture: usecase/div-c4-component-label]
+[fixture: usecase/div-c4-dynamic-json]
 [fixture: usecase/div-c4-deployment-stereotype]
 [fixture: usecase/gram-detect-c4-context-label]
 [fixture: usecase/gram-detect-c4-frontmatter]
@@ -266,6 +284,7 @@ usecase はラベル内の inline `%%` を保ちます。
 ラベルには書かれた全文を保ちます。
 EOF では検出がその接尾部を残すので、C4 を選んで拒否します。
 この仕様は既存の逆方向の基準により、同じラベルを usecase として受理します。
+
 [fixture: usecase/lex-c4-inline-percent-with-lf]
 [fixture: usecase/div-c4-inline-percent-eof]
 
@@ -281,8 +300,10 @@ mermaid.js は、検出の見るテキストに残る、
 これは逆方向の差異で、mermaid.js が拒否するものをこの仕様が受理します。
 この規則は、受理された pie の入力を拒否しません。
 対照の fixture の、除去するディレクティブの中の C4 の語は、検出器に見えず、
-印を持ちません。 [fixture: pie/div-detect-c4-label]
-[fixture: pie/div-detect-c4-title] [fixture: pie/div-yaml-body-c4-hidden]
+印を持ちません。
+
+[fixture: pie/div-detect-c4-label] [fixture: pie/div-detect-c4-title]
+[fixture: pie/div-yaml-body-c4-hidden]
 [fixture: pie/detect-c4-directive-control] [fixture: pie/div-detect-c4-acctitle]
 [fixture: pie/div-detect-c4-accdescr-line]
 [fixture: pie/div-detect-c4-accdescr-block]
@@ -295,6 +316,7 @@ mermaid.js は、検出の見るテキストに残る、
 EOF ではその接尾部が検出のテキストに残るため、Mermaid は C4 を選んで拒否します。
 この仕様は、既存の逆方向の基準により、同じ pie のラベルを受理します。
 ラベル内の `C4Context` 単独では C4 を選びません。
+
 [fixture: pie/lex-c4-inline-percent-with-lf]
 [fixture: pie/div-c4-inline-percent-eof] [fixture: pie/lex-c4context-label]
 
@@ -307,6 +329,7 @@ C4 の語を書かれたまま持てます。
 ここでは受理します。
 Mermaid が受理する入力をこの規則で拒否することはありません。
 後の `C4Context` や、LF で終わるコメントの対照例は一致します。
+
 [fixture: gitgraph/div-detect-c4container-id]
 [fixture: gitgraph/div-detect-c4component-branch]
 [fixture: gitgraph/div-detect-c4dynamic-message]
@@ -330,6 +353,7 @@ Mermaid が受理する入力を拒否しません。
 C4Context、除いたフロントマター・ディレクティブ、
 LF で終わるコメントの対照例は一致し、
 別の理由で不正な info の本文は引き続き拒否します。
+
 [fixture: info/div-c4container-title] [fixture: info/div-c4component-acctitle]
 [fixture: info/div-c4dynamic-line] [fixture: info/div-c4deployment-block]
 [fixture: info/div-c4container-header-comment-eof]
@@ -348,6 +372,7 @@ LF で終わるコメントの対照例は一致し、
 Mermaid が C4 へ切り替えて拒否する後続の C4 語を受理する。
 Mermaid が受理する入力は拒否しない。
 LF 終端の接尾辞と検出が通過した残存 YAML は差異のない対照である。
+
 [fixture: packet/c4container-label] [fixture: packet/c4component-title]
 [fixture: packet/c4deployment-block]
 [fixture: packet/c4dynamic-header-comment-eof]
@@ -363,14 +388,16 @@ C4Dynamic、C4Deployment があっても radar を選びます。
 C4 として解釈せず原文を保てます。
 新しい無視するテキストの node も拒否も不要です。
 残る逆方向の受理の差異は、先行する C4 の全体 scan に代わる、
-見出しによる直接の選択規則です。 [fixture: radar/c4-container-title]
-[fixture: radar/c4-component-axis-label] [fixture: radar/c4-dynamic-reference]
-[fixture: radar/c4-deployment-line]
+見出しによる直接の選択規則です。
+
+[fixture: radar/c4-container-title] [fixture: radar/c4-component-axis-label]
+[fixture: radar/c4-dynamic-reference] [fixture: radar/c4-deployment-line]
 
 C4Context はこの全体一致をしません。
 他の 4 語を持つ LF 終了の先頭 comment は、
 終端がなく C4 の検出に語を露出する comment とは異なる検出の対照例です。
 差異のある radar 入力には同じ共有識別子を付け、仕様の受理結果を記録します。
+
 [fixture: radar/c4-context-title] [fixture: radar/c4-container-header-lf]
 [fixture: radar/c4-container-header-eof] [fixture: radar/c4-component-header-lf]
 [fixture: radar/c4-component-header-eof] [fixture: radar/c4-dynamic-header-lf]
@@ -387,6 +414,7 @@ ignored node や拒否は要りません。
 先頭・見出しの native comment が LF で終わる場合は差異のない対照とし、
 終端がなければ C4 scan が C4 を選ぶ場合があります。
 既存の受理する specified を保ち、これらの対照と区別します。
+
 [fixture: treemap/c4-container-section] [fixture: treemap/c4-component-leaf]
 [fixture: treemap/c4-dynamic-title] [fixture: treemap/c4-deployment-block]
 [fixture: treemap/c4-component-header-eof]
@@ -400,6 +428,7 @@ C4Deployment があっても変えません。
 C4Context だけの場合も通常の値です。
 印のある例は、Mermaid が C4 を選ぶのに対し、
 specified の railroad の結果は受理です。
+
 [fixture: railroad/ir-c4-container-terminal]
 [fixture: railroad/ebnf-c4-component-special]
 [fixture: railroad/abnf-c4-dynamic-string]
@@ -412,6 +441,7 @@ ignored-text の node は要りません。
 第 2 の問いの答えは理由 2 で、
 detector の登録順の代わりに見出しを選ぶ直接の規則を使います。
 4 id は引き続き 1 個の RailroadDiagram を共有します。
+
 [fixture: railroad/ir-c4-container-terminal]
 [fixture: railroad/ebnf-c4-component-special]
 [fixture: railroad/abnf-c4-dynamic-string]
@@ -427,6 +457,7 @@ Wardley の木が同時に横取りした C4 図種でもあることはでき�
 Mermaid が拒否し、この仕様が受理する場合があります。
 検出前に除かれる通常の LF 終端のコメントは差異がなく、
 EOF のコメントは同じ control ではありません。
+
 [fixture: wardley/c4-component-component]
 [fixture: wardley/c4-dynamic-flow-label] [fixture: wardley/c4-container-title]
 [fixture: wardley/c4-component-header-eof]
@@ -438,6 +469,7 @@ EOF のコメントは同じ control ではありません。
 値は Cynefin の node を持つが、
 同じ木に置き換わった C4 の図種も持つことはできない。
 検出用に除去する通常の LF つきコメントは差異の無い対照である。
+
 [fixture: cynefin/c4-component-item] [fixture: cynefin/c4-container-title]
 [fixture: cynefin/c4-component-header-eof]
 [fixture: cynefin/c4-component-header-lf]
@@ -448,6 +480,7 @@ EOF のコメントは同じ control ではありません。
 は、共通の前処理と検出の結果を読みます。
 [Cynefin の構文](../diagrams/cynefin.ja.md)に直接の規則を定め、
 [木](../ast/cynefin.ja.md)に書かれた形を保ちます。
+
 [fixture: cynefin/db-all-fields]
 
 ### eventmodeling
@@ -460,7 +493,9 @@ eventmodeling は C4 の検出より後です。
 見出しから選ぶ規則に従い、印付きの例は Mermaid では拒否、
 指定の eventmodeling の読みでは受理します。
 LF で終わる percent comment の対照で はその検出の差がなく、
-両方拒否する場合も印を足しません。 [fixture: eventmodeling/c4-container-data]
+両方拒否する場合も印を足しません。
+
+[fixture: eventmodeling/c4-container-data]
 [fixture: eventmodeling/c4-component-identifier]
 [fixture: eventmodeling/c4-dynamic-gwt]
 [fixture: eventmodeling/c4-deployment-reference]
@@ -482,6 +517,7 @@ C4Dynamic、C4Deployment が入りえます。
 specified の treeview の読みが、先の検出器からまだ見える、
 終端改行の無い percent-comment の対照も含めて、比較を記録します。
 [構文](../diagrams/treeview.ja.md)は検出と文法の受理を分けます。
+
 [fixture: treeview/c4-container-bare]
 [fixture: treeview/c4-component-header-eof] [fixture: treeview/c4-dynamic-title]
 [fixture: treeview/c4-deployment-block]
@@ -515,6 +551,7 @@ specified の treeview の読みが、先の検出器からまだ見える、
 [PR #8501](https://github.com/mermaid-js/mermaid/pull/8501) と、
 [PR #8504](https://github.com/mermaid-js/mermaid/pull/8504) が見つかりました。
 ピン留めした検出器は四つの語を任意の位置で照合します。
+
 [fixture: venn/lex-c4-c4container-identifier]
 [fixture: venn/lex-c4-c4component-label] [fixture: venn/lex-c4-c4dynamic-style]
 [fixture: venn/lex-c4-c4deployment-title]

@@ -169,6 +169,8 @@ pnpm run -s lint:chars
 `pnpm run lint:md` は、リンクかそのアンカーが何も指さないときに失敗する。
 `pnpm run lint:docs` は、
 仕様と parser と tests の文書の fixture の引用が何も指さないとき、
+これらの文書と整形ツールの文書で、
+引用が引用の段落か `Fixtures` のセルの外にあるとき、
 mermaid.js へのリンクが pin した commit を指さないとき、
 英語の原本のない `.ja.md` があるときに失敗する。
 pin した commit は `packages/spec/docs/index.md` に記録してある。
@@ -276,7 +278,8 @@ pin した commit は `packages/spec/docs/index.md` に記録してある。
    入力の見た目だけで判断しない。
 3. なければ足す（2.3）。
    対照の例（規則が当たらない最も近い入力）も足す。
-4. 仕様の文に `[fixture: <category>/<name>]` で引く。
+4. 仕様の文の後ろの、その文の引用の段落に、
+   `[fixture: <category>/<name>]` で引く（スキル conventions の「文書」）。
    英語と日本語の両方に、同じ集合を引く。
 5. mermaid.js と仕様の判断が違う入力（Known divergences）には、
    `fixtures:set-divergence` で識別子を付ける。

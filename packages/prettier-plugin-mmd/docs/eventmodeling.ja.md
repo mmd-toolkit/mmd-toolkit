@@ -425,6 +425,7 @@ GWT の見出しがコメントやディレクティブの後に続く場合、�
 書かれた順序とコメントの形は保ちます。
 節キーワードは引き続き 1 段、項目は 2 段です。
 参照元フレームの行は新たなトップレベルの文ではありません。
+
 [fixture: eventmodeling/gwt-clauses-and-items/header-completion-comment]
 [fixture: eventmodeling/gwt-clauses-and-items/header-directive-continuation]
 
@@ -975,19 +976,26 @@ agentflow も同じ上限を持ちます（詳しくは、
 [既定のサイズによる分岐](./agentflow.ja.md#default-size-branches) を参照）。
 フロントマター、その後ろの空白だけの行、ディレクティブを除いた後で測り、
 CRLF は 1 単位、サロゲートペアは 2 単位と数えます。
+
 [fixture: default-size-branches/size-frontmatter-not-counted]
 [fixture: default-size-branches/size-frontmatter-trivia-not-counted]
 [fixture: default-size-branches/size-directive-not-counted]
 [fixture: default-size-branches/size-utf16-surrogate]
+
 50000 以上のときは、図のテキスト全体とその終わりを保ちます。
+
 [fixture: default-size-branches/size-preserving-to-fallback-unsafe]
+
 それ未満のときは、印字する計画の長さも 50000 未満に収まる場合だけ、
 通常の整形を行い、そうでなければ図のテキスト全体とその終わりを保ちます。
+
 [fixture: default-size-branches/size-below-planned-crossing]
+
 字下げや末尾の改行で上限を越えると、
 値の中のコメント行が除かれて Db が変わるので、それを防ぎます。
 境界そのものはコーパスが、CRLF、行の中のディレクティブ、
 フロントマターの場合も含めて確かめます。
+
 [corpus fixture: eventmodeling/comment-default-size-equal]
 [corpus fixture: eventmodeling/comment-default-size-above]
 [corpus fixture: eventmodeling/comment-default-size-equal-crlf]
@@ -1059,10 +1067,12 @@ tf %%{wrap}%%01 evt Alpha %%{wrap}%%->> %%{wrap}%%02
 その両側のトークンが接していれば 1 つのトークンになります。
 `;` の後の隙間は空白の有無を保ち、`/*style:#x*/;title` は書かれたまま残します。
 `/*style:#x*/ title` は拒否されるためです。
+
 [fixture: semicolons/stretch-kept-rest-formatted]
 [fixture: semicolons/ignored-semicolon-touches-next-atom]
 [fixture: semicolons/no-stretch-formatted]
 [fixture: semicolons/protected-gwt-title-hidden-gap-remains-zero]
+
 最初の保護された本文行は所属の段に揃え、内容と後続列は書かれたままです。
 必須の識別子と共通値の空白は構造上の字下げより優先します。
 子の本文の開始境界も保護行に残し、次の整形で分かれ方が変わるのを防ぎます。
@@ -1201,7 +1211,9 @@ tf 001 evt VeryLongNamespace.VeryLongEventName ->> 002 ->> 003 ->> 004 [[LongDat
 Db は、データ `{"x"}` には `{"x"}` を、`{x}` には `{x}` を保持し、
 `accTitle: "T"` と書かれたタイトルには `accTitle: "T"` を保持します。
 そのため、引用符の有無を変えて同じテキストとして書けるものはなく、
-どのテキストも変えません。 [fixture: quotes/quotes-as-written]
+どのテキストも変えません。
+
+[fixture: quotes/quotes-as-written]
 
 入力
 ([quotes/quotes-as-written-input.mmd](../tests/fixtures/eventmodeling/quotes/quotes-as-written-input.mmd)):

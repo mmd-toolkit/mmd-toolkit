@@ -47,8 +47,9 @@ fixtures affected by it are marked with that identifier. When both reject an
 input, it is not a divergence and its fixture is not marked, even when they
 reject it at different stages. `flow%%{init: {}}%%chart LR` followed by a line
 `A-->` is rejected by the flowchart grammar in mermaid.js, and by this
-specification because the directive lies inside the header keyword. [fixture:
-common/directive-splits-header-keyword]
+specification because the directive lies inside the header keyword.
+
+[fixture: common/directive-splits-header-keyword]
 
 ## When a divergence is made
 
@@ -73,18 +74,23 @@ three reasons, and only as a divergence listed here:
    an empty markdown string inside a shape in mindmap and in kanban, an empty
    string in xychart where it is not the whole title of an axis or of a plot or
    the whole label of a value, and an empty string or an empty markdown string
-   in quadrant and in block, wherever it stands. [fixture:
-   kanban/div-empty-string-before-label] The tree holds no statement that
-   changes nothing for such a form, and the input is rejected as
+   in quadrant and in block, wherever it stands.
+
+   [fixture: kanban/div-empty-string-before-label]
+
+   The tree holds no statement that changes nothing for such a form, and the
+   input is rejected as
    [tokenless-empty-forms](./known-divergences/tokenless-empty-forms.md). An
    empty string after `state` or after a statement in the state context of state
    is no such form: mermaid.js reads the statement before it, and the empty
    string is a [StateIgnoredStatement](./ast/state.md#stateignoredstatement).
+
 2. This specification states a direct rule where the behavior of mermaid.js
    comes from the order of the steps of its pipeline or of the rules of its
    lexer, and is nothing that a specification would state. The inputs that are
    then read differently are the divergence; they may also be inputs that both
    accept with a different Db, or that only this specification accepts.
+
 3. The maintainers of mermaid.js treat the behavior as a defect.
 
 Before a divergence is made for a behavior that looks like a defect, the issues

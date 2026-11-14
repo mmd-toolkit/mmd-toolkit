@@ -262,10 +262,10 @@ IR and ABNF keep `=`, EBNF prints `::=` as `=`, and PEG keeps `<-`. Both EBNF
 forms have the same Db, and the examples in the documentation of mermaid.js
 write `=` 35 times and `::=` never (see
 [Other spellings of a keyword or of a punctuation mark](./compatibility.md#other-spellings-of-a-keyword-or-of-a-punctuation-mark)).
-Compound delimiters remain whole tokens. [fixture:
-railroad/assignment/ebnf-assignment-equals]
+Compound delimiters remain whole tokens.
 
-[fixture: railroad/assignment/abnf-spaces]
+[fixture: railroad/assignment/ebnf-assignment-equals] [fixture:
+railroad/assignment/abnf-spaces]
 
 [fixture: railroad/assignment/ebnf-spellings]
 
@@ -663,18 +663,21 @@ entities and hidden/comment-looking text, with a run of spaces and tabs inside a
 string printed as one space, so a string of spaces and tabs only becomes one
 space. The name of a rule holds no whitespace, so a nonterminal whose string
 holds a run refers to no rule, and the string is printed like any other.
-[fixture: railroad/quotes/ir-string-runs-collapsed] IR, EBNF and PEG allow both
-quote forms and backslash escapes, and a string between `'` is printed between
-`"`, unless its text holds a `'`, a `"`, a backslash, a line break, U+2028,
-U+2029, a backquote, `&`, `#`, or `<` (see
+
+[fixture: railroad/quotes/ir-string-runs-collapsed]
+
+IR, EBNF and PEG allow both quote forms and backslash escapes, and a string
+between `'` is printed between `"`, unless its text holds a `'`, a `"`, a
+backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
 and `singleQuote` is not read; ABNF allows double quotes only and treats
 backslash as ordinary text. Trimming content or using the wrong escape model
-changes the Db. [fixture: railroad/quotes/ir-single-quote-sensitive-kept]
-[fixture: railroad/quotes/ebnf-single-quote-sensitive-kept] [fixture:
-railroad/quotes/peg-single-quote-sensitive-kept]
+changes the Db.
 
-[fixture: railroad/quotes/abnf-backslash]
+[fixture: railroad/quotes/ir-single-quote-sensitive-kept] [fixture:
+railroad/quotes/ebnf-single-quote-sensitive-kept] [fixture:
+railroad/quotes/peg-single-quote-sensitive-kept] [fixture:
+railroad/quotes/abnf-backslash]
 
 [fixture: railroad/quotes/abnf-empty-and-text]
 
@@ -787,12 +790,12 @@ authored line break after the assignment of an outermost choice and before its
 `|` or `/` separators. The continuation uses one extra level. The separator
 stays with the following alternative: a plain line break after it still joins.
 Other expression padding remains compact, and single-line rules gain no new
-breaks. `printWidth` controls no diagram line breaks. [fixture:
-railroad/long-lines/ebnf-written-alternatives] [fixture:
-railroad/long-lines/abnf-written-alternatives] [fixture:
-railroad/long-lines/peg-written-alternatives]
+breaks. `printWidth` controls no diagram line breaks.
 
-[fixture: railroad/long-lines/ir-comments-kept]
+[fixture: railroad/long-lines/ebnf-written-alternatives] [fixture:
+railroad/long-lines/abnf-written-alternatives] [fixture:
+railroad/long-lines/peg-written-alternatives] [fixture:
+railroad/long-lines/ir-comments-kept]
 
 [fixture: railroad/long-lines/ir-directive-kept]
 
@@ -1021,9 +1024,9 @@ are printed with one space before each that has whitespace before it, and the
 whitespace after the last one is left out, whatever the whitespace at the end of
 the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-[fixture: title/title-directives-end-blanks-dropped]
 
-[fixture: railroad/title/abnf-next-line]
+[fixture: title/title-directives-end-blanks-dropped] [fixture:
+railroad/title/abnf-next-line]
 
 [fixture: railroad/title/abnf-prefix]
 
@@ -1130,9 +1133,9 @@ diagrams. The directives that end the value are printed with one space before
 each that has whitespace before it, and the whitespace after the last one is
 left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
-[fixture: railroad/accessibility-lines/abnf-empty]
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
+railroad/accessibility-lines/abnf-empty]
 
 [fixture: railroad/accessibility-lines/abnf-values]
 
@@ -1208,8 +1211,9 @@ Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
 In a block that keeps its braces, put one space between `accDescr` and `{` and
 join a plain keyword-to-opener gap. Whitespace-only interiors become `{}`
-because no content needs surrounding padding. [fixture:
-railroad/description-blocks/abnf-edges] [fixture:
+because no content needs surrounding padding.
+
+[fixture: railroad/description-blocks/abnf-edges] [fixture:
 railroad/description-blocks/ebnf-edges] [fixture:
 railroad/description-blocks/ir-edges] [fixture:
 railroad/description-blocks/peg-edges]
@@ -1217,8 +1221,9 @@ railroad/description-blocks/peg-edges]
 In a block with a text over several lines, ordinary description body and
 standalone comment lines align one level inside the statement: the Db removes
 indentation after LF. Keep line breaks, internal blank lines and trailing
-whitespace, and align a separate closing brace with the statement. [fixture:
-railroad/description-blocks/abnf-lines] [fixture:
+whitespace, and align a separate closing brace with the statement.
+
+[fixture: railroad/description-blocks/abnf-lines] [fixture:
 railroad/description-blocks/ebnf-lines] [fixture:
 railroad/description-blocks/ir-lines] [fixture:
 railroad/description-blocks/peg-lines]
@@ -1227,8 +1232,9 @@ A block that a comment of the diagram type's own kind follows on its line stays
 a block (`accDescr { d } ; c` in an ABNF diagram, `(* c *)` or `/* c */` in an
 EBNF diagram, `# c` in a PEG diagram, `/* c */` in a railroad diagram): the form
 with the colon would take the comment as part of its text. A comment that starts
-with a `%%` ends the text, and the block becomes `accDescr: d %% c`. [fixture:
-railroad/description-blocks/abnf-comment-after-block-kept] [fixture:
+with a `%%` ends the text, and the block becomes `accDescr: d %% c`.
+
+[fixture: railroad/description-blocks/abnf-comment-after-block-kept] [fixture:
 railroad/description-blocks/ebnf-iso-comment-after-block-kept] [fixture:
 railroad/description-blocks/ebnf-c-comment-after-block-kept] [fixture:
 railroad/description-blocks/ir-comment-after-block-kept] [fixture:
@@ -1239,8 +1245,10 @@ railroad/description-blocks/ir-percent-comment-after-block] [fixture:
 railroad/description-blocks/peg-percent-comment-after-block]
 
 Directives keep their complete source. A block with only a comment or a
-directive keeps its contents. [fixture: railroad/description-blocks/abnf-trivia]
-[fixture: railroad/description-blocks/ebnf-trivia] [fixture:
+directive keeps its contents.
+
+[fixture: railroad/description-blocks/abnf-trivia] [fixture:
+railroad/description-blocks/ebnf-trivia] [fixture:
 railroad/description-blocks/ir-trivia] [fixture:
 railroad/description-blocks/peg-trivia]
 
@@ -1862,17 +1870,20 @@ Keep an authored railroad line as written when it contains the literal string
 all statements, comments and native hidden forms on the line, with their inner
 spacing. Do not join the line to either neighbor. When removing a directive
 forms one of these strings across physical lines, keep every contributing line.
+
 [fixture: railroad/semicolons/native-terminal-value]
+
+Here a line is the complete range that mermaid.js reads as one line.
 
 [fixture: railroad/semicolons/ir-word-unclosed-directive-lines] [fixture:
 railroad/semicolons/ebnf-word-unclosed-directive-lines] [fixture:
 railroad/semicolons/abnf-word-unclosed-directive-lines] [fixture:
-railroad/semicolons/peg-word-unclosed-directive-lines] Here a line is the
-complete range that mermaid.js reads as one line. A comment line after U+2028 or
-U+2029 can join text before or after the line containing the word, or on both
-sides: keep all the connected source lines too. The first source line uses one
-body indentation step; the contents and the columns of later source lines remain
-written.
+railroad/semicolons/peg-word-unclosed-directive-lines]
+
+A comment line after U+2028 or U+2029 can join text before or after the line
+containing the word, or on both sides: keep all the connected source lines too.
+The first source line uses one body indentation step; the contents and the
+columns of later source lines remain written.
 
 [test: railroad/semicolons/ir-style-comment-before-ls] [test:
 railroad/semicolons/ir-style-comment-after-ls] [test:
@@ -1913,10 +1924,10 @@ leaves that line unformatted, even when no colon or hash follows. Other lines
 follow the ordinary rules. A word found only inside a removed global directive
 does not keep a line; characters joined across a removed directive do count. A
 global directive on the line before the header is removed in the same way, and
-the lines of the body after it are kept or formatted as before. [fixture:
-railroad/semicolons/ir-word-after-leading-directive]
+the lines of the body after it are kept or formatted as before.
 
-[fixture: railroad/semicolons/abnf-comment-marker-spaced]
+[fixture: railroad/semicolons/ir-word-after-leading-directive] [fixture:
+railroad/semicolons/abnf-comment-marker-spaced]
 
 [fixture: railroad/semicolons/abnf-comment-marker-multiline]
 

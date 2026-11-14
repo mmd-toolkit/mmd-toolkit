@@ -20,6 +20,7 @@ sequenceDiagram
 ```
 
 この例はメッセージの間の単独行にコメントを置きます。
+
 [fixture: sequence/docs-syntax-sequence-diagram-c404e4ed]
 
 この文書は、`autonumber 10%% c` のように、その行のほかの文字のすぐ後に、
@@ -93,12 +94,13 @@ id の並びかテキストの文字です。
 | 6   | 10 からの番号付け            | 同じ                                |
 
 表で比較した読みを次の fixture が記録します。
-[fixture: sequence/div-comment-after-one-character-id] [fixture:
-sequence/div-comment-after-id-run-first-character-target] [fixture:
-sequence/div-comment-after-text-colon] [fixture:
-sequence/div-comment-after-two-digit-number] [fixture:
-sequence/lex-percent-comment-takes-number] [fixture:
-sequence/lex-space-before-comment-after-two-digit-number]
+
+[fixture: sequence/div-comment-after-one-character-id]
+[fixture: sequence/div-comment-after-id-run-first-character-target]
+[fixture: sequence/div-comment-after-text-colon]
+[fixture: sequence/div-comment-after-two-digit-number]
+[fixture: sequence/lex-percent-comment-takes-number]
+[fixture: sequence/lex-space-before-comment-after-two-digit-number]
 
 つまり、mermaid.js の字句解析器のある規則が、
 `%%` のすぐ前の文字で一致を始めるはずの場所では、
@@ -122,12 +124,13 @@ Db が違います。
 例 5 と、`autonumber 5 2%% c`（この仕様では刻み 2、mermaid.js では 1）、
 そして `A%% clice->>Bob: Hello` （この仕様では `A%% clice` からのメッセージ、
 mermaid.js ではメッセージなし）です。
+
 [fixture: sequence/div-comment-after-one-digit-line]
-[fixture: sequence/div-comment-after-first-letter-of-keyword] [fixture:
-sequence/div-comment-after-dot-before-number] [fixture:
-sequence/div-comment-after-fraction-number] [fixture:
-sequence/div-comment-after-step-number] [fixture:
-sequence/div-comment-after-id-run-first-character-line-start]
+[fixture: sequence/div-comment-after-first-letter-of-keyword]
+[fixture: sequence/div-comment-after-dot-before-number]
+[fixture: sequence/div-comment-after-fraction-number]
+[fixture: sequence/div-comment-after-step-number]
+[fixture: sequence/div-comment-after-id-run-first-character-line-start]
 
 `%%` の前の `;` のように、mermaid.js が失う文字が何も変えないときは、
 どちらも同じ結果で、その入力は差異ではありません。
@@ -135,14 +138,16 @@ sequence/div-comment-after-id-run-first-character-line-start]
 `A->>B: %% c` はどちらでもメッセージ `%% c` を持ちます。
 ただし、id の並びの中では空白が残るので、
 `A %% clice->>Bob: Hello` はどちらでも `A %% clice` からのメッセージです。
-[fixture: sequence/lex-comment-after-semicolon] [fixture:
-sequence/lex-comment-after-invalid-unit] [fixture:
-sequence/lex-space-before-comment-after-text-colon] [fixture:
-sequence/lex-space-before-comment-in-id-run]
+
+[fixture: sequence/lex-comment-after-semicolon]
+[fixture: sequence/lex-comment-after-invalid-unit]
+[fixture: sequence/lex-space-before-comment-after-text-colon]
+[fixture: sequence/lex-space-before-comment-in-id-run]
 
 `%%` が文字のすぐ後に来るかは、ディレクティブを除いた図のテキスト、
 つまり両方の字句解析器が読むテキストで決まります。
 `autonumber 1%%{init: {}}%%%% c0` では、`%%` は数 1 のすぐ後に来ます。
+
 [fixture: sequence/div-comment-after-number-across-directive]
 
 ガントチャートでは、mermaid.js の字句解析器は単独の `%` に同じ規則を持ちます。
@@ -159,6 +164,7 @@ URL 文字列の後の `"%c` も同じなので、これらの入力は拒否さ
 gantt では差異は両方向です。
 `ab% : 1d` と `}%c : 1d` はどちらでもタスクで、
 `%` の前の空白はどちらでもコメントにします。
+
 [fixture: gantt/lex-colon-then-percent]
 [fixture: gantt/div-comment-after-task-text-start]
 [fixture: gantt/div-comment-after-keyword-start]
@@ -167,6 +173,7 @@ gantt では差異は両方向です。
 [fixture: gantt/lex-comment-after-two-characters]
 [fixture: gantt/lex-brace-before-percent]
 [fixture: gantt/lex-space-then-percent-after-unit]
+
 [コメント](../diagrams/gantt.ja.md#コメント) を参照してください。
 
 ユーザージャーニー図では、mermaid.js の字句解析器は `%%` に同じ規則を持ちます。
@@ -184,6 +191,7 @@ journey では差異は両方向です。
 `a%: 5` のように文字の後の単独の `%` は、どちらでもタスクのテキストの文字で、
 `}%% c` はどちらでもデータのないタスクのテキストで、
 `%%` の前の `#` はどちらにもコメントを読ませます。
+
 [fixture: journey/div-comment-after-task-text-start]
 [fixture: journey/div-comment-after-semicolon-after-data]
 [fixture: journey/div-comment-after-semicolon-after-title]
@@ -192,6 +200,7 @@ journey では差異は両方向です。
 [fixture: journey/lex-single-percent-after-character]
 [fixture: journey/lex-brace-before-percent]
 [fixture: journey/lex-hash-before-percent]
+
 [コメント](../diagrams/journey.ja.md#コメント) を参照してください。
 
 timeline では、
@@ -204,6 +213,7 @@ period が始まるところの `a%% c`、`;%% c`、`é%% c`、ヘッダー直�
 timeline でも差異は両方向です。
 `}%% c` はどちらでも period で、
 `%%` の前の `#` はどちらにもコメントを読ませます。
+
 [fixture: timeline/div-comment-after-period-start]
 [fixture: timeline/div-comment-after-semicolon]
 [fixture: timeline/div-comment-after-non-ascii-letter]
@@ -212,6 +222,7 @@ timeline でも差異は両方向です。
 [fixture: timeline/div-comment-after-colon]
 [fixture: timeline/db-comment-percent-after-closing-brace]
 [fixture: timeline/lex-hash-before-percent]
+
 [コメント](../diagrams/timeline.ja.md#コメント) を参照してください。
 
 XY chart では、mermaid.js の字句解析器は、
@@ -231,6 +242,7 @@ XY chart では、mermaid.js の字句解析器は、
 これはどの文も変えず、
 [`title-digit-after-axis-statement`](./title-digit-after-axis-statement.ja.md)
 でだけ数に入り、そこでは段を降ろしません。
+
 [fixture: xychart/div-title-digit-after-bare-percent-line-after-axis-and-plot]
 [fixture: xychart/db-title-digit-after-bare-percent-line-and-empty-line]
 [fixture: xychart/header-bare-percent-line-after-header]
@@ -272,7 +284,9 @@ mermaid.js では矢印を持つ左のテキストを持って右のテキスト
 mermaid.js ではテキスト `ab` と `a` を、ここでは `ab,` と `a b` を持ちます。
 `quadrant-1 ab12%% c`、`%%` の前の ASCII 外の文字の並び、`x-axis L;%% c`、
 点の `]` のすぐ後の `%%`、ブロックの `}` のすぐ後の `%%` は、
-両方が同じに読みます。 [fixture: quadrant/div-after-x-axis-glued-comment]
+両方が同じに読みます。
+
+[fixture: quadrant/div-after-x-axis-glued-comment]
 [fixture: quadrant/div-after-y-axis-glued-comment]
 [fixture: quadrant/div-comment-unit-letter-then-non-ascii]
 [fixture: quadrant/div-comment-unit-letters-then-digit]
@@ -312,6 +326,7 @@ mermaid.js ではテキスト `ab` と `a` を、ここでは `ab,` と `a b` �
 [fixture: quadrant/db-comment-glued-after-semicolon]
 [fixture: quadrant/db-point-comment-glued]
 [fixture: quadrant/db-comment-after-statement-brace]
+
 [コメント](../diagrams/quadrant.ja.md#コメント) を参照してください。
 
 ## 書き手にとっての結果

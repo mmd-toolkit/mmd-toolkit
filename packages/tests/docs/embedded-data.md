@@ -25,8 +25,9 @@ it where its input has a data block, a frontmatter `title`, or a frontmatter or
 directive that changes the configuration; the rest need nothing from embedded
 data. A specified reading has its own `embedded`: where mermaid.js rejects the
 input, the reading may carry the configuration that a directive sets, or the
-effects of the data blocks. [fixture:
-class/div-comment-then-directive-line-sets-config] [fixture:
+effects of the data blocks.
+
+[fixture: class/div-comment-then-directive-line-sets-config] [fixture:
 sequence/div-comment-after-number-with-data-block]
 
 - `title` and `dataBlockEffects` are the values below.
@@ -46,8 +47,9 @@ object: `{ "nonFinite": "Infinity" }`, `{ "nonFinite": "-Infinity" }`, or
 Finite numbers remain JSON numbers; strings such as `"Infinity"`, `"-Infinity"`,
 and `"NaN"` remain strings. A tag is restored to a number before merging, so it
 replaces a value rather than merging as an ordinary object. `getDefaultConfig()`
-and `embeddedValuesOf()` give numeric values to `dbFromTree()`. [fixture:
-packet/config-frontmatter-row-infinity] [fixture:
+and `embeddedValuesOf()` give numeric values to `dbFromTree()`.
+
+[fixture: packet/config-frontmatter-row-infinity] [fixture:
 packet/config-frontmatter-row-negative-infinity] [fixture:
 packet/config-frontmatter-row-nan] [fixture:
 packet/config-frontmatter-row-infinity-string] [fixture:
@@ -97,10 +99,11 @@ them in one call
 ([`flow.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L396-L401)).
 
 Adjacent `@{ ... }` blocks of one kanban node are read as one suffix whose
-contents are concatenated, and one effect is recorded for the group. [fixture:
-kanban/db-metadata-adjacent-comma] [fixture: kanban/db-metadata-adjacent-empty]
-[fixture: kanban/db-metadata-two-items] [fixture:
-kanban/gram-metadata-two-blocks] [fixture: kanban/db-metadata-all]
+contents are concatenated, and one effect is recorded for the group.
+
+[fixture: kanban/db-metadata-adjacent-comma] [fixture:
+kanban/db-metadata-adjacent-empty] [fixture: kanban/db-metadata-two-items]
+[fixture: kanban/gram-metadata-two-blocks] [fixture: kanban/db-metadata-all]
 
 Each entry is `{ id, set }`:
 
@@ -120,9 +123,10 @@ follow authored JSON declaration order, which can differ from Db map order after
 a forward reference. Native usecase metadata is syntax and has no such effect.
 The usecase patch intercepts the published model at `commit`, takes JSON
 statements in source order and looks up their Mermaid-read values; it never
-reads the JSON interior again. `clear` resets the effects. [fixture:
-usecase/gram-json-empty] [fixture: usecase/db-json-source-map-order] [fixture:
-usecase/db-native-metadata-not-yaml]
+reads the JSON interior again. `clear` resets the effects.
+
+[fixture: usecase/gram-json-empty] [fixture: usecase/db-json-source-map-order]
+[fixture: usecase/db-native-metadata-not-yaml]
 
 ### How it is recorded
 
@@ -154,9 +158,10 @@ It compares the node summaries after that call without and with the block;
 because the shared Db keeps its state in module variables, it restores the
 prefix by clearing the Db and replaying the original node and decoration calls.
 The recorded effects and problems are reset with the Db's `clear()` before the
-next parse. [fixture: kanban/db-metadata-all] [fixture:
-kanban/db-metadata-repeated-id] [fixture: kanban/db-decoration-icon-twice]
-[fixture: kanban/header-only-lf]
+next parse.
+
+[fixture: kanban/db-metadata-all] [fixture: kanban/db-metadata-repeated-id]
+[fixture: kanban/db-decoration-icon-twice] [fixture: kanban/header-only-lf]
 
 If a block creates or removes an element, or changes more than one, or the
 participant or kanban node cannot be added without its block, the run fails
@@ -179,6 +184,7 @@ In kanban, `ticket` and `priority` are set only by blocks, as is `assigned`;
 `label` also comes from the node description, and an icon decoration can set
 `icon`. Only fields exposed in the node summary contribute to the effect: column
 `assigned`, `priority`, and `icon`, and the fixed `shape`, contribute nothing.
+
 [fixture: kanban/db-metadata-all] [fixture: kanban/db-metadata-section-assigned]
 [fixture: kanban/db-metadata-section-priority] [fixture:
 kanban/db-metadata-section-icon] [fixture: kanban/db-metadata-shape-lower]

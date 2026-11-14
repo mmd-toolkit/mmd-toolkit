@@ -107,8 +107,8 @@ treemap
 
 共通コメントの除去で前の空白だけの連なりが消えていても、
 その結果の行の桁を独立したコメント行にも使います。
-[fixture: treemap/comments/removed-indent]
 
+[fixture: treemap/comments/removed-indent]
 [fixture: treemap/carried-indentation/header-space]
 
 [fixture: treemap/carried-indentation/header-tab]
@@ -278,10 +278,9 @@ treemap
 Mermaid は `1_000` を 1 と読みます。
 ほかの綴りも丸め、NaN、桁あふれ、小さすぎる値の丸めになりえます。
 再符号化すると Db が変わったり、拒否される構文になったりします。
-[fixture: treemap/numbers/shortest-form] [fixture: treemap/numbers/forms-kept]
-[fixture: treemap/numbers/trailing-dot-kept]
 
-[fixture: treemap/numbers/comma]
+[fixture: treemap/numbers/shortest-form] [fixture: treemap/numbers/forms-kept]
+[fixture: treemap/numbers/trailing-dot-kept] [fixture: treemap/numbers/comma]
 
 [fixture: treemap/numbers/underscore]
 
@@ -435,14 +434,18 @@ CSS は空白の連続を 1 つとして読みます。
 `,` の前には空白を置かず、後に 1 つ置きます。
 スタイルの語と語の間の空白とタブの連続は空白 1 つにし、末尾の空白は除きます。
 Db は各スタイルの空白を保つので変わりますが、描かれる図は同じです。
-これは整形前後の図を描いて確かめました。 [fixture: treemap/styles/spaced]
-[fixture: treemap/styles/trailing]
+これは整形前後の図を描いて確かめました。
+
+[fixture: treemap/styles/spaced] [fixture: treemap/styles/trailing]
 [fixture: treemap/styles/trailing-before-semicolon]
 [fixture: treemap/styles/escaped-comma-spaced]
+
 バックスラッシュでエスケープされた `,` はスタイルの一部です。
 文字列の引用符と `%` のテキストは書かれた値の一部で、文字列、コメント、
-`url(` の括弧の中の連続は保ちます。 [fixture: treemap/styles/percent-owned]
-[fixture: treemap/styles/quotes] [fixture: treemap/styles/string-runs-kept]
+`url(` の括弧の中の連続は保ちます。
+
+[fixture: treemap/styles/percent-owned] [fixture: treemap/styles/quotes]
+[fixture: treemap/styles/string-runs-kept]
 
 名前と値の前後の空白以外も変わりうる場合は、スタイルを書かれたままにします。
 2 つのコンマの間や最後のコンマの後の空のスタイルは、
@@ -453,6 +456,7 @@ Db は各スタイルの空白を保つので変わりますが、描かれる�
 2 回目の整形でも同じテキストである必要があります。
 スタイルとクラス名を隔てる空白は、
 スタイルの一部ではありません（[スタイルの隙間](#style-gaps)を参照）。
+
 [fixture: treemap/styles/written] [fixture: treemap/styles/empty-entry-kept]
 [fixture: treemap/styles/directive-line-kept]
 [fixture: semicolons/protected-class-column]
@@ -476,6 +480,7 @@ treemap
 `classDef zz fill:#ABCDEF` は `classDef zz fill: #abcdef` と印字します。
 対象にする版は、`#ABCDEF` と `#abcdef` を同じに描きます。
 `url(#ABC)` の `#ABC` のように、色でない `#` は書かれたままにします。
+
 [fixture: colors/colors-in-lower-case]
 
 入力
@@ -508,47 +513,70 @@ mermaid.js は `;` がなくても同じ文として読むからです。
 `classDef zz color:#f00;` のように
 [mermaid.js の行の規則](../../spec/docs/common.ja.md#style-行と-classdef-行)
 が無視する最後の `;` も、同じく消します。
+
 [fixture: semicolons/class-terminator-dropped]
 [fixture: semicolons/class-terminator-hash-dropped]
+
 消す `;` の直前の空白も、U+00A0、U+2028、U+2029、U+FEFF を含めて一緒に消します。
+
 [fixture: semicolons/class-terminator-space-before-dropped]
 [test: treemap/line-terminators-and-unicode/unicode-values]
 [test: treemap/semicolons/class-terminator-unicode-space-before-dropped]
+
 行の規則が無視する `;` の後ろの空白は style に属するので、これも消します。
+
 [fixture: semicolons/class-terminator-hash-trailing-whitespace-dropped]
+
 文がテキストの末尾で終わっていても同じです。
+
 [fixture: semicolons/class-terminator-end-of-text-dropped]
+
 消した後の文は、`classDef` の行の通常の配置に従います。
 字下げ、前後の空行とコメント行、前にある空の説明ブロック、
 `;` の後ろの空白が次の行に与える字下げです。
+
 [fixture: semicolons/class-terminator-indented-dropped]
 [fixture: semicolons/class-terminator-trailing-whitespace-dropped]
 [fixture: semicolons/class-terminator-blank-and-comment-lines-dropped]
 [fixture: semicolons/class-terminator-empty-description-block-dropped]
 [fixture: style-gaps/css-comment-terminator-dropped]
+
 消すと読まれ方が変わる `;` は残します。
 style のない `classDef` の `;` は、消すと次の行が style になります。
 同じ行に別の文が続く `;` も、消すと読まれ方が変わります。
+
 [fixture: semicolons/terminator]
 [fixture: semicolons/class-terminator-before-row-kept]
+
 同じ行に続くコメントやディレクティブがあるときも残します。
+
 [fixture: semicolons/class-terminator-comment-kept]
+
 文の単位である `;` の直前にディレクティブがあるときも残します。
 間に空白があっても同じです。
+
 [fixture: semicolons/class-terminator-directive-kept]
+
 `classDef zz fill: #f00;` のように、`;` が style の一部であるときも残します。
 `#f00;` が文字参照だからです。
+
 [fixture: semicolons/class-terminator-entity-kept]
+
 別の `;` が隣にあるときも残します。
+
 [fixture: semicolons/class-terminator-beside-semicolon-kept]
+
 U+2028 か U+2029 の後にコメント行が続き、その後にある `;` も残します。
 その文字は行の規則の空白ではなく、コメント行は取り除かれるので、
 `;` とその文字を消すと mermaid.js の描く図が変わります。
 その行は書かれたまま印字します。
+
 [test: treemap/semicolons/class-terminator-after-separator-and-comment-kept]
+
 行の規則が無視する `;` の前にディレクティブがあるときは、
 ディレクティブを残して `;` を消します。
 ほかの図種と同じです。
+
 [fixture: semicolons/class-terminator-hash-directive-dropped]
 
 文を終える `;` が残るときは、その後ろの空白が次の文に字下げを与える連なりです。
@@ -556,38 +584,55 @@ U+2028 か U+2029 の後にコメント行が続き、その後にある `;` も
 2 つのディレクティブの間の空白、行末の空白がこれに当たります。
 mermaid.js はディレクティブの両側の空白を 1 つの連なりとして数えます
 ([見出しと字下げ](../../spec/docs/diagrams/treemap.ja.md#見出しと字下げ))。
+
 [corpus fixture: treemap/gram-indent-around-global-directive]
+
 次の行にもう 1 つ連なりがあると、2 つ目の字下げとして読んで拒否します。
+
 [corpus fixture: treemap/gram-class-tail-space-next-indent]
 [corpus fixture: treemap/gram-class-directive-tail-space-next-indent]
+
 この連なりは、[持ち越す字下げ](#carried-indentation) と同じく、
 次の文の計画された列へ 1 回だけ移します。
 そのため、コメントやディレクティブは `;` に接し、
 コメントやディレクティブは前のディレクティブにも接します。
 ディレクティブの両側の空白が連なりを作るときは、その合計を数えます。
+
 [fixture: semicolons/class-terminator-comment-run-moved]
 [fixture: semicolons/class-terminator-directive-run-moved]
 [fixture: semicolons/class-terminator-directives-run-moved]
 [fixture: semicolons/class-terminator-run-sum-moved]
+
 行の規則が無視する `;` がそれに続くときも同じです。
 2 つの `;` の間に空白やディレクティブがあるときも同じです。
+
 [fixture: semicolons/class-terminator-ignored-run-moved]
 [fixture: semicolons/class-terminator-ignored-comment-run-moved]
 [fixture: semicolons/class-terminator-semicolons-run-moved]
 [fixture: semicolons/class-terminator-directive-semicolon-run-moved]
+
 style のない `classDef` でも同じです。
+
 [fixture: semicolons/class-terminator-styleless-run-moved]
+
 次の文が `classDef` のときも同じです。
+
 [fixture: semicolons/class-terminator-class-run-moved]
+
 間にコメント行や空行があるときも同じです。
+
 [fixture: semicolons/class-terminator-comment-lines-run-moved]
+
 `;` の後ろに空白がないときは、次の行の字下げはその行自身のものなので、
 計画された列に印字します。
+
 [fixture: semicolons/class-terminator-comment-row-indented-kept]
+
 それより前に文を終える `;` がなく、
 行の規則が無視する `;` の後ろに同じ行の文字が続くときは、
 その文字が style の一部になるので、空白も残ります。
 `classDef zz a:#b ; %% c` は行が変わりません。
+
 [fixture: semicolons/class-terminator-ignored-text-after-kept]
 
 それ以外の書かれたセミコロンは保ちます。
@@ -604,9 +649,11 @@ style のない `classDef` でも同じです。
 行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
 書かれたまま残します。
 それ以外の複数行の文は、1 行の文と同じように整形します。
+
 [fixture: semicolons/stretch-kept-rest-formatted]
 [fixture: semicolons/no-stretch-formatted]
 [fixture: semicolons/protected-class-column]
+
 複数行にわたる文の保護区間は元の列を保ち、内部の行に字下げを足しません。
 保持する行が行の境界を拘束する場合は、本文を原文保持します。
 一部の行の字下げだけを固定して残りをそろえません。
@@ -657,7 +704,9 @@ Db の等しい外側の空白から 1 つを選び、引用符に見える文�
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+
 [fixture: title/title-directives-end-blanks-dropped]
+
 テキストのない `title` は、
 同じ行のディレクティブかコメントの前に空白が書かれていれば、
 その最初のものの前に空白 1 つを置いて印字します。
@@ -675,6 +724,7 @@ Db の等しい外側の空白から 1 つを選び、引用符に見える文�
 テキストのない title はキーワードで終わります。
 その 1 文字は、テキストのある title の後の空白と同じく、行の隙間です。
 2 回目の整形は、1 回目と同じ形になります。
+
 [fixture: title/bare-title-directive-one-space]
 [fixture: title/bare-title-directive-spaces]
 [fixture: title/bare-title-directive-tab]
@@ -687,6 +737,7 @@ Db の等しい外側の空白から 1 つを選び、引用符に見える文�
 [test: treemap/title/bare-title-comment-after-line-separator-kept]
 
 空の title の次のコメント行は次の文にそろえ、title の値にはしません。
+
 [fixture: treemap/title/empty-next-comment]
 
 字下げして書かれていない title は行頭に置いて印字し、
@@ -703,9 +754,10 @@ treemap を持つ最初の版は、字下げされた title、`accTitle`、
 を参照してください。
 その title の前のコメント行は title にそろえます。
 書かれた時点で字下げされた title は、最初の版が書かれたままでも拒否するので、
-ほかの文と同じく 1 段深く印字します。 [fixture: treemap/header/common]
-[fixture: treemap/title/after-header-spaced-line-start]
+ほかの文と同じく 1 段深く印字します。
 
+[fixture: treemap/header/common]
+[fixture: treemap/title/after-header-spaced-line-start]
 [fixture: treemap/title/padding]
 
 [fixture: treemap/title/empty-next-comment]
@@ -748,6 +800,7 @@ title Topic words
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 `accTitle` と `accDescr` の文は title と同じ位置に置きます。
@@ -931,33 +984,42 @@ treemap
 [mindmap](./mindmap.ja.md#コメント) と同じく、どの文に関係するかを示します。
 元のコメントが次の文より浅くても深くても同じで、
 字下げが浅くなる行の前にも適用します。
+
 [fixture: treemap/comments/aligned-depths]
 [fixture: treemap/comments/standalone] [fixture: treemap/comments/aligned-final]
 
 `%% text`、`%%!`、`%%!x`、`%%%`、`%%` の後が空白の行、`%% {x}` は、
 そろえるコメント行です。
 連続するコメント行は、空行を挟んでも同じ桁にそろえます。
+
 [fixture: treemap/comments/aligned-forms]
 [fixture: treemap/comments/aligned-blank-lines]
+
 文と同じ設定の字下げを使い、タブと `tabWidth` 0 での正の最小幅にも従います。
+
 [fixture: treemap/comments/aligned-tabs]
 [fixture: treemap/comments/aligned-zero]
+
 見出しの前のコメントと、文のない本文のコメントは第 1 列に置きます。
+
 [fixture: treemap/prefix/comment] [fixture: treemap/comments/only-comments]
 
 文の間では、`%%` だけの行、ディレクティブではない `%%{` 始まりの行、
 独立したディレクティブを第 1 列に置きます。
 字下げすると mermaid.js が拒否するためです。
 混在する列と末尾でも、この区別を保ちます。
+
 [fixture: treemap/comments/native-bare]
 [fixture: treemap/comments/native-nonword]
 [fixture: treemap/comments/unclosed-directive]
 [fixture: treemap/comments/mixed-directives]
 [fixture: treemap/comments/native-final]
+
 文の内部の隙間は [部品の間の改行](#component-newlines) と
 [スタイルの隙間](#style-gaps) に従います。
 空の説明ブロックやセミコロンで保護された title の前後でも、
 コメント行は次の文にそろえます。
+
 [fixture: treemap/comments/aligned-empty-description]
 [fixture: treemap/comments/aligned-protected-title]
 
@@ -966,8 +1028,8 @@ treemap
 その結果コメントが直前の token に接しても、親子を保ちます。
 共通コメント領域とともに消えた空白を復元せず、AST の親子を使います。
 図種固有のコメント内の LS と PS は内容として保ちます。
-[test: treemap/comments/standalone-ls] [test: treemap/comments/standalone-ps]
 
+[test: treemap/comments/standalone-ls] [test: treemap/comments/standalone-ps]
 [fixture: treemap/comments/standalone]
 
 [fixture: treemap/comments/native-bare]
@@ -1023,14 +1085,15 @@ class キーワードと名前の必須空白を保ち、ディレクティブ�
 書かれたまま印字します（[セミコロン](#semicolons)を参照）。
 二つの行を 1 行に書き、その間に閉じていないディレクティブがある場合も同じです。
 ディレクティブが引数の後の空白、つまり二つ目の行の字下げを取り込むためです。
+
 [fixture: treemap/directives/unclosed-directive-joins-rows-kept]
 [fixture: treemap/directives/unclosed-directive-between-rows-kept]
 
 `useTabs` のときは、保つ隙間も補う字下げもすべてタブで印字します。
 ディレクティブの前後の空白は一つの字下げ単位で、
 その各文字は種類を問わず一つと数えるためです（[タブ](#tabs) を参照）。
-[fixture: treemap/directives/leading-use-tabs]
 
+[fixture: treemap/directives/leading-use-tabs]
 [fixture: treemap/directives/leading]
 
 [fixture: treemap/directives/shortened]
@@ -1099,9 +1162,9 @@ treemap
 名前、説明、ディレクティブ、共通コメント領域が所有する空行は保ちます。
 
 コメント行と次の文の間に空行があっても、コメントをそろえる桁は変わりません。
+
 [fixture: treemap/blank-lines/comments]
 [fixture: treemap/comments/aligned-blank-lines]
-
 [fixture: treemap/blank-lines/ordinary]
 
 [fixture: treemap/blank-lines/comments]
@@ -1256,10 +1319,9 @@ EOF まで届く未完の大域的なディレクティブと保護された本�
 拒否される未使用の字下げの連なりは修復しません。
 
 末尾の独立したコメント行は最後の文にそろえます。
-[fixture: treemap/final-newline/comment]
-[fixture: treemap/comments/aligned-final]
 
-[fixture: treemap/final-newline/row]
+[fixture: treemap/final-newline/comment]
+[fixture: treemap/comments/aligned-final] [fixture: treemap/final-newline/row]
 
 [fixture: treemap/final-newline/common]
 

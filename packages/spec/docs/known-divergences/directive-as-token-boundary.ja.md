@@ -22,6 +22,7 @@ flowchart LR
 ```
 
 この例は見出しの前に `init` ディレクティブを置きます。
+
 [fixture: common/directive-init-theme]
 
 mermaid.js は、図を読む前に、
@@ -40,6 +41,7 @@ U+00A0 を含みうる ER の実体の名前も、gantt の click の id も、�
 sequence 図の参加者の id、クラスの名前、`~` を使って書いた ER の属性の語、
 gantt のタスクの説明、要求図の引用符なしの名前のように、
 図の文書がテキストの単位と数える名前は、テキストとして読まれます。
+
 [fixture: sequence/div-directive-in-wrap-prefix]
 [fixture: sequence/lex-directive-in-participant-id]
 [fixture: class/lex-directive-in-name] [fixture: er/div-directive-in-name]
@@ -51,6 +53,7 @@ gantt のタスクの説明、要求図の引用符なしの名前のように�
 kanban では `kanban`、形の開きと閉じ、`::icon(`、`:::`、
 データの開き `@{` の中のディレクティブは拒否します。
 mermaid.js は前後をつないで受理します。
+
 [fixture: kanban/header-directive-inside] [fixture: kanban/div-directive-opener]
 [fixture: kanban/div-directive-closer]
 [fixture: kanban/div-directive-icon-marker]
@@ -58,7 +61,9 @@ mermaid.js は前後をつないで受理します。
 [fixture: kanban/div-directive-data-marker]
 
 ノード本文、形の本文、icon 本文、class 本文、文字列、データ本文には、
-ディレクティブを置けます。 [fixture: kanban/db-grid-directive-item-id]
+ディレクティブを置けます。
+
+[fixture: kanban/db-grid-directive-item-id]
 [fixture: kanban/db-grid-directive-item-label-bare]
 [fixture: kanban/db-grid-directive-item-icon]
 [fixture: kanban/db-grid-directive-item-class]
@@ -66,27 +71,33 @@ mermaid.js は前後をつないで受理します。
 [fixture: kanban/db-metadata-directive]
 
 完全なデータブロックの間にはディレクティブを置けます。
+
 [fixture: kanban/db-metadata-adjacent-directive]
+
 [単位の中のディレクティブ](../diagrams/kanban.ja.md#単位の中のディレクティブ)
 を参照してください。
 
 C4 では見出し語、呼び出し語、`accTitle`、`accDescr` の内部の、
 ディレクティブを拒否し、mermaid.js は前後をつなぎます。
+
 [fixture: c4/lex-directive-keyword] [fixture: c4/div-directive-header]
 [fixture: c4/div-acc-title-directive]
 [fixture: c4/div-acc-block-marker-directive]
 
 裸の引数と名前付きキーはテキスト単位なので、
 引用引数やタイトル・説明のテキストと同様に、内部にディレクティブを置けます。
+
 [fixture: c4/lex-directive-bare-alias] [fixture: c4/lex-directive-named-key]
 [fixture: c4/lex-directive-quoted] [fixture: c4/lex-title-directive-value]
 
 名前付き値の等号と開き引用符は別の区切りなので、
 その間のディレクティブを許します。
+
 [fixture: c4/lex-directive-named-equals-quote]
 
 venn では、見出し、文のキーワード、名前、size、数値の text id、
 裸の style 値の識別子か数の中のディレクティブをここでは拒否します。
+
 [fixture: venn/header-directive-inside] [fixture: venn/lex-directive-in-set]
 [fixture: venn/lex-directive-in-union] [fixture: venn/lex-directive-in-text]
 [fixture: venn/lex-directive-in-style] [fixture: venn/lex-directive-in-title]
@@ -102,10 +113,11 @@ venn では、見出し、文のキーワード、名前、size、数値の text
 [fixture: venn/lex-unterminated-directive-next-line]
 [fixture: venn/lex-unterminated-colon-directive-next-line]
 
-mermaid.js はその前後を連結します。 [fixture: venn/header-directive-inside]
-[fixture: venn/lex-directive-in-set] [fixture: venn/lex-directive-in-union]
-[fixture: venn/lex-directive-in-text] [fixture: venn/lex-directive-in-style]
-[fixture: venn/lex-directive-in-title]
+mermaid.js はその前後を連結します。
+
+[fixture: venn/header-directive-inside] [fixture: venn/lex-directive-in-set]
+[fixture: venn/lex-directive-in-union] [fixture: venn/lex-directive-in-text]
+[fixture: venn/lex-directive-in-style] [fixture: venn/lex-directive-in-title]
 [fixture: venn/db-grid-directive-identifier-bare]
 [fixture: venn/db-grid-directive-size]
 [fixture: venn/db-grid-directive-style-key]
@@ -119,7 +131,9 @@ mermaid.js はその前後を連結します。 [fixture: venn/header-directive-
 [fixture: venn/lex-unterminated-colon-directive-next-line]
 
 venn の文字列、ラベルの内容、タイトルの内容、色全体は、
-ディレクティブを含められます。 [fixture: venn/lex-identifier-directive-middle]
+ディレクティブを含められます。
+
+[fixture: venn/lex-identifier-directive-middle]
 [fixture: venn/db-grid-directive-label-bare]
 [fixture: venn/lex-label-directive-middle]
 [fixture: venn/lex-style-directive-middle]
@@ -129,6 +143,7 @@ venn の文字列、ラベルの内容、タイトルの内容、色全体は、
 [fixture: venn/lex-directive-label-delimiter-gap]
 
 ラベルの角括弧と引用符は別の区切りです。
+
 [fixture: venn/lex-identifier-directive-middle]
 [fixture: venn/db-grid-directive-label-bare]
 [fixture: venn/lex-label-directive-middle]
@@ -143,6 +158,7 @@ Ishikawa で、
 は拒否します。
 完全な beta の見出しの `-beta` の直前も同じです。
 mermaid.js は前後をつないでこれらを受理します。
+
 [fixture: ishikawa/directive-in-header]
 [fixture: ishikawa/directive-in-beta-header]
 [fixture: ishikawa/div-directive-beta-prefix]
@@ -151,12 +167,14 @@ beta の単語境界が合わなければ、通常の見出しの後の接尾部
 その中や `-betaX` の直前に directive を置けます。
 数に見える節点のテキストにも directive を置けます。
 これらは両者が受理し、差異の印を付けません。
+
 [fixture: ishikawa/lex-directive-before-beta-fallback-text]
 [fixture: ishikawa/lex-directive-in-beta-fallback-text]
 [fixture: ishikawa/lex-directive-in-numeric-looking-text]
 
 節点のテキストは、引用符も含めて散文です。
 directive を含められ、値からは除きます。
+
 [fixture: ishikawa/directive-root-middle]
 [fixture: ishikawa/directive-in-quoted-root]
 [fixture: ishikawa/directive-child-middle]
@@ -227,6 +245,7 @@ directive を含められ、値からは除きます。
 | 7   | ラベル `xy` を持つ頂点 A                | 同じ     |
 
 表で比較した読みを次の fixture が記録します。
+
 [fixture: sequence/div-directive-in-keyword]
 [fixture: flowchart/div-directive-in-style-separator]
 [fixture: flowchart/div-directive-in-id]
@@ -243,10 +262,13 @@ directive を含められ、値からは除きます。
 `flow%%{init: {}}%%chart LR` の後に行 `A-->` が続くものは、
 mermaid.js では flowchart の文法が拒否し、この仕様では、
 ディレクティブがヘッダーのキーワードの中にあるので拒否します。
+
 [fixture: common/directive-splits-header-keyword]
 
 同じヘッダーの後に行 `A-->B` が続けば、mermaid.js では flowchart になり、
-この仕様では拒否されます。 [fixture: common/directive-in-header-keyword]
+この仕様では拒否されます。
+
+[fixture: common/directive-in-header-keyword]
 
 差異は一方向だけです。
 この仕様は、mermaid.js が拒否する入力を受理することはなく、
@@ -310,6 +332,7 @@ end、3 種の矢印、開く矢印、辺の id、形とプロパティの区切
 Identifier や矢印の隣のノードでは、
 値や区切りを変えずに内部のテキストを保てません。
 不可分の単位を再構築せず、理由 2 を適用します。
+
 [fixture: agentflow/div-directive-in-header]
 [fixture: agentflow/div-directive-in-flow-keyword]
 [fixture: agentflow/div-directive-in-connector-keyword]
@@ -327,6 +350,7 @@ flow と connector の Name の断片、ラベル、style、アクセシビリ�
 特に metadata のキーはデータのテキストです。
 完全な縦棒の境界も受理します。
 これらに印は不要であり、結合後も mermaid.js が拒否する入力にも不要です。
+
 [fixture: agentflow/lex-directive-in-flow-name-text]
 [fixture: agentflow/lex-directive-in-classdef-value]
 [fixture: agentflow/lex-directive-in-metadata-key]
@@ -343,6 +367,7 @@ Root.directives に directive は残せますが、
 mermaid は結合した綴りを受理しますが、前処理を写さない完全な単位の規則により、
 理由 2 で拒否します。
 この規則による逆方向の受理はありません。
+
 [fixture: usecase/div-directive-in-header]
 [fixture: usecase/div-directive-in-id]
 [fixture: usecase/div-directive-splits-operator]
@@ -360,18 +385,24 @@ CSS プロパティ名は `-- color` の内部 HWS も含められる名前の�
 文字列や raw text の節点と同じく、名前の節点に前後のテキストを保持できます。
 mermaid は directive の有無にかかわらず `--` と後の語を別々の単位に読みます。
 結合するものがないので理由 2 は適用しません。
+
 [fixture: usecase/lex-directive-css-name-gap]
 [fixture: usecase/lex-class-property-custom-gap]
+
 `co%%{init: {}}%%lor` のような語内の directive はこの差異のままです。
+
 [fixture: usecase/div-directive-css-property]
 
 CSS 値、引用した native metadata のキーと値、ラベル、stereotype、JSON 内容は、
 書かれたテキストを保持して trivia による分断を許します。
+
 [fixture: usecase/lex-directive-css-number]
 [fixture: usecase/lex-directive-native-quoted-key]
+
 json-prefix が json、id、@ をまとめても、それぞれは別の構成要素です。
 完全な id と @ の間や @ と { の間の directive は許します。
 native の `@{` は原子的です。
+
 [fixture: usecase/lex-directive-whole-json-prefix-boundary]
 [fixture: usecase/lex-directive-in-json-declaration-at]
 
@@ -391,6 +422,7 @@ mermaid.js がディレクティブを除いて断片をつなぐ場合に、
 下の差異の fixture はすべて mermaid.js が受理し、この仕様が拒否します。
 この規則は、この仕様だけが受理する pie の入力を加えません。
 閉じない共通のディレクティブを両者が拒否するときは印を付けません。
+
 [fixture: pie/div-directive-in-header] [fixture: pie/div-directive-in-showdata]
 [fixture: pie/div-directive-in-title-keyword]
 [fixture: pie/div-directive-in-acctitle-keyword]
@@ -415,6 +447,7 @@ mermaid.js がディレクティブを除いて断片をつなぐ場合に、
 この仕様だけが受理する逆方向の入力はありません。
 option の語とコロンの間や引用文字列の中は許し、
 両方が拒否する接着した境界の例には印を付けません。
+
 [fixture: gitgraph/div-directive-in-header]
 [fixture: gitgraph/div-directive-in-commit]
 [fixture: gitgraph/div-directive-in-option-keyword]
@@ -435,6 +468,7 @@ accDescr 内のディレクティブを拒否しますが、Mermaid は断片を
 これは理由 2 で、逆方向の受理は加えません。
 完全な構成要素の境界や値・隠れたテキストでは許し、
 結合後も不正な入力は両方が拒否します。
+
 [fixture: info/div-directive-header-middle]
 [fixture: info/div-directive-flag-middle]
 [fixture: info/div-directive-title-middle]
@@ -451,7 +485,9 @@ accDescr 内のディレクティブを拒否しますが、Mermaid は断片を
 固定語と整数の内部に構成要素の境界はない。
 理由 2 の直接の単位規則で分割形を拒否する。
 完全な keyword/colon・keyword/brace の境界と、
-値のテキストは差異のない対照である。 [fixture: packet/directive-header-middle]
+値のテキストは差異のない対照である。
+
+[fixture: packet/directive-header-middle]
 [fixture: packet/directive-beta-middle] [fixture: packet/directive-title-middle]
 [fixture: packet/directive-acctitle-middle]
 [fixture: packet/directive-accdescr-middle]
@@ -469,6 +505,7 @@ ignored-text の位置を持てない。
 mermaid は断片をつなぐが、本仕様は拒否する。
 text/string の値は directive を除いた原文を持てるため受理する。
 宣言 id と後続 text をつなぐ未閉鎖 directive も同じ名前の境界規則に従う。
+
 [fixture: architecture/directive-icon-delimiters]
 [fixture: architecture/directive-group-delimiters]
 [fixture: architecture/div-directive-name]
@@ -487,6 +524,7 @@ true/false・circle/polygon・common keyword の内部も含みます。
 native hidden form 全体は RadarIgnoredText に保てますが、
 不可分な atom の内部には node の置き場所がありません。
 残る差異は、前処理で atom の断片を連結せず、境界の直接の規則に従うものです。
+
 [fixture: radar/directive-header-middle] [fixture: radar/directive-axis-name]
 [fixture: radar/directive-curve-name] [fixture: radar/directive-number]
 [fixture: radar/directive-reference] [fixture: radar/div-directive-boolean-atom]
@@ -500,6 +538,7 @@ entry の名前・省略可能な colon・数、member と comma の間が該当
 native な形は名前つき gap/body に、
 global directive は共有 root のリストに保ちます。
 string・common 値・native な形の内容にも、atom を割らずに置けます。
+
 [fixture: radar/gram-directive-composite-header]
 [fixture: radar/directive-common-colon]
 [fixture: radar/common-block-directive-gap] [fixture: radar/directive-common]
@@ -530,6 +569,7 @@ string・共通 text・class style 全体は directive をまたぐ値を持て�
 必須の空白を残す完全な構成要素の間では directive を許します。
 Mermaid の directive 除去後の読みと印付きの受理 fixture が差異を示し、
 空白不足や不正な接尾辞の対照は両方で拒否します。
+
 [fixture: treemap/directive-header-middle]
 [fixture: treemap/div-directive-beta-header]
 [fixture: treemap/directive-class-keyword]
@@ -553,6 +593,7 @@ metadata の keyword、colon/brace、値は別の部品です。
 ABNF repeat は bound と star を別部品とし、
 percent numeric value は text 単位とします。
 完成した repeat の部品の間や string/text の値の内部の directive は許します。
+
 [fixture: railroad/ir-div-directive-header]
 [fixture: railroad/ir-directive-keyword-glued]
 [fixture: railroad/ir-directive-name]
@@ -571,7 +612,9 @@ percent numeric value は text 単位とします。
 式や ignored-text の兄弟ノードでは、それを 1 個の書かれた単位として表せません。
 第 2 の問いの答えは理由 2 です。
 Mermaid の削除して接合する順序の代わりに、直接の境界規則を使います。
-新しい差異の識別子は作りません。 [fixture: railroad/ir-native-ownership]
+新しい差異の識別子は作りません。
+
+[fixture: railroad/ir-native-ownership]
 [fixture: railroad/ebnf-native-ownership]
 [fixture: railroad/abnf-native-ownership]
 [fixture: railroad/peg-native-ownership]
@@ -586,6 +629,7 @@ WardleyIgnoredText に保持できます。
 作者の内部 gap がありません。
 原文を保存できても断片を接合するには異なる字句規則が要るため、
 既存の理由 2 の直接の境界規則でその分割を拒否します。
+
 [fixture: wardley/directive-keyword-middle]
 [fixture: wardley/directive-header-inside]
 [fixture: wardley/directive-id-inside]
@@ -601,7 +645,9 @@ global directive は完全な部品の間、文字列や空白を含む名の te
 native hidden の記号内に置けます。
 複合 flow の中へ通常の padding や native hidden を許す規則ではありません。
 Mermaid が座標や装飾全体を一つの terminal で読むことだけを理由に、
-不可分にはしません。 [fixture: wardley/directive-coordinate-parts]
+不可分にはしません。
+
+[fixture: wardley/directive-coordinate-parts]
 [fixture: wardley/directive-offset-sign]
 [fixture: wardley/directive-strategy-parts]
 [fixture: wardley/directive-parenthesized-inertia-parts]
@@ -618,6 +664,7 @@ Mermaid が座標や装飾全体を一つの terminal で読むことだけを�
 その atom 内の共通 directive を拒否する。
 完全な部品の境目と文字の内部は許す。
 native hidden な形はすでに node を持ち、差異を要しない。
+
 [fixture: cynefin/directive-header-inside]
 [fixture: cynefin/directive-domain-inside]
 [fixture: cynefin/directive-arrow-inside]
@@ -637,6 +684,7 @@ native hidden な形はすでに node を持ち、差異を要しない。
 は、共通の前処理と検出の結果を読みます。
 [Cynefin の構文](../diagrams/cynefin.ja.md)に直接の規則を定め、
 [木](../ast/cynefin.ja.md)に書かれた形を保ちます。
+
 [fixture: cynefin/db-all-fields]
 
 ### eventmodeling
@@ -651,6 +699,7 @@ type tag の backtick・型の語・本文、修飾名の dot・segment、
 残る字句の text が有効なら部品の境目を許します。
 native comment の mark と無視さ れる fence は全体を Comment/IgnoredText に持て、
 hidden であるだけでは拒否しませ ん。
+
 [fixture: eventmodeling/directive-header-inside]
 [fixture: eventmodeling/directive-id-inside]
 [fixture: eventmodeling/directive-number-inside]
@@ -678,6 +727,7 @@ bare 名などの text/string の内側は断片を持て、完成部品の間�
 branch と各 dash は別の部品なので、その間の directive も許します。
 [treeView.langium](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/treeView/treeView.langium#L15-L64)
 に基づく境目を、[図の構文](../diagrams/treeview.ja.md) が定めます。
+
 [fixture: treeview/directive-header-inside]
 [fixture: treeview/directive-class-inside]
 [fixture: treeview/directive-description-inside]

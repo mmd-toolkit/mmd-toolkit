@@ -7,6 +7,7 @@
 Db の導出値は [tests の要約](../../../tests/docs/db-summaries.ja.md#wardley)
 が定める。
 根拠は [wardley.langium][grammar] と [common.langium][common]。
+
 [fixture: wardley/db-all-fields] [fixture: wardley/header-only]
 
 ## 検出
@@ -16,12 +17,13 @@ Db の導出値は [tests の要約](../../../tests/docs/db-summaries.ja.md#ward
 文法の見出しは小文字だけ。
 大文字、見出しの反復、colon、読めない接尾辞は拒否する。
 見出しに EOL は要らず、次の文を直接つなげてもよい。
-Root.diagramType は wardley。 [fixture: wardley/header-only]
-[fixture: wardley/header-upper] [fixture: wardley/header-double]
-[fixture: wardley/header-punctuation] [fixture: wardley/header-letter]
-[fixture: wardley/header-word] [fixture: wardley/header-dash]
-[fixture: wardley/header-unicode] [fixture: wardley/header-glued-statement]
-[fixture: wardley/header-inline]
+Root.diagramType は wardley。
+
+[fixture: wardley/header-only] [fixture: wardley/header-upper]
+[fixture: wardley/header-double] [fixture: wardley/header-punctuation]
+[fixture: wardley/header-letter] [fixture: wardley/header-word]
+[fixture: wardley/header-dash] [fixture: wardley/header-unicode]
+[fixture: wardley/header-glued-statement] [fixture: wardley/header-inline]
 
 本物の先頭 frontmatter、global directive、comment region、先頭の空白、改行変換、
 HTML 属性の引用符、entity、
@@ -29,6 +31,7 @@ HTML 属性の引用符、entity、
 には[共通の前処理](../common.ja.md#ソースの読み方)を適用する。
 [diagram-orchestration.ts][order] は Wardley を C4 より後に登録するため、
 後の C4 語には後述の共有の見出し選択の差異が適用される。
+
 [fixture: wardley/frontmatter-title] [fixture: wardley/space-bom-leading]
 [fixture: wardley/line-cr] [fixture: wardley/line-crlf]
 [fixture: wardley/html-texts] [fixture: wardley/entity-texts]
@@ -42,6 +45,7 @@ HTML 属性の引用符、entity、
 block は図のテキストに残り、hidden-yaml を満たす必要がある。
 WardleyDiagram.textBeforeHeader が所有し、YAML の properties は適用しない。
 この別 block の前に本物の frontmatter があってもよい。
+
 [fixture: wardley/detect-block-after-directive]
 [fixture: wardley/detect-block-after-frontmatter]
 [fixture: wardley/detect-two-blocks]
@@ -52,6 +56,7 @@ WardleyDiagram.textBeforeHeader が所有し、YAML の properties は適用し�
 隣接する 3 本の fence は本文行を持てる。
 先頭の trim は開始側だけの字下げを除くこともある。
 検出を通っても native の開始・終了境界は緩めない。
+
 [fixture: wardley/detect-empty-after-directive]
 [fixture: wardley/detect-retained-missing]
 [fixture: wardley/detect-retained-indent-mismatch]
@@ -69,6 +74,7 @@ WardleyDiagram.textBeforeHeader が所有し、YAML の properties は適用し�
 第 2 scan の directive の後の block は通さない。
 残存 YAML の後に第 2 scan の directive を置けるが、逆順は検出に失敗する。
 到達した見出しだけでなく、検出点から残った形を読む。
+
 [fixture: wardley/detect-retained-two]
 [fixture: wardley/retained-yaml-between-bares]
 [fixture: wardley/detect-block-after-bare-brace]
@@ -79,6 +85,7 @@ WardleyDiagram.textBeforeHeader が所有し、YAML の properties は適用し�
 textBeforeHeader の hidden-directive として読む。
 native の閉じ境界も必要で、見出しを閉じに詰めると拒否する。
 本物の frontmatter や残存 YAML の後も含め、複数の残存形は別々に保つ。
+
 [fixture: wardley/prefix-secondscan]
 [fixture: wardley/prefix-secondscan-multiline]
 [fixture: wardley/detect-secondscan-glued]
@@ -92,6 +99,7 @@ ASCII の space/tab の対照は受理する。
 見出し直前や独立行の、
 通した Unicode trivia は bare-percent-line-before-header の差異になり得る。
 通した裸の行がなければ、後の native な Unicode の隙間は拒否し得る。
+
 [fixture: wardley/retained-directive-between-bares]
 [fixture: wardley/prefix-directive-between-bare-unicode]
 [fixture: wardley/detect-retained-secondscan-bare-ascii]
@@ -114,6 +122,7 @@ ASCII の space/tab の対照は受理する。
 [valueConverter.ts][wardley-converter] を使い、
 custom keyword matcher や validator を加えない。
 回復した model があっても、読めない文字は入力全体の拒否となる。
+
 [fixture: wardley/db-all-fields] [fixture: wardley/error-start]
 [fixture: wardley/error-after-prefix] [fixture: wardley/error-recovered]
 
@@ -129,6 +138,7 @@ custom keyword matcher や validator を加えない。
 | 8   | hidden-yaml、hidden-directive、native-comment                               |
 
 表の unit の優先順位を次の fixture が示します。
+
 [fixture: wardley/keywords-all-glued] [fixture: wardley/db-link-forms]
 [fixture: wardley/hidden-yaml-component-gaps]
 [fixture: wardley/lex-name-priority] [fixture: wardley/common-repeat]
@@ -141,8 +151,11 @@ import された BOOLEAN・FLOAT・NUMBER と space/tab padding は未到達で�
 単位を作らない。
 import された padding は native space/tab padding と同じ形で、
 先の native の規則が常に先に一致するため到達しない。
+
 [fixture: wardley/space-tabs] [fixture: wardley/space-lines]
+
 実効順は [wardley.langium][terminals] と [common.langium][common] による。
+
 [fixture: wardley/db-link-forms] [fixture: wardley/hidden-yaml-block]
 [fixture: wardley/keywords-all-glued]
 [fixture: wardley/number-integer-coordinate]
@@ -150,6 +163,7 @@ import された padding は native space/tab padding と同じ形で、
 ### keyword と名前の境界
 
 strategy は優先順に build、buy、outsource、market。
+
 [fixture: wardley/db-inertia-forms]
 [fixture: wardley/spec-wardley-parser-95189f48]
 
@@ -160,6 +174,7 @@ annotations は annotation に先行する。
 完全な keyword の直後に詰めた global directive を除いても、
 境界の要件は加わらない。
 keyword の内部の分割には後述の atomic な差異を適用する。
+
 [fixture: wardley/keywords-all-glued] [fixture: wardley/keywords-letter]
 [fixture: wardley/anchor-word] [fixture: wardley/annotations-letter]
 [fixture: wardley/annotation-letter] [fixture: wardley/strategy-prefix]
@@ -172,6 +187,7 @@ word character で終わる。
 先の規則が優先され、9a の 9 は integer が取るが、_a は名前になる。
 非 ASCII の bare name は拒否する。
 引用した名前には、この keyword と bare name の制約はない。
+
 [fixture: wardley/lex-id-forms] [fixture: wardley/db-id-underscore]
 [fixture: wardley/lex-name-nonascii] [fixture: wardley/lex-keyword-name-quoted]
 [fixture: wardley/db-prototype-names]
@@ -184,6 +200,7 @@ ASCII letter または開き丸括弧で始まり同じ続きの文字を持つ�
 この形が許すだけ多く取る。
 内部の space/tab は名前の原文で、末尾の padding は名前の外。
 space の後の ampersand は次の部分を始められない。
+
 [fixture: wardley/db-unquoted-names]
 [fixture: wardley/spec-wardley-parser-069bb337]
 [fixture: wardley/spec-wardley-parser-2ba74bc6]
@@ -199,10 +216,12 @@ accTitlex は id-name になれる一方 accTitlex Foo は component
 の一つの名前にならない。
 先頭の予約された接頭辞と、既に始まった spaced-name の内部は異なる。
 component 名の builder は拒否するが、My builder は一つの名前。
-[fixture: wardley/lex-name-title-glued] [fixture:
-wardley/lex-name-title-with-space] [fixture: wardley/lex-name-title-prefix]
-[fixture: wardley/lex-name-acctitle-multiword] [fixture:
-wardley/lex-name-priority] [fixture: wardley/lex-name-inner-keyword]
+
+[fixture: wardley/lex-name-title-glued]
+[fixture: wardley/lex-name-title-with-space]
+[fixture: wardley/lex-name-title-prefix]
+[fixture: wardley/lex-name-acctitle-multiword]
+[fixture: wardley/lex-name-priority] [fixture: wardley/lex-name-inner-keyword]
 
 字句の優先順は矢印の境界も決める。
 A->B は名前 A と dependency-arrow -> だが、
@@ -210,7 +229,9 @@ A-->B は名前 A- と dependency-arrow ->。
 A-.->B は dot で拒否する。
 長い矢印や破線矢印の前に padding があれば全体を読める。
 大文字の Evolution A -> B は名前 Evolution A からの link であり、
-evolution 文ではない。 [fixture: wardley/spec-wardley-parser-14953f7f]
+evolution 文ではない。
+
+[fixture: wardley/spec-wardley-parser-14953f7f]
 [fixture: wardley/lex-link-long-arrow-glued]
 [fixture: wardley/lex-link-dashed-arrow-glued] [fixture: wardley/db-link-forms]
 [fixture: wardley/evolution-upper]
@@ -224,7 +245,9 @@ dot の直前で終えずできるだけ多く取る。
 decimal は integer に先行する。
 そのため先頭 zero の整数は分かれ、一つの integer を要求する位置では拒否する。
 plus、負の decimal、指数表記、dot の片側がない形、
-NaN/Infinity の綴りは数の単位ではない。 [fixture: wardley/number-leading-zero]
+NaN/Infinity の綴りは数の単位ではない。
+
+[fixture: wardley/number-leading-zero]
 [fixture: wardley/number-int-leading-zero]
 [fixture: wardley/lex-number-int-annotation-leading-zero]
 [fixture: wardley/number-plus] [fixture: wardley/number-negative-zero]
@@ -239,6 +262,7 @@ size の寸法、annotation の番号、offset の大きさは integer。
 offset の minus は別の句読点であり、
 unsigned の大きさとの間に space/tab や whole hidden form を置ける。
 decimal の offset や size は拒否する。
+
 [fixture: wardley/number-integer-coordinate]
 [fixture: wardley/lex-number-boundary-integer]
 [fixture: wardley/lex-number-evolve-integer]
@@ -254,6 +278,7 @@ integer と decimal は [module.ts][module] の converter fallback と共有の 
 丸め、subnormal、underflow、overflow は raw を変えない。
 offset の大きさの葉は unsigned のままで、minus zero も含め書いた符号は別に持つ。
 座標の受理は後述の double の比較で決める。
+
 [fixture: wardley/db-number-int-precision]
 [fixture: wardley/db-number-subnormal] [fixture: wardley/db-number-underflow]
 [fixture: wardley/db-number-overflow]
@@ -272,6 +297,7 @@ escape していない実際の改行と両 separator は中身になる。
 閉じの欠落や末尾の backslash は拒否する。
 この照合より先に共通の quote 変換を行い、
 原文の quote と escape は StringLiteral.raw に残す。
+
 [fixture: wardley/db-empty-texts] [fixture: wardley/lex-string-escaped-quotes]
 [fixture: wardley/lex-string-multiline] [fixture: wardley/line-string-values]
 [fixture: wardley/lex-string-escaped-lf]
@@ -286,6 +312,7 @@ escape していない実際の改行と両 separator は中身になる。
 backslash-u0041 は Unicode escape ではなく u0041。
 bare name と string の中身は trim や空白縮約をしない。
 木の値にはこの比較変換を施さず原文を残す。
+
 [fixture: wardley/lex-string-conversion]
 [fixture: wardley/lex-string-escaped-quotes]
 [fixture: wardley/gram-reference-decoded-escape]
@@ -302,6 +329,7 @@ flow の中身は single quote 以外の任意の文字で、改行と U+2028/U+
 空でもよい。
 backslash は普通の文字で quote を escape しない。
 この label には string の escape 変換を施さない。
+
 [fixture: wardley/db-link-forms] [fixture: wardley/line-every-text]
 [fixture: wardley/lex-link-flow-raw-escapes]
 [fixture: wardley/lex-link-flow-quote-not-escapable]
@@ -318,6 +346,7 @@ semicolon-space は導出値が空でも非空の原文 literal であり、
 U+2028/U+2029 や native hidden に見える形も label の中身。
 この label は Db で flow label が優先されても別に保つ。
 導出される label/flow の規則は tests の要約が定め、原文の arrow 欄ではない。
+
 [fixture: wardley/tail-link-empty-label]
 [fixture: wardley/tail-link-spaced-label]
 [fixture: wardley/tail-link-double-label]
@@ -334,8 +363,10 @@ acc-title-line と acc-descr-line は完全な keyword、任意の space/tab、c
 行の中身は最初の %% または CR/LF の直前で終わる。
 quote は普通のテキストで閉じなくてもよい。
 title-colon は title の形ではない。
-先の spaced-name の除外も適用する。 [fixture: wardley/common-title-eof]
-[fixture: wardley/common-title-tabs] [fixture: wardley/common-title-two-spaces]
+先の spaced-name の除外も適用する。
+
+[fixture: wardley/common-title-eof] [fixture: wardley/common-title-tabs]
+[fixture: wardley/common-title-two-spaces]
 [fixture: wardley/common-line-whitespace] [fixture: wardley/common-acctitle-eof]
 [fixture: wardley/common-description-eof] [fixture: wardley/common-open-quote]
 [fixture: wardley/common-quoted-values] [fixture: wardley/common-title-colon]
@@ -347,6 +378,7 @@ quote と backslash は閉じ brace を保護しない。
 共有の除去がなければ内部の改行、字下げ、裸の percent 行、
 native YAML に見える文字も中身になる。
 native directive に見える文字は、その最初の brace で block を閉じることもある。
+
 [fixture: wardley/common-block-empty-gap]
 [fixture: wardley/common-block-comment-gap]
 [fixture: wardley/common-block-directive-gap]
@@ -367,6 +399,7 @@ block の値は両端の共通 whitespace だけを除き、中身がなくな�
 反復した出現は別に保つ。
 導出されるメタデータは [AbstractMermaidValueConverter][converter] と
 [populateCommonDb][populate-common] に基づき、tests の要約が定める。
+
 [fixture: wardley/common-empty-literals]
 [fixture: wardley/common-title-two-spaces] [fixture: wardley/common-title-tabs]
 [fixture: wardley/common-block-whitespace] [fixture: wardley/common-line-ls-ps]
@@ -384,6 +417,7 @@ EOL は可視 newline の一つ以上、または end-of-text。
 U+2029 は本文の一般的な padding ではない。
 囲む値と hidden の境界にはそれぞれの規則がある。
 source の後に追加する LF は原文の値や範囲に含めない。
+
 [fixture: wardley/space-tabs] [fixture: wardley/space-lines]
 [fixture: wardley/line-cr] [fixture: wardley/line-crlf]
 [fixture: wardley/space-bom-body] [fixture: wardley/space-nbsp-body]
@@ -397,6 +431,7 @@ hidden-yaml は 3 本 dash、任意の ASCII space/tab、改行で始まる。
 または消費しない共通 whitespace/終端の境界。
 開始の字下げを引き継ぐのではない。
 字下げした閉じや 4 本の閉じ dash はその閉じではない。
+
 [fixture: wardley/hidden-yaml-nested]
 [fixture: wardley/hidden-yaml-adjacent-eof]
 [fixture: wardley/hidden-yaml-adjacent-later]
@@ -412,6 +447,7 @@ hidden-yaml は 3 本 dash、任意の ASCII space/tab、改行で始まる。
 先の名前の貪欲な読みが dash を取る場合は異なる。
 条件を満たす hidden の閉じの後の U+2028/U+2029 は、
 境界として見るだけで消費しないため、残る空白を読めなければ拒否する。
+
 [fixture: wardley/hidden-yaml-adjacent-later]
 [fixture: wardley/hidden-yaml-nested] [fixture: wardley/hidden-yaml-unit-gap]
 [fixture: wardley/hidden-after-link] [fixture: wardley/hidden-yaml-closing-ls]
@@ -426,6 +462,7 @@ hidden-directive は任意の ASCII space/tab と %%{ で始まり、
 続く構文に見える文字も含めて読める。
 native comment は CR/LF の前で止まり改行を消費しない。
 mark は %% で、単独 percent は comment ではない。
+
 [fixture: wardley/hidden-directive-adjacent]
 [fixture: wardley/lex-hidden-directive-later-closer]
 [fixture: wardley/hidden-directive-no-boundary] [fixture: wardley/comment-eof]
@@ -440,6 +477,7 @@ native に見える文字で先の単位が終わることもある。
 hidden form の中でも共有 Directive、comment region、
 選ばれた semicolon の範囲は共通規則のまま。
 その除去による hidden の句読点や comment mark の接合を許す。
+
 [fixture: wardley/hidden-directive-string] [fixture: wardley/hidden-yaml-string]
 [fixture: wardley/hidden-yaml-title] [fixture: wardley/hidden-yaml-acctitle]
 [fixture: wardley/hidden-yaml-description] [fixture: wardley/hidden-yaml-block]
@@ -453,48 +491,50 @@ hidden form の中でも共有 Directive、comment region、
 [fixture: wardley/directive-native-directive-opener]
 [fixture: wardley/lex-selected-native-yaml-opener]
 [fixture: wardley/lex-selected-native-directive-opener]
+
 値の中の U+2028 か U+2029 の後の物理行の残りは、その改行も含めて、
 共通のコメント領域が取り除くことがある。
 そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
 `accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
-U+2028、`B` である。 [fixture:
-wardley/lex-string-line-separator-then-comment-line] [fixture:
-wardley/lex-string-paragraph-separator-then-comment-line] [fixture:
-wardley/lex-title-line-separator-then-comment-line] [fixture:
-wardley/lex-acc-title-line-separator-then-comment-line] [fixture:
-wardley/lex-acc-descr-line-separator-then-comment-line] [fixture:
-wardley/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
-wardley/lex-string-line-separator-comment-line-directive-next] [fixture:
-wardley/lex-string-line-separator-comment-line-space-next] [fixture:
-wardley/lex-string-line-separator-comment-line-separator-next] [fixture:
-wardley/lex-string-line-separator-comment-line-empty-line] [fixture:
-wardley/lex-string-line-separator-comment-line-end-of-text] [fixture:
-wardley/lex-title-line-separator-comment-line-end-of-text] [fixture:
-wardley/lex-string-line-separator-comment-line-cr] [fixture:
-wardley/lex-string-line-separator-comment-line-crlf] [fixture:
-wardley/lex-string-line-separator-comment-line-two-comment-lines] [fixture:
-wardley/lex-string-line-separator-comment-line-two-regions] [fixture:
-wardley/lex-string-line-separator-comment-line-spaces-before] [fixture:
-wardley/lex-string-line-separator-comment-line-line-feed-before] [fixture:
-wardley/lex-string-line-separator-comment-line-directive-before] [fixture:
-wardley/lex-string-line-separator-comment-line-line-rule-before] [fixture:
-wardley/lex-string-line-separator-comment-line-line-rule-after] [fixture:
-wardley/lex-string-line-separator-comment-line-bare-percent] [fixture:
-wardley/lex-string-line-separator-comment-line-percent-brace] [fixture:
-wardley/lex-anchor-name-line-separator-then-comment-line] [fixture:
-wardley/lex-link-source-name-line-separator-then-comment-line] [fixture:
-wardley/lex-link-target-name-line-separator-then-comment-line] [fixture:
-wardley/lex-pipeline-parent-name-line-separator-then-comment-line] [fixture:
-wardley/lex-pipeline-child-name-line-separator-then-comment-line] [fixture:
-wardley/lex-evolve-name-line-separator-then-comment-line] [fixture:
-wardley/lex-accelerator-name-line-separator-then-comment-line] [fixture:
-wardley/lex-deaccelerator-name-line-separator-then-comment-line] [fixture:
-wardley/lex-stage-name-line-separator-then-comment-line] [fixture:
-wardley/lex-stage-second-name-line-separator-then-comment-line] [fixture:
-wardley/lex-note-string-line-separator-then-comment-line] [fixture:
-wardley/lex-annotation-string-line-separator-then-comment-line] [fixture:
-wardley/lex-flow-body-line-separator-then-comment-line] [fixture:
-wardley/lex-link-label-line-separator-then-comment-line]
+U+2028、`B` である。
+
+[fixture: wardley/lex-string-line-separator-then-comment-line]
+[fixture: wardley/lex-string-paragraph-separator-then-comment-line]
+[fixture: wardley/lex-title-line-separator-then-comment-line]
+[fixture: wardley/lex-acc-title-line-separator-then-comment-line]
+[fixture: wardley/lex-acc-descr-line-separator-then-comment-line]
+[fixture: wardley/lex-acc-descr-block-line-separator-then-comment-line]
+[fixture: wardley/lex-string-line-separator-comment-line-directive-next]
+[fixture: wardley/lex-string-line-separator-comment-line-space-next]
+[fixture: wardley/lex-string-line-separator-comment-line-separator-next]
+[fixture: wardley/lex-string-line-separator-comment-line-empty-line]
+[fixture: wardley/lex-string-line-separator-comment-line-end-of-text]
+[fixture: wardley/lex-title-line-separator-comment-line-end-of-text]
+[fixture: wardley/lex-string-line-separator-comment-line-cr]
+[fixture: wardley/lex-string-line-separator-comment-line-crlf]
+[fixture: wardley/lex-string-line-separator-comment-line-two-comment-lines]
+[fixture: wardley/lex-string-line-separator-comment-line-two-regions]
+[fixture: wardley/lex-string-line-separator-comment-line-spaces-before]
+[fixture: wardley/lex-string-line-separator-comment-line-line-feed-before]
+[fixture: wardley/lex-string-line-separator-comment-line-directive-before]
+[fixture: wardley/lex-string-line-separator-comment-line-line-rule-before]
+[fixture: wardley/lex-string-line-separator-comment-line-line-rule-after]
+[fixture: wardley/lex-string-line-separator-comment-line-bare-percent]
+[fixture: wardley/lex-string-line-separator-comment-line-percent-brace]
+[fixture: wardley/lex-anchor-name-line-separator-then-comment-line]
+[fixture: wardley/lex-link-source-name-line-separator-then-comment-line]
+[fixture: wardley/lex-link-target-name-line-separator-then-comment-line]
+[fixture: wardley/lex-pipeline-parent-name-line-separator-then-comment-line]
+[fixture: wardley/lex-pipeline-child-name-line-separator-then-comment-line]
+[fixture: wardley/lex-evolve-name-line-separator-then-comment-line]
+[fixture: wardley/lex-accelerator-name-line-separator-then-comment-line]
+[fixture: wardley/lex-deaccelerator-name-line-separator-then-comment-line]
+[fixture: wardley/lex-stage-name-line-separator-then-comment-line]
+[fixture: wardley/lex-stage-second-name-line-separator-then-comment-line]
+[fixture: wardley/lex-note-string-line-separator-then-comment-line]
+[fixture: wardley/lex-annotation-string-line-separator-then-comment-line]
+[fixture: wardley/lex-flow-body-line-separator-then-comment-line]
+[fixture: wardley/lex-link-label-line-separator-then-comment-line]
 
 whole hidden form は WardleyIgnoredText。
 開始から適格な閉じまでを範囲にし、
@@ -504,6 +544,7 @@ whole hidden form は WardleyIgnoredText。
 native form に frontmatter や設定の効果はなく、
 その中の独立した global directive は固有の効果を保つ。
 comment は代わりに共有 Comment record。
+
 [fixture: wardley/lex-hidden-directive-cr] [fixture: wardley/lex-hidden-yaml-cr]
 [fixture: wardley/hidden-yaml-crlf] [fixture: wardley/lex-hidden-two-suffixes]
 [fixture: wardley/lex-hidden-yaml-common-directive]
@@ -516,6 +557,7 @@ EOL を調べる前に hidden form の後の LF を消費する。
 一方 pipeline の開始は hidden の終わりの消費後にも可視 LF が必要で、
 各子にも固有の EOL が要る。
 可視 EOL の後の hidden form は前の suffix ではなく body に属する。
+
 [fixture: wardley/hidden-directive-sole-lf]
 [fixture: wardley/hidden-directive-spare-lf]
 [fixture: wardley/hidden-directive-closing-space]
@@ -539,6 +581,7 @@ offset の符号と整数は別で、strategy と括弧つき inertia は parent
 parenthesis。
 stage の名前、@、boundary、slash、second name の間にも別の境界がある。
 共通メタデータは完全な語と colon/brace/title separator を分ける。
+
 [fixture: wardley/directive-coordinate-parts]
 [fixture: wardley/directive-offset-sign]
 [fixture: wardley/directive-strategy-parts]
@@ -556,6 +599,7 @@ dependency arrow、port 全体、<> marker は不可分の glyph。
 固定 keyword、strategy の語、integer、decimal、id-name も不可分。
 spaced-name は text の単位なので共有の除去を含められる。
 atom の内部の分割は後述の二つの atomic な差異として拒否する。
+
 [fixture: wardley/directive-flow-before-label]
 [fixture: wardley/directive-flow-after-label]
 [fixture: wardley/directive-every-field]
@@ -581,6 +625,7 @@ atom の内部の分割は後述の二つの atomic な差異として拒否す�
 その semicolon は許された値の外では拒否する。
 検出は選択 semicolon の除去より先なので、
 分かれた見出しは atomic な規則の前に検出で失敗し得る。
+
 [fixture: wardley/lex-link-native-flow-components]
 [fixture: wardley/lex-native-common-keyword-colon]
 [fixture: wardley/lex-native-inside-number]
@@ -626,6 +671,7 @@ native hidden form は定められた所有欄に入り、可視 EOL を供給�
 body は空でもよい。
 通常の文と共通文はそれぞれ EOL が必要で、見出しだけは不要。
 文の部品間に、記していない可視 newline は許さない。
+
 [fixture: wardley/header-only] [fixture: wardley/header-inline]
 [fixture: wardley/tail-all-spaces] [fixture: wardley/gram-component-empty-gap]
 [fixture: wardley/gram-component-comment-gap]
@@ -659,9 +705,10 @@ body は空でもよい。
 | title-line / acc-title-line          | WardleyTitleStatement / WardleyAccTitleStatement                 |
 | acc-descr-line / acc-descr-block     | WardleyAccDescrStatement / WardleyAccDescrBlockStatement         |
 
-表の文と値の形を次の fixture が示します。 [fixture: wardley/db-all-fields]
-[fixture: wardley/db-inertia-forms] [fixture: wardley/db-link-forms]
-[fixture: wardley/common-repeat]
+表の文と値の形を次の fixture が示します。
+
+[fixture: wardley/db-all-fields] [fixture: wardley/db-inertia-forms]
+[fixture: wardley/db-link-forms] [fixture: wardley/common-repeat]
 
 component はこの順で label offset、source strategy、
 inertia の装飾を高々一つずつ持つ。
@@ -669,6 +716,7 @@ inertia は裸または括弧つき。
 anchor に装飾はない。
 class の代入構文はなく、class はこれらの文の原文の欄ではない。
 未知・反復・逆順の装飾と data block の構文は拒否する。
+
 [fixture: wardley/db-inertia-forms] [fixture: wardley/gram-label-order]
 [fixture: wardley/gram-decorator-order]
 [fixture: wardley/gram-component-class-unsupported]
@@ -689,6 +737,7 @@ global directive だけの行は、Wardley の文法が body を読む前に、
 共通の前処理が directive を除くため許される。
 開き brace の直後や子と子の間の U+2028 は拒否する。
 U+2028 は可視 LF にも native padding にもならない。
+
 [fixture: wardley/directive-pipeline-line]
 [fixture: wardley/gram-pipeline-empty-description]
 [fixture: wardley/gram-pipeline-open-empty-description]
@@ -708,8 +757,9 @@ link は両 port の一方または両方と、任意の arrow を許す。
 bare word 二つは貪欲な一つの名前となって target がなくなることがある。
 未解決の端点、重複、自己 link を許す。
 evolve は node が見つからなくても名前と decimal target を書く。
-note と annotation は空も含め string が必要。 [fixture: wardley/db-bare-link]
-[fixture: wardley/lex-link-target-port-no-arrow]
+note と annotation は空も含め string が必要。
+
+[fixture: wardley/db-bare-link] [fixture: wardley/lex-link-target-port-no-arrow]
 [fixture: wardley/lex-link-no-arrow-bare-greedy]
 [fixture: wardley/db-link-unresolved-duplicates]
 [fixture: wardley/db-trend-missing] [fixture: wardley/db-empty-texts]
@@ -720,6 +770,7 @@ evolution は -> で区切る二つ以上の stage を持ち、
 部分的な boundary も書かれた構文として残す。
 末尾の stage separator や余分な座標/size の comma は許さない。
 ドキュメントの trend indicator の綴りは追加の文法規則ではない。
+
 [fixture: wardley/gram-evolution-single]
 [fixture: wardley/db-stage-empty-second-name]
 [fixture: wardley/db-stages-boundaries]
@@ -738,9 +789,10 @@ lexer/parser の error があれば拒否する。
 別の validation 段階はない。
 登録する全 node に座標を与えるため、このテキスト経路で、
 [WardleyBuilder.build][builder-build] の座標存在検査 が、
-追加の到達可能な拒否を作ることはない。 [fixture: wardley/error-start]
-[fixture: wardley/error-after-prefix] [fixture: wardley/error-recovered]
-[fixture: wardley/db-all-fields]
+追加の到達可能な拒否を作ることはない。
+
+[fixture: wardley/error-start] [fixture: wardley/error-after-prefix]
+[fixture: wardley/error-recovered] [fixture: wardley/db-all-fields]
 
 比較名は、名前の原文の共通の変換形に、
 string の quote 除去と上記の escape の解釈を当てたもの。
@@ -749,7 +801,9 @@ entity の placeholder を当てる。
 内部空白、大文字小文字、Unicode の綴りは変えず、trim、縮約、Unicode 正規化、
 entity placeholder の最終 decode はしない。
 security level が変わっても Wardley の名前に共通のテキストの sanitize
-を施さない。 [fixture: wardley/gram-reference-decoded-escape]
+を施さない。
+
+[fixture: wardley/gram-reference-decoded-escape]
 [fixture: wardley/gram-reference-same-whitespace]
 [fixture: wardley/gram-reference-html-converted]
 [fixture: wardley/gram-reference-entity-converted]
@@ -765,6 +819,7 @@ security level が変わっても Wardley の名前に共通のテキストの s
 数学的な十進値ではなく丸めた double を比較し、
 1 や 100 をわずかに超える綴りも境界へ丸まることがある。
 文法は負の座標や NaN を供給せず、正の無限大への overflow はこの検査で拒否する。
+
 [fixture: wardley/db-coordinate-boundary]
 [fixture: wardley/db-coordinate-double-one]
 [fixture: wardley/db-coordinate-double-hundred]
@@ -778,6 +833,7 @@ pipeline の各子の evolution も検査する。
 source の欄名が x/y である annotation/force の構文も含め、
 二値の位置の記述順は visibility、evolution。
 size の寸法と stage の boundary に追加の範囲・順・個数・有限値の制約はない。
+
 [fixture: wardley/gram-invalid-anchor]
 [fixture: wardley/gram-replaced-invalid-node]
 [fixture: wardley/gram-replaced-invalid-node-last]
@@ -797,6 +853,7 @@ pipeline を処理するとき、
 source 上で後の top-level 宣言は既に利用でき、
 anchor や先に処理した pipeline の子も親になれる。
 label だけの一致や後の pipeline が作る子は該当しない。
+
 [fixture: wardley/db-publication-order]
 [fixture: wardley/db-pipeline-forward-parent]
 [fixture: wardley/db-pipeline-anchor-parent]
@@ -811,6 +868,7 @@ pipeline の各子について、後の存在検査の ID は親の比較名、u
 置換と、書いた ID/synthetic ID の衝突を適用し、
 pipeline の再定義で先の子の登録を消さない。
 この状態は後の親と evolve の検査に必要で、原文の木は変えない。
+
 [fixture: wardley/db-pipeline-collision]
 [fixture: wardley/db-pipeline-duplicates]
 [fixture: wardley/db-pipeline-label-inheritance]
@@ -824,6 +882,7 @@ pipeline の子の label だけの一致も存在しない場合に当たる。
 そのため source で前の evolve が、
 後の top-level 宣言に対して失敗することもある。
 別の evolve に置き換わっても、存在する target の検査を飛ばさない。
+
 [fixture: wardley/db-trend-missing]
 [fixture: wardley/gram-evolve-missing-label-invalid]
 [fixture: wardley/gram-evolve-exact-child-invalid]
@@ -836,6 +895,7 @@ pipeline の子の label だけの一致も存在しない場合に当たる。
 後の有効な box は最初の不正な box を救わない。
 空名、prototype のような名前、宣言の重複、未解決 link、
 後で置換される文や公開されない文による他の拒否はない。
+
 [fixture: wardley/db-later-invalid-box]
 [fixture: wardley/gram-box-first-invalid] [fixture: wardley/db-empty-texts]
 [fixture: wardley/db-prototype-names] [fixture: wardley/db-node-duplicates]
@@ -845,8 +905,9 @@ pipeline の子の label だけの一致も存在しない場合に当たる。
 名前を ID 完全一致、次に node の初回登録順の最初の現在の label の一致、
 なければ未解決の比較名の順で解決するのは link だけ。
 この fallback は受理を決めず、pipeline の親や evolve には適用しない。
-木には各参照の原綴を残す。 [fixture: wardley/db-link-resolution]
-[fixture: wardley/db-link-exact-id]
+木には各参照の原綴を残す。
+
+[fixture: wardley/db-link-resolution] [fixture: wardley/db-link-exact-id]
 [fixture: wardley/db-link-unresolved-duplicates]
 [fixture: wardley/gram-pipeline-plain-name-ref]
 [fixture: wardley/gram-evolve-missing-label-invalid]
@@ -858,6 +919,7 @@ node 宣言、pipeline、link、evolve の全出現を木に保つ。
 選択、nullish merge、順序、省略される値は tests の要約が定め、
 構文の削除や差異の追加の根拠にはしない。
 特に、一方が優先されても両 label と両 port を保つ。
+
 [fixture: wardley/db-singletons-last] [fixture: wardley/common-repeat-empty]
 [fixture: wardley/frontmatter-empty-body-title]
 [fixture: wardley/db-node-duplicates] [fixture: wardley/db-pipeline-duplicates]
@@ -872,7 +934,9 @@ adapter と builder は wardley/wardley-beta の設定を読まず、
 共通の設定処理で失敗する数値の wardley.fontFamily を含め、
 不正な embedded data は embedded-data-opaque とする。
 設定による escape は共通メタデータと Wardley の名前で異なる場合があり、
-tests の要約が記録する。 [fixture: wardley/config-frontmatter-drawing]
+tests の要約が記録する。
+
+[fixture: wardley/config-frontmatter-drawing]
 [fixture: wardley/config-init-drawing]
 [fixture: wardley/config-frontmatter-cannot-rescue]
 [fixture: wardley/config-init-cannot-rescue]
@@ -890,9 +954,10 @@ tests の要約が記録する。 [fixture: wardley/config-frontmatter-drawing]
 tests の [Db-from-tree の契約](../../../tests/docs/db-from-tree.ja.md)
 が定める。
 座標の正規化、label、class 名、選択、置換はそちらの担当で、
-この仕様の木は原文の全出現と値を保つ。 [fixture: wardley/db-all-fields]
-[fixture: wardley/db-node-duplicates] [fixture: wardley/db-singletons-last]
-[fixture: wardley/db-link-forms]
+この仕様の木は原文の全出現と値を保つ。
+
+[fixture: wardley/db-all-fields] [fixture: wardley/db-node-duplicates]
+[fixture: wardley/db-singletons-last] [fixture: wardley/db-link-forms]
 
 ## 既知の差異
 
@@ -901,6 +966,7 @@ global directive は固定語、id-name、数、
 不可分な arrow/port/marker を分割できない。
 共有記録に原文は残せるが、atom の内部に作者の隙間はない。
 完全な部品の境界、spaced-name のテキスト、string、hidden の句読点は読めるまま。
+
 [fixture: wardley/directive-keyword-middle] [fixture: wardley/directive-number]
 [fixture: wardley/directive-header-inside]
 [fixture: wardley/directive-id-inside]
@@ -918,6 +984,7 @@ global directive は固定語、id-name、数、
 同じ atomic な規則を、共通の行規則が実際に選んだ semicolon だけに適用する。
 完全な部品の間や text/string/hidden の内部で選んだ文字は trivia となり、
 任意の semicolon が separator になるわけではない。
+
 [fixture: wardley/lex-selected-decimal-inside]
 [fixture: wardley/lex-selected-label-keyword]
 [fixture: wardley/lex-selected-strategy-inside]
@@ -936,6 +1003,7 @@ HTML の quote の探索は本物の frontmatter の後から始める。
 両 block の原文は保てるが、
 不透明な YAML の未完の tag に body の string の境界や値を支配させない。
 Mermaid が受理し仕様が拒否する場合、逆の場合、両方受理し共通値が違う場合がある。
+
 [fixture: wardley/div-html-frontmatter-accept]
 [fixture: wardley/div-html-frontmatter-reject]
 [fixture: wardley/div-html-frontmatter-value]
@@ -948,6 +1016,7 @@ YAML/設定として解析しない不透明な共有記録。
 共通の embedded data の失敗で Wardley の構文を拒否せず、
 共有規則に従い比較用の title と他の有効な設定を保つ。
 native に残る YAML は別の ignored node。
+
 [fixture: wardley/div-frontmatter-invalid]
 [fixture: wardley/config-frontmatter-fontfamily-number]
 [fixture: wardley/config-init-fontfamily-number]
@@ -959,8 +1028,10 @@ native に残る YAML は別の ignored node。
 検出が通した裸の percent 行は共有 Comment、伴って通した空白は trivia。
 残存形には名前つきの所有欄と native の境界が必要。
 Mermaid が通した Unicode 空白を native lexer で再読する場合が拒否の差異となり、
-通した行のない native gap は差異のない対照。 [fixture: wardley/bare-before-ls]
-[fixture: wardley/bare-line-ps] [fixture: wardley/prefix-yaml-bare-unicode]
+通した行のない native gap は差異のない対照。
+
+[fixture: wardley/bare-before-ls] [fixture: wardley/bare-line-ps]
+[fixture: wardley/prefix-yaml-bare-unicode]
 [fixture: wardley/detect-retained-secondscan-bare-ls]
 [fixture: wardley/detect-retained-secondscan-bare-ascii]
 [fixture: wardley/prefix-yaml-unicode-no-bare]
@@ -970,6 +1041,7 @@ Mermaid が通した Unicode 空白を native lexer で再読する場合が拒�
 文字は Wardley の node に持てるが、
 Mermaid に置き換えられた C4 の図種を同時には持てない。
 検出前に除いた通常の LF 終端の comment は差異のないまま。
+
 [fixture: wardley/c4-component-component]
 [fixture: wardley/c4-dynamic-flow-label] [fixture: wardley/c4-container-title]
 [fixture: wardley/c4-component-header-eof]
@@ -978,8 +1050,9 @@ Mermaid に置き換えられた C4 の図種を同時には持てない。
 whole hidden form、空の string/description block、置換される文、missing evolve、
 余分な annotations box は node に持てるため、追加の差異にしない。
 原文の arrow/label の綴りで不審な導出 flow/line を説明でき、
-拒否の理由にはしない。 [fixture: wardley/db-empty-texts]
-[fixture: wardley/common-empty-interleaved]
+拒否の理由にはしない。
+
+[fixture: wardley/db-empty-texts] [fixture: wardley/common-empty-interleaved]
 [fixture: wardley/db-singletons-last] [fixture: wardley/db-trend-missing]
 [fixture: wardley/db-later-invalid-box]
 [fixture: wardley/lex-flow-label-changes-direction]

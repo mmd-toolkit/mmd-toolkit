@@ -17,8 +17,9 @@ flowchart LR
   click A href "u" "tip"
 ```
 
-The example gives A the link `u` and tooltip `tip`. [fixture:
-flowchart/gram-click-href-tooltip]
+The example gives A the link `u` and tooltip `tip`.
+
+[fixture: flowchart/gram-click-href-tooltip]
 
 The word `click` where a unit starts, with the whitespace after it, is a `click`
 unit (see [Click and callbacks](../diagrams/flowchart.md#click-and-callbacks)).
@@ -26,7 +27,9 @@ This document is about such a unit where no click statement starts: inside a
 statement, after a statement on the same line, inside an id, a style, or a
 subgraph name. The word inside a string, or as part of a longer id, is no
 `click` unit, and both read it as text: `A["click"]` has the label `click`, and
-`click-node` is a vertex. [fixture: flowchart/gram-label-string-click] [fixture:
+`click-node` is a vertex.
+
+[fixture: flowchart/gram-label-string-click] [fixture:
 flowchart/spec-flow-singlenode-ada86e69]
 
 ## The difference
@@ -71,8 +74,9 @@ Each example is a whole flowchart.
 | 3       | the link `u` and the tooltip `tip` of A                        | rejected           |
 | 4       | a click on the id `---`, and no vertices                       | the same           |
 
-The fixtures record the readings compared in the table. [fixture:
-flowchart/db-subgraph-name-click-word-indented] [fixture:
+The fixtures record the readings compared in the table.
+
+[fixture: flowchart/db-subgraph-name-click-word-indented] [fixture:
 flowchart/gram-click-bare-after-vertex] [fixture:
 flowchart/gram-click-mid-statement-tooltip] [fixture:
 flowchart/lex-click-id-arrow-callback]
@@ -103,22 +107,26 @@ the vertex `A:b` and its edge to C. `subgraph click me` reads as `subgraph me`,
 with the id `me`, where an empty line follows, also after a comment line, where
 a U+2028 or a U+2029 and a line break follow, and where a directive follows
 `me`. `classDef a:click "" b fill:#f00;`, whose last `;` the line rule ignores,
-reads as `classDef a:b fill:#f00;`. [fixture: flowchart/db-vertex-id-bare-click]
-[fixture: flowchart/db-subgraph-id-click-blank-line] [fixture:
+reads as `classDef a:b fill:#f00;`.
+
+[fixture: flowchart/db-vertex-id-bare-click] [fixture:
+flowchart/db-subgraph-id-click-blank-line] [fixture:
 flowchart/db-subgraph-id-click-comment-line] [fixture:
 flowchart/db-subgraph-id-click-line-separator] [fixture:
 flowchart/db-subgraph-id-click-paragraph-separator] [fixture:
 flowchart/db-subgraph-id-click-space-directive] [fixture:
-flowchart/db-classdef-name-bare-click-ignored-semicolon] Elsewhere the removal
-joins what lies on its two sides, or puts the text of a click id where the
-statement context reads it otherwise, and nothing follows for the input without
-the `click`: `subgraph click me`, a line break, and `A` become `subgraph meA`;
-`subgraph click me accDescr {}` followed by an empty line becomes
-`subgraph meaccDescr {}`, which mermaid.js rejects; in `subgraph click m;e`, the
-`;` becomes a separator of `subgraph m;e`; and in `subgraph click a,b` followed
-by an empty line, the `,` becomes a `,` unit, which a name does not take, so
-`subgraph a,b` is rejected, by mermaid.js too. [fixture:
-flowchart/gram-subgraph-name-click] [fixture:
+flowchart/db-classdef-name-bare-click-ignored-semicolon]
+
+Elsewhere the removal joins what lies on its two sides, or puts the text of a
+click id where the statement context reads it otherwise, and nothing follows for
+the input without the `click`: `subgraph click me`, a line break, and `A` become
+`subgraph meA`; `subgraph click me accDescr {}` followed by an empty line
+becomes `subgraph meaccDescr {}`, which mermaid.js rejects; in
+`subgraph click m;e`, the `;` becomes a separator of `subgraph m;e`; and in
+`subgraph click a,b` followed by an empty line, the `,` becomes a `,` unit,
+which a name does not take, so `subgraph a,b` is rejected, by mermaid.js too.
+
+[fixture: flowchart/gram-subgraph-name-click] [fixture:
 flowchart/gram-subgraph-name-click-empty-description-block] [fixture:
 flowchart/gram-subgraph-name-click-semicolon-in-id] [fixture:
 flowchart/db-subgraph-id-click-comma-blank-line]
@@ -130,8 +138,9 @@ without quotes. mermaid.js then reads it as the start of a click, discards the
 word after it, and may join the next line to the text, as in example 1, without
 a word. This toolkit rejects the input and reports the reserved word. To write
 the word as text, put the text in quotes: with `subgraph "Handle click events"`,
-both read that title and the vertex A in the subgraph. [fixture:
-flowchart/gram-subgraph-name-string-click]
+both read that title and the vertex A in the subgraph.
+
+[fixture: flowchart/gram-subgraph-name-string-click]
 
 ## Why mermaid.js reads it so
 

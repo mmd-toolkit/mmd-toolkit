@@ -77,7 +77,9 @@ The common fixture loop calls `expectDivergenceForm` in
 checks rejecting forms, token-cut reference readings, frontmatter attribute
 quotes, passed bare percent lines and C4 keywords after the header. The
 agentflow, gitgraph, info, Ishikawa, pie, usecase and venn tests share these
-checks through that loop. [fixture: gitgraph/div-directive-in-commit] [fixture:
+checks through that loop.
+
+[fixture: gitgraph/div-directive-in-commit] [fixture:
 gitgraph/div-frontmatter-cross-string-enable] [fixture:
 usecase/div-comment-preheader-bare] [fixture: venn/div-c4-bare-identifier]
 
@@ -143,8 +145,9 @@ usecase/div-comment-preheader-bare] [fixture: venn/div-c4-bare-identifier]
 
 A fixture marked `embedded-data-opaque` has no content check: the parser does
 not read its embedded data. In gitgraph, embedded configuration can change
-acceptance in either direction; the specified reading decides it. [fixture:
-gitgraph/docs-community-contributing-05cdc44b] [fixture:
+acceptance in either direction; the specified reading decides it.
+
+[fixture: gitgraph/docs-community-contributing-05cdc44b] [fixture:
 gitgraph/div-frontmatter-main-branch-checkout-default-accepted]
 
 ### Reference inputs
@@ -176,8 +179,9 @@ units of the input other than the removed ones, with the click ids and
 where each of them does; the parser accepts it; and the text of each of those
 click ids lies within the range of one leaf node of its tree. Where the parser
 rejects it, a click id stands where the statement context reads it otherwise, as
-the `,` of `subgraph a,b`, and nothing is compared. [fixture:
-flowchart/db-subgraph-id-click-comma-blank-line]
+the `,` of `subgraph a,b`, and nothing is compared.
+
+[fixture: flowchart/db-subgraph-id-click-comma-blank-line]
 
 The reference input of `tokenless-empty-forms` is the input without its comment
 regions and without its empty forms: each empty string, each empty call from its
@@ -192,19 +196,25 @@ separates two statements, a block lies inside a statement where the statement
 before it has not ended, after a cardinality, a line, `:`, `:::`, `,`, or `[`,
 or in the first list of names of a `class` statement, and where the unit after
 the blocks continues that statement: a cardinality, `:::`, `{`, `[`, `:`, or
-`,`. [fixture: er/div-empty-description-block-in-relationship] [fixture:
+`,`.
+
+[fixture: er/div-empty-description-block-in-relationship] [fixture:
 er/div-empty-description-block-in-class] [fixture:
-er/gram-empty-description-block-between-names] In a Gantt chart, the empty href,
-`href` and two `"` with nothing between them, is an empty form too, which
-mermaid.js reads nothing for wherever it lies, as an empty call. Nothing
-separates two statements there, and an empty description block lies inside a
-statement only inside a click statement: between its ids and its first part, and
-between its two parts, where the unit after the forms starts the second part.
+er/gram-empty-description-block-between-names]
+
+In a Gantt chart, the empty href, `href` and two `"` with nothing between them,
+is an empty form too, which mermaid.js reads nothing for wherever it lies, as an
+empty call. Nothing separates two statements there, and an empty description
+block lies inside a statement only inside a click statement: between its ids and
+its first part, and between its two parts, where the unit after the forms starts
+the second part.
+
 [fixture: gantt/div-empty-href-before-call] [fixture:
 gantt/div-empty-description-block-between-href-and-call] [fixture:
-gantt/gram-empty-href-line] [fixture: gantt/gram-click-href-then-empty-href] In
-a requirement diagram, an empty string is an empty form wherever it lies, as in
-a flowchart. Nothing separates two statements there, and an empty description
+gantt/gram-empty-href-line] [fixture: gantt/gram-click-href-then-empty-href]
+
+In a requirement diagram, an empty string is an empty form wherever it lies, as
+in a flowchart. Nothing separates two statements there, and an empty description
 block lies inside a statement where a unit of the statement before it follows
 it: where that statement has not ended, after a unit that more of it must
 follow, a kind of requirement, `element`, `:::`, `,`, the keyword of a field,
@@ -216,6 +226,7 @@ where the unit after the blocks is a `,` after a class of a class shorthand
 statement or of the second list of a `class` statement. A style ends at the line
 feed that leaves the style context, so a block after it is a statement. On a
 line of the body of a requirement or an element, a block is an item of the body.
+
 [fixture: requirement/div-empty-string-line] [fixture:
 requirement/div-empty-description-block-in-relationship] [fixture:
 requirement/div-empty-description-block-after-string-class] [fixture:
@@ -226,20 +237,25 @@ requirement/div-empty-description-block-before-class-comma-next-line] [fixture:
 requirement/gram-empty-description-block-after-shorthand-string-class] [fixture:
 requirement/gram-empty-description-block-after-class-string-next-line] [fixture:
 requirement/gram-empty-description-block-after-style-line] [fixture:
-requirement/gram-empty-description-block-in-body] In a mindmap, the empty
-string, the empty markdown string, the empty icon, an `::icon(` unit followed
-directly by a `)` unit, and the empty class line, a `:::` unit that no
-`class-text` unit follows, are empty forms wherever they lie; the diagram has no
-empty description block. [fixture: mindmap/div-empty-string-in-shape] [fixture:
+requirement/gram-empty-description-block-in-body]
+
+In a mindmap, the empty string, the empty markdown string, the empty icon, an
+`::icon(` unit followed directly by a `)` unit, and the empty class line, a
+`:::` unit that no `class-text` unit follows, are empty forms wherever they lie;
+the diagram has no empty description block.
+
+[fixture: mindmap/div-empty-string-in-shape] [fixture:
 mindmap/div-empty-markdown-string-in-shape] [fixture:
 mindmap/div-empty-icon-before-root] [fixture:
-mindmap/div-empty-class-before-root] Whether a block is a statement is decided
-without the empty forms before it that are left out, and blocks written one
-after another, with only whitespace between them, are decided together, by what
-follows the last of them: in `""accDescr {}` followed by a line break and `A`,
-the block starts a statement once the empty string is left out, so it stays in
-the reference input. [fixture:
-flowchart/lex-empty-string-before-empty-description-block]
+mindmap/div-empty-class-before-root]
+
+Whether a block is a statement is decided without the empty forms before it that
+are left out, and blocks written one after another, with only whitespace between
+them, are decided together, by what follows the last of them: in `""accDescr {}`
+followed by a line break and `A`, the block starts a statement once the empty
+string is left out, so it stays in the reference input.
+
+[fixture: flowchart/lex-empty-string-before-empty-description-block]
 
 The test compares it where the specification gives it the Db of the input
 ([The difference](../../spec/docs/known-divergences/tokenless-empty-forms.md#the-difference)),
@@ -275,8 +291,11 @@ child fields in the order of `visitorKeys` meets the child nodes in source
 order, but in a FlowchartLink with an opening arrow and a label, whose label is
 written before its arrow and visited after it, in an AgentflowLink whose label
 is written before its closing arrow, and in a GanttClickStatement whose link is
-written before its call and visited after it. [fixture:
-agentflow/gram-split-edge-id] [fixture: gantt/gram-click-href-then-call]
+written before its call and visited after it.
+
+[fixture: agentflow/gram-split-edge-id] [fixture:
+gantt/gram-click-href-then-call]
+
 `tests/traverse.test.ts` reads the sentence of the child fields in the section
 of each node type and checks that `visitorKeys` lists the same fields in the
 same order for every node type. That the child nodes meet in source order in
@@ -371,13 +390,17 @@ fixtures, all hidden-form owners, visible EOL, padding, nulls, repeats and
 authored quoted text, and that the tree keeps the frontmatter of the fixtures
 whose embedded data mermaid.js rejects and the specification keeps opaque. The
 common fixture loop independently locates declared atomic cuts in reference
-tokens and compares reference inputs with the original expected Db. [fixture:
-info/div-directive-flag-middle] `tests/ast-info-examples.test.ts` checks all
-seven node comment examples. [fixture: info/lex-flag-hidden-two] [fixture:
-info/lex-hidden-without-flag] [fixture: info/lex-hidden-tail-two] [fixture:
-info/lex-hidden-after-visible-eol] [fixture: info/title-tabs] [fixture:
-info/lex-title-one-tab] [fixture: info/accdescr-line-repeat] [fixture:
-info/title-open-quote] [fixture: info/div-frontmatter-invalid-yaml] [fixture:
+tokens and compares reference inputs with the original expected Db.
+
+[fixture: info/div-directive-flag-middle]
+
+`tests/ast-info-examples.test.ts` checks all seven node comment examples.
+
+[fixture: info/lex-flag-hidden-two] [fixture: info/lex-hidden-without-flag]
+[fixture: info/lex-hidden-tail-two] [fixture: info/lex-hidden-after-visible-eol]
+[fixture: info/title-tabs] [fixture: info/lex-title-one-tab] [fixture:
+info/accdescr-line-repeat] [fixture: info/title-open-quote] [fixture:
+info/div-frontmatter-invalid-yaml] [fixture:
 info/div-frontmatter-html-invalid-yaml] [fixture: info/div-selected-showinfo]
 [fixture: common/detect-minimal-info]
 
@@ -386,58 +409,73 @@ option and trailing gaps, repeated options, written escapes, raw line padding,
 nullable blocks, and passed bare lines kept as comments.
 `tests/fixtures.test.ts` compares the records and the acceptance, including the
 common detection fixture, and its common fixture loop checks atomic divergences
-independently with reference tokens and readings. [fixture:
-gitgraph/gram-all-fields] [fixture: gitgraph/div-directive-in-commit] [fixture:
-gitgraph/div-frontmatter-invalid-yaml] [fixture:
+independently with reference tokens and readings.
+
+[fixture: gitgraph/gram-all-fields] [fixture: gitgraph/div-directive-in-commit]
+[fixture: gitgraph/div-frontmatter-invalid-yaml] [fixture:
 common/detect-minimal-git-graph]
 
 Records contain the default parse(text) result. The outcomeOf helper applies
 only site settings from fixture.config to the same source analysis, in either
-acceptance direction. [fixture: gitgraph/config-main-branch] [fixture:
-gitgraph/config-gitgraph-html-false] Frontmatter config and init-directive
-arguments remain opaque: they do not change the default initial branch or
-escaping for acceptance. These two fixtures therefore retain their default
-checkout errors and are checked against their specified rejections. [fixture:
-gitgraph/docs-community-contributing-05cdc44b] [fixture:
+acceptance direction.
+
+[fixture: gitgraph/config-main-branch] [fixture:
+gitgraph/config-gitgraph-html-false]
+
+Frontmatter config and init-directive arguments remain opaque: they do not
+change the default initial branch or escaping for acceptance. These two fixtures
+therefore retain their default checkout errors and are checked against their
+specified rejections.
+
+[fixture: gitgraph/docs-community-contributing-05cdc44b] [fixture:
 gitgraph/docs-syntax-gitgraph-2ea99686]
 
 Conversely, default-accepted histories retain their trees when opaque embedded
 settings make mermaid.js reject them. Their specified readings supply the Db
-comparison. [fixture:
-gitgraph/div-frontmatter-main-branch-checkout-default-accepted] [fixture:
-gitgraph/div-frontmatter-main-branch-duplicate-default-accepted] [fixture:
-gitgraph/div-init-main-branch-duplicate-default-accepted]
+comparison.
+
+[fixture: gitgraph/div-frontmatter-main-branch-checkout-default-accepted]
+[fixture: gitgraph/div-frontmatter-main-branch-duplicate-default-accepted]
+[fixture: gitgraph/div-init-main-branch-duplicate-default-accepted]
 
 `tests/ast-gitgraph-examples.test.ts` checks all eighteen node comment examples.
 
 Packet fixture records and acceptance are checked only by
 tests/fixtures.test.ts, using fixtureAccepts and external site configuration in
 outcomeOf. The default records keep parse(text)'s result even when site width
-rejects that tree. [fixture: packet/config-fraction-reject] [fixture:
-packet/config-frontmatter-overrides-site] Unit tests in tests/packet.test.ts
-check, on named fixtures, authored block forms, hidden ownership and common
-values. [fixture: packet/gram-mixed] [fixture:
-packet/gram-hidden-range-gap-spaced] [fixture: packet/lex-hidden-two-suffixes]
-[fixture: packet/title-repeat-empty] [fixture:
-packet/error-single-rounded-end-wide] The ten node-comment examples are checked
-by tests/ast-packet-examples.test.ts.
+rejects that tree.
+
+[fixture: packet/config-fraction-reject] [fixture:
+packet/config-frontmatter-overrides-site]
+
+Unit tests in tests/packet.test.ts check, on named fixtures, authored block
+forms, hidden ownership and common values.
+
+[fixture: packet/gram-mixed] [fixture: packet/gram-hidden-range-gap-spaced]
+[fixture: packet/lex-hidden-two-suffixes] [fixture: packet/title-repeat-empty]
+[fixture: packet/error-single-rounded-end-wide]
+
+The ten node-comment examples are checked by tests/ast-packet-examples.test.ts.
 
 Radar records and acceptance are checked only by tests/fixtures.test.ts using
 fixtureAccepts. The unit checks in tests/radar.test.ts check, on named fixtures,
 authored comma groups, hidden-form ownership, both entry forms, token kinds,
 repeated/empty common values and double spelling. The nineteen node-comment
-examples are checked by tests/ast-radar-examples.test.ts. [fixture:
-radar/gram-written-tree] [fixture: radar/lex-hidden-axis-comma] [fixture:
-radar/lex-named-entry-hidden-across-lines] [fixture: radar/common-repeat-empty]
-[fixture: radar/db-number-rounded] [fixture: common/detect-minimal-radar]
+examples are checked by tests/ast-radar-examples.test.ts.
+
+[fixture: radar/gram-written-tree] [fixture: radar/lex-hidden-axis-comma]
+[fixture: radar/lex-named-entry-hidden-across-lines] [fixture:
+radar/common-repeat-empty] [fixture: radar/db-number-rounded] [fixture:
+common/detect-minimal-radar]
 
 Treemap acceptance and records are checked only by tests/fixtures.test.ts, using
 fixtureAccepts. Unit checks in tests/treemap.test.ts check, on named fixtures,
 flat row indentation, composite boundaries, empty/repeated common values and
 authored numeric/string readings. All nine node-comment examples are checked by
-tests/ast-treemap-examples.test.ts. [fixture: treemap/gram-written-tree]
-[fixture: treemap/db-leaf-tail-space] [fixture:
-treemap/gram-indent-around-global-directive] [fixture:
+tests/ast-treemap-examples.test.ts.
+
+[fixture: treemap/gram-written-tree] [fixture: treemap/db-leaf-tail-space]
+[fixture: treemap/gram-indent-around-global-directive] [fixture:
 treemap/common-repeat-empty] [fixture: treemap/db-number-multiple-dots]
 [fixture: treemap/lex-string-conversion] [fixture:
 common/detect-minimal-treemap]
@@ -446,20 +484,23 @@ common/detect-minimal-treemap]
 tokens and named hidden-form ownership. `tests/fixtures.test.ts` checks
 acceptance and records, including common Wardley detection cases.
 `tests/ast-wardley-examples.test.ts` checks the 28 node type comment examples.
+
 [fixture: wardley/db-all-fields] [fixture: wardley/hidden-all-unit-gaps]
 [fixture: common/detect-minimal-wardley]
 
 `tests/cynefin.test.ts` checks, on named fixtures, fields, hidden-form ownership
 and component boundaries. Acceptance and records, including common detection
 cases, belong to `tests/fixtures.test.ts`. `tests/ast-cynefin-examples.test.ts`
-checks the eleven node-comment examples. [fixture: cynefin/db-all-fields]
-[fixture: cynefin/hidden-domain-item-members] [fixture:
-cynefin/hidden-all-unit-gaps] [fixture: common/detect-minimal-cynefin]
+checks the eleven node-comment examples.
+
+[fixture: cynefin/db-all-fields] [fixture: cynefin/hidden-domain-item-members]
+[fixture: cynefin/hidden-all-unit-gaps] [fixture: common/detect-minimal-cynefin]
 
 `tests/eventmodeling.test.ts` checks, on named fixtures, structure, token
 spelling, ranges and hidden-form ownership. Acceptance and records belong to
 `tests/fixtures.test.ts`, including the common detection fixture.
 `tests/ast-eventmodeling-examples.test.ts` checks all 22 node comment examples.
+
 [fixture: eventmodeling/gram-written-tree] [fixture:
 eventmodeling/lex-hidden-frame-optional-gaps] [fixture:
 eventmodeling/lex-hidden-gwt-required-gaps] [fixture:
@@ -471,6 +512,7 @@ of errors after decorations. Acceptance and records, including the common
 detection fixture, belong to `tests/fixtures.test.ts`.
 `tests/ast-treeview-examples.test.ts` checks all thirteen node-comment examples;
 ASCII display escapes are decoded before checking their marked source ranges.
+
 [fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]
 [fixture: treeview/ast-annotation-prefixes] [fixture:
 common/detect-minimal-tree-view]

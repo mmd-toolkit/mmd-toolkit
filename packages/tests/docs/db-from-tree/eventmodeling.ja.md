@@ -8,6 +8,7 @@
 受理は[構文](../../../spec/docs/diagrams/eventmodeling.ja.md#意味上の受理条件)と
 parser の結果の記録が決める。
 ここでは参照の解決や validator の検査をしない。
+
 [fixture: eventmodeling/gram-written-tree]
 [fixture: eventmodeling/db-source-missing]
 [fixture: eventmodeling/validator-command-invalid]
@@ -27,12 +28,14 @@ parser の結果の記録が決める。
    entity の placeholder を保つ。
    名前の segment は別々に読み、修飾名を dot でつなぐ。
    native の無視された本文を設定として評価しない。
+
    [fixture: eventmodeling/entity-texts] [fixture: eventmodeling/entity-common]
    [fixture: eventmodeling/html-common]
    [fixture: eventmodeling/line-block-values]
    [fixture: eventmodeling/space-qualified-name]
    [fixture: eventmodeling/directive-qualified]
    [fixture: eventmodeling/lex-hidden-yaml-fence-directive]
+
 2. **共通 terminal 全体。**
    木の共通文の値の欄は本文だけを持つ。
    [値の定義](../../../spec/docs/ast/eventmodeling.ja.md#共通の文の値)のとおり、
@@ -55,6 +58,7 @@ parser の結果の記録が決める。
    選ばれない semicolon は構文として、空の説明ブロックは文の境目として残る。
    どちらも除かれたかのように prefix をつながない。
    共通 converter の trim、空白の畳み込み、escape の復号を施さない。
+
    [fixture: eventmodeling/gram-common-leading-directive-both-sides]
    [fixture: eventmodeling/gram-common-leading-directive-before-padding]
    [fixture: eventmodeling/gram-common-leading-directive-after-padding]
@@ -81,6 +85,7 @@ parser の結果の記録が決める。
    [fixture: eventmodeling/lex-common-empty-description-inline-padding]
    [fixture: eventmodeling/lex-common-empty-description-leaves-lf]
    [fixture: eventmodeling/gram-common-leading-empty-description-boundary]
+
 3. **アクセシビリティの setter。**
    `accTitle` と `accDescr` は空から始める。
    アクセシビリティの代入を原文順に読み、最後の代入を残す。
@@ -91,6 +96,7 @@ parser の結果の記録が決める。
    それ以外の先頭・末尾の空白は保つ。
    data と名前には security による文字列の置換を施さない。
    書かれた図全体の title と `embedded.title` は要約に入らない。
+
    [fixture: eventmodeling/common-repeat]
    [fixture: eventmodeling/common-repeat-empty]
    [fixture: eventmodeling/common-description-repeat]
@@ -98,14 +104,18 @@ parser の結果の記録が決める。
    [fixture: eventmodeling/common-title-only]
    [fixture: eventmodeling/frontmatter-title]
    [fixture: eventmodeling/config-security-level-other]
+
 4. **Frame。**
    time/reset frame の文を宣言順に読む。
    同名の frame は mermaid.js が拒否するので、受理した木には現れない。
+
    [fixture: eventmodeling/db-frame-duplicates]
+
    kind は `time` または `reset`、name は書かれた数字列、
    modelEntityType は書かれた語のまま、entityIdentifier は修飾名をつなぐ。
    sourceFrames は書かれた数字列の集合を文字列順にソートして公開する。
    未定義・前方・自己参照も解決せず、先頭のゼロを区別する。
+
    [fixture: eventmodeling/db-frame-order]
    [fixture: eventmodeling/db-all-aliases]
    [fixture: eventmodeling/db-qualified-names]
@@ -114,6 +124,7 @@ parser の結果の記録が決める。
    [fixture: eventmodeling/db-source-missing]
    [fixture: eventmodeling/db-source-forward]
    [fixture: eventmodeling/db-source-self]
+
 5. **Data の選択と本文。**
    body 全体で名前ごとの最初の data 宣言を記録する。
    frame の data 参照に一致する最初の block があれば選び、なければ inline data、
@@ -125,6 +136,7 @@ parser の結果の記録が決める。
    閉じの lookahead だけになる space、LS、PS は含めない。
    受理済みの node が持つ、本文ありを優先した閉じの選択を保つ。
    kind が `inline` または `block` の `{kind, value}` を公開する。
+
    [fixture: eventmodeling/db-data-first]
    [fixture: eventmodeling/db-data-empty-first]
    [fixture: eventmodeling/db-data-reference-inline]
@@ -143,6 +155,7 @@ parser の結果の記録が決める。
 要約は model entity、note、GWT、未使用の data、型タグ、native の無視された形、
 描画時の計算を除く。
 書かれた node は木と checker の対象として残る。
+
 [fixture: eventmodeling/db-entities-notes-gwt]
 [fixture: eventmodeling/db-data-unused]
 [fixture: eventmodeling/gram-written-tree]
@@ -159,7 +172,9 @@ frontmatter の HTML による値の違いは指定の読みで比較する。
 error の記録は `fixtureAccepts` がその読みを拒否するときだけ飛ばす。
 受理しても比較 Db がない場合は、
 [共有の規則](../../../spec/docs/known-divergences/embedded-data-opaque.ja.md#比較する-db)
-に従って明示する。 [fixture: common/detect-minimal-eventmodeling]
+に従って明示する。
+
+[fixture: common/detect-minimal-eventmodeling]
 [fixture: eventmodeling/config-security-level-other]
 [fixture: eventmodeling/div-html-frontmatter-value]
 [fixture: eventmodeling/config-fontfamily-keeps-title]

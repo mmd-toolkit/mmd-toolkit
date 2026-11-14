@@ -25,8 +25,9 @@ followed by a word character (see
 no detector, `block-Beta` is the header `block` and text that no rule reads, and
 `blockx`, `block_beta`, `block2`, `block-betax`, and `block-alpha` are rejected,
 while `blocké` is the header and the node `é`. A header alone, with or without a
-line feed, is rejected: the diagram needs a statement. [fixture:
-block/header-block-beta] [fixture: block/header-block] [fixture:
+line feed, is rejected: the diagram needs a statement.
+
+[fixture: block/header-block-beta] [fixture: block/header-block] [fixture:
 block/header-only-block-beta] [fixture: block/header-only-block] [fixture:
 block/header-only-block-beta-no-line-break] [fixture: block/header-capitalized]
 [fixture: block/header-upper-case] [fixture: block/header-capitalized-block]
@@ -44,6 +45,7 @@ spaces before the header are comments (see
 [Diagram detection](../common.md#diagram-detection)), while mermaid.js reads
 them as a node before the header and rejects the input: the known divergence
 [`bare-percent-line-before-header`](../known-divergences/bare-percent-line-before-header.md).
+
 [fixture: block/div-after-bare-percent-line-and-whitespace-line] [fixture:
 block/header-indented] [fixture: block/header-tab-indented] [fixture:
 block/header-blank-lines-before] [fixture: block/header-nbsp-before] [fixture:
@@ -61,8 +63,9 @@ and a `;` or `%%` after it is a node, not a separator or a comment. A second
 header opens a composite, which `end` must close (see
 [Composites](#composites)). After the header, a vertical tab, a form feed, and
 the whitespace characters outside ASCII are whitespace, a CR and a CRLF end the
-line, and a U+0085 is part of the id after it. [fixture:
-block/header-spaced-word-suffix] [fixture:
+line, and a U+0085 is part of the id after it.
+
+[fixture: block/header-spaced-word-suffix] [fixture:
 block/header-statement-on-header-line] [fixture:
 block/header-statement-on-header-line-tab] [fixture:
 block/header-columns-on-header-line] [fixture: block/header-semicolon] [fixture:
@@ -102,30 +105,32 @@ statement may run over several lines. Between two ids, a tab, a vertical tab, a
 form feed, a CR, a CRLF, U+00A0, U+2028, U+2029, U+3000, and U+FEFF separate
 them, while a U+0085 is no whitespace and joins the two words into one id. A
 comment line or a directive line between the parts of a statement is no part of
-the diagram text, so `columns`, a line `%% c`, and `2` is `columns 2`. [fixture:
-block/db-name-tab-between] [fixture: block/db-name-nbsp-between] [fixture:
-block/db-name-ideographic-between] [fixture: block/db-name-bom-between]
-[fixture: block/db-name-ls-between] [fixture: block/db-name-ps-between]
-[fixture: block/db-name-nel-between] [fixture: block/db-name-vt-between]
-[fixture: block/db-name-ff-between] [fixture: block/db-name-cr-between]
-[fixture: block/db-name-crlf-between] [fixture: block/db-name-ls-around]
-[fixture: block/db-name-trailing-spaces] [fixture: block/db-name-indented-more]
-[fixture: block/db-name-blank-lines] [fixture: block/db-name-no-final-line-feed]
-[fixture: block/db-grid-tab-id] [fixture: block/db-grid-tab-composite-id]
-[fixture: block/db-grid-lf-id] [fixture: block/db-grid-lf-composite-id]
-[fixture: block/db-grid-cr-id] [fixture: block/db-grid-cr-composite-id]
-[fixture: block/db-grid-crlf-id] [fixture: block/db-grid-crlf-composite-id]
-[fixture: block/db-grid-ls-id] [fixture: block/db-grid-ls-composite-id]
-[fixture: block/db-grid-ps-id] [fixture: block/db-grid-ps-composite-id]
-[fixture: block/db-grid-nbsp-id] [fixture: block/db-grid-nbsp-composite-id]
-[fixture: block/db-grid-bom-id] [fixture: block/db-grid-bom-composite-id]
-[fixture: block/db-grid-ideographic-id] [fixture:
-block/db-grid-ideographic-composite-id] [fixture: block/db-grid-ff-id] [fixture:
-block/db-grid-ff-composite-id] [fixture: block/db-grid-vt-id] [fixture:
-block/db-grid-vt-composite-id] [fixture: block/db-grid-spaces-id] [fixture:
-block/db-grid-spaces-composite-id] [fixture: block/db-grid-nel-id] [fixture:
-block/db-grid-nel-composite-id] [fixture: block/db-between-columns-comment-line]
-[fixture: block/db-between-columns-directive-line] [fixture:
+the diagram text, so `columns`, a line `%% c`, and `2` is `columns 2`.
+
+[fixture: block/db-name-tab-between] [fixture: block/db-name-nbsp-between]
+[fixture: block/db-name-ideographic-between] [fixture:
+block/db-name-bom-between] [fixture: block/db-name-ls-between] [fixture:
+block/db-name-ps-between] [fixture: block/db-name-nel-between] [fixture:
+block/db-name-vt-between] [fixture: block/db-name-ff-between] [fixture:
+block/db-name-cr-between] [fixture: block/db-name-crlf-between] [fixture:
+block/db-name-ls-around] [fixture: block/db-name-trailing-spaces] [fixture:
+block/db-name-indented-more] [fixture: block/db-name-blank-lines] [fixture:
+block/db-name-no-final-line-feed] [fixture: block/db-grid-tab-id] [fixture:
+block/db-grid-tab-composite-id] [fixture: block/db-grid-lf-id] [fixture:
+block/db-grid-lf-composite-id] [fixture: block/db-grid-cr-id] [fixture:
+block/db-grid-cr-composite-id] [fixture: block/db-grid-crlf-id] [fixture:
+block/db-grid-crlf-composite-id] [fixture: block/db-grid-ls-id] [fixture:
+block/db-grid-ls-composite-id] [fixture: block/db-grid-ps-id] [fixture:
+block/db-grid-ps-composite-id] [fixture: block/db-grid-nbsp-id] [fixture:
+block/db-grid-nbsp-composite-id] [fixture: block/db-grid-bom-id] [fixture:
+block/db-grid-bom-composite-id] [fixture: block/db-grid-ideographic-id]
+[fixture: block/db-grid-ideographic-composite-id] [fixture: block/db-grid-ff-id]
+[fixture: block/db-grid-ff-composite-id] [fixture: block/db-grid-vt-id]
+[fixture: block/db-grid-vt-composite-id] [fixture: block/db-grid-spaces-id]
+[fixture: block/db-grid-spaces-composite-id] [fixture: block/db-grid-nel-id]
+[fixture: block/db-grid-nel-composite-id] [fixture:
+block/db-between-columns-comment-line] [fixture:
+block/db-between-columns-directive-line] [fixture:
 block/db-between-columns-empty-line] [fixture:
 block/db-between-columns-spaces-line] [fixture:
 block/db-between-class-def-name-comment-line] [fixture:
@@ -178,6 +183,7 @@ block/db-between-directions-spaces-line]
 before the lexer reads the text (see
 [Comment lines](../common.md#comment-lines)), and a `%%` that does not start a
 line is the text of an id, a class name, or a style, as is `%%` alone on a line.
+
 [fixture: block/db-comment-line] [fixture: block/db-comment-line-indented]
 [fixture: block/db-comment-line-tab] [fixture: block/db-comment-line-glued]
 [fixture: block/db-comment-line-bare] [fixture:
@@ -210,10 +216,13 @@ block/db-composite-end-comment] [fixture: block/db-comment-inside-string-start]
 [fixture: block/db-tail-node-comment] [fixture: block/db-tail-columns-comment]
 [fixture: block/db-tail-space-comment] [fixture: block/db-tail-class-comment]
 [fixture: block/db-tail-class-def-comment] [fixture:
-block/db-tail-style-comment] A comment after a U+2028 or U+2029 in a class name
-or a style is the exception: it is read through, and the value goes on after it
-(see [Comment lines](../common.md#comment-lines)). [fixture:
-block/db-class-name-line-separator-then-comment-line] [fixture:
+block/db-tail-style-comment]
+
+A comment after a U+2028 or U+2029 in a class name or a style is the exception:
+it is read through, and the value goes on after it (see
+[Comment lines](../common.md#comment-lines)).
+
+[fixture: block/db-class-name-line-separator-then-comment-line] [fixture:
 block/db-style-line-separator-then-comment-line] [fixture:
 block/db-class-name-line-separator-comment-line-directive-next] [fixture:
 block/db-class-name-line-separator-comment-line-space-next] [fixture:
@@ -231,10 +240,13 @@ block/db-class-name-line-separator-comment-line-line-rule-before] [fixture:
 block/db-class-name-line-separator-comment-line-line-rule-after] [fixture:
 block/db-class-name-line-separator-comment-line-bare-percent] [fixture:
 block/db-class-name-line-separator-comment-line-percent-brace] [fixture:
-block/db-classdef-styles-line-separator-then-comment-line] An id ends at a
-U+2028 or U+2029, which separates two ids (see Whitespace and line breaks
-above), so `a`, U+2028, `%% c`, a line break, and `b` are the blocks `a` and
-`b`. [fixture: block/db-id-line-separator-then-comment-line] [fixture:
+block/db-classdef-styles-line-separator-then-comment-line]
+
+An id ends at a U+2028 or U+2029, which separates two ids (see Whitespace and
+line breaks above), so `a`, U+2028, `%% c`, a line break, and `b` are the blocks
+`a` and `b`.
+
+[fixture: block/db-id-line-separator-then-comment-line] [fixture:
 block/db-id-line-separator-comment-line-directive-next] [fixture:
 block/db-id-line-separator-comment-line-space-next] [fixture:
 block/db-id-line-separator-comment-line-separator-next] [fixture:
@@ -258,7 +270,9 @@ name, and a style, an entity is read as its placeholder (see
 as `'` (see [HTML attribute quotes](../common.md#html-attribute-quotes)), and
 the `;` that the line rule of `style` and `classDef` lines ignores (see
 [`style` and `classDef` lines](../common.md#style-and-classdef-lines)) is left
-out. [fixture: block/db-class-def-semicolon-end] [fixture:
+out.
+
+[fixture: block/db-class-def-semicolon-end] [fixture:
 block/db-class-def-semicolon-middle] [fixture:
 block/db-class-def-semicolon-comma] [fixture: block/db-class-def-two-semicolons]
 [fixture: block/db-class-def-space-semicolon] [fixture: block/db-class-def-hash]
@@ -290,9 +304,11 @@ A directive between two units, also glued to them, is allowed: `A%%{init: {}}%%`
 followed by `:2`, `-->B`, or a line feed, `space:` followed by it and `2`, and
 one between the string of a shape or a block arrow and its opening or closing. A
 directive that is not closed runs to the end of the text (see
-[Where a directive is](../common.md#where-a-directive-is)). [fixture:
-block/div-directive-in-id] [fixture: block/div-directive-inside-direction]
-[fixture: block/div-directive-inside-class-keyword] [fixture:
+[Where a directive is](../common.md#where-a-directive-is)).
+
+[fixture: block/div-directive-in-id] [fixture:
+block/div-directive-inside-direction] [fixture:
+block/div-directive-inside-class-keyword] [fixture:
 block/div-directive-inside-end] [fixture: block/div-directive-inside-header]
 [fixture: block/div-directive-inside-keyword] [fixture:
 block/div-grid-directive-class-apply-id] [fixture:
@@ -383,9 +399,10 @@ that is no digit: `columns 2.5` is the columns 2 and the id `.5`, while
 `columns -1` and `columns 2:3` are rejected. `title t` is two ids, and
 `default`, `linkStyle`, and `interpolate` are rejected. An id is tried before an
 arrow, so `x`, `o`, and `~` before dashes start an id: `A x--x B` is the id A
-and an edge from `x`, and `~~~` and `A~~~B` are ids. [fixture:
-block/db-statement-many-line] [fixture: block/db-statement-mixed-line] [fixture:
-block/db-statement-columns-between] [fixture:
+and an edge from `x`, and `~~~` and `A~~~B` are ids.
+
+[fixture: block/db-statement-many-line] [fixture: block/db-statement-mixed-line]
+[fixture: block/db-statement-columns-between] [fixture:
 block/db-statement-statements-then-class] [fixture:
 block/db-statement-statements-then-style] [fixture:
 block/db-statement-statements-then-class-def] [fixture:
@@ -436,12 +453,13 @@ every character outside ASCII but the whitespace, and it may start with any of
 them: `A;B`, `50%`, `A"x"`, and `A""` are ids, and a `;` after an id and a space
 is an id of its own. Ids keep their case. `__proto__`, `constructor`, and `root`
 are ids like any other; `root` is the id of the block that holds the diagram
-(see the summary of the tests package). [fixture: block/db-name-two] [fixture:
-block/db-name-three-lines] [fixture: block/db-name-digits] [fixture:
-block/db-name-digits-and-letters] [fixture: block/db-name-underscore] [fixture:
-block/db-name-underscore-first] [fixture: block/db-name-dot] [fixture:
-block/db-name-slash] [fixture: block/db-name-comma] [fixture:
-block/db-name-pipe] [fixture: block/db-name-hash] [fixture:
+(see the summary of the tests package).
+
+[fixture: block/db-name-two] [fixture: block/db-name-three-lines] [fixture:
+block/db-name-digits] [fixture: block/db-name-digits-and-letters] [fixture:
+block/db-name-underscore] [fixture: block/db-name-underscore-first] [fixture:
+block/db-name-dot] [fixture: block/db-name-slash] [fixture: block/db-name-comma]
+[fixture: block/db-name-pipe] [fixture: block/db-name-hash] [fixture:
 block/db-name-ampersand] [fixture: block/db-name-percent] [fixture:
 block/db-name-dollar] [fixture: block/db-name-asterisk] [fixture:
 block/db-name-plus] [fixture: block/db-name-tilde] [fixture:
@@ -537,8 +555,9 @@ arrow, `:`, `;`, `#`, `%%`, keywords, and characters outside ASCII. A string has
 no escape, and a string that is not closed makes the input rejected. A quote
 followed by a backquote is a markdown string, which no rule of the grammar
 takes: ``A["`x`"]`` is rejected. An empty string, `""`, and an empty markdown
-string read no unit (see [Empty strings](#empty-strings)). [fixture:
-block/db-label-plain] [fixture: block/gram-label-empty] [fixture:
+string read no unit (see [Empty strings](#empty-strings)).
+
+[fixture: block/db-label-plain] [fixture: block/gram-label-empty] [fixture:
 block/db-label-spaces] [fixture: block/db-label-padded] [fixture:
 block/gram-label-single-quote] [fixture: block/gram-label-unquoted] [fixture:
 block/gram-label-unquoted-space] [fixture: block/gram-label-unclosed] [fixture:
@@ -759,10 +778,12 @@ block/db-grid-style-rule-composite-label] [fixture:
 block/db-grid-classdef-rule-label] [fixture:
 block/db-grid-classdef-rule-block-arrow-label] [fixture:
 block/db-grid-classdef-rule-edge-label] [fixture:
-block/db-grid-classdef-rule-composite-label] Inside a string, a comment after a
-U+2028 or U+2029 is read through, and the string goes on after it (see
-[Comment lines](../common.md#comment-lines)). [fixture:
-block/db-string-line-separator-then-comment-line] [fixture:
+block/db-grid-classdef-rule-composite-label]
+
+Inside a string, a comment after a U+2028 or U+2029 is read through, and the
+string goes on after it (see [Comment lines](../common.md#comment-lines)).
+
+[fixture: block/db-string-line-separator-then-comment-line] [fixture:
 block/db-string-paragraph-separator-then-comment-line] [fixture:
 block/db-string-line-separator-comment-line-directive-next] [fixture:
 block/db-string-line-separator-comment-line-space-next] [fixture:
@@ -797,22 +818,24 @@ brackets are rejected, while whitespace between the id and the opening is
 allowed (`A ("x")`). Any opening may meet any closing: a pair that is no shape
 of mermaid.js, such as `["x")`, `("x"]`, `-)"x"(-`, and `[|"x"]`, is accepted
 and has no type in the Db. `[|"x"|]` and `[[["x"]]]` are rejected, and a shape
-with no id before it is rejected. [fixture: block/db-shape-square] [fixture:
-block/db-shape-round] [fixture: block/db-shape-circle] [fixture:
-block/db-shape-doublecircle] [fixture: block/db-shape-stadium] [fixture:
-block/db-shape-subroutine] [fixture: block/db-shape-cylinder] [fixture:
-block/db-shape-diamond] [fixture: block/db-shape-hexagon] [fixture:
-block/db-shape-rect-left-inv-arrow] [fixture: block/db-shape-lean-right]
-[fixture: block/db-shape-lean-left] [fixture: block/db-shape-trapezoid]
-[fixture: block/db-shape-inv-trapezoid] [fixture: block/db-shape-block-arrow]
-[fixture: block/db-shape-odd-left] [fixture: block/db-shape-odd-double]
-[fixture: block/db-shape-minus-round] [fixture: block/db-shape-minus-reverse]
-[fixture: block/db-shape-mixed-round-square] [fixture:
-block/db-shape-mixed-square-round] [fixture: block/db-shape-mixed-arrow-brace]
-[fixture: block/db-shape-mixed-brace-square] [fixture:
-block/db-shape-mixed-double] [fixture: block/db-shape-mixed-circle-stadium]
-[fixture: block/db-shape-extra-close] [fixture: block/gram-shape-pipe] [fixture:
-block/gram-shape-triple-square] [fixture: block/db-shape-space-before] [fixture:
+with no id before it is rejected.
+
+[fixture: block/db-shape-square] [fixture: block/db-shape-round] [fixture:
+block/db-shape-circle] [fixture: block/db-shape-doublecircle] [fixture:
+block/db-shape-stadium] [fixture: block/db-shape-subroutine] [fixture:
+block/db-shape-cylinder] [fixture: block/db-shape-diamond] [fixture:
+block/db-shape-hexagon] [fixture: block/db-shape-rect-left-inv-arrow] [fixture:
+block/db-shape-lean-right] [fixture: block/db-shape-lean-left] [fixture:
+block/db-shape-trapezoid] [fixture: block/db-shape-inv-trapezoid] [fixture:
+block/db-shape-block-arrow] [fixture: block/db-shape-odd-left] [fixture:
+block/db-shape-odd-double] [fixture: block/db-shape-minus-round] [fixture:
+block/db-shape-minus-reverse] [fixture: block/db-shape-mixed-round-square]
+[fixture: block/db-shape-mixed-square-round] [fixture:
+block/db-shape-mixed-arrow-brace] [fixture: block/db-shape-mixed-brace-square]
+[fixture: block/db-shape-mixed-double] [fixture:
+block/db-shape-mixed-circle-stadium] [fixture: block/db-shape-extra-close]
+[fixture: block/gram-shape-pipe] [fixture: block/gram-shape-triple-square]
+[fixture: block/db-shape-space-before] [fixture:
 block/db-shape-line-feed-before] [fixture: block/gram-shape-shape-only]
 [fixture: block/gram-shape-shape-only-round] [fixture:
 block/db-shape-two-defs-line] [fixture: block/db-shape-no-space-between]
@@ -863,7 +886,9 @@ are rejected, and so is the same with a tab, a line feed, an empty line, or
 U+2028 in place of the first space. Directives, comment lines, and an ignored
 `;` are left out before this rule applies: `(%%{init: {}}%%,x)` is accepted, and
 `( %%{init: {}}%%,x)` is rejected. An empty description block cannot stand
-there. [fixture: block/gram-arrow-space-before-leading-comma] [fixture:
+there.
+
+[fixture: block/gram-arrow-space-before-leading-comma] [fixture:
 block/gram-arrow-space-before-leading-comma-space] [fixture:
 block/gram-arrow-tab-before-leading-comma] [fixture:
 block/gram-arrow-line-feed-before-leading-comma] [fixture:
@@ -884,20 +909,23 @@ block/db-arrow-ignored-semicolon-before-leading-comma] [fixture:
 block/db-arrow-space-before-later-comma] [fixture:
 block/db-arrow-line-feed-before-later-comma] [fixture:
 block/db-arrow-comment-line-before-later-comma] [fixture:
-block/db-arrow-ignored-semicolon-before-later-comma] Two directions need nothing
-between them: `(right down)`, `(right, down)`, and `(rightdown)` are the
-directions `right` and `down`. No direction, an unknown word, upper case, a `,`
-at the end or two in a row, and whitespace inside the brackets of `<[` are
-rejected, and so is `<[` closed by `]` alone. [fixture: block/db-arrow-left]
-[fixture: block/db-arrow-up] [fixture: block/db-arrow-down] [fixture:
-block/db-arrow-x] [fixture: block/db-arrow-y] [fixture: block/db-arrow-two]
-[fixture: block/db-arrow-all] [fixture: block/db-arrow-no-space] [fixture:
-block/db-arrow-spaces] [fixture: block/db-arrow-trailing-space] [fixture:
-block/db-arrow-leading-space] [fixture: block/db-arrow-tab] [fixture:
-block/db-arrow-line-feed] [fixture: block/db-arrow-twice] [fixture:
-block/db-arrow-leading-comma] [fixture: block/db-arrow-glued-words] [fixture:
-block/db-arrow-word-suffix] [fixture: block/db-arrow-word-prefix] [fixture:
-block/db-arrow-up-down] [fixture: block/db-arrow-space-before-paren] [fixture:
+block/db-arrow-ignored-semicolon-before-later-comma]
+
+Two directions need nothing between them: `(right down)`, `(right, down)`, and
+`(rightdown)` are the directions `right` and `down`. No direction, an unknown
+word, upper case, a `,` at the end or two in a row, and whitespace inside the
+brackets of `<[` are rejected, and so is `<[` closed by `]` alone.
+
+[fixture: block/db-arrow-left] [fixture: block/db-arrow-up] [fixture:
+block/db-arrow-down] [fixture: block/db-arrow-x] [fixture: block/db-arrow-y]
+[fixture: block/db-arrow-two] [fixture: block/db-arrow-all] [fixture:
+block/db-arrow-no-space] [fixture: block/db-arrow-spaces] [fixture:
+block/db-arrow-trailing-space] [fixture: block/db-arrow-leading-space] [fixture:
+block/db-arrow-tab] [fixture: block/db-arrow-line-feed] [fixture:
+block/db-arrow-twice] [fixture: block/db-arrow-leading-comma] [fixture:
+block/db-arrow-glued-words] [fixture: block/db-arrow-word-suffix] [fixture:
+block/db-arrow-word-prefix] [fixture: block/db-arrow-up-down] [fixture:
+block/db-arrow-space-before-paren] [fixture:
 block/db-arrow-line-feed-before-paren] [fixture:
 block/gram-arrow-trailing-comma] [fixture: block/gram-arrow-double-comma]
 [fixture: block/gram-arrow-empty] [fixture: block/gram-arrow-unknown] [fixture:
@@ -1165,7 +1193,9 @@ around an arrow belongs to it. `-->`, `---`, `==>`, `===`, `-.->`, `-.-`, `--x`,
 label context, which reads a string and then an arrow, which leaves the context.
 The arrow may have another line than the opening arrow: `A -- "x" ==> B` is
 accepted. A label without quotes, an empty label, and a markdown label are
-rejected. [fixture: block/db-edge-arrow] [fixture: block/db-edge-open] [fixture:
+rejected.
+
+[fixture: block/db-edge-arrow] [fixture: block/db-edge-open] [fixture:
 block/db-edge-thick] [fixture: block/db-edge-thick-open] [fixture:
 block/db-edge-dotted] [fixture: block/db-edge-dotted-open] [fixture:
 block/db-edge-dotted-long] [fixture: block/db-edge-cross] [fixture:
@@ -1255,7 +1285,9 @@ with only whitespace between them: any number of nodes, edges, `columns`,
 lines, and lines of whitespace change nothing. A `;`, `%%`, and `#` after a
 statement are ids, while after `classDef`, `class`, and `style` they are part of
 the rest of the line. The examples of the documentation of mermaid.js are
-accepted. [fixture: block/db-tail-node-comment-glued] [fixture:
+accepted.
+
+[fixture: block/db-tail-node-comment-glued] [fixture:
 block/db-tail-node-trailing-tab] [fixture: block/db-tail-node-trailing-nbsp]
 [fixture: block/db-tail-node-shape-comment] [fixture:
 block/db-tail-node-shape-comment-glued] [fixture:
@@ -1413,8 +1445,10 @@ first node of the statement only, with whitespace before the `:` or not, line
 feeds included: `A:2`, `A["x"]:2`, `A :2`, and `A:2 --> B` are accepted, while
 `A --> B:2`, a space after the `:`, a `:` with no digits, a sign, and two widths
 are rejected; what follows the digits is read on its own (`A:2.5` is the width 2
-and the id `.5`). [fixture: block/db-width-plain] [fixture: block/db-width-one]
-[fixture: block/db-width-zero] [fixture: block/db-width-leading-zeros] [fixture:
+and the id `.5`).
+
+[fixture: block/db-width-plain] [fixture: block/db-width-one] [fixture:
+block/db-width-zero] [fixture: block/db-width-leading-zeros] [fixture:
 block/db-width-large] [fixture: block/db-width-overflow] [fixture:
 block/db-width-space-before] [fixture: block/db-width-tab-before] [fixture:
 block/db-width-line-feed-before] [fixture: block/gram-width-space-after]
@@ -1439,8 +1473,9 @@ block-arrow = "<[" string "]>" "(" direction+ ")"
 
 A shape is an opening, a string, and a closing (see [Shapes](#shapes)), and a
 block arrow a string and its directions (see [Block arrows](#block-arrows)). The
-string is never empty and is never a markdown string. [fixture:
-block/db-shape-square] [fixture: block/db-shape-round] [fixture:
+string is never empty and is never a markdown string.
+
+[fixture: block/db-shape-square] [fixture: block/db-shape-round] [fixture:
 block/db-shape-block-arrow]
 
 ### Edge statements
@@ -1455,8 +1490,9 @@ of a link takes no width. An edge to `end`, to `space`, or to a composite is
 rejected, while `A --> columns` is an edge to the node `columns`. A chain of
 links, `A --> B --> C`, is accepted, and mermaid.js reads it badly: its Db loses
 the nodes before the last and the edges between them (see the summary of the
-tests package); the tree holds the chain as written. [fixture:
-block/db-edge-twice] [fixture: block/db-edge-opposite] [fixture:
+tests package); the tree holds the chain as written.
+
+[fixture: block/db-edge-twice] [fixture: block/db-edge-opposite] [fixture:
 block/db-edge-self] [fixture: block/db-edge-different-kinds] [fixture:
 block/db-edge-defined-before] [fixture: block/db-edge-new-shape] [fixture:
 block/db-edge-start-shape] [fixture: block/db-edge-both-shapes] [fixture:
@@ -1484,6 +1520,7 @@ columns-statement = "columns" ( digits | "auto" )
 width after it, and no edge, and `space :2`, `space: 2`, `space:` with no
 digits, and a sign are rejected. `columns` sets the columns of the block it
 stands in, and whitespace between `columns` and its number may hold line feeds.
+
 [fixture: block/db-space-plain] [fixture: block/db-space-width] [fixture:
 block/db-space-width-one] [fixture: block/db-space-width-zero] [fixture:
 block/db-space-zero-before-node] [fixture: block/db-space-leading-zeros]
@@ -1547,14 +1584,16 @@ outermost `end`. An edge statement after `block:` is the node statement of the
 composite, which mermaid.js then reads with no id, and whose nodes make no block
 (see [Rejections outside the grammar](#rejections-outside-the-grammar)); the
 tree holds it as written. A quoted id, a space before the `:`, `Block:G`, and
-`space` after `block:` are rejected. [fixture: block/db-composite-plain]
-[fixture: block/db-composite-no-id] [fixture: block/db-composite-no-id-beta]
-[fixture: block/db-composite-width] [fixture: block/db-composite-width-zero]
-[fixture: block/db-composite-label] [fixture: block/db-composite-label-shapes]
-[fixture: block/db-composite-label-and-width] [fixture:
-block/db-composite-block-arrow] [fixture: block/db-composite-nested] [fixture:
-block/db-composite-nested-no-id] [fixture: block/db-composite-nested-three]
-[fixture: block/db-composite-nested-empty-block-first] [fixture:
+`space` after `block:` are rejected.
+
+[fixture: block/db-composite-plain] [fixture: block/db-composite-no-id]
+[fixture: block/db-composite-no-id-beta] [fixture: block/db-composite-width]
+[fixture: block/db-composite-width-zero] [fixture: block/db-composite-label]
+[fixture: block/db-composite-label-shapes] [fixture:
+block/db-composite-label-and-width] [fixture: block/db-composite-block-arrow]
+[fixture: block/db-composite-nested] [fixture: block/db-composite-nested-no-id]
+[fixture: block/db-composite-nested-three] [fixture:
+block/db-composite-nested-empty-block-first] [fixture:
 block/db-composite-nested-only-nested] [fixture:
 block/db-composite-nested-three-levels-after-ends] [fixture:
 block/gram-composite-extra-end-nested] [fixture:
@@ -1681,9 +1720,10 @@ The styles are the parts between `,` of the rest of the line without the
 whitespace at its ends; the class name of `class` is the rest of the line as one
 text, which may be empty and may hold whitespace, so `class A c d` gives the
 class `c d`. The keywords need whitespace after them and are read in this case
-only. [fixture: block/db-class-def-and-apply] [fixture:
-block/db-class-def-two-styles] [fixture:
-block/db-class-def-spaces-around-styles] [fixture:
+only.
+
+[fixture: block/db-class-def-and-apply] [fixture: block/db-class-def-two-styles]
+[fixture: block/db-class-def-spaces-around-styles] [fixture:
 block/db-class-def-empty-style] [fixture: block/db-class-def-leading-comma]
 [fixture: block/gram-class-def-no-style] [fixture:
 block/gram-class-def-spaces-only] [fixture: block/gram-class-def-no-name]
@@ -2051,8 +2091,9 @@ block/db-grid-classdef-rule-style-text]
 The style statement has a rule outside the grammar: its ids, `,` included, must
 name a block that an earlier statement made; otherwise the Db of mermaid.js
 throws, and the input is rejected (see
-[Rejections outside the grammar](#rejections-outside-the-grammar)). [fixture:
-block/db-style-plain] [fixture: block/db-style-two] [fixture:
+[Rejections outside the grammar](#rejections-outside-the-grammar)).
+
+[fixture: block/db-style-plain] [fixture: block/db-style-two] [fixture:
 block/db-style-spaces] [fixture: block/db-style-leading-space] [fixture:
 block/db-style-trailing-space] [fixture: block/db-style-none] [fixture:
 block/db-style-spaces-only] [fixture: block/db-style-only-comma] [fixture:
@@ -2082,6 +2123,7 @@ the grammar takes it nowhere, and the input is rejected, while mermaid.js
 accepts it as if it were not there: `A --> accDescr {} B`. This is the known
 divergence
 [`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md).
+
 [fixture: block/db-empty-block-on-header-line] [fixture:
 block/gram-description-block-on-header-line] [fixture:
 block/div-empty-block-in-edge] [fixture:
@@ -2113,6 +2155,7 @@ line of its own, before or after an id, an edge, a shape, a width, or `end`,
 before a composite, inside a composite, and between `columns` and its number.
 Glued to an id, `""` is part of the id (`A""`). This is the known divergence
 [`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md).
+
 [fixture: block/div-empty-markdown-between] [fixture:
 block/div-empty-markdown-line] [fixture: block/div-empty-string-after-edge]
 [fixture: block/div-empty-string-after-id] [fixture:
@@ -2140,8 +2183,9 @@ before any statement, so `style root` needs no statement before it. After a
 `class` statement each of its ids, without the whitespace at its start, is the
 id of a block, since the statement makes one for an id that no block has:
 `class A, B c` followed by `style B` is accepted with no node `B`. Nothing else
-that the grammar accepts is rejected by the Db. [fixture:
-block/gram-composite-style-later-outer] [fixture:
+that the grammar accepts is rejected by the Db.
+
+[fixture: block/gram-composite-style-later-outer] [fixture:
 block/gram-composite-style-before-nested] [fixture:
 block/db-composite-style-after-nested] [fixture:
 block/gram-grid-ampersand-entity-style-id] [fixture:
@@ -2181,8 +2225,11 @@ block/db-class-apply-list-spaces-then-style]
   On a line that the line rule of `style` lines applies to, as one with the
   label `"style:#a"`, the ignored `;` inside an id or a keyword makes the input
   rejected here, while mermaid.js joins the parts: `A["style:#a"] B;C` has the
-  id `BC` there. [fixture: block/div-ignored-semicolon-in-id] [fixture:
+  id `BC` there.
+
+  [fixture: block/div-ignored-semicolon-in-id] [fixture:
   block/div-ignored-semicolon-in-keyword]
+
 - **[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md).**
   An empty string, an empty markdown string, and an empty description block
   inside a statement are rejected here, while mermaid.js accepts them as if they
@@ -2193,6 +2240,7 @@ block/db-class-apply-list-spaces-then-style]
   the header, in an id, a label, a class name, or a style, makes mermaid.js hand
   the text to the C4 parser, which rejects it; here the text is a block diagram.
   `C4Context` counts at the start of the text only in both, so it is an id.
+
   [fixture: block/div-c4-component-in-id] [fixture:
   block/div-c4-container-after-node] [fixture:
   block/gram-c4-container-before-header] [fixture:
@@ -2210,6 +2258,7 @@ block/db-class-apply-list-spaces-then-style]
   [fixture: block/div-c4-container-with-context] [fixture:
   block/db-c4-context-in-id] [fixture: block/db-c4-context-lower-case] [fixture:
   block/div-c4-deployment-in-id] [fixture: block/div-c4-dynamic-in-id]
+
 - **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.md)**
   and **[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.md)**
   apply as in every diagram type.
@@ -2217,8 +2266,10 @@ block/db-class-apply-list-spaces-then-style]
 - **[`bare-percent-line-before-header`](../known-divergences/bare-percent-line-before-header.md).**
   A line of `%%` alone or `%%{ }%%` before the header is a comment here, while
   mermaid.js reads it as a node before the header and rejects the input (see
-  [Detection](#detection)). [fixture: block/div-after-bare-percent-line]
-  [fixture: block/div-after-empty-braces-line]
+  [Detection](#detection)).
+
+  [fixture: block/div-after-bare-percent-line] [fixture:
+  block/div-after-empty-braces-line]
 
 The known divergences
 [`comment-takes-character`](../known-divergences/comment-takes-character.md) and
@@ -2229,12 +2280,14 @@ have no case in this diagram type: its lexer has no comment rule.
 
 The summary of the tests package describes how the Db collects the blocks, what
 a block defined again keeps, which blocks are left out of the diagram, the type
-of a shape, and the block `root`. [fixture: block/db-shape-redefine-shape]
-[fixture: block/db-shape-redefine-to-na] [fixture:
-block/db-shape-redefine-from-na] [fixture: block/db-shape-redefine-same-label]
-[fixture: block/db-shape-redefine-to-odd] [fixture:
-block/db-shape-redefine-width] [fixture: block/db-shape-redefine-label-only]
-[fixture: block/db-definitions-three-shapes] [fixture:
+of a shape, and the block `root`.
+
+[fixture: block/db-shape-redefine-shape] [fixture:
+block/db-shape-redefine-to-na] [fixture: block/db-shape-redefine-from-na]
+[fixture: block/db-shape-redefine-same-label] [fixture:
+block/db-shape-redefine-to-odd] [fixture: block/db-shape-redefine-width]
+[fixture: block/db-shape-redefine-label-only] [fixture:
+block/db-definitions-three-shapes] [fixture:
 block/db-definitions-three-labels-first-equal] [fixture:
 block/db-definitions-three-na-in-the-middle] [fixture:
 block/db-definitions-three-edge-ends] [fixture:

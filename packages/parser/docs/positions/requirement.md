@@ -25,13 +25,16 @@ token leaves out (see [Tokens](../tokens/requirement.md#tokens)), so a statement
 or a field that ends with one ends at its last character that is not whitespace:
 the field `id:   1` followed by two spaces covers `id:   1`, and
 `text:   spaced out` followed by three spaces covers `text:   spaced out`.
+
 [fixture: requirement/db-requirement-value-spaces]
 
 ### RequirementClassStatement
 
 The range runs from `class` to the last class, also where the statement goes on
 after the line feed that leaves the style context: `class r`, a line break, and
-`c` covers both lines. [fixture: requirement/lex-class-list-next-line]
+`c` covers both lines.
+
+[fixture: requirement/lex-class-list-next-line]
 
 ### RequirementIdentifier and RequirementLiteral
 
@@ -43,7 +46,9 @@ included (`requirement  spaced name  {` has the name `spaced name`, which covers
 at its ends. A style covers its units from the first to the last, the spaces
 between them included, while its value leaves them out: the first style of
 `style r fill: red , stroke : blue` covers `fill: red` and has the value
-`fill:red`. [fixture: requirement/db-requirement-name-spaces] [fixture:
+`fill:red`.
+
+[fixture: requirement/db-requirement-name-spaces] [fixture:
 requirement/db-acc-title-descr] [fixture: requirement/lex-style-spaces]
 
 ### RequirementIgnoredText
@@ -52,7 +57,8 @@ The text of a direction line covers it without the whitespace at its ends:
 `foo direction LR bar` has the texts `foo` and `bar`. An empty description block
 in a body covers it from `accDescr` to `}`, also over several lines, and the
 value leaves out a comment line inside it: `accDescr {`, a comment line `%% c`,
-and `}` has the value `accDescr {`, a line feed, and `}`. [fixture:
-requirement/lex-direction-line-text-before-and-after] [fixture:
+and `}` has the value `accDescr {`, a line feed, and `}`.
+
+[fixture: requirement/lex-direction-line-text-before-and-after] [fixture:
 requirement/gram-empty-description-block-multiline-in-body] [fixture:
 requirement/gram-empty-description-block-comment-line-in-body]

@@ -27,9 +27,11 @@ mermaid.js がそれを読むところだけです（[ノード](../ast.ja.md#�
 `click A "" ""` のような click の文の URL と tooltip のときだけです。
 `state "" as A` のような空の説明は入力を拒否させ、
 state の文脈の空の文字列は StringLiteral ではなく、
-mermaid.js が読まないテキストです。 [fixture: state/lex-click-empty-strings]
-[fixture: state/lex-alias-empty-string]
+mermaid.js が読まないテキストです。
+
+[fixture: state/lex-click-empty-strings] [fixture: state/lex-alias-empty-string]
 [fixture: state/gram-state-empty-string-alone]
+
 [state の文脈](../diagrams/state.ja.md#state-の文脈) を参照してください。
 
 ## ノード
@@ -71,8 +73,10 @@ id だけか、説明とともに書いた状態です。
 子の欄: `reference`、`description`。
 `A : ` は、Db と同じく説明を持たず、空白 4 個が続く `A :` も同じです。
 mermaid.js は、空白だけの説明を、その量によらず説明のないものとして読むので、
-その空白は値ではありません。 [fixture: state/gram-description-blank] [fixture:
-state/gram-description-blank-spaces]
+その空白は値ではありません。
+
+[fixture: state/gram-description-blank]
+[fixture: state/gram-description-blank-spaces]
 
 ### StateTransitionStatement
 
@@ -85,7 +89,9 @@ state/gram-description-blank-spaces]
 子の欄: `from`、`to`、`label`。
 矢印 `-->` は単位で、ノードではありません。
 state 図の矢印はこの 1 つだけで、端の印がなく、線の種類も 1 つなので、
-矢印のノードには置く欄がありません。 [fixture: state/lex-percent-in-label]
+矢印のノードには置く欄がありません。
+
+[fixture: state/lex-percent-in-label]
 
 ### StateReference
 
@@ -94,9 +100,10 @@ state 図の矢印はこの 1 つだけで、端の印がなく、線の種類�
 | `state`    | Identifier または StateTerminal | 状態の id か `[*]`。                     |
 | `cssClass` | Identifier または null          | `:::` の後の CSS クラス。なければ null。 |
 
-子の欄: `state`、`cssClass`。 [fixture: state/gram-style-separator-transition]
-[fixture:
-state/gram-terminal-style-separator]
+子の欄: `state`、`cssClass`。
+
+[fixture: state/gram-style-separator-transition]
+[fixture: state/gram-terminal-style-separator]
 
 ### StateTerminal
 
@@ -105,6 +112,7 @@ state/gram-terminal-style-separator]
 欄もありません。
 始まりか終わりかは、その位置から決まります。
 遷移の矢印の前か、それだけのときは始まり、矢印の後なら終わりです。
+
 [fixture: state/gram-terminal-alone]
 
 ### StateCompositeStatement
@@ -134,25 +142,31 @@ state/gram-terminal-style-separator]
 mermaid.js がトークンを読まない各 `state` と、その後の空の文字列も持ちます。
 `state X ""` の後の行 `state {` は、
 空の文字列から `state` までの 1 つの StateIgnoredText を持ち、
-本体は X のものです。 [fixture: state/gram-ignored-state-before-body-next-line]
-[fixture: state/gram-state-empty-string-before-name] [fixture:
-state/gram-state-empty-string-between-name-and-body] [fixture:
-state/gram-ignored-percent-before-body-next-line] [fixture:
-state/gram-state-empty-string-then-percent-before-body] [fixture:
-state/gram-empty-description-block-after-empty-string-before-body]
+本体は X のものです。
+
+[fixture: state/gram-ignored-state-before-body-next-line]
+[fixture: state/gram-state-empty-string-before-name]
+[fixture: state/gram-state-empty-string-between-name-and-body]
+[fixture: state/gram-ignored-percent-before-body-next-line]
+[fixture: state/gram-state-empty-string-then-percent-before-body]
+[fixture: state/gram-empty-description-block-after-empty-string-before-body]
+
 `state` の後か文の後の空の文字列で、名前も文字列も本体の `{` も続かないものは、
 [StateIgnoredStatement](#stateignoredstatement) です。
 `state x ""` は合成状態の文と無視される文ですが、
 `state x ""` の後に行 `{` が続くと 1 つの合成状態の文で、
 空の文字列はその `textBeforeBody` です。
-[fixture: state/gram-state-empty-string-after-name] [fixture:
-state/gram-state-empty-string-after-name-body-next-line]
+
+[fixture: state/gram-state-empty-string-after-name]
+[fixture: state/gram-state-empty-string-after-name-body-next-line]
+
 本体があれば、その文はその id の合成状態を定めます。
 本体はなくてもかまいません。
 `state A`、2 つのそのような文である `state a b`、`state` だけの文は、
-本体を持ちません。 [fixture: state/lex-keyword-upper-case] [fixture:
-state/lex-state-without-body] [fixture: state/lex-state-two-names] [fixture:
-state/lex-state-keyword-alone]
+本体を持ちません。
+
+[fixture: state/lex-keyword-upper-case] [fixture: state/lex-state-without-body]
+[fixture: state/lex-state-two-names] [fixture: state/lex-state-keyword-alone]
 
 ### StateAliasDefinitionStatement
 
@@ -175,7 +189,9 @@ state/lex-state-keyword-alone]
 `textBeforeDescription` と `textAfterDescription` は、
 説明の前後の state の文脈の空の文字列で、mermaid.js はそれを読みません。
 `state "" "y" "" as A` は両方を持ちます。
+
 [fixture: state/gram-state-empty-strings-around-alias-string]
+
 `textBeforeBody` は、mermaid.js が読まないテキストです。
 `as` の後の、`%%` からその行の `{` までのテキスト（終わりの空白を除く）で、
 そのとき別名は id を持ちません（`state "d" as %% c {`）。
@@ -184,18 +200,23 @@ state/lex-state-keyword-alone]
 または、`ignored-state` の単位と、
 その後の空の文字列です（いくつ続いてもよい）（行 `state {` が続く、
 `state "d" as A`）。
+
 [fixture: state/gram-ignored-state-before-alias-body-next-line]
 [fixture: state/lex-alias-id-ignored-percent-before-body]
 [fixture: state/lex-alias-id-ignored-percent-brace]
 [fixture: state/gram-ignored-percent-before-alias-body-next-line]
 [fixture: state/gram-empty-description-block-before-alias-body-next-line]
+
 id は空白を持て、本体の前では `:` も持てます。
 `state "d" as my id` は `my id` を定め、
 `state "d" as A : x {` は合成状態 `A : x` を定めます。
-[fixture: state/lex-alias-id-spaces] [fixture:
-state/lex-alias-second-description] [fixture: state/lex-alias-third-part]
-[fixture: state/lex-alias-colon-before-body] [fixture:
-state/lex-alias-without-id]
+
+[fixture: state/lex-alias-id-spaces]
+[fixture: state/lex-alias-second-description]
+[fixture: state/lex-alias-third-part]
+[fixture: state/lex-alias-colon-before-body]
+[fixture: state/lex-alias-without-id]
+
 mermaid.js は 2 つ目の説明を、空白を含めて書かれたとおりに読むので、
 `secondDescription` は、空白だけのときも単位の全体です。
 `state "d" as A : x  : y` の値は、空白、`x`、空白 2 個で、
@@ -205,11 +226,12 @@ mermaid.js は 2 つ目の説明を、空白を含めて書かれたとおりに
 それは木のどの欄にも現れません。
 行の規則が無視する `;` の後の空白は、その中に残ります。
 空白 2 個が続く `state "d" as A style:#x;` は、別名の id `A style` と、
-2 つ目の説明 `#x` と空白 2 個を持ちます。 [fixture: state/lex-alias-third-part]
-[fixture:
-state/db-alias-colon-spaces-second] [fixture:
-state/db-alias-colon-empty-second] [fixture:
-state/tokens-alias-ignored-semicolon-then-spaces]
+2 つ目の説明 `#x` と空白 2 個を持ちます。
+
+[fixture: state/lex-alias-third-part]
+[fixture: state/db-alias-colon-spaces-second]
+[fixture: state/db-alias-colon-empty-second]
+[fixture: state/tokens-alias-ignored-semicolon-then-spaces]
 
 ### StatePseudostateDefinitionStatement
 
@@ -223,14 +245,18 @@ state/tokens-alias-ignored-semicolon-then-spaces]
 子の欄: `id`。
 id は空白を持てます。
 `state f 1 <<fork>>` は fork `f 1` です。
-`state <<join>>` は id を持ちません。 [fixture: state/lex-fork-spaced-id]
-[fixture: state/lex-join-empty-id] [fixture: state/lex-choice-square-brackets]
+`state <<join>>` は id を持ちません。
+
+[fixture: state/lex-fork-spaced-id] [fixture: state/lex-join-empty-id]
+[fixture: state/lex-choice-square-brackets]
 
 ### StateDividerStatement
 
 合成状態の本体の中の `--` で、本体を区域に分けます。
 子の欄はありません。
-欄もありません。 [fixture: state/lex-composite-divider]
+欄もありません。
+
+[fixture: state/lex-composite-divider]
 
 ### StateNoteStatement
 
@@ -249,12 +275,15 @@ id は空白を持てます。
 `textBeforeState` は、mermaid.js が読まないテキストです。
 位置のすぐ後に空白なしで続く `%%` と、その後の `:`、改行、空白、
 `-` 以外の文字で、その後にノートの id が続きます（`note left of%%x A : t`）。
+
 [fixture: state/lex-note-id-ignored-percent-after-position]
+
 ノートの id は、最初の文字でも `%%` の前で終わり、そのときは空です。
 `note right of %% c S`、行 `x`、`end note` では、`state` は null で、
-テキストは `%%` で始まります。 [fixture: state/lex-note-mixed-case]
-[fixture: state/lex-note-block] [fixture: state/lex-note-block-empty]
-[fixture: state/lex-note-id-percent-block]
+テキストは `%%` で始まります。
+
+[fixture: state/lex-note-mixed-case] [fixture: state/lex-note-block]
+[fixture: state/lex-note-block-empty] [fixture: state/lex-note-id-percent-block]
 
 1 行のとき、mermaid.js は、ノートの id のすぐ後からのテキストを、
 最初の 2 文字と両端の空白を除いて読みます。
@@ -266,24 +295,32 @@ id は空白を持てます。
 空白でなければ `textBeforeText` です。
 `note left of A:hi` ではそれが `h` でテキストは `i` で、
 `note left of A:h` ではそれが `h` でテキストはありません。
-[fixture: state/lex-note-two-spaces-before-colon] [fixture:
-state/lex-note-colon-without-space] [fixture:
-state/lex-note-colon-then-one-character]
+
+[fixture: state/lex-note-two-spaces-before-colon]
+[fixture: state/lex-note-colon-without-space]
+[fixture: state/lex-note-colon-then-one-character]
 
 ### StateFloatingNoteStatement
 
-`note "テキスト" as N1`。 [fixture: state/lex-floating-note]
+`note "テキスト" as N1`。
+
+[fixture: state/lex-floating-note]
 
 | 欄     | 型                       | 意味                                               |
 | ------ | ------------------------ | -------------------------------------------------- |
 | `text` | StateLiteral または null | 引用符の間のテキスト。すべて空白なら null。        |
 | `id`   | StateLiteral または null | `as` の後、行の終わりまでのテキスト。空なら null。 |
 
-子の欄: `text`、`id`。 [fixture: state/lex-floating-note-id-spaces]
+子の欄: `text`、`id`。
+
+[fixture: state/lex-floating-note-id-spaces]
+
 引用符は文の単位で、どの欄にも属しません。
 テキストの前と後に、それぞれ 2 つ以上あることもあります。
+
 [fixture: state/lex-floating-note-extra-quote-before-text]
 [fixture: state/lex-floating-note-whitespace-text]
+
 [ノートの文脈](../diagrams/state.ja.md#ノートの文脈) を参照してください。
 
 ### StateClickStatement
@@ -300,8 +337,10 @@ state/lex-note-colon-then-one-character]
 click の文とその改行の間の空の説明ブロックは、その一部ではなく、
 その後の StateAccDescrBlockStatement です。
 `click A "u" "t" accDescr {}` は 2 つの文です。
+
 [fixture: state/gram-click-empty-description-block-after]
 [fixture: state/gram-click-tooltip] [fixture: state/gram-click-href]
+
 [click の文](../diagrams/state.ja.md#click-の文) を参照してください。
 
 ### StateClassDefStatement
@@ -318,9 +357,11 @@ mermaid.js が空のテキストとして読むもので、null です。
 `classDef a x,,y` のスタイルは `x`、null、`y` で、
 `classDef a ,` は null を 2 つ持ちます。
 一方、テキストのない `classDef` の文は、mermaid.js がスタイルを加えないので、
-スタイルを持ちません。 [fixture: state/lex-classdef-percent] [fixture:
-state/lex-classdef-without-styles] [fixture: state/db-classdef-empty-items]
-[fixture: state/db-classdef-comma-only]
+スタイルを持ちません。
+
+[fixture: state/lex-classdef-percent]
+[fixture: state/lex-classdef-without-styles]
+[fixture: state/db-classdef-empty-items] [fixture: state/db-classdef-comma-only]
 
 ### StateClassStatement
 
@@ -331,8 +372,10 @@ state/lex-classdef-without-styles] [fixture: state/db-classdef-empty-items]
 | `states`   | Identifier の列          | 状態の id。ソースの順。                    |
 | `cssClass` | StateLiteral または null | 行の残り、つまり CSS クラス。空なら null。 |
 
-子の欄: `states`、`cssClass`。 [fixture: state/lex-class-ids-space]
-[fixture: state/lex-class-name-spaces] [fixture: state/lex-class-without-name]
+子の欄: `states`、`cssClass`。
+
+[fixture: state/lex-class-ids-space] [fixture: state/lex-class-name-spaces]
+[fixture: state/lex-class-without-name]
 
 ### StateStyleStatement
 
@@ -345,7 +388,9 @@ state/lex-classdef-without-styles] [fixture: state/db-classdef-empty-items]
 
 子の欄: `states`、`styles`。
 `style ,A,,B, fill:red` の states は、null、A、null、B、null です。
+
 [fixture: state/tokens-style-empty-items]
+
 スタイルは、空の部分を null とする StateClassDefStatement と同じものですが、
 テキストのない `style` の文は、mermaid.js が空のスタイル 1 つを与えるので、
 null のスタイルを 1 つ持ちます。
@@ -353,9 +398,9 @@ null のスタイルを 1 つ持ちます。
 `style A` は null のスタイル 1 つを持ちます。
 id はその後の空白で終わります。
 `style A ,x` は、状態 A 1 つと、スタイル null と `x` を持ちます。
+
 [fixture: state/db-style-comma-after-space] [fixture: state/lex-style-empty-id]
-[fixture:
-state/lex-style-without-styles] [fixture: state/db-style-empty-items]
+[fixture: state/lex-style-without-styles] [fixture: state/db-style-empty-items]
 [fixture: state/db-style-whitespace-item] [fixture: state/db-style-without-text]
 
 ### StateDirectionStatement
@@ -367,8 +412,9 @@ state/lex-style-without-styles] [fixture: state/db-style-empty-items]
 | `textAfter`  | StateIgnoredText または null | 方向の行の値の後のテキスト。なければ null。            |
 
 子の欄: `textBefore`、`textAfter`。
-[fixture: state/lex-direction-line-in-description] [fixture:
-state/lex-direction-lower-case]
+
+[fixture: state/lex-direction-line-in-description]
+[fixture: state/lex-direction-lower-case]
 
 ### StateAccTitleStatement
 
@@ -381,8 +427,10 @@ state/lex-direction-lower-case]
 子の欄: `value`。
 `:` の後の空白は改行も含めて一緒に読まれるので、
 値が null になるのはテキストの終わりだけです。
-`#`、`;`、`%%` はテキストの文字です。 [fixture: state/lex-acc-title-next-line]
-[fixture: state/lex-acc-title-at-end] [fixture: state/lex-acc-title-semicolon]
+`#`、`;`、`%%` はテキストの文字です。
+
+[fixture: state/lex-acc-title-next-line] [fixture: state/lex-acc-title-at-end]
+[fixture: state/lex-acc-title-semicolon]
 
 ### StateAccDescrStatement
 
@@ -395,6 +443,7 @@ state/lex-direction-lower-case]
 子の欄: `value`。
 `:` の後の空白は改行も含めて一緒に読まれるので、
 値が null になるのはテキストの終わりだけです。
+
 [fixture: state/db-acc-descr-empty-replaces]
 
 ### StateAccDescrBlockStatement
@@ -412,9 +461,13 @@ Db への効果が `accDescr:` の文と違うので、別のノードの型に�
 
 子の欄: `value`。
 `accDescr {` の後に行 `x` が続いてテキストが終わるとき、値は `x` です。
+
 [fixture: state/db-acc-descr-unclosed-replaces]
+
 テキストの終わりの `accDescr {` は、値が null で、閉じていません。
+
 [fixture: state/lex-acc-descr-block-unclosed]
+
 `accDescr {  }` はテキストのない閉じたブロックで、値は null です。
 `{` の後の空白は `{` と一緒に読まれます。
 そのようなブロック、つまり空の説明ブロックが文になるのは、
@@ -427,13 +480,16 @@ click の文とその改行の間のブロックも同じです。
 後の単位がその前の文を続けるブロックと、間に空白しかないブロックの連なりは、
 `A accDescr {} --> B` や `A --> B accDescr {} : x` のようにその文の中にあり、
 `A --> accDescr {} B` のように文の単位の間にあるブロックも同じです。
-そのとき入力は拒否されます。 [fixture: state/db-acc-descr-empty-block-keeps]
+そのとき入力は拒否されます。
+
+[fixture: state/db-acc-descr-empty-block-keeps]
 [fixture: state/gram-empty-description-block-statement]
 [fixture: state/gram-empty-description-block-after-transition]
 [fixture: state/div-empty-description-block-in-transition]
 [fixture: state/div-empty-description-block-before-label]
 [fixture: state/div-empty-description-block-after-arrow]
 [fixture: state/header-empty-description-block]
+
 [state.ja.md](../diagrams/state.ja.md#ほかの文) を参照してください。
 
 ### StateScaleStatement
@@ -444,13 +500,17 @@ click の文とその改行の間のブロックも同じです。
 | ------- | -------------- | ---- |
 | `width` | NumericLiteral | 数。 |
 
-子の欄: `width`。 [fixture: state/gram-scale]
+子の欄: `width`。
+
+[fixture: state/gram-scale]
 
 ### StateHideEmptyDescriptionStatement
 
 `hide empty description`。
 子の欄はありません。
-欄もありません。 [fixture: state/gram-hide-empty-description]
+欄もありません。
+
+[fixture: state/gram-hide-empty-description]
 
 ### StateIgnoredStatement
 
@@ -460,9 +520,10 @@ click の文とその改行の間のブロックも同じです。
 [合成状態、別名、疑似状態](../diagrams/state.ja.md#合成状態別名疑似状態)
 を参照してください。
 mermaid.js はそれを読まず、この文は Db に何も加えません。
-[fixture: state/gram-state-empty-string-alone] [fixture:
-state/gram-state-empty-string-after-name] [fixture:
-state/gram-state-empty-string-after-name-before-comment]
+
+[fixture: state/gram-state-empty-string-alone]
+[fixture: state/gram-state-empty-string-after-name]
+[fixture: state/gram-state-empty-string-after-name-before-comment]
 
 | 欄      | 型     | 意味                                                                                                  |
 | ------- | ------ | ----------------------------------------------------------------------------------------------------- |

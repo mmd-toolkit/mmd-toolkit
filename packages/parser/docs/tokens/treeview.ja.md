@@ -7,11 +7,12 @@
 より長い bare-name との比較はヘッダーだけに適用する。
 共通文法、native YAML、hidden directive、可視 newline 単位はない。
 ASCII の字下げが hidden whitespace に先行するため、
-別の hidden-whitespace reader は使わない。 [fixture: treeview/header-only]
-[fixture:
-treeview/header-nbsp-custom-boundary] [fixture: treeview/gram-body-yaml]
-[fixture: treeview/detect-secondscan-singleline] [fixture:
-treeview/gram-quoted-tail-space-next-indent]
+別の hidden-whitespace reader は使わない。
+
+[fixture: treeview/header-only] [fixture: treeview/header-nbsp-custom-boundary]
+[fixture: treeview/gram-body-yaml]
+[fixture: treeview/detect-secondscan-singleline]
+[fixture: treeview/gram-quoted-tail-space-next-indent]
 
 ## トークン
 
@@ -30,40 +31,48 @@ treeview/gram-quoted-tail-space-next-indent]
 接頭辞のテキストをキーワードや注釈として読み直さない。
 枝と各横棒は別の書かれた構成要素であり、その間に共通 trivia を置ける。
 その trivia は共通契約に従って、この RawText 項目を分断する。
+
 [fixture: treeview/box-written-tree] [fixture: treeview/box-prefix-arbitrary]
-[fixture: treeview/box-branch-no-dash] [fixture:
-treeview/box-branch-directive-parts] [fixture:
-treeview/box-dash-selected-semicolon] [fixture:
-treeview/box-prefix-directive-column]
+[fixture: treeview/box-branch-no-dash]
+[fixture: treeview/box-branch-directive-parts]
+[fixture: treeview/box-dash-selected-semicolon]
+[fixture: treeview/box-prefix-directive-column]
 
 bare-name と description-text は、所有する末尾の空白を保持する。
 title の値は ASCII 区切り一つの直後、アクセシビリティ行の値はコロンの直後、
 ブロックの値は波括弧のすぐ内側から始まる。
 残る値の空白はすべてトークンのテキストであり、空白だけの値も含む。
 空または共通規則の除去だけからなる値にはテキスト項目がないが、
-空の引用名には String 項目がある。 [fixture: treeview/db-bare-tail-space]
-[fixture:
-treeview/db-description-tail-space] [fixture: treeview/gram-written-tree]
-[fixture: treeview/ast-common-whitespace-values] [fixture:
-treeview/ast-common-removal-only-values] [fixture:
-treeview/ast-description-removal-only] [fixture: treeview/ast-icon-removal-only]
-[fixture: treeview/db-empty-names]
+空の引用名には String 項目がある。
+
+[fixture: treeview/db-bare-tail-space]
+[fixture: treeview/db-description-tail-space]
+[fixture: treeview/gram-written-tree]
+[fixture: treeview/ast-common-whitespace-values]
+[fixture: treeview/ast-common-removal-only-values]
+[fixture: treeview/ast-description-removal-only]
+[fixture: treeview/ast-icon-removal-only] [fixture: treeview/db-empty-names]
 
 直接の罫線規則は、枝行の末尾の共通空白を字句解析から除く。
 開いている引用名やブロックの内部では、書かれた接頭辞、装飾、
 内部で除外された空白も囲む String または RawText 項目に残し、
 重なる罫線項目を作らない。
 外側の装飾は、最初から最後の非空白文字までの RawText 一つであり、
-後続 LF を含まない。 [fixture: treeview/box-tail-branch-no-carry] [fixture:
-treeview/box-trim-unicode-tail] [fixture: treeview/box-multiline-name-tail-trim]
-[fixture: treeview/box-quoted-decoration] [fixture:
-treeview/box-block-decoration] [fixture: treeview/box-unicode-decoration]
+後続 LF を含まない。
+
+[fixture: treeview/box-tail-branch-no-carry]
+[fixture: treeview/box-trim-unicode-tail]
+[fixture: treeview/box-multiline-name-tail-trim]
+[fixture: treeview/box-quoted-decoration]
+[fixture: treeview/box-block-decoration]
+[fixture: treeview/box-unicode-decoration]
 
 accDescr ブロックの RawText 項目は、有効な閉じ波括弧の直前まで、
 書かれた内部全体を覆う。
 末尾の装飾の行終端と、閉じを導く枝接頭辞もこの項目に残る。
 外端を縮めたりトークンを分断したりするのは共有の除去だけであり、
 重なる罫線項目は作らない。
+
 [fixture: treeview/box-block-tail-decoration-light-vertical]
 [fixture: treeview/box-block-tail-decoration-heavy-vertical]
 [fixture: treeview/box-block-tail-decoration-light-dash]
@@ -108,17 +117,20 @@ RawText と String を分断し、String の断片は StringFragment になる�
 `##` の内部の分断は拒否する。
 完全な構成要素間の trivia は許すが、欠けた空白を補わない。
 枝と横棒の各要素の間にも、その trivia を置ける。
-[fixture: treeview/directive-bare-middle] [fixture:
-treeview/directive-double-middle] [fixture: treeview/common-block-comments]
-[fixture: treeview/directive-header-inside] [fixture:
-treeview/directive-acctitle-inside] [fixture:
-treeview/directive-icon-word-inside] [fixture:
-treeview/directive-class-value-inside] [fixture:
-treeview/directive-icon-value-inside] [fixture: treeview/directive-class-inside]
-[fixture: treeview/semicolon-description-inside] [fixture:
-treeview/directive-icon-parts-parts] [fixture:
-treeview/icon-name-close-semicolon] [fixture:
-treeview/box-dash-directive-inside]
+
+[fixture: treeview/directive-bare-middle]
+[fixture: treeview/directive-double-middle]
+[fixture: treeview/common-block-comments]
+[fixture: treeview/directive-header-inside]
+[fixture: treeview/directive-acctitle-inside]
+[fixture: treeview/directive-icon-word-inside]
+[fixture: treeview/directive-class-value-inside]
+[fixture: treeview/directive-icon-value-inside]
+[fixture: treeview/directive-class-inside]
+[fixture: treeview/semicolon-description-inside]
+[fixture: treeview/directive-icon-parts-parts]
+[fixture: treeview/icon-name-close-semicolon]
+[fixture: treeview/box-dash-directive-inside]
 
 ## コメントと trivia
 
@@ -126,29 +138,33 @@ native 単位の先頭の `%%` から LF の前までは、
 mark が `%%` の共通 Comment である。
 U+2028、U+2029、閉じ記号らしいテキストもその内容に残る。
 裸の名前・引用名、説明注釈、ブロックが囲む場合は、その値が所有する。
-共通の行値はその前で終わる。 [fixture: treeview/native-comment-ls]
-[fixture: treeview/native-comment-ps]
-[fixture: treeview/native-comment-closer-greedy] [fixture:
-treeview/comment-in-bare] [fixture: treeview/comment-in-quotes] [fixture:
-treeview/tail-description-comment] [fixture:
-treeview/common-block-bare-percent] [fixture:
-treeview/common-title-percent-boundary]
+共通の行値はその前で終わる。
+
+[fixture: treeview/native-comment-ls] [fixture: treeview/native-comment-ps]
+[fixture: treeview/native-comment-closer-greedy]
+[fixture: treeview/comment-in-bare] [fixture: treeview/comment-in-quotes]
+[fixture: treeview/tail-description-comment]
+[fixture: treeview/common-block-bare-percent]
+[fixture: treeview/common-title-percent-boundary]
 
 通常の字下げと hidden LF はトークンを作らない。
 検出が通過した裸の percent 行は共通 Comment であり、伴う trivia を読み直さない。
 保持された一行の二回目走査形式には native Comment 規則を適用する。
 内部のソース directive は共通 Directive のまま残る。
 論理的に追加された LF は、書かれたトークンのテキストではない。
+
 [fixture: treeview/db-tabs-one-unit] [fixture: treeview/gram-body-hidden-eof]
-[fixture: treeview/bare-line-space] [fixture:
-treeview/detect-secondscan-bare-unicode] [fixture:
-treeview/detect-bare-before-secondscan] [fixture:
-treeview/comment-native-mark-directive]
+[fixture: treeview/bare-line-space]
+[fixture: treeview/detect-secondscan-bare-unicode]
+[fixture: treeview/detect-bare-before-secondscan]
+[fixture: treeview/comment-native-mark-directive]
 
 名前つき gap は同じ RawText の装飾項目を保持する。
 既存の葉、textBeforeName、注釈、ブロック開始待ちの所有を先に適用し、
 完成した階層ノード間に残る装飾は textBefore が所有する。
-children はトークンを追加しない。 [fixture: treeview/box-written-tree]
+children はトークンを追加しない。
+
+[fixture: treeview/box-written-tree]
 [fixture: treeview/box-decoration-pending-name-gap]
 [fixture: treeview/box-decoration-before-annotation]
 [fixture: treeview/box-prefix-common-block-two-prefixes]

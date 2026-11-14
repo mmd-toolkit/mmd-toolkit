@@ -11,10 +11,14 @@ mermaid.js.
 Three kinds of text in a diagram are data in another language, embedded in it:
 
 - the body of the frontmatter, in YAML;
+
 - the arguments of a directive, such as the JSON after `init:`;
+
 - the `@{ ... }` data blocks in the text of some diagram types: YAML for
   flowchart shape data and sequence participant data, and JSON for usecase
-  tables. [fixture: usecase/db-json-values]
+  tables.
+
+  [fixture: usecase/db-json-values]
 
 ```mmd
 ---
@@ -26,6 +30,7 @@ flowchart LR
 ```
 
 The example includes frontmatter, directive arguments and a data block.
+
 [fixture: flowchart/frontmatter-title] [fixture:
 common/config-font-family-string] [fixture: flowchart/gram-data-shape-known]
 
@@ -36,50 +41,82 @@ and the data blocks in the documents of the diagram types). This document is
 about what they contain.
 
 In kanban, frontmatter and `@{ ... }` contents are opaque. Invalid YAML and
-duplicate keys do not reject a well-delimited diagram. [fixture:
-kanban/gram-frontmatter-invalid-yaml] [fixture: kanban/gram-metadata-bad-yaml]
-[fixture: kanban/gram-metadata-ticket-duplicate] An empty multiline block is
-accepted. [fixture: kanban/gram-metadata-empty-multiline] Metadata types and
-shape spellings are not validated (see
-[Data blocks](../diagrams/kanban.md#data-blocks)). [fixture:
-kanban/gram-metadata-shape-number] [fixture: kanban/gram-metadata-shape-camel]
-[fixture: kanban/gram-metadata-shape-underscore]
+duplicate keys do not reject a well-delimited diagram.
 
-Adjacent kanban data blocks stay separate nodes. [fixture:
-kanban/db-metadata-two-items] [fixture: kanban/db-metadata-one-item-reference] A
-rejection caused only by their combined embedded content is this divergence as
-well. [fixture: kanban/gram-metadata-two-blocks]
+[fixture: kanban/gram-frontmatter-invalid-yaml] [fixture:
+kanban/gram-metadata-bad-yaml] [fixture: kanban/gram-metadata-ticket-duplicate]
+
+An empty multiline block is accepted.
+
+[fixture: kanban/gram-metadata-empty-multiline]
+
+Metadata types and shape spellings are not validated (see
+[Data blocks](../diagrams/kanban.md#data-blocks)).
+
+[fixture: kanban/gram-metadata-shape-number] [fixture:
+kanban/gram-metadata-shape-camel] [fixture:
+kanban/gram-metadata-shape-underscore]
+
+Adjacent kanban data blocks stay separate nodes.
+
+[fixture: kanban/db-metadata-two-items] [fixture:
+kanban/db-metadata-one-item-reference]
+
+A rejection caused only by their combined embedded content is this divergence as
+well.
+
+[fixture: kanban/gram-metadata-two-blocks]
 
 An unquoted caret, an unclosed data block, and a brace left after a nested
 mapping closes the block are syntax errors. They are not this divergence.
+
 [fixture: kanban/gram-metadata-caret] [fixture: kanban/gram-metadata-unclosed]
 [fixture: kanban/gram-metadata-assigned-mapping]
 
 In C4, frontmatter and directive contents are opaque, so invalid YAML such as
 `title: [` in a well-delimited frontmatter does not reject the diagram here;
-mermaid.js rejects it. [fixture: c4/div-frontmatter-invalid-yaml]
+mermaid.js rejects it.
 
-C4 has no `@{ ... }` data-block form. [fixture: c4/gram-data-block]
+[fixture: c4/div-frontmatter-invalid-yaml]
+
+C4 has no `@{ ... }` data-block form.
+
+[fixture: c4/gram-data-block]
 
 In venn, invalid YAML such as `title: [` inside a well-delimited frontmatter is
-accepted here and rejected by mermaid.js. [fixture: venn/frontmatter-invalid]
+accepted here and rejected by mermaid.js.
 
-Venn has no `@{ ... }` data-block form. [fixture: venn/gram-data-block]
-[fixture: venn/frontmatter-empty] [fixture: venn/frontmatter-unclosed] Adjacent
-frontmatter delimiter lines and an unclosed frontmatter remain syntax errors.
+[fixture: venn/frontmatter-invalid]
+
+Venn has no `@{ ... }` data-block form.
+
+[fixture: venn/gram-data-block] [fixture: venn/frontmatter-empty] [fixture:
+venn/frontmatter-unclosed]
+
+Adjacent frontmatter delimiter lines and an unclosed frontmatter remain syntax
+errors.
+
 [fixture: venn/gram-data-block] [fixture: venn/frontmatter-empty] [fixture:
 venn/frontmatter-unclosed]
 
 In Ishikawa, well-delimited frontmatter and directive contents are opaque too.
 Invalid YAML, including a YAML error caused by the common attribute-quote
 conversion, does not reject the diagram here; mermaid.js rejects these
-frontmatters. [fixture: ishikawa/frontmatter-malformed] [fixture:
-ishikawa/frontmatter-html-title] Adjacent empty delimiter lines and an unclosed
-frontmatter remain syntax errors. [fixture: ishikawa/frontmatter-empty]
-[fixture: ishikawa/frontmatter-unclosed] `@{...}` has no data-block syntax in
-Ishikawa: it is ordinary node text, so malformed-looking or unclosed content
-remains text rather than an embedded-data divergence. [fixture:
-ishikawa/db-data-block-is-text] [fixture: ishikawa/gram-child-unclosed-brace]
+frontmatters.
+
+[fixture: ishikawa/frontmatter-malformed] [fixture:
+ishikawa/frontmatter-html-title]
+
+Adjacent empty delimiter lines and an unclosed frontmatter remain syntax errors.
+
+[fixture: ishikawa/frontmatter-empty] [fixture: ishikawa/frontmatter-unclosed]
+
+`@{...}` has no data-block syntax in Ishikawa: it is ordinary node text, so
+malformed-looking or unclosed content remains text rather than an embedded-data
+divergence.
+
+[fixture: ishikawa/db-data-block-is-text] [fixture:
+ishikawa/gram-child-unclosed-brace]
 
 ## The difference
 
@@ -136,10 +173,12 @@ Each example is a whole diagram.
 | 4       | rejected, "No such shape"      | accepted           |
 | 5       | the vertex A with the label 12 | the same           |
 
-The fixtures record the readings compared in the table. [fixture:
-flowchart/frontmatter-invalid-yaml] [fixture: common/frontmatter-duplicate-key]
-[fixture: common/config-css-key-not-string] [fixture:
-flowchart/div-data-unknown-shape] [fixture: flowchart/db-data-label-number]
+The fixtures record the readings compared in the table.
+
+[fixture: flowchart/frontmatter-invalid-yaml] [fixture:
+common/frontmatter-duplicate-key] [fixture: common/config-css-key-not-string]
+[fixture: flowchart/div-data-unknown-shape] [fixture:
+flowchart/db-data-label-number]
 
 So mermaid.js rejects an input when it cannot parse embedded data, or when the
 result has a form that it does not know. This specification accepts every such
@@ -149,22 +188,38 @@ are these:
 
 - a YAML error that mermaid.js makes itself when it rewrites `="..."` in a tag
   to `='...'`, as in `title: '<a b="c">'`, and a frontmatter with two YAML
-  documents; [fixture: common/frontmatter-title-single-quoted-tag] [fixture:
+  documents;
+
+  [fixture: common/frontmatter-title-single-quoted-tag] [fixture:
   common/frontmatter-yaml-error] [fixture: common/frontmatter-two-documents]
+
 - a `displayMode` together with a frontmatter `config`, or a `gantt` in it, that
-  is a string, a number, or true; [fixture:
-  common/frontmatter-display-mode-primitive-config] [fixture:
+  is a string, a number, or true;
+
+  [fixture: common/frontmatter-display-mode-primitive-config] [fixture:
   common/config-display-mode-gantt-primitive]
+
 - a wrap directive together with an init configuration that is a string, a
-  number, or true; [fixture: common/directive-primitive-init-wrap] [fixture:
+  number, or true;
+
+  [fixture: common/directive-primitive-init-wrap] [fixture:
   common/directive-primitive-init-two-wrap-substrings]
+
 - a string `themeVariables` with a character that mermaid.js does not allow
   there, and a theme variable that mermaid.js cannot parse as a colour;
+
   [fixture: common/config-theme-variables-string-rejected] [fixture:
   common/config-theme-colour-rejected]
+
 - a failure of the second detection that mermaid.js runs when there is an init
-  directive; [fixture: common/config-init-detection-rejects]
-- a data block that is no valid YAML; [fixture: flowchart/div-data-invalid-yaml]
+  directive;
+
+  [fixture: common/config-init-detection-rejects]
+
+- a data block that is no valid YAML;
+
+  [fixture: flowchart/div-data-invalid-yaml]
+
 - a data block of a flowchart vertex whose content holds a line break and is
   YAML whose value is null, such as only a line break, only a comment, `null`,
   `~`, or a document marker alone: mermaid.js reads content with a line break as
@@ -177,6 +232,7 @@ are these:
   on one line, are accepted by both, and so is the same block of an edge id, for
   which mermaid.js reads no shape. In sequence, mermaid.js reads the content of
   a data block as a mapping, also with a line break, and accepts such a block.
+
   [fixture: flowchart/div-data-block-line-break-only] [fixture:
   flowchart/div-data-block-comment-then-line-break] [fixture:
   flowchart/div-data-block-null-on-own-line] [fixture:
@@ -187,8 +243,9 @@ are these:
 
 The malformed-data examples above go one way: mermaid.js rejects and gives no
 Db, while this specification accepts. Embedded configuration can also change
-acceptance in both directions, as the gitgraph cases below show. [fixture:
-gitgraph/docs-community-contributing-05cdc44b] [fixture:
+acceptance in both directions, as the gitgraph cases below show.
+
+[fixture: gitgraph/docs-community-contributing-05cdc44b] [fixture:
 gitgraph/div-frontmatter-main-branch-duplicate-default-accepted]
 
 ### The comparison Db
@@ -197,27 +254,33 @@ The reference removes only the embedded data responsible for the divergence:
 
 1. When Mermaid rejects while deriving configuration from a frontmatter or
    directive block, omit only that rejected block. Keep the other frontmatter
-   and directives. [fixture:
-   sequence/div-invalid-frontmatter-preserves-wrap-directive]
+   and directives.
+
+   [fixture: sequence/div-invalid-frontmatter-preserves-wrap-directive]
+
 2. When valid embedded configuration changes a diagram's acceptance conditions,
    read with only the keys used by those conditions removed from that
    configuration. Keep its other values. The gitgraph and packet keys are named
-   below. [fixture: gitgraph/div-frontmatter-main-branch-preserves-title]
-   [fixture: gitgraph/div-frontmatter-html-labels-default-comparison] [fixture:
+   below.
+
+   [fixture: gitgraph/div-frontmatter-main-branch-preserves-title] [fixture:
+   gitgraph/div-frontmatter-html-labels-default-comparison] [fixture:
    gitgraph/div-init-html-labels-default-comparison]
 
 Keep the frontmatter title as Mermaid derives it, as in
 [html-tag-in-frontmatter](./html-tag-in-frontmatter.md). Settings that affect
 only the Db also remain: a valid `wrap: true` directive still makes the sequence
-message wrap when an invalid frontmatter is omitted. [fixture:
-gitgraph/div-frontmatter-main-branch-preserves-title] [fixture:
+message wrap when an invalid frontmatter is omitted.
+
+[fixture: gitgraph/div-frontmatter-main-branch-preserves-title] [fixture:
 sequence/div-invalid-frontmatter-preserves-wrap-directive]
 
 If that reference is accepted, `specified.json` records its Db and embedded
 values for comparison, even though Mermaid's rejection of the written input
 supplies no Db. The comparison Db is `null` only when the reference retains the
-same opaque-data rejection; that specified reading still accepts. [fixture:
-gitgraph/div-frontmatter-invalid-yaml] [fixture:
+same opaque-data rejection; that specified reading still accepts.
+
+[fixture: gitgraph/div-frontmatter-invalid-yaml] [fixture:
 gitgraph/div-frontmatter-html-invalid-yaml] [fixture:
 info/div-frontmatter-invalid-yaml] [fixture:
 info/div-frontmatter-html-invalid-yaml] [fixture:
@@ -238,9 +301,11 @@ table bodies as JSON, and the arguments of some directives as JSON. It derives
 configuration and diagram data from them, and checks the result before or while
 it draws (see
 [Configuration (reference)](../../../tests/docs/configuration.md#configuration-reference)).
-A failure of any of these steps rejects the input. [fixture:
-usecase/db-json-integer-order] [fixture: usecase/db-json-duplicate-order]
-[fixture: usecase/gram-json-object-scalar-overwrite] [fixture:
+A failure of any of these steps rejects the input.
+
+[fixture: usecase/db-json-integer-order] [fixture:
+usecase/db-json-duplicate-order] [fixture:
+usecase/gram-json-object-scalar-overwrite] [fixture:
 usecase/gram-json-control-escapes] [fixture:
 usecase/div-gram-json-malformed-escape]
 
@@ -256,8 +321,9 @@ Accepting malformed embedded contents uses the reverse-direction criterion in
 [known-divergences.md](../known-divergences.md): validating them is unnecessary
 to hold their source text. The gitgraph configuration case below also rejects
 Mermaid-accepted inputs under reason 2: the direct default-configuration rule
-keeps embedded contents opaque. [fixture:
-gitgraph/docs-community-contributing-05cdc44b] [fixture:
+keeps embedded contents opaque.
+
+[fixture: gitgraph/docs-community-contributing-05cdc44b] [fixture:
 gitgraph/docs-syntax-gitgraph-2ea99686]
 
 ### Agentflow
@@ -268,7 +334,9 @@ Invalid YAML, unknown shape names, invalid metadata types, combined-block YAML
 failures, and recursive-alias failures depend on those contents rather than on
 building the tree. They are accepted under the existing reverse-direction
 criterion. No YAML property tree, key sanitization, or alias resolution is
-needed. [fixture: agentflow/db-data-block-invalid-yaml] [fixture:
+needed.
+
+[fixture: agentflow/db-data-block-invalid-yaml] [fixture:
 agentflow/db-data-block-unknown-shape] [fixture:
 agentflow/db-metadata-adjacent-no-comma] [fixture:
 agentflow/div-metadata-yaml-self-alias] [fixture:
@@ -278,6 +346,7 @@ agentflow/gram-data-adjacent-multiline-blocks]
 A delimiter failure remains a syntax error: an unclosed block, a brace protected
 only by a single quote, or a caret outside the double-quoted data context is not
 an embedded-content rejection. Empty multiline blocks already parse in this pin.
+
 [fixture: agentflow/lex-data-block-unclosed] [fixture:
 agentflow/lex-data-block-single-quoted-brace] [fixture:
 agentflow/lex-data-block-caret] [fixture:
@@ -293,7 +362,9 @@ including unquoted keys, bad escapes, trailing commas, and structural
 U+2028/U+2029. This specification accepts these content-only failures under the
 existing reverse criterion: JSON validation is unnecessary to construct the
 opaque tree. The externally supplied table value and property order do not
-become child nodes. [fixture: usecase/div-gram-json-unquoted-key] [fixture:
+become child nodes.
+
+[fixture: usecase/div-gram-json-unquoted-key] [fixture:
 usecase/div-gram-json-malformed-escape] [fixture:
 usecase/div-gram-json-trailing-comma] [fixture: usecase/div-gram-json-u2028]
 [fixture: usecase/div-lex-json-ps-whitespace] [fixture:
@@ -305,6 +376,7 @@ For a validated object root, it then gathers source property order with
 [`PropertyOrderCollector.collect()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/parser/usecaseJson.ts#L373-L377).
 The collector can also help locate a JSON error; it does not replace JSON
 validation. The native metadata property grammar does not use this JSON reader.
+
 [fixture: usecase/db-json-integer-order] [fixture:
 usecase/db-json-duplicate-order] [fixture:
 usecase/gram-json-object-scalar-overwrite] [fixture:
@@ -316,10 +388,11 @@ first balancing close remain syntax errors. Single quotes do not protect braces
 in this matcher. Native declaration/update `@{ ... }` is different: it has
 UsecaseMetadata and ordered properties, is not an opaque block, and retains all
 key/type/combination checks. No input Mermaid accepts is rejected for embedded
-contents by this rule. [fixture: usecase/gram-json-empty-delimiter-only]
-[fixture: usecase/gram-json-array-root] [fixture:
-usecase/gram-json-brace-in-single-quote] [fixture:
-usecase/gram-native-quoted-business] [fixture:
+contents by this rule.
+
+[fixture: usecase/gram-json-empty-delimiter-only] [fixture:
+usecase/gram-json-array-root] [fixture: usecase/gram-json-brace-in-single-quote]
+[fixture: usecase/gram-native-quoted-business] [fixture:
 usecase/gram-metadata-unknown-key] [fixture:
 usecase/lex-native-single-quoted-keys]
 
@@ -329,14 +402,18 @@ Frontmatter holds an invalid YAML body as written, so no syntax node is missing.
 Its content does not decide the tree's structure and is not checked: this
 specification accepts a leading frontmatter body `title: [` that mermaid.js
 rejects as YAML. This includes a written YAML title made invalid by HTML
-attribute-quote conversion, like the usecase case. [fixture:
-pie/div-review-frontmatter-html-invalid-yaml] [fixture:
-usecase/div-gram-frontmatter-html-attribute-quotes] This is the
-reverse-direction case only; opaque content never makes this rule reject an
-input that mermaid.js accepts. Nonleading hidden YAML is already opaque in
-mermaid.js too, so an invalid body there is held by PieIgnoredText and is not
-marked. The malformed init argument below is also accepted by both and has no
-mark. [fixture: pie/div-review-yaml-leading-invalid] [fixture:
+attribute-quote conversion, like the usecase case.
+
+[fixture: pie/div-review-frontmatter-html-invalid-yaml] [fixture:
+usecase/div-gram-frontmatter-html-attribute-quotes]
+
+This is the reverse-direction case only; opaque content never makes this rule
+reject an input that mermaid.js accepts. Nonleading hidden YAML is already
+opaque in mermaid.js too, so an invalid body there is held by PieIgnoredText and
+is not marked. The malformed init argument below is also accepted by both and
+has no mark.
+
+[fixture: pie/div-review-yaml-leading-invalid] [fixture:
 pie/review-yaml-hidden-invalid] [fixture:
 pie/lex-yaml-after-comment-invalid-body] [fixture:
 pie/review-directive-invalid-init]
@@ -348,12 +425,15 @@ rejected by Mermaid is accepted here. The rejection of the written input
 supplies no Db, but the accepted reference defined by the comparison rule
 supplies the comparison Db and embedded values recorded in `specified.json`,
 under [The comparison Db](#the-comparison-db). For these two frontmatters, that
-Db is an empty gitgraph history with the initial `main` branch. [fixture:
-gitgraph/div-frontmatter-invalid-yaml] [fixture:
-gitgraph/div-frontmatter-html-invalid-yaml] Invalid nonleading hidden YAML
-already agrees because GitgraphIgnoredText owns it; malformed init arguments
-that Mermaid accepts are not differing inputs. [fixture:
-gitgraph/div-frontmatter-invalid-yaml] [fixture:
+Db is an empty gitgraph history with the initial `main` branch.
+
+[fixture: gitgraph/div-frontmatter-invalid-yaml] [fixture:
+gitgraph/div-frontmatter-html-invalid-yaml]
+
+Invalid nonleading hidden YAML already agrees because GitgraphIgnoredText owns
+it; malformed init arguments that Mermaid accepts are not differing inputs.
+
+[fixture: gitgraph/div-frontmatter-invalid-yaml] [fixture:
 gitgraph/div-frontmatter-html-invalid-yaml] [fixture:
 gitgraph/lex-yaml-invalid-body] [fixture: gitgraph/directive-invalid-init]
 
@@ -363,7 +443,9 @@ initial branch `main` and the default escaping defined in
 [Semantic acceptance conditions](../diagrams/gitgraph.md#semantic-acceptance-conditions).
 The keys removed from the comparison configuration are `gitGraph.mainBranchName`
 and `gitGraph.htmlLabels`. Keep other configuration values and Mermaid's derived
-title. [fixture: gitgraph/div-frontmatter-main-branch-preserves-title] [fixture:
+title.
+
+[fixture: gitgraph/div-frontmatter-main-branch-preserves-title] [fixture:
 gitgraph/div-frontmatter-html-labels-default-comparison] [fixture:
 gitgraph/div-init-html-labels-default-comparison]
 
@@ -371,8 +453,9 @@ Under the default secure-key policy, `securityLevel` is secure at every nesting
 level. Neither root `securityLevel` nor `gitGraph.securityLevel` can be changed
 by frontmatter or init directives; Mermaid already removes those attempted
 settings. Site configuration may still supply the gitgraph setting, as described
-in the acceptance conditions. [fixture:
-gitgraph/frontmatter-security-level-secure] [fixture:
+in the acceptance conditions.
+
+[fixture: gitgraph/frontmatter-security-level-secure] [fixture:
 gitgraph/directive-security-level-secure] [fixture:
 gitgraph/config-gitgraph-loose]
 
@@ -380,8 +463,9 @@ Frontmatter and directive nodes already hold the written configuration;
 interpreting it to choose branches or escaping would read their opaque contents.
 The direct rule uses the defaults instead, under reason 2 for the
 Mermaid-accepted direction. Site configuration outside the text is still applied
-by whoever holds it, as described there. [fixture:
-gitgraph/docs-community-contributing-05cdc44b] [fixture:
+by whoever holds it, as described there.
+
+[fixture: gitgraph/docs-community-contributing-05cdc44b] [fixture:
 gitgraph/docs-syntax-gitgraph-2ea99686] [fixture: gitgraph/config-main-branch]
 
 The frontmatter settings in the two documentation examples make Mermaid accept
@@ -391,8 +475,9 @@ branches under the default initial name. In the reverse direction, frontmatter
 `checkout main` as unknown; this specification accepts both. An init directive
 setting the same name likewise makes `branch dev` reject in Mermaid and accept
 here. All five inputs carry this identifier, and their specified readings record
-the opposite acceptance. [fixture:
-gitgraph/docs-community-contributing-05cdc44b] [fixture:
+the opposite acceptance.
+
+[fixture: gitgraph/docs-community-contributing-05cdc44b] [fixture:
 gitgraph/docs-syntax-gitgraph-2ea99686] [fixture:
 gitgraph/div-frontmatter-main-branch-duplicate-default-accepted] [fixture:
 gitgraph/div-frontmatter-main-branch-checkout-default-accepted] [fixture:
@@ -408,7 +493,9 @@ comparison rule supplies the comparison Db and embedded values recorded in
 `specified.json`, under [The comparison Db](#the-comparison-db). For these two
 frontmatters, that Db is `{}`. This rule rejects no Mermaid-accepted input.
 Invalid hidden YAML and the recorded malformed init argument already accept in
-both and are unmarked. [fixture: info/div-frontmatter-invalid-yaml] [fixture:
+both and are unmarked.
+
+[fixture: info/div-frontmatter-invalid-yaml] [fixture:
 info/div-frontmatter-html-invalid-yaml] [fixture:
 info/hidden-yaml-preheader-invalid] [fixture: info/directive-invalid-init]
 
@@ -418,7 +505,9 @@ Frontmatter/directive nodes hold their bodies without interpreting them for
 acceptance. Malformed YAML may reject only in Mermaid. In both acceptance
 directions the comparison removes only `packet.bitsPerRow` from valid text
 configuration, retaining site configuration, Mermaid's derived frontmatter title
-and other valid settings. [fixture: packet/frontmatter-invalid] [fixture:
+and other valid settings.
+
+[fixture: packet/frontmatter-invalid] [fixture:
 packet/frontmatter-invalid-keeps-config] [fixture:
 packet/config-frontmatter-fraction] [fixture: packet/config-directive-fraction]
 [fixture: packet/config-frontmatter-overrides-site] [fixture:
@@ -431,9 +520,11 @@ A fractional width in YAML frontmatter or init can reject in Mermaid and accept
 here; overriding a fractional site width with text width 32 can reverse that
 difference. In both directions specified.json records acceptance, Db and
 embedded values. Whoever holds site configuration applies it; it is not
-reconstructed from text configuration. [fixture:
-packet/config-frontmatter-fraction] [fixture: packet/config-directive-fraction]
-[fixture: packet/config-frontmatter-overrides-site] [fixture:
+reconstructed from text configuration.
+
+[fixture: packet/config-frontmatter-fraction] [fixture:
+packet/config-directive-fraction] [fixture:
+packet/config-frontmatter-overrides-site] [fixture:
 packet/config-directive-overrides-site]
 
 Omit a rejected leading frontmatter only from the comparison, keeping a valid
@@ -441,9 +532,11 @@ showBits directive beside it. Nonleading hidden YAML is already held by
 PacketIgnoredText, so invalid content there alone is not a divergence.
 Configuration that changes published rows without changing acceptance follows
 the ordinary embedded-configuration path and the
-[tests summary](../../../tests/docs/db-summaries.md#packet). [fixture:
-packet/frontmatter-invalid-keeps-config] [fixture: packet/hidden-yaml-body]
-[fixture: packet/config-frontmatter-row-fraction-accepted] [fixture:
+[tests summary](../../../tests/docs/db-summaries.md#packet).
+
+[fixture: packet/frontmatter-invalid-keeps-config] [fixture:
+packet/hidden-yaml-body] [fixture:
+packet/config-frontmatter-row-fraction-accepted] [fixture:
 packet/config-init-row-integer]
 
 ### Architecture
@@ -455,8 +548,9 @@ them. The comparison removes only the rejected data, retaining independent
 configuration. Native hidden YAML/DIRECTIVE bodies are ignored forms, not new
 configuration blocks. No architecture acceptance key is removed from valid
 embedded configuration: drawing settings, maxEdges and maxTextSize do not change
-this diagram's public parse acceptance. [fixture:
-architecture/div-frontmatter-invalid-yaml] [fixture:
+this diagram's public parse acceptance.
+
+[fixture: architecture/div-frontmatter-invalid-yaml] [fixture:
 architecture/div-frontmatter-duplicate-key] [fixture:
 architecture/div-init-fontfamily-number] [fixture:
 architecture/div-init-primitive-wrap] [fixture:
@@ -473,10 +567,12 @@ shared records; it does not reject their contents. First ask whether the tree
 can preserve them: it can, in Frontmatter and Directive. No radar.* key changes
 radar acceptance, so there is no radar-specific acceptance key to remove in
 either comparison direction. Site, frontmatter and init drawing/options settings
-neither reject valid syntax nor rescue missing named entries. [fixture:
-radar/frontmatter-invalid] [fixture: radar/frontmatter-invalid-keeps-config]
-[fixture: radar/config-invalid-display-mode] [fixture:
-radar/config-drawing-only] [fixture: radar/config-options-site] [fixture:
+neither reject valid syntax nor rescue missing named entries.
+
+[fixture: radar/frontmatter-invalid] [fixture:
+radar/frontmatter-invalid-keeps-config] [fixture:
+radar/config-invalid-display-mode] [fixture: radar/config-drawing-only]
+[fixture: radar/config-options-site] [fixture:
 radar/detect-retained-close-no-lf-control] [fixture:
 radar/detect-retained-opener-nbsp] [fixture: radar/detect-retained-closer-u3000]
 [fixture: radar/lex-bare-accessibility-ids] [fixture: radar/lex-false-prefix-id]
@@ -486,8 +582,9 @@ outside the diagram grammar. Remove only the offending embedded data for the
 comparison, preserving unrelated values under the shared comparison rule. A
 native hidden YAML/directive form instead has RadarIgnoredText ownership; radar
 does not validate it as an embedded payload. Independent shared configuration
-reading still follows the tests summary. [fixture:
-radar/frontmatter-invalid-keeps-config] [fixture:
+reading still follows the tests summary.
+
+[fixture: radar/frontmatter-invalid-keeps-config] [fixture:
 radar/config-invalid-display-mode] [fixture: radar/retained-yaml-control]
 [fixture: radar/lex-hidden-yaml-global-inside] [fixture:
 radar/detect-retained-three-native]
@@ -501,7 +598,9 @@ comparison removes the offending data and retains independent configuration; no
 treemap-specific acceptance key is removed. Drawing settings cannot reject valid
 syntax or rescue invalid syntax. A retained YAML-looking block has no native
 rule and still rejects; this divergence does not promote it to frontmatter or an
-ignored form. [fixture: treemap/div-frontmatter-invalid] [fixture:
+ignored form.
+
+[fixture: treemap/div-frontmatter-invalid] [fixture:
 treemap/div-invalid-keeps-config] [fixture: treemap/div-init-fontfamily-number]
 [fixture: treemap/div-init-primitive-wrap] [fixture:
 treemap/div-init-invalid-colour-base] [fixture:
@@ -514,8 +613,9 @@ Railroad adds no semantic acceptance key: valid railroad drawing configuration
 does not change grammar acceptance. Frontmatter and global init contents remain
 opaque source records. Malformed YAML and a numeric railroad.fontFamily may make
 Mermaid’s derivation fail while a well-delimited diagram remains accepted by
-this specification. Configuration still cannot rescue an invalid rule. [fixture:
-railroad/ir-div-frontmatter-invalid] [fixture:
+this specification. Configuration still cannot rescue an invalid rule.
+
+[fixture: railroad/ir-div-frontmatter-invalid] [fixture:
 railroad/ir-config-frontmatter-drawing] [fixture:
 railroad/ebnf-config-init-drawing] [fixture:
 railroad/abnf-config-frontmatter-drawing] [fixture:
@@ -534,9 +634,10 @@ hold everything written; no ignored-text node or loss is needed. The remaining
 difference is validation of embedded data rather than railroad structure. The
 second answer is the established opaque-data rule: the specification does not
 duplicate Mermaid’s YAML/JSON/configuration derivation. Native retained YAML is
-separately RailroadIgnoredText and does not apply configuration. [fixture:
-railroad/ir-frontmatter-title-only] [fixture: railroad/ir-prefix-yaml-no-bare]
-[fixture: railroad/ir-div-frontmatter-invalid]
+separately RailroadIgnoredText and does not apply configuration.
+
+[fixture: railroad/ir-frontmatter-title-only] [fixture:
+railroad/ir-prefix-yaml-no-bare] [fixture: railroad/ir-div-frontmatter-invalid]
 
 ### Wardley
 
@@ -547,8 +648,9 @@ YAML or configuration; the existing opaque rule accepts recognized bodies whose
 Mermaid data processing fails, with the specified comparison preserving the
 title and other valid configuration. Numeric wardley.fontFamily can fail common
 configuration handling, whereas the wardley-beta drawing control does not.
-Neither is a new Wardley semantic acceptance setting. [fixture:
-wardley/div-frontmatter-invalid] [fixture:
+Neither is a new Wardley semantic acceptance setting.
+
+[fixture: wardley/div-frontmatter-invalid] [fixture:
 wardley/config-frontmatter-fontfamily-number] [fixture:
 wardley/config-init-fontfamily-number] [fixture:
 wardley/config-fontfamily-keeps-title] [fixture:
@@ -562,7 +664,9 @@ Shared records hold whole recognized frontmatter/global directives, so do not
 reject syntax because their YAML or configuration cannot be read. Apply the
 shared comparison-configuration rule rather than letting invalid data erase a
 valid title or configuration. Retained native YAML is instead
-CynefinIgnoredText. [fixture: cynefin/div-frontmatter-invalid] [fixture:
+CynefinIgnoredText.
+
+[fixture: cynefin/div-frontmatter-invalid] [fixture:
 cynefin/div-init-invalid-colour] [fixture: cynefin/div-init-primitive-wrap]
 [fixture: cynefin/config-frontmatter-fontfamily-number] [fixture:
 cynefin/config-init-fontfamily-number] [fixture:
@@ -576,8 +680,9 @@ and
 [public adapter](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
 read the result of the common preprocessing/detection pipeline. The
 [Cynefin syntax](../diagrams/cynefin.md) states the direct rule and
-[tree](../ast/cynefin.md) retains its authored forms. [fixture:
-cynefin/db-all-fields]
+[tree](../ast/cynefin.md) retains its authored forms.
+
+[fixture: cynefin/db-all-fields]
 
 ### eventmodeling
 
@@ -589,8 +694,9 @@ eventmodeling.fontFamily and invalid common theme data can fail Mermaid
 configuration derivation. The specified comparison removes only rejected
 embedded blocks, retaining independent valid title/configuration and native
 retained prefixes. Native data bodies and their json/type tags are authored
-syntax, not opaque configuration blocks. [fixture:
-eventmodeling/div-frontmatter-invalid] [fixture:
+syntax, not opaque configuration blocks.
+
+[fixture: eventmodeling/div-frontmatter-invalid] [fixture:
 eventmodeling/config-frontmatter-fontfamily-number] [fixture:
 eventmodeling/config-init-fontfamily-number] [fixture:
 eventmodeling/div-init-invalid-colour] [fixture:
@@ -614,7 +720,9 @@ opaque reading accepts. Preserve valid neighboring title/configuration when
 forming that reference. The
 [adapter](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/treeView/parser.ts#L11-L57)
 and [diagram syntax](../diagrams/treeview.md#semantic-acceptance-conditions) add
-no hidden semantic gate. [fixture: treeview/div-frontmatter-invalid] [fixture:
+no hidden semantic gate.
+
+[fixture: treeview/div-frontmatter-invalid] [fixture:
 treeview/config-frontmatter-fontfamily-number] [fixture:
 treeview/config-init-fontfamily-number] [fixture:
 treeview/div-init-invalid-colour] [fixture: treeview/div-init-primitive-wrap]

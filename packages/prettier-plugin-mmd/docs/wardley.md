@@ -163,21 +163,26 @@ with a `-` keeps its quotes, since the first release with the diagram type
 rejects it without them (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The name of a link without an arrow, `"A" "B"`, and a name that touches the
-`---` of a hidden YAML block keep their quotes. [fixture:
-names-and-quotes/plain-names-without-quotes] [fixture:
-names-and-quotes/names-that-need-quotes] Keep WardleyIdentifier and
-StringLiteral source spans otherwise, including internal spaces/tabs, hyphens,
-parentheses, ampersands, escapes, empty strings and whitespace-only strings,
-except for the label of a link, which prints a run of spaces and tabs as one
-space (see [Semicolon labels](#semicolon-labels)). A string of a name between
-`'` is printed between `"` unless its text holds a `'`, a `"`, a backslash, a
-line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
+`---` of a hidden YAML block keep their quotes.
+
+[fixture: names-and-quotes/plain-names-without-quotes] [fixture:
+names-and-quotes/names-that-need-quotes]
+
+Keep WardleyIdentifier and StringLiteral source spans otherwise, including
+internal spaces/tabs, hyphens, parentheses, ampersands, escapes, empty strings
+and whitespace-only strings, except for the label of a link, which prints a run
+of spaces and tabs as one space (see [Semicolon labels](#semicolon-labels)). A
+string of a name between `'` is printed between `"` unless its text holds a `'`,
+a `"`, a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<`
+(see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
 and `singleQuote` is not read. The label of a link (`+'moving'>`) stays between
-`'`, the only quote that mermaid.js reads there. [fixture:
-names-and-quotes/single-quote-sensitive-kept] Collapsing name whitespace or
-trimming string contents changes the Db, and a requoting that needs another
-escape interpretation is not made.
+`'`, the only quote that mermaid.js reads there.
+
+[fixture: names-and-quotes/single-quote-sensitive-kept]
+
+Collapsing name whitespace or trimming string contents changes the Db, and a
+requoting that needs another escape interpretation is not made.
 
 [fixture: wardley/names-and-quotes/name-spaces]
 
@@ -371,8 +376,11 @@ version draws as it draws A-->B, not A- -> B (see
 [Wardley authored text and required line breaks](./compatibility.md#wardley-authored-text-and-required-line-breaks)).
 A directive between the name and the arrow does not part them, as mermaid.js
 takes the directive away before it reads the text: A-%%{init: {}}%%->B prints
-A-%%{init: {}}%%-> B. [fixture: wardley/links/link-glued-directive-between] Do
-not search the source for arrow-shaped text. A -->B instead keeps -->. This
+A-%%{init: {}}%%-> B.
+
+[fixture: wardley/links/link-glued-directive-between]
+
+Do not search the source for arrow-shaped text. A -->B instead keeps -->. This
 spacing follows the components already read by the parser.
 
 [fixture: wardley/links/link-short]
@@ -417,8 +425,6 @@ wardley-beta
 
 ### Flows
 
-[test: wardley/flows/unicode-flow]
-
 Keep the interior of each +'label'>, +'label'< or +'label'<> flow as written:
 empty labels, padding, backslashes and physical continuation columns included.
 Root directives between its complete components retain their source boundaries.
@@ -426,7 +432,7 @@ Ordinary inserted spaces reject the composite unit, and trimming content changes
 the Db. Keep both ports and the semicolon label even when flow precedence hides
 them.
 
-[fixture: wardley/flows/flow-forward]
+[test: wardley/flows/unicode-flow] [fixture: wardley/flows/flow-forward]
 
 [fixture: wardley/flows/flow-backward]
 
@@ -463,11 +469,11 @@ prefix protection; native-looking forms and percent text remain label text. A
 run of spaces and tabs inside the label of a link, after the `;` or between the
 quotes of a flow, is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
-while the names of the components stay. [fixture:
-wardley/flows/flow-padding-escapes] [fixture:
-wardley/flows/flow-ports-and-label]
+while the names of the components stay.
 
-[fixture: wardley/semicolon-labels/label-exterior]
+[fixture: wardley/flows/flow-padding-escapes] [fixture:
+wardley/flows/flow-ports-and-label] [fixture:
+wardley/semicolon-labels/label-exterior]
 
 [fixture: wardley/semicolon-labels/label-whitespace]
 
@@ -599,9 +605,9 @@ string. The directives that end a title are printed with one space before each
 that has whitespace before it, and the whitespace after the last one is left
 out, whatever the whitespace at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-[fixture: title/title-directives-end-blanks-dropped]
 
-[fixture: wardley/title/title-trim]
+[fixture: title/title-directives-end-blanks-dropped] [fixture:
+wardley/title/title-trim]
 
 [fixture: wardley/title/title-empty]
 
@@ -621,19 +627,20 @@ wardley-beta
 
 ### Accessibility
 
-[test: wardley/accessibility/unicode-empty-description]
-
 Use the shared accessibility line layout for accTitle: Value and accDescr:
 Value, retaining empty assignments. The directives that end the value are
 printed with one space before each that has whitespace before it, and the
 whitespace after the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-[fixture: accessibility/acc-directives-end-blanks-dropped] [fixture:
+
+[test: wardley/accessibility/unicode-empty-description] [fixture:
+accessibility/acc-directives-end-blanks-dropped] [fixture:
 wardley/accessibility/access-lines] [fixture:
 wardley/accessibility/access-empty]
 
 A description block on one line follows
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
+
 [fixture: wardley/accessibility/description-tight] [fixture:
 wardley/accessibility/description-edges] [fixture:
 wardley/accessibility/description-opener-newline]
@@ -641,14 +648,18 @@ wardley/accessibility/description-opener-newline]
 In a block that keeps its braces, separate the keyword and `{` by one ordinary
 space even when written touching, compact whitespace-only interiors to `{}`
 because there is no text for the whitespace to surround, join plain opener
-whitespace and align a separate closer. [fixture:
-wardley/accessibility/description-empty] Protected trivia and semicolon layouts
-keep their gaps. Ordinary description body and standalone comment lines align
-one level inside the statement: the Db removes indentation after LF. Keep line
-breaks, internal blanks and trailing whitespace. Directives and shared removed
-comment regions keep their complete source, including in a block that contains
-only a directive, and trivia keeps its shared continuation layout. [fixture:
-wardley/accessibility/description-closer] [fixture:
+whitespace and align a separate closer.
+
+[fixture: wardley/accessibility/description-empty]
+
+Protected trivia and semicolon layouts keep their gaps. Ordinary description
+body and standalone comment lines align one level inside the statement: the Db
+removes indentation after LF. Keep line breaks, internal blanks and trailing
+whitespace. Directives and shared removed comment regions keep their complete
+source, including in a block that contains only a directive, and trivia keeps
+its shared continuation layout.
+
+[fixture: wardley/accessibility/description-closer] [fixture:
 wardley/accessibility/description-comment-only] [fixture:
 wardley/accessibility/description-directive-only]
 
@@ -879,8 +890,6 @@ wardley-beta
 
 ### Comments
 
-[test: wardley/comments/native-separators]
-
 Align ordinary standalone comments with the containing body and prefix comments
 at column one. Inline comments keep their line and touching side, with one space
 for a separated gap. Preserve marks, text and trailing padding; pipeline
@@ -888,7 +897,8 @@ comments use child depth. Enclosing strings, flows and link labels retain
 percent text. Common comment-region joins keep their source columns, preventing
 text from changing owner.
 
-[fixture: wardley/comments/comment-standalone]
+[test: wardley/comments/native-separators] [fixture:
+wardley/comments/comment-standalone]
 
 [fixture: wardley/comments/comment-inline-contact]
 
@@ -983,10 +993,10 @@ are protected or formatted as before.
 The whitespace around a `;` of a word line stays as written, since it changes
 how mermaid.js reads the line: `A -> B;` at the end of a line is rejected, while
 `A -> B;` followed by spaces is accepted, so the printer does not choose a form
-that mermaid.js reads otherwise. [fixture:
-wardley/semicolons/word-line-semicolon-whitespace-kept]
+that mermaid.js reads otherwise.
 
-[fixture: wardley/semicolons/style-label]
+[fixture: wardley/semicolons/word-line-semicolon-whitespace-kept] [fixture:
+wardley/semicolons/style-label]
 
 [fixture: wardley/semicolons/style-selected-delimiter]
 
@@ -1210,8 +1220,6 @@ wardley-beta
 
 ### Specified readings
 
-[test: wardley/specified-readings/passed-unicode]
-
 Follow the six existing divergences: directive-as-token-boundary,
 ignored-semicolon-as-token-boundary, html-tag-in-frontmatter,
 embedded-data-opaque, bare-percent-line-before-header and c4-keyword-anywhere.
@@ -1220,7 +1228,8 @@ use available specified readings and embedded effects. Standalone parse failures
 report syntax errors without output; Markdown declines embedding. No rejected
 syntax is repaired.
 
-[corpus fixture: wardley/directive-arrow-inside]
+[test: wardley/specified-readings/passed-unicode] [corpus fixture:
+wardley/directive-arrow-inside]
 
 [corpus fixture: wardley/lex-selected-decimal-inside]
 

@@ -167,7 +167,7 @@ takes out when none of the versions that the row names counts any longer.
 A form that the pinned version itself rejects or draws differently stays
 whatever the other versions are, so it has no row.
 
-| Diagram                                                        | Kept as written                                                                                                                                                              | The rules would print                                                 | Rule                                                                 | Needed by                                                                                                   | Fixture                                                                                                                                                     |
+| Diagram                                                        | Kept as written                                                                                                                                                              | The rules would print                                                 | Rule                                                                 | Needed by                                                                                                   | Fixtures                                                                                                                                                    |
 | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [block](./block.md#header)                                     | `block-beta`                                                                                                                                                                 | `block`                                                               | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 and 11.7.0 reject `block`                                                                            | [fixture: block/header/block-beta-kept]                                                                                                                     |
 | [sankey](./sankey.md#header)                                   | `sankey-beta`                                                                                                                                                                | `sankey`                                                              | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 and 11.7.0 reject `sankey`                                                                           | [fixture: sankey/header/sankey-beta]                                                                                                                        |
@@ -239,7 +239,9 @@ A directive (`%%{ ... }%%`) and a `;` that the line rule ignores (see
 they are removed, and the text on their two sides is joined. They may lie
 between any two tokens, and inside a string, a backquoted name, and a text that
 may contain whitespace: the text of a label, a class name, a participant id of a
-sequence diagram. [fixture: flowchart/directives/touching-token] [fixture:
+sequence diagram.
+
+[fixture: flowchart/directives/touching-token] [fixture:
 flowchart/directives/compat-directive-in-string] [fixture:
 state/directives/compat-directive-in-string] [fixture:
 class/directives/compat-directive-in-backquoted-name] [fixture:
@@ -249,21 +251,26 @@ flowchart/semicolons/compat-ignored-semicolon-in-label] [fixture:
 flowchart/semicolons/compat-ignored-semicolon-in-string] [fixture:
 class/whitespace-between-tokens/compat-ignored-semicolon-in-backquoted-name]
 [fixture: state/whitespace-between-tokens/compat-ignored-semicolon-in-string]
+
 They may not lie inside a name without whitespace (the id of a flowchart or
 state diagram), a number, a keyword, an arrow, or a delimiter such as `:::` or
 `((`, although mermaid.js accepts that. Such input is reported as a syntax error
-and left unchanged. [corpus fixture: flowchart/div-directive-in-id] [corpus
-fixture: flowchart/div-directive-in-circle-opening] [corpus fixture:
+and left unchanged.
+
+[corpus fixture: flowchart/div-directive-in-id] [corpus fixture:
+flowchart/div-directive-in-circle-opening] [corpus fixture:
 flowchart/div-directive-inside-arrow] [corpus fixture:
 sequence/div-directive-in-number] [corpus fixture:
 sequence/div-directive-in-keyword] [corpus fixture:
 flowchart/div-directive-in-subgraph-keyword] [corpus fixture:
 class/div-directive-in-triple-colon] [corpus fixture: state/div-directive-in-id]
+
 For example, mermaid.js reads `sub%%{init: {}}%%graph S` as the keyword
 `subgraph`, and `A%%{init: {}}%%B-->C` as the node `AB`. Where the input is
 accepted, the directive is printed as written with the text around it:
-`A["a %%{init: {}}%% b"]` is a node with the label `a  b`. [fixture:
-flowchart/directives/compat-directive-in-string]
+`A["a %%{init: {}}%% b"]` is a node with the label `a  b`.
+
+[fixture: flowchart/directives/compat-directive-in-string]
 
 This difference goes one way only: input that mermaid.js rejects is never
 accepted.
@@ -276,8 +283,9 @@ embedded data is malformed, has the wrong shape, or names something unknown may
 be accepted or rejected by mermaid.js, and is formatted here in either case.
 mermaid.js accepts `%%{init:   {oops}}%%`, a data block of a participant that is
 not JSON, and an unknown key of the configuration, and rejects an unknown node
-shape in a data block and malformed YAML in the frontmatter. [fixture:
-flowchart/directives/compat-malformed-directive-kept] [fixture:
+shape in a data block and malformed YAML in the frontmatter.
+
+[fixture: flowchart/directives/compat-malformed-directive-kept] [fixture:
 flowchart/whitespace-between-tokens/compat-unknown-shape-data-block-kept]
 [fixture: sequence/whitespace-between-tokens/compat-malformed-data-block-kept]
 [fixture: flowchart/frontmatter-yaml/malformed-kept] [fixture:
@@ -287,26 +295,32 @@ common/directive-bad-json] [corpus fixture: flowchart/div-data-unknown-shape]
 
 Directives stay as written. A data block on one line in flowchart, agentflow,
 kanban and sequence is printed with one space inside each end, and stays as
-written where [Data blocks](./flowchart.md#data-blocks) says so. [fixture:
-flowchart/data-blocks/one-line-padded] [fixture:
+written where [Data blocks](./flowchart.md#data-blocks) says so.
+
+[fixture: flowchart/data-blocks/one-line-padded] [fixture:
 flowchart/data-blocks/one-line-space-only-padded] [fixture:
 flowchart/data-blocks/one-line-touching-blocks-kept] [fixture:
-flowchart/data-blocks/one-line-separate-blocks-padded] In flowchart, agentflow
-and kanban, a data block on one line whose line is longer than `printWidth`
-prints on lines, one entry on each, where every entry is a simple key and value:
-only the whitespace, the line breaks and the `,` between its entries change, and
-the characters of the keys and values stay. The conditions are in
-[Data blocks](./flowchart.md#data-blocks). [fixture:
-flowchart/data-blocks/long-split] Eligible multiline data blocks in flowchart,
-agentflow, kanban and sequence, and usecase JSON tables, move their body lines
-by one uniform number of ASCII spaces, preserving relative indentation and
-trailing whitespace; a separate `}` aligns with its statement. Inline-opening
-blocks, leading non-space whitespace, embedded directives, column-zero YAML
-markers, kept lines, blocks after the statement's first line and `tabWidth: 0`
-prevent movement; with `useTabs` the statement that holds the block is printed
-as written instead. Sequence additionally requires a single text-bearing body
-line because Mermaid trims the whole block. The conditions and their reasons are
-in [Data blocks](./flowchart.md#data-blocks); other blocks keep their columns.
+flowchart/data-blocks/one-line-separate-blocks-padded]
+
+In flowchart, agentflow and kanban, a data block on one line whose line is
+longer than `printWidth` prints on lines, one entry on each, where every entry
+is a simple key and value: only the whitespace, the line breaks and the `,`
+between its entries change, and the characters of the keys and values stay. The
+conditions are in [Data blocks](./flowchart.md#data-blocks).
+
+[fixture: flowchart/data-blocks/long-split]
+
+Eligible multiline data blocks in flowchart, agentflow, kanban and sequence, and
+usecase JSON tables, move their body lines by one uniform number of ASCII
+spaces, preserving relative indentation and trailing whitespace; a separate `}`
+aligns with its statement. Inline-opening blocks, leading non-space whitespace,
+embedded directives, column-zero YAML markers, kept lines, blocks after the
+statement's first line and `tabWidth: 0` prevent movement; with `useTabs` the
+statement that holds the block is printed as written instead. Sequence
+additionally requires a single text-bearing body line because Mermaid trims the
+whole block. The conditions and their reasons are in
+[Data blocks](./flowchart.md#data-blocks); other blocks keep their columns.
+
 [fixture: flowchart/data-blocks/deep-nested-yaml] [fixture:
 flowchart/data-blocks/scalar-blank-lines] [fixture:
 sequence/multi-line-values/data-multiple-lines-kept] [fixture:
@@ -314,8 +328,10 @@ usecase/json-tables/tab-statement-space-body]
 
 The frontmatter is formatted with Prettier's YAML formatter when Prettier can
 read it as YAML, and kept as written otherwise (see
-[Frontmatter](#frontmatter)). [fixture: flowchart/frontmatter-yaml/formatted]
-[fixture: flowchart/frontmatter-yaml/malformed-kept]
+[Frontmatter](#frontmatter)).
+
+[fixture: flowchart/frontmatter-yaml/formatted] [fixture:
+flowchart/frontmatter-yaml/malformed-kept]
 
 ### HTML tags that start in the frontmatter
 
@@ -328,8 +344,9 @@ so the tree of such a text can differ from what mermaid.js reads.
 
 For example, mermaid.js accepts a flowchart whose frontmatter has `title: <a`
 and whose node is `A[b="c">d]`, with the label `b='c'>d`. The plugin reports it
-as a syntax error and leaves it unchanged. [corpus fixture:
-flowchart/html-tag-starts-in-frontmatter]
+as a syntax error and leaves it unchanged.
+
+[corpus fixture: flowchart/html-tag-starts-in-frontmatter]
 
 When a tag starts in the frontmatter and ends after it, the plugin keeps the
 text after the frontmatter as written, because a text printed from the tree can
@@ -339,12 +356,16 @@ the search goes on after that `>`. For example, an ER diagram with `title: <a`
 in the frontmatter and the body `"b="c">d"` is accepted by each version that
 counts for ER diagrams, with the one entity `b='c'>d`. The specification reads
 three entities, `"b="`, `c`, and `">d"`, and the text printed from them, one on
-each line, was rejected by each version that counts for ER diagrams. [corpus
-fixture: er/div-html-tag-starts-in-frontmatter-name] The `>` that ends the tag
-can be the `>` of an arrow, or lie in a comment line or a directive. A tag that
-ends in the frontmatter, a tag with no `>` after it, and a `<` with no word
-character after it leave the text after the frontmatter formatted. [fixture:
-flowchart/frontmatter-yaml/tag-open-into-body-kept] [fixture:
+each line, was rejected by each version that counts for ER diagrams.
+
+[corpus fixture: er/div-html-tag-starts-in-frontmatter-name]
+
+The `>` that ends the tag can be the `>` of an arrow, or lie in a comment line
+or a directive. A tag that ends in the frontmatter, a tag with no `>` after it,
+and a `<` with no word character after it leave the text after the frontmatter
+formatted.
+
+[fixture: flowchart/frontmatter-yaml/tag-open-into-body-kept] [fixture:
 flowchart/frontmatter-yaml/tag-open-ends-in-comment-kept] [fixture:
 flowchart/frontmatter-yaml/tag-open-ends-in-directive-kept] [fixture:
 flowchart/frontmatter-yaml/tag-second-open-kept] [fixture:
@@ -362,8 +383,10 @@ written. For example, mermaid.js reads `A-->B click ""` as the edge from A to B,
 reading past the `click` and the empty string, and gives the subgraph of
 `subgraph Handle click events`, `A`, and `end` the title `Handle eventsA` and no
 members. The plugin reports such input as a syntax error and leaves it
-unchanged. [corpus fixture: flowchart/gram-click-bare-after-vertex] [corpus
-fixture: flowchart/db-subgraph-name-click-word]
+unchanged.
+
+[corpus fixture: flowchart/gram-click-bare-after-vertex] [corpus fixture:
+flowchart/db-subgraph-name-click-word]
 
 This difference goes one way only: input that mermaid.js rejects is never
 accepted.
@@ -378,29 +401,35 @@ specification's
 mermaid.js accepts them in many such places, as if they were not there:
 `A-->|x""|B` is the edge from A to B with the label `x`, and `A call ()-->B` and
 `A accDescr {}-->B` are accepted too. The plugin reports such input as a syntax
-error and leaves it unchanged. [corpus fixture:
-flowchart/div-edge-label-empty-quoted-pair] [corpus fixture:
+error and leaves it unchanged.
+
+[corpus fixture: flowchart/div-edge-label-empty-quoted-pair] [corpus fixture:
 flowchart/gram-empty-call-before-link] [corpus fixture:
-flowchart/gram-empty-description-block-before-link] An empty description block
-is not reported where the tree has a place for it, where a statement starts or
-before the separator that ends a statement: as on a line of its own, or after
-another statement on its line (`A accDescr {}` is the vertex A and an empty
-description block), it is a description block statement. An ordinary closed
-block without text or trivia prints an empty interior `{}`, including when it
-contained a line break. A touching keyword stays touching, as `accDescr{}`.
-Every diagram with description-block syntax uses this form for whitespace-only
-interiors, including tabs and Unicode whitespace: there is no text for interior
-whitespace to surround. Blocks containing comments or directives retain their
-contents and required line breaks; ordinary indentation follows
-[Description block indentation](#description-block-indentation) and each
+flowchart/gram-empty-description-block-before-link]
+
+An empty description block is not reported where the tree has a place for it,
+where a statement starts or before the separator that ends a statement: as on a
+line of its own, or after another statement on its line (`A accDescr {}` is the
+vertex A and an empty description block), it is a description block statement.
+An ordinary closed block without text or trivia prints an empty interior `{}`,
+including when it contained a line break. A touching keyword stays touching, as
+`accDescr{}`. Every diagram with description-block syntax uses this form for
+whitespace-only interiors, including tabs and Unicode whitespace: there is no
+text for interior whitespace to surround. Blocks containing comments or
+directives retain their contents and required line breaks; ordinary indentation
+follows [Description block indentation](#description-block-indentation) and each
 diagram's structural rules. Protections for the surrounding line still apply.
+
 [test: sequence Unicode and tab interiors] [test: class Unicode and tab
 interiors] [test: state Unicode and tab interiors] [test: block Unicode and tab
 interiors] [test: c4 Unicode and tab interiors] [fixture:
-flowchart/accessibility-lines/empty-block-touching-keyword] Under
-[Accessibility lines](./flowchart.md#accessibility-lines), there is no text for
-an interior space to surround, so follow the sibling usecase form among Db-equal
-forms. [fixture:
+flowchart/accessibility-lines/empty-block-touching-keyword]
+
+Under [Accessibility lines](./flowchart.md#accessibility-lines), there is no
+text for an interior space to surround, so follow the sibling usecase form among
+Db-equal forms.
+
+[fixture:
 flowchart/statements-one-per-line/compat-empty-description-block-before-statement]
 [fixture:
 flowchart/statements-one-per-line/compat-empty-description-block-after-statement]
@@ -415,29 +444,39 @@ In a class diagram, the same holds for an empty string where the grammar takes
 none, an empty backquoted name, an empty generic type that does not end a class
 name, an empty call, and an empty description block inside a statement:
 `"" A --> B`, `class A``B`, and `class A~~B` are reported as syntax errors.
+
 [corpus fixture: class/div-empty-string-statement-start] [corpus fixture:
 class/div-empty-backquoted-in-name] [corpus fixture:
 class/div-empty-generic-in-name] [corpus fixture: class/div-empty-call] [corpus
-fixture: class/div-empty-description-block-after-annotation] An empty
-description block that shares its line with another statement or with the header
-is a statement, as in mermaid.js (see
-[Empty description blocks](./class.md#empty-description-blocks)). [fixture:
-class/empty-description-blocks/kept-with-statement] [fixture:
-class/empty-description-blocks/after-statement] In a state diagram, an empty
-description block inside a statement, as in `A accDescr {} --> B`, is reported
-as a syntax error, while an empty string after `state`, which mermaid.js reads
-as nothing, is text that it does not read and is kept as written. [fixture:
-state/statements-one-per-line/state-names-kept] [corpus fixture:
+fixture: class/div-empty-description-block-after-annotation]
+
+An empty description block that shares its line with another statement or with
+the header is a statement, as in mermaid.js (see
+[Empty description blocks](./class.md#empty-description-blocks)).
+
+[fixture: class/empty-description-blocks/kept-with-statement] [fixture:
+class/empty-description-blocks/after-statement]
+
+In a state diagram, an empty description block inside a statement, as in
+`A accDescr {} --> B`, is reported as a syntax error, while an empty string
+after `state`, which mermaid.js reads as nothing, is text that it does not read
+and is kept as written.
+
+[fixture: state/statements-one-per-line/state-names-kept] [corpus fixture:
 state/div-empty-description-block-in-transition] [corpus fixture:
 state/gram-state-empty-string-after-name]
 
 In a sequence diagram, which has no strings and no `call`, an empty description
 block inside a statement, as in `A->> accDescr {}+B: x` and
-`create accDescr {}participant A`, is reported as a syntax error. [corpus
-fixture: sequence/div-empty-description-block-before-activation] [corpus
-fixture: sequence/div-empty-description-block-after-create] An empty description
-block where the tree has a place for it is a statement, as in the other
-diagrams. [fixture:
+`create accDescr {}participant A`, is reported as a syntax error.
+
+[corpus fixture: sequence/div-empty-description-block-before-activation] [corpus
+fixture: sequence/div-empty-description-block-after-create]
+
+An empty description block where the tree has a place for it is a statement, as
+in the other diagrams.
+
+[fixture:
 sequence/statements-one-per-line/empty-description-block-moves-next-statement]
 
 This difference goes one way only: input that mermaid.js rejects is never
@@ -450,18 +489,27 @@ the `%%` belongs to what comes before it (the specification's
 [`comment-takes-character`](../../spec/docs/known-divergences/comment-takes-character.md)).
 mermaid.js reads that character as part of the comment in some places: it reads
 `autonumber 5%% c` without the number 5, rejects `A->>B:%% c`, which is the
-message `%% c` here, and accepts a line `C%% c`, which is rejected here. [corpus
-fixture: sequence/div-comment-after-number-across-directive] [corpus fixture:
-sequence/div-comment-after-text-colon] [corpus fixture:
-sequence/div-comment-after-one-character-id] The plugin keeps whether whitespace
-is written before the mark of a comment, so that mermaid.js reads
-`autonumber 5%% c` as before. [fixture:
-sequence/comments/compat-comment-touching-number-kept] [fixture:
-sequence/comments/compat-comment-after-number-spaced-kept] It prints
-`A->>B:%% c` as `A ->> B: %% c`, which mermaid.js reads as this specification
-does. [fixture: sequence/comments/compat-comment-after-colon] It reports what
-this specification rejects as a syntax error and leaves it unchanged. [corpus
-fixture: sequence/div-comment-after-one-character-id]
+message `%% c` here, and accepts a line `C%% c`, which is rejected here.
+
+[corpus fixture: sequence/div-comment-after-number-across-directive] [corpus
+fixture: sequence/div-comment-after-text-colon] [corpus fixture:
+sequence/div-comment-after-one-character-id]
+
+The plugin keeps whether whitespace is written before the mark of a comment, so
+that mermaid.js reads `autonumber 5%% c` as before.
+
+[fixture: sequence/comments/compat-comment-touching-number-kept] [fixture:
+sequence/comments/compat-comment-after-number-spaced-kept]
+
+It prints `A->>B:%% c` as `A ->> B: %% c`, which mermaid.js reads as this
+specification does.
+
+[fixture: sequence/comments/compat-comment-after-colon]
+
+It reports what this specification rejects as a syntax error and leaves it
+unchanged.
+
+[corpus fixture: sequence/div-comment-after-one-character-id]
 
 This difference goes both ways.
 
@@ -477,8 +525,9 @@ reads `A --> B %% c` followed by a line `A : +int age` as a relation from A to
 `BA`. The plugin keeps comments where they are, and keeps a line of only
 whitespace after such a comment (see
 [A line of only whitespace after a comment](#a-line-of-only-whitespace-after-a-comment)),
-so that mermaid.js reads the formatted text as it read the input. [fixture:
-class/comments/compat-comment-then-class] [fixture:
+so that mermaid.js reads the formatted text as it read the input.
+
+[fixture: class/comments/compat-comment-then-class] [fixture:
 class/comments/compat-comment-then-member] [fixture:
 class/comments/compat-comment-then-empty-lines] [fixture:
 class/comments/whitespace-line-kept] [corpus fixture:
@@ -494,8 +543,9 @@ such as `classDiagramX`, has no header and is rejected here (the specification's
 [`headerless-empty-ending`](../../spec/docs/known-divergences/headerless-empty-ending.md)).
 mermaid.js accepts it when the text ends with an empty title, description, or
 call, or a string opened at the end of a click statement. The plugin reports it
-as a syntax error and leaves it unchanged. [corpus fixture:
-class/div-headerless-empty-string] [corpus fixture:
+as a syntax error and leaves it unchanged.
+
+[corpus fixture: class/div-headerless-empty-string] [corpus fixture:
 class/div-headerless-empty-title] [corpus fixture:
 class/div-headerless-empty-call]
 
@@ -510,7 +560,9 @@ with `"`, `~`, `<<`, `>>`, or a keyword such as `note` (the specification's
 mermaid.js reads that unit instead of the name: it rejects ``class `note` ``,
 which declares the class `note` here, and reads ``A `"1"` --> B`` with the
 cardinality `1`, where this is a relation from `A"1"`. The plugin keeps
-backquoted names and generic types as written. [fixture:
+backquoted names and generic types as written.
+
+[fixture:
 class/whitespace-between-tokens/compat-backquoted-name-start-reads-unit]
 [fixture: class/generic-types/compat-start-reads-unit] [corpus fixture:
 class/div-backquote-starts-with-keyword] [corpus fixture:
@@ -523,8 +575,10 @@ This difference goes both ways.
 The parser does not know the site configuration that a page passes to
 mermaid.js. A flowchart with more edges than the `maxEdges` setting allows, 500
 by default, is rejected by mermaid.js, but the parser accepts it, and the plugin
-formats it. [fixture: flowchart/chains/compat-more-edges-than-max-edges] [corpus
-fixture: flowchart/config-max-edges-exceeded]
+formats it.
+
+[fixture: flowchart/chains/compat-more-edges-than-max-edges] [corpus fixture:
+flowchart/config-max-edges-exceeded]
 
 ## Words read with the line break after them
 
@@ -540,13 +594,15 @@ and `:` on two lines is an accessibility title. So when a statement ends with
 one of these ids, or with an id that ends with `direction` (a direction line
 takes `direction` after any run of characters), and a `;` separates it from the
 next one, the statements stay on the line and the `;` stays in place; the
-whitespace within the statements is formatted as usual. [fixture:
-flowchart/statements-one-per-line/semicolon-after-word-kept] [fixture:
+whitespace within the statements is formatted as usual.
+
+[fixture: flowchart/statements-one-per-line/semicolon-after-word-kept] [fixture:
 flowchart/statements-one-per-line/semicolon-after-link-to-word-kept] [corpus
 fixture: flowchart/lex-acc-title-semicolon-before-colon] [corpus fixture:
 flowchart/lex-direction-line-semicolon-before-value] [corpus fixture:
-flowchart/lex-call-keyword-semicolon] See
-[Statements one per line](./flowchart.md#statements-one-per-line).
+flowchart/lex-call-keyword-semicolon]
+
+See [Statements one per line](./flowchart.md#statements-one-per-line).
 
 Whether the printer drops the `;` that ends such a line decides which `;` the
 rule ignores in the printed line, so the printer asks one question for both the
@@ -557,8 +613,10 @@ at the end of the line is dropped, and the whitespace of the line before it is
 formatted as usual. Where it does not, a line-ending `;` of `classDef` or
 `style` is also dropped in class, state, ER, requirement, block, Venn and
 usecase diagrams when the line rule ignores it; style spacing then follows the
-ordinary rules. Other semicolons keep their protected lines and gaps. [fixture:
-flowchart/semicolons/style-line-dropped-semicolon-formats-the-gap] [fixture:
+ordinary rules. Other semicolons keep their protected lines and gaps.
+
+[fixture: flowchart/semicolons/style-line-dropped-semicolon-formats-the-gap]
+[fixture:
 xychart/statements-one-per-line/line-rule-line-with-a-dropped-semicolon-formats-the-gap]
 [fixture:
 quadrant/statements-one-per-line/line-rule-line-with-a-dropped-semicolon-formats-the-gap]
@@ -581,10 +639,12 @@ Spaces and tabs at the end of a `style`, `classDef`, or `linkStyle` statement
 are removed, except where the figure depends on them, in the statements that the
 paragraphs below and the document of the diagram type name: a space or a tab
 after a backslash that ends the last style stays as one character, and a style
-of whitespace only stays as written. [fixture:
-flowchart/style-trailing-whitespace/removed] mermaid.js keeps them at the end of
-the last style, so this changes what mermaid.js stores, separately from the
-permitted eventmodeling body margins in
+of whitespace only stays as written.
+
+[fixture: flowchart/style-trailing-whitespace/removed]
+
+mermaid.js keeps them at the end of the last style, so this changes what
+mermaid.js stores, separately from the permitted eventmodeling body margins in
 [Data blocks](./eventmodeling.md#data-blocks). The tests compare styles without
 their trailing spaces and tabs.
 
@@ -609,8 +669,9 @@ same. The figure is the same without the character for a block diagram, a state
 diagram, and the `style` of an agentflow diagram, and a requirement, a use case,
 a Venn diagram, and a quadrant chart reject the text with the character and
 accept the text without it, so there the character is removed, as the formatter
-formats other text that mermaid.js rejects. [test: keeps whitespace other than a
-space and a tab at the end of a style]
+formats other text that mermaid.js rejects.
+
+[test: keeps whitespace other than a space and a tab at the end of a style]
 
 The line rule of mermaid.js removes the last `;` of a `style` or `classDef` line
 (see [Lines that hold a `;`](#lines-that-hold-a-)), and mermaid.js removes a
@@ -618,17 +679,20 @@ directive too, so a character after such a `;` or after a directive is at the
 end of the last style as well: `style A fill:#f00;` followed by a no-break
 space, and `style A fill:red %%{init: {}}%%` followed by one, are kept as
 written in the same statements as above, and a space or a tab there is left out.
+
 [test: keeps the whitespace after a `;` and after a directive that the line rule
-removes] The endings were drawn by the versions that count for each diagram
-type, for the `style` of a class diagram and of a flowchart, the `classDef` of a
-class diagram, a flowchart, and an ER diagram, and the `linkStyle` of a
-flowchart and of an agentflow diagram: 24 endings for each statement, made of
-the character alone, with a space, a tab, a second character, a `;`, a
-directive, a comment, or a U+2028 or a U+2029 next to it. The text with the
-character and the text without it, and the text as written and as formatted,
-were drawn. Of the 168 texts, the formatter reads 153, and in none of them does
-the formatted text draw differently from the written text, or get rejected, in a
-version that draws the written one.
+removes]
+
+The endings were drawn by the versions that count for each diagram type, for the
+`style` of a class diagram and of a flowchart, the `classDef` of a class
+diagram, a flowchart, and an ER diagram, and the `linkStyle` of a flowchart and
+of an agentflow diagram: 24 endings for each statement, made of the character
+alone, with a space, a tab, a second character, a `;`, a directive, a comment,
+or a U+2028 or a U+2029 next to it. The text with the character and the text
+without it, and the text as written and as formatted, were drawn. Of the 168
+texts, the formatter reads 153, and in none of them does the formatted text draw
+differently from the written text, or get rejected, in a version that draws the
+written one.
 
 ## Styles that are drawn the same
 
@@ -638,8 +702,9 @@ ER and requirement diagrams: no whitespace before the first `:` of a style, one
 space after it where the value is not empty, no whitespace before the `,`
 between two styles, and one space after it. `style A fill :#f00,stroke:  #333`
 is printed `style A fill: #f00, stroke: #333`. A run of spaces and tabs between
-the words of a style is printed as one space (see below). [fixture:
-flowchart/whitespace-between-tokens/style-colon-spaced] [fixture:
+the words of a style is printed as one space (see below).
+
+[fixture: flowchart/whitespace-between-tokens/style-colon-spaced] [fixture:
 flowchart/whitespace-between-tokens/style-colon-empty-value-kept] [fixture:
 agentflow/single-space-gaps/style-colon-spaced] [fixture:
 class/whitespace-between-tokens/style-colon-spaced] [fixture:
@@ -686,7 +751,9 @@ pixels were the same, and so was the SVG without the whitespace around `:` and
 A `classDef` in a treemap drops the whitespace at the end of its styles:
 `classDef zz color:red  ` is printed `classDef zz color:red`. mermaid.js keeps
 it in the Db and draws the same figure: the pixels were the same with the class
-put on a node. [fixture: treemap/styles/trailing-before-semicolon] [fixture:
+put on a node.
+
+[fixture: treemap/styles/trailing-before-semicolon] [fixture:
 treemap/trailing-whitespace/style-content]
 
 A `linkStyle` with link numbers is drawn differently where a style after a `,`
@@ -698,14 +765,19 @@ and a style with a space before it does not. In
 `linkStyle 0 stroke:#f00, fill:red` mermaid.js adds `fill:none`, and it is not.
 So in flowchart and agentflow a style that starts with `fill`, `fill-opacity`
 included, keeps whether whitespace stands before it, a run of whitespace
-becoming one space. [fixture:
-flowchart/whitespace-between-tokens/link-style-fill-after-comma-kept] [fixture:
+becoming one space.
+
+[fixture: flowchart/whitespace-between-tokens/link-style-fill-after-comma-kept]
+[fixture:
 flowchart/whitespace-between-tokens/link-style-fill-opacity-after-comma-kept]
 [fixture: agentflow/single-space-gaps/link-style-fill-after-comma-kept]
 [fixture: agentflow/single-space-gaps/link-style-fill-opacity-after-comma-kept]
+
 The other styles of such a statement, and the styles of `linkStyle default`, are
 printed in the one form, except for a style that starts with `stroke:` (see
-below). [fixture:
+below).
+
+[fixture:
 flowchart/whitespace-between-tokens/link-style-other-after-comma-spaced]
 [fixture:
 flowchart/whitespace-between-tokens/link-style-default-after-comma-spaced]
@@ -723,7 +795,9 @@ name that ends with `stroke` keeps whether whitespace stands between it and the
 `:`, a run of whitespace becoming one space: `linkStyle 0 stroke  :#f00` is
 printed `linkStyle 0 stroke : #f00`. A `style` styles a node, and is printed in
 the one form: the pixels of `style A stroke :#f00` and `style A stroke: #f00`
-were the same. [fixture:
+were the same.
+
+[fixture:
 flowchart/whitespace-between-tokens/link-style-stroke-before-colon-kept]
 [fixture:
 flowchart/whitespace-between-tokens/class-def-stroke-before-colon-kept]
@@ -737,8 +811,9 @@ they keep their theme colour, and so it is for `style e1 stroke :#d33`; the
 pixels differ. A name that ends with `stroke` keeps whether whitespace stands
 between it and the `:`, a run of whitespace becoming one space, in a `style`
 too: `style A stroke  :#d33` is printed `style A stroke : #d33`, while
-`style A stroke:#d33` is printed `style A stroke: #d33`. [fixture:
-usecase/classes-and-styles/css-stroke-before-colon-kept] [fixture:
+`style A stroke:#d33` is printed `style A stroke: #d33`.
+
+[fixture: usecase/classes-and-styles/css-stroke-before-colon-kept] [fixture:
 usecase/classes-and-styles/css-stroke-before-colon-run-collapsed] [fixture:
 usecase/classes-and-styles/css-stroke-before-colon-touching]
 
@@ -752,7 +827,9 @@ with that look were the same, and the SVG of the first held one more definition
 of an arrowhead, of the colour `stroke:#f00`. So in flowchart and agentflow a
 style of a `linkStyle` with link numbers or `default` that starts with `stroke:`
 keeps whether whitespace stands before it, as a style that starts with `fill`
-does, a run of whitespace becoming one space. [fixture:
+does, a run of whitespace becoming one space.
+
+[fixture:
 flowchart/whitespace-between-tokens/link-style-stroke-after-comma-kept]
 [fixture: agentflow/single-space-gaps/link-style-stroke-after-comma-kept]
 
@@ -770,7 +847,9 @@ after it that starts with `stroke:` follows the rule above for such a style:
 `linkStyle 0 stroke: ,stroke:#f00` is printed
 `linkStyle 0 stroke: ,stroke: #f00`. A `classDef` is not affected: the pixels of
 `classDef c stroke: ,stroke:#f00` put on a link and of
-`classDef c stroke:, stroke: #f00` were the same. [fixture:
+`classDef c stroke:, stroke: #f00` were the same.
+
+[fixture:
 flowchart/whitespace-between-tokens/link-style-blank-stroke-value-kept]
 [fixture:
 flowchart/style-trailing-whitespace/link-style-blank-stroke-value-at-end-kept]
@@ -784,7 +863,9 @@ in the other diagram types, the `,` always ends a style, and a backslash before
 it does not escape it: `style A fill:#f00\,stroke:#00f` has the two styles
 `fill:#f00\` and `stroke:#00f`. A space after a backslash before the `:` stays
 in all of them, since taking it away would escape the `:`, and the whitespace
-after that space goes. [fixture:
+after that space goes.
+
+[fixture:
 flowchart/whitespace-between-tokens/style-colon-escaped-space-run-dropped]
 [fixture: flowchart/whitespace-between-tokens/style-escaped-space-before-comma]
 [fixture: flowchart/whitespace-between-tokens/style-backslash-before-comma]
@@ -835,9 +916,10 @@ and the pixels of both spellings were the same. A `classDef` of a class diagram
 that stands before the class it is put on is trimmed too, and the pixels were
 the same, but the formatter keeps it as written either way, since only the order
 of the statements tells the two apart. ER, requirement, and treemap diagrams
-reject a backslash in a style. [fixture:
-flowchart/whitespace-between-tokens/link-style-backslash-space-kept] [fixture:
-agentflow/single-space-gaps/link-style-backslash-space-kept] [fixture:
+reject a backslash in a style.
+
+[fixture: flowchart/whitespace-between-tokens/link-style-backslash-space-kept]
+[fixture: agentflow/single-space-gaps/link-style-backslash-space-kept] [fixture:
 flowchart/style-trailing-whitespace/link-style-backslash-at-end-kept] [fixture:
 agentflow/trailing-whitespace/link-style-backslash-at-end-kept] [fixture:
 block/styles/style-backslash-space-kept] [fixture:
@@ -868,8 +950,9 @@ before it, and a name `color` or `text-align` keeps whether whitespace stands
 between it and the `:`, a run of whitespace becoming one space. The other shapes
 of a block diagram make the style of their label again from their styles with
 `styles2String`, which takes the whitespace away, and the pixels of both
-spellings were the same for them and for a `classDef`. [fixture:
-block/styles/style-label-styles-kept]
+spellings were the same for them and for a `classDef`.
+
+[fixture: block/styles/style-label-styles-kept]
 
 Some of the versions that count read the `style` of a flowchart and of a class
 diagram so too, and the others do not (see
@@ -893,9 +976,11 @@ version that counts reads as the label style only without the gap:
 style of a class diagram, whose first style a version that counts does not read
 as the style of the label either way: `style A color :red` and
 `style A color: red` were drawn the same there. No version that counts reads a
-swimlane diagram so, and its `style` and `linkStyle` use the one form. [fixture:
-flowchart/whitespace-between-tokens/style-color-touching-kept] [fixture:
-flowchart/whitespace-between-tokens/style-text-align-touching-kept] [fixture:
+swimlane diagram so, and its `style` and `linkStyle` use the one form.
+
+[fixture: flowchart/whitespace-between-tokens/style-color-touching-kept]
+[fixture: flowchart/whitespace-between-tokens/style-text-align-touching-kept]
+[fixture:
 flowchart/whitespace-between-tokens/style-label-name-colon-gap-first-kept]
 [fixture:
 flowchart/whitespace-between-tokens/style-label-name-colon-gap-after-comma-spaced]
@@ -929,8 +1014,10 @@ and not in a numbered `linkStyle` after a `linkStyle default` whose styles the
 label reads before it, which are those with `fill:` in a flowchart and any in a
 swimlane diagram. The styles of a link in an agentflow diagram, which no version
 that counts reads so, and the styles of a node and of a `classDef`, are printed
-in the one form. [fixture:
-flowchart/whitespace-between-tokens/link-style-fill-colon-gap-kept] [fixture:
+in the one form.
+
+[fixture: flowchart/whitespace-between-tokens/link-style-fill-colon-gap-kept]
+[fixture:
 flowchart/whitespace-between-tokens/link-style-fill-colon-gap-after-fill-spaced]
 [fixture:
 flowchart/whitespace-between-tokens/link-style-default-fill-split-by-semicolon-spaced]
@@ -962,8 +1049,9 @@ after a backslash, which CSS reads as part of the value: the hexadecimal digits
 (at most six) and the one space or tab that follows them, or else the next
 character, so that `a\   b` is printed `a\  b`, and `Arial\20   Black` is
 printed `Arial\20  Black`. A string, a comment, or `url(` that is not closed
-runs to the end of the style. [fixture:
-flowchart/whitespace-between-tokens/style-string-runs-kept] [fixture:
+runs to the end of the style.
+
+[fixture: flowchart/whitespace-between-tokens/style-string-runs-kept] [fixture:
 flowchart/whitespace-between-tokens/style-backslash-run-spaced] [fixture:
 flowchart/whitespace-between-tokens/style-hex-escape-run-spaced] [fixture:
 flowchart/whitespace-between-tokens/style-hex-escape-tab-run-spaced] [fixture:
@@ -1023,6 +1111,7 @@ and so was one whose `:` follows a backslash and a space, in the diagram types
 that accept a backslash in a style (flowchart, agentflow, swimlane, state, and
 block): `style A :  red   x` and `style A : red x`, and
 `style A fill\   :red   x` and `style A fill\ : red x`, have the same pixels.
+
 [fixture: treemap/styles/spaced] [fixture: treemap/styles/escaped-comma-spaced]
 [fixture: class/whitespace-between-tokens/style-value-words-spaced] [fixture:
 class/whitespace-between-tokens/style-words-run-spaced] [fixture:
@@ -1039,8 +1128,9 @@ flowchart/whitespace-between-tokens/style-words-directive-kept]
 A statement stays as written where a style holds a line break or a U+2028 or
 U+2029, where the statement holds a comment or a directive, where a style is all
 whitespace, and where its line holds a `;` of its own (see
-[Lines that hold a `;`](#lines-that-hold-a-)). [fixture:
-flowchart/whitespace-between-tokens/style-blank-style-kept] [fixture:
+[Lines that hold a `;`](#lines-that-hold-a-)).
+
+[fixture: flowchart/whitespace-between-tokens/style-blank-style-kept] [fixture:
 flowchart/whitespace-between-tokens/style-colon-escaped-space-kept] [fixture:
 flowchart/whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
 flowchart/whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
@@ -1110,8 +1200,9 @@ timeline and the space that a period and an event before a colon gain, for the
 description of a task of a user journey, and for the second description of a
 state alias. The runs of spaces and tabs inside a date format, an axis format,
 or the value of an `accTitle:` line stay as written before the directives as
-they do without them. [fixture:
-ishikawa/trailing-whitespace/directives-end-blanks-dropped] [fixture:
+they do without them.
+
+[fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped] [fixture:
 usecase/direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
 [fixture: treeview/trailing-whitespace/directives-end-blanks-dropped] [fixture:
 gantt/settings/format-runs-kept-before-directives] [fixture:
@@ -1234,8 +1325,9 @@ and timeline collects the events of the sections with the same name
 ([`draw`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/timeline/timelineRenderer.ts#L144)).
 `section A` and `section  A` in a row draw two sections, `section A` and
 `section A` one, and the figures differ in the colour of the bands, in the
-number of boxes, and in the width. [fixture:
-gantt/titles-and-sections/section-padding-kept] [fixture:
+number of boxes, and in the width.
+
+[fixture: gantt/titles-and-sections/section-padding-kept] [fixture:
 journey/titles-and-sections/section-padding-kept] [fixture:
 timeline/titles-and-sections/section-padding-kept]
 
@@ -1249,8 +1341,9 @@ format of `D` has the axis of days only where it has no whitespace around it
 A today marker hides the line only where it is `off` as a whole
 ([`draw`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L861-L878)),
 so `todayMarker off` followed by two spaces draws the line where the chart holds
-today, and the pixels differ. [fixture:
-gantt/settings/format-padding-kept-where-drawn-differently] [fixture:
+today, and the pixels differ.
+
+[fixture: gantt/settings/format-padding-kept-where-drawn-differently] [fixture:
 gantt/settings/trailing-whitespace-by-setting]
 
 The name of a task of a Gantt chart ends with the whitespace between its text
@@ -1289,6 +1382,7 @@ texts differ. So the printer leaves the colons of a chart that holds
 `white-space` as written, as it leaves the runs of whitespace in the other texts
 (see
 [Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+
 [fixture: gantt/task-data/colon-column-new-longest-name] [fixture:
 gantt/task-data/description-padding-tightened] [fixture:
 gantt/task-data/colon-column-white-space-kept]
@@ -1322,9 +1416,11 @@ types, and descriptions among the arguments of a C4 diagram, the literals of a
 Cynefin diagram and an ishikawa diagram, the labels of a packet and a Venn
 diagram, the links of a Wardley map, the names of a treemap, and the strings and
 special sequences of a railroad diagram. A string of spaces and tabs only is a
-string like any other: `["   "]` is printed `[" "]`. [fixture:
-pie/title/title-inner-text] [fixture: railroad/quotes/ir-string-runs-collapsed]
-[fixture: pie/accessibility-lines/accessibility-inner-tab] [fixture:
+string like any other: `["   "]` is printed `[" "]`.
+
+[fixture: pie/title/title-inner-text] [fixture:
+railroad/quotes/ir-string-runs-collapsed] [fixture:
+pie/accessibility-lines/accessibility-inner-tab] [fixture:
 quadrant/keywords-and-texts/inner-runs-collapsed] [fixture:
 sequence/whitespace-between-tokens/values-runs-collapsed] [fixture:
 class/member-lines/runs-collapsed] [fixture: block/shapes/label-runs-collapsed]
@@ -1344,24 +1440,32 @@ These stay as written:
   `A B`. The words are what mermaid.js keeps of the title after it takes the
   brackets off, trims, takes one pair of outer quotes off, and trims again, so a
   quote beside the run, or a bracket inside the quotes, is a character of a
-  word: `["A'<tab>B"]` stays as written. [fixture:
-  architecture/quotes/labels-with-tab-words-kept] [fixture:
+  word: `["A'<tab>B"]` stays as written.
+
+  [fixture: architecture/quotes/labels-with-tab-words-kept] [fixture:
   architecture/quotes/labels-with-quotes-beside-tab-words-kept]
+
 - A text of spaces and tabs only that is not a string, except for the icon, the
   class, and the shape text of a mindmap node and a kanban card, which are
   printed as one space (see
   [Mindmap texts that are drawn the same](#mindmap-texts-that-are-drawn-the-same)).
+
   [fixture: gantt/titles-and-sections/title-blank-kept]
+
 - A text over several lines, and a text with a comment, a directive, or a U+2028
   or U+2029 in it, whose lines and marks mermaid.js reads by their place.
+
   [fixture: pie/directives-and-semicolons/global-value]
+
 - A text with a `<`, which may start an HTML tag that keeps the whitespace
   (`<pre>`), and every text of a diagram that holds `white-space` anywhere, also
   when a directive or a `;` that the line rule ignores splits the word, which a
-  `style` or a `classDef` can use to keep the runs of a label. [fixture:
-  sequence/whitespace-between-tokens/html-tag-runs-kept] [fixture:
+  `style` or a `classDef` can use to keep the runs of a label.
+
+  [fixture: sequence/whitespace-between-tokens/html-tag-runs-kept] [fixture:
   pie/title/white-space-property-kept] [fixture:
   flowchart/label-inner-whitespace/white-space-split-by-ignored-semicolon-kept]
+
 - The labels that mermaid.js draws as HTML: the nodes and the edges of a
   flowchart and an agentflow diagram, the descriptions, transitions, and notes
   of a state diagram, the nodes of a mindmap, the labels of a relation of a
@@ -1371,12 +1475,14 @@ These stay as written:
   ([`createText`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/createText.ts#L61-L77)),
   and whether a label does depends on the font and on the width setting, which
   the formatter does not know. A long label with runs was drawn with and without
-  them, and the pixels differed. [fixture:
-  flowchart/label-inner-whitespace/inner-whitespace-kept] [fixture:
+  them, and the pixels differed.
+
+  [fixture: flowchart/label-inner-whitespace/inner-whitespace-kept] [fixture:
   agentflow/labels/labels-padding] [fixture:
   state/descriptions-and-labels/text-kept] [fixture:
   mindmap/node-text/inner-whitespace-kept] [fixture:
   usecase/labels/label-interior-kept] [fixture: class/labels/spaced]
+
 - The title of a subgraph of a flowchart, and of a `flow` of an agentflow
   diagram, that mermaid.js draws with the width of the subgraph, which wraps it:
   the title is a markdown string
@@ -1411,6 +1517,7 @@ These stay as written:
   written for an id like `subGraph0`, which mermaid.js gives to a subgraph whose
   name holds whitespace; a diagram that names `swimlane` anywhere keeps every
   title. A setting of the host of mermaid.js, outside the text, is not read.
+
   [fixture: flowchart/subgraph-header/markdown-title-runs-kept] [fixture:
   flowchart/subgraph-header/collapsed-title-runs-kept] [fixture:
   flowchart/subgraph-header/swimlane-title-runs-kept] [fixture:
@@ -1425,28 +1532,34 @@ These stay as written:
   agentflow/containers/flow-spaced-quoted-name-title-collapsed-runs-kept]
   [fixture: agentflow/containers/flow-markdown-name-title-collapsed-runs-kept]
   [fixture: agentflow/containers/flow-two-part-name-title-collapsed-runs-kept]
+
 - The `accTitle`. mermaid.js puts it into the `title` element of the SVG, which
   the browser shows as a tooltip when the pointer rests on the figure, and
   AGENTS.md compares tooltips. Whether the tooltip shows the runs could not be
   seen in a headless browser, so the text stays as written; the accessible name,
   which was the same for both texts, does not decide it. The `accDescr` is a
-  `desc` element, which no tooltip shows. [fixture:
-  pie/accessibility-lines/accessibility-inner-tab] [fixture:
+  `desc` element, which no tooltip shows.
+
+  [fixture: pie/accessibility-lines/accessibility-inner-tab] [fixture:
   quadrant/titles-and-accessibility-statements/text-inner-whitespace-kept]
+
 - The arguments of a C4 statement that are not a label, a technology, a type, or
   a description (the sprite, the tags, the link), and a named attribute at
   another place than its own, which mermaid.js reads in a way that depends on
-  the place (see [Argument forms](./c4.md#argument-forms)). [fixture:
-  c4/named-attributes/named-text-places-runs-collapsed]
+  the place (see [Argument forms](./c4.md#argument-forms)).
+
+  [fixture: c4/named-attributes/named-text-places-runs-collapsed]
+
 - The names that other statements refer to: two names that differ by a run are
   two things, and are one once the run is gone. A pair of such names was drawn
   for the labels of a pie chart, the nodes of a Sankey diagram, the names of a
   requirement diagram, the entities of an ER diagram, the names of a class
   diagram, the ids of a state diagram, the aliases of a C4 diagram, the people
   of a user journey, and the components of a Wardley map, and the figures
-  differ; a repeated branch of a gitgraph is rejected. [fixture:
-  pie/labels/label-quotes] [fixture: requirement/names/inner-whitespace-kept]
-  [fixture: state/aliases/id-kept]
+  differ; a repeated branch of a gitgraph is rejected.
+
+  [fixture: pie/labels/label-quotes] [fixture:
+  requirement/names/inner-whitespace-kept] [fixture: state/aliases/id-kept]
 
 mermaid.js keeps the runs in the Db. The renderers put these texts into `text`
 elements of the SVG, whose whitespace the browser collapses
@@ -1463,6 +1576,7 @@ requirement diagram (`class="node c   d"`) and for the arguments of a color of a
 sequence diagram (`fill="rgb(1,   2, 3)"`): the browser reads the `class`
 attribute as words and ignores whitespace in the arguments of a CSS color, like
 the whitespace around a CSS declaration, which AGENTS.md does not compare.
+
 [fixture: block/styles/class-name-runs-collapsed] [fixture:
 requirement/class-lists/classes-with-spaces] [fixture:
 sequence/whitespace-between-tokens/values-of-other-statements-runs-collapsed]
@@ -1485,9 +1599,10 @@ diagrams are printed without whitespace at their ends or before a `,`, and with
 one space after it: `click A call f(  "x" ,y ,   z  )` is printed
 `click A call f("x", y, z)`. The whitespace inside quotes stays, and so does the
 whitespace beside a `,` inside quotes. Arguments with an empty part, with a line
-break, or with a comment or a directive stay as written. [fixture:
-flowchart/whitespace-between-tokens/callback-arguments-spaced] [fixture:
-agentflow/click-statements/callback-arguments-spaced] [fixture:
+break, or with a comment or a directive stay as written.
+
+[fixture: flowchart/whitespace-between-tokens/callback-arguments-spaced]
+[fixture: agentflow/click-statements/callback-arguments-spaced] [fixture:
 class/whitespace-between-tokens/callback-arguments-spaced] [fixture:
 gantt/click-statements/call-arguments-spaced]
 
@@ -1501,11 +1616,12 @@ another second argument, since the `;` is then no longer ignored and `#b;` is
 read as an entity code. A gap between the arguments that the rule may read keeps
 whether it holds whitespace, a run becoming one space, so the first call keeps
 its spelling. The word may be in an argument or before the call, such as in the
-id of the node, and `classDef` takes the place of `style`. [fixture:
-flowchart/whitespace-between-tokens/callback-arguments-line-rule-kept] [fixture:
-agentflow/click-statements/callback-arguments-line-rule-kept] [fixture:
-class/whitespace-between-tokens/callback-arguments-line-rule-kept] [fixture:
-gantt/click-statements/call-arguments-line-rule-kept]
+id of the node, and `classDef` takes the place of `style`.
+
+[fixture: flowchart/whitespace-between-tokens/callback-arguments-line-rule-kept]
+[fixture: agentflow/click-statements/callback-arguments-line-rule-kept]
+[fixture: class/whitespace-between-tokens/callback-arguments-line-rule-kept]
+[fixture: gantt/click-statements/call-arguments-line-rule-kept]
 
 mermaid.js keeps the text between the parentheses in the Db, so the Db of the
 printed text differs from the Db of the written text, but it calls the function
@@ -1542,8 +1658,9 @@ text over lines, and a line with a comment or a directive in it or after it stay
 as written, except that the directives that end the text of a node, of a class,
 or of a card are printed as in
 [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same).
-A text of nothing but spaces and tabs is printed as one space. [fixture:
-mindmap/node-text/directives-end-blanks-dropped] [fixture:
+A text of nothing but spaces and tabs is printed as one space.
+
+[fixture: mindmap/node-text/directives-end-blanks-dropped] [fixture:
 kanban/trailing-whitespace/directives-end-blanks-dropped] [fixture:
 mindmap/node-text/trailing-whitespace-dropped] [fixture:
 mindmap/node-text/space-before-a-shape-dropped] [fixture:
@@ -1572,8 +1689,9 @@ its columns and cards, and its icons and classes (see
 tells two columns apart by it. `todo [A]` and `todo[B]` are two columns, drawn
 apart, and with the space gone they were drawn differently. The id of a card is
 not compared, and `id1 [x]` and `id1[x]` were drawn the same, also where two
-cards got the same id by the change. [fixture:
-kanban/shapes/card-id-before-shape-dropped] [fixture:
+cards got the same id by the change.
+
+[fixture: kanban/shapes/card-id-before-shape-dropped] [fixture:
 kanban/shapes/id-before-shape]
 
 The tests compare the Db of the printed text with the texts of the nodes
@@ -1592,8 +1710,9 @@ form that the examples use (see [The quotes of a text](#the-quotes-of-a-text)):
 `A["Start here"]` is printed `A[Start here]` in a flowchart and a swimlane
 diagram, `A[Start]` is printed `A["Start"]` in an agentflow diagram, and the
 labels of links and the titles of subgraphs and flows follow. A text that
-mermaid.js reads differently in the other form stays as written. [fixture:
-flowchart/quotes/shape-labels-without-quotes] [fixture:
+mermaid.js reads differently in the other form stays as written.
+
+[fixture: flowchart/quotes/shape-labels-without-quotes] [fixture:
 flowchart/quotes/link-labels-without-quotes] [fixture:
 flowchart/quotes/subgraph-titles-without-quotes] [fixture:
 agentflow/quotes/labels-in-quotes] [fixture:
@@ -1691,6 +1810,7 @@ style after the first holds a `:`: 10.9.8 has no `style` statement there and
 draws `style A fill:#FFF` as the states `style` and `A` and the description
 `#FFF` of the state `fill`, so `#FFF` and `#fff` are drawn with different text;
 a line with a second `:` it rejects, and its colors are printed in lower case.
+
 [fixture: state/colors/style-read-as-description-kept] [fixture:
 flowchart/colors/colors-in-lower-case] [fixture:
 flowchart/colors/swimlane-colors-in-lower-case] [fixture:
@@ -1727,8 +1847,9 @@ an entity, or joins it to the word after the `;`
 so it stays; the `;` that ends the statement is dropped by the formatter, and
 the color before it is printed in lower case. A directive that touches the color
 (`fill:#ABCDEF%%{init: {}}%%`) can join the word before it to the word after it
-once mermaid.js has taken it away, so that color stays as written too. [fixture:
-flowchart/colors/words-that-are-not-colors-as-written] [fixture:
+once mermaid.js has taken it away, so that color stays as written too.
+
+[fixture: flowchart/colors/words-that-are-not-colors-as-written] [fixture:
 flowchart/colors/colors-in-quotes-and-after-a-backslash-as-written] [fixture:
 flowchart/colors/color-before-the-final-semicolon] [fixture:
 flowchart/colors/colors-before-a-semicolon-as-written] [fixture:
@@ -1772,8 +1893,9 @@ types are printed (see
 [Styles that are drawn the same](#styles-that-are-drawn-the-same)). A comma
 followed by a whitespace character other than a space and a tab, such as U+00A0
 and U+2028, and a text that has more than the function, such as `rect` followed
-by `rgb(1,2,3) extra`, stay as written. [fixture:
-sequence/colors/functions-spaced] [fixture:
+by `rgb(1,2,3) extra`, stay as written.
+
+[fixture: sequence/colors/functions-spaced] [fixture:
 sequence/colors/function-padding-kept] [fixture:
 sequence/colors/functions-as-written] [fixture:
 sequence/colors/functions-beside-comments-and-directives] [fixture:
@@ -1916,13 +2038,15 @@ one id), and the `:::` classes of the three (`class A,B c,d` is printed
 `class A, B c, d`, and `A:::c1,c2` is printed `A:::c1, c2`), the `classDef`
 names of a class diagram, the `class` ids of a state diagram, the two ids of a
 `Note over` in a sequence diagram (`Note over A,B` is printed `Note over A, B`),
-and the names of a Venn diagram (`union A,B` is printed `union A, B`). [fixture:
-er/entities/classes-tight] [fixture: er/styles-and-classes/class-lists]
-[fixture: requirement/class-lists/shorthand] [fixture:
-class/whitespace-between-tokens/classdef-names-touching] [fixture:
+and the names of a Venn diagram (`union A,B` is printed `union A, B`).
+
+[fixture: er/entities/classes-tight] [fixture:
+er/styles-and-classes/class-lists] [fixture: requirement/class-lists/shorthand]
+[fixture: class/whitespace-between-tokens/classdef-names-touching] [fixture:
 state/whitespace-between-tokens/class-ids-touching] [fixture:
 sequence/whitespace-between-tokens/comma-touching] [fixture:
 usecase/classes-and-styles/class-lists] [fixture: venn/name-lists/names-comma]
+
 The lists of the other diagram types that have a comma already had the space:
 the items of a task of a Gantt chart, the people of a user journey, the
 arguments of a C4 call, the values of an XY chart, the coordinates of a point of
@@ -1968,8 +2092,9 @@ field. A comma between such fields is not a mark beside which Prettier prints a
 space, since Prettier formats no language with rows of this kind, and no other
 diagram type has one, so the form that was published decides. A space would also
 be possible only in some rows: `a, "b c", 1` is rejected by the 14 versions that
-have sankey, since mermaid.js rejects a space before a quote. [fixture:
-sankey/commas/spaces-around-commas-dropped] [fixture:
+have sankey, since mermaid.js rejects a space before a quote.
+
+[fixture: sankey/commas/spaces-around-commas-dropped] [fixture:
 sankey/commas/quoted-fields-touch-commas]
 
 ## Spellings that are drawn the same
@@ -1992,15 +2117,18 @@ directive staying as they are, except that the quotes of a text stay as written
 on a line that mermaid.js reads with the next one, because a comment after the
 text removes its line feed: a U+2028 or U+2029 may stand between the text and
 the comment, and a quote that comes between them makes the comment a part of the
-text, or a name without quotes goes on over the character. [test: usecase:
-U+2028, a space, and a comment after a label text] [test: usecase: U+2028, a
-directive, and a comment after a label text] [test: usecase: U+2028, a space,
-and a comment after a note text that holds a percent mark] [test: U+2028 and a
-comment after the target in quotes of a relationship, with a statement after the
-comment] [test: U+2028 and a comment after a value in quotes, with a statement
-after the comment] [fixture: sequence/keyword-case/kept-line-in-one-form]
-[fixture: gantt/keyword-case/kept-line-in-one-form] The examples are the 541
-fenced `mermaid-example` and `mermaid` blocks of the
+text, or a name without quotes goes on over the character.
+
+[test: usecase: U+2028, a space, and a comment after a label text] [test:
+usecase: U+2028, a directive, and a comment after a label text] [test: usecase:
+U+2028, a space, and a comment after a note text that holds a percent mark]
+[test: U+2028 and a comment after the target in quotes of a relationship, with a
+statement after the comment] [test: U+2028 and a comment after a value in
+quotes, with a statement after the comment] [fixture:
+sequence/keyword-case/kept-line-in-one-form] [fixture:
+gantt/keyword-case/kept-line-in-one-form]
+
+The examples are the 541 fenced `mermaid-example` and `mermaid` blocks of the
 [syntax pages](https://github.com/mermaid-js/mermaid/tree/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax);
 the parser reads 524 of them, and the counts below are counts in those 524.
 
@@ -2119,8 +2247,9 @@ the keywords below in the case shown, and every other keyword as written.
 
 The examples use the printed case of each keyword at least twice as often as any
 other case: `Note` is written seven times and `note` once, and the other
-keywords are never written in another case. [fixture:
-gantt/keyword-case/keywords-one-form] [fixture:
+keywords are never written in another case.
+
+[fixture: gantt/keyword-case/keywords-one-form] [fixture:
 gantt/weekday-and-weekend/day-case-one-form] [fixture:
 journey/keyword-case/keywords-one-form] [fixture:
 mindmap/keyword-case/icon-keyword] [fixture:
@@ -2174,8 +2303,9 @@ directives and the comments are removed, so a directive that spans lines joins
 its two sides into one line, and whether another case reads a line the same
 cannot be told from the line of the keyword alone. The quadrant chart rejects
 some texts that the two cases would read differently and reads the others the
-same, and stays as written too. [fixture:
-er/whitespace-between-tokens/keyword-case-kept] [fixture:
+same, and stays as written too.
+
+[fixture: er/whitespace-between-tokens/keyword-case-kept] [fixture:
 er/direction/case-kept] [fixture: er/direction/case-bt-rl-kept] [fixture:
 er/subgraphs/end-case-kept] [fixture:
 state/whitespace-between-tokens/keyword-case-one-form] [fixture:
@@ -2193,8 +2323,9 @@ quadrant/styles/class-definition-semicolons-case-kept]
 
 In the body of an ER subgraph, mermaid.js lists the keyword of a `class`,
 `classDef`, or `style` statement as a node of the subgraph, as written, which is
-one more reason why those three keywords keep their case. [fixture:
-er/subgraphs/statement-keywords-case-kept]
+one more reason why those three keywords keep their case.
+
+[fixture: er/subgraphs/statement-keywords-case-kept]
 
 ### Strings between `"`
 
@@ -2206,7 +2337,9 @@ the one other is the label of a Wardley flow, which is read between `'` only.
 The printer writes `"`. The Prettier option `singleQuote` is not read: these ten
 diagram types are the only ones that read a string between `'` at all (the
 others reject it or read the quote marks as part of the text), and the examples
-do not use it. [fixture: cynefin/strings/strings-quotes] [fixture:
+do not use it.
+
+[fixture: cynefin/strings/strings-quotes] [fixture:
 gitgraph/quotes/quotes-one-form] [fixture: packet/quotes/quotes-one-form]
 [fixture: pie/labels/label-quote-one-form] [fixture:
 radar/quotes/quotes-and-empty] [fixture: railroad/quotes/ir-empty-and-text]
@@ -2219,8 +2352,9 @@ A string whose text holds a `'`, a `"`, a backslash, a line break, U+2028,
 U+2029, a backquote, `&`, `#`, or `<` stays as written: it would need an escape
 between `"`, or it holds a character that mermaid.js reads in a second way (an
 entity such as `#35;`, HTML, a Markdown string). The label of a Wardley flow
-(`+'moving'>`) stays between `'`. [fixture:
-cynefin/strings/single-quote-sensitive-kept] [fixture:
+(`+'moving'>`) stays between `'`.
+
+[fixture: cynefin/strings/single-quote-sensitive-kept] [fixture:
 gitgraph/quotes/single-quote-sensitive-kept] [fixture:
 packet/quotes/single-quote-sensitive-kept] [fixture:
 pie/labels/single-quote-sensitive-kept] [fixture:
@@ -2249,6 +2383,7 @@ a sankey diagram, not a value in quotes or followed by text; and the size after
 the `:` of a Venn set, not the numbers of a `text` or of a style. Of the 300
 numbers in these places in the examples, 297 are in this form and 3 (all in
 xychart: `49.0`, `103.0`, and `177.0`) have a zero at the end of the fraction.
+
 [fixture: pie/numbers/shortest-form] [fixture:
 xychart/numbers/range-numbers-one-form] [fixture:
 xychart/numbers/values-one-form] [fixture: treemap/numbers/shortest-form]
@@ -2273,7 +2408,9 @@ the start of its integer part (`007`), more than 15 digits, an exponent (`1e3`),
 or is `-0`, where it is no plain decimal (`abc`, `1_0`, `0x1` as the value of a
 sankey link), and in a diagram type that this section does not list: the
 coordinates of a Wardley map have a zero at the end of the fraction in 81 of its
-168 decimals. [fixture: venn/sizes-and-numbers/text-number-forms] [fixture:
+168 decimals.
+
+[fixture: venn/sizes-and-numbers/text-number-forms] [fixture:
 venn/sizes-and-numbers/text-and-style-numbers-kept] [fixture:
 xychart/numbers/forms-kept] [fixture:
 xychart/numbers/category-trailing-zero-kept] [fixture: pie/numbers/forms-kept]
@@ -2289,6 +2426,7 @@ swimlane count is a single example. A direction that stands after a directive
 which follows the header is printed `TB` too (`agentflow-beta%%{x}%% TD` becomes
 `agentflow-beta %%{x}%%TB`). A `direction` statement stays as written in all of
 them: mermaid.js keeps the direction of the statement as written in the Db.
+
 [fixture: agentflow/header/header-direction-spelling] [fixture:
 agentflow/header/header-direction-spelling-after-directive] [fixture:
 flowchart/direction/swimlane-header-td-one-form-after-directive] [fixture:
@@ -2299,8 +2437,9 @@ flowchart/direction/statement-values-kept]
 The `TB` in the header of a flowchart is printed `TD`, as the examples use `TD`
 70 times against 7. It stays `TB` where a subgraph that no link joins to the
 outside makes some version that counts draw `TB` and `TD` differently (see
-[Direction](./flowchart.md#direction)). [fixture:
-flowchart/direction/header-tb-without-subgraph] [fixture:
+[Direction](./flowchart.md#direction)).
+
+[fixture: flowchart/direction/header-tb-without-subgraph] [fixture:
 flowchart/direction/header-tb-unlinked-subgraph-kept] [fixture:
 flowchart/link-label-form/flowchart-header-both-forms-kept]
 
@@ -2319,8 +2458,9 @@ cardinality `u` has no symbol and stays as written, and so does a relationship
 with a directive between its units. The examples write the symbols 84 times and
 the words and the other forms 6 times (`only one` once, `zero or more` twice,
 `many(0)` once, `0+` once, and `1` once), and the line as `--` 39 times against
-`to` twice and as `..` 3 times against `optionally to` once. [fixture:
-er/relationship-spacing/words-to-symbols] [fixture:
+`to` twice and as `..` 3 times against `optionally to` once.
+
+[fixture: er/relationship-spacing/words-to-symbols] [fixture:
 er/relationship-spacing/cardinality-words-case-one-form] [fixture:
 er/relationship-spacing/entity-only-before-cardinality] [fixture:
 er/relationship-spacing/directive-between-word-units-kept] [fixture:
@@ -2355,8 +2495,9 @@ id). The row for each of them in
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)
 names the versions. The length of the link of a flowchart is not one of these:
 it asks for a link that spans more ranks (see
-[What else stays as written](#what-else-stays-as-written)). [fixture:
-block/edges/arrow-length-shortest] [fixture:
+[What else stays as written](#what-else-stays-as-written)).
+
+[fixture: block/edges/arrow-length-shortest] [fixture:
 block/edges/arrow-length-start-marker-shortest] [fixture:
 block/edges/arrow-length-kept-where-drawn-differently] [fixture:
 quadrant/axes/arrow-length-shortest]
@@ -2373,7 +2514,9 @@ EBNF notation of a railroad diagram reads `::=` as `=`; the examples write `=`
 that starts and ends at the same position is the position alone; the examples
 write the position alone 7 times and the range with equal ends never, so `4-4`
 is printed `4`, unless something other than whitespace and the `-` lies between
-the ends. [fixture: gitgraph/checkout-aliases/alias-one-form] [fixture:
+the ends.
+
+[fixture: gitgraph/checkout-aliases/alias-one-form] [fixture:
 c4/argument-forms/relationship-direction-long-forms] [fixture:
 railroad/assignment/ebnf-assignment-equals] [fixture:
 packet/block-forms-and-order/equal-range-single]
@@ -2385,6 +2528,7 @@ header without the colon. The examples write the header without the colon 3
 times in each, and with it never, so the colon is removed, and what follows it
 on the line goes to the next line as it does after a header without the colon.
 The colon stays where a `;` or the `---` of a hidden YAML block touches it.
+
 [fixture: cynefin/header/colon-removed] [fixture:
 cynefin/header/colon-semicolon-kept] [fixture: radar/header/colon-removed]
 [fixture: radar/header/colon-yaml-kept]
@@ -2405,18 +2549,28 @@ the colon: the examples write no such header, and a version that counts rejects
 with the colon (see the gitGraph row of
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
 `gitGraph %%{}%%:` is no such header: an empty directive is a comment that takes
-the colon with it. [fixture: gitgraph/header/header-hidden-before-colon] A
-hidden YAML block between them does not keep it: `gitGraph ---`, a block, and
+the colon with it.
+
+[fixture: gitgraph/header/header-hidden-before-colon]
+
+A hidden YAML block between them does not keep it: `gitGraph ---`, a block, and
 `--- :` followed by a statement were drawn by the versions that count for
 gitGraph with the colon and without it, and the one that does not read the block
-rejects both, so the colon is left out. [fixture:
-gitgraph/header/header-yaml-before-colon] A colon on a line of its own after the
-block is left out with the line break before it, so that no empty line stays.
+rejects both, so the colon is left out.
+
+[fixture: gitgraph/header/header-yaml-before-colon]
+
+A colon on a line of its own after the block is left out with the line break
+before it, so that no empty line stays.
+
 [fixture: gitgraph/header/header-yaml-colon-on-its-own-line] [corpus fixture:
-gitgraph/header-hidden-before-colon] A directive, a comment, or a hidden form
-after the colon does not keep it: `gitGraph:%%{}%% commit%%{}%%`,
-`gitGraph: %% note`, and `gitGraph: %%{}%%` followed by a statement were drawn
-the same by the versions that count for gitGraph, with and without the colon.
+gitgraph/header-hidden-before-colon]
+
+A directive, a comment, or a hidden form after the colon does not keep it:
+`gitGraph:%%{}%% commit%%{}%%`, `gitGraph: %% note`, and `gitGraph: %%{}%%`
+followed by a statement were drawn the same by the versions that count for
+gitGraph, with and without the colon.
+
 [fixture: gitgraph/header/header-colon] [fixture:
 gitgraph/header/header-directive-before-colon-kept] [fixture:
 gitgraph/header/header-colon-comment] [fixture:
@@ -2439,6 +2593,7 @@ flowchart; a flowchart has 14 of the first form and 8 of the second, which is
 not twice as often, and stays as written. The label must be plain text (letters,
 digits, spaces, `_`, `,`, `?`, and `!`); a label with a `|` or a `%%`, a string,
 a Markdown label, a label of blanks only, and an empty label stay as written.
+
 [fixture: agentflow/edge-labels/pipes-to-arrows] [fixture:
 agentflow/edge-labels/blank-pipe-label-kept] [fixture:
 flowchart/link-label-form/swimlane-arrows-to-pipes] [fixture:
@@ -2487,14 +2642,15 @@ packet, pie, radar, railroad, treemap, treeView, use case, and wardley diagram
 (the other 12); `accDescr %%{init: {}}%% {c}` is printed
 `accDescr %%{init: {}}%%: c` in a flowchart, an agentflow, and a swimlane
 diagram and `accDescr%%{init: {}}%%: c` in the other 23. Each of these is the
-output of the same text written with the colon. [fixture:
-class/multi-line-values/block-with-directive-before-the-text] [fixture:
-class/multi-line-values/colon-with-directive-before-the-text] [fixture:
-pie/accessibility-lines/block-with-directive-before-the-text] [fixture:
-pie/accessibility-lines/colon-with-directive-before-the-text] [fixture:
-flowchart/accessibility-lines/block-with-directive-before-the-text] [fixture:
-flowchart/accessibility-lines/colon-with-directive-before-the-text] [fixture:
-flowchart/accessibility-lines/block-tight-text] [fixture:
+output of the same text written with the colon.
+
+[fixture: class/multi-line-values/block-with-directive-before-the-text]
+[fixture: class/multi-line-values/colon-with-directive-before-the-text]
+[fixture: pie/accessibility-lines/block-with-directive-before-the-text]
+[fixture: pie/accessibility-lines/colon-with-directive-before-the-text]
+[fixture: flowchart/accessibility-lines/block-with-directive-before-the-text]
+[fixture: flowchart/accessibility-lines/colon-with-directive-before-the-text]
+[fixture: flowchart/accessibility-lines/block-tight-text] [fixture:
 flowchart/accessibility-lines/block-spaced-text] [fixture:
 flowchart/accessibility-lines/block-left-padding-only] [fixture:
 flowchart/accessibility-lines/block-right-padding-only] [fixture:
@@ -2530,8 +2686,9 @@ The tests for line breaks, separation from `direction`, and treeView box
 characters read the diagram text, after directives and the whitespace they take
 are removed. A line break or box character inside a closed directive therefore
 does not keep the braces. A directive before the opening brace follows the same
-rule when deciding whether the block is on one line. [fixture:
-flowchart/accessibility-lines/block-hidden-line-break] [fixture:
+rule when deciding whether the block is on one line.
+
+[fixture: flowchart/accessibility-lines/block-hidden-line-break] [fixture:
 flowchart/accessibility-lines/block-hidden-direction-gap] [fixture:
 flowchart/accessibility-lines/block-prefix-hidden-line-break] [fixture:
 treeview/description-blocks/block-hidden-box-glyph] [test: accessibility blocks:
@@ -2540,9 +2697,10 @@ pie separator-inside-directive-converted]
 A common comment region after the closing brace is removed before the diagram
 reads the statement, so it does not prevent the colon form. A `;` that the line
 rule ignores after the brace does not count as a following statement either; its
-written source is retained after the description. [test: accessibility blocks:
-flowchart removed-comment-after-block-converted] [fixture:
-er/accessibility-statements/block-trailing-ignored-semicolon]
+written source is retained after the description.
+
+[test: accessibility blocks: flowchart removed-comment-after-block-converted]
+[fixture: er/accessibility-statements/block-trailing-ignored-semicolon]
 
 A comment that starts with a `%%` after the `}` stays after the text in the
 diagram types that end the text of the form with the colon before a `%%`, as the
@@ -2556,9 +2714,10 @@ and only whitespace, comments, and directives follow it:
 block after an empty block, `accDescr {}accDescr {D}`, is
 `accDescr {}accDescr: D`. In a treeView diagram drawn with branch characters (a
 box), the characters of the drawing before the keyword and between the keyword
-and the `{` are redrawn, not printed, so they do not keep the block. [fixture:
-flowchart/accessibility-lines/block-last-on-a-line-with-a-semicolon] [fixture:
-flowchart/accessibility-lines/block-text-with-semicolon] [fixture:
+and the `{` are redrawn, not printed, so they do not keep the block.
+
+[fixture: flowchart/accessibility-lines/block-last-on-a-line-with-a-semicolon]
+[fixture: flowchart/accessibility-lines/block-text-with-semicolon] [fixture:
 c4/description-blocks/block-after-an-empty-block] [fixture:
 treeview/modes/ordinary-block] [fixture:
 treeview/modes/box-common-block-zero-column] [fixture:
@@ -2575,9 +2734,11 @@ The block stays as written where the form with the colon would not hold what the
 block holds, or would not be read as the block is:
 
 - The diagram text is over several lines: the form with the colon is one line.
+
   [fixture: er/accessibility-statements/block-lines-kept] [fixture:
   pie/description-blocks/block-inline-leading-lines] [fixture:
   pie/description-blocks/block-columns]
+
 - The diagram type reads a line with `direction` as the direction of the diagram
   (a flowchart, swimlane, agentflow, class, state, ER, requirement, C4, or use
   case diagram), and the text holds `direction` out of the reach of that rule.
@@ -2593,10 +2754,12 @@ block holds, or would not be read as the block is:
   agentflow diagram, an ER diagram, and a requirement diagram it comes after, so
   `accDescr: direction RL` is the description at the start of a line and a
   direction line when the line is indented, which the printer does for the
-  statements of a body. [fixture:
-  class/multi-line-values/block-direction-on-its-own-line-kept] [fixture:
-  class/multi-line-values/block-brace-on-the-next-line-direction-kept] [fixture:
-  state/multi-line-values/block-direction-on-its-own-line-kept] [fixture:
+  statements of a body.
+
+  [fixture: class/multi-line-values/block-direction-on-its-own-line-kept]
+  [fixture: class/multi-line-values/block-brace-on-the-next-line-direction-kept]
+  [fixture: state/multi-line-values/block-direction-on-its-own-line-kept]
+  [fixture:
   state/multi-line-values/block-on-a-line-with-a-semicolon-brace-on-the-next-line-direction-kept]
   [fixture: c4/description-blocks/acc-block-direction-keep] [fixture:
   c4/description-blocks/block-after-an-empty-block-brace-on-the-next-line-direction-kept]
@@ -2608,6 +2771,7 @@ block holds, or would not be read as the block is:
   accessibility blocks: class text-between-ls-direction-kept] [test:
   accessibility blocks: er text-between-ps-direction-kept] [test: accessibility
   blocks: requirement brace-after-ps-direction-kept]
+
 - A directive stands before the `{` or between the `{` and the text, and the
   diagram text of the block is over several lines, or another statement follows
   it on a line that keeps its statements together (see
@@ -2615,10 +2779,13 @@ block holds, or would not be read as the block is:
   beside an empty block is such a line). The printer writes such a block with
   the colon only where it stands on one line and its line does not keep its
   statements together; elsewhere it prints the block as a block, and a second
-  pass changes nothing. [fixture:
+  pass changes nothing.
+
+  [fixture:
   flowchart/accessibility-lines/block-with-directive-before-the-text-over-lines]
   [fixture:
   flowchart/accessibility-lines/block-with-directive-before-the-text-on-a-kept-line]
+
 - A comment follows the `}` on its line, in an agentflow, C4, Gantt, user
   journey, quadrant, requirement, sequence, state, timeline, or XY chart
   diagram, or, for the oldest version that counts, in a pie chart or a gitGraph.
@@ -2628,18 +2795,22 @@ block holds, or would not be read as the block is:
   the form with the colon before a `%%` (the next but one sentence), both forms
   have `a`, and the block is printed in the form with the colon. A class, ER,
   flowchart, swimlane, or use case diagram rejects a block with a comment after
-  it. [fixture: sequence/multi-line-values/block-then-comment-kept] [fixture:
+  it.
+
+  [fixture: sequence/multi-line-values/block-then-comment-kept] [fixture:
   pie/description-blocks/block-then-comment] [fixture:
   pie/description-blocks/block-trailing-comment] [fixture:
   info/comments/comments-inline]
+
 - A comment of the diagram type's own kind follows the `}` on its line, in an
   ABNF diagram (`; c`), an EBNF diagram (`(* c *)` and `/* c */`), a PEG diagram
   (`# c`), or a railroad diagram (`/* c */`). These diagram types end the text
   of the form with the colon before a `%%` only, so `accDescr: a ; c` has the
   description `a ; c`, while the block `accDescr {a} ; c` has `a`, and the two
   forms draw differently. A comment that starts with a `%%` ends the text, and
-  the block is printed in the form with the colon. [fixture:
-  railroad/description-blocks/abnf-comment-after-block-kept] [fixture:
+  the block is printed in the form with the colon.
+
+  [fixture: railroad/description-blocks/abnf-comment-after-block-kept] [fixture:
   railroad/description-blocks/ebnf-iso-comment-after-block-kept] [fixture:
   railroad/description-blocks/ebnf-c-comment-after-block-kept] [fixture:
   railroad/description-blocks/ir-comment-after-block-kept] [fixture:
@@ -2648,22 +2819,29 @@ block holds, or would not be read as the block is:
   railroad/description-blocks/ebnf-percent-comment-after-block] [fixture:
   railroad/description-blocks/ir-percent-comment-after-block] [fixture:
   railroad/description-blocks/peg-percent-comment-after-block]
+
 - The block has no text, or only a directive: it is printed `accDescr {}`, as
-  [Accessibility lines](./flowchart.md#accessibility-lines) says. [fixture:
-  flowchart/accessibility-lines/empty-block-tight] [fixture:
+  [Accessibility lines](./flowchart.md#accessibility-lines) says.
+
+  [fixture: flowchart/accessibility-lines/empty-block-tight] [fixture:
   flowchart/accessibility-lines/empty-block-spaced] [fixture:
   flowchart/accessibility-lines/empty-block-directive-kept]
-- The block is not closed. [fixture:
-  flowchart/accessibility-lines/block-unclosed]
+
+- The block is not closed.
+
+  [fixture: flowchart/accessibility-lines/block-unclosed]
+
 - The block is on a line that keeps its statements together, and a statement or
   a `;` that the diagram reads follows it on that line, including a line that
   the line rule of mermaid.js reads (see
   [Lines that hold a `;`](#lines-that-hold-a-)). The form with the colon runs to
   the end of the line, so a statement after it would become part of its text.
+
   [fixture:
   flowchart/accessibility-lines/block-before-another-statement-on-a-kept-line]
   [fixture: flowchart/accessibility-lines/block-on-style-line-kept] [fixture:
   c4/statements-one-per-line/description-null-adjacency]
+
 - The text holds a `%%`, or a U+2028 or U+2029, in an architecture, cynefin,
   gitGraph, info, packet, pie, radar, railroad, treemap, treeView, or wardley
   diagram. These diagram types read the description with
@@ -2676,24 +2854,32 @@ block holds, or would not be read as the block is:
   a gitGraph, and `accDescr: A<U+2028> B` has `A<U+2028> B`. The other diagram
   types take the `%%` and the line separator as part of the text in both forms,
   and the block is printed in the form with the colon also when the text holds
-  one. [fixture: pie/description-blocks/block-text-with-percent-kept] [fixture:
+  one.
+
+  [fixture: pie/description-blocks/block-text-with-percent-kept] [fixture:
   flowchart/accessibility-lines/block-text-with-percent] [test:
   pie/line-terminators-and-unicode/unicode-values]
+
 - The diagram is a state diagram and a U+2028 or U+2029 stands in the block: the
   state diagram prints a line that holds one as it is written (see
   [State lines that hold a line separator](#state-lines-that-hold-a-line-separator)).
+
   [test: accessibility blocks: state text-with-ls-kept]
+
 - The diagram is an event modeling diagram, whose description is kept whole (see
   [Description blocks](./eventmodeling.md#description-blocks)), or an ishikawa
   diagram, which reads `accDescr {a}` and `accDescr: a` as nodes with no
   description (the Db of both has an empty `accDescr`): the printer does not
-  change the form. [corpus fixture: ishikawa/db-accdescr-block-is-nodes] [corpus
-  fixture: ishikawa/db-accdescr-is-node] [fixture:
-  ishikawa/node-text/values-opaque]
+  change the form.
+
+  [corpus fixture: ishikawa/db-accdescr-block-is-nodes] [corpus fixture:
+  ishikawa/db-accdescr-is-node] [fixture: ishikawa/node-text/values-opaque]
+
 - In a treeView diagram drawn with branch characters (a box), the text holds a
   character of the drawing, such as `x─`, which the diagram reads as the box, or
-  the box keeps the characters between the keyword and the `{`. [fixture:
-  treeview/modes/block-interior-active]
+  the box keeps the characters between the keyword and the `{`.
+
+  [fixture: treeview/modes/block-interior-active]
 
 mermaid.js 12.3.0 read both spellings of each of the 3 examples that write a
 description after a colon, written again as a block: both were accepted, with
@@ -2744,6 +2930,7 @@ diagram was drawn the same with both forms in every version that accepts the
 input. So a block with a comment after the `}` stays a block in a pie chart and
 a gitGraph, with its text padded, and in the diagram types that take the `%%` as
 part of the text, and is printed in the form with the colon in the others.
+
 [fixture: pie/description-blocks/block-then-comment] [fixture:
 gitgraph/title-and-common-values/block-then-comment-kept]
 
@@ -2865,8 +3052,9 @@ character of another kind is not one that every stage reads the same: `%%`
 starts a comment or a directive, `#` starts an entity, `;` takes part in the
 line rule of `style` and `classDef` lines, and a line break ends the record. So
 a text with any of them, or with a `,` or a `"`, stays in quotes, and so does a
-string with a directive or a comment region inside it. [fixture:
-sankey/quotes/plain-text-without-quotes] [fixture:
+string with a directive or a comment region inside it.
+
+[fixture: sankey/quotes/plain-text-without-quotes] [fixture:
 sankey/quotes/plain-text-with-spaces-without-quotes] [fixture:
 sankey/quotes/spaces-at-the-ends-left-out] [fixture:
 sankey/quotes/symbols-without-quotes] [fixture:
@@ -2892,8 +3080,10 @@ whose names mermaid.js joins with one space, stay as written. So does a name
 that ends with `direction` or starts with `TB`, `BT`, `RL`, or `LR`, in any
 case, since the lexer reads `direction`, white space (a line break too), and the
 name of a direction as one line, which a name without quotes would join with the
-line before or after it. [fixture: er/entities/plain-names-without-quotes]
-[fixture: er/entities/hyphenated-names-without-quotes] [fixture:
+line before or after it.
+
+[fixture: er/entities/plain-names-without-quotes] [fixture:
+er/entities/hyphenated-names-without-quotes] [fixture:
 er/entities/names-that-need-quotes] [fixture:
 er/entities/names-next-to-a-direction-line] [fixture: er/entities/alias-tight]
 [fixture: er/statements-one-per-line/relationships] [fixture:
@@ -2912,8 +3102,9 @@ text that starts with `risk` is read as the field `risk`. A name that ends with
 `direction` or starts with `TB`, `BT`, `RL`, or `LR`, in any case, stays in
 quotes too, since the lexer reads `direction`, white space (a line break too),
 and the name of a direction as one line, which a name without quotes would join
-with the line before or after it. [fixture:
-requirement/names/plain-names-without-quotes] [fixture:
+with the line before or after it.
+
+[fixture: requirement/names/plain-names-without-quotes] [fixture:
 requirement/names/names-that-need-quotes] [fixture:
 requirement/names/names-next-to-a-direction-line] [fixture:
 requirement/fields/plain-values-without-quotes] [fixture:
@@ -2934,8 +3125,9 @@ written, since the first release with the diagram type rejects it without quotes
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
 Two names of a link without an arrow, `"A" "B"`, would be read as one name
 without quotes, and the `---` of a hidden YAML block next to a name would join
-the name, so these keep their quotes. [fixture:
-wardley/names-and-quotes/plain-names-without-quotes] [fixture:
+the name, so these keep their quotes.
+
+[fixture: wardley/names-and-quotes/plain-names-without-quotes] [fixture:
 wardley/names-and-quotes/names-that-need-quotes] [fixture:
 wardley/links/link-no-arrow] [fixture: wardley/pipeline/pipeline-depth]
 
@@ -2957,6 +3149,7 @@ mixed cases, alone and with the endings `-x`, `.x`, `/x`, `1`, and `_x`, was
 drawn in a `branch` with and without quotes by the versions that count for
 gitGraph, and 240 of them also in a `checkout` and in a `merge`: the quotes
 changed the drawing, or the acceptance, of exactly the names that keep them.
+
 [fixture: gitgraph/references/plain-names-without-quotes] [fixture:
 gitgraph/references/names-next-to-a-keyword-without-quotes] [fixture:
 gitgraph/references/names-that-need-quotes] [fixture:
@@ -2971,7 +3164,9 @@ word, so a part after it starts a word, and `my-x-axis` holds the keyword
 `x-axis`. The lexer reads a letter after a digit or a `_` as the start of a word
 again, so a text with a `_`, a digit in the middle of a word, a number at its
 start or after a `-`, or a `-` at its start or its end or two together stays in
-quotes. [fixture: quadrant/quotes/plain-texts-without-quotes] [fixture:
+quotes.
+
+[fixture: quadrant/quotes/plain-texts-without-quotes] [fixture:
 quadrant/quotes/texts-with-hyphens-without-quotes] [fixture:
 quadrant/quotes/texts-that-need-quotes] [fixture: quadrant/points/string-names]
 [fixture: quadrant/axes/strings]
@@ -2987,7 +3182,9 @@ where no letter, digit, or `_` follows them, and `vertical` and `horizontal`
 wherever they start. So `"a-line"` and `"Line"` keep their quotes, and `"line1"`
 and `"Barcelona"` lose them. The title of a bar, which the examples do not
 write, stays as written, and so does a title that touches a unit other than its
-keyword. [fixture: xychart/quotes/titles-in-quotes] [fixture:
+keyword.
+
+[fixture: xychart/quotes/titles-in-quotes] [fixture:
 xychart/quotes/categories-without-quotes] [fixture:
 xychart/quotes/categories-that-need-quotes] [fixture:
 xychart/quotes/texts-of-several-words] [fixture:
@@ -3012,6 +3209,7 @@ spaces next to the brackets, which mermaid.js trims from a label with or without
 quotes; a label of whitespace only (its Db has no label, where `[" "]` has an
 empty one), with a `%%`, or with a directive or a comment inside stays as
 written. A text with targets stays as written, since the examples write none.
+
 [fixture: venn/quotes/names-without-quotes] [fixture:
 venn/quotes/names-that-need-quotes] [fixture:
 venn/quotes/style-values-without-quotes] [fixture: venn/quotes/labels-in-quotes]
@@ -3034,7 +3232,9 @@ markdown string. A label between square brackets of a use case is printed
 without quotes where it is words of ASCII letters, digits, and `_` with one
 space between them. In the native metadata a key and a scalar are printed
 without quotes where they are a word, but the scalar of `icon`, which is printed
-in quotes. [fixture: usecase/quotes/names-without-quotes] [fixture:
+in quotes.
+
+[fixture: usecase/quotes/names-without-quotes] [fixture:
 usecase/quotes/names-that-need-quotes] [fixture:
 usecase/quotes/labels-in-quotes] [fixture: usecase/quotes/labels-as-written]
 [fixture: usecase/quotes/square-bracket-labels] [fixture:
@@ -3053,8 +3253,9 @@ where it holds none of `)`, `]`, `(`, and `}`, which end a text without quotes
 or are read as a closer, has no padding or line break, does not start with a `-`
 (`(` and a `-` make the opener `(-`, and a `-` before a `)` makes the closer
 `-)`), and does not stand next to a dash of the dash form (`(-"x"-)`, whose
-closer `-)` follows only a string). A markdown string stays. [fixture:
-architecture/quotes/labels-without-quotes] [fixture:
+closer `-)` follows only a string). A markdown string stays.
+
+[fixture: architecture/quotes/labels-without-quotes] [fixture:
 architecture/quotes/labels-that-need-quotes] [fixture:
 mindmap/quotes/labels-without-quotes] [fixture:
 mindmap/quotes/labels-that-need-quotes] [fixture:
@@ -3078,11 +3279,13 @@ arguments of `RelIndex`, the sprite, the tags, the link, the settings of an
 update, and the tags that stand at the third place of `Enterprise_Boundary`,
 `System_Boundary`, and `Container_Boundary` are written as named attributes in
 the examples, or not at all, and stay as written, and so does a named attribute,
-whose value is a string in every form and whose key holds the quotes. [fixture:
-c4/quotes/names-without-quotes] [fixture: c4/quotes/names-that-need-quotes]
-[fixture: c4/quotes/names-before-a-gap-as-written] [fixture:
-c4/quotes/texts-in-quotes] [fixture: c4/quotes/texts-that-stay-without-quotes]
-[fixture: c4/quotes/other-arguments-as-written] [fixture:
+whose value is a string in every form and whose key holds the quotes.
+
+[fixture: c4/quotes/names-without-quotes] [fixture:
+c4/quotes/names-that-need-quotes] [fixture:
+c4/quotes/names-before-a-gap-as-written] [fixture: c4/quotes/texts-in-quotes]
+[fixture: c4/quotes/texts-that-stay-without-quotes] [fixture:
+c4/quotes/other-arguments-as-written] [fixture:
 c4/quotes/names-and-texts-on-a-kept-line-as-written]
 
 In a flowchart, a swimlane diagram, and an agentflow diagram the name of a
@@ -3104,8 +3307,9 @@ comment follows, and a name of two spaces that is an id, since the subgraph has
 a title, keep their quotes, and so does a name that ends with `direction`,
 whatever follows it: the lexer reads `direction`, white space (a line break
 too), and the name of a direction (`TB`, `BT`, `RL`, `LR`, or `TD`) as one line,
-which `subgraph xdirection` and a next line `TB --> C` would form. [fixture:
-flowchart/quotes/subgraph-names-without-quotes] [fixture:
+which `subgraph xdirection` and a next line `TB --> C` would form.
+
+[fixture: flowchart/quotes/subgraph-names-without-quotes] [fixture:
 flowchart/quotes/subgraph-names-with-hyphens] [fixture:
 flowchart/quotes/swimlane-lane-names-without-quotes] [fixture:
 flowchart/quotes/subgraph-names-that-need-quotes] [fixture:
@@ -3148,7 +3352,9 @@ the first unit of its line, as after a comment line, a directive on a line of
 its own, or a U+2028 or U+2029, since mermaid.js rejects a string there. The
 label of a link that the printer writes in the other form (see
 [The label of a link](#the-label-of-a-link)) is written without quotes in that
-form. [fixture: flowchart/quotes/shape-labels-without-quotes] [fixture:
+form.
+
+[fixture: flowchart/quotes/shape-labels-without-quotes] [fixture:
 flowchart/quotes/link-labels-without-quotes] [fixture:
 flowchart/quotes/subgraph-titles-without-quotes] [fixture:
 flowchart/quotes/labels-that-need-quotes] [fixture:
@@ -3179,8 +3385,10 @@ a unit of its own where they stand as a name, and that neither ends with
 line, which a name without quotes would join with the line before or after it. A
 name of two words is the two words joined without the space, a name with another
 character is not read the same, and a name on a line that holds a comment or a
-directive keeps its backquotes. [fixture: class/quotes/names-without-quotes]
-[fixture: class/quotes/names-that-need-quotes] [fixture:
+directive keeps its backquotes.
+
+[fixture: class/quotes/names-without-quotes] [fixture:
+class/quotes/names-that-need-quotes] [fixture:
 class/quotes/names-next-to-a-direction-line] [fixture:
 class/quotes/names-on-a-kept-line-as-written]
 
@@ -3191,9 +3399,11 @@ label of a class, the text of a note, and a cardinality, and rejects the text
 without quotes (`class A[Label]`, `note for B Text`, `A 1 --> * B`). In an
 eventmodeling diagram a name has no form in quotes, and the quotes in the data
 of a frame, in a title, and in an accessibility value are characters of the text
-(the Db holds `{"x"}` for the data `{"x"}` and `{x}` for `{x}`). [fixture:
-sequence/quotes/texts-as-written] [fixture: class/quotes/strings-as-written]
-[fixture: eventmodeling/quotes/quotes-as-written]
+(the Db holds `{"x"}` for the data `{"x"}` and `{x}` for `{x}`).
+
+[fixture: sequence/quotes/texts-as-written] [fixture:
+class/quotes/strings-as-written] [fixture:
+eventmodeling/quotes/quotes-as-written]
 
 The name of a treeView node in quotes stays as written, though the examples
 write a name without quotes 58 times and in quotes 8 times: the grammars of two
@@ -3209,8 +3419,9 @@ the first one wrote: `text: "a b"` of a requirement diagram with a tab between
 the letters is printed `text: a b`, and so are `quadrant-2 "c d"` of a quadrant
 chart and `service s(server)["a b"]` of an architecture diagram. A text that
 stays as written, such as one in a diagram that holds `white-space`, is judged
-as it is written, and keeps its quotes when it has a tab. [fixture:
-requirement/fields/string-values-tabs-collapsed] [fixture:
+as it is written, and keeps its quotes when it has a tab.
+
+[fixture: requirement/fields/string-values-tabs-collapsed] [fixture:
 requirement/fields/string-values-tabs-kept-with-white-space] [fixture:
 quadrant/quotes/strings-runs-collapsed] [fixture:
 architecture/quotes/labels-with-runs-without-quotes]
@@ -3228,8 +3439,9 @@ reads such a line (see [Lines that hold a `;`](#lines-that-hold-a-)). A `;` that
 follows the string is no such character: the printer drops a `;` that separates
 statements, and the quotes go with it as they go without it (`quadrant-1 "A";`
 is printed `quadrant-1 A`). A string on a line that the printer writes as it is,
-such as one with a `;` that the line rule keeps, keeps its quotes. [fixture:
-requirement/comments/after-string-name] [fixture:
+such as one with a `;` that the line rule keeps, keeps its quotes.
+
+[fixture: requirement/comments/after-string-name] [fixture:
 requirement/comments/after-keyword-and-string-values] [fixture:
 requirement/multi-line-statements/class-last-line-semicolon-kept] [fixture:
 quadrant/quotes/texts-that-need-quotes] [fixture:
@@ -3320,6 +3532,7 @@ the header printed `ishikawa` with `-beta` on its line would be read as the
 header `ishikawa-beta` alone. So the root goes to a line of its own; where it
 stays on the line of the header, the header stays as written. A header of the
 other diagrams in another case (`sankey-BETA`, `XYCHART-BETA`) stays as written.
+
 [fixture: treemap/header/beta] [fixture: ishikawa/header/header-beta] [fixture:
 ishikawa/header/header-column] [fixture:
 ishikawa/header/header-beta-then-beta-root] [fixture:
@@ -3342,8 +3555,9 @@ The 22 pairs of the examples gave the same Db, and 21 of their drawings were the
 same, pixel for pixel. The 22nd, the choice example
 (`state if_state <<choice>>`), differs only in the strokes of the diamond, which
 are drawn at random: the same text drawn twice differs in the same way. The
-examples use `-v2` 17 times and the other 5 times. [fixture:
-state/header/spellings-kept]
+examples use `-v2` 17 times and the other 5 times.
+
+[fixture: state/header/spellings-kept]
 
 ### What else stays as written
 
@@ -3358,7 +3572,9 @@ gives it as `minlen` of the edge, which the dagre layout
 and the elk layout
 ([`render.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/layout-algorithms/elk/render.ts#L2754))
 take over. The examples that were drawn gave the same figure, but the length is
-the author's request. [fixture: flowchart/arrow-spacing/arrow-length-kept]
+the author's request.
+
+[fixture: flowchart/arrow-spacing/arrow-length-kept]
 
 ## Whitespace at the start of a label
 
@@ -3367,13 +3583,16 @@ formatting, except where the label would then be read differently or not at all:
 the whitespace is kept, as one space, when the label starts with `/`, `\`, `-`,
 or `"`, or when its first word has a `@`, and the label then gets one space at
 its end too, except before the closing `?]` or `=]` of a slanted shape, where
-mermaid.js would read the space and the `?` or `=` as text. [fixture:
+mermaid.js would read the space and the `?` or `=` as text.
+
+[fixture:
 flowchart/label-inner-whitespace/leading-whitespace-before-question-end-kept]
 [fixture: flowchart/label-inner-whitespace/trimmed] [fixture:
 flowchart/label-inner-whitespace/leading-whitespace-kept] [fixture:
-flowchart/label-inner-whitespace/compat-leading-backslash-kept] For example,
-`A[ /x/]` is a rectangle with the label `/x/`, while `A[/x/]` is a lean-right
-shape with the label `x`. See
+flowchart/label-inner-whitespace/compat-leading-backslash-kept]
+
+For example, `A[ /x/]` is a rectangle with the label `/x/`, while `A[/x/]` is a
+lean-right shape with the label `x`. See
 [Label inner whitespace](./flowchart.md#label-inner-whitespace).
 
 The `@` depends on the version of mermaid.js. In a flowchart, the pinned version
@@ -3391,8 +3610,10 @@ Some versions drew both forms the same, others rejected both, and others
 rejected the form without the spaces. A text printed without the space would be
 rejected by versions that count for the diagram type and read the text as it is
 written, so the space is kept in a flowchart, a swimlane diagram, and an
-agentflow diagram alike. [fixture:
-flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept] [fixture:
+agentflow diagram alike.
+
+[fixture: flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept]
+[fixture:
 flowchart/label-inner-whitespace/leading-whitespace-at-sign-every-shape-kept]
 [fixture:
 flowchart/label-inner-whitespace/leading-whitespace-at-sign-before-question-end-kept]
@@ -3410,18 +3631,23 @@ directive, and puts the directive after the space of that rule, so that it
 touches the unit after it. Where the rule has no space, the directive touches
 both units. For example, `note%%{init: {}}%% for A "t"` is printed
 `note %%{init: {}}%%for A "t"`, and `A  %%{init: {}}%%  --> B` is printed
-`A %%{init: {}}%%--> B`. [fixture: flowchart/directives/whitespace-on-each-side]
-[fixture: flowchart/directives/touching-token] [fixture:
+`A %%{init: {}}%%--> B`.
+
+[fixture: flowchart/directives/whitespace-on-each-side] [fixture:
+flowchart/directives/touching-token] [fixture:
 flowchart/directives/whitespace-on-both-sides] [fixture:
 class/directives/count-sensitive-unit] [fixture:
 sequence/directives/compat-whitespace-on-one-side-of-directive] [fixture:
 class/directives/compat-whitespace-on-one-side-of-directive] [fixture:
-state/directives/compat-whitespace-on-one-side-of-directive] The gap keeps
-whether it holds whitespace, a run becoming one space, where the line rule of
-mermaid.js may read its whitespace, and where a directive stands at the start or
-at the end of the printed line. [fixture:
-flowchart/directives/line-edge-whitespace] See
-[Directives](./flowchart.md#directives).
+state/directives/compat-whitespace-on-one-side-of-directive]
+
+The gap keeps whether it holds whitespace, a run becoming one space, where the
+line rule of mermaid.js may read its whitespace, and where a directive stands at
+the start or at the end of the printed line.
+
+[fixture: flowchart/directives/line-edge-whitespace]
+
+See [Directives](./flowchart.md#directives).
 
 ## Structural continuations around comments and directives
 
@@ -3435,12 +3661,15 @@ diagram-specific value boundaries still take precedence.
 This applies to class and state statements, ER statements, requirement headers,
 fields and statements, and sequence statements other than trivia-separated
 titles. Empty description blocks inside requirement and element bodies also
-align their standalone trivia and separate closer. [fixture:
-requirement/empty-description-blocks/in-body-with-comment-line-kept] [fixture:
-requirement/empty-description-blocks/in-body-with-directive-line] A state's
-separate opening brace aligns with its keyword. Callback-name whitespace through
-`(` in class remains value text. [fixture:
-class/multi-line-statements/comment-inside-kept] [fixture:
+align their standalone trivia and separate closer.
+
+[fixture: requirement/empty-description-blocks/in-body-with-comment-line-kept]
+[fixture: requirement/empty-description-blocks/in-body-with-directive-line]
+
+A state's separate opening brace aligns with its keyword. Callback-name
+whitespace through `(` in class remains value text.
+
+[fixture: class/multi-line-statements/comment-inside-kept] [fixture:
 class/whitespace-between-tokens/callback-name-comment-line-kept] [fixture:
 state/multi-line-statements/declaration-trivia-continuations] [fixture:
 state/multi-line-statements/brace-after-comment-line-kept] [fixture:
@@ -3454,8 +3683,9 @@ and timeline accessibility lines, quadrant points and accessibility, block
 structure, and XY chart headers, axes, plots and accessibility. It does not
 reindent literal text: Gantt settings/tasks/titles/sections, journey and
 timeline titles/sections, and timeline events retain their value-owned padding.
-Multiline labels and quoted values keep their internal columns. [fixture:
-gantt/multi-line-statements/structural-trivia-continuations] [fixture:
+Multiline labels and quoted values keep their internal columns.
+
+[fixture: gantt/multi-line-statements/structural-trivia-continuations] [fixture:
 journey/multi-line-statements/accessibility-trivia-continuations] [fixture:
 timeline/multi-line-statements/accessibility-trivia-continuations] [fixture:
 quadrant/multi-line-statements/point-trivia-with-multiline-label] [fixture:
@@ -3464,15 +3694,18 @@ xychart/multi-line-statements/axis-trivia-with-multiline-string]
 
 C4 call padding also formats around inline directives while retaining their
 contents, contacts and required breaks; a boundary opener kept below a directive
-aligns with its call. [fixture: c4/directives/directive-inline] [fixture:
+aligns with its call.
+
+[fixture: c4/directives/directive-inline] [fixture:
 c4/boundary-bodies/opener-directive] [fixture:
 c4/named-attributes/named-exterior-directive-lines] [fixture:
 c4/argument-spacing/directive-semicolon-prefix]
 
 The physical line completing an ordinary block header aligns with its statement,
 leaving its body one level deeper. Crossing literal values keep their own
-columns. This applies to state, requirement and C4 boundary headers. [fixture:
-state/composite-states/header-completion-after-comment] [fixture:
+columns. This applies to state, requirement and C4 boundary headers.
+
+[fixture: state/composite-states/header-completion-after-comment] [fixture:
 requirement/bodies/header-completion-after-comment] [fixture:
 c4/boundary-bodies/named-header-completion] [fixture:
 c4/boundary-bodies/value-spans-header-line-kept]
@@ -3482,6 +3715,7 @@ comments, directives and the line completing the header. An eligible body uses
 one further configured step inside that opening line; native hidden header
 boundaries and body-preservation guards take precedence. Block closers still
 stay at column one. Keep source order and trivia form, as for GWT headers.
+
 [fixture: eventmodeling/declarations-and-notes/header-completion-comments]
 [fixture: eventmodeling/declarations-and-notes/header-opener-comment] [fixture:
 eventmodeling/declarations-and-notes/header-directive-continuation] [fixture:
@@ -3490,17 +3724,19 @@ eventmodeling/declarations-and-notes/header-continuation-unsafe-body]
 GWT has no opening brace. Its continued source-frame line and intervening
 comments or directives use one ordinary continuation level inside `gwt`, keeping
 the written order and trivia form. Clause keywords and items retain their own
-one-level and two-level indentation. [fixture:
-eventmodeling/gwt-clauses-and-items/header-completion-comment] [fixture:
-eventmodeling/gwt-clauses-and-items/header-directive-continuation]
+one-level and two-level indentation.
+
+[fixture: eventmodeling/gwt-clauses-and-items/header-completion-comment]
+[fixture: eventmodeling/gwt-clauses-and-items/header-directive-continuation]
 
 Ordinary ER and requirement style units use `property: value`, with styles
 separated by a comma and one space. Property and value contents stay written,
 except that a run of spaces between value words is printed as one space (see
 [Styles that are drawn the same](#styles-that-are-drawn-the-same)). A plain
 joined header gets this spacing on the first pass too. Trivia, multiline style
-literals and semicolon-sensitive lines retain their existing layout. [fixture:
-er/styles-and-classes/style-unit-padding] [fixture:
+literals and semicolon-sensitive lines retain their existing layout.
+
+[fixture: er/styles-and-classes/style-unit-padding] [fixture:
 er/styles-and-classes/over-lines-joined] [fixture:
 requirement/styles-and-classes/style-unit-padding]
 
@@ -3514,23 +3750,30 @@ The rule reads the text of the line, so removing a `;` that separates
 statements, or moving a statement to a line of its own, can make it ignore
 another `;`, and change a label or an entity: `A[style:#x;];` has the label
 `style:` followed by the entity `#x;`, and `A[style:#x;]` the label `style:#x`.
+
 [corpus fixture: common/entity-style-separator-ignored] [corpus fixture:
-common/entity-style-label-semicolon-ignored] Both are accepted, so only the
-diagram shows the change. A line that holds a `;` other than one that separates
-statements or ends a statement therefore keeps its statements on it and its `;`
-where they are, whether the rule applies to it or not; the rule does not read
-the whitespace between other tokens, so that is formatted as usual. [fixture:
-flowchart/statements-one-per-line/line-with-semicolon-kept] [fixture:
+common/entity-style-label-semicolon-ignored]
+
+Both are accepted, so only the diagram shows the change. A line that holds a `;`
+other than one that separates statements or ends a statement therefore keeps its
+statements on it and its `;` where they are, whether the rule applies to it or
+not; the rule does not read the whitespace between other tokens, so that is
+formatted as usual.
+
+[fixture: flowchart/statements-one-per-line/line-with-semicolon-kept] [fixture:
 flowchart/statements-one-per-line/compat-semicolon-in-label-without-style-kept]
 [fixture: sequence/comments/semicolon-after-comment-kept] [fixture:
 class/labels/semicolon-line-kept] [fixture:
-state/descriptions-and-labels/semicolon-line-kept] See
-[Statements one per line](./flowchart.md#statements-one-per-line).
+state/descriptions-and-labels/semicolon-line-kept]
+
+See [Statements one per line](./flowchart.md#statements-one-per-line).
 
 In class, state, ER, requirement, block, Venn and usecase diagrams, line-ending
 `classDef` and `style` semicolons are dropped where this leaves the Db
 unchanged. This includes the ignored terminator and its preceding whitespace,
-with a closed directive before it retained. [fixture:
+with a closed directive before it retained.
+
+[fixture:
 class/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
 [fixture:
 state/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
@@ -3544,17 +3787,24 @@ block/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
 venn/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
 [fixture:
 usecase/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
+
 Without a `#` in the statement, ER also drops its terminating `;` unit when no
 trivia separates it from the last style. A treemap `classDef` statement with a
 style drops its terminating `;` unit on the same condition, with or without a
 `#`. A `;` inside the style, as in `fill: #f00;`, where `#f00;` is an entity,
-stays. [fixture: treemap/semicolons/class-terminator-dropped] [fixture:
+stays.
+
+[fixture: treemap/semicolons/class-terminator-dropped] [fixture:
 treemap/semicolons/class-terminator-directive-kept] [fixture:
-treemap/semicolons/class-terminator-entity-kept] State style statements and
-block `classDef` statements drop a final `;` from the last style only when it is
-that style's sole semicolon and follows non-whitespace text. Other style
-semicolons remain where deleting them changes the Db. [fixture:
-er/semicolons-at-the-end-of-a-style-statement/unit-terminators] [fixture:
+treemap/semicolons/class-terminator-entity-kept]
+
+State style statements and block `classDef` statements drop a final `;` from the
+last style only when it is that style's sole semicolon and follows
+non-whitespace text. Other style semicolons remain where deleting them changes
+the Db.
+
+[fixture: er/semicolons-at-the-end-of-a-style-statement/unit-terminators]
+[fixture:
 er/semicolons-at-the-end-of-a-style-statement/directive-before-unit-kept]
 [fixture:
 state/semicolons-at-the-end-of-a-style-statement/style-text-terminators]
@@ -3579,43 +3829,55 @@ one of those two things. That is the case on a line that holds
   The scan of such a directive takes the whitespace after its argument, line
   breaks included, and a `;` stops it. `%%{wrap foo;` and the next line
   `participant D` end the directive at the `;`, while without it the line break
-  and the next line are taken with the directive. [fixture:
+  and the next line are taken with the directive.
+
+  [fixture:
   sequence/statements-one-per-line/compat-unclosed-directive-semicolon-kept]
   [fixture:
   flowchart/statements-one-per-line/compat-unclosed-directive-semicolon-kept]
   [fixture:
   state/statements-one-per-line/compat-unclosed-directive-semicolon-kept]
   [corpus fixture: sequence/ignored-semicolon-after-directive-06349fee] [corpus
-  fixture: common/directive-word-argument-unclosed-next-line] The same holds for
-  `%%{init: {}`, U+2029, and `;`, where the argument stops before the U+2029,
-  which the directive takes as whitespace. [corpus fixture:
-  flowchart/ignored-semicolon-after-directive-530d2c05]
+  fixture: common/directive-word-argument-unclosed-next-line]
+
+  The same holds for `%%{init: {}`, U+2029, and `;`, where the argument stops
+  before the U+2029, which the directive takes as whitespace.
+
+  [corpus fixture: flowchart/ignored-semicolon-after-directive-530d2c05]
+
 - a `;` that the line rule ignores, with only whitespace and directives between
   it and another `;`. The directives are removed first, so the two are next to
   each other for the rule, which ignores only the last `;` of the line: dropping
   the last one makes the one before it the ignored one, and a message text
-  `style:#x`, with `;;` after a directive, changes into `style:`. [fixture:
+  `style:#x`, with `;;` after a directive, changes into `style:`.
+
+  [fixture:
   sequence/statements-one-per-line/compat-ignored-semicolon-next-to-semicolon-kept]
   [fixture:
   flowchart/statements-one-per-line/compat-ignored-semicolon-next-to-semicolon-kept]
   [fixture:
   state/statements-one-per-line/compat-ignored-semicolon-next-to-semicolon-kept]
+
 - a `;` that the line rule ignores and, after it, a U+2028 or U+2029. The rule
   reads the text up to the character as the line, so the character stays where
   it is, and printed as a space it would end the line elsewhere. In a flowchart,
   `Z[style:#x];`, U+2029, and `;` would become `Z[style:#x]; ;`, whose last `;`
-  is another one. [corpus fixture:
-  flowchart/ignored-semicolon-after-directive-5072803f]
+  is another one.
+
+  [corpus fixture: flowchart/ignored-semicolon-after-directive-5072803f]
 
 A `;` after a directive that is closed, with no other `;`, changes nothing when
 it is dropped, so it is dropped: `A-->B %%{init: {}}%% ;` is printed as
-`A --> B %%{init: {}}%%`. [fixture:
-flowchart/semicolons/closed-directive-formatted] [fixture:
+`A --> B %%{init: {}}%%`.
+
+[fixture: flowchart/semicolons/closed-directive-formatted] [fixture:
 sequence/statements-one-per-line/compat-closed-directive-semicolon-dropped]
 
 The same protections apply to the style terminators above: removing a semicolon
 must not move an unclosed directive's stopping boundary or make the line rule
-discard a different semicolon. [fixture:
+discard a different semicolon.
+
+[fixture:
 class/semicolons-at-the-end-of-a-style-statement/unclosed-directive-kept]
 [fixture:
 state/semicolons-at-the-end-of-a-style-statement/adjacent-semicolons-kept]
@@ -3624,18 +3886,24 @@ In a sequence diagram, a statement that ends with a unit that reads no
 whitespace, a data block of a participant or `autonumber`, keeps a `;` that
 follows a directive after it, and its line is printed as written when it holds a
 U+2028 or U+2029: the character is no whitespace to the `}` that ends the unit,
-while a space is. [fixture:
-sequence/statements-one-per-line/data-block-directive-kept] [fixture:
+while a space is.
+
+[fixture: sequence/statements-one-per-line/data-block-directive-kept] [fixture:
 sequence/statements-one-per-line/autonumber-directive-kept]
+
 `participant Z@{ ... }%%{init: {}}%%`, U+2029, and `;` is accepted, and with a
-space in place of the U+2029 it is rejected. [corpus fixture:
-sequence/ignored-semicolon-after-directive-5689c99a] The same holds for a `;`
-that the line rule ignores and, after it, a U+2028 or U+2029, and the `;` that
-ends the statement may stand on a later line: the line is printed as written to
-the last of those `;`. `participant Z@{ "style": "x:#y" };`, U+2028, a line
-break, and `;` is accepted, and without the second `;` the whitespace at the end
-of the line hides the line break, and it is rejected. [corpus fixture:
-sequence/ignored-semicolon-then-separator-line-1902f8c5]
+space in place of the U+2029 it is rejected.
+
+[corpus fixture: sequence/ignored-semicolon-after-directive-5689c99a]
+
+The same holds for a `;` that the line rule ignores and, after it, a U+2028 or
+U+2029, and the `;` that ends the statement may stand on a later line: the line
+is printed as written to the last of those `;`.
+`participant Z@{ "style": "x:#y" };`, U+2028, a line break, and `;` is accepted,
+and without the second `;` the whitespace at the end of the line hides the line
+break, and it is rejected.
+
+[corpus fixture: sequence/ignored-semicolon-then-separator-line-1902f8c5]
 
 See [Statements one per line](./flowchart.md#statements-one-per-line).
 
@@ -3648,29 +3916,36 @@ next line goes on the line of the directive, as it does after a comment line
 (see
 [A comment line after U+2028 or U+2029](#a-comment-line-after-u2028-or-u2029)).
 The line is printed as written, with what stands on it, and no `;` is needed for
-that. [fixture: flowchart/directives/compat-unclosed-directive-joins-next-line]
+that.
+
+[fixture: flowchart/directives/compat-unclosed-directive-joins-next-line]
 [fixture: sequence/statements-one-per-line/compat-unclosed-directive-joins-line]
 [fixture:
 state/statements-one-per-line/compat-unclosed-directive-joins-next-line]
 [fixture: class/directives/compat-unclosed-directive-joins-next-line] [corpus
 fixture: common/directive-word-argument-unclosed-next-line]
+
 `participant A@{ "style": "x:#y" };participant C%%{init: {}`, a line break,
 U+2029, and `;participant D` is one line for the line rule, and moving
-`participant C` to a line of its own would leave that `;` unignored. [corpus
-fixture: sequence/ignored-semicolon-after-directive-435fa018] In a class or
-state diagram, a statement after such a line break is kept as it is written,
-without the indentation of its level: `state S {%%{wrap foo`, an empty line, and
-`A` keep the empty line and the `A` where they stand. [fixture:
-state/composite-states/compat-unclosed-directive-joins-body-line] [fixture:
-class/member-bodies/compat-unclosed-directive-joins-body-line]
+`participant C` to a line of its own would leave that `;` unignored.
+
+[corpus fixture: sequence/ignored-semicolon-after-directive-435fa018]
+
+In a class or state diagram, a statement after such a line break is kept as it
+is written, without the indentation of its level: `state S {%%{wrap foo`, an
+empty line, and `A` keep the empty line and the `A` where they stand.
+
+[fixture: state/composite-states/compat-unclosed-directive-joins-body-line]
+[fixture: class/member-bodies/compat-unclosed-directive-joins-body-line]
 
 The whitespace on the line of the directive is taken with it as well, and it is
 what ends a word argument: `%%{x: w B` has the argument `w` and leaves `B` to
 the diagram, while `%%{x: wB` has the argument `wB`. The tree leaves that
 whitespace outside the directive, but the printers read it as a part of the
 directive and print it as written: `"style:#x" end; %%{x: w B` of an ER diagram
-stays as it is. [fixture:
-er/directives/unclosed-directive-argument-then-text-kept]
+stays as it is.
+
+[fixture: er/directives/unclosed-directive-argument-then-text-kept]
 
 A directive with a free-text argument, such as `init`, and no `}%%` extends to
 the end of the text (the specification's
@@ -3678,8 +3953,9 @@ the end of the text (the specification's
 everything after it is printed as written, as part of the directive:
 `A --> B %%{init: {};` is formatted up to the directive and the lines after it
 stay as they are. A directive whose argument is a word, such as `%%{wrap foo;`,
-ends after the word, and the lines after it are formatted. [fixture:
-flowchart/directives/unclosed-free-text-takes-the-rest] [fixture:
+ends after the word, and the lines after it are formatted.
+
+[fixture: flowchart/directives/unclosed-free-text-takes-the-rest] [fixture:
 flowchart/directives/unclosed-word-argument-stops-after-word]
 
 Whitespace that holds a U+2028 or U+2029 is printed as written, with the
@@ -3689,8 +3965,9 @@ the whitespace after it; with the character printed as a space, the argument
 would reach past it, and take the statements that follow, up to the next `}%%`
 or the end of the text. `class A%%{init: {}`, a space, U+2028, `class D`, and
 `class B` declare the classes `AclassD` and `B`, and with a space in place of
-the U+2028, only `A`. [corpus fixture:
-class/unclosed-directive-separator-whitespace-5cfdfca6]
+the U+2028, only `A`.
+
+[corpus fixture: class/unclosed-directive-separator-whitespace-5cfdfca6]
 
 ## A `;` that the line rule ignores before the value of its statement
 
@@ -3707,8 +3984,10 @@ trigger and the `;` on it, so that no statement per line, and no description
 block in the form of the colon, parts the `;` from its trigger, and the value is
 joined or kept as the statement is printed otherwise. A body of statements after
 the line of a block, and the word that closes a statement (`end`), are no such
-value. [fixture:
-flowchart/semicolons/ignored-semicolon-before-value-on-next-line-kept] [fixture:
+value.
+
+[fixture: flowchart/semicolons/ignored-semicolon-before-value-on-next-line-kept]
+[fixture:
 sequence/multi-line-statements/ignored-semicolon-before-value-on-next-line-kept]
 [fixture: agentflow/semicolons/ignored-semicolon-before-value-on-next-line-kept]
 [fixture:
@@ -3716,11 +3995,14 @@ requirement/multi-line-statements/ignored-semicolon-before-name-on-next-line-kep
 [fixture:
 xychart/multi-line-statements/ignored-semicolon-before-values-on-next-line-kept]
 [fixture:
-block/multi-line-statements/ignored-semicolon-before-value-on-next-line-kept] An
-ER diagram and a requirement diagram read `accTitle: direction LR` as a
+block/multi-line-statements/ignored-semicolon-before-value-on-next-line-kept]
+
+An ER diagram and a requirement diagram read `accTitle: direction LR` as a
 direction line when `accTitle` does not stand at the first column, so a text
 that is brought to the `:` there would change the figure, and the statement
-stays as written. [fixture:
+stays as written.
+
+[fixture:
 er/accessibility-statements/ignored-semicolon-before-direction-text-kept]
 [fixture:
 requirement/accessibility-statements/ignored-semicolon-before-direction-text-kept]
@@ -3747,8 +4029,9 @@ counts reads both with a lexer built with jison, whose rule takes `accTitle`,
   the `}` of a block keeps the block: the form with the colon,
   `accDescr: a %% c`, has the description `a %% c`, where the block has `a`.
 
-The other diagram types of the pinned grammar have no such version. [fixture:
-pie/accessibility-lines/a11y-next-join-kept] [fixture:
+The other diagram types of the pinned grammar have no such version.
+
+[fixture: pie/accessibility-lines/a11y-next-join-kept] [fixture:
 pie/accessibility-lines/a11y-next-section] [fixture:
 pie/accessibility-lines/accessibility-next-trivia] [fixture:
 pie/accessibility-lines/acc-value-after-blank-and-directive-kept] [fixture:
@@ -3770,43 +4053,58 @@ direction line before whitespace (the specification's
 An indented line that holds `direction`, whitespace, and a direction value
 anywhere is therefore a direction statement, while the same line at the first
 column may be read in another way: `accTitle: t;direction TB` is an
-accessibility title. [fixture:
-flowchart/indentation/compat-direction-text-indented] [corpus fixture:
+accessibility title.
+
+[fixture: flowchart/indentation/compat-direction-text-indented] [corpus fixture:
 flowchart/lex-direction-line-acc-title-column-zero] [corpus fixture:
-flowchart/lex-direction-line-acc-title-indented] Such a line that is not a
-direction statement is kept as written, with its indentation. [fixture:
-flowchart/indentation/direction-text-kept] [fixture:
-flowchart/indentation/direction-text-with-directive-kept] mermaid.js takes the
-directives away before the lexer reads the text, so a `direction` that a
-directive splits (`accDescr: direc%%{init: {}}%%tion RL`) is a direction text as
-well, in a description in a block or after a colon, in a title, after a `;`, and
-inside a subgraph, in a flowchart and in a swimlane diagram. [fixture:
-flowchart/indentation/direction-text-split-by-a-directive-kept] [fixture:
-flowchart/indentation/swimlane-direction-text-split-by-a-directive-kept] It also
-removes the comment lines and the `;` that the line rule ignores before the
-lexer reads the text, so a `direction` that such a `;` splits
+flowchart/lex-direction-line-acc-title-indented]
+
+Such a line that is not a direction statement is kept as written, with its
+indentation.
+
+[fixture: flowchart/indentation/direction-text-kept] [fixture:
+flowchart/indentation/direction-text-with-directive-kept]
+
+mermaid.js takes the directives away before the lexer reads the text, so a
+`direction` that a directive splits (`accDescr: direc%%{init: {}}%%tion RL`) is
+a direction text as well, in a description in a block or after a colon, in a
+title, after a `;`, and inside a subgraph, in a flowchart and in a swimlane
+diagram.
+
+[fixture: flowchart/indentation/direction-text-split-by-a-directive-kept]
+[fixture:
+flowchart/indentation/swimlane-direction-text-split-by-a-directive-kept]
+
+It also removes the comment lines and the `;` that the line rule ignores before
+the lexer reads the text, so a `direction` that such a `;` splits
 (`accTitle:style:#x,direc;tion TB`), and one whose value stands on a later line
 after a comment line (`accTitle:direction`, a comment line, and `TB`), are
-direction texts too, in a flowchart and in an ER diagram. [fixture:
-flowchart/indentation/direction-text-split-by-ignored-semicolon-kept] [fixture:
-flowchart/indentation/direction-text-value-after-comment-line-kept] [fixture:
-er/indentation/direction-text-split-by-ignored-semicolon-kept] See
-[Indentation](./flowchart.md#indentation).
+direction texts too, in a flowchart and in an ER diagram.
+
+[fixture: flowchart/indentation/direction-text-split-by-ignored-semicolon-kept]
+[fixture: flowchart/indentation/direction-text-value-after-comment-line-kept]
+[fixture: er/indentation/direction-text-split-by-ignored-semicolon-kept]
+
+See [Indentation](./flowchart.md#indentation).
 
 Flowchart bodies use the shared significant indentation minimum, at least one
 space per level even with `tabWidth: 0`. This prevents a direction statement
 from gaining column-one accessibility or keyword priority when its indentation
-is removed. [fixture: flowchart/indentation/zero-direction-description-subgraph]
-[fixture: flowchart/indentation/zero-direction-title] [fixture:
+is removed.
+
+[fixture: flowchart/indentation/zero-direction-description-subgraph] [fixture:
+flowchart/indentation/zero-direction-title] [fixture:
 flowchart/indentation/zero-direction-title-tab] [fixture:
 flowchart/indentation/zero-direction-description-block] [fixture:
 flowchart/indentation/zero-direction-title-prefix] [fixture:
 flowchart/indentation/zero-direction-directive] [fixture:
-flowchart/indentation/zero-direction-style-prefix] The same minimum protects
-[mindmap](./mindmap.md#indentation), [kanban](./kanban.md#indentation),
-[Venn](./venn.md#indentation), [Ishikawa](./ishikawa.md#indentation),
-[Agentflow](./agentflow.md#indentation), [class](./class.md#indentation) and
-[YAML](#frontmatter) where zero-width indentation would change the reading.
+flowchart/indentation/zero-direction-style-prefix]
+
+The same minimum protects [mindmap](./mindmap.md#indentation),
+[kanban](./kanban.md#indentation), [Venn](./venn.md#indentation),
+[Ishikawa](./ishikawa.md#indentation), [Agentflow](./agentflow.md#indentation),
+[class](./class.md#indentation) and [YAML](#frontmatter) where zero-width
+indentation would change the reading.
 
 ## Sequence messages from a number or `title`
 
@@ -3815,9 +4113,11 @@ source is an id that whitespace after it would make another unit: a number, as
 in `1->>2: x`, where `1 ->>2: x` is rejected, and `title` in any case, as in
 `title->>B: x`, where `title ->> B: x` is a title (the specification's
 [The statement context](../../spec/docs/diagrams/sequence.md#the-statement-context)).
-Such a message keeps its arrow touching on both sides. [fixture:
-sequence/arrow-spacing/touching-before-read-otherwise-kept] See
-[Arrow spacing](./sequence.md#arrow-spacing).
+Such a message keeps its arrow touching on both sides.
+
+[fixture: sequence/arrow-spacing/touching-before-read-otherwise-kept]
+
+See [Arrow spacing](./sequence.md#arrow-spacing).
 
 ## Sequence messages with a central connection
 
@@ -3838,9 +4138,10 @@ arrow and read the `<<` as part of the name before it, and `Alice<<->>Bob` and
 After a `()` it is the same: the name that these versions read runs from the id
 to the `<<`, so the whitespace between the `()` and the `<<` is part of it, and
 `A ()   <<->> B` stays as written, with a directive in that whitespace too. The
-whitespace after the arrow is not at stake in any version. [fixture:
-sequence/arrow-spacing/parentheses-then-bidirectional-arrow-gap-kept] [fixture:
-sequence/arrow-spacing/bidirectional-arrow-gap-before-kept] [fixture:
+whitespace after the arrow is not at stake in any version.
+
+[fixture: sequence/arrow-spacing/parentheses-then-bidirectional-arrow-gap-kept]
+[fixture: sequence/arrow-spacing/bidirectional-arrow-gap-before-kept] [fixture:
 sequence/arrow-spacing/parentheses-touching] [fixture:
 sequence/arrow-spacing/touching-beside-directive] [fixture:
 sequence/arrow-spacing/touching-between-semicolons] [fixture:
@@ -3848,37 +4149,47 @@ sequence/arrow-spacing/touching-after-blank-lines] [fixture:
 sequence/arrow-spacing/touching-over-line-breaks-joined] [fixture:
 sequence/arrow-spacing/touching-with-comment-line-kept] [fixture:
 sequence/arrow-spacing/minus-before-arrow-like-target-spaced] [corpus fixture:
-sequence/spec-sequence-diagram-c8d8bf08] See
-[Arrow spacing](./sequence.md#arrow-spacing).
+sequence/spec-sequence-diagram-c8d8bf08]
+
+See [Arrow spacing](./sequence.md#arrow-spacing).
 
 ## Sequence statements over several lines
 
 In a sequence diagram, a statement continues on the next line when whitespace
 comes before the line break, and such a statement is printed on one line.
-[fixture: sequence/multi-line-statements/joined] One with a comment or a
-directive keeps its line breaks and aligns structural continuations. The
-whitespace before the first line break of each gap is retained because it can
-join the lines for the lexer. [fixture:
-sequence/multi-line-statements/comment-inside-kept] A title with a comment line
-between `title` and its text keeps its complete source instead, including
-value-owned indentation: the comment line is removed before mermaid.js reads the
-text, so the line after it is the title. [fixture:
-sequence/title/comment-line-kept] See
-[Multi-line statements](./sequence.md#multi-line-statements).
+
+[fixture: sequence/multi-line-statements/joined]
+
+One with a comment or a directive keeps its line breaks and aligns structural
+continuations. The whitespace before the first line break of each gap is
+retained because it can join the lines for the lexer.
+
+[fixture: sequence/multi-line-statements/comment-inside-kept]
+
+A title with a comment line between `title` and its text keeps its complete
+source instead, including value-owned indentation: the comment line is removed
+before mermaid.js reads the text, so the line after it is the title.
+
+[fixture: sequence/title/comment-line-kept]
+
+See [Multi-line statements](./sequence.md#multi-line-statements).
 
 ## A line of only whitespace after a comment
 
 In a class diagram, a line of only whitespace right after a line that ends with
 a comment after a statement is printed as a line of one space, where any other
-empty line is printed without whitespace. [fixture:
-class/comments/whitespace-line-kept] [fixture:
+empty line is printed without whitespace.
+
+[fixture: class/comments/whitespace-line-kept] [fixture:
 class/comments/whitespace-line-after-header-comment-kept] [fixture:
 class/comments/compat-whitespace-line-after-comment-line] [fixture:
 class/comments/compat-comment-then-empty-lines] [corpus fixture:
 class/lex-comment-then-spaces-line] [corpus fixture:
-class/div-comment-then-empty-line] mermaid.js reads the line breaks after such a
-comment as part of the comment, and the next line as part of the commented
-statement, unless a line of only whitespace comes between them (see
+class/div-comment-then-empty-line]
+
+mermaid.js reads the line breaks after such a comment as part of the comment,
+and the next line as part of the commented statement, unless a line of only
+whitespace comes between them (see
 [A comment that takes the line breaks after it](#a-comment-that-takes-the-line-breaks-after-it)):
 `A --> B %% c`, a line of two spaces, and `A : +int age` is a relation and a
 member, and without the spaces, a relation from A to `BA`. An editor that
@@ -3891,32 +4202,42 @@ Class attributes, annotations, method-field contents and generic types keep
 their written text: whitespace after a visibility mark and between two `~` can
 be part of the Db. Ordinary methods remove padding around their parentheses and
 use one space before a nonempty return type. Methods with trivia, ignored text,
-line separators or semicolon protection keep their source. [fixture:
-class/member-lines/method-padding] [fixture:
+line separators or semicolon protection keep their source.
+
+[fixture: class/member-lines/method-padding] [fixture:
 class/member-lines/method-values-and-classifiers-runs-collapsed] [fixture:
 class/member-lines/method-trivia-and-semicolon-kept] [fixture:
-class/member-lines/runs-collapsed] [fixture: class/generic-types/kept] A label
-of only whitespace keeps the whitespace after its `:`, at the end of its line:
-`A --> B : ` has an empty title and `A --> B` none. [fixture:
-class/labels/blank-kept] On a line that holds a `;`, whether whitespace follows
-the `:` of a label is kept as written, since the line rule of mermaid.js reads a
-`:` directly followed by text up to a `#`. [fixture:
-class/labels/semicolon-line-kept] See [Labels](./class.md#labels) and
-[Member lines](./class.md#member-lines).
+class/member-lines/runs-collapsed] [fixture: class/generic-types/kept]
+
+A label of only whitespace keeps the whitespace after its `:`, at the end of its
+line: `A --> B : ` has an empty title and `A --> B` none.
+
+[fixture: class/labels/blank-kept]
+
+On a line that holds a `;`, whether whitespace follows the `:` of a label is
+kept as written, since the line rule of mermaid.js reads a `:` directly followed
+by text up to a `#`.
+
+[fixture: class/labels/semicolon-line-kept]
+
+See [Labels](./class.md#labels) and [Member lines](./class.md#member-lines).
 
 ## Unclosed backquoted names
 
 A backquoted name that is not closed runs to the end of the text, with the
 whitespace and line breaks at its end. It is printed as written to the end of
-the text, and no line break is added after it. [fixture:
-class/unclosed-backquoted-names/kept] See
-[Unclosed backquoted names](./class.md#unclosed-backquoted-names).
+the text, and no line break is added after it.
+
+[fixture: class/unclosed-backquoted-names/kept]
+
+See [Unclosed backquoted names](./class.md#unclosed-backquoted-names).
 
 ## Description block indentation
 
 Separate an ordinary `accDescr` keyword and its opening `{` with one space,
 including in empty blocks. This is how Prettier prints the space before a `{`,
 without changing its text. Interior contacts and trivia keep their own rules.
+
 [fixture: info/description-blocks/block-gap-presence] [fixture:
 flowchart/accessibility-lines/empty-block-touching-keyword]
 
@@ -3924,8 +4245,9 @@ Ordinary closed multiline `accDescr` bodies use the statement's continuation
 indentation, with a separate `}` at the statement's level. Mermaid discards
 leading spaces and tabs after LF from the description. Keep the remaining text,
 line breaks, trailing whitespace and directive contents. Quoted strings and
-opaque data blocks retain their separate value-preservation rules. [fixture:
-flowchart/multi-line-values/accdescr-block-kept]
+opaque data blocks retain their separate value-preservation rules.
+
+[fixture: flowchart/multi-line-values/accdescr-block-kept]
 
 Where the text starts on a line after the `{`, the whitespace between the `{`
 and that line break is left out, also where the raw body columns stay:
@@ -3937,9 +4259,11 @@ stays, with the gap before it as under
 becomes one space; the whitespace after a directive at the end of the line is
 left out like the whitespace after the `{`, and the whitespace after a comment
 is part of the comment, so it stays. Text on the line of the `{` is spaced as
-any other token. This holds in every diagram type that has the block. [fixture:
-flowchart/multi-line-values/accdescr-block-opener-whitespace-dropped] [fixture:
-flowchart/multi-line-values/accdescr-block-opener-tab-dropped] [fixture:
+any other token. This holds in every diagram type that has the block.
+
+[fixture: flowchart/multi-line-values/accdescr-block-opener-whitespace-dropped]
+[fixture: flowchart/multi-line-values/accdescr-block-opener-tab-dropped]
+[fixture:
 flowchart/multi-line-values/accdescr-block-opener-directive-trailing-dropped]
 [fixture:
 flowchart/multi-line-values/accdescr-block-opener-directive-run-collapsed]
@@ -3961,6 +4285,7 @@ inside flowchart subgraphs, Agentflow flow/global bodies and ER subgraphs.
 Changing a global body's text can change a later flow's members. Treeview box
 mode also keeps body columns because indenting a plain physical line can reject
 the input. Eventmodeling's raw common terminals follow their own rules.
+
 [fixture:
 flowchart/multi-line-values/accdescr-block-subgraph-raw-membership-kept]
 [fixture: agentflow/accessibility/global-description-membership-kept] [corpus
@@ -3974,17 +4299,21 @@ In a state diagram, `scale`, `classDef`, `class`, `style`, `state`, `note`, and
 `stateDiagram`, in any case, are keywords only when whitespace follows them. A
 transition from an id spelled so keeps its arrow touching on both sides, as in
 `scale-->B`, and a description after such an id keeps its `:` touching it:
-`scale -->B` and `style :x` are rejected. [fixture:
-state/arrow-spacing/touching-before-keyword-kept] [fixture:
+`scale -->B` and `style :x` are rejected.
+
+[fixture: state/arrow-spacing/touching-before-keyword-kept] [fixture:
 state/arrow-spacing/compat-keyword-ids-transition] [fixture:
-state/descriptions-and-labels/compat-keyword-ids-description] See
-[Arrow spacing](./state.md#arrow-spacing).
+state/descriptions-and-labels/compat-keyword-ids-description]
+
+See [Arrow spacing](./state.md#arrow-spacing).
 
 ## State notes, aliases, and names
 
 In a state diagram, what follows the id of a note on one line is kept as
 written: mermaid.js reads the text of the note from right after the id, without
-its first two characters. [fixture: state/notes/kept]
+its first two characters.
+
+[fixture: state/notes/kept]
 
 For multiline block notes, the restricted [Notes](./state.md#notes) rule aligns
 every content line of a single paragraph one level inside the note, using ASCII
@@ -3994,7 +4323,9 @@ emphasis, code closed on the same physical line, and noninitial exact `<br/>`
 forms are included. Outer blank rows stay exact. Literal marker continuations
 align only when the source and output both retain the required four-space
 margin. Only permitted ASCII-space prefixes in raw `notes[].text` may differ,
-while rendering stays the same. [fixture: state/notes/payment-prose] [fixture:
+while rendering stays the same.
+
+[fixture: state/notes/payment-prose] [fixture:
 state/notes/prose-tab-margin-kept] [fixture: state/notes/later-tab-margin-kept]
 [fixture: state/notes/over-lines-text-ends-kept] [fixture:
 state/notes/inline-emphasis-margins] [fixture: state/notes/inline-code-margins]
@@ -4010,14 +4341,16 @@ nonempty first physical row with ASCII-space/tab padding aligns; Mermaid trims
 that margin, so the raw Db stays identical. Use the configured body level for
 that first row, regardless of later margins or whether later content exists. Do
 not copy authored later indentation into it. Later bytes stay exact even when
-their margins differ from the first line. [fixture:
-state/notes/backslash-margins-kept] [fixture:
+their margins differ from the first line.
+
+[fixture: state/notes/backslash-margins-kept] [fixture:
 state/notes/protected-tab-margins-kept] [fixture: state/notes/single-markup-row]
 
 Trivia, semicolons and protected joining regions keep the whole body written.
-This does not reformat general Markdown. [fixture: state/notes/html-note-kept]
-[fixture: state/notes/html-pre-first-line] [fixture:
-state/notes/html-break-first-line] [fixture:
+This does not reformat general Markdown.
+
+[fixture: state/notes/html-note-kept] [fixture: state/notes/html-pre-first-line]
+[fixture: state/notes/html-break-first-line] [fixture:
 state/notes/first-tab-markup-margin] [fixture:
 state/notes/over-lines-empty-lines-kept] [fixture:
 state/notes/list-body-margin-kept] [fixture:
@@ -4028,17 +4361,25 @@ state/notes/strikethrough-spanning-lines-kept] [fixture:
 state/notes/marker-at-paragraph-boundary-kept]
 
 The second description of an alias definition is kept as written, with the
-whitespace at its ends, which mermaid.js reads. [fixture:
-state/aliases/second-description-kept] The names and the empty strings after
-`state` stay on the line of `state`: on a line of its own, a second name would
-add a state. [fixture: state/statements-one-per-line/state-names-kept] A `%%` or
-an empty description block right before a `{` is kept as written up to the `{`.
+whitespace at its ends, which mermaid.js reads.
+
+[fixture: state/aliases/second-description-kept]
+
+The names and the empty strings after `state` stay on the line of `state`: on a
+line of its own, a second name would add a state.
+
+[fixture: state/statements-one-per-line/state-names-kept]
+
+A `%%` or an empty description block right before a `{` is kept as written up to
+the `{`.
+
 [fixture: state/composite-states/compat-comment-after-name-before-body]
 [fixture: state/composite-states/compat-comment-line-before-body] [fixture:
 state/composite-states/percent-before-body-kept] [fixture:
 state/composite-states/empty-block-before-body-kept] [corpus fixture:
-state/gram-ignored-state-comment-before-brace] See [Notes](./state.md#notes),
-[Aliases](./state.md#aliases),
+state/gram-ignored-state-comment-before-brace]
+
+See [Notes](./state.md#notes), [Aliases](./state.md#aliases),
 [Statements one per line](./state.md#statements-one-per-line), and
 [Composite states](./state.md#composite-states).
 
@@ -4047,7 +4388,10 @@ state/gram-ignored-state-comment-before-brace] See [Notes](./state.md#notes),
 In a state diagram, a line that holds U+2028 or U+2029 is kept as written:
 mermaid.js stops at these characters when it looks for a pseudostate mark, a
 direction line, and a second name before a `{`, while the plugin reads them as
-whitespace. [corpus fixture: state/lex-pseudostate-mark-after-line-separator]
+whitespace.
+
+[corpus fixture: state/lex-pseudostate-mark-after-line-separator]
+
 See [Line separators](./state.md#line-separators).
 
 ## ER lines that the place or the whitespace decides
@@ -4062,8 +4406,10 @@ around them decide, so formatting keeps them as they are written. See
   line-rule trigger, as in `"style:#x" end;`. An ignored `;` after a `class` or
   `subgraph` keyword keeps the whole gap before the first name, so removing it
   leaves the same keyword boundary (`class;-A a`, `subgraph;-x`, and
-  `subgraph;é`), also with U+2028 or U+2029 before the subgraph name. [fixture:
-  er/statements-one-per-line/closing-end-ignored-semicolon-kept] [fixture:
+  `subgraph;é`), also with U+2028 or U+2029 before the subgraph name.
+
+  [fixture: er/statements-one-per-line/closing-end-ignored-semicolon-kept]
+  [fixture:
   er/statements-one-per-line/closing-uppercase-end-ignored-semicolon-kept]
   [fixture: er/statements-one-per-line/class-ignored-semicolon-before-dash-kept]
   [fixture:
@@ -4072,6 +4418,7 @@ around them decide, so formatting keeps them as they are written. See
   er/statements-one-per-line/subgraph-ignored-semicolon-before-non-ascii-kept]
   [test: er/statements-one-per-line/R44-er-subgraph-LS-c-before] [test:
   er/statements-one-per-line/R44-er-subgraph-PS-c-before]
+
 - An `accTitle`, `accDescr:`, or `accDescr {` statement that holds `direction`
   and a direction on its first printed line, where a text written on a later
   line is brought to the `:`. The line is judged as the lexer reads it, without
@@ -4080,33 +4427,43 @@ around them decide, so formatting keeps them as they are written. See
   description, and after an indentation it is a direction line with the text
   `accTitle:` before `direction`: the title is lost. The statement keeps the
   first column. The direction may stand on a later line, after empty lines,
-  comment lines, and directives, which the lexer does not read. [fixture:
-  er/accessibility-statements/first-column-for-direction-text] [fixture:
-  er/accessibility-statements/first-column-value-after-directive-line] [corpus
-  fixture: er/lex-acc-title-direction] [corpus fixture:
+  comment lines, and directives, which the lexer does not read.
+
+  [fixture: er/accessibility-statements/first-column-for-direction-text]
+  [fixture: er/accessibility-statements/first-column-value-after-directive-line]
+  [corpus fixture: er/lex-acc-title-direction] [corpus fixture:
   er/lex-acc-descr-block-direction]
+
 - The entity `1`, right before another statement, the `end` of its subgraph, or
   a unit of a relationship that starts with a letter, a digit, or `_`, also
   after directives between them. `1` followed by whitespace, line breaks
   included, and such a character is the cardinality `only-one` (diagrams/er.md,
   the cardinalities, rule 11), so `1a` stays on its line, and
-  `1one to one B : x` stays touching. [fixture:
-  er/statements-one-per-line/number-name-then-name-kept] [fixture:
+  `1one to one B : x` stays touching.
+
+  [fixture: er/statements-one-per-line/number-name-then-name-kept] [fixture:
   er/relationship-spacing/number-name-before-unit-kept] [corpus fixture:
   er/lex-name-number-then-letter]
+
 - The entity `only` before a cardinality that starts with `one`. `only one` with
   exactly one space is the cardinality `only one`, while two spaces or a tab
-  make `only` an entity, so the whitespace stays as written. [fixture:
-  er/relationship-spacing/entity-only-before-one-kept] [corpus fixture:
-  er/lex-only-one-two-spaces]
+  make `only` an entity, so the whitespace stays as written.
+
+  [fixture: er/relationship-spacing/entity-only-before-one-kept] [corpus
+  fixture: er/lex-only-one-two-spaces]
+
 - The right cardinality `u`, which is `md-parent` only right before the name of
-  the right entity, so a space after it is rejected. [fixture:
-  er/relationship-spacing/md-parent] [corpus fixture:
+  the right entity, so a space after it is rejected.
+
+  [fixture: er/relationship-spacing/md-parent] [corpus fixture:
   er/lex-md-parent-right-glued-name]
+
 - The whitespace at the end of a `classDef` or `style` statement, which takes
-  the line feed after it, so the next line goes on in the style. [fixture:
-  er/styles-and-classes/trailing-whitespace-takes-next-line] [corpus fixture:
-  er/lex-classdef-space-before-line-feed]
+  the line feed after it, so the next line goes on in the style.
+
+  [fixture: er/styles-and-classes/trailing-whitespace-takes-next-line] [corpus
+  fixture: er/lex-classdef-space-before-line-feed]
+
 - A `class` or `subgraph` keyword right before a unit that starts with a `-`,
   and an `end` right before a statement that starts with a `-`: `class-A a`,
   `subgraph-x`, and `end-x`. The pinned lexer ends a keyword at a `-`, so these
@@ -4120,11 +4477,12 @@ around them decide, so formatting keeps them as they are written. See
   So the keyword and the `-` keep touching, in any case of the keyword.
   `classDef-x` and `style-y` are drawn the same with and without a space by each
   version that accepts them (one rejects both), so they are printed
-  `classDef -x` and `style -y`. [fixture:
-  er/whitespace-between-tokens/keyword-then-dash-touching-kept] [fixture:
-  er/whitespace-between-tokens/keyword-upper-then-dash-touching-kept] [fixture:
-  er/whitespace-between-tokens/subgraph-then-dash-touching-kept] [fixture:
-  er/whitespace-between-tokens/end-then-dash-touching-kept] [fixture:
+  `classDef -x` and `style -y`.
+
+  [fixture: er/whitespace-between-tokens/keyword-then-dash-touching-kept]
+  [fixture: er/whitespace-between-tokens/keyword-upper-then-dash-touching-kept]
+  [fixture: er/whitespace-between-tokens/subgraph-then-dash-touching-kept]
+  [fixture: er/whitespace-between-tokens/end-then-dash-touching-kept] [fixture:
   er/whitespace-between-tokens/classdef-style-then-dash-spaced] [fixture:
   er/whitespace-between-tokens/keyword-then-dash-apart] [corpus fixture:
   er/lex-keyword-class-then-dash] [corpus fixture:
@@ -4132,6 +4490,7 @@ around them decide, so formatting keeps them as they are written. See
   er/lex-keyword-end-then-dash] [corpus fixture:
   er/lex-keyword-classdef-then-dash] [corpus fixture:
   er/lex-keyword-style-then-dash]
+
 - An entity named by a number of two digits or more, right before a character
   that continues a name (a letter, `_`, `-`, `*`, or a character outside ASCII):
   `12a`, `12*a`, and `12日本`. The pinned lexer ends the number there, and the
@@ -4141,36 +4500,44 @@ around them decide, so formatting keeps them as they are written. See
   [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
   A `.` after the number (`12.a`) and a quote (`12"x"`) make no difference, and
   the line is split. Directives between the number and the character change
-  nothing, since mermaid.js removes them first. [fixture:
-  er/statements-one-per-line/number-name-then-name-kept] [fixture:
+  nothing, since mermaid.js removes them first.
+
+  [fixture: er/statements-one-per-line/number-name-then-name-kept] [fixture:
   er/statements-one-per-line/number-name-before-directive-kept] [corpus fixture:
   er/lex-name-number2-then-letter]
+
 - The keyword `subgraph` and the name after it, and the keyword `end` and the
   statement after it, with a character outside ASCII between them (`subgraphé`,
   `endé`, `end日本`) or a U+2028 or U+2029 between them or at the end of the
   line of an `end` (`end` U+2028 `B`). A trailing separator stays exactly once
   before comments or directives, and before a blank line and the next statement.
+
   [test: er/statements-one-per-line/R63-er-ascii-after-LS-e] [test:
   er/statements-one-per-line/R44-er-after-separator-LS-e] [test:
   er/statements-one-per-line/R44-er-after-separator-PS-e] [test:
   er/statements-one-per-line/R74-er-LS-g-comment] [test:
   er/statements-one-per-line/R74-er-LS-g-directive] [test:
   er/statements-one-per-line/R74-er-PS-g-comment] [test:
-  er/statements-one-per-line/R74-er-PS-g-directive] Some versions that count
-  read one name and draw the text differently, while the others reject the forms
-  with a character outside ASCII, or draw both forms the same (see
+  er/statements-one-per-line/R74-er-PS-g-directive]
+
+  Some versions that count read one name and draw the text differently, while
+  the others reject the forms with a character outside ASCII, or draw both forms
+  the same (see
   [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
   The keywords `class`, `classDef`, `style`, and `direction` are drawn the same
   with and without such a character. Directives between the keyword and what
-  follows it change none of this. [fixture:
-  er/statements-one-per-line/end-then-name-outside-ascii-kept] [fixture:
-  er/statements-one-per-line/subgraph-then-name-outside-ascii-kept] [fixture:
+  follows it change none of this.
+
+  [fixture: er/statements-one-per-line/end-then-name-outside-ascii-kept]
+  [fixture: er/statements-one-per-line/subgraph-then-name-outside-ascii-kept]
+  [fixture:
   er/statements-one-per-line/end-directive-then-name-outside-ascii-kept]
   [fixture:
   er/statements-one-per-line/subgraph-directive-then-name-outside-ascii-kept]
   [corpus fixture: er/lex-keyword-end-then-e-acute] [corpus fixture:
   er/lex-keyword-subgraph-then-e-acute] [corpus fixture:
   er/db-subgraph-direction-after-nested-end-line-separator]
+
 - A statement that starts with a U+2028 or U+2029, with following statements,
   where some versions that count read the text from the end of the whitespace as
   a `class` statement or as a direction line. The pinned lexer reads the
@@ -4182,8 +4549,9 @@ around them decide, so formatting keeps them as they are written. See
   either name can cross line feeds when it starts with another whitespace
   character. The gaps through both names then stay as written, including
   comments, directives and blank lines; a line feed directly after the keyword
-  or first name ends the class statement. [test:
-  er/statements-one-per-line/R45-er-class-LS-d] [test:
+  or first name ends the class statement.
+
+  [test: er/statements-one-per-line/R45-er-class-LS-d] [test:
   er/statements-one-per-line/R45-er-class-LS-e] [test:
   er/statements-one-per-line/R45-er-class-PS-d] [test:
   er/statements-one-per-line/R45-er-class-PS-e] [test:
@@ -4196,12 +4564,13 @@ around them decide, so formatting keeps them as they are written. See
   er/statements-one-per-line/R45-er-nonascii-name-PS-d] [test:
   er/statements-one-per-line/R45-er-nonascii-name-PS-e] [test:
   er/statements-one-per-line/class-names-after-directive-ls] [test:
-  er/statements-one-per-line/class-second-name-after-directive-ps] Quoted names
-  and names with an alias, classes, or attributes do not count: the line
-  `class "A" "a"` is rejected on one line and on lines of their own. The rule of
-  the direction line takes the run up to the next line terminator that holds
-  `direction`, whitespace, and a direction (`TB`, `BT`, `RL`, `LR`, in any case;
-  the whitespace may hold a line feed), so in `A direction LR` and
+  er/statements-one-per-line/class-second-name-after-directive-ps]
+
+  Quoted names and names with an alias, classes, or attributes do not count: the
+  line `class "A" "a"` is rejected on one line and on lines of their own. The
+  rule of the direction line takes the run up to the next line terminator that
+  holds `direction`, whitespace, and a direction (`TB`, `BT`, `RL`, `LR`, in any
+  case; the whitespace may hold a line feed), so in `A direction LR` and
   `A B direction LR` the line is a direction line that has no entity `A`, which
   on a line of its own is one. The same holds for `direction` as the end of the
   first statement when a statement follows the value (`direction LR B`), and the
@@ -4214,40 +4583,42 @@ around them decide, so formatting keeps them as they are written. See
   stops at the separator, and a directive that holds the words, since mermaid.js
   removes it first. The condition reads the line and not what the other
   statements declare: where a later statement declares the entity `A` again, the
-  two forms draw the same, and the line stays as written. [test: a line of two
-  ER statements that starts with U+2028] [test: a line that starts with U+2029
-  and class, and two more statements] [test: a line that starts with U+2028 and
-  direction, and two more statements] [test: a statement with U+2028 and class
-  after a space, and two more statements] [test: a line that starts with U+2028
-  and a name, and one more statement] [test: a line that starts with U+2028 and
-  a word that starts like class] [test: a line that starts with U+2028 and a
-  word that starts like direction] [test: a line that starts with U+2028, a
-  name, and a direction line] [test: a line that starts with U+2029, two names,
-  and a direction line] [test: a line that starts with U+2028, a relationship,
-  and a direction line] [test: a direction line after a name and a name that
-  starts with U+2028] [test: a line that starts with U+2028 and direction, and a
-  value on the next line that a statement follows] [test: a line that starts
-  with U+2028, a name, and a direction line with a directive before its value]
-  [test: a line that starts with U+2028, a name, and a direction line in upper
-  case] [test: a line that starts with U+2028, class and a character outside
-  ASCII, and one more statement] [test: a line that starts with U+2028 and CLASS
-  in upper case, and two more statements] [test: a line in an ER subgraph that
+  two forms draw the same, and the line stays as written.
+
+  [test: a line of two ER statements that starts with U+2028] [test: a line that
+  starts with U+2029 and class, and two more statements] [test: a line that
+  starts with U+2028 and direction, and two more statements] [test: a statement
+  with U+2028 and class after a space, and two more statements] [test: a line
+  that starts with U+2028 and a name, and one more statement] [test: a line that
+  starts with U+2028 and a word that starts like class] [test: a line that
+  starts with U+2028 and a word that starts like direction] [test: a line that
   starts with U+2028, a name, and a direction line] [test: a line that starts
-  with U+2028 and direction, and its value alone] [test: a line that starts with
-  U+2028 and a name that ends with direction, and its value alone] [test: a line
-  that starts with U+2028 and direction, and a value glued to a letter] [test: a
-  line that starts with U+2028 and direction, and a relationship that starts
-  with its value] [test: a line that starts with U+2028, a name, and direction
-  without a direction] [test: a line that starts with U+2028, a name, a second
-  U+2028, and a direction line] [test: a line that starts with U+2028 and
-  direction, its value, and a statement on the next line] [test: a line that
-  starts with U+2028 and a name, and a directive that holds a direction] [test:
-  a line that starts with U+2028 and class, and one more statement] [test: a
-  line that starts with U+2028 and class, and a name on the next line] [test: a
-  line that starts with U+2028 and class, and two names in quotes] [test: a line
-  that starts with U+2028 and class, and a name with a class] [test: a line that
-  starts with U+2028, a space, and class] [test: a line that starts with U+2028,
-  a space, a name, and a direction line]
+  with U+2029, two names, and a direction line] [test: a line that starts with
+  U+2028, a relationship, and a direction line] [test: a direction line after a
+  name and a name that starts with U+2028] [test: a line that starts with U+2028
+  and direction, and a value on the next line that a statement follows] [test: a
+  line that starts with U+2028, a name, and a direction line with a directive
+  before its value] [test: a line that starts with U+2028, a name, and a
+  direction line in upper case] [test: a line that starts with U+2028, class and
+  a character outside ASCII, and one more statement] [test: a line that starts
+  with U+2028 and CLASS in upper case, and two more statements] [test: a line in
+  an ER subgraph that starts with U+2028, a name, and a direction line] [test: a
+  line that starts with U+2028 and direction, and its value alone] [test: a line
+  that starts with U+2028 and a name that ends with direction, and its value
+  alone] [test: a line that starts with U+2028 and direction, and a value glued
+  to a letter] [test: a line that starts with U+2028 and direction, and a
+  relationship that starts with its value] [test: a line that starts with
+  U+2028, a name, and direction without a direction] [test: a line that starts
+  with U+2028, a name, a second U+2028, and a direction line] [test: a line that
+  starts with U+2028 and direction, its value, and a statement on the next line]
+  [test: a line that starts with U+2028 and a name, and a directive that holds a
+  direction] [test: a line that starts with U+2028 and class, and one more
+  statement] [test: a line that starts with U+2028 and class, and a name on the
+  next line] [test: a line that starts with U+2028 and class, and two names in
+  quotes] [test: a line that starts with U+2028 and class, and a name with a
+  class] [test: a line that starts with U+2028, a space, and class] [test: a
+  line that starts with U+2028, a space, a name, and a direction line]
+
 - Several attributes on a line, one of which comes after another attribute and
   holds a pair of `~` (`int a List~int~ b`). The oldest version that counts
   reads a generic type with a rule that starts at an attribute and runs on over
@@ -4256,6 +4627,7 @@ around them decide, so formatting keeps them as they are written. See
   pair (`List~int~ a PK int b`), a line with one `~` only
   (`string a "x~y" int b`), and a line whose pair is in a directive are drawn
   the same on lines of their own, since mermaid.js removes the directives first.
+
   [fixture: er/attribute-spacing/attributes-with-tilde-on-one-line-kept]
   [fixture:
   er/attribute-spacing/attributes-with-generic-type-later-on-one-line-kept]
@@ -4288,8 +4660,9 @@ line, so the statement after `click A href "a:b"` would not be one there. A
 click statement without a `:` (`click A href "u" accDescr {}`) is drawn the same
 on lines of its own by every version, and so is one whose only `:` stands in a
 directive. Directives on the line change none of this, since mermaid.js removes
-them before it reads the text. [fixture:
-state/statements-one-per-line/percent-then-text-kept] [fixture:
+them before it reads the text.
+
+[fixture: state/statements-one-per-line/percent-then-text-kept] [fixture:
 state/statements-one-per-line/percent-word-then-text-kept] [fixture:
 state/statements-one-per-line/percent-word-then-percent-word-split] [fixture:
 state/statements-one-per-line/percent-word-text-percent-word-kept] [fixture:
@@ -4317,14 +4690,18 @@ See [Task data](./gantt.md#task-data), [Settings](./gantt.md#settings),
   section whose names have padding, or of the sections that share a column, and
   one space after a name that touches its colon (see
   [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same)).
+
   [fixture: gantt/settings/trailing-whitespace-by-setting] [fixture:
   gantt/titles-and-sections/title-trailing-dropped-section-kept] [fixture:
   gantt/task-data/description-padding-tightened]
+
 - The colon of a task named by a word that starts a statement once whitespace
   follows it: `title:T` is a task, and `title :T` is a title, so no whitespace
   is set before the colon of such a task (see
-  [Task data](./gantt.md#task-data)). [fixture:
-  gantt/task-data/colon-touching-keyword-name-kept]
+  [Task data](./gantt.md#task-data)).
+
+  [fixture: gantt/task-data/colon-touching-keyword-name-kept]
+
 - The whitespace after the `:` of a task, which the printer sets to one space.
   mermaid.js splits the data at its commas and trims each item
   ([`parseData`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L496-L505)),
@@ -4341,32 +4718,45 @@ See [Task data](./gantt.md#task-data), [Settings](./gantt.md#settings),
   that `#` gets its space): `classDef it:a1,2024-01-01,2d;#y:3d;z:2d` has two
   tasks, `classDef it` and `#y`, and with a space after the first colon it has
   three, and the two texts are drawn differently by every version that counts
-  for Gantt charts. [fixture: gantt/task-data/colon-touches-first-item]
-  [fixture: gantt/task-data/colon-space-line-rule-kept]
+  for Gantt charts.
+
+  [fixture: gantt/task-data/colon-touches-first-item] [fixture:
+  gantt/task-data/colon-space-line-rule-kept]
+
 - The whitespace inside an item of task data, the number of its items, and the
   case of its tags: `after   a1` is one item as written, `a : 1d,` has an empty
-  item that `a : 1d` does not, and `Done` is no tag. [fixture:
-  gantt/task-data/inner-whitespace-kept] [fixture: gantt/task-data/empty-items]
-  [fixture: gantt/keyword-case/tags-case-kept]
+  item that `a : 1d` does not, and `Done` is no tag.
+
+  [fixture: gantt/task-data/inner-whitespace-kept] [fixture:
+  gantt/task-data/empty-items] [fixture: gantt/keyword-case/tags-case-kept]
+
 - The whitespace after the `:` of a task whose data is whitespace only, and
   after the keyword of an `includes` or `excludes` statement whose list is
   whitespace only. mermaid.js needs a character of the data after the colon and
   of the list text after the whitespace that follows the keyword, so `a :` and
   `includes ` are rejected, and one whitespace character, or two, stay.
+
   [fixture: gantt/task-data/whitespace-only-data] [fixture:
   gantt/lists/whitespace-only]
+
 - A U+FEFF between the items of a list of `includes` or `excludes`. mermaid.js
   lowers the case of the whole list text before it splits it, and the conversion
   ignores U+FEFF, so a capital sigma after it, at the end of a word, is `ς`,
-  while after a space, or any other whitespace, it is `σ`. [test: U+FEFF between
-  the items of a list]
+  while after a space, or any other whitespace, it is `σ`.
+
+  [test: U+FEFF between the items of a list]
+
 - The name of a call, with its whitespace: `f ()` and `f()` call two functions,
   while the whitespace in the arguments is printed in one form (see
   [Call arguments that are drawn the same](#call-arguments-that-are-drawn-the-same)).
+
   [fixture: gantt/click-statements/call-name-kept-arguments-spaced]
+
 - A line that holds a kept `;`: its statements stay on it, since the line rule
-  of mermaid.js reads the text of the line. [fixture:
-  gantt/statements-one-per-line/ignored-semicolon-line-kept]
+  of mermaid.js reads the text of the line.
+
+  [fixture: gantt/statements-one-per-line/ignored-semicolon-line-kept]
+
 - A comment line that starts with `%%{` without being a directive, and a comment
   line with the mark `%` right before it, stand after one whitespace character.
   mermaid.js reads that `%%{` only after one whitespace character, or one after
@@ -4382,8 +4772,9 @@ See [Task data](./gantt.md#task-data), [Settings](./gantt.md#settings),
   of the `%%{` count as its whitespace. Where an input is read in the same way
   by mermaid.js and by the specification, as a `%%{` line at the first column or
   after one space or one tab, the formatter prints a form that both read in the
-  same way, and not one that falls under these divergences. [fixture:
-  gantt/comments/percent-brace-line-after-blank-line] [fixture:
+  same way, and not one that falls under these divergences.
+
+  [fixture: gantt/comments/percent-brace-line-after-blank-line] [fixture:
   gantt/comments/percent-comment-then-percent-brace-line]
 
 ## User journey lines that the whitespace decides
@@ -4401,24 +4792,33 @@ See [Task data](./journey.md#task-data) and
   section without padding is left out, as is the whitespace at the ends of a
   `title` (see
   [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same)).
+
   [fixture: journey/titles-and-sections/title-trailing-dropped-section-kept]
   [fixture: journey/task-data/description-padding-kept]
+
 - The whitespace before a `#` after a `section`: it is part of the name, while
   after the data of a task it is not. After a `title` it is left out too, and
-  one space stands before the `#`. [fixture:
-  journey/titles-and-sections/title-hash-gap-one-space-section-kept] [fixture:
-  journey/task-data/hash-ends-the-data]
+  one space stands before the `#`.
+
+  [fixture: journey/titles-and-sections/title-hash-gap-one-space-section-kept]
+  [fixture: journey/task-data/hash-ends-the-data]
+
 - The whitespace inside a person, and the number of the people: `Me  Two` is one
-  person as written, and `a,` has an empty person that `a` does not. [fixture:
-  journey/task-data/people-inner-whitespace-kept] [fixture:
+  person as written, and `a,` has an empty person that `a` does not.
+
+  [fixture: journey/task-data/people-inner-whitespace-kept] [fixture:
   journey/task-data/empty-people]
+
 - The whitespace after the colon of a task whose data is whitespace only.
   mermaid.js needs a character of the data after the colon, so `A:` is rejected
-  and `A: ` is a task, and one whitespace character stays. [fixture:
-  journey/task-data/whitespace-only-data]
+  and `A: ` is a task, and one whitespace character stays.
+
+  [fixture: journey/task-data/whitespace-only-data]
+
 - A line that holds a kept `;`: its statements stay on it, since the line rule
-  of mermaid.js reads the text of the line. [fixture:
-  journey/statements-one-per-line/ignored-semicolon-line-kept]
+  of mermaid.js reads the text of the line.
+
+  [fixture: journey/statements-one-per-line/ignored-semicolon-line-kept]
 
 ## Requirement lines that the place or the whitespace decides
 
@@ -4435,12 +4835,16 @@ them as they are written. See [Names](./requirement.md#names),
   is not in the Db, and is dropped, and a run inside a value, a class, or a
   string is printed as one space (see
   [Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+
   [fixture: requirement/names/inner-whitespace-kept] [fixture:
   requirement/fields/value-inner-runs-collapsed] [fixture:
   requirement/class-lists/classes-with-spaces]
+
 - A `#` or a `%` after an unquoted name or value. It is a character of the text,
   so `id: 1 #c` has the value `1 #c`, and the comment is not moved or touched.
+
   [fixture: requirement/comments/in-unquoted-text-is-text]
+
 - A statement that a string at the end of a `style`, `classDef`, or `class`
   statement starts. The lexer is still in the style context there, and the line
   feed after the string lets the statement go on, so `style r fill:red "r"` and
@@ -4448,28 +4852,39 @@ them as they are written. See [Names](./requirement.md#names),
   are rejected. The statement is printed on a line of its own with its parts on
   one line, and, when a comment line or a directive stands in it, or it stands
   on a line that holds a `;`, it stays on the line of the statement before it,
-  which is printed as written. [fixture:
-  requirement/statements-one-per-line/string-continued-after-styles] [fixture:
+  which is printed as written.
+
+  [fixture: requirement/statements-one-per-line/string-continued-after-styles]
+  [fixture:
   requirement/statements-one-per-line/continued-with-comment-line-kept]
   [fixture:
   requirement/statements-one-per-line/continued-on-semicolon-line-kept]
+
 - The names of a `class` statement after a line break, which are read in the
   statement context, where an unquoted name may hold whitespace and other
   characters. On one line, they would be read in the style context, where an
   unquoted name is a `style-word`, and the statement would be rejected.
+
   [fixture: requirement/styles-and-classes/class-over-lines-kept]
+
 - An `accTitle`, `accDescr:`, or `accDescr {` statement that holds `direction`
   and a direction on its first printed line keeps the first column, as in an ER
-  diagram. [fixture: requirement/accessibility-statements/first-column-kept]
+  diagram.
+
+  [fixture: requirement/accessibility-statements/first-column-kept]
+
 - A line that holds a kept `;`: its statements stay on it, since the line rule
   of mermaid.js reads the text of the line. A statement written over lines whose
   last line holds a `;` of the statement after it stays as written too, since
-  the joined line would be read as a whole. [fixture:
-  requirement/statements-one-per-line/semicolon-line-kept] [fixture:
+  the joined line would be read as a whole.
+
+  [fixture: requirement/statements-one-per-line/semicolon-line-kept] [fixture:
   requirement/multi-line-statements/relationship-last-line-semicolon-kept]
+
 - A body with no field: the `{` and the `}` on two lines, since mermaid.js needs
-  a line break after the `{`. [fixture:
-  requirement/bodies/empty-body-on-two-lines]
+  a line break after the `{`.
+
+  [fixture: requirement/bodies/empty-body-on-two-lines]
 
 ## Mindmap lines that the indentation or the empty lines decide
 
@@ -4483,19 +4898,26 @@ what the Db reads and does not repair what mermaid.js rejects. See
   reads the level of a node as its indentation minus that of the root, so `root`
   with a child at 4 characters and one at 2 are different diagrams, and the
   widths in one diagram can differ. Only the indentation of the root, and the
-  characters of the indentation, change. [fixture:
-  mindmap/indentation/step-widths-kept] [fixture:
+  characters of the indentation, change.
+
+  [fixture: mindmap/indentation/step-widths-kept] [fixture:
   mindmap/indentation/root-shifted-to-one-level]
+
 - The whitespace after a directive at the start of a line, which counts as
   indentation of the node: the line is printed as written from the directive.
+
   [fixture: mindmap/directives/before-a-node-on-its-line]
+
 - A diagram comment that a U+2028 or a U+2029 ends: the text after it is a new
-  line, so a line break is written there. [test: U+2028 after a comment after a
-  shape]
+  line, so a line break is written there.
+
+  [test: U+2028 after a comment after a shape]
+
 - The empty lines that mermaid.js rejects (known divergence
   [`blank-line-after-header-or-comments`](../../spec/docs/known-divergences/blank-line-after-header-or-comments.md)):
   the ones after the header are dropped, which makes the output accepted, and
   the ones after a diagram comment between nodes stay, as one, as in the input.
+
   [fixture: mindmap/blank-lines/after-the-header-dropped] [fixture:
   mindmap/blank-lines/after-a-comment-between-nodes-kept]
 
@@ -4519,38 +4941,48 @@ See [Periods and events](./timeline.md#periods-and-events),
   the whitespace at the end of the last event of a line is left out, including
   an event that a line break separates from the next colon (see
   [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same)).
+
   [fixture: timeline/periods-and-events/period-whitespace-kept] [fixture:
   timeline/periods-and-events/event-padding-kept-end-dropped] [fixture:
   timeline/periods-and-events/period-trailing-kept-event-end-dropped]
+
 - The line on which an event stands. Joining the event on a later line to the
   line of the period with a space would add the space to the text of the event
   before it, and splitting an event off its line would leave the space at the
-  end of the line before it. [fixture:
-  timeline/periods-and-events/events-on-both]
+  end of the line before it.
+
+  [fixture: timeline/periods-and-events/events-on-both]
+
 - An event after a section on its line, as in `section T : Google`. The name of
   the section keeps the space before its colon, so the event stays on the line;
   without the space, as in `section T: Google`, it goes to a line of its own.
+
   [fixture:
   timeline/statements-one-per-line/section-with-trailing-whitespace-keeps-the-event]
   [fixture:
   timeline/statements-one-per-line/section-without-trailing-whitespace-moves-the-event]
+
 - A line of only a directive after the word `title` or `section` alone on a
   line, which is a period: the whitespace before the directive would become the
-  text of a title or a section, so it stands at the first column. [fixture:
-  timeline/periods-and-events/title-word-then-directive-line]
+  text of a title or a section, so it stands at the first column.
+
+  [fixture: timeline/periods-and-events/title-word-then-directive-line]
+
 - A title or section with a comment line or directive between its keyword and
   text keeps its complete source, including value-owned padding. Accessibility
   lines instead follow
   [Structural continuations around comments and directives](#structural-continuations-around-comments-and-directives).
-  A line that holds a `;` keeps its statements together. [fixture:
-  timeline/multi-line-statements/comment-line-inside-kept] [fixture:
+  A line that holds a `;` keeps its statements together.
+
+  [fixture: timeline/multi-line-statements/comment-line-inside-kept] [fixture:
   timeline/statements-one-per-line/ignored-semicolon-line-kept]
 
 An `accDescr` block indents later text lines by replacing only spaces and tabs
 immediately after LF, which the Db setter discards. Its text, line breaks,
-trailing whitespace and directive contents remain as written. [fixture:
-timeline/multi-line-values/description-line-ending-whitespace] [fixture:
-timeline/multi-line-values/description-directive-lines]
+trailing whitespace and directive contents remain as written.
+
+[fixture: timeline/multi-line-values/description-line-ending-whitespace]
+[fixture: timeline/multi-line-values/description-directive-lines]
 
 ## Timeline texts that the versions read differently
 
@@ -4570,10 +5002,12 @@ See [Header and direction](./timeline.md#header-and-direction) and
   `2004 : a` or `title T` were drawn the same by the versions that count for
   timeline and read a direction and differently by the others, which draw the
   period `td` and the period `TD`. So `td` is not printed `TD`, though the
-  examples in the documentation of mermaid.js write `TD`. [fixture:
-  timeline/header-and-direction/direction-kept] [fixture:
+  examples in the documentation of mermaid.js write `TD`.
+
+  [fixture: timeline/header-and-direction/direction-kept] [fixture:
   timeline/header-and-direction/direction-case-kept] [fixture:
   timeline/header-and-direction/spaces-before-the-direction]
+
 - The text after a direction on the line of the header. `timeline TD title T`
   against `timeline TD` and a line `title T`, `timeline TD LR` against `TD` and
   `LR` on lines of their own, and `timeline LR 2004 : a` against the period on a
@@ -4583,11 +5017,13 @@ See [Header and direction](./timeline.md#header-and-direction) and
   direction (`timeline History`, `timeline title T`, `timeline 2004 : a`) the
   text on the line of the header and on a line of its own were drawn the same by
   every version that counts for timeline, and the text goes to a line of its
-  own. [fixture:
-  timeline/header-and-direction/second-word-stays-on-the-header-line] [fixture:
-  timeline/header-and-direction/direction-then-period-stays] [fixture:
+  own.
+
+  [fixture: timeline/header-and-direction/second-word-stays-on-the-header-line]
+  [fixture: timeline/header-and-direction/direction-then-period-stays] [fixture:
   timeline/statements-one-per-line/header-direction-then-title] [fixture:
   timeline/header-and-direction/text-after-the-header-without-direction-moves]
+
 - A title whose text starts with a `#` after whitespace on a later line than its
   keyword. `title`, a line break, and `  # c`, against `title # c` on one line,
   were drawn the same by most of the versions that count, which draw the title
@@ -4596,8 +5032,9 @@ See [Header and direction](./timeline.md#header-and-direction) and
   whitespace before the `#` as the text. So the title stays as written. With the
   `#` at the start of its line, there is no whitespace for that rule to take as
   the text, and both forms were drawn the same by every version that counts, so
-  the value is joined to the keyword. [fixture:
-  timeline/titles-and-sections/title-hash-on-next-line-kept] [fixture:
+  the value is joined to the keyword.
+
+  [fixture: timeline/titles-and-sections/title-hash-on-next-line-kept] [fixture:
   timeline/titles-and-sections/title-hash-at-line-start-joined]
 
 ## Sankey lines that the characters or the quotes decide
@@ -4611,34 +5048,46 @@ See [Indentation](./sankey.md#indentation) and [Commas](./sankey.md#commas).
   indentation, since a space before a quote is rejected, and a line of only a
   directive is a line of whitespace once the directive is removed, which is
   rejected too. So no line is indented, and the options `useTabs` and `tabWidth`
-  have no effect. [fixture:
-  sankey/indentation/quoted-first-record-at-the-first-column] [fixture:
-  sankey/indentation/use-tabs] [fixture:
+  have no effect.
+
+  [fixture: sankey/indentation/quoted-first-record-at-the-first-column]
+  [fixture: sankey/indentation/use-tabs] [fixture:
   sankey/indentation/directive-lines-at-the-first-column]
+
 - The commas touch the strings, and no space is added next to a quote. The space
-  before a field after a string is dropped. [fixture:
-  sankey/commas/quoted-fields-touch-commas]
+  before a field after a string is dropped.
+
+  [fixture: sankey/commas/quoted-fields-touch-commas]
+
 - Whether there is whitespace between a `:` and a later `#` of a line that holds
   `style` or `classDef` before the `:` and a `;` after the `#`. The line rule
   ignores the last `;` of a line only when no whitespace lies between them, so a
   comma between them keeps whether whitespace is around it, and a line that
   dropping a `;` would change the end of is printed as written. Where there is
-  whitespace, it is one space. [fixture:
-  sankey/commas/style-line-colon-and-hash-in-two-fields-kept] [fixture:
-  sankey/commas/style-line-spaces-between-colon-and-hash-become-one] [fixture:
-  sankey/commas/semicolon-ends-the-line-kept] [fixture:
+  whitespace, it is one space.
+
+  [fixture: sankey/commas/style-line-colon-and-hash-in-two-fields-kept]
+  [fixture: sankey/commas/style-line-spaces-between-colon-and-hash-become-one]
+  [fixture: sankey/commas/semicolon-ends-the-line-kept] [fixture:
   flowchart/semicolons/style-line-gap-between-colon-and-hash-kept]
+
 - A field of spaces only, which is a field with an empty text, is printed as one
   space, and a value of spaces only before another record ends its line with
-  that space. [fixture: sankey/commas/spaces-only-field-is-one-space] [fixture:
+  that space.
+
+  [fixture: sankey/commas/spaces-only-field-is-one-space] [fixture:
   sankey/commas/spaces-only-value-before-another-record]
+
 - The text of a string, with its line breaks, the empty lines in it, and the
-  whitespace at the start of a later line, which is part of its value. [fixture:
-  sankey/multi-line-strings/string-over-lines] [fixture:
+  whitespace at the start of a later line, which is part of its value.
+
+  [fixture: sankey/multi-line-strings/string-over-lines] [fixture:
   sankey/multi-line-strings/empty-line-in-string]
+
 - A tab, U+00A0, U+3000, U+2028, U+2029, and U+FEFF at the end of the text,
-  which mermaid.js accepts only there, are dropped. [test: U+3000 at the end of
-  the text without a line feed]
+  which mermaid.js accepts only there, are dropped.
+
+  [test: U+3000 at the end of the text without a line feed]
 
 ## XY chart lines that the units, the quotes, or the lexer decide
 
@@ -4651,56 +5100,77 @@ the Db or the lexer reads stays. See [Text units](./xychart.md#text-units) and
   title `Title`, and a space in `Title 1` would make the keyword `Title`, which
   mermaid.js rejects here; `title ba r` is not the keyword `bar`, and joining
   the units makes it one. So a run of whitespace becomes one space, and units
-  that touch keep touching. [fixture: text-units/title-then-range-touching-kept]
-  [fixture: text-units/plot-title-digits-touching-kept] [fixture:
+  that touch keep touching.
+
+  [fixture: text-units/title-then-range-touching-kept] [fixture:
+  text-units/plot-title-digits-touching-kept] [fixture:
   text-units/category-digits-touching-kept] [fixture:
   text-units/hyphen-and-number-touching-kept]
+
 - The case of the orientation. Only `horizontal` in lower case makes the chart
   horizontal, and `Horizontal` makes it vertical, so the case is in the Db.
+
   [fixture: header-and-orientation/orientation-case-kept]
+
 - A string, with the line breaks in it, which are in the Db, and the quotes of a
   text of several words: `"a b"` and `a b` are not the same text, so they stay
   as written. A run of spaces and tabs in a string is printed as one space. A
   text of one word changes its quotes only as
-  [The quotes of a text](#the-quotes-of-a-text) says. [fixture:
-  quotes/strings-runs-collapsed] [fixture: quotes/texts-of-several-words]
-  [fixture: multi-line-values/string-with-line-breaks-kept]
+  [The quotes of a text](#the-quotes-of-a-text) says.
+
+  [fixture: quotes/strings-runs-collapsed] [fixture:
+  quotes/texts-of-several-words] [fixture:
+  multi-line-values/string-with-line-breaks-kept]
+
 - The digits of a category and of a title, which are text, so `007` and `.5`
   stay as written; the numbers of a range and of a plot are printed in the
   shortest form (see
   [Spellings that are drawn the same](#spellings-that-are-drawn-the-same)).
+
   [fixture: numbers/categories-are-texts] [fixture:
   numbers/range-numbers-one-form]
+
 - A block `accDescr {` that is not closed, which runs to the end of the text:
   mermaid.js reads no text for it, and a `}` that the printer wrote would make
-  it a description. [fixture:
-  accessibility-statements/block-not-closed-kept-as-written]
+  it a description.
+
+  [fixture: accessibility-statements/block-not-closed-kept-as-written]
+
 - A line that the line rule of mermaid.js reads, with a `style` or `classDef`, a
   `:` and a `#` after it with no whitespace between them, and a `;` after that,
   keeps its statements together with the kept `;`; dropped style terminators
   follow
   [the style rule](./block.md#semicolons-at-the-end-of-a-style-statement).
+
   [fixture: statements-one-per-line/line-rule-line-kept-together] [fixture:
   multi-line-statements/semicolon-inside-joined]
+
 - A statement with a comment or directive keeps the required line breaks while
   structural continuations align under
   [Structural continuations around comments and directives](#structural-continuations-around-comments-and-directives).
+
   [fixture: multi-line-statements/comment-line-inside-kept] [fixture:
   multi-line-statements/directive-inside-kept]
+
 - Whether a comment touches the unit before it: mermaid.js reads a `%%` that
   touches a unit of one character together with that character (the known
   divergence `comment-takes-character`), and the printer keeps whether the
-  comment touches. [fixture:
-  comments/comment-glued-to-a-one-character-word-kept] [fixture:
+  comment touches.
+
+  [fixture: comments/comment-glued-to-a-one-character-word-kept] [fixture:
   comments/comment-takes-a-character-kept]
+
 - A U+2028 or U+2029 in the gap of a statement, which is printed as written.
+
   [test: U+2028 between the words of a title]
+
 - An input of the known divergence `title-digit-after-axis-statement`, which the
   specification accepts and mermaid.js rejects, is split into statements on
   lines of their own, and mermaid.js accepts the result with the Db of the
-  specification. [fixture:
-  statements-one-per-line/axis-then-title-with-a-digit-split] [fixture:
-  statements-one-per-line/axis-band-then-title-with-a-digit-split]
+  specification.
+
+  [fixture: statements-one-per-line/axis-then-title-with-a-digit-split]
+  [fixture: statements-one-per-line/axis-band-then-title-with-a-digit-split]
 
 ## Quadrant chart lines that the texts, the quotes, or the lexer decide
 
@@ -4716,50 +5186,71 @@ around them. What the Db or the lexer reads stays. See
   a text without quotes, a name, a title, or an accessibility description is
   printed as one space (see
   [Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+
   [fixture: keywords-and-texts/inner-runs-collapsed] [fixture:
   keywords-and-texts/string-then-text-whitespace-kept] [fixture:
   points/name-inner-runs-collapsed] [fixture:
   titles-and-accessibility-statements/text-inner-whitespace-kept]
+
 - A word after the keyword `title` or `classDef` with no whitespace between them
   is a word of its own: `title1: [0.3, 0.6]` is a point named `title1`, and a
-  space would make a title. [fixture:
-  keywords-and-texts/word-after-title-keyword-is-a-point-name]
-- The coordinates of a point, which are texts: `0.30` is not `0.3`. [fixture:
-  points/coordinates-as-written]
+  space would make a title.
+
+  [fixture: keywords-and-texts/word-after-title-keyword-is-a-point-name]
+
+- The coordinates of a point, which are texts: `0.30` is not `0.3`.
+
+  [fixture: points/coordinates-as-written]
+
 - The arrow of an axis with no second text, which the Db reads as part of the
-  left text. [fixture: axes/arrow-only]
+  left text.
+
+  [fixture: axes/arrow-only]
+
 - A string, with the line breaks in it, and the quotes of a string that holds
   what a text without quotes cannot (`"a: b"` has a colon, which a text without
   quotes is rejected for), which stay, while a run of spaces and tabs in it is
   printed as one space. A plain text loses its quotes, as
-  [The quotes of a text](#the-quotes-of-a-text) says. [fixture:
-  quotes/strings-runs-collapsed] [fixture: quotes/texts-that-need-quotes]
-  [fixture: quotes/keywords-and-arrows-in-strings] [fixture:
+  [The quotes of a text](#the-quotes-of-a-text) says.
+
+  [fixture: quotes/strings-runs-collapsed] [fixture:
+  quotes/texts-that-need-quotes] [fixture:
+  quotes/keywords-and-arrows-in-strings] [fixture:
   multi-line-values/string-with-line-breaks-kept]
+
 - A `;` inside a title or an accessibility text, which is a character of it, and
-  an empty description block inside a title, which is part of it. [fixture:
-  statements-one-per-line/semicolon-in-a-title-is-text] [fixture:
+  an empty description block inside a title, which is part of it.
+
+  [fixture: statements-one-per-line/semicolon-in-a-title-is-text] [fixture:
   statements-one-per-line/empty-description-block-in-a-title-stays]
+
 - A line that the line rule of mermaid.js reads, with a `style` or `classDef`, a
   `:` and a `#` after it with no whitespace between them, and a `;` after that,
   keeps its statements together with the kept `;`; dropped style terminators
   follow
   [the style rule](./block.md#semicolons-at-the-end-of-a-style-statement).
+
   [fixture: statements-one-per-line/line-rule-line-kept-together] [fixture:
   multi-line-statements/semicolon-on-the-last-line-joined]
+
 - A point or accessibility statement with a comment or directive keeps the
   required line breaks while structural continuations align under
   [Structural continuations around comments and directives](#structural-continuations-around-comments-and-directives).
+
   [fixture: multi-line-statements/comment-line-inside-kept] [fixture:
   multi-line-statements/directive-inside-kept]
+
 - Whether a comment touches the unit before it: mermaid.js reads a `%%` that
   touches a unit of one character together with that character (the known
   divergence `comment-takes-character`), and the printer keeps whether the
-  comment touches. [fixture:
-  comments/comment-glued-to-a-one-character-word-kept] [fixture:
+  comment touches.
+
+  [fixture: comments/comment-glued-to-a-one-character-word-kept] [fixture:
   comments/comment-takes-a-character-kept]
+
 - U+2028, U+2029, and U+00A0, which are characters of a word in a text, a name,
   a title, and an accessibility text, and stay where they stand, also in a gap.
+
   [test: U+2028 between the words of a text] [test: U+2028 around the arrow of
   an axis]
 
@@ -4767,8 +5258,9 @@ Ordinary point and class styles use `name: value`. Only ASCII spaces and tabs
 next to the first colon are normalized; the value spelling stays intact. A style
 with trivia, whitespace other than ASCII spaces and tabs, a semicolon or a
 second colon, or on a protected semicolon line, keeps its interior as written.
-The suffix after a second colon is not interpreted. [fixture:
-quadrant/styles/style-colon-padding] [fixture:
+The suffix after a second colon is not interpreted.
+
+[fixture: quadrant/styles/style-colon-padding] [fixture:
 quadrant/styles/style-colon-tab-padding] [fixture:
 quadrant/styles/style-extra-colon-kept] [fixture:
 quadrant/styles/style-directive-kept] [fixture:
@@ -4782,39 +5274,54 @@ What the Db or the lexer reads stays. See [Rows](./block.md#rows),
 [Multi-line statements](./block.md#multi-line-statements).
 
 - The whitespace inside the parentheses of a block arrow, which is in the Db:
-  `(right down)` has the direction `right `, and `( up)` has ` up`. [fixture:
-  shapes/block-arrow-directions-as-written] [fixture:
+  `(right down)` has the direction `right `, and `( up)` has ` up`.
+
+  [fixture: shapes/block-arrow-directions-as-written] [fixture:
   shapes/block-arrow-directions-whitespace-kept]
-- The whitespace of `class`: of its ids and of its class name. [fixture:
-  styles/class-ids-as-written] [fixture: styles/class-name-runs-collapsed]
-  [fixture: styles/class-name-with-a-comma-runs-collapsed]
+
+- The whitespace of `class`: of its ids and of its class name.
+
+  [fixture: styles/class-ids-as-written] [fixture:
+  styles/class-name-runs-collapsed] [fixture:
+  styles/class-name-with-a-comma-runs-collapsed]
+
 - A statement that starts with `%%`: mermaid.js reads `%%x` after a node as an
   id and a line that starts with `%%x` as a comment line, so the line that holds
-  such a statement stays on one line. [fixture:
-  rows/percent-id-stays-in-its-row] [fixture:
+  such a statement stays on one line.
+
+  [fixture: rows/percent-id-stays-in-its-row] [fixture:
   rows/percent-id-keeps-columns-with-it] [fixture:
   rows/percent-id-after-end-not-moved] [fixture:
   rows/percent-id-after-the-header-stays-on-the-line] [fixture:
   comments/percent-in-a-line-is-an-id]
+
 - A chain of links, `A --> B --> C`, which mermaid.js reads badly (its Db loses
   the nodes before the last) and which splitting would read otherwise, stays one
-  statement on one line. [fixture: edges/chain-on-one-line]
+  statement on one line.
+
+  [fixture: edges/chain-on-one-line]
+
 - A line that the line rule of mermaid.js reads, with a `style` or `classDef`, a
   `:` and a `#` after it with no whitespace between them, and a `;` after that,
   keeps its statements together with the kept `;`; dropped style terminators
   follow
   [the style rule](./block.md#semicolons-at-the-end-of-a-style-statement).
+
   [fixture: multi-line-statements/line-rule-line-kept] [fixture:
   multi-line-statements/line-rule-line-kept-with-columns] [fixture:
   multi-line-statements/line-rule-line-kept-with-composite]
+
 - A statement with a comment or directive keeps the required line breaks while
   structural continuations align under
   [Structural continuations around comments and directives](#structural-continuations-around-comments-and-directives).
+
   [fixture: multi-line-statements/comment-line-inside-kept] [fixture:
   multi-line-statements/directive-inside-kept]
+
 - U+0085, which mermaid.js does not read as whitespace: it is a character of an
-  id. A U+2028 or U+2029 in the gap of a statement is printed as written. [test:
-  U+0085 inside an id] [test: U+2028 between two statements of a row]
+  id. A U+2028 or U+2029 in the gap of a statement is printed as written.
+
+  [test: U+0085 inside an id] [test: U+2028 between two statements of a row]
 
 ## A comment line after U+2028 or U+2029
 
@@ -4827,12 +5334,15 @@ it, and with the line break that ends it (the comment region of the
 specification's [Comment lines](../../spec/docs/common.md#comment-lines)). When
 the region starts right after U+2028 or U+2029, or right where another region of
 this kind ends, the text before it and the text after it become one line: `alt`,
-U+2028, `%% e`, and a line ` a` is `alt a`. [corpus fixture:
-common/comment-after-u2028] [corpus fixture:
-flowchart/comment-lines-after-separator-006f79fb] A `#` comment is no such
-region: the lexer of its diagram reads it. Nor is a `%%` with nothing after it,
-or a line that starts with `%%{` without being a directive: mermaid.js does not
-remove these as comment lines, and a class diagram reads them itself.
+U+2028, `%% e`, and a line ` a` is `alt a`.
+
+[corpus fixture: common/comment-after-u2028] [corpus fixture:
+flowchart/comment-lines-after-separator-006f79fb]
+
+A `#` comment is no such region: the lexer of its diagram reads it. Nor is a
+`%%` with nothing after it, or a line that starts with `%%{` without being a
+directive: mermaid.js does not remove these as comment lines, and a class
+diagram reads them itself.
 
 A line that mermaid.js reads this way runs over several lines of the source. The
 formatter prints it as written, from its first line to its end, with the
@@ -4848,19 +5358,22 @@ line, unless a comment line follows it: before a comment line, such lines belong
 to the region and are removed with it. A U+2028 or U+2029 inside a directive is
 removed with the directive, so it ends no diagram comment and cuts none: the
 comment fragments before and after such a directive stay one comment, printed as
-written. [test: a diagram comment joined past a closed directive that holds
-U+2028]
+written.
+
+[test: a diagram comment joined past a closed directive that holds U+2028]
 
 ## Frontmatter
 
 The YAML between the `---` lines is formatted with Prettier's YAML formatter.
-The `---` lines are kept as written. [fixture:
-flowchart/frontmatter-yaml/formatted]
+The `---` lines are kept as written.
+
+[fixture: flowchart/frontmatter-yaml/formatted]
 
 YAML uses at least one space per indentation level, including with
 `tabWidth: 0`. Its indentation carries block scalars and nested values: zero
 width would make Mermaid reject a block scalar or change a title or
 configuration. This shared minimum preserves the reading for every diagram type.
+
 [fixture: ishikawa/frontmatter-yaml/zero-width-block-scalar-title] [fixture:
 ishikawa/frontmatter-yaml/zero-width-nested-title] [fixture:
 ishikawa/frontmatter-yaml/zero-width-nested-config] [fixture:
@@ -4870,23 +5383,26 @@ The YAML is kept as written when the `---` lines are indented, and when a line
 of the formatted YAML has the form of a `---` line (the specification's
 [Frontmatter](../../spec/docs/common.md#frontmatter)), which would end the
 frontmatter early. Prettier prints such lines: it prints `--- !!map` after a
-`%YAML` directive as `---` and `!!map` on two lines. [fixture:
-flowchart/frontmatter-yaml/indented-delimiters-kept] [fixture:
+`%YAML` directive as `---` and `!!map` on two lines.
+
+[fixture: flowchart/frontmatter-yaml/indented-delimiters-kept] [fixture:
 flowchart/frontmatter-yaml/delimiter-line-kept]
 
 The YAML is kept as written when it contains a `<` followed by an ASCII letter,
 a digit, or `_`. The formatted YAML is checked too, as a guard against the YAML
 printer of the installed Prettier version: no input is known whose formatted
-form has a `<` that the written one lacks. [fixture:
-flowchart/frontmatter-yaml/html-tag-kept] [fixture:
+form has a `<` that the written one lacks.
+
+[fixture: flowchart/frontmatter-yaml/html-tag-kept] [fixture:
 flowchart/frontmatter-yaml/compat-tag-start-digit-kept] [fixture:
 flowchart/frontmatter-yaml/compat-tag-start-underscore-kept] [fixture:
-flowchart/frontmatter-yaml/compat-less-than-without-tag-formatted] Such a `<`
-may start an HTML tag, and mermaid.js rewrites `="..."` inside HTML tags before
-it reads the YAML. Changing the quotes of a value inside a tag can change what
-mermaid.js reads. For example, mermaid.js accepts `title: "<a b=\"c\">"`.
-Prettier would print it as `title: '<a b="c">'`, which mermaid.js rewrites to
-`title: '<a b='c'>'`, which is not YAML.
+flowchart/frontmatter-yaml/compat-less-than-without-tag-formatted]
+
+Such a `<` may start an HTML tag, and mermaid.js rewrites `="..."` inside HTML
+tags before it reads the YAML. Changing the quotes of a value inside a tag can
+change what mermaid.js reads. For example, mermaid.js accepts
+`title: "<a b=\"c\">"`. Prettier would print it as `title: '<a b="c">'`, which
+mermaid.js rewrites to `title: '<a b='c'>'`, which is not YAML.
 
 ## Byte order mark
 
@@ -4895,10 +5411,14 @@ reads it, and adds it back afterwards. mermaid.js reads frontmatter after such a
 mark only when the closing `---` line repeats the mark. So:
 
 - When the mark stands before both `---` lines, mermaid.js accepts the text, and
-  the plugin reports a syntax error. [corpus fixture:
-  common/frontmatter-bom-both-delimiters]
+  the plugin reports a syntax error.
+
+  [corpus fixture: common/frontmatter-bom-both-delimiters]
+
 - When the mark stands only before the opening line, mermaid.js rejects the
-  text, and the plugin formats it. [corpus fixture: common/frontmatter-bom]
+  text, and the plugin formats it.
+
+  [corpus fixture: common/frontmatter-bom]
 
 ## Line endings
 
@@ -4906,9 +5426,11 @@ mermaid.js reads `\r\n` and a lone `\r` as line breaks, as it reads `\n` (the
 specification's [Line terminators](../../spec/docs/common.md#line-terminators)).
 Prettier converts them before the plugin reads the text, and the output has the
 line ending of Prettier's `endOfLine` option, with the same lines as for a text
-with line feeds. [test: a flowchart diagram with other line endings] [test: a
-sequence diagram with other line endings] [test: a class diagram with other line
-endings] [test: a state diagram with other line endings]
+with line feeds.
+
+[test: a flowchart diagram with other line endings] [test: a sequence diagram
+with other line endings] [test: a class diagram with other line endings] [test:
+a state diagram with other line endings]
 
 ## Markdown code blocks
 
@@ -4930,7 +5452,9 @@ with only comments, directives, and line breaks around it, has nothing to
 format: its printer prints the whole text as written, the frontmatter included,
 in a standalone file. Only the line endings may change: they follow Prettier's
 `endOfLine` option, as for every other language. In Markdown, the code block is
-left to Prettier. [fixture: error/as-written/frontmatter-kept] [fixture:
+left to Prettier.
+
+[fixture: error/as-written/frontmatter-kept] [fixture:
 error/as-written/trailing-whitespace-and-comment-kept] [fixture:
 error/as-written/directive-kept] [corpus fixture: common/error-pseudo-diagram]
 [corpus fixture: common/error-comment-inside]
@@ -4947,8 +5471,9 @@ before the first one. A data block with invalid YAML is accepted by the parser
 as opaque text, although mermaid.js rejects it (known divergence
 [`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.md)),
 and the printer retains its opaque content with only eligible margin movement.
-See the [kanban rules](./kanban.md). [fixture:
-kanban/indentation/sections-and-items] [fixture:
+See the [kanban rules](./kanban.md).
+
+[fixture: kanban/indentation/sections-and-items] [fixture:
 kanban/icons-and-classes/aligned] [fixture:
 kanban/directives/leading-directive-indentation-decided] [fixture:
 kanban/trailing-whitespace/class-trailing-trim]
@@ -4960,7 +5485,9 @@ adjacent blocks and intervening directives; YAML formatting applies only to
 guarded frontmatter. Complete blank/comment gaps after diagram comments,
 terminal gaps included, stay as written under
 `blank-line-after-header-or-comments`. A raw rejection has no raw Db; the corpus
-checks the specified reading. [fixture: kanban/data-blocks/adjacent] [fixture:
+checks the specified reading.
+
+[fixture: kanban/data-blocks/adjacent] [fixture:
 kanban/data-blocks/data-adjacent-directive] [fixture:
 kanban/blank-lines/div-between-comment-blank] [fixture:
 kanban/blank-lines/comment-blank-trailing]
@@ -4970,11 +5497,12 @@ complete segments, whitespace, comments, and directives. Kanban keeps `;`,
 including ignored semicolons: none is a statement separator. Removing a
 semicolon or moving its inline comment can select a different last semicolon.
 Unicode segment boundaries and comment endings remain characters; configured
-CR/LF conversion is shared with the other diagrams. [fixture:
-kanban/line-rule-and-kept-lines/line-rule-comment-to-own-line] [fixture:
-kanban/line-rule-and-kept-lines/line-rule-classdef-and-style] [fixture:
-kanban/semicolons/values] [test: kanban: line-rule-ls-segment] [test: kanban:
-comment-ls-split-count] [test: a kanban diagram with other line endings]
+CR/LF conversion is shared with the other diagrams.
+
+[fixture: kanban/line-rule-and-kept-lines/line-rule-comment-to-own-line]
+[fixture: kanban/line-rule-and-kept-lines/line-rule-classdef-and-style]
+[fixture: kanban/semicolons/values] [test: kanban: line-rule-ls-segment] [test:
+kanban: comment-ls-split-count] [test: a kanban diagram with other line endings]
 
 ## C4 argument units and physical lines
 
@@ -4983,21 +5511,25 @@ ignored indices and sprites, excess arguments, and adjacent units. Bare and
 quoted forms are printed as [The quotes of a text](#the-quotes-of-a-text) says;
 a non-ASCII-space prefix before a bare quote or `$` stays because it selects
 bare lexing. A whitespace-only unit after a quoted argument remains a unit. See
-the [C4 rules](./c4.md). [fixture: c4/argument-spacing/null-space-kept]
-[fixture: c4/empty-entries/named-null-slots] [fixture:
-c4/number-like-text/excess-kept] [test: c4: tab-before-quote] [test: c4:
-bare-dollar-prefix]
+the [C4 rules](./c4.md).
+
+[fixture: c4/argument-spacing/null-space-kept] [fixture:
+c4/empty-entries/named-null-slots] [fixture: c4/number-like-text/excess-kept]
+[test: c4: tab-before-quote] [test: c4: bare-dollar-prefix]
 
 Ordinary named-attribute gaps format as `$key = "value"`, keeping key and quoted
-contents intact. [fixture: c4/named-attributes/named-equals] [fixture:
+contents intact.
+
+[fixture: c4/named-attributes/named-equals] [fixture:
 c4/named-attributes/named-multiline]
 
 Empty description blocks remain adjacent, with both `beforeBody` gaps retained,
 because they supply neither a significant statement nor a newline. Multiline
 argument values retain their lines and columns. Named-key exterior gaps retain
 their line breaks with ordinary continuation indentation; joining direction text
-can make an accepted input rejected even at column one. [fixture:
-c4/empty-description-blocks/empty-header-gap] [fixture:
+can make an accepted input rejected even at column one.
+
+[fixture: c4/empty-description-blocks/empty-header-gap] [fixture:
 c4/empty-description-blocks/empty-boundary-next-gap] [fixture:
 c4/empty-description-blocks/empty-on-close-line] [fixture:
 c4/named-attributes/named-exterior-newline-kept] [fixture:
@@ -5006,8 +5538,9 @@ c4/direction-rejection/acc-colon-direction]
 
 Inside multiline empty `beforeBody` blocks, standalone trivia uses one level
 inside the containing header or call, and the closer aligns with that owner.
-Existing adjacency and brace-joining rules still apply. [fixture:
-c4/header/empty-header-comment-columns] [fixture:
+Existing adjacency and brace-joining rules still apply.
+
+[fixture: c4/header/empty-header-comment-columns] [fixture:
 c4/boundary-bodies/empty-beforebody-comment-columns]
 
 Colon accessibility forms keep trivia line breaks while ordinary exterior tokens
@@ -5015,8 +5548,10 @@ and standalone trivia use continuation indentation. Own-line directives in
 description blocks align with the body, keeping directive contents and contact
 unchanged. Native `title` and `accDescription` value prefixes, direction-text
 lines, semicolon protections and joining comment regions retain their separate
-preservation rules. [fixture: c4/accessibility-lines/colon-trivia-continuations]
-[fixture: c4/description-blocks/block-directive-lines]
+preservation rules.
+
+[fixture: c4/accessibility-lines/colon-trivia-continuations] [fixture:
+c4/description-blocks/block-directive-lines]
 
 Diagram comments retain their complete following gaps, including whitespace-only
 recovery lines and terminal gaps; the `comment-takes-line-break` divergence is
@@ -5028,9 +5563,10 @@ its last kept `;`, with no whitespace between the `:` and the `#` (see
 [Semicolons](./flowchart.md#semicolons)), so the gaps and the padding inside
 that stretch keep whether they hold whitespace, a run becoming one space, and
 the rest of the segment follows the ordinary rules of this diagram. Indentation
-and exterior trailing whitespace remain printer whitespace. [fixture:
-c4/comments/comment-header] [fixture: c4/blank-lines/comment-recovery] [fixture:
-c4/final-newline/comment-eof-gap] [fixture:
+and exterior trailing whitespace remain printer whitespace.
+
+[fixture: c4/comments/comment-header] [fixture: c4/blank-lines/comment-recovery]
+[fixture: c4/final-newline/comment-eof-gap] [fixture:
 c4/line-rule-and-semicolons/semicolon-inline-comment] [fixture:
 c4/line-rule-and-semicolons/semicolon-suffix-spacing] [fixture:
 c4/trailing-whitespace/semicolon-line] [test: c4: ls-line-rule-segments]
@@ -5143,8 +5679,9 @@ ishikawa/div-header-space-directive-node]
 
 Agentflow body indentation uses the shared significant width, at least one space
 per step even at `tabWidth: 0`. Moving an indented direction statement to column
-one can turn its prefix into accessibility text or a syntax error. [fixture:
-agentflow/direction/zero-title-indented] [fixture:
+one can turn its prefix into accessibility text or a syntax error.
+
+[fixture: agentflow/direction/zero-title-indented] [fixture:
 agentflow/direction/zero-description-indented] [fixture:
 agentflow/direction/zero-style-direction]
 
@@ -5155,11 +5692,14 @@ whitespace is value text. First-style leading whitespace and label-comment
 padding remain characters. Names keep erased click/empty parts and the one
 whitespace character that ends reading name text as a click id. A trailing
 whitespace-only part drops when replacing its separator with LF makes it
-exterior whitespace. [fixture:
-agentflow/names-and-headings/empty-description-space-flow] Click
-textBeforeUrl/textBeforeTooltip keeps each prefix and its source gaps. No
-reserved-click exception applies. [fixture:
-agentflow/single-space-gaps/style-first-spaces] [corpus fixture:
+exterior whitespace.
+
+[fixture: agentflow/names-and-headings/empty-description-space-flow]
+
+Click textBeforeUrl/textBeforeTooltip keeps each prefix and its source gaps. No
+reserved-click exception applies.
+
+[fixture: agentflow/single-space-gaps/style-first-spaces] [corpus fixture:
 agentflow/lex-flow-name-click-state] [corpus fixture:
 agentflow/gram-click-erased-before-url-tooltip]
 
@@ -5168,8 +5708,9 @@ comments inside strings, descriptions, callbacks and metadata are value text.
 End/global consume ASCII spaces/tabs rather than LF, and the brace fold takes
 only the whitespace immediately before the next LF. Metadata remains separate on
 its written occurrence, including content-only rejections under the specified
-opaque reading; raw rejection supplies no raw Db. [fixture:
-agentflow/comments/comment-looking-values] [fixture:
+opaque reading; raw rejection supplies no raw Db.
+
+[fixture: agentflow/comments/comment-looking-values] [fixture:
 agentflow/multiline-statements-and-values/brace-blank-kept] [corpus fixture:
 agentflow/db-data-block-invalid-yaml]
 
@@ -5179,10 +5720,11 @@ applied only if its planned measurement stays strictly below 50000. This keeps
 Mermaid's comment-preservation branch stable despite indentation, final LF,
 trimming and the host's restored BOM. Frontmatter keeps its shared YAML guards;
 CR/LF and Markdown retain their shared host handling, including final
-code-block-line trimming that can reject a null style. [fixture:
-agentflow/default-size-branches/size-preserving-to-fallback-unsafe] [fixture:
-agentflow/default-size-branches/size-below-planned-crossing] [test: agentflow
-Markdown: null style host limitation]
+code-block-line trimming that can reject a null style.
+
+[fixture: agentflow/default-size-branches/size-preserving-to-fallback-unsafe]
+[fixture: agentflow/default-size-branches/size-below-planned-crossing] [test:
+agentflow Markdown: null style host limitation]
 
 ## Usecase native syntax and authored values
 
@@ -5191,8 +5733,9 @@ arrow/id boundaries, declaration/update roles and source order are not rebuilt
 from the resolved Db. Body indentation is structural presentation, so
 `tabWidth: 0` stays zero; guarded YAML retains the shared minimum of one.
 `A --order` prints `A --o rder`, while `A -- order` keeps its complete target.
-See the [usecase rules](./usecase.md). [fixture:
-usecase/arrow-id-boundaries/circle-prefix-suffixes] [fixture:
+See the [usecase rules](./usecase.md).
+
+[fixture: usecase/arrow-id-boundaries/circle-prefix-suffixes] [fixture:
 usecase/indentation/indent-zero] [fixture:
 usecase/frontmatter-yaml/frontmatter-zero]
 
@@ -5205,8 +5748,9 @@ without supplied effects use the shared null Db comparison and written-source
 check; the corpus uses recorded effects where available. The padding of a CSS
 declaration around its first colon follows
 [Styles that are drawn the same](#styles-that-are-drawn-the-same); the runs in a
-declaration are printed as one space as well. [fixture:
-usecase/native-metadata/metadata-inline] [fixture:
+declaration are printed as one space as well.
+
+[fixture: usecase/native-metadata/metadata-inline] [fixture:
 usecase/native-metadata/metadata-blank-lines-kept] [fixture:
 usecase/json-tables/json-opaque] [fixture:
 usecase/classes-and-styles/css-colon-padding] [fixture:
@@ -5215,9 +5759,10 @@ usecase/classes-and-styles/css-custom-gap-run-collapsed]
 After common comment-region and line-terminator handling, the optional trailing
 comma and physical line breaks between the last property and `}` total at most
 two, with the comma allowed only before the line breaks. Keep the written line
-breaks and blank lines of accepted tails. [corpus fixture:
-usecase/gram-metadata-property-comma-no-newline] [corpus fixture:
-usecase/gram-native-trailing-newline] [corpus fixture:
+breaks and blank lines of accepted tails.
+
+[corpus fixture: usecase/gram-metadata-property-comma-no-newline] [corpus
+fixture: usecase/gram-native-trailing-newline] [corpus fixture:
 usecase/gram-metadata-no-trailing-comma-two-newlines] [corpus fixture:
 usecase/gram-metadata-no-trailing-comma-three-newlines] [corpus fixture:
 usecase/gram-metadata-no-trailing-comma-four-newlines] [corpus fixture:
@@ -5239,10 +5784,12 @@ usecase/gram-metadata-no-trailing-comma-whitespace-lines] [corpus fixture:
 usecase/gram-metadata-no-trailing-comma-two-tab-lines] [corpus fixture:
 usecase/gram-metadata-no-trailing-comma-tab-lines] [corpus fixture:
 usecase/gram-metadata-no-trailing-comma-comment-two-newlines] [corpus fixture:
-usecase/gram-metadata-no-trailing-comma-comment-three-newlines] A comma between
-properties permits zero or more line breaks. [corpus fixture:
-usecase/gram-metadata-property-comma-no-newline] [corpus fixture:
-usecase/gram-metadata-property-comma-one-newline] [corpus fixture:
+usecase/gram-metadata-no-trailing-comma-comment-three-newlines]
+
+A comma between properties permits zero or more line breaks.
+
+[corpus fixture: usecase/gram-metadata-property-comma-no-newline] [corpus
+fixture: usecase/gram-metadata-property-comma-one-newline] [corpus fixture:
 usecase/gram-metadata-property-comma-two-newlines] [corpus fixture:
 usecase/gram-metadata-property-comma-three-newlines]
 
@@ -5251,8 +5798,9 @@ value. Description bodies follow
 [Description block indentation](#description-block-indentation), retaining
 contents and line breaks while aligning ordinary body prefixes and a separate
 closing brace. Comment-only bodies use the same body and closer alignment. See
-the [usecase rule](./usecase.md#direction-and-accessibility). [fixture:
-usecase/direction-and-accessibility/a11y-comment-empty-tabs] [fixture:
+the [usecase rule](./usecase.md#direction-and-accessibility).
+
+[fixture: usecase/direction-and-accessibility/a11y-comment-empty-tabs] [fixture:
 usecase/direction-and-accessibility/a11y-padding] [fixture:
 usecase/direction-and-accessibility/a11y-closer-aligned]
 
@@ -5262,6 +5810,7 @@ becomes one space; absent whitespace stays absent. Mermaid trims the interior
 ends; whitespace before `<<` is structural. Interior text remains written;
 protected common comment regions retain their complete values. This reuses the
 [class statement-annotation rule](./class.md#whitespace-between-tokens).
+
 [fixture: usecase/stereotypes/stereotype-padding] [fixture:
 usecase/stereotypes/opener-gap-sides] [test: usecase: stereotype-opener-tab]
 [fixture: usecase/stereotypes/stereotype-inner-kept] [fixture:
@@ -5277,8 +5826,9 @@ even where trimming would have equal Db; a label between `'` is printed between
 comment-region joins and native comments through LS/PS stay intact; semicolons
 never separate statements and the stretch that the line rule reads is protected.
 The six specified usecase divergences use their specified acceptance/reading,
-and rejected trees follow the shared failure path. [fixture:
-usecase/labels/label-quote-kinds] [fixture:
+and rejected trees follow the shared failure path.
+
+[fixture: usecase/labels/label-quote-kinds] [fixture:
 usecase/system-boundaries/boundary-headings] [fixture:
 usecase/direction-and-accessibility/a11y-padding] [fixture:
 usecase/statements-and-semicolons/semicolon-selected-boundary] [test: usecase:
@@ -5286,6 +5836,7 @@ comment-region-join] [test: usecase: unicode-comment]
 
 Shared EOL, BOM, frontmatter, final-newline and Markdown handling apply.
 Accessibility exterior whitespace is trimmed in standalone files and Markdown.
+
 [fixture: usecase/final-newline/final-value-padding] [test: usecase Markdown:
 last-value-padding]
 
@@ -5297,6 +5848,7 @@ in one form (see
 retain escapes, value continuation columns, duplicates and source order. Common
 title/accessibility line edges compact like C4, but pie never joins a
 next-physical-line value. Empty labels and description blocks are real syntax.
+
 [fixture: pie/labels/label-quotes] [fixture: pie/numbers/number-spellings]
 [fixture: pie/title/title-next-trivia] [fixture:
 pie/description-blocks/block-empty]
@@ -5308,8 +5860,9 @@ Required exterior LF and edge blanks follow
 [pie Blank lines](./pie.md#blank-lines). Hidden YAML closers keep column one. A
 detection-skipped prefix stays whole, including its leading LF and comments, so
 ignored YAML cannot be promoted into frontmatter. Guarded YAML formatting
-applies only to real frontmatter. [fixture:
-pie/hidden-yaml/yaml-after-space-boundary] [fixture:
+applies only to real frontmatter.
+
+[fixture: pie/hidden-yaml/yaml-after-space-boundary] [fixture:
 pie/hidden-directives/hidden-after-extra-lf] [fixture:
 pie/frontmatter-yaml/preheader-leading-lf] [fixture:
 pie/frontmatter-yaml/frontmatter-safe]
@@ -5319,7 +5872,9 @@ positive minimum. Every semicolon remains, and the stretch that the line rule
 reads is protected. Physical EOL/BOM and final-newline handling are shared.
 Markdown hosts trim final code-block-line padding, including final hidden
 boundary padding; interior hidden boundary padding remains necessary before a
-later statement. [fixture: pie/indentation/indent-zero] [fixture:
+later statement.
+
+[fixture: pie/indentation/indent-zero] [fixture:
 pie/frontmatter-yaml/frontmatter-zero] [fixture:
 pie/directives-and-semicolons/selected-two-passes] [test: pie Markdown:
 hidden-boundary] [test: pie Markdown: final-hidden-padding]
@@ -5328,10 +5883,11 @@ The pie corpus includes marked divergences with specified acceptance and Db
 readings. Raw-rejected C4 detection, preheader Unicode and opaque YAML do not
 supply raw Db evidence; available specified Dbs and trees are checked
 separately. Rejected payloads follow the shared failure path. See
-[Specified readings](./pie.md#specified-readings). [corpus fixture:
-pie/div-detect-c4-label] [corpus fixture: pie/div-review-yaml-leading-invalid]
-[corpus fixture: pie/div-preheader-retained-yaml-bare-ls] [test: pie Markdown:
-rejected]
+[Specified readings](./pie.md#specified-readings).
+
+[corpus fixture: pie/div-detect-c4-label] [corpus fixture:
+pie/div-review-yaml-leading-invalid] [corpus fixture:
+pie/div-preheader-retained-yaml-bare-ls] [test: pie Markdown: rejected]
 
 ## Gitgraph hidden boundaries and authored history
 
@@ -5342,11 +5898,13 @@ option/statement occurrence. The colon after the header, `switch` for
 [Spellings that are drawn the same](#spellings-that-are-drawn-the-same)).
 String/reference padding, escapes, HTML, entities and tag order can change the
 Db, and empty cherry-pick tags can suppress a default tag. The summary's
-omission of messages does not permit deleting them. [fixture:
-gitgraph/header/header-tb] [fixture: gitgraph/checkout-aliases/alias-one-form]
-[fixture: gitgraph/messages/message-forms] [fixture:
-gitgraph/quotes/quotes-one-form] [fixture: gitgraph/references/reference-empty]
-[corpus fixture: gitgraph/number-precision] [fixture:
+omission of messages does not permit deleting them.
+
+[fixture: gitgraph/header/header-tb] [fixture:
+gitgraph/checkout-aliases/alias-one-form] [fixture:
+gitgraph/messages/message-forms] [fixture: gitgraph/quotes/quotes-one-form]
+[fixture: gitgraph/references/reference-empty] [corpus fixture:
+gitgraph/number-precision] [fixture:
 gitgraph/authored-values/inner-padding-change] [corpus fixture:
 gitgraph/db-cherry-pick-only-empty-tags] [fixture:
 gitgraph/order-and-repetitions/order-reverse-id]
@@ -5359,8 +5917,9 @@ keep their source columns. Preserve the entire retained preheader prefix so
 ignored YAML cannot become effective frontmatter. Safe real YAML uses the shared
 formatter and positive indentation minimum at tabWidth zero. Global trivia,
 comments and semicolon-protected groups use the shared preservation rules; a
-protected header/first statement stays together. [corpus fixture:
-gitgraph/lex-hidden-yaml-before-option-value] [corpus fixture:
+protected header/first statement stays together.
+
+[corpus fixture: gitgraph/lex-hidden-yaml-before-option-value] [corpus fixture:
 gitgraph/lex-hidden-yaml-commit-closing-space] [corpus fixture:
 gitgraph/lex-hidden-directive-commit-spare-lf] [fixture:
 gitgraph/trailing-whitespace/hidden-eof-padding] [fixture:
@@ -5374,8 +5933,9 @@ next physical line. Shared description-block layout keeps interior brace
 contacts, empty blocks and trivia, and aligns ordinary body indentation under
 [Description block indentation](#description-block-indentation). Physical EOL,
 BOM and final newline use the shared host path. Markdown trims final payload
-padding; interior hidden padding stays necessary. [corpus fixture:
-gitgraph/title-next-line] [fixture:
+padding; interior hidden padding stays necessary.
+
+[corpus fixture: gitgraph/title-next-line] [fixture:
 gitgraph/title-and-common-values/a11y-no-next-line] [fixture:
 gitgraph/title-and-common-values/a11y-fixed] [corpus fixture:
 gitgraph/lex-description-block-only-comment] [test:
@@ -5388,8 +5948,9 @@ preheader trivia. Raw rejection supplies no raw Db, including malformed YAML;
 check available specified readings separately. Empty quoted options and empty
 description blocks remain accepted. Parser failures report standalone syntax
 errors and decline Markdown embedding without repairing the payload. See
-[Specified readings](./gitgraph.md#specified-readings). [corpus fixture:
-gitgraph/div-directive-in-commit] [corpus fixture:
+[Specified readings](./gitgraph.md#specified-readings).
+
+[corpus fixture: gitgraph/div-directive-in-commit] [corpus fixture:
 gitgraph/div-style-semicolon-in-order-number] [corpus fixture:
 gitgraph/div-frontmatter-cross-title-value] [corpus fixture:
 gitgraph/div-frontmatter-invalid-yaml] [corpus fixture:
@@ -5405,7 +5966,9 @@ description-body prefixes follow
 and hidden-form continuation columns remain authored. Info's public Db summary
 is empty even for common title and accessibility assignments; equal empty Dbs do
 not authorize deleting source. Common line edges compact, while next-line values
-stay separate. [fixture: info/statements-one-per-line/order-and-empty] [fixture:
+stay separate.
+
+[fixture: info/statements-one-per-line/order-and-empty] [fixture:
 info/authored-values/literal-quotes-escapes] [fixture:
 info/title/title-next-comment-directive] [fixture:
 info/accessibility-lines/a11y-line-braces]
@@ -5418,9 +5981,11 @@ Required exterior LF and edge blanks follow
 columns. Keep the complete retained prefix, including leading LF and comment
 columns, to prevent ignored YAML from becoming effective frontmatter and
 changing configuration or acceptance. Only safe real YAML uses the shared
-formatter and positive indentation minimum. [fixture:
-info/hidden-yaml/yaml-block-space] [fixture: info/hidden-yaml/yaml-block-spare]
-[fixture: info/hidden-directives/hidden-title-space] [fixture:
+formatter and positive indentation minimum.
+
+[fixture: info/hidden-yaml/yaml-block-space] [fixture:
+info/hidden-yaml/yaml-block-spare] [fixture:
+info/hidden-directives/hidden-title-space] [fixture:
 info/trailing-whitespace/trailing-hidden-eof-kept] [fixture:
 info/retained-prefix/prefix-leading-lf-kept] [fixture:
 info/frontmatter-yaml/frontmatter-zero-minimum]
@@ -5434,8 +5999,9 @@ endings use the shared path. Prettier removes/restores a leading BOM; inside the
 plugin, an opening-fence BOM can therefore make hidden YAML read as real
 frontmatter. A BOM repeated before the closer instead causes the shared
 standalone syntax-error limitation. Markdown trims final payload padding;
-interior hidden boundaries remain. [fixture:
-info/semicolons/semicolon-style-classdef] [fixture:
+interior hidden boundaries remain.
+
+[fixture: info/semicolons/semicolon-style-classdef] [fixture:
 info/global-directives/global-config-align] [fixture:
 info/final-newline/final-open-global] [test:
 info/line-terminators-and-unicode/bom-frontmatter-opening] [corpus fixture:
@@ -5446,11 +6012,12 @@ Marked readings follow the specification: atomic keyword cuts remain rejected,
 while opaque embedded data, C4 detection and bare-percent preheader Unicode use
 their specified acceptance. Raw rejection supplies no raw Db or invented
 embedded effects. Parser failures report standalone syntax errors and decline
-Markdown embedding without repairing the payload. [corpus fixture:
-info/div-directive-flag-middle] [corpus fixture: info/div-selected-showinfo]
-[corpus fixture: info/div-frontmatter-invalid-yaml] [corpus fixture:
-info/div-c4container-title] [corpus fixture: info/div-bare-before-header-ls]
-[test: info Markdown: rejected]
+Markdown embedding without repairing the payload.
+
+[corpus fixture: info/div-directive-flag-middle] [corpus fixture:
+info/div-selected-showinfo] [corpus fixture: info/div-frontmatter-invalid-yaml]
+[corpus fixture: info/div-c4container-title] [corpus fixture:
+info/div-bare-before-header-ls] [test: info Markdown: rejected]
 
 ## Packet hidden boundaries and authored blocks
 
@@ -5463,8 +6030,9 @@ physical continuation columns because rewriting these can change the Db; a label
 between `'` is printed between `"` as under
 [Spellings that are drawn the same](#spellings-that-are-drawn-the-same). Numeric
 digits remain written even when double conversion rounds or overflows them;
-exponent/Infinity output is not packet syntax. [fixture:
-packet/block-forms-and-order/block-three-forms] [fixture:
+exponent/Infinity output is not packet syntax.
+
+[fixture: packet/block-forms-and-order/block-three-forms] [fixture:
 packet/block-forms-and-order/keep-interleaving] [fixture:
 packet/block-forms-and-order/cap-unpublished-kept] [fixture:
 packet/label-content/label-padding] [fixture:
@@ -5480,7 +6048,9 @@ columns, and keep the complete retained preheader prefix so ignored YAML cannot
 become effective title/configuration. Only safe real frontmatter uses the
 guarded YAML formatter and positive minimum indentation. Body indentation can
 instead be zero at `tabWidth: 0`, since packet columns have no grammatical
-meaning. [fixture: packet/hidden-yaml/yaml-all-range-gaps] [fixture:
+meaning.
+
+[fixture: packet/hidden-yaml/yaml-all-range-gaps] [fixture:
 packet/hidden-yaml/yaml-suffix-space] [fixture:
 packet/hidden-directives/hidden-common-suffixes] [fixture:
 packet/hidden-directives/hidden-eof-padding] [fixture:
@@ -5498,7 +6068,9 @@ semicolons remain, using shared segment protection for crossing values/trivia
 and header/body groups: removing selected semicolons or moving their triggers
 can change the Db. Physical EOL, BOM, final-newline and Markdown handling are
 shared. Markdown trims final payload-line padding; interior hidden padding stays
-necessary. [fixture: packet/title/title-no-next] [fixture:
+necessary.
+
+[fixture: packet/title/title-no-next] [fixture:
 packet/accessibility-lines/a11y-empty-next] [fixture:
 packet/description-blocks/description-columns] [fixture:
 packet/global-directives/global-standalone] [fixture:
@@ -5513,8 +6085,9 @@ detection and passed bare-percent trivia. Acceptance-changing text
 configuration, title and other settings. Raw rejection supplies no raw Db or
 invented accepted effects. Hidden forms, empty labels and empty descriptions
 need no new divergence. Parser failures report standalone syntax errors without
-output and decline Markdown embedding without repairing the payload. [corpus
-fixture: packet/directive-header-middle] [corpus fixture:
+output and decline Markdown embedding without repairing the payload.
+
+[corpus fixture: packet/directive-header-middle] [corpus fixture:
 packet/div-selected-title-interior] [corpus fixture:
 packet/config-frontmatter-fraction] [corpus fixture:
 packet/config-frontmatter-overrides-site] [corpus fixture:
@@ -5531,8 +6104,9 @@ escape conversion can change the Db. Text icons retain their complete
 StringLiteral source, and named icons retain their names: trimming, decoding or
 replacing these values can change what mermaid.js reads. `singleQuote` does not
 rewrite icons or labels. Keep the actual arrow marker characters, including
-reversed `>--<`, rather than reconstructing them from presence flags. [fixture:
-architecture/label-forms/padded-quotes] [fixture:
+reversed `>--<`, rather than reconstructing them from presence flags.
+
+[fixture: architecture/label-forms/padded-quotes] [fixture:
 architecture/label-content/bare-padding] [fixture:
 architecture/label-content/html-entities] [fixture:
 architecture/text-icons/double-quote] [fixture: architecture/text-icons/padding]
@@ -5547,9 +6121,10 @@ prefix so ignored YAML cannot become effective frontmatter. Only safe real
 frontmatter uses guarded YAML formatting, with the shared positive minimum
 indentation. All authored semicolons remain under shared segment protection;
 removing a selected one can select another and change a label. Source order,
-repeated constraints and empty common assignments remain written. [fixture:
-architecture/hidden-forms/yaml-named-icon-title-and-parent-gaps] [fixture:
-architecture/hidden-boundaries/header-and-statement] [fixture:
+repeated constraints and empty common assignments remain written.
+
+[fixture: architecture/hidden-forms/yaml-named-icon-title-and-parent-gaps]
+[fixture: architecture/hidden-boundaries/header-and-statement] [fixture:
 architecture/hidden-boundaries/suffix-space] [fixture:
 architecture/frontmatter-yaml/prefix-leading-lf-keep] [fixture:
 architecture/frontmatter-yaml/frontmatter-zero-minimum-block-scalar] [fixture:
@@ -5563,8 +6138,9 @@ acceptance-setting configuration key and is detected before C4; no C4 detection
 exception is added. Raw rejection supplies no raw Db or invented effects. Parser
 failures report standalone syntax errors without repaired output and decline
 Markdown embedding. Markdown's host trims the final payload line's padding;
-interior hidden padding remains necessary. [corpus fixture:
-architecture/div-directive-name] [corpus fixture:
+interior hidden padding remains necessary.
+
+[corpus fixture: architecture/div-directive-name] [corpus fixture:
 architecture/div-semicolon-parent-id] [corpus fixture:
 architecture/div-frontmatter-open-tag-icon] [corpus fixture:
 architecture/div-frontmatter-invalid-yaml] [corpus fixture:
@@ -5589,6 +6165,7 @@ escapes, HTML, entities, with a run of spaces and tabs inside a label printed as
 one space; a label between `'` is printed between `"` as under
 [Spellings that are drawn the same](#spellings-that-are-drawn-the-same), and
 `singleQuote` is not read. Deleting an empty label changes the ID fallback.
+
 [fixture: radar/source-order/declaration-order-kept] [fixture:
 radar/source-order/mixed-curve-forms] [fixture:
 radar/header/join-separated-inline-alternative] [fixture:
@@ -5612,8 +6189,9 @@ does not become effective frontmatter; safe real frontmatter alone uses guarded
 YAML formatting. All authored semicolons stay under shared segment protection,
 preserving continuation columns without added indentation inside each protected
 segment, including a semicolon on the last line of a multiline statement:
-joining a style-like label to it can change another statement's value. [fixture:
-radar/title/title-edge-trim] [fixture:
+joining a style-like label to it can change another statement's value.
+
+[fixture: radar/title/title-edge-trim] [fixture:
 radar/description-blocks/block-empty-fixed] [fixture:
 radar/multiline-values/physical-value-columns] [fixture:
 radar/hidden-forms/named-entry-hidden-owners] [fixture:
@@ -5628,6 +6206,7 @@ radar/multi-line-statements/semicolon-terminal-line]
 A list containing comments or directives keeps its other authored entry newlines
 too, so it remains a block as written. A separate closing brace aligns with the
 statement. Comment-free lists still compact their ordinary entry newlines.
+
 [fixture: radar/multi-line-statements/entry-comment-after-comma] [fixture:
 radar/multi-line-statements/entry-global-lines]
 
@@ -5641,10 +6220,11 @@ not new divergences. Standalone failures report syntax errors without repaired
 output; Markdown declines embedding. Physical CR/CRLF and leading BOM follow the
 shared host limits; LS/PS remain value characters where the lexer reads them.
 Markdown's host trims final payload padding while interior common-suffix padding
-remains necessary. [corpus fixture: radar/directive-header-middle] [corpus
-fixture: radar/div-semicolon-id] [corpus fixture:
-radar/div-html-frontmatter-cross] [corpus fixture:
-radar/frontmatter-invalid-keeps-config] [corpus fixture:
+remains necessary.
+
+[corpus fixture: radar/directive-header-middle] [corpus fixture:
+radar/div-semicolon-id] [corpus fixture: radar/div-html-frontmatter-cross]
+[corpus fixture: radar/frontmatter-invalid-keeps-config] [corpus fixture:
 radar/bare-before-header-nbsp] [corpus fixture: radar/c4-component-axis-label]
 [corpus fixture: radar/db-empty-labels] [corpus fixture:
 radar/common-block-empty-interleaved] [test:
@@ -5664,19 +6244,27 @@ including at tabWidth zero because indentation determines parentage. A class
 name touching a row keeps that contact and uses root baseline zero throughout
 the diagram. Trailing or whitespace-line indentation moves once to the following
 row. Standalone comment lines align with the next statement, or the last
-statement at EOF, as described in [Comments](./treemap.md#comments). [fixture:
-treemap/comments/aligned-depths] [fixture: treemap/comments/aligned-final]
+statement at EOF, as described in [Comments](./treemap.md#comments).
+
+[fixture: treemap/comments/aligned-depths] [fixture:
+treemap/comments/aligned-final]
+
 Between statements, bare `%%`, non-directive `%%{` lines and standalone
 directives stay at column one because mermaid.js rejects them when indented.
+
 [fixture: treemap/comments/native-bare] [fixture:
 treemap/comments/native-nonword] [fixture: treemap/comments/unclosed-directive]
-[fixture: treemap/comments/mixed-directives] In a class-style separator,
-standalone trivia and style continuation align one step inside `classDef`. The
-style text and the protected semicolon segments of a statement over several
-lines remain unchanged. [fixture: treemap/style-gaps/css-comment] [fixture:
+[fixture: treemap/comments/mixed-directives]
+
+In a class-style separator, standalone trivia and style continuation align one
+step inside `classDef`. The style text and the protected semicolon segments of a
+statement over several lines remain unchanged.
+
+[fixture: treemap/style-gaps/css-comment] [fixture:
 treemap/style-gaps/css-directive-tabs] [fixture:
-treemap/style-gaps/css-comment-semicolon-kept] Protected semicolon row
-boundaries keep the body as written.
+treemap/style-gaps/css-comment-semicolon-kept]
+
+Protected semicolon row boundaries keep the body as written.
 
 A `title`, `accTitle`, or `accDescr` statement, a line or a block, that was not
 written indented is printed at the start of its line. Of the versions that count
@@ -5694,8 +6282,9 @@ The text `treemaptitle T` and the text with `title T` on a line of its own were
 drawn the same by the versions that count for treemap. So a statement that
 starts its line is not moved, one that follows the header goes to the start of
 the next line, and one that is indented in the source is printed a step in, like
-the other statements, since the one rejects it as written too. [fixture:
-treemap/title/line-start-kept] [fixture:
+the other statements, since the one rejects it as written too.
+
+[fixture: treemap/title/line-start-kept] [fixture:
 treemap/title/line-start-after-row-kept] [fixture:
 treemap/title/line-start-tab-rows-kept] [fixture:
 treemap/title/line-start-comment-aligned] [fixture:
@@ -5708,12 +6297,10 @@ treemap/description-blocks/line-start-kept] [fixture:
 treemap/description-blocks/indented-at-body-step] [fixture:
 treemap/header/common] [fixture: treemap/title/after-header-spaced-line-start]
 [fixture: treemap/accessibility-lines/title-glued-after-header] [fixture:
-treemap/description-blocks/spaced-after-header-line-start]
-
-[fixture: treemap/indentation/leaf-closes] [fixture:
-treemap/indentation/common-and-class] [fixture: treemap/indentation/zero]
-[fixture: treemap/indentation/glued-roots] [fixture:
-treemap/carried-indentation/section-space] [fixture:
+treemap/description-blocks/spaced-after-header-line-start] [fixture:
+treemap/indentation/leaf-closes] [fixture: treemap/indentation/common-and-class]
+[fixture: treemap/indentation/zero] [fixture: treemap/indentation/glued-roots]
+[fixture: treemap/carried-indentation/section-space] [fixture:
 treemap/carried-indentation/whitespace-line] [fixture:
 treemap/comments/carried-space] [fixture: treemap/directives/leading] [fixture:
 treemap/semicolons/body-kept]
@@ -6035,11 +6622,12 @@ header, authored assignment delimiters, EBNF optional commas and expression
 structure. Singleton calls and groups remain even where their normalized Dbs are
 equal. Keep every rule, alternative, repeated metadata assignment and empty
 reset in source order. The comparison Db excludes body titles; that does not
-permit dropping their contents. [fixture: railroad/assignment/ebnf-spellings]
-[fixture: railroad/ebnf-sequences/mixed] [fixture: railroad/calls/ir-singletons]
-[fixture: railroad/groups/peg-delimiters] [fixture:
-railroad/source-order/ir-duplicates] [fixture:
-railroad/source-order/ebnf-duplicates] [fixture:
+permit dropping their contents.
+
+[fixture: railroad/assignment/ebnf-spellings] [fixture:
+railroad/ebnf-sequences/mixed] [fixture: railroad/calls/ir-singletons] [fixture:
+railroad/groups/peg-delimiters] [fixture: railroad/source-order/ir-duplicates]
+[fixture: railroad/source-order/ebnf-duplicates] [fixture:
 railroad/source-order/abnf-duplicates] [fixture:
 railroad/source-order/peg-duplicates] [fixture: railroad/title/ir-trim]
 
@@ -6055,8 +6643,9 @@ grammar around them receives structural indentation. After a line break
 following a constructor, both parentheses use continuation indentation, with
 their arguments one level deeper. Semicolons inside values do not prevent this
 layout; lines containing `style` or `classDef` and ignored semicolons retain
-their protected layout. EBNF, ABNF and PEG keep their flat layout. [fixture:
-railroad/comments/ir-leaf-value-comments] [fixture:
+their protected layout. EBNF, ABNF and PEG keep their flat layout.
+
+[fixture: railroad/comments/ir-leaf-value-comments] [fixture:
 railroad/comments/ir-leaf-boundary-comments] [fixture:
 railroad/hidden-forms/ir-call-global-inside-native] [fixture:
 railroad/hidden-forms/ir-call-native-yaml] [fixture:
@@ -6085,10 +6674,12 @@ case, digits, dots and hyphens as raw text. EBNF special sequences keep their
 whole span, including exterior whitespace, with a run of spaces and tabs inside
 printed as one space. Converting these spellings or reflowing values can change
 the Db. PEG predicates keep their entire authored operand rather than rebuilding
-it from a published label. [fixture: railroad/quotes/ir-escape] [fixture:
-railroad/quotes/ebnf-escape] [fixture: railroad/quotes/abnf-backslash] [fixture:
-railroad/quotes/peg-escape] [fixture: railroad/quotes/ir-empty-and-text]
-[fixture: railroad/quotes/ebnf-empty-and-text] [fixture:
+it from a published label.
+
+[fixture: railroad/quotes/ir-escape] [fixture: railroad/quotes/ebnf-escape]
+[fixture: railroad/quotes/abnf-backslash] [fixture: railroad/quotes/peg-escape]
+[fixture: railroad/quotes/ir-empty-and-text] [fixture:
+railroad/quotes/ebnf-empty-and-text] [fixture:
 railroad/quotes/abnf-empty-and-text] [fixture:
 railroad/quotes/peg-empty-and-text] [fixture: railroad/repeats/abnf-spellings]
 [fixture: railroad/repeats/abnf-zero] [fixture: railroad/repeats/abnf-large]
@@ -6108,15 +6699,19 @@ its later lines keep their written columns. Railroad lines containing the
 literal string `style` or `classDef` after global directive removal stay as
 written, including every statement, comment, native hidden form and inner gap.
 They do not join their neighbors. A removed directive forming a word across
-lines keeps all those lines. [fixture:
-railroad/semicolons/ir-word-unclosed-directive-lines] [fixture:
+lines keeps all those lines.
+
+[fixture: railroad/semicolons/ir-word-unclosed-directive-lines] [fixture:
 railroad/semicolons/ebnf-word-unclosed-directive-lines] [fixture:
 railroad/semicolons/abnf-word-unclosed-directive-lines] [fixture:
-railroad/semicolons/peg-word-unclosed-directive-lines] A line is the complete
-range that mermaid.js reads as one line. When a comment line after U+2028 or
-U+2029 joins text before or after the line containing the word, or on both
-sides, retain every connected source line. Only the first source line receives
-one body indentation step; the contents and later source columns remain written.
+railroad/semicolons/peg-word-unclosed-directive-lines]
+
+A line is the complete range that mermaid.js reads as one line. When a comment
+line after U+2028 or U+2029 joins text before or after the line containing the
+word, or on both sides, retain every connected source line. Only the first
+source line receives one body indentation step; the contents and later source
+columns remain written.
+
 [test: railroad/semicolons/ir-style-comment-before-ls] [test:
 railroad/semicolons/ir-style-comment-after-ls] [test:
 railroad/semicolons/ir-style-comment-both-ls] [test:
@@ -6140,18 +6735,21 @@ railroad/semicolons/peg-style-comment-after-ls] [test:
 railroad/semicolons/peg-style-comment-both-ls] [test:
 railroad/semicolons/peg-classdef-comment-before-ps] [test:
 railroad/semicolons/peg-classdef-comment-after-ps] [test:
-railroad/semicolons/peg-classdef-comment-both-ps] Shared kept-line layout also
-retains whole crossing statements and indivisible values/trivia. mermaid.js can
-ignore the last semicolon of such a line; in railroad this can remove a required
-terminator or an ABNF comment mark, so formatting could reject a rule or turn
-comment text into code. This source preservation protects both without
-predicting the line rule after movement. The cost is that names, strings and
-comments containing these strings leave their lines unformatted even without a
-colon/hash. Other lines format normally; words found only inside removed
-directives do not protect a line. [fixture: railroad/comments/ir-positions]
-[fixture: railroad/comments/ebnf-positions] [fixture:
-railroad/comments/abnf-positions] [fixture: railroad/comments/peg-positions]
-[fixture: railroad/comments/abnf-before-terminator] [fixture:
+railroad/semicolons/peg-classdef-comment-both-ps]
+
+Shared kept-line layout also retains whole crossing statements and indivisible
+values/trivia. mermaid.js can ignore the last semicolon of such a line; in
+railroad this can remove a required terminator or an ABNF comment mark, so
+formatting could reject a rule or turn comment text into code. This source
+preservation protects both without predicting the line rule after movement. The
+cost is that names, strings and comments containing these strings leave their
+lines unformatted even without a colon/hash. Other lines format normally; words
+found only inside removed directives do not protect a line.
+
+[fixture: railroad/comments/ir-positions] [fixture:
+railroad/comments/ebnf-positions] [fixture: railroad/comments/abnf-positions]
+[fixture: railroad/comments/peg-positions] [fixture:
+railroad/comments/abnf-before-terminator] [fixture:
 railroad/statements-one-per-line/abnf-terminators] [fixture:
 railroad/semicolons/ir-value-last-line] [fixture:
 railroad/semicolons/ebnf-special-last-line] [fixture:
@@ -6197,11 +6795,13 @@ header-edge exception; body forms retain the shared spare-LF rule, including
 after a statement moved from the header line. Keep the complete retained prefix
 so ignored YAML cannot become effective frontmatter. Safe real frontmatter alone
 uses guarded YAML formatting. Physical CR/CRLF, leading BOM and final Markdown
-payload padding follow the shared host limits. [fixture:
-railroad/description-blocks/ir-edges] [fixture: railroad/hidden-forms/ir-owners]
-[fixture: railroad/hidden-forms/ebnf-owners] [fixture:
-railroad/hidden-forms/abnf-owners] [fixture: railroad/hidden-forms/peg-owners]
-[fixture: railroad/hidden-boundaries/ir-moved-before-hidden] [fixture:
+payload padding follow the shared host limits.
+
+[fixture: railroad/description-blocks/ir-edges] [fixture:
+railroad/hidden-forms/ir-owners] [fixture: railroad/hidden-forms/ebnf-owners]
+[fixture: railroad/hidden-forms/abnf-owners] [fixture:
+railroad/hidden-forms/peg-owners] [fixture:
+railroad/hidden-boundaries/ir-moved-before-hidden] [fixture:
 railroad/hidden-boundaries/ebnf-moved-before-hidden] [fixture:
 railroad/hidden-boundaries/abnf-moved-before-hidden] [fixture:
 railroad/hidden-boundaries/peg-moved-before-hidden] [fixture:
@@ -6218,8 +6818,9 @@ and retain railroad across later C4 words. There is no railroad acceptance key
 to remove in opaque comparison. Empty strings remain values and empty calls
 reject; no new divergence is added. Raw rejection supplies no raw Db or invented
 accepted effects. Rejected standalone inputs report syntax errors without
-repaired output; Markdown declines embedding. [corpus fixture:
-railroad/ir-div-directive-header] [corpus fixture:
+repaired output; Markdown declines embedding.
+
+[corpus fixture: railroad/ir-div-directive-header] [corpus fixture:
 railroad/abnf-div-semicolon-repeat-number] [corpus fixture:
 railroad/ebnf-div-html-frontmatter-rule-reject] [corpus fixture:
 railroad/peg-config-init-fontfamily-number] [corpus fixture:
@@ -6233,8 +6834,10 @@ The [Wardley rules](./wardley.md) preserve names and strings, numeric spellings,
 source order and every occurrence. Bare names exactly `title` keep their contact
 with following components: inserting whitespace can turn a component, link,
 evolve or evolution stage into metadata. Quoted names and longer bare names use
-ordinary spacing. [fixture: wardley/name-boundaries/component-title-contact]
-[fixture: wardley/name-boundaries/link-title-contact] [fixture:
+ordinary spacing.
+
+[fixture: wardley/name-boundaries/component-title-contact] [fixture:
+wardley/name-boundaries/link-title-contact] [fixture:
 wardley/name-boundaries/title-evolve-hidden] [fixture:
 wardley/name-boundaries/stage-title-contact] [fixture:
 wardley/name-boundaries/force-title-contact] [fixture:
@@ -6254,7 +6857,9 @@ drawn with the four versions that count for Wardley maps and gave identical SVGs
 in all of them; `Alpha- -> Beta` gave the same SVG in the three later versions
 and is rejected by the first. `Alpha -->Beta` is a different link in the three
 later versions (the arrow `-->`), so it keeps its arrow and is printed
-`Alpha --> Beta`. [fixture: wardley/links/link-long-glued] [fixture:
+`Alpha --> Beta`.
+
+[fixture: wardley/links/link-long-glued] [fixture:
 wardley/links/link-name-dashes-glued] [fixture:
 wardley/links/link-name-dash-spaced] [fixture: wardley/links/link-long-spaced]
 
@@ -6264,8 +6869,9 @@ attaches to the preceding component, while everything after it through physical
 line end remains written, including whitespace-only labels and trailing padding.
 Bare `;` rejects. The shared textual-prefix protection excludes that opener;
 further semicolons protect their segment and whole crossing values/trivia. Keep
-both labels and ports even when only one affects the Db. [fixture:
-wardley/flows/flow-ports-and-label] [fixture:
+both labels and ports even when only one affects the Db.
+
+[fixture: wardley/flows/flow-ports-and-label] [fixture:
 wardley/flows/flow-padding-escapes] [fixture:
 wardley/multiline-values/multiline-flow-columns] [fixture:
 wardley/semicolon-labels/label-exterior] [fixture:
@@ -6277,17 +6883,21 @@ Shared line protection keeps a complete source line containing both a semicolon
 and literal `style` or `classDef` after global directives are omitted, including
 its statements, comments and hidden forms. This applies even when that semicolon
 is not selected. A line with no semicolon, such as a component or pipeline whose
-name includes `mystyle`, formats normally. [fixture:
-wardley/semicolons/style-no-semicolon-directive-lines] [fixture:
+name includes `mystyle`, formats normally.
+
+[fixture: wardley/semicolons/style-no-semicolon-directive-lines] [fixture:
 wardley/semicolons/style-pipeline-header] [fixture:
-wardley/semicolons/style-pipeline-child] The first line starts at its body
-indentation; content and later source columns stay written, without joining
-neighboring lines. Count lines as Mermaid reads them, including
-directive-spanning words and U+2028/U+2029 comment-region joins. The line rule
-can ignore the grammatical label opener and change a link's endpoints or label,
-so complete source preservation avoids predicting the rule after moving text.
-Words only inside removed global directives do not protect a line. [fixture:
-wardley/semicolons/style-selected-delimiter] [fixture:
+wardley/semicolons/style-pipeline-child]
+
+The first line starts at its body indentation; content and later source columns
+stay written, without joining neighboring lines. Count lines as Mermaid reads
+them, including directive-spanning words and U+2028/U+2029 comment-region joins.
+The line rule can ignore the grammatical label opener and change a link's
+endpoints or label, so complete source preservation avoids predicting the rule
+after moving text. Words only inside removed global directives do not protect a
+line.
+
+[fixture: wardley/semicolons/style-selected-delimiter] [fixture:
 wardley/semicolons/style-delimiter-hash-after] [fixture:
 wardley/semicolons/style-colon-space-nontrigger] [fixture:
 wardley/semicolons/style-no-semicolon] [fixture:
@@ -6303,8 +6913,9 @@ closing padding protected by shared rules. Pipeline opening braces and children
 need visible LF even at tabWidth zero; hidden forms do not supply it. Only
 header-owned forms use the header-edge exception. Keep the complete retained
 prefix so ignored YAML cannot become effective frontmatter. Safe real YAML alone
-uses guarded formatting; description blocks use the shared layout. [fixture:
-wardley/pipeline/pipeline-zero] [fixture:
+uses guarded formatting; description blocks use the shared layout.
+
+[fixture: wardley/pipeline/pipeline-zero] [fixture:
 wardley/hidden-boundaries/hidden-pipeline-opening] [fixture:
 wardley/hidden-boundaries/hidden-pipeline-child] [fixture:
 wardley/hidden-boundaries/header-first-statement-hidden] [fixture:
@@ -6319,8 +6930,9 @@ or opaque acceptance-setting key. Raw rejection supplies no raw Db. Parse
 failures report standalone syntax errors without output and decline Markdown
 embedding. CR/CRLF and leading BOM use shared host limits. Markdown trims the
 final code line: removing a whitespace-only link label leaves bare `;`, making
-an accepted payload reject. Standalone formatting keeps that padding. [corpus
-fixture: wardley/directive-arrow-inside] [corpus fixture:
+an accepted payload reject. Standalone formatting keeps that padding.
+
+[corpus fixture: wardley/directive-arrow-inside] [corpus fixture:
 wardley/lex-selected-decimal-inside] [corpus fixture:
 wardley/div-html-frontmatter-reject] [corpus fixture:
 wardley/config-fontfamily-keeps-title] [corpus fixture: wardley/bare-before-ls]
@@ -6349,6 +6961,7 @@ occurrences and can change replacement or reset behavior. Strings retain escapes
 and interior columns, including empty values and native-looking text; a string
 between `'` is printed between `"` as under
 [Spellings that are drawn the same](#spellings-that-are-drawn-the-same).
+
 [fixture: cynefin/empty-domains/empty-domain-last-reset] [fixture:
 cynefin/redeclarations/domain-repeat-order] [fixture:
 cynefin/transition-occurrences/transition-occurrences] [fixture:
@@ -6365,7 +6978,9 @@ Kept lines use the same decision for the header, domain openings and items,
 including item suffix forms, so moving a child cannot remove its parent's
 protection. Retain the complete skipped prefix so ignored YAML cannot become
 effective frontmatter. Safe real YAML and description blocks use the shared
-layouts. [fixture: cynefin/hidden-forms/hidden-domain-name] [fixture:
+layouts.
+
+[fixture: cynefin/hidden-forms/hidden-domain-name] [fixture:
 cynefin/hidden-forms/hidden-between-items] [fixture:
 cynefin/hidden-forms/hidden-body-after-last-item] [fixture:
 cynefin/hidden-forms/hidden-transition-all-gaps] [fixture:
@@ -6387,8 +7002,9 @@ format; complete word-line preservation does not apply. Root directives within a
 printed line are placed as under [Directives](./flowchart.md#directives). At
 split statement/item boundaries they attach to the following unit, retaining the
 right boundary and breaking left contact. Native comments retain LS/PS as
-content. These boundaries can affect selection, values and acceptance. [fixture:
-cynefin/semicolons/semi-selected-before-arrow] [fixture:
+content. These boundaries can affect selection, values and acceptance.
+
+[fixture: cynefin/semicolons/semi-selected-before-arrow] [fixture:
 cynefin/semicolons/semi-item-body-indentation] [fixture:
 cynefin/semicolons/semi-plain-style-line-formats] [fixture:
 cynefin/semicolons/semi-multiline-global-word] [fixture:
@@ -6402,8 +7018,9 @@ and C4 words. Raw rejection supplies no raw Db; Cynefin adds no divergence or
 acceptance-setting key. Standalone parse failures leave files unchanged through
 a syntax error; Markdown declines embedding. CR/CRLF and leading BOM follow
 shared host limits. Markdown trims final code-line hidden padding; standalone
-formatting retains it, and required internal padding stays protected. [corpus
-fixture: cynefin/directive-arrow-inside] [corpus fixture:
+formatting retains it, and required internal padding stays protected.
+
+[corpus fixture: cynefin/directive-arrow-inside] [corpus fixture:
 cynefin/semicolon-arrow-inside] [test:
 cynefin/specified-readings/divergence-html-cross] [test:
 cynefin/specified-readings/divergence-opaque-yaml] [test:
@@ -6420,8 +7037,10 @@ contents, except for the restricted ASCII-space margin adjustment in
 nonblank body line to `tabWidth` spaces, or `2 * tabWidth` after an ordinary
 continued header, without interpreting data fields, JSON or code structure.
 Plain joined header LF and LF inside an inline directive add no step; native
-hidden header forms retain their base body rule. [fixture:
-eventmodeling/declarations-and-notes/header-directive-continuation] [fixture:
+hidden header forms retain their base body rule.
+
+[fixture: eventmodeling/declarations-and-notes/header-directive-continuation]
+[fixture:
 eventmodeling/declarations-and-notes/header-inline-multiline-directive]
 [fixture: eventmodeling/declarations-and-notes/header-continuation-tabs]
 [fixture: eventmodeling/declarations-and-notes/data-and-note-headers] [fixture:
@@ -6435,8 +7054,10 @@ following LF; other whitespace is lookahead. Closing padding and LS/PS
 boundaries stay written, including at EOF. Reindenting a block closer can reject
 input, and replacing closing lookahead with LF can change the comparison Db.
 Native data is read directly from source rather than evaluated as embedded
-configuration. [fixture: eventmodeling/data-blocks/body-overindented-first-line]
-[fixture: eventmodeling/data-blocks/body-overindented-later-line] [fixture:
+configuration.
+
+[fixture: eventmodeling/data-blocks/body-overindented-first-line] [fixture:
+eventmodeling/data-blocks/body-overindented-later-line] [fixture:
 eventmodeling/inline-data/greedy-apparent-frames-kept] [fixture:
 eventmodeling/data-blocks/block-closer-indent-unsafe] [fixture:
 eventmodeling/data-boundaries/same-line-block-successor] [test:
@@ -6447,7 +7068,9 @@ Ordinary top-level statements start at column one, keeping frames, model
 entities, data and note declarations at the same level as the required
 unindented block closers. GWT clauses and items remain nested using the
 configured indentation. Data bodies outside the margin rule keep their authored
-columns. [fixture: eventmodeling/indentation/mixed-top-level-blocks] [fixture:
+columns.
+
+[fixture: eventmodeling/indentation/mixed-top-level-blocks] [fixture:
 eventmodeling/indentation/gwt-four-spaces] [fixture:
 eventmodeling/indentation/data-declaration-column-one] [fixture:
 eventmodeling/indentation/note-column-one]
@@ -6460,8 +7083,9 @@ whitespace-only description keeps its interior. Common statements can depend on
 their original connection to the header, a preceding statement or a consumed LF;
 putting them on ordinary body lines can reject input. Required identifier
 `title` likewise keeps its successful LF or hidden boundary, because adding
-horizontal padding can turn it into metadata. [fixture:
-eventmodeling/header/accdescr-moved-to-line-start] [fixture:
+horizontal padding can turn it into metadata.
+
+[fixture: eventmodeling/header/accdescr-moved-to-line-start] [fixture:
 eventmodeling/common-boundaries/common-retained-exact-leading-directive-gaps]
 [fixture: eventmodeling/semicolons/metadata-across-selected-semicolon-gap-exact]
 [fixture:
@@ -6477,8 +7101,9 @@ permitted block-body margin adjustment. At or above 50000 normalized units after
 frontmatter and directive removal, retain the complete diagram text and ending.
 Below it, ordinary layout is applied only if its planned measurement stays
 strictly below 50000, so that indentation or the final line break cannot move
-the text across the limit and drop those comment lines from the Db. [fixture:
-eventmodeling/default-size-branches/size-utf16-surrogate] [fixture:
+the text across the limit and drop those comment lines from the Db.
+
+[fixture: eventmodeling/default-size-branches/size-utf16-surrogate] [fixture:
 eventmodeling/default-size-branches/size-preserving-to-fallback-unsafe]
 [fixture: eventmodeling/default-size-branches/size-below-planned-crossing]
 [fixture: eventmodeling/comments/comment-line-inside-data-block-kept]
@@ -6489,8 +7114,9 @@ a reference. GWT's clauses/items use the shared range-ended body path. Hidden
 YAML and native DIRECTIVE print once at their original owner; consumed LF and
 closing padding are protected by the shared hidden rules. A retained pre-header
 form keeps the complete prefix so it cannot become real frontmatter. Safe real
-frontmatter alone uses the guarded YAML formatter. [fixture:
-eventmodeling/source-order/all-occurrences-retained] [fixture:
+frontmatter alone uses the guarded YAML formatter.
+
+[fixture: eventmodeling/source-order/all-occurrences-retained] [fixture:
 eventmodeling/hidden-forms/hidden-gwt-clause-item-owners] [fixture:
 eventmodeling/hidden-forms/gwt-required-source-and-given-hidden-gaps] [fixture:
 eventmodeling/frontmatter-yaml/retained-prefix-whole] [fixture:
@@ -6507,6 +7133,7 @@ Common-value intervals override this ordinary placement. Comments keep their
 marks and contents; native line comments include LS/PS. When units split,
 intervening inline comments and directives move with the following unit in
 source order. This shared placement treats comments alike across diagram types.
+
 [fixture: eventmodeling/comments/mixed-directive-order] [fixture:
 eventmodeling/semicolons/gwt-protected-opening-kept] [fixture:
 eventmodeling/semicolons/no-grammar-semicolon-style-word-line-formats] [fixture:
@@ -6520,7 +7147,9 @@ cross-frontmatter HTML quotes, opaque embedded configuration and later C4 words.
 Raw rejection provides no raw Db. Rejected files report syntax errors and are
 not rewritten; Markdown leaves rejected payloads to Prettier. Shared CR/CRLF
 conversion and the Markdown host's final-code-line padding limitation still
-apply. [corpus fixture: eventmodeling/directive-arrow-inside] [corpus fixture:
+apply.
+
+[corpus fixture: eventmodeling/directive-arrow-inside] [corpus fixture:
 eventmodeling/lex-semicolon-frame-id-inside] [corpus fixture:
 eventmodeling/div-html-frontmatter-value] [corpus fixture:
 eventmodeling/div-frontmatter-invalid] [corpus fixture:

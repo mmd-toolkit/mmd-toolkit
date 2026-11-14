@@ -18,9 +18,11 @@ mermaid.js は `cynefin-beta:` と `cynefin-beta` を同じ見出しとして読
 （[ヘッダーの後のコロン](./compatibility.ja.md#ヘッダーの後のコロン)を参照）。
 語との間に隠れた形か大域的なディレクティブがあるときと、
 `;` か隠れた YAML ブロックの `---` が接するときは、コロンを保ちます。
+
 [fixture: cynefin/header/colon-removed]
 [fixture: cynefin/header/colon-semicolon-kept]
 [fixture: cynefin/header/colon-directive-before-hidden-yaml-kept]
+
 普通の最初の文は次の行へ移し、見出しを見つけやすくします。
 大域的なディレクティブの接触、隠れた形の隣接、保護行は共有規則に従います。
 見出し行を保つときは、その行の領域と項目の開きも同じ行に保ちます。
@@ -435,13 +437,15 @@ cynefin-beta
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+
 [fixture: title/title-directives-end-blanks-dropped]
+
 `null` の title の区切り空白 1 個・タブは範囲の外にあります。
 値の最初の文字より前にある、行の規則が無視する `;` は、
 その前の空白が 1 文字でもそれ以上でも、隙間の項目です。
 `title  ;T` と `title ;T` は同じように印字します。
-[fixture: cynefin/semicolons/ignored-semicolon-title-value-second-space]
 
+[fixture: cynefin/semicolons/ignored-semicolon-title-value-second-space]
 [fixture: cynefin/title/title-edges]
 
 [fixture: cynefin/title/title-no-value]
@@ -487,8 +491,8 @@ cynefin-beta
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 [fixture: cynefin/accessibility-lines/accessibility-padding]
 
 [fixture: cynefin/accessibility-lines/accessibility-empty]
@@ -963,9 +967,11 @@ cynefin-beta
 行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
 書かれたまま残します。
 それ以外の複数行の文は、1 行の文と同じように整形します。
+
 [fixture: semicolons/stretch-kept-rest-formatted]
 [fixture: semicolons/no-stretch-formatted]
 [fixture: semicolons/semi-line-other-value]
+
 保護した最初の行は所属本文の段にし、項目なら項目の段にします。
 中身と後続行の列は保ちます。
 区間はディレクティブとコメント領域の結合を含め、mermaid が読む形で数えます。
@@ -1062,6 +1068,7 @@ cynefin-beta
 直前のトークンに付け、後ろに空白 1 つを置きます。
 文の間の隙間には空白 1 つを置くからです。
 キーワードの直後の隙間は、書かれたままの空白を保ちます。
+
 [fixture: semicolons/ignored-semicolon-space-before-attached]
 [fixture: semicolons/ignored-semicolon-space-both-attached]
 [fixture: semicolons/ignored-semicolon-space-after-kept]

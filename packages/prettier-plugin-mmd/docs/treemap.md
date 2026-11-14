@@ -102,10 +102,10 @@ measure only physical leading whitespace or add a second indentation run. Common
 removals have already decided which runs count.
 
 Use the resulting row column for standalone comment lines too, including when
-common comment removal discarded an earlier whitespace-only run. [fixture:
-treemap/comments/removed-indent]
+common comment removal discarded an earlier whitespace-only run.
 
-[fixture: treemap/carried-indentation/header-space]
+[fixture: treemap/comments/removed-indent] [fixture:
+treemap/carried-indentation/header-space]
 
 [fixture: treemap/carried-indentation/header-tab]
 
@@ -268,11 +268,10 @@ Every other source span stays as written: a sign, a `.` at the end, separators,
 underscores, a second dot, a zero at the start of the integer part, and more
 than 15 digits. Do not reprint its numeric value. Mermaid reads `1_000` as 1;
 other spellings can round, become NaN, overflow or underflow. Re-encoding can
-change the Db or produce rejected numeric syntax. [fixture:
-treemap/numbers/shortest-form] [fixture: treemap/numbers/forms-kept] [fixture:
-treemap/numbers/trailing-dot-kept]
+change the Db or produce rejected numeric syntax.
 
-[fixture: treemap/numbers/comma]
+[fixture: treemap/numbers/shortest-form] [fixture: treemap/numbers/forms-kept]
+[fixture: treemap/numbers/trailing-dot-kept] [fixture: treemap/numbers/comma]
 
 [fixture: treemap/numbers/underscore]
 
@@ -424,13 +423,17 @@ reads a run of whitespace as one. So a style has no whitespace before its first
 it and one space after it, a run of spaces and tabs between two words of a style
 is one space, and the style has no whitespace at its end. The Db keeps the
 whitespace in each style, so it changes, but the figure is the same, which was
-checked by drawing the chart before and after. [fixture: treemap/styles/spaced]
-[fixture: treemap/styles/trailing] [fixture:
+checked by drawing the chart before and after.
+
+[fixture: treemap/styles/spaced] [fixture: treemap/styles/trailing] [fixture:
 treemap/styles/trailing-before-semicolon] [fixture:
-treemap/styles/escaped-comma-spaced] A `,` that a backslash escapes is part of
-its style, the quotes of a string and percent text are part of the value as
-written, and the runs inside a string, a comment, and the parentheses of `url(`
-stay. [fixture: treemap/styles/percent-owned] [fixture: treemap/styles/quotes]
+treemap/styles/escaped-comma-spaced]
+
+A `,` that a backslash escapes is part of its style, the quotes of a string and
+percent text are part of the value as written, and the runs inside a string, a
+comment, and the parentheses of `url(` stay.
+
+[fixture: treemap/styles/percent-owned] [fixture: treemap/styles/quotes]
 [fixture: treemap/styles/string-runs-kept]
 
 The style stays as written where printing it could change more than the
@@ -440,9 +443,11 @@ that holds a `;`, or that has a comment or a directive on its line, stays too: a
 `;` there may be ignored by the line rule of mermaid.js, which reads the
 whitespace between a `:` and a later `#`, and a second formatting must find the
 same text. The whitespace that separates the style from the name of the class is
-not part of the style (see [Style gaps](#style-gaps)). [fixture:
-treemap/styles/written] [fixture: treemap/styles/empty-entry-kept] [fixture:
-treemap/styles/directive-line-kept] [fixture: semicolons/protected-class-column]
+not part of the style (see [Style gaps](#style-gaps)).
+
+[fixture: treemap/styles/written] [fixture: treemap/styles/empty-entry-kept]
+[fixture: treemap/styles/directive-line-kept] [fixture:
+semicolons/protected-class-column]
 
 Input (escaped):
 `"treemap\nclassDef zz color:red , fill:blue,stroke:rgb(1\\,2\\,3),;"`.
@@ -462,8 +467,9 @@ other diagram types, but not in a class diagram (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)):
 `classDef zz fill:#ABCDEF` is printed `classDef zz fill: #abcdef`. The versions
 that count draw `#ABCDEF` and `#abcdef` the same. A `#` that is no color, such
-as the `#ABC` of `url(#ABC)`, stays as written. [fixture:
-colors/colors-in-lower-case]
+as the `#ABC` of `url(#ABC)`, stays as written.
+
+[fixture: colors/colors-in-lower-case]
 
 Input
 ([colors/colors-in-lower-case-input.mmd](../tests/fixtures/treemap/colors/colors-in-lower-case-input.mmd)):
@@ -494,43 +500,66 @@ dropped: mermaid.js reads the statement the same without it. This holds for the
 `;` that is a unit of the statement, as in `classDef zz fill:red;`, and for the
 last `;` that the
 [line rule of mermaid.js](../../spec/docs/common.md#style-and-classdef-lines)
-ignores, as in `classDef zz color:#f00;`. [fixture:
-semicolons/class-terminator-dropped] [fixture:
-semicolons/class-terminator-hash-dropped] Whitespace immediately before the
-dropped `;` is dropped with it, also a U+00A0, U+2028, U+2029 or U+FEFF.
+ignores, as in `classDef zz color:#f00;`.
+
+[fixture: semicolons/class-terminator-dropped] [fixture:
+semicolons/class-terminator-hash-dropped]
+
+Whitespace immediately before the dropped `;` is dropped with it, also a U+00A0,
+U+2028, U+2029 or U+FEFF.
+
 [fixture: semicolons/class-terminator-space-before-dropped] [test:
 treemap/line-terminators-and-unicode/unicode-values] [test:
-treemap/semicolons/class-terminator-unicode-space-before-dropped] Whitespace
-after a `;` that the line rule ignores belongs to the style and is dropped too.
-[fixture: semicolons/class-terminator-hash-trailing-whitespace-dropped] The
-statement can end the text. [fixture:
-semicolons/class-terminator-end-of-text-dropped] The statement then takes the
-usual layout of a `classDef` line: indentation, blank lines and comment lines
-around it, an empty description block before it, and the run of whitespace after
-the `;` that indents the next row. [fixture:
-semicolons/class-terminator-indented-dropped] [fixture:
+treemap/semicolons/class-terminator-unicode-space-before-dropped]
+
+Whitespace after a `;` that the line rule ignores belongs to the style and is
+dropped too.
+
+[fixture: semicolons/class-terminator-hash-trailing-whitespace-dropped]
+
+The statement can end the text.
+
+[fixture: semicolons/class-terminator-end-of-text-dropped]
+
+The statement then takes the usual layout of a `classDef` line: indentation,
+blank lines and comment lines around it, an empty description block before it,
+and the run of whitespace after the `;` that indents the next row.
+
+[fixture: semicolons/class-terminator-indented-dropped] [fixture:
 semicolons/class-terminator-trailing-whitespace-dropped] [fixture:
 semicolons/class-terminator-blank-and-comment-lines-dropped] [fixture:
 semicolons/class-terminator-empty-description-block-dropped] [fixture:
-style-gaps/css-comment-terminator-dropped] The `;` stays where dropping it would
-change what is read: after a `classDef` without a style, where the next line
-would become the style, and before another statement on the same line. [fixture:
-semicolons/terminator] [fixture: semicolons/class-terminator-before-row-kept] It
-stays too when a comment or a directive follows it on its line, [fixture:
-semicolons/class-terminator-comment-kept] when a directive stands right before
-the `;` that is a unit of the statement, with or without whitespace between,
-[fixture: semicolons/class-terminator-directive-kept] when it is part of the
-style, as in `classDef zz fill: #f00;`, where `#f00;` is an entity, [fixture:
-semicolons/class-terminator-entity-kept] and when another `;` is beside it.
-[fixture: semicolons/class-terminator-beside-semicolon-kept] It stays too after
-a U+2028 or U+2029 and then a comment line: the character is no whitespace of
-the line rule and the comment line is removed, so dropping the `;` and the
-character would change what mermaid.js draws, and the line is printed as
-written. [test:
-treemap/semicolons/class-terminator-after-separator-and-comment-kept] A
-directive before a `;` that the line rule ignores stays and the `;` is dropped,
-as in the other diagram types. [fixture:
-semicolons/class-terminator-hash-directive-dropped]
+style-gaps/css-comment-terminator-dropped]
+
+The `;` stays where dropping it would change what is read: after a `classDef`
+without a style, where the next line would become the style, and before another
+statement on the same line.
+
+[fixture: semicolons/terminator] [fixture:
+semicolons/class-terminator-before-row-kept]
+
+It stays too when a comment or a directive follows it on its line, when a
+directive stands right before the `;` that is a unit of the statement, with or
+without whitespace between, when it is part of the style, as in
+`classDef zz fill: #f00;`, where `#f00;` is an entity, and when another `;` is
+beside it.
+
+[fixture: semicolons/class-terminator-comment-kept] [fixture:
+semicolons/class-terminator-directive-kept] [fixture:
+semicolons/class-terminator-entity-kept] [fixture:
+semicolons/class-terminator-beside-semicolon-kept]
+
+It stays too after a U+2028 or U+2029 and then a comment line: the character is
+no whitespace of the line rule and the comment line is removed, so dropping the
+`;` and the character would change what mermaid.js draws, and the line is
+printed as written.
+
+[test: treemap/semicolons/class-terminator-after-separator-and-comment-kept]
+
+A directive before a `;` that the line rule ignores stays and the `;` is
+dropped, as in the other diagram types.
+
+[fixture: semicolons/class-terminator-hash-directive-dropped]
 
 Where the `;` that ends the statement stays, the whitespace after it is the run
 that indents the next statement: the whitespace between the `;` and a comment or
@@ -538,34 +567,49 @@ a directive that follows it on its line, between two directives, and at the end
 of the line. mermaid.js counts the whitespace on both sides of a directive as
 one run
 ([Headers and indentation](../../spec/docs/diagrams/treemap.md#headers-and-indentation)),
-[corpus fixture: treemap/gram-indent-around-global-directive] and reads a second
-run on the next line as a second indentation, which it rejects. [corpus fixture:
+and reads a second run on the next line as a second indentation, which it
+rejects.
+
+[corpus fixture: treemap/gram-indent-around-global-directive] [corpus fixture:
 treemap/gram-class-tail-space-next-indent] [corpus fixture:
-treemap/gram-class-directive-tail-space-next-indent] The run moves once to the
-planned column of the next statement, as in
+treemap/gram-class-directive-tail-space-next-indent]
+
+The run moves once to the planned column of the next statement, as in
 [Carried indentation](#carried-indentation), so the comment or the directive
 touches the `;`, and a comment or a directive touches a directive before it.
 When the whitespace on the two sides of a directive makes the run, their sum
-counts. [fixture: semicolons/class-terminator-comment-run-moved] [fixture:
+counts.
+
+[fixture: semicolons/class-terminator-comment-run-moved] [fixture:
 semicolons/class-terminator-directive-run-moved] [fixture:
 semicolons/class-terminator-directives-run-moved] [fixture:
-semicolons/class-terminator-run-sum-moved] This holds when a `;` that the line
-rule ignores follows it, also when whitespace or a directive lies between the
-two `;`. [fixture: semicolons/class-terminator-ignored-run-moved] [fixture:
+semicolons/class-terminator-run-sum-moved]
+
+This holds when a `;` that the line rule ignores follows it, also when
+whitespace or a directive lies between the two `;`.
+
+[fixture: semicolons/class-terminator-ignored-run-moved] [fixture:
 semicolons/class-terminator-ignored-comment-run-moved] [fixture:
 semicolons/class-terminator-semicolons-run-moved] [fixture:
-semicolons/class-terminator-directive-semicolon-run-moved] It holds for a
-`classDef` without a style, [fixture:
-semicolons/class-terminator-styleless-run-moved] when the next statement is a
-`classDef`, [fixture: semicolons/class-terminator-class-run-moved] and when
-comment lines and blank lines lie between. [fixture:
-semicolons/class-terminator-comment-lines-run-moved] Without whitespace after
-the `;`, the indentation of the next row is its own and is printed at its
-planned column. [fixture: semicolons/class-terminator-comment-row-indented-kept]
+semicolons/class-terminator-directive-semicolon-run-moved]
+
+It holds for a `classDef` without a style, when the next statement is a
+`classDef`, and when comment lines and blank lines lie between.
+
+[fixture: semicolons/class-terminator-styleless-run-moved] [fixture:
+semicolons/class-terminator-class-run-moved] [fixture:
+semicolons/class-terminator-comment-lines-run-moved]
+
+Without whitespace after the `;`, the indentation of the next row is its own and
+is printed at its planned column.
+
+[fixture: semicolons/class-terminator-comment-row-indented-kept]
+
 Where no `;` before it ends the statement, a `;` that the line rule ignores,
 followed by text on its line, makes that text part of the style, so its
-whitespace stays: `classDef zz a:#b ; %% c` keeps its line. [fixture:
-semicolons/class-terminator-ignored-text-after-kept]
+whitespace stays: `classDef zz a:#b ; %% c` keeps its line.
+
+[fixture: semicolons/class-terminator-ignored-text-after-kept]
 
 Keep every other authored semicolon: selected ignored semicolons, a `;` beside
 another `;`, and value characters. A segment that holds a kept `;` is formatted
@@ -579,14 +623,17 @@ diagram. Text that no part of the layout holds stays as written. A statement
 over several lines whose lines, joined with one space or with nothing, could
 change which `;` the line rule ignores keeps the text of each segment, up to its
 last kept `;`, as written; any other statement over several lines is formatted
-like one on a single line. [fixture: semicolons/stretch-kept-rest-formatted]
-[fixture: semicolons/no-stretch-formatted] [fixture:
-semicolons/protected-class-column] Protected segments of a statement over
-several lines retain their source columns, with no extra indentation on their
-inner lines. If a kept line constrains a row boundary, preserve the body as
-written rather than fixing some row indents and normalizing others. This keeps
-parentage and semicolon selection together, including the protected ending; it
-takes precedence over ordinary line and spacing choices.
+like one on a single line.
+
+[fixture: semicolons/stretch-kept-rest-formatted] [fixture:
+semicolons/no-stretch-formatted] [fixture: semicolons/protected-class-column]
+
+Protected segments of a statement over several lines retain their source
+columns, with no extra indentation on their inner lines. If a kept line
+constrains a row boundary, preserve the body as written rather than fixing some
+row indents and normalizing others. This keeps parentage and semicolon selection
+together, including the protected ending; it takes precedence over ordinary line
+and spacing choices.
 
 [fixture: treemap/semicolons/terminator]
 
@@ -632,19 +679,23 @@ boundaries. The directives that end a title are printed with one space before
 each that has whitespace before it, and the whitespace after the last one is
 left out, whatever the whitespace at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-[fixture: title/title-directives-end-blanks-dropped] A `title` with no text,
-written with whitespace before a directive or a comment on its line, is printed
-with one space before the first of them, whether the whitespace is one character
-or more, a tab, or, before a directive, a space and a U+2028 or U+2029 (a title
-of whitespace only is a bare `title`), and with none where nothing is written
-between the keyword and the directive: `title`, a space, and `%%{init: {}}%%` is
-printed as it is, and `title`, three spaces, and `%%{init: {}}%%` as the first.
-A U+2028 or U+2029 before a comment that joins the next line (`title`, two
-spaces, the character, and `%% c`, with a row after it) keeps the line as
-written, as the comment starts after the character. The one whitespace character
-after the keyword is part of the keyword to mermaid.js, so a title with no text
-ends at its keyword, and that character is a gap of the line like the whitespace
-after a title with text; the second formatting finds the form of the first.
+
+[fixture: title/title-directives-end-blanks-dropped]
+
+A `title` with no text, written with whitespace before a directive or a comment
+on its line, is printed with one space before the first of them, whether the
+whitespace is one character or more, a tab, or, before a directive, a space and
+a U+2028 or U+2029 (a title of whitespace only is a bare `title`), and with none
+where nothing is written between the keyword and the directive: `title`, a
+space, and `%%{init: {}}%%` is printed as it is, and `title`, three spaces, and
+`%%{init: {}}%%` as the first. A U+2028 or U+2029 before a comment that joins
+the next line (`title`, two spaces, the character, and `%% c`, with a row after
+it) keeps the line as written, as the comment starts after the character. The
+one whitespace character after the keyword is part of the keyword to mermaid.js,
+so a title with no text ends at its keyword, and that character is a gap of the
+line like the whitespace after a title with text; the second formatting finds
+the form of the first.
+
 [fixture: title/bare-title-directive-one-space] [fixture:
 title/bare-title-directive-spaces] [fixture: title/bare-title-directive-tab]
 [fixture: title/bare-title-directive-touching] [fixture:
@@ -656,7 +707,9 @@ treemap/title/bare-title-directive-spaces-and-line-separator] [test:
 treemap/title/bare-title-comment-after-line-separator-kept]
 
 A comment line after an empty title aligns with the next statement without
-becoming the title's value. [fixture: treemap/title/empty-next-comment]
+becoming the title's value.
+
+[fixture: treemap/title/empty-next-comment]
 
 A title that was not written indented is printed at the start of its line, and
 the rows below it stay one step in: one that starts its line stays there, and
@@ -671,10 +724,10 @@ and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A comment line before such a title aligns with it. A title that is indented in
 the source is printed one step in, like the other statements, since the first
-version rejects it as written too. [fixture: treemap/header/common] [fixture:
-treemap/title/after-header-spaced-line-start]
+version rejects it as written too.
 
-[fixture: treemap/title/padding]
+[fixture: treemap/header/common] [fixture:
+treemap/title/after-header-spaced-line-start] [fixture: treemap/title/padding]
 
 [fixture: treemap/title/empty-next-comment]
 
@@ -715,6 +768,7 @@ no next-line value is joined. The directives that end the value are printed with
 one space before each that has whitespace before it, and the whitespace after
 the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 An `accTitle` or `accDescr` statement is placed like a title: it is printed at
@@ -889,39 +943,51 @@ Align standalone comment lines with the next statement, or the last statement at
 EOF, to show their association, as in [ishikawa](./ishikawa.md#comments),
 [kanban](./kanban.md#comments) and [mindmap](./mindmap.md#comments). This
 applies whether the comment was shallower or deeper than that statement,
-including before a dedent. [fixture: treemap/comments/aligned-depths] [fixture:
+including before a dedent.
+
+[fixture: treemap/comments/aligned-depths] [fixture:
 treemap/comments/standalone] [fixture: treemap/comments/aligned-final]
 
 The aligned forms include `%% text`, `%%!`, `%%!x`, `%%%`, `%%` followed by
 spaces, and `%% {x}`. Successive comment lines align together, even across blank
-lines. [fixture: treemap/comments/aligned-forms] [fixture:
-treemap/comments/aligned-blank-lines] Use the same configured indentation as the
-statement, including tabs and the positive minimum step at tabWidth zero.
+lines.
+
+[fixture: treemap/comments/aligned-forms] [fixture:
+treemap/comments/aligned-blank-lines]
+
+Use the same configured indentation as the statement, including tabs and the
+positive minimum step at tabWidth zero.
+
 [fixture: treemap/comments/aligned-tabs] [fixture:
-treemap/comments/aligned-zero] Comments before the header or in a body without
-statements stand at column one. [fixture: treemap/prefix/comment] [fixture:
-treemap/comments/only-comments]
+treemap/comments/aligned-zero]
+
+Comments before the header or in a body without statements stand at column one.
+
+[fixture: treemap/prefix/comment] [fixture: treemap/comments/only-comments]
 
 Between statements, keep a line of only `%%`, a line starting with `%%{` without
 being a directive, and a standalone directive at column one: mermaid.js rejects
 these lines when indented. Keep this distinction in mixed runs and at EOF.
+
 [fixture: treemap/comments/native-bare] [fixture:
 treemap/comments/native-nonword] [fixture: treemap/comments/unclosed-directive]
 [fixture: treemap/comments/mixed-directives] [fixture:
-treemap/comments/native-final] Gaps inside statements follow
-[Component newlines](#component-newlines) and [Style gaps](#style-gaps). Comment
-lines around an empty description block or a semicolon-protected title still
-align with the following statement. [fixture:
-treemap/comments/aligned-empty-description] [fixture:
+treemap/comments/native-final]
+
+Gaps inside statements follow [Component newlines](#component-newlines) and
+[Style gaps](#style-gaps). Comment lines around an empty description block or a
+semicolon-protected title still align with the following statement.
+
+[fixture: treemap/comments/aligned-empty-description] [fixture:
 treemap/comments/aligned-protected-title]
 
 Keep inline comments on their line and preserve content, marks, tails, order and
 ownership. When whitespace before an inline comment supplied the next row’s
 indent, move it to that row even if the comment then touches the preceding
 token. Use the AST hierarchy rather than whitespace already removed with common
-comment regions. Native comments retain LS/PS as content. [test:
-treemap/comments/standalone-ls] [test: treemap/comments/standalone-ps]
+comment regions. Native comments retain LS/PS as content.
 
+[test: treemap/comments/standalone-ls] [test: treemap/comments/standalone-ps]
 [fixture: treemap/comments/standalone]
 
 [fixture: treemap/comments/native-bare]
@@ -975,15 +1041,16 @@ printed as written, as it is for a kept line that constrains a row boundary (see
 [Semicolons](#semicolons)). The same holds for two rows on one line with a
 directive that is not closed between them, since the directive takes the
 whitespace after its argument, which is the indentation of the second row.
+
 [fixture: treemap/directives/unclosed-directive-joins-rows-kept] [fixture:
 treemap/directives/unclosed-directive-between-rows-kept]
 
 With useTabs, the retained gaps and the supplied indentation are all printed as
 tabs: the whitespace on both sides of the directive is one indentation unit, in
 which each character counts once whatever its kind (see [Tabs](#tabs)).
-[fixture: treemap/directives/leading-use-tabs]
 
-[fixture: treemap/directives/leading]
+[fixture: treemap/directives/leading-use-tabs] [fixture:
+treemap/directives/leading]
 
 [fixture: treemap/directives/shortened]
 
@@ -1050,10 +1117,10 @@ meaningful whitespace-only indentation run to its row. Preserve blank lines
 inside names, descriptions, directives and common comment regions as owned text.
 
 Blank lines between a comment line and its following statement do not change the
-comment's target column. [fixture: treemap/blank-lines/comments] [fixture:
-treemap/comments/aligned-blank-lines]
+comment's target column.
 
-[fixture: treemap/blank-lines/ordinary]
+[fixture: treemap/blank-lines/comments] [fixture:
+treemap/comments/aligned-blank-lines] [fixture: treemap/blank-lines/ordinary]
 
 [fixture: treemap/blank-lines/comments]
 
@@ -1200,10 +1267,10 @@ file boundary choice. Value tails remain owned text; an unfinished Root
 directive reaching EOF and a protected body ending keep their source ending. A
 rejected unused indentation run is never repaired.
 
-A final standalone comment line aligns with the last statement. [fixture:
-treemap/final-newline/comment] [fixture: treemap/comments/aligned-final]
+A final standalone comment line aligns with the last statement.
 
-[fixture: treemap/final-newline/row]
+[fixture: treemap/final-newline/comment] [fixture:
+treemap/comments/aligned-final] [fixture: treemap/final-newline/row]
 
 [fixture: treemap/final-newline/common]
 

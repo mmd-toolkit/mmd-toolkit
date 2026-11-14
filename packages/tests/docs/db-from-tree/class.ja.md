@@ -11,19 +11,25 @@ class 図の木から Db の要約を作る手順です。
 
 フロントマターの図のタイトルは、木から来ません。
 Db の値を確かめる人は、それを mermaid.js 自身の関数で求めます。
+
 [fixture: class/docs-syntax-class-diagram-2f728b32]
+
 [設定（参考）](../configuration.ja.md#設定参考) を参照。
 
 ## 木から要約を作る
 
 文はソースの順に当て、名前空間の項目はその中の順に当てます。
-各文は次のとおりです。 [fixture: class/db-style-class-def-source-order]
+各文は次のとおりです。
+
+[fixture: class/db-style-class-def-source-order]
+
 どの値も[変換した形](../../../spec/docs/common.ja.md#ソースの読み方)で読むので、
 エンティティはプレースホルダで、属性の引用符は `'`、行終端は改行で、
 行単位の規則が無視する `;` は除かれます。
 ``class `a#amp;b` `` はクラス `aﬂ°amp¶ßb` を宣言し、
 `style A fill:#f00,x:<a b="c">y</a>` は A に、
 スタイル `fill:#f00` と `x:<a b='c'>y</a>` を与えます。
+
 [fixture: class/db-backquoted-name-entity] [fixture: class/db-member-entity]
 [fixture: class/db-member-attribute-quote] [fixture: class/db-note-entity]
 [fixture: class/db-cardinality-entity] [fixture: class/db-acc-title-entity]
@@ -46,11 +52,13 @@ Db の値を確かめる人は、それを mermaid.js 自身の関数で求め�
 `class A~T%%{init: {}}%%U~` は型 `TU` の A を、
 `class A~ %%{init: {}}%% ~` は型が空白 2 つの A を、
 `class A~%%{init: {}}%%~` は型のない A を宣言します。
+
 [fixture: class/db-generic-blank] [fixture: class/db-generic-spaces]
 [fixture: class/db-generic-blank-line-feed]
 [fixture: class/db-generic-blank-directive-between-spaces]
 [fixture: class/db-generic-directive-only]
 [fixture: class/db-generic-directive-in-text]
+
 書いた名前の**型**は、`~` を持ち、その最初の `~` が最初の文字でないとき、
 最初の `~` と 2 つ目の `~` の間（なければ終わりまで）のテキストで、
 そうでなければ空です。
@@ -61,6 +69,7 @@ Db の値を確かめる人は、それを mermaid.js 自身の関数で求め�
 同様に、``class `a~b~c` `` は型 `b` の `a` を、
 ``class `a~` `` は型のない `a` を宣言し、``class `a~b`~T~ `` は、
 書いた名前が `a~b~T~` なので、型 `b` の `a` を宣言します。
+
 [fixture: class/db-generic-type] [fixture: class/db-backquoted-name-tilde]
 [fixture: class/db-backquoted-name-unclosed]
 [fixture: class/div-backquote-starts-with-tilde-and-type]
@@ -84,6 +93,7 @@ Db の値を確かめる人は、それを mermaid.js 自身の関数で求め�
 `A~T~ : x` は型 `T` の A を宣言します。
 U+2028 は行終端ではないので、`class A`、U+2028、
 `class B` は 1 つの class の文で、クラス `AclassB` を加えます。
+
 [fixture: class/db-class-type-first-added]
 [fixture: class/db-generic-type-angle-brackets]
 [fixture: class/db-class-type-member-statement]
@@ -98,23 +108,30 @@ class の文は、そのクラスを加え、それから次のことをしま�
   クラスが持つラベルを保ちます。
   型は、文に書いた型ではなく、クラスの型です。
   `class A` の後の `class A~T~["L"]` は、A の `text` を `L` にします。
-  [fixture: class/db-class-label-type] [fixture:
-  class/db-class-label-redefined] [fixture:
-  class/db-class-label-kept-without-label] [fixture:
-  class/db-class-label-type-of-class]
+
+  [fixture: class/db-class-label-type] [fixture: class/db-class-label-redefined]
+  [fixture: class/db-class-label-kept-without-label]
+  [fixture: class/db-class-label-type-of-class]
+
   ラベルは、同じ id のクラスのラベルを置き換えます。
   片方の文に型があり、もう片方にないときも、
   片方が namespace の中にあるときも同じです（クラスは `parent` を保ちます）。
   `class A~T~["First"]` の後の `class A["Second"]` は、
   A の `label` を `Second`、`text` を `Second<T>` にします。
   同じラベルを 2 度書いても、何も変わりません。
+
   [fixture: class/db-class-label-same-twice]
   [fixture: class/db-class-label-redefined-generic]
   [fixture: class/db-class-label-redefined-in-namespace]
+
 - `:::` は、
   クラスにその名前の部分の CSS クラスを与えます（下の **CSS クラス** を参照）。
+
 - 注釈は、その名前の部分を `annotations` に加えます。
-  クラスがすでに持っていても加えます。 [fixture: class/db-annotation-twice]
+  クラスがすでに持っていても加えます。
+
+  [fixture: class/db-annotation-twice]
+
 - メンバーの行は、CSS クラスや注釈の後に、メンバーの文と同じく順に加えます。
   クラスがすでに持つメンバーに加えるので、
   同じクラスの本体のある 2 つのクラスの文は、両方のメンバーを順に与えます。
@@ -123,21 +140,28 @@ class の文は、そのクラスを加え、それから次のことをしま�
   そのため、`class A <<first>> {` の注釈は、
   その本体の注釈の行 `<<second>>` より前になります。
   本体の中の独立した行のディレクティブは、メンバーの行を作りません。
-  [fixture: class/db-class-members-added] [fixture:
-  class/db-class-annotation-then-member-annotation] [fixture:
-  class/db-class-members-directive-line]
+
+  [fixture: class/db-class-members-added]
+  [fixture: class/db-class-annotation-then-member-annotation]
+  [fixture: class/db-class-members-directive-line]
 
 **メンバーの文とメンバーの行。**
 ラベルのあるメンバーの文は、そのクラスを加え、
 それからラベルのメンバーの行を加えます。
 ラベルはその行の残りで、`A : x %% c` はメンバー `x %% c` を加えます。
+
 [fixture: class/db-member-statement-percent]
+
 メンバーの行は、クラスに次のものを加えます。
 
 - 注釈の行は、その名前の値を空白を含めて、名前がなければ空のテキストを、
-  `annotations` に。 [fixture: class/db-member-annotation-spaces] [fixture:
-  class/tokens-annotation-blank] [fixture: class/tokens-annotation-blank-label]
+  `annotations` に。
+
+  [fixture: class/db-member-annotation-spaces]
+  [fixture: class/tokens-annotation-blank]
+  [fixture: class/tokens-annotation-blank-label]
   [fixture: class/db-member-annotation-empty]
+
 - 方法の行は `methods` に。
   `visibility` は可視性の記号か空のテキスト、
   `classifier` は分類子の記号か空のテキスト、`id` はメンバーの名前、
@@ -148,12 +172,16 @@ class の文は、そのクラスを加え、それから次のことをしま�
   を参照。
   `+getInstance() Foo $` の戻り値の型は `Foo` と空白 1 つで、`+foo(a) a b`、
   タブ、`*` の戻り値の型は `a b` とタブです。
-  [fixture: class/db-method-return-type-space-before-classifier] [fixture:
-  class/db-method-return-type-tab-before-classifier] [fixture:
-  class/db-method-visibility-classifier]
+
+  [fixture: class/db-method-return-type-space-before-classifier]
+  [fixture: class/db-method-return-type-tab-before-classifier]
+  [fixture: class/db-method-visibility-classifier]
+
 - 属性の行は、同じように `members` に。
   `parameters` と `returnType` は持ちません。
+
   [fixture: class/db-attribute-visibility-classifier]
+
 - 空白だけのメンバーの行は、何も加えません。
 
 メンバーの名前は、名前の値の始まりの空白を空白 1 つにしたもので、
@@ -168,11 +196,12 @@ class の文は、そのクラスを加え、それから次のことをしま�
 名前のテキストの始まりの U+2028 も空白です。
 `+`、U+2028、`int x` の id は `int x` で、`+`、空白、U+2028、
 `int y` の id は空白 1 つと `int y` です。
+
 [fixture: class/db-member-name-line-separator]
 [fixture: class/db-member-name-space] [fixture: class/db-method-name-space]
-[fixture: class/lex-member-method-segment-space-before-name] [fixture:
-class/lex-member-method-segment-space-only-name] [fixture:
-class/lex-member-method-segment-tab-only-name]
+[fixture: class/lex-member-method-segment-space-before-name]
+[fixture: class/lex-member-method-segment-space-only-name]
+[fixture: class/lex-member-method-segment-tab-only-name]
 
 **注釈の文。**
 注釈の文は、その名前の部分を、
@@ -206,11 +235,12 @@ id が `interface` にそれより前のインターフェースの数を続け�
 [ClassRelationStatement](../../../spec/docs/ast/class.ja.md#classrelationstatement)
 を参照。
 `A --> B : ` のタイトルは空のテキストで、`A --> B` はタイトルを持ちません。
+
 [fixture: class/tokens-relation-label-blank] [fixture: class/db-relation-types]
-[fixture:
-class/docs-syntax-class-diagram-bc06236e] [fixture:
-class/docs-syntax-class-diagram-b06c5b3c] [fixture: class/db-lollipop-both]
-[fixture: class/db-cardinality-spaces] [fixture: class/db-relation-label-quotes]
+[fixture: class/docs-syntax-class-diagram-bc06236e]
+[fixture: class/docs-syntax-class-diagram-b06c5b3c]
+[fixture: class/db-lollipop-both] [fixture: class/db-cardinality-spaces]
+[fixture: class/db-relation-label-quotes]
 [fixture: class/db-lollipop-other-end-second]
 [fixture: class/db-lollipop-written-names]
 [fixture: class/db-lollipop-strings-and-label]
@@ -240,8 +270,10 @@ class/docs-syntax-class-diagram-b06c5b3c] [fixture: class/db-lollipop-both]
 本体の各ノートの文は、そのノートについて同じことをします。
 そのため、`namespace A` の中の 2 つの `class C` の文は、
 A の `classes` に `C` を 1 回だけ与えます。
-[fixture: class/spec-class-diagram-95acf03b] [fixture:
-class/db-namespace-nested] [fixture: class/db-namespace-redeclared-label]
+
+[fixture: class/spec-class-diagram-95acf03b]
+[fixture: class/db-namespace-nested]
+[fixture: class/db-namespace-redeclared-label]
 [fixture: class/db-namespace-moves-class]
 [fixture: class/db-namespace-redeclared-label-kept]
 [fixture: class/db-namespace-new-dotted-label]
@@ -259,21 +291,25 @@ class/db-namespace-nested] [fixture: class/db-namespace-redeclared-label]
 クラスは加えません。
 文字列の中の独立した行のディレクティブは除かれ、その前後の改行は残ります。
 `note "a`、`%%{init: {}}%%` の行、`b"` の `text` は、`a`、改行 2 つ、`b` です。
-コメント行は、その改行とともに除かれます。 [fixture: class/db-note-text-spaces]
-[fixture:
-class/db-note-for-undefined-class]
+コメント行は、その改行とともに除かれます。
+
+[fixture: class/db-note-text-spaces]
+[fixture: class/db-note-for-undefined-class]
 [fixture: class/db-note-directive-line-inside]
 [fixture: common/comment-in-string]
 [fixture: class/tokens-comment-region-in-click-string]
 [fixture: class/db-note-comment-line-inside-string]
+
 後の文が宣言するクラスへの note は、書かれた名前を保ちます。
 `class A` の前の `note for A "x"` の `class` は `A` です。
+
 [fixture: class/db-note-for-before-class]
 
 **クリックの文。**
 これらの文では、クラスの名前の書いた名前は、`,` で区切った名前の一覧で、
-各手順は各名前に順に当てます。 [fixture: class/db-link-names-comma]
-[fixture: class/db-click-call-names-comma]
+各手順は各名前に順に当てます。
+
+[fixture: class/db-link-names-comma] [fixture: class/db-click-call-names-comma]
 
 - `callback` と、`call` の `click` は、各名前の id のクラスがあれば、
   その `haveCallback` を設定し、
@@ -284,7 +320,9 @@ class/db-note-for-undefined-class]
   `callback 1A "fn" "t"` は、
   クラス `1A` の `haveCallback` とツールチップを設定し、
   クラス `classId-1A` に `clickable` を与えます。
+
   [fixture: class/db-callback-digit-split-lookup]
+
 - `link` と、`href` の `click` は、各名前のクラスがあれば、その `link` を、
   URL から両端の空白を除いたものにし、それが空なら取り除きます。
   クラスがすでにリンクを持っていても同じです。
@@ -296,16 +334,18 @@ class/db-note-for-undefined-class]
   ASCII の数字で始まる名前は、CSS クラスと同じく、
   `classId-` に名前を続けたもので探します。
   そのため、`link 1A "u"` は、クラス `classId-1A` の `link` を設定し、
-  ほかのクラスの `link` は設定しません。 [fixture: class/db-link-url-blank]
-  [fixture:
-  class/db-link-url-blank-after-link] [fixture: class/db-link-targets]
+  ほかのクラスの `link` は設定しません。
+
+  [fixture: class/db-link-url-blank]
+  [fixture: class/db-link-url-blank-after-link] [fixture: class/db-link-targets]
   [fixture: class/db-link-digit-prefixed-class]
+
 - 空でないツールチップは、その後、各名前の id のクラスがあれば、
   その `tooltip` を、空白も含め書いたとおりに設定します。
   ツールチップは id で設定するので、`link 1A "u" "t"` は、
   クラス `1A` の `tooltip` だけを設定します。
-  [fixture: class/db-link-tooltip-spaces] [fixture:
-  class/db-link-digit-tooltip]
+
+  [fixture: class/db-link-tooltip-spaces] [fixture: class/db-link-digit-tooltip]
 
 そのため、存在しないクラスへのクリックの文は、何も変えません。
 ただし、`callback` と、`call` の `click` は、クラスかどうかにかかわらず、
@@ -313,17 +353,21 @@ class/db-note-for-undefined-class]
 `id` は名前、`name` は `callback` の StringLiteral か ClassLiteral の `value`、
 `args` は `arguments` の `value`（なければ null）です。
 要約は、呼び出しがあるときだけ `clickCalls` を持ちます。
+
 [fixture: class/tokens-callback-name-trailing-space]
 [fixture: class/db-click-href] [fixture: class/db-click-link-as-written]
-[fixture: class/spec-class-diagram-6fe56b41] [fixture:
-class/db-callback-names-comma] [fixture: class/db-link-url-spaces] [fixture:
-class/db-link-undefined-class] [fixture: class/db-click-undefined-class]
+[fixture: class/spec-class-diagram-6fe56b41]
+[fixture: class/db-callback-names-comma] [fixture: class/db-link-url-spaces]
+[fixture: class/db-link-undefined-class]
+[fixture: class/db-click-undefined-class]
 [fixture: class/db-callback-undefined-class]
 [fixture: class/db-callback-names-comma-one-undefined]
 [fixture: class/db-click-call-undefined-class]
+
 後で加わるクラスについても同じです。
 クラスを加える文より前のクリックの文は何も変えず、
 関係がクラスを宣言した後のクリックの文は、そのクラスに効きます。
+
 [fixture: class/db-click-before-class] [fixture: class/db-link-before-class]
 [fixture: class/db-callback-before-class]
 [fixture: class/db-click-after-relation]
@@ -341,17 +385,24 @@ class/db-link-undefined-class] [fixture: class/db-click-undefined-class]
 A と B に `c` を与えます。
 `,` の前後の空白は名前の一部です。
 `cssClass "A, B" c` は、A にだけ `c` を与え、`cssClass "A ,B" c` は、
-B にだけ `c` を与えます。 [fixture: class/db-css-class-digit] [fixture:
-class/db-css-class-statement-digit] [fixture: class/db-css-class-list-space]
+B にだけ `c` を与えます。
+
+[fixture: class/db-css-class-digit]
+[fixture: class/db-css-class-statement-digit]
+[fixture: class/db-css-class-list-space]
 [fixture: class/db-css-class-digit-prefixed-class]
 [fixture: class/db-css-class-colon-digit-prefixed-class]
 [fixture: class/db-css-class-colon-names-comma]
 [fixture: class/db-css-class-added-twice]
 [fixture: class/db-css-class-ids-space-before-comma]
+
 クラスのない名前への CSS クラスは、何も変えません。
+
 [fixture: class/db-css-class-undefined-class]
+
 後で加わるクラスについても同じです。
 `class A` の前の `cssClass "A" c` は、何も変えません。
+
 [fixture: class/db-css-class-before-class]
 
 **スタイル。**
@@ -363,27 +414,35 @@ class/db-css-class-statement-digit] [fixture: class/db-css-class-list-space]
 この変換した読みでは、directive、コメント領域、
 無視されるセミコロンは文字を加えません。
 各 `,` で分けた結果が Db の値で、それぞれの先頭と末尾の空白を残します。
+
 [fixture: class/db-style-trailing-whitespace-eol]
 [fixture: class/db-class-def-trailing-whitespace]
 [fixture: class/db-style-spaces]
 [fixture: class/tokens-style-label-space-before-directive]
 [fixture: class/tokens-style-space-ignored-semicolon]
+
 そのため、`,` で終わるスタイルは、最後の値が空のテキストです。
 `style A fill:red,` の値は `fill:red` と空のテキストです。
+
 [fixture: class/db-style-empty-value]
+
 `style` は、それを、id がその語のクラスがあれば、
 そのクラスがすでに持つ `styles` の後に加えます。
 そのため、クラスを加える文より前の `style` の文は、何も変えません。
 ASCII の数字で始まる語は、`classId-` を付けて探しません。
+
 [fixture: class/db-style-before-class] [fixture: class/db-style-twice]
 [fixture: class/db-style-digit-id]
+
 クラスを加える文が namespace の中にあるときも同じです。
 関係やメンバーの文が宣言したクラスは、それ以後クラスなので、
 その後の `style` や、namespace の中の `class` の文の後の `style` は効きます。
+
 [fixture: class/db-style-before-class-in-namespace]
 [fixture: class/db-style-after-relation]
 [fixture: class/db-style-after-member-statement]
 [fixture: class/db-style-after-class-in-namespace]
+
 `classDef` は、それを、その名前ごとに順に、
 `cssClasses` がその名前をどこかに含むクラスの `styles` に加えます。
 より長い CSS クラスの中に含むものも数えます。
@@ -391,35 +450,40 @@ ASCII の数字で始まる語は、`classId-` を付けて探しません。
 `classDef default fill:red` はすべてのクラスに当てはまります。
 名前を 2 つ持つクラスは、値を 2 回得ます。
 当てはまるのは、その時点でその CSS クラスを持つクラスだけです。
-後でそれを得たクラスはスタイルを得ません。 [fixture: class/db-style-spaces]
-[fixture: class/db-style-undefined-class]
-[fixture: class/db-class-def-substring] [fixture:
-class/db-class-def-default] [fixture: class/db-class-def-order]
-[fixture: class/db-class-def-names]
+後でそれを得たクラスはスタイルを得ません。
+
+[fixture: class/db-style-spaces] [fixture: class/db-style-undefined-class]
+[fixture: class/db-class-def-substring] [fixture: class/db-class-def-default]
+[fixture: class/db-class-def-order] [fixture: class/db-class-def-names]
 
 **ほかの文。**
 方向の文は、`direction` をその値にし、後の文が前の文を置き換えます。
+
 [fixture: class/db-direction-bt] [fixture: class/db-direction-tb-after-lr]
+
 `accTitle:` はアクセシビリティのタイトルを、
 `accDescr:` と `accDescr {` は説明を設定します。
 [flowchart.ja.md](./flowchart.ja.md#木から要約を作る) と同じく、
 両端の空白を除き、各改行とその後の空白を 1 つの改行として読み、
 後の文が前の文を置き換えます。
 `accDescr:` の行がブロックを置き換えるのも同じです。
-[fixture: class/db-acc-title-spaces] [fixture:
-class/spec-class-diagram-0926d7aa] [fixture: class/db-acc-title-replaces]
-[fixture: class/db-acc-descr-replaces] [fixture:
-class/db-acc-descr-line-replaces-block]
+
+[fixture: class/db-acc-title-spaces]
+[fixture: class/spec-class-diagram-0926d7aa]
+[fixture: class/db-acc-title-replaces] [fixture: class/db-acc-descr-replaces]
+[fixture: class/db-acc-descr-line-replaces-block]
 [fixture: class/db-acc-descr-block-collapse]
 [fixture: class/db-acc-whitespace-kinds]
 [fixture: class/db-acc-descr-block-replaces-line]
 [fixture: class/db-acc-descr-block-replaces-block]
+
 テキストのない `accTitle:` と `accDescr:` は、その行のテキストとして、
 テキストを持つ次の行を取ります。
 空行、コメント行、ディレクティブの行を越え、改行が LF でも CR LF でも、
 コロンの後に U+2028 があっても同じです。
 その行は文ではないので、`accDescr:` の後の `class A` は、説明を `class A` にし、
 クラスを宣言しません。
+
 [fixture: class/db-acc-title-line-empty-takes-next-after-comment]
 [fixture: class/db-acc-title-line-empty-takes-next-after-directive]
 [fixture: class/db-acc-descr-line-empty-takes-next-lines]
@@ -427,11 +491,17 @@ class/db-acc-descr-line-replaces-block]
 [fixture: class/db-acc-descr-line-empty-takes-next-after-directive]
 [fixture: class/db-acc-descr-line-empty-takes-next-line-crlf]
 [fixture: class/db-acc-descr-line-separator-then-text]
+
 テキストのない説明ブロックの文は、ほかの文の区切りの前にあるものも、
-何も変えません。 [fixture: class/gram-empty-description-block-after-note]
+何も変えません。
+
+[fixture: class/gram-empty-description-block-after-note]
 [fixture: class/db-acc-descr-empty-block-keeps-line]
 [fixture: class/db-acc-descr-empty-block-before-separator-keeps-block]
+
 ラベルのないクラスの名前だけの文は、何も変えません。
 `Foo` の行はクラスを宣言せず、名前 `ClassA` である `Class A` も同じです。
+
 [fixture: class/gram-name-alone] [fixture: class/lex-keyword-upper-case]
+
 [字句構造](../../../spec/docs/diagrams/class.ja.md#字句構造) を参照。

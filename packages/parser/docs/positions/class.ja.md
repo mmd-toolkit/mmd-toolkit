@@ -24,18 +24,24 @@
 
 各関係の端と線は、それぞれトークンです。
 矢印の範囲は、最初のものから最後のものまでです。
+
 [fixture: class/gram-relation-spaces]
 
 ### ClassDirectionStatement
 
-範囲は方向の行の全体です。 [fixture: class/lex-direction-line-in-label]
+範囲は方向の行の全体です。
+
+[fixture: class/lex-direction-line-in-label]
 
 ### ClassAnnotation
 
-範囲は `<<` から `>>` までです。 [fixture: class/db-annotation-after-relation]
+範囲は `<<` から `>>` までです。
+
+[fixture: class/db-annotation-after-relation]
 
 ### ClassLiteral
 
 空白だけのテキストが値であるところでは、
 `class A~ ~` と本体の `<<  >>` のように、その空白のトークンを持ちます。
+
 [fixture: class/tokens-generic-blank] [fixture: class/tokens-annotation-blank]

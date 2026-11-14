@@ -31,6 +31,7 @@ fixture の置き方と確かめ方は、
 mermaid.js の文書も、ヘッダーの後の文を 1 段深く書き、
 ほかの図も同じです（flowchart の[字下げ](./flowchart.ja.md#字下げ)を参照）。
 ヘッダーと、その前のコメント行は 1 列目に置きます。
+
 [fixture: indentation/statements-one-level-deeper]
 [fixture: indentation/written-indentation-dropped]
 [fixture: indentation/header-leading-whitespace]
@@ -74,6 +75,7 @@ mermaid.js は、`;` で区切らない限り、1 行の 2 つの文を拒否し
 `;` は、改行と同じに文を終わらせます。
 文を別々の行に置けば、何も区切らなくなるので、落とします。
 先頭にあるとき、続けて 2 つあるとき、最後にあるときも同じです。
+
 [fixture: statements-one-per-line/header-then-axis]
 [fixture: statements-one-per-line/header-then-title]
 [fixture: statements-one-per-line/header-then-point]
@@ -95,6 +97,7 @@ title、アクセシビリティのテキスト、説明ブロックの中の `;
 `title T; quadrant-1 A` は 1 つの title です。
 `title T accDescr {}` のように title の中にある空の説明ブロックは、
 title の一部なので、title と一緒に残ります。
+
 [fixture: statements-one-per-line/semicolon-in-a-title-is-text]
 [fixture: statements-one-per-line/semicolon-in-an-accessibility-text-is-text]
 [fixture: statements-one-per-line/empty-description-block-in-a-title-stays]
@@ -114,6 +117,7 @@ mermaid.js の行の規則が読む `;` がある行では、文を動かしま�
 その行がヘッダーの行であるときは、文はヘッダーの行に残ります。
 行の末尾にある、規則が無視する `;` は落とします。
 印字した行には規則が読む `;` がないので、その空白はほかと同じに整えます。
+
 [fixture: statements-one-per-line/line-rule-line-with-a-dropped-semicolon-formats-the-gap]
 [fixture: statements-one-per-line/line-rule-line-kept-together]
 [fixture: statements-one-per-line/line-rule-line-after-the-header-kept-together]
@@ -178,7 +182,9 @@ quadrantChart
 ヘッダーと最初の文の間にも、テキストの最後にも、空行は置きません。
 空行は、Db に入らない書き手の選択で、
 1 つの空行がそれを最小の手間で示します（[空行](./flowchart.ja.md#空行)を参照）。
-Prettier がコードでそうするのと同じです。 [fixture: blank-lines/runs-become-one]
+Prettier がコードでそうするのと同じです。
+
+[fixture: blank-lines/runs-become-one]
 [fixture: blank-lines/none-after-the-header]
 [fixture: blank-lines/none-at-the-end]
 [fixture: blank-lines/around-comment-lines]
@@ -212,6 +218,7 @@ quadrantChart
 mermaid.js はこの大文字小文字だけを検出するので、印字側が選ぶものはありません。
 前後の空白は落とし、
 同じ行の後ろの文は自分の行に移します（[1 行 1 文](#1-行-1-文)を参照）。
+
 [fixture: header/header-only] [fixture: header/trailing-whitespace-dropped]
 [fixture: header/comment-after-the-header]
 [fixture: header/comment-glued-to-the-header]
@@ -250,6 +257,7 @@ quadrantChart %% c
 mermaid.js の文書では、
 すべてのキーワードをテキストから離して書いています
 ([`title`、`x-axis`、`y-axis`、`quadrant-1` から `quadrant-4`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/quadrantChart.md#L13-L19))。
+
 [fixture: keywords-and-texts/title-spaces]
 [fixture: keywords-and-texts/title-tab]
 [fixture: keywords-and-texts/axis-keyword-spaces]
@@ -261,10 +269,13 @@ mermaid.js の文書では、
 [fixture: keywords-and-texts/inner-runs-of-a-title-collapsed]
 
 キーワードとテキストの間のディレクティブは、[指令](#指令)のとおりに置きます。
+
 [fixture: keywords-and-texts/directive-beside-keyword]
+
 軸や象限のキーワードの直後にある U+2028 と U+2029 は、
 テキストの最初の文字なので（[行区切り文字](#行区切り文字)を参照）、
 その前に空白を 1 つ置き、`title` の後にあるものはそのまま残します。
+
 [test: U+2028 between an axis keyword and its text]
 [test: U+2029 between a quadrant keyword and its text]
 [test: U+2028 after a title keyword]
@@ -277,6 +288,7 @@ mermaid.js の文書では、
 テキストの両端の空白は、Db が落とすので落とします。
 文字列とその後の単語は、間の空白を保ちます。
 `"a" b` のテキストは `a b` で、`"a"b` のテキストは `ab` だからです。
+
 [fixture: keywords-and-texts/inner-runs-collapsed]
 [fixture: keywords-and-texts/whitespace-at-the-ends-dropped]
 [fixture: keywords-and-texts/string-then-text-whitespace-kept]
@@ -334,6 +346,7 @@ mermaid.js は、矢印の周りの空白があってもなくても同じに読
 [象限チャートについて対象にする版](./compatibility.ja.md#対象にする-mermaidjs-の版)
 は同じ図を描くからです。
 mermaid.js の文書は `-->` を 6 回書き、それより長い矢印はありません。
+
 [fixture: axes/arrow-touching] [fixture: axes/arrow-with-more-whitespace]
 [fixture: axes/arrow-touching-on-one-side] [fixture: axes/arrow-length-shortest]
 [fixture: axes/text-inner-runs-collapsed] [fixture: axes/strings]
@@ -342,7 +355,9 @@ mermaid.js の文書は `-->` を 6 回書き、それより長い矢印はあ�
 矢印だけで、後ろにテキストのない軸（`x-axis L -->`）は、矢印を残し、
 前に空白 1 つを置きます。
 mermaid.js は `x-axis L` と別の軸として読むからです（左端のテキストは `L` と、
-矢印の文字になります）。 [fixture: axes/arrow-only]
+矢印の文字になります）。
+
+[fixture: axes/arrow-only]
 
 入力
 ([axes/arrow-touching-input.mmd](../tests/fixtures/quadrant/axes/arrow-touching-input.mmd)):
@@ -401,7 +416,9 @@ quadrantChart
 詳しくは
 [コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方) と
 [コロンの前の空白を決める例](./compatibility.ja.md#コロンの前の空白を決める例)
-を参照してください。 [fixture: points/colon-touches-the-name]
+を参照してください。
+
+[fixture: points/colon-touches-the-name]
 [fixture: points/spaces-inside-the-brackets]
 [fixture: points/name-whitespace-at-the-ends-dropped]
 [fixture: points/name-inner-runs-collapsed] [fixture: points/string-names]
@@ -414,6 +431,7 @@ mermaid.js は、点の中の改行を空白として読みます。
 複数行に書かれた点は、改行が字句解析器にとって空白である所で 1 行に印字します。
 コメント行か指令を含む点は、その改行を保ち、
 続きの列をそろえます（[複数行の文](#複数行の文)を参照）。
+
 [fixture: points/line-breaks-joined]
 [fixture: points/line-break-with-a-comment-line-kept]
 [fixture: points/line-break-with-a-directive-kept]
@@ -471,6 +489,7 @@ quadrantChart
 先頭のゼロや色の大文字小文字も含めて、値の綴りは保ちます。
 Db を変えず、点とクラスのスタイルを、
 Prettier がキーに続くコロンに印字する形にそろえます。
+
 [fixture: styles/style-colon-padding] [fixture: styles/style-colon-tab-padding]
 
 注釈類、ASCII 空白とタブ以外の空白文字、セミコロン、
@@ -478,6 +497,7 @@ Prettier がキーに続くコロンに印字する形にそろえます。
 書かれたまま保ちます。
 2 個目のコロンの後に許される後置部分は解釈しません。
 これらの保護は、コロンの空白整形より優先します。
+
 [fixture: styles/style-extra-colon-kept] [fixture: styles/style-directive-kept]
 [fixture: styles/style-semicolon-protected]
 [fixture: styles/styles-after-one-space] [fixture: styles/comma-after-one-space]
@@ -488,8 +508,9 @@ Prettier がキーに続くコロンに印字する形にそろえます。
 文法は、キーワードの後と名前の後の空白を 1 文字と数えるので、
 空白 1 つが唯一の形です。
 名前の後の空白は、木では最初のスタイルに属し、Db が落とすので、
-2 つ以上あれば 1 つにします。 [fixture: styles/class-definition]
-[fixture: styles/class-definition-spaces]
+2 つ以上あれば 1 つにします。
+
+[fixture: styles/class-definition] [fixture: styles/class-definition-spaces]
 [fixture: styles/class-definition-tabs]
 [fixture: styles/class-definition-name-with-a-dash]
 [fixture: styles/class-definition-three-styles]
@@ -542,6 +563,7 @@ quadrantChart
 色は、スタイルの値の中で単独で立つ、`#` と 3、4、6、8 桁の 16 進数です。
 色を短くすることはなく、色でないテキストは書かれたままにします。
 （[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
+
 [fixture: colors/colors-in-lower-case]
 
 入力
@@ -586,13 +608,16 @@ mermaid.js の文書の例のとおりに、引用符なしで印字します。
 テキストと同じ行でその後に続く `;` は、改行に置き換えて落とし、
 テキストの引用符は、`;` がない場合と同じに外します。
 `quadrant-1 "A";` は `quadrant-1 A` と印字します。
+
 [fixture: quotes/texts-before-a-semicolon]
+
 それ以外の文字列と markdown 文字列は、書かれたまま印字します。
 引用符とテキストを残し、中の空白とタブの連なりは空白 1 つにして印字します。
 mermaid.js は `"L"` と `L`、`"a b"` と `a b` を同じテキストとして読みますが、
 文字列は引用符なしのテキストが持てないものを持てます。
 `"a: b"` はコロンを持ち、引用符なしでは拒否されます。
 そのようなテキストの引用符は残し、引用符を付け加えることはありません。
+
 [fixture: quotes/strings-runs-collapsed]
 [fixture: quotes/plain-texts-without-quotes]
 [fixture: quotes/texts-with-hyphens-without-quotes]
@@ -656,6 +681,7 @@ quadrantChart
 中の空白とタブの連なりは空白 1 つにして印字します。
 テキストのない `title` は、キーワードだけを印字します。
 title の中の `;`、`#`、`%%`、引用符、キーワードは、そのテキストの文字です。
+
 [fixture: titles-and-accessibility-statements/title-text]
 [fixture: titles-and-accessibility-statements/title-without-text]
 [fixture: titles-and-accessibility-statements/title-with-special-characters]
@@ -674,6 +700,7 @@ Db はどちらの連なりも保持します。
 後ろの行に書かれたテキスト、キーワードより後ろの行に書かれたコロン、
 コロンの前の空白は、1 行にして印字します。
 改行は字句解析器にとって空白で、文のテキストは変わりません。
+
 [fixture: titles-and-accessibility-statements/colon-touches-keyword]
 [fixture: titles-and-accessibility-statements/colon-without-space-after]
 [fixture: titles-and-accessibility-statements/text-whitespace-dropped]
@@ -684,12 +711,14 @@ Db はどちらの連なりも保持します。
 
 1 行のブロックは、
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+
 [fixture: titles-and-accessibility-statements/block-text-on-the-opening-line]
 
 本文が複数行のブロックでは、本文を文より 1 段深くし、
 独立した `}` は文と同じ段に置きます。
 mermaid.js が説明から LF 後の字下げを除くためです。
 閉じていないブロックは拒否されるので、印字しません。
+
 [fixture: titles-and-accessibility-statements/block-lines-kept]
 [fixture: titles-and-accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
 [fixture: titles-and-accessibility-statements/block-comment-and-empty-lines-kept]
@@ -764,14 +793,17 @@ quadrantChart
 すでに空の内側は空のままです。
 通常のキーワードと開き括弧の間には空白 1 つを置き、
 `accDescr{  }` は `accDescr {}` にします。
+
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: quadrant Unicode and tab interiors]
+
 指令かコメント行の内容と改行は保ち、
 本文の字下げは
 [title とアクセシビリティの文](#title-とアクセシビリティの文)に従います。
 ヘッダーの後でも、ほかの文の後でも、自分の行に置きます。
 文法がブロックを受け入れるのは、文の始まりと、文の最後の単位の後です。
 mermaid.js は、どこにあってもトークンのないものとして読みます。
+
 [fixture: empty-description-blocks/inner-whitespace-collapsed]
 [fixture: empty-description-blocks/touching-kept]
 [fixture: empty-description-blocks/blank-lines-inside]
@@ -809,6 +841,7 @@ mermaid.js が複数行にわたって読む文は、
 印字は残しません。
 ほかの図も同じ規則で、
 文の行をつなぎます（[複数行の文](./xychart.ja.md#複数行の文)を参照）。
+
 [fixture: multi-line-statements/point-over-lines-joined]
 [fixture: multi-line-statements/name-then-colon-on-the-next-line-joined]
 [fixture: multi-line-statements/point-with-styles-over-lines-joined]
@@ -817,6 +850,7 @@ mermaid.js が複数行にわたって読む文は、
 後続の構造部分と独立した注釈類行を文より 1 段深くそろえます。
 各隙間の最初の行の末尾と、指令の内部全体を保ちます。
 複数行の名前などの値の範囲は、ひとまとまりのままです。
+
 [fixture: multi-line-statements/point-trivia-with-multiline-label]
 [fixture: multi-line-statements/accessibility-trivia-continuations]
 
@@ -829,12 +863,15 @@ mermaid.js が複数行にわたって読む文は、
 それ以外の複数行の文は、改行が残る場合、書かれたままにします。
 最終行の別の文にある `;` も、同じ判定をします。
 [1 行 1 文](#1-行-1-文)を参照してください。
+
 [fixture: multi-line-statements/breaks-decided-one-by-one]
 [fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/semicolon-joining-changes-kept]
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
+
 `;` があるだけでは、行をつなぐ妨げにはなりません。
+
 [fixture: multi-line-statements/semicolon-on-the-last-line-joined]
 
 ### 複数行の値
@@ -843,6 +880,7 @@ mermaid.js が複数行にわたって読む文は、
 説明本文の行は文より 1 段深くそろえます。
 Mermaid が LF 後の字下げを除くためです。
 それ以外の文字と改行は保ちます。
+
 [fixture: multi-line-values/string-with-line-breaks-kept]
 [fixture: multi-line-values/description-block-lines-kept]
 [fixture: multi-line-values/comment-line-inside-a-block-kept]
@@ -901,6 +939,7 @@ mermaid.js はどれも大文字小文字を問わずに読み、Db は同じで
 `classDef` も同じです。
 （[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード)）。
 クラスの名前は、大文字小文字も残します。
+
 [fixture: keyword-case/statement-keywords-one-form]
 [fixture: keyword-case/quadrant-3-4-one-form]
 [fixture: keyword-case/accessibility-keywords-kept]
@@ -939,6 +978,7 @@ quadrantChart
 title、アクセシビリティのテキスト、説明ブロック、文字列の中の `%%` は、
 その文字です。
 点の角括弧の中の `%%` は、入力を拒否させます。
+
 [fixture: comments/comment-line-at-the-level-of-the-next-statement]
 [fixture: comments/comment-line-at-the-end]
 [fixture: comments/comment-line-before-the-header]
@@ -957,6 +997,7 @@ title、アクセシビリティのテキスト、説明ブロック、文字列
 書き手の誤りを、何も知らせずに別のチャートとして読ませます。
 印字はコメントが接しているかどうかを保ち、報告する場所はリンターの規則です。
 ほかの図も同じです（[コメント](./journey.ja.md#コメント)を参照）。
+
 [fixture: comments/comment-after-a-statement-spaced]
 [fixture: comments/comment-after-a-statement-touching]
 [fixture: comments/comment-glued-to-a-one-character-word-kept]
@@ -1013,6 +1054,7 @@ quadrantChart
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
 単独の行にある指令は、後ろの文と同じ段に置き、
 行の中で 2 つの文の間にある指令は、後ろの文と一緒に動きます。
+
 [fixture: directives/directive-line-at-the-level-of-the-next-statement]
 [fixture: directives/directive-line-before-the-header]
 [fixture: directives/directive-after-a-statement-spaced]
@@ -1072,6 +1114,7 @@ quadrantChart
 [フロントマターの YAML](./flowchart.ja.md#フロントマターの-yaml) を参照）。
 正しい YAML でないフロントマターは、書かれたまま残します。
 フロントマターの title は Db に入るので、値には触れません。
+
 [fixture: frontmatter-yaml/formatted] [fixture: frontmatter-yaml/malformed-kept]
 [fixture: frontmatter-yaml/title-and-statement]
 [fixture: frontmatter-yaml/comment-after-frontmatter-before-header]
@@ -1113,6 +1156,7 @@ Db がそこで落とします。
 title、アクセシビリティのテキスト、説明ブロックのテキストは、
 値がそれらを両端から除くので、印字もそこで落とします。
 それらを含む隙間と、それらを含むテキストは、書かれたまま印字します。
+
 [test: U+2028 between the words of a text]
 [test: U+2029 between the words of a text] [test: U+2028 at the end of a text]
 [test: U+2028 between a statement and the next]
@@ -1132,6 +1176,7 @@ U+00A0、U+3000、U+FEFF は、テキスト、名前、クラスの名前の中�
 点の `:`、角括弧、コンマの周りと、アクセシビリティの文のコロンと括弧の周りでは、
 mermaid.js が空白として読むので、その場所に空白を印字します。
 点の `]` の後では受理されません（[行区切り文字](#行区切り文字)を参照）。
+
 [test: U+00A0 between the words of a text]
 [test: U+3000 between the words of a text]
 [test: U+FEFF between the words of a text]

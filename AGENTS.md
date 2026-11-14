@@ -215,6 +215,8 @@ same change.
   - Prose is wrapped at 80 columns: in English by Prettier
     (`pnpm run format:check`), in Japanese by the author and checked by
     `pnpm run lint:md`.
+  - A fixture citation stands in a paragraph of citations after its sentence,
+    never inside the sentence (`pnpm run lint:docs`).
   - A code block of Mermaid text has the info string `mmd` and is written as the
     formatter prints it, unless the example is there to show a way of writing.
   - Run the tests that a change can affect, and the whole suite of the package

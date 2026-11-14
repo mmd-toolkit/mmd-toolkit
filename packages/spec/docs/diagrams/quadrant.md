@@ -18,6 +18,7 @@ Entry 22 of [detection.md](../detection.md) selects this grammar: the text
 starts with `quadrantChart`, after whitespace, in exactly this case
 ([`quadrantDetector.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/quadrant-chart/quadrantDetector.ts#L9-L11)).
 `QUADRANTCHART`, `quadrantchart`, and `QuadrantChart` match no detector.
+
 [fixture: quadrant/header-upper-case] [fixture: quadrant/header-lower-case]
 [fixture: quadrant/header-capitalized]
 
@@ -27,7 +28,9 @@ before and after it, compared case-insensitively and followed by anything (see
 its own or on the line of the first, is rejected, and so is the word
 `quadrantChart` anywhere a unit starts: `A quadrantChart: [0.3, 0.6]` is
 rejected, while `"quadrantChart": [0.3, 0.6]` is a point. The header may be the
-whole text. [fixture: quadrant/spec-quadrant-jison-fe2d2340] [fixture:
+whole text.
+
+[fixture: quadrant/spec-quadrant-jison-fe2d2340] [fixture:
 quadrant/header-word-suffix] [fixture: quadrant/header-spaced-word-suffix]
 [fixture: quadrant/header-dash-suffix] [fixture:
 quadrant/header-non-ascii-suffix] [fixture: quadrant/header-digit-suffix]
@@ -45,11 +48,12 @@ Whitespace, empty lines, comment lines, a line of `%%` alone, directive lines, a
 line `%%{ }%%`, and a frontmatter before the header change nothing (see
 [Leading whitespace](../common.md#leading-whitespace)); a line that starts with
 `#` or `;`, a statement, or a text of nothing but a comment line before the
-header is detected as no diagram. [fixture: quadrant/header-indented] [fixture:
-quadrant/header-tab-indented] [fixture: quadrant/header-after-bare-percent-line]
-[fixture: quadrant/header-after-blank-lines] [fixture:
-quadrant/header-after-comment-line] [fixture:
-quadrant/header-after-directive-line] [fixture:
+header is detected as no diagram.
+
+[fixture: quadrant/header-indented] [fixture: quadrant/header-tab-indented]
+[fixture: quadrant/header-after-bare-percent-line] [fixture:
+quadrant/header-after-blank-lines] [fixture: quadrant/header-after-comment-line]
+[fixture: quadrant/header-after-directive-line] [fixture:
 quadrant/header-after-empty-braces-line] [fixture:
 quadrant/header-after-frontmatter] [fixture:
 quadrant/header-after-frontmatter-and-comment] [fixture:
@@ -67,7 +71,9 @@ or a directive: `quadrantChart title T`, `quadrantChart;title T`, and
 it makes the input rejected, such as a word, a dash and a word, a digit, or a
 character outside ASCII glued to the header, and a U+00A0, a U+2028, a U+2029,
 or a U+0085 after it, while a vertical tab and a form feed after it are
-whitespace. [fixture: quadrant/header-comment-on-header-line] [fixture:
+whitespace.
+
+[fixture: quadrant/header-comment-on-header-line] [fixture:
 quadrant/header-comment-glued] [fixture: quadrant/header-directive-glued]
 [fixture: quadrant/header-bare-percent-line-after-header] [fixture:
 quadrant/header-statement-on-header-line] [fixture:
@@ -102,8 +108,9 @@ name context, nor right after `accTitle:` or `accDescr:` with only whitespace
 after it: `x-axis "L`, ``quadrant-1 "`a``, `accDescr {` and a line `D`,
 `A: [0.3,`, `A:::c1`, and `accTitle:` at the end of the text are rejected, while
 `title` and `x-axis L -->` at the end of the text are a title with no text and
-an axis statement with the arrow. [fixture:
-quadrant/db-unclosed-axis-arrow-at-end] [fixture:
+an axis statement with the arrow.
+
+[fixture: quadrant/db-unclosed-axis-arrow-at-end] [fixture:
 quadrant/db-unclosed-directive-at-end] [fixture:
 quadrant/db-unclosed-title-keyword-at-end] [fixture:
 quadrant/gram-unclosed-acc-block-after-text] [fixture:
@@ -129,31 +136,38 @@ stand inside a text, a name, a title, and an accessibility text, and at the ends
 of a text and a name, where the Db trims them, while a title, an accessibility
 text, and the text of a description block leave them out at their ends with the
 other whitespace (see [ast/quadrant.md](../ast/quadrant.md#quadrantliteral)),
+and they start a text where a statement starts, so that U+00A0 before `x-axis`
+or `title` makes the input rejected and U+00A0 before the name of a point is
+part of the name.
+
 [fixture: quadrant/db-ends-title-nbsp-end] [fixture:
 quadrant/db-ends-acc-title-nbsp-end] [fixture:
-quadrant/db-acc-descr-block-nbsp-before-brace-close] and they start a text where
-a statement starts, so that U+00A0 before `x-axis` or `title` makes the input
-rejected and U+00A0 before the name of a point is part of the name. Where a rule
-reads a run of whitespace, between `accTitle` or `accDescr` and its `:` or `{`,
-after that `:` or `{`, and in the point context, around the `:` and the `[` that
-start a point and inside its brackets, whitespace is every whitespace character
-of [Notation](../common.md#notation), line feeds included (see
-[Accessibility values](#accessibility-values) and
+quadrant/db-acc-descr-block-nbsp-before-brace-close]
+
+Where a rule reads a run of whitespace, between `accTitle` or `accDescr` and its
+`:` or `{`, after that `:` or `{`, and in the point context, around the `:` and
+the `[` that start a point and inside its brackets, whitespace is every
+whitespace character of [Notation](../common.md#notation), line feeds included
+(see [Accessibility values](#accessibility-values) and
 [The point context](#the-point-context)). Everywhere else, in a `space` unit,
 around a keyword and the arrow, and after the `]` of a point, it is a space, a
 tab, a vertical tab, or a form feed, and after the `]` only spaces are part of
-it. [fixture: quadrant/db-point-nbsp-before-colon] [fixture:
+it.
+
+[fixture: quadrant/db-point-nbsp-before-colon] [fixture:
 quadrant/db-point-nbsp-inside-brackets] [fixture:
-quadrant/gram-ends-point-nbsp-end] A line of nothing but spaces and tabs stands
-anywhere, while a line of U+00A0, U+3000, U+FEFF, or U+2028 is a text where no
-statement starts and is rejected. [fixture: quadrant/db-grid-tab-acc-descr]
-[fixture: quadrant/db-grid-tab-acc-descr-block] [fixture:
-quadrant/db-grid-tab-acc-title] [fixture: quadrant/db-grid-tab-point-bare]
-[fixture: quadrant/db-grid-tab-point-quoted] [fixture:
-quadrant/db-grid-tab-quadrant-bare] [fixture:
-quadrant/db-grid-tab-quadrant-quoted] [fixture: quadrant/db-grid-tab-title]
-[fixture: quadrant/db-grid-tab-x-axis-bare] [fixture:
-quadrant/db-grid-tab-x-axis-quoted] [fixture:
+quadrant/gram-ends-point-nbsp-end]
+
+A line of nothing but spaces and tabs stands anywhere, while a line of U+00A0,
+U+3000, U+FEFF, or U+2028 is a text where no statement starts and is rejected.
+
+[fixture: quadrant/db-grid-tab-acc-descr] [fixture:
+quadrant/db-grid-tab-acc-descr-block] [fixture: quadrant/db-grid-tab-acc-title]
+[fixture: quadrant/db-grid-tab-point-bare] [fixture:
+quadrant/db-grid-tab-point-quoted] [fixture: quadrant/db-grid-tab-quadrant-bare]
+[fixture: quadrant/db-grid-tab-quadrant-quoted] [fixture:
+quadrant/db-grid-tab-title] [fixture: quadrant/db-grid-tab-x-axis-bare]
+[fixture: quadrant/db-grid-tab-x-axis-quoted] [fixture:
 quadrant/db-grid-tab-x-axis-right-bare] [fixture:
 quadrant/db-grid-tab-x-axis-right-quoted] [fixture:
 quadrant/db-grid-tab-y-axis-bare] [fixture: quadrant/db-grid-tab-y-axis-quoted]
@@ -409,7 +423,9 @@ inside the brackets of a point, around the `:` and the `,` of a point, and
 around the `:` of `accTitle:` and `accDescr:`; before the `:` of a point, it is
 whitespace only after a whitespace character, as described in
 [The point context](#the-point-context). A U+2028 and a U+2029 are no line
-break. [fixture: quadrant/gram-keyword-blank-line-classdef] [fixture:
+break.
+
+[fixture: quadrant/gram-keyword-blank-line-classdef] [fixture:
 quadrant/gram-keyword-blank-line-quadrant] [fixture:
 quadrant/gram-keyword-blank-line-x-axis] [fixture:
 quadrant/gram-keyword-blank-line-y-axis] [fixture:
@@ -484,8 +500,9 @@ HTML tag are read as `'` (see
 [HTML attribute quotes](../common.md#html-attribute-quotes)). The `;` that the
 line rule of `style` and `classDef` lines ignores (see
 [`style` and `classDef` lines](../common.md#style-and-classdef-lines)) is left
-out of a text, a title, and an accessibility text. [fixture:
-quadrant/db-grid-style-acc-descr] [fixture:
+out of a text, a title, and an accessibility text.
+
+[fixture: quadrant/db-grid-style-acc-descr] [fixture:
 quadrant/db-grid-style-acc-descr-block] [fixture:
 quadrant/db-grid-style-acc-title] [fixture: quadrant/db-grid-style-point-quoted]
 [fixture: quadrant/db-grid-style-quadrant-quoted] [fixture:
@@ -583,7 +600,9 @@ other units, the header, the keywords, the arrow, `:::`, a `class-name`, `-`,
   `quadrant-1 a%%{init: {}}%%b` has the text `ab`, and
   `A: [0.%%{init: {}}%%3, 0.6]` the coordinate `0.3`. A comment line or a
   directive line inside a value that runs over several lines is left out with
-  its line. [fixture: quadrant/db-grid-directive-acc-descr] [fixture:
+  its line.
+
+  [fixture: quadrant/db-grid-directive-acc-descr] [fixture:
   quadrant/db-grid-directive-acc-descr-block] [fixture:
   quadrant/db-grid-directive-acc-title] [fixture:
   quadrant/db-grid-directive-point-bare] [fixture:
@@ -609,11 +628,14 @@ other units, the header, the keywords, the arrow, `:::`, a `class-name`, `-`,
   quadrant/db-directive-inside-quoted-multiline] [fixture:
   quadrant/db-directive-inside-acc-block-line] [fixture:
   quadrant/db-comment-inline-in-quoted-block]
+
 - A directive between two units is allowed: on a line of its own, before or
   after a statement on its line, between a keyword and its text, between
   `accTitle` and its `:`, between the `:` and the `[` of a point, and between
-  two statements of a `;`. [fixture: quadrant/db-directive-after-statement]
-  [fixture: quadrant/db-directive-before-statement-same-line] [fixture:
+  two statements of a `;`.
+
+  [fixture: quadrant/db-directive-after-statement] [fixture:
+  quadrant/db-directive-before-statement-same-line] [fixture:
   quadrant/db-directive-between-statements] [fixture:
   quadrant/db-directive-config-width] [fixture:
   quadrant/db-directive-glued-to-statement] [fixture:
@@ -630,6 +652,7 @@ other units, the header, the keywords, the arrow, `:::`, a `class-name`, `-`,
   quadrant/db-directive-wrap-statement] [fixture:
   quadrant/db-comment-line-brace-closed-wrong] [fixture:
   quadrant/db-directive-between-acc-title-and-colon]
+
 - A directive inside the header, a keyword, the arrow, `:::`, a `class-name`, or
   the name of a class of `classDef` makes the input rejected, while mermaid.js
   joins the parts: `quadrant%%{init: {}}%%Chart`, `tit%%{init: {}}%%le T`,
@@ -638,6 +661,7 @@ other units, the header, the keywords, the arrow, `:::`, a `class-name`, `-`,
   `A:::c%%{init: {}}%%1: [0.3, 0.6]`, and
   `classDef c%%{init: {}}%%1 color: #f00`. This is the known divergence
   [`directive-as-token-boundary`](../known-divergences/directive-as-token-boundary.md).
+
   [fixture: quadrant/div-acc-title-keyword-inside-directive] [fixture:
   quadrant/div-class-directive-inside] [fixture:
   quadrant/div-directive-in-class-name] [fixture:
@@ -652,11 +676,13 @@ other units, the header, the keywords, the arrow, `:::`, a `class-name`, `-`,
   quadrant/div-y-axis-directive-in-keyword] [fixture:
   quadrant/div-directive-in-class-marker] [fixture:
   quadrant/div-directive-inside]
+
 - A directive that is not closed runs to the end of the text, and its argument
   may start on the next line (see
   [Where a directive is](../common.md#where-a-directive-is)): `%%{init` at the
-  end of a line takes the word at the start of the next line. [fixture:
-  quadrant/gram-directive-word-unclosed-takes-keyword] [fixture:
+  end of a line takes the word at the start of the next line.
+
+  [fixture: quadrant/gram-directive-word-unclosed-takes-keyword] [fixture:
   quadrant/gram-directive-colon-unclosed-takes-keyword] [fixture:
   quadrant/db-directive-argument-word-unclosed] [fixture:
   quadrant/db-directive-name-only-closed] [fixture:
@@ -723,8 +749,9 @@ starts with a dash, which is rejected. A keyword in another case is a keyword:
 `ACCDESCR:` start statements. `accTitle` and `accDescr` without their `:` or `{`
 are letters of a word, and a character between the keyword and the `:` other
 than whitespace makes the input rejected: `accTitlex:`, `accTitle-x:`,
-`accTitle1:`, and `accTitleé:`. [fixture:
-quadrant/db-keyword-suffix-quadrant-digit] [fixture:
+`accTitle1:`, and `accTitleé:`.
+
+[fixture: quadrant/db-keyword-suffix-quadrant-digit] [fixture:
 quadrant/db-keyword-suffix-quadrant-non-ascii] [fixture:
 quadrant/db-keyword-suffix-quadrant-underscore] [fixture:
 quadrant/db-keyword-suffix-title-dash] [fixture:
@@ -786,6 +813,7 @@ the statement, and an arrow in a text of a quadrant or in a name is the arrow,
 which the statement does not take: `quadrant-1 a-->b` is rejected. In quotes, in
 a title, in an accessibility text, and in a description block, a keyword is
 text. `__proto__`, `constructor`, and `hasOwnProperty` are words like any other.
+
 [fixture: quadrant/db-grid-nonascii-acc-descr] [fixture:
 quadrant/db-grid-nonascii-acc-descr-block] [fixture:
 quadrant/db-grid-nonascii-acc-title] [fixture:
@@ -999,12 +1027,14 @@ quadrant/gram-grid-keyword-y-axis-top-bare]
 keyword. Every character up to the line feed is a character of the title: a `;`,
 a `#`, `%%` and what follows it, quotes, a colon, keywords, and a text that
 looks like a point. So `title T; quadrant-1 A` is the title `T; quadrant-1 A`,
-and `title: [0.3, 0.6]` is a title. [fixture:
-quadrant/db-title-keyword-trailing-space] [fixture: quadrant/db-title-twice]
-[fixture: quadrant/db-title-indented] [fixture: quadrant/db-title-tab-indented]
-[fixture: quadrant/db-title-tab-separator] [fixture:
-quadrant/db-title-after-semicolon] [fixture: quadrant/db-title-frontmatter]
-[fixture: quadrant/db-title-frontmatter-after-statement] [fixture:
+and `title: [0.3, 0.6]` is a title.
+
+[fixture: quadrant/db-title-keyword-trailing-space] [fixture:
+quadrant/db-title-twice] [fixture: quadrant/db-title-indented] [fixture:
+quadrant/db-title-tab-indented] [fixture: quadrant/db-title-tab-separator]
+[fixture: quadrant/db-title-after-semicolon] [fixture:
+quadrant/db-title-frontmatter] [fixture:
+quadrant/db-title-frontmatter-after-statement] [fixture:
 quadrant/db-title-frontmatter-and-statement] [fixture:
 quadrant/gram-title-in-name-middle] [fixture: quadrant/gram-title-lf-ends]
 [fixture: quadrant/gram-title-after-axis-text] [fixture:
@@ -1045,8 +1075,10 @@ line whole, also when it is a statement: `accTitle:` followed by a line
 comment line and a directive line between them are no lines of the text.
 Whitespace may precede the `:`, line feeds too, with comment lines and directive
 lines between, and U+00A0, U+2028, U+2029, U+3000, and U+FEFF are whitespace
-before and after the `:`. [fixture: quadrant/db-acc-title-nbsp-before-colon]
-[fixture: quadrant/db-acc-title-ideographic-before-colon] [fixture:
+before and after the `:`.
+
+[fixture: quadrant/db-acc-title-nbsp-before-colon] [fixture:
+quadrant/db-acc-title-ideographic-before-colon] [fixture:
 quadrant/db-acc-title-bom-before-colon] [fixture:
 quadrant/db-acc-title-ls-before-colon] [fixture:
 quadrant/db-acc-title-ps-before-colon] [fixture:
@@ -1062,12 +1094,16 @@ quadrant/db-acc-title-ls-after-colon] [fixture:
 quadrant/db-acc-title-ps-after-colon] [fixture:
 quadrant/db-acc-title-comment-line-before-colon] [fixture:
 quadrant/db-acc-descr-comment-line-before-colon] [fixture:
-quadrant/db-acc-title-directive-line-before-colon] When only whitespace follows
-the `:` up to the end of the text, the input is rejected, also after an earlier
-accessibility statement. The characters `:`, `;`, `#`, `%%`, quotes, and the
-characters of the statement context are characters of the text. [fixture:
-quadrant/db-acc-title-plain] [fixture: quadrant/db-acc-title-glued-colon]
-[fixture: quadrant/db-acc-title-space-before-colon] [fixture:
+quadrant/db-acc-title-directive-line-before-colon]
+
+When only whitespace follows the `:` up to the end of the text, the input is
+rejected, also after an earlier accessibility statement. The characters `:`,
+`;`, `#`, `%%`, quotes, and the characters of the statement context are
+characters of the text.
+
+[fixture: quadrant/db-acc-title-plain] [fixture:
+quadrant/db-acc-title-glued-colon] [fixture:
+quadrant/db-acc-title-space-before-colon] [fixture:
 quadrant/db-acc-title-tab-before-colon] [fixture:
 quadrant/gram-acc-title-no-colon] [fixture: quadrant/db-acc-title-trimmed]
 [fixture: quadrant/db-acc-title-indented] [fixture:
@@ -1113,14 +1149,19 @@ the `{` and the `}`, there is no `description-block-text` unit. The text may
 hold line feeds, `#`, `;`, quotes, keywords, and `%%`; a CRLF or a lone CR in it
 is a line feed. Whitespace may precede the `{`, line feeds too, with comment
 lines and directive lines between, U+00A0 and the other whitespace characters of
-Notation included. [fixture: quadrant/db-acc-descr-nbsp-before-brace] [fixture:
+Notation included.
+
+[fixture: quadrant/db-acc-descr-nbsp-before-brace] [fixture:
 quadrant/db-acc-descr-ideographic-before-brace] [fixture:
 quadrant/db-acc-descr-bom-before-brace] [fixture:
 quadrant/db-acc-descr-ls-before-brace] [fixture:
 quadrant/db-acc-descr-ps-before-brace] [fixture:
 quadrant/db-acc-descr-comment-line-before-brace] [fixture:
-quadrant/db-acc-descr-directive-line-before-brace] A block without a `}` makes
-the input rejected. [fixture: quadrant/db-acc-descr-block] [fixture:
+quadrant/db-acc-descr-directive-line-before-brace]
+
+A block without a `}` makes the input rejected.
+
+[fixture: quadrant/db-acc-descr-block] [fixture:
 quadrant/db-acc-descr-block-glued-brace] [fixture:
 quadrant/db-acc-descr-block-lines] [fixture:
 quadrant/db-acc-descr-block-indented-lines] [fixture:
@@ -1151,7 +1192,9 @@ context at that `"`. The text may hold any character but `"`, line feeds
 included: spaces at its ends, punctuation, keywords, an arrow, brackets, a
 backquote, a `%%` after a space or glued to a word, and characters outside
 ASCII. A string has no escape, and a string that is not closed makes the input
-rejected. [fixture: quadrant/db-quoted-comment-glued-kept] [fixture:
+rejected.
+
+[fixture: quadrant/db-quoted-comment-glued-kept] [fixture:
 quadrant/db-quoted-comment-mark-kept-axis] [fixture:
 quadrant/db-quoted-comment-mark-kept-point] [fixture:
 quadrant/db-quoted-comment-mark-kept-quadrant] [fixture:
@@ -1162,9 +1205,11 @@ A quote followed by a backquote enters the markdown string context, which reads
 the characters up to the next backquote as a `markdown-string` unit and leaves
 at the backquote and the quote after it. The text holds no backquote and no
 quote: ``quadrant-1 "`a"b`"`` is rejected. A markdown string that is not closed
-makes the input rejected. [fixture: quadrant/db-name-markdown] [fixture:
-quadrant/db-quadrant-markdown] [fixture: quadrant/db-quadrant-markdown-newline]
-[fixture: quadrant/db-quadrant-markdown-then-bare] [fixture:
+makes the input rejected.
+
+[fixture: quadrant/db-name-markdown] [fixture: quadrant/db-quadrant-markdown]
+[fixture: quadrant/db-quadrant-markdown-newline] [fixture:
+quadrant/db-quadrant-markdown-then-bare] [fixture:
 quadrant/db-quadrant-markdown-then-title] [fixture:
 quadrant/db-x-axis-markdown-multiline] [fixture:
 quadrant/db-x-axis-markdown-string] [fixture:
@@ -1186,9 +1231,11 @@ ASCII (letters, digits, and `_`) as a `class-name` unit and leaves; the `:` of
 the point follows it. Whitespace right after `:::`, an empty name, a dash, a
 character outside ASCII, or a placeholder of an entity in the name, a second
 `:::`, a class name with no `:` after it, and `:::` with no name before it make
-the input rejected. [fixture: quadrant/db-class-constructor] [fixture:
-quadrant/db-class-digits] [fixture: quadrant/db-class-has-own-property]
-[fixture: quadrant/db-class-marker-in-bare-name] [fixture:
+the input rejected.
+
+[fixture: quadrant/db-class-constructor] [fixture: quadrant/db-class-digits]
+[fixture: quadrant/db-class-has-own-property] [fixture:
+quadrant/db-class-marker-in-bare-name] [fixture:
 quadrant/db-class-marker-with-comment] [fixture:
 quadrant/db-class-name-with-trailing-text] [fixture:
 quadrant/db-class-on-quoted-name] [fixture: quadrant/db-class-plain] [fixture:
@@ -1208,24 +1255,28 @@ A `:` and a `[` with whitespace around them enter the point context (rule 6 of
 the statement context); the whitespace is any whitespace character of
 [Notation](../common.md#notation), line feeds, U+00A0, U+2028, U+2029, U+3000,
 and U+FEFF included, so `A`, U+00A0, and `: [0.3, 0.6]`, and `A:`, U+3000, and
-`[0.3, 0.6]` are the point `A`. [fixture: quadrant/db-point-nbsp-before-colon]
-[fixture: quadrant/db-point-ideographic-before-colon] [fixture:
+`[0.3, 0.6]` are the point `A`.
+
+[fixture: quadrant/db-point-nbsp-before-colon] [fixture:
+quadrant/db-point-ideographic-before-colon] [fixture:
 quadrant/db-point-bom-before-colon] [fixture: quadrant/db-point-ls-before-colon]
 [fixture: quadrant/db-point-ps-before-colon] [fixture:
 quadrant/db-point-nbsp-after-colon] [fixture:
 quadrant/db-point-ideographic-after-colon] [fixture:
 quadrant/db-point-bom-after-colon] [fixture: quadrant/db-point-ls-after-colon]
 [fixture: quadrant/db-point-ps-after-colon] [fixture:
-quadrant/db-class-nbsp-before-colon] The whitespace before the `:` may hold line
-feeds only when it starts with a whitespace character other than a line feed: a
-line feed right after the name of a point or after its class name is a `newline`
-unit, so `A`, a line feed, and `: [0.3, 0.6]` is rejected, while `A`, a space, a
-line feed, and `: [0.3, 0.6]` is a point, and so is `A:`, a line feed, and
-`[0.3, 0.6]`; after a class name, `A:::c`, a space, a line feed, and
-`: [0.3, 0.6]` is a point, and without the space it is rejected. A tab before
-the `:` is whitespace too, and comment lines, directive lines, and empty lines
-may stand among the line feeds before it. [fixture:
-quadrant/db-point-tab-and-line-feed-before-colon] [fixture:
+quadrant/db-class-nbsp-before-colon]
+
+The whitespace before the `:` may hold line feeds only when it starts with a
+whitespace character other than a line feed: a line feed right after the name of
+a point or after its class name is a `newline` unit, so `A`, a line feed, and
+`: [0.3, 0.6]` is rejected, while `A`, a space, a line feed, and `: [0.3, 0.6]`
+is a point, and so is `A:`, a line feed, and `[0.3, 0.6]`; after a class name,
+`A:::c`, a space, a line feed, and `: [0.3, 0.6]` is a point, and without the
+space it is rejected. A tab before the `:` is whitespace too, and comment lines,
+directive lines, and empty lines may stand among the line feeds before it.
+
+[fixture: quadrant/db-point-tab-and-line-feed-before-colon] [fixture:
 quadrant/db-point-comment-line-before-colon] [fixture:
 quadrant/db-point-directive-line-before-colon] [fixture:
 quadrant/db-point-empty-line-before-colon] [fixture:
@@ -1247,16 +1298,20 @@ and one or more digits. So `0`, `1`, `0.3`, and `0.30` are coordinates, and so
 are `0x5`, `0 3`, `0,3`, `0;3`, `0#3`, and `0` with a quote, a character outside
 ASCII, U+00A0, U+3000, or U+FEFF before its digits, while `1.5`, `2`, `10`,
 `00`, `01`, `.3`, `-0.3`, `+0.3`, `0.`, `0..5`, `0.6e1`, a word, and `0` with a
-line feed, a U+2028, or a U+2029 before its digits are rejected. [fixture:
-quadrant/db-point-coordinate-nbsp] [fixture:
+line feed, a U+2028, or a U+2029 before its digits are rejected.
+
+[fixture: quadrant/db-point-coordinate-nbsp] [fixture:
 quadrant/db-point-coordinate-ideographic] [fixture:
 quadrant/db-point-coordinate-bom] [fixture:
 quadrant/gram-point-coordinate-line-separator] [fixture:
-quadrant/gram-point-coordinate-ps] The `,` after the first coordinate, with
-whitespace of any kind around it, is a `,` unit, and `]` with the spaces after
-it is a `]` unit, which leaves the context; whitespace of any kind after the `[`
-and before the `]` is allowed. [fixture: quadrant/db-point-nbsp-after-bracket]
-[fixture: quadrant/db-point-ideographic-after-bracket] [fixture:
+quadrant/gram-point-coordinate-ps]
+
+The `,` after the first coordinate, with whitespace of any kind around it, is a
+`,` unit, and `]` with the spaces after it is a `]` unit, which leaves the
+context; whitespace of any kind after the `[` and before the `]` is allowed.
+
+[fixture: quadrant/db-point-nbsp-after-bracket] [fixture:
+quadrant/db-point-ideographic-after-bracket] [fixture:
 quadrant/db-point-bom-after-bracket] [fixture:
 quadrant/db-point-ls-after-bracket] [fixture:
 quadrant/db-point-ps-after-bracket] [fixture:
@@ -1271,12 +1326,15 @@ quadrant/db-point-bom-after-comma] [fixture: quadrant/db-point-ls-after-comma]
 quadrant/db-point-nbsp-before-close] [fixture:
 quadrant/db-point-ideographic-before-close] [fixture:
 quadrant/db-point-bom-before-close] [fixture: quadrant/db-point-ls-before-close]
-[fixture: quadrant/db-point-ps-before-close] Since the character after `0` may
-be a comma, `A:[0,1]` has the coordinate `0,1` and no second one, and is
-rejected, while `A: [0, 1]` is a point. A `%%` inside the brackets is no comment
-and makes the input rejected. [fixture: quadrant/db-point-plain] [fixture:
-quadrant/db-point-glued] [fixture: quadrant/db-point-spaces-everywhere]
-[fixture: quadrant/db-point-tab-around-colon] [fixture:
+[fixture: quadrant/db-point-ps-before-close]
+
+Since the character after `0` may be a comma, `A:[0,1]` has the coordinate `0,1`
+and no second one, and is rejected, while `A: [0, 1]` is a point. A `%%` inside
+the brackets is no comment and makes the input rejected.
+
+[fixture: quadrant/db-point-plain] [fixture: quadrant/db-point-glued] [fixture:
+quadrant/db-point-spaces-everywhere] [fixture:
+quadrant/db-point-tab-around-colon] [fixture:
 quadrant/db-point-tab-inside-brackets] [fixture:
 quadrant/db-point-nbsp-inside-brackets] [fixture: quadrant/db-point-crlf-inside]
 [fixture: quadrant/db-point-both-one] [fixture: quadrant/db-point-both-zero]
@@ -1315,20 +1373,24 @@ quadrant/gram-point-coordinate-two-dots]
 
 After the `]`, the spaces are part of it; U+00A0, U+2028, U+2029, U+3000, and
 U+FEFF are characters of a word there, which no style takes, so the input is
-rejected, [fixture: quadrant/gram-ends-point-nbsp-end] [fixture:
-quadrant/gram-ends-point-ideographic-end] [fixture:
-quadrant/gram-ends-point-bom-end] [fixture: quadrant/gram-point-ls-after-close]
-[fixture: quadrant/gram-point-ps-after-close] and any other whitespace character
-is a `space` unit, which starts the styles: a tab after the `]` is a style
-without a name (see
+rejected, and any other whitespace character is a `space` unit, which starts the
+styles: a tab after the `]` is a style without a name (see
 [Rejections outside the grammar](#rejections-outside-the-grammar)), and a word
 after it is a style, so `A: [0.3, 0.6] x` and a second point on the line are
-rejected. A second `]` is rejected. [fixture: quadrant/db-point-trailing-space]
-[fixture: quadrant/db-point-semicolon] [fixture:
-quadrant/db-point-semicolon-spaced-next] [fixture:
-quadrant/db-point-semicolon-twice] [fixture: quadrant/db-point-semicolon-gap]
-[fixture: quadrant/gram-point-two-on-line] [fixture:
-quadrant/db-point-comment-after-space] [fixture:
+rejected.
+
+[fixture: quadrant/gram-ends-point-nbsp-end] [fixture:
+quadrant/gram-ends-point-ideographic-end] [fixture:
+quadrant/gram-ends-point-bom-end] [fixture: quadrant/gram-point-ls-after-close]
+[fixture: quadrant/gram-point-ps-after-close]
+
+A second `]` is rejected.
+
+[fixture: quadrant/db-point-trailing-space] [fixture:
+quadrant/db-point-semicolon] [fixture: quadrant/db-point-semicolon-spaced-next]
+[fixture: quadrant/db-point-semicolon-twice] [fixture:
+quadrant/db-point-semicolon-gap] [fixture: quadrant/gram-point-two-on-line]
+[fixture: quadrant/db-point-comment-after-space] [fixture:
 quadrant/db-point-comment-glued] [fixture: quadrant/gram-point-comment-inside]
 [fixture: quadrant/db-point-directive-inside] [fixture:
 quadrant/db-point-directive-after-colon] [fixture:
@@ -1347,6 +1409,7 @@ nothing before it: `quadrant-1 ab%% c` has the text `ab`, and
 accessibility text, a description block, or a string is a character of it, and
 inside the brackets of a point it makes the input rejected. A line `%%` alone,
 and `%%{` where no directive starts, such as a line `%%{ }%%`, are comments.
+
 [fixture: quadrant/db-comment-line] [fixture: quadrant/db-comment-line-last]
 [fixture: quadrant/db-comment-line-no-line-feed] [fixture:
 quadrant/db-comment-line-indented] [fixture:
@@ -1391,14 +1454,17 @@ quadrant/gram-grid-comment-glued-classdef-name] [fixture:
 quadrant/gram-grid-comment-point-bare] [fixture:
 quadrant/db-bare-percent-line-after-point] [fixture:
 quadrant/db-comment-glued-after-semicolon] [fixture:
-quadrant/db-empty-braces-line-between-statements] A comment line after a U+2028
-or U+2029 inside a text, a name, a title, an accessibility text, a description
-block, or a string is removed, its line break included, and the value goes on
-with the next line (see [Comment lines](../common.md#comment-lines)):
-`quadrant-1 a`, U+2028, `%% c`, a line break, and `b` has the text `a`, U+2028,
-and `b`. [fixture: quadrant/db-quadrant-text-line-separator-then-comment-line]
-[fixture: quadrant/db-quadrant-text-paragraph-separator-then-comment-line]
-[fixture: quadrant/db-title-line-separator-then-comment-line] [fixture:
+quadrant/db-empty-braces-line-between-statements]
+
+A comment line after a U+2028 or U+2029 inside a text, a name, a title, an
+accessibility text, a description block, or a string is removed, its line break
+included, and the value goes on with the next line (see
+[Comment lines](../common.md#comment-lines)): `quadrant-1 a`, U+2028, `%% c`, a
+line break, and `b` has the text `a`, U+2028, and `b`.
+
+[fixture: quadrant/db-quadrant-text-line-separator-then-comment-line] [fixture:
+quadrant/db-quadrant-text-paragraph-separator-then-comment-line] [fixture:
+quadrant/db-title-line-separator-then-comment-line] [fixture:
 quadrant/db-axis-text-line-separator-then-comment-line] [fixture:
 quadrant/db-point-name-line-separator-then-comment-line] [fixture:
 quadrant/db-acc-title-line-separator-then-comment-line] [fixture:
@@ -1456,6 +1522,7 @@ reject them. A comment after `;`, after the `]` of a point, after a run of two
 characters or more, and after the `}` of a block takes nothing that changes the
 reading in both. This is the known divergence
 [`comment-takes-character`](../known-divergences/comment-takes-character.md).
+
 [fixture: quadrant/div-after-x-axis-glued-comment] [fixture:
 quadrant/div-after-y-axis-glued-comment] [fixture:
 quadrant/div-comment-unit-letter-then-non-ascii] [fixture:
@@ -1545,9 +1612,11 @@ two statements on one line are rejected unless a `;` separates them: `x-axis L`
 followed by `quadrant-1 A` on the same line, a point followed by a second point,
 and a word after a point, which is read as a style, are rejected. Empty lines,
 lines of spaces and tabs, and empty statements between two `;` change nothing.
-The examples of the documentation of mermaid.js are accepted. [fixture:
-quadrant/db-after-acc-descr-cr] [fixture: quadrant/db-after-acc-descr-crlf]
-[fixture: quadrant/db-after-acc-descr-directive] [fixture:
+The examples of the documentation of mermaid.js are accepted.
+
+[fixture: quadrant/db-after-acc-descr-cr] [fixture:
+quadrant/db-after-acc-descr-crlf] [fixture:
+quadrant/db-after-acc-descr-directive] [fixture:
 quadrant/db-after-acc-descr-directive-glued] [fixture:
 quadrant/db-after-acc-descr-glued-comment] [fixture:
 quadrant/db-after-acc-descr-semicolon] [fixture:
@@ -1778,10 +1847,11 @@ or a markdown string, which a text without quotes may follow, glued to it or
 after whitespace: `"A" B` is the text `A B`, and `"A"B` the text `AB`. A string
 after a text without quotes, two strings, and a string after a markdown string
 are rejected. The whitespace at the ends of a text is no part of it. Which of
-the three forms starts a text is the kind of its node. [fixture:
-quadrant/db-x-axis-quoted-both] [fixture: quadrant/db-y-axis-quoted-both]
-[fixture: quadrant/db-x-axis-quoted-left-only] [fixture:
-quadrant/db-y-axis-quoted-bottom-only] [fixture:
+the three forms starts a text is the kind of its node.
+
+[fixture: quadrant/db-x-axis-quoted-both] [fixture:
+quadrant/db-y-axis-quoted-both] [fixture: quadrant/db-x-axis-quoted-left-only]
+[fixture: quadrant/db-y-axis-quoted-bottom-only] [fixture:
 quadrant/db-x-axis-quoted-arrow] [fixture: quadrant/db-y-axis-quoted-arrow]
 [fixture: quadrant/db-x-axis-quoted-real-arrow] [fixture:
 quadrant/db-y-axis-quoted-real-arrow] [fixture:
@@ -1881,7 +1951,9 @@ A title may be empty: `title` alone is a title with no text. An accessibility
 title and description are never empty (see
 [Accessibility values](#accessibility-values)). A later statement of the same
 kind is a statement like the first, and a description on a line and a block are
-both descriptions. [fixture: quadrant/db-title-keyword-alone] [fixture:
+both descriptions.
+
+[fixture: quadrant/db-title-keyword-alone] [fixture:
 quadrant/db-title-twice-empty-last] [fixture: quadrant/db-acc-title-twice]
 [fixture: quadrant/db-acc-descr-twice] [fixture:
 quadrant/db-acc-descr-line-then-block] [fixture:
@@ -1897,8 +1969,9 @@ is rejected, while `accDescr {x};title T`, `accDescr {x}%% c`, and
 `accDescr {x}` with a directive glued to the `}`, while
 `accDescr {x}accDescr {}` followed by a space is rejected. mermaid.js accepts a
 block followed by one whitespace character and a comment, also after an empty
-block or a directive (see [Comments](#comments)). [fixture:
-quadrant/db-acc-descr-block-then-two-empty-blocks] [fixture:
+block or a directive (see [Comments](#comments)).
+
+[fixture: quadrant/db-acc-descr-block-then-two-empty-blocks] [fixture:
 quadrant/db-acc-descr-block-empty-block-then-semicolon] [fixture:
 quadrant/db-acc-descr-block-then-directive] [fixture:
 quadrant/gram-acc-descr-block-empty-block-then-space] [fixture:
@@ -1934,22 +2007,23 @@ around it or not: `L-->R` and `L ---> R` have the texts `L` and `R`, while
 keyword alone are rejected, and so are a tab between the keyword and the text
 and a tab around the arrow, which are `space` units. The x axis and the y axis
 are separate statements, in either order, and a later statement for an axis is a
-statement like the first. [fixture: quadrant/db-x-axis-both] [fixture:
-quadrant/db-y-axis-both] [fixture: quadrant/db-x-axis-left-only] [fixture:
-quadrant/db-y-axis-bottom-only] [fixture: quadrant/db-x-axis-left-with-arrow]
-[fixture: quadrant/db-y-axis-bottom-with-arrow] [fixture:
-quadrant/gram-x-axis-right-only] [fixture: quadrant/gram-y-axis-top-only]
-[fixture: quadrant/gram-x-axis-arrow-only] [fixture:
-quadrant/gram-y-axis-arrow-only] [fixture: quadrant/gram-x-axis-no-text]
-[fixture: quadrant/gram-y-axis-no-text] [fixture:
-quadrant/db-x-axis-glued-arrow] [fixture: quadrant/db-y-axis-glued-arrow]
-[fixture: quadrant/db-x-axis-long-arrow] [fixture:
-quadrant/db-y-axis-long-arrow] [fixture: quadrant/gram-x-axis-short-arrow]
-[fixture: quadrant/gram-y-axis-short-arrow] [fixture:
-quadrant/gram-x-axis-broken-arrow] [fixture: quadrant/gram-y-axis-broken-arrow]
-[fixture: quadrant/gram-x-axis-two-arrows] [fixture:
-quadrant/gram-y-axis-two-arrows] [fixture: quadrant/db-x-axis-twice] [fixture:
-quadrant/db-x-axis-twice-arrow-then-both] [fixture:
+statement like the first.
+
+[fixture: quadrant/db-x-axis-both] [fixture: quadrant/db-y-axis-both] [fixture:
+quadrant/db-x-axis-left-only] [fixture: quadrant/db-y-axis-bottom-only]
+[fixture: quadrant/db-x-axis-left-with-arrow] [fixture:
+quadrant/db-y-axis-bottom-with-arrow] [fixture: quadrant/gram-x-axis-right-only]
+[fixture: quadrant/gram-y-axis-top-only] [fixture:
+quadrant/gram-x-axis-arrow-only] [fixture: quadrant/gram-y-axis-arrow-only]
+[fixture: quadrant/gram-x-axis-no-text] [fixture: quadrant/gram-y-axis-no-text]
+[fixture: quadrant/db-x-axis-glued-arrow] [fixture:
+quadrant/db-y-axis-glued-arrow] [fixture: quadrant/db-x-axis-long-arrow]
+[fixture: quadrant/db-y-axis-long-arrow] [fixture:
+quadrant/gram-x-axis-short-arrow] [fixture: quadrant/gram-y-axis-short-arrow]
+[fixture: quadrant/gram-x-axis-broken-arrow] [fixture:
+quadrant/gram-y-axis-broken-arrow] [fixture: quadrant/gram-x-axis-two-arrows]
+[fixture: quadrant/gram-y-axis-two-arrows] [fixture: quadrant/db-x-axis-twice]
+[fixture: quadrant/db-x-axis-twice-arrow-then-both] [fixture:
 quadrant/db-x-axis-twice-arrow-without-right] [fixture:
 quadrant/db-x-axis-twice-both] [fixture: quadrant/db-y-axis-twice] [fixture:
 quadrant/db-y-axis-twice-arrow-then-both] [fixture:
@@ -1998,15 +2072,17 @@ quadrant-statement = ( "quadrant-1" | "quadrant-2" | "quadrant-3" | "quadrant-4"
 
 A quadrant statement is the keyword and a text; `quadrant-0`, `quadrant-5`, and
 the keyword alone are rejected. The four quadrants are set in any order, and a
-later statement for a quadrant is a statement like the first. [fixture:
-quadrant/db-quadrant-all-four] [fixture: quadrant/db-quadrant-reverse-order]
-[fixture: quadrant/db-quadrant-1-alone] [fixture: quadrant/db-quadrant-2-alone]
-[fixture: quadrant/db-quadrant-3-alone] [fixture: quadrant/db-quadrant-4-alone]
-[fixture: quadrant/gram-quadrant-no-text] [fixture:
-quadrant/gram-quadrant-empty-string] [fixture: quadrant/gram-quadrant-five]
-[fixture: quadrant/gram-quadrant-zero] [fixture: quadrant/db-quadrant-ten]
-[fixture: quadrant/db-quadrant-glued-text] [fixture: quadrant/db-quadrant-twice]
-[fixture: quadrant/db-quadrant-twice-empty-spaces] [fixture:
+later statement for a quadrant is a statement like the first.
+
+[fixture: quadrant/db-quadrant-all-four] [fixture:
+quadrant/db-quadrant-reverse-order] [fixture: quadrant/db-quadrant-1-alone]
+[fixture: quadrant/db-quadrant-2-alone] [fixture: quadrant/db-quadrant-3-alone]
+[fixture: quadrant/db-quadrant-4-alone] [fixture:
+quadrant/gram-quadrant-no-text] [fixture: quadrant/gram-quadrant-empty-string]
+[fixture: quadrant/gram-quadrant-five] [fixture: quadrant/gram-quadrant-zero]
+[fixture: quadrant/db-quadrant-ten] [fixture: quadrant/db-quadrant-glued-text]
+[fixture: quadrant/db-quadrant-twice] [fixture:
+quadrant/db-quadrant-twice-empty-spaces] [fixture:
 quadrant/db-quadrant-spaces-trimmed] [fixture:
 quadrant/db-quadrant-comment-after-space] [fixture:
 quadrant/db-quadrant-comment-glued-longer] [fixture:
@@ -2037,15 +2113,17 @@ entity: `radius: 1.5` and `color: rgb(1,2,3)` are rejected. The styles are
 separated by `,`, with whitespace around it or not, and may follow the `]` with
 no space. A point without a name, without the brackets, the colon, or the comma,
 with one or three coordinates, or with a `;` for the comma, is rejected. Two
-points of the same name or position are two points. [fixture:
-quadrant/db-points-three] [fixture: quadrant/db-points-same-name] [fixture:
-quadrant/db-points-same-position] [fixture: quadrant/db-points-identical]
-[fixture: quadrant/db-points-between-statements] [fixture:
-quadrant/db-style-radius] [fixture: quadrant/db-style-radius-glued] [fixture:
-quadrant/db-style-radius-spaced-colon] [fixture: quadrant/db-style-radius-zero]
-[fixture: quadrant/db-style-radius-leading-zeros] [fixture:
-quadrant/db-style-radius-big] [fixture: quadrant/db-style-radius-overflow]
-[fixture: quadrant/gram-style-radius-fraction] [fixture:
+points of the same name or position are two points.
+
+[fixture: quadrant/db-points-three] [fixture: quadrant/db-points-same-name]
+[fixture: quadrant/db-points-same-position] [fixture:
+quadrant/db-points-identical] [fixture: quadrant/db-points-between-statements]
+[fixture: quadrant/db-style-radius] [fixture: quadrant/db-style-radius-glued]
+[fixture: quadrant/db-style-radius-spaced-colon] [fixture:
+quadrant/db-style-radius-zero] [fixture: quadrant/db-style-radius-leading-zeros]
+[fixture: quadrant/db-style-radius-big] [fixture:
+quadrant/db-style-radius-overflow] [fixture:
+quadrant/gram-style-radius-fraction] [fixture:
 quadrant/db-style-radius-trailing-space] [fixture:
 quadrant/db-style-radius-colon-after] [fixture: quadrant/db-style-color]
 [fixture: quadrant/db-style-color-colon-after] [fixture:
@@ -2089,9 +2167,11 @@ characters before the name are rejected, while whitespace after the second one
 belongs to the first style. A `classDef` without styles, without a name, or with
 a name in quotes, is rejected. A later definition of a class is a statement like
 the first, and a class may be defined before or after a point that uses it, or
-not used. [fixture: quadrant/db-classdef-color] [fixture:
-quadrant/db-classdef-two-styles] [fixture: quadrant/db-classdef-all-four]
-[fixture: quadrant/db-classdef-twice-replaces] [fixture:
+not used.
+
+[fixture: quadrant/db-classdef-color] [fixture: quadrant/db-classdef-two-styles]
+[fixture: quadrant/db-classdef-all-four] [fixture:
+quadrant/db-classdef-twice-replaces] [fixture:
 quadrant/db-classdef-twice-same-style] [fixture:
 quadrant/db-classdef-two-classes] [fixture: quadrant/db-classdef-redefine-order]
 [fixture: quadrant/gram-classdef-no-style] [fixture:
@@ -2154,6 +2234,7 @@ block were not there, but right after the keyword of an axis, where the
 whitespace before the text is a `space` unit there too. This is the known
 divergence
 [`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md).
+
 [fixture: quadrant/div-empty-block-in-classdef] [fixture:
 quadrant/div-empty-block-in-name] [fixture:
 quadrant/div-empty-block-in-quadrant-text] [fixture:
@@ -2195,7 +2276,9 @@ axis statement with the arrow and no second text, among the styles of a point,
 and in a `classDef` line. This is the known divergence
 [`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md). In a
 title, an accessibility text, and a description block, `""` is two characters of
-the text. [fixture: quadrant/div-empty-string-after-name] [fixture:
+the text.
+
+[fixture: quadrant/div-empty-string-after-name] [fixture:
 quadrant/div-empty-string-before-name] [fixture:
 quadrant/div-empty-string-before-quadrant-text] [fixture:
 quadrant/div-empty-string-before-statement] [fixture:
@@ -2235,8 +2318,9 @@ digits and `px`. Any other name, an empty style, a style without a `:` or a
 value, and a value of another form make the input rejected: `radius: -5`,
 `radius: 1e3`, `color: red`, `stroke-width: 3`, `stroke-width: 3 px`,
 `stroke-width: 3PX`, `stroke-width: 1.5px`, `RADIUS: 10`, and a tab after the
-`]` of a point. A `radius` of many digits is accepted. [fixture:
-quadrant/db-radius-above-safe-integer] [fixture:
+`]` of a point. A `radius` of many digits is accepted.
+
+[fixture: quadrant/db-radius-above-safe-integer] [fixture:
 quadrant/db-radius-first-infinite] [fixture: quadrant/db-radius-largest-finite]
 [fixture: quadrant/gram-radius-arabic-digit] [fixture:
 quadrant/gram-radius-exponent] [fixture: quadrant/gram-radius-fullwidth-digits]
@@ -2286,35 +2370,44 @@ quadrant/spec-quadrant-jison-2981d92b]
   the name of a class of `classDef` makes the input rejected here, while
   mermaid.js joins the parts (see
   [Directives inside units](#directives-inside-units)).
+
 - **[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.md).**
   The `;` that the line rule ignores inside the name of a class of `classDef`
   makes the input rejected here, while mermaid.js joins the parts:
-  `classDef style:#x;y color: #f00` is the class `style:#xy` there. [fixture:
-  quadrant/div-grid-style-classdef-name]
+  `classDef style:#x;y color: #f00` is the class `style:#xy` there.
+
+  [fixture: quadrant/div-grid-style-classdef-name]
+
 - **[`comment-takes-character`](../known-divergences/comment-takes-character.md).**
   A `%%` glued to a unit of one character takes that character in mermaid.js
   (see [Comments](#comments)).
+
 - **[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md).**
   An empty string, an empty markdown string, and an empty description block
   inside a statement are rejected here, while mermaid.js accepts them as if they
   were not there (see [Empty description blocks](#empty-description-blocks) and
   [Empty strings](#empty-strings)).
+
 - **[`c4-keyword-anywhere`](../known-divergences/c4-keyword-anywhere.md).**
   `C4Container`, `C4Component`, `C4Dynamic`, or `C4Deployment` anywhere after
   the header, in a title, an accessibility text, a text, a string, or a class
   name, makes mermaid.js hand the text to the C4 parser, which rejects it; here
   the text is a quadrant chart. `C4Context` counts at the start of the text only
-  in both, so it is a name of a point. [fixture: quadrant/db-c4-context-in-name]
-  [fixture: quadrant/div-c4-keyword-in-acc-title] [fixture:
+  in both, so it is a name of a point.
+
+  [fixture: quadrant/db-c4-context-in-name] [fixture:
+  quadrant/div-c4-keyword-in-acc-title] [fixture:
   quadrant/div-c4-keyword-in-class-name] [fixture:
   quadrant/div-c4-keyword-in-quadrant-text] [fixture:
   quadrant/div-c4-keyword-in-quoted-name] [fixture:
   quadrant/div-c4-keyword-in-title]
+
 - **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.md)**
   and **[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.md)**
   apply as in every diagram type: with `title: <a` in the frontmatter,
   `accTitle: b="c">d` has the accessibility title `b='c'>d` in mermaid.js, and a
   frontmatter that is no valid YAML is rejected there and accepted here.
+
   [fixture: quadrant/div-frontmatter-html-tag-starts-in-field] [fixture:
   quadrant/div-frontmatter-invalid-yaml]
 

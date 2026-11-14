@@ -21,53 +21,65 @@ order, the statements inside a subgraph before the subgraph itself, and applying
 the steps below; this is the order in which the grammar of mermaid.js calls its
 Db. So `class S c` in the body of `subgraph S` finds neither a subgraph nor a
 vertex `S`, and the label of `S@{ label: x }` there is set on a vertex `S`.
+
 [fixture: flowchart/db-subgraph-body-class-own-id] [fixture:
-flowchart/db-subgraph-body-data-block-own-id] Each step reads a value in
+flowchart/db-subgraph-body-data-block-own-id]
+
+Each step reads a value in
 [converted form](../../../spec/docs/common.md#reading-a-source), with whitespace
 after `}` read as in
 [Whitespace after `}`](../../../spec/docs/diagrams/flowchart.md#whitespace-after-);
-a data block's value is not read. [fixture:
-flowchart/db-converted-line-terminators-in-labels] [fixture:
+a data block's value is not read.
+
+[fixture: flowchart/db-converted-line-terminators-in-labels] [fixture:
 flowchart/db-converted-line-terminators-in-click-strings] [fixture:
 flowchart/db-converted-entity-in-click-strings] [fixture:
 flowchart/db-converted-attribute-quote-in-tooltip] [fixture:
 flowchart/db-converted-ignored-semicolon-in-tooltip] [fixture:
-flowchart/db-converted-brace-whitespace-in-click-strings] Labels contribute
-their converted value trimmed of whitespace at both ends, which a value has only
-inside the delimiters of the string it starts with or when the label is all
-whitespace, and then without the double quote at each end when the trimmed text
-is at least two characters and has one at both ends (`A[/ "x"/]` has the text
-`x`, as `A["x"]` does, while `A[/ "x /]` has `"x` and `A[/ " /]` has `"`), and
-their kind as the label type: `A["x "]` after `A["x"]` leaves the text `x`.
+flowchart/db-converted-brace-whitespace-in-click-strings]
+
+Labels contribute their converted value trimmed of whitespace at both ends,
+which a value has only inside the delimiters of the string it starts with or
+when the label is all whitespace, and then without the double quote at each end
+when the trimmed text is at least two characters and has one at both ends
+(`A[/ "x"/]` has the text `x`, as `A["x"]` does, while `A[/ "x /]` has `"x` and
+`A[/ " /]` has `"`), and their kind as the label type: `A["x "]` after `A["x"]`
+leaves the text `x`.
+
 [fixture: flowchart/db-vertex-label-string-trailing-space-redefined] [fixture:
 flowchart/db-label-slanted-quote-only] [fixture:
 flowchart/db-label-slanted-quote-at-end-only] [fixture:
 flowchart/db-label-slanted-quotes-inner-spaces] [fixture:
 flowchart/db-label-slanted-two-quotes] [fixture:
 flowchart/db-label-markdown-string-trimmed] [fixture:
-flowchart/db-label-line-separator-trimmed] The text of a link is made in the
-same way. The other values are those of the
+flowchart/db-label-line-separator-trimmed]
+
+The text of a link is made in the same way. The other values are those of the
 [shared leaf nodes](../../../spec/docs/ast.md#shared-leaf-nodes): the `name` of
 an Identifier and the `value` of a StringLiteral, a NumericLiteral, or a
 FlowchartLiteral. A null element of a list of ids or class names stands for the
 empty text; a null style stands for its whitespace (see **Style statements**).
+
 [fixture: flowchart/db-linkstyle-whitespace-only-style] [fixture:
 flowchart/db-classdef-whitespace-only-style] [fixture:
 flowchart/db-linkstyle-default-whitespace-only-style] [fixture:
-flowchart/db-class-ids-empty-subgraph-id] A null `value` of an accessibility
-statement is described under **Accessibility statements** below. The `callback`
-of a click statement is the `name` of its Identifier or the `value` of its
-FlowchartLiteral, and its `arguments` the `value` of a FlowchartLiteral, as
-written (see **Click statements**). [fixture:
-flowchart/db-converted-line-terminators-in-callback]
+flowchart/db-class-ids-empty-subgraph-id]
+
+A null `value` of an accessibility statement is described under **Accessibility
+statements** below. The `callback` of a click statement is the `name` of its
+Identifier or the `value` of its FlowchartLiteral, and its `arguments` the
+`value` of a FlowchartLiteral, as written (see **Click statements**).
+
+[fixture: flowchart/db-converted-line-terminators-in-callback]
 
 **Direction.** The direction of the header: `<` gives `RL`, `^` gives `BT`, `>`
 gives `LR`, `v` and `TD` give `TB`, and any other value, `BR` included, stays as
 written. A header without a direction gives `TB`. A direction statement outside
 a subgraph changes nothing, also when the header has no direction: `flowchart`,
-`direction LR`, and `A-->B` has the direction `TB`. [fixture:
-flowchart/db-direction-mapping] [fixture: flowchart/db-direction-br] [fixture:
-flowchart/header-direction-next-line] [fixture:
+`direction LR`, and `A-->B` has the direction `TB`.
+
+[fixture: flowchart/db-direction-mapping] [fixture: flowchart/db-direction-br]
+[fixture: flowchart/header-direction-next-line] [fixture:
 flowchart/db-direction-statement-top-level] [fixture:
 flowchart/db-direction-statement-top-level-no-header-direction] [fixture:
 flowchart/db-direction-bt] [fixture:
@@ -81,28 +93,39 @@ flowchart/config-inherit-dir-direction-statement-top-level]
 property:
 
 1. If an edge with that id exists, nothing happens: `style e1 fill:#f00` after
-   `A e1@--> B` adds no vertex and gives no style. [fixture:
-   flowchart/db-vertex-edge-id] [fixture: flowchart/db-style-edge-id] [fixture:
-   flowchart/db-vertex-edge-id-link-ends] [fixture:
+   `A e1@--> B` adds no vertex and gives no style.
+
+   [fixture: flowchart/db-vertex-edge-id] [fixture: flowchart/db-style-edge-id]
+   [fixture: flowchart/db-vertex-edge-id-link-ends] [fixture:
    flowchart/db-vertex-edge-id-vertex-exists]
+
 2. If no vertex has that id, a vertex is added at the end, with the id, the
    label type `text`, and no styles and no classes.
+
 3. With a label, the vertex takes its text and label type from the label, also
    when it has a text already: after `A[Start]-->B`, `C-->A[End]` gives A the
-   label `End`. [fixture: flowchart/db-vertex-label-redefined] [fixture:
-   flowchart/db-vertex-label-type-replaced] Without one, a vertex that has no
-   text yet takes the id as its text, and one that has a text, the empty text
-   included, keeps it and its label type: after `A[Start]-->B`, both `A-->C` and
-   `C-->A[Start]` leave A with the label `Start`. [fixture:
-   flowchart/db-vertex-label-kept-without-label] [fixture:
+   label `End`.
+
+   [fixture: flowchart/db-vertex-label-redefined] [fixture:
+   flowchart/db-vertex-label-type-replaced]
+
+   Without one, a vertex that has no text yet takes the id as its text, and one
+   that has a text, the empty text included, keeps it and its label type: after
+   `A[Start]-->B`, both `A-->C` and `C-->A[Start]` leave A with the label
+   `Start`.
+
+   [fixture: flowchart/db-vertex-label-kept-without-label] [fixture:
    flowchart/db-vertex-label-redefined-same] [fixture:
    flowchart/db-vertex-label-type-kept-without-label] [fixture:
    flowchart/db-vertex-label-whitespace-only-kept]
+
 4. With a shape, the Db type of the shape (see
    [Shapes](../../../spec/docs/diagrams/flowchart.md#shapes)) becomes the vertex
-   type; with styles, they are appended to the vertex's styles. [fixture:
-   flowchart/db-vertex-shape-replaced] [fixture:
+   type; with styles, they are appended to the vertex's styles.
+
+   [fixture: flowchart/db-vertex-shape-replaced] [fixture:
    flowchart/db-style-appended-twice]
+
 5. A vertex that has no `props` yet gets them: the property, or an empty set of
    properties without one. A vertex that has `props` gets the property added to
    them, or the value of the property with that name replaced. A property named
@@ -117,6 +140,7 @@ property:
    property to existing `props` in
    [`addVertex()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L255-L259)
    by assigning it to a plain object, where `__proto__` does not become a key.
+
    [fixture: flowchart/db-props-merge] [fixture:
    flowchart/db-props-existing-vertex] [fixture: flowchart/db-props-replaced]
    [fixture: flowchart/db-props-constructor-existing-vertex] [fixture:
@@ -131,16 +155,25 @@ property:
 
 **The class step,** with ids and a class name: the class name is appended to the
 classes of the vertex with each id, of the first edge with that id, and of the
-subgraph with that id. [fixture: flowchart/db-class-on-edge-and-subgraph]
-[fixture: flowchart/db-class-vertex-id-with-comma] An item that has the class
-already gets it again, and a vertex, an edge, and a subgraph with the same id
-all get it. [fixture: flowchart/db-class-vertex-and-subgraph-same-id] [fixture:
+subgraph with that id.
+
+[fixture: flowchart/db-class-on-edge-and-subgraph] [fixture:
+flowchart/db-class-vertex-id-with-comma]
+
+An item that has the class already gets it again, and a vertex, an edge, and a
+subgraph with the same id all get it.
+
+[fixture: flowchart/db-class-vertex-and-subgraph-same-id] [fixture:
 flowchart/db-class-last-subgraph-with-id] [fixture:
 flowchart/db-class-vertex-and-edge-same-id] [fixture:
-flowchart/db-class-applied-twice] It adds no vertex, so an id that no vertex has
-yet gets no class: `class C foo` after `A --> B` changes nothing, and after
-`class A foo` and then `A --> B`, A has no class. [fixture:
-flowchart/db-class-unknown-vertex] [fixture: flowchart/db-class-before-vertex]
+flowchart/db-class-applied-twice]
+
+It adds no vertex, so an id that no vertex has yet gets no class: `class C foo`
+after `A --> B` changes nothing, and after `class A foo` and then `A --> B`, A
+has no class.
+
+[fixture: flowchart/db-class-unknown-vertex] [fixture:
+flowchart/db-class-before-vertex]
 
 **Vertex statements.** For each vertex group, from the first to the last: for
 each of its vertices, the vertex step with its shape, then the class step with
@@ -148,16 +181,26 @@ the parts of the vertex's id between its `,` characters and its class, if it has
 one (so `A,B:::c` gives the class to the vertices `A` and `B`, when they exist,
 and none to the vertex `A,B`, and `e1:::c` gives it to the edge `e1`), and then
 the data blocks of the vertex before it in the group, if that vertex has any.
+
 [fixture: flowchart/db-class-vertex-id-with-comma-existing] [fixture:
-flowchart/db-class-vertex-class-on-edge-id] After the last vertex of a group
-come the data blocks of that vertex, so in `A@{ label: x } --> A[y]`, the label
-of `A` is `y`. [fixture: flowchart/db-data-before-target-group] After each
-link's target group come the link's edges, so in `A e1@--> e1`, a vertex `e1` is
-added, and the edge from `A` to it takes the id `e1`. [fixture:
-flowchart/db-link-edges-after-target-group] So the data blocks of a vertex that
-is followed by `&` apply after the next vertex: in `A@{ label: x } & A[y]`, the
-label of `A` is `x`. [fixture: flowchart/db-data-after-next-vertex] The members
-of a vertex statement are defined under **Subgraph members** in
+flowchart/db-class-vertex-class-on-edge-id]
+
+After the last vertex of a group come the data blocks of that vertex, so in
+`A@{ label: x } --> A[y]`, the label of `A` is `y`.
+
+[fixture: flowchart/db-data-before-target-group]
+
+After each link's target group come the link's edges, so in `A e1@--> e1`, a
+vertex `e1` is added, and the edge from `A` to it takes the id `e1`.
+
+[fixture: flowchart/db-link-edges-after-target-group]
+
+So the data blocks of a vertex that is followed by `&` apply after the next
+vertex: in `A@{ label: x } & A[y]`, the label of `A` is `x`.
+
+[fixture: flowchart/db-data-after-next-vertex]
+
+The members of a vertex statement are defined under **Subgraph members** in
 [Rejections outside the grammar](../../../spec/docs/diagrams/flowchart.md#rejections-outside-the-grammar).
 
 **Links.** A link makes the edges that **Link style numbers** in
@@ -167,24 +210,31 @@ first group, in order, one edge to each vertex of the target group, in order.
 Each edge has the start and end ids, the type, stroke, and length of the arrows
 (see below; a length above 10 counts as 10), the label's text and label type, or
 the empty text and `text` without a label, no classes, and the default
-interpolate of `linkStyle default`, if one is set at that point. [fixture:
-flowchart/db-arrow-length-cap] [fixture: flowchart/db-arrow-length-cap-lines]
-[fixture: flowchart/db-default-interpolate-later-edge] Its id is:
+interpolate of `linkStyle default`, if one is set at that point.
+
+[fixture: flowchart/db-arrow-length-cap] [fixture:
+flowchart/db-arrow-length-cap-lines] [fixture:
+flowchart/db-default-interpolate-later-edge]
+
+Its id is:
 
 - the edge id of the link, for the first edge whose start is the id of the last
   vertex of the first group and whose end is the id of the first vertex of the
   second, unless an earlier edge has that id. The Db id is the edge id when it
   contains no `@`; when it does, its first `@` is removed and an `@` is added at
-  its end. Such an edge has `isUserDefinedId` true; [fixture:
-  flowchart/db-edge-id-group] [fixture: flowchart/db-edge-id-reused] [fixture:
-  flowchart/db-edge-id-at-sign] [fixture:
+  its end. Such an edge has `isUserDefinedId` true;
+
+  [fixture: flowchart/db-edge-id-group] [fixture: flowchart/db-edge-id-reused]
+  [fixture: flowchart/db-edge-id-at-sign] [fixture:
   flowchart/db-edge-id-generated-id-taken] [fixture:
   flowchart/db-edge-id-group-duplicate-vertex]
+
 - otherwise `L_`, the start id, `_`, the end id, `_`, and a counter: 0 when no
   earlier edge has the same start and end, and one more than the number of such
   edges otherwise, whatever their ids. The third `A-->B` gets `L_A_B_3`, and an
-  `A-->B` after `A e1@-->B` gets `L_A_B_2`. [fixture:
-  flowchart/db-edge-id-counter] [fixture:
+  `A-->B` after `A e1@-->B` gets `L_A_B_2`.
+
+  [fixture: flowchart/db-edge-id-counter] [fixture:
   flowchart/db-edge-id-counter-after-user-id]
 
 An input with more edges than the site configuration's `maxEdges` is rejected
@@ -193,6 +243,7 @@ An input with more edges than the site configuration's `maxEdges` is rejected
 The edges are counted as there: a link counts one edge for each pair of a vertex
 of its first group and a vertex of its target group, and the links in the body
 of a subgraph count too. An input with exactly `maxEdges` edges is accepted.
+
 [fixture: flowchart/config-max-edges-equal] [fixture:
 flowchart/config-max-edges-group-exceeded] [fixture:
 flowchart/config-max-edges-group-equal] [fixture:
@@ -214,16 +265,21 @@ without a matching start marker, which keeps a start marker that does not match:
 stroke `normal`, and the length 2, `A x==>B` the stroke `normal`, `<-->` the
 type `double_arrow_point`, `A x---B` the type `arrow_open` and the length 2,
 `~~~` the stroke `invisible` and the length 1, and `-..->` the stroke `dotted`
-and the length 2. [fixture: flowchart/db-arrow-single-forms] [fixture:
+and the length 2.
+
+[fixture: flowchart/db-arrow-single-forms] [fixture:
 flowchart/lex-link-text-head-letter] [fixture:
 flowchart/db-arrow-dotted-start-marker-unmatched] [fixture:
-flowchart/db-arrow-thick-start-marker-end-none] That a start marker that does
-not match is drawn as no marker and makes the edge longer, as in `A o--> B`, is
-reported as a defect in
+flowchart/db-arrow-thick-start-marker-end-none]
+
+That a start marker that does not match is drawn as no marker and makes the edge
+longer, as in `A o--> B`, is reported as a defect in
 [issue #1665](https://github.com/mermaid-js/mermaid/issues/1665), open and
 approved as a bug as of 2026-10-01, whose comments also report that a link with
 text between two such arrows, as in `A o-- test1 --> B`, draws no arrowheads,
-which is the type `INVALID` below. [fixture: flowchart/db-arrow-mixed-markers]
+which is the type `INVALID` below.
+
+[fixture: flowchart/db-arrow-mixed-markers]
 
 For a link with an opening arrow, the FlowchartOpeningArrow gives a type from
 its start marker (`arrow_point` for `arrow`, `arrow_cross` for `cross`,
@@ -240,9 +296,11 @@ otherwise the type and the stroke are `INVALID` and there is no length. The
 stroke is the one they share, and the length is that of the closing arrow:
 `A x-- t --xB` has the type `double_arrow_cross`, while `A x-- t -->B` and
 `A x-- t x--x B` are `INVALID`, the second because `arrow_cross` is not
-`double_arrow_cross`. [fixture: flowchart/db-arrow-double] [fixture:
-flowchart/db-arrow-invalid] [fixture: flowchart/db-arrow-thick-head-invalid]
-[fixture: flowchart/db-arrow-dash-head-length] [fixture:
+`double_arrow_cross`.
+
+[fixture: flowchart/db-arrow-double] [fixture: flowchart/db-arrow-invalid]
+[fixture: flowchart/db-arrow-thick-head-invalid] [fixture:
+flowchart/db-arrow-dash-head-length] [fixture:
 flowchart/db-arrow-closing-double-in-link-text] [fixture:
 flowchart/db-arrow-opening-cross-closing-cross] [fixture:
 flowchart/db-arrow-opening-cross-closing-double-cross] [fixture:
@@ -252,22 +310,28 @@ flowchart/db-arrow-dotted-closing-start-marker]
 body, so a nested subgraph comes before the one around it. A subgraph whose id
 an earlier subgraph has is not added: its members, as the next paragraph defines
 them, are added after the members of the earlier one, which keeps its title,
-direction and place in the list. [fixture:
-flowchart/db-class-last-subgraph-with-id] [fixture:
+direction and place in the list.
+
+[fixture: flowchart/db-class-last-subgraph-with-id] [fixture:
 flowchart/db-data-block-last-subgraph-with-id] [fixture:
-flowchart/spec-subgraph-57671598] Its members are those that **Subgraph
-members** in
+flowchart/spec-subgraph-57671598]
+
+Its members are those that **Subgraph members** in
 [Rejections outside the grammar](../../../spec/docs/diagrams/flowchart.md#rejections-outside-the-grammar)
 defines, the value of an accessibility statement as it is (the line feeds of a
 description are not collapsed here); an empty statement outside a subgraph
-changes nothing. [fixture: flowchart/gram-empty-statement-top-level] Members
-that are empty or all whitespace are left out. Of the others, only the first of
-equal members is kept, except that every member `__proto__` is kept, because
-mermaid.js keeps the members it has seen as the keys of a plain object, where
-`__proto__` does not become a key. Then a member that a subgraph added earlier
-already has is left out, `__proto__` included, and so is the id of the subgraph
-itself, since a subgraph is never its own member. [fixture:
-flowchart/db-subgraph-body-data-block-own-id] [fixture:
+changes nothing.
+
+[fixture: flowchart/gram-empty-statement-top-level]
+
+Members that are empty or all whitespace are left out. Of the others, only the
+first of equal members is kept, except that every member `__proto__` is kept,
+because mermaid.js keeps the members it has seen as the keys of a plain object,
+where `__proto__` does not become a key. Then a member that a subgraph added
+earlier already has is left out, `__proto__` included, and so is the id of the
+subgraph itself, since a subgraph is never its own member.
+
+[fixture: flowchart/db-subgraph-body-data-block-own-id] [fixture:
 flowchart/db-subgraph-member-empty-statement] [fixture:
 flowchart/db-subgraph-member-empty-statement-end] [fixture:
 flowchart/db-subgraph-member-acc-title] [fixture:
@@ -280,8 +344,10 @@ flowchart/db-subgraph-member-proto-earlier-subgraph] [fixture:
 flowchart/db-subgraph-member-has-own-property-earlier-subgraph] [fixture:
 flowchart/db-subgraph-member-constructor-to-string] [fixture:
 flowchart/db-subgraph-member-empty-id] [fixture:
-flowchart/db-subgraph-member-has-own-property-then-empty-id] A subgraph with the
-member `hasOwnProperty` followed by another member is rejected (see
+flowchart/db-subgraph-member-has-own-property-then-empty-id]
+
+A subgraph with the member `hasOwnProperty` followed by another member is
+rejected (see
 [Rejections outside the grammar](../../../spec/docs/diagrams/flowchart.md#rejections-outside-the-grammar)).
 The subgraph has:
 
@@ -290,19 +356,27 @@ The subgraph has:
   defines, from the name text defined there; the generated id is `subGraph`
   followed by the number of subgraph statements before it, one that repeats an
   earlier id included, so of two nested subgraphs with generated ids, the outer
-  one has the larger number. [fixture: flowchart/db-subgraph-counter] [fixture:
+  one has the larger number.
+
+  [fixture: flowchart/db-subgraph-counter] [fixture:
   flowchart/db-subgraph-counter-nested] [fixture:
   flowchart/db-subgraph-counter-repeated-id]
+
 - `title`: the value of the title in converted form, trimmed, or the name text
-  trimmed when there is no title. [fixture: flowchart/db-subgraph-title-trimmed]
+  trimmed when there is no title.
+
+  [fixture: flowchart/db-subgraph-title-trimmed]
+
 - `labelType`: the kind of the title; without a title, `markdown` when the
   name's kind is `markdown`, that is, when it starts with a markdown string, and
-  `text` otherwise, also for a name that starts with a string. [fixture:
-  flowchart/db-subgraph-quoted-name] [fixture:
+  `text` otherwise, also for a name that starts with a string.
+
+  [fixture: flowchart/db-subgraph-quoted-name] [fixture:
   flowchart/db-subgraph-markdown-name] [fixture:
   flowchart/gram-subgraph-name-markdown-then-text] [fixture:
   flowchart/db-subgraph-title-markdown] [fixture:
   flowchart/db-subgraph-title-overrides-markdown-name]
+
 - `dir`: the direction of the last direction statement in its body, not counting
   those in the body of a nested subgraph. Without one, the diagram's direction,
   as **Direction** above gives it and not that of a subgraph around it, when
@@ -316,7 +390,9 @@ The subgraph has:
   `false` (see
   [The effective configuration](../configuration.md#the-effective-configuration)),
   and a null is removed by the key filter, so `[]`, `{}`, and `null` do not
-  either. [fixture: flowchart/config-inherit-dir-site] [fixture:
+  either.
+
+  [fixture: flowchart/config-inherit-dir-site] [fixture:
   flowchart/config-inherit-dir-frontmatter] [fixture:
   flowchart/config-inherit-dir-fm-one] [fixture:
   flowchart/config-inherit-dir-fm-yes] [fixture:
@@ -333,6 +409,7 @@ The subgraph has:
   flowchart/config-inherit-dir-nested-diagram-direction] [fixture:
   flowchart/config-inherit-dir-symbol-direction] [fixture:
   flowchart/config-inherit-dir-no-header-direction]
+
 - `classes`: none, until the class step adds some.
 
 **Style statements.** A Db style value is the converted value of the tree's
@@ -340,8 +417,9 @@ style followed by the line whitespace after its range. Line whitespace is
 JavaScript `\s` without LF and CR; a physical line terminator ends the value.
 Read through the common removals, so directives, comment regions and ignored
 semicolons add no characters. Stop at the first non-whitespace character,
-including a comma or a real semicolon. [fixture:
-flowchart/db-style-trailing-whitespace-characters] [fixture:
+including a comma or a real semicolon.
+
+[fixture: flowchart/db-style-trailing-whitespace-characters] [fixture:
 flowchart/tokens-style-ignored-semicolon-then-spaces] [fixture:
 flowchart/tokens-style-directive-after-comma] [fixture:
 flowchart/gram-style-semicolon-ends-statement]
@@ -352,8 +430,10 @@ after the one-character `space` unit that the statement consumes before `styles`
 (see
 [FlowchartStyleStatement](../../../spec/docs/ast/flowchart.md#flowchartstylestatement)).
 Thus `style A fill:red, ` has a final value of one space, and `style A  ` has
-one value of one space. [fixture: flowchart/db-style-whitespace-only-value]
-[fixture: flowchart/gram-style-whitespace] [fixture:
+one value of one space.
+
+[fixture: flowchart/db-style-whitespace-only-value] [fixture:
+flowchart/gram-style-whitespace] [fixture:
 flowchart/db-classdef-whitespace-only-style] [fixture:
 flowchart/db-linkstyle-whitespace-only-style] [fixture:
 flowchart/db-linkstyle-default-whitespace-only-style]
@@ -362,9 +442,10 @@ Skip the characters of closed empty description blocks while reading that
 whitespace, keeping the whitespace before, between and after them together.
 `linkStyle 0 stroke:red accDescr {} ;C` has `stroke:red` followed by two spaces.
 `linkStyle 0 interpolate basis accDescr {} ;` has a null style whose Db value is
-one space, after the statement consumes its first space. [fixture:
-flowchart/gram-empty-description-block-after-style-before-semicolon] [fixture:
-flowchart/gram-empty-description-block-after-classdef] [fixture:
+one space, after the statement consumes its first space.
+
+[fixture: flowchart/gram-empty-description-block-after-style-before-semicolon]
+[fixture: flowchart/gram-empty-description-block-after-classdef] [fixture:
 flowchart/gram-empty-description-block-after-classdef-before-semicolon]
 [fixture: flowchart/gram-empty-description-block-after-linkstyle] [fixture:
 flowchart/gram-empty-description-block-after-linkstyle-before-semicolon]
@@ -372,27 +453,39 @@ flowchart/gram-empty-description-block-after-linkstyle-before-semicolon]
 flowchart/gram-empty-description-block-splits-spaces-after-interpolate]
 [fixture: flowchart/gram-empty-description-block-after-linkstyle-default]
 [fixture: flowchart/name-semicolon-whitespace-bbc9fd27] [fixture:
-flowchart/name-semicolon-whitespace-c53c0d40] `style` applies the vertex step
-with the id, not split at commas, and its styles, so it adds a vertex that no
-statement has made yet: `style C fill:red` after `A-->B` adds C with the style
-`fill:red`. [fixture: flowchart/db-style-unknown-vertex] A `style` statement
-before the other statements of a vertex gives it the style, as
-`style A fill:red` before `A-->B` does, and the vertex step does not look at
+flowchart/name-semicolon-whitespace-c53c0d40]
+
+`style` applies the vertex step with the id, not split at commas, and its
+styles, so it adds a vertex that no statement has made yet: `style C fill:red`
+after `A-->B` adds C with the style `fill:red`.
+
+[fixture: flowchart/db-style-unknown-vertex]
+
+A `style` statement before the other statements of a vertex gives it the style,
+as `style A fill:red` before `A-->B` does, and the vertex step does not look at
 subgraphs, so `style S fill:red` after `subgraph S` adds a vertex `S` beside the
-subgraph. [fixture: flowchart/db-style-before-vertex] [fixture:
-flowchart/db-style-subgraph-id] `classDef` reads each `\,` in its styles as `,`;
-for each class name, a class is added at the end if none has that name, and the
-styles are appended to it. `classDef c fill:a\ ,stroke:b` has two styles:
-`fill:a\` followed by one space, and `stroke:b`. `classDef c fill:a\,  stroke:b`
-has the one style `fill:a,`, two spaces, and `stroke:b` (see
+subgraph.
+
+[fixture: flowchart/db-style-before-vertex] [fixture:
+flowchart/db-style-subgraph-id]
+
+`classDef` reads each `\,` in its styles as `,`; for each class name, a class is
+added at the end if none has that name, and the styles are appended to it.
+`classDef c fill:a\ ,stroke:b` has two styles: `fill:a\` followed by one space,
+and `stroke:b`. `classDef c fill:a\,  stroke:b` has the one style `fill:a,`, two
+spaces, and `stroke:b` (see
 [Style, class, and link style statements](../../../spec/docs/diagrams/flowchart.md#style-class-and-link-style-statements)).
-`class` applies the class step with its ids and class name. [fixture:
-flowchart/db-class-def-escaped-comma] [fixture:
+`class` applies the class step with its ids and class name.
+
+[fixture: flowchart/db-class-def-escaped-comma] [fixture:
 flowchart/db-classdef-escape-space-before-comma] [fixture:
 flowchart/db-classdef-escape-space-after-comma] [fixture:
-flowchart/db-classdef-appended-twice] The same trailing-whitespace reading
-applies after an escaped comma: `classDef c fill:x\, ` has `fill:x,` followed by
-one space. [fixture: flowchart/gram-classdef-escaped-comma-then-space]
+flowchart/db-classdef-appended-twice]
+
+The same trailing-whitespace reading applies after an escaped comma:
+`classDef c fill:x\, ` has `fill:x,` followed by one space.
+
+[fixture: flowchart/gram-classdef-escaped-comma-then-space]
 
 **Link style statements.** A `linkStyle` statement first sets the interpolate of
 each numbered edge, when it has `interpolate`, and then, when it has styles,
@@ -400,23 +493,29 @@ gives each numbered edge its styles, which replace the styles it has; when none
 of them starts with `fill`, `fill:none` is added once to the styles, which all
 the numbered edges share. The check looks at the styles with the whitespace at
 their start, so a style written after whitespace does not start with `fill`:
-`linkStyle 0 stroke:#f00 , fill:red` gets `fill:none`. [fixture:
-flowchart/db-linkstyle-shared-fill] [fixture:
+`linkStyle 0 stroke:#f00 , fill:red` gets `fill:none`.
+
+[fixture: flowchart/db-linkstyle-shared-fill] [fixture:
 flowchart/db-linkstyle-leading-space-fill] [fixture:
 flowchart/db-linkstyle-leading-line-separator] [fixture:
 flowchart/db-linkstyle-later-style-starts-with-fill] [fixture:
 flowchart/db-linkstyle-styles-replaced] [fixture:
 flowchart/db-linkstyle-interpolate-and-styles] [fixture:
-flowchart/db-linkstyle-numbered-edges-only] A statement with `interpolate` and
-no styles changes no style: an edge keeps the styles an earlier statement gave
-it, and no `fill:none` is added. [fixture:
-flowchart/db-linkstyle-interpolate-keeps-style] [fixture:
-flowchart/db-linkstyle-interpolate-only] `linkStyle default` sets the default
-interpolate, which edges added later take, and, when it has styles, the `style`
-of `edgeDefaults`, which is its styles and replaces those of an earlier
-statement: no `fill:none` is added, and no edge gets them. Without styles, it
-leaves that `style` as it is, null when no statement has set it. [fixture:
-flowchart/db-default-linkstyle-interpolate-keeps-style] [fixture:
+flowchart/db-linkstyle-numbered-edges-only]
+
+A statement with `interpolate` and no styles changes no style: an edge keeps the
+styles an earlier statement gave it, and no `fill:none` is added.
+
+[fixture: flowchart/db-linkstyle-interpolate-keeps-style] [fixture:
+flowchart/db-linkstyle-interpolate-only]
+
+`linkStyle default` sets the default interpolate, which edges added later take,
+and, when it has styles, the `style` of `edgeDefaults`, which is its styles and
+replaces those of an earlier statement: no `fill:none` is added, and no edge
+gets them. Without styles, it leaves that `style` as it is, null when no
+statement has set it.
+
+[fixture: flowchart/db-default-linkstyle-interpolate-keeps-style] [fixture:
 flowchart/db-default-interpolate-later-edge] [fixture:
 flowchart/db-linkstyle-default-no-fill] [fixture:
 flowchart/db-linkstyle-default-styles-replaced]
@@ -424,27 +523,35 @@ flowchart/db-linkstyle-default-styles-replaced]
 **Click statements.** A click with a callback records a click call for each id
 (a null id is the empty text), whether or not a vertex has it: `id`, `name` the
 callback, and `args` the `value` of the `arguments`, or null when there is none,
-as for `f(  )`; the summary has `clickCalls` only when it has a call. [fixture:
-flowchart/gram-click-call] [fixture:
+as for `f(  )`; the summary has `clickCalls` only when it has a call.
+
+[fixture: flowchart/gram-click-call] [fixture:
 flowchart/tokens-callback-name-trailing-space] [fixture:
 flowchart/tokens-callback-arguments-spaces-at-ends] [fixture:
-flowchart/db-click-callback-whitespace-arguments] It then applies the class step
-with the click's ids and the class `clickable`. [fixture:
-flowchart/db-click-class-subgraph] A click with a URL gives each vertex whose id
-is one of the click's ids the URL, trimmed and not sanitized, as `link` (none
-when it is empty) and the target as `linkTarget` (none when the click has none),
-and then applies the same class step. A later click replaces both:
-`click A href "u" _blank` followed by `click A href "v"` leaves A with the
-`link` `v` and no `linkTarget`, and `click A href "u"` followed by
-`click A href " "` leaves it with no `link`. [fixture:
-flowchart/db-click-url-replaces-target] [fixture:
+flowchart/db-click-callback-whitespace-arguments]
+
+It then applies the class step with the click's ids and the class `clickable`.
+
+[fixture: flowchart/db-click-class-subgraph]
+
+A click with a URL gives each vertex whose id is one of the click's ids the URL,
+trimmed and not sanitized, as `link` (none when it is empty) and the target as
+`linkTarget` (none when the click has none), and then applies the same class
+step. A later click replaces both: `click A href "u" _blank` followed by
+`click A href "v"` leaves A with the `link` `v` and no `linkTarget`, and
+`click A href "u"` followed by `click A href " "` leaves it with no `link`.
+
+[fixture: flowchart/db-click-url-replaces-target] [fixture:
 flowchart/db-click-url-empty-removes-link] [fixture:
-flowchart/db-click-line-separator-in-strings] A tooltip is recorded for each id,
-whether or not a vertex has it, with the `value` of its StringLiteral as its
-text, not trimmed; a later tooltip for the same id replaces the text and keeps
-the position. [fixture: flowchart/db-click-on-edge] [fixture:
-flowchart/db-tooltip-unknown-id] [fixture: flowchart/db-tooltip-replaced]
-[fixture: flowchart/db-tooltip-untrimmed]
+flowchart/db-click-line-separator-in-strings]
+
+A tooltip is recorded for each id, whether or not a vertex has it, with the
+`value` of its StringLiteral as its text, not trimmed; a later tooltip for the
+same id replaces the text and keeps the position.
+
+[fixture: flowchart/db-click-on-edge] [fixture: flowchart/db-tooltip-unknown-id]
+[fixture: flowchart/db-tooltip-replaced] [fixture:
+flowchart/db-tooltip-untrimmed]
 
 **Accessibility statements.** `accTitle:` sets the title to its value.
 `accDescr:` and `accDescr {` set the description to their value, with each line
@@ -458,7 +565,9 @@ so for `accDescr:`; `accDescr { y }` alone gives the description `y`,
 followed by `accDescr: second` gives `second`. A statement inside a subgraph
 sets the same description as one outside it, so `accDescr: inner` in a subgraph
 followed by `accDescr: outer` after its `end` gives `outer`, and so for
-`accTitle:`. [fixture: flowchart/db-acc-title-alone] [fixture:
+`accTitle:`.
+
+[fixture: flowchart/db-acc-title-alone] [fixture:
 flowchart/db-acc-descr-line-alone] [fixture: flowchart/db-acc-descr-lines]
 [fixture: flowchart/db-acc-descr-collapse-whitespace] [fixture:
 flowchart/db-acc-repeated] [fixture: flowchart/db-acc-descr-block-alone]
@@ -470,23 +579,31 @@ flowchart/db-acc-title-replaces] [fixture: flowchart/db-acc-descr-replaces]
 flowchart/db-acc-descr-collapse-crlf] [fixture:
 flowchart/db-acc-descr-collapse-line-separator] [fixture:
 flowchart/db-acc-descr-line-separator-kept] [fixture:
-flowchart/db-acc-title-line-separator] An `accDescr {` block that is not closed
-sets the empty description, whatever its text, because mermaid.js reads its text
-and then, at the end of the text, an empty text as a second block: `accDescr: d`
-followed by `accDescr { x` at the end of the text gives the empty description,
-and the title stays as it was. [fixture: flowchart/lex-acc-descr-block-unclosed]
-[fixture: flowchart/db-acc-descr-unclosed-replaces] [fixture:
+flowchart/db-acc-title-line-separator]
+
+An `accDescr {` block that is not closed sets the empty description, whatever
+its text, because mermaid.js reads its text and then, at the end of the text, an
+empty text as a second block: `accDescr: d` followed by `accDescr { x` at the
+end of the text gives the empty description, and the title stays as it was.
+
+[fixture: flowchart/lex-acc-descr-block-unclosed] [fixture:
+flowchart/db-acc-descr-unclosed-replaces] [fixture:
 flowchart/db-acc-descr-unclosed-empty-replaces] [fixture:
-flowchart/db-acc-descr-unclosed-keeps-title] Such a block takes the rest of the
-text, so a line `B --> C` after `accDescr { x`, or after `accDescr {` and a line
-`x`, adds no edge. [fixture: flowchart/db-acc-descr-unclosed-takes-lines]
-[fixture: flowchart/db-acc-descr-unclosed-text-next-line] Otherwise, a statement
-whose value is null sets the empty text, while a closed description block
-without text changes nothing: `accDescr: x` followed by `accDescr:` at the end
-of the text gives the empty description, and so does `accDescr { x }` followed
-by it, while `accDescr: x` followed by `accDescr {  }` keeps `x`, as
-`accDescr { x }` followed by `accDescr {}` does. [fixture:
-flowchart/db-acc-title-empty-replaces] [fixture:
+flowchart/db-acc-descr-unclosed-keeps-title]
+
+Such a block takes the rest of the text, so a line `B --> C` after
+`accDescr { x`, or after `accDescr {` and a line `x`, adds no edge.
+
+[fixture: flowchart/db-acc-descr-unclosed-takes-lines] [fixture:
+flowchart/db-acc-descr-unclosed-text-next-line]
+
+Otherwise, a statement whose value is null sets the empty text, while a closed
+description block without text changes nothing: `accDescr: x` followed by
+`accDescr:` at the end of the text gives the empty description, and so does
+`accDescr { x }` followed by it, while `accDescr: x` followed by `accDescr {  }`
+keeps `x`, as `accDescr { x }` followed by `accDescr {}` does.
+
+[fixture: flowchart/db-acc-title-empty-replaces] [fixture:
 flowchart/db-acc-descr-empty-replaces] [fixture:
 flowchart/db-acc-descr-block-then-empty-line] [fixture:
 flowchart/db-acc-descr-empty-block-keeps] [fixture:
@@ -496,9 +613,10 @@ flowchart/db-acc-descr-empty-block-after-block]
 left out of a value (see
 [The converted form](../db-from-tree.md#the-converted-form)). For a bare or
 quoted label in a data block, the data-block effect supplies the text, which
-goes on across the region in the same way. [fixture:
-flowchart/lex-data-label-bare-line-separator-then-comment-line] [fixture:
-flowchart/lex-data-label-quoted-line-separator-then-comment-line]
+goes on across the region in the same way.
+
+[fixture: flowchart/lex-data-label-bare-line-separator-then-comment-line]
+[fixture: flowchart/lex-data-label-quoted-line-separator-then-comment-line]
 
 ## Data blocks in the Db
 
@@ -507,11 +625,15 @@ The values that a data block sets come from `dataBlockEffects` of
 one after another count as one entry. The entries are in source order (see
 [`dataBlockEffects`](../embedded-data.md#datablockeffects)): the entries of
 `A@{ label: a } & B@{ label: b } --> C@{ label: c } & D@{ label: d }` are those
-of `A`, `B`, `C`, and `D`, in this order. [fixture:
-flowchart/db-data-block-entries-source-order] At the position given above, the
-next entry is applied: its fields are set on the subgraph with the vertex's id,
-if there is one; otherwise on the first edge with that id, if there is one;
-otherwise on the vertex with that id, which the vertex step has already added.
+of `A`, `B`, `C`, and `D`, in this order.
+
+[fixture: flowchart/db-data-block-entries-source-order]
+
+At the position given above, the next entry is applied: its fields are set on
+the subgraph with the vertex's id, if there is one; otherwise on the first edge
+with that id, if there is one; otherwise on the vertex with that id, which the
+vertex step has already added.
+
 [fixture: flowchart/gram-data-consecutive-blocks] [fixture:
 flowchart/db-data-block-subgraph-over-edge] [fixture:
 flowchart/db-data-block-last-subgraph-with-id] [fixture:

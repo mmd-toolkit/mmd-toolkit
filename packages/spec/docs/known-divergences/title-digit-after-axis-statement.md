@@ -100,8 +100,9 @@ Each example is a whole diagram:
 | 4       | rejected   | the x axis `A` and the title `Q1`             |
 | 5       | rejected   | the x axis `A`, two lines, and the title `Q1` |
 
-The fixtures record the readings compared in the table. [fixture:
-xychart/div-title-digit-after-axis-semicolon] [fixture:
+The fixtures record the readings compared in the table.
+
+[fixture: xychart/div-title-digit-after-axis-semicolon] [fixture:
 xychart/div-title-digit-after-axis-band-same-line] [fixture:
 xychart/div-title-digit-next-line-after-axis-and-plot] [fixture:
 xychart/div-title-digit-after-axis-trailing-space] [fixture:
@@ -115,8 +116,9 @@ them:
   after a second axis statement, and with nothing between; while a plot
   statement between them, as in `x-axis A; line [1] title Q1`, and a title
   without a digit, as in `x-axis A; title a.b`, are accepted by both, and so is
-  a title after a plot statement alone, as in `line [1]; title T1`. [fixture:
-  xychart/div-title-digit-after-axis-semicolon] [fixture:
+  a title after a plot statement alone, as in `line [1]; title T1`.
+
+  [fixture: xychart/div-title-digit-after-axis-semicolon] [fixture:
   xychart/div-title-digit-after-axis-band-same-line] [fixture:
   xychart/div-title-digit-after-axis-band-semicolon] [fixture:
   xychart/div-title-digit-after-axis-line-separator] [fixture:
@@ -128,6 +130,7 @@ them:
   xychart/db-title-digit-after-axis-and-plot-same-line] [fixture:
   xychart/db-title-dotted-word-after-axis-semicolon] [fixture:
   xychart/db-title-digit-after-plot-semicolon]
+
 - After a line that ends with whitespace: a space, a tab, a U+00A0, a U+2028, a
   U+2029, a space and a directive, or a description block and a space at the end
   of the line of `x-axis A`, of categories, of a range, or of a title in quotes,
@@ -137,6 +140,7 @@ them:
   comment after a space, and a line of whitespace after the line feed, also
   after an empty line for two levels, are read the same by both, and so is a
   line `%%` alone after the whitespace, whose line feed takes away the level.
+
   [fixture: xychart/div-title-digit-after-axis-trailing-space] [fixture:
   xychart/div-title-digit-after-axis-trailing-tab] [fixture:
   xychart/div-title-digit-after-axis-trailing-nbsp] [fixture:
@@ -159,6 +163,7 @@ them:
   xychart/db-title-digit-after-axis-whitespace-line] [fixture:
   xychart/db-title-digit-after-trailing-space-and-bare-percent-line] [fixture:
   xychart/db-title-quoted-digit-after-axis-trailing-space]
+
 - After levels put on after the axis statement on its line: a plot statement, a
   bar statement, another x axis, or a y axis after it, after categories or a
   range, after a CRLF or a lone CR, after `;` at the end of the line, after the
@@ -168,8 +173,9 @@ them:
   statement on its line, an axis statement after the last plot statement, an
   accessibility title after it, a lone CR, an indented title, and a frontmatter
   for one level, an empty line before the title for two levels, and two empty
-  lines for three are read the same by both. [fixture:
-  xychart/div-title-digit-next-line-after-axis-and-plot] [fixture:
+  lines for three are read the same by both.
+
+  [fixture: xychart/div-title-digit-next-line-after-axis-and-plot] [fixture:
   xychart/div-title-digit-next-line-after-two-axes] [fixture:
   xychart/div-title-digit-next-line-after-axis-and-y-axis] [fixture:
   xychart/div-title-digit-next-line-after-band-and-plot] [fixture:
@@ -193,15 +199,17 @@ them:
   xychart/db-title-digit-after-three-levels-and-two-empty-lines] [fixture:
   xychart/db-title-quoted-digit-next-line-after-axis-and-plot] [fixture:
   xychart/db-title-digit-after-axis-plot-lines]
+
 - Across line feeds that take away nothing: a comment line, also with an empty
   line before it, a line `%%` alone after a line with two levels, a line feed
   after `accTitle:` or `accDescr:` or around their `:` or `{`, a line feed in a
   string, and a line feed inside a directive; while a line `%%` alone and an
   empty line after it, a line of spaces and `%%`, whose line feed before it is
   read where a unit starts, and a directive alone on its line, which leaves an
-  empty line, are read the same by both. [fixture:
-  xychart/div-title-digit-after-comment-line-after-axis-and-plot] [fixture:
-  xychart/div-title-digit-after-empty-line-and-comment-line] [fixture:
+  empty line, are read the same by both.
+
+  [fixture: xychart/div-title-digit-after-comment-line-after-axis-and-plot]
+  [fixture: xychart/div-title-digit-after-empty-line-and-comment-line] [fixture:
   xychart/div-title-digit-after-bare-percent-line-after-axis-and-plot] [fixture:
   xychart/db-title-digit-after-bare-percent-line-and-empty-line] [fixture:
   xychart/div-title-digit-after-acc-title-line-feed-after-colon] [fixture:
@@ -214,14 +222,16 @@ them:
   [fixture: xychart/db-title-digit-after-directive-line-after-axis-and-plot]
   [fixture: xychart/db-title-digit-after-directive-line-after-axis] [fixture:
   xychart/db-title-digit-after-indented-bare-percent-line]
+
 - On later lines: after a line with a plot statement, after a line with a title
   without a digit before the title on the same line, after a line that ends with
   a space, and after the plot line of a line that ends with a space; while a
   line that ends with a unit, such as `title T`, takes away the level of the
   axis statement when it is on top, and a plot statement that ends with a space
   on the line of the axis statement keeps the title on the next line under the
-  level of the plot. [fixture:
-  xychart/div-title-digit-two-lines-after-axis-and-plot] [fixture:
+  level of the plot.
+
+  [fixture: xychart/div-title-digit-two-lines-after-axis-and-plot] [fixture:
   xychart/div-title-digit-after-plot-line-after-axis-and-plot] [fixture:
   xychart/div-title-digit-second-statement-next-line-after-axis-and-plot]
   [fixture: xychart/div-title-digit-after-axis-trailing-space-and-plot-line]
@@ -268,6 +278,7 @@ that the axis context ends with its statement, and the inputs that mermaid.js
 rejects for this reason are the divergence. An accepted input has the Db of the
 same input with each statement on a line of its own and without the whitespace
 at the end of each line that ends a statement, which mermaid.js accepts.
+
 [fixture: xychart/db-title-digit-line-after-axis] [fixture:
 xychart/db-title-digit-after-axis-plot-lines]
 

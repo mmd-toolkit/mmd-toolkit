@@ -17,9 +17,11 @@ defined in [ast/timeline.md](../ast/timeline.md).
 Entry 18 of [detection.md](../detection.md) selects this grammar: the text
 starts with `timeline`, after whitespace, in exactly this case
 ([`detector.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/timeline/detector.ts#L9-L11)).
-`Timeline` and `TIMELINE` match no detector. [fixture: timeline/db-header-only]
-[fixture: timeline/header-indented] [fixture: timeline/header-after-blank-lines]
-[fixture: timeline/header-capitalized] [fixture: timeline/header-upper-case]
+`Timeline` and `TIMELINE` match no detector.
+
+[fixture: timeline/db-header-only] [fixture: timeline/header-indented] [fixture:
+timeline/header-after-blank-lines] [fixture: timeline/header-capitalized]
+[fixture: timeline/header-upper-case]
 
 The lexer then reads the header, the keyword `timeline`, case-insensitively and
 not followed by a word character (see
@@ -31,10 +33,11 @@ the header on its line, after whitespace or not, and the header alone is
 accepted, also without a line feed after it. `timeline:` is rejected, as the
 header followed by a `:` unit, which the grammar does not take, `timeline;` is
 the header followed by the period `;`, and `timeline#c` and `timeline%c` are the
-header and a comment. A second header is taken by no rule. [fixture:
-timeline/header-word-suffix] [fixture: timeline/header-glued-direction]
-[fixture: timeline/header-dash-suffix] [fixture:
-timeline/header-non-ascii-letter-suffix] [fixture:
+header and a comment. A second header is taken by no rule.
+
+[fixture: timeline/header-word-suffix] [fixture:
+timeline/header-glued-direction] [fixture: timeline/header-dash-suffix]
+[fixture: timeline/header-non-ascii-letter-suffix] [fixture:
 timeline/header-text-on-header-line] [fixture:
 timeline/header-period-with-event-on-header-line] [fixture:
 timeline/header-section-on-header-line] [fixture:
@@ -56,7 +59,9 @@ direction. Other whitespace does not join the direction to the header: after a
 U+00A0, a U+3000, a U+2028, or a line feed, `TD` is a period, and so is `TDx`
 after a space. Only one direction is read: in `timeline TD LR` and
 `timeline LR TD` the second word is a period, and `LR` on a line of its own is a
-period. [fixture: timeline/db-direction-td] [fixture: timeline/db-direction-lr]
+period.
+
+[fixture: timeline/db-direction-td] [fixture: timeline/db-direction-lr]
 [fixture: timeline/db-direction-lower-case] [fixture:
 timeline/db-direction-mixed-case] [fixture: timeline/db-direction-tab] [fixture:
 timeline/db-direction-two-spaces] [fixture:
@@ -83,8 +88,9 @@ the header: the known divergence
 [`bare-percent-line-before-header`](#known-divergences). A comment line before
 the header is removed before detection, and a directive on a line before the
 header or after the header on its line is a directive and nothing else. A line
-`# c` before the header is the first text, so no detector matches. [fixture:
-timeline/header-after-bare-percent-line] [fixture:
+`# c` before the header is the first text, so no detector matches.
+
+[fixture: timeline/header-after-bare-percent-line] [fixture:
 timeline/header-after-empty-braces-line] [fixture:
 timeline/header-after-bare-percent-line-and-whitespace-line] [fixture:
 timeline/header-after-comment-line] [fixture:
@@ -101,24 +107,30 @@ each attribute quote as `'`, each entity as its placeholder, and through comment
 regions and the `;` that the line rule ignores as if they were not there. The
 `\n` that the lexer reads after the last character
 ([End of text](../common.md#end-of-text)) is part of the diagram text, so a
-title text, a period, or an event at the end of the text ends there. [fixture:
-timeline/lex-title-at-end-of-text] [fixture: timeline/lex-period-at-end-of-text]
-[fixture: timeline/lex-event-at-end-of-text] [fixture:
-timeline/demo-timeline-eab9c50d] This section describes the diagram's own unit
-rules, item 4 of [Reading a source](../common.md#reading-a-source).
+title text, a period, or an event at the end of the text ends there.
+
+[fixture: timeline/lex-title-at-end-of-text] [fixture:
+timeline/lex-period-at-end-of-text] [fixture: timeline/lex-event-at-end-of-text]
+[fixture: timeline/demo-timeline-eab9c50d]
+
+This section describes the diagram's own unit rules, item 4 of
+[Reading a source](../common.md#reading-a-source).
 
 The lexer of mermaid.js for this diagram compares letters case-insensitively
 (see [Notation](../common.md#notation)): `TITLE T`, `SECTION S`, `ACCTITLE: T`,
 `ACCDESCR: D`, and `ACCDESCR { D }` are read as with the words this document
 writes, and `Title`, a line feed, and `  Section` is a title. The texts keep the
-case in which they are written. [fixture: timeline/db-title-upper-case]
-[fixture: timeline/db-section-upper-case] [fixture:
-timeline/db-acc-title-upper-case] [fixture: timeline/lex-acc-descr-upper-case]
-[fixture: timeline/lex-acc-descr-block-upper-case] [fixture:
-timeline/db-period-title-then-section-lines] A **keyword** below is a word,
-matched case-insensitively, that is not followed by a word character (see
-[Notation](../common.md#notation)) where the rule says so, and a word followed
-by whitespace where it says so (see
+case in which they are written.
+
+[fixture: timeline/db-title-upper-case] [fixture:
+timeline/db-section-upper-case] [fixture: timeline/db-acc-title-upper-case]
+[fixture: timeline/lex-acc-descr-upper-case] [fixture:
+timeline/lex-acc-descr-block-upper-case] [fixture:
+timeline/db-period-title-then-section-lines]
+
+A **keyword** below is a word, matched case-insensitively, that is not followed
+by a word character (see [Notation](../common.md#notation)) where the rule says
+so, and a word followed by whitespace where it says so (see
 [Keywords and what follows them](#the-statement-context)).
 
 ### Units and contexts
@@ -139,9 +151,11 @@ The text may end in the statement context only. It may not end in the title
 context, the description context, or the description block context: the input is
 then rejected. So `accTitle:` with nothing after it, also with whitespace or a
 line feed after the colon, `accDescr:` with nothing after it, and `accDescr {`
-without `}`, with text after it or without, are rejected. [fixture:
-timeline/gram-acc-title-empty] [fixture: timeline/gram-acc-title-only-space]
-[fixture: timeline/lex-acc-title-colon-at-end-of-text] [fixture:
+without `}`, with text after it or without, are rejected.
+
+[fixture: timeline/gram-acc-title-empty] [fixture:
+timeline/gram-acc-title-only-space] [fixture:
+timeline/lex-acc-title-colon-at-end-of-text] [fixture:
 timeline/gram-acc-descr-empty] [fixture: timeline/gram-acc-descr-block-unclosed]
 [fixture: timeline/lex-acc-descr-block-unclosed-empty]
 
@@ -161,6 +175,7 @@ title, an accessibility description, and the text of a description block are
 read without whitespace at their ends, these characters included (see
 [Accessibility statements](#accessibility-statements)). Indentation means
 nothing: a period indented more than the one before it is another period.
+
 [fixture: timeline/lex-period-trailing-tab] [fixture:
 timeline/lex-event-trailing-tab] [fixture: timeline/lex-title-trailing-tab]
 [fixture: timeline/lex-section-trailing-tab] [fixture:
@@ -200,17 +215,21 @@ has the period `a #35; b ` and the event `c #35; d`; the named and the
 hexadecimal forms are read the same way; `a : #35;` has the event `#35;`; a
 title, a section, an accessibility title, an accessibility description, and a
 description block may hold one. A `#` that starts no entity starts a comment
-where it ends a period: `a #bogus b` is the period `a ` and a comment. [fixture:
-timeline/db-event-entity] [fixture: timeline/db-event-entity-named] [fixture:
-timeline/db-event-entity-hex] [fixture: timeline/db-event-entity-is-no-comment]
-[fixture: timeline/db-title-entity] [fixture: timeline/db-section-entity]
-[fixture: timeline/db-acc-title-entity] [fixture: timeline/db-acc-descr-entity]
-[fixture: timeline/db-acc-descr-block-entity] [fixture:
-timeline/db-period-unclosed-reference] The attribute quotes of an HTML tag are
-read as `'` as in every diagram type (see
-[HTML attribute quotes](../common.md#html-attribute-quotes)): `title`
+where it ends a period: `a #bogus b` is the period `a ` and a comment.
+
+[fixture: timeline/db-event-entity] [fixture: timeline/db-event-entity-named]
+[fixture: timeline/db-event-entity-hex] [fixture:
+timeline/db-event-entity-is-no-comment] [fixture: timeline/db-title-entity]
+[fixture: timeline/db-section-entity] [fixture: timeline/db-acc-title-entity]
+[fixture: timeline/db-acc-descr-entity] [fixture:
+timeline/db-acc-descr-block-entity] [fixture:
+timeline/db-period-unclosed-reference]
+
+The attribute quotes of an HTML tag are read as `'` as in every diagram type
+(see [HTML attribute quotes](../common.md#html-attribute-quotes)): `title`
 `<b a="x">t</b>` has the title with `a='x'`, and the period `A <a b="c">d` has
 `b='c'`, while quotes outside a tag stay quotes, as in the event `"b"`.
+
 [fixture: timeline/lex-html-tag-in-title] [fixture:
 timeline/lex-html-tag-in-period] [fixture:
 timeline/db-event-quotes-and-brackets]
@@ -234,12 +253,15 @@ and `}`, are no text units.
   `accTitle: a %%{init: {}}%% b` the accessibility title of the same text,
   `accDescr: a%%{init: {}}%%b` the description `ab`, and a description block the
   text of the same kind, as in mermaid.js; in `a : e %%{init: {}}%% : f` the
-  event is `e` and two spaces. [fixture: timeline/db-period-directive-glued]
-  [fixture: timeline/lex-directive-in-event] [fixture:
-  timeline/db-title-directive] [fixture: timeline/db-section-directive]
-  [fixture: timeline/db-acc-title-directive] [fixture:
+  event is `e` and two spaces.
+
+  [fixture: timeline/db-period-directive-glued] [fixture:
+  timeline/lex-directive-in-event] [fixture: timeline/db-title-directive]
+  [fixture: timeline/db-section-directive] [fixture:
+  timeline/db-acc-title-directive] [fixture:
   timeline/lex-directive-in-acc-descr] [fixture:
   timeline/db-acc-descr-block-directive] [fixture: timeline/db-event-directive]
+
 - A directive between two units is allowed: between the header and its
   direction, `timeline %%{init: {}}%% TD`; between a colon and the whitespace
   character after it, `a:%%{init: {}}%% e`, which has the event `e`; between
@@ -247,20 +269,23 @@ and `}`, are no text units.
   `title%%{init: {}}%% T` and `title %%{init: {}}%%T`; and before the colon of
   an event, `a %%{init: {}}%% : e`, whose period is `a` and two spaces. Without
   the directive, the units must still be read: in `a :%%{init: {}}%%e` no
-  whitespace follows the colon, and the input is rejected by both. [fixture:
-  timeline/header-directive-before-direction] [fixture:
+  whitespace follows the colon, and the input is rejected by both.
+
+  [fixture: timeline/header-directive-before-direction] [fixture:
   timeline/lex-directive-between-colon-and-space] [fixture:
   timeline/lex-directive-between-title-and-whitespace] [fixture:
   timeline/lex-directive-between-title-whitespace-and-text] [fixture:
   timeline/db-period-directive-before-colon] [fixture:
   timeline/lex-directive-between-colon-and-event-text]
+
 - In `time%%{init: {}}%%line`, `timeline T%%{init: {}}%%D`,
   `ti%%{init: {}}%%tle T`, `sec%%{init: {}}%%tion S`,
   `acc%%{init: {}}%%Title: T`, `acc%%{init: {}}%%Descr: T`, and
   `acc%%{init: {}}%%Descr { T }`, the directive lies inside a keyword or the
   direction: the input is rejected, while mermaid.js accepts it, reading the two
-  parts as one (see [Known divergences](#known-divergences)). [fixture:
-  timeline/div-directive-in-header-keyword] [fixture:
+  parts as one (see [Known divergences](#known-divergences)).
+
+  [fixture: timeline/div-directive-in-header-keyword] [fixture:
   timeline/div-directive-in-direction] [fixture:
   timeline/div-directive-in-title-keyword] [fixture:
   timeline/div-directive-in-section-keyword] [fixture:
@@ -271,16 +296,19 @@ and `}`, are no text units.
 **Trivia between units.** The trivia of [common.md](../common.md) meet the units
 of this diagram as follows. A lone CR and CRLF are line terminators, read as a
 line feed (see [Line terminators](../common.md#line-terminators)), also as the
-whitespace character after `title`. [fixture: timeline/db-lone-cr-line-ends]
-[fixture: timeline/db-crlf-line-ends] [fixture:
-timeline/lex-title-separator-carriage-return] A closed directive at the end of a
-line ends nothing, and the whitespace before it is a character of the text
-before it where the text keeps whitespace: `a %%{init: {}}%%` has the period
-`a `, and `title T %%{init: {}}%%` the title `T `, while
-`accTitle: T  %%{init: {}}%%` has the accessibility title `T`, which is read
-without the whitespace at its ends. An unclosed directive takes the rest of the
-text (see [Where a directive is](../common.md#where-a-directive-is)): `a`, a
-space, and `%%{init: {}` followed by a line `b` has the one period `a `.
+whitespace character after `title`.
+
+[fixture: timeline/db-lone-cr-line-ends] [fixture: timeline/db-crlf-line-ends]
+[fixture: timeline/lex-title-separator-carriage-return]
+
+A closed directive at the end of a line ends nothing, and the whitespace before
+it is a character of the text before it where the text keeps whitespace:
+`a %%{init: {}}%%` has the period `a `, and `title T %%{init: {}}%%` the title
+`T `, while `accTitle: T  %%{init: {}}%%` has the accessibility title `T`, which
+is read without the whitespace at its ends. An unclosed directive takes the rest
+of the text (see [Where a directive is](../common.md#where-a-directive-is)):
+`a`, a space, and `%%{init: {}` followed by a line `b` has the one period `a `.
+
 [fixture: timeline/lex-directive-at-end-of-period-line] [fixture:
 timeline/lex-directive-at-end-of-title-line] [fixture:
 timeline/lex-directive-after-acc-title-text] [fixture:
@@ -302,8 +330,10 @@ the event of two spaces; with the directive at the start of its line, the line
 is empty, so `title` and `section` are periods, and the event cannot start and
 the input is rejected; after `accTitle:` and `accDescr:`, the whitespace of the
 line is read with the colon. A line `# c` after `title` is the title `  # c`,
-since a title text holds `#`. [fixture: timeline/db-comment-percent-line]
-[fixture: timeline/lex-title-line-feed-comment-line] [fixture:
+since a title text holds `#`.
+
+[fixture: timeline/db-comment-percent-line] [fixture:
+timeline/lex-title-line-feed-comment-line] [fixture:
 timeline/lex-title-line-feed-two-comment-lines] [fixture:
 timeline/lex-section-line-feed-comment-line] [fixture:
 timeline/lex-event-line-feed-comment-line] [fixture:
@@ -339,8 +369,9 @@ text stops at the `:` of `style:`, so `style:#x;y` and `section style:#x;y` are
 rejected by both, as the rest is a `:` unit. Inside a keyword, the ignored `;`
 makes the input rejected, while mermaid.js accepts it (see
 [Known divergences](#known-divergences)): after `accDescr { style:#x }` on the
-same line, `ti;tle T`, `sec;tion S`, and `accTi;tle: T`. [fixture:
-timeline/lex-title-semicolon-in-style-line] [fixture:
+same line, `ti;tle T`, `sec;tion S`, and `accTi;tle: T`.
+
+[fixture: timeline/lex-title-semicolon-in-style-line] [fixture:
 timeline/lex-title-semicolon-in-classdef-line] [fixture:
 timeline/lex-acc-title-semicolon-in-style-line] [fixture:
 timeline/lex-acc-descr-semicolon-in-style-line] [fixture:
@@ -365,63 +396,101 @@ In the statement context, the lexer tries these rules in order:
 
 1. `%`, not followed by `{`: a diagram comment, from the `%` to the end of the
    line (see [Comments](#comments)): `% c`, `%c`, and `%` alone are comments,
-   also between a period and its event line and after the header. [fixture:
-   timeline/db-comment-percent-line] [fixture:
+   also between a period and its event line and after the header.
+
+   [fixture: timeline/db-comment-percent-line] [fixture:
    timeline/db-comment-single-percent-line] [fixture:
    timeline/db-comment-single-percent-glued] [fixture:
    timeline/db-comment-single-percent-only] [fixture:
    timeline/db-comment-single-percent-between-task-and-event] [fixture:
    timeline/header-single-percent-comment-on-header-line] [fixture:
    timeline/lex-percent-x-line] [fixture: timeline/lex-percent-brace-period]
-2. One or more line feeds: a `newline` unit. [fixture:
-   timeline/db-blank-line-between-tasks]
-3. One or more whitespace characters, line feeds included: nothing. [fixture:
-   timeline/db-whitespace-only-line]
+
+2. One or more line feeds: a `newline` unit.
+
+   [fixture: timeline/db-blank-line-between-tasks]
+
+3. One or more whitespace characters, line feeds included: nothing.
+
+   [fixture: timeline/db-whitespace-only-line]
+
 4. `#`: a diagram comment, from the `#` to the end of the line (see
-   [Comments](#comments)). [fixture: timeline/db-comment-hash-line]
+   [Comments](#comments)).
+
+   [fixture: timeline/db-comment-hash-line]
+
 5. The keyword `timeline`, one or more spaces or tabs, and the keyword `LR`: a
-   `header` unit and a `direction` unit. [fixture: timeline/db-direction-lr]
+   `header` unit and a `direction` unit.
+
+   [fixture: timeline/db-direction-lr]
+
 6. The keyword `timeline`, one or more spaces or tabs, and the keyword `TD`: a
-   `header` unit and a `direction` unit. [fixture: timeline/db-direction-td]
-7. The keyword `timeline`: a `header` unit. [fixture: timeline/db-header-only]
+   `header` unit and a `direction` unit.
+
+   [fixture: timeline/db-direction-td]
+
+7. The keyword `timeline`: a `header` unit.
+
+   [fixture: timeline/db-header-only]
+
 8. `title`, one whitespace character, line feed included, and one or more
    characters other than a line feed: a `title` unit and a `title-text` unit,
-   whose text is the characters after the one whitespace character. [fixture:
-   timeline/db-title-statement] [fixture: timeline/db-title-two-spaces]
-   [fixture: timeline/lex-title-separator-line-feed]
+   whose text is the characters after the one whitespace character.
+
+   [fixture: timeline/db-title-statement] [fixture:
+   timeline/db-title-two-spaces] [fixture:
+   timeline/lex-title-separator-line-feed]
+
 9. `accTitle`, zero or more whitespace characters, line feeds included, `:`, and
    zero or more whitespace characters, line feeds included: an `accTitle` unit
-   and a `:` unit; enters the title context. [fixture:
-   timeline/db-acc-title-statement] [fixture: timeline/db-acc-title-glued]
-   [fixture: timeline/db-acc-title-space-before-colon] [fixture:
+   and a `:` unit; enters the title context.
+
+   [fixture: timeline/db-acc-title-statement] [fixture:
+   timeline/db-acc-title-glued] [fixture:
+   timeline/db-acc-title-space-before-colon] [fixture:
    timeline/lex-acc-title-colon-on-next-line]
+
 10. `accDescr`, zero or more whitespace characters, line feeds included, `:`,
     and zero or more whitespace characters, line feeds included: an `accDescr`
-    unit and a `:` unit; enters the description context. [fixture:
-    timeline/db-acc-descr-statement] [fixture: timeline/db-acc-descr-glued]
+    unit and a `:` unit; enters the description context.
+
+    [fixture: timeline/db-acc-descr-statement] [fixture:
+    timeline/db-acc-descr-glued]
+
 11. `accDescr`, zero or more whitespace characters, line feeds included, `{`,
     and zero or more whitespace characters, line feeds included: an `accDescr`
-    unit and a `{` unit; enters the description block context. [fixture:
-    timeline/db-acc-descr-block] [fixture: timeline/db-acc-descr-block-glued]
-    [fixture: timeline/db-acc-descr-block-spaces]
+    unit and a `{` unit; enters the description block context.
+
+    [fixture: timeline/db-acc-descr-block] [fixture:
+    timeline/db-acc-descr-block-glued] [fixture:
+    timeline/db-acc-descr-block-spaces]
+
 12. `section`, one whitespace character, line feed included, and one or more
     characters other than `:` and a line feed: a `section` unit and a
     `section-text` unit, whose text is the characters after the one whitespace
-    character. [fixture: timeline/db-section-statement] [fixture:
+    character.
+
+    [fixture: timeline/db-section-statement] [fixture:
     timeline/db-section-two-spaces] [fixture:
     timeline/lex-section-separator-line-feed]
+
 13. `:`, one whitespace character, line feed included, and the **event text**:
     one or more characters, each a character other than `:` and a line feed or a
     `:` that no whitespace follows: a `:` unit and an `event-text` unit.
+
     [fixture: timeline/db-period-and-event] [fixture:
     timeline/db-event-colon-glued-inside] [fixture:
     timeline/db-event-line-feed-after-colon]
+
 14. One or more characters other than `#`, `:`, and a line feed: a `period-text`
-    unit. [fixture: timeline/db-period-only] [fixture:
-    timeline/db-period-with-spaces] [fixture:
-    timeline/db-period-trailing-spaces]
-15. `:`: a `:` unit, which no rule of the grammar takes. [fixture:
-    timeline/gram-event-colon-glued-to-event] [fixture:
+    unit.
+
+    [fixture: timeline/db-period-only] [fixture: timeline/db-period-with-spaces]
+    [fixture: timeline/db-period-trailing-spaces]
+
+15. `:`: a `:` unit, which no rule of the grammar takes.
+
+    [fixture: timeline/gram-event-colon-glued-to-event] [fixture:
     timeline/gram-event-empty-after-colon] [fixture: timeline/header-colon]
 
 Every character other than a line feed, `#`, and `:` is a character of a period
@@ -432,8 +501,9 @@ nothing after it are such units: `a:e`, `a :e`, `:e`, `a :`, `a : `, `a : e1 :`,
 `a : b:`, and `a : :` are rejected, while `;` is a character of every text: on a
 line of its own, it is the period `;`, and so it is right after a description
 block, as in `accDescr { d };`; `a;` is the period `a;`, `section s;` the
-section `s;`, and `accDescr: d;` the description `d;`. [fixture:
-timeline/gram-event-colon-glued-to-event] [fixture:
+section `s;`, and `accDescr: d;` the description `d;`.
+
+[fixture: timeline/gram-event-colon-glued-to-event] [fixture:
 timeline/gram-event-colon-space-glued] [fixture:
 timeline/gram-event-colon-glued-first] [fixture:
 timeline/gram-event-empty-after-colon] [fixture:
@@ -446,12 +516,17 @@ timeline/lex-semicolon-line-is-period] [fixture:
 timeline/gram-semicolon-after-block] [fixture:
 timeline/db-period-trailing-semicolon] [fixture:
 timeline/db-section-trailing-semicolon] [fixture:
-timeline/db-acc-descr-semicolon] Some consequences of the order:
+timeline/db-acc-descr-semicolon]
+
+Some consequences of the order:
 
 - A `%` where a unit starts is a comment unless `{` follows it; inside a text it
   is a character of the text (see [Comments](#comments)). `%{x}` is the period
-  `%{x}`. [fixture: timeline/lex-percent-brace-period] [fixture:
+  `%{x}`.
+
+  [fixture: timeline/lex-percent-brace-period] [fixture:
   timeline/db-comment-percent-after-period]
+
 - The statements are ended by their own units, not by line feeds: a `newline`
   unit is a line of its own to the grammar, and several statements may share a
   line, `timeline TD title T`, `timeline a : b`, `accDescr { D } a : e`, and
@@ -460,46 +535,58 @@ timeline/db-acc-descr-semicolon] Some consequences of the order:
   or a `:`, and an event text the rest up to a `:` that whitespace follows. So
   `title T : e` is the title `T : e`, `section S : x` is the section `S ` and an
   event, and `a : b -- c : d --> e` is the period `a ` with the events `b -- c `
-  and `d --> e`. [fixture: timeline/header-title-on-header-line] [fixture:
+  and `d --> e`.
+
+  [fixture: timeline/header-title-on-header-line] [fixture:
   timeline/header-period-with-event-on-header-line] [fixture:
   timeline/gram-acc-descr-block-then-period-same-line] [fixture:
   timeline/gram-empty-description-blocks-then-period] [fixture:
   timeline/gram-title-takes-event-text] [fixture:
   timeline/db-section-with-event-after-task] [fixture: timeline/db-event-arrows]
+
 - A period keeps the whitespace before its colon, `#`, or line feed: `a : e` has
   the period `a `, and `a: e` the period `a`. An event text keeps the whitespace
   after the one whitespace character and the whitespace at its end: `a :   e`
   has the event `  e`, `a : e   ` the event `e   `, and `a :` with two spaces
-  the event of one space. [fixture: timeline/db-period-and-event] [fixture:
+  the event of one space.
+
+  [fixture: timeline/db-period-and-event] [fixture:
   timeline/db-period-colon-glued-to-period] [fixture:
   timeline/db-event-leading-spaces] [fixture: timeline/db-event-trailing-spaces]
   [fixture: timeline/db-event-two-spaces]
+
 - In an event text, a `:` that a character other than whitespace follows is a
   character: `a : b:c` has the event `b:c`, `a : x::y` the event `x::y`, and
   `a : e1 :e2` the event `e1 :e2`, while `: ` starts the next event:
   `a : e1: e2` has the events `e1` and `e2`, and `a : x: :y` the events `x` and
-  `:y`. [fixture: timeline/db-event-colon-glued-inside] [fixture:
+  `:y`.
+
+  [fixture: timeline/db-event-colon-glued-inside] [fixture:
   timeline/db-event-double-colon-inside] [fixture:
   timeline/db-event-colon-space-before-glued-after] [fixture:
   timeline/db-event-colon-glued-before] [fixture:
   timeline/db-event-colon-space-then-glued-colon]
+
 - The one whitespace character after `title`, `section`, or the colon of an
   event may be a line feed, so the text starts on the next line: `a :`, a line
   feed, and `e` has the event `e`, and `a :`, a line feed, and `  e` the event
   `  e`; `a : e1 :` and a line `  e2` the events `e1 ` and `  e2`. A text may be
   whitespace only: `a :`, a line feed, a line of three spaces, and `e` has the
   event of three spaces and the period `e`, while after a line feed and an empty
-  line the event cannot start, and the input is rejected. [fixture:
-  timeline/db-event-line-feed-after-colon] [fixture:
+  line the event cannot start, and the input is rejected.
+
+  [fixture: timeline/db-event-line-feed-after-colon] [fixture:
   timeline/db-event-line-feed-after-colon-indented] [fixture:
   timeline/db-event-line-feed-after-second-colon] [fixture:
   timeline/db-event-line-feed-then-whitespace-line] [fixture:
   timeline/gram-event-line-feed-then-empty-line]
+
 - A `#` ends a period and starts a comment, so `a #c : e` has the period `a `
   and no event, while a `#` inside a title text, a section text, an event text,
   or an accessibility text is a character: `title T # c`, `section S # c`,
-  `a : e # c`, `a : #`, and `title #my#title#` keep it. [fixture:
-  timeline/db-comment-hash-after-period] [fixture:
+  `a : e # c`, `a : #`, and `title #my#title#` keep it.
+
+  [fixture: timeline/db-comment-hash-after-period] [fixture:
   timeline/db-comment-hash-after-period-hides-event] [fixture:
   timeline/db-title-hash] [fixture: timeline/db-section-hash] [fixture:
   timeline/db-event-hash] [fixture: timeline/db-event-only-hash] [fixture:
@@ -517,8 +604,9 @@ period: `title` and `section` alone, `title` and `section` followed by a space,
 and `sectionx` are periods, and `title:T` and `section:S` are the period `title`
 or `section` followed by a `:` unit and rejected. A title or a section whose
 text is whitespace only is read: `title` and two spaces at the end of a line has
-the title of one space, and so with `section`. [fixture:
-timeline/lex-title-separator-tab] [fixture:
+the title of one space, and so with `section`.
+
+[fixture: timeline/lex-title-separator-tab] [fixture:
 timeline/lex-title-separator-no-break-space] [fixture:
 timeline/lex-title-separator-ideographic-space] [fixture:
 timeline/lex-title-separator-line-separator] [fixture:
@@ -538,11 +626,13 @@ timeline/lex-section-line-feed-empty-line] [fixture:
 timeline/gram-title-word-suffix] [fixture: timeline/gram-section-word-suffix]
 [fixture: timeline/gram-title-colon-glued] [fixture:
 timeline/gram-section-colon-glued] [fixture: timeline/db-title-only-space]
-[fixture: timeline/db-section-only-space] `accTitle` and `accDescr` are keywords
-only with their `:` or `{` after them, after whitespace or not: `accTitle` and
-`accDescr` on lines of their own are periods, and `accTitle`, a line feed, and
-`: T` has the accessibility title `T`. [fixture:
-timeline/db-period-acc-keywords-alone] [fixture:
+[fixture: timeline/db-section-only-space]
+
+`accTitle` and `accDescr` are keywords only with their `:` or `{` after them,
+after whitespace or not: `accTitle` and `accDescr` on lines of their own are
+periods, and `accTitle`, a line feed, and `: T` has the accessibility title `T`.
+
+[fixture: timeline/db-period-acc-keywords-alone] [fixture:
 timeline/lex-acc-title-colon-on-next-line]
 
 ### Accessibility values
@@ -561,7 +651,9 @@ line of the colon or on a later line, and runs to the end of that line, `:`,
 `#`, `;`, and `%%` included: `accTitle: T : e` has the accessibility title
 `T : e`, and `accTitle:` and a line `T` the accessibility title `T`. The text
 may not end in these contexts, so `accTitle:` with nothing but whitespace after
-it is rejected. [fixture: timeline/db-acc-title-statement] [fixture:
+it is rejected.
+
+[fixture: timeline/db-acc-title-statement] [fixture:
 timeline/db-acc-title-many-spaces] [fixture: timeline/db-acc-title-colon]
 [fixture: timeline/gram-acc-title-takes-event-text] [fixture:
 timeline/db-acc-title-hash] [fixture: timeline/db-acc-title-semicolon] [fixture:
@@ -572,10 +664,15 @@ timeline/db-acc-descr-hash] [fixture: timeline/gram-acc-title-empty]
 
 In the description block context, the lexer tries these rules in order:
 
-1. `}`: a `}` unit; leaves the context. [fixture: timeline/db-acc-descr-block]
+1. `}`: a `}` unit; leaves the context.
+
+   [fixture: timeline/db-acc-descr-block]
+
 2. One or more characters other than `}`, line feeds included: an
-   `acc-description-block-text` unit. [fixture: timeline/db-acc-descr-block]
-   [fixture: timeline/db-acc-descr-block-hash-and-percent]
+   `acc-description-block-text` unit.
+
+   [fixture: timeline/db-acc-descr-block] [fixture:
+   timeline/db-acc-descr-block-hash-and-percent]
 
 The whitespace after the `{`, line feeds included, is read with the brace, so a
 block text starts at a character that is not whitespace and ends right before
@@ -584,9 +681,11 @@ between its braces has no text unit (see
 [Empty description blocks](#empty-description-blocks)). The text may not end in
 the description block context. After the `}`, the statement context goes on, so
 `}a` after a block is the period `a`, and in a block `a } b` followed by a line
-`}`, the block ends at the first `}`, and `b` and `}` are periods. [fixture:
-timeline/db-acc-descr-block] [fixture: timeline/db-acc-descr-block-braces-only]
-[fixture: timeline/db-acc-descr-block-empty] [fixture:
+`}`, the block ends at the first `}`, and `b` and `}` are periods.
+
+[fixture: timeline/db-acc-descr-block] [fixture:
+timeline/db-acc-descr-block-braces-only] [fixture:
+timeline/db-acc-descr-block-empty] [fixture:
 timeline/gram-acc-descr-block-unclosed] [fixture:
 timeline/db-acc-descr-block-then-text] [fixture:
 timeline/db-acc-descr-block-brace-inside]
@@ -598,6 +697,7 @@ of its line and that mermaid.js reads as nothing. They are not the comment lines
 of [common.md](../common.md#comment-lines), which are removed before the lexer
 reads the text; a diagram comment can start in the middle of a line, and a line
 `%%` alone, `%x`, `# c`, or `%%{ }%%` is a diagram comment, not a comment line.
+
 [fixture: timeline/db-comment-hash-line] [fixture:
 timeline/db-comment-percent-only] [fixture: timeline/lex-percent-x-line]
 [fixture: timeline/lex-percent-brace-line-after-period]
@@ -612,6 +712,7 @@ wherever a unit starts, because its first `%` is followed by a `%`: on a line of
 its own, indented or not, and right after a description block. The mark is found
 in the text without directives, as the lexer reads it, and the value is the
 source text after the mark, directives included, as for a comment line.
+
 [fixture: timeline/db-comment-hash-line] [fixture:
 timeline/db-comment-hash-only] [fixture: timeline/db-comment-hash-line-indented]
 [fixture: timeline/db-comment-hash-between-header-and-first-line] [fixture:
@@ -631,8 +732,10 @@ accessibility description, and a line of a description block that hold `% c`;
 and `a %% c`, `a %%c`, and `ab%% c` are periods, `a : e %% c`, `a : e%% c`,
 `a: e%% c`, and `a : %%` have events with the `%%`, and a title, a section, an
 accessibility title, and an accessibility description hold `%%` as characters,
-as in `accDescr: d %% c`. [fixture: timeline/db-comment-percent-after-period]
-[fixture: timeline/db-comment-percent-after-period-glued-no-space] [fixture:
+as in `accDescr: d %% c`.
+
+[fixture: timeline/db-comment-percent-after-period] [fixture:
+timeline/db-comment-percent-after-period-glued-no-space] [fixture:
 timeline/db-comment-percent-glued-after-two-characters] [fixture:
 timeline/db-event-percent] [fixture: timeline/db-comment-percent-glued-in-event]
 [fixture: timeline/db-event-percent-glued] [fixture:
@@ -643,10 +746,12 @@ timeline/db-period-percent-inside] [fixture: timeline/db-event-single-percent]
 timeline/db-acc-descr-percent] [fixture: timeline/db-section-single-percent]
 [fixture: timeline/db-acc-title-single-percent] [fixture:
 timeline/db-acc-descr-single-percent] [fixture:
-timeline/db-acc-descr-block-single-percent] A comment after a U+2028 or U+2029
-is the exception: it is read through, and the value goes on after it (see
-[Comment lines](../common.md#comment-lines)). [fixture:
-timeline/lex-period-line-separator-then-comment-line] [fixture:
+timeline/db-acc-descr-block-single-percent]
+
+A comment after a U+2028 or U+2029 is the exception: it is read through, and the
+value goes on after it (see [Comment lines](../common.md#comment-lines)).
+
+[fixture: timeline/lex-period-line-separator-then-comment-line] [fixture:
 timeline/lex-period-paragraph-separator-then-comment-line] [fixture:
 timeline/lex-event-line-separator-then-comment-line] [fixture:
 timeline/lex-section-line-separator-then-comment-line] [fixture:
@@ -680,8 +785,9 @@ take: `a%% c` is the period `a%% c` here and nothing in mermaid.js, and so are
 `;%% c`, `é%% c`, `;%% c` right after the header, and `x%%{ }%%` right after a
 description block; `:%% c` is rejected here, as no whitespace follows the colon,
 and a comment in mermaid.js. `}%% c` is a period in both, and a `#` before `%%`
-makes both read a comment. [fixture:
-timeline/db-comment-percent-after-period-glued] [fixture:
+makes both read a comment.
+
+[fixture: timeline/db-comment-percent-after-period-glued] [fixture:
 timeline/div-comment-after-period-start] [fixture:
 timeline/div-comment-after-semicolon] [fixture:
 timeline/div-comment-after-non-ascii-letter] [fixture:
@@ -737,6 +843,7 @@ lines, each a statement or a `newline` unit. Nothing separates statements: each
 ends with its own last unit, and the next may follow on the same line, after
 whitespace or without it, or on a later line. The `:` unit of rule 15 is taken
 by no rule, so a colon that no event text follows makes the input rejected.
+
 [fixture: timeline/db-header-only] [fixture: timeline/db-direction-td] [fixture:
 timeline/header-title-on-header-line] [fixture:
 timeline/gram-acc-descr-block-then-period-same-line] [fixture:
@@ -759,9 +866,11 @@ events, and so has `a` followed by the lines `: e1` and `: e2`, also with an
 empty line, a comment line, a line `# c`, or a bare `%%` line between them. A
 period is the text of its unit as written, the whitespace before the colon, `#`,
 or line feed included, which the Db keeps; the whitespace before it is outside
-it. [fixture: timeline/db-event-two-on-a-line] [fixture:
-timeline/db-event-own-line] [fixture: timeline/gram-event-line-two-events]
-[fixture: timeline/db-event-own-line-after-blank-line] [fixture:
+it.
+
+[fixture: timeline/db-event-two-on-a-line] [fixture: timeline/db-event-own-line]
+[fixture: timeline/gram-event-line-two-events] [fixture:
+timeline/db-event-own-line-after-blank-line] [fixture:
 timeline/db-event-own-line-after-comment-line] [fixture:
 timeline/db-event-own-line-after-hash-line] [fixture:
 timeline/gram-event-after-bare-percent-line] [fixture:
@@ -775,8 +884,9 @@ or an empty description block, also on the same line, as in `section S : x`. In
 `a`, `section S`, and `: e` on three lines, `: e` is an event statement; to
 which period mermaid.js gives its events is in the summary of the tests package.
 An event statement before the first period makes the input rejected (see
-[Rejections outside the grammar](#rejections-outside-the-grammar)). [fixture:
-timeline/db-event-own-line-after-title] [fixture:
+[Rejections outside the grammar](#rejections-outside-the-grammar)).
+
+[fixture: timeline/db-event-own-line-after-title] [fixture:
 timeline/db-event-own-line-after-acc-title] [fixture:
 timeline/db-event-own-line-after-acc-descr-block] [fixture:
 timeline/gram-event-after-empty-description-block] [fixture:
@@ -796,9 +906,10 @@ The title of a title statement is the text of its `title-text` unit as written,
 whitespace at its ends included, and the name of a section statement the text of
 its `section-text` unit as written; a title and a section name may repeat. How
 mermaid.js reads the titles, the title of the frontmatter, and the sections into
-its Db is in the summary of the tests package. [fixture:
-timeline/db-title-statement] [fixture: timeline/db-title-twice] [fixture:
-timeline/db-title-frontmatter] [fixture:
+its Db is in the summary of the tests package.
+
+[fixture: timeline/db-title-statement] [fixture: timeline/db-title-twice]
+[fixture: timeline/db-title-frontmatter] [fixture:
 timeline/db-title-frontmatter-and-statement] [fixture:
 timeline/db-section-then-title] [fixture: timeline/db-section-statement]
 [fixture: timeline/db-section-twice-same-name]
@@ -815,8 +926,9 @@ An accessibility title and an accessibility description are the text of their
 unit without the whitespace at its ends, which mermaid.js trims; the text of a
 block keeps its line breaks, and the whitespace after each of them is left out
 of the Db (see the summary of the tests package). A title and a description may
-be written more than once, a description as a line or as a block. [fixture:
-timeline/db-acc-title-statement] [fixture:
+be written more than once, a description as a line or as a block.
+
+[fixture: timeline/db-acc-title-statement] [fixture:
 timeline/db-acc-title-trailing-spaces] [fixture: timeline/db-acc-title-twice]
 [fixture: timeline/db-acc-descr-statement] [fixture:
 timeline/db-acc-descr-block] [fixture: timeline/db-acc-descr-block-blank-line]
@@ -841,8 +953,10 @@ is an event statement. Inside a period, an event, a title text, or a section
 text, `accDescr {}` is text. A statement starts at every place where a block can
 be read as one, so no block lies inside a statement, and the known divergence
 [`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md) has no
-case in this diagram type. [fixture: timeline/db-acc-descr-block-braces-only]
-[fixture: timeline/gram-empty-description-block-directive-only] [fixture:
+case in this diagram type.
+
+[fixture: timeline/db-acc-descr-block-braces-only] [fixture:
+timeline/gram-empty-description-block-directive-only] [fixture:
 timeline/gram-empty-description-block-comment-line-only] [fixture:
 timeline/gram-empty-description-block-keeps-description] [fixture:
 timeline/db-acc-descr-block-empty] [fixture:
@@ -861,11 +975,13 @@ statement before the first period, which
 [`addEvent()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/timeline/timelineDb.js#L65-L70)
 has no period to give to. So `: e` right after the header, `timeline : b` and
 `timeline: x`, `timeline TD: x`, `: e` after a title or a section and no period,
-and `section S : x` before any period are rejected. [fixture:
-timeline/gram-event-first] [fixture: timeline/header-event-on-header-line]
-[fixture: timeline/header-colon-suffix] [fixture:
-timeline/header-direction-then-colon] [fixture: timeline/gram-event-after-title]
-[fixture: timeline/gram-event-after-section-only] [fixture:
+and `section S : x` before any period are rejected.
+
+[fixture: timeline/gram-event-first] [fixture:
+timeline/header-event-on-header-line] [fixture: timeline/header-colon-suffix]
+[fixture: timeline/header-direction-then-colon] [fixture:
+timeline/gram-event-after-title] [fixture:
+timeline/gram-event-after-section-only] [fixture:
 timeline/gram-section-then-event-line] [fixture:
 timeline/gram-section-with-event]
 
@@ -875,14 +991,16 @@ timeline/gram-section-with-event]
   A directive inside a keyword or the direction makes the input rejected in this
   specification, while mermaid.js accepts it (see
   [Directives inside units](#directives-inside-units)): inside the header, the
-  direction, `title`, `section`, `accTitle`, and `accDescr`. [fixture:
-  timeline/div-directive-in-header-keyword] [fixture:
+  direction, `title`, `section`, `accTitle`, and `accDescr`.
+
+  [fixture: timeline/div-directive-in-header-keyword] [fixture:
   timeline/div-directive-in-direction] [fixture:
   timeline/div-directive-in-title-keyword] [fixture:
   timeline/div-directive-in-section-keyword] [fixture:
   timeline/div-directive-in-acc-title-keyword] [fixture:
   timeline/div-directive-in-acc-descr-keyword] [fixture:
   timeline/div-directive-in-acc-descr-block-keyword]
+
 - **[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.md).**
   On a line that matches the `style` rule, an ignored `;` inside a keyword makes
   the input rejected here, while mermaid.js removes the `;` and reads the parts
@@ -891,11 +1009,13 @@ timeline/gram-section-with-event]
   `accDescr { style:#x }` on the same line, `ti;tle T`, `sec;tion S`, and
   `accTi;tle: T` are read as the statements without the `;`. Inside a text unit,
   the reading of mermaid.js is kept (see
-  [Trivia between units](#directives-inside-units)). [fixture:
-  timeline/div-ignored-semicolon-in-title-keyword] [fixture:
+  [Trivia between units](#directives-inside-units)).
+
+  [fixture: timeline/div-ignored-semicolon-in-title-keyword] [fixture:
   timeline/div-ignored-semicolon-in-section-keyword] [fixture:
   timeline/div-ignored-semicolon-in-acc-title-keyword] [fixture:
   timeline/tokens-ignored-semicolon-in-period]
+
 - **[`comment-takes-character`](../known-divergences/comment-takes-character.md).**
   A `%%` right after the first character of a unit, a character other than `}`
   and whitespace, is read here as [Comments](#comments) says: a comment starts
@@ -904,41 +1024,53 @@ timeline/gram-section-with-event]
   character and the rest of the line as one comment. The difference goes both
   ways: `a%% c`, `;%% c`, `é%% c`, `timeline;%% c`, and `x%%{ }%%` right after a
   description block are periods here and nothing in mermaid.js; `:%% c` is
-  rejected here and accepted by mermaid.js. [fixture:
-  timeline/db-comment-percent-after-period-glued] [fixture:
+  rejected here and accepted by mermaid.js.
+
+  [fixture: timeline/db-comment-percent-after-period-glued] [fixture:
   timeline/div-comment-after-period-start] [fixture:
   timeline/div-comment-after-semicolon] [fixture:
   timeline/div-comment-after-non-ascii-letter] [fixture:
   timeline/div-comment-after-semicolon-after-header] [fixture:
   timeline/div-comment-after-block-character] [fixture:
   timeline/div-comment-after-colon]
+
 - **[`c4-keyword-anywhere`](../known-divergences/c4-keyword-anywhere.md).**
   `C4Container`, `C4Component`, `C4Dynamic`, or `C4Deployment` anywhere after
   the header, in an event, a period, a title, or a section, makes mermaid.js
   hand the text to the C4 parser, which rejects it; here the text is a timeline.
-  `C4Context` is text in both. [fixture: timeline/div-c4-keyword-in-event]
-  [fixture: timeline/div-c4-keyword-in-period] [fixture:
-  timeline/div-c4-keyword-in-title] [fixture:
-  timeline/div-c4-keyword-in-section] [fixture:
+  `C4Context` is text in both.
+
+  [fixture: timeline/div-c4-keyword-in-event] [fixture:
+  timeline/div-c4-keyword-in-period] [fixture: timeline/div-c4-keyword-in-title]
+  [fixture: timeline/div-c4-keyword-in-section] [fixture:
   timeline/lex-c4context-in-period]
+
 - **[`bare-percent-line-before-header`](../known-divergences/bare-percent-line-before-header.md).**
   A line of `%%` alone, a line `%%{ }%%`, which is no directive, and a line of
   whitespace only after such a line, before the header, are a comment or nothing
   here, while mermaid.js rejects the input, because its lexer reads the line
   feed after the `%%` as a `newline` unit before the header (see
-  [Detection](#detection)). [fixture: timeline/header-after-bare-percent-line]
-  [fixture: timeline/header-after-empty-braces-line] [fixture:
+  [Detection](#detection)).
+
+  [fixture: timeline/header-after-bare-percent-line] [fixture:
+  timeline/header-after-empty-braces-line] [fixture:
   timeline/header-after-bare-percent-line-and-whitespace-line]
+
 - **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.md).**
   With `title: <a` in the frontmatter, the period `A b="c">d` is `A b='c'>d` in
   mermaid.js, while here the frontmatter is not searched for tags and the quotes
   stay. Both accept the input; the Db differs. Without the frontmatter, a tag
   that starts in the text, as in `A <a b="c">d`, is read in the same way by
-  both. [fixture: timeline/div-html-tag-starts-in-frontmatter-period] [fixture:
+  both.
+
+  [fixture: timeline/div-html-tag-starts-in-frontmatter-period] [fixture:
   timeline/lex-html-tag-in-period]
+
 - **[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.md).** A
   frontmatter that is no valid YAML is accepted in this specification, while
-  mermaid.js rejects it. [fixture: timeline/div-frontmatter-invalid-yaml]
+  mermaid.js rejects it.
+
+  [fixture: timeline/div-frontmatter-invalid-yaml]
 
 The known divergences
 [`comment-takes-line-break`](../known-divergences/comment-takes-line-break.md)

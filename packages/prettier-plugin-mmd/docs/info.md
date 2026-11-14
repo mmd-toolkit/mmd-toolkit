@@ -110,9 +110,9 @@ printed with one space before each that has whitespace before it, and the
 whitespace after the last one is left out, whatever the whitespace at the end of
 the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-[fixture: title/title-directives-end-blanks-dropped]
 
-[fixture: info/title/title-trim]
+[fixture: title/title-directives-end-blanks-dropped] [fixture:
+info/title/title-trim]
 
 [fixture: info/title/title-whitespace]
 
@@ -151,9 +151,9 @@ blank/comment/directive gaps; hidden suffixes and protected gaps remain. The
 directives that end the value are printed with one space before each that has
 whitespace before it, and the whitespace after the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
-[fixture: info/accessibility-lines/a11y-lines]
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
+info/accessibility-lines/a11y-lines]
 
 [fixture: info/accessibility-lines/a11y-empty]
 
@@ -480,12 +480,15 @@ that no part of the layout holds stays as written. A statement over several
 lines whose lines, joined with one space or with nothing, could change which `;`
 the line rule ignores keeps the text of each segment, up to its last kept `;`,
 as written; any other statement over several lines is formatted like one on a
-single line. [fixture: semicolons/stretch-kept-rest-formatted] [fixture:
-semicolons/no-stretch-formatted] Keep protected header/body groups together,
-because moving a trigger can change semicolon selection and acceptance. Both
-style/classDef passes, case and colon/hash whitespace, Unicode segment bounds
-and directive-rejoined triggers keep their reading. A semicolon is not a general
-info statement separator.
+single line.
+
+[fixture: semicolons/stretch-kept-rest-formatted] [fixture:
+semicolons/no-stretch-formatted]
+
+Keep protected header/body groups together, because moving a trigger can change
+semicolon selection and acceptance. Both style/classDef passes, case and
+colon/hash whitespace, Unicode segment bounds and directive-rejoined triggers
+keep their reading. A semicolon is not a general info statement separator.
 
 [fixture: info/semicolons/native-description-value]
 

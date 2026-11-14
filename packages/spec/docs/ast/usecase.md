@@ -16,6 +16,7 @@ terminator that ends a statement or unrelated indentation/trailing trivia.
 Ordinary whitespace belongs to no node except where a value's own rule reads it.
 Values leave common directives, comment regions, and selected semicolons out,
 but otherwise retain original characters, entities, line terminators, and case.
+
 [fixture: usecase/db-all-fields]
 
 ## Nodes
@@ -35,8 +36,9 @@ UsecaseRelationshipStatement, UsecaseSystemBoundaryStatement,
 UsecaseMetadataAssignmentStatement, UsecaseNoteStatement, UsecaseJsonStatement,
 UsecaseDirectionStatement, UsecaseClassDefStatement, UsecaseClassStatement,
 UsecaseStyleStatement, UsecaseAccTitleStatement, UsecaseAccDescrStatement, or
-UsecaseAccDescrBlockStatement. [fixture: usecase/header-lf] [fixture:
-usecase/docs-syntax-usecase-00339c49]
+UsecaseAccDescrBlockStatement.
+
+[fixture: usecase/header-lf] [fixture: usecase/docs-syntax-usecase-00339c49]
 
 ### UsecaseActorStatement
 
@@ -46,8 +48,9 @@ usecase/docs-syntax-usecase-00339c49]
 
 Child fields: `actors`. Range: `actor` through the last suffix of its final
 item. A comma does not introduce another actor keyword. This node represents the
-actor-list alternative without a relationship. [fixture:
-usecase/gram-actor-list]
+actor-list alternative without a relationship.
+
+[fixture: usecase/gram-actor-list]
 
 ### UsecaseActor
 
@@ -63,8 +66,9 @@ Child fields: `id`, `label`, `metadata`, `stereotype`, `classes`. Range: first
 name unit through the last suffix, excluding the statement's actor keyword. If
 id is null, label is a string/markdown label; if label is null, id is present.
 There is no synthesized id label, actor type, icon, or business field. Metadata
-and stereotypes retain those authored forms separately. [fixture:
-usecase/gram-actor-keyword-adjacent-string] [fixture:
+and stereotypes retain those authored forms separately.
+
+[fixture: usecase/gram-actor-keyword-adjacent-string] [fixture:
 usecase/gram-empty-actor-label]
 
 ### UsecaseEntityStatement
@@ -76,6 +80,7 @@ usecase/gram-empty-actor-label]
 Child fields: `entity`. Range equals the entity's range. Inside a boundary this
 node also holds an id followed by metadata, because that grammar position is a
 declaration. At top level the same spelling is a metadata assignment instead.
+
 [fixture: usecase/gram-boundary-target-update-is-member] [fixture:
 usecase/gram-bare-source-metadata-forces-update] [fixture:
 usecase/gram-boundary-standalone-metadata-inside] [fixture:
@@ -99,8 +104,9 @@ entity's written punctuation. There is no declaration/reference boolean: its
 syntactic fields and its parent's position determine whether it declares an
 entity. Do not turn an endpoint resolved as an actor or JSON table into another
 node type. `rectangle` follows the toolkit's full shape-name convention; it is
-not Mermaid's normalized `rect` field. [fixture:
-usecase/gram-labeled-source-metadata-declaration] [fixture:
+not Mermaid's normalized `rect` field.
+
+[fixture: usecase/gram-labeled-source-metadata-declaration] [fixture:
 usecase/gram-target-metadata-declaration] [fixture:
 usecase/lex-label-unquoted-hws-trim]
 
@@ -120,8 +126,9 @@ string/markdown label; a bare explicit id has title null. Parentheses and
 brackets around a display title do not select boundary geometry and need no
 extra field. There is no inferred parentId or members list. An empty quoted name
 keeps its body even when Mermaid assigns no parentId to its members. No `closed`
-field is needed: unclosed boundaries are rejected. [fixture:
-usecase/gram-boundary-empty-id-reference] [fixture:
+field is needed: unclosed boundaries are rejected.
+
+[fixture: usecase/gram-boundary-empty-id-reference] [fixture:
 usecase/gram-boundary-empty-label]
 
 ### UsecaseRelationshipStatement
@@ -142,6 +149,7 @@ at its first source unit, and ends after the target's last suffix. Source and
 target are never swapped. Opening and label are either both present or both
 null. A semantic kind has no authored label child. The `:` and the
 case-preserving include/extend keyword remain written units of the statement.
+
 [fixture: usecase/db-labeled-arrows] [fixture: usecase/db-semantic-case]
 
 ### UsecaseOpeningArrow
@@ -154,8 +162,9 @@ case-preserving include/extend keyword remain written units of the statement.
 | `length`      | integer | Written dash count, always two here. |
 
 No child fields. Range covers only its written operator, excluding whitespace
-and the following label. It has no complete end marker or Db minlen. [fixture:
-usecase/db-labeled-arrows]
+and the following label. It has no complete end marker or Db minlen.
+
+[fixture: usecase/db-labeled-arrows]
 
 ### UsecaseArrow
 
@@ -170,8 +179,10 @@ usecase/db-labeled-arrows]
 No child fields. Range covers its operator only. `--|>` has endMarker triangle;
 `..>` is dotted with an arrow at its end. Split closing halves have no start
 marker; the opening node supplies it. Keep counts even where the Db uses a fixed
-minlen. This uses the same `triangle` marker word as ClassArrow. [fixture:
-usecase/lex-forward-circle-id-prefix] [fixture: usecase/db-labeled-arrows]
+minlen. This uses the same `triangle` marker word as ClassArrow.
+
+[fixture: usecase/lex-forward-circle-id-prefix] [fixture:
+usecase/db-labeled-arrows]
 
 ### UsecaseLabel
 
@@ -185,8 +196,9 @@ but not surrounding shape parentheses/brackets or stereotype marks. A bare label
 spans its first through last contributing unit, keeping interior HWS; ASCII HWS
 outside those units is trivia. Unicode whitespace is ordinary label content. A
 quoted label keeps all its interior padding and may be empty. No `closed` field
-is needed because every accepted string is closed. [fixture:
-usecase/lex-label-unquoted-hws-trim] [fixture:
+is needed because every accepted string is closed.
+
+[fixture: usecase/lex-label-unquoted-hws-trim] [fixture:
 usecase/lex-label-unicode-whitespace-only] [fixture:
 usecase/gram-empty-actor-label]
 
@@ -203,9 +215,11 @@ trailing skipped HWS is outside the literal. Accessibility line values begin
 immediately after the colon and extend to the physical line end. Block values
 are the complete text between braces. Their padding stays; conversion/trim is
 not an AST value. Exactly empty accessibility content is null rather than an
-empty Literal; a whitespace-only value is a nonempty Literal. [fixture:
-usecase/lex-css-property-padding] [fixture: usecase/gram-a11y-line-raw-padding]
-[fixture: usecase/gram-a11y-block-raw-padding] [fixture:
+empty Literal; a whitespace-only value is a nonempty Literal.
+
+[fixture: usecase/lex-css-property-padding] [fixture:
+usecase/gram-a11y-line-raw-padding] [fixture:
+usecase/gram-a11y-block-raw-padding] [fixture:
 usecase/gram-stereotype-trimmed-conflict]
 
 ### UsecaseMetadata
@@ -217,8 +231,9 @@ usecase/gram-stereotype-trimmed-conflict]
 Child fields: `properties`. Range: the contiguous `@{` through its closing
 brace. Empty metadata is a real node with no properties. Newline and comma
 separators are punctuation/trivia, not fabricated null property entries. This
-block is not in the opaque-data-block set. [fixture:
-usecase/gram-metadata-empty] [fixture:
+block is not in the opaque-data-block set.
+
+[fixture: usecase/gram-metadata-empty] [fixture:
 usecase/gram-native-trailing-comma-newline]
 
 ### UsecaseMetadataProperty
@@ -232,6 +247,7 @@ Child fields: `key`, `value`. Range: key start through value end, including the
 colon. Quotes are not stripped from raw. A bare true/false has its exact word in
 Identifier.name; only that unquoted spelling is interpreted as a boolean by the
 native validation/Db rules. An integer-looking word remains Identifier.
+
 [fixture: usecase/lex-native-single-quoted-keys] [fixture:
 usecase/lex-native-string-backslashes] [fixture:
 usecase/lex-identifier-leading-zero-icon] [fixture:
@@ -251,8 +267,9 @@ usecase/lex-native-single-quote-comment-region-lf]
 Child fields: `target`, `metadata`. A UsecaseLabel target is string/markdown,
 never bare text. Range: target start through metadata close. Its node type does
 not depend on whether resolution later identifies an actor, entity, boundary,
-JSON table, or explicit edge. No resolved-target field is inserted. [fixture:
-usecase/db-metadata-forward] [fixture:
+JSON table, or explicit edge. No resolved-target field is inserted.
+
+[fixture: usecase/db-metadata-forward] [fixture:
 usecase/gram-metadata-on-anonymous-resolved-node]
 
 ### UsecaseNoteStatement
@@ -263,8 +280,9 @@ usecase/gram-metadata-on-anonymous-resolved-node]
 | `label`  | UsecaseLabel | Its written note label. |
 
 Child fields: `target`, `label`. Range: note keyword through label end. No
-generated note id, connector edge, position, or alias field. [fixture:
-usecase/gram-note-adjacent-string-label]
+generated note id, connector edge, position, or alias field.
+
+[fixture: usecase/gram-note-adjacent-string-label]
 
 ### UsecaseJsonStatement
 
@@ -276,8 +294,10 @@ usecase/gram-note-adjacent-string-label]
 
 Child fields: `id`, `data`, `classes`. Range: json keyword through final suffix.
 A JSON-prefix id is a positive ASCII word run and may be keyword-shaped;
-ordinary id positions instead require an identifier unit. [fixture:
-usecase/gram-json-keyword-id] [fixture: usecase/gram-json-space-after-at]
+ordinary id positions instead require an identifier unit.
+
+[fixture: usecase/gram-json-keyword-id] [fixture:
+usecase/gram-json-space-after-at]
 
 ### UsecaseJsonDataBlock
 
@@ -290,6 +310,7 @@ between @ and {. Its value begins after the actual opening { and ends before the
 corresponding }. Nested objects/arrays, quotes, duplicate keys, and escape
 spelling remain opaque. Only this usecase block joins the shared opaque-block
 classification. A data block is always closed; unmatched balancing rejects.
+
 [fixture: usecase/db-json-duplicate-order] [fixture:
 usecase/div-json-balanced-invalid-array]
 
@@ -300,9 +321,11 @@ usecase/div-json-balanced-invalid-array]
 | `direction` | string | Written TD, TB, BT, LR, or RL. |
 
 No child fields. Range: direction keyword through its value. A keyword from this
-fixed set is a scalar field, not an invented Identifier child. [fixture:
-usecase/db-semantic-case] [fixture: usecase/gram-direction-adjacent-quoted]
-[fixture: usecase/db-direction-all] [fixture: usecase/db-direction-td]
+fixed set is a scalar field, not an invented Identifier child.
+
+[fixture: usecase/db-semantic-case] [fixture:
+usecase/gram-direction-adjacent-quoted] [fixture: usecase/db-direction-all]
+[fixture: usecase/db-direction-td]
 
 ### UsecaseClassDefStatement
 
@@ -313,6 +336,7 @@ usecase/db-semantic-case] [fixture: usecase/gram-direction-adjacent-quoted]
 
 Child fields: `classes`, `styles`. Range: classDef through last CSS component.
 Duplicate names and repeated class definitions stay separate occurrences.
+
 [fixture: usecase/gram-styles-components]
 
 ### UsecaseClassStatement
@@ -325,6 +349,7 @@ Duplicate names and repeated class definitions stay separate occurrences.
 Child fields: `targets`, `classes`. Range: class through final class name. No
 empty list items or trailing comma are accepted. The missing comma between the
 two lists is their grammar boundary; source HWS separates their two ids.
+
 [fixture: usecase/gram-class-target-hole] [fixture:
 usecase/gram-class-name-trailing-comma]
 
@@ -336,8 +361,9 @@ usecase/gram-class-name-trailing-comma]
 | `styles` | nonempty list of UsecaseStyleDeclaration | Written CSS declarations. |
 
 Child fields: `target`, `styles`. Range: style through last CSS component.
-Classes are not compiled into this node's direct styles. [fixture:
-usecase/lex-style-quoted-value-and-comma]
+Classes are not compiled into this node's direct styles.
+
+[fixture: usecase/lex-style-quoted-value-and-comma]
 
 ### UsecaseStyleDeclaration
 
@@ -350,8 +376,9 @@ Child fields: `name`, `value`. Range: first property unit through final value
 component. Padding before the colon remains source trivia inside this range;
 padding after it is in the value. Commas separate declarations unless protected
 by a quoted component or written as `\,`. No null declaration or trailing comma.
-Do not interpret CSS functions or decode string components here. [fixture:
-usecase/lex-css-property-padding] [fixture:
+Do not interpret CSS functions or decode string components here.
+
+[fixture: usecase/lex-css-property-padding] [fixture:
 usecase/lex-style-quoted-value-and-comma] [fixture:
 usecase/gram-css-empty-string-component] [fixture:
 usecase/gram-css-whitespace-without-component]
@@ -366,13 +393,15 @@ No child fields. Range: first through last property-name unit. It is a name
 node, rather than shared Identifier, because this native position permits HWS
 between a markerless dash prefix and its following word. It excludes padding
 before the colon. It is not used for ordinary ids or native metadata keys.
+
 [fixture: usecase/lex-class-property-custom-gap] [fixture:
 usecase/lex-class-property-long-custom] [fixture:
 usecase/lex-css-name-custom-tab] [fixture: usecase/lex-css-name-custom-nbsp]
 
 A directive in the HWS between `--` and the following word is common trivia;
-`name` retains the whitespace on both sides of it. [fixture:
-usecase/lex-directive-css-name-gap]
+`name` retains the whitespace on both sides of it.
+
+[fixture: usecase/lex-directive-css-name-gap]
 
 ### UsecaseAccTitleStatement
 
@@ -382,9 +411,10 @@ usecase/lex-directive-css-name-gap]
 
 Child fields: `value`. Range: accTitle through the colon or final written value
 character. Exactly empty content is null; whitespace-only content stays a
-Literal. The next physical line is a separate statement. [fixture:
-usecase/gram-a11y-line-raw-padding] [fixture: usecase/db-acctitle-empty]
-[fixture: usecase/db-acctitle-eof]
+Literal. The next physical line is a separate statement.
+
+[fixture: usecase/gram-a11y-line-raw-padding] [fixture:
+usecase/db-acctitle-empty] [fixture: usecase/db-acctitle-eof]
 
 ### UsecaseAccDescrStatement
 
@@ -393,9 +423,10 @@ usecase/gram-a11y-line-raw-padding] [fixture: usecase/db-acctitle-empty]
 | `value` | UsecaseLiteral or null | Complete line value after its colon. |
 
 Child fields: `value`. Range: accDescr through colon or final value character.
-Same empty/padding rule as UsecaseAccTitleStatement. [fixture:
-usecase/db-accdescr-directive-gap] [fixture: usecase/db-accdescr-eof] [fixture:
-usecase/db-accdescr-empty-gap]
+Same empty/padding rule as UsecaseAccTitleStatement.
+
+[fixture: usecase/db-accdescr-directive-gap] [fixture: usecase/db-accdescr-eof]
+[fixture: usecase/db-accdescr-empty-gap]
 
 ### UsecaseAccDescrBlockStatement
 
@@ -405,7 +436,8 @@ usecase/db-accdescr-empty-gap]
 
 Child fields: `value`. Range: accDescr through its first closing brace. There is
 no `closed` field: an unclosed block is rejected. An empty block is a normal
-statement, not an ignored form that can occur between arbitrary units. [fixture:
-usecase/gram-a11y-whitespace-block] [fixture:
+statement, not an ignored form that can occur between arbitrary units.
+
+[fixture: usecase/gram-a11y-whitespace-block] [fixture:
 usecase/gram-a11y-block-raw-padding] [fixture: usecase/db-accdescr-empty]
 [fixture: usecase/db-accdescr-unclosed]

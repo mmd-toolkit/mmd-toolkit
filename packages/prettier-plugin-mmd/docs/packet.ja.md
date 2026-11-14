@@ -114,7 +114,9 @@ mermaid.js は両方を同じに読み、文書の例は位置だけを 7 回使
 （[同じに描かれる綴り](./compatibility.ja.md#キーワードや記号の別の綴り)
 を参照）。
 両端の間に空白と `-` 以外がある範囲は、書かれたままにします。
+
 [fixture: packet/block-forms-and-order/equal-range-single]
+
 同じラベルと空の共通代入を含め、全出現を順に残します。
 Db から文を再構成したり併合したりしません。
 行分割と公開上限は作者の構造を失い、空代入の削除は最終値を変えるためです。
@@ -328,8 +330,8 @@ packet
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-[fixture: title/title-directives-end-blanks-dropped]
 
+[fixture: title/title-directives-end-blanks-dropped]
 [fixture: packet/title/title-trim]
 
 [fixture: packet/title/title-null]
@@ -365,8 +367,8 @@ packet
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 [fixture: packet/accessibility-lines/a11y-lines]
 
 [fixture: packet/accessibility-lines/a11y-empty-next]
@@ -711,8 +713,10 @@ packet
 行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
 書かれたまま残します。
 それ以外の複数行の文は、1 行の文と同じように整形します。
+
 [fixture: semicolons/stretch-kept-rest-formatted]
 [fixture: semicolons/no-stretch-formatted]
+
 保護された見出しと最初の文は分離しません。
 style・classDef の両走査、大文字小文字、コロン・ハッシュ記号の空白、反復、
 Unicode の境界とディレクティブで再結合する条件を満たす語の読みを保ちます。

@@ -23,42 +23,53 @@ when a statement follows on the next line, and accepts it with the colon (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The directive stands after the space that the gap has without it, which is none
 before a colon (see [Directives](./flowchart.md#directives)):
-`gitGraph %%{x}%%:` is printed `gitGraph%%{x}%%:`. [fixture:
-gitgraph/header/header-directive-before-colon-kept] A colon that a directive
-that is not closed follows stays too, when a statement follows on the next line:
-the directive takes the line break, so without the colon the statement would
-follow `gitGraph` directly, and the line cannot be split. `gitGraph:%%{x y` and
-`commit` on the next line stay as they are. [fixture:
-gitgraph/header/header-colon-unclosed-directive-joins-next-line-kept] A colon
-that a hidden YAML block precedes is left out like any other, since the versions
-that count read the header the same with it and without it, or reject both:
-`gitGraph ---`, the block, and `--- :` are printed with `---` and no colon.
-[fixture: gitgraph/header/header-yaml-before-colon] A colon on a line of its own
-after the block is left out with the line break before it, so that no empty line
-stays. A comment or directive between the block and that colon keeps its
-attachment to the block or its normal indentation before the first statement;
-the omitted colon leaves no empty line. This also applies when an unclosed
-directive, or a directive inside its argument, precedes the colon. [fixture:
-gitgraph/header/yaml-colon-after-comment] [fixture:
+`gitGraph %%{x}%%:` is printed `gitGraph%%{x}%%:`.
+
+[fixture: gitgraph/header/header-directive-before-colon-kept]
+
+A colon that a directive that is not closed follows stays too, when a statement
+follows on the next line: the directive takes the line break, so without the
+colon the statement would follow `gitGraph` directly, and the line cannot be
+split. `gitGraph:%%{x y` and `commit` on the next line stay as they are.
+
+[fixture: gitgraph/header/header-colon-unclosed-directive-joins-next-line-kept]
+
+A colon that a hidden YAML block precedes is left out like any other, since the
+versions that count read the header the same with it and without it, or reject
+both: `gitGraph ---`, the block, and `--- :` are printed with `---` and no
+colon.
+
+[fixture: gitgraph/header/header-yaml-before-colon]
+
+A colon on a line of its own after the block is left out with the line break
+before it, so that no empty line stays. A comment or directive between the block
+and that colon keeps its attachment to the block or its normal indentation
+before the first statement; the omitted colon leaves no empty line. This also
+applies when an unclosed directive, or a directive inside its argument, precedes
+the colon.
+
+[fixture: gitgraph/header/yaml-colon-after-comment] [fixture:
 gitgraph/header/yaml-colon-after-inline-directive] [fixture:
 gitgraph/header/yaml-colon-after-directive] [fixture:
 gitgraph/header/yaml-colon-after-nested-directive] [fixture:
 gitgraph/header/yaml-colon-after-unclosed-directive] [fixture:
 gitgraph/header/header-yaml-colon-on-its-own-line] [corpus fixture:
-gitgraph/header-hidden-before-colon] Hidden gaps and protected header/body
-groups retain their source boundaries.
+gitgraph/header-hidden-before-colon]
+
+Hidden gaps and protected header/body groups retain their source boundaries.
 
 A hidden form between `gitGraph` and the direction keeps the gap after it as
 written, because a hidden form consumes an immediately following line feed, and
 moving that gap can reject the input (see
 [Hidden DIRECTIVE and line endings](../../spec/docs/diagrams/gitgraph.md#hidden-directive-and-line-endings)),
 while the gap before it is an ordinary gap: `gitGraph  %%{}%%  LR:` is printed
-as `gitGraph %%{}%%  LR:`. [fixture: gitgraph/header/hidden-before-direction]
-[corpus fixture: gitgraph/header-hidden-before-direction]
+as `gitGraph %%{}%%  LR:`.
 
-Fixed cases: [fixture: gitgraph/header/header-absent] [fixture:
-gitgraph/header/header-colon] [fixture: gitgraph/header/header-colon-comment]
-[fixture: gitgraph/header/header-colon-hidden-statement] [fixture:
+[fixture: gitgraph/header/hidden-before-direction] [corpus fixture:
+gitgraph/header-hidden-before-direction] [fixture:
+gitgraph/header/header-absent] [fixture: gitgraph/header/header-colon] [fixture:
+gitgraph/header/header-colon-comment] [fixture:
+gitgraph/header/header-colon-hidden-statement] [fixture:
 gitgraph/header/header-colon-directive-line] [fixture:
 gitgraph/header/header-colon-tab-blank-lines] [fixture:
 gitgraph/header/header-hidden-before-colon] [fixture: gitgraph/header/header-lr]
@@ -85,7 +96,7 @@ tab even at width zero, because gitgraph columns have no grammatical meaning.
 This does not alter other value continuation columns, hidden closers or
 protected segments.
 
-Fixed cases: [fixture: gitgraph/indentation/indent-two] [fixture:
+[fixture: gitgraph/indentation/indent-two] [fixture:
 gitgraph/indentation/indent-four] [fixture: gitgraph/indentation/indent-zero]
 [fixture: gitgraph/indentation/tabs-normal] [fixture:
 gitgraph/indentation/zero-tabs]
@@ -111,8 +122,8 @@ quoted semicolons remain text. Gitgraph has no separator semicolon. Invalid
 adjacent statements and block-following semicolons are parser failures, covered
 by the corpus, and are never repaired.
 
-Fixed cases: [fixture: gitgraph/statements-one-per-line/eol-header-inline]
-[fixture: gitgraph/statements-one-per-line/eol-title-owns-text] [fixture:
+[fixture: gitgraph/statements-one-per-line/eol-header-inline] [fixture:
+gitgraph/statements-one-per-line/eol-title-owns-text] [fixture:
 gitgraph/statements-one-per-line/eol-values-semicolon]
 
 Input (escaped): `"gitGraph:commit id:\"a\"\n"`.
@@ -154,7 +165,7 @@ statements.
 
 [fixture: gitgraph/blank-lines/hidden-header-blanks]
 
-Fixed cases: [fixture: gitgraph/blank-lines/blank-collapse] [fixture:
+[fixture: gitgraph/blank-lines/blank-collapse] [fixture:
 gitgraph/blank-lines/blank-comment] [fixture:
 gitgraph/blank-lines/blank-string-kept] [fixture:
 gitgraph/blank-lines/block-and-directive]
@@ -179,7 +190,7 @@ consistent form; bare names retain their required boundaries. Gaps containing
 comments, global directives or hidden forms retain their attachment and physical
 boundaries.
 
-Fixed cases: [corpus fixture: gitgraph/gram-commit-glued-options] [fixture:
+[corpus fixture: gitgraph/gram-commit-glued-options] [fixture:
 gitgraph/operation-spacing/gap-branch-quoted] [fixture:
 gitgraph/operation-spacing/gap-branch-bare] [fixture:
 gitgraph/operation-spacing/gap-merge] [fixture:
@@ -205,7 +216,7 @@ a repeated option replaces it (step 2 of
 trivia at an authored word/colon boundary, including global directives and
 selected semicolons; ordinary whitespace before that colon is invalid.
 
-Fixed cases: [fixture: gitgraph/option-colons/colon-commit] [fixture:
+[fixture: gitgraph/option-colons/colon-commit] [fixture:
 gitgraph/option-colons/colon-order] [corpus fixture:
 gitgraph/lex-option-global-before-colon] [corpus fixture:
 gitgraph/lex-selected-semicolon-option-word-colon]
@@ -228,8 +239,8 @@ overwritten ids/types/messages and repeated or empty tags. Do not sort or reduce
 scalar options to their final values: the resolved history loses authored
 occurrences, and scalar/tag/statement order can change the Db.
 
-Fixed cases: [fixture: gitgraph/order-and-repetitions/order-reverse-id]
-[fixture: gitgraph/order-and-repetitions/order-reverse-type] [fixture:
+[fixture: gitgraph/order-and-repetitions/order-reverse-id] [fixture:
+gitgraph/order-and-repetitions/order-reverse-type] [fixture:
 gitgraph/order-and-repetitions/order-reverse-tags] [fixture:
 gitgraph/order-and-repetitions/order-dedup-tags] [corpus fixture:
 gitgraph/gram-merge-repeated-options] [corpus fixture:
@@ -252,7 +263,7 @@ Keep the bare quoted message and explicit `msg:` forms, including empty and
 repeated messages. Their introducer is authored syntax. The Db summary omits
 message text, so summary equality does not authorize changing or deleting it.
 
-Fixed cases: [fixture: gitgraph/messages/message-forms] [fixture:
+[fixture: gitgraph/messages/message-forms] [fixture:
 gitgraph/messages/message-empty]
 
 Input (escaped): `"gitGraph\ncommit \"bare\" msg:\"explicit\" \"last\"\n"`.
@@ -274,7 +285,7 @@ backslash, a line break, a backquote, `&`, `#`, or `<` (see
 and `singleQuote` is not read. Other re-encoding would require new escape and
 preprocessing decisions and would discard the authored form.
 
-Fixed cases: [fixture: gitgraph/quotes/quotes-one-form] [corpus fixture:
+[fixture: gitgraph/quotes/quotes-one-form] [corpus fixture:
 gitgraph/lex-string-escapes] [fixture: gitgraph/quotes/single-quote-option]
 [fixture: gitgraph/quotes/single-quote-sensitive-kept]
 
@@ -306,11 +317,12 @@ So `"commit-x"`, `"Title"`, and `"bt"` lose their quotes, and `"Merge"`,
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Other references keep their quotes, a string is printed between `"` as under
 Quotes, and empty, whitespace-only, Unicode, reserved-word, and numeric-looking
-quoted names are preserved. [fixture: references/plain-names-without-quotes]
-[fixture: references/names-next-to-a-keyword-without-quotes] [fixture:
-references/names-that-need-quotes]
+quoted names are preserved.
 
-Fixed cases: [fixture: gitgraph/references/reference-forms] [corpus fixture:
+[fixture: references/plain-names-without-quotes] [fixture:
+references/names-next-to-a-keyword-without-quotes] [fixture:
+references/names-that-need-quotes] [fixture:
+gitgraph/references/reference-forms] [corpus fixture:
 gitgraph/lex-reference-reserved-quoted] [corpus fixture:
 gitgraph/lex-reference-integer-quoted] [fixture:
 gitgraph/references/reference-empty]
@@ -336,7 +348,7 @@ can change identity, lookup and tag values; do not reconstruct them from
 converted Db values or decode escapes as JavaScript. Physical CR conversion is
 handled separately by the host.
 
-Fixed cases: [fixture: gitgraph/authored-values/inner-padding-change] [fixture:
+[fixture: gitgraph/authored-values/inner-padding-change] [fixture:
 gitgraph/authored-values/inner-runs-change] [fixture:
 gitgraph/authored-values/inner-case-change] [fixture:
 gitgraph/authored-values/inner-escape-spelling] [corpus fixture:
@@ -360,7 +372,7 @@ integers and overflow. The NumericLiteral source, rather than its converted
 double, is the authored value. Do not reorder branches by their numeric orders.
 Invalid signs, leading zeros, fractions and exponents remain corpus failures.
 
-Fixed cases: [corpus fixture: gitgraph/number-zero] [corpus fixture:
+[corpus fixture: gitgraph/number-zero] [corpus fixture:
 gitgraph/number-precision] [corpus fixture: gitgraph/number-overflow] [fixture:
 gitgraph/order-numbers/precision-digits]
 
@@ -380,7 +392,7 @@ Keep the exact operation/header words and `NORMAL`, `REVERSE`, `HIGHLIGHT`.
 Other case spellings reject; the printer does not introduce case-insensitive
 aliases.
 
-Fixed cases: [fixture: gitgraph/keyword-case/type-uppercase]
+[fixture: gitgraph/keyword-case/type-uppercase]
 
 Input (escaped):
 `"gitGraph\ncommit type:NORMAL\ncommit type:REVERSE\ncommit type:HIGHLIGHT\n"`.
@@ -403,7 +415,7 @@ mermaid.js write `checkout` 160 times and never `switch` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
 Unknown branches remain failures for either word.
 
-Fixed cases: [fixture: gitgraph/checkout-aliases/alias-one-form]
+[fixture: gitgraph/checkout-aliases/alias-one-form]
 
 Input (escaped): `"gitGraph\nbranch b\nswitch main\ncheckout b\n"`.
 
@@ -425,8 +437,8 @@ parents, repeated tags and empty tags. The id names the source, and deleting an
 empty tag can restore a default tag and change the Db. Merge-source parent
 requirements belong to acceptance, not to printer reconstruction.
 
-Fixed cases: [fixture: gitgraph/cherry-pick-options/cherry-spacing] [corpus
-fixture: gitgraph/gram-cherry-pick-repeated-options] [corpus fixture:
+[fixture: gitgraph/cherry-pick-options/cherry-spacing] [corpus fixture:
+gitgraph/gram-cherry-pick-repeated-options] [corpus fixture:
 gitgraph/gram-cherry-pick-merge-parent] [corpus fixture:
 gitgraph/gram-cherry-pick-empty-parent] [corpus fixture:
 gitgraph/gram-cherry-pick-tags] [corpus fixture:
@@ -458,11 +470,14 @@ are printed with one space before each that has whitespace before it, and the
 whitespace after the last one is left out, whatever the whitespace at the end of
 the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-[fixture: title-and-common-values/title-directives-end-blanks-dropped] Shared
-accessibility layout prints `accTitle: value` / `accDescr: value` and empty
-blocks as `{}`. The directives that end the value of such a line are printed as
-those that end a title (see
+
+[fixture: title-and-common-values/title-directives-end-blanks-dropped]
+
+Shared accessibility layout prints `accTitle: value` / `accDescr: value` and
+empty blocks as `{}`. The directives that end the value of such a line are
+printed as those that end a title (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+
 [fixture: title-and-common-values/acc-directives-end-blanks-dropped]
 
 Description blocks on one line follow
@@ -475,20 +490,23 @@ indentation after LF. Keep line breaks, internal blanks and trailing whitespace.
 Directives and shared removed comment regions keep their complete source.
 Whitespace-only interiors print `{}` because there is no text for interior
 whitespace to surround; tabs, line breaks and Unicode whitespace follow the same
-rule. [fixture: title-and-common-values/empty-whitespace-interiors] [test:
-gitgraph Unicode and tab interiors] Comment/directive-only blocks keep their
-trivia. Keep every repeated, empty and interleaved assignment, including
-frontmatter fallback. The pinned grammar reads no line form on the next physical
-line, even across blanks/comments/directives, and the oldest version that counts
-reads the statement after an empty `accTitle:` or `accDescr:` as its value, so
-that statement and the whitespace before a `%%` after an `accTitle` value stay
-as written (see
+rule.
+
+[fixture: title-and-common-values/empty-whitespace-interiors] [test: gitgraph
+Unicode and tab interiors]
+
+Comment/directive-only blocks keep their trivia. Keep every repeated, empty and
+interleaved assignment, including frontmatter fallback. The pinned grammar reads
+no line form on the next physical line, even across blanks/comments/directives,
+and the oldest version that counts reads the statement after an empty
+`accTitle:` or `accDescr:` as its value, so that statement and the whitespace
+before a `%%` after an `accTitle` value stay as written (see
 [Accessibility lines that the oldest version reads to the end](./compatibility.md#accessibility-lines-that-the-oldest-version-reads-to-the-end));
 colon-form braces stay line text. These choices compact equivalent outer
 whitespace without changing the description text or lexical ownership.
 
-Fixed cases: [fixture: gitgraph/title-and-common-values/title-trim] [corpus
-fixture: gitgraph/title-next-line] [fixture:
+[fixture: gitgraph/title-and-common-values/title-trim] [corpus fixture:
+gitgraph/title-next-line] [fixture:
 gitgraph/title-and-common-values/common-repeats-empty] [fixture:
 gitgraph/title-and-common-values/a11y-fixed] [fixture:
 gitgraph/title-and-common-values/a11y-no-next-line] [fixture:
@@ -523,7 +541,7 @@ statement. Keep physical quoted lines, their continuation columns and internal
 blank lines. Description bodies use the shared indentation above; hidden
 consumed-LF gaps follow their own preservation rules.
 
-Fixed cases: [fixture: gitgraph/multiline-values/long-kept] [fixture:
+[fixture: gitgraph/multiline-values/long-kept] [fixture:
 gitgraph/multiline-values/multiline-string] [fixture:
 gitgraph/multiline-values/block-columns-fixed]
 
@@ -549,7 +567,7 @@ strings/blocks own percent text while line values stop before it. Common removed
 regions retain complete source spans. Retained prefixes override ordinary
 alignment.
 
-Fixed cases: [fixture: gitgraph/comments/comment-placement] [fixture:
+[fixture: gitgraph/comments/comment-placement] [fixture:
 gitgraph/comments/comment-bare-triple] [fixture:
 gitgraph/comments/comment-in-values] [corpus fixture: gitgraph/comment-string]
 [corpus fixture: gitgraph/comment-between-mark-characters] [corpus fixture:
@@ -584,7 +602,7 @@ effect must not be reconstructed. Atomic cuts remain specified failures.
 
 [fixture: gitgraph/global-directives/header-to-body]
 
-Fixed cases: [fixture: gitgraph/global-directives/directive-sides] [fixture:
+[fixture: gitgraph/global-directives/directive-sides] [fixture:
 gitgraph/global-directives/directive-lines] [corpus fixture:
 gitgraph/directive-commit-id] [corpus fixture: gitgraph/directive-in-string]
 [corpus fixture: gitgraph/directive-open-after-header] [fixture:
@@ -614,7 +632,7 @@ three fences, later qualifying closers and multiple forms remain opaque. Earlier
 strings/blocks/line values retain ownership. Moving or trimming these boundaries
 can reject an accepted history.
 
-Fixed cases: [corpus fixture: gitgraph/lex-yaml-invalid-body] [corpus fixture:
+[corpus fixture: gitgraph/lex-yaml-invalid-body] [corpus fixture:
 gitgraph/lex-hidden-yaml-before-option-value] [fixture:
 gitgraph/hidden-yaml/yaml-close-indent-invalid] [corpus fixture:
 gitgraph/lex-hidden-yaml-commit-closing-space] [corpus fixture:
@@ -679,8 +697,8 @@ form until a later closer, or fall back to a native comment; do not insert a
 boundary that changes that classification. Required missing components still
 reject.
 
-Fixed cases: [fixture: gitgraph/hidden-directives/hidden-directive-body] [corpus
-fixture: gitgraph/lex-option-before-type-value-hidden] [corpus fixture:
+[fixture: gitgraph/hidden-directives/hidden-directive-body] [corpus fixture:
+gitgraph/lex-option-before-type-value-hidden] [corpus fixture:
 gitgraph/lex-hidden-directive-commit-closing-space] [corpus fixture:
 gitgraph/lex-hidden-directive-commit-spare-lf] [corpus fixture:
 gitgraph/lex-hidden-directive-closer-skips-nonboundary] [corpus fixture:
@@ -753,16 +771,18 @@ diagram. Text that no part of the layout holds stays as written. A statement
 over several lines whose lines, joined with one space or with nothing, could
 change which `;` the line rule ignores keeps the text of each segment, up to its
 last kept `;`, as written; any other statement over several lines is formatted
-like one on a single line. [fixture: semicolons/stretch-kept-rest-formatted]
-[fixture: semicolons/no-stretch-formatted] Do not split protected
-header/first-statement groups. Preserve style/classDef passes, colon/hash
-whitespace, case, repeated semicolons and directive-rejoined triggers; LS/PS
-segment bounds stay distinct. Removing a selected semicolon can select another
-and change the Db. Atomic cuts remain failures.
+like one on a single line.
 
-Fixed cases: [fixture: gitgraph/semicolons/native-commit-value]
+[fixture: semicolons/stretch-kept-rest-formatted] [fixture:
+semicolons/no-stretch-formatted]
 
-[fixture: gitgraph/semicolons/semicolon-header-protect] [corpus fixture:
+Do not split protected header/first-statement groups. Preserve style/classDef
+passes, colon/hash whitespace, case, repeated semicolons and directive-rejoined
+triggers; LS/PS segment bounds stay distinct. Removing a selected semicolon can
+select another and change the Db. Atomic cuts remain failures.
+
+[fixture: gitgraph/semicolons/native-commit-value] [fixture:
+gitgraph/semicolons/semicolon-header-protect] [corpus fixture:
 gitgraph/style-both-words] [corpus fixture: gitgraph/style-colon-space] [corpus
 fixture: gitgraph/style-tag-three-semicolons] [corpus fixture:
 gitgraph/style-directive-rejoins] [fixture:
@@ -787,7 +807,7 @@ rules. Keep trailing source inside strings, comments, directive/hidden
 interiors, protected segments and continuation lines. Hidden closing-boundary
 padding remains even at EOF because it can keep a required EOL visible.
 
-Fixed cases: [fixture: gitgraph/trailing-whitespace/trailing-safe] [fixture:
+[fixture: gitgraph/trailing-whitespace/trailing-safe] [fixture:
 gitgraph/trailing-whitespace/trailing-string-kept] [corpus fixture:
 gitgraph/lex-hidden-directive-commit-eof] [fixture:
 gitgraph/trailing-whitespace/hidden-eof-padding]
@@ -814,7 +834,7 @@ whitespace. Plain block-opener whitespace can join. Structural non-ASCII
 separators stay rejected. A leading BOM follows Prettier host handling, not a
 byte-identity guarantee.
 
-Fixed cases: [test: gitgraph/line-terminators-and-unicode/eol-cr] [test:
+[test: gitgraph/line-terminators-and-unicode/eol-cr] [test:
 gitgraph/line-terminators-and-unicode/eol-crlf] [test:
 gitgraph/line-terminators-and-unicode/eol-string-crlf] [test:
 gitgraph/line-terminators-and-unicode/eol-block-cr] [test:
@@ -842,7 +862,7 @@ real/hidden order. Removing the leading LF can promote ignored YAML into
 effective title/configuration and change the Db. Hidden forms never enter the
 YAML formatter.
 
-Fixed cases: [fixture: gitgraph/frontmatter-yaml/frontmatter-safe] [fixture:
+[fixture: gitgraph/frontmatter-yaml/frontmatter-safe] [fixture:
 gitgraph/frontmatter-yaml/prefix-promote-change] [fixture:
 gitgraph/frontmatter-yaml/prefix-retained] [corpus fixture:
 gitgraph/detect-block-after-real-frontmatter] [corpus fixture:
@@ -879,7 +899,7 @@ padding and retained-prefix boundaries; a closed hidden form can gain the final
 LF. This reuses the shared predictable file ending while respecting consumed-LF
 boundaries.
 
-Fixed cases: [corpus fixture: gitgraph/header-eof] [fixture:
+[corpus fixture: gitgraph/header-eof] [fixture:
 gitgraph/final-newline/final-commit] [fixture:
 gitgraph/final-newline/final-comment] [fixture:
 gitgraph/final-newline/final-block] [fixture:

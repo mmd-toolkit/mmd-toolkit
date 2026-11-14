@@ -5,20 +5,22 @@ Japanese version: [eventmodeling.ja.md](./eventmodeling.ja.md)
 This defines eventmodeling syntax and its
 [authored tree](../ast/eventmodeling.md), following
 [event-modeling.langium][grammar], [the parser tests][parser-tests] and [the
-adapter tests][mermaid-tests]. [fixture: eventmodeling/gram-written-tree]
-[fixture: eventmodeling/header-only]
+adapter tests][mermaid-tests].
+
+[fixture: eventmodeling/gram-written-tree] [fixture: eventmodeling/header-only]
 
 ## Detection
 
 Entry 27 of [detection.md](../detection.md), [detector.ts][detector], selects
 the exact lowercase prefix eventmodeling after common leading whitespace.
 Anything may follow that prefix. Detection alone does not establish acceptance:
-uppercase, unreadable suffixes, a colon and a repeated header reject. [fixture:
-eventmodeling/header-only] [fixture: eventmodeling/header-uppercase] [fixture:
-eventmodeling/header-letter] [fixture: eventmodeling/header-digit] [fixture:
-eventmodeling/header-word] [fixture: eventmodeling/header-dash] [fixture:
-eventmodeling/header-unicode] [fixture: eventmodeling/header-punctuation]
-[fixture: eventmodeling/header-double]
+uppercase, unreadable suffixes, a colon and a repeated header reject.
+
+[fixture: eventmodeling/header-only] [fixture: eventmodeling/header-uppercase]
+[fixture: eventmodeling/header-letter] [fixture: eventmodeling/header-digit]
+[fixture: eventmodeling/header-word] [fixture: eventmodeling/header-dash]
+[fixture: eventmodeling/header-unicode] [fixture:
+eventmodeling/header-punctuation] [fixture: eventmodeling/header-double]
 
 Apply [common source reading](../common.md#reading-a-source): line conversion,
 HTML attribute quotes, real leading frontmatter, global directives, entities and
@@ -27,6 +29,7 @@ detection only: the eventmodeling Db sets `preserveCommentsWhenParsing`, so the
 lexer reads comment lines and leading whitespace itself, unless the source is
 longer than `maxTextSize` (see
 [mermaid.js and this specification](../common.md#mermaidjs-and-this-specification)).
+
 [fixture: eventmodeling/comment-default-size-equal] [fixture:
 eventmodeling/comment-default-size-above] [fixture:
 eventmodeling/comment-default-size-equal-crlf] [fixture:
@@ -38,14 +41,17 @@ eventmodeling/comment-default-size-above-frontmatter] [fixture:
 eventmodeling/frontmatter-extra-trivia-below] [fixture:
 eventmodeling/frontmatter-extra-trivia-boundary] [fixture:
 eventmodeling/frontmatter-extra-trivia-above] [fixture:
-eventmodeling/frontmatter-extra-whitespace-line-boundary] The
-[preprocessor][preprocess] and [detection scan][detect-type] run before the
+eventmodeling/frontmatter-extra-whitespace-line-boundary]
+
+The [preprocessor][preprocess] and [detection scan][detect-type] run before the
 diagram grammar. Real frontmatter is a shared Frontmatter record. The earlier C4
-detector is subject to c4-keyword-anywhere. [fixture:
-eventmodeling/frontmatter-title] [fixture: eventmodeling/line-cr] [fixture:
-eventmodeling/line-crlf] [fixture: eventmodeling/html-common] [fixture:
-eventmodeling/entity-common] [fixture: eventmodeling/directive-header-inside]
-[fixture: eventmodeling/semicolon-selected-common-parts] [fixture:
+detector is subject to c4-keyword-anywhere.
+
+[fixture: eventmodeling/frontmatter-title] [fixture: eventmodeling/line-cr]
+[fixture: eventmodeling/line-crlf] [fixture: eventmodeling/html-common]
+[fixture: eventmodeling/entity-common] [fixture:
+eventmodeling/directive-header-inside] [fixture:
+eventmodeling/semicolon-selected-common-parts] [fixture:
 eventmodeling/c4-component-identifier]
 
 At the detection point, pass at most one retained block satisfying the common
@@ -54,7 +60,9 @@ and the second directive scan. It remains diagram text. A second retained block
 rejects; real frontmatter may precede the retained block and a second-scan
 directive. A block before a second-scan directive can pass; the reverse order
 does not repeat the block skip. A preceding bare percent line prevents that
-block skip. [fixture: eventmodeling/detect-retained-two] [fixture:
+block skip.
+
+[fixture: eventmodeling/detect-retained-two] [fixture:
 eventmodeling/detect-two-blocks] [fixture:
 eventmodeling/detect-real-retained-secondscan] [fixture:
 eventmodeling/detect-yaml-secondscan] [fixture:
@@ -67,8 +75,9 @@ closing-fence suffix text and a closer without a following line break stop the
 retained-block skip. Leading trimming can remove only the opening indentation:
 compare a formerly indented opener with an unindented closer, an indented closer
 alone, and equally indented fences after that trimming. Closing padding followed
-by LF can satisfy both detection and native reading. [fixture:
-eventmodeling/detect-adjacent-no-body] [fixture:
+by LF can satisfy both detection and native reading.
+
+[fixture: eventmodeling/detect-adjacent-no-body] [fixture:
 eventmodeling/detect-missing-close] [fixture:
 eventmodeling/detect-four-opening-dashes] [fixture:
 eventmodeling/detect-closing-suffix] [fixture:
@@ -82,7 +91,9 @@ A genuine second-scan directive remains diagram text and must satisfy the native
 directive boundary. Two such forms can be read independently; a closer glued to
 the header can fail native reading. Retained native YAML and directives belong
 to EventmodelingDiagram.textBeforeHeader, not shared frontmatter or
-configuration. [fixture: eventmodeling/detect-two-secondscan] [fixture:
+configuration.
+
+[fixture: eventmodeling/detect-two-secondscan] [fixture:
 eventmodeling/detect-secondscan-glued] [fixture:
 eventmodeling/detect-real-retained-secondscan]
 
@@ -92,11 +103,13 @@ before, between and after retained forms. Distinguish the detection point, the
 header reached, and later native whitespace. ASCII space/tab and Unicode
 whitespace on their own lines or immediately before the header remain accepted
 here, with or without a passed bare line; this does not create
-bare-percent-line-before-header divergences. [fixture:
-eventmodeling/bare-before-space] [fixture: eventmodeling/bare-before-tab]
-[fixture: eventmodeling/bare-before-ls] [fixture: eventmodeling/bare-before-ps]
-[fixture: eventmodeling/bare-line-ls] [fixture: eventmodeling/bare-line-ps]
-[fixture: eventmodeling/prefix-directive-between-bares] [fixture:
+bare-percent-line-before-header divergences.
+
+[fixture: eventmodeling/bare-before-space] [fixture:
+eventmodeling/bare-before-tab] [fixture: eventmodeling/bare-before-ls] [fixture:
+eventmodeling/bare-before-ps] [fixture: eventmodeling/bare-line-ls] [fixture:
+eventmodeling/bare-line-ps] [fixture:
+eventmodeling/prefix-directive-between-bares] [fixture:
 eventmodeling/detect-bare-retained] [fixture:
 eventmodeling/prefix-yaml-bare-unicode] [fixture:
 eventmodeling/detect-retained-bare-ascii-line] [fixture:
@@ -115,10 +128,11 @@ that order. There is no general longest-match rule. [module.ts][module] uses
 [EventModelingTokenBuilder][token-builder] and [the common token
 builder][common-token-builder]. The [grammar][grammar] imports no common
 grammar: no inherited STRING, INT, BOOLEAN or EOL supplies another unit. Any
-character that no rule reads rejects the input. [fixture:
-eventmodeling/header-only] [fixture: eventmodeling/gram-written-tree] [fixture:
-eventmodeling/error-start] [fixture: eventmodeling/error-recovered] [fixture:
-eventmodeling/error-after-prefix]
+character that no rule reads rejects the input.
+
+[fixture: eventmodeling/header-only] [fixture: eventmodeling/gram-written-tree]
+[fixture: eventmodeling/error-start] [fixture: eventmodeling/error-recovered]
+[fixture: eventmodeling/error-after-prefix]
 
 | Order | Unit or trivia                        | Reading                                        |
 | ----- | ------------------------------------- | ---------------------------------------------- |
@@ -175,7 +189,9 @@ longer identifier wins, but an equal-length keyword wins. Punctuation has no
 longer alternative. Matching is case-sensitive. This is not Jison word-boundary
 matching: tf01 and evtA are identifiers, while a numeric frame-name can touch
 the next type keyword. Exact ordinary keywords cannot be identifiers, but longer
-words such as eventX can. [fixture: eventmodeling/lex-glued-frame-id] [fixture:
+words such as eventX can.
+
+[fixture: eventmodeling/lex-glued-frame-id] [fixture:
 eventmodeling/lex-glued-type-name] [fixture:
 eventmodeling/lex-glued-frame-parts] [fixture: eventmodeling/lex-keyword-name]
 [fixture: eventmodeling/lex-keyword-prefix-name] [fixture:
@@ -190,6 +206,7 @@ NBSP and BOM, but excludes U+0085 and U+200B. A glued percent comment can follow
 it; a glued slash comment cannot. A space before the slash comment supplies the
 boundary. Judge this after common removals: a removed directive leaving space or
 LF succeeds, while eventmodeling joined to tf, or tf joined to digits, rejects.
+
 [fixture: eventmodeling/header-percent-comment] [fixture:
 eventmodeling/header-slash-comment-glued] [fixture:
 eventmodeling/header-slash-comment-spaced] [fixture:
@@ -203,8 +220,9 @@ eventmodeling/directive-keyword-glued] [fixture: eventmodeling/line-ls-gap]
 
 When that custom keyword matcher fails in a name position, identifier can still
 match. Thus eventmodeling.A is a qualified name, whereas event.A begins with the
-ordinary reserved keyword event and rejects. [fixture:
-eventmodeling/lex-name-custom-header-dot] [fixture:
+ordinary reserved keyword event and rejects.
+
+[fixture: eventmodeling/lex-name-custom-header-dot] [fixture:
 eventmodeling/lex-name-ordinary-keyword-dot]
 
 ### Names and references
@@ -215,13 +233,14 @@ names and prototype-shaped names are permitted. A Unicode letter, dash, quote or
 entity cannot extend that unit. A frame-name is a string of one to three ASCII
 digits, not a quantity: 1, 01 and 001 are distinct names. A fourth digit, a
 sign, NaN, Infinity or two whitespace-separated digit units do not form a
-frame-name. [fixture: eventmodeling/lex-id-forms] [fixture:
-eventmodeling/lex-id-unicode] [fixture: eventmodeling/lex-id-unicode-tail]
-[fixture: eventmodeling/db-prototype-names] [fixture:
-eventmodeling/entity-id-rejected] [fixture:
-eventmodeling/db-source-leading-zero] [fixture: eventmodeling/number-one]
-[fixture: eventmodeling/number-three] [fixture: eventmodeling/number-four]
-[fixture: eventmodeling/number-plus] [fixture:
+frame-name.
+
+[fixture: eventmodeling/lex-id-forms] [fixture: eventmodeling/lex-id-unicode]
+[fixture: eventmodeling/lex-id-unicode-tail] [fixture:
+eventmodeling/db-prototype-names] [fixture: eventmodeling/entity-id-rejected]
+[fixture: eventmodeling/db-source-leading-zero] [fixture:
+eventmodeling/number-one] [fixture: eventmodeling/number-three] [fixture:
+eventmodeling/number-four] [fixture: eventmodeling/number-plus] [fixture:
 eventmodeling/number-negative-zero] [fixture: eventmodeling/number-nan]
 [fixture: eventmodeling/number-infinity] [fixture:
 eventmodeling/gram-frame-id-split-whitespace]
@@ -230,9 +249,11 @@ A qualified-name is one or more identifiers separated by dot punctuation. Native
 whitespace, comments and hidden forms can stand on either side of a dot, but a
 missing segment, leading dot or trailing dot rejects. Data declaration names,
 bracketed data references and GWT item references instead require one
-identifier. Their names are not qualified-name forms. [fixture:
-eventmodeling/db-qualified-names] [fixture: eventmodeling/space-qualified-name]
-[fixture: eventmodeling/lex-qualified-hidden-components] [fixture:
+identifier. Their names are not qualified-name forms.
+
+[fixture: eventmodeling/db-qualified-names] [fixture:
+eventmodeling/space-qualified-name] [fixture:
+eventmodeling/lex-qualified-hidden-components] [fixture:
 eventmodeling/lex-qualified-empty-segment] [fixture:
 eventmodeling/lex-qualified-leading-dot] [fixture:
 eventmodeling/lex-qualified-trailing-dot] [fixture:
@@ -246,10 +267,12 @@ The [data fragments][data] permit an optional tag: opening backtick, one of
 json, jsobj, figma, salt, uri, md, html or text, then closing backtick. These
 are separate components with native gaps between them; the following body is
 required. Empty or unknown tags reject. The tag does not validate its body as
-JSON, a URI or another language. [fixture: eventmodeling/data-all-types]
-[fixture: eventmodeling/data-block-types] [fixture:
-eventmodeling/data-unknown-type] [fixture: eventmodeling/lex-block-type-empty]
-[fixture: eventmodeling/lex-block-type-multiline-gaps] [fixture:
+JSON, a URI or another language.
+
+[fixture: eventmodeling/data-all-types] [fixture:
+eventmodeling/data-block-types] [fixture: eventmodeling/data-unknown-type]
+[fixture: eventmodeling/lex-block-type-empty] [fixture:
+eventmodeling/lex-block-type-multiline-gaps] [fixture:
 eventmodeling/lex-hidden-type-tag] [fixture:
 eventmodeling/lex-hidden-data-tag-gaps]
 
@@ -259,6 +282,7 @@ earlier closers and apparent later statements. CR, LF, LS and PS cannot be
 inside it. Backslash is ordinary content and protects neither quote nor brace.
 Empty braces and empty quoted strings are accepted. Inline data has priority
 over block data at the same position, even where the grammar requires a block.
+
 [fixture: eventmodeling/lex-inline-greedy] [fixture:
 eventmodeling/lex-inline-quote-greedy] [fixture:
 eventmodeling/lex-inline-two-objects-following-frame] [fixture:
@@ -277,8 +301,9 @@ Block-data starts with an opening brace, zero or more ASCII spaces/tabs and LF.
 Its closer is an unindented brace immediately after LF, followed by LF, another
 Notation whitespace character or end of text. Opening NBSP or LS, an indented
 closer and a closer immediately after LS reject. The interior can contain every
-character, including LS and PS. Missing closure rejects. [fixture:
-eventmodeling/data-block-empty] [fixture:
+character, including LS and PS. Missing closure rejects.
+
+[fixture: eventmodeling/data-block-empty] [fixture:
 eventmodeling/lex-block-empty-whitespace] [fixture:
 eventmodeling/lex-block-open-padding] [fixture:
 eventmodeling/lex-block-opening-ls] [fixture:
@@ -293,16 +318,18 @@ such form succeeds, try the empty form closed directly after the opening line.
 Consequently an immediately adjacent closing line can become body text when a
 later closer exists. Once a nonempty body has a qualifying closer, stop there;
 quotes, nested braces and frame-looking lines do not protect it. A nonqualifying
-closing-looking line can remain content. [fixture:
-eventmodeling/lex-block-adjacent-closers] [fixture:
+closing-looking line can remain content.
+
+[fixture: eventmodeling/lex-block-adjacent-closers] [fixture:
 eventmodeling/lex-block-adjacent-later-close] [fixture:
 eventmodeling/lex-block-unqualified-close-later] [fixture:
 eventmodeling/data-block-nested] [fixture: eventmodeling/data-block-empty]
 
 A closing LF is consumed by block-data; other following whitespace is only a
 boundary and is not consumed. The logical LF appended at end of text may supply
-it. These are lexical boundaries, not statement-ending EOL units. [fixture:
-eventmodeling/data-block-close-eof] [fixture:
+it. These are lexical boundaries, not statement-ending EOL units.
+
+[fixture: eventmodeling/data-block-close-eof] [fixture:
 eventmodeling/data-block-close-space] [fixture:
 eventmodeling/lex-block-close-ps-boundary] [fixture:
 eventmodeling/lex-block-closer-native-comment] [fixture:
@@ -318,7 +345,9 @@ including keyword, delimiter and leading horizontal padding, without trimming,
 whitespace collapse or escape decoding. Authored tree payloads remain
 unconverted;
 [the tests summary](../../../tests/docs/db-summaries.md#eventmodeling) owns
-subsequent Db normalization. [fixture: eventmodeling/common-inline] [fixture:
+subsequent Db normalization.
+
+[fixture: eventmodeling/common-inline] [fixture:
 eventmodeling/common-whitespace] [fixture: eventmodeling/common-repeat-empty]
 [fixture: eventmodeling/common-description-repeat] [fixture:
 eventmodeling/common-quoted-values]
@@ -347,8 +376,9 @@ empty description block remains a statement; it leaves its following LF
 unconsumed, but a common form can claim padding directly after its closing brace
 on the same line. In a name position, padded title can steal the position as a
 composite, whereas unpadded title can be an identifier. accTitle and accDescr
-without their required delimiters are identifiers. [fixture:
-eventmodeling/common-line-keywords] [fixture:
+without their required delimiters are identifiers.
+
+[fixture: eventmodeling/common-line-keywords] [fixture:
 eventmodeling/lex-common-no-padding-after-brace] [fixture:
 eventmodeling/common-inline] [fixture:
 eventmodeling/lex-common-after-slash-comment] [fixture:
@@ -393,7 +423,9 @@ precedence over its brace alternative. Line text may be empty and includes
 LS/PS; prefer ending it immediately before the first %%, otherwise take it
 through the end of the line. Bare title is permitted, but unreadable text after
 its bare-prefix match still rejects. No later line supplies a missing line
-value. [fixture: eventmodeling/common-title-empty] [fixture:
+value.
+
+[fixture: eventmodeling/common-title-empty] [fixture:
 eventmodeling/common-title-prefix] [fixture: eventmodeling/common-acctitle-eof]
 [fixture: eventmodeling/common-description-eof] [fixture:
 eventmodeling/common-colon-block-priority] [fixture:
@@ -410,8 +442,9 @@ brace, any characters through the first closing brace, and that closer. It may
 span LF, LS and PS. Quotes and backslashes do not shield a closer, and unclosed
 forms reject. Empty blocks remain statements. Do not trim the authored interior:
 whitespace-only content remains a literal. Global removals can make payloads
-empty without removing the authored statement or data shell. [fixture:
-eventmodeling/common-block-first-close] [fixture:
+empty without removing the authored statement or data shell.
+
+[fixture: eventmodeling/common-block-first-close] [fixture:
 eventmodeling/lex-common-block-after-close] [fixture:
 eventmodeling/common-block-quoted-close] [fixture:
 eventmodeling/common-block-open] [fixture:
@@ -426,8 +459,9 @@ In the keyword-to-brace gap, global directives are left out before matching
 whitespace; blank lines are allowed. Native comments, comment lines included,
 cannot be inserted into a composite unit, so a comment line in this gap is
 rejected. Native-looking slash comments or YAML inside an already matched
-metadata value are its text, not separate hidden forms. [fixture:
-eventmodeling/common-description-comment-gap] [fixture:
+metadata value are its text, not separate hidden forms.
+
+[fixture: eventmodeling/common-description-comment-gap] [fixture:
 eventmodeling/common-description-directive-gap] [fixture:
 eventmodeling/common-description-empty-gap] [fixture:
 eventmodeling/lex-common-block-slash-text] [fixture:
@@ -440,15 +474,16 @@ including LF, LS, PS, BOM and NBSP. It makes no node. There is no visible EOL
 unit and no EOL production after the header, a frame, entity, data, note or GWT.
 Complete units can cross physical lines or share a line wherever their lexical
 rules allow it. An ordinary semicolon is not a separator and rejects outside a
-containing text unit; only common line-rule selection can ignore it. [fixture:
-eventmodeling/space-tabs] [fixture: eventmodeling/space-bom-body] [fixture:
-eventmodeling/space-nbsp-body] [fixture: eventmodeling/space-3000-body]
-[fixture: eventmodeling/space-lines] [fixture: eventmodeling/line-ls-gap]
-[fixture: eventmodeling/line-ps-gap] [fixture: eventmodeling/header-inline]
-[fixture: eventmodeling/gram-gwt-next-top-level] [fixture:
-eventmodeling/tail-frame-semicolon] [fixture: eventmodeling/tail-data-semicolon]
-[fixture: eventmodeling/tail-gwt-semicolon] [fixture:
-eventmodeling/semicolon-frame-parts]
+containing text unit; only common line-rule selection can ignore it.
+
+[fixture: eventmodeling/space-tabs] [fixture: eventmodeling/space-bom-body]
+[fixture: eventmodeling/space-nbsp-body] [fixture:
+eventmodeling/space-3000-body] [fixture: eventmodeling/space-lines] [fixture:
+eventmodeling/line-ls-gap] [fixture: eventmodeling/line-ps-gap] [fixture:
+eventmodeling/header-inline] [fixture: eventmodeling/gram-gwt-next-top-level]
+[fixture: eventmodeling/tail-frame-semicolon] [fixture:
+eventmodeling/tail-data-semicolon] [fixture: eventmodeling/tail-gwt-semicolon]
+[fixture: eventmodeling/semicolon-frame-parts]
 
 In [the hidden rules][hidden], hidden-yaml starts with three dashes, optional
 ASCII space/tab and LF. It has an unindented three-dash closer followed by LF,
@@ -456,6 +491,7 @@ another Notation whitespace character or end of text. Try a body of at least one
 line before the adjacent empty form, with the same closing choice as block-data.
 Four opening dashes or an indented closer fail. It does not parse YAML or apply
 configuration. A following LF is consumed, other boundary whitespace is not.
+
 [fixture: eventmodeling/hidden-yaml-adjacent-later] [fixture:
 eventmodeling/hidden-yaml-adjacent-no-later] [fixture:
 eventmodeling/hidden-yaml-adjacent-eof] [fixture:
@@ -473,7 +509,9 @@ whitespace or end of text. A following LF is consumed; other whitespace is only
 looked ahead at. A nonqualifying earlier closer can be included while seeking a
 later qualifying closer. Separate this from global directive removal: word-named
 forms such as %%{x}%% may already have disappeared. Nonword forms establish the
-native behavior. [fixture: eventmodeling/lex-native-directive-object] [fixture:
+native behavior.
+
+[fixture: eventmodeling/lex-native-directive-object] [fixture:
 eventmodeling/lex-native-directive-object-space] [fixture:
 eventmodeling/lex-native-directive-object-eof] [fixture:
 eventmodeling/hidden-native-directive-later] [fixture:
@@ -489,17 +527,21 @@ comment line ends only at CR or LF: a U+2028 or U+2029 in it does not end it, so
 comment line is removed, as everywhere, and the rest of the line stays in the
 comment: in `%% a %%{init: {}}%% tf 09 evt Z` the frame is part of the comment,
 and inside a data block the line `%% c %%{init: {}}%% d` leaves `%% c`, two
-spaces, and `d` in the value. [fixture:
-eventmodeling/comment-line-line-separator] [fixture:
+spaces, and `d` in the value.
+
+[fixture: eventmodeling/comment-line-line-separator] [fixture:
 eventmodeling/comment-line-paragraph-separator] [fixture:
 eventmodeling/comment-line-directive] [fixture:
-eventmodeling/comment-line-directive-in-data] A one-line failed native directive
-can therefore become a comment that swallows a following apparent frame;
-multiline leftover text can still reject. Earlier inline, block and common-value
-units instead enclose native-looking text as content. Hidden-yaml and
-hidden-directive become EventmodelingIgnoredText; comments use shared Comment
-records. [fixture: eventmodeling/lex-native-directive-one-line-fallback]
-[fixture: eventmodeling/lex-native-directive-object-glued] [fixture:
+eventmodeling/comment-line-directive-in-data]
+
+A one-line failed native directive can therefore become a comment that swallows
+a following apparent frame; multiline leftover text can still reject. Earlier
+inline, block and common-value units instead enclose native-looking text as
+content. Hidden-yaml and hidden-directive become EventmodelingIgnoredText;
+comments use shared Comment records.
+
+[fixture: eventmodeling/lex-native-directive-one-line-fallback] [fixture:
+eventmodeling/lex-native-directive-object-glued] [fixture:
 eventmodeling/comment-eof] [fixture: eventmodeling/comment-header] [fixture:
 eventmodeling/hidden-data-yaml-text] [fixture:
 eventmodeling/lex-inline-double-embedded-slash] [fixture:
@@ -512,7 +554,9 @@ are `/*` and `//`, their values exclude the marks and the block closer, and
 outside padding is not content. Comments can occupy complete-unit gaps but do
 not join identifier fragments. Global directives can lie inside comment text or
 between the mark characters; a comment line inside a slash block comment is part
-of its text. [fixture: eventmodeling/comment-native] [fixture:
+of its text.
+
+[fixture: eventmodeling/comment-native] [fixture:
 eventmodeling/comment-between-id] [fixture: eventmodeling/comment-block-open]
 [fixture: eventmodeling/comment-block-nearest-close] [fixture:
 eventmodeling/comment-line-ls-body] [fixture:
@@ -536,7 +580,9 @@ punctuation, type-tag backticks and type word, reference opener/name/closer,
 arrow/reference name and common keyword/colon/brace/value are separate authored
 components. Global removal between them is allowed only when the remaining
 lexical boundaries still match. Native hidden forms do not gain the power to
-split an atom. [fixture: eventmodeling/directive-header-inside] [fixture:
+split an atom.
+
+[fixture: eventmodeling/directive-header-inside] [fixture:
 eventmodeling/directive-id-inside] [fixture:
 eventmodeling/directive-number-inside] [fixture:
 eventmodeling/directive-arrow-inside] [fixture:
@@ -564,8 +610,9 @@ Data and common-value interiors are text and can contain global directives and
 selected semicolons. A retained ignored form or Comment can also hold joined
 native-fence or comment-mark spelling; retain its source directive once, rather
 than rejecting text that has an owner. Ignore only the semicolon selected by the
-common line rule, not every semicolon on the line. [fixture:
-eventmodeling/directive-block-middle] [fixture:
+common line rule, not every semicolon on the line.
+
+[fixture: eventmodeling/directive-block-middle] [fixture:
 eventmodeling/directive-string-start] [fixture:
 eventmodeling/directive-string-middle] [fixture:
 eventmodeling/directive-string-end] [fixture: eventmodeling/style-every-text]
@@ -581,9 +628,10 @@ Use [common notation](../common.md#notation). Native whitespace, comments and
 ignored forms can separate complete units; composite line/data rules retain
 their own boundaries and priorities. The [entry and reachable rules][entry] have
 the following forms. Consume all units; trailing incomplete sources, references,
-clauses or unreadable suffixes reject. [fixture: eventmodeling/header-only]
-[fixture: eventmodeling/gram-written-tree] [fixture:
-eventmodeling/frame-source-missing] [fixture:
+clauses or unreadable suffixes reject.
+
+[fixture: eventmodeling/header-only] [fixture: eventmodeling/gram-written-tree]
+[fixture: eventmodeling/frame-source-missing] [fixture:
 eventmodeling/frame-reference-open] [fixture: eventmodeling/gwt-empty-then]
 [fixture: eventmodeling/gram-gwt-empty-name] [fixture:
 eventmodeling/error-after-prefix]
@@ -642,7 +690,9 @@ require block data; frames permit inline data only. Each GWT group contains at
 least one item; given and then are required and when is optional in that order.
 GWT references use single identifiers even when entity declarations use
 qualified names. Each complete following top-level statement starts a new body
-item. [fixture: eventmodeling/db-source-order] [fixture:
+item.
+
+[fixture: eventmodeling/db-source-order] [fixture:
 eventmodeling/frame-data-order] [fixture:
 eventmodeling/gram-frame-sources-after-dataref] [fixture:
 eventmodeling/gram-frame-repeat-dataref] [fixture:
@@ -662,8 +712,9 @@ a blank line, LS or PS can separate items. An empty description block there does
 not become a GWT item and rejects. Within a data block, the corresponding forms
 are text, not nested statements: a global-directive-only line and a selected
 semicolon are removed, and a comment line stays in the text; LS, PS and an
-empty-description-looking line remain content. [fixture:
-eventmodeling/gram-nested-gwt-global-directive-line] [fixture:
+empty-description-looking line remain content.
+
+[fixture: eventmodeling/gram-nested-gwt-global-directive-line] [fixture:
 eventmodeling/lex-native-directive-in-gwt] [fixture:
 eventmodeling/gram-nested-gwt-selected-semicolon] [fixture:
 eventmodeling/gram-nested-gwt-comment-line] [fixture:
@@ -681,8 +732,9 @@ eventmodeling/gram-nested-block-empty-description]
 Inside a GWT item, the type word and required reference name are separate
 components. A global-directive-only line, a selected semicolon, a comment line,
 a blank line, LS or PS can separate them. An empty description block there
-supplies no name and rejects. [fixture:
-eventmodeling/gram-gwt-item-directive-only-line] [fixture:
+supplies no name and rejects.
+
+[fixture: eventmodeling/gram-gwt-item-directive-only-line] [fixture:
 eventmodeling/gram-gwt-item-selected-semicolon] [fixture:
 eventmodeling/gram-gwt-item-comment-line] [fixture:
 eventmodeling/gram-gwt-item-blank-line] [fixture:
@@ -701,11 +753,13 @@ frames or reset frames in any combination and wherever they stand, have the same
 name as written, and otherwise only stores the AST: `tf 01` followed by `tf 01`
 or `rf 01`, and `rf 01` followed by `tf 01`, are rejected, and so is `tf 01`,
 `tf 02`, and `tf 01`, while `tf 01` and `tf 1` are accepted. Rendering and
-getState are outside acceptance. [fixture: eventmodeling/error-start] [fixture:
-eventmodeling/error-recovered] [fixture: eventmodeling/error-after-prefix]
-[fixture: eventmodeling/db-source-missing] [fixture:
-eventmodeling/db-source-forward] [fixture: eventmodeling/db-source-self]
-[fixture: eventmodeling/db-frame-duplicates] [fixture:
+getState are outside acceptance.
+
+[fixture: eventmodeling/error-start] [fixture: eventmodeling/error-recovered]
+[fixture: eventmodeling/error-after-prefix] [fixture:
+eventmodeling/db-source-missing] [fixture: eventmodeling/db-source-forward]
+[fixture: eventmodeling/db-source-self] [fixture:
+eventmodeling/db-frame-duplicates] [fixture:
 eventmodeling/db-frame-duplicate-reset-frame] [fixture:
 eventmodeling/db-frame-duplicate-reset-frames] [fixture:
 eventmodeling/db-frame-duplicate-reset-then-time] [fixture:
@@ -730,9 +784,10 @@ entity-type word of each GWT item even though the upstream unassigned grammar
 call omits it from its model. Do not resolve references, sort or deduplicate
 source references, replace a reference with selected data, or discard authored
 inline data when referenced data exists. Empty data/common forms remain nodes.
-Semantic misreadings with a place in the tree remain accepted. [fixture:
-eventmodeling/db-data-first] [fixture: eventmodeling/db-data-unused] [fixture:
-eventmodeling/db-entities-notes-gwt] [fixture:
+Semantic misreadings with a place in the tree remain accepted.
+
+[fixture: eventmodeling/db-data-first] [fixture: eventmodeling/db-data-unused]
+[fixture: eventmodeling/db-entities-notes-gwt] [fixture:
 eventmodeling/gram-gwt-unassigned-type] [fixture: eventmodeling/db-source-order]
 [fixture: eventmodeling/db-data-reference-inline] [fixture:
 eventmodeling/lex-inline-empty] [fixture:
@@ -749,8 +804,10 @@ embedded-data-opaque. Preserve independently valid metadata/configuration when
 removing a rejected embedded block. Values affected by common sanitization and
 all Db normalization are defined in
 [the tests summary](../../../tests/docs/db-summaries.md#eventmodeling), not this
-syntax or the authored tree. [fixture: eventmodeling/config-drawing-site]
-[fixture: eventmodeling/config-frontmatter-drawing] [fixture:
+syntax or the authored tree.
+
+[fixture: eventmodeling/config-drawing-site] [fixture:
+eventmodeling/config-frontmatter-drawing] [fixture:
 eventmodeling/config-init-drawing] [fixture:
 eventmodeling/config-frontmatter-cannot-rescue] [fixture:
 eventmodeling/config-init-cannot-rescue] [fixture:
@@ -769,8 +826,10 @@ and
 to the atoms defined above. Parts of a single atom cannot be joined through
 removed trivia; retaining its directive or semicolon alone cannot preserve that
 atomic spelling. Complete authored components and text interiors retain their
-permitted common trivia. [fixture: eventmodeling/directive-arrow-inside]
-[fixture: eventmodeling/directive-reference-inside] [fixture:
+permitted common trivia.
+
+[fixture: eventmodeling/directive-arrow-inside] [fixture:
+eventmodeling/directive-reference-inside] [fixture:
 eventmodeling/directive-reference-close-inside] [fixture:
 eventmodeling/lex-semicolon-identifier-inside] [fixture:
 eventmodeling/lex-semicolon-frame-id-inside] [fixture:
@@ -781,8 +840,9 @@ eventmodeling/directive-qualified] [fixture: eventmodeling/directive-reference]
 confines HTML quote conversion to text after real frontmatter. A tag starting
 inside opaque frontmatter cannot rewrite later authored values. This can reject
 an input Mermaid accepts, accept one Mermaid rejects, or change only an
-accessibility value; retain all three cases. [fixture:
-eventmodeling/div-html-frontmatter-accept] [fixture:
+accessibility value; retain all three cases.
+
+[fixture: eventmodeling/div-html-frontmatter-accept] [fixture:
 eventmodeling/div-html-frontmatter-reject] [fixture:
 eventmodeling/div-html-frontmatter-value] [fixture:
 eventmodeling/html-body-double-control] [fixture:
@@ -796,7 +856,9 @@ does not make native inline/block data opaque configuration.
 diagram from its header rather than later C4 words inside names, references or
 text. Bare-prefix whitespace and empty data/common forms have nodes or trivia
 here, so neither bare-percent-line-before-header nor tokenless-empty-forms is
-added. [fixture: eventmodeling/div-frontmatter-invalid] [fixture:
+added.
+
+[fixture: eventmodeling/div-frontmatter-invalid] [fixture:
 eventmodeling/div-init-invalid-colour] [fixture:
 eventmodeling/div-init-primitive-wrap] [fixture:
 eventmodeling/c4-container-data] [fixture:

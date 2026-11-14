@@ -43,6 +43,7 @@
 キーワード、ヘッダー、矢印、`]` は、その単位が前後に読む空白を含みません。
 `x-axis L -->` は、トークン `x-axis`、`L`、`-->` を持ちます。
 `space` 単位と `newline` 単位はすべて空白なので、トークンを作りません。
+
 [fixture: quadrant/db-quadrant-spaces-trimmed] [fixture: quadrant/db-style-two]
 [fixture: quadrant/db-classdef-two-styles]
 [fixture: quadrant/db-x-axis-left-with-arrow] [fixture: quadrant/db-point-plain]
@@ -55,16 +56,19 @@ U+00A0、U+2028、U+2029、U+3000、U+FEFF は、
 `quadrant-1 A` と U+00A0 は、`A` と U+00A0 の `RawText` トークンを持ちます。
 `x-axis L`、U+00A0、`-->`、U+00A0、`R` は、後に U+00A0 のある `L` と、
 前に U+00A0 のある `R` の `RawText` トークンを持ちます。
+
 [fixture: quadrant/db-ends-quadrant-nbsp-end]
 [fixture: quadrant/db-x-axis-nbsp-around-arrow]
 [fixture: quadrant/db-name-after-nbsp]
 [fixture: quadrant/db-grid-nbsp-classdef-name]
+
 題、アクセシビリティのテキスト、説明ブロックのテキストのトークンは、
 その値と同じく、両端から Notation の空白をすべて除き、U+00A0 も除きます。
 [ast/quadrant.ja.md](../../../spec/docs/ast/quadrant.ja.md#quadrantliteral)
 を参照。
 `title`、U+00A0、`T` は `RawText` トークン `T` を持ち、
 `title` と U+3000 は `title` のトークンだけを持ちます。
+
 [fixture: quadrant/db-title-nbsp-before-text]
 [fixture: quadrant/db-ends-title-nbsp-end]
 [fixture: quadrant/db-title-ideographic-only]
@@ -75,7 +79,9 @@ U+00A0、U+2028、U+2029、U+3000、U+FEFF は、
 残りの `RawText` トークンを持ちます。
 `quadrant-1 "a" b` は、トークン `"a"` と `b` を持ちます。
 テキストのない題は `title` のトークンだけを持ち、空の説明ブロックは `accDescr`、
-`{`、`}` のトークンを持ちます。 [fixture: quadrant/db-quadrant-quoted-then-bare]
+`{`、`}` のトークンを持ちます。
+
+[fixture: quadrant/db-quadrant-quoted-then-bare]
 [fixture: quadrant/db-title-keyword-alone]
 [fixture: quadrant/db-acc-descr-block-empty-braces]
 [fixture: quadrant/db-empty-block-after-point]
@@ -91,5 +97,6 @@ U+00A0、U+2028、U+2029、U+3000、U+FEFF は、
 `quadrant-1 a%%{init: {}}%%b%%{init: {}}%%c` は、`RawText` トークン `a`、`b`、
 `c` と、その 2 つずつの間の `Directive` トークンを持ちます。
 一方、`A:::c%%{init: {}}%%1: [0.3, 0.6]` は拒否されます。
+
 [fixture: quadrant/db-directive-two-in-text]
 [fixture: quadrant/div-class-directive-inside]

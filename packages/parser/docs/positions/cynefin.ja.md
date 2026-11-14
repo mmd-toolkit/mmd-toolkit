@@ -4,8 +4,9 @@
 
 範囲は[記述されたノードの仕様](../../../spec/docs/ast/cynefin.md)に従い、
 元の UTF-16 オフセットとソースの改行表記を使います。
-Root は入力全体を覆います。 [fixture: cynefin/db-all-fields]
-[fixture: cynefin/line-crlf]
+Root は入力全体を覆います。
+
+[fixture: cynefin/db-all-fields] [fixture: cynefin/line-crlf]
 
 ## 範囲
 
@@ -13,6 +14,7 @@ CynefinDiagram は最初の保持されたヘッダー前形式から、
 それがなければヘッダーから、最後のヘッダー・本文形式までです。
 textBeforeHeader は保持されたネイティブ YAML と再走査のディレクティブです。
 通過した裸の行と付随する trivia はそれらのノードの外です。
+
 [fixture: cynefin/detect-real-before-retained-secondscan]
 [fixture: cynefin/detect-retained-secondscan-bare-ls]
 [fixture: cynefin/lex-title-one-space] [fixture: common/detect-minimal-cynefin]
@@ -26,6 +28,7 @@ textAfterName は最初の可視 LF または次の可視単位の前で終わ�
 LF 後の形式は同じブロックに実在する次の項目に属し、
 その項目がなければ Diagram.body に属します。
 可視 LF を探す前にネイティブ形式の消費を決めます。
+
 [fixture: cynefin/gram-domain-empty-eof]
 [fixture: cynefin/hidden-domain-empty-suffix]
 [fixture: cynefin/hidden-domain-item-members]
@@ -41,7 +44,9 @@ LF 後の形式は同じブロックに実在する次の項目に属し、
 コロンと文字列の組がなければ両ラベル用リストは空で、
 宛先後の形式は textAfter です。
 StringLiteral は空の文字列でも引用符を含み、raw はソースそのものです。
-必須の可視 EOL は文の外です。 [fixture: cynefin/hidden-all-unit-gaps]
+必須の可視 EOL は文の外です。
+
+[fixture: cynefin/hidden-all-unit-gaps]
 [fixture: cynefin/hidden-unlabeled-transition-gaps]
 [fixture: cynefin/hidden-two-transition-suffixes]
 [fixture: cynefin/db-empty-texts] [fixture: cynefin/lex-string-conversion]
@@ -53,8 +58,9 @@ title は値の末尾まで、値が null ならキーワードまでです。
 各文は可視 EOL より前のネイティブ接尾まで延長します。
 EOL 後の形式は本文に属します。
 CynefinLiteral は行値の空白を保持し、ブロック値は外側の共通空白だけを除きます。
-null の値には葉がありません。 [fixture: cynefin/common-title-eof]
-[fixture: cynefin/lex-title-one-space]
+null の値には葉がありません。
+
+[fixture: cynefin/common-title-eof] [fixture: cynefin/lex-title-one-space]
 [fixture: cynefin/common-title-comment-only]
 [fixture: cynefin/common-title-directive-only]
 [fixture: cynefin/lex-title-one-tab] [fixture: cynefin/lex-title-two-spaces]
@@ -71,6 +77,7 @@ CynefinIgnoredText は開始記号から条件を満たす閉じまでで、
 一つのネイティブ一致には一つの所有先があります。
 値は共通の除去対象を除きますが、範囲はそれらをまたぎます。
 記述された CR/CRLF 表記は保持します。
+
 [fixture: cynefin/hidden-yaml-opener-padding]
 [fixture: cynefin/hidden-yaml-adjacent-later]
 [fixture: cynefin/hidden-yaml-two-nonempty]

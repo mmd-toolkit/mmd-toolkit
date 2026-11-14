@@ -31,6 +31,7 @@ Nothing in the grammar forbids indenting a statement, and the documentation of
 mermaid.js writes the statements one level deeper than the header, as the other
 diagrams do (see [Indentation](./flowchart.md#indentation) in the flowchart
 rules). The header, and a comment line before it, stand at the first column.
+
 [fixture: indentation/statements-one-level-deeper] [fixture:
 indentation/written-indentation-dropped] [fixture:
 indentation/header-leading-whitespace] [fixture: indentation/tab-width-4]
@@ -73,7 +74,9 @@ read, as in the other diagrams (see
 [Statements one per line](./flowchart.md#statements-one-per-line)). A `;` ends a
 statement as a line feed does and separates nothing once the statements are on
 lines of their own, so it is dropped, also where it stands first, twice in a
-row, or last. [fixture: statements-one-per-line/header-then-axis] [fixture:
+row, or last.
+
+[fixture: statements-one-per-line/header-then-axis] [fixture:
 statements-one-per-line/header-then-title] [fixture:
 statements-one-per-line/header-then-point] [fixture:
 statements-one-per-line/header-glued-point] [fixture:
@@ -92,8 +95,9 @@ directives/directive-between-two-statements-moves-with-the-next]
 A `;` inside a title, an accessibility text, or a description block is a
 character of the text, and stays: `title T; quadrant-1 A` is one title. An empty
 description block that stands in a title, as in `title T accDescr {}`, is part
-of the title, and stays with it. [fixture:
-statements-one-per-line/semicolon-in-a-title-is-text] [fixture:
+of the title, and stays with it.
+
+[fixture: statements-one-per-line/semicolon-in-a-title-is-text] [fixture:
 statements-one-per-line/semicolon-in-an-accessibility-text-is-text] [fixture:
 statements-one-per-line/empty-description-block-in-a-title-stays]
 
@@ -110,7 +114,9 @@ written (see [A line that a `;` ends](./compatibility.md#a-line-that-a--ends)).
 When such a line is the line of the header, the statements stay on the header's
 line. A `;` that the rule ignores at the end of the line is dropped, and the
 line that is printed has no `;` for the rule to read, so its whitespace is
-formatted as anywhere else. [fixture:
+formatted as anywhere else.
+
+[fixture:
 statements-one-per-line/line-rule-line-with-a-dropped-semicolon-formats-the-gap]
 [fixture: statements-one-per-line/line-rule-line-kept-together] [fixture:
 statements-one-per-line/line-rule-line-after-the-header-kept-together] [fixture:
@@ -175,10 +181,12 @@ A run of empty lines becomes one empty line, and there is none between the
 header and the first statement, and none at the end of the text. A blank line is
 a choice of the author that the Db does not hold, and one empty line shows it at
 the least cost, as Prettier does in code (see
-[Blank lines](./flowchart.md#blank-lines)). [fixture:
-blank-lines/runs-become-one] [fixture: blank-lines/none-after-the-header]
-[fixture: blank-lines/none-at-the-end] [fixture:
-blank-lines/around-comment-lines] [fixture: blank-lines/whitespace-only-lines]
+[Blank lines](./flowchart.md#blank-lines)).
+
+[fixture: blank-lines/runs-become-one] [fixture:
+blank-lines/none-after-the-header] [fixture: blank-lines/none-at-the-end]
+[fixture: blank-lines/around-comment-lines] [fixture:
+blank-lines/whitespace-only-lines]
 
 Input
 ([blank-lines/runs-become-one-input.mmd](../tests/fixtures/quadrant/blank-lines/runs-become-one-input.mmd)):
@@ -207,11 +215,12 @@ quadrantChart
 The header `quadrantChart` is printed as written; mermaid.js detects it in
 exactly this case, so the printer has nothing to choose. The whitespace before
 it and after it is dropped, and a statement after it on its line goes to a line
-of its own (see [Statements one per line](#statements-one-per-line)). [fixture:
-header/header-only] [fixture: header/trailing-whitespace-dropped] [fixture:
-header/comment-after-the-header] [fixture: header/comment-glued-to-the-header]
-[fixture: header/directive-after-the-header] [fixture:
-header/directive-glued-to-the-header]
+of its own (see [Statements one per line](#statements-one-per-line)).
+
+[fixture: header/header-only] [fixture: header/trailing-whitespace-dropped]
+[fixture: header/comment-after-the-header] [fixture:
+header/comment-glued-to-the-header] [fixture: header/directive-after-the-header]
+[fixture: header/directive-glued-to-the-header]
 
 Input
 ([header/comment-after-the-header-input.mmd](../tests/fixtures/quadrant/header/comment-after-the-header-input.mmd)):
@@ -242,6 +251,7 @@ printed space shows. A space marks where the text starts, which a keyword glued
 to its text hides, and the documentation of mermaid.js writes every keyword
 apart from its text
 ([`title`, `x-axis`, `y-axis`, and `quadrant-1` to `quadrant-4`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/quadrantChart.md#L13-L19)).
+
 [fixture: keywords-and-texts/title-spaces] [fixture:
 keywords-and-texts/title-tab] [fixture: keywords-and-texts/axis-keyword-spaces]
 [fixture: keywords-and-texts/quadrant-keyword-spaces] [fixture:
@@ -252,21 +262,25 @@ keywords-and-texts/word-after-title-keyword-is-a-point-name] [fixture:
 keywords-and-texts/inner-runs-of-a-title-collapsed]
 
 A directive between the keyword and its text is placed as under
-[Directives](#directives). [fixture:
-keywords-and-texts/directive-beside-keyword] A U+2028 or U+2029 right after an
-axis or quadrant keyword is the first character of the text (see
-[Line separators](#line-separators)), so one space is put before it, while one
-after `title` stays where it is. [test: U+2028 between an axis keyword and its
-text] [test: U+2029 between a quadrant keyword and its text] [test: U+2028 after
-a title keyword]
+[Directives](#directives).
+
+[fixture: keywords-and-texts/directive-beside-keyword]
+
+A U+2028 or U+2029 right after an axis or quadrant keyword is the first
+character of the text (see [Line separators](#line-separators)), so one space is
+put before it, while one after `title` stays where it is.
+
+[test: U+2028 between an axis keyword and its text] [test: U+2029 between a
+quadrant keyword and its text] [test: U+2028 after a title keyword]
 
 The whitespace inside a text is in the Db, and a run of spaces and tabs in it is
 printed as one space: `quadrant-1 a    b` has the text `a    b` and is printed
 `quadrant-1 a b`, and a tab between two words is a space; a form feed is no
 space or tab, and stays. The whitespace at the ends of a text is dropped, since
 the Db drops it. A string and the words after it keep the whitespace between
-them, as `"a" b` is the text `a b` and `"a"b` the text `ab`. [fixture:
-keywords-and-texts/inner-runs-collapsed] [fixture:
+them, as `"a" b` is the text `a b` and `"a"b` the text `ab`.
+
+[fixture: keywords-and-texts/inner-runs-collapsed] [fixture:
 keywords-and-texts/whitespace-at-the-ends-dropped] [fixture:
 keywords-and-texts/string-then-text-whitespace-kept] [fixture:
 keywords-and-texts/inner-runs-of-a-title-collapsed]
@@ -321,16 +335,19 @@ Db, an axis with no second text holds the same text with `--->` and with `-->`,
 and the
 [versions that count for quadrant charts](./compatibility.md#versions-of-mermaidjs-that-count)
 draw the same figure. The documentation of mermaid.js writes `-->` six times and
-no longer arrow. [fixture: axes/arrow-touching] [fixture:
-axes/arrow-with-more-whitespace] [fixture: axes/arrow-touching-on-one-side]
-[fixture: axes/arrow-length-shortest] [fixture: axes/text-inner-runs-collapsed]
-[fixture: axes/strings] [fixture: axes/markdown-string] [fixture:
-axes/axis-only-one-text]
+no longer arrow.
+
+[fixture: axes/arrow-touching] [fixture: axes/arrow-with-more-whitespace]
+[fixture: axes/arrow-touching-on-one-side] [fixture: axes/arrow-length-shortest]
+[fixture: axes/text-inner-runs-collapsed] [fixture: axes/strings] [fixture:
+axes/markdown-string] [fixture: axes/axis-only-one-text]
 
 An axis with the arrow and no second text, as in `x-axis L -->`, is printed with
 the arrow, after one space: mermaid.js reads it as another axis than `x-axis L`
 (the text of the left end is `L` and the arrow character), so the arrow is not
-dropped. [fixture: axes/arrow-only]
+dropped.
+
+[fixture: axes/arrow-only]
 
 Input
 ([axes/arrow-touching-input.mmd](../tests/fixtures/quadrant/axes/arrow-touching-input.mmd)):
@@ -383,9 +400,11 @@ the examples in the documentation of mermaid.js decide the whitespace before it
 the examples that write a space after the colon, 9 write no space before it and
 none writes one (counted as under
 [the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)),
-as in `Campaign A: [0.3, 0.6]` and `Campaign B:::class1: [0.8, 0.1]`. [fixture:
-points/colon-touches-the-name] [fixture: points/spaces-inside-the-brackets]
-[fixture: points/name-whitespace-at-the-ends-dropped] [fixture:
+as in `Campaign A: [0.3, 0.6]` and `Campaign B:::class1: [0.8, 0.1]`.
+
+[fixture: points/colon-touches-the-name] [fixture:
+points/spaces-inside-the-brackets] [fixture:
+points/name-whitespace-at-the-ends-dropped] [fixture:
 points/name-inner-runs-collapsed] [fixture: points/string-names] [fixture:
 points/class-name] [fixture: points/coordinates-as-written] [fixture:
 points/trailing-whitespace-dropped]
@@ -396,9 +415,11 @@ whitespace character comes first. A point written over several lines is printed
 on one line, where the line break is whitespace to the lexer, so that each
 statement is on one line; a point with a comment line or a directive in it is
 printed with its line breaks and continuation indentation (see
-[Multi-line statements](#multi-line-statements)). [fixture:
-points/line-breaks-joined] [fixture: points/line-break-with-a-comment-line-kept]
-[fixture: points/line-break-with-a-directive-kept] [fixture:
+[Multi-line statements](#multi-line-statements)).
+
+[fixture: points/line-breaks-joined] [fixture:
+points/line-break-with-a-comment-line-kept] [fixture:
+points/line-break-with-a-directive-kept] [fixture:
 multi-line-statements/point-over-lines-joined] [fixture:
 multi-line-statements/name-then-colon-on-the-next-line-joined]
 
@@ -450,24 +471,28 @@ dropped. In an ordinary style, the first `:` touches its name and has one space
 before the value: `radius :  10` becomes `radius: 10`. Replace only ASCII spaces
 and tabs next to that colon; keep the value's spelling, including leading zeros
 and color case. This gives point and class styles the form that Prettier prints
-after a key, without changing their Db. [fixture: styles/style-colon-padding]
-[fixture: styles/style-colon-tab-padding]
+after a key, without changing their Db.
+
+[fixture: styles/style-colon-padding] [fixture: styles/style-colon-tab-padding]
 
 Keep a style's interior as written when it contains trivia, whitespace other
 than ASCII spaces and tabs, a semicolon or a second colon, or lies on a
 protected semicolon line. The allowed suffix after a second colon is not
-interpreted. These guards take precedence over colon spacing. [fixture:
-styles/style-extra-colon-kept] [fixture: styles/style-directive-kept] [fixture:
-styles/style-semicolon-protected] [fixture: styles/styles-after-one-space]
-[fixture: styles/comma-after-one-space] [fixture: styles/style-text-as-written]
+interpreted. These guards take precedence over colon spacing.
+
+[fixture: styles/style-extra-colon-kept] [fixture: styles/style-directive-kept]
+[fixture: styles/style-semicolon-protected] [fixture:
+styles/styles-after-one-space] [fixture: styles/comma-after-one-space] [fixture:
+styles/style-text-as-written]
 
 `classDef` is followed by one space, the name of the class, one space, and the
 styles, which are laid out as those of a point. The grammar counts one
 whitespace character after the keyword and one after the name, so one space is
 the only form; the whitespace after the name belongs to the first style in the
-tree, and the Db drops it, so more than one space becomes one. [fixture:
-styles/class-definition] [fixture: styles/class-definition-spaces] [fixture:
-styles/class-definition-tabs] [fixture:
+tree, and the Db drops it, so more than one space becomes one.
+
+[fixture: styles/class-definition] [fixture: styles/class-definition-spaces]
+[fixture: styles/class-definition-tabs] [fixture:
 styles/class-definition-name-with-a-dash] [fixture:
 styles/class-definition-three-styles] [fixture:
 styles/class-definition-keyword-case-kept] [fixture:
@@ -519,6 +544,7 @@ statement of a quadrant chart are printed so. A color is a `#` and 3, 4, 6, or 8
 hexadecimal digits that stand alone in the value of a style; it is never
 shortened, and a text that is no color stays as written (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+
 [fixture: colors/colors-in-lower-case]
 
 Input
@@ -560,13 +586,18 @@ parts is one that the lexer reads as a unit of its own, nor is `x-axis` or
 after it starts a word (`"my-title"` and `"my-x-axis"` stay in quotes). A `;`
 that follows the text on its line is dropped with the line break that replaces
 it, and the text loses its quotes as it does without the `;`: `quadrant-1 "A";`
-is printed `quadrant-1 A`. [fixture: quotes/texts-before-a-semicolon] Any other
-string and a markdown string are printed as written: their quotes and their
-text, with a run of spaces and tabs inside them printed as one space. mermaid.js
-reads `"L"` and `L`, and `"a b"` and `a b`, as the same text, but a string can
-hold what a text without quotes cannot (`"a: b"` has a colon, which a text
-without quotes is rejected for), so the quotes of such a text stay, and a quote
-is never added. [fixture: quotes/strings-runs-collapsed] [fixture:
+is printed `quadrant-1 A`.
+
+[fixture: quotes/texts-before-a-semicolon]
+
+Any other string and a markdown string are printed as written: their quotes and
+their text, with a run of spaces and tabs inside them printed as one space.
+mermaid.js reads `"L"` and `L`, and `"a b"` and `a b`, as the same text, but a
+string can hold what a text without quotes cannot (`"a: b"` has a colon, which a
+text without quotes is rejected for), so the quotes of such a text stay, and a
+quote is never added.
+
+[fixture: quotes/strings-runs-collapsed] [fixture:
 quotes/plain-texts-without-quotes] [fixture:
 quotes/texts-with-hyphens-without-quotes] [fixture:
 quotes/texts-that-need-quotes] [fixture: quotes/quotes-not-added] [fixture:
@@ -627,8 +658,9 @@ A `title` is printed as the keyword and its text, after one space, whatever
 whitespace separates them (a tab too). The text is the rest of the line without
 the whitespace at its ends, and a run of spaces and tabs inside it is printed as
 one space. A `title` with no text is printed as the keyword alone. `;`, `#`,
-`%%`, quotes, and keywords in a title are characters of it. [fixture:
-titles-and-accessibility-statements/title-text] [fixture:
+`%%`, quotes, and keywords in a title are characters of it.
+
+[fixture: titles-and-accessibility-statements/title-text] [fixture:
 titles-and-accessibility-statements/title-without-text] [fixture:
 titles-and-accessibility-statements/title-with-special-characters] [fixture:
 titles-and-accessibility-statements/title-keyword-case]
@@ -643,8 +675,9 @@ and that of an `accTitle` stays as written, since the browser shows it as a
 tooltip; the Db keeps both. A text written on a later line, a colon written on a
 later line than the keyword, and whitespace before the colon are printed on one
 line: the line breaks are whitespace to the lexer, and the text of the statement
-is the same. [fixture:
-titles-and-accessibility-statements/colon-touches-keyword] [fixture:
+is the same.
+
+[fixture: titles-and-accessibility-statements/colon-touches-keyword] [fixture:
 titles-and-accessibility-statements/colon-without-space-after] [fixture:
 titles-and-accessibility-statements/text-whitespace-dropped] [fixture:
 titles-and-accessibility-statements/text-inner-whitespace-kept] [fixture:
@@ -654,13 +687,15 @@ titles-and-accessibility-statements/text-that-looks-like-a-statement]
 
 A block on one line follows
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
+
 [fixture: titles-and-accessibility-statements/block-text-on-the-opening-line]
 
 In a block with a text over several lines, indent the body one level inside the
 statement and align a separate `}` with the statement: mermaid.js discards
 indentation after LF from the description. A block that is not closed makes the
-input rejected, so it is not printed. [fixture:
-titles-and-accessibility-statements/block-lines-kept] [fixture:
+input rejected, so it is not printed.
+
+[fixture: titles-and-accessibility-statements/block-lines-kept] [fixture:
 titles-and-accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
 [fixture:
 titles-and-accessibility-statements/block-comment-and-empty-lines-kept]
@@ -733,16 +768,21 @@ An empty block, which changes nothing, is a statement of its own. The
 whitespace-only interior of a description block, including tabs, line breaks and
 Unicode whitespace, prints `{}`: there is no text for interior whitespace to
 surround. An already empty interior stays empty. The ordinary keyword/opener gap
-uses one space: `accDescr{  }` becomes `accDescr {}`. [fixture:
-empty-description-blocks/empty-whitespace-interiors] [test: quadrant Unicode and
-tab interiors] A block with a directive or a comment line keeps its contents and
-line breaks, with body indentation under
+uses one space: `accDescr{  }` becomes `accDescr {}`.
+
+[fixture: empty-description-blocks/empty-whitespace-interiors] [test: quadrant
+Unicode and tab interiors]
+
+A block with a directive or a comment line keeps its contents and line breaks,
+with body indentation under
 [Titles and accessibility statements](#titles-and-accessibility-statements). It
 stands on a line of its own, also after the header and after another statement,
 where the grammar takes it: mermaid.js reads it as nothing wherever it stands,
 and the grammar takes it where a statement starts and after the last unit of a
-statement. [fixture: empty-description-blocks/inner-whitespace-collapsed]
-[fixture: empty-description-blocks/touching-kept] [fixture:
+statement.
+
+[fixture: empty-description-blocks/inner-whitespace-collapsed] [fixture:
+empty-description-blocks/touching-kept] [fixture:
 empty-description-blocks/blank-lines-inside] [fixture:
 empty-description-blocks/with-directive-or-comment-line-kept] [fixture:
 empty-description-blocks/between-two-statements]
@@ -777,16 +817,18 @@ end of the line goes with it. A line that ends in whitespace is invisible, and a
 statement that goes on to the next line because of it is easy to miss, so the
 printer does not keep it; the same rule joins the lines of a statement in the
 other diagrams (see
-[Multi-line statements](./xychart.md#multi-line-statements)). [fixture:
-multi-line-statements/point-over-lines-joined] [fixture:
+[Multi-line statements](./xychart.md#multi-line-statements)).
+
+[fixture: multi-line-statements/point-over-lines-joined] [fixture:
 multi-line-statements/name-then-colon-on-the-next-line-joined] [fixture:
 multi-line-statements/point-with-styles-over-lines-joined]
 
 In points and accessibility line statements, keep trivia line breaks and align
 later structural parts and standalone trivia one continuation level inside the
 statement. Preserve each first gap-line tail and complete directive interiors;
-multiline names and other value ranges stay whole. [fixture:
-multi-line-statements/point-trivia-with-multiline-label] [fixture:
+multiline names and other value ranges stay whole.
+
+[fixture: multi-line-statements/point-trivia-with-multiline-label] [fixture:
 multi-line-statements/accessibility-trivia-continuations]
 
 Other statements with multiline trivia retain their layout. Joining comment
@@ -796,19 +838,24 @@ could change which `;` the line rule ignores, and where a `;` ends the last
 line; any other line break is joined as usual, also in a statement that holds a
 `;`. Any other statement over several lines is kept as written when a line break
 of it stays. The same decision applies to a `;` in another statement on its
-final line (see [Statements one per line](#statements-one-per-line)). [fixture:
-multi-line-statements/breaks-decided-one-by-one] [fixture:
+final line (see [Statements one per line](#statements-one-per-line)).
+
+[fixture: multi-line-statements/breaks-decided-one-by-one] [fixture:
 multi-line-statements/line-rule-first-hash-after-colon-kept] [fixture:
 multi-line-statements/semicolon-joining-changes-kept] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
-multi-line-statements/directive-inside-kept] A `;` alone does not prevent
-joining. [fixture: multi-line-statements/semicolon-on-the-last-line-joined]
+multi-line-statements/directive-inside-kept]
+
+A `;` alone does not prevent joining.
+
+[fixture: multi-line-statements/semicolon-on-the-last-line-joined]
 
 ### Multi-line values
 
 Strings keep their authored line breaks and whitespace, which are part of their
 values. Description-body lines align one step inside their statement; Mermaid
 discards their indentation after LF. Keep the remaining text and line breaks.
+
 [fixture: multi-line-values/string-with-line-breaks-kept] [fixture:
 multi-line-values/description-block-lines-kept] [fixture:
 multi-line-values/comment-line-inside-a-block-kept]
@@ -865,8 +912,10 @@ mermaid.js reads them in any case (`Title` and `X-Axis` start statements), and
 the Db is the same. `accTitle` and `accDescr` are printed in the case written,
 which the examples do not use, and so is `classDef` (see
 [Keywords in one case](./compatibility.md#keywords-in-one-case)). The name of a
-class keeps its case. [fixture: keyword-case/statement-keywords-one-form]
-[fixture: keyword-case/quadrant-3-4-one-form] [fixture:
+class keeps its case.
+
+[fixture: keyword-case/statement-keywords-one-form] [fixture:
+keyword-case/quadrant-3-4-one-form] [fixture:
 keyword-case/accessibility-keywords-kept]
 
 Input
@@ -901,8 +950,10 @@ and its text and its mark are kept as written: a comment line after the last
 statement stays after it, and one before the header stands at the first column.
 A `%%` inside a title, an accessibility text, a description block, or a string
 is a character of it, and inside the brackets of a point it makes the input
-rejected. [fixture: comments/comment-line-at-the-level-of-the-next-statement]
-[fixture: comments/comment-line-at-the-end] [fixture:
+rejected.
+
+[fixture: comments/comment-line-at-the-level-of-the-next-statement] [fixture:
+comments/comment-line-at-the-end] [fixture:
 comments/comment-line-before-the-header] [fixture: comments/comment-line-only]
 [fixture: comments/comment-mark-in-an-accessibility-text] [fixture:
 comments/comment-marks-and-empty-lines] [fixture: comments/bare-percent-comment]
@@ -916,8 +967,9 @@ has the text `a`. A rule that wrote a space before every comment would change
 how mermaid.js reads such an input, and leave a mistake of the author to read as
 another chart without a word; the printer keeps whether the comment touches, and
 a lint rule is the place to report it, as in the other diagrams (see
-[Comments](./journey.md#comments)). [fixture:
-comments/comment-after-a-statement-spaced] [fixture:
+[Comments](./journey.md#comments)).
+
+[fixture: comments/comment-after-a-statement-spaced] [fixture:
 comments/comment-after-a-statement-touching] [fixture:
 comments/comment-glued-to-a-one-character-word-kept] [fixture:
 comments/comment-glued-to-a-style-kept] [fixture:
@@ -971,9 +1023,10 @@ placed as under [Directives](./flowchart.md#directives): the gap is printed as
 without the directive, and the directive stands after its space and touches the
 unit that follows it. A directive on a line of its own stands at the level of
 the statement after it, and a directive between two statements on a line moves
-with the statement after it. [fixture:
-directives/directive-line-at-the-level-of-the-next-statement] [fixture:
-directives/directive-line-before-the-header] [fixture:
+with the statement after it.
+
+[fixture: directives/directive-line-at-the-level-of-the-next-statement]
+[fixture: directives/directive-line-before-the-header] [fixture:
 directives/directive-after-a-statement-spaced] [fixture:
 directives/directive-after-a-statement-touching] [fixture:
 directives/directive-between-keyword-and-text] [fixture:
@@ -1031,9 +1084,10 @@ quadrantChart
 The frontmatter is formatted as YAML by Prettier, as in the other diagrams (see
 [Frontmatter YAML](./flowchart.md#frontmatter-yaml)); a frontmatter that is no
 valid YAML stays as written. The title of the frontmatter is in the Db, and the
-printer does not touch its value. [fixture: frontmatter-yaml/formatted]
-[fixture: frontmatter-yaml/malformed-kept] [fixture:
-frontmatter-yaml/title-and-statement] [fixture:
+printer does not touch its value.
+
+[fixture: frontmatter-yaml/formatted] [fixture: frontmatter-yaml/malformed-kept]
+[fixture: frontmatter-yaml/title-and-statement] [fixture:
 frontmatter-yaml/comment-after-frontmatter-before-header]
 
 Input
@@ -1072,13 +1126,14 @@ the name of a class. A text and a name keep them at their ends too, where the Db
 trims them, since they are part of the written text; a title, an accessibility
 text, and the text of a description block leave them out at their ends, as their
 values do, and the printer drops them there. A gap that holds one is printed as
-written, and so is the text that holds one. [test: U+2028 between the words of a
-text] [test: U+2029 between the words of a text] [test: U+2028 at the end of a
-text] [test: U+2028 between a statement and the next] [test: U+2028 between the
-words of a title] [test: U+2028 after a title keyword] [test: U+2028 at the end
-of a title] [test: U+2028 in the name of a point] [test: U+2028 in an
-accessibility text] [test: U+2028 in a string] [test: U+2028 around the arrow of
-an axis] [test: U+2028 in the name of a class]
+written, and so is the text that holds one.
+
+[test: U+2028 between the words of a text] [test: U+2029 between the words of a
+text] [test: U+2028 at the end of a text] [test: U+2028 between a statement and
+the next] [test: U+2028 between the words of a title] [test: U+2028 after a
+title keyword] [test: U+2028 at the end of a title] [test: U+2028 in the name of
+a point] [test: U+2028 in an accessibility text] [test: U+2028 in a string]
+[test: U+2028 around the arrow of an axis] [test: U+2028 in the name of a class]
 
 ### Whitespace characters
 
@@ -1091,12 +1146,14 @@ and the name of a class; but around the `:`, the brackets, and the comma of a
 point, and around the colon and the brace of an accessibility statement,
 mermaid.js reads them as whitespace, and a space is printed in their place.
 After the `]` of a point they are not accepted (see
-[Line separators](#line-separators)). [test: U+00A0 between the words of a text]
-[test: U+3000 between the words of a text] [test: U+FEFF between the words of a
-text] [test: a form feed between the words of a text] [test: U+00A0 at the end
-of a text] [test: U+00A0 around the text of a title] [test: U+00A0 before the
-name of a point] [test: U+00A0 around the colon and the brackets of a point]
-[test: U+00A0 inside the brackets of a point] [test: a form feed after the
-bracket of a point] [test: U+00A0 around the colon of accTitle] [test: U+00A0
-inside a description block] [test: U+00A0 inside an empty description block]
-[test: U+00A0 around the arrow of an axis] [test: U+00A0 in the name of a class]
+[Line separators](#line-separators)).
+
+[test: U+00A0 between the words of a text] [test: U+3000 between the words of a
+text] [test: U+FEFF between the words of a text] [test: a form feed between the
+words of a text] [test: U+00A0 at the end of a text] [test: U+00A0 around the
+text of a title] [test: U+00A0 before the name of a point] [test: U+00A0 around
+the colon and the brackets of a point] [test: U+00A0 inside the brackets of a
+point] [test: a form feed after the bracket of a point] [test: U+00A0 around the
+colon of accTitle] [test: U+00A0 inside a description block] [test: U+00A0
+inside an empty description block] [test: U+00A0 around the arrow of an axis]
+[test: U+00A0 in the name of a class]

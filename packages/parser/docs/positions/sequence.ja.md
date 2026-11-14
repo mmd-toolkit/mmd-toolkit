@@ -23,12 +23,14 @@
 ### SequenceParticipantStatement
 
 `create` があるときは、範囲は `create` から始まります。
+
 [fixture: sequence/db-create-participant-before-message]
 [fixture: sequence/db-participant-empty-alias]
 
 ### SequenceDestroyStatement
 
 `create` があるときは、範囲は `create` から始まります。
+
 [fixture: sequence/gram-create-destroy]
 [fixture: sequence/db-destroy-participant]
 
@@ -39,20 +41,25 @@
 [トークン](../tokens/sequence.ja.md#トークン) を参照。
 `box Gr%%{init: {}}%%oup` では、候補の範囲は、
 `RawText` のトークン `Gr` と `oup` と、その間のディレクティブを覆います。
+
 [fixture: sequence/tokens-box-text-directive-in-candidate]
 [fixture: sequence/tokens-box-text-directive-in-remainder]
 
 ### SequenceArrow
 
-範囲はそのトークンです。 [fixture: sequence/db-message-activate-target]
+範囲はそのトークンです。
+
+[fixture: sequence/db-message-activate-target]
 
 ### SequenceSection
 
 範囲は、節を始めるキーワードから始まり、その最後のトークンで終わります。
 節を始めるキーワードは、`else`、`and`、`option`、
 最初の節ならブロックのキーワードです。
-`end` はブロックに属します。 [fixture: sequence/db-block-alt]
-[fixture: sequence/db-block-par] [fixture: sequence/db-block-critical]
+`end` はブロックに属します。
+
+[fixture: sequence/db-block-alt] [fixture: sequence/db-block-par]
+[fixture: sequence/db-block-critical]
 
 ### SequenceIdentifier
 
@@ -63,6 +70,7 @@
 `participant A%%{init: {}}%% c%%B` では、
 参加者の 1 つの単位がトークン `A` と ` c%%B` に切られます。
 ` c%%B` は、id が持つ空白を含みます。
+
 [fixture: sequence/lex-directive-in-id-before-space]
 [fixture: sequence/tokens-ignored-semicolon-in-participant-id]
 [fixture: sequence/db-participant-empty-alias]
@@ -71,10 +79,12 @@
 
 範囲は、接頭辞（接頭辞がなければテキスト）から、
 テキストの終わり（テキストがなければ接頭辞の終わり）までです。
+
 [fixture: sequence/lex-wrap-prefix-colon] [fixture: sequence/db-note-over-two]
 [fixture: sequence/db-message-wrap-prefix-without-text]
 
 ### SequenceDataBlock
 
 範囲は `@{` から `}` までです。
+
 [fixture: sequence/gram-data-block-line-break-only]
