@@ -590,7 +590,7 @@ journey/lex-person-line-separator-then-comment-line] [fixture:
 journey/lex-title-line-separator-comment-line-directive-next] [fixture:
 journey/lex-title-line-separator-comment-line-space-next] [fixture:
 journey/lex-title-line-separator-comment-line-separator-next] [fixture:
-journey/gram-title-line-separator-comment-line-empty-line] [fixture:
+journey/lex-title-line-separator-comment-line-empty-line] [fixture:
 journey/lex-title-line-separator-comment-line-end-of-text] [fixture:
 journey/lex-title-line-separator-comment-line-cr] [fixture:
 journey/lex-title-line-separator-comment-line-crlf] [fixture:
@@ -601,8 +601,8 @@ journey/lex-title-line-separator-comment-line-line-feed-before] [fixture:
 journey/lex-title-line-separator-comment-line-directive-before] [fixture:
 journey/lex-title-line-separator-comment-line-line-rule-before] [fixture:
 journey/lex-title-line-separator-comment-line-line-rule-after] [fixture:
-journey/gram-title-line-separator-comment-line-bare-percent] [fixture:
-journey/gram-title-line-separator-comment-line-percent-brace] [fixture:
+journey/lex-title-line-separator-comment-line-bare-percent] [fixture:
+journey/lex-title-line-separator-comment-line-percent-brace] [fixture:
 journey/lex-score-part-line-separator-then-comment-line] [fixture:
 journey/lex-ignored-data-line-separator-then-comment-line]
 

@@ -1110,7 +1110,7 @@ er/lex-acc-descr-block-unclosed]
 [fixture: er/lex-acc-descr-block-line-separator-comment-line-line-rule-before]
 [fixture: er/lex-acc-descr-block-line-separator-comment-line-line-rule-after]
 [fixture: er/lex-acc-descr-block-line-separator-comment-line-bare-percent]
-[fixture: er/gram-acc-descr-block-line-separator-comment-line-percent-brace]
+[fixture: er/lex-acc-descr-block-line-separator-comment-line-percent-brace]
 
 これらの文脈に入る規則は文の文脈の規則だけです。
 属性ブロックと style の文脈では、`accTitle` と `accDescr` は語です。

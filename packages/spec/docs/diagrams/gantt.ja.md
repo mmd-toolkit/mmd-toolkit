@@ -557,8 +557,8 @@ gantt/lex-task-colon-only]
   [fixture: gantt/lex-task-line-separator-comment-line-directive-next]
   [fixture: gantt/lex-task-line-separator-comment-line-space-next]
   [fixture: gantt/lex-task-line-separator-comment-line-separator-next]
-  [fixture: gantt/gram-task-line-separator-comment-line-empty-line]
-  [fixture: gantt/gram-task-line-separator-comment-line-end-of-text]
+  [fixture: gantt/lex-task-line-separator-comment-line-empty-line]
+  [fixture: gantt/lex-task-line-separator-comment-line-end-of-text]
   [fixture: gantt/lex-task-line-separator-comment-line-cr]
   [fixture: gantt/lex-task-line-separator-comment-line-crlf]
   [fixture: gantt/lex-task-line-separator-comment-line-two-comment-lines]
@@ -566,8 +566,8 @@ gantt/lex-task-colon-only]
   [fixture: gantt/lex-task-line-separator-comment-line-spaces-before]
   [fixture: gantt/lex-task-line-separator-comment-line-line-feed-before]
   [fixture: gantt/lex-task-line-separator-comment-line-directive-before]
-  [fixture: gantt/gram-task-line-separator-comment-line-bare-percent]
-  [fixture: gantt/gram-task-line-separator-comment-line-percent-brace]
+  [fixture: gantt/lex-task-line-separator-comment-line-bare-percent]
+  [fixture: gantt/lex-task-line-separator-comment-line-percent-brace]
 
 - 文は改行ではなく自分の単位で終わります。
   `newline` の単位は文法にとってそれだけで 1 つの行で、
@@ -830,7 +830,7 @@ U+2028 や U+2029 の後のコメントは読み飛ばされ、
 [fixture: gantt/lex-acc-title-line-separator-comment-line-directive-next]
 [fixture: gantt/lex-acc-title-line-separator-comment-line-space-next]
 [fixture: gantt/lex-acc-title-line-separator-comment-line-separator-next]
-[fixture: gantt/gram-acc-title-line-separator-comment-line-empty-line]
+[fixture: gantt/lex-acc-title-line-separator-comment-line-empty-line]
 [fixture: gantt/lex-acc-title-line-separator-comment-line-end-of-text]
 [fixture: gantt/lex-acc-title-line-separator-comment-line-cr]
 [fixture: gantt/lex-acc-title-line-separator-comment-line-crlf]
@@ -841,8 +841,8 @@ U+2028 や U+2029 の後のコメントは読み飛ばされ、
 [fixture: gantt/lex-acc-title-line-separator-comment-line-directive-before]
 [fixture: gantt/lex-acc-title-line-separator-comment-line-line-rule-before]
 [fixture: gantt/lex-acc-title-line-separator-comment-line-line-rule-after]
-[fixture: gantt/gram-acc-title-line-separator-comment-line-bare-percent]
-[fixture: gantt/gram-acc-title-line-separator-comment-line-percent-brace]
+[fixture: gantt/lex-acc-title-line-separator-comment-line-bare-percent]
+[fixture: gantt/lex-acc-title-line-separator-comment-line-percent-brace]
 
 説明ブロックの文脈では、字句解析器は次の規則をこの順に試します。
 
@@ -884,7 +884,7 @@ gantt/lex-acc-descr-block-line-separator-comment-line-two-comment-lines]
 [fixture: gantt/lex-acc-descr-block-line-separator-comment-line-line-rule-before]
 [fixture: gantt/lex-acc-descr-block-line-separator-comment-line-line-rule-after]
 [fixture: gantt/lex-acc-descr-block-line-separator-comment-line-bare-percent]
-[fixture: gantt/gram-acc-descr-block-line-separator-comment-line-percent-brace]
+[fixture: gantt/lex-acc-descr-block-line-separator-comment-line-percent-brace]
 
 ### コメント
 
@@ -1098,7 +1098,7 @@ U+2028 や U+2029 の後のコメントは読み飛ばされ、
 [fixture: gantt/lex-title-line-separator-comment-line-directive-next]
 [fixture: gantt/lex-title-line-separator-comment-line-space-next]
 [fixture: gantt/lex-title-line-separator-comment-line-separator-next]
-[fixture: gantt/gram-title-line-separator-comment-line-empty-line]
+[fixture: gantt/lex-title-line-separator-comment-line-empty-line]
 [fixture: gantt/lex-title-line-separator-comment-line-end-of-text]
 [fixture: gantt/lex-title-line-separator-comment-line-cr]
 [fixture: gantt/lex-title-line-separator-comment-line-crlf]
@@ -1109,8 +1109,8 @@ U+2028 や U+2029 の後のコメントは読み飛ばされ、
 [fixture: gantt/lex-title-line-separator-comment-line-directive-before]
 [fixture: gantt/lex-title-line-separator-comment-line-line-rule-before]
 [fixture: gantt/lex-title-line-separator-comment-line-line-rule-after]
-[fixture: gantt/gram-title-line-separator-comment-line-bare-percent]
-[fixture: gantt/gram-title-line-separator-comment-line-percent-brace]
+[fixture: gantt/lex-title-line-separator-comment-line-bare-percent]
+[fixture: gantt/lex-title-line-separator-comment-line-percent-brace]
 click の id は U+2028 や U+2029 で終わり、
 それによって click の文脈を出るので（[click の文脈](#click-の文脈) の規則 1）、
 その後のコメント行の次の行は文の文脈で読まれます。
@@ -1118,23 +1118,23 @@ id `a1` のタスクの後で、`click a1`、U+2028、`%% c`、改行、
 `href "https://e"` は `a1` のリンクを決めますが、`click a1`、U+2028、`%% c`、
 改行、`b href "https://e"` は拒否されます。
 [fixture: gantt/lex-click-id-line-separator-then-comment-line-href]
-[fixture: gantt/gram-click-id-line-separator-then-comment-line]
+[fixture: gantt/lex-click-id-line-separator-then-comment-line]
 [fixture: gantt/lex-click-id-line-separator-comment-line-directive-next]
 [fixture: gantt/lex-click-id-line-separator-comment-line-space-next]
 [fixture: gantt/lex-click-id-line-separator-comment-line-separator-next]
-[fixture: gantt/gram-click-id-line-separator-comment-line-empty-line]
-[fixture: gantt/gram-click-id-line-separator-comment-line-end-of-text]
+[fixture: gantt/lex-click-id-line-separator-comment-line-empty-line]
+[fixture: gantt/lex-click-id-line-separator-comment-line-end-of-text]
 [fixture: gantt/lex-click-id-line-separator-comment-line-cr]
 [fixture: gantt/lex-click-id-line-separator-comment-line-crlf]
 [fixture: gantt/lex-click-id-line-separator-comment-line-two-comment-lines]
-[fixture: gantt/gram-click-id-line-separator-comment-line-two-regions]
+[fixture: gantt/lex-click-id-line-separator-comment-line-two-regions]
 [fixture: gantt/lex-click-id-line-separator-comment-line-spaces-before]
 [fixture: gantt/lex-click-id-line-separator-comment-line-line-feed-before]
 [fixture: gantt/lex-click-id-line-separator-comment-line-directive-before]
-[fixture: gantt/gram-click-id-line-separator-comment-line-line-rule-before]
-[fixture: gantt/gram-click-id-line-separator-comment-line-line-rule-after]
-[fixture: gantt/gram-click-id-line-separator-comment-line-bare-percent]
-[fixture: gantt/gram-click-id-line-separator-comment-line-percent-brace]
+[fixture: gantt/lex-click-id-line-separator-comment-line-line-rule-before]
+[fixture: gantt/lex-click-id-line-separator-comment-line-line-rule-after]
+[fixture: gantt/lex-click-id-line-separator-comment-line-bare-percent]
+[fixture: gantt/lex-click-id-line-separator-comment-line-percent-brace]
 
 mermaid.js の文書は
 [Comments](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/gantt.md#L323-L326)

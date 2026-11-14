@@ -646,30 +646,30 @@ timeline/db-acc-descr-single-percent] [fixture:
 timeline/db-acc-descr-block-single-percent] A comment after a U+2028 or U+2029
 is the exception: it is read through, and the value goes on after it (see
 [Comment lines](../common.md#comment-lines)). [fixture:
-timeline/db-period-line-separator-then-comment-line] [fixture:
-timeline/db-period-paragraph-separator-then-comment-line] [fixture:
-timeline/db-event-line-separator-then-comment-line] [fixture:
-timeline/db-section-line-separator-then-comment-line] [fixture:
-timeline/db-title-line-separator-then-comment-line] [fixture:
-timeline/db-acc-title-line-separator-then-comment-line] [fixture:
-timeline/db-acc-descr-line-separator-then-comment-line] [fixture:
-timeline/db-acc-descr-block-line-separator-then-comment-line] [fixture:
-timeline/db-period-line-separator-comment-line-directive-next] [fixture:
-timeline/db-period-line-separator-comment-line-space-next] [fixture:
-timeline/db-period-line-separator-comment-line-separator-next] [fixture:
-timeline/db-period-line-separator-comment-line-empty-line] [fixture:
-timeline/db-period-line-separator-comment-line-end-of-text] [fixture:
-timeline/db-period-line-separator-comment-line-cr] [fixture:
-timeline/db-period-line-separator-comment-line-crlf] [fixture:
-timeline/db-period-line-separator-comment-line-two-comment-lines] [fixture:
-timeline/db-period-line-separator-comment-line-two-regions] [fixture:
-timeline/db-period-line-separator-comment-line-spaces-before] [fixture:
-timeline/db-period-line-separator-comment-line-line-feed-before] [fixture:
-timeline/db-period-line-separator-comment-line-directive-before] [fixture:
-timeline/db-period-line-separator-comment-line-bare-percent] [fixture:
-timeline/db-period-line-separator-comment-line-percent-brace] [fixture:
-timeline/db-event-line-separator-comment-line-line-rule-before] [fixture:
-timeline/db-event-line-separator-comment-line-line-rule-after]
+timeline/lex-period-line-separator-then-comment-line] [fixture:
+timeline/lex-period-paragraph-separator-then-comment-line] [fixture:
+timeline/lex-event-line-separator-then-comment-line] [fixture:
+timeline/lex-section-line-separator-then-comment-line] [fixture:
+timeline/lex-title-line-separator-then-comment-line] [fixture:
+timeline/lex-acc-title-line-separator-then-comment-line] [fixture:
+timeline/lex-acc-descr-line-separator-then-comment-line] [fixture:
+timeline/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+timeline/lex-period-line-separator-comment-line-directive-next] [fixture:
+timeline/lex-period-line-separator-comment-line-space-next] [fixture:
+timeline/lex-period-line-separator-comment-line-separator-next] [fixture:
+timeline/lex-period-line-separator-comment-line-empty-line] [fixture:
+timeline/lex-period-line-separator-comment-line-end-of-text] [fixture:
+timeline/lex-period-line-separator-comment-line-cr] [fixture:
+timeline/lex-period-line-separator-comment-line-crlf] [fixture:
+timeline/lex-period-line-separator-comment-line-two-comment-lines] [fixture:
+timeline/lex-period-line-separator-comment-line-two-regions] [fixture:
+timeline/lex-period-line-separator-comment-line-spaces-before] [fixture:
+timeline/lex-period-line-separator-comment-line-line-feed-before] [fixture:
+timeline/lex-period-line-separator-comment-line-directive-before] [fixture:
+timeline/lex-period-line-separator-comment-line-bare-percent] [fixture:
+timeline/lex-period-line-separator-comment-line-percent-brace] [fixture:
+timeline/lex-event-line-separator-comment-line-line-rule-before] [fixture:
+timeline/lex-event-line-separator-comment-line-line-rule-after]
 
 mermaid.js reads `%` in one more way, which differs from this rule where a
 character other than `}` and whitespace stands right before `%%` where a unit

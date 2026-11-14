@@ -655,8 +655,7 @@ requirement/lex-direction-text-line-separator-comment-line-directive-next]
 [fixture:
 requirement/lex-direction-text-line-separator-comment-line-separator-next]
 [fixture:
-requirement/gram-direction-text-line-separator-comment-line-empty-line]
-[fixture:
+requirement/lex-direction-text-line-separator-comment-line-empty-line] [fixture:
 requirement/lex-direction-text-line-separator-comment-line-end-of-text]
 [fixture: requirement/lex-direction-text-line-separator-comment-line-cr]
 [fixture: requirement/lex-direction-text-line-separator-comment-line-crlf]
@@ -675,9 +674,9 @@ requirement/lex-direction-text-line-separator-comment-line-line-rule-before]
 [fixture:
 requirement/lex-direction-text-line-separator-comment-line-line-rule-after]
 [fixture:
-requirement/gram-direction-text-line-separator-comment-line-bare-percent]
+requirement/lex-direction-text-line-separator-comment-line-bare-percent]
 [fixture:
-requirement/gram-direction-text-line-separator-comment-line-percent-brace]
+requirement/lex-direction-text-line-separator-comment-line-percent-brace]
 `direction` と値の間の空白は、改行、空行、タブ、U+2028 を持てますが、
 `direction` の前の並びは U+2028 を持てません。
 `a`、U+2028、`direction LR` は 1 つの引用符なしのテキストで、文ではなく、
@@ -791,7 +790,7 @@ U+2028 や U+2029 の後のコメントは読み飛ばされ、
 [fixture: requirement/lex-acc-title-line-separator-comment-line-directive-next]
 [fixture: requirement/lex-acc-title-line-separator-comment-line-space-next]
 [fixture: requirement/lex-acc-title-line-separator-comment-line-separator-next]
-[fixture: requirement/gram-acc-title-line-separator-comment-line-empty-line]
+[fixture: requirement/lex-acc-title-line-separator-comment-line-empty-line]
 [fixture: requirement/lex-acc-title-line-separator-comment-line-end-of-text]
 [fixture: requirement/lex-acc-title-line-separator-comment-line-cr]
 [fixture: requirement/lex-acc-title-line-separator-comment-line-crlf] [fixture:
@@ -802,8 +801,8 @@ requirement/lex-acc-title-line-separator-comment-line-two-comment-lines]
 [fixture: requirement/lex-acc-title-line-separator-comment-line-directive-before]
 [fixture: requirement/lex-acc-title-line-separator-comment-line-line-rule-before]
 [fixture: requirement/lex-acc-title-line-separator-comment-line-line-rule-after]
-[fixture: requirement/gram-acc-title-line-separator-comment-line-bare-percent]
-[fixture: requirement/gram-acc-title-line-separator-comment-line-percent-brace]
+[fixture: requirement/lex-acc-title-line-separator-comment-line-bare-percent]
+[fixture: requirement/lex-acc-title-line-separator-comment-line-percent-brace]
 
 説明ブロックの文脈では、`}` は `}` の単位で文脈を出て、
 `}` 以外の 1 つ以上の文字（改行を含む）は `description-block-text` の単位です。
@@ -851,7 +850,7 @@ requirement/lex-acc-descr-block-line-separator-comment-line-line-rule-after]
 [fixture:
 requirement/lex-acc-descr-block-line-separator-comment-line-bare-percent]
 [fixture:
-requirement/gram-acc-descr-block-line-separator-comment-line-percent-brace]
+requirement/lex-acc-descr-block-line-separator-comment-line-percent-brace]
 
 これらの文脈に入る規則は文の文脈だけの規則です。
 style の文脈では、
@@ -910,8 +909,8 @@ U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
 [fixture: requirement/lex-name-line-separator-comment-line-directive-next]
 [fixture: requirement/lex-name-line-separator-comment-line-space-next]
 [fixture: requirement/lex-name-line-separator-comment-line-separator-next]
-[fixture: requirement/gram-name-line-separator-comment-line-empty-line]
-[fixture: requirement/gram-name-line-separator-comment-line-end-of-text]
+[fixture: requirement/lex-name-line-separator-comment-line-empty-line]
+[fixture: requirement/lex-name-line-separator-comment-line-end-of-text]
 [fixture:
 requirement/lex-relationship-target-line-separator-comment-line-end-of-text]
 [fixture: requirement/lex-name-line-separator-comment-line-cr]
@@ -921,8 +920,8 @@ requirement/lex-relationship-target-line-separator-comment-line-end-of-text]
 [fixture: requirement/lex-name-line-separator-comment-line-spaces-before]
 [fixture: requirement/lex-name-line-separator-comment-line-line-feed-before]
 [fixture: requirement/lex-name-line-separator-comment-line-directive-before]
-[fixture: requirement/gram-name-line-separator-comment-line-bare-percent]
-[fixture: requirement/gram-name-line-separator-comment-line-percent-brace]
+[fixture: requirement/lex-name-line-separator-comment-line-bare-percent]
+[fixture: requirement/lex-name-line-separator-comment-line-percent-brace]
 
 ## 文法
 

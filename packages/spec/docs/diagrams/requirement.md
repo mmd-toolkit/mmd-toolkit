@@ -585,8 +585,7 @@ requirement/lex-direction-text-line-separator-comment-line-directive-next]
 [fixture: requirement/lex-direction-text-line-separator-comment-line-space-next]
 [fixture:
 requirement/lex-direction-text-line-separator-comment-line-separator-next]
-[fixture:
-requirement/gram-direction-text-line-separator-comment-line-empty-line]
+[fixture: requirement/lex-direction-text-line-separator-comment-line-empty-line]
 [fixture:
 requirement/lex-direction-text-line-separator-comment-line-end-of-text]
 [fixture: requirement/lex-direction-text-line-separator-comment-line-cr]
@@ -606,9 +605,9 @@ requirement/lex-direction-text-line-separator-comment-line-line-rule-before]
 [fixture:
 requirement/lex-direction-text-line-separator-comment-line-line-rule-after]
 [fixture:
-requirement/gram-direction-text-line-separator-comment-line-bare-percent]
+requirement/lex-direction-text-line-separator-comment-line-bare-percent]
 [fixture:
-requirement/gram-direction-text-line-separator-comment-line-percent-brace] The
+requirement/lex-direction-text-line-separator-comment-line-percent-brace] The
 whitespace between `direction` and its value may hold a line feed, an empty
 line, a tab, or a U+2028, while the run before `direction` may not hold a
 U+2028: `a`, U+2028, and `direction LR` is one unquoted text, which is no
@@ -714,7 +713,7 @@ requirement/lex-acc-descr-line-separator-then-comment-line] [fixture:
 requirement/lex-acc-title-line-separator-comment-line-directive-next] [fixture:
 requirement/lex-acc-title-line-separator-comment-line-space-next] [fixture:
 requirement/lex-acc-title-line-separator-comment-line-separator-next] [fixture:
-requirement/gram-acc-title-line-separator-comment-line-empty-line] [fixture:
+requirement/lex-acc-title-line-separator-comment-line-empty-line] [fixture:
 requirement/lex-acc-title-line-separator-comment-line-end-of-text] [fixture:
 requirement/lex-acc-title-line-separator-comment-line-cr] [fixture:
 requirement/lex-acc-title-line-separator-comment-line-crlf] [fixture:
@@ -728,8 +727,8 @@ requirement/lex-acc-title-line-separator-comment-line-directive-before]
 [fixture:
 requirement/lex-acc-title-line-separator-comment-line-line-rule-before]
 [fixture: requirement/lex-acc-title-line-separator-comment-line-line-rule-after]
-[fixture: requirement/gram-acc-title-line-separator-comment-line-bare-percent]
-[fixture: requirement/gram-acc-title-line-separator-comment-line-percent-brace]
+[fixture: requirement/lex-acc-title-line-separator-comment-line-bare-percent]
+[fixture: requirement/lex-acc-title-line-separator-comment-line-percent-brace]
 
 In the description block context, `}` is a `}` unit and leaves the context, and
 one or more characters other than `}`, line feeds included, are a
@@ -777,7 +776,7 @@ requirement/lex-acc-descr-block-line-separator-comment-line-line-rule-after]
 [fixture:
 requirement/lex-acc-descr-block-line-separator-comment-line-bare-percent]
 [fixture:
-requirement/gram-acc-descr-block-line-separator-comment-line-percent-brace]
+requirement/lex-acc-descr-block-line-separator-comment-line-percent-brace]
 
 The rules that enter these contexts are rules of the statement context only; in
 the style context, `accDescr` is a `style-word` (see
@@ -832,8 +831,8 @@ requirement/lex-string-line-separator-then-comment-line] [fixture:
 requirement/lex-name-line-separator-comment-line-directive-next] [fixture:
 requirement/lex-name-line-separator-comment-line-space-next] [fixture:
 requirement/lex-name-line-separator-comment-line-separator-next] [fixture:
-requirement/gram-name-line-separator-comment-line-empty-line] [fixture:
-requirement/gram-name-line-separator-comment-line-end-of-text] [fixture:
+requirement/lex-name-line-separator-comment-line-empty-line] [fixture:
+requirement/lex-name-line-separator-comment-line-end-of-text] [fixture:
 requirement/lex-relationship-target-line-separator-comment-line-end-of-text]
 [fixture: requirement/lex-name-line-separator-comment-line-cr] [fixture:
 requirement/lex-name-line-separator-comment-line-crlf] [fixture:
@@ -842,8 +841,8 @@ requirement/lex-name-line-separator-comment-line-two-regions] [fixture:
 requirement/lex-name-line-separator-comment-line-spaces-before] [fixture:
 requirement/lex-name-line-separator-comment-line-line-feed-before] [fixture:
 requirement/lex-name-line-separator-comment-line-directive-before] [fixture:
-requirement/gram-name-line-separator-comment-line-bare-percent] [fixture:
-requirement/gram-name-line-separator-comment-line-percent-brace]
+requirement/lex-name-line-separator-comment-line-bare-percent] [fixture:
+requirement/lex-name-line-separator-comment-line-percent-brace]
 
 ## Grammar
 

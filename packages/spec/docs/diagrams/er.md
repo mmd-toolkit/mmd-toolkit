@@ -982,7 +982,7 @@ er/lex-acc-descr-block-line-separator-comment-line-directive-before] [fixture:
 er/lex-acc-descr-block-line-separator-comment-line-line-rule-before] [fixture:
 er/lex-acc-descr-block-line-separator-comment-line-line-rule-after] [fixture:
 er/lex-acc-descr-block-line-separator-comment-line-bare-percent] [fixture:
-er/gram-acc-descr-block-line-separator-comment-line-percent-brace]
+er/lex-acc-descr-block-line-separator-comment-line-percent-brace]
 
 The rules that enter these contexts are rules of the statement context only; in
 an attribute block and in the style context, `accTitle` and `accDescr` are words
