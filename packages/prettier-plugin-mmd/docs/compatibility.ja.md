@@ -1871,6 +1871,35 @@ Prettier 3.9.9 で、以下の各値を `fill: <値>` として整形し、
 色に接するディレクティブ（`fill:#ABCDEF%%{init: {}}%%`）は、
 mermaid.js が取り除いた後で、その前の語を後の語と結ぶことがあるので、
 その色も書かれたまま残します。
+ER 図と requirement 図では、スタイルのテキストを空白なしで読みます。
+ER 図は空白、タブ、改行を落とし、行の規則が無視する `;` の次の行もつなぎます。
+requirement 図は空白を落とします。
+そのため、色の後ろに空白を挟んで文字が続くと、色はその文字に接した語になります。
+`style A fill:#F9F ab` は、テキスト `fill:#F9Fab` で、
+`#F9Fab` は色ではないので、`fill: #F9F ab` のまま残します。
+`style A fill:#F9F stroke:#ABC` は `fill: #F9F stroke:#abc` と印字します。
+どの図種でも、スタイルのテキストが色の後ろに残す文字（U+2028、U+2029、U+00A0、
+U+3000、ER 図と requirement 図以外では、空白とタブでない空白文字）は、
+色をその文字に接した語にするので、色は書かれたまま残します。
+ただし、文の終わりで整形ツールがその文字を除くときは、
+色が印字したテキストの終わりになるので、最初の整形で小文字にします。
+2 回目の整形で変わらないようにするためです。
+[fixture: er/colors/color-words-as-read]
+[fixture: er/colors/color-word-over-ignored-semicolon]
+[fixture: requirement/colors/color-words-as-read]
+[test: agentflow color words before a comma keep their padding]
+[test: flowchart color words before a comma keep form feed]
+[test: state color before a semicolon follows the trimmed Db end]
+[test: agentflow color at EOF after dropped U+2028]
+[test: agentflow color before LF after dropped U+2028]
+[test: agentflow color at EOF after dropped U+00A0]
+[test: agentflow color before LF after dropped U+00A0]
+[test: agentflow color before a semicolon after dropped U+00A0]
+[test: agentflow color after other dropped Unicode whitespace]
+[test: flowchart color after dropped form feed]
+[test: swimlane color after dropped form feed]
+[test: class color after dropped form feed]
+[test: treemap color before a dropped semicolon and its padding]
 [fixture: flowchart/colors/words-that-are-not-colors-as-written]
 [fixture: flowchart/colors/colors-in-quotes-and-after-a-backslash-as-written]
 [fixture: flowchart/colors/color-before-the-final-semicolon]

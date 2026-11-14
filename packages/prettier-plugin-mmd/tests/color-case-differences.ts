@@ -131,7 +131,11 @@ function colorRanges(text: string): [number, number][] {
  * color is the written one in lower case; any other text is returned as it is.
  */
 function withWrittenColors(written: string, printed: string): string {
-  const writtenColors = colorRanges(written)
+  // A removed end is not part of the color word; an end that is still printed
+  // remains one (docs/compatibility.md, Colors that are drawn the same).
+  const writtenText =
+    printed.trimEnd() === printed ? written.trimEnd() : written
+  const writtenColors = colorRanges(writtenText)
   const printedColors = colorRanges(printed)
   if (writtenColors.length !== printedColors.length) return printed
   let result = ""

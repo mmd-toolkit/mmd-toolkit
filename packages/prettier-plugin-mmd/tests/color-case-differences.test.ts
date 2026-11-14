@@ -18,6 +18,20 @@ interface Case {
 
 const restored: readonly Case[] = [
   {
+    name: "a color before removed U+2028",
+    type: "agentflow",
+    before: vertex(["color:#C0FFEE\u2028"]),
+    after: vertex(["color: #c0ffee"]),
+    compared: vertex(["color: #C0FFEE"]),
+  },
+  {
+    name: "a color before removed U+00A0",
+    type: "agentflow",
+    before: vertex(["color:#C0FFEE\u00a0"]),
+    after: vertex(["color: #c0ffee"]),
+    compared: vertex(["color: #C0FFEE"]),
+  },
+  {
     name: "the colors of a style of a vertex",
     type: "flowchart-v2",
     before: vertex(["fill:#F9F", "stroke:#ABCDEF"]),
@@ -111,6 +125,20 @@ const restored: readonly Case[] = [
 ]
 
 const kept: readonly Case[] = [
+  {
+    name: "a color word that keeps U+2028",
+    type: "flowchart-v2",
+    before: vertex(["color:#C0FFEE\u2028"]),
+    after: vertex(["color:#c0ffee\u2028"]),
+    compared: vertex(["color:#c0ffee\u2028"]),
+  },
+  {
+    name: "a color word that keeps U+00A0",
+    type: "flowchart-v2",
+    before: vertex(["color:#C0FFEE\u00a0"]),
+    after: vertex(["color:#c0ffee\u00a0"]),
+    compared: vertex(["color:#c0ffee\u00a0"]),
+  },
   {
     name: "a run of 5 digits printed in lower case",
     type: "flowchart-v2",

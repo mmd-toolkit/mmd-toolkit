@@ -15,6 +15,7 @@ import type { KeptLines } from "./kept-lines.ts"
 import {
   holdsJoiningRegion,
   isDroppedSemicolon,
+  keepsTrailingLineSeparators,
   lineEndOf,
   lineStartOf,
   withJoinedLines,
@@ -784,23 +785,21 @@ export function printBlock<Statement extends Positioned>(
     // whitespace after the last statement stays as written where it holds
     // one (docs/state.md, Line separators).
     const written = source.text.slice(position, stretch.end)
-    const trailing =
-      written.trim() === "" &&
-      (written.includes("\u2028") || written.includes("\u2029"))
-        ? printAsWritten(source, position, stretch.end)
-        : printInlineGap(
-            source,
-            position,
-            stretch.end,
-            {
-              atLineStart: false,
-              atLineEnd: true,
-            },
-            rules.keptInlineGapEnd,
-            undefined,
-            rules.omittedRanges,
-            rules.relocatedWhitespace,
-          )
+    const trailing = keepsTrailingLineSeparators(source, position, stretch.end)
+      ? printAsWritten(source, position, stretch.end)
+      : printInlineGap(
+          source,
+          position,
+          stretch.end,
+          {
+            atLineStart: false,
+            atLineEnd: true,
+          },
+          rules.keptInlineGapEnd,
+          undefined,
+          rules.omittedRanges,
+          rules.relocatedWhitespace,
+        )
     // The spaces and tabs after the printed end of the last statement are not
     // printed, so the statement ends the line, with the whitespace that it
     // takes (the one after the `:` of a task, say).

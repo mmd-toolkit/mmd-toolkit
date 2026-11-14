@@ -970,6 +970,23 @@ export function findLinesWithUnusualStyleEnd(
 }
 
 /**
+ * Whether the whitespace after a kept statement holds a line separator, which
+ * stays as written (docs/state.md, Line separators). The color rule uses this
+ * same printed suffix when deciding where a color word ends.
+ */
+export function keepsTrailingLineSeparators(
+  source: Source,
+  start: number,
+  end: number,
+): boolean {
+  const written = source.text.slice(start, end)
+  return (
+    written.trim() === "" &&
+    (written.includes("\u2028") || written.includes("\u2029"))
+  )
+}
+
+/**
  * The kept lines with the lines of the statements that end in whitespace other
  * than a space or a tab added as verbatim lines (see
  * `findLinesWithUnusualStyleEnd`).

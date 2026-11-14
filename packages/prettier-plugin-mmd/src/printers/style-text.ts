@@ -3,7 +3,6 @@ import type { Source } from "./source.ts"
 import {
   findTriviaAt,
   isSpaceOrTab,
-  isWhitespace,
   previousRead,
   skipRemoved,
   textRead,
@@ -174,17 +173,63 @@ export function readsStyleAsDescription(
 }
 
 /**
+ * How a style reads whitespace beside a color: ER drops ASCII whitespace,
+ * requirement drops spaces, and other styles keep spaces and tabs as word
+ * boundaries. Other characters continue the word, including Unicode whitespace
+ * kept in a value (docs/compatibility.md, Colors that are drawn the same).
+ */
+function styleWordWhitespace(
+  source: Source,
+  character: string,
+): "removed" | "boundary" | undefined {
+  switch (source.root.body.type) {
+    case "ErDiagram":
+      return " \t\r\n\v\f".includes(character) ? "removed" : undefined
+    case "RequirementDiagram":
+      return character === " " ? "removed" : undefined
+    default:
+      return isSpaceOrTab(character) ? "boundary" : undefined
+  }
+}
+
+/** The next character of a style, without removed regions or dropped whitespace. */
+function nextStyleRead(source: Source, offset: number, end: number): number {
+  let position = skipRemoved(source, offset)
+  while (
+    position < end &&
+    styleWordWhitespace(source, source.text[position]) === "removed"
+  )
+    position = skipRemoved(source, position + 1)
+  return position
+}
+
+/** The previous character of a style, without removed regions or dropped whitespace. */
+function previousStyleRead(
+  source: Source,
+  offset: number,
+  start: number,
+): number {
+  let position = previousRead(source, offset)
+  while (
+    position >= start &&
+    styleWordWhitespace(source, source.text[position]) === "removed"
+  )
+    position = previousRead(source, position)
+  return position
+}
+
+/**
  * The edits that print each color in the text of a style, at `[start, end)`,
  * in lower case: a `#` and 3, 4, 6, or 8 hexadecimal digits, as CSS reads a
  * color, and as the CSS formatter of Prettier prints it (docs/compatibility.md,
  * Colors that are drawn the same). It is a color only as a word of its own: it
- * starts the text or follows whitespace, a `:`, a `,`, or a `(`, and it ends the
- * text or is followed by whitespace, a `,`, a `)`, or a `!`, or by the `;` that
- * ends the text, which the line rule of mermaid.js ignores. A `;` inside the
- * text makes it the placeholder of an entity (`#f00;`, or the word `#f00stroke`
- * once the `;` is taken away, common.md, `style` and `classDef` lines), a longer
- * or shorter run of digits is no color, and nothing inside a string, a comment,
- * the parentheses of `url(`, or after a backslash is one.
+ * starts the read text or follows a word boundary, a `:`, a `,`, or a `(`, and
+ * ends the read text or is followed by a word boundary, a `,`, a `)`, or a `!`,
+ * or by the `;` that ends the text, which the line rule of mermaid.js ignores.
+ * A `;` inside the text can make it the placeholder of an entity (`#f00;`, or the
+ * word `#f00stroke` once the `;` is taken away, common.md, `style` and `classDef`
+ * lines). A longer or shorter run of digits is no color, and nothing inside a
+ * string, a comment, the parentheses of `url(`, or after a backslash is one.
  */
 export function styleColorEdits(
   source: Source,
@@ -195,7 +240,7 @@ export function styleColorEdits(
   const edits: TextEdit[] = []
   let position = start
   while (position < end) {
-    const read = skipRemoved(source, position)
+    const read = nextStyleRead(source, position, end)
     if (read !== position) {
       position = read
       continue
@@ -206,23 +251,25 @@ export function styleColorEdits(
       position = regionEnd
     } else if (character === "#") {
       const digitPositions: number[] = []
-      let digitsEnd = skipRemoved(source, position + 1)
+      let digitsEnd = nextStyleRead(source, position + 1, end)
       while (digitsEnd < end && isHexDigit(text[digitsEnd])) {
         digitPositions.push(digitsEnd)
-        digitsEnd = skipRemoved(source, digitsEnd + 1)
+        digitsEnd = nextStyleRead(source, digitsEnd + 1, end)
       }
       const digits = digitPositions.length
       // The characters beside the color are the ones that the lexer reads: the
       // `;` that ends the text, which the line rule ignores, is not one.
-      const beforeAt = previousRead(source, position)
+      const beforeAt = previousStyleRead(source, position, start)
       const before = beforeAt < start ? undefined : text[beforeAt]
       const after = digitsEnd < end ? text[digitsEnd] : undefined
       if (
         (digits === 3 || digits === 4 || digits === 6 || digits === 8) &&
         (before === undefined ||
-          isWhitespace(before) ||
+          styleWordWhitespace(source, before) === "boundary" ||
           ":,(".includes(before)) &&
-        (after === undefined || isWhitespace(after) || ",)!".includes(after))
+        (after === undefined ||
+          styleWordWhitespace(source, after) === "boundary" ||
+          ",)!".includes(after))
       ) {
         // Edit only the written digits: a directive between them stays whole.
         for (const digit of digitPositions) {
