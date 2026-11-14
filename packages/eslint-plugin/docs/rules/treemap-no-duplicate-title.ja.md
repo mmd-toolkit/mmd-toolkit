@@ -52,7 +52,7 @@ mermaid.js は、
 
 ```mmd
 %% eslint @mmd-toolkit/treemap-no-duplicate-title: error
-treemap-beta
+treemap
   title First
   title Second
   "Revenue": 10
@@ -62,7 +62,7 @@ treemap-beta
 
 ```mmd
 %% eslint @mmd-toolkit/treemap-no-duplicate-title: error
-treemap-beta
+treemap
   title Second
   "Revenue": 10
 ```

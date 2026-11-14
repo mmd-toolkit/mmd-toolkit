@@ -38,7 +38,7 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/pie-no-empty-description-block: error
 pie
   accDescr {}
-  "A" : 1
+  "A": 1
 ```
 
 Examples of **correct** code for this rule:
@@ -50,7 +50,7 @@ pie
     Revenue by product
     in the last quarter
   }
-  "A" : 1
+  "A": 1
 ```
 
 ## Options

@@ -49,7 +49,7 @@ gantt
     third
   }
   dateFormat YYYY-MM-DD
-  Design :2024-01-06, 3d
+  Design : 2024-01-06, 3d
 ```
 
 この規則に**従う**コードの例:
@@ -59,7 +59,7 @@ gantt
 gantt
   accDescr: first
   dateFormat YYYY-MM-DD
-  Design :2024-01-06, 3d
+  Design : 2024-01-06, 3d
 ```
 
 ```mmd
@@ -68,7 +68,7 @@ gantt
   accDescr: first
   accDescr: first
   dateFormat YYYY-MM-DD
-  Design :2024-01-06, 3d
+  Design : 2024-01-06, 3d
 ```
 
 ## オプション

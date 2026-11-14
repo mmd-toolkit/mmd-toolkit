@@ -10,11 +10,11 @@
 
 ### Header
 
-`architecture-beta` を第1列に置き、
-通常の最初の文を次行へ移して見出しを明確にします。
+`architecture-beta` を第1列に置き、通常の最初の文を次行へ移します。
+ほかの図種と同じです。
 空の本文も保ちます。
-hidden の境界と保護された見出し・本文の区間を優先し、
-接着した keyword を作りません。
+隠れた形の境界と保護された見出し・本文の区間を優先し、
+接着したキーワードを作りません。
 
 [fixture: architecture/header/header-empty]
 
@@ -38,7 +38,7 @@ hidden の境界と保護された見出し・本文の区間を優先し、
 
 [corpus fixture: architecture/header-letter-suffix]
 
-入力（escape 表記）: `"architecture-beta accTitle: Topic\n"`
+入力（エスケープ表記）: `"architecture-beta accTitle: Topic\n"`
 
 出力
 ([header/header-inline-accessibility-output.mmd](../tests/fixtures/architecture/header/header-inline-accessibility-output.mmd)):
@@ -50,11 +50,11 @@ architecture-beta
 
 ### Indentation
 
-通常の宣言・辺・alignment・共通文・独立した trivia は設定の1段だけ字下げします。
+通常の宣言・辺・整列指定・共通文・独立した注釈類は設定の1段だけ字下げします。
 本文は平坦で、`in` は参照なので入れ子の段を増やしません。
 architecture の列には文法上の意味がないため、`tabWidth: 0` は空白0個、
 `useTabs` は幅0でもタブ1個です。
-説明本文以外の値の継続列、hidden の閉じ、保持する prefix は原形を保ちます。
+説明本文以外の値の継続列、隠れた形の閉じ、保持する前置部分は原形を保ちます。
 
 [fixture: architecture/indentation/indent-four]
 
@@ -66,7 +66,7 @@ architecture の列には文法上の意味がないため、`tabWidth: 0` は�
 
 [fixture: architecture/indentation/zero-tabs]
 
-入力（escape 表記）: `"architecture-beta\nservice a\n"`
+入力（エスケープ表記）: `"architecture-beta\nservice a\n"`
 
 設定: `{"tabWidth": 4}`
 
@@ -80,8 +80,8 @@ architecture-beta
 
 ### Statements one per line
 
-読みやすさのため、通常の文は1行ずつ印字します。
-共通の行値は物理行末までの keyword に見える文字も所有するため、分割しません。
+通常の文は、ほかの図種と同じく1行ずつ印字します。
+共通の行値は物理行末までのキーワードに見える文字も所有するため、分割しません。
 セミコロンは文の区切りではありません。
 隣接する不正な文や部品の隙間に使われた空の説明は、失敗のままです。
 
@@ -95,7 +95,7 @@ architecture-beta
 
 [corpus fixture: architecture/gram-empty-description-after-service]
 
-入力（escape 表記）: `"architecture-beta title t service a; junction j\n"`
+入力（エスケープ表記）: `"architecture-beta title t service a; junction j\n"`
 
 出力
 ([statements-one-per-line/line-value-owns-keywords-output.mmd](../tests/fixtures/architecture/statements-one-per-line/line-value-owns-keywords-output.mmd)):
@@ -106,11 +106,11 @@ architecture-beta title t service a; junction j
 
 ### Declaration spacing
 
-keyword と ID の間は空白1個です。
+キーワードと ID の間は空白1個です。
 `group g(cloud)[G]`、`service a(server)[A]`、`service a[A]` と印字し、
-括弧・角括弧の付属部品を1つの node として読みやすくします。
-文字 icon は独立した値なので `service a "I" [A]` とします。
-省略された部品は補わず、trivia のある隙間は接触を保ちます。
+括弧・角括弧の付属部品を1つの node として印字します。
+文字アイコンは独立した値なので `service a "I" [A]` とします。
+省略された部品は補わず、注釈類のある隙間は接触を保ちます。
 
 [fixture: architecture/declaration-spacing/double-text-icon]
 
@@ -130,7 +130,7 @@ keyword と ID の間は空白1個です。
 
 [fixture: architecture/declaration-spacing/single-text-icon]
 
-入力（escape 表記）: `"architecture-beta\ngroup  g (cloud) [Group]\n"`
+入力（エスケープ表記）: `"architecture-beta\ngroup  g (cloud) [Group]\n"`
 
 出力
 ([declaration-spacing/named-group-output.mmd](../tests/fixtures/architecture/declaration-spacing/named-group-output.mmd)):
@@ -158,7 +158,7 @@ architecture-beta
 
 [corpus fixture: architecture/db-junction-forward-parent]
 
-入力（escape 表記）: `"architecture-beta\ngroup p\ngroup g(cloud)[G]in\tp\n"`
+入力（エスケープ表記）: `"architecture-beta\ngroup p\ngroup g(cloud)[G]in\tp\n"`
 
 出力
 ([parent-references/group-parent-output.mmd](../tests/fixtures/architecture/parent-references/group-parent-output.mmd)):
@@ -171,9 +171,9 @@ architecture-beta
 
 ### Named icons
 
-括弧内の icon 名は先頭の記号や未知の名前も原綴を保ちます。
+括弧内のアイコン名は先頭の記号や未知の名前も原綴を保ちます。
 この構文単位は空でなく空白のない名前を要求するため、空白を加えると拒否されます。
-完全な部品間の global directive は境界を保ちます。
+完全な部品間の大域的なディレクティブは境界を保ちます。
 
 [fixture: architecture/named-icons/leading-symbols]
 
@@ -189,7 +189,7 @@ architecture-beta
 
 [corpus fixture: architecture/lex-icon-text-parenthesized]
 
-入力（escape 表記）: `"architecture-beta\ngroup symbols (-:A_)\n"`
+入力（エスケープ表記）: `"architecture-beta\ngroup symbols (-:A_)\n"`
 
 出力
 ([named-icons/leading-symbols-output.mmd](../tests/fixtures/architecture/named-icons/leading-symbols-output.mmd)):
@@ -201,12 +201,13 @@ architecture-beta
 
 ### Text icons
 
-StringLiteral の範囲全体を保ちます。
-単引用符・二重引用符・反対側の引用符・空文字・escape・空白・継続行も保持します。
+`StringLiteral` の範囲全体を保ちます。
+単引用符、二重引用符、反対側の引用符、空文字、エスケープ、空白、
+継続行も保持します。
 ただし、テキストの中の空白とタブの連なりは、
-空白 1 つにして印字します（[Label content](#label-content)を参照）。
+空白 1 つにして印字します（[ラベルの内容](#label-content)を参照）。
 `singleQuote` では書き換えません。
-再符号化は作者の綴りを失い、trim や decode は Db を変え得るためです。
+再符号化は作者の綴りを失い、両端の空白の除去や復号は Db を変え得るためです。
 
 [fixture: architecture/text-icons/double-quote]
 
@@ -222,7 +223,8 @@ StringLiteral の範囲全体を保ちます。
 
 [corpus fixture: architecture/directive-empty-text-icon]
 
-入力（escape 表記）: `"architecture-beta\nservice double\"a'\\n\\t\\q\\\\b\"\n"`
+入力（エスケープ表記）:
+`"architecture-beta\nservice double\"a'\\n\\t\\q\\\\b\"\n"`
 
 設定: `{"singleQuote": true}`
 
@@ -236,16 +238,16 @@ architecture-beta
 
 ### Label forms
 
-ArchitectureLabel の全範囲と引用符の綴りを保ちますが、
-引用符つきの平易なラベルは引用符なしで印字します（[Quotes](#quotes)を参照）。
+`ArchitectureLabel` の全範囲と引用符の綴りを保ちますが、
+引用符つきの平易なラベルは引用符なしで印字します（[引用符](#quotes)を参照）。
 引用符の前に余白があるラベル（`[ "x" ]`）は、
-木では引用符を含む bare ラベルですが、
+木では引用符を含む引用符なしラベルですが、
 mermaid.js は余白を除いて引用符を外し `x` と読むので、
 `["x"]` や `[x]` と同じに読みます。
 印字は引用符つきのラベルと同じで、
 `service padded [ "x" ]` は `service padded[x]` になります。
-引用符に見える fallback は bare のままにし、
-変換後の文字から kind を推測しません。
+引用符に見えても引用符付きとして読まれなかったテキストは、引用符なしのままにし、
+変換後の文字から種別を推測しません。
 
 [fixture: architecture/label-forms/backslash-fallback]
 
@@ -287,7 +289,7 @@ mermaid.js は余白を除いて引用符を外し `x` と読むので、
 
 [corpus fixture: architecture/db-title-quote-only-padded]
 
-入力（escape 表記）: `"architecture-beta\nservice padded [ \"x\" ]\n"`
+入力（エスケープ表記）: `"architecture-beta\nservice padded [ \"x\" ]\n"`
 
 設定: `{"singleQuote": true}`
 
@@ -307,10 +309,11 @@ architecture-beta
 `group api(cloud)["API Group"]` は `group api(cloud)[API Group]` と印字し、
 `service s(server)['Plain Single']` は `service s(server)[Plain Single]`
 と印字します。
-平易なラベルとは、ASCII 英字、数字、`_`、空白からなり、
+平易なラベルとは、角括弧、引用符、バックスラッシュ、改行を含まず、
 両端に空白がないものです。
-引用符つきのラベルを読む 11.13.0 から 11.16.1 までの文法は、
-引用符なしのラベルではこれらの文字だけを読むので、`"a-b"`、`"A.B"`、`"日本語"`、
+引用符なしのラベルは次の `]` まで続き、
+同じ引用符で始まり終わるラベルは引用符つきのラベルとして読まれるので、`"a-b"`、
+`"A.B"`、`"日本語"` は引用符なしで印字します。
 `"a[b"`、空のラベル、引用符の内側に余白があるラベル（`[" padded "]`）は、
 引用符を保ちます。
 バックスラッシュや引用符があるラベルも同じです。
@@ -319,9 +322,23 @@ mermaid.js は、読むタイトルの外側の `"` か `'` の引用符 1 組�
 `"a\"b"` を `a\"b` と、`"'x'"` を `'x'` と印字すると、
 別のタイトルとして読まれます。
 引用符なしのラベルを引用符で囲むことはありません。
+ラベルの中の空白とタブの連続は空白 1 つにしますが、
+それだけで 1 語になる場合は残します。
+mermaid.js はラベルを、1 つの空白で区切った語ごとに描くので、タブだけの連続と、
+空白にはさまれたタブは、別の語になります。
+`"A<タブ>B"` は `A<タブ>B` と印字します。
+これらの語は、mermaid.js がタイトルから残すものです。
+角括弧を外し、両端の空白を除き、外側の引用符 1 組を外して、
+再び両端の空白を除きます。
+語の中や、語の中の角括弧の隣にある引用符も、ほかと同じく語の文字なので、
+その隣のタブも残します。
+`["A'<タブ>B"]` と `["A[<タブ>B"]` は書かれたまま印字します。
 [fixture: quotes/labels-without-quotes]
+[fixture: quotes/labels-with-punctuation-without-quotes]
 [fixture: quotes/labels-that-need-quotes]
 [fixture: quotes/labels-with-runs-without-quotes]
+[fixture: quotes/labels-with-tab-words-kept]
+[fixture: quotes/labels-with-quotes-beside-tab-words-kept]
 
 入力
 ([quotes/labels-without-quotes-input.mmd](../tests/fixtures/architecture/quotes/labels-without-quotes-input.mmd)):
@@ -349,8 +366,8 @@ architecture-beta
 
 角括弧の内側はそのまま保ちますが、group と service のタイトル、
 および矢印のラベル（[Arrow labels](#arrow-labels) を参照）の括弧に接する空白、
-タブ、no-break space は例外です。
-mermaid.js が trim するからです。
+タブ、改行しない空白は例外です。
+mermaid.js が両端の空白を除くからです。
 `group a(cloud)[ API ]` は `group a(cloud)[API]` に、
 `service s(server)["x" ]` は `service s(server)["x"]` になります。
 [fixture: label-content/title-edge-whitespace-dropped]
@@ -397,11 +414,11 @@ mermaid.js が trim するからです。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 `group labels[A  B]` は `group labels[A B]` と印字します。
 [fixture: label-content/bare-padding]
-空白だけの値、quoted の空値、escape、HTML、entity、
-hidden に見える文字は保ちます。
+空白だけの値、引用符付きの空値、エスケープ、HTML、entity、
+隠れた形に見える文字は保ちます。
 Db がこれらを区別するためです。
 コメントやディレクティブのあるタイトルも、そのままです。
-物理 CR・CRLF だけは共有の host 方針に従います。
+物理 CR・CRLF だけは共有の埋め込み先方針に従います。
 
 [fixture: architecture/label-content/bare-padding]
 
@@ -427,7 +444,7 @@ Db がこれらを区別するためです。
 
 [corpus fixture: architecture/space-unicode-values]
 
-入力（escape 表記）: `"architecture-beta\ngroup labels [  A  B\t C  ]\n"`
+入力（エスケープ表記）: `"architecture-beta\ngroup labels [  A  B\t C  ]\n"`
 
 出力
 ([label-content/bare-padding-output.mmd](../tests/fixtures/architecture/label-content/bare-padding-output.mmd)):
@@ -439,13 +456,18 @@ architecture-beta
 
 ### Port colons
 
-`a:R` と `L:b` のように port の colon の両側を詰めます。
-colon は列を揃える欄ではなく端点の一部だからです。
-trivia と hidden の境界は詰めずに保ちます。
+`a:R` と `L:b` のように port のコロンの両側を詰めます。
+このコロンは名前の中のコロンで、辺が端を名付ける仕方の一部です。
+`R` は service `a` の側であり、どちらの側にも空白を置きません。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
+の手順 1 を参照してください。
+列を揃える欄ではありません。
+注釈類と隠れた形の境界は詰めずに保ちます。
 
 [fixture: architecture/port-colons/port-colons-tight]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"architecture-beta\nservice a\nservice b\na {group} : R -- L : b {group}\n"`
 
 出力
@@ -460,11 +482,11 @@ architecture-beta
 
 ### Arrow lines
 
-線と任意の marker をまとめ、その両側を空白1個にします。
+線と任意の印をまとめ、その両側を空白1個にします。
 `a:R <-- L:b`、`a:T --> B:b`、`a:R <--> L:b` とし、port から線を区別します。
-`>--<` を含め、実際の marker の文字を保ちます。
-有無の flag から文字は決められません。
-marker のない線も同じ空白にします。
+`>--<` を含め、実際の印の文字を保ちます。
+有無の真偽値から文字は決められません。
+印のない線も同じ空白にします。
 
 [fixture: architecture/arrow-lines/arrow-both-markers]
 
@@ -480,7 +502,7 @@ marker のない線も同じ空白にします。
 
 [corpus fixture: architecture/gram-edge-separated-dashes]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"architecture-beta\nservice a\nservice b\na:R < -- > L:b\n"`
 
 出力
@@ -496,14 +518,14 @@ architecture-beta
 ### Arrow labels
 
 ラベル付きの線は `a:R <-[label]-> L:b` と印字します。
-単 dash、角括弧ラベル全体、marker を視覚上の1単位にします。
-通常の外側の隙間と、ラベルの括弧に接する空白、タブ、no-break space を、
+1 つのダッシュ、角括弧ラベル全体、印を視覚上の1単位にします。
+通常の外側の隙間と、ラベルの括弧に接する空白、タブ、改行しない空白を、
 group や service のタイトルと同じく除きます。
-[Label content](#label-content) を参照してください。
+[ラベルの内容](#label-content) を参照してください。
 `a:R -[ Label ]- L:b` は `a:R -[Label]- L:b` に、
 `a:R - [ "x" ] - L:b` は `a:R -["x"]- L:b` と印字します。
-mermaid.js がラベルを trim するので Db は同じです。
-quoted の空値も含め、ラベルの残りの範囲を保ちます。
+mermaid.js がラベルの両端の空白を除くので Db は同じです。
+引用符付きの空値も含め、ラベルの残りの範囲を保ちます。
 コメントやディレクティブがあるラベルと、U+2028 や U+2029 を含む空白は、
 書かれたまま残します。
 
@@ -525,7 +547,7 @@ quoted の空値も含め、ラベルの残りの範囲を保ちます。
 
 [corpus fixture: architecture/db-edge-title-quote-only]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"architecture-beta\nservice a\nservice b\na:R - [ \"x\" ] - L:b\n"`
 
 出力
@@ -555,7 +577,7 @@ ID と一緒に読める形にします。
 
 [corpus fixture: architecture/gram-hidden-modifier-gaps]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"architecture-beta\nservice a\nservice b\na  {group}:R -- L:b\t{group}\n"`
 
 出力
@@ -570,9 +592,9 @@ architecture-beta
 
 ### Alignment
 
-`align`、row・column の方向、各 member の間は通常の空白1個です。
-列揃え、member の並べ替え、繰り返す制約の統合、折り返しはしません。
-作者の順番や可視 EOL を変えずに隙間を統一します。
+`align`、row・column の方向、各構成要素の間は通常の空白1個です。
+列揃え、構成要素の並べ替え、繰り返す制約の統合、折り返しはしません。
+作者が書いた順序を変えず、可視の改行を加えずに隙間を統一し、読みやすくします。
 
 [fixture: architecture/alignment/alignment-row-and-column]
 
@@ -580,7 +602,7 @@ architecture-beta
 
 [corpus fixture: architecture/db-align-layout-conflict]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"architecture-beta\nservice a\nservice b\njunction j\nalign\t row\t a   b\tj\nalign  column j\t b\n"`
 
 出力
@@ -597,12 +619,12 @@ architecture-beta
 
 ### Title
 
-共有の共通行処理を使い、
-`title value` は common whitespace の端だけを trim します。
-null と空白だけの値は `title` とし、同じ意味の外側の空白を詰めます。
-trivia を挟んでも次の物理行を値にしません。
-architecture の summary が title を公開しなくても、文と内容を保ちます。
-trivia のある値と保護された hidden の境界は source の隙間を保ちます。
+共有の共通行処理を使い、`title value` の両端から、
+共通規則が読む空白だけを除きます。
+`null` と空白だけの値は `title` とし、同じ意味の外側の空白を詰めます。
+注釈類を挟んでも次の物理行を値にしません。
+architecture の要約が title を公開しなくても、文と内容を保ちます。
+注釈類のある値と保護された隠れた形の境界は原文の隙間を保ちます。
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
@@ -626,7 +648,7 @@ trivia のある値と保護された hidden の境界は source の隙間を保
 
 [corpus fixture: architecture/common-repeat-empty]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"architecture-beta\ntitle\n%% next\nservice next_title\ntitle \"unclosed\n"`
 
 出力
@@ -643,10 +665,11 @@ architecture-beta
 ### Accessibility lines
 
 共有の `accTitle: value` と `accDescr: value` を使います。
-colon を keyword に付け、trim した非空値の前は空白1個、空なら colon で終えます。
+コロンをキーワードに付け、両端の空白を除いた非空値の前は空白1個、
+空ならコロンで終えます。
 これにより外側の空白を統一します。
-次行の文を取り込まず、colon 後の波括弧は行値のまま保ちます。
-保護された trivia と hidden の隙間を優先します。
+次行の文を取り込まず、コロン後の波括弧は行値のまま保ちます。
+保護された注釈類と隠れた形の隙間を優先します。
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
@@ -666,7 +689,7 @@ colon を keyword に付け、trim した非空値の前は空白1個、空な�
 
 [corpus fixture: architecture/common-repeat-empty]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"architecture-beta\naccTitle: %% note\n\naccDescr: %% note\nservice a\n"`
 
 出力
@@ -687,12 +710,12 @@ architecture-beta
 波括弧を残すブロックは、境界がわかるよう、
 キーワードと開始波括弧の間に空白を 1 つ置きます。
 空白だけの内側は囲む文字がないため `{}` にします。
-開始前の単なる空白は結合し、実際の trivia は改行を保ちます。
-comment・directive だけの内側を保ちます。
+開始前の単なる空白は結合し、実際の注釈類は改行を保ちます。
+コメント・ディレクティブだけの内側を保ちます。
 通常の説明本文と独立したコメント行は文より1段内側に揃えます。
 Db で LF 後の字下げが取り除かれるためです。
 改行、内部の空行、行末空白を保ちます。
-directive と共有の除去対象となるコメント領域は原文全体を保ちます。
+ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
 独立する閉じは文の位置に揃え、最初の閉じ波括弧が値を終える規則も保ちます。
 
 [fixture: architecture/description-blocks/asymmetric]
@@ -727,7 +750,7 @@ directive と共有の除去対象となるコメント領域は原文全体を�
 
 [test: architecture/description-blocks/unicode-opener]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"architecture-beta\naccDescr{A }\naccDescr{ B}\naccDescr {C}\naccDescr\n\n{ D }\n"`
 
 出力
@@ -743,10 +766,10 @@ architecture-beta
 
 ### Multiline values
 
-printWidth で折り返しません。
+`printWidth` で折り返しません。
 通常の部品間の可視 LF は拒否され、
-文字 icon やラベルの reflow は Db を変え得ます。
-作者が書いたラベルと文字 icon の物理行、継続列と内部空行を保ちます。
+文字アイコンやラベルの折り返し直しは Db を変え得ます。
+作者が書いたラベルと文字アイコンの物理行、継続列と内部空行を保ちます。
 説明本文は前述の共有の字下げを使います。
 
 [fixture: architecture/multiline-values/continuation-columns]
@@ -757,7 +780,7 @@ printWidth で折り返しません。
 
 [corpus fixture: architecture/line-lf-string-title]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"architecture-beta\nservice multi \"A\n   B\n\nC\" [\"D\n E\"]\naccDescr {\n  F\n\n G\n}\n"`
 
 出力
@@ -780,11 +803,11 @@ C" ["D
 ### Comments
 
 通常の独立コメントは本文の1段、見出し前は第1列に揃えます。
-inline は同じ行で接触を保ち、離れていれば空白1個にします。
-付属先を保つため mark・内容・末尾空白を保持します。
-native comment は LF・CR で終わり、LS・PS は内容です。
-先に始まった値は内側の percent 文字を所有し、共通行はそこで終わります。
-common が除く領域は全 source と継続列を保ちます。
+同じ行のコメントは同じ行で接触を保ち、離れていれば空白1個にします。
+付属先を保つため印・内容・末尾空白を保持します。
+図固有のコメントは LF・CR で終わり、LS・PS は内容です。
+先に始まった値は内側のパーセント文字を所有し、共通行はそこで終わります。
+共通処理が除く領域は原文全体と継続列を保ちます。
 
 [fixture: architecture/comments/comment-attachments]
 
@@ -802,7 +825,7 @@ common が除く領域は全 source と継続列を保ちます。
 
 [test: architecture/comments/ls-ps-content]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"architecture-beta\nservice percent \"A%%B\" [C%%D]\naccDescr {E%%F}\ntitle Topic%% inline\n"`
 
 出力
@@ -817,16 +840,16 @@ architecture-beta
 
 ### Global directives
 
-Root directive の内容・順序・所有位置を保ちます。
+`Root` ディレクティブの内容・順序・所有位置を保ちます。
 同じ印字行の中のディレクティブは、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 元は同じ行にあった単位を別の行へ分けるときは、
-間の directive を次の単位に付けます。
+間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
 通常の独立開始だけ本文の1段に揃え、複数行の内部と EOF までの末尾は保ちます。
-common の除去は両側を結合するため、
+共通処理の除去は両側を結合するため、
 部品の境界の空白を消すと宣言が拒否され得ます。
-部品間・値内部の directive を保ち、不透明な内容を JSON として扱いません。
+部品間・値内部のディレクティブを保ち、不透明な内容を JSON として扱いません。
 
 [fixture: architecture/global-directives/header-to-body]
 
@@ -860,7 +883,7 @@ common の除去は両側を結合するため、
 
 [corpus fixture: architecture/end-junction-unclosed-directive]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"architecture-beta\nservice composite(%%{wrap}%%cloud%%{wrap}%%)\nservice target\ncomposite{%%{wrap}%%group%%{wrap}%%} : R < %%{wrap}%% -- > L :target\n"`
 
 出力
@@ -875,15 +898,16 @@ architecture-beta
 
 ### Hidden forms
 
-ArchitectureIgnoredText は名前付き gap、textBeforeHeader、body、
-textAfter の owner ごとに1回だけ保ち、
-trivia を除いた value でなく全 source 範囲を使います。
-native YAML と DIRECTIVE は不透明で、
-frontmatter や Root directive ではありません。
+`ArchitectureIgnoredText` は名前付き隙間、`textBeforeHeader`、`body`、
+`textAfter` の所有ノードごとに1回だけ保ち、
+注釈類を除いた値でなく原文の全範囲を使います。
+図固有の YAML と DIRECTIVE は不透明で、
+フロントマターや `Root` ディレクティブではありません。
 本文の開始は字下げできますが、内部列と閉じの列を保ちます。
-三重 fence、別々の form、後の有効な閉じ、内部の global な切れ目を保ちます。
-先行する値は hidden 風の文字を所有し、
-icon・modifier 内に native gap を作りません。
+区切り行 3 本からなる 1 つの形、別々の形、後の有効な閉じ、
+内部の大域的な切れ目を保ちます。
+先行する値は隠れた形に見える文字を所有し、
+アイコン・修飾子内に図固有の隙間を作りません。
 
 [fixture: architecture/hidden-forms/body-directive]
 
@@ -937,7 +961,7 @@ icon・modifier 内に native gap を作りません。
 
 [corpus fixture: architecture/gram-hidden-inside-modifier]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"architecture-beta\n%%{!opaque\nbody}%%\nservice body_directive\n"`
 
 出力
@@ -952,13 +976,13 @@ body}%%
 
 ### Hidden boundaries
 
-共有の消費済み LF と閉じの padding の規則を使います。
+共有の消費済み LF と閉じの余白の規則を使います。
 これらの境界が次の文の可視 EOL を決めるためです。
-閉じの padding がない文末 suffix は、次の文までに予備の LF が1個必要です。
+閉じの余白がない文末の後置部分は、次の文までに予備の LF が1個必要です。
 EOF も文を終えます。
-見出し自身の hidden form の直後だけ予備の LF は不要です。
-見出し行に残った文も、その suffix の後ろは文と文の境界です。
-複数 suffix の owner と可視 EOL 後の form を区別し、
+見出し自身の隠れた形の直後だけ予備の LF は不要です。
+見出し行に残った文も、その後置部分の後ろは文と文の境界です。
+複数の後置部分の所有ノードと可視 EOL 後の形を区別し、
 外側の余分な空行は共有の最大1空行の規則に従います。
 
 [fixture: architecture/hidden-boundaries/header-and-statement]
@@ -1023,7 +1047,7 @@ EOF も文を終えます。
 
 [corpus fixture: architecture/hidden-yaml-after-header]
 
-入力（escape 表記）: `"architecture-beta%%{}%% group a%%{}%%\n\nservice b"`
+入力（エスケープ表記）: `"architecture-beta%%{}%% group a%%{}%%\n\nservice b"`
 
 出力
 ([hidden-boundaries/header-and-statement-output.mmd](../tests/fixtures/architecture/hidden-boundaries/header-and-statement-output.mmd)):
@@ -1036,15 +1060,16 @@ architecture-beta%%{}%% group a%%{}%%
 
 ### Blank lines
 
-通常の ASCII 空行は文・trivia 間に最大1行残し、本文・文書端では除きます。
+通常の ASCII 空行は文・注釈類間に最大1行残し、本文・文書端では除きます。
 過剰な空白を除きながら、見た目のまとまりを保つためです。
-値の内部、保持する prefix、保護区間、hidden 境界に必要な LF は各規則に従います。
+値の内部、保持する前置部分、保護区間、
+隠れた形の境界に必要な LF は各規則に従います。
 
 [fixture: architecture/blank-lines/blank-collapse]
 
 [fixture: architecture/blank-lines/blank-in-value-kept]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"\n\narchitecture-beta\n\n\nservice a\n\n \t\n\n%% note\n\n\nservice b\n\n\n"`
 
 出力
@@ -1062,17 +1087,17 @@ architecture-beta
 ### Trailing whitespace
 
 見出し、
-完結した宣言・辺・alignment・説明の閉じの後の無害な ASCII padding を除きます。
-値と継続行、コメント末尾、directive・hidden 内部、保持する prefix、
+完結した宣言・辺・整列指定・説明の閉じの後の無害な ASCII 余白を除きます。
+値と継続行、コメント末尾、ディレクティブ・隠れた形の内部、保持する前置部分、
 保護区間は保ちます。
-hidden の閉じの padding は EOF でも保持します。
-trim すると可視 EOL が消え得るためです。
+隠れた形の閉じの余白は EOF でも保持します。
+両端の空白を除くと可視 EOL が消え得るためです。
 
 [fixture: architecture/trailing-whitespace/trailing-exterior]
 
 [fixture: architecture/trailing-whitespace/trailing-string-content-kept]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"architecture-beta \t\nservice a(cloud)[A] \t\njunction j\t\na:R -- L:j\t\nalign row a j \t\naccDescr {D}\t\n"`
 
 出力
@@ -1089,12 +1114,12 @@ architecture-beta
 
 ### Frontmatter yaml
 
-安全な実際の frontmatter だけを共有の guarded YAML formatter で整えます。
-不正な YAML、字下げした fence、区切りの padding、HTML の危険、
-整形で fence ができる本文は保ちます。
-YAML は tabWidth 0 でも共有の正の最小字下げ幅を使います。
-textBeforeHeader があれば、先頭 LF、コメント、通過した bare trivia、
-second-scan form、real・hidden の順番を含む prefix 全体を保ちます。
+安全な実際のフロントマターだけを、共有の保護条件付きの YAML 整形で整えます。
+不正な YAML、字下げした囲み、区切りの余白、HTML の危険、
+整形で囲みができる本文は保ちます。
+YAML は `tabWidth` 0 でも共有の正の最小字下げ幅を使います。
+`textBeforeHeader` があれば、先頭 LF、コメント、通過した単独行の注釈類、
+再走査で読む形、実際の形と隠れた形の順番を含む前置部分全体を保ちます。
 整理すると無視された YAML が有効な data に変わり得るためです。
 
 [fixture: architecture/frontmatter-yaml/frontmatter-delimiter-padding-kept]
@@ -1137,7 +1162,7 @@ second-scan form、real・hidden の順番を含む prefix 全体を保ちます
 
 [corpus fixture: architecture/retained-directive-between-bare]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"---\ntitle: \"<a b=\\\"c\\\">\"\n---\narchitecture-beta\nservice a\n"`
 
 出力
@@ -1170,9 +1195,9 @@ architecture-beta
 [fixture: semicolons/no-stretch-formatted]
 [fixture: semicolons/crossing-comment]
 保護された見出し・最初の文は一緒に保ちます。
-選択された1個の削除や style・classDef の trigger 移動は、
-別のセミコロンを選んで Db を変え得るため、両 pass、非 trigger、entity、
-値の物理行、global 除去で結合する trigger を保ちます。
+選択された1個の削除や style・classDef の条件を満たす語の移動は、
+別のセミコロンを選んで Db を変え得るため、2 回の走査、条件を満たさない語、
+entity、値の物理行、大域的な除去で結合する条件を満たす語を保ちます。
 
 [fixture: architecture/semicolons/native-service-value]
 
@@ -1204,7 +1229,7 @@ architecture-beta
 
 [test: architecture/semicolons/unicode-segment]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"architecture-beta\naccDescr {\nstyle A fill:#red\n%% owned;\ntext\n}\n"`
 
 出力
@@ -1221,12 +1246,12 @@ architecture-beta
 
 ### Line terminators and unicode
 
-共有の host 方針で物理 CR・CRLF を LF にし、設定の endOfLine を出します。
-値と hidden form の内部も同じです。
-内容の LS・PS・NBSP・BOM は保ち、
-共通の行値の端だけ common whitespace を trim します。
+共有の埋め込み先方針で物理 CR・CRLF を LF にし、設定の `endOfLine` を出します。
+値と隠れた形の内部も同じです。
+内容の LS・PS・NBSP・BOM は保ち、共通の行値の端からだけ、
+共通規則が読む空白を除きます。
 構造の非 ASCII 区切りは拒否のままです。
-先頭 BOM は byte 同一性でなく Prettier host の処理に従います。
+先頭 BOM はバイト同一性でなく埋め込み先の Prettierの処理に従います。
 
 [corpus fixture: architecture/hidden-yaml-crlf]
 
@@ -1280,17 +1305,17 @@ architecture-beta
 
 [test: architecture/line-terminators-and-unicode/frontmatter-bom]
 
-入力（escape 表記）: `"architecture-beta\rservice cr_node\r"`
+入力（エスケープ表記）: `"architecture-beta\rservice cr_node\r"`
 
-出力（escape 表記）: `"architecture-beta\n  service cr_node\n"`
+出力（エスケープ表記）: `"architecture-beta\n  service cr_node\n"`
 
 ### Final newline
 
 空本文、最後の文・コメントを含め、通常の受理入力は設定の改行1個で終えます。
 文書末尾を一定にするため、通常の末尾空行列は除きます。
-EOF までの global directive と hidden の閉じの padding は、
+EOF までの大域的なディレクティブと隠れた形の閉じの余白は、
 共有の境界の挙動を保ちます。
-閉じた hidden form には LF を加えられます。
+閉じた隠れた形には LF を加えられます。
 
 [fixture: architecture/final-newline/ending-comment]
 
@@ -1312,7 +1337,7 @@ EOF までの global directive と hidden の閉じの padding は、
 
 [corpus fixture: architecture/end-junction-unclosed-directive]
 
-入力（escape 表記）: `"architecture-beta\nservice a"`
+入力（エスケープ表記）: `"architecture-beta\nservice a"`
 
 出力
 ([final-newline/ending-service-output.mmd](../tests/fixtures/architecture/final-newline/ending-service-output.mmd)):
@@ -1324,8 +1349,8 @@ architecture-beta
 
 ### Source order
 
-すべての文、参照、alignment member、繰り返す辺・制約、
-空の代入を source 順に保ちます。
+すべての文、参照、整列指定の構成要素、繰り返す辺・制約、
+空の代入を原文順に保ちます。
 Db から木を再構成したり、公開順に宣言を並べたりすると作者の構造が失われます。
 空の代入の削除は最終値を変え得ます。
 数値に見える ID も書かれた文字のままです。
@@ -1348,7 +1373,7 @@ Db から木を再構成したり、公開順に宣言を並べたりすると�
 
 [corpus fixture: architecture/common-repeat-empty]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"architecture-beta\nalign row later cross\njunction cross in parent\nservice later in parent\ngroup parent\nlater:R -- L:cross\nlater:R -- L:cross\nalign column cross later\nalign row later cross\ntitle First\ntitle\naccTitle: First\naccTitle:\naccDescr {First}\naccDescr {}\n"`
 
 出力
@@ -1381,7 +1406,8 @@ architecture に受理を決める設定キーはなく、検出は C4 より前
 生の拒否から生の Db を作りません。
 拒否構文を修復せず、単独整形は出力のない構文エラー、
 Markdown は埋め込みを辞退します。
-空の quoted icon・ラベル、空の説明、native hidden form に新しい差分は不要です。
+空の引用符付きアイコン・ラベル、空の説明、図固有の隠れた形を、
+新たな差異として定義する必要はありません。
 
 [corpus fixture: architecture/div-frontmatter-invalid-yaml]
 
@@ -1405,11 +1431,11 @@ Markdown は埋め込みを辞退します。
 
 ### Markdown fences
 
-共有の Markdown 経路で字下げを除いた payload に同じ規則を適用します。
-fence・list・quote の字下げと EOL は host が用意します。
-最後の hidden padding を含め、payload の最終行の padding は host が除きますが、
-内部の hidden 境界は必要です。
-host の出力と冪等性は payload の Db・source 保持と別に確認します。
+共有の Markdown 経路で字下げを除いた図の本文に同じ規則を適用します。
+囲み・リスト・引用の字下げと EOL は埋め込み先が用意します。
+最後の隠れた形の余白を含め、図の本文の最終行の余白は埋め込み先が除きますが、
+内部の隠れた形の境界は必要です。
+埋め込み先の出力と冪等性は図の本文の Db・原文保持と別に確認します。
 
 [test: architecture Markdown: top-level]
 
@@ -1437,13 +1463,13 @@ host の出力と冪等性は payload の Db・source 保持と別に確認し�
 
 [test: architecture Markdown: rejected]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ````json
 "```mermaid\narchitecture-beta service fence\n```\n"
 ````
 
-出力（escape 表記）:
+出力（エスケープ表記）:
 
 ````json
 "```mermaid\narchitecture-beta\n  service fence\n```\n"

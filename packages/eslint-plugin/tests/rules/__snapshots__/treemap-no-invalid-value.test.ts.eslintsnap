@@ -5,13 +5,13 @@ Test: treemap-no-invalid-value >> invalid >>> docs/rules/treemap-no-invalid-valu
 Filename: treemap-no-invalid-value-incorrect-1.mmd
 
 Code:
-  1 | treemap-beta
+  1 | treemap
   2 |   "Revenue": 1_000
     |              ^~~~~ [1]
   3 |
 
 Output:
-  1 | treemap-beta
+  1 | treemap
   2 |   "Revenue": 1000
   3 |
 

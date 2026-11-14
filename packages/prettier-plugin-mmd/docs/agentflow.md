@@ -36,19 +36,20 @@ direction `TD` is printed `TB`, the direction that the examples in the
 documentation of mermaid.js use (10 times, and `TD` never; see
 [The direction of a header](./compatibility.md#the-direction-of-a-header)): the
 diagram type is later than the version of mermaid.js that made `TD` behave as
-`TB`, so every version that reads it draws the two the same (see
-[Versions of mermaid.js](./compatibility.md#versions-of-mermaidjs)). Agentflow
-accepts only exact lower-case `agentflow-beta`. An absent direction stays
-absent, symbol directions stay written, a direction that stands after a
-directive which follows the header (`agentflow-beta%%{init: {}}%% TD`) stays as
-written, and next-line LR remains a vertex. Ordinary header followers move into
-the body; directive attachment follows Directives. [fixture:
-header/header-column] [fixture: header/header-direction-spelling] [fixture:
+`TB`, so every version that counts and reads it draws the two the same (see
+[Versions of mermaid.js that count](./compatibility.md#versions-of-mermaidjs-that-count)).
+Agentflow accepts only exact lower-case `agentflow-beta`. An absent direction
+stays absent, symbol directions stay written, a direction that stands after a
+directive which follows the header is printed like any other (`TD` as `TB`, and
+`agentflow-beta%%{init: {}}%% TD` as `agentflow-beta %%{init: {}}%%TB`), and
+next-line LR remains a vertex. Ordinary header followers move into the body;
+directive attachment follows Directives. [fixture: header/header-column]
+[fixture: header/header-direction-spelling] [fixture:
 header/header-inline-separated] [fixture: header/header-next-line-direction]
 [fixture: header/header-symbol] [fixture:
-header/header-direction-after-directive-kept] A symbol direction stands after
-one space, as in [flowchart](./flowchart.md#direction): `agentflow-beta<` is
-printed `agentflow-beta <`. [fixture: header/header-symbol-touching-spaced]
+header/header-direction-spelling-after-directive] A symbol direction stands
+after one space, as in [flowchart](./flowchart.md#direction): `agentflow-beta<`
+is printed `agentflow-beta <`. [fixture: header/header-symbol-touching-spaced]
 [test: agentflow: U+2028 between the header keyword and its direction]
 
 Input (escaped): `"agentflow-beta"`. [fixture: header/header-only]
@@ -63,15 +64,15 @@ agentflow-beta
 ### Indentation
 
 Reuse [Indentation](./flowchart.md#indentation) for the same reason: indentation
-from the AST makes nesting visible, while authored columns do not determine
-membership. Use one configured step below the header and each flow/global, align
-end with its opener, and give connectors no body. `useTabs` uses one tab per
-level. Agentflow uses the shared significant indentation width: even with
-`tabWidth: 0`, each body step is at least one space. Indented lines such as
-`accTitle: direction LR` are direction statements; moving them to column one
-would change the Db or reject a style-prefixed direction line. Non-direction
-lines whose reading depends on their columns keep their written indentation
-under Direction. [fixture: indentation/indent-direction-unsafe] [fixture:
+is set from the AST, while authored columns do not determine membership. Use one
+configured step below the header and each flow/global, align end with its
+opener, and give connectors no body. `useTabs` uses one tab per level. Agentflow
+uses the shared significant indentation width: even with `tabWidth: 0`, each
+body step is at least one space. Indented lines such as `accTitle: direction LR`
+are direction statements; moving them to column one would change the Db or
+reject a style-prefixed direction line. Non-direction lines whose reading
+depends on their columns keep their written indentation under Direction.
+[fixture: indentation/indent-direction-unsafe] [fixture:
 indentation/indent-nested] [fixture: indentation/indent-tabs] [fixture:
 indentation/indent-zero]
 
@@ -92,9 +93,9 @@ agentflow-beta TB
 
 Reuse flowchart [Indentation](./flowchart.md#indentation) and
 [Statements one per line](./flowchart.md#statements-one-per-line): an opening,
-body and closing line make structure readable. Keep named and unnamed flows,
-globals, empty and mixed nested bodies, and statement order. Globals affect
-membership despite emitting no container, so they remain blocks. Never
+body and closing line, as in the other diagram types. Keep named and unnamed
+flows, globals, empty and mixed nested bodies, and statement order. Globals
+affect membership despite emitting no container, so they remain blocks. Never
 manufacture a name or data. Agentflow end/global consume only ASCII spaces/tabs;
 they do not absorb LF into a name. A semicolon after end is a separate
 EmptyStatement at the containing depth. [fixture: containers/containers-empty]
@@ -138,9 +139,9 @@ headings with a title in
 are written so, and the Db is the same for both forms. The whitespace inside the
 brackets of the title is dropped, so `[ T ]` is printed `[T]` and `["x" ]` is
 printed `["x"]`, as in flowchart; Agentflow has no reason to choose a different
-form. One space stays where the title would be read otherwise (`[ /x/ ]`, and
-`[ x@ ]` in Agentflow). A directive at an edge of the title touches the bracket
-and the title, as the gap has no space: `flow F[ %%{x}%% T ]` is printed
+form. One space stays where the title would be read otherwise (`[ /x/ ]` and
+`[ x@ ]`). A directive at an edge of the title touches the bracket and the
+title, as the gap has no space: `flow F[ %%{x}%% T ]` is printed
 `flow F[%%{x}%%T]`, and `flow G[ T %%{x}%% ]` is printed `flow G[T%%{x}%%]`.
 [fixture: names-and-headings/heading-title-directive-at-edge] A U+2028 or U+2029
 on the line of the `]` stays, and one at the start of a continuation line is
@@ -184,6 +185,11 @@ touching the id or title before it
 A name that holds a directive or a comment is kept as written, as above.
 [fixture: names-and-headings/heading-data-touches-name] [test: agentflow: U+2029
 between a connector name and its data block]
+
+Whitespace before the title is trimmed through a `;` that the line rule ignores:
+`connector style:#x ; [T]` is printed `connector style:#x;[T]`. The semicolon
+keeps its written place against the name. [fixture:
+names-and-headings/title-after-ignored-semicolon]
 
 The whitespace at the end of an ordinary single-part name that has neither a
 title nor a data block is dropped in the same way: `flow F` followed by two
@@ -233,7 +239,9 @@ statement that follows, also one after a `;` that becomes a line break: without
 it the line break ends the id and the next statement is read as a part of the
 name, so the Db differs. Drop a space or tab where nothing follows it but
 whitespace, line breaks, and separators: the text then ends the id, as at EOF
-without the character, and the Db and the figure are the same. [fixture:
+without the character, and the Db and the figure are the same. A `;` that the
+line rule ignores leaves no following text for this decision. [fixture:
+names-and-headings/click-exit-before-ignored-semicolon] [fixture:
 names-and-headings/name-exit-space-before-statement-kept] [fixture:
 names-and-headings/name-exit-space-before-separator-statement-kept] [fixture:
 names-and-headings/name-exit-space-before-blank-end-dropped] Additional
@@ -269,7 +277,10 @@ names-and-headings/name-click-exit-before-title-tab]
 A name read as a click id that reaches EOF with no exit character keeps its text
 as written; the only addition is the final LF of
 [Final newline](#final-newline). [fixture:
-names-and-headings/name-click-exit-eof]
+names-and-headings/name-click-exit-eof] Whitespace taken by an unclosed
+directive is removed before the click id is read, so it supplies no exit
+character and can be dropped at EOF. [test: agentflow: click id before taken EOF
+whitespace]
 
 Ordinary blank gaps after the character ending click-id text follow Blank lines.
 [fixture: names-and-headings/name-exit-lf-empty-line] [fixture:
@@ -388,6 +399,14 @@ grammar's required single whitespace character; both remain written. [fixture:
 single-space-gaps/linkstyle-required-tab] [fixture:
 single-space-gaps/interpolate-required-tab]
 
+The `,` of a `class`, `click`, and `linkStyle` statement stays as written,
+without a space after it, since mermaid.js rejects `class A, B c` and the like.
+In a `classDef`, a space after the `,` between the names would move the name
+after it into the style (`classDef a, b fill:red` gives `a` the style
+`b fill:red`), so those names stay as written too (see
+[Lists separated by commas](./compatibility.md#lists-separated-by-commas)).
+[fixture: single-space-gaps/comma-lists-without-space-kept]
+
 Input (escaped): `"agentflow-beta TB\nA\nclass\tA\tc\n"`. [fixture:
 single-space-gaps/class-required-tab]
 
@@ -402,8 +421,8 @@ agentflow-beta TB
 
 ### Arrows
 
-Reuse [Arrow spacing](./flowchart.md#arrow-spacing): one exterior space makes a
-relation readable; an edge id touches its @ and arrow. Keep directive touching
+Reuse [Arrow spacing](./flowchart.md#arrow-spacing): one exterior space on each
+side of an arrow; an edge id touches its @ and arrow. Keep directive touching
 and exact dash/dot counts, including counts beyond the Db cap: below the cap a
 shorter or longer arrow is another arrow (`A---->B` printed as `A --> B` is read
 differently), and beyond the cap the Db is the same but the tree keeps the
@@ -419,12 +438,18 @@ arrows/three-kinds]
 An edge id after a data block touches it: a vertex statement takes no whitespace
 after a data block except the one that an arrow reads, so
 `A@{ shape: rect }e1@-->B` is accepted and `A@{ shape: rect } e1@-->B` is
-rejected. [fixture: arrows/edge-id-after-data-block-touches] An edge id that
-starts as an arrow does touches the shape or the data block before it, as in
-`A["x"]--a@-->B`. In agentflow that is an edge id that starts with `--`, `-.-`,
-or `-..-`; one such as `x--a`, `==a`, `-.a`, or `.-a` is read the same after
-whitespace, and has one space before it. [fixture:
-arrows/edge-id-arrow-like-kept-attached] [fixture:
+rejected. A directive or an ignored `;` between the block and the edge id is
+removed before the text is read, so the block, the directive or the `;`, and the
+edge id touch one another: `A@{ shape: rect }%%{x}%%e1@-->B` is printed
+`A@{ shape: rect }%%{x}%%e1@--> B`, and `A@{ shape: rect };e1@-->B` keeps its
+`;` against the block and the edge id. [fixture:
+arrows/edge-id-after-data-block-touches] [fixture:
+arrows/edge-id-after-data-block-directive] [fixture:
+arrows/edge-id-after-data-block-semicolon] An edge id that starts as an arrow
+does touches the shape or the data block before it, as in `A["x"]--a@-->B`. In
+agentflow that is an edge id that starts with `--`, `-.-`, or `-..-`; one such
+as `x--a`, `==a`, `-.a`, or `.-a` is read the same after whitespace, and has one
+space before it. [fixture: arrows/edge-id-arrow-like-kept-attached] [fixture:
 arrows/edge-id-not-arrow-like-gets-one-space]
 
 Input (escaped): `"agentflow-beta TB\nA--xB"`. [fixture:
@@ -441,24 +466,23 @@ agentflow-beta TB
 ### Edge labels
 
 Reuse [Link label form](./flowchart.md#link-label-form) and
-[Arrow spacing](./flowchart.md#arrow-spacing) with their reasons: make relations
-readable. A label of plain text (letters, digits, spaces, `_`, `,`, `?`, and
-`!`) on the arrow `-->` or `--x` is printed between two arrows, the form that
-the examples in the documentation of mermaid.js use twice against none for the
-form between pipes (see
-[The label of a link](./compatibility.md#the-label-of-a-link)): `A -->|x| B` is
-printed `A -- x --> B`. [fixture: edge-labels/pipes-to-arrows] Any other label
-keeps the pipe/split form it is written in, since split text can contain a pipe,
-a label with a `|` or a `%%`, a string, and a Markdown label cannot be printed
-between the arrows, a label of blanks only is rejected between the arrows, and
-only the arrows `-->` and `--x` can have a label between two arrows. [fixture:
-edge-labels/blank-pipe-label-kept] Pipes touch the arrow and their label; split
-text has one exterior space. Print one post-pipe gap. Only sequence/failure
-support split labels. Keep string/markdown kind, bare continuation, and split
-semicolons, percent text and line breaks; do not invent another string or split
-reference form. [fixture: edge-labels/edge-label-forms] [fixture:
-edge-labels/split-pipe-content] A string between pipes keeps its text, and the
-pipes touch the arrow and the quotes: `A  -->  |"x  y"|B` is printed as
+[Arrow spacing](./flowchart.md#arrow-spacing) with their reasons. A label of
+plain text (letters, digits, spaces, `_`, `,`, `?`, and `!`) on the arrow `-->`
+or `--x` is printed between two arrows, the form that the examples in the
+documentation of mermaid.js use twice against none for the form between pipes
+(see [The label of a link](./compatibility.md#the-label-of-a-link)):
+`A -->|x| B` is printed `A -- x --> B`. [fixture: edge-labels/pipes-to-arrows]
+Any other label keeps the pipe/split form it is written in, since split text can
+contain a pipe, a label with a `|` or a `%%`, a string, and a Markdown label
+cannot be printed between the arrows, a label of blanks only is rejected between
+the arrows, and only the arrows `-->` and `--x` can have a label between two
+arrows. [fixture: edge-labels/blank-pipe-label-kept] Pipes touch the arrow and
+their label; split text has one exterior space. Print one post-pipe gap. Only
+sequence/failure support split labels. Keep string/markdown kind, bare
+continuation, and split semicolons, percent text and line breaks; do not invent
+another string or split reference form. [fixture: edge-labels/edge-label-forms]
+[fixture: edge-labels/split-pipe-content] A string between pipes keeps its text,
+and the pipes touch the arrow and the quotes: `A  -->  |"x  y"|B` is printed as
 `A -->|"x  y"| B`. [fixture: edge-labels/pipe-label-string-kept] So does a
 closing pipe that was written apart from the closing quote: `A-->|"x" |B` is
 printed `A -->|"x"| B`. [fixture: edge-labels/pipe-string-closing-touches]

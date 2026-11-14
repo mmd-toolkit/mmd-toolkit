@@ -22,9 +22,8 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
 正しさの基準は pin した mermaid.js 本体。
 
 1. 受理・拒否が mermaid.js と一致する。
-   例外は、
-   仕様が Known divergences
-   （`packages/spec/docs/known-divergences.md`）に定義する入力で、
+   例外は、仕様が「既知の差異」（Known divergences、
+   `packages/spec/docs/known-divergences.md`）に定義する入力で、
    それぞれが識別子を持ち、関わる fixture にその識別子の印が付く。
 
    入力を差にするのは、次の 2 つの問いに、この順で答えた後だけである。
@@ -75,7 +74,7 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
    issue と pull request を探し、見つけたものを事実として引く。
 
 2. 受理した入力の Db が mermaid.js と一致する。
-   ただし、Known divergences が読み方の違いを定義する入力を除く。
+   ただし、「既知の差異」が読み方の違いを定義する入力を除く。
 3. AST は入力を何も失わない。
    入力のすべての文字は、トークンかコメントに含まれるか、空白か行終端子である。
    トークンとコメントのテキストは、その範囲の入力と一致する。
@@ -86,70 +85,27 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
    ツールチップ、アクセシビリティの文を含む。
    生成される id と、描画が無視する空白（CSS の宣言の周り、
    HTML の文字の連なり）は比べない。
-   描くものが同じになる書き方は、1 つの形で印字する。
+   描くものが同じになる書き方は、その中でいちばん読みやすい 1 つの形で印字する。
    描くものが変わる書き方は、書かれたまま残す。
-   隙間の形は、ほかの図種が同じ種類の隙間を印字する形である。
-   綴り（キーワードの大文字小文字、文字列の引用符、数の桁、
-   ヘッダーの向き）の形は、固定した mermaid.js の文書の例が、
-   ほかのどの形よりも 2 倍以上多く使う形である。
-   そのように多く使われる形がないとき、または例がその綴りを使わないときは、
-   書かれたまま残す。
-   確かめは固定した mermaid.js だけで行うが、
-   整形した文章はほかの版の mermaid.js でも描かれる。
-   そこで、印字する形が、
-   書かれた形を受け付けるすべての版で受け付けられるとは限らないとき、または、
-   そのうちの版が違う描き方をするときも、書かれたまま残す。
-   ヘッダーの名前（`block-beta` と `block`）は版によって受け付けが違い、
-   gitGraph のヘッダーの後のコロンは古い版が要求し、
-   flowchart のヘッダーの向き（`TB` と `TD`）は 11.10.0
-   より前の版が違う描き方をする。
-   どの版が形を足したか、変えたかは、mermaid.js の CHANGELOG.md か、
-   文法の履歴で分かる。
+   どの形がいちばん読みやすいかは、決まった順に当てる決まりで決める。
+   その場その場の判断にすると、判断する人によって形が変わるからである。
+   1 つめは、Prettier が同じ種類の記号の横に印字する空白である。
+   2 つめは、ほかの図種が同じ種類の隙間を印字する形である。
+   3 つめは、固定した mermaid.js の文書の例が使う綴りである。
+   決まりを当てた形が、描くものが同じになる別の形より読みにくいときは、
+   決まりの方を直す。
+   そのときと、どの決まりからも形が出ないときは、
+   作業をしている人の判断だけで公開済みの版の出力を変えない。
+   より読みやすいと考える形を、入力の文と、いまの出力と、その形の出力を付けて、
+   ユーザーに提案し、ユーザーが決める。
+   整形した文章はほかの版の mermaid.js でも描かれるので、
+   対象にする版のどれもが同じに読み、同じに描く形だけを印字する。
    確かめる方法は、整形が Db を変えないことである。
    Db を変えても描くものを変えない整形は、例外とする。
-   例外は種類ごとに、定義する節と、描画が変わらない理由を示す、
-   固定した mermaid.js のコードへのリンクと、両方のテキストを描いた結果を持つ。
-   テストは、その種類の差を戻した Db で比べる。
-   関数は種類ごとに 1 つで、
-   `packages/prettier-plugin-mmd/tests/db-comparison.ts` が呼ぶ。
-   固定した mermaid.js の版を上げるときは、例外のそれぞれを描画で確かめ直す。
-   種類は次のとおり。
-   - eventmodeling のブロック本文に対する、限定的な ASCII 空白 margin の変更。
-     [Data blocks](packages/prettier-plugin-mmd/docs/eventmodeling.ja.md#data-blocks)
-     が定める。
-   - state のノートの対象となる段落に対する margin の変更。
-     [ノート](packages/prettier-plugin-mmd/docs/state.ja.md#ノート) が定める。
-   - スタイルの最初の `:` と `,` の周りの空白、
-     スタイルの語の間の空白とタブの連なり（1 つの空白にする）、
-     スタイルの末尾の空白。
-     [同じに描かれるスタイル](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれるスタイル)
-     が定める。
-   - title、Gantt の日付形式と軸形式、C4 図の説明の先頭と末尾の空白と、
-     timeline の行の最後の event、state 図の別名の 2 つ目の説明、
-     Gantt の task 名の末尾の空白。
-     [同じに描かれるキーワードの後のテキスト](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれるキーワードの後のテキスト)
-     が定める。
-   - mermaid.js が連なりを描かずにテキストを描く場合の、
-     テキスト中の空白とタブの連なり。
-     タイトル、アクセシビリティの説明、
-     SVG のテキストとしてラベルを描く図種のラベルが対象です。
-     [同じに描かれるテキスト中の空白の連なり](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)
-     が定めます。
-   - flowchart、agentflow、class、Gantt の `click` の呼び出しの、
-     引数の周りの空白。
-     [同じに描かれる呼び出しの引数](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれる呼び出しの引数)
-     が定める。
-   - mindmap の節点と kanban のカードのテキストの両端の空白とタブ。
-     [同じに描かれる mindmap のテキスト](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれる-mindmap-のテキスト)
-     が定める。
-   - flowchart、swimlane、agentflow のラベルの `labelType`。
-     引用符の付いたラベルと付かないラベルで違う。
-     [同じに描かれるラベル](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれるラベル)
-     が定める。
-   - スタイルの色の 16 進数の大文字と小文字。
-     フォーマッターは小文字で印字する。
-     [同じに描かれる色](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれる色)
-     が定める。
+   例外の種類は、整形ツールの文書の節が定める。
+   決まり、対象にする版、例外の種類は、
+   [印字する形の決め方](packages/prettier-plugin-mmd/docs/printed-form.ja.md)
+   にある。
 
 ## 各パッケージの責務
 
@@ -162,12 +118,16 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
   それを作って確かめる道具を持つ。
   コーパスが記録する木の確かめも持つ。
   記録した木から Db を作って mermaid.js の Db と比べ、木の不変条件を確かめる。
-  SKILL は `tests`。
+  作業は SKILL `tests` に従う。
+  図種を足す作業、木から Db を作る関数と木の検査を書く作業、
+  mermaid.js を更新する作業は、それに加えて、SKILL `tests-diagram-type`、
+  `tests-tree-checks`、`tests-mermaid-update` に従う。
 - `packages/spec`: 構文と、抽象構文木の形（ノードの型、欄、値）を定義する。
   入力を受理するかどうかを決めるものは、すべてここで定める。
   定義の出どころはここで、実装はこれに従う。
   仕様の文書は、parser のトークンと位置の仕様に言及しない。
-  SKILL は `spec`。
+  作業は SKILL `spec` に従う。
+  図種を足す作業は、それに加えて、SKILL `spec-diagram-type` に従う。
 - `packages/ast`: 木の TypeScript の型で、仕様の定義に従う。
   持つのは型だけである。
   パーサー、フォーマッター、リンターは、これを任意の peer 依存にする。
@@ -183,7 +143,8 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
   parser は、仕様とこれらの文書とコーパスから、別の言語でも書けるものにする。
   そのため、parser のテストは、結果を fixture の記録と比べ、
   mermaid.js も生成した入力も動かさない。
-  SKILL は `parser`。
+  作業は SKILL `parser` に従う。
+  頼まれた性能のレビューは、SKILL `parser-performance-review` に従う。
 - `packages/prettier-plugin-mmd`: フォーマッター。
   図種ごとに printer を持ち、項目ごとに明示的に決めた整形方針に従う。
   SKILL は `prettier-plugin`。
@@ -191,12 +152,13 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
   `.mmd` と `.mermaid` のファイルと、Markdown のファイルのコードブロックの図を、
   Prettier と `prettier-plugin-mmd` で整形し、ほかは変えない。
   何をするかは README が定める。
-  SKILL は `prettier-plugin`。
+  SKILL は `mmdfmt`。
 - `packages/eslint-plugin`: リンター。
   ESLint の言語プラグインである。
   規則が報告するのは、書き手の誤りのうち、mermaid.js が黙って受理し、
   意図と違うものとして読むものである。
   どの規則を持つかは SKILL `rule-ideas` で決め、
+  残した規則の提案と自動修正は SKILL `rule-ideas-suggestions` で決める。
   規則の文書は SKILL `eslint-plugin` に、
   規則の実装は SKILL `eslint-plugin-rules` に従う。
 - `packages/textmate-grammar`: エディターやサイト（Shiki、VS Code、
@@ -279,8 +241,10 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
     振る舞いを定める文（仕様、parser のトークンと位置の文書、
     `dbFromTree` の文書、整形の規則）は、
     その文が分ける場合ごとに fixture を持ち、
-    その文が名指す場所でほかの規則が接する場合（ディレクティブ、無視される `;`、
-    コメント行、空行、行区切り、空の説明ブロック）にも fixture を持つ。
+    その文が名指す場所でほかの規則が接する場合にも fixture を持つ。
+    接する規則は、ディレクティブ、無視される `;`、コメント行、空行、
+    行区切り（U+2028、U+2029）、空の説明ブロック、テキストの終わり、
+    そのほか文の言葉が名指すものである。
     fixture は文と一緒に書き、mermaid.js で 1 回確かめる。
     review は文ごとに、欠けている場合がないかを見る。
     乱数や数（seed、count）で入力を選ばない。

@@ -33,7 +33,7 @@ so `Fill` is reported. A property written twice is reported twice.
 
 The rule checks the name only, not the target. For a union, the drawing uses
 only `fill` and `color`; for a text node, only `color`. Another of the five for
-them, as `style A1 fill:red` for a text node, is not reported, because the
+them, as `style A1 fill: red` for a text node, is not reported, because the
 documentation of mermaid.js gives the five for sets, unions, and text nodes
 alike.
 
@@ -42,8 +42,8 @@ Examples of **incorrect** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/venn-no-invalid-style-key: error
 venn-beta
-set A
-style A Fill:red, opacity:0.5
+  set A
+  style A Fill: red, opacity: 0.5
 ```
 
 Examples of **correct** code for this rule:
@@ -51,8 +51,8 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/venn-no-invalid-style-key: error
 venn-beta
-set A
-style A fill:red, fill-opacity:0.5
+  set A
+  style A fill: red, fill-opacity: 0.5
 ```
 
 ## Options

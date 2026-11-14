@@ -17,16 +17,32 @@ running Mermaid.
 
 ### Header
 
-The selected written `ishikawa` or `ishikawa-beta` header stands at column one,
-retaining its accepted case and stable/beta spelling. This makes the header easy
-to find without replacing an authored choice with a Db-equal spelling (see
+The header stands at column one and is printed `ishikawa`, in lower case and
+without `-beta`, whatever case and name it was written in: `IsHiKaWa-BeTa` and
+`ISHIKAWA` become `ishikawa`. Every version of mermaid.js that counts and has
+the diagram reads the names in any case and draws them the same (see
 [The names of a header](./compatibility.md#the-names-of-a-header)). [fixture:
 ishikawa/header/header-column] [fixture: ishikawa/header/header-stable]
 [fixture: ishikawa/header/header-case-alternative] [fixture:
 ishikawa/header/header-lowercase] [fixture: ishikawa/header/header-valid]
-Exterior padding disappears; a failed beta boundary leaves its suffix with the
-root, and attached trivia follows the rules below. [fixture:
-ishikawa/header/header-beta-fallback]
+[fixture: ishikawa/header/header-beta] Exterior padding disappears; a failed
+beta boundary leaves its suffix with the root, and attached trivia follows the
+rules below. [fixture: ishikawa/header/header-beta-fallback] A root that starts
+with the word `-beta` right after the header, with at most directives between
+them, which mermaid.js removes before it reads the header (`ishikawa-beta-beta`
+has the header `ishikawa-beta` and the root `-beta`), goes to a line of its own,
+so the short header cannot be read as the long one. Where the root stays on the
+line of the header, because the indentation of the nodes is kept as written, a
+directive touches it, or a directive that is not closed joins the next line to
+it, the header stays as written too. A root such as `-betax` or `-x` is no such
+word, and the header is shortened. [fixture:
+ishikawa/header/header-beta-then-beta-root] [fixture:
+ishikawa/header/header-beta-then-beta-root-kept] [fixture:
+ishikawa/header/header-beta-directive-then-beta-root-kept] [fixture:
+ishikawa/header/beta-directive-before-word-kept] [fixture:
+ishikawa/header/beta-directive-in-root-kept] [fixture:
+ishikawa/header/header-beta-then-beta-root-joined-line-kept] [fixture:
+ishikawa/header/header-beta-then-beta-root-joined-semicolon-line-kept]
 
 Input (escaped):
 
@@ -46,26 +62,61 @@ ishikawa
 ### Indentation
 
 Indentation is AST depth times one configured step: the header has depth zero,
-the root depth one, and each child one greater than its parent. Uniform
-increasing indentation reproduces the same ordered tree without importing
-written widths or discarded clamp/base numbers. [fixture:
-ishikawa/indentation/indent-depth] [fixture:
-ishikawa/indentation/indent-flatten-unsafe] [fixture:
-ishikawa/indentation/indent-sibling-causes] [fixture:
-ishikawa/indentation/indent-unindented-causes] [fixture:
-ishikawa/indentation/indent-zero-unclamped-unsafe] Clamped, relative-zero and
-shallower causes become ordinary root children. [fixture:
+the root depth one, and each child one greater than its parent. This holds where
+the written indentation shows the tree by nesting alone: each node is deeper
+than the nearest node before it that is less deep, up to the root, and a root on
+the line of the header has the whitespace between the header and its text as its
+indentation. Such an indentation reproduces the same ordered tree without
+importing written widths. [fixture: ishikawa/indentation/indent-flatten-unsafe]
+[fixture: ishikawa/indentation/indent-sibling-causes] [fixture:
+ishikawa/indentation/indent-zero-unclamped-unsafe]
+
+Where it does not, the nodes keep the whitespace written before them, and a root
+on the line of the header stays there: a cause that is clamped to the root, a
+cause at the column of the root, or of the whitespace after the header, a cause
+not deeper than the nearest node before it that it follows, and a root deeper
+than its causes. The specification reads them as children of the root, while the
+first version that has the diagram draws the text printed by depth differently
+from the written text, and the later ones draw both the same (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A node that follows a comment-ending separator on its line is left to the
+ordinary rules, and a root that does so leaves the whole diagram to them: every
+version that counts rejects such a root, so the indentation decides no drawing.
+[test: ishikawa: header-spaced-directive-comment-ls] [fixture:
 ishikawa/indentation/indent-clamped] [fixture:
-ishikawa/indentation/indent-relative-zero] Spaces use `Math.max(1, tabWidth)`
-characters per step, including `tabWidth: 0`; `useTabs` uses one tab per step. A
-positive minimum is necessary to preserve nesting. [fixture:
-ishikawa/indentation/indent-four] [fixture: ishikawa/indentation/indent-tabs]
-[fixture: ishikawa/indentation/indent-zero] [fixture:
-ishikawa/indentation/indent-zero-tabs] [fixture:
+ishikawa/indentation/indent-depth] [fixture:
+ishikawa/indentation/indent-relative-zero] [fixture:
+ishikawa/indentation/indent-unindented-causes] [fixture:
+ishikawa/indentation/indent-tabs-irregular-kept] [fixture:
+ishikawa/root-indentation/root-deeper] [fixture:
+ishikawa/root-indentation/root-zero-alternative] [fixture:
+ishikawa/root-on-header-line/header-root-kept]
+
+Spaces use `Math.max(1, tabWidth)` characters per step, including `tabWidth: 0`;
+`useTabs` uses one tab per step. A positive minimum is necessary to preserve
+nesting. [fixture: ishikawa/indentation/indent-four] [fixture:
+ishikawa/indentation/indent-tabs] [fixture: ishikawa/indentation/indent-zero]
+[fixture: ishikawa/indentation/indent-zero-tabs] [fixture:
 ishikawa/indentation/tabs-leading-directives] [fixture:
 ishikawa/indentation/zero-kept-leading-directive] [fixture:
 ishikawa/indentation/zero-leading-directive] [fixture:
 ishikawa/indentation/zero-tabs-leading-directives]
+
+Input (escaped):
+
+```json
+"ishikawa\nR\n A\n  B"
+```
+
+Output
+([indentation/indent-flatten-unsafe-output.mmd](../tests/fixtures/ishikawa/indentation/indent-flatten-unsafe-output.mmd)):
+
+```mmd
+ishikawa
+  R
+    A
+      B
+```
 
 Input (escaped):
 
@@ -78,18 +129,24 @@ Output
 
 ```mmd
 ishikawa
-  R
+R
     A
-    B
-    C
+ B
+  C
       D
-    E
+ E
 ```
 
 ### Root on header line
 
 An ordinary header-line root moves whole to its own depth-one line, including
-glued punctuation, fallback suffixes, percent text and semicolons. This agrees
+glued punctuation, fallback suffixes, percent text and semicolons, where the
+written indentation shows the tree by nesting alone (see
+[Indentation](#indentation)); where a cause is not deeper than the whitespace
+between the header and the root, the root stays on the line of the header and
+the causes keep their indentation. [fixture:
+ishikawa/root-on-header-line/header-root-irregular-kept] [fixture:
+ishikawa/root-on-header-line/header-root-directive-irregular-kept] This agrees
 with the other printers' header/body convention while keeping the Db. A root
 that contains semicolons moves whole as well: the Ishikawa header adds no
 `style` or `classDef` trigger to the shared line rule. Header comments and
@@ -154,11 +211,13 @@ Ishikawa. A blank after a diagram comment is that comment's separating gap, not
 a plain body-edge blank, so it stays. [fixture: ishikawa/blank-lines/blank-runs]
 [fixture: ishikawa/blank-lines/blank-around-trivia] A separating blank after a
 diagram comment remains one, including after an attached header comment,
-touching or spaced (see [Comments](#comments)); the complete terminal gap after
-a final diagram comment stays written. [fixture:
+touching or spaced, also when a directive before the comment contains a line
+feed that mermaid.js removes (see [Comments](#comments)); the complete terminal
+gap after a final diagram comment stays written. [fixture:
 ishikawa/blank-lines/blank-comment-accepted] [fixture:
 ishikawa/blank-lines/blank-header-comment-accepted] [fixture:
-ishikawa/blank-lines/blank-spaced-header-comment-accepted] [corpus fixture:
+ishikawa/blank-lines/blank-spaced-header-comment-accepted] [fixture:
+ishikawa/blank-lines/header-comment-after-multiline-directive] [corpus fixture:
 ishikawa/gram-last-comment-blank-line] [fixture:
 ishikawa/blank-lines/header-comment-many-blanks] [fixture:
 ishikawa/blank-lines/interior-comment-many-blanks] [fixture:
@@ -308,7 +367,7 @@ Output
 Input (escaped):
 
 ```json
-"ishikawa %%{init: {}}%% R\n A"
+"ishikawa %%{init: {}}%% R\n   A"
 ```
 
 Output
@@ -323,7 +382,7 @@ ishikawa
 Input (escaped):
 
 ```json
-"ishikawa %%{init: {\n     }}%% R\n A\n  B"
+"ishikawa %%{init: {\n     }}%% R\n   A\n    B"
 ```
 
 Output
@@ -346,17 +405,20 @@ ishikawa/inline-directives/directive-single-space-gaps] [fixture:
 ishikawa/inline-directives/directive-in-value] [fixture:
 ishikawa/inline-directives/literal-side-whitespace] [fixture:
 ishikawa/inline-directives/joined-line-spaces] Leading directive gaps instead
-count toward the node's chosen depth indentation, excluding directive
-characters: retain the gaps while they fit, shorten from the last gap backwards
-when necessary, and supply the remainder before the first directive using
-configured characters. This reuses kanban's allocation policy, keeps multiline
-contents and continuation columns, and avoids preserving arbitrary source
-indentation. [fixture: ishikawa/inline-directives/directive-leading] [fixture:
+count toward the node's chosen depth indentation, excluding directive characters
+and removed common comment regions: retain the gaps while they fit, shorten from
+the last gap backwards when necessary, and supply the remainder before the first
+directive using configured characters. This reuses kanban's allocation policy,
+keeps multiline contents and continuation columns, and avoids preserving
+arbitrary source indentation. [fixture:
+ishikawa/inline-directives/directive-leading] [fixture:
 ishikawa/inline-directives/directive-leading-wide] [fixture:
 ishikawa/inline-directives/directive-two-leading] [fixture:
 ishikawa/inline-directives/directive-multiline-join] [test: ishikawa:
 ls-comment-leading-directives] [test: ishikawa:
-ps-comment-leading-directive-kept-zero]
+ps-comment-leading-directive-kept-zero] [test: ishikawa:
+leading-directive-in-joining-region] [test: ishikawa:
+joining-region-does-not-count-indentation]
 
 Input (escaped):
 
@@ -547,11 +609,11 @@ ishikawa
 
 ### Case and order
 
-Written header case, literal case, source/sibling order and repeated nodes
-remain, including equal labels with different children. Header case is a
-Db-equal authored choice worth retaining; sibling order and repetitions are part
-of the ordered Db tree, so sorting, deduplication or grouping would change it.
-[fixture: ishikawa/case-and-order/case-order-kept] [fixture:
+Literal case, source/sibling order and repeated nodes remain, including equal
+labels with different children. The header is printed `ishikawa` whatever case
+it was written in (see [Header](#header)); sibling order and repetitions are
+part of the ordered Db tree, so sorting, deduplication or grouping would change
+it. [fixture: ishikawa/case-and-order/case-order-kept] [fixture:
 ishikawa/case-and-order/deduplicate-unsafe] [fixture:
 ishikawa/case-and-order/single-cause]
 
@@ -565,7 +627,7 @@ Output
 ([case-and-order/case-order-kept-output.mmd](../tests/fixtures/ishikawa/case-and-order/case-order-kept-output.mmd)):
 
 ```mmd
-iShIkAwA
+ishikawa
   R
     A
       First
@@ -710,7 +772,7 @@ ishikawa
 
 ### Frontmatter YAML
 
-Shared guarded Prettier YAML formatting makes safe configuration readable while
+Shared guarded Prettier YAML formatting formats safe configuration while
 retaining delimiters and closing padding. [fixture:
 ishikawa/frontmatter-yaml/frontmatter-yaml] [fixture:
 ishikawa/frontmatter-yaml/frontmatter-width-config] [fixture:
@@ -814,7 +876,7 @@ are checked separately.
 Input (escaped):
 
 ```json
-"ishikawa R\n A\n   B"
+"ishikawa R\n  A\n    B"
 ```
 
 Output

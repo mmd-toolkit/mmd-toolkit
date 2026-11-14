@@ -47,7 +47,7 @@ gantt
   title first
   title second
   dateFormat YYYY-MM-DD
-  Design :2024-01-06, 3d
+  Design : 2024-01-06, 3d
 ```
 
 ```mmd
@@ -56,7 +56,7 @@ gantt
   accTitle: first
   accTitle: second
   dateFormat YYYY-MM-DD
-  Design :2024-01-06, 3d
+  Design : 2024-01-06, 3d
 ```
 
 Examples of **correct** code for this rule:
@@ -67,7 +67,7 @@ gantt
   title first
   accTitle: second
   dateFormat YYYY-MM-DD
-  Design :2024-01-06, 3d
+  Design : 2024-01-06, 3d
 ```
 
 ```mmd
@@ -76,7 +76,7 @@ gantt
   title first
   title first
   dateFormat YYYY-MM-DD
-  Design :2024-01-06, 3d
+  Design : 2024-01-06, 3d
 ```
 
 ## Options

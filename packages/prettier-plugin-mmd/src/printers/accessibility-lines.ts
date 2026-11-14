@@ -6,21 +6,38 @@ import {
   findStructuralToken,
   findTriviaBetween,
   isWhitespace,
+  skipRemoved,
+  textRead,
 } from "./source.ts"
 
 /**
  * Whether anything but whitespace, comments, and directives follows `end` on
- * its line: another statement, or a `;`.
+ * its line: another statement, or a `;` that the line rule does not remove.
  */
 export function holdsStatementAfter(source: Source, end: number): boolean {
+  return findStatementAfter(source, end) !== undefined
+}
+
+/**
+ * Where the first thing but whitespace, comments, and directives after `end` on
+ * its line is, as the offset after the last comment or directive that comes
+ * before it (`end` where none does), or undefined where nothing but whitespace,
+ * comments, and directives follows (see `holdsStatementAfter`).
+ */
+export function findStatementAfter(
+  source: Source,
+  end: number,
+): number | undefined {
   const lineEnd = lineEndOf(source, end)
   let position = end
   for (const item of findTriviaBetween(source, end, lineEnd)) {
-    if (![...source.text.slice(position, item.range[0])].every(isWhitespace))
-      return true
+    if (![...textRead(source, position, item.range[0])].every(isWhitespace))
+      return position
     position = Math.max(position, item.range[1])
   }
-  return ![...source.text.slice(position, lineEnd)].every(isWhitespace)
+  return [...textRead(source, position, lineEnd)].every(isWhitespace)
+    ? undefined
+    : position
 }
 
 /**
@@ -44,6 +61,11 @@ export function holdsDirection(
      * from the source.
      */
     readonly text: string | null
+    /**
+     * Where the value starts, for a statement with a `text`: the line break
+     * before it joins unless a comment or a directive stands in the gap.
+     */
+    readonly valueStart?: number
   },
   options: { readonly caseSensitive?: boolean } = {},
 ): boolean {
@@ -52,14 +74,17 @@ export function holdsDirection(
   let view: string
   if (
     statement.text !== null &&
-    !spansLinesThatCannotJoin(source, start, end)
+    !spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }) &&
+    (statement.valueStart === undefined ||
+      !spansLinesThatCannotJoin(source, start, statement.valueStart))
   ) {
     // The value of the tree is the text that the lexer reads, without the
-    // directives inside it.
+    // directives inside it. A directive inside the value does not keep the
+    // line break before it: the first line is printed with the value.
     const keyword = findStructuralToken(source, start)
     view = `${keyword?.value ?? ""}: ${statement.text}`
   } else {
-    view = readableText(source, start, end)
+    view = textRead(source, start, end)
   }
   let headEnd = 0
   while (headEnd < view.length && !isLineEnd(view[headEnd])) headEnd++
@@ -96,6 +121,22 @@ export function holdsDirection(
 }
 
 /**
+ * Whether the first line that is printed for an accessibility statement holds
+ * a direction only because the printer brings the text of a later line to the
+ * `:`: the line as written does not hold it (see `holdsDirection`).
+ */
+export function holdsDirectionOnlyWhenJoined(
+  source: Source,
+  statement: Parameters<typeof holdsDirection>[1],
+  options: Parameters<typeof holdsDirection>[2] = {},
+): boolean {
+  return (
+    holdsDirection(source, statement, options) &&
+    !holdsDirection(source, { range: statement.range, text: null }, options)
+  )
+}
+
+/**
  * Whether a direction follows the first line of an accessibility statement,
  * after whitespace: in the rest of the statement, or, where only whitespace
  * is left of it, in the source after the statement. `separated` says whether
@@ -116,30 +157,18 @@ function isDirectionAfterHead(
       isDirection(remainder.slice(index, index + 2), caseSensitive)
     )
   }
-  const next = skipWhitespaceAndTrivia(source, statementEnd)
-  return (
-    (separated || index > 0 || next > statementEnd) &&
-    isDirection(source.text.slice(next, next + 2), caseSensitive)
+  const next = skipWhitespaceAndRemoved(source, statementEnd)
+  const second = skipRemoved(source, next + 1)
+  const hasWhitespace = [...textRead(source, statementEnd, next)].some(
+    isWhitespace,
   )
-}
-
-/**
- * The text from `from` to `to` as the lexer reads it: without the directives
- * and the comment lines.
- */
-function readableText(source: Source, from: number, to: number): string {
-  let text = ""
-  let position = from
-  while (position < to) {
-    const trivia = findTriviaBetween(source, position, position + 1).at(0)
-    if (trivia === undefined) {
-      text += source.text[position]
-      position++
-    } else {
-      position = trivia.range[1]
-    }
-  }
-  return text
+  return (
+    (separated || index > 0 || hasWhitespace) &&
+    isDirection(
+      textRead(source, next, Math.min(second + 1, source.text.length)),
+      caseSensitive,
+    )
+  )
 }
 
 /** Whether two characters match the direction values under the selected case rule. */
@@ -151,27 +180,27 @@ function isDirection(text: string, caseSensitive: boolean): boolean {
 }
 
 /**
- * The offset after the whitespace, the comments, and the directives that
- * start at `offset`, or `offset` when none does.
+ * The offset of the first character from `offset` on that the lexer reads and
+ * that is no whitespace (see `skipRemoved`), or the end of the text.
  */
-function skipWhitespaceAndTrivia(source: Source, offset: number): number {
-  let position = offset
-  for (;;) {
-    const trivia = findTriviaBetween(source, position, position + 1).at(0)
-    if (trivia !== undefined) {
-      position = trivia.range[1]
-    } else if (
-      position < source.text.length &&
-      isWhitespace(source.text[position])
-    ) {
-      position++
-    } else {
-      return position
-    }
+function skipWhitespaceAndRemoved(source: Source, offset: number): number {
+  let position = skipRemoved(source, offset)
+  while (position < source.text.length && isWhitespace(source.text[position])) {
+    position = skipRemoved(source, position + 1)
   }
+  return position
 }
 
-/** Whether a character ends a line for the run before `direction`: a line feed, U+2028, or U+2029. */
+/**
+ * Whether a character ends a line for the run before `direction`: a line feed,
+ * a carriage return (the lexer reads a lone `\r` as a line feed), U+2028, or
+ * U+2029.
+ */
 function isLineEnd(character: string): boolean {
-  return character === "\n" || character === "\u2028" || character === "\u2029"
+  return (
+    character === "\n" ||
+    character === "\r" ||
+    character === "\u2028" ||
+    character === "\u2029"
+  )
 }

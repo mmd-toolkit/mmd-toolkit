@@ -6,9 +6,9 @@ Filename: venn-no-duplicate-style-incorrect-1.mmd
 
 Code:
   1 | venn-beta
-  2 | set A
-  3 | style A fill:red, fill:blue
-    |                   ^~~~~~~~~ [1]
+  2 |   set A
+  3 |   style A fill: red, fill: blue
+    |                      ^~~~~~~~~~ [1]
   4 |
 
 [1] mermaid.js replaces the `fill` value given earlier for this target with this value.
@@ -16,14 +16,14 @@ Code:
       - Remove this property.
         Output:
           1 | venn-beta
-          2 | set A
-          3 | style A fill:red
+          2 |   set A
+          3 |   style A fill: red
           4 |
       - Remove the earlier property.
         Output:
           1 | venn-beta
-          2 | set A
-          3 | style A  fill:blue
+          2 |   set A
+          3 |   style A  fill: blue
           4 |
 ---
 
@@ -33,10 +33,10 @@ Filename: venn-no-duplicate-style-incorrect-2.mmd
 
 Code:
   1 | venn-beta
-  2 | set A
-  3 | style A fill:red, stroke:black
-  4 | style A fill:blue
-    |         ^~~~~~~~~ [1]
+  2 |   set A
+  3 |   style A fill: red, stroke: black
+  4 |   style A fill: blue
+    |           ^~~~~~~~~~ [1]
   5 |
 
 [1] mermaid.js replaces the `fill` value given earlier for this target with this value.
@@ -44,15 +44,15 @@ Code:
       - Remove this property.
         Output:
           1 | venn-beta
-          2 | set A
-          3 | style A fill:red, stroke:black
+          2 |   set A
+          3 |   style A fill: red, stroke: black
           4 |
       - Remove the earlier property.
         Output:
           1 | venn-beta
-          2 | set A
-          3 | style A  stroke:black
-          4 | style A fill:blue
+          2 |   set A
+          3 |   style A  stroke: black
+          4 |   style A fill: blue
           5 |
 ---
 

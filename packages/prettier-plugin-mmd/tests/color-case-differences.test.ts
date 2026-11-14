@@ -72,6 +72,42 @@ const restored: readonly Case[] = [
     after: { styles: [{ target: "A", styles: { fill: "#f9f" } }] },
     compared: { styles: [{ target: "A", styles: { fill: "#F9F" } }] },
   },
+  {
+    name: "the spaces after the commas of a color function of a Venn style",
+    type: "venn",
+    before: { styles: [{ target: "A", styles: { fill: "rgb(1,2, 3)" } }] },
+    after: { styles: [{ target: "A", styles: { fill: "rgb(1, 2, 3)" } }] },
+    compared: { styles: [{ target: "A", styles: { fill: "rgb(1,2, 3)" } }] },
+  },
+  {
+    name: "the color of a box of a sequence diagram",
+    type: "sequence",
+    before: { boxes: [{ name: "Team", fill: "rgba(1,2,3,0.5)" }] },
+    after: { boxes: [{ name: "Team", fill: "rgba(1, 2, 3, 0.5)" }] },
+    compared: { boxes: [{ name: "Team", fill: "rgba(1,2,3,0.5)" }] },
+  },
+  {
+    name: "the text of a rectangle of a sequence diagram",
+    type: "sequence",
+    before: {
+      messages: [
+        { message: "hsl(10,20%,30%)", type: 22 },
+        { message: "", type: 23 },
+      ],
+    },
+    after: {
+      messages: [
+        { message: "hsl(10, 20%, 30%)", type: 22 },
+        { message: "", type: 23 },
+      ],
+    },
+    compared: {
+      messages: [
+        { message: "hsl(10,20%,30%)", type: 22 },
+        { message: "", type: 23 },
+      ],
+    },
+  },
 ]
 
 const kept: readonly Case[] = [
@@ -125,6 +161,34 @@ const kept: readonly Case[] = [
     compared: vertex(["fill:red"], "color #abc"),
   },
   {
+    name: "a color function of a message that is no rectangle",
+    type: "sequence",
+    before: { messages: [{ message: "rgb(1,2,3)", type: 0 }] },
+    after: { messages: [{ message: "rgb(1, 2, 3)", type: 0 }] },
+    compared: { messages: [{ message: "rgb(1, 2, 3)", type: 0 }] },
+  },
+  {
+    name: "the name of a box with commas",
+    type: "sequence",
+    before: { boxes: [{ name: "Team (a,b)", fill: "transparent" }] },
+    after: { boxes: [{ name: "Team (a, b)", fill: "transparent" }] },
+    compared: { boxes: [{ name: "Team (a, b)", fill: "transparent" }] },
+  },
+  {
+    name: "a color function with another channel",
+    type: "sequence",
+    before: { boxes: [{ name: "Team", fill: "rgb(1,2,3)" }] },
+    after: { boxes: [{ name: "Team", fill: "rgb(1, 2, 4)" }] },
+    compared: { boxes: [{ name: "Team", fill: "rgb(1, 2, 4)" }] },
+  },
+  {
+    name: "a Venn value with commas that is no color function",
+    type: "venn",
+    before: { styles: [{ target: "A", styles: { fill: "a,b" } }] },
+    after: { styles: [{ target: "A", styles: { fill: "a, b" } }] },
+    compared: { styles: [{ target: "A", styles: { fill: "a, b" } }] },
+  },
+  {
     name: "a color of a key that holds no style",
     type: "quadrantChart",
     before: { points: [{ text: "#ABC", color: "#FF3300" }] },
@@ -133,7 +197,7 @@ const kept: readonly Case[] = [
   },
 ]
 
-describe("the case of the colors of the styles that the formatter prints in lower case", () => {
+describe("the colors that the formatter prints in lower case or with a space after the commas of a function", () => {
   it.each(restored)("restores $name", ({ type, before, after, compared }) => {
     expect(colorCaseDbForFormattingComparison(before, after, type)).toEqual(
       compared,

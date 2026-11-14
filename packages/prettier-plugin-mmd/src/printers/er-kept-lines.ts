@@ -4,18 +4,92 @@ import type { KeptLines } from "./kept-lines.ts"
 import {
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
+  becomesCommentLineOnItsOwnLine,
+  isFirstOnItsLine,
   lineEndOf,
   lineStartOf,
 } from "./kept-lines.ts"
-import { holdsDirection, holdsStatementAfter } from "./accessibility-lines.ts"
+import {
+  holdsDirection,
+  holdsDirectionOnlyWhenJoined,
+  holdsStatementAfter,
+} from "./accessibility-lines.ts"
 import type { Source } from "./source.ts"
-import { findTriviaBetween } from "./source.ts"
+import {
+  findStructuralTokenEndingBefore,
+  isWhitespace,
+  isWordCharacter,
+  skipRemoved,
+  textRead,
+} from "./source.ts"
+import { toAsciiLowerCase } from "./layout.ts"
 
 /** The lines that hold a `;`, of each source, found once per source. */
 const semicolonLinesBySource = new WeakMap<Source, ReadonlySet<number>>()
 
 /** The kept lines of each source, found once per source. */
 const keptLinesBySource = new WeakMap<Source, KeptLines>()
+
+/** The starts of names that keep their gap after an older `class` keyword. */
+const classNameGapsBySource = new WeakMap<Source, ReadonlySet<number>>()
+
+/**
+ * The bare names after a `class` that starts with a whitespace character that
+ * the pinned lexer reads as part of a name (a U+2028, a U+2029, a U+00A0, and
+ * the others of `isNameWhitespace`) and that an older lexer reads as a class
+ * statement. Its whitespace rule consumes line feeds only
+ * after another whitespace character; comments and directives are removed
+ * first, so an intervening comment or blank line does not end that gap.
+ * Keep the original gaps through both names (docs/er.md, Statements one per
+ * line), including the first name in `classé`.
+ */
+export function findErClassNameGaps(source: Source): ReadonlySet<number> {
+  const cached = classNameGapsBySource.get(source)
+  if (cached !== undefined) return cached
+  const gaps = new Set<number>()
+
+  /** Checks each statement list without crossing a subgraph boundary. */
+  function visit(statements: readonly ErStatement[]): void {
+    for (const [index, statement] of statements.entries()) {
+      if (statement.type === "ErSubgraphStatement") visit(statement.body)
+      if (!isNameWhitespace(source.text.charAt(statement.range[0]))) continue
+      const start = skipWhitespaceOnLine(source, statement.range[0])
+      const own = textRead(source, start, statement.range[1])
+      if (
+        !isNameAlone(statement) ||
+        toAsciiLowerCase(readWord(own, 0)) !== "class"
+      )
+        continue
+      const needed = own.length > "class".length ? 1 : 2
+      const names = statements.slice(index + 1, index + 1 + needed)
+      if (
+        names.length !== needed ||
+        !names.every((name, nameIndex) => {
+          if (!isNameAlone(name) || name.name.type !== "ErIdentifier")
+            return false
+          const previous = nameIndex === 0 ? statement : names[nameIndex - 1]
+          const first = textRead(
+            source,
+            previous.range[1],
+            name.range[0],
+          ).charAt(0)
+          return (
+            first !== "" &&
+            first !== "\n" &&
+            first !== "\r" &&
+            isWhitespace(first)
+          )
+        })
+      )
+        continue
+      for (const name of names) gaps.add(name.range[0])
+    }
+  }
+
+  visit(diagramOf(source).body)
+  classNameGapsBySource.set(source, gaps)
+  return gaps
+}
 
 /**
  * The lines of an ER diagram that hold a `;` (see
@@ -56,6 +130,7 @@ export function findErKeptLines(source: Source): KeptLines {
     verbatim: new Set([
       ...findLinesEndedBySemicolon(source),
       ...findLinesReadByTheirPlace(source, diagramOf(source).body),
+      ...findAttributeLinesWithTildes(source, diagramOf(source).body),
     ]),
     ownIndentation: new Set(
       findAccessibilityLines(source, diagramOf(source).body),
@@ -108,29 +183,333 @@ function findSubgraphHeaderLines(
  *   (diagrams/er.md, The cardinalities, numbers, and relationship lines,
  *   rule 11), so the statements cannot be split into lines of their own
  *   (docs/er.md, Statements one per line).
+ * - An entity statement named by a number of two digits or more, with a
+ *   character right after it that continues a name: `12a` is the entities
+ *   `12` and `a` to the pinned lexer, and one name to a version that counts.
+ * - A statement that starts with a whitespace character that is no space or
+ *   tab (a U+2028, a U+2029, a U+00A0, a U+3000, and the others of
+ *   `isNameWhitespace`), with following statements,
+ *   where a version that counts reads the text from the
+ *   end of the whitespace as a `class` statement or a direction line (see
+ *   `findLineReadAsKeywordByOlderVersions`): the character belongs to the
+ *   first name to the pinned lexer, and a version that counts reads it as
+ *   whitespace. `class A a` can continue across line feeds after whitespace
+ *   (see `findErClassNameGaps`), and
+ *   `A direction LR` is a direction line, which has no entity `A`; on lines
+ *   of their own, the statements are a keyword alone, which it rejects, and
+ *   an entity and a direction line.
+ * - The lines of an attribute block with a `~` that a version that counts
+ *   reads from the start of an attribute (see `findAttributeLinesWithTildes`).
+ * - The `subgraph` keyword with a character outside ASCII, or a U+2028 or
+ *   U+2029, between it and its name: the keyword ends there to the pinned
+ *   lexer, and a version that counts reads one name (`subgraphé` is the
+ *   keyword and the name `é`). The statement after an `end` that stands
+ *   so stays on its line (see `followsEndAsOneName`).
  */
 function findLinesReadByTheirPlace(
   source: Source,
   statements: readonly ErStatement[],
 ): number[] {
   const lines: number[] = []
-  for (const statement of statements) {
+  for (const [index, statement] of statements.entries()) {
+    const keptLine = findLineReadAsKeywordByOlderVersions(
+      source,
+      statements,
+      index,
+    )
+    if (keptLine !== null) lines.push(keptLine)
     if (
-      statement.type === "ErEntityStatement" &&
+      isNameAlone(statement) &&
       statement.name.type === "ErIdentifier" &&
-      statement.name.name === "1" &&
-      statement.alias === null &&
-      statement.cssClasses.length === 0 &&
-      statement.attributes === null &&
-      startsLikeRuleEleven(source, statement.range[1])
+      (statement.name.name === "1"
+        ? startsLikeRuleEleven(source, statement.range[1])
+        : isNumber(statement.name.name) &&
+          continuesName(
+            source.text.charAt(skipRemoved(source, statement.range[1])),
+          ))
+    ) {
+      lines.push(lineStartOf(source, statement.range[0]))
+    }
+    if (
+      becomesCommentLineOnItsOwnLine(source, statement.range[0]) ||
+      startsWithSeparatorBeforeMore(source, statement)
     ) {
       lines.push(lineStartOf(source, statement.range[0]))
     }
     if (statement.type === "ErSubgraphStatement") {
+      if (followsSplitKeyword(source, statement.id.range[0])) {
+        lines.push(lineStartOf(source, statement.range[0]))
+      }
       appendItems(lines, findLinesReadByTheirPlace(source, statement.body))
     }
   }
   return lines
+}
+
+/**
+ * The lines of an attribute block that hold several attributes, one of which
+ * starts before a pair of `~`. The oldest version that counts reads the `~` of
+ * a generic type with the rule `(.*?)[~](.*?)*[~]`, which starts at the
+ * attribute and runs on over the rest of the line to the second `~`, so
+ * ` int a List~int~ b` is the attribute `int a List~int~` and `b` there, and
+ * the attributes `int a` and `List~int~ b` when they stand on lines of their
+ * own. The rule reads an attribute whose own type holds the pair as it is
+ * (`List~int~ a`) (docs/er.md, Attribute blocks).
+ */
+function findAttributeLinesWithTildes(
+  source: Source,
+  statements: readonly ErStatement[],
+): number[] {
+  const lines: number[] = []
+  for (const statement of statements) {
+    if (statement.type === "ErSubgraphStatement") {
+      appendItems(lines, findAttributeLinesWithTildes(source, statement.body))
+    }
+    if (statement.type !== "ErEntityStatement" || statement.attributes === null)
+      continue
+    const attributes = statement.attributes.filter(
+      (item) => item.type === "ErAttribute",
+    )
+    for (const attribute of attributes) {
+      const line = lineStartOf(source, attribute.range[0])
+      const lineEnd = lineEndOf(source, attribute.range[0])
+      const first = indexOfTilde(source, attribute.range[0], lineEnd)
+      const second =
+        first === -1 ? -1 : indexOfTilde(source, first + 1, lineEnd)
+      const onLine = attributes.filter(
+        (other) => lineStartOf(source, other.range[0]) === line,
+      )
+      if (
+        onLine.length > 1 &&
+        second !== -1 &&
+        second < lineEnd &&
+        second >= attribute.dataType.range[1]
+      ) {
+        lines.push(line)
+      }
+    }
+  }
+  return lines
+}
+
+/**
+ * The offset of the first `~` from `from` to the end of the line at `to` that
+ * mermaid.js reads, or -1: removed characters do not supply a tilde.
+ */
+function indexOfTilde(source: Source, from: number, to: number): number {
+  let position = from
+  while (position < to) {
+    position = skipRemoved(source, position)
+    if (position >= to) break
+    if (source.text[position] === "~") return position
+    position++
+  }
+  return -1
+}
+
+/**
+ * The line to print as written for the statement at `index`, which starts
+ * with a whitespace character (`isNameWhitespace`) that a version that counts
+ * reads as whitespace, or null where the statements on lines of their own are
+ * read as the line is.
+ * The keyword rules of that version start where the whitespace ends, with the
+ * directives removed:
+ *
+ * - `class` followed by a character that is no letter, digit, or `_` is the
+ *   keyword, and `class A a` is one statement. It needs two names after the
+ *   keyword, and a statement of a name alone is one name (`classé` is the
+ *   keyword and the name `é`), so `class A` is rejected whether it stands on
+ *   one line or on two. The line of the statement is the one to keep.
+ * - The rule of the direction line takes the run up to the next line
+ *   terminator that holds `direction`, whitespace, and a direction
+ *   (`holdsDirection`), so `A direction LR` is a direction line with no entity
+ *   `A`, while on lines of their own `A` is an entity. When the statement
+ *   after the first is a direction line, whose `direction` is out of the reach
+ *   of the rule once it stands on a line of its own, the line of the first is
+ *   the one to keep. When `direction` ends the first statement, the whitespace
+ *   before the direction may hold a line feed, so a line of the entity
+ *   `direction` and a line of the entity `LR` are the same direction line; the
+ *   line that holds the value is read differently only where a statement
+ *   follows the value on it, which the rule takes into the direction line and
+ *   which stands on a line of its own otherwise, and that line is the one to
+ *   keep.
+ */
+function findLineReadAsKeywordByOlderVersions(
+  source: Source,
+  statements: readonly ErStatement[],
+  index: number,
+): number | null {
+  const statement = statements[index]
+  if (!isNameWhitespace(source.text.charAt(statement.range[0]))) return null
+  const start = skipWhitespaceOnLine(source, statement.range[0])
+  // A separator that whitespace follows is a name of its own, and the
+  // keyword after the whitespace is read the same by every version.
+  if (start >= statement.range[1]) return null
+  const line = lineStartOf(source, statement.range[0])
+  const followers = statements.slice(index + 1, index + 3)
+  const own = textRead(source, start, statement.range[1])
+  if (toAsciiLowerCase(readWord(own, 0)) === "class") {
+    return followers[0] !== undefined &&
+      findErClassNameGaps(source).has(followers[0].range[0])
+      ? line
+      : null
+  }
+  if (
+    !holdsDirection(source, {
+      range: [start, lineEndOf(source, start)],
+      text: null,
+    })
+  )
+    return null
+  const [first, second] = followers
+  if (
+    first?.type === "ErDirectionStatement" &&
+    lineStartOf(source, first.range[0]) === line
+  )
+    return line
+  const valueLine =
+    first === undefined ? null : lineStartOf(source, first.range[0])
+  return second !== undefined &&
+    valueLine === lineStartOf(source, second.range[0])
+    ? valueLine
+    : null
+}
+
+/**
+ * The offset of the first character from `offset` on that is no whitespace
+ * and no directive, or of the line feed that ends the line.
+ */
+function skipWhitespaceOnLine(source: Source, offset: number): number {
+  let start = offset
+  for (;;) {
+    start = skipRemoved(source, start)
+    const character = source.text.charAt(start)
+    if (
+      character === "" ||
+      character === "\n" ||
+      character === "\r" ||
+      !isWhitespace(character)
+    )
+      return start
+    start++
+  }
+}
+
+/**
+ * Whether the first entity of a statement is named by whitespace characters
+ * only (a U+2028, a U+2029, a U+00A0, a U+3000, and the others of
+ * `isNameWhitespace`), after another statement on its line, and the statement
+ * goes on after the name: an attribute block, an alias, a CSS class, or a
+ * relationship (`"Alpha"`, the character, and `{ int x }`). The oldest versions
+ * that count read the character as whitespace and the rest as part of the
+ * statement before it, so the rest cannot start a line of its own there, and
+ * printing the statement on a line of its own gives a text that they reject
+ * (docs/er.md, Statements one per line). A name that stands alone is no such
+ * statement, and a name of the character and other characters (`LR`) starts a
+ * line there.
+ */
+function startsWithSeparatorBeforeMore(
+  source: Source,
+  statement: ErStatement,
+): boolean {
+  const name =
+    statement.type === "ErEntityStatement"
+      ? statement.name
+      : statement.type === "ErRelationshipStatement"
+        ? statement.left.name
+        : undefined
+  return (
+    name !== undefined &&
+    isNameWhitespace(source.text.charAt(name.range[0])) &&
+    [...source.text.slice(...name.range)].every(isWhitespace) &&
+    !isNameAlone(statement) &&
+    !isFirstOnItsLine(source, name.range[0])
+  )
+}
+
+/** Whether the statement is an entity written by its name alone. */
+function isNameAlone(
+  statement: ErStatement,
+): statement is Extract<ErStatement, { type: "ErEntityStatement" }> {
+  return (
+    statement.type === "ErEntityStatement" &&
+    statement.alias === null &&
+    statement.cssClasses.length === 0 &&
+    statement.attributes === null
+  )
+}
+
+/**
+ * Whether a character is a whitespace character that a name of the statement
+ * context may start with: every one but a space, a tab, and a line break
+ * (diagrams/er.md, Whitespace). The pinned lexer reads it as part of a name,
+ * and the oldest versions that count read it as whitespace.
+ */
+export function isNameWhitespace(character: string): boolean {
+  return (
+    character !== "" &&
+    isWhitespace(character) &&
+    character !== " " &&
+    character !== "\t" &&
+    character !== "\n" &&
+    character !== "\r"
+  )
+}
+
+/** The letters, digits, and `_` that start at `offset`. */
+function readWord(text: string, offset: number): string {
+  let end = offset
+  while (end < text.length && isWordCharacter(text.charAt(end))) end++
+  return text.slice(offset, end)
+}
+
+/** Whether the text is a number of two digits or more. */
+function isNumber(text: string): boolean {
+  return text.length >= 2 && [...text].every((c) => c >= "0" && c <= "9")
+}
+
+/**
+ * Whether a character continues a name to a version that counts: an ASCII
+ * letter, `_`, `-`, `*`, or a character outside ASCII, a U+2028 and a U+2029
+ * included.
+ */
+function continuesName(character: string): boolean {
+  return (
+    character !== "" &&
+    ((character >= "a" && character <= "z") ||
+      (character >= "A" && character <= "Z") ||
+      character === "_" ||
+      character === "-" ||
+      character === "*" ||
+      character > "\u007f")
+  )
+}
+
+/**
+ * Whether the name that starts at `nameStart` follows the keyword `end` or
+ * `subgraph` so that a version that counts reads both as one name: a whitespace
+ * character that is no space or tab (`isNameWhitespace`: a U+2028, a U+2029, a
+ * U+00A0, and the others) stands between them, or a character outside ASCII
+ * touches the keyword.
+ * The pinned lexer ends the keyword there (docs/er.md, Statements one per
+ * line). The directives between them are left out, since mermaid.js removes
+ * them before it reads the text.
+ */
+export function followsSplitKeyword(
+  source: Source,
+  nameStart: number,
+): boolean {
+  const keyword = findStructuralTokenEndingBefore(source, nameStart)
+  if (
+    keyword?.type !== "Keyword" ||
+    !["end", "subgraph"].includes(toAsciiLowerCase(keyword.value))
+  )
+    return false
+  const gap = textRead(source, keyword.range[1], nameStart)
+  return (
+    [...gap].some(isNameWhitespace) ||
+    (gap === "" && source.text.charAt(nameStart) > "\u007f")
+  )
 }
 
 /**
@@ -140,13 +519,7 @@ function findLinesReadByTheirPlace(
  * before them from what lies after them.
  */
 function startsLikeRuleEleven(source: Source, offset: number): boolean {
-  let position = offset
-  for (;;) {
-    const trivia = findTriviaBetween(source, position, position + 1).at(0)
-    if (trivia?.type !== "Directive") break
-    position = trivia.range[1]
-  }
-  const character = source.text[position]
+  const character = source.text[skipRemoved(source, offset)]
   return (
     character !== undefined &&
     ((character >= "a" && character <= "z") ||
@@ -181,20 +554,74 @@ function findAccessibilityLines(
     if (statement.type === "ErSubgraphStatement") {
       appendItems(lines, findAccessibilityLines(source, statement.body))
     } else if (
-      (statement.type === "ErAccTitleStatement" ||
-        statement.type === "ErAccDescrStatement" ||
-        statement.type === "ErAccDescrBlockStatement") &&
-      holdsDirection(source, {
-        range: [statement.range[0], lineEndOf(source, statement.range[1])],
-        text:
-          statement.type === "ErAccDescrBlockStatement" ||
-          holdsStatementAfter(source, statement.range[1])
-            ? null
-            : statement.value.value,
-      })
+      isAccessibilityStatement(statement) &&
+      holdsDirection(source, directionStatementOf(source, statement))
     ) {
       lines.push(lineStartOf(source, statement.range[0]))
     }
   }
   return lines
+}
+
+/** The statements of `accTitle` and `accDescr`, the ones that can hold a direction. */
+function isAccessibilityStatement(statement: ErStatement): statement is Extract<
+  ErStatement,
+  {
+    type:
+      "ErAccTitleStatement" | "ErAccDescrStatement" | "ErAccDescrBlockStatement"
+  }
+> {
+  return (
+    statement.type === "ErAccTitleStatement" ||
+    statement.type === "ErAccDescrStatement" ||
+    statement.type === "ErAccDescrBlockStatement"
+  )
+}
+
+/** What `holdsDirection` reads of an `accTitle` or `accDescr` statement. */
+function directionStatementOf(
+  source: Source,
+  statement: Extract<
+    ErStatement,
+    {
+      type:
+        | "ErAccTitleStatement"
+        | "ErAccDescrStatement"
+        | "ErAccDescrBlockStatement"
+    }
+  >,
+): Parameters<typeof holdsDirection>[1] {
+  return {
+    range: [statement.range[0], lineEndOf(source, statement.range[1])],
+    text:
+      statement.type === "ErAccDescrBlockStatement" ||
+      holdsStatementAfter(source, statement.range[1])
+        ? null
+        : statement.value.value,
+    valueStart:
+      statement.type === "ErAccDescrBlockStatement"
+        ? undefined
+        : statement.value.range[0],
+  }
+}
+
+/**
+ * Whether the printer brings the text of a statement to the `:` and the line
+ * then holds a direction, which the written line does not. The statement then
+ * starts at the first column: at the first column `accTitle: direction LR` is
+ * a title, as the statement is read when its text stands on a later line,
+ * while after an indentation it is a direction line (see
+ * `findAccessibilityLines`).
+ */
+export function isDirectionBroughtToTheColon(
+  source: Source,
+  statement: ErStatement,
+): boolean {
+  return (
+    isAccessibilityStatement(statement) &&
+    holdsDirectionOnlyWhenJoined(
+      source,
+      directionStatementOf(source, statement),
+    )
+  )
 }

@@ -8,6 +8,7 @@ import type { KeptLines } from "./kept-lines.ts"
 import { lineStartOf } from "./kept-lines.ts"
 import { keptAsWritten } from "./layout.ts"
 import { printAsWritten } from "./lines.ts"
+import { isNameLikeDataBlock } from "./sequence-name-blocks.ts"
 import type { Source } from "./source.ts"
 import {
   findDirectiveEndingAt,
@@ -415,6 +416,7 @@ function padDataBlock(
   const after = blocks[index + 1]
   if (
     !paddedTypes.has(block.type) ||
+    isNameLikeDataBlock(source, block) ||
     text.includes("%%{") ||
     startsWithYamlMark(text.slice(2)) ||
     holdsKeptLine(source, block.range, kept) ||

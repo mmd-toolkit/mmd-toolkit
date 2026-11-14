@@ -5,7 +5,7 @@
 決定された 29 項目に従い、
 [treemap の木](../../spec/docs/ast/treemap.ja.md)から整形します。
 各規則で選択の理由を説明します。
-semicolon の保護は普通の整形より優先します。
+セミコロンの保護は普通の整形より優先します。
 保持する文字と mermaid.js との差は
 [compatibility.ja.md](./compatibility.ja.md)に記します。
 
@@ -15,9 +15,10 @@ semicolon の保護は普通の整形より優先します。
 
 見出しを第 1 列に置き、普通の最初の文を次行に移します。
 見出しを見つけやすくするためです。
-Db が同じになる別名から一つを選ばず、
-書かれたキーワード `treemap` または `treemap-beta`
-を保ちます（[ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)を参照）。
+キーワードは `treemap-beta` と書かれていても `treemap` と印字します。
+この図を持つ対象の版は、どれも両方の名前を読み、同じに描くからです。
+詳しくは [ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)
+を参照してください。
 コロンは足さず、空本文も保ちます。
 
 [fixture: treemap/header/stable]
@@ -28,7 +29,7 @@ Db が同じになる別名から一つを選ばず、
 
 [fixture: treemap/header/empty]
 
-入力（escape 表記）: `" treemap\"HeadingRoot\"\n \"HeadingChild\":3"`
+入力（エスケープ表記）: `" treemap\"HeadingRoot\"\n \"HeadingChild\":3"`
 
 出力
 ([header/stable-output.mmd](../tests/fixtures/treemap/header/stable-output.mmd)):
@@ -41,14 +42,17 @@ treemap
 
 ### Indentation
 
-AST の children から、書かれた順に親を読みます。
+AST の `children` から、書かれた順に親を読みます。
 子を持つのは section だけで、leaf の後の深い行が別の根になることもあります。
-statementsBefore の common 文と classDef は原文の位置を保ち、
+`statementsBefore` の共通文と classDef は原文の位置を保ち、
 親の判定に参加しません。
 普通の根は設定の 1 段、子は親より 1 段深く置きます。
-common 文と classDef は本文の 1 段に置きます。
+共通文と classDef は本文の 1 段に置きます。
 同じ読みを持つ幅から、一貫した深さを選ぶためです。
-tabWidth 0 でも、字下げが親子を決めるので 1 段 1 文字以上にします。
+字下げして書かれていない title とアクセシビリティの文だけは、
+行頭に置いて印字します。
+詳しくは [タイトル](#title) を参照してください。
+`tabWidth` 0 でも、字下げが親子を決めるので 1 段 1 文字以上にします。
 style と終端のない classDef に行が接する場合は接触を保ち、
 その図の全根の基準を 0 にします。
 後の根が子になるのを防ぐためです。
@@ -77,7 +81,7 @@ style と終端のない classDef に行が接する場合は接触を保ち、
 
 [fixture: treemap/indentation/glued-tabs]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"treemap\n    \"Top\"\n           \"Branch\"\n             \"Tip\":3\n      \"Sibling\":4\n \"Other\":5"`
 
 出力
@@ -94,14 +98,14 @@ treemap
 
 ### Carried indentation
 
-外側の空白を消す前に、割り当て済みの indent を反映した AST の親子を使います。
+外側の空白を消す前に、割り当て済みの字下げを反映した AST の親子を使います。
 見出し、section、leaf、classDef の終端、説明の閉じ括弧の後や、
-空白だけの行の run が、LF を越えて次行の字下げになりえます。
+空白だけの行の連なりが、LF を越えて次行の字下げになりえます。
 その情報を次行の予定の列へ一度だけ移します。
-物理行の先頭だけを測り直したり、二つ目の run を足したりしません。
-数える run は common の除去処理で既に決まっています。
+物理行の先頭だけを測り直したり、二つ目の連なりを足したりしません。
+数える連なりは共通の除去処理で既に決まっています。
 
-common コメントの除去で前の空白だけの run が消えていても、
+共通コメントの除去で前の空白だけの連なりが消えていても、
 その結果の行の桁を独立したコメント行にも使います。
 [fixture: treemap/comments/removed-indent]
 
@@ -125,7 +129,7 @@ common コメントの除去で前の空白だけの run が消えていても�
 
 [fixture: treemap/carried-indentation/closer]
 
-入力（escape 表記）: `"treemap\n\"Top\"  \n\"Tip\":2"`
+入力（エスケープ表記）: `"treemap\n\"Top\"  \n\"Tip\":2"`
 
 出力
 ([carried-indentation/section-space-output.mmd](../tests/fixtures/treemap/carried-indentation/section-space-output.mmd)):
@@ -149,7 +153,7 @@ useTabs なら深さごとに 1 tab、それ以外は設定の正の幅の space
 
 [fixture: treemap/tabs/same-count]
 
-入力（escape 表記）: `"treemap\n \"TabRoot\"\n\t \"Branch\"\n \t \"Tip\":3"`
+入力（エスケープ表記）: `"treemap\n \"TabRoot\"\n\t \"Branch\"\n \t \"Tip\":3"`
 
 出力 ([tabs/mixed-output.mmd](../tests/fixtures/treemap/tabs/mixed-output.mmd)):
 
@@ -162,12 +166,13 @@ treemap
 
 ### Statements one per line
 
-普通の隣接行や閉じた説明の後の文は、元順で一文一行にします。
-文の境界を見やすくするためです。
-終端のない空の classDef と次の引用行の接触は、間の directive も含めて保ちます。
-空白を足すと行が style に取り込まれるためです。
-完了した classDef にこの接触の制約はありませんが、semicolon の保護が優先します。
-title や class style が既に所有する文字は、別文にしません。
+普通の隣接行や閉じた説明の後の文は、元の順序で 1 行に 1 文ずつ置き、
+文の境界を見やすくします。
+終端のない空のクラス名と次の引用行の接触は、間のディレクティブも含めて保ちます。
+空白を足すと行がスタイルに取り込まれるためです。
+完了したクラス定義にこの接触の制約はありませんが、セミコロンの保護が優先します。
+タイトルやクラスのスタイルが既に所有する文字は、1 つの値であり、
+別文にはしません。
 
 [fixture: treemap/statements-one-per-line/adjacent]
 
@@ -183,7 +188,7 @@ title や class style が既に所有する文字は、別文にしません。
 
 [fixture: treemap/statements-one-per-line/title-owns-row]
 
-入力（escape 表記）: `"treemap\"Top\"  \"Left\":1   \"Right\",2\"Last\""`
+入力（エスケープ表記）: `"treemap\"Top\"  \"Left\":1   \"Right\",2\"Last\""`
 
 出力
 ([statements-one-per-line/adjacent-output.mmd](../tests/fixtures/treemap/statements-one-per-line/adjacent-output.mmd)):
@@ -198,10 +203,19 @@ treemap
 
 ### Separators
 
-leaf の colon と comma の綴りを保ち、普通の空白は前 0、後 1 にします。
+leaf のコロンとコンマの綴りを保ち、普通の空白は前 0、後 1 にします。
 句読点を変えず、同じ読みの空白をそろえるためです。
-NumericLiteral の中の comma は末尾も含めて数の一部として保ちます。
-trivia のある gap は接触を保ちます。
+各行が leaf を 1 つ足すので、このコロンはキーのコロンではありません。
+コロンの前の空白は、mermaid.js の文書の例が決めます。
+コロンの後に空白を置いて書いた例のうち、前に空白を置くものは 0 件で、
+置かないものは 35 件です。
+これは手順 3 です。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方) と
+[コロンの前の空白を決める例](./compatibility.ja.md#コロンの前の空白を決める例)
+を参照してください。
+`NumericLiteral` の中のコンマは末尾も含めて数の一部として保ちます。
+注釈のある隙間は接触を保ちます。
 
 [fixture: treemap/separators/colon]
 
@@ -211,7 +225,7 @@ trivia のある gap は接触を保ちます。
 
 [fixture: treemap/separators/trivia]
 
-入力（escape 表記）: `"treemap\n\"Colon\" \t: \t1,234.5"`
+入力（エスケープ表記）: `"treemap\n\"Colon\" \t: \t1,234.5"`
 
 出力
 ([separators/colon-output.mmd](../tests/fixtures/treemap/separators/colon-output.mmd)):
@@ -224,9 +238,9 @@ treemap
 ### Selectors
 
 `"section":::class` と `"leaf": value:::class` にします。
-trivia のない marker と名前の間の改行を詰め、`:::` の前後には空白を足しません。
+注釈のない印と名前の間の改行を詰め、`:::` の前後には空白を足しません。
 そこでは字下げが許されないためです。
-1 文字や keyword に似た名前も含め、selector の綴りと有無を保ちます。
+1 文字やキーワードに似た名前も含め、selector の綴りと有無を保ちます。
 
 [fixture: treemap/selectors/section-newlines]
 
@@ -240,7 +254,7 @@ trivia のない marker と名前の間の改行を詰め、`:::` の前後に�
 
 [fixture: treemap/selectors/keyword-prefix]
 
-入力（escape 表記）: `"treemap\n\"Section\"\n:::\nzz"`
+入力（エスケープ表記）: `"treemap\n\"Section\"\n:::\nzz"`
 
 出力
 ([selectors/section-newlines-output.mmd](../tests/fixtures/treemap/selectors/section-newlines-output.mmd)):
@@ -252,17 +266,17 @@ treemap
 
 ### Numbers
 
-NumericLiteral が数字の並びに任意の小数部を続けた形か、小数部だけの形なら、
+`NumericLiteral` が数字の並びに任意の小数部を続けた形か、小数部だけの形なら、
 最短の形で印字します。
 小数部の末尾のゼロを除き、先頭の `.` の前には `0` を置きます。
 `1.50` は `1.5`、`.5` は `0.5` になります。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
-それ以外の source span はすべて書かれたままにします。
-符号、末尾の `.`、区切り、underscore、2 つ目の dot、整数部の先頭のゼロ、
+それ以外の原文の範囲はすべて書かれたままにします。
+符号、末尾の `.`、区切り、アンダースコア、2 つ目の点、整数部の先頭のゼロ、
 15 桁を超えるものが対象です。
-数値 field から印字し直しません。
+数値フィールドから印字し直しません。
 Mermaid は `1_000` を 1 と読みます。
-ほかの綴りも丸め、NaN、overflow、underflow になりえます。
+ほかの綴りも丸め、NaN、桁あふれ、小さすぎる値の丸めになりえます。
 再符号化すると Db が変わったり、拒否される構文になったりします。
 [fixture: treemap/numbers/shortest-form] [fixture: treemap/numbers/forms-kept]
 [fixture: treemap/numbers/trailing-dot-kept]
@@ -291,7 +305,7 @@ Mermaid は `1_000` を 1 と読みます。
 
 [corpus fixture: treemap/db-number-underflow]
 
-入力（escape 表記）: `"treemap\n\"Underscore\":1_000"`
+入力（エスケープ表記）: `"treemap\n\"Underscore\":1_000"`
 
 出力
 ([numbers/underscore-output.mmd](../tests/fixtures/treemap/numbers/underscore-output.mmd)):
@@ -303,15 +317,15 @@ treemap
 
 ### Names
 
-StringLiteral の source span 全体を保ちます。
-空名、padding、backslash、HTML、entity、percent の文字と物理継続列を残します。
+`StringLiteral` の原文の範囲全体を保ちます。
+空名、余白、バックスラッシュ、HTML、文字参照、`%` の文字と物理継続列を残します。
 名前の中の空白とタブの連なりは空白 1 つにして印字します。
 空白とタブだけの名前は空白 1 つになります。
-`'` で囲んだ名前は `"` で囲んで印字しますが、内容に `'`、`"`、backslash、改行、
-バッククォート、`&`、`#`、`<` が含まれる場合は書かれたままにします。
+`'` で囲んだ名前は `"` で囲んで印字しますが、内容に `'`、`"`、バックスラッシュ、
+改行、バッククォート、`&`、`#`、`<` が含まれる場合は書かれたままにします。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 `singleQuote` は読みません。
-backslash は引用符を escape せず、`\n` も decode しません。
+バックスラッシュは引用符をエスケープせず、`\n` も復号しません。
 これらの書き方は名前や受理を変えうるためです。
 
 [fixture: treemap/names/quotes]
@@ -330,7 +344,7 @@ backslash は引用符を escape せず、`\n` も decode しません。
 
 [corpus fixture: treemap/lex-string-backslash-line-feed]
 
-入力（escape 表記）: `"treemap\n'  Other \"quote\"  ':1"`
+入力（エスケープ表記）: `"treemap\n'  Other \"quote\"  ':1"`
 
 設定: `{"singleQuote":true}`
 
@@ -344,8 +358,8 @@ treemap
 
 ### Class definitions
 
-`classDef` と作者の class 名の間を、普通の ASCII space 1 個にします。
-この separator の普通の改行や Unicode 空白も詰めます。
+`classDef` と作者の class 名の間を、普通の ASCII の空白 1 個にします。
+この区切りの普通の改行や Unicode 空白も詰めます。
 複合規則は空白を要求しますが、幅は保持しないためです。
 `title` で始まる名前を読み替えません。
 selector と違い、class 名は 2 文字以上必要です。
@@ -358,7 +372,7 @@ selector と違い、class 名は 2 文字以上必要です。
 
 [test: treemap/class-definitions/unicode-gap]
 
-入力（escape 表記）: `"treemap\nclassDef\n\t zz"`
+入力（エスケープ表記）: `"treemap\nclassDef\n\t zz"`
 
 出力
 ([class-definitions/keyword-newline-output.mmd](../tests/fixtures/treemap/class-definitions/keyword-newline-output.mmd)):
@@ -370,16 +384,16 @@ treemap
 
 ### Style gaps
 
-null でない style の前に、普通の space 1 個を置きます。
-最大 separator 空白は空行を越えることもあります。
-次の行や classDef に見える literal でも、その空白を詰めます。
+`null` でない style の前に、普通の空白 1 個を置きます。
+最大区切り空白は空行を越えることもあります。
+次の行や classDef に見える原文でも、その空白を詰めます。
 AST が既に style として所有しているためです。
-コメントや directive を含む separator は改行を保ち、
-独立した trivia と style の継続行を `classDef` より 1 段深くそろえます。
+コメントやディレクティブを含む区切りは改行を保ち、
+独立した注釈と style の継続行を `classDef` より 1 段深くそろえます。
 style がその定義に属することを見分けやすくするためです。
-最大 separator はこの字下げを取り除き、style 値そのものは変えません。
-すでに字下げの run を供給する native の inline コメントと、
-複数行にわたる文の semicolon で保護する区間は、従来の列を保ちます。
+最大区切りはこの字下げを取り除き、style 値そのものは変えません。
+すでに字下げの連なりを供給する、図種固有の行内コメントと、
+複数行にわたる文のセミコロンで保護する区間は、従来の列を保ちます。
 
 [fixture: treemap/style-gaps/spaces]
 
@@ -399,7 +413,7 @@ style がその定義に属することを見分けやすくするためです�
 
 [fixture: treemap/style-gaps/css-comment-terminator-dropped]
 
-入力（escape 表記）: `"treemap\nclassDef zz\n\n  \"Apparent\":2"`
+入力（エスケープ表記）: `"treemap\nclassDef zz\n\n  \"Apparent\":2"`
 
 出力
 ([style-gaps/row-on-next-line-output.mmd](../tests/fixtures/treemap/style-gaps/row-on-next-line-output.mmd)):
@@ -426,7 +440,7 @@ Db は各スタイルの空白を保つので変わりますが、描かれる�
 [fixture: treemap/styles/trailing-before-semicolon]
 [fixture: treemap/styles/escaped-comma-spaced]
 バックスラッシュでエスケープされた `,` はスタイルの一部です。
-文字列の引用符と percent のテキストは書かれた値の一部で、文字列、コメント、
+文字列の引用符と `%` のテキストは書かれた値の一部で、文字列、コメント、
 `url(` の括弧の中の連続は保ちます。 [fixture: treemap/styles/percent-owned]
 [fixture: treemap/styles/quotes] [fixture: treemap/styles/string-runs-kept]
 
@@ -438,12 +452,12 @@ Db は各スタイルの空白を保つので変わりますが、描かれる�
 その規則は `:` と後の `#` の間の空白を読むため、
 2 回目の整形でも同じテキストである必要があります。
 スタイルとクラス名を隔てる空白は、
-スタイルの一部ではありません（[Style gaps](#style-gaps)を参照）。
+スタイルの一部ではありません（[スタイルの隙間](#style-gaps)を参照）。
 [fixture: treemap/styles/written] [fixture: treemap/styles/empty-entry-kept]
 [fixture: treemap/styles/directive-line-kept]
 [fixture: semicolons/protected-class-column]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"treemap\nclassDef zz color:red , fill:blue,stroke:rgb(1\\,2\\,3),;"`
 
 出力
@@ -452,6 +466,38 @@ Db は各スタイルの空白を保つので変わりますが、描かれる�
 ```mmd
 treemap
   classDef zz color:red , fill:blue,stroke:rgb(1\,2\,3),
+```
+
+### Colors
+
+`classDef` のスタイルの色は、class 図とは異なり、
+ほかのほとんどの図種と同じく小文字で印字します。
+（[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)）。
+`classDef zz fill:#ABCDEF` は `classDef zz fill: #abcdef` と印字します。
+対象にする版は、`#ABCDEF` と `#abcdef` を同じに描きます。
+`url(#ABC)` の `#ABC` のように、色でない `#` は書かれたままにします。
+[fixture: colors/colors-in-lower-case]
+
+入力
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/treemap/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+treemap-beta
+"A"
+  "B": 1:::zz
+classDef zz fill:#ABCDEF,stroke:#DEF,color:#C0FFEE
+classDef yy color:#333,fill:url(#ABC)
+```
+
+出力
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/treemap/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+treemap
+  "A"
+    "B": 1:::zz
+  classDef zz fill: #abcdef, stroke: #def, color: #c0ffee
+  classDef yy color: #333, fill: url(#ABC)
 ```
 
 ### Semicolons
@@ -473,8 +519,8 @@ mermaid.js は `;` がなくても同じ文として読むからです。
 文がテキストの末尾で終わっていても同じです。
 [fixture: semicolons/class-terminator-end-of-text-dropped]
 消した後の文は、`classDef` の行の通常の配置に従います。
-字下げ、前後の空行とコメント行、前にある空の description block、
-`;` の後ろの空白が次の row に与える字下げです。
+字下げ、前後の空行とコメント行、前にある空の説明ブロック、
+`;` の後ろの空白が次の行に与える字下げです。
 [fixture: semicolons/class-terminator-indented-dropped]
 [fixture: semicolons/class-terminator-trailing-whitespace-dropped]
 [fixture: semicolons/class-terminator-blank-and-comment-lines-dropped]
@@ -485,41 +531,46 @@ style のない `classDef` の `;` は、消すと次の行が style になり�
 同じ行に別の文が続く `;` も、消すと読まれ方が変わります。
 [fixture: semicolons/terminator]
 [fixture: semicolons/class-terminator-before-row-kept]
-同じ行に続くコメントや directive があるときも残します。
+同じ行に続くコメントやディレクティブがあるときも残します。
 [fixture: semicolons/class-terminator-comment-kept]
-文の単位である `;` の直前に directive があるときも残します。
+文の単位である `;` の直前にディレクティブがあるときも残します。
 間に空白があっても同じです。
 [fixture: semicolons/class-terminator-directive-kept]
 `classDef zz fill: #f00;` のように、`;` が style の一部であるときも残します。
-`#f00;` が entity だからです。
+`#f00;` が文字参照だからです。
 [fixture: semicolons/class-terminator-entity-kept]
 別の `;` が隣にあるときも残します。
 [fixture: semicolons/class-terminator-beside-semicolon-kept]
-行の規則が無視する `;` の前に directive があるときは、
-directive を残して `;` を消します。
+U+2028 か U+2029 の後にコメント行が続き、その後にある `;` も残します。
+その文字は行の規則の空白ではなく、コメント行は取り除かれるので、
+`;` とその文字を消すと mermaid.js の描く図が変わります。
+その行は書かれたまま印字します。
+[test: treemap/semicolons/class-terminator-after-separator-and-comment-kept]
+行の規則が無視する `;` の前にディレクティブがあるときは、
+ディレクティブを残して `;` を消します。
 ほかの図種と同じです。
 [fixture: semicolons/class-terminator-hash-directive-dropped]
 
-文を終える `;` が残るときは、その後ろの空白が次の文に字下げを与える run です。
-同じ行で `;` とその後ろのコメントや directive の間の空白、
-2 つの directive の間の空白、行末の空白がこれに当たります。
-mermaid.js は directive の両側の空白を 1 つの run として数えます
+文を終える `;` が残るときは、その後ろの空白が次の文に字下げを与える連なりです。
+同じ行で `;` とその後ろのコメントやディレクティブの間の空白、
+2 つのディレクティブの間の空白、行末の空白がこれに当たります。
+mermaid.js はディレクティブの両側の空白を 1 つの連なりとして数えます
 ([見出しと字下げ](../../spec/docs/diagrams/treemap.ja.md#見出しと字下げ))。
 [corpus fixture: treemap/gram-indent-around-global-directive]
-次の行にもう 1 つ run があると、2 つ目の字下げとして読んで拒否します。
+次の行にもう 1 つ連なりがあると、2 つ目の字下げとして読んで拒否します。
 [corpus fixture: treemap/gram-class-tail-space-next-indent]
 [corpus fixture: treemap/gram-class-directive-tail-space-next-indent]
-この run は、[Carried indentation](#carried-indentation) と同じく、
+この連なりは、[持ち越す字下げ](#carried-indentation) と同じく、
 次の文の計画された列へ 1 回だけ移します。
-そのため、コメントや directive は `;` に接し、
-コメントや directive は前の directive にも接します。
-directive の両側の空白が run を作るときは、その合計を数えます。
+そのため、コメントやディレクティブは `;` に接し、
+コメントやディレクティブは前のディレクティブにも接します。
+ディレクティブの両側の空白が連なりを作るときは、その合計を数えます。
 [fixture: semicolons/class-terminator-comment-run-moved]
 [fixture: semicolons/class-terminator-directive-run-moved]
 [fixture: semicolons/class-terminator-directives-run-moved]
 [fixture: semicolons/class-terminator-run-sum-moved]
 行の規則が無視する `;` がそれに続くときも同じです。
-2 つの `;` の間に空白や directive があるときも同じです。
+2 つの `;` の間に空白やディレクティブがあるときも同じです。
 [fixture: semicolons/class-terminator-ignored-run-moved]
 [fixture: semicolons/class-terminator-ignored-comment-run-moved]
 [fixture: semicolons/class-terminator-semicolons-run-moved]
@@ -530,7 +581,7 @@ style のない `classDef` でも同じです。
 [fixture: semicolons/class-terminator-class-run-moved]
 間にコメント行や空行があるときも同じです。
 [fixture: semicolons/class-terminator-comment-lines-run-moved]
-`;` の後ろに空白がないときは、次の row の字下げはその row 自身のものなので、
+`;` の後ろに空白がないときは、次の行の字下げはその行自身のものなので、
 計画された列に印字します。
 [fixture: semicolons/class-terminator-comment-row-indented-kept]
 それより前に文を終える `;` がなく、
@@ -539,7 +590,7 @@ style のない `classDef` でも同じです。
 `classDef zz a:#b ; %% c` は行が変わりません。
 [fixture: semicolons/class-terminator-ignored-text-after-kept]
 
-それ以外の書かれた semicolon は保ちます。
+それ以外の書かれたセミコロンは保ちます。
 選ばれて無視されるもの、別の `;` の隣にあるもの、値の文字です。
 保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
 ほかの場所と同じように整形します。
@@ -557,9 +608,9 @@ style のない `classDef` でも同じです。
 [fixture: semicolons/no-stretch-formatted]
 [fixture: semicolons/protected-class-column]
 複数行にわたる文の保護区間は元の列を保ち、内部の行に字下げを足しません。
-保持する行が row の境界を拘束する場合は、本文を原文保持します。
-一部の行の indent だけを固定して残りをそろえません。
-親子と semicolon の選択を、保護された末尾も含めて保つためです。
+保持する行が行の境界を拘束する場合は、本文を原文保持します。
+一部の行の字下げだけを固定して残りをそろえません。
+親子とセミコロンの選択を、保護された末尾も含めて保つためです。
 普通の改行や空白の選択より優先します。
 
 [fixture: treemap/semicolons/terminator]
@@ -582,7 +633,7 @@ style のない `classDef` でも同じです。
 
 [test: treemap/semicolons/protected-later-atom]
 
-入力（escape 表記）: `"treemap\nclassDef zz\n   color:#navy;;"`
+入力（エスケープ表記）: `"treemap\nclassDef zz\n   color:#navy;;"`
 
 出力
 ([semicolons/protected-class-column-output.mmd](../tests/fixtures/treemap/semicolons/protected-class-column-output.mmd)):
@@ -595,21 +646,65 @@ treemap
 
 ### Title
 
-共有の common line 配置を使います。
-普通の common 空白の外端を除き、非空値の前を space 1 個にします。
-null と空白だけの値は `title` だけにします。
+共通の行の配置を使います。
+普通の共通空白の外端を除き、非空値の前を空白 1 個にします。
+`null` と空白だけの値は `title` だけにします。
 Db の等しい外側の空白から 1 つを選び、引用符に見える文字を保ち、
 内側の空白とタブの連なりは空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
-コメントや directive を越えて次の物理行から値を取りません。
-trivia を持つ値は書かれた境界を保ちます。
+コメントやディレクティブを越えて次の物理行から値を取りません。
+注釈を持つ値は書かれた境界を保ちます。
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 [fixture: title/title-directives-end-blanks-dropped]
+テキストのない `title` は、
+同じ行のディレクティブかコメントの前に空白が書かれていれば、
+その最初のものの前に空白 1 つを置いて印字します。
+空白が 1 文字でもそれ以上でも、タブでも同じです。
+ディレクティブの前では、
+空白と U+2028 か U+2029 の組でも同じです（空白だけの title は、
+値のない `title` です）。
+キーワードとディレクティブの間に何も書かれていなければ、空白は置きません。
+`title`、空白 1 つ、`%%{init: {}}%%` はそのまま印字し、`title`、空白 3 つ、
+`%%{init: {}}%%` も同じ形に印字します。
+次の行と合わせて読まれるコメントの前に U+2028 か U+2029 がある形（`title`、
+空白 2 つ、その文字、`%% c` の後に行が続く形）は、行を書かれたまま残します。
+コメントが、その文字の後から始まるからです。
+キーワードの後の 1 文字の空白は、mermaid.js にとってキーワードの一部なので、
+テキストのない title はキーワードで終わります。
+その 1 文字は、テキストのある title の後の空白と同じく、行の隙間です。
+2 回目の整形は、1 回目と同じ形になります。
+[fixture: title/bare-title-directive-one-space]
+[fixture: title/bare-title-directive-spaces]
+[fixture: title/bare-title-directive-tab]
+[fixture: title/bare-title-directive-touching]
+[fixture: title/bare-title-comment-spaces]
+[fixture: title/bare-title-unclosed-directive-spaces]
+[test: treemap/title/bare-title-directive-space-and-line-separator]
+[test: treemap/title/bare-title-directive-space-and-paragraph-separator]
+[test: treemap/title/bare-title-directive-spaces-and-line-separator]
+[test: treemap/title/bare-title-comment-after-line-separator-kept]
 
 空の title の次のコメント行は次の文にそろえ、title の値にはしません。
 [fixture: treemap/title/empty-next-comment]
+
+字下げして書かれていない title は行頭に置いて印字し、
+その下の行は 1 段深いままにします。
+行頭から始まる title はそのまま行頭に置き、
+ヘッダーと同じ行に続く title（`treemaptitle T`）は次の行の行頭に移します。
+treemap を持つ最初の版は、字下げされた title、`accTitle`、
+`accDescr` を拒否します。
+それ以降の版は、行頭の同じ文も 1 段深い同じ文も受け付け、同じに描きます。
+そのため、1 段深く印字すると最初の版が拒否するテキストになります。
+詳しくは
+[treemap の親子と作者の値](./compatibility.ja.md#treemap-の親子と作者の値) と
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+その title の前のコメント行は title にそろえます。
+書かれた時点で字下げされた title は、最初の版が書かれたままでも拒否するので、
+ほかの文と同じく 1 段深く印字します。 [fixture: treemap/header/common]
+[fixture: treemap/title/after-header-spaced-line-start]
 
 [fixture: treemap/title/padding]
 
@@ -621,29 +716,44 @@ trivia を持つ値は書かれた境界を保ちます。
 
 [fixture: treemap/title/quotes]
 
-入力（escape 表記）: `"treemap\ntitle\t  Topic  words \t\n\"AfterTitle\":3"`
+[fixture: treemap/title/line-start-kept]
+
+[fixture: treemap/title/line-start-after-row-kept]
+
+[fixture: treemap/title/line-start-tab-rows-kept]
+
+[fixture: treemap/title/line-start-comment-aligned]
+
+[fixture: treemap/title/indented-at-body-step]
+
+入力（エスケープ表記）: `"treemap\ntitle\t  Topic  words \t\n\"AfterTitle\":3"`
 
 出力
 ([title/padding-output.mmd](../tests/fixtures/treemap/title/padding-output.mmd)):
 
 ```mmd
 treemap
-  title Topic words
+title Topic words
   "AfterTitle": 3
 ```
 
 ### Accessibility lines
 
 共有の `accTitle: value` と `accDescr: value` の配置を使います。
-colon を keyword に付け、trim した非空値の前を space 1 個にし、
-空値は colon で終えます。
-内側の文字を保ち、colon 後の波括弧は行の文字として残します。
+コロンをキーワードに付け、両端の空白を除いた非空値の前を空白 1 個にし、
+空値はコロンで終えます。
+内側の文字を保ち、コロン後の波括弧は行の文字として残します。
 同じ読みの外側の空白を、ほかの図種とそろえるためです。
-trivia の境界を保ち、次行の値を連結しません。
+注釈の境界を保ち、次行の値を連結しません。
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
+
+`accTitle` と `accDescr` の文は title と同じ位置に置きます。
+字下げして書かれていなければ行頭に置いて印字し、
+字下げして書かれていれば 1 段深く印字します。
+詳しくは [タイトル](#title) を参照してください。
 
 [fixture: treemap/accessibility-lines/title-padding]
 
@@ -655,18 +765,28 @@ trivia の境界を保ち、次行の値を連結しません。
 
 [fixture: treemap/accessibility-lines/colon-braces]
 
+[fixture: treemap/accessibility-lines/title-line-start-kept]
+
+[fixture: treemap/accessibility-lines/description-line-start-kept]
+
+[fixture: treemap/accessibility-lines/title-indented-at-body-step]
+
+[fixture: treemap/accessibility-lines/description-indented-at-body-step]
+
+[fixture: treemap/accessibility-lines/title-glued-after-header]
+
 [fixture: treemap/accessibility-lines/trivia]
 
 [test: treemap/accessibility-lines/unicode-edges]
 
-入力（escape 表記）: `"treemap\naccTitle \t: \t Access  words \t"`
+入力（エスケープ表記）: `"treemap\naccTitle \t: \t Access  words \t"`
 
 出力
 ([accessibility-lines/title-padding-output.mmd](../tests/fixtures/treemap/accessibility-lines/title-padding-output.mmd)):
 
 ```mmd
 treemap
-  accTitle: Access  words
+accTitle: Access  words
 ```
 
 ### Description blocks
@@ -677,14 +797,17 @@ treemap
 元が接していても空白 1 つにします。
 キーワードと本文の開始を見分けやすくするためです。
 空白だけの中身は `{}` にします。
-囲む文字がないときは padding が不要なためです。
-opener 前の普通の空白は詰めます。
-コメントや directive の中身と境界、内部の空行は保ちます。
+囲む文字がないときは余白が不要なためです。
+開始記号前の普通の空白は詰めます。
+コメントやディレクティブの中身と境界、内部の空行は保ちます。
 本文行は文より 1 段深くそろえます。
 Mermaid が説明から LF 後の字下げを除くためです。
 本文も設定の字下げを使い、タブと幅 0 の正の最小段幅も同じです。
-別行の opener と closer は文の列にそろえます。
+別行の開始記号と閉じ記号は文の列にそろえます。
 最初の `}` がブロックを閉じます。
+字下げして書かれていないブロックは行頭に置いて印字し、
+本文はその 1 段内側に置きます。
+詳しくは [タイトル](#title) を参照してください。
 
 [fixture: treemap/description-blocks/empty]
 
@@ -710,13 +833,19 @@ Mermaid が説明から LF 後の字下げを除くためです。
 
 [fixture: treemap/description-blocks/opener-directive]
 
+[fixture: treemap/description-blocks/line-start-kept]
+
+[fixture: treemap/description-blocks/indented-at-body-step]
+
+[fixture: treemap/description-blocks/spaced-after-header-line-start]
+
 [corpus fixture: treemap/common-block-first-close]
 
 [test: treemap/description-blocks/unicode-empty]
 
 [test: treemap/description-blocks/unicode-opener]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"treemap\naccDescr  {\n  first\n\n    second\n}\n\"AfterDescription\":3"`
 
 出力
@@ -724,17 +853,17 @@ Mermaid が説明から LF 後の字下げを除くためです。
 
 ```mmd
 treemap
-  accDescr {
-    first
+accDescr {
+  first
 
-    second
-  }
+  second
+}
   "AfterDescription": 3
 ```
 
 ### Long lines
 
-printWidth によって名前、数、style、common 値を折り返しません。
+`printWidth` によって名前、数、style、共通値を折り返しません。
 値の改行は Db を変え、新しい style 行は拒否されうるためです。
 作者が値に書いた改行も、整形の折返しとはみなさず保ちます。
 
@@ -742,7 +871,7 @@ printWidth によって名前、数、style、common 値を折り返しません
 
 [fixture: treemap/long-lines/style-and-title]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"treemap\n\"A deliberately long name preserves every word and its internal spaces\":12345678901234567890"`
 
 設定: `{"printWidth":20}`
@@ -757,17 +886,17 @@ treemap
 
 ### Component newlines
 
-trivia のない leaf の名前、区切り、数と、selector の部品の間の改行を、
+注釈のない leaf の名前、区切り、数と、selector の部品の間の改行を、
 普通の空白へ詰めます。
 これらの部品の境界には同じ読みの配置があるためです。
-コメントや directive がある gap と必要な改行は保ちます。
-別行の selector の marker と名前は第 1 列に置きます。
-そこに space や tab があると拒否されるためです。
+コメントやディレクティブがある隙間と必要な改行は保ちます。
+別行の selector の印と名前は第 1 列に置きます。
+そこに空白やタブがあると拒否されるためです。
 leaf の区切りと数の継続行は文にそろえます。
-ただし native コメント前の gap が既に字下げの run を持つなら、
-二つ目の run は足しません。
-これらの部品の gap 内の独立した trivia の mark は、
-[Style gaps](#style-gaps) の class style separator を除き、第 1 列に置きます。
+ただし図種固有のコメントの前の隙間が既に字下げの連なりを持つなら、
+二つ目の連なりは足しません。
+これらの部品の隙間内の独立した注釈の印は、
+[スタイルの隙間](#style-gaps) の class style 区切りを除き、第 1 列に置きます。
 文の間のコメントは [Comments](#comments) に従います。
 
 [fixture: treemap/component-newlines/leaf]
@@ -784,7 +913,7 @@ leaf の区切りと数の継続行は文にそろえます。
 
 [corpus fixture: treemap/comment-leaf-separator-indent]
 
-入力（escape 表記）: `"treemap\n\"Selector\":2%% gap\n:::zz"`
+入力（エスケープ表記）: `"treemap\n\"Selector\":2%% gap\n:::zz"`
 
 出力
 ([component-newlines/selector-comment-output.mmd](../tests/fixtures/treemap/component-newlines/selector-comment-output.mmd)):
@@ -810,14 +939,14 @@ treemap
 連続するコメント行は、空行を挟んでも同じ桁にそろえます。
 [fixture: treemap/comments/aligned-forms]
 [fixture: treemap/comments/aligned-blank-lines]
-文と同じ設定の字下げを使い、tab と tabWidth 0 での正の最小幅にも従います。
+文と同じ設定の字下げを使い、タブと `tabWidth` 0 での正の最小幅にも従います。
 [fixture: treemap/comments/aligned-tabs]
 [fixture: treemap/comments/aligned-zero]
 見出しの前のコメントと、文のない本文のコメントは第 1 列に置きます。
 [fixture: treemap/prefix/comment] [fixture: treemap/comments/only-comments]
 
-文の間では、`%%` だけの行、directive ではない `%%{` 始まりの行、
-独立した directive を第 1 列に置きます。
+文の間では、`%%` だけの行、ディレクティブではない `%%{` 始まりの行、
+独立したディレクティブを第 1 列に置きます。
 字下げすると mermaid.js が拒否するためです。
 混在する列と末尾でも、この区別を保ちます。
 [fixture: treemap/comments/native-bare]
@@ -825,18 +954,18 @@ treemap
 [fixture: treemap/comments/unclosed-directive]
 [fixture: treemap/comments/mixed-directives]
 [fixture: treemap/comments/native-final]
-文の内部の gap は [Component newlines](#component-newlines) と
-[Style gaps](#style-gaps) に従います。
-空の description block やセミコロンで保護された title の前後でも、
+文の内部の隙間は [部品の間の改行](#component-newlines) と
+[スタイルの隙間](#style-gaps) に従います。
+空の説明ブロックやセミコロンで保護された title の前後でも、
 コメント行は次の文にそろえます。
 [fixture: treemap/comments/aligned-empty-description]
 [fixture: treemap/comments/aligned-protected-title]
 
-inline は同じ行に残し、内容、mark、末尾、順序、所有位置を保ちます。
-inline コメント前の空白が次行の indent なら、次行へ移します。
+行内のコメントは同じ行に残し、内容、印、末尾、順序、所有位置を保ちます。
+行内のコメント前の空白が次行の字下げなら、次行へ移します。
 その結果コメントが直前の token に接しても、親子を保ちます。
-common コメント領域とともに消えた空白を復元せず、AST の親子を使います。
-native コメント内の LS と PS は内容として保ちます。
+共通コメント領域とともに消えた空白を復元せず、AST の親子を使います。
+図種固有のコメント内の LS と PS は内容として保ちます。
 [test: treemap/comments/standalone-ls] [test: treemap/comments/standalone-ps]
 
 [fixture: treemap/comments/standalone]
@@ -857,7 +986,7 @@ native コメント内の LS と PS は内容として保ちます。
 
 [test: treemap/comments/native-ls-ps]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"treemap\n\"Top\"\n%% before child\n    \"Tip\":2\n%% final comment"`
 
 出力
@@ -873,18 +1002,33 @@ treemap
 
 ### Directives
 
-Root directive の全文、順序、部品や値の所有位置を保ちます。
-独立 directive は、[Style gaps](#style-gaps) を除き第 1 列に置きます。
-除去後に余分な字下げの run を残さないためです。
-行頭の unit の中では、directive 前後の space と tab を合計します。
-共有の leading gap 配置を使い、後側の gap が目標幅に収まる間は保ちます。
-余れば最後の gap から縮め、残りを最初の directive 前に置きます。
-前の行から渡る unit は、代わりに一度だけ次行へ移します。
-class keyword と名前の必須空白を保ち、directive で代用しません。
+大域的なディレクティブの全文、順序、部品や値の所有位置を保ちます。
+独立ディレクティブは、[スタイルの隙間](#style-gaps) を除き第 1 列に置きます。
+除去後に余分な字下げの連なりを残さないためです。
+行頭の単位の中では、ディレクティブ前後の空白とタブを合計します。
+共有の先頭の隙間配置を使い、後側の隙間が目標幅に収まる間は保ちます。
+余れば最後の隙間から縮め、残りを最初のディレクティブ前に置きます。
+前の行から渡る単位は、代わりに一度だけ次行へ移します。
+class キーワードと名前の必須空白を保ち、ディレクティブで代用しません。
 
-useTabs のときは、保つ gap も補う字下げもすべて tab で印字します。
-directive の前後の空白は一つの字下げ unit で、
-その各文字は種類を問わず一つと数えるためです（[Tabs](#tabs) を参照）。
+閉じていないディレクティブは引数の後の空白を改行も含めて取り込むため、
+次の行はディレクティブと同じ行に続きます。
+詳しくは
+[閉じていないディレクティブがつなぐ行](./compatibility.ja.md#閉じていないディレクティブがつなぐ行)
+を参照してください。
+つながった行はすべて、最初の行の前の字下げを基準に読まれます。
+`"A" %%{x: w`、改行、`  "B": 1` は `B` を `A` の子にし、
+`A` を空白 2 つで字下げすると `B` はその兄弟になります。
+そのような行を含む本文は、保持する行が行の境界を拘束する場合と同じく、
+書かれたまま印字します（[セミコロン](#semicolons)を参照）。
+二つの行を 1 行に書き、その間に閉じていないディレクティブがある場合も同じです。
+ディレクティブが引数の後の空白、つまり二つ目の行の字下げを取り込むためです。
+[fixture: treemap/directives/unclosed-directive-joins-rows-kept]
+[fixture: treemap/directives/unclosed-directive-between-rows-kept]
+
+`useTabs` のときは、保つ隙間も補う字下げもすべてタブで印字します。
+ディレクティブの前後の空白は一つの字下げ単位で、
+その各文字は種類を問わず一つと数えるためです（[タブ](#tabs) を参照）。
 [fixture: treemap/directives/leading-use-tabs]
 
 [fixture: treemap/directives/leading]
@@ -907,7 +1051,7 @@ directive の前後の空白は一つの字下げ unit で、
 
 [fixture: treemap/directives/selector]
 
-入力（escape 表記）: `"treemap\n\"Top\"\n %%{wrap}%% \"Tip\":2"`
+入力（エスケープ表記）: `"treemap\n\"Top\"\n %%{wrap}%% \"Tip\":2"`
 
 出力
 ([directives/leading-output.mmd](../tests/fixtures/treemap/directives/leading-output.mmd)):
@@ -920,10 +1064,10 @@ treemap
 
 ### Prefix
 
-見出し前の普通のコメント、directive、空行は共有の root 配置を使います。
-検出の second scan で残った単行の percent 形式は、Comment として、
-内部の Root directive を一度だけ印字します。
-frontmatter に昇格させる native hidden YAML はありません。
+見出し前の普通のコメント、ディレクティブ、空行は共有の最上位配置を使います。
+検出の 2 回目の走査で残った単行の `%` 形式は、`Comment` として、
+内部の大域的なディレクティブを一度だけ印字します。
+フロントマターに昇格させる図種の文法が読み飛ばす YAML はありません。
 読めない retained YAML は拒否のままです。
 
 [fixture: treemap/prefix/comment]
@@ -936,7 +1080,7 @@ frontmatter に昇格させる native hidden YAML はありません。
 
 [corpus fixture: treemap/retained-yaml-no-bare]
 
-入力（escape 表記）: `"\n  %% leading note\ntreemap\n\"Prefix\":2"`
+入力（エスケープ表記）: `"\n  %% leading note\ntreemap\n\"Prefix\":2"`
 
 出力
 ([prefix/comment-output.mmd](../tests/fixtures/treemap/prefix/comment-output.mmd)):
@@ -952,7 +1096,7 @@ treemap
 普通の空行は最大 1 行とし、文書と本文の端の普通の空行を除きます。
 文の間の空きを一定の範囲にそろえるためです。
 空白だけの行が意味のある字下げなら、先に次の行へ移します。
-名前、説明、directive、common コメント領域が所有する空行は保ちます。
+名前、説明、ディレクティブ、共通コメント領域が所有する空行は保ちます。
 
 コメント行と次の文の間に空行があっても、コメントをそろえる桁は変わりません。
 [fixture: treemap/blank-lines/comments]
@@ -966,7 +1110,7 @@ treemap
 
 [fixture: treemap/blank-lines/name-interior]
 
-入力（escape 表記）: `"treemap\n\n\"Top\"\n\n\n \"Tip\":2\n\n"`
+入力（エスケープ表記）: `"treemap\n\n\"Top\"\n\n\n \"Tip\":2\n\n"`
 
 出力
 ([blank-lines/ordinary-output.mmd](../tests/fixtures/treemap/blank-lines/ordinary-output.mmd)):
@@ -981,9 +1125,9 @@ treemap
 ### Trailing whitespace
 
 全行の末尾を一括で削らず、所有者で決めます。
-名前、style、コメント、directive の末尾は保ちます。
-common の行値は共有の外端除去を使います。
-構造の文字の後の run は次行の indent になりうるので、
+名前、style、コメント、ディレクティブの末尾は保ちます。
+共通の行値は共有の外端除去を使います。
+構造の文字の後の連なりは次行の字下げになりうるので、
 その場合は一度だけ次行へ移します。
 作者の値と親子の情報を分けて保つためです。
 fixture の意味のある行末空白は、コードブロックでは正確に表示できません。
@@ -996,15 +1140,16 @@ fixture の意味のある行末空白は、コードブロックでは正確に
 
 ### Line terminators and unicode
 
-共有の host の行末処理を使います。
-値の中も含め、物理 CR と CRLF は printer に LF として届き、
-出力は endOfLine に従います。
+共有の呼び出し側の行末処理を使います。
+値の中も含め、物理 CR と CRLF は印字処理に LF として届き、
+出力は `endOfLine` に従います。
 値に属する LS、PS、NBSP、BOM は保ちます。
-native コメントは LS と PS では終わりません。
-普通の common 値の外端は common Unicode 空白を除き、
-class の separator もその空白を許します。
+図種固有のコメントは LS と PS では終わりません。
+普通の共通値の外端は共通 Unicode 空白を除き、
+class の区切りもその空白を許します。
 Unicode の行の字下げを追加する規則ではありません。
-先頭 BOM の host による除去と復元には、共有の frontmatter の制限があります。
+先頭 BOM の呼び出し側による除去と復元には、
+共有のフロントマターの制限があります。
 
 [test: treemap/line-terminators-and-unicode/cr-structure]
 
@@ -1022,10 +1167,10 @@ Unicode の行の字下げを追加する規則ではありません。
 
 ### Frontmatter yaml
 
-安全な実際の先頭 frontmatter だけを、共有の guard 付き YAML 整形へ渡します。
-字下げした fence、closer の padding、不正 YAML、HTML 引用符の危険や、
-整形で fence になる本文は原文を保ちます。
-YAML の入れ子と block scalar は、tabWidth 0 でも 1 space 以上にします。
+安全な実際の先頭フロントマターだけを、共有の保護条件付き YAML 整形へ渡します。
+字下げした囲みの区切り、閉じ記号の余白、不正 YAML、HTML 引用符の危険や、
+整形で囲みの区切りになる本文は原文を保ちます。
+YAML の入れ子と複数行のスカラー値は、`tabWidth` 0 でも空白 1 つ以上にします。
 前処理と値を守りながら、安全な YAML の空白をそろえるためです。
 
 [fixture: treemap/frontmatter-yaml/safe]
@@ -1046,7 +1191,7 @@ YAML の入れ子と block scalar は、tabWidth 0 でも 1 space 以上にし�
 
 [corpus fixture: treemap/div-frontmatter-invalid]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"---\ntitle: |\n  First\n  Second\nconfig: {treemap: {padding: 3}}\n---\ntreemap\n\"YamlZero\":2"`
 
 設定: `{"tabWidth":0}`
@@ -1069,7 +1214,7 @@ treemap
 
 本文の全出現と兄弟、根の順を保ちます。
 空や重複した名と section、未使用や再定義された class、前方や未解決の selector、
-common の空代入も残します。
+共通の空代入も残します。
 class の蓄積、リセット、順序、親子を変えうるため、sort、統合、削除はしません。
 正規化した Db から再構築せず、作者の構文を印字します。
 
@@ -1083,7 +1228,7 @@ class の蓄積、リセット、順序、親子を変えうるため、sort、�
 
 [corpus fixture: treemap/db-class-unused]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"treemap\n\"Top\"\n \"Right\":2\n \"Left\":1\nclassDef zz color:red;\nclassDef zz fill:blue;\ntitle Earlier\ntitle"`
 
 出力
@@ -1096,19 +1241,19 @@ treemap
     "Left": 1
   classDef zz color: red
   classDef zz fill: blue
-  title Earlier
-  title
+title Earlier
+title
 ```
 
 ### Final newline
 
 普通の受理入力は、設定の改行 1 個で終えます。
-空本文、行、common 文、閉じたブロック、コメントも同じです。
+空本文、行、共通文、閉じたブロック、コメントも同じです。
 共有のファイル境界の選択にそろえるためです。
 値の末尾は所有する文字として残します。
-EOF まで届く未完の Root directive と保護された本文の末尾は、
+EOF まで届く未完の大域的なディレクティブと保護された本文の末尾は、
 元の終わり方を優先します。
-拒否される未使用の字下げの run は修復しません。
+拒否される未使用の字下げの連なりは修復しません。
 
 末尾の独立したコメント行は最後の文にそろえます。
 [fixture: treemap/final-newline/comment]
@@ -1124,7 +1269,7 @@ EOF まで届く未完の Root directive と保護された本文の末尾は、
 
 [fixture: treemap/final-newline/open-directive]
 
-入力（escape 表記）: `"treemap\n\"FinalComment\":2\n%% final"`
+入力（エスケープ表記）: `"treemap\n\"FinalComment\":2\n%% final"`
 
 出力
 ([final-newline/comment-output.mmd](../tests/fixtures/treemap/final-newline/comment-output.mmd)):
@@ -1141,11 +1286,12 @@ treemap
 directive-as-token-boundary、ignored-semicolon-as-token-boundary、
 html-tag-in-frontmatter、embedded-data-opaque、bare-percent-line-before-header、
 c4-keyword-anywhere です。
-atomic な切断は修復せず拒否し、frontmatter の HTML の影響を分離します。
-埋め込みは opaque とし、後の C4 語で選択図種を変えません。
-opaque 比較で削る treemap 固有の受理設定 key はありません。
-corpus の受理入力は記録された指定 Db と比較します。
-raw で拒否される場合、比較できる raw Db はありません。
+単位の途中での分断は修復せず拒否し、フロントマターの HTML の影響を分離します。
+埋め込みデータの内容は解釈せず、後の C4 語で選択図種を変えません。
+埋め込みデータの内容を解釈しない比較で削る treemap
+固有の受理設定キーはありません。
+コーパスの受理入力は記録された指定 Db と比較します。
+素の mermaid.js が拒否した場合、比較できる素の Db はありません。
 
 [corpus fixture: treemap/directive-header-middle]
 
@@ -1169,13 +1315,13 @@ raw で拒否される場合、比較できる raw Db はありません。
 
 ### Markdown fences
 
-dedent した payload に同じ規則を適用します。
-fence、list、quote の外側の字下げは Markdown host に任せます。
+外側の字下げを除いた図のテキストに同じ規則を適用します。
+囲みの区切り、リスト、引用の外側の字下げは Markdown 側に任せます。
 値の継続列に container の幅を足しません。
-host の出力と冪等性を、payload の Db と別々に検査します。
-host は最後のコード行の padding を、style の末尾も含めて除きます。
-試験した場合の読みは保ちますが、作者の byte の保持にはこの制限があります。
-拒否された fence は、host のコードを変えない経路に任せます。
+呼び出し側の出力と冪等性を、図のテキストの Db と別々に検査します。
+呼び出し側は最後のコード行の余白を、style の末尾も含めて除きます。
+試験した場合の読みは保ちますが、作者のバイトの保持にはこの制限があります。
+拒否されたコードブロックは、呼び出し側のコードを変えない経路に任せます。
 
 [test: treemap Markdown: top-level]
 

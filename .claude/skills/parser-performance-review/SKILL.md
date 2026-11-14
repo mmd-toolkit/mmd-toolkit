@@ -193,27 +193,9 @@ only the checks the changes need.
 Report each finding when it is complete, with its link and the executed
 evidence, and keep unconfirmed candidates and unmeasured scope apart from it.
 
-## When Codex interrupts a response
-
-A notice headed `このコンテンツは表示できません` that mentions cybersecurity
-safeguards or Daybreak is a response interruption, not a parser rejection or a
-failed test. The
-[OpenAI documentation](https://learn.chatgpt.com/docs/cyber-safety#false-positives)
-says legitimate work can trigger safeguards; that does not establish the cause
-of a given notice.
-
-- Record the notice and whether it was seen directly or reported. Keep what
-  completed apart from what is unverified. Do not state a cause, or that a model
-  change or an
-  [access request](https://learn.chatgpt.com/docs/cyber-safety#trusted-access-for-cyber)
-  will clear it.
-- Keep completed reports, raw samples, commands, source state, and the last
-  verified step. On resumption, check saved files, log completion, and the
-  measurements still running before retrying; compare current inputs and source
-  with the recorded state; continue the review with incomplete checks marked
-  pending. Partial output is not evidence. Do not start a benchmark while the
-  same one is running.
-- Do not try to bypass a safeguard. If a suspected false positive keeps
-  blocking, explain the limitation and point to the official `/feedback`
-  guidance. Do not send feedback, apply for access, or upload reports or logs
-  without the user's authorization.
+When the review is interrupted and taken up again, keep the completed reports,
+raw samples, commands, source state, and the last verified step. Check the saved
+files, whether each log is complete, and the measurements still running before
+retrying; compare the current inputs and source with the recorded state; and
+continue the review with incomplete checks marked pending. Partial output is not
+evidence. Do not start a benchmark while the same one is running.

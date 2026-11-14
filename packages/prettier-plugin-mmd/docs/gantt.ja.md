@@ -65,10 +65,10 @@ section Two
 gantt
   title T
   section One
-    a :a1, 2024-01-01, 2d
+    a : a1, 2024-01-01, 2d
     click a1 href "u"
   section Two
-    b :2d
+    b : 2d
 ```
 
 入力
@@ -88,17 +88,17 @@ a : 1d
 gantt
     title T
     section S
-        a :1d
+        a : 1d
 ```
 
 ### 1 行に 1 文
 
 各文は 1 行に 1 つ置きます。
-Gantt 図には文を区切るものがなく（diagrams/gantt.md、Diagram and statements）、
-ヘッダー、`inclusiveEndDates`、日つきの `weekday` と `weekend`、
-`accDescr` ブロック、click 文の後ろには、同じ行に次の文を続けられます。
+Gantt 図には文を区切るものがなく（`diagrams/gantt.md`、図と文）、ヘッダー、
+`inclusiveEndDates`、日つきの `weekday` と `weekend`、`accDescr` ブロック、
+click 文の後ろには、同じ行に次の文を続けられます。
 これらの後ろの文は、それぞれの行に移します。
-1 行に 2 つの文があると読みにくく、ほかの図種も 1 行に 1 つの文を印字します。
+ほかの図種も 1 行に 1 つの文を印字します。
 [fixture: statements-one-per-line/header-then-statement]
 [fixture: statements-one-per-line/header-then-task]
 [fixture: statements-one-per-line/keyword-statements]
@@ -110,7 +110,7 @@ Gantt 図には文を区切るものがなく（diagrams/gantt.md、Diagram and 
 `title`、`section`、`accTitle`、`accDescr:` は行の残りを取るので、
 その後ろには何も続きません。
 `todayMarker` の値は `;` で終わり、ほかの設定、タスクのデータ、
-リストは `#` か `;` で終わり（diagrams/gantt.md、The statement context）、
+リストは `#` か `;` で終わり（`diagrams/gantt.md`、文の文脈）、
 その後ろは次の文です。
 `a : 1d#b : 2d` はタスク `a ` と `#b ` です。
 その文は、説明の最初の文字である `#` と一緒に、自分の行に移します。
@@ -189,9 +189,9 @@ click id1 href "u" b : 1d
 
 ```mmd
 gantt
-  a :id1, 1d
+  a : id1, 1d
   click id1 href "u"
-  b :1d
+  b : 1d
 ```
 
 入力
@@ -206,7 +206,7 @@ gantt-x : 1d
 
 ```mmd
 gantt
-  -x :1d
+  -x : 1d
 ```
 
 入力
@@ -223,7 +223,7 @@ inclusiveEndDates weekday monday
 
 ```mmd
 gantt
-  accDescr { style:#x } a :1d;
+  accDescr { style:#x } a : 1d;
   inclusiveEndDates
   weekday monday
 ```
@@ -264,7 +264,7 @@ gantt
 
   section S
 
-    a :1d
+    a : 1d
 ```
 
 入力
@@ -295,18 +295,47 @@ gantt
 Db が持つので、`A task           :a1` と `A task :a1` は、
 mermaid.js にとって 2 つの説明です。
 その空白がどう書かれていても同じ図を描くので、次の段落のとおり、
-名前の後ろに桁そろえの空白がある所で、その空白を整えます。
+その空白を整えます。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 [fixture: task-data/description-padding-tightened]
 `#` や `;` で始まる説明も、ほかと同じタスクのテキストです。
 [fixture: task-data/hash-and-semicolon-descriptions]
 
+名前がコロンに接しているタスクは、コロンの前に空白を 1 つ置いて印字します。
+`Short:a1` は `Short : a1` になります。
+タスクのコロンは、名前とデータの間に立つ記号とも読めるので、コロンの前の空白は、
+mermaid.js の文書の例が、ほかのどの形よりも 2 倍以上の頻度で書く形です。
+例では、コロンの後に空白がある 22 行のすべてが、コロンの前に空白を持ち、
+コロンに接する行はありません。
+数え方は
+[コロンの前の空白を決める例](./compatibility.ja.md#コロンの前の空白を決める例)
+を参照してください。
+この空白は、セクションのコロンをそろえるかどうか（後述）によらず置きます。
+コロンをそろえるセクションでは、その桁までの空白になり、
+それ以外のセクションでは空白 1 つです。
+そろえた行が `printWidth` より長くなるために残すセクションや、
+名前の中にタブがあるために残すセクションでも、同じです。
+空白 1 つはほかのコロンを動かさず、幅にも頼らないからです。
+空白とタブ以外の空白文字（U+00A0 など）で終わる名前も、
+コロンに接しているとみなし、その文字の後に空白を置きます。
+行の中で文の後にあり、プラグインが別の行に移すタスクも、ほかと同じに空白か、
+セクションの桁を得ます（`axisFormat %m #a: 1d` は 2 行になり、
+2 行目は `#a : 1d` です）。 [fixture: task-data/colon-touching-name-spaced]
+[fixture: task-data/colon-touching-name-aligned-with-padded]
+[fixture: task-data/colon-touching-name-too-wide-kept]
+[fixture: task-data/colon-touching-name-tab-in-name]
+[fixture: task-data/colon-touching-name-style-rule-line]
+[fixture: task-data/colon-touching-task-after-hash-ended-statement]
+[fixture: task-data/colon-touching-task-after-statement-with-directive-moved]
+[test: U+2028 before the colon of a task]
+[test: U+00A0 before the colon of a task]
+
 セクションの名前のどれかで、
 コロンの前に桁そろえの空白（空白が 2 文字以上かタブ）があるときは、
 コロンがすでに 1 つの桁にそろっているかどうかによらず、
 セクションのコロンを最長の名前の後に空白 1 つを置いた所にそろえます。
-最長の名前に必要な桁より後ろにそろえると、名前とデータの間が広がり、
-読みにくくなるので、その桁は残しません。
+桁は、どの名前の後にも空白が 1 つ残る最小の桁で、
+それより後ろの空白は何も運ばないので、その桁は残しません。
 作者は長い名前を足し、ほかの名前の空白を整形に任せられます。
 名前の幅は Prettier がテキストに与える幅なので、全角文字は 2 と数え、
 整える空白には半角空白を使い、タブも置き換えます。
@@ -338,14 +367,13 @@ mermaid.js にとって 2 つの説明です。
 [fixture: task-data/colon-column-before-first-section]
 [fixture: task-data/colon-column-sections-and-preamble]
 
-次の場合は、コロンを動かしても読みやすくならないか、図が変わりうるので、
-コロンをその位置に残します。
-どの名前もコロンの前の空白が 1 つ以下か、空白がないセクションは、
-作者がテキストの隣にコロンを置いたので、そのままにします。
+次の場合は、コロンを動かすと図が変わりうるので、コロンをその位置に残します。
+どの名前もコロンの前の空白が 1 つ以下のセクションは、どのコロンも動かさず、
+コロンに接する名前にだけ上の空白 1 つを置きます。
 そろえた行が `printWidth` より長く、元の行よりも長くなるセクションは、
 長い名前 1 つがすべてのコロンを大きく右に押すので、そのままにします。
 `white-space` を含む図は、図の CSS が名前の末尾の空白を描くことがあり、
-そのときは空白で図が変わるので、そのままにします。
+そのときは空白で図が変わるので、コロンに接する名前も含めて、そのままにします。
 名前の中にタブがあるセクションも、そのままにします。
 タブはエディターの次のタブ位置まで進むので、
 Prettier が数えるどの幅でもコロンをそろえられないからです。
@@ -353,34 +381,69 @@ Prettier が数えるどの幅でもコロンをそろえられないからで�
 [fixture: task-data/colon-column-single-space-kept]
 [fixture: task-data/colon-column-too-wide-kept]
 [fixture: task-data/colon-column-white-space-kept]
+[fixture: task-data/colon-touching-name-white-space-kept]
 
-次の場合、タスクは書かれたまま残し、ほかのタスクがそろえる対象に含めないので、
-その空白はほかのタスクの桁を決めません。
+次の場合、タスクはコロンの前の空白を書かれたまま残し、
+ほかのタスクがそろえる対象に含めず、コロンに接する名前にも空白を置きません。
+そのタスクの空白は、ほかのタスクの桁を決めません。
+コロンとデータは、ほかのタスクと同じように印字します。
+`%%{init: {}}%% A task:a2,after a1,2d` は
+`%%{init: {}}%% A task: a2, after a1, 2d` になります。
+
+- 名前がディレクティブで終わるとき。
+  ディレクティブの隣の空白は、
+  残すからです（[ディレクティブ](#ディレクティブ)を参照）。
+- その前にディレクティブがあり、両者の間に文がないとき。
+
+次の場合、タスクはデータも含めて全体を書かれたまま残します。
+その行が変わらないからです。
 
 - 行を書かれたまま印字するとき（[1 行に 1 文](#1-行に-1-文)と、
   後述する空白だけのデータを参照）。
 - 複数行にわたるとき。
-- 名前がディレクティブで終わるとき。
-  ディレクティブの隣の空白は、
-  残すからです（[ディレクティブ](#ディレクティブ)を参照）。
-- 同じ行でその前に何かがあるとき。
-  名前が行頭から始まらず、ほかのタスクとコロンがそろわないからです。
-  また、コロンの前の空白が、行の規則の読む所に入りえます。
-  規則は、`style` や `classDef` の後の `:` より後ろの空白を読み、
-  名前は `:` を含まないので、タスクのコロンより前の `:` は、
-  その前にある文からしか来ないからです（[1 行に 1 文](#1-行に-1-文)を参照）。
+- まとまったままの行で、その前に文があるとき。
+
+それ以外の行でその前にある文は、周りのディレクティブとともに、
+別の行に印字されるので、タスクは行頭になります。
+タスクが行頭にならないとき、名前が行頭から始まらないので、
+ほかのタスクとコロンがそろいません。
+また、コロンの前の空白が、行の規則の読む所に入りえます。
+規則は、`style` や `classDef` の後の `:` より後ろの空白を読み、
+名前は `:` を含まないので、タスクのコロンより前の `:` は、
+その前にある文からしか来ないからです（[1 行に 1 文](#1-行に-1-文)を参照）。
 
 [fixture: task-data/colon-column-line-as-written-kept]
 [fixture: task-data/colon-column-task-over-lines-kept]
 [fixture: task-data/colon-column-task-after-statement-kept]
 [fixture: task-data/colon-column-name-ending-with-directive-kept]
+[fixture: task-data/colon-touching-name-line-as-written-kept]
+[fixture: task-data/colon-touching-task-over-lines-kept]
+[fixture: task-data/colon-touching-task-after-statement-kept]
+[fixture: task-data/colon-touching-task-after-directive-kept]
+[fixture: task-data/colon-touching-name-ending-with-directive-kept]
+
+空白が後ろに続くと文を始める語を名前とするタスクも、
+コロンの前の空白を書かれたまま残し、ほかのタスクもそれにそろえません。
+`title:T` はタスクで、`title :T` は title なので、コロンの前に空白を置きません。
+データはほかのタスクと同じように印字します（`title:T` は `title: T`
+になります）。
+語は、`dateFormat`、`axisFormat`、`tickInterval`、`includes`、`excludes`、
+`todayMarker`、`title`、`accDescription`、`section`、`click`、`call` で、
+大文字小文字は問わず、名前の中のディレクティブは、
+mermaid.js が読むとおり除いて比べます（`ti%%{init: {}}%%tle:T` はタスク `title`
+です）。
+詳しくは、
+[キーワードとその後に続くもの](../../spec/docs/diagrams/gantt.ja.md#文の文脈)
+を参照してください。 [fixture: task-data/colon-touching-keyword-name-kept]
+[fixture: task-data/colon-touching-keyword-name-with-directive-kept]
 
 行にあるそれ以外のものは、タスクをそろえる妨げになりません。
 名前の中やほかの場所にある `;`、コメント、名前の中やデータの後のディレクティブ、
 行の規則が読む行があっても、タスクはそろえます。
 行頭から始まるタスクの桁そろえの空白は、その行の最初の `:` より前にあり、
 規則が読むのは、その後ろの空白だけだからです。
-名前と行の残りの幅は、書かれたままの幅です。
+名前と、同じ行の次の文（別の行に印字します）の前までのタスクの残りの幅は、
+書かれたままの幅です。
 コロンをテキスト上でそろえるので、名前の中のディレクティブも幅に数え、
 データの後のコメントやディレクティブも `printWidth` に数えます。
 プラグインが数えるのは、図の行だけです。
@@ -393,14 +456,34 @@ Prettier は行の前にあるものの幅を引かずに `printWidth` をその
 を参照してください。
 [test: Gantt in a list item: the width is that of the diagram alone]
 [fixture: task-data/colon-column-name-with-semicolon]
+[fixture: task-data/colon-column-statement-after-task-moves]
+[fixture: task-data/colon-column-width-of-following-statement-ignored]
 [fixture: task-data/colon-column-style-rule-line]
 [fixture: task-data/colon-column-directive-inside-name]
 [fixture: task-data/colon-column-comment-after-data]
 
-最初の項目はコロンに接し、`,` は前の項目に接して、
+コロンの後ろは空白 1 つを置いて始め、`,` は前の項目に接して、
 後ろに項目があれば空白 1 つを置きます。
 コロンと `,` の周りの空白は Db に入らないので、残しません。
-mermaid.js の文書の task 行の多くがこの形で、空白は項目の前にだけ置きます。
+コロンはタスクの名前に続くので、
+Prettier が名前やキーに続くコロンの後ろに印字する空白 1 つを置きます。
+mermaid.js の文書のタスク行は、最初の項目をコロンに接して書くものが多く、
+この規則はそれに従いません。
+mermaid.js の行の規則が読む範囲では、コロンの後ろの空白を書かれたまま残します。
+規則は、`style` か `classDef` の後の最初の `:` から、
+行の最後の `;` の前の最後の `#` までを読み、
+そのようなコロンの後ろに空白を置くと、規則が無視する `;` が変わるからです。
+`classDef it:a1,2024-01-01,2d;#y:3d;z:2d` は、
+タスク `classDef it` とタスク `#y` の 2 つです。
+最初のコロンの後ろに空白を置くと、タスクは 3 つになります。
+mermaid.js は規則を当てる前にディレクティブを取り除くので、
+ディレクティブで割れた `style`（`sty%%{init: {}}%%le a:x#y;b:1d`）も `style`
+です。
+コロンと最初の項目の間のディレクティブは、空白の後ろに置き、項目に接します。
+`a:%%{init: {}}%%1d` は `a : %%{init: {}}%%1d` と印字します。
+[fixture: task-data/colon-space-line-rule-kept]
+[fixture: task-data/colon-line-rule-keyword-split-by-directive]
+[fixture: task-data/colon-directive-before-first-item]
 [fixture: task-data/colon-touches-first-item] [fixture: task-data/comma-spacing]
 [fixture: task-data/tab-around-items]
 データの末尾の空白は落とします。
@@ -413,7 +496,7 @@ mermaid.js の文書の task 行の多くがこの形で、空白は項目の前
 [fixture: task-data/after-until-forms] [fixture: keyword-case/tags-case-kept]
 
 空の項目は、mermaid.js が項目の数を読むので残します。
-`,` は残り、空の項目は何も印字しないので、`a : , 1d` は `a :, 1d` になり、
+`,` は残り、空の項目は何も印字しないので、`a :,1d` は `a : , 1d` になり、
 `a : 1d,` は `,` を保ちます。 [fixture: task-data/empty-items]
 
 空白だけのデータは空の項目 1 つで、
@@ -423,8 +506,10 @@ mermaid.js はコロンの後に 1 文字を要求します。
 残りは落とします。
 行の続きにディレクティブなどの文字があるときは、
 空白がそれらと一緒に読まれるので、行を書かれたまま印字します。
+`;` によって分割せずに残す行の末尾にあるタスクも、その空白 1 文字を残します。
 [fixture: task-data/whitespace-only-data]
 [fixture: task-data/whitespace-only-data-then-directive]
+[fixture: task-data/whitespace-only-data-on-kept-line]
 タスクの部分の間のディレクティブは、
 その位置に残します（[ディレクティブ](#ディレクティブ) を参照）。
 
@@ -443,9 +528,9 @@ Future task               :         des3, after des2, 5d
 
 ```mmd
 gantt
-  Completed task :done, des1, 2014-01-06, 2014-01-08
-  Active task    :active, des2, 2014-01-09, 3d
-  Future task    :des3, after des2, 5d
+  Completed task : done, des1, 2014-01-06, 2014-01-08
+  Active task    : active, des2, 2014-01-09, 3d
+  Future task    : des3, after des2, 5d
 ```
 
 入力
@@ -472,16 +557,52 @@ gantt
 ```mmd
 gantt
   section A
-    Task A      :a1, 2014-01-01, 3d
-    Task B long :a2, after a1, 2d
+    Task A      : a1, 2014-01-01, 3d
+    Task B long : a2, after a1, 2d
   section B
-    Other       :a3, after a2, 1d
+    Other       : a3, after a2, 1d
   section C
-    Single            :a4, after a3, 1d
-    Quite a long name :a5, after a4, 1d
+    Single            : a4, after a3, 1d
+    Quite a long name : a5, after a4, 1d
   section D
-    Alone :a6, after a5, 1d
-    Brief :a7, after a6, 1d
+    Alone : a6, after a5, 1d
+    Brief : a7, after a6, 1d
+```
+
+入力
+([task-data/colon-touching-name-spaced-input.mmd](../tests/fixtures/gantt/task-data/colon-touching-name-spaced-input.mmd)):
+
+```mmd
+gantt
+Before:a0, 2014-01-01, 3d
+Before long name:a9, after a0, 1d
+  section A
+    Short:a1, 2014-01-01, 3d
+    A longer name:a2, after a1, 2d
+  section B
+    Compact:b1, 2014-01-01, 3d
+    Single space :b2, after b1, 2d
+    Without id:3d
+    First item empty:, 2014-02-01, 3d
+    日本語:b5, 2014-02-01, 3d
+```
+
+出力
+([task-data/colon-touching-name-spaced-output.mmd](../tests/fixtures/gantt/task-data/colon-touching-name-spaced-output.mmd)):
+
+```mmd
+gantt
+  Before : a0, 2014-01-01, 3d
+  Before long name : a9, after a0, 1d
+  section A
+    Short : a1, 2014-01-01, 3d
+    A longer name : a2, after a1, 2d
+  section B
+    Compact : b1, 2014-01-01, 3d
+    Single space : b2, after b1, 2d
+    Without id : 3d
+    First item empty : , 2014-02-01, 3d
+    日本語 : b5, 2014-02-01, 3d
 ```
 
 入力
@@ -499,9 +620,9 @@ C task :    a3 , 2014-01-01
 
 ```mmd
 gantt
-  A task :a1, 2014-01-01, 30d
-  B task :a2, 2014-01-01, 30d
-  C task :a3, 2014-01-01
+  A task : a1, 2014-01-01, 30d
+  B task : a2, 2014-01-01, 30d
+  C task : a3, 2014-01-01
 ```
 
 入力
@@ -520,10 +641,10 @@ d : milestone , m1, 2024-01-01, 0d
 
 ```mmd
 gantt
-  a :done, 1d
-  b :active, crit, 2d
-  c :Done, 1d
-  d :milestone, m1, 2024-01-01, 0d
+  a : done, 1d
+  b : active, crit, 2d
+  c : Done, 1d
+  d : milestone, m1, 2024-01-01, 0d
 ```
 
 ### 設定
@@ -541,6 +662,8 @@ mermaid.js はその空白を Db に残しますが、その空白がなくて�
 `tickInterval` も、値全体を読んでいて、
 前か後に空白があると目盛りが既定のものになるので、書かれたままにします。
 [fixture: settings/format-padding-kept-where-drawn-differently]
+[fixture: gantt/settings/date-format-directive-after-value-kept]
+[fixture: gantt/settings/date-format-directive-before-value-kept]
 `todayMarker` の値は、両端の空白も含めて書かれたまま印字します。
 末尾に空白 2 つがある `todayMarker off` は別のマーカーで、今日の線を描きます。
 [fixture: settings/trailing-whitespace-by-setting]
@@ -913,8 +1036,8 @@ click   ,id1,   href "u"
 
 ```mmd
 gantt
-  a :id1, 1d
-  b :id2, 1d
+  a : id1, 1d
+  b : id2, 1d
   click id1,id2 href "u"
   click id1,,id2 href "u"
   click id1, href "u"
@@ -937,7 +1060,7 @@ click id1 call f() href "u"
 
 ```mmd
 gantt
-  a :id1, 1d
+  a : id1, 1d
   click id1 href "u" call f()
   click id1 call f() href "u"
 ```
@@ -960,7 +1083,7 @@ click id1 call   f()
 
 ```mmd
 gantt
-  a :id1, 1d
+  a : id1, 1d
   click id1 call f ()
   click id1 call f(1, 2)
   click id1 call f(1, 2)
@@ -1111,18 +1234,17 @@ mermaid.js が複数行にわたって読む文は、
 [fixture: multi-line-statements/value-on-next-line-joined]
 [fixture: multi-line-statements/blank-lines-between-keyword-and-day]
 click、weekday/weekend、includes/excludes、アクセシビリティの行の文では、
-trivia の改行を保ちます。
+注釈類の改行を保ちます。
 後続の構造部分と独立したコメント行や指令行は、section の下でも、
 その文より 1 段深くそろえます。
-各 gap の最初の行の末尾と指令の内部全体は保ち、引用符付き文字列、呼び出し名、
+各隙間の最初の行の末尾と指令の内部全体は保ち、引用符付き文字列、呼び出し名、
 引数はひとまとまりのままです。
 [fixture: multi-line-statements/structural-trivia-continuations]
 [fixture: click-statements/trivia-continuation-under-section]
 
 title、section、設定、タスクでは、値の空白が Db の一部なので、
-複数行の trivia を含む配置を元のまま保ちます。
-click 文などの trivia 行を整形する文では、
-改行を空白 1 つか何も挟まずにつなぐと、
+複数行の注釈類を含む配置を元のまま保ちます。
+click 文などの注釈類行を整形する文では、改行を空白 1 つか何も挟まずにつなぐと、
 行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
 その改行を残します。
 それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
@@ -1219,7 +1341,7 @@ click id1 call f(1,
 
 ```mmd
 gantt
-  a :id1, 1d
+  a : id1, 1d
   click id1 call f(1,
   2)
 ```
@@ -1286,7 +1408,7 @@ click id1 call f()
 
 ```mmd
 gantt
-  a :id1, 1d
+  a : id1, 1d
   click id1 call f()
   click id1 call f()
 ```
@@ -1337,6 +1459,9 @@ mermaid.js は、その `%%{` を、前の空白が 1 文字か、
 [fixture: comments/percent-brace-line-after-directive-on-its-line]
 [fixture: comments/percent-brace-line-after-directive-touching]
 [fixture: comments/percent-brace-line-after-directive-with-tabs]
+印を構成する文字の間のディレクティブは、`%%{` を認識する前に取り除きます。
+ディレクティブを書かれたまま残し、同じ 1 文字の字下げを適用します。
+[fixture: comments/directive-in-percent-brace-marker]
 
 文やヘッダーの後ろのコメントは、書かれたとおり行に残します。
 空白が書かれていれば空白 1 つを置き、接していれば接したままにします。
@@ -1407,7 +1532,7 @@ click id1 call f()  %% d
 
 ```mmd
 gantt
-  a :id1, 1d
+  a : id1, 1d
   click id1 href "u"%% c
   click id1 call f() %% d
 ```
@@ -1427,12 +1552,12 @@ gantt
 [fixture: directives/statement-after-directive-line]
 
 元は同じ行にあった単位を別の行へ分けるときは、
-間の directive を次の単位に付けます。
+間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
 
 [fixture: gantt/directives/split-directive-gap]
 
-文の単位の間の指令は元の gap に残し、
+文の単位の間の指令は元の隙間に残し、
 [ディレクティブ](#ディレクティブ)のとおりに置きます。
 構造部分の続きの列は[複数行の文](#複数行の文)に従います。
 値の中の指令は、そのテキストの一部です。 [fixture: directives/between-units]
@@ -1499,7 +1624,7 @@ click id1 call f%%{init: {}}%%()
 ```mmd
 gantt
   weekday %%{init: {}}%%monday
-  a :id1, 1d
+  a : id1, 1d
   click %%{init: {}}%%id1 href "u"
   click id1 call f%%{init: {}}%%()
 ```

@@ -44,6 +44,24 @@ const restored: readonly DbPair[] = [
     after: { tasks: [{ task: "2020 ", events: ["e   ", "f"] }] },
   },
   {
+    name: "the space added at the end of a period and of an event of a timeline",
+    diagramType: "timeline",
+    before: { tasks: [{ task: "2004", events: ["a", "b"] }] },
+    after: { tasks: [{ task: "2004 ", events: ["a ", "b"] }] },
+  },
+  {
+    name: "the whitespace before the first colon of a task of a user journey",
+    diagramType: "journey",
+    before: { tasks: [{ task: "Make tea  ", score: 5 }] },
+    after: { tasks: [{ task: "Make tea", score: 5 }] },
+  },
+  {
+    name: "a period of a timeline that keeps the whitespace at its end",
+    diagramType: "timeline",
+    before: { tasks: [{ task: "2002   ", events: ["a"] }] },
+    after: { tasks: [{ task: "2002   ", events: ["a"] }] },
+  },
+  {
     name: "the whitespace at the end of the name of a task of a Gantt chart",
     before: { tasks: [{ task: "A task\t", id: "a1" }] },
     after: { tasks: [{ task: "A task     ", id: "a1" }] },
@@ -113,6 +131,42 @@ const kept: readonly DbPair[] = [
     diagramType: "timeline",
     before: { tasks: [{ task: "a", events: ["  e"] }] },
     after: { tasks: [{ task: "a", events: ["e"] }] },
+  },
+  {
+    name: "the padding of a period of a timeline narrowed, which aligns colons",
+    diagramType: "timeline",
+    before: { tasks: [{ task: "2002   ", events: ["a"] }] },
+    after: { tasks: [{ task: "2002 ", events: ["a"] }] },
+  },
+  {
+    name: "more than one space added at the end of a period of a timeline",
+    diagramType: "timeline",
+    before: { tasks: [{ task: "2004", events: ["a"] }] },
+    after: { tasks: [{ task: "2004  ", events: ["a"] }] },
+  },
+  {
+    name: "a space added to a period of a timeline that ends with a space",
+    diagramType: "timeline",
+    before: { tasks: [{ task: "2004 ", events: ["a"] }] },
+    after: { tasks: [{ task: "2004  ", events: ["a"] }] },
+  },
+  {
+    name: "the whitespace before the colon of a task of a user journey narrowed",
+    diagramType: "journey",
+    before: { tasks: [{ task: "Make tea   ", score: 5 }] },
+    after: { tasks: [{ task: "Make tea ", score: 5 }] },
+  },
+  {
+    name: "the whitespace at the start of a task of a user journey",
+    diagramType: "journey",
+    before: { tasks: [{ task: "  Make tea ", score: 5 }] },
+    after: { tasks: [{ task: "Make tea", score: 5 }] },
+  },
+  {
+    name: "the whitespace at the start of a period of a timeline",
+    diagramType: "timeline",
+    before: { tasks: [{ task: "  2004 ", events: ["e"] }] },
+    after: { tasks: [{ task: "2004 ", events: ["e"] }] },
   },
   {
     name: "the whitespace at the start of a description of a state",

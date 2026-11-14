@@ -32,9 +32,9 @@ describe("printWidth: Infinity", () => {
   const gantt = [
     "gantt",
     "  section A",
-    "    A task :a1, 2014-01-01, 3d",
-    "    Another long task name   :after a1, 2d, extra",
-    "    X   :a3, after a2, 1d",
+    "    A task : a1, 2014-01-01, 3d",
+    "    Another long task name   : after a1, 2d, extra",
+    "    X   : a3, after a2, 1d",
     "",
   ].join("\n")
 
@@ -46,9 +46,9 @@ describe("printWidth: Infinity", () => {
     const aligned = [
       "gantt",
       "  section A",
-      "    A task                 :a1, 2014-01-01, 3d",
-      "    Another long task name :after a1, 2d, extra",
-      "    X                      :a3, after a2, 1d",
+      "    A task                 : a1, 2014-01-01, 3d",
+      "    Another long task name : after a1, 2d, extra",
+      "    X                      : a3, after a2, 1d",
       "",
     ].join("\n")
     expect(await format(gantt, Infinity)).toBe(aligned)
@@ -66,8 +66,8 @@ describe("printWidth in a Markdown list item", () => {
     "gantt",
     "  dateFormat YYYY-MM-DD",
     "  section A",
-    "  Task name long enough to matter :a1, 2014-01-01, 1d",
-    "  T  :a2, after a1, 1d",
+    "  Task name long enough to matter : a1, 2014-01-01, 1d",
+    "  T  : a2, after a1, 1d",
   ]
   const inList = [
     "- item",
@@ -77,7 +77,7 @@ describe("printWidth in a Markdown list item", () => {
     "  ```",
     "",
   ].join("\n")
-  const alignedRow = "  T                               :a2, after a1, 1d"
+  const alignedRow = "  T                               : a2, after a1, 1d"
 
   /** Formats Markdown with the plugin at a line width. */
   async function formatMarkdown(text: string, width: number): Promise<string> {

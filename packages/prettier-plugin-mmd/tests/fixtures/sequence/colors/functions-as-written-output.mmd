@@ -1,0 +1,48 @@
+sequenceDiagram
+  participant A
+  participant B
+  rect aqua
+    A ->> B: one
+  end
+  rect rgb(1,2,3) extra
+    A ->> B: two
+  end
+  rect rgb(1,2)
+    A ->> B: three
+  end
+  rect hsl(120,100,50)
+    A ->> B: four
+  end
+  rect rgb(10%,20,30)
+    A ->> B: five
+  end
+  rect rgb(var(--a),2,3)
+    A ->> B: six
+  end
+  rect RGB(1,2,3)
+    A ->> B: seven
+  end
+  rect rgba(1,2,3)
+    A ->> B: eight
+  end
+  box transparent Team
+    participant C
+  end
+  box rgb(33,66,99) Team (x)
+    participant D
+  end
+  box rgb(33,66,99) Team (x,y)
+    participant E
+  end
+  box Team (a,b)
+    participant F
+  end
+  box RGB(33,66,99) Team
+    participant G
+  end
+  box rgb (33,66,99) Team
+    participant H
+  end
+  box hsl(120,100,50) Team
+    participant I
+  end

@@ -3,10 +3,11 @@ name: prettier-plugin
 description:
   Add the printer of a diagram type to prettier-plugin-mmd, or update the
   printers after mermaid.js is updated. Use when the parser supports a new
-  diagram type and its formatting is to be decided and implemented, or when the
-  pinned mermaid.js changes. It covers deciding the formatting choices, the
-  printer, the fixtures, and the documents, and mmdfmt, the command-line tool
-  that formats with the plugin.
+  diagram type and its formatting is to be decided and implemented, when the
+  pinned mermaid.js changes, or when the plugin's entry changes (index.ts,
+  parser.ts, printer.ts, its options, or its languages). It covers deciding the
+  formatting choices, the printer, the fixtures, and the documents; mmdfmt, the
+  command-line tool that formats with the plugin, has a skill of its own.
 ---
 
 # Adding the printer of a diagram type (prettier-plugin)
@@ -25,16 +26,6 @@ update the printers when mermaid.js is updated.
   item by item.
 - Four tests: idempotence, Db agreement before and after formatting, no change
   on failure, fences in Markdown.
-
-`packages/mmdfmt`:
-
-- Formats the diagrams of `.mmd` and `.mermaid` files and of the `mermaid` and
-  `mmd` code blocks of Markdown with Prettier and the plugin, and changes
-  nothing else in a Markdown file.
-- How a diagram is printed is decided in the plugin only; the tool decides which
-  text it formats and how it reports and exits.
-- Its README defines what it does, and each sentence of it that defines a
-  behavior has a test for each case it distinguishes (section 12).
 
 ## 1. What to read first
 
@@ -57,12 +48,10 @@ digits in one word for paths and fixture categories, its capitalized form for
 node type prefixes, and mermaid.js's spelling only where its own text, values,
 configuration keys or source paths are held.
 
-This procedure writes only to `packages/prettier-plugin-mmd`, `packages/mmdfmt`,
-and this SKILL. When another package needs a change, make it with that package's
-SKILL (a gap in the specification with the spec SKILL, a change of the tree with
-the parser SKILL, fixtures with the tests SKILL). Commit and push only when
-asked (AGENTS.md). Do not change the staging area, and do not use `git mv`. Move
-and delete files with `mv` and `rm`.
+This procedure writes only to `packages/prettier-plugin-mmd` and this SKILL.
+When another package needs a change, make it with that package's SKILL (a gap in
+the specification with the spec SKILL, a change of the tree with the parser
+SKILL, fixtures with the tests SKILL).
 
 ## 2. When to start (input)
 
@@ -81,7 +70,16 @@ and delete files with `mv` and `rm`.
 
 ## 3. Deciding the formatting
 
-The rules of the printer follow the choices made item by item.
+The printed form of each item is decided by the rules of
+[How the printed form is decided](../../../packages/prettier-plugin-mmd/docs/printed-form.md),
+in their order: the whitespace beside a mark (for a colon, the three steps that
+say which kind it is), then the form that the other diagram types print for the
+same kind of gap, then a spelling. The rules say which form reads best, which is
+what a printed form is for; they are applied in their order so that the form
+does not depend on who judges. Where none of them gives a form, the output of
+the released version is not changed on the judgment of whoever is working on it:
+a form that seems to read better is proposed to the user, with a text as written
+and both outputs, and what is decided is added to those rules.
 
 1. From the grammar and the tree in the specification, list what formatting
    could change. The kinds of items flowchart has (as examples; a diagram type
@@ -95,17 +93,34 @@ The rules of the printer follow the choices made item by item.
    - where comments and directives stand
    - the YAML of the frontmatter
    - what is kept as written (what affects the Db)
-2. Give each item its choices, examples (before and after formatting), and a
-   recommendation with its reason. Say which choices change the Db.
-3. For each choice, run the text before and after formatting through mermaid.js,
-   and check that the Db does not change. Each case that the choice
-   distinguishes has a fixture (section 6). Attach the results, marked as
-   checked by running.
-4. Show the list, ask for a decision, and implement the choices that are made.
+2. For each item, find the rule of that document that decides its form, taking
+   the rules in their order, and the facts it needs: the whitespace that
+   Prettier prints beside the same kind of mark, the form that the other diagram
+   types print for the same gap, or the count of each form in the examples of
+   the documentation of the pinned mermaid.js. Write the candidate forms with
+   examples (before and after formatting), the rule that decides, and the facts.
+   Say which forms change the Db.
+3. For each candidate form, run the text before and after formatting through the
+   pinned mermaid.js and the versions that count (that document), and check that
+   the Db does not change and that every one of those versions accepts the form
+   and draws it the same. A form that one of them rejects or draws differently
+   is not printed. Each case that the choice distinguishes has a fixture
+   (section 6). Attach the results, marked as checked by running.
+4. Implement the forms that the rules decide. A form that would change what a
+   released version printed, and a form that seems better where no rule gives
+   one, is shown to the user first, with a text as written, the old and the new
+   output, the rule that gives the new form if there is one, and a
+   recommendation; the user decides it, and the decision is added to the rules.
 5. Write each decision into the rules document `docs/<diagram>.md` (English and
-   Japanese) as a rule with its reason. Write what is kept as written because it
-   affects the Db, and the differences from mermaid.js, into
-   `docs/compatibility.md` too. Keep decisions in these two documents only.
+   Japanese) as a rule with its reason. The reason is the rule of that document
+   that decided the form, with the facts that rule needs. A reason that says
+   only "reads better" tells a reader nothing: name the rule that says why it
+   reads better. Where a rule gives a form that reads worse than another form
+   that draws the same, say so and propose the other form to the user as under
+   step 4 of this section, since the rule is then what is wrong. Write what is
+   kept as written because it affects the Db, and the differences from
+   mermaid.js, into `docs/compatibility.md` too. Keep decisions in these two
+   documents only.
 
 ## 4. Writing the printer
 
@@ -177,7 +192,7 @@ Steps when writing:
    the text of tokens again. Where a lexical fact that is not in the tree is
    needed, find it in the lexical sections of the specification, give it a
    fixture (section 6), and make it an explicit rule with a comment that points
-   to the section of the specification (section 5).
+   to the section of the specification (section 5 of this skill).
 2. Do not build a check that parses the formatted result again at run time and
    compares it; it only hides a missing rule.
 3. Keep each decision in one place (for example, where a line starts and ends,
@@ -259,18 +274,18 @@ built is in `docs/development.md`.
   data. Add a file for a new diagram type.
 - A failure of the printer is guarded by a fixture of the corpus, made in
   `@mmd-toolkit/tests`. A failure that `pnpm run lint` rules out (an array
-  spread into the arguments of a call, in the `conventions` skill) is guarded by
-  that rule instead.
+  spread into the arguments of a call, in the
+  [`conventions`](../conventions/SKILL.md#code) skill) is guarded by that rule
+  instead.
 - Fixtures answer sentences. Every sentence of the rules documents
   (`docs/<diagram>.md`, `docs/compatibility.md`) that defines a behavior has a
   formatting fixture for each case it distinguishes, and for each other rule
-  that meets it at the place it names: a directive, an ignored `;`, a comment
-  line, an empty line, a line separator (U+2028, U+2029), an empty description
-  block, and whatever else the sentence's own words name. The fixtures are
-  written with the sentence and checked against mermaid.js once. A failure is
-  closed by a fixture and by the sentence that states the rule it shows to be
-  missing. No test or command generates inputs, and no input is chosen by a
-  random source or by a number (a seed, a count).
+  that meets it at the place it names, as
+  [the Principles of AGENTS.md](../../../AGENTS.md#principles) list them. The
+  fixtures are written with the sentence and checked against mermaid.js once. A
+  failure is closed by a fixture and by the sentence that states the rule it
+  shows to be missing. No test or command generates inputs, and no input is
+  chosen by a random source or by a number (a seed, a count).
 - Fixtures come from the cases of the rule sentences, not from copies of corpus
   inputs: write a minimal input for each distinct case, merge fixtures that
   answer the same case, and cite corpus inputs as `[corpus fixture: ...]`.
@@ -283,7 +298,8 @@ built is in `docs/development.md`.
   match the fixture files. Add a new rules document to `ruleDocuments` there.
 
 Which tests to run (the rule for every package is in the skill `conventions`,
-Running tests; this is what belongs to this package):
+[Running tests](../conventions/SKILL.md#running-tests); this is what belongs to
+this package):
 
 - The part of the code and the test files that a change to it can affect. Run
   these while working, with
@@ -294,110 +310,11 @@ Running tests; this is what belongs to this package):
   With `-t`, every other file is skipped whole and nothing fails, so run the
   other files without it.
 
-  - A shared module (`blocks.ts`, `atoms.ts`, `gap.ts`, `layout.ts`, `lines.ts`,
-    `source.ts`, `kept-lines.ts`, `common-layout.ts`, `hidden-forms.ts`,
-    `flat-hidden-diagram.ts`): the tests of every diagram type, that is, the
-    whole package.
-  - `flowchart*.ts`: `format` and `corpus` with `-t flowchart`; and, without
-    `-t`, `markdown-flowchart`, `value-nodes`, `line-separators`,
-    `line-terminators`, `empty-description-blocks`, `accessibility-blocks`, and
-    `graph-accessibility`.
-  - `sequence*.ts`: `format` and `corpus` with `-t sequence`; and, without `-t`,
-    `line-separators`, `sequence-layout`, `markdown-sequence`, `value-nodes`,
-    `line-terminators`, and `empty-description-blocks`.
-  - `class*.ts`: `format` and `corpus` with `-t class`; and, without `-t`,
-    `markdown-class`, `value-nodes`, `line-separators`, `line-terminators`,
-    `empty-description-blocks`, and `accessibility-revisions`.
-  - `state*.ts`: `format` and `corpus` with `-t state`; and, without `-t`,
-    `line-separators`, `markdown-state`, `value-nodes`, `line-terminators`,
-    `empty-description-blocks`, and `accessibility-revisions`.
-  - `er*.ts`: `format` and `corpus` with `-t er`; and, without `-t`,
-    `line-separators`, `markdown-er`, `value-nodes`, `line-terminators`,
-    `empty-description-blocks`, and `accessibility-revisions`.
-  - `gantt*.ts`: `format` and `corpus` with `-t gantt`; and, without `-t`,
-    `line-separators`, `markdown-gantt`, `value-nodes`, `line-terminators`, and
-    `empty-description-blocks`.
-  - `journey*.ts`: `format` and `corpus` with `-t journey`; and, without `-t`,
-    `line-separators`, `markdown-journey`, `value-nodes`, `line-terminators`,
-    and `empty-description-blocks`.
-  - `requirement*.ts`: `format` and `corpus` with `-t requirement`; and, without
-    `-t`, `line-separators`, `markdown-requirement`, `value-nodes`,
-    `line-terminators`, and `empty-description-blocks`.
-  - `mindmap*.ts`: `format` and `corpus` with `-t mindmap`; and, without `-t`,
-    `line-separators`, `markdown-mindmap`, `value-nodes`, and
-    `line-terminators`.
-  - `timeline*.ts`: `format` and `corpus` with `-t timeline`; and, without `-t`,
-    `line-separators`, `markdown-timeline`, `value-nodes`, `line-terminators`,
-    and `empty-description-blocks`.
-  - `sankey*.ts`: `format` and `corpus` with `-t sankey`; and, without `-t`,
-    `line-separators`, `markdown-sankey`, `value-nodes`, `line-terminators`, and
-    `empty-description-blocks`.
-  - `xychart*.ts`: `format` and `corpus` with `-t xychart`; and, without `-t`,
-    `line-separators`, `markdown-xychart`, `value-nodes`, `line-terminators`,
-    and `empty-description-blocks`.
-  - `quadrant*.ts`: `format` and `corpus` with `-t quadrant`; and, without `-t`,
-    `line-separators`, `markdown-quadrant`, `value-nodes`, `line-terminators`,
-    and `empty-description-blocks`.
-  - `block.ts`, `block-*.ts`: `format` and `corpus` with `-t block`; and,
-    without `-t`, `line-separators`, `markdown-block`, `value-nodes`,
-    `line-terminators`, and `empty-description-blocks`.
-  - `kanban*.ts`: `format` and `corpus` with `-t kanban`; and, without `-t`,
-    `line-separators`, `markdown-kanban`, `value-nodes`, and `line-terminators`.
-  - `c4*.ts`: `format` and `corpus` with `-t c4`; and, without `-t`,
-    `line-separators`, `line-terminators`, `markdown-c4`, `value-nodes`,
-    `dispatch`, `empty-description-blocks`, `accessibility-revisions`, and
-    `accessibility-blocks`.
-  - `venn*.ts`: `format` and `corpus` with `-t venn`; and, without `-t`,
-    `line-separators`, `markdown-venn`, `value-nodes`, `line-terminators`, and
-    `dispatch`.
-  - `ishikawa*.ts`: `format` and `corpus` with `-t ishikawa`; and, without `-t`,
-    `ishikawa`, `markdown-ishikawa`, `value-nodes`, `dispatch`, and
-    `empty-description-blocks`.
-  - `agentflow*.ts`: `format` and `corpus` with `-t agentflow`; and, without
-    `-t`, `agentflow`, `markdown-agentflow`, `value-nodes`, `dispatch`,
-    `empty-description-blocks`, `accessibility-blocks`, and
-    `graph-accessibility`.
-  - `pie*.ts`: `format` and `corpus` with `-t pie`; and, without `-t`, `pie`,
-    `markdown-pie`, `value-nodes`, `dispatch`, and `empty-description-blocks`.
-  - `gitgraph*.ts`: `format` and `corpus` with `-t gitgraph`; and, without `-t`,
-    `gitgraph`, `markdown-gitgraph`, `value-nodes`, `dispatch`, and
-    `empty-description-blocks`.
-  - `info*.ts`: `format` and `corpus` with `-t info`; and, without `-t`, `info`,
-    `markdown-info`, `value-nodes`, `dispatch`, and `empty-description-blocks`.
-  - `architecture*.ts`: `format` and `corpus` with `-t architecture`; and,
-    without `-t`, `architecture`, `markdown-architecture`, `value-nodes`, and
-    `dispatch`.
-  - `cynefin*.ts`: `format` and `corpus` with `-t cynefin`; and, without `-t`,
-    `cynefin`, `markdown-cynefin`, `value-nodes`, and `dispatch`.
-  - `eventmodeling*.ts`: `format` and `corpus` with `-t eventmodeling`; and,
-    without `-t`, `eventmodeling`, `markdown-eventmodeling`, `value-nodes`, and
-    `dispatch`.
-  - `packet*.ts`: `format` and `corpus` with `-t packet`; and, without `-t`,
-    `packet`, `markdown-packet`, `value-nodes`, and `dispatch`.
-  - `radar*.ts`: `format` and `corpus` with `-t radar`; and, without `-t`,
-    `radar`, `markdown-radar`, `value-nodes`, and `dispatch`.
-  - `railroad*.ts`: `format` and `corpus` with `-t railroad`; and, without `-t`,
-    `railroad`, `markdown-railroad`, `value-nodes`, and `dispatch`.
-  - `treemap*.ts`: `format` and `corpus` with `-t treemap`; and, without `-t`,
-    `treemap`, `markdown-treemap`, and `value-nodes`.
-  - `treeview*.ts`: `format` and `corpus` with `-t treeview`; and, without `-t`,
-    `treeview`, `markdown-treeview`, and `value-nodes`.
-  - `usecase*.ts`: `format` and `corpus` with `-t usecase`; and, without `-t`,
-    `usecase`, `markdown-usecase`, `value-nodes`, `dispatch`,
-    `empty-description-blocks`, and `accessibility-revisions`.
-  - `wardley*.ts`: `format` and `corpus` with `-t wardley`; and, without `-t`,
-    `wardley`, `markdown-wardley`, and `value-nodes`.
-  - `error.ts`: `format` with `-t error/`; and, without `-t`, `corpus`,
-    `dispatch`, `failure`, and `markdown`.
-  - `default-size.ts`: the tests of the diagram types that use it, agentflow and
-    eventmodeling.
-  - `statement-rules.ts`: the whole package, since `common-layout.ts` uses it.
-  - `accessibility-lines.ts`: the tests of the diagram types that use it: class,
-    ER, requirement, and state.
-  - `index.ts`, `parser.ts`, `printer.ts`, `root.ts`, `frontmatter-yaml.ts`:
-    `dispatch`, `failure`, `markdown`, `plugin`, and the files of each diagram
-    type.
-  - `tests/db-reading.ts`, `tests/helpers.ts`: every test that imports them.
+  Which test files go with each source file is listed in
+  [references/tests-by-changed-file.md](references/tests-by-changed-file.md).
+  Search it for the name of the changed file: the files of a diagram type start
+  with its name (`flowchart*.ts`), and a shared module, `error.ts`, `index.ts`,
+  and a test helper are named as they are.
 
 - The test that reads documents: `tests/docs.test.ts` reads the rules documents
   (`docs/<diagram>.md`, English and Japanese), the READMEs, and the fixture
@@ -416,8 +333,6 @@ When the machine is under load or the workspace has unrelated failures:
   if it passes, the failure came from the load.
 - Workspace lint or tests may fail in a file outside this package. Do not touch
   files outside this package; say so in the results.
-- Stop a run by its process id. Do not `pkill` by name (that stops other
-  processes with the same name too).
 
 ## 7. Documents
 
@@ -484,38 +399,13 @@ When the machine is under load or the workspace has unrelated failures:
     tree's `comments` in a document node.
   - `embed` returns `null` for nodes it does not handle.
   - `printDocToString` follows `endOfLine`.
-- The Write tool and bash heredocs turn `\uXXXX` into the actual characters.
-  After writing, grep for non-ASCII characters and turn them back into escapes.
-- Do not change tracked files temporarily to check something. Do not put
-  temporary test files in the working tree (a test run picks them up). Put
-  checking scripts in a scratch directory, and import with absolute paths. A
-  script run with Node that imports the plugin's sources gets
-  `@mmd-toolkit/parser` and `@mmd-toolkit/tests` from their builds in `lib/`,
-  unlike the tests, so rebuild them first:
-  `pnpm --filter @mmd-toolkit/parser run build` and
-  `pnpm --filter @mmd-toolkit/tests run build`.
 - Before making a document again from its draft, check that the draft is current
   (that the document has not been edited directly).
 
 ## 10. When mermaid.js is updated
 
-1. Updating the pin of mermaid.js, regenerating the fixtures, and classifying
-   the differences come first, with the tests SKILL. Their results are the
-   input.
-2. Run the regular tests.
-3. Classify the failures:
-   - The Db of a corpus input or fixture differs before and after formatting:
-     mermaid.js's lexing or grammar changed, and the premise of a printer rule
-     (a section of the specification) changed. Fix the specification first (the
-     spec SKILL), then the rule.
-   - The acceptance or the Db of the input before formatting changed: not a
-     printer problem. Write the fixture outputs again and read the diff.
-   - An exception or a non-idempotent output: a missing printer rule.
-4. When a rule changes, write it into the documents as in section 5, and bring
-   the fixtures, the rules document, `docs/compatibility.md`, and the README
-   along.
-5. Check that the sections of the specification and the mermaid.js links that
-   the rules' comments point to still match the new version.
+The steps are in
+[references/updating-mermaid.md](references/updating-mermaid.md).
 
 ## 11. Jison diagrams and Langium diagrams
 
@@ -545,21 +435,8 @@ When the machine is under load or the workspace has unrelated failures:
 
 ## 12. mmdfmt
 
-- The tool calls Prettier with the plugin on the text of each diagram, finds the
-  code blocks of Markdown with Prettier's Markdown parser
-  (`prettier/plugins/markdown`), and replaces only their content lines
-  (`src/markdown.ts`). A syntax error's message and offset are read from the
-  parser's error kept as its `cause` (`src/diagram.ts`).
-- The info strings it formats (`diagramLanguages` in `src/markdown.ts`) are the
-  `aliases` of the plugin's language. A change to the plugin's `languages`, to
-  its handling of rejected text, or to its options is a change to the tool in
-  the same change.
-- Tests (`tests/*.test.ts`) write their inputs in the test code, so that line
-  endings, a byte order mark, and U+2028 are escapes; the files of a run are
-  written to a temporary directory outside the repository, so that no
-  configuration of the repository applies. `tests/plugin-blocks.test.ts`
-  compares the blocks the tool formats with those Prettier formats with the
-  plugin.
-- Which tests to run: `pnpm vitest run --project mmdfmt` after a change to the
-  tool, and also after a change to the plugin's `index.ts`, `parser.ts`, or
-  `printer.ts`.
+- A change to the plugin's `languages`, to its handling of rejected text, or to
+  its options is a change to the tool in the same change, made with the skill
+  [mmdfmt](../mmdfmt/SKILL.md).
+- After a change to the plugin's `index.ts`, `parser.ts`, or `printer.ts`, also
+  run `pnpm vitest run --project mmdfmt`.

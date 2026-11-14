@@ -46,7 +46,7 @@ Examples of **incorrect** code for this rule:
 gantt
   accDescr {}
   dateFormat YYYY-MM-DD
-  Design :2024-01-06, 3d
+  Design : 2024-01-06, 3d
 ```
 
 <!-- prettier-ignore -->
@@ -55,7 +55,7 @@ gantt
 gantt
   accDescr { }
   dateFormat YYYY-MM-DD
-  Design :2024-01-06, 3d
+  Design : 2024-01-06, 3d
 ```
 
 Examples of **correct** code for this rule:
@@ -76,7 +76,7 @@ gantt
     %% old description
   }
   dateFormat YYYY-MM-DD
-  Design :2024-01-06, 3d
+  Design : 2024-01-06, 3d
 ```
 
 ## Options

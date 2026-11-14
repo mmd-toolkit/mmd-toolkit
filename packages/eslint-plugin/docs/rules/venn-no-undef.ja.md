@@ -43,16 +43,16 @@ mermaid.js は文をエラーなしに受理するが、文字を描かず、ス
 ```mmd
 %% eslint @mmd-toolkit/venn-no-undef: error
 venn-beta
-set A
+  set A
 text Typo A1[Review]
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/venn-no-undef: error
 venn-beta
-set A
-set B
-style A, B fill:red
+  set A
+  set B
+  style A, B fill: red
 ```
 
 この規則に**従う**コードの例:
@@ -60,19 +60,19 @@ style A, B fill:red
 ```mmd
 %% eslint @mmd-toolkit/venn-no-undef: error
 venn-beta
-set A
-set B
-union A, B
+  set A
+  set B
+  union A, B
 text A, B AB1[Shared]
-style A, B fill:red
+  style A, B fill: red
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/venn-no-undef: error
 venn-beta
-set A
+  set A
 text A A1[React]
-style A1 color:red
+  style A1 color: red
 ```
 
 ## オプション

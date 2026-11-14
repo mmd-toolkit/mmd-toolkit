@@ -56,6 +56,9 @@ import {
   findTokensBetween,
   findTriviaBetween,
   isStructural,
+  isWordCharacter,
+  skipRemoved,
+  textRead,
 } from "./source.ts"
 
 /**
@@ -357,7 +360,11 @@ export function layoutClassStatement(
     source.text.slice(start, statement.value.range[0]).includes("\n") &&
     holdsDirection(
       source,
-      { range: statement.range, text: statement.value.value },
+      {
+        range: statement.range,
+        text: statement.value.value,
+        valueStart: statement.value.range[0],
+      },
       { caseSensitive: true },
     )
   const atoms = collectAtoms(
@@ -393,6 +400,9 @@ export function layoutClassStatement(
     }
     normalizeStyleList(source, atoms, statement, {
       joinsStyles,
+      labelStyleNames:
+        statement.type === "ClassStyleStatement" ? ["color", "text-align"] : [],
+      labelStyleGaps: "none",
       collapsesWordGaps: true,
     })
   }
@@ -540,6 +550,36 @@ function findMemberStretches(source: Source, statement: Node): Atom[] {
 }
 
 /**
+ * The visibility mark and the gap after it that starts with a tab, as one
+ * stretch. A version that counts reads the tab after the mark of an attribute as
+ * part of the name, as it reads a space, while the others trim it, so neither
+ * dropping the tab nor printing a space draws the same, and the stretch is
+ * printed with the tab. Every version that counts ignores the tab after the
+ * mark of a method, so the stretch is the mark alone. A gap that starts with a
+ * space is read as a space by all of them, and the general rule prints it
+ * (docs/class.md, Member lines; docs/compatibility.md, Forms kept for versions
+ * of mermaid.js that count).
+ */
+function findTabAfterVisibility(
+  source: Source,
+  member: ClassMethod | ClassAttribute,
+  values: readonly Node[],
+): Atom | undefined {
+  const first = values.find((value) => value.range[0] >= member.range[0])
+  if (first === undefined) return undefined
+  const mark = source.text[member.range[0]]
+  if (mark !== "+" && mark !== "-" && mark !== "#" && mark !== "~")
+    return undefined
+  const gap = source.text.slice(member.range[0] + 1, first.range[0])
+  if (!gap.startsWith("\t")) return undefined
+  return {
+    start: member.range[0],
+    end: first.range[0],
+    doc: member.type === "ClassMethod" ? mark : `${mark}\t`,
+  }
+}
+
+/**
  * Member fields already exclude harmless exterior padding. Keep their contents
  * and, in a method, its classifier tail and return type, formatting only the
  * gaps around the AST fields: the classifier of an attribute touches its text
@@ -563,7 +603,14 @@ export function printClassMember(
   )
     return undefined
   const values = collectValueNodes(member, classValueNodeTypes)
-  const atoms = collectAtoms(source, start, end, values, [])
+  const markGap = findTabAfterVisibility(source, member, values)
+  const atoms = collectAtoms(
+    source,
+    start,
+    end,
+    values,
+    markGap === undefined ? [] : [markGap],
+  )
   const rules = new Map<number, GapRule>()
   for (const atom of atoms.slice(1))
     rules.set(
@@ -908,27 +955,12 @@ function spaceAfterName(
   name: ClassName,
   token: number,
 ): GapRule {
-  if (token !== name.range[1]) return "space"
-  const text = source.text.slice(...name.range)
+  if (token !== skipRemoved(source, name.range[1])) return "space"
+  const text = textRead(source, ...name.range)
   const before = text.at(-"call".length - 1)
   const endsWithCall =
     text.endsWith("call") && (before === undefined || !isWordCharacter(before))
   return endsWithCall ? "none" : "space"
-}
-
-/**
- * Whether a character is one of those that the lexer reads as a word, which
- * `call` does not start inside of: an ASCII letter, an ASCII digit, or `_`
- * (diagrams/class.md, The shared rules, rule 12). After any other character,
- * a `-`, a `.`, a letter that is not ASCII, or whitespace, a unit starts.
- */
-function isWordCharacter(character: string): boolean {
-  return (
-    (character >= "a" && character <= "z") ||
-    (character >= "A" && character <= "Z") ||
-    (character >= "0" && character <= "9") ||
-    character === "_"
-  )
 }
 
 /**

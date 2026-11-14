@@ -6,10 +6,15 @@ description:
   fixtures). Use when a rule has been decided with the rule-ideas skill and is
   to be implemented, when the condition, the messages, the fixes, or the
   suggestions of a rule change, and when the tests or the fixtures of a rule are
-  added. The documents of the rules are in the eslint-plugin skill.
+  added. The documents of the rules are in the eslint-plugin skill. Use it
+  together with the eslint-plugin skill.
 ---
 
 # 規則の実装（eslint-plugin-rules）
+
+SKILL [eslint-plugin](../eslint-plugin/SKILL.ja.md#方針と基準)
+の「方針と基準」の節は、この手順にも当たる。
+先に読む。
 
 `@mmd-toolkit/eslint-plugin` の規則を実装、変更、削除する手順。
 規則が報告するものが、固定した mermaid.js についての事実であり、規則が、
@@ -20,17 +25,21 @@ description:
 ## 1. 最初に読むもの
 
 1. 規則についての決定。
-   rule-ideas の SKILL （`.claude/skills/rule-ideas/SKILL.md`）で決まる。
+   rule-ideas の SKILL （`.claude/skills/rule-ideas/SKILL.md`）で決まり、
+   fix と提案については rule-ideas-suggestions の SKILL
+   （`.claude/skills/rule-ideas-suggestions/SKILL.md`）で決まる。
    規則を持つこと、名前と範囲、`recommended` で有効にするか、fix を持つか、
    提案を持つか。
    実装してみて、決定が成り立たないと分かったら（条件が木から読めない、
    fix や提案が確かめられない、など）、その根拠を持って決定に戻る。
 2. テストが読む例を持つ、規則の英語の文書。
-3. SKILL `eslint-plugin` の「方針と基準」の節と、SKILL `conventions`。
+3. SKILL `eslint-plugin`
+   の「[方針と基準](../eslint-plugin/SKILL.ja.md#方針と基準)」の節と、
+   SKILL `conventions`。
    前者は `.claude/skills/eslint-plugin/SKILL.md` にある。
 4. 木の定義: `packages/spec/docs/ast.md` と `packages/spec/docs/ast/<図種>.md`。
-5. `packages/eslint-plugin/docs/development.md` の Writing a rule、
-   The fixtures of the rules、Snapshots、Rules and their documents。
+5. `packages/eslint-plugin/docs/development.md` の「規則の書き方」、
+   「規則の fixture」、「スナップショット」、「規則と文書」の節。
 
 ## 2. 規則とは独立に、事実を確かめる
 
@@ -44,11 +53,16 @@ description:
   渡された値を記録する。
 - 規則の主張ごとに、その主張が分ける場合ごとの入力で確かめる。
   主張は、報告する条件、しない条件、メッセージ、fix、提案である。
-  規則の文書と、rule-ideas の SKILL の 7 節にあるその規則の記録の文ごとに、
-  その文が分ける場合（誤りがどの文の中にあるか、行のどこか、
-  隣に区切りや空白があるか、どの文脈の中か）と、
-  その文が名指す場所で出会う言語の規則（ディレクティブ、無視される `;`、
-  コメントの行、空の行、行区切り、空の説明ブロック）を挙げる。
+  規則の文書と、
+  rule-ideas の SKILL の
+  [`.claude/skills/rule-ideas/references/recommended-decisions.ja.md`](../rule-ideas/references/recommended-decisions.ja.md)
+  にある、
+  [7 節](../rule-ideas/SKILL.ja.md#7-recommended-に入れるか)
+  のその規則の記録の文ごとに、その文が分ける場合（誤りがどの文の中にあるか、
+  行のどこか、隣に区切りや空白があるか、どの文脈の中か）と、
+  その文が名指す場所で出会う言語の規則を挙げる。
+  出会う規則は、
+  [AGENTS.md の「行動原則」](../../../AGENTS.ja.md#行動原則) が挙げるもの。
   場合ごとに、規則の fixture である入力を 1 つ与え、場合の名前を付ける。
   各入力で mermaid.js を 1 回動かし、規則の報告を、
   その振る舞いと両方向で比べる。
@@ -62,16 +76,12 @@ description:
   名指す文の前にある入力と後ろにある入力が要る。
   それぞれを mermaid.js で確かめる。
 - mermaid.js を動かす、テキストを parse するスクリプトは、
-  rule-ideas の SKILL の 4 節にある。
+  rule-ideas の SKILL の
+  [references/probe-scripts.ja.md](../rule-ideas/references/probe-scripts.ja.md)
+  にある。
   下のスクリプトは、テストと同じように 1 つの規則でテキストを lint し、
   fix と提案をそれぞれ当てる。
-  それらのスクリプトと同じく、
-  `<repo>` はリポジトリのルートの絶対パスに置き換える。
-  スクリプトはリポジトリの外に置き、`node <ファイル>` で動かす。
-  `tsx` は使わない。
-  mermaid.js の呼び出しは直列で遅い。
-  長くかかる確かめはバックグラウンドで動かし、出力をファイルに書き、
-  一部ではなく、件数を読む。
+  準備と動かし方は、その文書のとおりにする。
 
   ```ts
   import { Linter } from "<repo>/packages/eslint-plugin/node_modules/eslint/lib/api.js"
@@ -102,9 +112,9 @@ description:
 
 ## 3. 規則を書く
 
-- `docs/development.md` の Writing a rule に従う。
-  規則の採否、範囲、`recommended`、fix を持つか、
-  提案を持つかは rule-ideas の SKILL から来る。
+- `docs/development.md` の「規則の書き方」の節に従う。
+  規則の採否、範囲、`recommended` は rule-ideas の SKILL から来て、
+  fix を持つか、提案を持つかは rule-ideas-suggestions の SKILL から来る。
 - fix と提案は、それぞれ `create` から分けた関数で組み立てる。
   fix は、編集できる場所でだけ出す。
   ほかでは、報告は fix を持たない。
@@ -116,8 +126,10 @@ description:
   提案のメッセージは、提案を出すすべての場合に、当てた後に真であることを言う。
   その読み方は、2 節のとおり、規則とは独立に確かめる。
   規則のテストは mermaid.js を動かさない。
-  候補の条件が、rule-ideas の記録（8 節）が与える文で書けないときは、
-  その候補を rule-ideas に戻す。
+  候補の条件が、
+  スキル [rule-ideas-suggestions](../rule-ideas-suggestions/SKILL.ja.md) と
+  [`.claude/skills/rule-ideas-suggestions/references/suggestion-decisions.ja.md`](../rule-ideas-suggestions/references/suggestion-decisions.ja.md)
+  の記録が与える文で書けないときは、その候補を rule-ideas に戻す。
   提案を出さないことは、普通の結論である。
   条件や確かめを足して候補を守ってはならず、結果を parse したり、
   既知の相違ごとに判定したりしてもならない。
@@ -177,7 +189,7 @@ description:
   それらの文字はエスケープする。
   CR は `\r` と書き、CRLF は `\r` の後に実際の改行を置く。
   U+2028、U+2029、U+00A0 は `\u2028`、`\u2029`、`\u00a0` と書く。
-  CR 以外の改行は、実際の改行で書く。
+  それ以外の改行は、実際の改行で書く。
   タブと行末の空白は、`\t` と `\u0020` で書いてよい。
   そう書くと、ケースが対象にする空白がコードの中で見える。
   `errors` に期待する報告を書き、fix と各提案の出力は全文を指定する。
@@ -191,7 +203,8 @@ description:
 
 ### 回すテスト
 
-SKILL `conventions` の決まり（テストの実行）に従う。
+SKILL `conventions`
+の決まり（[テストの実行](../conventions/SKILL.ja.md#テストの実行)）に従う。
 作業の途中は、
 変更が影響しうるテストのファイルだけを回し（`packages/eslint-plugin` で
 `npx vitest run <ファイル>`）、全体は、作業の完了を報告する前に 1 回だけ回す。
@@ -241,10 +254,6 @@ SKILL `conventions` の決まり（テストの実行）に従う。
     `npx eslint packages/eslint-plugin` （パッケージの中で動かす ESLint は、
     ルートの設定を読まない）、`pnpm run lint:docs`、`pnpm run lint:chars`、
     `pnpm run format:check`、`npx tsc --noEmit`。
-- コミットも push も、
-  ステージの変更もしない（`git mv` と `git rm` はステージを変える）。
-  `rm` と `mv` をそのまま使う。
-  作業用のファイルはリポジトリの外に置く。
 
 ## 6. 報告
 

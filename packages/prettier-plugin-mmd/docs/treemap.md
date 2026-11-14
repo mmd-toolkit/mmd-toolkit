@@ -13,8 +13,9 @@ from mermaid.js.
 ### Header
 
 Put the header at column one and an ordinary first statement on the next line,
-making the heading easy to find. Preserve the authored `treemap` or
-`treemap-beta` keyword rather than choosing between Db-equivalent aliases (see
+making the heading easy to find. The keyword is printed `treemap`, also where it
+was written `treemap-beta`: every version of mermaid.js that counts and has the
+diagram reads both names and draws them the same (see
 [The names of a header](./compatibility.md#the-names-of-a-header)). Add no
 colon; an empty body stays empty.
 
@@ -46,6 +47,8 @@ parents. Print ordinary roots one configured step in and children one step
 deeper than their parent; common statements and class definitions use one body
 step. This chooses consistent depths from equivalent widths. Use at least one
 character per step at tabWidth zero because indentation determines parentage. A
+title or an accessibility statement that was not written indented is the
+exception and is printed at the start of its line (see [Title](#title)). A
 styleless, unterminated class definition touching a row keeps that contact; in
 such a diagram every root uses baseline zero, so later roots cannot become
 children accidentally.
@@ -199,8 +202,14 @@ treemap
 
 Keep the leaf’s authored colon or comma, with no ordinary space before and one
 after. This gives equivalent padding a consistent form without changing
-punctuation. Commas inside NumericLiteral spans, including trailing commas,
-remain part of the number. Trivia-bearing gaps keep their contact.
+punctuation. Each line adds a leaf, so the colon is not the colon of a key, and
+the examples in the documentation of mermaid.js decide the whitespace before it
+(step 3 of [Which kind a colon is](./printed-form.md#which-kind-a-colon-is)): of
+the examples that write a space after the colon, 35 write no space before it and
+none writes one (counted as under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)).
+Commas inside NumericLiteral spans, including trailing commas, remain part of
+the number. Trivia-bearing gaps keep their contact.
 
 [fixture: treemap/separators/colon]
 
@@ -446,6 +455,38 @@ treemap
   classDef zz color:red , fill:blue,stroke:rgb(1\,2\,3),
 ```
 
+### Colors
+
+A color in the style of a `classDef` is printed in lower case, as in most of the
+other diagram types, but not in a class diagram (see
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)):
+`classDef zz fill:#ABCDEF` is printed `classDef zz fill: #abcdef`. The versions
+that count draw `#ABCDEF` and `#abcdef` the same. A `#` that is no color, such
+as the `#ABC` of `url(#ABC)`, stays as written. [fixture:
+colors/colors-in-lower-case]
+
+Input
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/treemap/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+treemap-beta
+"A"
+  "B": 1:::zz
+classDef zz fill:#ABCDEF,stroke:#DEF,color:#C0FFEE
+classDef yy color:#333,fill:url(#ABC)
+```
+
+Output
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/treemap/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+treemap
+  "A"
+    "B": 1:::zz
+  classDef zz fill: #abcdef, stroke: #def, color: #c0ffee
+  classDef yy color: #333, fill: url(#ABC)
+```
+
 ### Semicolons
 
 A `;` that ends a `classDef` statement with a style, at the end of its line, is
@@ -481,9 +522,15 @@ the `;` that is a unit of the statement, with or without whitespace between,
 [fixture: semicolons/class-terminator-directive-kept] when it is part of the
 style, as in `classDef zz fill: #f00;`, where `#f00;` is an entity, [fixture:
 semicolons/class-terminator-entity-kept] and when another `;` is beside it.
-[fixture: semicolons/class-terminator-beside-semicolon-kept] A directive before
-a `;` that the line rule ignores stays and the `;` is dropped, as in the other
-diagram types. [fixture: semicolons/class-terminator-hash-directive-dropped]
+[fixture: semicolons/class-terminator-beside-semicolon-kept] It stays too after
+a U+2028 or U+2029 and then a comment line: the character is no whitespace of
+the line rule and the comment line is removed, so dropping the `;` and the
+character would change what mermaid.js draws, and the line is printed as
+written. [test:
+treemap/semicolons/class-terminator-after-separator-and-comment-kept] A
+directive before a `;` that the line rule ignores stays and the `;` is dropped,
+as in the other diagram types. [fixture:
+semicolons/class-terminator-hash-directive-dropped]
 
 Where the `;` that ends the statement stays, the whitespace after it is the run
 that indents the next statement: the whitespace between the `;` and a comment or
@@ -585,10 +632,47 @@ boundaries. The directives that end a title are printed with one space before
 each that has whitespace before it, and the whitespace after the last one is
 left out, whatever the whitespace at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-[fixture: title/title-directives-end-blanks-dropped]
+[fixture: title/title-directives-end-blanks-dropped] A `title` with no text,
+written with whitespace before a directive or a comment on its line, is printed
+with one space before the first of them, whether the whitespace is one character
+or more, a tab, or, before a directive, a space and a U+2028 or U+2029 (a title
+of whitespace only is a bare `title`), and with none where nothing is written
+between the keyword and the directive: `title`, a space, and `%%{init: {}}%%` is
+printed as it is, and `title`, three spaces, and `%%{init: {}}%%` as the first.
+A U+2028 or U+2029 before a comment that joins the next line (`title`, two
+spaces, the character, and `%% c`, with a row after it) keeps the line as
+written, as the comment starts after the character. The one whitespace character
+after the keyword is part of the keyword to mermaid.js, so a title with no text
+ends at its keyword, and that character is a gap of the line like the whitespace
+after a title with text; the second formatting finds the form of the first.
+[fixture: title/bare-title-directive-one-space] [fixture:
+title/bare-title-directive-spaces] [fixture: title/bare-title-directive-tab]
+[fixture: title/bare-title-directive-touching] [fixture:
+title/bare-title-comment-spaces] [fixture:
+title/bare-title-unclosed-directive-spaces] [test:
+treemap/title/bare-title-directive-space-and-line-separator] [test:
+treemap/title/bare-title-directive-space-and-paragraph-separator] [test:
+treemap/title/bare-title-directive-spaces-and-line-separator] [test:
+treemap/title/bare-title-comment-after-line-separator-kept]
 
 A comment line after an empty title aligns with the next statement without
 becoming the title's value. [fixture: treemap/title/empty-next-comment]
+
+A title that was not written indented is printed at the start of its line, and
+the rows below it stay one step in: one that starts its line stays there, and
+one that follows the header on its line (`treemaptitle T`) goes to the start of
+the next line. The first version with the diagram rejects a title, an
+`accTitle`, and an `accDescr` that is indented, while the later versions read
+the same statement at the start of its line and one step in and draw both the
+same, so printing it one step in would give a text that the first version
+rejects (see
+[Treemap parentage and authored values](./compatibility.md#treemap-parentage-and-authored-values)
+and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A comment line before such a title aligns with it. A title that is indented in
+the source is printed one step in, like the other statements, since the first
+version rejects it as written too. [fixture: treemap/header/common] [fixture:
+treemap/title/after-header-spaced-line-start]
 
 [fixture: treemap/title/padding]
 
@@ -600,6 +684,16 @@ becoming the title's value. [fixture: treemap/title/empty-next-comment]
 
 [fixture: treemap/title/quotes]
 
+[fixture: treemap/title/line-start-kept]
+
+[fixture: treemap/title/line-start-after-row-kept]
+
+[fixture: treemap/title/line-start-tab-rows-kept]
+
+[fixture: treemap/title/line-start-comment-aligned]
+
+[fixture: treemap/title/indented-at-body-step]
+
 Input (escaped): `"treemap\ntitle\t  Topic  words \t\n\"AfterTitle\":3"`.
 
 Output
@@ -607,7 +701,7 @@ Output
 
 ```mmd
 treemap
-  title Topic words
+title Topic words
   "AfterTitle": 3
 ```
 
@@ -623,6 +717,10 @@ the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
+An `accTitle` or `accDescr` statement is placed like a title: it is printed at
+the start of its line unless it was written indented, in which case it is
+printed one step in (see [Title](#title)).
+
 [fixture: treemap/accessibility-lines/title-padding]
 
 [fixture: treemap/accessibility-lines/description-padding]
@@ -632,6 +730,16 @@ the last one is left out (see
 [fixture: treemap/accessibility-lines/description-empty]
 
 [fixture: treemap/accessibility-lines/colon-braces]
+
+[fixture: treemap/accessibility-lines/title-line-start-kept]
+
+[fixture: treemap/accessibility-lines/description-line-start-kept]
+
+[fixture: treemap/accessibility-lines/title-indented-at-body-step]
+
+[fixture: treemap/accessibility-lines/description-indented-at-body-step]
+
+[fixture: treemap/accessibility-lines/title-glued-after-header]
 
 [fixture: treemap/accessibility-lines/trivia]
 
@@ -644,7 +752,7 @@ Output
 
 ```mmd
 treemap
-  accTitle: Access  words
+accTitle: Access  words
 ```
 
 ### Description blocks
@@ -659,7 +767,9 @@ boundaries, and align body lines one step inside the statement while retaining
 internal blank lines. Mermaid discards indentation after LF from the
 description. The body uses the configured indentation, including tabs and the
 positive minimum step at width zero. Align a separate opener or closer with its
-statement. The first `}` still closes the block.
+statement. The first `}` still closes the block. A block that was not written
+indented is printed at the start of its line, with its body one step inside it
+(see [Title](#title)).
 
 [fixture: treemap/description-blocks/empty]
 
@@ -685,6 +795,12 @@ statement. The first `}` still closes the block.
 
 [fixture: treemap/description-blocks/opener-directive]
 
+[fixture: treemap/description-blocks/line-start-kept]
+
+[fixture: treemap/description-blocks/indented-at-body-step]
+
+[fixture: treemap/description-blocks/spaced-after-header-line-start]
+
 [corpus fixture: treemap/common-block-first-close]
 
 [test: treemap/description-blocks/unicode-empty]
@@ -699,11 +815,11 @@ Output
 
 ```mmd
 treemap
-  accDescr {
-    first
+accDescr {
+  first
 
-    second
-  }
+  second
+}
   "AfterDescription": 3
 ```
 
@@ -849,6 +965,19 @@ remaining configured indentation before the first directive. Earlier-line
 carried units move once instead. Keep necessary class keyword/name whitespace
 and never use a directive as its substitute.
 
+A directive that is not closed takes the whitespace after its argument, line
+breaks included, so the next row goes on its line (see
+[A line that a directive that is not closed joins](./compatibility.md#a-line-that-a-directive-that-is-not-closed-joins)),
+and the rows on that line are read from the indentation before the first of
+them. `"A" %%{x: w`, a line break, and `  "B": 1` make `B` a child of `A`, and
+with `A` indented by two spaces `B` is its sibling. A body with such a line is
+printed as written, as it is for a kept line that constrains a row boundary (see
+[Semicolons](#semicolons)). The same holds for two rows on one line with a
+directive that is not closed between them, since the directive takes the
+whitespace after its argument, which is the indentation of the second row.
+[fixture: treemap/directives/unclosed-directive-joins-rows-kept] [fixture:
+treemap/directives/unclosed-directive-between-rows-kept]
+
 With useTabs, the retained gaps and the supplied indentation are all printed as
 tabs: the whitespace on both sides of the directive is one indentation unit, in
 which each character counts once whatever its kind (see [Tabs](#tabs)).
@@ -890,7 +1019,7 @@ treemap
 Use shared root placement for ordinary pre-header comments, directives and blank
 lines. Preserve a detection second-scan single-line percent form as its Comment,
 with its inner Root directive printed once. There is no native hidden YAML form
-to promote into frontmatter; unreadable retained YAML remains rejected.
+to promote into frontmatter; retained YAML that cannot be read remains rejected.
 
 [fixture: treemap/prefix/comment]
 
@@ -1059,8 +1188,8 @@ treemap
     "Left": 1
   classDef zz color: red
   classDef zz fill: blue
-  title Earlier
-  title
+title Earlier
+title
 ```
 
 ### Final newline

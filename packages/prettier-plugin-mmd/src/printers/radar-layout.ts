@@ -119,6 +119,15 @@ export function layoutRadarStatement(
         break
       }
       const atoms = collectAtoms(source, start, end, values, [])
+      // The braces of the curves with named entries hold one space inside; the
+      // braces of the curves with values only are tight (docs/radar.md, Curve
+      // braces).
+      const namedCurves =
+        statement.type === "RadarCurveStatement"
+          ? statement.curves.filter(
+              (curve) => curve.entries[0]?.type === "RadarNamedEntry",
+            )
+          : []
       const rules = new Map<number, GapRule>()
       const outdented = new Set<number>()
       const joinedBefore = new Set<number>()
@@ -128,10 +137,17 @@ export function layoutRadarStatement(
         if (previous === undefined) continue
         const token = findTokenStartingAt(source, atom.start)
         const before = findTokenStartingAt(source, previous.start)
+        const holdsNamedEntries =
+          (before?.value === "{" || token?.value === "}") &&
+          namedCurves.some(
+            (curve) =>
+              curve.range[0] <= atom.start && atom.start < curve.range[1],
+          )
         const touches =
-          token?.type === "Punctuator" ||
-          before?.value === "[" ||
-          before?.value === "{"
+          (token?.type === "Punctuator" ||
+            before?.value === "[" ||
+            before?.value === "{") &&
+          !holdsNamedEntries
         rules.set(atom.start, touches ? "none" : "space")
         if (token?.value === "}") outdented.add(atom.start)
         // Plain entry newlines join only in a statement without trivia, so

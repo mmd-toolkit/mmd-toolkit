@@ -92,7 +92,7 @@ requirementDiagram
 
 ### 本体
 
-trivia を挟んで見出しが続く場合、開始括弧のある行を最初のキーワードにそろえ、
+注釈類を挟んで見出しが続く場合、開始括弧のある行を最初のキーワードにそろえ、
 本文がさらに 1 段深く見えるようにします。
 その行をまたぐ値や保護された原文の境界は変えません。
 [fixture: bodies/header-completion-after-comment]
@@ -182,7 +182,10 @@ requirementDiagram
 
 フィールドは 1 行に、キーワード、キーワードに接する `:`、
 空白 1 つの後に値を置きます。
-mermaid.js の文書がフィールドをそう書き、journey も値の前に空白 1 つを置きます。
+このコロンはキーのコロンで、行がフィールドに値を 1 つ与えます。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
+の手順 2 を参照してください。
 コメントかディレクティブがあれば改行を残し、
 構造の続きの行と間の注釈をフィールドより 1 段深く置きます。
 [fixture: fields/comment-and-directive-continuations]
@@ -388,9 +391,9 @@ ER 図の関係文も単位の間は空白 1 つです。
 空白の後で改行して複数行に書かれた関係文は、
 コメントやディレクティブが結合を妨げる場合を除き、1 行にします。
 結合しない場合は、
-後続の構造部分と独立した trivia を関係文の内側に 1 段字下げします。
+後続の構造部分と独立した注釈類を関係文の内側に 1 段字下げします。
 関係文を続ける空白の連続は LF より前から始まる必要があるため、
-各 gap の最初の行の末尾を保ちます。
+各隙間の最初の行の末尾を保ちます。
 複数行のディレクティブ全体と名前の内部も保ちます。
 [fixture: relationship-spacing/over-lines-joined]
 [fixture: relationship-spacing/comment-continuation-with-multiline-names]
@@ -445,9 +448,10 @@ requirementDiagram
 ### クラスの並び
 
 requirement、element、名前とクラスだけの文で、`:::` の後に書くクラスは、
-`:::` に接し、クラスを区切る `,` は両側のクラスに接します。
-`requirement r ::: a , b {` は `requirement r:::a,b {` と印字します。
-これは ER 図のクラスと同じで、mermaid.js の文書の書き方でもあります。
+最初のクラスは `:::` に接し、クラスを区切る `,` は前のクラスに接して、
+後ろに空白を 1 つ置きます。
+`requirement r ::: a , b {` は `requirement r:::a, b {` と印字します。
+これは ER 図のクラスと同じです。
 [fixture: class-lists/in-requirement-and-element]
 [fixture: class-lists/shorthand]
 クラスは、文字列か、語の間に空白を持てる引用符のない文字列です。
@@ -475,12 +479,12 @@ requirement s:::a,b,c {
 
 ```mmd
 requirementDiagram
-  requirement r:::a,b {
+  requirement r:::a, b {
     id: 1
   }
   element e:::c {
   }
-  requirement s:::a,b,c {
+  requirement s:::a, b, c {
   }
 ```
 
@@ -499,14 +503,16 @@ r ::: "d"
 
 ```mmd
 requirementDiagram
-  requirement r:::"a b",c {
+  requirement r:::"a b", c {
   }
   r:::"d"
 ```
 
 ### スタイルとクラス
 
-名前とクラスのリストでは、名前に接する comma を使います。
+名前とクラスのリストでは、
+前の名前に接して後ろに空白を 1 つ置く comma を使います。
+Prettier のコンマの印字と同じ形で、mermaid.js が一覧を同じに読むからです。
 `class` の 2 つのリストは、空白 1 つで区切ります。
 style の文脈が LF で終わる場合、文の末尾の空白は落とします。
 最初のスタイルは空白 1 つの後に置きます。
@@ -531,7 +537,7 @@ Mermaid は、区切る空白にかかわらずスタイルの単位をつなげ
 `style r :  red   x` は `style r : red x` と印字します。
 [fixture: styles-and-classes/style-colon-first-run-spaced]
 通常はつなげる見出しや外側の改行があっても、最初の整形で同じ間隔にします。
-スタイル内部の改行区切り、所有する trivia、
+スタイル内部の改行区切り、所有する注釈類、
 同じ物理行に保持するセミコロンがある場合は、既存のスタイルの配置を保ちます。
 キーワード `style` と `classDef` は、書かれた大文字小文字を保ちます。
 （[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード)）。
@@ -561,8 +567,8 @@ Mermaid は、区切る空白にかかわらずスタイルの単位をつなげ
 
 `class` 文は、途中で改行して続けられます。
 改行の前の名前は style の文脈で読まれ、
-引用符のない名前は `style-word` です（diagrams/requirement.md、
-The style context、規則 1）。
+引用符のない名前は `style-word` です（diagrams/requirement.md、スタイルの文脈、
+規則 1）。
 改行の後の名前は文の文脈で読まれ、
 引用符のない名前は空白やほかの文字を含められます。
 最初の改行の後の名前がすべて、
@@ -593,7 +599,7 @@ classDef "d" fill:red
 
 ```mmd
 requirementDiagram
-  classDef a,b,c fill: red
+  classDef a, b, c fill: red
   classDef default fill: #f9f, stroke-width: 4px
   classDef d fill: red
 ```
@@ -647,9 +653,9 @@ requirementDiagram
     id: 1
   }
   class r c
-  class r c,d
-  class r c,d
-  class r c,d
+  class r c, d
+  class r c, d
+  class r c, d
 ```
 
 入力
@@ -747,8 +753,8 @@ requirementDiagram
 
 requirement の図には文を区切るものがなく、
 mermaid.js は同じ行に続く文を読みます。
-各文は 1 行に 1 つ置きます。
-1 行に 2 つの文があると読みにくく、ほかの図種も 1 行に 1 つの文を印字します。
+1 行に 2 つの文があると読みにくいため、各文は 1 行に 1 つ置きます。
+ほかの図種も 1 行に 1 つの文を印字します。
 `}` の後ろの文、
 ヘッダーの後ろや `}` か文字列で終わる文の後ろの空の説明ブロック、
 `style`・`classDef`・`class` 文の行末の文字列が始める文が、
@@ -1038,7 +1044,7 @@ requirementDiagram
 
 `accDescr { ... }` ブロックの後続の本文行は、文の内側に 1 段字下げし、
 LF 直後の ASCII 空白とタブだけを置き換えます。
-説明の setter がこの字下げを捨てるためです。
+説明の設定関数がこの字下げを捨てるためです。
 改行、行末空白、ディレクティブの内部は保ちます。
 `}` は文と同じ段に置きます。
 [fixture: accessibility-statements/block-lines-kept]
@@ -1057,6 +1063,12 @@ LF 直後の ASCII 空白とタブだけを置き換えます。
 `LR` のどれか（大文字小文字は問わない）があるものは、1 桁目を保ちます。
 行は、ディレクティブとコメント行を除いて字句解析器が読むとおりに判断します。
 [fixture: accessibility-statements/first-column-kept]
+後の行に書かれたテキストは `:` の後ろに寄せるので、`accTitle:`、改行、
+`direction LR` は、`accTitle:` が字下げの後に書かれていた場合も、
+1 桁目の `accTitle: direction LR` として印字します。
+書かれた文はタイトルで、
+字下げした `accTitle: direction LR` は方向の行になるためです。
+[fixture: accessibility-statements/first-column-text-brought-to-the-colon-from-indentation]
 そのような方向を含まない行は、ほかの文と同じに字下げします。
 [fixture: accessibility-statements/first-column-not-needed]
 行全体で判断します。
@@ -1149,7 +1161,7 @@ accDescr: direction RL
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
 文の前後の空行とコメント行は、通常の配置に従います。
 [fixture: semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines]
-空の description block も通常の配置に従い、スタイルの終端は削除します。
+空の説明ブロックも通常の配置に従い、スタイルの終端は削除します。
 [fixture: semicolons-at-the-end-of-a-style-statement/empty-description-block]
 
 行の規則が無視しないセミコロンは、スタイルの文字として残します。
@@ -1343,7 +1355,7 @@ mermaid.js は表のキーワードをどの大文字小文字でも読み、Db 
 [fixture: keyword-case/keywords-one-form] [fixture: keyword-case/types-one-form]
 ヘッダーは、
 小文字の `requirement` で始まるときだけ検出されます（diagrams/requirement.md、
-Detection）。
+図の種類の検出）。
 
 入力
 ([keyword-case/keywords-one-form-input.mmd](../tests/fixtures/requirement/keyword-case/keywords-one-form-input.mmd)):
@@ -1702,6 +1714,13 @@ U+2028 と U+2029 は、requirement の図の単位の間の空白であり、�
 [test: U+2028 between direction and its value]
 [test: U+2028 after the colon of accTitle]
 [test: U+2028 inside an accessibility text]
+すぐ後に U+2028 か U+2029 が続く文字列は、その文字の後のコメントが、
+行を終える改行を取り除く所では、引用符を保ちます。
+その行は次の行と合わせて読まれるので、書かれたまま印字します。
+引用符がないと、名前がその文字を越えて続き、コメントがテキストになるからです。
+[test: U+2028 and a comment after the target in quotes of a relationship, with a statement after the comment]
+[test: U+2028 and a comment after a value in quotes, with a statement after the comment]
+[test: U+2028 and a comment after the class in quotes of a class statement, with a statement after the comment]
 
 ### 空白の文字
 

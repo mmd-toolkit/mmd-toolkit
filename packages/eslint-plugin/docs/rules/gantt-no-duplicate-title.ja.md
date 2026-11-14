@@ -49,7 +49,7 @@ gantt
   title first
   title second
   dateFormat YYYY-MM-DD
-  Design :2024-01-06, 3d
+  Design : 2024-01-06, 3d
 ```
 
 ```mmd
@@ -58,7 +58,7 @@ gantt
   accTitle: first
   accTitle: second
   dateFormat YYYY-MM-DD
-  Design :2024-01-06, 3d
+  Design : 2024-01-06, 3d
 ```
 
 この規則に**従う**コードの例:
@@ -69,7 +69,7 @@ gantt
   title first
   accTitle: second
   dateFormat YYYY-MM-DD
-  Design :2024-01-06, 3d
+  Design : 2024-01-06, 3d
 ```
 
 ```mmd
@@ -78,7 +78,7 @@ gantt
   title first
   title first
   dateFormat YYYY-MM-DD
-  Design :2024-01-06, 3d
+  Design : 2024-01-06, 3d
 ```
 
 ## オプション

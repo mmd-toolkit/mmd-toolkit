@@ -4,8 +4,10 @@ description:
   Write, change, or remove the rule documents of @mmd-toolkit/eslint-plugin
   under packages/eslint-plugin/docs/rules/, and update them when a diagram type
   is added. Use when a rule has been decided and needs its document, when a
-  document must follow a change of the tree or the fixtures, or when a diagram
-  type is supported. Which rules exist is decided with the rule-ideas skill.
+  document must follow a change of the tree, of the fixtures, or of how the
+  formatter prints the examples, when a diagram type is supported, and when a
+  rule is implemented, whose steps are in the eslint-plugin-rules skill. Which
+  rules exist is decided with the rule-ideas skill.
 ---
 
 # 規則の文書の書き方（eslint-plugin）
@@ -48,7 +50,8 @@ fixture で確かめて書く手順。
 ## 1. 最初に読むもの
 
 1. 上の「方針と基準」の節と、
-   rule-ideas の SKILL （`.claude/skills/rule-ideas/SKILL.md`）の基準。
+   rule-ideas の SKILL （`.claude/skills/rule-ideas/SKILL.md`）の
+   [基準](../rule-ideas/SKILL.ja.md#方針と基準)。
    このパッケージが持つ規則と持たない規則、規則を共通にする条件。
 2. SKILL `conventions`（`.claude/skills/conventions/SKILL.md`）。
    英語の文書と日本語の対、見えない文字を書かないこと、
@@ -58,8 +61,7 @@ fixture で確かめて書く手順。
 3. 木の定義: `packages/spec/docs/ast.md` と `packages/spec/docs/ast/<図種>.md`。
    規則の条件は、ここにあるノードの型、欄、トークンの種類で書く。
 4. `packages/eslint-plugin/docs/rules/index.md` と、同じ種類の既存の文書 1 つ。
-5. `packages/eslint-plugin/docs/development.md` の「Rules and their
-   documents」の節。
+5. `packages/eslint-plugin/docs/development.md` の「規則と文書」の節。
    規則のファイル、文書のうちそれから生成する部分、
    コマンド `update` と `check:docs` が書いてある。
 
@@ -94,64 +96,14 @@ SKILL（`.claude/skills/rule-ideas/SKILL.md`）の手順と基準で決める。
 `no-unsafe-negation` や `no-unused-vars` の文書がそうである。
 1 行の説明、短い動機、Rule Details、Options、あるときだけの節が、この順に並ぶ。
 Rule Details は、文の後に、反するコードと従うコードの例を持つ。
-英語の規則の文書:
-
-    # @mmd-toolkit/<name>
-
-    Japanese version: [<name>.ja.md](./<name>.ja.md)
-
-    Disallow ….
-
-    <!-- begin auto-generated rule notice -->
-    …
-    <!-- end auto-generated rule notice -->
-
-    <動機。1 段落>
-
-    ## Rule Details
-
-    <少数の短い文>
-
-    Examples of **incorrect** code for this rule:
-
-    ```mmd
-    %% eslint @mmd-toolkit/<name>: error
-    …
-    ```
-
-    Examples of **correct** code for this rule:
-
-    ```mmd
-    %% eslint @mmd-toolkit/<name>: error
-    …
-    ```
-
-    ## Options
-
-    This rule has no options.
-
-    ## When Not To Use It               （本当に言うことがあるときだけ）
-
-    ## Related Rules                    （関連する規則があるときだけ）
-
-    - [<name>](./<name>.md)
-
-    ## Further Reading                  （リンクがあるときだけ）
-
-    - [<mermaid.js の文書の頁、issue、PR>](<link>)
-
-    ## Resources                        （生成する）
+英語の文書のひな形と、日本語の文書の部分は、
+[references/template.ja.md](references/template.ja.md) にある。
 
 `Japanese version: …` の行は、日本語の文書があるときだけ書く。
 日本語の文書のない英語の文書にはこの行を置かない。
 サイトは、
 ない頁へのリンクで失敗するからである（`pnpm run lint:md`
 がそのリンクを報告する）。
-日本語の規則の文書は同じ部分を持つ。
-`英語版: [<名前>.md](./<名前>.md)`、`…を禁止する。`、`## 規則の詳細`、
-`この規則に**反する**コードの例:`、`この規則に**従う**コードの例:`、
-`この規則にはオプションがない。` を持つ `## オプション`、`## 使わないとき`、
-`## 関連する規則`、`## 参考` である。
 日本語の文書からほかの文書へのリンクは、その日本語版（`.ja.md`）に向ける。
 日本語版がないときは、その英語の文書に向ける（リンク先がないと、
 `pnpm run lint:md` が報告する）。
@@ -201,9 +153,22 @@ Rule Details は、文の後に、反するコードと従うコードの例を�
   サイトの `twoslash-eslint` の診断を有効にする。
   `eslint-check` の fence マーカーは足さない。
   この先頭のコメントがないか違うと、英日とも `check:docs` が失敗する。
-  このコメントより後は、fixture の入力を整形したもの（4 節の手順 4）にする。
+  このコメントより後は、
+  fixture の入力を整形したもの
+  [（4 節の手順 4）](references/checking-before-and-after-writing.ja.md)
+  にする。
   `update` が例をフォーマッターの印字する形にし、`check:docs` は、
   `update` が変える例があると失敗する。
+  その手順には、例とその fixture の比較も書いてある。
+  例にする fixture は、従う例も含めて、`accepted` が true のものだけにする。
+  フォーマッターの印字する形にしない例は、
+  フォーマッターが 1 つの形に印字する書き方（空白、
+  値やキーワードの大文字小文字、引用符、数の書き方）そのものが要点で、
+  わざと書いたまま残す例だけである。
+  そのコードブロックの直前に、英日とも `<!-- prettier-ignore -->` を置き、
+  その理由を述べる文を規則の詳細に置く。
+  fixture のない例や主張には fixture を足し、
+  fixture ができるまで文書の変更は終わらない。
   本文で例を引くときは、コードブロックのとおりに書く。
   フォーマッターが空白を入れるところは、`A-->B` ではなく `A --> B` と書く。
   行を指すときは、数えずに、その行が持つもので指す。
@@ -227,7 +192,9 @@ Rule Details は、文の後に、反するコードと従うコードの例を�
 - 規則の詳細: 例の前に、少数の短い文で、規則を使う人の言葉で書く。
   - 対象の図種を、「この規則は、
     <名前>（<ヘッダー>）に当てる。」の 1 つの形で書く。
-    名前は下の表のものである。
+    名前は
+    [references/diagram-type-names.ja.md](references/diagram-type-names.ja.md)
+    の表のものであり、図種で検索する。
     ヘッダーには、仕様の図種の文書が定めるすべてのヘッダーを、「、」で並べる。
     その文書は `packages/spec/docs/diagrams/<diagram>.md` である。
     「この規則は、フローチャート（`flowchart`、`graph`、`flowchart-elk`、
@@ -238,39 +205,6 @@ Rule Details は、文の後に、反するコードと従うコードの例を�
     ヘッダーは `requirementDiagram` である。
     `flowchart-v2` や `swimlane` のような、ヘッダーでない図種の id は使わない。
     共通の規則は「この規則は、すべての図種に当てる。」と書く。
-
-    | 図種          | 名前                 |
-    | ------------- | -------------------- |
-    | agentflow     | agentflow 図         |
-    | architecture  | アーキテクチャ図     |
-    | block         | ブロック図           |
-    | c4            | C4 図                |
-    | class         | クラス図             |
-    | cynefin       | Cynefin 図           |
-    | er            | ER 図                |
-    | eventmodeling | イベントモデリング図 |
-    | flowchart     | フローチャート       |
-    | gantt         | ガントチャート       |
-    | gitgraph      | Git グラフ           |
-    | journey       | ユーザージャーニー図 |
-    | kanban        | カンバン             |
-    | mindmap       | マインドマップ       |
-    | packet        | パケット図           |
-    | pie           | 円グラフ             |
-    | quadrant      | 象限チャート         |
-    | radar         | レーダーチャート     |
-    | railroad      | レールロード図       |
-    | requirement   | 要求図               |
-    | sankey        | Sankey 図            |
-    | sequence      | シーケンス図         |
-    | state         | 状態図               |
-    | timeline      | タイムライン         |
-    | treemap       | ツリーマップ         |
-    | treeview      | ツリービュー         |
-    | usecase       | ユースケース図       |
-    | venn          | ベン図               |
-    | wardley       | Wardley マップ       |
-    | xychart       | XY チャート          |
 
   - 規則が報告するもの。
   - 報告しない形のうち、規則を使う人が書きうるものと、その理由。
@@ -294,7 +228,8 @@ Rule Details は、文の後に、反するコードと従うコードの例を�
   つまり mermaid.js の文書の頁、issue、PR へのリンクの一覧だけを、
   散文なしで書く。
   mermaid.js のソースの permalink は規則の文書に置かず、
-  rule-ideas の SKILL の規則の記録に置く。
+  規則の記録（`.claude/skills/rule-ideas/references/` と、
+  提案については `.claude/skills/rule-ideas-suggestions/references/`）に置く。
 - どの文をどこに置くか。
   mermaid.js がすることについての文を、次に順に当てる。
   - 規則を使う人が書きうる形の中で、報告するものとしないものを分ける文は、
@@ -304,7 +239,9 @@ Rule Details は、文の後に、反するコードと従うコードの例を�
     頂点より前の文を報告しないこと、数を数として比べること、
     数を mermaid.js が描く上限までで比べること、などである。
   - mermaid.js の文書の頁、issue、PR は、参考にリンクとして置く。
-    ソースの permalink は、rule-ideas の SKILL の規則の記録に置く。
+    ソースの permalink は、
+    規則の記録（`.claude/skills/rule-ideas/references/` と、
+    提案については `.claude/skills/rule-ideas-suggestions/references/`）に置く。
   - ほかは消す。
     報告する形としない形を分けない mermaid.js の仕組みの説明、
     例が示すことの言い直し、規則を使う人が書かない形についての文、
@@ -323,7 +260,8 @@ Rule Details は、文の後に、反するコードと従うコードの例を�
 - 文は短くし、1 段落は 3〜4 文までにする。
 - fixture: 規則のためだけに書く入力は、
   規則の fixture のディレクトリ `tests/fixtures/rules/<名前>/` の `valid/` か
-  `invalid/` の下に置く（SKILL `eslint-plugin-rules` の 4 節）。
+  `invalid/` の下に置く（SKILL `eslint-plugin-rules` の
+  [4 節](../eslint-plugin-rules/SKILL.ja.md#4-テストと-fixture)）。
   fixture のファイルに、
   `pnpm run lint:chars` が調べる文字は入れない（一覧は
   `packages/spec/docs/index.md`）。
@@ -335,75 +273,9 @@ Rule Details は、文の後に、反するコードと従うコードの例を�
 
 ## 4. 書く前と書いた後に確かめること
 
-mermaid.js を動かし、テキストを parse し、整形するスクリプトは、
-rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の 4 節にある。
-リポジトリの外に置き、`node <ファイル>` で動かす。
-入力が多いときは、バックグラウンドで動かし、出力をファイルに書く。
-
-1. mermaid.js の読み方: 各例を `packages/tests/src/mermaid.ts` の
-   `runMermaid(text)` に掛ける。
-   どの例も受理されなければならない（拒否される入力は構文エラーで、
-   規則は報告しない）。
-   Db の値は、文書に書いたとおりでなければならない。
-2. 木での条件: 規則の条件を、ノードの型、欄、トークンの種類と値、範囲で書き、
-   `packages/parser/src/index.ts` の `parse(text)` の結果（`traverseNodes`、
-   `root.tokens`、`root.comments`、`root.directives`）に当てるコードにして、
-   反する例すべてに当たり、従う例のどれにも当たらないことを確かめる。
-   境界の入力も足す。
-   空白の有無、`\n` と `\r\n`、同じ行と次の行、ディレクティブ、コメント行、
-   文字列の中、subgraph の中、`;` で区切った 1 行の複数の文である。
-3. 整形: 反する例をすべて、整形のスクリプトで整形し、
-   出力に mermaid.js の読み方が現れないことを確かめる。
-   フォーマッターがすでに見えるようにするものの規則は、
-   持たないからである（rule-ideas の SKILL の基準）。
-   プラグインが import する `@mmd-toolkit/parser` は、ソースではなく、
-   ビルドした `packages/parser/lib` に解決される。
-   parser のソースが変わっていたら、
-   先に `pnpm --filter @mmd-toolkit/parser run build` で lib を作り直す。
-   作り直さないと、例が古い parser で整形される。
-   反する例それぞれの整形の結果は、作業の結果（9 節）に含める。
-4. 例と fixture: 各例の図の部分は、
-   示したいテキストを入力に持つ `packages/tests/fixtures` の fixture の
-   `input.mmd` を、整形のスクリプト（prettier-plugin-mmd、
-   既定のオプション）で整形した出力から、
-   末尾に行終端子があればそれを除いたものにする。
-   閉じていないディレクティブの中でテキストが終わるときは、
-   出力は行終端子で終わらない。
-   その fixture は、
-   例を mermaid.js がどう読むかを記録している（SKILL `conventions`: Mermaid
-   の例はフォーマッターが印字する形で書く）。
-   フォーマッターが行を書いたまま残すところも、出力のとおりにする。
-   文書の例については、`update` がそれを行う（6 節）。
-   例を fixture の入力のとおりに書いて `update` を実行し、印字された形を読む。
-   例の先頭の ESLint 設定コメントだけを除いて、出力と比べる。
-   公開する例を parser やサイトの表示処理で確かめるときは、コメントも残す。
-   スナップショットのテストヘルパーだけは、このコメントを除く。
-   テスターが同じ規則を `rule-to-test/` の下で有効にするため、
-   `@mmd-toolkit/` の下でも有効にすると、すべての報告が二重になるからである。
-   コメントは公開する例の一部で、コーパスの fixture の一部ではない。
-   足すために fixture を変更しない。
-   例外は、フォーマッターが 1 つの形に印字する書き方（空白、
-   値やキーワードの大文字小文字、引用符、数の書き方）そのものが要点で、
-   わざと書いたまま残す例だけである。
-   そのコードブロックの直前に、英日とも `<!-- prettier-ignore -->` を置き、
-   規則の詳細の文で、その例を書いたまま示していることと、その理由を述べる。
-   理由は、例えば、
-   フォーマッターが空の `accDescr` のブロックを `accDescr {}` と書くので、
-   波括弧の間に空白がある例を残す、というものである。
-   書き方ではなく説明のブロックを示す例は、テキストが 2 行以上のブロックで書く。
-   フォーマッターは、その形をブロックのまま残すので、印は要らない。
-   `check:docs` は、その文も、印がまだ要るかも読まない。
-   確かめるのはレビューである。
-   使う fixture の `expected.json` が文書の主張どおりであることを確かめる。
-   例にする fixture は、従う例も含めて、`accepted` が true のものだけにする。
-   fixture のない例と主張には、SKILL `tests` の手順で fixture を足す。
-   それを示す最小の入力と、その fixture が答える規則の文書の主張を添え、
-   `pnpm run fixtures:add` で足して、
-   mermaid.js
-   の結果を記録する（`packages/tests/docs/maintaining-fixtures.md`）。
-   そのうえで、parser に木を記録する（SKILL `parser`）。
-   その `expected.json` を読み、規則のテストに入れる。
-   文書の変更は、fixture ができるまで終わらない。
+手順は
+[references/checking-before-and-after-writing.ja.md](references/checking-before-and-after-writing.ja.md)
+にある。
 
 ## 5. 書いた後の検査
 
@@ -428,24 +300,15 @@ rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の 4 節にある
    規則の文書の最初の段落も、同じ決まりで書く。
    index は、行の切れ目に依らずにそれを読む。
 5. 相対リンクの先がすべてあること。
-6. 文書だけの変更では、この検査を動かし、
-   テストは回さない（SKILL `conventions` の「テストの実行」）。
-   例外は、テストが読むものを変えたときである。
-   つまり、例（3 節の 2 行の後のコードブロック）か規則のファイルである。
-   そのときは、
-   `tests/rule-cases.test.ts` と規則のテスト `tests/rules/<名前>.test.ts`
-   を回し、最初の段落と生成する部分のために `pnpm run check:docs` を動かす。
-   例が変わるとスナップショットも変わる。
-   `pnpm --filter @mmd-toolkit/eslint-plugin run test:update` で更新し、
-   差分を読む。
-   どの変更にどのテストが対応するかは、
-   SKILL `eslint-plugin-rules` の 4 節にある。
+6. どの変更でどのテストを回し、どの変更では回さないかは、
+   [references/tests-after-writing.ja.md](references/tests-after-writing.ja.md)
+   にある。
 
 ## 6. 規則のファイルと、生成する部分
 
 文書はそれぞれ `src/rules/` の規則のファイルに属する。
-2 つは、`docs/development.md` の「Rules and their documents」の節のとおり、
-一緒に足し、名前を変え、消す。
+2 つは、`docs/development.md` の「規則と文書」の節のとおり、一緒に足し、
+名前を変え、消す。
 
 - 規則のファイルから来るもの: 規則があること、その名前、
   英語の説明（`meta.docs.description`）、
@@ -453,7 +316,11 @@ rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の 4 節にある
   規則を足す、名前を変える、消す、英語の文書の最初の段落を変える、のどれも、
   規則のファイルを変える。
 - 規則のファイルの `recommended` は、
-  rule-ideas の SKILL の 7 節の判定から設定する。
+  rule-ideas の SKILL の
+  [7 節](../rule-ideas/SKILL.ja.md#7-recommended-に入れるか)の判定から設定する。
+  判定は
+  [`.claude/skills/rule-ideas/references/recommended-decisions.ja.md`](../rule-ideas/references/recommended-decisions.ja.md)
+  に記録してある。
   そこの判定がいったんの案なら、先に決め直す。
 - `pnpm --filter @mmd-toolkit/eslint-plugin run update` が書くもの:
   すべての文書の題と告知。
@@ -474,66 +341,27 @@ rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の 4 節にある
   日本語の文書の最初の段落を変えたら、`update` を実行する。
 - フォーマッター（`packages/prettier-plugin-mmd`）が印字する形を変えると、
   例が古くなり、`check:docs` が失敗する。
-  そのときは次の順にする。
-  1. `pnpm --filter @mmd-toolkit/eslint-plugin run update:docs` を実行する。
-     parser を build し、英日の例を書き換える。
-  2. `pnpm --filter @mmd-toolkit/eslint-plugin run test:update` を実行し、
-     スナップショットの差分を読む。
-     もう報告されなくなった反する例と、報告されるようになった従う例は、
-     書いたまま残す（4 節の手順 4）か、例から外す。
-     `<!-- prettier-ignore -->`
-     を付けた例をフォーマッターが同じ形に印字するようになったら、
-     もう残す理由はないので、印とその文を消す。
-  3. 書き換えた文書の本文から、古い形を探す。
-     フォーマッターが変えた行を引いているコードスパンである。
-     英日とも新しい形に書く。
-  4. フォーマッターが、
-     前は変えていた書き方を書かれたまま残すようになった変更では、
-     該当する例を fixture の `input.mmd` から作り直す（4 節の手順 4）。
-     古い印字結果を整形し直しても、fixture のテキストには戻らないからである。
-  5. `pnpm run lint:docs` を実行する。
-     続けて、ドキュメントサイトのテストを実行する。
-     このテストは、build したプラグインで、すべての規則の文書の例を表示する。
-     先に `pnpm --filter @mmd-toolkit/eslint-plugin run build` を実行し、
-     そのあと `pnpm --filter @mmd-toolkit/docs run test` を実行する。
-     `packages/docs/pages/linter` のページの例は手で書くので、
-     それもフォーマッターが印字する形に直す。
+  そのときの手順は、
+  [references/formatter-changes.ja.md](references/formatter-changes.ja.md)
+  にある。
 - index のうち手で書くもの: 生成する一覧より前の部分で、
   `recommended` が ✅ を付けた規則を有効にすると述べる文を持つ冒頭と、
   規則の id の節である。
   `recommended` に入れる基準は、index でなく `docs/development.md` に書く。
-- 文書を消したら、ほかの文書から参照が残っていないことを `grep` で確かめる。
 - 規則は、SKILL `eslint-plugin-rules` で実装する。
-  それは `docs/development.md` の「Writing a rule」の節に従う。
+  それは `docs/development.md` の「規則の書き方」の節に従う。
 
 ## 7. 図種に対応したとき
 
-1. 規則の名前を、`packages/spec/docs/ast/<図種>.md` の名前 `<図種>-` で始める。
-   index の図種の表は、その規則ができると `update` が生成する（6 節）。
-   図種を `tools/rule-docs.ts` の `DIAGRAM_ORDER` に足す。
-   場所は、
-   サイトがサイドバーに使う `packages/docs/.vitepress/documents.js` の
-   `diagramOrder` での位置である。
-   2 つの順序が違うと `tests/rule-docs.test.ts` が失敗し、
-   `DIAGRAM_ORDER` にない図種の規則があると `update` が失敗する。
-2. 共通の規則ごとに、新しい図種の普通の書き方の例を mermaid.js に掛ける。
-   ほかの図種と同じに振る舞い、その規則がその図種について言うことがあるなら、
-   規則の詳細の図種の箇条に 1 項目（そこで起きること）を足し、
-   その fixture を規則のテストに足す。
-   振る舞いが違う、または木の共通の部分の 1 つの定義で扱えなくなったなら、
-   その規則は共通の規則の条件（rule-ideas の SKILL の基準）を満たさない。
-   図種の規則に移すのは規則についての判断なので、
-   先に mermaid.js の結果を根拠に rule-ideas の SKILL で決め、
-   それから文書を移す（8 節）。
-3. その図種の規則の文書は、上の手順で書く。
+手順は
+[references/supporting-a-diagram-type.ja.md](references/supporting-a-diagram-type.ja.md)
+にある。
 
 ## 8. 文書を消す、移す
 
-- `rm` と普通の `mv` を使う。
-  これに git（`git mv`、`git rm`、ステージの変更）を使わない。
-- 文書を移すときは、規則の名前が変わる（6 節）。
-  当たる図種を書いた規則の詳細の文と相対リンクを直し、`update` を実行する。
-  題と index の行は `update` が書く。
+手順は
+[references/removing-or-moving.ja.md](references/removing-or-moving.ja.md)
+にある。
 
 ## 9. 作業の結果
 

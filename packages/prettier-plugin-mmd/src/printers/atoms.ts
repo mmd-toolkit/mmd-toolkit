@@ -219,6 +219,34 @@ export function printAtoms(
         )
       ) {
         if (
+          gap.trailing !== null &&
+          gap.trailing.absentItems?.every((item) => item.isSemicolon) ===
+            true &&
+          gap.lines.length === 0 &&
+          gap.leading === null
+        ) {
+          // A `;` that the line rule ignores before the line break: mermaid.js
+          // reads the line as if it were not there, so the lines join and the
+          // `;` stays against what comes before it, the gap having the rule
+          // that it has without it (see `printAbsentItems`).
+          const absent = printAbsentItems(
+            source,
+            previous.end,
+            atom.start,
+            gap.trailing,
+            layout.rules.get(atom.start),
+          )
+          if (absent !== null) {
+            current.push(absent)
+            previous = atom
+            current.push(
+              atom.doc ?? printAsWritten(source, atom.start, atom.end),
+            )
+            currentEndsWithWhitespace = endsWithSpaceOrTab(text)
+            continue
+          }
+          current = [withTrailing(current, gap.trailing)]
+        } else if (
           gap.trailing !== null ||
           gap.lines.length > 0 ||
           gap.leading !== null

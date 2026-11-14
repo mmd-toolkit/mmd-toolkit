@@ -6,7 +6,7 @@ Filename: venn-no-undef-incorrect-1.mmd
 
 Code:
   1 | venn-beta
-  2 | set A
+  2 |   set A
   3 | text Typo A1[Review]
     |      ^~~~ [1]
   4 |
@@ -20,10 +20,10 @@ Filename: venn-no-undef-incorrect-2.mmd
 
 Code:
   1 | venn-beta
-  2 | set A
-  3 | set B
-  4 | style A, B fill:red
-    |       ^~~~ [1]
+  2 |   set A
+  3 |   set B
+  4 |   style A, B fill: red
+    |         ^~~~ [1]
   5 |
 
 [1] mermaid.js applies no style for these names.

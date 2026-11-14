@@ -11,8 +11,9 @@ limits are in [compatibility.md](./compatibility.md).
 ### Header
 
 Print `architecture-beta` at column one and move an ordinary first statement
-below it, making the heading visible. Keep empty bodies. Hidden boundaries and
-protected header/body segments take precedence; never invent a glued keyword.
+below it, as in the other diagram types. Keep empty bodies. Hidden boundaries
+and protected header/body segments take precedence; never invent a glued
+keyword.
 
 [fixture: architecture/header/header-empty]
 
@@ -78,10 +79,10 @@ architecture-beta
 
 ### Statements one per line
 
-Print ordinary statements one per line for readability. A common line value owns
-apparent keywords through physical EOL, so do not split it. Semicolons are not
-statement separators; invalid adjacent statements and empty descriptions used as
-component gaps remain failures.
+Print ordinary statements one per line, as the other diagram types do. A common
+line value owns apparent keywords through physical EOL, so do not split it.
+Semicolons are not statement separators; invalid adjacent statements and empty
+descriptions used as component gaps remain failures.
 
 [fixture: architecture/statements-one-per-line/line-value-owns-keywords]
 
@@ -302,18 +303,29 @@ the documentation of mermaid.js write it (see
 [The quotes of a text](./compatibility.md#the-quotes-of-a-text)):
 `group api(cloud)["API Group"]` is printed `group api(cloud)[API Group]`, and
 `service s(server)['Plain Single']` is printed
-`service s(server)[Plain Single]`. A label is plain where it is ASCII letters,
-digits, `_`, and spaces, with no space at its ends: the grammars of 11.13.0 to
-11.16.1, which read a label in quotes, read a label without quotes of these
-characters only, so `"a-b"`, `"A.B"`, `"日本語"`, `"a[b"`, the empty label, and
-a label with padding inside the quotes (`[" padded "]`) keep their quotes. So do
-a backslash and a quote: mermaid.js takes one pair of outer quotes, `"` or `'`,
-off the title that it reads, and turns `\"` and `\'` into `"` and `'` only in a
-title that had them, so `"a\"b"` printed `a\"b`, and `"'x'"` printed `'x'`,
-would be read as other titles. A label without quotes is never put in quotes.
-[fixture: quotes/labels-without-quotes] [fixture:
+`service s(server)[Plain Single]`. A label is plain where it holds no bracket,
+quote, backslash, or line break, and has no space at its ends: a label without
+quotes runs to the next `]`, and one that starts and ends with a quote is read
+as a label in quotes, so `"a-b"`, `"A.B"`, and `"日本語"` are printed without
+quotes, while `"a[b"`, the empty label, and a label with padding inside the
+quotes (`[" padded "]`) keep theirs. So do a backslash and a quote: mermaid.js
+takes one pair of outer quotes, `"` or `'`, off the title that it reads, and
+turns `\"` and `\'` into `"` and `'` only in a title that had them, so `"a\"b"`
+printed `a\"b`, and `"'x'"` printed `'x'`, would be read as other titles. A
+label without quotes is never put in quotes. A run of spaces and tabs in a label
+is printed as one space, except where it makes a word of its own: mermaid.js
+draws a label word by word, split at single spaces, so a run of tabs alone, and
+a tab between two spaces, stay (`"A<tab>B"` is printed `A<tab>B`). The words are
+what mermaid.js keeps of the title: it takes the brackets off, trims, takes one
+pair of outer quotes off, and trims again. A quote inside the words, or beside a
+bracket inside them, is a character of a word like any other, so a tab beside it
+stays too (`["A'<tab>B"]` and `["A[<tab>B"]` are printed as written). [fixture:
+quotes/labels-without-quotes] [fixture:
+quotes/labels-with-punctuation-without-quotes] [fixture:
 quotes/labels-that-need-quotes] [fixture:
-quotes/labels-with-runs-without-quotes]
+quotes/labels-with-runs-without-quotes] [fixture:
+quotes/labels-with-tab-words-kept] [fixture:
+quotes/labels-with-quotes-beside-tab-words-kept]
 
 Input
 ([quotes/labels-without-quotes-input.mmd](../tests/fixtures/architecture/quotes/labels-without-quotes-input.mmd)):
@@ -425,8 +437,11 @@ architecture-beta
 ### Port colons
 
 Close ordinary gaps on both sides of each port colon, as `a:R` and `L:b`. The
-colon belongs to its endpoint rather than an aligned field; keep trivia and
-hidden boundaries instead of tightening them.
+colon is a colon inside a name: the side `R` is a part of how the edge names its
+end, the side `R` of the service `a`, so no whitespace stands on either side
+(step 1 of [Which kind a colon is](./printed-form.md#which-kind-a-colon-is)). It
+is no aligned field. Keep trivia and hidden boundaries instead of tightening
+them.
 
 [fixture: architecture/port-colons/port-colons-tight]
 

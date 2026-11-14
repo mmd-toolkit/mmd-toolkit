@@ -19,22 +19,36 @@ import {
   printClosedBlock,
   printDiagramBlock,
 } from "./blocks.ts"
-import { findErKeptLines } from "./er-kept-lines.ts"
+import {
+  findErClassNameGaps,
+  findErKeptLines,
+  isDirectionBroughtToTheColon,
+  isNameWhitespace,
+  followsSplitKeyword,
+} from "./er-kept-lines.ts"
 import {
   classifyErStatement,
   findAttributeBraces,
   findSubgraphHeaderEnd,
   hasAttributeBlock,
+  touchesKeywordWithDash,
   layoutAttribute,
   layoutBlockOpening,
   layoutErStatement,
   layoutSubgraphOpening,
 } from "./er-layout.ts"
 import { expectToken, layoutKeywordHeader, toAsciiLowerCase } from "./layout.ts"
+import { lineEndOf, lineStartOf } from "./kept-lines.ts"
 import { indentationOf, printAsWritten } from "./lines.ts"
 import { narrowPath } from "./paths.ts"
 import type { Source } from "./source.ts"
-import { findTokenEndingBefore, findTokenStartingAt } from "./source.ts"
+import {
+  findTokenEndingBefore,
+  findTokenStartingAt,
+  findTriviaAt,
+  isWhitespace,
+  skipRemoved,
+} from "./source.ts"
 
 /**
  * Prints the body of an ER diagram and the nodes below it, to the end of the
@@ -203,10 +217,42 @@ function printSubgraph(
   return printClosedBlock(
     header,
     block,
-    printedToken(source, closing),
+    [
+      printedToken(source, closing),
+      printAsWritten(source, closing.range[1], printedErEnd(source, statement)),
+    ],
     depth,
     options,
   )
+}
+
+/**
+ * The end of the printed statement, including the whitespace characters that
+ * are no space or tab (`isNameWhitespace`: a U+2028, a U+2029, a U+00A0, and
+ * the others) after the `end` of a subgraph, through the last of them before a
+ * comment or a directive, or no extension where another statement follows on
+ * the line. The block consumes exactly what the closing prints, so a following
+ * written gap cannot print them again. `end` followed by a U+2028 is the
+ * keyword to the pinned lexer, and one name to a version that counts
+ * (docs/er.md, Line separators).
+ */
+function printedErEnd(source: Source, statement: ErStatement): number {
+  const from = statement.range[1]
+  if (statement.type !== "ErSubgraphStatement") return from
+  const lineEnd = lineEndOf(source, from)
+  let end = from
+  for (let position = from; position < lineEnd; position++) {
+    position = skipRemoved(source, position)
+    if (
+      position >= lineEnd ||
+      findTriviaAt(source, position)?.type === "Comment"
+    )
+      break
+    const character = source.text.charAt(position)
+    if (!isWhitespace(character)) return from
+    if (isNameWhitespace(character)) end = position + 1
+  }
+  return end
 }
 
 /**
@@ -274,7 +320,11 @@ function findSubgraphEnd(
 function statementBlockRules(source: Source): BlockRules<ErStatement> {
   return {
     kept: findErKeptLines(source),
-    printedEnd: (statement) => statement.range[1],
+    printedEnd: (statement) => printedErEnd(source, statement),
+    // An ignored `;` after `end` still needs the line's `style` and `:#`
+    // trigger (diagrams/er.md, The statement context; docs/er.md,
+    // Statements one per line).
+    keptClosingJoin: " ",
     holdsStatements: (statement) => {
       const classified = classifyErStatement(statement)
       return (
@@ -283,9 +333,20 @@ function statementBlockRules(source: Source): BlockRules<ErStatement> {
           hasAttributeBlock(source, classified.statement))
       )
     },
+    writtenGapBefore: (statement) =>
+      touchesKeywordWithDash(source, statement.range[0]) ||
+      followsSplitKeyword(source, statement.range[0]) ||
+      findErClassNameGaps(source).has(statement.range[0]),
     isDroppedAtTopLevel: () => false,
     keepsWhitespaceLineAfterComment: false,
     keepsDirectiveLinesUnindented: false,
+    keptIndentationOf: (statement) =>
+      isDirectionBroughtToTheColon(source, statement)
+        ? ""
+        : source.text.slice(
+            lineStartOf(source, statement.range[0]),
+            statement.range[0],
+          ),
   }
 }
 

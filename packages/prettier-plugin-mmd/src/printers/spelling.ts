@@ -1,14 +1,27 @@
 import type { Node, Range, Token } from "@mmd-toolkit/ast"
 import { visitorKeys } from "@mmd-toolkit/parser"
 import type { Atom } from "./atoms.ts"
+import { findArrowLengthRespellings } from "./arrow-length.ts"
 import { findNodes } from "./collections.ts"
 import { findColorRespellings } from "./color-form.ts"
+import { hasSubgraphWithoutOuterLink } from "./flowchart-clusters.ts"
+import { ishikawaLines } from "./ishikawa-layout.ts"
+import { keepsRootOnHeaderLine } from "./ishikawa-kept-lines.ts"
+import { joinsNextLine } from "./kept-lines.ts"
 import { keywordSpellings } from "./keyword-spellings.ts"
-import { childrenOf } from "./layout.ts"
+import { childrenOf, toAsciiLowerCase } from "./layout.ts"
 import { findLinkLabelRespellings } from "./link-label-form.ts"
 import { shortestNumber } from "./number-form.ts"
 import { findQuoteFormRespellings } from "./quote-form.ts"
 import type { Source } from "./source.ts"
+import {
+  findStructuralToken,
+  findTokenStartingAt,
+  isWordCharacter,
+  skipRemovedBeforeLineRule,
+  textRead,
+  textReadBeforeLineRule,
+} from "./source.ts"
 
 /** The text to print in place of the token or node at an offset. */
 export interface Respelling {
@@ -20,15 +33,72 @@ export interface Respelling {
  * The header directions that name the top-to-bottom direction another way, by
  * the diagram type and the direction as written (docs/compatibility.md,
  * Spellings that are drawn the same). The diagram types listed appeared in a
- * version of mermaid.js after 11.10.0, which made `TD` behave as `TB`. The
- * header of a flowchart is not listed: a version before 11.10.0 draws it
- * differently with `TD` than with `TB`.
+ * version of mermaid.js that makes `TD` behave as `TB`. The header of a
+ * flowchart is not listed: some versions that count draw it differently with
+ * `TD` than with `TB` (docs/compatibility.md, Forms kept for versions of
+ * mermaid.js that count).
  */
 const directionSpellings: Readonly<
   Record<string, Readonly<Record<string, string>>>
 > = {
   agentflow: { TD: "TB" },
   swimlane: { TD: "TB" },
+}
+
+/**
+ * The diagram types whose header is printed as this name, in lower case and
+ * without the `-beta` that the header may have: every version that counts and
+ * has the diagram reads and draws the names the same (docs/compatibility.md,
+ * The names of a header).
+ */
+const shortHeaderNames: Readonly<Record<string, string>> = {
+  ishikawa: "ishikawa",
+  treemap: "treemap",
+}
+
+/**
+ * The spelling of the direction of a header: the one that
+ * `directionSpellings` gives, and `TD` for the `TB` of a flowchart without a
+ * subgraph that some version that counts draws in another direction, which
+ * every version that counts draws the same (docs/flowchart.md, Direction).
+ */
+function headerDirectionSpelling(
+  source: Source,
+  type: string,
+  text: string,
+): string | undefined {
+  if (type !== "flowchart-v2" && type !== "flowchart-elk") {
+    return directionSpellings[type]?.[text]
+  }
+  const { body } = source.root
+  return text === "TB" &&
+    body.type === "FlowchartDiagram" &&
+    !hasSubgraphWithoutOuterLink(source, body)
+    ? "TD"
+    : undefined
+}
+
+/**
+ * Whether `-beta`, in any case and followed by no word character, stands at
+ * the offset after the directives and the comment lines that start there,
+ * which mermaid.js removes before it reads the header. The `;` that the line
+ * rule ignores are not removed yet: diagram detection reads the header.
+ */
+function startsWithBetaWord(source: Source, offset: number): boolean {
+  const text = textReadBeforeLineRule(source, offset, source.text.length)
+  if (toAsciiLowerCase(text.slice(0, 5)) !== "-beta") return false
+  return !isWordCharacter(text.charAt(5))
+}
+
+/** Whether the root of an ishikawa diagram stays on the line of the header. */
+function keepsRootOnHeaderLineOf(source: Source): boolean {
+  const { body } = source.root
+  if (body.type !== "IshikawaDiagram") return false
+  const header = findTokenStartingAt(source, body.range[0])
+  return (
+    header !== undefined &&
+    keepsRootOnHeaderLine(source, ishikawaLines(source, body, header.range[1]))
+  )
 }
 
 /**
@@ -60,8 +130,15 @@ const punctuationAliases: Readonly<
   railroadEbnf: { "::=": "=" },
 }
 
-/** The diagram types whose header can be followed by a `:`, which they read as no `:`. */
-const headerColonTypes: ReadonlySet<string> = new Set(["cynefin", "radar"])
+/**
+ * The diagram types whose header can be followed by a `:`, which they read as
+ * no `:` (a gitGraph needs it after a direction, which is no part of this).
+ */
+const headerColonTypes: ReadonlySet<string> = new Set([
+  "cynefin",
+  "gitGraph",
+  "radar",
+])
 
 /**
  * The cardinalities of a relationship of an ER diagram as symbols, by their
@@ -236,6 +313,7 @@ function respellingsOf(source: Source): SourceRespellings {
     findLinkLabelRespellings(source, map)
     collectNumbers(source, source.root, map)
     findColorRespellings(source, map)
+    findArrowLengthRespellings(source, map)
     found = { byStart: map, starts: [...map.keys()].sort((a, b) => a - b) }
     respellingsOfSource.set(source, found)
   }
@@ -245,7 +323,8 @@ function respellingsOf(source: Source): SourceRespellings {
 /**
  * Records the respelling of the tokens that are respelled one by one: a
  * keyword, the direction of a header, the assignment of the EBNF notation, the
- * colon after the header of a cynefin or a radar diagram, and a string.
+ * colon after the header of a cynefin, a gitGraph, or a radar diagram, and a
+ * string.
  */
 function findTokenRespellings(
   source: Source,
@@ -256,15 +335,46 @@ function findTokenRespellings(
   const tokens = source.root.tokens
   const headerIndex = tokens.findIndex((token) => token.type === "Keyword")
   // The direction of a header is the keyword that follows it.
+  const headerEnd = tokens[headerIndex]?.range[1]
+  const direction =
+    headerEnd === undefined ? undefined : findStructuralToken(source, headerEnd)
   const directionIndex =
-    directionSpellings[type] !== undefined &&
+    (directionSpellings[type] !== undefined ||
+      type === "flowchart-v2" ||
+      type === "flowchart-elk") &&
     headerIndex !== -1 &&
-    tokens[headerIndex + 1]?.type === "Keyword" &&
-    source.text
-      .slice(tokens[headerIndex].range[1], tokens[headerIndex + 1].range[0])
-      .trim() === ""
-      ? headerIndex + 1
+    direction?.type === "Keyword" &&
+    textRead(
+      source,
+      tokens[headerIndex].range[1],
+      direction.range[0],
+    ).trim() === ""
+      ? tokens.indexOf(direction)
       : -1
+  // The colon of a header follows it. In a gitGraph, directives and a hidden
+  // YAML block, which are tokens, can stand between them. The colon stays after
+  // a directive, since a version that counts rejects `gitGraph %%{x}%%` that a
+  // statement follows on the next line, and accepts it with the colon
+  // (docs/compatibility.md, The colon after a header; Forms kept for versions
+  // of mermaid.js that count). A hidden YAML block between them does not keep
+  // it: the versions that count read the header the same with the colon and
+  // without it, or reject both.
+  const afterHeader =
+    type === "gitGraph"
+      ? tokens.findIndex(
+          (token, index) =>
+            index > headerIndex &&
+            token.type !== "Directive" &&
+            token.type !== "RawText",
+        )
+      : headerIndex + 1
+  const between = tokens.slice(headerIndex + 1, afterHeader)
+  const colonIndex =
+    between.some((token) => token.type === "Directive") &&
+    !between.some((token) => token.type === "RawText")
+      ? -1
+      : afterHeader
+
   // The label of a flow of a Wardley map is between `'` only (`+'moving'>`).
   const arrows: Range[] = []
   collectRanges(source.root, (name) => name === "WardleyArrow", arrows)
@@ -272,18 +382,33 @@ function findTokenRespellings(
     const text = source.text.slice(...token.range)
     let respelled: string | undefined
     if (token.type === "Keyword" && index === headerIndex) {
-      // The keyword of the header stays as written: mermaid.js accepts the
-      // names of a header from different versions on.
-      respelled = undefined
+      // The keyword of the header stays as written, since some versions that
+      // count do not read every name of a header, except for the diagram types
+      // that every version reads and draws alike with the short name.
+      // A root that starts with `-beta` and stands on the line of the header
+      // keeps the header as written: the short name followed by it would be
+      // read as the long name, and the root would be lost. mermaid.js removes
+      // the directives before it reads the header, so they do not separate the
+      // two (docs/ishikawa.md, Header).
+      const shortName = shortHeaderNames[type]
+      respelled =
+        shortName !== undefined &&
+        toAsciiLowerCase(text).startsWith(shortName) &&
+        !(
+          startsWithBetaWord(source, token.range[1]) &&
+          keepsRootOnHeaderLineOf(source)
+        )
+          ? shortName
+          : undefined
     } else if (token.type === "Keyword") {
       respelled =
         index === directionIndex
-          ? directionSpellings[type]?.[text]
+          ? headerDirectionSpelling(source, type, text)
           : (keywordAliases[type]?.[text] ?? spellings[text.toLowerCase()])
     } else if (token.type === "Punctuator") {
       respelled =
         headerColonTypes.has(type) &&
-        index === headerIndex + 1 &&
+        index === colonIndex &&
         text === ":" &&
         !isTouchedAfter(source, token.range[1])
           ? ""
@@ -309,7 +434,14 @@ function findTokenRespellings(
  * not read the same before them, and the printer keeps them where they are.
  */
 function isTouchedAfter(source: Source, offset: number): boolean {
-  return source.text[offset] === ";" || source.text[offset] === "-"
+  const position = skipRemovedBeforeLineRule(source, offset)
+  return (
+    source.text[position] === ";" ||
+    source.text[position] === "-" ||
+    // A directive that is not closed takes the line break, so the next
+    // statement follows the colon directly, and the line cannot be split.
+    joinsNextLine(source, offset)
+  )
 }
 
 /**

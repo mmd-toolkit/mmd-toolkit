@@ -6,8 +6,7 @@ description:
   everything it is going to find. Use before reviewing a change, before
   re-reviewing a fix, and when a review is repeated more than twice on the same
   item. It names the inputs a review takes from the sentences, the checks it
-  runs on documents, how a finding is classified and reported, and how a review
-  runs things on the machine.
+  runs on documents, and how a finding is classified and reported.
 ---
 
 # Reviewing a change
@@ -27,14 +26,20 @@ document). A claim in the report under review is neither until the reviewer has
 run it. Numbers are counted again before they are sent; a wrong count is a
 finding against the review.
 
-The reviewer edits nothing in the working tree. Probes, copies, and generated
-inputs live outside it.
+The reviewer edits nothing in the working tree.
 
 ## 1. Scope
 
+- Read the skill [conventions](../conventions/SKILL.md) first: the documents and
+  the code of the change are checked against it.
 - Read the whole of every file the change touched, not the part the report
   points at. A document that covers several diagram types is read for all of
   them.
+- A review of a branch or a pull request covers the whole of it, also when the
+  request names only its last commit: every file it changed since its base, and
+  the released behavior that the same sentences govern. What an earlier round
+  did not look at is looked at in this one, so that the findings come in one
+  report and not a few with each round.
 - List what the change can affect beyond the files it touched: the packages that
   use a shared interface it changed, the fixtures that back a rule it changed,
   the printers and rules that read a node it changed.
@@ -112,7 +117,10 @@ reported as a finding, or a real one is dismissed as declared.
 When the change is a fix, run the same inputs on the version before the fix.
 Every difference in output is classified by reading each one, not by a rule that
 sorts them: intended by the fix, a consequence the fix did not report, or
-unrelated. Unreported consequences are findings.
+unrelated. Unreported consequences are findings. A copy of code that runs
+mermaid.js, such as that version, runs with the result store disabled
+(`MMD_TOOLKIT_MERMAID_CACHE=disabled`), unless the copy reads the tree's own
+`packages/tests` and so shares its key.
 
 For a tool or a piece of infrastructure (the mermaid result store, the fixture
 tools, a CLI), the inputs are different and the list is this:
@@ -147,10 +155,11 @@ tools, a CLI), the inputs are different and the list is this:
 - A claim in a document is checked against mermaid.js when it states a behavior,
   and against the code when it states what the code does.
 - Every changeset that the change adds or edits is read as the changelog will
-  show it, against the section How to write it of the `changesets` skill: its
-  length, its examples, the two sentences of a change that overturns a decision
-  of a released version, no conditions of a rule or counts behind it, and the
-  words of a user of the package. A missing or wrong explanation of an
+  show it, against the section
+  [How to write it](../changesets/SKILL.md#how-to-write-it) of the `changesets`
+  skill: its length, its examples, the two sentences of a change that overturns
+  a decision of a released version, no conditions of a rule or counts behind it,
+  and the words of a user of the package. A missing or wrong explanation of an
   overturned decision is a finding (major); any other break is a finding
   (minor).
 
@@ -216,16 +225,8 @@ Every review has a section on proper form, also when the behavior is right:
   (`packages/tests/fixtures/`), where a parser in any language is checked with
   it, and not in a list inside the parser.
 - The report says what the reviewer did not look at and why, so that nobody
-  reads a pass as exhaustive.
-
-## 6. Running things on the machine
-
-- Fix the number of concurrent processes before a parallel run, children
-  included (8 to 16), and do not probe a system limit: hitting the per-user
-  process limit kills the other runs on the machine.
-- A copy of code that runs mermaid.js runs with the result store disabled
-  (`MMD_TOOLKIT_MERMAID_CACHE=disabled`), unless the copy reads the tree's own
-  `packages/tests` and so shares its key.
-- Stop only one's own tasks, by task id or PID; never a process by name.
-- Do not start a long run while another long run is going; the load multiplies
-  both.
+  reads a pass as exhaustive. That list holds only what the reviewer could not
+  look at (a run that needs something it may not fetch, a file it cannot read),
+  each with the one who can. What the reviewer could have looked at is looked at
+  before the report is sent: no finding is left for a later round by leaving its
+  place unread.

@@ -384,18 +384,18 @@ These choices hold for every rule, so that the rules read alike:
   directive or a token, is reported at its `loc`; a part of the value of a
   token, at a `loc` from `sourceCode.getLocFromIndex`. Something that runs to
   the end of the text, such as an unclosed block, is reported where it opens.
-- A rule has a fix only as the rule-ideas skill decides (`meta.fixable`), and it
-  offers suggestions only as that skill decides (`meta.hasSuggestions`). The
-  document of a rule says whether it has options; the rule-ideas skill decides
-  whether a rule has an option. Each suggestion says how mermaid.js reads the
-  text after it is applied. The fixes and the suggestions are built in functions
-  of their own, apart from `create`, which passes what they return to
-  `context.report`; a fix is left out where the edit cannot be made. A
-  suggestion that removes a statement or a token removes the range that
-  `removalRange` of `src/utils/removal.ts` gives: the element, and the
-  whitespace or the line around it, so that no blank space is left. A `;` after
-  the element is not removed: it is the separator of the statement before it, or
-  an empty statement of its own, which is a member in a subgraph. The one
+- A rule has a fix only as the rule-ideas-suggestions skill decides
+  (`meta.fixable`), and it offers suggestions only as that skill decides
+  (`meta.hasSuggestions`). The document of a rule says whether it has options;
+  the rule-ideas skill decides whether a rule has an option. Each suggestion
+  says how mermaid.js reads the text after it is applied. The fixes and the
+  suggestions are built in functions of their own, apart from `create`, which
+  passes what they return to `context.report`; a fix is left out where the edit
+  cannot be made. A suggestion that removes a statement or a token removes the
+  range that `removalRange` of `src/utils/removal.ts` gives: the element, and
+  the whitespace or the line around it, so that no blank space is left. A `;`
+  after the element is not removed: it is the separator of the statement before
+  it, or an empty statement of its own, which is a member in a subgraph. The one
   exception is the `;` that mermaid.js ignores (an `IgnoredSemicolon` token, by
   the rule of `style` and `classDef` lines): `oneOfTwoRemovals` removes it with
   the statement that it follows.

@@ -7,8 +7,15 @@ import {
   lineStartOf,
 } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
-import { findTriviaBetween, isWhitespace } from "./source.ts"
-import { holdsStatementAfter } from "./accessibility-lines.ts"
+import { findTriviaBetween, isWhitespace, textRead } from "./source.ts"
+import {
+  findStatementAfter,
+  holdsStatementAfter,
+} from "./accessibility-lines.ts"
+import {
+  diagramTypesWithJisonAccessibilityLines,
+  isReadAsAccValueByOlderVersions,
+} from "./acc-value-join.ts"
 import { printedToken } from "./spelling.ts"
 import { treeviewBoxCharacters } from "./treeview-characters.ts"
 import { collapseRuns, staysAsWritten } from "./text-runs.ts"
@@ -21,7 +28,8 @@ import { collapseRuns, staysAsWritten } from "./text-runs.ts"
  * the text holds a `%%`, and where a comment follows the block on its line.
  * The other types read the `%%` as part of the text in both forms, and reject
  * a comment after the `}` of a block or take it into the text of the form with
- * the `:`.
+ * the `:`. So do these types for a comment of their own kind that does not
+ * start with a `%%` (the four railroad types; see `commentsAfterAllowed`).
  */
 const diagramTypesEndingTextAtPercent: ReadonlySet<string> = new Set([
   "architecture",
@@ -133,7 +141,10 @@ interface DescriptionBlockParts {
  * the drawing of a box; where a line terminator separates the text from the
  * keyword or from the `}` and a diagram type of `bodiesReadingDirectionLines`
  * holds `direction` in it (also split by a directive); and where the block is
- * not closed or has no text. The characters in the `omitted` ranges are not
+ * not closed or has no text, and where the oldest version that counts reads
+ * the block as the value of the empty `accTitle:` or `accDescr:` before it
+ * (docs/compatibility.md, Accessibility lines that the oldest version reads to
+ * the end). The characters in the `omitted` ranges are not
  * printed (the drawing of a box in a treeView), and count as whitespace.
  */
 function readDescriptionBlock(
@@ -150,7 +161,8 @@ function readDescriptionBlock(
     !isDescriptionBlock(statement) ||
     statement.value === null ||
     statement.closed === false ||
-    diagramTypesStoringTheToken.has(source.root.diagramType)
+    diagramTypesStoringTheToken.has(source.root.diagramType) ||
+    isReadAsAccValueByOlderVersions(source, statement)
   ) {
     return undefined
   }
@@ -233,11 +245,7 @@ function readDescriptionBlock(
         textOf(source, inner[last]).trimEnd().length),
   ]
   const text = source.text.slice(...textRange)
-  // The text without the directives that lie inside it.
-  const spelled = inner
-    .filter((token) => token.type === "RawText")
-    .map((token) => textOf(source, token))
-    .join("")
+  const spelled = textRead(source, ...textRange)
   // A lexer that reads a whole line starting at its beginning reads a line
   // with `direction` as the direction of the diagram, before or after the rule
   // of `accDescr`, so the form with the `:` reads the description as a
@@ -245,23 +253,33 @@ function readDescriptionBlock(
   // after a line terminator that is no part of a line (LF, CR, U+2028, U+2029),
   // or with a directive inside the word, which mermaid.js takes away first.
   const apart =
-    holdsLineTerminator(source.text.slice(statement.range[0], textRange[0])) ||
-    holdsLineTerminator(source.text.slice(textRange[1], statement.range[1]))
+    holdsLineTerminator(textRead(source, statement.range[0], textRange[0])) ||
+    holdsLineTerminator(textRead(source, textRange[1], statement.range[1]))
   const endsAtPercent = diagramTypesEndingTextAtPercent.has(
     source.root.diagramType,
   )
+  // A directive that is not closed takes the whitespace after it, line breaks
+  // included, so in the form with the `:`, which ends at the line, what follows
+  // would go on the line of the text.
+  const holdsUnclosedDirective = source.root.directives.some(
+    (directive) =>
+      !directive.closed &&
+      statement.range[0] <= directive.range[0] &&
+      directive.range[0] < statement.range[1],
+  )
   if (
-    holdsLineBreak(text) ||
+    holdsLineBreak(spelled) ||
+    holdsUnclosedDirective ||
     (apart &&
       bodiesReadingDirectionLines.has(source.root.body.type) &&
       spelled.toLowerCase().includes("direction")) ||
     (source.root.diagramType === "treeView" &&
-      [...text].some((character) =>
+      [...spelled].some((character) =>
         treeviewBoxCharacters.includes(character),
       )) ||
     (endsAtPercent &&
-      (text.includes("\u2028") ||
-        text.includes("\u2029") ||
+      (spelled.includes("\u2028") ||
+        spelled.includes("\u2029") ||
         spelled.includes("%%")))
   ) {
     return undefined
@@ -358,16 +376,29 @@ export function printAccessibilityLine(
 }
 
 /**
- * Whether the comments that follow a block on its line (there are none, or the
- * diagram type ends the text of the form with the `:` before a `%%`) leave the
- * form with the `:` the same.
+ * Whether the comments that follow a block on its line leave the form with the
+ * `:` the same: there are none, or the diagram type ends the text of the form
+ * with the `:` before a `%%` and they start with a `%%`. A comment of another
+ * kind in such a diagram type (the `; c` of an ABNF diagram, the `# c` of a
+ * PEG diagram, the `(* c *)` of an EBNF diagram, and the comment that opens
+ * with a slash and an asterisk in a railroad and an EBNF diagram) is part of
+ * the text of the form with the `:`.
  */
 function commentsAfterAllowed(source: Source, end: number): boolean {
-  return (
-    diagramTypesEndingTextAtPercent.has(source.root.diagramType) ||
-    findTriviaBetween(source, end, lineEndOf(source, end)).every(
-      (item) => item.type === "Directive",
-    )
+  const endsTextAtPercent =
+    diagramTypesEndingTextAtPercent.has(source.root.diagramType) &&
+    !diagramTypesWithJisonAccessibilityLines.has(source.root.diagramType)
+  // The comments after a statement that follows the block on its line stay
+  // with that statement, which goes to a line of its own.
+  return findTriviaBetween(
+    source,
+    end,
+    findStatementAfter(source, end) ?? lineEndOf(source, end),
+  ).every(
+    (item) =>
+      item.type === "Directive" ||
+      textRead(source, ...item.range) === "" ||
+      (endsTextAtPercent && source.text.startsWith("%%", item.range[0])),
   )
 }
 
@@ -390,7 +421,7 @@ export function rewriteDirectiveBlocks(source: Source): string | undefined {
     if (
       block === undefined ||
       (block.beforeBrace.length === 0 && block.beforeText.length === 0) ||
-      holdsLineBreak(source.text.slice(...node.range))
+      holdsLineBreak(textRead(source, ...node.range))
     ) {
       return
     }

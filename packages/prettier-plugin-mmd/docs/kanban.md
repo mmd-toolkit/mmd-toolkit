@@ -366,8 +366,14 @@ a label without quotes would end earlier or be read as a closer or an opener: a
 label with a `)`, a `]`, a `(`, or a `}`; a label that starts with a `-`
 (`card6("-x")`, since `(-` opens another shape, and a `-` before a `)` closes
 one); a string next to a dash of the dash form (`card4(-"x"-)`); a label with
-padding or a line break. A markdown string stays as written. [fixture:
+padding or a line break. A string after the opener `(-` loses its quotes, since
+mermaid.js reads `card8(-x)` as it reads `card8(-"x")`. A markdown string stays
+as written. Directives between the string and the dash change nothing, since
+mermaid.js removes them before it reads the text: `card7("x"%%{init: {}}%%-)`
+keeps its quotes, and `card9(-%%{init: {}}%%"y z")` loses them. [fixture:
 quotes/labels-without-quotes] [fixture: quotes/labels-that-need-quotes]
+[fixture: quotes/dash-closer-after-a-directive-kept] [fixture:
+quotes/dash-opener-string-unquoted]
 
 Input
 ([quotes/labels-without-quotes-input.mmd](../tests/fixtures/kanban/quotes/labels-without-quotes-input.mmd)):
@@ -477,11 +483,14 @@ kanban
 
 A data block `@{ ... }` is embedded text that mermaid.js reads as YAML for the
 properties of a node, such as `ticket` and `assigned`. The printer keeps it
-opaque, with its delimiters and its content retained, apart from the uniform
-indentation below, the spaces at the ends of a block on one line, and the
-printing of a block on one line on lines where its line is too long: it does not
-format the YAML, and it does not merge, reorder, or repair blocks, whether a
-block is empty (`A@{}`), has an unknown or duplicate key
+opaque, with its delimiters and its content retained (the tree holds its body
+whole, so the colon of a key stays as written: `A@{ ticket : MC-1 }` keeps the
+space before its colon; see
+[A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)),
+apart from the uniform indentation below, the spaces at the ends of a block on
+one line, and the printing of a block on one line on lines where its line is too
+long: it does not format the YAML, and it does not merge, reorder, or repair
+blocks, whether a block is empty (`A@{}`), has an unknown or duplicate key
 (`A@{ticket: X, ticket: Y}`), is not valid YAML (`A@{assigned: [a}`), or runs
 over several lines. The parser accepts a block whose YAML is invalid, although
 mermaid.js rejects it (known divergence
@@ -627,11 +636,17 @@ whether it accepts depends on how many diagram comments and empty lines lie
 between two statements. For example, `S`, a line `%%`, an empty line, and `   A`
 are rejected by mermaid.js and accepted by the specification. The printer does
 not repair that. A gap that holds a diagram comment followed by an empty line,
-by another comment, or by a U+2028 or U+2029 is kept whole as written: its empty
-lines and its comments, up to the indentation of the next statement, which the
-printer chooses (see [Indentation](#indentation)). A gap with only comment lines
-(`S`, `%% note`, an empty line, `A`) is formatted as usual, and the comment line
-is aligned (see [Comments](#comments)). A gap of this kind at the end of the
+by another diagram comment, or by a U+2028 or U+2029 in the read text is kept
+whole as written: its empty lines and its comments, up to the indentation of the
+next statement, which the printer chooses (see [Indentation](#indentation)). A
+gap with only comment lines (`S`, `%% note`, an empty line, `A`) is formatted as
+usual, and the comment line is aligned (see [Comments](#comments)). A common
+comment after a directive containing a line feed, or after a native `%%`
+comment, is still removed before this decision and aligned as usual; a U+2028 or
+U+2029 inside that common comment is removed too and cannot make the gap stay as
+written. [test: kanban: comment-line-ls-taken] [fixture:
+blank-lines/common-comment-after-multiline-directive] [fixture:
+blank-lines/native-then-common-comment] A gap of this kind at the end of the
 board is kept whole too, with nothing after it to indent: `kanban`, ` S`, `%%`,
 and two empty lines print `  S`, `%%`, and the same two empty lines. [fixture:
 blank-lines/div-between-comment-blank] [fixture:

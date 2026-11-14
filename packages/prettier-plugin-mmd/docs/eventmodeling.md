@@ -145,10 +145,10 @@ note 01 {
 
 Put ordinary top-level AST statements on separate lines in source order, without
 adding semicolons. The grammar needs no visible EOL between complete units, so
-this exposes their boundaries without changing the Db. A common successor keeps
-its connection to the preceding unit. Apparent statements inside greedy inline
-data remain part of that single value; a closed description can instead be
-followed by an ordinary new statement.
+this does not change the Db. A common successor keeps its connection to the
+preceding unit. Apparent statements inside greedy inline data remain part of
+that single value; a closed description can instead be followed by an ordinary
+new statement.
 
 [fixture: eventmodeling/statements-one-per-line/adjacent-frame-reset-entity]
 
@@ -238,9 +238,10 @@ tf 01 evt Alpha ->> 02 ->> 001
 ### Data references
 
 Use one ordinary space before a data reference and tight inner edges, `[[D]]`.
-This makes the delimiters one readable pair. Compact ordinary component newlines
-too; `[[title]]` also avoids a padded title composite. Preserve hidden forms and
-trivia in their owned gaps, and never qualify a single reference name.
+This is how Prettier prints nested brackets, with none inside. Compact ordinary
+component newlines too; `[[title]]` also avoids a padded title composite.
+Preserve hidden forms and trivia in their owned gaps, and never qualify a single
+reference name.
 
 [fixture: eventmodeling/data-references/reference-padded]
 
@@ -393,9 +394,8 @@ note
 
 Separate declaration and note components with one ordinary space:
 `entity Shop.Buy`, `data D` and `note 01`. Put a block opener on its header line
-after one space, exposing the declaration's parts. Values and closing boundaries
-follow the data rules. A required name `title` keeps its safe preceding
-boundary, as for frames.
+after one space. Values and closing boundaries follow the data rules. A required
+name `title` keeps its safe preceding boundary, as for frames.
 
 [fixture: eventmodeling/declarations-and-notes/entity-ordinary]
 
@@ -703,13 +703,14 @@ data D {
 ### Common boundaries
 
 Keep a common statement's complete source, the immediately preceding ASCII
-space/tab run and its connection to the unit that makes it readable. Preserve
-the entire intervening source interval across global directives, selected
-semicolons; these removals decide which padding joins. Do not reconstruct a run
-after losing it. The shared accessibility layout is deliberately bypassed here:
-EM terminals retain keyword, delimiter and leading padding as values, unlike the
-converted common terminals of other diagrams. Even when accTitle's setter strips
-some leading padding, retaining all common forms avoids inconsistent exceptions.
+space/tab run and its connection to the unit that lets the lexer read it.
+Preserve the entire intervening source interval across global directives,
+selected semicolons; these removals decide which padding joins. Do not
+reconstruct a run after losing it. The shared accessibility layout is
+deliberately bypassed here: EM terminals retain keyword, delimiter and leading
+padding as values, unlike the converted common terminals of other diagrams. Even
+when accTitle's setter strips some leading padding, retaining all common forms
+avoids inconsistent exceptions.
 
 [fixture:
 eventmodeling/common-boundaries/common-retained-exact-leading-directive-gaps]
@@ -1049,8 +1050,13 @@ diagram. Text that no part of the layout holds stays as written. A statement
 over several lines whose lines, joined with one space or with nothing, could
 change which `;` the line rule ignores keeps the text of each segment, up to its
 last kept `;`, as written; any other statement over several lines is formatted
-like one on a single line. [fixture: semicolons/stretch-kept-rest-formatted]
-[fixture: semicolons/no-stretch-formatted] [fixture:
+like one on a single line. A `;` that the line rule ignores is removed by
+mermaid.js, so the tokens on both sides of it are one token where they touch:
+the gap after it keeps whether it holds whitespace, and `/*style:#x*/;title`
+stays as it is, since `/*style:#x*/ title` is rejected. [fixture:
+semicolons/stretch-kept-rest-formatted] [fixture:
+semicolons/ignored-semicolon-touches-next-atom] [fixture:
+semicolons/no-stretch-formatted] [fixture:
 semicolons/protected-gwt-title-hidden-gap-remains-zero] The first protected body
 line aligns with its body; contents and later columns remain authored. Required
 identifier and common-value padding takes precedence over structural

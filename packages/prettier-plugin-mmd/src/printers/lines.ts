@@ -195,6 +195,14 @@ export function printAsWritten(
 }
 
 /**
+ * Prints the source between two offsets exactly as it is written, with no
+ * spelling replaced: for a text that must not change at all.
+ */
+export function printVerbatim(source: Source, start: number, end: number): Doc {
+  return replaceEndOfLine(source.text.slice(start, end))
+}
+
+/**
  * Prints the source between two offsets as written, without the whitespace at
  * its end.
  */

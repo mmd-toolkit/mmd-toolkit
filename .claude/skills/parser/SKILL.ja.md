@@ -8,7 +8,9 @@ description:
   tree in ast.json, or its error in parse-error.json), finding gaps in the
   specification, and fixing the parser when the pinned mermaid.js is updated.
   Use when a diagram type is added to the parser, when fixtures are added or a
-  rule of the specification changes, or when mermaid.js is updated.
+  rule of the specification changes, when only the types of packages/ast change,
+  or when mermaid.js is updated. A requested review of its performance has a
+  skill of its own, parser-performance-review.
 ---
 
 # 図種のパーサーを足す（parser）
@@ -54,8 +56,9 @@ pin した mermaid.js の更新を扱う。
 
 1. この文書の「方針と基準」の節（仕様だけから実装し、
    mermaid.js のソースを挙動の出どころにしない）、
-   AGENTS.md の「Shared interfaces」と「Principles」（読みやすさ、あるべき形）、
-   SKILL `conventions`（正規表現を使わない、見えない文字、文書の決まり）。
+   AGENTS.md の「共有するインターフェース」と「行動原則」（読みやすさ、
+   あるべき形）、SKILL `conventions`（正規表現を使わない、見えない文字、
+   文書の決まり）。
 2. `packages/parser/docs/development.md`（パーサーの作りと道具）、
    `docs/tokens.md` と `docs/positions.md`（木のトークン、位置、不変条件）、
    `docs/testing.md`（テストが何を確かめるか）、
@@ -65,7 +68,7 @@ pin した mermaid.js の更新を扱う。
    それと `packages/tests/fixtures/<図種>/` の fixture。
    実装する挙動は、ここにあるものだけ。
 
-## 2. 作業ツリー
+## 2. この SKILL が書くもの
 
 - この SKILL の手順が書くのは、`packages/parser`、`packages/ast` と、
   fixture のテストが書く `packages/tests/fixtures/<図種>/<fixture 名>/` の
@@ -73,19 +76,7 @@ pin した mermaid.js の更新を扱う。
   fixture のほかのファイル、仕様、ほかのパッケージは書かない。
   それらを直す必要が出たら、そのパッケージの SKILL の手順で直す。
   spec、tests、prettier-plugin の SKILL である。
-- ルートの設定は、すべてのパッケージが使う。
-  変える前に、ほかのパッケージへの影響を確かめる。
-  ルートの設定とは、`package.json`、`pnpm-lock.yaml`、`tsconfig.json`、
-  `eslint.config.mjs`、`prettier.config.js`、`vitest.config.ts`、
-  `.github/workflows/`、`scripts/` である。
-- コミット、ステージの変更、`git mv`、`stash`、`checkout`、`reset` はしない。
-  ファイルの移動と削除は、通常の `mv` と `rm` で行う。
-- 確かめ方を変えるために、
-  追跡されているファイルを一時的に書き換えない（テストの入力の件数など）。
-  途中で止まった実行は元に戻さず、その状態でコミットされることがある。
-- Write ツールとシェルのヒアドキュメントは、`\u00a0` のようなエスケープを、
-  実際の文字に変えることがある。
-  `packages/parser` のソースとテストは ASCII
+- `packages/parser` のソースとテストは ASCII
   だけで書かれている（それ以外の文字は、すべてエスケープで書く）。
   例外は、`src/code-points.ts` のコメントで、
   定数がどの文字かを示す読める文字（`// À`）。
@@ -102,19 +93,11 @@ pin した mermaid.js の更新を扱う。
   lint の規則を `eslint-disable` で外すのは、
   規則の意図に照らして正しい場合だけにし、
   理由を書く（`eslint-comments/require-description` が求める）。
-- テストは重い。
-  負荷が高いと（`uptime` の load average が CPU の数を超えると）、
-  テストのファイルが時間切れになることがある。
-  時間切れが出たら、そのファイルだけを単独で走らせ直してから判断する。
-  時間の長い確かめは、バックグラウンドで動かし、
-  出力をリポジトリの外のファイルに書く。
-  自分が始めたものだけを、タスクの ID か PID で止める。
-  名前で止めない（`pkill -f vitest` は、自分が始めていない実行も止める）。
 
 ## 3. 確かめ方（すべての作業で）
 
 - mermaid.js の挙動についての主張は、自分のものも、ほかから来たものも、
-  書く前に、リポジトリの外（scratchpad）の probe で確かめる。
+  書く前に、リポジトリの外の probe で確かめる。
   probe は `node --conditions=source` で走らせるスクリプトで、
   `packages/tests` のソースから `runMermaidWithEmbeddedData` と `dbFromTree`
   を読み込む。
@@ -136,29 +119,26 @@ pin した mermaid.js の更新を扱う。
   `flowchart/lex-click-line-feed-indented`）。
 
 - パーサーの文書の、挙動を定める文を書くか変えるときは、その文が分ける場合と、
-  その文の名指す場所で接するほかの規則（ディレクティブ、無視される `;`、
-  コメント行、空行、行区切り、空の説明ブロック）を挙げ、
-  コーパスに欠けている場合ごとに fixture を頼む（AGENTS.md の Principles）。
+  その文の名指す場所で接するほかの規則を挙げ、
+  コーパスに欠けている場合ごとに fixture を頼む。
+  接する規則は、
+  [AGENTS.md の「行動原則」](../../../AGENTS.ja.md#行動原則) が挙げるもの。
   fixture のある場合に入力を足さない。
 - 結果では、主張ごとに、実行して確かめたか、コードや文書を読んで確かめたか、
   確かめていないかを区別して示す。
 - 新しく対応した図や既存のパーサーの性能レビューを依頼されたら、
   [parser-performance-review](../parser-performance-review/SKILL.ja.md) を使う。
-- 変更が影響しうるものだけを回す（SKILL `conventions` の「テストの実行」）。
+- 変更が影響しうるものだけを回す（SKILL `conventions`
+  の「[テストの実行](../conventions/SKILL.ja.md#テストの実行)」）。
   作業の途中では、変えたコードの部分に対応するテストのファイルを、
   `packages/parser` で `npx vitest run <ファイル>` として回す。
   `tests/fixtures.test.ts` の図種の部分だけを回すなら、
   `-t "<図種> fixtures"` を付ける。
 
-  | 変えた部分                                                                | テストのファイル                                                                                                                                               |
-  | ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | `src/diagrams/<図種>/`                                                    | `tests/<図種>.test.ts`、`tests/fixtures.test.ts`                                                                                                               |
-  | `packages/ast/src/`、`src/visitor-keys*`                                  | `tests/types.test.ts`、`tests/traverse.test.ts`、`tests/ast-<図種>-examples.test.ts`、`tests/union-docs.test.ts`、flowchart では `tests/ast-flowchart.test.ts` |
-  | `src/unit-grammar.ts`、`src/empty-forms.ts`、`src/diagram-*.ts`           | すべての図種の `tests/<図種>.test.ts`、`tests/diagram-parsing.test.ts`、`tests/fixtures.test.ts`                                                               |
-  | 共通の規則（`src/source-lexer.ts`、`directives.ts`、`entities.ts` など）  | 同じ名前のテストのファイル、`tests/fixtures.test.ts`                                                                                                           |
-  | `src/diagrams/flowchart/subgraph-ids.ts`                                  | `tests/fixtures.test.ts`                                                                                                                                       |
-  | `src/parse.ts`、`src/index.ts`                                            | `tests/parse.test.ts`、`tests/readme-example.test.ts`                                                                                                          |
-  | `tests/helpers/reference-inputs.ts`、`tests/helpers/known-divergences.ts` | `tests/reference-inputs.test.ts`、`tests/fixtures.test.ts`                                                                                                     |
+  変えた部分ごとのテストのファイルは、
+  [references/tests-by-changed-part.ja.md](references/tests-by-changed-part.ja.md)
+  にある。
+  変えたファイルを含む行を探す。
 
   文書を読むテストは、その文書だけを変えたときにも回す。
   `tests/readme-example.test.ts`（`README.md` と `README.ja.md` の例）、
@@ -176,10 +156,12 @@ pin した mermaid.js の更新を扱う。
   `packages/spec/docs/diagrams/<図種>.md` の節に「To be written」がない。
   節は、Detection、Lexical structure、文法の外の拒否を含む Grammar、
   Known divergences である。
-  `packages/spec/docs/ast/<図種>.md` がある（spec の SKILL）。
+  `packages/spec/docs/ast/<図種>.md` がある（spec-diagram-type と spec の
+  SKILL）。
 - その図種の fixture、
   Db の要約（`packages/tests/docs/db-from-tree/<図種>.md`）、
-  記録した木の検査が、`packages/tests` にある（tests の SKILL）。
+  記録した木の検査が、
+  `packages/tests` にある（tests-diagram-type と tests-tree-checks の SKILL）。
 
 ### 4.2 仕様を読み、欠落を先に扱う
 
@@ -191,8 +173,9 @@ pin した mermaid.js の更新を扱う。
    決まらないもの、仕様と fixture が食い違うもの、
    mermaid.js（3 節）と仕様が食い違うものは、仕様の欠落である。
    mermaid.js のソースから埋めず、入力と mermaid.js の結果を添えて、
-   先に仕様を直す（spec の SKILL の「When a gap in the specification is
-   found」）。
+   先に仕様を直す（spec の SKILL の
+   [仕様の欠落が見つかったとき](../spec/SKILL.ja.md#9-仕様の欠落が見つかったとき)
+   の節）。
    仕様が決めなければならないことの、
    flowchart の例: 1 文字ずつ読む文脈での実体参照の読み方、
    subgraph の名前の中の `click` のトークンの種類、
@@ -226,8 +209,11 @@ flowchart のファイルが手本になる。
    その `switch` の `default` は、
    `DiagramType` のどの ID にも `case` があることを `satisfies never`
    で確かめる。
-   そのため、図種 ID を `DiagramType` に足すこと（7 節の手順 3）は、
+   そのため、図種 ID を `DiagramType` に足すことは、
    その `case` と同じ変更で行う。
+   図種 ID を足すのは、
+   [references/updating-mermaid.ja.md](references/updating-mermaid.ja.md) の手順
+   3 である。
    その後、図種の fixture を記録する（4.7 節）。
 
 ### 4.4 字句解析器
@@ -259,7 +245,7 @@ flowchart のファイルが手本になる。
    ディレクティブを除いたテキストのような派生テキストを、
    中間結果として作らない。
    そうしたテキストは mermaid.js の前処理のパスを繰り返すもので、
-   仕様はその代わりに直接の規則を述べている（AGENTS.md の Principles）。
+   仕様はその代わりに直接の規則を述べている（AGENTS.md の「行動原則」）。
 3. ほかの図種の文書も述べる規則は、実装を 1 つにして両方で使う。
    flowchart と class の方向の行は、
    それぞれの値の一覧で `src/direction-line.ts` を使う。
@@ -291,7 +277,7 @@ flowchart のファイルが手本になる。
 6. 字句解析器が大文字小文字を区別しないとき（sequence ではすべての規則）は、
    語を `src/scanning.ts` の `matchWordIgnoringCase` と
    `matchWholeWordIgnoringCase` で比べる。
-   これらは Notation に従う。
+   これらは仕様の「表記」に従う。
    小文字にしてから比べることはしない。
 7. 図種の字句解析器が自分のコメントを読むとき（図のコメント。sequence では、
    行の終わりまでの `#` と `%`）は、その範囲と値の始まりを返し、
@@ -706,30 +692,5 @@ pnpm run format:check
 
 ## 7. mermaid.js を更新するとき
 
-入力: 新しい版で生成し直した fixture と、分類した差分（tests の SKILL）、
-それに合わせて直した仕様（spec の SKILL）。
-パーサーは、仕様が変わる前に挙動を変えない。
-
-1. 仕様の変わった節を読み、変わった規則ごとに、4.2 節の手順 2 で確かめる。
-2. 版に結び付いた箇所を直す。
-   `packages/parser` で古い版の番号を `grep -rn` すると、
-   README と `docs/development.md` に見つかり、それぞれ `.ja.md` もある。
-   mermaid.js のソースへのリンクは、固定した commit の permalink である。
-   仕様の更新が出す、古いリンクと新しいリンクの表に従って、
-   それぞれを新しい commit のリンクに置き換え、
-   `node scripts/check-mermaid-links.mjs` で確かめる。
-3. 図種 ID が増えた、
-   または変わった: 仕様の `detection.md` と `ast.md` の DiagramType に従って、
-   `src/detection.ts`、`packages/ast/src/ast.ts` の `DiagramType`、
-   `tests/types.test.ts` の `allDiagramTypes`、
-   `tests/detection.test.ts` を直す。
-   増えた ID は、
-   まず `tests/fixtures.test.ts` の `DIAGRAM_TYPES_WITHOUT_BODY` に入れる。
-   次に本体を書き（4 節）、本体を足す変更で、上の箇所を直し、ID を一覧から消す。
-4. 仕様の一覧を写した表が、仕様と一致するかを確かめる。
-   flowchart と class では、
-   両者が共有する `src/unicode-letters.ts` の文字の範囲である。
-5. 4.7 節の手順 4 で木の違いを分類し、4.8 節で確かめる。
-6. 結果として、直したもの、木の違いの種類ごとの数、残る不一致を示す。
-
-更新のときに合わない手順があれば、それを直す。
+手順は [references/updating-mermaid.ja.md](references/updating-mermaid.ja.md)
+にある。

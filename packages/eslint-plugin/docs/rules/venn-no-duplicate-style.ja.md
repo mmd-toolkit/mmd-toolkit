@@ -44,16 +44,16 @@ mermaid.js は名前と値の文字参照や HTML 属性の引用符を変換す
 ```mmd
 %% eslint @mmd-toolkit/venn-no-duplicate-style: error
 venn-beta
-set A
-style A fill:red, fill:blue
+  set A
+  style A fill: red, fill: blue
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/venn-no-duplicate-style: error
 venn-beta
-set A
-style A fill:red, stroke:black
-style A fill:blue
+  set A
+  style A fill: red, stroke: black
+  style A fill: blue
 ```
 
 この規則に**従う**コードの例:
@@ -61,9 +61,9 @@ style A fill:blue
 ```mmd
 %% eslint @mmd-toolkit/venn-no-duplicate-style: error
 venn-beta
-set A
-style A fill:red, stroke:black
-style A color:white
+  set A
+  style A fill: red, stroke: black
+  style A color: white
 ```
 
 ## オプション

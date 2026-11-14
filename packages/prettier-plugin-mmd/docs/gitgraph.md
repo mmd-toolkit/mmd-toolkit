@@ -10,13 +10,43 @@ cases.
 
 ### Header
 
-Keep the exact `gitGraph` word, authored direction and optional colon. Print
-ordinary gaps as `gitGraph LR:` or `gitGraph:`; an ordinary inline first
-statement moves below the header. Direction changes the Db, while its omission
-and colon presence remain author choices: mermaid.js 8.14.0 reads the header
-with the colon only, and the colon-less header is read from 9.0.0 (see
-[Versions of mermaid.js](./compatibility.md#versions-of-mermaidjs)). Hidden gaps
-and protected header/body groups retain their source boundaries.
+Keep the exact `gitGraph` word and the authored direction, which changes the Db.
+Print ordinary gaps as `gitGraph LR:` or `gitGraph`; an ordinary inline first
+statement moves below the header. The colon of a header without a direction is
+left out, as the documentation of mermaid.js writes it (30 headers without it, 2
+with it): `gitGraph:` is printed `gitGraph`, and every version that counts reads
+and draws the two forms the same. The colon after a direction stays, since
+mermaid.js rejects `gitGraph LR` without it. So does a colon that a directive
+precedes, since a version that counts rejects such a header without the colon
+when a statement follows on the next line, and accepts it with the colon (see
+[The colon after a header](./compatibility.md#the-colon-after-a-header) and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The directive stands after the space that the gap has without it, which is none
+before a colon (see [Directives](./flowchart.md#directives)):
+`gitGraph %%{x}%%:` is printed `gitGraph%%{x}%%:`. [fixture:
+gitgraph/header/header-directive-before-colon-kept] A colon that a directive
+that is not closed follows stays too, when a statement follows on the next line:
+the directive takes the line break, so without the colon the statement would
+follow `gitGraph` directly, and the line cannot be split. `gitGraph:%%{x y` and
+`commit` on the next line stay as they are. [fixture:
+gitgraph/header/header-colon-unclosed-directive-joins-next-line-kept] A colon
+that a hidden YAML block precedes is left out like any other, since the versions
+that count read the header the same with it and without it, or reject both:
+`gitGraph ---`, the block, and `--- :` are printed with `---` and no colon.
+[fixture: gitgraph/header/header-yaml-before-colon] A colon on a line of its own
+after the block is left out with the line break before it, so that no empty line
+stays. A comment or directive between the block and that colon keeps its
+attachment to the block or its normal indentation before the first statement;
+the omitted colon leaves no empty line. This also applies when an unclosed
+directive, or a directive inside its argument, precedes the colon. [fixture:
+gitgraph/header/yaml-colon-after-comment] [fixture:
+gitgraph/header/yaml-colon-after-inline-directive] [fixture:
+gitgraph/header/yaml-colon-after-directive] [fixture:
+gitgraph/header/yaml-colon-after-nested-directive] [fixture:
+gitgraph/header/yaml-colon-after-unclosed-directive] [fixture:
+gitgraph/header/header-yaml-colon-on-its-own-line] [corpus fixture:
+gitgraph/header-hidden-before-colon] Hidden gaps and protected header/body
+groups retain their source boundaries.
 
 A hidden form between `gitGraph` and the direction keeps the gap after it as
 written, because a hidden form consumes an immediately following line feed, and
@@ -27,9 +57,14 @@ as `gitGraph %%{}%%  LR:`. [fixture: gitgraph/header/hidden-before-direction]
 [corpus fixture: gitgraph/header-hidden-before-direction]
 
 Fixed cases: [fixture: gitgraph/header/header-absent] [fixture:
-gitgraph/header/header-colon] [fixture: gitgraph/header/header-lr] [fixture:
-gitgraph/header/header-tb] [fixture: gitgraph/header/header-bt] [corpus fixture:
-gitgraph/spec-git-graph-851bf4f9] [fixture: gitgraph/header/hidden-touching]
+gitgraph/header/header-colon] [fixture: gitgraph/header/header-colon-comment]
+[fixture: gitgraph/header/header-colon-hidden-statement] [fixture:
+gitgraph/header/header-colon-directive-line] [fixture:
+gitgraph/header/header-colon-tab-blank-lines] [fixture:
+gitgraph/header/header-hidden-before-colon] [fixture: gitgraph/header/header-lr]
+[fixture: gitgraph/header/header-tb] [fixture: gitgraph/header/header-bt]
+[corpus fixture: gitgraph/spec-git-graph-851bf4f9] [fixture:
+gitgraph/header/hidden-touching]
 
 Input (escaped): `"  gitGraph\t\ncommit\n"`.
 
@@ -47,8 +82,8 @@ Put the header at column one and ordinary body statements, standalone comments
 and global directives one configured step below it. The flat history has no
 extra level after branch. `tabWidth: 0` gives zero spaces; `useTabs` gives one
 tab even at width zero, because gitgraph columns have no grammatical meaning.
-This exposes the AST structure without altering other value continuation
-columns, hidden closers or protected segments.
+This does not alter other value continuation columns, hidden closers or
+protected segments.
 
 Fixed cases: [fixture: gitgraph/indentation/indent-two] [fixture:
 gitgraph/indentation/indent-four] [fixture: gitgraph/indentation/indent-zero]
@@ -70,11 +105,11 @@ gitGraph
 
 ### Statements one per line
 
-Print each ordinary body statement on its own line for readability. A line
-common value still owns apparent later operations and semicolons; quoted
-semicolons remain text. Gitgraph has no separator semicolon. Invalid adjacent
-statements and block-following semicolons are parser failures, covered by the
-corpus, and are never repaired.
+Print each ordinary body statement on its own line, as the other diagram types
+do. A line common value still owns apparent later operations and semicolons;
+quoted semicolons remain text. Gitgraph has no separator semicolon. Invalid
+adjacent statements and block-following semicolons are parser failures, covered
+by the corpus, and are never repaired.
 
 Fixed cases: [fixture: gitgraph/statements-one-per-line/eol-header-inline]
 [fixture: gitgraph/statements-one-per-line/eol-title-owns-text] [fixture:
@@ -86,7 +121,7 @@ Output
 ([statements-one-per-line/eol-header-inline-output.mmd](../tests/fixtures/gitgraph/statements-one-per-line/eol-header-inline-output.mmd)):
 
 ```mmd
-gitGraph:
+gitGraph
   commit id: "a"
 ```
 
@@ -139,8 +174,8 @@ gitGraph
 ### Operation spacing
 
 Use one space between ordinary operation, reference and option components, even
-when authored components touch. Do not align columns. The visible components get
-a consistent form; bare names retain their required boundaries. Gaps containing
+when authored components touch. Do not align columns. The components get a
+consistent form; bare names retain their required boundaries. Gaps containing
 comments, global directives or hidden forms retain their attachment and physical
 boundaries.
 
@@ -164,9 +199,11 @@ gitGraph
 
 Print `id: "A"`, `msg: "M"`, `tag: "T"`, `type: NORMAL`, `parent: "A"` and
 `order: 2`: the colon touches its word, with one ordinary space before its
-value. This follows the shared accessibility colon form. Preserve trivia at an
-authored word/colon boundary, including global directives and selected
-semicolons; ordinary whitespace before that colon is invalid.
+value. The colon is the colon of a key: the option gives its word one value, and
+a repeated option replaces it (step 2 of
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)). Preserve
+trivia at an authored word/colon boundary, including global directives and
+selected semicolons; ordinary whitespace before that colon is invalid.
 
 Fixed cases: [fixture: gitgraph/option-colons/colon-commit] [fixture:
 gitgraph/option-colons/colon-order] [corpus fixture:
@@ -253,18 +290,24 @@ gitGraph
 
 ### References
 
-A branch, checkout and merge reference in quotes that the lexer reads whole
-without them is printed without quotes, as the examples in the documentation of
-mermaid.js write it (see
+A branch, checkout and merge reference in quotes that the lexer of every version
+that counts reads whole without them is printed without quotes, as the examples
+in the documentation of mermaid.js write it (see
 [The quotes of a text](./compatibility.md#the-quotes-of-a-text)): `branch "dev"`
 is printed `branch dev`. The reference is plain where it is ASCII letters,
 digits, and `_`, with `-`, `.`, and `/` between them, it starts with a letter or
-`_`, and it does not start with one of the words that the lexer reads as a unit
-of its own (`commit`, `branch`, `merge`, `LR`, `NORMAL`, and the others, in any
-case) before a character that is no part of a word, or with `title`. Other
-references keep their quotes, a string is printed between `"` as under Quotes,
-and empty, whitespace-only, Unicode, reserved-word, and numeric-looking quoted
-names are preserved. [fixture: references/plain-names-without-quotes] [fixture:
+`_`, and it is none of the names that a version that counts reads as something
+else: `gitGraph`, `HIGHLIGHT`, `REVERSE`, `NORMAL`, `LR`, and `TB`, in any case,
+alone or before a character that is no part of a word (`lr-x`); `commit`,
+`branch`, `merge`, `cherry-pick`, `checkout`, and `options`, in any case, as the
+whole name; `switch` and `BT` as written; and a name that starts with `title`.
+So `"commit-x"`, `"Title"`, and `"bt"` lose their quotes, and `"Merge"`,
+`"lr-x"`, `"switch"`, and `"title1"` keep them (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Other references keep their quotes, a string is printed between `"` as under
+Quotes, and empty, whitespace-only, Unicode, reserved-word, and numeric-looking
+quoted names are preserved. [fixture: references/plain-names-without-quotes]
+[fixture: references/names-next-to-a-keyword-without-quotes] [fixture:
 references/names-that-need-quotes]
 
 Fixed cases: [fixture: gitgraph/references/reference-forms] [corpus fixture:
@@ -327,7 +370,7 @@ Output
 ([order-numbers/precision-digits-output.mmd](../tests/fixtures/gitgraph/order-numbers/precision-digits-output.mmd)):
 
 ```mmd
-gitGraph:
+gitGraph
   branch release order: 9007199254740993
 ```
 
@@ -435,16 +478,23 @@ whitespace to surround; tabs, line breaks and Unicode whitespace follow the same
 rule. [fixture: title-and-common-values/empty-whitespace-interiors] [test:
 gitgraph Unicode and tab interiors] Comment/directive-only blocks keep their
 trivia. Keep every repeated, empty and interleaved assignment, including
-frontmatter fallback. Line forms never read the next physical line, even across
-blanks/comments/directives; colon-form braces stay line text. These choices
-compact equivalent outer whitespace without changing the description text or
-lexical ownership.
+frontmatter fallback. The pinned grammar reads no line form on the next physical
+line, even across blanks/comments/directives, and the oldest version that counts
+reads the statement after an empty `accTitle:` or `accDescr:` as its value, so
+that statement and the whitespace before a `%%` after an `accTitle` value stay
+as written (see
+[Accessibility lines that the oldest version reads to the end](./compatibility.md#accessibility-lines-that-the-oldest-version-reads-to-the-end));
+colon-form braces stay line text. These choices compact equivalent outer
+whitespace without changing the description text or lexical ownership.
 
 Fixed cases: [fixture: gitgraph/title-and-common-values/title-trim] [corpus
 fixture: gitgraph/title-next-line] [fixture:
 gitgraph/title-and-common-values/common-repeats-empty] [fixture:
 gitgraph/title-and-common-values/a11y-fixed] [fixture:
 gitgraph/title-and-common-values/a11y-no-next-line] [fixture:
+gitgraph/title-and-common-values/acc-value-on-next-line-kept] [fixture:
+gitgraph/title-and-common-values/acc-title-percent-gap-kept] [fixture:
+gitgraph/title-and-common-values/block-then-comment-kept] [fixture:
 gitgraph/title-and-common-values/common-literal-not-string] [fixture:
 gitgraph/title-and-common-values/common-move-front] [corpus fixture:
 gitgraph/accdescr-block] [fixture:
@@ -893,5 +943,5 @@ Input (escaped):
 Output (escaped):
 
 ````json
-"```mermaid\ngitGraph:\n  commit id: \"Fence\"\n```\n"
+"```mermaid\ngitGraph\n  commit id: \"Fence\"\n```\n"
 ````

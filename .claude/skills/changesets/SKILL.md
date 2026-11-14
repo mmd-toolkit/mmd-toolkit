@@ -90,6 +90,36 @@ How it reads:
   and keeps what the earlier rule was for, naming one kept case at most, for
   example `such as a text with a comma`. Such an entry has three sentences, or
   four with the one of what the user has to do.
+- Such a change names the released version that introduced the decision it
+  overturns, where that was a later version than the first one of the package
+  (`which 0.5.0 began to print without the space`).
+- Where that version changed what is printed and the new change turns the output
+  back the other way (0.5.0 took the space after a comma away, and the new
+  change puts it back), the change also adds a note to the entry of that version
+  in the `CHANGELOG.md` of the package, after the text of the entry and indented
+  like it. The note is a quote, so that it does not read as something that
+  release did. Its first line is `**NOTE:**` and a `\`, which breaks the line,
+  and then come `Overturned in the next release: ` and one sentence that says
+  what is printed now:
+
+  ```md
+  > **NOTE:**\
+  > Overturned in the next release: the comma of a note is printed with one
+  > space after it, as in `Note over A, B`.
+  ```
+
+  GitHub does not draw `> [!NOTE]` as a note inside a list item, which every
+  entry is. The note tells the reader of that entry that its change was
+  reversed; it is not a history of later changes. No note is added where the
+  earlier version left a form as written and the new change prints it in one
+  form, where the new change carries the earlier one further or replaces its
+  form with a third one, or to the entry of the first release, which changed
+  nothing. `version:ci` replaces `the next release` with the version that
+  Changesets gives the package (`scripts/stamp-overturned-notes.mjs`), so the
+  changeset has to bump the package whose `CHANGELOG.md` holds the entry. Where
+  a version that is already released reversed the change, the note names that
+  version itself.
+
 - Leave out the forms that stay as they were, the conditions of a rule, and the
   counts behind it, such as how many times the documentation of mermaid.js
   writes each form: the rules documents hold them. Name one only when a user

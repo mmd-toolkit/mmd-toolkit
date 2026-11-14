@@ -22,6 +22,7 @@ import {
   toAsciiLowerCase,
   walk,
 } from "./layout.ts"
+import { holdsNameLikeDataBlock } from "./sequence-name-blocks.ts"
 import {
   findKeptBreaks,
   gapKeepsLineBreak,
@@ -34,8 +35,12 @@ import type { Source } from "./source.ts"
 import {
   findStructuralToken,
   findTokenStartingAt,
+  findTriviaAt,
   findTriviaBetween,
+  isAtLineEnd,
+  isSpaceOrTab,
   isWhitespace,
+  skipRemoved,
 } from "./source.ts"
 
 /**
@@ -309,7 +314,19 @@ export function layoutSequenceStatement(
         )
       : originalLayout()
   }
-  const atoms = collectAtoms(source, start, end, values, tail)
+  // A data block that a version that counts reads as a part of the name stays
+  // as written with its id, so does the gap between them (docs/sequence.md,
+  // Whitespace between tokens).
+  const nameBlock = holdsNameLikeDataBlock(statement)
+    ? [{ start: statement.id.range[0], end: statement.data.range[1] }]
+    : []
+  const atoms = collectAtoms(source, start, end, values, [
+    ...tail,
+    ...nameBlock,
+    ...(statement.type === "SequenceMessageStatement"
+      ? findNameGaps(source, statement)
+      : []),
+  ])
   return {
     atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
       gapKeepsLineBreak(source, keptBreaks, from, to),
@@ -318,6 +335,41 @@ export function layoutSequenceStatement(
     outdented: new Set(),
     lineBreaks: "joined",
   }
+}
+
+/**
+ * The stretches of a message whose whitespace stays as written, directives
+ * and all: some versions that count read a `()` beside an id, and the `<<` of
+ * a `<<->>` or `<<-->>`, as part of the name, so the whitespace between the id
+ * and the `()` or the `<<` is part of the name, and so is the one between a
+ * `()` and the target (docs/sequence.md, Arrow spacing).
+ */
+function findNameGaps(
+  source: Source,
+  statement: SequenceMessageStatement,
+): Atom[] {
+  const stretches: Atom[] = []
+  const { arrow, from, to } = statement
+  const arrowText = source.text.slice(arrow.range[0], arrow.range[1])
+  if (arrowText === "<<->>" || arrowText === "<<-->>") {
+    // The name reaches the `<<`, so the stretch holds the `()` and the gaps
+    // around it.
+    stretches.push({ start: from.range[1], end: arrow.range[0] })
+  } else if (statement.fromCentralConnection) {
+    const parentheses = expectToken(
+      findStructuralToken(source, from.range[1]),
+      "the `()` after the source of a message",
+    )
+    stretches.push({ start: from.range[1], end: parentheses.range[1] })
+  }
+  if (statement.toCentralConnection) {
+    const parentheses = expectToken(
+      findStructuralToken(source, arrow.range[1]),
+      "the `()` before the target of a message",
+    )
+    stretches.push({ start: parentheses.range[0], end: to.range[0] })
+  }
+  return stretches
 }
 
 /**
@@ -400,6 +452,163 @@ export function findTitleText(
   )
 }
 
+/** What stands after the bare `:` of a statement (see `scanAfterBareColon`). */
+interface ColonRemainder {
+  readonly holdsWhitespace: boolean
+  /** Whether nothing but spaces and tabs stands there. */
+  readonly isPlainRun: boolean
+  /**
+   * Whether a space or a tab stands right after the `:`, and no line
+   * separator (U+2028, U+2029) follows, so that the first character is the one
+   * that is read as the text and the rest can be left out.
+   */
+  readonly startsWithSpaceOrTab: boolean
+}
+
+/**
+ * What stands after the bare `:` of a message, a note, or a `links`, `link`,
+ * `properties`, or `details` statement, whose text is empty: whether it holds
+ * whitespace, and whether it is a plain run of spaces and tabs. Null when the
+ * statement has a text, or when the line goes on after the whitespace and the
+ * directives with anything else (a comment is read as text, which is no
+ * whitespace to hold). The scan stops at the end of the line or at a `;`.
+ */
+function scanAfterBareColon(
+  source: Source,
+  statement: SequenceStatement,
+): ColonRemainder | null {
+  switch (statement.type) {
+    case "SequenceMessageStatement":
+    case "SequenceNoteStatement":
+    case "SequenceLinksStatement":
+    case "SequenceLinkStatement":
+    case "SequencePropertiesStatement":
+    case "SequenceDetailsStatement":
+      break
+    default:
+      return null
+  }
+  if (statement.text !== null) return null
+  let end = statement.range[1]
+  let holdsWhitespace = false
+  let holdsSeparator = false
+  let isPlainRun = true
+  for (;;) {
+    const read = skipRemoved(source, end)
+    if (read !== end) {
+      isPlainRun = false
+      end = read
+    }
+    if (isAtLineEnd(source, end) || source.text[end] === ";") break
+    const character = source.text.charAt(end)
+    if (isWhitespace(character)) {
+      holdsWhitespace = true
+      if (character === "\u2028" || character === "\u2029")
+        holdsSeparator = true
+      if (!isSpaceOrTab(character)) isPlainRun = false
+      end++
+      continue
+    }
+    return null
+  }
+  return {
+    holdsWhitespace,
+    isPlainRun,
+    startsWithSpaceOrTab:
+      isSpaceOrTab(source.text.charAt(statement.range[1])) && !holdsSeparator,
+  }
+}
+
+/**
+ * The end of the `%%` comment that follows such a data block on its line, or
+ * undefined when none does. The name of a participant that a version that
+ * counts reads reaches that comment, with the whitespace before it, so both
+ * stay as written (a participant with a description after `as` has its text
+ * run to the comment already).
+ */
+export function findEndOfCommentAfterNameBlock(
+  source: Source,
+  statement: SequenceStatement,
+): number | undefined {
+  if (!holdsNameLikeDataBlock(statement) || statement.alias !== null) {
+    return undefined
+  }
+  // mermaid.js removes the directives before it reads the name, so the name
+  // runs over the whitespace (every character of it but a line break, which
+  // ends a name) and the directives to the comment.
+  let position = statement.range[1]
+  for (;;) {
+    const read = skipRemoved(source, position)
+    if (read !== position) position = read
+    else if (isNameWhitespace(source.text.charAt(position))) position++
+    else break
+  }
+  const comment = findTriviaAt(source, position)
+  return comment?.type === "Comment" &&
+    comment.mark === "%%" &&
+    comment.range[0] === position
+    ? comment.range[1]
+    : undefined
+}
+
+/** Whether a character is whitespace that the name of an older version holds: any but a line break. */
+function isNameWhitespace(character: string): boolean {
+  return (
+    character !== "" &&
+    character !== "\n" &&
+    character !== "\r" &&
+    isWhitespace(character)
+  )
+}
+
+/**
+ * The end of the statement together with the whitespace character that stays
+ * after its `:` when no text follows it, or null when no whitespace stays:
+ * `A->>B: ` is a message with an empty text, while a version that counts
+ * rejects `A->>B:`, since its text rule needs a character at least. The
+ * whitespace is outside the range of the statement, and its first character
+ * is printed as written, as in a task of a Gantt chart or a user journey
+ * (docs/sequence.md, Colons). It stays only where nothing but spaces and tabs
+ * follows the `:` up to the end of the line or to a `;`, which the printer
+ * drops. Where a directive or another whitespace character follows the `:`,
+ * the line is printed as written (see `readsItsColonWhitespace`).
+ */
+export function findColonWhitespaceEnd(
+  source: Source,
+  statement: SequenceStatement,
+): number | null {
+  const remainder = scanAfterBareColon(source, statement)
+  return remainder !== null &&
+    remainder.holdsWhitespace &&
+    (remainder.isPlainRun || remainder.startsWithSpaceOrTab)
+    ? statement.range[1] + 1
+    : null
+}
+
+/**
+ * Whether the line of a statement with an empty text is printed as written,
+ * because the whitespace after its `:` is read with what lies around it.
+ * A version that counts needs a character after the `:`, takes a whitespace
+ * character of any kind for it, and removes a directive before it reads the
+ * line, so the whitespace after a directive is that character too. The printer
+ * drops whitespace at the end of a line and prints another whitespace
+ * character as a space, so where the whitespace after the `:` is more than a
+ * run of spaces and tabs, the line stays as it is, as in a task of a Gantt
+ * chart or a user journey (docs/sequence.md, Colons).
+ */
+export function readsItsColonWhitespace(
+  source: Source,
+  statement: SequenceStatement,
+): boolean {
+  const remainder = scanAfterBareColon(source, statement)
+  return (
+    remainder !== null &&
+    remainder.holdsWhitespace &&
+    !remainder.isPlainRun &&
+    !remainder.startsWithSpaceOrTab
+  )
+}
+
 /** The gap rules of a statement: around its arrow, its `,`, and its `:`. */
 function statementRules(
   source: Source,
@@ -467,8 +676,8 @@ function addWrapRules(node: Node, rules: Map<number, GapRule>): void {
  * after it, before the `+`, `-`, or `()` that may follow it, or before the
  * target; none on either side when the source is an id that a following
  * space would make another unit (see `isReadOtherwiseBeforeWhitespace`).
- * The `()` of the source touches the source, and the `+`, `-`, or `()`
- * before the target touches the target (docs/sequence.md, Arrow spacing).
+ * The `+` or `-` before the target touches the target, and the whitespace
+ * beside a `()` stays as written (docs/sequence.md, Arrow spacing).
  * The arrow is printed from its token, whose range is the range of the
  * arrow node.
  */
@@ -491,16 +700,15 @@ function addArrowRules(
       : "space"
   rules.set(arrow.range[0], rule)
   rules.set(next.range[0], rule)
-  if (statement.fromCentralConnection) {
-    rules.set(
-      expectToken(
-        findStructuralToken(source, statement.from.range[1]),
-        "the `()` after the source of a message",
-      ).range[0],
-      "none",
-    )
-  }
-  if (statement.activation !== null || statement.toCentralConnection) {
+  // A version that counts has no `<<->>` and `<<-->>` and reads the `<<` as
+  // part of the name before them, so the whitespace before such an arrow stays
+  // as written.
+  const arrowText = source.text.slice(arrow.range[0], arrow.range[1])
+  if (arrowText === "<<->>" || arrowText === "<<-->>")
+    rules.delete(arrow.range[0])
+  // The whitespace beside a `()` stays as written: some versions that count
+  // have no central connection and read `()` as part of a name.
+  if (statement.activation !== null) {
     // The `-` of an activation and the first characters of the target would
     // read as an arrow (see `isReadAsArrowAfterMinus`).
     rules.set(
@@ -528,7 +736,7 @@ function isReadAsArrowAfterMinus(id: string): boolean {
 
 /**
  * Adds the rules of the `,` between the two ids of a note over two
- * participants: none before it and none after it (docs/sequence.md,
+ * participants: none before it and one space after it (docs/sequence.md,
  * Whitespace between tokens). A note with one id has no `,`.
  */
 function addCommaRules(
@@ -544,7 +752,7 @@ function addCommaRules(
   )
   expectValue(comma, ",")
   rules.set(comma.range[0], "none")
-  rules.set(second.range[0], "none")
+  rules.set(second.range[0], "space")
 }
 
 /**

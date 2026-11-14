@@ -42,7 +42,7 @@ Examples of **incorrect** code for this rule:
 gantt
   dateFormat YYYY-MM-DD
   excludes weekend
-  Design :2024-01-05, 3d
+  Design : 2024-01-05, 3d
 ```
 
 ```mmd
@@ -50,7 +50,7 @@ gantt
 gantt
   dateFormat YYYY-MM-DD
   excludes sat, sun
-  Design :2024-01-05, 3d
+  Design : 2024-01-05, 3d
 ```
 
 Examples of **correct** code for this rule:
@@ -60,7 +60,7 @@ Examples of **correct** code for this rule:
 gantt
   dateFormat YYYY-MM-DD
   excludes weekends
-  Design :2024-01-05, 3d
+  Design : 2024-01-05, 3d
 ```
 
 ```mmd
@@ -68,7 +68,7 @@ gantt
 gantt
   dateFormat YYYY-MM-DD
   excludes saturday, sunday, 2024-01-08
-  Design :2024-01-05, 3d
+  Design : 2024-01-05, 3d
 ```
 
 ## Options

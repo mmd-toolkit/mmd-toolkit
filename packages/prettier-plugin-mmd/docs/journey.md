@@ -248,25 +248,50 @@ journey
 ### Task data
 
 A task is printed as its description, a colon, the score, a colon, the people,
-and the text after a third colon. The description is printed as written, with
-the whitespace between its text and the colon: that whitespace is part of the
-description, which the Db keeps, so `Make tea  : 5` and `Make tea: 5` are
-different tasks, and the padding that aligns the colons of a journey stays.
-[fixture: task-data/colon-touches-description] [fixture:
-task-data/description-padding-kept] A description may hold quotes, tags, `%`,
-and keywords inside it. [fixture: task-data/special-characters-in-description]
-[fixture: task-data/keywords-inside]
+and the text after a third colon. The whitespace between the text of the
+description and the first colon is the end of the description, which the Db
+keeps and mermaid.js draws without (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+Each line adds a task, so the colon is not the colon of a key, and the examples
+in the documentation of mermaid.js write it touching the description: of the
+five task lines, the ten colons that are followed by a space have no space
+before them (step 3 of
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is); counted as
+under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)).
+So `Make tea : 5: Me` is printed `Make tea: 5: Me`. The padding that lines the
+colons up stays: in a section where some description has two spaces or tabs, or
+more, before its colon, every task of the section stays as written (the tasks
+before the first `section` are a section), as the tasks of a Gantt chart whose
+names are padded are lined up. A description that ends with a whitespace
+character other than a space or a tab (`A\u3000 : 5` with U+3000), a description
+that holds a directive, and a task over several lines also stay as written.
+[fixture: task-data/description-blank-dropped] [fixture:
+task-data/description-blank-dropped-per-section] [fixture:
+task-data/description-blank-directive-kept] [fixture:
+task-data/description-blank-over-lines-kept] [fixture:
+task-data/colon-touches-description] [fixture:
+task-data/description-padding-kept] [fixture:
+task-data/description-padding-space-tab-kept] A description may hold quotes,
+tags, `%`, and keywords inside it. [fixture:
+task-data/special-characters-in-description] [fixture:
+task-data/keywords-inside]
 
 A score or a person stands after one space, after a colon and after a comma
 alike; a colon and a comma touch what is before them. Whitespace around them is
-not in the Db, and is not kept. The space is written only before a value, as in
-a Gantt chart, which is the form of most task lines in the documentation of
-mermaid.js. [fixture: task-data/colon-spacing] [fixture:
-task-data/people-comma-spacing] An empty score or an empty person prints
-nothing, so no space stands before it: `A: : Me` is printed `A:: Me`, and
-`A: 3: a, ,b` is printed `A: 3: a,, b`. The empty people stay, since mermaid.js
-reads each as a name. [fixture: task-data/empty-score] [fixture:
-task-data/empty-people] [fixture: task-data/no-people-no-score]
+not in the Db, and is not kept. The space is written only before a value, and a
+colon after the score touches it: of the colons that the examples in the
+documentation of mermaid.js write with a space after them, none has a space
+before it (10 colons; step 3 of
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is); counted as
+under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)).
+[fixture: task-data/colon-spacing] [fixture: task-data/people-comma-spacing] An
+empty score or an empty person prints nothing, so no space stands before it:
+`A: : Me` is printed `A:: Me`, and `A: 3: a, ,b` is printed `A: 3: a,, b`. The
+empty people stay, since mermaid.js reads each as a name. [fixture:
+task-data/empty-score] [fixture: task-data/empty-people] [fixture:
+task-data/no-people-no-score]
 
 The score and the people are printed as written: the whitespace inside a person
 is part of it in the Db. The spelling of a score is the author's: mermaid.js

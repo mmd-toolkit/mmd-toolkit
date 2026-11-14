@@ -6,9 +6,9 @@ Filename: pie-no-duplicate-label-incorrect-1.mmd
 
 Code:
   1 | pie
-  2 |   "Revenue" : 8
-  3 |   "Revenue" : 3
-    |   ^~~~~~~~~~~~~ [1]
+  2 |   "Revenue": 8
+  3 |   "Revenue": 3
+    |   ^~~~~~~~~~~~ [1]
   4 |
 
 [1] mermaid.js keeps the value of the first section with this label and ignores this value.

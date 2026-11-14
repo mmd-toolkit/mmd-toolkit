@@ -49,7 +49,7 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/gantt-no-undef: error
 gantt
   dateFormat YYYY-MM-DD
-  Design :des1, 2024-01-06, 3d
+  Design : des1, 2024-01-06, 3d
   click des2 href "https://example.com"
 ```
 
@@ -57,16 +57,16 @@ gantt
 %% eslint @mmd-toolkit/gantt-no-undef: error
 gantt
   dateFormat YYYY-MM-DD
-  Design :des1, 2024-01-06, 3d
-  Build :after des2, 5d
+  Design : des1, 2024-01-06, 3d
+  Build : after des2, 5d
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/gantt-no-undef: error
 gantt
   dateFormat YYYY-MM-DD
-  Design :des1, 2024-01-06, 3d
-  Review :2024-01-01, until des2
+  Design : des1, 2024-01-06, 3d
+  Review : 2024-01-01, until des2
 ```
 
 Examples of **correct** code for this rule:
@@ -75,8 +75,8 @@ Examples of **correct** code for this rule:
 %% eslint @mmd-toolkit/gantt-no-undef: error
 gantt
   dateFormat YYYY-MM-DD
-  Design :des1, 2024-01-06, 3d
-  Build :after des1, 5d
+  Design : des1, 2024-01-06, 3d
+  Build : after des1, 5d
   click des1 href "https://example.com"
 ```
 

@@ -12,7 +12,7 @@ import {
   lineStartOf,
 } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
-import { findFirstIndex, findTokenStartingAt } from "./source.ts"
+import { findFirstIndex, findTokenStartingAt, textRead } from "./source.ts"
 
 import {
   findStyleLinesWithLineSeparators,
@@ -111,7 +111,8 @@ export function findSemicolonOnLaterLine(
       statement.range[0] === separator.range[0],
   )
   if (isStatement) return undefined
-  const between = source.text.slice(
+  const between = textRead(
+    source,
     findWordEnd(source, range),
     separator.range[0],
   )

@@ -1,6 +1,13 @@
 import type { TextEdit } from "./layout.ts"
 import type { Source } from "./source.ts"
-import { isSpaceOrTab, isWhitespace } from "./source.ts"
+import {
+  findTriviaAt,
+  isSpaceOrTab,
+  isWhitespace,
+  previousRead,
+  skipRemoved,
+  textRead,
+} from "./source.ts"
 
 /**
  * The edits that print each run of spaces and tabs inside the text of a style,
@@ -20,16 +27,15 @@ export function styleRunEdits(
   const edits: TextEdit[] = []
   let position = start
   while (position < end) {
+    const read = skipRemoved(source, position)
+    if (read !== position) {
+      position = read
+      continue
+    }
+    const regionEnd = endOfStyleRegion(source, position, end)
     const character = text[position]
-    if (character === "\\") {
-      position = endOfEscape(text, position, end)
-    } else if (character === '"' || character === "'") {
-      position = endOfQuoted(text, position, end)
-    } else if (text.startsWith("/*", position)) {
-      const close = text.indexOf("*/", position + "/*".length)
-      position = close === -1 || close + "*/".length > end ? end : close + 2
-    } else if (text.slice(position, position + 4).toLowerCase() === "url(") {
-      position = endOfUrl(text, position + "url(".length, end)
+    if (regionEnd !== undefined) {
+      position = regionEnd
     } else if (isSpaceOrTab(character)) {
       let runEnd = position
       while (runEnd < end && isSpaceOrTab(text[runEnd])) runEnd++
@@ -53,17 +59,67 @@ export function styleRunEdits(
  * escape is a run like any other (`Arial\20  Black` is `Arial`, the escape
  * `\20 `, one space, and `Black`).
  */
-function endOfEscape(text: string, backslashAt: number, end: number): number {
+function endOfEscape(source: Source, backslashAt: number, end: number): number {
+  let position = skipRemoved(source, backslashAt + 1)
   let digits = 0
-  while (
-    digits < 6 &&
-    backslashAt + 1 + digits < end &&
-    isHexDigit(text[backslashAt + 1 + digits])
-  )
+  while (digits < 6 && position < end && isHexDigit(source.text[position])) {
     digits++
-  if (digits === 0) return backslashAt + 2
-  const after = backslashAt + 1 + digits
-  return after < end && isSpaceOrTab(text[after]) ? after + 1 : after
+    position = skipRemoved(source, position + 1)
+  }
+  if (digits === 0) return Math.min(position + 1, end)
+  return position < end && isSpaceOrTab(source.text[position])
+    ? position + 1
+    : Math.min(position, end)
+}
+
+/**
+ * The offset after a CSS mark, ignoring directives between its characters,
+ * or undefined where that mark does not start here (common.md, Reading a source).
+ */
+function endOfStyleMark(
+  source: Source,
+  start: number,
+  end: number,
+  mark: string,
+): number | undefined {
+  let position = start
+  for (const character of mark) {
+    position = skipRemoved(source, position)
+    if (position >= end || source.text[position].toLowerCase() !== character)
+      return undefined
+    position++
+  }
+  return position
+}
+
+/**
+ * The offset after a directive or a CSS region whose contents stay as written.
+ * Both scans use the same boundaries, read without directives: their arguments
+ * can contain CSS punctuation of their own (docs/compatibility.md, Colors that
+ * are drawn the same).
+ */
+function endOfStyleRegion(
+  source: Source,
+  position: number,
+  end: number,
+): number | undefined {
+  const trivia = findTriviaAt(source, position)
+  if (trivia?.type === "Directive") return Math.min(trivia.range[1], end)
+  const character = source.text[position]
+  if (character === "\\") return endOfEscape(source, position, end)
+  if (character === '"' || character === "'")
+    return endOfQuoted(source, position, end)
+  const commentStart = endOfStyleMark(source, position, end, "/*")
+  if (commentStart !== undefined) {
+    for (let index = commentStart; index < end; index++) {
+      index = skipRemoved(source, index)
+      const close = endOfStyleMark(source, index, end, "*/")
+      if (close !== undefined) return close
+    }
+    return end
+  }
+  const urlStart = endOfStyleMark(source, position, end, "url(")
+  return urlStart === undefined ? undefined : endOfUrl(source, urlStart, end)
 }
 
 /** Whether a character is a hexadecimal digit. */
@@ -72,24 +128,49 @@ function isHexDigit(character: string | undefined): boolean {
 }
 
 /** The offset after the string that starts with the quote at `quoteAt`. */
-function endOfQuoted(text: string, quoteAt: number, end: number): number {
+function endOfQuoted(source: Source, quoteAt: number, end: number): number {
   for (let index = quoteAt + 1; index < end; index++) {
-    if (text[index] === "\\") index++
-    else if (text[index] === text[quoteAt]) return index + 1
+    index = skipRemoved(source, index)
+    if (index >= end) break
+    if (source.text[index] === "\\") index = skipRemoved(source, index + 1)
+    else if (source.text[index] === source.text[quoteAt]) return index + 1
   }
   return end
 }
 
 /** The offset after the `)` that closes the `url(` whose text starts at `from`. */
-function endOfUrl(text: string, from: number, end: number): number {
+function endOfUrl(source: Source, from: number, end: number): number {
   for (let index = from; index < end; index++) {
-    const character = text[index]
-    if (character === "\\") index++
+    index = skipRemoved(source, index)
+    if (index >= end) break
+    const character = source.text[index]
+    if (character === "\\") index = skipRemoved(source, index + 1)
     else if (character === '"' || character === "'")
-      index = endOfQuoted(text, index, end) - 1
+      index = endOfQuoted(source, index, end) - 1
     else if (character === ")") return index + 1
   }
   return end
+}
+
+/**
+ * Whether mermaid.js 10.9.8 reads a `style` statement of a state diagram as a
+ * state with a description, and so draws its text as it is: it has no `style`
+ * statement there, and a line `style A fill:#ABC` is the states `style` and `A`
+ * and the description `#ABC` of the state `fill`. It reads the line so where no
+ * style after the first holds a `:`: a second `:` is a syntax error. The
+ * characters of such a line stay as written where they would be drawn
+ * (docs/state.md, Styles).
+ */
+export function readsStyleAsDescription(
+  source: Source,
+  styles: readonly ({ readonly range: readonly [number, number] } | null)[],
+): boolean {
+  return styles
+    .slice(1)
+    .every(
+      (style) =>
+        style === null || !textRead(source, ...style.range).includes(":"),
+    )
 }
 
 /**
@@ -114,35 +195,40 @@ export function styleColorEdits(
   const edits: TextEdit[] = []
   let position = start
   while (position < end) {
+    const read = skipRemoved(source, position)
+    if (read !== position) {
+      position = read
+      continue
+    }
+    const regionEnd = endOfStyleRegion(source, position, end)
     const character = text[position]
-    if (character === "\\") {
-      position = endOfEscape(text, position, end)
-    } else if (character === '"' || character === "'") {
-      position = endOfQuoted(text, position, end)
-    } else if (text.startsWith("/*", position)) {
-      const close = text.indexOf("*/", position + "/*".length)
-      position = close === -1 || close + "*/".length > end ? end : close + 2
-    } else if (text.slice(position, position + 4).toLowerCase() === "url(") {
-      position = endOfUrl(text, position + "url(".length, end)
+    if (regionEnd !== undefined) {
+      position = regionEnd
     } else if (character === "#") {
-      let digitsEnd = position + 1
-      while (digitsEnd < end && isHexDigit(text[digitsEnd])) digitsEnd++
-      const digits = digitsEnd - position - 1
-      const before = position === start ? undefined : text[position - 1]
-      const after = text[digitsEnd]
+      const digitPositions: number[] = []
+      let digitsEnd = skipRemoved(source, position + 1)
+      while (digitsEnd < end && isHexDigit(text[digitsEnd])) {
+        digitPositions.push(digitsEnd)
+        digitsEnd = skipRemoved(source, digitsEnd + 1)
+      }
+      const digits = digitPositions.length
+      // The characters beside the color are the ones that the lexer reads: the
+      // `;` that ends the text, which the line rule ignores, is not one.
+      const beforeAt = previousRead(source, position)
+      const before = beforeAt < start ? undefined : text[beforeAt]
+      const after = digitsEnd < end ? text[digitsEnd] : undefined
       if (
         (digits === 3 || digits === 4 || digits === 6 || digits === 8) &&
         (before === undefined ||
           isWhitespace(before) ||
           ":,(".includes(before)) &&
-        (after === undefined ||
-          isWhitespace(after) ||
-          ",)!".includes(after) ||
-          (after === ";" && digitsEnd === end))
+        (after === undefined || isWhitespace(after) || ",)!".includes(after))
       ) {
-        const lower = text.slice(position, digitsEnd).toLowerCase()
-        if (lower !== text.slice(position, digitsEnd)) {
-          edits.push({ range: [position, digitsEnd], replacement: lower })
+        // Edit only the written digits: a directive between them stays whole.
+        for (const digit of digitPositions) {
+          const lower = text[digit].toLowerCase()
+          if (lower !== text[digit])
+            edits.push({ range: [digit, digit + 1], replacement: lower })
         }
       }
       position = digitsEnd

@@ -37,9 +37,9 @@ id を書いていないタスクに mermaid.js が付ける、
 %% eslint @mmd-toolkit/gantt-no-duplicate-id: error
 gantt
   dateFormat YYYY-MM-DD
-  Design :des1, 2024-01-06, 3d
-  Build :des1, 2024-01-09, 5d
-  Test :after des1, 2d
+  Design : des1, 2024-01-06, 3d
+  Build : des1, 2024-01-09, 5d
+  Test : after des1, 2d
 ```
 
 この規則に**従う**コードの例:
@@ -48,9 +48,9 @@ gantt
 %% eslint @mmd-toolkit/gantt-no-duplicate-id: error
 gantt
   dateFormat YYYY-MM-DD
-  Design :des1, 2024-01-06, 3d
-  Build :des2, 2024-01-09, 5d
-  Test :after des1, 2d
+  Design : des1, 2024-01-06, 3d
+  Build : des2, 2024-01-09, 5d
+  Test : after des1, 2d
 ```
 
 ## オプション

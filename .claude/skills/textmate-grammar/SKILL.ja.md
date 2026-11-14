@@ -120,9 +120,6 @@ description:
 この作業が書くのは、`packages/textmate-grammar`、
 その changeset（`.changeset/`）、このスキルだけです。
 仕様の抜けは spec スキルで直し、推測で書いた規則で埋めません。
-commit と push は、頼まれたときだけ行います（AGENTS.md）。
-stage は変えません。
-`git mv`、`git stash`、`git checkout`、`git restore` は使いません。
 
 ## 2. ファイルの組み立て
 
@@ -245,7 +242,7 @@ stage は変えません。
 ## 6. mermaid.js の更新のとき
 
 この文法は、mermaid.js から何も取りません。
-tests スキルと spec スキルの手順で仕様が更新されるのを待ち、
+tests-mermaid-update スキルと spec スキルの手順で仕様が更新されるのを待ち、
 5 節の手順を当てます。
 文法の中に、mermaid.js の版に結び付いたものはありません。
 playground の例（playground の依存の

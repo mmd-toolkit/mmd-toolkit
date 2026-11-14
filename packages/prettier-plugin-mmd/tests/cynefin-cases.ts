@@ -111,7 +111,7 @@ export const cynefinCases: readonly CynefinCase[] = [
   {
     name: "cynefin/specified-readings/divergence-html-cross",
     input: '---\ntitle: <a\n---\ncynefin-beta\naccTitle: b="z">raw',
-    output: '---\ntitle: <a\n---\ncynefin-beta\n  accTitle: b="z">raw\n',
+    output: '---\ntitle: <a\n---\ncynefin-beta\naccTitle: b="z">raw',
     options: {},
   },
   {

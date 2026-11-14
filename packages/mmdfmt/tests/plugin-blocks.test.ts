@@ -410,9 +410,9 @@ describe("If you know Prettier: the colons of a Gantt section in a container", (
     withSection = true,
   ): string[] {
     const tasks = [
-      ["Task name long enough to matter", ":a1, 2014-01-01, 1d"],
-      ["T", ":a2, after a1, 1d"],
-      ["Mid name", ":a3, after a2, 1d"],
+      ["Task name long enough to matter", ": a1, 2014-01-01, 1d"],
+      ["T", ": a2, after a1, 1d"],
+      ["Mid name", ": a3, after a2, 1d"],
     ].map(([name, rest], index) => `${margin}${name}${gaps[index]}${rest}`)
     return [
       "gantt",
@@ -423,7 +423,7 @@ describe("If you know Prettier: the colons of a Gantt section in a container", (
   }
 
   /** The row of the second task once the colons are lined up under the longest name. */
-  const alignedRow = "T                               :a2, after a1, 1d"
+  const alignedRow = "T                               : a2, after a1, 1d"
   /** The tasks of a section are one level deeper than `section`, and the tasks before it one level deeper than `gantt`. */
   const sectionMargin = "    "
   const noSectionMargin = "  "
@@ -433,36 +433,36 @@ describe("If you know Prettier: the colons of a Gantt section in a container", (
     {
       container: "a list item",
       inContainer: inListItem,
-      prettierOnly: [53, 54],
-      both: 55,
+      prettierOnly: [54, 55],
+      both: 56,
     },
     {
       container: "a block quote",
       inContainer: inBlockQuote,
-      prettierOnly: [53, 54],
-      both: 55,
+      prettierOnly: [54, 55],
+      both: 56,
     },
     {
       container: "an ordered list item",
       inContainer: inOrderedListItem("1."),
-      prettierOnly: [53, 54, 55],
-      both: 56,
+      prettierOnly: [54, 55, 56],
+      both: 57,
     },
     {
       container: "an ordered list item with a number of two digits",
       inContainer: inOrderedListItem("10."),
-      prettierOnly: [53, 54, 55, 56],
-      both: 57,
+      prettierOnly: [54, 55, 56, 57],
+      both: 58,
     },
   ])(
     "in $container, is lined up by Prettier where the lines fit without what stands before them, and by mmdfmt only where they fit with it",
     async ({ inContainer, prettierOnly, both }) => {
-      // The lined-up rows are 53 columns wide without what stands before the
-      // lines, and 53 plus the width of that with it: 55 in a list item and in
-      // a block quote, 56 after `1.`, and 57 after `10.`.
+      // The lined-up rows are 54 columns wide without what stands before the
+      // lines, and 54 plus the width of that with it: 56 in a list item and in
+      // a block quote, 57 after `1.`, and 58 after `10.`.
       const text = inContainer(ganttLines(sectionMargin, padded))
       for (const { printWidth, prettierLinesUp, toolLinesUp } of [
-        { printWidth: 52, prettierLinesUp: false, toolLinesUp: false },
+        { printWidth: 53, prettierLinesUp: false, toolLinesUp: false },
         ...prettierOnly.map((width) => ({
           printWidth: width,
           prettierLinesUp: true,
@@ -518,7 +518,7 @@ describe("If you know Prettier: the colons of a Gantt section in a container", (
     async ({ indentation, gaps }) => {
       const text = inListItem(ganttLines(" ".repeat(indentation), gaps))
       const printed = inListItem(ganttLines(sectionMargin, gaps))
-      const printWidth = 53
+      const printWidth = 54
       const byPrettier = await format(text, {
         parser: "markdown",
         plugins: [plugin],
@@ -531,10 +531,10 @@ describe("If you know Prettier: the colons of a Gantt section in a container", (
   )
 
   it("indents the tasks before the first section one level deeper than gantt, and leaves the whitespace before each colon as written", async () => {
-    // The lined-up rows are 51 columns wide without what stands before the lines.
+    // The lined-up rows are 52 columns wide without what stands before the lines.
     const text = inListItem(ganttLines("      ", padded, false))
     const printed = inListItem(ganttLines(noSectionMargin, padded, false))
-    const printWidth = 51
+    const printWidth = 52
     const byPrettier = await format(text, {
       parser: "markdown",
       plugins: [plugin],

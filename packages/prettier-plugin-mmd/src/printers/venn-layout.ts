@@ -1,6 +1,6 @@
 import type { Node, Range, VennStatement } from "@mmd-toolkit/ast"
 import type { AtomLayout, GapRule } from "./atoms.ts"
-import { lineStartOf } from "./kept-lines.ts"
+import { holdsKeptSemicolon, lineEndOf, lineStartOf } from "./kept-lines.ts"
 import {
   collectAtoms,
   collectValueNodes,
@@ -15,6 +15,7 @@ import type { Source } from "./source.ts"
 import { findRespellings } from "./spelling.ts"
 import {
   findTriviaBetween,
+  skipRemoved,
   hasTriviaBesidesTrailingDirectives,
   isSpaceOrTab,
 } from "./source.ts"
@@ -81,6 +82,11 @@ function findWordRunEdits(source: Source, [start, end]: Range): TextEdit[] {
   const edits: TextEdit[] = []
   let depth = 0
   for (let position = start; position < end;) {
+    const read = skipRemoved(source, position)
+    if (read !== position) {
+      position = read
+      continue
+    }
     const character = source.text[position]
     if (character === "(") depth++
     else if (character === ")" && depth > 0) depth--
@@ -99,6 +105,12 @@ function findWordRunEdits(source: Source, [start, end]: Range): TextEdit[] {
     position = runEnd
   }
   return edits
+}
+
+/** Whether a unit starts with a text statement that has targets. */
+export function isExplicitVennTextUnit(unit: VennUnit): boolean {
+  const first = unit.statements[0]
+  return first.type === "VennTextStatement" && first.targets !== null
 }
 
 /** Only targetless text uses positive indentation; it is a marker, not nesting. */
@@ -121,6 +133,15 @@ export function layoutVennStatement(
     statement.type === "VennIgnoredText" ||
     (statement.type === "VennTitleStatement" &&
       hasTriviaBesidesTrailingDirectives(source, start, end))
+  )
+    return keptAsWritten(start, end)
+  // A title whose text stands on a later line, after a `;` that stays: the
+  // line break and the whitespace of the later line are kept, since the
+  // indentation of the line is part of what the lexer reads.
+  if (
+    statement.type === "VennTitleStatement" &&
+    source.text.slice(start, statement.value.range[0]).includes("\n") &&
+    holdsKeptSemicolon(source, start, statement.value.range[0])
   )
     return keptAsWritten(start, end)
   const values = collectValueNodes(statement, vennValueNodeTypes)
@@ -157,19 +178,54 @@ export function layoutVennStatement(
     )
   }
   const rules = new Map<number, GapRule>()
+  // A comma touches the name before it and is followed by one space, and the
+  // colon of a style property is followed by one space too. The colon of a
+  // size stands between the declaration and its size, with one space on each
+  // side (docs/venn.md, Name lists, Sizes and numbers, and Style properties).
+  const sizeStart =
+    statement.type === "VennSubsetStatement"
+      ? (statement.size?.range[0] ?? null)
+      : null
+  // The starts of the values that follow a colon: those of the properties of a
+  // style, and the size of a set or a union.
+  const colonValueStarts = new Set(
+    statement.type === "VennStyleStatement"
+      ? statement.properties.map((property) => property.value.range[0])
+      : sizeStart === null
+        ? []
+        : [sizeStart],
+  )
+  // A `;` on the line is read by the line rule of mermaid.js, which ignores
+  // it or not by whether whitespace lies between a `:` and a `#`: the gap
+  // after the colon of a property or of a size keeps whether it holds
+  // whitespace (docs/venn.md, Style properties and Line rule and kept lines).
+  const keepsColonGap = holdsKeptSemicolon(
+    source,
+    start,
+    lineEndOf(source, start),
+  )
   for (let index = 1; index < atoms.length; index++) {
     const previous = atoms[index - 1]
     const atom = atoms[index]
     const before = source.text.slice(previous.start, previous.end)
     const text = source.text.slice(atom.start, atom.end)
+    const afterColon = colonValueStarts.has(atom.start)
+    const beforeSizeColon =
+      text === ":" && atoms[index + 1]?.start === sizeStart
     rules.set(
       atom.start,
-      text === "," ||
-        text === ":" ||
-        before === ":" ||
-        ("label" in statement && atom.start === statement.label?.range[0])
-        ? "none"
-        : "space",
+      afterColon
+        ? keepsColonGap && skipRemoved(source, previous.end) === atom.start
+          ? "none"
+          : "space"
+        : beforeSizeColon
+          ? "space"
+          : text === "," ||
+              text === ":" ||
+              before === ":" ||
+              ("label" in statement && atom.start === statement.label?.range[0])
+            ? "none"
+            : "space",
     )
   }
   return {

@@ -39,7 +39,7 @@ mermaid.js の文書の書き方と同じく、section の中に置きます。
 入力に書かれた字下げは残しません。
 行頭の空白は mermaid.js にとって何の意味も持たず、
 前の period より深く書いた period も別の period です（diagrams/timeline.md、
-Lexical structure）。
+字句構造）。
 字下げは構造だけで決められるので、1 つの規則で、
 入力の字下げによらず同じテキストになります。
 [fixture: indentation/written-indentation-dropped]
@@ -103,11 +103,11 @@ timeline
 ### 1 行 1 文
 
 各文は自分の行に置きます。
-timeline では文を区切るものがなく（diagrams/timeline.md、
-Diagram and statements）、ヘッダーと `accDescr` ブロックの後ろには、
-同じ行に次の文が続けられます。
+timeline では文を区切るものがなく（diagrams/timeline.md、図と文）、
+ヘッダーと `accDescr` ブロックの後ろには、同じ行に次の文が続けられます。
 どちらの後ろの文も、自分の行に移します。
-ヘッダーの方向は、ヘッダーの行に残します。
+ヘッダーの方向と、その後ろのテキストは、
+ヘッダーの行に残します（[ヘッダーと方向](#ヘッダーと方向)を参照）。
 [fixture: statements-one-per-line/header-then-title]
 [fixture: statements-one-per-line/header-then-period]
 [fixture: statements-one-per-line/header-then-section]
@@ -171,8 +171,7 @@ timeline TD title T
 ([statements-one-per-line/header-direction-then-title-output.mmd](../tests/fixtures/timeline/statements-one-per-line/header-direction-then-title-output.mmd)):
 
 ```mmd
-timeline TD
-  title T
+timeline TD title T
 ```
 
 入力
@@ -300,31 +299,48 @@ timeline
 
 ### period と event
 
-period と event は、行の最後の event の末尾の空白を除き、
+期間とイベントは、行の最後のイベントの末尾の空白と、`:` の前に足す空白を除き、
 テキストと `:` の間の空白も含め、書かれたまま印字します。
-mermaid.js はその空白を Db に持ちますが、空白がなくても同じ event を描きます。
+mermaid.js はその空白を Db に持ちますが、空白がなくても同じテキストを描きます。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 Db は、period の末尾の空白（`:` の前の空白）と、
 event の `:` の後ろの 1 文字を除いた両端の空白を、値として持ちます。
 `2004 : a` と `2004: a` は別の period で、`a :   e` の event は `  e`、
 `a : e   ` の event は `e   ` です。
-そのため、timeline の `:` をそろえるための空白は残し、
-period に接した `:` は接したままにします。
+そのため、timeline の `:` をそろえるための空白は残します。
 行末の `a : e   ` は `a : e` と印字し、`c : g   : h` は書かれたままにします。
+末尾に空白のないテキストの後の `:` には、その前に空白を 1 つ足します。
+mermaid.js の文書の例は、
+テキストの後の `:` をすべてこう書きます（88 個が前に空白を置き、
+テキストに接するものはありません）。
+数え方は
+[コロンの前の空白を決める例](./compatibility.ja.md#コロンの前の空白を決める例)
+を参照してください。
+`2004: Facebook: Google` は `2004 : Facebook : Google` と印字します。
+後ろに空白がない `:` はテキストの文字なので、そのままにします。
+period が `title` か `section` の語（大文字小文字は問いません）のときは、
+`:` が接したままにします。
+字句解析器は `title` と空白を title のキーワードとして読むためです。
+`title: x` は event `x` を持つ period で、
+`title : x` はテキスト `: x` を持つ title です。
+テキストと `:` の間にディレクティブがあるときは、
+隙間を書かれたままにします（[指令](#指令)を参照）。
 次の `:` との間に改行がある event も、行の最後の event です。
 `2020 : e1  ` の次に `: e2` の行が続くとき、`e1` の後ろの空白は除きます。
-このような event の末尾の directive は、前に空白があれば空白 1 つを置き、
-最後の directive の後ろの空白は除きます。
+このようなイベントの末尾のディレクティブは、前に空白があれば空白 1 つを置き、
+最後のディレクティブの後ろの空白は除きます。
 `2020 : e1   %%{x}%%  ` は `2020 : e1 %%{x}%%` と印字します。
-（[同じに描かれるキーワードの後のテキスト](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)）。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 [fixture: periods-and-events/event-trailing-directive-blanks-dropped]
 [fixture: periods-and-events/event-two-directives-trailing-blanks-dropped]
+[fixture: periods-and-events/space-before-colon-added]
+[fixture: periods-and-events/space-before-colon-keyword-period]
 [fixture: periods-and-events/period-whitespace-kept]
 [fixture: periods-and-events/event-padding-kept-end-dropped]
 [fixture: periods-and-events/whitespace-only-event]
 [fixture: periods-and-events/period-trailing-kept-event-end-dropped]
 [fixture: periods-and-events/event-end-before-continuation-dropped]
-event の中の `:`、`#`、`%%` はテキストの文字で、
+イベントの中の `:`、`#`、`%%` はテキストの文字で、
 後ろに空白が続かない `:` も同じです。
 [fixture: periods-and-events/colon-inside-event]
 [fixture: periods-and-events/special-characters-in-events]
@@ -353,7 +369,7 @@ event が `Facebook` から `Facebook ` になります。
 
 最初の `:` が period と同じ行で直後に続くとき、
 後ろの行の event の `:` をその下にそろえます。
-section の中でも、同じ period の event を読み取りやすくするためです。
+section の中でも、同じ period の `:` は 1 つの桁に置きます。
 整列用の空白では、タブをタブ位置として残し、
 全角文字を含む残りのテキストには Prettier の表示幅を使います。
 中にある指令も含め、period に書かれたテキストの幅を数えます。
@@ -423,7 +439,7 @@ timeline
 ```mmd
 timeline
   2002   : LinkedIn
-  2004: Facebook
+  2004 : Facebook
   2005 : YouTube
 ```
 
@@ -525,10 +541,10 @@ timeline
 
 ### event の文
 
-period でない文（title、section、accessibility の文、
+period でない文（title、section、アクセシビリティの文、
 空の説明ブロック）の後ろにある event は、event の文です。
 mermaid.js は、その event を、間の文をまたいで、
-その前の最後の period に付けます（diagrams/timeline.md、Periods and events）。
+その前の最後の period に付けます（diagrams/timeline.md、period と event）。
 印字はそれを動かさず、書かれた場所に、自分の行で、まわりの文と同じ段に置きます。
 このプロジェクトのどの印字も、文を別の文の前後へ動かしません。
 title の後ろの event を読む人がどう読むかは、整形の問題ではありません。
@@ -620,6 +636,24 @@ Db はその空白を持ちますが、図では描かれません。
 その文を書かれたまま印字します（[複数行の文](#複数行の文)を参照）。
 [fixture: titles-and-sections/value-on-next-line]
 [fixture: titles-and-sections/comment-line-inside-kept]
+値が、2 文字以上の空白に続く `#` で始まる title は、書かれたままにします。
+`title` の後に、空白 2 つか、タブと空白か、改行と字下げがあり、
+その後に `# c` が続く形です。
+対象にする版の一部は、`title`、その空白、`# c` を、
+空白だけの title とコメントとして読み、空白が 1 文字の `title # c` を、
+period `title` とコメントとして読みますが、残りの版は、
+どちらも title `# c` として読み、同じに描くためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+`#` が行頭にあると、その版でも両方の形が period `title` になるので、
+値はキーワードにつなげます。
+`#` の前の空白が 1 文字（半角空白かタブ）のときは、空白 1 つで印字します。
+[fixture: titles-and-sections/title-hash-on-next-line-kept]
+[fixture: titles-and-sections/title-hash-after-padding-kept]
+[fixture: titles-and-sections/title-hash-after-tab-and-space-kept]
+[fixture: titles-and-sections/title-hash-after-tab-joined]
+[fixture: titles-and-sections/title-hash-at-line-start-joined]
 値は `:`、`#`、`%`、`%%` を文字として持ちます。
 ただし section の名前は `:` で終わり、その `:` は event を始めます。
 [fixture: titles-and-sections/special-characters-in-values]
@@ -703,19 +737,43 @@ timeline
 
 ヘッダーには、同じ行の空白の後ろに、
 方向 `LR` か `TD` を書けます（大文字小文字は問いません）。
-方向は、ヘッダーの行に空白 1 つの後ろに印字します。
-`td` は、mermaid.js の文書の例のとおり、`TD` と印字します。
-（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
-`lr` は、書かれた大文字小文字のまま印字します。
+方向は、ヘッダーの行に空白 1 つの後ろに、書かれた大文字小文字のまま印字します。
 Db は大文字にして読みます。
 空白 1 つは、
 トークンの間の空白（[トークンの間の空白](#トークンの間の空白)）と同じです。
 [fixture: header-and-direction/direction-kept]
 [fixture: header-and-direction/direction-case-kept]
 [fixture: header-and-direction/spaces-before-the-direction]
-2 つ目の語は period なので、自分の行に移します。
-自分の行にある方向も period です。
-[fixture: header-and-direction/second-word-is-a-period]
+
+対象にする版の一部は方向を読まず、
+`timeline` の後ろの語を period のテキストとして読みます。
+残りは方向を読みます。
+詳しくは
+[対象にする mermaid.js の版](./compatibility.ja.md#対象にする-mermaidjs-の版) と
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+そのため `timeline td` と `timeline TD` は、
+これらの版では大文字小文字だけが違う period で、`td` は `TD` と印字しません。
+mermaid.js の文書の例は `TD` と書きます。
+方向の後ろのテキストは、書かれたままの隙間を置いて、ヘッダーの行に残します。
+`timeline TD title T` は、これらの版では 1 つの period で、
+`timeline TD` の次の行が `title T` の形は、period と title だからです。
+`timeline TD LR`（方向と period `LR`）と `timeline LR 2004 : a` も同じです。
+方向のないヘッダーの後ろのテキストは、
+自分の行に移します（`timeline History` は、
+`History` をヘッダーの下に置きます）。
+timeline について対象にする版は、どちらの形も同じに描きます。
+ヘッダーの行に残る period は、`:` が自分の行にある period の桁にないので、
+後ろの event は通常の続きの字下げに置きます。
+自分の行にある方向は period です。
+ここで改行として数えるのは mermaid.js が読むものなので、
+複数行にわたるディレクティブは改行になりません。
+`timeline TD%%{init:`、改行、`{}}%% title T` は `timeline TD title T` となり、
+テキストはその行に残します。
+[fixture: header-and-direction/second-word-stays-on-the-header-line]
+[fixture: header-and-direction/direction-then-period-stays]
+[fixture: header-and-direction/text-after-a-directive-over-lines-stays]
+[fixture: header-and-direction/text-after-the-header-without-direction-moves]
 [fixture: header-and-direction/direction-on-its-own-line-is-a-period]
 
 方向の後ろのコメントは行に残します（[コメント](#コメント)を参照）。
@@ -727,7 +785,7 @@ Db は大文字にして読みます。
 [fixture: header-and-direction/trailing-whitespace-dropped]
 
 入力
-([header-and-direction/second-word-is-a-period-input.mmd](../tests/fixtures/timeline/header-and-direction/second-word-is-a-period-input.mmd)):
+([header-and-direction/second-word-stays-on-the-header-line-input.mmd](../tests/fixtures/timeline/header-and-direction/second-word-stays-on-the-header-line-input.mmd)):
 
 ```mmd
 timeline TD LR
@@ -735,11 +793,10 @@ title T
 ```
 
 出力
-([header-and-direction/second-word-is-a-period-output.mmd](../tests/fixtures/timeline/header-and-direction/second-word-is-a-period-output.mmd)):
+([header-and-direction/second-word-stays-on-the-header-line-output.mmd](../tests/fixtures/timeline/header-and-direction/second-word-stays-on-the-header-line-output.mmd)):
 
 ```mmd
-timeline TD
-  LR
+timeline TD LR
   title T
 ```
 
@@ -904,15 +961,15 @@ event の `:` の後ろの改行は、字句解析器が読む区切りの空白
 period と event は、後ろの行の行頭に `:` を書く別の形で複数行に書け、
 その改行は残します（[period と event](#period-と-event)を参照）。
 
-`accTitle` と `accDescr:` の文では、trivia の改行を保ち、
-section の下でも後続の構造部分と独立した trivia 行を文より 1 段深くそろえます。
-各 gap の最初の行の末尾と、指令の内部全体を保ちます。
+`accTitle` と `accDescr:` の文では、注釈の改行を保ち、
+section の下でも後続の構造部分と独立した注釈行を文より 1 段深くそろえます。
+各隙間の最初の行の末尾と、指令の内部全体を保ちます。
 物理行を結ぶコメント領域は、元の配置を保ちます。
 セミコロンの保護は、後述の行をつなぐ判定に従います。
 [fixture: multi-line-statements/accessibility-trivia-continuations]
 
 title と section、event テキストの続きでは、値の空白が Db の一部なので、
-複数行の trivia を含む配置を元のまま保ちます。
+複数行の注釈を含む配置を元のまま保ちます。
 [fixture: multi-line-statements/breaks-decided-one-by-one]
 [fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/comment-line-inside-kept]
@@ -997,7 +1054,7 @@ T
 
 `accDescr` ブロックの後ろのテキスト行は、その文より 1 段深く置きます。
 置き換えるのは、LF の直後の ASCII の空白とタブだけです。
-Db の setter はこの字下げを捨てるので、section の中でも、
+Db の設定処理はこの字下げを捨てるので、section の中でも、
 テキストをブロックの内側にそろえられます。
 [fixture: multi-line-values/description-block-lines-kept]
 [fixture: indentation/description-block-under-a-section]
@@ -1009,7 +1066,7 @@ Db の setter はこの字下げを捨てるので、section の中でも、
 テキスト、改行、行末の空白とタブは残します。
 開始行のテキストはその行に残し、テキスト内の空行も空行のまま残します。
 [fixture: multi-line-values/description-line-ending-whitespace]
-ブロック内の hash コメントはテキストなので、同じ字下げを使います。
+ブロック内の `#` コメントはテキストなので、同じ字下げを使います。
 `%%` のコメント行もテキストにそろえます。
 [fixture: multi-line-values/comment-line-inside-block-kept]
 [fixture: multi-line-values/description-percent-comment-line]
@@ -1094,7 +1151,7 @@ period の前のコメントは period の段に置きます。
 テキストの末尾にあるものは自分の行に残して、改行を足します。
 [fixture: comments/before-header] [fixture: comments/last-in-body]
 
-ヘッダーや方向の後ろ、accessibility ブロックの `}` の後ろ、
+ヘッダーや方向の後ろ、アクセシビリティブロックの `}` の後ろ、
 period の後ろのコメントは、行に書かれたまま残します。
 空白が書かれていれば前に空白 1 つを置き、接していれば接したままにします。
 period の後ろでは、`#` の前の空白は period の一部なので、
@@ -1104,7 +1161,7 @@ period の後ろでは、`#` の前の空白は period の一部なので、
 [fixture: comments/after-description-block]
 [fixture: comments/after-statement-under-a-section]
 
-title、section、event、accessibility のテキストの中の `#` と `%%` は、
+title、section、event、アクセシビリティのテキストの中の `#` と `%%` は、
 コメントではなくテキストの文字で、一緒に残します。
 [fixture: comments/hash-and-percent-in-texts-kept]
 
@@ -1178,12 +1235,12 @@ timeline
 [fixture: directives/statement-after-directive-line]
 
 元は同じ行にあった単位を別の行へ分けるときは、
-間の directive を次の単位に付けます。
+間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
 
 [fixture: timeline/directives/whitespace-on-both-sides-collapsed]
 
-文の単位の間の指令は元の gap に残し、[指令](#指令)のとおりに置きます。
+文の単位の間の指令は元の隙間に残し、[指令](#指令)のとおりに置きます。
 構造部分の続きの列は[複数行の文](#複数行の文)に従います。
 値の中の指令は、そのテキストの一部です。 [fixture: directives/between-units]
 [fixture: directives/inside-values-kept] [fixture: directives/over-lines-kept]
@@ -1233,8 +1290,8 @@ c : e%%{init: {}}%%: f
 ```mmd
 timeline
   a %%{init: {}}%%: e
-  b: %%{init: {}}%%e
-  c : e%%{init: {}}%%: f
+  b : %%{init: {}}%%e
+  c : e %%{init: {}}%%: f
 ```
 
 ### フロントマターの YAML
@@ -1303,7 +1360,7 @@ timeline
 U+2028 と U+2029 は、timeline の単位の間では空白で、テキストの中では文字です。
 文の間では、ほかの空白と同じく改行として扱い、文を自分の行に移します。
 文の中の隙間にあるものは書かれたまま印字し、テキストも同じです。
-period、event、title、section の名前、accessibility のテキストは、
+period、event、title、section の名前、アクセシビリティのテキストは、
 それを残します。
 例は文字列で書き、`\u2028` は U+2028、`\n` は改行です。
 [test: U+2028 between the header and a statement]

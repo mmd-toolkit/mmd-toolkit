@@ -43,16 +43,16 @@ Examples of **incorrect** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/venn-no-undef: error
 venn-beta
-set A
+  set A
 text Typo A1[Review]
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/venn-no-undef: error
 venn-beta
-set A
-set B
-style A, B fill:red
+  set A
+  set B
+  style A, B fill: red
 ```
 
 Examples of **correct** code for this rule:
@@ -60,19 +60,19 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/venn-no-undef: error
 venn-beta
-set A
-set B
-union A, B
+  set A
+  set B
+  union A, B
 text A, B AB1[Shared]
-style A, B fill:red
+  style A, B fill: red
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/venn-no-undef: error
 venn-beta
-set A
+  set A
 text A A1[React]
-style A1 color:red
+  style A1 color: red
 ```
 
 ## Options

@@ -33,7 +33,7 @@
     "format": "pnpm run build:parser && prettier --write .",
     "format:check": "pnpm run build:parser && prettier --check .",
     "update": "pnpm --filter \"./packages/*\" run --if-present update",
-    "version:ci": "changeset version && pnpm run update --release",
+    "version:ci": "changeset version && node scripts/stamp-overturned-notes.mjs && pnpm run update --release",
     "prerelease": "pnpm run build",
     "release": "node scripts/copy-license.mjs && changeset publish"
   },

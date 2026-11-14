@@ -241,7 +241,7 @@ Db が保つからです。 [fixture: attribute-spacing/keys-comma-space]
 [corpus fixture: er/gram-attribute-split-lines]
 [corpus fixture: er/gram-name-then-key-next-line]
 部分の間にコメント行かディレクティブがある属性は、改行を保ちます。
-後続の構造部分と独立した trivia 行は、subgraph の中でも、
+後続の構造部分と独立した注釈類行は、subgraph の中でも、
 属性の内側に 1 段字下げします。
 型、名前、引用符付きコメントの内部は書かれたまま残します。
 [fixture: attribute-spacing/comment-line-inside-kept]
@@ -344,9 +344,8 @@ erDiagram
 
 ER 図の 2 つの文を区切るものはなく、
 mermaid.js は 1 行に続けて書かれた文も読みます。
-各文は行に単独で置きます。
-1 行に 2 つの文があると読みにくく、flowchart、sequence、class、
-state も 1 行に 1 つの文を印字します。
+1 行に 2 つの文があると読みにくいため、各文は行に単独で置きます。
+flowchart、sequence、class、state も 1 行に 1 つの文を印字します。
 `A B` は実体 A と B で、関係は 1 行に、その役割の後の実体は次の行に置き、
 属性ブロックの `}`、subgraph の `end`、ヘッダーの後に続く文も、
 次の行に置きます。 [fixture: statements-one-per-line/entities]
@@ -365,14 +364,38 @@ state も 1 行に 1 つの文を印字します。
 2 つの文の間のディレクティブは、後ろの文と一緒に置きます。
 [fixture: statements-one-per-line/directive-after-statement]
 
-2 つの場合は、文を 1 行に残します。
+無視される `;` は、行規則がそれを無視する根拠となる行に残します。
+`"style:#x" end;` の `end` は、前の実体と同じ行に、大文字でも残します。
+`class` や `subgraph` と最初の名前の間に無視される `;` があるときは、
+隙間全体を書かれたまま残します。
+`class;-A a`、`subgraph;-x`、`subgraph;é` は、
+行規則が `;` を取り除いた後の接し方を保ちます。
+subgraph の名前の前に U+2028 や U+2029 があるときも同じです。
+[fixture: statements-one-per-line/closing-end-ignored-semicolon-kept]
+[fixture: statements-one-per-line/closing-uppercase-end-ignored-semicolon-kept]
+[fixture: statements-one-per-line/class-ignored-semicolon-before-dash-kept]
+[fixture: statements-one-per-line/subgraph-ignored-semicolon-before-dash-kept]
+[fixture: statements-one-per-line/subgraph-ignored-semicolon-before-non-ascii-kept]
+[test: er/statements-one-per-line/R44-er-subgraph-LS-c-before]
+[test: er/statements-one-per-line/R44-er-subgraph-PS-c-before]
+
+いくつかの場合は、文を 1 行に残します。
 実体 `1` の直後に、空白なしで、またはディレクティブだけを挟んで、別の文や、
 その subgraph の `end` が続くときは、そのままにします。
 `1a` は実体 `1` と `a` ですが、`1` と文字を 2 行に分けたり、
 間に空白を置いたりすると、
 カーディナリティ `only-one` と名前になるからです（diagrams/er.md、
 カーディナリティ、数、関係の線、規則 11）。
-ほかの数は、後ろの文と分けます。
+2 桁以上の数の名前の実体も、直後に名前が続く文字（英字、`_`、`-`、`*`、
+ASCII 外の文字）があれば、その行に残します。
+`12a` は、固定した版では実体 `12` と `a` ですが、
+対象にする版の一部では 1 つの名前で、2 行に分けると違って描くからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+数とその文字の間にディレクティブがあっても、変わりません。
+mermaid.js は、テキストを読む前にディレクティブを取り除くからです。
+`2.5x` のようなほかの数は、後ろの文と分けます。
 そのような実体の行は書かれたまま印字し、その行で終わる subgraph も、
 ヘッダーから `end` まで、行ごとの 1 段の字下げなしで書かれたまま印字します。
 [fixture: statements-one-per-line/number-name-then-name-kept]
@@ -383,6 +406,197 @@ state も 1 行に 1 つの文を印字します。
 [fixture: statements-one-per-line/number-name-before-directive-kept]
 [fixture: statements-one-per-line/number-name-then-name-split]
 [corpus fixture: er/lex-name-number-then-letter]
+[corpus fixture: er/lex-name-number2-then-letter]
+`subgraph` キーワードと名前の間に ASCII 外の文字か、
+空白とタブ以外の空白文字（U+2028、U+2029、U+00A0、U+3000 など。diagrams/er.md、
+空白）があれば、書かれたままにします。
+`end` の後にそうした文字が続く文も、`end` の行に、
+隙間を書かれたままにして残します。
+`endé` は、固定した版ではキーワード `end` と実体 `é` ですが、
+対象にする版の一部では 1 つの名前だからです。
+`end` の行の終わりにある同じ種類の空白文字は、1 回だけ残します。
+コメントやディレクティブの前や、空行を挟んで別の文が続くときも同じです。
+[test: er/statements-one-per-line/R63-er-ascii-after-LS-e]
+[test: er/statements-one-per-line/R44-er-after-separator-LS-e]
+[test: er/statements-one-per-line/R44-er-after-separator-PS-e]
+[test: er/statements-one-per-line/R74-er-LS-g-comment]
+[test: er/statements-one-per-line/R74-er-LS-g-directive]
+[test: er/statements-one-per-line/R74-er-PS-g-comment]
+[test: er/statements-one-per-line/R74-er-PS-g-directive]
+[test: U+00A0 in place of the separator: er/statements-one-per-line/R63-er-ascii-after-LS-e]
+[test: U+3000 in place of the separator: er/statements-one-per-line/R63-er-ascii-after-LS-e]
+[test: U+00A0 in place of the separator: er/statements-one-per-line/R44-er-after-separator-LS-e]
+[test: U+3000 in place of the separator: er/statements-one-per-line/R44-er-after-separator-LS-e]
+[test: U+00A0 in place of the separator: er/statements-one-per-line/R74-er-LS-g-directive]
+[test: U+3000 in place of the separator: er/statements-one-per-line/R74-er-LS-g-directive]
+そうした文字で始まる文も、対象にする版の一部がテキストを、
+空白の終わりから `class` の文、または方向の行として読む場合は、
+後ろの文と一緒に残します。
+固定した版は、その文字を最初の名前の一部として読みますが、
+対象にする版のその一部は、キーワードの前の空白として読むからです。
+`class A a` は、キーワードの後ろに名前が 2 つあるので、行にわたって続きます。
+どちらの名前の前の空白も、改行以外の空白で始まる場合は、改行を越えて続きます。
+この場合は、2 番目の名前までの両方の隙間を、コメント行、ディレクティブ、
+空行を含めて書かれたまま残します。
+キーワードや最初の名前の直後にある改行は、class の文を続けません。
+[test: er/statements-one-per-line/R45-er-class-LS-d]
+[test: er/statements-one-per-line/R45-er-class-LS-e]
+[test: er/statements-one-per-line/R45-er-class-PS-d]
+[test: er/statements-one-per-line/R45-er-class-PS-e]
+[test: er/statements-one-per-line/R45-er-second-name-LS-d]
+[test: er/statements-one-per-line/R45-er-second-name-LS-e]
+[test: er/statements-one-per-line/R45-er-nonascii-name-LS-d]
+[test: er/statements-one-per-line/R45-er-nonascii-name-LS-e]
+[test: er/statements-one-per-line/R45-er-second-name-PS-d]
+[test: er/statements-one-per-line/R45-er-second-name-PS-e]
+[test: er/statements-one-per-line/R45-er-nonascii-name-PS-d]
+[test: er/statements-one-per-line/R45-er-nonascii-name-PS-e]
+[test: er/statements-one-per-line/class-names-after-directive-ls]
+[test: er/statements-one-per-line/class-second-name-after-directive-ps]
+`A direction LR` と `A B direction LR` は、その版では方向の行で、
+`direction` の前にある文も含めます。
+`direction LR B` や、値が次の行にある `direction` も、
+値の後ろに文が続くときは同じで、その文は値のある行に残します。
+ほかの語（`classes`、`directionX`、名前）で始まる文、名前が 1 つの `class`、
+値だけが続く `direction` は、後ろの文と分けます。
+そうした `end` の後の引用符つきの名前は、引用符を残します。
+キーワードとその後ろの間にディレクティブがあっても、変わりません。
+ディレクティブが U+2028 や U+2029 の前にあっても、ASCII 外の文字に接していても、
+同じです。 [fixture: statements-one-per-line/end-then-name-outside-ascii-kept]
+[fixture: statements-one-per-line/subgraph-then-name-outside-ascii-kept]
+[fixture: statements-one-per-line/end-directive-then-name-outside-ascii-kept]
+[fixture: statements-one-per-line/subgraph-directive-then-name-outside-ascii-kept]
+[corpus fixture: er/lex-keyword-end-then-e-acute]
+[corpus fixture: er/lex-keyword-subgraph-then-e-acute]
+[corpus fixture: er/db-subgraph-direction-after-nested-end-line-separator]
+[test: U+2028 between the end of an ER subgraph and the next entity]
+[test: a directive between the end of an ER subgraph and a U+2028]
+[test: a directive between the end of an ER subgraph and a U+2029 and a name in quotes]
+[test: a directive between the keyword of an ER subgraph and a U+2028]
+[test: a directive between an ER number name and a U+2028]
+[test: a line of two ER statements that starts with U+2028]
+[test: a line that starts with U+2029 and class, and two more statements]
+[test: a line that starts with U+2028 and direction, and two more statements]
+[test: a statement with U+2028 and class after a space, and two more statements]
+[test: a line that starts with U+2028 and a name, and one more statement]
+[test: a line that starts with U+2028 and a word that starts like class]
+[test: a line that starts with U+2028 and a word that starts like direction]
+[test: a line that starts with U+2028, a name, and a direction line]
+[test: a line that starts with U+2029, two names, and a direction line]
+[test: a line that starts with U+2028, a relationship, and a direction line]
+[test: a direction line after a name and a name that starts with U+2028]
+[test: a line that starts with U+2028 and direction, and a value on the next line that a statement follows]
+[test: a line that starts with U+2028, a name, and a direction line with a directive before its value]
+[test: a line that starts with U+2028, a name, and a direction line in upper case]
+[test: a line that starts with U+2028, class and a character outside ASCII, and one more statement]
+[test: a line that starts with U+2028 and CLASS in upper case, and two more statements]
+[test: a line in an ER subgraph that starts with U+2028, a name, and a direction line]
+[test: a line that starts with U+2028 and direction, and its value alone]
+[test: a line that starts with U+2028 and a name that ends with direction, and its value alone]
+[test: a line that starts with U+2028 and direction, and a value glued to a letter]
+[test: a line that starts with U+2028 and direction, and a relationship that starts with its value]
+[test: a line that starts with U+2028, a name, and direction without a direction]
+[test: a line that starts with U+2028, a name, a second U+2028, and a direction line]
+[test: a line that starts with U+2028 and direction, its value, and a statement on the next line]
+[test: a line that starts with U+2028 and a name, and a directive that holds a direction]
+[test: a line that starts with U+2028 and class, and one more statement]
+[test: a line that starts with U+2028 and class, and a name on the next line]
+[test: a line that starts with U+2028 and class, and two names in quotes]
+[test: a line that starts with U+2028 and class, and a name with a class]
+[test: a line that starts with U+2028, a space, and class]
+[test: a line that starts with U+2028, a space, a name, and a direction line]
+[test: U+00A0 in place of the separator: er/statements-one-per-line/class-names-after-directive-ls]
+[test: U+3000 in place of the separator: er/statements-one-per-line/class-names-after-directive-ls]
+[test: U+00A0 in place of the separator: er/statements-one-per-line/class-second-name-after-directive-ps]
+[test: U+00A0 in place of the separator: er/statements-one-per-line/R45-er-class-LS-d]
+[test: U+3000 in place of the separator: er/statements-one-per-line/R45-er-class-LS-d]
+[test: U+00A0 in place of the separator: er/statements-one-per-line/R45-er-class-LS-e]
+[test: U+00A0 in place of the separator: er/statements-one-per-line/R45-er-second-name-LS-d]
+[test: U+3000 in place of the separator: er/statements-one-per-line/R45-er-second-name-LS-d]
+[test: U+00A0 in place of the separator: er/statements-one-per-line/R45-er-second-name-LS-e]
+[test: U+00A0 in place of the separator: er/statements-one-per-line/R45-er-nonascii-name-LS-d]
+[test: U+00A0 in place of the separator: er/statements-one-per-line/R45-er-nonascii-name-LS-e]
+[test: U+00A0 in place of the separator: a line of two ER statements that starts with U+2028]
+[test: U+3000 in place of the separator: a line of two ER statements that starts with U+2028]
+[test: U+00A0 in place of the separator: a line that starts with U+2029 and class, and two more statements]
+[test: U+3000 in place of the separator: a line that starts with U+2029 and class, and two more statements]
+[test: U+00A0 in place of the separator: a statement with U+2028 and class after a space, and two more statements]
+[test: U+00A0 in place of the separator: a line that starts with U+2028, class and a character outside ASCII, and one more statement]
+[test: U+00A0 in place of the separator: a line that starts with U+2028 and CLASS in upper case, and two more statements]
+[test: U+00A0 in place of the separator: U+2028 between the end of an ER subgraph and the next entity]
+[test: U+3000 in place of the separator: U+2028 between the end of an ER subgraph and the next entity]
+[test: U+00A0 in place of the separator: U+2029 between the end of an ER subgraph and a relationship]
+[test: U+00A0 in place of the separator: U+2028 after the end of an ER subgraph that nothing follows]
+[test: U+3000 in place of the separator: U+2028 after the end of an ER subgraph that nothing follows]
+[test: U+00A0 in place of the separator: a name in quotes after the end of an ER subgraph and a U+2028]
+[test: U+3000 in place of the separator: a name in quotes after the end of an ER subgraph and a U+2028]
+[test: U+00A0 in place of the separator: a directive between the end of an ER subgraph and a U+2028]
+[test: U+00A0 in place of the separator: a directive between the end of an ER subgraph and a U+2029 and a name in quotes]
+空白とタブ以外の空白文字（U+2028、U+2029、
+その前に置かれたノーブレークスペース）で始まる文は、同じ行のほかの文の後にあり、
+その空白の後に、空白、改行、ディレクティブだけを挟んでコメントが続くとき、
+その行に残します。
+mermaid.js は、その空白を実体の名前として読み、その実体を描きます。
+その空白だけを 1 行に置くと、空白はコメント行のものになり、実体は描かれません。
+コメント行は、`%%` の前の空白と改行を一緒に取るからです。
+行の末尾にあって次がディレクティブのときは、ほかの文と同じく、
+前の文から分けます。
+行の先頭にあるときは、コメントの前の空白です。
+[test: U+2028 alone after a name in quotes, before a comment]
+[test: U+2029 alone after a name in quotes and a space, before a comment]
+[test: U+2028 alone after the block of an accessibility description, before a comment]
+[test: two U+2028 alone after a name in quotes, before a comment]
+[test: U+00A0 and U+2028 after a name in quotes, before a comment]
+[test: U+00A0 after a name in quotes at the end of its line, and U+2028 and a comment on the next line]
+[test: U+2028 alone after a name in quotes, at the end of its line]
+[test: U+2028 alone after a name in quotes, before a directive]
+[test: U+2028 alone at the start of its line, before a comment]
+最初の実体の名前が空白とタブ以外の空白文字だけ（U+2028、U+2029、U+00A0、U+3000、
+U+FEFF などが 1 つか複数）の文が、同じ行のほかの文の後にあり、その名前の後に、
+属性ブロック、別名、CSS のクラス、関係が続くときも、
+その行に残します（`"Alpha"`、その文字、`{ int x }`）。
+対象にする版のうち、最も古いいくつかの版は、その文字を空白として読み、
+残りを前の文の一部として読むので、残りが行を始めることはできないからです。
+その文字の後の 2 つ目の名前は、分けます。
+その文字とほかの文字からなる名前（`LR`）も、行を始めるので、分けます。
+[test: U+2028 and an attribute block after a name in quotes]
+[test: U+2028 and an attribute block touching it after a name in quotes]
+[test: U+2028, a directive, and an attribute block after a name in quotes]
+[test: U+2029 and a relationship after a name in quotes]
+[test: U+2028 and an alias after a name in quotes]
+[test: U+2028 and a CSS class after a name in quotes]
+[test: U+2028 and a second name after a name in quotes]
+[test: U+00A0 in place of the separator: U+2028 and an attribute block after a name in quotes]
+[test: U+3000 in place of the separator: U+2028 and an attribute block after a name in quotes]
+[test: U+00A0 in place of the separator: U+2028 and an attribute block touching it after a name in quotes]
+[test: U+3000 in place of the separator: U+2028 and an attribute block touching it after a name in quotes]
+[test: U+00A0 in place of the separator: U+2028, a directive, and an attribute block after a name in quotes]
+[test: U+3000 in place of the separator: U+2028, a directive, and an attribute block after a name in quotes]
+[test: U+00A0 in place of the separator: U+2029 and a relationship after a name in quotes]
+[test: U+3000 in place of the separator: U+2029 and a relationship after a name in quotes]
+[test: U+00A0 in place of the separator: U+2028 and an alias after a name in quotes]
+[test: U+3000 in place of the separator: U+2028 and an alias after a name in quotes]
+[test: U+00A0 in place of the separator: U+2028 and a CSS class after a name in quotes]
+[test: U+3000 in place of the separator: U+2028 and a CSS class after a name in quotes]
+[test: U+00A0, U+2028, and an attribute block after a name in quotes]
+[test: U+3000, U+2028, and an attribute block after a name in quotes]
+[test: U+FEFF and an attribute block after a name in quotes]
+[test: U+2003 and an attribute block after a name in quotes]
+[test: U+3000 and an attribute block after a name in quotes]
+[test: U+00A0 and a second name after a name in quotes]
+複数の属性がある行は、その行の後ろの属性が、
+`int a List~int~ b` のように `~` を 2 つ持つときに、書かれたまま印字します。
+対象にする版のうち最も古い版が、ジェネリクスの型を、
+属性の先頭から行の残りを越えて 2 つ目の `~` まで続く規則で読むからです。
+`~` が文字列かディレクティブの中にしかない行と、
+自分の型が `~` を 2 つ持つ属性は、分けます。
+ディレクティブは、mermaid.js がテキストを読む前に取り除くからです。
+[fixture: attribute-spacing/attributes-with-tilde-on-one-line-kept]
+[fixture: attribute-spacing/attributes-with-generic-type-later-on-one-line-kept]
+[fixture: attribute-spacing/attributes-with-generic-type-first-on-one-line-split]
+[fixture: attribute-spacing/attributes-with-tilde-in-quotes-on-one-line-split]
+[fixture: attribute-spacing/attributes-with-tilde-in-directive-on-one-line-split]
+[corpus fixture: er/lex-tilde-after-quoted]
 また、保持する `;` がある行は、その文を一緒に残します。
 mermaid.js の行の規則は行のテキストを読み、テキストを別の行に動かすと、
 規則に合う行と、規則が無視する `;` が、
@@ -393,9 +607,14 @@ mermaid.js の行の規則は行のテキストを読み、テキストを別の
 行の上で後ろに文を従えているときは、`}` や `end` が単独の行に移り、
 文は `;` のない行に残ってしまうので、行に残し、
 行はトークンの間の空白を通常どおりにして印字します。
-後ろに文がなければ、ほかのブロックと同じく単独の行に置きます。
+後ろに文がなければ、ほかのブロックと同じく単独の行に置きますが、
+同じ行の後ろに行の規則が無視する `;` が続く場合は例外です。
+`"Alpha" { int x "style:#x" };` のように、
+その `;` は同じ行の前のテキストによって無視されるので、`}` もその行に残します。
+`}` の前で改行すると、`;` がそのテキストのない行に残り、構文エラーになります。
 [fixture: statements-one-per-line/semicolon-line-block-kept]
 [fixture: statements-one-per-line/semicolon-line-subgraph-end-kept]
+[fixture: statements-one-per-line/semicolon-after-block-closing-kept]
 
 入力
 ([statements-one-per-line/entities-input.mmd](../tests/fixtures/er/statements-one-per-line/entities-input.mmd)):
@@ -461,8 +680,7 @@ erDiagram
   1a
   1"x"
   B
-  12
-  a
+  12a
 ```
 
 ### 空行
@@ -548,16 +766,40 @@ erDiagram
 接しているトークンは、以下の規則が別に定めるものを除き、接したままにします。
 [fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/touching-kept]
-表にあるキーワードは、そこで示す大文字小文字で印字します。
-（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
-`SUBGRAPH` は `subgraph`、`END` は `end` です。
-ほかのキーワード（`CLASS`、`CLASSDEF`、`STYLE`）は、
+キーワード（`SUBGRAPH`、`END`、`DIRECTION`、`CLASS`、`CLASSDEF`、`STYLE`）は、
 書かれた大文字小文字を保ちます。
 （[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード)）。
 Db がそのまま保つ属性のキーも同じです。
 関係の語は記号として印字します（[関係の空白](#関係の空白)を参照）。
-[fixture: whitespace-between-tokens/keyword-case-one-form]
+[fixture: whitespace-between-tokens/keyword-case-kept]
 [fixture: relationship-spacing/cardinality-words-case-one-form]
+
+`class` と `subgraph` のキーワードに `-` で始まる単位が接する場合と、
+`end` に `-` で始まる文が接する場合は、接したままにします。
+`class-A a` は `class -A a` と印字しません。
+対象にする版の 1 つが拒否するためです。
+`subgraph-x` と `end-x` は分けません。
+対象にする版にエンティティとして読むものがあるためです。
+詳しくは
+[置かれた場所や空白で読みが決まる ER の行](./compatibility.ja.md#置かれた場所や空白で読みが決まる-er-の行)
+と
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+キーワードと `-` の間のディレクティブは、2 つを分けません。
+mermaid.js が、テキストを読む前にディレクティブを取り除くからです。
+`class%%{init: {}}%%-A a` はそのまま残ります。
+`classDef` と `style` は対象外で、`classDef-x` は `classDef -x` と印字します。
+行の規則が無視する `;` も、キーワードと `-` を分けません。
+[fixture: whitespace-between-tokens/class-then-dash-ignored-semicolon-kept]
+[fixture: whitespace-between-tokens/class-then-dash-directive-kept]
+[fixture: whitespace-between-tokens/subgraph-then-dash-directive-kept]
+[fixture: whitespace-between-tokens/end-then-dash-directive-kept]
+[fixture: whitespace-between-tokens/keyword-then-dash-touching-kept]
+[fixture: whitespace-between-tokens/keyword-upper-then-dash-touching-kept]
+[fixture: whitespace-between-tokens/subgraph-then-dash-touching-kept]
+[fixture: whitespace-between-tokens/end-then-dash-touching-kept]
+[fixture: whitespace-between-tokens/classdef-style-then-dash-spaced]
+[fixture: whitespace-between-tokens/keyword-then-dash-apart]
 
 入力
 ([whitespace-between-tokens/touching-kept-input.mmd](../tests/fixtures/er/whitespace-between-tokens/touching-kept-input.mmd)):
@@ -584,7 +826,7 @@ erDiagram
 ```
 
 入力
-([whitespace-between-tokens/keyword-case-one-form-input.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-one-form-input.mmd)):
+([whitespace-between-tokens/keyword-case-kept-input.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-kept-input.mmd)):
 
 ```mmd
 erDiagram
@@ -605,17 +847,17 @@ int a PK
 ```
 
 出力
-([whitespace-between-tokens/keyword-case-one-form-output.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-one-form-output.mmd)):
+([whitespace-between-tokens/keyword-case-kept-output.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-kept-output.mmd)):
 
 ```mmd
 erDiagram
-  subgraph S
+  SUBGRAPH S
     A
-  end
+  END
   CLASSDEF a fill: red
   CLASS A a
   STYLE A fill: red
-  direction LR
+  DIRECTION lr
   ACCTITLE: T
   ACCDESCR: D
   ACCDESCR: D
@@ -629,15 +871,21 @@ erDiagram
 
 関係は、左の実体と関係の間、関係と右の実体の間、役割の `:` の両側に、
 どう書かれていても空白 1 つを置きます。
-これは mermaid.js の文書の形で、役割は名前、文字列、
-引用符つきの名前のどれでも同じです。
+このコロンは、関係とその役割の間に立つ記号とも読めるので、コロンの前の空白は、
+mermaid.js の文書の例が、ほかのどの形よりも 2 倍以上の頻度で書く形です。
+例では、コロンの後に空白がある関係の行 40 行のすべてが、コロンの前に空白を持ち、
+実体に接する行はありません。
+数え方は
+[コロンの前の空白を決める例](./compatibility.ja.md#コロンの前の空白を決める例)
+を参照してください。
+役割は名前、文字列、引用符つきの名前のどれでも同じです。
 [fixture: relationship-spacing/around-units-and-role]
 [fixture: relationship-spacing/names-and-classes]
 [fixture: relationship-spacing/role-forms]
 [corpus fixture: er/lex-relationship-no-spaces]
 [corpus fixture: er/lex-colon-no-space]
-実体のクラスは、`:::` と、その間の `,` に両側で接します。
-[fixture: relationship-spacing/names-and-classes]
+実体の最初のクラスは `:::` に接し、クラスの間の `,` は前のクラスに接して、
+後ろに空白を 1 つ置きます。 [fixture: relationship-spacing/names-and-classes]
 
 関係のカーディナリティと線は、語と記号のどちらが書かれていても、
 記号で印字します。
@@ -773,9 +1021,11 @@ erDiagram
 
 実体の別名は、名前に接し、角括弧の中に何も置きません。
 `p [ Person ]` は `p[Person]` にします。 [fixture: entities/alias-tight]
-`:::` の後のクラスは `:::` に接し、両側のクラスに接する `,` で区切ります。
-`A ::: c1 , c2` は `A:::c1,c2` にします。
-別名と `:::` を接する書き方が、mermaid.js の文書の例の多くです。
+`:::` の後の最初のクラスは `:::` に接し、クラスは、
+前のクラスに接して後ろに空白を 1 つ置く `,` で区切ります。
+Prettier のコンマの印字と同じ形で、mermaid.js が一覧を同じに読むからです。
+`A ::: c1 , c2` は `A:::c1, c2` にします。
+別名をこのように書く例が、mermaid.js の文書の例の多くです。
 [fixture: entities/classes-tight] [fixture: entities/alias-and-classes]
 属性ブロックの `{` は空白 1
 つの後に置きます（[属性ブロック](#属性ブロック)を参照）。
@@ -788,12 +1038,20 @@ mermaid.js の文書の例に合わせて引用符なしで印字します。
 文書の例は、`LINE-ITEM` や `NAMED-DRIVER` などのこのような名前を、
 引用符なしで 20 回使い、引用符付きでは一度も使わないので、
 `"LINE-ITEM"` は `LINE-ITEM` と印字します。
+名前は `_` で始まってもよく、`"_x"` は `_x` と印字します。
+文書の例には、`_` で始まる名前が、引用符の有無を問わず一つもありませんが、
+対象にする版はすべて、どちらの形も同じに読みます。
 `-` はキーワードを終わらせるので（`"end-x"` は `end` と `-x`）、
 最初の `-` より前の部分を、字句解析器が独立した単位として読む語と比較します。
+ASCII 以外の文字を含む名前（`"Zoë"`）は、
+対象にする版に引用符なしで拒否するものがあるので、引用符を残します。
+`.` を含む名前（`"a.b"`）も、対象にする版に引用符なしで拒否するものがあるので、
+引用符を残します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 ほかの名前は、引用符の有無も数も含めて、書かれたまま残します。
-先頭か末尾に `-` がある名前、`-` が 2 つ続く名前、`_` で始まる名前（`"_x"`）も、
-そのまま残します。
-10.5.0 より前の字句解析器は、引用符がないとその名前を拒否するためです。
+先頭か末尾に `-` がある名前と、`-` が 2 つ続く名前も、そのまま残します。
 `direction` で終わる名前と、`TB`、`BT`、`RL`、`LR` で始まる名前も、
 大文字小文字を問わず書かれたまま残します。
 字句解析器は、`direction`、空白（改行も含みます）、向きの名前を 1 行として読み、
@@ -801,6 +1059,7 @@ mermaid.js の文書の例に合わせて引用符なしで印字します。
 [fixture: entities/plain-names-without-quotes]
 [fixture: entities/hyphenated-names-without-quotes]
 [fixture: entities/names-that-need-quotes]
+[fixture: entities/name-with-dot-kept]
 [fixture: entities/names-next-to-a-direction-line]
 [fixture: entities/names-kept]
 実体の部分の間にあるディレクティブは、
@@ -852,9 +1111,9 @@ B ::: d
 
 ```mmd
 erDiagram
-  A:::c1,c2
+  A:::c1, c2
   "A B":::c
-  A:::é,b-c
+  A:::é, b-c
   B:::d
 ```
 
@@ -871,6 +1130,7 @@ int id
 subgraph "my-group"
 "x-y"
 end
+"_a-b" ||--o{ "_c-d" : "_e-f"
 ```
 
 出力
@@ -886,6 +1146,7 @@ erDiagram
   subgraph my-group
     x-y
   end
+  _a-b ||--o{ _c-d : _e-f
 ```
 
 ### subgraph
@@ -901,14 +1162,14 @@ mermaid.js が空白 1 つで結ぶからです。 [fixture: subgraphs/header-sp
 [fixture: subgraphs/title-touches-name] [fixture: subgraphs/title-names-spaced]
 [fixture: subgraphs/quoted-and-number-ids]
 本体の文は 1 段深く置き、`end` は、subgraph と同じ段に行に単独で置き、
-どの大文字小文字でも `end` と印字します。
+書かれた大文字小文字のまま印字します。
 本体の `class`、`classDef`、`style` 文のキーワードは、subgraph の外と同じく、
 書かれたまま残します。
 mermaid.js は、それを書かれたまま subgraph のノードに並べます。
 [fixture: subgraphs/statement-keywords-case-kept]
 `end` の後に同じ行で続く文は、次の行に置きます。
 [fixture: subgraphs/end-on-the-line-of-a-statement]
-[fixture: subgraphs/end-case-one-form] [fixture: subgraphs/entity-after-end]
+[fixture: subgraphs/end-case-kept] [fixture: subgraphs/entity-after-end]
 文のない subgraph は、`end` を次の行に置いて印字します。
 [fixture: subgraphs/empty]
 
@@ -999,12 +1260,16 @@ erDiagram
 方向の行は、`direction` とその値と、前後の mermaid.js が読まないテキストです。
 テキストは書かれたまま残します。
 テキストと `direction` の間（離して書かれていれば）と、
-`direction` と値の間には空白 1 つを置き、値は大文字で印字します。
-`lr` は `LR` です。
-mermaid.js の文書の例で使う形です。
-（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
-[fixture: direction/spacing] [fixture: direction/text-kept]
-[fixture: direction/case-one-form] [fixture: direction/case-bt-rl-one-form]
+`direction` と値の間には空白 1 つを置き、値は書かれた大文字小文字を保ちます。
+`lr` は `lr` のままです。
+対象にする版の一部はその行をエンティティとして読み、
+`direction tb` と `direction TB` を別に描くためです。
+詳しくは
+[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード)
+と
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。 [fixture: direction/spacing] [fixture: direction/text-kept]
+[fixture: direction/case-kept] [fixture: direction/case-bt-rl-kept]
 後の行に書かれた値は、`direction` の後に 1 行で印字します。
 [fixture: direction/value-on-next-line-joined]
 [corpus fixture: er/lex-direction-value-next-line]
@@ -1037,7 +1302,7 @@ erDiagram
 ```
 
 入力
-([direction/case-one-form-input.mmd](../tests/fixtures/er/direction/case-one-form-input.mmd)):
+([direction/case-kept-input.mmd](../tests/fixtures/er/direction/case-kept-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1046,17 +1311,19 @@ Direction Tb
 ```
 
 出力
-([direction/case-one-form-output.mmd](../tests/fixtures/er/direction/case-one-form-output.mmd)):
+([direction/case-kept-output.mmd](../tests/fixtures/er/direction/case-kept-output.mmd)):
 
 ```mmd
 erDiagram
-  direction LR
-  direction TB
+  DIRECTION lr
+  Direction Tb
 ```
 
 ### スタイルとクラス
 
-名前とクラスのリストでは、名前に接する comma を使います。
+名前とクラスのリストでは、
+前の名前に接して後ろに空白を 1 つ置くコンマを使います。
+Prettier のコンマの印字と同じ形で、mermaid.js が一覧を同じに読むからです。
 最初のスタイルは空白 1 つの後に置きます。
 `style` と `classDef` の、通常の 1 行のプロパティと値からなるスタイルでは、
 最初の `:` の前を詰め、空でない値の前に空白を 1 つ置きます。
@@ -1074,7 +1341,7 @@ Mermaid は、区切る空白にかかわらずスタイルの単位をつなげ
 `stroke-dasharray: 5 5` は引き続き `stroke-dasharray:55` で、Db は変わりません。
 `fill   : navy, stroke  : black` は `fill: navy, stroke: black` にします。
 通常はつなげる見出しや外側の改行があっても、最初の整形で同じ間隔にします。
-スタイル内部の改行区切り、所有する trivia、
+スタイル内部の改行区切り、所有する注釈類、
 同じ物理行に保持するセミコロンがある場合は、既存のスタイルの配置を保ちます。
 キーワード `style` と `classDef` は、書かれた大文字小文字を保ちます。
 （[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード)）。
@@ -1113,6 +1380,10 @@ Db は同じで mermaid.js の読みも見えますが、作者が書いた空�
 [fixture: styles-and-classes/comment-line-inside-kept]
 [corpus fixture: er/lex-classdef-space-before-line-feed]
 [corpus fixture: er/lex-style-tab-before-line-feed]
+最後のスタイルの末尾の垂直タブと改ページも、
+スタイル文脈が空白の文字をすべて単位の間として読むので、
+同じようにその後の改行を取り込み、文は同じように書かれたまま残します。
+[test: keeps a vertical tab and a form feed at the end of the classDef of an ER diagram]
 
 行末のセミコロンは、
 [スタイル文の末尾のセミコロン](#スタイル文の末尾のセミコロン)に従います。
@@ -1139,7 +1410,7 @@ classDef default fill:#f9f,stroke-width:4px
 
 ```mmd
 erDiagram
-  classDef a,b,c fill: red
+  classDef a, b, c fill: red
   classDef default fill: #f9f, stroke-width: 4px
 ```
 
@@ -1191,6 +1462,10 @@ erDiagram
 
 ### アクセシビリティの文
 
+説明ブロックの後で行の規則が無視する `;` があっても、
+コロンを使う 1 行の形にでき、書かれた `;` は説明の後に残します。
+[fixture: accessibility-statements/block-trailing-ignored-semicolon]
+
 `accTitle` と `accDescr` の `:` は、キーワードに接し、後に空白 1 つを置きます。
 テキストは両端の空白を除きます。
 [fixture: accessibility-statements/title-and-description]
@@ -1202,7 +1477,7 @@ erDiagram
 
 通常の `accDescr { ... }` ブロックの後続の本文行は、文の内側に 1 段字下げし、
 LF 直後の ASCII 空白とタブだけを置き換えます。
-説明の setter がこの字下げを捨てるためです。
+説明の設定関数がこの字下げを捨てるためです。
 改行、行末空白、ディレクティブの内部は保ちます。
 subgraph 内では、生の説明がその所属の読みにも使われるため、
 本文の元の列を保ちます。
@@ -1225,7 +1500,7 @@ subgraph 内では、生の説明がその所属の読みにも使われるた�
 agentflow、usecase に合わせます。
 [test: accessibility revisions: er empty-description-nbsp]
 コメントやディレクティブがあるブロックは、改行と完全な内容を保ち、
-普通の独立した trivia はブロックの内側にそろえます。
+普通の独立した注釈類はブロックの内側にそろえます。
 [fixture: accessibility-statements/empty-blocks]
 [fixture: accessibility-statements/empty-block-with-directive-or-comment-line]
 [corpus fixture: er/gram-acc-descr-block-empty]
@@ -1248,7 +1523,10 @@ subgraph の中でも 1 桁目を保ちます（diagrams/er.md、方向の行）
 数えるのは最初に印字される行です。
 後の行に書かれたテキストは `:`
 の行に寄せるので（[複数行の文](#複数行の文)を参照）、`accTitle:`、改行、
-`direction LR` は、1 桁目の `accTitle: direction LR` として印字します。
+`direction LR` は、`accTitle:` が字下げの後に書かれていた場合も、
+1 桁目の `accTitle: direction LR` として印字します。
+書かれた文はタイトルで、
+字下げした `accTitle: direction LR` は方向の行になるためです。
 `direction` と方向の間のコメント行とディレクティブは、
 字句解析器がそれらなしにテキストを読むので、飛ばし（diagrams/er.md、
 単位の間のトリビア）、空行も同じです。
@@ -1267,6 +1545,8 @@ subgraph の中でも 1 桁目を保ちます（diagrams/er.md、方向の行）
 [fixture: accessibility-statements/first-column-value-after-blank-line]
 [fixture: accessibility-statements/first-column-text-brought-to-the-colon]
 [fixture: accessibility-statements/first-column-text-brought-to-the-colon-in-subgraph]
+[fixture: accessibility-statements/first-column-text-brought-to-the-colon-from-indentation]
+[fixture: accessibility-statements/first-column-text-brought-to-the-colon-from-indentation-directive]
 [fixture: accessibility-statements/first-column-directive-inside-direction]
 [fixture: accessibility-statements/first-column-directive-over-lines-before-direction]
 [fixture: accessibility-statements/indented-when-directive-takes-the-space-before-value]
@@ -1710,7 +1990,7 @@ erDiagram
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
 文の前後の空行とコメント行は、通常の配置に従います。
 [fixture: semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines]
-空の description block も通常の配置に従い、スタイルの終端は削除します。
+空の説明ブロックも通常の配置に従い、スタイルの終端は削除します。
 [fixture: semicolons-at-the-end-of-a-style-statement/empty-description-block]
 
 文に `#` がない場合は、文を終える `;` の単位も、直前の空白と一緒に削除します。

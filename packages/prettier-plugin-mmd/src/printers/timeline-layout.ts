@@ -43,6 +43,9 @@ import {
   findStructuralToken,
   findTriviaBetween,
   isSpaceOrTab,
+  isWhitespace,
+  skipRemoved,
+  textRead,
 } from "./source.ts"
 
 /**
@@ -65,13 +68,21 @@ export const timelineValueNodeTypes: ReadonlySet<Node["type"]> = new Set([
  * them; Trivia between units).
  */
 export function isBareKeywordPeriod(statement: TimelineStatement): boolean {
-  if (
-    statement.type !== "TimelinePeriodStatement" ||
-    statement.events.length > 0
-  ) {
-    return false
-  }
-  const word = toAsciiLowerCase(statement.period.value)
+  return (
+    statement.type === "TimelinePeriodStatement" &&
+    statement.events.length === 0 &&
+    isKeywordWord(statement.period.value)
+  )
+}
+
+/**
+ * Whether the text is the word `title` or `section` in any case, which the
+ * lexer reads as the keyword of a title or a section once whitespace follows
+ * it: a period of that word touches its `:` (`title: x`), and a space before
+ * the `:` would make the line a title with the text `: x`.
+ */
+function isKeywordWord(text: string): boolean {
+  const word = toAsciiLowerCase(text)
   return word === "title" || word === "section"
 }
 
@@ -101,6 +112,49 @@ export function layoutTimelineHeader(
     rules.set(direction.range[0], "space")
   }
   return { atoms, rules, outdented: new Set(), lineBreaks: "kept" }
+}
+
+/**
+ * Whether a statement stays on the line of the header, after its gap as
+ * written: the first statement, when the header has a direction and the
+ * statement starts on its line. A version of mermaid.js that counts and has no
+ * direction reads the words after `timeline` as the text of a period,
+ * so `timeline TD title T` is one period there and `timeline TD` followed by a
+ * line `title T` is a period and a title; the text after a direction stays
+ * where it is (docs/timeline.md, Header and direction).
+ */
+export function staysOnTimelineHeaderLine(
+  source: Source,
+  statement: TimelineStatement,
+): boolean {
+  const { body } = source.root
+  if (
+    body.type !== "TimelineDiagram" ||
+    body.direction === null ||
+    body.body[0] !== statement
+  ) {
+    return false
+  }
+  const keyword = expectToken(
+    findStructuralToken(source, body.range[0]),
+    "the header keyword",
+  )
+  const direction = expectToken(
+    findStructuralToken(source, keyword.range[1]),
+    "the direction of the header",
+  )
+  // The line breaks that count are the ones mermaid.js reads: a line break
+  // inside a directive is removed with it.
+  return !textRead(source, direction.range[1], statement.range[0]).includes(
+    "\n",
+  )
+}
+
+/** The offset after the `;` that the line rule ignores at `offset`, if any. */
+function skipIgnoredSemicolons(source: Source, offset: number): number {
+  let position = offset
+  while (source.ignoredSemicolons.has(position)) position++
+  return position
 }
 
 /**
@@ -140,6 +194,9 @@ export function layoutTimelineStatement(
     default:
       break
   }
+  if (startsTitleTextWithHashAfterWhitespace(source, statement)) {
+    return keptAsWritten(start, end)
+  }
   const keptBreaks = findKeptBreaks(source, start, end)
   const keepsLineBreaks = spansKeptBreaks(source, keptBreaks, start, end)
   const formatsTriviaLines =
@@ -176,6 +233,34 @@ export function layoutTimelineStatement(
   }
 }
 
+/**
+ * Whether a title has more than one whitespace character between its keyword
+ * and a `#`, or a line break and an indentation before it: `title` and two
+ * spaces, or a tab and a space, and `# c`; or `title`, a line break, an
+ * indentation, and `# c`. The oldest version that counts has a title rule that
+ * takes the whitespace after the first character as the text of the title when
+ * a `#` follows it, so the `# c` is a comment there, while `title # c` with one
+ * whitespace character is the period `title` and a comment. A `#` at the start
+ * of its line is no title text there, and the title is the period `title` in
+ * both forms. The statement stays as written (docs/timeline.md, Titles and
+ * sections; docs/compatibility.md, Forms kept for versions of mermaid.js that
+ * count).
+ */
+function startsTitleTextWithHashAfterWhitespace(
+  source: Source,
+  statement: TimelineStatement,
+): boolean {
+  if (statement.type !== "TimelineTitleStatement") return false
+  const text = textRead(source, ...statement.value.range)
+  if (!text.trimStart().startsWith("#")) return false
+  const beforeHash =
+    textRead(source, statement.range[0], statement.value.range[0]) +
+    text.slice(0, text.length - text.trimStart().length)
+  const lineBreak = beforeHash.lastIndexOf("\n")
+  if (lineBreak >= 0) return lineBreak + 1 < beforeHash.length
+  return beforeHash.length > "title".length + 1
+}
+
 /** The gap rules of a title, a section, or an accessibility statement. */
 function textStatementRules(
   source: Source,
@@ -203,10 +288,11 @@ function textStatementRules(
 /**
  * The layout of a period with its events, or of events alone: the period and
  * the `:` and text of every event, with the gaps between them as written. A
- * period touches its `:`, since it holds the whitespace before it, and so
- * does an event before the next `:`; the text of an event stands after one
- * space, whatever whitespace character was the separator after the `:`
- * (docs/timeline.md, Periods and events).
+ * period holds the whitespace before its `:`, and so does an event before the
+ * next `:`; where a text has none, one space is added, except after the word
+ * `title` or `section`. The text of an event stands after one space, whatever
+ * whitespace character was the separator after the `:` (docs/timeline.md,
+ * Periods and events).
  *
  * The separator may be a line break, with the text on the next line: that
  * line break is whitespace to the lexer, and the text moves to the line of
@@ -242,24 +328,46 @@ function layoutEvents(
         `prettier-plugin-mmd: no colon before the event at offset ${event.range[0]}`,
       )
     }
+    // The text before the `:` gets one space where it ends without whitespace
+    // and nothing stands between them (docs/timeline.md, Periods and events).
+    const text = atoms[eventIndex - 2]
+    const addsSpace =
+      text !== undefined &&
+      skipRemoved(source, text.end) === colon.start &&
+      !isWhitespace(source.text[text.end - 1]) &&
+      !(
+        statement.type === "TimelinePeriodStatement" &&
+        event === statement.events[0] &&
+        isKeywordWord(statement.period.value)
+      )
+    if (addsSpace) rules.set(colon.start, "space")
     if (
       event === statement.events[0] &&
       statement.type === "TimelinePeriodStatement"
     ) {
-      const writtenPeriod = source.text.slice(...statement.period.range)
+      // A `;` that the line rule ignores between the period and the colon is
+      // printed, so it is part of the text before the colon.
+      const periodEnd = skipIgnoredSemicolons(source, statement.period.range[1])
+      const writtenPeriod = source.text.slice(
+        statement.period.range[0],
+        periodEnd,
+      )
       if (
-        colon.start === statement.period.range[1] &&
+        colon.start === periodEnd &&
+        !staysOnTimelineHeaderLine(source, statement) &&
         !writtenPeriod.includes("\n") &&
         !writtenPeriod.includes("\u2028") &&
         !writtenPeriod.includes("\u2029")
       ) {
         // Keep tabs as tab stops and replace each remaining span by its display
-        // width, so later colons align without changing the period's value
-        // (docs/timeline.md, Periods and events).
-        statementPadding = writtenPeriod
-          .split("\t")
-          .map((part) => " ".repeat(util.getStringWidth(part)))
-          .join("\t")
+        // width, so later colons align under the first one, which stands one
+        // space further where that space is added (docs/timeline.md, Periods
+        // and events).
+        statementPadding =
+          writtenPeriod
+            .split("\t")
+            .map((part) => " ".repeat(util.getStringWidth(part)))
+            .join("\t") + (addsSpace ? " " : "")
       }
     } else if (statementPadding !== undefined) {
       alignedColons.add(colon.start)

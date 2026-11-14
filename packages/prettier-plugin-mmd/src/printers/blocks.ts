@@ -14,9 +14,11 @@ import {
 import type { KeptLines } from "./kept-lines.ts"
 import {
   holdsJoiningRegion,
+  isDroppedSemicolon,
   lineEndOf,
   lineStartOf,
   withJoinedLines,
+  withUnusualStyleEnds,
 } from "./kept-lines.ts"
 import { toAsciiLowerCase } from "./layout.ts"
 import type { Line } from "./lines.ts"
@@ -37,9 +39,11 @@ import {
   findTokenEndingBefore,
   findTokenStartingAt,
   findTokensBetween,
+  isSpaceOrTab,
   isStructural,
   isWhitespace,
 } from "./source.ts"
+import { writtenWithRespellings } from "./spelling.ts"
 
 const { indent } = builders
 const { replaceEndOfLine } = utils
@@ -415,10 +419,14 @@ export function printBlock<Statement extends Positioned>(
   rules: BlockRules<Statement>,
 ): PrintedBlock {
   const { statements } = bounds
-  const kept =
-    rules.joiningRegionsPrintedAsWritten === true
-      ? rules.kept
-      : withJoinedLines(source, rules.kept)
+  const kept = withUnusualStyleEnds(
+    source,
+    withJoinedLines(
+      source,
+      rules.kept,
+      rules.joiningRegionsPrintedAsWritten !== true,
+    ),
+  )
   const lines: Line[] = []
   let headerTrailing: ItemRun | null = null
   let offset = bounds.start
@@ -709,8 +717,9 @@ export function printBlock<Statement extends Positioned>(
   }
 
   /**
-   * Prints a stretch: as written when one of its lines is verbatim or it
-   * holds a statement that holds statements, and otherwise its statements
+   * Prints a stretch: as written, with the spellings that are printed in one
+   * form (see `writtenWithRespellings`), when one of its lines is verbatim or
+   * it holds a statement that holds statements, and otherwise its statements
    * as formatted, with what lies between them (see `printInlineGap`). After
    * its last statement, the whitespace that the planned indentation of the
    * next statement supplies (`relocatedWhitespace`) is not printed in either
@@ -730,7 +739,7 @@ export function printBlock<Statement extends Positioned>(
       const tailStart =
         last === undefined ? stretch.end : rules.printedEnd(last)
       const written =
-        source.text.slice(stretch.start, tailStart) +
+        writtenWithRespellings(source, stretch.start, tailStart) +
         withoutRelocatedWhitespace(
           source,
           tailStart,
@@ -792,11 +801,16 @@ export function printBlock<Statement extends Positioned>(
             rules.omittedRanges,
             rules.relocatedWhitespace,
           )
+    // The spaces and tabs after the printed end of the last statement are not
+    // printed, so the statement ends the line, with the whitespace that it
+    // takes (the one after the `:` of a task, say).
+    const endsTheLine =
+      position === stretch.end || [...written].every(isSpaceOrTab)
     return {
       doc: [...parts, trailing],
       blankBefore: false,
       endsWithWhitespace:
-        (position === stretch.end &&
+        (endsTheLine &&
           last !== undefined &&
           endsWithSpaceOrTab(source.text.slice(last.range[0], position))) ||
         (rules.keepsTrailingWhitespaceInKeptTrivia === true &&
@@ -829,11 +843,23 @@ export function printBlock<Statement extends Positioned>(
     if (rules.keptClosingJoin !== undefined) return rules.keptClosingJoin
     const closing = findTokenStartingAt(source, bounds.end)
     if (closing === undefined) return null
-    const followed = findTokensBetween(
-      source,
-      closing.range[1],
-      lineEndOf(source, bounds.end),
-    ).some((token) => isStructural(source, token))
+    const lineEnd = lineEndOf(source, bounds.end)
+    // A `;` that the line rule ignores stays with the text on the line that
+    // makes it ignored (`style:#x` before the closing), which a line break
+    // before the closing would part from it.
+    // The `}` that closes a block around this one is on a line of its own
+    // after this block, unless something follows it, so it does not keep the
+    // closing of this block on the line: the second formatting would move it.
+    const followed =
+      findTokensBetween(source, closing.range[1], lineEnd).some(
+        (token) => isStructural(source, token) && token.value !== "}",
+      ) ||
+      [...source.ignoredSemicolons].some(
+        (semicolon) =>
+          closing.range[1] <= semicolon &&
+          semicolon < lineEnd &&
+          !isDroppedSemicolon(source, semicolon),
+      )
     return followed ? " " : null
   }
 

@@ -51,6 +51,16 @@ function format(text: string, options: Options = {}): Promise<string> {
  */
 const examples: readonly (readonly [string, string, string])[] = [
   [
+    "a state line starting with a directive before U+2028",
+    "stateDiagram-v2\n%%{wrap foo}%%\u2028A",
+    "stateDiagram-v2\n%%{wrap foo}%%\u2028A\n",
+  ],
+  [
+    "style trailing NBSP taken by an unclosed directive",
+    "flowchart TD\nstyle A fill:red%%{x y\u00a0",
+    "flowchart TD\n  style A fill: red%%{x y\n",
+  ],
+  [
     "U+2028 before the `:::` of a state",
     "stateDiagram-v2\nA\u2028:::c\n",
     "stateDiagram-v2\n  A\u2028:::c\n",
@@ -309,8 +319,17 @@ const semicolonExamples: readonly (readonly [string, string, string])[] = [
  * - On a line that holds a `;` that the line rule ignores and, after it, a
  *   U+2028 or U+2029, the statements are printed as written (the spaces in
  *   `participant   Z` stay), up to the end of the line that the rule reads.
+ * - A statement with an empty text, whose `:` is followed by whitespace other
+ *   than spaces and tabs (U+00A0, U+3000, U+FEFF, U+2028, U+2029), is printed
+ *   as written: mermaid.js before 11.7.0 takes that whitespace for the text
+ *   that it needs after the `:`, and the printer would drop it.
  */
 const sequenceExamples: readonly (readonly [string, string, string])[] = [
+  [
+    "a diagram comment joined past a closed directive that holds U+2028",
+    "sequenceDiagram\n# native\u2028%% first\n%% middle\n%%{x:\u2028}%%%% last\nremainder\nAlice->>Bob: x\n",
+    "sequenceDiagram\n  # native\u2028%% first\n%% middle\n%%{x:\u2028}%%%% last\nremainder\n  Alice ->> Bob: x\n",
+  ],
   [
     "a standalone open directive before U+2028 and a semicolon",
     "sequenceDiagram\n%%{wrap foo\u2028;\nparticipant A\n",
@@ -479,7 +498,7 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
   [
     "U+2029 between an id of a note and the `,`",
     "sequenceDiagram\nNote over A\u2029 , B: x\n",
-    "sequenceDiagram\n  Note over A\u2029 ,B: x\n",
+    "sequenceDiagram\n  Note over A\u2029 , B: x\n",
   ],
   [
     "U+2028 between the `,` of a note and an id",
@@ -520,6 +539,41 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
     "U+2028 and spaces at the end of a title",
     "sequenceDiagram\ntitle T  \u2028  \nA->>B: x\n",
     "sequenceDiagram\n  title T  \u2028\n  A ->> B: x\n",
+  ],
+  [
+    "U+00A0 as the entire text of a message",
+    "sequenceDiagram\nA->>B:\u00a0\n",
+    "sequenceDiagram\n  A->>B:\u00a0\n",
+  ],
+  [
+    "U+3000 as the entire text of a note",
+    "sequenceDiagram\nNote left of A:\u3000\n",
+    "sequenceDiagram\n  Note left of A:\u3000\n",
+  ],
+  [
+    "U+FEFF as the entire text of a `links` statement",
+    "sequenceDiagram\nlinks A:\ufeff\n",
+    "sequenceDiagram\n  links A:\ufeff\n",
+  ],
+  [
+    "U+2029 as the entire text of a `link` statement",
+    "sequenceDiagram\nlink A:\u2029\n",
+    "sequenceDiagram\n  link A:\u2029\n",
+  ],
+  [
+    "a space and U+2028 as the entire text of a message",
+    "sequenceDiagram\nA->>B: \u2028\n",
+    "sequenceDiagram\n  A->>B: \u2028\n",
+  ],
+  [
+    "U+00A0 as the entire text of a message, with a `;` after it",
+    "sequenceDiagram\nA->>B:\u00a0;C->>D:x\n",
+    "sequenceDiagram\n  A->>B:\u00a0;C->>D:x\n",
+  ],
+  [
+    "U+00A0 as the entire text of a message in a block",
+    "sequenceDiagram\nalt a\nA->>B:\u00a0\nend\n",
+    "sequenceDiagram\n  alt a\n    A->>B:\u00a0\n  end\n",
   ],
 ]
 
@@ -795,7 +849,7 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
     "U+2028 before the comma of a flowchart style statement",
     "flowchart LR\nA-->B\nstyle A fill:#f00\u2028 ,color:white\n",
-    "flowchart LR\n  A --> B\n  style A fill: #f00\u2028, color: white\n",
+    "flowchart LR\n  A --> B\n  style A fill: #f00\u2028,color: white\n",
   ],
   [
     "U+2029 after the comma of a flowchart style statement",
@@ -974,6 +1028,21 @@ const classLineSeparatorExamples: readonly (readonly [
     "classDiagram\nclass A\nstyle A fill:#f00\u2028 ,color:white\n",
     "classDiagram\n  class A\n  style A fill:#f00\u2028 ,color:white\n",
   ],
+  [
+    "U+2028 and a comment after a name in backquotes",
+    "classDiagram\nclass `A_Car`\u2028%% c\n",
+    "classDiagram\n  class A_Car\n  %% c\n",
+  ],
+  [
+    "U+2028, a directive, and a comment after a name in backquotes",
+    "classDiagram\nclass `notex`\u2028%%{x}%%%% c\n\n",
+    "classDiagram\n  class notex\n  %%{x}%%%% c\n",
+  ],
+  [
+    "U+2028, a directive, and a body with a comment after a name in backquotes",
+    "classDiagram\nclass `Alpha`\u2028%%{x:y}%% {Word %% c}\n",
+    "classDiagram\n  class Alpha\u2028%%{x:y}%% {\n    Word %% c\n  }\n",
+  ],
 ]
 
 /**
@@ -982,6 +1051,331 @@ const classLineSeparatorExamples: readonly (readonly [
  * one is printed as written (docs/er.md, Line separators).
  */
 const erExamples: readonly (readonly [string, string, string])[] = [
+  [
+    "er/statements-one-per-line/class-names-after-directive-ls",
+    "erDiagram\n\u2028class %%{init: {}}%%\nA a",
+    "erDiagram\n  \u2028class %%{init: {}}%%\nA a\n",
+  ],
+  [
+    "er/statements-one-per-line/class-second-name-after-directive-ps",
+    "erDiagram\n\u2029class A \n%%{init: {}}%%\na",
+    "erDiagram\n  \u2029class A \n%%{init: {}}%%\na\n",
+  ],
+  [
+    "er/statements-one-per-line/R44-er-subgraph-LS-c-before",
+    'erDiagram\n"style:#x" subgraph;\u2028X\nA\nend',
+    'erDiagram\n  "style:#x" subgraph;\u2028X\n    A\n  end\n',
+  ],
+  [
+    "er/statements-one-per-line/R44-er-subgraph-PS-c-before",
+    'erDiagram\n"style:#x" subgraph;\u2029X\nA\nend',
+    'erDiagram\n  "style:#x" subgraph;\u2029X\n    A\n  end\n',
+  ],
+  [
+    "er/statements-one-per-line/R63-er-ascii-after-LS-e",
+    'erDiagram\nsubgraph S\nA\nend\u2028\n\n"X"',
+    'erDiagram\n  subgraph S\n    A\n  end\u2028\n\n"X"\n',
+  ],
+  [
+    "er/statements-one-per-line/R44-er-after-separator-LS-e",
+    "erDiagram\nsubgraph S\nA\nend\u2028\n\nX",
+    "erDiagram\n  subgraph S\n    A\n  end\u2028\n\nX\n",
+  ],
+  [
+    "er/statements-one-per-line/R44-er-after-separator-PS-e",
+    "erDiagram\nsubgraph S\nA\nend\u2029\n\nX",
+    "erDiagram\n  subgraph S\n    A\n  end\u2029\n\nX\n",
+  ],
+  [
+    "er/statements-one-per-line/R74-er-LS-g-comment",
+    "erDiagram\nsubgraph S\nA\nend\u2028 %% c",
+    "erDiagram\n  subgraph S\n    A\n  end\u2028 %% c\n",
+  ],
+  [
+    "er/statements-one-per-line/R74-er-LS-g-directive",
+    "erDiagram\nsubgraph S\nA\nend\u2028%%{init: {}}%%",
+    "erDiagram\n  subgraph S\n    A\n  end\u2028%%{init: {}}%%\n",
+  ],
+  [
+    "er/statements-one-per-line/R74-er-PS-g-comment",
+    "erDiagram\nsubgraph S\nA\nend\u2029 %% c",
+    "erDiagram\n  subgraph S\n    A\n  end\u2029 %% c\n",
+  ],
+  [
+    "er/statements-one-per-line/R74-er-PS-g-directive",
+    "erDiagram\nsubgraph S\nA\nend\u2029%%{init: {}}%%",
+    "erDiagram\n  subgraph S\n    A\n  end\u2029%%{init: {}}%%\n",
+  ],
+  [
+    "er/statements-one-per-line/R45-er-class-LS-d",
+    "erDiagram\n\u2028class \n%% c\nA a",
+    "erDiagram\n  \u2028class \n%% c\nA a\n",
+  ],
+  [
+    "er/statements-one-per-line/R45-er-class-LS-e",
+    "erDiagram\n\u2028class \n\nA a",
+    "erDiagram\n  \u2028class \n\nA a\n",
+  ],
+  [
+    "er/statements-one-per-line/R45-er-class-PS-d",
+    "erDiagram\n\u2029class \n%% c\nA a",
+    "erDiagram\n  \u2029class \n%% c\nA a\n",
+  ],
+  [
+    "er/statements-one-per-line/R45-er-class-PS-e",
+    "erDiagram\n\u2029class \n\nA a",
+    "erDiagram\n  \u2029class \n\nA a\n",
+  ],
+  [
+    "er/statements-one-per-line/R45-er-second-name-LS-d",
+    "erDiagram\n\u2028class A \n%% c\na",
+    "erDiagram\n  \u2028class A \n%% c\na\n",
+  ],
+  [
+    "er/statements-one-per-line/R45-er-second-name-LS-e",
+    "erDiagram\n\u2028class A \n\na",
+    "erDiagram\n  \u2028class A \n\na\n",
+  ],
+  [
+    "er/statements-one-per-line/R45-er-nonascii-name-LS-d",
+    "erDiagram\n\u2028class\u00e9 \n%% c\na",
+    "erDiagram\n  \u2028class\u00e9 \n%% c\na\n",
+  ],
+  [
+    "er/statements-one-per-line/R45-er-nonascii-name-LS-e",
+    "erDiagram\n\u2028class\u00e9 \n\na",
+    "erDiagram\n  \u2028class\u00e9 \n\na\n",
+  ],
+  [
+    "er/statements-one-per-line/R45-er-second-name-PS-d",
+    "erDiagram\n\u2029class A \n%% c\na",
+    "erDiagram\n  \u2029class A \n%% c\na\n",
+  ],
+  [
+    "er/statements-one-per-line/R45-er-second-name-PS-e",
+    "erDiagram\n\u2029class A \n\na",
+    "erDiagram\n  \u2029class A \n\na\n",
+  ],
+  [
+    "er/statements-one-per-line/R45-er-nonascii-name-PS-d",
+    "erDiagram\n\u2029class\u00e9 \n%% c\na",
+    "erDiagram\n  \u2029class\u00e9 \n%% c\na\n",
+  ],
+  [
+    "er/statements-one-per-line/R45-er-nonascii-name-PS-e",
+    "erDiagram\n\u2029class\u00e9 \n\na",
+    "erDiagram\n  \u2029class\u00e9 \n\na\n",
+  ],
+  [
+    "U+2028 between the end of an ER subgraph and the next entity",
+    "erDiagram\nsubgraph S\nA\nend\u2028B\n",
+    "erDiagram\n  subgraph S\n    A\n  end\u2028B\n",
+  ],
+  [
+    "U+2029 between the end of an ER subgraph and a relationship",
+    "erDiagram\nsubgraph S\nA\nend\u2029B ||--o{ C : x\n",
+    "erDiagram\n  subgraph S\n    A\n  end\u2029B ||--o{ C : x\n",
+  ],
+  [
+    "U+2028 between the end of a nested ER subgraph and a direction",
+    "erDiagram\nsubgraph O\nsubgraph I\nA\nend\u2028direction RL\nB\nend\n",
+    "erDiagram\n  subgraph O\n    subgraph I\n      A\n    end\u2028direction RL\n    B\n  end\n",
+  ],
+  [
+    "U+2028 after the end of an ER subgraph that nothing follows",
+    "erDiagram\nSUBGRAPH S\nA\nEND\u2028\n",
+    "erDiagram\n  SUBGRAPH S\n    A\n  END\u2028\n",
+  ],
+  [
+    "a name in quotes after the end of an ER subgraph and a U+2028",
+    'erDiagram\nsubgraph S\nA\nend\u2028"B"\n',
+    'erDiagram\n  subgraph S\n    A\n  end\u2028"B"\n',
+  ],
+  [
+    "a directive between the end of an ER subgraph and a U+2028",
+    "erDiagram\nsubgraph S\nA\nend%%{init: {}}%%\u2028B\n",
+    "erDiagram\n  subgraph S\n    A\n  end%%{init: {}}%%\u2028B\n",
+  ],
+  [
+    "a directive between the end of an ER subgraph and a U+2029 and a name in quotes",
+    'erDiagram\nsubgraph S\nA\nend%%{init: {}}%%\u2029"B"\n',
+    'erDiagram\n  subgraph S\n    A\n  end%%{init: {}}%%\u2029"B"\n',
+  ],
+  [
+    "a directive between the keyword of an ER subgraph and a U+2028",
+    "erDiagram\nsubgraph%%{init: {}}%%\u2028S\nA\nend\n",
+    "erDiagram\n  subgraph%%{init: {}}%%\u2028S\n    A\n  end\n",
+  ],
+  [
+    "a directive between an ER number name and a U+2028",
+    "erDiagram\n12%%{init: {}}%%\u2028a\n",
+    "erDiagram\n  12%%{init: {}}%%\u2028a\n",
+  ],
+  [
+    "a line of two ER statements that starts with U+2028",
+    "erDiagram\nA\n\u2028class-A a\n",
+    "erDiagram\n  A\n  \u2028class-A a\n",
+  ],
+  [
+    "a line that starts with U+2029 and class, and two more statements",
+    "erDiagram\nA\n\u2029class A a\n",
+    "erDiagram\n  A\n  \u2029class A a\n",
+  ],
+  [
+    "a line that starts with U+2028 and direction, and two more statements",
+    "erDiagram\nA\n\u2028direction LR B\n",
+    "erDiagram\n  A\n  \u2028direction LR B\n",
+  ],
+  [
+    "a statement with U+2028 and class after a space, and two more statements",
+    "erDiagram\nA\nB \u2028class A a\n",
+    "erDiagram\n  A\n  B \u2028class A a\n",
+  ],
+  [
+    "a line that starts with U+2028 and a name, and one more statement",
+    "erDiagram\nA\n\u2028B C\n",
+    "erDiagram\n  A\n  \u2028B\n  C\n",
+  ],
+  [
+    "a line that starts with U+2028 and a word that starts like class",
+    "erDiagram\nA\n\u2028classes A a\n",
+    "erDiagram\n  A\n  \u2028classes\n  A\n  a\n",
+  ],
+  [
+    "a line that starts with U+2028 and a word that starts like direction",
+    "erDiagram\nA\n\u2028directionX LR B\n",
+    "erDiagram\n  A\n  \u2028directionX\n  LR\n  B\n",
+  ],
+  [
+    "a line that starts with U+2028, a name, and a direction line",
+    "erDiagram\nA\n\u2028B direction LR\n",
+    "erDiagram\n  A\n  \u2028B direction LR\n",
+  ],
+  [
+    "a line that starts with U+2029, two names, and a direction line",
+    "erDiagram\nA\n\u2029B C direction LR\n",
+    "erDiagram\n  A\n  \u2029B C direction LR\n",
+  ],
+  [
+    "a line that starts with U+2028, a relationship, and a direction line",
+    "erDiagram\nA\n\u2028B ||--o{ C : x direction LR\n",
+    "erDiagram\n  A\n  \u2028B ||--o{ C : x direction LR\n",
+  ],
+  [
+    "a direction line after a name and a name that starts with U+2028",
+    "erDiagram\nA\nC \u2028B direction LR\n",
+    "erDiagram\n  A\n  C \u2028B direction LR\n",
+  ],
+  [
+    "a line that starts with U+2028 and direction, and a value on the next line that a statement follows",
+    "erDiagram\nA\n\u2028direction\nLR B\n",
+    "erDiagram\n  A\n  \u2028direction\n  LR B\n",
+  ],
+  [
+    "a line that starts with U+2028, a name, and a direction line with a directive before its value",
+    "erDiagram\nA\n\u2028B direction%%{init: {}}%% LR\n",
+    "erDiagram\n  A\n  \u2028B direction%%{init: {}}%% LR\n",
+  ],
+  [
+    "a line that starts with U+2028, a name, and a direction line in upper case",
+    "erDiagram\nA\n\u2028B DIRECTION lr\n",
+    "erDiagram\n  A\n  \u2028B DIRECTION lr\n",
+  ],
+  [
+    "a line that starts with U+2028, class and a character outside ASCII, and one more statement",
+    "erDiagram\nA\n\u2028classé A\n",
+    "erDiagram\n  A\n  \u2028classé A\n",
+  ],
+  [
+    "a line that starts with U+2028 and CLASS in upper case, and two more statements",
+    "erDiagram\nA\n\u2028CLASS A a\n",
+    "erDiagram\n  A\n  \u2028CLASS A a\n",
+  ],
+  [
+    "a line in an ER subgraph that starts with U+2028, a name, and a direction line",
+    "erDiagram\nA\nsubgraph S\n\u2028B direction LR\nend\n",
+    "erDiagram\n  A\n  subgraph S\n    \u2028B direction LR\n  end\n",
+  ],
+  [
+    "a line that starts with U+2028 and direction, and its value alone",
+    "erDiagram\nA\n\u2028direction LR\n",
+    "erDiagram\n  A\n  \u2028direction\n  LR\n",
+  ],
+  [
+    "a line that starts with U+2028 and a name that ends with direction, and its value alone",
+    "erDiagram\nA\n\u2028Bdirection LR\n",
+    "erDiagram\n  A\n  \u2028Bdirection\n  LR\n",
+  ],
+  [
+    "a line that starts with U+2028 and direction, and a value glued to a letter",
+    "erDiagram\nA\n\u2028direction LRX\n",
+    "erDiagram\n  A\n  \u2028direction\n  LRX\n",
+  ],
+  [
+    "a line that starts with U+2028 and direction, and a relationship that starts with its value",
+    "erDiagram\nA\n\u2028direction LR ||--o{ B : x\n",
+    "erDiagram\n  A\n  \u2028direction\n  LR ||--o{ B : x\n",
+  ],
+  [
+    "a line that starts with U+2028, a name, and direction without a direction",
+    "erDiagram\nA\n\u2028B direction XY\n",
+    "erDiagram\n  A\n  \u2028B\n  direction\n  XY\n",
+  ],
+  [
+    "a line that starts with U+2028, a name, a second U+2028, and a direction line",
+    "erDiagram\nA\n\u2028B\u2028C direction LR\n",
+    "erDiagram\n  A\n  \u2028B\u2028C\n  direction LR\n",
+  ],
+  [
+    "a line that starts with U+2028 and direction, its value, and a statement on the next line",
+    "erDiagram\nA\n\u2028direction LR\nB\n",
+    "erDiagram\n  A\n  \u2028direction\n  LR\n  B\n",
+  ],
+  [
+    "a line that starts with U+2028 and a name, and a directive that holds a direction",
+    'erDiagram\nA\n\u2028B %%{init: {"x": "direction LR"}}%% C\n',
+    'erDiagram\n  A\n  \u2028B\n  %%{init: {"x": "direction LR"}}%% C\n',
+  ],
+  [
+    "a line that starts with U+2028 and class, and one more statement",
+    "erDiagram\nA\n\u2028class B\n",
+    "erDiagram\n  A\n  \u2028class\n  B\n",
+  ],
+  [
+    "a line that starts with U+2028 and class, and a name on the next line",
+    "erDiagram\nA\n\u2028class B\nb\n",
+    "erDiagram\n  A\n  \u2028class\n  B\n  b\n",
+  ],
+  [
+    "a line that starts with U+2028 and class, and two names in quotes",
+    'erDiagram\nA\n\u2028class "B" "b"\n',
+    "erDiagram\n  A\n  \u2028class\n  B\n  b\n",
+  ],
+  [
+    "a line that starts with U+2028 and class, and a name with a class",
+    "erDiagram\nA\n\u2028class B:::x b\n",
+    "erDiagram\n  A\n  \u2028class\n  B:::x\n  b\n",
+  ],
+  [
+    "a line that starts with U+2028, a space, and class",
+    "erDiagram\nA\n\u2028 class B b\n",
+    "erDiagram\n  A\n  \u2028\n  class B b\n",
+  ],
+  [
+    "a line that starts with U+2028, a space, a name, and a direction line",
+    "erDiagram\nA\n\u2028 B direction LR\n",
+    "erDiagram\n  A\n  \u2028\n  B direction LR\n",
+  ],
+  [
+    "U+2028 between the keyword of an ER subgraph and its name",
+    "erDiagram\nsubgraph\u2028S\nA\nend\n",
+    "erDiagram\n  subgraph\u2028S\n    A\n  end\n",
+  ],
+  [
+    "U+2028 between an ER number name and the next name",
+    "erDiagram\n12\u2028a\n",
+    "erDiagram\n  12\u2028a\n",
+  ],
   [
     "U+2028 between an ER subgraph name and its title",
     "erDiagram\nsubgraph S\u2028[t]\nA\nend\n",
@@ -1062,6 +1456,341 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     'erDiagram\nA ||--o{ B : "myDirection"\u2029BT ||--o{ C : has\n',
     'erDiagram\n  A ||--o{ B : "myDirection"\n  \u2029BT ||--o{ C : has\n',
   ],
+  [
+    "U+2028 alone after a name in quotes, before a comment",
+    'erDiagram\n"Foo"\u2028%% c\n',
+    'erDiagram\n  "Foo"\u2028%% c\n',
+  ],
+  [
+    "U+2029 alone after a name in quotes and a space, before a comment",
+    'erDiagram\n"Foo" \u2029%% c\n',
+    'erDiagram\n  "Foo" \u2029%% c\n',
+  ],
+  [
+    "U+2028 alone after the block of an accessibility description, before a comment",
+    "erDiagram\naccDescr {x}\u2028%% c\n",
+    "erDiagram\n  accDescr {x}\u2028%% c\n",
+  ],
+  [
+    "two U+2028 alone after a name in quotes, before a comment",
+    'erDiagram\n"Foo"\u2028\u2028%% c\n',
+    'erDiagram\n  "Foo"\u2028\u2028%% c\n',
+  ],
+  [
+    "U+2028 alone after a name in quotes, at the end of its line",
+    'erDiagram\n"Foo"\u2028\n',
+    "erDiagram\n  Foo\n  \u2028\n",
+  ],
+  [
+    "U+2028 alone after a name in quotes, before a directive",
+    'erDiagram\n"Foo"\u2028%%{init: {}}%%\n',
+    "erDiagram\n  Foo\n  \u2028%%{init: {}}%%\n",
+  ],
+  [
+    "U+00A0 and U+2028 after a name in quotes, before a comment",
+    'erDiagram\n"Foo"\u00a0\u2028%% c\n',
+    'erDiagram\n  "Foo"\u00a0\u2028%% c\n',
+  ],
+  [
+    "U+00A0 after a name in quotes at the end of its line, and U+2028 and a comment on the next line",
+    'erDiagram\n"Foo"\u00a0\n\u2028%% c\n\n',
+    'erDiagram\n  "Foo"\u00a0\n  %% c\n',
+  ],
+  [
+    "U+2028 and an attribute block after a name in quotes",
+    'erDiagram\n"Alpha"\u2028 { int x }\n',
+    'erDiagram\n  "Alpha"\u2028 { int x }\n',
+  ],
+  [
+    "U+2028 and an attribute block touching it after a name in quotes",
+    'erDiagram\n"Alpha"\u2028{ int x }\n',
+    'erDiagram\n  "Alpha"\u2028{ int x }\n',
+  ],
+  [
+    "U+2028, a directive, and an attribute block after a name in quotes",
+    'erDiagram\n"Alpha"\u2028%%{x:y}%% { int x }\n',
+    'erDiagram\n  "Alpha"\u2028%%{x:y}%% { int x }\n',
+  ],
+  [
+    "U+2029 and a relationship after a name in quotes",
+    'erDiagram\n"Alpha"\u2029 ||--o{ B : x\n',
+    'erDiagram\n  "Alpha"\u2029 ||--o{ B : x\n',
+  ],
+  [
+    "U+2028 and an alias after a name in quotes",
+    'erDiagram\n"Alpha"\u2028["x"]\n',
+    'erDiagram\n  "Alpha"\u2028["x"]\n',
+  ],
+  [
+    "U+2028 and a CSS class after a name in quotes",
+    'erDiagram\n"Alpha"\u2028:::c\n',
+    'erDiagram\n  "Alpha"\u2028:::c\n',
+  ],
+  [
+    "U+2028 and a second name after a name in quotes",
+    'erDiagram\n"Alpha"\u2028 "B"\n',
+    "erDiagram\n  Alpha\n  \u2028\n  B\n",
+  ],
+  [
+    "U+2028 alone at the start of its line, before a comment",
+    "erDiagram\n\u2028%% c\n",
+    "erDiagram\n  %% c\n",
+  ],
+  [
+    "U+00A0 in place of the separator: er/statements-one-per-line/class-names-after-directive-ls",
+    "erDiagram\n\u00a0class %%{init: {}}%%\nA a",
+    "erDiagram\n  \u00a0class %%{init: {}}%%\nA a\n",
+  ],
+  [
+    "U+3000 in place of the separator: er/statements-one-per-line/class-names-after-directive-ls",
+    "erDiagram\n\u3000class %%{init: {}}%%\nA a",
+    "erDiagram\n  \u3000class %%{init: {}}%%\nA a\n",
+  ],
+  [
+    "U+00A0 in place of the separator: er/statements-one-per-line/class-second-name-after-directive-ps",
+    "erDiagram\n\u00a0class A \n%%{init: {}}%%\na",
+    "erDiagram\n  \u00a0class A \n%%{init: {}}%%\na\n",
+  ],
+  [
+    "U+00A0 in place of the separator: er/statements-one-per-line/R63-er-ascii-after-LS-e",
+    'erDiagram\nsubgraph S\nA\nend\u00a0\n\n"X"',
+    'erDiagram\n  subgraph S\n    A\n  end\u00a0\n\n"X"\n',
+  ],
+  [
+    "U+3000 in place of the separator: er/statements-one-per-line/R63-er-ascii-after-LS-e",
+    'erDiagram\nsubgraph S\nA\nend\u3000\n\n"X"',
+    'erDiagram\n  subgraph S\n    A\n  end\u3000\n\n"X"\n',
+  ],
+  [
+    "U+00A0 in place of the separator: er/statements-one-per-line/R44-er-after-separator-LS-e",
+    "erDiagram\nsubgraph S\nA\nend\u00a0\n\nX",
+    "erDiagram\n  subgraph S\n    A\n  end\u00a0\n\nX\n",
+  ],
+  [
+    "U+3000 in place of the separator: er/statements-one-per-line/R44-er-after-separator-LS-e",
+    "erDiagram\nsubgraph S\nA\nend\u3000\n\nX",
+    "erDiagram\n  subgraph S\n    A\n  end\u3000\n\nX\n",
+  ],
+  [
+    "U+00A0 in place of the separator: er/statements-one-per-line/R74-er-LS-g-directive",
+    "erDiagram\nsubgraph S\nA\nend\u00a0%%{init: {}}%%",
+    "erDiagram\n  subgraph S\n    A\n  end\u00a0%%{init: {}}%%\n",
+  ],
+  [
+    "U+3000 in place of the separator: er/statements-one-per-line/R74-er-LS-g-directive",
+    "erDiagram\nsubgraph S\nA\nend\u3000%%{init: {}}%%",
+    "erDiagram\n  subgraph S\n    A\n  end\u3000%%{init: {}}%%\n",
+  ],
+  [
+    "U+00A0 in place of the separator: er/statements-one-per-line/R45-er-class-LS-d",
+    "erDiagram\n\u00a0class \n%% c\nA a",
+    "erDiagram\n  \u00a0class \n%% c\nA a\n",
+  ],
+  [
+    "U+3000 in place of the separator: er/statements-one-per-line/R45-er-class-LS-d",
+    "erDiagram\n\u3000class \n%% c\nA a",
+    "erDiagram\n  \u3000class \n%% c\nA a\n",
+  ],
+  [
+    "U+00A0 in place of the separator: er/statements-one-per-line/R45-er-class-LS-e",
+    "erDiagram\n\u00a0class \n\nA a",
+    "erDiagram\n  \u00a0class \n\nA a\n",
+  ],
+  [
+    "U+00A0 in place of the separator: er/statements-one-per-line/R45-er-second-name-LS-d",
+    "erDiagram\n\u00a0class A \n%% c\na",
+    "erDiagram\n  \u00a0class A \n%% c\na\n",
+  ],
+  [
+    "U+3000 in place of the separator: er/statements-one-per-line/R45-er-second-name-LS-d",
+    "erDiagram\n\u3000class A \n%% c\na",
+    "erDiagram\n  \u3000class A \n%% c\na\n",
+  ],
+  [
+    "U+00A0 in place of the separator: er/statements-one-per-line/R45-er-second-name-LS-e",
+    "erDiagram\n\u00a0class A \n\na",
+    "erDiagram\n  \u00a0class A \n\na\n",
+  ],
+  [
+    "U+00A0 in place of the separator: er/statements-one-per-line/R45-er-nonascii-name-LS-d",
+    "erDiagram\n\u00a0classé \n%% c\na",
+    "erDiagram\n  \u00a0classé \n%% c\na\n",
+  ],
+  [
+    "U+00A0 in place of the separator: er/statements-one-per-line/R45-er-nonascii-name-LS-e",
+    "erDiagram\n\u00a0classé \n\na",
+    "erDiagram\n  \u00a0classé \n\na\n",
+  ],
+  [
+    "U+00A0 in place of the separator: U+2028 between the end of an ER subgraph and the next entity",
+    "erDiagram\nsubgraph S\nA\nend\u00a0B\n",
+    "erDiagram\n  subgraph S\n    A\n  end\u00a0B\n",
+  ],
+  [
+    "U+3000 in place of the separator: U+2028 between the end of an ER subgraph and the next entity",
+    "erDiagram\nsubgraph S\nA\nend\u3000B\n",
+    "erDiagram\n  subgraph S\n    A\n  end\u3000B\n",
+  ],
+  [
+    "U+00A0 in place of the separator: U+2029 between the end of an ER subgraph and a relationship",
+    "erDiagram\nsubgraph S\nA\nend\u00a0B ||--o{ C : x\n",
+    "erDiagram\n  subgraph S\n    A\n  end\u00a0B ||--o{ C : x\n",
+  ],
+  [
+    "U+00A0 in place of the separator: U+2028 after the end of an ER subgraph that nothing follows",
+    "erDiagram\nSUBGRAPH S\nA\nEND\u00a0\n",
+    "erDiagram\n  SUBGRAPH S\n    A\n  END\u00a0\n",
+  ],
+  [
+    "U+3000 in place of the separator: U+2028 after the end of an ER subgraph that nothing follows",
+    "erDiagram\nSUBGRAPH S\nA\nEND\u3000\n",
+    "erDiagram\n  SUBGRAPH S\n    A\n  END\u3000\n",
+  ],
+  [
+    "U+00A0 in place of the separator: a name in quotes after the end of an ER subgraph and a U+2028",
+    'erDiagram\nsubgraph S\nA\nend\u00a0"B"\n',
+    'erDiagram\n  subgraph S\n    A\n  end\u00a0"B"\n',
+  ],
+  [
+    "U+3000 in place of the separator: a name in quotes after the end of an ER subgraph and a U+2028",
+    'erDiagram\nsubgraph S\nA\nend\u3000"B"\n',
+    'erDiagram\n  subgraph S\n    A\n  end\u3000"B"\n',
+  ],
+  [
+    "U+00A0 in place of the separator: a directive between the end of an ER subgraph and a U+2028",
+    "erDiagram\nsubgraph S\nA\nend%%{init: {}}%%\u00a0B\n",
+    "erDiagram\n  subgraph S\n    A\n  end%%{init: {}}%%\u00a0B\n",
+  ],
+  [
+    "U+00A0 in place of the separator: a directive between the end of an ER subgraph and a U+2029 and a name in quotes",
+    'erDiagram\nsubgraph S\nA\nend%%{init: {}}%%\u00a0"B"\n',
+    'erDiagram\n  subgraph S\n    A\n  end%%{init: {}}%%\u00a0"B"\n',
+  ],
+  [
+    "U+00A0 in place of the separator: a line of two ER statements that starts with U+2028",
+    "erDiagram\nA\n\u00a0class-A a\n",
+    "erDiagram\n  A\n  \u00a0class-A a\n",
+  ],
+  [
+    "U+3000 in place of the separator: a line of two ER statements that starts with U+2028",
+    "erDiagram\nA\n\u3000class-A a\n",
+    "erDiagram\n  A\n  \u3000class-A a\n",
+  ],
+  [
+    "U+00A0 in place of the separator: a line that starts with U+2029 and class, and two more statements",
+    "erDiagram\nA\n\u00a0class A a\n",
+    "erDiagram\n  A\n  \u00a0class A a\n",
+  ],
+  [
+    "U+3000 in place of the separator: a line that starts with U+2029 and class, and two more statements",
+    "erDiagram\nA\n\u3000class A a\n",
+    "erDiagram\n  A\n  \u3000class A a\n",
+  ],
+  [
+    "U+00A0 in place of the separator: a statement with U+2028 and class after a space, and two more statements",
+    "erDiagram\nA\nB \u00a0class A a\n",
+    "erDiagram\n  A\n  B \u00a0class A a\n",
+  ],
+  [
+    "U+00A0 in place of the separator: a line that starts with U+2028, class and a character outside ASCII, and one more statement",
+    "erDiagram\nA\n\u00a0classé A\n",
+    "erDiagram\n  A\n  \u00a0classé A\n",
+  ],
+  [
+    "U+00A0 in place of the separator: a line that starts with U+2028 and CLASS in upper case, and two more statements",
+    "erDiagram\nA\n\u00a0CLASS A a\n",
+    "erDiagram\n  A\n  \u00a0CLASS A a\n",
+  ],
+  [
+    "U+00A0 in place of the separator: U+2028 and an attribute block after a name in quotes",
+    'erDiagram\n"Alpha"\u00a0 { int x }\n',
+    'erDiagram\n  "Alpha"\u00a0 { int x }\n',
+  ],
+  [
+    "U+3000 in place of the separator: U+2028 and an attribute block after a name in quotes",
+    'erDiagram\n"Alpha"\u3000 { int x }\n',
+    'erDiagram\n  "Alpha"\u3000 { int x }\n',
+  ],
+  [
+    "U+00A0 in place of the separator: U+2028 and an attribute block touching it after a name in quotes",
+    'erDiagram\n"Alpha"\u00a0{ int x }\n',
+    'erDiagram\n  "Alpha"\u00a0{ int x }\n',
+  ],
+  [
+    "U+3000 in place of the separator: U+2028 and an attribute block touching it after a name in quotes",
+    'erDiagram\n"Alpha"\u3000{ int x }\n',
+    'erDiagram\n  "Alpha"\u3000{ int x }\n',
+  ],
+  [
+    "U+00A0 in place of the separator: U+2028, a directive, and an attribute block after a name in quotes",
+    'erDiagram\n"Alpha"\u00a0%%{x:y}%% { int x }\n',
+    'erDiagram\n  "Alpha"\u00a0%%{x:y}%% { int x }\n',
+  ],
+  [
+    "U+3000 in place of the separator: U+2028, a directive, and an attribute block after a name in quotes",
+    'erDiagram\n"Alpha"\u3000%%{x:y}%% { int x }\n',
+    'erDiagram\n  "Alpha"\u3000%%{x:y}%% { int x }\n',
+  ],
+  [
+    "U+00A0 in place of the separator: U+2029 and a relationship after a name in quotes",
+    'erDiagram\n"Alpha"\u00a0 ||--o{ B : x\n',
+    'erDiagram\n  "Alpha"\u00a0 ||--o{ B : x\n',
+  ],
+  [
+    "U+3000 in place of the separator: U+2029 and a relationship after a name in quotes",
+    'erDiagram\n"Alpha"\u3000 ||--o{ B : x\n',
+    'erDiagram\n  "Alpha"\u3000 ||--o{ B : x\n',
+  ],
+  [
+    "U+00A0 in place of the separator: U+2028 and an alias after a name in quotes",
+    'erDiagram\n"Alpha"\u00a0["x"]\n',
+    'erDiagram\n  "Alpha"\u00a0["x"]\n',
+  ],
+  [
+    "U+3000 in place of the separator: U+2028 and an alias after a name in quotes",
+    'erDiagram\n"Alpha"\u3000["x"]\n',
+    'erDiagram\n  "Alpha"\u3000["x"]\n',
+  ],
+  [
+    "U+00A0 in place of the separator: U+2028 and a CSS class after a name in quotes",
+    'erDiagram\n"Alpha"\u00a0:::c\n',
+    'erDiagram\n  "Alpha"\u00a0:::c\n',
+  ],
+  [
+    "U+3000 in place of the separator: U+2028 and a CSS class after a name in quotes",
+    'erDiagram\n"Alpha"\u3000:::c\n',
+    'erDiagram\n  "Alpha"\u3000:::c\n',
+  ],
+  [
+    "U+00A0, U+2028, and an attribute block after a name in quotes",
+    'erDiagram\n"Anchor" \u00a0\u2028{ int id }\n',
+    'erDiagram\n  "Anchor" \u00a0\u2028{ int id }\n',
+  ],
+  [
+    "U+3000, U+2028, and an attribute block after a name in quotes",
+    'erDiagram\n"Anchor" \u3000\u2028{ int id }\n',
+    'erDiagram\n  "Anchor" \u3000\u2028{ int id }\n',
+  ],
+  [
+    "U+FEFF and an attribute block after a name in quotes",
+    'erDiagram\n"Alpha"\ufeff{ int x }\n',
+    'erDiagram\n  "Alpha"\ufeff{ int x }\n',
+  ],
+  [
+    "U+2003 and an attribute block after a name in quotes",
+    'erDiagram\n"Alpha" \u2003{ int x }\n',
+    'erDiagram\n  "Alpha" \u2003{ int x }\n',
+  ],
+  [
+    "U+3000 and an attribute block after a name in quotes",
+    'erDiagram\n"Alpha" \u3000{ int x }\n',
+    'erDiagram\n  "Alpha" \u3000{ int x }\n',
+  ],
+  [
+    "U+00A0 and a second name after a name in quotes",
+    'erDiagram\n"Alpha"\u00a0 "B"\n',
+    "erDiagram\n  Alpha\n  \u00a0\n  B\n",
+  ],
 ]
 
 /**
@@ -1079,12 +1808,12 @@ const ganttLineSeparatorExamples: readonly (readonly [
   [
     "U+2028 between the parentheses of a blank Gantt callback",
     "gantt\na : id1, 1d\nclick id1 call f(\u2028)",
-    "gantt\n  a :id1, 1d\n  click id1 call f(\u2028)\n",
+    "gantt\n  a : id1, 1d\n  click id1 call f(\u2028)\n",
   ],
   [
     "U+2029 between the parentheses of a blank Gantt callback",
     "gantt\na : id1, 1d\nclick id1 call f(\u2029)",
-    "gantt\n  a :id1, 1d\n  click id1 call f(\u2029)\n",
+    "gantt\n  a : id1, 1d\n  click id1 call f(\u2029)\n",
   ],
   [
     "U+2028 between the header and a statement",
@@ -1104,17 +1833,22 @@ const ganttLineSeparatorExamples: readonly (readonly [
   [
     "U+2028 inside a task description",
     "gantt\na\u2028b : 1d\n",
-    "gantt\n  a\u2028b :1d\n",
+    "gantt\n  a\u2028b : 1d\n",
   ],
   [
     "U+2028 before the colon of a task",
     "gantt\na\u2028: 1d\n",
-    "gantt\n  a\u2028:1d\n",
+    "gantt\n  a\u2028 : 1d\n",
   ],
   [
     "U+2028 between the items of task data",
     "gantt\na : 1d,\u20282d\n",
-    "gantt\n  a :1d,\u20282d\n",
+    "gantt\n  a : 1d,\u20282d\n",
+  ],
+  [
+    "U+2028 right after the colon of a task",
+    "gantt\na:\u20281d\n",
+    "gantt\n  a :\u20281d\n",
   ],
   [
     "U+2028 after a title keyword",
@@ -1144,7 +1878,7 @@ const ganttLineSeparatorExamples: readonly (readonly [
   [
     "U+2028 between a click id and its part",
     'gantt\na : id1, 1d\nclick id1\u2028href "u"\n',
-    'gantt\n  a :id1, 1d\n  click id1\u2028href "u"\n',
+    'gantt\n  a : id1, 1d\n  click id1\u2028href "u"\n',
   ],
   [
     "U+2028 and spaces at the end of a title",
@@ -1186,22 +1920,22 @@ const ganttWhitespaceExamples: readonly (readonly [string, string, string])[] =
     [
       "U+00A0 around an item of task data",
       "gantt\na :\u00a01d\u00a0\n",
-      "gantt\n  a :1d\n",
+      "gantt\n  a : 1d\n",
     ],
     [
       "U+00A0 between the items of task data",
       "gantt\na : id1,\u00a0\u00a01d\n",
-      "gantt\n  a :id1, 1d\n",
+      "gantt\n  a : id1, 1d\n",
     ],
     [
       "U+00A0 before the colon of a task",
       "gantt\na\u00a0: 1d\n",
-      "gantt\n  a\u00a0:1d\n",
+      "gantt\n  a\u00a0 : 1d\n",
     ],
     [
       "U+FEFF before a task",
       "gantt\ntitle T\n\ufeffa : 1d\n",
-      "gantt\n  title T\n  a :1d\n",
+      "gantt\n  title T\n  a : 1d\n",
     ],
     [
       "U+FEFF between the items of a list",
@@ -1315,6 +2049,16 @@ const journeyWhitespaceExamples: readonly (readonly [
     "U+2029 as the entire data of a journey task",
     "journey\nTask:\u2029\n",
     "journey\n  Task:\u2029\n",
+  ],
+  [
+    "U+00A0 before the colon of a task",
+    "journey\nA\u00a0: 5\nB : 2\n",
+    "journey\n  A\u00a0: 5\n  B: 2\n",
+  ],
+  [
+    "U+3000 and a space before the colon of a task",
+    "journey\nA\u3000 : 5\nB : 2\n",
+    "journey\n  A\u3000 : 5\n  B: 2\n",
   ],
   [
     "U+00A0 after a title keyword",
@@ -1435,6 +2179,21 @@ const requirementLineSeparatorExamples: readonly (readonly [
     "requirementDiagram\naccTitle: a\u2028b\n",
     "requirementDiagram\n  accTitle: a\u2028b\n",
   ],
+  [
+    "U+2028 and a comment after the target in quotes of a relationship, with a statement after the comment",
+    'requirementDiagram\na - satisfies -> "b"\u2028%% c\naccDescr {}\n',
+    'requirementDiagram\n  a - satisfies -> "b"\u2028%% c\naccDescr {}\n',
+  ],
+  [
+    "U+2028 and a comment after a value in quotes, with a statement after the comment",
+    'requirementDiagram\nrequirement r {\nid: "1"\u2028%% c\naccDescr {}\n}\n',
+    'requirementDiagram\n  requirement r {\n    id: "1"\u2028%% c\naccDescr {}\n  }\n',
+  ],
+  [
+    "U+2028 and a comment after the class in quotes of a class statement, with a statement after the comment",
+    'requirementDiagram\nrequirement r {\n}\nclass r\n"c"\u2028%% c\naccDescr {}\n',
+    'requirementDiagram\n  requirement r {\n  }\n  class r\n"c"\u2028%% c\naccDescr {}\n',
+  ],
 ]
 
 /**
@@ -1472,7 +2231,7 @@ const requirementWhitespaceExamples: readonly (readonly [
   [
     "U+00A0 around the comma of a list of classes",
     "requirementDiagram\nrequirement r:::a\u00a0,\u00a0b {\n}\n",
-    "requirementDiagram\n  requirement r:::a,b {\n  }\n",
+    "requirementDiagram\n  requirement r:::a, b {\n  }\n",
   ],
   [
     "U+00A0 inside a name",
@@ -1874,6 +2633,16 @@ const timelineLineSeparatorExamples: readonly (readonly [
     "U+2028 and spaces at the end of the last event of a line",
     "timeline\n2020 : e  \u2028  \n",
     "timeline\n  2020 : e  \u2028\n",
+  ],
+  [
+    "U+2028 and a space between the title keyword and a hash",
+    "timeline\ntitle\u2028 # c\n  2004 : a\n",
+    "timeline\n  title\u2028 # c\n  2004 : a\n",
+  ],
+  [
+    "U+2029 and a space between the title keyword and a hash",
+    "timeline\ntitle\u2029 # c\n  2004 : a\n",
+    "timeline\n  title\u2029 # c\n  2004 : a\n",
   ],
 ]
 
@@ -2452,7 +3221,7 @@ const blockLineSeparatorExamples: readonly (readonly [
   [
     "U+2028 between a composite head and its body",
     "block-beta\nblock:G\u2028a\u2028end\n",
-    "block-beta\n  block:G\n    a\n  end\n",
+    "block-beta\n  block: G\n    a\n  end\n",
   ],
   [
     "block: ls-comment-in-composite-head",
@@ -2467,17 +3236,17 @@ const blockLineSeparatorExamples: readonly (readonly [
   [
     "block: comment-ls-semicolon-before",
     'block-beta\nblock:r\n A["x"]%% c;\u2028 B["y"]\nend\n',
-    'block-beta\n  block:r\n    A["x"] %% c;\u2028 B["y"]\n  end\n',
+    'block-beta\n  block: r\n    A["x"] %% c;\u2028 B["y"]\n  end\n',
   ],
   [
     "block: comment-ps-semicolon-after",
     'block-beta\nblock:r\n A["x"]%% c\u2029 B["x;y"]\nend\n',
-    'block-beta\n  block:r\n    A["x"] %% c\u2029 B["x;y"]\n  end\n',
+    'block-beta\n  block: r\n    A["x"] %% c\u2029 B["x;y"]\n  end\n',
   ],
   [
     "block: comment-ls-semicolon-both",
     'block-beta\nblock:r\n A["x"]%% c;\u2028 B["x;y"]\nend\n',
-    'block-beta\n  block:r\n    A["x"] %% c;\u2028 B["x;y"]\n  end\n',
+    'block-beta\n  block: r\n    A["x"] %% c;\u2028 B["x;y"]\n  end\n',
   ],
   [
     "U+2029 before the comma of a block classDef statement",
@@ -2544,7 +3313,7 @@ const blockWhitespaceExamples: readonly (readonly [string, string, string])[] =
     [
       "U+00A0 in a composite head",
       "block-beta\nblock:\u00a0G\u00a0a\u00a0end\n",
-      "block-beta\n  block:G\n    a\n  end\n",
+      "block-beta\n  block: G\n    a\n  end\n",
     ],
     [
       "U+0085 inside an id",
@@ -2810,7 +3579,7 @@ const kanbanExamples: readonly (readonly [string, string, string, Options?])[] =
     [
       "kanban: comment-line-ls-taken",
       "kanban\n S[x]\n%%\n%%\u2028   A\n",
-      "kanban\n  S[x]\n%%\n%%\u2028   A\n",
+      "kanban\n  S[x]\n  %%\n  %%\u2028   A\n",
     ],
     [
       "kanban: indent-whitespace-kind",
@@ -3358,6 +4127,21 @@ const dataBlockExamples: readonly (readonly [
     'sequenceDiagram\n  participant A@{ \u00a0"type":"queue"\u00a0 }\n',
   ],
   [
+    "data blocks: sequence name block with a no-break space before a comment",
+    "sequenceDiagram\nparticipant A@{x}\u00a0%% c\n",
+    "sequenceDiagram\n  participant A@{x}\u00a0%% c\n",
+  ],
+  [
+    "data blocks: sequence name block with an ideographic space before a comment",
+    "sequenceDiagram\nparticipant A@{x}\u3000%% c\n",
+    "sequenceDiagram\n  participant A@{x}\u3000%% c\n",
+  ],
+  [
+    "data blocks: sequence name block with a form feed before a comment",
+    "sequenceDiagram\nparticipant A@{x}\f%% c\n",
+    "sequenceDiagram\n  participant A@{x}\f%% c\n",
+  ],
+  [
     "data blocks: kanban one line with U+2028 inside",
     'kanban\nS\n  A@{ticket:"Alpha\u2028 Beta"}\n',
     'kanban\n  S\n    A@{ticket:"Alpha\u2028 Beta"}\n',
@@ -3819,159 +4603,163 @@ const vennExamples: readonly (readonly [string, string, string])[] = [
   [
     "U+2028 inside the brackets of a venn label with a semicolon",
     "venn-beta\nset A[ a;b \u2028]\n",
-    "venn-beta\nset A[a;b \u2028]\n",
+    "venn-beta\n  set A[a;b \u2028]\n",
   ],
   [
     "U+2029 inside the brackets of a venn label with a semicolon",
     "venn-beta\nset A[ a;b \u2029]\n",
-    "venn-beta\nset A[a;b \u2029]\n",
+    "venn-beta\n  set A[a;b \u2029]\n",
   ],
   [
     "U+2028 inside the brackets of a venn label",
     "venn-beta\nset A[ T\u2028]\n",
-    'venn-beta\nset A["T\u2028"]\n',
+    'venn-beta\n  set A["T\u2028"]\n',
   ],
   [
     "U+2029 inside the brackets of a venn label",
     "venn-beta\nset A[ T\u2029]\n",
-    'venn-beta\nset A["T\u2029"]\n',
+    'venn-beta\n  set A["T\u2029"]\n',
   ],
   [
     "venn: crlf-values",
     'venn-beta\r\nset "A\r\n B"[L\r\n M]\r\nstyle A fill:rgb(1,\r\n 2,3)\r\n',
-    'venn-beta\nset "A\n B"["L\n M"]\nstyle A fill:rgb(1,\n 2,3)\n',
+    'venn-beta\n  set "A\n B"["L\n M"]\n  style A fill: rgb(1,\n 2,3)\n',
   ],
   [
     "venn: cr-values",
     'venn-beta\rset "A\r B"[L\r M]\rstyle A fill:rgb(1,\r 2,3)\r',
-    'venn-beta\nset "A\n B"["L\n M"]\nstyle A fill:rgb(1,\n 2,3)\n',
+    'venn-beta\n  set "A\n B"["L\n M"]\n  style A fill: rgb(1,\n 2,3)\n',
   ],
   [
     "venn: ls-values",
     'venn-beta\nset "A\u2028 B"[L\u2028 M]\nstyle A fill:rgb(1,\u2028 2,3)',
-    'venn-beta\nset "A\u2028 B"["L\u2028 M"]\nstyle A fill:rgb(1,\u2028 2,3)\n',
+    'venn-beta\n  set "A\u2028 B"["L\u2028 M"]\n  style A fill: rgb(1,\u2028 2,3)\n',
   ],
   [
     "venn: ps-values",
     'venn-beta\nset "A\u2029 B"[L\u2029 M]\nstyle A fill:rgba(1,\u2029 2,3,.5)',
-    'venn-beta\nset "A\u2029 B"["L\u2029 M"]\nstyle A fill:rgba(1,\u2029 2,3,.5)\n',
+    'venn-beta\n  set "A\u2029 B"["L\u2029 M"]\n  style A fill: rgba(1,\u2029 2,3,.5)\n',
   ],
   [
     "venn: ls-comment-kept",
     "venn-beta\n set A[style:#x;y]%% c;\u2028set B\nset C",
-    "venn-beta\nset A[style:#x;y]%% c;\u2028set B\nset C\n",
+    "venn-beta\n  set A[style:#x;y]%% c;\u2028set B\n  set C\n",
   ],
   [
     "venn: ps-comment-kept",
     "venn-beta\n set A[style:#x;y]%% c;\u2029set B\nset C",
-    "venn-beta\nset A[style:#x;y]%% c;\u2029set B\nset C\n",
+    "venn-beta\n  set A[style:#x;y]%% c;\u2029set B\n  set C\n",
   ],
   [
     "venn: ps-comment-eof",
     "venn-beta\nset A[style:#x;y]%% c;\u2029 x",
-    "venn-beta\nset A[style:#x;y]%% c;\u2029 x\n",
+    "venn-beta\n  set A[style:#x;y]%% c;\u2029 x\n",
   ],
   [
     "venn: ls-header-comment",
     "venn-beta %% style:#x;y\u2028set Hidden\nset A",
-    "venn-beta %% style:#x;y\u2028set Hidden\nset A\n",
+    "venn-beta %% style:#x;y\u2028set Hidden\n  set A\n",
   ],
   [
     "venn: ps-kept-comment-whitespace-line",
     "venn-beta\n set A[style:#x;y]%% c;\u2029   \nset B",
-    "venn-beta\nset A[style:#x;y]%% c;\u2029   \nset B\n",
+    "venn-beta\n  set A[style:#x;y]%% c;\u2029   \n  set B\n",
   ],
   [
     "venn: ls-kept-comment-last-character",
     "venn-beta\n set A[style:#x;y]%% c;\u2028x",
-    "venn-beta\nset A[style:#x;y]%% c;\u2028x\n",
+    "venn-beta\n  set A[style:#x;y]%% c;\u2028x\n",
   ],
-  ["venn: nbsp-leading-header", "\u00a0venn-beta\nset A", "venn-beta\nset A\n"],
+  [
+    "venn: nbsp-leading-header",
+    "\u00a0venn-beta\nset A",
+    "venn-beta\n  set A\n",
+  ],
   [
     "venn: nbsp-value-kept",
     'venn-beta\nset " A\u00a0B "[ L\u00a0M ]\nstyle A fill:rgb(1,\u00a02,3)',
-    'venn-beta\nset " A\u00a0B "["L\u00a0M"]\nstyle A fill:rgb(1,\u00a02,3)\n',
+    'venn-beta\n  set " A\u00a0B "["L\u00a0M"]\n  style A fill: rgb(1,\u00a02,3)\n',
   ],
-  ["venn: ff-title-separator", "venn-beta\ntitle\fT", "venn-beta\ntitle T\n"],
+  ["venn: ff-title-separator", "venn-beta\ntitle\fT", "venn-beta\n  title T\n"],
   [
     "venn: bom-leading-header",
     "\ufeffvenn-beta\nset A",
-    "\ufeffvenn-beta\nset A\n",
+    "\ufeffvenn-beta\n  set A\n",
   ],
   [
     "venn: vt-value-kept",
     'venn-beta\nset "A\u000bB"[L\fM]',
-    'venn-beta\nset "A\u000bB"["L\fM"]\n',
+    'venn-beta\n  set "A\u000bB"["L\fM"]\n',
   ],
   [
     "venn: nbsp-title-separator",
     "venn-beta\ntitle\u00a0 T",
-    "venn-beta\ntitle T\n",
+    "venn-beta\n  title T\n",
   ],
   [
     "venn: bom-title-separator",
     "venn-beta\ntitle\ufeffT",
-    "venn-beta\ntitle T\n",
+    "venn-beta\n  title T\n",
   ],
   [
     "venn: ps-header-comment",
     "venn-beta %% style:#x;y\u2029set Hidden\nset A",
-    "venn-beta %% style:#x;y\u2029set Hidden\nset A\n",
+    "venn-beta %% style:#x;y\u2029set Hidden\n  set A\n",
   ],
   [
     "venn: ls-kept-comment-whitespace-line",
     "venn-beta\n set A[style:#x;y]%% c;\u2028   \nset B",
-    "venn-beta\nset A[style:#x;y]%% c;\u2028   \nset B\n",
+    "venn-beta\n  set A[style:#x;y]%% c;\u2028   \n  set B\n",
   ],
   [
     "venn: ps-kept-comment-last-character",
     "venn-beta\n set A[style:#x;y]%% c;\u2029x",
-    "venn-beta\nset A[style:#x;y]%% c;\u2029x\n",
+    "venn-beta\n  set A[style:#x;y]%% c;\u2029x\n",
   ],
   [
     "venn: ls-kept-directive",
     "venn-beta\nset A[style:#x;y] %%{init:\u2028 {}}%%",
-    "venn-beta\nset A[style:#x;y] %%{init:\u2028 {}}%%\n",
+    "venn-beta\n  set A[style:#x;y] %%{init:\u2028 {}}%%\n",
   ],
   [
     "venn: ps-kept-directive",
     "venn-beta\nset A[style:#x;y] %%{init:\u2029 {}}%%",
-    "venn-beta\nset A[style:#x;y] %%{init:\u2029 {}}%%\n",
+    "venn-beta\n  set A[style:#x;y] %%{init:\u2029 {}}%%\n",
   ],
   [
     "venn: unicode-role-whitespace",
     '\u3000venn-beta\nset "A\ufeffB"[L\u3000M]\ntext A "x\u2028y"\nstyle A fill:"a\u2029b"',
-    'venn-beta\nset "A\ufeffB"["L\u3000M"]\ntext A "x\u2028y"\nstyle A fill:"a\u2029b"\n',
+    'venn-beta\n  set "A\ufeffB"["L\u3000M"]\ntext A "x\u2028y"\n  style A fill: "a\u2029b"\n',
   ],
   [
     "venn: ls-kept-overlapping-value",
     "venn-beta\n set A[style:#x;\u2028rest] : 2",
-    "venn-beta\nset A[style:#x;\u2028rest]:2\n",
+    "venn-beta\n  set A[style:#x;\u2028rest] : 2\n",
   ],
   [
     "venn: ps-kept-overlapping-value",
     "venn-beta\n set A[style:#x;\u2029rest] : 2",
-    "venn-beta\nset A[style:#x;\u2029rest]:2\n",
+    "venn-beta\n  set A[style:#x;\u2029rest] : 2\n",
   ],
   [
     "venn: bom-frontmatter",
     "\ufeff---\ntitle:   T\n---\nvenn-beta\nset A",
-    "\ufeff---\ntitle: T\n---\nvenn-beta\nset A\n",
+    "\ufeff---\ntitle: T\n---\nvenn-beta\n  set A\n",
   ],
   [
     "venn: ls-comment-competing-semicolon",
     "venn-beta\nset A[style:#x;y]%% c\u2028tail;",
-    "venn-beta\nset A[style:#x;y]%% c\u2028tail;\n",
+    "venn-beta\n  set A[style:#x;y]%% c\u2028tail;\n",
   ],
   [
     "venn: ps-comment-competing-semicolon",
     "venn-beta\nset A[style:#x;y]%% c\u2029tail;",
-    "venn-beta\nset A[style:#x;y]%% c\u2029tail;\n",
+    "venn-beta\n  set A[style:#x;y]%% c\u2029tail;\n",
   ],
   [
     "venn: title-line-separator-spaces",
     "venn-beta\ntitle T  \u2028  \n",
-    "venn-beta\ntitle T  \u2028\n",
+    "venn-beta\n  title T  \u2028\n",
   ],
 ]
 
@@ -4053,12 +4841,12 @@ describe("style semicolons", () => {
     [
       "style semicolons: venn before U+2028",
       "venn-beta\nset A\nstyle A fill:#f00%%{wrap;\u2028\n",
-      "venn-beta\nset A\nstyle A fill:#f00%%{wrap;\u2028\n",
+      "venn-beta\n  set A\n  style A fill:#f00%%{wrap;\u2028\n",
     ],
     [
       "style semicolons: venn before U+2029",
       "venn-beta\nset A\nstyle A fill:#f00%%{wrap;\u2029\n",
-      "venn-beta\nset A\nstyle A fill:#f00%%{wrap;\u2029\n",
+      "venn-beta\n  set A\n  style A fill:#f00%%{wrap;\u2029\n",
     ],
     [
       "style semicolons: usecase before U+2028",
@@ -4073,7 +4861,7 @@ describe("style semicolons", () => {
     [
       "style semicolons: state CRLF terminator",
       "stateDiagram-v2\r\nstyle A fill:red ;\r\n",
-      "stateDiagram-v2\n  style A fill: red\n",
+      "stateDiagram-v2\n  style A fill:red ;\n",
     ],
     [
       "style semicolons: state trailing tab",
@@ -4101,5 +4889,33 @@ describe("style semicolons", () => {
     expect(writtenEmbeddedTexts(output)).toEqual(writtenEmbeddedTexts(input))
     expect(writtenTextKeptUpToSeparators(input, output)).toBe(true)
     expect(await describeFrontmatterChange(input, output)).toBeNull()
+  })
+})
+
+/**
+ * An ishikawa diagram whose written indentation does not show the tree keeps
+ * it for the nodes, and a node after a diagram comment that ends at a
+ * U+2028 keeps the separator once, with the comment: the other lines of the
+ * diagram decide whether the written indentation is kept, so that one node
+ * after such a comment does not re-indent the lines before it (docs/ishikawa.md,
+ * Indentation).
+ */
+describe("an ishikawa diagram with a node after a comment that ends at a line separator", () => {
+  it.each([
+    [
+      "a comment with a `{}` after the `%%`",
+      "ishikawa\nR\n  A\n B\n  C\n%%{}%%\u2028 D\n",
+      "ishikawa\nR\n  A\n B\n  C\n    %%{}%%\u2028 D\n",
+    ],
+    [
+      "a plain comment",
+      "ishikawa\nR\n  A\n B\n  C\n%% c\u2028 D\n",
+      "ishikawa\nR\n  A\n B\n  C\n    %% c\u2028 D\n",
+    ],
+  ])("keeps the written indentation: %s", async (_title, input, expected) => {
+    const output = await format(input)
+    expect(output).toBe(expected)
+    expect(await format(output)).toBe(output)
+    expect(writtenTextKeptUpToSeparators(input, output)).toBe(true)
   })
 })

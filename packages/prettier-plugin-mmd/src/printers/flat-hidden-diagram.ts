@@ -329,6 +329,7 @@ export function createFlatHiddenDiagramPrinter<
         },
         {
           ...rules,
+          ...(isTopLevel ? { omittedRanges: headerLayout.omittedRanges } : {}),
           printedStart: (item) => {
             const layout = nested.get(item)?.header ?? statements.get(item)!
             return layout.atoms[0].start

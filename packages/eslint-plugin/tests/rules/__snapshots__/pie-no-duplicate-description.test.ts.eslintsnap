@@ -9,7 +9,7 @@ Code:
   2 |   accDescr: First
   3 |   accDescr: Second
     |   ^~~~~~~~~~~~~~~~ [1]
-  4 |   "A" : 1
+  4 |   "A": 1
   5 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
@@ -18,13 +18,13 @@ Code:
         Output:
           1 | pie
           2 |   accDescr: First
-          3 |   "A" : 1
+          3 |   "A": 1
           4 |
       - Remove the earlier statement that sets the description.
         Output:
           1 | pie
           2 |   accDescr: Second
-          3 |   "A" : 1
+          3 |   "A": 1
           4 |
 ---
 

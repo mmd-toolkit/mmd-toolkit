@@ -27,8 +27,8 @@ const cases: readonly MarkdownCase[] = [
     input: "```mermaid\n  IsHiKaWa-BeTa R\n A\n   B\n```\n",
     options: {},
     payloadInput: "ishikawa R\n A\n   B",
-    output: "```mermaid\nIsHiKaWa-BeTa\n  R\n    A\n      B\n```\n",
-    payloadOutput: "IsHiKaWa-BeTa\n  R\n    A\n      B\n",
+    output: "```mermaid\nishikawa R\n A\n   B\n```\n",
+    payloadOutput: "ishikawa R\n A\n   B\n",
     rejected: false,
   },
   {
@@ -48,8 +48,8 @@ const cases: readonly MarkdownCase[] = [
     options: {},
     payloadInput: "ishikawa\nR\n    A\n B\n  C\n      D",
     output:
-      "> - item\n>\n>   ```mermaid\n>   ishikawa\n>     R\n>       A\n>       B\n>       C\n>         D\n>   ```\n",
-    payloadOutput: "ishikawa\n  R\n    A\n    B\n    C\n      D\n",
+      "> - item\n>\n>   ```mermaid\n>   ishikawa\n>   R\n>       A\n>    B\n>     C\n>         D\n>   ```\n",
+    payloadOutput: "ishikawa\nR\n    A\n B\n  C\n      D\n",
     rejected: false,
   },
   {
@@ -138,8 +138,8 @@ const cases: readonly MarkdownCase[] = [
     input: "```mermaid\nishikawa %%{init: {}}%% R\n A\n```\n",
     options: {},
     payloadInput: "ishikawa %%{init: {}}%% R\n A",
-    output: "```mermaid\nishikawa\n %%{init: {}}%% R\n    A\n```\n",
-    payloadOutput: "ishikawa\n %%{init: {}}%% R\n    A\n",
+    output: "```mermaid\nishikawa %%{init: {}}%% R\n A\n```\n",
+    payloadOutput: "ishikawa %%{init: {}}%% R\n A\n",
     rejected: false,
   },
 ]

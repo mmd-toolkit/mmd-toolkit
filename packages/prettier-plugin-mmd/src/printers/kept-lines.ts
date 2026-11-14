@@ -9,8 +9,12 @@ import {
   findTokenStartingAt,
   findTokensBetween,
   findTriviaBetween,
+  isAtLineEnd,
   isSpaceOrTab,
   isWhitespace,
+  previousRead,
+  skipRemoved,
+  textRead,
 } from "./source.ts"
 
 /**
@@ -360,19 +364,180 @@ export function isFirstOnItsLine(source: Source, offset: number): boolean {
 }
 
 /**
+ * The comment that starts after `offset`, with only whitespace (line breaks
+ * included) and directives between: the `%%` satisfies the second condition of
+ * common.md, Comment lines (a character after it that is not `{` or a line
+ * terminator). `crossesLineBreak` says whether a line feed, a U+2028, or a
+ * U+2029 lies between: the comment starts right after it, whatever the text
+ * before it is.
+ */
+export function findCommentAfter(
+  source: Source,
+  offset: number,
+): { readonly at: number; readonly crossesLineBreak: boolean } | undefined {
+  let at = offset
+  let crossesLineBreak = false
+  while (at < source.text.length) {
+    const directive = findTriviaBetween(source, at, at + 1).find(
+      (item) => item.type === "Directive",
+    )
+    if (directive !== undefined) at = directive.range[1]
+    else if (isWhitespace(source.text.charAt(at))) {
+      if ("\n\r\u2028\u2029".includes(source.text.charAt(at))) {
+        crossesLineBreak = true
+      }
+      at++
+    } else break
+  }
+  const after = source.text.charAt(at + 2)
+  return source.text.startsWith("%%", at) &&
+    after !== "" &&
+    after !== "{" &&
+    after !== "\n" &&
+    after !== "\r"
+    ? { at, crossesLineBreak }
+    : undefined
+}
+
+/** Whether a comment starts after `offset` (see `findCommentAfter`). */
+export function isFollowedByComment(source: Source, offset: number): boolean {
+  return findCommentAfter(source, offset) !== undefined
+}
+
+/**
+ * Whether the text at `offset`, after other text on its line, would be taken
+ * by a comment line on a line of its own: a whitespace character that is not a
+ * space or a tab (a U+2028, a U+2029, a no-break space, and the others of
+ * `isWhitespace`), then whitespace, line breaks, and directives, then a comment
+ * (see `isFollowedByComment`). The comment line of mermaid.js starts at the
+ * start of a line and takes the whitespace before its `%%`, line breaks
+ * included. Where the text stands, after other text, it is read: a U+2028 or
+ * U+2029 starts a comment of its own, so the whitespace before it is a name,
+ * and any other whitespace character is a name, with the `%%` after it, or a
+ * name that ends its line. On a line of its own the text is whitespace before
+ * the comment line and no name is read. So a statement that starts there stays
+ * on its line (docs/er.md and docs/treeview.md, Statements one per line).
+ */
+export function becomesCommentLineOnItsOwnLine(
+  source: Source,
+  offset: number,
+): boolean {
+  return (
+    isWhitespace(source.text.charAt(offset)) &&
+    !isFirstOnItsLine(source, offset) &&
+    isFollowedByComment(source, offset)
+  )
+}
+
+/**
  * Whether nothing but whitespace follows the `;` at `offset` on its line: no
  * token that holds more than whitespace, comment, or directive starts after it
- * before the line ends (a style holds the whitespace after an ignored `;`). A
- * `;` that the line rule ignores and that ends its line can be dropped only
- * where it is optional (see `isDroppedSemicolon`).
+ * before the line ends (a style holds the whitespace after an ignored `;`), and
+ * the statement that holds it does not go on with text of its own on a later
+ * line (see `statementContinuesAfter`). A `;` that the line rule ignores and
+ * that ends its line can be dropped only where it is optional (see
+ * `isDroppedSemicolon`).
  */
 export function isLastOnItsLine(source: Source, offset: number): boolean {
   const lineEnd = lineEndOf(source, offset)
   return (
     findTokensBetween(source, offset + 1, lineEnd).every(
       (token) => source.text.slice(...token.range).trim() === "",
-    ) && findTriviaBetween(source, offset + 1, lineEnd).length === 0
+    ) &&
+    findTriviaBetween(source, offset + 1, lineEnd).length === 0 &&
+    !statementContinuesAfter(source, offset)
   )
+}
+
+/** The nodes of each source, found once. */
+const nodesBySource = new WeakMap<Source, readonly Node[]>()
+
+/**
+ * Whether the statement that holds the `;` at `offset` goes on after the end
+ * of its line, with a value of its own: a value that stands on a later line,
+ * as the text of `accTitle:;` and of `title;` does. The `;` then is not at the
+ * end of its statement: the printer joins the later line, or keeps it, so the
+ * `;` stands between the text of the statement, on the line of the trigger
+ * that makes the line rule ignore it, and is no `;` to drop. What follows the
+ * line may also be a statement of its own (the body of a block) or the word
+ * that closes the statement (`end`), which are no values of the statement.
+ */
+function statementContinuesAfter(source: Source, offset: number): boolean {
+  let nodes = nodesBySource.get(source)
+  if (nodes === undefined) {
+    nodes = findNodes(source.root, () => true)
+    nodesBySource.set(source, nodes)
+  }
+  let holder: Node | undefined
+  for (const node of nodes) {
+    if (
+      node.type.endsWith("Statement") &&
+      node.range[0] <= offset &&
+      offset < node.range[1] &&
+      (holder === undefined ||
+        node.range[1] - node.range[0] < holder.range[1] - holder.range[0])
+    )
+      holder = node
+  }
+  if (holder === undefined) return false
+  const lineEnd = lineEndOf(source, offset)
+  if (holder.range[1] <= lineEnd) return false
+  let next = lineEnd
+  while (next < holder.range[1]) {
+    const read = skipRemoved(source, next)
+    if (read !== next) next = read
+    else if (isWhitespace(source.text[next])) next++
+    else break
+  }
+  if (next >= holder.range[1]) return false
+  const start = holder.range[0]
+  const end = holder.range[1]
+  // A statement of its own that holds the next text is no value of the holder.
+  if (
+    nodes.some(
+      (node) =>
+        node !== holder &&
+        node.type.endsWith("Statement") &&
+        start <= node.range[0] &&
+        node.range[1] <= end &&
+        node.range[0] <= next &&
+        next < node.range[1],
+    )
+  )
+    return false
+  // A value of the holder that starts on a later line and reaches the text:
+  // its range may begin with the whitespace before the text.
+  return nodes.some(
+    (node) =>
+      node !== holder &&
+      lineEnd <= node.range[0] &&
+      node.range[0] <= next &&
+      next < node.range[1] &&
+      node.range[1] <= end,
+  )
+}
+
+/**
+ * Whether a U+2028 or U+2029 stands before the `;` at `offset`, with at most
+ * spaces and tabs between them and some text that mermaid.js removes (a
+ * comment line, say). The character ends no line for the line rule, and the
+ * `;` stays where it is: with the `;` and the character dropped, a second
+ * formatting would read the line differently. A `;` right after the
+ * character is dropped with it (docs/treemap.md, Semicolons).
+ */
+function followsLineSeparator(source: Source, offset: number): boolean {
+  let position = offset
+  let crossedRemoved = false
+  while (position > 0) {
+    const before = previousRead(source, position)
+    if (before < 0) return false
+    if (before !== position - 1) crossedRemoved = true
+    const character = source.text[before]
+    if (character === "\u2028" || character === "\u2029") return crossedRemoved
+    if (!isSpaceOrTab(character)) return false
+    position = before
+  }
+  return false
 }
 
 /**
@@ -392,7 +557,8 @@ export function isLastOnItsLine(source: Source, offset: number): boolean {
 export function isDroppedSemicolon(source: Source, offset: number): boolean {
   if (
     !isLastOnItsLine(source, offset) ||
-    source.root.comments.some((comment) => comment.range[1] === offset)
+    source.root.comments.some((comment) => comment.range[1] === offset) ||
+    followsLineSeparator(source, offset)
   ) {
     return false
   }
@@ -536,25 +702,29 @@ function styleSemicolonsOf(source: Source): StyleSemicolons {
         ends.add(semicolon)
       continue
     }
-    const statementText = source.text.slice(...node.range)
-    if (statementText.includes("#")) continue
+    // The `#` and the `;` that count are those of the text that mermaid.js
+    // reads: a directive in the statement holds neither.
+    if (textRead(source, ...node.range).includes("#")) continue
     if (
       node.type === "ErClassDefStatement" ||
       node.type === "ErStyleStatement"
     ) {
       addUnitTerminator(node, node.styles.at(-1))
     } else if (
+      // The `;` that ends a `style` of a state diagram stays: 10.9.8 reads it
+      // as a state of its own (docs/compatibility.md, Forms kept for versions
+      // of mermaid.js that count).
       node.type === "StateClassDefStatement" ||
-      node.type === "StateStyleStatement" ||
       node.type === "BlockClassDefStatement"
     ) {
       const style = node.styles.findLast((item) => item !== null)
       if (style === undefined || style === null) continue
-      const text = source.text.slice(...style.range)
+      const text = textRead(source, ...style.range)
       if (
         text.endsWith(";") &&
         text.indexOf(";") === text.length - 1 &&
-        text.slice(0, -1).trim() !== ""
+        text.slice(0, -1).trim() !== "" &&
+        source.text[style.range[1] - 1] === ";"
       )
         terminators.add(style.range[1] - 1)
     }
@@ -688,17 +858,129 @@ export function holdsJoiningRegion(
  * The kept lines with the lines that hold a removed line feed added as
  * verbatim lines: a line that mermaid.js reads over several lines of the
  * source is printed as written, from its first line to its end. A layout that
- * prints its joining regions itself skips this (see
- * `BlockRules.joiningRegionsPrintedAsWritten`).
+ * prints its joining regions itself leaves out the lines that the regions join
+ * (`joinsByRegions` is false; see `BlockRules.joiningRegionsPrintedAsWritten`),
+ * and keeps the ones that a directive that is not closed joins.
  */
-export function withJoinedLines(source: Source, kept: KeptLines): KeptLines {
-  const joinedLines = [...source.removedLineFeeds].map((lineFeed) =>
-    lineStartOf(source, lineFeed),
-  )
+export function withJoinedLines(
+  source: Source,
+  kept: KeptLines,
+  joinsByRegions = true,
+): KeptLines {
+  const joinedLines = [...source.removedLineFeeds]
+    .filter(
+      (lineFeed) =>
+        joinsByRegions ||
+        !source.joiningRegions.some(
+          (region) => region.start <= lineFeed && lineFeed < region.end,
+        ),
+    )
+    .map((lineFeed) => lineStartOf(source, lineFeed))
   return {
     ...kept,
     verbatim: new Set([...kept.verbatim, ...joinedLines]),
   }
+}
+
+/**
+ * Whether mermaid.js reads the line that holds `offset` together with the
+ * next one: a directive that is not closed, or a comment region, removes a
+ * line feed of the line. Such a line is printed as written, so its parts
+ * cannot move to a line of their own.
+ */
+export function joinsNextLine(source: Source, offset: number): boolean {
+  const line = lineStartOf(source, offset)
+  return [...source.removedLineFeeds].some(
+    (lineFeed) => lineStartOf(source, lineFeed) === line,
+  )
+}
+
+/** Whether a character is whitespace in CSS, other than a line break: a space, a tab, or a form feed. */
+function isCssWhitespace(character: string): boolean {
+  return isSpaceOrTab(character) || character === "\u000c"
+}
+
+/**
+ * The whitespace characters at the end of a statement that a version of
+ * mermaid.js that counts draws a figure differently for, with the character
+ * and without it, by the type of the statement. The statements are the
+ * `style`, `classDef`, and `linkStyle` of the diagram types that keep the
+ * character in the value of the last style. CSS reads a space, a tab, and a
+ * form feed as whitespace, so the figure is the same without them, except for
+ * the `classDef` of an ER diagram, where a vertical tab and a form feed change
+ * it. The statements that are not here, such as those of a block diagram, a
+ * state diagram, and an agentflow `style`, draw the same figure without the
+ * character, and the text that a requirement, use case, or Venn diagram or a
+ * quadrant chart rejects with the character is accepted without it
+ * (docs/compatibility.md, Whitespace at the end of a style).
+ */
+const styleEndCharactersKept: ReadonlyMap<
+  string,
+  (character: string) => boolean
+> = new Map([
+  ["ErClassDefStatement", (c) => c === "\u000b" || c === "\u000c"],
+  ["ClassStyleStatement", (c) => !isCssWhitespace(c)],
+  ["ClassClassDefStatement", (c) => !isCssWhitespace(c)],
+  ["FlowchartStyleStatement", (c) => !isCssWhitespace(c)],
+  ["FlowchartClassDefStatement", (c) => !isCssWhitespace(c)],
+  ["FlowchartLinkStyleStatement", (c) => !isCssWhitespace(c)],
+  ["FlowchartDefaultLinkStyleStatement", (c) => !isCssWhitespace(c)],
+  ["AgentflowClassDefStatement", (c) => !isCssWhitespace(c)],
+  ["AgentflowLinkStyleStatement", (c) => !isCssWhitespace(c)],
+  ["AgentflowDefaultLinkStyleStatement", (c) => !isCssWhitespace(c)],
+])
+
+const unusualStyleEndsBySource = new WeakMap<Source, ReadonlySet<number>>()
+
+/**
+ * The lines of a `style`, `classDef`, or `linkStyle` statement whose end is
+ * followed, before the end of the line, by a whitespace character that
+ * `styleEndCharactersKept` selects, also after a `;` that the line rule
+ * ignores and after a directive. The statement holds the styles up to its
+ * last token, and the printer leaves out the whitespace after it, which these
+ * lines keep as written.
+ */
+export function findLinesWithUnusualStyleEnd(
+  source: Source,
+): ReadonlySet<number> {
+  const cached = unusualStyleEndsBySource.get(source)
+  if (cached !== undefined) return cached
+  const lines = new Set<number>()
+  for (const statement of findNodes(source.root, (node) =>
+    styleEndCharactersKept.has(node.type),
+  )) {
+    const keeps = styleEndCharactersKept.get(statement.type)
+    let end = statement.range[1]
+    let kept = false
+    // The line rule of mermaid.js removes the last `;` of the line before it
+    // reads the styles, and so does it with a directive, so the whitespace
+    // after them is at the end of the last style too.
+    while (end < source.text.length) {
+      end = skipRemoved(source, end)
+      if (isAtLineEnd(source, end)) break
+      const character = source.text.charAt(end)
+      if (!isWhitespace(character)) break
+      if (keeps?.(character) === true) kept = true
+      end++
+    }
+    if (kept) lines.add(lineStartOf(source, statement.range[1]))
+  }
+  unusualStyleEndsBySource.set(source, lines)
+  return lines
+}
+
+/**
+ * The kept lines with the lines of the statements that end in whitespace other
+ * than a space or a tab added as verbatim lines (see
+ * `findLinesWithUnusualStyleEnd`).
+ */
+export function withUnusualStyleEnds(
+  source: Source,
+  kept: KeptLines,
+): KeptLines {
+  const lines = findLinesWithUnusualStyleEnd(source)
+  if (lines.size === 0) return kept
+  return { ...kept, verbatim: new Set([...kept.verbatim, ...lines]) }
 }
 
 /**

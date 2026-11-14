@@ -39,8 +39,8 @@ CR は LF として比べる。
 ```mmd
 %% eslint @mmd-toolkit/pie-no-duplicate-label: error
 pie
-  "Revenue" : 8
-  "Revenue" : 3
+  "Revenue": 8
+  "Revenue": 3
 ```
 
 この規則に**従う**コードの例:
@@ -48,8 +48,8 @@ pie
 ```mmd
 %% eslint @mmd-toolkit/pie-no-duplicate-label: error
 pie
-  "Revenue" : 8
-  "Costs" : 3
+  "Revenue": 8
+  "Costs": 3
 ```
 
 ## オプション

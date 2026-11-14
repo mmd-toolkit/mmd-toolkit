@@ -45,16 +45,16 @@ Examples of **incorrect** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/venn-no-duplicate-style: error
 venn-beta
-set A
-style A fill:red, fill:blue
+  set A
+  style A fill: red, fill: blue
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/venn-no-duplicate-style: error
 venn-beta
-set A
-style A fill:red, stroke:black
-style A fill:blue
+  set A
+  style A fill: red, stroke: black
+  style A fill: blue
 ```
 
 Examples of **correct** code for this rule:
@@ -62,9 +62,9 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/venn-no-duplicate-style: error
 venn-beta
-set A
-style A fill:red, stroke:black
-style A color:white
+  set A
+  style A fill: red, stroke: black
+  style A color: white
 ```
 
 ## Options

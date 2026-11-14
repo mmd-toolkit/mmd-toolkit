@@ -36,7 +36,7 @@ mermaid.js の描画は `fill`、`color`、`stroke`、`stroke-width`、
 
 この規則は名前だけを調べ、対象は調べない。
 描画は、和には `fill` と `color` だけを、文字のノードには `color` だけを使う。
-文字のノードへの `style A1 fill:red` のように、
+文字のノードへの `style A1 fill: red` のように、
 それらに 5 つのうちのほかのプロパティを書いても報告しない。
 mermaid.js の文書が、5 つを集合、和、文字のノードに共通に挙げるからである。
 
@@ -45,8 +45,8 @@ mermaid.js の文書が、5 つを集合、和、文字のノードに共通に�
 ```mmd
 %% eslint @mmd-toolkit/venn-no-invalid-style-key: error
 venn-beta
-set A
-style A Fill:red, opacity:0.5
+  set A
+  style A Fill: red, opacity: 0.5
 ```
 
 この規則に**従う**コードの例:
@@ -54,8 +54,8 @@ style A Fill:red, opacity:0.5
 ```mmd
 %% eslint @mmd-toolkit/venn-no-invalid-style-key: error
 venn-beta
-set A
-style A fill:red, fill-opacity:0.5
+  set A
+  style A fill: red, fill-opacity: 0.5
 ```
 
 ## オプション

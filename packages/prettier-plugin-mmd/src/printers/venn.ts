@@ -4,8 +4,12 @@ import { printAtoms } from "./atoms.ts"
 import type { BlockRules } from "./blocks.ts"
 import { openingLine, printBlock, printDiagramBlock } from "./blocks.ts"
 import { expectToken, layoutKeywordHeader } from "./layout.ts"
-import { lineStartOf } from "./kept-lines.ts"
-import { significantIndentationOf, printAsWritten } from "./lines.ts"
+import { holdsKeptSemicolon, lineStartOf } from "./kept-lines.ts"
+import {
+  indentationOf,
+  significantIndentationOf,
+  printAsWritten,
+} from "./lines.ts"
 import type { Source } from "./source.ts"
 import { findTokenStartingAt, findTriviaBetween } from "./source.ts"
 import {
@@ -17,11 +21,16 @@ import {
 import type { VennUnit } from "./venn-layout.ts"
 import {
   groupVennUnits,
+  isExplicitVennTextUnit,
   isImplicitVennUnit,
   layoutVennStatement,
 } from "./venn-layout.ts"
 
-/** Prints a flat Venn body with implicit markers one configured step deeper. */
+/**
+ * Prints a flat Venn body one configured step deeper than the header, with
+ * the implicit markers one more step deeper and the explicit text statements
+ * at the level of the header (docs/venn.md, Indentation).
+ */
 export function printVenn(
   path: AstPath<MermaidAst>,
   options: ParserOptions<MermaidAst>,
@@ -46,6 +55,7 @@ export function printVenn(
           previous === undefined
             ? ""
             : statement.range[0] <= vennKeptPrefixEnd(source, start) ||
+                holdsKeptSemicolon(source, start, statement.range[0]) ||
                 findTriviaBetween(source, start, statement.range[0]).length >
                   0 ||
                 gap.includes("\n")
@@ -92,6 +102,20 @@ function blockRules(
   source: Source,
   options: ParserOptions<MermaidAst>,
 ): BlockRules<VennUnit> {
+  /**
+   * The indentation of a unit: one configured step for an ordinary statement,
+   * none for an explicit text statement, whose indentation can make it an
+   * implicit one, and one more step, which is a positive marker and no
+   * nesting, for an implicit text statement (docs/venn.md, Indentation).
+   */
+  function indentationOfUnit(unit: VennUnit): string {
+    if (isExplicitVennTextUnit(unit)) return ""
+    const step = indentationOf(options, 1)
+    return isImplicitVennUnit(unit)
+      ? step + significantIndentationOf(options, 1)
+      : step
+  }
+
   /** Indentation before the first directive, after accounting for all its gaps. */
   function leadingIndentation(unit: VennUnit): string | undefined {
     const start = lineStartOf(source, unit.range[0])
@@ -101,9 +125,9 @@ function blockRules(
       const next = leading[index + 1]?.range[0] ?? unit.range[0]
       return next > item.range[1]
     })
-    return isImplicitVennUnit(unit) && !hasMarkerGap
-      ? significantIndentationOf(options, 1)
-      : ""
+    return isImplicitVennUnit(unit) && hasMarkerGap
+      ? indentationOf(options, 1)
+      : indentationOfUnit(unit)
   }
 
   return {
@@ -115,15 +139,13 @@ function blockRules(
     keepsDirectiveLinesUnindented: false,
     keepsInlineDirectivesWithPrevious: true,
     keepsTrailingWhitespaceInKeptTrivia: true,
-    extraIndentationOf: (unit) =>
-      isImplicitVennUnit(unit) ? significantIndentationOf(options, 1) : "",
+    extraIndentationOf: indentationOfUnit,
     // A leading directive's gaps already supply a positive marker. Preserve
     // them and choose only the whitespace before the first directive
     // (diagrams/venn.md, Text and implicit text mode; docs/venn.md, Directives).
     writtenIndentationOf: leadingIndentation,
     keptIndentationOf: (unit) =>
-      leadingIndentation(unit) ??
-      (isImplicitVennUnit(unit) ? significantIndentationOf(options, 1) : ""),
+      leadingIndentation(unit) ?? indentationOfUnit(unit),
     diagramLineEnd: (offset) => vennDiagramLineEnd(source, offset),
     keptInlineGapEnd: (start) => vennKeptPrefixEnd(source, start),
     keptGapEnd: (start, end, before) =>

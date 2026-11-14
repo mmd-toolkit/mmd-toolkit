@@ -31,6 +31,7 @@ import {
   findTokenStartingAt,
   findTriviaBetween,
   isWhitespace,
+  textRead,
 } from "./source.ts"
 import { normalizeStyleList } from "./statement-rules.ts"
 
@@ -48,6 +49,37 @@ export interface TreemapLine {
   readonly statements: readonly TreemapBodyItem[]
   readonly depth: number
   readonly leading: LeadingDirectives | null
+}
+
+/**
+ * The depth at which a line is printed. A title or an accessibility statement
+ * is printed at the start of its line, unless it was written indented: the
+ * first version with the diagram rejects such a statement when it is
+ * indented, and accepts it at the start of its line and after the header on
+ * the line of the header (`treemaptitle T`), so the printer does not indent
+ * what was not written indented (docs/treemap.md, Title; docs/compatibility.md,
+ * Forms kept for versions of mermaid.js that count). Every other line is
+ * printed at its own depth.
+ */
+export function treemapPrintedDepth(source: Source, line: TreemapLine): number {
+  const statement = line.statements[0]
+  if (
+    statement.type !== "TreemapTitleStatement" &&
+    statement.type !== "TreemapAccTitleStatement" &&
+    statement.type !== "TreemapAccDescrStatement" &&
+    statement.type !== "TreemapAccDescrBlockStatement"
+  ) {
+    return line.depth
+  }
+  // mermaid.js removes the directives before the statement first, so a line
+  // that starts with directives is indented only by the whitespace around them.
+  const before = textRead(
+    source,
+    lineStartOf(source, statement.range[0]),
+    statement.range[0],
+  )
+  const writtenIndented = before !== "" && [...before].every(isWhitespace)
+  return writtenIndented ? line.depth : 0
 }
 
 /** Own row syntax in source order, always including the required name. */
@@ -84,14 +116,7 @@ function touchesEmptyClass(
     (next?.type !== "TreemapSection" && next?.type !== "TreemapLeaf")
   )
     return false
-  let position = item.range[1]
-  const nextStart = treemapStatementRange(next)[0]
-  for (const trivia of findTriviaBetween(source, position, nextStart)) {
-    if (trivia.type !== "Directive" || trivia.range[0] !== position)
-      return false
-    position = trivia.range[1]
-  }
-  return position === nextStart
+  return textRead(source, item.range[1], treemapStatementRange(next)[0]) === ""
 }
 
 /**

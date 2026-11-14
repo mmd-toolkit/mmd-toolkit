@@ -34,7 +34,7 @@ Examples of **incorrect** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/venn-no-ignored-text: error
 venn-beta
-set A:%% size to fill in
+  set A:%% size to fill in
 ```
 
 Examples of **correct** code for this rule:
@@ -42,7 +42,7 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/venn-no-ignored-text: error
 venn-beta
-set A:20 %% size
+  set A : 20 %% size
 ```
 
 ## Options

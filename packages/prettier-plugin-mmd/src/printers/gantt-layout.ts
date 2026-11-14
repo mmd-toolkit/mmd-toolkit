@@ -36,7 +36,9 @@ import type { Source } from "./source.ts"
 import {
   findTokenEndingBefore,
   findTokensBetween,
+  isAtLineEnd,
   isSpaceOrTab,
+  textRead,
 } from "./source.ts"
 
 /**
@@ -162,15 +164,6 @@ export function endsWithNeededWhitespace(
   }
 }
 
-/** Whether the text ends at `offset` or a line terminator stands there. */
-function isAtLineEnd(source: Source, offset: number): boolean {
-  return (
-    offset >= source.text.length ||
-    source.text[offset] === "\n" ||
-    source.text[offset] === "\r"
-  )
-}
-
 /**
  * The layout of a statement, from its start to `end` (the end of its range).
  *
@@ -287,7 +280,7 @@ function textAfterKeyword(
     case "GanttAxisFormatStatement":
       return statement.value
     case "GanttDateFormatStatement":
-      return source.text.slice(...statement.value.range).trim() === "D"
+      return textRead(source, ...statement.value.range).trim() === "D"
         ? null
         : statement.value
     default:
@@ -386,10 +379,10 @@ function afterKeywordRules(valueStart: number): Map<number, GapRule> {
 
 /**
  * The rules of the line of a task: the `:` touches the description, whose
- * range keeps the whitespace before it, the first item touches the `:`, and
- * a `,` touches what is before it and is followed by one space where an item
- * follows (docs/gantt.md, Task data). The whitespace of data that holds only
- * whitespace is one character (see `findBlankRemainder`).
+ * range keeps the whitespace before it, what follows the `:` stands after one
+ * space, and a `,` touches what is before it and is followed by one space
+ * where an item follows (docs/gantt.md, Task data). The whitespace of data
+ * that holds only whitespace is one character (see `findBlankRemainder`).
  */
 function taskRules(
   source: Source,
@@ -404,9 +397,17 @@ function taskRules(
     ),
   )
   let afterComma = false
+  let colonSeen = false
+  let afterColon = false
   for (const atom of atoms.slice(1)) {
     if (remainder !== null && atom.start === remainder.start) {
       rules.set(atom.start, "none")
+    } else if (afterColon) {
+      // The first item, or the `,` of an empty first item.
+      rules.set(atom.start, "space")
+      afterColon = false
+      afterComma =
+        !valueStarts.has(atom.start) && source.text[atom.start] === ","
     } else if (valueStarts.has(atom.start)) {
       rules.set(atom.start, afterComma ? "space" : "none")
       afterComma = false
@@ -414,6 +415,11 @@ function taskRules(
       // The `:` and the `,` units of the data.
       rules.set(atom.start, "none")
       afterComma = source.text[atom.start] === ","
+      if (!colonSeen) {
+        colonSeen = true
+        afterColon = true
+        afterComma = false
+      }
     }
   }
   return rules
