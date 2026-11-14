@@ -576,7 +576,7 @@ const CASES: readonly Case[] = [
     statements: [
       classDefAcrossRegion(
         `a${LINE_SEPARATOR}${LINE_SEPARATOR}%% c\nb`,
-        `a${LINE_SEPARATOR}${LINE_SEPARATOR}b`,
+        `a${LINE_SEPARATOR}b`,
         "color: #109060",
       ),
     ],

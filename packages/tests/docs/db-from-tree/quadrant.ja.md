@@ -172,16 +172,20 @@ Db が持つものが要約になります。
 点のスタイルと同じように読んで設定します。
 クラスは最後の定義のスタイルだけを持ち、一覧では最初の定義の位置を保ちます。
 名前は範囲の変換後の形で、その中のコメント領域を除きます。
+出典は [変換した形](../db-from-tree.ja.md#変換した形) です。
 U+2028 と U+2029 は、名前の文字であるとともにコメントの始まりなので、
 `classDef a`、U+2028、`%% c`、改行、`b color: #109060` は、名前が `a`、U+2028、
 `b` のクラスを定めます。
 U+2029 のときも同じです。
 [fixture: quadrant/lex-classdef-name-line-separator-comment-line]
 [fixture: quadrant/lex-classdef-name-paragraph-separator-comment-line]
-領域が、U+2028 と `%%` の間で空白、2 つ目の U+2028、改行、
-ディレクティブを取るときも、CRLF や CR がコメントを終えるときも、
-コメントの中にディレクティブがあるときも、2 つ目のコメント行や、
-2 つ目の U+2028 の後の 2 つ目の領域をまたぐときも、名前は同じです。
+領域が何を取るかと、その前後で名前がどこで終わりどこで始まるかは、
+字句解析器が決め、範囲に現れます。
+出典は [クラス](../../../spec/docs/diagrams/quadrant.ja.md#クラス) です。
+テキストは、領域が、U+2028 と `%%` の間で空白、2 つ目の U+2028、改行、
+ディレクティブを取るときも、コメントを終える CRLF や CR のときも、
+コメントの中のディレクティブのときも、2 つ目のコメント行や、
+2 つ目の U+2028 の後の 2 つ目の領域をまたぐときも、同じです。
 次の行の始めの U+2028、領域の後の ASCII 以外の文字や `-` は名前の文字で、
 `classDef` とスペースの後の U+2028 から名前を始めることもできます。
 [fixture: quadrant/lex-classdef-name-line-separator-spaces-comment-line]
@@ -197,33 +201,6 @@ U+2029 のときも同じです。
 [fixture: quadrant/lex-classdef-name-line-separator-comment-line-non-ascii]
 [fixture: quadrant/lex-classdef-name-line-separator-comment-line-dash]
 [fixture: quadrant/lex-classdef-name-starts-with-line-separator-comment-line]
-コメント行の次の行の始めにあるディレクティブは名前の中にあるので、
-入力は拒否され、Db はありません。
-[fixture: quadrant/div-directive-after-comment-line-in-classdef-name]
-そのディレクティブの後にスペースがあると名前が終わり、
-そのスペースはスタイルの前の空白なので、クラスは `a` と U+2028 です。
-[fixture: quadrant/lex-classdef-name-line-separator-comment-line-directive-space-next]
-次の行の始めのスペースは名前を終え、スタイルの前の空白なので、
-クラスは `a` と U+2028 です。
-[fixture: quadrant/lex-classdef-name-line-separator-comment-line-space]
-仕様が拒否する入力には Db がありません。
-次の行の始めの 2 つのスペース、コメント行の後の空行、テキストの終わり、
-名前と U+2028 の間のスペース、後ろに何もない `%%`、
-ディレクティブを始めない `%%{` が該当します。
-[fixture: quadrant/gram-classdef-name-line-separator-comment-line-two-spaces]
-[fixture: quadrant/gram-classdef-name-line-separator-comment-line-empty-line]
-[fixture: quadrant/gram-classdef-name-line-separator-comment-line-last-line]
-[fixture: quadrant/gram-classdef-name-space-line-separator-comment-line]
-[fixture: quadrant/gram-classdef-name-line-separator-bare-percent-line]
-[fixture: quadrant/gram-classdef-name-line-separator-percent-brace-line]
-領域の後の行は行の規則にとって独立した区間なので、
-その行のスタイルに `;` がある入力も拒否されます。
-`b color: #f00;` の `;` は無視されず、`#f00;` はエンティティです。
-[fixture: quadrant/gram-classdef-name-comment-line-hash-semicolon]
-領域の後の空の説明ブロックや、行の規則が無視する `;` がある入力も、
-同じく拒否されます。
-[fixture: quadrant/div-classdef-name-comment-line-empty-description-block]
-[fixture: quadrant/div-classdef-name-comment-line-ignored-semicolon]
 点とそのクラスのスタイルは併合されず、どの点も使わないクラスも一覧に載ります。
 [fixture: quadrant/db-classdef-color]
 [fixture: quadrant/db-classdef-twice-replaces]

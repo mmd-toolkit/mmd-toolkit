@@ -154,14 +154,16 @@ const problems: TreeProblem[] = checkTree(text, tree)
   `Identifier` のトークンをコメント領域が切るのは、
   名前が U+2028 か U+2029 を持つときだけです。
   それがコメントの始まりだからです。
-  断片は `Identifier` のトークンで、最初の断片はその区切りで終わり、
-  領域はどの断片にも入りません。
+  断片は `Identifier` のトークンで、領域の前の断片はどれも、
+  その領域を始める区切りで終わり、領域はどの断片にも入りません。
   出典は parser/docs/tokens.md の Comment regions in tokens です。
   トークンをつないだものが名前の書かれたテキストなので、
   領域の前の断片に区切りがなければ、値の規則が報告します。
   領域をまたぐ 1 つのトークン、遅く始まる断片、木にない領域は、
   コメントがどのトークンにも入らないという条件と、
   トークンの外のすべての文字が空白であるという条件が報告します。
+  断片の種類は、quadrant の図では検査しますが、ER の図では検査しません。
+  検査しないものは、下の一覧にあります。
   [fixture: er/lex-name-line-separator-comment-line]
   [fixture: er/lex-name-two-comment-regions]
   [fixture: quadrant/lex-classdef-name-line-separator-comment-line]
@@ -2429,6 +2431,14 @@ null になりうる欄は、ソースがそれを書く所で null にし、書
   という条件。
   行の規則を 2 か所に書かないために、トークンは与えられたものとして扱い、
   その正しさは Db の比べに任せます。
+- ER の図の名前のトークンの種類。
+  quadrant の図の検査は `QuadrantIdentifier` のトークンの種類を調べますが、
+  ER の図の検査は `ErIdentifier` のトークンの種類を調べません。
+  コメント領域をまたぐ名前の断片や、領域のない名前のトークンが、
+  別の種類（`Identifier` の代わりに `RawText`）で書かれていても、
+  報告されません。
+  ER の種類の表はユニットごとで（チルダの語は `RawText` です）、
+  検査は独立した規則になるので、まだ書いていません。
 
 ## テスト
 

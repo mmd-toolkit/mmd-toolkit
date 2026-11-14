@@ -147,18 +147,21 @@ quadrant/db-style-space-around] [fixture: quadrant/db-style-four]
 **Classes.** A `classDef` statement sets the styles of the class of its name,
 read as the styles of a point: a class keeps the styles of its last definition
 only, and keeps the place of its first in the list. The name is the converted
-form of its range, which leaves out a comment region inside it: a U+2028 or a
+form of its range, which leaves out a comment region inside it (see
+[The converted form](../db-from-tree.md#the-converted-form)): a U+2028 or a
 U+2029 is a character of a name and a comment start, so `classDef a`, U+2028,
 `%% c`, a line break, and `b color: #109060` defines the class `a`, U+2028, and
 `b`, and so it is with U+2029. [fixture:
 quadrant/lex-classdef-name-line-separator-comment-line] [fixture:
-quadrant/lex-classdef-name-paragraph-separator-comment-line] The name is the
-same where the region takes spaces, a second U+2028, a line feed, or a directive
-before the `%%`, where a CRLF or a CR ends the comment, where a directive lies
-in the comment, and across a second comment line or a second region after a
-second U+2028; a U+2028 at the start of the next line, a character outside
-ASCII, and a `-` after the region are characters of the name, and a name may
-start with the U+2028 after `classDef` and a space. [fixture:
+quadrant/lex-classdef-name-paragraph-separator-comment-line] The lexer decides
+what the region takes and where a name ends and starts around it (see
+[Classes](../../../spec/docs/diagrams/quadrant.md#classes)), and the range shows
+it; the text is the same where the region takes spaces, a second U+2028, a line
+feed, or a directive before the `%%`, where a CRLF or a CR ends the comment,
+where a directive lies in the comment, and across a second comment line or a
+second region after a second U+2028; a U+2028 at the start of the next line, a
+character outside ASCII, and a `-` after the region are characters of the name,
+and a name may start with the U+2028 after `classDef` and a space. [fixture:
 quadrant/lex-classdef-name-line-separator-spaces-comment-line] [fixture:
 quadrant/lex-classdef-name-two-line-separators-comment-line] [fixture:
 quadrant/lex-classdef-name-line-separator-line-feed-comment-line] [fixture:
@@ -171,34 +174,9 @@ quadrant/lex-classdef-name-two-comment-regions] [fixture:
 quadrant/lex-classdef-name-comment-line-line-separator-next] [fixture:
 quadrant/lex-classdef-name-line-separator-comment-line-non-ascii] [fixture:
 quadrant/lex-classdef-name-line-separator-comment-line-dash] [fixture:
-quadrant/lex-classdef-name-starts-with-line-separator-comment-line] A directive
-at the start of the line after the comment line lies inside the name, so the
-input is rejected and has no Db, while a directive followed by a space there
-ends the name, and the space is the whitespace before the styles: the class is
-`a` and U+2028. [fixture:
-quadrant/div-directive-after-comment-line-in-classdef-name] [fixture:
-quadrant/lex-classdef-name-line-separator-comment-line-directive-space-next] A
-space at the start of the next line ends the name and is the whitespace before
-the styles, so the class is `a` and U+2028. [fixture:
-quadrant/lex-classdef-name-line-separator-comment-line-space] The inputs that
-the specification rejects have no Db: two spaces there, an empty line after the
-comment line, the end of the text, a space between the name and the U+2028, a
-`%%` with nothing after it, a `%%{` that starts no directive, and a `;` in a
-style on the line after the region, which is a segment of its own for the line
-rule, so that the `;` of `b color: #f00;` is not ignored and `#f00;` is an
-entity; so are an empty description block and a `;` that the line rule ignores
-after the region. [fixture:
-quadrant/gram-classdef-name-line-separator-comment-line-two-spaces] [fixture:
-quadrant/gram-classdef-name-line-separator-comment-line-empty-line] [fixture:
-quadrant/gram-classdef-name-line-separator-comment-line-last-line] [fixture:
-quadrant/gram-classdef-name-space-line-separator-comment-line] [fixture:
-quadrant/gram-classdef-name-line-separator-bare-percent-line] [fixture:
-quadrant/gram-classdef-name-line-separator-percent-brace-line] [fixture:
-quadrant/gram-classdef-name-comment-line-hash-semicolon] [fixture:
-quadrant/div-classdef-name-comment-line-empty-description-block] [fixture:
-quadrant/div-classdef-name-comment-line-ignored-semicolon] The styles of a point
-and of its class are not merged, and a class that no point uses is listed.
-[fixture: quadrant/db-classdef-color] [fixture:
+quadrant/lex-classdef-name-starts-with-line-separator-comment-line] The styles
+of a point and of its class are not merged, and a class that no point uses is
+listed. [fixture: quadrant/db-classdef-color] [fixture:
 quadrant/db-classdef-twice-replaces] [fixture: quadrant/db-classdef-two-classes]
 [fixture: quadrant/db-classdef-redefine-order] [fixture:
 quadrant/db-classdef-three-times-partner] [fixture:

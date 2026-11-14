@@ -135,14 +135,16 @@ const problems: TreeProblem[] = checkTree(text, tree)
   String tokens).
 - **Names across a comment region.** An `Identifier` token is cut by a comment
   region only where its name holds a U+2028 or a U+2029, which is the comment
-  start: its fragments are `Identifier` tokens, the first of which ends with
-  that separator, and the region lies in none of them (parser/docs/tokens.md,
-  Comment regions in tokens). The tokens joined are the written text of the
-  name, so a fragment before the region that lacks the separator is reported by
-  the value rule, and a token that spans the region, a fragment that starts
-  late, and a region that the tree lacks are reported by the conditions that a
-  comment lies in no token and that every character outside the tokens is
-  whitespace. [fixture: er/lex-name-line-separator-comment-line] [fixture:
+  start: its fragments are `Identifier` tokens, the fragment before each region
+  ends with the separator that starts it, and the region lies in none of them
+  (parser/docs/tokens.md, Comment regions in tokens). The tokens joined are the
+  written text of the name, so a fragment before the region that lacks the
+  separator is reported by the value rule, and a token that spans the region, a
+  fragment that starts late, and a region that the tree lacks are reported by
+  the conditions that a comment lies in no token and that every character
+  outside the tokens is whitespace. The kinds of the fragments are checked in a
+  quadrant diagram, and not in an ER diagram (see Not checked below). [fixture:
+  er/lex-name-line-separator-comment-line] [fixture:
   er/lex-name-two-comment-regions] [fixture:
   quadrant/lex-classdef-name-line-separator-comment-line]
 - **Tokens that are not cut.** A directive or a `;` that the line rule ignores
@@ -2144,6 +2146,13 @@ Not checked:
 - The condition that every `;` the line rule ignores has an `IgnoredSemicolon`
   token: the line rule is not written twice, so the tokens are taken as given
   and their correctness is shown by the Db comparison.
+- The kinds of the tokens of a name in an ER diagram. The check of a quadrant
+  diagram holds the tokens of a `QuadrantIdentifier` to their kinds, and the
+  check of an ER diagram does not look at the kinds of the tokens of an
+  `ErIdentifier`: a fragment of a name across a comment region, or the token of
+  a name away from any region, that is written as another kind (a `RawText` for
+  an `Identifier`) is not reported. The ER table of kinds is by unit (a tilde
+  word is a `RawText`), so the check is a rule of its own, not yet written.
 
 ## The tests
 
