@@ -6,7 +6,7 @@ import {
   lineStartOf,
 } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
-import { staysOnTimelineHeaderLine } from "./timeline-layout.ts"
+import { findTimelineHeaderLineStatements } from "./timeline-header-line.ts"
 
 /** The kept lines of each source, found once per source. */
 const keptLinesBySource = new WeakMap<Source, KeptLines>()
@@ -25,11 +25,11 @@ const keptLinesBySource = new WeakMap<Source, KeptLines>()
  *   space that only the `:` after it keeps from being trailing whitespace.
  *   A statement moves to a line of its own only when no such whitespace
  *   would be left at the end of the line before it.
- * - The line of the header whose text after the direction starts with a
- *   description block that ends on it. The versions of mermaid.js that read no
- *   direction draw that text, the whitespace inside the braces and the
- *   statements after the block on the line included, so the line is printed as
- *   written (docs/timeline.md, Header and direction).
+ * - The lines of the statements that stay on the line of the header or on the
+ *   line where a description block of that line ends. The versions of
+ *   mermaid.js that read no direction draw each of these lines as text, so
+ *   the statements on a line stay together and the whitespace between them is
+ *   that of a text (docs/timeline.md, Header and direction).
  */
 export function findTimelineKeptLines(source: Source): KeptLines {
   const cached = keptLinesBySource.get(source)
@@ -38,11 +38,9 @@ export function findTimelineKeptLines(source: Source): KeptLines {
     joined: new Set([
       ...findLinesWithOwnSemicolons(source),
       ...findLinesEndingInTextWhitespace(source),
+      ...findLinesOfHeaderLineStatements(source),
     ]),
-    verbatim: new Set([
-      ...findLinesEndedBySemicolon(source),
-      ...findHeaderLineWithDescriptionBlock(source),
-    ]),
+    verbatim: findLinesEndedBySemicolon(source),
     ownIndentation: new Set(),
   }
   keptLinesBySource.set(source, kept)
@@ -50,22 +48,14 @@ export function findTimelineKeptLines(source: Source): KeptLines {
 }
 
 /**
- * The line of the header, when the first statement stays on it and is a
- * description block that ends on it.
+ * The lines of the statements that stay on a line of the header, where the
+ * statements after a description block stand on the line where it ends.
  */
-function findHeaderLineWithDescriptionBlock(source: Source): number[] {
-  const body = source.root.body
-  if (body.type !== "TimelineDiagram") return []
-  const first = body.body[0]
-  if (
-    first === undefined ||
-    first.type !== "TimelineAccDescrBlockStatement" ||
-    !staysOnTimelineHeaderLine(source, first)
-  ) {
-    return []
-  }
-  const line = lineStartOf(source, first.range[0])
-  return lineStartOf(source, first.range[1] - 1) === line ? [line] : []
+function findLinesOfHeaderLineStatements(source: Source): number[] {
+  return findTimelineHeaderLineStatements(source).flatMap((statement) => [
+    lineStartOf(source, statement.range[0]),
+    lineStartOf(source, statement.range[1] - 1),
+  ])
 }
 
 /**

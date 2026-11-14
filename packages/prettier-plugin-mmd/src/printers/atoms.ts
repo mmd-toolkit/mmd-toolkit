@@ -11,6 +11,7 @@ import type { Line } from "./lines.ts"
 import {
   lineBreakBetween,
   printAsWritten,
+  printTextGap,
   withLeading,
   withTrailing,
 } from "./lines.ts"
@@ -91,6 +92,14 @@ export interface AtomLayout {
   readonly keptBreaksBefore?: ReadonlySet<number>
   /** Exact gaps after hidden forms, including a consumed LF outside the node. */
   readonly writtenGapsBefore?: ReadonlySet<number>
+  /**
+   * The starts of the atoms whose gap before them, where it holds whitespace
+   * only and no line break, is part of text that a version of mermaid.js draws
+   * as it is: each run of spaces and tabs is one space and every other
+   * whitespace character stays (`printTextGap`). Other gaps follow the
+   * ordinary rules.
+   */
+  readonly textGapsBefore?: ReadonlySet<number>
   /** Align these atoms after retained hidden LF, outside the hidden source. */
   readonly alignedGapsBefore?: ReadonlySet<number>
 }
@@ -201,6 +210,19 @@ export function printAtoms(
           )
         } else current.push(printAsWritten(source, previous.end, atom.start))
         current.push(atom.doc ?? printAsWritten(source, atom.start, atom.end))
+        currentEndsWithWhitespace = endsWithSpaceOrTab(text)
+        previous = atom
+        continue
+      }
+      const textGap =
+        layout.textGapsBefore?.has(atom.start) === true
+          ? printTextGap(source, previous.end, atom.start)
+          : null
+      if (textGap !== null) {
+        current.push(
+          textGap,
+          atom.doc ?? printAsWritten(source, atom.start, atom.end),
+        )
         currentEndsWithWhitespace = endsWithSpaceOrTab(text)
         previous = atom
         continue

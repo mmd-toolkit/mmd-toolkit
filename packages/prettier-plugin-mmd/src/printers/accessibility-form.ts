@@ -17,6 +17,7 @@ import {
   isReadAsAccValueByOlderVersions,
 } from "./acc-value-join.ts"
 import { printedToken } from "./spelling.ts"
+import { staysOnTimelineHeaderLine } from "./timeline-header-line.ts"
 import { treeviewBoxCharacters } from "./treeview-characters.ts"
 import { collapseRuns, staysAsWritten } from "./text-runs.ts"
 
@@ -421,7 +422,8 @@ export function rewriteDirectiveBlocks(source: Source): string | undefined {
     if (
       block === undefined ||
       (block.beforeBrace.length === 0 && block.beforeText.length === 0) ||
-      holdsLineBreak(textRead(source, ...node.range))
+      holdsLineBreak(textRead(source, ...node.range)) ||
+      staysOnTimelineHeaderLine(source, node)
     ) {
       return
     }

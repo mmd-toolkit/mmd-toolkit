@@ -755,7 +755,7 @@ Db は大文字にして読みます。
 そのため `timeline td` と `timeline TD` は、
 これらの版では大文字小文字だけが違う period で、`td` は `TD` と印字しません。
 mermaid.js の文書の例は `TD` と書きます。
-方向の後ろのテキストは、書かれたままの隙間を置いて、ヘッダーの行に残します。
+方向の後ろのテキストは、ヘッダーの行に残します。
 `timeline TD title T` は、これらの版では 1 つの period で、
 `timeline TD` の次の行が `title T` の形は、period と title だからです。
 `timeline TD LR`（方向と period `LR`）と `timeline LR 2004 : a` も同じです。
@@ -776,22 +776,84 @@ timeline について対象にする版は、どちらの形も同じに描き�
 [fixture: header-and-direction/text-after-the-header-without-direction-moves]
 [fixture: header-and-direction/direction-on-its-own-line-is-a-period]
 
-方向を読まない版は、方向の後ろのテキストを描きます。
-そのため、そこにあり、ヘッダーの行で終わる description ブロックは、
-その行の残りと一緒に、書かれたまま印字します。
-波括弧の中の空白と、ブロックの後ろにある同じ行の文は、そのまま残ります。
-`timeline TD accDescr {alpha} Phase : done` は、これらの版では、
-event `done` を持つ 1 つの period です。
-`{ alpha }` にしても、`Phase : done` を自分の行に移しても、同じには描きません。
-複数行にわたるブロックは、ほかのブロックと同じに印字します。
-方向のないヘッダーの後ろのブロックは、そこのテキストと同じく、
-自分の行に移します。
+方向を読まない版は、方向の後ろのテキストをテキストとして描きます。
+そこでは、空白とタブの連なりは空白 1 つになります。
+ほかの空白文字（U+00A0、U+2003、U+2028 など）は、行のほとんどの場所で、
+空白とは違うものとして描かれるので、そのまま残します。
+そのため、ヘッダーの行の空白は 1 つの形で印字します。
+行の中のトークンの間は、空白とタブの連なりを空白 1 つにします。
+元に空白がない所には、何も足しません。
+ほかの空白文字は、書かれた場所に残します。
+`timeline TD    title T` は `timeline TD title T` と印字します。
+`timeline TD`、U+00A0、`title T` の形は、そのまま残ります。
+行末のコメントの前の隙間と、行の中の指令のまわりの隙間も、同じように印字します。
+[fixture: header-and-direction/gap-after-the-direction-spaces-formatted]
+[fixture: header-and-direction/gap-after-the-direction-tab-formatted]
+[test: U+00A0 between the direction and a text on the header line]
+[test: a run of spaces and tabs around U+00A0 between the direction and a text on the header line]
+
+方向の後ろ、ヘッダーの行で始まる説明ブロックも、このテキストの一部です。
+複数行にわたるブロックの各行と、その `}` の後ろにある同じ行の文も同じです。
+このブロックは、`accDescr: alpha` にせず、ブロックのまま印字し、
+後ろの文もその場所に残します。
+`timeline TD accDescr {alpha} Phase : done` は、
+これらの版では event `done` を持つ 1 つの period です。
+`accDescr: alpha` にしても、同じには描きません。
+`Phase : done` を自分の行に移しても、同じには描きません。
+ブロックのトークンの間と、ブロックと後ろの文の間の空白は、上の形で印字します。
+`accDescr {  alpha  }` は `accDescr { alpha }` になり、
+`accDescr   {alpha}    accDescr {beta}` は、
+`accDescr {alpha} accDescr {beta}` になります。
+元に空白がない所には、何も足しません（`accDescr{ alpha}`）。
+波括弧の横の指令は、ブロックをコロンの形にしません。
+ほかの所での扱いは、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+行を終える `;` はそのまま残り、ブロックの後ろのコメントも同じです。
+ブロックの後ろの period は、ヘッダーのすぐ後ろの period と同じく、
+後ろの event を通常の続きの字下げに置きます。
 [fixture: header-and-direction/description-block-glued-on-the-header-line-kept]
 [fixture: header-and-direction/description-block-empty-with-space-on-the-header-line-kept]
-[fixture: header-and-direction/description-block-with-spaces-on-the-header-line-kept]
+[fixture: header-and-direction/description-block-with-spaces-on-the-header-line-formatted]
+[fixture: header-and-direction/description-block-wide-gaps-on-the-header-line-formatted]
+[fixture: header-and-direction/description-block-touching-on-the-header-line-kept]
 [fixture: header-and-direction/description-block-then-period-on-the-header-line-kept]
+[fixture: header-and-direction/description-block-then-wide-gap-period-on-the-header-line-formatted]
+[fixture: header-and-direction/description-block-then-period-events-on-the-header-line-formatted]
 [fixture: header-and-direction/description-block-then-block-on-the-header-line-kept]
+[fixture: header-and-direction/description-block-then-semicolon-on-the-header-line-kept]
+[fixture: header-and-direction/description-block-then-comment-on-the-header-line-formatted]
+[fixture: header-and-direction/description-block-directive-beside-the-braces-on-the-header-line-kept]
+[fixture: header-and-direction/description-block-directives-in-the-gaps-on-the-header-line-formatted]
+[test: U+00A0 between the direction and a description block on the header line]
+[test: U+00A0 between the keyword and the brace of a description block on the header line]
+[test: U+00A0 inside the braces of a description block on the header line]
+[test: U+00A0 after a description block on the header line]
+[test: a run of spaces around U+00A0 after a description block on the header line]
+[test: U+2003 between two description blocks on the header line]
+[test: U+00A0 before a comment after a description block on the header line]
+[test: U+2028 after a description block on the header line]
+[test: U+2029 between the direction and a description block on the header line]
+[test: U+2029 between two description blocks on the header line]
+
+複数行にわたるブロックは、行をそのまま残します。
+これらの版が、その各行を period のテキストとして描くからです。
+テキストの行はほかのブロックと同じに字下げし、`}` は文の字下げに置きます。
+テキストのないブロックは、波括弧の間の改行を残します（`accDescr {` と `}`）。
+印字した `{}` では、行がつながるからです。
+中の空行は、空行のまま残ります。
+`}` の後ろの文は、その行に 1 つずつ残り、その間の隙間も同じ形で印字します。
 [fixture: header-and-direction/description-block-over-lines-on-the-header-line-formatted]
+[fixture: header-and-direction/description-block-over-lines-then-period-on-the-header-line-formatted]
+[fixture: header-and-direction/description-block-over-lines-then-block-over-lines-on-the-header-line-formatted]
+[fixture: header-and-direction/description-block-over-lines-blank-line-on-the-header-line-formatted]
+[fixture: header-and-direction/description-block-over-lines-directive-before-the-text-on-the-header-line-formatted]
+[fixture: header-and-direction/description-block-empty-over-lines-on-the-header-line-formatted]
+[fixture: header-and-direction/description-block-empty-over-lines-blank-line-on-the-header-line-formatted]
+[test: U+00A0 after the closing brace of a description block over lines on the header line]
+[test: U+2028 after the closing brace of a description block over lines on the header line]
+
+方向のないヘッダーの後ろのブロックは、そこのテキストと同じく、
+自分の行に移します。
 [fixture: header-and-direction/description-block-after-the-header-without-direction-moves]
 
 方向の後ろのコメントは行に残します（[コメント](#コメント)を参照）。

@@ -2644,6 +2644,26 @@ const timelineLineSeparatorExamples: readonly (readonly [
     "timeline\ntitle\u2029 # c\n  2004 : a\n",
     "timeline\n  title\u2029 # c\n  2004 : a\n",
   ],
+  [
+    "U+2028 after a description block on the header line",
+    "timeline TD accDescr {alpha}\u2028Phase : done\n",
+    "timeline TD accDescr {alpha}\u2028Phase : done\n",
+  ],
+  [
+    "U+2029 between the direction and a description block on the header line",
+    "timeline TD\u2029accDescr {alpha}\n",
+    "timeline TD\u2029accDescr {alpha}\n",
+  ],
+  [
+    "U+2028 after the closing brace of a description block over lines on the header line",
+    "timeline TD accDescr {\nalpha\n}\u2028Phase : done\n",
+    "timeline TD accDescr {\n    alpha\n  }\u2028Phase : done\n",
+  ],
+  [
+    "U+2029 between two description blocks on the header line",
+    "timeline TD accDescr {a}\u2029accDescr {b}\n",
+    "timeline TD accDescr {a}\u2029accDescr {b}\n",
+  ],
 ]
 
 /**
@@ -2712,6 +2732,56 @@ const timelineWhitespaceExamples: readonly (readonly [
     "U+00A0 inside a section name",
     "timeline\nsection S\u00a0T\n",
     "timeline\n  section S\u00a0T\n",
+  ],
+  [
+    "U+00A0 between the direction and a text on the header line",
+    "timeline TD\u00a0title T\n",
+    "timeline TD\u00a0title T\n",
+  ],
+  [
+    "a run of spaces and tabs around U+00A0 between the direction and a text on the header line",
+    "timeline TD  \u00a0\t title T\n",
+    "timeline TD \u00a0 title T\n",
+  ],
+  [
+    "U+00A0 between the direction and a description block on the header line",
+    "timeline TD\u00a0accDescr {alpha}\n",
+    "timeline TD\u00a0accDescr {alpha}\n",
+  ],
+  [
+    "U+00A0 between the keyword and the brace of a description block on the header line",
+    "timeline TD accDescr\u00a0{alpha}\n",
+    "timeline TD accDescr\u00a0{alpha}\n",
+  ],
+  [
+    "U+00A0 inside the braces of a description block on the header line",
+    "timeline TD accDescr {\u00a0alpha   \u00a0}\n",
+    "timeline TD accDescr {\u00a0alpha \u00a0}\n",
+  ],
+  [
+    "U+00A0 after a description block on the header line",
+    "timeline TD accDescr {alpha}\u00a0Phase : done\n",
+    "timeline TD accDescr {alpha}\u00a0Phase : done\n",
+  ],
+  [
+    "a run of spaces around U+00A0 after a description block on the header line",
+    "timeline TD accDescr {alpha}  \u00a0  Phase : done\n",
+    "timeline TD accDescr {alpha} \u00a0 Phase : done\n",
+  ],
+  [
+    "U+2003 between two description blocks on the header line",
+    "timeline TD accDescr {a}\u2003accDescr {b}\n",
+    "timeline TD accDescr {a}\u2003accDescr {b}\n",
+  ],
+  [
+    "U+00A0 before a comment after a description block on the header line",
+    "timeline TD accDescr {alpha}\u00a0%% c\n",
+    "timeline TD accDescr {alpha}\u00a0%% c\n",
+  ],
+  [
+    "U+00A0 after the closing brace of a description block over lines on the header line",
+    "timeline TD accDescr {\nalpha\n}\u00a0Phase : done\n",
+    "timeline TD accDescr {\n    alpha\n  }\u00a0Phase : done\n",
   ],
 ]
 

@@ -3,9 +3,10 @@ import { builders, utils } from "prettier/doc"
 import type { StringLiteral } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import type { ItemRun } from "./gap.ts"
+import { readGapElement } from "./gap.ts"
 import { walk } from "./layout.ts"
 import type { Source } from "./source.ts"
-import { isWhitespace } from "./source.ts"
+import { isSpaceOrTab, isWhitespace } from "./source.ts"
 import { writtenWithRespellings } from "./spelling.ts"
 
 const { align, hardline, literalline } = builders
@@ -214,6 +215,43 @@ export function printAsWrittenTrimmed(
   let trimmed = end
   while (trimmed > start && isWhitespace(source.text[trimmed - 1])) trimmed--
   return printAsWritten(source, start, trimmed)
+}
+
+/**
+ * Prints the gap between two tokens of text that a version of mermaid.js draws
+ * as it is: each run of spaces and tabs is one space, and every other
+ * whitespace character stays where it is, since that version draws it. A
+ * comment, a directive, and a `;` that the line rule ignores stay as written,
+ * and the whitespace on each side of them is printed in the same way. Null
+ * when the gap holds a line break or anything else, which the ordinary rules
+ * of the gap print (docs/timeline.md, Header and direction).
+ */
+export function printTextGap(
+  source: Source,
+  start: number,
+  end: number,
+): Doc | null {
+  const printed: Doc[] = []
+  let whitespace = ""
+  let inRun = false
+  for (let offset = start; offset < end;) {
+    const { element, end: next } = readGapElement(source, offset)
+    if (element.kind === "item") {
+      printed.push(whitespace, printAsWritten(source, offset, next))
+      whitespace = ""
+      inRun = false
+    } else if (element.kind === "whitespace") {
+      const character = source.text[offset]
+      if (!isSpaceOrTab(character)) whitespace += character
+      else if (!inRun) whitespace += " "
+      inRun = isSpaceOrTab(character)
+    } else {
+      return null
+    }
+    offset = next
+  }
+  printed.push(whitespace)
+  return printed
 }
 
 /** Prints items that stand after `doc` on its line. */
