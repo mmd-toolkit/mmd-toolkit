@@ -10,6 +10,8 @@
  * `checkTree`.
  */
 
+import { POSITIONS_ROWS } from "./positions.ts"
+
 /** A test case in which `checkTree` reports a tree that breaks the condition. */
 export interface CoverageCase {
   /** The test file, relative to `packages/tests/tests/`. */
@@ -51,4 +53,4 @@ export interface CoverageRow {
 }
 
 /** The table, in the order of the documents and their blocks. */
-export const COVERAGE: readonly CoverageRow[] = []
+export const COVERAGE: readonly CoverageRow[] = [...POSITIONS_ROWS]
