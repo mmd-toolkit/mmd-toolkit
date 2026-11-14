@@ -1027,11 +1027,27 @@ of a line that the line rule of mermaid.js ignores, and the comment ends before
 it. [fixture: comments/semicolon-after-comment-kept] [corpus fixture:
 sequence/tokens-comment-then-ignored-semicolon] [corpus fixture:
 sequence/tokens-loop-comment-then-ignored-semicolon] [fixture:
-comments/semicolon-after-percent-comment-kept] Where whitespace follows that `;`
-in the source, the `;` lies inside the comment, and the comment is printed with
-it. [fixture: comments/semicolon-inside-comment-kept] Dropping it in one case
-and keeping it in the other would make a second formatting differ from the
-first.
+comments/semicolon-after-percent-comment-kept] Where whitespace and then more
+text follow that `;` in the source, the `;` lies inside the comment, and the
+comment is printed with it. [fixture: comments/semicolon-inside-comment-kept]
+Dropping it in one case and keeping it in the other would make a second
+formatting differ from the first. Where only whitespace follows the `;` up to
+the end of the line, the whitespace is not printed, and the line is decided as
+it is without the whitespace: the `;` is then the last `;` of the line, which
+does not keep the statements of the line together, so `accDescr {}` and a
+message `A->>B: x #style:#x;` followed by a space are printed on two lines, as
+they are without the space, and not on one line at the first formatting and on
+two at the second. [fixture:
+statements-one-per-line/message-comment-ignored-semicolon-trailing-whitespace]
+[fixture:
+statements-one-per-line/loop-comment-ignored-semicolon-trailing-whitespace]
+[fixture:
+statements-one-per-line/autonumber-comment-ignored-semicolon-trailing-whitespace]
+[test: an ignored `;` at a message comment end before U+2029 and a directive]
+[test: an ignored `;` at an autonumber comment end before U+2029 and a
+directive] A `;` that the line rule does not ignore stays in the comment, and
+the line stays together. [fixture:
+statements-one-per-line/comment-nonignored-semicolon-trailing-whitespace]
 
 Input
 ([comments/semicolon-after-comment-kept-input.mmd](../tests/fixtures/sequence/comments/semicolon-after-comment-kept-input.mmd)):

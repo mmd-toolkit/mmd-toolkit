@@ -421,6 +421,16 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
     "sequenceDiagram\n  %% z\n  A->>B: x\u2028# d1\u2028%% line\n frag\n  B ->> A: y\n",
   ],
   [
+    "an ignored `;` at a message comment end before U+2029 and a directive",
+    "sequenceDiagram\naccDescr {} A->>B: x #style:#x;\u2029\n%%{init: {}}%% %% e",
+    "sequenceDiagram\n  accDescr {}\n  A ->> B: x #style:#x;\n  %%{init: {}}%% %% e\n",
+  ],
+  [
+    "an ignored `;` at an autonumber comment end before U+2029 and a directive",
+    "sequenceDiagram\naccDescr {} autonumber % style:#x;\u2029\n%%{init: {}}%% %% e",
+    "sequenceDiagram\n  accDescr {}\n  autonumber % style:#x;\n  %%{init: {}}%% %% e\n",
+  ],
+  [
     "U+2029 at the end of the text of a box",
     "sequenceDiagram\nbox aqua\u2029\nparticipant A\nend\n",
     "sequenceDiagram\n  box aqua\u2029\n    participant A\n  end\n",
