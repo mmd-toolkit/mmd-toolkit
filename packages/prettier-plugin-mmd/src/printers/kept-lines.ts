@@ -984,6 +984,23 @@ export function withUnusualStyleEnds(
 }
 
 /**
+ * The kept lines of a block as `printBlock` takes them: the lines of the rules
+ * of the diagram type, the lines that hold a removed line feed (see
+ * `withJoinedLines`), and the lines of the statements that end in whitespace
+ * that is kept (see `withUnusualStyleEnds`).
+ */
+export function completeKeptLines(
+  source: Source,
+  kept: KeptLines,
+  joinsByRegions = true,
+): KeptLines {
+  return withUnusualStyleEnds(
+    source,
+    withJoinedLines(source, kept, joinsByRegions),
+  )
+}
+
+/**
  * Whether the whitespace between `start` and `end`, which lies between two
  * pieces of a line, may be what the line rule of mermaid.js reads (common.md,
  * The `style` and `classDef` lines): the line holds `style` or `classDef`,

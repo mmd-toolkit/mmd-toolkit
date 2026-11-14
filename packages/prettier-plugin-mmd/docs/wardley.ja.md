@@ -166,8 +166,10 @@ mermaid.js の文書の例と同じく引用符で囲んで印字します。
 を参照してください。
 矢印のない link（`"A" "B"`）の名前と、
 読み飛ばす YAML ブロックの `---` に接する名前は、引用符を残します。
+
 [fixture: names-and-quotes/plain-names-without-quotes]
 [fixture: names-and-quotes/names-that-need-quotes]
+
 それ以外では、
 `WardleyIdentifier` と `StringLiteral` を原文の範囲のまま印字します。
 内部の空白とタブ、ハイフン、括弧、`&`、エスケープ、
@@ -181,7 +183,9 @@ mermaid.js の文書の例と同じく引用符で囲んで印字します。
 `singleQuote` は読みません。
 link のラベル（`+'moving'>`）は `'` で囲んだままにします。
 mermaid.js がその場所で読む引用符は、それだけだからです。
+
 [fixture: names-and-quotes/single-quote-sensitive-kept]
+
 名前の空白を畳むことと文字列の両端の空白の除去は Db を変えます。
 エスケープの別の解釈が必要になる引用符への変更はしません。
 
@@ -385,7 +389,9 @@ A-->B は A--> B と印字し、A- -> B とは印字しません。
 名前と矢印の間のディレクティブは、2 つを分けません。
 mermaid.js が、テキストを読む前にディレクティブを取り除くからです。
 A-%%{init: {}}%%->B は A-%%{init: {}}%%-> B と印字します。
+
 [fixture: wardley/links/link-glued-directive-between]
+
 原文の字面から矢印を探しません。
 A -->B の矢印は --> のままです。
 解析済みの部品に従った空白です。
@@ -432,15 +438,13 @@ wardley-beta
 
 ### flow
 
-[test: wardley/flows/unicode-flow]
-
 +'label'>、+'label'<、+'label'<> の内側は書かれたまま保ちます。
 空ラベル、余白、バックスラッシュ、継続行の列も含みます。
 完全な部品間の大域的なディレクティブの境界も保ちます。
 普通の空白を挿入すると複合単位が拒否され、両端の空白の除去は Db を変えます。
 flow の優先順位で見えなくても、両 port とセミコロンラベルを残します。
 
-[fixture: wardley/flows/flow-forward]
+[test: wardley/flows/unicode-flow] [fixture: wardley/flows/flow-forward]
 
 [fixture: wardley/flows/flow-backward]
 
@@ -478,9 +482,10 @@ Db が同じ形から、link に属する区切りと分かる接した形を選
 リンクのラベルでは、`;` の後や flow の引用符の間の空白とタブの連なりは、
 空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
-component の名前はそのままです。 [fixture: wardley/flows/flow-padding-escapes]
-[fixture: wardley/flows/flow-ports-and-label]
+component の名前はそのままです。
 
+[fixture: wardley/flows/flow-padding-escapes]
+[fixture: wardley/flows/flow-ports-and-label]
 [fixture: wardley/semicolon-labels/label-exterior]
 
 [fixture: wardley/semicolon-labels/label-whitespace]
@@ -610,8 +615,8 @@ wardley-beta
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-[fixture: title/title-directives-end-blanks-dropped]
 
+[fixture: title/title-directives-end-blanks-dropped]
 [fixture: wardley/title/title-trim]
 
 [fixture: wardley/title/title-empty]
@@ -632,19 +637,20 @@ wardley-beta
 
 ### アクセシビリティ
 
-[test: wardley/accessibility/unicode-empty-description]
-
 accTitle: Value と accDescr: Value は共有の行配置を使います。
 空の代入も残します。
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+
+[test: wardley/accessibility/unicode-empty-description]
 [fixture: accessibility/acc-directives-end-blanks-dropped]
 [fixture: wardley/accessibility/access-lines]
 [fixture: wardley/accessibility/access-empty]
 
 1 行の説明ブロックは、
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+
 [fixture: wardley/accessibility/description-tight]
 [fixture: wardley/accessibility/description-edges]
 [fixture: wardley/accessibility/description-opener-newline]
@@ -654,7 +660,9 @@ accTitle: Value と accDescr: Value は共有の行配置を使います。
 空白だけの内部は、囲むテキストがないため `{}` にします。
 キーワードと開始括弧の間が空白だけなら同じ行にまとめ、
 独立した閉じ括弧を文と同じ段にそろえます。
+
 [fixture: wardley/accessibility/description-empty]
+
 保護された注釈とセミコロンの配置では、隙間を保ちます。
 通常の説明本文と独立したコメント行は文より 1 段深くそろえます。
 Db で LF 後の字下げが取り除かれるためです。
@@ -662,6 +670,7 @@ Db で LF 後の字下げが取り除かれるためです。
 ディレクティブと共有処理で取り除かれるコメント領域は、
 ディレクティブだけを含むブロックでも原文全体を保ちます。
 注釈は共有の継続行の配置を保ちます。
+
 [fixture: wardley/accessibility/description-closer]
 [fixture: wardley/accessibility/description-comment-only]
 [fixture: wardley/accessibility/description-directive-only]
@@ -898,14 +907,13 @@ wardley-beta
 
 ### コメント
 
-[test: wardley/comments/native-separators]
-
 普通の独立コメントは所属する本文の段、見出し前は第 1 列に揃えます。
 行内のコメントは同じ行と接触側を保ち、離れた隙間は空白 1 つにします。
 印、本文、末尾余白を保ち、pipeline 内では子文の段にします。
 文字列、flow、link ラベルの `%` テキストはその値に残します。
 共通のコメント領域の結合は原文の列を保ち、所属先の変化を防ぎます。
 
+[test: wardley/comments/native-separators]
 [fixture: wardley/comments/comment-standalone]
 
 [fixture: wardley/comments/comment-inline-contact]
@@ -1007,8 +1015,8 @@ mermaid が 1 行として読む範囲で数えます。
 行末の `A -> B;` は拒否されますが、
 その後に空白がある `A -> B;` は受理されるので、
 mermaid.js が別の読み方をする形を印字しません。
-[fixture: wardley/semicolons/word-line-semicolon-whitespace-kept]
 
+[fixture: wardley/semicolons/word-line-semicolon-whitespace-kept]
 [fixture: wardley/semicolons/style-label]
 
 [fixture: wardley/semicolons/style-selected-delimiter]
@@ -1236,8 +1244,6 @@ wardley-beta
 
 ### 仕様による読み
 
-[test: wardley/specified-readings/passed-unicode]
-
 既存の 6 差異を適用します。
 directive-as-token-boundary、ignored-semicolon-as-token-boundary、
 html-tag-in-frontmatter、embedded-data-opaque、bare-percent-line-before-header、
@@ -1249,6 +1255,7 @@ Wardley 固有の内容を解釈しない受理設定キーはありません。
 Markdown では埋め込みを断ります。
 拒否構文は修復しません。
 
+[test: wardley/specified-readings/passed-unicode]
 [corpus fixture: wardley/directive-arrow-inside]
 
 [corpus fixture: wardley/lex-selected-decimal-inside]

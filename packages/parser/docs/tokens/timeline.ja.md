@@ -33,9 +33,13 @@
 `timeline TD` は、`Keyword` トークン `timeline` と `TD` を持ちます。
 `a : e1 : e2` は、`RawText` トークン `a` と空白、`e1` と空白、`e2` を持ち、
 各 event の前に `Punctuator` トークン `:` を持ちます。
+
 [fixture: timeline/db-direction-td] [fixture: timeline/db-event-two-on-a-line]
+
 event を始めない `:` 単位は、文法のどの規則も取らないので、入力は拒否され、
-そのトークンは作られません。 [fixture: timeline/gram-event-colon-glued-to-event]
+そのトークンは作られません。
+
+[fixture: timeline/gram-event-colon-glued-to-event]
 
 トークンは両端に空白を持ちません。
 ただし mermaid.js
@@ -54,6 +58,7 @@ mermaid.js が値をトリムするアクセシビリティのテキスト、つ
 `accTitle: T` と 3 つの空白は、トークン `T` を持ちます。
 `accDescr {`、`  line1` の行、`  line2` の行、`  }` の行は、`line1`、
 改行とインデント、`line2` のトークンを持ちます。
+
 [fixture: timeline/db-period-trailing-spaces]
 [fixture: timeline/db-event-leading-spaces]
 [fixture: timeline/db-event-two-spaces] [fixture: timeline/db-title-two-spaces]
@@ -71,14 +76,18 @@ mermaid.js が値をトリムするアクセシビリティのテキスト、つ
 `a : e%%{init: {}}%%f` は、`RawText` トークン `e` と `f` と、
 その間の `Directive` トークンを持ちます。
 一方、`ti%%{init: {}}%%tle T` は拒否されます。
+
 [fixture: timeline/lex-directive-in-event]
 [fixture: timeline/div-directive-in-title-keyword]
 
 - 空の説明ブロックは、`Keyword` トークン `accDescr` と、
   `Punctuator` トークン `{` と `}` を持ちます。
+
   [fixture: timeline/db-acc-descr-block-braces-only]
+
 - 行の規則が無視する `;` は `IgnoredSemicolon` トークンです。
   同じ行の `accDescr { style:#x }` の後の `a;b` は、
   `RawText` トークン `a` と `b` と、
   その間の `IgnoredSemicolon` トークンを持ちます。
+
   [fixture: timeline/tokens-ignored-semicolon-in-period]

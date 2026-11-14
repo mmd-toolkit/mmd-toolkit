@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Classes: on the line `style:x;b color:#f00;` after the region, the line rule ignores only the last `;`, and the `;` in the name, which follows no `#` and word, ends no entity and is a `;` unit; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...tclassDef a style:x;b color:#f00\n----------------------^\nExpecting 'ALPHA', 'NUM', 'NODE_STRING', 'DOWN', 'MINUS', 'DEFAULT', 'COMMA', 'COLON', 'AMP', 'BRKT', 'MULT', 'UNICODE_TEXT', 'SPACE', got 'SEMI'"
+  }
+}

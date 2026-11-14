@@ -467,15 +467,21 @@ for acceptance without adding configuration parameters or options to `parse()`.
    of the specification, the parser, and the tests, a name inside
    `[fixture: ...]` cites the fixture. In the documents of the formatter, only a
    name inside `[corpus fixture: ...]` does; a `[fixture: ...]` there names a
-   fixture of the formatter, also when it starts on the same line. The sentence
-   that cites the fixture is the paragraph, the list item, or the table row that
-   holds the citation; read it whole. For each such sentence, say which case the
-   fixture shows (what is accepted, what is read as what, or how a text is
-   printed), and compare the parts of the tree that the case touches (nodes,
-   tokens, comments, positions) with what the sentence says of them and with
-   what the documents of the tree say of those node types and token kinds:
-   `packages/spec/docs/ast.md` and `ast/<diagram>.md`, and this package's
-   `docs/tokens.md`, `docs/tokens/<diagram>.md`, `docs/positions.md`, and
+   fixture of the formatter, also when it starts on the same line. A citation
+   stands in a paragraph of citations or in the `Fixtures` cell of a table row
+   (the skill `conventions`, Documents). The sentences that cite the fixture are
+   those right before its paragraph of citations, back to the paragraph of
+   citations before it or to the start of the paragraph or of the list item; a
+   paragraph of citations right after a table cites for the whole table, one
+   right after a code block for that example, and a `Fixtures` cell for its row.
+   Read them with the whole paragraph, list item, or table that holds them. For
+   each such sentence, say which case the fixture shows (what is accepted, what
+   is read as what, or how a text is printed), and compare the parts of the tree
+   that the case touches (nodes, tokens, comments, positions) with what the
+   sentence says of them and with what the documents of the tree say of those
+   node types and token kinds: `packages/spec/docs/ast.md` and
+   `ast/<diagram>.md`, and this package's `docs/tokens.md`,
+   `docs/tokens/<diagram>.md`, `docs/positions.md`, and
    `docs/positions/<diagram>.md`, where the diagram is that of the body node of
    the tree (`FlowchartDiagram` is `flowchart`), also for a fixture of
    `common/`. When the case touches no part of the tree, as a sentence of the
@@ -485,8 +491,10 @@ for acceptance without adding configuration parameters or options to `parse()`.
    tree that no sentence cites gets an answer that says so, and is not compared.
    When the work added its fixture, report the missing sentence to the
    specification: a fixture is written with the sentence that cites it (the
-   skill `conventions`, Running tests). Whether the work added it is the one
-   thing here that needs the history of the repository:
+   skill `conventions`, Running tests). A fixture whose `source` has `kind`
+   `mermaid`, an input that the collector took from mermaid.js, is not reported:
+   the same paragraph of `conventions` excepts it. Whether the work added it is
+   the one thing here that needs the history of the repository:
    `git cat-file -e origin/main:packages/tests/fixtures/<folder>/<fixture>/input.mmd`
    fails for a fixture that the work added.
 

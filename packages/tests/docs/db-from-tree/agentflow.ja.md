@@ -19,8 +19,10 @@ class、click の Db 手順を置く。
 directive と選ばれた無視されるセミコロンを除き、CR/CRLF を正規化し、
 文字参照をプレースホルダーに置き換える。
 HTML 属性の引用符は frontmatter 後の本文全体を文脈として変換する。
-書かれた値は別途検査し、ソースの綴りを保つ。 [fixture: agentflow/lex-cr]
-[fixture: agentflow/lex-crlf] [fixture: agentflow/entity-label-contexts]
+書かれた値は別途検査し、ソースの綴りを保つ。
+
+[fixture: agentflow/lex-cr] [fixture: agentflow/lex-crlf]
+[fixture: agentflow/entity-label-contexts]
 [fixture: agentflow/html-attribute-quotes]
 [fixture: agentflow/directive-in-string]
 [fixture: agentflow/lex-style-preprocessing-semicolon]
@@ -30,15 +32,18 @@ Agentflow で共通のコメント領域と先頭空白を取り除くのは、
 frontmatter の trivia 全体の後から、directive を除き、CRLF を一つと数える。
 この trivia は閉じ区切り後の空行や空白だけの行を含む。
 本文の最初の空でない行の字下げは測定に残す。
+
 [fixture: agentflow/frontmatter-extra-trivia-boundary]
 [fixture: agentflow/frontmatter-extra-trivia-below]
 [fixture: agentflow/frontmatter-extra-whitespace-line-boundary]
 [fixture: agentflow/frontmatter-extra-trivia-above]
 [fixture: agentflow/frontmatter-extra-trivia-indent-above]
+
 上限以下では、木に記録された実際の図のコメントだけを除く。
 文字列、コールバック、アクセシビリティ、
 データ内のコメント風テキストは内容である。
 パーサーはサイトの maxTextSize を受け取らない。
+
 [fixture: agentflow/comment-default-size-equal]
 [fixture: agentflow/comment-default-size-fallback]
 [fixture: agentflow/comment-default-size-equal-crlf]
@@ -56,6 +61,7 @@ frontmatter の trivia 全体の後から、directive を除き、CRLF を一つ
 `}` の直後の行内空白と最初の LF だけを、その LF にまとめる。
 後の空行と、LF が続かない空白は保つ。
 文字列と markdown 文字列の区切りは、共有する入れ子の文脈で取り除く。
+
 [fixture: agentflow/lex-brace-string-keeps-blank-line]
 [fixture: agentflow/lex-brace-ls-without-lf]
 [fixture: agentflow/gram-target-data-trailing-space]
@@ -70,6 +76,7 @@ frontmatter のタイトルは `embedded` から取り、なければ空にす�
 `^` は BT にする。
 BR を含め、ほかの綴られた方向はそのまま使う。
 方向文が変えるのは、図全体でなく、それを直接含む flow の方向だけである。
+
 [fixture: agentflow/frontmatter-title]
 [fixture: agentflow/db-frontmatter-null-title] [fixture: agentflow/header-only]
 [fixture: agentflow/header-td] [fixture: agentflow/header-br]
@@ -87,6 +94,7 @@ BR を含め、ほかの綴られた方向はそのまま使う。
 同じプロパティは値を置き換える。
 最初から own property だった `__proto__` は残るが、
 既存の空の props に後からそのキーを加えても残らない。
+
 [fixture: agentflow/gram-node-three-definitions]
 [fixture: agentflow/gram-bracket-shapes]
 [fixture: agentflow/gram-props-repeated]
@@ -96,6 +104,7 @@ BR を含め、ほかの綴られた方向はそのまま使う。
 
 既存の辺の id なら、頂点の処理は何も変えない。
 予約 id `connectors` は、スタイルやメタデータの出現でも通常の頂点を作らない。
+
 [fixture: agentflow/db-generated-edge-id-metadata-target]
 [fixture: agentflow/db-data-block-reserved-connectors]
 [fixture: agentflow/spec-agentflow-metadata-no-validation-92cc9f70]
@@ -106,9 +115,11 @@ BR を含め、ほかの綴られた方向はそのまま使う。
 隣接データは次のメンバーを作った後、最後のメンバーならグループの末尾で適用する。
 リンクの辺を作る前に、対象グループを読む。
 始点の各頂点と終点の各頂点をその順に組み合わせる。
-鎖では、前の対象グループが次の始点となる。 [fixture: agentflow/gram-group-data]
-[fixture: agentflow/gram-style-suffix] [fixture: agentflow/gram-group-spaces]
-[fixture: agentflow/gram-edge-chain] [fixture: agentflow/db-data-block-routing]
+鎖では、前の対象グループが次の始点となる。
+
+[fixture: agentflow/gram-group-data] [fixture: agentflow/gram-style-suffix]
+[fixture: agentflow/gram-group-spaces] [fixture: agentflow/gram-edge-chain]
+[fixture: agentflow/db-data-block-routing]
 
 sequence、failure、reference の矢印はそれぞれ、`arrow_point`/normal、
 `arrow_cross`/normal、`arrow_open`/dotted になる。
@@ -116,6 +127,7 @@ sequence、failure、reference の矢印はそれぞれ、`arrow_point`/normal�
 どちらも十で止め、木の長さは制限しない。
 ラベルは変換、trim、サニタイズと外側の引用符の除去を行い、書かれた kind を使う。
 ラベルがなければ空のテキストと kind text にする。
+
 [fixture: agentflow/gram-three-edge-kinds]
 [fixture: agentflow/db-edge-length-cap]
 [fixture: agentflow/lex-reference-long-length-at-cap]
@@ -125,8 +137,9 @@ sequence、failure、reference の矢印はそれぞれ、`arrow_point`/normal�
 書かれた辺 id が未使用なら、最後の始点と最初の終点の組へ与える。
 それ以外は `L_<source>_<target>_0` を作り、
 同じ端点の先行する辺に応じて接尾辞を 2、3 と進める。
-後に作る辺は、その時点の既定の補間を取る。 [fixture: agentflow/gram-edge-id]
-[fixture: agentflow/db-edge-id-repeated]
+後に作る辺は、その時点の既定の補間を取る。
+
+[fixture: agentflow/gram-edge-id] [fixture: agentflow/db-edge-id-repeated]
 [fixture: agentflow/gram-linkstyle-interpolate-default]
 
 **名前と flow。**
@@ -136,6 +149,7 @@ Label の parts だけを変換し、初期文字列の区切りを除いて連�
 連結結果を trim して id にする。
 `flow click A` の次に `B` があると AB になり、
 `Handle click events` の次の `B` は `Handle eventsB` になる。
+
 [fixture: agentflow/lex-flow-name-click-state]
 [fixture: agentflow/lex-flow-name-click-mixed]
 [fixture: agentflow/gram-flow-name-quoted-padding]
@@ -147,7 +161,9 @@ AgentflowIgnoredText.kind は、
 認識された消される形式や direction 行のテキストを、木の検査のために記録する。
 Db ビルダーはこれらのノードの kind も value も読まない。
 名前は Label の parts、方向文は direction フィールド、
-click の手順はオペランドを使う。 [fixture: agentflow/lex-flow-name-click-state]
+click の手順はオペランドを使う。
+
+[fixture: agentflow/lex-flow-name-click-state]
 [fixture: agentflow/lex-direction-line-greedy]
 [fixture: agentflow/gram-empty-description-before-href]
 
@@ -160,6 +176,7 @@ click の手順はオペランドを使う。 [fixture: agentflow/lex-flow-name-
 同じ id は最初のレコードへ新しい所属をそれぞれ一度だけ足し、
 空でないタイトルと与えられた方向を置き換える。
 最初の labelType とマップ内の位置は保つ。
+
 [fixture: agentflow/gram-flow-all-forms]
 [fixture: agentflow/gram-nested-unnamed-flow]
 [fixture: agentflow/db-flow-three-definitions]
@@ -180,6 +197,7 @@ EmptyStatement はセミコロンを寄与する。
 そのため、3 回目の宣言も含め、再宣言は新しい `__proto__` を最大一つ追加し、
 初回の宣言にあった重複はまとめない。
 レイアウトが折り畳みや循環のため調整した記録でなく、元の端点と所属を保つ。
+
 [fixture: agentflow/gram-group-spaces]
 [fixture: agentflow/lex-accessibility-scope]
 [fixture: agentflow/gram-flow-hasownproperty-before-empty-statement]
@@ -194,6 +212,7 @@ EmptyStatement はセミコロンを寄与する。
 object の `__proto__` に真偽値を代入しても own key ができないため、
 最初の処理ではすべての出現が残る。
 統合は、その途中ですでに追加した所属も検査する。
+
 [fixture: agentflow/db-flow-proto-initial-repeated]
 [fixture: agentflow/db-flow-proto-redefinition]
 [fixture: agentflow/db-flow-ordinary-redefinition]
@@ -209,6 +228,7 @@ object の `__proto__` に真偽値を代入しても own key ができないた
 既定値は false である。
 global はコンテナーも外側への所属も寄与しない。
 寄与した空でない id を global とし、既存と後の flow の所属から外す。
+
 [fixture: agentflow/gram-direction-in-flow]
 [fixture: agentflow/config-inherit-site] [fixture: agentflow/gram-global-nested]
 [fixture: agentflow/gram-global-after-flow]
@@ -223,6 +243,7 @@ global はコンテナーも外側への所属も寄与しない。
 既存の connector のメタデータ、スタイル、クラスは保ち、
 空でないタイトルがあるときだけテキストを変える。
 後の通常の頂点の出現で props が付くこともある。
+
 [fixture: agentflow/gram-connector-name-whitespace-only]
 [fixture: agentflow/gram-connector-all-forms]
 [fixture: agentflow/gram-connector-markdown-title]
@@ -238,6 +259,7 @@ classDef は各名前のスタイルへ追加し、エスケープされたカ�
 ほかのスタイルのカンマは区切りである。
 スタイルの値を変換した形と、範囲の後ろの行内空白を残す。
 行内空白は JavaScript の `\s` から LF と CR を除いた文字である。
+
 [fixture: agentflow/db-all-fields] [fixture: agentflow/gram-class-semicolon]
 [fixture: agentflow/gram-classdef-multi]
 [fixture: agentflow/gram-classdef-escaped-comma]
@@ -247,7 +269,9 @@ classDef は各名前のスタイルへ追加し、エスケープされたカ�
 null のスタイルは前のコンマの直後の空白を読む。
 最初の null のスタイルなら、文が読む 1 文字の `space` 区切りの後から読む。
 `style A  ` の値は空白 1 つで、`style A fill:red,` の後にタブがあれば、
-2 つ目の値はそのタブになる。 [fixture: agentflow/gram-style-all-null]
+2 つ目の値はそのタブになる。
+
+[fixture: agentflow/gram-style-all-null]
 [fixture: agentflow/gram-classdef-all-null]
 [fixture: agentflow/gram-default-linkstyle-all-null]
 [fixture: agentflow/gram-style-whitespace-after-comma]
@@ -257,14 +281,18 @@ null のスタイルは前のコンマの直後の空白を読む。
 最初の空白でない文字、コンマ、本当のセミコロン、行終端で止める。
 エスケープされたコンマの後の空白も残す。
 `classDef hot x:y\, ` は、`x:y,` と空白 1 つになる。
+
 [fixture: agentflow/db-style-trailing-whitespace]
 [fixture: agentflow/lex-style-preprocessing-semicolon]
 [fixture: agentflow/gram-tail-style-semicolons]
 [fixture: agentflow/gram-empty-description-splits-interpolate-spaces]
 [fixture: agentflow/gram-classdef-escaped-comma-whitespace-tail]
+
 文のコメント規則が読む、コメントの直前の ASCII 空白とタブは trivia であり、
 スタイルの値に加えない。
-一方、NBSP はスタイルの値に残る。 [fixture: agentflow/comment-after-style]
+一方、NBSP はスタイルの値に残る。
+
+[fixture: agentflow/comment-after-style]
 [fixture: agentflow/gram-tail-classdef-comment]
 [fixture: agentflow/gram-tail-linkstyle-comment]
 [fixture: agentflow/gram-style-null-before-comment-nbsp]
@@ -275,6 +303,7 @@ null のスタイルは前のコンマの直後の空白を読む。
 スタイルがなければ以前のスタイルを保つ。
 default 形式は指定された edgeDefaults のフィールドだけを置き換える。
 そのスタイルへ `fill:none` を足さず、既存の辺のスタイルも置き換えない。
+
 [fixture: agentflow/db-style-leading-whitespace]
 [fixture: agentflow/gram-linkstyle-interpolate-index]
 [fixture: agentflow/gram-linkstyle-default]
@@ -288,6 +317,7 @@ URL は既存の各頂点の trim したリンクと target を設定する。
 どちらも clickable クラスを適用する。
 ツールチップは trim せずサニタイズし、id ごとに置き換え、最初の id 順を保つ。
 textBeforeUrl/textBeforeTooltip は Db の値を変えない。
+
 [fixture: agentflow/gram-click-callback-forms]
 [fixture: agentflow/gram-click-callback-space-args]
 [fixture: agentflow/db-call-name-space-before-parentheses]
@@ -301,6 +331,7 @@ textBeforeUrl/textBeforeTooltip は Db の値を変えない。
 説明の LF と続く空白は一つの LF にする。
 行の値がなければ空テキスト、閉じた空ブロックなら何も変更しない。
 閉じていないブロックは、保持されたテキストにかかわらず説明を空にする。
+
 [fixture: agentflow/lex-accessibility-scope]
 [fixture: agentflow/db-accessibility-repeated]
 [fixture: agentflow/db-accessibility-whitespace-block]
@@ -319,6 +350,7 @@ textBeforeUrl/textBeforeTooltip は Db の値を変えない。
 要素なしで空の効果を持つことがある。
 各エントリーの id が一致し、すべて一度ずつ消費されることを検査する。
 YAML の解析やメタデータのキーの再構築はしない。
+
 [fixture: agentflow/db-data-block-adjacent] [fixture: agentflow/gram-group-data]
 [fixture: agentflow/gram-flow-inline-data]
 [fixture: agentflow/db-data-block-routing]
@@ -331,6 +363,7 @@ YAML の解析やメタデータのキーの再構築はしない。
 再帰的な非有限数のテキスト `Infinity`、`-Infinity`、`NaN` が記録済みである。
 YAML の構文をノードにはしない。
 診断と描画用の派生フィールドは組み立てない。
+
 [fixture: agentflow/db-metadata-yaml-shared-alias]
 [fixture: agentflow/db-data-block-recursive-prototype-keys]
 [fixture: agentflow/db-metadata-nested-map-infinity]
@@ -349,6 +382,7 @@ frontmatter の HTML を本文の文脈に含めない読みと、
 `divergence-removals.ts` に Agentflow の登録は不要である。
 flowchart の登録もなく、
 この六つの識別子は既存の共通の specified-reading 経路か、木の受理規則で扱う。
+
 [fixture: agentflow/div-frontmatter-attribute-blocks-body-tag]
 [fixture: agentflow/div-percent-braces-before-header]
 [fixture: agentflow/db-data-block-invalid-yaml]

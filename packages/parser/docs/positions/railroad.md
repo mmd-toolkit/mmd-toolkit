@@ -5,11 +5,12 @@ Japanese version: [railroad.ja.md](./railroad.ja.md)
 All four dialects use the ranges and child order of the
 [railroad source tree](../../../spec/docs/ast/railroad.md), in original UTF-16
 offsets. Root covers the complete source. Shared conversions do not rewrite
-source line endings, quotes, escapes or raw numeric spelling. [fixture:
-railroad/ir-gram-written-tree] [fixture: railroad/ebnf-gram-written-tree]
-[fixture: railroad/abnf-gram-written-tree] [fixture:
-railroad/peg-gram-written-tree] [fixture: railroad/ir-line-string-values]
-[fixture: railroad/abnf-db-repeat-leading-zero]
+source line endings, quotes, escapes or raw numeric spelling.
+
+[fixture: railroad/ir-gram-written-tree] [fixture:
+railroad/ebnf-gram-written-tree] [fixture: railroad/abnf-gram-written-tree]
+[fixture: railroad/peg-gram-written-tree] [fixture:
+railroad/ir-line-string-values] [fixture: railroad/abnf-db-repeat-leading-zero]
 
 ## Ranges
 
@@ -36,8 +37,10 @@ Hidden forms follow the tree's
 Expression cores exclude outer forms owned by a parent. List members hold
 separator gaps on their respective sides; adjacency puts the entire gap on the
 following member. Comments, outside padding, detection-passed trivia and the
-appended LF do not extend a node. [fixture: railroad/ir-native-ownership]
-[fixture: railroad/ebnf-native-ownership] [fixture:
-railroad/abnf-native-ownership] [fixture: railroad/peg-native-ownership]
-[fixture: railroad/ir-retained-bare-secondscan-unicode] [fixture:
+appended LF do not extend a node.
+
+[fixture: railroad/ir-native-ownership] [fixture:
+railroad/ebnf-native-ownership] [fixture: railroad/abnf-native-ownership]
+[fixture: railroad/peg-native-ownership] [fixture:
+railroad/ir-retained-bare-secondscan-unicode] [fixture:
 railroad/ir-tail-comment] [fixture: railroad/ir-header-only]

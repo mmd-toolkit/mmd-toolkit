@@ -18,9 +18,10 @@ tree are defined in [ast/flowchart.md](../ast/flowchart.md).
 
 Three entries of [detection.md](../detection.md) select this grammar: entry 3
 (`flowchart-elk`, id `flowchart-elk`), entry 16 (`swimlane-beta`, id
-`swimlane`), and entry 17 (`graph` or `flowchart`, id `flowchart-v2`). [fixture:
-common/detect-minimal-flowchart-elk] [fixture: common/detect-minimal-swimlane]
-[fixture: common/detect-minimal-flowchart-v2]
+`swimlane`), and entry 17 (`graph` or `flowchart`, id `flowchart-v2`).
+
+[fixture: common/detect-minimal-flowchart-elk] [fixture:
+common/detect-minimal-swimlane] [fixture: common/detect-minimal-flowchart-v2]
 
 Detection only looks at the detection point (see
 [Diagram detection](../common.md#diagram-detection)). The grammar then reads the
@@ -28,7 +29,9 @@ header keyword again (see [The header context](#the-header-context)), and it
 requires that no word character follows it. So `graphTD` is detected as
 `flowchart-v2` and rejected, and `flowchart-elkX` is detected as `flowchart-elk`
 and rejected, because the grammar reads `flowchart` and then cannot read
-`-elkX`. [fixture: common/detect-no-boundary-graph] [fixture:
+`-elkX`.
+
+[fixture: common/detect-no-boundary-graph] [fixture:
 flowchart/header-elk-suffix]
 
 A line that holds only `%%`, or `%%{ }%%`, which is no directive, before the
@@ -37,6 +40,7 @@ and which is a comment of the diagram here, as in every diagram type (see
 [Diagram detection](../common.md#diagram-detection)). mermaid.js rejects the
 input, because its flowchart lexer reads the `%%` as an id before the header:
 the known divergence [`bare-percent-line-before-header`](#known-divergences).
+
 [fixture: flowchart/header-after-bare-percent-line] [fixture:
 flowchart/header-after-empty-braces-line]
 
@@ -46,6 +50,7 @@ The lexer reads the [diagram text](../common.md#reading-a-source) in
 [converted form](../common.md#reading-a-source): each line terminator as `\n`,
 each attribute quote as `'`, each entity as its placeholder, and through comment
 regions and the `;` that the line rule ignores as if they were not there.
+
 [fixture: flowchart/lex-acc-descr-block-line-separator-then-comment-line]
 [fixture: flowchart/lex-acc-descr-line-separator-then-comment-line] [fixture:
 flowchart/lex-acc-title-line-separator-then-comment-line] [fixture:
@@ -87,15 +92,20 @@ flowchart/lex-acc-descr-block-line-separator-comment-line-line-rule-after]
 [fixture:
 flowchart/lex-acc-descr-block-line-separator-comment-line-bare-percent]
 [fixture:
-flowchart/lex-acc-descr-block-line-separator-comment-line-percent-brace] The
-`\n` that the lexer reads after the last character
+flowchart/lex-acc-descr-block-line-separator-comment-line-percent-brace]
+
+The `\n` that the lexer reads after the last character
 ([End of text](../common.md#end-of-text)) is part of the diagram text: the rules
 read it, and check conditions on it, like any other line feed, and `end-of-text`
 in the grammar is the position after it. So `flowchart` alone, without a line
 break, is accepted: the header context reads the added `\n` as the end of the
-header. [fixture: flowchart/header-only-no-line-break] [fixture:
-flowchart/header-direction-trailing-space] This section describes the diagram's
-own unit rules, item 4 of [Reading a source](../common.md#reading-a-source).
+header.
+
+[fixture: flowchart/header-only-no-line-break] [fixture:
+flowchart/header-direction-trailing-space]
+
+This section describes the diagram's own unit rules, item 4 of
+[Reading a source](../common.md#reading-a-source).
 
 ### Units and contexts
 
@@ -149,7 +159,9 @@ unit and its `}`, and a `direction-text` unit. The **string units** are the
 an `id-list-part`, and of a `name` are each one name, and the two `(` or `{`
 that open a circle or a hexagon, and the two `)` or `}` that close it, are each
 one delimiter: a directive between two of these units lies inside the name or
-the delimiter. [fixture: flowchart/div-directive-in-class-id-list] [fixture:
+the delimiter.
+
+[fixture: flowchart/div-directive-in-class-id-list] [fixture:
 flowchart/div-directive-in-class-def-id-list] [fixture:
 flowchart/div-directive-in-edge-id] [fixture:
 flowchart/div-directive-in-interpolate-name] [fixture:
@@ -159,13 +171,20 @@ flowchart/div-directive-in-circle-opening]
 
 - A directive in whitespace that a unit reads at its start or its end changes
   nothing: in `A --> %%{init: {}}%% B`, the directive lies in the whitespace of
-  the arrow unit. [fixture: flowchart/lex-directive-after-arrow]
+  the arrow unit.
+
+  [fixture: flowchart/lex-directive-after-arrow]
+
 - `A-->en%%{init: {}}%%d` is rejected, as in mermaid.js: the lexer reads the
-  keyword `end`. [fixture: flowchart/lex-directive-joins-keyword]
+  keyword `end`.
+
+  [fixture: flowchart/lex-directive-joins-keyword]
+
 - The title of `accTitle: a %%{init: {}}%% b` is `a`, two spaces, and `b`, and
   the subgraph `subgraph sty%%{init: {}}%%le x` has the title `style x`, both as
-  in mermaid.js: the directive lies inside a text unit. [fixture:
-  flowchart/lex-directive-in-title] [fixture:
+  in mermaid.js: the directive lies inside a text unit.
+
+  [fixture: flowchart/lex-directive-in-title] [fixture:
   flowchart/lex-directive-in-description-block] [fixture:
   flowchart/lex-directive-in-callback-name] [fixture:
   flowchart/lex-directive-in-callback-arguments] [fixture:
@@ -177,31 +196,40 @@ flowchart/div-directive-in-circle-opening]
   flowchart/lex-directive-in-style-text] [fixture:
   flowchart/lex-directive-in-acc-descr-text] [fixture:
   flowchart/lex-directive-in-data-text]
+
 - A directive inside a string or a markdown string keeps the reading of
   mermaid.js, wherever it lies inside the unit: the labels of
   `A["a%%{init: {}}%%b"]`, `A["%%{init: {}}%%b"]`, `A["a%%{init: {}}%%"]`, and
   ``A["`a %%{init: {}}%% b`"]`` are `ab`, `b`, `a`, and `a`, two spaces, and
   `b`, and a directive between a quote and a backquote of a markdown string lies
-  inside the string. [fixture: flowchart/lex-directive-in-string-glued]
-  [fixture: flowchart/lex-directive-in-string-after-open-quote] [fixture:
+  inside the string.
+
+  [fixture: flowchart/lex-directive-in-string-glued] [fixture:
+  flowchart/lex-directive-in-string-after-open-quote] [fixture:
   flowchart/lex-directive-in-string-before-close-quote] [fixture:
   flowchart/lex-directive-in-markdown-string] [fixture:
   flowchart/lex-directive-in-markdown-string-glued] [fixture:
   flowchart/lex-directive-before-markdown-backquote] [fixture:
-  flowchart/lex-directive-after-markdown-backquote] So it is with a directive
-  between two spaces, two directives one after the other, a directive on a line
-  of its own inside a string, and the strings of an edge label, a link text, a
-  subgraph title, and a click statement. [fixture:
-  flowchart/lex-directive-in-string-between-spaces] [fixture:
+  flowchart/lex-directive-after-markdown-backquote]
+
+  So it is with a directive between two spaces, two directives one after the
+  other, a directive on a line of its own inside a string, and the strings of an
+  edge label, a link text, a subgraph title, and a click statement.
+
+  [fixture: flowchart/lex-directive-in-string-between-spaces] [fixture:
   flowchart/lex-directives-in-string-adjacent] [fixture:
   flowchart/lex-directive-in-string-own-line] [fixture:
   flowchart/lex-directive-in-edge-label-string] [fixture:
   flowchart/lex-directive-in-link-text-string] [fixture:
   flowchart/lex-directive-in-subgraph-title-string] [fixture:
   flowchart/lex-directive-in-click-href-string] [fixture:
-  flowchart/lex-directive-in-click-tooltip-string] A string with only a
-  directive is read as the empty string: `A["%%{init: {}}%%"]` is rejected, as
-  `A[""]` is. [fixture: flowchart/lex-directive-in-string-only]
+  flowchart/lex-directive-in-click-tooltip-string]
+
+  A string with only a directive is read as the empty string:
+  `A["%%{init: {}}%%"]` is rejected, as `A[""]` is.
+
+  [fixture: flowchart/lex-directive-in-string-only]
+
 - In `A--%%{init: {}}%%>B`, the directive lies inside the arrow unit `-->`,
   which is not a text unit or a string unit, and the input is rejected, while
   mermaid.js accepts it. So it is with the other arrows, as in
@@ -211,8 +239,9 @@ flowchart/div-directive-in-circle-opening]
   `styleA`, and `AB`, with keywords such as the `href` of
   `click A hr%%{init: {}}%%ef "u"`, and with delimiters such as `:::` and the
   two `(` that open a circle, as in `A(%%{init: {}}%%(x))`, which mermaid.js
-  reads as a circle (see [Known divergences](#known-divergences)). [fixture:
-  flowchart/div-directive-inside-arrow] [fixture:
+  reads as a circle (see [Known divergences](#known-divergences)).
+
+  [fixture: flowchart/div-directive-inside-arrow] [fixture:
   flowchart/div-directive-in-arrow-length] [fixture:
   flowchart/div-directive-in-arrow-dotted] [fixture:
   flowchart/div-directive-in-id] [fixture:
@@ -224,37 +253,49 @@ flowchart/div-directive-in-circle-opening]
   flowchart/div-directive-in-circle-closing] [fixture:
   flowchart/div-directive-in-hexagon-opening] [fixture:
   flowchart/div-directive-in-hexagon-closing]
+
 - A directive between two units is allowed whatever their kind, unless they are
   one name or one delimiter together: `accTitle%%{init: {}}%%: t` has the title
-  `t`, as in mermaid.js. [fixture:
-  flowchart/lex-directive-between-acctitle-colon]
+  `t`, as in mermaid.js.
+
+  [fixture: flowchart/lex-directive-between-acctitle-colon]
 
 ### Whitespace after `}`
 
 When a `}` is followed by whitespace that contains a line feed, the lexer reads
 that whitespace, up to and including its last line feed, as one line feed.
-[fixture: flowchart/lex-brace-data-trailing-space] The whitespace is that of the
-diagram text, so comment regions and directives inside it are left out.
-[fixture: flowchart/lex-brace-data-trailing-directive] mermaid.js makes this
-replacement in
+
+[fixture: flowchart/lex-brace-data-trailing-space]
+
+The whitespace is that of the diagram text, so comment regions and directives
+inside it are left out.
+
+[fixture: flowchart/lex-brace-data-trailing-directive]
+
+mermaid.js makes this replacement in
 [`flowParser.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser/flowParser.ts#L6-L10)
 before its grammar reads the text.
 
 So a directive in that whitespace gives the result of mermaid.js: in `A-- a}`,
 two spaces, a directive, two spaces, a line break, and ` b -->B`, mermaid.js
 reads the link text `a}`, a line break, and ` b`, and `click A call f(a}`, two
-spaces, a directive, two spaces, a line break, and ` b)` is accepted. [fixture:
-flowchart/lex-brace-link-text-directive] [fixture:
+spaces, a directive, two spaces, a line break, and ` b)` is accepted.
+
+[fixture: flowchart/lex-brace-link-text-directive] [fixture:
 flowchart/lex-brace-callback-arguments-directive]
 
 The replacement changes what mermaid.js reads in a string that contains such a
 `}`: in `A["a}`, two spaces, a line break, and `  b"]`, mermaid.js reads the
 label `a}`, a line break, and `  b`, while the value of the label in the tree is
 its written text, `a}`, two spaces, a line break, and `  b` (see
-[Nodes](../ast.md#nodes)). [fixture: flowchart/lex-brace-string] mermaid.js
-reads the same label when an empty line or a comment line lies in that
-whitespace, because the replacement reaches the last line feed. [fixture:
-flowchart/lex-brace-string-empty-line] [fixture:
+[Nodes](../ast.md#nodes)).
+
+[fixture: flowchart/lex-brace-string]
+
+mermaid.js reads the same label when an empty line or a comment line lies in
+that whitespace, because the replacement reaches the last line feed.
+
+[fixture: flowchart/lex-brace-string-empty-line] [fixture:
 flowchart/lex-brace-string-comment-line]
 
 ### The statement context
@@ -263,54 +304,86 @@ At each position in the statement context, the lexer applies the first of these
 rules that matches:
 
 1. `accTitle`, zero or more whitespace, `:`, and zero or more whitespace: an
-   `accTitle` unit and a `:` unit; enters the title context. [fixture:
-   flowchart/db-acc-title-alone] [fixture:
+   `accTitle` unit and a `:` unit; enters the title context.
+
+   [fixture: flowchart/db-acc-title-alone] [fixture:
    flowchart/lex-acc-title-line-feed-before-colon] [fixture:
    flowchart/lex-acc-title-space-before-colon] [fixture:
    flowchart/lex-acc-title-no-whitespace]
+
 2. `accDescr`, zero or more whitespace, `:`, and zero or more whitespace: an
-   `accDescr` unit and a `:` unit; enters the description context. [fixture:
-   flowchart/db-acc-descr-line-alone] [fixture:
+   `accDescr` unit and a `:` unit; enters the description context.
+
+   [fixture: flowchart/db-acc-descr-line-alone] [fixture:
    flowchart/lex-acc-descr-line-feed-before-colon] [fixture:
    flowchart/lex-acc-descr-space-before-colon] [fixture:
    flowchart/lex-acc-descr-no-whitespace]
+
 3. `accDescr`, zero or more whitespace, `{`, and zero or more whitespace: an
    `accDescr` unit and a `{` unit; enters the description block context.
+
    [fixture: flowchart/db-acc-descr-empty-block-alone] [fixture:
    flowchart/lex-acc-descr-block-unclosed] [fixture:
    flowchart/lex-acc-descr-block-line-feed-before-brace] [fixture:
    flowchart/gram-acc-descr-block-empty-no-space]
-4. `@{`: a `data-start` unit; enters the data context. [fixture:
-   flowchart/gram-data-shape-known]
+
+4. `@{`: a `data-start` unit; enters the data context.
+
+   [fixture: flowchart/gram-data-shape-known]
+
 5. `call` and one or more whitespace: a `call` unit; enters the callback name
-   context. [fixture: flowchart/gram-click-call]
-6. `"`: a string (see [Strings](#strings)), which is one unit. [fixture:
-   flowchart/db-subgraph-quoted-name]
+   context.
+
+   [fixture: flowchart/gram-click-call]
+
+6. `"`: a string (see [Strings](#strings)), which is one unit.
+
+   [fixture: flowchart/db-subgraph-quoted-name]
+
 7. `style`, `default`, `linkStyle`, `interpolate`, `classDef`, or `class`, not
    followed by a word character: a unit named by its text. `classDef` is tried
-   before `class`. [fixture: flowchart/gram-style-semicolon-ends-statement]
-   [fixture: flowchart/db-linkstyle-default-no-fill] [fixture:
+   before `class`.
+
+   [fixture: flowchart/gram-style-semicolon-ends-statement] [fixture:
+   flowchart/db-linkstyle-default-no-fill] [fixture:
    flowchart/db-linkstyle-interpolate-only] [fixture:
    flowchart/db-classdef-names-trailing-comma] [fixture:
    flowchart/gram-class-name-comma] [fixture:
    flowchart/lex-keyword-prefix-of-id]
-8. `href` and one whitespace character: an `href` unit. [fixture:
-   flowchart/gram-click-href]
+
+8. `href` and one whitespace character: an `href` unit.
+
+   [fixture: flowchart/gram-click-href]
+
 9. `click` and one or more whitespace: a `click` unit; enters the click context.
+
    [fixture: flowchart/gram-click-two-ids-one-click]
+
 10. `flowchart-elk`, `swimlane-beta`, `graph`, or `flowchart`, tried in this
     order, not followed by a word character: a `header-keyword` unit. The first
-    header keyword in the text also enters the header context. [fixture:
-    flowchart/header-elk-suffix] [fixture:
+    header keyword in the text also enters the header context.
+
+    [fixture: flowchart/header-elk-suffix] [fixture:
     flowchart/lex-header-keyword-as-vertex]
-11. `subgraph`, not followed by a word character: a `subgraph` unit. [fixture:
-    flowchart/gram-subgraph-title-space-before]
+
+11. `subgraph`, not followed by a word character: a `subgraph` unit.
+
+    [fixture: flowchart/gram-subgraph-title-space-before]
+
 12. `end`, not followed by a word character, and all whitespace after it, line
-    feeds included: an `end` unit. [fixture: flowchart/gram-subgraph-name-end]
+    feeds included: an `end` unit.
+
+    [fixture: flowchart/gram-subgraph-name-end]
+
 13. `_self`, `_blank`, `_parent`, or `_top`, not followed by a word character: a
-    `link-target` unit. [fixture: flowchart/gram-click-url-target]
-14. A direction line (see below). [fixture:
-    flowchart/lex-direction-line-swallows-edge]
+    `link-target` unit.
+
+    [fixture: flowchart/gram-click-url-target]
+
+14. A direction line (see below).
+
+    [fixture: flowchart/lex-direction-line-swallows-edge]
+
 15. An edge id: one or more characters that are not whitespace and none of `"`,
     `[`, `]`, `(`, `)`, `{`, `}`, and `|`, and then an `@` that is followed by a
     character other than `{` and `"`. The run ends at the last such `@` before
@@ -321,9 +394,10 @@ rules that matches:
     edge id either and is rejected, because the run stops at `[` with no `@` in
     it; the same holds for the other characters that a run may not hold. In
     `A e1@x[y@-->B` the run stops at `[` too, so its last `@` is the one after
-    `e1`, and the input is rejected. [fixture: flowchart/lex-edge-id-at-start]
-    [fixture: flowchart/gram-edge-id] [fixture:
-    flowchart/lex-edge-id-open-square] [fixture:
+    `e1`, and the input is rejected.
+
+    [fixture: flowchart/lex-edge-id-at-start] [fixture: flowchart/gram-edge-id]
+    [fixture: flowchart/lex-edge-id-open-square] [fixture:
     flowchart/lex-edge-id-close-square] [fixture:
     flowchart/lex-edge-id-open-paren] [fixture:
     flowchart/lex-edge-id-close-paren] [fixture:
@@ -331,87 +405,135 @@ rules that matches:
     flowchart/lex-edge-id-close-brace] [fixture: flowchart/lex-edge-id-pipe]
     [fixture: flowchart/lex-edge-id-last-at-before-bracket] [fixture:
     flowchart/lex-edge-id-at-after-shape]
-16. One or more ASCII digits: a `number` unit. [fixture:
-    flowchart/lex-number-vertices]
+
+16. One or more ASCII digits: a `number` unit.
+
+    [fixture: flowchart/lex-number-vertices]
+
 17. `#`, `:::`, `:`, `&`, `;`, `,`, or `*`: a unit named by its text. `:::` is
-    tried before `:`. [fixture: flowchart/gram-vertex-id-comma] [fixture:
+    tried before `:`.
+
+    [fixture: flowchart/gram-vertex-id-comma] [fixture:
     flowchart/gram-group-two-vertices] [fixture:
     flowchart/db-subgraph-member-empty-statement] [fixture:
     flowchart/gram-class-after-shape]
+
 18. An arrow (see [Arrows](#arrows)): an `arrow` unit, or an `opening-arrow`
-    unit, which enters the link text context of its kind. [fixture:
-    flowchart/db-arrow-single-forms] [fixture:
+    unit, which enters the link text context of its kind.
+
+    [fixture: flowchart/db-arrow-single-forms] [fixture:
     flowchart/lex-link-text-head-letter]
+
 19. `(-`, which enters the ellipse context; `([`, `[[`, `>`, `[(`, or `(((`,
     which enter the label context; `[|`; `[/` or `[\`, which enter the slanted
     context; `^`. Each is a unit named by its text, tried in this order. Then
     `\|` (a backslash and a vertical bar): rejected; without this rule, rule 21
-    would read the backslash. [fixture: flowchart/lex-ellipse-label] [fixture:
+    would read the backslash.
+
+    [fixture: flowchart/lex-ellipse-label] [fixture:
     flowchart/lex-lean-right-label] [fixture: flowchart/gram-rect-property]
     [fixture: flowchart/db-bracket-shape-types] [fixture:
     flowchart/lex-backslash-bar-rejected]
-20. `v`, not followed by a word character: a `v` unit. [fixture:
-    flowchart/gram-vertex-id-v]
+
+20. `v`, not followed by a word character: a `v` unit.
+
+    [fixture: flowchart/gram-vertex-id-v]
+
 21. An id run: one or more characters, as many as possible, each of which is an
     ASCII letter or digit, one of `!` `"` `#` `$` `%` `&` `'` `*` `+` `.`
     `` ` `` `?` `\` `_` `/`, or a `-` followed by a character other than `>`,
-    `-`, and `.`. An `id-run` unit. [fixture:
-    flowchart/lex-keyword-inside-id-run]
-22. `-`: a `-` unit. [fixture: flowchart/lex-minus-then-tag]
+    `-`, and `.`. An `id-run` unit.
+
+    [fixture: flowchart/lex-keyword-inside-id-run]
+
+22. `-`: a `-` unit.
+
+    [fixture: flowchart/lex-minus-then-tag]
+
 23. A Unicode letter (see [Unicode letters](#unicode-letters)): a `letter` unit
-    of one character. [fixture: flowchart/lex-letter-in-id]
+    of one character.
+
+    [fixture: flowchart/lex-letter-in-id]
+
 24. `|`, `(`, `[`, or `{`: a unit named by its text; enters the label context.
+
     [fixture: flowchart/gram-pipe-label-space-after] [fixture:
     flowchart/gram-label-space]
-25. One or more line feeds: a `newline` unit. [fixture:
-    flowchart/lex-arrow-line-break-after]
+
+25. One or more line feeds: a `newline` unit.
+
+    [fixture: flowchart/lex-arrow-line-break-after]
+
 26. One or more whitespace characters other than line feeds: a `space` unit.
+
     [fixture: flowchart/gram-group-two-vertices]
 
 Anything else is rejected, for example `=` on its own, `}`, `]`, `)`, `@` that
 no edge id or data block takes, or a character outside the Unicode letters, such
-as an emoji. [fixture: flowchart/lex-non-bmp-character-unexpected] [fixture:
+as an emoji.
+
+[fixture: flowchart/lex-non-bmp-character-unexpected] [fixture:
 flowchart/lex-edge-id-at-start] [fixture:
 flowchart/lex-label-closing-bracket-paren] [fixture: flowchart/lex-equals-alone]
 [fixture: flowchart/lex-close-brace-alone] [fixture:
-flowchart/lex-close-bracket-alone] Some consequences of the order:
+flowchart/lex-close-bracket-alone]
+
+Some consequences of the order:
 
 - A keyword is a keyword wherever a unit starts, also inside what looks like an
   id: in `A-->1end`, the `1` is a number and `end` is the keyword, so the input
   is rejected. Inside an id run, a keyword is just characters: `A-->xend` has
-  the vertex `xend`. [fixture: flowchart/lex-keyword-after-number] [fixture:
+  the vertex `xend`.
+
+  [fixture: flowchart/lex-keyword-after-number] [fixture:
   flowchart/lex-keyword-inside-id-run]
+
 - `"` starts a string only where a unit starts; inside an id run it is an id
   character: `A"x"-->B` has the vertex `A"x"`. An empty string `""` is an
   `empty-string` unit, which no rule of the grammar takes (see
   [Strings](#strings)), so `A ""` and `A@{ shape: rect } "" ;B` are rejected,
   while mermaid.js accepts the first as the vertex `A` and the second as the
-  vertices `A` and `B`. [fixture: flowchart/lex-quote-in-id] [fixture:
-  flowchart/lex-empty-string] [fixture:
-  flowchart/gram-data-space-empty-string-semicolon]
+  vertices `A` and `B`.
+
+  [fixture: flowchart/lex-quote-in-id] [fixture: flowchart/lex-empty-string]
+  [fixture: flowchart/gram-data-space-empty-string-semicolon]
+
 - `&` starts its own unit only where a unit starts: `A&B` is the one vertex
-  `A&B`, while `A & B` is two vertices. [fixture: flowchart/lex-ampersand-in-id]
-  [fixture: flowchart/gram-group-two-vertices]
+  `A&B`, while `A & B` is two vertices.
+
+  [fixture: flowchart/lex-ampersand-in-id] [fixture:
+  flowchart/gram-group-two-vertices]
+
 - An `x` or `o` at the start of a unit, before `--`, is the head of an arrow: in
   `A-->x-->B` the lexer reads the two arrows `-->` and `x-->`, and the input is
-  rejected. [fixture: flowchart/lex-arrow-head-x]
+  rejected.
+
+  [fixture: flowchart/lex-arrow-head-x]
+
 - `-` followed by `>` is not an arrow and not part of an id run: `A->B]` is the
-  vertex `A-` with the shape `>B]` (see [Shapes](#shapes)). [fixture:
-  flowchart/lex-minus-then-tag]
+  vertex `A-` with the shape `>B]` (see [Shapes](#shapes)).
+
+  [fixture: flowchart/lex-minus-then-tag]
+
 - `accTitle` and `accDescr` are keywords only with the `:` that rules 1 and 2
   read after them, past whitespace, line feeds included: `accTitle ; :` is the
   vertices `accTitle` and `:`, while `accTitle`, a line break, and `:` is an
   accessibility statement with an empty title and no vertex, and so for
-  `accDescr`. [fixture: flowchart/lex-acc-title-semicolon-before-colon]
-  [fixture: flowchart/lex-acc-title-line-feed-before-colon] [fixture:
+  `accDescr`.
+
+  [fixture: flowchart/lex-acc-title-semicolon-before-colon] [fixture:
+  flowchart/lex-acc-title-line-feed-before-colon] [fixture:
   flowchart/lex-acc-descr-semicolon-before-colon] [fixture:
   flowchart/lex-acc-descr-line-feed-before-colon]
+
 - `click`, `call`, and `href` are keywords only with whitespace after them
   (rules 9, 5, and 8), and a line feed is whitespace: `A-->click;B`,
   `A-->call;B`, and `A-->href;B` are links to the vertices `click`, `call`, and
   `href`, followed by the vertex `B`, while with a line break in place of the
   `;` the input is rejected. `click;A`, `call;A`, `href;A`, and `A;click;B` are
-  vertices. [fixture: flowchart/lex-click-keyword-semicolon] [fixture:
+  vertices.
+
+  [fixture: flowchart/lex-click-keyword-semicolon] [fixture:
   flowchart/lex-call-keyword-semicolon] [fixture:
   flowchart/lex-href-keyword-semicolon] [fixture:
   flowchart/lex-click-keyword-line-feed] [fixture:
@@ -421,53 +543,65 @@ flowchart/lex-close-bracket-alone] Some consequences of the order:
   flowchart/lex-call-keyword-semicolon-statement] [fixture:
   flowchart/lex-href-keyword-semicolon-statement] [fixture:
   flowchart/lex-click-keyword-between-semicolons]
+
 - The units that open a shape, such as `[/` and `(-`, have no whitespace inside,
   so a space after `[` or `(` changes the shape: `A[ /x/]` is a rectangle with
   the label `/x/` and `A[/x/]` a `lean-right` shape with the label `x`;
   `A( -x-)` is a rounded shape with the label `-x-` and `A(-x-)` an ellipse;
   `A(( -x))` is a circle with the label `-x`, while in `A((-x))` the `(-` after
-  `(` starts an ellipse, and the input is rejected. [fixture:
-  flowchart/lex-square-label-space-slash] [fixture:
+  `(` starts an ellipse, and the input is rejected.
+
+  [fixture: flowchart/lex-square-label-space-slash] [fixture:
   flowchart/lex-lean-right-label] [fixture:
   flowchart/lex-round-label-space-dash] [fixture: flowchart/lex-ellipse-label]
   [fixture: flowchart/lex-circle-label-space-dash] [fixture:
   flowchart/lex-circle-dash-ellipse]
+
 - An `@` in a label that `[`, `(`, or `{` opens and in a link text between `|`
   is no edge id, because the run of rule 15 stops at those characters: `A[x@]`,
   `A[ x@ ]`, `A[x@%%{init: {}}%%]`, `A(x@)`, and `A{x@}` have the label `x@`,
   `A[x@y]` has the label `x@y`, `A-->|x@|B` and `A-->| x@ |B` have the link text
-  `x@`, and `A-->|a@b|B` has the link text `a@b`. [fixture:
-  flowchart/lex-edge-id-in-label] [fixture: flowchart/lex-edge-id-space-label]
-  [fixture: flowchart/lex-edge-id-in-label-before-directive] [fixture:
+  `x@`, and `A-->|a@b|B` has the link text `a@b`.
+
+  [fixture: flowchart/lex-edge-id-in-label] [fixture:
+  flowchart/lex-edge-id-space-label] [fixture:
+  flowchart/lex-edge-id-in-label-before-directive] [fixture:
   flowchart/lex-edge-id-in-round-label] [fixture:
   flowchart/lex-edge-id-in-diamond-label] [fixture:
   flowchart/lex-edge-id-inside-label] [fixture:
   flowchart/lex-edge-id-in-pipe-label] [fixture:
   flowchart/lex-edge-id-space-pipe-label] [fixture:
-  flowchart/lex-edge-id-inside-pipe-label] An ignored `;`, an empty line, a
-  comment line, or U+2028 in the label changes nothing of this: `A[style:#x;x@]`
-  has the label `style:#xx@`. `A[x@accDescr {}]` is rejected, because the `@` is
-  in the label, and the grammar takes no `{` there. [fixture:
-  flowchart/lex-edge-id-in-label-ignored-semicolon] [fixture:
+  flowchart/lex-edge-id-inside-pipe-label]
+
+  An ignored `;`, an empty line, a comment line, or U+2028 in the label changes
+  nothing of this: `A[style:#x;x@]` has the label `style:#xx@`.
+  `A[x@accDescr {}]` is rejected, because the `@` is in the label, and the
+  grammar takes no `{` there.
+
+  [fixture: flowchart/lex-edge-id-in-label-ignored-semicolon] [fixture:
   flowchart/lex-edge-id-in-label-before-comment-line] [fixture:
   flowchart/lex-edge-id-in-label-before-empty-line] [fixture:
   flowchart/lex-edge-id-in-label-before-line-separator] [fixture:
   flowchart/lex-edge-id-in-label-before-empty-description-block]
+
 - Other characters that open a label or a link text do not stop the run:
   `A>x@]`, `A--a@-->B`, `A==a@==>B`, and `A-.a@.->B` read `A>x`, `A--a`, `A==a`,
   and `A-.a` as edge ids and are rejected. A space before the `@` stops it:
-  `A> x@]` has the label `x@` and `A -- x@ --> B` the link text `x@`. [fixture:
-  flowchart/lex-edge-id-in-odd-label] [fixture:
+  `A> x@]` has the label `x@` and `A -- x@ --> B` the link text `x@`.
+
+  [fixture: flowchart/lex-edge-id-in-odd-label] [fixture:
   flowchart/lex-edge-id-odd-label-space] [fixture:
   flowchart/lex-edge-id-in-link-text] [fixture:
   flowchart/lex-edge-id-in-thick-link-text] [fixture:
   flowchart/lex-edge-id-in-dotted-link-text] [fixture:
   flowchart/lex-edge-id-space-link-text]
+
 - An edge id may follow a shape without whitespace, because the run starts after
   the `]`, `)`, or `}` that closes the shape: `A[x]e1@-->B`, `A(x)e1@-->B`, and
   `A{x}e1@-->B` have the edge id `e1`, and so do `A[x]%%{init: {}}%%e1@-->B` and
-  `A[style:#x];e1@-->B`, while `A[x]--a@-->B` has the edge id `--a`. [fixture:
-  flowchart/lex-edge-id-after-square-shape] [fixture:
+  `A[style:#x];e1@-->B`, while `A[x]--a@-->B` has the edge id `--a`.
+
+  [fixture: flowchart/lex-edge-id-after-square-shape] [fixture:
   flowchart/lex-edge-id-after-round-shape] [fixture:
   flowchart/lex-edge-id-after-diamond-shape] [fixture:
   flowchart/lex-edge-id-after-shape-directive] [fixture:
@@ -490,71 +624,98 @@ The values are tried in the order given: if the line has `direction` followed by
 value, the lexer takes the last `direction` of the run that it follows, and the
 unit ends at the end of the line on which the value stands. So
 `direction TB x direction TB` is read at its last `direction`, and
-`direction TB x` is a `direction-text` unit. [fixture:
-flowchart/lex-direction-line-same-value-twice] [fixture:
+`direction TB x` is a `direction-text` unit.
+
+[fixture: flowchart/lex-direction-line-same-value-twice] [fixture:
 flowchart/lex-direction-line-after-line-separator] [fixture:
-flowchart/lex-direction-line-after-paragraph-separator] Because rules 1 to 13
-are tried first, a direction line starts at the first position of a line where
-none of them applies, and it takes the rest of the line:
+flowchart/lex-direction-line-after-paragraph-separator]
+
+Because rules 1 to 13 are tried first, a direction line starts at the first
+position of a line where none of them applies, and it takes the rest of the
+line:
 
 - `A-->B direction TB` is a direction line, and the vertices and the link are
-  not read at all; `A[direction TB]` is one as well. [fixture:
-  flowchart/lex-direction-line-swallows-edge] [fixture:
-  flowchart/lex-direction-line-in-label] A `;` before `direction` changes
-  nothing: in a subgraph, `A-->B; direction TB` is one direction line, which
-  gives the subgraph the direction `TB` and leaves it without members, while
-  with `direction TB` on a line of its own, A links to B and the subgraph has
-  the members B and A. [fixture: flowchart/lex-direction-line-after-semicolon]
-  [fixture: flowchart/lex-direction-line-own-line-after-link]
+  not read at all; `A[direction TB]` is one as well.
+
+  [fixture: flowchart/lex-direction-line-swallows-edge] [fixture:
+  flowchart/lex-direction-line-in-label]
+
+  A `;` before `direction` changes nothing: in a subgraph, `A-->B; direction TB`
+  is one direction line, which gives the subgraph the direction `TB` and leaves
+  it without members, while with `direction TB` on a line of its own, A links to
+  B and the subgraph has the members B and A.
+
+  [fixture: flowchart/lex-direction-line-after-semicolon] [fixture:
+  flowchart/lex-direction-line-own-line-after-link]
+
 - `end direction TB` is the `end` keyword followed by a direction line, and
   `style A direction TB` is the `style` keyword followed by a direction line,
-  which the grammar rejects. [fixture: flowchart/lex-direction-line-after-end]
-  [fixture: flowchart/lex-direction-line-after-style]
+  which the grammar rejects.
+
+  [fixture: flowchart/lex-direction-line-after-end] [fixture:
+  flowchart/lex-direction-line-after-style]
+
 - `A-->B %%{init: {}}%% direction TB` is a direction line, as in mermaid.js;
   `A-->B direction%%{init: {}}%%TB` is not, because the text is `directionTB`,
-  and it is rejected, as in mermaid.js. [fixture:
-  flowchart/lex-direction-line-directive-between] [fixture:
+  and it is rejected, as in mermaid.js.
+
+  [fixture: flowchart/lex-direction-line-directive-between] [fixture:
   flowchart/lex-direction-line-directive-glued]
+
 - `direction`, a line break, and `TB` is a direction line: the whitespace may
-  contain line feeds. [fixture: flowchart/lex-direction-line-value-next-line]
+  contain line feeds.
+
+  [fixture: flowchart/lex-direction-line-value-next-line]
+
 - Indentation alone decides some lines: `accTitle: t;direction TB` at the start
   of a line has the title `t;direction TB`, because the `accTitle` rule applies
   at its first position, while the same line after spaces or a tab is a
   direction line, because no rule before it applies at the first whitespace
   character, and it has no title. In a subgraph, `accDescr: d ; direction LR` at
   the start of a line is a description and gives the subgraph no direction, and
-  indented it gives the subgraph the direction `LR`. [fixture:
-  flowchart/lex-direction-line-acc-title-column-zero] [fixture:
+  indented it gives the subgraph the direction `LR`.
+
+  [fixture: flowchart/lex-direction-line-acc-title-column-zero] [fixture:
   flowchart/lex-direction-line-acc-title-indented] [fixture:
   flowchart/lex-direction-line-acc-title-tab-indented] [fixture:
   flowchart/lex-direction-line-acc-descr-subgraph-column-zero] [fixture:
-  flowchart/lex-direction-line-acc-descr-subgraph-indented] So does
-  `end; direction TB` after `subgraph a`: at the start of a line, the `end` rule
-  applies first and closes the subgraph, and the rest is a direction line, while
-  indented the whole line is a direction line, `end` is not read, and the
-  subgraph is left open, which is rejected. [fixture:
-  flowchart/lex-direction-line-after-end-semicolon-column-zero] [fixture:
-  flowchart/lex-direction-line-after-end-semicolon-indented]
+  flowchart/lex-direction-line-acc-descr-subgraph-indented]
+
+  So does `end; direction TB` after `subgraph a`: at the start of a line, the
+  `end` rule applies first and closes the subgraph, and the rest is a direction
+  line, while indented the whole line is a direction line, `end` is not read,
+  and the subgraph is left open, which is rejected.
+
+  [fixture: flowchart/lex-direction-line-after-end-semicolon-column-zero]
+  [fixture: flowchart/lex-direction-line-after-end-semicolon-indented]
+
 - A `;` is not whitespace: `direction ; TB` is no direction line but the
   vertices `direction` and `TB`, and `A-->direction; TB` is a link to the vertex
   `direction` and the vertex `TB`, while `direction`, a line break, and `TB` is
-  a direction line, which changes nothing outside a subgraph. [fixture:
-  flowchart/lex-direction-line-semicolon-before-value] [fixture:
+  a direction line, which changes nothing outside a subgraph.
+
+  [fixture: flowchart/lex-direction-line-semicolon-before-value] [fixture:
   flowchart/lex-direction-line-link-target-semicolon] [fixture:
   flowchart/lex-direction-line-top-level-next-line]
+
 - The line goes on after the value: in a subgraph, `direction TB; A-->B` gives
   the subgraph the direction `TB` and reads no link, and in
   `direction TB %% vertical` the `%%`, which follows text on its line, is no
   comment but part of the text after the value, while the link on the next line
   is read. A string does not keep the rule out: `A["Set direction LR"]-->B` is a
   direction line, as `A[Set direction LR]-->B` is, and neither has vertices or
-  edges. [fixture: flowchart/lex-direction-line-then-semicolon-statement]
-  [fixture: flowchart/lex-direction-line-percent-after-value] [fixture:
+  edges.
+
+  [fixture: flowchart/lex-direction-line-then-semicolon-statement] [fixture:
+  flowchart/lex-direction-line-percent-after-value] [fixture:
   flowchart/lex-direction-line-in-string-label] [fixture:
-  flowchart/lex-direction-line-in-label-with-link] In the text after the value,
-  a comment after a U+2028 or U+2029 is read through, and the text goes on after
-  it (see [Comment lines](../common.md#comment-lines)). [fixture:
-  flowchart/tokens-ignored-text-comment-in-direction-line] [fixture:
+  flowchart/lex-direction-line-in-label-with-link]
+
+  In the text after the value, a comment after a U+2028 or U+2029 is read
+  through, and the text goes on after it (see
+  [Comment lines](../common.md#comment-lines)).
+
+  [fixture: flowchart/tokens-ignored-text-comment-in-direction-line] [fixture:
   flowchart/lex-direction-text-line-separator-comment-line-directive-next]
   [fixture: flowchart/lex-direction-text-line-separator-comment-line-space-next]
   [fixture:
@@ -581,11 +742,13 @@ none of them applies, and it takes the rest of the line:
   [fixture:
   flowchart/lex-direction-text-line-separator-comment-line-bare-percent]
   [fixture:
-  flowchart/lex-direction-text-line-separator-comment-line-percent-brace] In a
-  subgraph, `direction TB;` has the text `;` after the value, and
+  flowchart/lex-direction-text-line-separator-comment-line-percent-brace]
+
+  In a subgraph, `direction TB;` has the text `;` after the value, and
   `direction TB; -->B` the text `; -->B`, so no link is read, while with `-->B`
-  on the next line the link has no source and the input is rejected. [fixture:
-  flowchart/lex-direction-line-semicolon-after-value] [fixture:
+  on the next line the link has no source and the input is rejected.
+
+  [fixture: flowchart/lex-direction-line-semicolon-after-value] [fixture:
   flowchart/lex-direction-line-semicolon-link-after-value] [fixture:
   flowchart/lex-direction-line-then-link-without-source]
 
@@ -602,71 +765,109 @@ order:
    `-->`, `---`, `--x`, `<-->`, `o--o`. The head is taken also when an id
    follows it without a space: `A---orders` is the arrow `---o` to the vertex
    `rders`, and `A---xray` the arrow `---x` to `ray`, while `A --- orders` links
-   to `orders`. [fixture: flowchart/lex-arrow-head-o-before-id] [fixture:
+   to `orders`.
+
+   [fixture: flowchart/lex-arrow-head-o-before-id] [fixture:
    flowchart/lex-arrow-head-x-before-id] [fixture:
    flowchart/lex-arrow-spaced-before-id-o]
-2. an **opening dash arrow**: optionally a head, then `--`. [fixture:
-   flowchart/lex-link-text-head-letter]
+
+2. an **opening dash arrow**: optionally a head, then `--`.
+
+   [fixture: flowchart/lex-link-text-head-letter]
+
 3. a **closed thick arrow**: optionally a head; then two or more `=` followed by
    `x`, `o`, or `>`, or, when no such mark follows them, three or more `=`.
+
    [fixture: flowchart/db-arrow-single-forms]
-4. an **opening thick arrow**: optionally a head, then `==`. [fixture:
-   flowchart/lex-link-text-thick]
+
+4. an **opening thick arrow**: optionally a head, then `==`.
+
+   [fixture: flowchart/lex-link-text-thick]
+
 5. a **closed dotted arrow**: optionally a head; then optionally `-`; then one
    or more `.`; then `-`; then `x`, `o`, or `>` when one follows. Examples:
-   `-.->`, `-.-`, `.-`, `-..-`. [fixture: flowchart/db-arrow-single-forms]
-6. an **opening dotted arrow**: optionally a head, then `-.`. [fixture:
-   flowchart/lex-link-text-dotted]
-7. an **invisible arrow**: three or more `~`. [fixture:
-   flowchart/db-arrow-single-forms]
+   `-.->`, `-.-`, `.-`, `-..-`.
+
+   [fixture: flowchart/db-arrow-single-forms]
+
+6. an **opening dotted arrow**: optionally a head, then `-.`.
+
+   [fixture: flowchart/lex-link-text-dotted]
+
+7. an **invisible arrow**: three or more `~`.
+
+   [fixture: flowchart/db-arrow-single-forms]
 
 A closed arrow is an `arrow` unit. An opening arrow is an `opening-arrow` unit
 and enters the dash, thick, or dotted link text context. Because the whitespace
 belongs to the arrow, `A` and `-->B` on two lines are one link, and so are
 `A-->` and `B` on two lines. In `A-->B`, a line break, and `x-->C`, the second
 line starts with the arrow `x-->`, so the link goes from `B` to `C` and there is
-no vertex `x`. [fixture: flowchart/lex-arrow-line-break-before] [fixture:
+no vertex `x`.
+
+[fixture: flowchart/lex-arrow-line-break-before] [fixture:
 flowchart/lex-arrow-line-break-after] [fixture:
 flowchart/lex-arrow-line-break-head] [fixture:
-flowchart/lex-arrow-line-break-comment] `<--` with two `-` is an opening arrow,
-so `B <-- C` is rejected, as no closing arrow follows; mermaid.js rejects it
-too, and [issue #6402](https://github.com/mermaid-js/mermaid/issues/6402), open
-and approved as of 2026-10-01 and labelled both a bug and an enhancement, asks
-for it to be read as an arrow from C to B. [fixture:
-flowchart/gram-reverse-arrow-two-dashes]
+flowchart/lex-arrow-line-break-comment]
+
+`<--` with two `-` is an opening arrow, so `B <-- C` is rejected, as no closing
+arrow follows; mermaid.js rejects it too, and
+[issue #6402](https://github.com/mermaid-js/mermaid/issues/6402), open and
+approved as of 2026-10-01 and labelled both a bug and an enhancement, asks for
+it to be read as an arrow from C to B.
+
+[fixture: flowchart/gram-reverse-arrow-two-dashes]
 
 ### The label context
 
 The label context reads the label of a vertex shape or of a pipe label
 (`|...|`). At each position:
 
-1. `"`: a string (see [Strings](#strings)). [fixture:
-   flowchart/gram-label-string-then-text]
-2. Zero or more whitespace and three or more `~`: rejected. [fixture:
-   flowchart/lex-label-tilde-start]
+1. `"`: a string (see [Strings](#strings)).
+
+   [fixture: flowchart/gram-label-string-then-text]
+
+2. Zero or more whitespace and three or more `~`: rejected.
+
+   [fixture: flowchart/lex-label-tilde-start]
+
 3. `(-`, `([`, or `(((`: rejected. Without this rule, rule 5 would read their
-   `(`. [fixture: flowchart/lex-label-ellipse-opening-rejected] [fixture:
+   `(`.
+
+   [fixture: flowchart/lex-label-ellipse-opening-rejected] [fixture:
    flowchart/lex-label-stadium-opening-rejected] [fixture:
    flowchart/lex-label-double-circle-opening-rejected]
+
 4. `])`, `]]`, `)]`, `)))`, `|`, `)`, `]`, or `}`, tried in this order: a unit
-   named by its text; leaves the context. [fixture:
-   flowchart/lex-label-closing-bracket-paren]
+   named by its text; leaves the context.
+
+   [fixture: flowchart/lex-label-closing-bracket-paren]
+
 5. `(` or `{`: a unit named by its text; enters the label context. The grammar
    accepts this only right after the `(` or `{` that opens a circle or a hexagon
-   (see [Shapes](#shapes)). [fixture: flowchart/lex-circle-label-space-dash]
+   (see [Shapes](#shapes)).
+
+   [fixture: flowchart/lex-circle-label-space-dash]
+
 6. One or more characters other than `[`, `]`, `(`, `)`, `{`, `}`, `|`, and `"`:
-   a `text-run` unit. [fixture: flowchart/gram-label-space]
+   a `text-run` unit.
+
+   [fixture: flowchart/gram-label-space]
 
 So a label ends at the first `]`, `)`, `}`, or `|` outside a string, and which
 closing unit the lexer reads depends on the character after it: `A[x])` reads
 `])`, which does not close a rectangle, and is rejected. `~~~` is text inside a
 text run, but not at its start: `A[x ~~~]` is accepted, and `A[ ~~~x]` is
-rejected. [fixture: flowchart/lex-label-closing-bracket-paren] [fixture:
+rejected.
+
+[fixture: flowchart/lex-label-closing-bracket-paren] [fixture:
 flowchart/lex-label-closing-double-bracket] [fixture:
-flowchart/lex-label-tilde-inside] [fixture: flowchart/lex-label-tilde-start] A
-`(` in the label of a rectangle is rejected, as in `A[This is a () in text]`,
+flowchart/lex-label-tilde-inside] [fixture: flowchart/lex-label-tilde-start]
+
+A `(` in the label of a rectangle is rejected, as in `A[This is a () in text]`,
 while a string may contain it:
 `A["<span style='color:rgb(51,51,51);font-size:12px'>x</span>"]` is accepted.
+
 [fixture: flowchart/spec-flow-text-aa363bda] [fixture:
 flowchart/lex-label-string-with-parenthesis]
 
@@ -675,34 +876,52 @@ flowchart/lex-label-string-with-parenthesis]
 The slanted context reads the label of the four slanted shapes. At each
 position:
 
-1. `"`: a string (see [Strings](#strings)). [fixture:
-   flowchart/lex-slanted-label-space-string]
-2. Zero or more whitespace and three or more `~`: rejected. [fixture:
-   flowchart/lex-slanted-tilde-start]
+1. `"`: a string (see [Strings](#strings)).
+
+   [fixture: flowchart/lex-slanted-label-space-string]
+
+2. Zero or more whitespace and three or more `~`: rejected.
+
+   [fixture: flowchart/lex-slanted-tilde-start]
+
 3. One of `\`, `(`, `?`, `=`, `]`, `)`, followed by `]`: a `backslash-end` unit;
-   leaves the context. [fixture: flowchart/lex-slanted-question-end] [fixture:
+   leaves the context.
+
+   [fixture: flowchart/lex-slanted-question-end] [fixture:
    flowchart/lex-slanted-paren-open-end] [fixture:
    flowchart/lex-slanted-equals-end]
-4. `/]`: a `slash-end` unit; leaves the context. [fixture:
-   flowchart/lex-lean-right-label]
+
+4. `/]`: a `slash-end` unit; leaves the context.
+
+   [fixture: flowchart/lex-lean-right-label]
+
 5. `/` or `\` not followed by `]`, or one or more characters other than `\`,
-   `[`, `]`, `(`, `)`, `{`, `}`, and `/`: a `text-run` unit. [fixture:
-   flowchart/lex-slanted-question-in-run]
+   `[`, `]`, `(`, `)`, `{`, `}`, and `/`: a `text-run` unit.
+
+   [fixture: flowchart/lex-slanted-question-in-run]
 
 Rule 5 reads a `/` or `\` as a text run of its own, so a unit can start at a `?`
 or `=`: `A[/a/?]` is a trapezoid with the label `a/`, while `A[/a?]` is
 rejected, because the text run `a?` takes the `?`. `A[/a]]` and `A[/a)]` are
-trapezoids with the label `a`. [fixture: flowchart/lex-slanted-question-end]
-[fixture: flowchart/lex-slanted-question-in-run] [fixture:
+trapezoids with the label `a`.
+
+[fixture: flowchart/lex-slanted-question-end] [fixture:
+flowchart/lex-slanted-question-in-run] [fixture:
 flowchart/lex-slanted-double-bracket-end] [fixture:
-flowchart/lex-slanted-paren-end] Rule 1 applies where a unit starts: `A[/ "x /]`
-is a `lean-right` shape with the label `"x`, because the text run that starts at
-the space takes the `"`, while `A[/"x/]` starts a string that is not closed, and
-the input is rejected. [fixture: flowchart/lex-slanted-label-space-quote]
-[fixture: flowchart/lex-slanted-label-quote] Two quotes after the space are read
-the same way, as characters of the text run: `A[/ "x"/]`, `A[/ "x" /]`, and
-`A[\ "x"\]` have the text label `"x"`, quotes included, and `A[/ "x"y/]` the
-text label `"x"y`. [fixture: flowchart/lex-slanted-label-space-string] [fixture:
+flowchart/lex-slanted-paren-end]
+
+Rule 1 applies where a unit starts: `A[/ "x /]` is a `lean-right` shape with the
+label `"x`, because the text run that starts at the space takes the `"`, while
+`A[/"x/]` starts a string that is not closed, and the input is rejected.
+
+[fixture: flowchart/lex-slanted-label-space-quote] [fixture:
+flowchart/lex-slanted-label-quote]
+
+Two quotes after the space are read the same way, as characters of the text run:
+`A[/ "x"/]`, `A[/ "x" /]`, and `A[\ "x"\]` have the text label `"x"`, quotes
+included, and `A[/ "x"y/]` the text label `"x"y`.
+
+[fixture: flowchart/lex-slanted-label-space-string] [fixture:
 flowchart/lex-slanted-label-space-string-space] [fixture:
 flowchart/lex-slanted-label-backslash-space-string] [fixture:
 flowchart/lex-slanted-label-space-string-then-text]
@@ -711,21 +930,34 @@ flowchart/lex-slanted-label-space-string-then-text]
 
 The ellipse context reads the label of `(-...-)`. At each position:
 
-1. `"`: a string (see [Strings](#strings)). [fixture:
-   flowchart/lex-ellipse-string]
-2. Zero or more whitespace and three or more `~`: rejected. [fixture:
-   flowchart/lex-ellipse-tilde-start]
+1. `"`: a string (see [Strings](#strings)).
+
+   [fixture: flowchart/lex-ellipse-string]
+
+2. Zero or more whitespace and three or more `~`: rejected.
+
+   [fixture: flowchart/lex-ellipse-tilde-start]
+
 3. `-`, `/`, or `)`, followed by `)`: an `ellipse-end` unit; leaves the context.
+
    [fixture: flowchart/lex-ellipse-slash-end]
+
 4. One character other than `(`, `)`, `[`, `]`, `{`, and `}`: a `text-run` unit
    of that one character. The placeholder of an entity is one such unit (see
-   [Entities](../common.md#entities)). [fixture: flowchart/lex-ellipse-label]
+   [Entities](../common.md#entities)).
+
+   [fixture: flowchart/lex-ellipse-label]
 
 `A(-a/)` and `A(-a))` are ellipses with the label `a`, and `A(-a|b-)` has the
-label `a|b`. [fixture: flowchart/lex-ellipse-slash-end] [fixture:
+label `a|b`.
+
+[fixture: flowchart/lex-ellipse-slash-end] [fixture:
 flowchart/lex-ellipse-paren-end] [fixture: flowchart/lex-ellipse-pipe]
+
 `A(-#x;t-)` and `A(-t#x;-)` have the labels of the placeholder of `#x;` and `t`,
-in their order. [fixture: flowchart/lex-ellipse-entity-start] [fixture:
+in their order.
+
+[fixture: flowchart/lex-ellipse-entity-start] [fixture:
 flowchart/lex-ellipse-entity-end]
 
 ### The link text contexts
@@ -733,29 +965,39 @@ flowchart/lex-ellipse-entity-end]
 An opening arrow enters the link text context of its kind: dash, thick, or
 dotted. At each position:
 
-1. `"`: a string (see [Strings](#strings)). [fixture:
-   flowchart/gram-link-text-string-then-text]
+1. `"`: a string (see [Strings](#strings)).
+
+   [fixture: flowchart/gram-link-text-string-then-text]
+
 2. A closed arrow of the same kind, with its whitespace (see [Arrows](#arrows)):
-   an `arrow` unit; leaves the context. [fixture:
-   flowchart/lex-link-text-head-letter]
+   an `arrow` unit; leaves the context.
+
+   [fixture: flowchart/lex-link-text-head-letter]
+
 3. One character other than the kind's character (`-` for dash, `=` for thick,
    `.` for dotted), or, in the dash context, a `-` not followed by another `-`:
    a `link-text-char` unit. The placeholder of an entity is one such unit (see
-   [Entities](../common.md#entities)). [fixture:
-   flowchart/lex-link-text-double-dash]
+   [Entities](../common.md#entities)).
+
+   [fixture: flowchart/lex-link-text-double-dash]
 
 So `--` inside the text of a dash link is rejected unless it closes the link,
 and so are `=` inside a thick link and `.` inside a dotted link. The closing
 arrow is tried first at every position, so the whitespace before it and a head
 letter right before it belong to the arrow: `A-- box-->B` has the link text `bo`
-and the arrow `x-->`. [fixture: flowchart/lex-link-text-double-dash] [fixture:
+and the arrow `x-->`.
+
+[fixture: flowchart/lex-link-text-double-dash] [fixture:
 flowchart/lex-link-text-equals] [fixture: flowchart/lex-link-text-dot] [fixture:
-flowchart/lex-link-text-head-letter] An entity in a link text is one unit:
-`A--#x;-->B`, `A==#x;==>B`, and `A-.#x;.->B` have the edge text of the
-placeholder of `#x;`, and so do numeric entities and entities whose word has `o`
-or `x`; in `A--#x;x-->B` the `x` after the entity is the head of the closing
-arrow. A directive may lie inside the entity, as in `A--#x%%{init: {}}%%y;-->B`,
-and `A--#x;--#y;-->B` is rejected, as `--` would be without the entity.
+flowchart/lex-link-text-head-letter]
+
+An entity in a link text is one unit: `A--#x;-->B`, `A==#x;==>B`, and
+`A-.#x;.->B` have the edge text of the placeholder of `#x;`, and so do numeric
+entities and entities whose word has `o` or `x`; in `A--#x;x-->B` the `x` after
+the entity is the head of the closing arrow. A directive may lie inside the
+entity, as in `A--#x%%{init: {}}%%y;-->B`, and `A--#x;--#y;-->B` is rejected, as
+`--` would be without the entity.
+
 [fixture: flowchart/lex-link-text-entity-dash] [fixture:
 flowchart/lex-link-text-entity-thick] [fixture:
 flowchart/lex-link-text-entity-dotted] [fixture:
@@ -791,16 +1033,19 @@ of characters that the string contexts read inside it are its **content**:
   as if it were not there; they are the known divergence
   [`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md) (see
   [Known divergences](#known-divergences)). Both reject `A --""> B`, because
-  inside the text of a link the `""` does not end the opening `--`; [fixture:
-  flowchart/lex-empty-string-line] [fixture:
+  inside the text of a link the `""` does not end the opening `--`;
+
+  [fixture: flowchart/lex-empty-string-line] [fixture:
   flowchart/lex-empty-string-before-id] [fixture:
   flowchart/lex-empty-string-before-empty-description-block] [fixture:
   flowchart/tokens-empty-string-in-label] [fixture:
   flowchart/lex-empty-string-after-string] [fixture:
   flowchart/lex-empty-string-after-shape] [fixture:
   flowchart/lex-empty-string-in-arrow]
+
 - one run: a `string` unit, or a `markdown-string` unit when the run was read in
   the markdown string context. The text of the unit is the run;
+
 - two or more runs: rejected.
 
 The value of a string, in a label or as a
@@ -817,8 +1062,9 @@ is content: ``A["a`b"]`` has the label `a`, a backtick, and `b`, of kind
 `string`. ``A["""`x`"""]`` is an empty string, a markdown string with the
 content `x`, and another empty string, and so it is rejected. `A["``"x"]` is
 rejected too: the markdown string closes with no content, and the `"` after `x`
-opens a string that is not closed. [fixture:
-flowchart/gram-string-nested-markdown] [fixture:
+opens a string that is not closed.
+
+[fixture: flowchart/gram-string-nested-markdown] [fixture:
 flowchart/gram-string-nested-empty-markdown] [fixture:
 flowchart/gram-string-backtick-inside] [fixture:
 flowchart/gram-string-triple-quotes-markdown] [fixture:
@@ -826,46 +1072,71 @@ flowchart/gram-string-markdown-empty-then-string]
 
 In the string context:
 
-1. `"` followed by a backtick: enters the markdown string context. [fixture:
-   flowchart/gram-string-nested-markdown]
-2. `"`: leaves the context. [fixture: flowchart/lex-string-multiline]
-3. One or more characters other than `"`: a run of content. [fixture:
-   flowchart/lex-string-multiline]
+1. `"` followed by a backtick: enters the markdown string context.
+
+   [fixture: flowchart/gram-string-nested-markdown]
+
+2. `"`: leaves the context.
+
+   [fixture: flowchart/lex-string-multiline]
+
+3. One or more characters other than `"`: a run of content.
+
+   [fixture: flowchart/lex-string-multiline]
 
 In the markdown string context:
 
 1. One or more characters other than a backtick and `"`: a run of content.
+
    [fixture: flowchart/gram-string-markdown-then-text]
-2. A backtick followed by `"`: leaves the context. [fixture:
-   flowchart/gram-string-markdown-then-text]
-3. `"` followed by a backtick: enters the markdown string context. [fixture:
-   flowchart/gram-string-markdown-in-markdown]
-4. `"`: enters the string context. [fixture:
-   flowchart/lex-markdown-string-quote-enters-string]
+
+2. A backtick followed by `"`: leaves the context.
+
+   [fixture: flowchart/gram-string-markdown-then-text]
+
+3. `"` followed by a backtick: enters the markdown string context.
+
+   [fixture: flowchart/gram-string-markdown-in-markdown]
+
+4. `"`: enters the string context.
+
+   [fixture: flowchart/lex-markdown-string-quote-enters-string]
 
 A string may span lines, and a line feed in it is part of its text, with the
 whitespace at the start of the next line: the label of `A["a`, a line break, and
-`   b"]` is `a`, a line feed, three spaces, and `b`. [fixture:
-flowchart/lex-string-multiline] [fixture: flowchart/lex-string-multiline-indent]
+`   b"]` is `a`, a line feed, three spaces, and `b`.
+
+[fixture: flowchart/lex-string-multiline] [fixture:
+flowchart/lex-string-multiline-indent]
+
 A string whose context is not left before the end of the text makes no unit, and
-the input is rejected. [fixture: flowchart/lex-string-unclosed] [fixture:
+the input is rejected.
+
+[fixture: flowchart/lex-string-unclosed] [fixture:
 flowchart/lex-markdown-string-unclosed]
 
 ### Data blocks
 
 In the data context, entered by `@{`:
 
-1. `"`: a `data-quote` unit; enters the data string context. [fixture:
-   flowchart/lex-data-brace-in-string]
+1. `"`: a `data-quote` unit; enters the data string context.
+
+   [fixture: flowchart/lex-data-brace-in-string]
+
 2. One or more characters other than `}`, `^`, and `"`: a `data-text` unit.
+
    [fixture: flowchart/gram-data-shape-known]
-3. `}`: a `}` unit; leaves the context. [fixture:
-   flowchart/gram-data-shape-known]
+
+3. `}`: a `}` unit; leaves the context.
+
+   [fixture: flowchart/gram-data-shape-known]
 
 In the data string context, `"` is a `data-quote` unit and leaves the context,
 and one or more other characters are a `data-text` unit. So a data block ends at
 the first `}` outside a quoted string, and `^` is rejected outside a quoted
-string. [fixture: flowchart/lex-data-brace-in-string] [fixture:
+string.
+
+[fixture: flowchart/lex-data-brace-in-string] [fixture:
 flowchart/lex-data-caret]
 
 ### Click and callbacks
@@ -873,38 +1144,56 @@ flowchart/lex-data-caret]
 The click context is entered by `click` and the whitespace after it:
 
 1. `"`: a string (see [Strings](#strings)); when it ends, the lexer is back in
-   the click context. [fixture: flowchart/gram-click-string-id]
-2. One whitespace character: leaves the context. [fixture:
-   flowchart/lex-click-line-feed]
+   the click context.
+
+   [fixture: flowchart/gram-click-string-id]
+
+2. One whitespace character: leaves the context.
+
+   [fixture: flowchart/lex-click-line-feed]
+
 3. One or more characters other than whitespace: each `,` among them is a
    `click-comma` unit, and each run of the other characters is a `click-id`
-   unit. [fixture: flowchart/lex-click-id-comma]
+   unit.
+
+   [fixture: flowchart/lex-click-id-comma]
 
 So the ids of a click statement are every character up to the next whitespace,
 parted at each `,`, and the one whitespace character after them is read with
 them. Rule 3 reads as many characters as it can, so rule 1 applies only at the
 start of the context and right after a string: after a `,`, a `"` belongs to the
 next id, and `click A"" href "x"` has the id `A""`, which names no vertex.
-[fixture: flowchart/lex-click-id-with-quotes] `click A[x],B href "u"` has the
-ids `A[x]` and `B`, and `click A,"x" href "u"` has the ids `A` and `"x"`, as in
-mermaid.js. [fixture: flowchart/lex-click-id-comma] [fixture:
-flowchart/lex-click-id-comma-quote] A `,` that the click context reads is a
-`click-comma` unit, not a `,` unit: mermaid.js reads it as part of the click
-ids, while a `,` of the statement context is a unit of its own, which the
-grammar of a click statement does not accept. So `click , href "x"` and
-`click , call cb()` are click statements whose ids are empty, while `,href "x"`
-and `,call cb()` are rejected, and `,cb` alone is the vertex `,cb`. [fixture:
-flowchart/gram-click-comma-only-href] [fixture:
+
+[fixture: flowchart/lex-click-id-with-quotes]
+
+`click A[x],B href "u"` has the ids `A[x]` and `B`, and `click A,"x" href "u"`
+has the ids `A` and `"x"`, as in mermaid.js.
+
+[fixture: flowchart/lex-click-id-comma] [fixture:
+flowchart/lex-click-id-comma-quote]
+
+A `,` that the click context reads is a `click-comma` unit, not a `,` unit:
+mermaid.js reads it as part of the click ids, while a `,` of the statement
+context is a unit of its own, which the grammar of a click statement does not
+accept. So `click , href "x"` and `click , call cb()` are click statements whose
+ids are empty, while `,href "x"` and `,call cb()` are rejected, and `,cb` alone
+is the vertex `,cb`.
+
+[fixture: flowchart/gram-click-comma-only-href] [fixture:
 flowchart/gram-comma-href-statement] [fixture:
 flowchart/gram-click-comma-only-call] [fixture:
 flowchart/gram-comma-call-statement] [fixture:
-flowchart/lex-comma-starts-vertex-id] That character may be a line feed:
-`click A`, a line break, and `cb` is the click statement `click A cb`. Two
-spaces after the id are rejected, because the second one is a `space` unit where
-the grammar expects the callback. So is a line feed followed by indentation:
-`click A`, a line break, and `  cb` is rejected. [fixture:
-flowchart/lex-click-line-feed] [fixture: flowchart/lex-click-two-spaces]
-[fixture: flowchart/lex-click-line-feed-indented]
+flowchart/lex-comma-starts-vertex-id]
+
+That character may be a line feed: `click A`, a line break, and `cb` is the
+click statement `click A cb`. Two spaces after the id are rejected, because the
+second one is a `space` unit where the grammar expects the callback. So is a
+line feed followed by indentation: `click A`, a line break, and `  cb` is
+rejected.
+
+[fixture: flowchart/lex-click-line-feed] [fixture:
+flowchart/lex-click-two-spaces] [fixture:
+flowchart/lex-click-line-feed-indented]
 
 The grammar allows no string in a click statement, so a string before the ids is
 rejected: `click "A" href "x"`, and the same with a markdown string that has
@@ -915,8 +1204,10 @@ are rejected here, while mermaid.js accepts them with the id `A` first. Both
 reject `click "" A href "x"`, because the space after the empty string leaves
 the context before any id. An empty string after the id and its whitespace, as
 in `click A ""href "x"`, is read in the statement context, and the input is
-rejected in the same way. [fixture: flowchart/gram-click-empty-string-before-id]
-[fixture: flowchart/gram-click-empty-markdown-string-before-id] [fixture:
+rejected in the same way.
+
+[fixture: flowchart/gram-click-empty-string-before-id] [fixture:
+flowchart/gram-click-empty-markdown-string-before-id] [fixture:
 flowchart/gram-click-two-empty-strings-before-id] [fixture:
 flowchart/gram-click-empty-string-before-ids] [fixture:
 flowchart/gram-click-empty-string-before-callback-id] [fixture:
@@ -940,6 +1231,7 @@ of that unit reads: `click A click href "u"`, `click A click B href "u"`,
 `click A href "u" click _blank` are rejected, as in mermaid.js, and so are
 `style A click fill:red`, `style A click ""fill:red`, `A:click b-->C`,
 `A & click B`, and `A-->B & click C`, while `click A,B href "u"` is accepted.
+
 [fixture: flowchart/gram-click-second-click-before-href] [fixture:
 flowchart/gram-click-second-click-id-before-href] [fixture:
 flowchart/gram-click-second-click-before-callback] [fixture:
@@ -954,27 +1246,39 @@ flowchart/gram-style-click-empty-string-then-click-id] [fixture:
 flowchart/gram-click-ids-after-id-colon] [fixture:
 flowchart/gram-ampersand-then-click-statement] [fixture:
 flowchart/gram-link-ampersand-then-click-statement] [fixture:
-flowchart/gram-click-two-ids-one-click] The word `click` is a `click` unit only
-where a unit starts and whitespace follows it (rule 9 of
-[The statement context](#the-statement-context)): `A-click` and `vclick` are id
-runs, and `A:click""b` is the id run `click""b` after `A` and `:`. [fixture:
-flowchart/lex-click-inside-id-run-vertex] [fixture:
+flowchart/gram-click-two-ids-one-click]
+
+The word `click` is a `click` unit only where a unit starts and whitespace
+follows it (rule 9 of [The statement context](#the-statement-context)):
+`A-click` and `vclick` are id runs, and `A:click""b` is the id run `click""b`
+after `A` and `:`.
+
+[fixture: flowchart/lex-click-inside-id-run-vertex] [fixture:
 flowchart/lex-click-v-id-run] [fixture: flowchart/lex-click-no-whitespace-in-id]
+
 When the text ends while the click context has read nothing since a `click` unit
 entered it, the input is rejected, because mermaid.js reads an empty click id
-there: `A-->B click` followed by a line break at the end of the text. [fixture:
-flowchart/lex-click-at-end-of-text]
+there: `A-->B click` followed by a line break at the end of the text.
+
+[fixture: flowchart/lex-click-at-end-of-text]
 
 The callback name context is entered by `call` and the whitespace after it:
 
 1. `(`, zero or more whitespace, and `)`: a `(` unit and a `)` unit; leaves the
-   context. [fixture: flowchart/gram-click-empty-call-then-arguments] [fixture:
+   context.
+
+   [fixture: flowchart/gram-click-empty-call-then-arguments] [fixture:
    flowchart/lex-callback-blank-parentheses] [fixture:
    flowchart/gram-click-call-empty-parentheses]
+
 2. `(`: a `(` unit; leaves the context and enters the callback arguments
-   context. [fixture: flowchart/gram-click-call]
-3. One or more characters other than `(`: a `callback-name` unit. [fixture:
-   flowchart/lex-directive-in-callback-name]
+   context.
+
+   [fixture: flowchart/gram-click-call]
+
+3. One or more characters other than `(`: a `callback-name` unit.
+
+   [fixture: flowchart/lex-directive-in-callback-name]
 
 In the callback arguments context, `)` is a `)` unit and leaves the context, and
 one or more other characters are a `callback-arguments` unit. The name and the
@@ -982,6 +1286,7 @@ arguments may contain any character, line feeds included, but a callback without
 `(` reads the rest of the text as its name and is rejected: when the text ends
 in the callback name context or in the callback arguments context, the input is
 rejected, because mermaid.js reads an empty name or empty arguments there.
+
 [fixture: flowchart/lex-callback-no-parenthesis] [fixture:
 flowchart/lex-callback-arguments-end-of-text]
 
@@ -1001,8 +1306,10 @@ vertices `A,` and `,`; and, in a click statement, `click A call ()cb`, as
 `click A cb`, and `click A call ()href "u"`. They are the known divergence
 [`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md). Both
 reject `A-->call () B`, because mermaid.js reads the whitespace after the empty
-call as a space before the target. [fixture: flowchart/gram-empty-call-line]
-[fixture: flowchart/gram-empty-call-after-vertex] [fixture:
+call as a space before the target.
+
+[fixture: flowchart/gram-empty-call-line] [fixture:
+flowchart/gram-empty-call-after-vertex] [fixture:
 flowchart/gram-empty-call-before-vertex] [fixture:
 flowchart/gram-empty-call-before-link] [fixture:
 flowchart/gram-empty-call-after-arrow] [fixture:
@@ -1011,21 +1318,26 @@ flowchart/gram-empty-call-after-comma] [fixture:
 flowchart/gram-empty-call-comma-vertex] [fixture:
 flowchart/gram-click-empty-call-before-callback] [fixture:
 flowchart/gram-click-empty-call-before-href] [fixture:
-flowchart/gram-empty-call-after-arrow-space] `call` is a keyword only with
-whitespace after it (rule 5 of [The statement context](#the-statement-context)):
-`call()` is rejected. A callback name or arguments are accepted only in a click
-statement, where they follow the click ids: `,call x` and `A,call (x)` are
-rejected, and so is `click ,call ()`, whose click ids are `,call`. [fixture:
-flowchart/gram-call-no-whitespace] [fixture:
+flowchart/gram-empty-call-after-arrow-space]
+
+`call` is a keyword only with whitespace after it (rule 5 of
+[The statement context](#the-statement-context)): `call()` is rejected. A
+callback name or arguments are accepted only in a click statement, where they
+follow the click ids: `,call x` and `A,call (x)` are rejected, and so is
+`click ,call ()`, whose click ids are `,call`.
+
+[fixture: flowchart/gram-call-no-whitespace] [fixture:
 flowchart/gram-call-name-outside-click] [fixture:
 flowchart/gram-call-arguments-outside-click] [fixture:
-flowchart/gram-click-comma-call-empty] In a click statement, the arguments may
-also follow the name after a second `call`: `click A call cb()call (x)` calls
-`cb` with the arguments `x`, as `click A call cb(x)` does. `click A call ()`
-alone, `click A call () href "u"`, with the space after the ids,
-`click A call cb(y)call (x)`, with two arguments, and
-`click A call cb()call x()`, with two names, are rejected by both. [fixture:
-flowchart/gram-click-empty-call-then-arguments] [fixture:
+flowchart/gram-click-comma-call-empty]
+
+In a click statement, the arguments may also follow the name after a second
+`call`: `click A call cb()call (x)` calls `cb` with the arguments `x`, as
+`click A call cb(x)` does. `click A call ()` alone, `click A call () href "u"`,
+with the space after the ids, `click A call cb(y)call (x)`, with two arguments,
+and `click A call cb()call x()`, with two names, are rejected by both.
+
+[fixture: flowchart/gram-click-empty-call-then-arguments] [fixture:
 flowchart/gram-click-empty-call-only] [fixture:
 flowchart/gram-click-empty-call-space-before-href] [fixture:
 flowchart/gram-click-call-arguments-twice] [fixture:
@@ -1039,28 +1351,32 @@ or `description-text` unit; so they read the rest of the line, which may be
 empty. In the description block context, `}` is a `}` unit and leaves the
 context, and one or more other characters are a `description-block-text` unit.
 When the text ends before a `}`, the block has none: `accDescr { x` and
-`accDescr {` at the end of the text are accepted, as in mermaid.js. [fixture:
-flowchart/lex-acc-descr-block-unclosed] [fixture:
-flowchart/lex-acc-descr-block-unclosed-empty] An `accDescr` unit and a `{` unit
-followed directly by a `}` unit, with no `description-block-text` unit, are an
-**empty description block**. It is a description block statement without text
-(see
+`accDescr {` at the end of the text are accepted, as in mermaid.js.
+
+[fixture: flowchart/lex-acc-descr-block-unclosed] [fixture:
+flowchart/lex-acc-descr-block-unclosed-empty]
+
+An `accDescr` unit and a `{` unit followed directly by a `}` unit, with no
+`description-block-text` unit, are an **empty description block**. It is a
+description block statement without text (see
 [Direction and accessibility statements](#direction-and-accessibility-statements)),
 so, like every statement, it is accepted where a statement starts: `accDescr {}`
 alone on a line, after a `;`, or with `{` and `}` on two lines, also with a
-comment line between them, changes nothing. [fixture:
-flowchart/db-acc-descr-empty-block-alone] [fixture:
+comment line between them, changes nothing.
+
+[fixture: flowchart/db-acc-descr-empty-block-alone] [fixture:
 flowchart/db-acc-descr-empty-block-spaces-alone] [fixture:
 flowchart/db-acc-descr-empty-block-lines-alone] [fixture:
 flowchart/db-acc-descr-block-comment-only-alone] [fixture:
 flowchart/db-acc-descr-empty-block-keeps] [fixture:
 flowchart/db-acc-descr-empty-block-after-semicolon-keeps] [fixture:
 flowchart/db-acc-descr-empty-block-lines-keeps] [fixture:
-flowchart/db-acc-descr-block-comment-only-keeps] After the last unit of a
-statement and before its separator, it is a statement too: `A accDescr {}`, and
-`A accDescr {` and `}` on two lines, are a vertex statement and a description
-block statement, and so is one after the direction of the header, before its
-separator (see
+flowchart/db-acc-descr-block-comment-only-keeps]
+
+After the last unit of a statement and before its separator, it is a statement
+too: `A accDescr {}`, and `A accDescr {` and `}` on two lines, are a vertex
+statement and a description block statement, and so is one after the direction
+of the header, before its separator (see
 [Empty description blocks before a separator](#empty-description-blocks-before-a-separator)).
 Anywhere else it lies inside a statement, where the tree has no place for it, so
 no rule of the grammar takes it, and the input is rejected: `A accDescr {}-->B`.
@@ -1069,53 +1385,70 @@ it were not there; this is the known divergence
 [`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md). Both
 reject `A-->accDescr {} B`, because mermaid.js reads the space after the block
 as a space before the target, and `A accDescr {x}`, because a block with text is
-a statement of its own, which cannot start inside another. [fixture:
-flowchart/gram-acc-descr-block-empty] [fixture:
+a statement of its own, which cannot start inside another.
+
+[fixture: flowchart/gram-acc-descr-block-empty] [fixture:
 flowchart/gram-empty-description-block-after-vertex] [fixture:
 flowchart/gram-empty-description-block-before-link] [fixture:
 flowchart/gram-empty-description-block-line-feed] [fixture:
 flowchart/gram-empty-description-block-after-arrow-space] [fixture:
-flowchart/gram-description-block-after-vertex] The rule reads the whitespace
-after the `:` or `{`, line feeds included, as part of the `:` or `{` unit:
-`accTitle:`, a line break, and `  foo` has the title `foo`. [fixture:
-flowchart/lex-acc-title-next-line] So a statement on the next line becomes the
-title: `accTitle:`, a line break, and `A-->B` has the title `A-->B` and no
-vertices and no edges. [fixture: flowchart/lex-acc-title-next-line-statement]
+flowchart/gram-description-block-after-vertex]
+
+The rule reads the whitespace after the `:` or `{`, line feeds included, as part
+of the `:` or `{` unit: `accTitle:`, a line break, and `  foo` has the title
+`foo`.
+
+[fixture: flowchart/lex-acc-title-next-line]
+
+So a statement on the next line becomes the title: `accTitle:`, a line break,
+and `A-->B` has the title `A-->B` and no vertices and no edges.
+
+[fixture: flowchart/lex-acc-title-next-line-statement]
 
 ### The header context
 
 The first header keyword enters the header context:
 
 1. Whitespace that contains a line feed, up to and including its last line feed:
-   a `no-direction` unit; leaves the context. [fixture:
-   flowchart/header-direction-next-line]
+   a `no-direction` unit; leaves the context.
+
+   [fixture: flowchart/header-direction-next-line]
+
 2. Zero or more whitespace, then `LR`, `RL`, `TB`, `BT`, `TD`, `BR`, or `v`, not
    followed by a word character, or `<`, `>`, or `^`: a `header-direction` unit
-   of the direction; leaves the context. [fixture:
-   flowchart/header-direction-trailing-space] [fixture:
+   of the direction; leaves the context.
+
+   [fixture: flowchart/header-direction-trailing-space] [fixture:
    flowchart/db-direction-br] [fixture: flowchart/db-direction-bt] [fixture:
    flowchart/db-direction-mapping] [fixture: flowchart/header-direction-rl]
    [fixture: flowchart/header-direction-v] [fixture:
    flowchart/header-direction-greater-than] [fixture:
    flowchart/header-direction-caret] [fixture:
    flowchart/header-direction-then-word]
+
 3. `"`: a string (see [Strings](#strings)); when it ends, the lexer is back in
-   the header context. [fixture: flowchart/header-string]
+   the header context.
+
+   [fixture: flowchart/header-string]
 
 Rule 1 comes first, so a direction on the next line is not a direction:
 `flowchart`, a line break, and `LR` has no direction and the vertex `LR`.
-`flowchart LR;A` is accepted, while `graph;A` is rejected. [fixture:
-flowchart/header-direction-next-line] [fixture:
-flowchart/header-semicolon-no-direction] The grammar allows no string in the
-header: `flowchart"x" TD`, whose string has content, is rejected, and so is an
-empty string (see [Strings](#strings)). `flowchart"" TD`, `flowchart""TD`,
-`flowchart"""" TD`, `flowchart` followed by an empty markdown string `"``"` and
-` TD`, `flowchart"" LR;A`, and `flowchart""` followed by a line break are
-rejected here, while mermaid.js accepts them as if the empty strings were not
-there, with the direction `TD`, `LR`, or none. Both reject `flowchart "" TD`,
-because no rule of the header context reads a space that no direction or line
-feed follows. [fixture: flowchart/header-empty-string-before-direction]
-[fixture: flowchart/header-empty-string-no-space] [fixture:
+`flowchart LR;A` is accepted, while `graph;A` is rejected.
+
+[fixture: flowchart/header-direction-next-line] [fixture:
+flowchart/header-semicolon-no-direction]
+
+The grammar allows no string in the header: `flowchart"x" TD`, whose string has
+content, is rejected, and so is an empty string (see [Strings](#strings)).
+`flowchart"" TD`, `flowchart""TD`, `flowchart"""" TD`, `flowchart` followed by
+an empty markdown string `"``"` and ` TD`, `flowchart"" LR;A`, and `flowchart""`
+followed by a line break are rejected here, while mermaid.js accepts them as if
+the empty strings were not there, with the direction `TD`, `LR`, or none. Both
+reject `flowchart "" TD`, because no rule of the header context reads a space
+that no direction or line feed follows.
+
+[fixture: flowchart/header-empty-string-before-direction] [fixture:
+flowchart/header-empty-string-no-space] [fixture:
 flowchart/header-two-empty-strings] [fixture:
 flowchart/header-empty-markdown-string] [fixture:
 flowchart/header-empty-string-semicolon] [fixture:
@@ -1195,8 +1528,9 @@ U+FB46–U+FBB1, U+FBD3–U+FD3D, U+FD50–U+FD8F, U+FD92–U+FDC7, U+FDF0–U+F
 U+FE70–U+FE74, U+FE76–U+FEFC, U+FF21–U+FF3A, U+FF41–U+FF5A, U+FF66–U+FFBE,
 U+FFC2–U+FFC7, U+FFCA–U+FFCF, U+FFD2–U+FFD7, U+FFDA–U+FFDC. A character outside
 them that no other rule reads is rejected; `é` (U+00E9) is a letter, while `°`
-(U+00B0) is not. [fixture: flowchart/lex-letter-in-id] [fixture:
-flowchart/lex-non-letter]
+(U+00B0) is not.
+
+[fixture: flowchart/lex-letter-in-id] [fixture: flowchart/lex-non-letter]
 
 ## Grammar
 
@@ -1269,31 +1603,37 @@ description-block-statement = "accDescr" "{" description-block-text? ( "}" | end
 ```
 
 The diagram ends at the end of the text. A `space` after the header's direction
-must be followed by a line feed: `flowchart TD ;` is rejected. [fixture:
-flowchart/header-space-before-semicolon] A statement other than a subgraph, a
-direction statement, and an accessibility statement must be followed by its
-separator: a line feed, a `;`, or the end of the text, with nothing but empty
-description blocks before it (see
+must be followed by a line feed: `flowchart TD ;` is rejected.
+
+[fixture: flowchart/header-space-before-semicolon]
+
+A statement other than a subgraph, a direction statement, and an accessibility
+statement must be followed by its separator: a line feed, a `;`, or the end of
+the text, with nothing but empty description blocks before it (see
 [Empty description blocks before a separator](#empty-description-blocks-before-a-separator)).
 So `class A c; %%{init: {}}%%` is accepted, while without the `;` the space
 before the directive is a `space` unit after the class name, and the input is
 rejected; In `class A c""` the quotes are characters of the id run, and the
 class is `c""`, while in `class A c;""` they are an empty string after the
 separator, and the input is rejected, as is `click;"" A`, whose `click` before
-the `;` is a vertex (see [Strings](#strings)). [fixture:
-flowchart/gram-separator-before-directive] [fixture:
+the `;` is a vertex (see [Strings](#strings)).
+
+[fixture: flowchart/gram-separator-before-directive] [fixture:
 flowchart/gram-no-separator-before-directive] [fixture:
 flowchart/gram-separator-before-empty-string] [fixture:
 flowchart/lex-click-keyword-semicolon-statement] [fixture:
-flowchart/lex-quotes-after-class-name] The separator belongs to no statement.
-Every other `;` that the grammar reads is an empty statement: a second `;` after
-a separator, a `;` on a line of its own, and a `;` right after a statement that
-takes no separator. `end` takes the whitespace after it, so in `end;` on its own
-line the `;` is an empty statement. [fixture:
-flowchart/db-subgraph-member-empty-statement] [fixture:
+flowchart/lex-quotes-after-class-name]
+
+The separator belongs to no statement. Every other `;` that the grammar reads is
+an empty statement: a second `;` after a separator, a `;` on a line of its own,
+and a `;` right after a statement that takes no separator. `end` takes the
+whitespace after it, so in `end;` on its own line the `;` is an empty statement.
+
+[fixture: flowchart/db-subgraph-member-empty-statement] [fixture:
 flowchart/db-subgraph-member-empty-statement-end] [fixture:
-flowchart/gram-empty-statement-line] A line feed that follows a separator is a
-line of its own.
+flowchart/gram-empty-statement-line]
+
+A line feed that follows a separator is a line of its own.
 
 ### Empty description blocks before a separator
 
@@ -1322,8 +1662,9 @@ click statements, and the name of a subgraph has one after it too. So
 `A --> B accDescr {}`, `style A fill:red accDescr {}`,
 `classDef c fill:red accDescr {}`, `linkStyle 0 stroke:red accDescr {}`,
 `subgraph S accDescr {}`, and `click A href "u"accDescr {}` are accepted, and so
-is `A accDescr {`, a line break, and `}`. [fixture:
-flowchart/gram-empty-description-block-after-vertex] [fixture:
+is `A accDescr {`, a line break, and `}`.
+
+[fixture: flowchart/gram-empty-description-block-after-vertex] [fixture:
 flowchart/gram-empty-description-blocks-after-vertex] [fixture:
 flowchart/gram-empty-description-block-before-semicolon] [fixture:
 flowchart/gram-empty-description-block-after-link] [fixture:
@@ -1332,17 +1673,19 @@ flowchart/gram-empty-description-block-after-classdef] [fixture:
 flowchart/gram-empty-description-block-after-linkstyle] [fixture:
 flowchart/gram-empty-description-block-after-subgraph-name] [fixture:
 flowchart/gram-empty-description-block-after-click-glued] [fixture:
-flowchart/gram-empty-description-block-line-feed] The grammar reads a statement
-and its `statement-end` without their empty description blocks, as mermaid.js
-does: the `space` units before, between, and after the blocks are the whitespace
-at the end of the statement, and the rule of the statement takes them or not.
-The end of a vertex statement takes whitespace, also after a data block, and so
-do the styles of a style, class definition, or link style statement and the name
-of a subgraph, so `A accDescr {} ;B`, `A accDescr {} accDescr {} ;B`,
-`A@{ shape: rect } accDescr {}`, `A@{ shape: rect }accDescr {} ;B`,
-`A@{ shape: rect }accDescr {} accDescr {}`,
+flowchart/gram-empty-description-block-line-feed]
+
+The grammar reads a statement and its `statement-end` without their empty
+description blocks, as mermaid.js does: the `space` units before, between, and
+after the blocks are the whitespace at the end of the statement, and the rule of
+the statement takes them or not. The end of a vertex statement takes whitespace,
+also after a data block, and so do the styles of a style, class definition, or
+link style statement and the name of a subgraph, so `A accDescr {} ;B`,
+`A accDescr {} accDescr {} ;B`, `A@{ shape: rect } accDescr {}`,
+`A@{ shape: rect }accDescr {} ;B`, `A@{ shape: rect }accDescr {} accDescr {}`,
 `A@{ shape: rect } accDescr {} accDescr {} ;B`,
 `style A fill:red accDescr {} ;B`, and `subgraph S accDescr {} ;A` are accepted.
+
 [fixture: flowchart/gram-empty-description-blocks-after-data-block-spaces]
 [fixture: flowchart/gram-empty-description-block-after-data-block-directive]
 [fixture:
@@ -1352,9 +1695,10 @@ flowchart/gram-empty-description-block-after-data-block-ignored-semicolon]
 [fixture:
 flowchart/gram-empty-description-block-after-data-block-line-separator]
 [fixture:
-flowchart/gram-empty-description-blocks-after-target-data-block-spaces] A class
-statement and a click statement take none, because the `space` unit after the
-class name or the URL must be followed by more of the statement. So
+flowchart/gram-empty-description-blocks-after-target-data-block-spaces]
+
+A class statement and a click statement take none, because the `space` unit
+after the class name or the URL must be followed by more of the statement. So
 `class A c accDescr {}`, `class A c accDescr {} ;B`,
 `click A href "u" accDescr {}`, `click A href "u"accDescr {} ;B`, and
 `click A href "u"accDescr {} accDescr {}` are rejected, as the same without the
@@ -1367,7 +1711,9 @@ accepted, while `linkStyle 0 interpolate basis`, two spaces, and `;` is
 rejected. Whitespace after the `}` of a block that a line feed ends is read as a
 line feed (see [Whitespace after `}`](#whitespace-after-)), so
 `click A href "u"accDescr {}` followed by a space and a line break is accepted.
-mermaid.js reads these the same way. [fixture:
+mermaid.js reads these the same way.
+
+[fixture:
 flowchart/gram-empty-description-block-splits-spaces-after-interpolate]
 [fixture: flowchart/gram-interpolate-trailing-space] [fixture:
 flowchart/gram-empty-description-block-after-click-trailing-space] [fixture:
@@ -1391,20 +1737,24 @@ flowchart/gram-empty-description-block-after-class-statement-before-semicolon]
 [fixture:
 flowchart/gram-empty-description-block-after-data-block-before-semicolon]
 [fixture:
-flowchart/gram-empty-description-blocks-after-data-block-space-between] The
-empty description blocks before the separator of a subgraph's name are the first
-statements of its body, and the name text of the subgraph leaves them out (see
-[Rejections outside the grammar](#rejections-outside-the-grammar)):
+flowchart/gram-empty-description-blocks-after-data-block-space-between]
+
+The empty description blocks before the separator of a subgraph's name are the
+first statements of its body, and the name text of the subgraph leaves them out
+(see [Rejections outside the grammar](#rejections-outside-the-grammar)):
 `subgraph "S"accDescr {}` has the name text `S` and the id `S`, while the
 whitespace before a block stays in it: `subgraph S accDescr {}` has the name
-text `S` and a space, and the id `subGraph0`. [fixture:
-flowchart/gram-empty-description-block-after-subgraph-name] [fixture:
-flowchart/db-subgraph-name-text-without-empty-description-block] A block that
-the separator does not follow lies inside a statement: `A accDescr {} B` is
-rejected by both, and `A accDescr {}-->B`, which mermaid.js accepts, is the
-known divergence `tokenless-empty-forms` (see
-[Known divergences](#known-divergences)). [fixture:
-flowchart/gram-empty-description-block-then-vertex] [fixture:
+text `S` and a space, and the id `subGraph0`.
+
+[fixture: flowchart/gram-empty-description-block-after-subgraph-name] [fixture:
+flowchart/db-subgraph-name-text-without-empty-description-block]
+
+A block that the separator does not follow lies inside a statement:
+`A accDescr {} B` is rejected by both, and `A accDescr {}-->B`, which mermaid.js
+accepts, is the known divergence `tokenless-empty-forms` (see
+[Known divergences](#known-divergences)).
+
+[fixture: flowchart/gram-empty-description-block-then-vertex] [fixture:
 flowchart/gram-empty-description-block-before-link]
 
 A header with a direction needs a separator too: a `;`, or a line feed with only
@@ -1424,20 +1774,24 @@ rejected, as `flowchart LR ;A` and `flowchart LR  A` are, and so is
 only where no whitespace follows the direction, which is after `<`, `>`, or `^`
 with the block written directly after it: `flowchart >accDescr {};A` and the
 same with two blocks are accepted, as `flowchart >;A` is, while
-`flowchart >accDescr {} accDescr {};A` is rejected. [fixture:
-flowchart/header-empty-description-block-glued-before-semicolon] [fixture:
-flowchart/header-empty-description-blocks-glued-before-semicolon] [fixture:
-flowchart/header-empty-description-blocks-space-before-semicolon] A header
-without a direction has no place for a block: after the header keyword, the
-header context reads only whitespace that contains a line feed, a direction, or
-a string (see [The header context](#the-header-context)), so
+`flowchart >accDescr {} accDescr {};A` is rejected.
+
+[fixture: flowchart/header-empty-description-block-glued-before-semicolon]
+[fixture: flowchart/header-empty-description-blocks-glued-before-semicolon]
+[fixture: flowchart/header-empty-description-blocks-space-before-semicolon]
+
+A header without a direction has no place for a block: after the header keyword,
+the header context reads only whitespace that contains a line feed, a direction,
+or a string (see [The header context](#the-header-context)), so
 `flowchart accDescr {}` is rejected, while `flowchart`, a line break, and
 `accDescr {}` is a block where a statement starts. mermaid.js reads these the
-same way. [fixture: flowchart/header-empty-description-block-after-direction]
-[fixture: flowchart/header-empty-description-block-after-direction-at-end]
-[fixture: flowchart/header-empty-description-blocks-after-direction-spaces]
-[fixture: flowchart/header-empty-description-block-after-symbol-direction-glued]
-[fixture: flowchart/header-empty-description-block-before-semicolon] [fixture:
+same way.
+
+[fixture: flowchart/header-empty-description-block-after-direction] [fixture:
+flowchart/header-empty-description-block-after-direction-at-end] [fixture:
+flowchart/header-empty-description-blocks-after-direction-spaces] [fixture:
+flowchart/header-empty-description-block-after-symbol-direction-glued] [fixture:
+flowchart/header-empty-description-block-before-semicolon] [fixture:
 flowchart/header-empty-description-block-then-statement] [fixture:
 flowchart/header-description-block-with-text-after-direction] [fixture:
 flowchart/header-empty-description-block-no-direction]
@@ -1456,32 +1810,44 @@ data             = ( data-start ( data-text | data-quote )* "}" )+
 A vertex statement is a chain of vertex groups joined by links. A vertex group
 is one or more vertices joined by `&`, which needs whitespace on both sides. A
 data block belongs to the vertex right before it, and so do the blocks written
-right after it; each is a node of the tree. [fixture:
-flowchart/gram-vertex-id-comma] [fixture: flowchart/gram-vertex-id-colon]
-[fixture: flowchart/gram-vertex-id-hash-start] [fixture:
-flowchart/gram-vertex-id-star-start] [fixture: flowchart/gram-vertex-id-default]
-[fixture: flowchart/gram-vertex-id-v] [fixture: flowchart/lex-number-vertices]
-[fixture: flowchart/gram-data-consecutive-blocks]
+right after it; each is a node of the tree.
+
+[fixture: flowchart/gram-vertex-id-comma] [fixture:
+flowchart/gram-vertex-id-colon] [fixture: flowchart/gram-vertex-id-hash-start]
+[fixture: flowchart/gram-vertex-id-star-start] [fixture:
+flowchart/gram-vertex-id-default] [fixture: flowchart/gram-vertex-id-v]
+[fixture: flowchart/lex-number-vertices] [fixture:
+flowchart/gram-data-consecutive-blocks]
 
 - `A & B --> C & D` links each vertex of the first group to each vertex of the
-  second. A group may stand alone: `A & B` is accepted. [fixture:
-  flowchart/gram-group-links] [fixture: flowchart/gram-group-two-vertices]
+  second. A group may stand alone: `A & B` is accepted.
+
+  [fixture: flowchart/gram-group-links] [fixture:
+  flowchart/gram-group-two-vertices]
+
 - `A &B` is rejected, because `&` needs a `space` after it; `A&B` is one id (see
-  [The statement context](#the-statement-context)). [fixture:
-  flowchart/gram-group-no-space-after-ampersand] [fixture:
+  [The statement context](#the-statement-context)).
+
+  [fixture: flowchart/gram-group-no-space-after-ampersand] [fixture:
   flowchart/lex-ampersand-in-id]
+
 - `A%%{init: {}}%%B-->C` is rejected, while mermaid.js gives it the vertex `AB`:
   the directive lies inside the id run `AB`, a name unit (see
-  [Directives inside units](#directives-inside-units)). [fixture:
-  flowchart/div-directive-in-id]
+  [Directives inside units](#directives-inside-units)).
+
+  [fixture: flowchart/div-directive-in-id]
 
 - Whitespace may not come between the id and its shape: `A [x]` is rejected.
+
   [fixture: flowchart/gram-space-before-shape]
+
 - A data block may follow a vertex only without whitespace: `A @{ shape: rect }`
   is rejected. Whitespace may follow the block, of any kind and length, at the
   end of a statement: `A@{ shape: rect } ;B` and `A-->B@{ shape: rect } ;C` are
   accepted, and so is `A@{ shape: rect }` followed by a space at the end of the
-  text. [fixture: flowchart/gram-data-space-semicolon] [fixture:
+  text.
+
+  [fixture: flowchart/gram-data-space-semicolon] [fixture:
   flowchart/gram-data-tab-semicolon] [fixture:
   flowchart/gram-data-spaces-semicolon] [fixture:
   flowchart/gram-data-line-separator-semicolon] [fixture:
@@ -1496,27 +1862,35 @@ flowchart/gram-vertex-id-star-start] [fixture: flowchart/gram-vertex-id-default]
   flowchart/gram-data-space-empty-line] [fixture:
   flowchart/gram-data-space-comment-line] [fixture:
   flowchart/gram-data-space-directive-semicolon] [fixture:
-  flowchart/gram-data-space-ignored-semicolon] After the block and that
-  whitespace, nothing but `&`, a link, or a separator may come:
-  `A@{ shape: rect } & B` and `A@{ shape: rect } --> B` are accepted, while
-  `A@{ shape: rect } B`, `A@{ shape: rect } @{ label: x }`,
+  flowchart/gram-data-space-ignored-semicolon]
+
+  After the block and that whitespace, nothing but `&`, a link, or a separator
+  may come: `A@{ shape: rect } & B` and `A@{ shape: rect } --> B` are accepted,
+  while `A@{ shape: rect } B`, `A@{ shape: rect } @{ label: x }`,
   `A@{ shape: rect } :::c`, `A@{ shape: rect } %% c`, and
-  `A@{ shape: rect } end` are rejected. [fixture:
-  flowchart/gram-data-space-link] [fixture:
+  `A@{ shape: rect } end` are rejected.
+
+  [fixture: flowchart/gram-data-space-link] [fixture:
   flowchart/gram-data-target-space-link] [fixture:
   flowchart/gram-data-space-group] [fixture: flowchart/gram-data-space-vertex]
   [fixture: flowchart/gram-data-space-data] [fixture:
   flowchart/gram-data-space-class] [fixture:
   flowchart/gram-data-space-trailing-comment] [fixture:
-  flowchart/gram-data-space-subgraph-end] Blocks written one after another all
-  belong to the vertex, each a data block of its own, and mermaid.js reads them
-  together: `A@{`, `shape: rect`, `}@{`, `label: x`, and `}` on consecutive
-  lines give A two data blocks, the shape `rect`, and the label `x`. [fixture:
-  flowchart/gram-data-space-before] [fixture:
+  flowchart/gram-data-space-subgraph-end]
+
+  Blocks written one after another all belong to the vertex, each a data block
+  of its own, and mermaid.js reads them together: `A@{`, `shape: rect`, `}@{`,
+  `label: x`, and `}` on consecutive lines give A two data blocks, the shape
+  `rect`, and the label `x`.
+
+  [fixture: flowchart/gram-data-space-before] [fixture:
   flowchart/gram-data-consecutive-blocks]
+
 - `A:::c@{ shape: rect }` and `A[x]:::c-->B` are accepted: the class comes after
-  the shape and before the data block. [fixture: flowchart/gram-class-then-data]
-  [fixture: flowchart/gram-class-after-shape]
+  the shape and before the data block.
+
+  [fixture: flowchart/gram-class-then-data] [fixture:
+  flowchart/gram-class-after-shape]
 
 ### Shapes
 
@@ -1565,14 +1939,19 @@ of those words, the one that names the shape itself and is not abbreviated, not
 a word for a use, such as `process`, `decision`, or `subroutine`, and not an
 abbreviation, such as `rect`, `diam`, or `fr-rect`. A bracketed shape is drawn
 as the shape of its name in a data block: `A[x]` and `A@{ shape: rectangle }`
-are drawn alike. [fixture: flowchart/db-data-block-shape-names] The shape `(-` …
-`-)` has no such word: mermaid.js defines no shape `ellipse`, so
-`A@{ shape: ellipse }` is rejected by mermaid.js and accepted here (see
+are drawn alike.
+
+[fixture: flowchart/db-data-block-shape-names]
+
+The shape `(-` … `-)` has no such word: mermaid.js defines no shape `ellipse`,
+so `A@{ shape: ellipse }` is rejected by mermaid.js and accepted here (see
 [`embedded-data-opaque`](../known-divergences/embedded-data-opaque.md)), and
 drawing `A(-x-)` fails, which
 [issue #5976](https://github.com/mermaid-js/mermaid/issues/5976) reports, open
 and approved as a bug as of 2026-10-01; its acceptance and its Db are not
-affected. [fixture: flowchart/div-data-block-shape-ellipse]
+affected.
+
+[fixture: flowchart/div-data-block-shape-ellipse]
 
 The two `(` of a circle and the two `{` of a hexagon are separate units, but no
 whitespace or text may come between them: `A( (x) )` is rejected. The two
@@ -1581,8 +1960,9 @@ together are one delimiter (see
 `[|` carries one property, a name and a value, each a single id run:
 `A[|borders:lt|text]` has the property `borders` with the value `lt`. Its name
 is `rectangle`, as that of `[` … `]`: the property changes nothing in how
-mermaid.js draws the rectangle. [fixture: flowchart/gram-circle-gap] [fixture:
-flowchart/gram-rect-property]
+mermaid.js draws the rectangle.
+
+[fixture: flowchart/gram-circle-gap] [fixture: flowchart/gram-rect-property]
 
 ### Labels
 
@@ -1596,23 +1976,31 @@ when it starts with a markdown string, and `text` otherwise. Its **value** is
 the content of the string or markdown string that it starts with (see
 [Strings](#strings)), followed by the [written text](../ast.md#nodes) of the
 rest of the label; for a label that starts with a text run, it is its written
-text. ``A["`x`" y]`` has the value `x y` of kind `markdown`. [fixture:
-flowchart/gram-string-markdown-then-text] It keeps the whitespace inside it; it
-has whitespace at its ends only inside the content of that string, or when the
-label is all whitespace. It keeps what the author wrote, not the converted form;
-mermaid.js also trims it.
+text. ``A["`x`" y]`` has the value `x y` of kind `markdown`.
+
+[fixture: flowchart/gram-string-markdown-then-text]
+
+It keeps the whitespace inside it; it has whitespace at its ends only inside the
+content of that string, or when the label is all whitespace. It keeps what the
+author wrote, not the converted form; mermaid.js also trims it.
 
 - `A["x" y]` is accepted with the kind `string` and the value `x y`, while
   `A[ "x" ]` is rejected, because a text run cannot come before a string.
+
   [fixture: flowchart/gram-label-string-then-text] [fixture:
   flowchart/gram-label-text-then-string]
+
 - A label cannot be empty: `A[]` and `A[""]` are rejected. `A[ ]` is accepted;
-  its value is one space. [fixture: flowchart/gram-label-empty] [fixture:
+  its value is one space.
+
+  [fixture: flowchart/gram-label-empty] [fixture:
   flowchart/gram-label-empty-string] [fixture: flowchart/gram-label-space]
+
 - A directive inside a text run does not change the label: the value of
   `A[x %%{init: {}}%% y]` is `x`, two spaces, and `y`, as in mermaid.js, and the
-  directive lies inside a text unit of the label. [fixture:
-  flowchart/gram-label-across-directive]
+  directive lies inside a text unit of the label.
+
+  [fixture: flowchart/gram-label-across-directive]
 
 ### Links
 
@@ -1631,16 +2019,23 @@ character, followed by any further characters; its kind is `string`, `markdown`,
 or `text`, and its value is defined as for a label.
 
 - `A e1@-->B`, `A e1@ --> B`, and `A e1@-- t -->B` give the link the id `e1`;
-  `A e1 @-->B` is rejected, because an edge id must end with its `@`. [fixture:
-  flowchart/gram-edge-id] [fixture: flowchart/gram-edge-id-space-after]
-  [fixture: flowchart/gram-edge-id-link-text] [fixture:
+  `A e1 @-->B` is rejected, because an edge id must end with its `@`.
+
+  [fixture: flowchart/gram-edge-id] [fixture:
+  flowchart/gram-edge-id-space-after] [fixture:
+  flowchart/gram-edge-id-link-text] [fixture:
   flowchart/gram-edge-id-space-before-at]
-- `A-->|t| B` is accepted: a `space` may follow the closing `|`. [fixture:
-  flowchart/gram-pipe-label-space-after]
+
+- `A-->|t| B` is accepted: a `space` may follow the closing `|`.
+
+  [fixture: flowchart/gram-pipe-label-space-after]
+
 - `A-- "a"b -->B` has the link text `ab` of kind `string`, and `A-- "a" x -->B`
   the text `a x`; a markdown string may be continued in the same way.
   `A-- b"a" -->B` and `A-- "a""b" -->B` are rejected, because a string can only
-  come first. [fixture: flowchart/gram-link-text-string-then-text] [fixture:
+  come first.
+
+  [fixture: flowchart/gram-link-text-string-then-text] [fixture:
   flowchart/gram-link-text-string-space-text] [fixture:
   flowchart/gram-link-text-markdown-then-text] [fixture:
   flowchart/gram-link-text-text-then-string] [fixture:
@@ -1656,60 +2051,82 @@ name-piece         = number | id-run | letter | space | "-" | "&" | ":" | "*" | 
 ```
 
 The name after `subgraph` is required: mermaid.js accepts `subgraph` alone in
-its grammar and then rejects it in its Db. [fixture:
-flowchart/gram-subgraph-no-name] [fixture:
-flowchart/gram-subgraph-nested-no-name] The name is a label of its own: it is a
-string, a markdown string, or a name piece, followed by any further name pieces;
-its kind is `string`, `markdown`, or `text` as for a label, and its value is
-defined as for a label. mermaid.js reads it as the name text that
+its grammar and then rejects it in its Db.
+
+[fixture: flowchart/gram-subgraph-no-name] [fixture:
+flowchart/gram-subgraph-nested-no-name]
+
+The name is a label of its own: it is a string, a markdown string, or a name
+piece, followed by any further name pieces; its kind is `string`, `markdown`, or
+`text` as for a label, and its value is defined as for a label. mermaid.js reads
+it as the name text that
 [Rejections outside the grammar](#rejections-outside-the-grammar) defines.
 `subgraph "a"b` has the name `ab`, which is its id and its title;
 `subgraph "a" b` has the name `a b`; a markdown string may be continued in the
 same way. `subgraph "a""b"` is rejected. In `subgraph b"a"`, the `"` are
 characters of the id run `b"a"` (see
-[The statement context](#the-statement-context)), which is the name. [fixture:
-flowchart/gram-subgraph-name-string-then-text] [fixture:
+[The statement context](#the-statement-context)), which is the name.
+
+[fixture: flowchart/gram-subgraph-name-string-then-text] [fixture:
 flowchart/gram-subgraph-name-string-space-text] [fixture:
 flowchart/gram-subgraph-name-markdown-then-text] [fixture:
 flowchart/gram-subgraph-name-string-then-text-title] [fixture:
 flowchart/gram-subgraph-name-string-then-string] [fixture:
 flowchart/gram-subgraph-name-pieces] [fixture:
-flowchart/gram-subgraph-name-quote-inside] The `end` unit holds the whitespace
-after it, so a statement may follow `end` on the same line: `end B` is accepted.
-[fixture: flowchart/gram-subgraph-end-then-statement] The name keeps the
-whitespace inside it: `subgraph a   b` has the title `a`, three spaces, and `b`.
+flowchart/gram-subgraph-name-quote-inside]
+
+The `end` unit holds the whitespace after it, so a statement may follow `end` on
+the same line: `end B` is accepted.
+
+[fixture: flowchart/gram-subgraph-end-then-statement]
+
+The name keeps the whitespace inside it: `subgraph a   b` has the title `a`,
+three spaces, and `b`.
+
 [fixture: flowchart/db-subgraph-title-inner-spaces]
 
 The name may contain keywords, which are then part of its text. `end` changes
 what follows, because of how it is read: in a name it takes the whitespace after
 it, line feeds included: `subgraph a end`, a line break, `A`, a line break, and
 `end` is a subgraph named `a end`, a line break, and `A`, with no members.
-[fixture: flowchart/gram-subgraph-name-end] So `subgraph Front end`, `A`, and
-`end` has the title `Front end`, a line feed, and `A`, and no members, while
-`subgraph fe [Front end]` has the id `fe`, the title `Front end`, and the member
-A. [fixture: flowchart/db-subgraph-name-end-word] [fixture:
-flowchart/db-subgraph-id-with-title-spaces] The same holds where a separator
-follows: when the name ends with an `end` unit, the whitespace after it, line
-feeds included, is part of the name; a `;` that follows is then the separator of
-the statement, and an empty description block that follows is the first
-statement of the body, before the separator. `subgraph end`, a line break, and
-`;` has the name `end` and a line feed, which holds whitespace, so the id is
-generated, `subGraph0`, the title is `end`, and the `;` is no member; so does
-the same input with an empty description block in place of the `;`, with
-`"a"end` as the name, with a space after `end`, and with an empty line before
-the `;`. [fixture: flowchart/db-subgraph-name-end-line-feed-then-semicolon]
-[fixture: flowchart/db-subgraph-name-end-line-feed-then-empty-description-block]
-[fixture: flowchart/db-subgraph-string-name-end-line-feed-then-semicolon]
-[fixture: flowchart/db-subgraph-name-end-space-line-feed-then-semicolon]
-[fixture: flowchart/db-subgraph-name-end-blank-line-then-semicolon] A name that
-does not end with an `end` unit ends at the line feed: `subgraph S` or
-`subgraph xend`, a line break, and `;` has the id `S` or `xend`, and the `;` is
-an empty statement of the body, the member `;`, while `subgraph end;` has the id
-`end`. [fixture: flowchart/db-subgraph-name-line-feed-then-semicolon] [fixture:
+
+[fixture: flowchart/gram-subgraph-name-end]
+
+So `subgraph Front end`, `A`, and `end` has the title `Front end`, a line feed,
+and `A`, and no members, while `subgraph fe [Front end]` has the id `fe`, the
+title `Front end`, and the member A.
+
+[fixture: flowchart/db-subgraph-name-end-word] [fixture:
+flowchart/db-subgraph-id-with-title-spaces]
+
+The same holds where a separator follows: when the name ends with an `end` unit,
+the whitespace after it, line feeds included, is part of the name; a `;` that
+follows is then the separator of the statement, and an empty description block
+that follows is the first statement of the body, before the separator.
+`subgraph end`, a line break, and `;` has the name `end` and a line feed, which
+holds whitespace, so the id is generated, `subGraph0`, the title is `end`, and
+the `;` is no member; so does the same input with an empty description block in
+place of the `;`, with `"a"end` as the name, with a space after `end`, and with
+an empty line before the `;`.
+
+[fixture: flowchart/db-subgraph-name-end-line-feed-then-semicolon] [fixture:
+flowchart/db-subgraph-name-end-line-feed-then-empty-description-block] [fixture:
+flowchart/db-subgraph-string-name-end-line-feed-then-semicolon] [fixture:
+flowchart/db-subgraph-name-end-space-line-feed-then-semicolon] [fixture:
+flowchart/db-subgraph-name-end-blank-line-then-semicolon]
+
+A name that does not end with an `end` unit ends at the line feed: `subgraph S`
+or `subgraph xend`, a line break, and `;` has the id `S` or `xend`, and the `;`
+is an empty statement of the body, the member `;`, while `subgraph end;` has the
+id `end`.
+
+[fixture: flowchart/db-subgraph-name-line-feed-then-semicolon] [fixture:
 flowchart/db-subgraph-name-end-in-word-line-feed-then-semicolon] [fixture:
-flowchart/db-subgraph-name-end-semicolon] The documentation of flowcharts of
-mermaid.js warns at its start that the word `end` in all lowercase letters
-breaks a flowchart, and advises capitalizing it or any of its letters
+flowchart/db-subgraph-name-end-semicolon]
+
+The documentation of flowcharts of mermaid.js warns at its start that the word
+`end` in all lowercase letters breaks a flowchart, and advises capitalizing it
+or any of its letters
 ([flowchart.md](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L10-L12));
 it links to a workaround in
 [issue #1444](https://github.com/mermaid-js/mermaid/issues/1444), "Some node
@@ -1721,18 +2138,23 @@ A name cannot contain a `click` unit, which only starts a click statement (see
 `subgraph 1click me`, and `subgraph Handle click events` are rejected here,
 while mermaid.js accepts them (see [Known divergences](#known-divergences)).
 Inside an id run, `click` is no unit: `subgraph xclick me` has `xclick` in its
-title. [fixture: flowchart/gram-subgraph-name-click-inside-id-run]
+title.
+
+[fixture: flowchart/gram-subgraph-name-click-inside-id-run]
 
 A `space` before `[` is a `name-piece` of the grammar, though not part of the
 value of the name (see
 [FlowchartSubgraphStatement](../ast/flowchart.md#flowchartsubgraphstatement)),
 and nothing may follow the closing `]` but the separator: `subgraph S [t]` is
 accepted, and `subgraph S[t]` followed by a space and a line break is rejected.
+
 [fixture: flowchart/gram-subgraph-title-space-before] [fixture:
 flowchart/gram-subgraph-title-space-after]
 
 The lines of a subgraph are the lines of the diagram, so subgraphs nest in them
-to any depth. [fixture: flowchart/gram-subgraph-nested-three-levels] [fixture:
+to any depth.
+
+[fixture: flowchart/gram-subgraph-nested-three-levels] [fixture:
 flowchart/gram-subgraph-nested-string-title] [fixture:
 flowchart/gram-subgraph-nested-markdown-name] [fixture:
 flowchart/gram-subgraph-nested-semicolons] [fixture:
@@ -1744,8 +2166,9 @@ flowchart/gram-subgraph-body-empty-block] [fixture:
 flowchart/gram-subgraph-nested-end-ignored-semicolon]
 
 Outside a name, each `end` closes the innermost open subgraph, and each needs
-its own: a missing `end` and an `end` with nothing open are rejected. [fixture:
-flowchart/gram-subgraph-end-extra] [fixture:
+its own: a missing `end` and an `end` with nothing open are rejected.
+
+[fixture: flowchart/gram-subgraph-end-extra] [fixture:
 flowchart/gram-subgraph-end-extra-nested] [fixture:
 flowchart/gram-subgraph-end-missing] [fixture:
 flowchart/gram-subgraph-end-missing-nested] [fixture:
@@ -1760,9 +2183,12 @@ flowchart/gram-subgraph-nested-end-line-separator] [fixture:
 flowchart/gram-subgraph-nested-end-empty-block] [fixture:
 flowchart/gram-subgraph-nested-end-ignored-semicolon] [fixture:
 flowchart/gram-subgraph-nested-end-same-line] [fixture:
-flowchart/gram-subgraph-name-end] What follows an `end` stands in the subgraph
-around it, or in the diagram after the outermost `end`, a direction statement
-included. [fixture: flowchart/db-subgraph-dir-after-nested-end] [fixture:
+flowchart/gram-subgraph-name-end]
+
+What follows an `end` stands in the subgraph around it, or in the diagram after
+the outermost `end`, a direction statement included.
+
+[fixture: flowchart/db-subgraph-dir-after-nested-end] [fixture:
 flowchart/db-subgraph-dir-after-nested-ends] [fixture:
 flowchart/db-subgraph-dir-after-nested-end-comment-line] [fixture:
 flowchart/db-subgraph-dir-after-nested-end-directive] [fixture:
@@ -1791,13 +2217,16 @@ name                 = ( number | letter | id-run | "v" | "-" | "," | ":" | "&" 
 A `;` that the line rule does not ignore ends the statement:
 `style A fill:red;stroke:blue` gives A the style `fill:red` and makes the vertex
 `stroke:blue`, and so does `classDef c fill:red;stroke:blue` for the class `c`,
-while with `,` in place of the `;` both are styles. [fixture:
-flowchart/gram-style-semicolon-ends-statement] [fixture:
+while with `,` in place of the `;` both are styles.
+
+[fixture: flowchart/gram-style-semicolon-ends-statement] [fixture:
 flowchart/gram-classdef-semicolon-ends-statement] [fixture:
-flowchart/db-style-comma-two-styles] So
-`linkStyle 0 stroke:red;stroke-width:2px` makes the vertex `stroke-width:2px`,
-and `style A fill:red; style B fill:blue` is two statements. [fixture:
-flowchart/gram-linkstyle-semicolon-ends-statement] [fixture:
+flowchart/db-style-comma-two-styles]
+
+So `linkStyle 0 stroke:red;stroke-width:2px` makes the vertex
+`stroke-width:2px`, and `style A fill:red; style B fill:blue` is two statements.
+
+[fixture: flowchart/gram-linkstyle-semicolon-ends-statement] [fixture:
 flowchart/gram-style-semicolon-two-statements] [fixture:
 flowchart/gram-style-keyword-inside-style]
 
@@ -1805,8 +2234,9 @@ In the tree, a style is its written text, which starts right after the `,`
 before it, with the whitespace there, and ends at its last character that is not
 whitespace: `style A fill:#f00 ,  stroke:#333 ` has the styles `fill:#f00` and
 `stroke:#333` after two spaces, and a style that is all whitespace is null (see
-[ast/flowchart.md](../ast/flowchart.md#flowchartstylestatement)). [fixture:
-flowchart/db-style-written-text-whitespace] [fixture:
+[ast/flowchart.md](../ast/flowchart.md#flowchartstylestatement)).
+
+[fixture: flowchart/db-style-written-text-whitespace] [fixture:
 flowchart/db-style-whitespace-only]
 
 In a `classDef` statement, a `,` right after a `\` in the diagram text does not
@@ -1816,16 +2246,20 @@ one style. `classDef c fill:x\,y` has the one style `fill:x\,y`, and so has
 while `classDef c fill:x\ ,y` has two, and `style A fill:x\,y` and
 `linkStyle 0 fill:x\,y` have the two styles `fill:x\` and `y`. The grammar still
 reads that `,` and needs a style after it, so `classDef c fill:x\,` is rejected,
-as in mermaid.js, while `classDef c fill:x\, ` is accepted. [fixture:
-flowchart/gram-classdef-escaped-comma-one-style] [fixture:
+as in mermaid.js, while `classDef c fill:x\, ` is accepted.
+
+[fixture: flowchart/gram-classdef-escaped-comma-one-style] [fixture:
 flowchart/gram-classdef-escaped-comma-directive] [fixture:
 flowchart/gram-style-escaped-comma-two-styles] [fixture:
 flowchart/gram-classdef-escaped-comma-at-end] [fixture:
 flowchart/gram-classdef-escaped-comma-then-space] [fixture:
-flowchart/db-classdef-escape-space-before-comma] A style needs at least one
-unit: `style A fill:#f00,` is rejected, while `style A fill:#f00, ` is accepted.
-A style may contain only those units: `fill:rgb(0,0,0)` is rejected, because `(`
-starts a label, and `fill:default` is rejected, because `default` is a keyword.
+flowchart/db-classdef-escape-space-before-comma]
+
+A style needs at least one unit: `style A fill:#f00,` is rejected, while
+`style A fill:#f00, ` is accepted. A style may contain only those units:
+`fill:rgb(0,0,0)` is rejected, because `(` starts a label, and `fill:default` is
+rejected, because `default` is a keyword.
+
 [fixture: flowchart/gram-style-parenthesis] [fixture:
 flowchart/gram-style-keyword]
 
@@ -1833,19 +2267,24 @@ An `id-list` accepts the same units as an `id`, and is read as a list: its
 elements are the parts between its `,` units, so it has one element more than it
 has `,` units, and a part that is empty is an empty element. `class ,A c` gives
 A the class c, `class , c` is accepted, and `classDef a,,b` defines the classes
-`a`, the empty name, and `b`, as in mermaid.js. [fixture:
-flowchart/db-class-ids-empty-first] [fixture: flowchart/db-class-ids-only-comma]
-[fixture: flowchart/db-classdef-names-empty] [fixture:
-flowchart/db-classdef-names-trailing-comma] The id of a `style` statement, the
-second id of a `class` statement, the class after `:::`, and the id of a vertex
-are not lists: `style A,B fill:red` makes the vertex `A,B`. [fixture:
-flowchart/gram-style-id-comma] [fixture: flowchart/gram-class-name-comma]
-[fixture: flowchart/gram-vertex-class-comma] [fixture:
-flowchart/gram-vertex-id-comma]
+`a`, the empty name, and `b`, as in mermaid.js.
+
+[fixture: flowchart/db-class-ids-empty-first] [fixture:
+flowchart/db-class-ids-only-comma] [fixture: flowchart/db-classdef-names-empty]
+[fixture: flowchart/db-classdef-names-trailing-comma]
+
+The id of a `style` statement, the second id of a `class` statement, the class
+after `:::`, and the id of a vertex are not lists: `style A,B fill:red` makes
+the vertex `A,B`.
+
+[fixture: flowchart/gram-style-id-comma] [fixture:
+flowchart/gram-class-name-comma] [fixture: flowchart/gram-vertex-class-comma]
+[fixture: flowchart/gram-vertex-id-comma]
 
 After `interpolate` and its name, a `space` must be followed by styles:
-`linkStyle 0 interpolate basis` followed by a space is rejected. [fixture:
-flowchart/gram-interpolate-trailing-space]
+`linkStyle 0 interpolate basis` followed by a space is rejected.
+
+[fixture: flowchart/gram-interpolate-trailing-space]
 
 ### Click statements
 
@@ -1864,6 +2303,7 @@ links to the URL in the first string, with an optional tooltip and target; the
 third calls the function named by a name. In each, a string after the call or
 the link is the tooltip. The click ids are a list as an `id-list` is:
 `click A,,B href "u" "tip"` gives the tooltip to A, to the empty id, and to B.
+
 [fixture: flowchart/db-click-ids-empty-tooltip] [fixture:
 flowchart/gram-click-call] [fixture: flowchart/gram-click-href] [fixture:
 flowchart/gram-click-url-target]
@@ -1877,7 +2317,9 @@ id `-->` with the callback name `B`; `click end href "u"` and
 link; `click & B` is one on the id `&` with the callback name `B`, and
 `click B C` one on the id `B` with the callback name `C`. A click id that names
 no vertex still gets its tooltip: `click --> cb "tip"` gives the tooltip `tip`
-to the id `-->`. [fixture: flowchart/lex-click-id-arrow-callback] [fixture:
+to the id `-->`.
+
+[fixture: flowchart/lex-click-id-arrow-callback] [fixture:
 flowchart/lex-click-id-arrow] [fixture: flowchart/lex-click-id-keyword]
 [fixture: flowchart/lex-click-id-shape] [fixture:
 flowchart/gram-click-ampersand-id] [fixture:
@@ -1896,14 +2338,18 @@ and a vertex statement, and in `accDescr {};A` the `;` is an empty statement
 before the vertex statement, and `A accDescr {}`, with the block after the last
 unit of the statement, is a vertex statement and a description block statement,
 while `A accDescr {}-->B`, with the block inside the statement, is rejected (see
-[Accessibility values](#accessibility-values)). [fixture:
-flowchart/gram-acc-descr-block-empty] [fixture:
+[Accessibility values](#accessibility-values)).
+
+[fixture: flowchart/gram-acc-descr-block-empty] [fixture:
 flowchart/gram-acc-descr-block-empty-then-statement] [fixture:
 flowchart/gram-acc-descr-block-empty-then-semicolon] [fixture:
 flowchart/gram-empty-description-block-after-vertex] [fixture:
-flowchart/gram-empty-description-block-before-link] The title is the rest of the
-line, `;` and `#` included: `accTitle: a;b #c` has the title `a;b #c`. [fixture:
-flowchart/gram-acc-title-semicolon]
+flowchart/gram-empty-description-block-before-link]
+
+The title is the rest of the line, `;` and `#` included: `accTitle: a;b #c` has
+the title `a;b #c`.
+
+[fixture: flowchart/gram-acc-title-semicolon]
 
 ### Rejections outside the grammar
 
@@ -1918,25 +2364,30 @@ mermaid.js rejects some inputs that the grammar accepts, while it builds the Db:
   before it, to each vertex of its target group, and no other statement makes an
   edge; the edges of a link in the body of a subgraph count where the link is
   written. So `A & B --> C & D` makes four edges, `A --> B --> C` two, and
-  `A --> B & C --> D` two for each of its links. [fixture:
-  flowchart/gram-linkstyle-group-edges] [fixture:
+  `A --> B & C --> D` two for each of its links.
+
+  [fixture: flowchart/gram-linkstyle-group-edges] [fixture:
   flowchart/gram-linkstyle-group-edges-out-of-range] [fixture:
   flowchart/gram-linkstyle-chain-edges] [fixture:
   flowchart/gram-linkstyle-chain-edges-out-of-range] [fixture:
   flowchart/gram-linkstyle-chain-group-edges] [fixture:
   flowchart/gram-linkstyle-chain-group-edges-out-of-range] [fixture:
   flowchart/gram-linkstyle-link-in-subgraph] [fixture:
-  flowchart/gram-linkstyle-repeated-link] `linkStyle 00 stroke:red` and a
-  `linkStyle` before the link it names are rejected, with and without
-  `interpolate`. mermaid.js rejects them with a `TypeError` in
+  flowchart/gram-linkstyle-repeated-link]
+
+  `linkStyle 00 stroke:red` and a `linkStyle` before the link it names are
+  rejected, with and without `interpolate`. mermaid.js rejects them with a
+  `TypeError` in
   [`updateLink()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L417-L439)
   and
   [`updateLinkInterpolate()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L403-L412),
-  which do not check the index they receive as text. [fixture:
-  flowchart/linkstyle-index-out-of-range] [fixture:
+  which do not check the index they receive as text.
+
+  [fixture: flowchart/linkstyle-index-out-of-range] [fixture:
   flowchart/gram-linkstyle-leading-zero] [fixture:
   flowchart/gram-linkstyle-before-link] [fixture:
   flowchart/gram-interpolate-out-of-range]
+
 - **Too many edges.** An input with more edges than the site configuration's
   `maxEdges` (500 by default) is rejected. The limit is in the site
   configuration, not in the text, so this check is made like the values that
@@ -1944,8 +2395,10 @@ mermaid.js rejects some inputs that the grammar accepts, while it builds the Db:
   [Configuration (reference)](../../../tests/docs/configuration.md#configuration-reference)):
   whoever holds the configuration compares with it the number of edges that the
   tree makes, as **Link style numbers** above counts them. The link style
-  numbers above, by contrast, are checked from the tree alone. [fixture:
-  flowchart/config-max-edges-exceeded]
+  numbers above, by contrast, are checked from the tree alone.
+
+  [fixture: flowchart/config-max-edges-exceeded]
+
 - **Subgraph members.** The **members** of a subgraph are, in the order of its
   body: for each vertex statement, the ids of the vertices of its last group,
   then those of the group before it, and so on back to the first group; for each
@@ -1961,9 +2414,10 @@ mermaid.js rejects some inputs that the grammar accepts, while it builds the Db:
   `hasOwnProperty` and then `A`, or with `hasOwnProperty` followed by a
   direction statement and `A`, by an empty statement, by an accessibility
   statement, or by a nested subgraph; an earlier subgraph that has
-  `hasOwnProperty` does not change this. [fixture:
-  flowchart/gram-subgraph-member-has-own-property-then-member] [fixture:
-  flowchart/gram-subgraph-member-has-own-property-twice] [fixture:
+  `hasOwnProperty` does not change this.
+
+  [fixture: flowchart/gram-subgraph-member-has-own-property-then-member]
+  [fixture: flowchart/gram-subgraph-member-has-own-property-twice] [fixture:
   flowchart/gram-subgraph-member-has-own-property-link-target] [fixture:
   flowchart/gram-subgraph-member-has-own-property-group] [fixture:
   flowchart/gram-subgraph-member-has-own-property-direction-then-member]
@@ -1979,29 +2433,33 @@ mermaid.js rejects some inputs that the grammar accepts, while it builds the Db:
   [fixture:
   flowchart/gram-subgraph-member-has-own-property-nested-outer-end-missing]
   [fixture: flowchart/gram-subgraph-member-has-own-property-numbered-nested]
-  [fixture: flowchart/gram-subgraph-member-has-own-property-then-extra-end] A
-  subgraph with `hasOwnProperty` alone, with `A` and then `hasOwnProperty`, with
-  `hasOwnProperty-->A`, whose members are `A` and then `hasOwnProperty`, or with
-  `hasOwnProperty` followed only by statements that add no member is accepted,
-  and so is a nested subgraph with the member `hasOwnProperty` followed by `A`
-  in the subgraph around it. [fixture:
-  flowchart/db-subgraph-member-has-own-property-alone] [fixture:
+  [fixture: flowchart/gram-subgraph-member-has-own-property-then-extra-end]
+
+  A subgraph with `hasOwnProperty` alone, with `A` and then `hasOwnProperty`,
+  with `hasOwnProperty-->A`, whose members are `A` and then `hasOwnProperty`, or
+  with `hasOwnProperty` followed only by statements that add no member is
+  accepted, and so is a nested subgraph with the member `hasOwnProperty`
+  followed by `A` in the subgraph around it.
+
+  [fixture: flowchart/db-subgraph-member-has-own-property-alone] [fixture:
   flowchart/db-subgraph-member-has-own-property-last] [fixture:
   flowchart/db-subgraph-member-has-own-property-link-source] [fixture:
   flowchart/db-subgraph-member-has-own-property-acc-title-last] [fixture:
   flowchart/db-subgraph-member-has-own-property-direction] [fixture:
   flowchart/db-subgraph-member-has-own-property-no-member-statements] [fixture:
   flowchart/db-subgraph-member-has-own-property-in-nested] [fixture:
-  flowchart/db-subgraph-member-has-own-property-two-levels-down] The member
-  `hasOwnProperty` may be any kind of member: the id of a nested subgraph, as
-  with `subgraph hasOwnProperty`, `subgraph "hasOwnProperty"`,
+  flowchart/db-subgraph-member-has-own-property-two-levels-down]
+
+  The member `hasOwnProperty` may be any kind of member: the id of a nested
+  subgraph, as with `subgraph hasOwnProperty`, `subgraph "hasOwnProperty"`,
   `subgraph hasOwnProperty [T]`, and `subgraph " hasOwnProperty "[T]`; or the
   value of an accessibility statement, such as an `accDescr {` block whose text
   is `hasOwnProperty`. Each of them followed by `A` is rejected. A nested
   `subgraph x[hasOwnProperty]` has the id `x`, and a nested
   `subgraph hasOwnProperty ` with a space after the name has the id `subGraph0`,
-  so followed by `A` they are accepted. [fixture:
-  flowchart/gram-subgraph-member-has-own-property-nested-id] [fixture:
+  so followed by `A` they are accepted.
+
+  [fixture: flowchart/gram-subgraph-member-has-own-property-nested-id] [fixture:
   flowchart/gram-subgraph-member-has-own-property-nested-id-third-level]
   [fixture: flowchart/gram-subgraph-member-has-own-property-nested-string-id]
   [fixture: flowchart/gram-subgraph-member-has-own-property-nested-id-title]
@@ -2009,8 +2467,9 @@ mermaid.js rejects some inputs that the grammar accepts, while it builds the Db:
   flowchart/gram-subgraph-member-has-own-property-nested-string-space-id-title]
   [fixture: flowchart/gram-subgraph-member-has-own-property-acc-descr-block]
   [fixture: flowchart/db-subgraph-member-has-own-property-nested-title]
-  [fixture: flowchart/db-subgraph-member-has-own-property-nested-name-space] The
-  **id** of a subgraph is its name text without the whitespace at its ends,
+  [fixture: flowchart/db-subgraph-member-has-own-property-nested-name-space]
+
+  The **id** of a subgraph is its name text without the whitespace at its ends,
   except that a subgraph without a title whose name text contains whitespace
   gets a generated id, `subGraph` followed by a number, which is never
   `hasOwnProperty`. The **name text** is the text that mermaid.js reads as the
@@ -2022,48 +2481,62 @@ mermaid.js rejects some inputs that the grammar accepts, while it builds the Db:
   [FlowchartSubgraphStatement](../ast/flowchart.md#flowchartsubgraphstatement)),
   so only that whitespace after the blocks is read from the source. The `space`
   unit after `subgraph` is not part of it, also when a directive lies in it, as
-  in `subgraph %%{init: {}}%% a`. [fixture:
-  flowchart/db-subgraph-id-directive-in-statement-space] `subgraph a ` with a
-  space after the name has the name text `a` and a space, and gets `subGraph0`.
-  [fixture: flowchart/db-subgraph-name-trailing-space] The whitespace before an
-  empty description block after the name, and between two such blocks, stays in
-  the name text, while the whitespace after the last block that a line feed ends
-  is read as a line feed (see [Whitespace after `}`](#whitespace-after-)) and is
-  no part of it: `subgraph S accDescr {}`, `subgraph S accDescr {};A`, and
+  in `subgraph %%{init: {}}%% a`.
+
+  [fixture: flowchart/db-subgraph-id-directive-in-statement-space]
+
+  `subgraph a ` with a space after the name has the name text `a` and a space,
+  and gets `subGraph0`.
+
+  [fixture: flowchart/db-subgraph-name-trailing-space]
+
+  The whitespace before an empty description block after the name, and between
+  two such blocks, stays in the name text, while the whitespace after the last
+  block that a line feed ends is read as a line feed (see
+  [Whitespace after `}`](#whitespace-after-)) and is no part of it:
+  `subgraph S accDescr {}`, `subgraph S accDescr {};A`, and
   `subgraph "S"accDescr {} accDescr {}` have a name text with a space, and get
   `subGraph0`, while `subgraph "S"accDescr {}`, also with a space after the
-  block at the end of its line, has the name text `S` and the id `S`. [fixture:
-  flowchart/gram-empty-description-block-after-subgraph-name] [fixture:
-  flowchart/db-subgraph-name-space-before-empty-description-block] [fixture:
-  flowchart/db-subgraph-name-space-between-empty-description-blocks] [fixture:
-  flowchart/db-subgraph-name-text-without-empty-description-block] [fixture:
-  flowchart/db-subgraph-name-space-after-empty-description-block] A string or a
-  directive before the space changes nothing of this: `subgraph "S"` and
-  `subgraph S%%{init: {}}%%`, each followed by a space at the end of its line,
-  have the id `subGraph0`, and so does `subgraph S` followed by a space; a later
-  `A-->S` then links to a new vertex `S`. In `subgraph "click me"`, `click` is
-  inside a string and no `click` unit, so the name text is `click me`, the id
-  `subGraph0`, and the title `click me`. [fixture:
-  flowchart/db-subgraph-string-name-trailing-space] [fixture:
+  block at the end of its line, has the name text `S` and the id `S`.
+
+  [fixture: flowchart/gram-empty-description-block-after-subgraph-name]
+  [fixture: flowchart/db-subgraph-name-space-before-empty-description-block]
+  [fixture: flowchart/db-subgraph-name-space-between-empty-description-blocks]
+  [fixture: flowchart/db-subgraph-name-text-without-empty-description-block]
+  [fixture: flowchart/db-subgraph-name-space-after-empty-description-block]
+
+  A string or a directive before the space changes nothing of this:
+  `subgraph "S"` and `subgraph S%%{init: {}}%%`, each followed by a space at the
+  end of its line, have the id `subGraph0`, and so does `subgraph S` followed by
+  a space; a later `A-->S` then links to a new vertex `S`. In
+  `subgraph "click me"`, `click` is inside a string and no `click` unit, so the
+  name text is `click me`, the id `subGraph0`, and the title `click me`.
+
+  [fixture: flowchart/db-subgraph-string-name-trailing-space] [fixture:
   flowchart/db-subgraph-name-directive-trailing-space] [fixture:
   flowchart/db-subgraph-name-trailing-space-then-vertex] [fixture:
   flowchart/gram-subgraph-string-click-title] [fixture:
-  flowchart/db-subgraph-string-click-name-member] So a nested
-  `subgraph "hasOwnProperty"accDescr {}` has the id `hasOwnProperty`, and so
-  does one with two blocks written together, while with a space before the block
-  or between the blocks it has a generated id. [fixture:
+  flowchart/db-subgraph-string-click-name-member]
+
+  So a nested `subgraph "hasOwnProperty"accDescr {}` has the id
+  `hasOwnProperty`, and so does one with two blocks written together, while with
+  a space before the block or between the blocks it has a generated id.
+
+  [fixture:
   flowchart/gram-subgraph-member-has-own-property-nested-string-before-block]
   [fixture:
   flowchart/db-subgraph-member-has-own-property-nested-space-before-block]
   [fixture:
   flowchart/db-subgraph-member-has-own-property-nested-space-between-blocks]
   [fixture: flowchart/gram-subgraph-member-has-own-property-nested-blocks-glued]
+
   The name is not reserved anywhere else. mermaid.js keeps the members it has
   seen as the keys of a plain object in
   [`addSubGraph()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L712-L734)
   and asks the object's `hasOwnProperty` function about each member; keeping the
   member `hasOwnProperty` replaces that function with `true`, so the next member
   makes it throw a `TypeError`.
+
 - **Data blocks.** mermaid.js reads each data block as YAML and rejects some of
   them; this specification does not (see
   [Known divergences](#known-divergences)).
@@ -2085,8 +2558,10 @@ flowchart, and show in it as follows.
   `click A hr%%{init: {}}%%ef "u"`,
   `linkStyle 0 interpo%%{init: {}}%%late basis`, and
   `A-->B dir%%{init: {}}%%ection TB`; the `:::` in `A::%%{init: {}}%%:c`; and
-  the `((` in `A(%%{init: {}}%%(x))`. [fixture: flowchart/div-directive-in-id]
-  [fixture: flowchart/div-directive-in-id-starting-with-style] [fixture:
+  the `((` in `A(%%{init: {}}%%(x))`.
+
+  [fixture: flowchart/div-directive-in-id] [fixture:
+  flowchart/div-directive-in-id-starting-with-style] [fixture:
   flowchart/div-directive-inside-arrow] [fixture:
   flowchart/div-directive-in-arrow-length] [fixture:
   flowchart/div-directive-in-arrow-dotted] [fixture:
@@ -2100,14 +2575,16 @@ flowchart, and show in it as follows.
   flowchart/div-directive-in-class-def-id-list] [fixture:
   flowchart/div-directive-in-edge-id] [fixture:
   flowchart/div-directive-in-interpolate-name]
+
 - **[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.md).**
   On a line that matches the `style` rule, the ignored `;` inside a name, a
   number, a keyword, an arrow, or a delimiter makes the input rejected here,
   while mermaid.js accepts it: `A[style:#x] --> B;b`,
   `linkStyle 1;0 stroke:red`, `sub;graph S`, `A[style:#x] -;-> B`,
   `A[style:#x] -;- t --> B`, and the delimiters `::;:`, `(;(`, `[;(`, `{;{`, and
-  `@;{`, each after `A[style:#x];` or on such a line. [fixture:
-  flowchart/div-ignored-semicolon-in-id] [fixture:
+  `@;{`, each after `A[style:#x];` or on such a line.
+
+  [fixture: flowchart/div-ignored-semicolon-in-id] [fixture:
   flowchart/div-ignored-semicolon-in-id-in-group] [fixture:
   flowchart/div-ignored-semicolon-in-edge-id] [fixture:
   flowchart/div-ignored-semicolon-in-css-class] [fixture:
@@ -2124,24 +2601,33 @@ flowchart, and show in it as follows.
   flowchart/div-ignored-semicolon-in-cylinder-opening] [fixture:
   flowchart/div-ignored-semicolon-in-hexagon-opening] [fixture:
   flowchart/div-ignored-semicolon-in-data-block-start]
+
 - **[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.md).**
   The content of a data block is not read. mermaid.js reads it as YAML and
   rejects content that is not valid YAML and content that names an unknown
   shape, and a vertex whose content holds a line break and is YAML whose value
   is null, as in `A@{`, a line break, and `}`, while on one line, as in `A@{ }`,
-  both accept it; here they are accepted. [fixture:
-  flowchart/div-data-block-line-break-only] [fixture:
-  flowchart/gram-data-block-space-only] A line with only `%%` in a data block is
-  no comment line, so it stays in the content, which mermaid.js then rejects as
-  YAML: `A@{`, a line `%%`, a line `shape: circle`, and a line `}` is rejected
-  there and accepted here, and without the `%%` line both accept it. [fixture:
-  flowchart/div-data-invalid-yaml] [fixture: flowchart/div-data-unknown-shape]
-  [fixture: flowchart/div-data-block-bare-marker-line] [fixture:
+  both accept it; here they are accepted.
+
+  [fixture: flowchart/div-data-block-line-break-only] [fixture:
+  flowchart/gram-data-block-space-only]
+
+  A line with only `%%` in a data block is no comment line, so it stays in the
+  content, which mermaid.js then rejects as YAML: `A@{`, a line `%%`, a line
+  `shape: circle`, and a line `}` is rejected there and accepted here, and
+  without the `%%` line both accept it.
+
+  [fixture: flowchart/div-data-invalid-yaml] [fixture:
+  flowchart/div-data-unknown-shape] [fixture:
+  flowchart/div-data-block-bare-marker-line] [fixture:
   flowchart/gram-data-block-shape-on-own-line]
+
 - **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.md).**
   In mermaid.js, an HTML tag that starts in the frontmatter can change how a `"`
-  of the diagram is read; here it cannot. [fixture:
-  flowchart/html-tag-starts-in-frontmatter]
+  of the diagram is read; here it cannot.
+
+  [fixture: flowchart/html-tag-starts-in-frontmatter]
+
 - **[`click-reserved-word`](../known-divergences/click-reserved-word.md).** A
   `click` unit that does not start a click statement makes the input rejected
   here (see [Click and callbacks](#click-and-callbacks)), while mermaid.js
@@ -2153,8 +2639,9 @@ flowchart, and show in it as follows.
   a style, as in `style A fill:red click "" x`; and a `click` in a subgraph
   name, with click ids after it, as in `subgraph click me`,
   `subgraph 1click me`, `subgraph Handle click events`, and
-  `subgraph click a,b`, or without, as in `subgraph click "" y`. [fixture:
-  flowchart/gram-click-mid-statement-tooltip] [fixture:
+  `subgraph click a,b`, or without, as in `subgraph click "" y`.
+
+  [fixture: flowchart/gram-click-mid-statement-tooltip] [fixture:
   flowchart/gram-click-bare-click-before-href] [fixture:
   flowchart/gram-click-bare-before-click-statement] [fixture:
   flowchart/gram-click-bare-before-vertex-statement] [fixture:
@@ -2166,6 +2653,7 @@ flowchart, and show in it as follows.
   flowchart/db-subgraph-name-click-word] [fixture:
   flowchart/gram-subgraph-name-click-comma] [fixture:
   flowchart/gram-subgraph-name-bare-click]
+
 - **[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md).**
   An empty string, an empty call, and, neither where a statement starts nor
   before the separator of a statement or of the header, an empty description
@@ -2180,20 +2668,24 @@ flowchart, and show in it as follows.
   empty call inside a statement, as in `A call ()-->B`, after the last unit of a
   statement, as in `A call ()`, and in a click statement, as in
   `click A call ()cb`; and an empty description block inside a statement, as in
-  `A accDescr {}-->B`. [fixture: flowchart/lex-empty-string-line] [fixture:
+  `A accDescr {}-->B`.
+
+  [fixture: flowchart/lex-empty-string-line] [fixture:
   flowchart/lex-empty-string] [fixture: flowchart/tokens-empty-string-in-label]
   [fixture: flowchart/gram-click-empty-string-before-id] [fixture:
   flowchart/header-empty-string-before-direction] [fixture:
   flowchart/gram-empty-call-before-link] [fixture:
   flowchart/gram-empty-call-after-vertex] [fixture:
   flowchart/gram-click-empty-call-before-callback] [fixture:
-  flowchart/gram-empty-description-block-before-link] After the last unit of a
-  statement this covers `A "``"`, `A:::c ""`, `A --> B ""`, `A --> B call ()`,
-  `A@{}""`, `A@{}call ()`, `A "";B`, `A call ();B`, `A "" ""`, `A "" call ()`,
-  and `end ""`, also in the body of a subgraph. A comment line, an empty line,
-  U+2028, a directive, an ignored `;`, or an empty description block next to the
-  form changes nothing of this. [fixture:
-  flowchart/div-empty-markdown-after-vertex] [fixture:
+  flowchart/gram-empty-description-block-before-link]
+
+  After the last unit of a statement this covers `A "``"`, `A:::c ""`,
+  `A --> B ""`, `A --> B call ()`, `A@{}""`, `A@{}call ()`, `A "";B`,
+  `A call ();B`, `A "" ""`, `A "" call ()`, and `end ""`, also in the body of a
+  subgraph. A comment line, an empty line, U+2028, a directive, an ignored `;`,
+  or an empty description block next to the form changes nothing of this.
+
+  [fixture: flowchart/div-empty-markdown-after-vertex] [fixture:
   flowchart/div-empty-string-after-link-target] [fixture:
   flowchart/div-empty-call-after-link-target] [fixture:
   flowchart/div-empty-string-after-class-suffix] [fixture:
@@ -2217,14 +2709,18 @@ flowchart, and show in it as follows.
   flowchart/div-empty-string-before-empty-description-block] [fixture:
   flowchart/div-empty-string-after-empty-description-block] [fixture:
   flowchart/div-empty-call-after-empty-description-block]
+
 - **[`c4-keyword-anywhere`](../known-divergences/c4-keyword-anywhere.md).**
   `C4Container`, `C4Component`, `C4Dynamic`, or `C4Deployment` anywhere after
   the header, as a vertex id, a label, or an edge text, makes mermaid.js hand
   the text to the C4 parser, which rejects it; here the text is a flowchart.
+
   [fixture: flowchart/div-c4-keyword-in-label]
+
 - **[`bare-percent-line-before-header`](../known-divergences/bare-percent-line-before-header.md).**
   A line of `%%` alone, or a line `%%{ }%%`, before the header is a comment
   here, while mermaid.js rejects the input: its flowchart lexer reads the `%%`
-  as an id before the header (see [Detection](#detection)). [fixture:
-  flowchart/header-after-bare-percent-line] [fixture:
+  as an id before the header (see [Detection](#detection)).
+
+  [fixture: flowchart/header-after-bare-percent-line] [fixture:
   flowchart/header-after-empty-braces-line]

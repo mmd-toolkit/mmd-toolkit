@@ -42,7 +42,9 @@
 リンクの部分の文字列、つまり `"` 単位とその間の `url-text` は、
 開きの引用符から閉じの引用符までの 1 つの `String` トークンです。
 `href "u"` は、`Keyword` トークン `href` と `String` トークン `"u"` を持ちます。
+
 [fixture: gantt/gram-click-href]
+
 ほかの項目はどれも 1 つの単位で、したがって 1 つのトークンです。
 
 トークンは両端に空白を持ちません。
@@ -60,15 +62,18 @@
 `f` と空白 1 つのトークンを持ちます）。
 `callback-arguments` 単位も保ちます（`call f( 1)` は、
 空白 1 つと `1` のトークンを持ちます）。
+
 [fixture: gantt/lex-task-text-trailing-spaces]
 [fixture: gantt/lex-dateformat-two-spaces]
 [fixture: gantt/lex-title-trailing-spaces]
 [fixture: gantt/gram-click-call-name-space-before-parenthesis]
 [fixture: gantt/gram-click-call-name-line-feed-before-parenthesis]
 [fixture: gantt/gram-click-call-arguments-leading-space]
+
 mermaid.js が値をトリムするアクセシビリティのテキストと、
 単位が両端に空白を持たないタスクのデータの項目は、それを含みません。
 `accTitle: T` と 2 つの空白は、トークン `T` を持ちます。
+
 [fixture: gantt/gram-acc-title-trailing-spaces]
 [fixture: gantt/lex-task-items-nbsp-trimmed]
 
@@ -78,6 +83,7 @@ CR や CRLF は、改行と同じくテキストを終わらせます。
 `title T %%{init: {}}%%` は `T` と空白 1 つのトークンを持ち、
 `title T%%{init: {}}%%` はトークン `T` を持ち、
 `title T` と CRLF はトークン `T` を持ちます。
+
 [fixture: gantt/lex-directive-at-end-of-title-line]
 [fixture: gantt/lex-directive-glued-at-end-of-title]
 [fixture: gantt/lex-directive-at-end-of-section-line]
@@ -97,6 +103,7 @@ CR や CRLF は、改行と同じくテキストを終わらせます。
 `a : 1%%{init: {}}%%d` は、`RawText` トークン `1` と `d` と、
 その間の `Directive` トークンを持ちます。
 一方、`click id%%{init: {}}%%1 href "u"` は拒否されます。
+
 [fixture: gantt/lex-directive-in-task-data]
 [fixture: gantt/lex-directive-in-task-text]
 [fixture: gantt/lex-directive-in-href-string]
@@ -112,13 +119,18 @@ CR や CRLF は、改行と同じくテキストを終わらせます。
   タグの名前は、ディレクティブを除いたテキストです。
   `a : do%%{init: {}}%%ne, t1, 2024-01-01, 1d` はタグ `done` を持ち、
   `RawText` トークン `do` と `ne` を持ちます。
+
   [fixture: gantt/gram-task-tag-then-item]
   [fixture: gantt/gram-task-tag-cut-by-directive]
+
 - 文である空の説明ブロックは、`Keyword` トークン `accDescr` と、
   `Punctuator` トークン `{` と `}` を持ちます。
+
   [fixture: gantt/gram-acc-descr-block-empty]
+
 - 行の規則が無視する `;` は `IgnoredSemicolon` トークンです。
   `title a;b style:#x;` では、最初の `;` はその行の最後ではないので、
   `RawText` トークン `a;b style:#x` の文字です。
   最後の `;` は `IgnoredSemicolon` トークンです。
+
   [fixture: gantt/tokens-ignored-semicolon-in-title-text]

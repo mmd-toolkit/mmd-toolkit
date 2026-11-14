@@ -9,7 +9,9 @@
 [packet.langium](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/packet/packet.langium#L1-L21)
 と、
 [common.langium](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/common/common.langium#L6-L34)
-である。 [fixture: packet/gram-mixed] [fixture: packet/spec-packet-c4580507]
+である。
+
+[fixture: packet/gram-mixed] [fixture: packet/spec-packet-c4580507]
 
 ## 検出
 
@@ -18,10 +20,11 @@
 は、接尾辞境界なしで小文字の接頭辞 `packet` を選ぶ。
 `packet-beta` も含み、どちらの図種 id も `packet` である。
 検出だけで `packetx`、`packet2`、`packet-BETA` を受理することにはならない。
-`Packet` は別名ではない。 [fixture: packet/spec-packet-7426afc4]
-[fixture: packet/spec-packet-c4580507] [fixture: packet/header-letter-suffix]
-[fixture: packet/header-digit-suffix] [fixture: packet/header-beta-uppercase]
-[fixture: packet/header-uppercase]
+`Packet` は別名ではない。
+
+[fixture: packet/spec-packet-7426afc4] [fixture: packet/spec-packet-c4580507]
+[fixture: packet/header-letter-suffix] [fixture: packet/header-digit-suffix]
+[fixture: packet/header-beta-uppercase] [fixture: packet/header-uppercase]
 
 [common.md](../common.md#reading-a-source) の先頭の trivia、実際の frontmatter、
 変換を適用する。
@@ -29,6 +32,7 @@
 実際の frontmatter は共有 Frontmatter であり、packet の文にはならない。
 両 fence の直前の BOM が一致すると、
 そのブロックは本物の先頭 frontmatter になり得る。
+
 [fixture: packet/lex-yaml-bom-both-fences]
 [fixture: packet/header-parser-packet-spaces]
 [fixture: packet/header-parser-packet-tabs]
@@ -48,7 +52,9 @@ textBeforeHeader が PacketIgnoredText として所有し、そのプロパテ�
 二つ目のブロック、二回目の scan の directive の後、
 通過した裸の行の後にあるブロックは通過しない。
 先頭の trim が開始 fence の字下げだけを取り除き、
-fence を不一致にする場合もある。 [fixture: packet/detect-one-block]
+fence を不一致にする場合もある。
+
+[fixture: packet/detect-one-block]
 [fixture: packet/detect-yaml-properties-ignored]
 [fixture: packet/detect-block-after-real-frontmatter]
 [fixture: packet/detect-block-before-directive]
@@ -62,6 +68,7 @@ fence を不一致にする場合もある。 [fixture: packet/detect-one-block]
 隣接する三本の fence 行では、中間が本文行になり得る。
 検出後も native の受理が必要であり、
 開始の Unicode padding と閉じの後の読めない空白は拒否する。
+
 [fixture: packet/detect-adjacent-fences] [fixture: packet/detect-unclosed-block]
 [fixture: packet/detect-mismatched-indent] [fixture: packet/detect-four-dashes]
 [fixture: packet/detect-closing-suffix] [fixture: packet/detect-no-closing-lf]
@@ -74,6 +81,7 @@ native DIRECTIVE の境界を要求するため、接着した見出しは拒否
 `%%{}%%` と未閉鎖の `%%{!` を含む通過した裸の行は、
 mark が `%%` の共有 Comment である。
 それらと付随して通過した空白・改行は読み直さない。
+
 [fixture: packet/detect-second-scan-directive]
 [fixture: packet/detect-second-scan-glued]
 [fixture: packet/detect-two-second-scan-forms]
@@ -87,6 +95,7 @@ Mermaid の native な読みはそこで非 ASCII 空白を拒否するが、
 [bare-percent-line-before-header](../known-divergences/bare-percent-line-before-header.md)
 により受理する。
 通過した行がなければ、同じ隙間は native な図のテキストのままである。
+
 [fixture: packet/bare-before-header-space]
 [fixture: packet/bare-line-ascii-whitespace]
 [fixture: packet/bare-before-header-tab]
@@ -136,9 +145,11 @@ Mermaid の native な読みはそこで非 ASCII 空白を拒否するが、
 一般的な最長一致ではない。
 範囲の dash には明示的な長い代替があり、
 同じ位置で hidden YAML 全体が一致すればそちらを選ぶ。
-読めない文字があれば入力全体を拒否する。 [fixture: packet/gram-mixed]
-[fixture: packet/hidden-yaml-body] [fixture: packet/lex-dash-before-yaml]
-[fixture: packet/error-start] [fixture: packet/error-after-prefix]
+読めない文字があれば入力全体を拒否する。
+
+[fixture: packet/gram-mixed] [fixture: packet/hidden-yaml-body]
+[fixture: packet/lex-dash-before-yaml] [fixture: packet/error-start]
+[fixture: packet/error-after-prefix]
 
 1. `packet-beta`。
 2. `packet`。
@@ -160,6 +171,7 @@ Mermaid の native な読みはそこで非 ASCII 空白を拒否するが、
 import された BOOLEAN、FLOAT、NUMBER、ID は追加の単位を供給しない。
 単独の boolean、名前、空文字列は拒否する。
 文字列はブロックの label としてだけ使える。
+
 [fixture: packet/gram-standalone-boolean] [fixture: packet/gram-standalone-name]
 [fixture: packet/gram-standalone-empty-string]
 [fixture: packet/gram-number-float] [fixture: packet/db-label-empty-double]
@@ -172,6 +184,7 @@ brace、quote はこの境界を満たさない。
 共通 directive と選ばれた semicolon を除いてから判定し、
 除かれた directive だけでは境界にならない。
 `packet-beta` にはこの検査がなく、ブロックや共通の形に接着できる。
+
 [fixture: packet/header-letter-suffix] [fixture: packet/header-digit-suffix]
 [fixture: packet/lex-header-underscore] [fixture: packet/header-dash-suffix]
 [fixture: packet/header-unicode-suffix] [fixture: packet/lex-header-colon]
@@ -189,6 +202,7 @@ brace、quote はこの境界を満たさない。
 共通の CR・CRLF 変換を先に適用する。
 NBSP、BOM、LS/PS などの共通空白は、
 共通の先頭 trivia または包含する値・開始の隙間が許す場所だけで読める。
+
 [fixture: packet/header-packet-spaces-before-lf]
 [fixture: packet/header-packet-tab-before-lf]
 [fixture: packet/header-beta-spaces-before-lf]
@@ -206,6 +220,7 @@ NBSP、BOM、LS/PS などの共通空白は、
 ゼロの代替は一桁で終わる。
 非ゼロの一致は dot の前で短くなり得るが、残る文字は引き続き拒否の原因になる。
 符号、小数点、指数、NaN と Infinity の綴りは整数ではない。
+
 [fixture: packet/gram-single-zero] [fixture: packet/gram-leading-zero]
 [fixture: packet/lex-integer-shorter-before-dot]
 [fixture: packet/gram-negative-zero] [fixture: packet/gram-number-dot]
@@ -219,6 +234,7 @@ NBSP、BOM、LS/PS などの共通空白は、
 通常の内容には物理改行、LS/PS、反対の quote も含められる。
 文字列は内部の native comment・YAML・native directive らしいテキストを所有する。
 共通 directive と comment region は引き続き共通の適用範囲を持つ。
+
 [fixture: packet/db-label-empty-double] [fixture: packet/db-label-empty-single]
 [fixture: packet/db-label-single-escapes] [fixture: packet/lex-label-open]
 [fixture: packet/lex-label-open-single] [fixture: packet/lex-label-multiline]
@@ -234,9 +250,10 @@ NBSP、BOM、LS/PS などの共通空白は、
 NumericLiteral は raw に書かれた数字、value にその double 値を保持する。
 StringLiteral は raw に quote と escape、value に書かれた内側を保持し、
 escape の復号や空白の正規化をしない。
-Db の変換は別である。 [fixture: packet/db-precision-rounded]
-[fixture: packet/db-overflow-wide] [fixture: packet/db-label-escapes]
-[fixture: packet/db-label-space]
+Db の変換は別である。
+
+[fixture: packet/db-precision-rounded] [fixture: packet/db-overflow-wide]
+[fixture: packet/db-label-escapes] [fixture: packet/db-label-space]
 
 ### 複合した共通の形
 
@@ -246,13 +263,15 @@ Db の変換は別である。 [fixture: packet/db-precision-rounded]
 `acc-title-line` は `accTitle`、ゼロ個以上の ASCII space/tab、colon、
 空でもよい行テキストで、`acc-descr-line` は `accDescr` を使う。
 構成要素の規則は大文字小文字を区別し、見出しの独自の境界は使わない。
-二つの accessibility の行形は colon を必要とする。 [fixture: packet/title-empty]
-[fixture: packet/lex-title-one-space] [fixture: packet/lex-title-one-tab]
-[fixture: packet/lex-title-two-spaces] [fixture: packet/common-whitespace]
-[fixture: packet/acctitle-empty] [fixture: packet/accdescr-line-empty]
-[fixture: packet/acctitle-no-colon] [fixture: packet/title-colon]
-[fixture: packet/title-uppercase] [fixture: packet/acctitle-uppercase]
-[fixture: packet/accdescr-uppercase] [fixture: packet/common-title-nbsp-gap]
+二つの accessibility の行形は colon を必要とする。
+
+[fixture: packet/title-empty] [fixture: packet/lex-title-one-space]
+[fixture: packet/lex-title-one-tab] [fixture: packet/lex-title-two-spaces]
+[fixture: packet/common-whitespace] [fixture: packet/acctitle-empty]
+[fixture: packet/accdescr-line-empty] [fixture: packet/acctitle-no-colon]
+[fixture: packet/title-colon] [fixture: packet/title-uppercase]
+[fixture: packet/acctitle-uppercase] [fixture: packet/accdescr-uppercase]
+[fixture: packet/common-title-nbsp-gap]
 [fixture: packet/common-acctitle-nbsp-gap]
 
 行テキストは最初の `%%` または物理行末の前で終わる。
@@ -260,6 +279,7 @@ LS/PS、単独の percent、句読点、quote、backslash、
 後の keyword に見えるものも内容のままである。
 quote の閉じは不要で、escape は文字列構文ではない。
 空の値は comment 行を挟んでも次の物理行を取らない。
+
 [fixture: packet/comment-title] [fixture: packet/comment-acctitle]
 [fixture: packet/comment-accdescr] [fixture: packet/common-title-ls]
 [fixture: packet/common-acctitle-ps] [fixture: packet/common-accdescr-ls]
@@ -277,6 +297,7 @@ quote の閉じは不要で、escape は文字列構文ではない。
 内容には LF/LS/PS を含む。
 brace は入れ子にならず、quote と backslash は閉じを保護しない。
 colon があれば代わりに行テキストを選び、brace もその内容となる。
+
 [fixture: packet/accdescr-block-gap-lf]
 [fixture: packet/lex-block-native-comment-inline-gap]
 [fixture: packet/lex-block-gap-comment-region]
@@ -302,6 +323,7 @@ LF で始まり、物理行の先頭でなくてもよい。
 本文には LF/LS/PS を含み、YAML として解釈しない。
 開始の四本 dash、Unicode padding、字下げされた閉じ、閉じの欠落は一致しないが、
 範囲の dash の直後に有効な YAML opener を置ける。
+
 [fixture: packet/hidden-yaml-padding] [fixture: packet/hidden-yaml-body]
 [fixture: packet/hidden-yaml-adjacent-eof]
 [fixture: packet/hidden-yaml-adjacent-later]
@@ -314,6 +336,7 @@ LF で始まり、物理行の先頭でなくてもよい。
 二つの空ブロックに見える形では四本目の fence が余る場合がある。
 閉じの境界を満たす本文ありの二ブロックは別々のままである。
 境界を満たさない閉じは、後の閉じが条件を満たすまで本文に残る。
+
 [fixture: packet/hidden-yaml-adjacent-later]
 [fixture: packet/lex-yaml-two-empty] [fixture: packet/lex-yaml-two-nonempty]
 [fixture: packet/hidden-yaml-nonqualifying]
@@ -323,6 +346,7 @@ LF で始まり、物理行の先頭でなくてもよい。
 空・非単語の内容と LF/LS/PS を許す。
 境界を満たさない閉じは後の閉じのために通過する。
 条件を満たす閉じがなければ、代わりに native comment の規則が適用され得る。
+
 [fixture: packet/hidden-directive-header]
 [fixture: packet/hidden-directive-empty-adjacent]
 [fixture: packet/lex-directive-body-separators]
@@ -336,6 +360,7 @@ LF で始まり、物理行の先頭でなくてもよい。
 余分な LF、または閉じの直後の ASCII space/tab は可視 EOL を残す。
 元の EOF では追加 LF を消費しても、EOF が EOL を満たす。
 消費した行終端は PacketIgnoredText の範囲の外である。
+
 [fixture: packet/hidden-directive-block]
 [fixture: packet/hidden-directive-block-spare]
 [fixture: packet/hidden-directive-block-space]
@@ -374,6 +399,7 @@ hidden な形全体の所有者は一つだけであり、textBeforeHeader、bod
 先行する文字列・行値・説明ブロックは、内部の hidden らしい形を代わりに所有する。
 行値は YAML の dash を吸収する。
 hidden な形は単位を区切り、整数や固定語を連結しない。
+
 [fixture: packet/gram-hidden-gap] [fixture: packet/gram-single-hidden-gaps]
 [fixture: packet/gram-relative-hidden-colon]
 [fixture: packet/gram-hidden-range-gap-spaced]
@@ -397,6 +423,7 @@ LS/PS は内容のままである。
 mark は `%%`、value はその後である。
 前の文字も終端の改行も Comment に含めない。
 裸の percent 対と三個の percent は許すが、単独の percent は許さない。
+
 [fixture: packet/comment-header] [fixture: packet/comment-block]
 [fixture: packet/comment-eof] [fixture: packet/comment-bare]
 [fixture: packet/lex-native-comment-triple]
@@ -406,8 +433,9 @@ mark は `%%`、value はその後である。
 comment は共有の記録で、PacketIgnoredText にはしない。
 説明ブロックは裸の percent 行を所有し、共通 comment region は引き続き除く。
 説明内の native directive らしい形は最初の brace で説明を閉じ、
-native comment を残し得る。 [fixture: packet/common-block-bare]
-[fixture: packet/common-block-comment]
+native comment を残し得る。
+
+[fixture: packet/common-block-bare] [fixture: packet/common-block-comment]
 [fixture: packet/lex-description-comment-only]
 [fixture: packet/lex-description-hidden-first-brace]
 
@@ -417,6 +445,7 @@ native comment を残し得る。 [fixture: packet/common-block-bare]
 除去により hidden な delimiter や native comment の mark の句読点を連結できる。
 完全な共通 keyword と colon・brace・title の区切りの間にも置ける。
 固定語と整数の内部には、代わりに後述の単位境界の差異を適用する。
+
 [fixture: packet/directive-label-middle] [fixture: packet/directive-title-value]
 [fixture: packet/directive-acctitle-value]
 [fixture: packet/directive-accdescr-value]
@@ -438,38 +467,41 @@ native comment を残し得る。 [fixture: packet/common-block-bare]
 [fixture: packet/directive-title-separator]
 [fixture: packet/lex-selected-colon-boundary]
 [fixture: packet/lex-selected-brace-boundary]
+
 値の中の U+2028 か U+2029 の後の物理行の残りは、その改行も含めて、
 共通のコメント領域が取り除くことがある。
 そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
 `accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
-U+2028、`B` である。 [fixture:
-packet/lex-string-line-separator-then-comment-line] [fixture:
-packet/lex-string-paragraph-separator-then-comment-line] [fixture:
-packet/lex-title-line-separator-then-comment-line] [fixture:
-packet/lex-acc-title-line-separator-then-comment-line] [fixture:
-packet/lex-acc-descr-line-separator-then-comment-line] [fixture:
-packet/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
-packet/lex-string-line-separator-comment-line-directive-next] [fixture:
-packet/lex-string-line-separator-comment-line-space-next] [fixture:
-packet/lex-string-line-separator-comment-line-separator-next] [fixture:
-packet/lex-string-line-separator-comment-line-empty-line] [fixture:
-packet/lex-string-line-separator-comment-line-end-of-text] [fixture:
-packet/lex-title-line-separator-comment-line-end-of-text] [fixture:
-packet/lex-string-line-separator-comment-line-cr] [fixture:
-packet/lex-string-line-separator-comment-line-crlf] [fixture:
-packet/lex-string-line-separator-comment-line-two-comment-lines] [fixture:
-packet/lex-string-line-separator-comment-line-two-regions] [fixture:
-packet/lex-string-line-separator-comment-line-spaces-before] [fixture:
-packet/lex-string-line-separator-comment-line-line-feed-before] [fixture:
-packet/lex-string-line-separator-comment-line-directive-before] [fixture:
-packet/lex-string-line-separator-comment-line-line-rule-before] [fixture:
-packet/lex-string-line-separator-comment-line-line-rule-after] [fixture:
-packet/lex-string-line-separator-comment-line-bare-percent] [fixture:
-packet/lex-string-line-separator-comment-line-percent-brace]
+U+2028、`B` である。
+
+[fixture: packet/lex-string-line-separator-then-comment-line]
+[fixture: packet/lex-string-paragraph-separator-then-comment-line]
+[fixture: packet/lex-title-line-separator-then-comment-line]
+[fixture: packet/lex-acc-title-line-separator-then-comment-line]
+[fixture: packet/lex-acc-descr-line-separator-then-comment-line]
+[fixture: packet/lex-acc-descr-block-line-separator-then-comment-line]
+[fixture: packet/lex-string-line-separator-comment-line-directive-next]
+[fixture: packet/lex-string-line-separator-comment-line-space-next]
+[fixture: packet/lex-string-line-separator-comment-line-separator-next]
+[fixture: packet/lex-string-line-separator-comment-line-empty-line]
+[fixture: packet/lex-string-line-separator-comment-line-end-of-text]
+[fixture: packet/lex-title-line-separator-comment-line-end-of-text]
+[fixture: packet/lex-string-line-separator-comment-line-cr]
+[fixture: packet/lex-string-line-separator-comment-line-crlf]
+[fixture: packet/lex-string-line-separator-comment-line-two-comment-lines]
+[fixture: packet/lex-string-line-separator-comment-line-two-regions]
+[fixture: packet/lex-string-line-separator-comment-line-spaces-before]
+[fixture: packet/lex-string-line-separator-comment-line-line-feed-before]
+[fixture: packet/lex-string-line-separator-comment-line-directive-before]
+[fixture: packet/lex-string-line-separator-comment-line-line-rule-before]
+[fixture: packet/lex-string-line-separator-comment-line-line-rule-after]
+[fixture: packet/lex-string-line-separator-comment-line-bare-percent]
+[fixture: packet/lex-string-line-separator-comment-line-percent-brace]
 
 共通の style/classDef 行の規則は条件に合う semicolon だけを選ぶ。
 残る semicolon は値の外では拒否され、packet の文の区切りにはならない。
 HTML 属性の quote と entity は共通の変換に従うが、木は書かれた綴りを保持する。
+
 [fixture: packet/style-label] [fixture: packet/style-title]
 [fixture: packet/style-description-end]
 [fixture: packet/style-description-double] [fixture: packet/end-block-semicolon]
@@ -495,6 +527,7 @@ hidden な形の所有者は木で定め、可視の区切りは供給しない�
 body は空でもよく、見出しの後に改行は不要である。
 ブロックと共通文は交互に置ける。
 showInfo・showBits flag はなく、二回目の見出しは拒否する。
+
 [fixture: packet/spec-packet-7426afc4] [fixture: packet/header-inline-block]
 [fixture: packet/header-inline-title] [fixture: packet/header-beta-title]
 [fixture: packet/gram-common-interleaved] [fixture: packet/gram-no-showinfo]
@@ -505,6 +538,7 @@ showInfo・showBits flag はなく、二回目の見出しは拒否する。
 可視改行、comment 行、空の説明はブロックの構成要素間には置けない。
 端点・colon・引用された label の欠落と、同じ行に隣接するブロック、
 完結したブロックの後の共通文は拒否する。
+
 [fixture: packet/gram-block-blank-lines] [fixture: packet/comment-inside-range]
 [fixture: packet/gram-visible-newline-in-block]
 [fixture: packet/gram-empty-description-in-block]
@@ -535,6 +569,7 @@ showInfo・showBits flag はなく、二回目の見出しは拒否する。
 変換されたテキスト、最終的な共通値、公開される行を定める。
 これらは導出値であり、追加の構文ノードや受理条件ではない。
 反復、空の値、公開上限後に省略されたブロックも含め、各文を保持する。
+
 [fixture: packet/gram-mixed] [fixture: packet/db-label-escapes]
 [fixture: packet/title-repeat-empty] [fixture: packet/accdescr-block-repeat]
 [fixture: packet/db-cap-following-block-unpublished]
@@ -550,9 +585,10 @@ label と共通値は追加の意味上の拒否を起こさない。
 [public wrapper](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/parse.ts#L134-L150)
 と、
 [packet adapter](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/packet/parser.ts#L11-L90)
-である。 [fixture: packet/error-after-prefix]
-[fixture: packet/error-recovered-block] [fixture: packet/db-label-empty-double]
-[fixture: packet/gram-empty-description]
+である。
+
+[fixture: packet/error-after-prefix] [fixture: packet/error-recovered-block]
+[fixture: packet/db-label-empty-double] [fixture: packet/gram-empty-description]
 
 書かれた整数と以下の各演算には IEEE 754 double を使い、丸めと overflow を含め、
 記載した演算順序を保つ。
@@ -561,12 +597,13 @@ label と共通値は追加の意味上の拒否を起こさない。
 等しい端点は許す。
 次に相対ブロックの start を最後の論理端点に一を加えた値とし、
 明示したすべての start にも、丸めた後の double 値で同じ値との一致を要求する。
-その後で相対 count のゼロを拒否する。 [fixture: packet/db-precision-rounded]
-[fixture: packet/db-overflow-wide] [fixture: packet/error-descending-before-gap]
-[fixture: packet/gram-zero-range] [fixture: packet/error-first-nonzero]
-[fixture: packet/error-overlap] [fixture: packet/error-repeat-third]
-[fixture: packet/gram-mixed] [fixture: packet/spec-packet-a0e6e5ca]
-[fixture: packet/error-zero-after-valid]
+その後で相対 count のゼロを拒否する。
+
+[fixture: packet/db-precision-rounded] [fixture: packet/db-overflow-wide]
+[fixture: packet/error-descending-before-gap] [fixture: packet/gram-zero-range]
+[fixture: packet/error-first-nonzero] [fixture: packet/error-overlap]
+[fixture: packet/error-repeat-third] [fixture: packet/gram-mixed]
+[fixture: packet/spec-packet-a0e6e5ca] [fixture: packet/error-zero-after-valid]
 [fixture: packet/db-explicit-start-rounded]
 [fixture: packet/db-explicit-end-rounded-continuity]
 [fixture: packet/db-explicit-end-and-start-rounded-continuity]
@@ -583,15 +620,17 @@ label と共通値は追加の意味上の拒否を起こさない。
 
 書かれた明示 end と次の start がともに無限大へ overflow すると、
 一を加えても無限大のままなので、連続性の比較は次のブロックを受理する。
+
 [fixture: packet/db-explicit-end-overflow-continuity]
 
 相対ブロックの論理 end は、start に書かれた count を加え、その後で一を引く。
 単一ブロックでは start に一を加えてから一を引き、範囲では明示した end を使う。
 行の分割より前に、最後の論理端点をその end に更新する。
 共通文、comment、hidden な形はこれを更新しない。
-これらの演算を代数的に簡略化した式へ置き換えない。 [fixture: packet/gram-mixed]
-[fixture: packet/gram-common-interleaved] [fixture: packet/comment-block]
-[fixture: packet/lex-hidden-after-visible-eol]
+これらの演算を代数的に簡略化した式へ置き換えない。
+
+[fixture: packet/gram-mixed] [fixture: packet/gram-common-interleaved]
+[fixture: packet/comment-block] [fixture: packet/lex-hidden-after-visible-eol]
 [fixture: packet/db-rounded-following-unpublished]
 [fixture: packet/error-rounded-following-wide]
 [fixture: packet/error-single-rounded-end-wide]
@@ -610,6 +649,7 @@ schema の検証を構文上の拒否として追加しない。
 埋め込みの frontmatter/directive 設定は、これらの受理条件を変えない。
 テキスト設定の `packet.bitsPerRow` でどちらかの方向に受理が変わる入力には、
 [embedded-data-opaque](../known-divergences/embedded-data-opaque.md) を付ける。
+
 [fixture: packet/config-fraction-default]
 [fixture: packet/config-fraction-reject] [fixture: packet/config-rows-eight]
 [fixture: packet/config-frontmatter-fraction]
@@ -626,6 +666,7 @@ schema の検証を構文上の拒否として追加しない。
 各ブロックでは論理 start と end を保留中の fragment とする。
 現在行の fragment 数が行幅に一を加えた値以下で、
 公開済み行数が 10,000 未満の間だけ、次の反復に入る。
+
 [fixture: packet/db-row-split] [fixture: packet/db-row-exact]
 [fixture: packet/config-fraction-reject]
 [fixture: packet/db-rounded-following-unpublished]
@@ -640,6 +681,7 @@ schema の検証を構文上の拒否として追加しない。
 収まる end に一を加えた値が行番号と行幅の積に等しければ、
 公開済み行数と行番号を一ずつ増やし、現在行の fragment 数をゼロに戻す。
 残りがあれば入口条件から繰り返し、なければこのブロックを終える。
+
 [fixture: packet/db-row-split] [fixture: packet/db-row-exact]
 [fixture: packet/config-fraction-reject]
 [fixture: packet/error-rounded-following-wide]
@@ -648,6 +690,7 @@ schema の検証を構文上の拒否として追加しない。
 逆転が可能な 2^53 付近の開始に達する前に 10,000 行の上限に達するため、
 保留 start が end を超える拒否は起こらない。
 この拒否が効くのは、変更されたサイトの行幅を適用する者だけである。
+
 [fixture: packet/db-single-rounded-end-default]
 [fixture: packet/error-single-rounded-end-wide]
 [fixture: packet/db-rounded-following-unpublished]
@@ -657,6 +700,7 @@ schema の検証を構文上の拒否として追加しない。
 後のブロックの降順範囲・連続性・ゼロ count の検査は続ける。
 論理 end の更新も続ける。
 したがって、後のブロックが受理され、公開されずに木に残ることがある。
+
 [fixture: packet/db-cap-following-block-unpublished]
 [fixture: packet/db-cap-later-logical-end]
 [fixture: packet/error-cap-following-descending]
@@ -669,15 +713,19 @@ schema の検証を構文上の拒否として追加しない。
 適用するのは以下の既存の六識別子だけで、
 [各文書](../known-divergences.md)が理由と比較読みを定める。
 hidden な形全体、空 label、空の説明には独自のノードがあり、
-tokenless-empty-forms の差異は不要である。 [fixture: packet/hidden-yaml-body]
-[fixture: packet/db-label-empty-double] [fixture: packet/gram-empty-description]
+tokenless-empty-forms の差異は不要である。
+
+[fixture: packet/hidden-yaml-body] [fixture: packet/db-label-empty-double]
+[fixture: packet/gram-empty-description]
 
 - **[directive-as-token-boundary](../known-divergences/directive-as-token-boundary.md).**
   共有 Directive がテキストを保持するが、
   固定語と整数の内部に構成要素の境界はない。
   理由 2 の直接の単位規則で分割形を拒否する。
   完全な keyword/colon・keyword/brace の境界と、
-  値のテキストは差異のない対照である。 [fixture: packet/directive-header-middle]
+  値のテキストは差異のない対照である。
+
+  [fixture: packet/directive-header-middle]
   [fixture: packet/directive-beta-middle]
   [fixture: packet/directive-title-middle]
   [fixture: packet/directive-acctitle-middle]
@@ -686,10 +734,12 @@ tokenless-empty-forms の差異は不要である。 [fixture: packet/hidden-yam
   [fixture: packet/directive-acctitle-colon]
   [fixture: packet/directive-accdescr-brace]
   [fixture: packet/directive-label-middle]
+
 - **[ignored-semicolon-as-token-boundary](../known-divergences/ignored-semicolon-as-token-boundary.md).**
   選ばれた文字は trivia だが、固定語や整数を分割できない。
   完全な構成要素の境界や hidden な句読点には置ける。
   検出は選択より先なので、分割された見出しは差異に至る前に拒否され得る。
+
   [fixture: packet/div-selected-title-interior]
   [fixture: packet/div-selected-acctitle-interior]
   [fixture: packet/div-selected-accdescr-line-interior]
@@ -699,31 +749,37 @@ tokenless-empty-forms の差異は不要である。 [fixture: packet/hidden-yam
   [fixture: packet/lex-selected-brace-boundary]
   [fixture: packet/lex-yaml-fence-selected]
   [fixture: packet/detect-selected-split-header]
+
 - **[html-tag-in-frontmatter](../known-divergences/html-tag-in-frontmatter.md).**
   Frontmatter と値は原文を保持するが、
   本文の quote 変換は不透明な frontmatter の未閉鎖 tag に依存しない。
   値が変わる場合と、両方向に受理が逆転する場合があり、本文だけの対照は一致する。
+
   [fixture: packet/div-html-frontmatter-value]
   [fixture: packet/div-html-frontmatter-accept]
   [fixture: packet/div-html-frontmatter-reject]
   [fixture: packet/gram-html-body-only-reference]
+
 - **[embedded-data-opaque](../known-divergences/embedded-data-opaque.md).**
   Frontmatter/directive ノードは内容を受理のために解釈せず保持する。
   不正な YAML は Mermaid だけが拒否する場合がある。
   両方向とも比較では有効なテキスト設定から `packet.bitsPerRow` だけを除き、
   サイト設定、Mermaid が導いた frontmatter title、ほかの有効な設定を残す。
+
   [fixture: packet/frontmatter-invalid]
   [fixture: packet/frontmatter-invalid-keeps-config]
   [fixture: packet/config-frontmatter-fraction]
   [fixture: packet/config-directive-fraction]
   [fixture: packet/config-frontmatter-overrides-site]
   [fixture: packet/config-directive-overrides-site]
+
 - **[c4-keyword-anywhere](../known-divergences/c4-keyword-anywhere.md).**
   文字列、共通 literal、ignored text、Comment は C4 語を保持できる。
   理由 2 の逆方向の見出しだけの選択により、
   Mermaid が C4 へ切り替えて拒否する後続の C4 語を受理する。
   Mermaid が受理する入力は拒否しない。
   LF 終端の接尾辞と検出が通過した残存 YAML は差異のない対照である。
+
   [fixture: packet/c4container-label] [fixture: packet/c4component-title]
   [fixture: packet/c4deployment-block]
   [fixture: packet/c4dynamic-header-comment-eof]
@@ -731,12 +787,14 @@ tokenless-empty-forms の差異は不要である。 [fixture: packet/hidden-yam
   [fixture: packet/div-c4-hidden-suffix-eof]
   [fixture: packet/c4-hidden-suffix-lf]
   [fixture: packet/c4-retained-preheader-yaml]
+
 - **[bare-percent-line-before-header](../known-divergences/bare-percent-line-before-header.md).**
   通過した行は共有 Comment、付随する空白は trivia である。
   直接の検出規則は残存する形の間も含め、
   Mermaid が拒否する Unicode trivia を受理する。
   Mermaid が受理する入力は拒否しない。
   通過した行がなければ native な隙間の規則を適用する。
+
   [fixture: packet/bare-before-header-bom] [fixture: packet/bare-line-ls]
   [fixture: packet/retained-yaml-bare-ls]
   [fixture: packet/div-detect-yaml-bare-directive-ls]

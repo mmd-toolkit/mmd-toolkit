@@ -20,11 +20,11 @@ the header without the colon 3 times against none (see
 colon stays where a hidden form or a global directive lies between it and the
 word, and where a `;` or the `---` of a hidden YAML block touches it. Hidden
 forms, global trivia and protected semicolon segments keep their source
-boundaries instead. Empty bodies remain empty. [fixture:
-radar/header/colon-removed] [fixture: radar/header/colon-yaml-kept] [fixture:
-radar/header/colon-directive-before-hidden-yaml-kept]
+boundaries instead. Empty bodies remain empty.
 
-[fixture: radar/header/joined-empty]
+[fixture: radar/header/colon-removed] [fixture: radar/header/colon-yaml-kept]
+[fixture: radar/header/colon-directive-before-hidden-yaml-kept] [fixture:
+radar/header/joined-empty]
 
 [fixture: radar/header/join-separated-empty-alternative]
 
@@ -427,9 +427,9 @@ A string between `'` is printed between `"`, unless its text holds a `'`, a `"`,
 a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
 and `singleQuote` is not read. Removing an empty label changes the ID fallback.
-[fixture: radar/quotes/single-quote-sensitive-kept]
 
-[fixture: radar/quotes/quotes-and-empty]
+[fixture: radar/quotes/single-quote-sensitive-kept] [fixture:
+radar/quotes/quotes-and-empty]
 
 [fixture: radar/quotes/padding-label]
 
@@ -469,9 +469,9 @@ The directives that end a title are printed with one space before each that has
 whitespace before it, and the whitespace after the last one is left out,
 whatever the whitespace at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-[fixture: title/title-directives-end-blanks-dropped]
 
-[fixture: radar/title/title-edge-trim]
+[fixture: title/title-directives-end-blanks-dropped] [fixture:
+radar/title/title-edge-trim]
 
 [fixture: radar/title/title-empty]
 
@@ -505,9 +505,9 @@ protection take precedence. The directives that end the value are printed with
 one space before each that has whitespace before it, and the whitespace after
 the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
-[fixture: radar/accessibility-lines/a11y-lines-fixed]
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
+radar/accessibility-lines/a11y-lines-fixed]
 
 [fixture: radar/accessibility-lines/a11y-empty-next]
 
@@ -899,10 +899,13 @@ diagram. Text that no part of the layout holds stays as written. A statement
 over several lines whose lines, joined with one space or with nothing, could
 change which `;` the line rule ignores keeps the text of each segment, up to its
 last kept `;`, as written; any other statement over several lines is formatted
-like one on a single line. [fixture: semicolons/stretch-kept-rest-formatted]
-[fixture: semicolons/no-stretch-formatted] [fixture:
-multi-line-statements/protected-semicolon-written-indentation] Protected
-header/first-statement groups remain together. Preserve style/classDef
+like one on a single line.
+
+[fixture: semicolons/stretch-kept-rest-formatted] [fixture:
+semicolons/no-stretch-formatted] [fixture:
+multi-line-statements/protected-semicolon-written-indentation]
+
+Protected header/first-statement groups remain together. Preserve style/classDef
 selection, both removal passes, case/colon/hash nontriggers, Unicode segment
 boundaries and directive-rejoined triggers. Removing even a selected semicolon
 can select another and change a value; radar has no ordinary semicolon

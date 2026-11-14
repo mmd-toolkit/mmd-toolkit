@@ -24,50 +24,61 @@ and every reference to the source of mermaid.js in this specification is a link
 into that commit.
 
 The gitgraph definition is in its [syntax](./diagrams/gitgraph.md) and
-[tree](./ast/gitgraph.md) documents. [fixture: gitgraph/header-only] [fixture:
-gitgraph/gram-all-fields]
+[tree](./ast/gitgraph.md) documents.
+
+[fixture: gitgraph/header-only] [fixture: gitgraph/gram-all-fields]
 
 The info definition is in its [syntax](./diagrams/info.md) and
-[tree](./ast/info.md) documents. [fixture: info/header-lf] [fixture:
-info/common-all]
+[tree](./ast/info.md) documents.
+
+[fixture: info/header-lf] [fixture: info/common-all]
 
 The packet definition is in its [syntax](./diagrams/packet.md) and
-[tree](./ast/packet.md) documents. [fixture: packet/gram-mixed] [fixture:
-packet/spec-packet-c4580507]
+[tree](./ast/packet.md) documents.
+
+[fixture: packet/gram-mixed] [fixture: packet/spec-packet-c4580507]
 
 The architecture definition is in its [syntax](./diagrams/architecture.md) and
-[tree](./ast/architecture.md) documents. [fixture: architecture/header-beta]
-[fixture: architecture/db-mixed]
+[tree](./ast/architecture.md) documents.
+
+[fixture: architecture/header-beta] [fixture: architecture/db-mixed]
 
 The radar definition is in its [syntax](./diagrams/radar.md) and
-[tree](./ast/radar.md) documents. [fixture: radar/header-colon-inline] [fixture:
-radar/gram-written-tree]
+[tree](./ast/radar.md) documents.
+
+[fixture: radar/header-colon-inline] [fixture: radar/gram-written-tree]
 
 The treemap definition is in its [syntax](./diagrams/treemap.md) and
-[tree](./ast/treemap.md) documents. [fixture: treemap/gram-written-tree]
-[fixture: treemap/header-beta]
+[tree](./ast/treemap.md) documents.
+
+[fixture: treemap/gram-written-tree] [fixture: treemap/header-beta]
 
 The railroad definition covers four dialects in its
 [syntax](./diagrams/railroad.md) and [tree](./ast/railroad.md) documents.
+
 [fixture: railroad/ir-gram-written-tree] [fixture:
 railroad/ebnf-gram-written-tree] [fixture: railroad/abnf-gram-written-tree]
 [fixture: railroad/peg-gram-written-tree]
 
 The wardley definition is in its [syntax](./diagrams/wardley.md) and
-[tree](./ast/wardley.md) documents. [fixture: wardley/header-only] [fixture:
-wardley/db-all-fields]
+[tree](./ast/wardley.md) documents.
+
+[fixture: wardley/header-only] [fixture: wardley/db-all-fields]
 
 The cynefin definition is in its [syntax](./diagrams/cynefin.md) and
-[tree](./ast/cynefin.md) documents. [fixture: cynefin/header-only] [fixture:
-cynefin/db-all-fields]
+[tree](./ast/cynefin.md) documents.
+
+[fixture: cynefin/header-only] [fixture: cynefin/db-all-fields]
 
 The eventmodeling definition is in its [syntax](./diagrams/eventmodeling.md) and
-[tree](./ast/eventmodeling.md) documents. [fixture: eventmodeling/header-only]
-[fixture: eventmodeling/gram-written-tree]
+[tree](./ast/eventmodeling.md) documents.
+
+[fixture: eventmodeling/header-only] [fixture: eventmodeling/gram-written-tree]
 
 The treeview definition is in its [syntax](./diagrams/treeview.md) and
-[tree](./ast/treeview.md) documents. [fixture: treeview/gram-written-tree]
-[fixture: treeview/box-written-tree]
+[tree](./ast/treeview.md) documents.
+
+[fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]
 
 ## Sources
 

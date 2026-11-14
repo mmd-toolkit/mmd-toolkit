@@ -167,13 +167,16 @@ converted set names to check union members against earlier declarations, while
 the tree keeps written values.
 
 The Ishikawa grammar retains written indentation and selects parents using the
-first cause's indentation, independently of the root's indentation. [fixture:
-ishikawa/db-indent-clamped] [fixture: ishikawa/db-indent-root-deeper]
+first cause's indentation, independently of the root's indentation.
+
+[fixture: ishikawa/db-indent-clamped] [fixture: ishikawa/db-indent-root-deeper]
 
 Architecture implements the
 [ordered lexical rules, grammar and registration conditions](../../spec/docs/diagrams/architecture.md).
 The common lexer reads composite values and hidden forms; the tree keeps
-authored order and gap ownership. [fixture: architecture/db-mixed] [fixture:
+authored order and gap ownership.
+
+[fixture: architecture/db-mixed] [fixture:
 architecture/hidden-directive-unit-gaps]
 
 ## Tools
@@ -208,8 +211,9 @@ characters that end the run of an edge id (`edgeIdRunEnds`) and the whitespace
 that a vertex statement takes after a group (`takeSpacesAfterGroup`), where the
 two diagrams differ. The existing shared reader, direction-line rule, and
 Unicode-letter helper are also reused. Its text wrapper folds only line
-whitespace immediately followed by the first LF after a closing brace. [fixture:
-agentflow/lex-brace-string-keeps-blank-line] [fixture:
+whitespace immediately followed by the first LF after a closing brace.
+
+[fixture: agentflow/lex-brace-string-keeps-blank-line] [fixture:
 agentflow/lex-brace-line-whitespace-ls] [fixture:
 agentflow/lex-brace-ls-without-lf]
 
@@ -217,8 +221,10 @@ At or below the default 50000 normalized UTF-16 code units after frontmatter and
 directive removal, SourceLexer reads line segments without removing common
 comment regions for agentflow and eventmodeling, and the diagram's lexer reads
 leading trivia and its own comments. Above the limit both use the common
-comment-removal path. [fixture: agentflow/comment-default-size-equal-crlf]
-[fixture: agentflow/comment-default-size-above-crlf] [fixture:
+comment-removal path.
+
+[fixture: agentflow/comment-default-size-equal-crlf] [fixture:
+agentflow/comment-default-size-above-crlf] [fixture:
 agentflow/comment-default-size-equal-inline-directive] [fixture:
 agentflow/comment-default-size-above-frontmatter] [fixture:
 eventmodeling/comment-default-size-equal] [fixture:
@@ -239,9 +245,10 @@ exclusive JSON and stereotype contexts. Its grammar retains authored
 occurrences, parses native metadata properties and CSS declarations, and checks
 namespace, declaration compatibility, endpoint kinds and final metadata in
 `src/diagrams/usecase/rejections.ts`. JSON table bodies remain opaque; only the
-specified brace/string balancing finds their end. [fixture:
-usecase/db-all-fields] [fixture: usecase/lex-keyword-longer-number] [fixture:
-usecase/gram-native-final-invalid-then-valid] [fixture:
+specified brace/string balancing finds their end.
+
+[fixture: usecase/db-all-fields] [fixture: usecase/lex-keyword-longer-number]
+[fixture: usecase/gram-native-final-invalid-then-valid] [fixture:
 usecase/div-json-balanced-invalid-array]
 
 The pie lexer implements the first-match rules in the specification's priority
@@ -250,6 +257,7 @@ consume one following LF. Its grammar owns retained forms in their specified
 source gaps and rejects section values below zero after double conversion.
 Detection passes one frontmatter-shaped block once, retaining it for pie, and
 pie also reads second-scan directives; detection's bare lines remain comments.
+
 [fixture: pie/db-all-fields] [fixture: pie/frontmatter-nonleading-comment]
 [fixture: pie/lex-hidden-directive-second-detection-scan] [fixture:
 pie/lex-hidden-before-colon-lf] [fixture:
@@ -260,8 +268,9 @@ The info lexer follows the
 [ordered rules](../../spec/docs/diagrams/info.md#ordered-rules), then recursive
 descent retains common statements and hidden forms in the
 [specified gaps](../../spec/docs/ast/info.md#nodes); detection leaves retained
-pre-header forms to that lexer and passes bare-line trivia only once. [fixture:
-info/common-all] [fixture: info/lex-flag-hidden-two] [fixture:
+pre-header forms to that lexer and passes bare-line trivia only once.
+
+[fixture: info/common-all] [fixture: info/lex-flag-hidden-two] [fixture:
 info/div-detect-yaml-bare-directive]
 
 The gitgraph grammar retains decoded comparison values from its lexical units
@@ -269,8 +278,9 @@ separately from written leaves. After common token checks, history validation
 applies the specification's default comparison spelling and source-ordered
 branch, HEAD, identity, replacement and immediate-parent rules. The internal
 source analysis is also used by tests that hold external configuration; the
-public parse(text) API still has no configuration parameter. [fixture:
-gitgraph/db-compare-escape-once] [fixture:
+public parse(text) API still has no configuration parameter.
+
+[fixture: gitgraph/db-compare-escape-once] [fixture:
 gitgraph/db-state-replacement-source-origin] [fixture:
 gitgraph/db-state-empty-ids-are-fresh] [fixture:
 gitgraph/db-cherry-pick-invalid-parent] [fixture:
@@ -282,19 +292,22 @@ common forms with info in src/common-form-unit-lexer.ts. Recursive descent
 retains all three authored block forms and their hidden gaps. After shared token
 checks, src/diagrams/packet/acceptance.ts applies ordered double arithmetic and
 the row iteration with the default width of 32. Tests apply external site width
-to the same analysis; parse(text) keeps its fixed API. [fixture:
-packet/gram-mixed] [fixture: packet/gram-hidden-range-gap-spaced] [fixture:
-packet/db-explicit-start-rounded] [fixture: packet/config-fraction-reject]
+to the same analysis; parse(text) keeps its fixed API.
+
+[fixture: packet/gram-mixed] [fixture: packet/gram-hidden-range-gap-spaced]
+[fixture: packet/db-explicit-start-rounded] [fixture:
+packet/config-fraction-reject]
 
 The radar lexer follows its
 [first-match rules](../../spec/docs/diagrams/radar.md#ordered-rules). Recursive
 descent preserves authored comma groups, optional entry colons and hidden-form
 gaps. After shared token checks, every named curve must contain each declared
 axis name; forward axes are considered and radar configuration does not change
-acceptance. [fixture: radar/gram-written-tree] [fixture:
-radar/lex-hidden-entry-comma] [fixture: radar/db-forward-axis] [fixture:
-radar/error-reference-missing] [fixture:
-radar/config-site-invalid-cannot-rescue]
+acceptance.
+
+[fixture: radar/gram-written-tree] [fixture: radar/lex-hidden-entry-comma]
+[fixture: radar/db-forward-axis] [fixture: radar/error-reference-missing]
+[fixture: radar/config-site-invalid-cannot-rescue]
 
 The treemap lexer follows its
 [ordered rules](../../spec/docs/diagrams/treemap.md#ordered-rules). It reuses
@@ -305,18 +318,21 @@ statements belong to the next hierarchy node's statementsBefore, keeping each
 row's indentation, including preceding trailing whitespace. Detection retains
 its reached position so passed bare-line trivia is excluded around retained
 native comments. Public acceptance adds no root-count, numeric-finiteness or
-configuration gate. [fixture: treemap/gram-written-tree] [fixture:
-treemap/db-header-tail-space] [fixture:
-treemap/div-retained-before-bare-unicode-line] [fixture: treemap/db-empty-names]
-[fixture: treemap/db-number-nan] [fixture: treemap/config-drawing-only]
+configuration gate.
+
+[fixture: treemap/gram-written-tree] [fixture: treemap/db-header-tail-space]
+[fixture: treemap/div-retained-before-bare-unicode-line] [fixture:
+treemap/db-empty-names] [fixture: treemap/db-number-nan] [fixture:
+treemap/config-drawing-only]
 
 Railroad keeps one authored AST for its four dialects. Each dialect has its own
 ordered lexical rules and expression grammar, sharing only matching terminals,
 metadata, named hidden gaps and natural list/group productions. It has no
-configuration-dependent or semantic acceptance gate. [fixture:
-railroad/ir-gram-written-tree] [fixture: railroad/ebnf-native-ownership]
-[fixture: railroad/abnf-directive-repeat] [fixture:
-railroad/peg-config-init-drawing]
+configuration-dependent or semantic acceptance gate.
+
+[fixture: railroad/ir-gram-written-tree] [fixture:
+railroad/ebnf-native-ownership] [fixture: railroad/abnf-directive-repeat]
+[fixture: railroad/peg-config-init-drawing]
 
 Treeview implements its
 [ordered units](../../spec/docs/diagrams/treeview.md#ordered-units) without the
@@ -326,7 +342,8 @@ line-number map. Units carry assigned prefix indentation and the branch marker;
 the grammar assigns outer box forms to their named owners and retains enclosed
 forms in authored leaves. Shared common-form readers supply matching
 title/accessibility line forms and native comments; the block reader
-additionally keeps box forms in its required opener gap. [fixture:
-treeview/gram-written-tree] [fixture: treeview/box-written-tree] [fixture:
-treeview/box-prefix-common-block-two-prefixes] [fixture:
+additionally keeps box forms in its required opener gap.
+
+[fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]
+[fixture: treeview/box-prefix-common-block-two-prefixes] [fixture:
 treeview/ast-prefix-inside-and-outside]

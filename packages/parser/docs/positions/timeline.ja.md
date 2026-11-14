@@ -28,6 +28,7 @@
 間に空行があっても同じです。
 period や event が終わりに保つ空白は、範囲の中にあります。
 `a :` と 2 つの空白は、`a :` と event の空白を覆います。
+
 [fixture: timeline/db-event-own-line]
 [fixture: timeline/db-event-own-line-after-blank-line]
 [fixture: timeline/db-event-two-spaces]
@@ -39,6 +40,7 @@ period や event が終わりに保つ空白は、範囲の中にあります。
 トークンが保つテキストの終わりの空白も含みます。
 [トークン](../tokens/timeline.ja.md#トークン) を参照。
 `title T` と 3 つの空白は、3 つの空白も覆います。
+
 [fixture: timeline/db-title-trailing-spaces]
 [fixture: timeline/db-section-trailing-spaces]
 
@@ -46,6 +48,7 @@ period や event が終わりに保つ空白は、範囲の中にあります。
 
 範囲は、キーワードから、テキストの空白でない最後の文字までです。
 値が除く行末の空白は、範囲の外にあります。
+
 [fixture: timeline/db-acc-title-trailing-spaces]
 
 ### TimelineLiteral
@@ -54,5 +57,6 @@ period や event が終わりに保つ空白は、範囲の中にあります。
 それを含みます（[トークン](../tokens/timeline.ja.md#トークン) を参照）。
 値はその範囲の書かれたテキストです。
 `a : e` の period は、`a` とコロンの前の空白を覆います。
+
 [fixture: timeline/db-period-and-event]
 [fixture: timeline/db-period-trailing-spaces]

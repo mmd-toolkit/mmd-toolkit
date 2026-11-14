@@ -24,6 +24,7 @@ flowchart LR
 ```
 
 どちらも、タイトル `<b class='x'>T</b>` を読みます。
+
 [fixture: flowchart/frontmatter-title-html-attribute]
 
 この文書は、フロントマターで始まってそこで終わらず、
@@ -31,12 +32,15 @@ flowchart LR
 
 venn では、frontmatter が `title: <a` を持つ場合、
 `set "b="c">d"` はここでは拒否します。
+
 [fixture: venn/div-html-tag-starts-in-frontmatter]
 
 mermaid.js は内側の属性の引用符を変換して受理します。
+
 [fixture: venn/div-html-tag-starts-in-frontmatter]
 
 frontmatter に開始タグがなければ、同じ venn の本文をどちらも拒否します。
+
 [fixture: venn/gram-html-tag-body-only-reference]
 
 Ishikawa では、frontmatter に `title: <a` があっても、
@@ -45,10 +49,12 @@ Ishikawa では、frontmatter に `title: <a` があっても、
 mermaid.js は属性の引用符を単一引用符に変えますが、
 この仕様はそのタグと独立に本文を読みます。
 書かれた IshikawaLiteral は元の引用符を保ちます。
+
 [fixture: ishikawa/div-frontmatter-open-tag-bare-node]
 [fixture: ishikawa/div-frontmatter-open-tag-quoted-node]
 
 frontmatter のタグがなければ、両者とも `b="c">d` を変えずに受理します。
+
 [fixture: ishikawa/lex-quotes-without-frontmatter-tag]
 
 ## 差異
@@ -116,6 +122,7 @@ frontmatter のタグがなければ、両者とも `b="c">d` を変えずに受
 | 5   | メッセージ `b="c">d`                 | 同じ                                 |
 
 表で比較した読みを次の fixture が記録します。
+
 [fixture: flowchart/html-tag-starts-in-frontmatter]
 [fixture: flowchart/html-tag-starts-in-frontmatter-value]
 [fixture: flowchart/html-tag-starts-in-frontmatter-acc-title]
@@ -134,20 +141,25 @@ mermaid.js の flowchart の文法はそれを受理します。
 この仕様は、フロントマターの後のテキストでだけタグを探し、これらのテキストを、
 フロントマターがないときと同じに読みます。
 フロントマター内で始まって終わるタグは、図の HTML の読み方に差異を生みません。
+
 [fixture: pie/frontmatter-html]
+
 差異は両方向にあり、受理も Db も変わることがあります。
 
 kanban ではフロントマターに `title: <a` があるとき、
 mermaid.js は `S["b="c">d"]` の内側の属性引用符を変換して入力を受理します。
 この仕様はラベルの文字列を 2 つ目の引用符で終えて入力を拒否します。
+
 [fixture: kanban/div-frontmatter-open-tag]
 
 フロントマターに `<a` がなければ両者で拒否します。
+
 [fixture: kanban/gram-frontmatter-no-tag-reference]
 
 C4 では frontmatter に `title: <a` があると、
 `Person(a,"b="c">d")` をここでは拒否し、
 mermaid.js は内側の属性引用符を変換して受理します。
+
 [fixture: c4/div-frontmatter-open-tag]
 
 ## 書き手にとっての結果
@@ -160,6 +172,7 @@ mermaid.js は内側の属性引用符を変換して受理します。
 ラベル、タイトル、メッセージのテキストを変えたりします。
 mmd-toolkit のパーサーは、図をフロントマターがないときと同じに読みます。
 タイトルのタグを閉じるか、`<` を書かなければ、どちらも同じに読みます。
+
 [fixture: pie/frontmatter-html]
 
 ## mermaid.js がそう読む理由
@@ -180,8 +193,11 @@ mermaid.js は、
 フロントマターが何を持っていても、テキストの読み方は変わりません。
 [HTML 属性の引用符](../common.ja.md#html-属性の引用符) を参照してください。
 どの図種でも、タイトルのようなフロントマターから得る値は、
-mermaid.js が得るものと同じです。 [fixture: pie/frontmatter-html]
+mermaid.js が得るものと同じです。
+
+[fixture: pie/frontmatter-html]
 [fixture: flowchart/frontmatter-title-html-attribute]
+
 [フロントマターの設定](../../../tests/docs/configuration.ja.md#フロントマターの設定)
 を参照してください。
 
@@ -201,6 +217,7 @@ Frontmatter の記録と Label と Literal のノードは書かれたテキス�
 その範囲のままフロントマターのタグで本文の引用符の役割を変えられません。
 mermaid.js に合わせるには、欠けた値の保持ではなく、
 共通の走査の範囲の変更が必要です。
+
 [fixture: agentflow/div-html-cross-frontmatter]
 [fixture: agentflow/div-frontmatter-tag-enables-label]
 [fixture: agentflow/div-frontmatter-tag-changes-title]
@@ -212,6 +229,7 @@ mermaid.js に合わせるには、欠けた値の保持ではなく、
 正しい本文のタグを mermaid.js に拒否させます。
 既存の理由 2 の直接の規則が両方を扱い、
 逆方向の pipeline の順序の条件が後者の受理を認めます。
+
 [fixture: agentflow/div-frontmatter-tag-enables-label]
 [fixture: agentflow/html-label-without-frontmatter-tag]
 [fixture: agentflow/div-frontmatter-attribute-blocks-body-tag]
@@ -228,6 +246,7 @@ mermaid の境界をまたぐ変換は、本体だけなら拒否する例を受
 本体だけなら受理する例を拒否します。
 双方向に既存の理由 2 を適用します。
 後者の受理は pipeline 順序の逆方向の基準によるもので、ラベル文法は緩めません。
+
 [fixture: usecase/div-html-frontmatter-enables-label]
 [fixture: usecase/lex-html-body-label-reference]
 [fixture: usecase/div-html-frontmatter-blocks-label]
@@ -239,7 +258,9 @@ mermaid は `b='c'>d` と読み、この仕様は `b="c">d` を保ちます。
 Frontmatter と UsecaseLiteral に書かれたテキストを保持し、
 木の値を変換後の引用符には変えません。
 アクセシビリティ文の前に矢印があれば、その `>` が frontmatter のタグを閉じ、
-その値の変化は起きません。 [fixture: usecase/div-html-frontmatter-acc-title-db]
+その値の変化は起きません。
+
+[fixture: usecase/div-html-frontmatter-acc-title-db]
 [fixture: usecase/lex-html-acc-title-body-control]
 [fixture: usecase/lex-html-frontmatter-arrow-closes-tag]
 
@@ -258,6 +279,7 @@ Mermaid が受理するラベルをここでは拒否します。
 対応する usecase の入力と同じ扱いです。
 異なるのは、区切りをまたぐ効果と、変換後の YAML の拒否だけです。
 図のテキスト内で完結するタグは、共通の HTML の規則に従います。
+
 [fixture: pie/frontmatter-html]
 [fixture: pie/div-review-frontmatter-html-cross-label]
 [fixture: pie/div-review-frontmatter-html-invalid-yaml]
@@ -272,6 +294,7 @@ Mermaid が受理するラベルをここでは拒否します。
 Mermaid だけが受理する場合、ここだけが受理する場合があります。
 フロントマターのタイトルは Mermaid が得る値を保ち、
 結果の同じ通常の本文のタグやフロントマターのタグには印を付けません。
+
 [fixture: gitgraph/div-frontmatter-cross-title-value]
 [fixture: gitgraph/div-frontmatter-cross-string-enable]
 [fixture: gitgraph/div-frontmatter-cross-string-block]
@@ -283,6 +306,7 @@ Mermaid だけが受理する場合、ここだけが受理する場合があり
 Frontmatter と値は原文を保持するが、
 本文の quote 変換は不透明な frontmatter の未閉鎖 tag に依存しない。
 値が変わる場合と、両方向に受理が逆転する場合があり、本文だけの対照は一致する。
+
 [fixture: packet/div-html-frontmatter-value]
 [fixture: packet/div-html-frontmatter-accept]
 [fixture: packet/div-html-frontmatter-reject]
@@ -298,6 +322,7 @@ frontmatter 内で開始した属性が、本仕様の受理する文字 icon �
 木は quote の原綴を持てるが、mermaid と同じ本文の変換には、
 前処理の順序に沿って frontmatter の HTML 文脈を引き継ぐ必要がある。
 共有の直接の規則では、frontmatter の後から本文の HTML を読む。
+
 [fixture: architecture/div-frontmatter-open-tag-icon]
 [fixture: architecture/gram-frontmatter-open-tag-reference]
 [fixture: architecture/div-frontmatter-open-attribute-icon]
@@ -312,6 +337,7 @@ frontmatter の開いた tag の属性状態を label や common 値に持ち越
 テキストの欠落を理由に拒否しません。
 残る差異は、前処理の状態を持ち越さず、
 frontmatter と本文の境界を直接定めるものです。
+
 [fixture: radar/div-html-frontmatter-cross]
 [fixture: radar/div-html-frontmatter-reverse]
 [fixture: radar/gram-html-body-only-double]
@@ -327,6 +353,7 @@ single quote の逆方向の例は、mermaid が拒否し、
 これらの受理と値の差異には、この識別子を使い、
 比較を specified.json に記録します。
 label と common 値の node は原綴を保ちます。
+
 [fixture: radar/div-html-frontmatter-cross]
 [fixture: radar/div-html-frontmatter-reverse]
 [fixture: radar/gram-html-body-only-double]
@@ -343,6 +370,7 @@ Mermaid に合わせるには、それに加え、
 前処理の順序に沿って frontmatter の HTML の文脈を持ち越す必要があります。
 共有の直接の規則は、代わりに本文を frontmatter の後から読み始め、
 ignored text のノードで閉じ quote を移動しません。
+
 [fixture: treemap/div-html-tag-starts-in-frontmatter]
 [fixture: treemap/div-html-frontmatter-reverse]
 [fixture: treemap/div-html-frontmatter-title-value]
@@ -358,6 +386,7 @@ Mermaid は title を `x='y'>`、style を `fill:x='y'>` として読みます�
 この仕様は本文だけの引用符の読みに合わせ、`x="y">` と `fill:x="y">` を保ちます。
 受理と値の差異をこの識別子で表し、比較を specified.json に記録します。
 ノードは書かれた綴りを保ちます。
+
 [fixture: treemap/div-html-tag-starts-in-frontmatter]
 [fixture: treemap/div-html-frontmatter-reverse]
 [fixture: treemap/div-html-frontmatter-title-value]
@@ -372,6 +401,7 @@ rule-accept の fixture は Mermaid が受理して仕様が拒否し、
 rule-reject は Mermaid が拒否して仕様が受理し、
 acctitle は両方が受理して値が異なります。
 Mermaid が拒否する向きも含め、各 fixture に specified の記録があります。
+
 [fixture: railroad/ir-div-html-frontmatter-rule-accept]
 [fixture: railroad/ir-div-html-frontmatter-rule-reject]
 [fixture: railroad/ir-div-html-frontmatter-acctitle]
@@ -393,7 +423,9 @@ Mermaid の frontmatter を跨ぐ引用符の文脈を保つことはできま�
 ignored-text の兄弟ノードで文字列の閉じる位置を変えることはできないためです。
 第 2 の問いの答えは理由 2、共通の直接規則です。
 body の内部だけの HTML に見える text には通常の共通引用符規則を適用し、
-tag があるだけでは印を付けません。 [fixture: railroad/ir-html-body-control]
+tag があるだけでは印を付けません。
+
+[fixture: railroad/ir-html-body-control]
 [fixture: railroad/ebnf-html-body-control]
 [fixture: railroad/abnf-html-body-control]
 [fixture: railroad/peg-html-body-control]
@@ -412,6 +444,7 @@ accessible title の例は双方受理し、Mermaid は b='c'>d、
 この仕様は b="c">d と読みます。
 本文だけの control は一致し、
 Mermaid が拒否する向きも含め各差異に specified.json があります。
+
 [fixture: wardley/div-html-frontmatter-accept]
 [fixture: wardley/div-html-frontmatter-reject]
 [fixture: wardley/div-html-frontmatter-value]
@@ -426,6 +459,7 @@ frontmatter と本文の node を保ったうえで、
 Mermaid が受理してこの規則が拒否する場合、逆の場合、
 両方受理して値だけが異なる場合があり、
 本文だけの引用符の対照には共通の HTML の規則を適用する。
+
 [fixture: cynefin/div-html-frontmatter-accept]
 [fixture: cynefin/div-html-frontmatter-reject]
 [fixture: cynefin/div-html-frontmatter-value]
@@ -438,6 +472,7 @@ Mermaid が受理してこの規則が拒否する場合、逆の場合、
 は、共通の前処理と検出の結果を読みます。
 [Cynefin の構文](../diagrams/cynefin.ja.md)に直接の規則を定め、
 [木](../ast/cynefin.ja.md)に書かれた形を保ちます。
+
 [fixture: cynefin/db-all-fields]
 
 ### eventmodeling
@@ -451,6 +486,7 @@ Mermaid が不整合な inline quote を修復して受理し、この仕様が�
 両方受理して accessibility の text だけが異なる場合もあり、
 Mermaid は属性を single quote、指定の読みは書かれた double quote とします。
 retained prefix は比較 の両方で保ちます。
+
 [fixture: eventmodeling/div-html-frontmatter-accept]
 [fixture: eventmodeling/div-html-frontmatter-reject]
 [fixture: eventmodeling/div-html-frontmatter-value]
@@ -472,7 +508,9 @@ div-html-frontmatter-reject は逆です。
 div-html-frontmatter-value は両方が受理し、bare 名の引用符だけが異なります。
 各 specified は比較 Db と必要な埋込み値を保ちます。
 [図の構文](../diagrams/treeview.ja.md)はこの既存の直接規則を適用し、
-罫線専用の差異は要しません。 [fixture: treeview/div-html-frontmatter-accept]
+罫線専用の差異は要しません。
+
+[fixture: treeview/div-html-frontmatter-accept]
 [fixture: treeview/div-html-frontmatter-reject]
 [fixture: treeview/div-html-frontmatter-value]
 

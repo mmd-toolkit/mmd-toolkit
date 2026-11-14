@@ -15,14 +15,14 @@ space, as in the other diagram types. An ordinary inline first statement moves
 below it. Hidden predecessors of the flag retain their position and consumed
 breaks; moving them would end the flag opportunity.
 
-Fixed cases: [fixture: pie/header/header-space] [fixture:
-pie/header/header-absent] [fixture: pie/header/flag-hidden-yaml] [fixture:
-pie/header/flag-hidden-directive] [fixture: pie/header/flag-in-title] [fixture:
-pie/header/header-global-flag] [fixture: pie/header/flag-hidden-remove-kept]
-[fixture: pie/header/header-hidden-after-flag] [fixture:
+[fixture: pie/header/header-space] [fixture: pie/header/header-absent] [fixture:
+pie/header/flag-hidden-yaml] [fixture: pie/header/flag-hidden-directive]
+[fixture: pie/header/flag-in-title] [fixture: pie/header/header-global-flag]
+[fixture: pie/header/flag-hidden-remove-kept] [fixture:
+pie/header/header-hidden-after-flag] [fixture:
 pie/header/header-hidden-without-flag] [fixture:
 pie/header/header-two-hidden-forms] [fixture:
-pie/header/header-spare-visible-lf].
+pie/header/header-spare-visible-lf]
 
 Input (escaped): `" \tpie   showData \"Revenue\":8"`.
 
@@ -44,11 +44,10 @@ width zero, because pie columns have no grammatical meaning. Other value
 continuation columns and hidden closers retain their source columns; YAML alone
 uses the shared positive minimum.
 
-Fixed cases: [fixture: pie/indentation/indent-default] [fixture:
-pie/indentation/indent-four] [fixture: pie/indentation/indent-zero] [fixture:
-pie/indentation/indent-tabs] [fixture: pie/indentation/indent-zero-tabs]
-[fixture: pie/indentation/indent-two] [fixture:
-pie/indentation/indent-four-trivia].
+[fixture: pie/indentation/indent-default] [fixture: pie/indentation/indent-four]
+[fixture: pie/indentation/indent-zero] [fixture: pie/indentation/indent-tabs]
+[fixture: pie/indentation/indent-zero-tabs] [fixture:
+pie/indentation/indent-two] [fixture: pie/indentation/indent-four-trivia]
 
 Input (escaped):
 `"pie\n    \"Zero\":0\n    accTitle: direction LR\n    accDescr {direction TB}"`
@@ -73,9 +72,9 @@ description blocks. Pie has no separator semicolon: semicolons in labels and
 common values stay text. Invalid adjacent statements are handled by the corpus
 failure path rather than repaired.
 
-Fixed cases: [fixture: pie/statements-one-per-line/body-lines] [fixture:
+[fixture: pie/statements-one-per-line/body-lines] [fixture:
 pie/statements-one-per-line/semicolon-values] [fixture:
-pie/statements-one-per-line/statement-interleaving].
+pie/statements-one-per-line/statement-interleaving]
 
 Input (escaped): `"pie \"Line\":2\naccTitle: Data; title Later\n\"Next\":3"`.
 
@@ -102,10 +101,10 @@ rule. A gap containing a directive is placed as under
 [Directives](./flowchart.md#directives); a hidden form keeps its physical
 boundary, since these items supply no separator.
 
-Fixed cases: [fixture: pie/sections/section-colon] [fixture:
+[fixture: pie/sections/section-colon] [fixture:
 pie/sections/section-colon-tight-authored] [fixture:
 pie/sections/section-gap-directive] [fixture: pie/sections/section-gap-sides]
-[fixture: pie/sections/section-hidden-both-sides].
+[fixture: pie/sections/section-hidden-both-sides]
 
 Input (escaped): `"pie\n\"Wide\"\t:   12\n'Narrow':3\n\"\":1"`.
 
@@ -131,7 +130,7 @@ backquote, `&`, `#`, or `<` (see
 and `singleQuote` is not read. Keep converted-label collisions as separate
 occurrences; the resolved Map is not source.
 
-Fixed cases: [fixture: pie/labels/single-quote-sensitive-kept] [fixture:
+[fixture: pie/labels/single-quote-sensitive-kept] [fixture:
 pie/labels/label-quotes] [fixture: pie/labels/label-escapes] [fixture:
 pie/labels/label-inner-trim-kept] [fixture: pie/labels/label-quote-one-form]
 [fixture: pie/labels/label-hidden-looking] [fixture: pie/labels/div-c4-label]
@@ -139,7 +138,7 @@ pie/labels/label-inner-trim-kept] [fixture: pie/labels/label-quote-one-form]
 pie/labels/div-retained-bare-unicode] [fixture: pie/labels/div-html-invalid]
 [fixture: pie/labels/label-whitespace-opposite] [fixture:
 pie/labels/label-html-entities] [fixture: pie/labels/label-converted-collisions]
-[fixture: pie/labels/label-quote-option].
+[fixture: pie/labels/label-quote-option]
 
 Input (escaped): `"pie\n' single  label ':3\n\" double  label \":4\n'':2"`.
 
@@ -164,12 +163,10 @@ negative zero, a zero at the start of the integer part, long precision, zero and
 small slices. Overflow and signed underflow follow the accepted corpus readings;
 invalid spellings and negative duplicates remain parser failures.
 
-Fixed cases: [fixture: pie/numbers/shortest-form] [fixture:
-pie/numbers/forms-kept] [fixture: pie/numbers/number-spellings] [fixture:
-pie/numbers/number-normalize-authored] [fixture: pie/numbers/number-zero-small].
-
-[corpus fixture: pie/number-overflow] [corpus fixture:
-pie/review-number-negative-underflow-final] [corpus fixture:
+[fixture: pie/numbers/shortest-form] [fixture: pie/numbers/forms-kept] [fixture:
+pie/numbers/number-spellings] [fixture: pie/numbers/number-normalize-authored]
+[fixture: pie/numbers/number-zero-small] [corpus fixture: pie/number-overflow]
+[corpus fixture: pie/review-number-negative-underflow-final] [corpus fixture:
 pie/db-duplicate-negative]
 
 Input (escaped):
@@ -201,12 +198,11 @@ that end a title are printed with one space before each that has whitespace
 before it, and the whitespace after the last one is left out, whatever the
 whitespace at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-[fixture: title/title-directives-end-blanks-dropped]
 
-Fixed cases: [fixture: pie/title/title-trim] [fixture: pie/title/title-empty]
-[fixture: pie/title/title-next-section] [fixture: pie/title/title-next-trivia]
-[fixture: pie/title/title-inner-text] [fixture:
-pie/title/empty-value-with-directive].
+[fixture: title/title-directives-end-blanks-dropped] [fixture:
+pie/title/title-trim] [fixture: pie/title/title-empty] [fixture:
+pie/title/title-next-section] [fixture: pie/title/title-next-trivia] [fixture:
+pie/title/title-inner-text] [fixture: pie/title/empty-value-with-directive]
 
 Input (escaped): `"pie\ntitle\t   Sales  report  \n\"Sales\":8"`.
 
@@ -245,12 +241,12 @@ Hidden forms and protected textual groups retain their gaps. The directives that
 end the value are printed with one space before each that has whitespace before
 it, and the whitespace after the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
 accessibility-lines/acc-title-percent-gap-kept] [fixture:
 accessibility-lines/acc-value-after-blank-and-directive-kept] [fixture:
-accessibility-lines/acc-value-with-value-then-row-split]
-
-Fixed cases: [fixture: pie/accessibility-lines/a11y-lines] [fixture:
+accessibility-lines/acc-value-with-value-then-row-split] [fixture:
+pie/accessibility-lines/a11y-lines] [fixture:
 pie/accessibility-lines/a11y-empty] [fixture:
 pie/accessibility-lines/a11y-next-section] [fixture:
 pie/accessibility-lines/a11y-next-join-kept] [fixture:
@@ -259,7 +255,7 @@ pie/accessibility-lines/a11y-percent] [fixture:
 pie/accessibility-lines/accessibility-next-trivia] [fixture:
 pie/accessibility-lines/accessibility-directive-edges] [fixture:
 pie/accessibility-lines/accessibility-inner-tab] [fixture:
-pie/accessibility-lines/accessibility-only-global-trivia].
+pie/accessibility-lines/accessibility-only-global-trivia]
 
 Input (escaped):
 `"pie\naccTitle \t:   Title  words \t\naccDescr\t:  Description  text  \n\"Line\":1"`.
@@ -294,7 +290,7 @@ regions keep their complete source. Trivia-bearing interiors keep their trivia.
 The first closing brace still closes the block, even inside
 quote/backslash/hidden-looking text.
 
-Fixed cases: [fixture: pie/description-blocks/block-runs] [fixture:
+[fixture: pie/description-blocks/block-runs] [fixture:
 pie/description-blocks/block-empty] [fixture:
 pie/description-blocks/block-columns] [fixture:
 pie/description-blocks/block-opener-newline] [fixture:
@@ -309,7 +305,7 @@ pie/description-blocks/block-keyword-tab] [fixture:
 pie/description-blocks/block-mixed-trivia] [fixture:
 pie/description-blocks/block-trailing-comment] [fixture:
 pie/description-blocks/block-opener-directive] [fixture:
-pie/description-blocks/block-quotes-backslashes].
+pie/description-blocks/block-quotes-backslashes]
 
 Input (escaped):
 `"pie\naccDescr {\n  first\n    second\n        }\n\"Data\":2"`.
@@ -352,7 +348,7 @@ indented forms, forms after the header or showData, and forms at EOF. The same
 boundary rule applies to hidden YAML and hidden directives. Closing padding also
 stays between forms or before a same-line statement.
 
-Fixed cases: [fixture: pie/hidden-yaml/yaml-section-gaps] [fixture:
+[fixture: pie/hidden-yaml/yaml-section-gaps] [fixture:
 pie/hidden-yaml/yaml-body] [fixture: pie/hidden-yaml/yaml-move-gap-kept]
 [fixture: pie/hidden-yaml/yaml-after-space-boundary] [fixture:
 pie/hidden-yaml/yaml-extra-eol] [fixture: pie/hidden-yaml/yaml-eof] [fixture:
@@ -364,9 +360,8 @@ pie/hidden-yaml/yaml-global-trivia] [fixture: pie/hidden-yaml/yaml-empty-body]
 pie/hidden-yaml/yaml-qualifying-later-closer] [fixture:
 pie/hidden-yaml/yaml-after-block] [fixture:
 pie/hidden-yaml/yaml-selected-content] [fixture:
-pie/hidden-yaml/yaml-followed-trivia].
-
-[fixture: pie/hidden-yaml/body-closing-padding] [fixture:
+pie/hidden-yaml/yaml-followed-trivia] [fixture:
+pie/hidden-yaml/body-closing-padding] [fixture:
 pie/hidden-yaml/first-body-closing-padding] [fixture:
 pie/hidden-yaml/indented-body-spare-lf] [fixture:
 pie/hidden-yaml/header-closing-padding] [fixture:
@@ -375,9 +370,8 @@ pie/hidden-yaml/header-eof-closing-padding] [fixture:
 pie/hidden-yaml/body-eof-closing-padding] [fixture:
 pie/hidden-yaml/flag-eof-closing-padding] [fixture:
 pie/hidden-yaml/inline-section-padding] [fixture:
-pie/hidden-yaml/inline-two-forms-padding].
-
-[fixture: pie/hidden-yaml/closing-line-comment-padding].
+pie/hidden-yaml/inline-two-forms-padding] [fixture:
+pie/hidden-yaml/closing-line-comment-padding]
 
 Input (escaped): `"pie\n\"Yaml\"---\nnot: [yaml\n---\n:---\nignored\n---\n7"`.
 
@@ -408,7 +402,7 @@ Strings and blocks retain earlier lexical priority. Closing spaces and spare LF
 remain significant before another statement; a closed form at EOF can gain the
 shared final LF.
 
-Fixed cases: [fixture: pie/hidden-directives/hidden-number-gap] [fixture:
+[fixture: pie/hidden-directives/hidden-number-gap] [fixture:
 pie/hidden-directives/hidden-before-colon] [fixture:
 pie/hidden-directives/hidden-after-space] [fixture:
 pie/hidden-directives/hidden-after-extra-lf] [fixture:
@@ -429,9 +423,8 @@ pie/hidden-directives/hidden-comment-cuts] [fixture:
 pie/hidden-directives/hidden-split-opener] [fixture:
 pie/hidden-directives/hidden-split-closer] [fixture:
 pie/hidden-directives/hidden-boundary-comment] [fixture:
-pie/hidden-directives/hidden-followed-trivia].
-
-[fixture: pie/hidden-directives/body-closing-padding] [fixture:
+pie/hidden-directives/hidden-followed-trivia] [fixture:
+pie/hidden-directives/body-closing-padding] [fixture:
 pie/hidden-directives/first-body-closing-padding] [fixture:
 pie/hidden-directives/indented-body-spare-lf] [fixture:
 pie/hidden-directives/header-closing-padding] [fixture:
@@ -440,9 +433,8 @@ pie/hidden-directives/header-eof-closing-padding] [fixture:
 pie/hidden-directives/body-eof-closing-padding] [fixture:
 pie/hidden-directives/flag-eof-closing-padding] [fixture:
 pie/hidden-directives/inline-section-padding] [fixture:
-pie/hidden-directives/inline-two-forms-padding].
-
-[fixture: pie/hidden-directives/closing-line-comment-padding].
+pie/hidden-directives/inline-two-forms-padding] [fixture:
+pie/hidden-directives/closing-line-comment-padding]
 
 Input (escaped): `"pie\n\"Hidden\":%%{}%%\n7"`.
 
@@ -469,12 +461,12 @@ swallowed source and joined continuation columns, because re-indenting a
 continuation adds spaces to the joined label. A protected preheader prefix
 overrides ordinary alignment.
 
-Fixed cases: [fixture: pie/comments/comments-align] [fixture:
-pie/comments/comment-bare] [fixture: pie/comments/comment-value-text] [test:
+[fixture: pie/comments/comments-align] [fixture: pie/comments/comment-bare]
+[fixture: pie/comments/comment-value-text] [test:
 pie/comments/comment-region-join] [fixture:
 pie/comments/comment-section-move-attachment] [fixture:
 pie/comments/comments-block-attachments] [fixture:
-pie/comments/comments-final-triple].
+pie/comments/comments-final-triple]
 
 Input (escaped):
 `"pie\n\"percent %% label\":3\naccDescr {a%% text}\naccTitle: a%% real comment"`.
@@ -511,18 +503,21 @@ part of the layout holds stays as written. A statement over several lines whose
 lines, joined with one space or with nothing, could change which `;` the line
 rule ignores keeps the text of each segment, up to its last kept `;`, as
 written; any other statement over several lines is formatted like one on a
-single line. [fixture: directives-and-semicolons/stretch-kept-rest-formatted]
-[fixture: directives-and-semicolons/no-stretch-formatted] Do not split a
-protected header/body group. Keep every semicolon and both style/classDef
-passes, case/colon-hash whitespace distinctions, Unicode segment bounds,
-directive-rejoined triggers and comment semicolons. Atomic keyword/number cuts
-remain specified failures.
+single line.
+
+[fixture: directives-and-semicolons/stretch-kept-rest-formatted] [fixture:
+directives-and-semicolons/no-stretch-formatted]
+
+Do not split a protected header/body group. Keep every semicolon and both
+style/classDef passes, case/colon-hash whitespace distinctions, Unicode segment
+bounds, directive-rejoined triggers and comment semicolons. Atomic
+keyword/number cuts remain specified failures.
 
 [fixture: pie/directives-and-semicolons/native-label-value]
 
 [fixture: pie/directives-and-semicolons/global-header-first-statement]
 
-Fixed cases: [fixture: pie/directives-and-semicolons/global-align] [fixture:
+[fixture: pie/directives-and-semicolons/global-align] [fixture:
 pie/directives-and-semicolons/global-touch] [fixture:
 pie/directives-and-semicolons/global-value] [fixture:
 pie/directives-and-semicolons/global-colon-brace] [fixture:
@@ -541,7 +536,7 @@ pie/directives-and-semicolons/global-gap-sides] [fixture:
 pie/directives-and-semicolons/global-value-boundaries] [fixture:
 pie/directives-and-semicolons/selected-one-three-padding] [fixture:
 pie/directives-and-semicolons/selected-comment-semicolon] [fixture:
-pie/directives-and-semicolons/semicolon-header-gap].
+pie/directives-and-semicolons/semicolon-header-gap]
 
 Input (escaped): `"pie title style:#a;b"`.
 
@@ -587,10 +582,10 @@ statements.
 
 [fixture: pie/blank-lines/hidden-comment-whitespace]
 
-Fixed cases: [fixture: pie/blank-lines/blank-runs] [fixture:
-pie/blank-lines/blank-trivia] [fixture: pie/blank-lines/blank-literal] [fixture:
+[fixture: pie/blank-lines/blank-runs] [fixture: pie/blank-lines/blank-trivia]
+[fixture: pie/blank-lines/blank-literal] [fixture:
 pie/blank-lines/blank-hidden-body] [fixture:
-pie/blank-lines/blank-directive-content].
+pie/blank-lines/blank-directive-content]
 
 Input (escaped): `"\npie\n\n\n\"First\":2\n \t\n\n\"Second\":3\n\n"`.
 
@@ -613,18 +608,19 @@ interiors, common-region continuations and protected semicolon text. Hidden
 closing-boundary spaces are outside the node range but can preserve required
 EOL, so they remain, including at EOF.
 
-Fixed cases: [fixture: pie/trailing-whitespace/trailing-exterior] [fixture:
+[fixture: pie/trailing-whitespace/trailing-exterior] [fixture:
 pie/trailing-whitespace/trailing-values] [fixture:
 pie/trailing-whitespace/trailing-label-trim-kept] [fixture:
 pie/trailing-whitespace/trailing-hidden-eof] [fixture:
-pie/trailing-whitespace/trailing-protected-prefix].
+pie/trailing-whitespace/trailing-protected-prefix]
 
 A semicolon alone does not protect a line value's trailing whitespace; the
-shared semicolon-prefix rule decides which source to retain. [fixture:
-pie/trailing-whitespace/line-semicolons] [fixture:
+shared semicolon-prefix rule decides which source to retain.
+
+[fixture: pie/trailing-whitespace/line-semicolons] [fixture:
 pie/trailing-whitespace/line-selected-semicolons] [fixture:
 pie/trailing-whitespace/line-without-semicolons] [fixture:
-pie/trailing-whitespace/header-line-semicolon].
+pie/trailing-whitespace/header-line-semicolon]
 
 Input (escaped): `"pie showData \t\n\"Data\" : 2 \t\naccDescr {a} \t"`.
 
@@ -649,12 +645,12 @@ converted labels, prototype/numeric-looking keys, repeated/empty common
 assignments and zero/small slices; reconstructing the resolved Map would lose
 source occurrences or change the first value.
 
-Fixed cases: [fixture: pie/multiline-values-and-order/multiline-label] [fixture:
+[fixture: pie/multiline-values-and-order/multiline-label] [fixture:
 pie/multiline-values-and-order/no-wrap] [fixture:
 pie/multiline-values-and-order/order-duplicates] [fixture:
 pie/multiline-values-and-order/order-sort-kept] [fixture:
 pie/multiline-values-and-order/order-converted-prototype] [fixture:
-pie/multiline-values-and-order/order-common-resets].
+pie/multiline-values-and-order/order-common-resets]
 
 Input (escaped):
 `"pie\n\"10\":3\n\"2\":4\n\"__proto__\":5\n\"constructor\":6\n'10':8\n\"a\\n\":1\n\"a\n\":7"`.
@@ -686,13 +682,16 @@ strings, common values, comments and ignored bodies, and invalid in structural
 places, and splitting at them changes the Db; unprotected common value edges
 trim
 [common whitespace as defined in the specification](../../spec/docs/common.md#notation)
-at either end. [corpus fixture: pie/review-common-all-whitespace-trim] Plain
-block-opener whitespace joins. Native colon gaps remain ASCII: a native colon
-gap takes only ASCII whitespace, and NBSP there is rejected. Invalid structural
-Unicode stays rejected. A leading BOM is handled by Prettier, so byte identity
-is not promised.
+at either end.
 
-Fixed cases: [test: pie/line-terminators-and-unicode/eol-cr] [test:
+[corpus fixture: pie/review-common-all-whitespace-trim]
+
+Plain block-opener whitespace joins. Native colon gaps remain ASCII: a native
+colon gap takes only ASCII whitespace, and NBSP there is rejected. Invalid
+structural Unicode stays rejected. A leading BOM is handled by Prettier, so byte
+identity is not promised.
+
+[test: pie/line-terminators-and-unicode/eol-cr] [test:
 pie/line-terminators-and-unicode/eol-crlf-hidden] [test:
 pie/line-terminators-and-unicode/eol-output-cr] [test:
 pie/line-terminators-and-unicode/eol-output-crlf] [test:
@@ -711,15 +710,14 @@ pie/line-terminators-and-unicode/eol-yaml-cr] [test:
 pie/line-terminators-and-unicode/eol-block-crlf] [test:
 pie/line-terminators-and-unicode/unicode-preheader-comment] [test:
 pie/line-terminators-and-unicode/unicode-comment-region-common] [test:
-pie/line-terminators-and-unicode/div-unicode-preheader-nbsp-hidden].
-
-[test: pie/line-terminators-and-unicode/title-leading-ls] [test:
+pie/line-terminators-and-unicode/div-unicode-preheader-nbsp-hidden] [test:
+pie/line-terminators-and-unicode/title-leading-ls] [test:
 pie/line-terminators-and-unicode/title-leading-ps] [test:
 pie/line-terminators-and-unicode/acctitle-leading-ls] [test:
 pie/line-terminators-and-unicode/acctitle-leading-ps] [test:
 pie/line-terminators-and-unicode/accdescr-leading-ls] [test:
 pie/line-terminators-and-unicode/accdescr-leading-ps] [test:
-pie/line-terminators-and-unicode/line-values-only-unicode].
+pie/line-terminators-and-unicode/line-values-only-unicode]
 
 Input (escaped):
 `"pie\n\"x\u2028y\u2029z\":2\ntitle x\u2028y\naccTitle: x\u2029y\naccDescr {x\u2028y}"`.
@@ -741,7 +739,7 @@ that prefix can promote ignored YAML into effective frontmatter. Never send
 PieIgnoredText to the YAML formatter. Check written source separately from
 embedded effects.
 
-Fixed cases: [fixture: pie/frontmatter-yaml/frontmatter-safe] [fixture:
+[fixture: pie/frontmatter-yaml/frontmatter-safe] [fixture:
 pie/frontmatter-yaml/frontmatter-invalid] [fixture:
 pie/frontmatter-yaml/frontmatter-zero] [fixture:
 pie/frontmatter-yaml/frontmatter-indent] [fixture:
@@ -755,7 +753,7 @@ pie/frontmatter-yaml/frontmatter-less-than-safe] [fixture:
 pie/frontmatter-yaml/preheader-malformed-yaml] [fixture:
 pie/frontmatter-yaml/preheader-directive-before-yaml] [fixture:
 pie/frontmatter-yaml/preheader-real-and-hidden] [fixture:
-pie/frontmatter-yaml/preheader-leading-comments].
+pie/frontmatter-yaml/preheader-leading-comments]
 
 Input (escaped): `"\n---\ntitle: Hidden\n---\npie\n\"Leading\":2"`.
 
@@ -805,15 +803,14 @@ appended LF and satisfy EOL at EOF. Ordinary terminal blank runs disappear,
 while protected hidden/preheader boundaries stay. A final LF may change raw C4
 detection without changing the specified pie reading.
 
-Fixed cases: [fixture: pie/final-newline/final-newline] [fixture:
+[fixture: pie/final-newline/final-newline] [fixture:
 pie/final-newline/final-bare] [fixture: pie/final-newline/final-global-open]
 [fixture: pie/final-newline/final-hidden-space] [fixture:
 pie/final-newline/markdown-top-payload] [fixture:
 pie/final-newline/markdown-nested-payload] [fixture:
 pie/final-newline/markdown-final-hidden-limit] [fixture:
 pie/final-newline/final-section-without-lf] [fixture:
-pie/final-newline/final-block] [fixture: pie/final-newline/final-common-empty].
-
+pie/final-newline/final-block] [fixture: pie/final-newline/final-common-empty]
 [corpus fixture: pie/header-only] [corpus fixture: pie/acctitle-eof]
 
 Input (escaped): `"pie\n\"End\":2\n\n\n"`.

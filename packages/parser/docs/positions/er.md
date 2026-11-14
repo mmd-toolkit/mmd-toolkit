@@ -22,17 +22,21 @@ The range is that of the node in `Root.body` of every diagram (see
 
 Each cardinality and the line are tokens of their own; the range runs from the
 first to the last, over the whitespace between them: in `A || -- o{ B : has`, it
-runs from `||` to `o{`. [fixture: er/lex-relationship-spaces-in-spec]
+runs from `||` to `o{`.
+
+[fixture: er/lex-relationship-spaces-in-spec]
 
 ### ErSubgraphStatement
 
 The range runs from `subgraph` to `end`; the whitespace that the `end` unit
-reads after the keyword is outside it. [fixture:
-er/lex-end-blank-line-then-name]
+reads after the keyword is outside it.
+
+[fixture: er/lex-end-blank-line-then-name]
 
 ### ErDirectionStatement
 
 The range covers the whole direction line, from its first token to its last.
+
 [fixture: er/lex-direction-line-text-before] [fixture:
 er/lex-direction-line-text-after]
 
@@ -40,14 +44,17 @@ er/lex-direction-line-text-after]
 
 The range of a style runs from its first token to its last, over the whitespace
 between them, which its value leaves out: in `classDef a fill : #f9f`, it covers
-`fill : #f9f`, and the value is `fill:#f9f`. [fixture:
-er/lex-classdef-style-spaces]
+`fill : #f9f`, and the value is `fill:#f9f`.
+
+[fixture: er/lex-classdef-style-spaces]
 
 ### ErIgnoredText
 
 The range of a run of `empty-backquotes` units runs from the first to the last,
 and its value is the written text of that range, the whitespace between them
-included. [fixture: er/gram-empty-backquotes-twice] [fixture:
+included.
+
+[fixture: er/gram-empty-backquotes-twice] [fixture:
 er/gram-empty-backquotes-run-across-line-feed] [fixture:
 er/gram-empty-backquotes-run-across-comment-line] [fixture:
 er/gram-empty-backquotes-run-across-directive]

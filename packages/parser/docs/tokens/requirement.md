@@ -39,7 +39,9 @@ hold whitespace between its words, as a name of a class diagram that may hold
 whitespace is (see [tokens/class.md](./class.md#tokens)):
 `requirement  spaced name  {` has the one `RawText` token `spaced name`. A
 `style-word` holds no whitespace, and a name of that unit is an `Identifier`
-token. [fixture: requirement/db-requirement-name-spaces] [fixture:
+token.
+
+[fixture: requirement/db-requirement-name-spaces] [fixture:
 requirement/db-style-statement]
 
 A **token** is a maximal run of units of one item and one kind that follow one
@@ -48,10 +50,13 @@ units of a style, so a run breaks where whitespace lies between two of them: the
 style of `style r fill: red , stroke : blue` is the `RawText` tokens `fill:` and
 `red`, and the next one `stroke`, `:`, and `blue`, while `style r fill:red` has
 the one token `fill:red`; and `style r fill:red #c` has the tokens `fill:red`
-and `#c` of the one style `fill:red#c`. [fixture: requirement/lex-style-spaces]
-[fixture: requirement/db-style-statement] [fixture:
-requirement/lex-style-hash-after-style] Every other item is one unit, and so one
-token.
+and `#c` of the one style `fill:red#c`.
+
+[fixture: requirement/lex-style-spaces] [fixture:
+requirement/db-style-statement] [fixture:
+requirement/lex-style-hash-after-style]
+
+Every other item is one unit, and so one token.
 
 A token holds no whitespace at its ends, except where mermaid.js reads it as
 part of a value (see [Tokens](../tokens.md#tokens)). An `unquoted-text` reads
@@ -64,8 +69,9 @@ mermaid.js trims, leave it out as well: `accTitle:   t1` followed by two spaces
 has the token `t1`, and `accDescr {`, a line `  line 1`, a line `  line 2`, and
 `}` on a line of its own have the token `line 1`, the line break and the
 indentation, and `line 2`, without the line break before the `}`, which the
-lexer reads into the block text. [fixture:
-requirement/db-requirement-name-spaces] [fixture:
+lexer reads into the block text.
+
+[fixture: requirement/db-requirement-name-spaces] [fixture:
 requirement/db-requirement-value-spaces] [fixture:
 requirement/lex-whitespace-nbsp-after-name] [fixture:
 requirement/lex-whitespace-nbsp-in-name] [fixture:
@@ -81,6 +87,7 @@ of any other kind, a directive or an ignored `;` makes the input rejected (see
 `Directive` token between them, and `style r fi%%{init: {}}%%ll:red` the
 `RawText` tokens `fi` and `ll:red`, while `style r%%{init: {}}%%x fill:red`,
 whose directive lies inside the `Identifier` token of the name, is rejected.
+
 [fixture: requirement/lex-directive-in-name] [fixture:
 requirement/lex-directive-in-style] [fixture:
 requirement/div-directive-in-style-name] [fixture:
@@ -88,14 +95,17 @@ requirement/lex-directive-in-string]
 
 - An empty description block has the `Keyword` token `accDescr` and the
   `Punctuator` tokens `{` and `}`, as a statement and as an item of a body.
+
   [fixture: requirement/gram-acc-descr-block-empty] [fixture:
   requirement/gram-empty-description-block-in-body]
+
 - A `;` that the line rule ignores is an `IgnoredSemicolon` token:
   `accTitle: style:#x a;b` has the `RawText` tokens `style:#x a` and `b` with
   the `IgnoredSemicolon` token between them, after the requirement `"style:#x"`
   the target of `"style:#x" - satisfies -> b;c` is the `RawText` tokens `b` and
   `c` with the `IgnoredSemicolon` token between them, and `style r fill:#f00;`
   ends in the `RawText` token `fill:#f00` and the `IgnoredSemicolon` token `;`.
+
   [fixture: requirement/tokens-ignored-semicolon-in-acc-title] [fixture:
   requirement/tokens-ignored-semicolon-in-name] [fixture:
   requirement/tokens-ignored-semicolon-in-style]
