@@ -217,6 +217,7 @@ whatever the other versions are, so it has no row.
 | [ER](./er.md#statements-one-per-line)                          | `12a`, a number of two digits or more and a character that continues a name                                                 | `12` and `a` on lines of their own                                    | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.7.0 draws the two lines differently; 10.9.8 rejects the text                                             | [fixture: er/statements-one-per-line/number-name-then-name-kept]                   |
 | [ER](./er.md#statements-one-per-line)                          | `endé`, `end` and a U+2028 or U+2029 and a statement, `subgraphé`, `subgraph` and a U+2028 and a name                       | `end` and `é` on lines of their own; the separator printed as a space | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.7.0 draws them differently; 10.9.8 rejects `endé` and `subgraphé`                                        | [fixture: er/statements-one-per-line/end-then-name-outside-ascii-kept]             |
 | [ER](./er.md#statements-one-per-line)                          | a U+2028 or U+2029 before `class` and two names, or before a direction line, with a statement after it on its line          | each statement on a line of its own                                   | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.7.0 rejects the `class` line and draws the `direction` line differently                                  | [test: a line of two ER statements that starts with U+2028]                        |
+| [ER](./er.md#statements-one-per-line)                          | `"Alpha"`, a U+2028 or U+2029, and `{ int x }`, an alias, a CSS class, or a relationship                                    | `Alpha`, and the statement of the character on a line of its own      | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 and 11.7.0 read the character as whitespace, and reject a line that starts with it before the rest   | [test: U+2028 and an attribute block after a name in quotes]                       |
 | [ER](./er.md#statements-one-per-line)                          | an attribute with a pair of `~` after another attribute on its line (`int a List~int~ b`)                                   | one attribute on each line                                            | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 reads the line up to the second `~` as the type of its first attribute                               | [fixture: er/attribute-spacing/attributes-with-tilde-on-one-line-kept]             |
 | [treemap](./treemap.md#title)                                  | `title T` at the start of its line                                                                                          | `  title T` one step in                                               | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.8.1 rejects a title, `accTitle`, and `accDescr` that is indented                                         | [fixture: treemap/title/line-start-kept]                                           |
 | [ishikawa](./ishikawa.md#indentation)                          | `ishikawa`, `R`, `  A`, ` B`, `  C` as written                                                                              | every node at its depth                                               | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.13.0 draws the text printed by depth differently from the written text                                   | [fixture: ishikawa/indentation/indent-relative-zero]                               |
@@ -1991,10 +1992,15 @@ directive staying as they are, except that the quotes of a text stay as written
 on a line that mermaid.js reads with the next one, because a comment after the
 text removes its line feed: a U+2028 or U+2029 may stand between the text and
 the comment, and a quote that comes between them makes the comment a part of the
-text, or a name without quotes goes on over the character. [fixture:
-sequence/keyword-case/kept-line-in-one-form] [fixture:
-gantt/keyword-case/kept-line-in-one-form] The examples are the 541 fenced
-`mermaid-example` and `mermaid` blocks of the
+text, or a name without quotes goes on over the character. [test: usecase:
+U+2028, a space, and a comment after a label text] [test: usecase: U+2028, a
+directive, and a comment after a label text] [test: usecase: U+2028, a space,
+and a comment after a note text that holds a percent mark] [test: U+2028 and a
+comment after the target in quotes of a relationship, with a statement after the
+comment] [test: U+2028 and a comment after a value in quotes, with a statement
+after the comment] [fixture: sequence/keyword-case/kept-line-in-one-form]
+[fixture: gantt/keyword-case/kept-line-in-one-form] The examples are the 541
+fenced `mermaid-example` and `mermaid` blocks of the
 [syntax pages](https://github.com/mermaid-js/mermaid/tree/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax);
 the parser reads 524 of them, and the counts below are counts in those 524.
 

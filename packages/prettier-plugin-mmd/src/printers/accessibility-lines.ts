@@ -15,14 +15,29 @@ import {
  * its line: another statement, or a `;` that the line rule does not remove.
  */
 export function holdsStatementAfter(source: Source, end: number): boolean {
+  return findStatementAfter(source, end) !== undefined
+}
+
+/**
+ * Where the first thing but whitespace, comments, and directives after `end` on
+ * its line is, as the offset after the last comment or directive that comes
+ * before it (`end` where none does), or undefined where nothing but whitespace,
+ * comments, and directives follows (see `holdsStatementAfter`).
+ */
+export function findStatementAfter(
+  source: Source,
+  end: number,
+): number | undefined {
   const lineEnd = lineEndOf(source, end)
   let position = end
   for (const item of findTriviaBetween(source, end, lineEnd)) {
     if (![...textRead(source, position, item.range[0])].every(isWhitespace))
-      return true
+      return position
     position = Math.max(position, item.range[1])
   }
-  return ![...textRead(source, position, lineEnd)].every(isWhitespace)
+  return [...textRead(source, position, lineEnd)].every(isWhitespace)
+    ? undefined
+    : position
 }
 
 /**

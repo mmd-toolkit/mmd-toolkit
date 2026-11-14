@@ -499,13 +499,26 @@ comment] [test: U+00A0 and U+2028 after a name in quotes, before a comment]
 [test: U+00A0 after a name in quotes at the end of its line, and U+2028 and a
 comment on the next line] [test: U+2028 alone after a name in quotes, at the end
 of its line] [test: U+2028 alone after a name in quotes, before a directive]
-[test: U+2028 alone at the start of its line, before a comment] A line of
-several attributes is printed as written when an attribute on it that comes
-after another holds a pair of `~`, as in `int a List~int~ b`: the oldest version
-that counts reads a generic type with a rule that runs from the start of an
-attribute over the rest of the line to the second `~`. A line whose only `~` is
-in a string or in a directive, which mermaid.js removes before it reads the
-text, and an attribute whose own type holds the pair, are split. [fixture:
+[test: U+2028 alone at the start of its line, before a comment] A statement
+whose first entity is named by a U+2028 or U+2029 alone, after another statement
+on its line, and that goes on after the character with an attribute block, an
+alias, a CSS class, or a relationship, stays on its line too (`"Alpha"`, the
+character, and `{ int x }`): the oldest versions that count read the character
+as whitespace and the rest as part of the statement before it, so the rest
+cannot start a line of its own there. A second name after the character is split
+from it, as is a name of the character and other characters (`LR`), which starts
+a line. [test: U+2028 and an attribute block after a name in quotes] [test:
+U+2028 and an attribute block touching it after a name in quotes] [test: U+2028,
+a directive, and an attribute block after a name in quotes] [test: U+2029 and a
+relationship after a name in quotes] [test: U+2028 and an alias after a name in
+quotes] [test: U+2028 and a CSS class after a name in quotes] [test: U+2028 and
+a second name after a name in quotes] A line of several attributes is printed as
+written when an attribute on it that comes after another holds a pair of `~`, as
+in `int a List~int~ b`: the oldest version that counts reads a generic type with
+a rule that runs from the start of an attribute over the rest of the line to the
+second `~`. A line whose only `~` is in a string or in a directive, which
+mermaid.js removes before it reads the text, and an attribute whose own type
+holds the pair, are split. [fixture:
 attribute-spacing/attributes-with-tilde-on-one-line-kept] [fixture:
 attribute-spacing/attributes-with-generic-type-later-on-one-line-kept] [fixture:
 attribute-spacing/attributes-with-generic-type-first-on-one-line-split]

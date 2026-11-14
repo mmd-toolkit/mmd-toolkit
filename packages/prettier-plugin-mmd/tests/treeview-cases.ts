@@ -441,6 +441,12 @@ export const treeviewCases: readonly TreeviewCase[] = [
     options: {},
   },
   {
+    name: "treeview/title/bare-title-comment-after-line-separator-kept",
+    input: 'treeView-beta\ntitle  \u2028%% c\n"A"\n',
+    output: 'treeView-beta\n  title  \u2028%% c\n"A"\n',
+    options: {},
+  },
+  {
     name: "treeview/statements-one-per-line/separator-node-before-comment-ls",
     input: 'treeView-beta\n"a"\u2028%% c\n',
     output: 'treeView-beta\n"a"\u2028%% c\n',

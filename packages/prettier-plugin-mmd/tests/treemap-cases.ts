@@ -28,6 +28,12 @@ export const treemapCases: readonly TreemapCase[] = [
     options: {},
   },
   {
+    name: "treemap/title/bare-title-comment-after-line-separator-kept",
+    input: 'treemap\ntitle  \u2028%% c\n"A":1\n',
+    output: 'treemap\ntitle  \u2028%% c\n"A":1\n',
+    options: {},
+  },
+  {
     name: "treemap/comments/standalone-ls",
     input:
       'treemap\n"SeparatorRoot"\n%% note\u2028still comment\n "SeparatorChild":2\n',

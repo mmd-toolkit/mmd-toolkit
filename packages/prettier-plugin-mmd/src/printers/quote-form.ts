@@ -27,8 +27,10 @@ import { findSankeyKeptLines } from "./sankey-kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
   findDirectiveEndingAt,
+  findTokensBetween,
   findTriviaAt,
   isBracketPadding,
+  isStructural,
   isSpaceOrTab,
   isWordCharacter,
   isWhitespace,
@@ -1437,7 +1439,12 @@ function isKept(source: Source, offset: number): boolean {
   const line = lineStartOf(source, offset)
   return (
     (kept === null
-      ? holdsSemicolonOrPercents(source, line, lineEndOf(source, offset))
+      ? holdsSemicolonOrPercents(
+          source,
+          line,
+          lineEndOf(source, offset),
+          offset,
+        )
       : kept.joined.has(line) || kept.verbatim.has(line)) ||
     joinsNextLine(source, offset)
   )
@@ -1447,14 +1454,22 @@ function isKept(source: Source, offset: number): boolean {
  * Whether the line from `start` to `end` holds a `;`, or a `%%` or a directive
  * that does not start a comment line: one after a U+2028 or U+2029, with only
  * whitespace and directives between, stands apart from the text before the
- * character, and the printer puts it on a line of its own.
+ * character, and the printer puts it on a line of its own. So does the text of
+ * a body after its `{`, which the printer puts on lines of its own, for an item
+ * that stands before the `{`: the line of the item is the text up to it.
  */
 function holdsSemicolonOrPercents(
   source: Source,
   start: number,
   end: number,
+  offset: number,
 ): boolean {
-  const text = source.text.slice(start, end)
+  const brace = findTokensBetween(source, start, end).find(
+    (token) => token.value === "{" && isStructural(source, token),
+  )
+  const limit =
+    brace !== undefined && offset < brace.range[0] ? brace.range[0] : end
+  const text = source.text.slice(start, limit)
   if (text.includes(";")) return true
   for (let at = text.indexOf("%%"); at >= 0;) {
     // A directive is read whole: the `%%` that closes it is not a comment.

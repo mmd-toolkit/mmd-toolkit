@@ -5,6 +5,7 @@ import {
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
   becomesCommentLineOnItsOwnLine,
+  isFirstOnItsLine,
   lineEndOf,
   lineStartOf,
 } from "./kept-lines.ts"
@@ -225,7 +226,10 @@ function findLinesReadByTheirPlace(
     ) {
       lines.push(lineStartOf(source, statement.range[0]))
     }
-    if (becomesCommentLineOnItsOwnLine(source, statement.range[0])) {
+    if (
+      becomesCommentLineOnItsOwnLine(source, statement.range[0]) ||
+      startsWithSeparatorBeforeMore(source, statement)
+    ) {
       lines.push(lineStartOf(source, statement.range[0]))
     }
     if (statement.type === "ErSubgraphStatement") {
@@ -384,6 +388,37 @@ function skipWhitespaceOnLine(source: Source, offset: number): number {
       return start
     start++
   }
+}
+
+/**
+ * Whether the first entity of a statement is named by whitespace only, a
+ * U+2028 or U+2029, after another statement on its line, and the statement goes
+ * on after the name: an attribute block, an alias, a CSS class, or a
+ * relationship (`"Alpha"`, the character, and `{ int x }`). The oldest versions
+ * that count read the character as whitespace and the rest as part of the
+ * statement before it, so the rest cannot start a line of its own there, and
+ * printing the statement on a line of its own gives a text that they reject
+ * (docs/er.md, Statements one per line). A name that stands alone is no such
+ * statement, and a name of the character and other characters (`LR`) starts a
+ * line there.
+ */
+function startsWithSeparatorBeforeMore(
+  source: Source,
+  statement: ErStatement,
+): boolean {
+  const name =
+    statement.type === "ErEntityStatement"
+      ? statement.name
+      : statement.type === "ErRelationshipStatement"
+        ? statement.left.name
+        : undefined
+  return (
+    name !== undefined &&
+    isLineSeparator(source.text.charAt(name.range[0])) &&
+    [...source.text.slice(...name.range)].every(isWhitespace) &&
+    !isNameAlone(statement) &&
+    !isFirstOnItsLine(source, name.range[0])
+  )
 }
 
 /** Whether the statement is an entity written by its name alone. */

@@ -1077,16 +1077,22 @@ with another character (`` `a-b` ``, `` `Animal Class!` ``, `` `é` ``) and a
 name on a line that holds a comment or a directive, except one that starts after
 a U+2028 or U+2029, which the printer puts on a line of its own
 (`` class `A_Car` ``, the character, and `%% c` is printed `class A_Car` and the
-comment on the next line). A name that ends with `direction` or starts with
-`TB`, `BT`, `RL`, or `LR` keeps its backquotes too, since the lexer reads
-`direction`, white space (a line break too), and the name of a direction as one
-line, which a name without backquotes would join with the line before or after
-it: ``A --> `direction` `` followed by a line `TB --> C` keeps its backquotes.
-[fixture: quotes/names-without-quotes] [fixture: quotes/names-that-need-quotes]
-[fixture: quotes/names-next-to-a-direction-line] [fixture:
-quotes/names-on-a-kept-line-as-written] [test: U+2028 and a comment after a name
-in backquotes] [test: U+2028, a directive, and a comment after a name in
-backquotes]
+comment on the next line), and so does the text of a body after its `{`, which
+the printer puts on lines of its own: ``class `Alpha` {Word %% c}`` is printed
+`class Alpha {` and `Word %% c` on the next lines, while a name inside the body
+keeps its backquotes on a line with a comment. [fixture:
+quotes/name-before-a-body-with-a-comment-unquoted] [fixture:
+quotes/name-in-a-body-line-with-a-comment-as-written] A name that ends with
+`direction` or starts with `TB`, `BT`, `RL`, or `LR` keeps its backquotes too,
+since the lexer reads `direction`, white space (a line break too), and the name
+of a direction as one line, which a name without backquotes would join with the
+line before or after it: ``A --> `direction` `` followed by a line `TB --> C`
+keeps its backquotes. [fixture: quotes/names-without-quotes] [fixture:
+quotes/names-that-need-quotes] [fixture: quotes/names-next-to-a-direction-line]
+[fixture: quotes/names-on-a-kept-line-as-written] [test: U+2028 and a comment
+after a name in backquotes] [test: U+2028, a directive, and a comment after a
+name in backquotes] [test: U+2028, a directive, and a body with a comment after
+a name in backquotes]
 
 The printer adds no quotes. Where the grammar needs a string, mermaid.js rejects
 the text without quotes: `class A["Label"]` is read and `class A[Label]` is

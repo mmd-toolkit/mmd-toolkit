@@ -1038,6 +1038,11 @@ const classLineSeparatorExamples: readonly (readonly [
     "classDiagram\nclass `notex`\u2028%%{x}%%%% c\n\n",
     "classDiagram\n  class notex\n  %%{x}%%%% c\n",
   ],
+  [
+    "U+2028, a directive, and a body with a comment after a name in backquotes",
+    "classDiagram\nclass `Alpha`\u2028%%{x:y}%% {Word %% c}\n",
+    "classDiagram\n  class Alpha\u2028%%{x:y}%% {\n    Word %% c\n  }\n",
+  ],
 ]
 
 /**
@@ -1490,6 +1495,41 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "U+00A0 after a name in quotes at the end of its line, and U+2028 and a comment on the next line",
     'erDiagram\n"Foo"\u00a0\n\u2028%% c\n\n',
     'erDiagram\n  "Foo"\u00a0\n  %% c\n',
+  ],
+  [
+    "U+2028 and an attribute block after a name in quotes",
+    'erDiagram\n"Alpha"\u2028 { int x }\n',
+    'erDiagram\n  "Alpha"\u2028 { int x }\n',
+  ],
+  [
+    "U+2028 and an attribute block touching it after a name in quotes",
+    'erDiagram\n"Alpha"\u2028{ int x }\n',
+    'erDiagram\n  "Alpha"\u2028{ int x }\n',
+  ],
+  [
+    "U+2028, a directive, and an attribute block after a name in quotes",
+    'erDiagram\n"Alpha"\u2028%%{x:y}%% { int x }\n',
+    'erDiagram\n  "Alpha"\u2028%%{x:y}%% { int x }\n',
+  ],
+  [
+    "U+2029 and a relationship after a name in quotes",
+    'erDiagram\n"Alpha"\u2029 ||--o{ B : x\n',
+    'erDiagram\n  "Alpha"\u2029 ||--o{ B : x\n',
+  ],
+  [
+    "U+2028 and an alias after a name in quotes",
+    'erDiagram\n"Alpha"\u2028["x"]\n',
+    'erDiagram\n  "Alpha"\u2028["x"]\n',
+  ],
+  [
+    "U+2028 and a CSS class after a name in quotes",
+    'erDiagram\n"Alpha"\u2028:::c\n',
+    'erDiagram\n  "Alpha"\u2028:::c\n',
+  ],
+  [
+    "U+2028 and a second name after a name in quotes",
+    'erDiagram\n"Alpha"\u2028 "B"\n',
+    "erDiagram\n  Alpha\n  \u2028\n  B\n",
   ],
   [
     "U+2028 alone at the start of its line, before a comment",

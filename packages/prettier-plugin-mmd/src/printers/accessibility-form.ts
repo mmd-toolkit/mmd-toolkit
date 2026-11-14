@@ -8,7 +8,10 @@ import {
 } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import { findTriviaBetween, isWhitespace, textRead } from "./source.ts"
-import { holdsStatementAfter } from "./accessibility-lines.ts"
+import {
+  findStatementAfter,
+  holdsStatementAfter,
+} from "./accessibility-lines.ts"
 import {
   diagramTypesWithJisonAccessibilityLines,
   isReadAsAccValueByOlderVersions,
@@ -380,7 +383,13 @@ function commentsAfterAllowed(source: Source, end: number): boolean {
   return (
     (diagramTypesEndingTextAtPercent.has(source.root.diagramType) &&
       !diagramTypesWithJisonAccessibilityLines.has(source.root.diagramType)) ||
-    findTriviaBetween(source, end, lineEndOf(source, end)).every(
+    // The comments after a statement that follows the block on its line stay
+    // with that statement, which goes to a line of its own.
+    findTriviaBetween(
+      source,
+      end,
+      findStatementAfter(source, end) ?? lineEndOf(source, end),
+    ).every(
       (item) =>
         item.type === "Directive" || textRead(source, ...item.range) === "",
     )

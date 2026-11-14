@@ -653,7 +653,11 @@ the end of the text without adding a `}`: mermaid.js reads no text for it, and a
 with a `}` have `abc`). [fixture: accessibility-statements/block-lines-kept]
 [fixture:
 accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
-[fixture: accessibility-statements/block-then-statement-on-the-closing-line]
+[fixture: accessibility-statements/block-then-statement-on-the-closing-line] A
+comment after the statement that follows the block belongs to that statement,
+which goes to a line of its own, and does not keep the block as it is written.
+[fixture:
+accessibility-statements/block-then-statement-and-comment-on-the-closing-line]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept] [fixture:
 accessibility-statements/block-not-closed-kept-as-written] [fixture:
 accessibility-statements/block-not-closed-text-on-the-opening-line] [fixture:
