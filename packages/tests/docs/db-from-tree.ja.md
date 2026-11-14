@@ -122,7 +122,7 @@ U+2028、`B`）、U+2028 と `%%` の間の空白、改行、ディレクティ�
 [fixture: block/db-string-line-separator-comment-line-line-rule-before]
 [fixture: block/db-string-line-separator-comment-line-line-rule-after]
 コメント行で終わるテキストは、文字列が閉じず、拒否されます。
-[fixture: block/gram-string-line-separator-comment-line-end-of-text]
+[fixture: block/lex-string-line-separator-comment-line-end-of-text]
 
 値が U+2028 で終わる場合は、領域の後へ続きません。
 ブロックの id、gantt の click の id、mindmap と kanban のノードのクラス、

@@ -113,7 +113,7 @@ ignored, so that the value is `A`, U+2028, and `style:#bB`. [fixture:
 block/db-string-line-separator-comment-line-line-rule-before] [fixture:
 block/db-string-line-separator-comment-line-line-rule-after] A text that ends
 with the comment line leaves the string open and is rejected. [fixture:
-block/gram-string-line-separator-comment-line-end-of-text]
+block/lex-string-line-separator-comment-line-end-of-text]
 
 A value that ends at the U+2028 does not go on after the region: the id of a
 block, the id of a gantt click, the class of a mindmap or kanban node, and the
