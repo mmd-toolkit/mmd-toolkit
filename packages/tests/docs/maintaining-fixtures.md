@@ -114,18 +114,32 @@ The prefix tells what a failure on the fixture would be a failure of:
 An input that shows more than one thing takes the prefix of the thing a failure
 on it would be about.
 
-The sentence above does not decide every case. An input that shows where a
-comment starts shows it through a Db value, and a rejected input is rejected by
-a rule of the lexer or by one of the grammar, so the same input can be named in
-two ways. The corpus does not follow one way across the diagram types; it
-follows the way of each diagram. So a new fixture takes the prefix that the
-fixtures of the same diagram and of the same kind already take: for an accepted
-input, a value that a comment or a directive cuts, and for a rejected one, the
-kind of error that the parser reports (an unexpected character, an unexpected
-token, the end of the text). Where the diagram has no fixture of that kind, or
-its fixtures divide about evenly, the prefix of the rule that the fixture is
-written to show decides: `lex-` for a rule of the units, `gram-` for a rule of
-the statements.
+The sentence above does not decide every case. The corpus follows the prefixes
+that each diagram type already has, so a new fixture whose input has `%%` (a
+comment or a directive) and whose prefix is `lex-`, `gram-`, or `db-` takes its
+prefix by these steps, in order. The fixtures of main (the base of the pull
+request) that the steps count are those of the same diagram type and the same
+kind, without the generated sets (a name that contains `-grid-` or ends with
+eight hexadecimal digits).
+
+1. An input is accepted if its `expected.json` says that mermaid.js accepts it,
+   and rejected if it has a `parse-error.json`; the two are separate tests, so
+   an input that mermaid.js accepts and the parser rejects is both. The kind of
+   an accepted input is that it has `%%` in its text. The kind of a rejected
+   input, one that has a `parse-error.json`, is how the message in that file
+   begins: `Unexpected character`, `Unexpected token`, or an end of the text,
+   which is `Unexpected end of text` or a message that ends with
+   `before the end of the text`. A rejected input with another message has no
+   kind.
+2. Count the fixtures of that kind whose prefix is `lex-` or `db-` (accepted) or
+   `lex-` or `gram-` (rejected). If there are at least five and one prefix has
+   at least twice as many as the other, the new fixture takes the prefix that
+   has more.
+3. Otherwise an accepted input takes `lex-`. A rejected input takes `lex-` if
+   its message begins with `Unexpected character` or ends with
+   `before the end of the text` (a rule of the units: a character that no rule
+   of the context reads, a unit that is not closed), and `gram-` in every other
+   case (a rule of the statements and nodes).
 
 After the topic, a name may carry marks of what the input holds, in this order
 where there are several: `u2028` or `u2029` (the character is in the input),
