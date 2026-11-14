@@ -247,6 +247,8 @@ block/lex-id-line-separator-comment-line-two-regions] [fixture:
 block/lex-id-line-separator-comment-line-spaces-before] [fixture:
 block/lex-id-line-separator-comment-line-line-feed-before] [fixture:
 block/lex-id-line-separator-comment-line-directive-before] [fixture:
+block/db-id-line-separator-comment-line-line-rule-before] [fixture:
+block/db-id-line-separator-comment-line-line-rule-after] [fixture:
 block/lex-id-line-separator-comment-line-bare-percent] [fixture:
 block/lex-id-line-separator-comment-line-percent-brace]
 

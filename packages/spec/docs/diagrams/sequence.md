@@ -388,13 +388,15 @@ Some consequences of the order:
   sequence/db-id-run-line-separator-comment-line-separator-next] [fixture:
   sequence/gram-id-run-line-separator-comment-line-empty-line] [fixture:
   sequence/gram-id-run-line-separator-comment-line-end-of-text] [fixture:
-  sequence/db-id-run-line-separator-comment-line-cr] [fixture:
+  sequence/db-participant-id-run-line-separator-comment-line-end-of-text]
+  [fixture: sequence/db-id-run-line-separator-comment-line-cr] [fixture:
   sequence/db-id-run-line-separator-comment-line-crlf] [fixture:
   sequence/db-id-run-line-separator-comment-line-two-comment-lines] [fixture:
   sequence/db-id-run-line-separator-comment-line-two-regions] [fixture:
   sequence/db-id-run-line-separator-comment-line-spaces-before] [fixture:
   sequence/db-id-run-line-separator-comment-line-line-feed-before] [fixture:
   sequence/db-id-run-line-separator-comment-line-directive-before] [fixture:
+  sequence/db-id-run-line-separator-comment-line-line-rule-after] [fixture:
   sequence/gram-id-run-line-separator-comment-line-bare-percent] [fixture:
   sequence/gram-id-run-line-separator-comment-line-percent-brace]
 - Rule 2 makes whitespace at the end of a line hide the line break from the

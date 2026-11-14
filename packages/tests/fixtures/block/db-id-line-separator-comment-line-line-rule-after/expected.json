@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Units and contexts: `b[\"style:#x;\"]` on the line after a comment line that follows a U+2028 that ends the id `a` is a line segment of its own for the line rule of style and classDef lines, which it matches, so its `;` is ignored; the label of `b` is `style:#x`."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "a",
+          "label": "a",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "b",
+          "label": "style:#x",
+          "type": "square",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

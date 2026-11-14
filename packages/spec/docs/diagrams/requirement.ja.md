@@ -912,6 +912,8 @@ U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
 [fixture: requirement/db-name-line-separator-comment-line-separator-next]
 [fixture: requirement/gram-name-line-separator-comment-line-empty-line]
 [fixture: requirement/gram-name-line-separator-comment-line-end-of-text]
+[fixture:
+requirement/db-relationship-target-line-separator-comment-line-end-of-text]
 [fixture: requirement/db-name-line-separator-comment-line-cr]
 [fixture: requirement/db-name-line-separator-comment-line-crlf]
 [fixture: requirement/db-name-line-separator-comment-line-two-comment-lines]

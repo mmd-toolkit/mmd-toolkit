@@ -441,13 +441,15 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
   sequence/db-id-run-line-separator-comment-line-separator-next] [fixture:
   sequence/gram-id-run-line-separator-comment-line-empty-line] [fixture:
   sequence/gram-id-run-line-separator-comment-line-end-of-text] [fixture:
-  sequence/db-id-run-line-separator-comment-line-cr] [fixture:
+  sequence/db-participant-id-run-line-separator-comment-line-end-of-text]
+  [fixture: sequence/db-id-run-line-separator-comment-line-cr] [fixture:
   sequence/db-id-run-line-separator-comment-line-crlf] [fixture:
   sequence/db-id-run-line-separator-comment-line-two-comment-lines] [fixture:
   sequence/db-id-run-line-separator-comment-line-two-regions] [fixture:
   sequence/db-id-run-line-separator-comment-line-spaces-before] [fixture:
   sequence/db-id-run-line-separator-comment-line-line-feed-before] [fixture:
   sequence/db-id-run-line-separator-comment-line-directive-before] [fixture:
+  sequence/db-id-run-line-separator-comment-line-line-rule-after] [fixture:
   sequence/gram-id-run-line-separator-comment-line-bare-percent] [fixture:
   sequence/gram-id-run-line-separator-comment-line-percent-brace]
 - 規則 2 によって、行末の空白は、`newline` の単位を要る文から改行を隠します。

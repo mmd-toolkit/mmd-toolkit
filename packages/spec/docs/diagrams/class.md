@@ -339,10 +339,10 @@ consequences of the order:
   class/db-relation-label-line-separator-comment-line-line-feed-before]
   [fixture:
   class/db-relation-label-line-separator-comment-line-directive-before]
-
+  [fixture:
+  class/db-relation-label-line-separator-comment-line-line-rule-before]
   [fixture: class/db-relation-label-line-separator-comment-line-bare-percent]
   [fixture: class/db-relation-label-line-separator-comment-line-percent-brace]
-
 - `;`, `{`, `}`, `|`, `(` without `)`, `)`, `@`, and `^` match no rule in the
   statement context: `class A; class B`, `A | B`, and `A@B --> C` are rejected.
   [fixture: class/lex-semicolon] [fixture: class/lex-pipe] [fixture:
