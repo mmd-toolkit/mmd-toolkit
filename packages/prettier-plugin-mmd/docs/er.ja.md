@@ -148,6 +148,17 @@ mermaid.js が拒否します。
 `}` を実体の字下げ（空白 2 つ）の後ろに置いて印字します。
 `1a B {`、空白 2 つ、改行 2 つ、`} A["x;y"]` は、`1a B {`、改行、
 `} A["x;y"]` に印字します。
+`end` の行が書かれたまま残るサブグラフは、全体を書かれたまま印字し、
+中の行は書かれた字下げを保ちます。
+ヘッダーだけがブロックの字下げに立ちます。
+その本体にある空のブロックも、どの深さでも同じです。
+`}` は、実体が始まる行の、書かれた字下げに置きます。
+[test: an empty ER attribute block in a subgraph whose end line stays as written, with spaces after its opening brace, an empty line, and four spaces before its closing brace]
+[test: an empty ER attribute block in a subgraph whose end line stays as written, after two spaces of indentation]
+[test: an empty ER attribute block in a subgraph whose end line stays as written, in a subgraph after a tab]
+[test: an empty ER attribute block in a subgraph whose end line stays as written, with two empty blocks after a statement]
+[test: an empty ER attribute block in a subgraph whose end line stays as written, and a block with an attribute]
+[test: an empty ER attribute block in a subgraph whose end line stays as written, and U+00A0 before the closing brace]
 [fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-both-lines]
 [fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-closing-line-ends]
 [fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-in-subgraph]

@@ -7,6 +7,7 @@ import type {
   ErIgnoredText,
   ErStatement,
   ErSubgraphStatement,
+  Range,
   Token,
 } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
@@ -51,6 +52,7 @@ import {
   findTokenEndingBefore,
   findTokenStartingAt,
   findTriviaAt,
+  isSpaceOrTab,
   isWhitespace,
   skipRemoved,
 } from "./source.ts"
@@ -388,8 +390,10 @@ function startsBlockAfterJoinedLine(
  * no line of only whitespace is kept after one (docs/er.md, Comments). Where
  * a stretch is printed as written, an empty attribute block uses the same
  * closing gap as where the statement is printed on its own, with the `}` at
- * `indentation`, the indentation of the statements of the block (docs/er.md,
- * Attribute blocks).
+ * `indentation`, the indentation of the statements of the block. Inside a
+ * subgraph that stays as written, its body's lines keep their written
+ * indentation, including the `}` of each empty block (docs/er.md, Attribute
+ * blocks).
  */
 function statementBlockRules(
   source: Source,
@@ -399,16 +403,12 @@ function statementBlockRules(
     kept: findErKeptLines(source),
     printedEnd: (statement) => printedErEnd(source, statement),
     writtenReplacements: (statement) => {
+      if (statement.type === "ErSubgraphStatement") {
+        return subgraphEmptyBlockReplacements(source, statement)
+      }
       if (statement.type !== "ErEntityStatement") return []
-      const gap = findEmptyBlockClosingGap(source, statement)
-      return gap === null
-        ? []
-        : [
-            {
-              range: gap.range,
-              text: (gap.startsWithLineBreak ? "\n" : "") + indentation,
-            },
-          ]
+      const replacement = emptyBlockReplacement(source, statement, indentation)
+      return replacement === null ? [] : [replacement]
     },
     // An ignored `;` after `end` still needs the line's `style` and `:#`
     // trigger (diagrams/er.md, The statement context; docs/er.md,
@@ -440,6 +440,52 @@ function statementBlockRules(
             statement.range[0],
           ),
   }
+}
+
+/**
+ * The closing gap of an empty block at the indentation of its entity, whether
+ * the kept stretch covers the entity or a subgraph that holds it (docs/er.md,
+ * Attribute blocks).
+ */
+function emptyBlockReplacement(
+  source: Source,
+  statement: ErEntityStatement,
+  indentation: string,
+): { readonly range: Range; readonly text: string } | null {
+  const gap = findEmptyBlockClosingGap(source, statement)
+  return gap === null
+    ? null
+    : {
+        range: gap.range,
+        text: (gap.startsWithLineBreak ? "\n" : "") + indentation,
+      }
+}
+
+/**
+ * The empty blocks inside a subgraph printed as written, in source order. Its
+ * body keeps its written lines, so each `}` uses the spaces and tabs at the
+ * start of its entity's line, also after another statement on that line
+ * (docs/er.md, Attribute blocks).
+ */
+function subgraphEmptyBlockReplacements(
+  source: Source,
+  statement: ErSubgraphStatement,
+): readonly { readonly range: Range; readonly text: string }[] {
+  return statement.body.flatMap((child) => {
+    if (child.type === "ErSubgraphStatement") {
+      return subgraphEmptyBlockReplacements(source, child)
+    }
+    if (child.type !== "ErEntityStatement") return []
+    const start = source.text.lastIndexOf("\n", child.range[0] - 1) + 1
+    let end = start
+    while (isSpaceOrTab(source.text.charAt(end))) end++
+    const replacement = emptyBlockReplacement(
+      source,
+      child,
+      source.text.slice(start, end),
+    )
+    return replacement === null ? [] : [replacement]
+  })
 }
 
 /**

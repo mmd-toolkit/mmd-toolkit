@@ -2192,6 +2192,36 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     'erDiagram\n  subgraph G\n    "style:#x"; B {\u2029\n    } A["x;y"]\n  end\n',
   ],
   [
+    "an empty ER attribute block in a subgraph whose end line stays as written, with spaces after its opening brace, an empty line, and four spaces before its closing brace",
+    'erDiagram\nsubgraph G\n"style:#x"; B {  \n\n    } A["x;y"]\nend "style:#x";\u2028Q\n',
+    'erDiagram\n  subgraph G\n"style:#x"; B {\n} A["x;y"]\nend "style:#x";\u2028Q\n',
+  ],
+  [
+    "an empty ER attribute block in a subgraph whose end line stays as written, after two spaces of indentation",
+    'erDiagram\nsubgraph G\n  "style:#x"; B {  \n\n    } A["x;y"]\nend "style:#x";\u2028Q\n',
+    'erDiagram\n  subgraph G\n  "style:#x"; B {\n  } A["x;y"]\nend "style:#x";\u2028Q\n',
+  ],
+  [
+    "an empty ER attribute block in a subgraph whose end line stays as written, in a subgraph after a tab",
+    'erDiagram\nsubgraph G\n  subgraph H\n\t"style:#x"; B {  \n\n    } A["x;y"]\n  end\nend "style:#x";\u2028Q\n',
+    'erDiagram\n  subgraph G\n  subgraph H\n\t"style:#x"; B {\n\t} A["x;y"]\n  end\nend "style:#x";\u2028Q\n',
+  ],
+  [
+    "an empty ER attribute block in a subgraph whose end line stays as written, with two empty blocks after a statement",
+    'erDiagram\nsubgraph G\n  X "style:#x"; B {  \n\n    } A["x;y"]\n  C {\n\n  }\nend "style:#x";\u2028Q\n',
+    'erDiagram\n  subgraph G\n  X "style:#x"; B {\n  } A["x;y"]\n  C {\n  }\nend "style:#x";\u2028Q\n',
+  ],
+  [
+    "an empty ER attribute block in a subgraph whose end line stays as written, and a block with an attribute",
+    'erDiagram\nsubgraph G\n  "style:#x"; B {\n    int id\n    } A["x;y"]\nend "style:#x";\u2028Q\n',
+    'erDiagram\n  subgraph G\n  "style:#x"; B {\n    int id\n    } A["x;y"]\nend "style:#x";\u2028Q\n',
+  ],
+  [
+    "an empty ER attribute block in a subgraph whose end line stays as written, and U+00A0 before the closing brace",
+    'erDiagram\nsubgraph G\n  "style:#x"; B {\u2028\n\u00a0  } A["x;y"]\nend "style:#x";\u2028Q\n',
+    'erDiagram\n  subgraph G\n  "style:#x"; B {\u2028\n\u00a0  } A["x;y"]\nend "style:#x";\u2028Q\n',
+  ],
+  [
     "an empty ER attribute block that stays over several lines with U+2029 after its opening brace, after a semicolon that the line rule ignores, before a closing line that a semicolon ends",
     'erDiagram\n"style:#x"; B {\u2029\n    } "style:#x";\u2029\nQ\n',
     'erDiagram\n  "style:#x"; B {\u2029\n  } "style:#x";\u2029\n  Q\n',

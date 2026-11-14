@@ -139,7 +139,21 @@ after a `{` that ends its line, between the braces, and before a `}` on a later
 line is no part of any of them. `"style:#x"; B {`, U+2029, a line break, four
 spaces, and `} A["x;y"]` are printed with the `}` after the two spaces of the
 entity, and `1a B {`, two spaces, two line breaks, and `} A["x;y"]` are printed
-`1a B {`, a line break, and `} A["x;y"]` with the `}` there. [fixture:
+`1a B {`, a line break, and `} A["x;y"]` with the `}` there. A subgraph whose
+`end` line stays as written is printed as written as a whole, and its lines keep
+their written indentation, only the header standing at the indentation of the
+block: the same holds for the empty blocks in its body, at any depth, with the
+`}` at the written indentation of the line where the entity starts. [test: an
+empty ER attribute block in a subgraph whose end line stays as written, with
+spaces after its opening brace, an empty line, and four spaces before its
+closing brace] [test: an empty ER attribute block in a subgraph whose end line
+stays as written, after two spaces of indentation] [test: an empty ER attribute
+block in a subgraph whose end line stays as written, in a subgraph after a tab]
+[test: an empty ER attribute block in a subgraph whose end line stays as
+written, with two empty blocks after a statement] [test: an empty ER attribute
+block in a subgraph whose end line stays as written, and a block with an
+attribute] [test: an empty ER attribute block in a subgraph whose end line stays
+as written, and U+00A0 before the closing brace] [fixture:
 attribute-blocks/written-line-empty-block-ignored-semicolon-both-lines]
 [fixture:
 attribute-blocks/written-line-empty-block-ignored-semicolon-closing-line-ends]
