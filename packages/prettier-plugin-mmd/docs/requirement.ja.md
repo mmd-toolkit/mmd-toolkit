@@ -1076,6 +1076,20 @@ LF 直後の ASCII 空白とタブだけを置き換えます。
 字句解析器は行頭から行全体を読むので、その文にある `direction` も数えます。
 [fixture: accessibility-statements/semicolon-line-with-direction-text-first-column]
 
+別の文の後ろにある `accTitle:` か `accDescr:` の文は、
+次の行のテキストが `direction` と値であるとき、そのテキストを次の行に残し、
+行の字下げも書かれたまま残します。
+行の中の空白は、ふつうに整えます。
+`accDescr {x}    accTitle:` は、`accDescr { x } accTitle:` になります。
+その文の前に同じ行でディレクティブがあるときは、1 回だけ印字します。
+閉じていないディレクティブ（次の行を取ります）も、
+同じ行にある閉じたディレクティブも同じです。
+[fixture: accessibility-statements/direction-text-after-closed-directive-on-the-line]
+[fixture: accessibility-statements/direction-text-after-unclosed-directive]
+[fixture: accessibility-statements/direction-text-of-accdescr-after-directive]
+[fixture: accessibility-statements/direction-text-whitespace-in-the-line-formatted]
+[fixture: accessibility-statements/direction-text-line-keeps-its-indentation]
+
 入力
 ([accessibility-statements/colon-touches-keyword-input.mmd](../tests/fixtures/requirement/accessibility-statements/colon-touches-keyword-input.mmd)):
 
