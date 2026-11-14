@@ -67,6 +67,8 @@ type StatementSpec =
   | {
       readonly kind: "class-def"
       readonly name: string
+      /** The text of the name in the source, with the comment regions that its units go on across; `name` when it has none. */
+      readonly written?: string
       readonly styles: readonly string[]
     }
 
@@ -133,8 +135,19 @@ function classDef(name: string, ...styles: string[]): StatementSpec {
   return { kind: "class-def", name, styles }
 }
 
+/** A `classDef` statement whose name goes on across a comment region: `written` is the text of the name in the source, with the region, and `name` its written text without it. */
+function classDefAcrossRegion(
+  written: string,
+  name: string,
+  ...styles: string[]
+): StatementSpec {
+  return { kind: "class-def", name, written, styles }
+}
+
 const A = words("A")
 const NO_BREAK_SPACE = String.fromCharCode(0xa0)
+const LINE_SEPARATOR = String.fromCharCode(0x2028)
+const PARAGRAPH_SEPARATOR = String.fromCharCode(0x2029)
 
 const CASES: readonly Case[] = [
   // Converted form.
@@ -526,6 +539,169 @@ const CASES: readonly Case[] = [
       point(A, "0.3", "0.6", [], "constructor"),
     ],
   },
+  // A comment region inside the name of a class: the name goes on across it
+  // after a U+2028 or a U+2029, and the region is not in the name.
+  {
+    fixture: "lex-classdef-name-line-separator-comment-line",
+    statements: [
+      classDefAcrossRegion(
+        `a${LINE_SEPARATOR}%% c\nb`,
+        `a${LINE_SEPARATOR}b`,
+        "color: #109060",
+      ),
+    ],
+  },
+  {
+    fixture: "db-classdef-name-paragraph-separator-comment-line",
+    statements: [
+      classDefAcrossRegion(
+        `a${PARAGRAPH_SEPARATOR}%% c\nb`,
+        `a${PARAGRAPH_SEPARATOR}b`,
+        "color: #109060",
+      ),
+    ],
+  },
+  {
+    fixture: "db-classdef-name-line-separator-spaces-comment-line",
+    statements: [
+      classDefAcrossRegion(
+        `a${LINE_SEPARATOR}  %% c\nb`,
+        `a${LINE_SEPARATOR}b`,
+        "color: #109060",
+      ),
+    ],
+  },
+  {
+    fixture: "db-classdef-name-two-line-separators-comment-line",
+    statements: [
+      classDefAcrossRegion(
+        `a${LINE_SEPARATOR}${LINE_SEPARATOR}%% c\nb`,
+        `a${LINE_SEPARATOR}b`,
+        "color: #109060",
+      ),
+    ],
+  },
+  {
+    fixture: "db-classdef-name-line-separator-line-feed-comment-line",
+    statements: [
+      classDefAcrossRegion(
+        `a${LINE_SEPARATOR}\n%% c\nb`,
+        `a${LINE_SEPARATOR}b`,
+        "color: #109060",
+      ),
+    ],
+  },
+  {
+    fixture: "db-classdef-name-line-separator-directive-comment-line",
+    statements: [
+      classDefAcrossRegion(
+        `a${LINE_SEPARATOR}%%{init: {}}%% %% c\nb`,
+        `a${LINE_SEPARATOR}b`,
+        "color: #109060",
+      ),
+    ],
+  },
+  {
+    fixture: "db-classdef-name-line-separator-comment-line-crlf",
+    statements: [
+      classDefAcrossRegion(
+        `a${LINE_SEPARATOR}%% c\r\nb`,
+        `a${LINE_SEPARATOR}b`,
+        "color: #109060",
+      ),
+    ],
+  },
+  {
+    fixture: "db-classdef-name-line-separator-two-comment-lines",
+    statements: [
+      classDefAcrossRegion(
+        `a${LINE_SEPARATOR}%% c\n%% d\nb`,
+        `a${LINE_SEPARATOR}b`,
+        "color: #109060",
+      ),
+    ],
+  },
+  {
+    fixture: "db-classdef-name-two-comment-regions",
+    statements: [
+      classDefAcrossRegion(
+        `a${LINE_SEPARATOR}%% c\nb${LINE_SEPARATOR}%% d\nc`,
+        `a${LINE_SEPARATOR}b${LINE_SEPARATOR}c`,
+        "color: #109060",
+      ),
+    ],
+  },
+  {
+    fixture: "db-classdef-name-line-separator-comment-line-dash",
+    statements: [
+      classDefAcrossRegion(
+        `a${LINE_SEPARATOR}%% c\n-b`,
+        `a${LINE_SEPARATOR}-b`,
+        "color: #109060",
+      ),
+    ],
+  },
+  {
+    fixture: "db-classdef-name-starts-with-line-separator-comment-line",
+    statements: [
+      classDefAcrossRegion(
+        `${LINE_SEPARATOR}%% c\nb`,
+        `${LINE_SEPARATOR}b`,
+        "color: #109060",
+      ),
+    ],
+  },
+  {
+    fixture: "db-classdef-name-line-separator-comment-line-cr",
+    statements: [
+      classDefAcrossRegion(
+        `a${LINE_SEPARATOR}%% c\rb`,
+        `a${LINE_SEPARATOR}b`,
+        "color: #109060",
+      ),
+    ],
+  },
+  {
+    fixture: "db-classdef-name-line-separator-comment-line-with-directive",
+    statements: [
+      classDefAcrossRegion(
+        `a${LINE_SEPARATOR}%% c %%{init: {}}%%\nb`,
+        `a${LINE_SEPARATOR}b`,
+        "color: #109060",
+      ),
+    ],
+  },
+  {
+    fixture: "db-classdef-name-comment-line-line-separator-next",
+    statements: [
+      classDefAcrossRegion(
+        `a${LINE_SEPARATOR}%% c\n${LINE_SEPARATOR}b`,
+        `a${LINE_SEPARATOR}${LINE_SEPARATOR}b`,
+        "color: #109060",
+      ),
+    ],
+  },
+  {
+    fixture: "db-classdef-name-line-separator-comment-line-non-ascii",
+    statements: [
+      classDefAcrossRegion(
+        `a${LINE_SEPARATOR}%% c\né`,
+        `a${LINE_SEPARATOR}é`,
+        "color: #109060",
+      ),
+    ],
+  },
+  // The name ends where no character of a name follows the region: a space
+  // there, or a directive and a space, is the whitespace before the styles.
+  {
+    fixture:
+      "db-classdef-name-line-separator-comment-line-directive-space-next",
+    statements: [classDef(`a${LINE_SEPARATOR}`, "color: #109060")],
+  },
+  {
+    fixture: "db-classdef-name-line-separator-comment-line-space",
+    statements: [classDef(`a${LINE_SEPARATOR}`, "color: #109060")],
+  },
   // The summary.
   {
     fixture: "config-settings-chart",
@@ -694,9 +870,13 @@ function treeOf(input: string, testCase: Case): DbTreeRoot {
       }
       case "class-def": {
         const keyword = take("classDef")
-        const name = node("QuadrantIdentifier", take(spec.name), {
-          name: spec.name,
-        })
+        const name = node(
+          "QuadrantIdentifier",
+          take(spec.written ?? spec.name),
+          {
+            name: spec.name,
+          },
+        )
         const styles = spec.styles.map((style) => literal(style))
         return node(
           "QuadrantClassDefStatement",

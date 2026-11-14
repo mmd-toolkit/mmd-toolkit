@@ -31,6 +31,7 @@ kanban のトークンを定めます。
 空白だけの内部は、その空白の `RawText` トークンを作ります。
 隣り合うデータブロックは別々のトークンを保ちます。
 `Identifier` と `Numeric` の項目は使いません。
+
 [fixture: kanban/db-metadata-empty] [fixture: kanban/db-metadata-whitespace]
 [fixture: kanban/db-metadata-quotes-empty]
 [fixture: kanban/db-metadata-quoted-brace]
@@ -43,6 +44,7 @@ kanban のトークンを定めます。
 読んだ空白を保ちます。
 class は行区間の区切りの前で終わります。
 ラベル、icon、データの中の改行は、元の CRLF や CR の綴りでトークンに残ります。
+
 [fixture: kanban/db-indent-tabs] [fixture: kanban/db-name-trailing-space]
 [fixture: kanban/gram-whitespace-bare-shape]
 [fixture: kanban/gram-whitespace-icon] [fixture: kanban/gram-whitespace-class]
@@ -59,6 +61,7 @@ class は行区間の区切りの前で終わります。
 共通の部分が `Directive` と `IgnoredSemicolon`
 のトークンとコメントを記録します。
 kanban の字句解析器は、単位の始まりの `%%` から始まる図のコメントを加えます。
+
 [fixture: kanban/db-grid-directive-item-id]
 [fixture: kanban/db-grid-directive-item-label-markdown]
 [fixture: kanban/db-grid-directive-item-icon]
@@ -73,5 +76,6 @@ kanban の字句解析器は、単位の始まりの `%%` から始まる図の�
 
 カードを列の children に入れても、トークンや字下げの文字は追加しません。
 カードの装飾トークンは、後の深いカードが始まる前のカードに属します。
+
 [fixture: kanban/lex-indent-directive] [fixture: kanban/db-indent-deeper]
 [fixture: kanban/gram-nesting-item-decoration-before-deeper-item]

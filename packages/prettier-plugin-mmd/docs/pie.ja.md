@@ -17,7 +17,7 @@ XY chart の[ヘッダーと向き](./xychart.ja.md#ヘッダーと向き) を�
 指定前の隠れた形と消費される改行は保持します。
 移動すると指定を読めなくなるためです。
 
-固定例: [fixture: pie/header/header-space] [fixture: pie/header/header-absent]
+[fixture: pie/header/header-space] [fixture: pie/header/header-absent]
 [fixture: pie/header/flag-hidden-yaml]
 [fixture: pie/header/flag-hidden-directive] [fixture: pie/header/flag-in-title]
 [fixture: pie/header/header-global-flag]
@@ -48,9 +48,8 @@ pie では列が構文を決めないため、`tabWidth: 0` の本文は空白0�
 説明本文以外の値の継続行と隠れた形の閉じは元の列を保ち、
 YAML だけは共有の正の最小幅を使います。
 
-固定例: [fixture: pie/indentation/indent-default]
-[fixture: pie/indentation/indent-four] [fixture: pie/indentation/indent-zero]
-[fixture: pie/indentation/indent-tabs]
+[fixture: pie/indentation/indent-default] [fixture: pie/indentation/indent-four]
+[fixture: pie/indentation/indent-zero] [fixture: pie/indentation/indent-tabs]
 [fixture: pie/indentation/indent-zero-tabs]
 [fixture: pie/indentation/indent-two]
 [fixture: pie/indentation/indent-four-trivia]
@@ -77,7 +76,7 @@ accDescr: direction TB
 pie のセミコロンは文の区切りではなく、ラベルや共通値の文字です。
 不正に並ぶ文は修復せず、コーパスの失敗経路で扱います。
 
-固定例: [fixture: pie/statements-one-per-line/body-lines]
+[fixture: pie/statements-one-per-line/body-lines]
 [fixture: pie/statements-one-per-line/semicolon-values]
 [fixture: pie/statements-one-per-line/statement-interleaving]
 
@@ -110,7 +109,7 @@ pie
 隠れた形は物理的な境界を保持します。
 これらは区切りを供給しないためです。
 
-固定例: [fixture: pie/sections/section-colon]
+[fixture: pie/sections/section-colon]
 [fixture: pie/sections/section-colon-tight-authored]
 [fixture: pie/sections/section-gap-directive]
 [fixture: pie/sections/section-gap-sides]
@@ -141,7 +140,7 @@ U+2029、バッククォート、`&`、`#`、`<` がある場合を除き、`"` 
 変換後に衝突するラベルも別の出現として残します。
 解決後の `Map` は原文ではないためです。
 
-固定例: [fixture: pie/labels/single-quote-sensitive-kept]
+[fixture: pie/labels/single-quote-sensitive-kept]
 [fixture: pie/labels/label-quotes] [fixture: pie/labels/label-escapes]
 [fixture: pie/labels/label-inner-trim-kept]
 [fixture: pie/labels/label-quote-one-form]
@@ -178,12 +177,10 @@ XY chart の[数](./xychart.ja.md#数)を再利用します。
 桁あふれと符号付きの過小値の丸めはコーパスの受理された読みを使い、
 不正な綴りや負の重複値は解析失敗のままです。
 
-固定例: [fixture: pie/numbers/shortest-form] [fixture: pie/numbers/forms-kept]
+[fixture: pie/numbers/shortest-form] [fixture: pie/numbers/forms-kept]
 [fixture: pie/numbers/number-spellings]
 [fixture: pie/numbers/number-normalize-authored]
-[fixture: pie/numbers/number-zero-small]
-
-[corpus fixture: pie/number-overflow]
+[fixture: pie/numbers/number-zero-small] [corpus fixture: pie/number-overflow]
 [corpus fixture: pie/review-number-negative-underflow-final]
 [corpus fixture: pie/db-duplicate-negative]
 
@@ -216,9 +213,9 @@ pie は次の物理行を title に結合しません。
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-[fixture: title/title-directives-end-blanks-dropped]
 
-固定例: [fixture: pie/title/title-trim] [fixture: pie/title/title-empty]
+[fixture: title/title-directives-end-blanks-dropped]
+[fixture: pie/title/title-trim] [fixture: pie/title/title-empty]
 [fixture: pie/title/title-next-section] [fixture: pie/title/title-next-trivia]
 [fixture: pie/title/title-inner-text]
 [fixture: pie/title/empty-value-with-directive]
@@ -266,12 +263,12 @@ mermaid.js が先に取り除く空行・コメント・ディレクティブの
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 [fixture: accessibility-lines/acc-title-percent-gap-kept]
 [fixture: accessibility-lines/acc-value-after-blank-and-directive-kept]
 [fixture: accessibility-lines/acc-value-with-value-then-row-split]
-
-固定例: [fixture: pie/accessibility-lines/a11y-lines]
+[fixture: pie/accessibility-lines/a11y-lines]
 [fixture: pie/accessibility-lines/a11y-empty]
 [fixture: pie/accessibility-lines/a11y-next-section]
 [fixture: pie/accessibility-lines/a11y-next-join-kept]
@@ -316,7 +313,7 @@ flowchart の[複数行の値](./flowchart.ja.md#複数行の値)を再利用し
 注釈類のある内部は残します。
 引用符・バックスラッシュ・隠れた形に見える文字列でも最初の `}` が閉じます。
 
-固定例: [fixture: pie/description-blocks/block-runs]
+[fixture: pie/description-blocks/block-runs]
 [fixture: pie/description-blocks/block-empty]
 [fixture: pie/description-blocks/block-columns]
 [fixture: pie/description-blocks/block-opener-newline]
@@ -378,7 +375,7 @@ EOF の形でも、閉じの空白を保持します。
 隠れた YAML と隠れたディレクティブに同じ境界の規則を適用します。
 形間や同じ行の次の文の前でも、閉じの空白を保ちます。
 
-固定例: [fixture: pie/hidden-yaml/yaml-section-gaps]
+[fixture: pie/hidden-yaml/yaml-section-gaps]
 [fixture: pie/hidden-yaml/yaml-body]
 [fixture: pie/hidden-yaml/yaml-move-gap-kept]
 [fixture: pie/hidden-yaml/yaml-after-space-boundary]
@@ -393,7 +390,6 @@ EOF の形でも、閉じの空白を保持します。
 [fixture: pie/hidden-yaml/yaml-after-block]
 [fixture: pie/hidden-yaml/yaml-selected-content]
 [fixture: pie/hidden-yaml/yaml-followed-trivia]
-
 [fixture: pie/hidden-yaml/body-closing-padding]
 [fixture: pie/hidden-yaml/first-body-closing-padding]
 [fixture: pie/hidden-yaml/indented-body-spare-lf]
@@ -404,7 +400,6 @@ EOF の形でも、閉じの空白を保持します。
 [fixture: pie/hidden-yaml/flag-eof-closing-padding]
 [fixture: pie/hidden-yaml/inline-section-padding]
 [fixture: pie/hidden-yaml/inline-two-forms-padding]
-
 [fixture: pie/hidden-yaml/closing-line-comment-padding]
 
 入力（エスケープ表記）:
@@ -440,7 +435,7 @@ Mermaid が読むコメントが隠れたトークンに変わるためです。
 次の文がある場合の閉じの空白と余分な LF は重要です。
 EOF の閉じた形には共有の最後の LF を加えられます。
 
-固定例: [fixture: pie/hidden-directives/hidden-number-gap]
+[fixture: pie/hidden-directives/hidden-number-gap]
 [fixture: pie/hidden-directives/hidden-before-colon]
 [fixture: pie/hidden-directives/hidden-after-space]
 [fixture: pie/hidden-directives/hidden-after-extra-lf]
@@ -462,7 +457,6 @@ EOF の閉じた形には共有の最後の LF を加えられます。
 [fixture: pie/hidden-directives/hidden-split-closer]
 [fixture: pie/hidden-directives/hidden-boundary-comment]
 [fixture: pie/hidden-directives/hidden-followed-trivia]
-
 [fixture: pie/hidden-directives/body-closing-padding]
 [fixture: pie/hidden-directives/first-body-closing-padding]
 [fixture: pie/hidden-directives/indented-body-spare-lf]
@@ -473,7 +467,6 @@ EOF の閉じた形には共有の最後の LF を加えられます。
 [fixture: pie/hidden-directives/flag-eof-closing-padding]
 [fixture: pie/hidden-directives/inline-section-padding]
 [fixture: pie/hidden-directives/inline-two-forms-padding]
-
 [fixture: pie/hidden-directives/closing-line-comment-padding]
 
 入力（エスケープ表記）: `"pie\n\"Hidden\":%%{}%%\n7"`
@@ -502,8 +495,8 @@ LS・PS は区切りではなく、
 継続行を字下げし直すと、結合したラベルに空白が加わるためです。
 保持する前置きは通常の整列より優先します。
 
-固定例: [fixture: pie/comments/comments-align]
-[fixture: pie/comments/comment-bare] [fixture: pie/comments/comment-value-text]
+[fixture: pie/comments/comments-align] [fixture: pie/comments/comment-bare]
+[fixture: pie/comments/comment-value-text]
 [test: pie/comments/comment-region-join]
 [fixture: pie/comments/comment-section-move-attachment]
 [fixture: pie/comments/comments-block-attachments]
@@ -546,8 +539,10 @@ pie
 行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
 書かれたまま残します。
 それ以外の複数行の文は、1 行の文と同じように整形します。
+
 [fixture: directives-and-semicolons/stretch-kept-rest-formatted]
 [fixture: directives-and-semicolons/no-stretch-formatted]
+
 保護したヘッダーと本文を分割しません。
 全セミコロン、style/classDef の両段階、
 大小文字とコロン-ハッシュ記号の空白の区別、Unicode の区間境界、
@@ -558,7 +553,7 @@ pie
 
 [fixture: pie/directives-and-semicolons/global-header-first-statement]
 
-固定例: [fixture: pie/directives-and-semicolons/global-align]
+[fixture: pie/directives-and-semicolons/global-align]
 [fixture: pie/directives-and-semicolons/global-touch]
 [fixture: pie/directives-and-semicolons/global-value]
 [fixture: pie/directives-and-semicolons/global-colon-brace]
@@ -622,8 +617,8 @@ Unicode だけの不正な本文行はコーパスの解析失敗です。
 
 [fixture: pie/blank-lines/hidden-comment-whitespace]
 
-固定例: [fixture: pie/blank-lines/blank-runs]
-[fixture: pie/blank-lines/blank-trivia] [fixture: pie/blank-lines/blank-literal]
+[fixture: pie/blank-lines/blank-runs] [fixture: pie/blank-lines/blank-trivia]
+[fixture: pie/blank-lines/blank-literal]
 [fixture: pie/blank-lines/blank-hidden-body]
 [fixture: pie/blank-lines/blank-directive-content]
 
@@ -649,7 +644,7 @@ C4 の[末尾空白](./c4.ja.md#末尾空白)を再利用し、
 隠れた形の閉じ境界の空白はノード外でも EOL を保つ場合があるため、
 EOF も含め残します。
 
-固定例: [fixture: pie/trailing-whitespace/trailing-exterior]
+[fixture: pie/trailing-whitespace/trailing-exterior]
 [fixture: pie/trailing-whitespace/trailing-values]
 [fixture: pie/trailing-whitespace/trailing-label-trim-kept]
 [fixture: pie/trailing-whitespace/trailing-hidden-eof]
@@ -657,6 +652,7 @@ EOF も含め残します。
 
 セミコロンがあるだけでは行の値の末尾空白を保護しません。
 共有のセミコロン前置部分の規則が、保持する原文を決めます。
+
 [fixture: pie/trailing-whitespace/line-semicolons]
 [fixture: pie/trailing-whitespace/line-selected-semicolons]
 [fixture: pie/trailing-whitespace/line-without-semicolons]
@@ -685,7 +681,7 @@ flowchart の [複数行の値](./flowchart.ja.md#複数行の値) と共有の
 共通文の重複・空代入、ゼロや小さい扇形を残します。
 解決した `Map` から組み直すと出現を失うか最初の値が変わるためです。
 
-固定例: [fixture: pie/multiline-values-and-order/multiline-label]
+[fixture: pie/multiline-values-and-order/multiline-label]
 [fixture: pie/multiline-values-and-order/no-wrap]
 [fixture: pie/multiline-values-and-order/order-duplicates]
 [fixture: pie/multiline-values-and-order/order-sort-kept]
@@ -723,14 +719,17 @@ LS・PS は pie の区切りではなく、文字列、共通値、コメント�
 分割すると Db が変わります。
 保護範囲外の共通値は、
 両端の [仕様で定義する共通の空白](../../spec/docs/common.ja.md#表記)
-を除きます。 [corpus fixture: pie/review-common-all-whitespace-trim]
+を除きます。
+
+[corpus fixture: pie/review-common-all-whitespace-trim]
+
 空白だけのブロックの開きの隙間は結合します。
 通常のコロンの隙間は ASCII です。
 図固有のコロンの隙間は ASCII の空白だけで、そこの NBSP は拒否されます。
 不正な構造上の Unicode は拒否のままです。
 先頭の BOM は Prettier が処理するため、バイトの同一性は約束しません。
 
-固定例: [test: pie/line-terminators-and-unicode/eol-cr]
+[test: pie/line-terminators-and-unicode/eol-cr]
 [test: pie/line-terminators-and-unicode/eol-crlf-hidden]
 [test: pie/line-terminators-and-unicode/eol-output-cr]
 [test: pie/line-terminators-and-unicode/eol-output-crlf]
@@ -750,7 +749,6 @@ LS・PS は pie の区切りではなく、文字列、共通値、コメント�
 [test: pie/line-terminators-and-unicode/unicode-preheader-comment]
 [test: pie/line-terminators-and-unicode/unicode-comment-region-common]
 [test: pie/line-terminators-and-unicode/div-unicode-preheader-nbsp-hidden]
-
 [test: pie/line-terminators-and-unicode/title-leading-ls]
 [test: pie/line-terminators-and-unicode/title-leading-ps]
 [test: pie/line-terminators-and-unicode/acctitle-leading-ls]
@@ -781,7 +779,7 @@ pie はこれを適用する最初の印字処理です。
 `PieIgnoredText` を YAML 整形処理へ渡しません。
 原文と埋め込まれた効果を別々に確認します。
 
-固定例: [fixture: pie/frontmatter-yaml/frontmatter-safe]
+[fixture: pie/frontmatter-yaml/frontmatter-safe]
 [fixture: pie/frontmatter-yaml/frontmatter-invalid]
 [fixture: pie/frontmatter-yaml/frontmatter-zero]
 [fixture: pie/frontmatter-yaml/frontmatter-indent]
@@ -848,7 +846,7 @@ EOF まで続く大域的なディレクティブと隠れた形の閉じの空�
 最後の LF が素の mermaid.js の C4 判定を変えても、
 指定の pie の読みは変わりません。
 
-固定例: [fixture: pie/final-newline/final-newline]
+[fixture: pie/final-newline/final-newline]
 [fixture: pie/final-newline/final-bare]
 [fixture: pie/final-newline/final-global-open]
 [fixture: pie/final-newline/final-hidden-space]
@@ -858,7 +856,6 @@ EOF まで続く大域的なディレクティブと隠れた形の閉じの空�
 [fixture: pie/final-newline/final-section-without-lf]
 [fixture: pie/final-newline/final-block]
 [fixture: pie/final-newline/final-common-empty]
-
 [corpus fixture: pie/header-only] [corpus fixture: pie/acctitle-eof]
 
 入力（エスケープ表記）: `"pie\n\"End\":2\n\n\n"`

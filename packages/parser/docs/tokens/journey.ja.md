@@ -32,9 +32,13 @@
 `A: 3: a,b: c, d` は、`RawText` トークン `A`、`3`、`a`、`b` と、
 `Punctuator` トークン `:`、`:`、`,` と、
 無視されるデータの `RawText` トークン `: c, d` を持ちます。
-このトークンのコロンは、その文字です。 [fixture: journey/db-task-extra-colon]
+このトークンのコロンは、その文字です。
+
+[fixture: journey/db-task-extra-colon]
+
 `;` 単位と、データを始めない `:` 単位は、文法のどの規則も取らないので、
 入力は拒否され、それらのトークンは作られません。
+
 [fixture: journey/lex-semicolon-line] [fixture: journey/lex-task-colon-at-end]
 
 トークンは両端に空白を持ちません。
@@ -56,7 +60,9 @@ mermaid.js が値をトリムするアクセシビリティのテキスト、つ
 改行とインデント、`line two` のトークンを持ちます。
 字句解析器がブロックのテキストに読み込む、`}` の前の改行と空白は含みません。
 `A:` の後に U+00A0、`5`、U+00A0、`: Me` が続くスコアは、
-トークン `5` を持ちます。 [fixture: journey/db-task-description-spaces]
+トークン `5` を持ちます。
+
+[fixture: journey/db-task-description-spaces]
 [fixture: journey/lex-title-two-spaces]
 [fixture: journey/lex-title-trailing-spaces]
 [fixture: journey/lex-section-two-spaces]
@@ -70,6 +76,7 @@ CR や CRLF は、改行と同じくテキストを終わらせます。
 `title T %%{init: {}}%%` は `T` と空白 1 つのトークンを持ち、
 `title T%%{init: {}}%%` はトークン `T` を持ち、
 `title T` と CRLF はトークン `T` を持ちます。
+
 [fixture: journey/lex-directive-at-end-of-title-line]
 [fixture: journey/lex-directive-glued-at-end-of-title]
 [fixture: journey/lex-directive-at-end-of-section-line]
@@ -91,6 +98,7 @@ CR や CRLF は、改行と同じくテキストを終わらせます。
 `A: 5: Me: a %%{init: {}}%%b` の無視されるデータは、
 ディレクティブの前の空白を含む `RawText` トークン `: a` と、`b` を持ちます。
 一方、`ti%%{init: {}}%%tle T` は拒否されます。
+
 [fixture: journey/lex-directive-after-space-in-ignored-data]
 [fixture: journey/lex-directive-in-task-text]
 [fixture: journey/div-directive-in-title-keyword]
@@ -98,12 +106,15 @@ CR や CRLF は、改行と同じくテキストを終わらせます。
 
 - 空の説明ブロックは、`Keyword` トークン `accDescr` と、
   `Punctuator` トークン `{` と `}` を持ちます。
+
   [fixture: journey/gram-acc-descr-block-empty]
+
 - 行の規則が無視する `;` は `IgnoredSemicolon` トークンです。
   `accTitle: style:#x;` は、`RawText` トークン `style:#x` と、
   `IgnoredSemicolon` トークン `;` を持ちます。
   同じ行の `accDescr { style:#x }` の後の `A;B: 5` は、
   `RawText` トークン `A` と `B` と、
   その間の `IgnoredSemicolon` トークンを持ちます。
+
   [fixture: journey/tokens-ignored-semicolon-in-acc-title]
   [fixture: journey/tokens-ignored-semicolon-in-task-text]

@@ -18,11 +18,13 @@ a shape keep the whitespace at both ends (see
 markdown string in a shape is always closed and never empty, and a label is
 never empty: an unclosed string, and an empty string or an empty markdown
 string, make the input rejected (see
-[Empty forms](../diagrams/mindmap.md#empty-forms)). [fixture:
-mindmap/db-node-trailing-whitespace] [fixture: mindmap/db-class-trailing-space]
-[fixture: mindmap/db-icon-surrounding-whitespace] [fixture:
-mindmap/lex-string-unclosed] [fixture: mindmap/gram-empty-string-shape]
-[fixture: mindmap/div-empty-string-in-shape]
+[Empty forms](../diagrams/mindmap.md#empty-forms)).
+
+[fixture: mindmap/db-node-trailing-whitespace] [fixture:
+mindmap/db-class-trailing-space] [fixture:
+mindmap/db-icon-surrounding-whitespace] [fixture: mindmap/lex-string-unclosed]
+[fixture: mindmap/gram-empty-string-shape] [fixture:
+mindmap/div-empty-string-in-shape]
 
 A **node** is a box of the mindmap, written on a line of its own with its
 indentation; the indentation makes the tree: the first node is the root, and
@@ -39,9 +41,11 @@ them.
 | `root` | MindmapNode or null | The first node, the root; null when there is none. |
 
 Child fields: `root`. The header keyword is not a field. A diagram without nodes
-has the root null, also with empty lines or comments after the header. [fixture:
-mindmap/db-header-only] [fixture: mindmap/db-header-then-comment-line-only]
-[fixture: mindmap/db-first-node-unindented]
+has the root null, also with empty lines or comments after the header.
+
+[fixture: mindmap/db-header-only] [fixture:
+mindmap/db-header-then-comment-line-only] [fixture:
+mindmap/db-first-node-unindented]
 
 ### MindmapNode
 
@@ -67,8 +71,10 @@ nodes whose nearest earlier node with a smaller indentation is this one (see
 and c a child of b. The decorations of a node are the icon and class lines
 between its line and the next node line, whatever their indentation, because
 mermaid.js gives them to the node it added last. The `id` keeps the whitespace
-at its end: `a (x)` has the id `a `. [fixture: mindmap/db-indent-tab-levels]
-[fixture: mindmap/db-indent-fullwidth-space] [fixture:
+at its end: `a (x)` has the id `a `.
+
+[fixture: mindmap/db-indent-tab-levels] [fixture:
+mindmap/db-indent-fullwidth-space] [fixture:
 mindmap/lex-indent-around-directive] [fixture:
 mindmap/db-first-node-on-header-line] [fixture: mindmap/db-indent-root-offset]
 [fixture: mindmap/gram-indent-between-earlier-levels] [fixture:
@@ -91,8 +97,9 @@ The shape of a node: an opener, a label, and a closer, such as `(text)`,
 Child fields: `label`. The closer need not match the opener: `[text)` has the
 opener `[` and the closer `)`. How mermaid.js reads the type of the shape from
 them is in the summary of the tests package (see
-[Nodes and shapes](../diagrams/mindmap.md#nodes-and-shapes)). [fixture:
-mindmap/db-shape-rect] [fixture: mindmap/db-shape-rounded] [fixture:
+[Nodes and shapes](../diagrams/mindmap.md#nodes-and-shapes)).
+
+[fixture: mindmap/db-shape-rect] [fixture: mindmap/db-shape-rounded] [fixture:
 mindmap/db-shape-circle] [fixture: mindmap/db-shape-cloud] [fixture:
 mindmap/db-shape-bang] [fixture: mindmap/db-shape-hexagon] [fixture:
 mindmap/db-shape-mismatched-end] [fixture:
@@ -114,10 +121,11 @@ keeps what lies between its quotes; the content of a markdown string lies
 between `` "` `` and `` `" ``. The value is never empty, and a text never starts
 with `"`: a `"` right after the opener starts a string or a markdown string (see
 [The shape context](../diagrams/mindmap.md#the-shape-context)), so `a[ "x" ]`
-has the text `"x"` with a space at each end. [fixture: mindmap/db-shape-rect]
-[fixture: mindmap/gram-shape-text-line-feed] [fixture:
-mindmap/gram-shape-text-quoted-with-space] [fixture: mindmap/db-shape-string]
-[fixture: mindmap/lex-string-line-feed] [fixture:
+has the text `"x"` with a space at each end.
+
+[fixture: mindmap/db-shape-rect] [fixture: mindmap/gram-shape-text-line-feed]
+[fixture: mindmap/gram-shape-text-quoted-with-space] [fixture:
+mindmap/db-shape-string] [fixture: mindmap/lex-string-line-feed] [fixture:
 mindmap/db-shape-markdown-string] [fixture: mindmap/db-shape-empty-description]
 
 ### MindmapIconStatement
@@ -129,9 +137,11 @@ An icon line: `::icon(fa fa-book)`.
 | `icon` | MindmapLiteral | The text between `::icon(` and `)`. |
 
 Child fields: `icon`. The text keeps the whitespace at its ends and may go over
-lines; it is never empty, as an empty icon makes the input rejected. [fixture:
-mindmap/db-icon-line] [fixture: mindmap/db-icon-surrounding-whitespace]
-[fixture: mindmap/gram-icon-line-feed] [fixture: mindmap/db-icon-empty]
+lines; it is never empty, as an empty icon makes the input rejected.
+
+[fixture: mindmap/db-icon-line] [fixture:
+mindmap/db-icon-surrounding-whitespace] [fixture: mindmap/gram-icon-line-feed]
+[fixture: mindmap/db-icon-empty]
 
 ### MindmapClassStatement
 
@@ -142,9 +152,10 @@ A class line: `:::big red`.
 | `cssClass` | MindmapLiteral | The rest of the line after `:::`. |
 
 Child fields: `cssClass`. The text keeps the whitespace at its ends; it is never
-empty, as an empty class line makes the input rejected. [fixture:
-mindmap/db-class-line] [fixture: mindmap/db-class-leading-whitespace] [fixture:
-mindmap/db-class-trailing-space] [fixture: mindmap/db-class-empty]
+empty, as an empty class line makes the input rejected.
+
+[fixture: mindmap/db-class-line] [fixture: mindmap/db-class-leading-whitespace]
+[fixture: mindmap/db-class-trailing-space] [fixture: mindmap/db-class-empty]
 
 ### MindmapLiteral
 
@@ -156,6 +167,7 @@ class.
 | `value` | string | Its written text (see [Nodes](../ast.md#nodes)). |
 
 No child fields. It is no [Identifier](../ast.md#identifier): no other node
-refers to it, and it may hold whitespace between its characters. [fixture:
-mindmap/db-node-trailing-whitespace] [fixture:
+refers to it, and it may hold whitespace between its characters.
+
+[fixture: mindmap/db-node-trailing-whitespace] [fixture:
 mindmap/lex-keyword-inside-node-text] [fixture: mindmap/db-icon-line]

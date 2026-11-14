@@ -29,21 +29,25 @@ the `data-text` units and the `data-quote` units around a quoted part, also one
 around `}` or `^`, make one `RawText` token for the whole interior. An empty
 interior makes no token; a whitespace-only interior makes a `RawText` token of
 that whitespace. Adjacent data blocks keep separate tokens. No `Identifier` or
-`Numeric` items are used. [fixture: kanban/db-metadata-empty] [fixture:
-kanban/db-metadata-whitespace] [fixture: kanban/db-metadata-quotes-empty]
-[fixture: kanban/db-metadata-quoted-brace] [fixture:
-kanban/db-metadata-double-caret] [fixture: kanban/db-metadata-two-items]
+`Numeric` items are used.
+
+[fixture: kanban/db-metadata-empty] [fixture: kanban/db-metadata-whitespace]
+[fixture: kanban/db-metadata-quotes-empty] [fixture:
+kanban/db-metadata-quoted-brace] [fixture: kanban/db-metadata-double-caret]
+[fixture: kanban/db-metadata-two-items]
 
 Indentation and statement-context whitespace make no tokens. Node text keeps its
 trailing whitespace. Shape text, icon text, class text, and data interiors keep
 all whitespace they read, including whitespace-only values. A class ends before
 its line-segment separator. Line feeds in labels, icons, and data remain inside
-their tokens, with the original CRLF or CR spelling. [fixture:
-kanban/db-indent-tabs] [fixture: kanban/db-name-trailing-space] [fixture:
-kanban/gram-whitespace-bare-shape] [fixture: kanban/gram-whitespace-icon]
-[fixture: kanban/gram-whitespace-class] [fixture: kanban/lex-class-ls-lf]
-[fixture: kanban/db-metadata-spaces] [fixture: kanban/lex-string-crlf] [fixture:
-kanban/lex-icon-multiline] [fixture: kanban/db-metadata-multiline]
+their tokens, with the original CRLF or CR spelling.
+
+[fixture: kanban/db-indent-tabs] [fixture: kanban/db-name-trailing-space]
+[fixture: kanban/gram-whitespace-bare-shape] [fixture:
+kanban/gram-whitespace-icon] [fixture: kanban/gram-whitespace-class] [fixture:
+kanban/lex-class-ls-lf] [fixture: kanban/db-metadata-spaces] [fixture:
+kanban/lex-string-crlf] [fixture: kanban/lex-icon-multiline] [fixture:
+kanban/db-metadata-multiline]
 
 Directives, comment regions, and the semicolon selected by the common line rule
 cut `RawText` and `String` items under the
@@ -51,8 +55,9 @@ cut `RawText` and `String` items under the
 becomes `StringFragment` tokens. The data interior remains `RawText`, including
 its quotes. A cut inside a keyword or delimiter rejects the input. The common
 part records `Directive` and `IgnoredSemicolon` tokens and comments; the kanban
-lexer adds diagram comments beginning at a unit-start `%%`. [fixture:
-kanban/db-grid-directive-item-id] [fixture:
+lexer adds diagram comments beginning at a unit-start `%%`.
+
+[fixture: kanban/db-grid-directive-item-id] [fixture:
 kanban/db-grid-directive-item-label-markdown] [fixture:
 kanban/db-grid-directive-item-icon] [fixture:
 kanban/db-grid-directive-item-class] [fixture:
@@ -65,6 +70,7 @@ kanban/lex-after-shape-comment]
 
 Nesting cards in a column's children adds no tokens or indentation text. A
 card's decoration tokens still belong to that card before a later deeper card
-begins. [fixture: kanban/lex-indent-directive] [fixture:
-kanban/db-indent-deeper] [fixture:
-kanban/gram-nesting-item-decoration-before-deeper-item]
+begins.
+
+[fixture: kanban/lex-indent-directive] [fixture: kanban/db-indent-deeper]
+[fixture: kanban/gram-nesting-item-decoration-before-deeper-item]

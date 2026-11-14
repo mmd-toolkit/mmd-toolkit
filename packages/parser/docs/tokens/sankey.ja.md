@@ -33,8 +33,10 @@
 `newline` 単位はすべて空白なので、トークンを作りません。
 引用符のない欄は、id としても `RawText` です。
 `a b` のように文字の間に空白を持つことがあり、値はどんなテキストでもよいので、
-数ではないからです。 [fixture: sankey/db-link-basic]
-[fixture: sankey/db-text-with-spaces] [fixture: sankey/db-value-not-a-number]
+数ではないからです。
+
+[fixture: sankey/db-link-basic] [fixture: sankey/db-text-with-spaces]
+[fixture: sankey/db-value-not-a-number]
 
 `RawText` トークンは、両端に空白を持ちません。
 そのノードの値が、それを除くからです。
@@ -45,8 +47,9 @@
 を参照。
 `a, ,1` は、2 つのコンマの間の空白のトークンを持ちます。
 `String` トークンは、開きの引用符から閉じの引用符までで、
-文字列の改行を含みます。 [fixture: sankey/db-fields-trimmed]
-[fixture: sankey/db-spaces-only-target-id]
+文字列の改行を含みます。
+
+[fixture: sankey/db-fields-trimmed] [fixture: sankey/db-spaces-only-target-id]
 [fixture: sankey/db-spaces-only-source-id]
 [fixture: sankey/db-spaces-only-value] [fixture: sankey/db-quoted-line-feed]
 
@@ -62,6 +65,7 @@
 文字列の中のコメント行も、同じように `String` トークンを切ります。
 `style:#x;y` は、`RawText` トークン `style:#x` と `y` と、
 その間の `IgnoredSemicolon` トークンを持ちます。
+
 [fixture: sankey/db-directive-in-field] [fixture: sankey/db-directive-in-quotes]
 [fixture: sankey/db-quoted-comment-line]
 [fixture: sankey/lex-style-line-semicolon-source]

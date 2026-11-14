@@ -12,9 +12,11 @@ import { locationOf } from "./check-tree-trees.ts"
 // parser/docs/tokens.md, A token that a directive cuts: a run of text that a
 // cut lies inside is cut into fragments, and the whitespace next to the cut
 // lies in the fragment next to it, a `RawText` token or a `StringFragment`
-// token: the whitespace before the cut at the end of the fragment before it,
-// and the whitespace after the cut at the start of the fragment after it, for
-// each kind of cut. Each case below takes the recorded
+// token, or an `Identifier` token of a name that goes on across a comment
+// region after a U+2028 (parser/docs/tokens.md, Comment regions in tokens):
+// the whitespace before the cut at the end of the fragment before it, and the
+// whitespace after the cut at the start of the fragment after it, for each
+// kind of cut. Each case below takes the recorded
 // tree of a named fixture, takes the whitespace off one side of a token that
 // touches a cut (the token keeps the text of the source at its range, so the
 // whitespace lies in no token), and says which problem the check reports. The
@@ -25,6 +27,8 @@ import { locationOf } from "./check-tree-trees.ts"
 // next to a cut lies in no token.
 
 const JOINED = "the texts of its tokens joined are not its written text"
+
+const LINE_SEPARATOR = String.fromCodePoint(0x2028)
 
 describe("the whitespace before a directive", () => {
   expectWhitespaceCases([
@@ -259,6 +263,32 @@ describe("the whitespace before a comment region", () => {
         },
       ],
     },
+    {
+      name: "is in the Identifier token before it: an ER name without the U+2028 is reported",
+      diagram: "er",
+      fixture: "lex-name-line-separator-comment-line",
+      token: { type: "Identifier", value: `A${LINE_SEPARATOR}` },
+      side: "end",
+      problems: [
+        {
+          where: "ErIdentifier at 10-20",
+          message: `${JOINED}: "ABar", not "A${LINE_SEPARATOR}Bar"`,
+        },
+      ],
+    },
+    {
+      name: "is in the Identifier token before it: a quadrant class name without the U+2028 is reported",
+      diagram: "quadrant",
+      fixture: "lex-classdef-name-line-separator-comment-line",
+      token: { type: "Identifier", value: `a${LINE_SEPARATOR}` },
+      side: "end",
+      problems: [
+        {
+          where: "QuadrantIdentifier at 23-31",
+          message: `${JOINED}: "ab", not "a${LINE_SEPARATOR}b"`,
+        },
+      ],
+    },
   ])
 })
 
@@ -316,8 +346,6 @@ describe("the whitespace after a comment region", () => {
 // string that a label starts with, `continues` by the whitespace tokens of the
 // box text of a sequence diagram), so the negative cases are made from a
 // recorded tree by changing the range of one token.
-
-const LINE_SEPARATOR = String.fromCodePoint(0x2028)
 
 /** Sets the range of the token `index` of `root`, with its value and its location, as the source `input` has them. */
 function setTokenRange(

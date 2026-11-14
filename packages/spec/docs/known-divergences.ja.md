@@ -50,6 +50,7 @@ mermaid.js がそう読む理由、この仕様の規則とその理由、
 `flow%%{init: {}}%%chart LR` の後に行 `A-->` が続くものは、
 mermaid.js では flowchart の文法で拒否され、
 この仕様ではディレクティブがヘッダーのキーワードの中にあるので拒否されます。
+
 [fixture: common/directive-splits-header-keyword]
 
 ## 差異を認める条件
@@ -78,6 +79,7 @@ mermaid.js では flowchart の文法で拒否され、
    軸やプロットのタイトルの全体でも値のラベルの全体でもない、
    xychart の空の文字列、そして、どこにあっても、
    quadrant と block の空の文字列と空の markdown 文字列です。
+
    [fixture: kanban/div-empty-string-before-label]
 
    木はそうした形を何も変えない文としては持たず、

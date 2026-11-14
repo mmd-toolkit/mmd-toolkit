@@ -112,14 +112,22 @@ The procedures of a package are in the skill of that package.
   as it is. A sentence that cannot be laid out this way is left as written and
   reported, for its author to split or to give a `、`. A `。` inside brackets
   does not end a sentence, and a closing emphasis mark stays with its sentence.
-  The body is wrapped before its following `[fixture: …]` citations are placed:
-  they continue from the body's last line with one space, and those that do not
-  fit go on continuation lines. One space is added before a citation that
-  immediately follows `。`; directly adjacent citations remain adjacent. Where a
+  A paragraph of citations is laid out the same way: its citations, one space
+  apart, fill each line up to 80 columns, and no citation is broken. Where a
   line break between a full-width and a half-width character, or between two
   half-width characters, is removed, one space takes its place. A `、` or a `。`
   takes no space after it, neither where a line break is removed nor where one
-  is written, except before a citation. `pnpm run lint:md` checks all of this.
+  is written. `pnpm run lint:md` checks all of this.
+- A fixture citation (`[fixture: …]`; in the documents of the formatter also
+  `[corpus fixture: …]` and `[test: …]`) never stands inside a sentence. The
+  citations of a sentence, or of a run of sentences, stand right after it in a
+  paragraph of their own, a paragraph of citations, which holds only citations,
+  one space apart. In a list item, that paragraph is a paragraph of the item
+  after its text; in a table, the citations of a row stand in its last column,
+  headed `Fixtures` (`fixture` in Japanese). A paragraph of citations right
+  after a table belongs to the whole table, and one right after a code block to
+  that example. `pnpm run lint:docs` checks this
+  (`scripts/check-doc-citations.mjs`).
 - A code block that holds Mermaid text has the info string `mmd`, not `mermaid`
   and not `text`. GitHub highlights it and does not try to render it as a
   diagram, which matters because many examples are rejected or are edge cases on
@@ -167,14 +175,27 @@ everything after every change.
   it distinguishes and for each other rule that meets it at the place it names,
   as [the Principles of AGENTS.md](../../../AGENTS.md#principles) list them. The
   fixtures are written with the sentence, checked against mermaid.js once, and
-  cited by the sentence (`[fixture: ...]`). A failure found anywhere is closed
-  by a fixture in the corpus (or a formatting fixture) and by the sentence that
-  was missing. An input kept only in a list inside a package is not kept.
-  Products of places and strings are not written: a product repeats one rule as
-  many times as it has contexts and names no question; the cases of a sentence
-  are finite and each is named. No input of a test or a review is chosen by a
-  random source or by a number (a seed, a count, a sample). `Math.random` is
-  reported by the lint; a hand-written generator is caught in review.
+  cited by the sentence (`[fixture: ...]`). The inputs that the collector takes
+  from mermaid.js, the fixtures whose `expected.json` has a `source` of `kind`
+  `mermaid`, are the exception: they are taken in bulk and not written with a
+  sentence, so no sentence needs to cite them; one that a sentence cites is read
+  against that sentence like any other fixture. How they are collected and named
+  is in
+  [the section Inputs taken from mermaid of maintaining-fixtures.md](../../../packages/tests/docs/maintaining-fixtures.md#inputs-taken-from-mermaid).
+  A failure found anywhere is closed by a fixture in the corpus (or a formatting
+  fixture) and by the sentence that was missing. An input kept only in a list
+  inside a package is not kept. A set of inputs that puts each of a list of
+  strings at each of a list of places is written only where the sentence that
+  cites it names each of those places and each of those strings, as cases that
+  it distinguishes or as other rules that meet it at the places it names. The
+  grids of [db-summaries.md](../../../packages/tests/docs/db-summaries.md) are
+  such sets. A product over places or strings that no sentence names, such as
+  places taken from the inputs of the corpus, is not written: it repeats one
+  rule as many times as it has contexts and names no question. The cases of a
+  sentence are finite and each is named. No input of a test or a review is
+  chosen by a random source or by a number (a seed, a count, a sample).
+  `Math.random` is reported by the lint; a hand-written generator is caught in
+  review.
 - A result already reported for the same state of the tree is not run again; a
   check of another kind (other inputs, another method) is.
 - The report says what was run and what was not.

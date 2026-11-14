@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Classes: `%%{ }%%` after a U+2028 starts no directive and is no comment line but a comment of this diagram type that runs to the end of its line; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...tclassDef a %%{ }%%b color: #109060\n----------------------^\nExpecting 'ALPHA', 'NUM', 'NODE_STRING', 'DOWN', 'MINUS', 'DEFAULT', 'COMMA', 'COLON', 'AMP', 'BRKT', 'MULT', 'UNICODE_TEXT', 'SPACE', got 'NEWLINE'"
+  }
+}

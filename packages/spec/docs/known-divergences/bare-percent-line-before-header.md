@@ -26,8 +26,9 @@ sequenceDiagram
   A ->> B: x
 ```
 
-The example places a bare `%%` line before the header. [fixture:
-sequence/header-after-bare-percent-line]
+The example places a bare `%%` line before the header.
+
+[fixture: sequence/header-after-bare-percent-line]
 
 mermaid.js reads the same input differently: its detection strips every `%%`
 that has a line break after it together with the rest of its line, finds the
@@ -158,8 +159,9 @@ Each example is a whole diagram.
 | 12      | rejected: the `%%` is a field before the header     | a sankey diagram with the link a to b        |
 | 13      | rejected: the `%%` is an id before the header       | a block diagram with the block A             |
 
-The fixtures record the readings compared in the table. [fixture:
-flowchart/header-after-bare-percent-line] [fixture:
+The fixtures record the readings compared in the table.
+
+[fixture: flowchart/header-after-bare-percent-line] [fixture:
 flowchart/header-after-empty-braces-line] [fixture:
 state/header-after-empty-braces-line] [fixture:
 class/header-after-bare-percent-then-whitespace-line] [fixture:
@@ -190,24 +192,28 @@ The neighbouring forms are read in the same way: in flowchart and state, a line
 `%%{-x}%%` or `%%{}`, which starts no directive, is a bare `%%` line, a comment
 here and rejected there; in class, a line of a tab only, or a line that is
 whitespace only once its directives are left out, such as `  %%{init: {}}%%`, is
-a line of whitespace only, trivia here and a `newline` unit there. [fixture:
-flowchart/header-after-non-word-brace-line] [fixture:
+a line of whitespace only, trivia here and a `newline` unit there.
+
+[fixture: flowchart/header-after-non-word-brace-line] [fixture:
 flowchart/header-after-empty-braces-no-space] [fixture:
 state/header-after-non-word-brace-line] [fixture:
 state/header-after-empty-braces-no-space] [fixture:
 class/header-after-bare-percent-then-tab-line] [fixture:
-class/header-after-bare-percent-then-indented-directive-line] A directive or the
-frontmatter before the bare `%%` line changes nothing: it is trivia, and the
-bare `%%` line is still read as above. [fixture:
-flowchart/header-after-directive-then-bare-percent-line] [fixture:
+class/header-after-bare-percent-then-indented-directive-line]
+
+A directive or the frontmatter before the bare `%%` line changes nothing: it is
+trivia, and the bare `%%` line is still read as above.
+
+[fixture: flowchart/header-after-directive-then-bare-percent-line] [fixture:
 flowchart/header-after-frontmatter-then-bare-percent-line]
 
 Where mermaid.js accepts the input, both read it the same: a line of `%%` alone
 before a sequence, class, state, or agentflow header, a line `%%{ }%%` before a
 sequence or class header, a line of whitespace only between such a line and a
 sequence or state header, and, in class, a line of whitespace only right before
-a comment line, which lies in the comment region. [fixture:
-agentflow/comment-bare-percent-line] [fixture:
+a comment line, which lies in the comment region.
+
+[fixture: agentflow/comment-bare-percent-line] [fixture:
 sequence/header-after-bare-percent-line] [fixture:
 class/header-after-bare-percent-line] [fixture:
 state/header-after-bare-percent-line] [fixture:
@@ -215,16 +221,21 @@ sequence/header-after-empty-braces-line] [fixture:
 class/header-after-empty-braces-line] [fixture:
 sequence/header-after-bare-percent-then-whitespace-line] [fixture:
 class/header-after-bare-percent-then-whitespace-line-then-comment-line]
-[fixture: class/header-after-bare-percent-then-empty-line] The difference goes
-one way: this specification accepts inputs that mermaid.js rejects, and it never
-rejects one that mermaid.js accepts here.
+[fixture: class/header-after-bare-percent-then-empty-line]
+
+The difference goes one way: this specification accepts inputs that mermaid.js
+rejects, and it never rejects one that mermaid.js accepts here.
 
 In C4, a bare `%%` line followed by a spaces-only line before the header is
 leading trivia here; mermaid.js leaves a newline before the header and rejects
-it. [fixture: c4/div-leading-percent-space-blank]
+it.
+
+[fixture: c4/div-leading-percent-space-blank]
 
 A bare percent line directly before the C4 header or followed only by an empty
-line is accepted by both. [fixture: c4/header-after-bare-percent-line] [fixture:
+line is accepted by both.
+
+[fixture: c4/header-after-bare-percent-line] [fixture:
 c4/header-leading-percent-blank] [fixture:
 c4/header-leading-percent-before-different-header]
 
@@ -233,13 +244,15 @@ c4/header-leading-percent-before-different-header]
 This toolkit reads a line of `%%` alone or `%%{ }%%` before the header as a
 comment in every diagram type. In mermaid.js, acceptance depends on the form and
 diagram type, as listed above. Agentflow accepts `%%` alone, including before a
-whitespace-only line, but rejects a non-directive percent-brace line. [fixture:
-agentflow/comment-bare-percent-line] [fixture:
+whitespace-only line, but rejects a non-directive percent-brace line.
+
+[fixture: agentflow/comment-bare-percent-line] [fixture:
 agentflow/comment-bare-before-spaces] [fixture:
-agentflow/div-percent-braces-before-header] To write a diagram that both read
-the same, write comments before the header as comment lines, with at least one
-character after the `%%`, and leave no line of spaces between them and the
-header.
+agentflow/div-percent-braces-before-header]
+
+To write a diagram that both read the same, write comments before the header as
+comment lines, with at least one character after the `%%`, and leave no line of
+spaces between them and the header.
 
 ## Why mermaid.js reads it so
 
@@ -285,6 +298,7 @@ Its preserving lexer rejects a non-directive %%{}%% or %%{ }%% line before the
 header, although detection passes it. The shared Comment record holds the entire
 line, so the common pre-header-comment rule accepts it. This is the existing
 reverse pipeline-order criterion; no authored text is discarded from the tree.
+
 [fixture: agentflow/comment-bare-percent-line] [fixture:
 agentflow/comment-bare-before-spaces] [fixture:
 agentflow/div-percent-braces-before-header] [fixture:
@@ -300,8 +314,9 @@ header after skipping it, then rejects because its parser requires the header
 first; deleting that line gives the accepted reference. The existing reverse
 pipeline-order criterion accepts these common leading comments, with no
 additional usecase node and no rejection of a Mermaid-accepted input. Native
-bare comments after the header already work. [fixture:
-usecase/div-comment-preheader-bare] [fixture:
+bare comments after the header already work.
+
+[fixture: usecase/div-comment-preheader-bare] [fixture:
 usecase/div-comment-preheader-braces] [fixture:
 usecase/div-comment-preheader-bare-unicode-blank] [fixture:
 usecase/lex-comment-bare-percent-before-header-reference] [fixture:
@@ -320,7 +335,9 @@ and a byte order mark also reject immediately before the header. Without the
 bare line, an LS line is leading trivia and is accepted by both. The shared rule
 accepts all these leading comments and whitespace. This is the existing reverse
 pipeline-order criterion: it accepts these rejected inputs and rejects no input
-Mermaid accepts. [fixture: pie/div-preheader-bare-ls-blank] [fixture:
+Mermaid accepts.
+
+[fixture: pie/div-preheader-bare-ls-blank] [fixture:
 pie/div-preheader-bare-ps-blank] [fixture: pie/div-preheader-bare-nbsp-blank]
 [fixture: pie/div-preheader-bare-bom-blank] [fixture:
 pie/lex-preheader-bare-ascii-blank-control] [fixture:
@@ -340,8 +357,9 @@ retained block and a second-scan directive. LS or a byte order mark before the
 header, an LS-only line, and LS before the later directive are accepted here and
 rejected by Mermaid; the corresponding ASCII space/tab forms are accepted by
 both. The retained hidden forms stay in textBeforeHeader; the bare line is a
-shared Comment and its passed whitespace and line breaks are trivia. [fixture:
-pie/div-preheader-retained-directive-bare-bom] [fixture:
+shared Comment and its passed whitespace and line breaks are trivia.
+
+[fixture: pie/div-preheader-retained-directive-bare-bom] [fixture:
 pie/div-preheader-retained-directive-bare-ls] [fixture:
 pie/div-preheader-retained-directive-bare-ls-line] [fixture:
 pie/div-preheader-retained-yaml-bare-bom] [fixture:
@@ -360,8 +378,9 @@ A shared Comment holds each passed bare line and its accompanying whitespace is
 trivia, also after or between retained forms. Under reverse reason 2 this
 specification accepts common whitespace that the native reading rejects there.
 It rejects no Mermaid-accepted input. The same Unicode whitespace without a
-passed bare line remains subject to ordinary lexical rejection. [fixture:
-gitgraph/div-detect-bare-before-header-ls] [fixture:
+passed bare line remains subject to ordinary lexical rejection.
+
+[fixture: gitgraph/div-detect-bare-before-header-ls] [fixture:
 gitgraph/div-detect-bare-nbsp-line] [fixture:
 gitgraph/div-detect-retained-directive-bare-bom] [fixture:
 gitgraph/div-detect-retained-yaml-bare-ls-line] [fixture:
@@ -376,6 +395,7 @@ whitespace is trivia. The existing reverse pipeline-order rule accepts
 whitespace that Mermaid rejects on native re-reading, including after or between
 retained forms. It rejects no Mermaid-accepted input. ASCII controls agree,
 while Unicode gaps without a passed bare line remain native rejections.
+
 [fixture: info/div-bare-before-header-bom] [fixture: info/div-bare-line-ls]
 [fixture: info/div-detect-retained-yaml-bare-ls] [fixture:
 info/div-detect-retained-directive-bare-bom] [fixture:
@@ -389,8 +409,10 @@ info/lex-retained-no-bare-ls]
 Passed lines are shared Comments and accompanying whitespace is trivia; the
 direct detection rule accepts Unicode trivia Mermaid rejects, including between
 retained forms. This rejects no Mermaid-accepted input. Without a passed line,
-native gap rules still apply. [fixture: packet/bare-before-header-bom] [fixture:
-packet/bare-line-ls] [fixture: packet/retained-yaml-bare-ls] [fixture:
+native gap rules still apply.
+
+[fixture: packet/bare-before-header-bom] [fixture: packet/bare-line-ls]
+[fixture: packet/retained-yaml-bare-ls] [fixture:
 packet/div-detect-yaml-bare-directive-ls] [fixture:
 packet/detect-yaml-bare-directive-ascii] [fixture:
 packet/lex-retained-no-bare-ls]
@@ -404,7 +426,9 @@ native lexer accepts ASCII padding but rejects the recorded Unicode gaps, so the
 specification accepts those inputs under this divergence. Without a passed line
 the same gap is native diagram text and remains rejected. Retained forms are
 still read, with their own closing boundaries; they are not erased together with
-the passed lines. [fixture: architecture/detection-bare-space] [fixture:
+the passed lines.
+
+[fixture: architecture/detection-bare-space] [fixture:
 architecture/detection-bare-tab] [fixture:
 architecture/detection-bare-before-header-ls] [fixture:
 architecture/detection-bare-ls] [fixture: architecture/div-retained-bare-ls]
@@ -421,7 +445,9 @@ YAML and second-scan directives. The tree can preserve each comment and each
 retained native form separately; it does not need a catch-all node or a
 rejection for the passed Unicode whitespace. The remaining difference is a
 direct rule that the passed interval is not read a second time by the diagram
-lexer. [fixture: radar/bare-before-header-space] [fixture:
+lexer.
+
+[fixture: radar/bare-before-header-space] [fixture:
 radar/bare-before-header-tab] [fixture: radar/bare-before-header-nbsp] [fixture:
 radar/bare-before-header-ls] [fixture: radar/bare-before-header-ps] [fixture:
 radar/bare-line-ls] [fixture: radar/bare-line-ps] [fixture:
@@ -433,8 +459,10 @@ Whitespace without a passed line is still diagram text and must satisfy radar's
 native rules. A retained form still needs its own closing boundary: passing a
 bare line never excuses a glued or otherwise nonqualifying closer. These
 controls are unmarked rejections, while passed Unicode-trivia differences use
-this identifier. [fixture: radar/detect-yaml-bare-secondscan-native-ascii]
-[fixture: radar/detect-secondscan-native-nbsp] [fixture:
+this identifier.
+
+[fixture: radar/detect-yaml-bare-secondscan-native-ascii] [fixture:
+radar/detect-secondscan-native-nbsp] [fixture:
 radar/detect-retained-no-bare-control] [fixture:
 radar/detect-secondscan-native-glued]
 
@@ -448,9 +476,10 @@ the direct rule that passed intervals are not lexed again: Mermaid's visible
 INDENTATION rejects ASCII gaps too, unlike the cited native-ASCII controls of
 some other diagrams. Without a passed line, later Unicode gaps still reject; a
 retained YAML or unreadable multiline form still rejects after passing bare
-lines. The accepted specified records use the same empty treemap Db. [fixture:
-treemap/bare-before-header-space] [fixture: treemap/bare-before-header-tab]
-[fixture: treemap/bare-line-nbsp] [fixture:
+lines. The accepted specified records use the same empty treemap Db.
+
+[fixture: treemap/bare-before-header-space] [fixture:
+treemap/bare-before-header-tab] [fixture: treemap/bare-line-nbsp] [fixture:
 treemap/div-retained-before-bare-unicode-line] [fixture:
 treemap/div-bare-before-retained-unicode-line] [fixture:
 treemap/div-bare-retained-ascii-padding] [fixture:
@@ -469,9 +498,10 @@ them again. Matching retained YAML or genuine second-scan directives stay
 RailroadIgnoredText in textBeforeHeader. This accepts passed Unicode whitespace
 that Mermaid’s native padding rejects, including before or between retained
 forms. Without a passed bare line, later Unicode padding remains native diagram
-text and rejects; ASCII controls accept. [fixture: railroad/ir-bare-nbsp]
-[fixture: railroad/ebnf-bare-unicode] [fixture: railroad/abnf-bare-unicode]
-[fixture: railroad/peg-bare-unicode] [fixture:
+text and rejects; ASCII controls accept.
+
+[fixture: railroad/ir-bare-nbsp] [fixture: railroad/ebnf-bare-unicode] [fixture:
+railroad/abnf-bare-unicode] [fixture: railroad/peg-bare-unicode] [fixture:
 railroad/ir-secondscan-between-bares-unicode] [fixture:
 railroad/ir-retained-bare-secondscan-unicode] [fixture:
 railroad/ir-yaml-unicode-no-bare] [fixture:
@@ -488,8 +518,10 @@ owners preserve all authored content. The difference that remains is Mermaid
 reading already-passed trivia again, not text without an owner. The second
 answer is reason 2, the shared direct detection rule. Native closer boundaries
 still apply, and a leading nonword percent-brace line is not automatically a
-retained native directive. [fixture: railroad/ir-prefix-retained-directive]
-[fixture: railroad/ir-secondscan-real] [fixture: railroad/ir-secondscan-glued]
+retained native directive.
+
+[fixture: railroad/ir-prefix-retained-directive] [fixture:
+railroad/ir-secondscan-real] [fixture: railroad/ir-secondscan-glued]
 
 ### Wardley
 
@@ -501,8 +533,10 @@ the common direct skip rule does not re-read it. Unicode trivia after passed
 bare lines can therefore accept here while Mermaid rejects, including before or
 between retained forms. ASCII controls agree. Without a passed line, native
 Unicode gaps retain their ordinary rejection, so merely containing Unicode
-whitespace does not justify a mark. [fixture: wardley/bare-before-ls] [fixture:
-wardley/bare-line-ps] [fixture: wardley/prefix-yaml-bare-unicode] [fixture:
+whitespace does not justify a mark.
+
+[fixture: wardley/bare-before-ls] [fixture: wardley/bare-line-ps] [fixture:
+wardley/prefix-yaml-bare-unicode] [fixture:
 wardley/detect-retained-secondscan-bare-ls] [fixture:
 wardley/detect-retained-secondscan-bare-ascii] [fixture:
 wardley/prefix-yaml-unicode-no-bare] [fixture: wardley/retained-no-bare-unicode]
@@ -512,6 +546,7 @@ wardley/prefix-yaml-unicode-no-bare] [fixture: wardley/retained-no-bare-unicode]
 Shared Comments and trivia hold detection-passed bare lines and whitespace.
 State the direct passed-prefix rule rather than re-reading passed Unicode trivia
 with the native lexer. Native retained forms still need their own boundaries.
+
 [fixture: cynefin/bare-before-ls] [fixture: cynefin/bare-line-ps] [fixture:
 cynefin/detect-retained-secondscan-bare-ascii] [fixture:
 cynefin/detect-retained-secondscan-bare-ls] [fixture:
@@ -525,8 +560,9 @@ and
 [public adapter](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
 read the result of the common preprocessing/detection pipeline. The
 [Cynefin syntax](../diagrams/cynefin.md) states the direct rule and
-[tree](../ast/cynefin.md) retains its authored forms. [fixture:
-cynefin/db-all-fields]
+[tree](../ast/cynefin.md) retains its authored forms.
+
+[fixture: cynefin/db-all-fields]
 
 ### Treeview
 
@@ -538,11 +574,12 @@ one-line second-scan form is still a native Comment, while retained YAML and
 noncomment multiline closers remain unreadable: this divergence does not waive
 their native rules. The [tree](../ast/treeview.md#gap-ownership) and
 [detection rules](../diagrams/treeview.md#detection) assign each retained or
-passed range once. [fixture: treeview/bare-line-space] [fixture:
-treeview/bare-line-tab] [fixture: treeview/bare-line-nbsp] [fixture:
-treeview/bare-line-ls] [fixture: treeview/bare-line-ps] [fixture:
-treeview/detect-secondscan-bare-ascii] [fixture:
-treeview/detect-secondscan-bare-unicode] [fixture:
+passed range once.
+
+[fixture: treeview/bare-line-space] [fixture: treeview/bare-line-tab] [fixture:
+treeview/bare-line-nbsp] [fixture: treeview/bare-line-ls] [fixture:
+treeview/bare-line-ps] [fixture: treeview/detect-secondscan-bare-ascii]
+[fixture: treeview/detect-secondscan-bare-unicode] [fixture:
 treeview/detect-retained-comment-ascii-header] [fixture:
 treeview/detect-retained-comment-unicode-header] [fixture:
 treeview/detect-secondscan-multiline] [fixture:

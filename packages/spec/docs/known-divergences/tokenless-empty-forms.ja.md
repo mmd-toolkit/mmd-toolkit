@@ -15,19 +15,27 @@ flowchart では 3 つです。
 
 - **空の文字列**。
   `""` か、空のマークダウンの文字列です。
+
   [fixture: flowchart/lex-empty-string-line]
   [fixture: flowchart/header-empty-markdown-string]
+
 - **空の呼び出し**。
   `click A call ()` のように、`call` とその後の空白に、
-  間に空白しかない括弧が続くものです。 [fixture: flowchart/gram-empty-call-line]
+  間に空白しかない括弧が続くものです。
+
+  [fixture: flowchart/gram-empty-call-line]
+
 - **空の説明ブロック**。
   括弧の間に空白しかない `accDescr {}` です。
+
   [fixture: flowchart/db-acc-descr-empty-block-alone]
 
 文字列も `call` も文法にない sequence では、空の説明ブロックだけです。
 `call` を持たず、クリックの文が文字列を取る文の文脈では、字句解析器が `""` を、
 トークンのある文字列の単位として読む state も同じです。
+
 [fixture: state/lex-string-outside-click] [fixture: state/gram-click-terminal]
+
 `state` が入る state の文脈でも、
 mermaid.js は空の文字列にトークンを読みませんが、
 そこでそれが現れるのは単位が始まるところだけで、木（構文木、
@@ -38,10 +46,12 @@ StateIgnoredStatement
 として持ちます（[state の文字列の文脈](../diagrams/state.ja.md#state-の文脈)
 を参照）。
 そのため、そのような入力は mermaid.js と同じく受理され、この差異には入りません。
-[fixture: state/gram-state-empty-string-before-name] [fixture:
-state/gram-state-empty-string-between-name-and-body] [fixture:
-state/gram-state-empty-strings-around-alias-string] [fixture:
-state/gram-state-empty-string-after-name]
+
+[fixture: state/gram-state-empty-string-before-name]
+[fixture: state/gram-state-empty-string-between-name-and-body]
+[fixture: state/gram-state-empty-strings-around-alias-string]
+[fixture: state/gram-state-empty-string-after-name]
+
 class では 5 つです。
 flowchart の 3 つ（class にはマークダウン文字列がないので、
 空の文字列は `""` だけ）と、クラスの名前の中に書く 2 つ、つまり、
@@ -81,6 +91,7 @@ quadrant では 3 つです。
 2 つの文字列は、どこにあってもこの差異に入ります。
 [空の文字列](../diagrams/quadrant.ja.md#空の文字列) を参照してください。
 block でも同じ 3 つで、2 つの文字列はどこにあってもこの差異に入ります。
+
 [fixture: block/div-empty-string-line] [fixture: block/div-empty-markdown-line]
 [fixture: block/div-empty-block-in-edge]
 [fixture: quadrant/div-empty-string-alone]
@@ -100,6 +111,7 @@ block でも同じ 3 つで、2 つの文字列はどこにあってもこの差
 [fixture: mindmap/div-empty-markdown-string-in-shape]
 [fixture: xychart/div-empty-string-line]
 [fixture: xychart/div-empty-description-block-in-categories]
+
 [空の文字列](../diagrams/block.ja.md#空の文字列) を参照してください。
 
 それだけの行の空の説明ブロックは、そのふつうの書き方で、
@@ -112,6 +124,7 @@ flowchart LR
 ```
 
 この例は空の説明ブロックを文として保ちます。
+
 [fixture: flowchart/gram-acc-descr-block-empty]
 
 この文書は、この仕様の木にそれらの場所がないところ、つまり文の中や、
@@ -120,6 +133,7 @@ flowchart LR
 kanban では mindmap と同様、
 空の icon `::icon()` と空の class 行 `:::` は認識するどこでも拒否します。
 最初のノードの前と形の直後も含みます。
+
 [fixture: kanban/db-decoration-empty-class]
 [fixture: kanban/db-decoration-empty-icon]
 [fixture: kanban/div-empty-icon-before-first]
@@ -128,18 +142,26 @@ kanban では mindmap と同様、
 [fixture: kanban/div-class-end-empty]
 [fixture: kanban/div-empty-icon-after-shape]
 [fixture: kanban/div-empty-class-after-shape]
+
 形の中の空の文字列と markdown 文字列も、空でないラベルの前後を含めて拒否します。
+
 [fixture: kanban/div-empty-string-before-label]
 [fixture: kanban/div-empty-markdown-before-label]
 [fixture: kanban/div-empty-string-after-label]
 [fixture: kanban/div-empty-markdown-after-label]
 [fixture: kanban/div-string-before-string]
 [fixture: kanban/div-empty-markdown-before-string]
+
 [空の形](../diagrams/kanban.ja.md#空の形) を参照してください。
 
 形の外の裸の `""` と空の markdown 文字列はノード本文です。
+
 [fixture: kanban/db-empty-string-node] [fixture: kanban/db-empty-markdown-node]
-空の `@{}` はデータブロックです。 [fixture: kanban/db-metadata-empty]
+
+空の `@{}` はデータブロックです。
+
+[fixture: kanban/db-metadata-empty]
+
 どれも捨てられる空の形ではありません。
 
 ## 差異
@@ -215,13 +237,15 @@ kanban では mindmap と同様、
 | 8   | A から B への関係                      | A の側に空の多重度を持つ関係       |
 
 表で比較した読みを次の fixture が記録します。
-[fixture: flowchart/tokens-empty-string-in-label] [fixture:
-flowchart/gram-click-empty-call-before-callback] [fixture:
-flowchart/gram-label-empty-string] [fixture:
-sequence/gram-empty-description-block-after-arrow] [fixture:
-sequence/gram-acc-descr-block-empty-then-statement] [fixture:
-class/div-empty-backquoted-in-name] [fixture:
-class/div-empty-string-statement-start] [fixture: class/gram-cardinality-empty]
+
+[fixture: flowchart/tokens-empty-string-in-label]
+[fixture: flowchart/gram-click-empty-call-before-callback]
+[fixture: flowchart/gram-label-empty-string]
+[fixture: sequence/gram-empty-description-block-after-arrow]
+[fixture: sequence/gram-acc-descr-block-empty-then-statement]
+[fixture: class/div-empty-backquoted-in-name]
+[fixture: class/div-empty-string-statement-start]
+[fixture: class/gram-cardinality-empty]
 
 つまり mermaid.js は、これらの形のある入力を、その形がないものとして読みます。
 残ったものが受理されるところなら、どこでもその入力を受理します。
@@ -232,6 +256,7 @@ class/div-empty-string-statement-start] [fixture: class/gram-cardinality-empty]
 `A --""> B` や `linkStyle 0""0 stroke:red` のように、
 字句解析器が 1 つのトークンとして読むもの、
 たとえば矢印や数の中にあるところです。
+
 [fixture: flowchart/lex-empty-string-in-arrow]
 [fixture: flowchart/gram-linkstyle-number-empty-string]
 
@@ -245,6 +270,7 @@ class/div-empty-string-statement-start] [fixture: class/gram-cardinality-empty]
 `A[""x]` は、U+2028 か U+2029 が後に続いても `A[x]` として読まれます。
 Gantt チャートでは、引用符の間にディレクティブがある空の href は、
 そのディレクティブごと除きます。
+
 [fixture: flowchart/db-subgraph-id-trailing-empty-string]
 [fixture: flowchart/db-subgraph-id-trailing-empty-string-comment-line]
 [fixture: flowchart/db-subgraph-id-trailing-empty-string-blank-line]
@@ -252,6 +278,7 @@ Gantt チャートでは、引用符の間にディレクティブがある空�
 [fixture: flowchart/db-label-leading-empty-string-line-separator]
 [fixture: flowchart/db-label-leading-empty-string-paragraph-separator]
 [fixture: gantt/div-empty-href-directive-between-quotes-before-call]
+
 その前の形を除いたときに、図の種類の文書が文として読む空の説明ブロックは、
 これらの形に当たらず、残ります。
 文が始まる所のブロックと、文の最後の単位の後にあって、
@@ -266,18 +293,21 @@ flowchart では、別の説明ブロックの直後でも文が始まり、
 空の文字列を除くとブロックが文を始めます。
 そこに 2 つか 3 つのブロックが、空白、タブ、または何も挟まずに並ぶときも、
 同じ行でその後に `A` が続くときも同じです。
+
 [fixture: flowchart/lex-empty-string-before-empty-description-block]
 [fixture: flowchart/div-empty-string-before-empty-description-blocks]
 [fixture: flowchart/div-empty-string-before-three-empty-description-blocks]
 [fixture: flowchart/div-empty-string-before-glued-empty-description-blocks]
 [fixture: flowchart/div-empty-string-before-tab-empty-description-blocks]
 [fixture: flowchart/div-empty-string-before-empty-description-blocks-then-vertex]
+
 `A[""x]` に 2 つか 3 つのブロックと、改行、`;`、
 またはテキストの終わりが続くものでも、ブロックは残ります。
 2 つのブロックの間にコメントの行、空の行、ディレクティブがあるときも、
 style の文のブロックの後に行単位の規則が無視する `;` があるときも、
 改行の前に U+2028 か U+2029 があるときも、ブロックは残ります。
 mermaid.js は、これらの入力から空の文字列を除いたものに、入力の Db を与えます。
+
 [fixture: flowchart/div-empty-string-then-empty-description-blocks-before-line-feed]
 [fixture: flowchart/div-empty-string-then-three-empty-description-blocks-before-line-feed]
 [fixture: flowchart/div-empty-string-then-glued-empty-description-blocks-before-line-feed]
@@ -290,14 +320,17 @@ mermaid.js は、これらの入力から空の文字列を除いたものに、
 [fixture: flowchart/div-empty-string-then-empty-description-blocks-before-ignored-semicolon]
 [fixture: flowchart/div-empty-string-then-empty-description-blocks-before-line-separator]
 [fixture: flowchart/div-empty-string-then-empty-description-blocks-before-paragraph-separator]
+
 `A`、2 つか 3 つのブロック、`--> B` では、
 最後のブロックの後に文の続きが来るので、ブロックはすべて除かれ、
 その両側の空白が 1 つの並びに合わさり、
 ブロックを除いた入力について何もいえません。
+
 [fixture: flowchart/div-empty-description-blocks-before-link]
 [fixture: flowchart/div-three-empty-description-blocks-before-link]
 [fixture: flowchart/div-glued-empty-description-blocks-before-link]
 [fixture: flowchart/div-tab-empty-description-blocks-before-link]
+
 形を除くとその両側のテキストがほかの単位に合わさるところでは、
 形を除いた入力について何もいえず、mermaid.js は別に読むことがあります。
 空の文字列を除いた `1""2-->B` は 1 つの単位 `12` を持ちます。
@@ -312,6 +345,7 @@ U+2028 か U+2029 が続く `subgraph a ""` では、
 ディレクティブの後の空白も、同じく 1 つの並びになります。
 class では、ブロックを除いた `direction accDescr {} LR` は方向の行ですが、
 mermaid.js は入力を別に読みます（下を参照）。
+
 [fixture: flowchart/tokens-id-empty-string-between]
 [fixture: flowchart/db-style-empty-string-separator]
 [fixture: flowchart/db-style-empty-string-ignored-semicolon]
@@ -331,6 +365,7 @@ mermaid.js は `direction` と値を、メンバーの文の 2 つの名前の�
 `direction accDescr {} LR : x` は、
 メンバー `x` を持つクラス `directionLR` を宣言します。
 そのため mermaid.js は、この入力をブロックがないものとしては読みません。
+
 [fixture: class/div-empty-description-block-between-direction-and-value]
 [fixture: class/div-empty-description-block-before-direction-value-glued]
 [fixture: class/div-empty-description-block-between-direction-and-value-label]
@@ -340,6 +375,7 @@ class と state では、ブロックは、
 mermaid.js は `accTitle accDescr {}: t` を、
 メンバーか説明を持つ名前 `accTitle` として読みますが、`accTitle : t` は題です。
 この仕様は、ブロックがその文の中にあるので、この入力を拒否します。
+
 [fixture: class/div-empty-description-block-between-acc-title-and-colon]
 [fixture: state/div-empty-description-block-between-acc-title-and-colon]
 
@@ -347,10 +383,11 @@ mermaid.js は `accTitle accDescr {}: t` を、
 `A""-->B` の引用符は頂点 `A""` の文字で、`accTitle: ""` はタイトル `""` を持ち、
 `A[" "]` は空白 1 つの文字列を持ち、
 `A["call ()"]` はラベル `call ()` を持ちます。
-[fixture: flowchart/lex-empty-quotes-in-id] [fixture:
-flowchart/lex-acc-title-quotes] [fixture: flowchart/gram-label-space-string]
-[fixture:
-flowchart/gram-label-string-call-text]
+
+[fixture: flowchart/lex-empty-quotes-in-id]
+[fixture: flowchart/lex-acc-title-quotes]
+[fixture: flowchart/gram-label-space-string]
+[fixture: flowchart/gram-label-string-call-text]
 
 差異は一方向だけです。
 mermaid.js が受理し、この仕様が拒否します。
@@ -373,13 +410,15 @@ mermaid.js が受理し、この仕様が拒否します。
 mermaid.js もそれを拒否します。
 `A[""]`、`A("")`、`A-->|""|B`、`A -- "" --> B`、`click A href ""`、
 `subgraph ""`、`click A call ()` は、どちらも拒否します。
-[fixture: flowchart/gram-label-empty-string] [fixture:
-flowchart/gram-shape-round-empty-string] [fixture:
-flowchart/gram-link-text-empty-string] [fixture:
-flowchart/gram-link-text-dash-empty-string] [fixture:
-flowchart/gram-click-href-empty-string] [fixture:
-flowchart/gram-subgraph-name-empty-string-only] [fixture:
-flowchart/gram-click-empty-call-only]
+
+[fixture: flowchart/gram-label-empty-string]
+[fixture: flowchart/gram-shape-round-empty-string]
+[fixture: flowchart/gram-link-text-empty-string]
+[fixture: flowchart/gram-link-text-dash-empty-string]
+[fixture: flowchart/gram-click-href-empty-string]
+[fixture: flowchart/gram-subgraph-name-empty-string-only]
+[fixture: flowchart/gram-click-empty-call-only]
+
 mermaid.js がそれらを受理するのは、ほかのテキストの隣で何も残さず、
 描かれるものを何も変えないところだけです。
 mmd-toolkit のパーサーはそのようなテキストを拒否し、その形を報告します。
@@ -396,7 +435,9 @@ mermaid.js はそのテキストを違って読むか、拒否します。
 class では、`direction accDescr {} LR` は方向を `TB` のままにしますが、
 `direction`、空白 2 つ、`LR` は `LR` を決めます。
 `flowchart""TD` は受理されますが、`flowchartTD` はヘッダーがなく、
-どちらも拒否します。 [fixture: flowchart/db-style-empty-strings-one-space]
+どちらも拒否します。
+
+[fixture: flowchart/db-style-empty-strings-one-space]
 [fixture: flowchart/db-style-two-spaces-before-style]
 [fixture: flowchart/lex-empty-string-splits-triple-colon]
 [fixture: flowchart/lex-triple-colon-after-id]
@@ -404,6 +445,7 @@ class では、`direction accDescr {} LR` は方向を `TB` のままにしま�
 [fixture: class/lex-direction-two-spaces-before-value]
 [fixture: flowchart/header-empty-string-no-space]
 [fixture: flowchart/header-keyword-direction-glued]
+
 mermaid.js のテスト、文書、デモから集めた入力に、
 これらの形を持つものはありません。
 
@@ -472,7 +514,9 @@ mermaid.js の
 入力は拒否されます（[文字列](../diagrams/flowchart.ja.md#文字列)、
 [クリックとコールバック](../diagrams/flowchart.ja.md#クリックとコールバック)、
 [アクセシビリティの値](../diagrams/flowchart.ja.md#アクセシビリティの値)
-を参照）。 [fixture: flowchart/tokens-empty-string-in-label]
+を参照）。
+
+[fixture: flowchart/tokens-empty-string-in-label]
 [fixture: flowchart/gram-empty-call-before-link]
 [fixture: flowchart/gram-empty-description-block-before-link]
 
@@ -488,7 +532,9 @@ mermaid.js がテキストを読まないことは、それだけでは拒否の
 木に場所があるところでは、形はノードになり、入力は受理されます。
 方向の文の周りで mermaid.js が捨てるテキストが、
 [FlowchartIgnoredText](../ast/flowchart.ja.md#flowchartignoredtext)
-になるのと同じです。 [fixture: flowchart/lex-direction-line-swallows-edge]
+になるのと同じです。
+
+[fixture: flowchart/lex-direction-line-swallows-edge]
 [fixture: flowchart/lex-direction-line-text-after-value]
 
 この仕様は、木に場所のあるところでは、そのような形をノードにし、
@@ -507,27 +553,32 @@ sequence の `autonumber accDescr {}` がそうです。
 [sequence](../diagrams/sequence.ja.md#区切りの前の空の説明ブロック)、
 [state](../diagrams/state.ja.md#区切りの前の空の説明ブロック) の、
 区切りの前の空の説明ブロックの節を参照）。
+
 [fixture: flowchart/gram-empty-description-block-after-vertex]
 [fixture: class/gram-empty-description-block-after-note]
 [fixture: sequence/gram-empty-description-block-after-autonumber]
 [fixture: flowchart/header-empty-description-block-after-direction]
 [fixture: class/header-empty-description-block]
+
 class では、関係の多重度やツールチップとしての空の文字列は、
 空の値を持つ StringLiteral で、Db はそれを「なし」として読みます（例 8）。
 クラスの名前の終わりの空のジェネリクスの型は、
-ジェネリクスのない 2 つの `~` です。 [fixture: class/gram-link-tooltip-empty]
-[fixture:
-class/gram-generic-empty-at-end]
+ジェネリクスのない 2 つの `~` です。
+
+[fixture: class/gram-link-tooltip-empty]
+[fixture: class/gram-generic-empty-at-end]
+
 state では、2 つの文の間に何も要らないので、文は各文のすぐ後で始まります。
 `A --> B accDescr {}` は遷移と説明のブロックの文で、
 `A --> accDescr {} B` ではブロックが遷移の中にあり、入力は拒否されます。
 後の単位（状態の参照の後の `-->`、`:::`、説明）がその前の文を続けるブロックと、
 間に空白しかないブロックの連なりも、その文の中にあります。
 `A accDescr {} --> B` と `A --> B accDescr {} : x` は拒否されます。
-[fixture: state/gram-empty-description-block-after-transition] [fixture:
-state/div-empty-description-block-after-arrow] [fixture:
-state/div-empty-description-block-in-transition] [fixture:
-state/div-empty-description-block-before-label]
+
+[fixture: state/gram-empty-description-block-after-transition]
+[fixture: state/div-empty-description-block-after-arrow]
+[fixture: state/div-empty-description-block-in-transition]
+[fixture: state/div-empty-description-block-before-label]
 
 木は、flowchart の文の始まりと文の最後の単位の後で mermaid.js が丸ごと捨てる、
 空の文字列、空の markdown 文字列、空の call の文を持ちません。
@@ -538,6 +589,7 @@ class の本体のメンバーが始まるところの空の文字列のメン�
 `class A {`、改行、`""`、改行、`}` は、mermaid.js でもメンバーを持ちません。
 空の説明ブロックと同じく、その位置には文やメンバーを置けますが、
 これらの形はそれ自体の意味を持って書かれているので、入力は拒否されます。
+
 [fixture: flowchart/lex-empty-string-line] [fixture: flowchart/lex-empty-string]
 [fixture: flowchart/gram-empty-call-after-vertex]
 [fixture: class/div-empty-string-statement-start]
@@ -564,7 +616,9 @@ state の合成状態と別名の文の中では、名前の次の行の本体�
 これに対して、state の文脈の空の文字列は、state の文脈の単位が始まるところ、
 つまり合成状態と別名の文の決まった数か所にしか置けず、そのどの場所にも欄があり、
 本体の `{` の前のブロックも同じです。
+
 [fixture: state/gram-empty-description-block-before-alias-body-next-line]
+
 区切りの前のブロックは文の最後の単位の後にあり、そこには文が続けられます。
 次の場所は例で、
 mermaid.js がそのようなブロックを受理する文のノードごとに少なくとも 1 つと、
@@ -579,26 +633,30 @@ flowchart では:
   `A -->|t| accDescr {}B`、`A &accDescr {} B[y]`、
   `A@{ label: x } &accDescr {} A[y]`。
   持つには、その隙間に欄が要る（理由 a）。
-  [fixture: flowchart/gram-empty-description-block-before-link] [fixture:
-  flowchart/div-empty-description-block-after-arrow-glued] [fixture:
-  flowchart/div-empty-description-block-before-ampersand] [fixture:
-  flowchart/div-empty-description-block-after-ampersand] [fixture:
-  flowchart/div-empty-description-block-after-edge-id] [fixture:
-  flowchart/div-empty-description-block-before-link-label] [fixture:
-  flowchart/div-empty-description-block-after-link-label]
+
+  [fixture: flowchart/gram-empty-description-block-before-link]
+  [fixture: flowchart/div-empty-description-block-after-arrow-glued]
+  [fixture: flowchart/div-empty-description-block-before-ampersand]
+  [fixture: flowchart/div-empty-description-block-after-ampersand]
+  [fixture: flowchart/div-empty-description-block-after-edge-id]
+  [fixture: flowchart/div-empty-description-block-before-link-label]
+  [fixture: flowchart/div-empty-description-block-after-link-label]
   [fixture: flowchart/div-ampersand-empty-block-then-vertex]
   [fixture: flowchart/div-data-block-ampersand-empty-block-then-vertex]
+
 - FlowchartStyleStatement、FlowchartClassDefStatement、FlowchartClassStatement、
   FlowchartLinkStyleStatement の 2 つの単位の間:
   `style A accDescr {} fill:red`、`style A fill:red accDescr {},stroke:blue`、
   `classDef accDescr {}c fill:red`、`class accDescr {}A c`、
   `linkStyle accDescr {}0 stroke:red`。
   持つには、その隙間に欄が要る（理由 a）。
+
   [fixture: flowchart/db-style-first-style-after-empty-description-block]
   [fixture: flowchart/div-empty-description-block-before-style-comma]
   [fixture: flowchart/div-empty-description-block-before-classdef-names]
-  [fixture: flowchart/div-empty-description-block-before-class-ids] [fixture:
-  flowchart/div-empty-description-block-before-linkstyle-numbers]
+  [fixture: flowchart/div-empty-description-block-before-class-ids]
+  [fixture: flowchart/div-empty-description-block-before-linkstyle-numbers]
+
 - スタイル、
   つまり FlowchartLiteral の中: `style A fill:accDescr {}red` と
   `style A fill:red accDescr {} %% c`。
@@ -608,31 +666,38 @@ flowchart では:
   を参照）、スタイルは `fill:red`、空白 2 つ、`%% c` で、
   ブロックはその中にある。
   値の中なので、どの欄も持てない（理由 b）。
-  [fixture: flowchart/div-empty-description-block-in-style] [fixture:
-  flowchart/div-empty-description-block-in-style-before-percent]
+
+  [fixture: flowchart/div-empty-description-block-in-style]
+  [fixture: flowchart/div-empty-description-block-in-style-before-percent]
+
 - FlowchartClickUrlStatement と、
   FlowchartClickCallbackStatement の 2 つの単位の間:
   `click A accDescr {}href "u"`、`click A "u"accDescr {} "t"`、
   `click A href "u"accDescr {} _blank`、`click A call cb()accDescr {} "t"`。
   持つには、その隙間に欄が要る（理由 a）。
-  [fixture: flowchart/div-empty-description-block-before-href] [fixture:
-  flowchart/div-empty-description-block-before-click-tooltip] [fixture:
-  flowchart/div-empty-description-block-before-link-target] [fixture:
-  flowchart/div-empty-description-block-before-callback-tooltip]
+
+  [fixture: flowchart/div-empty-description-block-before-href]
+  [fixture: flowchart/div-empty-description-block-before-click-tooltip]
+  [fixture: flowchart/div-empty-description-block-before-link-target]
+  [fixture: flowchart/div-empty-description-block-before-callback-tooltip]
+
 - FlowchartSubgraphStatement の 2 つの単位の間:
   `subgraph accDescr {} fe [Front end]`、`subgraph accDescr {}"x"y`、
   `subgraph fe accDescr {} [Front end]`。
   持つには、その隙間に欄が要る（理由 a）。
+
   [fixture: flowchart/div-empty-description-block-before-subgraph-name]
   [fixture: flowchart/gram-subgraph-name-empty-description-block-then-string]
   [fixture: flowchart/div-empty-description-block-before-subgraph-title]
+
 - subgraph の名前、
   つまり FlowchartLabel の中: `subgraph a accDescr {} b` と
   `subgraph S accDescr {} %% c`。
   後者の `%% c` は、上と同じく名前のテキストで、題は `S`、空白 2 つ、`%% c`。
   値の中なので、どの欄も持てない（理由 b）。
-  [fixture: flowchart/gram-empty-description-block-in-subgraph-name] [fixture:
-  flowchart/div-empty-description-block-in-subgraph-name-before-percent]
+
+  [fixture: flowchart/gram-empty-description-block-in-subgraph-name]
+  [fixture: flowchart/div-empty-description-block-in-subgraph-name-before-percent]
 
 class では:
 
@@ -640,16 +705,20 @@ class では:
   その ClassName の 2 つの単位の間: `A accDescr {} --> B`、
   `A accDescr {}~T~ <|-- B`。
   持つには、その隙間に欄が要る（理由 a）。
-  [fixture: class/div-empty-description-block-in-statement] [fixture:
-  class/div-empty-description-block-before-generic]
+
+  [fixture: class/div-empty-description-block-in-statement]
+  [fixture: class/div-empty-description-block-before-generic]
+
 - ClassArrow、または名前の部分からなる名前、
   つまり Identifier の中: `A --accDescr {}> B`、
   `A accDescr {} - B --> C`（名前は `A-B`）、
   `direction accDescr {} LR`（上を参照）。
   値の中なので、どの欄も持てない（理由 b）。
-  [fixture: class/div-empty-description-block-in-arrow] [fixture:
-  class/div-empty-description-block-in-dashed-name] [fixture:
-  class/div-empty-description-block-between-direction-and-value]
+
+  [fixture: class/div-empty-description-block-in-arrow]
+  [fixture: class/div-empty-description-block-in-dashed-name]
+  [fixture: class/div-empty-description-block-between-direction-and-value]
+
 - ClassNoteStatement、ClassMemberStatement、ClassLinkStatement、
   ClassCallbackStatement、ClassCssClassStatement、ClassClassDefStatement、
   ClassStyleStatement、
@@ -661,20 +730,23 @@ class では:
   `classDef c accDescr {} fill:red`、`style C accDescr {} fill:red`、
   `<<interface>> accDescr {} Class01`。
   持つには、その隙間に欄が要る（理由 a）。
-  [fixture: class/div-empty-description-block-before-note-class] [fixture:
-  class/div-empty-description-block-before-member-colon] [fixture:
-  class/div-empty-description-block-before-click-class] [fixture:
-  class/div-empty-description-block-before-href] [fixture:
-  class/div-empty-description-block-before-link-target] [fixture:
-  class/div-empty-description-block-in-callback] [fixture:
-  class/div-empty-description-block-before-click-call-tooltip] [fixture:
-  class/div-empty-description-block-before-css-class-ids] [fixture:
-  class/div-empty-description-block-before-css-class-name] [fixture:
-  class/div-empty-description-block-in-class-def] [fixture:
-  class/div-empty-description-block-in-style] [fixture:
-  class/div-empty-description-block-after-annotation]
+
+  [fixture: class/div-empty-description-block-before-note-class]
+  [fixture: class/div-empty-description-block-before-member-colon]
+  [fixture: class/div-empty-description-block-before-click-class]
+  [fixture: class/div-empty-description-block-before-href]
+  [fixture: class/div-empty-description-block-before-link-target]
+  [fixture: class/div-empty-description-block-in-callback]
+  [fixture: class/div-empty-description-block-before-click-call-tooltip]
+  [fixture: class/div-empty-description-block-before-css-class-ids]
+  [fixture: class/div-empty-description-block-before-css-class-name]
+  [fixture: class/div-empty-description-block-in-class-def]
+  [fixture: class/div-empty-description-block-in-style]
+  [fixture: class/div-empty-description-block-after-annotation]
+
 - ClassAnnotation の名前の中: `<<accDescr {}interface>> A`。
   値の中なので、どの欄も持てない（理由 b）。
+
   [fixture: class/div-empty-description-block-in-annotation]
 
 sequence では:
@@ -682,64 +754,90 @@ sequence では:
 - SequenceMessageStatement の 2 つの単位の間: `A->>accDescr {}B: x`、
   `A() accDescr {}->>()B: x`、`A->> accDescr {}+B: x`、`A->>+ accDescr {}B: x`。
   持つには、その隙間に欄が要る（理由 a）。
-  [fixture: sequence/gram-empty-description-block-after-arrow] [fixture:
-  sequence/div-empty-description-block-after-central-connection] [fixture:
-  sequence/div-empty-description-block-before-activation] [fixture:
-  sequence/div-empty-description-block-after-activation]
+
+  [fixture: sequence/gram-empty-description-block-after-arrow]
+  [fixture: sequence/div-empty-description-block-after-central-connection]
+  [fixture: sequence/div-empty-description-block-before-activation]
+  [fixture: sequence/div-empty-description-block-after-activation]
+
 - SequenceNoteStatement の 2 つの単位の間: `note accDescr {} left of A: x`、
   `note left of accDescr {} A: x`、`note over A,accDescr {}B: x`。
   持つには、その隙間に欄が要る（理由 a）。
+
   [fixture: sequence/div-empty-description-block-before-note-placement]
-  [fixture: sequence/gram-empty-description-block-after-placement] [fixture:
-  sequence/div-empty-description-block-between-note-ids]
+  [fixture: sequence/gram-empty-description-block-after-placement]
+  [fixture: sequence/div-empty-description-block-between-note-ids]
+
 - SequenceLinkStatement、SequenceLinksStatement、SequencePropertiesStatement、
   SequenceDetailsStatement の 2 つの単位の間: `link accDescr {}A: x@https://u`、
   `links accDescr {} A: {"a": "https://u"}`、`properties accDescr {} A: {}`、
   `details accDescr {} A: x`。
   持つには、その隙間に欄が要る（理由 a）。
-  [fixture: sequence/div-empty-description-block-before-link-id] [fixture:
-  sequence/div-empty-description-block-before-links-id] [fixture:
-  sequence/div-empty-description-block-before-properties-id] [fixture:
-  sequence/div-empty-description-block-before-details-id]
+
+  [fixture: sequence/div-empty-description-block-before-link-id]
+  [fixture: sequence/div-empty-description-block-before-links-id]
+  [fixture: sequence/div-empty-description-block-before-properties-id]
+  [fixture: sequence/div-empty-description-block-before-details-id]
+
 - SequenceAutonumberStatement の 2 つの単位の間: `autonumber accDescr {}1 2`、
   `autonumber accDescr {} off`。
   持つには、その隙間に欄が要る（理由 a）。
+
   [fixture: sequence/div-empty-description-block-before-autonumber-numbers]
   [fixture: sequence/div-empty-description-block-before-autonumber-off]
+
 - SequenceParticipantStatement と SequenceDestroyStatement の、
   `create` とキーワードの間: `create accDescr {}participant A`、
   `create accDescr {} destroy A`。
   持つには、その隙間に欄が要る（理由 a）。
-  [fixture: sequence/div-empty-description-block-after-create] [fixture:
-  sequence/div-empty-description-block-before-destroy]
+
+  [fixture: sequence/div-empty-description-block-after-create]
+  [fixture: sequence/div-empty-description-block-before-destroy]
 
 state では、どれも文の 2 つの単位の間です:
 
 - `A accDescr {} --> B` と `[*] accDescr {} --> A`: StateTransitionStatement
   の、元と矢印の間の欄。
-  [fixture: state/div-empty-description-block-in-transition] [fixture:
-  state/div-empty-description-block-terminal-before-arrow]
+
+  [fixture: state/div-empty-description-block-in-transition]
+  [fixture: state/div-empty-description-block-terminal-before-arrow]
+
 - `A --> accDescr {} B` と `A --> accDescr {} [*]`: StateTransitionStatement
   の、矢印と先の間の欄。
-  [fixture: state/div-empty-description-block-after-arrow] [fixture:
-  state/div-empty-description-block-before-terminal-target]
+
+  [fixture: state/div-empty-description-block-after-arrow]
+  [fixture: state/div-empty-description-block-before-terminal-target]
+
 - `A --> B accDescr {} : x`: StateTransitionStatement の、ラベルの前の欄。
+
   [fixture: state/div-empty-description-block-before-label]
+
 - `A accDescr {} : x`: StateDefinitionStatement の、説明の前の欄。
+
   [fixture: state/div-empty-description-block-before-description]
+
 - `A accDescr {} :::c --> B` と `A --> B accDescr {} :::c`: StateReference の、
-  `:::` の前の欄。 [fixture: state/div-empty-description-block-before-class]
-  [fixture:
-  state/div-empty-description-block-before-target-class]
+  `:::` の前の欄。
+
+  [fixture: state/div-empty-description-block-before-class]
+  [fixture: state/div-empty-description-block-before-target-class]
+
 - `A:::accDescr {}c`: StateReference の、`:::` とクラスの間の欄。
+
   [fixture: state/div-empty-description-block-after-class-separator]
+
 - `click accDescr {} A "u" "t"`: StateClickStatement の、id の前の欄。
+
   [fixture: state/div-empty-description-block-in-click-before-id]
+
 - `click A accDescr {} "u" "t"` と `click A href accDescr {} "u"`:
   StateClickStatement の、URL の前の欄。
-  [fixture: state/div-empty-description-block-in-click-before-url] [fixture:
-  state/div-empty-description-block-in-click-after-href]
+
+  [fixture: state/div-empty-description-block-in-click-before-url]
+  [fixture: state/div-empty-description-block-in-click-after-href]
+
 - `click A "u" accDescr {} "t"`: StateClickStatement の、ツールチップの前の欄。
+
   [fixture: state/div-empty-description-block-in-click-before-tooltip]
 
 er では、どれも文の 2 つの単位の間で、持つにはその隙間に欄が要ります（理由 a）。
@@ -753,19 +851,20 @@ ErAttribute の単位の間の空のバッククォート、
 2 つの属性の間、最初の属性の前、最後の属性の後では、
 木は空のバッククォートを属性の一覧の ErIgnoredText の項目として持つので、
 入力は受理されます（[属性](../diagrams/er.ja.md#属性) を参照）。
-[fixture: er/div-empty-description-block-in-relationship] [fixture:
-er/div-empty-description-block-after-spec] [fixture:
-er/div-empty-description-block-before-class-separator] [fixture:
-er/div-empty-description-block-before-alias] [fixture:
-er/div-empty-description-block-in-alias-start] [fixture:
-er/div-empty-description-block-before-subgraph-id] [fixture:
-er/div-empty-description-block-in-subgraph-title-start] [fixture:
-er/div-empty-description-block-in-class] [fixture:
-er/div-empty-backquotes-between-type-and-name] [fixture:
-er/div-empty-backquotes-before-key] [fixture:
-er/gram-empty-backquotes-between-attributes] [fixture:
-er/gram-empty-backquotes-before-first] [fixture:
-er/gram-empty-backquotes-after-last]
+
+[fixture: er/div-empty-description-block-in-relationship]
+[fixture: er/div-empty-description-block-after-spec]
+[fixture: er/div-empty-description-block-before-class-separator]
+[fixture: er/div-empty-description-block-before-alias]
+[fixture: er/div-empty-description-block-in-alias-start]
+[fixture: er/div-empty-description-block-before-subgraph-id]
+[fixture: er/div-empty-description-block-in-subgraph-title-start]
+[fixture: er/div-empty-description-block-in-class]
+[fixture: er/div-empty-backquotes-between-type-and-name]
+[fixture: er/div-empty-backquotes-before-key]
+[fixture: er/gram-empty-backquotes-between-attributes]
+[fixture: er/gram-empty-backquotes-before-first]
+[fixture: er/gram-empty-backquotes-after-last]
 
 gantt では、GanttClickStatement の id と最初の部分の間、
 2 つの部分の間の空の説明ブロックは、持つにはその隙間に欄が要ります（理由 a）。
@@ -776,6 +875,7 @@ mermaid.js が丸ごと捨てるリンクや call を、
 木は文として持たないからです（flowchart と同じ）。
 [空の href と空の call](../diagrams/gantt.ja.md#空の-href-と空の-call)
 にあるとおり、文の始まる位置では、空の説明ブロックは文で、入力は受理されます。
+
 [fixture: gantt/div-empty-description-block-between-click-id-and-href]
 [fixture: gantt/div-empty-description-block-between-call-and-href]
 [fixture: gantt/div-empty-href-before-call]
@@ -804,6 +904,7 @@ mermaid.js が丸ごと捨てる文字列を、
 要求か要素の本体の行では本体の RequirementIgnoredText の項目なので、
 入力は受理されます（詳しくは、
 [空の説明ブロック](../diagrams/requirement.ja.md#空の説明ブロック) を参照）。
+
 [fixture: requirement/div-empty-description-block-between-keyword-and-name]
 [fixture: requirement/div-empty-description-block-after-class-separator]
 [fixture: requirement/div-empty-description-block-before-brace]
@@ -836,9 +937,10 @@ mindmap では、空の icon、空の class の行、形の中の空の文字列
 mermaid.js が丸ごと捨てる icon や class の行を、木は文として持たず、
 丸ごと捨てる文字列を label として持たないからです。
 flowchart と class と同じです（[空の形](../diagrams/mindmap.ja.md#空の形)
-を参照）。 [fixture: mindmap/db-icon-empty]
-[fixture: mindmap/div-empty-icon-before-root] [fixture: mindmap/db-class-empty]
-[fixture: mindmap/div-empty-class-before-root]
+を参照）。
+
+[fixture: mindmap/db-icon-empty] [fixture: mindmap/div-empty-icon-before-root]
+[fixture: mindmap/db-class-empty] [fixture: mindmap/div-empty-class-before-root]
 [fixture: mindmap/div-empty-string-in-shape]
 [fixture: mindmap/div-empty-markdown-string-in-shape]
 
@@ -852,6 +954,7 @@ flowchart と class と同じく、mermaid.js が丸ごと捨てる文字列を�
 木は文として持たないからです。
 タイトル全体やラベル全体では、空の文字列は空の値の StringLiteral で、
 class と同じく、Db はそれをタイトルなし、ラベルなしと読みます。
+
 [fixture: xychart/div-empty-description-block-inside-title-text]
 [fixture: xychart/div-empty-description-block-inside-axis]
 [fixture: xychart/div-empty-description-block-inside-plot]
@@ -878,6 +981,7 @@ class と同じく、Db はそれをタイトルなし、ラベルなしと読�
 [fixture: xychart/db-grid-empty-plot-title-quoted]
 [fixture: xychart/db-empty-string-as-x-axis-title-before-band]
 [fixture: xychart/db-label-empty-string]
+
 [空の説明ブロック](../diagrams/xychart.ja.md#空の説明ブロック) と、
 [空の文字列](../diagrams/xychart.ja.md#空の文字列) を参照してください。
 
@@ -895,6 +999,7 @@ flowchart と class と同じく、mermaid.js が丸ごと捨てる文字列を�
 `quadrant-1 ""` は両方が拒否し、mermaid.js は `x-axis L --> ""` を、
 矢印を持ち 2 つ目のテキストのない軸の文と読み、
 空の値の 2 つ目のテキストではそうなりません。
+
 [fixture: quadrant/div-empty-block-in-classdef]
 [fixture: quadrant/div-empty-block-in-name]
 [fixture: quadrant/div-empty-block-in-quadrant-text]
@@ -922,6 +1027,7 @@ flowchart と class と同じく、mermaid.js が丸ごと捨てる文字列を�
 [fixture: quadrant/db-empty-string-in-title]
 [fixture: quadrant/db-empty-block-after-point]
 [fixture: quadrant/db-empty-block-before-statement]
+
 [空の説明ブロック](../diagrams/quadrant.ja.md#空の説明ブロック) と、
 [空の文字列](../diagrams/quadrant.ja.md#空の文字列) を参照してください。
 
@@ -935,7 +1041,9 @@ flowchart と class と同じく、mermaid.js が丸ごと捨てる文字列を�
 木は文として持たないからです。
 どのラベルもそれを値全体として持たず、
 `A[""]` と `A -- "" --> B` は両方が拒否し、
-id にくっついた `""` は id の一部です。 [fixture: block/div-empty-block-in-edge]
+id にくっついた `""` は id の一部です。
+
+[fixture: block/div-empty-block-in-edge]
 [fixture: block/div-empty-markdown-between]
 [fixture: block/div-empty-markdown-line]
 [fixture: block/div-empty-string-after-edge]
@@ -953,6 +1061,7 @@ id にくっついた `""` は id の一部です。 [fixture: block/div-empty-b
 [fixture: block/db-empty-block-line] [fixture: block/db-empty-block-between]
 [fixture: block/db-empty-string-glued-to-id]
 [fixture: block/gram-empty-block-only]
+
 [空の説明ブロック](../diagrams/block.ja.md#空の説明ブロック) と、
 [空の文字列](../diagrams/block.ja.md#空の文字列) を参照してください。
 
@@ -970,14 +1079,16 @@ state の `click A "u" "t" accDescr {}` のように、ブロックは文です�
 class の `direction accDescr {}`、改行、`LR` もそのような入力です。
 ブロックは、mermaid.js でも、2 つが方向の行になるのを妨げるので、
 それらはラベルのない 2 つのメンバーの文で、方向は `TB` のままです。
-[fixture: state/gram-click-empty-description-block-after] [fixture:
-flowchart/gram-empty-description-block-after-click-space] [fixture:
-sequence/gram-empty-description-block-after-autonumber-spaces] [fixture:
-class/gram-empty-description-block-after-direction-word]
+
+[fixture: state/gram-click-empty-description-block-after]
+[fixture: flowchart/gram-empty-description-block-after-click-space]
+[fixture: sequence/gram-empty-description-block-after-autonumber-spaces]
+[fixture: class/gram-empty-description-block-after-direction-word]
 
 ヘッダーの後、その区切りの前でも、ブロックは文で、受理される入力は、
 ブロックのない同じ入力の Db を持ちます。
 ヘッダーの後でどこが受理されるかは、図の文書が述べるとおり、図種によります。
+
 [fixture: flowchart/header-empty-description-block-after-direction]
 [fixture: flowchart/header-empty-description-block-before-semicolon]
 [fixture: flowchart/header-empty-description-block-no-direction]
@@ -987,6 +1098,7 @@ class/gram-empty-description-block-after-direction-word]
 [fixture: er/header-empty-description-block]
 [fixture: gantt/gram-empty-description-block-after-header]
 [fixture: requirement/header-empty-description-block]
+
 [flowchart](../diagrams/flowchart.ja.md#区切りの前の空の説明ブロック)、
 [class](../diagrams/class.ja.md#区切りの前の空の説明ブロック)、
 [sequence](../diagrams/sequence.ja.md#区切りの前の空の説明ブロック)、
@@ -1000,6 +1112,7 @@ kanban の空の装飾と形の文字列はそれ自体の意味を持ちます�
 mermaid.js はそれらを丸ごと捨てます。
 空の形の例外を適用します。
 木はそれらを何も変えない文やラベルとしては持たず、入力を拒否します。
+
 [fixture: kanban/db-decoration-empty-icon]
 [fixture: kanban/db-decoration-empty-class]
 [fixture: kanban/div-empty-string-before-label]
@@ -1012,7 +1125,9 @@ agentflow は、flowchart と空の文字列、空の markdown 文字列、
 文の始まりや文の最後の単位の後では IgnoredStatement に保つこともできますが、
 その位置には明示の空の形の例外を適用します。
 それ自体の意味を持って書かれた文字列や呼び出しを mermaid.js が丸ごと捨てるため、
-何も変えない文は作りません。 [fixture: agentflow/div-empty-string-statement]
+何も変えない文は作りません。
+
+[fixture: agentflow/div-empty-string-statement]
 [fixture: agentflow/div-empty-markdown-statement]
 [fixture: agentflow/div-empty-call-statement]
 [fixture: agentflow/div-empty-string-before-vertex]
@@ -1028,6 +1143,7 @@ flow と connector の名前の中や、後続の click の URL・tooltip の前
 その位置の消される click や閉じた空の説明ブロックと同じく、
 書かれたまま受理します。
 その例外は、これらの位置には当たりません。
+
 [fixture: agentflow/lex-empty-string-in-flow-name]
 [fixture: agentflow/lex-empty-call-in-flow-name]
 [fixture: agentflow/lex-empty-markdown-in-flow-name]
@@ -1045,6 +1161,7 @@ flow と connector の名前の中や、後続の click の URL・tooltip の前
 保持する欄がない他の内部の位置では、
 認識した消される形を tokenless-empty-forms の理由 1 で拒否します。
 保持するには葉を分けるか任意の構造の間の欄を足す必要があります。
+
 [fixture: agentflow/div-empty-string-before-arrow]
 [fixture: agentflow/div-empty-call-before-arrow]
 [fixture: agentflow/div-empty-string-before-callback]
@@ -1059,6 +1176,7 @@ flow と connector の名前の中では、
 AgentflowName.parts が全体を AgentflowIgnoredText として保ち、
 既存の click の textBefore の欄も保てます。
 計測した通常の読み方を表せるため、理由 1 で拒否せず受理します。
+
 [fixture: agentflow/lex-empty-description-before-node]
 [fixture: agentflow/gram-empty-description-after-vertex]
 [fixture: agentflow/gram-empty-description-after-header-direction]
@@ -1074,6 +1192,7 @@ style のコンマの前などです。
 保持するには葉の値を変えるか、任意の構造の間の欄を加える必要があります。
 完成したクラスの値の後の末尾のブロックは保ちます。
 空のデータブロックと空白だけの文字列も、消される空の形ではなく実際の構文です。
+
 [fixture: agentflow/div-empty-description-inside-vertex-id]
 [fixture: agentflow/div-empty-description-before-class-name]
 [fixture: agentflow/div-empty-description-in-style]
