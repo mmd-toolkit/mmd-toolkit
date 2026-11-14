@@ -869,7 +869,7 @@ ASCII 外の文字です。
 [fixture: block/db-string-line-separator-comment-line-space-next]
 [fixture: block/db-string-line-separator-comment-line-separator-next]
 [fixture: block/db-string-line-separator-comment-line-empty-line]
-[fixture: block/gram-string-line-separator-comment-line-end-of-text]
+[fixture: block/lex-string-line-separator-comment-line-end-of-text]
 [fixture: block/db-string-line-separator-comment-line-cr]
 [fixture: block/db-string-line-separator-comment-line-crlf]
 [fixture: block/db-string-line-separator-comment-line-two-comment-lines]

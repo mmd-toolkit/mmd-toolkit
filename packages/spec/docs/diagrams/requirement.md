@@ -752,7 +752,7 @@ requirement/db-acc-descr-block-line-separator-comment-line-directive-next]
 requirement/db-acc-descr-block-line-separator-comment-line-separator-next]
 [fixture: requirement/db-acc-descr-block-line-separator-comment-line-empty-line]
 [fixture:
-requirement/gram-acc-descr-block-line-separator-comment-line-end-of-text]
+requirement/lex-acc-descr-block-line-separator-comment-line-end-of-text]
 [fixture: requirement/db-acc-descr-block-line-separator-comment-line-cr]
 [fixture: requirement/db-acc-descr-block-line-separator-comment-line-crlf]
 [fixture:

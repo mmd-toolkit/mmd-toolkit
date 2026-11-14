@@ -622,7 +622,7 @@ mermaid.js は `direction-text` の単位を読みません。
   flowchart/lex-direction-text-line-separator-comment-line-separator-next]
   [fixture: flowchart/lex-direction-text-line-separator-comment-line-empty-line]
   [fixture:
-  flowchart/gram-direction-text-line-separator-comment-line-end-of-text]
+  flowchart/lex-direction-text-line-separator-comment-line-end-of-text]
   [fixture: flowchart/lex-direction-text-line-separator-comment-line-cr]
   [fixture: flowchart/lex-direction-text-line-separator-comment-line-crlf]
   [fixture:

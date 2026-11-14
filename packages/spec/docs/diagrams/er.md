@@ -971,7 +971,7 @@ er/db-acc-descr-block-line-separator-comment-line-directive-next] [fixture:
 er/db-acc-descr-block-line-separator-comment-line-space-next] [fixture:
 er/db-acc-descr-block-line-separator-comment-line-separator-next] [fixture:
 er/db-acc-descr-block-line-separator-comment-line-empty-line] [fixture:
-er/gram-acc-descr-block-line-separator-comment-line-end-of-text] [fixture:
+er/lex-acc-descr-block-line-separator-comment-line-end-of-text] [fixture:
 er/db-acc-descr-block-line-separator-comment-line-cr] [fixture:
 er/db-acc-descr-block-line-separator-comment-line-crlf] [fixture:
 er/db-acc-descr-block-line-separator-comment-line-two-comment-lines] [fixture:

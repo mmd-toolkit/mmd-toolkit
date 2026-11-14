@@ -566,10 +566,9 @@ gantt/lex-task-colon-only]
   [fixture: gantt/db-task-line-separator-comment-line-spaces-before]
   [fixture: gantt/db-task-line-separator-comment-line-line-feed-before]
   [fixture: gantt/db-task-line-separator-comment-line-directive-before]
-
-
   [fixture: gantt/gram-task-line-separator-comment-line-bare-percent]
   [fixture: gantt/gram-task-line-separator-comment-line-percent-brace]
+
 - 文は改行ではなく自分の単位で終わります。
   `newline` の単位は文法にとってそれだけで 1 つの行で、
   複数の文が 1 つの行を共有できます。
@@ -874,7 +873,7 @@ gantt/gram-acc-descr-block-double-close]
 [fixture: gantt/db-acc-descr-block-line-separator-comment-line-space-next]
 [fixture: gantt/db-acc-descr-block-line-separator-comment-line-separator-next]
 [fixture: gantt/db-acc-descr-block-line-separator-comment-line-empty-line]
-[fixture: gantt/gram-acc-descr-block-line-separator-comment-line-end-of-text]
+[fixture: gantt/lex-acc-descr-block-line-separator-comment-line-end-of-text]
 [fixture: gantt/db-acc-descr-block-line-separator-comment-line-cr]
 [fixture: gantt/db-acc-descr-block-line-separator-comment-line-crlf] [fixture:
 gantt/db-acc-descr-block-line-separator-comment-line-two-comment-lines]

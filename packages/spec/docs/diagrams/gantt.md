@@ -774,7 +774,7 @@ gantt/db-acc-descr-block-line-separator-comment-line-directive-next] [fixture:
 gantt/db-acc-descr-block-line-separator-comment-line-space-next] [fixture:
 gantt/db-acc-descr-block-line-separator-comment-line-separator-next] [fixture:
 gantt/db-acc-descr-block-line-separator-comment-line-empty-line] [fixture:
-gantt/gram-acc-descr-block-line-separator-comment-line-end-of-text] [fixture:
+gantt/lex-acc-descr-block-line-separator-comment-line-end-of-text] [fixture:
 gantt/db-acc-descr-block-line-separator-comment-line-cr] [fixture:
 gantt/db-acc-descr-block-line-separator-comment-line-crlf] [fixture:
 gantt/db-acc-descr-block-line-separator-comment-line-two-comment-lines]

@@ -113,7 +113,7 @@ kanban/db-icon-line-separator-comment-line-directive-next] [fixture:
 kanban/db-icon-line-separator-comment-line-space-next] [fixture:
 kanban/db-icon-line-separator-comment-line-separator-next] [fixture:
 kanban/db-icon-line-separator-comment-line-empty-line] [fixture:
-kanban/gram-icon-line-separator-comment-line-end-of-text] [fixture:
+kanban/lex-icon-line-separator-comment-line-end-of-text] [fixture:
 kanban/db-icon-line-separator-comment-line-cr] [fixture:
 kanban/db-icon-line-separator-comment-line-crlf] [fixture:
 kanban/db-icon-line-separator-comment-line-two-comment-lines] [fixture:
@@ -681,7 +681,7 @@ kanban/db-string-line-separator-comment-line-directive-next] [fixture:
 kanban/db-string-line-separator-comment-line-space-next] [fixture:
 kanban/db-string-line-separator-comment-line-separator-next] [fixture:
 kanban/db-string-line-separator-comment-line-empty-line] [fixture:
-kanban/gram-string-line-separator-comment-line-end-of-text] [fixture:
+kanban/lex-string-line-separator-comment-line-end-of-text] [fixture:
 kanban/db-string-line-separator-comment-line-cr] [fixture:
 kanban/db-string-line-separator-comment-line-crlf] [fixture:
 kanban/db-string-line-separator-comment-line-two-comment-lines] [fixture:

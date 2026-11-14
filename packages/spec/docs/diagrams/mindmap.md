@@ -84,7 +84,7 @@ mindmap/db-icon-line-separator-comment-line-directive-next] [fixture:
 mindmap/db-icon-line-separator-comment-line-space-next] [fixture:
 mindmap/db-icon-line-separator-comment-line-separator-next] [fixture:
 mindmap/db-icon-line-separator-comment-line-empty-line] [fixture:
-mindmap/gram-icon-line-separator-comment-line-end-of-text] [fixture:
+mindmap/lex-icon-line-separator-comment-line-end-of-text] [fixture:
 mindmap/db-icon-line-separator-comment-line-cr] [fixture:
 mindmap/db-icon-line-separator-comment-line-crlf] [fixture:
 mindmap/db-icon-line-separator-comment-line-two-comment-lines] [fixture:
@@ -388,7 +388,7 @@ mindmap/db-shape-text-line-separator-comment-line-directive-next] [fixture:
 mindmap/db-shape-text-line-separator-comment-line-space-next] [fixture:
 mindmap/db-shape-text-line-separator-comment-line-separator-next] [fixture:
 mindmap/db-shape-text-line-separator-comment-line-empty-line] [fixture:
-mindmap/gram-shape-text-line-separator-comment-line-end-of-text] [fixture:
+mindmap/lex-shape-text-line-separator-comment-line-end-of-text] [fixture:
 mindmap/db-shape-text-line-separator-comment-line-cr] [fixture:
 mindmap/db-shape-text-line-separator-comment-line-crlf] [fixture:
 mindmap/db-shape-text-line-separator-comment-line-two-comment-lines] [fixture:

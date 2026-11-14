@@ -369,10 +369,9 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
   class/db-relation-label-line-separator-comment-line-line-feed-before]
   [fixture:
   class/db-relation-label-line-separator-comment-line-directive-before]
-
-
   [fixture: class/db-relation-label-line-separator-comment-line-bare-percent]
   [fixture: class/db-relation-label-line-separator-comment-line-percent-brace]
+
 - `;`、`{`、`}`、`|`、`)` の続かない `(`、`)`、`@`、`^` は、
   文の文脈のどの規則にも当たりません。
   `class A; class B`、`A | B`、`A@B --> C` は拒否されます。
@@ -589,7 +588,7 @@ U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
 [fixture: class/db-member-name-line-separator-comment-line-space-next]
 [fixture: class/db-member-name-line-separator-comment-line-separator-next]
 [fixture: class/lex-member-name-line-separator-comment-line-empty-line]
-[fixture: class/gram-member-name-line-separator-comment-line-end-of-text]
+[fixture: class/lex-member-name-line-separator-comment-line-end-of-text]
 [fixture: class/db-member-name-line-separator-comment-line-cr]
 [fixture: class/db-member-name-line-separator-comment-line-crlf]
 [fixture: class/db-member-name-line-separator-comment-line-two-comment-lines]

@@ -545,7 +545,7 @@ class/db-member-name-line-separator-comment-line-directive-next] [fixture:
 class/db-member-name-line-separator-comment-line-space-next] [fixture:
 class/db-member-name-line-separator-comment-line-separator-next] [fixture:
 class/lex-member-name-line-separator-comment-line-empty-line] [fixture:
-class/gram-member-name-line-separator-comment-line-end-of-text] [fixture:
+class/lex-member-name-line-separator-comment-line-end-of-text] [fixture:
 class/db-member-name-line-separator-comment-line-cr] [fixture:
 class/db-member-name-line-separator-comment-line-crlf] [fixture:
 class/db-member-name-line-separator-comment-line-two-comment-lines] [fixture:
