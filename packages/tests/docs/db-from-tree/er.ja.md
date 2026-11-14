@@ -73,6 +73,58 @@ U+2028 は行終端ではなく、値の中にそのまま残ります。
   [fixture: er/db-entity-name-no-break-space]
   [fixture: er/db-entity-name-line-separator]
   [fixture: er/db-entity-name-numbers] [fixture: er/db-alias-line-separator]
+- 名前の中のコメント領域は、そのテキストにありません。
+  文字列の中のコメント行がテキストにないのと同じです。
+  U+2028 と U+2029 は、名前の文字であるとともにコメントの始まりなので、`A`、
+  U+2028、`%% c`、改行、`Bar` は、名前が `A`、U+2028、`Bar` の 1 つの実体で、
+  U+2029 のときも同じです。 [fixture: er/lex-name-line-separator-comment-line]
+  [fixture: er/lex-name-paragraph-separator-comment-line]
+  領域が、U+2028 と `%%` の間で空白、2 つ目の U+2028、改行、
+  ディレクティブを取るときも、コメントを終える CRLF や CR のときも、
+  コメントの中のディレクティブのときも、2 つ目のコメント行や、
+  2 つ目の U+2028 の後の 2 つ目の領域をまたぐときも、名前は同じです。
+  次の行の始めの U+2028 は名前の文字です。
+  [fixture: er/lex-name-line-separator-spaces-comment-line]
+  [fixture: er/lex-name-two-line-separators-comment-line]
+  [fixture: er/lex-name-line-separator-line-feed-comment-line]
+  [fixture: er/lex-name-line-separator-empty-line-comment-line]
+  [fixture: er/lex-name-line-separator-directive-comment-line]
+  [fixture: er/lex-name-line-separator-comment-line-crlf]
+  [fixture: er/lex-name-line-separator-comment-line-cr]
+  [fixture: er/lex-name-line-separator-comment-line-with-directive]
+  [fixture: er/lex-name-line-separator-two-comment-lines]
+  [fixture: er/lex-name-two-comment-regions]
+  [fixture: er/lex-name-comment-line-line-separator-next]
+  どの名前でも同じで、関係の実体、ロール、別名、`:::` の後のクラス、`classDef`、
+  `class`、`style` の後の名前、subgraph の id、属性の名前もそうです。
+  [fixture: er/lex-relationship-first-name-comment-line]
+  [fixture: er/lex-relationship-second-name-comment-line]
+  [fixture: er/lex-role-name-comment-line]
+  [fixture: er/lex-alias-name-comment-line]
+  [fixture: er/lex-class-shorthand-name-comment-line]
+  [fixture: er/lex-classdef-name-comment-line]
+  [fixture: er/lex-class-statement-name-comment-line]
+  [fixture: er/lex-style-statement-name-comment-line]
+  [fixture: er/lex-subgraph-id-comment-line]
+  [fixture: er/lex-attribute-name-comment-line]
+  名前は領域の後の名前の文字へ続くので、
+  その後の行 `accDescr {}` は名前の一部で、実体は空の属性ブロックを持ちます。
+  領域の後の行は、`style` と `classDef` の行の規則にとって独立した区間です。
+  [fixture: er/lex-name-line-separator-comment-line-acc-descr]
+  [fixture: er/lex-classdef-name-comment-line-style-line]
+  領域の後に名前の文字が続かないところで、名前は終わります。
+  次の行の始めにスペースがあるとき、コメント行の後に空行があるとき、
+  テキストの終わりでは、名前は `A` と U+2028 です。
+  U+2028 の後のディレクティブだけの行はコメント行ではないので、
+  その後の改行文字が名前を終えます。
+  スペースや引用符付きの名前の後の U+2028 は、別の名前を始めます。
+  [fixture: er/lex-name-line-separator-comment-line-indented]
+  [fixture: er/lex-name-line-separator-comment-line-empty-line]
+  [fixture: er/lex-name-line-separator-comment-line-last-line]
+  [fixture: er/lex-name-line-separator-comment-end-of-text]
+  [fixture: er/lex-name-line-separator-directive-line]
+  [fixture: er/lex-name-space-line-separator-comment-line]
+  [fixture: er/lex-quoted-name-line-separator-comment-line]
 - StringLiteral は、その範囲の変換した形から区切りを除いたものを持ちます。
   区切りは、引用符付きの名前、ロール、コメントの引用符と、
   属性の語のバッククォートです。

@@ -184,21 +184,25 @@ with U+2029. [fixture: er/lex-name-line-separator-comment-line] [fixture:
 er/lex-name-paragraph-separator-comment-line] So it is with the whitespace, the
 second U+2028, the line breaks, and the directive that the comment region takes
 between the U+2028 and the `%%`, with a CRLF or a CR ending the comment, with a
-directive inside the comment or at the start of the next line, with a second
-comment line, and across a second region after a second U+2028, and a U+2028 at
-the start of the next line is a character of the name. [fixture:
-er/lex-name-line-separator-spaces-comment-line] [fixture:
-er/lex-name-two-line-separators-comment-line] [fixture:
+directive inside the comment, with a second comment line, and across a second
+region after a second U+2028, and a U+2028 at the start of the next line is a
+character of the name. [fixture: er/lex-name-line-separator-spaces-comment-line]
+[fixture: er/lex-name-two-line-separators-comment-line] [fixture:
 er/lex-name-line-separator-line-feed-comment-line] [fixture:
 er/lex-name-line-separator-empty-line-comment-line] [fixture:
 er/lex-name-line-separator-directive-comment-line] [fixture:
 er/lex-name-line-separator-comment-line-crlf] [fixture:
 er/lex-name-line-separator-comment-line-cr] [fixture:
 er/lex-name-line-separator-comment-line-with-directive] [fixture:
-er/lex-name-line-separator-comment-line-directive-next] [fixture:
 er/lex-name-line-separator-two-comment-lines] [fixture:
 er/lex-name-two-comment-regions] [fixture:
-er/lex-name-comment-line-line-separator-next] So it is for every name: an entity
+er/lex-name-comment-line-line-separator-next] A directive at the start of the
+line after the comment line is no part of the region, which ends with the line
+break of the comment, so it lies inside the name: `A`, U+2028, `%% c`, a line
+break, and `%%{init: {}}%%Bar` is rejected here, while mermaid.js reads the name
+`A`, U+2028, and `Bar` (see
+[Directives inside units](#directives-inside-units)). [fixture:
+er/div-directive-after-comment-line-in-name] So it is for every name: an entity
 of a relationship, a role, an alias, a class after `:::`, a name after
 `classDef`, `class`, or `style`, the id of a subgraph, and the name of an
 attribute. [fixture: er/lex-relationship-first-name-comment-line] [fixture:

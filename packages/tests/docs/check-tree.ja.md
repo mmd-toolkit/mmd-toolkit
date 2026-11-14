@@ -150,6 +150,21 @@ const problems: TreeProblem[] = checkTree(text, tree)
   行の規則が無視する `;` が切れば切れ目の数より 1 つ多い `StringFragment`
   トークンです。
   出典は parser/docs/tokens.md の String tokens です。
+- **コメント領域をまたぐ名前。**
+  `Identifier` のトークンをコメント領域が切るのは、
+  名前が U+2028 か U+2029 を持つときだけです。
+  それがコメントの始まりだからです。
+  断片は `Identifier` のトークンで、最初の断片はその区切りで終わり、
+  領域はどの断片にも入りません。
+  出典は parser/docs/tokens.md の Comment regions in tokens です。
+  トークンをつないだものが名前の書かれたテキストなので、
+  領域の前の断片に区切りがなければ、値の規則が報告します。
+  領域をまたぐ 1 つのトークン、遅く始まる断片、木にない領域は、
+  コメントがどのトークンにも入らないという条件と、
+  トークンの外のすべての文字が空白であるという条件が報告します。
+  [fixture: er/lex-name-line-separator-comment-line]
+  [fixture: er/lex-name-two-comment-regions]
+  [fixture: quadrant/lex-classdef-name-line-separator-comment-line]
 - **切られないトークン。**
   ディレクティブと行の規則が無視する `;` は、
   `String`（そのときは `StringFragment` のトークン）と `RawText`
@@ -2545,6 +2560,9 @@ fixture の元の木に問題がないことも求めます。
 値のメッセージ（トークンをつないだテキストが書かれたテキストと違う）で求めます。
 無視されるテキストには、ディレクティブとコメント領域の場合が 1 つずつあり、
 切れ目の隣の空白がどのトークンにもないというメッセージで求めます。
+コメント領域の前にある ER の名前と quadrant のクラス名の `Identifier`
+のトークンについては、領域の前のトークンの終わりから U+2028 を取り、
+値のメッセージで求めます。
 さらに、記録した木 1 つずつから、ほかの例外の否定の例を 2 つ作ります。
 1 つは、前のトークンが接していないのに、
 先に始まった値の中で空白から始まるトークンです。

@@ -171,7 +171,31 @@ Db が持つものが要約になります。
 `classDef` の文は、名前のクラスのスタイルを、
 点のスタイルと同じように読んで設定します。
 クラスは最後の定義のスタイルだけを持ち、一覧では最初の定義の位置を保ちます。
-名前は範囲の変換後の形です。
+名前は範囲の変換後の形で、その中のコメント領域を除きます。
+U+2028 と U+2029 は、名前の文字であるとともにコメントの始まりなので、
+`classDef a`、U+2028、`%% c`、改行、`b color: #109060` は、名前が `a`、U+2028、
+`b` のクラスを定めます。
+U+2029 のときも同じです。
+[fixture: quadrant/lex-classdef-name-line-separator-comment-line]
+[fixture: quadrant/lex-classdef-name-paragraph-separator-comment-line]
+領域が、U+2028 と `%%` の間で空白、2 つ目の U+2028、改行、
+ディレクティブを取るときも、コメントを終える CRLF のときも、
+2 つ目のコメント行や、2 つ目の U+2028 の後の 2 つ目の領域をまたぐときも、
+名前は同じです。
+領域の後の `-` は名前の一部で、
+`classDef` とスペースの後の U+2028 から名前を始めることもできます。
+[fixture: quadrant/lex-classdef-name-line-separator-spaces-comment-line]
+[fixture: quadrant/lex-classdef-name-two-line-separators-comment-line]
+[fixture: quadrant/lex-classdef-name-line-separator-line-feed-comment-line]
+[fixture: quadrant/lex-classdef-name-line-separator-directive-comment-line]
+[fixture: quadrant/lex-classdef-name-line-separator-comment-line-crlf]
+[fixture: quadrant/lex-classdef-name-line-separator-two-comment-lines]
+[fixture: quadrant/lex-classdef-name-two-comment-regions]
+[fixture: quadrant/lex-classdef-name-line-separator-comment-line-dash]
+[fixture: quadrant/lex-classdef-name-starts-with-line-separator-comment-line]
+次の行の始めのスペースは名前を終え、スタイルの前の空白なので、
+クラスは `a` と U+2028 です。
+[fixture: quadrant/lex-classdef-name-line-separator-comment-line-space]
 点とそのクラスのスタイルは併合されず、どの点も使わないクラスも一覧に載ります。
 [fixture: quadrant/db-classdef-color]
 [fixture: quadrant/db-classdef-twice-replaces]

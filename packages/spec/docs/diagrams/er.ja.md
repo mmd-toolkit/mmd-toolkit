@@ -206,9 +206,8 @@ U+2029 を使ったときも同じです。
 [fixture: er/lex-name-line-separator-comment-line]
 [fixture: er/lex-name-paragraph-separator-comment-line]
 コメント領域が U+2028 と `%%` の間で取る空白、2 つ目の U+2028、改行、
-ディレクティブ、コメントを終える CRLF や CR、
-コメントの中や次の行の始めのディレクティブ、2 つ目のコメント行、
-2 つ目の U+2028 の後の 2 つ目の領域をまたぐときも同じで、
+ディレクティブ、コメントを終える CRLF や CR、コメントの中のディレクティブ、
+2 つ目のコメント行、2 つ目の U+2028 の後の 2 つ目の領域をまたぐときも同じで、
 次の行の始めの U+2028 は名前の文字です。
 [fixture: er/lex-name-line-separator-spaces-comment-line]
 [fixture: er/lex-name-two-line-separators-comment-line]
@@ -218,10 +217,16 @@ U+2029 を使ったときも同じです。
 [fixture: er/lex-name-line-separator-comment-line-crlf]
 [fixture: er/lex-name-line-separator-comment-line-cr]
 [fixture: er/lex-name-line-separator-comment-line-with-directive]
-[fixture: er/lex-name-line-separator-comment-line-directive-next]
 [fixture: er/lex-name-line-separator-two-comment-lines]
 [fixture: er/lex-name-two-comment-regions]
 [fixture: er/lex-name-comment-line-line-separator-next]
+コメント行の次の行の始めのディレクティブは、
+コメントの改行で終わる領域には含まれず、名前の中にあるので、`A`、U+2028、
+`%% c`、改行、
+`%%{init: {}}%%Bar`
+はここでは拒否されます（[単位の中のディレクティブ](#単位の中のディレクティブ)
+を参照）が、mermaid.js は名前を `A`、U+2028、`Bar` と読みます。
+[fixture: er/div-directive-after-comment-line-in-name]
 どの名前でも同じで、関係の実体、ロール、別名、`:::` の後のクラス、`classDef`、
 `class`、`style` の後の名前、subgraph の id、属性の名前もそうです。
 [fixture: er/lex-relationship-first-name-comment-line]

@@ -133,6 +133,18 @@ const problems: TreeProblem[] = checkTree(text, tree)
   directive, a comment region, or a `;` that the line rule ignores cuts it,
   `StringFragment` tokens, one more than there are cuts (parser/docs/tokens.md,
   String tokens).
+- **Names across a comment region.** An `Identifier` token is cut by a comment
+  region only where its name holds a U+2028 or a U+2029, which is the comment
+  start: its fragments are `Identifier` tokens, the first of which ends with
+  that separator, and the region lies in none of them (parser/docs/tokens.md,
+  Comment regions in tokens). The tokens joined are the written text of the
+  name, so a fragment before the region that lacks the separator is reported by
+  the value rule, and a token that spans the region, a fragment that starts
+  late, and a region that the tree lacks are reported by the conditions that a
+  comment lies in no token and that every character outside the tokens is
+  whitespace. [fixture: er/lex-name-line-separator-comment-line] [fixture:
+  er/lex-name-two-comment-regions] [fixture:
+  quadrant/lex-classdef-name-line-separator-comment-line]
 - **Tokens that are not cut.** A directive or a `;` that the line rule ignores
   lies in a `String` (which then is `StringFragment` tokens) or a `RawText`
   token, and in no other token (parser/docs/tokens.md, A token that a directive
@@ -2253,19 +2265,22 @@ takes the whitespace off its side that touches the cut, one case for each side
 `StringFragment`), and requires the check to report the tree with the message of
 its value (the texts of the tokens joined are not the written text). For an
 ignored text it has a case for a directive and one for a comment region, with
-the message that the whitespace next to a cut lies in no token. It also makes,
-from one recorded tree each, the two negative cases of the other exceptions: a
-token that starts with whitespace in a value that began before it, where the
-token before it does not touch it, and a token of whitespace that ends with
-whitespace in the middle of a value, where no token follows it. The check must
-report each with its message. `tests/check-tree-node-types.test.ts` requires the
-tables of node types of the check to classify the node types that the tree
-documents of the specification define, and no others. `tests/check-tree.test.ts`
-and `tests/check-tree-*.test.ts` break a tree, one condition at a time, and
-require the check to report it. The conditions that every tree satisfies
-(positions, the placement of every character, the order of the tokens, the cuts,
-the comments, the directives, and the frontmatter) are broken mostly on
-hand-made trees (`check-tree.test.ts`, `check-tree-comments.test.ts`,
+the message that the whitespace next to a cut lies in no token. For the
+`Identifier` token of an ER name and of a quadrant class name before a comment
+region, it takes the U+2028 off the end of the token that precedes the region,
+with the message of the value. It also makes, from one recorded tree each, the
+two negative cases of the other exceptions: a token that starts with whitespace
+in a value that began before it, where the token before it does not touch it,
+and a token of whitespace that ends with whitespace in the middle of a value,
+where no token follows it. The check must report each with its message.
+`tests/check-tree-node-types.test.ts` requires the tables of node types of the
+check to classify the node types that the tree documents of the specification
+define, and no others. `tests/check-tree.test.ts` and
+`tests/check-tree-*.test.ts` break a tree, one condition at a time, and require
+the check to report it. The conditions that every tree satisfies (positions, the
+placement of every character, the order of the tokens, the cuts, the comments,
+the directives, and the frontmatter) are broken mostly on hand-made trees
+(`check-tree.test.ts`, `check-tree-comments.test.ts`,
 `check-tree-cut-units.test.ts`). The form of a tree, its fields and values, the
 whitespace at the ends of tokens, the literals, and the conditions of a diagram
 are broken on recorded trees, those of a diagram on the recorded trees of named

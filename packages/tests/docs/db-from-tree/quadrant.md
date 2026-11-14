@@ -147,11 +147,33 @@ quadrant/db-style-space-around] [fixture: quadrant/db-style-four]
 **Classes.** A `classDef` statement sets the styles of the class of its name,
 read as the styles of a point: a class keeps the styles of its last definition
 only, and keeps the place of its first in the list. The name is the converted
-form of its range. The styles of a point and of its class are not merged, and a
-class that no point uses is listed. [fixture: quadrant/db-classdef-color]
-[fixture: quadrant/db-classdef-twice-replaces] [fixture:
-quadrant/db-classdef-two-classes] [fixture: quadrant/db-classdef-redefine-order]
-[fixture: quadrant/db-classdef-three-times-partner] [fixture:
+form of its range, which leaves out a comment region inside it: a U+2028 or a
+U+2029 is a character of a name and a comment start, so `classDef a`, U+2028,
+`%% c`, a line break, and `b color: #109060` defines the class `a`, U+2028, and
+`b`, and so it is with U+2029. [fixture:
+quadrant/lex-classdef-name-line-separator-comment-line] [fixture:
+quadrant/lex-classdef-name-paragraph-separator-comment-line] The name is the
+same where the region takes spaces, a second U+2028, a line feed, or a directive
+before the `%%`, where a CRLF ends the comment, and across a second comment line
+or a second region after a second U+2028; a `-` after the region is part of the
+name, and a name may start with the U+2028 after `classDef` and a space.
+[fixture: quadrant/lex-classdef-name-line-separator-spaces-comment-line]
+[fixture: quadrant/lex-classdef-name-two-line-separators-comment-line] [fixture:
+quadrant/lex-classdef-name-line-separator-line-feed-comment-line] [fixture:
+quadrant/lex-classdef-name-line-separator-directive-comment-line] [fixture:
+quadrant/lex-classdef-name-line-separator-comment-line-crlf] [fixture:
+quadrant/lex-classdef-name-line-separator-two-comment-lines] [fixture:
+quadrant/lex-classdef-name-two-comment-regions] [fixture:
+quadrant/lex-classdef-name-line-separator-comment-line-dash] [fixture:
+quadrant/lex-classdef-name-starts-with-line-separator-comment-line] A space at
+the start of the next line ends the name and is the whitespace before the
+styles, so the class is `a` and U+2028. [fixture:
+quadrant/lex-classdef-name-line-separator-comment-line-space] The styles of a
+point and of its class are not merged, and a class that no point uses is listed.
+[fixture: quadrant/db-classdef-color] [fixture:
+quadrant/db-classdef-twice-replaces] [fixture: quadrant/db-classdef-two-classes]
+[fixture: quadrant/db-classdef-redefine-order] [fixture:
+quadrant/db-classdef-three-times-partner] [fixture:
 quadrant/db-classdef-point-style-and-class] [fixture:
 quadrant/db-classdef-unused] [fixture: quadrant/db-classdef-dash-name] [fixture:
 quadrant/db-grid-nbsp-classdef-name] [fixture:
