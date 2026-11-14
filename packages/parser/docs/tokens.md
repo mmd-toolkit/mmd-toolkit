@@ -370,15 +370,21 @@ of whitespace and line terminators only that mermaid.js does not read as part of
 the value, such as one at the start of a label whose ends mermaid.js trims.
 Where several regions lie inside one token, it is cut at each. [fixture:
 flowchart/tokens-string-two-comment-lines] [fixture:
-flowchart/tokens-rawtext-two-comment-lines] Only `String` and `RawText` tokens
-can hold a comment region, because only their units may span lines. The
-fragments of a `String` token are `StringFragment` tokens; the fragments of a
-`RawText` token are `RawText` tokens, as the fragments of a token that a
-directive cuts keep its kind (see
-[Directive](../../spec/docs/ast.md#directive)). The node of the unit, such as a
-label, a StringLiteral, or a literal, spans the fragments and the region, and
-its value is the text before and after the region joined, as before. In
-`A["one`, a line `%% two`, and a line `three"]`, the label has the
+flowchart/tokens-rawtext-two-comment-lines] Only `String`, `RawText`, and
+`Identifier` tokens can hold a comment region, because only their units may span
+lines: an `Identifier` token only where its name holds a U+2028 or a U+2029,
+which is a comment start, as in er and in quadrant. The fragments of a `String`
+token are `StringFragment` tokens; the fragments of a `RawText` token are
+`RawText` tokens, and those of an `Identifier` token are `Identifier` tokens, as
+the fragments of a token that a directive cuts keep its kind (see
+[Directive](../../spec/docs/ast.md#directive)). In er, `A`, U+2028, `%% c`, a
+line break, and `Bar` is one ErIdentifier with the `Identifier` tokens `A` with
+the U+2028, and `Bar`. [fixture: er/lex-name-line-separator-comment-line]
+[fixture: er/lex-name-two-comment-regions] [fixture:
+quadrant/lex-classdef-name-line-separator-comment-line] The node of the unit,
+such as a label, a StringLiteral, or a literal, spans the fragments and the
+region, and its value is the text before and after the region joined, as before.
+In `A["one`, a line `%% two`, and a line `three"]`, the label has the
 `StringFragment` tokens `"one` with the line feed after it, and `three"`, with
 the comment between them, and the value `one`, a line feed, and `three`; in
 `A["`, a line `%% c`, and a line `b"]`, the fragments are `"` with a line feed,

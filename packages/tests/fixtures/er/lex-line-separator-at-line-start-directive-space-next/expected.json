@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Directives inside units: a directive between a U+2028 at the start of a line and a space lies between two units, not inside the name: the entities are `X`, U+2028, and `Q`, and the direction is `LR`."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-X-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "X",
+        "classes": []
+      },
+      {
+        "id": "entity- -1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": " ",
+        "classes": []
+      },
+      {
+        "id": "entity-Q-2",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "Q",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

@@ -82,4 +82,12 @@ directive or an ignored `;` makes the input rejected (see
 and `c` with a `Directive` token between each two, while
 `A:::c%%{init: {}}%%1: [0.3, 0.6]` is rejected. [fixture:
 quadrant/db-directive-two-in-text] [fixture:
-quadrant/div-class-directive-inside]
+quadrant/div-class-directive-inside] A comment region also cuts the `Identifier`
+token of the name of a class of `classDef`, which goes on across the region
+after a U+2028 or a U+2029 in it (see
+[Comment regions in tokens](../tokens.md#comment-regions-in-tokens)): its
+fragments are `Identifier` tokens, also when the name starts with the U+2028,
+while an ignored `;` after the region lies inside the name and makes the input
+rejected. [fixture: quadrant/lex-classdef-name-line-separator-comment-line]
+[fixture: quadrant/db-classdef-name-starts-with-line-separator-comment-line]
+[fixture: quadrant/div-classdef-name-comment-line-ignored-semicolon]

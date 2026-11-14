@@ -1,0 +1,59 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Units and contexts: a U+2028 at the start of a line that no comment follows starts a name, and the text before `direction` holds the U+2028, so the line is no direction line: the entities are `X`, U+2028 and `direction`, `LR`, `B`, and `Q`, and the direction stays `TB`."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-X-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "X",
+        "classes": []
+      },
+      {
+        "id": "entity- direction-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": " direction",
+        "classes": []
+      },
+      {
+        "id": "entity-LR-2",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "LR",
+        "classes": []
+      },
+      {
+        "id": "entity-B-3",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "B",
+        "classes": []
+      },
+      {
+        "id": "entity-Q-4",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "Q",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}
