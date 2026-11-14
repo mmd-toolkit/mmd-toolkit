@@ -120,14 +120,13 @@ export function classifyErStatement(
 /**
  * Whether an entity statement is printed with its attribute block as a
  * block: the block holds an attribute or an item that mermaid.js does not
- * read, or a comment or a directive between braces on different lines. An
- * empty block, with nothing but whitespace between its braces, is printed
- * as `{ }` on the line of the entity (see `isEmptyAttributeBlock`), and a
- * block without attributes on one line keeps its comments and directives on
- * that line (docs/er.md, Attribute blocks). An empty block over several lines
- * after a line that a joining region cuts is a block too: the line of the
- * entity is printed as written up to the `{`, and the `}` follows it with one
- * space (docs/er.md, Multi-line statements).
+ * read, or a line break between its braces, whether it holds a comment or a
+ * directive or nothing but whitespace. So an empty block over several lines is
+ * a block too, and where the line of the entity stays as written, it is
+ * printed as any block is: the entity stays on its line, and the `}` follows
+ * the `{` with one space (see `isEmptyAttributeBlock`; docs/er.md, Attribute
+ * blocks). A block without attributes on one line keeps its comments and
+ * directives on that line, and is printed as one statement.
  */
 export function hasAttributeBlock(
   source: Source,
@@ -135,9 +134,6 @@ export function hasAttributeBlock(
 ): boolean {
   if (statement.attributes === null) return false
   if (statement.attributes.length > 0) return true
-  if (isEmptyAttributeBlock(source, statement)) {
-    return isBlockAfterJoinedLine(source, statement)
-  }
   const { opening, closing } = findAttributeBraces(source, statement)
   return source.text.slice(opening.range[1], closing.range[0]).includes("\n")
 }

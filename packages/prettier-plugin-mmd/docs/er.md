@@ -90,17 +90,47 @@ braces on different lines all declare the entity without attributes. The form
 attribute-blocks/empty-unified] [corpus fixture: er/gram-block-empty] [corpus
 fixture: er/gram-block-empty-space] [corpus fixture:
 er/gram-block-empty-line-feed] [corpus fixture: er/gram-block-blank-lines] On a
-line of the entity that a comment line after U+2028 or U+2029 cuts, braces on
-one line stay as written with the line, and braces on different lines are
-printed `{ }` at the end of that line (see
-[Multi-line statements](#multi-line-statements)). [test: an empty attribute
-block over several lines after a comment line after U+2028 inside the name of an
-ER entity] [test: an empty attribute block on one line after a comment line
-after U+2028 inside the name of an ER entity] A block without attributes that
-holds a directive on the line of its braces keeps the directive there, as
-written, and a block that holds a comment line or a directive on a line of its
-own is printed as a block. [fixture: attribute-blocks/empty-with-directive-kept]
-[fixture: attribute-blocks/empty-with-comment-line-over-lines] [fixture:
+line that stays as written (see
+[Statements one per line](#statements-one-per-line) and
+[Multi-line statements](#multi-line-statements)), a block on one line stays as
+written with the line. A block over several lines whose `}` stands on a line
+that does not stay as written is printed as a block: the entity stays on its
+line, with the statements that stand before it, and its attributes and its `}`
+stand as those of any entity, so that an empty block over several lines ends the
+line with ` { }`, whatever stands after the `{` (spaces, a tab, a U+2028) or
+between the braces. A block whose `}` stands on a line that stays as written, as
+in `A {`, a line break, and `}1b`, stays as written with that line, whether it
+holds attributes or not. A line that holds a `;` is formatted, so a block on it
+is printed as anywhere. [fixture: attribute-blocks/written-line-number-name]
+[fixture: attribute-blocks/written-line-tilde-line] [fixture:
+attribute-blocks/written-line-unclosed-directive] [fixture:
+attribute-blocks/written-line-closing-brace] [fixture:
+attribute-blocks/semicolon-line] [test: an empty attribute block over several
+lines after a comment line after U+2028 inside the name of an ER entity] [test:
+an empty attribute block on one line after a comment line after U+2028 inside
+the name of an ER entity] [test: an empty attribute block over several lines
+after a name in quotes and U+2028] [test: an empty attribute block over several
+lines after a name in quotes and U+2029] [test: an empty attribute block over
+several lines after a name in quotes and U+2028 in a subgraph] [test: an empty
+attribute block with an empty line before its closing brace after a name in
+quotes and U+2028] [test: an empty attribute block with U+2028 after its opening
+brace after a name in quotes and U+2028] [test: an empty attribute block on one
+line after a name in quotes and U+2028] [test: an empty attribute block over
+several lines after U+2028 and class] [test: an empty attribute block over
+several lines after a semicolon that the line rule ignores and U+2028] [test: an
+empty attribute block with U+2028 after its opening brace after a semicolon that
+the line rule ignores] [test: an empty attribute block with U+2028 after its
+opening brace after the ER entity 1 that touches a letter] [test: an attribute
+block over several lines after a name in quotes and U+2028] [test: U+2028 and an
+attribute block after a name in quotes] [test: an attribute block over several
+lines after U+2028 and class] [test: an attribute block over several lines after
+a semicolon that the line rule ignores and U+2028] [test: an attribute block
+over several lines after the ER entity 1 that touches a letter and U+2028 after
+its opening brace] A block without attributes that holds a directive on the line
+of its braces keeps the directive there, as written, and a block that holds a
+comment line or a directive on a line of its own is printed as a block.
+[fixture: attribute-blocks/empty-with-directive-kept] [fixture:
+attribute-blocks/empty-with-comment-line-over-lines] [fixture:
 attribute-blocks/empty-with-directive-line-over-lines]
 
 The text that mermaid.js does not read, two backquotes with nothing between

@@ -92,14 +92,52 @@ mermaid.js は属性ブロックを改行に関係なく読むので、同じ属
 [corpus fixture: er/gram-block-empty-space]
 [corpus fixture: er/gram-block-empty-line-feed]
 [corpus fixture: er/gram-block-blank-lines]
-コメント行が U+2028 か U+2029 の後で切る実体の行では、1 行にある波括弧は、
+書かれたまま残る行（[1 行に 1 文](#1-行に-1-文)と
+[複数行の文](#複数行の文)を参照）では、1 行にあるブロックは、
 その行と一緒に書かれたままにします。
-別々の行にある波括弧は、
-その行の終わりに `{ }` として印字します（[複数行の文](#複数行の文)を参照）。
+複数行にまたがるブロックは、`}` が、書かれたまま残らない行にあるとき、
+ブロックとして印字します。
+実体は、その前にある文と一緒に行に残し、属性と `}` は、
+ほかの実体と同じに置きます。
+そのため、複数行にまたがる空のブロックは、`{` の後ろに何があっても（空白、タブ、
+U+2028）、波括弧の間に何があっても、行の終わりが ` { }` になります。
+`}` が、書かれたまま残る行にあるブロックは、`A {`、改行、`}1b` のように、
+属性があってもなくても、その行と一緒に書かれたままにします。
+`;` を含む行は整形するので、その上にあるブロックは、どこでもと同じに印字します。
+[fixture: attribute-blocks/written-line-number-name]
+[fixture: attribute-blocks/written-line-tilde-line]
+[fixture: attribute-blocks/written-line-unclosed-directive]
+[fixture: attribute-blocks/written-line-closing-brace]
+[fixture: attribute-blocks/semicolon-line]
 [test: an empty attribute block over several lines after a comment line after
 U+2028 inside the name of an ER entity]
 [test: an empty attribute block on one line after a comment line after U+2028
 inside the name of an ER entity]
+[test: an empty attribute block over several lines after a name in quotes and
+U+2028]
+[test: an empty attribute block over several lines after a name in quotes and
+U+2029]
+[test: an empty attribute block over several lines after a name in quotes and
+U+2028 in a subgraph]
+[test: an empty attribute block with an empty line before its closing brace
+after a name in quotes and U+2028]
+[test: an empty attribute block with U+2028 after its opening brace after a name
+in quotes and U+2028]
+[test: an empty attribute block on one line after a name in quotes and U+2028]
+[test: an empty attribute block over several lines after U+2028 and class]
+[test: an empty attribute block over several lines after a semicolon that the
+line rule ignores and U+2028]
+[test: an empty attribute block with U+2028 after its opening brace after a
+semicolon that the line rule ignores]
+[test: an empty attribute block with U+2028 after its opening brace after the ER
+entity 1 that touches a letter]
+[test: an attribute block over several lines after a name in quotes and U+2028]
+[test: U+2028 and an attribute block after a name in quotes]
+[test: an attribute block over several lines after U+2028 and class]
+[test: an attribute block over several lines after a semicolon that the line
+rule ignores and U+2028]
+[test: an attribute block over several lines after the ER entity 1 that touches
+a letter and U+2028 after its opening brace]
 波括弧と同じ行にディレクティブがある属性のないブロックは、
 ディレクティブをその行に書かれたまま残します。
 コメント行や、行に単独で置かれたディレクティブがあるブロックは、

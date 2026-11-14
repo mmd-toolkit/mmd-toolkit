@@ -260,10 +260,10 @@ function printedErEnd(source: Source, statement: ErStatement): number {
 /**
  * Prints an entity statement with its attribute block: the line of the
  * entity with its `{`, the attributes one level deeper, one on each line, and
- * the `}` (docs/er.md, Attribute blocks). An empty block, which
- * `hasAttributeBlock` takes for a block only where a joining region cuts the
- * line of the entity, is printed as `{ }` after the line as written up to the
- * `{`, whatever stands between the braces, as every empty block is (docs/er.md,
+ * the `}` (docs/er.md, Attribute blocks). An empty block over several lines,
+ * which `hasAttributeBlock` takes for a block, is printed as `{ }` after the
+ * line up to the `{`, whatever stands between the braces, as every empty block
+ * is, also where its line stays as written (docs/er.md, Attribute blocks and
  * Multi-line statements).
  */
 function printAttributeBlock(

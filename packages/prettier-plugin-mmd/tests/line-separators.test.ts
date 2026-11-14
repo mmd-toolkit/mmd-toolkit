@@ -2146,6 +2146,76 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "erDiagram\r\naccDescr:\u2028%% c\r\n\r\n   D\r\n",
     "erDiagram\n  accDescr:\u2028%% c\n\n   D\n",
   ],
+  [
+    "an empty attribute block over several lines after a name in quotes and U+2028",
+    'erDiagram\n"Z"\u2028 {\n}\n',
+    'erDiagram\n  "Z"\u2028 { }\n',
+  ],
+  [
+    "an empty attribute block over several lines after a name in quotes and U+2029",
+    'erDiagram\n"Z"\u2029 {\n}\n',
+    'erDiagram\n  "Z"\u2029 { }\n',
+  ],
+  [
+    "an empty attribute block over several lines after a name in quotes and U+2028 in a subgraph",
+    'erDiagram\nsubgraph S\n"Z"\u2028 {\n}\nend\n',
+    'erDiagram\n  subgraph S\n    "Z"\u2028 { }\n  end\n',
+  ],
+  [
+    "an empty attribute block with an empty line before its closing brace after a name in quotes and U+2028",
+    'erDiagram\n"Z"\u2028 {\n\n}\n',
+    'erDiagram\n  "Z"\u2028 { }\n',
+  ],
+  [
+    "an empty attribute block with U+2028 after its opening brace after a name in quotes and U+2028",
+    'erDiagram\n"Z"\u2028 {\u2028\n}\n',
+    'erDiagram\n  "Z"\u2028 { }\n',
+  ],
+  [
+    "an empty attribute block on one line after a name in quotes and U+2028",
+    'erDiagram\n"Z"\u2028 {}\n',
+    'erDiagram\n  "Z"\u2028 {}\n',
+  ],
+  [
+    "an empty attribute block over several lines after U+2028 and class",
+    "erDiagram\n\u2028class A a B {\n}\n",
+    "erDiagram\n  \u2028class A a B { }\n",
+  ],
+  [
+    "an empty attribute block over several lines after a semicolon that the line rule ignores and U+2028",
+    'erDiagram\n"style:#x" ;\u2028 A {\n}\n',
+    'erDiagram\n  "style:#x"; \u2028 A { }\n',
+  ],
+  [
+    "an empty attribute block with U+2028 after its opening brace after a semicolon that the line rule ignores",
+    'erDiagram\nX "style:#x"; A {\u2028\n}\n',
+    'erDiagram\n  X "style:#x"; A { }\n',
+  ],
+  [
+    "an empty attribute block with U+2028 after its opening brace after the ER entity 1 that touches a letter",
+    "erDiagram\n1A {\u2028\n}\n",
+    "erDiagram\n  1A { }\n",
+  ],
+  [
+    "an attribute block over several lines after a name in quotes and U+2028",
+    'erDiagram\n"Z"\u2028 {\nint id\n}\n',
+    'erDiagram\n  "Z"\u2028 {\n    int id\n  }\n',
+  ],
+  [
+    "an attribute block over several lines after U+2028 and class",
+    "erDiagram\n\u2028class A a B {\nint id\n}\n",
+    "erDiagram\n  \u2028class A a B {\n    int id\n  }\n",
+  ],
+  [
+    "an attribute block over several lines after a semicolon that the line rule ignores and U+2028",
+    'erDiagram\n"style:#x" ;\u2028 A {\nint id\n}\n',
+    'erDiagram\n  "style:#x"; \u2028 A {\n    int id\n  }\n',
+  ],
+  [
+    "an attribute block over several lines after the ER entity 1 that touches a letter and U+2028 after its opening brace",
+    "erDiagram\n1A {\u2028\nint id\n}\n",
+    "erDiagram\n  1A {\u2028\n    int id\n  }\n",
+  ],
 ]
 
 /**
