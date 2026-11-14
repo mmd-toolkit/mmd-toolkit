@@ -321,6 +321,13 @@ ASCII after its first character (see
 er/lex-tilde-space-inside] [fixture: er/lex-name-number] [fixture:
 er/gram-attribute] [fixture: er/lex-tilde-run-two-words]
 
+A comment region inside the name, after a U+2028 or a U+2029, is left out of its
+written text: `A`, U+2028, `%% c`, a line break, and `Bar` has the `name` `A`,
+U+2028, and `Bar` (see
+[Comment regions inside names](../diagrams/er.md#units-and-contexts)).
+
+[fixture: er/lex-name-line-separator-comment-line]
+
 ### ErLiteral
 
 A text without quotes that may contain whitespace: a style, and an accessibility

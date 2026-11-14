@@ -114,6 +114,164 @@ mermaid.js は属性ブロックを改行に関係なく読むので、同じ属
 [corpus fixture: er/gram-block-empty-line-feed]
 [corpus fixture: er/gram-block-blank-lines]
 
+書かれたまま残る行（[1 行に 1 文](#1-行に-1-文)と
+[複数行の文](#複数行の文)を参照）では、1 行にあるブロックは、
+その行と一緒に書かれたままにします。
+複数行にまたがるブロックは、`}` が、書かれたまま残らない行にあるとき、
+ブロックとして印字します。
+行の文は、その行に一緒に残し、文の単位の間の空白は通常どおり整形します。
+ただし、mermaid.js がその行をどう読むかを決める空白は書かれたまま残します。
+`1` と次の名前の接触、空白でもタブでもない空白文字、`class` の後の隙間です。
+コメント行がつなぐ行も例外で、
+`{` までを書かれたままにします（[複数行の文](#複数行の文)を参照）。
+空でないブロックでは、`{` の後ろにあるものは、その行に書かれたまま残し、
+その後の属性と `}` は、ほかの実体と同じに置きます。
+そのため、複数行にまたがる空のブロックは、`{` の後ろに何があっても（空白、タブ、
+U+2028）、波括弧の間に何があっても、行の終わりが ` { }` になります。
+ただし、`}` と閉じる行の残りが `{` の行につながると、別の読みになるときは別で、
+行を離したままにします。
+mermaid.js の行の規則（[セミコロン](#スタイル文の末尾のセミコロン)を参照）は、
+規則に合う行の最後の `;` を無視するので、つないだ行では、
+2 つの行のときと別の `;` を無視することがあります。
+`"style:#x"; B {`、改行、`} A["x;y"]` は、
+最初の行では `"style:#x"` の後ろの `;` を無視しますが、
+つないだ行では `A["x;y"]` の中の `;` を無視し、最初の `;` が区切りとして残って、
+mermaid.js が拒否します。
+規則が、どちらでも同じ `;` を無視するときは、`"style:#x"; B {`、改行、
+`}` のように、行をつなぎます。
+`{` の前の同じ行に、属性ブロックの中の `~` があり、書かれたまま残る行も、
+行を離したままにします。
+数える版のうち最も古いものは、そのような `~` の後ろの行の残りを、
+行が長いほど時間がかかる規則で読むので、その版が描ける行が、
+描けない行になりかねません。
+引用符の名前やディレクティブの中の `~` は、そのような規則に読まれないので、
+行をつなぎます。
+`A["x;~y"] B {`、改行、`}` は、`A["x;~y"] B { }` です。
+行を離したままにするとき、波括弧の間に空白とタブと改行だけがあれば、
+文は `{` までを書かれたまま印字し、改行を 1 つ置き、
+実体の字下げに `}` を置きます。
+行末の `{` の後ろの空白と、波括弧の間の空行は何も描かず、
+つないだ形の `{ }` でも落とすからです。
+波括弧の間に、
+空白でもタブでもない空白文字（たとえば U+00A0 や U+2028）があるときは、
+文は書かれたままにします。
+ただし `}` の前の同じ行に空白とタブだけがあれば、`}` は実体の字下げに置きます。
+`{` の行を、その行の文と一緒に書かれたまま印字するときも、
+ブロックは同じに印字します。
+行の印字については
+[`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照してください。
+`}` は実体の字下げに置き、波括弧の間に空白とタブと改行だけがあれば、
+`{` の後ろの空白と、波括弧の間の空行は、ほかの所と同じく落とします。
+行を書かれたままにしているのは、行の規則が無視する `;` と、
+その後ろの U+2028 か U+2029 の位置、または行が読まれる位置です。
+行末の `{` の後ろ、波括弧の間、後の行にある `}` の前の空白は、
+そのどれにも入りません。
+`"style:#x"; B {`、U+2029、改行、空白 4 つ、`} A["x;y"]` は、
+`}` を実体の字下げ（空白 2 つ）の後ろに置いて印字します。
+`1a B {`、空白 2 つ、改行 2 つ、`} A["x;y"]` は、`1a B {`、改行、
+`} A["x;y"]` に印字します。
+`end` の行が書かれたまま残るサブグラフは、全体を書かれたまま印字し、
+中の行は書かれた字下げを保ちます。
+ヘッダーだけがブロックの字下げに立ちます。
+その本体にある空のブロックも、どの深さでも同じです。
+`}` は、実体が始まる行の、書かれた字下げに置きます。
+
+[test: an empty ER attribute block in a subgraph whose end line stays as written, with spaces after its opening brace, an empty line, and four spaces before its closing brace]
+[test: an empty ER attribute block in a subgraph whose end line stays as written, after two spaces of indentation]
+[test: an empty ER attribute block in a subgraph whose end line stays as written, in a subgraph after a tab]
+[test: an empty ER attribute block in a subgraph whose end line stays as written, with two empty blocks after a statement]
+[test: an empty ER attribute block in a subgraph whose end line stays as written, and a block with an attribute]
+[test: an empty ER attribute block in a subgraph whose end line stays as written, after a directive over two lines]
+[test: an empty ER attribute block in a subgraph whose end line stays as written, after a comment line that joins its line to the line before]
+[test: an empty ER attribute block in a subgraph whose end line stays as written, and U+00A0 before the closing brace]
+[fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-both-lines]
+[fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-closing-line-ends]
+[fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-in-subgraph]
+[fixture: attribute-blocks/empty-block-joined-where-the-lines-read-the-same]
+[fixture: attribute-blocks/written-line-tilde-line]
+[fixture: attribute-blocks/written-line-tilde-line-closing-remainder]
+[fixture: attribute-blocks/empty-block-joined-where-the-tilde-is-not-in-an-attribute-block]
+[fixture: attribute-blocks/written-line-empty-block-tilde-attribute-on-a-semicolon-line]
+[fixture: attribute-blocks/written-line-empty-block-tilde-in-a-string-of-an-attribute]
+[fixture: attribute-blocks/written-line-empty-block-closing-brace-at-the-indentation-of-the-entity]
+[fixture: attribute-blocks/written-line-empty-block-spaces-after-the-brace-dropped]
+[fixture: attribute-blocks/written-line-empty-block-tab-after-the-brace-dropped]
+[fixture: attribute-blocks/written-line-empty-block-empty-line-dropped]
+[fixture: attribute-blocks/written-line-empty-block-whitespace-only-line-dropped]
+[fixture: attribute-blocks/written-line-empty-block-tilde-whitespace-and-empty-line-dropped]
+[fixture: attribute-blocks/written-line-empty-block-in-subgraph-whitespace-dropped]
+[test: an empty ER attribute block that stays over several lines with U+00A0 after its opening brace]
+[test: an empty ER attribute block that stays over several lines with U+2028 after its opening brace]
+[test: an empty ER attribute block that stays over several lines with a U+00A0 line between its braces]
+[test: an empty ER attribute block that stays over several lines with U+2029 after its opening brace, after a semicolon that the line rule ignores]
+[test: an empty ER attribute block that stays over several lines with U+2028 on a line between its braces, after a semicolon that the line rule ignores]
+[test: an empty ER attribute block that stays over several lines with U+2029 after its opening brace, after a semicolon that the line rule ignores, and four spaces before its closing brace]
+[test: an empty ER attribute block that stays over several lines with U+2029 after its opening brace, after a semicolon that the line rule ignores, and a tab before its closing brace]
+[test: an empty ER attribute block that stays over several lines with U+2028 after its opening brace, after a semicolon that the line rule ignores, and U+00A0 before its closing brace]
+[test: an empty ER attribute block that stays over several lines with spaces after its opening brace and an empty line before its closing brace, after a semicolon that the line rule ignores and U+2028]
+[test: an empty ER attribute block that stays over several lines with U+2029 after its opening brace, after a semicolon that the line rule ignores, in a subgraph]
+[test: an empty ER attribute block that stays over several lines with U+2029 after its opening brace, after a semicolon that the line rule ignores, before a closing line that a semicolon ends]
+[test: an empty ER attribute block that stays over several lines with U+2028 after its opening brace, after a tilde in an attribute block]
+[test: an empty ER attribute block that stays over several lines with U+2029 after its opening brace, after a tilde in an attribute block]
+[test: an empty ER attribute block that stays over several lines with U+2028 after its opening brace, after a tilde in an attribute block, in a subgraph]
+
+`}` が、書かれたまま残る行にあるブロックは、`A {`、改行、`}1b` のように、
+属性があれば、その行と一緒に書かれたままにします。
+空のブロックは、上と同じに印字します。
+
+[fixture: attribute-blocks/written-line-empty-block-closing-brace-on-a-line-read-by-its-place]
+[fixture: attribute-blocks/written-line-empty-block-spaces-and-empty-line-dropped-on-a-line-read-by-its-place]
+
+`;` を含み、ほかに書かれたまま残る理由がない行は整形します。
+空の description ブロックがある subgraph の見出しの行も、
+テキストを `:` に寄せると `direction` を持つ `accTitle` と `accDescr` の行も、
+同じです。
+そのような行の文は、行に一緒に残ります。
+その行にあるブロックはブロックとして印字します。
+`{` の行にある属性は、その行が上の行のどれかであれば、そこに残ります。
+`{` と属性の間に空白があれば、空白とタブの連なりは 1 つの空白になり、
+接していれば接したままです。
+行末にある `{` の後ろの空白とタブは落とします。
+1 行に書かれたブロックは 1 行のままで、
+`}` の前に空白が 1 つ入ります（`T {int a}` は `T {int a }` です）。
+ただし `;` を含む行では `}` が単独の行に移ります。
+
+[fixture: attribute-blocks/semicolon-line-spaces-after-brace]
+[fixture: attribute-blocks/block-on-one-line-space-before-the-closing-brace]
+[fixture: attribute-blocks/subgraph-header-line-spaces-after-brace]
+[fixture: attribute-blocks/accessibility-line-spaces-after-brace]
+[fixture: attribute-blocks/written-line-number-name]
+[fixture: attribute-blocks/written-line-tilde-line]
+[fixture: attribute-blocks/written-line-unclosed-directive]
+[fixture: attribute-blocks/written-line-closing-brace]
+[fixture: attribute-blocks/semicolon-line]
+[test: an empty attribute block over several lines after a comment line after U+2028 inside the name of an ER entity]
+[test: an empty attribute block on one line after a comment line after U+2028 inside the name of an ER entity]
+[test: an empty attribute block over several lines after a name in quotes and U+2028]
+[test: an empty attribute block over several lines after a name in quotes and U+2029]
+[test: an empty attribute block over several lines after a name in quotes and U+2028 in a subgraph]
+[test: an empty attribute block with an empty line before its closing brace after a name in quotes and U+2028]
+[test: an empty attribute block with U+2028 after its opening brace after a name in quotes and U+2028]
+[test: an empty attribute block on one line after a name in quotes and U+2028]
+[test: an empty attribute block over several lines after U+2028 and class]
+[test: an empty attribute block over several lines after a semicolon that the line rule ignores and U+2028]
+[test: an empty attribute block with U+2028 after its opening brace after a semicolon that the line rule ignores]
+[test: an empty attribute block with U+2028 after its opening brace after the ER entity 1 that touches a letter]
+[test: an attribute block over several lines after a name in quotes and U+2028]
+[test: U+2028 and an attribute block after a name in quotes]
+[test: an attribute block over several lines after U+2028 and class]
+[test: an attribute block over several lines after a semicolon that the line rule ignores and U+2028]
+[test: an attribute block over several lines after the ER entity 1 that touches a letter and U+2028 after its opening brace]
+[test: an attribute block of an entity after the end of an ER subgraph and U+2028, and a comment line after U+2028 after its closing brace]
+[test: an empty attribute block of an entity after the end of an ER subgraph and U+2028, and a comment line after U+2028 after its closing brace]
+[test: an attribute block of an entity after the end of an ER subgraph and U+2028, and a comment line after U+2028 at the end of the text]
+[test: an attribute block of an entity after the end of an ER subgraph and U+2029, and a comment line after U+2029 after its closing brace]
+[fixture: attribute-blocks/written-line-closing-line-kinds]
+[fixture: attribute-blocks/written-line-unclosed-directive-semicolon]
+[test: an empty attribute block over several lines before a name that is a no-break space and a comment line]
+[test: an attribute block over several lines before a name that is a no-break space and a comment line]
+[test: an attribute block over several lines of an entity after a statement, before a name that is a no-break space and a comment line]
+
 波括弧と同じ行にディレクティブがある属性のないブロックは、
 ディレクティブをその行に書かれたまま残します。
 コメント行や、行に単独で置かれたディレクティブがあるブロックは、
@@ -666,6 +824,54 @@ U+FEFF などが 1 つか複数）の文が、同じ行のほかの文の後に�
 [fixture: attribute-spacing/attributes-with-tilde-in-quotes-on-one-line-split]
 [fixture: attribute-spacing/attributes-with-tilde-in-directive-on-one-line-split]
 [corpus fixture: er/lex-tilde-after-quoted]
+
+書かれたまま残るこれらの行のどれでも、複数行の属性ブロックを持つ実体は、
+[属性ブロック](#属性ブロック)と同じに、ブロックとして印字します。
+行の文はその行に一緒に残り、文の単位の間の空白は、
+mermaid.js が行をどう読むかを決めないかぎり通常どおり整形します。
+空でないブロックでは、`{` の後ろにあるものは書かれたまま残り、
+属性と `}` はほかの実体と同じに置きます。
+そのため、`1A {`、改行、`}` は、`1A { }` になります。
+
+[fixture: attribute-blocks/written-line-number-name]
+[fixture: attribute-blocks/written-line-tilde-line]
+[fixture: attribute-blocks/written-line-unclosed-directive]
+[fixture: attribute-blocks/written-line-closing-brace]
+[fixture: attribute-blocks/semicolon-line]
+[test: an empty attribute block over several lines after U+2028 and class]
+[test: an attribute block over several lines after U+2028 and class]
+[test: an empty attribute block over several lines after a name in quotes and U+2028]
+[test: an attribute block over several lines after a name in quotes and U+2028]
+[test: an empty attribute block over several lines after a name in quotes and U+2029]
+[test: an empty attribute block over several lines after a semicolon that the line rule ignores and U+2028]
+[test: an attribute block over several lines after a semicolon that the line rule ignores and U+2028]
+[test: an attribute block over several lines of an entity after a statement that starts with U+2028 and a comment line]
+[test: an empty attribute block over several lines of an entity after a statement that starts with U+2028 and a comment line]
+
+`end` の後ろにあって、`end` の行に残る実体は、
+その前の隙間だけを書かれたままにし、ブロックはほかの行と同じに印字します。
+
+[test: an attribute block over several lines of an entity after the end of an ER subgraph and U+2028]
+[test: an empty attribute block over several lines of an entity after the end of an ER subgraph and U+2028]
+
+このように前の隙間を書かれたままにする文は、その行が書かれたまま残るとき、
+後ろに続くテキストと一緒にその行に残り、単独の行には移りません。
+行が書かれたまま残る理由は、何であっても同じです。
+次の行をつなぐ U+2028 の後のコメント行、引用符つきの名前の中の `;`、
+文字に接する実体 `1`、1 行の属性ブロックにある一対の `~`、
+閉じていないディレクティブがその例です。
+その行にあるブロックは、上と同じに印字します。
+
+[test: an ER statement attached to a class name after U+00A0, and a comment line after U+2028 and a statement]
+[test: an ER statement attached to a class name after U+00A0, and a comment line after U+2028 and an attribute block on one line]
+[test: an ER statement attached to a class name after U+00A0, and a comment line after U+2028 and an empty attribute block over several lines]
+[test: an ER statement attached to a class name after U+2028, and a comment line after U+2028 and a statement]
+[test: an ER statement attached to a class name after U+00A0, and a name in quotes that holds a semicolon]
+[test: an ER statement attached to a class name after U+00A0, and the entity 1 that touches a letter]
+[test: an ER statement attached to a class name after U+00A0, and an attribute block with a pair of tildes on one line]
+[test: an ER statement attached to a class name after U+00A0, and a directive that is not closed]
+[test: an ER statement after the end of a subgraph and U+2028, and a comment line after U+2028 and a statement]
+[test: an ER statement that touches the end of a subgraph with a dash, and a comment line after U+2028 and a statement]
 
 また、保持する `;` がある行は、その文を一緒に残します。
 mermaid.js の行の規則は行のテキストを読み、テキストを別の行に動かすと、
@@ -2215,11 +2421,18 @@ erDiagram
 
 ### 複数行の文
 
-mermaid.js が複数行にわたって読む文は、
-改行が字句解析器にとって空白である所では 1 行に印字します。
-`accTitle` と `accDescr` の `:` の後、`direction` と値の間、
+mermaid.js が複数行にわたって読む文は、改行が、
+その文の字句解析器にとって空白である所では 1 行に印字します。
+その場所は、仕様の[文の文脈](../../spec/docs/diagrams/er.ja.md#文の文脈)、
+[属性ブロックの文脈](../../spec/docs/diagrams/er.ja.md#属性ブロックの文脈)、
+[style の文脈](../../spec/docs/diagrams/er.ja.md#style-の文脈)が定めます。
+`accTitle` と `accDescr` の `:` の前後、`accDescr` の `{` の前後、
+`direction` と値の間、属性の単位の間、
 空白の後の `classDef` と `style` の文の中です。
 
+[fixture: multi-line-statements/acc-colon-and-brace-joined]
+[fixture: multi-line-statements/acc-descr-brace-joined]
+[fixture: multi-line-statements/attribute-over-lines-joined]
 [fixture: multi-line-statements/breaks-decided-one-by-one]
 [fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/accessibility-text-joined]
@@ -2229,7 +2442,7 @@ mermaid.js が複数行にわたって読む文は、
 コメント行やディレクティブがある文は改行を残し、
 構造の続きの行と間の注釈を 1 段深く置きます。
 値の中の空白と、各隙間の最初の改行の前の空白は保ちます。
-コメントで結合される領域では、文全体を原文のまま残します。
+コメントで結合される領域は、それがつなぐ行を原文のまま残します（下を参照）。
 改行を空白 1 つか何も挟まずにつなぐと、
 行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
 その改行を残します。
@@ -2240,6 +2453,156 @@ mermaid.js が複数行にわたって読む文は、
 [fixture: multi-line-statements/style-comment-continuation]
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
+
+コメントで結合される領域をまたいで続く名前も、そのような文の一部です。
+`A`、U+2028、`%% c`、行 `Bar` は、1 つの名前 `A`、U+2028、`Bar` です。
+名前がどこにあっても同じです。
+エンティティ、関係の端、属性の名前と型、サブグラフの名前と題、`class`、
+`classDef`、`style` の文の中の名前が、これにあたります。
+
+[test: a comment line after U+2028 inside the name of an ER entity]
+[test: a comment line after U+2029 inside the name of an ER entity]
+[test: two comment lines after U+2028 inside the name of an ER entity]
+[test: a directive and a comment line after U+2028 inside the name of an ER entity]
+[test: a comment line after U+2028 inside the name of an ER entity that follows a name in quotes]
+[test: an indented line after a comment line after U+2028 inside the name of an ER entity]
+[test: a comment line after U+2028 inside the name of an ER entity with an alias]
+[test: a comment line after U+2028 inside the name of an ER entity with an attribute block on one line]
+[test: a comment line after U+2028 inside the name of an ER entity with a CSS class]
+[test: a comment line after U+2028 inside the first entity of an ER relationship]
+[test: a comment line after U+2028 inside the second entity of an ER relationship]
+[test: a comment line after U+2028 inside both entities of an ER relationship]
+[test: a comment line after U+2028 inside the name of an ER attribute]
+[test: a comment line after U+2028 inside the type of an ER attribute]
+[test: a comment line after U+2028 inside the name of an ER subgraph]
+[test: a comment line after U+2028 inside the title of an ER subgraph]
+[test: a comment line after U+2028 inside the name of an ER class statement]
+[test: a comment line after U+2028 inside the name of an ER class definition]
+[test: a comment line after U+2028 inside the name of an ER style statement]
+
+行に載るものと行の終わりは、
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+のとおりです。
+行が終わった所では、次の行は、
+字下げされた別の文（属性ブロックの中では別の属性）になります。
+改行の後も文が続く所、つまり字句解析器がその改行を文の中の空白と読む所では、
+この節の初めに挙げた場所のどこでも、次の行は文の残りで、書かれたまま印字します。
+
+[test: an empty line after a comment line after U+2028 inside the name of an ER entity]
+[test: a line of only whitespace after a comment line after U+2028 inside the name of an ER entity]
+[test: a directive line after a comment line after U+2028 inside the name of an ER entity]
+[test: a comment line after U+2028 at the end of the text of an ER diagram]
+[test: an empty line after a comment line after U+2028 after the colon of accTitle, and the rest of the statement on the next line]
+[test: a directive line after a comment line after U+2028 after the colon of accTitle, and the rest of the statement on the next line]
+[test: an empty line after a comment line after U+2028 after the colon of accDescr, and the rest of the statement on the next line]
+[test: a directive line after a comment line after U+2028 after the colon of accDescr, and the rest of the statement on the next line]
+[test: an empty line after a comment line after U+2028 after direction, and the rest of the statement on the next line]
+[test: a directive line after a comment line after U+2028 after direction, and the rest of the statement on the next line]
+[test: an empty line after a comment line after U+2028 after a style that a comma ends, and the rest of the statement on the next line]
+[test: a directive line after a comment line after U+2028 after a style that a comma ends, and the rest of the statement on the next line]
+[test: an empty line after a comment line after U+2028 after the keyword of classDef, and the rest of the statement on the next line]
+[test: a directive line after a comment line after U+2028 after the keyword of classDef, and the rest of the statement on the next line]
+[test: an empty line after a comment line after U+2029 after the colon of accTitle, and the rest of the statement on the next line]
+[test: an empty line after a comment line after U+2028 after the colon of accDescr, with CRLF line breaks]
+[test: an empty line after a comment line after U+2028 before the colon of accTitle, and the rest of the statement on the next line]
+[test: a directive line after a comment line after U+2028 before the colon of accTitle, and the rest of the statement on the next line]
+[test: an empty line after a comment line after U+2028 before the colon of accDescr, and the rest of the statement on the next line]
+[test: a directive line after a comment line after U+2028 before the colon of accDescr, and the rest of the statement on the next line]
+[test: an empty line after a comment line after U+2028 before the opening brace of accDescr, and the rest of the statement on the next line]
+[test: a directive line after a comment line after U+2028 before the opening brace of accDescr, and the rest of the statement on the next line]
+[test: an empty line after a comment line after U+2028 after the opening brace of accDescr, and the rest of the statement on the next line]
+[test: a directive line after a comment line after U+2028 after the opening brace of accDescr, and the rest of the statement on the next line]
+[test: an empty line after a comment line after U+2028 after the keyword of style, and the rest of the statement on the next line]
+[test: a directive line after a comment line after U+2028 after the keyword of style, and the rest of the statement on the next line]
+[test: an empty line after a comment line after U+2028 after a name that a comma ends in a style statement, and the rest of the statement on the next line]
+[test: a directive line after a comment line after U+2028 after a name that a comma ends in a style statement, and the rest of the statement on the next line]
+[test: an empty line after a comment line after U+2028 after the name of a style statement, and the rest of the statement on the next line]
+[test: a directive line after a comment line after U+2028 after the name of a style statement, and the rest of the statement on the next line]
+[test: an empty line after a comment line after U+2028 before the colon of a style, and the rest of the statement on the next line]
+[test: a directive line after a comment line after U+2028 before the colon of a style, and the rest of the statement on the next line]
+[test: an empty line after a comment line after U+2028 after the colon of a style, and the rest of the statement on the next line]
+[test: a directive line after a comment line after U+2028 after the colon of a style, and the rest of the statement on the next line]
+[test: an empty line after a comment line after U+2028 between the type and the name of an attribute, and the rest of the statement on the next line]
+[test: a directive line after a comment line after U+2028 between the type and the name of an attribute, and the rest of the statement on the next line]
+[test: an empty line after a comment line after U+2028 between the name and the key of an attribute, and the rest of the statement on the next line]
+[test: a directive line after a comment line after U+2028 between the name and the key of an attribute, and the rest of the statement on the next line]
+
+その行にある `;` は、何であっても、その場所に残ります。
+`style` や `classDef` の文を終わらせる `;`（`Bar fill:red;`）、
+コメント行の後の行に `style` と `:#` があるために行の規則が無視する `;`
+（`style fill:#f00;`）、文字実体の `;`（`Bar fill:#f00;`）のどれも同じです。
+
+[test: a character entity at the end of an ER style statement, after a comment line after U+2028 inside its name]
+[test: a semicolon that ends an ER style statement, after a comment line after U+2028 inside its name]
+[test: a semicolon that ends an ER class definition, after a comment line after U+2028 inside its name]
+[test: a semicolon that the line rule ignores, after a comment line after U+2028 inside the name of an ER style statement]
+[test: a semicolon that the line rule ignores, after a comment line after U+2028 inside the name of an ER class definition]
+
+空でない複数行の属性ブロックを持つエンティティでは、書かれたまま印字するのは、
+ブロックを開く行で、`{` の後ろにあるものと、そこで始まる属性が続く行も含みます。
+その後の属性と `}` は、通常どおり、属性は 1 段深く、`}` は文の位置に置きます。
+ただし `}` が、U+2028 か U+2029 の後のコメント行が始まる行にあるときは、
+ブロックはその行と一緒に書かれたままにします。
+`}` が書かれたまま残るどの行にあるときも、同じです。
+[属性ブロック](#属性ブロック)を参照してください。
+行をつなげられるとき、複数行の空のブロックは、行の終わりが `{ }` になります。
+`{` の後ろに空白、タブ、U+2028 があっても同じで、ほかの空のブロックと同じです。
+1 行の空のブロックは、その行と一緒に書かれたままにします。
+
+[test: a comment line after U+2028 inside the name of an ER entity with an attribute block over several lines]
+[test: an attribute on the line of the opening brace after a comment line after U+2028 inside the name of an ER entity]
+[test: two attributes, the first on the line of the opening brace, after a comment line after U+2028 inside the name of an ER entity]
+[test: an empty attribute block over several lines after a comment line after U+2028 inside the name of an ER entity]
+[test: an empty attribute block with an indented closing brace after a comment line after U+2028 inside the name of an ER entity]
+[test: an empty attribute block with an empty line before its closing brace after a comment line after U+2028 inside the name of an ER entity]
+[test: an empty attribute block on one line after a comment line after U+2028 inside the name of an ER entity]
+[test: an empty attribute block over several lines after a comment line after U+2028 and a space]
+[test: an empty attribute block with spaces after its opening brace after a comment line after U+2028 inside the name of an ER entity]
+[test: an empty attribute block with a tab after its opening brace after a comment line after U+2028 inside the name of an ER entity]
+[test: an empty attribute block with U+2028 after its opening brace after a comment line after U+2028 inside the name of an ER entity]
+[test: an attribute block of an entity that starts the line, and a comment line after U+2028 after its closing brace]
+[test: an empty attribute block of an entity that starts the line, and a comment line after U+2028 after its closing brace]
+[test: an attribute that starts on the line of the opening brace and goes on over the next line, after a comment line after U+2028 inside the name of an ER entity]
+[test: an attribute that starts on the line of the opening brace and goes on over an empty line, after a comment line after U+2028 inside the name of an ER entity]
+[test: an attribute that starts on the line of the opening brace and goes on over a directive line, after a comment line after U+2028 inside the name of an ER entity]
+[test: an attribute that starts on the line of the opening brace and goes on over a comment line after U+2028, after a comment line after U+2028 inside the name of an ER entity]
+[test: an attribute that starts on the line of the opening brace and goes on over two lines, after a comment line after U+2028 inside the name of an ER entity]
+[test: an attribute that goes on over a line, and an attribute after it, after a comment line after U+2028 inside the name of an ER entity]
+
+同じ行で別の文の後に立つエンティティと、行が続く名前の後に立つエンティティも、
+同じように印字します。
+`{` までは、その前の隙間と一緒に書かれたままで、属性と `}` は、
+ほかのエンティティと同じ位置に置きます。
+ただし `}` が、書かれたまま残る行にあるときは、
+ブロックはその行と一緒に書かれたままにします。
+行を始めるエンティティと同じです。
+
+[test: an attribute block of an entity that follows another entity on the line, after a comment line after U+2028]
+[test: an attribute block of an entity after a statement on its line, with a comment line after U+2028 inside its name]
+[test: an attribute block of an entity after a name in quotes, with a comment line after U+2028 inside its name]
+[test: an empty attribute block of an entity that follows another entity on the line, after a comment line after U+2028]
+[test: an empty attribute block of an entity after a statement on its line, after a comment line after U+2028 and a space]
+[test: an attribute and a closing brace with other indentation of an entity that follows another entity on the line, after a comment line after U+2028]
+[test: a statement after the closing brace of an entity that follows another entity on the line, after a comment line after U+2028]
+[test: an attribute block on one line of an entity that follows another entity on the line, after a comment line after U+2028]
+[test: an attribute block inside a subgraph, of an entity that follows another entity on the line, after a comment line after U+2028]
+[test: an attribute block of an entity that follows a name that a comment line cuts, and a comment line after U+2028 after its closing brace]
+[test: an empty attribute block of an entity that follows a name that a comment line cuts, and a comment line after U+2028 after its closing brace]
+[test: an empty attribute block with an empty line before its closing brace, of an entity that follows a name that a comment line cuts, and a comment line after U+2028 after its closing brace]
+[test: an attribute block of an entity that follows a name that a comment line cuts, and a comment line after U+2028 at the end of the text]
+[test: an attribute block of an entity that follows a name that a comment line cuts, and two comment lines after U+2028 after its closing brace]
+[test: an attribute block of an entity that follows a name that a comment line cuts, and a comment line after U+2029 after its closing brace]
+[test: an attribute block of an entity that follows a name that a comment line cuts, and a statement touching its closing brace]
+[test: an attribute block of an entity that follows a name that a comment line cuts, with an indented closing brace and a comment line after U+2028]
+[test: two attribute blocks of entities that follow a name that a comment line cuts, with a comment line after U+2028 between them]
+[test: two spaces before the opening brace of an entity that follows a name that a comment line cuts]
+[test: two spaces before the opening brace of an empty attribute block of an entity that follows a name that a comment line cuts]
+[test: a tab before the opening brace of an entity that follows a name that a comment line cuts]
+[test: an alias with spaces before the opening brace of an entity that follows a name that a comment line cuts]
+[test: CSS classes with spaces before the opening brace of an entity that follows a name that a comment line cuts]
+[test: a directive before the opening brace of an entity that follows a name that a comment line cuts]
+[test: two spaces before the opening brace of an entity that starts the line, after a comment line after U+2028]
+[test: an attribute that starts on the line of the opening brace and goes on over the next line, of an entity that follows a name that a comment line cuts]
 
 入力
 ([multi-line-statements/accessibility-text-joined-input.mmd](../tests/fixtures/er/multi-line-statements/accessibility-text-joined-input.mmd)):

@@ -64,6 +64,53 @@ er/db-role-attribute-quote] [fixture: er/db-attribute-comment-attribute-quote]
   er/db-entity-name-line-separator] [fixture: er/db-entity-name-numbers]
   [fixture: er/db-alias-line-separator]
 
+- A comment region inside a name is not in its text, as a comment line inside a
+  string is not: the name is the converted form of its range, which leaves out
+  comment regions (see
+  [The converted form](../db-from-tree.md#the-converted-form)). A U+2028 or a
+  U+2029 is a character of a name and a comment start, so `A`, U+2028, `%% c`, a
+  line break, and `Bar` is one entity whose name is `A`, U+2028, and `Bar`, and
+  so it is with U+2029.
+
+  [fixture: er/lex-name-line-separator-comment-line] [fixture:
+  er/lex-name-paragraph-separator-comment-line]
+
+  The lexer decides what the region takes and where a name ends and starts
+  around it (see
+  [Comment regions inside names](../../../spec/docs/diagrams/er.md#units-and-contexts)),
+  and the range shows it; the text is the same where the region takes spaces, a
+  second U+2028, or line breaks before the comment line, or a directive before
+  the `%%`, where a CRLF or a CR ends the comment, where a directive lies in the
+  comment, and across a second comment line or a second region after a second
+  U+2028; a U+2028 at the start of the next line is a character of the name.
+
+  [fixture: er/lex-name-line-separator-spaces-comment-line] [fixture:
+  er/lex-name-two-line-separators-comment-line] [fixture:
+  er/lex-name-line-separator-line-feed-comment-line] [fixture:
+  er/lex-name-line-separator-empty-line-comment-line] [fixture:
+  er/lex-name-line-separator-directive-comment-line] [fixture:
+  er/lex-name-line-separator-comment-line-crlf] [fixture:
+  er/lex-name-line-separator-comment-line-cr] [fixture:
+  er/lex-name-line-separator-comment-line-with-directive] [fixture:
+  er/lex-name-line-separator-two-comment-lines] [fixture:
+  er/lex-name-two-comment-regions] [fixture:
+  er/lex-name-comment-line-line-separator-next]
+
+  It is so for each name: an entity of a relationship, a role, an alias, a class
+  after `:::`, a name after `classDef`, `class`, or `style`, a class of `class`,
+  the id of a subgraph, and the type and the name of an attribute.
+
+  [fixture: er/lex-relationship-first-name-comment-line] [fixture:
+  er/lex-relationship-second-name-comment-line] [fixture:
+  er/lex-role-name-comment-line] [fixture: er/lex-alias-name-comment-line]
+  [fixture: er/lex-class-shorthand-name-comment-line] [fixture:
+  er/lex-classdef-name-comment-line] [fixture:
+  er/lex-class-statement-name-comment-line] [fixture:
+  er/lex-style-statement-name-comment-line] [fixture:
+  er/lex-class-statement-class-comment-line] [fixture:
+  er/lex-subgraph-id-comment-line] [fixture: er/lex-attribute-type-comment-line]
+  [fixture: er/lex-attribute-name-comment-line]
+
 - A StringLiteral has the converted form of its range without the delimiters,
   the quotes of a quoted name, a role, and a comment, and the backquotes of a
   word of an attribute, so `"A B"` is the name `A B`, and the id of its entity

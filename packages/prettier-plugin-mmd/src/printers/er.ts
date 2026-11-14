@@ -1,4 +1,5 @@
 import type { AstPath, Doc, ParserOptions } from "prettier"
+import { builders } from "prettier/doc"
 import type {
   ErAttribute,
   ErDiagram,
@@ -6,6 +7,7 @@ import type {
   ErIgnoredText,
   ErStatement,
   ErSubgraphStatement,
+  Range,
   Token,
 } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
@@ -29,8 +31,12 @@ import {
 import {
   classifyErStatement,
   findAttributeBraces,
+  findEmptyBlockClosingGap,
   findSubgraphHeaderEnd,
   hasAttributeBlock,
+  isBlockAfterJoinedLine,
+  keepsEmptyBlockLines,
+  isEmptyAttributeBlock,
   touchesKeywordWithDash,
   layoutAttribute,
   layoutBlockOpening,
@@ -38,7 +44,7 @@ import {
   layoutSubgraphOpening,
 } from "./er-layout.ts"
 import { expectToken, layoutKeywordHeader, toAsciiLowerCase } from "./layout.ts"
-import { lineEndOf, lineStartOf } from "./kept-lines.ts"
+import { isFirstOnItsLine, lineEndOf, lineStartOf } from "./kept-lines.ts"
 import { indentationOf, printAsWritten } from "./lines.ts"
 import { narrowPath } from "./paths.ts"
 import type { Source } from "./source.ts"
@@ -46,9 +52,12 @@ import {
   findTokenEndingBefore,
   findTokenStartingAt,
   findTriviaAt,
+  isSpaceOrTab,
   isWhitespace,
   skipRemoved,
 } from "./source.ts"
+
+const { literalline } = builders
 
 /**
  * Prints the body of an ER diagram and the nodes below it, to the end of the
@@ -106,6 +115,14 @@ export function printEr(
         depth,
       )
     case "entity":
+      if (keepsEmptyBlockLines(source, classified.statement)) {
+        return printEmptyBlockOverLines(
+          options,
+          source,
+          classified.statement,
+          depth,
+        )
+      }
       if (hasAttributeBlock(source, classified.statement)) {
         return printAttributeBlock(
           path,
@@ -169,7 +186,7 @@ function printDiagram(
       end: source.text.length,
       isTopLevel: true,
     },
-    statementBlockRules(source),
+    statementBlockRules(source, indentationOf(options, 1)),
   )
   const header = openingLine(
     printLine(source, options, layoutKeywordHeader(source, keyword), 0),
@@ -202,7 +219,7 @@ function printSubgraph(
       end: closing.range[0],
       isTopLevel: false,
     },
-    statementBlockRules(source),
+    statementBlockRules(source, indentationOf(options, depth + 1)),
   )
   const header = openingLine(
     printLine(
@@ -258,7 +275,12 @@ function printedErEnd(source: Source, statement: ErStatement): number {
 /**
  * Prints an entity statement with its attribute block: the line of the
  * entity with its `{`, the attributes one level deeper, one on each line, and
- * the `}` (docs/er.md, Attribute blocks).
+ * the `}` (docs/er.md, Attribute blocks). An empty block over several lines,
+ * which `hasAttributeBlock` takes for a block, is printed as `{ }` after the
+ * line up to the `{`, whatever stands between the braces, as every empty block
+ * is, also where its line stays as written, unless its lines stay over several
+ * lines (`keepsEmptyBlockLines`, which `printEr` asks first; docs/er.md,
+ * Attribute blocks and Multi-line statements).
  */
 function printAttributeBlock(
   path: AstPath<MermaidAst>,
@@ -269,6 +291,15 @@ function printAttributeBlock(
   depth: number,
 ): Doc {
   const { opening, closing } = findAttributeBraces(source, statement)
+  const opened = printLine(
+    source,
+    options,
+    layoutBlockOpening(source, statement, opening),
+    depth,
+  )
+  if (isEmptyAttributeBlock(source, statement)) {
+    return [opened, " ", closing.value]
+  }
   const block = printBlock<ErAttribute | ErIgnoredText>(
     narrowPath(path, statement.type).map(print, "attributes"),
     source,
@@ -280,17 +311,40 @@ function printAttributeBlock(
     },
     attributeBlockRules(source),
   )
-  const header = openingLine(
-    printLine(
-      source,
-      options,
-      layoutBlockOpening(source, statement, opening),
-      depth,
-    ),
+  return printClosedBlock(
+    openingLine(opened, block, false),
     block,
-    false,
+    closing.value,
+    depth,
+    options,
   )
-  return printClosedBlock(header, block, closing.value, depth, options)
+}
+
+/**
+ * Prints an entity statement whose empty attribute block stays over several
+ * lines (see `keepsEmptyBlockLines`): spaces, tabs, and line feeds between the
+ * braces become one line break before the `}` at the indentation of the entity.
+ * Otherwise it stays as written, except that the `}` stands at that indentation
+ * where only spaces and tabs precede it on its line (docs/er.md, Attribute
+ * blocks).
+ */
+function printEmptyBlockOverLines(
+  options: ParserOptions<MermaidAst>,
+  source: Source,
+  statement: ErEntityStatement,
+  depth: number,
+): Doc {
+  const gap = findEmptyBlockClosingGap(source, statement)
+  if (gap === null) {
+    return printAsWritten(source, statement.range[0], statement.range[1])
+  }
+  const { closing } = findAttributeBraces(source, statement)
+  return [
+    printAsWritten(source, statement.range[0], gap.range[0]),
+    gap.startsWithLineBreak ? literalline : "",
+    indentationOf(options, depth),
+    closing.value,
+  ]
 }
 
 /** The `end` that closes a subgraph: its last token. */
@@ -311,16 +365,51 @@ function findSubgraphEnd(
 }
 
 /**
+ * Whether a statement is an entity whose attribute block lies outside the line
+ * that a joining region joins, and that stands after another statement on that
+ * line: the line up to it is printed as written, and it is printed after the
+ * gap before it as written, with its block as any entity does (see
+ * `isBlockAfterJoinedLine`).
+ */
+function startsBlockAfterJoinedLine(
+  source: Source,
+  statement: ErStatement,
+): boolean {
+  return (
+    statement.type === "ErEntityStatement" &&
+    isBlockAfterJoinedLine(source, statement) &&
+    !isFirstOnItsLine(source, statement.range[0])
+  )
+}
+
+/**
  * The block rules of the statements of an ER diagram and of a subgraph (see
  * `BlockRules`): a subgraph and an entity statement with an attribute block
  * hold lines of their own, and no statement is dropped. A comment line is
  * the only comment of the diagram, and it takes no line break after it, so
- * no line of only whitespace is kept after one (docs/er.md, Comments).
+ * no line of only whitespace is kept after one (docs/er.md, Comments). Where
+ * a stretch is printed as written, an empty attribute block uses the same
+ * closing gap as where the statement is printed on its own, with the `}` at
+ * `indentation`, the indentation of the statements of the block. Inside a
+ * subgraph that stays as written, its body's lines keep their written
+ * indentation, including the `}` of each empty block (docs/er.md, Attribute
+ * blocks).
  */
-function statementBlockRules(source: Source): BlockRules<ErStatement> {
+function statementBlockRules(
+  source: Source,
+  indentation: string,
+): BlockRules<ErStatement> {
   return {
     kept: findErKeptLines(source),
     printedEnd: (statement) => printedErEnd(source, statement),
+    writtenReplacements: (statement) => {
+      if (statement.type === "ErSubgraphStatement") {
+        return subgraphEmptyBlockReplacements(source, statement)
+      }
+      if (statement.type !== "ErEntityStatement") return []
+      const replacement = emptyBlockReplacement(source, statement, indentation)
+      return replacement === null ? [] : [replacement]
+    },
     // An ignored `;` after `end` still needs the line's `style` and `:#`
     // trigger (diagrams/er.md, The statement context; docs/er.md,
     // Statements one per line).
@@ -336,7 +425,10 @@ function statementBlockRules(source: Source): BlockRules<ErStatement> {
     writtenGapBefore: (statement) =>
       touchesKeywordWithDash(source, statement.range[0]) ||
       followsSplitKeyword(source, statement.range[0]) ||
-      findErClassNameGaps(source).has(statement.range[0]),
+      findErClassNameGaps(source).has(statement.range[0]) ||
+      startsBlockAfterJoinedLine(source, statement),
+    endsStretchBefore: (statement) =>
+      startsBlockAfterJoinedLine(source, statement),
     isDroppedAtTopLevel: () => false,
     keepsWhitespaceLineAfterComment: false,
     keepsDirectiveLinesUnindented: false,
@@ -348,6 +440,54 @@ function statementBlockRules(source: Source): BlockRules<ErStatement> {
             statement.range[0],
           ),
   }
+}
+
+/**
+ * The closing gap of an empty block at the indentation of its entity, whether
+ * the kept stretch covers the entity or a subgraph that holds it (docs/er.md,
+ * Attribute blocks).
+ */
+function emptyBlockReplacement(
+  source: Source,
+  statement: ErEntityStatement,
+  indentation: string,
+): { readonly range: Range; readonly text: string } | null {
+  const gap = findEmptyBlockClosingGap(source, statement)
+  return gap === null
+    ? null
+    : {
+        range: gap.range,
+        text: (gap.startsWithLineBreak ? "\n" : "") + indentation,
+      }
+}
+
+/**
+ * The empty blocks inside a subgraph printed as written, in source order. Its
+ * body keeps its written lines, so each `}` uses the spaces and tabs at the
+ * start of its entity's line, also after another statement on that line
+ * (docs/er.md, Attribute blocks). That line starts after a line feed, and not
+ * where `lineStartOf` puts it: a line that a comment line or an unclosed
+ * directive joins to the line before still has its own written indentation.
+ */
+function subgraphEmptyBlockReplacements(
+  source: Source,
+  statement: ErSubgraphStatement,
+): readonly { readonly range: Range; readonly text: string }[] {
+  return statement.body.flatMap((child) => {
+    if (child.type === "ErSubgraphStatement") {
+      return subgraphEmptyBlockReplacements(source, child)
+    }
+    if (child.type !== "ErEntityStatement") return []
+    const start = source.text.lastIndexOf("\n", child.range[0] - 1) + 1
+    let end = start
+    while (isSpaceOrTab(source.text.charAt(end))) end++
+    const replacement = emptyBlockReplacement(
+      source,
+      child,
+      source.text.slice(start, end),
+    )
+    return replacement === null ? [] : [replacement]
+  })
 }
 
 /**

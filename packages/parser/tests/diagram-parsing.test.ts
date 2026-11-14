@@ -87,6 +87,28 @@ describe("finishDiagram", () => {
     },
   )
 
+  it("cuts an Identifier token at a comment region after a U+2028 into Identifier tokens", () => {
+    const root = finish("a\u2028%% c\nb", [
+      { kind: "Identifier", range: [0, 8] },
+    ])
+    expect(root.tokens.map((token) => [token.type, token.value])).toEqual([
+      ["Identifier", "a\u2028"],
+      ["Identifier", "b"],
+    ])
+  })
+
+  it("rejects a directive after a comment region inside an Identifier token at the directive", () => {
+    expect(() =>
+      finish("a\u2028%% c\n%%{x}%%b", [{ kind: "Identifier", range: [0, 15] }]),
+    ).toThrow(
+      expect.objectContaining({
+        constructor: ParseError,
+        message: "Unexpected directive",
+        range: [7, 14],
+      }),
+    )
+  })
+
   it.each<DiagramTokenKind>(["Identifier", "Keyword", "Punctuator", "Numeric"])(
     "rejects a `;` that the line rule ignores inside a %s token at the `;`",
     (kind) => {
@@ -130,6 +152,11 @@ describe("finishDiagram", () => {
     ],
     [
       "of a kind that a comment region cuts",
+      "a\n%% c\nb",
+      [{ kind: "Keyword", range: [0, 8] }],
+    ],
+    [
+      "of a name that a comment region cuts after a line feed",
       "a\n%% c\nb",
       [{ kind: "Identifier", range: [0, 8] }],
     ],

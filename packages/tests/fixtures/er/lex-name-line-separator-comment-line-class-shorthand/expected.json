@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Units and contexts, Comment regions inside names: `:::c` on the line after the region belongs to the name before it; the entity `A` and U+2028 with the class `c`."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A -0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A ",
+        "classes": [
+          "c"
+        ]
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

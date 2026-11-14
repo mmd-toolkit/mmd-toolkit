@@ -83,6 +83,18 @@
 
 [単位の中のディレクティブ](../../../spec/docs/diagrams/er.ja.md#単位の中のディレクティブ)
 を参照。
+コメント領域は、`Identifier` トークンも切ります。
+名前は、その中の U+2028 か U+2029 の後で、領域をまたいで続くからです。
+[トークンの中のコメント領域](../tokens.ja.md#トークンの中のコメント領域)
+を参照。
+断片は `Identifier` トークンで、領域は、
+その `%%` の前のディレクティブとともに断片の外にあります。
+役割と、属性の名前でも同じです。
+
+[fixture: er/lex-name-line-separator-comment-line]
+[fixture: er/lex-name-line-separator-directive-comment-line]
+[fixture: er/lex-role-name-comment-line]
+[fixture: er/lex-attribute-name-comment-line]
 
 - 文である空の説明ブロックは、`Keyword` トークン `accDescr` と、
   `Punctuator` トークン `{` と `}` を持ちます。

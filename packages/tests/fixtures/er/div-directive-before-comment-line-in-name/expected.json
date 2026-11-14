@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences.md, directive-as-token-boundary: the comment region starts after the U+2029, so the directive right before it lies inside the name unit, which this specification rejects; mermaid.js removes the directive and reads the one entity `A`, U+2029, and `B`."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A B-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A B",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

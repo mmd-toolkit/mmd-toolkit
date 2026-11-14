@@ -76,6 +76,57 @@ U+2028 は行終端ではなく、値の中にそのまま残ります。
   [fixture: er/db-entity-name-line-separator]
   [fixture: er/db-entity-name-numbers] [fixture: er/db-alias-line-separator]
 
+- 名前の中のコメント領域は、そのテキストにありません。
+  文字列の中のコメント行がテキストにないのと同じで、名前は範囲の変換した形で、
+  変換した形はコメント領域を除きます。
+  出典は [変換した形](../db-from-tree.ja.md#変換した形) です。
+  U+2028 と U+2029 は、名前の文字であるとともにコメントの始まりなので、`A`、
+  U+2028、`%% c`、改行、`Bar` は、名前が `A`、U+2028、`Bar` の 1 つの実体で、
+  U+2029 のときも同じです。
+
+  [fixture: er/lex-name-line-separator-comment-line]
+  [fixture: er/lex-name-paragraph-separator-comment-line]
+
+  領域が何を取るかと、その前後で名前がどこで終わりどこで始まるかは、
+  字句解析器が決め、範囲に現れます。
+  出典は
+  [名前の中のコメント領域](../../../spec/docs/diagrams/er.ja.md#単位と文脈)
+  です。
+  テキストは、領域が、U+2028 と `%%` の間で空白、2 つ目の U+2028、改行、
+  ディレクティブを取るときも、コメントを終える CRLF や CR のときも、
+  コメントの中のディレクティブのときも、2 つ目のコメント行や、
+  2 つ目の U+2028 の後の 2 つ目の領域をまたぐときも、同じです。
+  次の行の始めの U+2028 は名前の文字です。
+
+  [fixture: er/lex-name-line-separator-spaces-comment-line]
+  [fixture: er/lex-name-two-line-separators-comment-line]
+  [fixture: er/lex-name-line-separator-line-feed-comment-line]
+  [fixture: er/lex-name-line-separator-empty-line-comment-line]
+  [fixture: er/lex-name-line-separator-directive-comment-line]
+  [fixture: er/lex-name-line-separator-comment-line-crlf]
+  [fixture: er/lex-name-line-separator-comment-line-cr]
+  [fixture: er/lex-name-line-separator-comment-line-with-directive]
+  [fixture: er/lex-name-line-separator-two-comment-lines]
+  [fixture: er/lex-name-two-comment-regions]
+  [fixture: er/lex-name-comment-line-line-separator-next]
+
+  どの名前でも同じで、関係の実体、ロール、別名、`:::` の後のクラス、`classDef`、
+  `class`、`style` の後の名前、`class` のクラス、subgraph の id、
+  属性の型と名前もそうです。
+
+  [fixture: er/lex-relationship-first-name-comment-line]
+  [fixture: er/lex-relationship-second-name-comment-line]
+  [fixture: er/lex-role-name-comment-line]
+  [fixture: er/lex-alias-name-comment-line]
+  [fixture: er/lex-class-shorthand-name-comment-line]
+  [fixture: er/lex-classdef-name-comment-line]
+  [fixture: er/lex-class-statement-name-comment-line]
+  [fixture: er/lex-style-statement-name-comment-line]
+  [fixture: er/lex-class-statement-class-comment-line]
+  [fixture: er/lex-subgraph-id-comment-line]
+  [fixture: er/lex-attribute-type-comment-line]
+  [fixture: er/lex-attribute-name-comment-line]
+
 - StringLiteral は、その範囲の変換した形から区切りを除いたものを持ちます。
   区切りは、引用符付きの名前、ロール、コメントの引用符と、
   属性の語のバッククォートです。

@@ -490,13 +490,22 @@ mermaid.js が値の一部として読むものを含みます（[トークン](
 [fixture: flowchart/tokens-string-two-comment-lines]
 [fixture: flowchart/tokens-rawtext-two-comment-lines]
 
-コメント領域を持ちうるのは、
-単位が行をまたぎうる `String` と `RawText` のトークンだけです。
+コメント領域を持ちうるのは、単位が行をまたぎうる `String`、`RawText`、
+`Identifier` のトークンだけです。
+`Identifier` のトークンが持ちうるのは、er と quadrant のように、
+名前がコメントの始まりである U+2028 か U+2029 を含むときだけです。
 `String` のトークンの断片は `StringFragment` のトークンです。
-`RawText` のトークンの断片は、
+`RawText` と `Identifier` のトークンの断片は、
 ディレクティブが切るトークンの断片が元の種類を持つのと同じく、
-`RawText` のトークンです（[Directive](../../spec/docs/ast.ja.md#directive)
+元と同じ種類のトークンです（[Directive](../../spec/docs/ast.ja.md#directive)
 を参照）。
+er では、`A`、U+2028、`%% c`、改行、`Bar` は 1 つの ErIdentifier で、
+U+2028 を含む `A` と、`Bar` の `Identifier` トークンを持ちます。
+
+[fixture: er/lex-name-line-separator-comment-line]
+[fixture: er/lex-name-two-comment-regions]
+[fixture: quadrant/lex-classdef-name-line-separator-comment-line]
+
 ラベル、StringLiteral、リテラルなど、単位のノードは断片と領域にまたがり、
 その値は、これまでどおり領域の前と後のテキストをつないだものです。
 `A["one`、行 `%% two`、行 `three"]` では、
