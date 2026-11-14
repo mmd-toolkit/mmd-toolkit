@@ -2042,13 +2042,15 @@ describe("checkTree: another diagram's number read as a treemap number", () => {
     setField(node, "range", [35, 38])
     setField(node, "loc", locationOf(text, [35, 38]))
     setField(firstNode(tree, "FlowchartLinkStyleStatement"), "indices", [node])
-    const first = tree.tokens.findIndex((token) => token.type === "Numeric")
-    tree.tokens.splice(first, 3, {
+    const tokens = [...tree.tokens]
+    const first = tokens.findIndex((token) => token.type === "Numeric")
+    tokens.splice(first, 3, {
       type: "Numeric",
       value: "1,2",
       range: [35, 38],
       loc: locationOf(text, [35, 38]),
     })
+    setField(tree, "tokens", tokens)
     expect(checkTree(text, tree)).toEqual([
       {
         where: "NumericLiteral at 35-38",
