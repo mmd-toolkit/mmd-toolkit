@@ -1095,9 +1095,35 @@
       ],
       "about": "Every node has these fields besides those of [`ast.md`](../.",
       "judgment": {
-        "status": "no-condition",
-        "kind": "introduction",
-        "note": "It leads in to the table of the fields of every node below it; the conditions are in those rows, which have rows of their own."
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Every node has range, both Root and a node in its body.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a Root without range"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a node in the body without range"
+              }
+            ]
+          },
+          {
+            "case": "Every node has loc, both Root and a node in its body.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a Root without loc"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a node in the body without loc"
+              }
+            ]
+          }
+        ]
       }
     },
     {

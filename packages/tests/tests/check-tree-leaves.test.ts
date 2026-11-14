@@ -48,16 +48,21 @@ describe("checkTree: the diagram type of the root", () => {
     expect(says(checkTree(input, tree), "diagram type")).toBe(false)
   })
 
-  it("passes any of the diagram types that a flowchart body has", () => {
-    // `flowchart-elk` is the type of a header the tree of `graph` does not
-    // have, but the body of a flowchart has all three of the documents.
+  it("passes the diagram type that each flowchart header gives", () => {
+    // spec/docs/ast.md, Root: graph gives flowchart-v2, flowchart-elk gives
+    // flowchart-elk, and swimlane-beta gives swimlane.
+    for (const fixture of [
+      "spec-flow-singlenode-a5fa3415",
+      "demo-flowchart-elk-dd7d446d",
+      "spec-flow-92e675d0",
+    ]) {
+      const { input, tree } = recordedTree("flowchart", fixture)
+      expect(checkTree(input, tree)).toEqual([])
+    }
     const { input, tree } = recordedTree(
       "flowchart",
       "spec-flow-singlenode-a5fa3415",
     )
-    for (const diagramType of ["flowchart-v2", "flowchart-elk", "swimlane"]) {
-      expect(checkTree(input, { ...copyOf(tree), diagramType })).toEqual([])
-    }
     expect(
       says(
         checkTree(input, { ...copyOf(tree), diagramType: "sequence" }),

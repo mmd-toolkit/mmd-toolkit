@@ -168,29 +168,37 @@ who reads the table, and is not compared. A judgment is one of:
   or more test references. Each test shows `checkTree()` reporting a tree that
   breaks that case's condition of this block; breaking another block's condition
   does not show it. A permission (`may`) or a term's definition alone is not a
-  case. Each test is named by its file under `packages/tests/tests/` (`file`)
-  and a string that the file holds (`text`), such as the title of the test,
-  written out in the file, or the name of the fixture that it breaks. The string
-  is looked for in the text of the file, so a title that a test builds at run
-  time cannot name a test.
+  case. Statements about what a tree-walking tool does (its visit order or what
+  it skips), how the specification is written, or whether a parser accepts an
+  input are not tree cases: `checkTree()` receives only the input string and the
+  tree, so no tree can break them. Each test is named by its file under
+  `packages/tests/tests/` (`file`) and a string that the file holds (`text`),
+  such as the title of the test, written out in the file, or the name of the
+  fixture that it breaks. The string is looked for in the text of the file, so a
+  title that a test builds at run time cannot name a test.
 - `not-shown`: why (`reason`), with a `note`. `no-rule`: no rule of
   `checkTree()` is about the condition. `rule-misses-condition`: a rule is about
   it, but a case that breaks a part of it is not reported.
-- `no-condition`: the block states no condition of the tree: it says nothing of
-  the nodes, the fields, the values, the tokens, or the positions. Its `kind`
-  says what it is instead, with a `note`: `introduction` (it introduces the
-  document or a part of it), `pointer` (it points to the document or the section
-  that holds the conditions), or `reason` (it gives the reason of other
-  sentences). A sentence written as an example of a condition is a case of that
-  condition, and a block that mixes a condition with an introduction states a
-  condition.
+- `no-condition`: the block states no condition of the tree for the named
+  diagram types. It says nothing of the nodes, the fields, the values, the
+  tokens, or the positions, or has no case in those diagrams. Its `kind` says
+  why, with a `note`: `introduction` (it introduces the document or a part of
+  it), `pointer` (it points to the document or the section that holds the
+  conditions), `reason` (it gives the reason of other sentences), or
+  `not-in-diagram` (the diagram documents define no node type, field, or token
+  kind that gives the block a case in their trees). For `not-in-diagram`, the
+  `note` names which documents do not define what. The row may remain if a
+  diagram document later defines it, because the new blocks in that document
+  receive judgments of their own. A sentence written as an example of a
+  condition is a case of that condition, and a block that mixes a condition with
+  an introduction states a condition.
 
 The type notation in
 [How fields are described](../../spec/docs/ast.md#how-fields-are-described)
 defines conditions on the fields in the tables. Its blocks are judged as
 conditions, so a change to a type's meaning makes those items read again. Their
 cases distinguish the value kinds and the placement of lists and `null` that the
-notation describes, including a fraction in a `number` field being allowed.
+notation describes.
 
 The command checks every file of the table when it reads it: a file that is not
 JSON, or whose rows are not of this form or name a diagram type that the

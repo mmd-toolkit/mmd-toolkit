@@ -308,15 +308,11 @@
             ]
           },
           {
-            "case": "A number field holds a number and may include a fraction.",
+            "case": "A number field holds a number.",
             "tests": [
               {
                 "file": "check-tree-shared-ast.test.ts",
                 "text": "fails a NumericLiteral value that is a string"
-              },
-              {
-                "file": "check-tree-shared-ast.test.ts",
-                "text": "passes a fractional number and the node and null elements of a parenthesized list"
               }
             ]
           }
@@ -582,9 +578,22 @@
       ],
       "about": "Every node has these fields:",
       "judgment": {
-        "status": "no-condition",
-        "kind": "introduction",
-        "note": "It leads in to the table of the fields of every node below it; the conditions are in those rows, which have rows of their own."
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Every node has a type field.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports Root without its type field"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a node inside the body without its type field"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -688,9 +697,27 @@
       ],
       "about": "Each node type adds its own fields, and a node's child nodes",
       "judgment": {
-        "status": "not-shown",
-        "reason": "rule-misses-condition",
-        "note": "Own fields and child values have shape rules, but checkTree has no rule that checks a tool visiting only child fields in their declared order, or the Child fields / No child fields notation in the specification. Those are properties of a tool or document rather than of the tree passed to checkTree; a malformed current field does not break those conditions."
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Each node type has the fields that its type defines.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a node that lacks a field"
+              }
+            ]
+          },
+          {
+            "case": "A node's child nodes are values of its fields.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child field whose value is a primitive instead of a child node"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -981,9 +1008,18 @@
       ],
       "about": "A child field whose value is a list may have null elements w",
       "judgment": {
-        "status": "not-shown",
-        "reason": "no-rule",
-        "note": "The permission to put null elements in a list is not a condition to break. The condition is that a tool walking the tree skips permitted null elements. checkTree has no rule about another tool visiting those elements. The valid comma-only click list with two null elements passes (passes a fractional number and the node and null elements of a parenthesized list); rejecting a null in a non-nullable list is a different condition and its old test is removed."
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A child list has null elements only where its node type permits them.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a null element in a child list whose type allows no null"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -1499,12 +1535,52 @@
     },
     {
       "block": "packages/spec/docs/ast.md:fee48dbd6f16",
-      "diagrams": ["flowchart", "railroad"],
+      "diagrams": ["flowchart"],
       "about": "| `diagramType` | DiagramType | The diagram type id as merma",
       "judgment": {
         "status": "not-shown",
         "reason": "rule-misses-condition",
-        "note": "The check of the diagram type takes any id of the body type: flowchart-v2, flowchart-elk, or swimlane for a FlowchartDiagram, and railroad, railroadEbnf, railroadAbnf, or railroadPeg for a RailroadDiagram, whatever the header; a tree of the header `flowchart` recorded as flowchart-elk passes."
+        "note": "In the recorded tree of flowchart/spec-flow-singlenode-a5fa3415, whose header is graph, changing diagramType to flowchart-elk returned []; changing it to swimlane also returned []. The id therefore does not always agree with the header."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:fee48dbd6f16",
+      "diagrams": ["railroad"],
+      "about": "| `diagramType` | DiagramType | The diagram type id as merma",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "diagramType is one of the defined DiagramType strings.",
+            "tests": [
+              {
+                "file": "check-tree-fields.test.ts",
+                "text": "Root.diagramType"
+              }
+            ]
+          },
+          {
+            "case": "The diagram type id agrees with the railroad dialect of the header.",
+            "tests": [
+              {
+                "file": "check-tree-railroad.test.ts",
+                "text": "rejects another dialect's node"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports an ABNF header recorded with another railroad diagram type"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports an EBNF header recorded with another railroad diagram type"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a PEG header recorded with another railroad diagram type"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -1666,12 +1742,58 @@
     },
     {
       "block": "packages/spec/docs/ast.md:9905c2c75f77",
-      "diagrams": ["flowchart", "railroad"],
+      "diagrams": ["flowchart"],
       "about": "`diagramType` is the id that [`mermaid.parse()`](https://git",
       "judgment": {
         "status": "not-shown",
         "reason": "rule-misses-condition",
-        "note": "The check of the diagram type takes any id of the body type: flowchart-v2, flowchart-elk, or swimlane for a FlowchartDiagram, and railroad, railroadEbnf, railroadAbnf, or railroadPeg for a RailroadDiagram, whatever the header; a tree of the header `flowchart` recorded as flowchart-elk passes."
+        "note": "In the recorded tree of flowchart/spec-flow-singlenode-a5fa3415, whose header is graph, changing diagramType to flowchart-elk returned []; changing it to swimlane also returned []. The id therefore does not always agree with the header."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:9905c2c75f77",
+      "diagrams": ["railroad"],
+      "about": "`diagramType` is the id that [`mermaid.parse()`](https://git",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The railroad-beta header gives railroad.",
+            "tests": [
+              {
+                "file": "check-tree-railroad.test.ts",
+                "text": "rejects another dialect's node"
+              }
+            ]
+          },
+          {
+            "case": "The railroad-abnf-beta header gives railroadAbnf.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports an ABNF header recorded with another railroad diagram type"
+              }
+            ]
+          },
+          {
+            "case": "The railroad-ebnf-beta header gives railroadEbnf.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports an EBNF header recorded with another railroad diagram type"
+              }
+            ]
+          },
+          {
+            "case": "The railroad-peg-beta header gives railroadPeg.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a PEG header recorded with another railroad diagram type"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -1994,46 +2116,428 @@
     },
     {
       "block": "packages/spec/docs/ast.md:1350f7746f11",
+      "diagrams": ["agentflow"],
+      "about": "Text that the author writes but that the diagram does not re",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Unread text with no effect is a leaf node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child node added to an unread-text leaf"
+              }
+            ]
+          },
+          {
+            "case": "Unread text with no effect has the unread-text type its diagram defines.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "gram-click-erased-after-href"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:1350f7746f11",
+      "diagrams": ["architecture"],
+      "about": "Text that the author writes but that the diagram does not re",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Unread text with no effect is a leaf node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child node added to an unread-text leaf"
+              }
+            ]
+          },
+          {
+            "case": "Unread text with no effect has the unread-text type its diagram defines.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "detect-retained-bare-ascii"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:1350f7746f11",
+      "diagrams": ["cynefin"],
+      "about": "Text that the author writes but that the diagram does not re",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Unread text with no effect is a leaf node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child node added to an unread-text leaf"
+              }
+            ]
+          },
+          {
+            "case": "Unread text with no effect has the unread-text type its diagram defines.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "detect-block-after-directive"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:1350f7746f11",
+      "diagrams": ["eventmodeling"],
+      "about": "Text that the author writes but that the diagram does not re",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Unread text with no effect is a leaf node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child node added to an unread-text leaf"
+              }
+            ]
+          },
+          {
+            "case": "Unread text with no effect has the unread-text type its diagram defines.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "comment-line-inside-hidden-directive"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:1350f7746f11",
+      "diagrams": ["gitgraph"],
+      "about": "Text that the author writes but that the diagram does not re",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Unread text with no effect is a leaf node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child node added to an unread-text leaf"
+              }
+            ]
+          },
+          {
+            "case": "Unread text with no effect has the unread-text type its diagram defines.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "db-state-common-forms-preserve-head"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:1350f7746f11",
+      "diagrams": ["info"],
+      "about": "Text that the author writes but that the diagram does not re",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Unread text with no effect is a leaf node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child node added to an unread-text leaf"
+              }
+            ]
+          },
+          {
+            "case": "Unread text with no effect has the unread-text type its diagram defines.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "detect-block-after-real-frontmatter"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:1350f7746f11",
+      "diagrams": ["packet"],
+      "about": "Text that the author writes but that the diagram does not re",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Unread text with no effect is a leaf node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child node added to an unread-text leaf"
+              }
+            ]
+          },
+          {
+            "case": "Unread text with no effect has the unread-text type its diagram defines.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "c4-hidden-suffix-lf"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:1350f7746f11",
+      "diagrams": ["pie"],
+      "about": "Text that the author writes but that the diagram does not re",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Unread text with no effect is a leaf node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child node added to an unread-text leaf"
+              }
+            ]
+          },
+          {
+            "case": "Unread text with no effect has the unread-text type its diagram defines.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "lex-preheader-retained-yaml-bare-then-directive-ascii"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:1350f7746f11",
+      "diagrams": ["radar"],
+      "about": "Text that the author writes but that the diagram does not re",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Unread text with no effect is a leaf node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child node added to an unread-text leaf"
+              }
+            ]
+          },
+          {
+            "case": "Unread text with no effect has the unread-text type its diagram defines.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "detect-retained-indent-open-native"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:1350f7746f11",
+      "diagrams": ["railroad"],
+      "about": "Text that the author writes but that the diagram does not re",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Unread text with no effect is a leaf node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child node added to an unread-text leaf"
+              }
+            ]
+          },
+          {
+            "case": "Unread text with no effect has the unread-text type its diagram defines.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "abnf-frontmatter-retained"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:1350f7746f11",
+      "diagrams": ["requirement"],
+      "about": "Text that the author writes but that the diagram does not re",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Unread text with no effect is a leaf node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child node added to an unread-text leaf"
+              }
+            ]
+          },
+          {
+            "case": "Unread text with no effect has the unread-text type its diagram defines.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "gram-empty-description-block-after-brace"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:1350f7746f11",
+      "diagrams": ["treeview"],
+      "about": "Text that the author writes but that the diagram does not re",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Unread text with no effect is a leaf node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child node added to an unread-text leaf"
+              }
+            ]
+          },
+          {
+            "case": "Unread text with no effect has the unread-text type its diagram defines.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "ast-annotation-prefixes"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:1350f7746f11",
+      "diagrams": ["venn"],
+      "about": "Text that the author writes but that the diagram does not re",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Unread text with no effect is a leaf node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child node added to an unread-text leaf"
+              }
+            ]
+          },
+          {
+            "case": "Unread text with no effect has the unread-text type its diagram defines.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "db-grid-comment-header-line"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:1350f7746f11",
+      "diagrams": ["wardley"],
+      "about": "Text that the author writes but that the diagram does not re",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Unread text with no effect is a leaf node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child node added to an unread-text leaf"
+              }
+            ]
+          },
+          {
+            "case": "Unread text with no effect has the unread-text type its diagram defines.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "detect-block-after-frontmatter"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:1350f7746f11",
+      "diagrams": ["class", "er", "flowchart", "journey", "sequence", "state"],
+      "about": "Text that the author writes but that the diagram does not re",
+      "judgment": {
+        "status": "not-shown",
+        "reason": "rule-misses-condition",
+        "note": "Replacing an unread-text node by its ordinary literal type, keeping its written value, range, location and tokens, returned [] in class/db-direction-then-comment (ClassIgnoredText to ClassLiteral), er/db-direction-line-text-after (ErIgnoredText to ErLiteral), flowchart/db-subgraph-dir-after-nested-end-ignored-semicolon (FlowchartIgnoredText to FlowchartLiteral), journey/db-task-extra-colon (JourneyIgnoredText to JourneyLiteral), sequence/db-ignored-line-after-wrapped-message (SequenceIgnoredStatement to SequenceLiteral), state/db-composite-id-terminal-after-empty-string (StateIgnoredText to StateLiteral), and state/gram-state-empty-string-after-name (StateIgnoredStatement to StateLiteral). The leaf type is therefore not always that of unread text."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:1350f7746f11",
       "diagrams": [
-        "agentflow",
-        "architecture",
         "block",
         "c4",
-        "class",
-        "cynefin",
-        "er",
-        "eventmodeling",
-        "flowchart",
         "gantt",
-        "gitgraph",
-        "info",
         "ishikawa",
-        "journey",
         "kanban",
         "mindmap",
-        "packet",
-        "pie",
         "quadrant",
-        "radar",
-        "railroad",
-        "requirement",
         "sankey",
-        "sequence",
-        "state",
         "timeline",
         "treemap",
-        "treeview",
         "usecase",
-        "venn",
-        "wardley",
         "xychart",
         "error"
       ],
       "about": "Text that the author writes but that the diagram does not re",
       "judgment": {
-        "status": "not-shown",
-        "reason": "rule-misses-condition",
-        "note": "Authored unread text has a leaf node and its shape is checked, but checkTree has no rule deciding whether the parser must accept such text before proposing a rejection as a known divergence. It receives an already-built tree and never compares parser acceptance or the reason for rejection. Replacing the leaf by a string only breaks its field shape, not those acceptance conditions."
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "The diagram documents packages/spec/docs/ast/block.md, packages/spec/docs/ast/c4.md, packages/spec/docs/ast/gantt.md, packages/spec/docs/ast/ishikawa.md, packages/spec/docs/ast/kanban.md, packages/spec/docs/ast/mindmap.md, packages/spec/docs/ast/quadrant.md, packages/spec/docs/ast/sankey.md, packages/spec/docs/ast/timeline.md, packages/spec/docs/ast/treemap.md, packages/spec/docs/ast/usecase.md and packages/spec/docs/ast/xychart.md define no diagram-specific leaf type for unread body text. packages/spec/docs/ast.md, ErrorDiagram, defines no child fields and no other fields, so the error body has no such text type either. These trees therefore have no case that breaks this block's condition."
       }
     },
     {
@@ -2756,41 +3260,7 @@
     },
     {
       "block": "packages/spec/docs/ast.md:2b0429e3030e",
-      "diagrams": [
-        "agentflow",
-        "architecture",
-        "block",
-        "c4",
-        "class",
-        "cynefin",
-        "er",
-        "eventmodeling",
-        "flowchart",
-        "gantt",
-        "gitgraph",
-        "info",
-        "ishikawa",
-        "journey",
-        "kanban",
-        "mindmap",
-        "packet",
-        "pie",
-        "quadrant",
-        "radar",
-        "railroad",
-        "requirement",
-        "sankey",
-        "sequence",
-        "state",
-        "timeline",
-        "treemap",
-        "treeview",
-        "usecase",
-        "venn",
-        "wardley",
-        "xychart",
-        "error"
-      ],
+      "diagrams": ["treemap"],
       "about": "At a treemap leaf value, the position permits digits, unders",
       "judgment": {
         "status": "shown",
@@ -2861,13 +3331,56 @@
                 "text": "fails a treemap raw value with its unread suffix omitted"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:2b0429e3030e",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "At a treemap leaf value, the position permits digits, unders",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "Other diagram numeric grammars retain their own definition.",
             "tests": [
               {
                 "file": "check-tree-shared-ast.test.ts",
-                "text": "fails a flowchart NumericLiteral value changed to a fraction"
+                "text": "reports a flowchart number read with treemap comma handling"
               }
             ]
           }

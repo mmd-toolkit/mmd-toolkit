@@ -383,6 +383,52 @@ describe("checkTree: every kind of positioned record carries range and loc", () 
 })
 
 describe("checkTree: the missing cases of positions.md", () => {
+  for (const [name, field, inBody, problem] of [
+    [
+      "fails a Root without range",
+      "range",
+      false,
+      { where: "the tree", message: "is no node: it has no type and no range" },
+    ],
+    [
+      "fails a Root without loc",
+      "loc",
+      false,
+      { where: "Root at 0-37", message: "has a loc that is no location" },
+    ],
+    [
+      "fails a node in the body without range",
+      "range",
+      true,
+      {
+        where: "SequenceMessageStatement at 16-25",
+        message: "the field from is object, not a node",
+      },
+    ],
+    [
+      "fails a node in the body without loc",
+      "loc",
+      true,
+      {
+        where: "SequenceIdentifier at 16-17",
+        message: "has a loc that is no location",
+      },
+    ],
+  ] as const) {
+    it(name, () => {
+      const { input, tree } = recordedTree(
+        "sequence",
+        "db-message-activate-target",
+      )
+      const broken = copyOf(tree)
+      Reflect.deleteProperty(
+        inBody ? firstNode(broken, "SequenceIdentifier") : broken,
+        field,
+      )
+      expect(checkTree(input, broken)).toEqual([problem])
+    })
+  }
+
   it("fails a root whose start offset is not zero", () => {
     const text = " error"
     const root = handMadeRoot(text, { tokens: [["RawText", "error"]] })

@@ -36,7 +36,7 @@ export type NotShownReason =
   /** A rule is about the condition, but a case that breaks a part of it is not reported. */
   | "rule-misses-condition"
 
-/** What a block that states no condition of the tree is instead. */
+/** Why a block states no condition of the tree for the named diagram types. */
 export type NoConditionKind =
   /** It introduces the document or a part of it. */
   | "introduction"
@@ -44,6 +44,8 @@ export type NoConditionKind =
   | "pointer"
   /** It gives the reason of other sentences. */
   | "reason"
+  /** The diagram documents define no node type, field or token kind that gives the block a case in their trees. */
+  | "not-in-diagram"
 
 /** The judgment of a block for some diagram types. */
 export type CoverageJudgment =
@@ -61,7 +63,7 @@ export type CoverageJudgment =
   | {
       readonly status: "no-condition"
       readonly kind: NoConditionKind
-      /** Why the block says nothing about nodes, fields, values, tokens or positions. */
+      /** Why the block has no tree condition for these diagrams; for not-in-diagram, which documents lack which definitions. */
       readonly note: string
     }
 
@@ -130,10 +132,11 @@ function judgmentProblem(judgment: unknown): string | undefined {
     case "no-condition":
       return (judgment.kind === "introduction" ||
         judgment.kind === "pointer" ||
-        judgment.kind === "reason") &&
+        judgment.kind === "reason" ||
+        judgment.kind === "not-in-diagram") &&
         typeof judgment.note === "string"
         ? undefined
-        : "states no condition without a kind (introduction, pointer or reason) and a note"
+        : "states no condition without a kind (introduction, pointer, reason or not-in-diagram) and a note"
     default:
       return "has a status other than shown, not-shown and no-condition"
   }

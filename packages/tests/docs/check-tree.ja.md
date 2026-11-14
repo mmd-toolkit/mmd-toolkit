@@ -2520,8 +2520,13 @@ flowchart では 3 つにも。sequence、class、state、ER の断片は、
 場所とメッセージを正確に報告することを求め、
 fixture の元の木に問題がないことも求めます。
 `String` を `StringFragment` のトークンに、
-`RawText` を `RawText` のトークンに切った木は、ディレクティブでも `;` でも、
-複数の図種で、問題がまったくないことを求めます。
+`RawText` を `RawText` のトークンにディレクティブで切った木は、複数の図種で、
+問題がまったくないことを求めます。
+行の規則が無視する `;` には、
+`common/entity-css-in-string-label` と
+`common/entity-css-semicolon-between-declarations` の記録した木を使います。
+それぞれ `StringFragment` と `RawText` のトークンを持ち、
+問題がないことを求めます。
 同じファイルは、`:::` の断片の連続に、切れ目が前に `)`、後ろに `(`、
 または両方をつないだ木を手で作り、
 `:::` の連続の問題が 1 つだけあることを求めます。

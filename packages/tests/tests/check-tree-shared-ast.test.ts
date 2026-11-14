@@ -1977,3 +1977,246 @@ describe("checkTree: cases named by the shared AST conditions", () => {
     })
   })
 })
+
+describe("checkTree: the fields of a node", () => {
+  const { input, tree } = recordedTree(
+    "flowchart",
+    "spec-flow-singlenode-a5fa3415",
+  )
+
+  it("reports Root without its type field", () => {
+    const broken = copyOf(tree)
+    Reflect.deleteProperty(broken, "type")
+    expect(checkTree(input, broken)).toEqual([
+      { where: "the tree", message: "is no node: it has no type and no range" },
+    ])
+  })
+
+  it("reports a node inside the body without its type field", () => {
+    const broken = copyOf(tree)
+    Reflect.deleteProperty(
+      firstNode(broken, "FlowchartVertexStatement"),
+      "type",
+    )
+    expect(checkTree(input, broken)).toEqual([
+      {
+        where: "FlowchartDiagram at 0-11.body[0]",
+        message: "is no node: it has no type and no range",
+      },
+    ])
+  })
+
+  it("reports a null element in a child list whose type allows no null", () => {
+    const broken = copyOf(tree)
+    setField(broken.body, "body", [null])
+    expect(checkTree(input, broken)).toEqual([
+      {
+        where: "FlowchartDiagram at 0-11.body[0]",
+        message: "is no node: it has no type and no range",
+      },
+    ])
+  })
+
+  it("reports a child field whose value is a primitive instead of a child node", () => {
+    const broken = copyOf(tree)
+    setField(firstNode(broken, "FlowchartVertexStatement"), "first", "A")
+    expect(checkTree(input, broken)).toEqual([
+      {
+        where: "FlowchartVertexStatement at 9-10",
+        message: "the field first is string, not a node",
+      },
+    ])
+  })
+})
+
+describe("checkTree: another diagram's number read as a treemap number", () => {
+  it("reports a flowchart number read with treemap comma handling", () => {
+    const { input, tree } = recordedTree(
+      "flowchart",
+      "db-linkstyle-shared-fill",
+    )
+    const text = input.replace("0,1", "1,2")
+    const node = firstNode(tree, "NumericLiteral")
+    setField(node, "raw", "1,2")
+    setField(node, "value", 12)
+    setField(node, "range", [35, 38])
+    setField(node, "loc", locationOf(text, [35, 38]))
+    setField(firstNode(tree, "FlowchartLinkStyleStatement"), "indices", [node])
+    const first = tree.tokens.findIndex((token) => token.type === "Numeric")
+    tree.tokens.splice(first, 3, {
+      type: "Numeric",
+      value: "1,2",
+      range: [35, 38],
+      loc: locationOf(text, [35, 38]),
+    })
+    expect(checkTree(text, tree)).toEqual([
+      {
+        where: "NumericLiteral at 35-38",
+        message:
+          "value is not the number that its written text writes: 12, not NaN",
+      },
+    ])
+  })
+})
+
+describe("checkTree: unread text keeps the leaf type of its diagram", () => {
+  it("reports a child node added to an unread-text leaf", () => {
+    const { input, tree } = recordedTree(
+      "flowchart",
+      "db-subgraph-dir-after-nested-end-ignored-semicolon",
+    )
+    const node = firstNode(tree, "FlowchartIgnoredText")
+    setField(node, "children", [{ ...node }])
+    expect(checkTree(input, tree)).toEqual([
+      {
+        where: "FlowchartIgnoredText at 54-64",
+        message: "has the field children, which its type does not have",
+      },
+    ])
+  })
+
+  for (const [diagram, fixture, type, literal, field] of [
+    [
+      "agentflow",
+      "gram-click-erased-after-href",
+      "AgentflowIgnoredText",
+      "AgentflowLiteral",
+      "textBeforeUrl",
+    ],
+    [
+      "architecture",
+      "detect-retained-bare-ascii",
+      "ArchitectureIgnoredText",
+      "ArchitectureLiteral",
+      "textBeforeHeader",
+    ],
+    [
+      "cynefin",
+      "detect-block-after-directive",
+      "CynefinIgnoredText",
+      "CynefinLiteral",
+      "textBeforeHeader",
+    ],
+    [
+      "eventmodeling",
+      "comment-line-inside-hidden-directive",
+      "EventmodelingIgnoredText",
+      "EventmodelingLiteral",
+      "textBeforeHeader",
+    ],
+    [
+      "gitgraph",
+      "db-state-common-forms-preserve-head",
+      "GitgraphIgnoredText",
+      "GitgraphLiteral",
+      "body",
+    ],
+    [
+      "info",
+      "detect-block-after-real-frontmatter",
+      "InfoIgnoredText",
+      "InfoLiteral",
+      "textBeforeHeader",
+    ],
+    [
+      "packet",
+      "c4-hidden-suffix-lf",
+      "PacketIgnoredText",
+      "PacketLiteral",
+      "textAfter",
+    ],
+    [
+      "pie",
+      "lex-preheader-retained-yaml-bare-then-directive-ascii",
+      "PieIgnoredText",
+      "PieLiteral",
+      "textBeforeHeader",
+    ],
+    [
+      "radar",
+      "detect-retained-indent-open-native",
+      "RadarIgnoredText",
+      "RadarLiteral",
+      "textBeforeHeader",
+    ],
+    [
+      "railroad",
+      "abnf-frontmatter-retained",
+      "RailroadIgnoredText",
+      "RailroadLiteral",
+      "textBeforeHeader",
+    ],
+    [
+      "requirement",
+      "gram-empty-description-block-after-brace",
+      "RequirementIgnoredText",
+      "RequirementLiteral",
+      "body",
+    ],
+    [
+      "treeview",
+      "ast-annotation-prefixes",
+      "TreeviewIgnoredText",
+      "TreeviewLiteral",
+      "textBefore",
+    ],
+    [
+      "venn",
+      "db-grid-comment-header-line",
+      "VennIgnoredText",
+      "VennLiteral",
+      "body",
+    ],
+    [
+      "wardley",
+      "detect-block-after-frontmatter",
+      "WardleyIgnoredText",
+      "WardleyLiteral",
+      "textBeforeHeader",
+    ],
+  ] as const) {
+    it(`reports ${diagram} unread text represented by an ordinary literal`, () => {
+      const { input, tree } = recordedTree(diagram, fixture)
+      const node = firstNode(tree, type)
+      setField(node, "type", literal)
+      Reflect.deleteProperty(node, "kind")
+      expect(
+        checkTree(input, tree).map((problem) => problem.message),
+      ).toContainEqual(
+        expect.stringContaining(
+          `the field ${field} holds a ${literal}, not a `,
+        ),
+      )
+    })
+  }
+})
+
+describe("checkTree: railroad diagram type agrees with its dialect header", () => {
+  it("reports an ABNF header recorded with another railroad diagram type", () => {
+    const { input, tree } = recordedTree("railroad", "abnf-bare-unicode")
+    setField(tree, "diagramType", "railroadPeg")
+    expect(checkTree(input, tree).map((problem) => problem.message)).toContain(
+      "the diagram owns exactly its dialect's complete lowercase header",
+    )
+  })
+  it("reports an EBNF header recorded with another railroad diagram type", () => {
+    const { input, tree } = recordedTree(
+      "railroad",
+      "db-acc-descr-block-two-lines-before-statement",
+    )
+    setField(tree, "diagramType", "railroadPeg")
+    expect(checkTree(input, tree).map((problem) => problem.message)).toContain(
+      "the diagram owns exactly its dialect's complete lowercase header",
+    )
+  })
+  it("reports a PEG header recorded with another railroad diagram type", () => {
+    const { input, tree } = recordedTree(
+      "railroad",
+      "lex-peg-acc-descr-block-line-separator-then-comment-line",
+    )
+    setField(tree, "diagramType", "railroad")
+    expect(checkTree(input, tree).map((problem) => problem.message)).toContain(
+      "the diagram owns exactly its dialect's complete lowercase header",
+    )
+  })
+})

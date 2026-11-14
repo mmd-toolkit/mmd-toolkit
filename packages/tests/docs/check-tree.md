@@ -2234,45 +2234,49 @@ into `String` tokens, each cut by a directive or by a `;`. For each, the test
 requires the check to report the problems of the condition that the case names,
 with their exact places and messages, and requires the unedited tree of the
 fixture to have none. A `String` cut into `StringFragment` tokens and a
-`RawText` cut into `RawText` tokens, by a directive and by a `;` and in several
-diagrams, are required to have no problem at all. The same file makes, by hand,
-the trees of a run of `Punctuator` fragments of `:::` that cuts attach a `)` to
-before it, a `(` after it, or both, and requires the one problem for the run of
-`:::`; and a `)` and a `(` that a cut separates are required to have none.
-`tests/check-tree-keywords.test.ts` requires the table of the `Keyword` texts to
-be the words of the row of each diagram and the texts of the units that the row
-names without their text, and to hold every `Keyword` token of a recorded tree,
-and it makes, by hand, the trees of two, three, and four `Keyword` fragments.
-`tests/check-tree-punctuators.test.ts` requires the table of the texts of the
-`Punctuator` tokens, and the table of the shapes, to agree with the documents,
-and, on a tree made by hand, the check of a `Punctuator` text that its diagram
-does not have, in each diagram. `tests/check-tree-flowchart.test.ts` requires
-the directions of the flowchart header that the check knows to be those of the
-rule of the specification. `tests/check-tree-cut-whitespace.test.ts` takes, from
-a named fixture each, a `RawText` or `StringFragment` token next to a cut and
-takes the whitespace off its side that touches the cut, one case for each side
-(before the cut, after it), each kind of cut (a directive, a comment region, a
-`;` that the line rule ignores), and each kind of token (`RawText`,
-`StringFragment`), and requires the check to report the tree with the message of
-its value (the texts of the tokens joined are not the written text). For an
-ignored text it has a case for a directive and one for a comment region, with
-the message that the whitespace next to a cut lies in no token. For a value that
-a comment region after a U+2028 or a U+2029 cuts, it has a case for a title of a
-gantt diagram, a backquoted name of a class diagram, and an icon text of an
-architecture diagram (with a U+2029), each taking the separator off the end of
-the fragment before the region, with the message of the value. It also makes,
-from one recorded tree each, the two negative cases of the other exceptions: a
-token that starts with whitespace in a value that began before it, where the
-token before it does not touch it, and a token of whitespace that ends with
-whitespace in the middle of a value, where no token follows it. The check must
-report each with its message. `tests/check-tree-node-types.test.ts` requires the
-tables of node types of the check to classify the node types that the tree
-documents of the specification define, and no others. `tests/check-tree.test.ts`
-and `tests/check-tree-*.test.ts` break a tree, one condition at a time, and
-require the check to report it. The conditions that every tree satisfies
-(positions, the placement of every character, the order of the tokens, the cuts,
-the comments, the directives, and the frontmatter) are broken mostly on
-hand-made trees (`check-tree.test.ts`, `check-tree-comments.test.ts`,
+`RawText` cut into `RawText` tokens by a directive, in several diagrams, are
+required to have no problem at all. For the `;` that the line rule ignores, the
+recorded trees of `common/entity-css-in-string-label` and
+`common/entity-css-semicolon-between-declarations`, with `StringFragment` and
+`RawText` tokens respectively, are required to have no problem. The same file
+makes, by hand, the trees of a run of `Punctuator` fragments of `:::` that cuts
+attach a `)` to before it, a `(` after it, or both, and requires the one problem
+for the run of `:::`; and a `)` and a `(` that a cut separates are required to
+have none. `tests/check-tree-keywords.test.ts` requires the table of the
+`Keyword` texts to be the words of the row of each diagram and the texts of the
+units that the row names without their text, and to hold every `Keyword` token
+of a recorded tree, and it makes, by hand, the trees of two, three, and four
+`Keyword` fragments. `tests/check-tree-punctuators.test.ts` requires the table
+of the texts of the `Punctuator` tokens, and the table of the shapes, to agree
+with the documents, and, on a tree made by hand, the check of a `Punctuator`
+text that its diagram does not have, in each diagram.
+`tests/check-tree-flowchart.test.ts` requires the directions of the flowchart
+header that the check knows to be those of the rule of the specification.
+`tests/check-tree-cut-whitespace.test.ts` takes, from a named fixture each, a
+`RawText` or `StringFragment` token next to a cut and takes the whitespace off
+its side that touches the cut, one case for each side (before the cut, after
+it), each kind of cut (a directive, a comment region, a `;` that the line rule
+ignores), and each kind of token (`RawText`, `StringFragment`), and requires the
+check to report the tree with the message of its value (the texts of the tokens
+joined are not the written text). For an ignored text it has a case for a
+directive and one for a comment region, with the message that the whitespace
+next to a cut lies in no token. For a value that a comment region after a U+2028
+or a U+2029 cuts, it has a case for a title of a gantt diagram, a backquoted
+name of a class diagram, and an icon text of an architecture diagram (with a
+U+2029), each taking the separator off the end of the fragment before the
+region, with the message of the value. It also makes, from one recorded tree
+each, the two negative cases of the other exceptions: a token that starts with
+whitespace in a value that began before it, where the token before it does not
+touch it, and a token of whitespace that ends with whitespace in the middle of a
+value, where no token follows it. The check must report each with its message.
+`tests/check-tree-node-types.test.ts` requires the tables of node types of the
+check to classify the node types that the tree documents of the specification
+define, and no others. `tests/check-tree.test.ts` and
+`tests/check-tree-*.test.ts` break a tree, one condition at a time, and require
+the check to report it. The conditions that every tree satisfies (positions, the
+placement of every character, the order of the tokens, the cuts, the comments,
+the directives, and the frontmatter) are broken mostly on hand-made trees
+(`check-tree.test.ts`, `check-tree-comments.test.ts`,
 `check-tree-cut-units.test.ts`). The form of a tree, its fields and values, the
 whitespace at the ends of tokens, the literals, and the conditions of a diagram
 are broken on recorded trees, those of a diagram on the recorded trees of named

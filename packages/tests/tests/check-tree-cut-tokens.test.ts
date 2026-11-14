@@ -582,7 +582,28 @@ describe("a String that a cut cuts into String tokens", () => {
 })
 
 describe("a String or a RawText that a cut cuts", () => {
+  // spec/docs/common.md, `style` and `classDef` lines: the line rule ignores
+  // the last `;` after `style` and `:#` in this label. parser/docs/tokens.md,
+  // Tokens: it cuts a String into StringFragment tokens.
+  it("is not reported when a `;` cuts a String into StringFragment tokens", () => {
+    const { input, tree } = recordedTree("common", "entity-css-in-string-label")
+    expect(checkTree(input, tree)).toEqual([])
+  })
+
+  // spec/docs/common.md, `style` and `classDef` lines: the line rule ignores
+  // the last `;` after `style` and `:#` in this label. parser/docs/tokens.md,
+  // Tokens: it cuts a RawText into RawText tokens.
+  it("is not reported when a `;` cuts a RawText of a flowchart into RawText tokens", () => {
+    const { input, tree } = recordedTree(
+      "common",
+      "entity-css-semicolon-between-declarations",
+    )
+    expect(checkTree(input, tree)).toEqual([])
+  })
+
   expectCases([
+    // parser/docs/tokens.md, A token that a directive cuts: a String may be
+    // cut into StringFragment tokens without changing its value.
     {
       name: "is not reported when a directive cuts a String into StringFragment tokens",
       diagram: "flowchart",
@@ -593,16 +614,8 @@ describe("a String or a RawText that a cut cuts", () => {
       about: [""],
       problems: [],
     },
-    {
-      name: "is not reported when a `;` cuts a String into StringFragment tokens",
-      diagram: "flowchart",
-      fixture: "click-callback-tooltip",
-      token: { type: "String", value: '"Tooltip for A"' },
-      cuts: [{ at: 5, cut: SEMICOLON }],
-      fragments: "StringFragment",
-      about: [""],
-      problems: [],
-    },
+    // parser/docs/tokens.md, A token that a directive cuts: a String may be
+    // cut into StringFragment tokens without changing its value.
     {
       name: "is not reported when a directive cuts the String of a class diagram into StringFragment tokens",
       diagram: "class",
@@ -613,6 +626,8 @@ describe("a String or a RawText that a cut cuts", () => {
       about: [""],
       problems: [],
     },
+    // parser/docs/tokens.md, A token that a directive cuts: a RawText may be
+    // cut into RawText tokens without changing its value.
     {
       name: "is not reported when a directive cuts a RawText of a flowchart into RawText tokens",
       diagram: "flowchart",
@@ -623,16 +638,8 @@ describe("a String or a RawText that a cut cuts", () => {
       about: [""],
       problems: [],
     },
-    {
-      name: "is not reported when a `;` cuts a RawText of a flowchart into RawText tokens",
-      diagram: "flowchart",
-      fixture: "docs-syntax-flowchart-2d81e8b9",
-      token: { type: "RawText", value: "This is the text in the circle" },
-      cuts: [{ at: 3, cut: SEMICOLON }],
-      fragments: "RawText",
-      about: [""],
-      problems: [],
-    },
+    // parser/docs/tokens.md, A token that a directive cuts: a RawText may be
+    // cut into RawText tokens without changing its value.
     {
       name: "is not reported when a directive cuts a RawText of a sequence diagram into RawText tokens",
       diagram: "sequence",
@@ -643,6 +650,8 @@ describe("a String or a RawText that a cut cuts", () => {
       about: [""],
       problems: [],
     },
+    // parser/docs/tokens.md, A token that a directive cuts: a RawText may be
+    // cut into RawText tokens without changing its value.
     {
       name: "is not reported when a directive cuts a RawText of a class diagram into RawText tokens",
       diagram: "class",

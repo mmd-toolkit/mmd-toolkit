@@ -873,9 +873,27 @@
       ],
       "about": "`Root` has these fields besides those of [`ast.md`](../../sp",
       "judgment": {
-        "status": "no-condition",
-        "kind": "introduction",
-        "note": "It leads in to the table of the fields of `Root` below it; the conditions are in those rows, which have rows of their own."
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Root has a comments field",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails Root without its comments field"
+              }
+            ]
+          },
+          {
+            "case": "Root has a tokens field",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails Root without its tokens field"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -1992,9 +2010,18 @@
       ],
       "about": "The frontmatter record has this field besides those of [`ast",
       "judgment": {
-        "status": "no-condition",
-        "kind": "introduction",
-        "note": "It leads in to the table of the field of the frontmatter record below it; the conditions are in those rows, which have rows of their own."
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The frontmatter record has a valueRange field",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails Frontmatter without its valueRange field"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -2203,11 +2230,19 @@
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "fails frontmatter opening indentation included in its token"
+                "text": "fails the line break before the frontmatter body included in the opening token"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "fails blank lines after frontmatter included in the closing token"
+                "text": "fails the indentation before the frontmatter body included in its token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the line break after the frontmatter body included in its token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the indentation after the frontmatter body included in the closing token"
               }
             ]
           },

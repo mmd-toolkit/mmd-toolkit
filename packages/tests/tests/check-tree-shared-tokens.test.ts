@@ -1165,6 +1165,73 @@ describe("checkTree: common/frontmatter-indented (tokens.md)", () => {
     expect(checkTree(input, tree)).toEqual([])
   })
 
+  it("fails Root without its comments field", () => {
+    const broken = copyOf(tree)
+    Reflect.deleteProperty(broken, "comments")
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "Root at 0-45",
+      message: "lacks the field comments",
+    })
+  })
+
+  it("fails Root without its tokens field", () => {
+    const broken = copyOf(tree)
+    Reflect.deleteProperty(broken, "tokens")
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "Root at 0-45",
+      message: "lacks the field tokens",
+    })
+  })
+
+  it("fails Frontmatter without its valueRange field", () => {
+    const broken = copyOf(tree)
+    Reflect.deleteProperty(broken.frontmatter!, "valueRange")
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "Frontmatter at 2-26",
+      message: "lacks the field valueRange",
+    })
+  })
+
+  it("fails the line break before the frontmatter body included in the opening token", () => {
+    const broken = copyOf(tree)
+    extendToken(input, broken.tokens[0], 2, 6)
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "the tokens in the range of the frontmatter",
+      message:
+        'are not the opening delimiter, the body, and the closing delimiter: [["Punctuator",[2,6]],["RawText",[8,20]],["Punctuator",[23,26]]], not [["Punctuator",[2,5]],["RawText",[8,20]],["Punctuator",[23,26]]]',
+    })
+  })
+
+  it("fails the indentation before the frontmatter body included in its token", () => {
+    const broken = copyOf(tree)
+    extendToken(input, broken.tokens[1], 6, 20)
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "the tokens in the range of the frontmatter",
+      message:
+        'are not the opening delimiter, the body, and the closing delimiter: [["Punctuator",[2,5]],["RawText",[6,20]],["Punctuator",[23,26]]], not [["Punctuator",[2,5]],["RawText",[8,20]],["Punctuator",[23,26]]]',
+    })
+  })
+
+  it("fails the line break after the frontmatter body included in its token", () => {
+    const broken = copyOf(tree)
+    extendToken(input, broken.tokens[1], 8, 21)
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "the tokens in the range of the frontmatter",
+      message:
+        'are not the opening delimiter, the body, and the closing delimiter: [["Punctuator",[2,5]],["RawText",[8,21]],["Punctuator",[23,26]]], not [["Punctuator",[2,5]],["RawText",[8,20]],["Punctuator",[23,26]]]',
+    })
+  })
+
+  it("fails the indentation after the frontmatter body included in the closing token", () => {
+    const broken = copyOf(tree)
+    extendToken(input, broken.tokens[2], 21, 26)
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "the tokens in the range of the frontmatter",
+      message:
+        'are not the opening delimiter, the body, and the closing delimiter: [["Punctuator",[2,5]],["RawText",[8,20]],["Punctuator",[21,26]]], not [["Punctuator",[2,5]],["RawText",[8,20]],["Punctuator",[23,26]]]',
+    })
+  })
+
   it("fails frontmatter opening indentation included in its token", () => {
     const broken = copyOf(tree)
     extendToken(input, broken.tokens[0], 0, 5)
