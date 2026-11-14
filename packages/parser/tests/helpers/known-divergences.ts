@@ -272,20 +272,19 @@ function mayBeCut(kind: TokenKind): boolean {
 
 /**
  * common.md, A directive is a token boundary: whether the place `at` of the
- * reference input lies inside a unit that may not be cut, that is, inside
- * the range of a token of `root`, the tree of the reference input, of a
- * kind that may not be cut ({@link mayBeCut}): after its first character
- * and before its last. Such a token is the range of its unit and nothing
- * else: a character that a diagram counts as a character of a name, as
- * U+2028 or U+00A0 in an ER name, is inside it, and whitespace that a unit
- * reads at its start or its end is not (`docs/tokens.md`, Tokens). The tree
- * of the reference input is compared with mermaid.js on its own, so its
- * tokens can be relied on; a token that may not be cut is whole in it, since
- * the parser rejects a tree where a directive or a `;` cuts one, except that
- * a comment region cuts an `Identifier` token into fragments
- * ({@link fragmentsOf}). The fragments are one token: a place after the
- * region and before the next fragment lies inside it too, while a place in
- * the region is read through with it.
+ * reference input lies inside a unit that may not be cut, that is, inside the
+ * range of a token of `root`, the tree of the reference input, of a kind that
+ * may not be cut ({@link mayBeCut}): after its first character and before its
+ * last. Such a token is the range of its unit: in the recorded trees, no token
+ * of such a kind has whitespace at an end other than a character that the
+ * diagram counts as a character of a name, as U+2028, U+2029, or U+00A0 in an
+ * ER or a quadrant name, which lies inside the unit. The tree of the reference
+ * input is compared with mermaid.js on its own, so its tokens can be relied on;
+ * a token that may not be cut is whole in it, since the parser rejects a tree
+ * where a directive or a `;` cuts one, except that a comment region cuts an
+ * `Identifier` token into fragments ({@link fragmentsOf}). The fragments are
+ * one token: a place after the region and before the next fragment lies inside
+ * it too, while a place in the region is read through with it.
  */
 function isInsideTokenThatMayNotBeCut(root: Root, at: number): boolean {
   const insideToken = root.tokens.some(
