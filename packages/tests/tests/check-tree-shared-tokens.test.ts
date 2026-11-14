@@ -33705,6 +33705,26 @@ it("reports tokens-358b-agentflow-percent-line-in-fragment", () => {
   })
 })
 
+it("reports tokens-631b-sankey-unread-fragment-beside-directive", () => {
+  // A space between a comma and a directive at the start of a field is taken by
+  // the field-text unit but left out of the field (diagrams/sankey.md), so it
+  // is an unread whitespace-only fragment of the value that the directive cuts.
+  const { input, tree } = insertText("sankey", "db-directive-in-field", 9, " ")
+  expect(checkTree(input, tree)).toEqual([])
+  const broken = copyOf(tree)
+  const index = broken.tokens.findIndex((item) => item.range[0] > 9)
+  setField(broken, "tokens", [
+    ...broken.tokens.slice(0, index),
+    tokenOf(input, "RawText", { text: " ", from: 9 }),
+    ...broken.tokens.slice(index),
+  ])
+  expect(checkTree(input, broken)).toContainEqual({
+    where: "RawText at 9-10",
+    message:
+      "starts with whitespace or a line terminator where no value starts",
+  })
+})
+
 it.each(commentCutTokenRangeCases)(
   "reports a broken comment-cut lexical unit in $case",
   (theCase) => {

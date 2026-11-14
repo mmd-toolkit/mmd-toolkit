@@ -27324,15 +27324,6 @@
                 "text": "tokens-review4-read-whitespace-only-ishikawa"
               }
             ]
-          },
-          {
-            "case": "A whitespace-only fragment not read as part of a value beside a directive has no token",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-review4-unread-whitespace-only-ishikawa"
-              }
-            ]
           }
         ]
       }
@@ -27636,11 +27627,11 @@
             ]
           },
           {
-            "case": "A whitespace-only fragment not read as part of a value beside a directive has no token",
+            "case": "A whitespace-only fragment of a value that a directive cuts has no token when mermaid.js does not read it as part of the value.",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-review4-unread-whitespace-only-sankey"
+                "text": "tokens-631b-sankey-unread-fragment-beside-directive"
               }
             ]
           }
