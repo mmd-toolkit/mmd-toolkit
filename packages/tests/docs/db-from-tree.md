@@ -68,17 +68,24 @@ what the text cannot give alone:
 
 A U+2028 or a U+2029 inside a value is a character of it and a comment start, so
 a comment region after it is not in the converted form, and the value goes on
-after the region, for the values of every diagram: the helper reads the range of
-a value and leaves the regions out. `A`, U+2028, `%% c`, a line break, and `B`
-is the value `A`, U+2028, and `B`, whether the value is a string, a text, or a
-description block. [fixture:
+after the region, for the values of every diagram except agentflow and
+eventmodeling: the helper reads the range of a value and leaves the regions out.
+`A`, U+2028, `%% c`, a line break, and `B` is the value `A`, U+2028, and `B`,
+whether the value is a string, a text, or a description block. [fixture:
 flowchart/db-string-line-separator-then-comment-line] [fixture:
 block/db-string-paragraph-separator-then-comment-line] [fixture:
 gantt/db-title-line-separator-then-comment-line] [fixture:
 flowchart/db-square-label-paragraph-separator-then-comment-line] [fixture:
 flowchart/db-acc-descr-block-line-separator-then-comment-line] A diagram
 document says where the summary has no field for such a value, or takes it from
-elsewhere.
+elsewhere. Agentflow and eventmodeling leave the comment regions out of the
+converted form only for a source longer than `maxTextSize`, so at or below it
+the rule above does not apply to them; their documents are
+[db-from-tree/agentflow.md](./db-from-tree/agentflow.md) and
+[db-from-tree/eventmodeling.md](./db-from-tree/eventmodeling.md). In an
+agentflow label, `first`, U+2028, `%% c`, a line break, and `second` is the
+value `first`, U+2028, a line break, and `second`. [fixture:
+agentflow/lex-comment-in-label-after-ls]
 
 Leading whitespace is not read, and the end of the text is one more `\n`. In
 flowchart, the whitespace after a `}` up to its last line feed is one line feed.

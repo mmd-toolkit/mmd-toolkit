@@ -374,7 +374,7 @@ requirements, elements, relationships, and class definitions in the order of the
 lists.
 
 **Comment regions in values.** A comment region after a U+2028 or a U+2029 is
-left out of a value as in every diagram (see
+left out of a value (see
 [The converted form](../db-from-tree.md#the-converted-form)). The summary has no
 field for the text after the direction value, so that fixture records that the
 input is accepted. [fixture:

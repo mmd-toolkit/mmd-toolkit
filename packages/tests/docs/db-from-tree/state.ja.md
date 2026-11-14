@@ -458,7 +458,7 @@ state/db-acc-title-empty-replaces] [fixture: state/db-acc-descr-empty-replaces]
 state/db-acc-descr-empty-block-keeps-then-transition]
 
 **値の中のコメント領域。**
-U+2028 や U+2029 の後のコメント領域は、どの図種でも値から除かれます。
+U+2028 や U+2029 の後のコメント領域は、値から除かれます。
 出典は [変換した形](../db-from-tree.ja.md#変換した形) です。
 要約は方向の値の後のテキストを持ちませんが、領域の後の行 `B` はその一部なので、
 Db に状態 `B` はできず、方向は `LR` です。

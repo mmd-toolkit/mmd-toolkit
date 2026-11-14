@@ -154,7 +154,7 @@ JSON の内部は不透明に保ちます。
    [fixture: usecase/config-security-other]
    [fixture: usecase/config-security-other-root-false]
 10. **値の中のコメント領域。**
-    U+2028 や U+2029 の後のコメント領域は、どの図種でも値から除かれます。
+    U+2028 や U+2029 の後のコメント領域は、値から除かれます。
     出典は [変換した形](../db-from-tree.ja.md#変換した形) です。
     JSON のノードの `value` は、供給された effect から取り、
     `description` プロパティに `A`、U+2028、`B` を持ちます。

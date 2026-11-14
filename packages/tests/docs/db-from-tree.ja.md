@@ -76,7 +76,8 @@ common.md の Where a directive is と Comment lines の規則で、
 
 値の中の U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
 その後のコメント領域は変換した形になく、値は領域の後へ続きます。
-これはどの図種の値でも同じで、補助関数は値の範囲を読み、領域を除くためです。
+これは agentflow と eventmodeling を除くどの図種の値でも同じで、
+補助関数は値の範囲を読み、領域を除くためです。
 `A`、U+2028、`%% c`、改行、`B` は、文字列でも、テキストでも、説明ブロックでも、
 `A`、U+2028、`B` の値になります。
 [fixture: flowchart/db-string-line-separator-then-comment-line]
@@ -85,6 +86,15 @@ common.md の Where a directive is と Comment lines の規則で、
 [fixture: flowchart/db-square-label-paragraph-separator-then-comment-line]
 [fixture: flowchart/db-acc-descr-block-line-separator-then-comment-line]
 そのような値の欄が要約にないとき、またほかから取るときは、図種の文書が述べます。
+agentflow と eventmodeling は、`maxTextSize` より長いソースでだけ、
+コメント領域を変換した形から除くので、
+`maxTextSize` 以下では上の規則は当たりません。
+両図種の文書は、
+[db-from-tree/agentflow.ja.md](./db-from-tree/agentflow.ja.md) と
+[db-from-tree/eventmodeling.ja.md](./db-from-tree/eventmodeling.ja.md) です。
+agentflow のラベルでは、`first`、U+2028、`%% c`、改行、`second` は、`first`、
+U+2028、改行、`second` の値になります。
+[fixture: agentflow/lex-comment-in-label-after-ls]
 
 先頭の空白は読みません。
 テキストの終わりには、`\n` がもう 1 つあります。

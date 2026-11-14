@@ -12,7 +12,7 @@ showInfo、共通の 4 形式、hidden text は Db の欄に寄与しない。
 info/common-all] [fixture: info/common-flag-all]
 [fixture: info/hidden-yaml-body]
 
-U+2028 や U+2029 の後のコメント領域は、どの図種でも値から除かれます。
+U+2028 や U+2029 の後のコメント領域は、値から除かれます。
 出典は [変換した形](../db-from-tree.ja.md#変換した形) です。
 要約はアクセシビリティのタイトルを持たないので、
 領域をまたいで続く `accTitle` の fixture は、

@@ -94,7 +94,7 @@
    [fixture: treeview/config-frontmatter-drawing]
    [fixture: treeview/config-init-drawing]
 7. **値の中のコメント領域。**
-   U+2028 や U+2029 の後のコメント領域は、どの図種でも値から除かれます。
+   U+2028 や U+2029 の後のコメント領域は、値から除かれます。
    出典は [変換した形](../db-from-tree.ja.md#変換した形) です。
    要約には図のタイトルの欄がありませんが、
    領域の後の行 `B` はタイトルの一部なので、Db にノード `B` はできません。

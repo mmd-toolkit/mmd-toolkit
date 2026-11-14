@@ -399,7 +399,7 @@ state/db-acc-title-empty-replaces] [fixture: state/db-acc-descr-empty-replaces]
 state/db-acc-descr-empty-block-keeps-then-transition]
 
 **Comment regions in values.** A comment region after a U+2028 or a U+2029 is
-left out of a value as in every diagram (see
+left out of a value (see
 [The converted form](../db-from-tree.md#the-converted-form)). The summary keeps
 no text after the direction value, but the line `B` after the region is part of
 it, so the Db has no state `B`, and its direction is `LR`. [fixture:

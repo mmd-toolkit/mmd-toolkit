@@ -11,10 +11,10 @@ or effective title is synthesized. [fixture: info/header-lf] [fixture:
 info/header-inline-flag] [fixture: info/common-all] [fixture:
 info/common-flag-all] [fixture: info/hidden-yaml-body]
 
-A comment region after a U+2028 or a U+2029 is left out of a value as in every
-diagram (see [The converted form](../db-from-tree.md#the-converted-form)). The
-summary does not keep the accessibility title, so the fixture of an `accTitle`
-that goes on across a region records that the input is accepted. [fixture:
+A comment region after a U+2028 or a U+2029 is left out of a value (see
+[The converted form](../db-from-tree.md#the-converted-form)). The summary does
+not keep the accessibility title, so the fixture of an `accTitle` that goes on
+across a region records that the input is accepted. [fixture:
 info/lex-acc-title-line-separator-then-comment-line]
 
 Frontmatter and directives still supply shared embedded values, but the info
