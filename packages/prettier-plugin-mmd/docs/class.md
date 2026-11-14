@@ -1275,17 +1275,34 @@ then formats as a line without that `;`, including its usual style spacing.
 lines and comment lines keep their usual layout around the statement. [fixture:
 semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines] Member
 semicolons stay: they are outside style statements. [fixture:
-semicolons-at-the-end-of-a-style-statement/member-semicolons-kept]
+semicolons-at-the-end-of-a-style-statement/member-semicolons-kept] A statement
+that follows an empty description block on its line is no exception: mermaid.js
+reads no token for the block (see
+[Empty description blocks](#empty-description-blocks)), so the line rule ignores
+the `;` of `accDescr {} style A fill:#f00;` as it does on a line of its own, and
+the `;` is dropped. Kept, it would stand after a `fill: #f00` that the line rule
+no longer matches, and mermaid.js would read it as a character of the value or
+reject it. [fixture:
+semicolons-at-the-end-of-a-style-statement/style-after-empty-block-terminator-dropped]
+[fixture:
+semicolons-at-the-end-of-a-style-statement/classdef-after-empty-block-terminator-dropped]
+[fixture:
+semicolons-at-the-end-of-a-style-statement/style-after-empty-block-tab-before-terminator-dropped]
+[fixture:
+semicolons-at-the-end-of-a-style-statement/style-after-empty-block-directive-before-terminator]
+[fixture:
+semicolons-at-the-end-of-a-style-statement/style-after-member-and-two-empty-blocks-terminator-dropped]
 
 A directive after the semicolon on the same line keeps the `;`. [fixture:
-semicolons-at-the-end-of-a-style-statement/trailing-items-kept] Following `%%`
-text on the same line also keeps it; here it is part of the style. [fixture:
-semicolons-at-the-end-of-a-style-statement/trailing-items-kept] An ignored `;`
-beside another `;` is kept to preserve the line rule's selection. [fixture:
-semicolons-at-the-end-of-a-style-statement/adjacent-semicolons-kept] A `;` after
-an unclosed directive stays, preserving its stopping boundary. [fixture:
-semicolons-at-the-end-of-a-style-statement/unclosed-directive-kept] The same
-protection applies before U+2028 and U+2029; see
+semicolons-at-the-end-of-a-style-statement/trailing-items-kept] [fixture:
+semicolons-at-the-end-of-a-style-statement/style-after-empty-block-directive-after-terminator-kept]
+Following `%%` text on the same line also keeps it; here it is part of the
+style. [fixture: semicolons-at-the-end-of-a-style-statement/trailing-items-kept]
+An ignored `;` beside another `;` is kept to preserve the line rule's selection.
+[fixture: semicolons-at-the-end-of-a-style-statement/adjacent-semicolons-kept] A
+`;` after an unclosed directive stays, preserving its stopping boundary.
+[fixture: semicolons-at-the-end-of-a-style-statement/unclosed-directive-kept]
+The same protection applies before U+2028 and U+2029; see
 [A line that a `;` ends](./compatibility.md#a-line-that-a--ends). [test: style
 semicolons: class before U+2028] [test: style semicolons: class before U+2029] A
 closed directive between the statement and an ignored terminator is kept while
