@@ -142,8 +142,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
   directives and the comment regions (`LineRule` of
   `src/check-tree/line-rule.ts`), so that a comment that covers such a `;` is
   reported whether or not the tree has the token. A comment that a comment
-  region follows on its line is not asked, because the whole comment goes on
-  past the `;` into the region.
+  region cuts is not asked, because the whole comment goes on past the `;` into
+  the region. A mindmap, ishikawa, or kanban comment that a U+2028 or a U+2029
+  ends is not cut by a region on the next line segment, so it is asked.
 
   [fixture: sequence/tokens-comment-then-ignored-semicolon] [fixture:
   eventmodeling/tokens-comment-line-ignored-semicolon] [fixture:
@@ -2479,7 +2480,11 @@ rule ignores, in each diagram type that has diagram comments and with each of
 their marks, and requires it to be reported, and the comment that ends before
 that `;`, with the `IgnoredSemicolon` token, to be accepted; further cases give
 the line a `classDef` rule, both rules, a second `;`, a directive, a U+2028 or a
-U+2029, and no rule at all, where the `;` is a character of the comment.
+U+2029, and no rule at all, where the `;` is a character of the comment. For a
+mindmap, an ishikawa, and a kanban diagram it also makes the comment that a
+U+2028 or a U+2029 ends before a comment line, which must have the `;` as a
+token, and for a sequence, a state, and a class diagram the comment that such a
+comment line cuts, which must have the `;` inside it.
 `tests/check-tree-sequence.test.ts` and `tests/check-tree-eventmodeling.test.ts`
 do the same with a recorded tree whose token is removed and whose comment is
 made to cover the `;`. `tests/check-tree-cut-tokens.test.ts` is a list of named

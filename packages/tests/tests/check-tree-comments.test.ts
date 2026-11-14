@@ -963,4 +963,62 @@ describe("checkTree: a diagram comment and the `;` that the line rule ignores", 
     )
     expect(says(checkTree(source, root), ENDS_WITH_IGNORED)).toBe(true)
   })
+
+  // parser/docs/tokens.md, Comment: whether a `;` that the line rule ignores
+  // lies inside a diagram comment is decided on the whole comment before a
+  // comment region cuts it. Where a U+2028 or a U+2029 ends the comment
+  // (mindmap, ishikawa, kanban), no region cuts it and no character of the
+  // comment follows the `;`, so the `;` is a token; elsewhere the region cuts
+  // the comment, and the `;` lies inside the fragment before it.
+  for (const bodyType of [
+    "MindmapDiagram",
+    "IshikawaDiagram",
+    "KanbanDiagram",
+  ]) {
+    for (const separator of ["\u2028", "\u2029"]) {
+      it(`reads the \`;\` before a comment line after a ${separator === "\u2028" ? "U+2028" : "U+2029"} as a token in a ${bodyType}, where the separator ends the comment`, () => {
+        const source = `header\nA %% style:#x;${separator}%% r\n`
+        const at = source.indexOf("%% style")
+        const semicolon = source.indexOf(";")
+        const line = source.indexOf("%% r")
+        const lineComment: CommentSpec = { mark: "%%", range: [line, line + 4] }
+        const token: readonly [string, Piece] = [
+          "IgnoredSemicolon",
+          { text: ";", from: semicolon },
+        ]
+        const asToken = treeWith(
+          source,
+          bodyType,
+          [{ mark: "%%", range: [at, semicolon] }, lineComment],
+          [],
+          [token],
+        )
+        expect(checkTree(source, asToken)).toEqual([])
+        const inside = treeWith(source, bodyType, [
+          { mark: "%%", range: [at, semicolon + 1] },
+          lineComment,
+        ])
+        expect(checkTree(source, inside)).toContainEqual({
+          where: `Comment at ${at}-${semicolon + 1}`,
+          message: ENDS_WITH_IGNORED,
+        })
+      })
+    }
+  }
+
+  for (const bodyType of ["SequenceDiagram", "StateDiagram", "ClassDiagram"]) {
+    it(`keeps the \`;\` inside the fragment of a ${bodyType} comment that a comment line after a U+2028 or a U+2029 cuts`, () => {
+      for (const separator of ["\u2028", "\u2029"]) {
+        const source = `header\nA %% style:#x;${separator}%% r\n`
+        const at = source.indexOf("%% style")
+        const semicolon = source.indexOf(";")
+        const line = source.indexOf("%% r")
+        const root = treeWith(source, bodyType, [
+          { mark: "%%", range: [at, semicolon + 1] },
+          { mark: "%%", range: [line, line + 4] },
+        ])
+        expect(checkTree(source, root)).toEqual([])
+      }
+    })
+  }
 })

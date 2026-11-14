@@ -284,6 +284,24 @@ function isLineSegmentEndCode(code: number): boolean {
 }
 
 /**
+ * parser/docs/tokens.md, Comment: a `;` that the line rule ignores and that no
+ * character of the comment follows is a token after the comment, not the end
+ * of it. Reports a comment that ends at `end` with such a `;`.
+ */
+function expectNoIgnoredSemicolonAtEnd(
+  problems: Problems,
+  where: string,
+  lineRule: LineRule,
+  end: number,
+): void {
+  problems.expect(
+    !lineRule.ignores(end - 1),
+    where,
+    "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+  )
+}
+
+/**
  * parser/docs/tokens.md, Comment, and common.md, Comment lines: where the
  * diagram comment `comment` ends. It ends before the line terminator that ends
  * its line, or at the end of the text, with three exceptions: where a directive
@@ -341,15 +359,16 @@ export function checkDiagramCommentEnd(
       where,
       "ends with whitespace before a comment region",
     )
+    // A comment that the region cuts goes on past a `;` in the whole comment,
+    // so the `;` lies inside it. A comment that a U+2028 or a U+2029 ends
+    // (mindmap, ishikawa, kanban) is not cut: the region is on the next line
+    // segment, and no character of the comment follows its last `;`.
+    if (endsComment(text.charCodeAt(end))) {
+      expectNoIgnoredSemicolonAtEnd(problems, where, lineRule, end)
+    }
     return
   }
-  // A `;` that the line rule ignores and that no character of the comment
-  // follows is a token after the comment, not the end of it.
-  problems.expect(
-    !lineRule.ignores(end - 1),
-    where,
-    "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
-  )
+  expectNoIgnoredSemicolonAtEnd(problems, where, lineRule, end)
   const after = ignoredSemicolonStarts.has(end) ? end + 1 : end
   const atLineEnd = after === text.length || endsComment(text.charCodeAt(after))
   problems.expect(atLineEnd, where, "does not end where its line ends")

@@ -158,8 +158,10 @@ const problems: TreeProblem[] = checkTree(text, tree)
   `LineRule`）。
   そのため、そのような `;` を覆うコメントは、
   木にトークンがあってもなくても報告します。
-  コメント領域が同じ行で後に続くコメントは、問いません。
+  コメント領域が切るコメントは、問いません。
   コメント全体が `;` の先の領域まで続くからです。
+  mindmap 図、ishikawa 図、kanban 図で U+2028 や U+2029 が終わらせるコメントは、
+  次の行の区間にあるコメント領域に切られないので、問います。
 
   [fixture: sequence/tokens-comment-then-ignored-semicolon]
   [fixture: eventmodeling/tokens-comment-line-ignored-semicolon]
@@ -2745,6 +2747,11 @@ CRLF、単独の CR、テキストの終わりで終わる木を手で作り、
 そのほかの場合は、行に `classDef` の規則がある、両方の規則がある、
 `;` が 2 つ続く、ディレクティブがある、U+2028 や U+2029 がある、
 規則がまったくなくて `;` がコメントの文字である、です。
+mindmap 図、ishikawa 図、kanban 図では、U+2028 や U+2029 が、
+コメント行の前でコメントを終わらせる木も作り、
+`;` がトークンであることを求めます。
+sequence 図、state 図、class 図では、そのコメント行が切るコメントも作り、
+`;` がその中にあることを求めます。
 `tests/check-tree-sequence.test.ts` と `tests/check-tree-eventmodeling.test.ts`
 は、記録した木からトークンを除き、コメントを `;` まで覆わせて、
 同じことを求めます。
