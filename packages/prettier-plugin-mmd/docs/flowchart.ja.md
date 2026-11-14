@@ -160,6 +160,8 @@ direction 行はそれより前へは届きません。
 どれもこの規則では桁を保ちません。
 
 [fixture: indentation/joined-direction-column-zero]
+[fixture: indentation/joined-direction-end-of-text]
+[fixture: indentation/swimlane-joined-direction-end-of-text]
 [fixture: indentation/swimlane-joined-direction-column-zero]
 [fixture: indentation/joined-direction-separators-and-trivia]
 [fixture: indentation/unclosed-directive-before-direction]

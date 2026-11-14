@@ -1080,6 +1080,7 @@ Mermaidは順に試す方向の選択肢と、その選択肢内の最後の出�
 説明は空になるためです（[字下げ](./flowchart.ja.md#字下げ)を参照）。
 
 [fixture: direction/joined-direction-column-zero]
+[fixture: direction/joined-direction-end-of-text]
 [fixture: direction/split-direction-after-description]
 [fixture: direction/unclosed-directive-before-direction]
 [test: agentflow direction after a U+2029 and a comment line]

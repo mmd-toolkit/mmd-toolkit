@@ -157,6 +157,8 @@ segment, which the direction line does not reach back over: none of these is
 kept at its column by this rule.
 
 [fixture: indentation/joined-direction-column-zero] [fixture:
+indentation/joined-direction-end-of-text] [fixture:
+indentation/swimlane-joined-direction-end-of-text] [fixture:
 indentation/swimlane-joined-direction-column-zero] [fixture:
 indentation/joined-direction-separators-and-trivia] [fixture:
 indentation/unclosed-directive-before-direction] [fixture:

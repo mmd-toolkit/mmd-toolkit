@@ -4353,6 +4353,9 @@ direction 行はそれより前へは届きません。
 この規則はどれも桁を保ちません。
 
 [fixture: flowchart/indentation/joined-direction-column-zero]
+[fixture: flowchart/indentation/joined-direction-end-of-text]
+[fixture: flowchart/indentation/swimlane-joined-direction-end-of-text]
+[fixture: agentflow/direction/joined-direction-end-of-text]
 [fixture: flowchart/indentation/swimlane-joined-direction-column-zero]
 [fixture: flowchart/indentation/joined-direction-separators-and-trivia]
 [fixture: flowchart/indentation/unclosed-directive-before-direction]

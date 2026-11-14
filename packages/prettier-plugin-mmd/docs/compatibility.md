@@ -4120,6 +4120,9 @@ the direction line does not reach back over: this rule keeps none of these at
 its column.
 
 [fixture: flowchart/indentation/joined-direction-column-zero] [fixture:
+flowchart/indentation/joined-direction-end-of-text] [fixture:
+flowchart/indentation/swimlane-joined-direction-end-of-text] [fixture:
+agentflow/direction/joined-direction-end-of-text] [fixture:
 flowchart/indentation/swimlane-joined-direction-column-zero] [fixture:
 flowchart/indentation/joined-direction-separators-and-trivia] [fixture:
 flowchart/indentation/unclosed-directive-before-direction] [fixture:

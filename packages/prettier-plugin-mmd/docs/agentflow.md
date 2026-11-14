@@ -1038,6 +1038,7 @@ would take the block with it and the description would be empty (see
 [Indentation](./flowchart.md#indentation)).
 
 [fixture: direction/joined-direction-column-zero] [fixture:
+direction/joined-direction-end-of-text] [fixture:
 direction/split-direction-after-description] [fixture:
 direction/unclosed-directive-before-direction] [test: agentflow direction after
 a U+2029 and a comment line]
