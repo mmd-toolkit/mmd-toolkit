@@ -167,14 +167,27 @@ everything after every change.
   it distinguishes and for each other rule that meets it at the place it names,
   as [the Principles of AGENTS.md](../../../AGENTS.md#principles) list them. The
   fixtures are written with the sentence, checked against mermaid.js once, and
-  cited by the sentence (`[fixture: ...]`). A failure found anywhere is closed
-  by a fixture in the corpus (or a formatting fixture) and by the sentence that
-  was missing. An input kept only in a list inside a package is not kept.
-  Products of places and strings are not written: a product repeats one rule as
-  many times as it has contexts and names no question; the cases of a sentence
-  are finite and each is named. No input of a test or a review is chosen by a
-  random source or by a number (a seed, a count, a sample). `Math.random` is
-  reported by the lint; a hand-written generator is caught in review.
+  cited by the sentence (`[fixture: ...]`). The inputs that the collector takes
+  from mermaid.js, the fixtures whose `expected.json` has a `source` of `kind`
+  `mermaid`, are the exception: they are taken in bulk and not written with a
+  sentence, so no sentence needs to cite them; one that a sentence cites is read
+  against that sentence like any other fixture. How they are collected and named
+  is in
+  [the section Inputs taken from mermaid of maintaining-fixtures.md](../../../packages/tests/docs/maintaining-fixtures.md#inputs-taken-from-mermaid).
+  A failure found anywhere is closed by a fixture in the corpus (or a formatting
+  fixture) and by the sentence that was missing. An input kept only in a list
+  inside a package is not kept. A set of inputs that puts each of a list of
+  strings at each of a list of places is written only where the sentence that
+  cites it names each of those places and each of those strings, as cases that
+  it distinguishes or as other rules that meet it at the places it names. The
+  grids of [db-summaries.md](../../../packages/tests/docs/db-summaries.md) are
+  such sets. A product over places or strings that no sentence names, such as
+  places taken from the inputs of the corpus, is not written: it repeats one
+  rule as many times as it has contexts and names no question. The cases of a
+  sentence are finite and each is named. No input of a test or a review is
+  chosen by a random source or by a number (a seed, a count, a sample).
+  `Math.random` is reported by the lint; a hand-written generator is caught in
+  review.
 - A result already reported for the same state of the tree is not run again; a
   check of another kind (other inputs, another method) is.
 - The report says what was run and what was not.
