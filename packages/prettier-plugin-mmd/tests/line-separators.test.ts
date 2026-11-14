@@ -2299,7 +2299,7 @@ const erExamples: readonly (readonly [string, string, string])[] = [
   [
     "an empty attribute block with an empty line before its closing brace, of an entity that follows a name that a comment line cuts, and a comment line after U+2028 after its closing brace",
     "erDiagram\nA\u2028%% c\nBar Zed {\n\n}\u2028%% d\nQux\n",
-    "erDiagram\n  A\u2028%% c\nBar Zed {\n\n  }\u2028%% d\nQux\n",
+    "erDiagram\n  A\u2028%% c\nBar Zed {\n  }\u2028%% d\nQux\n",
   ],
   [
     "an attribute block of an entity that follows a name that a comment line cuts, and a comment line after U+2028 at the end of the text",

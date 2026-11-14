@@ -135,15 +135,19 @@ mermaid.js が拒否します。
 文は書かれたままにします。
 ただし `}` の前の同じ行に空白とタブだけがあれば、`}` は実体の字下げに置きます。
 `{` の行を、その行の文と一緒に書かれたまま印字するときも、
-`}` は同じ位置に置きます。
+ブロックは同じに印字します。
 行の印字については
 [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照してください。
-文のほかの部分は、`{` の後ろの空白や波括弧の間の空行も含めて、書かれたままです。
+`}` は実体の字下げに置き、波括弧の間に空白とタブと改行だけがあれば、
+`{` の後ろの空白と、波括弧の間の空行は、ほかの所と同じく落とします。
 行を書かれたままにしているのは、行の規則が無視する `;` と、
-その後ろの U+2028 か U+2029 の位置です。
-後の行にある `}` の前の空白は、行の規則が読む文には入りません。
+その後ろの U+2028 か U+2029 の位置、または行が読まれる位置です。
+行末の `{` の後ろ、波括弧の間、後の行にある `}` の前の空白は、
+そのどれにも入りません。
 `"style:#x"; B {`、U+2029、改行、空白 4 つ、`} A["x;y"]` は、
 `}` を実体の字下げ（空白 2 つ）の後ろに置いて印字します。
+`1a B {`、空白 2 つ、改行 2 つ、`} A["x;y"]` は、`1a B {`、改行、
+`} A["x;y"]` に印字します。
 [fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-both-lines]
 [fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-closing-line-ends]
 [fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-in-subgraph]
@@ -176,9 +180,9 @@ mermaid.js が拒否します。
 [test: an empty ER attribute block that stays over several lines with U+2028 after its opening brace, after a tilde in an attribute block, in a subgraph]
 `}` が、書かれたまま残る行にあるブロックは、`A {`、改行、`}1b` のように、
 属性があれば、その行と一緒に書かれたままにします。
-空のブロックは、上と同じく `}` を実体の字下げに置き、
-行の残りは書かれたままにします。
+空のブロックは、上と同じに印字します。
 [fixture: attribute-blocks/written-line-empty-block-closing-brace-on-a-line-read-by-its-place]
+[fixture: attribute-blocks/written-line-empty-block-spaces-and-empty-line-dropped-on-a-line-read-by-its-place]
 `;` を含み、ほかに書かれたまま残る理由がない行は整形します。
 空の description ブロックがある subgraph の見出しの行も、
 テキストを `:` に寄せると `direction` を持つ `accTitle` と `accDescr` の行も、

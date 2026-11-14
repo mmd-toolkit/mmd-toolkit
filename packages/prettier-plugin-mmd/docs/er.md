@@ -127,16 +127,19 @@ ends its line and empty lines between the braces draw nothing, and the joined
 form `{ }` drops them too. Where a whitespace character that is no space or tab
 (a U+00A0 or a U+2028, say) stands between the braces, the statement stays as
 written, except that the `}` stands at the indentation of the entity where only
-spaces and tabs precede it on its line. The `}` stands there also where the line
-of the `{` is printed as written with its statements on it (see
-[A line that a `;` ends](./compatibility.md#a-line-that-a--ends)), and the rest
-of the text stays as written, the spaces after the `{` and the empty lines
-between the braces included: the place of the `;` that the line rule ignores and
-of the U+2028 or U+2029 after it is what keeps the line as written, and the
-whitespace before a `}` on a later line is no part of the text that the line
-rule reads. `"style:#x"; B {`, U+2029, a line break, four spaces, and
-`} A["x;y"]` are printed with the `}` after the two spaces of the entity.
-[fixture:
+spaces and tabs precede it on its line. The block is printed so also where the
+line of the `{` is printed as written with its statements on it (see
+[A line that a `;` ends](./compatibility.md#a-line-that-a--ends)): the `}`
+stands at the indentation of the entity, and where only spaces, tabs, and line
+feeds stand between the braces, the spaces after the `{` and the empty lines
+between the braces are dropped as everywhere else, since what keeps such a line
+as written is the place of the `;` that the line rule ignores and of the U+2028
+or U+2029 after it, or the place where the line is read, and the whitespace
+after a `{` that ends its line, between the braces, and before a `}` on a later
+line is no part of any of them. `"style:#x"; B {`, U+2029, a line break, four
+spaces, and `} A["x;y"]` are printed with the `}` after the two spaces of the
+entity, and `1a B {`, two spaces, two line breaks, and `} A["x;y"]` are printed
+`1a B {`, a line break, and `} A["x;y"]` with the `}` there. [fixture:
 attribute-blocks/written-line-empty-block-ignored-semicolon-both-lines]
 [fixture:
 attribute-blocks/written-line-empty-block-ignored-semicolon-closing-line-ends]
@@ -191,10 +194,11 @@ after its opening brace, after a tilde in an attribute block] [test: an empty ER
 attribute block that stays over several lines with U+2028 after its opening
 brace, after a tilde in an attribute block, in a subgraph] A block whose `}`
 stands on a line that stays as written, as in `A {`, a line break, and `}1b`,
-stays as written with that line when it holds attributes; an empty block has its
-`}` at the indentation of the entity, as above, and the rest of the line stays
-as written. [fixture:
+stays as written with that line when it holds attributes; an empty block is
+printed as above. [fixture:
 attribute-blocks/written-line-empty-block-closing-brace-on-a-line-read-by-its-place]
+[fixture:
+attribute-blocks/written-line-empty-block-spaces-and-empty-line-dropped-on-a-line-read-by-its-place]
 A line that holds a `;` and stays as written for no other reason is formatted,
 and so is the line of a subgraph header that holds an empty description block
 and the line of an `accTitle` or `accDescr` whose text goes to the `:` and then

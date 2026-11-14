@@ -30,7 +30,7 @@ import {
 import {
   classifyErStatement,
   findAttributeBraces,
-  findEmptyBlockClosingIndentation,
+  findEmptyBlockClosingGap,
   findSubgraphHeaderEnd,
   hasAttributeBlock,
   isBlockAfterJoinedLine,
@@ -51,7 +51,6 @@ import {
   findTokenEndingBefore,
   findTokenStartingAt,
   findTriviaAt,
-  isSpaceOrTab,
   isWhitespace,
   skipRemoved,
 } from "./source.ts"
@@ -333,26 +332,14 @@ function printEmptyBlockOverLines(
   statement: ErEntityStatement,
   depth: number,
 ): Doc {
-  const { opening, closing } = findAttributeBraces(source, statement)
-  const between = source.text.slice(opening.range[1], closing.range[0])
-  if (
-    [...between].every(
-      (character) => isSpaceOrTab(character) || character === "\n",
-    )
-  ) {
-    return [
-      printAsWritten(source, statement.range[0], opening.range[1]),
-      literalline,
-      indentationOf(options, depth),
-      closing.value,
-    ]
-  }
-  const indentation = findEmptyBlockClosingIndentation(source, statement)
-  if (indentation === null) {
+  const gap = findEmptyBlockClosingGap(source, statement)
+  if (gap === null) {
     return printAsWritten(source, statement.range[0], statement.range[1])
   }
+  const { closing } = findAttributeBraces(source, statement)
   return [
-    printAsWritten(source, statement.range[0], indentation[0]),
+    printAsWritten(source, statement.range[0], gap.range[0]),
+    gap.startsWithLineBreak ? literalline : "",
     indentationOf(options, depth),
     closing.value,
   ]
@@ -399,9 +386,10 @@ function startsBlockAfterJoinedLine(
  * hold lines of their own, and no statement is dropped. A comment line is
  * the only comment of the diagram, and it takes no line break after it, so
  * no line of only whitespace is kept after one (docs/er.md, Comments). Where
- * a stretch is printed as written, the `}` of an empty attribute block stands
- * at `indentation`, the indentation of the statements of the block, as it does
- * where the statement is printed on its own (docs/er.md, Attribute blocks).
+ * a stretch is printed as written, an empty attribute block uses the same
+ * closing gap as where the statement is printed on its own, with the `}` at
+ * `indentation`, the indentation of the statements of the block (docs/er.md,
+ * Attribute blocks).
  */
 function statementBlockRules(
   source: Source,
@@ -412,8 +400,15 @@ function statementBlockRules(
     printedEnd: (statement) => printedErEnd(source, statement),
     writtenReplacements: (statement) => {
       if (statement.type !== "ErEntityStatement") return []
-      const range = findEmptyBlockClosingIndentation(source, statement)
-      return range === null ? [] : [{ range, text: indentation }]
+      const gap = findEmptyBlockClosingGap(source, statement)
+      return gap === null
+        ? []
+        : [
+            {
+              range: gap.range,
+              text: (gap.startsWithLineBreak ? "\n" : "") + indentation,
+            },
+          ]
     },
     // An ignored `;` after `end` still needs the line's `style` and `:#`
     // trigger (diagrams/er.md, The statement context; docs/er.md,

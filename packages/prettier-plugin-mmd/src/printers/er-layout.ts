@@ -218,15 +218,18 @@ export function isEmptyAttributeBlock(
 }
 
 /**
- * The spaces and tabs before the `}` on its line in an empty attribute block
- * over several lines, or null when another character precedes it. Replacing
- * only this range aligns the `}` with the entity while keeping the rest as
- * written (docs/er.md, Attribute blocks).
+ * The range before the `}` of an empty attribute block over several lines,
+ * and whether its replacement starts with a line break. Spaces, tabs, and line
+ * feeds between the braces become one line break: trailing whitespace and
+ * empty lines do not decide why a stretch stays as written. Otherwise only
+ * spaces and tabs before the `}` on its line are replaced, or null when another
+ * character precedes it. Replacing this range aligns the `}` with the entity
+ * (docs/er.md, Attribute blocks).
  */
-export function findEmptyBlockClosingIndentation(
+export function findEmptyBlockClosingGap(
   source: Source,
   statement: ErEntityStatement,
-): Range | null {
+): { readonly range: Range; readonly startsWithLineBreak: boolean } | null {
   if (
     !hasAttributeBlock(source, statement) ||
     !isEmptyAttributeBlock(source, statement)
@@ -235,9 +238,22 @@ export function findEmptyBlockClosingIndentation(
   }
   const { opening, closing } = findAttributeBraces(source, statement)
   const between = source.text.slice(opening.range[1], closing.range[0])
+  if (
+    [...between].every(
+      (character) => isSpaceOrTab(character) || character === "\n",
+    )
+  ) {
+    return {
+      range: [opening.range[1], closing.range[0]],
+      startsWithLineBreak: true,
+    }
+  }
   const indentation = between.slice(between.lastIndexOf("\n") + 1)
   return [...indentation].every(isSpaceOrTab)
-    ? [closing.range[0] - indentation.length, closing.range[0]]
+    ? {
+        range: [closing.range[0] - indentation.length, closing.range[0]],
+        startsWithLineBreak: false,
+      }
     : null
 }
 
