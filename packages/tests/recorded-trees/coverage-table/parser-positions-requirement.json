@@ -35,6 +35,179 @@
           }
         ]
       }
+    },
+    {
+      "block": "packages/parser/docs/positions/requirement.md:d6fcf8334092",
+      "diagrams": ["requirement"],
+      "about": "This document defines the ranges of the nodes of the diagram type in the tree\nth",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It introduces the position document of the diagram type and points to positions.md, the tree document, and the token document."
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions/requirement.md:b9fb30ee52e4",
+      "diagrams": ["requirement"],
+      "about": "The ranges of the nodes of this diagram type, besides the rules of\n[positions.md",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It introduces the list of the ranges of the nodes of the diagram type."
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions/requirement.md:d68c89bb37b0",
+      "diagrams": ["requirement"],
+      "about": "The range is that of the node in `Root.body` of every diagram (see\n[Node ranges]",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The range of the RequirementDiagram is that of the node in `Root.body`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a requirement diagram that ends before its last token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions/requirement.md:e66aedfdc595",
+      "diagrams": ["requirement"],
+      "about": "An `unquoted-text` unit reads the whitespace after it on its line, which its\ntok",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A field that ends with an `unquoted-text` unit ends at its last character that is not whitespace.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a field that runs over the spaces after its value"
+              },
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a field whose range covers the whitespace after its value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions/requirement.md:b2849b77022e",
+      "diagrams": ["requirement"],
+      "about": "The range runs from `class` to the last class, also where the statement goes on\n",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A class statement runs from `class` to the last class, also on the next line.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a class statement that ends at the end of its first line"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions/requirement.md:8252c71fbc56",
+      "diagrams": ["requirement"],
+      "about": "The range is that of the tokens of the node, and the value is the written text\no",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The value is the written text of the range.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a text that is not its written text"
+              }
+            ]
+          },
+          {
+            "case": "An unquoted name covers its characters without the whitespace after them.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a name that runs over the spaces after it"
+              }
+            ]
+          },
+          {
+            "case": "An accessibility text covers its text without the whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "an accessibility title whose range covers the whitespace after its text"
+              }
+            ]
+          },
+          {
+            "case": "A style covers its units from the first to the last.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a style that ends before its last unit"
+              }
+            ]
+          },
+          {
+            "case": "The value of a style leaves out the spaces between its units.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a style whose value holds the spaces between its units"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions/requirement.md:038d90981885",
+      "diagrams": ["requirement"],
+      "about": "The text of a direction line covers it without the whitespace at its ends:\n`foo ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The text of a direction line covers it without the whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a text before a direction that runs over the space after it"
+              }
+            ]
+          },
+          {
+            "case": "An empty description block in a body covers it from `accDescr` to `}`, also over several lines.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an empty description block in a body that ends before its `}`"
+              }
+            ]
+          },
+          {
+            "case": "Its value leaves out a comment line inside it.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an empty description block in a body whose value holds the comment line inside it"
+              }
+            ]
+          }
+        ]
+      }
     }
   ]
 }

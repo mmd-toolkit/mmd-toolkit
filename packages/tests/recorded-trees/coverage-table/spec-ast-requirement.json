@@ -257,6 +257,2365 @@
           }
         ]
       }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:2f3aa57fed1c",
+      "diagrams": ["requirement"],
+      "about": "This document defines the nodes of the tree for the diagram type `requirement`.\n",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It introduces the document and points to ast.md and to the syntax document."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:3ada376cf56f",
+      "diagrams": ["requirement"],
+      "about": "The body of this diagram type is a [RequirementDiagram](#requirementdiagram).\nTh",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The body is a RequirementDiagram.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the body of a requirement diagram as a PieDiagram"
+              }
+            ]
+          },
+          {
+            "case": "A value keeps what the author wrote, not the converted form.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the text of an accessibility title in the converted form"
+              }
+            ]
+          },
+          {
+            "case": "An unquoted name or value leaves the whitespace after it out of its written text.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a name that ends with whitespace"
+              },
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a text that ends with whitespace"
+              }
+            ]
+          },
+          {
+            "case": "A value starts with whitespace only inside quotes.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a name that starts with whitespace"
+              },
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a text that starts with whitespace"
+              }
+            ]
+          },
+          {
+            "case": "A StringLiteral is always closed.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a string that is not closed"
+              }
+            ]
+          },
+          {
+            "case": "A StringLiteral is never empty.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a string that is empty"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:3936ff9dd234",
+      "diagrams": ["requirement"],
+      "about": "A **requirement** is a box of the diagram with an id, a text, a risk, and a\nveri",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It says what a requirement, an element, and a relationship are in the drawing; the node sections state the conditions."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:331861366365",
+      "diagrams": ["requirement"],
+      "about": "| `body` | list of RequirementStatement | The statements, in source order. |\n\nCh",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`body` is a list of nodes.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a list that is a string, and a value of another type"
+              }
+            ]
+          },
+          {
+            "case": "Each item is a RequirementStatement.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a field among the statements of a requirement diagram"
+              }
+            ]
+          },
+          {
+            "case": "The statements are in source order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails a list that is not in source order"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:b1beabe20ac0",
+      "diagrams": ["requirement"],
+      "about": "Child fields: `body`. The header keyword is not a field.\n\n**RequirementStatement",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The child field `body` holds child nodes.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child field whose value is a primitive instead of a child node"
+              }
+            ]
+          },
+          {
+            "case": "The header keyword is not a field.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a field that the type does not have"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:6749d779b448",
+      "diagrams": ["requirement"],
+      "about": "**RequirementStatement** is a RequirementRequirementStatement,\nRequirementElemen",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A RequirementStatement is one of the listed node types.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a field among the statements of a requirement diagram"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:9fa91fa1979b",
+      "diagrams": ["requirement"],
+      "about": "A line break belongs to no statement, and an empty line makes no node. The child",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A line break belongs to no statement.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a relationship whose range covers the line feed after it"
+              }
+            ]
+          },
+          {
+            "case": "An empty line makes no node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a node for an empty line of a requirement diagram"
+              }
+            ]
+          },
+          {
+            "case": "The child fields of every node are in source order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails child fields that are not in source order"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:f12fb5025029",
+      "diagrams": ["requirement"],
+      "about": "A requirement with its body: `requirement r {`, the fields on their lines, and\n`",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It gives examples of a requirement statement; the table and the sentences after it state the conditions."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:adefca7eeaaa",
+      "diagrams": ["requirement"],
+      "about": "| `requirementType` | string                                                    ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`requirementType` is a string.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a list that is a string, and a value of another type"
+              }
+            ]
+          },
+          {
+            "case": "It is one of the kinds of requirement.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a kind of requirement that is not in the form of the names of the kinds"
+              }
+            ]
+          },
+          {
+            "case": "It is the kind that was written.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a kind of requirement that is another than its keyword"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:92dd6a22b0f9",
+      "diagrams": ["requirement"],
+      "about": "| `name`            | RequirementIdentifier or StringLiteral                    ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`name` is a node, never null.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a required node that is null"
+              }
+            ]
+          },
+          {
+            "case": "It is a RequirementIdentifier or a StringLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "the name of a requirement as a RequirementLiteral"
+              }
+            ]
+          },
+          {
+            "case": "It is the name of the requirement.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a requirement whose name is its class"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:73add28ece36",
+      "diagrams": ["requirement"],
+      "about": "| `cssClasses`      | list of (RequirementIdentifier or StringLiteral)          ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`cssClasses` is a list of nodes.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a list that is a string, and a value of another type"
+              }
+            ]
+          },
+          {
+            "case": "Each class is a RequirementIdentifier or a StringLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a class after the `:::` of a requirement as an Identifier"
+              }
+            ]
+          },
+          {
+            "case": "The classes are those after `:::`.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a requirement without its `:::`"
+              }
+            ]
+          },
+          {
+            "case": "The classes are separated by `,` units.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a requirement without the comma between its classes"
+              }
+            ]
+          },
+          {
+            "case": "The classes are in source order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails a list that is not in source order"
+              }
+            ]
+          },
+          {
+            "case": "The list is empty when there is no `:::`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a class of a requirement without `:::`"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:9843c060fbaf",
+      "diagrams": ["requirement"],
+      "about": "| `body`            | list of (RequirementValueField, RequirementRiskField, Requ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`body` is a list of nodes.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a list that is a string, and a value of another type"
+              }
+            ]
+          },
+          {
+            "case": "Each item is a RequirementValueField, a RequirementRiskField, a RequirementVerifyMethodField, or a RequirementIgnoredText.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "an item of the body of a requirement that is a RequirementElementField"
+              }
+            ]
+          },
+          {
+            "case": "The items are those between `{` and `}`.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a requirement without its opening brace"
+              }
+            ]
+          },
+          {
+            "case": "The items are in source order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails a list that is not in source order"
+              }
+            ]
+          },
+          {
+            "case": "The list is empty for a body without items.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an item of the body of a requirement that the source does not write"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:3f6466606b59",
+      "diagrams": ["requirement"],
+      "about": "Child fields: `name`, `cssClasses`, `body`. The kind is `requirement`,\n`function",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The child fields are `name`, `cssClasses`, and `body`, in that order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails child fields that are not in source order"
+              }
+            ]
+          },
+          {
+            "case": "The kind is the keyword that starts the statement, in its form among the kinds, whatever the case in which it is written.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a kind of requirement that is not in the form of the names of the kinds"
+              },
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a kind of requirement that is not the keyword that was written"
+              }
+            ]
+          },
+          {
+            "case": "The name is a RequirementIdentifier for an `unquoted-text` unit.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the name of a requirement as an Identifier"
+              }
+            ]
+          },
+          {
+            "case": "The name is a StringLiteral for a `string` unit.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the quoted name of a requirement as a RequirementIdentifier"
+              }
+            ]
+          },
+          {
+            "case": "A class is a RequirementIdentifier for an `unquoted-text` unit.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a class after the `:::` of a requirement as an Identifier"
+              }
+            ]
+          },
+          {
+            "case": "A class is a StringLiteral for a `string` unit.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a quoted class after the `:::` of a requirement as a RequirementIdentifier"
+              }
+            ]
+          },
+          {
+            "case": "A RequirementIgnoredText in `body` is an empty description block.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "an item of a body that is no empty description block"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:5089f77e32e0",
+      "diagrams": ["requirement"],
+      "about": "An `id` or a `text` field of a requirement: `id: 1.2`, `text: \"a: b\"`. Its value",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The value of an `id` or a `text` field is a node.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a required node that is null"
+              }
+            ]
+          },
+          {
+            "case": "`risk` and `verifyMethod` are words, no node.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a field of a node that is of another kind, and reports no more"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:00177ab78c9b",
+      "diagrams": ["requirement"],
+      "about": "| `field` | string                              | `id` or `text`.          |\n| `",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`field` is `id` or `text`.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a field that is not in lower case"
+              }
+            ]
+          },
+          {
+            "case": "It is the field that was written.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a field that is another than its keyword"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:1f46f1293083",
+      "diagrams": ["requirement"],
+      "about": "| `value` | RequirementLiteral or StringLiteral | The value after the `:`. |\n\nCh",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`value` is a node, never null.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a required node that is null"
+              }
+            ]
+          },
+          {
+            "case": "It is a RequirementLiteral or a StringLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "the value of a field as a RequirementIdentifier"
+              }
+            ]
+          },
+          {
+            "case": "It is the value after the `:`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a value field without its colon"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:ad7df4b3ce66",
+      "diagrams": ["requirement"],
+      "about": "Child fields: `value`. The field is the keyword as a word in lower case,\nwhateve",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Its child fields hold child nodes.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child field whose value is a primitive instead of a child node"
+              }
+            ]
+          },
+          {
+            "case": "The field is the keyword in lower case, whatever the case in which it is written.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a field that is not in lower case"
+              }
+            ]
+          },
+          {
+            "case": "The value is a RequirementLiteral for an `unquoted-text` unit.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the unquoted value of a field as a StringLiteral"
+              }
+            ]
+          },
+          {
+            "case": "The value is a StringLiteral for a `string` unit.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the quoted value of a field as a RequirementLiteral"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:c5d7399d7ad5",
+      "diagrams": ["requirement"],
+      "about": "A `risk` field: `risk: high`.\n\n| Field  | Type   | Meaning                     |",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It gives an example of a risk field."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:dd00b34ce9db",
+      "diagrams": ["requirement"],
+      "about": "| `risk` | string | `low`, `medium`, or `high`. |\n\nNo child fields. The risk is ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`risk` is `low`, `medium`, or `high`.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a risk that is not in lower case"
+              }
+            ]
+          },
+          {
+            "case": "It is the risk that was written.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a risk that is another than its keyword"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:f20693515620",
+      "diagrams": ["requirement"],
+      "about": "No child fields. The risk is the keyword in lower case, whatever the case in\nwhi",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "It has no child fields.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a field that the type does not have"
+              }
+            ]
+          },
+          {
+            "case": "The risk is the keyword in lower case, whatever the case in which it is written.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a risk that is not in lower case"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:b2f1a2d99274",
+      "diagrams": ["requirement"],
+      "about": "A `verifyMethod` field: `verifyMethod: test`.\n\n| Field          | Type   | Meani",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It gives an example of a verifyMethod field."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:f08b4fb26e1d",
+      "diagrams": ["requirement"],
+      "about": "| `verifyMethod` | string | `analysis`, `demonstration`, `inspection`, or `test`",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`verifyMethod` is `analysis`, `demonstration`, `inspection`, or `test`.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a verification method that is not in lower case"
+              }
+            ]
+          },
+          {
+            "case": "It is the method that was written.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a verification method that is another than its keyword"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:7f80c00e9fd1",
+      "diagrams": ["requirement"],
+      "about": "No child fields. The method is the keyword in lower case, whatever the case in\nw",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "It has no child fields.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a field that the type does not have"
+              }
+            ]
+          },
+          {
+            "case": "The method is the keyword in lower case, whatever the case in which it is written.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a verification method that is not in lower case"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:98c5776d52c2",
+      "diagrams": ["requirement"],
+      "about": "An element with its body: `element e {`, the fields on their lines, and `}`.\n\n| ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It gives an example of an element statement."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:e023bbcbedf8",
+      "diagrams": ["requirement"],
+      "about": "| `name`       | RequirementIdentifier or StringLiteral                      | T",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`name` is a node, never null.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a required node that is null"
+              }
+            ]
+          },
+          {
+            "case": "It is a RequirementIdentifier or a StringLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the name of an element as an Identifier"
+              }
+            ]
+          },
+          {
+            "case": "It is the name of the element.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "an element whose name is after its classes"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:0255022043d4",
+      "diagrams": ["requirement"],
+      "about": "| `cssClasses` | list of (RequirementIdentifier or StringLiteral)            | T",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`cssClasses` is a list of nodes.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a list that is a string, and a value of another type"
+              }
+            ]
+          },
+          {
+            "case": "Each class is a RequirementIdentifier or a StringLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a class after the `:::` of an element as an Identifier"
+              }
+            ]
+          },
+          {
+            "case": "The classes are those after `:::`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an element without its `:::`"
+              }
+            ]
+          },
+          {
+            "case": "The classes are separated by `,` units.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an element without the comma between its classes"
+              }
+            ]
+          },
+          {
+            "case": "The classes are in source order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails a list that is not in source order"
+              }
+            ]
+          },
+          {
+            "case": "The list is empty when there is no `:::`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a class of an element without `:::`"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:501375d0123b",
+      "diagrams": ["requirement"],
+      "about": "| `body`       | list of (RequirementElementField or RequirementIgnoredText) | T",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`body` is a list of nodes.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a list that is a string, and a value of another type"
+              }
+            ]
+          },
+          {
+            "case": "Each item is a RequirementElementField or a RequirementIgnoredText.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "an item of the body of an element that is a RequirementValueField"
+              }
+            ]
+          },
+          {
+            "case": "The items are those between `{` and `}`.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "an element without its closing brace"
+              }
+            ]
+          },
+          {
+            "case": "The items are in source order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails a list that is not in source order"
+              }
+            ]
+          },
+          {
+            "case": "The list is empty for a body without items.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an item of the body of an element that the source does not write"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:a3dbf7d7bffa",
+      "diagrams": ["requirement"],
+      "about": "Child fields: `name`, `cssClasses`, `body`. They are those of\nRequirementRequire",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The child fields are `name`, `cssClasses`, and `body`, in that order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails child fields that are not in source order"
+              }
+            ]
+          },
+          {
+            "case": "They hold the parts that they hold in RequirementRequirementStatement.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "an element whose name is after its classes"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:f3fe60f2242d",
+      "diagrams": ["requirement"],
+      "about": "A `type` or a `docref` field of an element: `type: simulation`,\n`docRef: \"http:/",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It gives examples of an element field."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:c184c60ee528",
+      "diagrams": ["requirement"],
+      "about": "| `field` | string                              | `type` or `docref`.      |\n| `",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`field` is `type` or `docref`.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "an element field that is none of the two"
+              }
+            ]
+          },
+          {
+            "case": "It is the field that was written.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "an element field that is another than its keyword"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:09fb68456981",
+      "diagrams": ["requirement"],
+      "about": "| `value` | RequirementLiteral or StringLiteral | The value after the `:`. |\n\nCh",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`value` is a node, never null.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a required node that is null"
+              }
+            ]
+          },
+          {
+            "case": "It is a RequirementLiteral or a StringLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the value of an element field as a RequirementIdentifier"
+              }
+            ]
+          },
+          {
+            "case": "It is the value after the `:`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an element field without its colon"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:463990b8926e",
+      "diagrams": ["requirement"],
+      "about": "Child fields: `value`. The field is the keyword in lower case, whatever the case",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Its child fields hold child nodes.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child field whose value is a primitive instead of a child node"
+              }
+            ]
+          },
+          {
+            "case": "The field is the keyword in lower case, whatever the case in which it is written.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the field of an element field in the case in which it is written"
+              }
+            ]
+          },
+          {
+            "case": "The value is a RequirementLiteral for an `unquoted-text` unit, as in RequirementValueField.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the unquoted value of an element field as a StringLiteral"
+              }
+            ]
+          },
+          {
+            "case": "The value is a StringLiteral for a `string` unit, as in RequirementValueField.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the quoted value of an element field as a RequirementLiteral"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:8446b2953845",
+      "diagrams": ["requirement"],
+      "about": "`a - satisfies -> b`, `b <- copies - a`. The names need not be defined.\n\n| Field",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It gives examples of a relationship and allows names that are not defined, which is a permission, not a condition."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:adb87d52a3df",
+      "diagrams": ["requirement"],
+      "about": "| `left`         | RequirementIdentifier or StringLiteral | The name before the ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`left` is a node, never null.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a required node that is null"
+              }
+            ]
+          },
+          {
+            "case": "It is a RequirementIdentifier or a StringLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the first end of a relationship as an Identifier"
+              }
+            ]
+          },
+          {
+            "case": "It is the name before the relationship.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a relationship whose names are swapped"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:4a941f60ac89",
+      "diagrams": ["requirement"],
+      "about": "| `relationship` | string                                 | The kind of relation",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`relationship` is one of the kinds of relationship.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a relationship that is not in lower case"
+              }
+            ]
+          },
+          {
+            "case": "It is the kind that was written.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a relationship that is another than its keyword"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:284c8ebc27c5",
+      "diagrams": ["requirement"],
+      "about": "| `arrow`        | string                                 | `forward` for `- … -",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`arrow` is `forward` or `backward`.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "an arrow that is neither forward nor backward"
+              }
+            ]
+          },
+          {
+            "case": "It is `forward` for `- … ->`.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a forward relationship whose arrow is backward"
+              }
+            ]
+          },
+          {
+            "case": "It is `backward` for `<- … -`.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a backward relationship whose arrow is forward"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:4e3a2aadc24d",
+      "diagrams": ["requirement"],
+      "about": "| `right`        | RequirementIdentifier or StringLiteral | The name after the r",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`right` is a node, never null.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a required node that is null"
+              }
+            ]
+          },
+          {
+            "case": "It is a RequirementIdentifier or a StringLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the second end of a relationship as an Identifier"
+              }
+            ]
+          },
+          {
+            "case": "It is the name after the relationship.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a relationship whose names are swapped"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:3f58100b88a5",
+      "diagrams": ["requirement"],
+      "about": "Child fields: `left`, `right`. The kind is `contains`, `copies`, `derives`,\n`sat",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The child fields are `left` and `right`, in that order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails child fields that are not in source order"
+              }
+            ]
+          },
+          {
+            "case": "The kind is in lower case, whatever the case in which it is written.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a relationship that is not in lower case"
+              }
+            ]
+          },
+          {
+            "case": "The fields keep the order in which the names are written.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a relationship whose names are swapped"
+              }
+            ]
+          },
+          {
+            "case": "`b <- copies - a` is a backward relationship.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a backward relationship whose arrow is forward"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:4cec10fc6015",
+      "diagrams": ["requirement"],
+      "about": "| `textBefore` | RequirementIgnoredText or null | The text of the direction line",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`textBefore` is a RequirementIgnoredText or null.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the text before a direction as a RequirementLiteral"
+              }
+            ]
+          },
+          {
+            "case": "It is the text before `direction` where the line has one.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a direction statement whose text before is null where the source writes it"
+              }
+            ]
+          },
+          {
+            "case": "It is null where there is none.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a direction statement with a text before where the source writes none"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:5f51674b3f86",
+      "diagrams": ["requirement"],
+      "about": "| `direction`  | string                         | `TB`, `BT`, `RL`, or `LR`.    ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`direction` is `TB`, `BT`, `RL`, or `LR`.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a direction that is not in upper case"
+              }
+            ]
+          },
+          {
+            "case": "It is the value that was written.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a direction that is another than its value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:34d20df3f5fa",
+      "diagrams": ["requirement"],
+      "about": "| `textAfter`  | RequirementIgnoredText or null | The text of the direction line",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`textAfter` is a RequirementIgnoredText or null.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the text after a direction as a RequirementLiteral"
+              }
+            ]
+          },
+          {
+            "case": "It is the text after the value where the line has one.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a direction statement whose text after is null where the source writes it"
+              }
+            ]
+          },
+          {
+            "case": "It is null where there is none.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a direction statement with a text after where the source writes none"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:4d1f9914b2b7",
+      "diagrams": ["requirement"],
+      "about": "Child fields: `textBefore`, `textAfter`. The texts are without the whitespace at",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The child fields are `textBefore` and `textAfter`, in that order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails child fields that are not in source order"
+              }
+            ]
+          },
+          {
+            "case": "The texts are without the whitespace at their ends.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a text before a direction that starts with whitespace"
+              }
+            ]
+          },
+          {
+            "case": "A text is null where only whitespace lies there.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a text after a direction that is empty"
+              }
+            ]
+          },
+          {
+            "case": "The direction is the value in upper case.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a direction that is not in upper case"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:a91f4c915336",
+      "diagrams": ["requirement"],
+      "about": "`style r,e fill:#f9f,stroke:#333`.\n\n| Field    | Type                           ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It gives an example of a style statement."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:5d45d22e9e51",
+      "diagrams": ["requirement"],
+      "about": "| `styles` | list of RequirementLiteral            | The styles, separated by `,",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`styles` is a list of nodes.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a list that is a string, and a value of another type"
+              }
+            ]
+          },
+          {
+            "case": "Each style is a RequirementLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a style as a RequirementIdentifier"
+              }
+            ]
+          },
+          {
+            "case": "The styles are separated by `,` units.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a style without the comma between its styles"
+              }
+            ]
+          },
+          {
+            "case": "The styles are in source order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails a list that is not in source order"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:70fccf58e207",
+      "diagrams": ["requirement"],
+      "about": "`classDef a,b fill:#f9f,stroke:#333`.\n\n| Field        | Type                    ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It gives an example of a classDef statement."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:97e1092caad9",
+      "diagrams": ["requirement"],
+      "about": "| `styles`     | list of RequirementLiteral            | The styles, as in Requi",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`styles` is a list of nodes.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a list that is a string, and a value of another type"
+              }
+            ]
+          },
+          {
+            "case": "Each style is a RequirementLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a style of a class definition as a RequirementIdentifier"
+              }
+            ]
+          },
+          {
+            "case": "The styles are separated by `,` units.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a class definition without the comma between its styles"
+              }
+            ]
+          },
+          {
+            "case": "The styles are in source order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails a list that is not in source order"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:27c60548eda7",
+      "diagrams": ["requirement"],
+      "about": "Child fields: `cssClasses`, `styles`. A class name is as a name of\nRequirementSt",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The child fields are `cssClasses` and `styles`, in that order.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a class definition whose styles are before its names"
+              }
+            ]
+          },
+          {
+            "case": "A class name is an Identifier for a `style-word` unit.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a class of a class definition as a RequirementIdentifier"
+              }
+            ]
+          },
+          {
+            "case": "A class name is a StringLiteral for a `string` unit.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a quoted class of a class definition as an Identifier"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:1e1eb002c9db",
+      "diagrams": ["requirement"],
+      "about": "`class r,e a,b`.\n\n| Field        | Type                                         ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It gives an example of a class statement."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:22fee3675e3f",
+      "diagrams": ["requirement"],
+      "about": "| `names`      | list of (RequirementIdentifier or StringLiteral) | The names af",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`names` is a list of nodes.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a list that is a string, and a value of another type"
+              }
+            ]
+          },
+          {
+            "case": "Each name is a RequirementIdentifier or a StringLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a name after `class` as an Identifier"
+              }
+            ]
+          },
+          {
+            "case": "The names are those after `class`, separated by `,` units.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a class statement without the comma between its names"
+              }
+            ]
+          },
+          {
+            "case": "The names are in source order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails a list that is not in source order"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:df90f4078a35",
+      "diagrams": ["requirement"],
+      "about": "| `cssClasses` | list of (RequirementIdentifier or StringLiteral) | The classes,",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`cssClasses` is a list of nodes.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a list that is a string, and a value of another type"
+              }
+            ]
+          },
+          {
+            "case": "Each class is a RequirementIdentifier or a StringLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a class after `class` as an Identifier"
+              }
+            ]
+          },
+          {
+            "case": "The classes are separated by `,` units.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a class statement without the comma between its classes"
+              }
+            ]
+          },
+          {
+            "case": "The classes are in source order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails a list that is not in source order"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:a127c3fe192f",
+      "diagrams": ["requirement"],
+      "about": "Child fields: `names`, `cssClasses`. A name or a class is a\nRequirementIdentifie",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The child fields are `names` and `cssClasses`, in that order.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a class statement whose names are the classes"
+              }
+            ]
+          },
+          {
+            "case": "A name or a class is a RequirementIdentifier for a `style-word` or an `unquoted-text` unit.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a name after `class` as an Identifier"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a class after `class` as an Identifier"
+              }
+            ]
+          },
+          {
+            "case": "A name or a class is a StringLiteral for a `string` unit.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a quoted name after `class` as a RequirementIdentifier"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a quoted class after `class` as a RequirementIdentifier"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:efb62829e3b4",
+      "diagrams": ["requirement"],
+      "about": "A name followed by `:::` and classes: `r:::a,b`. It gives the classes to the\nreq",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It says what a shorthand is written as and what it does in the drawing."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:29c48a639257",
+      "diagrams": ["requirement"],
+      "about": "| `name`       | RequirementIdentifier or StringLiteral           | The name bef",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`name` is a node, never null.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a required node that is null"
+              }
+            ]
+          },
+          {
+            "case": "It is a RequirementIdentifier or a StringLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the name before the `:::` of a shorthand as an Identifier"
+              }
+            ]
+          },
+          {
+            "case": "It is the name before `:::`.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a shorthand without its `:::`"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:894c894e0d0a",
+      "diagrams": ["requirement"],
+      "about": "| `cssClasses` | list of (RequirementIdentifier or StringLiteral) | The classes ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`cssClasses` is a list of nodes.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a list that is a string, and a value of another type"
+              }
+            ]
+          },
+          {
+            "case": "Each class is a RequirementIdentifier or a StringLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a class after the `:::` of a shorthand as an Identifier"
+              }
+            ]
+          },
+          {
+            "case": "The classes are those after `:::`, separated by `,` units.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a shorthand without its `:::`"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a shorthand without the comma between its classes"
+              }
+            ]
+          },
+          {
+            "case": "The classes are in source order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails a list that is not in source order"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:cced6738f6bd",
+      "diagrams": ["requirement"],
+      "about": "Child fields: `name`, `cssClasses`. It is not a RequirementClassStatement,\nbecau",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The child fields are `name` and `cssClasses`, in that order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails child fields that are not in source order"
+              }
+            ]
+          },
+          {
+            "case": "It is not a RequirementClassStatement.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a shorthand as a RequirementClassStatement"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:0efeee470b88",
+      "diagrams": ["requirement"],
+      "about": "An `accTitle:` statement with its text.\n\n| Field   | Type               | Meanin",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It names the statement."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:381a602f0ecd",
+      "diagrams": ["requirement"],
+      "about": "| `value` | RequirementLiteral | The text after `accTitle:`, up to the end of it",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`value` is a RequirementLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the text of an accessibility title as a StringLiteral"
+              }
+            ]
+          },
+          {
+            "case": "It is the text after `accTitle:`, up to the end of its line.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "an accessibility title whose value stops before the end of its line"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:e47ca460b4db",
+      "diagrams": ["requirement"],
+      "about": "Child fields: `value`. The whitespace after the `:` is read with it, line feeds\n",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The text starts on the first line after the `:` that has one.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an accessibility title whose text starts at the line feed after its colon"
+              }
+            ]
+          },
+          {
+            "case": "The value is never null.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an accessibility title without its value"
+              }
+            ]
+          },
+          {
+            "case": "The value is the text without the whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "an accessibility title whose value ends with whitespace"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:c205f61b09ce",
+      "diagrams": ["requirement"],
+      "about": "An `accDescr:` statement with its text.\n\n| Field   | Type               | Meanin",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It names the statement."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:39ff4a4c3771",
+      "diagrams": ["requirement"],
+      "about": "| `value` | RequirementLiteral | The text after `accDescr:`, up to the end of it",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`value` is a RequirementLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the text of an accessibility description as a StringLiteral"
+              }
+            ]
+          },
+          {
+            "case": "It is the text after `accDescr:`, up to the end of its line.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an accessibility description whose value stops before the end of its line"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:ae18c799ff20",
+      "diagrams": ["requirement"],
+      "about": "Child fields: `value`. As for RequirementAccTitleStatement, the value is never\nn",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The value is never null.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an accessibility description without its value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:803fbf85c406",
+      "diagrams": ["requirement"],
+      "about": "An `accDescr { … }` statement with its text, or without text: an empty\ndescripti",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The block is always closed.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a description block without its closing brace"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:80faee21f326",
+      "diagrams": ["requirement"],
+      "about": "| `value` | RequirementLiteral or null | The text between `accDescr {` and `}`, ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`value` is the text between `accDescr {` and `}`.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a description block whose value leaves out text between the braces"
+              },
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a description block whose value is null where text lies between the braces"
+              }
+            ]
+          },
+          {
+            "case": "It is without the whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a description block whose value ends with whitespace"
+              }
+            ]
+          },
+          {
+            "case": "It is null when only whitespace lies between the braces.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an empty description block with a value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:bf87feba4192",
+      "diagrams": ["requirement"],
+      "about": "Child fields: `value`. `accDescr {}` and a block that holds only a directive\nhav",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`accDescr {}` has the value null.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an empty description block with a value"
+              }
+            ]
+          },
+          {
+            "case": "A block that holds only a directive has the value null.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a description block that holds only a directive with a value"
+              }
+            ]
+          },
+          {
+            "case": "Such a block is a statement where a statement starts.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an empty description block of requirement retyped as RequirementAccDescrStatement"
+              }
+            ]
+          },
+          {
+            "case": "Such a block is an item of a body on a line of the body.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an empty description block on a line of a requirement body retyped as RequirementAccDescrBlockStatement"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:a0cb16ba5013",
+      "diagrams": ["requirement"],
+      "about": "| `name` | string | Its written text (see [Nodes](../ast.md#nodes)), whitespace ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`name` is the written text.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a name that is not its written text"
+              }
+            ]
+          },
+          {
+            "case": "The whitespace between its characters is included.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a name that leaves out the whitespace between its words"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:398704be1160",
+      "diagrams": ["requirement"],
+      "about": "No child fields. It is a name node of the diagram, not an\n[Identifier](../ast.md",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "It has no child fields.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a field that the type does not have"
+              }
+            ]
+          },
+          {
+            "case": "`requirement  spaced name  {` is the one name `spaced name`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a name that leaves out the whitespace between its words"
+              }
+            ]
+          },
+          {
+            "case": "`a`, U+00A0, and `b` is one name.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a name that leaves out the U+00A0 between its characters"
+              }
+            ]
+          },
+          {
+            "case": "The whitespace after the name on its line, U+00A0 included, is not part of its written text.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a name that ends with whitespace"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:8838c49ecbef",
+      "diagrams": ["requirement"],
+      "about": "A text without quotes that may contain whitespace: the value of a field, a\nstyle",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It says where a RequirementLiteral stands; the table and the sentences after it state the conditions."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:3900c749f1b4",
+      "diagrams": ["requirement"],
+      "about": "| `value` | string | Its written text (see [Nodes](../ast.md#nodes)); for a styl",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`value` is the written text.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a text that is not its written text"
+              }
+            ]
+          },
+          {
+            "case": "For a style, it is the written texts of its units joined in order.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a style that is not the texts of its units joined"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:1e0bf0c5b3d9",
+      "diagrams": ["requirement"],
+      "about": "No child fields. The value of a field is the written text of its `unquoted-text`",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The value of a field leaves out the whitespace after it.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a text that ends with whitespace"
+              }
+            ]
+          },
+          {
+            "case": "The value of a field keeps the whitespace between its characters.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a value that leaves out the whitespace between its words"
+              }
+            ]
+          },
+          {
+            "case": "The value of a style is the written texts of its units joined, without the spaces between them.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a style that is not the texts of its units joined"
+              }
+            ]
+          },
+          {
+            "case": "`style r fill:red stroke:blue` has the one style `fill:redstroke:blue`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a style without a comma that holds only its first unit"
+              }
+            ]
+          },
+          {
+            "case": "An accessibility text is without the whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "an accessibility title whose value ends with whitespace"
+              }
+            ]
+          },
+          {
+            "case": "An accessibility text never consists of whitespace only.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an accessibility title whose value is whitespace only"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:06df50ff2124",
+      "diagrams": ["requirement"],
+      "about": "Text that the author wrote and mermaid.js does not read: the text before\n`direct",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It says what text a RequirementIgnoredText holds; the sections of the direction statement and of the bodies state the conditions."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:e5812001973f",
+      "diagrams": ["requirement"],
+      "about": "| `value` | string | Its written text (see [ast.md](../ast.md#nodes)). |\n\nNo chi",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`value` is the written text.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a text of a direction line that is not its written text"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:c3dee5324211",
+      "diagrams": ["requirement"],
+      "about": "No child fields. Each empty description block in a body is one node with the\ntex",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "It has no child fields.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a field that the type does not have"
+              }
+            ]
+          },
+          {
+            "case": "Each empty description block in a body is one node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails two empty description blocks of a body held as one node"
+              }
+            ]
+          },
+          {
+            "case": "Its value is the text of the block.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "an item of a body that is no empty description block"
+              }
+            ]
+          },
+          {
+            "case": "It is a node after `{`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an empty description block after `{` left out of the body"
+              }
+            ]
+          },
+          {
+            "case": "It is a node before a field.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an empty description block before a field left out of the body"
+              }
+            ]
+          },
+          {
+            "case": "It is a node after a field whose value is a string.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an empty description block after a field whose value is a string left out of the body"
+              }
+            ]
+          },
+          {
+            "case": "It is a node before `}`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an empty description block before `}` left out of the body"
+              }
+            ]
+          }
+        ]
+      }
     }
   ]
 }

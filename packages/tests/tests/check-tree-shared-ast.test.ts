@@ -11599,6 +11599,27 @@ describe("checkTree: undecoded single-quoted values (ast.md, StringLiteral)", ()
   }
 })
 
+/** The first node of the type `type` for which `holds` is true. */
+function nodeOf(
+  root: CheckedRoot,
+  type: string,
+  holds: (node: CheckedNode) => boolean = () => true,
+): CheckedNode {
+  return nodesOf(root).find((node) => node.type === type && holds(node))!
+}
+
+/** The first node in the field `field` of `owner`, a node or a list of nodes. */
+function firstIn(owner: CheckedNode, field: string): CheckedNode {
+  const value = owner[field] as CheckedNode | CheckedNode[]
+  return Array.isArray(value) ? value[0] : value
+}
+
+/** Whether the field `field` of `node` holds a node or a nonempty list. */
+function holdsNode(node: CheckedNode, field: string): boolean {
+  const value = node[field]
+  return Array.isArray(value) ? value.length > 0 : value !== null
+}
+
 /** Changes the type of the first node in the field `field` of the first node of the type `type` that holds a node there to `to`. */
 function retypeChild(
   type: string,
@@ -11606,22 +11627,159 @@ function retypeChild(
   to: string,
 ): MutationCase["mutate"] {
   return (root) => {
-    const owner = nodesOf(root).find((node) => {
-      const value = node[field]
-      return (
-        node.type === type &&
-        (Array.isArray(value) ? value.length > 0 : value !== null)
-      )
-    })!
-    const value = owner[field] as CheckedNode | CheckedNode[]
-    setField(Array.isArray(value) ? value[0] : value, "type", to)
+    const owner = nodeOf(root, type, (node) => holdsNode(node, field))
+    setField(firstIn(owner, field), "type", to)
   }
 }
 
-describe("checkTree: the names of a requirement diagram (ast/requirement.md)", () => {
-  // RequirementIdentifier: a name written without quotes in each of these
-  // places is a RequirementIdentifier, so an Identifier there is reported.
-  const requirementIdentifierCases: readonly MutationCase[] = [
+/**
+ * Makes the first node in the field `field` of the first node of the type
+ * `type` that holds a node there a node of the type `to`: the fields
+ * `dropped` are taken off it, and `added` are set.
+ */
+function remakeChild(
+  type: string,
+  field: string,
+  to: string,
+  dropped: readonly string[],
+  added: (node: CheckedNode) => Record<string, unknown>,
+): MutationCase["mutate"] {
+  return (root) => {
+    const owner = nodeOf(root, type, (node) => holdsNode(node, field))
+    const node = firstIn(owner, field)
+    const fields = added(node)
+    for (const name of dropped) delete (node as Record<string, unknown>)[name]
+    setField(node, "type", to)
+    for (const [name, value] of Object.entries(fields))
+      setField(node, name, value)
+  }
+}
+
+/** The fields of a StringLiteral that a name node and a RequirementLiteral do not have. */
+const STRING_FIELDS = ["raw", "value", "closed"] as const
+
+/** Takes off the `,` token between the first two nodes of the field `field` of the first node of the type `type` that holds two. */
+function withoutCommaIn(type: string, field: string): MutationCase["mutate"] {
+  return (root) => {
+    const owner = nodeOf(
+      root,
+      type,
+      (node) => (node[field] as CheckedNode[]).length > 1,
+    )
+    const [first, second] = owner[field] as CheckedNode[]
+    setField(
+      root,
+      "tokens",
+      root.tokens.filter(
+        (token) =>
+          !(
+            token.value === "," &&
+            token.range[0] >= first.range[1] &&
+            token.range[1] <= second.range[0]
+          ),
+      ),
+    )
+  }
+}
+
+/** Takes off the tokens with the text `text` inside the first node of the type `type` for which `holds` is true. */
+function withoutTokenIn(
+  type: string,
+  text: string,
+  holds: (node: CheckedNode) => boolean = () => true,
+): MutationCase["mutate"] {
+  return (root) => {
+    const owner = nodeOf(root, type, holds)
+    setField(
+      root,
+      "tokens",
+      root.tokens.filter(
+        (token) =>
+          !(
+            token.value === text &&
+            token.range[0] >= owner.range[0] &&
+            token.range[1] <= owner.range[1]
+          ),
+      ),
+    )
+  }
+}
+
+/** Leaves the RequirementIgnoredText nodes out of the body of the first requirement. */
+function withoutIgnoredTextInBody(root: CheckedRoot): void {
+  const statement = nodeOf(root, "RequirementRequirementStatement")
+  setField(
+    statement,
+    "body",
+    (statement.body as CheckedNode[]).filter(
+      (item) => item.type !== "RequirementIgnoredText",
+    ),
+  )
+}
+
+/** The message of a node whose tokens and child nodes are not in the order of its form. */
+const PARTS =
+  "the tokens that the node writes itself and its child nodes, in source order"
+
+describe("checkTree: the nodes of a requirement diagram (ast/requirement.md)", () => {
+  const requirementCases: readonly MutationCase[] = [
+    // The diagram.
+    {
+      name: "fails the body of a requirement diagram as a PieDiagram",
+      fixture: "header-only",
+      mutate: (root) => {
+        setField(root.body, "type", "PieDiagram")
+        setField(root.body, "showData", false)
+        setField(root.body, "textBeforeHeader", [])
+        setField(root.body, "textBeforeShowData", [])
+      },
+      expected:
+        "Root: the diagram type requirement is not one of those of a PieDiagram: pie",
+    },
+    {
+      name: "fails a field among the statements of a requirement diagram",
+      fixture: "db-requirement-all-fields",
+      mutate: (root) => {
+        const field = nodeOf(root, "RequirementValueField")
+        setField(root.body, "body", [
+          ...(root.body.body as CheckedNode[]),
+          field,
+        ])
+      },
+      expected:
+        "RequirementDiagram at 0-118: the field body holds a RequirementValueField, not a RequirementRequirementStatement",
+    },
+    {
+      name: "fails a node for an empty line of a requirement diagram",
+      fixture: "lex-style-blank-line-after",
+      mutate: (root) => {
+        const body = root.body.body as CheckedNode[]
+        // The empty line between the style and the element, at 54.
+        const node = {
+          type: "RequirementIgnoredText",
+          value: "",
+          range: [54, 54],
+          loc: { start: { line: 5, column: 0 }, end: { line: 5, column: 0 } },
+        } as CheckedNode
+        setField(root.body, "body", [
+          ...body.slice(0, 2),
+          node,
+          ...body.slice(2),
+        ])
+      },
+      expected:
+        "RequirementDiagram at 0-68: the field body holds a RequirementIgnoredText, not a RequirementRequirementStatement",
+    },
+    {
+      name: "fails the text of an accessibility title in the converted form",
+      fixture: "lex-html-attribute-quote-in-acc-title",
+      mutate: (root) => {
+        const value = nodeOf(root, "RequirementLiteral")
+        setField(value, "value", (value.value as string).replaceAll('"', "'"))
+      },
+      expected: "RequirementLiteral at 29-43: value is not its written text",
+    },
+    // RequirementRequirementStatement.
     {
       name: "fails the name of a requirement as an Identifier",
       fixture: "db-requirement-defaults",
@@ -11634,6 +11792,34 @@ describe("checkTree: the names of a requirement diagram (ast/requirement.md)", (
         "the field name holds a Identifier, not a RequirementIdentifier or StringLiteral",
     },
     {
+      name: "fails the quoted name of a requirement as a RequirementIdentifier",
+      fixture: "db-requirement-quoted-values",
+      mutate: remakeChild(
+        "RequirementRequirementStatement",
+        "name",
+        "RequirementIdentifier",
+        STRING_FIELDS,
+        (node) => ({ name: node.value }),
+      ),
+      expected:
+        "RequirementIdentifier at 31-39: the tokens of a RequirementIdentifier in name are not all of the kind RawText: String",
+    },
+    {
+      name: "fails a requirement whose name is its class",
+      fixture: "db-requirement-second-definition-classes",
+      mutate: (root) => {
+        const statement = nodeOf(
+          root,
+          "RequirementRequirementStatement",
+          (node) => holdsNode(node, "cssClasses"),
+        )
+        const [first] = statement.cssClasses as CheckedNode[]
+        setField(statement, "cssClasses", [statement.name])
+        setField(statement, "name", first)
+      },
+      expected: `RequirementRequirementStatement at 57-84: ${PARTS}`,
+    },
+    {
       name: "fails a class after the `:::` of a requirement as an Identifier",
       fixture: "db-requirement-second-definition-classes",
       mutate: retypeChild(
@@ -11644,6 +11830,79 @@ describe("checkTree: the names of a requirement diagram (ast/requirement.md)", (
       expected:
         "the field cssClasses holds a Identifier, not a RequirementIdentifier or StringLiteral",
     },
+    {
+      name: "fails a quoted class after the `:::` of a requirement as a RequirementIdentifier",
+      fixture: "gram-requirement-class-string",
+      mutate: remakeChild(
+        "RequirementRequirementStatement",
+        "cssClasses",
+        "RequirementIdentifier",
+        STRING_FIELDS,
+        (node) => ({ name: node.value }),
+      ),
+      expected:
+        "RequirementIdentifier at 35-40: the tokens of a RequirementIdentifier in cssClasses are not all of the kind RawText: String",
+    },
+    {
+      name: "fails a class of a requirement without `:::`",
+      fixture: "db-requirement-defaults",
+      mutate: (root) => {
+        const statement = nodeOf(root, "RequirementRequirementStatement")
+        setField(statement, "cssClasses", [statement.name])
+      },
+      expected: `RequirementRequirementStatement at 19-36: ${PARTS}`,
+    },
+    {
+      name: "fails an item of the body of a requirement that the source does not write",
+      fixture: "db-requirement-defaults",
+      mutate: (root) => {
+        const statement = nodeOf(root, "RequirementRequirementStatement")
+        // The `}` of the empty body, at 35.
+        setField(statement, "body", [
+          {
+            type: "RequirementIgnoredText",
+            value: "}",
+            range: [35, 36],
+            loc: { start: { line: 3, column: 0 }, end: { line: 3, column: 1 } },
+          },
+        ])
+      },
+      expected: `RequirementRequirementStatement at 19-36: ${PARTS}`,
+    },
+    // RequirementValueField.
+    {
+      name: "fails a value field without its colon",
+      fixture: "db-requirement-all-fields",
+      mutate: withoutTokenIn("RequirementValueField", ":"),
+      expected: `RequirementValueField at 47-54: ${PARTS}`,
+    },
+    {
+      name: "fails the unquoted value of a field as a StringLiteral",
+      fixture: "db-requirement-all-fields",
+      mutate: remakeChild(
+        "RequirementValueField",
+        "value",
+        "StringLiteral",
+        [],
+        (node) => ({ raw: node.value, closed: true }),
+      ),
+      expected:
+        "StringLiteral at 51-54: the tokens of the string are not one String token or StringFragment tokens: RawText",
+    },
+    {
+      name: "fails the quoted value of a field as a RequirementLiteral",
+      fixture: "db-requirement-quoted-values",
+      mutate: remakeChild(
+        "RequirementValueField",
+        "value",
+        "RequirementLiteral",
+        ["raw", "closed"],
+        () => ({}),
+      ),
+      expected:
+        "RequirementLiteral at 48-63: the tokens of a RequirementLiteral are not all of the kind RawText: String",
+    },
+    // RequirementElementStatement and RequirementElementField.
     {
       name: "fails the name of an element as an Identifier",
       fixture: "db-class-shorthand-requirement-and-element",
@@ -11662,6 +11921,109 @@ describe("checkTree: the names of a requirement diagram (ast/requirement.md)", (
       expected:
         "the field cssClasses holds a Identifier, not a RequirementIdentifier or StringLiteral",
     },
+    {
+      name: "fails an element without its `:::`",
+      fixture: "db-element-definition-again-with-class",
+      mutate: withoutTokenIn("RequirementElementStatement", ":::", (node) =>
+        holdsNode(node, "cssClasses"),
+      ),
+      expected: `RequirementElementStatement at 33-50: ${PARTS}`,
+    },
+    {
+      name: "fails an element without the comma between its classes",
+      fixture: "spec-requirement-diagram-a8854583",
+      mutate: withoutCommaIn("RequirementElementStatement", "cssClasses"),
+      expected: `RequirementElementStatement at 51-85: ${PARTS}`,
+    },
+    {
+      name: "fails a class of an element without `:::`",
+      fixture: "db-element-fields",
+      mutate: (root) => {
+        const statement = nodeOf(root, "RequirementElementStatement")
+        setField(statement, "cssClasses", [statement.name])
+      },
+      expected: `RequirementElementStatement at 19-73: ${PARTS}`,
+    },
+    {
+      name: "fails an item of the body of an element that the source does not write",
+      fixture: "db-element-definition-again-with-class",
+      mutate: (root) => {
+        const statement = nodeOf(root, "RequirementElementStatement")
+        // The `}` of the empty body of the first element, at 31.
+        setField(statement, "body", [
+          {
+            type: "RequirementIgnoredText",
+            value: "}",
+            range: [31, 32],
+            loc: { start: { line: 3, column: 0 }, end: { line: 3, column: 1 } },
+          },
+        ])
+      },
+      expected: `RequirementElementStatement at 19-32: ${PARTS}`,
+    },
+    {
+      name: "fails an element field without its colon",
+      fixture: "db-element-fields",
+      mutate: withoutTokenIn("RequirementElementField", ":"),
+      expected: `RequirementElementField at 33-49: ${PARTS}`,
+    },
+    {
+      name: "fails the value of an element field as a RequirementIdentifier",
+      fixture: "db-element-fields",
+      mutate: remakeChild(
+        "RequirementElementField",
+        "value",
+        "RequirementIdentifier",
+        ["value"],
+        (node) => ({ name: node.value }),
+      ),
+      expected:
+        "RequirementElementField at 33-49: the field value holds a RequirementIdentifier, not a RequirementLiteral or StringLiteral",
+    },
+    {
+      name: "fails the unquoted value of an element field as a StringLiteral",
+      fixture: "db-element-fields",
+      mutate: remakeChild(
+        "RequirementElementField",
+        "value",
+        "StringLiteral",
+        [],
+        (node) => ({ raw: node.value, closed: true }),
+      ),
+      expected:
+        "the tokens of the string are not one String token or StringFragment tokens: RawText",
+    },
+    {
+      name: "fails the quoted value of an element field as a RequirementLiteral",
+      fixture: "gram-element-docref-quoted-url",
+      mutate: remakeChild(
+        "RequirementElementField",
+        "value",
+        "RequirementLiteral",
+        ["raw", "closed"],
+        () => ({}),
+      ),
+      expected:
+        "the tokens of a RequirementLiteral are not all of the kind RawText: String",
+    },
+    {
+      name: "fails the field of an element field in the case in which it is written",
+      fixture: "db-element-fields",
+      mutate: (root) => {
+        setField(
+          nodeOf(
+            root,
+            "RequirementElementField",
+            (node) => node.field === "docref",
+          ),
+          "field",
+          "docRef",
+        )
+      },
+      expected:
+        'RequirementElementField at 52-71: the field field is "docRef", none of type, docref',
+    },
+    // RequirementRelationshipStatement.
     {
       name: "fails the first end of a relationship as an Identifier",
       fixture: "db-relationship-arrows",
@@ -11684,6 +12046,175 @@ describe("checkTree: the names of a requirement diagram (ast/requirement.md)", (
       expected:
         "the field right holds a Identifier, not a RequirementIdentifier or StringLiteral",
     },
+    // RequirementDirectionStatement.
+    {
+      name: "fails the text before a direction as a RequirementLiteral",
+      fixture: "lex-direction-line-text-before-and-after",
+      mutate: retypeChild(
+        "RequirementDirectionStatement",
+        "textBefore",
+        "RequirementLiteral",
+      ),
+      expected:
+        "RequirementDirectionStatement at 19-39: the field textBefore holds a RequirementLiteral, not a RequirementIgnoredText",
+    },
+    {
+      name: "fails the text after a direction as a RequirementLiteral",
+      fixture: "lex-direction-line-text-before-and-after",
+      mutate: retypeChild(
+        "RequirementDirectionStatement",
+        "textAfter",
+        "RequirementLiteral",
+      ),
+      expected:
+        "RequirementDirectionStatement at 19-39: the field textAfter holds a RequirementLiteral, not a RequirementIgnoredText",
+    },
+    {
+      name: "fails a direction statement with a text before where the source writes none",
+      fixture: "db-direction-last-wins",
+      mutate: (root) => {
+        const statement = nodeOf(root, "RequirementDirectionStatement")
+        // The keyword `direction` of `direction LR`, at 19.
+        setField(statement, "textBefore", {
+          type: "RequirementIgnoredText",
+          value: "direction",
+          range: [19, 28],
+          loc: { start: { line: 2, column: 0 }, end: { line: 2, column: 9 } },
+        })
+      },
+      expected: `RequirementDirectionStatement at 19-31: ${PARTS}`,
+    },
+    {
+      name: "fails a direction statement with a text after where the source writes none",
+      fixture: "db-direction-last-wins",
+      mutate: (root) => {
+        const statement = nodeOf(root, "RequirementDirectionStatement")
+        // The value `LR` of `direction LR`, at 29.
+        setField(statement, "textAfter", {
+          type: "RequirementIgnoredText",
+          value: "LR",
+          range: [29, 31],
+          loc: { start: { line: 2, column: 10 }, end: { line: 2, column: 12 } },
+        })
+      },
+      expected: `RequirementDirectionStatement at 19-31: ${PARTS}`,
+    },
+    // RequirementStyleStatement and RequirementClassDefStatement.
+    {
+      name: "fails a quoted name of a style as an Identifier",
+      fixture: "lex-style-string-name",
+      mutate: remakeChild(
+        "RequirementStyleStatement",
+        "names",
+        "Identifier",
+        STRING_FIELDS,
+        (node) => ({ name: node.value }),
+      ),
+      expected:
+        "Identifier at 48-54: the tokens of a Identifier in names are not all of the kind Identifier: String",
+    },
+    {
+      name: "fails a style without the comma between its styles",
+      fixture: "db-style-statement",
+      mutate: withoutCommaIn("RequirementStyleStatement", "styles"),
+      expected: `RequirementStyleStatement at 51-82: ${PARTS}`,
+    },
+    {
+      name: "fails a class definition without the comma between its classes",
+      fixture: "db-class-def",
+      mutate: withoutCommaIn("RequirementClassDefStatement", "cssClasses"),
+      expected: `RequirementClassDefStatement at 51-75: ${PARTS}`,
+    },
+    {
+      name: "fails a class definition without the comma between its styles",
+      fixture: "db-class-def",
+      mutate: withoutCommaIn("RequirementClassDefStatement", "styles"),
+      expected: `RequirementClassDefStatement at 19-50: ${PARTS}`,
+    },
+    {
+      name: "fails a style of a class definition as a RequirementIdentifier",
+      fixture: "db-class-def",
+      mutate: remakeChild(
+        "RequirementClassDefStatement",
+        "styles",
+        "RequirementIdentifier",
+        ["value"],
+        (node) => ({ name: node.value }),
+      ),
+      expected:
+        "RequirementClassDefStatement at 19-50: the field styles holds a RequirementIdentifier, not a RequirementLiteral",
+    },
+    {
+      name: "fails a quoted class of a class definition as an Identifier",
+      fixture: "lex-classdef-string-name",
+      mutate: remakeChild(
+        "RequirementClassDefStatement",
+        "cssClasses",
+        "Identifier",
+        STRING_FIELDS,
+        (node) => ({ name: node.value }),
+      ),
+      expected:
+        "Identifier at 46-52: the tokens of a Identifier in cssClasses are not all of the kind Identifier: String",
+    },
+    // RequirementClassStatement.
+    {
+      name: "fails a name after `class` as an Identifier",
+      fixture: "db-class-statement",
+      mutate: retypeChild("RequirementClassStatement", "names", "Identifier"),
+      expected:
+        "the field names holds a Identifier, not a RequirementIdentifier or StringLiteral",
+    },
+    {
+      name: "fails a class after `class` as an Identifier",
+      fixture: "db-class-statement",
+      mutate: retypeChild(
+        "RequirementClassStatement",
+        "cssClasses",
+        "Identifier",
+      ),
+      expected:
+        "the field cssClasses holds a Identifier, not a RequirementIdentifier or StringLiteral",
+    },
+    {
+      name: "fails a quoted name after `class` as a RequirementIdentifier",
+      fixture: "db-name-quoted-and-unquoted-same",
+      mutate: remakeChild(
+        "RequirementClassStatement",
+        "names",
+        "RequirementIdentifier",
+        STRING_FIELDS,
+        (node) => ({ name: node.value }),
+      ),
+      expected:
+        "the tokens of a RequirementIdentifier in names are not all of the kind Identifier: String",
+    },
+    {
+      name: "fails a quoted class after `class` as a RequirementIdentifier",
+      fixture: "gram-class-string-class",
+      mutate: remakeChild(
+        "RequirementClassStatement",
+        "cssClasses",
+        "RequirementIdentifier",
+        STRING_FIELDS,
+        (node) => ({ name: node.value }),
+      ),
+      expected:
+        "RequirementIdentifier at 45-51: the tokens of a RequirementIdentifier in cssClasses are not all of the kind Identifier or RawText: String",
+    },
+    {
+      name: "fails a class statement without the comma between its names",
+      fixture: "db-class-statement",
+      mutate: withoutCommaIn("RequirementClassStatement", "names"),
+      expected: `RequirementClassStatement at 51-64: ${PARTS}`,
+    },
+    {
+      name: "fails a class statement without the comma between its classes",
+      fixture: "db-class-statement",
+      mutate: withoutCommaIn("RequirementClassStatement", "cssClasses"),
+      expected: `RequirementClassStatement at 51-64: ${PARTS}`,
+    },
+    // RequirementClassShorthandStatement.
     {
       name: "fails the name before the `:::` of a shorthand as an Identifier",
       fixture: "db-class-colon-form",
@@ -11707,72 +12238,251 @@ describe("checkTree: the names of a requirement diagram (ast/requirement.md)", (
         "the field cssClasses holds a Identifier, not a RequirementIdentifier or StringLiteral",
     },
     {
-      name: "fails a name after `class` as an Identifier",
-      fixture: "db-class-statement",
-      mutate: retypeChild("RequirementClassStatement", "names", "Identifier"),
-      expected:
-        "the field names holds a Identifier, not a RequirementIdentifier or StringLiteral",
+      name: "fails a shorthand without the comma between its classes",
+      fixture: "db-class-colon-form",
+      mutate: withoutCommaIn(
+        "RequirementClassShorthandStatement",
+        "cssClasses",
+      ),
+      expected: `RequirementClassShorthandStatement at 51-58: ${PARTS}`,
     },
     {
-      name: "fails a class after `class` as an Identifier",
-      fixture: "db-class-statement",
-      mutate: retypeChild(
-        "RequirementClassStatement",
-        "cssClasses",
-        "Identifier",
+      name: "fails a shorthand as a RequirementClassStatement",
+      fixture: "db-class-colon-form",
+      mutate: (root) => {
+        const statement = nodeOf(root, "RequirementClassShorthandStatement")
+        const name = statement.name
+        delete (statement as Record<string, unknown>).name
+        setField(statement, "type", "RequirementClassStatement")
+        setField(statement, "names", [name])
+      },
+      expected: `RequirementClassStatement at 51-58: ${PARTS}`,
+    },
+    // The accessibility statements.
+    {
+      name: "fails the text of an accessibility title as a StringLiteral",
+      fixture: "db-acc-title-descr",
+      mutate: remakeChild(
+        "RequirementAccTitleStatement",
+        "value",
+        "StringLiteral",
+        [],
+        (node) => ({ raw: node.value, closed: true }),
       ),
       expected:
-        "the field cssClasses holds a Identifier, not a RequirementIdentifier or StringLiteral",
+        "StringLiteral at 31-33: the tokens of the string are not one String token or StringFragment tokens: RawText",
     },
-    // RequirementStyleStatement: a name for a `string` unit is a
-    // StringLiteral, so an Identifier that holds the string is reported.
     {
-      name: "fails a quoted name of a style as an Identifier",
-      fixture: "lex-style-string-name",
+      name: "fails the text of an accessibility description as a StringLiteral",
+      fixture: "db-acc-title-descr",
+      mutate: remakeChild(
+        "RequirementAccDescrStatement",
+        "value",
+        "StringLiteral",
+        [],
+        (node) => ({ raw: node.value, closed: true }),
+      ),
+      expected:
+        "StringLiteral at 60-62: the tokens of the string are not one String token or StringFragment tokens: RawText",
+    },
+    {
+      name: "fails an accessibility title without its value",
+      fixture: "db-acc-title-descr",
       mutate: (root) => {
-        const names = firstNode(root, "RequirementStyleStatement")
-          .names as CheckedNode[]
-        const node = names[0]
-        const { value } = node
-        // The fields of a StringLiteral that an Identifier does not have.
-        for (const field of ["raw", "value", "closed"])
-          delete (node as Record<string, unknown>)[field]
-        setField(node, "type", "Identifier")
-        setField(node, "name", value)
+        setField(nodeOf(root, "RequirementAccTitleStatement"), "value", null)
       },
       expected:
-        "Identifier at 48-54: the tokens of a Identifier in names are not all of the kind Identifier: String",
+        "RequirementAccTitleStatement at 19-33: the field value is null, not a node",
     },
-    // RequirementClassDefStatement: the class names are separated by `,`
-    // units.
     {
-      name: "fails a class definition without the comma between its classes",
-      fixture: "db-class-def",
+      name: "fails an accessibility description without its value",
+      fixture: "db-acc-title-descr",
       mutate: (root) => {
-        const statement = nodesOf(root).find(
-          (node) =>
-            node.type === "RequirementClassDefStatement" &&
-            (node.cssClasses as CheckedNode[]).length > 1,
-        )!
-        const [first, second] = statement.cssClasses as CheckedNode[]
+        setField(nodeOf(root, "RequirementAccDescrStatement"), "value", null)
+      },
+      expected:
+        "RequirementAccDescrStatement at 49-62: the field value is null, not a node",
+    },
+    {
+      name: "fails an accessibility title whose text starts at the line feed after its colon",
+      fixture: "gram-acc-title-line-feed-then-text",
+      mutate: (root) => {
+        // The line feed after `accTitle:`, at 28, and the text `T`.
+        const value = firstIn(
+          nodeOf(root, "RequirementAccTitleStatement"),
+          "value",
+        )
+        setField(value, "range", [28, 30])
+        setField(value, "loc", {
+          start: { line: 2, column: 9 },
+          end: { line: 3, column: 1 },
+        })
+        setField(value, "value", "\nT")
+      },
+      expected:
+        'RequirementLiteral at 28-30: the RequirementLiteral starts or ends with whitespace: "\\nT"',
+    },
+    {
+      name: "fails an accessibility description whose value stops before the end of its line",
+      fixture: "db-acc-title-descr",
+      mutate: (root) => {
+        // `d1` at 60, without its last character.
+        const value = firstIn(
+          nodeOf(root, "RequirementAccDescrStatement"),
+          "value",
+        )
+        setField(value, "range", [60, 61])
+        setField(value, "loc", {
+          start: { line: 4, column: 11 },
+          end: { line: 4, column: 12 },
+        })
+        setField(value, "value", "d")
+      },
+      expected: 'RawText at 60-62 of "d1": lies in no value node',
+    },
+    {
+      name: "fails an accessibility title whose value is whitespace only",
+      fixture: "db-acc-title-descr",
+      mutate: (root) => {
         setField(
-          root,
-          "tokens",
-          root.tokens.filter(
-            (token) =>
-              !(
-                token.value === "," &&
-                token.range[0] >= first.range[1] &&
-                token.range[1] <= second.range[0]
-              ),
-          ),
+          firstIn(nodeOf(root, "RequirementAccTitleStatement"), "value"),
+          "value",
+          "  ",
         )
       },
       expected:
-        'RequirementClassDefStatement at 51-75: the tokens that the node writes itself and its child nodes, in source order: ["\\"classdef\\"","<cssClasses>","<cssClasses>","<styles>"]',
+        'RequirementAccTitleStatement at 19-33: the value of an accessibility statement starts or ends with whitespace: "  "',
+    },
+    {
+      name: "fails an empty description block with a value",
+      fixture: "gram-acc-descr-block-empty",
+      mutate: (root) => {
+        // Between the braces of `accDescr {}`, at 29.
+        setField(nodeOf(root, "RequirementAccDescrBlockStatement"), "value", {
+          type: "RequirementLiteral",
+          value: "",
+          range: [29, 29],
+          loc: { start: { line: 2, column: 10 }, end: { line: 2, column: 10 } },
+        })
+      },
+      expected: "RequirementLiteral at 29-29: the RequirementLiteral is empty",
+    },
+    {
+      name: "fails a description block that holds only a directive with a value",
+      fixture: "gram-acc-descr-block-directive-only",
+      mutate: (root) => {
+        // After the directive, before `}`, at 43.
+        setField(nodeOf(root, "RequirementAccDescrBlockStatement"), "value", {
+          type: "RequirementLiteral",
+          value: "",
+          range: [43, 43],
+          loc: { start: { line: 2, column: 24 }, end: { line: 2, column: 24 } },
+        })
+      },
+      expected: "RequirementLiteral at 43-43: the RequirementLiteral is empty",
+    },
+    {
+      name: "fails a description block without its closing brace",
+      fixture: "db-acc-descr-block",
+      mutate: withoutTokenIn("RequirementAccDescrBlockStatement", "}"),
+      expected:
+        "RequirementAccDescrBlockStatement at 19-49: does not run from the start of a token to the end of a token",
+    },
+    // RequirementIdentifier and RequirementLiteral.
+    {
+      name: "fails a name that leaves out the whitespace between its words",
+      fixture: "db-requirement-name-spaces",
+      mutate: (root) => {
+        setField(nodeOf(root, "RequirementIdentifier"), "name", "spacedname")
+      },
+      expected: "RequirementIdentifier at 32-43: name is not its written text",
+    },
+    {
+      name: "fails a name that leaves out the U+00A0 between its characters",
+      fixture: "lex-whitespace-nbsp-in-name",
+      mutate: (root) => {
+        setField(nodeOf(root, "RequirementIdentifier"), "name", "ab")
+      },
+      expected: "RequirementIdentifier at 31-34: name is not its written text",
+    },
+    {
+      name: "fails a value that leaves out the whitespace between its words",
+      fixture: "db-requirement-value-spaces",
+      mutate: (root) => {
+        setField(
+          nodeOf(
+            root,
+            "RequirementLiteral",
+            (node) => node.value === "spaced out",
+          ),
+          "value",
+          "spacedout",
+        )
+      },
+      expected: "RequirementLiteral at 57-67: value is not its written text",
+    },
+    {
+      name: "fails a style without a comma that holds only its first unit",
+      fixture: "lex-style-no-comma",
+      mutate: (root) => {
+        setField(
+          firstIn(nodeOf(root, "RequirementStyleStatement"), "styles"),
+          "value",
+          "fill:red",
+        )
+      },
+      expected:
+        'RequirementLiteral at 45-65: value is not the texts of its tokens joined: "fill:red", not "fill:redstroke:blue"',
+    },
+    // RequirementIgnoredText.
+    {
+      name: "fails two empty description blocks of a body held as one node",
+      fixture: "gram-empty-description-blocks-adjacent-in-body",
+      mutate: (root) => {
+        const statement = nodeOf(root, "RequirementRequirementStatement")
+        const [first, second, ...rest] = statement.body as CheckedNode[]
+        const range = [first.range[0], second.range[1]] as const
+        setField(statement, "body", [
+          {
+            ...first,
+            range,
+            loc: { start: first.loc.start, end: second.loc.end },
+            value: "accDescr {} accDescr {}",
+          },
+          ...rest,
+        ])
+      },
+      expected:
+        "RequirementIgnoredText at 35-58: the text of an item of a body, without its whitespace, which is an empty description block",
+    },
+    // An empty description block in a body is one node wherever it stands
+    // on its line, so leaving it out of the body is reported.
+    {
+      name: "fails an empty description block after `{` left out of the body",
+      fixture: "gram-empty-description-block-after-brace",
+      mutate: withoutIgnoredTextInBody,
+      expected: `RequirementRequirementStatement at 19-54: ${PARTS}`,
+    },
+    {
+      name: "fails an empty description block before a field left out of the body",
+      fixture: "gram-empty-description-block-before-field",
+      mutate: withoutIgnoredTextInBody,
+      expected: `RequirementRequirementStatement at 19-54: ${PARTS}`,
+    },
+    {
+      name: "fails an empty description block after a field whose value is a string left out of the body",
+      fixture: "gram-empty-description-block-after-string-value",
+      mutate: withoutIgnoredTextInBody,
+      expected: `RequirementRequirementStatement at 19-56: ${PARTS}`,
+    },
+    {
+      name: "fails an empty description block before `}` left out of the body",
+      fixture: "gram-empty-description-block-before-close-brace",
+      mutate: withoutIgnoredTextInBody,
+      expected: `RequirementRequirementStatement at 19-48: ${PARTS}`,
     },
   ]
-  for (const testCase of requirementIdentifierCases) {
+  for (const testCase of requirementCases) {
     it(testCase.name, () => {
       const { base, mutated } = problemsOf("requirement", testCase)
       expect(base).toEqual([])

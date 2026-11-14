@@ -12,8 +12,11 @@ import {
   recordedTree,
   setField,
   firstNode,
+  problemsOf,
   replaceToken,
+  says,
 } from "./check-tree-recorded.ts"
+import type { MutationCase } from "./check-tree-recorded.ts"
 import {
   handMadeRoot,
   tokenOf,
@@ -51651,7 +51654,7 @@ for (const testCase of review4SplitStringSemicolonWhitespaceCases) {
   })
 }
 
-describe("checkTree: the tokens of the names of a requirement diagram (tokens/requirement.md)", () => {
+describe("checkTree: the tokens of a requirement diagram (tokens/requirement.md)", () => {
   it("fails a name that holds whitespace split into two RawText tokens", () => {
     const { input, tree } = recordedTree(
       "requirement",
@@ -51714,4 +51717,315 @@ describe("checkTree: the tokens of the names of a requirement diagram (tokens/re
         "the tokens of a RequirementIdentifier in names are not all of the kind Identifier: RawText",
     })
   })
+})
+
+/** Sets the kind of the `nth` token with the text `text` to `to`. */
+function retypeToken(
+  text: string,
+  to: string,
+  nth = 0,
+): MutationCase["mutate"] {
+  return (root) => {
+    const target = root.tokens.filter((candidate) => candidate.value === text)[
+      nth
+    ]
+    setField(target, "type", to)
+  }
+}
+
+/** Sets the range of the first token of `root` with the text `text` to `range`, and its text to the input there. */
+function widenToken(
+  root: CheckedRoot,
+  input: string,
+  text: string,
+  range: readonly [number, number],
+): void {
+  const target = root.tokens.find((candidate) => candidate.value === text)!
+  setField(target, "range", range)
+  setField(target, "loc", locationOf(input, range))
+  setField(target, "value", input.slice(...range))
+}
+
+/** The message of a token that a node writes itself and that is of the kind `kind`, not `expected`. */
+function ownKind(kind: string, expected: string): string {
+  return `the kind of a token that the node writes itself: "${kind}", not "${expected}"`
+}
+
+describe("checkTree: the kinds of the tokens of a requirement diagram (tokens/requirement.md)", () => {
+  const kindCases: readonly MutationCase[] = [
+    // Keyword: the keywords of the statement context and the style context.
+    {
+      name: "fails the keyword `element` as a RawText token",
+      fixture: "db-element-fields",
+      mutate: retypeToken("element", "RawText"),
+      expected: `RawText at 19-26 of "element" in RequirementElementStatement at 19-73: ${ownKind("RawText", "Keyword")}`,
+    },
+    {
+      name: "fails the name of a field as a RawText token",
+      fixture: "db-requirement-all-fields",
+      mutate: retypeToken("id", "RawText"),
+      expected: `RawText at 47-49 of "id" in RequirementValueField at 47-54: ${ownKind("RawText", "Keyword")}`,
+    },
+    {
+      name: "fails the name of the method field as a RawText token",
+      fixture: "db-requirement-all-fields",
+      mutate: retypeToken("verifyMethod", "RawText"),
+      expected: `RawText at 89-101 of "verifyMethod" in RequirementVerifyMethodField at 89-116: ${ownKind("RawText", "Keyword")}`,
+    },
+    {
+      name: "fails a method as a RawText token",
+      fixture: "db-requirement-all-fields",
+      mutate: retypeToken("demonstration", "RawText"),
+      expected: `RawText at 103-116 of "demonstration" in RequirementVerifyMethodField at 89-116: ${ownKind("RawText", "Keyword")}`,
+    },
+    {
+      name: "fails the keyword `style` as a RawText token",
+      fixture: "db-style-statement",
+      mutate: retypeToken("style", "RawText"),
+      expected: `RawText at 51-56 of "style" in RequirementStyleStatement at 51-82: ${ownKind("RawText", "Keyword")}`,
+    },
+    {
+      name: "fails the keyword `classDef` as a RawText token",
+      fixture: "db-class-def",
+      mutate: retypeToken("classDef", "RawText"),
+      expected: `RawText at 19-27 of "classDef" in RequirementClassDefStatement at 19-50: ${ownKind("RawText", "Keyword")}`,
+    },
+    {
+      name: "fails the keyword `class` as a RawText token",
+      fixture: "db-class-statement",
+      mutate: retypeToken("class", "RawText"),
+      expected: `RawText at 51-56 of "class" in RequirementClassStatement at 51-64: ${ownKind("RawText", "Keyword")}`,
+    },
+    {
+      name: "fails the keyword `accTitle` as a RawText token",
+      fixture: "db-acc-title-descr",
+      mutate: retypeToken("accTitle", "RawText"),
+      expected: `RawText at 19-27 of "accTitle" in RequirementAccTitleStatement at 19-33: ${ownKind("RawText", "Keyword")}`,
+    },
+    {
+      name: "fails the keyword `accDescr` as a RawText token",
+      fixture: "db-acc-title-descr",
+      mutate: retypeToken("accDescr", "RawText"),
+      expected: `RawText at 49-57 of "accDescr" in RequirementAccDescrStatement at 49-62: ${ownKind("RawText", "Keyword")}`,
+    },
+    // Punctuator: the marks of a relationship.
+    {
+      name: "fails the dash of a relationship as a Keyword token",
+      fixture: "db-relationship-arrows",
+      mutate: retypeToken("-", "Keyword"),
+      expected: `Keyword at 21-22 of "-" in RequirementRelationshipStatement at 19-36: ${ownKind("Keyword", "Punctuator")}`,
+    },
+    {
+      name: "fails the backward arrow of a relationship as a Keyword token",
+      fixture: "db-relationship-arrows",
+      mutate: retypeToken("<-", "Keyword"),
+      expected: `Keyword at 39-41 of "<-" in RequirementRelationshipStatement at 37-52: ${ownKind("Keyword", "Punctuator")}`,
+    },
+    // RawText: the texts and the units of a style.
+    {
+      name: "fails the text of an accessibility title as a Keyword token",
+      fixture: "db-acc-title-descr",
+      mutate: retypeToken("t1", "Keyword"),
+      expected:
+        "RequirementLiteral at 31-33: the tokens of a RequirementLiteral are not all of the kind RawText: Keyword",
+    },
+    {
+      name: "fails the text of an accessibility description as a Keyword token",
+      fixture: "db-acc-title-descr",
+      mutate: retypeToken("d1", "Keyword"),
+      expected:
+        "RequirementLiteral at 60-62: the tokens of a RequirementLiteral are not all of the kind RawText: Keyword",
+    },
+    {
+      name: "fails the text of a description block as a Keyword token",
+      fixture: "db-acc-descr-block",
+      mutate: retypeToken("line 1\n  line 2", "Keyword"),
+      expected:
+        "RequirementLiteral at 32-47: the tokens of a RequirementLiteral are not all of the kind RawText: Keyword",
+    },
+    {
+      name: "fails the text after a direction as a Keyword token",
+      fixture: "lex-direction-line-text-before-and-after",
+      mutate: retypeToken("bar", "Keyword"),
+      expected:
+        "RequirementIgnoredText at 36-39: the tokens of the text of a direction line are not all of the kind RawText: Keyword",
+    },
+    {
+      name: "fails the units of a style as an Identifier token",
+      fixture: "db-style-statement",
+      mutate: retypeToken("fill:#f9f", "Identifier"),
+      expected:
+        "RequirementLiteral at 61-70: the tokens of a RequirementLiteral are not all of the kind RawText: Identifier",
+    },
+    // An empty description block: `accDescr`, `{`, and `}`.
+    {
+      name: "fails the brace of an empty description block statement as a RawText token",
+      fixture: "gram-acc-descr-block-empty",
+      mutate: retypeToken("{", "RawText"),
+      expected: `RawText at 28-29 of "{" in RequirementAccDescrBlockStatement at 19-30: ${ownKind("RawText", "Punctuator")}`,
+    },
+    {
+      name: "fails the keyword of an empty description block statement as a RawText token",
+      fixture: "gram-acc-descr-block-empty",
+      mutate: retypeToken("accDescr", "RawText"),
+      expected: `RawText at 19-27 of "accDescr" in RequirementAccDescrBlockStatement at 19-30: ${ownKind("RawText", "Keyword")}`,
+    },
+    {
+      name: "fails the keyword of an empty description block in a body as a RawText token",
+      fixture: "gram-empty-description-block-in-body",
+      mutate: retypeToken("accDescr", "RawText"),
+      expected:
+        "RequirementIgnoredText at 35-46: the tokens of an empty description block, `accDescr {}` are not all of the kind Keyword or Punctuator: RawText, Punctuator, Punctuator",
+    },
+    {
+      name: "fails the closing brace of an empty description block in a body as a RawText token",
+      fixture: "gram-empty-description-block-in-body",
+      mutate: retypeToken("}", "RawText"),
+      expected:
+        "RequirementIgnoredText at 35-46: the tokens of an empty description block, `accDescr {}` are not all of the kind Keyword or Punctuator: Keyword, Punctuator, RawText",
+    },
+    // IgnoredSemicolon.
+    {
+      name: "fails a `;` that the line rule ignores in an accessibility title as a Punctuator token",
+      fixture: "tokens-ignored-semicolon-in-acc-title",
+      mutate: retypeToken(";", "Punctuator"),
+      expected:
+        'Punctuator at 39-40: the Punctuator text ";" is none of those of a RequirementDiagram',
+    },
+    {
+      name: "fails a `;` that the line rule ignores in the end of a relationship as a Punctuator token",
+      fixture: "tokens-ignored-semicolon-in-name",
+      mutate: retypeToken(";", "Punctuator"),
+      expected:
+        'Punctuator at 73-74: the Punctuator text ";" is none of those of a RequirementDiagram',
+    },
+    {
+      name: "fails a `;` that the line rule ignores in a style as a Punctuator token",
+      fixture: "tokens-ignored-semicolon-in-style",
+      mutate: retypeToken(";", "Punctuator"),
+      expected:
+        'Punctuator at 54-55: the Punctuator text ";" is none of those of a RequirementDiagram',
+    },
+  ]
+  for (const testCase of kindCases) {
+    it(testCase.name, () => {
+      const { base, mutated } = problemsOf("requirement", testCase)
+      expect(base).toEqual([])
+      expect(
+        says(mutated, testCase.expected),
+        JSON.stringify(mutated, null, 1),
+      ).toBe(true)
+    })
+  }
+})
+
+describe("checkTree: the ends and the runs of the tokens of a requirement diagram (tokens/requirement.md)", () => {
+  // A token widened over whitespace that mermaid.js reads with the unit and
+  // leaves out of the value.
+  const widenedCases = [
+    {
+      name: "fails the token of a value widened over the spaces after it",
+      fixture: "db-requirement-value-spaces",
+      text: "1",
+      range: [43, 46],
+      expected: "ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails the token of a name widened over the U+00A0 after it",
+      fixture: "lex-whitespace-nbsp-after-name",
+      text: "a",
+      range: [31, 33],
+      expected: "ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails the token of an accessibility title widened over the spaces after it",
+      fixture: "db-acc-title-descr",
+      text: "t1",
+      range: [31, 35],
+      expected: "ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails the token of an accessibility title widened over the spaces before it",
+      fixture: "db-acc-title-descr",
+      text: "t1",
+      range: [28, 33],
+      expected:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails the token of a description block widened over the line feed before its `}`",
+      fixture: "db-acc-descr-block",
+      text: "line 1\n  line 2",
+      range: [32, 48],
+      expected: "ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails the token of a description block widened over the indentation of its first line",
+      fixture: "db-acc-descr-block",
+      text: "line 1\n  line 2",
+      range: [30, 47],
+      expected:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+  ] as const
+  for (const testCase of widenedCases) {
+    it(testCase.name, () => {
+      const { input, tree } = recordedTree("requirement", testCase.fixture)
+      expect(checkTree(input, tree)).toEqual([])
+      const broken = copyOf(tree)
+      widenToken(broken, input, testCase.text, testCase.range)
+      expect(checkTree(input, broken)).toContainEqual({
+        where: `RawText at ${testCase.range[0]}-${testCase.range[1]}`,
+        message: testCase.expected,
+      })
+    })
+  }
+
+  // Two tokens of a style, with whitespace between them, made one token.
+  const mergedCases = [
+    {
+      name: "fails two units of a style with a space between them as one token",
+      fixture: "lex-style-spaces",
+      texts: ["fill:", "red"],
+      range: [45, 54],
+      expected:
+        'value is not the texts of its tokens joined: "fill:red", not "fill: red"',
+    },
+    {
+      name: "fails a style and the hash unit after its space as one token",
+      fixture: "lex-style-hash-after-style",
+      texts: ["fill:red", "#c"],
+      range: [45, 56],
+      expected:
+        'value is not the texts of its tokens joined: "fill:red#c", not "fill:red #c"',
+    },
+  ] as const
+  for (const testCase of mergedCases) {
+    it(testCase.name, () => {
+      const { input, tree } = recordedTree("requirement", testCase.fixture)
+      expect(checkTree(input, tree)).toEqual([])
+      const broken = copyOf(tree)
+      const [first, second] = testCase.texts
+      setField(
+        broken,
+        "tokens",
+        broken.tokens
+          .filter((candidate) => candidate.value !== second)
+          .map((candidate) =>
+            candidate.value === first
+              ? {
+                  ...candidate,
+                  range: testCase.range,
+                  loc: locationOf(input, testCase.range),
+                  value: input.slice(...testCase.range),
+                }
+              : candidate,
+          ),
+      )
+      expect(checkTree(input, broken)).toContainEqual({
+        where: `RequirementLiteral at ${testCase.range[0]}-${testCase.range[1]}`,
+        message: testCase.expected,
+      })
+    })
+  }
 })

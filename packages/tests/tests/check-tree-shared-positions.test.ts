@@ -901,3 +901,131 @@ describe("checkTree: the range of a name after `style` or `classDef` (positions/
     })
   }
 })
+
+describe("checkTree: the ranges of the nodes of a requirement diagram (positions/requirement.md)", () => {
+  // Each case sets the range of one node, and its value where the case says
+  // so, and expects the problem at that node.
+  const rangeCases = [
+    {
+      name: "fails a requirement diagram that ends before its last token",
+      fixture: "db-requirement-defaults",
+      node: (root: CheckedRoot) => root.body,
+      range: [0, 35],
+      expected: {
+        where: "Root.body",
+        message:
+          "does not run from its first token to its last: [0,35], not [0,36]",
+      },
+    },
+    {
+      name: "fails a field that runs over the spaces after its value",
+      fixture: "db-requirement-value-spaces",
+      node: (root: CheckedRoot) => firstNode(root, "RequirementValueField"),
+      range: [37, 46],
+      expected: {
+        where: "RequirementValueField at 37-46",
+        message: "does not run from the start of a token to the end of a token",
+      },
+    },
+    {
+      name: "fails a name that runs over the spaces after it",
+      fixture: "db-requirement-name-spaces",
+      node: (root: CheckedRoot) => firstNode(root, "RequirementIdentifier"),
+      range: [32, 45],
+      expected: {
+        where: "RequirementIdentifier at 32-45",
+        message: "does not run from the start of a token to the end of a token",
+      },
+    },
+    {
+      name: "fails a class statement that ends at the end of its first line",
+      fixture: "lex-class-list-next-line",
+      node: (root: CheckedRoot) => firstNode(root, "RequirementClassStatement"),
+      range: [37, 44],
+      expected: {
+        where: "RequirementIdentifier at 45-46",
+        message: "lies outside RequirementClassStatement at 37-44",
+      },
+    },
+    {
+      name: "fails a style that ends before its last unit",
+      fixture: "lex-style-spaces",
+      node: (root: CheckedRoot) => firstNode(root, "RequirementLiteral"),
+      range: [45, 50],
+      expected: {
+        where: 'RawText at 51-54 of "red"',
+        message: "lies in no value node",
+      },
+    },
+    {
+      name: "fails a text before a direction that runs over the space after it",
+      fixture: "lex-direction-line-text-before-and-after",
+      node: (root: CheckedRoot) => firstNode(root, "RequirementIgnoredText"),
+      range: [19, 23],
+      expected: {
+        where: "RequirementIgnoredText at 19-23",
+        message: "does not run from the start of a token to the end of a token",
+      },
+    },
+  ] as const
+  for (const testCase of rangeCases) {
+    it(testCase.name, () => {
+      const { input, tree } = recordedTree("requirement", testCase.fixture)
+      expect(checkTree(input, tree)).toEqual([])
+      const broken = copyOf(tree)
+      const node = testCase.node(broken)
+      setField(node, "range", testCase.range)
+      setField(node, "loc", locationOf(input, testCase.range))
+      expect(checkTree(input, broken)).toContainEqual(testCase.expected)
+    })
+  }
+
+  it("fails an empty description block in a body that ends before its `}`", () => {
+    const { input, tree } = recordedTree(
+      "requirement",
+      "gram-empty-description-block-multiline-in-body",
+    )
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    const block = firstNode(broken, "RequirementIgnoredText")
+    // `accDescr {` and its line feed, without the `}` at 46.
+    const range = [35, 45] as const
+    setField(block, "range", range)
+    setField(block, "loc", locationOf(input, range))
+    setField(block, "value", input.slice(...range))
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "RequirementIgnoredText at 35-45",
+      message:
+        'the text of an item of a body, without its whitespace, which is an empty description block: "accdescr{", not "accdescr{}"',
+    })
+  })
+
+  it("fails an empty description block in a body whose value holds the comment line inside it", () => {
+    const { input, tree } = recordedTree(
+      "requirement",
+      "gram-empty-description-block-comment-line-in-body",
+    )
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    const block = firstNode(broken, "RequirementIgnoredText")
+    setField(block, "value", input.slice(...block.range))
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "RequirementIgnoredText at 35-52",
+      message:
+        'value is not its written text: "accDescr {\\n%% c\\n}", not "accDescr {\\n}"',
+    })
+  })
+
+  it("fails a style whose value holds the spaces between its units", () => {
+    const { input, tree } = recordedTree("requirement", "lex-style-spaces")
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    const style = firstNode(broken, "RequirementLiteral")
+    setField(style, "value", input.slice(...style.range))
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "RequirementLiteral at 45-54",
+      message:
+        'value is not the texts of its tokens joined: "fill: red", not "fill:red"',
+    })
+  })
+})
