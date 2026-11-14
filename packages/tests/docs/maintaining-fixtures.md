@@ -381,9 +381,10 @@ from its tests, its documents, and its demos, so that what the parser and
 how it is made, it answers no one sentence. The tree of such a fixture is
 checked by `checkTree()`, by the Db that `dbFromTree()` builds from it against
 the Db of mermaid.js, and by the parser's comparison of its output with the
-recorded tree; no one reads it against a sentence. An input that the parser
-rejects has no tree, only the `parse-error.json` that the parser's tests
-compare.
+recorded tree. A sentence may still cite one of them, and then its tree is read
+against that sentence like the tree of any other fixture; the tree of one that
+no sentence cites is read against no sentence. An input that the parser rejects
+has no tree, only the `parse-error.json` that the parser's tests compare.
 
 How to prepare the checkout and run the collection, and how to check the inputs
 mermaid.js rejects, is in [tools/README.md](../../../tools/README.md).
