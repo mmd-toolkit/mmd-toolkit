@@ -311,7 +311,7 @@ mermaid.js と同じく `#f00;` はエンティティとして読まれ、`style
 U+2028、`%% c`、改行、`B` は拒否されます。
 [fixture: er/lex-end-line-separator-comment-line]
 [fixture: er/lex-one-line-separator-comment-line-letter]
-[fixture: er/gram-one-line-separator-comment-line-statement-start]
+[fixture: er/lex-one-line-separator-comment-line-statement-start]
 属性ブロックと style の文脈では、前の語や名前に続かない U+2028 は空白で、
 単位の間にあり、ブロックの中の `string`、スペース、U+2028、`%% c`、改行、
 `a` は型 `string` の属性 `a` で、`classDef`、スペース、U+2028、`%% c`、改行、

@@ -284,7 +284,7 @@ of the second entity, U+2028 and `B`, while `1`, U+2028, `%% c`, a line break,
 and `B` where a statement starts is rejected. [fixture:
 er/lex-end-line-separator-comment-line] [fixture:
 er/lex-one-line-separator-comment-line-letter] [fixture:
-er/gram-one-line-separator-comment-line-statement-start] In an attribute block
+er/lex-one-line-separator-comment-line-statement-start] In an attribute block
 and in the style context, a U+2028 that does not go on with a word or a name
 before it is whitespace and lies between units: `string`, a space, U+2028,
 `%% c`, a line break, and `a` in a block is the attribute `a` of type `string`,
