@@ -2152,29 +2152,36 @@ quadrant/gram-classdef-name-space-line-separator-comment-line] [fixture:
 quadrant/gram-classdef-name-line-separator-bare-percent-line] [fixture:
 quadrant/gram-classdef-name-line-separator-percent-brace-line] For the line rule
 of `style` and `classDef` lines, the line after the region is a segment of its
-own, without the `classDef` before the region, so the `;` of `b color: #f00;`
+own, without the `classDef` before the region, so the `;` of `b color:#f00;`
 there is not ignored, and the input is rejected, because `#f00;` in a style is
-an entity, as in mermaid.js. [fixture:
-quadrant/gram-classdef-name-comment-line-hash-semicolon] An empty description
-block after the region lies inside the statement, and a `;` that the line rule
-ignores in the name after the region, as in `style:#x;b color: #f00`, lies
-inside the name; both make the input rejected here, while mermaid.js accepts it
-(see [Known divergences](#known-divergences)). [fixture:
+an entity, as in mermaid.js, while on one line, `classDef ab color:#f00;`
+matches the rule, its `;` is ignored, and the class `ab` has the colour `#f00`.
+[fixture: quadrant/gram-classdef-name-comment-line-hash-semicolon] [fixture:
+quadrant/lex-classdef-color-hash-semicolon-one-line] An empty description block
+after the region, which lies inside the statement, and a `;` that the line rule
+ignores between two characters of the name after the region, as in
+`style:#x;b color: #f00`, both make the input rejected here, while mermaid.js
+accepts it (see [Known divergences](#known-divergences)). [fixture:
 quadrant/div-classdef-name-comment-line-empty-description-block] [fixture:
-quadrant/div-classdef-name-comment-line-ignored-semicolon] Where the `;` that
-the rule ignores is at the end of the line, after the styles, it lies outside
-the name, as on any `classDef` line, and the input is accepted: `classDef a`,
-U+2028, `%% c`, a line break, and `style color:#f00;` defines the class `a`,
-U+2028, and `style` with the colour `#f00`, and so it is with U+2029. [fixture:
-quadrant/lex-classdef-name-comment-line-style-line] [fixture:
-quadrant/lex-classdef-name-paragraph-separator-comment-line-style-line] With a
-second `;` at the end of the line, the rule ignores that last one, and the `;`
-in the name ends an entity: `style:#x;b color: #f00;` there gives the class `a`,
-U+2028, `style:`, the placeholder of `#x;`, and `b`. [fixture:
-quadrant/lex-classdef-name-comment-line-style-line-two-semicolons] A `;` in the
-name on a line without `style` is a `;` unit, and the input is rejected, as in
-mermaid.js: `b;c color: #f00` there. [fixture:
-quadrant/gram-classdef-name-comment-line-semicolon-in-name]
+quadrant/div-classdef-name-comment-line-ignored-semicolon] A `;` that the rule
+ignores right after the last character of the name, as in
+`style:#x; color: #f00`, or after the styles, as in `style color:#f00;`, lies
+outside the name, as on any `classDef` line, and the input is accepted: the
+classes are `a`, U+2028, and `style:#x`, and `a`, U+2028, and `style`, with the
+colour `#f00`, and so it is with U+2029. [fixture:
+quadrant/lex-classdef-name-comment-line-style-line-semicolon-after-name]
+[fixture: quadrant/lex-classdef-name-comment-line-style-line] [fixture:
+quadrant/lex-classdef-name-paragraph-separator-comment-line-style-line] The rule
+ignores only the last `;` of a line that matches it, and a `;` in the name that
+it does not ignore ends an entity where `#` and a word come before it, and is a
+`;` unit otherwise, which makes the input rejected, as in mermaid.js:
+`style:#x;b color: #f00;` there gives the class `a`, U+2028, `style:`, the
+placeholder of `#x;`, and `b`, while `style:x;b color:#f00;`, whose first `;`
+follows no `#` and word, and `b;c color: #f00`, on a line that the rule does not
+match, are rejected. [fixture:
+quadrant/lex-classdef-name-comment-line-style-line-two-semicolons] [fixture:
+quadrant/gram-classdef-name-comment-line-style-line-semicolon-no-entity]
+[fixture: quadrant/gram-classdef-name-comment-line-semicolon-in-name]
 
 ### Empty description blocks
 

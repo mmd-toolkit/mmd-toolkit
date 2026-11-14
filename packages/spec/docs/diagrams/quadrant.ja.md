@@ -2386,28 +2386,37 @@ mermaid.js は名前が `a`、U+2029、`b` のクラスを定めます。
 [fixture: quadrant/gram-classdef-name-line-separator-percent-brace-line]
 領域の後の行は `style` 行と `classDef` 行の行の規則にとって、
 領域の前の `classDef` を含まない独立した区間なので、
-そこの `b color: #f00;` の `;` は無視されず、
-スタイルの `#f00;` は mermaid.js と同じくエンティティなので、
-入力は拒否されます。
+そこの `b color:#f00;` の `;` は無視されず、
+スタイルの `#f00;` はエンティティなので、
+入力は mermaid.js と同じく拒否されますが、
+1 行の `classDef ab color:#f00;` は行の規則に一致し、その `;` は無視され、
+クラス `ab` の色は `#f00` です。
 [fixture: quadrant/gram-classdef-name-comment-line-hash-semicolon]
-領域の後の空の説明ブロックは文の中にあり、領域の後の名前の中で、
-`style:#x;b color: #f00` のように行の規則が無視する `;` は名前の中にあり、
+[fixture: quadrant/lex-classdef-color-hash-semicolon-one-line]
+文の中にある領域の後の空の説明ブロックと、領域の後の名前の 2 つの文字の間で、
+`style:#x;b color: #f00` のように行の規則が無視する `;` は、
 どちらもここでは入力を拒否させますが、
 mermaid.js は受理します（[既知の差異](#既知の差異) を参照）。
 [fixture: quadrant/div-classdef-name-comment-line-empty-description-block]
 [fixture: quadrant/div-classdef-name-comment-line-ignored-semicolon]
-行の規則が無視する `;` がスタイルの後の行の終わりにあるときは、
+`style:#x; color: #f00` のように名前の最後の文字のすぐ後や、
+`style color:#f00;` のようにスタイルの後で行の規則が無視する `;` は、
 どの `classDef` 行でもそうであるように名前の外にあり、入力は受理され、
-`classDef a`、U+2028、`%% c`、改行、`style color:#f00;` は、色 `#f00` を持ち、
-名前が `a`、U+2028、`style` のクラスを定め、U+2029 でも同じです。
+クラスの名前はそれぞれ `a`、U+2028、`style:#x` と、`a`、U+2028、`style` で、
+色はどちらも `#f00` となり、U+2029 でも同じです。 [fixture:
+quadrant/lex-classdef-name-comment-line-style-line-semicolon-after-name]
 [fixture: quadrant/lex-classdef-name-comment-line-style-line] [fixture:
 quadrant/lex-classdef-name-paragraph-separator-comment-line-style-line]
-行の終わりに 2 つ目の `;` があるときは、行の規則は最後の `;` を無視し、
-名前の中の `;` はエンティティを終えるので、そこの `style:#x;b color: #f00;` は、
-名前が `a`、U+2028、`style:`、`#x;` のプレースホルダー、`b` のクラスを定めます。
+行の規則が無視するのは、それに一致する行の最後の `;` だけで、
+名前の中の無視されない `;` は、前に `#` と語があるときはエンティティを終え、
+それ以外では `;` の単位となって、mermaid.js と同じく入力を拒否させます。
+そこの `style:#x;b color: #f00;` は、名前が `a`、U+2028、`style:`、
+`#x;` のプレースホルダー、`b` のクラスを定めますが、
+最初の `;` の前に `#` と語がない `style:x;b color:#f00;` と、
+行の規則に一致しない行の `b;c color: #f00` は拒否されます。
 [fixture: quadrant/lex-classdef-name-comment-line-style-line-two-semicolons]
-`style` のない行の名前の中の `;` は `;` の単位であり、
-そこの `b;c color: #f00` は mermaid.js と同じく拒否されます。
+[fixture:
+quadrant/gram-classdef-name-comment-line-style-line-semicolon-no-entity]
 [fixture: quadrant/gram-classdef-name-comment-line-semicolon-in-name]
 
 ### 空の説明ブロック
