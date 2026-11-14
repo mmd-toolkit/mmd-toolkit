@@ -17,7 +17,6 @@ import {
   findRequirementKeptLines,
   isDirectionBroughtToTheColon,
 } from "./requirement-kept-lines.ts"
-import { lineStartOf } from "./kept-lines.ts"
 import type {
   RequirementBlockStatement,
   RequirementBodyItem,
@@ -200,12 +199,7 @@ function statementBlockRules(source: Source): BlockRules<RequirementStatement> {
     keepsWhitespaceLineAfterComment: false,
     keepsDirectiveLinesUnindented: false,
     keptIndentationOf: (statement) =>
-      isDirectionBroughtToTheColon(source, statement)
-        ? ""
-        : source.text.slice(
-            lineStartOf(source, statement.range[0]),
-            statement.range[0],
-          ),
+      isDirectionBroughtToTheColon(source, statement) ? "" : undefined,
   }
 }
 
