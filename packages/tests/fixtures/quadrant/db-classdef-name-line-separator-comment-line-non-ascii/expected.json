@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Classes: a character outside ASCII after the region joins the unit of the U+2028; the class `a`, U+2028, and `é`."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": [
+      {
+        "name": "a é",
+        "color": "#109060"
+      }
+    ]
+  }
+}

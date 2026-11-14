@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences.md, ignored-semicolon-as-token-boundary: the name goes on across the comment region, and the `;` that the line rule ignores lies inside it, which this specification rejects; mermaid.js joins the parts into the class `a`, U+2028, and `style:#xb`."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": [
+      {
+        "name": "a style:#xb",
+        "color": "#f00"
+      }
+    ]
+  }
+}

@@ -297,7 +297,11 @@ ASCII after its first character (see
 `string name` has the type `string`. [fixture: er/lex-name-nbsp] [fixture:
 er/lex-name-line-separator] [fixture: er/lex-tilde-space-inside] [fixture:
 er/lex-name-number] [fixture: er/gram-attribute] [fixture:
-er/lex-tilde-run-two-words]
+er/lex-tilde-run-two-words] A comment region inside the name, after a U+2028 or
+a U+2029, is left out of its written text: `A`, U+2028, `%% c`, a line break,
+and `Bar` has the `name` `A`, U+2028, and `Bar` (see
+[Comment regions inside names](../diagrams/er.md#units-and-contexts)). [fixture:
+er/lex-name-line-separator-comment-line]
 
 ### ErLiteral
 

@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Classes: the comment region takes the directive before the `%%`, and the name goes on across the comment region, as every unit does: the class is `a`, U+2028, and `b`."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": [
+      {
+        "name": "a b",
+        "color": "#109060"
+      }
+    ]
+  }
+}

@@ -802,7 +802,21 @@ multi-line-statements/line-rule-first-hash-after-colon-kept] [fixture:
 multi-line-statements/semicolon-joining-changes-kept] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept] A `;` alone does not prevent
-joining. [fixture: multi-line-statements/semicolon-on-the-last-line-joined]
+joining. [fixture: multi-line-statements/semicolon-on-the-last-line-joined] The
+name of a class of `classDef` that goes on across a joining comment region keeps
+the statement as written too: `classDef a`, U+2028, `%% c`, and a line
+`b color: #f00` are the class `a`, U+2028, `b`. Only the first line is indented,
+and a statement after it is printed on a line of its own. [test: a comment line
+after U+2028 inside the name of a class] [test: a comment line after U+2029
+inside the name of a class] [test: a comment line after a U+2028 that starts the
+name of a class] [test: two comment lines after U+2028 inside the name of a
+class] [test: a comment line after U+2028 inside the name of a class, and a
+point after it] What the line holds and where it ends follow
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029).
+Where it ends before the styles, the `classDef` is incomplete, and the input is
+rejected. A `;` that the line rule ignores on the line after the comment line
+(`style color:#f00;`) stays where it is. [test: a semicolon that the line rule
+ignores, after a comment line after U+2028 inside the name of a class]
 
 ### Multi-line values
 

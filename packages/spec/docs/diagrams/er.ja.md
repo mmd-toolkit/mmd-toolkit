@@ -197,6 +197,154 @@ er/tokens-comment-line-in-backquoted-word]
 `A ||--o{ B : "x`、改行、`%% c"` は拒否されます。
 [fixture: er/lex-comment-line-takes-closing-quote]
 
+**名前の中のコメント領域。**
+`name` の単位と属性ブロックの `word` は、どの単位もそうであるように、
+コメント領域をまたいで続き（[コメント行](../common.ja.md#コメント行) を参照）、
+U+2028 と U+2029 は名前の文字であるとともにコメントの始まりなので、`A`、U+2028、
+`%% c`、改行、`Bar` は、名前が `A`、U+2028、`Bar` の 1 つの実体で、
+U+2029 を使ったときも同じです。
+[fixture: er/lex-name-line-separator-comment-line]
+[fixture: er/lex-name-paragraph-separator-comment-line]
+コメント領域が U+2028 と `%%` の間で取る空白、2 つ目の U+2028、改行、
+ディレクティブ、コメントを終える CRLF や CR、コメントの中のディレクティブ、
+2 つ目のコメント行、2 つ目の U+2028 の後の 2 つ目の領域をまたぐときも同じで、
+次の行の始めの U+2028 は名前の文字です。
+[fixture: er/lex-name-line-separator-spaces-comment-line]
+[fixture: er/lex-name-two-line-separators-comment-line]
+[fixture: er/lex-name-line-separator-line-feed-comment-line]
+[fixture: er/lex-name-line-separator-empty-line-comment-line]
+[fixture: er/lex-name-line-separator-directive-comment-line]
+[fixture: er/lex-name-line-separator-comment-line-crlf]
+[fixture: er/lex-name-line-separator-comment-line-cr]
+[fixture: er/lex-name-line-separator-comment-line-with-directive]
+[fixture: er/lex-name-line-separator-two-comment-lines]
+[fixture: er/lex-name-two-comment-regions]
+[fixture: er/lex-name-comment-line-line-separator-next]
+コメント行の次の行の始めのディレクティブは、
+コメントの改行で終わる領域には含まれず、名前の中にあるので、`A`、U+2028、
+`%% c`、改行、
+`%%{init: {}}%%Bar`
+はここでは拒否されます（[単位の中のディレクティブ](#単位の中のディレクティブ)
+を参照）が、mermaid.js は名前を `A`、U+2028、`Bar` と読みます。
+[fixture: er/div-directive-after-comment-line-in-name]
+そこで後ろに空白が続くディレクティブは 2 つの単位の間にあり、名前を終えるので、
+`A`、U+2028、`%% c`、改行、`%%{init: {}}%% Bar` は、
+名前が `A` と U+2028 の実体と、実体 `Bar` です。
+[fixture: er/lex-name-line-separator-comment-line-directive-space-next]
+領域を始める U+2028 や U+2029 の直前のディレクティブも、
+領域がその文字の後で始まるので名前の中にあり、`A`、`%%{init: {}}%%`、U+2029、
+`%% c`、改行、`B` はここでは拒否されますが、mermaid.js は名前を `A`、U+2029、
+`B` と読みます。 [fixture: er/div-directive-before-comment-line-in-name]
+どの名前もこのように領域をまたいで続き、関係の実体、ロール、別名、
+`:::` の後のクラス、`classDef`、`class`、`style` の後の名前、`class` のクラス、
+subgraph の id、属性の型と名前もそうです。
+[fixture: er/lex-relationship-first-name-comment-line]
+[fixture: er/lex-relationship-second-name-comment-line]
+[fixture: er/lex-role-name-comment-line]
+[fixture: er/lex-alias-name-comment-line]
+[fixture: er/lex-class-shorthand-name-comment-line]
+[fixture: er/lex-classdef-name-comment-line]
+[fixture: er/lex-class-statement-name-comment-line]
+[fixture: er/lex-style-statement-name-comment-line]
+[fixture: er/lex-subgraph-id-comment-line]
+[fixture: er/lex-attribute-name-comment-line]
+[fixture: er/lex-class-statement-class-comment-line]
+[fixture: er/lex-attribute-type-comment-line]
+名前は領域の後の名前の文字へ続くので、その後の行 `accDescr {}` は名前が `A`、
+U+2028、`accDescr` で空の属性ブロックを持つ実体となり、
+領域の後の行は `style` と `classDef` の行の規則にとって独立した区間なので、
+`classDef c`、U+2028、コメント行の後の行 `style fill:#f00;` は、名前が `c`、
+U+2028、`style` でスタイルが `fill:#f00` のクラスとなります。
+領域の前の行も独立した区間なので、
+行の規則は U+2028 より前の `classDef` や `style` には届かず、`classDef c`、
+U+2028、コメント行の後では、行 `d fill:#f00;` の `;` は無視されず、
+mermaid.js と同じく `#f00;` はエンティティとして読まれ、`style A`、U+2028、
+コメント行の後も同じです。
+方向の行の規則は、`direction` の前のテキストが U+2028 を含めないため、
+領域の後の行の始めにある `direction` を見ないので、`A`、U+2028、`%% c`、改行、
+`direction LR` は、名前が `A`、U+2028、`direction` の実体と、実体 `LR` で、
+方向は `TB` のままです。
+[fixture: er/lex-name-line-separator-comment-line-acc-descr]
+[fixture: er/lex-classdef-name-comment-line-style-line]
+[fixture: er/lex-classdef-name-comment-line-hash-semicolon]
+[fixture: er/lex-style-statement-name-comment-line-hash-semicolon]
+[fixture: er/lex-name-line-separator-comment-line-direction]
+領域の後に名前の文字が続かないところで名前は終わり、
+次の行の始めにスペースがあるとき、コメント行の後に空行があるとき、
+テキストの終わりでは、名前は `A` と U+2028 です。
+[fixture: er/lex-name-line-separator-comment-line-indented]
+[fixture: er/lex-name-line-separator-comment-line-empty-line]
+[fixture: er/lex-name-line-separator-comment-line-last-line]
+[fixture: er/lex-name-line-separator-comment-end-of-text]
+その後、コメント行の改行が領域の中にあるので、
+次の行が名前の行にあるかのように文が続き、`A`、U+2028、`%% c`、改行、
+`||--o{ B : x` は、名前が `A` と U+2028 の実体から `B` への関係となる一方、
+どの領域にもない改行は文を終えるので、`A`、改行、`||--o{ B : x` は拒否され、
+したがって次の行の属性ブロック、`:::c`、`classDef` のクラス名の `,b` は、
+領域の前の名前に属します。
+[fixture: er/lex-name-line-separator-comment-line-relationship]
+[fixture: er/lex-relationship-spec-next-line]
+[fixture: er/lex-name-line-separator-comment-line-attribute-block]
+[fixture: er/lex-name-line-separator-comment-line-class-shorthand]
+[fixture: er/lex-classdef-name-line-separator-comment-line-comma]
+文の文脈では、前の名前に続かない U+2028 は、
+コメント領域やほかの規則が取らないかぎり名前を始め、スペース、引用符付きの名前、
+数、ヘッダー、`:::`、関係の `:` の後で名前を始めます。
+`A`、スペース、U+2028、`%% c`、改行、`Bar` は、実体 `A` と、
+名前が U+2028 と `Bar` の実体で、`12`、U+2028、`%% c`、改行、`ab` は、
+実体 `12` と、名前が U+2028 と `ab` の実体です。
+[fixture: er/lex-name-space-line-separator-comment-line]
+[fixture: er/lex-quoted-name-line-separator-comment-line]
+[fixture: er/lex-number-line-separator-comment-line]
+[fixture: er/lex-decimal-line-separator-comment-line]
+[fixture: er/lex-header-line-separator-comment-line]
+[fixture: er/lex-class-shorthand-line-separator-comment-line]
+[fixture: er/lex-role-line-separator-comment-line]
+行の始めでは、コメント領域は行の始めから始まって U+2028 や U+2029 を取るので、
+行 `A` の前の U+2028 と `%% c` の行は、実体 `A` を残し、
+U+2029 と `%% c` の行も同じです。
+[fixture: er/lex-line-separator-comment-line-at-line-start]
+[fixture: er/lex-paragraph-separator-comment-line-at-line-start]
+後にコメントが続かないとき、行の始めの U+2028 や U+2029 は名前を始めるので、
+U+2028 と `direction LR B` の行は、実体 U+2028 と `direction`、`LR`、
+`B` になり、方向は `TB` のままで、U+2029 でも同じです。
+[fixture: er/db-line-separator-at-line-start]
+[fixture: er/db-paragraph-separator-at-line-start]
+名前は、名前の字が後に続かないところで終わります。
+U+2028 の後に空白、またはディレクティブと空白が続くとき、名前は U+2028 だけで、
+方向の行の規則はそこから行の残りを読むので、U+2028、空白、
+`direction LR` の行は、実体 U+2028 になり、方向を `LR` にします。
+行に U+2028 だけがあるときと、テキストが U+2028 で終わるときも、
+実体 U+2028 になります。
+[fixture: er/db-line-separator-at-line-start-space-next]
+[fixture: er/lex-line-separator-at-line-start-directive-space-next]
+[fixture: er/db-line-separator-at-line-start-line-feed-next]
+[fixture: er/db-line-separator-at-line-start-end-of-text]
+`end` の後では、U+2028 は `end` が読む空白で、`1` の後では、
+濃度と数と関係の線の規則 11 が、`1` の後に探す空白として U+2028 を取り、
+領域を越えて先を見るので、`A ||--1`、U+2028、`%% c`、改行、
+`B : x` の `1` は `only-one` で、その後の U+2028 は、
+2 つ目の実体の名前（U+2028 と `B`）を始める一方、文が始まるところの `1`、
+U+2028、`%% c`、改行、`B` は拒否されます。
+[fixture: er/lex-end-line-separator-comment-line]
+[fixture: er/lex-one-line-separator-comment-line-letter]
+[fixture: er/lex-one-line-separator-comment-line-statement-start]
+属性ブロックと style の文脈では、前の語や名前に続かない U+2028 は空白で、
+単位の間にあり、ブロックの中の `string`、スペース、U+2028、`%% c`、改行、
+`a` は型 `string` の属性 `a` で、`classDef`、スペース、U+2028、`%% c`、改行、
+`a fill:red` はクラス `a` を定義し、`classDef a`、スペース、U+2028、`%% c`、
+改行、`fill:red` も同じです。
+[fixture: er/lex-attribute-space-line-separator-comment-line]
+[fixture: er/lex-classdef-space-line-separator-comment-line]
+[fixture: er/lex-classdef-name-space-line-separator-comment-line]
+後ろに何もない `%%` と、ディレクティブを始めない `%%{` はコメントではなく、
+`%` は名前の文字ではないので入力を拒否させ、
+U+2028 の後のディレクティブだけではコメント行にならないので、
+その後の改行文字は名前を終えます。
+[fixture: er/lex-name-line-separator-bare-percent-line]
+[fixture: er/lex-name-line-separator-directive-line]
+[fixture: er/lex-name-line-separator-percent-brace-line]
+
 ### 単位の中のディレクティブ
 
 字句解析器は、ディレクティブを持たない図のテキストを、
@@ -247,8 +395,9 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
   `A ||--o{ B : x%%{init: {}}%%y`、`A:::c%%{init: {}}%%d`、
   `p[Per%%{init: {}}%%son]`、`subgraph S%%{init: {}}%%T`、
   ブロックの中の `str%%{init: {}}%%ing` と `P%%{init: {}}%%K`、
-  `style A%%{init: {}}%%B fill:red` では、
-  ディレクティブは名前の単位の中にあります。
+  `style A%%{init: {}}%%B fill:red` と、
+  名前を始める行の始めの U+2028 の後に `%%{init: {}}%%` と `direction LR B`
+  が続く行では、ディレクティブは名前の単位の中にあります。
   `er%%{init: {}}%%Diagram`、`sub%%{init: {}}%%graph`、`e%%{init: {}}%%nd`、
   `acc%%{init: {}}%%Title:`、`class%%{init: {}}%%Def`、`cl%%{init: {}}%%ass`、
   `st%%{init: {}}%%yle`、`dir%%{init: {}}%%ection LR`、
@@ -263,6 +412,7 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
   [fixture: er/div-directive-in-subgraph-id]
   [fixture: er/div-directive-in-attribute-word]
   [fixture: er/div-directive-in-key] [fixture: er/div-directive-in-style-id]
+  [fixture: er/div-directive-after-line-separator-at-line-start]
   [fixture: er/div-directive-in-header-keyword]
   [fixture: er/div-directive-in-subgraph-keyword]
   [fixture: er/div-directive-in-end]
@@ -1711,7 +1861,10 @@ accessibility-statement = "accTitle" ":" title-text
   er/div-directive-in-subgraph-keyword] [fixture:
   er/div-directive-in-cardinality-words] [fixture:
   er/div-directive-in-cardinality-symbol] [fixture:
-  er/div-directive-in-class-separator]
+  er/div-directive-in-class-separator] [fixture:
+  er/div-directive-after-comment-line-in-name] [fixture:
+  er/div-directive-before-comment-line-in-name] [fixture:
+  er/div-directive-after-line-separator-at-line-start]
 - **[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.ja.md)。**
   `style` の規則か `classDef` の規則に合う行で、
   テキストの単位と文字列の単位以外の単位の中にある無視される `;` は、

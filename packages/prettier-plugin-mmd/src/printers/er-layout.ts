@@ -6,6 +6,7 @@ import type {
   ErStatement,
   ErSubgraphStatement,
   Node,
+  Range,
   Token,
 } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
@@ -16,6 +17,7 @@ import {
   holdsJoiningRegion,
   isDroppedSemicolon,
   isFirstOnItsLine,
+  lineStartOf,
   spansKeptBreaks,
 } from "./kept-lines.ts"
 import {
@@ -26,11 +28,14 @@ import {
   keepFirstGapLineTails,
   keptAsWritten,
   layoutDescriptionBlock,
+  spansLinesThatCannotJoin,
   toAsciiLowerCase,
 } from "./layout.ts"
 import {
   followsSplitKeyword,
+  holdsAttributeTildeBefore,
   isDirectionBroughtToTheColon,
+  isErLineKept,
 } from "./er-kept-lines.ts"
 import type { Source } from "./source.ts"
 import { printedToken } from "./spelling.ts"
@@ -49,6 +54,7 @@ import {
   findTokenEndingBefore,
   findTokensBetween,
   findTriviaBetween,
+  isSpaceOrTab,
   isStructural,
 } from "./source.ts"
 
@@ -119,11 +125,13 @@ export function classifyErStatement(
 /**
  * Whether an entity statement is printed with its attribute block as a
  * block: the block holds an attribute or an item that mermaid.js does not
- * read, or a comment or a directive between braces on different lines. An
- * empty block, with nothing but whitespace between its braces, is printed
- * as `{ }` on the line of the entity (see `isEmptyAttributeBlock`), and a
- * block without attributes on one line keeps its comments and directives on
- * that line (docs/er.md, Attribute blocks).
+ * read, or a line break between its braces, whether it holds a comment or a
+ * directive or nothing but whitespace. So an empty block over several lines is
+ * a block too, and where the line of the entity stays as written, it is
+ * printed as any block is: the entity stays on its line, and the `}` follows
+ * the `{` with one space (see `isEmptyAttributeBlock`; docs/er.md, Attribute
+ * blocks). A block without attributes on one line keeps its comments and
+ * directives on that line, and is printed as one statement.
  */
 export function hasAttributeBlock(
   source: Source,
@@ -131,9 +139,64 @@ export function hasAttributeBlock(
 ): boolean {
   if (statement.attributes === null) return false
   if (statement.attributes.length > 0) return true
-  if (isEmptyAttributeBlock(source, statement)) return false
   const { opening, closing } = findAttributeBraces(source, statement)
   return source.text.slice(opening.range[1], closing.range[0]).includes("\n")
+}
+
+/**
+ * Whether an entity statement has an empty attribute block over several lines
+ * that stays over them. The `{ }` that it is otherwise printed as puts the `}`
+ * and what follows it on the closing line on the line of the `{`, and the
+ * joined line is not read as the two lines were:
+ *
+ * - The line rule of mermaid.js ignores the last `;` of a line that matches
+ *   it, so in the joined line it can ignore another `;` than it does in each of
+ *   the two lines (`spansLinesThatCannotJoin`, the one decision about joining
+ *   lines; common.md, The `style` and `classDef` lines).
+ * - The oldest versions that count read the text after a `~` in an attribute
+ *   block with a rule that takes the longer, the longer the line is, so a line
+ *   that stays as written and holds such a `~` before the `{` could become one
+ *   that they do not draw (`holdsAttributeTildeBefore`).
+ *
+ * The statement is then printed as written (docs/er.md, Attribute blocks).
+ */
+export function keepsEmptyBlockLines(
+  source: Source,
+  statement: ErEntityStatement,
+): boolean {
+  if (!hasAttributeBlock(source, statement)) return false
+  if (!isEmptyAttributeBlock(source, statement)) return false
+  const { opening, closing } = findAttributeBraces(source, statement)
+  return (
+    spansLinesThatCannotJoin(source, opening.range[0], closing.range[1]) ||
+    (isErLineKept(source, opening.range[0]) &&
+      holdsAttributeTildeBefore(source, opening.range[0]))
+  )
+}
+
+/**
+ * Whether an entity statement has an attribute block whose `}` lies on a later
+ * line than its `{`, after text that a joining region cuts: mermaid.js reads
+ * the text up to the `{` as one line, which is printed as written, and the
+ * attributes and the `}` lie outside that line, so they are printed as the
+ * block of any entity, also where the entity stands after another statement on
+ * the line (docs/er.md, Multi-line statements).
+ */
+export function isBlockAfterJoinedLine(
+  source: Source,
+  statement: ErEntityStatement,
+): boolean {
+  if (statement.attributes === null) return false
+  const { opening, closing } = findAttributeBraces(source, statement)
+  return (
+    lineStartOf(source, closing.range[0]) !==
+      lineStartOf(source, opening.range[0]) &&
+    holdsJoiningRegion(
+      source,
+      lineStartOf(source, statement.range[0]),
+      opening.range[0],
+    )
+  )
 }
 
 /**
@@ -152,6 +215,46 @@ export function isEmptyAttributeBlock(
   return (
     findTriviaBetween(source, opening.range[1], closing.range[0]).length === 0
   )
+}
+
+/**
+ * The range before the `}` of an empty attribute block over several lines,
+ * and whether its replacement starts with a line break. Spaces, tabs, and line
+ * feeds between the braces become one line break: trailing whitespace and
+ * empty lines do not decide why a stretch stays as written. Otherwise only
+ * spaces and tabs before the `}` on its line are replaced, or null when another
+ * character precedes it. Replacing this range aligns the `}` with the entity
+ * (docs/er.md, Attribute blocks).
+ */
+export function findEmptyBlockClosingGap(
+  source: Source,
+  statement: ErEntityStatement,
+): { readonly range: Range; readonly startsWithLineBreak: boolean } | null {
+  if (
+    !hasAttributeBlock(source, statement) ||
+    !isEmptyAttributeBlock(source, statement)
+  ) {
+    return null
+  }
+  const { opening, closing } = findAttributeBraces(source, statement)
+  const between = source.text.slice(opening.range[1], closing.range[0])
+  if (
+    [...between].every(
+      (character) => isSpaceOrTab(character) || character === "\n",
+    )
+  ) {
+    return {
+      range: [opening.range[1], closing.range[0]],
+      startsWithLineBreak: true,
+    }
+  }
+  const indentation = between.slice(between.lastIndexOf("\n") + 1)
+  return [...indentation].every(isSpaceOrTab)
+    ? {
+        range: [closing.range[0] - indentation.length, closing.range[0]],
+        startsWithLineBreak: false,
+      }
+    : null
 }
 
 /** The `{` and the `}` of the attribute block of an entity statement. */
@@ -317,7 +420,13 @@ export function layoutBlockOpening(
   statement: ErEntityStatement,
   opening: Token,
 ): AtomLayout {
-  if (holdsJoiningRegion(source, statement.range[0], opening.range[1])) {
+  if (
+    holdsJoiningRegion(
+      source,
+      lineStartOf(source, statement.range[0]),
+      opening.range[1],
+    )
+  ) {
     return keptAsWritten(statement.range[0], opening.range[1])
   }
   const rules = entityHeaderRules(source, statement)

@@ -61,7 +61,15 @@ of any other kind, a directive or an ignored `;` makes the input rejected (see
 [fixture: er/lex-directive-in-role-string] [fixture:
 er/tokens-comment-line-in-role-string] [fixture:
 er/tokens-ignored-semicolon-in-role-string] [fixture: er/div-directive-in-name]
-[fixture: er/div-ignored-semicolon-in-name]
+[fixture: er/div-ignored-semicolon-in-name] A comment region also cuts an
+`Identifier` token, whose name goes on across the region after a U+2028 or a
+U+2029 in it (see
+[Comment regions in tokens](../tokens.md#comment-regions-in-tokens)): its
+fragments are `Identifier` tokens, and the region, with a directive before its
+`%%`, lies outside them, as in a role and in the name of an attribute. [fixture:
+er/lex-name-line-separator-comment-line] [fixture:
+er/lex-name-line-separator-directive-comment-line] [fixture:
+er/lex-role-name-comment-line] [fixture: er/lex-attribute-name-comment-line]
 
 - An empty description block that is a statement has the `Keyword` token
   `accDescr` and the `Punctuator` tokens `{` and `}`. [fixture:
