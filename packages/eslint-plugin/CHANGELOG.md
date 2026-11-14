@@ -1,5 +1,22 @@
 # @mmd-toolkit/eslint-plugin
 
+## 0.5.0
+
+### Minor Changes
+
+- [#82](https://github.com/mmd-toolkit/mmd-toolkit/pull/82) [`7c25dfb`](https://github.com/mmd-toolkit/mmd-toolkit/commit/7c25dfb066f3cb57b60753bddd9ca4cf1aaa8236) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Report a vertex written again in a later `subgraph` or `flow`, which does not
+  get it, also when one label is in quotes and the other is not, as `A["x"]` after
+  `A[x]`, in `flowchart-no-redefined-vertex` and `agentflow-no-redefined-vertex`.
+
+### Patch Changes
+
+- [#82](https://github.com/mmd-toolkit/mmd-toolkit/pull/82) [`7c25dfb`](https://github.com/mmd-toolkit/mmd-toolkit/commit/7c25dfb066f3cb57b60753bddd9ca4cf1aaa8236) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Fix `agentflow-no-redefined-vertex` after a `connector` declaration: its title
+  is plain text even when written as markdown, so `C["API"]` in a later `flow`
+  after ``connector C["`API`"]`` is now reported, and ``C["`API`"]`` is not.
+- Updated dependencies [[`ff4b39a`](https://github.com/mmd-toolkit/mmd-toolkit/commit/ff4b39ae943932cc050b479dd1e44af024a67cfa)]:
+  - @mmd-toolkit/parser@0.3.2
+  - @mmd-toolkit/ast@0.3.2
+
 ## 0.4.0
 
 ### Minor Changes

@@ -1,5 +1,15 @@
 # @mmd-toolkit/parser
 
+## 0.3.2
+
+### Patch Changes
+
+- [#86](https://github.com/mmd-toolkit/mmd-toolkit/pull/86) [`ff4b39a`](https://github.com/mmd-toolkit/mmd-toolkit/commit/ff4b39ae943932cc050b479dd1e44af024a67cfa) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Read a name in `erDiagram`, and the name of a class of `classDef` in
+  `quadrantChart`, across a comment line that follows a U+2028 or a U+2029 in it,
+  as one name, which threw an internal error.
+- Updated dependencies []:
+  - @mmd-toolkit/ast@0.3.2
+
 ## 0.3.1
 
 ### Patch Changes
