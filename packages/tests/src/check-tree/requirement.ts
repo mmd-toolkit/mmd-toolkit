@@ -155,7 +155,7 @@ const STATEMENTS: readonly string[] = [
   "RequirementAccDescrBlockStatement",
 ]
 
-/** The node types of a name (the Type column of the tables of ast/requirement.md). */
+/** The node types of a name other than one after `style` or `classDef` (the Type column of the tables of ast/requirement.md). */
 const NAME: readonly string[] = ["RequirementIdentifier", "StringLiteral"]
 
 /** The node types of the value of a field. */
@@ -165,10 +165,10 @@ const VALUE: readonly string[] = ["RequirementLiteral", "StringLiteral"]
  * ast/requirement.md: the node types that a field of a node type holds, as the
  * Type column of its table gives them; a field that holds a value is not in
  * it. `tests/check-tree-requirement.test.ts` requires the table to be that
- * column. The unit that the author wrote decides the type: a name is a
- * RequirementIdentifier for an `unquoted-text` or a `style-word` unit and a
- * StringLiteral for a `string` unit, and a value is a RequirementLiteral or a
- * StringLiteral in the same way.
+ * column. A name without quotes after `style` or `classDef` is an Identifier;
+ * every other name without quotes is a RequirementIdentifier for an
+ * `unquoted-text` or a `style-word` unit. A quoted name is a StringLiteral, and
+ * a value is a RequirementLiteral or a StringLiteral in the same way.
  */
 export const REQUIREMENT_CHILD_TYPES: Readonly<
   Record<string, Readonly<Record<string, readonly string[]>>>
@@ -197,11 +197,11 @@ export const REQUIREMENT_CHILD_TYPES: Readonly<
     textAfter: ["RequirementIgnoredText"],
   },
   RequirementStyleStatement: {
-    names: NAME,
+    names: ["Identifier", "StringLiteral"],
     styles: ["RequirementLiteral"],
   },
   RequirementClassDefStatement: {
-    cssClasses: NAME,
+    cssClasses: ["Identifier", "StringLiteral"],
     styles: ["RequirementLiteral"],
   },
   RequirementClassStatement: { names: NAME, cssClasses: NAME },
@@ -502,7 +502,9 @@ function fieldOf(parent: CheckedNode | null, node: CheckedNode): string {
 function checkUnquotedText(reading: Reading, node: CheckedNode): void {
   const value = textOf(
     node,
-    node.type === "RequirementIdentifier" ? "name" : "value",
+    node.type === "RequirementIdentifier" || node.type === "Identifier"
+      ? "name"
+      : "value",
   )
   const where = label(node)
   reading.problems.expect(
@@ -519,18 +521,20 @@ function checkUnquotedText(reading: Reading, node: CheckedNode): void {
 }
 
 /**
- * ast/requirement.md, RequirementIdentifier and RequirementLiteral: the value
- * of a name or a text without quotes is not empty and starts and ends without
- * whitespace; the tokens of a text are `RawText` tokens, also where a directive
- * cuts them, and those of a name are of the kinds that its field gives (see
- * {@link NAME_TOKEN_KINDS}).
+ * ast/requirement.md, RequirementIdentifier, RequirementStyleStatement,
+ * RequirementClassDefStatement, and RequirementLiteral: the value of a name
+ * or a text without quotes is not empty and starts and ends without
+ * whitespace; the tokens of a text are `RawText` tokens, also where a
+ * directive cuts them, and those of a name are of the kinds that its field
+ * gives (see {@link NAME_TOKEN_KINDS}).
  */
 function checkUnquoted(
   reading: Reading,
   node: CheckedNode,
   parent: CheckedNode | null,
 ): void {
-  const isName = node.type === "RequirementIdentifier"
+  const isName =
+    node.type === "RequirementIdentifier" || node.type === "Identifier"
   const value = textOf(node, isName ? "name" : "value")
   const where = label(node)
   reading.problems.expect(value !== "", where, `the ${node.type} is empty`)
@@ -665,6 +669,7 @@ export function checkRequirementTree(
   const reading = readingOf(text, root, problems)
   walkNodes(root, (node, parent) => {
     switch (node.type) {
+      case "Identifier":
       case "RequirementIdentifier":
       case "RequirementLiteral":
         checkUnquoted(reading, node, parent)

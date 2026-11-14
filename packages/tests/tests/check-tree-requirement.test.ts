@@ -59,6 +59,12 @@ function name(
   return kit.node("RequirementIdentifier", token.range, { name: value })
 }
 
+/** A name after `style` or `classDef`: its `Identifier` token and node. */
+function identifier(kit: Kit, text: string): CheckedNode {
+  const token = kit.token("Identifier", text)
+  return kit.node("Identifier", token.range, { name: text })
+}
+
 /** A text without quotes: its `RawText` token, and the `RequirementLiteral` that holds it. */
 function literal(kit: Kit, text: string, value = text): CheckedNode {
   const token = kit.token("RawText", text)
@@ -563,7 +569,7 @@ function stylesAndClasses(): Built {
     'requirementDiagram\nstyle r,"e" fill:blue,stroke : green\nclassDef cA,cB fill : red\nclass rq,el cA,cB\nrq:::cA,cB',
     (kit) => {
       const styleKeyword = kit.token("Keyword", "style")
-      const r = name(kit, "r", "r", "Identifier")
+      const r = identifier(kit, "r")
       kit.token("Punctuator", ",")
       const e = quoted(kit, '"e"')
       const fill = literal(kit, "fill:blue")
@@ -577,9 +583,9 @@ function stylesAndClasses(): Built {
         { value: "stroke:green" },
       )
       const classDefKeyword = kit.token("Keyword", "classDef")
-      const cA = name(kit, "cA", "cA", "Identifier")
+      const cA = identifier(kit, "cA")
       kit.token("Punctuator", ",")
-      const cB = name(kit, "cB", "cB", "Identifier")
+      const cB = identifier(kit, "cB")
       const redStart = kit.token("RawText", "fill")
       kit.token("RawText", ":")
       const redEnd = kit.token("RawText", "red")
@@ -1117,8 +1123,8 @@ const BROKEN: readonly BrokenCase[] = [
     built: stylesAndClasses,
     mutate: retype("r", "RawText"),
     expected: at(
-      "RequirementIdentifier",
-      "the tokens of a RequirementIdentifier in names are not all of the kind Identifier: RawText",
+      "Identifier",
+      "the tokens of a Identifier in names are not all of the kind Identifier: RawText",
     ),
   },
   {
@@ -1126,8 +1132,8 @@ const BROKEN: readonly BrokenCase[] = [
     built: stylesAndClasses,
     mutate: retype("cA", "RawText"),
     expected: at(
-      "RequirementIdentifier",
-      "the tokens of a RequirementIdentifier in cssClasses are not all of the kind Identifier: RawText",
+      "Identifier",
+      "the tokens of a Identifier in cssClasses are not all of the kind Identifier: RawText",
     ),
   },
   {
@@ -1265,6 +1271,24 @@ const BROKEN: readonly BrokenCase[] = [
   // fixed words are `Keyword` tokens, and the marks are `Punctuator` tokens.
   // The tokens of a name, a text, and a string.
   // The types of the nodes in a field, which the unit that was written decides.
+  {
+    name: "a name of a style as a RequirementIdentifier",
+    built: stylesAndClasses,
+    mutate: setOf("Identifier", "name", "r", "type", "RequirementIdentifier"),
+    expected: at(
+      "RequirementStyleStatement",
+      "the field names holds a RequirementIdentifier, not a Identifier or StringLiteral",
+    ),
+  },
+  {
+    name: "a class of a class definition as a RequirementIdentifier",
+    built: stylesAndClasses,
+    mutate: setOf("Identifier", "name", "cA", "type", "RequirementIdentifier"),
+    expected: at(
+      "RequirementClassDefStatement",
+      "the field cssClasses holds a RequirementIdentifier, not a Identifier or StringLiteral",
+    ),
+  },
   {
     name: "the name of a requirement as a RequirementLiteral",
     built: requirementWithoutItems,
@@ -1755,6 +1779,53 @@ const BROKEN: readonly BrokenCase[] = [
     ),
   },
   // The names and the texts without quotes.
+  ...[
+    ["a name of a style", "r"],
+    ["a class of a class definition", "cA"],
+  ].flatMap(([title, value]): BrokenCase[] => [
+    {
+      name: `${title} that is empty`,
+      built: stylesAndClasses,
+      mutate: setOf("Identifier", "name", value, "name", ""),
+      expected: at("Identifier", "the Identifier is empty"),
+    },
+    {
+      name: `${title} that starts with whitespace`,
+      built: stylesAndClasses,
+      mutate: setOf("Identifier", "name", value, "name", ` ${value}`),
+      expected: at(
+        "Identifier",
+        `the Identifier starts or ends with whitespace: ${JSON.stringify(` ${value}`)}`,
+      ),
+    },
+    {
+      name: `${title} that ends with whitespace`,
+      built: stylesAndClasses,
+      mutate: setOf("Identifier", "name", value, "name", `${value} `),
+      expected: at(
+        "Identifier",
+        `the Identifier starts or ends with whitespace: ${JSON.stringify(`${value} `)}`,
+      ),
+    },
+    {
+      name: `${title} that starts with a dot`,
+      built: stylesAndClasses,
+      mutate: setOf("Identifier", "name", value, "name", `.${value}`),
+      expected: at(
+        "Identifier",
+        `${JSON.stringify(`.${value}`)} starts with ".", which is no ASCII word character, with which an unquoted name or value starts`,
+      ),
+    },
+    {
+      name: `${title} that holds a character that ends an unquoted name`,
+      built: stylesAndClasses,
+      mutate: setOf("Identifier", "name", value, "name", `${value}:`),
+      expected: at(
+        "Identifier",
+        `${JSON.stringify(`${value}:`)} holds ":", which ends an unquoted name or value`,
+      ),
+    },
+  ]),
   {
     name: "a name that is empty",
     built: requirementWithoutItems,
