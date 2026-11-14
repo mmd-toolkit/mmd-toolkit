@@ -21,7 +21,7 @@ import {
   afVertex,
   agentflowTree,
 } from "./agentflow-built.ts"
-import { recordedTree, setField } from "./check-tree-recorded.ts"
+import { copyOf, recordedTree, setField } from "./check-tree-recorded.ts"
 
 const fixtures = loadFixtures("agentflow")
 
@@ -413,3 +413,29 @@ it("rejects an accessibility value that swallows its closing brace and the next 
     ),
   ).toBe(true)
 })
+
+// A token of a flow name or of a comment line whose type is changed to a string
+// type, with a bare text behind it, is a problem of the tree, not an exception
+// of the check: the check that reads the string reports that it cannot be read.
+for (const name of ["comment-after-connector", "comment-after-flow-start"])
+  for (const type of ["String", "StringFragment"])
+    it(`reports the RawText token 3 of ${name} changed to ${type}`, () => {
+      const { input, tree } = recordedTree("agentflow", name)
+      const broken = copyOf(tree)
+      const token = broken.tokens[3]
+      if (token === undefined || token.type !== "RawText")
+        throw new Error(`${name} has no RawText token 3`)
+      setField(token, "type", type)
+      const problems = checkTree(input, broken)
+      expect(
+        problems.filter((problem) =>
+          problem.message.startsWith("its string cannot be read"),
+        ),
+      ).toHaveLength(1)
+      if (type === "String")
+        expect(
+          problems.some((problem) =>
+            problem.message.startsWith("a String token does not start with"),
+          ),
+        ).toBe(true)
+    })

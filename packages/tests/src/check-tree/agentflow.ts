@@ -4,6 +4,7 @@ import {
   readAgentflowCharacters,
 } from "../db-from-tree/converted-text.ts"
 import { StringDelimiters } from "../db-from-tree/graph.ts"
+import type { TreeRange } from "../db-from-tree/tree.ts"
 import { isWhitespace, isWordCharacter } from "../db-from-tree/characters.ts"
 import { trimmed } from "../db-from-tree/values.ts"
 import { scanSource } from "../source-scan.ts"
@@ -244,7 +245,10 @@ const HEADER_DIRECTIONS: readonly string[] = [
   "^",
 ]
 
-/** The shared nested string contexts, with Agentflow's own comment and brace conversion. */
+/**
+ * The shared nested string contexts, with Agentflow's own comment and brace
+ * conversion; a string that cannot be read is a problem, not an exception.
+ */
 export function agentflowStringDelimitersOf(
   text: string,
   root: CheckedRoot,
@@ -253,16 +257,23 @@ export function agentflowStringDelimitersOf(
     root,
     readAgentflowCharacters(text, root),
   )
+  // A node asked twice (by the value and by the name of a flow) reports once.
+  const read = new Map<CheckedNode, TreeRange[]>()
   return (node, problems) => {
+    const known = read.get(node)
+    if (known !== undefined) return known
+    let delimiters: TreeRange[]
     try {
-      return strings.around(node.range)
+      delimiters = strings.around(node.range)
     } catch (error) {
       problems.report(
         label(node),
         `its string cannot be read: ${error instanceof Error ? error.message : String(error)}`,
       )
-      return []
+      delimiters = []
     }
+    read.set(node, delimiters)
+    return delimiters
   }
 }
 
@@ -1721,12 +1732,11 @@ function checkLexicalValues(
 }
 
 /** Canonical existing link indices and the flow member hasOwnProperty condition, before filtering. */
-function checkOutsideGrammar(reading: Reading): void {
+function checkOutsideGrammar(
+  reading: Reading,
+  delimiters: StringDelimitersOf,
+): void {
   let edges = 0
-  const strings = new StringDelimiters(
-    reading.root,
-    readAgentflowCharacters(reading.text, reading.root),
-  )
 
   /** The candidate name used by the member rejection, before membership filtering. */
   function nameOf(name: CheckedNode | null): string {
@@ -1735,7 +1745,10 @@ function checkOutsideGrammar(reading: Reading): void {
       : entriesOf(name, "parts")
           .map((part) =>
             part?.type === "AgentflowLabel"
-              ? reading.converted.of(part.range, strings.around(part.range))
+              ? reading.converted.of(
+                  part.range,
+                  delimiters(part, reading.problems),
+                )
               : "",
           )
           .join("")
@@ -2000,5 +2013,5 @@ export function checkAgentflowTree(
   }
   checkDiagramAndValues(reading, delimiters)
   checkLexicalValues(reading, delimiters)
-  checkOutsideGrammar(reading)
+  checkOutsideGrammar(reading, delimiters)
 }
