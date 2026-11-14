@@ -114,23 +114,21 @@ The prefix tells what a failure on the fixture would be a failure of:
 An input that shows more than one thing takes the prefix of the thing a failure
 on it would be about.
 
-For an input that has `%%`, the list above does not give every reader the same
-prefix: a failure on such an input can be about the units, the statements, or
-the values, and the corpus has the same kind of input under different prefixes
-in one diagram type. The corpus follows the prefixes that each diagram type
-already has, and the table below records them. So a new fixture whose input
-contains `%%` anywhere in its text (whether or not it starts a comment or a
-directive) and whose name, as the author chose it by the list above, has the
-prefix `lex-`, `gram-`, or `db-` takes its prefix by these steps, in order, and
-not by the list. The prefix of such a fixture shows the habit of its diagram
-type, and does not always say what a failure on the fixture would be a failure
-of. A new fixture whose input has no `%%` takes its prefix from the list above;
-these steps do not cover it.
+For an input whose failure can be about the units, the statements, or the
+values, the list above does not give every reader the same prefix, and the
+corpus has the same kind of input under different prefixes in one diagram type.
+The corpus follows the prefixes that each diagram type already has, and the
+table below records them. So a new fixture whose name, as the author chose it by
+the list above, has the prefix `lex-`, `gram-`, or `db-` takes its prefix by
+these steps, in order, and not by the list. The prefix of such a fixture shows
+the habit of its diagram type, and does not always say what a failure on the
+fixture would be a failure of.
 
 1. An input is accepted if its `expected.json` says that mermaid.js accepts it,
    and rejected if it has a `parse-error.json`; the two are separate tests, so
-   an input that mermaid.js accepts and the parser rejects is both. The kind of
-   an accepted input is that it has `%%` in its text. The kind of a rejected
+   an input that mermaid.js accepts and the parser rejects is both. An accepted
+   input has one of two kinds: it has `%%` anywhere in its text (whether or not
+   it starts a comment or a directive), or it has none. The kind of a rejected
    input, one that has a `parse-error.json`, is how the message in that file
    begins: `Unexpected character`, `Unexpected token`, or an end of the text
    (one kind, for `Unexpected end of text` and for a message that ends with
@@ -155,27 +153,27 @@ forms of an end of the text different prefixes (`Unexpected end of text` takes
 a diagram type whose end-of-text fixtures take one prefix has that prefix in its
 cell.
 
-| Diagram type  | Accepted | `Unexpected character` | `Unexpected token` | End of the text |
-| ------------- | -------- | ---------------------- | ------------------ | --------------- |
-| `block`       | `db-`    | `gram-`                |                    | `gram-`         |
-| `c4`          |          |                        |                    | `gram-`         |
-| `class`       |          |                        |                    | `lex-`          |
-| `er`          |          |                        | `lex-`             | `lex-`          |
-| `gantt`       |          |                        | `lex-`             | `lex-`          |
-| `gitgraph`    |          |                        | `lex-`             |                 |
-| `journey`     |          |                        | `lex-`             | `lex-`          |
-| `kanban`      |          | `gram-`                |                    | `gram-`         |
-| `mindmap`     |          |                        |                    | `lex-`          |
-| `quadrant`    | `db-`    | `gram-`                |                    | `gram-`         |
-| `requirement` |          |                        | `lex-`             | `lex-`          |
-| `sankey`      | `db-`    | `gram-`                |                    | `gram-`         |
-| `sequence`    |          |                        |                    | `gram-`         |
-| `state`       |          |                        |                    | `lex-`          |
-| `timeline`    |          |                        |                    | `gram-`         |
-| `treemap`     | `gram-`  | `gram-`                |                    |                 |
-| `treeview`    | `gram-`  |                        |                    |                 |
-| `venn`        |          |                        |                    | `gram-`         |
-| `xychart`     | `db-`    | `gram-`                |                    | `gram-`         |
+| Diagram type  | Accepted, with `%%` | Accepted, without `%%` | `Unexpected character` | `Unexpected token` | End of the text |
+| ------------- | ------------------- | ---------------------- | ---------------------- | ------------------ | --------------- |
+| `block`       | `db-`               | `db-`                  | `gram-`                |                    | `gram-`         |
+| `c4`          |                     | `db-`                  |                        |                    | `gram-`         |
+| `class`       |                     |                        |                        |                    | `lex-`          |
+| `er`          |                     |                        |                        | `lex-`             | `lex-`          |
+| `gantt`       |                     |                        |                        | `lex-`             | `lex-`          |
+| `gitgraph`    |                     |                        |                        | `lex-`             |                 |
+| `journey`     |                     |                        |                        | `lex-`             | `lex-`          |
+| `kanban`      |                     |                        | `gram-`                |                    | `gram-`         |
+| `mindmap`     |                     | `db-`                  |                        |                    | `lex-`          |
+| `quadrant`    | `db-`               | `db-`                  | `gram-`                |                    | `gram-`         |
+| `requirement` |                     |                        |                        | `lex-`             | `lex-`          |
+| `sankey`      | `db-`               | `db-`                  | `gram-`                |                    | `gram-`         |
+| `sequence`    |                     | `db-`                  |                        |                    | `gram-`         |
+| `state`       |                     |                        |                        |                    | `lex-`          |
+| `timeline`    |                     | `db-`                  |                        |                    | `gram-`         |
+| `treemap`     | `gram-`             |                        | `gram-`                |                    |                 |
+| `treeview`    | `gram-`             |                        |                        |                    |                 |
+| `venn`        |                     |                        |                        |                    | `gram-`         |
+| `xychart`     | `db-`               | `db-`                  | `gram-`                |                    | `gram-`         |
 
 After the topic, a name may carry marks of what the input holds, in this order
 where there are several: `u2028` or `u2029` (the character is in the input),
