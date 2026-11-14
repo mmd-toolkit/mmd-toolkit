@@ -544,6 +544,8 @@ fixture のテストが、各結果をそのファイルと比べる。
    その fixture をこの作業が足したなら、欠けた文を仕様に伝える。
    スキル `conventions` の「テストの実行」のとおり、fixture は、
    それを引く文と一緒に書かれるものだからである。
+   収集器が mermaid.js から取った入力は、
+   `conventions` の同じ段落が例外とするので、伝えない。
    この作業が足したかは、ここでただ 1 つ、リポジトリの履歴が要る確かめである。
    この作業が足した fixture では、
    `git cat-file -e origin/main:packages/tests/fixtures/<フォルダ>/<fixture 名>/input.mmd`

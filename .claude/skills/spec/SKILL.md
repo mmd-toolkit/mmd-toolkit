@@ -281,9 +281,10 @@ it from the cases that its sentences distinguish.
    list each case that it distinguishes, and each other rule that meets it at
    the place it names, as
    [the Principles of AGENTS.md](../../../AGENTS.md#principles) list them. Each
-   case is one input that answers one question about the sentence. Products of
-   places and strings are not written, and no input is chosen by a random source
-   or by a number (a seed, a count).
+   case is one input that answers one question about the sentence. A product of
+   places and strings is written only as the skill conventions allows (Running
+   tests), and no input is chosen by a random source or by a number (a seed, a
+   count).
 2. Check each case once with mermaid.js and with the parser's `parse()` and
    `dbOf()` (2.1). For a diagram type that the parser does not read yet, compare
    mermaid.js's result with what the sentence says. Each case then has a fixture

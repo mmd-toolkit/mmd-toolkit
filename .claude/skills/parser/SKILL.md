@@ -485,8 +485,10 @@ for acceptance without adding configuration parameters or options to `parse()`.
    tree that no sentence cites gets an answer that says so, and is not compared.
    When the work added its fixture, report the missing sentence to the
    specification: a fixture is written with the sentence that cites it (the
-   skill `conventions`, Running tests). Whether the work added it is the one
-   thing here that needs the history of the repository:
+   skill `conventions`, Running tests). An input that the collector took from
+   mermaid.js is not reported: the same paragraph of `conventions` excepts it.
+   Whether the work added it is the one thing here that needs the history of the
+   repository:
    `git cat-file -e origin/main:packages/tests/fixtures/<folder>/<fixture>/input.mmd`
    fails for a fixture that the work added.
 

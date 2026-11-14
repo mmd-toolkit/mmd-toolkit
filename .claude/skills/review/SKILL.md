@@ -45,7 +45,8 @@ The reviewer edits nothing in the working tree.
   against the parser or the specification, whichever is wrong; a changed tree
   that the author gives no answer for is a finding; and a fixture that the
   change added and that no sentence cites is a finding against the
-  specification. The review report carries the answers.
+  specification, unless the collector took it from mermaid.js (the skill
+  conventions, Running tests). The review report carries the answers.
 - A review of a branch or a pull request covers the whole of it, also when the
   request names only its last commit: every file it changed since its base, and
   the released behavior that the same sentences govern. What an earlier round
