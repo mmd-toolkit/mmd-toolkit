@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md Comments: two comment lines follow a U+2028 in the period; the Db summary holds `A`, U+2028, and `B`."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A B",
+        "events": [
+          "e"
+        ]
+      }
+    ]
+  }
+}

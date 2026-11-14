@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Comments and boundaries: a `%%{ }%%`, which starts no directive and no comment, follows a U+2028 in the quoted name; the Db summary holds `A`, U+2028, `%%{ }%%`, a line feed, and `B`."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A %%{ }%%\nB",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

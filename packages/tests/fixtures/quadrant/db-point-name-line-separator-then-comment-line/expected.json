@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Comment lines: a U+2028 is a comment start, so the comment after it is read through, and the name of the point goes on after it: the point is `A`, U+2028, `b`."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [
+      {
+        "text": "A b",
+        "className": "",
+        "x": "0.3",
+        "y": "0.6"
+      }
+    ],
+    "classes": []
+  }
+}

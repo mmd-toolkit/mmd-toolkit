@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Comment lines: a U+2028 is a comment start, so the comment after it is read through, and the string goes on after it: its value is `A`, U+2028, `B`."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A B",
+        "value": 1
+      }
+    ]
+  }
+}

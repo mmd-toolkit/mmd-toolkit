@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Comment lines: a U+2029 is a comment start as a U+2028 is, so the comment after it is read through, and the string goes on after it: its value is `A`, U+2029, `B`."
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "A_B",
+        "label": "A B",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

@@ -312,18 +312,47 @@ usecase/lex-vt], [fixture: usecase/lex-ff], [fixture: usecase/lex-nel],
 usecase/lex-native-label-separators].
 
 Common comment regions are recognized in all contexts, including strings,
-metadata, JSON, and accessibility blocks. They can remove entire comment lines
-and preceding blank lines. Native comments are different: only default context
-recognizes a physical line whose prefix before %% contains ASCII spaces/tabs
-only. Its mark is %% and its value runs through the physical line, excluding LF;
-neither U+2028 nor U+2029 ends it. A bare %% or a non-directive %%{...} line
-after the header is a native comment. Native comments supply a comment line, not
-an inline statement suffix. [fixture: usecase/comment-bare-pair], [fixture:
-usecase/comment-bare-eof], [fixture: usecase/comment-u2028], [fixture:
-usecase/comment-u2029], [fixture: usecase/comment-after-actor], [fixture:
-usecase/comment-after-edge], [fixture: usecase/gram-json-comment], [fixture:
-usecase/db-accdescr-block-comment]; [fixture: usecase/lex-comment-bare-ls],
-[fixture: usecase/lex-comment-region-hides-markdown-close], [fixture:
+metadata, JSON, and accessibility blocks. [fixture:
+usecase/lex-string-line-separator-then-comment-line] [fixture:
+usecase/lex-string-paragraph-separator-then-comment-line] [fixture:
+usecase/lex-markdown-string-line-separator-then-comment-line] [fixture:
+usecase/lex-stereotype-line-separator-then-comment-line] [fixture:
+usecase/lex-json-line-separator-then-comment-line] [fixture:
+usecase/lex-acc-title-line-separator-then-comment-line] [fixture:
+usecase/lex-acc-descr-line-separator-then-comment-line] [fixture:
+usecase/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+usecase/lex-string-line-separator-comment-line-directive-next] [fixture:
+usecase/lex-string-line-separator-comment-line-space-next] [fixture:
+usecase/lex-string-line-separator-comment-line-separator-next] [fixture:
+usecase/lex-string-line-separator-comment-line-empty-line] [fixture:
+usecase/lex-string-line-separator-comment-line-end-of-text] [fixture:
+usecase/lex-acc-title-line-separator-comment-line-end-of-text] [fixture:
+usecase/lex-string-line-separator-comment-line-cr] [fixture:
+usecase/lex-string-line-separator-comment-line-crlf] [fixture:
+usecase/lex-string-line-separator-comment-line-two-comment-lines] [fixture:
+usecase/lex-string-line-separator-comment-line-two-regions] [fixture:
+usecase/lex-string-line-separator-comment-line-spaces-before] [fixture:
+usecase/lex-string-line-separator-comment-line-line-feed-before] [fixture:
+usecase/lex-string-line-separator-comment-line-directive-before] [fixture:
+usecase/lex-string-line-separator-comment-line-line-rule-before] [fixture:
+usecase/lex-string-line-separator-comment-line-line-rule-after] [fixture:
+usecase/lex-string-line-separator-comment-line-bare-percent] [fixture:
+usecase/lex-string-line-separator-comment-line-percent-brace] [fixture:
+usecase/lex-bare-node-label-line-separator-then-comment-line] [fixture:
+usecase/lex-note-label-line-separator-then-comment-line] [fixture:
+usecase/lex-css-quoted-component-line-separator-then-comment-line] They can
+remove entire comment lines and preceding blank lines. Native comments are
+different: only default context recognizes a physical line whose prefix before
+%% contains ASCII spaces/tabs only. Its mark is %% and its value runs through
+the physical line, excluding LF; neither U+2028 nor U+2029 ends it. A bare %% or
+a non-directive %%{...} line after the header is a native comment. Native
+comments supply a comment line, not an inline statement suffix. [fixture:
+usecase/comment-bare-pair], [fixture: usecase/comment-bare-eof], [fixture:
+usecase/comment-u2028], [fixture: usecase/comment-u2029], [fixture:
+usecase/comment-after-actor], [fixture: usecase/comment-after-edge], [fixture:
+usecase/gram-json-comment], [fixture: usecase/db-accdescr-block-comment];
+[fixture: usecase/lex-comment-bare-ls], [fixture:
+usecase/lex-comment-region-hides-markdown-close], [fixture:
 usecase/lex-comment-inline-native], [fixture:
 usecase/lex-comment-region-inside-stereotype].
 

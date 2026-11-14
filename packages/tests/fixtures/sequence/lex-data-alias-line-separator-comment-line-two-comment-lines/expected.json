@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md The data context: two comment lines follow a U+2028 in the alias in the data block; the Db summary holds `A`, U+2028, and `B`."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "X",
+        "description": "A B",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "X",
+        "set": {
+          "description": "A B"
+        }
+      }
+    ]
+  }
+}

@@ -135,6 +135,12 @@ validation serves `checkTree`. JSON interiors stay opaque.
    [fixture: usecase/db-acctitle-empty] [fixture: usecase/db-accdescr-empty]
    [fixture: usecase/config-security-other] [fixture:
    usecase/config-security-other-root-false]
+10. **Comment regions in values.** A comment region after a U+2028 or a U+2029
+    is left out of a value (see
+    [The converted form](../db-from-tree.md#the-converted-form)). For JSON, the
+    `value` of the node comes from the supplied effect, and has `A`, U+2028, and
+    `B` in its `description` property. [fixture:
+    usecase/lex-json-line-separator-then-comment-line]
 
 ## Recorded comparisons
 

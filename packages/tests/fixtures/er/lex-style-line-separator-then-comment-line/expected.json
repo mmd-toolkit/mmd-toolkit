@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Comment lines: a U+2028 is a comment start, so the comment after it is read through, and the style goes on after it: its value is `fill:red`, U+2028, `x`."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [
+          "fill:red x"
+        ],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Whitespace, comments, and directives in every context: `style:#a` before a U+2028 in the string, and `#b;` on the line after the comment line, a line segment of its own for the line rule of style and classDef lines; the Db summary holds `Astyle:#a`, U+2028, and `ﬂ°b¶ßB`."
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "Astyle__a___b__B",
+        "label": "Astyle:#a ﬂ°b¶ßB",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

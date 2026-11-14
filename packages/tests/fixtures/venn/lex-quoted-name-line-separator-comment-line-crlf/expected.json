@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md Whitespace and value units: a CRLF ends a comment line that follows a U+2028 in the quoted name; the Db summary holds `A`, U+2028, and `B`."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A B"
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Comments: a comment line after a U+2028 in the category unquoted words is read through, and the value goes on after it; the Db summary holds `AB`."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": [
+        "AB"
+      ]
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  }
+}

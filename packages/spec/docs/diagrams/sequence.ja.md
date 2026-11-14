@@ -374,6 +374,48 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
   [fixture: sequence/lex-hash-ends-text] [fixture:
   sequence/lex-hash-comment-after-unit] [fixture:
   sequence/lex-percent-comment-after-unit]
+  U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+  値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+  [fixture:
+  sequence/db-message-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-message-text-line-separator-comment-line-directive-next]
+  [fixture:
+  sequence/lex-message-text-line-separator-comment-line-space-next] [fixture:
+  sequence/lex-message-text-line-separator-comment-line-separator-next]
+  [fixture:
+  sequence/gram-message-text-line-separator-comment-line-empty-line] [fixture:
+  sequence/lex-message-text-line-separator-comment-line-end-of-text] [fixture:
+  sequence/lex-message-text-line-separator-comment-line-cr] [fixture:
+  sequence/lex-message-text-line-separator-comment-line-crlf] [fixture:
+  sequence/lex-message-text-line-separator-comment-line-two-comment-lines]
+  [fixture: sequence/lex-message-text-line-separator-comment-line-two-regions]
+  [fixture: sequence/lex-message-text-line-separator-comment-line-spaces-before]
+  [fixture:
+  sequence/lex-message-text-line-separator-comment-line-line-feed-before]
+  [fixture:
+  sequence/lex-message-text-line-separator-comment-line-directive-before]
+  [fixture:
+  sequence/lex-message-text-line-separator-comment-line-line-rule-before]
+  [fixture:
+  sequence/lex-message-text-line-separator-comment-line-line-rule-after]
+  [fixture: sequence/gram-message-text-line-separator-comment-line-bare-percent]
+  [fixture:
+  sequence/gram-message-text-line-separator-comment-line-percent-brace]
+  [fixture: sequence/lex-note-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-loop-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-alt-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-else-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-opt-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-par-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-and-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-critical-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-option-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-break-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-rect-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-links-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-link-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-properties-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-details-text-line-separator-then-comment-line]
 - 図のコメントはその印から始まり、その前の単位は文字をすべて保ちます。
   数の後には `%%` が続いてよいので、
   `autonumber 5%% c` は `autonumber 5 %% c` と同じく 5 から始まり、
@@ -391,6 +433,27 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
   sequence/lex-number-before-single-percent] [fixture:
   sequence/div-comment-after-one-character-id] [fixture:
   sequence/div-comment-after-text-colon]
+  id の並びの中では、U+2028 や U+2029 の後のコメントは読み飛ばされ、
+  並びはその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+  [fixture:
+  sequence/lex-id-run-line-separator-then-comment-line] [fixture:
+  sequence/lex-id-run-paragraph-separator-then-comment-line] [fixture:
+  sequence/lex-id-run-line-separator-comment-line-directive-next] [fixture:
+  sequence/lex-id-run-line-separator-comment-line-space-next] [fixture:
+  sequence/lex-id-run-line-separator-comment-line-separator-next] [fixture:
+  sequence/gram-id-run-line-separator-comment-line-empty-line] [fixture:
+  sequence/gram-id-run-line-separator-comment-line-end-of-text] [fixture:
+  sequence/lex-participant-id-run-line-separator-comment-line-end-of-text]
+  [fixture: sequence/lex-id-run-line-separator-comment-line-cr] [fixture:
+  sequence/lex-id-run-line-separator-comment-line-crlf] [fixture:
+  sequence/lex-id-run-line-separator-comment-line-two-comment-lines] [fixture:
+  sequence/lex-id-run-line-separator-comment-line-two-regions] [fixture:
+  sequence/lex-id-run-line-separator-comment-line-spaces-before] [fixture:
+  sequence/lex-id-run-line-separator-comment-line-line-feed-before] [fixture:
+  sequence/lex-id-run-line-separator-comment-line-directive-before] [fixture:
+  sequence/lex-id-run-line-separator-comment-line-line-rule-after] [fixture:
+  sequence/gram-id-run-line-separator-comment-line-bare-percent] [fixture:
+  sequence/gram-id-run-line-separator-comment-line-percent-brace]
 - 規則 2 によって、行末の空白は、`newline` の単位を要る文から改行を隠します。
   `autonumber`、空白 2 個、改行、`A->>B: y` は拒否され、
   空白のない同じものは受理されます。
@@ -637,6 +700,26 @@ sequence/tokens-box-text-trailing-spaces]
 そのため、データブロックは最初の `}` で終わり、その中身は `}` を含められません。
 [fixture: sequence/docs-syntax-sequence-diagram-1371ae9a] [fixture:
 sequence/lex-data-block-nested-brace]
+中身にあるコメント行は、中身の文字列の中の U+2028 や U+2029 の後でも取り除かれ、
+中身はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: sequence/lex-data-alias-line-separator-then-comment-line] [fixture:
+sequence/lex-data-alias-line-separator-comment-line-directive-next] [fixture:
+sequence/lex-data-alias-line-separator-comment-line-space-next] [fixture:
+sequence/lex-data-alias-line-separator-comment-line-separator-next] [fixture:
+sequence/div-data-alias-line-separator-comment-line-empty-line] [fixture:
+sequence/gram-data-alias-line-separator-comment-line-end-of-text] [fixture:
+sequence/lex-data-alias-line-separator-comment-line-cr] [fixture:
+sequence/lex-data-alias-line-separator-comment-line-crlf] [fixture:
+sequence/lex-data-alias-line-separator-comment-line-two-comment-lines] [fixture:
+sequence/lex-data-alias-line-separator-comment-line-two-regions] [fixture:
+sequence/lex-data-alias-line-separator-comment-line-spaces-before] [fixture:
+sequence/lex-data-alias-line-separator-comment-line-line-feed-before] [fixture:
+sequence/lex-data-alias-line-separator-comment-line-directive-before] [fixture:
+sequence/lex-data-alias-line-separator-comment-line-line-rule-before] [fixture:
+sequence/lex-data-alias-line-separator-comment-line-line-rule-after] [fixture:
+sequence/div-data-alias-line-separator-comment-line-bare-percent] [fixture:
+sequence/gram-data-alias-line-separator-comment-line-percent-brace] [fixture:
+sequence/lex-data-plain-alias-line-separator-then-comment-line]
 
 ### アクセシビリティの値
 

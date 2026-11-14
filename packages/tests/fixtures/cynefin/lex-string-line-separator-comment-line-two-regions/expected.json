@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Strings and common values: a comment line follows a U+2028 in the string, and another one follows a second U+2028 on the next line; the Db summary holds `A`, U+2028, `x`, U+2028, and `B`."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "A x B"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md Comments: `P: style:#x` before a U+2028 in the event, with `style`, `:`, and `#` in its line segment, and `#y;` on the line after the comment line, a line segment of its own for the line rule of style and classDef lines, which does not match there, so its `;` is not ignored; the Db summary holds `style:#x`, U+2028, and `ﬂ°y¶ß`."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "P",
+        "events": [
+          "style:#x ﬂ°y¶ß"
+        ]
+      }
+    ]
+  }
+}

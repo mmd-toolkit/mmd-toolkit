@@ -338,7 +338,36 @@ JSON と stereotype 文脈に空白を飛ばす規則はなく、内容として
 [fixture: usecase/lex-style-unicode-trailing]
 [fixture: usecase/lex-native-label-separators]
 
-共通のコメント領域は文字列、metadata、JSON、アクセシビリティを含む全域です。
+共通のコメント領域は文字列、metadata、JSON、
+アクセシビリティのブロックを含む全域です。 [fixture:
+usecase/lex-string-line-separator-then-comment-line] [fixture:
+usecase/lex-string-paragraph-separator-then-comment-line] [fixture:
+usecase/lex-markdown-string-line-separator-then-comment-line] [fixture:
+usecase/lex-stereotype-line-separator-then-comment-line] [fixture:
+usecase/lex-json-line-separator-then-comment-line] [fixture:
+usecase/lex-acc-title-line-separator-then-comment-line] [fixture:
+usecase/lex-acc-descr-line-separator-then-comment-line] [fixture:
+usecase/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+usecase/lex-string-line-separator-comment-line-directive-next] [fixture:
+usecase/lex-string-line-separator-comment-line-space-next] [fixture:
+usecase/lex-string-line-separator-comment-line-separator-next] [fixture:
+usecase/lex-string-line-separator-comment-line-empty-line] [fixture:
+usecase/lex-string-line-separator-comment-line-end-of-text] [fixture:
+usecase/lex-acc-title-line-separator-comment-line-end-of-text] [fixture:
+usecase/lex-string-line-separator-comment-line-cr] [fixture:
+usecase/lex-string-line-separator-comment-line-crlf] [fixture:
+usecase/lex-string-line-separator-comment-line-two-comment-lines] [fixture:
+usecase/lex-string-line-separator-comment-line-two-regions] [fixture:
+usecase/lex-string-line-separator-comment-line-spaces-before] [fixture:
+usecase/lex-string-line-separator-comment-line-line-feed-before] [fixture:
+usecase/lex-string-line-separator-comment-line-directive-before] [fixture:
+usecase/lex-string-line-separator-comment-line-line-rule-before] [fixture:
+usecase/lex-string-line-separator-comment-line-line-rule-after] [fixture:
+usecase/lex-string-line-separator-comment-line-bare-percent] [fixture:
+usecase/lex-string-line-separator-comment-line-percent-brace] [fixture:
+usecase/lex-bare-node-label-line-separator-then-comment-line] [fixture:
+usecase/lex-note-label-line-separator-then-comment-line] [fixture:
+usecase/lex-css-quoted-component-line-separator-then-comment-line]
 コメント行全体と前の空行を除くことがあります。
 native コメントは異なり、既定文脈だけで、
 %% より前の物理行の文字が ASCII 空白とタブだけの場合に認識します。
