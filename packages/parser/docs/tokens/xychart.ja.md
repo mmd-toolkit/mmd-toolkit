@@ -33,7 +33,9 @@
 `newline` 単位はすべて空白なので、トークンを作りません。
 一方、行を終える `;` は `Punctuator` トークンです。
 `title T; x-axis [a]` は、トークン `title`、`T`、`;`、`x-axis`、`[`、`a`、
-`]` を持ちます。 [fixture: xychart/db-semicolon-statements]
+`]` を持ちます。
+
+[fixture: xychart/db-semicolon-statements]
 
 引用符のないテキストの語で、間に何もなく続くものは 1 つのトークンです。
 2 つの語の間の空白は、どのトークンにも属しません。
@@ -43,6 +45,7 @@
 アクセシビリティの文のテキストは 1 つのトークンで、文字の間の空白と改行を含み、
 両端の空白を含みません。
 `accTitle:` と `a b` と空白は、トークン `a b` を持ちます。
+
 [fixture: xychart/db-title-bare-characters]
 [fixture: xychart/db-title-bare-words]
 [fixture: xychart/db-acc-title-spaces-trimmed]
@@ -55,6 +58,7 @@
 `}` のトークンだけを持ち、閉じていないものは `}` を持ちません。
 テキストの終わりで、テキストのない `accTitle:` や `accDescr:` は、
 キーワードと `:` のトークンだけを持ちます。
+
 [fixture: xychart/db-grid-empty-plot-title-quoted]
 [fixture: xychart/db-acc-descr-block-empty]
 [fixture: xychart/db-acc-descr-unclosed-block]
@@ -73,6 +77,7 @@
 `title "style:#x;y"` は、`StringFragment` トークン `"style:#x` と `y"` と、
 その間の `IgnoredSemicolon` トークンを持ちます。
 一方、`ti%%{init: {}}%%tle T` は拒否されます。
+
 [fixture: xychart/db-x-axis-band-directive-in-word]
 [fixture: xychart/lex-title-style-line-semicolon]
 [fixture: xychart/div-directive-in-keyword]

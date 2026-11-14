@@ -84,7 +84,9 @@ written indentation carries nothing that a reader of the Db keeps, and the
 printer chooses it: a section stands one step deeper than the header, and an
 item two steps deeper, whatever the item's depth was. `kanban`, `      S`,
 `          A`, `             B`, and `      T` print `S` and `T` with 2 spaces,
-and `A` and `B` with 4. [fixture: indentation/sections-and-items] [fixture:
+and `A` and `B` with 4.
+
+[fixture: indentation/sections-and-items] [fixture:
 indentation/written-indentation-dropped] [fixture:
 indentation/first-section-at-the-first-column] [fixture:
 indentation/items-at-any-depth]
@@ -94,10 +96,11 @@ default, one tab with `useTabs`. Every whitespace character before a node is one
 character of its indentation, a tab, a U+00A0, a U+3000, and a U+FEFF included
 (see [Whitespace characters](#whitespace-characters)), and the printer writes
 only the characters of the options, so the indentation of every line is of one
-kind of character. [fixture: indentation/tab-width-4] [fixture:
-indentation/use-tabs] [test: kanban: tab-one-space] [test: kanban:
-indent-whitespace-kind] [test: kanban: ls-indent-one-space] [test: kanban:
-ps-indent-count]
+kind of character.
+
+[fixture: indentation/tab-width-4] [fixture: indentation/use-tabs] [test:
+kanban: tab-one-space] [test: kanban: indent-whitespace-kind] [test: kanban:
+ls-indent-one-space] [test: kanban: ps-indent-count]
 
 A line that is printed as written in part still takes its indentation from the
 printer, and the Db still compares the indentation of a node with that of the
@@ -109,8 +112,10 @@ line has the indentation of its role like any other. On a line that holds a `;`
 before the text is chosen in the same way. After a diagram comment that ends at
 a U+2028 or U+2029 the separator is one character of the indentation of the next
 node and stays (see [Blank lines](#blank-lines)), and the whitespace after it
-makes up the rest. [fixture: directives/leading-directive-indentation-decided]
-[fixture: directives/wide-whitespace-after-directive] [fixture:
+makes up the rest.
+
+[fixture: directives/leading-directive-indentation-decided] [fixture:
+directives/wide-whitespace-after-directive] [fixture:
 directives/leading-directive-gap-shortened] [fixture:
 line-rule-and-kept-lines/kept-line-indentation-decided] [fixture:
 blank-lines/div-between-comment-blank] [test: kanban: selected-ls-column-short]
@@ -184,8 +189,9 @@ line that holds a directive keeps it with the node (see
 [Directives](#directives)), and one that holds a `;` is no exception: the word
 `kanban` holds nothing that the line rule reads, so the node moves with its `;`
 (`kanban S;T` prints `kanban` and `  S;T`; see
-[Line rule and kept lines](#line-rule-and-kept-lines)). [fixture:
-header/inline-count] [fixture: header/header-column] [fixture:
+[Line rule and kept lines](#line-rule-and-kept-lines)).
+
+[fixture: header/inline-count] [fixture: header/header-column] [fixture:
 header/header-touching-shape] [fixture: header/header-touching-dash] [fixture:
 header/header-percent-in-text] [fixture:
 header/header-line-with-semicolon-moved] [fixture:
@@ -198,6 +204,7 @@ A header with nothing after it stays `kanban` and a line break; whitespace after
 `kanban` is dropped (see [Blank lines](#blank-lines)), and the board `kanban`
 with no line break after it is rejected (see
 [When a diagram is not formatted](../README.md#when-a-diagram-is-not-formatted)).
+
 [fixture: header/header-only-lf] [fixture: header/header-space-only]
 
 Input
@@ -230,6 +237,7 @@ same id stay two sections, items at any depth are printed at the one depth of an
 item, and a last line that is shallower than the first section is printed as an
 item (see [Indentation](#indentation)). Nesting items under other items,
 merging, sorting, or joining would change the board that mermaid.js builds.
+
 [fixture: nodes-one-per-line/flat-order] [fixture:
 nodes-one-per-line/deeper-to-regular-items] [fixture:
 nodes-one-per-line/repeated-ids] [fixture: nodes-one-per-line/shallower-last]
@@ -265,14 +273,16 @@ match the opener: `S[x)` is accepted, and `S[x]` would give the same Db, but it
 would rewrite what the author wrote, as in [mindmap](./mindmap.md#shapes). This
 holds for every family of shapes (`S[x]`, `A(y)`, `B((z))`, `C{{q}}`, `D)w(`,
 `E))v((`, and the dash spellings `F-)"bang"(-` and `G(-"cloud"-)`), and for a
-shape with no id (`[S]`). [fixture: shapes/mismatched] [fixture:
-shapes/matching-closer] [fixture: shapes/shape-families] [fixture:
-shapes/shape-alone] [fixture: shapes/db-shape-square] [fixture:
-shapes/db-shape-round] [fixture: shapes/db-shape-circle] [fixture:
-shapes/db-shape-hexagon] [fixture: shapes/db-shape-bang] [fixture:
-shapes/db-shape-bang-alt] [fixture: shapes/db-shape-cloud] [fixture:
-shapes/db-shape-cloud-alt] [fixture: shapes/db-shape-mismatched] [fixture:
-shapes/lex-shape-dash-bare] [fixture: shapes/lex-shape-dash-string]
+shape with no id (`[S]`).
+
+[fixture: shapes/mismatched] [fixture: shapes/matching-closer] [fixture:
+shapes/shape-families] [fixture: shapes/shape-alone] [fixture:
+shapes/db-shape-square] [fixture: shapes/db-shape-round] [fixture:
+shapes/db-shape-circle] [fixture: shapes/db-shape-hexagon] [fixture:
+shapes/db-shape-bang] [fixture: shapes/db-shape-bang-alt] [fixture:
+shapes/db-shape-cloud] [fixture: shapes/db-shape-cloud-alt] [fixture:
+shapes/db-shape-mismatched] [fixture: shapes/lex-shape-dash-bare] [fixture:
+shapes/lex-shape-dash-string]
 
 The whitespace between the id of a card and its shape is dropped: `A [x]` is
 printed `A[x]`. The Db keeps it as part of the id, but the card is drawn the
@@ -281,8 +291,9 @@ same (see
 The whitespace between the id of a column and its shape stays: `S [x]` has the
 id `S ` with the space, and mermaid.js tells two columns apart by their ids, so
 `todo [A]` and `todo[B]` are two columns, while `todo[A]` and `todo[B]` would be
-one, drawn differently. [fixture: shapes/id-before-shape] [fixture:
-shapes/card-id-before-shape-dropped]
+one, drawn differently.
+
+[fixture: shapes/id-before-shape] [fixture: shapes/card-id-before-shape-dropped]
 
 Input
 ([shapes/mismatched-input.mmd](../tests/fixtures/kanban/shapes/mismatched-input.mmd)):
@@ -319,6 +330,7 @@ A quote is the start of a string only right after the opener, so `D[ "x" ]` has
 the bare text `"x"` with its quotes and the spaces around it, and the printer
 does not move them. Entities (`a#35;b`) and HTML attributes (`<a href="x">`) are
 text and stay, and so does a node written `""` or `"``"` outside a shape.
+
 [fixture: labels/forms] [fixture: labels/inner-whitespace-trim] [fixture:
 labels/leading-space-quote] [fixture: labels/whitespace-only-forms] [fixture:
 labels/bare-empty-spellings] [fixture: labels/lex-style-entity-two-semicolons]
@@ -330,6 +342,7 @@ spaces and tabs at the ends of a bare label. `A[x y]` and `A["x y"]` have the
 same Db, and the form is the one of [Quotes](#quotes). A space after the closing
 quote of a string (`S["x" ]`) is rejected, so it is never a form to print (see
 [When a diagram is not formatted](../README.md#when-a-diagram-is-not-formatted)).
+
 [fixture: labels/bare-to-quoted] [fixture: labels/space-after-string-invalid]
 
 Input
@@ -370,9 +383,11 @@ padding or a line break. A string after the opener `(-` loses its quotes, since
 mermaid.js reads `card8(-x)` as it reads `card8(-"x")`. A markdown string stays
 as written. Directives between the string and the dash change nothing, since
 mermaid.js removes them before it reads the text: `card7("x"%%{init: {}}%%-)`
-keeps its quotes, and `card9(-%%{init: {}}%%"y z")` loses them. [fixture:
-quotes/labels-without-quotes] [fixture: quotes/labels-that-need-quotes]
-[fixture: quotes/dash-closer-after-a-directive-kept] [fixture:
+keeps its quotes, and `card9(-%%{init: {}}%%"y z")` loses them.
+
+[fixture: quotes/labels-without-quotes] [fixture:
+quotes/labels-that-need-quotes] [fixture:
+quotes/dash-closer-after-a-directive-kept] [fixture:
 quotes/dash-opener-string-unquoted]
 
 Input
@@ -408,7 +423,9 @@ documentation of mermaid.js writes them and as in
 printed with 4 characters of indentation, those of an item; after a node line
 that is shallower than the first node, which is an item too, the icon follows
 that node (`    S`, `  A`, and ` ::icon(x)` print `A` and the icon with 4
-characters). [fixture: icons-and-classes/aligned] [fixture:
+characters).
+
+[fixture: icons-and-classes/aligned] [fixture:
 icons-and-classes/decorations-align] [fixture:
 icons-and-classes/gram-shallower-then-decoration] [fixture:
 icons-and-classes/db-decoration-icon-section] [fixture:
@@ -426,27 +443,34 @@ so the board is the same, and a space or a tab does not belong to a class name
 in HTML. A class or an icon of only whitespace is printed as one space, which is
 the least that keeps it (an empty one is rejected), so `::icon(  )` is printed
 `::icon( )` and `:::` followed by two spaces is printed `:::` followed by one.
+
 [fixture: icons-and-classes/gram-whitespace-icon] [fixture:
-icons-and-classes/gram-whitespace-class] A class line with a directive anywhere
-on it (`::: hot %%{x}%%`, `::: h%%{x}%%ot`, `%%{x}%%::: hot`): a line with a
-directive is printed as written (see [Directives](#directives)). Only spaces and
-tabs are dropped: `:::` followed by spaces and a U+00A0 is printed with the
-U+00A0 next to the `:::`, and it stays. [fixture:
-icons-and-classes/class-padding-after-marker-dropped] [fixture:
+icons-and-classes/gram-whitespace-class]
+
+A class line with a directive anywhere on it (`::: hot %%{x}%%`,
+`::: h%%{x}%%ot`, `%%{x}%%::: hot`): a line with a directive is printed as
+written (see [Directives](#directives)). Only spaces and tabs are dropped: `:::`
+followed by spaces and a U+00A0 is printed with the U+00A0 next to the `:::`,
+and it stays.
+
+[fixture: icons-and-classes/class-padding-after-marker-dropped] [fixture:
 icons-and-classes/class-with-directive-kept] [test: kanban:
 class-spaces-then-no-break-space] [test: kanban: class-padding-then-u2028]
-[test: kanban: class-padding-then-u2029] A later icon replaces an earlier one in
-the Db, and both are kept, because the printer drops no text. The printer never
-moves a decoration onto the line of its node, because that changes the board:
-after a bare node an icon makes a round shape of its text and the rest part of
-the id (`A ::icon(x)` is the node `A ::icon` with the label `x`), a class
-becomes part of the id (`A :::c` is the id `A :::c`), and after a shape both are
-rejected (`S[x] ::icon(star)`, see
+[test: kanban: class-padding-then-u2029]
+
+A later icon replaces an earlier one in the Db, and both are kept, because the
+printer drops no text. The printer never moves a decoration onto the line of its
+node, because that changes the board: after a bare node an icon makes a round
+shape of its text and the rest part of the id (`A ::icon(x)` is the node
+`A ::icon` with the label `x`), a class becomes part of the id (`A :::c` is the
+id `A :::c`), and after a shape both are rejected (`S[x] ::icon(star)`, see
 [When a diagram is not formatted](../README.md#when-a-diagram-is-not-formatted)).
 Classes and the icons of sections do not show in the Db that the tests compare,
-but they are text that the author wrote, and they are kept as well. [fixture:
-icons-and-classes/icon-after-bare] [fixture: icons-and-classes/class-after-bare]
-[fixture: icons-and-classes/icon-appended-to-bare-is-a-shape] [fixture:
+but they are text that the author wrote, and they are kept as well.
+
+[fixture: icons-and-classes/icon-after-bare] [fixture:
+icons-and-classes/class-after-bare] [fixture:
+icons-and-classes/icon-appended-to-bare-is-a-shape] [fixture:
 icons-and-classes/class-appended-to-bare-is-the-id] [fixture:
 icons-and-classes/icon-after-shape] [fixture:
 icons-and-classes/class-after-shape] [fixture:
@@ -496,6 +520,7 @@ over several lines. The parser accepts a block whose YAML is invalid, although
 mermaid.js rejects it (known divergence
 [`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.md)),
 because the block is embedded text that the specification reads as opaque.
+
 [fixture: data-blocks/data-opaque] [fixture: data-blocks/empty-data] [fixture:
 data-blocks/data-invalid-yaml] [fixture: data-blocks/data-unknown-duplicate]
 [fixture: data-blocks/gram-metadata-ticket-duplicate] [fixture:
@@ -510,7 +535,9 @@ A block on one line is printed with one space inside each end, as in
 `A@{ ticket: X }`. Where its line is too long it prints on lines, one entry on
 each, under the conditions listed there, which a node text that fills the line
 before the block does not meet. The block stays as written in the cases listed
-there. [fixture: data-blocks/long-split] [fixture:
+there.
+
+[fixture: data-blocks/long-split] [fixture:
 data-blocks/long-prefix-too-long-kept] [fixture: data-blocks/one-line-padded]
 [fixture: data-blocks/one-line-space-only-padded] [fixture:
 data-blocks/one-line-directive-kept] [fixture:
@@ -530,19 +557,24 @@ Apply the movement and safety conditions of
 shallowest text one level inside its node. A section's body is two levels below
 the header, an item's three; nested YAML keeps its relative indentation. A
 separate `}` aligns with the node, even if it had no margin; a closer after text
-stays on that line. [fixture: data-blocks/section-and-item-margins] [fixture:
+stays on that line.
+
+[fixture: data-blocks/section-and-item-margins] [fixture:
 data-blocks/nested-yaml] [fixture: data-blocks/closing-after-text]
 
 Move space-only lines by the same amount, making them empty when no spaces
 remain, and leave empty lines empty. Keep trailing spaces: literal block scalars
 read both their trailing spaces and blank-line widths, so discarding them can
-change the Db. [fixture: data-blocks/scalar-blank-lines] [fixture:
+change the Db.
+
+[fixture: data-blocks/scalar-blank-lines] [fixture:
 data-blocks/scalar-blank-lines-outdent]
 
 Keep columns when the shared conditions fail: inline-opening text counts its
 first margin from `@{`, embedded directives keep their columns, kept lines must
 stay whole, and `tabWidth: 0` supplies no inner step. Tab-indented YAML is
 rejected by Mermaid; moving column-zero document markers can also make it fail.
+
 [fixture: data-blocks/inline-opening-kept] [fixture:
 data-blocks/directive-inside-kept] [fixture: data-blocks/kept-body-line]
 [fixture: data-blocks/zero-width-kept] [fixture:
@@ -556,15 +588,18 @@ in the other diagram types (see [Data blocks](./flowchart.md#data-blocks)). The
 lines then stand right where a tab is as wide as `tabWidth`, whatever the author
 wrote, and off by the difference at any other width, while lines left as written
 would stand right only where the indentation of the author happens to fit the
-width of a tab. [fixture: data-blocks/tab-statement-space-body] [fixture:
+width of a tab.
+
+[fixture: data-blocks/tab-statement-space-body] [fixture:
 data-blocks/use-tabs-empty-lines-kept] [fixture:
 data-blocks/use-tabs-folded-empty-lines-kept]
 
 Comments, directives and blank lines outside the block retain their own rules.
 CRLF and CR follow `endOfLine`; Unicode separators inside values remain
-characters. [fixture: data-blocks/surrounding-trivia] [test: kanban:
-multiline-data-crlf] [test: kanban: multiline-data-cr] [test: data blocks:
-kanban U+2028]
+characters.
+
+[fixture: data-blocks/surrounding-trivia] [test: kanban: multiline-data-crlf]
+[test: kanban: multiline-data-cr] [test: data blocks: kanban U+2028]
 
 Where a block is attached is part of the syntax. The block touches the closing
 of a shape (`A[x]@{ticket: X}`), and a space there is rejected. After a bare id,
@@ -572,17 +607,20 @@ the spaces before the block are part of the id, so `A  @{ticket: X}` has the id
 `A  `. Blocks that follow each other touch (`A[x]@{ticket: X,}@{assigned: Ada}`:
 mermaid.js joins their interiors), with a directive between them at most
 (`A@{ticket: X,}%%{init: {}}%%@{assigned: Ada}`), and a space between two blocks
-is rejected. The printer keeps all of this as written. [fixture:
-data-blocks/data-space-after-shape] [fixture: data-blocks/data-space-after-bare]
-[fixture: data-blocks/data-space-before-kept] [fixture: data-blocks/adjacent]
-[fixture: data-blocks/data-adjacent-gap] [fixture:
-data-blocks/data-adjacent-directive] [fixture: data-blocks/data-empty-adjacent]
+is rejected. The printer keeps all of this as written.
+
+[fixture: data-blocks/data-space-after-shape] [fixture:
+data-blocks/data-space-after-bare] [fixture: data-blocks/data-space-before-kept]
+[fixture: data-blocks/adjacent] [fixture: data-blocks/data-adjacent-gap]
+[fixture: data-blocks/data-adjacent-directive] [fixture:
+data-blocks/data-empty-adjacent]
 
 A node with two blocks, as in `A@{`, a line break, `ticket: A,`, a line break,
 and `}@{assigned: Ada}`, keeps both as written: the blocks touch, so Mermaid
 joins their text, and moving the lines of the first alone makes accepted YAML
-fail. The same holds when one of the two blocks is a single line. [fixture:
-data-blocks/adjacent-multiline-kept] [fixture:
+fail. The same holds when one of the two blocks is a single line.
+
+[fixture: data-blocks/adjacent-multiline-kept] [fixture:
 data-blocks/adjacent-single-line-after-kept] [fixture:
 data-blocks/adjacent-single-line-before-kept]
 
@@ -614,9 +652,11 @@ start and at the end of the board are dropped, as in the other diagram types:
 `kanban`, two empty lines, and ` S` print `kanban` and `  S`. Whitespace after
 `kanban` on a header line with nothing else is dropped, whatever the character
 (a space, a tab, a U+00A0, a U+3000, a U+FEFF, a form feed, a vertical tab, a
-U+2028, a U+2029). [fixture: blank-lines/collapsed] [fixture:
-blank-lines/blank-body-end] [fixture: blank-lines/gram-grid-lf-header-line]
-[fixture: blank-lines/decoration-blank-runs-collapsed] [fixture:
+U+2028, a U+2029).
+
+[fixture: blank-lines/collapsed] [fixture: blank-lines/blank-body-end] [fixture:
+blank-lines/gram-grid-lf-header-line] [fixture:
+blank-lines/decoration-blank-runs-collapsed] [fixture:
 blank-lines/gram-blank-before-icon] [fixture: blank-lines/div-header-space-node]
 [test: kanban: blank-whitespace] [test: kanban: header-tab-trailing] [test:
 kanban: header-bom-trailing] [test: kanban: header-crlf-trailing] [test: kanban:
@@ -644,12 +684,17 @@ usual, and the comment line is aligned (see [Comments](#comments)). A common
 comment after a directive containing a line feed, or after a native `%%`
 comment, is still removed before this decision and aligned as usual; a U+2028 or
 U+2029 inside that common comment is removed too and cannot make the gap stay as
-written. [test: kanban: comment-line-ls-taken] [fixture:
+written.
+
+[test: kanban: comment-line-ls-taken] [fixture:
 blank-lines/common-comment-after-multiline-directive] [fixture:
-blank-lines/native-then-common-comment] A gap of this kind at the end of the
-board is kept whole too, with nothing after it to indent: `kanban`, ` S`, `%%`,
-and two empty lines print `  S`, `%%`, and the same two empty lines. [fixture:
-blank-lines/div-between-comment-blank] [fixture:
+blank-lines/native-then-common-comment]
+
+A gap of this kind at the end of the board is kept whole too, with nothing after
+it to indent: `kanban`, ` S`, `%%`, and two empty lines print `  S`, `%%`, and
+the same two empty lines.
+
+[fixture: blank-lines/div-between-comment-blank] [fixture:
 blank-lines/div-comment-blank-before-icon] [fixture:
 blank-lines/div-comment-blank-before-class] [fixture:
 blank-lines/blank-comment-accepted] [fixture:
@@ -665,8 +710,9 @@ specification. An empty line after the diagram comments that follow the header
 stays, by the rule above: `kanban`, `%%`, `%%`, an empty line, and `S` are
 rejected by mermaid.js as input and as output, and after one `%%` both accept
 the text, so the gap is kept. A rejected text has no Db of mermaid.js, so these
-are no before-and-after comparisons of a Db. [fixture:
-blank-lines/div-header-comments-blank] [fixture:
+are no before-and-after comparisons of a Db.
+
+[fixture: blank-lines/div-header-comments-blank] [fixture:
 blank-lines/header-header-comment-blank]
 
 Input
@@ -729,10 +775,15 @@ statement the comment is about, as in [mindmap](./mindmap.md#comments). In
 with 2, 4, and 4 characters of indentation, those of `S` and `A`. A comment line
 inside a multi-line label or data block is removed by mermaid.js and stays on
 its authored line, with eligible data-block margins following
-[Data blocks](#data-blocks). [fixture: data-blocks/indented-comment-line] A
-diagram comment that is followed by an empty line, by another comment, or by a
+[Data blocks](#data-blocks).
+
+[fixture: data-blocks/indented-comment-line]
+
+A diagram comment that is followed by an empty line, by another comment, or by a
 U+2028 or U+2029 stays as written with the gap after it (see
-[Blank lines](#blank-lines)). [fixture: comments/comments-align] [fixture:
+[Blank lines](#blank-lines)).
+
+[fixture: comments/comments-align] [fixture:
 comments/bare-brace-comments-aligned] [fixture: comments/header-leading-comment]
 [fixture: comments/comment-line-in-value]
 
@@ -747,8 +798,9 @@ a class, `%%` is a character of the text (`S %% x`, `A[%% y]`, `:::c %% z`), and
 a line that starts with `#` or with a single `%` is node text; the printer does
 not touch these. A comment line is removed with the text up to the line feed,
 and a U+2028 or a U+2029 on it does not end it: the text after the separator is
-part of the removed comment, and the printer keeps it there. [fixture:
-comments/inline] [fixture: comments/header-comment-gap] [fixture:
+part of the removed comment, and the printer keeps it there.
+
+[fixture: comments/inline] [fixture: comments/header-comment-gap] [fixture:
 comments/comment-after-data-gap] [fixture: comments/comment-after-icon-gap]
 [fixture: comments/percent-values] [test: kanban: comment-line-ls-taken]
 
@@ -791,8 +843,9 @@ node `A` is an item and is indented by 8 characters, 6 before the directive and
 is shortened to 2, and nothing stands before the first directive. A directive
 between two units of a line (`A  %%{init: {}}%%  B[x]`), between data blocks,
 inside an id, an icon, a class, or a markdown label, a directive that is not
-closed, and its line joins stay exactly as written. [fixture:
-directives/leading-directive-kept] [fixture:
+closed, and its line joins stay exactly as written.
+
+[fixture: directives/leading-directive-kept] [fixture:
 directives/leading-directive-with-semicolon] [fixture:
 directives/two-leading-directives] [fixture:
 directives/leading-directive-then-empty-data] [fixture:
@@ -812,9 +865,11 @@ column of the statement after it. On the header line, the node moves to a line
 of its own with everything after `kanban`, the directive included, and the line
 is printed as written from the first directive or node
 (`kanban %%{init: {}}%%  S[x]` prints `kanban` and `%%{init: {}}%%  S[x]`). A
-directive before the header stands at the first column. [fixture:
-directives/standalone] [fixture: directives/standalone-directive-align]
-[fixture: directives/header-directive-inline] [fixture:
+directive before the header stands at the first column.
+
+[fixture: directives/standalone] [fixture:
+directives/standalone-directive-align] [fixture:
+directives/header-directive-inline] [fixture:
 directives/directive-before-header]
 
 Input
@@ -866,8 +921,9 @@ stands between them included, and it is no kanban statement. Moving or reflowing
 any of that text can make the rule ignore another `;`.
 `S["style:#x ;y"]%% note;` has the label `style:#x ;y`, because the `;` of the
 comment is the one that is ignored, and with the comment on a line of its own
-the `;` in the label is ignored and the label is `style:#x y`. [fixture:
-line-rule-and-kept-lines/line-rule-comment-after-label-kept] [fixture:
+the `;` in the label is ignored and the label is `style:#x y`.
+
+[fixture: line-rule-and-kept-lines/line-rule-comment-after-label-kept] [fixture:
 line-rule-and-kept-lines/line-rule-comment-on-its-own-line] [fixture:
 line-rule-and-kept-lines/line-rule-comment-to-own-line] [fixture:
 line-rule-and-kept-lines/line-rule-comment-move] [fixture:
@@ -882,6 +938,7 @@ block, a comment, or a directive, and it holds whether the rule applies to the
 line or not. A `style` that is in upper case (`aStyle`), a `:` and a `#` with
 whitespace between them (`style: #x;`), no `#`, or a `;` on another line of a
 multi-line label do not make the rule apply, and the text is kept all the same.
+
 [fixture: line-rule-and-kept-lines/style-segment] [fixture:
 line-rule-and-kept-lines/line-rule-kept] [fixture:
 line-rule-and-kept-lines/line-rule-wrap] [fixture:
@@ -908,6 +965,7 @@ So the indentation is chosen (see [Indentation](#indentation)), and the
 whitespace at the end is dropped where it is not in the Db (see
 [Trailing whitespace](#trailing-whitespace)): `kanban`, ` S`, and that line
 print `  S` and `A[style:#x;y]` indented by 4 spaces, with nothing after it.
+
 [fixture: line-rule-and-kept-lines/kept-line-whitespace-decided] [fixture:
 line-rule-and-kept-lines/kept-line-indentation-decided] [fixture:
 line-rule-and-kept-lines/kept-line-data-trailing-whitespace] [fixture:
@@ -957,11 +1015,12 @@ of a card are printed with one space before each that has whitespace before it,
 and the whitespace after the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same));
 those that end the id of a column stay as written, since the figure depends on
-its whitespace. [fixture: trailing-whitespace/directives-end-blanks-dropped]
-[test: kanban: bare-trailing-trim] [test: kanban: closed-trailing-trim] [test:
-kanban: closed-whitespace-trim] [fixture:
-trailing-whitespace/class-trailing-trim] [fixture:
-trailing-whitespace/lex-after-quoted-spaces] [fixture:
+its whitespace.
+
+[fixture: trailing-whitespace/directives-end-blanks-dropped] [test: kanban:
+bare-trailing-trim] [test: kanban: closed-trailing-trim] [test: kanban:
+closed-whitespace-trim] [fixture: trailing-whitespace/class-trailing-trim]
+[fixture: trailing-whitespace/lex-after-quoted-spaces] [fixture:
 trailing-whitespace/kept-line-kept]
 
 ### Line terminators
@@ -971,7 +1030,9 @@ specification's [Line terminators](../../spec/docs/common.md#line-terminators)),
 also inside a label, an icon, a directive, and a data block. Prettier converts
 them before the plugin reads the text, and the output has the line ending of the
 `endOfLine` option, with the same lines. The printer has no rule of its own for
-it. [test: kanban: crlf-to-lf] [test: kanban: cr-to-lf] [test: kanban:
+it.
+
+[test: kanban: crlf-to-lf] [test: kanban: cr-to-lf] [test: kanban:
 multiline-data-crlf] [test: kanban: multiline-data-cr] [test: kanban:
 crlf-in-multiline-values] [test: a kanban diagram with other line endings]
 
@@ -984,8 +1045,9 @@ each is replaced by one space (or one tab with `useTabs`); see
 and a class they are characters of the text and stay
 (`A\u00a0B[x\ufeff\t\u3000y]`). A U+0085 is text, not whitespace, and stays. A
 U+2028 and a U+2029 are not line breaks: `S[x\u2028y]` is one node. A file that
-starts with a U+FEFF keeps it, as Prettier handles it before the plugin. [test:
-kanban: whitespace-values] [test: kanban: nel-is-text] [test: kanban:
+starts with a U+FEFF keeps it, as Prettier handles it before the plugin.
+
+[test: kanban: whitespace-values] [test: kanban: nel-is-text] [test: kanban:
 ls-is-value] [test: kanban: ps-is-value] [test: kanban: ls-bare-value] [test:
 kanban: ls-data-value] [test: kanban: ps-icon-value] [test: kanban: leading-bom]
 
@@ -1006,7 +1068,9 @@ the comment does not join `T` to the line. A comment line (`%% c\u2029   A`) is
 removed with the text up to the line feed, so `A` there is part of the comment;
 the printer aligns the comment line and keeps its text. A separator after a
 class text and before the line feed ends the class outside its value and is
-dropped (`:::c\u2028`). [test: kanban: comment-ls-split-count] [test: kanban:
+dropped (`:::c\u2028`).
+
+[test: kanban: comment-ls-split-count] [test: kanban:
 div-between-real-comments-ls-node] [test: kanban:
 div-between-real-comments-ps-node] [test: kanban: div-header-comment-ls-node]
 [test: kanban: div-header-comment-ps-node] [test: kanban: lex-icon-comment-ls]
@@ -1033,8 +1097,9 @@ separator, the comment line, and what stands before it as written, and prints
 the line of the node with the indentation of its role, less the separator. In a
 section, the gap after the directive is shortened when it does not fit, down to
 nothing with `useTabs`: `%%{x}%%C`. A directive and a comment on the line of the
-separator, with the node on the next line, are such a comment line too. [test:
-kanban: comment-line-then-directive-item] [test: kanban:
+separator, with the node on the next line, are such a comment line too.
+
+[test: kanban: comment-line-then-directive-item] [test: kanban:
 comment-line-then-indented-directive-item] [test: kanban:
 directive-and-comment-line-then-item] [test: kanban:
 directive-comment-line-directive-item] [test: kanban:
@@ -1051,8 +1116,9 @@ alone is a node, and `:::c;d` has a `;` in the class. The printer keeps every
 `;`, the ones that the line rule of mermaid.js ignores included (see
 [Line rule and kept lines](#line-rule-and-kept-lines)); dropping one, or
 splitting a line at it, would change a written text or its reading. A `;` right
-after a shape is not part of the shape and is rejected (`S[x];`). [fixture:
-semicolons/values] [fixture: semicolons/semicolon-remove]
+after a shape is not part of the shape and is rejected (`S[x];`).
+
+[fixture: semicolons/values] [fixture: semicolons/semicolon-remove]
 
 Input
 ([semicolons/values-input.mmd](../tests/fixtures/kanban/semicolons/values-input.mmd)):
@@ -1085,10 +1151,11 @@ written (`::ICON(x)`, `::Icon(y)`). Words that are statements in other diagram
 types, `title`, `accTitle`, `accDescr`, `style`, `classDef`, `columns`, `space`,
 `end`, and the C4 words (`C4Container`), are ordinary node text here and are
 printed as written. Nothing is changed in the case, as in
-[mindmap](./mindmap.md#keyword-case). [fixture: keyword-case/icon-case]
-[fixture: keyword-case/case-lower-icon] [fixture:
-keyword-case/lower-case-header] [fixture: keyword-case/keywords-ordinary]
-[fixture: keyword-case/lex-c4-c4container-id]
+[mindmap](./mindmap.md#keyword-case).
+
+[fixture: keyword-case/icon-case] [fixture: keyword-case/case-lower-icon]
+[fixture: keyword-case/lower-case-header] [fixture:
+keyword-case/keywords-ordinary] [fixture: keyword-case/lex-c4-c4container-id]
 
 Input
 ([keyword-case/icon-case-input.mmd](../tests/fixtures/kanban/keyword-case/icon-case-input.mmd)):
@@ -1122,9 +1189,11 @@ an HTML tag, and one whose formatted YAML would hold a `---` line stay as
 written. Whitespace after the closing `---` stays too. A comment or a directive
 between the frontmatter and the header stays, and the board after it is
 formatted as usual. YAML formatting does not reach a data block; only its
-eligible margins move (see [Data blocks](#data-blocks)). [fixture:
-frontmatter-yaml/formatted] [fixture: frontmatter-yaml/frontmatter-malformed]
-[fixture: frontmatter-yaml/frontmatter-indented-kept] [fixture:
+eligible margins move (see [Data blocks](#data-blocks)).
+
+[fixture: frontmatter-yaml/formatted] [fixture:
+frontmatter-yaml/frontmatter-malformed] [fixture:
+frontmatter-yaml/frontmatter-indented-kept] [fixture:
 frontmatter-yaml/frontmatter-html-tag-kept] [fixture:
 frontmatter-yaml/delimiter-line-kept] [test: kanban:
 closing-delimiter-whitespace-kept] [fixture:
@@ -1163,24 +1232,29 @@ value as written, with the columns of its continuation lines, a comment line or
 a directive inside it, and an empty line inside it. Only the first line of a
 decoration is aligned (see [Icons and classes](#icons-and-classes)). It does not
 join the lines, since a line break in a value is a character of it and joining
-would change the Db or make another node. [fixture:
-multi-line-values/labels-and-icon] [fixture: multi-line-values/multiline-join]
-[fixture: multi-line-values/multiline-icon-trim-unsafe] [fixture:
+would change the Db or make another node.
+
+[fixture: multi-line-values/labels-and-icon] [fixture:
+multi-line-values/multiline-join] [fixture:
+multi-line-values/multiline-icon-trim-unsafe] [fixture:
 multi-line-values/lex-label-empty-line] [fixture:
 multi-line-values/lex-label-directive-line] [fixture:
 multi-line-values/lex-metadata-blank-line]
 
 Multiline data blocks instead follow [Data blocks](#data-blocks): preserve their
-line breaks and contents with only the eligible uniform margin change. [fixture:
-data-blocks/data-multiline]
+line breaks and contents with only the eligible uniform margin change.
+
+[fixture: data-blocks/data-multiline]
 
 `printWidth` has no effect on a long bare node
 (`This is a deliberately long kanban item ...`) or a long label: they stay on
 their lines, since a bare node cannot be wrapped without becoming other nodes,
 and a value is text. A data block on one line is the exception: where its line
 is wider than `printWidth`, it prints on lines under the conditions of
-[Data blocks](#data-blocks). [fixture: multi-line-values/long-line-kept]
-[fixture: multi-line-values/small-print-width]
+[Data blocks](#data-blocks).
+
+[fixture: multi-line-values/long-line-kept] [fixture:
+multi-line-values/small-print-width]
 
 Input
 ([multi-line-values/labels-and-icon-input.mmd](../tests/fixtures/kanban/multi-line-values/labels-and-icon-input.mmd)):
@@ -1226,9 +1300,10 @@ stay (`S   ` prints with its spaces, then the line break). When a directive that
 is not closed reaches the end of the text, it takes the rest, and the printer
 adds nothing after it. In Markdown, the indentation of the code fence or of its
 list item is the indentation of the host, and is not part of the indentation of
-the board. [fixture: final-newline/accepted] [fixture:
-final-newline/no-final-lf] [fixture: final-newline/empty-board] [fixture:
-final-newline/open-directive-at-eof]
+the board.
+
+[fixture: final-newline/accepted] [fixture: final-newline/no-final-lf] [fixture:
+final-newline/empty-board] [fixture: final-newline/open-directive-at-eof]
 
 Input
 ([final-newline/empty-board-input.mmd](../tests/fixtures/kanban/final-newline/empty-board-input.mmd)):

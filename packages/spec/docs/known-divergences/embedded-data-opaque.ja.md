@@ -13,10 +13,14 @@
 
 - フロントマターの本文。
   YAML です。
+
 - `init:` の後の JSON のような、ディレクティブの引数。
+
 - いくつかの図種のテキストの中の `@{ ... }` のデータブロック。
   flowchart の形状や sequence の参加者のデータは YAML、
-  usecase の表は JSON です。 [fixture: usecase/db-json-values]
+  usecase の表は JSON です。
+
+  [fixture: usecase/db-json-values]
 
 ```mmd
 ---
@@ -28,6 +32,7 @@ flowchart LR
 ```
 
 この例はフロントマター、ディレクティブの引数、データブロックを含みます。
+
 [fixture: flowchart/frontmatter-title]
 [fixture: common/config-font-family-string]
 [fixture: flowchart/gram-data-shape-known]
@@ -41,49 +46,62 @@ flowchart LR
 
 kanban ではフロントマターと `@{ ... }` の中身は解析しません。
 境界が正しければ、不正な YAML と重複キーは入力を拒否させません。
+
 [fixture: kanban/gram-frontmatter-invalid-yaml]
 [fixture: kanban/gram-metadata-bad-yaml]
 [fixture: kanban/gram-metadata-ticket-duplicate]
 
-空の複数行ブロックは受理します。 [fixture: kanban/gram-metadata-empty-multiline]
+空の複数行ブロックは受理します。
+
+[fixture: kanban/gram-metadata-empty-multiline]
 
 メタデータの型と形名の綴りは検査しません。
+
 [fixture: kanban/gram-metadata-shape-number]
 [fixture: kanban/gram-metadata-shape-camel]
 [fixture: kanban/gram-metadata-shape-underscore]
+
 [データブロック](../diagrams/kanban.ja.md#データブロック) を参照してください。
 
 kanban の隣り合うデータブロックは別々のノードに保ちます。
+
 [fixture: kanban/db-metadata-two-items]
 [fixture: kanban/db-metadata-one-item-reference]
 
 連結した埋め込みデータの中身だけによる拒否もこの差異です。
+
 [fixture: kanban/gram-metadata-two-blocks]
 
 二重引用符の外の `^`、閉じないデータブロック、
 入れ子のマッピングがブロックを閉じた後に残る波括弧は構文エラーです。
-この差異には当たりません。 [fixture: kanban/gram-metadata-caret]
-[fixture: kanban/gram-metadata-unclosed]
+この差異には当たりません。
+
+[fixture: kanban/gram-metadata-caret] [fixture: kanban/gram-metadata-unclosed]
 [fixture: kanban/gram-metadata-assigned-mapping]
 
 C4 では frontmatter とディレクティブの内容は不透明なので、
 正しく区切られた frontmatter の `title: [` のような無効な YAML は、
 ここでは図を拒否せず、mermaid.js は拒否します。
+
 [fixture: c4/div-frontmatter-invalid-yaml]
 
 C4 には `@{ ... }` のデータブロック形式はありません。
+
 [fixture: c4/gram-data-block]
 
 venn では、正しく区切られた frontmatter 内の `title: [` などの不正な YAML は、
 ここでは受理しますが mermaid.js は拒否します。
+
 [fixture: venn/frontmatter-invalid]
 
 venn に `@{ ... }` のデータブロックの形はありません。
+
 [fixture: venn/gram-data-block] [fixture: venn/frontmatter-empty]
 [fixture: venn/frontmatter-unclosed]
 
 隣り合う frontmatter の区切りの行と、
 閉じていない frontmatter は構文エラーのままです。
+
 [fixture: venn/gram-data-block] [fixture: venn/frontmatter-empty]
 [fixture: venn/frontmatter-unclosed]
 
@@ -91,14 +109,17 @@ Ishikawa でも、正しく区切られた frontmatter と directive の内容�
 共通の属性の引用符の変換が起こす YAML エラーも含め、
 不正な YAML だけでは図を拒否しません。
 mermaid.js はこれらの frontmatter を拒否します。
+
 [fixture: ishikawa/frontmatter-malformed]
 [fixture: ishikawa/frontmatter-html-title]
 
 空の区切り行の隣接と、閉じていない frontmatter は構文エラーのままです。
+
 [fixture: ishikawa/frontmatter-empty] [fixture: ishikawa/frontmatter-unclosed]
 
 Ishikawa の `@{...}` にデータブロックの構文はなく、通常の節点のテキストです。
 不正に見える内容や閉じていない内容も、埋め込みデータの差異ではなくテキストです。
+
 [fixture: ishikawa/db-data-block-is-text]
 [fixture: ishikawa/gram-child-unclosed-brace]
 
@@ -158,6 +179,7 @@ Ishikawa の `@{...}` にデータブロックの構文はなく、通常の節�
 | 5   | ラベル 12 を持つ頂点 A  | 同じ     |
 
 表で比較した読みを次の fixture が記録します。
+
 [fixture: flowchart/frontmatter-invalid-yaml]
 [fixture: common/frontmatter-duplicate-key]
 [fixture: common/config-css-key-not-string]
@@ -174,28 +196,35 @@ AST）は、埋め込まれたデータを書かれたとおりに持ちます�
 - mermaid.js が、`title: '<a b="c">'` のように、
   タグの中の `="..."` を `='...'` に書き換えて自分で作る YAML のエラーと、
   2 つの YAML の文書を持つフロントマター。
+
   [fixture: common/frontmatter-title-single-quoted-tag]
   [fixture: common/frontmatter-yaml-error]
   [fixture: common/frontmatter-two-documents]
 
 - 文字列、数、true であるフロントマターの `config` か、その中の `gantt` と、
   一緒にある `displayMode`。
+
   [fixture: common/frontmatter-display-mode-primitive-config]
   [fixture: common/config-display-mode-gantt-primitive]
 
 - 文字列、数、true である init の設定と、一緒にある wrap ディレクティブ。
+
   [fixture: common/directive-primitive-init-wrap]
   [fixture: common/directive-primitive-init-two-wrap-substrings]
 
 - mermaid.js がそこに許さない文字を持つ文字列の `themeVariables` と、
   mermaid.js が色として解析できないテーマの変数。
+
   [fixture: common/config-theme-variables-string-rejected]
   [fixture: common/config-theme-colour-rejected]
 
 - init ディレクティブがあるときに mermaid.js が行う、2 回目の判定の失敗。
+
   [fixture: common/config-init-detection-rejects]
 
-- 正しい YAML でないデータブロック。 [fixture: flowchart/div-data-invalid-yaml]
+- 正しい YAML でないデータブロック。
+
+  [fixture: flowchart/div-data-invalid-yaml]
 
 - flowchart の頂点のデータブロックで、中身が改行を持ち、
   値が null の YAML であるもの（改行だけ、コメントだけ、`null`、`~`、
@@ -212,6 +241,7 @@ AST）は、埋め込まれたデータを書かれたとおりに持ちます�
 mermaid.js が形を読まない辺の id の同じブロックも同じです。
 sequence では、mermaid.js は改行があっても、
 データブロックの中身をマッピングとして読み、そのようなブロックを受理します。
+
 [fixture: flowchart/div-data-block-line-break-only]
 [fixture: flowchart/div-data-block-comment-then-line-break]
 [fixture: flowchart/div-data-block-null-on-own-line]
@@ -223,6 +253,7 @@ sequence では、mermaid.js は改行があっても、
 上記の不正なデータの例は一方向です。
 mermaid.js は拒否して Db を与えず、この仕様は受理します。
 下記の gitgraph の例のように、埋め込み設定は受理を両方向に変える場合もあります。
+
 [fixture: gitgraph/docs-community-contributing-05cdc44b]
 [fixture: gitgraph/div-frontmatter-main-branch-duplicate-default-accepted]
 
@@ -233,10 +264,13 @@ mermaid.js は拒否して Db を与えず、この仕様は受理します。
 1. フロントマターやディレクティブからの設定の導出で Mermaid が拒否する場合、
    拒否されたブロックだけを除きます。
    ほかのフロントマターやディレクティブは残します。
+
    [fixture: sequence/div-invalid-frontmatter-preserves-wrap-directive]
+
 2. 正しい埋め込み設定が図の受理条件を変える場合、
    その条件が使う鍵だけを除いた設定で読み、ほかの値は残します。
    gitgraph と packet の鍵は下記で名指しします。
+
    [fixture: gitgraph/div-frontmatter-main-branch-preserves-title]
    [fixture: gitgraph/div-frontmatter-html-labels-default-comparison]
    [fixture: gitgraph/div-init-html-labels-default-comparison]
@@ -247,6 +281,7 @@ Mermaid が導く値を保ちます。
 Db にだけ効く設定も残します。
 不正なフロントマターを除いても、正しい `wrap: true` のディレクティブは、
 sequence のメッセージを wrap させます。
+
 [fixture: gitgraph/div-frontmatter-main-branch-preserves-title]
 [fixture: sequence/div-invalid-frontmatter-preserves-wrap-directive]
 
@@ -256,6 +291,7 @@ sequence のメッセージを wrap させます。
 比較する Db が `null` になるのは、
 参照入力にも同じ不透明なデータによる拒否が残るときだけです。
 その場合も、指定の読みは受理です。
+
 [fixture: gitgraph/div-frontmatter-invalid-yaml]
 [fixture: gitgraph/div-frontmatter-html-invalid-yaml]
 [fixture: info/div-frontmatter-invalid-yaml]
@@ -278,6 +314,7 @@ usecase の表の本文を JSON、いくつかの directive の引数を JSON �
 [設定（参考）](../../../tests/docs/configuration.ja.md#設定参考)
 を参照してください。
 そのどの段階が失敗しても、入力は拒否されます。
+
 [fixture: usecase/db-json-integer-order]
 [fixture: usecase/db-json-duplicate-order]
 [fixture: usecase/gram-json-object-scalar-overwrite]
@@ -297,6 +334,7 @@ usecase の表の本文を JSON、いくつかの directive の引数を JSON �
 ソースのテキストを持つために内容の検証は不要だからです。
 下記の gitgraph の設定の例は、理由 2 により Mermaid が受理する入力も拒否します。
 既定の設定を使う直接の規則により、埋め込み内容を不透明に保ちます。
+
 [fixture: gitgraph/docs-community-contributing-05cdc44b]
 [fixture: gitgraph/docs-syntax-gitgraph-2ea99686]
 
@@ -310,6 +348,7 @@ connector の見出しの全てのブロックの内部を、隣接するもの�
 木の構築ではなく内容に依存します。
 既存の逆方向の条件により受理します。
 YAML のプロパティの木、キーの除去、alias の解決は不要です。
+
 [fixture: agentflow/db-data-block-invalid-yaml]
 [fixture: agentflow/db-data-block-unknown-shape]
 [fixture: agentflow/db-metadata-adjacent-no-comma]
@@ -321,6 +360,7 @@ YAML のプロパティの木、キーの除去、alias の解決は不要です
 閉じないブロック、単引用符だけで保護する波括弧、
 二重引用のデータの文脈の外のキャレットは、内容の拒否ではありません。
 空の複数行のブロックは、この固定版で既に受理されます。
+
 [fixture: agentflow/lex-data-block-unclosed]
 [fixture: agentflow/lex-data-block-single-quoted-brace]
 [fixture: agentflow/lex-data-block-caret]
@@ -337,6 +377,7 @@ mermaid 独自の JSON reader は、裸のキー、不正 escape、末尾コン�
 この仕様は、不透明な木の構築に JSON 検証は不要という既存の逆方向の基準により、
 内容だけの失敗を受理します。
 外から与える表の value と propertyOrder は子の節点にしません。
+
 [fixture: usecase/div-gram-json-unquoted-key]
 [fixture: usecase/div-gram-json-malformed-escape]
 [fixture: usecase/div-gram-json-trailing-comma]
@@ -355,6 +396,7 @@ mermaid は
 collector は JSON エラーの位置の特定にも使いますが、
 JSON の検証の代わりにはしません。
 native metadata のプロパティ文法はこの JSON reader を使いません。
+
 [fixture: usecase/db-json-integer-order]
 [fixture: usecase/db-json-duplicate-order]
 [fixture: usecase/gram-json-object-scalar-overwrite]
@@ -369,6 +411,7 @@ UsecaseMetadata と順序つきのプロパティを持ち、不透明ではあ�
 キー、型、組合せの検証をすべて保ちます。
 この規則で embedded 内容を理由に、
 mermaid が受理する入力を拒否することはありません。
+
 [fixture: usecase/gram-json-empty-delimiter-only]
 [fixture: usecase/gram-json-array-root]
 [fixture: usecase/gram-json-brace-in-single-quote]
@@ -385,13 +428,16 @@ Frontmatter は不正な YAML の本文を書かれたまま持てるので、
 この仕様は受理します。
 HTML 属性の引用符の変換で、書かれた YAML のタイトルが不正になる場合も、
 usecase の場合と同じく含みます。
+
 [fixture: pie/div-review-frontmatter-html-invalid-yaml]
 [fixture: usecase/div-gram-frontmatter-html-attribute-quotes]
+
 これは逆方向の場合だけで、不透明な内容を理由に、
 mermaid.js が受理する入力をこの規則が拒否することはありません。
 先頭以外の隠れた YAML は mermaid.js でもすでに不透明なので、
 不正な本文は PieIgnoredText に持ち、印を付けません。
 下の不正な init 引数も両者が受理し、印を持ちません。
+
 [fixture: pie/div-review-yaml-leading-invalid]
 [fixture: pie/review-yaml-hidden-invalid]
 [fixture: pie/lex-yaml-after-comment-invalid-body]
@@ -406,10 +452,13 @@ Mermaid が拒否する先頭の不正な YAML は、ここでは受理します
 [比較する Db](#比較する-db)の規則により、
 `specified.json` はその Db と埋め込み値を比較のために記録します。
 この 2 つのフロントマターでは、その Db は初期分岐 `main` だけの空の履歴です。
+
 [fixture: gitgraph/div-frontmatter-invalid-yaml]
 [fixture: gitgraph/div-frontmatter-html-invalid-yaml]
+
 先頭以外の不正な隠れた YAML は GitgraphIgnoredText に持て、既に一致します。
 Mermaid が受理する不正な init 引数も差異ではありません。
+
 [fixture: gitgraph/div-frontmatter-invalid-yaml]
 [fixture: gitgraph/div-frontmatter-html-invalid-yaml]
 [fixture: gitgraph/lex-yaml-invalid-body]
@@ -422,6 +471,7 @@ gitgraph では、初期分岐 `main` と、
 比較に使う設定から除く鍵は、
 `gitGraph.mainBranchName` と `gitGraph.htmlLabels` です。
 ほかの設定の値と、Mermaid が導くタイトルは残します。
+
 [fixture: gitgraph/div-frontmatter-main-branch-preserves-title]
 [fixture: gitgraph/div-frontmatter-html-labels-default-comparison]
 [fixture: gitgraph/div-init-html-labels-default-comparison]
@@ -431,6 +481,7 @@ root の `securityLevel` と `gitGraph.securityLevel` は、
 フロントマターでも init ディレクティブでも変更できません。
 これらの設定の試みは、Mermaid が既に除きます。
 サイトの設定では、上記の受理条件のとおり gitgraph の値を与えられます。
+
 [fixture: gitgraph/frontmatter-security-level-secure]
 [fixture: gitgraph/directive-security-level-secure]
 [fixture: gitgraph/config-gitgraph-loose]
@@ -440,6 +491,7 @@ root の `securityLevel` と `gitGraph.securityLevel` は、
 直接の規則では代わりに既定値を使い、
 Mermaid が受理する向きには理由 2 を使います。
 テキストの外のサイト設定は、上記のとおり設定を持つ側が適用します。
+
 [fixture: gitgraph/docs-community-contributing-05cdc44b]
 [fixture: gitgraph/docs-syntax-gitgraph-2ea99686]
 [fixture: gitgraph/config-main-branch]
@@ -453,6 +505,7 @@ Mermaid は `branch dev` を重複、`checkout main` を未知として拒否し
 init ディレクティブで同じ名前を設定した `branch dev` も、Mermaid では拒否し、
 ここでは受理します。
 5 入力すべてにこの識別子の印を付け、指定の読みには逆の受理を記録します。
+
 [fixture: gitgraph/docs-community-contributing-05cdc44b]
 [fixture: gitgraph/docs-syntax-gitgraph-2ea99686]
 [fixture: gitgraph/div-frontmatter-main-branch-duplicate-default-accepted]
@@ -471,6 +524,7 @@ Mermaid が拒否してもここでは受理します。
 この 2 つのフロントマターでは、その Db は `{}` です。
 この規則で Mermaid が受理する入力を拒否することはありません。
 不正な隠れた YAML と記録済みの不正な init 引数は両方が受理し、印を付けません。
+
 [fixture: info/div-frontmatter-invalid-yaml]
 [fixture: info/div-frontmatter-html-invalid-yaml]
 [fixture: info/hidden-yaml-preheader-invalid]
@@ -482,6 +536,7 @@ Frontmatter/directive ノードは内容を受理のために解釈せず保持�
 不正な YAML は Mermaid だけが拒否する場合がある。
 両方向とも比較では有効なテキスト設定から `packet.bitsPerRow` だけを除き、
 サイト設定、Mermaid が導いた frontmatter title、ほかの有効な設定を残す。
+
 [fixture: packet/frontmatter-invalid]
 [fixture: packet/frontmatter-invalid-keeps-config]
 [fixture: packet/config-frontmatter-fraction]
@@ -498,6 +553,7 @@ Mermaid が拒否して本仕様が受理する場合があり、
 サイトの小数幅をテキストの 32 で上書きすると逆方向の差異になります。
 両方向とも specified.json に受理と Db・埋め込み値を記録します。
 サイト設定はそれを持つ者が適用し、テキストの設定から再構築しません。
+
 [fixture: packet/config-frontmatter-fraction]
 [fixture: packet/config-directive-fraction]
 [fixture: packet/config-frontmatter-overrides-site]
@@ -509,6 +565,7 @@ Mermaid が拒否して本仕様が受理する場合があり、
 不正な内容だけによる差異ではありません。
 受理を変えずに公開行だけを変える設定は通常の embedded configuration として扱い、
 [tests の要約](../../../tests/docs/db-summaries.md#packet)に従います。
+
 [fixture: packet/frontmatter-invalid-keeps-config]
 [fixture: packet/hidden-yaml-body]
 [fixture: packet/config-frontmatter-row-fraction-accepted]
@@ -524,6 +581,7 @@ architecture は frontmatter と共通 directive の内容を、
 native hidden YAML/DIRECTIVE の本文は ignored form であり、設定 block ではない。
 正しい埋め込み設定から除く architecture の acceptance key はない。
 描画設定、maxEdges、maxTextSize はこの図の public parse の受理を変えない。
+
 [fixture: architecture/div-frontmatter-invalid-yaml]
 [fixture: architecture/div-frontmatter-duplicate-key]
 [fixture: architecture/div-init-fontfamily-number]
@@ -543,7 +601,9 @@ radar は先頭の frontmatter と global directive の引数を、
 radar.* に radar の受理を変える鍵はなく、
 両方向の比較から除く radar 固有の acceptance key はありません。
 site・frontmatter・init の描画/option 設定は、正しい構文を拒否させず、
-不足した名前つき entry も救済しません。 [fixture: radar/frontmatter-invalid]
+不足した名前つき entry も救済しません。
+
+[fixture: radar/frontmatter-invalid]
 [fixture: radar/frontmatter-invalid-keeps-config]
 [fixture: radar/config-invalid-display-mode]
 [fixture: radar/config-drawing-only] [fixture: radar/config-options-site]
@@ -557,6 +617,7 @@ site・frontmatter・init の描画/option 設定は、正しい構文を拒否�
 native hidden YAML/directive は RadarIgnoredText が所有します。
 radar は埋め込み payload として検証しません。
 独立した共有の設定の読み方は tests の要約に従います。
+
 [fixture: radar/frontmatter-invalid-keeps-config]
 [fixture: radar/config-invalid-display-mode]
 [fixture: radar/retained-yaml-control]
@@ -573,6 +634,7 @@ treemap 固有の acceptance key は除きません。
 描画設定は有効な構文を拒否せず、不正な構文も救済しません。
 残る YAML のような block に native の規則はなく、依然拒否します。
 この差異で frontmatter や ignored な形へ昇格させません。
+
 [fixture: treemap/div-frontmatter-invalid]
 [fixture: treemap/div-invalid-keeps-config]
 [fixture: treemap/div-init-fontfamily-number]
@@ -591,6 +653,7 @@ Frontmatter と global init の内容は opaque な source record として保�
 Mermaid の導出を失敗させることがありますが、
 この仕様は適切な delimiter を持つ図を受理します。
 設定で不正な規則を受理させることはできません。
+
 [fixture: railroad/ir-div-frontmatter-invalid]
 [fixture: railroad/ir-config-frontmatter-drawing]
 [fixture: railroad/ebnf-config-init-drawing]
@@ -612,6 +675,7 @@ ignored-text の追加も情報の損失も要りません。
 第 2 の問いでは、確定済みの opaque-data の規則を適用し、
 Mermaid の YAML/JSON/設定の導出を仕様に複製しません。
 native の残る YAML は別に RailroadIgnoredText に保ち、設定を適用しません。
+
 [fixture: railroad/ir-frontmatter-title-only]
 [fixture: railroad/ir-prefix-yaml-no-bare]
 [fixture: railroad/ir-div-frontmatter-invalid]
@@ -627,6 +691,7 @@ specified の比較は title と他の有効な設定を保ちます。
 数値の wardley.fontFamily は共通の設定処理で失敗しえますが、
 wardley-beta の描画設定の control は失敗しません。
 いずれも新たな Wardley 固有の受理設定ではありません。
+
 [fixture: wardley/div-frontmatter-invalid]
 [fixture: wardley/config-frontmatter-fontfamily-number]
 [fixture: wardley/config-init-fontfamily-number]
@@ -641,6 +706,7 @@ wardley-beta の描画設定の control は失敗しません。
 YAML や設定が読めないことを理由に構文を拒否しない。
 不正なデータで有効な title や設定を消さず、共有の比較の設定の規則を適用する。
 retained な native YAML は代わりに CynefinIgnoredText である。
+
 [fixture: cynefin/div-frontmatter-invalid]
 [fixture: cynefin/div-init-invalid-colour]
 [fixture: cynefin/div-init-primitive-wrap]
@@ -656,6 +722,7 @@ retained な native YAML は代わりに CynefinIgnoredText である。
 は、共通の前処理と検出の結果を読みます。
 [Cynefin の構文](../diagrams/cynefin.ja.md)に直接の規則を定め、
 [木](../ast/cynefin.ja.md)に書かれた形を保ちます。
+
 [fixture: cynefin/db-all-fields]
 
 ### eventmodeling
@@ -670,6 +737,7 @@ Mermaid の設定の導出で失敗しえます。
 独立した有効な title/設定と native の retained prefix を保ちます。
 native data の 本文や json/type tag は書かれた構文で、
 opaque な設定 block ではありません。
+
 [fixture: eventmodeling/div-frontmatter-invalid]
 [fixture: eventmodeling/config-frontmatter-fontfamily-number]
 [fixture: eventmodeling/config-init-fontfamily-number]
@@ -695,7 +763,9 @@ Mermaid が拒否して opaque な読みが受理する場合があります。
 その参照を作るときも隣の有効な title・設定を保ちます。
 [adapter](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/treeView/parser.ts#L11-L57)
 と、[図の構文](../diagrams/treeview.ja.md) には、
-隠れた意味の gate はありません。 [fixture: treeview/div-frontmatter-invalid]
+隠れた意味の gate はありません。
+
+[fixture: treeview/div-frontmatter-invalid]
 [fixture: treeview/config-frontmatter-fontfamily-number]
 [fixture: treeview/config-init-fontfamily-number]
 [fixture: treeview/div-init-invalid-colour]

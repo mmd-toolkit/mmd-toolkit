@@ -112,14 +112,22 @@ The procedures of a package are in the skill of that package.
   as it is. A sentence that cannot be laid out this way is left as written and
   reported, for its author to split or to give a `、`. A `。` inside brackets
   does not end a sentence, and a closing emphasis mark stays with its sentence.
-  The body is wrapped before its following `[fixture: …]` citations are placed:
-  they continue from the body's last line with one space, and those that do not
-  fit go on continuation lines. One space is added before a citation that
-  immediately follows `。`; directly adjacent citations remain adjacent. Where a
+  A paragraph of citations is laid out the same way: its citations, one space
+  apart, fill each line up to 80 columns, and no citation is broken. Where a
   line break between a full-width and a half-width character, or between two
   half-width characters, is removed, one space takes its place. A `、` or a `。`
   takes no space after it, neither where a line break is removed nor where one
-  is written, except before a citation. `pnpm run lint:md` checks all of this.
+  is written. `pnpm run lint:md` checks all of this.
+- A fixture citation (`[fixture: …]`; in the documents of the formatter also
+  `[corpus fixture: …]` and `[test: …]`) never stands inside a sentence. The
+  citations of a sentence, or of a run of sentences, stand right after it in a
+  paragraph of their own, a paragraph of citations, which holds only citations,
+  one space apart. In a list item, that paragraph is a paragraph of the item
+  after its text; in a table, the citations of a row stand in its last column,
+  headed `Fixtures` (`fixture` in Japanese). A paragraph of citations right
+  after a table belongs to the whole table, and one right after a code block to
+  that example. `pnpm run lint:docs` checks this
+  (`scripts/check-doc-citations.mjs`).
 - A code block that holds Mermaid text has the info string `mmd`, not `mermaid`
   and not `text`. GitHub highlights it and does not try to render it as a
   diagram, which matters because many examples are rejected or are edge cases on

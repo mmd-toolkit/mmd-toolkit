@@ -25,9 +25,10 @@ A comment can also be written after a statement, on the same line, as in
 statement of a class diagram. A comment on a line of its own is read the same by
 mermaid.js and by this specification, and so is a comment after a statement on
 the last line of the text, also when only a line that holds a directive follows
-it. A line whose `%%` follows only a directive is a comment line too. [fixture:
-class/lex-comment-own-line] [fixture: class/lex-comment-on-last-line] [fixture:
-class/lex-comment-then-directive-at-end] [fixture:
+it. A line whose `%%` follows only a directive is a comment line too.
+
+[fixture: class/lex-comment-own-line] [fixture: class/lex-comment-on-last-line]
+[fixture: class/lex-comment-then-directive-at-end] [fixture:
 class/lex-directive-then-comment-line]
 
 ## The difference
@@ -92,11 +93,13 @@ Each example is a whole class diagram.
 | 6       | the relation                                 | the same                                     |
 
 With a line of spaces in place of the empty line of example 2, both read the
-relation and the class Fish. [fixture: class/div-comment-then-statement]
-[fixture: class/div-comment-then-empty-line] [fixture:
-class/div-comment-joins-member] [fixture: class/div-comment-splits-relation]
-[fixture: class/div-comment-after-header] [fixture:
-class/lex-comment-on-last-line] [fixture: class/lex-comment-then-spaces-line]
+relation and the class Fish.
+
+[fixture: class/div-comment-then-statement] [fixture:
+class/div-comment-then-empty-line] [fixture: class/div-comment-joins-member]
+[fixture: class/div-comment-splits-relation] [fixture:
+class/div-comment-after-header] [fixture: class/lex-comment-on-last-line]
+[fixture: class/lex-comment-then-spaces-line]
 
 So mermaid.js reads the line after such a comment as the rest of the statement
 before it. Where the two lines together are no statement, mermaid.js rejects the
@@ -107,8 +110,9 @@ it as the next statement.
 With a comment after a relation, then a line with only `%%`, and then a line of
 spaces, mermaid.js takes the line feeds after the comment and after the `%%` and
 reads one line break, while this specification reads two, and rejects the text,
-as both do without the comment after the relation. [fixture:
-class/div-comment-then-comment-only-line]
+as both do without the comment after the relation.
+
+[fixture: class/div-comment-then-comment-only-line]
 
 In a Gantt chart, a comment with the mark `%` that mermaid.js reaches directly,
 as [Comments](../diagrams/gantt.md#comments) defines it, takes the line feeds
@@ -120,8 +124,9 @@ its line, and the `newline` unit ends the statement, so the input is rejected.
 With a space before the `%` after a call part, or with `%%`, both reject the
 input, and between statements the line feeds that mermaid.js takes change
 nothing (see [Comments](../diagrams/gantt.md#comments)). The difference goes one
-way in gantt: mermaid.js accepts, and this specification rejects. [fixture:
-gantt/div-percent-comment-takes-line-feed-after-click-id] [fixture:
+way in gantt: mermaid.js accepts, and this specification rejects.
+
+[fixture: gantt/div-percent-comment-takes-line-feed-after-click-id] [fixture:
 gantt/div-percent-comment-takes-line-feed-after-call] [fixture:
 gantt/div-percent-comment-takes-line-feeds-after-call] [fixture:
 gantt/div-percent-comment-takes-line-feed-after-href] [fixture:
@@ -130,8 +135,9 @@ gantt/lex-double-percent-comment-after-click-id-then-href-line] [fixture:
 gantt/lex-percent-comment-glued-after-header-blank-line]
 
 In C4, a diagram comment after a header, call, or boundary leaves the following
-line terminator outside the comment in this specification. [fixture:
-c4/header-component-comment-glued] [fixture:
+line terminator outside the comment in this specification.
+
+[fixture: c4/header-component-comment-glued] [fixture:
 c4/header-component-comment-on-header-line] [fixture:
 c4/header-container-comment-glued] [fixture:
 c4/header-container-comment-on-header-line] [fixture:
@@ -147,13 +153,17 @@ c4/div-boundary-comment-before-next-statement]
 
 mermaid.js takes consecutive following line feeds and rejects these inputs when
 the required separator disappears, including with an empty line after the
-comment. [fixture: c4/div-header-comment-blank-recovery] [fixture:
+comment.
+
+[fixture: c4/div-header-comment-blank-recovery] [fixture:
 c4/div-comment-between-blank-recovery] [fixture: c4/div-diagram-comment-u2028]
 [fixture: c4/div-diagram-comment-u2029]
 
 A spaces-only line after the comment stops the C4 comment rule, so both accept
-the separated statements. [fixture: c4/header-header-comment-spaces-recovery]
-[fixture: c4/lex-comment-between-spaces-recovery]
+the separated statements.
+
+[fixture: c4/header-header-comment-spaces-recovery] [fixture:
+c4/lex-comment-between-spaces-recovery]
 
 ## What it means for an author
 
@@ -176,17 +186,23 @@ does not. The lexer reads the text without its directives, so a line that holds
 only a directive is an empty line to it, and a directive after spaces leaves a
 line of spaces: `A <|-- B %% c`, a line `%%{init: {}}%%`, and `class C` is
 rejected by mermaid.js, while with spaces before the directive both read the
-relation and the class C. [fixture: class/div-comment-then-directive-line]
-[fixture: class/lex-comment-then-indented-directive-line] Before its lexer reads
-the text, though, mermaid.js removes each comment line with text after its `%%`,
-other than a directive, together with the lines of only whitespace right before
-it
+relation and the class C.
+
+[fixture: class/div-comment-then-directive-line] [fixture:
+class/lex-comment-then-indented-directive-line]
+
+Before its lexer reads the text, though, mermaid.js removes each comment line
+with text after its `%%`, other than a directive, together with the lines of
+only whitespace right before it
 ([`cleanupComments`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagram-api/comments.ts#L6-L8)).
 A line of spaces right before such a comment line is then gone, and stops
 nothing: `A --> B %% c`, a line of spaces, `%% x`, and `A : +int age` is one
 relation from A to `BA` with the label `+int age` in mermaid.js, as in
-example 3. [fixture: class/div-comment-then-spaces-line-then-comment-line] The
-lexer of gantt has a rule of the same shape for a comment that starts with a
+example 3.
+
+[fixture: class/div-comment-then-spaces-line-then-comment-line]
+
+The lexer of gantt has a rule of the same shape for a comment that starts with a
 single `%`
 ([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L30-L30)),
 which it reaches only where it stands directly at the `%`; its rule for `%%`,

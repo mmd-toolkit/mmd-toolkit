@@ -7,9 +7,11 @@ The lexer follows the specification's
 header compares a longer bare-name alternative. There is no imported common
 grammar, native YAML, hidden directive or visible newline unit. ASCII
 indentation precedes hidden whitespace, so no separate hidden-whitespace reader
-is used. [fixture: treeview/header-only] [fixture:
-treeview/header-nbsp-custom-boundary] [fixture: treeview/gram-body-yaml]
-[fixture: treeview/detect-secondscan-singleline] [fixture:
+is used.
+
+[fixture: treeview/header-only] [fixture: treeview/header-nbsp-custom-boundary]
+[fixture: treeview/gram-body-yaml] [fixture:
+treeview/detect-secondscan-singleline] [fixture:
 treeview/gram-quoted-tail-space-next-indent]
 
 ## Tokens
@@ -28,9 +30,11 @@ its adjacent dash run. Leading whitespace and separating ASCII spaces/tabs have
 no tokens; assigned indentation creates no synthetic tokens. Prefix text is not
 reclassified as keywords or annotations. Each branch and dash is a separate
 authored component, so common trivia between them is allowed and cuts this
-RawText item under the shared contract. [fixture: treeview/box-written-tree]
-[fixture: treeview/box-prefix-arbitrary] [fixture: treeview/box-branch-no-dash]
-[fixture: treeview/box-branch-directive-parts] [fixture:
+RawText item under the shared contract.
+
+[fixture: treeview/box-written-tree] [fixture: treeview/box-prefix-arbitrary]
+[fixture: treeview/box-branch-no-dash] [fixture:
+treeview/box-branch-directive-parts] [fixture:
 treeview/box-dash-selected-semicolon] [fixture:
 treeview/box-prefix-directive-column]
 
@@ -39,7 +43,9 @@ text begins after exactly one ASCII separator, accessibility line text
 immediately after the colon, and block text immediately inside the braces. All
 surviving payload whitespace is token text, including whitespace-only values.
 Empty or shared-removal-only payloads have no text item; empty quoted names
-still have a String item. [fixture: treeview/db-bare-tail-space] [fixture:
+still have a String item.
+
+[fixture: treeview/db-bare-tail-space] [fixture:
 treeview/db-description-tail-space] [fixture: treeview/gram-written-tree]
 [fixture: treeview/ast-common-whitespace-values] [fixture:
 treeview/ast-common-removal-only-values] [fixture:
@@ -51,6 +57,7 @@ lexing. Inside an open quoted name or block, authored prefixes, decorations and
 enclosed excluded padding remain in the enclosing String or RawText item, with
 no overlapping box items. An outer decoration instead has one RawText item from
 its first through last non-whitespace character, excluding its following LF.
+
 [fixture: treeview/box-tail-branch-no-carry] [fixture:
 treeview/box-trim-unicode-tail] [fixture: treeview/box-multiline-name-tail-trim]
 [fixture: treeview/box-quoted-decoration] [fixture:
@@ -60,6 +67,7 @@ An accDescr block's RawText item spans its complete authored interior up to the
 effective closing brace. A final decoration's line ending and a branch prefix
 introducing that closer remain in this item. Only shared removals shorten its
 outer boundaries or cut it into tokens; no separate box item overlaps it.
+
 [fixture: treeview/box-block-tail-decoration-light-vertical] [fixture:
 treeview/box-block-tail-decoration-heavy-vertical] [fixture:
 treeview/box-block-tail-decoration-light-dash] [fixture:
@@ -103,6 +111,7 @@ String items; String pieces become StringFragment. Cuts inside header/common
 keywords, `icon`, class names, whole icon references, `:::` or `##` reject.
 Trivia between complete components is allowed without supplying missing
 whitespace. Branch and dash components can be separated by that trivia.
+
 [fixture: treeview/directive-bare-middle] [fixture:
 treeview/directive-double-middle] [fixture: treeview/common-block-comments]
 [fixture: treeview/directive-header-inside] [fixture:
@@ -120,19 +129,22 @@ treeview/box-dash-directive-inside]
 At a native unit start, `%%` through before LF is a shared Comment with mark
 `%%`; U+2028/U+2029 and apparent closers remain comment content. An enclosing
 bare/quoted name, description annotation or block instead owns that text; common
-line values stop before it. [fixture: treeview/native-comment-ls] [fixture:
-treeview/native-comment-ps] [fixture: treeview/native-comment-closer-greedy]
-[fixture: treeview/comment-in-bare] [fixture: treeview/comment-in-quotes]
-[fixture: treeview/tail-description-comment] [fixture:
-treeview/common-block-bare-percent] [fixture:
-treeview/common-title-percent-boundary]
+line values stop before it.
+
+[fixture: treeview/native-comment-ls] [fixture: treeview/native-comment-ps]
+[fixture: treeview/native-comment-closer-greedy] [fixture:
+treeview/comment-in-bare] [fixture: treeview/comment-in-quotes] [fixture:
+treeview/tail-description-comment] [fixture: treeview/common-block-bare-percent]
+[fixture: treeview/common-title-percent-boundary]
 
 Ordinary indentation and hidden LF make no tokens. Passed bare percent lines are
 shared Comments, and their accompanying trivia is not read again. Retained
 single-line second-scan forms use the native Comment rule; source directives
 inside remain shared Directives. The logical appended LF is not authored token
-text. [fixture: treeview/db-tabs-one-unit] [fixture:
-treeview/gram-body-hidden-eof] [fixture: treeview/bare-line-space] [fixture:
+text.
+
+[fixture: treeview/db-tabs-one-unit] [fixture: treeview/gram-body-hidden-eof]
+[fixture: treeview/bare-line-space] [fixture:
 treeview/detect-secondscan-bare-unicode] [fixture:
 treeview/detect-bare-before-secondscan] [fixture:
 treeview/comment-native-mark-directive]
@@ -140,7 +152,9 @@ treeview/comment-native-mark-directive]
 The named gaps keep the same RawText decoration items: textBefore owns remaining
 decorations between complete hierarchy nodes, after the existing leaf,
 textBeforeName, annotation and block-opener owners take precedence. Children add
-no tokens. [fixture: treeview/box-written-tree] [fixture:
+no tokens.
+
+[fixture: treeview/box-written-tree] [fixture:
 treeview/box-decoration-pending-name-gap] [fixture:
 treeview/box-decoration-before-annotation] [fixture:
 treeview/box-prefix-common-block-two-prefixes] [fixture:

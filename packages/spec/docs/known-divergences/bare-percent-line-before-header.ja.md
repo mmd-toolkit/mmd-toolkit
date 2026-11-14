@@ -27,6 +27,7 @@ sequenceDiagram
 ```
 
 この例は、見出しの前に裸の `%%` の行を置きます。
+
 [fixture: sequence/header-after-bare-percent-line]
 
 mermaid.js は同じ入力を違って読みます。
@@ -160,6 +161,7 @@ mermaid.js が入力を拒否し、この仕様は受理します。
 | 13  | 拒否。`%%` はヘッダーの前の id                          | ブロック A を持つ block 図          |
 
 表で比較した読みを次の fixture が記録します。
+
 [fixture: flowchart/header-after-bare-percent-line]
 [fixture: flowchart/header-after-empty-braces-line]
 [fixture: state/header-after-empty-braces-line]
@@ -195,6 +197,7 @@ flowchart と state では、
 class では、タブだけの行や、
 ディレクティブを除くと空白だけになる行（`  %%{init: {}}%%`
 など）は空白だけの行で、ここではトリビア、mermaid.js では `newline` の単位です。
+
 [fixture: flowchart/header-after-non-word-brace-line]
 [fixture: flowchart/header-after-empty-braces-no-space]
 [fixture: state/header-after-non-word-brace-line]
@@ -204,6 +207,7 @@ class では、タブだけの行や、
 
 `%%` だけの行の前にディレクティブやフロントマターがあっても変わりません。
 それらはトリビアで、`%%` だけの行は上と同じに読まれます。
+
 [fixture: flowchart/header-after-directive-then-bare-percent-line]
 [fixture: flowchart/header-after-frontmatter-then-bare-percent-line]
 
@@ -212,14 +216,15 @@ sequence・class・state・agentflow のヘッダーの前の `%%` だけの行�
 sequence・class のヘッダーの前の `%%{ }%%` の行、
 そのような行と sequence・state のヘッダーの間の空白だけの行、
 class でコメント行の直前にある空白だけの行（コメント領域に入ります）です。
+
 [fixture: agentflow/comment-bare-percent-line]
 [fixture: sequence/header-after-bare-percent-line]
 [fixture: class/header-after-bare-percent-line]
 [fixture: state/header-after-bare-percent-line]
 [fixture: sequence/header-after-empty-braces-line]
 [fixture: class/header-after-empty-braces-line]
-[fixture: sequence/header-after-bare-percent-then-whitespace-line] [fixture:
-class/header-after-bare-percent-then-whitespace-line-then-comment-line]
+[fixture: sequence/header-after-bare-percent-then-whitespace-line]
+[fixture: class/header-after-bare-percent-then-whitespace-line-then-comment-line]
 [fixture: class/header-after-bare-percent-then-empty-line]
 
 差異は一方向です。
@@ -228,10 +233,12 @@ mermaid.js がここで受理する入力を拒否することはありません
 
 C4 では見出しの前で `%%` だけの行にスペースだけの行が続くと、
 ここでは前置きとなり、mermaid.js は見出しの前に改行を残して拒否します。
+
 [fixture: c4/div-leading-percent-space-blank]
 
 C4 の見出しの直前の裸のパーセント行と、
 その後に空行だけがある形は両者とも受理します。
+
 [fixture: c4/header-after-bare-percent-line]
 [fixture: c4/header-leading-percent-blank]
 [fixture: c4/header-leading-percent-before-different-header]
@@ -243,6 +250,7 @@ C4 の見出しの直前の裸のパーセント行と、
 mermaid.js の受理は、上に挙げたとおり形と図種によって異なります。
 agentflow は空白だけの行の前も含め `%%` だけの行を受理しますが、
 ディレクティブでない percent と波括弧の行は拒否します。
+
 [fixture: agentflow/comment-bare-percent-line]
 [fixture: agentflow/comment-bare-before-spaces]
 [fixture: agentflow/div-percent-braces-before-header]
@@ -304,6 +312,7 @@ agentflow は、裸の %% の行とその後の空白だけの行を既に受理
 共通のヘッダー前のコメントの規則で受理します。
 これは既存の逆方向の pipeline の順序の条件であり、
 書かれたテキストを木から捨てません。
+
 [fixture: agentflow/comment-bare-percent-line]
 [fixture: agentflow/comment-bare-before-spaces]
 [fixture: agentflow/div-percent-braces-before-header]
@@ -321,6 +330,7 @@ parser が最初にヘッダーを要求するので拒否します。
 既存の pipeline 順序の逆方向の基準で共通の先頭コメントを受理します。
 追加の usecase 節点は不要で、mermaid の受理入力を拒否することもありません。
 ヘッダー後の native な裸のコメントは既に動きます。
+
 [fixture: usecase/div-comment-preheader-bare]
 [fixture: usecase/div-comment-preheader-braces]
 [fixture: usecase/div-comment-preheader-bare-unicode-blank]
@@ -342,6 +352,7 @@ LS とバイトオーダーマークはヘッダーの直前でも拒否しま�
 共通の規則は、これらの先頭のコメントと空白をすべて受理します。
 既存の処理順による逆方向の基準であり、これらの拒否された入力を受理し、
 Mermaid が受理する入力は拒否しません。
+
 [fixture: pie/div-preheader-bare-ls-blank]
 [fixture: pie/div-preheader-bare-ps-blank]
 [fixture: pie/div-preheader-bare-nbsp-blank]
@@ -367,6 +378,7 @@ Mermaid が受理する入力は拒否しません。
 対応する ASCII 空白とタブの形は両者が受理します。
 保持した隠れた形は textBeforeHeader に残し、裸の行は共通の Comment、
 通過させた空白と改行はトリビアとします。
+
 [fixture: pie/div-preheader-retained-directive-bare-bom]
 [fixture: pie/div-preheader-retained-directive-bare-ls]
 [fixture: pie/div-preheader-retained-directive-bare-ls-line]
@@ -387,6 +399,7 @@ Mermaid が受理する入力は拒否しません。
 理由 2 の逆方向として、固有の読み方がそこで拒否する共通の空白を受理します。
 Mermaid が受理する入力を拒否することはありません。
 裸の行を通過していなければ、同じ Unicode の空白も通常の字句規則で拒否します。
+
 [fixture: gitgraph/div-detect-bare-before-header-ls]
 [fixture: gitgraph/div-detect-bare-nbsp-line]
 [fixture: gitgraph/div-detect-retained-directive-bare-bom]
@@ -402,6 +415,7 @@ Mermaid が受理する入力を拒否することはありません。
 Mermaid が通常の読み直しで拒否する空白を受理します。
 Mermaid が受理する入力を拒否しません。
 ASCII の対照例は一致し、裸の行を通さない Unicode の間隔は通常どおり拒否します。
+
 [fixture: info/div-bare-before-header-bom] [fixture: info/div-bare-line-ls]
 [fixture: info/div-detect-retained-yaml-bare-ls]
 [fixture: info/div-detect-retained-directive-bare-bom]
@@ -417,6 +431,7 @@ ASCII の対照例は一致し、裸の行を通さない Unicode の間隔は�
 Mermaid が拒否する Unicode trivia を受理する。
 Mermaid が受理する入力は拒否しない。
 通過した行がなければ native な隙間の規則を適用する。
+
 [fixture: packet/bare-before-header-bom] [fixture: packet/bare-line-ls]
 [fixture: packet/retained-yaml-bare-ls]
 [fixture: packet/div-detect-yaml-bare-directive-ls]
@@ -433,6 +448,7 @@ mermaid の native lexer は ASCII padding を受理するが、
 本仕様はこの差異としてその入力を受理する。
 通した行がなければ同じ隙間は native な図のテキストであり、拒否のままとする。
 残存形は固有の閉じの境界で引き続き読み、通した行と一緒には消さない。
+
 [fixture: architecture/detection-bare-space]
 [fixture: architecture/detection-bare-tab]
 [fixture: architecture/detection-bare-before-header-ls]
@@ -451,6 +467,7 @@ radar は検出で通した裸の percent 行を共有 Comment とし、
 木は各 comment と各 native な残存形を別々に保てます。
 通した Unicode 空白のための汎用 node や拒否は不要です。
 残る差異は、通した区間を図の字句解析器が再読しないという直接の規則です。
+
 [fixture: radar/bare-before-header-space]
 [fixture: radar/bare-before-header-tab] [fixture: radar/bare-before-header-nbsp]
 [fixture: radar/bare-before-header-ls] [fixture: radar/bare-before-header-ps]
@@ -465,6 +482,7 @@ radar は検出で通した裸の percent 行を共有 Comment とし、
 接着した閉じや不適格な閉じを許しません。
 これらの対照例は無印の拒否とし、
 通した Unicode trivia の差異にこの識別子を使います。
+
 [fixture: radar/detect-yaml-bare-secondscan-native-ascii]
 [fixture: radar/detect-secondscan-native-nbsp]
 [fixture: radar/detect-retained-no-bare-control]
@@ -482,6 +500,7 @@ Mermaid の可視の INDENTATION は ASCII の gap も拒否し、
 通した裸の行がなければ後の Unicode gap は依然拒否します。
 残存 YAML や読めない複数行の形も、裸の行を通した後で拒否します。
 受理する specified の記録は、同じ空の treemap Db を持ちます。
+
 [fixture: treemap/bare-before-header-space]
 [fixture: treemap/bare-before-header-tab] [fixture: treemap/bare-line-nbsp]
 [fixture: treemap/div-retained-before-bare-unicode-line]
@@ -504,9 +523,10 @@ textBeforeHeader の RailroadIgnoredText に保ちます。
 Mermaid の native padding が拒否する通過済みの Unicode 空白を受理します。
 通過した bare line のない対照では、
 後続の Unicode padding は native の図のテキストに残って拒否し、
-ASCII の対照は受理します。 [fixture: railroad/ir-bare-nbsp]
-[fixture: railroad/ebnf-bare-unicode] [fixture: railroad/abnf-bare-unicode]
-[fixture: railroad/peg-bare-unicode]
+ASCII の対照は受理します。
+
+[fixture: railroad/ir-bare-nbsp] [fixture: railroad/ebnf-bare-unicode]
+[fixture: railroad/abnf-bare-unicode] [fixture: railroad/peg-bare-unicode]
 [fixture: railroad/ir-secondscan-between-bares-unicode]
 [fixture: railroad/ir-retained-bare-secondscan-unicode]
 [fixture: railroad/ir-yaml-unicode-no-bare]
@@ -526,6 +546,7 @@ Mermaid が通過済みの trivia を再読することです。
 第 2 の問いの答えは理由 2、共有の直接の検出規則です。
 native の closer の境界は依然必要で、先頭の nonword percent-brace の行を、
 自動的に retained native directive にはしません。
+
 [fixture: railroad/ir-prefix-retained-directive]
 [fixture: railroad/ir-secondscan-real] [fixture: railroad/ir-secondscan-glued]
 
@@ -539,8 +560,10 @@ native の closer の境界は依然必要で、先頭の nonword percent-brace 
 残存形の前や間も、この仕様が受理して Mermaid が拒否することがあります。
 ASCII の control は一致します。
 通した行がなければ native の Unicode gap の通常の拒否を保つため、
-Unicode 空白があるだけでは印を付けません。 [fixture: wardley/bare-before-ls]
-[fixture: wardley/bare-line-ps] [fixture: wardley/prefix-yaml-bare-unicode]
+Unicode 空白があるだけでは印を付けません。
+
+[fixture: wardley/bare-before-ls] [fixture: wardley/bare-line-ps]
+[fixture: wardley/prefix-yaml-bare-unicode]
 [fixture: wardley/detect-retained-secondscan-bare-ls]
 [fixture: wardley/detect-retained-secondscan-bare-ascii]
 [fixture: wardley/prefix-yaml-unicode-no-bare]
@@ -552,6 +575,7 @@ Unicode 空白があるだけでは印を付けません。 [fixture: wardley/ba
 通過した Unicode の trivia を native lexer で読み直さず、
 通過した接頭の直接の規則を使う。
 native の retained な形には依然としてそれ自体の境目が必要である。
+
 [fixture: cynefin/bare-before-ls] [fixture: cynefin/bare-line-ps]
 [fixture: cynefin/detect-retained-secondscan-bare-ascii]
 [fixture: cynefin/detect-retained-secondscan-bare-ls]
@@ -565,6 +589,7 @@ native の retained な形には依然としてそれ自体の境目が必要で
 は、共通の前処理と検出の結果を読みます。
 [Cynefin の構文](../diagrams/cynefin.ja.md)に直接の規則を定め、
 [木](../ast/cynefin.ja.md)に書かれた形を保ちます。
+
 [fixture: cynefin/db-all-fields]
 
 ### Treeview
@@ -577,9 +602,11 @@ keyword の前で拒否することがあります。
 保持 YAML やコメントでない複数行の閉じは読めません。
 この差異は native な規則を免除しません。
 [木](../ast/treeview.ja.md) と、[検出規則](../diagrams/treeview.ja.md) が、
-保持・通過の範囲を一度だけ所有します。 [fixture: treeview/bare-line-space]
-[fixture: treeview/bare-line-tab] [fixture: treeview/bare-line-nbsp]
-[fixture: treeview/bare-line-ls] [fixture: treeview/bare-line-ps]
+保持・通過の範囲を一度だけ所有します。
+
+[fixture: treeview/bare-line-space] [fixture: treeview/bare-line-tab]
+[fixture: treeview/bare-line-nbsp] [fixture: treeview/bare-line-ls]
+[fixture: treeview/bare-line-ps]
 [fixture: treeview/detect-secondscan-bare-ascii]
 [fixture: treeview/detect-secondscan-bare-unicode]
 [fixture: treeview/detect-retained-comment-ascii-header]

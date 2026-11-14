@@ -29,14 +29,16 @@ mermaid.js は、構文解析の間に、描くデータ、つまりノードの
 同じ形では、各行終端（`\r\n` と単独の `\r` も）を `\n` として、
 各属性の引用符を `'` として読みます。
 U+2028 は行終端ではなく、値の中にそのまま残ります。
+
 [fixture: state/lex-entity-in-id] [fixture: state/db-transition-id-entity]
 [fixture: state/db-state-alias-id-entity] [fixture: state/db-description-entity]
 [fixture: state/db-note-text-entity] [fixture: state/db-transition-label-entity]
 [fixture: state/db-state-string-entity] [fixture: state/db-acc-title-entity]
-[fixture: state/db-style-entity] [fixture: state/db-classdef-entity] [fixture:
-state/db-click-url-entity] [fixture: state/db-pseudostate-id-entity] [fixture:
-state/db-description-attribute-quote] [fixture:
-state/db-state-string-attribute-quote] [fixture: state/db-acc-descr-block-crlf]
+[fixture: state/db-style-entity] [fixture: state/db-classdef-entity]
+[fixture: state/db-click-url-entity] [fixture: state/db-pseudostate-id-entity]
+[fixture: state/db-description-attribute-quote]
+[fixture: state/db-state-string-attribute-quote]
+[fixture: state/db-acc-descr-block-crlf]
 [fixture: state/db-acc-descr-block-lone-cr] [fixture: state/db-note-block-crlf]
 [fixture: state/db-description-line-separator]
 
@@ -63,13 +65,14 @@ Y の最後の区域のノードが、列の中で先に来るからです。
 定義がその id で説明する区切りの状態や区域（`state "a" as divider-id-1`）は、
 ほかの状態と同じく、それらの定義のラベルと説明を持ちます。
 どの定義も説明しないものは、空のラベルを持ち、`description` を持ちません。
-[fixture: state/db-last-region-alias-with-spaces] [fixture:
-state/db-last-region-terminal-composite] [fixture:
-state/db-last-region-numbers-follow-node-order] [fixture:
-state/db-last-region-terminal-end] [fixture:
-state/db-divider-state-two-descriptions] [fixture:
-state/db-divider-state-one-description] [fixture:
-state/db-region-one-description]
+
+[fixture: state/db-last-region-alias-with-spaces]
+[fixture: state/db-last-region-terminal-composite]
+[fixture: state/db-last-region-numbers-follow-node-order]
+[fixture: state/db-last-region-terminal-end]
+[fixture: state/db-divider-state-two-descriptions]
+[fixture: state/db-divider-state-one-description]
+[fixture: state/db-region-one-description]
 
 **巡り。**
 ノードと遷移は、本体の文を順に巡ることで作ります。
@@ -78,8 +81,10 @@ state/db-region-one-description]
 文は次のものを加えます。
 
 - 定義の文は、その説明とともに、その状態を訪れます。
+
 - 遷移の文は、`from` の状態と `to` の状態を訪れ、遷移を加えます。
   `start` と `end` はそれらの id、`label` はそのラベルの値か空のテキストです。
+
 - 本体のある合成状態の文、別名の定義、疑似状態の定義は、その状態を訪れます。
   別名の定義の説明は、その文字列の値から、
   U+2028 を含む両端の空白を除いたものです。
@@ -88,13 +93,16 @@ state/db-region-one-description]
   その `secondDescription` の値で、空白を含み、なければ空のテキストです。
   `state "d" as A :` は、A に説明 `d` と空のテキストを与えます。
   疑似状態の定義は、その種類の形でその状態を訪れます。
-  [fixture: state/db-alias-description-trimmed] [fixture:
-  state/db-alias-body-description-untrimmed] [fixture:
-  state/lex-alias-second-description] [fixture:
-  state/db-alias-colon-empty-second] [fixture:
-  state/db-alias-colon-spaces-second] [fixture:
-  state/db-alias-description-trimmed-line-separator]
+
+  [fixture: state/db-alias-description-trimmed]
+  [fixture: state/db-alias-body-description-untrimmed]
+  [fixture: state/lex-alias-second-description]
+  [fixture: state/db-alias-colon-empty-second]
+  [fixture: state/db-alias-colon-spaces-second]
+  [fixture: state/db-alias-description-trimmed-line-separator]
+
 - ノートの文は、その状態を訪れ、ノートを加えます。
+
 - 分けられた本体は、その区域として巡ります。
   各区域は、合成状態の状態として、形 `divider` で訪れられ、
   その文は区域を親として巡られます。
@@ -109,22 +117,30 @@ state/db-region-one-description]
   次の番号で状態に加えます。
   最初の本体が `B`、`--`、`C` で、2 つ目の本体が `D`、`--`、`E` なら、
   A に `divider-id-2` と `generated-region-2` が加わります。
-  [fixture: state/db-divider-last-in-body] [fixture:
-  state/db-dividers-each-last] [fixture: state/db-divider-alone-in-body]
-  [fixture: state/db-divider-then-directive] [fixture:
-  state/db-divider-then-comment-line] [fixture:
-  state/db-divider-then-empty-line] [fixture:
-  state/db-divider-then-line-separator] [fixture: state/db-divider-then-style]
+
+  [fixture: state/db-divider-last-in-body]
+  [fixture: state/db-dividers-each-last]
+  [fixture: state/db-divider-alone-in-body]
+  [fixture: state/db-divider-then-directive]
+  [fixture: state/db-divider-then-comment-line]
+  [fixture: state/db-divider-then-empty-line]
+  [fixture: state/db-divider-then-line-separator]
+  [fixture: state/db-divider-then-style]
   [fixture: state/db-composite-divided-twice]
+
 - ほかの文はノードを加えません。
   本体のない合成状態の文、浮いたノート、click、classDef、class、style の文、
   方向の文、アクセシビリティの文、scale と hide の文です。
   どの文も訪れない id への click、class、style の文は、状態を加えません。
+
   [fixture: state/lex-state-without-body] [fixture: state/lex-floating-note]
   [fixture: state/gram-scale] [fixture: state/gram-hide-empty-description]
-  [fixture: state/db-click-undefined-state] [fixture:
-  state/db-class-undefined-state] [fixture: state/db-style-undefined-state]
+  [fixture: state/db-click-undefined-state]
+  [fixture: state/db-class-undefined-state]
+  [fixture: state/db-style-undefined-state]
+
   ノートの文はその状態を訪れるので、ほかの文が加えなくても状態を加えます。
+
   [fixture: state/db-note-undefined-state]
 
 状態を訪れると、その id のノードがなければ列の終わりに加え、
@@ -132,6 +148,7 @@ state/db-region-one-description]
 id が空、`</choice>`、`</join></fork>` の状態は、ノードを作りません。
 ノートの文、別名の定義、本体のある合成状態がそれを訪れるときも同じです。
 ノートは、その id を `state` として記録を加えます。
+
 [fixture: state/lex-join-empty-id] [fixture: state/db-choice-close-tag-id]
 [fixture: state/db-fork-close-tags-id] [fixture: state/db-note-close-tag-id]
 [fixture: state/db-alias-close-tag-id]
@@ -146,11 +163,14 @@ id が空、`</choice>`、`</join></fork>` の状態は、ノードを作りま�
   親があるときは、その id で、
   その id が空や `</choice>` のようにノードを作らないときも同じです。
   後で別の合成状態か区域の中で訪れると、状態はそこへ移り、後で最上位で訪れても、
-  `parentId` はそのままです。 [fixture: state/db-state-in-two-composites]
-  [fixture:
-  state/db-parent-kept-at-top-level] [fixture:
-  state/db-parent-set-by-later-composite] [fixture: state/lex-alias-without-id]
+  `parentId` はそのままです。
+
+  [fixture: state/db-state-in-two-composites]
+  [fixture: state/db-parent-kept-at-top-level]
+  [fixture: state/db-parent-set-by-later-composite]
+  [fixture: state/lex-alias-without-id]
   [fixture: state/db-composite-close-tag-parent]
+
 - 状態の**説明**。
   初めはその id だけです。
   説明を持つ最初の訪れは、そのどれかが id と同じでも、
@@ -158,10 +178,13 @@ id が空、`</choice>`、`</join></fork>` の状態は、ノードを作りま�
   説明を持つ後の訪れは、そのどれかが id やすでにあるものと同じでも、
   その説明をほかの後に加えます。
   `A : x`、`A : y`、`A : z` は、A にラベル `x` と説明 `y`、`z` を与えます。
-  [fixture: state/db-description-id-alone] [fixture:
-  state/db-description-equal-to-id] [fixture:
-  state/db-description-id-after-description] [fixture:
-  state/db-description-twice-same] [fixture: state/db-description-three-visits]
+
+  [fixture: state/db-description-id-alone]
+  [fixture: state/db-description-equal-to-id]
+  [fixture: state/db-description-id-after-description]
+  [fixture: state/db-description-twice-same]
+  [fixture: state/db-description-three-visits]
+
 - `shape`。
   最初の訪れが、StateTerminal には `stateStart` か `stateEnd`、
   id を `[*]` と書いた別名の定義には `stateStart`、疑似状態には `fork`、`join`、
@@ -174,10 +197,12 @@ id が空、`</choice>`、`</join></fork>` の状態は、ノードを作りま�
   本体のある `state A {` の後に `A : x` が続けば、
   A は形 `roundedWithTitle` を持ちます。
   本体のある最初の訪れは、`roundedWithTitle`、区域なら `divider` にします。
-  [fixture: state/db-terminal-description] [fixture:
-  state/db-fork-description] [fixture: state/db-fork-two-descriptions]
-  [fixture: state/db-divider-state-one-description] [fixture:
-  state/db-body-then-description]
+
+  [fixture: state/db-terminal-description] [fixture: state/db-fork-description]
+  [fixture: state/db-fork-two-descriptions]
+  [fixture: state/db-divider-state-one-description]
+  [fixture: state/db-body-then-description]
+
   そのため、ノートの文が最初に訪れた状態は、
   説明か本体のある訪れまで形を持ちません。
   `note left of A : x` の後に、`A --> B`、`A`、`state A <<fork>>` が続けば、
@@ -185,11 +210,15 @@ id が空、`</choice>`、`</join></fork>` の状態は、ノードを作りま�
   本体のある `state A {` が続けば `roundedWithTitle` を持ちます。
   一方、`A` の後にノートが続けば `rect` です。
   合成状態の本体の中のノートは、合成状態を親としてその状態を訪れます。
-  [fixture: state/db-note-first-no-shape] [fixture:
-  state/db-note-first-then-state] [fixture: state/db-note-first-then-fork]
-  [fixture: state/db-note-first-then-description] [fixture:
-  state/db-note-first-then-body] [fixture: state/db-note-after-state-shape]
+
+  [fixture: state/db-note-first-no-shape]
+  [fixture: state/db-note-first-then-state]
+  [fixture: state/db-note-first-then-fork]
+  [fixture: state/db-note-first-then-description]
+  [fixture: state/db-note-first-then-body]
+  [fixture: state/db-note-after-state-shape]
   [fixture: state/db-note-in-composite]
+
   `[*]` の別名は、親の開始状態、最上位なら `root_start` を訪れます。
   先に遷移が終了状態を訪れた場合も同じです。
   文字列が trim 後に空で、本体も `:` もなければ、その初期の形、
@@ -201,6 +230,7 @@ id が空、`</choice>`、`</join></fork>` の状態は、ノードを作りま�
   と、
   [`dataFetcher`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/state/dataFetcher.ts#L271-L338)
   の、初回の訪れと説明の処理によります。
+
   [fixture: state/db-alias-blank-terminal-first]
   [fixture: state/db-alias-blank-terminal-nested]
   [fixture: state/db-alias-blank-terminal-after-end]
@@ -218,6 +248,7 @@ id が空、`</choice>`、`</join></fork>` の状態は、ノードを作りま�
   [fixture: state/db-alias-blank-terminal-body]
   [fixture: state/db-alias-blank-terminal-after-note]
   [fixture: state/db-alias-id-terminal]
+
 - `dir`。
   本体のある最初の訪れが、その本体の最後の方向の文の向きか、`TB` を決めます。
   本体が空でも同じです。
@@ -229,11 +260,12 @@ id が空、`</choice>`、`</join></fork>` の状態は、ノードを作りま�
   そのような合成状態は `TB` を持ち、各区域は、
   その中の最後の方向の文の向きか `TB` を持ちます。
   分けられない本体は方向の文をそのまま持ち、区切りの文は `dir` を持ちません。
-  [fixture: state/lex-composite-state-before-direction] [fixture:
-  state/db-dir-first-body] [fixture: state/db-dir-last-in-body] [fixture:
-  state/db-dir-nested-body] [fixture: state/db-dir-first-body-empty] [fixture:
-  state/db-composite-divider-dir] [fixture:
-  state/db-divider-last-in-body-direction]
+
+  [fixture: state/lex-composite-state-before-direction]
+  [fixture: state/db-dir-first-body] [fixture: state/db-dir-last-in-body]
+  [fixture: state/db-dir-nested-body] [fixture: state/db-dir-first-body-empty]
+  [fixture: state/db-composite-divider-dir]
+  [fixture: state/db-divider-last-in-body-direction]
 
 ノートは記録を加えます。
 `state` は状態の id で、`note-id` が空なら空のテキストで、
@@ -248,21 +280,28 @@ id が空、`</choice>`、`</join></fork>` の状態は、ノードを作りま�
 行 `a`、空行、` b` は、`a`、2 つの改行、` b` を与えます。
 ディレクティブだけの行は、その空白を保つので、行 `a`、
 ディレクティブの前に空白 1 つのその行、` b` は、`a`、改行、空白 1 つ、改行、
-` b` を与えます。 [fixture: state/lex-note-mixed-case] [fixture:
-state/lex-note-colon-without-space] [fixture:
-state/lex-note-two-spaces-before-colon] [fixture: state/lex-note-block]
-[fixture: state/lex-note-id-percent-block] [fixture:
-state/db-note-block-empty-line] [fixture: state/db-note-block-directive-line]
+` b` を与えます。
+
+[fixture: state/lex-note-mixed-case]
+[fixture: state/lex-note-colon-without-space]
+[fixture: state/lex-note-two-spaces-before-colon]
+[fixture: state/lex-note-block] [fixture: state/lex-note-id-percent-block]
+[fixture: state/db-note-block-empty-line]
+[fixture: state/db-note-block-directive-line]
 
 巡りの後、説明を持つ訪れを受けた状態は、その説明の最初のものを `label`、
 ほかを `description` として持ちます。
 説明が 1 つなら、`description` は空のリストです。
 ほかの状態は、その id を `label` として持ち、`description` を持ちません。
 区域と区切りの文は空のラベルを持ち、`description` を持ちません。
+
 [fixture: state/lex-composite-divider]
+
 本体があり、説明が 2 つ以上の状態は拒否されます。
-[fixture: state/db-composite-two-descriptions] [fixture:
-state/gram-region-two-descriptions]
+
+[fixture: state/db-composite-two-descriptions]
+[fixture: state/gram-region-two-descriptions]
+
 [文法の外での拒否](../../../spec/docs/diagrams/state.ja.md#文法の外での拒否)
 を参照。
 
@@ -279,12 +318,15 @@ state/gram-region-two-descriptions]
   click の文の StateReference の `cssClass` も、
   合成状態の本体の中の遷移の `cssClass` も、何も加えません。
   P の本体の中の `A:::c --> B` は、A にクラスを与えません。
-  [fixture: state/db-classes-order] [fixture:
-  state/db-classes-order-transition-first] [fixture: state/db-class-twice-same]
-  [fixture: state/db-definition-css-class] [fixture:
-  state/db-click-reference-css-class] [fixture:
-  state/db-nested-transition-css-class] [fixture: state/db-class-before-state]
+
+  [fixture: state/db-classes-order]
+  [fixture: state/db-classes-order-transition-first]
+  [fixture: state/db-class-twice-same] [fixture: state/db-definition-css-class]
+  [fixture: state/db-click-reference-css-class]
+  [fixture: state/db-nested-transition-css-class]
+  [fixture: state/db-class-before-state]
   [fixture: state/db-top-class-applies-nested]
+
   遷移の中の StateReference のクラスは、
   その id を `,` ごとに分けた各部分の状態に当たり、
   `,` を持つ id の状態には当たりません。
@@ -293,12 +335,14 @@ state/gram-region-two-descriptions]
   空の部分は、どの文も訪れない id と同じく、状態を加えません。
   矢印の後の StateTerminal も、そのクラスを受けます。
   `A --> [*]:::c` は、`root_end` にクラス `c` を与えます。
+
   [fixture: state/db-css-class-reference-comma]
   [fixture: state/db-css-class-reference-two-ids]
   [fixture: state/db-css-class-reference-comma-after-arrow]
   [fixture: state/db-css-class-reference-comma-undefined]
   [fixture: state/db-css-class-reference-comma-only]
   [fixture: state/db-css-class-terminal-end]
+
 - `style` の文は、その各状態のスタイルを、前のものを置き換えて決めます。
   あとの文が訪れる状態にも、合成状態の本体の中の状態にも、同じく当たります。
   その id の後の、行の終わりまでのテキストを `,` ごとに分け、
@@ -319,20 +363,25 @@ state/gram-region-two-descriptions]
   `style A fill:#f00;` は `fill:#f00` を与えます。
   `style A fill:#f00;b;c` では最後の `;` だけが無視されるので、
   `#f00;` はエンティティで、スタイルは `fill:`、そのプレースホルダ、`bc` です。
+
   [fixture: state/db-style-replaced] [fixture: state/db-style-semicolons]
-  [fixture: state/db-style-two-semicolons-in-part] [fixture:
-  state/db-style-semicolon-after-space] [fixture: state/db-style-empty-items]
-  [fixture: state/db-style-blank] [fixture: state/db-style-trailing-comma]
-  [fixture: state/db-style-takes-next-line] [fixture:
-  state/db-style-comment-line-before-styles] [fixture:
-  state/db-style-directive-before-comma] [fixture:
-  state/db-style-directive-only] [fixture: state/db-style-ignored-semicolon]
-  [fixture: state/db-style-ignored-semicolon-last-only] [fixture:
-  state/db-style-before-state] [fixture: state/db-top-style-applies-nested]
+  [fixture: state/db-style-two-semicolons-in-part]
+  [fixture: state/db-style-semicolon-after-space]
+  [fixture: state/db-style-empty-items] [fixture: state/db-style-blank]
+  [fixture: state/db-style-trailing-comma]
+  [fixture: state/db-style-takes-next-line]
+  [fixture: state/db-style-comment-line-before-styles]
+  [fixture: state/db-style-directive-before-comma]
+  [fixture: state/db-style-directive-only]
+  [fixture: state/db-style-ignored-semicolon]
+  [fixture: state/db-style-ignored-semicolon-last-only]
+  [fixture: state/db-style-before-state]
+  [fixture: state/db-top-style-applies-nested]
 
 合成状態の本体の中の `classDef`、`class`、`style` の文は何も変えません。
-[fixture: state/db-nested-class-statement] [fixture:
-state/db-nested-classdef] [fixture: state/db-nested-style]
+
+[fixture: state/db-nested-class-statement] [fixture: state/db-nested-classdef]
+[fixture: state/db-nested-style]
 
 **クラスの定義。**
 最上位の各 `classDef` の文は、そのスタイルを、
@@ -353,15 +402,17 @@ state/db-nested-classdef] [fixture: state/db-nested-style]
 ディレクティブと、行の規則が無視する `;` を除いて読みます。
 `classDef c a:#f00;b,d;e` では、2 つ目の部分の最後の `;` が無視されるので、
 スタイルは `a:`、エンティティ `#f00;` のプレースホルダ、`b` と、`de` です。
+
 [fixture: state/db-classdef-appended] [fixture: state/db-classdef-semicolons]
-[fixture: state/db-classdef-semicolon-in-each-part] [fixture:
-state/db-classdef-semicolon-after-space] [fixture:
-state/db-classdef-empty-items] [fixture: state/db-classdef-comma-only] [fixture:
-state/db-classdef-trailing-comma] [fixture: state/lex-classdef-without-styles]
-[fixture: state/db-classdef-directive-only] [fixture:
-state/db-classdef-without-styles-takes-transition] [fixture:
-state/db-classdef-comment-line-before-styles] [fixture:
-state/db-classdef-ignored-semicolon-last-only]
+[fixture: state/db-classdef-semicolon-in-each-part]
+[fixture: state/db-classdef-semicolon-after-space]
+[fixture: state/db-classdef-empty-items] [fixture: state/db-classdef-comma-only]
+[fixture: state/db-classdef-trailing-comma]
+[fixture: state/lex-classdef-without-styles]
+[fixture: state/db-classdef-directive-only]
+[fixture: state/db-classdef-without-styles-takes-transition]
+[fixture: state/db-classdef-comment-line-before-styles]
+[fixture: state/db-classdef-ignored-semicolon-last-only]
 
 **リンク。**
 各 click の文はリンクを加えます。
@@ -371,6 +422,7 @@ state/db-classdef-ignored-semicolon-last-only]
 同じ状態への 2 つの click の文は、ソースの順に 2 つのリンクを加えます。
 行の規則が無視する `;` は、文字列に含まれません。
 `click A href "style:#x;"` の url は `"style:#x"` です。
+
 [fixture: state/gram-click-tooltip] [fixture: state/gram-click-href]
 [fixture: state/gram-click-terminal] [fixture: state/db-click-twice-same-state]
 [fixture: state/db-click-url-ignored-semicolon]
@@ -378,8 +430,10 @@ state/db-classdef-ignored-semicolon-last-only]
 **そのほか。**
 `direction` は、最上位の最後の方向の文の向きか、`TB` です。
 タイトルはフロントマターのものです。
-行 `title T` は 2 つの状態です。 [fixture: state/db-direction-last]
-[fixture: state/db-title-frontmatter] [fixture: state/db-title-line-states]
+行 `title T` は 2 つの状態です。
+
+[fixture: state/db-direction-last] [fixture: state/db-title-frontmatter]
+[fixture: state/db-title-line-states]
 
 **アクセシビリティの文。**
 `accTitle:` は、タイトルをその値にします。
@@ -390,52 +444,66 @@ state/db-classdef-ignored-semicolon-last-only]
 が持つとおり、両端に空白を持ちません。
 `accTitle: x` と `accDescr: x` の後に空白 2 つが続いても `x` で、
 `accDescr { a  }` は `a` です。
-[fixture: state/db-acc-title-trailing-whitespace] [fixture:
-state/db-acc-descr-trailing-whitespace] [fixture:
-state/db-acc-descr-block-whitespace-before-close]
+
+[fixture: state/db-acc-title-trailing-whitespace]
+[fixture: state/db-acc-descr-trailing-whitespace]
+[fixture: state/db-acc-descr-block-whitespace-before-close]
+
 ブロックの中では、空行と、ディレクティブだけの行も、その空白です。
 行 `a`、空行、`b` は、`a`、改行、`b` を与えます。
 改行の前の空白は残るので、`a` の後に空白 2 つと改行が続けば、`a`、空白 2 つ、
 改行を与えます。
 U+2028 は改行の後では空白ですが、改行ではないので、
 2 つの語の間の U+2028 は説明に残ります。
-[fixture: state/db-acc-descr-block-empty-line] [fixture:
-state/db-acc-descr-block-directive-line] [fixture:
-state/db-acc-descr-block-space-before-line-feed] [fixture:
-state/db-acc-descr-block-line-separator] [fixture:
-state/db-acc-descr-block-line-separator-after-line-feed]
+
+[fixture: state/db-acc-descr-block-empty-line]
+[fixture: state/db-acc-descr-block-directive-line]
+[fixture: state/db-acc-descr-block-space-before-line-feed]
+[fixture: state/db-acc-descr-block-line-separator]
+[fixture: state/db-acc-descr-block-line-separator-after-line-feed]
+
 行の形の値は、コロンの後の空白が改行を含むので、後の行から始まることがあります。
 `accDescr:` の後に行 `A --> B` が続けば、説明は `A --> B` で、
 遷移は加わりません。
 `accTitle:` の後の、コメント行、ディレクティブの行、空行、U+2028 の後の `x` は、
-タイトル `x` を与えます。 [fixture: state/db-acc-descr-line-next-line] [fixture:
-state/db-acc-title-comment-line-before-value] [fixture:
-state/db-acc-title-directive-line-before-value] [fixture:
-state/db-acc-title-empty-line-before-value] [fixture:
-state/db-acc-title-line-separator-before-value]
+タイトル `x` を与えます。
+
+[fixture: state/db-acc-descr-line-next-line]
+[fixture: state/db-acc-title-comment-line-before-value]
+[fixture: state/db-acc-title-directive-line-before-value]
+[fixture: state/db-acc-title-empty-line-before-value]
+[fixture: state/db-acc-title-line-separator-before-value]
+
 値は行の終わりまで続き、その中の `accDescr {}` は値の一部です。
 `accTitle: x accDescr {}` は `x accDescr {}` を与えます。
 値は、ディレクティブと、行の規則が無視する `;` を除いて読みます。
 `accTitle: x %%{init: {}}%% y` は、`x`、空白 2 つ、`y` を与え、
 `accDescr: style:#x;` と、行 `style:#x;` のあるブロックは、
 `style:#x` を与えます。
-[fixture: state/db-acc-title-with-empty-description-block] [fixture:
-state/db-acc-title-directive-in-text] [fixture:
-state/db-acc-descr-ignored-semicolon] [fixture:
-state/db-acc-descr-block-ignored-semicolon]
+
+[fixture: state/db-acc-title-with-empty-description-block]
+[fixture: state/db-acc-title-directive-in-text]
+[fixture: state/db-acc-descr-ignored-semicolon]
+[fixture: state/db-acc-descr-block-ignored-semicolon]
+
 ブロックのテキストは最初の `}` で終わります。
 ブロックの中の行 `a accDescr {} b` は、説明 `a accDescr {` を与え、
 `b` と `}` は状態です。
+
 [fixture: state/db-acc-descr-block-text-with-empty-block]
+
 後の文は、それぞれがどちらの形でも、前の文が決めた値を置き換えます。
 `accTitle: first` の後に `accTitle: second` が続けばタイトルは `second` で、
 `accDescr: x` の後に `accDescr { y }` が続けば説明は `y` で、
 `accDescr { x }` の後に `accDescr: y` が続けば `y` です。
-[fixture: state/spec-state-diagram-480eb00e] [fixture:
-state/db-acc-title-replaces] [fixture:
-state/db-acc-title-replaces-then-transition] [fixture:
-state/db-acc-descr-replaces] [fixture: state/db-acc-descr-block-replaces]
+
+[fixture: state/spec-state-diagram-480eb00e]
+[fixture: state/db-acc-title-replaces]
+[fixture: state/db-acc-title-replaces-then-transition]
+[fixture: state/db-acc-descr-replaces]
+[fixture: state/db-acc-descr-block-replaces]
 [fixture: state/db-acc-descr-line-replaces-block]
+
 閉じていない `accDescr {` のブロックは、テキストにかかわらず説明を空にします。
 mermaid.js は、そのテキストを読んだ後、テキストの終わりで、
 空のテキストを 2 つ目のブロックとして読むからです。
@@ -443,23 +511,28 @@ mermaid.js は、そのテキストを読んだ後、テキストの終わりで
 説明は空になり、タイトルはそのままです。
 そのようなブロックはテキストの残りを取るので、`A --> B` の後に、`accDescr {`、
 行 `never`、行 `C --> D` が続くものは、状態 C と D を持ちません。
-[fixture: state/db-acc-descr-block-unclosed-takes-lines] [fixture:
-state/lex-acc-descr-block-unclosed] [fixture:
-state/db-acc-descr-unclosed-replaces] [fixture:
-state/db-acc-descr-unclosed-keeps-title]
+
+[fixture: state/db-acc-descr-block-unclosed-takes-lines]
+[fixture: state/lex-acc-descr-block-unclosed]
+[fixture: state/db-acc-descr-unclosed-replaces]
+[fixture: state/db-acc-descr-unclosed-keeps-title]
+
 それ以外では、値が null の文は空のテキストにし、
 テキストのない閉じた説明のブロックは何も変えません。
 `accTitle: x` の後にテキストの終わりの `accTitle:` が続けばタイトルは空で、
 `accDescr:` も同じです。
 `accDescr: x` の後に `accDescr {  }` が続いても `x` のままです。
-[fixture: state/lex-acc-title-at-end] [fixture:
-state/db-acc-title-empty-replaces] [fixture: state/db-acc-descr-empty-replaces]
-[fixture: state/db-acc-descr-empty-block-keeps] [fixture:
-state/db-acc-descr-empty-block-keeps-then-transition]
+
+[fixture: state/lex-acc-title-at-end]
+[fixture: state/db-acc-title-empty-replaces]
+[fixture: state/db-acc-descr-empty-replaces]
+[fixture: state/db-acc-descr-empty-block-keeps]
+[fixture: state/db-acc-descr-empty-block-keeps-then-transition]
 
 **値の中のコメント領域。**
 U+2028 や U+2029 の後のコメント領域は、値から除かれます。
 出典は [変換した形](../db-from-tree.ja.md#変換した形) です。
 要約は方向の値の後のテキストを持ちませんが、領域の後の行 `B` はその一部なので、
 Db に状態 `B` はできず、方向は `LR` です。
+
 [fixture: state/lex-direction-text-line-separator-then-comment-line]

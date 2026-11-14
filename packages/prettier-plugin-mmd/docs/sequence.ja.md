@@ -23,15 +23,21 @@ fixture の置き方と確かめ方は、
 ブロックは、`loop`、`alt`、`opt`、`par`、`par_over`、`critical`、`break`、
 `rect` です。
 `else`、`and`、`option`、`end` は、その行と同じ段に置きます。
+
 [fixture: indentation/blocks] [fixture: indentation/sections]
 [fixture: indentation/other-blocks-kept]
+
 1 段は Prettier の `useTabs` と `tabWidth` のオプションが決め、
-既定は空白 2 つです。 [fixture: indentation/tab-width-4]
-[fixture: indentation/use-tabs]
+既定は空白 2 つです。
+
+[fixture: indentation/tab-width-4] [fixture: indentation/use-tabs]
+
 入力に書かれた字下げは保ちません。
 文の行頭の空白は、Mermaid による図の解釈に影響しないためです。
 字下げは構造だけで決められるので、1 つの規則で、
-入力の字下げによらず同じテキストになります。 [fixture: indentation/sections]
+入力の字下げによらず同じテキストになります。
+
+[fixture: indentation/sections]
 
 入力
 ([indentation/blocks-input.mmd](../tests/fixtures/sequence/indentation/blocks-input.mmd)):
@@ -116,12 +122,17 @@ sequenceDiagram
 各文は 1 行に 1 つ置きます。
 文を区切る `;` は取り除きます。
 mermaid.js は `;` を改行と同じに読むからです。
+
 [fixture: statements-one-per-line/semicolons-dropped]
+
 ヘッダーの行や、`end` の後に同じ行で書かれた文は、それぞれの行に移します。
+
 [fixture: statements-one-per-line/split]
+
 mermaid.js の行単位の規則が無視する `;` を含む行は、flowchart と同じく、
 その行の文と、
 `;` を残します（[1 行に 1 文](./flowchart.ja.md#1-行に-1-文)を参照）。
+
 [corpus fixture: sequence/tokens-ignored-semicolon-in-participant-id]
 [corpus fixture: sequence/tokens-ignored-semicolon-in-message-id]
 [fixture: statements-one-per-line/line-with-ignored-semicolon-kept]
@@ -153,10 +164,10 @@ sequenceDiagram
 `box` の中でも同じで、参加者の間に置けます。
 その後に同じ行で書かれた文や box の `end` は、それぞれの行に移し、
 mermaid.js は同じ box を読みます。
+
 [fixture: statements-one-per-line/empty-description-block-in-box]
 [fixture: statements-one-per-line/empty-description-block-moves-next-statement]
-[fixture:
-statements-one-per-line/empty-description-block-before-semicolon-and-directive]
+[fixture: statements-one-per-line/empty-description-block-before-semicolon-and-directive]
 
 入力
 ([statements-one-per-line/empty-description-block-in-box-input.mmd](../tests/fixtures/sequence/statements-one-per-line/empty-description-block-in-box-input.mmd)):
@@ -185,17 +196,23 @@ sequenceDiagram
 `autonumber` の後、または、
 データブロックで終わり `as` のない `participant` と `actor` の後の、
 ディレクティブに続く `;` は残します。
+
 [fixture: statements-one-per-line/autonumber-directive-kept]
 [fixture: statements-one-per-line/data-block-directive-kept]
 [fixture: statements-one-per-line/actor-data-block-directive-kept]
 [fixture: statements-one-per-line/autonumber-two-directives-kept]
+
 そのような `;` の後に同じ行で続く文と、ブロックの `end` は、別の行に置きます。
 `autonumber %%{wrap}%%; A->>B: x; B->>A: y` は、`autonumber %%{wrap}%%;`、
 `A ->> B: x`、`B ->> A: y` と印字します。
+
 [fixture: statements-one-per-line/autonumber-directive-semicolon-then-statements-split]
+
 `autonumber`、改行、`5` のように複数行に書かれた文は、通常どおりつなぎ、
 ディレクティブと `;` を文と一緒に残します。
+
 [fixture: statements-one-per-line/directive-semicolon-after-multi-line-statement-aligned]
+
 mermaid.js はディレクティブを取り除き、行末の空白が、
 文に必要な改行を隠すからです。
 その文の最後の単位は、後ろの空白を読みません。
@@ -204,7 +221,9 @@ mermaid.js はディレクティブを取り除き、行末の空白が、
 後ろの空白を一緒に読みます（仕様の
 [文の文脈](../../spec/docs/diagrams/sequence.ja.md#文の文脈) と、
 [区切りの前の空の説明ブロック](../../spec/docs/diagrams/sequence.ja.md#区切りの前の空の説明ブロック)
-を参照）。 [fixture: statements-one-per-line/closed-directive-semicolon-dropped]
+を参照）。
+
+[fixture: statements-one-per-line/closed-directive-semicolon-dropped]
 
 入力
 ([statements-one-per-line/autonumber-directive-kept-input.mmd](../tests/fixtures/sequence/statements-one-per-line/autonumber-directive-kept-input.mmd)):
@@ -246,6 +265,7 @@ sequenceDiagram
 
 flowchart と同じです。
 空行の連続は 1 つにし、ブロックの先頭と末尾の空行は取り除きます。
+
 [fixture: blank-lines/collapsed]
 [fixture: blank-lines/around-comments-and-directives]
 [fixture: blank-lines/block-edges-dropped]
@@ -288,8 +308,10 @@ sequenceDiagram
 接しているトークンは接したまま残します。
 flowchart と同じです。
 ただし、接頭辞やブロックのキーワードの後のテキストは、空白 1 つの後に置きます。
+
 [fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/tabs-collapsed]
+
 折り返しの接頭辞 `wrap:` と `nowrap:` は、テキストに接していても、
 間に空白を 1 つ置きます。
 `A->>B:wrap:x` は `A ->> B: wrap: x` と印字し、
@@ -304,13 +326,17 @@ mermaid.js の文書では、
 すべてのブロックのキーワードの後に空白を書いています
 ([`loop Loop text`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L472)、
 [`alt Describing text`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L492))。
+
 [fixture: whitespace-between-tokens/wrap-text-spaced]
 [fixture: whitespace-between-tokens/block-text-touching-spaced]
+
 隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
 U+2028 と U+2029 はそのまま残します。
+
 [fixture: whitespace-between-tokens/block-text-beside-directive]
 [test: U+2028 between a block keyword and its text]
 [test: U+2029 between a wrap prefix and its text]
+
 2 人の参加者にまたがるノートの id の間の `,` は、
 `Note over A, B` のように前の id に接して、後ろに空白を 1 つ置きます。
 `note over A , B` は `Note over A, B` になります。
@@ -324,8 +350,11 @@ mermaid.js の文書にある、2 人の参加者にまたがるノート 5 件�
 にあります。
 残る 3 件は、
 [ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L445-L464)
-にあります。 [fixture: whitespace-between-tokens/collapsed]
+にあります。
+
+[fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/comma-touching]
+
 `,` の隣の隙間にあるものは、
 [矢印の前後の空白](#矢印の前後の空白)と同じに扱います。
 表にあるキーワードは、そこで示す大文字小文字で印字します。
@@ -334,6 +363,7 @@ mermaid.js の文書にある、2 人の参加者にまたがるノート 5 件�
 mermaid.js は大文字小文字にかかわらず読み、Db は同じです。
 表にないキーワードは、書かれた大文字小文字を保ちます。
 例えば `Note LEFT of A` です。
+
 [fixture: whitespace-between-tokens/keyword-case-one-form]
 [fixture: keyword-case/statements-one-form]
 [fixture: keyword-case/blocks-one-form]
@@ -397,41 +427,57 @@ sequenceDiagram
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 `links` と `properties` の JSON の中の空白は、値の一部なので残します。
 ここでも、`<` を含むテキストや `white-space` を含む図は、書かれたまま残します。
+
 [fixture: whitespace-between-tokens/values-runs-collapsed]
 [fixture: whitespace-between-tokens/values-of-other-statements-runs-collapsed]
 [fixture: whitespace-between-tokens/html-tag-runs-kept]
+
 `box` のテキストは全体を残します。
 最初の語が色でないとき、mermaid.js はテキスト全体を box の名前にするからです。
+
 [fixture: whitespace-between-tokens/values-runs-collapsed]
 [fixture: whitespace-between-tokens/box-text-runs-collapsed]
+
 参加者のデータブロック `@{ ... }` は id に接します。
 mermaid.js は、間に空白があっても、ないときと同じ図を読むので、
 空白は取り除きます。
 NBSP、全角空白、BOM も同じです。
+
 [test: no-break space between the id of a participant and its data block]
 [test: byte order mark between the id of a participant and its data block]
 [test: ideographic space between the id of a participant and its data block]
+
 データブロックが 1 行でも複数行でも、後ろに `as` が続いても同じです。
+
 [fixture: whitespace-between-tokens/data-block-space-before-removed]
 [fixture: whitespace-between-tokens/data-block-space-before-removed-alias]
 [fixture: whitespace-between-tokens/data-block-multi-line-space-before-removed]
 [fixture: whitespace-between-tokens/data-block-space-before-removed-between-statements]
+
 id と `@{` の間のディレクティブは、
 [ディレクティブ](#ディレクティブ)のとおりに置きます。
 隙間に空白を置かないので、両方に接します。
 `participant A %%{init: {}}%% @{ "type": "queue" }` は、
 `participant A%%{init: {}}%%@{ "type": "queue" }` と印字します。
+
 [fixture: whitespace-between-tokens/data-block-space-before-after-directive]
+
 内容は、[複数行の値](#複数行の値)で対象となる余白と、
 1 行のブロックの両端の半角空白とタブを除いて保ちます。
 両端は[データブロック](./flowchart.ja.md#データブロック)と同じく、
 空白 1 つずつにします。
 `participant A@{"type":"queue"}` は `participant A@{ "type":"queue" }`
-になります。 [fixture: whitespace-between-tokens/data-block-padded]
+になります。
+
+[fixture: whitespace-between-tokens/data-block-padded]
+
 長いブロックも複数行には分けません。
 mermaid.js がその位置でブロック形式のマッピングの行を拒否するためです。
+
 [fixture: whitespace-between-tokens/data-block-long-kept]
+
 その規則が書かれたままにする場合は、このブロックも書かれたままにします。
+
 [fixture: whitespace-between-tokens/data-block-directive-kept]
 [fixture: whitespace-between-tokens/data-block-kept-line-kept]
 [test: data blocks: sequence one line with U+2028 inside]
@@ -441,6 +487,7 @@ mermaid.js がその位置でブロック形式のマッピングの行を拒否
 [fixture: whitespace-between-tokens/data-block-surrounding-trivia]
 [fixture: whitespace-between-tokens/data-block-and-ignored-line-kept]
 [fixture: whitespace-between-tokens/actor-data-block-kept]
+
 `create` の有無にかかわらず、`participant` と `actor` のデータブロックで、`:`、
 `,`、`;`、`>` のどれも含まず、改行も含まないものは、対象にする版が、
 参加者の名前の一部として読みます。
@@ -461,6 +508,7 @@ mermaid.js は名前を読む前にディレクティブを除きます。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+
 [fixture: whitespace-between-tokens/data-block-name-gap-before-kept]
 [fixture: whitespace-between-tokens/data-block-name-comment-gap-kept]
 [fixture: whitespace-between-tokens/data-block-name-directive-then-comment-gap-kept]
@@ -474,8 +522,10 @@ mermaid.js は名前を読む前にディレクティブを除きます。
 [test: data blocks: sequence name block with a no-break space before a comment]
 [test: data blocks: sequence name block with an ideographic space before a comment]
 [test: data blocks: sequence name block with a form feed before a comment]
+
 行に単独の `)` のように、mermaid.js が何も読まない行は残し、
 周りの文と同じ段に置きます。
+
 [fixture: whitespace-between-tokens/data-block-and-ignored-line-kept]
 [corpus fixture: sequence/lex-invalid-line-parenthesis]
 [fixture: whitespace-between-tokens/ignored-line-in-block-kept]
@@ -532,6 +582,7 @@ sequenceDiagram
 
 文の 2 つのトークンの間で行の規則が無視する `;` は、直前のトークンに付けます。
 隙間に空白が書かれていれば後ろに空白 1 つを置き、なければ接したままにします。
+
 [fixture: whitespace-between-tokens/ignored-semicolon-before-of-attached]
 [fixture: whitespace-between-tokens/ignored-semicolon-before-of-spaced-after-kept]
 
@@ -543,6 +594,7 @@ sequenceDiagram
 `DESTROY`、`LINK`、`LINKS`、`OVER`、`RIGHT`、`AS`、`OF` と、ブロックの `ALT`、
 `ELSE`、`OPT`、`PAR`、`AND`、`CRITICAL`、`OPTION`、`BREAK`、`RECT`、`LOOP`、
 `END` は小文字で印字し、`NOTE` は `Note` と印字します。
+
 [fixture: keyword-case/statements-one-form]
 [fixture: keyword-case/statements-one-form-2]
 [fixture: keyword-case/blocks-one-form]
@@ -592,12 +644,16 @@ mermaid.js の正規表現が最後の `)` まで読むので、書かれたま�
 `box RGB(33,66,99) Team`、`box rgb (33,66,99) Team`、
 関数のほかにテキストがある `rect` も、書かれたままです。
 コンマの前、開き括弧 `(` の直後、閉じ括弧 `)` の直前の空白は、書かれたままです。
+
 [fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
 [fixture: colors/functions-as-written]
 [fixture: colors/functions-beside-comments-and-directives]
+
 成分の中のディレクティブは、関数を認識する前に取り除かれます。
 ディレクティブは書かれたまま残し、コンマの空白には通常の規則を適用します。
+
 [fixture: colors/directive-in-channel]
+
 実行した版と Db は、
 [同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照してください。
 
@@ -689,10 +745,14 @@ sequenceDiagram
 
 メッセージの矢印の前後には、flowchart の辺と同じく、空白を 1 つずつ置きます。
 `Alice->>Bob: hi` は `Alice ->> Bob: hi` になります。
+
 [fixture: arrow-spacing/spaced]
+
 矢印の後の `+` と `-` は宛先に接します。
 `A ->> + B` は `A ->> +B` になります。
+
 [fixture: arrow-spacing/plus-and-minus-touching]
+
 `()` の前後の空白は、接していれば接したまま、空いていれば空白の連続も含めて、
 書かれたままにします。
 間のディレクティブも、空白の間に残します。
@@ -703,9 +763,12 @@ sequenceDiagram
 [中央接続のある sequence のメッセージ](./compatibility.ja.md#central-接続のある-sequence-のメッセージ)
 と
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。 [fixture: arrow-spacing/parentheses-touching]
+を参照してください。
+
+[fixture: arrow-spacing/parentheses-touching]
 [fixture: arrow-spacing/parentheses-gap-run-kept]
 [fixture: arrow-spacing/parentheses-gap-directive-kept]
+
 `+` と `-` は、空白があってもなくても、
 mermaid.js は同じメッセージとして読みます。
 例外は、矢印として読まれる始まりの宛先の前の `-` だけです（下記）。
@@ -725,28 +788,42 @@ mermaid.js の文書で `+` か `-` のあるメッセージ 12 件のうち、
 隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
 `A%%{init: {}}%%->>B: v` は `A %%{init: {}}%%->> B: v` に、
 `A ->> +%%{init: {}}%% B: v` は `A ->> +%%{init: {}}%%B: v` と印字します。
-`+` は行き先に接するからです。 [fixture: arrow-spacing/directive-beside-arrow]
+`+` は行き先に接するからです。
+
+[fixture: arrow-spacing/directive-beside-arrow]
 [fixture: arrow-spacing/directive-beside-arrow-runs]
 [fixture: arrow-spacing/touching-beside-directive]
+
 隙間の中の改行は[複数行の文](#複数行の文)と同じく 1 行に結び、
 空白も改行と一緒になくなります。
 コメント行があるときは行を保ちます。
+
 [fixture: arrow-spacing/touching-over-line-breaks-joined]
 [fixture: arrow-spacing/touching-with-comment-line-kept]
+
 1 行の隙間の中の U+2028 と U+2029 は、隣の空白とともにそのまま残します。
+
 [test: U+2028 between a `+` and an id] [test: U+2029 between a `-` and an id]
 [test: U+2028 between an id and `()`] [test: U+2029 between `()` and an id]
 [test: U+2029 between an id of a note and the `,`]
 [test: U+2028 between the `,` of a note and an id]
+
 `;` や空行で区切られた文も、同じように整形します。
+
 [fixture: arrow-spacing/touching-between-semicolons]
 [fixture: arrow-spacing/touching-after-blank-lines]
+
 mermaid.js の行の規則が `;` を無視する行は、
 [1 行に 1 文](#1-行に-1-文)に従います。
 `A ->> + B: style:#x;` は `A ->> +B: style:#x;` になり、
 `A () ->> () B: style:#x;;` は書かれたままです。
+
 [fixture: arrow-spacing/touching-with-ignored-semicolon]
-矢印は書かれたまま印字します。 [fixture: arrow-spacing/arrows-kept]
+
+矢印は書かれたまま印字します。
+
+[fixture: arrow-spacing/arrows-kept]
+
 `<<->>` と `<<-->>` の前の空白は、書かれたまま残します。
 対象にする版の一部にはこの矢印がなく、前の名前の一部として `<<` を読むためです。
 `A<<->>B` は `A<<->> B` と印字し、`A <<->> B` と `A   <<->> B` はそのままです。
@@ -757,6 +834,7 @@ mermaid.js の行の規則が `;` を無視する行は、
 と
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+
 [fixture: arrow-spacing/bidirectional-arrow-gap-before-kept]
 [fixture: arrow-spacing/bidirectional-arrow-gap-run-kept]
 [fixture: arrow-spacing/parentheses-then-bidirectional-arrow-gap-kept]
@@ -766,6 +844,7 @@ mermaid.js の行の規則が `;` を無視する行は、
 `A ->> - x: b` は空白を残し、`A ->> -x: b` は拒否されます。
 対象になるのは、`x`、`X`、`Xavier`、`|\y` のような宛先です。
 `+` と `()` は矢印の始まりにならず、そのように始まらない宛先は `-` に接します。
+
 [fixture: arrow-spacing/minus-before-arrow-like-target-spaced]
 [corpus fixture: sequence/lex-minus-space-destination-x]
 
@@ -802,7 +881,9 @@ sequenceDiagram
 ただし id の後に `()` が続くときは別で、
 `1() ->> B` と `title() ->> B` には空白を置きます。
 `()` が id を終わらせるためです。
+
 [fixture: arrow-spacing/central-connection-after-number-or-title]
+
 字句解析の規則のうち、
 読むものの後に空白を要するものが 2 つあります（仕様の
 [文の文脈](../../spec/docs/diagrams/sequence.ja.md#文の文脈)）。
@@ -812,6 +893,7 @@ sequenceDiagram
 そのため、`1 ->> 2: x` は拒否され、`title ->> B: x` はタイトルですが、
 `1->>2: x` と `title->>B: x` はメッセージです。
 `1a`、`1.234`、`titles` のような id には、ほかと同じく空白を置きます。
+
 [fixture: arrow-spacing/touching-before-read-otherwise-kept]
 [corpus fixture: sequence/lex-number-as-id]
 [corpus fixture: sequence/lex-number-before-space]
@@ -855,8 +937,10 @@ mermaid.js の文書の sequence 図の書き方と同じです。
 を参照してください。
 ディレクティブの隣でも同じで、
 ディレクティブは[ディレクティブ](#ディレクティブ)のとおりに置きます。
+
 [fixture: colons/spaced] [fixture: colons/other-statements-spaced]
 [fixture: colons/directive-around-colon]
+
 mermaid.js はテキストを両端の空白を除いて読みます。
 テキストが空のときは、`:` の後に何も置きません。
 ただし、`:` の後に、行末か整形ツールが落とす `;` まで、
@@ -869,13 +953,18 @@ mermaid.js はテキストを両端の空白を除いて読みます。
 を参照）。
 ノートと `links`・`link`・`properties`・`details` の文も同じです。
 Chromium で解析すると、その文字のない形を、対象にする版の一部は拒否し、
-ほかの版は読みました。 [fixture: colons/spaced] [fixture: colons/empty-text]
+ほかの版は読みました。
+
+[fixture: colons/spaced] [fixture: colons/empty-text]
 [fixture: colons/whitespace-only-text]
 [fixture: colons/semicolon-after-whitespace-kept]
+
 その空白の前で行の規則が無視する `;` は、空白を認識する前に取り除かれます。
 `:` の直後にある場合は、無視される `;` とその後の空白が一緒に残るように、
 行を書かれたまま残します。
+
 [fixture: colons/ignored-semicolon-before-empty-text-whitespace]
+
 残した空白は、Markdown のコードブロックの最後の行の末尾では失われます。
 プラグインの印字によらず、Prettier が取り除くからです。
 詳しくは、
@@ -900,6 +989,7 @@ Gantt 図の[タスク](./gantt.ja.md#タスクのデータ)と、
 行は通常どおりに印字し、残りは除きます。
 `A->>B: %%{init: {}}%%` の後に空白が 2 つ続く形は、
 `A ->> B: %%{init: {}}%%` と印字します。
+
 [fixture: colons/directive-then-whitespace-kept]
 [test: U+00A0 as the entire text of a message]
 [test: U+3000 as the entire text of a note]
@@ -912,6 +1002,7 @@ Gantt 図の[タスク](./gantt.ja.md#タスクのデータ)と、
 `accTitle` の `:` の後の改行は、mermaid.js にとって空白なので、
 次の行がそのテキストになります。
 テキストのない `accTitle:` は、ほかの文の前には書けません。
+
 [fixture: colons/acc-title-colon-line-break]
 
 入力
@@ -952,31 +1043,41 @@ sequenceDiagram
 `accTitle` はブラウザがツールチップとして表示するので、
 その連なりは書かれたまま残します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+
 [fixture: title/accessibility-runs-collapsed]
 [fixture: title/text-padding-dropped]
 [fixture: title/text-padding-dropped-colon]
+
 半角空白とタブだけのタイトルは、書かれたままにします。
+
 [fixture: title/title-blank-kept]
+
 キーワードとその後の空白 1 文字の間のディレクティブは、
 キーワードに接したまま残します。
 `title%%{init: {}}%% U` と `title:%%{init: {}}%% V` は変えません。
 その 1 文字の後のディレクティブはテキストの一部で、テキストの先頭の空白は、
 ディレクティブの前後の空白も除きます。
 `title %%{init: {}}%% T` は `title %%{init: {}}%%T` と印字します。
+
 [fixture: title/directive-after-keyword-kept]
+
 mermaid.js はキーワードの後の空白 1 文字を読み、それは改行でもよく、
 その後のすべてを、先頭と末尾の空白も含めてタイトルに入れ、
 先頭と末尾の空白を除いてタイトルを描きます。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 そのため、`title`、改行、`A->>B: x` は `title A->>B: x` と印字し、
 次の行がタイトルになることが見えます。
-mermaid.js はそのように読みます。 [fixture: title/separator]
-[corpus fixture: sequence/lex-title-line-break]
+mermaid.js はそのように読みます。
+
+[fixture: title/separator] [corpus fixture: sequence/lex-title-line-break]
 [corpus fixture: sequence/db-title-next-line-indented]
 [fixture: title/tab-and-colon-line-break] [fixture: title/line-break-indented]
+
 タイトルの末尾の空白は、後ろに `;` がある場合も除きます。
+
 [fixture: title/trailing-whitespace-dropped]
 [fixture: title/semicolon-after-whitespace-dropped]
+
 キーワードと次の行のテキストの間にある、行の規則が無視する `;` は、
 ひとまとまりで残る行の一部として、規則の条件となる部分と同じ行に残します。
 `participant A@{"style":"x:#y"};title;` と次の行の `T` は、
@@ -984,8 +1085,10 @@ mermaid.js はそのように読みます。 [fixture: title/separator]
 `participant A@{"style":"x:#y"};title; T` と印字します。
 [セミコロン](./compatibility.ja.md#行の規則が文の値の前で無視する-)
 を参照してください。
+
 [fixture: title/ignored-semicolon-before-text-on-next-line-kept]
 [fixture: title/ignored-semicolon-before-text-on-kept-line-kept]
+
 空白が行末にあるので、例は、`\n` を改行とする文字列で書きます。
 `"sequenceDiagram\ntitle Kept   \nA->>B: x\n"` は
 `"sequenceDiagram\n  title Kept\n  A ->> B: x\n"` と印字します。
@@ -1017,8 +1120,9 @@ sequenceDiagram
 コメント行は mermaid.js がテキストを読む前に取り除かれるので、
 その次の行がタイトルです。
 空白 1 つの後に印字すると、コメントがキーワードの行に乗り、
-次の行が文として読まれてしまいます。 [fixture: title/comment-line-kept]
-[fixture: title/colon-comment-line-kept]
+次の行が文として読まれてしまいます。
+
+[fixture: title/comment-line-kept] [fixture: title/colon-comment-line-kept]
 
 入力
 ([title/comment-line-kept-input.mmd](../tests/fixtures/sequence/title/comment-line-kept-input.mmd)):
@@ -1045,15 +1149,19 @@ sequenceDiagram
 ### コメント
 
 行に単独のコメント（`%%`、`#`、`%`）は、周りの文と同じ段に置き、
-本文は書かれたまま残します。 [fixture: comments/kept]
+本文は書かれたまま残します。
+
+[fixture: comments/kept]
 [corpus fixture: sequence/lex-single-percent-comment-line]
 [fixture: comments/percent-line-kept] [fixture: comments/block-edges-kept]
 [fixture: comments/text-whitespace-kept]
+
 文の後のコメントはその行に残し、印の前に空白が書かれているかどうかを保ちます。
 mermaid.js は `autonumber 5%% c` を数 5 なしで読み、
 `%%` の前に空白を入れると数を読むからです。
 印の前の空白の連なりは、空白 1 つで印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+
 [fixture: comments/mark-run-one-space] [fixture: comments/kept]
 [corpus fixture: sequence/lex-percent-comment-takes-number]
 [fixture: comments/mark-whitespace-kept]
@@ -1093,12 +1201,17 @@ sequenceDiagram
 コメントの直後に同じ行で置かれた `;` は残します。
 それは mermaid.js の行の規則が無視する行の最後の `;` で、
 コメントはその手前で終わります。
+
 [fixture: comments/semicolon-after-comment-kept]
 [corpus fixture: sequence/tokens-comment-then-ignored-semicolon]
 [corpus fixture: sequence/tokens-loop-comment-then-ignored-semicolon]
 [fixture: comments/semicolon-after-percent-comment-kept]
+
 その `;` の後に空白が書かれていると、`;` はコメントの中にあり、
-コメントごと印字されます。 [fixture: comments/semicolon-inside-comment-kept]
+コメントごと印字されます。
+
+[fixture: comments/semicolon-inside-comment-kept]
+
 片方で落とし、片方で残すと、2 回目の整形が 1 回目と違う結果になります。
 
 入力
@@ -1143,15 +1256,20 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   最後の文字より後の空白は落とします。
   `box` 以外のブロックの見出しは、mermaid.js がテキストの両端を取り除くので、
   文字は、テキストの末尾の空白と一緒に落とします（`loop x`、U+2028、
-  ` ;` など）。 [test: U+2028 at the end of the text of a box]
+  ` ;` など）。
+
+  [test: U+2028 at the end of the text of a box]
   [test: whitespace around U+2028 at the end of the text of a box]
   [test: U+2029 at the end of the text of a box]
   [test: whitespace around U+2029 at the end of the text of a box]
+
 - コメントと、同じ行でその後ろに続くコメント行の間。
   文やブロックの見出しの終わりと、そのようなコメント行の間も同じです。
   図のコメントは、そのコメント行を越えて次の行まで続くため、
   文字の代わりに改行を置くと、その後の文が文として読まれます。
+
   [corpus fixture: sequence/lex-hash-comment-across-comment-line]
+
   mermaid.js はコメント行を取り除くので、その後の行は前の行の続きになります。
   `A->>B:   x`、U+2028、`%% c`、`C->>D: y` は 1 つの行で、
   メッセージのテキストは次の行まで続きます。
@@ -1159,7 +1277,9 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   間の空白も整形せずに、書かれたまま印字します。
   木はコメントを並べますが、印字処理は 1 つの行として読みます。
   [U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-  を参照してください。 [test: a `#` comment after U+2028, which joins no lines]
+  を参照してください。
+
+  [test: a `#` comment after U+2028, which joins no lines]
   [test: a `%%` comment line after U+2028, which joins the next line]
   [test: a `%%` comment line after U+2028 at the end of a block header]
   [test: a `%%` comment line after U+2028 at the end of a participant]
@@ -1167,39 +1287,50 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   [test: U+2028 after a `%%` comment that a comment line follows]
   [test: U+2029 after a `%` comment that a comment line follows]
   [test: a `#` comment and a comment line after U+2028 inside a message text]
+
 - 閉じていないディレクティブの直後。
   そのようなディレクティブのテキストはこの文字の手前で止まり、
   文字はディレクティブにとって空白ではありません。
   文字を空白や改行で印字すると、
   ディレクティブが残りのテキストに届いてしまいます。
   これはすべての図種で同じです。
+
   [test: U+2028 after a directive that is not closed]
   [test: U+2029 after a directive that is not closed]
   [test: a `;` after U+2029 after a directive that is not closed]
   [test: a standalone open directive before U+2028 and a semicolon]
   [test: a standalone open directive before U+2029 and a semicolon]
+
 - `title` の後の 1 つの空白文字としての U+2028 か U+2029。
   `title`、U+2028、` ;` は、`;` ごと書かれたまま残します。
+
   [test: U+2028 as the whitespace character after `title`, with a `;` after it]
   [test: U+2029 as the whitespace character after `title`]
+
 - タイトルの末尾。
   空白やタブではなくテキストの文字なので、
   その後の空白はタイトル末尾のほかの空白と一緒に除き、前の空白は残します。
+
   [test: U+2028 and spaces at the end of a title]
+
 - ブロックの `end` の後（残しません）。
   `end`、U+2028、改行は `end` と印字します。
   mermaid.js はそこでこの文字を空白として読むからです。
+
   [test: U+2028 after the `end` of a block of a sequence diagram]
   [test: U+2029 and whitespace around it after the last `end` of a sequence diagram]
+
 - 文の 2 つの部分の間（すべての図種）。
   間の空白に U+2028 か U+2029 があるときは、書かれたまま残します。
   この文字は、
   mermaid.js のすべての規則で空白として読まれるわけではないからです（`class A`、
   U+2028、` direction LR` は 1 つの名前で、`class A`、改行、
   ` direction LR` は文と方向になります）。
+
   [test: U+2028 between an id and an arrow]
   [test: U+2029 between an arrow and an id]
   [test: U+2028 between an id and `as`]
+
 - 行の規則が無視する `;` と、その後に U+2028 か U+2029 がある行。
   行の規則は、文字の手前までを行として読むので、その行を書かれたまま残します。
   ダイアグラムコメントの中の `;` はコメントの一部で、
@@ -1208,15 +1339,18 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   `participant Z@{ "style": "x:#y" };`、U+2028、改行、`;`、
   続く文は mermaid.js が受理し、
   続く文があって 2 つ目の `;` がない同じテキストは拒否されます。
+
   [test: a `;` after an ignored `;` and U+2029, which the line rule reads as the end of its line]
   [test: a `;` on the next line after an ignored `;` and U+2028, which the line rule reads as the end of its line]
   [test: statements after an ignored `;`, with a U+2029 later on the line]
+
 - 印字処理が残す U+2028 か U+2029 の後の `;`。
   `box`、タイトル、subgraph の名前のテキストの終わりにあるものがその例です。
   mermaid.js は、U+2028 か U+2029 の直後に始まるコメント行を、
   その前の改行ごと取り除くので、間にある `;` が、
   改行とその後のコメント行が次の行をつなぐのを防ぎます。
   `box red`、U+2028、`;`、行 `%% c` では、箱のテキストは `;` で終わります。
+
   [corpus fixture: sequence/line-end-semicolons-2636cb4a]
   [corpus fixture: sequence/kept-semicolon-after-separator-05ce7bd7]
   [test: a `;` after U+2028 at the end of the text of a box]
@@ -1227,6 +1361,7 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
 閉じていないディレクティブの後の `;`、別の `;` に接する無視される `;`、
 U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは、
 [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照）。
+
 [corpus fixture: sequence/ignored-semicolon-after-directive-06349fee]
 [corpus fixture: sequence/ignored-semicolon-then-separator-line-15c6520f]
 [fixture: statements-one-per-line/unclosed-directive-semicolon-kept]
@@ -1239,6 +1374,7 @@ flowchart と同じです。
 同じ印字行の中では、flowchart と同じく、
 隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
+
 [fixture: directives/kept] [fixture: directives/section-edges-kept]
 [fixture: directives/whitespace-on-each-side]
 [fixture: directives/touching-kept] [fixture: directives/block-lines-kept]
@@ -1283,6 +1419,7 @@ sequence 図には文字列がなく、引用符はテキストの文字です�
 `B-->>A: Hello` はテキストが `Hello` のメッセージです。
 ノートも同じように引用符をテキストに含みます。
 引用符を外すと、mermaid.js が描くテキストが変わります。
+
 [fixture: quotes/texts-as-written]
 
 入力
@@ -1317,6 +1454,7 @@ flowchart と同じです。
 `---` の行の間の YAML は、
 安全なときに Prettier の YAML 整形にかけます（詳しくは、
 [フロントマターの YAML](./flowchart.ja.md#フロントマターの-yaml)を参照）。
+
 [fixture: frontmatter-yaml/formatted] [fixture: frontmatter-yaml/malformed-kept]
 [fixture: frontmatter-yaml/indented-delimiters-kept]
 [fixture: frontmatter-yaml/delimiter-line-kept]
@@ -1353,7 +1491,9 @@ sequenceDiagram
 その空白と後に続く改行をまとめて空白として読みます（仕様の
 [文の文脈](../../spec/docs/diagrams/sequence.ja.md#文の文脈) の規則 2）。
 そのため、`Alice ->>`、空白、改行、`Bob: hi` は、
-`Alice ->> Bob: hi` と印字します。 [fixture: multi-line-statements/joined]
+`Alice ->> Bob: hi` と印字します。
+
+[fixture: multi-line-statements/joined]
 [fixture: multi-line-statements/more-lines-joined]
 
 文の各改行は、それぞれ別に判断します。
@@ -1364,11 +1504,13 @@ sequenceDiagram
 各隙間の最初の改行の前の空白は保ちます。
 その空白によって、mermaid.js が後の行も同じ文の一部として読むためです。
 値の中の空白は変えません。
+
 [fixture: multi-line-statements/breaks-decided-one-by-one]
 [fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/comment-inside-kept]
 [fixture: multi-line-statements/autonumber-comment-continuation]
 [fixture: multi-line-statements/autonumber-directive-continuation]
+
 キーワードと本文の間に注釈があるタイトルは、本文の字下げも値に含むので、
 全体を原文のまま残します。
 コメントで結合される領域も、文全体を原文のまま残します。
@@ -1376,10 +1518,14 @@ sequenceDiagram
 行の規則が無視する `;` が変わりうる場合と、
 最後の行の終わりを `;` が決める場合は、その改行を残します。
 それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
+
 [fixture: multi-line-statements/semicolon-joining-changes-kept]
+
 `;` があるだけでは、行をつなぐ妨げにはなりません。
+
 [fixture: multi-line-statements/semicolon-inside-joined]
 [fixture: multi-line-statements/start-moves-to-own-line]
+
 説明ブロックは[複数行の値](#複数行の値)に従い、本文の字下げをそろえます。
 
 入力の行末に空白があるので、例は、`\n` を改行とする文字列で書きます。
@@ -1395,30 +1541,38 @@ sequenceDiagram
 すでに空の内側は空のままです。
 キーワードと開始括弧の間には空白を 1 つ置きます。
 `accDescr{  }` は `accDescr {}` にします。
+
 [fixture: multi-line-values/empty-whitespace-interiors]
 [test: sequence Unicode and tab interiors]
+
 コメントやディレクティブがあるブロックの内容と改行は保ちます。
 1 行のブロックは、
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+
 [fixture: multi-line-values/block-text-on-one-line-padded]
 
 `accDescr { ... }` の本文行は文より 1 段深くそろえ、
 独立した `}` は文と同じ段に置きます。
 [flowchart のトップレベルの説明](./flowchart.ja.md#複数行の値)と同じく、
 Mermaid が説明からこの字下げを除くためです。
+
 [fixture: multi-line-values/description-and-data-indented]
 [fixture: multi-line-values/accdescr-block-closing-brace-after-text]
 [fixture: multi-line-values/accdescr-block-blank-and-comment-lines-kept]
 [fixture: multi-line-values/data-block-in-block-indented]
+
 テキストがなく、コメント行だけを持つブロックは、値を持ちません。
 そのコメント行は、文の中のコメント行と同じく `accDescr` より 1 段深く置き、
 `}` は `accDescr` と同じ段に置きます。
+
 [fixture: multi-line-values/accdescr-block-comment-only]
 [fixture: multi-line-values/accdescr-block-without-text-kept]
+
 テキストの終わりで閉じる説明ブロック（`accDescr {` の後に `}` がないもの）は、
 mermaid.js が受理します（詳しくは、
 [文の文脈](../../spec/docs/diagrams/sequence.ja.md#文の文脈)を参照）。
 その本文行は、閉じたブロックと同じく文より 1 段深く置き、`}` は足しません。
+
 [fixture: multi-line-values/accdescr-block-unclosed-indented]
 
 participant と actor のデータブロックには、
@@ -1441,6 +1595,7 @@ box やブロックの中の文が `end` の前にある場合が当たります
 [データブロック](./flowchart.ja.md#データブロック)
 の節に挙げたもの以外で始まる行の文も同じです。
 `end` が先にある文は、その行と同じ深さなので、書かれたまま印字します。
+
 [fixture: multi-line-values/data-use-tabs-box-header-moved]
 [fixture: multi-line-values/data-use-tabs-section-keyword-moved]
 [fixture: multi-line-values/data-use-tabs-statement-before-end-moved]
@@ -1462,6 +1617,7 @@ Mermaid はデータブロック全体の両端の空白を除くので、最初
 行全体を保つ行、`tabWidth: 0` もそのまま残します。
 最初の行との相対的な余白やディレクティブのテキストを変えず、
 行全体の保持を守るためです。
+
 [fixture: multi-line-values/data-multiple-lines-kept]
 [fixture: multi-line-values/data-inline-and-directive-kept]
 [fixture: multi-line-values/data-kept-body-line]
@@ -1471,6 +1627,7 @@ Mermaid はデータブロック全体の両端の空白を除くので、最初
 空の説明ブロックはそれぞれの規則に従います。
 CRLF と CR は `endOfLine` に従い、
 値内の Unicode の区切り文字は文字として保ちます。
+
 [fixture: multi-line-values/data-surrounding-trivia]
 [test: data blocks: sequence U+2028] [test: data blocks: sequence CR]
 

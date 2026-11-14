@@ -6,6 +6,7 @@
 
 [順序付き字句規則](../../../spec/docs/diagrams/gitgraph.md#ordered-rules)
 が次の成分を作り、複合一致は書かれた語・コロン・波括弧の境界で分けます。
+
 [fixture: gitgraph/gram-all-fields]
 [fixture: gitgraph/lex-option-global-before-colon]
 
@@ -20,8 +21,9 @@
 
 [行の共通値](../../../spec/docs/ast/gitgraph.md#gitgraphtitlestatement)
 は指定された空白を保持し、説明ブロックの内容は両端の共通空白だけを除き、
-空の内容には内容トークンを作りません。 [fixture: gitgraph/title-conversion]
-[fixture: gitgraph/title-tab]
+空の内容には内容トークンを作りません。
+
+[fixture: gitgraph/title-conversion] [fixture: gitgraph/title-tab]
 [fixture: gitgraph/common-acctitle-only-whitespace]
 [fixture: gitgraph/common-accdescr-only-whitespace]
 [fixture: gitgraph/accdescr-block]
@@ -31,7 +33,9 @@
 
 [隠れた形式](../../../spec/docs/ast/gitgraph.md#gitgraphignoredtext)は、
 開始から終端までの一つの RawText 項目で、先行する ASCII 空白と、
-消費する直後の LF は含めません。 [fixture: gitgraph/lex-yaml-empty-body]
+消費する直後の LF は含めません。
+
+[fixture: gitgraph/lex-yaml-empty-body]
 [fixture: gitgraph/lex-yaml-three-adjacent-fences]
 [fixture: gitgraph/lex-hidden-directive-commit-eof]
 [fixture: gitgraph/lex-hidden-directive-commit-closing-space]
@@ -41,6 +45,7 @@
 StringFragment、RawText 項目を RawText に分割します。
 語・参照・整数の内部での分割は拒否しますが、
 オプションの語とコロンの境界では許可します。
+
 [fixture: gitgraph/directive-in-string]
 [fixture: gitgraph/lex-hidden-yaml-global-comment-body]
 [fixture: gitgraph/lex-hidden-yaml-global-directive-body]
@@ -54,6 +59,7 @@ StringFragment、RawText 項目を RawText に分割します。
 [図のコメント](../../../spec/docs/diagrams/gitgraph.md#whitespace-and-comments)
 と、検出が通過した裸の行は、印が `%%` の Comment です。
 可視の改行と通常の ASCII 空白にはトークンを作りません。
+
 [fixture: gitgraph/comment-commit-glued]
 [fixture: gitgraph/comment-between-mark-characters]
 [fixture: gitgraph/detect-bare-brace-eof-header] [fixture: gitgraph/lex-tab]
@@ -63,6 +69,7 @@ StringFragment、RawText 項目を RawText に分割します。
 トークンを作りません。
 引用された葉は書かれた escape・物理改行・空白を保持し、
 裸の参照は自身の Identifier トークンを保持します。
+
 [fixture: gitgraph/db-compare-bare-and-quoted]
 [fixture: gitgraph/db-compare-branch-lookups]
 [fixture: gitgraph/db-compare-escape-backslash]
@@ -79,6 +86,7 @@ StringFragment、RawText 項目を RawText に分割します。
 比較時に正規化したりプレースホルダーとして読んだりする場合も、
 HTML 改行の綴りとエンティティの元のテキストは、
 String トークンと書かれた葉に残ります。
+
 [fixture: gitgraph/db-compare-break-spellings]
 [fixture: gitgraph/db-compare-break-whitespace]
 [fixture: gitgraph/db-compare-break-boundaries]

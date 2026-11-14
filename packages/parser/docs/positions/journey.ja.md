@@ -27,8 +27,9 @@
 後の人が空のときは最後の `,` か、人の部分が空白だけのときは 2 つ目のコロンか、
 スコアか、データが空白だけのときは最初のコロンです。
 `A: 5: Me,` は `A: 5: Me,` を覆い、`A: 5:` は `A: 5:` を覆い、
-`A:` と空白 1 つは `A:` を覆います。 [fixture: journey/db-task-people]
-[fixture: journey/db-task-extra-colon]
+`A:` と空白 1 つは `A:` を覆います。
+
+[fixture: journey/db-task-people] [fixture: journey/db-task-extra-colon]
 [fixture: journey/gram-task-people-trailing-comma]
 [fixture: journey/gram-task-second-colon-at-end]
 [fixture: journey/db-task-score-only]
@@ -41,6 +42,7 @@
 [トークン](../tokens/journey.ja.md#トークン) を参照。
 `title T` と 3 つの空白は 3 つの空白も覆い、`section` と 2 つの空白は、
 名前が空白 1 つで、2 つの空白を覆います。
+
 [fixture: journey/lex-title-trailing-spaces]
 [fixture: journey/lex-section-whitespace-only]
 
@@ -48,6 +50,7 @@
 
 範囲は、キーワードから、テキストの空白でない最後の文字までです。
 値が除く行末の空白は、範囲の外にあります。
+
 [fixture: journey/gram-acc-title-trailing-spaces]
 
 ### JourneyLiteral
@@ -57,6 +60,7 @@
 値はその範囲の書かれたテキストです。
 `Make tea  : 3` の説明は、`Make tea` とコロンの前の 2 つの空白を覆います。
 `title T` と 3 つの空白のタイトルは、`T` と 3 つの空白を覆います。
+
 [fixture: journey/db-task-description-spaces]
 [fixture: journey/lex-title-trailing-spaces]
 
@@ -69,6 +73,7 @@
 データの中のディレクティブは範囲の中にあり、値はそれを除きます。
 `A: 5: Me: a %%{init: {}}%%b` の無視されるテキストは、
 3 つ目のコロンから `b` までで、値は `: a b` です。
+
 [fixture: journey/lex-directive-after-space-in-ignored-data]
 [fixture: journey/db-task-extra-colon]
 [fixture: journey/gram-task-third-colon-at-end]

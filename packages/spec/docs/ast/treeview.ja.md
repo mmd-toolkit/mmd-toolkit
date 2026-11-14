@@ -6,6 +6,7 @@
 共有 node と不変条件は [ast.md](../ast.ja.md)、
 受理と罫線の直接の読みは [treeview の構文](../diagrams/treeview.ja.md)が定める。
 任意の欄も null として存在し、list は記述順を保ち、子の欄は訪問順を示す。
+
 [fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]
 
 ## 書かれた値
@@ -13,13 +14,16 @@
 bare の node 名は空白を許す位置なので TreeviewIdentifier を使う。
 引用名は共有 StringLiteral、class 名と icon 参照全体は共有 Identifier を使う。
 数らしい名前も数ではなく名前である。
-一つの例の見た目で node の型を選ばない。 [fixture: treeview/gram-written-tree]
-[fixture: treeview/db-bare-internal-space] [fixture: treeview/ast-numeric-name]
+一つの例の見た目で node の型を選ばない。
+
+[fixture: treeview/gram-written-tree] [fixture: treeview/db-bare-internal-space]
+[fixture: treeview/ast-numeric-name]
 
 StringLiteral.raw は両端の原文の引用符と、共通 trivia も含む間の全字を保つ。
 value は、共有 directive、コメント領域、選択されたセミコロンを除いた、
 書かれた内側であり、escape を decode せず、改行も正規化しない。
 空の引用名も node となり、closed は true である。
+
 [fixture: treeview/gram-written-tree] [fixture: treeview/db-empty-names]
 [fixture: treeview/db-quote-conversion]
 [fixture: treeview/directive-double-middle]
@@ -41,6 +45,7 @@ value は、共有 directive、コメント領域、選択されたセミコロ�
 共有の葉に prefix や装飾の子を重ねず、原文を仮想の空白で置き換えない。
 導出する値は
 [tests の要約](../../../tests/docs/db-summaries.ja.md#treeview)に属する。
+
 [fixture: treeview/gram-written-tree] [fixture: treeview/entity-double]
 [fixture: treeview/box-multiline-quoted]
 [fixture: treeview/box-quoted-decoration]
@@ -66,6 +71,7 @@ TreeviewIgnoredText は box-decoration だけを持ち、
 共有 Comment・Directive・空白・native YAML を持たない。
 native な hidden YAML と directive の node は無い。
 保持する形の owner は一つだけとし、次の規則を順に適用する。
+
 [fixture: treeview/box-written-tree] [fixture: treeview/gram-body-yaml]
 [fixture: treeview/detect-secondscan-singleline]
 
@@ -74,6 +80,7 @@ native な hidden YAML と directive の node は無い。
 間の外側の装飾は Node.textBeforeName に属する。
 その字下げを与える prefix は、
 名前の前に native comment が入っても Node.prefix に属する。
+
 [fixture: treeview/ast-decoration-internal-and-body]
 [fixture: treeview/box-physical-directive-inline]
 [fixture: treeview/box-decoration-pending-name-gap]
@@ -94,6 +101,7 @@ native な hidden YAML と directive の node は無い。
 注釈を始める branch は注釈の prefix に属し、node の indent を変えない。
 accDescr と必須の block の開きの間の装飾と prefix は textBeforeOpen に属する。
 これらの owner は node の textBefore より優先する。
+
 [fixture: treeview/box-decoration-before-annotation]
 [fixture: treeview/ast-annotation-prefixes]
 [fixture: treeview/box-branch-before-block-open]
@@ -106,7 +114,9 @@ accDescr と必須の block の開きの間の装飾と prefix は textBeforeOpe
 後続の注釈が無い装飾は、前の node に戻らずこの規則へ進む。
 最初の階層 node より前と最後より後の独立した装飾は Diagram.body に残し、
 共通文の preamble を終わらせない。
-装飾だけの図は階層 node を持たない。 [fixture: treeview/box-written-tree]
+装飾だけの図は階層 node を持たない。
+
+[fixture: treeview/box-written-tree]
 [fixture: treeview/gram-nesting-decoration-before-parent]
 [fixture: treeview/gram-nesting-decoration-before-ancestor-child]
 [fixture: treeview/spec-box-drawing-preprocessor-e9d19370]
@@ -122,6 +132,7 @@ accDescr と必須の block の開きの間の装飾と prefix は textBeforeOpe
 付加 LF を書かれた構文にしない。
 選ばれた無視するセミコロンは共有 trivia のままとし、
 選ばれないセミコロンは字句の読みを保つ。
+
 [fixture: treeview/box-tail-decoration-directive-inline]
 [fixture: treeview/box-tail-decoration-directive-line]
 [fixture: treeview/box-tail-decoration-comment-line]
@@ -153,6 +164,7 @@ body が空なら見出しの終端まで。
 外側の空白、その後の共有 Comment、追加する LF を含めない。
 Root.diagramType は `treeView`。
 見出しは keyword の unit に保ち、別の header node を作らない。
+
 [fixture: treeview/header-only] [fixture: treeview/gram-written-tree]
 [fixture: treeview/box-decoration-trailing-body]
 
@@ -166,6 +178,7 @@ body に直接置く TreeviewNode は根だけとし、
 gap の所有に従い body に残す。
 全出現を保ち、人工の根や親への参照は作らない。
 空行と共有 Comment は body item を作らない。
+
 [fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]
 [fixture: treeview/box-decoration-preamble-body]
 [fixture: treeview/common-repeat-empty] [fixture: treeview/comment-native]
@@ -191,6 +204,7 @@ node の範囲の開始は名前の開始とは限らない。
 範囲は連続し、兄弟は重ならない。
 前置の通常の字下げや、無関係な後続の trivia で範囲を延ばさない。
 name は null にならず、空の引用名は空の value を持つ StringLiteral である。
+
 [fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]
 [fixture: treeview/box-comment-indent-carry]
 [fixture: treeview/box-decoration-pending-name-gap]
@@ -207,6 +221,7 @@ name は null にならず、空の引用名は空の value を持つ StringLite
 textBefore と children は、無ければ空の list とする。
 children は階層 node だけを持ち、導出した深さや親の欄は作らない。
 file の名前、字下げの飛び、複数の根も親子の規則に従って入れ子にする。
+
 [fixture: treeview/db-file-parent] [fixture: treeview/db-indent-pop]
 [fixture: treeview/db-first-indented]
 [fixture: treeview/gram-nesting-decoration-before-ancestor-child]
@@ -218,6 +233,7 @@ prefix は[直接規則](../diagrams/treeview.ja.md)の深さの 4 倍を与え�
 列・幅・別の導出深さを欄に持たない。
 この node を与える prefix が無ければ prefix は null、
 所有する装飾が無ければ textBeforeName は空である。
+
 [fixture: treeview/db-tabs-one-unit] [fixture: treeview/db-quoted-tail-space]
 [fixture: treeview/box-written-tree]
 [fixture: treeview/box-comment-indent-carry]
@@ -229,6 +245,7 @@ TreeviewDescriptionAnnotation のいずれか。
 書かれていなければ list を空とし、書かれていれば上書き前の class/icon、
 空の description も含め全出現を保つ。
 name の元の slash を残し、nodeType 欄は持たない。
+
 [fixture: treeview/gram-written-tree] [fixture: treeview/db-repeat-class]
 [fixture: treeview/db-repeat-icon]
 [fixture: treeview/annotation-description-repeat-empty]
@@ -248,6 +265,7 @@ name の元の slash を残し、nodeType 欄は持たない。
 それらが無ければ `:::` から class 名の終端まで。
 前の形を所有しないときの `:::` より前の区切り空白を含めない。
 name は非空で null にならず、`:::` の後の任意の空白を名前の範囲に含めない。
+
 [fixture: treeview/gram-written-tree] [fixture: treeview/annotation-class-space]
 [fixture: treeview/box-decoration-before-annotation]
 [fixture: treeview/box-annotation-prefix]
@@ -256,6 +274,7 @@ name は非空で null にならず、`:::` の後の任意の空白を名前の
 所有する装飾が無ければ textBefore は空。
 名前の大文字小文字・underscore・dash と、繰り返す各注釈を独立に保つ。
 固定の `:::` marker は句読の unit とし、名前の葉や追加の欄にはしない。
+
 [fixture: treeview/gram-written-tree]
 [fixture: treeview/annotation-class-uppercase]
 [fixture: treeview/annotation-class-hyphen] [fixture: treeview/db-repeat-class]
@@ -274,14 +293,18 @@ name は非空で null にならず、`:::` の後の任意の空白を名前の
 それらが無ければ `icon` から閉じ `)` の終端まで。
 共有の除去の後に参照が空のときだけ name は null。
 `icon()` もこの注釈を作り、`icon(none)` は名前の Identifier を持つ。
-注釈自体が無ければ list の member が無い。 [fixture: treeview/gram-written-tree]
-[fixture: treeview/db-icon-none] [fixture: treeview/ast-icon-removal-only]
+注釈自体が無ければ list の member が無い。
+
+[fixture: treeview/gram-written-tree] [fixture: treeview/db-icon-none]
+[fixture: treeview/ast-icon-removal-only]
 [fixture: treeview/ast-annotation-prefixes]
 
 `pack:file` や `:file` の全綴りを colon も含め一つの Identifier とする。
 pack を解決せず、参照の別の模型へ分解しない。
 無ければ prefix は null、textBefore は空。
-繰り返す各注釈と元の括弧を保つ。 [fixture: treeview/gram-written-tree]
+繰り返す各注釈と元の括弧を保つ。
+
+[fixture: treeview/gram-written-tree]
 [fixture: treeview/annotation-icon-leading-colon]
 [fixture: treeview/db-repeat-icon] [fixture: treeview/ast-annotation-prefixes]
 
@@ -299,6 +322,7 @@ pack を解決せず、参照の別の模型へ分解しない。
 value が null なら marker の終端まで。
 value は `##` の直後から行末の直前までの空白を全て含む。
 空または共有の除去だけの内容なら null、空白だけなら literal とする。
+
 [fixture: treeview/gram-written-tree] [fixture: treeview/spec-parser-ab2c8458]
 [fixture: treeview/db-description-empty]
 [fixture: treeview/ast-description-removal-only]
@@ -308,6 +332,7 @@ value は `##` の直後から行末の直前までの空白を全て含む。
 value の内側の後続の marker らしい字、U+2028・U+2029、
 別の行の description の全出現を保ち、結合したり、
 最後の sanitize された値へ置き換えたりしない。
+
 [fixture: treeview/gram-written-tree]
 [fixture: treeview/db-description-absorbs-annotations]
 [fixture: treeview/text-description-ls] [fixture: treeview/text-description-ps]
@@ -325,8 +350,9 @@ value の内側の後続の marker らしい字、U+2028・U+2029、
 value は `title` と正確に 1 字の ASCII space/tab の後で始まり、
 それ以上の空白を保つ。
 区切りが無いか、共有の除去の後に内容が残らなければ null とし、
-残る内容が空白だけなら literal とする。 [fixture: treeview/gram-written-tree]
-[fixture: treeview/common-title-eof]
+残る内容が空白だけなら literal とする。
+
+[fixture: treeview/gram-written-tree] [fixture: treeview/common-title-eof]
 [fixture: treeview/common-title-quoted-next]
 [fixture: treeview/ast-common-whitespace-values]
 [fixture: treeview/ast-common-removal-only-values]
@@ -336,8 +362,9 @@ value は `title` と正確に 1 字の ASCII space/tab の後で始まり、
 value が null なら keyword の終端まで。
 前置の空白と文末の改行を含めない。
 文を始める branch が無ければ prefix は null。
-空と上書き前の出現も一つずつ保つ。 [fixture: treeview/gram-written-tree]
-[fixture: treeview/common-title-eof]
+空と上書き前の出現も一つずつ保つ。
+
+[fixture: treeview/gram-written-tree] [fixture: treeview/common-title-eof]
 [fixture: treeview/common-title-quoted-next]
 [fixture: treeview/ast-common-whitespace-values]
 [fixture: treeview/ast-common-removal-only-values]
@@ -353,6 +380,7 @@ value が null なら keyword の終端まで。
 value は colon の直後で始まり、本文の空白を全て保つ。
 共有の除去の後に内容が残らないときだけ null とし、空白だけなら literal とする。
 引用符や brace らしい本文もテキストのままとする。
+
 [fixture: treeview/gram-written-tree] [fixture: treeview/common-acctitle-eof]
 [fixture: treeview/ast-common-whitespace-values]
 [fixture: treeview/ast-common-removal-only-values]
@@ -362,8 +390,9 @@ value は colon の直後で始まり、本文の空白を全て保つ。
 value が null なら colon の終端まで。
 前置の空白と文末の改行を含めない。
 文を始める branch が無ければ prefix は null。
-空と上書き前の出現も一つずつ保つ。 [fixture: treeview/gram-written-tree]
-[fixture: treeview/common-acctitle-eof]
+空と上書き前の出現も一つずつ保つ。
+
+[fixture: treeview/gram-written-tree] [fixture: treeview/common-acctitle-eof]
 [fixture: treeview/ast-common-whitespace-values]
 [fixture: treeview/ast-common-removal-only-values]
 [fixture: treeview/common-repeat-empty] [fixture: treeview/box-common-prefix]
@@ -378,6 +407,7 @@ value が null なら colon の終端まで。
 value は colon の直後で始まり、本文の空白を全て保つ。
 共有の除去の後に内容が残らないときだけ null とし、空白だけなら literal とする。
 引用符や brace らしい本文もテキストのままとする。
+
 [fixture: treeview/gram-written-tree] [fixture: treeview/common-accline-eof]
 [fixture: treeview/ast-common-whitespace-values]
 [fixture: treeview/ast-common-removal-only-values]
@@ -387,8 +417,9 @@ value は colon の直後で始まり、本文の空白を全て保つ。
 value が null なら colon の終端まで。
 前置の空白と文末の改行を含めない。
 文を始める branch が無ければ prefix は null。
-空と上書き前の出現も一つずつ保つ。 [fixture: treeview/gram-written-tree]
-[fixture: treeview/common-accline-eof]
+空と上書き前の出現も一つずつ保つ。
+
+[fixture: treeview/gram-written-tree] [fixture: treeview/common-accline-eof]
 [fixture: treeview/ast-common-whitespace-values]
 [fixture: treeview/ast-common-removal-only-values]
 [fixture: treeview/common-repeat-empty] [fixture: treeview/box-common-prefix]
@@ -408,6 +439,7 @@ value が null でも両端の brace を残す。
 前置の空白と後の trivia を含めない。
 prefix が無ければ null、
 必須の gap に prefix も装飾も無ければ textBeforeOpen は空。
+
 [fixture: treeview/gram-written-tree] [fixture: treeview/common-repeat-empty]
 [fixture: treeview/box-decoration-before-block-open]
 [fixture: treeview/box-branch-before-block-open]
@@ -418,8 +450,9 @@ prefix が無ければ null、
 罫線の形も保つ。
 空または共有の除去だけの内容のときだけ null、空白だけなら literal とする。
 この型には閉じが必須なので closed 欄を持たない。
-空や上書き前の block も独立に残す。 [fixture: treeview/gram-written-tree]
-[fixture: treeview/common-repeat-empty]
+空や上書き前の block も独立に残す。
+
+[fixture: treeview/gram-written-tree] [fixture: treeview/common-repeat-empty]
 [fixture: treeview/ast-common-whitespace-values]
 [fixture: treeview/ast-common-removal-only-values]
 [fixture: treeview/common-block-whitespace-raw]
@@ -475,8 +508,9 @@ prefix が無ければ null、
 name は共有 trivia だけを除き、大文字小文字、引用符、句読記号、
 内側の連続空白を変えない。
 空にはならないが、非 ASCII 空白だけでもよい。
-1 語だけの例でもこの型を使う。 [fixture: treeview/gram-written-tree]
-[fixture: treeview/db-bare-internal-space]
+1 語だけの例でもこの型を使う。
+
+[fixture: treeview/gram-written-tree] [fixture: treeview/db-bare-internal-space]
 [fixture: treeview/db-bare-tail-space] [fixture: treeview/space-line-nbsp]
 [fixture: treeview/box-quoted-branch] [fixture: treeview/directive-bare-middle]
 
@@ -492,6 +526,7 @@ name は共有 trivia だけを除き、大文字小文字、引用符、句読�
 value は共有 directive・コメント領域・選択されたセミコロンを除き、
 それ以外の書かれた字と所有する空白を正規化せず保つ。
 null の欄に空の literal を作らず、空白だけの内容も非空とする。
+
 [fixture: treeview/gram-written-tree]
 [fixture: treeview/ast-common-whitespace-values]
 [fixture: treeview/common-block-whitespace-raw]
@@ -502,6 +537,7 @@ null の欄に空の literal を作らず、空白だけの内容も非空とす
 この葉に包まれる罫線の形は、直接の字句の読みで字下げを表したり、
 末尾空白を外したり、装飾を除いたりする場合も書かれた value の一部として残す。
 重なる子へ移さず、比較 Db の値へ literal を書き換えない。
+
 [fixture: treeview/box-block-decoration]
 [fixture: treeview/box-trim-block-closing-brace]
 [fixture: treeview/block-physical-selected-semicolon]
@@ -520,6 +556,7 @@ null の欄に空の literal を作らず、空白だけの内容も非空とす
 value は共有 trivia 以外の全字を保ち、任意のテキスト、引用符、縦線、
 light/heavy の dash の混在も保つ。
 marker は固定の branch の文字であり、Identifier ではない。
+
 [fixture: treeview/box-prefix-nonbmp-column]
 [fixture: treeview/box-written-tree] [fixture: treeview/box-prefix-arbitrary]
 [fixture: treeview/box-quoted-branch] [fixture: treeview/box-heavy]
@@ -532,6 +569,7 @@ marker は固定の branch の文字であり、Identifier ではない。
 範囲の前の原文の空白も列に数える。
 prefix は node、注釈、共通文、必須の block の開きの gap に属しうる。
 既存の値の中ではその葉の綴りに残し、重なる prefix の子を作らない。
+
 [fixture: treeview/box-written-tree] [fixture: treeview/box-annotation-prefix]
 [fixture: treeview/ast-annotation-prefixes]
 [fixture: treeview/box-common-prefix]
@@ -550,14 +588,16 @@ prefix は node、注釈、共通文、必須の block の開きの gap に属�
 外端の空白と読みから外れる後続の改行を node の外に置く。
 value は共有 trivia 以外の罫線の字と内側の空白を保つ。
 非空であり、kind は常に box-decoration。
-空白だけの行はこの node を作らない。 [fixture: treeview/box-written-tree]
-[fixture: treeview/box-mode-dash-only]
+空白だけの行はこの node を作らない。
+
+[fixture: treeview/box-written-tree] [fixture: treeview/box-mode-dash-only]
 [fixture: treeview/box-unicode-decoration]
 
 外側の装飾は、最後のものも含め、
 gap の所有に従って名前のある gap か body に一つずつ保つ。
 名前として公開せず、複数の owner に重ねず、葉の内側の装飾を取り出さない。
 native な percent の形はこの型ではなく共有 Comment のままである。
+
 [fixture: treeview/box-written-tree]
 [fixture: treeview/box-decoration-trailing-body]
 [fixture: treeview/box-decoration-before-annotation]
@@ -571,6 +611,7 @@ native な percent の形はこの型ではなく共有 Comment のままであ�
 body は共通の四種の文の後に二つの根を持ち、最初の根は子を持つ。
 最初の node は二つの class、二つの icon、description を保ち、
 子は引用名の末尾の空白を、最後の node は一重引用符の空名を保つ。
+
 [fixture: treeview/gram-written-tree]
 
 ```mmd
@@ -590,6 +631,7 @@ src/ と子の間の縦の装飾は子の textBefore に属する。
 root/.children は src/ と other、src/.children は my file を持つ。
 src/ は class・icon・description を保つ。
 割り当てられた字下げと prefix の綴りも、入れ子とともに保つ。
+
 [fixture: treeview/box-written-tree]
 
 ```mmd

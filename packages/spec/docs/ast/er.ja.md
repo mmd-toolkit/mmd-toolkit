@@ -26,9 +26,11 @@ ASCII の外の空白文字で終わる名前やロールがそうです。
 空になるのは、`A ||--o{ B : ""` のようなロールと、属性のコメントのときだけです。
 実体の名前としての空の文字列は入力を拒否させ、
 空のバッククォートは StringLiteral ではありません。
+
 [fixture: er/gram-role-string-empty] [fixture: er/gram-comment-empty]
 [fixture: er/spec-er-diagram-f4c59d78]
 [fixture: er/gram-empty-backquotes-between-attributes]
+
 [属性](../diagrams/er.ja.md#属性) を参照してください。
 
 ## ノード
@@ -71,13 +73,14 @@ ErAccDescrBlockStatement のいずれかです。
 `attributes` の ErIgnoredText は、2 つの属性の間、最初の属性の前、
 または最後の属性の後の `empty-backquotes` の単位で、
 mermaid.js は読みません（[属性](../diagrams/er.ja.md#属性) を参照）。
+
 [fixture: er/lex-name-unicode-characters] [fixture: er/lex-name-number]
-[fixture: er/lex-quoted-name] [fixture: er/gram-alias] [fixture:
-er/gram-alias-string] [fixture: er/gram-entity-classes] [fixture:
-er/gram-attribute] [fixture: er/gram-block-empty] [fixture:
-er/gram-alias-class-block] [fixture:
-er/gram-empty-backquotes-between-attributes] [fixture:
-er/gram-empty-backquotes-alone]
+[fixture: er/lex-quoted-name] [fixture: er/gram-alias]
+[fixture: er/gram-alias-string] [fixture: er/gram-entity-classes]
+[fixture: er/gram-attribute] [fixture: er/gram-block-empty]
+[fixture: er/gram-alias-class-block]
+[fixture: er/gram-empty-backquotes-between-attributes]
+[fixture: er/gram-empty-backquotes-alone]
 
 ### ErAttribute
 
@@ -99,12 +102,13 @@ er/gram-empty-backquotes-alone]
 `?` は単位でノードではありません。
 キーは Identifier で、
 その `name` は `pk` や `PK` のように書かれたとおりのキーです。
-コメントは空でもよく、その値は空の文字列です。 [fixture: er/gram-attribute]
-[fixture: er/gram-optional-type] [fixture:
-er/lex-tilde-word] [fixture: er/lex-backquote-word] [fixture:
-er/gram-keys-comma-space] [fixture: er/lex-key-lower-case] [fixture:
-er/gram-comment] [fixture: er/gram-comment-empty] [fixture:
-er/gram-attributes-keys-comment]
+コメントは空でもよく、その値は空の文字列です。
+
+[fixture: er/gram-attribute] [fixture: er/gram-optional-type]
+[fixture: er/lex-tilde-word] [fixture: er/lex-backquote-word]
+[fixture: er/gram-keys-comma-space] [fixture: er/lex-key-lower-case]
+[fixture: er/gram-comment] [fixture: er/gram-comment-empty]
+[fixture: er/gram-attributes-keys-comment]
 
 ### ErRelationshipStatement
 
@@ -121,9 +125,10 @@ er/gram-attributes-keys-comment]
 ロールは、`string` か `quoted-name` の単位では StringLiteral、
 `name` の単位では ErIdentifier です。
 `string` は空でもよく、その値は空の文字列です。
+
 [fixture: er/gram-relationship-symbols] [fixture: er/gram-role-string]
-[fixture: er/gram-role-string-empty] [fixture: er/lex-role-unicode] [fixture:
-er/gram-relationship-both-classes]
+[fixture: er/gram-role-string-empty] [fixture: er/lex-role-unicode]
+[fixture: er/gram-relationship-both-classes]
 
 ### ErEntityReference
 
@@ -135,11 +140,12 @@ er/gram-relationship-both-classes]
 | `name`       | ErIdentifier か StringLiteral | 実体の名前。ErEntityStatement と同じです。                                   |
 | `cssClasses` | ErIdentifier のリスト         | `:::` の後の、`,` の単位で区切ったクラス。ソースの順。`:::` がないときは空。 |
 
-子の欄: `name`、`cssClasses`。 [fixture: er/gram-relationship-left-classes]
-[fixture:
-er/gram-relationship-right-classes] [fixture:
-er/gram-relationship-string-names] [fixture:
-er/gram-relationship-number-names]
+子の欄: `name`、`cssClasses`。
+
+[fixture: er/gram-relationship-left-classes]
+[fixture: er/gram-relationship-right-classes]
+[fixture: er/gram-relationship-string-names]
+[fixture: er/gram-relationship-number-names]
 
 ### ErRelationship
 
@@ -160,11 +166,12 @@ er/gram-relationship-number-names]
 `--` と `to` はどちらも `identifying` です。
 このノードに `value` はありません。
 単位の間には mermaid.js が読まない空白を置け、
-単位のテキストはトークンにあります。 [fixture: er/gram-relationship-symbols]
-[fixture: er/lex-cardinality-words]
-[fixture: er/lex-cardinality-only-one-optionally-to] [fixture:
-er/lex-md-parent] [fixture: er/lex-relationship-spaces-in-spec] [fixture:
-er/spec-er-diagram-7b5988ee]
+単位のテキストはトークンにあります。
+
+[fixture: er/gram-relationship-symbols] [fixture: er/lex-cardinality-words]
+[fixture: er/lex-cardinality-only-one-optionally-to] [fixture: er/lex-md-parent]
+[fixture: er/lex-relationship-spaces-in-spec]
+[fixture: er/spec-er-diagram-7b5988ee]
 
 ### ErSubgraphStatement
 
@@ -181,8 +188,9 @@ er/spec-er-diagram-7b5988ee]
 間に空白があってもなくても読み、
 mermaid.js がそのテキストを 1つの空白文字でつなぐからです。
 間の空白は値ではありません（[subgraph](../diagrams/er.ja.md#subgraph) を参照）。
-[fixture: er/gram-subgraph] [fixture: er/gram-subgraph-title] [fixture:
-er/gram-subgraph-title-string] [fixture: er/gram-subgraph-string-id]
+
+[fixture: er/gram-subgraph] [fixture: er/gram-subgraph-title]
+[fixture: er/gram-subgraph-title-string] [fixture: er/gram-subgraph-string-id]
 [fixture: er/gram-subgraph-header-blocks] [fixture: er/gram-subgraph-nested]
 
 ### ErDirectionStatement
@@ -198,11 +206,13 @@ er/gram-subgraph-title-string] [fixture: er/gram-subgraph-string-id]
 `  direction LR` には `textBefore` がなく、
 `A ||--o{ B : x direction LR` の `textBefore` は `A ||--o{ B : x` です。
 方向は値を大文字にしたものです。
-`direction lr` は `LR` です。 [fixture: er/gram-direction]
-[fixture: er/lex-direction-lower-case] [fixture:
-er/lex-direction-leading-space] [fixture:
-er/lex-direction-line-after-relationship] [fixture:
-er/lex-direction-line-text-after] [fixture: er/lex-direction-value-glued]
+`direction lr` は `LR` です。
+
+[fixture: er/gram-direction] [fixture: er/lex-direction-lower-case]
+[fixture: er/lex-direction-leading-space]
+[fixture: er/lex-direction-line-after-relationship]
+[fixture: er/lex-direction-line-text-after]
+[fixture: er/lex-direction-value-glued]
 
 ### ErClassDefStatement
 
@@ -217,9 +227,11 @@ er/lex-direction-line-text-after] [fixture: er/lex-direction-value-glued]
 クラス名は ErIdentifier で、その `name` は `style-text` の単位のテキストです。
 スタイルは単位のテキストをつないだものです（[ErLiteral](#erliteral) を参照）。
 スタイルのリストが空になることはありません。
-スタイルのない `classDef` は拒否されます。 [fixture: er/gram-classdef]
-[fixture: er/gram-classdef-two-names] [fixture:
-er/lex-classdef-style-spaces] [fixture: er/gram-classdef-without-styles]
+スタイルのない `classDef` は拒否されます。
+
+[fixture: er/gram-classdef] [fixture: er/gram-classdef-two-names]
+[fixture: er/lex-classdef-style-spaces]
+[fixture: er/gram-classdef-without-styles]
 
 ### ErClassStatement
 
@@ -232,9 +244,10 @@ er/lex-classdef-style-spaces] [fixture: er/gram-classdef-without-styles]
 
 子の欄: `entities`、`cssClasses`。
 それぞれは `name` の単位の ErIdentifier なので、
-どちらのリストも数や引用符付きの名前を持ちません。 [fixture: er/gram-class]
-[fixture: er/gram-class-two-lists] [fixture:
-er/db-class-subgraph]
+どちらのリストも数や引用符付きの名前を持ちません。
+
+[fixture: er/gram-class] [fixture: er/gram-class-two-lists]
+[fixture: er/db-class-subgraph]
 
 ### ErStyleStatement
 
@@ -247,8 +260,9 @@ er/db-class-subgraph]
 
 子の欄: `entities`、`styles`。
 名前は ErIdentifier で、その `name` は `style-text` の単位のテキストです。
-[fixture: er/gram-style] [fixture: er/gram-style-two-names] [fixture:
-er/db-style-subgraph]
+
+[fixture: er/gram-style] [fixture: er/gram-style-two-names]
+[fixture: er/db-style-subgraph]
 
 ### ErAccTitleStatement
 
@@ -262,8 +276,9 @@ er/db-style-subgraph]
 `:` の後の空白は改行を含めて一緒に読まれるので、
 テキストはそれのある最初の行で始まり、値が null になることはありません。
 後ろに何もない `accTitle:` は拒否されます。
-値は両端の空白を除いたテキストです。 [fixture: er/gram-acc-title]
-[fixture: er/lex-acc-title-blank-line-then-name]
+値は両端の空白を除いたテキストです。
+
+[fixture: er/gram-acc-title] [fixture: er/lex-acc-title-blank-line-then-name]
 [fixture: er/lex-acc-title-at-end] [fixture: er/db-acc-title-trailing-space]
 
 ### ErAccDescrStatement
@@ -276,6 +291,7 @@ er/db-style-subgraph]
 
 子の欄: `value`。
 ErAccTitleStatement と同じく、値が nullになることはありません。
+
 [fixture: er/gram-acc-descr] [fixture: er/lex-acc-descr-at-end]
 
 ### ErAccDescrBlockStatement
@@ -292,13 +308,15 @@ ErAccTitleStatement と同じく、値が nullになることはありません�
 子の欄: `value`。
 `accDescr {}`、`accDescr { }`、空行のブロックは値 null で、何も変えません。
 そのようなブロックが文になるのは文が始まるところだけで、
-文の中のブロックは入力を拒否させます。 [fixture: er/gram-acc-descr-block]
-[fixture: er/gram-acc-descr-block-multiline]
+文の中のブロックは入力を拒否させます。
+
+[fixture: er/gram-acc-descr-block] [fixture: er/gram-acc-descr-block-multiline]
 [fixture: er/gram-acc-descr-block-empty]
 [fixture: er/db-acc-descr-block-whitespace-only]
 [fixture: er/gram-empty-description-block-between-names]
 [fixture: er/div-empty-description-block-in-relationship]
 [fixture: er/lex-acc-descr-block-unclosed]
+
 [空の説明ブロック](../diagrams/er.ja.md#空の説明ブロック) を参照してください。
 
 ### ErIdentifier
@@ -325,14 +343,17 @@ U+00A0 や U+2028 のような ASCII
 それ以外の ASCII の外の空白文字を最初の文字の後に持てます。
 [属性ブロックの文脈](../diagrams/er.ja.md#属性ブロックの文脈)
 を参照してください。
-`string name` の型は `string` です。 [fixture: er/lex-name-nbsp]
-[fixture: er/lex-name-line-separator] [fixture:
-er/lex-tilde-space-inside] [fixture: er/lex-name-number] [fixture:
-er/gram-attribute] [fixture: er/lex-tilde-run-two-words]
+`string name` の型は `string` です。
+
+[fixture: er/lex-name-nbsp] [fixture: er/lex-name-line-separator]
+[fixture: er/lex-tilde-space-inside] [fixture: er/lex-name-number]
+[fixture: er/gram-attribute] [fixture: er/lex-tilde-run-two-words]
+
 名前の中の、U+2028 や U+2029 の後のコメント領域は、
 その書かれたテキストから除かれ、`A`、U+2028、`%% c`、改行、
 `Bar` の `name` は `A`、U+2028、
 `Bar` です（[名前の中のコメント領域](../diagrams/er.ja.md#単位と文脈) を参照）。
+
 [fixture: er/lex-name-line-separator-comment-line]
 
 ### ErLiteral
@@ -352,9 +373,10 @@ mermaid.js はスタイルの単位の間の空白を落とすので、
 `classDef a fill:red stroke:blue` は 1 つのスタイル `fill:redstroke:blue`
 を持ちます。
 アクセシビリティのテキストは、mermaid.js が取り除く両端の空白なしで読まれ、
-空白だけになることはありません。 [fixture: er/lex-classdef-style-spaces]
-[fixture: er/lex-classdef-styles-joined] [fixture: er/gram-acc-title]
-[fixture: er/db-acc-title-trailing-space]
+空白だけになることはありません。
+
+[fixture: er/lex-classdef-style-spaces] [fixture: er/lex-classdef-styles-joined]
+[fixture: er/gram-acc-title] [fixture: er/db-acc-title-trailing-space]
 [fixture: er/lex-acc-descr-block-trailing-spaces]
 
 ### ErIgnoredText
@@ -369,7 +391,9 @@ mermaid.js はスタイルの単位の間の空白を落とすので、
 | ------- | ------ | ------------------------------------------------------------- |
 | `value` | string | 書かれたテキスト（[ast.ja.md](../ast.ja.md#ノード) を参照）。 |
 
-子の欄はありません。 [fixture: er/lex-direction-line-text-before] [fixture:
-er/lex-direction-line-text-after] [fixture:
-er/gram-empty-backquotes-between-attributes] [fixture:
-er/gram-empty-backquotes-twice]
+子の欄はありません。
+
+[fixture: er/lex-direction-line-text-before]
+[fixture: er/lex-direction-line-text-after]
+[fixture: er/gram-empty-backquotes-between-attributes]
+[fixture: er/gram-empty-backquotes-twice]

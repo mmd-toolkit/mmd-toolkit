@@ -41,6 +41,7 @@ treeView-beta
 
 注釈の `icon(` は小文字でだけ読まれます。
 `ICON(logos:react)` は名前なので、書かれたままにします。
+
 [fixture: keyword-case/icon-kept]
 
 入力（エスケープ表記）: `"treeView-beta\n'plain'\nICON(logos:react)"`.
@@ -67,8 +68,8 @@ treeView-beta
 
 コメント行内の罫線文字は罫線モードを選ばず、
 字下げモードのコメントは次の文にそろえます。
-[fixture: treeview/modes/comment-excluded]
 
+[fixture: treeview/modes/comment-excluded]
 [corpus fixture: treeview/box-written-tree]
 
 [corpus fixture: treeview/box-heavy]
@@ -264,6 +265,7 @@ treeview/description-blocks/box-redraw-opener-prefix-with-directive-gap]
 
 名前が `;` だけの枝もノードです。
 前置部分の後に何も続かず、前置部分はほかと同じように描きます。
+
 [fixture: treeview/branch-prefixes/branch-semicolon-name]
 
 描く前に、本文を保つかを一度に判断します。
@@ -538,10 +540,6 @@ treeview/semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
 
 ### Decorations
 
-[fixture: treeview/decorations/explicit-empty-description-trivia]
-
-[fixture: treeview/decorations/pending-name-before-first-root]
-
 普通の外側の装飾は、次のノードへ続く木の案内線として 1 回描き直します。
 続く木が無ければ空行にし、空行と末尾の改行に従って整理します。
 本文、名前待ち、注釈、開始記号の隙間の各所有位置で適用します。
@@ -557,6 +555,8 @@ block の残りと本文は普通に整形します。
 値に所有された装飾の範囲は保ちます。
 装飾の行に共有の付随要素があれば、削除せず本文を保ちます。
 
+[fixture: treeview/decorations/explicit-empty-description-trivia]
+[fixture: treeview/decorations/pending-name-before-first-root]
 [fixture: treeview/decorations/review159-sole-opener-selector-line-rule-semicolon]
 
 [fixture: treeview/decorations/review159-sole-opener-selector]
@@ -767,17 +767,19 @@ mermaid.js は改行を隠すので、引用名や class の後ろの連なり�
 間に行の規則が無視する `;` があるときも、
 次の行にもう 1 つ連なりがあると拒否します
 ([字下げと行](../../spec/docs/diagrams/treeview.ja.md#字下げと行))。
+
 [corpus fixture: treeview/gram-quoted-tail-space-next-indent]
 [corpus fixture: treeview/gram-class-tail-space-next-indent]
 [corpus fixture: treeview/gram-quoted-ignored-semicolon-tail-space-next-indent]
+
 移した後は、`;`、コメント、ディレクティブ、ノードが互いに接します。
+
 [fixture: treeview/carried-indentation/carry-quote-semicolon-comment]
 [fixture: treeview/carried-indentation/carry-quote-semicolon-directive]
 [fixture: treeview/carried-indentation/carry-quote-run-before-semicolon]
 [fixture: treeview/carried-indentation/carry-class-semicolon]
 [fixture: treeview/carried-indentation/carry-quote-semicolon-lines]
 [fixture: treeview/carried-indentation/carry-quote-semicolon-directive-line]
-
 [fixture: treeview/carried-indentation/carry-quote]
 
 [fixture: treeview/carried-indentation/carry-class]
@@ -1561,10 +1563,11 @@ treeView-beta
 対象にする版に、引用符で囲んだ名前だけを読むものがあるためです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。 [fixture: treeview/names/quoted-name-kept]
+を参照してください。
+
+[fixture: treeview/names/quoted-name-kept]
 [fixture: treeview/names/single-quote-sensitive-kept]
 [fixture: treeview/names/name-quote-tail]
-
 [fixture: treeview/names/name-bare-tail]
 
 [fixture: treeview/names/name-quote-tail]
@@ -1683,12 +1686,15 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+
 [fixture: title/title-directives-end-blanks-dropped]
+
 次の行から値を取らず、Db の等しい一定の外側の配置を選ぶためです。
 `titlex` と `title"node"` は AST の境界に従い、要約に出ない title も残します。
 値の最初の文字より前にある、行の規則が無視する `;` は、
 その前の空白が 1 文字でもそれ以上でも、隙間の項目です。
 `title  ;T` と `title ;T` は同じように印字します。
+
 [fixture: treeview/semicolons/ignored-semicolon-title-value-second-space]
 
 テキストのない `title` は、
@@ -1708,6 +1714,7 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 テキストのない title はキーワードで終わります。
 その 1 文字は、テキストのある title の後の空白と同じく、行の隙間です。
 2 回目の整形は、1 回目と同じ形になります。
+
 [fixture: title/bare-title-directive-one-space]
 [fixture: title/bare-title-directive-spaces]
 [fixture: title/bare-title-directive-tab]
@@ -1718,7 +1725,6 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 [test: treeview/title/bare-title-directive-space-and-paragraph-separator]
 [test: treeview/title/bare-title-directive-spaces-and-line-separator]
 [test: treeview/title/bare-title-comment-after-line-separator-kept]
-
 [fixture: treeview/title/title-shared]
 
 [fixture: treeview/title/title-bare]
@@ -1787,8 +1793,8 @@ treeView-beta
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 [fixture: treeview/accessibility-lines/acctitle-padding]
 
 [fixture: treeview/accessibility-lines/accdescr-padding]
@@ -1854,19 +1860,26 @@ treeView-beta
 その場合、キーワードの前と、キーワードと `{` の間にある罫線の文字は、
 印字せずに描き直します。
 本文が罫線の文字を含むブロックと、罫線モードで開始記号の隙間を保つブロックは、
-ブロックのままにします。 [fixture: treeview/modes/ordinary-block]
+ブロックのままにします。
+
+[fixture: treeview/modes/ordinary-block]
 [fixture: treeview/modes/box-common-block-zero-column]
 [fixture: treeview/modes/block-interior-active]
 [fixture: treeview/description-blocks/box-redraw-remove-opener-prefixes]
 [fixture: treeview/description-blocks/block-after-directive]
+
 罫線の文字の判定は、ディレクティブを取り除いたテキストで行うので、
 ディレクティブ内の罫線の文字を理由に波括弧を残すことはありません。
+
 [fixture: description-blocks/block-hidden-box-glyph]
+
 普通の空白だけの内部は `{}` です。
 行の規則が無視する `;` もテキストではありません。
 書かれた `;` があるために縮められないときは、
 `;` を残して空のブロックの配置にします。
+
 [fixture: description-blocks/block-ignored-semicolon-interior]
+
 波括弧を残すブロックは、`accDescr` と `{` の間を、
 元が接していても空白 1 つにします。
 キーワードと本文の開始を見分けやすくするためです。
@@ -1885,12 +1898,14 @@ Mermaid が説明から LF 後の字下げを除くためです。
 開始記号の隙間の唯一のモードの選び手は、装飾に従って隙間だけを保ちます。
 `}` の前の空白はテキストではないので、コメント行の後でも、
 毎回の整形で `}` を文と同じ段にそろえます。
+
 [fixture: treeview/description-blocks/block-comment-line-after-the-text]
+
 1 行の本文を独立した行に置くブロックも、
 本文に空白とタブの連なりがある場合を含め、1 行の説明ブロックの規則に従います。
 （[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック)）。
-[fixture: treeview/description-blocks/block-text-on-its-own-line-runs-collapsed]
 
+[fixture: treeview/description-blocks/block-text-on-its-own-line-runs-collapsed]
 [fixture: treeview/description-blocks/geometry-with-opener-directive]
 
 [fixture: treeview/decorations/review159-sole-opener-selector]
@@ -2035,18 +2050,25 @@ treeView-beta
 [mindmap](./mindmap.ja.md#コメント) と同じく、どの文に関係するかを示します。
 字下げが浅くなる行の前も含め、コメントを深くも浅くも移します。
 連続するコメントは、空行を挟んでも同じ桁にそろえます。
+
 [fixture: treeview/comments/comment-standalone-aligned]
 [fixture: treeview/comments/aligned-depths]
 [fixture: treeview/comments/aligned-final]
 [fixture: treeview/comments/aligned-blank-lines]
 
 `%% text`、`%%!`、`%%!x`、`%%%`、`%%` の後が空白の行、`%% {x}` は、
-そろえるコメント行です。 [fixture: treeview/comments/aligned-forms]
+そろえるコメント行です。
+
+[fixture: treeview/comments/aligned-forms]
 [fixture: treeview/comments/comment-mark-spliced-directive]
+
 文と同じ設定の字下げを使い、タブと `tabWidth` 0 での正の最小幅にも従います。
+
 [fixture: treeview/comments/aligned-tabs]
 [fixture: treeview/comments/aligned-zero]
+
 見出しの前のコメントと、文のない本文のコメントは第 1 列に置きます。
+
 [fixture: treeview/comments/before-header]
 [fixture: treeview/comments/only-comments]
 
@@ -2054,25 +2076,31 @@ treeView-beta
 コメント行もノード名の桁ではなく、その桁から始めます。
 mermaid.js は字下げしたコメント行も受理しますが、
 字下げすると前後の行の始まりとずれるためです。
+
 [fixture: treeview/comments/box-standalone]
 
 文の間では、`%%` だけの行、ディレクティブではない `%%{` 始まりの行、
 独立したディレクティブを第 1 列に置きます。
 字下げモードでは、字下げすると mermaid.js が拒否するためです。
 混在する列と末尾でも、この区別を保ちます。
+
 [fixture: treeview/comments/comment-bare-native]
 [fixture: treeview/comments/native-nonword]
 [fixture: treeview/comments/unclosed-directive]
 [fixture: treeview/comments/mixed-directives]
 [fixture: treeview/comments/native-final]
+
 空の説明ブロックやセミコロンで保護された title の前後でも、
 コメント行は次の文にそろえます。
+
 [fixture: treeview/comments/aligned-empty-description]
 [fixture: treeview/comments/aligned-protected-title]
 
 行内のコメントは同じ行に置きます。
 印、内容、末尾と図種固有のコメントの LS・PS を保ちます。
+
 [test: treeview/comments/standalone-ls] [test: treeview/comments/standalone-ps]
+
 有意な字下げ連なりは割り当て済みのノードへ 1 回だけ移します。
 描き直せる罫線の図では、図種固有のコメントの構造の前置部分を外し、
 その枝をノードの名前の行へ 1 回だけ描きます。
@@ -2200,8 +2228,8 @@ treeView-beta
 `useTabs` のときは、
 行頭の字下げ単位の保つ隙間も補う字下げもすべてタブで印字します。
 その単位の各文字は種類を問わず一つと数えるためです（[タブ](#tabs) を参照）。
-[fixture: treeview/directives/directive-leading-use-tabs]
 
+[fixture: treeview/directives/directive-leading-use-tabs]
 [fixture: treeview/directives/before-unprefixed-box-root]
 
 [test: treeview/directives/unclosed-final-whitespace-ls]
@@ -2293,9 +2321,11 @@ treeView-beta
 行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
 書かれたまま残します。
 それ以外の複数行の文は、1 行の文と同じように整形します。
+
 [fixture: semicolons/stretch-kept-rest-formatted]
 [fixture: semicolons/no-stretch-formatted]
 [fixture: semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
+
 treeview に文法上のセミコロンはなく、
 style・classDef の語だけでは行を固定しません。
 保護された内容の外側の安全な罫線は描き直し、内部と値の列は原文のまま保ちます。
@@ -2559,12 +2589,16 @@ mermaid.js は値を読む前にディレクティブを取り除き、
 複数のディレクティブも title の末尾と同じように印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 `R   %%{x}%%   %%{y}%%  ` は `R %%{x}%% %%{y}%%` と印字します。
+
 [fixture: trailing-whitespace/directives-end-blanks-dropped]
+
 名前や description の末尾の U+2028 と U+2029 は、
 空白やタブではなくテキストの文字なので、その後の空白は除き、
 その前の空白は残します。
+
 [test: treeview/trailing-whitespace/spaces-after-trailing-line-separator]
 [test: treeview/trailing-whitespace/description-spaces-after-trailing-line-separator]
+
 構造の持ち越し連なりは 1 回だけ移し、
 共通の行値は共有の外端の空白除去に従います。
 枝行で値から除外された末尾は削り、持ち越しません。

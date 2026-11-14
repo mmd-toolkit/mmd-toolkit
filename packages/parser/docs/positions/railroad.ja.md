@@ -8,6 +8,7 @@
 の範囲と子の順序に従います。
 Root はソース全体を覆います。
 共通変換はソースの改行、引用符、エスケープ、数値の raw を書き換えません。
+
 [fixture: railroad/ir-gram-written-tree]
 [fixture: railroad/ebnf-gram-written-tree]
 [fixture: railroad/abnf-gram-written-tree]
@@ -17,7 +18,7 @@ Root はソース全体を覆います。
 
 ## 範囲
 
-| ノード                                         | 始点と終点                                                                                  | fixtures                                                                                                                                                                                                                                   |
+| ノード                                         | 始点と終点                                                                                  | fixture                                                                                                                                                                                                                                    |
 | ---------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | RailroadDiagram                                | 最初の保持された開始記号かヘッダーから最後の body 項目まで。空ならヘッダー末尾まで。        | [fixture: railroad/ir-secondscan-real] [fixture: railroad/ir-yaml-before-secondscan-real] [fixture: railroad/ir-header-only] [fixture: railroad/ebnf-header-only] [fixture: railroad/abnf-header-only] [fixture: railroad/peg-header-only] |
 | RailroadRule                                   | 名前から必須の可視セミコロンまで。                                                          | [fixture: railroad/ir-native-ownership] [fixture: railroad/ebnf-native-ownership] [fixture: railroad/abnf-native-ownership] [fixture: railroad/peg-native-ownership]                                                                       |
@@ -42,7 +43,9 @@ Root はソース全体を覆います。
 リストのメンバーは区切りの各側の gap を持ち、
 隣接する場合は次のメンバーが gap 全体を持ちます。
 コメント、外側の空白、検出が通過した trivia、
-追加された LF はノードを延長しません。 [fixture: railroad/ir-native-ownership]
+追加された LF はノードを延長しません。
+
+[fixture: railroad/ir-native-ownership]
 [fixture: railroad/ebnf-native-ownership]
 [fixture: railroad/abnf-native-ownership]
 [fixture: railroad/peg-native-ownership]

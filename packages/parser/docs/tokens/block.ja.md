@@ -52,6 +52,7 @@
 `,` の後の空白は、どのトークンにも入りません。
 `class` のクラス名は、中の空白を含めて 1 つの `RawText` トークンです。
 `class A c d` は `RawText` トークン `c d` を持ちます。
+
 [fixture: block/db-edge-label] [fixture: block/db-columns-plain]
 [fixture: block/db-arrow-spaces-around-first]
 [fixture: block/db-arrow-directive-before-first]
@@ -72,10 +73,12 @@
 `style A, B` の id は 1 つのトークン `A, B` になるはずですが、
 受理される入力にはありません。
 空白を含む id のブロックはないからです。
+
 [fixture: block/db-class-apply-list-spaces]
 [fixture: block/db-class-apply-line-feed-after-comma]
 [fixture: block/db-grid-comma-style-id]
 [fixture: block/div-grid-directive-class-apply-id]
+
 [文法の外の拒否](../../../spec/docs/diagrams/block.ja.md#文法の外の拒否)
 を参照。
 
@@ -88,8 +91,9 @@
 前にスペースのある `stroke:#333` の `RawText` トークンを持ちます。
 `style A fill:red,  ,stroke:#333` のようにすべて空白の部分は、
 その空白の `RawText` トークンです。
-空の部分は、トークンを作りません。 [fixture: block/db-style-spaces]
-[fixture: block/db-style-spaces-at-line-ends]
+空の部分は、トークンを作りません。
+
+[fixture: block/db-style-spaces] [fixture: block/db-style-spaces-at-line-ends]
 [fixture: block/db-style-whitespace-only-between-commas]
 [fixture: block/db-class-def-spaces-around-styles]
 [fixture: block/db-class-def-leading-comma] [fixture: block/db-style-only-comma]
@@ -105,6 +109,7 @@
 `A -- "a%%{init: {}}%%b" --> B` は、`StringFragment` トークン `"a` と `b"` と、
 その間の `Directive` トークンを持ちます。
 一方、`A%%{init: {}}%%B` は拒否されます。
+
 [fixture: block/db-edge-label-directive]
 [fixture: block/db-grid-directive-style-text]
 [fixture: block/db-class-apply-directive] [fixture: block/div-directive-in-id]

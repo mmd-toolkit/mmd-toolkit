@@ -23,9 +23,12 @@ classDiagram
 です（[検出](../diagrams/class.ja.md#検出) を参照）。
 `classDiagramX`、`classDiagram2`、
 `classDiagramclassDiagram` で始まるテキストは、class 図として検出されますが、
-ヘッダーを持ちません。 [fixture: class/header-word-after-keyword]
+ヘッダーを持ちません。
+
+[fixture: class/header-word-after-keyword]
 [fixture: class/header-digit-after-keyword]
 [fixture: class/header-keyword-twice]
+
 この文書は、そのようなテキストが空の値で終わるときについてのものです。
 
 ## 差異
@@ -87,10 +90,12 @@ classDiagram
 | 6   | 空の図                    | 拒否     |
 
 表で比較した読みを次の fixture が記録します。
-[fixture: class/div-headerless-relation-empty-title] [fixture:
-class/header-word-relation-title] [fixture:
-class/lex-acc-title-at-end-after-relation] [fixture:
-class/div-headerless-empty-call] [fixture: class/div-headerless-empty-string]
+
+[fixture: class/div-headerless-relation-empty-title]
+[fixture: class/header-word-relation-title]
+[fixture: class/lex-acc-title-at-end-after-relation]
+[fixture: class/div-headerless-empty-call]
+[fixture: class/div-headerless-empty-string]
 [fixture: class/div-headerless-repeated-header]
 
 つまり mermaid.js は、ヘッダーのないテキストを拒否しますが、
@@ -102,8 +107,9 @@ class/div-headerless-empty-call] [fixture: class/div-headerless-empty-string]
 何も足さない文として読みます。
 正しいヘッダーの後の同じ終わりは、どちらも拒否します。
 この仕様は、ヘッダーのないテキストをすべて拒否します。
-[fixture: class/div-headerless-empty-title] [fixture:
-class/header-word-after-keyword-title]
+
+[fixture: class/div-headerless-empty-title]
+[fixture: class/header-word-after-keyword-title]
 [fixture: class/div-headerless-empty-description-block]
 [fixture: class/div-headerless-link-string-opened]
 [fixture: class/div-headerless-click-string-opened]

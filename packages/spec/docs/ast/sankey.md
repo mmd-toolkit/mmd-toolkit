@@ -30,9 +30,10 @@ two links with the same id name the same node.
 
 Child fields: `body`. The header keyword, `sankey` or `sankey-beta`, is not a
 field: both give the same diagram type and the same Db. A line break belongs to
-no link, and an empty line makes no node. [fixture: sankey/db-link-basic]
-[fixture: sankey/db-header-beta] [fixture: sankey/db-blank-lines-between]
-[fixture: sankey/header-only]
+no link, and an empty line makes no node.
+
+[fixture: sankey/db-link-basic] [fixture: sankey/db-header-beta] [fixture:
+sankey/db-blank-lines-between] [fixture: sankey/header-only]
 
 ### SankeyLinkStatement
 
@@ -48,6 +49,7 @@ Child fields: `source`, `target`, `value`. Each field is written without quotes
 or in quotes, and which of them is written is shown by the type of its node:
 `"a",b,1` has a StringLiteral as its source, and `a,b,1` a SankeyIdentifier. How
 mermaid.js reads the fields into its Db is in the summary of the tests package.
+
 [fixture: sankey/docs-syntax-sankey-9cc115a6] [fixture:
 sankey/db-quoted-and-unquoted-same-id] [fixture: sankey/db-quoted-value]
 
@@ -63,8 +65,10 @@ which links refer to by its text.
 No child fields. The name holds the spaces between its characters and every
 printable character of ASCII but `"` and `,`: `Bio-conversion`, with a space at
 each end, has the name `Bio-conversion`, and `a b` the name `a b`. A field of
-spaces only has the empty name. [fixture: sankey/db-fields-trimmed] [fixture:
-sankey/db-text-with-spaces] [fixture: sankey/db-spaces-only-source-id] [fixture:
+spaces only has the empty name.
+
+[fixture: sankey/db-fields-trimmed] [fixture: sankey/db-text-with-spaces]
+[fixture: sankey/db-spaces-only-source-id] [fixture:
 sankey/db-spaces-only-target-id]
 
 ### SankeyLiteral
@@ -78,6 +82,7 @@ The value of a link written without quotes.
 No child fields. It is no [NumericLiteral](../ast.md#numericliteral), because
 the grammar takes any text here: `12.5`, `1e3`, `abc`, `1 #c`, and `0x10` are
 values. A field of spaces only before another record has the empty value.
+
 [fixture: sankey/db-value-decimal] [fixture: sankey/db-value-exponent] [fixture:
 sankey/db-value-not-a-number] [fixture: sankey/db-value-hash-after-number]
 [fixture: sankey/db-value-hexadecimal] [fixture: sankey/db-spaces-only-value]

@@ -40,7 +40,9 @@ treeView-beta
 ### Keyword case
 
 The annotation `icon(` is read in lower case only: `ICON(logos:react)` is a
-name, and stays as written. [fixture: keyword-case/icon-kept]
+name, and stays as written.
+
+[fixture: keyword-case/icon-kept]
 
 Input (escaped): `"treeView-beta\n'plain'\nICON(logos:react)"`.
 
@@ -66,10 +68,10 @@ removed and ordinary common statements use column one, so they do not appear as
 children.
 
 Box characters inside a comment line do not select box mode; in indentation mode
-that comment aligns with the following statement. [fixture:
-treeview/modes/comment-excluded]
+that comment aligns with the following statement.
 
-[corpus fixture: treeview/box-written-tree]
+[fixture: treeview/modes/comment-excluded] [corpus fixture:
+treeview/box-written-tree]
 
 [corpus fixture: treeview/box-heavy]
 
@@ -267,8 +269,9 @@ treeview/statements-one-per-line/review159-box-quoted-unprefixed-leading-ps]
 [fixture: treeview/branch-prefixes/box-redraw-nested-mixed-weights]
 
 A branch whose name is a `;` alone is a node: nothing follows its prefix, and
-the prefix is drawn like any other. [fixture:
-treeview/branch-prefixes/branch-semicolon-name]
+the prefix is drawn like any other.
+
+[fixture: treeview/branch-prefixes/branch-semicolon-name]
 
 Choose body retention once before drawing. Keep the complete body as written if
 an outer prefix or its separator crosses arbitrary text, a directive, selected
@@ -540,10 +543,6 @@ treeview/semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
 
 ### Decorations
 
-[fixture: treeview/decorations/explicit-empty-description-trivia]
-
-[fixture: treeview/decorations/pending-name-before-first-root]
-
 Redraw each ordinary outer decoration once as the guide continuing toward the
 next node, or as a blank line when no tree continues there. Apply this at body,
 pending-name, annotation and opener-gap owners; moved blanks join the following
@@ -558,7 +557,8 @@ without freezing unrelated title spacing or blank lines. Keep value-owned
 decoration spans unchanged. Shared trivia on a decoration line invokes body
 retention rather than deletion.
 
-[fixture:
+[fixture: treeview/decorations/explicit-empty-description-trivia] [fixture:
+treeview/decorations/pending-name-before-first-root] [fixture:
 treeview/decorations/review159-sole-opener-selector-line-rule-semicolon]
 
 [fixture: treeview/decorations/review159-sole-opener-selector]
@@ -765,18 +765,20 @@ directive lines may lie between. Newlines are hidden to mermaid.js, so it
 rejects a second run on the next line after a run that follows a quote or a
 class, also when a `;` that the line rule ignores lies between
 ([Indentation and lines](../../spec/docs/diagrams/treeview.md#indentation-and-lines)).
+
 [corpus fixture: treeview/gram-quoted-tail-space-next-indent] [corpus fixture:
 treeview/gram-class-tail-space-next-indent] [corpus fixture:
-treeview/gram-quoted-ignored-semicolon-tail-space-next-indent] The `;`, the
-comment and the directive then touch each other and the node. [fixture:
-treeview/carried-indentation/carry-quote-semicolon-comment] [fixture:
+treeview/gram-quoted-ignored-semicolon-tail-space-next-indent]
+
+The `;`, the comment and the directive then touch each other and the node.
+
+[fixture: treeview/carried-indentation/carry-quote-semicolon-comment] [fixture:
 treeview/carried-indentation/carry-quote-semicolon-directive] [fixture:
 treeview/carried-indentation/carry-quote-run-before-semicolon] [fixture:
 treeview/carried-indentation/carry-class-semicolon] [fixture:
 treeview/carried-indentation/carry-quote-semicolon-lines] [fixture:
-treeview/carried-indentation/carry-quote-semicolon-directive-line]
-
-[fixture: treeview/carried-indentation/carry-quote]
+treeview/carried-indentation/carry-quote-semicolon-directive-line] [fixture:
+treeview/carried-indentation/carry-quote]
 
 [fixture: treeview/carried-indentation/carry-class]
 
@@ -1578,11 +1580,10 @@ name and file/directory type. A name in quotes keeps its quotes, though the
 examples write 58 names without quotes and 8 in quotes: some versions that count
 read a name in quotes only (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+
 [fixture: treeview/names/quoted-name-kept] [fixture:
 treeview/names/single-quote-sensitive-kept] [fixture:
-treeview/names/name-quote-tail]
-
-[fixture: treeview/names/name-bare-tail]
+treeview/names/name-quote-tail] [fixture: treeview/names/name-bare-tail]
 
 [fixture: treeview/names/name-quote-tail]
 
@@ -1703,13 +1704,16 @@ The directives that end a title are printed with one space before each that has
 whitespace before it, and the whitespace after the last one is left out,
 whatever the whitespace at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-[fixture: title/title-directives-end-blanks-dropped] This chooses consistent
-Db-equivalent outer spacing without taking a next-line value. Follow AST
-boundaries for `titlex` and `title"node"`; title still stays written when the
-summary omits it. A `;` that the line rule ignores before the first character of
-the value is a gap item whether one whitespace character or more comes before
-it: `title  ;T` and `title ;T` are printed alike. [fixture:
-treeview/semicolons/ignored-semicolon-title-value-second-space]
+
+[fixture: title/title-directives-end-blanks-dropped]
+
+This chooses consistent Db-equivalent outer spacing without taking a next-line
+value. Follow AST boundaries for `titlex` and `title"node"`; title still stays
+written when the summary omits it. A `;` that the line rule ignores before the
+first character of the value is a gap item whether one whitespace character or
+more comes before it: `title  ;T` and `title ;T` are printed alike.
+
+[fixture: treeview/semicolons/ignored-semicolon-title-value-second-space]
 
 A `title` with no text, written with whitespace before a directive or a comment
 on its line, is printed with one space before the first of them, whether the
@@ -1723,7 +1727,9 @@ it) keeps the line as written, as the comment starts after the character. The
 one whitespace character after the keyword is part of the keyword to mermaid.js,
 so a title with no text ends at its keyword, and that character is a gap of the
 line like the whitespace after a title with text; the second formatting finds
-the form of the first. [fixture: title/bare-title-directive-one-space] [fixture:
+the form of the first.
+
+[fixture: title/bare-title-directive-one-space] [fixture:
 title/bare-title-directive-spaces] [fixture: title/bare-title-directive-tab]
 [fixture: title/bare-title-directive-touching] [fixture:
 title/bare-title-comment-spaces] [fixture:
@@ -1731,9 +1737,8 @@ title/bare-title-unclosed-directive-spaces] [test:
 treeview/title/bare-title-directive-space-and-line-separator] [test:
 treeview/title/bare-title-directive-space-and-paragraph-separator] [test:
 treeview/title/bare-title-directive-spaces-and-line-separator] [test:
-treeview/title/bare-title-comment-after-line-separator-kept]
-
-[fixture: treeview/title/title-shared]
+treeview/title/bare-title-comment-after-line-separator-kept] [fixture:
+treeview/title/title-shared]
 
 [fixture: treeview/title/title-bare]
 
@@ -1799,9 +1804,9 @@ these equivalent outer gaps. Never borrow text from the next line. The
 directives that end the value are printed with one space before each that has
 whitespace before it, and the whitespace after the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
-[fixture: treeview/accessibility-lines/acctitle-padding]
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
+treeview/accessibility-lines/acctitle-padding]
 
 [fixture: treeview/accessibility-lines/accdescr-padding]
 
@@ -1866,37 +1871,47 @@ Description blocks on one line follow
 also in a box, where the characters of the drawing before the keyword and
 between the keyword and the `{` are redrawn, not printed. A block whose text
 holds a character of the drawing, or whose opener gap the box keeps, stays a
-block. [fixture: treeview/modes/ordinary-block] [fixture:
+block.
+
+[fixture: treeview/modes/ordinary-block] [fixture:
 treeview/modes/box-common-block-zero-column] [fixture:
 treeview/modes/block-interior-active] [fixture:
 treeview/description-blocks/box-redraw-remove-opener-prefixes] [fixture:
-treeview/description-blocks/block-after-directive] The box-character test reads
-the text after directives are removed, so a box glyph inside a directive does
-not keep the braces. [fixture: description-blocks/block-hidden-box-glyph]
+treeview/description-blocks/block-after-directive]
+
+The box-character test reads the text after directives are removed, so a box
+glyph inside a directive does not keep the braces.
+
+[fixture: description-blocks/block-hidden-box-glyph]
+
 Ordinary whitespace-only interiors become `{}`. A `;` that the line rule ignores
 is no text either; when its written source prevents compaction, retain the `;`
-and use the empty block layout. [fixture:
-description-blocks/block-ignored-semicolon-interior] For blocks that keep their
-braces, put one space between `accDescr` and `{`, even when originally touching,
-to distinguish the keyword from its body. Join plain opener whitespace, align
-ordinary body lines one step inside the statement, preserve trivia contents, and
-align separate closers with the statement. Mermaid discards indentation after LF
-from the description. The body uses the configured indentation, including tabs
-and the positive minimum step at width zero. In box mode remove ordinary
-keyword/opener prefixes and place the common statement at column one, while
-keeping the body's authored columns: indenting a plain physical line can make
-box syntax reject it. Value-owned box geometry still keeps its complete brace
-span. The first effective `}` remains the closer. Unsafe removal follows Branch
-prefixes, including common-value tabs. A sole mode selector in the opener gap
-keeps just that gap, as described in Decorations. The whitespace before the `}`
-is no text, so the `}` stays aligned with the statement in every pass, also
-after a comment line. [fixture:
-treeview/description-blocks/block-comment-line-after-the-text] A block with one
-line of text on a line of its own follows
-[A description block on one line](./compatibility.md#a-description-block-on-one-line)
-too, also where the text has runs of spaces and tabs. [fixture:
-treeview/description-blocks/block-text-on-its-own-line-runs-collapsed]
+and use the empty block layout.
 
+[fixture: description-blocks/block-ignored-semicolon-interior]
+
+For blocks that keep their braces, put one space between `accDescr` and `{`,
+even when originally touching, to distinguish the keyword from its body. Join
+plain opener whitespace, align ordinary body lines one step inside the
+statement, preserve trivia contents, and align separate closers with the
+statement. Mermaid discards indentation after LF from the description. The body
+uses the configured indentation, including tabs and the positive minimum step at
+width zero. In box mode remove ordinary keyword/opener prefixes and place the
+common statement at column one, while keeping the body's authored columns:
+indenting a plain physical line can make box syntax reject it. Value-owned box
+geometry still keeps its complete brace span. The first effective `}` remains
+the closer. Unsafe removal follows Branch prefixes, including common-value tabs.
+A sole mode selector in the opener gap keeps just that gap, as described in
+Decorations. The whitespace before the `}` is no text, so the `}` stays aligned
+with the statement in every pass, also after a comment line.
+
+[fixture: treeview/description-blocks/block-comment-line-after-the-text]
+
+A block with one line of text on a line of its own follows
+[A description block on one line](./compatibility.md#a-description-block-on-one-line)
+too, also where the text has runs of spaces and tabs.
+
+[fixture: treeview/description-blocks/block-text-on-its-own-line-runs-collapsed]
 [fixture: treeview/description-blocks/geometry-with-opener-directive]
 
 [fixture: treeview/decorations/review159-sole-opener-selector]
@@ -2041,46 +2056,62 @@ the last statement at EOF, to show their association, as in
 [ishikawa](./ishikawa.md#comments), [kanban](./kanban.md#comments) and
 [mindmap](./mindmap.md#comments). A comment may move deeper or shallower,
 including before a dedent; successive comments share the target column even
-across blank lines. [fixture: treeview/comments/comment-standalone-aligned]
-[fixture: treeview/comments/aligned-depths] [fixture:
-treeview/comments/aligned-final] [fixture:
-treeview/comments/aligned-blank-lines]
+across blank lines.
+
+[fixture: treeview/comments/comment-standalone-aligned] [fixture:
+treeview/comments/aligned-depths] [fixture: treeview/comments/aligned-final]
+[fixture: treeview/comments/aligned-blank-lines]
 
 The aligned forms include `%% text`, `%%!`, `%%!x`, `%%%`, `%%` followed by
-spaces, and `%% {x}`. [fixture: treeview/comments/aligned-forms] [fixture:
-treeview/comments/comment-mark-spliced-directive] Use the statement's configured
-indentation, including tabs and the positive minimum step at tabWidth zero.
+spaces, and `%% {x}`.
+
+[fixture: treeview/comments/aligned-forms] [fixture:
+treeview/comments/comment-mark-spliced-directive]
+
+Use the statement's configured indentation, including tabs and the positive
+minimum step at tabWidth zero.
+
 [fixture: treeview/comments/aligned-tabs] [fixture:
-treeview/comments/aligned-zero] Comments before the header or in a body without
-statements stand at column one. [fixture: treeview/comments/before-header]
-[fixture: treeview/comments/only-comments]
+treeview/comments/aligned-zero]
+
+Comments before the header or in a body without statements stand at column one.
+
+[fixture: treeview/comments/before-header] [fixture:
+treeview/comments/only-comments]
 
 In box mode, ordinary structural lines start at column one, before their
 branches or guides. Comment lines also start there, rather than at the node's
 name column: mermaid.js accepts indented comment lines, but shifting them would
-misalign the starts of successive lines. [fixture:
-treeview/comments/box-standalone]
+misalign the starts of successive lines.
+
+[fixture: treeview/comments/box-standalone]
 
 Between statements, keep a line of only `%%`, a line starting with `%%{` without
 being a directive, and a standalone directive at column one: mermaid.js rejects
 them when indented in indentation mode. Keep this distinction in mixed runs and
-at EOF. [fixture: treeview/comments/comment-bare-native] [fixture:
+at EOF.
+
+[fixture: treeview/comments/comment-bare-native] [fixture:
 treeview/comments/native-nonword] [fixture:
 treeview/comments/unclosed-directive] [fixture:
 treeview/comments/mixed-directives] [fixture: treeview/comments/native-final]
+
 Comment lines around an empty description block or a semicolon-protected title
-still align with the following statement. [fixture:
-treeview/comments/aligned-empty-description] [fixture:
+still align with the following statement.
+
+[fixture: treeview/comments/aligned-empty-description] [fixture:
 treeview/comments/aligned-protected-title]
 
 Keep inline comments on their line, preserving marks, contents and tails,
-including native LS/PS. [test: treeview/comments/standalone-ls] [test:
-treeview/comments/standalone-ps] Move meaningful indentation runs once to their
-assigned node. In a drawable box diagram remove a native comment's structural
-prefix and draw that assigned branch once on the node's name line. The comment
-is not a tree child. Percent text inside names, descriptions or blocks stays
-value text; common joining regions and unsafe prefix intersections follow body
-retention.
+including native LS/PS.
+
+[test: treeview/comments/standalone-ls] [test: treeview/comments/standalone-ps]
+
+Move meaningful indentation runs once to their assigned node. In a drawable box
+diagram remove a native comment's structural prefix and draw that assigned
+branch once on the node's name line. The comment is not a tree child. Percent
+text inside names, descriptions or blocks stays value text; common joining
+regions and unsafe prefix intersections follow body retention.
 
 [fixture: treeview/comments/comment-standalone-aligned]
 
@@ -2198,10 +2229,10 @@ value-owned forms and unfinished EOF directives remain written.
 
 With useTabs, the retained gaps and the supplied indentation of a leading
 indentation unit are all printed as tabs: each character of that unit counts
-once whatever its kind (see [Tabs](#tabs)). [fixture:
-treeview/directives/directive-leading-use-tabs]
+once whatever its kind (see [Tabs](#tabs)).
 
-[fixture: treeview/directives/before-unprefixed-box-root]
+[fixture: treeview/directives/directive-leading-use-tabs] [fixture:
+treeview/directives/before-unprefixed-box-root]
 
 [test: treeview/directives/unclosed-final-whitespace-ls]
 
@@ -2290,16 +2321,19 @@ diagram. Text that no part of the layout holds stays as written. A statement
 over several lines whose lines, joined with one space or with nothing, could
 change which `;` the line rule ignores keeps the text of each segment, up to its
 last kept `;`, as written; any other statement over several lines is formatted
-like one on a single line. [fixture: semicolons/stretch-kept-rest-formatted]
-[fixture: semicolons/no-stretch-formatted] [fixture:
-semicolons/box-redraw-protected-value-on-enclosed-prefix-line] Treeview has no
-grammatical semicolon and style/classDef words alone do not freeze a line. Draw
-a safe outer box head around protected content, while protected interiors and
-value columns remain written. Retain the whole body when protected source row
-boundaries constrain parentage or when another Branch prefixes condition
-applies. These protections compose with unchanged value-owned prefixes on the
-same line or elsewhere in the diagram; they are not permission to discard a
-semicolon or partially redraw an unsafe body.
+like one on a single line.
+
+[fixture: semicolons/stretch-kept-rest-formatted] [fixture:
+semicolons/no-stretch-formatted] [fixture:
+semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
+
+Treeview has no grammatical semicolon and style/classDef words alone do not
+freeze a line. Draw a safe outer box head around protected content, while
+protected interiors and value columns remain written. Retain the whole body when
+protected source row boundaries constrain parentage or when another Branch
+prefixes condition applies. These protections compose with unchanged value-owned
+prefixes on the same line or elsewhere in the diagram; they are not permission
+to discard a semicolon or partially redraw an unsafe body.
 
 [corpus fixture: treeview/semicolon-selected]
 
@@ -2555,12 +2589,17 @@ the value, so the gap is in neither the Db nor the figure, and `R   %%{x}%%` is
 printed `R %%{x}%%`, the form of a title. Several directives are printed as at
 the end of a title (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)):
-`R   %%{x}%%   %%{y}%%  ` is printed `R %%{x}%% %%{y}%%`. [fixture:
-trailing-whitespace/directives-end-blanks-dropped] At the end of a name or a
-description, U+2028 and U+2029 are characters of the text and no spaces or tabs:
-the spaces after one are left out, and the spaces before it stay. [test:
-treeview/trailing-whitespace/spaces-after-trailing-line-separator] [test:
+`R   %%{x}%%   %%{y}%%  ` is printed `R %%{x}%% %%{y}%%`.
+
+[fixture: trailing-whitespace/directives-end-blanks-dropped]
+
+At the end of a name or a description, U+2028 and U+2029 are characters of the
+text and no spaces or tabs: the spaces after one are left out, and the spaces
+before it stay.
+
+[test: treeview/trailing-whitespace/spaces-after-trailing-line-separator] [test:
 treeview/trailing-whitespace/description-spaces-after-trailing-line-separator]
+
 Move structural carried runs once. Common line values use shared outer trimming;
 a branch-line tail already excluded from the value is removed rather than
 carried. Adding a branch that would newly trim an owned tail retains the body.

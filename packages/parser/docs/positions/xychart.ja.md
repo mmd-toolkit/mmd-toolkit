@@ -20,6 +20,7 @@
 のノードとも同じ定めに従います（[ノードの範囲](../positions.ja.md#ノードの範囲)
 を参照）。
 最初のヘッダーのキーワードから、最後のトークンまでです。
+
 [fixture: xychart/db-orientation-capitalized] [fixture: xychart/header-twice]
 
 ### XychartHeader
@@ -27,6 +28,7 @@
 範囲は、ヘッダーのキーワードからその向きまでです。
 向きがないときはキーワードを覆います。
 `xychart-beta Horizontal` は行の全体を覆います。
+
 [fixture: xychart/db-orientation-capitalized] [fixture: xychart/header-twice]
 
 ### 文
@@ -36,6 +38,7 @@
 テキストが後の行にあるものは、そのテキストまでの行を覆います。
 説明ブロックはその `}` を覆います。
 閉じていないものは、そのテキストで終わり、テキストがなければ `{` で終わります。
+
 [fixture: xychart/db-x-axis-band-title] [fixture: xychart/db-acc-title-empty]
 [fixture: xychart/db-acc-title-takes-next-line]
 [fixture: xychart/db-acc-descr-block]
@@ -48,6 +51,7 @@ XychartBand はその `[` から `]` まで、
 XychartRange は最初の数から 2 つ目の数までです。
 XychartValue は、その数からラベルまでで、ラベルがないときは数を覆います。
 `[1 "a", 2]` の最初の値は、`1 "a"` を覆います。
+
 [fixture: xychart/db-x-axis-band-title] [fixture: xychart/db-x-axis-range]
 [fixture: xychart/db-label-one]
 
@@ -58,6 +62,8 @@ XychartValue は、その数からラベルまでで、ラベルがないとき�
 値はその空白を除くので、範囲より短くなります。
 `title Two words` は `Two words` を覆い、値は `Twowords` です。
 アクセシビリティの文のテキストでは、両端の空白を除いたテキストを覆い、
-説明ブロックの改行を含みます。 [fixture: xychart/db-title-bare-words]
+説明ブロックの改行を含みます。
+
+[fixture: xychart/db-title-bare-words]
 [fixture: xychart/db-acc-title-spaces-trimmed]
 [fixture: xychart/db-acc-descr-block]

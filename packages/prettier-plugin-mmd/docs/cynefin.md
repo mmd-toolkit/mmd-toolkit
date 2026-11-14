@@ -17,13 +17,16 @@ examples in its documentation write the header without the colon 3 times against
 none (see
 [The colon after a header](./compatibility.md#the-colon-after-a-header)). The
 colon stays where a hidden form or a global directive lies between it and the
-word, and where a `;` or the `---` of a hidden YAML block touches it. [fixture:
-cynefin/header/colon-removed] [fixture: cynefin/header/colon-semicolon-kept]
-[fixture: cynefin/header/colon-directive-before-hidden-yaml-kept] Move an
-ordinary first statement to the next line so the header is easy to find. Global
-directive contact, hidden neighbors and protected lines use their shared rules:
-a kept header line also keeps its domain and item openings on that line. A
-spaced colon is rejected rather than repaired.
+word, and where a `;` or the `---` of a hidden YAML block touches it.
+
+[fixture: cynefin/header/colon-removed] [fixture:
+cynefin/header/colon-semicolon-kept] [fixture:
+cynefin/header/colon-directive-before-hidden-yaml-kept]
+
+Move an ordinary first statement to the next line so the header is easy to find.
+Global directive contact, hidden neighbors and protected lines use their shared
+rules: a kept header line also keeps its domain and item openings on that line.
+A spaced colon is rejected rather than repaired.
 
 [fixture: cynefin/hidden-boundaries/meeting-inline-directive-directive]
 
@@ -430,12 +433,15 @@ title are printed with one space before each that has whitespace before it, and
 the whitespace after the last one is left out, whatever the whitespace at the
 end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-[fixture: title/title-directives-end-blanks-dropped] A single separator
-space/tab is outside the range of a null title. A `;` that the line rule ignores
-before the first character of the value is a gap item whether one whitespace
-character or more comes before it: `title  ;T` and `title ;T` are printed alike.
-[fixture: cynefin/semicolons/ignored-semicolon-title-value-second-space]
 
+[fixture: title/title-directives-end-blanks-dropped]
+
+A single separator space/tab is outside the range of a null title. A `;` that
+the line rule ignores before the first character of the value is a gap item
+whether one whitespace character or more comes before it: `title  ;T` and
+`title ;T` are printed alike.
+
+[fixture: cynefin/semicolons/ignored-semicolon-title-value-second-space]
 [fixture: cynefin/title/title-edges]
 
 [fixture: cynefin/title/title-no-value]
@@ -480,9 +486,9 @@ compact common forms do not reinterpret authored values. The directives that end
 the value are printed with one space before each that has whitespace before it,
 and the whitespace after the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
-[fixture: cynefin/accessibility-lines/accessibility-padding]
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
+cynefin/accessibility-lines/accessibility-padding]
 
 [fixture: cynefin/accessibility-lines/accessibility-empty]
 
@@ -943,14 +949,17 @@ diagram. Text that no part of the layout holds stays as written. A statement
 over several lines whose lines, joined with one space or with nothing, could
 change which `;` the line rule ignores keeps the text of each segment, up to its
 last kept `;`, as written; any other statement over several lines is formatted
-like one on a single line. [fixture: semicolons/stretch-kept-rest-formatted]
-[fixture: semicolons/no-stretch-formatted] [fixture:
-semicolons/semi-line-other-value] The first protected line uses its body depth,
-including item depth; content and later columns remain written. Count segments
-as Mermaid reads them, including directives and comment-region joins. Cynefin
-has no grammatical semicolon, so verbatimStyleLines is false: ordinary
-style/classDef word lines still format. Deleting semicolons or relocating their
-triggers can change the Db or acceptance.
+like one on a single line.
+
+[fixture: semicolons/stretch-kept-rest-formatted] [fixture:
+semicolons/no-stretch-formatted] [fixture: semicolons/semi-line-other-value]
+
+The first protected line uses its body depth, including item depth; content and
+later columns remain written. Count segments as Mermaid reads them, including
+directives and comment-region joins. Cynefin has no grammatical semicolon, so
+verbatimStyleLines is false: ordinary style/classDef word lines still format.
+Deleting semicolons or relocating their triggers can change the Db or
+acceptance.
 
 [fixture: cynefin/hidden-boundaries/semicolon-hidden-header-directive]
 
@@ -1039,7 +1048,9 @@ cynefin-beta
 A `;` that the line rule ignores between two statements stands against the token
 before it with one space after it, whatever whitespace was written around it, as
 the gap has one space; the gap right after the keyword keeps its whitespace as
-written. [fixture: semicolons/ignored-semicolon-space-before-attached] [fixture:
+written.
+
+[fixture: semicolons/ignored-semicolon-space-before-attached] [fixture:
 semicolons/ignored-semicolon-space-both-attached] [fixture:
 semicolons/ignored-semicolon-space-after-kept] [fixture:
 semicolons/ignored-semicolon-after-header-keyword-kept] [fixture:

@@ -33,23 +33,28 @@ const problems: TreeProblem[] = checkTree(text, tree)
 - `text` is the input as written, and `tree` the content of `ast.json`
   (`CheckedRoot`). The tree is plain JSON; the checks read the fields that they
   name and report a missing or malformed field as a problem, not as an error.
+
 - The result lists the conditions that do not hold, each with where (a node, a
   token, a record) and a message; it is empty for a tree that satisfies them
   all. Checking all of a tree, not stopping at the first, shows the whole damage
   of a wrong tree.
+
 - The directives and the comment lines are found in the text (`scanSource()` of
   `src/source-scan.ts`, also used for the converted form of
   [db-from-tree.md](./db-from-tree.md)), not taken from the tree, so that a
   comment or a directive that the tree lacks is found. The tree gives the
   `IgnoredSemicolon` tokens: which `;` the line rule ignores depends on the line
   segment and on the diagram.
+
 - HTML attribute-quote positions use the same shared conversion as the Db: they
   are found once over the whole source after the frontmatter, including comments
   and earlier statements. Checks of strings, labels and data blocks apply that
   context to their ranges; they do not find tags anew inside each value. Written
-  node values and token texts retain their original quotes. [fixture:
-  venn/db-html-tag-from-title-name] [fixture: venn/db-html-tag-from-title-label]
-  [fixture: venn/db-html-tag-from-title-style] [fixture:
+  node values and token texts retain their original quotes.
+
+  [fixture: venn/db-html-tag-from-title-name] [fixture:
+  venn/db-html-tag-from-title-label] [fixture:
+  venn/db-html-tag-from-title-style] [fixture:
   venn/db-html-tag-from-comment-name] [fixture: venn/db-html-tag-across-names]
   [fixture: c4/db-html-tag-from-earlier-text] [fixture:
   kanban/db-html-tag-from-earlier-text] [fixture:
@@ -59,6 +64,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
   sankey/db-html-tag-from-earlier-text] [fixture:
   sankey/db-html-tag-from-earlier-text-quoted] [fixture:
   xychart/db-html-tag-from-earlier-text]
+
 - The form of a tree is given by a table of the fields of each node type and
   record (`src/check-tree/node-fields.ts`): the name of each field and its kind
   (a value of a type, a node, a node or null, a list of nodes). The
@@ -69,6 +75,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
   field of another kind (a list for a node, a string for a node or null), or a
   range that is no offset pair, is reported, and the other checks are not run on
   it.
+
 - The children of a node are the fields that the table gives as a node, a node
   or null, or a list of nodes, except the fields that hold records (`record:` in
   the table: `Root` has four, which the specification says are not child
@@ -80,11 +87,14 @@ const problems: TreeProblem[] = checkTree(text, tree)
 - **Positions.** Every range lies in the input, and every `loc` is the place of
   its `range` ([positions.md](../../parser/docs/positions.md), Positions); no
   token, comment, or directive has an empty range (positions.md, Invariants).
+
 - **Every character is placed.** A character outside the tokens and comments is
   whitespace (positions.md, Invariants).
+
 - **Texts.** The `value` of a token, and the text of a comment, a directive, and
   the frontmatter, equal the source of their ranges (positions.md, Invariants;
   [ast.md](../../spec/docs/ast.md)).
+
 - **Comments.** A comment line is where the scan finds it, with the mark `%%`; a
   diagram comment has a mark that its diagram has, and, except for closed block
   comments, ends where its line ends (before a U+2028 or a U+2029 too in a
@@ -101,25 +111,33 @@ const problems: TreeProblem[] = checkTree(text, tree)
   eventmodeling when the text is not longer than `maxTextSize`: there the lexer
   reads the comment lines after the header itself, so only those before the
   header are required to be comments of the tree, and a comment line inside the
-  text of a value is a part of that text. [fixture:
-  eventmodeling/comment-line-entity-in-data] [fixture:
-  eventmodeling/comment-default-size-equal] Railroad's native comments also use
-  `/*`, `(*`, `;` and `#` as their dialect permits; eventmodeling also uses `/*`
-  and `//`. A block comment includes its first required closer in its range and
-  excludes it from its value, including in the last fragment after a common
-  comment region. [fixture: eventmodeling/comment-native] [fixture:
-  railroad/ir-tail-comment] [fixture: railroad/ebnf-comment-iso] [fixture:
+  text of a value is a part of that text.
+
+  [fixture: eventmodeling/comment-line-entity-in-data] [fixture:
+  eventmodeling/comment-default-size-equal]
+
+  Railroad's native comments also use `/*`, `(*`, `;` and `#` as their dialect
+  permits; eventmodeling also uses `/*` and `//`. A block comment includes its
+  first required closer in its range and excludes it from its value, including
+  in the last fragment after a common comment region.
+
+  [fixture: eventmodeling/comment-native] [fixture: railroad/ir-tail-comment]
+  [fixture: railroad/ebnf-comment-iso] [fixture:
   railroad/abnf-comment-semicolon-ls] [fixture: railroad/peg-comment-hash-ps]
+
   Marks and closers are checked in the text after common removals; directives
-  inside them remain shared records. [fixture:
-  railroad/ir-comment-block-common-region] [fixture:
+  inside them remain shared records.
+
+  [fixture: railroad/ir-comment-block-common-region] [fixture:
   railroad/ebnf-comment-iso-common-region] [fixture:
   railroad/ir-comment-c-open-mark-directive] [fixture:
   railroad/ebnf-comment-c-open-mark-directive] [fixture:
   railroad/ebnf-comment-iso-open-mark-directive]
+
 - **Directives.** The directives of the tree are those of the scan, each with
   its `closed` and the range of the match without the whitespace at its end
   (ast.md, Directive; common.md, Where a directive is).
+
 - **Tokens.** They are in source order and do not overlap. A token starts or
   ends with whitespace only where a value starts or ends, next to a cut (a
   directive, a comment region, or a `;` that the line rule ignores), or where it
@@ -128,11 +146,13 @@ const problems: TreeProblem[] = checkTree(text, tree)
   whitespace between the colour candidate and the remainder of a sequence box
   text). A directive lies in no other token, and a comment lies in none
   (positions.md, Invariants).
+
 - **Strings.** The tokens of a StringLiteral, a node type that every diagram
   type shares, are one `String` token where nothing cuts it, and, where a
   directive, a comment region, or a `;` that the line rule ignores cuts it,
   `StringFragment` tokens, one more than there are cuts (parser/docs/tokens.md,
   String tokens).
+
 - **Names across a comment region.** An `Identifier` token is cut by a comment
   region only where its name holds a U+2028 or a U+2029, which is the comment
   start: its fragments are `Identifier` tokens, the fragment before a run of
@@ -145,10 +165,13 @@ const problems: TreeProblem[] = checkTree(text, tree)
   reported by the conditions that a comment lies in no token and that every
   character outside the tokens is whitespace. The kinds of the fragments are
   checked in a quadrant diagram, and not in an ER diagram (see Not checked
-  below). [fixture: er/lex-name-line-separator-comment-line] [fixture:
+  below).
+
+  [fixture: er/lex-name-line-separator-comment-line] [fixture:
   er/lex-name-two-comment-regions] [fixture:
   quadrant/lex-classdef-name-line-separator-comment-line] [fixture:
   er/lex-name-line-separator-two-comment-lines]
+
 - **Tokens that are not cut.** A directive or a `;` that the line rule ignores
   lies in a `String` (which then is `StringFragment` tokens) or a `RawText`
   token, and in no other token (parser/docs/tokens.md, A token that a directive
@@ -192,9 +215,11 @@ const problems: TreeProblem[] = checkTree(text, tree)
     line of a class arrow. Two `,` with a cut between are two units, as no text
     of the table is `,,`.
   - A `String` token starts with a quote, and one that a cut follows is closed.
+
 - **Frontmatter.** The first tokens are `---`, the body, and `---`; the body is
   a `RawText` token without the whitespace around it, and there is none when the
   body is all whitespace (positions.md, Invariants).
+
 - **Node ranges.** A node runs from the start of a token to the end of one,
   inside its parent, so every node has a token: a flowchart label that is all
   whitespace has the one `RawText` token of that whitespace. The children of a
@@ -207,19 +232,24 @@ const problems: TreeProblem[] = checkTree(text, tree)
   in the source while the child fields are `ids`, `call`, `href` (the ids come
   first whichever part follows); the body is a diagram of the specification and
   covers the tokens of the diagram (positions.md, Node ranges and Invariants).
+
 - **Literals.** The `raw` of a `StringLiteral` or a `NumericLiteral` is the
   source of its range, and `closed` of a `StringLiteral` is whether its `raw`
   has more than one character and ends with the quote that it starts with
   (positions.md, Invariants; ast.md, StringLiteral).
+
 - **The `error` pseudo-diagram.** Its tokens are `RawText` tokens that hold no
   whitespace or line terminator, and no two of them touch (ast.md,
   ErrorDiagram).
+
 - **Values.** The value of every node that has one is made from the source of
   its range by one rule, which the table of `src/check-tree/values.ts` applies
   type by type (ast.md, Nodes, and `ast/<diagram>.md`); see below.
+
 - **Tokens and value nodes.** The tokens of a value lie in value nodes, and
   keywords and punctuators do not, with the exceptions that the documents state
   (`parser/docs/tokens/<diagram>.md`, Tokens).
+
 - **Fixed words and fields.** The fields that the words and marks of a node
   write are what they write, and are null where nothing is written
   (`ast/<diagram>.md`):
@@ -546,16 +576,20 @@ const problems: TreeProblem[] = checkTree(text, tree)
     [ast/gitgraph.md](../../spec/docs/ast/gitgraph.md). The header keeps only a
     written LR/TB/BT direction or null; joined and separated colons have their
     distinct boundaries, and no visible LF separates header components.
+
     [fixture: gitgraph/gram-all-fields] [fixture: gitgraph/header-only]
     [fixture: gitgraph/header-colon-commit-inline] [fixture:
     gitgraph/header-hidden-before-direction-colon] [fixture:
-    gitgraph/header-visible-lf-before-colon] Each statement and option checks
-    its authored keyword, punctuation, allowed children and nullable fields.
-    Checkout preserves checkout/switch; a message preserves msg or null for a
-    bare string; type preserves NORMAL/REVERSE/HIGHLIGHT. Repeated options stay
-    in source order. Option words and colons are contiguous after common
-    removal; native whitespace and hidden forms cannot separate them. [fixture:
-    gitgraph/gram-commit-repeated-options] [fixture:
+    gitgraph/header-visible-lf-before-colon]
+
+    Each statement and option checks its authored keyword, punctuation, allowed
+    children and nullable fields. Checkout preserves checkout/switch; a message
+    preserves msg or null for a bare string; type preserves
+    NORMAL/REVERSE/HIGHLIGHT. Repeated options stay in source order. Option
+    words and colons are contiguous after common removal; native whitespace and
+    hidden forms cannot separate them.
+
+    [fixture: gitgraph/gram-commit-repeated-options] [fixture:
     gitgraph/gram-merge-repeated-options] [fixture:
     gitgraph/gram-cherry-pick-repeated-options] [fixture: gitgraph/gram-switch]
     [fixture: gitgraph/lex-option-global-before-colon] [fixture:
@@ -568,6 +602,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     and dot-boundary priority. Bare references obey their word, interior and
     ending characters and lose to earlier integers, equal-length keywords and
     composite common forms; other keywords yield to longer bare references.
+
     [fixture: gitgraph/lex-string-escapes] [fixture:
     gitgraph/lex-string-backslash-lf] [fixture: gitgraph/lex-string-multiline]
     [fixture: gitgraph/number-leading-zero] [fixture:
@@ -586,8 +621,10 @@ const problems: TreeProblem[] = checkTree(text, tree)
     earliest bounded closer. Consumed following LF stays outside the range. A
     following statement requires a surviving visible LF; spare LF, a closing
     space and EOF are distinguished. Ordinary gaps allow only ASCII space/tab
-    and permitted visible LF. [fixture: gitgraph/header-hidden-before-colon]
-    [fixture: gitgraph/lex-hidden-directive-before-branch-name] [fixture:
+    and permitted visible LF.
+
+    [fixture: gitgraph/header-hidden-before-colon] [fixture:
+    gitgraph/lex-hidden-directive-before-branch-name] [fixture:
     gitgraph/lex-option-between-options-hidden] [fixture:
     gitgraph/lex-hidden-directive-between-option-value] [fixture:
     gitgraph/lex-yaml-three-adjacent-fences] [fixture:
@@ -607,9 +644,10 @@ const problems: TreeProblem[] = checkTree(text, tree)
     trivia even between retained forms, without widening body gaps or hidden
     boundaries. Shared coverage, raw/written values, token kinds and hulls
     apply. History's acceptance conditions are checked by the parser and the
-    fixture acceptance comparison described above. [fixture: gitgraph/title-tab]
-    [fixture: gitgraph/lex-description-line-null] [fixture:
-    gitgraph/lex-description-block-only-directive] [fixture:
+    fixture acceptance comparison described above.
+
+    [fixture: gitgraph/title-tab] [fixture: gitgraph/lex-description-line-null]
+    [fixture: gitgraph/lex-description-block-only-directive] [fixture:
     gitgraph/lex-hidden-directive-string] [fixture:
     gitgraph/lex-hidden-directive-block] [fixture:
     gitgraph/lex-hidden-directive-fallback-complete-statement] [fixture:
@@ -626,11 +664,12 @@ const problems: TreeProblem[] = checkTree(text, tree)
     pair; body gaps remain ASCII space/tab and LF only. Common statements retain
     repeated and empty occurrences, with null only where their composite value
     is empty. Their title separator, colon gap, block trim and first brace are
-    checked independently of their lack of Db effect. [fixture:
-    info/header-inline-flag] [fixture: info/header-flag-next-line] [fixture:
-    info/lex-hidden-without-flag] [fixture: info/flag-letter-suffix] [fixture:
-    info/space-header-nbsp] [fixture: info/title-repeat-empty] [fixture:
-    info/lex-title-two-spaces] [fixture: info/acctitle-gap] [fixture:
+    checked independently of their lack of Db effect.
+
+    [fixture: info/header-inline-flag] [fixture: info/header-flag-next-line]
+    [fixture: info/lex-hidden-without-flag] [fixture: info/flag-letter-suffix]
+    [fixture: info/space-header-nbsp] [fixture: info/title-repeat-empty]
+    [fixture: info/lex-title-two-spaces] [fixture: info/acctitle-gap] [fixture:
     info/space-block-interior] [fixture: info/accdescr-block-first-close]
 
     Each InfoIgnoredText is one whole hidden YAML or DIRECTIVE match in its
@@ -645,7 +684,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     their accompanying common whitespace are trivia even between retained forms.
     Ordinary body gaps stay strict. RawText fragmentation is allowed only at
     common source cuts. Shared coverage, field, written-value, range and token
-    checks apply. [fixture: info/lex-flag-hidden-two] [fixture:
+    checks apply.
+
+    [fixture: info/lex-flag-hidden-two] [fixture:
     info/lex-hidden-after-visible-eol] [fixture: info/lex-yaml-three-fences]
     [fixture: info/lex-yaml-two-empty] [fixture:
     info/hidden-directive-after-title] [fixture:
@@ -669,10 +710,12 @@ const problems: TreeProblem[] = checkTree(text, tree)
     RawText unit, retaining internal whitespace; common cuts fragment it under
     the shared contract. A quoted name's closed flag follows its effective
     closer after shared attribute-quote conversion, even when the authored
-    delimiter differs; raw and tokens retain source spelling. [fixture:
-    treeview/box-prefix-arbitrary] [fixture: treeview/html-single] [fixture:
-    treeview/gram-written-tree] [fixture: treeview/ast-common-whitespace-values]
-    [fixture: treeview/ast-common-removal-only-values] [fixture:
+    delimiter differs; raw and tokens retain source spelling.
+
+    [fixture: treeview/box-prefix-arbitrary] [fixture: treeview/html-single]
+    [fixture: treeview/gram-written-tree] [fixture:
+    treeview/ast-common-whitespace-values] [fixture:
+    treeview/ast-common-removal-only-values] [fixture:
     treeview/ast-icon-removal-only] [fixture: treeview/ast-numeric-name]
 
     Every external branch prefix and box-decoration line has exactly one owner
@@ -691,7 +734,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     the last remaining node or body. Files can be parents. Ranges cover the
     first owned syntax through the last descendant, with nonoverlapping
     siblings. The checker adds no identity, installed-icon or semantic
-    acceptance gate. [fixture: treeview/box-written-tree] [fixture:
+    acceptance gate.
+
+    [fixture: treeview/box-written-tree] [fixture:
     treeview/box-decoration-pending-name-gap] [fixture:
     treeview/box-decoration-before-annotation] [fixture:
     treeview/ast-annotation-prefixes] [fixture:
@@ -711,6 +756,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     fields, source ranges, token kinds, atom boundaries and written-value checks
     apply. Treeview has no native block comment; the shared block-comment
     contract still includes closers in ranges and excludes them from values.
+
     [fixture: treeview/comment-in-quotes] [fixture: treeview/comment-in-bare]
     [fixture: treeview/common-block-bare-percent] [fixture:
     treeview/detect-secondscan-bare-unicode] [fixture:
@@ -730,7 +776,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     none/solid/arrow fields agree. Data tags are null exactly without a tag.
     Clauses keep their kind, nonempty item bodies and required/optional order.
     References stay written names; the checker adds no validator or linking
-    conditions. [fixture: eventmodeling/gram-written-tree] [fixture:
+    conditions.
+
+    [fixture: eventmodeling/gram-written-tree] [fixture:
     eventmodeling/lex-keyword-prefix-name] [fixture:
     eventmodeling/lex-name-custom-header-dot] [fixture:
     eventmodeling/db-source-leading-zero] [fixture:
@@ -744,8 +792,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     leading forms, qualified tail members own their dot/name gaps, and GWT
     items/clauses own their leading forms. Completed statements leave subsequent
     hidden forms in body. There is no visible EOL or textAfter field. Ordinary
-    gaps accept Notation whitespace and complete native comments. [fixture:
-    eventmodeling/lex-hidden-frame-type-gap] [fixture:
+    gaps accept Notation whitespace and complete native comments.
+
+    [fixture: eventmodeling/lex-hidden-frame-type-gap] [fixture:
     eventmodeling/lex-hidden-frame-entity-gap] [fixture:
     eventmodeling/lex-hidden-frame-optional-gaps] [fixture:
     eventmodeling/lex-qualified-hidden-components] [fixture:
@@ -764,8 +813,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     closer. Consumed closing LF stays outside ranges; space/LS/PS boundaries are
     lookahead only. The logical appended LF makes no authored range. Common
     payloads preserve all their padding and delimiters stay outside the payload;
-    null means an empty surviving interior. [fixture:
-    eventmodeling/lex-inline-quote-greedy] [fixture:
+    null means an empty surviving interior.
+
+    [fixture: eventmodeling/lex-inline-quote-greedy] [fixture:
     eventmodeling/lex-inline-quote-conversion] [fixture:
     eventmodeling/lex-block-adjacent-later-close] [fixture:
     eventmodeling/hidden-yaml-adjacent-later] [fixture:
@@ -782,8 +832,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     native directive closer, allowing its consumption. Next-line indentation
     then belongs to a common terminal only when that LF was consumed. LS and PS
     remain whitespace. Empty description blocks stay statements, and unselected
-    semicolons stay syntax. [fixture:
-    eventmodeling/lex-common-yaml-comment-line-padding] [fixture:
+    semicolons stay syntax.
+
+    [fixture: eventmodeling/lex-common-yaml-comment-line-padding] [fixture:
     eventmodeling/lex-common-block-comment-line-padding] [fixture:
     eventmodeling/lex-common-native-directive-comment-line-padding] [fixture:
     eventmodeling/lex-common-yaml-directive-only-line] [fixture:
@@ -807,8 +858,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     Retained forms still obey their own closing boundaries, also without a
     passed line. Global trivia can cut literal or retained text and separate
     authored components, but cannot split atomic words, digit names, `->>`, `[[`
-    or `]]`. Written values remain separate from converted Db values. [fixture:
-    eventmodeling/comment-native] [fixture:
+    or `]]`. Written values remain separate from converted Db values.
+
+    [fixture: eventmodeling/comment-native] [fixture:
     eventmodeling/comment-block-nearest-close] [fixture:
     eventmodeling/comment-line-ls-body] [fixture:
     eventmodeling/comment-line-ps-body] [fixture:
@@ -833,6 +885,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     agree with their written Keywords. CynefinArrow has the whole --> value and
     fixed none/solid/arrow fields. The checker retains self transitions,
     undeclared endpoints, repeated blocks and empty strings as authored nodes.
+
     [fixture: cynefin/db-all-fields] [fixture: cynefin/header-colon-inline]
     [fixture: cynefin/gram-glued-domains] [fixture: cynefin/db-self-loops]
     [fixture: cynefin/gram-transition-first] [fixture:
@@ -845,8 +898,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     Hidden LF consumption is applied before locating visible LF. Transitions use
     textBeforeArrow, textBeforeTo, textBeforeColon, textBeforeLabel and
     textAfter. An absent label has empty colon/label gaps. Common suffixes stop
-    before visible EOL; forms after it belong to body. [fixture:
-    cynefin/hidden-domain-item-members] [fixture:
+    before visible EOL; forms after it belong to body.
+
+    [fixture: cynefin/hidden-domain-item-members] [fixture:
     cynefin/hidden-before-first-item-after-eol] [fixture:
     cynefin/hidden-item-after-visible-eol] [fixture:
     cynefin/hidden-domain-end-after-visible-eol] [fixture:
@@ -861,7 +915,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     CR/LF. YAML tries a body-present match before an empty fallback. Native
     Comments lose to an earlier hidden directive and cannot start inside a
     string, common block or hidden form. A failed hidden directive can become a
-    Comment. [fixture: cynefin/hidden-yaml-adjacent-later] [fixture:
+    Comment.
+
+    [fixture: cynefin/hidden-yaml-adjacent-later] [fixture:
     cynefin/hidden-yaml-two-nonempty] [fixture:
     cynefin/hidden-directive-adjacent] [fixture: cynefin/hidden-directive-crlf]
     [fixture: cynefin/hidden-directive-comment-fallback-kept] [fixture:
@@ -873,6 +929,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     padding after their separator; block interiors trim only outer common
     whitespace. A title with null value and no textAfter ends at its keyword;
     its separator stays outside the range. The diagram ends at its last token.
+
     [fixture: cynefin/hidden-directive-sole-lf] [fixture:
     cynefin/hidden-directive-spare-lf] [fixture:
     cynefin/hidden-directive-closing-space] [fixture:
@@ -889,8 +946,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     separately. Global directives and selected semicolons may separate authored
     components and cut values, but cannot split fixed words or -->. Check
     written values separately from Db conversion, including the site security
-    and specified frontmatter HTML value readings. [fixture:
-    cynefin/detect-retained-secondscan-bare-ls] [fixture:
+    and specified frontmatter HTML value readings.
+
+    [fixture: cynefin/detect-retained-secondscan-bare-ls] [fixture:
     cynefin/detect-retained-secondscan-bare-ps] [fixture:
     cynefin/retained-directive-between-bares] [fixture:
     cynefin/prefix-yaml-unicode-no-bare] [fixture:
@@ -906,6 +964,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     integer positions keep their authored roles; signs stay outside unsigned
     offset leaves. Decorations follow offset, strategy, then one inertia form.
     Common line/block values retain their specified null and whitespace forms.
+
     [fixture: wardley/db-all-fields] [fixture: wardley/db-id-underscore]
     [fixture: wardley/lex-name-priority] [fixture: wardley/number-leading-zero]
     [fixture: wardley/lex-link-flow-raw-escapes] [fixture:
@@ -919,7 +978,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     separates statements and pipeline children; a pipeline opener requires a
     visible LF too. The header has no EOL requirement. After a visible EOL a
     form belongs to body, not the preceding suffix; an evolution suffix belongs
-    to its last stage. [fixture: wardley/hidden-all-unit-gaps] [fixture:
+    to its last stage.
+
+    [fixture: wardley/hidden-all-unit-gaps] [fixture:
     wardley/hidden-yaml-adjacent-later] [fixture:
     wardley/hidden-directive-adjacent] [fixture:
     wardley/lex-hidden-directive-cr] [fixture:
@@ -934,6 +995,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     form. Before the header, detection-passed bare Comments and accompanying
     trivia are not read again, including between retained forms. Without a
     passed line native boundaries remain strict, as do ordinary body gaps.
+
     [fixture: wardley/comment-native-triple] [fixture:
     wardley/hidden-directive-no-boundary] [fixture:
     wardley/hidden-directive-string] [fixture:
@@ -948,7 +1010,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     independent labels and every named optional gap. The checker does not check
     coordinate ranges, resolve parents or evolve targets, or repeat any other
     semantic acceptance condition. Those belong to the parser and its result
-    records. [fixture: wardley/db-link-forms] [fixture:
+    records.
+
+    [fixture: wardley/db-link-forms] [fixture:
     wardley/lex-flow-label-changes-direction] [fixture:
     wardley/lex-flow-label-changes-dashed] [fixture:
     wardley/gram-invalid-anchor] [fixture: wardley/gram-missing-pipeline-parent]
@@ -960,6 +1024,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     dialect and precedence roles, retaining IR calls and every written group;
     natural sequence/choice wrappers need at least two members. Rule names,
     assignment and the required visible semicolon remain distinct components.
+
     [fixture: railroad/ir-gram-written-tree] [fixture:
     railroad/ebnf-gram-written-tree] [fixture: railroad/abnf-gram-written-tree]
     [fixture: railroad/peg-gram-written-tree] [fixture:
@@ -970,8 +1035,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     alternatives and ABNF's longer semicolon comment. Strings use their
     dialect's quote and escape boundaries; decimal counts remain whole digit
     atoms, while special sequences and percent numeric values are RawText text
-    units. Written values retain their spelling and common cuts. [fixture:
-    railroad/ir-keywords-long-rule-name] [fixture:
+    units. Written values retain their spelling and common cuts.
+
+    [fixture: railroad/ir-keywords-long-rule-name] [fixture:
     railroad/ebnf-reference-title-prefix] [fixture:
     railroad/ebnf-postfix-special-priority] [fixture:
     railroad/abnf-comment-terminator-control] [fixture:
@@ -985,10 +1051,12 @@ const problems: TreeProblem[] = checkTree(text, tree)
     textBefore; adjacency puts the whole gap in the following textBefore.
     Natural lists leave their outer member gaps empty for their parent. Calls,
     groups, postfixes, exceptions, repeats and predicates have their separate
-    named gaps. Native forms cannot split repeat components. [fixture:
-    railroad/ir-native-ownership] [fixture: railroad/ebnf-native-ownership]
-    [fixture: railroad/abnf-native-ownership] [fixture:
-    railroad/peg-native-ownership] [fixture: railroad/abnf-native-in-atom]
+    named gaps. Native forms cannot split repeat components.
+
+    [fixture: railroad/ir-native-ownership] [fixture:
+    railroad/ebnf-native-ownership] [fixture: railroad/abnf-native-ownership]
+    [fixture: railroad/peg-native-ownership] [fixture:
+    railroad/abnf-native-in-atom]
 
     Match the earliest qualifying closer within YAML's body-present alternative
     before its empty fallback, or the native directive's first bounded closer.
@@ -997,6 +1065,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     plus space and EOF controls remain valid. Native Comments follow their
     dialect's line or block rule and cannot replace an earlier terminal or start
     inside an enclosing string, special sequence, metadata or hidden form.
+
     [fixture: railroad/ir-hidden-yaml-adjacent-later] [fixture:
     railroad/ir-hidden-yaml-adjacent-eof] [fixture:
     railroad/ir-native-directive-adjacent] [fixture:
@@ -1014,7 +1083,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     between retained forms; without a passed line the native boundary stays
     strict. Body gaps remain ASCII space/tab and physical line endings. Metadata
     is confined to the prefix before the first rule, and a following native form
-    is a body item. [fixture: railroad/ir-secondscan-real] [fixture:
+    is a body item.
+
+    [fixture: railroad/ir-secondscan-real] [fixture:
     railroad/ir-secondscan-between-bares-unicode] [fixture:
     railroad/ir-retained-bare-secondscan-unicode] [fixture:
     railroad/ir-secondscan-no-bare-unicode] [fixture:
@@ -1025,10 +1096,11 @@ const problems: TreeProblem[] = checkTree(text, tree)
     These are tree conditions, not semantic acceptance gates. References need
     not resolve, duplicate names remain declarations, and repeat bounds need not
     be ordered. The parser's result records are compared with fixtureAccepts
-    separately; configuration is not revalidated by the checker. [fixture:
-    railroad/ir-gram-reference-resolution] [fixture: railroad/peg-db-duplicates]
-    [fixture: railroad/abnf-db-repeat-reversed] [fixture:
-    railroad/ir-config-frontmatter-fontfamily-number]
+    separately; configuration is not revalidated by the checker.
+
+    [fixture: railroad/ir-gram-reference-resolution] [fixture:
+    railroad/peg-db-duplicates] [fixture: railroad/abnf-db-repeat-reversed]
+    [fixture: railroad/ir-config-frontmatter-fontfamily-number]
 
   - treemap: all nine node types and their child order follow
     [ast/treemap.md](../../spec/docs/ast/treemap.md). Body holds roots and outer
@@ -1048,9 +1120,10 @@ const problems: TreeProblem[] = checkTree(text, tree)
     Ranges exclude leading indentation. Two separate runs cannot stand for one
     indent, and an unused trailing run is reported. Common composites consume
     their own padding; null title consumes its one separator, and null class
-    style consumes its maximal separator whitespace. [fixture:
-    treemap/gram-written-tree] [fixture: treemap/db-section-tail-space]
-    [fixture: treemap/db-leaf-tail-tab] [fixture:
+    style consumes its maximal separator whitespace.
+
+    [fixture: treemap/gram-written-tree] [fixture:
+    treemap/db-section-tail-space] [fixture: treemap/db-leaf-tail-tab] [fixture:
     treemap/gram-indent-around-global-directive] [fixture:
     treemap/gram-two-indent-runs] [fixture:
     treemap/gram-header-trailing-indent-eof] [fixture:
@@ -1072,6 +1145,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     whitespace and any swallowed later-looking row. Common literals retain line
     padding or the trimmed block interior; null denotes empty content and the
     first block closer is required. No EOL is required after a common statement.
+
     [fixture: treemap/header-beta] [fixture: treemap/gram-adjacent-sections]
     [fixture: treemap/db-number-nan] [fixture: treemap/db-number-underscore]
     [fixture: treemap/lex-string-conversion] [fixture:
@@ -1090,6 +1164,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     inner source Directive held once. Body gaps remain strict ASCII
     whitespace/LF in their named positions. Check tree conditions only; recorded
     result kinds check parser acceptance, and dbFromTree constructs parentage.
+
     [fixture: treemap/hidden-comment-class] [fixture:
     treemap/hidden-comment-string] [fixture: treemap/hidden-comment-block]
     [fixture: treemap/hidden-yaml-body] [fixture:
@@ -1109,9 +1184,10 @@ const problems: TreeProblem[] = checkTree(text, tree)
     bounded bare header can instead be a name directly before a label bracket or
     entry brace. Strings are complete matching quotes with the specified escape
     boundaries. These are tree conditions; missing axis references and other
-    semantic acceptance conditions remain the parser's responsibility. [fixture:
-    radar/gram-written-tree] [fixture: radar/gram-inline-statements] [fixture:
-    radar/gram-curve-kind-per-curve] [fixture:
+    semantic acceptance conditions remain the parser's responsibility.
+
+    [fixture: radar/gram-written-tree] [fixture: radar/gram-inline-statements]
+    [fixture: radar/gram-curve-kind-per-curve] [fixture:
     radar/gram-detailed-colon-mixed-spelling] [fixture: radar/db-options-repeat]
     [fixture: radar/lex-id-keyword-prefix] [fixture:
     radar/lex-id-numeric-leading] [fixture: radar/lex-id-boolean-prefix]
@@ -1127,7 +1203,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     visible LF; entry lists permit LF before their first entry, after commas and
     before the closing brace, but not before an entry comma. Label gaps and
     absent components have their specified owners, and an omitted colon has an
-    empty textBeforeColon. [fixture: radar/lex-hidden-axis-comma] [fixture:
+    empty textBeforeColon.
+
+    [fixture: radar/lex-hidden-axis-comma] [fixture:
     radar/lex-hidden-curve-comma] [fixture: radar/lex-hidden-option-comma]
     [fixture: radar/lex-hidden-detailed-before-colon] [fixture:
     radar/lex-hidden-detailed-no-colon] [fixture:
@@ -1146,7 +1224,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     after visible EOL it belongs to body. Earlier strings and composite values
     own enclosed hidden-looking text. A native Comment cannot disguise an
     earlier hidden directive or start inside an earlier string, block or hidden
-    form. [fixture: radar/lex-common-empty-values] [fixture:
+    form.
+
+    [fixture: radar/lex-common-empty-values] [fixture:
     radar/common-block-first-close] [fixture: radar/hidden-native-title]
     [fixture: radar/hidden-native-title-spare] [fixture:
     radar/hidden-native-title-space] [fixture: radar/hidden-native-title-eof]
@@ -1160,6 +1240,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     Only intervals passed with bare percent Comments admit accompanying Unicode
     trivia, including between retained forms; ordinary body gaps stay strict.
     Shared field, coverage, written-value, range and token checks apply.
+
     [fixture: radar/header-colon-inline] [fixture: radar/header-separated-colon]
     [fixture: radar/header-colon-hidden] [fixture:
     radar/header-native-no-boundary] [fixture: radar/detect-retained-two]
@@ -1176,6 +1257,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     choose the first complete quoted or bare alternative on converted text,
     while kind and value keep their authored contract. String versus RawText
     content tokens follow that choice; brackets are separate punctuation.
+
     [fixture: architecture/lex-keyword-prefix-ids] [fixture:
     architecture/lex-keyword-terminal-priority] [fixture:
     architecture/lex-direction-id-prefix] [fixture:
@@ -1195,8 +1277,10 @@ const problems: TreeProblem[] = checkTree(text, tree)
     trivia, including authored internal padding and hidden forms. Alignment
     direction and at least two members retain source order; each member owns its
     preceding hidden gap, including the first member. Semantic acceptance
-    remains the parser's responsibility. [fixture: architecture/db-mixed]
-    [fixture: architecture/directive-icon-delimiters] [fixture:
+    remains the parser's responsibility.
+
+    [fixture: architecture/db-mixed] [fixture:
+    architecture/directive-icon-delimiters] [fixture:
     architecture/directive-group-delimiters] [fixture:
     architecture/gram-hidden-inside-icon] [fixture:
     architecture/gram-hidden-inside-modifier] [fixture:
@@ -1212,8 +1296,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     selected alternative: YAML tries body-present before adjacent-empty;
     DIRECTIVE skips nonqualifying closers. Exclude the consumed following LF and
     require surviving visible EOL before a next statement; spare LF, lookahead
-    space and EOF have separate controls. [fixture:
-    architecture/lex-hidden-two-suffixes] [fixture:
+    space and EOF have separate controls.
+
+    [fixture: architecture/lex-hidden-two-suffixes] [fixture:
     architecture/lex-hidden-after-visible-eol] [fixture:
     architecture/hidden-yaml-three-fences] [fixture:
     architecture/hidden-yaml-adjacent-later-closer] [fixture:
@@ -1229,9 +1314,11 @@ const problems: TreeProblem[] = checkTree(text, tree)
     second-scan directives keep their own closing rules; detection-passed bare
     lines and accompanying Unicode trivia are not read again, including between
     retained forms. Without a passed line the native gap stays strict. Ordinary
-    body gaps accept only ASCII space/tab and visible LF as specified. [fixture:
-    architecture/common-all] [fixture: architecture/common-repeat-empty]
-    [fixture: architecture/common-block-first-close] [fixture:
+    body gaps accept only ASCII space/tab and visible LF as specified.
+
+    [fixture: architecture/common-all] [fixture:
+    architecture/common-repeat-empty] [fixture:
+    architecture/common-block-first-close] [fixture:
     architecture/hidden-directive-inside-values] [fixture:
     architecture/hidden-yaml-inside-values] [fixture:
     architecture/detect-empty-braces-bare] [fixture:
@@ -1249,13 +1336,15 @@ const problems: TreeProblem[] = checkTree(text, tree)
     to a whole hidden YAML match. Only the plain packet header requires common
     whitespace, EOF or a percent-pair boundary; packet-beta may touch its first
     block or common form. No visible LF can divide block components. Semantic
-    rejection belongs to the parser and fixture result comparison. [fixture:
-    packet/gram-mixed] [fixture: packet/gram-single-hidden-gaps] [fixture:
-    packet/gram-hidden-range-gap-spaced] [fixture: packet/gram-hidden-yaml-gap]
-    [fixture: packet/gram-relative-hidden-colon] [fixture:
-    packet/gram-leading-zero] [fixture: packet/lex-integer-shorter-before-dot]
-    [fixture: packet/lex-dash-before-yaml] [fixture: packet/header-inline-block]
-    [fixture: packet/header-beta-glued-block] [fixture:
+    rejection belongs to the parser and fixture result comparison.
+
+    [fixture: packet/gram-mixed] [fixture: packet/gram-single-hidden-gaps]
+    [fixture: packet/gram-hidden-range-gap-spaced] [fixture:
+    packet/gram-hidden-yaml-gap] [fixture: packet/gram-relative-hidden-colon]
+    [fixture: packet/gram-leading-zero] [fixture:
+    packet/lex-integer-shorter-before-dot] [fixture:
+    packet/lex-dash-before-yaml] [fixture: packet/header-inline-block] [fixture:
+    packet/header-beta-glued-block] [fixture:
     packet/gram-visible-newline-in-block] [fixture: packet/lex-label-escaped-lf]
     [fixture: packet/db-label-empty-single]
 
@@ -1267,6 +1356,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     range; require surviving visible EOL before the next statement. Spare LF,
     lookahead space and EOF are separate controls. Enclosing strings and common
     values retain hidden-looking content, and line values absorb YAML dashes.
+
     [fixture: packet/lex-hidden-two-suffixes] [fixture:
     packet/lex-hidden-after-visible-eol] [fixture:
     packet/hidden-yaml-adjacent-later] [fixture: packet/lex-yaml-two-nonempty]
@@ -1287,9 +1377,10 @@ const problems: TreeProblem[] = checkTree(text, tree)
     precedes second-scan directives; detection-passed bare Comments and their
     accompanying Unicode whitespace remain trivia, including between retained
     forms. Without a passed bare line those gaps stay native. Ordinary body gaps
-    stay ASCII space/tab and LF only. [fixture: packet/lex-title-two-spaces]
-    [fixture: packet/acctitle-empty] [fixture:
-    packet/accdescr-block-first-close] [fixture:
+    stay ASCII space/tab and LF only.
+
+    [fixture: packet/lex-title-two-spaces] [fixture: packet/acctitle-empty]
+    [fixture: packet/accdescr-block-first-close] [fixture:
     packet/lex-description-comment-only] [fixture:
     packet/hidden-directive-close-glued] [fixture:
     packet/lex-label-native-directive] [fixture:
@@ -1306,27 +1397,35 @@ const problems: TreeProblem[] = checkTree(text, tree)
     for its written flag; textBeforeHeader holds only retained hidden forms,
     textBeforeShowData is empty without the flag, and hidden forms following the
     header or flag otherwise begin body. Every section, including empty and
-    duplicate labels, remains a statement. [fixture: pie/db-all-fields]
-    [fixture: pie/header-only] [fixture: pie/frontmatter-nonleading-comment]
-    [fixture: pie/review-hidden-directive-before-showdata] [fixture:
+    duplicate labels, remains a statement.
+
+    [fixture: pie/db-all-fields] [fixture: pie/header-only] [fixture:
+    pie/frontmatter-nonleading-comment] [fixture:
+    pie/review-hidden-directive-before-showdata] [fixture:
     pie/frontmatter-after-header] [fixture: pie/label-empty] [fixture:
-    pie/db-three-definitions] Before the header, detection permits one retained
-    YAML block with a body line, before second-scan directives and native bare
-    percent lines. Empty or punctuation-only percent-brace lines passed by
-    detection are Comments, rather than hidden directives; a retained
-    second-scan directive has a word type after common removal. [fixture:
-    pie/detect-two-nonleading-blocks] [fixture:
+    pie/db-three-definitions]
+
+    Before the header, detection permits one retained YAML block with a body
+    line, before second-scan directives and native bare percent lines. Empty or
+    punctuation-only percent-brace lines passed by detection are Comments,
+    rather than hidden directives; a retained second-scan directive has a word
+    type after common removal.
+
+    [fixture: pie/detect-two-nonleading-blocks] [fixture:
     pie/detect-second-scan-directive-before-block] [fixture:
     pie/lex-yaml-after-comment-adjacent-fences] [fixture:
     pie/lex-yaml-after-bare-comment] [fixture:
     pie/lex-preheader-yaml-empty-line-control] [fixture:
     pie/lex-hidden-directive-second-detection-scan] [fixture:
     pie/lex-bare-percent-braces-before-header] [fixture:
-    pie/lex-hidden-comment-before-header] Bare lines and the common whitespace
-    and line terminators detection passes after them remain trivia even between
-    a retained form and the header or another retained form. This does not widen
-    body gaps or hidden closing boundaries. [fixture:
-    pie/div-preheader-retained-yaml-bare-ls] [fixture:
+    pie/lex-hidden-comment-before-header]
+
+    Bare lines and the common whitespace and line terminators detection passes
+    after them remain trivia even between a retained form and the header or
+    another retained form. This does not widen body gaps or hidden closing
+    boundaries.
+
+    [fixture: pie/div-preheader-retained-yaml-bare-ls] [fixture:
     pie/div-preheader-retained-directive-bare-ls] [fixture:
     pie/div-preheader-retained-yaml-bare-bom] [fixture:
     pie/div-preheader-retained-directive-bare-bom] [fixture:
@@ -1337,8 +1436,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     pie/lex-preheader-retained-directive-bare-ascii] [fixture:
     pie/lex-preheader-retained-yaml-bare-ascii-line] [fixture:
     pie/lex-preheader-retained-directive-bare-ascii-line] [fixture:
-    pie/lex-preheader-retained-yaml-bare-then-directive-ascii] The
-    case-sensitive pie/showData keywords require common whitespace, EOF or a
+    pie/lex-preheader-retained-yaml-bare-then-directive-ascii]
+
+    The case-sensitive pie/showData keywords require common whitespace, EOF or a
     percent pair immediately afterwards; intervening unreadable Unicode
     whitespace is rejected. StringLiteral is a complete closed single- or
     double-quoted unit: backslash escapes cannot cross a physical LF or LS/PS,
@@ -1347,44 +1447,56 @@ const problems: TreeProblem[] = checkTree(text, tree)
     fraction. Whether its shared double is negative, including on duplicates,
     belongs to parser acceptance rather than tree checking. Negative zero and
     negative underflow still have their written numeric values checked.
+
     [fixture: pie/header-letter-suffix] [fixture: pie/showdata-quote-glued]
     [fixture: pie/lex-header-nbsp] [fixture: pie/label-single-quote] [fixture:
     pie/label-escaped-quotes] [fixture: pie/label-multiline] [fixture:
     pie/label-backslash-ls] [fixture: pie/number-leading-zero] [fixture:
     pie/number-decimal-leading-zero] [fixture: pie/db-duplicate-negative]
     [fixture: pie/number-negative-zero] [fixture:
-    pie/review-number-negative-underflow-final] Common values fill their entire
-    composite lexical form. A title starts after one ASCII space/tab;
-    accessibility line text starts immediately after its colon, whose preceding
-    gap allows only ASCII spaces/tabs. These line values preserve their written
-    edges and end before LF or a percent pair. Description blocks permit common
-    whitespace before the opener, close at the first brace, and retain a trimmed
-    interior. Null means no written value, including whitespace-only block
-    interiors; it does not erase the statement. [fixture: pie/title-spaces]
-    [fixture: pie/acctitle-spaces] [fixture: pie/acctitle-eof] [fixture:
-    pie/ast-title-tab-null-eof] [fixture: pie/title-comment] [fixture:
-    pie/accdescr-block-gap] [fixture: pie/accdescr-block-nested] [fixture:
-    pie/review-accdescr-empty-block-first] Each PieIgnoredText is one complete
-    hidden YAML or DIRECTIVE form. Explicit character scanning checks YAML's
-    earliest bounded closer after at least one body line; only when none exists
-    may the immediately following fence close an empty body. [fixture:
-    pie/lex-yaml-three-adjacent-fences] [fixture:
+    pie/review-number-negative-underflow-final]
+
+    Common values fill their entire composite lexical form. A title starts after
+    one ASCII space/tab; accessibility line text starts immediately after its
+    colon, whose preceding gap allows only ASCII spaces/tabs. These line values
+    preserve their written edges and end before LF or a percent pair.
+    Description blocks permit common whitespace before the opener, close at the
+    first brace, and retain a trimmed interior. Null means no written value,
+    including whitespace-only block interiors; it does not erase the statement.
+
+    [fixture: pie/title-spaces] [fixture: pie/acctitle-spaces] [fixture:
+    pie/acctitle-eof] [fixture: pie/ast-title-tab-null-eof] [fixture:
+    pie/title-comment] [fixture: pie/accdescr-block-gap] [fixture:
+    pie/accdescr-block-nested] [fixture: pie/review-accdescr-empty-block-first]
+
+    Each PieIgnoredText is one complete hidden YAML or DIRECTIVE form. Explicit
+    character scanning checks YAML's earliest bounded closer after at least one
+    body line; only when none exists may the immediately following fence close
+    an empty body.
+
+    [fixture: pie/lex-yaml-three-adjacent-fences] [fixture:
     pie/lex-yaml-immediate-fence-before-later-closer] [fixture:
     pie/lex-yaml-three-fences-before-value] [fixture:
     pie/lex-nonleading-yaml-three-adjacent-fences] [fixture:
     pie/lex-yaml-apparent-empty-pairs-unmatched-fence] [fixture:
     pie/review-yaml-hidden-empty] [fixture:
-    pie/lex-yaml-before-colon-two-blocks] DIRECTIVE uses its earliest bounded
-    closer. The consumed following LF stays outside the node. [fixture:
-    pie/lex-yaml-closer-suffix-skip-later] [fixture:
-    pie/lex-hidden-multiple-closers] Only the specified section gaps, common
-    textAfter lists and diagram positions can own it; strings and description
-    blocks absorb hidden-looking text as content. A visible LF cannot stand
-    between section components or before showData. After a completed statement,
-    a following item needs an LF that remains after hidden consumption; EOF
-    needs none. A hidden form after a visible EOL belongs to body, rather than
-    the preceding statement. [fixture: pie/review-yaml-between-label-colon]
-    [fixture: pie/frontmatter-between-section-parts] [fixture:
+    pie/lex-yaml-before-colon-two-blocks]
+
+    DIRECTIVE uses its earliest bounded closer. The consumed following LF stays
+    outside the node.
+
+    [fixture: pie/lex-yaml-closer-suffix-skip-later] [fixture:
+    pie/lex-hidden-multiple-closers]
+
+    Only the specified section gaps, common textAfter lists and diagram
+    positions can own it; strings and description blocks absorb hidden-looking
+    text as content. A visible LF cannot stand between section components or
+    before showData. After a completed statement, a following item needs an LF
+    that remains after hidden consumption; EOF needs none. A hidden form after a
+    visible EOL belongs to body, rather than the preceding statement.
+
+    [fixture: pie/review-yaml-between-label-colon] [fixture:
+    pie/frontmatter-between-section-parts] [fixture:
     pie/lex-yaml-closer-suffix-skip-later] [fixture:
     pie/lex-hidden-multiple-closers] [fixture: pie/gram-newline-before-colon]
     [fixture: pie/showdata-next-line] [fixture: pie/review-yaml-after-section]
@@ -1392,23 +1504,30 @@ const problems: TreeProblem[] = checkTree(text, tree)
     pie/gram-section-eof-hidden-yaml] [fixture:
     pie/lex-hidden-after-title-before-comment] [fixture:
     pie/review-label-hidden-yaml-text] [fixture:
-    pie/review-block-hidden-yaml-text] At each native Comment after the header,
-    the earlier hidden DIRECTIVE rule must not match, and no STRING or composite
-    description block may already enclose its start. Detection's pre-header bare
-    percent-brace Comments remain valid. [fixture:
-    pie/review-hidden-directive-after-section] [fixture:
+    pie/review-block-hidden-yaml-text]
+
+    At each native Comment after the header, the earlier hidden DIRECTIVE rule
+    must not match, and no STRING or composite description block may already
+    enclose its start. Detection's pre-header bare percent-brace Comments remain
+    valid.
+
+    [fixture: pie/review-hidden-directive-after-section] [fixture:
     pie/review-hidden-directive-after-title] [fixture:
     pie/review-hidden-directive-after-acctitle] [fixture:
     pie/review-hidden-directive-after-accdescr] [fixture:
     pie/review-hidden-directive-after-block] [fixture:
     pie/review-directive-empty-body] [fixture:
-    pie/lex-bare-percent-braces-before-header] Native comments also consume
-    their trailing whitespace, including LS/PS; that padding is outside the
-    trimmed Comment record and remains comment trivia when a common region
-    bridges its continuation. [fixture: pie/lex-comment-ls-region-bridge] Shared
-    coverage, written-value, raw, range and token checks also apply; hidden
-    forms and common literals use RawText, numbers Numeric, and strings String
-    or StringFragment. Hand-built and broken trees exercise these rules;
+    pie/lex-bare-percent-braces-before-header]
+
+    Native comments also consume their trailing whitespace, including LS/PS;
+    that padding is outside the trimmed Comment record and remains comment
+    trivia when a common region bridges its continuation.
+
+    [fixture: pie/lex-comment-ls-region-bridge]
+
+    Shared coverage, written-value, raw, range and token checks also apply;
+    hidden forms and common literals use RawText, numbers Numeric, and strings
+    String or StringFragment. Hand-built and broken trees exercise these rules;
     recorded trees are checked without importing a parser.
 
   - agentflow: all 29 node types, child types, field order, required nonempty
@@ -1418,9 +1537,11 @@ const problems: TreeProblem[] = checkTree(text, tree)
     before its closing arrow while visitation keeps arrow before label.
     EmptyStatement is exactly one semicolon. The header is one exact lower-case
     agentflow-beta Keyword, with the written same-line direction or null and the
-    required first separator. [fixture: agentflow/gram-flow-all-forms] [fixture:
-    agentflow/gram-global] [fixture: agentflow/gram-connector-all-forms]
-    [fixture: agentflow/gram-tail-node-semicolons] [fixture:
+    required first separator.
+
+    [fixture: agentflow/gram-flow-all-forms] [fixture: agentflow/gram-global]
+    [fixture: agentflow/gram-connector-all-forms] [fixture:
+    agentflow/gram-tail-node-semicolons] [fixture:
     agentflow/gram-split-failure-label] [fixture: agentflow/header-only]
     [fixture: agentflow/header-td] [fixture:
     agentflow/lex-header-space-then-semicolon] [fixture:
@@ -1431,15 +1552,20 @@ const problems: TreeProblem[] = checkTree(text, tree)
     click, empty-string, empty-markdown-string, empty-call, or
     empty-description-block. Direction prefixes and suffixes require
     direction-text, regardless of their spelling (ast/agentflow.md,
-    AgentflowIgnoredText). [fixture: agentflow/lex-flow-name-click-state]
-    [fixture: agentflow/lex-empty-string-in-flow-name] [fixture:
+    AgentflowIgnoredText).
+
+    [fixture: agentflow/lex-flow-name-click-state] [fixture:
+    agentflow/lex-empty-string-in-flow-name] [fixture:
     agentflow/lex-empty-markdown-in-flow-name] [fixture:
     agentflow/lex-empty-call-in-connector-name] [fixture:
     agentflow/lex-empty-description-in-flow-name] [fixture:
-    agentflow/lex-direction-line-greedy] A closed empty description block before
-    a URL has kind empty-description-block; the same erased-form rules apply
-    before URL and callback tooltips. [fixture:
-    agentflow/gram-empty-description-before-href] [fixture:
+    agentflow/lex-direction-line-greedy]
+
+    A closed empty description block before a URL has kind
+    empty-description-block; the same erased-form rules apply before URL and
+    callback tooltips.
+
+    [fixture: agentflow/gram-empty-description-before-href] [fixture:
     agentflow/lex-mixed-empty-forms-before-url-tooltip] [fixture:
     agentflow/gram-click-erased-before-callback-tooltip]
 
@@ -1450,20 +1576,24 @@ const problems: TreeProblem[] = checkTree(text, tree)
     empty string or empty markdown string recognized after click satisfies its
     need to read a unit without contributing a Label; in a flow, a following
     bare fragment still requires the one-whitespace exit. A terminal click that
-    has read nothing is invalid. [fixture:
-    agentflow/lex-name-click-empty-string-before-text] [fixture:
+    has read nothing is invalid.
+
+    [fixture: agentflow/lex-name-click-empty-string-before-text] [fixture:
     agentflow/lex-name-click-empty-markdown-before-text] [fixture:
     agentflow/lex-name-click-empty-string-before-string] [fixture:
     agentflow/lex-name-click-empty-string-then-call] [fixture:
     agentflow/lex-connector-name-click-empty-string-tail] [fixture:
     agentflow/gram-name-click-empty-string-adjacent-text] [fixture:
-    agentflow/gram-flow-name-click-empty-markdown-adjacent-rejected] In a
-    connector, an erased empty string or empty markdown string after click, with
-    kind empty-string or empty-markdown-string respectively, may touch a
+    agentflow/gram-flow-name-click-empty-markdown-adjacent-rejected]
+
+    In a connector, an erased empty string or empty markdown string after click,
+    with kind empty-string or empty-markdown-string respectively, may touch a
     following text Label, including a leading or trailing semicolon and a Label
     that supplies the name's first contributing fragment (diagrams/agentflow.md,
-    Names, strings, and click text; ast/agentflow.md, AgentflowName). [fixture:
-    agentflow/lex-connector-name-click-empty-string-adjacent-text] [fixture:
+    Names, strings, and click text; ast/agentflow.md, AgentflowName).
+
+    [fixture: agentflow/lex-connector-name-click-empty-string-adjacent-text]
+    [fixture:
     agentflow/lex-connector-name-click-empty-string-adjacent-semicolon]
     [fixture:
     agentflow/lex-connector-name-click-empty-string-no-id-adjacent-semicolon]
@@ -1476,27 +1606,36 @@ const problems: TreeProblem[] = checkTree(text, tree)
     agentflow/lex-connector-name-click-empty-markdown-trailing-semicolon]
     [fixture:
     agentflow/lex-connector-name-click-empty-markdown-no-id-adjacent-semicolon]
+
     An empty string may touch an empty markdown string before that Label; each
-    erased form remains a separate IgnoredText part. [fixture:
-    agentflow/lex-connector-name-click-empty-string-then-markdown] Flow and
-    connector headings require one space, title brackets, and touching adjacent
-    data. The final click-context exit stays outside Name before a title opener,
-    heading data, or a flow heading separator, including when the last part is
-    an erased empty string or markdown string; the exit is consumed before
-    checking those following units (diagrams/agentflow.md, Names, strings, and
-    click text; ast/agentflow.md, AgentflowName). [fixture:
-    agentflow/name-click-exit-before-title-tab] [fixture:
+    erased form remains a separate IgnoredText part.
+
+    [fixture: agentflow/lex-connector-name-click-empty-string-then-markdown]
+
+    Flow and connector headings require one space, title brackets, and touching
+    adjacent data. The final click-context exit stays outside Name before a
+    title opener, heading data, or a flow heading separator, including when the
+    last part is an erased empty string or markdown string; the exit is consumed
+    before checking those following units (diagrams/agentflow.md, Names,
+    strings, and click text; ast/agentflow.md, AgentflowName).
+
+    [fixture: agentflow/name-click-exit-before-title-tab] [fixture:
     agentflow/name-click-exit-before-title-lf] [fixture:
     agentflow/name-click-exit-before-title-ls] [fixture:
     agentflow/name-click-exit-before-data-tab] [fixture:
-    agentflow/name-click-exit-before-separator-space] Bare heading titles leave
-    their bracket-interior padding outside the trimmed Label, after the opener
-    (ast/agentflow.md, AgentflowLabel). [fixture:
-    agentflow/name-heading-title-interior-padding] Global has only a body, and
-    unnamed flows have no title or heading data. Empty blocks before a name
-    separator belong to the Name; after an explicit title or global heading they
-    are body statements. [fixture: agentflow/lex-flow-name-click-mixed]
-    [fixture: agentflow/lex-name-click-exit-extra-space] [fixture:
+    agentflow/name-click-exit-before-separator-space]
+
+    Bare heading titles leave their bracket-interior padding outside the trimmed
+    Label, after the opener (ast/agentflow.md, AgentflowLabel).
+
+    [fixture: agentflow/name-heading-title-interior-padding]
+
+    Global has only a body, and unnamed flows have no title or heading data.
+    Empty blocks before a name separator belong to the Name; after an explicit
+    title or global heading they are body statements.
+
+    [fixture: agentflow/lex-flow-name-click-mixed] [fixture:
+    agentflow/lex-name-click-exit-extra-space] [fixture:
     agentflow/lex-name-click-exit-crlf] [fixture:
     agentflow/lex-name-click-initial-markdown] [fixture:
     agentflow/lex-empty-call-in-flow-name] [fixture:
@@ -1511,8 +1650,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     comma-separated id lists exclude comma from each slot; shape properties are
     single id-run units; interpolation and bare callbacks use name units; bare
     container names use name-piece units with their keyword priority. Click ids
-    use their own nonwhitespace runs. [fixture:
-    agentflow/lex-vertex-equals-alone] [fixture:
+    use their own nonwhitespace runs.
+
+    [fixture: agentflow/lex-vertex-equals-alone] [fixture:
     agentflow/lex-vertex-supplementary-alone] [fixture:
     agentflow/gram-bare-callback-global] [fixture:
     agentflow/gram-connector-name-default] [fixture:
@@ -1526,13 +1666,15 @@ const problems: TreeProblem[] = checkTree(text, tree)
     agentflow/gram-interpolate-default-name]
 
     After an initial string in a click name fragment, a bare continuation cannot
-    start another string unit. [fixture:
-    agentflow/gram-name-click-second-string]
+    start another string unit.
+
+    [fixture: agentflow/gram-name-click-second-string]
 
     Bare label continuations use the ordinary, slanted, ellipse or split-link
     text context, including its delimiter priority; a style literal consists of
-    style units, with escaped commas only in classDef. [fixture:
-    agentflow/gram-bare-label-open-bracket] [fixture:
+    style units, with escaped commas only in classDef.
+
+    [fixture: agentflow/gram-bare-label-open-bracket] [fixture:
     agentflow/gram-bare-label-pipe] [fixture:
     agentflow/gram-slanted-label-open-bracket] [fixture:
     agentflow/gram-ellipse-label-open-paren] [fixture:
@@ -1549,6 +1691,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     give none as startMarker, the matching line/endMarker and the uncapped
     written count. An opening arrow is exactly -- and requires a solid closing
     arrow and label. A pipe label allows at most one following space unit.
+
     [fixture: agentflow/gram-group-spaces] [fixture:
     agentflow/gram-group-unspaced] [fixture:
     agentflow/gram-node-three-definitions] [fixture:
@@ -1562,19 +1705,22 @@ const problems: TreeProblem[] = checkTree(text, tree)
     written value, including empty and adjacent blocks separately. Only double
     quotes protect an interior caret or brace; the data context does not treat
     backslash as a quote escape. YAML, alias resolution, metadata types and
-    shape catalogues are not validated. [fixture:
-    agentflow/gram-data-adjacent-multiline-blocks] [fixture:
+    shape catalogues are not validated.
+
+    [fixture: agentflow/gram-data-adjacent-multiline-blocks] [fixture:
     agentflow/db-data-block-empty-multiline] [fixture:
     agentflow/lex-data-block-caret] [fixture:
     agentflow/lex-data-block-quoted-caret] [fixture:
     agentflow/lex-data-backslash-quote-is-not-escape] [fixture:
     agentflow/db-data-block-invalid-yaml] [fixture:
-    agentflow/div-metadata-yaml-self-alias] In the text left after common
-    preprocessing, a diagram comment cannot cut a data block, literal, name,
-    split-link text or initial string: those contexts read percent pairs as
-    content. Above the default size limit, the common comment regions may still
-    cut those values before lexing. [fixture:
-    agentflow/div-data-percent-line-is-content] [fixture:
+    agentflow/div-metadata-yaml-self-alias]
+
+    In the text left after common preprocessing, a diagram comment cannot cut a
+    data block, literal, name, split-link text or initial string: those contexts
+    read percent pairs as content. Above the default size limit, the common
+    comment regions may still cut those values before lexing.
+
+    [fixture: agentflow/div-data-percent-line-is-content] [fixture:
     agentflow/comment-split-edge-label] [fixture:
     agentflow/lex-flow-name-string-comment-content] [fixture:
     agentflow/lex-accessibility-block-comment] [fixture:
@@ -1582,17 +1728,24 @@ const problems: TreeProblem[] = checkTree(text, tree)
 
     Style/class/linkStyle lists retain comma slots and null holes, including
     terminal holes. An id list needs an actual id or comma, and a null style
-    still needs a written whitespace unit beyond its required gap. [fixture:
-    agentflow/gram-class-one-operand] [fixture:
-    agentflow/gram-style-empty-value] ASCII padding consumed by a following
-    comment supplies no style unit; non-ASCII whitespace remains a unit.
+    still needs a written whitespace unit beyond its required gap.
+
+    [fixture: agentflow/gram-class-one-operand] [fixture:
+    agentflow/gram-style-empty-value]
+
+    ASCII padding consumed by a following comment supplies no style unit;
+    non-ASCII whitespace remains a unit.
+
     [fixture: agentflow/gram-style-null-before-comment] [fixture:
-    agentflow/gram-style-null-before-comment-nbsp] Style literals keep leading
-    whitespace and exclude trailing padding. Keyword, id/class-value and
-    interpolation gaps have the exact one-space width of Agentflow. ClassDef
-    retains escaped commas inside its literal; linkStyle has interpolation or
-    styles and canonical indices naming preceding chain/group edges, including
-    nested bodies. The separate exceedsMaxEdges helper checks the site limit.
+    agentflow/gram-style-null-before-comment-nbsp]
+
+    Style literals keep leading whitespace and exclude trailing padding.
+    Keyword, id/class-value and interpolation gaps have the exact one-space
+    width of Agentflow. ClassDef retains escaped commas inside its literal;
+    linkStyle has interpolation or styles and canonical indices naming preceding
+    chain/group edges, including nested bodies. The separate exceedsMaxEdges
+    helper checks the site limit.
+
     [fixture: agentflow/gram-class-target-empty-ends] [fixture:
     agentflow/gram-classdef-trailing-empty-name] [fixture:
     agentflow/gram-style-all-null] [fixture:
@@ -1607,8 +1760,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     agentflow/config-max-edges-group]
 
     A URL or tooltip occupies exactly one complete string unit, with no bare
-    continuation or merged following string. [fixture:
-    agentflow/gram-click-url-merged-strings]
+    continuation or merged following string.
+
+    [fixture: agentflow/gram-click-url-merged-strings]
 
     Click id lists keep null ends. Bare callbacks are Identifier; call names and
     optional arguments are opaque Literals, with padding retained and
@@ -1618,7 +1772,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     textBeforeUrl/textBeforeTooltip item is a complete recognized erased form at
     its declared position, with the following value required. No prefix field
     exists before a callback name or target. Tooltip and target gaps remain one
-    space unit. [fixture: agentflow/gram-click-id-empty-ends] [fixture:
+    space unit.
+
+    [fixture: agentflow/gram-click-id-empty-ends] [fixture:
     agentflow/gram-click-callback-forms] [fixture:
     agentflow/gram-click-callback-space-args] [fixture:
     agentflow/gram-callback-arguments-after-second-call] [fixture:
@@ -1636,12 +1792,16 @@ const problems: TreeProblem[] = checkTree(text, tree)
     leading whitespace, including a later physical line, with null only at EOF;
     block closed follows the written brace and an unclosed block reaches EOF. A
     block value stops at its first closing brace, leaving following statements
-    outside the value. [fixture: agentflow/db-accessibility-block] The same
-    default-size comment and immediate-brace conversion as dbFromTree supplies
-    the lexical gaps. Complete frontmatter trivia includes empty and
+    outside the value.
+
+    [fixture: agentflow/db-accessibility-block]
+
+    The same default-size comment and immediate-brace conversion as dbFromTree
+    supplies the lexical gaps. Complete frontmatter trivia includes empty and
     whitespace-only lines after its closing delimiter, but preserves the
-    indentation of the first nonblank body line. [fixture:
-    agentflow/frontmatter-extra-trivia-boundary] [fixture:
+    indentation of the first nonblank body line.
+
+    [fixture: agentflow/frontmatter-extra-trivia-boundary] [fixture:
     agentflow/frontmatter-extra-trivia-below] [fixture:
     agentflow/frontmatter-extra-whitespace-line-boundary] [fixture:
     agentflow/frontmatter-extra-trivia-above] [fixture:
@@ -1660,8 +1820,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     contribute candidates. Duplicate ids, unresolved references, containment
     cycles and known removed shapes do not reject. Shared whole-unit checks
     reject internal directive/ignored-semicolon boundaries; unsupported empty
-    forms have no free statement or gap field. [fixture:
-    agentflow/gram-flow-named-member-hasownproperty] [fixture:
+    forms have no free statement or gap field.
+
+    [fixture: agentflow/gram-flow-named-member-hasownproperty] [fixture:
     agentflow/gram-hasownproperty-last-member] [fixture:
     agentflow/gram-flow-hasownproperty-before-empty-statement] [fixture:
     agentflow/db-flow-three-definitions] [fixture:
@@ -1681,25 +1842,30 @@ const problems: TreeProblem[] = checkTree(text, tree)
     stereotype, CSS name and CSS value must be a lexical unit of its particular
     position, with keyword/operator priority and numeric alternatives checked. A
     single-quoted StringLiteral must be closed by the same single quote;
-    backslash does not escape it. [fixture: usecase/db-all-fields] [fixture:
-    usecase/lex-whitespace-leading] [fixture: usecase/lex-unicode-indent]
-    [fixture: usecase/lex-number-decimal-id-unit] [fixture:
+    backslash does not escape it.
+
+    [fixture: usecase/db-all-fields] [fixture: usecase/lex-whitespace-leading]
+    [fixture: usecase/lex-unicode-indent] [fixture:
+    usecase/lex-number-decimal-id-unit] [fixture:
     usecase/lex-forward-circle-id-prefix] [fixture:
     usecase/lex-native-single-quoted-keys] [fixture:
     usecase/lex-plain-single-apostrophe]
 
     A CSS name has one Identifier atom, or a dash-prefix Punctuator and one
     Identifier word; HWS between them stays in the name but in no token. RawText
-    and String items fragment only at common source cuts. [fixture:
-    usecase/lex-class-property-custom-gap] [fixture:
+    and String items fragment only at common source cuts.
+
+    [fixture: usecase/lex-class-property-custom-gap] [fixture:
     usecase/lex-css-name-custom-tab] [fixture: usecase/directive-in-label]
     [fixture: usecase/lex-directive-css-name-gap]
 
     A split opening must be the complete operator selected with its following
     label source: `--o`, `--x` and longer dash runs cannot be split into a
     shorter opening and label text. HWS after the opening keeps that label
-    separate. [fixture: usecase/gram-split-opening-forward-circle-prefix]
-    [fixture: usecase/gram-split-opening-forward-cross-prefix] [fixture:
+    separate.
+
+    [fixture: usecase/gram-split-opening-forward-circle-prefix] [fixture:
+    usecase/gram-split-opening-forward-cross-prefix] [fixture:
     usecase/gram-split-opening-extra-dash] [fixture:
     usecase/gram-split-backward-opening-extra-dash] [fixture:
     usecase/gram-split-opening-circle-prefix-hws-control] [fixture:
@@ -1707,14 +1873,17 @@ const problems: TreeProblem[] = checkTree(text, tree)
 
     A JSON prefix switches context before a CSS value component in both style
     and classDef; neither an empty nor a nonempty valid JSON object makes it a
-    CSS Literal. [fixture: usecase/gram-style-json-prefix-mode] [fixture:
+    CSS Literal.
+
+    [fixture: usecase/gram-style-json-prefix-mode] [fixture:
     usecase/gram-classdef-json-prefix-mode] [fixture:
     usecase/gram-style-json-prefix-nonempty-mode]
 
     That prefix is checked at each component boundary, including after a Word or
     hash-color, and is not retried inside a plain string, CSS identifier or
-    longer Identifier unit. [fixture:
-    usecase/gram-style-json-prefix-after-word-mode] [fixture:
+    longer Identifier unit.
+
+    [fixture: usecase/gram-style-json-prefix-after-word-mode] [fixture:
     usecase/gram-style-json-prefix-after-hash-mode] [fixture:
     usecase/gram-style-json-prefix-in-string-control] [fixture:
     usecase/gram-style-json-prefix-css-word-control] [fixture:
@@ -1729,10 +1898,11 @@ const problems: TreeProblem[] = checkTree(text, tree)
     vocabularies and final native model constraints; declaration conflicts
     cannot be repaired by later updates. Accessibility values fill the whole
     colon/brace interior, keeping padding and using null only for exactly empty
-    content. [fixture: usecase/gram-actor-list] [fixture:
-    usecase/db-labeled-arrows] [fixture: usecase/db-semantic-case] [fixture:
-    usecase/gram-boundary-nested] [fixture:
-    usecase/gram-native-key-newline-colon] [fixture:
+    content.
+
+    [fixture: usecase/gram-actor-list] [fixture: usecase/db-labeled-arrows]
+    [fixture: usecase/db-semantic-case] [fixture: usecase/gram-boundary-nested]
+    [fixture: usecase/gram-native-key-newline-colon] [fixture:
     usecase/gram-native-value-newline] [fixture:
     usecase/gram-native-trailing-newline-comma] [fixture:
     usecase/gram-native-quoted-business] [fixture:
@@ -1744,8 +1914,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     After common trivia removal and CR/CRLF normalization, the optional trailing
     comma and physical line breaks between the last property and `}` total at
     most two, with the comma allowed only before the line breaks. ASCII HWS does
-    not change the count. [fixture:
-    usecase/gram-metadata-trailing-comma-no-newline] [fixture:
+    not change the count.
+
+    [fixture: usecase/gram-metadata-trailing-comma-no-newline] [fixture:
     usecase/gram-native-trailing-comma-newline] [fixture:
     usecase/gram-metadata-trailing-comma-two-newlines] [fixture:
     usecase/gram-metadata-trailing-comma-three-newlines] [fixture:
@@ -1771,9 +1942,11 @@ const problems: TreeProblem[] = checkTree(text, tree)
     [fixture: usecase/gram-edge-metadata-two-newlines] [fixture:
     usecase/gram-edge-metadata-three-newlines] [fixture:
     usecase/gram-metadata-no-trailing-comma-comment-two-newlines] [fixture:
-    usecase/gram-metadata-no-trailing-comma-comment-three-newlines] A comma
-    between properties still permits multiple line breaks. [fixture:
-    usecase/gram-metadata-property-comma-two-newlines] [fixture:
+    usecase/gram-metadata-no-trailing-comma-comment-three-newlines]
+
+    A comma between properties still permits multiple line breaks.
+
+    [fixture: usecase/gram-metadata-property-comma-two-newlines] [fixture:
     usecase/gram-metadata-property-comma-three-newlines]
 
     UsecaseJsonDataBlock has @, optional HWS, its opening brace, opaque RawText
@@ -1783,8 +1956,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     inside atomic words/operators, while the HWS after a CSS dash prefix and
     complete JSON-prefix components may contain trivia. The per-diagram tests
     construct and break fixed trees; corpus checks use every recorded usecase
-    tree and the common detection fixture. [fixture:
-    usecase/gram-json-space-after-at] [fixture:
+    tree and the common detection fixture.
+
+    [fixture: usecase/gram-json-space-after-at] [fixture:
     usecase/gram-json-double-backslash-before-quote] [fixture:
     usecase/div-json-balanced-invalid-array] [fixture:
     usecase/gram-json-brace-in-single-quote] [fixture:
@@ -1796,15 +1970,19 @@ const problems: TreeProblem[] = checkTree(text, tree)
   - ishikawa: child fields follow `ISHIKAWA_CHILD_TYPES`, checked against
     ast/ishikawa.md: an optional root, one literal per node, and ordered node
     children. Diagram and node ranges are the hull of their tokens and children;
-    a node writes no token outside its text and descendants. [fixture:
-    ishikawa/header-only-lf] [fixture:
+    a node writes no token outside its text and descendants.
+
+    [fixture: ishikawa/header-only-lf] [fixture:
     ishikawa/header-comment-ps-whitespace-eof] [fixture: ishikawa/db-all-fields]
-    [fixture: ishikawa/db-three-definitions] `indent` is a nonnegative integer
-    equal to the written line whitespace count, with a tab counted as one,
-    excluding directive interiors and common comment regions; on the header line
-    only whitespace after the header counts, and a U+2028 or U+2029 ending a
-    diagram comment counts with following whitespace, excluding whitespace
-    inside that comment. [fixture: ishikawa/db-indent-tab-character] [fixture:
+    [fixture: ishikawa/db-three-definitions]
+
+    `indent` is a nonnegative integer equal to the written line whitespace
+    count, with a tab counted as one, excluding directive interiors and common
+    comment regions; on the header line only whitespace after the header counts,
+    and a U+2028 or U+2029 ending a diagram comment counts with following
+    whitespace, excluding whitespace inside that comment.
+
+    [fixture: ishikawa/db-indent-tab-character] [fixture:
     ishikawa/db-indent-equal-mixed-whitespace] [fixture:
     ishikawa/db-indent-around-directives] [fixture:
     ishikawa/header-same-line-root] [fixture: ishikawa/comment-preserved-u2028]
@@ -1813,55 +1991,73 @@ const problems: TreeProblem[] = checkTree(text, tree)
     ishikawa/lex-header-indent-multiline-directive] [fixture:
     ishikawa/lex-indent-comment-region-ls] [fixture:
     ishikawa/lex-indent-comment-region-ps] [fixture:
-    ishikawa/lex-comment-ps-indent-excludes-body-padding] The first cause is a
-    root child, root indentation decides no parent, and later causes at or below
-    the first cause's indentation are root children; otherwise the nearest
-    earlier cause with strictly smaller indentation is the parent, with siblings
-    in source order. [fixture: ishikawa/db-indent-first-cause] [fixture:
+    ishikawa/lex-comment-ps-indent-excludes-body-padding]
+
+    The first cause is a root child, root indentation decides no parent, and
+    later causes at or below the first cause's indentation are root children;
+    otherwise the nearest earlier cause with strictly smaller indentation is the
+    parent, with siblings in source order.
+
+    [fixture: ishikawa/db-indent-first-cause] [fixture:
     ishikawa/db-indent-root-deeper] [fixture: ishikawa/db-indent-root-shallower]
     [fixture: ishikawa/db-indent-relative-zero] [fixture:
     ishikawa/db-indent-clamp-below-base] [fixture:
     ishikawa/db-indent-nearest-smaller-cause] [fixture: ishikawa/db-indent-jump]
-    [fixture: ishikawa/db-indent-pop-several] A literal has its nonempty written
-    value, including trailing whitespace, quotes and entities, with directives,
-    common comment regions and selected ignored semicolons excluded; its RawText
-    tokens are split only at those cuts. [fixture:
-    ishikawa/gram-root-trailing-space] [fixture: ishikawa/gram-empty-quotes]
-    [fixture: ishikawa/header-root-inline-entity] [fixture:
-    ishikawa/directive-root-middle] [fixture:
+    [fixture: ishikawa/db-indent-pop-several]
+
+    A literal has its nonempty written value, including trailing whitespace,
+    quotes and entities, with directives, common comment regions and selected
+    ignored semicolons excluded; its RawText tokens are split only at those
+    cuts.
+
+    [fixture: ishikawa/gram-root-trailing-space] [fixture:
+    ishikawa/gram-empty-quotes] [fixture: ishikawa/header-root-inline-entity]
+    [fixture: ishikawa/directive-root-middle] [fixture:
     ishikawa/comment-ls-region-in-text] [fixture:
-    ishikawa/lex-root-style-semicolon] Text starts with neither indentation,
-    `%%`, nor a bounded header keyword, has no line break outside removed
-    trivia, and runs to the end of its logical line. [fixture:
-    ishikawa/lex-header-nonascii-child] [fixture:
+    ishikawa/lex-root-style-semicolon]
+
+    Text starts with neither indentation, `%%`, nor a bounded header keyword,
+    has no line break outside removed trivia, and runs to the end of its logical
+    line.
+
+    [fixture: ishikawa/lex-header-nonascii-child] [fixture:
     ishikawa/lex-header-middle-label] [fixture:
     ishikawa/gram-root-unclosed-quote] [fixture:
     ishikawa/directive-multiline-joins-node-text] [fixture:
-    ishikawa/lex-kelvin-node-text] A diagram writes one complete `ishikawa` or
-    `ishikawa-beta` Keyword, ignoring the case of ASCII letters and leaving
-    other characters unchanged, with the beta rule first and the ASCII word
-    boundary judged on the original characters; split selected headers and a
-    header with nothing after it but removed directives are rejected. [fixture:
-    ishikawa/header-uppercase] [fixture: ishikawa/header-beta-mixed-case]
-    [fixture: ishikawa/detect-kelvin-in-header] [fixture:
-    ishikawa/lex-header-kelvin-boundary] [fixture:
+    ishikawa/lex-kelvin-node-text]
+
+    A diagram writes one complete `ishikawa` or `ishikawa-beta` Keyword,
+    ignoring the case of ASCII letters and leaving other characters unchanged,
+    with the beta rule first and the ASCII word boundary judged on the original
+    characters; split selected headers and a header with nothing after it but
+    removed directives are rejected.
+
+    [fixture: ishikawa/header-uppercase] [fixture:
+    ishikawa/header-beta-mixed-case] [fixture: ishikawa/detect-kelvin-in-header]
+    [fixture: ishikawa/lex-header-kelvin-boundary] [fixture:
     ishikawa/lex-header-dotted-i-boundary] [fixture:
     ishikawa/header-beta-letter-suffix] [fixture: ishikawa/directive-in-header]
     [fixture: ishikawa/div-directive-beta-prefix] [fixture:
-    ishikawa/header-only] [fixture: ishikawa/header-directive-only-eof] Blank
-    lines, comments and directives create no nodes; successive node texts have a
-    line break or a diagram-comment-ending LS/PS between them, and all other gap
-    and tail characters are whitespace. [fixture:
-    ishikawa/div-header-blank-node] [fixture:
+    ishikawa/header-only] [fixture: ishikawa/header-directive-only-eof]
+
+    Blank lines, comments and directives create no nodes; successive node texts
+    have a line break or a diagram-comment-ending LS/PS between them, and all
+    other gap and tail characters are whitespace.
+
+    [fixture: ishikawa/div-header-blank-node] [fixture:
     ishikawa/div-header-trailing-space-node] [fixture:
     ishikawa/gram-between-directive-line] [fixture:
     ishikawa/gram-root-and-child-one-line] [fixture:
     ishikawa/comment-preserved-u2028] [fixture:
-    ishikawa/comment-preserved-u2029] Diagram comments have mark `%%` and end
-    before a physical line break, U+2028, U+2029, or EOF. [fixture:
-    ishikawa/gram-preserved-comment-after-root] [fixture:
+    ishikawa/comment-preserved-u2029]
+
+    Diagram comments have mark `%%` and end before a physical line break,
+    U+2028, U+2029, or EOF.
+
+    [fixture: ishikawa/gram-preserved-comment-after-root] [fixture:
     ishikawa/comment-preserved-u2028] [fixture:
     ishikawa/comment-preserved-u2029] [fixture: ishikawa/comment-only-eof]
+
   - venn: child types, nullable fields, nonempty name and property lists, subset
     arity, the numeric-id label restriction and kind sets follow ast/venn.md.
     Implicit targets are null exactly at an enabled indented text marker;
@@ -1884,6 +2080,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     immediately before a `%%` that remains in diagram text. U+2028 and U+2029
     can be swallowed before a bare `%%` or `%%{ }%%`; before a removed common
     comment line or a real directive, they remain invalid ordinary gaps.
+
     [fixture: venn/gram-comment-prefix-line-separator-bare-percent] [fixture:
     venn/gram-comment-prefix-line-separator-u2029-bare-percent] [fixture:
     venn/gram-comment-prefix-line-separator-brace-comment] [fixture:
@@ -1926,14 +2123,18 @@ const problems: TreeProblem[] = checkTree(text, tree)
     venn/lex-comment-swallowed-medium-math] [fixture:
     venn/lex-comment-swallowed-ideographic] [fixture:
     venn/lex-comment-swallowed-bom] [fixture: venn/lex-comment-swallowed-cr]
+
     U+0085 is not whitespace and remains ignored text in that position.
-    [fixture: venn/lex-swallowed-nel-gap] A diagram comment stops before a line
-    feed, not U+2028 or U+2029
+
+    [fixture: venn/lex-swallowed-nel-gap]
+
+    A diagram comment stops before a line feed, not U+2028 or U+2029
     ([diagrams/venn.md, Comments](../../spec/docs/diagrams/venn.md#comments-and-swallowed-fragments));
     its range for the gap and tail checks includes the separators and whitespace
     between source pieces where common comment regions cut it, through the next
-    line feed of diagram text or EOF. [fixture:
-    venn/lex-diagram-comment-cut-ls-tree-gap] [fixture:
+    line feed of diagram text or EOF.
+
+    [fixture: venn/lex-diagram-comment-cut-ls-tree-gap] [fixture:
     venn/lex-diagram-comment-cut-ps-tree-gap] [fixture:
     venn/lex-diagram-comment-cut-ls-spaces-tree-gap] [fixture:
     venn/lex-diagram-comment-cut-ps-spaces-tree-gap] [fixture:
@@ -1943,11 +2144,14 @@ const problems: TreeProblem[] = checkTree(text, tree)
     venn/lex-diagram-comment-cut-ps-eof-tree-gap] [fixture:
     venn/lex-diagram-comment-cut-ls-following-real-statement] [fixture:
     venn/lex-diagram-comment-cut-ps-following-real-statement] [fixture:
-    venn/lex-diagram-comment-cut-ls-joined-unit] Label tokens cover the complete
-    written interior, including padding. `check-tree-venn.test.ts` supplies and
-    breaks hand-made trees and breaks recorded trees of named fixtures. The
-    corpus checks include every recorded Venn tree and the common detection
-    fixture; Venn has no recorded-tree exclusion.
+    venn/lex-diagram-comment-cut-ls-joined-unit]
+
+    Label tokens cover the complete written interior, including padding.
+    `check-tree-venn.test.ts` supplies and breaks hand-made trees and breaks
+    recorded trees of named fixtures. The corpus checks include every recorded
+    Venn tree and the common detection fixture; Venn has no recorded-tree
+    exclusion.
+
   - c4: child types, nullable fields, nonempty argument lists, exact keyword
     families and diagram kinds follow ast/c4.md; `beforeBody` holds only empty
     description blocks, and a boundary body starts with a significant call.
@@ -1988,6 +2192,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     syntax and its last descendant, with nonoverlapping siblings; decorations
     belong exactly once to the last written node, irrespective of indentation.
     Acceptance is checked through parser result records, not reimplemented here.
+
     [fixture: kanban/db-indent-deeper] [fixture:
     kanban/db-indent-shallower-last] [fixture:
     kanban/gram-decoration-then-child] [fixture:
@@ -2000,7 +2205,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     after the comment range, through those shared removals. Ordinary LS/PS in a
     value or whitespace gap do not supply a newline. These checks are specific
     to kanban; treemap and treeview native comments still continue through LS/PS
-    to LF. [fixture: kanban/lex-indent-comment-ps-semicolon-space] [fixture:
+    to LF.
+
+    [fixture: kanban/lex-indent-comment-ps-semicolon-space] [fixture:
     kanban/lex-indent-comment-ls-semicolon-space] [fixture:
     kanban/lex-indent-comment-ps-semicolon-wide-tail] [fixture:
     kanban/lex-indent-comment-ps-space-after-card] [fixture:
@@ -2065,29 +2272,35 @@ that says so:
   a style of a class diagram, an ER diagram, or a requirement diagram) leaves
   out the whitespace between its units; the joined tokens are the value. An
   `Identifier` is one token.
+
 - A field without quotes in a sankey diagram (`SankeyIdentifier`,
   `SankeyLiteral`) has the value of its written text without the whitespace at
   its ends, which is empty for a field of whitespace only; the node is the field
   without that whitespace, but for a field of whitespace only, whose one
   `RawText` token is the whitespace, and the tokens are the written text.
+
 - A quadrant chart has the value of its written text in a coordinate, a style,
   and the name of a class (`QuadrantLiteral` and `QuadrantIdentifier`), and the
   value of its written text without the whitespace of Notation at its ends in a
   title, an accessibility text, and the text of a block (`QuadrantLiteral`); a
   label (`QuadrantLabel`) has a value that follows from its written text and its
   kind, which the check of the diagram reads.
+
 - A text of an xychart diagram (`XychartLiteral`) without quotes is a value made
   of units joined, which holds no whitespace; the text of an accessibility
   statement has the value of its written text without the whitespace at its
   ends, the whitespace between its characters included, and the tokens are the
   written text.
+
 - A string, a label that starts with a string, a label of a mindmap diagram that
   is a string or a markdown string, a data block, and a special sequence of a
   railroad diagram (its two question marks) have delimiters that belong to their
   own text; the value is the written text without them, with the whitespace
   written inside them, and that whitespace lies in the tokens, also where a
-  comment region after a U+2028 cuts the special sequence. [fixture:
-  railroad/db-ebnf-special-sequence-line-separator-then-comment-line]
+  comment region after a U+2028 cuts the special sequence.
+
+  [fixture: railroad/db-ebnf-special-sequence-line-separator-then-comment-line]
+
 - A node of text that mermaid.js does not read (an ignored text or statement)
   shows what was written, the whitespace between its units too, and the comments
   in its range are left out; that whitespace lies in no token, except in a run
@@ -2100,6 +2313,7 @@ that says so:
   terminators, the whitespace after them, and the fragment after them. The line
   terminator that ends the comment, a CRLF as one, and a comment line of its own
   with no diagram comment before it, leave nothing else out.
+
 - The number of a `NumericLiteral` and the name of a `FlowchartShape` follow
   from the text and are not the text; the number is checked against the written
   text, and the name against the delimiters of the shape.

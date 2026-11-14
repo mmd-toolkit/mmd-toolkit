@@ -15,9 +15,11 @@ with mermaid.js's own functions (see
 [Configuration (reference)](../configuration.md#configuration-reference)). Here
 this is the wrap setting that a text without a wrap prefix gets: true when
 `wrap` or `sequence.wrap` of the configuration is true, else false. One of the
-two being true is enough, whatever the other says. [fixture:
-sequence/config-wrap-site] [fixture: sequence/config-sequence-wrap-site]
-[fixture: sequence/config-wrap-site-nowrap-prefix] [fixture:
+two being true is enough, whatever the other says.
+
+[fixture: sequence/config-wrap-site] [fixture:
+sequence/config-sequence-wrap-site] [fixture:
+sequence/config-wrap-site-nowrap-prefix] [fixture:
 sequence/config-wrap-false-sequence-wrap-true-site] [fixture:
 sequence/config-wrap-true-sequence-wrap-false-site]
 
@@ -33,25 +35,35 @@ of the configuration otherwise.
 The whitespace at the ends is the whitespace of
 [Notation](../../../spec/docs/common.md#notation): in `A->>B:` followed by
 U+00A0, U+FEFF, `x`, U+3000, and U+2003, the text is `x`, while U+0085 and
-U+180E are not whitespace and stay around an `x`. [fixture:
-sequence/db-message-text-unicode-whitespace-ends] [fixture:
-sequence/db-message-text-non-whitespace-ends-kept] The whitespace after an id is
-the same: `participant A`, U+3000, and U+00A0 adds `A`. [fixture:
-sequence/db-participant-id-unicode-whitespace-ends] A message with only
-whitespace after the `:` has the empty text, and `A->>B: wrap:` has the empty
-text and the wrap true. [fixture: sequence/db-message-text-whitespace-only]
-[fixture: sequence/db-message-wrap-prefix-without-text] A directive inside a
-text is read as nothing, and the whitespace beside a directive at an end of the
-text is removed: `loop a%%{init: {}}%%b` has the text `ab`, and
-`loop %%{init: {}}%% c %%{init: {}}%%` the text `c`. [fixture:
-sequence/db-block-text-directive]
+U+180E are not whitespace and stay around an `x`.
+
+[fixture: sequence/db-message-text-unicode-whitespace-ends] [fixture:
+sequence/db-message-text-non-whitespace-ends-kept]
+
+The whitespace after an id is the same: `participant A`, U+3000, and U+00A0 adds
+`A`.
+
+[fixture: sequence/db-participant-id-unicode-whitespace-ends]
+
+A message with only whitespace after the `:` has the empty text, and
+`A->>B: wrap:` has the empty text and the wrap true.
+
+[fixture: sequence/db-message-text-whitespace-only] [fixture:
+sequence/db-message-wrap-prefix-without-text]
+
+A directive inside a text is read as nothing, and the whitespace beside a
+directive at an end of the text is removed: `loop a%%{init: {}}%%b` has the text
+`ab`, and `loop %%{init: {}}%% c %%{init: {}}%%` the text `c`.
+
+[fixture: sequence/db-block-text-directive]
 
 Each value is read in
 [converted form](../../../spec/docs/common.md#reading-a-source), so an entity is
 its placeholder, in an id as in a text: `participant #quot;B` adds the
 participant `ﬂ°quot¶ßB`, and `A->>B#quot;: x` a message to `Bﬂ°quot¶ß`, and so
-does every statement that names an id. [fixture:
-sequence/db-participant-id-entity] [fixture:
+does every statement that names an id.
+
+[fixture: sequence/db-participant-id-entity] [fixture:
 sequence/db-participant-id-numeric-entity] [fixture:
 sequence/db-actor-id-entity] [fixture: sequence/db-participant-alias-id-entity]
 [fixture: sequence/db-message-from-id-entity] [fixture:
@@ -63,20 +75,26 @@ sequence/db-box-participant-id-entity] [fixture: sequence/db-link-id-entity]
 [fixture: sequence/db-deactivate-id-entity] [fixture:
 sequence/db-details-id-entity] [fixture: sequence/db-links-id-entity] [fixture:
 sequence/db-properties-id-entity] [fixture: sequence/db-note-left-id-entity]
-[fixture: sequence/db-create-destroy-id-entity] A text is read in converted form
-in the same way: `note over A: a#amp;b` has the text `aﬂ°amp¶ßb`, and so do the
-description after `as`, the text of a block, and the name of a box after its
-colour (the title and the accessibility values are read so too, see **Titles**).
+[fixture: sequence/db-create-destroy-id-entity]
+
+A text is read in converted form in the same way: `note over A: a#amp;b` has the
+text `aﬂ°amp¶ßb`, and so do the description after `as`, the text of a block, and
+the name of a box after its colour (the title and the accessibility values are
+read so too, see **Titles**).
+
 [fixture: sequence/db-note-text-entity] [fixture:
 sequence/db-participant-alias-entity] [fixture: sequence/db-block-text-entity]
-[fixture: sequence/db-box-text-entity] The converted form of a text also has the
-quotes of an attribute value as `'`, so `A->>B: <a href="x">y</a>` has the text
-`<a href='x'>y</a>` (see
+[fixture: sequence/db-box-text-entity]
+
+The converted form of a text also has the quotes of an attribute value as `'`,
+so `A->>B: <a href="x">y</a>` has the text `<a href='x'>y</a>` (see
 [HTML attribute quotes](../../../spec/docs/common.md#html-attribute-quotes)),
 and it has nothing for a `;` that
 [the line rule](../../../spec/docs/common.md#style-and-classdef-lines) ignores:
 in `participant Z@{ "style": "x:#y" };A->>B: x;y`, the text of the message is
-`xy`. [fixture: sequence/db-message-text-attribute-quote] [fixture:
+`xy`.
+
+[fixture: sequence/db-message-text-attribute-quote] [fixture:
 sequence/db-message-text-ignored-semicolon]
 
 **Participants.** Adding a participant with an id, a description, a kind, and a
@@ -86,9 +104,11 @@ data block does this:
   makes the input rejected, as **A participant in two boxes** in
   [Rejections outside the grammar](../../../spec/docs/diagrams/sequence.md#rejections-outside-the-grammar)
   defines. This happens before the next two items, so it happens also when
-  nothing else changes. [fixture:
-  sequence/db-box-existing-participant-joins-box] [fixture:
+  nothing else changes.
+
+  [fixture: sequence/db-box-existing-participant-joins-box] [fixture:
   sequence/gram-box-participant-in-two-boxes]
+
 - When a participant with that id exists already and the statement has no
   description, nothing else changes: `participant A as Alice` followed by
   `participant A` keeps the description `Alice`, and `actor A` keeps also the
@@ -99,13 +119,15 @@ data block does this:
   [Data blocks in the Db](#data-blocks-in-the-db)): after
   `participant A as Alice`, `participant A@{ "alias": "Q" }` records A anew with
   the description `Q`, while `participant A@{ "type": "queue" }` changes
-  nothing, and A keeps the kind `participant`. [fixture:
-  sequence/db-participant-redeclared-without-alias] [fixture:
+  nothing, and A keeps the kind `participant`.
+
+  [fixture: sequence/db-participant-redeclared-without-alias] [fixture:
   sequence/db-participant-redeclared-without-alias-keeps-kind] [fixture:
   sequence/db-participant-redeclared-empty-alias] [fixture:
   sequence/db-participant-empty-alias] [fixture:
   sequence/db-data-block-existing-participant-alias] [fixture:
   sequence/db-data-block-existing-participant-type]
+
 - Otherwise the participant is recorded anew: `name` the id, `description` the
   description or else the id, `wrap` the wrap of the description, `type` the
   kind, `links` and `properties` empty, and `prevActor` the id of the
@@ -123,7 +145,9 @@ data block does this:
   `z` and `wrap` true, and `participant B as wrap:` the empty description and
   `wrap` true. A description without a prefix, and a participant without a
   description, have the wrap setting of the configuration, and `nowrap:` gives
-  false. [fixture: sequence/db-participant-redeclared-with-alias] [fixture:
+  false.
+
+  [fixture: sequence/db-participant-redeclared-with-alias] [fixture:
   sequence/db-participant-redeclared-after-links] [fixture:
   sequence/db-participant-redeclared-itself-previous] [fixture:
   sequence/db-participant-redeclared-kind-changes] [fixture:
@@ -131,14 +155,17 @@ data block does this:
   sequence/db-participant-redeclared-after-properties] [fixture:
   sequence/db-participant-alias-wrap-prefix] [fixture:
   sequence/config-wrap-site-participant-description]
+
 - When the participant is recorded inside a box, a participant recorded for the
   first time gets the box, and the box gets the id at the end of its
   `actorKeys`, each time the participant is recorded: `box a`, `participant A`,
   `participant A as X`, and `end` give `actorKeys` A twice, while two
   `participant A` give it once, and `participant A` before the box and again
   inside it give an empty `actorKeys` and A the box. Outside a box, a
-  participant keeps its box. [fixture: sequence/spec-sequence-diagram-f1763a40]
-  [fixture: sequence/db-box-participant-twice-with-alias] [fixture:
+  participant keeps its box.
+
+  [fixture: sequence/spec-sequence-diagram-f1763a40] [fixture:
+  sequence/db-box-participant-twice-with-alias] [fixture:
   sequence/db-box-participant-twice] [fixture:
   sequence/db-box-existing-participant-with-alias] [fixture:
   sequence/db-box-participant-redeclared-outside]
@@ -152,33 +179,44 @@ participant, which **Creating an existing participant** in
 lists, first add each id they name with no description and the kind
 `participant`, so an id that exists already is not changed: a participant that
 has a description from `as` keeps it after a `link`, a `links`, a message, and a
-note that name it. [fixture: sequence/demo-sequence-90dc5f3e] [fixture:
-sequence/spec-sequence-diagram-1705b6f7] `activate` and `deactivate` add none:
-`activate A B` adds an entry for the id `A B` and no participant. [fixture:
-sequence/lex-activate-id-space]
+note that name it.
+
+[fixture: sequence/demo-sequence-90dc5f3e] [fixture:
+sequence/spec-sequence-diagram-1705b6f7]
+
+`activate` and `deactivate` add none: `activate A B` adds an entry for the id
+`A B` and no participant.
+
+[fixture: sequence/lex-activate-id-space]
 
 **Create and destroy.** `create` before a participant statement is rejected when
 a participant with that id exists already (see
 [Rejections outside the grammar](../../../spec/docs/diagrams/sequence.md#rejections-outside-the-grammar));
 otherwise it adds the participant, and records the id in `createdActors` with
 `messageIndex` the number of entries in `messages` so far. `destroy` records the
-id in `destroyedActors` in the same way. [fixture:
-sequence/db-create-participant] [fixture: sequence/db-destroy-participant]
-[fixture: sequence/db-create-participant-before-message] The entries of
-`messages` that `messageIndex` counts are all of them, whatever their kind: in
-`autonumber`, `note over A: n`, `loop x`, `A->>+B: m`, and
+id in `destroyedActors` in the same way.
+
+[fixture: sequence/db-create-participant] [fixture:
+sequence/db-destroy-participant] [fixture:
+sequence/db-create-participant-before-message]
+
+The entries of `messages` that `messageIndex` counts are all of them, whatever
+their kind: in `autonumber`, `note over A: n`, `loop x`, `A->>+B: m`, and
 `create participant C`, the entries before the `create` are the `autonumber`,
 the note, the start of the loop, the message, and the entry of the `+`, and
 `messageIndex` is 5. A second `destroy` with the same id replaces the record of
 the first: `destroy B` after the first message and again after the second
 message give `destroyedActors` B once, with the `messageIndex` of the second.
+
 [fixture: sequence/db-create-message-index-counts-entries] [fixture:
-sequence/db-destroy-twice-replaces-index] A destroy statement with `create` does
-what `create participant` does with its id: it adds the participant with the
-kind `participant` and the id as its description, and records it in
-`createdActors`; it records nothing in `destroyedActors`, and the checks after
-`create` apply to it (see
+sequence/db-destroy-twice-replaces-index]
+
+A destroy statement with `create` does what `create participant` does with its
+id: it adds the participant with the kind `participant` and the id as its
+description, and records it in `createdActors`; it records nothing in
+`destroyedActors`, and the checks after `create` apply to it (see
 [Rejections outside the grammar](../../../spec/docs/diagrams/sequence.md#rejections-outside-the-grammar)).
+
 [fixture: sequence/gram-create-destroy] [fixture:
 sequence/db-create-destroy-then-destroy] [fixture:
 sequence/gram-create-destroy-without-message] [fixture:
@@ -202,7 +240,9 @@ then:
 An entry for one participant has `from` its id, no `to`, the empty `message`,
 `wrap` the wrap setting of the configuration, `activate` false, and
 `centralConnection` 0. `activate` and `deactivate` add such an entry of type 17
-and 18. [fixture: sequence/db-message-activate-target] [fixture:
+and 18.
+
+[fixture: sequence/db-message-activate-target] [fixture:
 sequence/db-message-central-connection-target] [fixture:
 sequence/db-message-central-connection-source] [fixture:
 sequence/db-message-central-connection-both] [fixture:
@@ -210,33 +250,44 @@ sequence/config-wrap-site-activation-entries]
 
 **Notes.** A note adds an entry with `from` and `to` the id, or the two ids of
 `over` with a `,`, `message` the text, `wrap` its wrap, `type` 2, and
-`placement` 0 for `left of`, 1 for `right of`, and 2 for `over`. [fixture:
-sequence/db-note-over-two] [fixture: sequence/db-note-left-of]
+`placement` 0 for `left of`, 1 for `right of`, and 2 for `over`.
+
+[fixture: sequence/db-note-over-two] [fixture: sequence/db-note-left-of]
 
 **Autonumber.** `autonumber` adds an entry of type 26 whose `message` is
 `visible` true, and `start` and `step` when a number follows: the first number,
 and the second, or else 1; a 0 is a number as any other, so `autonumber 0 0`
 gives `start` 0 and `step` 0, and the step is not 1. A number is the number that
 the converted form of its text writes, and the text `Infinity` or `-Infinity`
-where it is too large for a double, as in the summary. [fixture:
-sequence/db-autonumber-start-overflow] [fixture:
-sequence/db-autonumber-step-overflow] `autonumber off` gives `visible` false and
-no numbers. Its `wrap` is false, also when the wrap setting of the configuration
-is true. [fixture: sequence/db-autonumber-bare] [fixture:
-sequence/db-autonumber-start] [fixture: sequence/db-autonumber-start-step]
-[fixture: sequence/db-autonumber-off] [fixture: sequence/db-autonumber-zero]
-[fixture: sequence/config-wrap-site-autonumber]
+where it is too large for a double, as in the summary.
+
+[fixture: sequence/db-autonumber-start-overflow] [fixture:
+sequence/db-autonumber-step-overflow]
+
+`autonumber off` gives `visible` false and no numbers. Its `wrap` is false, also
+when the wrap setting of the configuration is true.
+
+[fixture: sequence/db-autonumber-bare] [fixture: sequence/db-autonumber-start]
+[fixture: sequence/db-autonumber-start-step] [fixture:
+sequence/db-autonumber-off] [fixture: sequence/db-autonumber-zero] [fixture:
+sequence/config-wrap-site-autonumber]
 
 **Blocks.** A block adds an entry at its start with the text and its wrap, one
 for each `else`, `and`, or `option` with its text, and one at its `end` with the
 empty text and the wrap setting of the configuration. A second `else` is another
 entry of type 13: after `alt a`, `else wrap: b` gives `b` with `wrap` true, and
-`else` without text the empty text. [fixture: sequence/db-block-alt-two-else] A
-text without a prefix has the wrap setting too, so with the setting true the
+`else` without text the empty text.
+
+[fixture: sequence/db-block-alt-two-else]
+
+A text without a prefix has the wrap setting too, so with the setting true the
 start, the sections, and the `end` have `wrap` true, and `loop nowrap: x` has
-`wrap` false while its `end` has true. [fixture:
-sequence/config-wrap-site-block-sections] [fixture:
-sequence/config-wrap-site-block-nowrap-prefix] The types are:
+`wrap` false while its `end` has true.
+
+[fixture: sequence/config-wrap-site-block-sections] [fixture:
+sequence/config-wrap-site-block-nowrap-prefix]
+
+The types are:
 
 | Block      | Start | Section | End |
 | ---------- | ----- | ------- | --- |
@@ -251,18 +302,22 @@ sequence/config-wrap-site-block-nowrap-prefix] The types are:
 
 The entries of blocks have no `from` and `to`, `activate` false, and
 `centralConnection` 0. The text of `rect` is used by the renderer as the fill
-colour; the Db holds it as a text. [fixture: sequence/db-block-loop-wrap]
-[fixture: sequence/db-block-alt] [fixture: sequence/db-block-opt] [fixture:
-sequence/db-block-rect] [fixture: sequence/db-block-critical] [fixture:
-sequence/db-block-par] [fixture: sequence/db-block-par-over] [fixture:
-sequence/db-block-break]
+colour; the Db holds it as a text.
+
+[fixture: sequence/db-block-loop-wrap] [fixture: sequence/db-block-alt]
+[fixture: sequence/db-block-opt] [fixture: sequence/db-block-rect] [fixture:
+sequence/db-block-critical] [fixture: sequence/db-block-par] [fixture:
+sequence/db-block-par-over] [fixture: sequence/db-block-break]
 
 **Boxes.** A box adds an entry to `boxes` with `actorKeys` empty; the
 participant statements inside it add their ids, and a destroy statement inside
-it adds nothing. [fixture: sequence/db-box-empty] [fixture:
-sequence/db-box-destroy-inside] Its `name`, `fill`, and `wrap` depend on whether
-the start of its text is a colour, which mermaid.js asks the browser; they are
-given from outside the tree (see [Box colours](#box-colours)).
+it adds nothing.
+
+[fixture: sequence/db-box-empty] [fixture: sequence/db-box-destroy-inside]
+
+Its `name`, `fill`, and `wrap` depend on whether the start of its text is a
+colour, which mermaid.js asks the browser; they are given from outside the tree
+(see [Box colours](#box-colours)).
 
 **Links and properties.** `links` and `properties` read their text as JSON and
 copy each key of the value into the participant's `links` or `properties`,
@@ -281,48 +336,66 @@ the Db reads the JSON from the text of the tree, in converted form, where an
 entity is a placeholder: the JSON is not embedded data in the sense of
 [`embedded-data-opaque`](../../../spec/docs/known-divergences/embedded-data-opaque.md),
 because mermaid.js never rejects an input because of it, and the tree keeps it
-as text like any other. [fixture: sequence/db-links-not-json] [fixture:
-sequence/db-properties-not-json] [fixture: sequence/db-links-string-value]
-[fixture: sequence/db-properties-string-value] [fixture:
-sequence/db-links-array-value] [fixture: sequence/db-links-number-value]
-[fixture: sequence/db-links-two-statements] [fixture: sequence/db-links-entity]
-[fixture: sequence/db-links-object] [fixture: sequence/db-links-trailing-comma]
-[fixture: sequence/db-properties-trailing-comma] [fixture:
-sequence/db-links-true] [fixture: sequence/db-links-false] [fixture:
-sequence/db-links-null] [fixture: sequence/db-links-string-astral] [fixture:
-sequence/db-links-wrap-prefix] [fixture: sequence/db-links-hash-ends-text]
-[fixture: sequence/db-links-directive-in-json] A statement without text has the
-empty text, which is not JSON: `links A:` and `properties A:` change nothing.
+as text like any other.
+
+[fixture: sequence/db-links-not-json] [fixture: sequence/db-properties-not-json]
+[fixture: sequence/db-links-string-value] [fixture:
+sequence/db-properties-string-value] [fixture: sequence/db-links-array-value]
+[fixture: sequence/db-links-number-value] [fixture:
+sequence/db-links-two-statements] [fixture: sequence/db-links-entity] [fixture:
+sequence/db-links-object] [fixture: sequence/db-links-trailing-comma] [fixture:
+sequence/db-properties-trailing-comma] [fixture: sequence/db-links-true]
+[fixture: sequence/db-links-false] [fixture: sequence/db-links-null] [fixture:
+sequence/db-links-string-astral] [fixture: sequence/db-links-wrap-prefix]
+[fixture: sequence/db-links-hash-ends-text] [fixture:
+sequence/db-links-directive-in-json]
+
+A statement without text has the empty text, which is not JSON: `links A:` and
+`properties A:` change nothing.
+
 [fixture: sequence/db-links-empty] [fixture: sequence/db-properties-empty]
 [fixture: sequence/db-links-proto-key] [fixture:
-sequence/db-properties-proto-key] `link` sets one link: its label is the text
-before the first `@` without the character just before the `@`, and its URL the
-text after that `@`, each without whitespace at its ends. When the `@` is the
-first character, no character comes before it, and the label is the text without
-its last character; when it is the second, the label is empty. Without an `@`,
-the label is the text without its last two characters, and the URL the whole
-text: `link A: Dash @ https://x` sets `Dash`, `link A: Dash@https://x` sets
-`Das`, `link A: @ https://alic` sets `@ https://ali` to `https://alic`,
-`link A: x@https://u` sets the empty label, and `link A: no at` sets `no` to
-`no at`. [fixture: sequence/db-link-label] [fixture:
-sequence/db-link-without-space] [fixture: sequence/db-link-at-first] [fixture:
-sequence/db-link-at-second] [fixture: sequence/db-link-at-only] [fixture:
-sequence/db-link-without-at] [fixture: sequence/db-link-without-at-url] The text
-is that of a text part, so `link A: wrap: Dash @ https://x.example` sets `Dash`
-to `https://x.example`, and a `#` ends it, so
+sequence/db-properties-proto-key]
+
+`link` sets one link: its label is the text before the first `@` without the
+character just before the `@`, and its URL the text after that `@`, each without
+whitespace at its ends. When the `@` is the first character, no character comes
+before it, and the label is the text without its last character; when it is the
+second, the label is empty. Without an `@`, the label is the text without its
+last two characters, and the URL the whole text: `link A: Dash @ https://x` sets
+`Dash`, `link A: Dash@https://x` sets `Das`, `link A: @ https://alic` sets
+`@ https://ali` to `https://alic`, `link A: x@https://u` sets the empty label,
+and `link A: no at` sets `no` to `no at`.
+
+[fixture: sequence/db-link-label] [fixture: sequence/db-link-without-space]
+[fixture: sequence/db-link-at-first] [fixture: sequence/db-link-at-second]
+[fixture: sequence/db-link-at-only] [fixture: sequence/db-link-without-at]
+[fixture: sequence/db-link-without-at-url]
+
+The text is that of a text part, so `link A: wrap: Dash @ https://x.example`
+sets `Dash` to `https://x.example`, and a `#` ends it, so
 `link A: Docs @ https://x.example/#top` sets `Docs` to `https://x.example/`. A
 second `@` stays in the URL: `link A: Mail @ mailto:x@y.example` sets `Mail` to
 `mailto:x@y.example`. Without an `@`, a text of one character gives the empty
-label: `link A: x` sets the empty label to `x`. [fixture:
-sequence/db-link-wrap-prefix] [fixture: sequence/db-link-url-hash-ends-text]
-[fixture: sequence/db-link-second-at-in-url] [fixture:
-sequence/db-link-without-at-one-character] With the empty text, `link A:` has no
-`@`, and sets the empty label to the empty URL. [fixture:
-sequence/db-link-empty] `details` adds the participant its id names, if it has
-none, and changes nothing else, also without text: mermaid.js looks for an
-element of the page with the text as its id, which is not part of the diagram's
-text, and the summary is made as on a page without one. [fixture:
-sequence/db-details-empty] [fixture: sequence/db-details-adds-participant]
+label: `link A: x` sets the empty label to `x`.
+
+[fixture: sequence/db-link-wrap-prefix] [fixture:
+sequence/db-link-url-hash-ends-text] [fixture:
+sequence/db-link-second-at-in-url] [fixture:
+sequence/db-link-without-at-one-character]
+
+With the empty text, `link A:` has no `@`, and sets the empty label to the empty
+URL.
+
+[fixture: sequence/db-link-empty]
+
+`details` adds the participant its id names, if it has none, and changes nothing
+else, also without text: mermaid.js looks for an element of the page with the
+text as its id, which is not part of the diagram's text, and the summary is made
+as on a page without one.
+
+[fixture: sequence/db-details-empty] [fixture:
+sequence/db-details-adds-participant]
 
 **Titles.** `title` sets the title to the value of its SequenceTitleStatement,
 the text of the `title-text` unit in converted form, whitespace included:
@@ -347,11 +420,12 @@ line feed, and `c`; a line terminator written as `\r\n` is one line feed. The
 values are in converted form: `a#amp;b` after `accTitle:` or `accDescr:`, and in
 an `accDescr {` block, holds the placeholder of the entity, and a directive on a
 line of its own in a block is read as nothing, the line feeds around it as one:
-`a`, a directive line, and `b` give `a`, a line feed, and `b`. [fixture:
-sequence/db-title-spaces] [fixture: sequence/db-title-whitespace-only] [fixture:
-sequence/db-title-legacy] [fixture: sequence/db-title-legacy-spaces] [fixture:
-sequence/db-title-legacy-next-line-indented] [fixture: sequence/db-title-entity]
-[fixture: sequence/db-title-directive] [fixture:
+`a`, a directive line, and `b` give `a`, a line feed, and `b`.
+
+[fixture: sequence/db-title-spaces] [fixture: sequence/db-title-whitespace-only]
+[fixture: sequence/db-title-legacy] [fixture: sequence/db-title-legacy-spaces]
+[fixture: sequence/db-title-legacy-next-line-indented] [fixture:
+sequence/db-title-entity] [fixture: sequence/db-title-directive] [fixture:
 sequence/db-acc-descr-block-lines] [fixture:
 sequence/db-acc-descr-block-unclosed] [fixture:
 sequence/db-acc-descr-line-alone] [fixture:
@@ -366,23 +440,27 @@ sequence/db-acc-descr-block-directive-line]
 
 The statements are applied in source order, inside blocks too, and each of the
 three values keeps the last one set: `title outer`, a `loop`, and inside it
-`title inner` and `accTitle: inner` give both `inner`. [fixture:
-sequence/db-title-inside-block] The title starts as the title of the
-frontmatter, which does not come from the tree (see
-[The summary](../db-summaries.md#sequence)), and a `title` statement replaces
-it: with `title: From frontmatter` in the frontmatter, `title From statement`
-gives the title `From statement`. `title first` and `title second` give
-`second`, and `accTitle:` and `accDescr:` replace an earlier statement of their
-own kind in the same way; an `accDescr:` line also replaces the description of
-an earlier block, and `accDescr: outer` after a loop replaces `accDescr: inner`
-inside it. The title and the accessibility title are separate values:
-`title first` and `accTitle: second` give the title `first` and the
+`title inner` and `accTitle: inner` give both `inner`.
+
+[fixture: sequence/db-title-inside-block]
+
+The title starts as the title of the frontmatter, which does not come from the
+tree (see [The summary](../db-summaries.md#sequence)), and a `title` statement
+replaces it: with `title: From frontmatter` in the frontmatter,
+`title From statement` gives the title `From statement`. `title first` and
+`title second` give `second`, and `accTitle:` and `accDescr:` replace an earlier
+statement of their own kind in the same way; an `accDescr:` line also replaces
+the description of an earlier block, and `accDescr: outer` after a loop replaces
+`accDescr: inner` inside it. The title and the accessibility title are separate
+values: `title first` and `accTitle: second` give the title `first` and the
 accessibility title `second`. A closed block without text, also one with only
 whitespace, line breaks, or a comment line, changes nothing: after
 `accDescr: x`, `accDescr {}`, `accDescr { }`, and a block with a line break
-between its braces keep `x`. [fixture: sequence/db-title-replaces-frontmatter]
-[fixture: sequence/db-title-replaces] [fixture: sequence/db-acc-title-replaces]
-[fixture: sequence/db-acc-descr-replaces] [fixture:
+between its braces keep `x`.
+
+[fixture: sequence/db-title-replaces-frontmatter] [fixture:
+sequence/db-title-replaces] [fixture: sequence/db-acc-title-replaces] [fixture:
+sequence/db-acc-descr-replaces] [fixture:
 sequence/db-acc-descr-line-replaces-block] [fixture:
 sequence/db-acc-descr-outer-replaces-loop] [fixture:
 sequence/db-title-and-acc-title] [fixture:
@@ -396,8 +474,9 @@ sequence/db-acc-descr-empty-block-lines-after-message] [fixture:
 sequence/db-acc-descr-block-comment-only-after-message]
 
 **Ignored statements.** A SequenceIgnoredStatement changes nothing, also after
-`end` on the same line: a line with only `)` is such a statement. [fixture:
-sequence/lex-invalid-line-parenthesis] [fixture:
+`end` on the same line: a line with only `)` is such a statement.
+
+[fixture: sequence/lex-invalid-line-parenthesis] [fixture:
 sequence/gram-invalid-after-end]
 
 **Lines that go on.** A comment line right after a line that ends with U+2028 or
@@ -414,8 +493,9 @@ text, which then holds a U+2028 and has no name and the fill `transparent`: in
 `box red`, U+2028, a comment line, `participant A`, and `end`, the participant
 statement is not read, and the box has no participant. A directive line and an
 empty line do not continue the line: `A->>B: x`, U+2028, either of them, and
-`C->>D: y` have two messages. [fixture:
-sequence/db-message-text-line-separator-then-comment-line] [fixture:
+`C->>D: y` have two messages.
+
+[fixture: sequence/db-message-text-line-separator-then-comment-line] [fixture:
 sequence/db-participant-description-line-separator-then-comment-line] [fixture:
 sequence/db-participant-id-line-separator-then-comment-line] [fixture:
 sequence/db-title-line-separator-then-comment-line] [fixture:
@@ -440,8 +520,9 @@ arrow (see [SequenceArrow](../../../spec/docs/ast/sequence.md#sequencearrow)):
 - with such a start marker: 45, 46, 47, or 48 for the line `solid`, and 55, 56,
   57, or 58 for `dotted`.
 
-So `->>` is 0, `<<-->>` 34, `-//` 44, and `//--` 57. [fixture:
-sequence/db-arrow-types]
+So `->>` is 0, `<<-->>` 34, `-//` 44, and `//--` 57.
+
+[fixture: sequence/db-arrow-types]
 
 ## Box colours
 
@@ -481,6 +562,7 @@ included, as the name, while `box rgb(1, 2, 3)`, U+2028, and ` G` has no name.
 `box rgba`, U+2028, and `(1, 2, 3, 0.5) G`, `box hsla`, U+2029, and
 `(1, 2%, 3%, 0.5) G`, and `box rgb`, a space, U+2028, U+2029, a space, and
 `(1, 2, 3) G` have the fill `transparent` and the whole text as the name too.
+
 [fixture: sequence/db-box-line-separator-in-colour-function] [fixture:
 sequence/db-box-paragraph-separator-in-colour-function] [fixture:
 sequence/db-box-line-separator-after-colour-function] [fixture:
@@ -508,38 +590,59 @@ whole text. A wrap prefix at the start of the name sets `wrap` as in a text part
 name is the rest; when it is empty, or the box has no text, the box has no
 `name`. Without a prefix, `wrap` is the wrap setting of the configuration, for a
 box without text, with only a colour, or with a name, and `nowrap:` gives false,
-after a colour or not. [fixture: sequence/config-wrap-site-box] [fixture:
-sequence/config-wrap-site-box-nowrap-prefix] The prefix alone leaves no name,
-and it may follow one `:`: `box aqua wrap:` has `wrap` true and no name, and
-`box aqua :wrap:G` has `wrap` true and the name `G`. [fixture:
-sequence/db-box-wrap-prefix-only] [fixture: sequence/db-box-wrap-colon-prefix]
+after a colour or not.
+
+[fixture: sequence/config-wrap-site-box] [fixture:
+sequence/config-wrap-site-box-nowrap-prefix]
+
+The prefix alone leaves no name, and it may follow one `:`: `box aqua wrap:` has
+`wrap` true and no name, and `box aqua :wrap:G` has `wrap` true and the name
+`G`.
+
+[fixture: sequence/db-box-wrap-prefix-only] [fixture:
+sequence/db-box-wrap-colon-prefix]
+
 With the answers of a browser:
 
 - `box green Group 1` has the fill `green` and the name `Group 1`, and
-  `box Group 1` the fill `transparent` and the name `Group 1`. [fixture:
-  sequence/spec-sequence-diagram-f1763a40] [fixture:
+  `box Group 1` the fill `transparent` and the name `Group 1`.
+
+  [fixture: sequence/spec-sequence-diagram-f1763a40] [fixture:
   sequence/spec-sequence-diagram-1705b6f7]
+
 - `box aqua` has the fill `aqua` and no name, and a box without text the fill
-  `transparent` and no name. [fixture: sequence/spec-sequence-diagram-9f31df65]
-  [fixture: sequence/db-box-no-text]
+  `transparent` and no name.
+
+  [fixture: sequence/spec-sequence-diagram-9f31df65] [fixture:
+  sequence/db-box-no-text]
+
 - `box rgb(34, 56, 0) Group1` has the fill `rgb(34, 56, 0)`, and
   `box Purple Alice & John` the fill `Purple` and the name `Alice & John`.
+
   [fixture: sequence/spec-sequence-diagram-97d37793] [fixture:
   sequence/docs-syntax-sequence-diagram-93d3c0ff] [fixture:
   sequence/demo-sequence-ec7c4269]
-- `box red-team` has the fill `red` and the name `-team`. [fixture:
-  sequence/db-box-colour-candidate-word-prefix]
+
+- `box red-team` has the fill `red` and the name `-team`.
+
+  [fixture: sequence/db-box-colour-candidate-word-prefix]
+
 - In `box RGB(0, 0, 255) Team` the candidate is the word `RGB`, and
   `rgb (0, 0, 255)` is no colour; both boxes have the fill `transparent` and
-  their whole text as the name. [fixture:
-  sequence/db-box-colour-function-upper-case] [fixture:
+  their whole text as the name.
+
+  [fixture: sequence/db-box-colour-function-upper-case] [fixture:
   sequence/db-box-colour-function-space]
+
 - `box aqua wrap:Group` has the fill `aqua`, and `box wrap:Group` the fill
-  `transparent`; both have the name `Group` and `wrap` true. [fixture:
-  sequence/db-box-wrap-after-colour] [fixture:
+  `transparent`; both have the name `Group` and `wrap` true.
+
+  [fixture: sequence/db-box-wrap-after-colour] [fixture:
   sequence/db-box-wrap-without-colour]
-- `#` ends the text: `box aqua G # c` has the name `G`. [fixture:
-  sequence/lex-box-hash-comment]
+
+- `#` ends the text: `box aqua G # c` has the name `G`.
+
+  [fixture: sequence/lex-box-hash-comment]
 
 ## Data blocks in the Db
 
@@ -548,13 +651,16 @@ from `dataBlockEffects` of `@mmd-toolkit/tests`, one entry for each participant
 statement with a data block (see
 [`dataBlockEffects`](../embedded-data.md#datablockeffects)). The description
 from `as` comes before the one from the block:
-`participant A@{ "alias": "Q" } as R` has the description `R`. [fixture:
-sequence/db-data-block-alias-and-as] A participant that exists already and is
-recorded anew by a statement with `as` gets the type of its data block as a new
-participant does: `participant A as Alice`, then
-`participant A@{ "type": "queue" } as Bob`, gives A the description `Bob` and
-the type `queue`. After `create`, the data block gives the type as well:
-`create participant A@{ "type": "queue" }` has the type `queue` for A, which
-`createdActors` records with `messageIndex` 0. [fixture:
-sequence/db-data-block-existing-participant-with-as] [fixture:
+`participant A@{ "alias": "Q" } as R` has the description `R`.
+
+[fixture: sequence/db-data-block-alias-and-as]
+
+A participant that exists already and is recorded anew by a statement with `as`
+gets the type of its data block as a new participant does:
+`participant A as Alice`, then `participant A@{ "type": "queue" } as Bob`, gives
+A the description `Bob` and the type `queue`. After `create`, the data block
+gives the type as well: `create participant A@{ "type": "queue" }` has the type
+`queue` for A, which `createdActors` records with `messageIndex` 0.
+
+[fixture: sequence/db-data-block-existing-participant-with-as] [fixture:
 sequence/db-data-block-create-participant]

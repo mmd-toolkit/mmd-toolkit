@@ -19,6 +19,7 @@ flowchart LR
 ```
 
 この例は A にリンク `u` とツールチップ `tip` を与えます。
+
 [fixture: flowchart/gram-click-href-tooltip]
 
 単位が始まる場所の語 `click` は、その後の空白とともに `click` の単位です。
@@ -29,8 +30,9 @@ flowchart LR
 文字列の中や、長い id の一部の語は `click` の単位ではなく、
 どちらもテキストとして読みます。
 `A["click"]` はラベル `click` を持ち、`click-node` は頂点です。
-[fixture: flowchart/gram-label-string-click] [fixture:
-flowchart/spec-flow-singlenode-ada86e69]
+
+[fixture: flowchart/gram-label-string-click]
+[fixture: flowchart/spec-flow-singlenode-ada86e69]
 
 ## 差異
 
@@ -75,10 +77,11 @@ flowchart/spec-flow-singlenode-ada86e69]
 | 4   | id `---` へのクリック。頂点はない               | 同じ     |
 
 表で比較した読みを次の fixture が記録します。
-[fixture: flowchart/db-subgraph-name-click-word-indented] [fixture:
-flowchart/gram-click-bare-after-vertex] [fixture:
-flowchart/gram-click-mid-statement-tooltip] [fixture:
-flowchart/lex-click-id-arrow-callback]
+
+[fixture: flowchart/db-subgraph-name-click-word-indented]
+[fixture: flowchart/gram-click-bare-after-vertex]
+[fixture: flowchart/gram-click-mid-statement-tooltip]
+[fixture: flowchart/lex-click-id-arrow-callback]
 
 例 1 では、mermaid.js は `events` をクリックの id として読んで捨て、
 次の行をその字下げとともにサブグラフのタイトルにつなぎます。
@@ -111,6 +114,7 @@ id `me` の `subgraph me` として読まれ、U+2028 か U+2029 と改行が続
 `me` の後にディレクティブが続くところでも同じです。
 行単位の規則が最後の `;` を無視する `classDef a:click "" b fill:#f00;` は、
 `classDef a:b fill:#f00;` として読まれます。
+
 [fixture: flowchart/db-vertex-id-bare-click]
 [fixture: flowchart/db-subgraph-id-click-blank-line]
 [fixture: flowchart/db-subgraph-id-click-comment-line]
@@ -118,6 +122,7 @@ id `me` の `subgraph me` として読まれ、U+2028 か U+2029 と改行が続
 [fixture: flowchart/db-subgraph-id-click-paragraph-separator]
 [fixture: flowchart/db-subgraph-id-click-space-directive]
 [fixture: flowchart/db-classdef-name-bare-click-ignored-semicolon]
+
 それ以外では、除くことで両側がつながるか、
 クリックの id のテキストが文の文脈で別に読まれる位置に来るので、
 `click` を除いた入力について何もいえません。
@@ -127,6 +132,7 @@ id `me` の `subgraph me` として読まれ、U+2028 か U+2029 と改行が続
 `subgraph click m;e` では `;` が `subgraph m;e` の区切りになり、
 `subgraph click a,b` に空の行が続くものでは、`,` が `,` の単位になります。
 名前は `,` の単位を取らないので、`subgraph a,b` は mermaid.js でも拒否されます。
+
 [fixture: flowchart/gram-subgraph-name-click]
 [fixture: flowchart/gram-subgraph-name-click-empty-description-block]
 [fixture: flowchart/gram-subgraph-name-click-semicolon-in-id]
@@ -142,6 +148,7 @@ mmd-toolkit のパーサーは入力を拒否し、予約語を報告します�
 語をテキストとして書くには、テキストを引用符で囲みます。
 `subgraph "Handle click events"` なら、どちらもそのタイトルと、
 サブグラフの中の頂点 A を読みます。
+
 [fixture: flowchart/gram-subgraph-name-string-click]
 
 ## mermaid.js がそう読む理由

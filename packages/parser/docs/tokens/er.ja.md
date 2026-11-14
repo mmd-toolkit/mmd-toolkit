@@ -44,20 +44,28 @@
 `classDef a fill : #f9f` のスタイルは `fill`、`:`、
 `#f9f` の 3 つの `RawText` トークンで、値は `fill:#f9f` です。
 `classDef a fill:#f9f` は `fill:#f9f` の 1 つのトークンです。
+
 [fixture: er/lex-classdef-style-spaces] [fixture: er/gram-classdef]
+
 いくつかの語の濃度や線は、語の間の空白を含めて、
 1 つの単位で 1 つのトークンです。
 `one or more` は 1 つの `Keyword` トークンです。
+
 [fixture: er/lex-cardinality-words]
+
 トークンは両端に空白を持ちません。
 ただし mermaid.js
 が値の一部として読むところは別です（[トークン](../tokens.ja.md#トークン)
 を参照）。
 `end` 単位がキーワードの後に読む空白は、そのトークンの外にあります。
+
 [fixture: er/lex-end-blank-line-then-name]
+
 一方、名前の終わりの U+00A0 のように、名前、語、
 `style-text` の単位の文字である空白は、値の中にあるのと同じく、
-トークンの中にあります。 [fixture: er/lex-name-trailing-nbsp]
+トークンの中にあります。
+
+[fixture: er/lex-name-trailing-nbsp]
 [fixture: er/lex-style-nbsp-before-line-feed]
 
 `RawText` か `String` のトークンの中のディレクティブ、コメント領域、
@@ -67,10 +75,12 @@
 切られた `String` トークンは `StringFragment` トークンになります。
 ほかの種類のトークンの中では、
 ディレクティブや無視される `;` は入力を拒否させます。
+
 [fixture: er/lex-directive-in-role-string]
 [fixture: er/tokens-comment-line-in-role-string]
 [fixture: er/tokens-ignored-semicolon-in-role-string]
 [fixture: er/div-directive-in-name] [fixture: er/div-ignored-semicolon-in-name]
+
 [単位の中のディレクティブ](../../../spec/docs/diagrams/er.ja.md#単位の中のディレクティブ)
 を参照。
 コメント領域は、`Identifier` トークンも切ります。
@@ -80,6 +90,7 @@
 断片は `Identifier` トークンで、領域は、
 その `%%` の前のディレクティブとともに断片の外にあります。
 役割と、属性の名前でも同じです。
+
 [fixture: er/lex-name-line-separator-comment-line]
 [fixture: er/lex-name-line-separator-directive-comment-line]
 [fixture: er/lex-role-name-comment-line]
@@ -87,12 +98,18 @@
 
 - 文である空の説明ブロックは、`Keyword` トークン `accDescr` と、
   `Punctuator` トークン `{` と `}` を持ちます。
+
   [fixture: er/gram-acc-descr-block-empty]
+
 - ErIgnoredText の各 `empty-backquotes` 単位は、
   それぞれ 1 つの `String` トークンです。
   2 つの属性の間にそれが 2 つある属性ブロックは、
-  そうしたトークンを 2 つ持ちます。 [fixture: er/gram-empty-backquotes-twice]
+  そうしたトークンを 2 つ持ちます。
+
+  [fixture: er/gram-empty-backquotes-twice]
+
 - 行の規則が無視する `;` は `IgnoredSemicolon` トークンです。
   `A ||--o{ Bstyle : "x:#y";` では、役割は `String` トークン `"x:#y"` で、
   その後の `;` は `IgnoredSemicolon` トークンです。
+
   [fixture: er/tokens-ignored-semicolon-after-role]

@@ -41,16 +41,23 @@ another with nothing between them. Whitespace belongs to no unit in this diagram
 type, so a run breaks where whitespace lies between two units: the style of
 `classDef a fill : #f9f` is the three `RawText` tokens `fill`, `:`, and `#f9f`,
 and its value is `fill:#f9f`, while `classDef a fill:#f9f` has the one token
-`fill:#f9f`. [fixture: er/lex-classdef-style-spaces] [fixture: er/gram-classdef]
+`fill:#f9f`.
+
+[fixture: er/lex-classdef-style-spaces] [fixture: er/gram-classdef]
+
 A cardinality or a line of several words is one unit and one token, with the
-spaces between its words: `one or more` is one `Keyword` token. [fixture:
-er/lex-cardinality-words] A token holds no whitespace at its ends, except where
-mermaid.js reads it as part of a value (see [Tokens](../tokens.md#tokens)): the
-whitespace that the `end` unit reads after the keyword is outside its token,
-[fixture: er/lex-end-blank-line-then-name] while a whitespace character that is
-a character of a name, a word, or a style-text unit, such as U+00A0 at the end
-of a name, is inside the token, as it is inside the value. [fixture:
-er/lex-name-trailing-nbsp] [fixture: er/lex-style-nbsp-before-line-feed]
+spaces between its words: `one or more` is one `Keyword` token.
+
+[fixture: er/lex-cardinality-words]
+
+A token holds no whitespace at its ends, except where mermaid.js reads it as
+part of a value (see [Tokens](../tokens.md#tokens)): the whitespace that the
+`end` unit reads after the keyword is outside its token, while a whitespace
+character that is a character of a name, a word, or a style-text unit, such as
+U+00A0 at the end of a name, is inside the token, as it is inside the value.
+
+[fixture: er/lex-end-blank-line-then-name] [fixture: er/lex-name-trailing-nbsp]
+[fixture: er/lex-style-nbsp-before-line-feed]
 
 A directive, a comment region, or a `;` that the line rule ignores inside a
 `RawText` or a `String` token cuts it into fragments, as
@@ -58,26 +65,35 @@ A directive, a comment region, or a `;` that the line rule ignores inside a
 says, and a cut `String` token becomes `StringFragment` tokens; inside a token
 of any other kind, a directive or an ignored `;` makes the input rejected (see
 [Directives inside units](../../../spec/docs/diagrams/er.md#directives-inside-units)).
+
 [fixture: er/lex-directive-in-role-string] [fixture:
 er/tokens-comment-line-in-role-string] [fixture:
 er/tokens-ignored-semicolon-in-role-string] [fixture: er/div-directive-in-name]
-[fixture: er/div-ignored-semicolon-in-name] A comment region also cuts an
-`Identifier` token, whose name goes on across the region after a U+2028 or a
-U+2029 in it (see
+[fixture: er/div-ignored-semicolon-in-name]
+
+A comment region also cuts an `Identifier` token, whose name goes on across the
+region after a U+2028 or a U+2029 in it (see
 [Comment regions in tokens](../tokens.md#comment-regions-in-tokens)): its
 fragments are `Identifier` tokens, and the region, with a directive before its
-`%%`, lies outside them, as in a role and in the name of an attribute. [fixture:
-er/lex-name-line-separator-comment-line] [fixture:
+`%%`, lies outside them, as in a role and in the name of an attribute.
+
+[fixture: er/lex-name-line-separator-comment-line] [fixture:
 er/lex-name-line-separator-directive-comment-line] [fixture:
 er/lex-role-name-comment-line] [fixture: er/lex-attribute-name-comment-line]
 
 - An empty description block that is a statement has the `Keyword` token
-  `accDescr` and the `Punctuator` tokens `{` and `}`. [fixture:
-  er/gram-acc-descr-block-empty]
+  `accDescr` and the `Punctuator` tokens `{` and `}`.
+
+  [fixture: er/gram-acc-descr-block-empty]
+
 - Each `empty-backquotes` unit of an ErIgnoredText is a `String` token of its
   own: an attribute block with two of them between two attributes has two such
-  tokens. [fixture: er/gram-empty-backquotes-twice]
+  tokens.
+
+  [fixture: er/gram-empty-backquotes-twice]
+
 - A `;` that the line rule ignores is an `IgnoredSemicolon` token: in
   `A ||--o{ Bstyle : "x:#y";`, the role is the `String` token `"x:#y"`, and the
-  `;` after it is an `IgnoredSemicolon` token. [fixture:
-  er/tokens-ignored-semicolon-after-role]
+  `;` after it is an `IgnoredSemicolon` token.
+
+  [fixture: er/tokens-ignored-semicolon-after-role]

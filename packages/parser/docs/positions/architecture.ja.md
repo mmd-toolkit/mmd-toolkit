@@ -4,8 +4,9 @@
 
 範囲は [ノード仕様](../../../spec/docs/ast/architecture.md#nodes)に従い、
 元の UTF-16 オフセットとソースの改行を使います。
-Root は入力全体を覆います。 [fixture: architecture/gram-written-tree]
-[fixture: architecture/line-crlf]
+Root は入力全体を覆います。
+
+[fixture: architecture/gram-written-tree] [fixture: architecture/line-crlf]
 
 ## 範囲
 
@@ -14,6 +15,7 @@ ArchitectureDiagram は、ヘッダー前に保持する最初の形式、なけ
 外側の余白、通過した裸の行と付随する trivia、コメント、
 追加の LF は範囲を延ばしません。
 textBeforeHeader は、保持する YAML と二回目の走査のネイティブ形式を所有します。
+
 [fixture: architecture/header-beta]
 [fixture: architecture/detect-retained-before-second-scan]
 [fixture: architecture/detect-two-second-scan-forms]
@@ -27,6 +29,7 @@ textBeforeHeader は、保持する YAML と二回目の走査のネイティブ
 junction にアイコンやラベルはありません。
 存在する任意要素の前の隠れた形式は、その要素の gap に属します。
 要素がなければ、次に存在する要素か textAfter に属します。
+
 [fixture: architecture/gram-written-tree]
 [fixture: architecture/header-inline-group]
 [fixture: architecture/header-inline-service]
@@ -41,6 +44,7 @@ junction にアイコンやラベルはありません。
 textAfter まで延びます。
 矢印は両ポートのコロンを含み、内部の gap と任意ラベルを覆います。
 マーカーや任意要素がなければ、その名前の gap は空です。
+
 [fixture: architecture/db-mixed] [fixture: architecture/end-edge-eof]
 [fixture: architecture/hidden-yaml-edge-eof]
 [fixture: architecture/hidden-yaml-edge-gaps]
@@ -51,6 +55,7 @@ textAfter まで延びます。
 各メンバーは直前の最初の隠れた形式、なければ自身の ID から、
 自身の ID の終わりまでを覆います。
 メンバーと文の順序は、書かれた順序のままです。
+
 [fixture: architecture/db-align-forward-repeat]
 [fixture: architecture/hidden-yaml-align-gap]
 [fixture: architecture/hidden-directive-align-eof]
@@ -62,6 +67,7 @@ raw はソースの切り出しそのものです。
 ラベルは両角括弧を覆い、値は kind が text なら角括弧だけを、
 string なら一致する引用符も除きます。
 裸のラベル内部の余白は保持します。
+
 [fixture: architecture/lex-icon-leading-symbols]
 [fixture: architecture/directive-icon-delimiters]
 [fixture: architecture/lex-string-conversion]
@@ -78,7 +84,9 @@ title は値、null ならキーワードの終わりまでです。
 以降の隠れた形式は body に属します。
 ArchitectureLiteral は余白を含む行の内容か、
 両端だけを trim したブロック内容を覆います。
-null に葉はありません。 [fixture: architecture/common-repeat-empty]
+null に葉はありません。
+
+[fixture: architecture/common-repeat-empty]
 [fixture: architecture/lex-title-one-space-null]
 [fixture: architecture/lex-title-two-spaces-literal]
 [fixture: architecture/lex-acctitle-whitespace-only]
@@ -99,6 +107,7 @@ ArchitectureIgnoredText は開始から選ばれた終端までを覆い、
 共通ディレクティブ、コメント領域、選択されたセミコロンは、
 それらをまたぐノードの範囲内にありますが、値からは除きます。
 ソースの改行をそのまま保持します。
+
 [fixture: architecture/hidden-yaml-open-padding]
 [fixture: architecture/hidden-yaml-three-fences]
 [fixture: architecture/lex-yaml-two-nonempty]

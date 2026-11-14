@@ -22,8 +22,9 @@ gantt
   b : 2d
 ```
 
-The example puts a `%%{ }%%` comment between tasks. [fixture:
-gantt/lex-percent-brace-line-after-task]
+The example puts a `%%{ }%%` comment between tasks.
+
+[fixture: gantt/lex-percent-brace-line-after-task]
 
 This document is about such a `%%{` where mermaid.js reaches it directly, as
 [Comments](../diagrams/gantt.md#comments) defines it: right after a unit on its
@@ -97,8 +98,9 @@ Each example is a whole Gantt chart.
 | 6       | rejected   | a chart with no statement        |
 | 7       | the same   | a chart with the title T         |
 
-The fixtures record the readings compared in the table. [fixture:
-gantt/div-percent-brace-glued-after-header] [fixture:
+The fixtures record the readings compared in the table.
+
+[fixture: gantt/div-percent-brace-glued-after-header] [fixture:
 gantt/div-percent-brace-glued-after-keyword] [fixture:
 gantt/div-percent-brace-glued-after-string] [fixture:
 gantt/div-percent-brace-after-two-spaces] [fixture:
@@ -112,8 +114,9 @@ description block, after a space and a line feed, and after a `%` comment line
 and an empty line are comments here and rejected by mermaid.js, while `%%{ }%%`
 after a line feed and a tab, after a unit and one space, where it takes the rest
 of the line, on the line after a `%` comment line, after a click statement, and
-`%%{}` or `%%{-x}%%` on a line of its own are comments in both. [fixture:
-gantt/div-percent-brace-glued-empty-after-header] [fixture:
+`%%{}` or `%%{-x}%%` on a line of its own are comments in both.
+
+[fixture: gantt/div-percent-brace-glued-empty-after-header] [fixture:
 gantt/div-percent-brace-open-glued-after-header] [fixture:
 gantt/div-percent-brace-glued-after-day] [fixture:
 gantt/div-percent-brace-glued-after-block] [fixture:
@@ -126,11 +129,13 @@ gantt/lex-percent-brace-after-percent-comment-line] [fixture:
 gantt/lex-percent-brace-after-call-line-feed] [fixture:
 gantt/lex-percent-brace-after-href-space] [fixture:
 gantt/lex-percent-brace-empty-line] [fixture:
-gantt/lex-percent-brace-non-word-line] The difference goes one way: this
-specification accepts inputs that mermaid.js rejects, and it never rejects one
-that mermaid.js accepts here. Where a `%%{` lies inside a title text, task data,
-or another text, it is text in both. [fixture:
-gantt/lex-percent-brace-in-title-text] [fixture:
+gantt/lex-percent-brace-non-word-line]
+
+The difference goes one way: this specification accepts inputs that mermaid.js
+rejects, and it never rejects one that mermaid.js accepts here. Where a `%%{`
+lies inside a title text, task data, or another text, it is text in both.
+
+[fixture: gantt/lex-percent-brace-in-title-text] [fixture:
 gantt/lex-percent-brace-in-task-data]
 
 ## What it means for an author

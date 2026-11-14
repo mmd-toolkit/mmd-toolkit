@@ -105,6 +105,7 @@ CRLF と単独の CR は 1 つの改行文字として、空行の改行文字�
 | 5   | 拒否       | x 軸 `A`、2 つの line、タイトル `Q1` |
 
 表で比較した読みを次の fixture が記録します。
+
 [fixture: xychart/div-title-digit-after-axis-semicolon]
 [fixture: xychart/div-title-digit-after-axis-band-same-line]
 [fixture: xychart/div-title-digit-next-line-after-axis-and-plot]
@@ -118,6 +119,7 @@ CRLF と単独の CR は 1 つの改行文字として、空行の改行文字�
   一方、`x-axis A; line [1] title Q1` のように間にプロットの文があるものと、
   `x-axis A; title a.b` のように数字のないタイトルは両方が受理し、
   `line [1]; title T1` のようにプロットの文だけの後のタイトルも同じです。
+
   [fixture: xychart/div-title-digit-after-axis-semicolon]
   [fixture: xychart/div-title-digit-after-axis-band-same-line]
   [fixture: xychart/div-title-digit-after-axis-band-semicolon]
@@ -130,6 +132,7 @@ CRLF と単独の CR は 1 つの改行文字として、空行の改行文字�
   [fixture: xychart/db-title-digit-after-axis-and-plot-same-line]
   [fixture: xychart/db-title-dotted-word-after-axis-semicolon]
   [fixture: xychart/db-title-digit-after-plot-semicolon]
+
 - 空白で終わる行の後: `x-axis A`、分類、範囲、
   引用符の中のタイトルの行の終わりの空白文字、タブ、U+00A0、U+2028、U+2029、
   空白文字とディレクティブ、説明ブロックと空白文字で、
@@ -139,6 +142,7 @@ CRLF と単独の CR は 1 つの改行文字として、空行の改行文字�
   空白文字の後のコメント、
   改行文字の後の空白だけの行（2 つの段では空行の後のもの）は、両方が同じに読み、
   空白の後の `%%` だけの行も、その改行文字が段を降ろすので同じです。
+
   [fixture: xychart/div-title-digit-after-axis-trailing-space]
   [fixture: xychart/div-title-digit-after-axis-trailing-tab]
   [fixture: xychart/div-title-digit-after-axis-trailing-nbsp]
@@ -161,6 +165,7 @@ CRLF と単独の CR は 1 つの改行文字として、空行の改行文字�
   [fixture: xychart/db-title-digit-after-axis-whitespace-line]
   [fixture: xychart/db-title-digit-after-trailing-space-and-bare-percent-line]
   [fixture: xychart/db-title-quoted-digit-after-axis-trailing-space]
+
 - 軸の文の行でその後に積まれた段の後: その後のプロットの文、bar の文、
   別の x 軸、y 軸、分類か範囲の後、CRLF か単独の CR の後、
   行の終わりの `;` の後、アクセシビリティのタイトルのテキストの後、
@@ -170,6 +175,7 @@ CRLF と単独の CR は 1 つの改行文字として、空行の改行文字�
   その後のアクセシビリティのタイトル、1 つの段での単独の CR、
   字下げしたタイトル、フロントマター、2 つの段でのタイトルの前の空行、
   3 つの段での 2 つの空行は、両方が同じに読みます。
+
   [fixture: xychart/div-title-digit-next-line-after-axis-and-plot]
   [fixture: xychart/div-title-digit-next-line-after-two-axes]
   [fixture: xychart/div-title-digit-next-line-after-axis-and-y-axis]
@@ -193,6 +199,7 @@ CRLF と単独の CR は 1 つの改行文字として、空行の改行文字�
   [fixture: xychart/db-title-digit-after-three-levels-and-two-empty-lines]
   [fixture: xychart/db-title-quoted-digit-next-line-after-axis-and-plot]
   [fixture: xychart/db-title-digit-after-axis-plot-lines]
+
 - 何も降ろさない改行文字を越えて: コメント行（その前に空行があるときも）、
   2 つの段を持つ行の後の `%%` だけの行、`accTitle:` や `accDescr:` の後や、
   その `:` や `{` の周りの改行文字、文字列の中の改行文字、
@@ -200,6 +207,7 @@ CRLF と単独の CR は 1 つの改行文字として、空行の改行文字�
   一方、`%%` だけの行とその後の空行と、
   前の改行文字が単位の始まるところで読まれる、空白と `%%` の行と、空行を残す、
   それだけの行のディレクティブは、両方が同じに読みます。
+
   [fixture: xychart/div-title-digit-after-comment-line-after-axis-and-plot]
   [fixture: xychart/div-title-digit-after-empty-line-and-comment-line]
   [fixture: xychart/div-title-digit-after-bare-percent-line-after-axis-and-plot]
@@ -214,12 +222,14 @@ CRLF と単独の CR は 1 つの改行文字として、空行の改行文字�
   [fixture: xychart/db-title-digit-after-directive-line-after-axis-and-plot]
   [fixture: xychart/db-title-digit-after-directive-line-after-axis]
   [fixture: xychart/db-title-digit-after-indented-bare-percent-line]
+
 - 後の行で: プロットの文を持つ行の後、
   同じ行のタイトルの前に数字のないタイトルを持つ行の後、空白文字で終わる行の後、
   空白文字で終わる行に続くプロットの行の後。
   一方、`title T` のように単位で終わる行は、軸の文の段が一番上ならそれを降ろし、
   軸の文の行で空白文字で終わるプロットの文は、
   次の行のタイトルをプロットの段の下に保ちます。
+
   [fixture: xychart/div-title-digit-two-lines-after-axis-and-plot]
   [fixture: xychart/div-title-digit-after-plot-line-after-axis-and-plot]
   [fixture: xychart/div-title-digit-second-statement-next-line-after-axis-and-plot]
@@ -269,6 +279,7 @@ CRLF と単独の CR は 1 つの改行文字として、空行の改行文字�
 受理した入力は、同じ入力で各文をそれだけの行に置き、
 文を終える各行の終わりの空白を除いたものの Db を持ちます。
 mermaid.js はそれを受理します。
+
 [fixture: xychart/db-title-digit-line-after-axis]
 [fixture: xychart/db-title-digit-after-axis-plot-lines]
 

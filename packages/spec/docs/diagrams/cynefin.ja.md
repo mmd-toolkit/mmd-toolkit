@@ -4,6 +4,7 @@
 
 cynefin 図とその[書かれた木](../ast/cynefin.ja.md)を定義する。
 公開の見出しは cynefin-beta で、直結した colon を付けてもよい。
+
 [fixture: cynefin/header-only] [fixture: cynefin/header-colon]
 
 ## 検出
@@ -13,17 +14,20 @@ cynefin 図とその[書かれた木](../ast/cynefin.ja.md)を定義する。
 先頭の共通空白の後の cynefin-beta に、共通空白、colon、
 テキスト末尾のいずれかが続く。
 英字、数字、underscore、dash、他の Unicode 文字、
-semicolon はその境目を満たさない。 [fixture: cynefin/header-only]
-[fixture: cynefin/header-colon] [fixture: cynefin/header-uppercase]
-[fixture: cynefin/header-letter] [fixture: cynefin/header-digit]
-[fixture: cynefin/header-word] [fixture: cynefin/header-dash]
-[fixture: cynefin/header-unicode] [fixture: cynefin/header-punctuation]
+semicolon はその境目を満たさない。
+
+[fixture: cynefin/header-only] [fixture: cynefin/header-colon]
+[fixture: cynefin/header-uppercase] [fixture: cynefin/header-letter]
+[fixture: cynefin/header-digit] [fixture: cynefin/header-word]
+[fixture: cynefin/header-dash] [fixture: cynefin/header-unicode]
+[fixture: cynefin/header-punctuation]
 
 [文法][grammar] の見出しは cynefin-beta と cynefin-beta: の二つで、
 どちらにも後続の EOL は要らない。
 colon の無い形の独自の境目は共通空白、テキスト末尾、%% で、
 colon つきの形には後続の境目の検査が無い。
 語と colon の間の空白や native hidden な形は colon つきの見出しを作らない。
+
 [fixture: cynefin/header-inline] [fixture: cynefin/header-colon-inline]
 [fixture: cynefin/header-colon-title] [fixture: cynefin/header-spaced-colon]
 [fixture: cynefin/native-header-word-colon]
@@ -38,6 +42,7 @@ colon の前や残る空白の前の共通 directive は許すが、
 検出は選ばれた semicolon の除去より先なので、
 見出しの中や語と colon の間の semicolon は検出を修復しない。
 先にある C4 の検出には c4-keyword-anywhere を適用する。
+
 [fixture: cynefin/line-cr] [fixture: cynefin/line-crlf]
 [fixture: cynefin/directive-every-field] [fixture: cynefin/entity-texts]
 [fixture: cynefin/header-global-before-colon]
@@ -54,6 +59,7 @@ colon の無い見出しに接する %% は、検出対象のソースに後続�
 通常のコメントの直結にも同じ LF の条件がある。
 %% の前に空白があれば、それ自体が検出の境目となる。
 検出用の除去は、文法の入力から native directive や続く領域を除かない。
+
 [fixture: cynefin/header-native-no-eol]
 [fixture: cynefin/header-native-spaced-no-eol]
 [fixture: cynefin/header-native-glued-line-feed]
@@ -71,6 +77,7 @@ retained なブロックの飛ばしには本文の行、
 空の隣接する fence、閉じの欠落、字下げした閉じ、四つの dash、接尾の文字、
 EOF の閉じ、二つ目のブロック、先行する裸の %% 行はこの飛ばしを止める。
 開きの前の字下げを通過しても、閉じの字下げは許されない。
+
 [fixture: cynefin/frontmatter-title]
 [fixture: cynefin/detect-block-after-directive]
 [fixture: cynefin/detect-retained-empty]
@@ -93,6 +100,7 @@ retained YAML が二度目の走査の directive より前なら受理できる�
 逆順でもう一度 YAML を飛ばすことはない。
 二つの二度目の走査の directive を読める場合はあるが、
 閉じと見出しの直結は native の境目を満たさない。
+
 [fixture: cynefin/detect-real-before-retained-secondscan]
 [fixture: cynefin/detect-retained-yaml-properties]
 [fixture: cynefin/prefix-yaml-before-secondscan]
@@ -108,6 +116,7 @@ ASCII の対照は native の境目を保つ。
 native の空白として読み直さない。
 通過した裸の行が無ければ、
 native の接頭の境目の Unicode の文字には native の規則が必要である。
+
 [fixture: cynefin/detect-retained-secondscan-bare-ascii]
 [fixture: cynefin/detect-retained-secondscan-bare-ls]
 [fixture: cynefin/detect-retained-secondscan-bare-ps]
@@ -125,7 +134,9 @@ colon の無い cynefin-beta だけの独自 matcher を加える。
 実効の一つの文脈の順序は次のとおりで、先に合うものを採り、
 longer alternative や一般の最長一致の規則は無い。
 到達する[共通 terminal][common] を含むが、import した BOOLEAN、FLOAT、INT、
-NUMBER、ID には到達しない。 [fixture: cynefin/header-colon-inline]
+NUMBER、ID には到達しない。
+
+[fixture: cynefin/header-colon-inline]
 [fixture: cynefin/lex-domain-title-priority]
 [fixture: cynefin/gram-glued-domains] [fixture: cynefin/common-title-prefix]
 [fixture: cynefin/domain-digit]
@@ -153,6 +164,7 @@ complextitle T は領域と title となる。
 未知の接尾の文字は依然として lexer error になる。
 --> は分割しない一つの矢印で、colon が別の単位となるのは囲む形の外だけである。
 他の矢印、任意の領域名、引用符の無い項目は単位でない。
+
 [fixture: cynefin/gram-glued-domains]
 [fixture: cynefin/lex-domain-title-priority] [fixture: cynefin/domain-letter]
 [fixture: cynefin/domain-digit] [fixture: cynefin/domain-dash]
@@ -167,8 +179,9 @@ string は対になる単一引用符または二重引用符を使い、空で�
 backslash の後には CR、LF、U+2028、U+2029 以外の一文字が必要である。
 単独の backslash、escape した行区切り、対応する閉じの欠落は拒否する。
 他方の引用符では閉じない。
-全域の共通の除去は、内側にも適用する。 [fixture: cynefin/db-empty-texts]
-[fixture: cynefin/lex-string-escaped-quotes]
+全域の共通の除去は、内側にも適用する。
+
+[fixture: cynefin/db-empty-texts] [fixture: cynefin/lex-string-escaped-quotes]
 [fixture: cynefin/lex-string-conversion] [fixture: cynefin/line-string-values]
 [fixture: cynefin/lex-string-open-double]
 [fixture: cynefin/lex-string-open-single]
@@ -178,35 +191,37 @@ backslash の後には CR、LF、U+2028、U+2029 以外の一文字が必要で�
 [fixture: cynefin/lex-string-escaped-ps]
 [fixture: cynefin/directive-every-field]
 [fixture: cynefin/comment-line-in-string]
+
 値の中の U+2028 か U+2029 の後の物理行の残りは、その改行も含めて、
 共通のコメント領域が取り除くことがある。
 そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
 `accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
-U+2028、`B` である。 [fixture:
-cynefin/lex-string-line-separator-then-comment-line] [fixture:
-cynefin/lex-string-paragraph-separator-then-comment-line] [fixture:
-cynefin/lex-title-line-separator-then-comment-line] [fixture:
-cynefin/lex-acc-title-line-separator-then-comment-line] [fixture:
-cynefin/lex-acc-descr-line-separator-then-comment-line] [fixture:
-cynefin/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
-cynefin/lex-string-line-separator-comment-line-directive-next] [fixture:
-cynefin/lex-string-line-separator-comment-line-space-next] [fixture:
-cynefin/lex-string-line-separator-comment-line-separator-next] [fixture:
-cynefin/lex-string-line-separator-comment-line-empty-line] [fixture:
-cynefin/lex-string-line-separator-comment-line-end-of-text] [fixture:
-cynefin/lex-title-line-separator-comment-line-end-of-text] [fixture:
-cynefin/lex-string-line-separator-comment-line-cr] [fixture:
-cynefin/lex-string-line-separator-comment-line-crlf] [fixture:
-cynefin/lex-string-line-separator-comment-line-two-comment-lines] [fixture:
-cynefin/lex-string-line-separator-comment-line-two-regions] [fixture:
-cynefin/lex-string-line-separator-comment-line-spaces-before] [fixture:
-cynefin/lex-string-line-separator-comment-line-line-feed-before] [fixture:
-cynefin/lex-string-line-separator-comment-line-directive-before] [fixture:
-cynefin/lex-string-line-separator-comment-line-line-rule-before] [fixture:
-cynefin/lex-string-line-separator-comment-line-line-rule-after] [fixture:
-cynefin/lex-string-line-separator-comment-line-bare-percent] [fixture:
-cynefin/lex-string-line-separator-comment-line-percent-brace] [fixture:
-cynefin/lex-transition-label-string-line-separator-then-comment-line]
+U+2028、`B` である。
+
+[fixture: cynefin/lex-string-line-separator-then-comment-line]
+[fixture: cynefin/lex-string-paragraph-separator-then-comment-line]
+[fixture: cynefin/lex-title-line-separator-then-comment-line]
+[fixture: cynefin/lex-acc-title-line-separator-then-comment-line]
+[fixture: cynefin/lex-acc-descr-line-separator-then-comment-line]
+[fixture: cynefin/lex-acc-descr-block-line-separator-then-comment-line]
+[fixture: cynefin/lex-string-line-separator-comment-line-directive-next]
+[fixture: cynefin/lex-string-line-separator-comment-line-space-next]
+[fixture: cynefin/lex-string-line-separator-comment-line-separator-next]
+[fixture: cynefin/lex-string-line-separator-comment-line-empty-line]
+[fixture: cynefin/lex-string-line-separator-comment-line-end-of-text]
+[fixture: cynefin/lex-title-line-separator-comment-line-end-of-text]
+[fixture: cynefin/lex-string-line-separator-comment-line-cr]
+[fixture: cynefin/lex-string-line-separator-comment-line-crlf]
+[fixture: cynefin/lex-string-line-separator-comment-line-two-comment-lines]
+[fixture: cynefin/lex-string-line-separator-comment-line-two-regions]
+[fixture: cynefin/lex-string-line-separator-comment-line-spaces-before]
+[fixture: cynefin/lex-string-line-separator-comment-line-line-feed-before]
+[fixture: cynefin/lex-string-line-separator-comment-line-directive-before]
+[fixture: cynefin/lex-string-line-separator-comment-line-line-rule-before]
+[fixture: cynefin/lex-string-line-separator-comment-line-line-rule-after]
+[fixture: cynefin/lex-string-line-separator-comment-line-bare-percent]
+[fixture: cynefin/lex-string-line-separator-comment-line-percent-brace]
+[fixture: cynefin/lex-transition-label-string-line-separator-then-comment-line]
 
 項目と遷移ラベルの文字列は共有の StringLiteral を使う。
 raw は引用符と共通の trivia を含む書かれた全体を保ち、
@@ -214,6 +229,7 @@ value は共通の除去を除く未変換の内側を保ち、closed は true �
 木の値の中で文字列の escape、HTML の引用符、entity を変換しない。
 これらの文字列の[共通と既定の変換][converter]は、
 書かれた木と分けて tests の要約で記録する。
+
 [fixture: cynefin/lex-string-conversion]
 [fixture: cynefin/lex-transition-string-conversion]
 [fixture: cynefin/lex-string-unknown-single]
@@ -227,8 +243,10 @@ acc-title-line と acc-descr-form の行の選択肢は colon の前に ASCII sp
 を許し、colon の直後から値を読む。
 行の値は CR、LF、最初の %% の直前で止まり、U+2028、U+2029、引用符、
 波括弧は通常の文字として含む。
-特に accDescr: {x} は行の値である。 [fixture: cynefin/common-title-eof]
-[fixture: cynefin/common-title-prefix] [fixture: cynefin/common-line-whitespace]
+特に accDescr: {x} は行の値である。
+
+[fixture: cynefin/common-title-eof] [fixture: cynefin/common-title-prefix]
+[fixture: cynefin/common-line-whitespace]
 [fixture: cynefin/common-quoted-values] [fixture: cynefin/common-open-quote]
 [fixture: cynefin/common-title-comment-only]
 [fixture: cynefin/common-acctitle-comment-only]
@@ -245,6 +263,7 @@ acc-title-line と acc-descr-form の行の選択肢は colon の前に ASCII sp
 空や空白だけのブロックも完全な文である。
 共通 directive やコメント領域の除去でブロックが空になる場合もあり、
 囲むブロックの中の native 状の形は値の文字のままとなる。
+
 [fixture: cynefin/common-block-unicode-gap]
 [fixture: cynefin/common-block-empty-gap]
 [fixture: cynefin/common-block-comment-gap]
@@ -268,6 +287,7 @@ accessibility の colon の後の空白なら non-null の literal となる。
 残りが空なら null となる。
 CynefinLiteral に、
 [converter][converter] の空白の圧縮や escape の変換を適用しない。
+
 [fixture: cynefin/lex-title-one-space] [fixture: cynefin/lex-title-one-tab]
 [fixture: cynefin/lex-title-two-spaces]
 [fixture: cynefin/lex-common-whitespace-literals]
@@ -286,6 +306,7 @@ native-comment は、任意の ASCII の空白の接頭と %% から、
 CR または LF の直前までを読み、その newline は可視のまま残す。
 percent 一つはその印でない。
 共有のコメントのレコードは、共通の除去を除いた書かれた印と文字を保つ。
+
 [fixture: cynefin/space-tabs] [fixture: cynefin/space-lines]
 [fixture: cynefin/line-cr] [fixture: cynefin/line-crlf]
 [fixture: cynefin/line-ls-gap] [fixture: cynefin/line-ps-gap]
@@ -304,6 +325,7 @@ newline で終わる任意の本文、字下げの無い三つの閉じの dash 
 空でない二つのブロックは二つの一致のままにもなる。
 四つの dash、字下げした閉じ、閉じの欠落、
 空白でない接尾の文字はこの形を満たさない。
+
 [fixture: cynefin/hidden-yaml-adjacent-later]
 [fixture: cynefin/hidden-yaml-adjacent-eof]
 [fixture: cynefin/hidden-yaml-adjacent-no-later]
@@ -324,7 +346,9 @@ native-directive は任意の ASCII の空白、%%{、
 全体の形が合わなければ native-comment がその行を読める。
 これらは共通 directive ではない。
 先に試す文字列と共通の値は native 状の文字を囲むため、
-その中に ignored node を作らない。 [fixture: cynefin/hidden-directive-adjacent]
+その中に ignored node を作らない。
+
+[fixture: cynefin/hidden-directive-adjacent]
 [fixture: cynefin/hidden-native-comment-fallback]
 [fixture: cynefin/hidden-directive-comment-fallback-kept]
 [fixture: cynefin/hidden-directive-string] [fixture: cynefin/hidden-yaml-string]
@@ -336,6 +360,7 @@ native-directive は任意の ASCII の空白、%%{、
 ソースの範囲には残る。
 Unicode の閉じの境目が hidden の一致を成立させても、
 native の空白でない文字が残って入力全体を拒否する場合がある。
+
 [fixture: cynefin/hidden-yaml-ps-body]
 [fixture: cynefin/hidden-directive-ls-body]
 [fixture: cynefin/hidden-directive-cr] [fixture: cynefin/hidden-directive-crlf]
@@ -353,6 +378,7 @@ EOL を供給せずに消費しうる。
 領域のブロックと項目には EOL が要らないため、同じ消費を許す。
 native な形全体を[名前つきの所有者](../ast/cynefin.ja.md#hidden-な形の所有)の
 CynefinIgnoredText とし、消費した後続の改行を自身の範囲から除く。
+
 [fixture: cynefin/hidden-directive-sole-lf]
 [fixture: cynefin/hidden-directive-spare-lf]
 [fixture: cynefin/hidden-directive-eof]
@@ -375,6 +401,7 @@ native fence の個々の句読の文字である。
 固定語や分割しない --> の中は割れない。
 複合の行の単位でも、作者の句読の境目は語の内部にならない。
 一方、native hidden な形は複合の見出しや共通の行の単位を割れない。
+
 [fixture: cynefin/header-global-before-colon]
 [fixture: cynefin/directive-transition-parts]
 [fixture: cynefin/directive-title-parts]
@@ -404,6 +431,7 @@ semicolon の選択は見た目だけでなく共通の行の規則に従う。
 後の印はその前の semicolon を選ばない。
 同じ規則が native fence の句読や文字列の内側にも適用され、
 残る semicolon は一般の文の区切りでない。
+
 [fixture: cynefin/selected-arrow-inside]
 [fixture: cynefin/semicolon-arrow-inside]
 [fixture: cynefin/selected-colon-label-components]
@@ -421,6 +449,7 @@ semicolon の選択は見た目だけでなく共通の行の規則に従う。
 共有の trivia を置ける。
 文法に参加するのは可視の newline だけである。
 acc-descr-line と acc-descr-block は acc-descr-form の二つの選択肢である。
+
 [fixture: cynefin/db-all-fields] [fixture: cynefin/hidden-all-unit-gaps]
 [fixture: cynefin/gram-adjacent-items]
 [fixture: cynefin/common-colon-block-priority]
@@ -454,19 +483,22 @@ eol = newline+ | end-of-text
 領域には波括弧も colon も要らず、項目は引用符つきの文字列だけである。
 名前と項目の間、項目の間、次の領域の前に EOL は要らない。
 同じ項目や領域の宣言の繰り返しも受理する。
-現在の領域のブロックが無い文字列は拒否する。 [fixture: cynefin/header-only]
-[fixture: cynefin/gram-domain-empty-eof] [fixture: cynefin/gram-adjacent-items]
-[fixture: cynefin/gram-inline-items] [fixture: cynefin/gram-glued-domains]
-[fixture: cynefin/gram-item-duplicates] [fixture: cynefin/db-domain-duplicates]
-[fixture: cynefin/gram-orphan-item] [fixture: cynefin/gram-domain-colon]
-[fixture: cynefin/gram-domain-braces]
+現在の領域のブロックが無い文字列は拒否する。
+
+[fixture: cynefin/header-only] [fixture: cynefin/gram-domain-empty-eof]
+[fixture: cynefin/gram-adjacent-items] [fixture: cynefin/gram-inline-items]
+[fixture: cynefin/gram-glued-domains] [fixture: cynefin/gram-item-duplicates]
+[fixture: cynefin/db-domain-duplicates] [fixture: cynefin/gram-orphan-item]
+[fixture: cynefin/gram-domain-colon] [fixture: cynefin/gram-domain-braces]
 
 領域の項目の並びでは、directive だけの行、選ばれた semicolon、コメント行、
 空行は並びを閉じない。
 項目の間の U+2028 と U+2029 は拒否する。
 空の説明ブロックは別の共通の文なので、その後の領域に属さない文字列は拒否するが、
 領域を再宣言すれば次の項目を置ける。
-遷移も直前の領域の並びを終える。 [fixture: cynefin/gram-items-directive-line]
+遷移も直前の領域の並びを終える。
+
+[fixture: cynefin/gram-items-directive-line]
 [fixture: cynefin/gram-items-selected-semicolon]
 [fixture: cynefin/gram-items-comment-line]
 [fixture: cynefin/gram-items-blank-line] [fixture: cynefin/gram-items-ls]
@@ -480,8 +512,10 @@ eol = newline+ | end-of-text
 colon の無い文字列は許さない。
 可視の newline で部品を割れないが、
 native hidden な形は可視の newline を加えずに名前つきの gap に置ける。
-複数の遷移にはそれぞれの EOL が要る。 [fixture: cynefin/gram-transition-first]
-[fixture: cynefin/gram-missing-target] [fixture: cynefin/gram-label-unquoted]
+複数の遷移にはそれぞれの EOL が要る。
+
+[fixture: cynefin/gram-transition-first] [fixture: cynefin/gram-missing-target]
+[fixture: cynefin/gram-label-unquoted]
 [fixture: cynefin/gram-label-missing-string]
 [fixture: cynefin/gram-label-without-colon]
 [fixture: cynefin/gram-domain-before-arrow-newline]
@@ -495,6 +529,7 @@ native hidden な形は可視の newline を加えずに名前つきの gap に�
 同じ行の別の文が行の値に吸収される場合があり、
 完了したブロックの後で EOL 無しに領域を続けると拒否する。
 空を含め、共通の文の繰り返しは別の文のまま残る。
+
 [fixture: cynefin/common-repeat-empty]
 [fixture: cynefin/common-empty-interleaved] [fixture: cynefin/common-title-eof]
 [fixture: cynefin/gram-title-inline-domain]
@@ -512,17 +547,20 @@ native hidden な形は可視の newline を加えずに名前つきの gap に�
 [service module][module]、[adapter][adapter]、
 [Db][db] に追加の意味の拒否は無い。
 五つの領域の語は宣言が無くても参照でき、領域や遷移の繰り返し、自己遷移、
-空の領域や文字列は受理する。 [fixture: cynefin/error-start]
-[fixture: cynefin/error-after-prefix] [fixture: cynefin/error-recovered]
-[fixture: cynefin/gram-transition-first] [fixture: cynefin/db-domain-duplicates]
+空の領域や文字列は受理する。
+
+[fixture: cynefin/error-start] [fixture: cynefin/error-after-prefix]
+[fixture: cynefin/error-recovered] [fixture: cynefin/gram-transition-first]
+[fixture: cynefin/db-domain-duplicates]
 [fixture: cynefin/db-transition-duplicates] [fixture: cynefin/db-self-loops]
 [fixture: cynefin/gram-domain-empty-eof] [fixture: cynefin/db-empty-texts]
 
 空の遷移ラベルは、Mermaid が STRING を読んで文法で label に代入し、
 その後で Db が偽の値を除くだけで、
 class の空の多重度と同じく書かれた構文として残るため、
-tokenless-empty-forms ではない。 [fixture: cynefin/db-empty-texts]
-[fixture: cynefin/db-self-loop-empty-label]
+tokenless-empty-forms ではない。
+
+[fixture: cynefin/db-empty-texts] [fixture: cynefin/db-self-loop-empty-label]
 [fixture: class/gram-cardinality-empty]
 
 ### 全出現の保持と設定
@@ -532,6 +570,7 @@ tokenless-empty-forms ではない。 [fixture: cynefin/db-empty-texts]
 空の共通の形はすべて node を持つ。
 native の無視される形も node を持つ。
 書かれた木に実効の宣言の合成、除去、置き換えを行わない。
+
 [fixture: cynefin/db-self-loops] [fixture: cynefin/db-domain-duplicates]
 [fixture: cynefin/db-domain-empty-first] [fixture: cynefin/db-domain-empty-last]
 [fixture: cynefin/gram-domain-empty-eof] [fixture: cynefin/gram-item-duplicates]
@@ -546,7 +585,9 @@ site、frontmatter、init directive の描画の設定は不正な文法を救�
 site の小さい描画の上限も parse の拒否を加えない。
 共通の設定によって、
 共通の文字の変換が変わったり埋め込みデータの処理が失敗したりする場合は、
-共有の規則に従い、書かれた値は変えない。 [fixture: cynefin/config-drawing-site]
+共有の規則に従い、書かれた値は変えない。
+
+[fixture: cynefin/config-drawing-site]
 [fixture: cynefin/config-frontmatter-drawing]
 [fixture: cynefin/config-init-drawing]
 [fixture: cynefin/config-frontmatter-cannot-rescue]
@@ -561,9 +602,11 @@ site の小さい描画の上限も parse の拒否を加えない。
 変換された値、省略、選択、置き換え、順序は、
 [tests の要約](../../../tests/docs/db-summaries.ja.md#cynefin) と、
 [Db-from-tree の契約](../../../tests/docs/db-from-tree.ja.md) に定義する。
-それらによって書かれた構文を木から除かない。 [fixture: cynefin/db-all-fields]
-[fixture: cynefin/db-domain-duplicates] [fixture: cynefin/db-self-loops]
-[fixture: cynefin/db-empty-texts] [fixture: cynefin/common-empty-interleaved]
+それらによって書かれた構文を木から除かない。
+
+[fixture: cynefin/db-all-fields] [fixture: cynefin/db-domain-duplicates]
+[fixture: cynefin/db-self-loops] [fixture: cynefin/db-empty-texts]
+[fixture: cynefin/common-empty-interleaved]
 
 ## 既知の差異
 
@@ -573,6 +616,7 @@ site の小さい描画の上限も parse の拒否を加えない。
 その atom 内の共通 directive を拒否する。
 完全な部品の境目と文字の内部は許す。
 native hidden な形はすでに node を持ち、差異を要しない。
+
 [fixture: cynefin/directive-header-inside]
 [fixture: cynefin/directive-domain-inside]
 [fixture: cynefin/directive-arrow-inside]
@@ -591,6 +635,7 @@ native hidden な形はすでに node を持ち、差異を要しない。
 共有の trivia に句読を持てても、固定語や --> の内部に gap は作れない。
 部品の境目、文字列の文字、native fence の句読は許す。
 任意の semicolon が区切りになるわけではない。
+
 [fixture: cynefin/semicolon-complex-inside]
 [fixture: cynefin/semicolon-clear-inside]
 [fixture: cynefin/semicolon-arrow-inside]
@@ -613,6 +658,7 @@ frontmatter と本文の node を保ったうえで、
 Mermaid が受理してこの規則が拒否する場合、逆の場合、
 両方受理して値だけが異なる場合があり、
 本文だけの引用符の対照には共通の HTML の規則を適用する。
+
 [fixture: cynefin/div-html-frontmatter-accept]
 [fixture: cynefin/div-html-frontmatter-reject]
 [fixture: cynefin/div-html-frontmatter-value]
@@ -624,6 +670,7 @@ Mermaid が受理してこの規則が拒否する場合、逆の場合、
 YAML や設定が読めないことを理由に構文を拒否しない。
 不正なデータで有効な title や設定を消さず、共有の比較の設定の規則を適用する。
 retained な native YAML は代わりに CynefinIgnoredText である。
+
 [fixture: cynefin/div-frontmatter-invalid]
 [fixture: cynefin/div-init-invalid-colour]
 [fixture: cynefin/div-init-primitive-wrap]
@@ -638,6 +685,7 @@ retained な native YAML は代わりに CynefinIgnoredText である。
 通過した Unicode の trivia を native lexer で読み直さず、
 通過した接頭の直接の規則を使う。
 native の retained な形には依然としてそれ自体の境目が必要である。
+
 [fixture: cynefin/bare-before-ls] [fixture: cynefin/bare-line-ps]
 [fixture: cynefin/detect-retained-secondscan-bare-ascii]
 [fixture: cynefin/detect-retained-secondscan-bare-ls]
@@ -650,6 +698,7 @@ native の retained な形には依然としてそれ自体の境目が必要で
 値は Cynefin の node を持つが、
 同じ木に置き換わった C4 の図種も持つことはできない。
 検出用に除去する通常の LF つきコメントは差異の無い対照である。
+
 [fixture: cynefin/c4-component-item] [fixture: cynefin/c4-container-title]
 [fixture: cynefin/c4-component-header-eof]
 [fixture: cynefin/c4-component-header-lf]

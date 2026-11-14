@@ -29,9 +29,13 @@ timeline/db-acc-descr-statement] [fixture: timeline/db-acc-descr-block]
 Every item is one unit, and so one **token**: `timeline TD` has the `Keyword`
 tokens `timeline` and `TD`, and `a : e1 : e2` the `RawText` tokens `a` and a
 space, `e1` and a space, and `e2`, with a `Punctuator` token `:` before each
-event. [fixture: timeline/db-direction-td] [fixture:
-timeline/db-event-two-on-a-line] A `:` unit that starts no event is taken by no
-rule of the grammar, so the input is rejected and no token is made of it.
+event.
+
+[fixture: timeline/db-direction-td] [fixture: timeline/db-event-two-on-a-line]
+
+A `:` unit that starts no event is taken by no rule of the grammar, so the input
+is rejected and no token is made of it.
+
 [fixture: timeline/gram-event-colon-glued-to-event]
 
 A token holds no whitespace at its ends, except where mermaid.js reads it as
@@ -47,6 +51,7 @@ a space and `T`). An accessibility text, an `acc-title-text`, an
 mermaid.js trims, leaves it out: `accTitle: T` followed by three spaces has the
 token `T`, and `accDescr {`, a line `  line1`, a line `  line2`, and a line
 `  }` have the token `line1`, the line break and the indentation, and `line2`.
+
 [fixture: timeline/db-period-trailing-spaces] [fixture:
 timeline/db-event-leading-spaces] [fixture: timeline/db-event-two-spaces]
 [fixture: timeline/db-title-two-spaces] [fixture:
@@ -59,14 +64,18 @@ says; inside a token of any other kind, a directive or an ignored `;` makes the
 input rejected (see
 [Directives inside units](../../../spec/docs/diagrams/timeline.md#directives-inside-units)):
 `a : e%%{init: {}}%%f` has the `RawText` tokens `e` and `f` with the `Directive`
-token between them, while `ti%%{init: {}}%%tle T` is rejected. [fixture:
-timeline/lex-directive-in-event] [fixture:
+token between them, while `ti%%{init: {}}%%tle T` is rejected.
+
+[fixture: timeline/lex-directive-in-event] [fixture:
 timeline/div-directive-in-title-keyword]
 
 - An empty description block has the `Keyword` token `accDescr` and the
-  `Punctuator` tokens `{` and `}`. [fixture:
-  timeline/db-acc-descr-block-braces-only]
+  `Punctuator` tokens `{` and `}`.
+
+  [fixture: timeline/db-acc-descr-block-braces-only]
+
 - A `;` that the line rule ignores is an `IgnoredSemicolon` token: after
   `accDescr { style:#x }` on the same line, `a;b` has the `RawText` tokens `a`
-  and `b` with the `IgnoredSemicolon` token between them. [fixture:
-  timeline/tokens-ignored-semicolon-in-period]
+  and `b` with the `IgnoredSemicolon` token between them.
+
+  [fixture: timeline/tokens-ignored-semicolon-in-period]

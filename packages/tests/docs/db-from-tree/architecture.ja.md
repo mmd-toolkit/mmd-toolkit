@@ -6,8 +6,9 @@
 [木](../../../spec/docs/ast/architecture.ja.md) が書かれた形を保持します。
 `architectureDbOf` は受理済みの木を読み、意味上の検査を繰り返しません。
 結果の欄は [architecture の要約](../db-summaries.ja.md#architecture)
-のとおりです。 [fixture: architecture/db-mixed]
-[fixture: architecture/header-beta]
+のとおりです。
+
+[fixture: architecture/db-mixed] [fixture: architecture/header-beta]
 
 ## 木から要約を組み立てる
 
@@ -19,12 +20,14 @@
    `nodes` は services の後に junctions を並べる。
    保持した hidden の形は何も公開しない。
    frontmatter の title を含む図全体の title は、この要約に入らない。
+
    [fixture: architecture/db-mixed] [fixture: architecture/db-junction-order]
    [fixture: architecture/db-edge-forward-nodes]
    [fixture: architecture/db-align-forward-repeat]
    [fixture: architecture/hidden-yaml-three-fences]
    [fixture: architecture/frontmatter-title]
    [fixture: architecture/common-repeat-empty]
+
 2. **アクセシビリティ。**
    literal の変換後の range を読み、null なら空のテキストを使う。
    共有の `commonValue` で、行の値の両端を trim し、
@@ -34,12 +37,15 @@
    最後の description に `descriptionOf` を適用し、
    両方の欄に `textReplacementOf(embedded.config)` を適用する。
    最後の空の値は、空の初期値を残す。
-   図全体の title 文は木には保持する。 [fixture: architecture/common-all]
+   図全体の title 文は木には保持する。
+
+   [fixture: architecture/common-all]
    [fixture: architecture/common-repeat-empty]
    [fixture: architecture/common-empty-block-after-value]
    [fixture: architecture/common-block-whitespace]
    [fixture: architecture/html-all-fields]
    [fixture: architecture/config-security-level-other]
+
 3. **宣言。**
    ID と明示的な `in` は、変換後の Identifier の range から読む。
    `in` が null なら省く。
@@ -53,6 +59,7 @@
    Unicode escape の形も Unicode の符号位置には変えない。
    空の文字 icon も公開する。
    label と icon に追加の HTML sanitization は行わない。
+
    [fixture: architecture/db-prototype-ids] [fixture: architecture/db-id-case]
    [fixture: architecture/db-service-forward-parent]
    [fixture: architecture/lex-icon-leading-symbols]
@@ -60,6 +67,7 @@
    [fixture: architecture/lex-string-number-escape]
    [fixture: architecture/db-empty-values]
    [fixture: architecture/html-all-fields]
+
 4. **角括弧の title。**
    ArchitectureLabel.kind にかかわらず、変換後の角括弧の内側全体を読む。
    trim する。
@@ -72,6 +80,7 @@
    ほかの escape は解かない。
    null の title は省き、変換後の空の title は保つ。
    この変換は木の字句上の kind を変えない。
+
    [fixture: architecture/lex-title-conversion]
    [fixture: architecture/lex-title-padded-quotes]
    [fixture: architecture/lex-title-unquoted-fallback]
@@ -86,6 +95,7 @@
    [fixture: architecture/db-title-bare-escaped-double-quote]
    [fixture: architecture/db-title-bare-escaped-single-quote]
    [fixture: architecture/config-security-level-other]
+
 5. **辺。**
    lhsId/rhsId は変換後の参照、lhsDir/rhsDir は arrow の方向から読む。
    lhsInto/rhsInto は marker が arrow かどうかで決める。
@@ -95,26 +105,32 @@
    arrow の title は工程 4 で変換し、null だけを省く。
    辺の順序、重複辺、自己辺、同じ port 方向を保つ。
    生成した辺の ID、隣接情報、解決した group の端点は持たない。
+
    [fixture: architecture/db-directions]
    [fixture: architecture/db-duplicate-edges]
    [fixture: architecture/gram-edge-reversed-labeled-markers]
    [fixture: architecture/db-group-modifier-one-group]
    [fixture: architecture/db-group-modifier-ungrouped]
    [fixture: architecture/db-mixed]
+
 6. **配置制約。**
    各 direction と変換後の member の参照を公開する。
    member の順序と繰り返した文を保つ。
    制約をまとめたり layout を導出したりしない。
    空の図は nodes、groups、edges、layoutHints が空の配列になる。
-   描画の設定は公開を変えない。 [fixture: architecture/db-align-forward-repeat]
+   描画の設定は公開を変えない。
+
+   [fixture: architecture/db-align-forward-repeat]
    [fixture: architecture/db-align-layout-conflict]
    [fixture: architecture/header-beta]
    [fixture: architecture/config-drawing-only]
+
 7. **値の中のコメント領域。**
    U+2028 や U+2029 の後のコメント領域は、値から除かれます。
    出典は [変換した形](../db-from-tree.ja.md#変換した形) です。
    要約には図のタイトルの欄がないので、タイトルの fixture は、
    入力が受け入れられることを記録します。
+
    [fixture: architecture/lex-title-line-separator-then-comment-line]
 
 ## 記録した木の検査
@@ -127,6 +143,7 @@
 [比較用の Db](../../../spec/docs/known-divergences/embedded-data-opaque.ja.md#比較する-db)
 の規則に従って明示します。
 native hidden の属性は埋め込み設定ではありません。
+
 [fixture: architecture/div-invalid-keeps-config]
 [fixture: architecture/div-frontmatter-invalid-yaml]
 [fixture: architecture/div-retained-bare-second-scan-ls]

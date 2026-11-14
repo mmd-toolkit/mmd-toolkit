@@ -7,8 +7,9 @@
 構文と受理は [diagrams/architecture.md](../diagrams/architecture.md) で定める。
 欄は Db の変換を当てず原文を保つ。
 省略欄も null として存在し、リストは空でもよく、各リストはソース順を保つ。
-子の欄は訪問順を示す。 [fixture: architecture/db-mixed]
-[fixture: architecture/db-empty-values]
+子の欄は訪問順を示す。
+
+[fixture: architecture/db-mixed] [fixture: architecture/db-empty-values]
 [fixture: architecture/common-repeat-empty]
 [fixture: architecture/lex-title-unquoted-fallback]
 [fixture: architecture/lex-string-conversion]
@@ -27,6 +28,7 @@
 最後の見出し/body の形までとし、外の padding と改行を除く。
 Root.diagramType は architecture。
 固定の見出しは keyword とし、独立した header node や別名の欄は作らない。
+
 [fixture: architecture/header-beta]
 [fixture: architecture/detect-retained-before-second-scan]
 [fixture: architecture/detect-two-second-scan-forms]
@@ -40,6 +42,7 @@ ArchitectureAccDescrStatement、ArchitectureAccDescrBlockStatement、
 ArchitectureIgnoredText のいずれか。
 全出現を公開順でなくソース順に保つ。
 所属は in の参照とし、親の body へ宣言を移したり子のリストを合成したりしない。
+
 [fixture: architecture/db-mixed] [fixture: architecture/db-junction-order]
 [fixture: architecture/db-align-forward-repeat]
 [fixture: architecture/common-repeat-empty]
@@ -52,6 +55,7 @@ textBeforeHeader は検出で残る native YAML と 2 回目の scan の DIRECTI
 native の閉じの境界は維持する。
 空行・comment だけの行は body 要素を作らない。
 見出しの後、文の前、可視 EOL の後の hidden form は body 要素である。
+
 [fixture: architecture/detect-retained-before-second-scan]
 [fixture: architecture/detect-empty-braces-bare]
 [fixture: architecture/div-retained-bare-second-scan-ls]
@@ -85,6 +89,7 @@ Identifier の範囲は両括弧を除き、name は括弧内部の原綴を保�
 宣言 id でなく icon-name の文字規則を適用する。
 title は bracket がなければ null。
 in は in 節全体がなければ null とし、暗黙の親や hasIn 欄は作らない。
+
 [fixture: architecture/db-mixed]
 [fixture: architecture/lex-icon-leading-symbols]
 [fixture: architecture/db-empty-values]
@@ -118,6 +123,7 @@ textAfter があればその末尾まで広げ、外の padding と EOL を除�
 文字 icon は quote を含む閉じた StringLiteral、どちらもなければ null。
 空の文字 icon も StringLiteral のままである。
 title と in は、それぞれ任意の形全体がない場合だけ null。
+
 [fixture: architecture/db-mixed] [fixture: architecture/header-inline-service]
 [fixture: architecture/db-empty-values]
 [fixture: architecture/lex-string-conversion]
@@ -143,6 +149,7 @@ title と in は、それぞれ任意の形全体がない場合だけ null。
 textAfter があればその末尾まで広げ、外の padding/EOL を除く。
 in は in 節全体がない場合に null。
 icon、title、導出した親子の欄は持たない。
+
 [fixture: architecture/header-inline-junction]
 [fixture: architecture/db-junction-forward-parent]
 [fixture: architecture/hidden-directive-unit-gaps]
@@ -171,7 +178,9 @@ icon、title、導出した親子の欄は持たない。
 textAfter があればその末尾まで広げ、外の padding と EOL を除く。
 boolean は所属なしの node でも、書いた modifier を記録する。
 その modifier がない場合に限り false とする。
-端点を解決済みの group 名で置き換えない。 [fixture: architecture/db-mixed]
+端点を解決済みの group 名で置き換えない。
+
+[fixture: architecture/db-mixed]
 [fixture: architecture/db-group-modifier-ungrouped]
 [fixture: architecture/db-group-modifier-one-group]
 [fixture: architecture/gram-hidden-modifier-gaps]
@@ -206,7 +215,9 @@ value は内部の padding、原文の改行、label の構文、
 native ignored form も含めた原文とする。
 共通 directive、comment region、選ばれた semicolon は value から除き、
 範囲は跨ぐ。
-escape の復号と marker の綴りの正規化はしない。 [fixture: architecture/db-mixed]
+escape の復号と marker の綴りの正規化はしない。
+
+[fixture: architecture/db-mixed]
 [fixture: architecture/hidden-directive-unit-gaps]
 [fixture: architecture/hidden-yaml-edge-gaps]
 [fixture: architecture/directive-fields] [fixture: architecture/style-fields]
@@ -219,7 +230,9 @@ line は常に solid。
 title は double dash では null、
 single dash・label・single dash では ArchitectureLabel とし、
 引用した空 label も null にしない。
-title がなければ textBeforeEndDash は空。 [fixture: architecture/db-directions]
+title がなければ textBeforeEndDash は空。
+
+[fixture: architecture/db-directions]
 [fixture: architecture/gram-edge-reversed-labeled-markers]
 [fixture: architecture/db-empty-values] [fixture: architecture/db-mixed]
 [fixture: architecture/end-edge-eof]
@@ -238,8 +251,10 @@ title がなければ textBeforeEndDash は空。 [fixture: architecture/db-dire
 外の padding と EOL を除く。
 members は 2 個以上。
 反復した alignment の文もすべて保ち、member をソートせず制約を統合しない。
-layout の結果を木の欄にしない。 [fixture: architecture/db-align-forward-repeat]
-[fixture: architecture/db-mixed] [fixture: architecture/hidden-yaml-align-gap]
+layout の結果を木の欄にしない。
+
+[fixture: architecture/db-align-forward-repeat] [fixture: architecture/db-mixed]
+[fixture: architecture/hidden-yaml-align-gap]
 [fixture: architecture/hidden-directive-align-eof]
 [fixture: architecture/error-align-one]
 [fixture: architecture/db-align-layout-conflict]
@@ -256,6 +271,7 @@ layout の結果を木の欄にしない。 [fixture: architecture/db-align-forw
 最初の member も含め、自分の id の直前の native hidden な隙間全体を所有する。
 通常の空白と共有 trivia は要素にしない。
 暗黙の member や null の穴は加えない。
+
 [fixture: architecture/hidden-yaml-align-gap]
 [fixture: architecture/hidden-directive-unit-gaps]
 [fixture: architecture/db-align-forward-repeat]
@@ -273,6 +289,7 @@ value は title とちょうど 1 文字の ASCII space/tab 区切りの後で�
 追加の区切りは空白の Literal とする。
 範囲は title から値の末尾、null なら keyword までで、textAfter があれば広げる。
 EOL と無関係な外の padding を除く。
+
 [fixture: architecture/common-title-next-statement]
 [fixture: architecture/lex-title-one-space-null]
 [fixture: architecture/lex-title-one-tab-null]
@@ -283,6 +300,7 @@ EOL と無関係な外の padding を除く。
 反復と空の出現を別々に保つ。
 最初の可視 EOL 前の形は textAfter、その EOL 後は body に所有させる。
 native comment は接尾辞の要素でなく共有 Comment とする。
+
 [fixture: architecture/common-repeat-empty]
 [fixture: architecture/hidden-directive-title-eof]
 [fixture: architecture/lex-hidden-after-visible-eol]
@@ -299,6 +317,7 @@ value は colon の直後からの行のテキストで、両端の padding を�
 内容が残らない場合だけ null とし、空白だけなら Literal とする。
 範囲は accTitle から colon または最後の値の文字までで、textAfter があれば広げ、
 EOL と無関係な外の padding を除く。
+
 [fixture: architecture/lex-acctitle-whitespace-only]
 [fixture: architecture/common-acctitle-next-statement]
 [fixture: architecture/common-repeat-empty]
@@ -307,6 +326,7 @@ EOL と無関係な外の padding を除く。
 反復と空の出現を別々に保つ。
 最初の可視 EOL 前の形は textAfter、その EOL 後は body に所有させる。
 native comment は接尾辞の要素でなく共有 Comment とする。
+
 [fixture: architecture/common-repeat-empty]
 [fixture: architecture/hidden-directive-acctitle-eof]
 [fixture: architecture/lex-hidden-after-visible-eol]
@@ -323,6 +343,7 @@ value は colon の直後からの行のテキストで、両端の padding を�
 内容が残らない場合だけ null とし、空白だけなら Literal とする。
 範囲は accDescr から colon または最後の値の文字までで、textAfter があれば広げ、
 EOL と無関係な外の padding を除く。
+
 [fixture: architecture/lex-description-line-whitespace-only]
 [fixture: architecture/common-accdescr-next-statement]
 [fixture: architecture/common-repeat-empty]
@@ -331,6 +352,7 @@ EOL と無関係な外の padding を除く。
 反復と空の出現を別々に保つ。
 最初の可視 EOL 前の形は textAfter、その EOL 後は body に所有させる。
 native comment は接尾辞の要素でなく共有 Comment とする。
+
 [fixture: architecture/common-repeat-empty]
 [fixture: architecture/hidden-directive-accdescr-eof]
 [fixture: architecture/lex-hidden-after-visible-eol]
@@ -349,6 +371,7 @@ value は brace 内部から外側の共通の空白だけを除いた内容。
 範囲は accDescr から最初の終了 brace までで、textAfter があれば広げ、
 EOL と無関係な外の padding を除く。
 閉じは必須なので closed 欄は不要。
+
 [fixture: architecture/common-empty-block-after-value]
 [fixture: architecture/lex-description-block-whitespace-only]
 [fixture: architecture/common-description-block-comment]
@@ -360,6 +383,7 @@ EOL と無関係な外の padding を除く。
 反復と空の出現を別々に保つ。
 最初の可視 EOL 前の形は textAfter、その EOL 後は body に所有させる。
 native comment は接尾辞の要素でなく共有 Comment とする。
+
 [fixture: architecture/common-repeat-empty]
 [fixture: architecture/hidden-directive-block-eof]
 [fixture: architecture/lex-hidden-after-visible-eol]
@@ -380,6 +404,7 @@ string の value は bracket と同じ quote の 1 組を除き、
 text は bracket だけを除く。
 single/double の綴りも含め quote は範囲が覆う原文に残る。
 converter の出力から kind を推測しない。
+
 [fixture: architecture/lex-title-quoted-brackets]
 [fixture: architecture/lex-title-padded-quotes]
 [fixture: architecture/lex-title-unclosed-quote-with-close]
@@ -393,6 +418,7 @@ value は内部の空白、原文の改行、entity、escape の綴りを保つ�
 それ以外の trim、空白縮約、escape 復号はしない。
 引用した空は value が空の string、裸の空白はその空白を持つ text とする。
 裸の空ラベルと bracket の未閉鎖の形はない。
+
 [fixture: architecture/lex-title-conversion]
 [fixture: architecture/db-empty-values] [fixture: architecture/line-cr-title]
 [fixture: architecture/line-ls-ps-values]
@@ -406,6 +432,7 @@ value は内部の空白、原文の改行、entity、escape の綴りを保つ�
 ラベルの選択肢は、共通の変換後の図のテキストで決める。
 kind は HTML 属性 quote の変換と選ばれた semicolon を反映するが、
 value は written-value の規則で原文を保つ。
+
 [fixture: architecture/html-label-authored-quotes]
 [fixture: architecture/lex-label-selected-semicolon-after-quote]
 
@@ -421,6 +448,7 @@ value から共通 directive、comment region、選ばれた semicolon を除き
 原文の改行、quote、entity、escape、その文が所有する空白など、それ以外は保つ。
 null に対して空の Literal は作らない。
 quote に見える共通値も ArchitectureLiteral で、quote の閉じを要求しない。
+
 [fixture: architecture/common-title-literal-quotes]
 [fixture: architecture/common-line-whitespace]
 [fixture: architecture/common-block-whitespace]
@@ -446,6 +474,7 @@ value から内部の共通 directive、comment region、選ばれた semicolon 
 本文が空でも fence を持つ原文は空でない。
 両形式とも閉じは必須であり、
 directive が失敗して comment になる形は共有 Comment に持つ。
+
 [fixture: architecture/hidden-yaml-adjacent-eof]
 [fixture: architecture/hidden-yaml-open-padding]
 [fixture: architecture/hidden-yaml-crlf]
@@ -467,6 +496,7 @@ native YAML は yaml-block、native DIRECTIVE は directive とする。
 その値の内容とする。
 全 hidden match は固有の所有先に 1 回だけ保つ。
 3 本 fence の 1 回の一致は 1 node、別々の非空の 2 回の一致は 2 node とする。
+
 [fixture: architecture/detect-retained-before-second-scan]
 [fixture: architecture/lex-yaml-global-directive]
 [fixture: architecture/hidden-directive-inside-values]
@@ -482,6 +512,7 @@ native YAML は yaml-block、native DIRECTIVE は directive とする。
 共有 Comment、Directive、通常の空白、選ばれた semicolon は隙間の要素にしない。
 文の内部では、
 hidden の LF 消費によりソース上の行を跨いでも可視 EOL は作られない。
+
 [fixture: architecture/hidden-directive-unit-gaps]
 [fixture: architecture/hidden-yaml-service-gap]
 [fixture: architecture/hidden-yaml-edge-gaps]
@@ -498,6 +529,7 @@ textBeforeEndColon は最後の colon の前に置く。
 その colon の後の隙間は Edge.textBeforeRhsId とする。
 marker がなければその隙間は空とし、次の実在する構成要素へ形を持たせる。
 複合形 icon/modifier の内部には native hidden な隙間の要素を持たない。
+
 [fixture: architecture/hidden-directive-unit-gaps]
 [fixture: architecture/hidden-yaml-parent-gap]
 [fixture: architecture/hidden-yaml-edge-gaps]
@@ -511,6 +543,7 @@ marker がなければその隙間は空とし、次の実在する構成要素�
 service と junction は in で g を参照する。
 arrow は角括弧の title を所有し、value に両 marker の文字を保つ。
 例はソースの構造を示し、導出した layout は示さない。
+
 [fixture: architecture/db-mixed]
 [fixture: architecture/db-group-modifier-junction]
 [fixture: architecture/gram-written-tree]

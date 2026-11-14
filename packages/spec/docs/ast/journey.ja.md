@@ -23,6 +23,7 @@
 
 この図種には引用符の文字列がないので、StringLiteral のノードはありません。
 タスクのテキストの中の `"` は、テキストの文字です。
+
 [fixture: journey/lex-quotes-in-task-text]
 
 ## ノード
@@ -77,13 +78,15 @@ null、`b` を持ちます。
 `A: 5, 6: Me` はスコア `5, 6` を持ちます。
 `A: 3: a,b: c, d` は人 `a` と `b` と、`textAfter` の `: c, d` を持ち、
 `A: 5: Me:` は `textAfter` の `:` を持ちます。
-[fixture: journey/db-task-score-only] [fixture:
-journey/db-task-people] [fixture: journey/db-task-people-empty-item] [fixture:
-journey/db-task-people-blank] [fixture: journey/gram-task-second-colon-at-end]
+
+[fixture: journey/db-task-score-only] [fixture: journey/db-task-people]
+[fixture: journey/db-task-people-empty-item]
+[fixture: journey/db-task-people-blank]
+[fixture: journey/gram-task-second-colon-at-end]
 [fixture: journey/db-task-score-empty] [fixture: journey/db-task-score-spaces]
-[fixture: journey/db-task-score-not-a-number] [fixture:
-journey/gram-task-score-comma] [fixture: journey/db-task-extra-colon] [fixture:
-journey/gram-task-third-colon-at-end]
+[fixture: journey/db-task-score-not-a-number]
+[fixture: journey/gram-task-score-comma] [fixture: journey/db-task-extra-colon]
+[fixture: journey/gram-task-third-colon-at-end]
 
 ### JourneyTitleStatement
 
@@ -95,10 +98,11 @@ journey/gram-task-third-colon-at-end]
 
 子の欄: `value`。
 値は両端の空白を保ち、`:` と `%%` を文字として持ちます。
-[fixture: journey/db-title-statement] [fixture:
-journey/lex-title-two-spaces] [fixture: journey/lex-title-trailing-spaces]
-[fixture: journey/lex-title-colon-inside] [fixture:
-journey/lex-title-percent-inside]
+
+[fixture: journey/db-title-statement] [fixture: journey/lex-title-two-spaces]
+[fixture: journey/lex-title-trailing-spaces]
+[fixture: journey/lex-title-colon-inside]
+[fixture: journey/lex-title-percent-inside]
 
 ### JourneySectionStatement
 
@@ -111,9 +115,10 @@ journey/lex-title-percent-inside]
 子の欄: `name`。
 名前は空白を含みうるテキストで、何も参照しないので JourneyLiteral です。
 両端の空白を保ち、空白だけの名前はその空白の値です。
+
 [fixture: journey/db-sections] [fixture: journey/lex-section-two-spaces]
-[fixture: journey/db-section-ends-at-hash] [fixture:
-journey/lex-section-whitespace-only]
+[fixture: journey/db-section-ends-at-hash]
+[fixture: journey/lex-section-whitespace-only]
 
 ### JourneyAccTitleStatement
 
@@ -127,9 +132,12 @@ journey/lex-section-whitespace-only]
 `:` の後の空白は改行を含めて一緒に読まれるので、
 テキストは最初にテキストのある行から始まり、値は null になりません。
 後ろに何もない `accTitle:` は拒否されます。
-値は両端の空白を除いたテキストです。 [fixture: journey/db-acc-title] [fixture:
-journey/gram-acc-title-line-feed-then-text] [fixture:
-journey/lex-acc-title-at-end] [fixture: journey/gram-acc-title-trailing-spaces]
+値は両端の空白を除いたテキストです。
+
+[fixture: journey/db-acc-title]
+[fixture: journey/gram-acc-title-line-feed-then-text]
+[fixture: journey/lex-acc-title-at-end]
+[fixture: journey/gram-acc-title-trailing-spaces]
 
 ### JourneyAccDescrStatement
 
@@ -141,6 +149,7 @@ journey/lex-acc-title-at-end] [fixture: journey/gram-acc-title-trailing-spaces]
 
 子の欄: `value`。
 JourneyAccTitleStatement と同じく、値は null になりません。
+
 [fixture: journey/db-acc-descr] [fixture: journey/lex-acc-descr-at-end]
 
 ### JourneyAccDescrBlockStatement
@@ -156,10 +165,11 @@ JourneyAccTitleStatement と同じく、値は null になりません。
 
 子の欄: `value`。
 `accDescr {}`、`accDescr { }`、空行のブロックは値 null を持ち、何も変えません。
-[fixture: journey/db-acc-descr-block] [fixture:
-journey/gram-acc-descr-block-empty] [fixture:
-journey/gram-acc-descr-block-whitespace-only] [fixture:
-journey/lex-acc-descr-block-unclosed]
+
+[fixture: journey/db-acc-descr-block]
+[fixture: journey/gram-acc-descr-block-empty]
+[fixture: journey/gram-acc-descr-block-whitespace-only]
+[fixture: journey/lex-acc-descr-block-unclosed]
 
 ### JourneyLiteral
 
@@ -178,10 +188,13 @@ JourneyLiteral はそれぞれ 1 つの単位なので、
 スコアと人は空白を持たず、アクセシビリティのテキストは、
 mermaid.js が取り除く両端の空白なしで読まれます。
 説明ブロックの中の改行は値の一部です。
-[fixture: journey/db-task-description-spaces] [fixture:
-journey/lex-title-two-spaces] [fixture: journey/lex-title-trailing-spaces]
-[fixture: journey/lex-task-score-nbsp-trimmed] [fixture:
-journey/gram-acc-title-trailing-spaces] [fixture: journey/db-acc-descr-block]
+
+[fixture: journey/db-task-description-spaces]
+[fixture: journey/lex-title-two-spaces]
+[fixture: journey/lex-title-trailing-spaces]
+[fixture: journey/lex-task-score-nbsp-trimmed]
+[fixture: journey/gram-acc-title-trailing-spaces]
+[fixture: journey/db-acc-descr-block]
 
 ### JourneyIgnoredText
 
@@ -199,7 +212,8 @@ journey/gram-acc-title-trailing-spaces] [fixture: journey/db-acc-descr-block]
 値は 3 つ目のコロンから始まり、データの終わりまでで、終わりの空白を除きます。
 その後のコロンは値の文字です。
 空白 2 つが続く `A: 5: Me: x` は値 `: x` を持ちます。
-[fixture: journey/db-task-extra-colon] [fixture:
-journey/gram-task-third-colon-at-end] [fixture:
-journey/gram-task-four-colons] [fixture:
-journey/gram-task-ignored-data-trailing-spaces]
+
+[fixture: journey/db-task-extra-colon]
+[fixture: journey/gram-task-third-colon-at-end]
+[fixture: journey/gram-task-four-colons]
+[fixture: journey/gram-task-ignored-data-trailing-spaces]

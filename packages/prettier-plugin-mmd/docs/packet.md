@@ -108,11 +108,14 @@ its documentation write the position alone 7 times against none of the range
 with equal ends (see
 [Spellings that are drawn the same](./compatibility.md#other-spellings-of-a-keyword-or-of-a-punctuation-mark)).
 A range with something other than whitespace and the `-` between its ends stays
-as written. [fixture: packet/block-forms-and-order/equal-range-single] Keep
-every occurrence in order, repeated labels and empty common assignments. Never
-merge or reconstruct statements from the Db: row splitting and the publication
-cap lose authored structure, and deleting empty assignments can change the final
-value.
+as written.
+
+[fixture: packet/block-forms-and-order/equal-range-single]
+
+Keep every occurrence in order, repeated labels and empty common assignments.
+Never merge or reconstruct statements from the Db: row splitting and the
+publication cap lose authored structure, and deleting empty assignments can
+change the final value.
 
 [fixture: packet/block-forms-and-order/block-three-forms]
 
@@ -320,9 +323,9 @@ that end a title are printed with one space before each that has whitespace
 before it, and the whitespace after the last one is left out, whatever the
 whitespace at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-[fixture: title/title-directives-end-blanks-dropped]
 
-[fixture: packet/title/title-trim]
+[fixture: title/title-directives-end-blanks-dropped] [fixture:
+packet/title/title-trim]
 
 [fixture: packet/title/title-null]
 
@@ -356,9 +359,9 @@ hidden suffixes and protected groups keep their gaps. The directives that end
 the value are printed with one space before each that has whitespace before it,
 and the whitespace after the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
-[fixture: packet/accessibility-lines/a11y-lines]
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
+packet/accessibility-lines/a11y-lines]
 
 [fixture: packet/accessibility-lines/a11y-empty-next]
 
@@ -692,12 +695,15 @@ that no part of the layout holds stays as written. A statement over several
 lines whose lines, joined with one space or with nothing, could change which `;`
 the line rule ignores keeps the text of each segment, up to its last kept `;`,
 as written; any other statement over several lines is formatted like one on a
-single line. [fixture: semicolons/stretch-kept-rest-formatted] [fixture:
-semicolons/no-stretch-formatted] Keep protected header/first-statement groups
-together. Both style/classDef passes, case, colon/hash whitespace, repetitions,
-Unicode segment bounds and directive-rejoined triggers keep their reading.
-Removing one selected semicolon can select another and change the Db; atomic
-cuts remain failures.
+single line.
+
+[fixture: semicolons/stretch-kept-rest-formatted] [fixture:
+semicolons/no-stretch-formatted]
+
+Keep protected header/first-statement groups together. Both style/classDef
+passes, case, colon/hash whitespace, repetitions, Unicode segment bounds and
+directive-rejoined triggers keep their reading. Removing one selected semicolon
+can select another and change the Db; atomic cuts remain failures.
 
 [fixture: packet/semicolons/native-field-value]
 

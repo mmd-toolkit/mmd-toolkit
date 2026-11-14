@@ -29,6 +29,7 @@
 そのため、それで終わる文や欄は、空白でない最後の文字で終わります。
 欄 `id:   1` と 2 つの空白は `id:   1` を覆い、
 `text:   spaced out` と 3 つの空白は `text:   spaced out` を覆います。
+
 [fixture: requirement/db-requirement-value-spaces]
 
 ### RequirementClassStatement
@@ -36,6 +37,7 @@
 範囲は、`class` から最後のクラスまでです。
 文が style の文脈を出る改行の後に続くところでも同じです。
 `class r`、改行、`c` は、両方の行を覆います。
+
 [fixture: requirement/lex-class-list-next-line]
 
 ### RequirementIdentifier と RequirementLiteral
@@ -49,7 +51,9 @@
 スタイルは、最初の単位から最後の単位までを、間の空白を含めて覆い、
 値はその空白を除きます。
 `style r fill: red , stroke : blue` の最初のスタイルは `fill: red` を覆い、
-値は `fill:red` です。 [fixture: requirement/db-requirement-name-spaces]
+値は `fill:red` です。
+
+[fixture: requirement/db-requirement-name-spaces]
 [fixture: requirement/db-acc-title-descr]
 [fixture: requirement/lex-style-spaces]
 
@@ -61,6 +65,7 @@
 複数の行にわたるときも覆います。
 値は、その中のコメント行を除きます。
 `accDescr {`、コメント行 `%% c`、`}` の値は、`accDescr {`、改行、`}` です。
+
 [fixture: requirement/lex-direction-line-text-before-and-after]
 [fixture: requirement/gram-empty-description-block-multiline-in-body]
 [fixture: requirement/gram-empty-description-block-comment-line-in-body]

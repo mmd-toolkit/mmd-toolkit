@@ -420,13 +420,16 @@ entity Shop.Buy
 A GWT header continued after a comment or directive uses ordinary continuation
 indentation: the trivia and source-frame line stand one level inside `gwt`. Keep
 their written order and comment form. Clause keywords still use one level and
-items two; the source-frame line is not a new top-level statement. [fixture:
-eventmodeling/gwt-clauses-and-items/header-completion-comment] [fixture:
-eventmodeling/gwt-clauses-and-items/header-directive-continuation]
+items two; the source-frame line is not a new top-level statement.
+
+[fixture: eventmodeling/gwt-clauses-and-items/header-completion-comment]
+[fixture: eventmodeling/gwt-clauses-and-items/header-directive-continuation]
 
 A clause that follows the directive of a continued GWT header keeps the
 whitespace before it as written, and a directive that follows its item on its
-line stays on that line: `given evt A %%{{tail}}%%` stays on one line. [fixture:
+line stays on that line: `given evt A %%{{tail}}%%` stays on one line.
+
+[fixture:
 eventmodeling/gwt-clauses-and-items/clause-after-header-directive-with-tail-directive]
 
 Put `gwt 99` at column one, each clause keyword one step deeper and every item
@@ -851,9 +854,10 @@ cannot remove an enclosing opening's protection on the next formatting.
 A hidden form that follows the `}` of a description block over several lines on
 its line stays on that line: `eventmodeling accDescr {A`, a line break, and
 `B} %%{{native}}%%` stay as they are, where the form went to a line of its own
-before. [fixture:
-eventmodeling/hidden-forms/native-after-description-block-end-stays-on-its-line]
+before.
 
+[fixture:
+eventmodeling/hidden-forms/native-after-description-block-end-stays-on-its-line]
 [fixture: eventmodeling/hidden-forms/header-inline-gwt-item-directive]
 
 [fixture: eventmodeling/hidden-forms/header-inline-gwt-item-yaml]
@@ -982,19 +986,28 @@ removes them when the source is longer than `maxTextSize`, 50000 UTF-16 code
 units by default; agentflow has the same limit (see
 [Default size branches](./agentflow.md#default-size-branches)). Measure after
 the frontmatter, the whitespace-only lines that follow it and the directives are
-removed, counting CRLF as one unit and a surrogate pair as two. [fixture:
-default-size-branches/size-frontmatter-not-counted] [fixture:
+removed, counting CRLF as one unit and a surrogate pair as two.
+
+[fixture: default-size-branches/size-frontmatter-not-counted] [fixture:
 default-size-branches/size-frontmatter-trivia-not-counted] [fixture:
 default-size-branches/size-directive-not-counted] [fixture:
-default-size-branches/size-utf16-surrogate] At or above 50000 retain the
-complete diagram text and its ending. [fixture:
-default-size-branches/size-preserving-to-fallback-unsafe] Below it apply
-ordinary layout only when the planned printed measurement also stays strictly
-below 50000; otherwise retain the complete diagram and its ending. [fixture:
-default-size-branches/size-below-planned-crossing] This keeps indentation or the
-final line break from moving the text across the limit, where the comment lines
-in a value would be removed and the Db would change. The boundary itself is
-covered by the corpus, also with CRLF, an inline directive and frontmatter.
+default-size-branches/size-utf16-surrogate]
+
+At or above 50000 retain the complete diagram text and its ending.
+
+[fixture: default-size-branches/size-preserving-to-fallback-unsafe]
+
+Below it apply ordinary layout only when the planned printed measurement also
+stays strictly below 50000; otherwise retain the complete diagram and its
+ending.
+
+[fixture: default-size-branches/size-below-planned-crossing]
+
+This keeps indentation or the final line break from moving the text across the
+limit, where the comment lines in a value would be removed and the Db would
+change. The boundary itself is covered by the corpus, also with CRLF, an inline
+directive and frontmatter.
+
 [corpus fixture: eventmodeling/comment-default-size-equal] [corpus fixture:
 eventmodeling/comment-default-size-above] [corpus fixture:
 eventmodeling/comment-default-size-equal-crlf] [corpus fixture:
@@ -1025,9 +1038,9 @@ breaks included, so the next line goes on its line, which is printed as written
 also where the directive stands after the `}` of a description block over
 several lines: `accDescr {alpha`, a line break, `beta} %%{wrap foo`, a line
 break, and ` tf 23 evt End` stay as they are, with the whitespace before `tf`.
+
 [fixture:
 eventmodeling/global-directives/description-block-end-line-with-unclosed-directive-kept]
-
 [fixture: eventmodeling/global-directives/directive-same-line-contacts]
 
 [fixture:
@@ -1074,24 +1087,27 @@ last kept `;`, as written; any other statement over several lines is formatted
 like one on a single line. A `;` that the line rule ignores is removed by
 mermaid.js, so the tokens on both sides of it are one token where they touch:
 the gap after it keeps whether it holds whitespace, and `/*style:#x*/;title`
-stays as it is, since `/*style:#x*/ title` is rejected. [fixture:
-semicolons/stretch-kept-rest-formatted] [fixture:
+stays as it is, since `/*style:#x*/ title` is rejected.
+
+[fixture: semicolons/stretch-kept-rest-formatted] [fixture:
 semicolons/ignored-semicolon-touches-next-atom] [fixture:
 semicolons/no-stretch-formatted] [fixture:
-semicolons/protected-gwt-title-hidden-gap-remains-zero] The first protected body
-line aligns with its body; contents and later columns remain authored. Required
-identifier and common-value padding takes precedence over structural
-indentation. Keep a child body's opening edge on the protected line too, so a
-second formatting cannot split it differently. This grammar has no grammatical
-semicolon, so `verbatimStyleLines` is false: a `style` or `classDef` word alone
-does not freeze the whole line.
+semicolons/protected-gwt-title-hidden-gap-remains-zero]
+
+The first protected body line aligns with its body; contents and later columns
+remain authored. Required identifier and common-value padding takes precedence
+over structural indentation. Keep a child body's opening edge on the protected
+line too, so a second formatting cannot split it differently. This grammar has
+no grammatical semicolon, so `verbatimStyleLines` is false: a `style` or
+`classDef` word alone does not freeze the whole line.
 
 A line that holds a `;` keeps its statements together, also where the `;` stands
 in the last line of a description block over several lines and a statement
 follows its `}`: `accDescr {x`, a line break, and `y;}` stay with
-`tf 17 evt End` on one line. [fixture:
-eventmodeling/semicolons/description-block-end-line-keeps-next-statement]
+`tf 17 evt End` on one line.
 
+[fixture:
+eventmodeling/semicolons/description-block-end-line-keeps-next-statement]
 [fixture: eventmodeling/semicolons/native-gwt-value]
 
 [fixture: eventmodeling/semicolons/native-frame-value]
@@ -1226,7 +1242,9 @@ braces on the line or in a block of a `data` declaration, in a title, and in an
 accessibility value is a character of the text: the Db holds `{"x"}` for the
 data `{"x"}` and `{x}` for `{x}`, and `accTitle: "T"` for the title written so.
 So no text can be written with or without quotes as the same text, and none is
-changed. [fixture: quotes/quotes-as-written]
+changed.
+
+[fixture: quotes/quotes-as-written]
 
 Input
 ([quotes/quotes-as-written-input.mmd](../tests/fixtures/eventmodeling/quotes/quotes-as-written-input.mmd)):

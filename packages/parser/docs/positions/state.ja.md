@@ -26,16 +26,20 @@
 空白 2 個が続く `state "d" as A style:#x;` では、
 そのトークンは `#x` と空白 2 個で、
 その間に `IgnoredSemicolon` のトークンがあります。
+
 [fixture: state/tokens-alias-ignored-semicolon-then-spaces]
 
 ### StateDirectionStatement
 
-範囲は方向の行の全体です。 [fixture: state/lex-direction-line-value-then-text]
+範囲は方向の行の全体です。
+
+[fixture: state/lex-direction-line-value-then-text]
 [fixture: state/lex-direction-line-in-description]
 
 ### StateIgnoredStatement
 
 範囲は、一続きの最初の `"` から最後の `"` までです。
+
 [fixture: state/gram-state-empty-string-alone]
 [fixture: state/tokens-ignored-statement-directive-between-empty-strings]
 
@@ -49,6 +53,7 @@
 `Punctuator` のトークン `{` と `}`、
 `ignored-state` の単位の `Keyword` のトークンです。
 トークンの種類は単位で決まり、それを持つノードでは決まりません。
+
 [fixture: state/gram-empty-description-block-before-alias-body-next-line]
 [fixture: state/gram-state-empty-string-before-name]
 [fixture: state/gram-ignored-percent-before-body-next-line]

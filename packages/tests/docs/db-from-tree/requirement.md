@@ -42,8 +42,9 @@ requirement `aﬂ°amp¶ß b`, and the same holds in a quoted name, the id, text
 type, and reference of a field, the names of a relationship, a class name, and
 the accessibility texts. The same form has each line terminator, `\r\n` and a
 lone `\r` too, as `\n`, in a string and in a description block, and each
-attribute quote as `'`, in an accessibility text. [fixture:
-requirement/entity-placeholder-in-unquoted-name] [fixture:
+attribute quote as `'`, in an accessibility text.
+
+[fixture: requirement/entity-placeholder-in-unquoted-name] [fixture:
 requirement/entity-placeholder-in-unquoted-value] [fixture:
 requirement/entity-placeholder-in-requirement-fields] [fixture:
 requirement/entity-placeholder-in-element-fields] [fixture:
@@ -68,21 +69,25 @@ requirement/entity-placeholder-in-quoted-class-name]
   their range. Their `value`, where they have one, is the written text, which
   the tree keeps, and the Db has the text as mermaid.js reads it. So `a`,
   U+00A0, and `b` is one name with the no-break space in it, and the whitespace
-  after a name or a value on its line is no part of it. [fixture:
-  requirement/db-requirement-name-spaces] [fixture:
+  after a name or a value on its line is no part of it.
+
+  [fixture: requirement/db-requirement-name-spaces] [fixture:
   requirement/lex-whitespace-nbsp-in-name] [fixture:
   requirement/lex-whitespace-nbsp-after-name] [fixture:
   requirement/lex-whitespace-line-separator-in-name] [fixture:
   requirement/db-requirement-value-spaces]
+
 - A StringLiteral has the converted form of its range without the quotes. It
   keeps every character between them, the whitespace and the line feeds too, and
   `#`, `%`, `:`, `,`, `-`, `{`, and `}`, which an unquoted text cannot hold. A
-  quoted name and the unquoted name with the same text are one name. [fixture:
-  requirement/db-requirement-quoted-values] [fixture:
+  quoted name and the unquoted name with the same text are one name.
+
+  [fixture: requirement/db-requirement-quoted-values] [fixture:
   requirement/db-relationship-quoted-names] [fixture:
   requirement/lex-string-hash-percent] [fixture:
   requirement/lex-string-line-feed] [fixture:
   requirement/db-name-quoted-and-unquoted-same]
+
 - A directive inside a text unit or a string is not in the converted form, and
   so not in the text: `text: a%%{init: {}}%%b` and `text: "a%%{init: {}}%%b"`
   have the text `ab`, `docref: a%%{init: {}}%%b` the reference `ab`,
@@ -91,8 +96,10 @@ requirement/entity-placeholder-in-quoted-class-name]
   `a - satisfies -> b%%{init: {}}%%c` the end `bc`, and `r:::c%%{init: {}}%%d`
   the class `cd`. The whitespace before the directive stays in the text:
   `text: a %%{init: {}}%%b` has the text `a b`. A comment line inside a
-  description block is not either. [fixture: requirement/lex-directive-in-name]
-  [fixture: requirement/lex-directive-in-target] [fixture:
+  description block is not either.
+
+  [fixture: requirement/lex-directive-in-name] [fixture:
+  requirement/lex-directive-in-target] [fixture:
   requirement/lex-directive-in-shorthand-class] [fixture:
   requirement/lex-directive-in-value] [fixture:
   requirement/lex-directive-after-space-in-value] [fixture:
@@ -105,29 +112,36 @@ requirement/entity-placeholder-in-quoted-class-name]
   requirement/tokens-comment-line-in-acc-block] [fixture:
   requirement/lex-directive-in-acc-descr] [fixture:
   requirement/lex-directive-in-acc-descr-block]
+
 - A `;` that the line rule ignores is not in the converted form either, so
   `style r fill:#f00;` has the style `fill:#f00`, `accTitle: style:#x a;b` the
   title `style:#x ab`, and `"style:#x" - satisfies -> b;c` the end `bc`, while a
   `;` on a line that is no `style` line is a character of its text: `id: 1;` has
-  the id `1;`, and `style r fill:red;` the style `fill:red;`. [fixture:
-  requirement/tokens-ignored-semicolon-in-style] [fixture:
+  the id `1;`, and `style r fill:red;` the style `fill:red;`.
+
+  [fixture: requirement/tokens-ignored-semicolon-in-style] [fixture:
   requirement/tokens-ignored-semicolon-in-acc-title] [fixture:
   requirement/tokens-ignored-semicolon-in-acc-descr] [fixture:
   requirement/tokens-ignored-semicolon-in-acc-descr-block] [fixture:
   requirement/tokens-ignored-semicolon-in-name] [fixture:
   requirement/lex-value-semicolon] [fixture: requirement/lex-style-semicolon]
+
 - The value of a style is the converted forms of the tokens inside its
   RequirementLiteral, joined. The whitespace between the units of a style is no
   token, so it is no part of the value: `style r fill: red , stroke : blue`
   gives the styles `fill:red` and `stroke:blue`, and
-  `style r fill:red stroke:blue` the one style `fill:redstroke:blue`. [fixture:
-  requirement/lex-style-spaces] [fixture: requirement/lex-style-no-comma]
-  [fixture: requirement/db-style-statement] [fixture:
-  requirement/lex-style-hash-after-style] [fixture:
+  `style r fill:red stroke:blue` the one style `fill:redstroke:blue`.
+
+  [fixture: requirement/lex-style-spaces] [fixture:
+  requirement/lex-style-no-comma] [fixture: requirement/db-style-statement]
+  [fixture: requirement/lex-style-hash-after-style] [fixture:
   requirement/lex-directive-in-style]
+
 - The text of an accessibility statement is the converted form of the range of
   its RequirementLiteral without the whitespace at its ends, as mermaid.js trims
-  it. [fixture: requirement/db-acc-title-descr] [fixture:
+  it.
+
+  [fixture: requirement/db-acc-title-descr] [fixture:
   requirement/lex-acc-title-no-space] [fixture:
   requirement/lex-acc-title-directive-adjacent-whitespace] [fixture:
   requirement/lex-acc-title-trailing-nbsp] [fixture:
@@ -142,6 +156,7 @@ no statements, and neither is a line of `%%` alone, which is a comment of the
 diagram. An empty description block, a RequirementAccDescrBlockStatement without
 text, changes nothing: the statements around it are executed as if it were not
 there, wherever a statement may start, after the header and after a `}` too.
+
 [fixture: requirement/db-class-statement-before-def] [fixture:
 requirement/lex-bare-percent-line-after-statement] [fixture:
 requirement/lex-percent-brace-line] [fixture:
@@ -159,8 +174,9 @@ requirement/db-style-before-definition]
 **Defaults.** Without a statement, the Db has the direction `TB`, the empty text
 for `accTitle` and `accDescr`, the title of the frontmatter (the empty text
 without one) for the title, and no requirement, element, relationship, and class
-definition. [fixture: requirement/header-only] [fixture:
-requirement/db-frontmatter-title]
+definition.
+
+[fixture: requirement/header-only] [fixture: requirement/db-frontmatter-title]
 
 **Direction, title, and accessibility.** `direction` is the direction of the
 last direction statement of the body, which the tree gives in upper case, or
@@ -168,13 +184,18 @@ last direction statement of the body, which the tree gives in upper case, or
 its value is no part of the Db, and a line like `a - satisfies -> direction LR`
 sets the direction and adds no relationship. The title is that of the
 frontmatter, with the replacement of characters; the diagram has no statement
-for it. [fixture: requirement/lex-title-statement] `accTitle` is the text of the
-last accTitle statement, with the replacement of characters, or the empty text.
-`accDescr` is the text of the last `accDescr` statement or description block
-with text, with each line feed, together with the whitespace that follows it,
-line feeds included, replaced by one line feed, and then with the replacement of
-characters. A description block without text changes nothing. The text may start
-on a later line: `accTitle:` followed by a line `T` gives the title `T`.
+for it.
+
+[fixture: requirement/lex-title-statement]
+
+`accTitle` is the text of the last accTitle statement, with the replacement of
+characters, or the empty text. `accDescr` is the text of the last `accDescr`
+statement or description block with text, with each line feed, together with the
+whitespace that follows it, line feeds included, replaced by one line feed, and
+then with the replacement of characters. A description block without text
+changes nothing. The text may start on a later line: `accTitle:` followed by a
+line `T` gives the title `T`.
+
 [fixture: requirement/db-direction-last-wins] [fixture:
 requirement/db-direction-lower-case] [fixture:
 requirement/lex-direction-tb-first] [fixture:
@@ -242,8 +263,9 @@ name, in the order in which a statement first names them.
   field of a kind is the one that stays: of two `id` fields the first is the id.
   An item of the body that is a RequirementIgnoredText, an empty description
   block, is no field, wherever it stands. A comment line, a directive line, an
-  empty line, and a line of whitespace in a body are no items. [fixture:
-  requirement/db-requirement-fields-repeated] [fixture:
+  empty line, and a line of whitespace in a body are no items.
+
+  [fixture: requirement/db-requirement-fields-repeated] [fixture:
   requirement/gram-empty-description-block-in-body] [fixture:
   requirement/gram-empty-description-block-after-brace] [fixture:
   requirement/gram-empty-description-block-before-field] [fixture:
@@ -257,18 +279,22 @@ name, in the order in which a statement first names them.
   requirement/lex-directive-at-end-of-field-line] [fixture:
   requirement/lex-directive-line-in-body] [fixture:
   requirement/lex-whitespace-only-line-in-body]
+
 - A statement with the name of a requirement that exists, of any kind, changes
   no field of it, its body included; a requirement and an element may have the
-  same name. A name is any name, `__proto__` and `constructor` too. [fixture:
-  requirement/db-requirement-name-repeated] [fixture:
+  same name. A name is any name, `__proto__` and `constructor` too.
+
+  [fixture: requirement/db-requirement-name-repeated] [fixture:
   requirement/db-requirement-and-element-same-name] [fixture:
   requirement/spec-requirement-diagram-7e4de658] [fixture:
   requirement/spec-requirement-diagram-dec8a0d9] [fixture:
   requirement/db-requirement-definition-again-with-class]
+
 - `requirementId` and `text` are the texts of the values of the first `id` and
   the first `text` field, a quoted value with its spaces, an unquoted one
-  without the whitespace at its ends. [fixture:
-  requirement/db-requirement-quoted-values] [fixture:
+  without the whitespace at its ends.
+
+  [fixture: requirement/db-requirement-quoted-values] [fixture:
   requirement/db-requirement-value-spaces]
 
 **Elements.** An element statement adds the element of its name to the elements
@@ -277,6 +303,7 @@ when there is none, then the classes after `:::` go to the target of its name
 first `type` and first `docref` field, which are any text, and the empty text
 where the body does not set them. A name that exists changes no field of the
 element, its body included; the body is read as the body of a requirement.
+
 [fixture: requirement/db-element-fields] [fixture:
 requirement/db-element-defaults] [fixture:
 requirement/db-element-fields-repeated] [fixture:
@@ -294,8 +321,9 @@ earlier one is the same. `type` is the relationship of the tree, in lower case.
 `src` and `dst` are the left and the right name for an arrow `forward`, and the
 right and the left name for an arrow `backward`: `b <- copies - a` is a
 relationship from a to b. The names need not be those of a requirement or an
-element, and the statement adds neither. [fixture:
-requirement/db-relationship-arrows] [fixture:
+element, and the statement adds neither.
+
+[fixture: requirement/db-relationship-arrows] [fixture:
 requirement/gram-relationship-glued] [fixture:
 requirement/gram-relationship-backward-glued] [fixture:
 requirement/lex-relationship-upper-case] [fixture:
@@ -320,21 +348,26 @@ class `default`, which the summary leaves out, so a statement that names
   the target of each of its names, in the order of the names, and stops at the
   first name that has no target: the names after it get nothing. The styles of
   several statements add up. When a requirement and an element have the name,
-  the requirement gets the styles. [fixture: requirement/db-style-statement]
-  [fixture: requirement/db-style-unknown-name] [fixture:
+  the requirement gets the styles.
+
+  [fixture: requirement/db-style-statement] [fixture:
+  requirement/db-style-unknown-name] [fixture:
   requirement/db-class-statement-unknown-name-first] [fixture:
   requirement/db-requirement-and-element-same-name] [fixture:
   requirement/lex-style-string-name] [fixture:
   requirement/spec-requirement-diagram-5305b791] [fixture:
   requirement/spec-requirement-diagram-e39bdc99] [fixture:
   requirement/spec-requirement-diagram-5ee6d26d]
+
 - A `class` statement, a class shorthand statement (`r:::a,b`), and the classes
   after `:::` in the head of a requirement or an element add the classes, in
   order, to the `classes` of the target of each name, in the order of the names.
   A name that has no target is skipped, and the names after it still get the
   classes. With each class the target gets the styles that the class has at that
   point, appended to its `cssStyles`. A class needs no `classDef`; a class given
-  twice is kept twice. [fixture: requirement/db-class-statement] [fixture:
+  twice is kept twice.
+
+  [fixture: requirement/db-class-statement] [fixture:
   requirement/db-class-statement-unknown-name-first] [fixture:
   requirement/db-class-colon-form] [fixture: requirement/db-class-in-definition]
   [fixture: requirement/db-class-default-name] [fixture:
@@ -350,6 +383,7 @@ class `default`, which the summary leaves out, so a statement that names
   requirement/spec-requirement-diagram-a8854583] [fixture:
   requirement/db-class-given-twice] [fixture:
   requirement/db-class-statements-same-class-twice]
+
 - A `classDef` statement adds its styles, in order, to the definition of each of
   its names, which it makes at the end of the list when there is none, and then
   adds them to the `cssStyles` of every requirement and element that has the
@@ -357,9 +391,11 @@ class `default`, which the summary leaves out, so a statement that names
   to a member in two ways: when the member joins the class, if the class is
   defined by then, and when the class is defined, to the members it has at that
   time. A second `classDef` of a name adds its styles to the first and does not
-  move it. A definition that no requirement or element uses is kept. [fixture:
-  requirement/db-class-def] [fixture: requirement/db-class-def-default-all]
-  [fixture: requirement/db-class-statement-before-def] [fixture:
+  move it. A definition that no requirement or element uses is kept.
+
+  [fixture: requirement/db-class-def] [fixture:
+  requirement/db-class-def-default-all] [fixture:
+  requirement/db-class-statement-before-def] [fixture:
   requirement/db-class-styles-order] [fixture:
   requirement/db-class-styles-order-defined-first] [fixture:
   requirement/lex-classdef-string-name] [fixture:
@@ -377,8 +413,9 @@ lists.
 left out of a value (see
 [The converted form](../db-from-tree.md#the-converted-form)). The summary has no
 field for the text after the direction value, so that fixture records that the
-input is accepted. [fixture:
-requirement/lex-direction-text-line-separator-then-comment-line]
+input is accepted.
+
+[fixture: requirement/lex-direction-text-line-separator-then-comment-line]
 
 ## The replacement of characters
 
@@ -389,8 +426,9 @@ The Db passes three texts through `sanitizeText`: the title, `accTitle`, and
 to no other text: names, ids, texts, types, references, the names of
 relationships, classes, and styles are as written. The title of the frontmatter
 is replaced; the `accDescr` is replaced after its lines are joined, and a block
-is replaced like a line. [fixture:
-requirement/config-security-level-other-title] [fixture:
+is replaced like a line.
+
+[fixture: requirement/config-security-level-other-title] [fixture:
 requirement/config-security-level-other-acc-title] [fixture:
 requirement/config-security-level-other-acc-descr] [fixture:
 requirement/config-security-level-other-acc-descr-block] [fixture:
