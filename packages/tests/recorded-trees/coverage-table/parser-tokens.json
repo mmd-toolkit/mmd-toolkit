@@ -1702,6 +1702,19 @@
                 "text": "fails a fragment without a mark that follows no comment region, or with whitespace before the region, and comments that overlap"
               }
             ]
+          },
+          {
+            "case": "A comment that is not the fragment after a region that cuts a diagram comment has a mark: the text after a comment line that follows no cut diagram comment is no markless Comment.",
+            "tests": [
+              {
+                "file": "check-tree-comments.test.ts",
+                "text": "fails the text after a comment line as a fragment in a ${bodyType} where a line feed ends the comment, or no comment comes before the line"
+              },
+              {
+                "file": "check-tree-comments.test.ts",
+                "text": "fails the text after a comment line as a fragment in a ${bodyType} where the comment ends before ${"
+              }
+            ]
           }
         ]
       }
