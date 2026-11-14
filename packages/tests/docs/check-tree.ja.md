@@ -466,8 +466,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     本体の空の description ブロックは `Keyword` と `Punctuator` です。
     名前は、
     `style` と `classDef` の後と `class` の文の names では `Identifier`、
-    requirement、element、関係、省略形では `RawText`、
-    `class` の文のクラスでは `Identifier` か `RawText` です。
+    requirement、element、関係、省略形では `RawText`、`class` の文のクラスでは、
+    `class` のある行で style 文脈が続く間は `Identifier`、
+    最初の line feed の後では `RawText` です。
     文の範囲は、トークンと子ノードの最初から最後までです。
     出典は `parser/docs/positions/requirement.md` です。
   - mindmap: 検査は木とソースのテキストを読みます。

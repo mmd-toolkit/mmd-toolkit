@@ -404,9 +404,10 @@ const problems: TreeProblem[] = checkTree(text, tree)
     text of a direction line `RawText`, and those of an empty description block
     of a body `Keyword` and `Punctuator`; a name is `Identifier` after `style`
     and `classDef` and in the names of a `class` statement, `RawText` for a
-    requirement, an element, a relationship, and a shorthand, and `Identifier`
-    or `RawText` for a class of a `class` statement. The range of a statement is
-    the hull of its tokens and child nodes
+    requirement, an element, a relationship, and a shorthand, and for a class of
+    a `class` statement `Identifier` on the line of the `class` keyword, where
+    the style context lasts, and `RawText` after the first line feed. The range
+    of a statement is the hull of its tokens and child nodes
     (`parser/docs/positions/requirement.md`).
   - mindmap: the checks read the tree and the text of the source. The child
     nodes of a field are of the types of its table (`MINDMAP_CHILD_TYPES`, which

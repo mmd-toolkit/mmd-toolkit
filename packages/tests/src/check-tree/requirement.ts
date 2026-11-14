@@ -1,4 +1,7 @@
-import { isWordCharacter } from "../db-from-tree/characters.ts"
+import {
+  isLineTerminatorCode,
+  isWordCharacter,
+} from "../db-from-tree/characters.ts"
 import {
   checkChildTypes,
   checkFieldWords,
@@ -64,9 +67,10 @@ const OWN_PUNCTUATORS: readonly string[] = [
  * `Identifier` token; one of a requirement, an element, a relationship, and a
  * shorthand is an `unquoted-text` unit, a `RawText` token; a name of a `class`
  * statement is a `style-word` unit (a line feed ends the style context, and
- * the names list does not go on after it), and a class of it a `style-word`
- * unit, or an `unquoted-text` unit where the statement goes on after the line
- * feed.
+ * the names list does not go on after it). The classes of a `class` statement
+ * are not in the table: a class on the line of the `class` keyword is a
+ * `style-word` unit, an `Identifier` token, and a class after a line feed an
+ * `unquoted-text` unit, a `RawText` token (see {@link classTokenKinds}).
  */
 const NAME_TOKEN_KINDS: Readonly<
   Record<string, Readonly<Record<string, readonly string[]>>>
@@ -83,10 +87,28 @@ const NAME_TOKEN_KINDS: Readonly<
   },
   RequirementStyleStatement: { names: ["Identifier"] },
   RequirementClassDefStatement: { cssClasses: ["Identifier"] },
-  RequirementClassStatement: {
-    names: ["Identifier"],
-    cssClasses: ["Identifier", "RawText"],
-  },
+  RequirementClassStatement: { names: ["Identifier"] },
+}
+
+/**
+ * diagrams/requirement.md, The style context, rule 9, and
+ * parser/docs/tokens/requirement.md, Tokens: the kinds of the tokens of the
+ * class `node` of a `class` statement. The style context, whose names are
+ * `style-word` units, lasts to the first line feed after the `class` keyword,
+ * and the statement goes on in the statement context, whose classes are
+ * `unquoted-text` units.
+ */
+function classTokenKinds(
+  reading: Reading,
+  statement: CheckedNode,
+  node: CheckedNode,
+): readonly string[] {
+  const before = reading.converted.of([statement.range[0], node.range[0]])
+  return [...before].some((character) =>
+    isLineTerminatorCode(character.charCodeAt(0)),
+  )
+    ? ["RawText"]
+    : ["Identifier"]
 }
 
 /** ast/requirement.md, RequirementRequirementStatement: the kinds of requirement. */
@@ -548,7 +570,9 @@ function checkUnquoted(
     checkTokenKinds(
       reading,
       node,
-      NAME_TOKEN_KINDS[parent?.type ?? ""]?.[field] ?? ["RawText"],
+      parent?.type === "RequirementClassStatement" && field === "cssClasses"
+        ? classTokenKinds(reading, parent, node)
+        : (NAME_TOKEN_KINDS[parent?.type ?? ""]?.[field] ?? ["RawText"]),
       `${withArticle(node.type)} in ${field}`,
     )
   } else {

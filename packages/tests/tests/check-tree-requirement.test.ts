@@ -2391,6 +2391,27 @@ const RECORDED_CASES: readonly MutationCase[] = [
       "the tokens of an Identifier in names are not all of the kind Identifier: RawText",
   },
   {
+    name: "a class on the line of `class` as a RawText token",
+    fixture: "db-class-statement",
+    mutate: retypeIn("RequirementClassStatement", "Identifier", "a", "RawText"),
+    expected:
+      "the tokens of a RequirementIdentifier in cssClasses are not all of the kind Identifier: RawText",
+  },
+  {
+    name: "a class after the line feed that ends the style context as an Identifier token",
+    fixture: "lex-class-list-next-line",
+    mutate: retypeIn("RequirementClassStatement", "RawText", "c", "Identifier"),
+    expected:
+      "the tokens of a RequirementIdentifier in cssClasses are not all of the kind RawText: Identifier",
+  },
+  {
+    name: "the second class after that line feed as an Identifier token",
+    fixture: "lex-class-list-comma-next-line",
+    mutate: retypeIn("RequirementClassStatement", "RawText", "d", "Identifier"),
+    expected:
+      "the tokens of a RequirementIdentifier in cssClasses are not all of the kind RawText: Identifier",
+  },
+  {
     name: "the name of a requirement as an Identifier token",
     fixture: "db-requirement-defaults",
     mutate: retypeIn("RequirementIdentifier", "RawText", null, "Identifier"),
