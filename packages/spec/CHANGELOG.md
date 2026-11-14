@@ -1,5 +1,20 @@
 # @mmd-toolkit/spec
 
+## 0.4.1
+
+### Patch Changes
+
+- [#88](https://github.com/mmd-toolkit/mmd-toolkit/pull/88) [`32f4196`](https://github.com/mmd-toolkit/mmd-toolkit/commit/32f419663a7c1304b17560520d6bbdaf715a3de1) Thanks [@ota-meshi](https://github.com/ota-meshi)! - State which names and texts go on across a comment line after a U+2028 or U+2029
+  in them, as the comment lines of `common.md` define, and which end at the U+2028
+  instead, in the lexical sections (units, contexts, strings, and comments) of
+  every diagram type except `agentflow-beta`, `eventmodeling`, `ishikawa-beta`,
+  and `sankey`, in the classes of `quadrantChart`, and in the nodes `ErIdentifier`
+  and `QuadrantIdentifier` of the tree: in `stateDiagram`, `X: A`, U+2028, a line
+  `%% c`, and a line `B` give X the description `A`, U+2028, `B`, while in
+  `block-beta` the id `a` ends at the U+2028. An implementation reads the values
+  that go on as one value with the comment line left out, also in the `name` of
+  those two nodes.
+
 ## 0.4.0
 
 ### Minor Changes

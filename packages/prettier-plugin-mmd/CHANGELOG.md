@@ -1,5 +1,534 @@
 # prettier-plugin-mmd
 
+## 0.9.0
+
+### Minor Changes
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print an `agentflow-beta` label whose `@` stands before a `"` or a `{` without
+  the spaces inside its brackets: `A[/ a@"b" /]` becomes `A[/a@"b"/]`. Before,
+  since 0.4.0, every label with an `@` kept its spaces in an `agentflow-beta`,
+  because mermaid.js rejects `A[x@]` there, so this label came out in two forms
+  although mermaid.js draws both the same. Now only a label that needs the spaces
+  keeps them, such as `A[ user@example.com ]`.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print an `architecture-beta` group or service label without quotes when it needs
+  none: `service api(server)["A.B"]` becomes `service api(server)[A.B]`.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print a space after the `block:` of a nested block in a `block` diagram:
+  `block:group1:2` becomes `block: group1:2`. Until now, since the first release,
+  the node touched the colon because the examples of mermaid.js write it so,
+  although the space makes the node easier to distinguish from the keyword. Now
+  the node follows one space, which mermaid.js reads the same.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the arrows of `block` diagrams and the arrow of a `quadrantChart` axis in
+  their shortest form: `A ---> B` is now printed `A --> B`. Before, the length of
+  the line stayed as written, because it is the author's choice, so the same arrow
+  came out in two forms in one diagram although mermaid.js draws them the same.
+  Now only the shortest form is printed, and an arrow that some versions of
+  mermaid.js draw differently with another length, such as `---x`, stays as
+  written.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print spaces after commas in color functions in the `rect` and `box` of a
+  `sequenceDiagram` and the `style` of a `venn-beta`: `rect rgb(191,223,255)`
+  becomes `rect rgb(191, 223, 255)`. The colors were left as written, like the
+  other texts of these statements, but mermaid.js draws them the same either way,
+  and the examples of its documentation write the colors of a `sequenceDiagram`
+  with the space, so the same color came out in two forms. Now these colors have a
+  space after each comma, giving each color one form.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the `TB` in the header of a `flowchart` as `TD`: `flowchart TB` becomes
+  `flowchart TD`. Before, since 0.6.0, the direction stayed as written, because
+  some versions of mermaid.js draw a flowchart with a subgraph that no link joins
+  to the outside differently with `TB` than with `TD`, so every other flowchart
+  came out in two forms that draw the same figure. Now the header is printed `TD`,
+  as the documentation of mermaid.js writes it, and `TB` stays only for a
+  flowchart with such a subgraph.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Separate `gantt` task names from their colons: `Short:a1, 2024-01-01, 3d`
+  becomes `Short : a1, 2024-01-01, 3d`. Such names were left as written because
+  the author had chosen the compact form, but mermaid.js draws the chart the same
+  either way, and a chart that mixed the two forms printed the same task in two
+  forms. Now such a name gets the space that the examples of the mermaid.js
+  documentation write, without changing the drawing.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print one space after the colon of a `gantt` task: `Task :a1, 2024-01-01, 30d`
+  becomes `Task : a1, 2024-01-01, 30d`. The first item was printed against the
+  colon, as task examples in the mermaid.js documentation are written, but
+  Prettier prints a space after a colon that follows a name, so formatted tasks
+  looked unlike names and values in the rest of a project. Now the first item
+  stands after one space without changing the drawing.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Omit the optional colon from a `gitGraph` header with no direction: `gitGraph:`
+  becomes `gitGraph`. Before, since 0.6.0, the colon stayed as written because an
+  older version of mermaid.js required it, so the same diagram came out in two
+  forms that draw the same figure. Now the colon is left out where it is optional,
+  while a header with a directive keeps the colon that mermaid.js 10.9.8 requires.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print `branch "commit-x"` as `branch commit-x` in `gitGraph`. Since 0.8.0, a
+  name that started with a keyword or spelled one in another case kept its quotes
+  to avoid being read as a keyword, so the same branch could come out in two forms
+  that draw the same figure. Now such names lose unnecessary quotes while names
+  read as keywords, such as `"Merge"`, keep them.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the direction `TD` of an `agentflow-beta` or a `swimlane-beta` header as
+  `TB` also after a directive: `agentflow-beta%%{init: {}}%% TD` becomes
+  `agentflow-beta %%{init: {}}%%TB`. Version 0.6.0 began to print `TD` as `TB` in
+  these headers, but left it as written after a directive, so the same direction
+  came out in two forms although mermaid.js draws both the same. Now it is printed
+  `TB` in both places.
+
+- [#82](https://github.com/mmd-toolkit/mmd-toolkit/pull/82) [`7c25dfb`](https://github.com/mmd-toolkit/mmd-toolkit/commit/7c25dfb066f3cb57b60753bddd9ca4cf1aaa8236) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the hexadecimal colors of styles in lower case: `style A fill:#F9F`
+  becomes `style A fill: #f9f`, as Prettier prints the colors of CSS. The colors
+  of a `classDef` in `classDiagram`, and of a `style` with one style in
+  `stateDiagram`, keep their case, because mermaid.js 10.9.8 draws those lines as
+  text.
+
+- [#82](https://github.com/mmd-toolkit/mmd-toolkit/pull/82) [`7c25dfb`](https://github.com/mmd-toolkit/mmd-toolkit/commit/7c25dfb066f3cb57b60753bddd9ca4cf1aaa8236) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print a name or text with a `-` between its parts without quotes in `erDiagram`,
+  `flowchart`, `swimlane-beta`, `agentflow-beta`, and `quadrantChart`:
+  `"LINE-ITEM" ||--o{ ORDER : has` becomes `LINE-ITEM ||--o{ ORDER : has`. Before,
+  since 0.8.0, a name with a `-` kept its quotes to avoid changing how mermaid.js
+  reads the name, so `LINE-ITEM` and `ORDER` came out in two forms in one diagram.
+  Now such a name is printed without quotes while a name that mermaid.js reads
+  differently keeps them.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the first colon of a `journey` task touching its description:
+  `Make tea : 5: Me` becomes `Make tea: 5: Me`. Before, since the first release,
+  the whitespace before that colon stayed as written, because mermaid.js keeps it
+  in the description, so the same task came out in different forms although all of
+  them draw the same. Now the colon touches the description, as in the examples of
+  the documentation of mermaid.js, and a section whose descriptions are padded to
+  line the colons up stays as written.
+
+- [#82](https://github.com/mmd-toolkit/mmd-toolkit/pull/82) [`7c25dfb`](https://github.com/mmd-toolkit/mmd-toolkit/commit/7c25dfb066f3cb57b60753bddd9ca4cf1aaa8236) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the labels of `flowchart` and `swimlane-beta` diagrams without quotes and
+  the labels of shapes and the titles of flows of `agentflow-beta` diagrams in
+  quotes, as the documentation of mermaid.js writes them: `A["Start here"]`
+  becomes `A[Start here]` in a `flowchart`, and `A[Start]` becomes `A["Start"]` in
+  an `agentflow-beta`. Before, since 0.8.0, a label stayed as written, because
+  mermaid.js distinguishes a label in quotes from one without them, so the same
+  label came out in two forms although it draws them the same. Now a label is
+  printed in the form of the examples, and a label that needs its quotes, such as
+  one with a bracket, keeps them.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print a string after the `(-` opener of a `mindmap` or `kanban` shape without
+  its quotes: `f(-"x")` becomes `f(-x)`. Before, since 0.8.0, the quotes stayed
+  next to the dash of an opener as they do before a `-)` closer, so the same label
+  came out in two forms although mermaid.js draws both the same after `(-`. Now
+  the quotes stay only before a `-)` closer, which a text without quotes does not
+  close.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print one space after each comma of a list of names in `erDiagram`,
+  `requirementDiagram`, `usecase-beta`, `stateDiagram`, `classDiagram`, and
+  `sequenceDiagram`: `class A,B c,d` becomes `class A, B c, d`. These lists were
+  printed with the commas touching the names, since the first version in
+  `erDiagram`, `requirementDiagram`, and `usecase-beta` and since 0.5.0 in the
+  others, as the mermaid.js documentation writes them, but Prettier prints a space
+  after a comma in every language it formats, so a file formatted by Prettier lost
+  a space that it prints elsewhere. Now a comma touches the name before it and has
+  one space after it, which mermaid.js reads the same.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the colon of a `pie` section against its label: `"Dogs" : 386` is now
+  printed `"Dogs": 386`. The colon was printed with a space on each side, as the
+  examples in the mermaid.js documentation write it, but a label and its value are
+  a key and its value, and Prettier prints no space before the colon that follows
+  a key, so a formatted `pie` looked unlike the keys and values in the rest of a
+  project. Now the colon touches the label and has one space after it, which
+  mermaid.js reads the same.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the braces of a `radar-beta` curve with named entries with one space
+  inside each end: `curve c{m: 60, s: 70}` is now printed
+  `curve c{ m: 60, s: 70 }`. The braces were printed tight, like those of a curve
+  of values, but a list of names and values is the kind of braces that Prettier
+  prints with a space inside, so these curves looked unlike the objects in the
+  rest of a project. Now a curve with named entries has the space, which
+  mermaid.js reads the same, and a curve of values only, `curve c{85, 90}`, stays
+  tight.
+
+- [#82](https://github.com/mmd-toolkit/mmd-toolkit/pull/82) [`7c25dfb`](https://github.com/mmd-toolkit/mmd-toolkit/commit/7c25dfb066f3cb57b60753bddd9ca4cf1aaa8236) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Remove unnecessary quotes from `sankey` source and target names:
+  `"R&D",Product,10` becomes `R&D,Product,10`. Before, since 0.8.0, names such as
+  this kept their quotes to preserve names containing punctuation, so the same
+  source or target came out in two forms depending on how its author wrote it. Now
+  such names are printed without quotes while a text with a comma keeps them.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the colon of a `stateDiagram` description against the id of its state:
+  `A : waiting` is now printed `A: waiting`. The colon was printed with a space on
+  each side to match a transition label, so state descriptions looked unlike the
+  descriptions in the mermaid.js documentation. Now a description uses the form of
+  those examples while transition labels keep one space on each side of the colon.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Add a missing space before the `:` between a period and an event or between
+  events of a `timeline`: `2004: Facebook: Google` becomes
+  `2004 : Facebook : Google`. Before, since the first release, the whitespace
+  before a `:` stayed as written, because mermaid.js keeps it in the text of the
+  period and of the event, so the same timeline came out in different forms
+  although all of them draw the same. Now a missing space is added, as in the
+  examples of the mermaid.js documentation, and existing whitespace stays as
+  written.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the header of a `treemap` or `ishikawa` diagram without `-beta`, and the
+  header of an `ishikawa` diagram in lower case: `ISHIKAWA-BETA` becomes
+  `ishikawa`. Until now, since 0.6.0, every header stayed as written to avoid
+  names that older versions of mermaid.js could not read, so these diagrams came
+  out in multiple spellings that draw the same figure. Now the shorter name is
+  printed unless it would change an `ishikawa` root.
+
+- [#82](https://github.com/mmd-toolkit/mmd-toolkit/pull/82) [`7c25dfb`](https://github.com/mmd-toolkit/mmd-toolkit/commit/7c25dfb066f3cb57b60753bddd9ca4cf1aaa8236) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the colon of an `include` or `extend` link in `usecase-beta` with a space
+  on each side: `Checkout ..>:include Browse` becomes
+  `Checkout ..> : include Browse`. Before, the colon touched the arrow and the
+  keyword as part of one operator, which is not how the documentation of
+  mermaid.js writes it, so the form that its examples use came out as another one.
+  Now the link is printed as the examples write it, and the keyword is still
+  printed in lower case.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the colon of the size of a `venn-beta` `set` or `union` with one space on
+  each side: `set A["Alpha"]:20` is now printed `set A["Alpha"] : 20`. Before, the
+  colon touched the name or label before the size, as the documentation of
+  mermaid.js writes it, but the size belongs to the whole declaration, and in a
+  `union` a colon against the last name looked like the size of that name alone.
+  Now the colon stands between the declaration and its size, the way an operator
+  between two things does, and mermaid.js reads the same diagram.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the statements of a `venn-beta` diagram one step under its header: `set A`
+  under the header was printed at column one, and is now printed with two spaces
+  before it. The statements stood at column one so that indenting could not change
+  how mermaid.js reads a `text` line, but that left every `venn-beta` diagram
+  without the indentation of the mermaid.js documentation's examples. Now `set`,
+  `union`, `style`, and `title` stand one step deep, and a `text` line with its
+  own target stays level with the header.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the properties of a `venn-beta` `style` statement as `key: value`:
+  `style A fill:#f00` was printed as written, and is now printed
+  `style A fill: #f00`. Both spellings were left as written to follow the examples
+  of the mermaid.js documentation, so the same property could be printed in two
+  forms. Now a property is printed with the space after its colon, which
+  mermaid.js reads the same.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Decide what stays as written from mermaid.js `10.9.8`, `11.7.0`, `11.17.2`,
+  `12.0.0`, and `12.3.0`: a form is printed only where each of them that has the
+  diagram type draws it the same. For a diagram type that was added later than the
+  oldest of these versions of a major version, the first minor version that has
+  it, at its latest patch, counts in its place for that diagram type alone.
+
+### Patch Changes
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep a `direction` text after an empty `accTitle:` from becoming a direction
+  statement in `classDiagram`, `stateDiagram`, `erDiagram`, and
+  `requirementDiagram`: `  accTitle:` followed by `    direction LR` in an
+  `erDiagram` was printed `  accTitle: direction LR`, which mermaid.js reads as a
+  direction and not as the title, and is now printed `accTitle: direction LR` at
+  the start of its line.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep a tab between the words of an `architecture-beta` label:
+  `service api(server)["A<tab>B"]` becomes `service api(server)[A<tab>B]` instead
+  of replacing the tab with a space.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Fix a `classDiagram` name in backticks that lost them only at a second
+  formatting: ``class `Alpha` {Word %% c}`` kept its backticks at the first
+  formatting and lost them at the second, and now loses them at the first.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Fix a class body inside a `namespace` of a `classDiagram` that was printed
+  differently when it was formatted a second time:
+  `namespace Alpha { class Beta { +style:#x; } }` is printed with each `}` on a
+  line of its own at the first formatting.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Fix output that mermaid.js rejects in a `classDiagram`:
+  `call%%{init: {}}%%()--> B` was printed with a space after `call`, as
+  `call %%{init: {}}%%()--> B`, and now stays as written.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep a tab after the visibility mark of an attribute of a `classDiagram`:
+  `+<tab>int x` was printed `+int x`, which mermaid.js 10.9.8 draws with another
+  name, since it reads the tab as part of the name.
+
+- [#98](https://github.com/mmd-toolkit/mmd-toolkit/pull/98) [`d71a9ce`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d71a9ce50546c5f06e7da5f2d37c255ccc09728d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Fix a `style` or `classDef` line that follows `accDescr {}` in a `classDiagram`:
+  `accDescr {} style A fill:#f00;` was printed as
+  `accDescr {} style A fill: #f00;`, which mermaid.js reads differently or
+  rejects.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the closing `}` of a `classDiagram`, `erDiagram`, or `stateDiagram` block
+  on its line where a `;` that mermaid.js ignores follows it:
+  `class Alpha { +style:#x };` was printed with `};` on a line of its own, which
+  mermaid.js rejects.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the lines of a `%%` comment together where a directive between them holds a
+  line separator (U+2028 or U+2029): the separator inside the directive was read
+  as the end of a comment line. In a `sequenceDiagram` with the four lines
+  `# native`, a U+2028, `%% first`; `%% middle`; `%%{x:`, a U+2028, `}%%%% last`;
+  and `remainder`, the first line came out as two lines, which mermaid.js rejects.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print an `accDescr` block in the form with the colon also where its only line
+  break stands inside a directive: `accDescr {a %%{init:` followed by `{}}%% b}`
+  on the next line becomes `accDescr: a %%{init:` and `{}}%% b`, as mermaid.js
+  reads the description as one line.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep a `flowchart` or `erDiagram` line as written, with its indentation, where
+  mermaid.js reads `direction` and a direction value in it only after it removes a
+  `;` or a comment line: `accTitle:style:#x,direc;tion TB` and an `accTitle:` of
+  `direction` with `TB` after a comment line were indented, which turned them into
+  direction statements and dropped the title.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Fix a space put between a data block and the edge id after it in `flowchart` and
+  `swimlane-beta`: `A@{ shape: circle }e1@--> B` was printed
+  `A@{ shape: circle } e1@--> B` since 0.4.0, which mermaid.js 11.7.0, 11.17.2,
+  and 12.0.0 reject in `flowchart`, and 11.16.1, 11.17.2, and 12.0.0 reject in
+  `swimlane-beta`.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the attributes of an `erDiagram` entity on one line where a later one has a
+  pair of `~`: `int a PK List~int~ b` was printed as `int a PK` and `List~int~ b`
+  on two lines, which mermaid.js 10.9.8 draws as two attributes in place of one.
+
+- [#86](https://github.com/mmd-toolkit/mmd-toolkit/pull/86) [`ff4b39a`](https://github.com/mmd-toolkit/mmd-toolkit/commit/ff4b39ae943932cc050b479dd1e44af024a67cfa) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the attribute block of an `erDiagram` entity over several lines as any
+  attribute block also on a line that stays as written, such as after an entity
+  `1` that touches a letter: `1A {`, a line break, and `}` now becomes `1A { }`.
+  Before, the whole statement stayed as written, because moving text of such a
+  line can change how mermaid.js reads it, so an empty block written over several
+  lines stayed over several lines, although it is ` { }` everywhere else. Now the
+  `}` and the attributes below the `{` line are printed as in any other block,
+  keeping the text up to the `{` of a line that a comment line joined as written.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep an `erDiagram` keyword that touches a `-` as written: `class-A a` was
+  printed `class -A a`, which mermaid.js 10.9.8 rejects.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the case of `direction`, its value, `subgraph`, and `end` in an
+  `erDiagram`: `SUBGRAPH S` with `END` no longer becomes `subgraph S` with `end`.
+  Version 0.6.0 began to print these words in the case of the examples in the
+  documentation of mermaid.js, but mermaid.js 10.9.8 and 11.7.0 read them as the
+  names of entities, so the diagram that they draw changed once the text was
+  formatted. Now these words stay as written.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep adjacent `erDiagram` statements on one line when splitting them changes the
+  drawing in mermaid.js 11.7.0: `12a` was printed as `12` and `a` on two lines,
+  and now stays `12a`.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep an `erDiagram` statement that starts with whitespace other than a space or
+  a tab, such as a line separator (U+2028 or U+2029) or a no-break space, on its
+  line where more of the statement follows it: `"Alpha"`, a no-break space, and
+  `{ int x }` on one line was printed with the no-break space and the block on
+  lines of their own, which mermaid.js 10.9.8 and 11.7.0 reject.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep a statement that starts with whitespace other than a space or a tab, such
+  as a line separator (U+2028 or U+2029) or a no-break space, on its line where a
+  comment follows it, in an `erDiagram` and a `treeView-beta`: `"Foo"`, a U+2028,
+  and `%% c` on one line of an `erDiagram` came out on two lines, which lost the
+  entity that mermaid.js reads from the separator.
+
+- [#86](https://github.com/mmd-toolkit/mmd-toolkit/pull/86) [`ff4b39a`](https://github.com/mmd-toolkit/mmd-toolkit/commit/ff4b39ae943932cc050b479dd1e44af024a67cfa) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Fix an `eventmodeling` diagram that came out differently when it was formatted a
+  second time: `given evt A %%{{tail}}%%` after `gwt 01` and a `%%{{one}}%%` line
+  was printed with the `%%{{tail}}%%` on a line of its own, and with `evt A` below
+  `given` the next time, and it now stays on one line.
+
+- [#86](https://github.com/mmd-toolkit/mmd-toolkit/pull/86) [`ff4b39a`](https://github.com/mmd-toolkit/mmd-toolkit/commit/ff4b39ae943932cc050b479dd1e44af024a67cfa) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Fix an `eventmodeling` description block over several lines being separated from
+  what follows its `}` on its line, a statement or a `%%{{native}}%%`:
+  `y;} tf 17 evt End` below `accDescr {x` was split into two lines.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Put no space after a `;` that mermaid.js ignores where a word touches it in an
+  `eventmodeling` diagram: `/*style:#x*/;title` was printed with a space after the
+  `;`, which mermaid.js rejects.
+
+- [#97](https://github.com/mmd-toolkit/mmd-toolkit/pull/97) [`e78de65`](https://github.com/mmd-toolkit/mmd-toolkit/commit/e78de659da4afed08cb7bf21f05550dabf91f1cd) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Fix the whitespace at the start of the line after a `%%{` directive that is not
+  closed in an `eventmodeling` diagram, which was dropped: ` tf 23 evt End` after
+  `%%{wrap foo` was printed as `tf 23 evt End`.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep whether whitespace stands before the `color` or `text-align` of a `style`
+  and a `linkStyle` in `flowchart`, and of a `style` in `classDiagram`:
+  `style A fill:#f00,color:white` was printed `style A fill: #f00, color: white`,
+  which mermaid.js 10.9.8 draws with another text colour.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the space before the `:` of a `fill` in a `linkStyle` of a `flowchart` or a
+  `swimlane-beta`: `linkStyle 0 fill :red` was printed `linkStyle 0 fill: red`,
+  which draws the text of the link in another colour in mermaid.js 11.7.0, and in
+  every version for a `swimlane-beta`.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the whitespace after a backslash that ends a style of a `style` in
+  `flowchart`: `style A stroke-width:3px\ ,stroke:#0f0` was printed with the space
+  dropped, which mermaid.js 10.9.8 draws with another style.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the text after frontmatter as written when an HTML tag starts in the
+  frontmatter and ends after it: an `erDiagram` with `title: <a` in its
+  frontmatter and the body `"b="c">d"` now keeps that body on one line instead of
+  splitting it into three lines that mermaid.js rejects.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep one whitespace character after the `:` of a `gantt` task without data also
+  where the task follows a description on its line: `accDescr {style:#x} A;:` and
+  two spaces lost both, and mermaid.js rejected the output; one of them now stays.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep a `gantt` task named like a keyword from turning into another statement
+  when aligning task colons: `title:T` now becomes `title: T`.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Line up the colon of a `gantt` task on the first formatting even when another
+  statement precedes it: after `Short   : 1d`, `axisFormat %m #a   : 1d` now
+  prints as `axisFormat %m` and `#a    : 1d` on separate lines.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the quotes of a `gitGraph` branch named `options`: `branch "options"` was
+  printed `branch options`, which mermaid.js 10.9.8 rejects.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep `ishikawa` indentation needed to preserve the drawing: `ishikawa`, `R`,
+  `  A`, ` B`, and `  C` on successive lines now stay as written instead of
+  placing every cause one step under `R`, which mermaid.js 11.13.0 draws
+  differently.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the keywords, strings, and numbers of a line whose whitespace stays as
+  written in the same form as on the other lines: in a `gantt`, the line
+  `EXCLUDES  %%{init: {}}%%` with a space after the directive kept its capitals,
+  and is now printed with `excludes`.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the spaces around a `flowchart` or `swimlane-beta` label that holds an `@`:
+  `A[ user@example.com ]` no longer becomes `A[user@example.com]`. Version 0.4.0
+  began to print such a label without the spaces, so that a label comes out in one
+  form, but several versions of mermaid.js reject `A[user@example.com]`, so a
+  diagram that drew there stopped drawing once it was formatted. Now the spaces
+  stay as written.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the quotes of a `mindmap` or `kanban` label that a directive separates from
+  the dash of a `-)` closer: `f("x"%%{init: {}}%%-)` was printed
+  `f(x%%{init: {}}%%-)`, which mermaid.js draws differently.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep lines and whitespace that mermaid.js 10.9.8 reads as `pie` or `gitGraph`
+  title or description text: `"A":1` after an empty `accTitle:` now stays as
+  written instead of gaining a space in the title.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Leave the quotes of a text as written where a line separator (U+2028 or U+2029)
+  and a comment after it join its line to the next one: in a `requirementDiagram`,
+  `element "b"`, a U+2028, and `%% c` above a line `{` was printed without the
+  quotes, and now stays as written.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the `accDescr { ... }` block of a railroad diagram as a block where a
+  comment of that diagram type follows it on its line: `accDescr { d } ; c` in
+  `railroad-abnf-beta` was printed `accDescr: d ; c`, which made the comment part
+  of the description.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Fix output that changed when it was formatted a second time in `agentflow-beta`,
+  `block-beta`, `mindmap`, and `treemap`, where a `;` ends a name or a style
+  beside text that mermaid.js removes: `classDef c fill:red%%{init: {}}%%;` of a
+  `block-beta` is printed `classDef c fill: red%%{init: {}}%%` at the first
+  formatting.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the whitespace beside the `()` of a `sequenceDiagram` message and before
+  `<<->>` and `<<-->>` as written: `A ()   <<->> B: x` stays as written. Version
+  0.5.0 made `()` touch the participant to print message punctuation one way, but
+  mermaid.js 10.9.8 and 11.7.0 read that form with different participant names,
+  and 10.9.8 also reads `<<` as part of a name. The whitespace now stays as
+  written, and activation marks still touch their participant.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep one whitespace character after the `:` of a `sequenceDiagram` message or
+  note whose text is only whitespace: `A->>B:   ` is now printed `A ->> B: `
+  instead of `A ->> B:`. Before, the whitespace was dropped, because mermaid.js
+  12.3.0 reads both forms the same, but mermaid.js 10.9.8 rejects a `:` with
+  nothing after it, so a diagram that drew there stopped drawing once formatted.
+  Now one whitespace character stays, the first one as written.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep a `sequenceDiagram` note and the statement after its directive on one line:
+  `Note over A:%%{init: {}}%%  ;actor B` was printed as
+  `Note over A:%%{init: {}}%%` and `actor B` on two lines, which mermaid.js 10.9.8
+  rejects.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep a `participant` or `actor` of a `sequenceDiagram` as written where
+  mermaid.js 10.9.8 and 11.7.0 read its data block as a part of the name:
+  `participant A @{x}` no longer becomes `participant A@{ x }`. Version 0.5.0
+  began to attach the block to the name and to print one space inside each of its
+  ends, as mermaid.js 12.3.0 reads the same participant either way, but those two
+  versions then draw a participant with another name. Now such a line stays as
+  written, and a block that they do not read as a name, such as
+  `@{ "type": "queue" }`, is printed as before.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep a line together where a `;` that mermaid.js ignores stands between a
+  statement and its value on the next line: in a `sequenceDiagram`,
+  `participant A@{"style":"x:#y"};title;` followed by `T` was split into two lines
+  that mermaid.js rejects, and is now printed
+  `participant A@{"style":"x:#y"};title; T`.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep a `stateDiagram` line starting with `%` together: `% not a comment` was
+  printed as four lines, which some older versions of mermaid.js draw as states
+  instead of reading the whole line as a comment.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the commas of a `style` with one style in a `stateDiagram` as written:
+  `style A fill:rgb(1,2,3)` is now printed `style A fill: rgb(1,2,3)`, not
+  `style A fill: rgb(1, 2, 3)`. Version 0.6.0 began to print one space after these
+  commas, as mermaid.js 12.3.0 reads the same style either way, but mermaid.js
+  10.9.8 draws the text of such a line, so the text in its diagram changed once
+  the line was formatted. Now these commas stay as written, and a line with
+  several styles, such as `style A fill:red,stroke:blue`, is printed as before.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the `;` that ends a `style` of a `stateDiagram`: `style A fill:red;` no
+  longer becomes `style A fill: red`. Version 0.5.0 began to drop this `;`, as
+  mermaid.js 12.3.0 reads the line the same without it, but mermaid.js 10.9.8
+  reads the `;` as a state of its own, so a state disappeared from the diagram
+  that it draws once the text was formatted. Now the line stays as written, and
+  the `;` of a `classDef` is dropped as before.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep unusual trailing whitespace needed for the drawing in the styles of
+  `flowchart`, `classDiagram`, `agentflow-beta`, and `erDiagram`:
+  `classDef c fill:red` followed by a no-break space (U+00A0) stays as written in
+  `classDiagram`.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the second space in `subgraph  S` of a `flowchart` or `swimlane-beta`
+  diagram when a later link names the subgraph: it was printed `subgraph S`, which
+  draws that edge from the subgraph instead of a separate node `S` in mermaid.js
+  10.9.8, 11.7.0, and 11.17.2 for `flowchart`, and 11.16.1 and 11.17.2 for
+  `swimlane-beta`.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the direction `td` of a `timeline` header in lower case: `timeline td` no
+  longer becomes `timeline TD`. Version 0.6.0 began to print it as `TD`, as the
+  examples in the documentation of mermaid.js write it, but mermaid.js 10.9.8 and
+  11.7.0 read the word as the text of a period, so that text changed in the
+  diagram that they draw once the text was formatted. Now the direction stays as
+  written.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the text after the direction of a `timeline` on the header line:
+  `timeline TD title T` was printed as `timeline TD` and `title T` on two lines,
+  which mermaid.js 10.9.8 and 11.7.0 draw as a different period.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Fix an error that stopped the formatting where a line ends with a `;` that
+  mermaid.js ignores and its statement goes on in the next line: in a `timeline`,
+  `accDescr {style:#x} A:;` followed by `e` is now printed
+  `accDescr {style:#x} A :; e`.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep a `timeline` title whose text starts with `#` as written: `title  # c`,
+  with two spaces, was printed `title # c`, which mermaid.js 10.9.8 reads as a
+  period.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep an unindented `title`, `accTitle`, or `accDescr` of a `treemap` at the
+  start of its line: `title T` no longer becomes `  title T`, which mermaid.js
+  11.8.1 rejects.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print one space between a `title` without text and a directive or a comment
+  after it on its line, in `treemap` and `treeView-beta`: `title %%{init: {}}%%`
+  was printed `title%%{init: {}}%%`, and now stays as written.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the rows of a `treemap` or a `treeView-beta` as written where text that
+  mermaid.js removes joins two of them: in a `treemap`, `"A" %%{x: w` followed by
+  `  "B": 1` lost the space before the `%%{`, which made `B` a sibling of `A`
+  instead of its child.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep the whitespace after a directive that is not closed when text follows it on
+  its line: `%%{x: w B` was printed `%%{x: wB`, which changes the argument of the
+  directive and drops the `B` from the diagram.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Leave a comment line inside the parentheses of a color function of a `venn-beta`
+  style as it is written: the `)` in `%% ) x  y` between the lines of
+  `fill:rgb(1,` and `2,3)` ended the function early, and the runs in the comment
+  were joined.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep a long `wardley-beta` arrow attached to the name before it: `Alpha-->Beta`
+  becomes `Alpha--> Beta`.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Keep a `wardley-beta` name that ends with `-` touching its arrow when a
+  directive stands between them: `Alpha-%%{init: {}}%%->Beta` becomes
+  `Alpha-%%{init: {}}%%-> Beta`.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Read `white-space` where a `;` that mermaid.js ignores splits the word: with
+  `classDef c fill:#fff,white-;space:pre`, the title `Title  text` of a
+  `flowchart` subgraph was printed `Title text`, and now keeps its two spaces.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print an `xychart-beta` `accDescr { ... }` block as `accDescr: ...` at the first
+  formatting where a comment follows the statement after the block on its line:
+  `accDescr { a } title T %% c` kept the block at the first formatting and became
+  `accDescr: a` at the second.
+
+- [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the title of an `xychart-beta` in quotes also where a directive stands
+  before it: `title %%{wrap x}%%abc` becomes `title %%{wrap x}%%"abc"`.
+- Updated dependencies [[`ff4b39a`](https://github.com/mmd-toolkit/mmd-toolkit/commit/ff4b39ae943932cc050b479dd1e44af024a67cfa)]:
+  - @mmd-toolkit/parser@0.3.2
+  - @mmd-toolkit/ast@0.3.2
+
 ## 0.8.0
 
 ### Minor Changes
@@ -263,7 +792,7 @@
   strings.
   
   > **NOTE:**\
-  > Overturned in the next release: `direction`, its value, `subgraph`, and
+  > Overturned in 0.9.0: `direction`, its value, `subgraph`, and
   > `end` of an `erDiagram` keep their case, as in `SUBGRAPH S`, and so does
   > the direction of a `timeline` header, as in `timeline td`.
 
@@ -289,7 +818,7 @@
   `color:` and `text-align:` of a `block` `style`.
   
   > **NOTE:**\
-  > Overturned in the next release: in a `stateDiagram`, the commas of a `style`
+  > Overturned in 0.9.0: in a `stateDiagram`, the commas of a `style`
   > with one style stay as written, as in `style A fill: rgb(1,2,3)`.
 
 - [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print a run of spaces and tabs inside a title, an `accDescr`, and the labels
@@ -345,7 +874,7 @@
   between the id and the block keeps the whitespace as written.
   
   > **NOTE:**\
-  > Overturned in the next release: a block that mermaid.js 10.9.8 and 11.7.0
+  > Overturned in 0.9.0: a block that mermaid.js 10.9.8 and 11.7.0
   > read as a part of the name stays as written, as in `participant A @{x}`.
 
 - [#58](https://github.com/mmd-toolkit/mmd-toolkit/pull/58) [`1f30d00`](https://github.com/mmd-toolkit/mmd-toolkit/commit/1f30d0065688ed391e4af58353532282b8070dda) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Drop the `;` at the end of `classDef` and `style` lines in `class`, `state`,
@@ -354,7 +883,7 @@
   as in `style A fill:red;` in `requirement`, stays.
   
   > **NOTE:**\
-  > Overturned in the next release: the `;` that ends a `style` of a `state`
+  > Overturned in 0.9.0: the `;` that ends a `style` of a `state`
   > diagram stays, as in `style A fill:red;`.
 
 - [#59](https://github.com/mmd-toolkit/mmd-toolkit/pull/59) [`4a6be00`](https://github.com/mmd-toolkit/mmd-toolkit/commit/4a6be00cd4dc012d5a75e17540419e6d81eaf4de) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Drop the `;` that ends a `classDef` line in `treemap`, as in the other diagram
@@ -381,7 +910,7 @@
   whose braces are part of the JSON.
   
   > **NOTE:**\
-  > Overturned in the next release: in `sequence`, a block that mermaid.js
+  > Overturned in 0.9.0: in `sequence`, a block that mermaid.js
   > 10.9.8 and 11.7.0 read as a part of the name of a participant stays as
   > written, as in `participant A@{x}`.
 
@@ -397,7 +926,7 @@
   it stays as written.
   
   > **NOTE:**\
-  > Overturned in the next release: these commas are printed with one space
+  > Overturned in 0.9.0: these commas are printed with one space
   > after them, as in `class A, B c`.
 
 - [#60](https://github.com/mmd-toolkit/mmd-toolkit/pull/60) [`f41858e`](https://github.com/mmd-toolkit/mmd-toolkit/commit/f41858ef670c82de824f7a0f875b4968abdbf8b8) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the punctuation of a `sequence` message or note one way. `+`, `-`, and
@@ -407,7 +936,7 @@
   the space in `A ->> - x`, where `-x` would be read as an arrow.
   
   > **NOTE:**\
-  > Overturned in the next release: whitespace beside `()` stays as written,
+  > Overturned in 0.9.0: whitespace beside `()` stays as written,
   > as in `A () ->> () B`, and the comma of a note is printed with one space
   > after it, as in `Note over A, B`.
 
@@ -454,7 +983,7 @@
   the output is no longer rejected.
   
   > **NOTE:**\
-  > Overturned in the next release: `A[ user@example.com ]` keeps its spaces
+  > Overturned in 0.9.0: `A[ user@example.com ]` keeps its spaces
   > again in `flowchart` and `swimlane-beta`.
 
 ### Patch Changes
