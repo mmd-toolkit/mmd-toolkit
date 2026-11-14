@@ -118,9 +118,9 @@ const cases: readonly MarkdownCase[] = [
     payloadInput: 'treemap\naccDescr {\n detail\n more\n}\n"DescriptionHost":3',
     options: {},
     output:
-      '```mermaid\ntreemap\n  accDescr {\n    detail\n    more\n  }\n  "DescriptionHost": 3\n```\n',
+      '```mermaid\ntreemap\naccDescr {\n  detail\n  more\n}\n  "DescriptionHost": 3\n```\n',
     payloadOutput:
-      'treemap\n  accDescr {\n    detail\n    more\n  }\n  "DescriptionHost": 3\n',
+      'treemap\naccDescr {\n  detail\n  more\n}\n  "DescriptionHost": 3\n',
   },
   {
     name: "treemap Markdown: frontmatter",

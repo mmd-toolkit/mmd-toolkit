@@ -141,7 +141,7 @@ const cases = [
   {
     name: "ishikawa description-looking node keeps its text",
     input: "ishikawa-beta\naccDescr {  }\n accDescr{\t}\n",
-    output: "ishikawa-beta\n  accDescr { }\n    accDescr{ }\n",
+    output: "ishikawa\n  accDescr { }\n    accDescr{ }\n",
   },
   {
     name: "sankey description-looking field keeps its text",

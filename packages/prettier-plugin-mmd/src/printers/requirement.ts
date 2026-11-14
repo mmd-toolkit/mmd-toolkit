@@ -13,7 +13,11 @@ import {
 import { expectToken, layoutKeywordHeader } from "./layout.ts"
 import { narrowPath } from "./paths.ts"
 import { indentationOf } from "./lines.ts"
-import { findRequirementKeptLines } from "./requirement-kept-lines.ts"
+import {
+  findRequirementKeptLines,
+  isDirectionBroughtToTheColon,
+} from "./requirement-kept-lines.ts"
+import { lineStartOf } from "./kept-lines.ts"
 import type {
   RequirementBlockStatement,
   RequirementBodyItem,
@@ -195,6 +199,13 @@ function statementBlockRules(source: Source): BlockRules<RequirementStatement> {
     isDroppedAtTopLevel: () => false,
     keepsWhitespaceLineAfterComment: false,
     keepsDirectiveLinesUnindented: false,
+    keptIndentationOf: (statement) =>
+      isDirectionBroughtToTheColon(source, statement)
+        ? ""
+        : source.text.slice(
+            lineStartOf(source, statement.range[0]),
+            statement.range[0],
+          ),
   }
 }
 

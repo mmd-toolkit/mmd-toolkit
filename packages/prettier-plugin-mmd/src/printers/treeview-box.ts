@@ -15,7 +15,13 @@ import {
 import { walk } from "./layout.ts"
 import { lineStartOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
-import { findFirstIndex, findStructuralToken, isWhitespace } from "./source.ts"
+import {
+  findFirstIndex,
+  findStructuralToken,
+  isWhitespace,
+  skipRemoved,
+  textRead,
+} from "./source.ts"
 import type { TreeviewLine, TreeviewPhysicalLine } from "./treeview-layout.ts"
 import {
   isTreeviewCommonStatement,
@@ -281,7 +287,7 @@ export function planTreeviewBox(
       original !== undefined &&
       original.offsets[0] < node.name.range[0] &&
       node.prefix === null &&
-      isWhitespace(source.text[node.name.range[0]])
+      isWhitespace(source.text[skipRemoved(source, node.name.range[0])] ?? "x")
     )
       reasons.add("splitting a logical line exposes leading value whitespace")
     if (heads.get(node) === "" || original?.prefix !== null) continue
@@ -293,7 +299,8 @@ export function planTreeviewBox(
         return (
           from < to &&
           (valueHasTab(original, [from, to]) ||
-            (to === original.range[1] && isWhitespace(source.text[to - 1])))
+            (to === original.range[1] &&
+              isWhitespace(textRead(source, from, to).at(-1) ?? "x")))
         )
       })
     )

@@ -93,9 +93,8 @@ journey
 ### 1 行に 1 文
 
 各文は 1 行に 1 つ置きます。
-journey には文を区切るものがなく（diagrams/journey.md、
-Diagram and statements）、ヘッダーと `accDescr` ブロックの後ろには、
-同じ行に次の文を続けられます。
+journey には文を区切るものがなく（diagrams/journey.md、図と文）、
+ヘッダーと `accDescr` ブロックの後ろには、同じ行に次の文を続けられます。
 それらの後ろの文は、それぞれの行に移します。
 [fixture: statements-one-per-line/header-then-title]
 [fixture: statements-one-per-line/header-then-task]
@@ -258,11 +257,35 @@ journey
 
 タスクは、説明、コロン、score、コロン、人々、
 3 つ目のコロン以降のテキストの順に印字します。
-説明は、テキストとコロンの間の空白も含めて、書かれたまま印字します。
-その空白は説明の一部で Db が持つので、
-`Make tea  : 5` と `Make tea: 5` は別のタスクであり、
-コロンをそろえる空白も残ります。 [fixture: task-data/colon-touches-description]
+説明のテキストと最初のコロンの間の空白は、説明の末尾で、Db は持ち、
+mermaid.js はなくても同じに描きます。
+詳しくは
+[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)
+を参照してください。
+各行がタスクを 1 つ足すので、このコロンはキーのコロンではありません。
+mermaid.js の文書の例は、このコロンを説明に接して書きます。
+タスクの行 5 行で、コロンの後に空白がある 10 個のコロンは、
+前に空白を置きません。
+これは手順 3 です。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方) と
+[コロンの前の空白を決める例](./compatibility.ja.md#コロンの前の空白を決める例)
+を参照してください。
+そのため `Make tea : 5: Me` は `Make tea: 5: Me` と印字します。
+名前に桁そろえの空白がある Gantt 図のタスクをそろえるのと同じく、
+コロンをそろえる空白は残します。
+節のどれかの説明が、コロンの前に 2 つ以上の空白かタブを持つ節は、
+その節のタスクをすべて書かれたままにします（最初の `section` より前のタスクは、
+それで 1 つの節です）。
+空白とタブ以外の空白文字で終わる説明（`A\u3000 : 5` の U+3000）、
+ディレクティブを含む説明、複数行にわたるタスクも、書かれたままにします。
+[fixture: task-data/description-blank-dropped]
+[fixture: task-data/description-blank-dropped-per-section]
+[fixture: task-data/description-blank-directive-kept]
+[fixture: task-data/description-blank-over-lines-kept]
+[fixture: task-data/colon-touches-description]
 [fixture: task-data/description-padding-kept]
+[fixture: task-data/description-padding-space-tab-kept]
 説明には、引用符、タグ、`%`、キーワードを含められます。
 [fixture: task-data/special-characters-in-description]
 [fixture: task-data/keywords-inside]
@@ -271,8 +294,14 @@ score と人は、コロンの後でも `,` の後でも、空白 1 つの後に
 コロンと `,` は前の値に接します。
 それらの周りの空白は Db に入らないので、残しません。
 空白は値の前にだけ置きます。
-Gantt 図と同じ規則で、mermaid.js の文書の task 行の多くがこの形です。
-[fixture: task-data/colon-spacing] [fixture: task-data/people-comma-spacing]
+スコアの後のコロンは、前に空白を置きません。
+mermaid.js の文書の例で、コロンの後に空白を置いて書かれたコロン 10 件のうち、
+前に空白を置くものはありません（手順 3 です）。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方) と
+[コロンの前の空白を決める例](./compatibility.ja.md#コロンの前の空白を決める例)
+を参照してください。 [fixture: task-data/colon-spacing]
+[fixture: task-data/people-comma-spacing]
 空の score や空の人は何も印字しないので、その前に空白を置きません。
 `A: : Me` は `A:: Me` に、`A: 3: a, ,b` は `A: 3: a,, b` になります。
 空の人は、mermaid.js が名前として読むので残します。
@@ -367,10 +396,11 @@ journey
 ### 無視されるデータ
 
 3 つ目のコロン以降は、mermaid.js が読まず、木はテキストとして持ちます。
-コロンも含めて書かれたまま印字し、コロンは、書かれた空白によらず、
-前の値に接します。 [fixture: ignored-data/third-colon-touches]
+コロンも含めて書かれたまま印字し、タスクのデータのコロンと同じく、コロンは、
+書かれた空白によらず、前の値に接します。
+[fixture: ignored-data/third-colon-touches]
 [fixture: ignored-data/text-as-written] [fixture: ignored-data/four-colons]
-空の score や空の人の後でも同じです。 [fixture: ignored-data/after-empty-people]
+空のスコアや空の人の後でも同じです。 [fixture: ignored-data/after-empty-people]
 末尾の空白は落とします。 [fixture: ignored-data/trailing-whitespace-dropped]
 
 入力
@@ -657,9 +687,9 @@ mermaid.js が複数行にわたって読む文は、
 タスクは複数行に書かれることがありません。
 [fixture: multi-line-statements/breaks-decided-one-by-one]
 [fixture: multi-line-statements/value-on-next-line-joined]
-`accTitle` と `accDescr:` の文では、trivia の改行を保ち、
-section の下でも後続の構造部分と独立した trivia 行を文より 1 段深くそろえます。
-各 gap の最初の行の末尾と、指令の内部全体を保ちます。
+`accTitle` と `accDescr:` の文では、注釈類の改行を保ち、
+section の下でも後続の構造部分と独立した注釈類行を文より 1 段深くそろえます。
+各隙間の最初の行の末尾と、指令の内部全体を保ちます。
 物理行を結ぶコメント領域は、元の配置を保ちます。
 `;` があるだけでは、複数行に書かれた文をつなぐ妨げにはなりません。
 journey では文の区切りに `;` を使えず、
@@ -669,7 +699,7 @@ journey では文の区切りに `;` を使えず、
 [fixture: multi-line-statements/accessibility-trivia-continuations]
 
 title と section では、値の空白が Db の一部なので、
-複数行の trivia を含む配置を元のまま保ちます。
+複数行の注釈類を含む配置を元のまま保ちます。
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 
@@ -867,12 +897,12 @@ journey # c
 [fixture: directives/statement-after-directive-line]
 
 元は同じ行にあった単位を別の行へ分けるときは、
-間の directive を次の単位に付けます。
+間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
 
 [fixture: journey/directives/split-directive-gap]
 
-文の単位の間の指令は元の gap に残し、
+文の単位の間の指令は元の隙間に残し、
 [ディレクティブ](#ディレクティブ)のとおりに置きます。
 構造部分の続きの列は[複数行の文](#複数行の文)に従います。
 値の中の指令は、そのテキストの一部です。 [fixture: directives/between-units]

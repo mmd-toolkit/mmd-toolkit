@@ -18,8 +18,10 @@ import {
   findKeptBreaks,
   gapKeepsLineBreak,
   holdsJoiningRegion,
+  isFirstOnItsLine,
   spansKeptBreaks,
 } from "./kept-lines.ts"
+import { isDirectionBroughtToTheColon } from "./requirement-kept-lines.ts"
 import {
   alignBlockOpeningLine,
   collectAtoms,
@@ -296,6 +298,16 @@ export function layoutRequirementStatement(
   const keptBreaks = findKeptBreaks(source, start, end)
   const keepsLineBreaks = spansKeptBreaks(source, keptBreaks, start, end)
   if (keepsLineBreaks && holdsJoiningRegion(source, start, end)) {
+    return keptAsWritten(start, end)
+  }
+  // The text of a statement that is brought to its `:` makes a direction line
+  // when the statement does not start its line, where it is read as a title
+  // at the first column (see `isDirectionBroughtToTheColon`): the statement
+  // stays as written then.
+  if (
+    isDirectionBroughtToTheColon(source, statement) &&
+    !isFirstOnItsLine(source, start)
+  ) {
     return keptAsWritten(start, end)
   }
   // A statement with a kept line break keeps its styles as written: printing

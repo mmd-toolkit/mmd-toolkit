@@ -37,7 +37,7 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/radar-no-duplicate-entry: error
 radar-beta
   axis A, B, C
-  curve sales{A: 1, B: 2, C: 3, A: 9}
+  curve sales{ A: 1, B: 2, C: 3, A: 9 }
 ```
 
 Examples of **correct** code for this rule:
@@ -46,7 +46,7 @@ Examples of **correct** code for this rule:
 %% eslint @mmd-toolkit/radar-no-duplicate-entry: error
 radar-beta
   axis A, B, C
-  curve sales{A: 9, B: 2, C: 3}
+  curve sales{ A: 9, B: 2, C: 3 }
 ```
 
 ## Options

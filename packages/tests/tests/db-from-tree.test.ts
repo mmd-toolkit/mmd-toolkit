@@ -67,7 +67,7 @@ function fileOf(fixture: Fixture, file: string): string {
 /**
  * The diagram types of mermaid.js whose parser has not recorded trees yet, in
  * the steps between the normalizer of a new diagram type and the recording of
- * its trees (the skill `tests`, adding a diagram type): the fixtures of
+ * its trees (the skill `tests-diagram-type`): the fixtures of
  * `common/` that are detected as one have a summary and no tree, since the
  * reference implementation does not read the diagram type yet. A type leaves
  * the list when the parser records its trees, and the list is empty between two

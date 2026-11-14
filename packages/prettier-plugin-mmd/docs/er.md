@@ -355,15 +355,36 @@ er/gram-empty-description-block-between-names] A directive between two
 statements stands with the statement after it. [fixture:
 statements-one-per-line/directive-after-statement]
 
-Two cases keep their statements on one line. The entity `1` followed right after
-by another statement or by the `end` of its subgraph, with no whitespace between
-them or with only directives, stays as it is: `1a` is the entities `1` and `a`,
-while `1` and a letter on two lines, or with whitespace between them, are the
-cardinality `only-one` and a name (diagrams/er.md, The cardinalities, numbers,
-and relationship lines, rule 11). Any other number is split from the statement
-after it. The line of such an entity is printed as written, and so is a subgraph
-that ends on it, from its header to its `end`, without the indentation of a
-level for its lines. [fixture:
+An ignored `;` keeps the line that makes the line rule ignore it: in
+`"style:#x" end;`, the `end` stays with the entity before it, also in upper
+case. An ignored `;` between `class` or `subgraph` and its first name keeps the
+complete gap as written: `class;-A a`, `subgraph;-x`, and `subgraph;é` keep
+their contacts after the `;` is removed by the line rule. This also applies when
+U+2028 or U+2029 precedes the subgraph name. [fixture:
+statements-one-per-line/closing-end-ignored-semicolon-kept] [fixture:
+statements-one-per-line/closing-uppercase-end-ignored-semicolon-kept] [fixture:
+statements-one-per-line/class-ignored-semicolon-before-dash-kept] [fixture:
+statements-one-per-line/subgraph-ignored-semicolon-before-dash-kept] [fixture:
+statements-one-per-line/subgraph-ignored-semicolon-before-non-ascii-kept] [test:
+er/statements-one-per-line/R44-er-subgraph-LS-c-before] [test:
+er/statements-one-per-line/R44-er-subgraph-PS-c-before]
+
+Some cases keep their statements on one line. The entity `1` followed right
+after by another statement or by the `end` of its subgraph, with no whitespace
+between them or with only directives, stays as it is: `1a` is the entities `1`
+and `a`, while `1` and a letter on two lines, or with whitespace between them,
+are the cardinality `only-one` and a name (diagrams/er.md, The cardinalities,
+numbers, and relationship lines, rule 11). An entity named by a number of two
+digits or more stays on its line with a character that continues a name right
+after it (a letter, `_`, `-`, `*`, or a character outside ASCII): `12a` is the
+entities `12` and `a` to the pinned version, and one name to some versions that
+count, which draw the two lines differently (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Directives between the number and that character change nothing, since
+mermaid.js removes the directives before it reads the text. Any other number,
+such as `2.5x`, is split from the statement after it. The line of such an entity
+is printed as written, and so is a subgraph that ends on it, from its header to
+its `end`, without the indentation of a level for its lines. [fixture:
 statements-one-per-line/number-name-then-name-kept] [fixture:
 statements-one-per-line/number-name-before-uppercase] [fixture:
 statements-one-per-line/number-name-before-non-ascii] [fixture:
@@ -371,7 +392,209 @@ statements-one-per-line/number-name-in-subgraph-kept] [fixture:
 statements-one-per-line/number-name-before-end-kept] [fixture:
 statements-one-per-line/number-name-before-directive-kept] [fixture:
 statements-one-per-line/number-name-then-name-split] [corpus fixture:
-er/lex-name-number-then-letter] And a line that holds a kept `;` keeps its
+er/lex-name-number-then-letter] [corpus fixture:
+er/lex-name-number2-then-letter] A `subgraph` keyword with a character outside
+ASCII, or a whitespace character that is no space or tab (a U+2028, a U+2029, a
+U+00A0, a U+3000, and the others; diagrams/er.md, Whitespace), between it and
+its name stays as written, and so does the statement after an `end` that such a
+character follows, which stays on the line of the `end` with the gap as written:
+`endé` is the keyword `end` and the entity `é` to the pinned version, and one
+name to some versions that count. A whitespace character of that kind that ends
+the line of an `end` stays exactly once, also before a comment or directive and
+before a blank line and another statement. [test:
+er/statements-one-per-line/R63-er-ascii-after-LS-e] [test:
+er/statements-one-per-line/R44-er-after-separator-LS-e] [test:
+er/statements-one-per-line/R44-er-after-separator-PS-e] [test:
+er/statements-one-per-line/R74-er-LS-g-comment] [test:
+er/statements-one-per-line/R74-er-LS-g-directive] [test:
+er/statements-one-per-line/R74-er-PS-g-comment] [test:
+er/statements-one-per-line/R74-er-PS-g-directive] [test: U+00A0 in place of the
+separator: er/statements-one-per-line/R63-er-ascii-after-LS-e] [test: U+3000 in
+place of the separator: er/statements-one-per-line/R63-er-ascii-after-LS-e]
+[test: U+00A0 in place of the separator:
+er/statements-one-per-line/R44-er-after-separator-LS-e] [test: U+3000 in place
+of the separator: er/statements-one-per-line/R44-er-after-separator-LS-e] [test:
+U+00A0 in place of the separator:
+er/statements-one-per-line/R74-er-LS-g-directive] [test: U+3000 in place of the
+separator: er/statements-one-per-line/R74-er-LS-g-directive] A statement that
+starts with such a character also stays with its following statements when some
+versions that count read the text from the end of the whitespace as a `class`
+statement or as a direction line: the character belongs to the first name to the
+pinned version, and those versions read it as whitespace before the keyword.
+`class A a` goes on over the line there, with two names after the keyword. The
+whitespace before either name can continue across line feeds when it starts with
+another whitespace character. In that case, both gaps stay as written, including
+comment lines, directives and blank lines, through the second name. A line feed
+directly after the keyword or first name does not continue the class statement.
+[test: er/statements-one-per-line/R45-er-class-LS-d] [test:
+er/statements-one-per-line/R45-er-class-LS-e] [test:
+er/statements-one-per-line/R45-er-class-PS-d] [test:
+er/statements-one-per-line/R45-er-class-PS-e] [test:
+er/statements-one-per-line/R45-er-second-name-LS-d] [test:
+er/statements-one-per-line/R45-er-second-name-LS-e] [test:
+er/statements-one-per-line/R45-er-nonascii-name-LS-d] [test:
+er/statements-one-per-line/R45-er-nonascii-name-LS-e] [test:
+er/statements-one-per-line/R45-er-second-name-PS-d] [test:
+er/statements-one-per-line/R45-er-second-name-PS-e] [test:
+er/statements-one-per-line/R45-er-nonascii-name-PS-d] [test:
+er/statements-one-per-line/R45-er-nonascii-name-PS-e] [test:
+er/statements-one-per-line/class-names-after-directive-ls] [test:
+er/statements-one-per-line/class-second-name-after-directive-ps]
+`A direction LR` and `A B direction LR` are a direction line there, which takes
+the statements before `direction` too, and so are `direction LR B` and
+`direction` with its value on the next line when a statement follows the value,
+which stays on the line of the value. A statement that starts so with another
+word (`classes`, `directionX`, a name), `class` with one name, and `direction`
+with its value alone are split from the statement after them. A name in quotes
+that follows such an `end` keeps its quotes. Directives between the keyword and
+what follows it change none of this, whether they stand before the U+2028 or
+U+2029 or touch the character outside ASCII. [fixture:
+statements-one-per-line/end-then-name-outside-ascii-kept] [fixture:
+statements-one-per-line/subgraph-then-name-outside-ascii-kept] [fixture:
+statements-one-per-line/end-directive-then-name-outside-ascii-kept] [fixture:
+statements-one-per-line/subgraph-directive-then-name-outside-ascii-kept] [corpus
+fixture: er/lex-keyword-end-then-e-acute] [corpus fixture:
+er/lex-keyword-subgraph-then-e-acute] [corpus fixture:
+er/db-subgraph-direction-after-nested-end-line-separator] [test: U+2028 between
+the end of an ER subgraph and the next entity] [test: a directive between the
+end of an ER subgraph and a U+2028] [test: a directive between the end of an ER
+subgraph and a U+2029 and a name in quotes] [test: a directive between the
+keyword of an ER subgraph and a U+2028] [test: a directive between an ER number
+name and a U+2028] [test: a line of two ER statements that starts with U+2028]
+[test: a line that starts with U+2029 and class, and two more statements] [test:
+a line that starts with U+2028 and direction, and two more statements] [test: a
+statement with U+2028 and class after a space, and two more statements] [test: a
+line that starts with U+2028 and a name, and one more statement] [test: a line
+that starts with U+2028 and a word that starts like class] [test: a line that
+starts with U+2028 and a word that starts like direction] [test: a line that
+starts with U+2028, a name, and a direction line] [test: a line that starts with
+U+2029, two names, and a direction line] [test: a line that starts with U+2028,
+a relationship, and a direction line] [test: a direction line after a name and a
+name that starts with U+2028] [test: a line that starts with U+2028 and
+direction, and a value on the next line that a statement follows] [test: a line
+that starts with U+2028, a name, and a direction line with a directive before
+its value] [test: a line that starts with U+2028, a name, and a direction line
+in upper case] [test: a line that starts with U+2028, class and a character
+outside ASCII, and one more statement] [test: a line that starts with U+2028 and
+CLASS in upper case, and two more statements] [test: a line in an ER subgraph
+that starts with U+2028, a name, and a direction line] [test: a line that starts
+with U+2028 and direction, and its value alone] [test: a line that starts with
+U+2028 and a name that ends with direction, and its value alone] [test: a line
+that starts with U+2028 and direction, and a value glued to a letter] [test: a
+line that starts with U+2028 and direction, and a relationship that starts with
+its value] [test: a line that starts with U+2028, a name, and direction without
+a direction] [test: a line that starts with U+2028, a name, a second U+2028, and
+a direction line] [test: a line that starts with U+2028 and direction, its
+value, and a statement on the next line] [test: a line that starts with U+2028
+and a name, and a directive that holds a direction] [test: a line that starts
+with U+2028 and class, and one more statement] [test: a line that starts with
+U+2028 and class, and a name on the next line] [test: a line that starts with
+U+2028 and class, and two names in quotes] [test: a line that starts with U+2028
+and class, and a name with a class] [test: a line that starts with U+2028, a
+space, and class] [test: a line that starts with U+2028, a space, a name, and a
+direction line] [test: U+00A0 in place of the separator:
+er/statements-one-per-line/class-names-after-directive-ls] [test: U+3000 in
+place of the separator:
+er/statements-one-per-line/class-names-after-directive-ls] [test: U+00A0 in
+place of the separator:
+er/statements-one-per-line/class-second-name-after-directive-ps] [test: U+00A0
+in place of the separator: er/statements-one-per-line/R45-er-class-LS-d] [test:
+U+3000 in place of the separator: er/statements-one-per-line/R45-er-class-LS-d]
+[test: U+00A0 in place of the separator:
+er/statements-one-per-line/R45-er-class-LS-e] [test: U+00A0 in place of the
+separator: er/statements-one-per-line/R45-er-second-name-LS-d] [test: U+3000 in
+place of the separator: er/statements-one-per-line/R45-er-second-name-LS-d]
+[test: U+00A0 in place of the separator:
+er/statements-one-per-line/R45-er-second-name-LS-e] [test: U+00A0 in place of
+the separator: er/statements-one-per-line/R45-er-nonascii-name-LS-d] [test:
+U+00A0 in place of the separator:
+er/statements-one-per-line/R45-er-nonascii-name-LS-e] [test: U+00A0 in place of
+the separator: a line of two ER statements that starts with U+2028] [test:
+U+3000 in place of the separator: a line of two ER statements that starts with
+U+2028] [test: U+00A0 in place of the separator: a line that starts with U+2029
+and class, and two more statements] [test: U+3000 in place of the separator: a
+line that starts with U+2029 and class, and two more statements] [test: U+00A0
+in place of the separator: a statement with U+2028 and class after a space, and
+two more statements] [test: U+00A0 in place of the separator: a line that starts
+with U+2028, class and a character outside ASCII, and one more statement] [test:
+U+00A0 in place of the separator: a line that starts with U+2028 and CLASS in
+upper case, and two more statements] [test: U+00A0 in place of the separator:
+U+2028 between the end of an ER subgraph and the next entity] [test: U+3000 in
+place of the separator: U+2028 between the end of an ER subgraph and the next
+entity] [test: U+00A0 in place of the separator: U+2029 between the end of an ER
+subgraph and a relationship] [test: U+00A0 in place of the separator: U+2028
+after the end of an ER subgraph that nothing follows] [test: U+3000 in place of
+the separator: U+2028 after the end of an ER subgraph that nothing follows]
+[test: U+00A0 in place of the separator: a name in quotes after the end of an ER
+subgraph and a U+2028] [test: U+3000 in place of the separator: a name in quotes
+after the end of an ER subgraph and a U+2028] [test: U+00A0 in place of the
+separator: a directive between the end of an ER subgraph and a U+2028] [test:
+U+00A0 in place of the separator: a directive between the end of an ER subgraph
+and a U+2029 and a name in quotes] A statement that starts with a whitespace
+character other than a space or a tab (U+2028, U+2029, or a no-break space that
+comes before one of them), after another statement on its line, stays on its
+line when a comment follows that whitespace, with only whitespace, line breaks,
+and directives between: mermaid.js reads the whitespace as the name of an entity
+and draws that entity, while on a line of its own the whitespace belongs to a
+comment line, which takes it with the whitespace and line breaks before its
+`%%`, and no entity is drawn. At the end of its line before a directive, it is
+split from the statement before it like any other statement, and at the start of
+its line it is whitespace before the comment. [test: U+2028 alone after a name
+in quotes, before a comment] [test: U+2029 alone after a name in quotes and a
+space, before a comment] [test: U+2028 alone after the block of an accessibility
+description, before a comment] [test: two U+2028 alone after a name in quotes,
+before a comment] [test: U+00A0 and U+2028 after a name in quotes, before a
+comment] [test: U+00A0 after a name in quotes at the end of its line, and U+2028
+and a comment on the next line] [test: U+2028 alone after a name in quotes, at
+the end of its line] [test: U+2028 alone after a name in quotes, before a
+directive] [test: U+2028 alone at the start of its line, before a comment] A
+statement whose first entity is named by whitespace characters alone that are no
+space or tab (a U+2028, a U+2029, a U+00A0, a U+3000, a U+FEFF, and the others;
+one or several of them), after another statement on its line, and that goes on
+after the name with an attribute block, an alias, a CSS class, or a
+relationship, stays on its line too (`"Alpha"`, the character, and `{ int x }`):
+the oldest versions that count read the character as whitespace and the rest as
+part of the statement before it, so the rest cannot start a line of its own
+there. A second name after the character is split from it, as is a name of the
+character and other characters (`LR`), which starts a line. [test: U+2028 and an
+attribute block after a name in quotes] [test: U+2028 and an attribute block
+touching it after a name in quotes] [test: U+2028, a directive, and an attribute
+block after a name in quotes] [test: U+2029 and a relationship after a name in
+quotes] [test: U+2028 and an alias after a name in quotes] [test: U+2028 and a
+CSS class after a name in quotes] [test: U+2028 and a second name after a name
+in quotes] [test: U+00A0 in place of the separator: U+2028 and an attribute
+block after a name in quotes] [test: U+3000 in place of the separator: U+2028
+and an attribute block after a name in quotes] [test: U+00A0 in place of the
+separator: U+2028 and an attribute block touching it after a name in quotes]
+[test: U+3000 in place of the separator: U+2028 and an attribute block touching
+it after a name in quotes] [test: U+00A0 in place of the separator: U+2028, a
+directive, and an attribute block after a name in quotes] [test: U+3000 in place
+of the separator: U+2028, a directive, and an attribute block after a name in
+quotes] [test: U+00A0 in place of the separator: U+2029 and a relationship after
+a name in quotes] [test: U+3000 in place of the separator: U+2029 and a
+relationship after a name in quotes] [test: U+00A0 in place of the separator:
+U+2028 and an alias after a name in quotes] [test: U+3000 in place of the
+separator: U+2028 and an alias after a name in quotes] [test: U+00A0 in place of
+the separator: U+2028 and a CSS class after a name in quotes] [test: U+3000 in
+place of the separator: U+2028 and a CSS class after a name in quotes] [test:
+U+00A0, U+2028, and an attribute block after a name in quotes] [test: U+3000,
+U+2028, and an attribute block after a name in quotes] [test: U+FEFF and an
+attribute block after a name in quotes] [test: U+2003 and an attribute block
+after a name in quotes] [test: U+3000 and an attribute block after a name in
+quotes] [test: U+00A0 and a second name after a name in quotes] A line of
+several attributes is printed as written when an attribute on it that comes
+after another holds a pair of `~`, as in `int a List~int~ b`: the oldest version
+that counts reads a generic type with a rule that runs from the start of an
+attribute over the rest of the line to the second `~`. A line whose only `~` is
+in a string or in a directive, which mermaid.js removes before it reads the
+text, and an attribute whose own type holds the pair, are split. [fixture:
+attribute-spacing/attributes-with-tilde-on-one-line-kept] [fixture:
+attribute-spacing/attributes-with-generic-type-later-on-one-line-kept] [fixture:
+attribute-spacing/attributes-with-generic-type-first-on-one-line-split]
+[fixture: attribute-spacing/attributes-with-tilde-in-quotes-on-one-line-split]
+[fixture:
+attribute-spacing/attributes-with-tilde-in-directive-on-one-line-split] [corpus
+fixture: er/lex-tilde-after-quoted] And a line that holds a kept `;` keeps its
 statements together: the line rule of mermaid.js reads the text of a line, and
 moving text to another line changes which line matches the rule and which `;` it
 ignores (see [Styles and classes](#styles-and-classes)). [fixture:
@@ -381,9 +604,13 @@ block or the `end` of a subgraph on such a line, with a statement after it on
 the line, would go to a line of its own and leave the statement on a line
 without the `;`, so it stays on the line, which is printed with the whitespace
 between its tokens as usual. Where no statement follows it, it stands on a line
-of its own, as in any block. [fixture:
-statements-one-per-line/semicolon-line-block-kept] [fixture:
-statements-one-per-line/semicolon-line-subgraph-end-kept]
+of its own, as in any block, unless a `;` that the line rule ignores follows it
+on the line (`"Alpha" { int x "style:#x" };`): that `;` is ignored because of
+the text before it on its line, so the `}` stays with it, and a line break
+before the `}` would leave the `;` on a line without that text, where it is a
+syntax error. [fixture: statements-one-per-line/semicolon-line-block-kept]
+[fixture: statements-one-per-line/semicolon-line-subgraph-end-kept] [fixture:
+statements-one-per-line/semicolon-after-block-closing-kept]
 
 Input
 ([statements-one-per-line/entities-input.mmd](../tests/fixtures/er/statements-one-per-line/entities-input.mmd)):
@@ -449,8 +676,7 @@ erDiagram
   1a
   1"x"
   B
-  12
-  a
+  12a
 ```
 
 ### Blank lines
@@ -535,16 +761,35 @@ erDiagram
 Within a line, a run of spaces and tabs between two tokens becomes one space,
 and tokens that touch keep touching, unless a rule below says otherwise.
 [fixture: whitespace-between-tokens/collapsed] [fixture:
-whitespace-between-tokens/touching-kept] A keyword of the table under
-[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
-is printed in the case shown there (`SUBGRAPH` is `subgraph`, and `END` is
-`end`). Any other keyword keeps the case in which it is written (`CLASS`,
-`CLASSDEF`, and `STYLE`: see
+whitespace-between-tokens/touching-kept] A keyword keeps the case in which it is
+written (`SUBGRAPH`, `END`, `DIRECTION`, `CLASS`, `CLASSDEF`, and `STYLE`: see
 [Keywords in one case](./compatibility.md#keywords-in-one-case)), and so do the
 keys of an attribute, which the Db keeps. The words of a relationship are
 printed as symbols (see [Relationship spacing](#relationship-spacing)).
-[fixture: whitespace-between-tokens/keyword-case-one-form] [fixture:
+[fixture: whitespace-between-tokens/keyword-case-kept] [fixture:
 relationship-spacing/cardinality-words-case-one-form]
+
+A `class` or `subgraph` keyword that touches a unit starting with a `-`, and an
+`end` that touches a statement starting with a `-`, keep touching: `class-A a`
+is not printed `class -A a`, which a version that counts rejects, and
+`subgraph-x` and `end-x` are not split, since some read them as entities (see
+[ER lines that the place or the whitespace decides](./compatibility.md#er-lines-that-the-place-or-the-whitespace-decides)
+and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A directive between the keyword and the `-` does not part them, since mermaid.js
+removes it before it reads the text: `class%%{init: {}}%%-A a` stays. `classDef`
+and `style` are not among them: `classDef-x` is printed `classDef -x`. A `;`
+that the line rule ignores does not part the keyword and the `-` either.
+[fixture: whitespace-between-tokens/class-then-dash-ignored-semicolon-kept]
+[fixture: whitespace-between-tokens/class-then-dash-directive-kept] [fixture:
+whitespace-between-tokens/subgraph-then-dash-directive-kept] [fixture:
+whitespace-between-tokens/end-then-dash-directive-kept] [fixture:
+whitespace-between-tokens/keyword-then-dash-touching-kept] [fixture:
+whitespace-between-tokens/keyword-upper-then-dash-touching-kept] [fixture:
+whitespace-between-tokens/subgraph-then-dash-touching-kept] [fixture:
+whitespace-between-tokens/end-then-dash-touching-kept] [fixture:
+whitespace-between-tokens/classdef-style-then-dash-spaced] [fixture:
+whitespace-between-tokens/keyword-then-dash-apart]
 
 Input
 ([whitespace-between-tokens/touching-kept-input.mmd](../tests/fixtures/er/whitespace-between-tokens/touching-kept-input.mmd)):
@@ -571,7 +816,7 @@ erDiagram
 ```
 
 Input
-([whitespace-between-tokens/keyword-case-one-form-input.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-one-form-input.mmd)):
+([whitespace-between-tokens/keyword-case-kept-input.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-kept-input.mmd)):
 
 ```mmd
 erDiagram
@@ -592,17 +837,17 @@ int a PK
 ```
 
 Output
-([whitespace-between-tokens/keyword-case-one-form-output.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-one-form-output.mmd)):
+([whitespace-between-tokens/keyword-case-kept-output.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-kept-output.mmd)):
 
 ```mmd
 erDiagram
-  subgraph S
+  SUBGRAPH S
     A
-  end
+  END
   CLASSDEF a fill: red
   CLASS A a
   STYLE A fill: red
-  direction LR
+  DIRECTION lr
   ACCTITLE: T
   ACCDESCR: D
   ACCDESCR: D
@@ -616,14 +861,19 @@ erDiagram
 
 A relationship has one space between the left entity and the relationship,
 between the relationship and the right entity, and on each side of the `:` of
-its role, however it was written: this is the form of the documentation of
-mermaid.js, and the role may be a name, a string, or a quoted name alike.
-[fixture: relationship-spacing/around-units-and-role] [fixture:
+its role, however it was written. The colon can be read as a mark that stands
+between the relationship and its role, so the whitespace before it is the one
+that the examples in the documentation of mermaid.js write at least twice as
+often as any other: 40 relationship lines with a space after the colon have a
+space before it, and none touches the entity (counted as under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)).
+The role may be a name, a string, or a quoted name alike. [fixture:
+relationship-spacing/around-units-and-role] [fixture:
 relationship-spacing/names-and-classes] [fixture:
 relationship-spacing/role-forms] [corpus fixture: er/lex-relationship-no-spaces]
-[corpus fixture: er/lex-colon-no-space] The classes of an entity touch their
-`:::` and the `,` between them. [fixture:
-relationship-spacing/names-and-classes]
+[corpus fixture: er/lex-colon-no-space] The first class of an entity touches its
+`:::`, and each `,` between the classes touches the class before it and has one
+space after it. [fixture: relationship-spacing/names-and-classes]
 
 The cardinalities and the line of a relationship are printed as symbols,
 whatever words or symbols were written: mermaid.js reads `only one`,
@@ -753,34 +1003,40 @@ erDiagram
 
 The alias of an entity touches its name and has nothing inside its brackets, as
 in most examples of the documentation of mermaid.js: `p [ Person ]` is printed
-`p[Person]`. [fixture: entities/alias-tight] The classes after `:::` touch it,
-and are separated by a `,` that touches the classes on both sides:
-`A ::: c1 , c2` is printed `A:::c1,c2`. [fixture: entities/classes-tight]
-[fixture: entities/alias-and-classes] The `{` of an attribute block stands after
-one space (see [Attribute blocks](#attribute-blocks)). A name, a role, or the id
-of a subgraph in quotes that is one plain word is printed without them, as the
-examples in the documentation of mermaid.js write it (see
+`p[Person]`. [fixture: entities/alias-tight] The first class after `:::` touches
+it, and the classes are separated by a `,` that touches the class before it and
+has one space after it, as Prettier prints a comma where mermaid.js reads the
+list the same: `A ::: c1 , c2` is printed `A:::c1, c2`. [fixture:
+entities/classes-tight] [fixture: entities/alias-and-classes] The `{` of an
+attribute block stands after one space (see
+[Attribute blocks](#attribute-blocks)). A name, a role, or the id of a subgraph
+in quotes that is one plain word is printed without them, as the examples in the
+documentation of mermaid.js write it (see
 [The quotes of a text](./compatibility.md#the-quotes-of-a-text)): `"A"[B]` is
 printed `A[B]`, and `C ||--o{ D : "has"` is `C ||--o{ D : has`. A word that
 starts with a letter, with a single `-` between its parts (`LINE-ITEM`, `a-1`),
 is plain too, as the examples write 20 such names, `LINE-ITEM` and
 `NAMED-DRIVER` among them, and none in quotes: `"LINE-ITEM"` is printed
-`LINE-ITEM`. The part before the first `-` is compared with the words that the
-lexer reads as a unit of its own, since a `-` ends a keyword (`"end-x"` is `end`
-and `-x`). The other names are kept as written, quoted or not, numbers included,
-and so are a name with a `-` at its start or its end or two together, a name
-that starts with a `_` (`"_x"`, which the lexers before 10.5.0 reject without
-quotes), and a name that ends with `direction` or starts with `TB`, `BT`, `RL`,
-or `LR`, in any case: the lexer reads `direction`, white space (a line break
-too), and the name of a direction as one line, which a name without quotes would
-join with the line before or after it. [fixture:
-entities/plain-names-without-quotes] [fixture:
+`LINE-ITEM`. A `_` may start a name (`"_x"` is printed `_x`): the examples write
+no such name, with quotes or without, and every version that counts reads it the
+same in both forms. The part before the first `-` is compared with the words
+that the lexer reads as a unit of its own, since a `-` ends a keyword (`"end-x"`
+is `end` and `-x`). A name with a letter outside ASCII (`"Zoë"`) keeps its
+quotes, since a version that counts rejects it without them, and so does a name
+with a `.` (`"a.b"`), which some versions that count reject without them (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The other names are kept as written, quoted or not, numbers included, and so are
+a name with a `-` at its start or its end or two together, and a name that ends
+with `direction` or starts with `TB`, `BT`, `RL`, or `LR`, in any case: the
+lexer reads `direction`, white space (a line break too), and the name of a
+direction as one line, which a name without quotes would join with the line
+before or after it. [fixture: entities/plain-names-without-quotes] [fixture:
 entities/hyphenated-names-without-quotes] [fixture:
-entities/names-that-need-quotes] [fixture:
-entities/names-next-to-a-direction-line] [fixture: entities/names-kept] A
-directive between the parts of an entity is placed as under
-[Directives](#directives). [fixture: entities/directive-between-parts] [fixture:
-entities/directive-between-parts-runs]
+entities/names-that-need-quotes] [fixture: entities/name-with-dot-kept]
+[fixture: entities/names-next-to-a-direction-line] [fixture:
+entities/names-kept] A directive between the parts of an entity is placed as
+under [Directives](#directives). [fixture: entities/directive-between-parts]
+[fixture: entities/directive-between-parts-runs]
 
 Input
 ([entities/alias-tight-input.mmd](../tests/fixtures/er/entities/alias-tight-input.mmd)):
@@ -826,9 +1082,9 @@ Output
 
 ```mmd
 erDiagram
-  A:::c1,c2
+  A:::c1, c2
   "A B":::c
-  A:::é,b-c
+  A:::é, b-c
   B:::d
 ```
 
@@ -845,6 +1101,7 @@ int id
 subgraph "my-group"
 "x-y"
 end
+"_a-b" ||--o{ "_c-d" : "_e-f"
 ```
 
 Output
@@ -860,6 +1117,7 @@ erDiagram
   subgraph my-group
     x-y
   end
+  _a-b ||--o{ _c-d : _e-f
 ```
 
 ### Subgraphs
@@ -874,12 +1132,12 @@ mermaid.js joins them with one space. [fixture: subgraphs/header-spacing]
 [fixture: subgraphs/title-touches-name] [fixture: subgraphs/title-names-spaced]
 [fixture: subgraphs/quoted-and-number-ids] The statements of the body stand one
 level deeper, and `end` stands on a line of its own at the level of the
-subgraph, printed `end` in any case; in the body, the keyword of a `class`,
-`classDef`, or `style` statement stays as written, as it does outside a
-subgraph, and mermaid.js lists it as a node of the subgraph as written.
-[fixture: subgraphs/statement-keywords-case-kept] A statement that follows the
-`end` on its line stands on the line after it. [fixture:
-subgraphs/end-on-the-line-of-a-statement] [fixture: subgraphs/end-case-one-form]
+subgraph, printed in the case in which it is written; in the body, the keyword
+of a `class`, `classDef`, or `style` statement stays as written, as it does
+outside a subgraph, and mermaid.js lists it as a node of the subgraph as
+written. [fixture: subgraphs/statement-keywords-case-kept] A statement that
+follows the `end` on its line stands on the line after it. [fixture:
+subgraphs/end-on-the-line-of-a-statement] [fixture: subgraphs/end-case-kept]
 [fixture: subgraphs/entity-after-end] A subgraph without statements is printed
 with its `end` on the next line. [fixture: subgraphs/empty]
 
@@ -967,12 +1225,14 @@ erDiagram
 A direction line is `direction` and its value, with the text that mermaid.js
 does not read before and after them. The text is kept as written. One space
 stands between it and `direction`, where they were written apart, and between
-`direction` and the value; the value is printed in upper case (`lr` is `LR`), as
-the examples in the documentation of mermaid.js write it (see
-[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
+`direction` and the value; the value keeps the case in which it is written (`lr`
+stays `lr`), since a version that counts reads the line as entities and draws
+`direction tb` and `direction TB` differently (see
+[Keywords in one case](./compatibility.md#keywords-in-one-case) and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 [fixture: direction/spacing] [fixture: direction/text-kept] [fixture:
-direction/case-one-form] [fixture: direction/case-bt-rl-one-form] A value
-written on a later line is printed after `direction` on one line. [fixture:
+direction/case-kept] [fixture: direction/case-bt-rl-kept] A value written on a
+later line is printed after `direction` on one line. [fixture:
 direction/value-on-next-line-joined] [corpus fixture:
 er/lex-direction-value-next-line] A direction line with a directive or comment
 keeps its line breaks and indents structural continuations one level deeper.
@@ -1003,7 +1263,7 @@ erDiagram
 ```
 
 Input
-([direction/case-one-form-input.mmd](../tests/fixtures/er/direction/case-one-form-input.mmd)):
+([direction/case-kept-input.mmd](../tests/fixtures/er/direction/case-kept-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1012,35 +1272,36 @@ Direction Tb
 ```
 
 Output
-([direction/case-one-form-output.mmd](../tests/fixtures/er/direction/case-one-form-output.mmd)):
+([direction/case-kept-output.mmd](../tests/fixtures/er/direction/case-kept-output.mmd)):
 
 ```mmd
 erDiagram
-  direction LR
-  direction TB
+  DIRECTION lr
+  Direction Tb
 ```
 
 ### Styles and classes
 
-Name and class lists use commas without surrounding spaces. The first style
-stands after one space. For ordinary single-line property/value styles in
-`style` or `classDef`, put no space before the first colon of each style and one
-before its nonempty value; separate styles with a comma and one following space.
-Print a run of spaces or tabs between two words of a style as one space, in a
-style with a `:` and in one without: `stroke-dasharray:  5    5` becomes
-`stroke-dasharray: 5 5`, and `4px    wide` becomes `4px wide`. Whether
-whitespace stands between two words stays as written: `fill #f00` and `fill#f00`
-are kept apart, since a word that touches the next stays touching, as a gap does
-elsewhere (see [Directives](#directives)), and joining the words would hide
-where one word ends. Mermaid concatenates the native style units whatever
-whitespace separates them: `stroke-dasharray: 5 5` still means
-`stroke-dasharray:55`, so the Db does not change. For example,
-`fill   : navy, stroke  : black` becomes `fill: navy, stroke: black`. A header
-or exterior line break that ordinarily joins does not delay this spacing until
-another formatting. Style interiors containing line separators, owned trivia,
-and statements with a kept semicolon on their physical line retain the existing
-style layout. The keywords `style` and `classDef` keep the case in which they
-are written (see
+Name and class lists use a comma that touches the name before it and has one
+space after it, as Prettier prints a comma where mermaid.js reads the list the
+same. The first style stands after one space. For ordinary single-line
+property/value styles in `style` or `classDef`, put no space before the first
+colon of each style and one before its nonempty value; separate styles with a
+comma and one following space. Print a run of spaces or tabs between two words
+of a style as one space, in a style with a `:` and in one without:
+`stroke-dasharray:  5    5` becomes `stroke-dasharray: 5 5`, and `4px    wide`
+becomes `4px wide`. Whether whitespace stands between two words stays as
+written: `fill #f00` and `fill#f00` are kept apart, since a word that touches
+the next stays touching, as a gap does elsewhere (see
+[Directives](#directives)), and joining the words would hide where one word
+ends. Mermaid concatenates the native style units whatever whitespace separates
+them: `stroke-dasharray: 5 5` still means `stroke-dasharray:55`, so the Db does
+not change. For example, `fill   : navy, stroke  : black` becomes
+`fill: navy, stroke: black`. A header or exterior line break that ordinarily
+joins does not delay this spacing until another formatting. Style interiors
+containing line separators, owned trivia, and statements with a kept semicolon
+on their physical line retain the existing style layout. The keywords `style`
+and `classDef` keep the case in which they are written (see
 [Keywords in one case](./compatibility.md#keywords-in-one-case)). [fixture:
 styles-and-classes/style-unit-padding] [fixture:
 styles-and-classes/class-def-names] [fixture: styles-and-classes/style-names]
@@ -1073,7 +1334,11 @@ styles-and-classes/trailing-whitespace-takes-next-line] [fixture:
 styles-and-classes/directive-before-next-line] [fixture:
 styles-and-classes/comment-line-inside-kept] [corpus fixture:
 er/lex-classdef-space-before-line-feed] [corpus fixture:
-er/lex-style-tab-before-line-feed]
+er/lex-style-tab-before-line-feed] A vertical tab and a form feed at the end of
+the last style take the line feed in the same way, since the style context reads
+every whitespace character between units, and the statement is kept in the same
+way. [test: keeps a vertical tab and a form feed at the end of the classDef of
+an ER diagram]
 
 Line-ending semicolons follow
 [Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement).
@@ -1098,7 +1363,7 @@ Output
 
 ```mmd
 erDiagram
-  classDef a,b,c fill: red
+  classDef a, b, c fill: red
   classDef default fill: #f9f, stroke-width: 4px
 ```
 
@@ -1149,6 +1414,10 @@ erDiagram
 ```
 
 ### Accessibility statements
+
+A `;` that the line rule ignores after a description block does not prevent the
+one-line colon form; its written source remains after the description. [fixture:
+accessibility-statements/block-trailing-ignored-semicolon]
 
 The `:` of `accTitle` and `accDescr` touches the keyword and has one space after
 it; the text is without the whitespace at its ends. [fixture:
@@ -1201,13 +1470,16 @@ needs no word boundary after it, and may stand on a later line, which the
 statement does not hold. The first printed line is the one that counts: a text
 written on a later line is brought to the `:` (see
 [Multi-line statements](#multi-line-statements)), so `accTitle:`, a line break,
-and `direction LR` are printed `accTitle: direction LR` at the first column. The
-comment lines and the directives between `direction` and the value are skipped,
-as the lexer reads the text without them (diagrams/er.md, Trivia between units),
-and so are empty lines. Where no direction follows, the statement is indented as
-any other. The line counts as a whole: where other statements follow on it
-(`accDescr {x}; accDescr {direction RL}`), the `direction` in them counts too,
-as the lexer reads the whole line from its start. [fixture:
+and `direction LR` are printed `accTitle: direction LR` at the first column,
+also where `accTitle:` was written after an indentation: the written statement
+is a title, and an indented `accTitle: direction LR` would be a direction line.
+The comment lines and the directives between `direction` and the value are
+skipped, as the lexer reads the text without them (diagrams/er.md, Trivia
+between units), and so are empty lines. Where no direction follows, the
+statement is indented as any other. The line counts as a whole: where other
+statements follow on it (`accDescr {x}; accDescr {direction RL}`), the
+`direction` in them counts too, as the lexer reads the whole line from its
+start. [fixture:
 accessibility-statements/semicolon-line-with-direction-text-first-column]
 [fixture: accessibility-statements/first-column-for-direction-text] [fixture:
 accessibility-statements/first-column-direction-case-insensitive] [fixture:
@@ -1219,6 +1491,10 @@ accessibility-statements/first-column-value-after-directive-line] [fixture:
 accessibility-statements/first-column-value-after-blank-line] [fixture:
 accessibility-statements/first-column-text-brought-to-the-colon] [fixture:
 accessibility-statements/first-column-text-brought-to-the-colon-in-subgraph]
+[fixture:
+accessibility-statements/first-column-text-brought-to-the-colon-from-indentation]
+[fixture:
+accessibility-statements/first-column-text-brought-to-the-colon-from-indentation-directive]
 [fixture: accessibility-statements/first-column-directive-inside-direction]
 [fixture:
 accessibility-statements/first-column-directive-over-lines-before-direction]

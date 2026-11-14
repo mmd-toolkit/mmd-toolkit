@@ -12,6 +12,22 @@ export interface IshikawaCase {
 
 export const ishikawaCases: readonly IshikawaCase[] = [
   {
+    rule: "inline-directives",
+    name: "ishikawa: leading-directive-in-joining-region",
+    input: "ishikawa\n R\n%%{}\u2028 %%{x: {}}%% %% c\n  A",
+    output: "ishikawa\n  R\n    %%{}\u2028    %%{x: {}}%% %% c\n  A\n",
+    options: {},
+    rejected: false,
+  },
+  {
+    rule: "indentation",
+    name: "ishikawa: joining-region-does-not-count-indentation",
+    input: "ishikawa\n R\n%%{}\u2028 %% c\n  A",
+    output: "ishikawa\n  R\n    %%{}\u2028    %% c\n  A\n",
+    options: {},
+    rejected: false,
+  },
+  {
     rule: "line-separators",
     name: "ishikawa: ls-comment-two-lf-before-root",
     input: "ishikawa\n%%{}%%\u2028\n\nRoot\n",
@@ -200,14 +216,14 @@ export const ishikawaCases: readonly IshikawaCase[] = [
     rule: "whitespace-characters",
     name: "ishikawa: nel-zero-width-text",
     input: "ishikawa\nR\n\u0085\n\u200b",
-    output: "ishikawa\n  R\n    \u0085\n    \u200b\n",
+    output: "ishikawa\nR\n\u0085\n\u200b\n",
     options: {},
     rejected: false,
   },
   {
     rule: "whitespace-characters",
     name: "ishikawa: unicode-indentation",
-    input: "ishikawa\n\u3000R\n\u00a0A\n\t\ufeffB",
+    input: "ishikawa\n\u3000R\n\u00a0\u00a0A\n\t\ufeff\u3000B",
     output: "ishikawa\n  R\n    A\n      B\n",
     options: {},
     rejected: false,

@@ -40,9 +40,9 @@ Examples of **incorrect** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/venn-no-duplicate-title: error
 venn-beta
-title Audience
-title Coverage
-set A
+  title Audience
+  title Coverage
+  set A
 ```
 
 Examples of **correct** code for this rule:
@@ -50,8 +50,8 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/venn-no-duplicate-title: error
 venn-beta
-title Audience
-set A
+  title Audience
+  set A
 ```
 
 ## Options

@@ -62,9 +62,9 @@ xychart
 Each statement stands on a line of its own. Nothing separates statements in an
 XY chart (diagrams/xychart.md, Diagram and statements), so `title T line [1]`,
 `x-axis [a] line [1]`, `line [1]bar [2]`, and a statement after the header on
-its line are several statements on one line. They go to lines of their own,
-because a line of two statements is harder to read, as in the other diagrams
-(see [Statements one per line](./flowchart.md#statements-one-per-line)). The
+its line are several statements on one line. They go to lines of their own, as
+in the other diagrams (see
+[Statements one per line](./flowchart.md#statements-one-per-line)). The
 orientation of the header stays on the header's line (see
 [Header and orientation](#header-and-orientation)). A directive between two
 statements on a line moves with the statement after it. A `;` ends a statement
@@ -211,16 +211,17 @@ xychart
 ### Header and orientation
 
 The header is printed as written: `xychart` or `xychart-beta`, in the case
-written. mermaid.js 12.3.0 reads them as the same diagram type, but mermaid.js
-11.9.0 detects `xychart-beta` only, so the spelling is the author's, not the
-printer's (see
-[The names of a header](./compatibility.md#the-names-of-a-header)). A header
-after the first stands on a line of its own, and none is dropped: a later header
-with an orientation changes the orientation, and one without changes nothing,
-but the text is the author's. A header with a comment or directive in its gap
-keeps that line break and aligns its continuation one level inside the header
-(see [Multi-line statements](#multi-line-statements)). [fixture:
-header-and-orientation/plain-header] [fixture:
+written. mermaid.js 12.3.0 reads them as the same diagram type, but some
+versions that count detect `xychart-beta` only, so the spelling is the author's,
+not the printer's (see
+[The names of a header](./compatibility.md#the-names-of-a-header) and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A header after the first stands on a line of its own, and none is dropped: a
+later header with an orientation changes the orientation, and one without
+changes nothing, but the text is the author's. A header with a comment or
+directive in its gap keeps that line break and aligns its continuation one level
+inside the header (see [Multi-line statements](#multi-line-statements)).
+[fixture: header-and-orientation/plain-header] [fixture:
 header-and-orientation/beta-header-kept] [fixture:
 header-and-orientation/header-only] [fixture:
 header-and-orientation/vertical-kept] [fixture:
@@ -368,10 +369,10 @@ whitespace is in the Db, and none of it changes how units are read, since a
 bracket, a comma, and a quote are no characters of a word, so the form is a
 choice. It is the form that most examples in the documentation of mermaid.js use
 (`[jan, feb, mar]`, `[5000, 6000, 7500]`); some examples there have no space
-after a comma (`[12,2,20,25,17,24]`), and one form for every chart is simpler to
-read than two. A space after each comma is also how a list of values reads in
-English. [fixture: brackets-and-commas/spaces-inside-and-around-commas]
-[fixture: brackets-and-commas/bracket-touching-the-keyword] [fixture:
+after a comma (`[12,2,20,25,17,24]`), and every chart has one form. A space
+after each comma is the whitespace that Prettier prints beside a comma.
+[fixture: brackets-and-commas/spaces-inside-and-around-commas] [fixture:
+brackets-and-commas/bracket-touching-the-keyword] [fixture:
 brackets-and-commas/bracket-touching-the-title] [fixture:
 brackets-and-commas/bracket-touching-a-string] [fixture:
 brackets-and-commas/values-with-spaces] [fixture:
@@ -609,6 +610,10 @@ xychart
   bar [1 ""]
 ```
 
+A directive between the keyword and a title is removed before token contact is
+tested: `title %%{wrap x}%%abc` therefore prints the title in quotes. The
+directive stays as written. [fixture: quotes/title-after-directive]
+
 ### Accessibility statements
 
 The `:` of `accTitle` and `accDescr` touches the keyword and has one space after
@@ -648,12 +653,21 @@ the end of the text without adding a `}`: mermaid.js reads no text for it, and a
 with a `}` have `abc`). [fixture: accessibility-statements/block-lines-kept]
 [fixture:
 accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
-[fixture: accessibility-statements/block-then-statement-on-the-closing-line]
+[fixture: accessibility-statements/block-then-statement-on-the-closing-line] A
+comment after the statement that follows the block belongs to that statement,
+which goes to a line of its own, and does not keep the block as it is written.
+[fixture:
+accessibility-statements/block-then-statement-and-comment-on-the-closing-line]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept] [fixture:
 accessibility-statements/block-not-closed-kept-as-written] [fixture:
 accessibility-statements/block-not-closed-text-on-the-opening-line] [fixture:
 accessibility-statements/block-not-closed-without-text] [fixture:
 accessibility-statements/block-not-closed-after-a-statement-on-its-line]
+
+A directive between the keyword and the colon or the brace, or after them, stays
+where it is, and a block on one line with a directive beside its braces is
+written with the colon first (see
+[A description block on one line](./compatibility.md#a-description-block-on-one-line)).
 [fixture: accessibility-statements/directive-around-colon-and-braces]
 
 Input

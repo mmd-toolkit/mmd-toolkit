@@ -19,10 +19,11 @@ none (see
 colon stays where a hidden form or a global directive lies between it and the
 word, and where a `;` or the `---` of a hidden YAML block touches it. [fixture:
 cynefin/header/colon-removed] [fixture: cynefin/header/colon-semicolon-kept]
-Move an ordinary first statement to the next line so the header is easy to find.
-Global directive contact, hidden neighbors and protected lines use their shared
-rules: a kept header line also keeps its domain and item openings on that line.
-A spaced colon is rejected rather than repaired.
+[fixture: cynefin/header/colon-directive-before-hidden-yaml-kept] Move an
+ordinary first statement to the next line so the header is easy to find. Global
+directive contact, hidden neighbors and protected lines use their shared rules:
+a kept header line also keeps its domain and item openings on that line. A
+spaced colon is rejected rather than repaired.
 
 [fixture: cynefin/hidden-boundaries/meeting-inline-directive-directive]
 
@@ -118,13 +119,12 @@ cynefin-beta
 
 ### Domains and items
 
-Put the domain word on its own line and each item one step deeper. This exposes
-the authored child relationship. The grammar requires no EOL between a domain
-and its items, adjacent strings or adjacent domains, so splitting these units
-keeps the Db. Keep empty strings, repeated items and multiline strings.
-Comments, directives, blanks and hidden forms between items leave the sequence
-open. Protected or hidden inline neighbors take precedence; add no closing
-delimiter.
+Put the domain word on its own line and each item one step deeper, as the other
+diagram types nest a block. The grammar requires no EOL between a domain and its
+items, adjacent strings or adjacent domains, so splitting these units keeps the
+Db. Keep empty strings, repeated items and multiline strings. Comments,
+directives, blanks and hidden forms between items leave the sequence open.
+Protected or hidden inline neighbors take precedence; add no closing delimiter.
 
 On a kept semicolon line, keep the domain word with its first item too. Moving
 only the items could make the next formatting split them again.
@@ -200,10 +200,10 @@ cynefin-beta
 ### Statements one per line
 
 Print ordinary domains, transitions and common statements in source order on
-separate lines; add no semicolon. This makes statement boundaries visible
-without inventing syntax. Transitions and common statements need visible EOL. A
-title containing apparent domain syntax remains one value, and an empty
-description block remains a statement that ends an item sequence.
+separate lines; add no semicolon, as the other diagram types do. Transitions and
+common statements need visible EOL. A title containing apparent domain syntax
+remains one value, and an empty description block remains a statement that ends
+an item sequence.
 
 [fixture: cynefin/statements-one-per-line/statement-boundaries]
 
@@ -258,9 +258,15 @@ cynefin-beta
 ### Label colon
 
 Use to : "label" with one ordinary space before and after the colon, separating
-the label from its endpoint. Retain an absent label, an empty quoted label and a
-whitespace-only label as distinct authored forms. Hidden and global trivia gaps
-override ordinary spacing.
+the label from its endpoint. The label belongs to the transition and not to its
+endpoint, so the examples in the documentation of mermaid.js decide the
+whitespace before the colon (step 3 of
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)): all 4 that
+write a space after the colon write a space before it (counted as under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)).
+Retain an absent label, an empty quoted label and a whitespace-only label as
+distinct authored forms. Hidden and global trivia gaps override ordinary
+spacing.
 
 [fixture: cynefin/label-colon/colon-tabs]
 
@@ -1069,12 +1075,12 @@ cynefin-beta
 
 ### Frontmatter yaml
 
-Use shared guarded YAML formatting only for safe real frontmatter, choosing
-readable Db-equal YAML. Keep malformed YAML, indented fences, delimiter padding,
-HTML hazards and bodies whose formatting could create a fence under the shared
-guards. YAML nesting/block scalars use a positive minimum at tabWidth zero.
-Retained/native YAML remains source text; preserve the empty title reset to the
-frontmatter fallback.
+Use shared guarded YAML formatting only for safe real frontmatter, choosing the
+Db-equal YAML that Prettier prints. Keep malformed YAML, indented fences,
+delimiter padding, HTML hazards and bodies whose formatting could create a fence
+under the shared guards. YAML nesting/block scalars use a positive minimum at
+tabWidth zero. Retained/native YAML remains source text; preserve the empty
+title reset to the frontmatter fallback.
 
 [fixture: cynefin/frontmatter-yaml/frontmatter-safe-yaml]
 

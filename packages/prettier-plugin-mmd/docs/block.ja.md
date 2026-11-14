@@ -29,7 +29,7 @@ composite の中の文は `block:` の行より 1 段深く置き、
 行頭の空白は mermaid.js にとって何の意味も持たないので、字下げは構造だけで決め、
 どのテキストも 1 つの形になります。
 入れ子は composite の始まりと終わりを見せます。
-`block:` と `end` だけでは、深く入れ子になると読みにくいからで、
+`block:` と `end` だけでは、深く入れ子になると始まりと終わりが見えないからで、
 mermaid.js の文書もそう書き、
 ほかの図もブロックを入れ子にします（flowchart
 の[字下げ](./flowchart.ja.md#字下げ)を参照）。
@@ -65,7 +65,7 @@ d
 block-beta
   columns 3
   a
-  block:group1:2
+  block: group1:2
     columns 2
     h
     i
@@ -76,17 +76,34 @@ block-beta
 ### composite
 
 composite は 3 種類の行でできています。
-`block:` とその node の行、中の文の行、`end` の行です。
-`block:G`、`block`、`block-beta` は書かれたままに印字し、
-`block:` はその node に接します。
-mermaid.js は `block: G` と `block:G` を同じに読むので、
-形は 1 つのほうが読みやすいからです（mermaid.js の文書の `block:group1:2`
-の形です）。
+`block:` とそのノードの行、中の文の行、`end` の行です。
+`block` と `block-beta` は書かれたままに印字します。
+キーワード `block:` はコロンを含み、そのノードとの間は空白 1 つにします。
+`block:G` は `block: G` に、`block:G:2` は `block: G:2` に印字します。
+幅のコロンは、ブロック図のほかの箇所と同じくノードに接します。
+キーワードとその後ろのものの間の隙間は、
+どの図種でも同じ形にします（`title Pets`）。
+詳しくは
+[Prettier にない種類の隙間](./printed-form.ja.md#2-prettier-にない種類の隙間)
+を参照してください。
+この決まりは、mermaid.js の例に綴りを合わせる決まりより先に当たります。
+例は `block:` をノードに接して 4 回書き、後に空白を置く形は一度も書きません。
+mermaid.js は `block: G` と `block:G` を同じに読み、
+対象にする版もすべて同じなので、接する形が要る版はありません。
+対象にする版はどれも、コロンの前の空白（`block : G`）を拒否します。
+キーワード `block:` が許さないので、この形は印字しません。
+`block:` の後には、改行を含む空白を置けます。
+空白、タブ、改行の隙間は、空白 1 つに印字します。
+`block:`、改行、`G` は `block: G` になります。
+この隙間にあるディレクティブは、その空白の後に置き、ノードに接します。
+詳しくは[指令](#指令)を参照してください。
 見出しの後の最初の文と、`end` の後の文は、自分の行に移します。
 1 行に書かれた composite（`block:G a b end`）も同じで、
 どの composite も同じ形に置き、字下げが中身を示します。
 `end` は自分の行に置き、`block:` と同じ段にします。
-[fixture: composites/colon-touches-the-node]
+[fixture: composites/space-after-the-colon]
+[fixture: composites/tab-after-the-colon]
+[fixture: composites/directive-between-the-colon-and-the-node]
 [fixture: composites/colon-and-node-on-different-lines]
 [fixture: composites/width-kept]
 [fixture: composites/width-colon-touches-the-node]
@@ -101,22 +118,34 @@ mermaid.js は `block: G` と `block:G` を同じに読むので、
 [fixture: composites/head-over-lines-joined]
 
 入力
-([composites/colon-touches-the-node-input.mmd](../tests/fixtures/block/composites/colon-touches-the-node-input.mmd)):
+([composites/space-after-the-colon-input.mmd](../tests/fixtures/block/composites/space-after-the-colon-input.mmd)):
 
 ```mmd
 block-beta
-block: G
+block:G
 a
+end
+block: H
+b
+end
+block:   I
+c
 end
 ```
 
 出力
-([composites/colon-touches-the-node-output.mmd](../tests/fixtures/block/composites/colon-touches-the-node-output.mmd)):
+([composites/space-after-the-colon-output.mmd](../tests/fixtures/block/composites/space-after-the-colon-output.mmd)):
 
 ```mmd
 block-beta
-  block:G
+  block: G
     a
+  end
+  block: H
+    b
+  end
+  block: I
+    c
   end
 ```
 
@@ -133,7 +162,7 @@ block:G a b end
 
 ```mmd
 block-beta
-  block:G
+  block: G
     a b
   end
 ```
@@ -143,14 +172,14 @@ block-beta
 ほとんどの図は、どの文も自分の行に置きます。
 ブロック図は、そうしません。
 行は、書き手がブロックを並べる単位だからです。
-1 行に並んだ node と `space` の連なりは、`columns` が決める格子の 1 行で、
+1 行に並んだノードと `space` の連なりは、`columns` が決める格子の 1 行で、
 mermaid.js の文書もそう書いています（`a b c`、`a["A label"] b:2 c:2 d`、
 `Start(("Start")) space:2`）。
-node を 1 行ずつに分けると、その行が見えなくなり、
+ノードを 1 行ずつに分けると、その行が見えなくなり、
 列の数を `columns` の文から数えなおすことになります。
 [fixture: rows/documentation-row-with-widths] [fixture: rows/space-in-a-row]
 
-そのため、1 行にある node の文（幅、形、辺も含む）と `space` の連なりは、
+そのため、1 行にあるノードの文（幅、形、辺も含む）と `space` の連なりは、
 その行に残し、文の間は空白 1 つにします。
 連なりの中の 2 つの文の間の改行は、書かれた場所に残し、空行は 1 つにします。
 それ以外の文は自分の行に置きます。
@@ -172,7 +201,7 @@ node を 1 行ずつに分けると、その行が見えなくなり、
 [fixture: rows/composite-on-lines-of-its-own] [fixture: rows/row-in-a-composite]
 
 `%%` で始まる文は、行頭に動かしません。
-mermaid.js は node の後の `%%x` を id として読みますが、
+mermaid.js はノードの後の `%%x` を id として読みますが、
 `%%x` で始まる行はコメント行で、
 取り除かれるからです（[コメント](#コメント)を参照）。
 そのような文がある行は、1 行のまま残し、中の文は他の文と同じに整えて、
@@ -280,9 +309,13 @@ block-beta
 
 ヘッダーの `block-beta` と `block` は、書かれたまま印字します。
 mermaid.js 12.3.0 はどちらも同じ図種として読みますが、
-mermaid.js 11.9.0 は `block-beta` だけを検出するので、
+対象にする版には `block-beta` だけを検出するものがあるので、
 綴りは作者の選択だからです。
-（[ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)を参照）。
+詳しくは [ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)
+を参照してください。
+残す版は
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+の表にあります。
 前の空白は落とし、同じ行の後ろの文は自分の行に移します（[行](#行)を参照）。
 [fixture: header/block-beta-kept] [fixture: header/block-kept]
 [fixture: header/statement-after-the-header-on-a-line-of-its-own]
@@ -314,7 +347,7 @@ block 図が語をキーワードとして読むのは、小文字のときだ�
 ヘッダーは例外です（[ヘッダー](#ヘッダー)を参照）。
 [fixture: keyword-case/keywords-kept]
 
-Input (escaped): `"block-beta\nCOLUMNS 2\nSPACE\nSTYLE A\nCLASSDEF c"`.
+入力（エスケープ表記）: `"block-beta\nCOLUMNS 2\nSPACE\nSTYLE A\nCLASSDEF c"`.
 
 出力
 ([keyword-case/keywords-kept-output.mmd](../tests/fixtures/block/keyword-case/keywords-kept-output.mmd)):
@@ -391,11 +424,17 @@ block-beta
 id とその後の形は接します（`A("x")`、`B[["y"]]`）。
 間に空白が書かれていても（`A ("x")`）同じです。
 mermaid.js は id と形の始まりの間の空白を同じに読むので、この形は選択です。
-接していると、id と形が 1 つの node であることが見え、
+接していると、id と形が 1 つのノードであることが見え、
 `A ("x") B` が 3 つと読まれません。
 mermaid.js の文書の形です。
-幅の `:` は前に接します（`A:3`、`B["b"]:2`）。
-`space:2` の `:` が接していなければならないのと同じです。
+幅の `:` は、前にも後にも接します（`A:3`、`B["b"]:2`）。
+対象にする版はどれも、コロンの後の空白（`A: 3`、`A : 3`）を拒否します。
+Prettier は片側だけに空白を置いたコロンを印字しないので、前の空白（`A :3`。
+それらの版は同じに読みます）も印字しません。
+詳しくは
+[mermaid.js が空白を許さない所](./printed-form.ja.md#mermaidjs-が空白を許さない所)
+を参照してください。
+`space:2` の `:` は接していなければなりません。
 [fixture: shapes/shape-touches-the-id]
 [fixture: shapes/shape-on-the-next-line-joined]
 [fixture: shapes/shape-touching-kept]
@@ -523,16 +562,34 @@ mermaid.js の文書の辺の書き方で、矢印と後ろの id の間の空�
 印がどこで終わり id がどこで始まるかを示します（`I --x J`。
 `I--xJ` では見えません）。
 `x` か `o` で終わる id も、後ろの矢印から離れます（`A x --x B`、`Ao --> B`）。
-線の長さ（`---->`）は Db に入りませんが、書き手が書いたものなので残します。
-[fixture: edges/spaces-around-an-arrow] [fixture: edges/spaces-around-a-label]
+矢印の線は、ラベルつきの辺のラベルの後でも、最短の形で印字します。
+`--->` は `-->`、`-----` は `---`、`<--->` は `<-->`、`-..->` は `-.->`、
+`====>` は `==>` です。
+線の長さは Db に入らず、対象にする版は、
+短い線から同じ図を描きます（太線を読まない版は両方を拒否します）。
+mermaid.js の文書は `-->` を 9 回、`--` を 1 回書き、
+それより長い線はありません。
+`<` で始まる線は、何で終わっても短くします。
+対象にする版が同じに描くからです（`<---x` は `<--x`、`<====` は `<===`）。
+`<` のない、`x` か `o` で終わる矢印は書かれたままにします。
+対象にする版のうち、`---x` と `--x`、
+`---o` と `--o` を違う図に描くものがあるからです。
+`>` で終わらない太線（`====`）も同じで、長さで違う id として読む版があります。
+`~` の線も、どの版でも id なので同じです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。 [fixture: edges/spaces-around-an-arrow]
+[fixture: edges/spaces-around-a-label]
 [fixture: edges/end-marker-apart-from-the-id] [fixture: edges/start-marker]
-[fixture: edges/id-ending-in-x-or-o] [fixture: edges/length-kept]
+[fixture: edges/id-ending-in-x-or-o] [fixture: edges/arrow-length-shortest]
+[fixture: edges/arrow-length-start-marker-shortest]
+[fixture: edges/arrow-length-kept-where-drawn-differently]
 [fixture: edges/line-kinds] [fixture: edges/label-with-other-opening-arrow]
 [fixture: edges/edge-over-lines-joined] [fixture: edges/width-before-the-arrow]
 [fixture: edges/edge-with-shapes]
 
 辺の連鎖 `A --> B --> C` は 1 つの文で、1 行に印字します。
-mermaid.js はそれを正しく読まず、Db が最後の前の node を落としますが、
+mermaid.js はそれを正しく読まず、Db が最後より前のすべてのノードを落としますが、
 `A --> B` と `B --> C` に分けると別の Db になります。
 印字は連鎖を mermaid.js より良く読むことはしません。
 それは lint の規則の仕事です。 [fixture: edges/chain-on-one-line]
@@ -731,6 +788,13 @@ block-beta
   class A, B c1
 ```
 
+クラス名が複数ある `class` は、書かれたまま印字します。
+`class A x,y` はそのまま残します。
+`x, y` と書くと、`x, y` という名前の 1 つのクラスになり、
+`x,y` という名前の 1 つのクラスとは別のクラスになるので、Db が変わります。
+詳しくは [コンマで区切る一覧](./compatibility.ja.md#コンマで区切る一覧)
+を参照してください。 [fixture: styles/class-names-without-space-kept]
+
 ### スタイル文の末尾のセミコロン
 
 `classDef` または `style` 文の行末の `;` は、
@@ -745,7 +809,7 @@ block-beta
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
 文の前後の空行とコメント行は、通常の配置に従います。
 [fixture: semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines]
-空の description block も通常の配置に従い、スタイルの終端は削除します。
+空の説明ブロックも通常の配置に従い、スタイルの終端は削除します。
 [fixture: semicolons-at-the-end-of-a-style-statement/empty-description-block]
 
 文に `#` がない `classDef` では、最後のスタイルの末尾の `;` も削除します。
@@ -793,10 +857,10 @@ composite の見出しの中の改行もそうです。
 ほかの図も同じ規則で文の行をつなぎます（[複数行の文](./xychart.ja.md#複数行の文)
 を参照）。
 node/shape/width と辺の部分、`columns`、class/style の先頭、
-composite の見出しなどの構造 gap では、trivia の改行を保ちます。
-後続の部分と独立した trivia 行は、node の行や composite の内側でも、
+composite の見出しなどの構造隙間では、注釈類の改行を保ちます。
+後続の部分と独立した注釈類行は、ノードの行や composite の内側でも、
 その文より 1 段深くそろえます。
-各 gap の最初の行の末尾、指令の内部全体、値の範囲全体を保ちます。
+各隙間の最初の行の末尾、指令の内部全体、値の範囲全体を保ちます。
 block-arrow の方向は、`,` の後の空白を除いて原文のままです。
 [fixture: multi-line-statements/structural-trivia-continuations]
 
@@ -939,7 +1003,7 @@ block-beta
 [fixture: directives/directive-before-the-directions-of-a-block-arrow]
 
 元は同じ行にあった単位を別の行へ分けるときは、
-間の directive を次の単位に付けます。
+間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
 
 [fixture: block/directives/directive-after-columns]
@@ -988,15 +1052,15 @@ block-beta
 内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
 囲む空白を要する本文がないためです。
 すでに空の内側は空のままです。
-keyword と opener の間は、元が接していても空白 1 個にします。
+キーワードと開始記号の間は、元が接していても空白 1 個にします。
 語と本文の開始を見分けやすくするためで、
 `accDescr{  }` は `accDescr {}` にします。
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: block Unicode and tab interiors]
-指令かコメント行を持つブロックは、内容と改行を保ち、
-独立した trivia を 1 段内側、閉じ括弧を文の段に置きます。
+指令かコメント行を持つブロックは、内容と改行を保ち、独立した注釈類を 1 段内側、
+閉じ括弧を文の段に置きます。
 [fixture: empty-description-blocks/trivia-continuations]
-ヘッダーの後でも、2 つの node の間でも、自分の行に置きます。
+ヘッダーの後でも、2 つのノードの間でも、自分の行に置きます。
 文法がブロックを受け入れるのは、文が始まる場所です。
 mermaid.js は、どこにあってもトークンのないものとして読みます。
 [fixture: empty-description-blocks/whitespace-removed]
@@ -1056,6 +1120,7 @@ block 図の `style`、`classDef` 文のスタイルの色が対象です。
 （[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
 [fixture: colors/colors-in-lower-case]
 [fixture: colors/words-that-are-not-colors-as-written]
+[fixture: block/colors/color-directive-in-url-name-kept]
 
 入力
 ([colors/colors-in-lower-case-input.mmd](../tests/fixtures/block/colors/colors-in-lower-case-input.mmd)):

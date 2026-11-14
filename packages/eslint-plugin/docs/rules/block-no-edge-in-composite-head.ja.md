@@ -19,8 +19,8 @@ since: v0.1.0
 
 <!-- end auto-generated rule notice -->
 
-複合ブロックは、`block:G`、そのブロック、`end` で書く。
-mermaid.js は `block:G --> B` のような id の後のリンクもエラーなしに受理する。
+複合ブロックは、`block: G`、そのブロック、`end` で書く。
+mermaid.js は `block: G --> B` のような id の後のリンクもエラーなしに受理する。
 複合ブロックは id とリンクを失い、ブロック `G` はなく、辺は描かれず、
 `B` は置かれない。
 
@@ -29,16 +29,16 @@ mermaid.js は `block:G --> B` のような id の後のリンクもエラーな
 この規則は、ブロック図（`block-beta`、`block`）に当てる。
 1 つ以上のリンクを持つ複合ブロックの頭を、頭ごとに 1 度報告する。
 ラベルや幅があっても、
-`block:G["Group"]:2 --> B` は id とラベルを失うので報告する。
+`block: G["Group"]:2 --> B` は id とラベルを失うので報告する。
 
-`block:G` の次の行のリンクも頭に属し、報告する。
+`block: G` の次の行のリンクも頭に属し、報告する。
 
 この規則に**反する**コードの例:
 
 ```mmd
 %% eslint @mmd-toolkit/block-no-edge-in-composite-head: error
 block
-  block:G --> B
+  block: G --> B
     A
   end
 ```
@@ -48,7 +48,7 @@ block
 ```mmd
 %% eslint @mmd-toolkit/block-no-edge-in-composite-head: error
 block
-  block:G
+  block: G
     A
   end
   G --> B

@@ -67,7 +67,7 @@ Output
 
 ```mmd
 venn-beta
-set A
+  set A
 ```
 
 Under the specified
@@ -87,7 +87,7 @@ Output
 
 ```mmd
 venn-beta
-set C4Container
+  set C4Container
 ```
 
 ### Indentation
@@ -95,23 +95,35 @@ set C4Container
 With spaces, one configured indentation level is at least one character, even
 with `tabWidth: 0`; `useTabs` still supplies a tab. Formatting must not change
 the Db, and one character is the smallest width that keeps the indentation's
-reading. Only implicit text needs that positive marker; ordinary statements
-remain at column one. [fixture: venn/indentation/tab-width-0] [fixture:
+reading. Only implicit text needs that positive marker; the other statements
+stand at the level that `tabWidth` gives them, which is none with `tabWidth: 0`.
+[fixture: venn/indentation/tab-width-0] [fixture:
 venn/indentation/tab-width-0-leading-directive] [fixture:
 venn/indentation/tab-width-0-kept] [fixture:
 venn/indentation/tab-width-0-kept-leading-directive] [fixture:
 venn/indentation/tab-width-0-internal-marker] [fixture:
 venn/indentation/tab-width-0-use-tabs]
 
-Ordinary set, union, style, title and explicit text statements stand at column
-one; only implicit text stands one configured step deeper (`tabWidth`,
-`useTabs`). Positive indentation selects implicit syntax while mode is enabled;
-it expresses no nesting, and indenting explicit text can change its reading. A
+The `set`, `union`, `style`, and `title` statements stand one configured step
+deeper than the header (`tabWidth`, `useTabs`), as the statements of the other
+diagram types do and as the documentation of mermaid.js writes them: all 39
+lines of these statements in its 8 examples are indented, and none stands at
+column one. An implicit text statement stands one step deeper still. mermaid.js
+skips the indentation before `set`, `union`, `style`, and `title`, so it does
+not change their reading. Whitespace before `text` selects an implicit text
+statement while mode is enabled, so an explicit text statement (`text A item`)
+stands at the level of the header, whatever the mode: indenting it can change
+its reading, and the one form does not depend on the mode. Positive indentation
+selects implicit syntax while mode is enabled; it expresses no nesting. A
 declaration enables mode, a later ordinary line-start statement clears it, and
-another declaration enables it again. [corpus fixture:
-venn/db-form-indent-id-label] [corpus fixture: venn/db-form-indent-number]
-[corpus fixture: venn/db-form-indent-string] [corpus fixture:
-venn/db-form-indent-string-label] [corpus fixture:
+another declaration enables it again. The comment and directive lines before a
+statement stand at its level. [fixture:
+venn/indentation/ordinary-statements-stand-one-step-deep] [fixture:
+venn/indentation/explicit-text-stays-at-the-header] [fixture:
+venn/indentation/comment-and-directive-lines-follow-the-statement] [corpus
+fixture: venn/db-form-indent-id-label] [corpus fixture:
+venn/db-form-indent-number] [corpus fixture: venn/db-form-indent-string] [corpus
+fixture: venn/db-form-indent-string-label] [corpus fixture:
 venn/db-indent-after-header-set] [corpus fixture:
 venn/db-indent-after-indented-set] [corpus fixture:
 venn/db-indent-after-indented-union] [corpus fixture:
@@ -138,9 +150,9 @@ Output
 
 ```mmd
 venn-beta
-set A
-  text one
-  text two
+  set A
+    text one
+    text two
 ```
 
 ### Statements one per line
@@ -186,8 +198,8 @@ Output
 
 ```mmd
 venn-beta
-set A style A fill:red
-  text item
+  set A style A fill: red
+    text item
 ```
 
 ### Blank lines
@@ -237,9 +249,9 @@ Output
 
 ```mmd
 venn-beta
-set A
+  set A
 
-set B
+  set B
 ```
 
 ### Comments
@@ -280,23 +292,24 @@ Output
 
 ```mmd
 venn-beta
-set A Q%% note
-  text item
+  set A Q%% note
+    text item
 ```
 
 ### Name lists
 
 Keywords and operands use one separator; name commas touch the preceding name
-and take one following space for readable lists. Quoted padding, empty names,
-source order and repeated members stay as written, even where the Db sorts
-targets. A name is printed with or without quotes as [Quotes](#quotes) says,
-padding inside quotes belongs to the name (`" A "` and `"A"` differ in the Db),
-the Db sorting the targets is no permission to reorder the written list, and a
-repeated member keeps a union's arity. Venn accepts spaces beside quoted names,
-so, unlike a sankey list, a space after each comma is safe. Directives and
-ignored semicolons override ordinary gap spacing. [corpus fixture:
-venn/db-case-distinct-ids] [corpus fixture: venn/db-empty-identifiers] [corpus
-fixture: venn/db-union-repeated-member] [corpus fixture:
+and take one following space, as Prettier prints a comma, where mermaid.js reads
+the list the same. Quoted padding, empty names, source order and repeated
+members stay as written, even where the Db sorts targets. A name is printed with
+or without quotes as [Quotes](#quotes) says, padding inside quotes belongs to
+the name (`" A "` and `"A"` differ in the Db), the Db sorting the targets is no
+permission to reorder the written list, and a repeated member keeps a union's
+arity. Venn reads a list the same with or without spaces beside its commas,
+quoted names included, so, unlike a sankey list, a space after each comma is
+safe. Directives and ignored semicolons override ordinary gap spacing. [corpus
+fixture: venn/db-case-distinct-ids] [corpus fixture: venn/db-empty-identifiers]
+[corpus fixture: venn/db-union-repeated-member] [corpus fixture:
 venn/lex-name-list-comma-directive] [corpus fixture:
 venn/lex-union-empty-quoted-members] [corpus fixture:
 venn/lex-union-matching-quoted-padding] [fixture:
@@ -316,11 +329,11 @@ Output
 
 ```mmd
 venn-beta
-set A
-set B
-union A, B, A
+  set A
+  set B
+  union A, B, A
 text A, "B" item
-style A, B fill:red
+  style A, B fill: red
 ```
 
 ### Labels
@@ -387,21 +400,34 @@ Output
 
 ```mmd
 venn-beta
-set A["L"]:002.00
-  text item[" Label "]
+  set A["L"] : 002.00
+    text item[" Label "]
 ```
 
 ### Colors
 
 A color in a style is printed in lower case, as the examples in the
 documentation of mermaid.js write it and as the CSS formatter of Prettier prints
-it: `style A fill:#F9F` is printed `style A fill:#f9f`. The colors in the
+it: `style A fill:#F9F` is printed `style A fill: #f9f`. The colors in the
 properties of a `style` statement of a Venn diagram are printed so. A color is a
 `#` and 3, 4, 6, or 8 hexadecimal digits that stand alone in the value of a
 style; it is never shortened, and a text that is no color stays as written (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
 [fixture: colors/colors-in-lower-case] [fixture:
 colors/words-that-are-not-colors-as-written]
+
+A color function that stands alone as the value of a property, `rgb(` with three
+numbers or `rgba(` with four, in lower case, is printed with one space after
+each comma: `style A fill:rgb(1,2,3)` is printed `style A fill: rgb(1, 2, 3)`.
+The whitespace before a comma, immediately after the opening `(`, and
+immediately before the closing `)` stays as written, and so does a function in
+capitals (`RGB(1,2,3)`) or one that runs over lines. The examples in the
+documentation of mermaid.js have no color function in a Venn diagram; the space
+is the form of the examples of the sequence diagram and of the styles of the
+other diagram types (see
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+[fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
+[fixture: colors/functions-as-written]
 
 Input
 ([colors/colors-in-lower-case-input.mmd](../tests/fixtures/venn/colors/colors-in-lower-case-input.mmd)):
@@ -420,11 +446,11 @@ Output
 
 ```mmd
 venn-beta
-set A
-set B
-union A, B
-style A fill:#f9f, color:#abcdef
-style B fill:#c0ffee
+  set A
+  set B
+  union A, B
+  style A fill: #f9f, color: #abcdef
+  style B fill: #c0ffee
 ```
 
 Input
@@ -441,8 +467,8 @@ Output
 
 ```mmd
 venn-beta
-set A
-style A fill:#ABCDE, color:#ABCDEF1
+  set A
+  style A fill: #ABCDE, color: #ABCDEF1
 ```
 
 ### Quotes
@@ -453,7 +479,7 @@ label is printed in quotes, as the examples in the documentation of mermaid.js
 write them (see
 [The quotes of a text](./compatibility.md#the-quotes-of-a-text)): `set "A"` is
 printed `set A`, `union "A","B"` is printed `union A, B`, `style A fill:"red"`
-is printed `style A fill:red`, and `set A[Alpha]` is printed `set A["Alpha"]`.
+is printed `style A fill: red`, and `set A[Alpha]` is printed `set A["Alpha"]`.
 
 A name is ASCII letters, digits, `_`, and `-` that starts with a letter or a
 `_`. It keeps its quotes where the lexer would read it as something else: a name
@@ -513,23 +539,36 @@ Output
 
 ```mmd
 venn-beta
-set A
-set B_2["Beta"]
-set c-d:3
-set xset
-set set1
-union A, B_2["Both"]
-style A, c-d fill:red
-set A1
-  text item
-  text item-2["Note"]
+  set A
+  set B_2["Beta"]
+  set c-d : 3
+  set xset
+  set set1
+  union A, B_2["Both"]
+  style A, c-d fill: red
+  set A1
+    text item
+    text item-2["Note"]
 ```
 
 ### Sizes and numbers
 
-A size touches the preceding name or label as `:number`, giving both suffixes
-one compact form. A size that is a plain decimal is printed in the shortest form
-(`+5` is `5`, `-.5` is `-0.5`; see
+The colon of a size, in a `set` and in a `union`, has one space on each side:
+`set A["Alpha"]:20` is printed `set A["Alpha"] : 20`, and `union A,B["AB"]:3` is
+printed `union A, B["AB"] : 3`. The colon can be read as a mark that stands
+between the declaration and its size, so the examples in the documentation of
+mermaid.js that write a space after the colon decide the whitespace before it
+(counted as under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)),
+and there is none: the 6 sizes of the examples (`set A["Alpha"]:20`) have no
+whitespace on either side, which is a way of writing that differs from every
+printed form, so they do not count. The colon is then a mark that stands between
+two things, and Prettier prints one space on each side of such a mark. The size
+is an addition to the declaration, which can be left out, and it is the size of
+the declaration and not of the name before the colon, which a colon against that
+name would suggest in a `union`. [fixture: sizes-and-numbers/colon-of-a-size]
+[fixture: sizes-and-numbers/colon-of-a-size-directive] A size that is a plain
+decimal is printed in the shortest form (`+5` is `5`, `-.5` is `-0.5`; see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
 A zero at the start of the integer part, signed zero and overflow retain their
 spelling; numeric text ids also retain their spelling because rewriting them
@@ -560,20 +599,38 @@ Output
 
 ```mmd
 venn-beta
-set A:+02.50
-set B:-0.5
-union A, B:007
-  text 007
+  set A : +02.50
+  set B : -0.5
+  union A, B : 007
+    text 007
 ```
 
 ### Style properties
 
-Properties use `key:value` and comma plus one space, distinguishing compact
-punctuation from value whitespace. Each bare value is one written `VennLiteral`.
-A run of spaces and tabs between its atoms, outside the parentheses of an
-rgb/rgba token, is printed as one space: mermaid.js joins the atoms with one
-space, so the Db is the same, and whether whitespace stands between two atoms
-stays as written. Space inside an rgb/rgba token is different: changing a
+Color-function comma spacing reads through directives: the one space after a
+comma stands before a directive that follows the comma, in place of the
+whitespace that was there, and the contents of the directive and the whitespace
+after it stay as written (`rgb(1,%%{x}%%  2,3)` is printed
+`rgb(1, %%{x}%%  2, 3)`). [fixture:
+style-properties/word-run-directive-parenthesis-kept]
+
+A property is printed `key: value`, with no space before the colon and one after
+it, and the properties are separated by a comma and one space, as the styles of
+the other diagram types are printed (`style A fill: #f00, stroke: #000`). The
+documentation of mermaid.js writes `fill:#ff6b6b` in its three examples of a
+property; the gap after the colon is the same kind of gap as in the styles of
+the other ten diagram types that have them, so it follows them, and the Db holds
+the properties as a map, without the whitespace. On a line with a `;` that the
+printer keeps, the gap after the colon stays as written
+(`style A fill:#f00;%% c`), since the line rule of mermaid.js ignores a `;` by
+whether whitespace lies between a `:` and a `#`. Each bare value is one written
+`VennLiteral`. A run of spaces and tabs between its atoms, outside the
+parentheses of an rgb/rgba token, is printed as one space: mermaid.js joins the
+atoms with one space, so the Db is the same, and whether whitespace stands
+between two atoms stays as written. A comment line inside the parentheses
+(`style A fill:rgb(1,`, a line `%% ) x  y`, and `2,3)`) is removed before the
+value is read, so its characters, a `)` among them, are no part of the value and
+stay as written. Space inside an rgb/rgba token is different: changing a
 component gap changes the Db, and so does quoting a joined bare value; a quoted
 value is printed without quotes as [Quotes](#quotes) says, and whole rgb/rgba
 tokens, key case, repetitions and separate statements stay as written. A kept
@@ -592,9 +649,14 @@ venn/style-properties/property-directives] [fixture:
 venn/style-properties/prototype-repeat] [fixture:
 venn/style-properties/style-atoms-spaced] [fixture:
 venn/style-properties/style-words-run-spaced] [fixture:
+venn/style-properties/word-run-directive-spaces-kept] [fixture:
 venn/style-properties/style-atoms-normalize-equal-control] [fixture:
-venn/style-properties/style-color-kept] [corpus fixture: venn/db-form-style-rgb]
-[fixture: venn/style-properties/style-color-space-differs] [fixture:
+venn/style-properties/style-color-kept] [fixture:
+venn/style-properties/colon-directive-before-hash-kept] [corpus fixture:
+venn/db-form-style-rgb] [fixture:
+venn/style-properties/style-color-space-differs] [fixture:
+venn/style-properties/word-run-directive-parenthesis-kept] [fixture:
+venn/style-properties/style-parentheses-comment-line-kept] [fixture:
 venn/style-properties/style-common-comment] [fixture:
 venn/style-properties/style-order-kept] [fixture:
 venn/style-properties/style-property-spacing] [fixture:
@@ -613,7 +675,7 @@ Output
 
 ```mmd
 venn-beta
-style A, B fill:red, opacity:.50, custom:" dark blue "
+  style A, B fill: red, opacity: .50, custom: " dark blue "
 ```
 
 ### Semicolons at the end of a style statement
@@ -648,12 +710,17 @@ Output
 
 ```mmd
 venn-beta
-set A
-style A fill:#f00
-style A fill:#0f0, stroke:#00f
+  set A
+  style A fill: #f00
+  style A fill: #0f0, stroke: #00f
 ```
 
 ### Line rule and kept lines
+
+A kept semicolon between a declaration and its same-line explicit text stays,
+just as it does before another declaration. The label therefore keeps the same
+line-rule context on the next formatting. [fixture:
+line-rule-and-kept-lines/semicolon-before-explicit-text]
 
 Semicolons never separate Venn statements. Except for
 [Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement),
@@ -734,15 +801,14 @@ Output
 
 ```mmd
 venn-beta
-set A[style:#x;y] set B:2
+  set A[style:#x;y] set B : 2
 ```
 
 ### Title
 
-The consumed first title separator becomes one ASCII space for readability, and
-so do the spaces and tabs after it, and the spaces and tabs at the end of the
-title are left out: mermaid.js keeps them in the Db, but draws the same title
-without them (see
+The consumed first title separator becomes one ASCII space, and so do the spaces
+and tabs after it, and the spaces and tabs at the end of the title are left out:
+mermaid.js keeps them in the Db, but draws the same title without them (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 Every later value character, including statement-looking words, stays as
 written, because everything after the one separator is the title value in the
@@ -756,7 +822,11 @@ with directives and then spaces and tabs is printed as the same title with the
 directives last: `title T  %%{x}%%  ` is printed `title T %%{x}%%`, and
 `title T  %%{x}%%  %%{y}%%  ` is printed `title T %%{x}%% %%{y}%%`. [fixture:
 venn/title/title-trailing-directive-blanks-dropped] [fixture:
-venn/title/title-two-directives-trailing-blanks-dropped] LF and the broader
+venn/title/title-two-directives-trailing-blanks-dropped] A title whose text
+stands on a later line after a `;` that the line rule ignores stays as written,
+with the `;` and the indentation of that line: the lexer rejects the title
+printed with the text indented. [fixture:
+venn/title/ignored-semicolon-before-text-on-next-line-kept] LF and the broader
 accepted title separators may normalize, but trivia, joined regions and kept
 parts protect their written boundaries. [corpus fixture:
 venn/db-frontmatter-title-overridden] [corpus fixture: venn/db-title-on-header]
@@ -780,7 +850,7 @@ Output
 
 ```mmd
 venn-beta
-title T
+  title T
 ```
 
 ### Directives
@@ -809,8 +879,13 @@ directive and its neighbour decides what is read. This is the same as in class,
 flowchart, gantt, timeline and block diagrams. Kanban moves the directive along
 only because the whitespace after a directive becomes node indentation there; a
 statement on a Venn header line has no such role. A semicolon-kept line also
-keeps its header attachment. [corpus fixture: venn/db-indent-after-directive]
-[corpus fixture: venn/db-set-label-unclosed-directive-gap] [corpus fixture:
+keeps its header attachment. The whitespace after the argument of a directive
+that is not closed is taken with it, also on a line that follows a protected
+comment gap, so it stays: `%%{x y text A t` keeps the space between `y` and
+`text`. [fixture:
+venn/directives/directive-unclosed-argument-space-after-percent-brace-comment]
+[corpus fixture: venn/db-indent-after-directive] [corpus fixture:
+venn/db-set-label-unclosed-directive-gap] [corpus fixture:
 venn/lex-after-set-directive-unclosed] [corpus fixture:
 venn/lex-comment-after-directive-keeps-id] [corpus fixture:
 venn/lex-directive-style-value-color] [corpus fixture:
@@ -860,7 +935,7 @@ Output
 
 ```mmd
 venn-beta
-set A%%{init: {}}%%["L"]:2
+  set A%%{init: {}}%%["L"] : 2
 ```
 
 Input (escaped):
@@ -874,17 +949,16 @@ Output
 
 ```mmd
 venn-beta%%{init: {}}%%
-set A
+  set A
 ```
 
 ### Trailing whitespace
 
 Exterior ASCII spaces and tabs after completed headers and non-title statements
-disappear for clean line endings, including after kept parts and safe suffixes.
-Spaces inside names, colors, style strings, comments and directives remain
-authored text. A run of spaces and tabs inside a label or a title value is
-printed as one space, and the spaces at the end of a title are left out (see
-[Title](#title) and
+disappear, including after kept parts and safe suffixes. Spaces inside names,
+colors, style strings, comments and directives remain authored text. A run of
+spaces and tabs inside a label or a title value is printed as one space, and the
+spaces at the end of a title are left out (see [Title](#title) and
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 [fixture: venn/trailing-whitespace/continuation-spaces] [corpus fixture:
 venn/db-after-set-label-size-space] [corpus fixture: venn/db-title-padding]
@@ -929,14 +1003,14 @@ Output
 
 ```mmd
 venn-beta
-set "A
+  set "A
  B"["L
   M"]
 text A "x
  y"[N
  O]
-style A fill:"red
- blue", stroke:rgb(1,
+  style A fill: "red
+ blue", stroke: rgb(1,
   2,3)
 ```
 
@@ -973,10 +1047,10 @@ Output
 
 ```mmd
 venn-beta
-set A
-  text item
-STYLE A fill:RED
-title T
+  set A
+    text item
+  STYLE A fill: RED
+  title T
 ```
 
 ### Line terminators
@@ -1028,7 +1102,7 @@ nbsp-title-separator]
 
 ### Frontmatter YAML
 
-Frontmatter uses the shared guarded YAML formatter for readable configuration.
+Frontmatter uses the shared guarded YAML formatter, as Prettier prints YAML.
 Delimiters, closing-line padding, comments/directives before the header and
 title overrides retain their roles; malformed, indented, HTML-sensitive and
 delimiter-hazard YAML stays as written, including ineffective accessibility
@@ -1062,7 +1136,7 @@ title: T
 config: { venn: { padding: 20 } }
 ---
 venn-beta
-set A
+  set A
 ```
 
 ### Final newline
@@ -1093,7 +1167,7 @@ Output
 
 ```mmd
 venn-beta
-set A
+  set A
 ```
 
 ## Rejected inputs

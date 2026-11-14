@@ -13,8 +13,8 @@ export interface TriviaComment {
 
 /**
  * A directive as the printers read it: its kind and its range, which takes
- * the whitespace after a directive that is not closed when that holds a
- * U+2028 or U+2029 (see `extendDirective`).
+ * the whitespace after a directive that is not closed, as the scan of
+ * mermaid.js does (see `extendDirective`).
  */
 export interface TriviaDirective {
   readonly type: "Directive"
@@ -54,6 +54,23 @@ export interface Source {
    * comment.
    */
   readonly ignoredSemicolons: ReadonlySet<number>
+  /**
+   * The ranges that mermaid.js removes before the lexer of the diagram reads
+   * the text, in source order and disjoint: the directives, with the
+   * whitespace that a directive that is not closed takes, the comment
+   * regions, and the `;` that the line rule ignores. What is left is the
+   * diagram text (common.md, Reading a source). A decision about how
+   * mermaid.js reads a place reads the characters through `skipRemoved`,
+   * `previousRead`, and `textRead`, not from `text`.
+   */
+  readonly removed: readonly Range[]
+  /**
+   * The ranges that are removed before the line rule is applied: `removed`
+   * without the `;`. Diagram detection reads the text at this stage, so the
+   * header of the diagram is decided on it (docs/cynefin.md, Semicolons); see
+   * `skipRemovedBeforeLineRule` and `textReadBeforeLineRule`.
+   */
+  readonly removedBeforeLineRule: readonly Range[]
   /**
    * The comment regions that join lines (see `JoiningRegion`), in source
    * order.
@@ -124,6 +141,50 @@ export function isSpaceOrTab(character: string): boolean {
 }
 
 /**
+ * Whether a character is an ASCII letter, an ASCII digit, or `_`: the
+ * characters that the lexers read as a word (common.md, Notation).
+ */
+export function isWordCharacter(character: string | undefined): boolean {
+  return (
+    character !== undefined &&
+    ((character >= "a" && character <= "z") ||
+      (character >= "A" && character <= "Z") ||
+      (character >= "0" && character <= "9") ||
+      character === "_")
+  )
+}
+
+/** Whether the text ends at `offset` or a line terminator stands there. */
+export function isAtLineEnd(source: Source, offset: number): boolean {
+  return (
+    offset >= source.text.length ||
+    source.text[offset] === "\n" ||
+    source.text[offset] === "\r"
+  )
+}
+
+/**
+ * The offset of the first character from `start` on that the lexer of the
+ * diagram reads and that is no space and no tab, or `end` where the range
+ * holds nothing else: the spaces and tabs, and what mermaid.js removes (see
+ * `Source.removed`), are passed.
+ */
+export function skipBlanksAndRemoved(
+  source: Source,
+  start: number,
+  end: number,
+): number {
+  let offset = start
+  while (offset < end) {
+    const read = skipRemoved(source, offset)
+    if (read !== offset) offset = read
+    else if (isSpaceOrTab(source.text[offset])) offset++
+    else break
+  }
+  return Math.min(offset, end)
+}
+
+/**
  * The offset of the first character from `start` on that is no space and no
  * tab, or `end` where the range holds nothing else.
  */
@@ -135,6 +196,156 @@ export function skipSpacesAndTabs(
   let offset = start
   while (offset < end && isSpaceOrTab(source.text[offset])) offset++
   return offset
+}
+
+/**
+ * The offset of the first character from `offset` on that the lexer of the
+ * diagram reads: `offset` itself where its character is read, and the end of
+ * the removed range that covers it otherwise (see `Source.removed`), which is
+ * the length of the text where nothing is left. A decision about the character
+ * that follows a place asks for it here: mermaid.js removes the directives, the
+ * comment regions, and the `;` that the line rule ignores before it reads the
+ * text, so the character that follows a place is the one that follows the
+ * removed ones.
+ */
+export function skipRemoved(source: Source, offset: number): number {
+  return findCoveringRange(source.removed, offset)?.[1] ?? offset
+}
+
+/**
+ * Whether the text from `from` to `to` holds a character that mermaid.js
+ * removes before the lexer reads it (see `Source.removed`).
+ */
+export function holdsRemoved(
+  source: Source,
+  from: number,
+  to: number,
+): boolean {
+  const range = source.removed[
+    findFirstIndex(source.removed, (candidate) => candidate[1] > from)
+  ] as Range | undefined
+  return range !== undefined && range[0] < to
+}
+
+/**
+ * The offset of the last character before `offset` that the lexer of the
+ * diagram reads, or -1 where there is none (see `skipRemoved`).
+ */
+export function previousRead(source: Source, offset: number): number {
+  let position = offset - 1
+  for (;;) {
+    const range = findCoveringRange(source.removed, position)
+    if (range === undefined) return position
+    position = range[0] - 1
+  }
+}
+
+/**
+ * `skipRemoved` for the text as it is before the line rule is applied: the `;`
+ * that the rule ignores are still in it. Diagram detection reads the text so
+ * (docs/cynefin.md, Semicolons).
+ */
+export function skipRemovedBeforeLineRule(
+  source: Source,
+  offset: number,
+): number {
+  return findCoveringRange(source.removedBeforeLineRule, offset)?.[1] ?? offset
+}
+
+/**
+ * The text from `from` to `to` as the lexer of the diagram reads it: without
+ * the removed ranges that lie in it (see `Source.removed`). A range that starts
+ * before `from` and ends inside is left out from `from` on.
+ */
+export function textRead(source: Source, from: number, to: number): string {
+  return textWithout(source, source.removed, from, to)
+}
+
+/** `textRead` for the text as it is before the line rule is applied. */
+export function textReadBeforeLineRule(
+  source: Source,
+  from: number,
+  to: number,
+): string {
+  return textWithout(source, source.removedBeforeLineRule, from, to)
+}
+
+/** The text from `from` to `to` without the ranges `removed` that lie in it. */
+function textWithout(
+  source: Source,
+  removed: readonly Range[],
+  from: number,
+  to: number,
+): string {
+  let text = ""
+  let position = from
+  let index = findFirstIndex(removed, (range) => range[1] > position)
+  while (position < to) {
+    const range = removed[index]
+    if (range === undefined || range[0] >= to) {
+      text += source.text.slice(position, to)
+      break
+    }
+    if (range[0] > position) text += source.text.slice(position, range[0])
+    position = Math.max(position, range[1])
+    index++
+  }
+  return text
+}
+
+/**
+ * The diagram text of a source (common.md, Reading a source): the characters
+ * that the lexer of the diagram reads, and a way back to the source.
+ */
+export interface DiagramText {
+  readonly text: string
+  /** The offset in the source of the character at `index` of `text`. */
+  readonly offsetOf: (index: number) => number
+}
+
+const diagramTexts = new WeakMap<Source, DiagramText>()
+
+/**
+ * The diagram text of the source, found once: a decision that reads across
+ * the places where characters are removed, such as a word that a directive
+ * or a `;` that the line rule ignores cuts, reads it, and goes back to the
+ * source through `offsetOf`.
+ */
+export function readDiagramText(source: Source): DiagramText {
+  let diagramText = diagramTexts.get(source)
+  if (diagramText === undefined) {
+    // The stretches of the source that stay, with where each starts in the
+    // text and in the source.
+    const stretches: { readonly visible: number; readonly source: number }[] =
+      []
+    let visible = 0
+    let position = 0
+    for (const [start, end] of [
+      ...source.removed,
+      [source.text.length, source.text.length],
+    ]) {
+      if (start > position) {
+        stretches.push({ visible, source: position })
+        visible += start - position
+      }
+      position = Math.max(position, end)
+    }
+    diagramText = {
+      text: textRead(source, 0, source.text.length),
+      offsetOf(index) {
+        const stretch =
+          stretches[
+            findFirstIndex(
+              stretches,
+              (candidate) => candidate.visible > index,
+            ) - 1
+          ]
+        return stretch.source + index - stretch.visible
+      },
+    }
+    diagramTexts.set(source, diagramText)
+  }
+  return diagramText
 }
 
 /**
@@ -174,10 +385,20 @@ function joinCommentFragments(
     return [comments[index - 1].range[1], comments[index].range[0]]
   }
 
-  /** Whether a U+2028 or U+2029 lies in the gap before the comment at `index`. */
+  /**
+   * Whether a U+2028 or U+2029 that mermaid.js reads lies in the gap before the
+   * comment at `index`: one inside a directive is removed with it.
+   */
   function hasSeparatorBefore(index: number): boolean {
-    const gap = text.slice(...gapBefore(index))
-    return gap.includes("\u2028") || gap.includes("\u2029")
+    const [from, to] = gapBefore(index)
+    for (let offset = from; offset < to; offset++) {
+      if (
+        (text[offset] === "\u2028" || text[offset] === "\u2029") &&
+        findCoveringRange(directiveRanges, offset) === undefined
+      )
+        return true
+    }
+    return false
   }
 
   const joined: TriviaComment[] = []
@@ -255,14 +476,15 @@ function findTakenWhitespace(
 
 /**
  * Makes the directive as the printers read it. The whitespace that a
- * directive that is not closed takes is part of it when it holds a U+2028 or
- * U+2029. The free text of its argument stops before such a character, which
- * is no whitespace to it (common.md, Where a directive is): with the
- * character printed as a space, the argument would reach past it, and take
- * the statements that follow, up to the next `}%%` or the end of the text. So
- * the whitespace is printed as written, with the directive. Whitespace that
- * runs to the end of the text joins nothing, so only what reaches its last
- * U+2028 or U+2029 matters there.
+ * directive that is not closed takes, line breaks included, is part of it:
+ * mermaid.js removes it with the directive (common.md, Where a directive is),
+ * so what follows goes on the line of the directive, and the whitespace is
+ * printed as written. The free text of an argument stops before a U+2028 or
+ * U+2029, which is no whitespace to it: with the character printed as a
+ * space, the argument would reach past it, and take the statements that
+ * follow, up to the next `}%%` or the end of the text. Whitespace that runs to
+ * the end of the text joins nothing, so there only what reaches its last
+ * U+2028 or U+2029 is part of the directive.
  */
 function extendDirective(
   text: string,
@@ -281,7 +503,9 @@ function extendDirective(
     record?.range[0] === directive.range[0]
       ? findTakenWhitespace(text, record)
       : undefined
-  if (taken === undefined) return { type: "Directive", range: directive.range }
+  if (taken === undefined) {
+    return { type: "Directive", range: directive.range }
+  }
   // Only the whitespace that the directive takes is searched: a search of the
   // whole text would read it once for each directive.
   const whitespace = text.slice(taken.start, taken.end)
@@ -289,11 +513,16 @@ function extendDirective(
     whitespace.lastIndexOf("\u2028"),
     whitespace.lastIndexOf("\u2029"),
   )
-  if (stop < 0) return { type: "Directive", range: directive.range }
+  if (taken.runsToEnd && stop < 0) {
+    return { type: "Directive", range: directive.range }
+  }
   const lastStop = taken.start + stop
   return {
     type: "Directive",
-    range: [directive.range[0], taken.runsToEnd ? lastStop + 1 : taken.end],
+    range: [
+      directive.range[0],
+      taken.runsToEnd && stop >= 0 ? lastStop + 1 : taken.end,
+    ],
   }
 }
 
@@ -329,15 +558,24 @@ export function isCommentLine(
     const directive = directives[index]
     if (end < directive.range[1]) continue
     withoutDirectives += text.slice(position, directive.range[0])
-    position = directive.range[1]
+    position = Math.min(
+      end,
+      findTakenWhitespace(text, directive)?.end ?? directive.range[1],
+    )
   }
   withoutDirectives += text.slice(position, end)
   const next = withoutDirectives[2]
   return next !== undefined && next !== "{" && next !== "\r" && next !== "\n"
 }
 
+/** The comment regions of a text: all of them, and those that join lines. */
+interface CommentRegions {
+  readonly all: readonly Range[]
+  readonly joining: readonly JoiningRegion[]
+}
+
 /**
- * Finds the comment regions that join lines (see `JoiningRegion`).
+ * Finds the comment regions (see `JoiningRegion`), and those that join lines.
  *
  * The region of a comment starts at the earliest comment start from which
  * only whitespace and directives lead to the `%%` (common.md, Comment): a
@@ -345,11 +583,11 @@ export function isCommentLine(
  * terminator, U+2028, or U+2029 that is not part of a directive. Whitespace is
  * no node of the tree, so it is read from the text here, and only here.
  */
-function findJoiningRegions(
+function findCommentRegions(
   text: string,
   root: Root,
   directiveRanges: readonly Range[],
-): readonly JoiningRegion[] {
+): CommentRegions {
   const directiveStartByEnd = new Map(
     directiveRanges.map((range) => [range[1], range[0]]),
   )
@@ -399,28 +637,76 @@ function findJoiningRegions(
   // has text after it when it ends before that.
   const contentEnd = text.trimEnd().length
 
-  const regions: JoiningRegion[] = []
+  const all: Range[] = []
+  const joining: JoiningRegion[] = []
   let previousEnd = -1
   for (const comment of root.comments) {
     if (!isCommentLine(text, root, comment)) continue
     const start = findRegionStart(comment.range[0])
     if (start === undefined) continue
+    const end =
+      comment.range[1] + lineTerminatorLengthAt(text, comment.range[1])
+    all.push([start, end])
     const joins =
       text[start - 1] === "\u2028" ||
       text[start - 1] === "\u2029" ||
       start === previousEnd
     if (!joins) continue
-    const end =
-      comment.range[1] + lineTerminatorLengthAt(text, comment.range[1])
     previousEnd = end
-    regions.push({
+    joining.push({
       comment,
       start,
       end,
       hasTextAfter: end < contentEnd,
     })
   }
-  return regions
+  return { all, joining }
+}
+
+/**
+ * The ranges that mermaid.js removes before the lexer reads the text (see
+ * `Source.removed`), merged into ranges in source order that do not touch.
+ * The whitespace that a directive that is not closed takes is removed with
+ * it, although the tree leaves it outside the directive (ast.md, Directive).
+ */
+function findRemovedRanges(
+  text: string,
+  root: Root,
+  commentRegions: readonly Range[],
+  ignoredSemicolons: ReadonlySet<number>,
+): {
+  readonly all: readonly Range[]
+  readonly beforeLineRule: readonly Range[]
+} {
+  const found: Range[] = [...commentRegions]
+  // The frontmatter is not part of the text that the lexer reads (common.md,
+  // Reading a source), and a directive is found everywhere after it, also in a
+  // comment that the lexer of the diagram reads itself.
+  if (root.frontmatter !== null) found.push(root.frontmatter.range)
+  for (const directive of root.directives) {
+    found.push([
+      directive.range[0],
+      findTakenWhitespace(text, directive)?.end ?? directive.range[1],
+    ])
+  }
+  const beforeLineRule = mergeRanges(found)
+  for (const offset of ignoredSemicolons) found.push([offset, offset + 1])
+  return { all: mergeRanges(found), beforeLineRule }
+}
+
+/** The ranges in source order, with the ranges that overlap or touch merged. */
+function mergeRanges(ranges: readonly Range[]): Range[] {
+  const sorted = [...ranges].sort((a, b) => a[0] - b[0] || b[1] - a[1])
+  const merged: Range[] = []
+  for (const range of sorted) {
+    const last = merged[merged.length - 1]
+    if (last !== undefined && range[0] <= last[1]) {
+      merged[merged.length - 1] = [last[0], Math.max(last[1], range[1])]
+    } else {
+      merged.push(range)
+    }
+  }
+  return merged
 }
 
 /**
@@ -468,31 +754,48 @@ export function createSource(
   // The tokens, the comments, and the records of the directives are in source
   // order and do not overlap, so they are searched with `findFirstIndex` and
   // `findCoveringRange`, not scanned for each directive and comment.
-  const directiveRanges = directiveTokens.map((token) => token.range)
+  // A directive takes the whitespace after it when it is not closed, so a
+  // U+2028 or U+2029 in that whitespace is no comment start (common.md,
+  // Comment lines).
+  const extendedDirectives = directiveTokens.map((token) =>
+    extendDirective(text, token, root.directives),
+  )
+  const directiveRanges = extendedDirectives.map((directive) => directive.range)
   const comments = joinCommentFragments(text, root, directiveRanges)
   const commentRanges = comments.map((comment) => comment.range)
-  const joiningRegions = keepsCommentLines
-    ? []
-    : findJoiningRegions(text, root, directiveRanges)
-  const directives = directiveTokens
-    .filter(
-      (token) =>
-        findCoveringRange(commentRanges, token.range[0], token.range[1]) ===
-        undefined,
-    )
-    .map((token) => extendDirective(text, token, root.directives))
+  const commentRegions: CommentRegions = keepsCommentLines
+    ? { all: [], joining: [] }
+    : findCommentRegions(text, root, directiveRanges)
+  const joiningRegions = commentRegions.joining
+  const ignoredSemicolons = new Set(
+    root.tokens
+      .filter((token) => token.type === "IgnoredSemicolon")
+      .map((token) => token.range[0]),
+  )
+  const directives = extendedDirectives.filter(
+    (directive) =>
+      findCoveringRange(
+        commentRanges,
+        directive.range[0],
+        directive.range[1],
+      ) === undefined,
+  )
   const trivia = [...comments, ...directives].sort(
     (a, b) => a.range[0] - b.range[0],
+  )
+  const removed = findRemovedRanges(
+    text,
+    root,
+    commentRegions.all,
+    ignoredSemicolons,
   )
   return {
     text,
     root,
     trivia,
-    ignoredSemicolons: new Set(
-      root.tokens
-        .filter((token) => token.type === "IgnoredSemicolon")
-        .map((token) => token.range[0]),
-    ),
+    ignoredSemicolons,
+    removed: removed.all,
+    removedBeforeLineRule: removed.beforeLineRule,
     joiningRegions,
     removedLineFeeds: findRemovedLineFeeds(text, root, joiningRegions),
     commentsEndAtLineSeparators:

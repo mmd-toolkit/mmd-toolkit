@@ -10,6 +10,11 @@ export interface AgentflowCase {
 
 export const agentflowCases: readonly AgentflowCase[] = [
   {
+    name: "agentflow: click id before taken EOF whitespace",
+    input: "agentflow-beta\nconnector click A%%{x y\u00a0",
+    output: "agentflow-beta\n  connector click A%%{x y\n",
+  },
+  {
     name: "agentflow: U+2028 inside the brackets of a flow title",
     input: "agentflow-beta TB\nflow F[ T\u2028]\nA\nend\n",
     output: 'agentflow-beta TB\n  flow F["T"\u2028]\n    A\n  end\n',

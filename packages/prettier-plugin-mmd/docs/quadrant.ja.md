@@ -69,7 +69,7 @@ quadrantChart
 mermaid.js は、`;` で区切らない限り、1 行の 2 つの文を拒否します。
 ただし、ヘッダーの行でヘッダーの後に文を書けて、
 文の後に空の説明ブロックを書けるので、それらは自分の行に移します。
-1 行に 2 つの文があると読みにくいからで、
+1 行に 2 つの文があると読みにくいためです。
 ほかの図も同じです（[1 行に 1 文](./flowchart.ja.md#1-行に-1-文)を参照）。
 `;` は、改行と同じに文を終わらせます。
 文を別々の行に置けば、何も区切らなくなるので、落とします。
@@ -328,9 +328,14 @@ mermaid.js は、矢印の周りの空白があってもなくても同じに読
 空白 1 つは mermaid.js の文書が使う形で、
 テキストの中の空白（[キーワードとテキスト](#キーワードとテキスト)
 を参照）が隠してしまう、最初のテキストの終わりを示します。
-矢印の長さは Db に入りませんが、書き手が書いたものなので、`--->` は残します。
+矢印は、長さによらず `-->` と印字します（`--->` は `-->`）。
+長さは Db に入らず、
+2つ目のテキストのない軸も `--->` と `-->` で同じテキストを持ち、
+[象限チャートについて対象にする版](./compatibility.ja.md#対象にする-mermaidjs-の版)
+は同じ図を描くからです。
+mermaid.js の文書は `-->` を 6 回書き、それより長い矢印はありません。
 [fixture: axes/arrow-touching] [fixture: axes/arrow-with-more-whitespace]
-[fixture: axes/arrow-touching-on-one-side] [fixture: axes/arrow-length-kept]
+[fixture: axes/arrow-touching-on-one-side] [fixture: axes/arrow-length-shortest]
 [fixture: axes/text-inner-runs-collapsed] [fixture: axes/strings]
 [fixture: axes/markdown-string] [fixture: axes/axis-only-one-text]
 
@@ -387,8 +392,16 @@ quadrantChart
 `:` の前の名前と座標はテキストで、
 書かれたまま残します（`0.30` は `0.3` ではありません）が、
 両端の空白は Db が落とすので落とします。
-この形は mermaid.js の文書のものです（`Campaign A: [0.3, 0.6]`、
-`Campaign B:::class1: [0.8, 0.1]`）。 [fixture: points/colon-touches-the-name]
+各行が点を 1 つ足すので、このコロンはキーのコロンではありません。
+コロンの前の空白は、mermaid.js の文書の例が決めます。
+コロンの後に空白を置いて書いた例のうち、前に空白を置くものは 0 件で、
+置かないものは 9 件です（`Campaign A: [0.3, 0.6]`、
+`Campaign B:::class1: [0.8, 0.1]`）。
+これは手順 3 です。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方) と
+[コロンの前の空白を決める例](./compatibility.ja.md#コロンの前の空白を決める例)
+を参照してください。 [fixture: points/colon-touches-the-name]
 [fixture: points/spaces-inside-the-brackets]
 [fixture: points/name-whitespace-at-the-ends-dropped]
 [fixture: points/name-inner-runs-collapsed] [fixture: points/string-names]
@@ -456,13 +469,14 @@ quadrantChart
 `radius :  10` は `radius: 10` になります。
 置き換えるのは、そのコロンに接する ASCII 空白とタブだけです。
 先頭のゼロや色の大文字小文字も含めて、値の綴りは保ちます。
-Db を変えず、点とクラスのスタイルを読みやすい 1 つの形にそろえます。
+Db を変えず、点とクラスのスタイルを、
+Prettier がキーに続くコロンに印字する形にそろえます。
 [fixture: styles/style-colon-padding] [fixture: styles/style-colon-tab-padding]
 
-trivia、ASCII 空白とタブ以外の空白文字、セミコロン、
+注釈類、ASCII 空白とタブ以外の空白文字、セミコロン、
 2 個目のコロンがあるスタイルや、保護対象のセミコロン行にあるスタイルの内部は、
 書かれたまま保ちます。
-2 個目のコロンの後に許される suffix は解釈しません。
+2 個目のコロンの後に許される後置部分は解釈しません。
 これらの保護は、コロンの空白整形より優先します。
 [fixture: styles/style-extra-colon-kept] [fixture: styles/style-directive-kept]
 [fixture: styles/style-semicolon-protected]
@@ -799,14 +813,14 @@ mermaid.js が複数行にわたって読む文は、
 [fixture: multi-line-statements/name-then-colon-on-the-next-line-joined]
 [fixture: multi-line-statements/point-with-styles-over-lines-joined]
 
-点とアクセシビリティの行の文では、trivia の改行を保ち、
-後続の構造部分と独立した trivia 行を文より 1 段深くそろえます。
-各 gap の最初の行の末尾と、指令の内部全体を保ちます。
+点とアクセシビリティの行の文では、注釈類の改行を保ち、
+後続の構造部分と独立した注釈類行を文より 1 段深くそろえます。
+各隙間の最初の行の末尾と、指令の内部全体を保ちます。
 複数行の名前などの値の範囲は、ひとまとまりのままです。
 [fixture: multi-line-statements/point-trivia-with-multiline-label]
 [fixture: multi-line-statements/accessibility-trivia-continuations]
 
-ほかの文の複数行の trivia は元の配置を保ちます。
+ほかの文の複数行の注釈類は元の配置を保ちます。
 物理行を結ぶコメント領域も、元の配置を保ちます。
 点とアクセシビリティの文では、改行を空白 1 つか何も挟まずにつなぐと、
 行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
@@ -941,7 +955,7 @@ title、アクセシビリティのテキスト、説明ブロック、文字列
 `x-axis L%% c` は拒否され、`quadrant-1 a b%% c` のテキストは `a` です。
 コメントの前に必ず空白を書く規則は、そのような入力を mermaid.js が読む形を変え、
 書き手の誤りを、何も知らせずに別のチャートとして読ませます。
-印字はコメントが接しているかどうかを保ち、報告する場所は lint の規則です。
+印字はコメントが接しているかどうかを保ち、報告する場所はリンターの規則です。
 ほかの図も同じです（[コメント](./journey.ja.md#コメント)を参照）。
 [fixture: comments/comment-after-a-statement-spaced]
 [fixture: comments/comment-after-a-statement-touching]
@@ -1011,7 +1025,7 @@ quadrantChart
 [fixture: directives/directive-and-comment-on-a-line]
 
 元は同じ行にあった単位を別の行へ分けるときは、
-間の directive を次の単位に付けます。
+間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
 
 [fixture: quadrant/directives/directive-between-two-statements-moves-with-the-next]

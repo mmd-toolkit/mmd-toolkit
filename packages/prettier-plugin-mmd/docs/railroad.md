@@ -324,8 +324,8 @@ railroad-peg-beta
 ### Choices
 
 EBNF bars use `a | b`; ABNF and PEG slashes use `a / b`. One ordinary space on
-each side makes the alternatives visible. Keep their order and hierarchy; IR
-choice calls follow Calls.
+each side, as Prettier prints an operator between two things. Keep their order
+and hierarchy; IR choice calls follow Calls.
 
 [fixture: railroad/choices/abnf-slashes]
 
@@ -469,8 +469,8 @@ railroad-peg-beta
 Attach AST postfix `?`, `*` and `+` to their operand in EBNF and PEG. Keep the
 EBNF chain order and the single PEG suffix. EBNF special-sequence priority is
 already represented by the AST: question marks inside its raw leaf are not
-reinterpreted as postfixes. Attached operators make their scope clear without
-replacing them with calls or groups.
+reinterpreted as postfixes. Attached operators stay, without replacing them with
+calls or groups.
 
 [fixture: railroad/postfixes/ebnf-chain]
 
@@ -1125,10 +1125,10 @@ retaining internal text and brace-looking line values, except that a run of
 spaces and tabs inside the value of an `accDescr` is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 and that of an `accTitle` stays as written, since the browser shows it as a
-tooltip. Keep next-line values separate. This gives the same compact, readable
-form as the other diagrams. The directives that end the value are printed with
-one space before each that has whitespace before it, and the whitespace after
-the last one is left out (see
+tooltip. Keep next-line values separate. This gives the same form as the other
+diagrams. The directives that end the value are printed with one space before
+each that has whitespace before it, and the whitespace after the last one is
+left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
@@ -1222,6 +1222,21 @@ railroad/description-blocks/abnf-lines] [fixture:
 railroad/description-blocks/ebnf-lines] [fixture:
 railroad/description-blocks/ir-lines] [fixture:
 railroad/description-blocks/peg-lines]
+
+A block that a comment of the diagram type's own kind follows on its line stays
+a block (`accDescr { d } ; c` in an ABNF diagram, `(* c *)` or `/* c */` in an
+EBNF diagram, `# c` in a PEG diagram, `/* c */` in a railroad diagram): the form
+with the colon would take the comment as part of its text. A comment that starts
+with a `%%` ends the text, and the block becomes `accDescr: d %% c`. [fixture:
+railroad/description-blocks/abnf-comment-after-block-kept] [fixture:
+railroad/description-blocks/ebnf-iso-comment-after-block-kept] [fixture:
+railroad/description-blocks/ebnf-c-comment-after-block-kept] [fixture:
+railroad/description-blocks/ir-comment-after-block-kept] [fixture:
+railroad/description-blocks/peg-comment-after-block-kept] [fixture:
+railroad/description-blocks/abnf-percent-comment-after-block] [fixture:
+railroad/description-blocks/ebnf-percent-comment-after-block] [fixture:
+railroad/description-blocks/ir-percent-comment-after-block] [fixture:
+railroad/description-blocks/peg-percent-comment-after-block]
 
 Directives keep their complete source. A block with only a comment or a
 directive keeps its contents. [fixture: railroad/description-blocks/abnf-trivia]
@@ -2646,11 +2661,11 @@ railroad-peg-beta
 ### Frontmatter yaml
 
 Only safe real leading frontmatter uses the shared guarded YAML formatter. It
-chooses readable YAML while preserving embedded effects. Malformed YAML,
-indented fences, closer padding, HTML-quote hazards, fences that formatting
-would create in the body and retained-prefix YAML stay written. YAML nesting and
-block scalars use the shared positive minimum at tabWidth zero. Native hidden
-YAML is opaque and never enters this path.
+chooses the YAML that Prettier prints while preserving embedded effects.
+Malformed YAML, indented fences, closer padding, HTML-quote hazards, fences that
+formatting would create in the body and retained-prefix YAML stay written. YAML
+nesting and block scalars use the shared positive minimum at tabWidth zero.
+Native hidden YAML is opaque and never enters this path.
 
 [fixture: railroad/frontmatter-yaml/abnf-padding]
 

@@ -8,7 +8,9 @@ description:
   tree in ast.json, or its error in parse-error.json), finding gaps in the
   specification, and fixing the parser when the pinned mermaid.js is updated.
   Use when a diagram type is added to the parser, when fixtures are added or a
-  rule of the specification changes, or when mermaid.js is updated.
+  rule of the specification changes, when only the types of packages/ast change,
+  or when mermaid.js is updated. A requested review of its performance has a
+  skill of its own, parser-performance-review.
 ---
 
 # Adding the parser of a diagram type (parser)
@@ -62,7 +64,7 @@ type.
    `packages/tests/fixtures/<diagram>/`. The behavior to implement is only what
    these hold.
 
-## 2. The working tree
+## 2. What this skill writes
 
 - The steps of this skill write `packages/parser`, `packages/ast`, and the
   `ast.json` and `parse-error.json` files in
@@ -70,21 +72,11 @@ type.
   They do not write the other files of a fixture, the specification, or the
   other packages; when one of those must change, change it with the steps of
   that package's skill (spec, tests, prettier-plugin).
-- The configuration at the root (`package.json`, `pnpm-lock.yaml`,
-  `tsconfig.json`, `eslint.config.mjs`, `prettier.config.js`,
-  `vitest.config.ts`, `.github/workflows/`, `scripts/`) is used by every
-  package. Before changing it, check what the change does to the other packages.
-- Do not commit, change what is staged, or use `git mv`, `stash`, `checkout`, or
-  `reset`; move and delete files with plain `mv` and `rm`.
-- Do not edit a tracked file for a while to change how a check runs, such as the
-  number of inputs of a test. A run that is cut off never restores it, and the
-  file can then be committed in that state.
-- The Write tool and shell here-documents can turn an escape such as `\u00a0`
-  into the real character. The sources and tests of `packages/parser` are ASCII
-  only (every other character is written as an escape), except a readable
-  character in a comment of `src/code-points.ts` that shows which character a
-  constant is (`// À`). So after writing, check with these two commands, at the
-  root; the first may print only those comments, and the second nothing:
+- The sources and tests of `packages/parser` are ASCII only (every other
+  character is written as an escape), except a readable character in a comment
+  of `src/code-points.ts` that shows which character a constant is (`// À`). So
+  after writing, check with these two commands, at the root; the first may print
+  only those comments, and the second nothing:
 
   ```sh
   grep -rnP '[^\x00-\x7e]' packages/parser/src packages/parser/tests packages/parser/tools
@@ -95,24 +87,19 @@ type.
   comments. Turn off a lint rule with `eslint-disable` only where that is right
   by the intent of the rule, with the reason
   (`eslint-comments/require-description` asks for it).
-- The tests are heavy. Under a high load (a load average of `uptime` above the
-  number of CPUs) a test file can time out. When one does, run that file alone
-  before judging. Run long checks in the background, with the output in a file
-  outside the repository. Stop only what you started, by its task id or process
-  id; never by name (`pkill -f vitest` also stops runs that you did not start).
 
 ## 3. How to check (in every piece of work)
 
 - Check every claim about the behavior of mermaid.js, your own or another's,
-  before writing it, in a probe outside the repository (in the scratchpad), a
-  script run with `node --conditions=source` that imports
-  `runMermaidWithEmbeddedData` and `dbFromTree` from the sources of
-  `packages/tests`: the first gives the acceptance and the Db of mermaid.js for
-  an input, the second the Db built from the parser's tree of the same input.
-  What the probe shows goes into the corpus and the sentences, and the probe is
-  not kept: an input that a sentence needs becomes a fixture, which the tests
-  package adds when given the input and the sentence (the tests skill), or which
-  you add with the fixtures CLI and report to the tests package:
+  before writing it, in a probe outside the repository, a script run with
+  `node --conditions=source` that imports `runMermaidWithEmbeddedData` and
+  `dbFromTree` from the sources of `packages/tests`: the first gives the
+  acceptance and the Db of mermaid.js for an input, the second the Db built from
+  the parser's tree of the same input. What the probe shows goes into the corpus
+  and the sentences, and the probe is not kept: an input that a sentence needs
+  becomes a fixture, which the tests package adds when given the input and the
+  sentence (the tests skill), or which you add with the fixtures CLI and report
+  to the tests package:
 
   ```sh
   pnpm --filter @mmd-toolkit/tests run fixtures:add <diagram> <name> --note "<the sentence and the case>" < input.mmd
@@ -125,29 +112,24 @@ type.
 
 - When a sentence of the parser's documents that defines a behavior is written
   or changed, list the cases that it distinguishes and the other rules that meet
-  it at the place that it names (a directive, an ignored `;`, a comment line, an
-  empty line, a line separator, an empty description block), and ask for a
-  fixture of each case that the corpus lacks (AGENTS.md, Principles). Do not add
-  inputs to a case that has a fixture.
+  it at the place that it names, as
+  [the Principles of AGENTS.md](../../../AGENTS.md#principles) list them, and
+  ask for a fixture of each case that the corpus lacks. Do not add inputs to a
+  case that has a fixture.
 - In every result, show for each claim whether it was checked by running
   something, checked by reading code or documents, or not checked.
 - For a requested performance review of a newly supported diagram or an existing
   parser, use
   [parser-performance-review](../parser-performance-review/SKILL.md).
-- Run what a change can affect (the skill `conventions`, Running tests). While
-  working, run the test files that go with the changed part of the code, in
-  `packages/parser` (`npx vitest run <files>`; a diagram's part of
-  `tests/fixtures.test.ts` with `-t "<diagram> fixtures"`):
+- Run what a change can affect (the skill `conventions`,
+  [Running tests](../conventions/SKILL.md#running-tests)). While working, run
+  the test files that go with the changed part of the code, in `packages/parser`
+  (`npx vitest run <files>`; a diagram's part of `tests/fixtures.test.ts` with
+  `-t "<diagram> fixtures"`).
 
-  | Changed part                                                                  | Test files                                                                                                                                                           |
-  | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | `src/diagrams/<diagram>/`                                                     | `tests/<diagram>.test.ts`, `tests/fixtures.test.ts`                                                                                                                  |
-  | `packages/ast/src/`, `src/visitor-keys*`                                      | `tests/types.test.ts`, `tests/traverse.test.ts`, `tests/ast-<diagram>-examples.test.ts`, `tests/union-docs.test.ts`, and for flowchart `tests/ast-flowchart.test.ts` |
-  | `src/unit-grammar.ts`, `src/empty-forms.ts`, `src/diagram-*.ts`               | `tests/<diagram>.test.ts` of every diagram, `tests/diagram-parsing.test.ts`, `tests/fixtures.test.ts`                                                                |
-  | the common rules (`src/source-lexer.ts`, `directives.ts`, `entities.ts`, ...) | the test file of the same name, `tests/fixtures.test.ts`                                                                                                             |
-  | `src/diagrams/flowchart/subgraph-ids.ts`                                      | `tests/fixtures.test.ts`                                                                                                                                             |
-  | `src/parse.ts`, `src/index.ts`                                                | `tests/parse.test.ts`, `tests/readme-example.test.ts`                                                                                                                |
-  | `tests/helpers/reference-inputs.ts`, `tests/helpers/known-divergences.ts`     | `tests/reference-inputs.test.ts`, `tests/fixtures.test.ts`                                                                                                           |
+  Which test files go with each changed part is listed in
+  [references/tests-by-changed-part.md](references/tests-by-changed-part.md):
+  find the row whose changed part covers the changed file.
 
   The tests that read documents, which a change of those documents alone also
   runs: `tests/readme-example.test.ts` (the example of `README.md` and
@@ -164,11 +146,12 @@ type.
 - The specification of the diagram is written: the sections of
   `packages/spec/docs/diagrams/<diagram>.md` (Detection, Lexical structure,
   Grammar with its Rejections outside the grammar, and Known divergences) have
-  no "To be written", and `packages/spec/docs/ast/<diagram>.md` exists (the spec
-  skill).
+  no "To be written", and `packages/spec/docs/ast/<diagram>.md` exists (the
+  spec-diagram-type and spec skills).
 - The fixtures of the diagram, its Db summary
   (`packages/tests/docs/db-from-tree/<diagram>.md`), and the checks of its
-  recorded trees exist in `packages/tests` (the tests skill).
+  recorded trees exist in `packages/tests` (the skills tests-diagram-type and
+  tests-tree-checks).
 
 ### 4.2 Reading the specification, and its gaps first
 
@@ -180,12 +163,12 @@ type.
    the specification and a fixture disagree, and where mermaid.js (section 3)
    disagrees with the specification, is a gap in the specification. Do not fill
    it from the source of mermaid.js; fix the specification first, with the input
-   and the result of mermaid.js (the spec skill, "When a gap in the
-   specification is found"). Examples from the flowchart of what the
-   specification has to decide: how an entity is read in a context that reads
-   one character at a time; the token kind of a `click` in a subgraph name; a
-   unit name of its own for the `,` of the click context and for the `,` of the
-   statement context.
+   and the result of mermaid.js (the spec skill,
+   "[When a gap in the specification is found](../spec/SKILL.md#9-when-a-gap-in-the-specification-is-found)").
+   Examples from the flowchart of what the specification has to decide: how an
+   entity is read in a context that reads one character at a time; the token
+   kind of a `click` in a subgraph name; a unit name of its own for the `,` of
+   the click context and for the `,` of the statement context.
 3. While a gap is open, implement what it does not touch.
 4. The specification can change while you work, also on what you have built
    already (the fields of a node can be renamed or removed). Keep a copy of the
@@ -210,8 +193,9 @@ Add them in this order; the flowchart files are the model.
    parser. Several ids can share one parser (the flowchart has `flowchart-v2`,
    `flowchart-elk`, and `swimlane`). The `default` of that `switch` checks with
    `satisfies never` that every id of `DiagramType` has a `case`, so an id is
-   added to `DiagramType` (section 7, step 3) in the same change as its `case`.
-   The fixtures of the type are then recorded (4.7).
+   added to `DiagramType` (step 3 of
+   [references/updating-mermaid.md](references/updating-mermaid.md)) in the same
+   change as its `case`. The fixtures of the type are then recorded (4.7).
 
 ### 4.4 The lexer
 
@@ -395,18 +379,19 @@ fixture corpus.
 
 Steps:
 
-1. Only `tests/fixtures.test.ts` writes the corpus records. It compares each
-   parse result with its record and checks acceptance with the shared helper
-   above (4.7). That the recorded trees keep the conditions of the tree and give
-   the Db of mermaid.js is a check of the corpus, which `@mmd-toolkit/tests`
-   makes on every recorded tree (`check-tree-corpus.test.ts` and
-   `db-from-tree.test.ts`); no test of the parser parses the fixtures again to
-   check them. A diagram test names the fixtures of the cases that it checks and
-   states what their trees hold; `tests/helpers/tree-problems.ts` wraps the
-   check of the tree conditions (`checkTree`) for such a test. When
-   `db-from-tree.test.ts` fails for a recorded tree because its accepted reading
-   has no embedded values to build the Db with, report it to the specification
-   with the input and the recorded reading.
+1. Only `tests/fixtures.test.ts` writes the corpus records (4.7). It compares
+   each parse result with its record and checks acceptance with the shared
+   helper above. That the recorded trees keep the conditions of the tree and
+   give the Db of mermaid.js is a check of the corpus, which
+   `@mmd-toolkit/tests` makes on every recorded tree
+   (`check-tree-corpus.test.ts` and `db-from-tree.test.ts`); no test of the
+   parser parses the fixtures again to check them. A diagram test names the
+   fixtures of the cases that it checks and states what their trees hold;
+   `tests/helpers/tree-problems.ts` wraps the check of the tree conditions
+   (`checkTree`) for such a test. When `db-from-tree.test.ts` fails for a
+   recorded tree because its accepted reading has no embedded values to build
+   the Db with, report it to the specification with the input and the recorded
+   reading.
 2. Find where text outside a node's range decides a reading. Example from the
    flowchart: the name text of a subgraph runs to its separator, and where empty
    description blocks follow the name, the whitespace between them lies outside
@@ -654,30 +639,5 @@ wiring, tests and records.
 
 ## 7. Updating mermaid.js
 
-Input: the fixtures regenerated with the new version and their differences,
-classified (the tests skill), and the specification updated for it (the spec
-skill). The parser does not change behavior before the specification does.
-
-1. Read the changed sections of the specification, and check each changed rule
-   as in 4.2, step 2.
-2. Fix what is tied to the version. A `grep -rn` for the old version number in
-   `packages/parser` finds it in the README and `docs/development.md`, each with
-   its `.ja.md`. The links to the source of mermaid.js are permalinks of the
-   pinned commit: replace each with the link at the new commit, from the table
-   of old and new links that the update of the specification gives, and check
-   them with `node scripts/check-mermaid-links.mjs`.
-3. When diagram type ids are added or changed: following `detection.md` and the
-   DiagramType of `ast.md`, fix `src/detection.ts`, `DiagramType` in
-   `packages/ast/src/ast.ts`, `allDiagramTypes` in `tests/types.test.ts`, and
-   `tests/detection.test.ts`. An added id first goes into
-   `DIAGRAM_TYPES_WITHOUT_BODY` of `tests/fixtures.test.ts`; then write its body
-   (section 4), and make these fixes and remove the id from the list in the
-   change that adds the body.
-4. Check that tables copied from lists of the specification (in the flowchart,
-   the letter ranges of `src/unicode-letters.ts`, which flowchart and class
-   share) still agree with it.
-5. Classify the differences of the trees as in 4.7, step 4, and check as in 4.8.
-6. Show as the result: what was fixed, the number of differences of the trees by
-   kind, and the mismatches that remain.
-
-Where a step does not hold at an update, correct it.
+The steps are in
+[references/updating-mermaid.md](references/updating-mermaid.md).

@@ -6,8 +6,8 @@ description: >-
   characters, links to mermaid.js source, the English and Japanese document
   pairs, prose wrapping, Mermaid code blocks, and which tests to run after a
   change. Use before writing or reviewing source code, tests, or a Markdown
-  document here, before running the tests, and when a check of
-  `pnpm run lint` or `pnpm run format:check` fails on one of these.
+  document here, before running the tests, and when a check of `pnpm run lint`
+  or `pnpm run format:check` fails on one of these.
 ---
 
 # コードと文書の決まり
@@ -81,6 +81,11 @@ AGENTS.md は、それぞれを 1 行で述べ、守らせる検査の名前を�
   それらを無効にするコメントと規則名のないコメントは `pnpm run lint`
   が拒否する。
   どの規則かと、代わりに何をするかは `eslint.config.mjs` にある。
+- ルートの共有ファイル（`package.json`、`pnpm-lock.yaml`、`tsconfig.json`、
+  `eslint.config.mjs`、`prettier.config.js`、`vitest.config.ts`、
+  `.github/workflows/`、`scripts/`）は、すべてのパッケージに効く。
+  要るときだけ変える。
+  変える前に、ほかのパッケージに何が起きるかを確かめる。
 
 ## 文書
 
@@ -182,11 +187,10 @@ AGENTS.md は、それぞれを 1 行で述べ、守らせる検査の名前を�
   入力と期待する出力は、テストのソースに、
   エスケープを使うテンプレートリテラルで書く。
 - 振る舞いを確かめる入力は fixture であり、どの fixture も 1 つの文に答える。
-  振る舞いを定める文（仕様、parser のトークンと位置の文書、`dbFromTree` の文書、
-  整形の規則）は、その文が分ける場合ごとに fixture を持ち、
+  振る舞いを定める文は、その文が分ける場合ごとに fixture を持ち、
   その文が名指す場所でほかの規則が接する場合にも fixture を持つ。
-  ディレクティブ、無視される `;`、コメント行、空行、行区切り（U+2028、U+2029）、
-  空の説明ブロック、そのほか文の言葉が名指すもの。
+  接する規則は、
+  [AGENTS.md の「行動原則」](../../../AGENTS.ja.md#行動原則) が挙げるもの。
   fixture は文と一緒に書き、mermaid.js で 1 回確かめ、
   文から引く（`[fixture: …]`）。
   どこで見つかった失敗も、コーパスの fixture（か整形の fixture）と、

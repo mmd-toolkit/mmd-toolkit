@@ -137,16 +137,25 @@ The formatting rules of each diagram type are in its document:
 - Formatting preserves what mermaid.js reads, apart from the documented
   whitespace changes below.
 - mermaid.js is the reference, at the version recorded in the specification,
-  currently 12.3.0. When the formatter would change how a token is spelled, such
-  as the case of a keyword, it keeps the spelling as written if the history of
-  mermaid.js (its changelog and the grammars of earlier releases) shows that an
-  earlier version reads the new spelling differently or not at all. The rest of
-  its formatting is checked with 12.3.0 only.
-  [Versions of mermaid.js](./docs/compatibility.md#versions-of-mermaidjs) lists
-  what was read for each kind of spelling.
+  currently 12.3.0. A formatted text is also drawn by other versions, so the
+  formatter checks what it prints against up to five versions of mermaid.js for
+  each diagram type. When the formatter would change how something is written,
+  such as the case of a keyword, it keeps it as written if a version that counts
+  for the diagram type and reads the written form does not read the new form, or
+  draws it differently.
+  [Versions of mermaid.js that count](./docs/compatibility.md#versions-of-mermaidjs-that-count)
+  lists them for each diagram type, and
+  [Forms kept for versions of mermaid.js that count](./docs/compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)
+  lists each form that stays as written for them.
 - Formatting a formatted diagram again changes nothing.
-- Whitespace at the end of a `style`, `classDef`, or `linkStyle` line is
-  removed. mermaid.js keeps it at the end of the last style.
+- Spaces and tabs at the end of a `style`, `classDef`, or `linkStyle` line are
+  removed, except where mermaid.js draws another figure without them, in the
+  statements that the document of the diagram type names: a space or a tab after
+  a backslash that ends the last style, and a style of whitespace only, such as
+  the blank value in `linkStyle default stroke: `. mermaid.js keeps them at the
+  end of the last style. Whitespace of another kind there, such as a no-break
+  space, stays where it changes the figure, in a class diagram and a flowchart
+  for example.
 - The lines inside `eventmodeling` data and note blocks are aligned where the
   [Data blocks](./docs/eventmodeling.md#data-blocks) rule permits it. This can
   change the spaces in the text that mermaid.js keeps, while the rendered

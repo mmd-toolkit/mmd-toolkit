@@ -10,7 +10,10 @@ import {
 import type { Source } from "./source.ts"
 import { findFirstIndex } from "./source.ts"
 import type { SequenceSimpleStatement } from "./sequence-layout.ts"
-import { classifySequenceStatement } from "./sequence-layout.ts"
+import {
+  classifySequenceStatement,
+  readsItsColonWhitespace,
+} from "./sequence-layout.ts"
 
 /** The kept lines of each source, found once per source. */
 const keptLinesBySource = new WeakMap<Source, KeptLines>()
@@ -26,7 +29,9 @@ const extendedEndsBySource = new WeakMap<Source, ReadonlyMap<number, number>>()
  * (see `findStatementsThatEndWithUnitsThatReadNoWhitespace`). The lines that hold a
  * `;` that the line rule ignores and a U+2028 or U+2029 after it are printed
  * as written (see `findLinesEndedBySemicolon`), over the `;` that follow on
- * the lines after it (see `printedEndAfterSemicolons`).
+ * the lines after it (see `printedEndAfterSemicolons`), and so are the lines
+ * of a statement with an empty text whose `:` is followed by whitespace that
+ * is more than a run of spaces and tabs (see `readsItsColonWhitespace`).
  */
 export function findSequenceKeptLines(source: Source): KeptLines {
   const cached = keptLinesBySource.get(source)
@@ -45,6 +50,9 @@ export function findSequenceKeptLines(source: Source): KeptLines {
     .map((statement) => lineStartOf(source, statement.range[1]))
   const verbatimLines = new Set([
     ...findLinesEndedBySemicolon(source),
+    ...findSimpleStatements(root.body.body)
+      .filter((statement) => readsItsColonWhitespace(source, statement))
+      .map((statement) => lineStartOf(source, statement.range[1])),
     ...linesAfterUnits.filter((line) =>
       holdsLineSeparator(source.text.slice(line, lineEndOf(source, line))),
     ),
@@ -140,26 +148,25 @@ function holdsLineSeparator(text: string): boolean {
 function findStatementsThatEndWithUnitsThatReadNoWhitespace(
   statements: readonly SequenceStatement[],
 ): SequenceSimpleStatement[] {
+  return findSimpleStatements(statements).filter(
+    endsWithUnitThatReadsNoWhitespace,
+  )
+}
+
+/** The statements that hold no statements, at any depth, in source order. */
+function findSimpleStatements(
+  statements: readonly SequenceStatement[],
+): SequenceSimpleStatement[] {
   const found: SequenceSimpleStatement[] = []
   for (const statement of statements) {
     const classified = classifySequenceStatement(statement)
     if (classified.kind === "body") {
-      appendItems(
-        found,
-        findStatementsThatEndWithUnitsThatReadNoWhitespace(
-          classified.statement.body,
-        ),
-      )
+      appendItems(found, findSimpleStatements(classified.statement.body))
     } else if (classified.kind === "sections") {
       for (const section of classified.statement.sections) {
-        appendItems(
-          found,
-          findStatementsThatEndWithUnitsThatReadNoWhitespace(section.body),
-        )
+        appendItems(found, findSimpleStatements(section.body))
       }
-    } else if (endsWithUnitThatReadsNoWhitespace(classified.statement)) {
-      found.push(classified.statement)
-    }
+    } else found.push(classified.statement)
   }
   return found
 }

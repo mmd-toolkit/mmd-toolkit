@@ -149,7 +149,7 @@ describe("the line feeds that a directive that is not closed takes", () => {
   })
 })
 
-describe("the directive that takes whitespace with a U+2028 or U+2029", () => {
+describe("the directive that takes whitespace", () => {
   /** The directive of a text, and the token that starts where it ends. */
   function directiveAndNext(text: string) {
     const source = sourceOf(text)
@@ -166,6 +166,8 @@ describe("the directive that takes whitespace with a U+2028 or U+2029", () => {
       "classDiagram\nclass A%%{init: {} \u2028\n  class D\n",
       "classDiagram\nclass A%%{init: x \u2028\r  class D\n",
       "classDiagram\nclass A%%{init: x \u2029\r\n\n class D\n",
+      "classDiagram\nclass A%%{init: x \n\nclass D\n",
+      "classDiagram\nclass A%%{init: x  class D\n",
     ]) {
       const { directive, next } = directiveAndNext(text)
       expect(directive, text).toBeDefined()
@@ -180,8 +182,15 @@ describe("the directive that takes whitespace with a U+2028 or U+2029", () => {
     expect(directive?.range[1]).toBe(text.indexOf("\u2028") + 1)
   })
 
-  it("is the directive as the parser has it, when no U+2028 or U+2029 follows", () => {
-    const text = "classDiagram\nclass A%%{init: x \n\nclass D\n"
+  it("is the directive as the parser has it, when the whitespace runs to the end of the text without a U+2028 or U+2029", () => {
+    const text = "classDiagram\nclass A%%{init: x \n\n"
+    const source = sourceOf(text)
+    const [directive] = source.root.directives
+    expect(source.trivia[0].range).toEqual(directive.range)
+  })
+
+  it("is the directive as the parser has it, when it is closed", () => {
+    const text = "classDiagram\nclass A%%{init: {}}%% \n\nclass D\n"
     const source = sourceOf(text)
     const [directive] = source.root.directives
     expect(source.trivia[0].range).toEqual(directive.range)

@@ -300,10 +300,13 @@ placed as under [Directives](#directives), and a U+2028 or U+2029 stays where it
 is. [fixture: whitespace-between-tokens/block-text-beside-directive] [test:
 U+2028 between a block keyword and its text] [test: U+2029 between a wrap prefix
 and its text] The `,` between the ids of a note over two participants touches
-both ids, as in `note over A,B`: `note over A , B` is printed `note over A,B`.
-Every spelling that mermaid.js accepts gives the same Db, so nothing forces the
-form; the five notes over two participants in the documentation of mermaid.js
-are all written `A,B`
+the id before it and has one space after it, as in `Note over A, B`:
+`note over A , B` is printed `Note over A, B`. Every spelling that mermaid.js
+accepts gives the same Db, so nothing forces the form. The five notes over two
+participants in the documentation of mermaid.js are all written `A,B`, which
+does not decide the form: the whitespace that Prettier prints beside a comma,
+none before it and one space after it, comes before the form of the
+documentation
 ([two](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L49-L77)
 and
 [three](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L445-L464)).
@@ -342,7 +345,7 @@ sequenceDiagram
   autonumber 10 5
   create participant C
   A ->> C: x
-  Note over A,C: n
+  Note over A, C: n
   A ->> B: wrap: x
   A ->> B: wrap: y
 ```
@@ -410,7 +413,6 @@ whitespace-between-tokens/data-block-padded] A long block is not split over
 lines, since mermaid.js rejects the lines of a block mapping there. [fixture:
 whitespace-between-tokens/data-block-long-kept] The block stays as written where
 that rule says so. [fixture:
-whitespace-between-tokens/data-block-space-only-padded] [fixture:
 whitespace-between-tokens/data-block-directive-kept] [fixture:
 whitespace-between-tokens/data-block-kept-line-kept] [test: data blocks:
 sequence one line with U+2028 inside] [test: data blocks: sequence one line with
@@ -418,10 +420,41 @@ U+2029 inside] [test: data blocks: sequence one line with no-break spaces at the
 ends] [fixture: whitespace-between-tokens/data-block-padded-zero-width]
 [fixture: whitespace-between-tokens/data-block-surrounding-trivia] [fixture:
 whitespace-between-tokens/data-block-and-ignored-line-kept] [fixture:
-whitespace-between-tokens/actor-data-block-kept] A line that mermaid.js reads as
-nothing, such as `)` alone, is kept and stands at the level of the statements
-around it. [fixture: whitespace-between-tokens/data-block-and-ignored-line-kept]
-[corpus fixture: sequence/lex-invalid-line-parenthesis] [fixture:
+whitespace-between-tokens/actor-data-block-kept] A data block of a `participant`
+or an `actor`, with or without `create`, that holds none of `:`, `,`, `;`, and
+`>`, and no line break, is read by a version that counts as a part of the name
+of the participant, with the whitespace before it, the whitespace inside it, and
+the whitespace before a `%%` comment after it, whatever whitespace characters it
+holds but a line break. So the gap before the block, the block, and that gap
+before the comment stay as written, and the block is not padded:
+`participant A   @{ x }` and `actor B@{x}` stay, and so does the whitespace
+before the `%%` in `participant C@{ y }   %% c`. mermaid.js removes the
+directives before it reads the name, so the name runs over a directive in that
+whitespace, one that is not closed included, and the whitespace on both sides of
+it stays: `participant B@{x}   %%{init: {}}%%   %% c`. A directive that ends the
+line, with no comment after it, is an ordinary gap, printed
+`participant E@{z} %%{init: {}}%%`. A block with one of these characters or with
+a line break is printed as above (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+[fixture: whitespace-between-tokens/data-block-name-gap-before-kept] [fixture:
+whitespace-between-tokens/data-block-name-comment-gap-kept] [fixture:
+whitespace-between-tokens/data-block-name-directive-then-comment-gap-kept]
+[fixture:
+whitespace-between-tokens/data-block-name-unclosed-directive-then-comment-gap-kept]
+[fixture:
+whitespace-between-tokens/data-block-name-directive-at-line-end-spaced]
+[fixture: whitespace-between-tokens/data-block-space-only-kept] [fixture:
+whitespace-between-tokens/compat-malformed-data-block-kept] [fixture:
+whitespace-between-tokens/data-block-name-end-characters-padded] [fixture:
+whitespace-between-tokens/data-block-name-created-kept] [fixture:
+whitespace-between-tokens/data-block-name-created-comment-gap-kept] [test: data
+blocks: sequence name block with a no-break space before a comment] [test: data
+blocks: sequence name block with an ideographic space before a comment] [test:
+data blocks: sequence name block with a form feed before a comment] A line that
+mermaid.js reads as nothing, such as `)` alone, is kept and stands at the level
+of the statements around it. [fixture:
+whitespace-between-tokens/data-block-and-ignored-line-kept] [corpus fixture:
+sequence/lex-invalid-line-parenthesis] [fixture:
 whitespace-between-tokens/ignored-line-in-block-kept]
 
 Input
@@ -509,40 +542,157 @@ sequenceDiagram
   box Group
     participant C
   end
-  Note over A,B: together
+  Note over A, B: together
   Note right of A: side
   link A: Docs @ https://example.com
   links B: {"Docs":"https://example.com"}
+```
+
+### Colors
+
+A color function that stands alone as the text of a `rect`, or as the color of a
+`box`, is printed with one space after each comma: `rect rgb(191,223,255)` is
+printed `rect rgb(191, 223, 255)`, and `box hsl(10,40%,90%) Team` is printed
+`box hsl(10, 40%, 90%) Team`. The documentation of mermaid.js writes the colors
+of a `rect` so (all 4 examples), and those of a `box` as often with the space as
+without it, so 6 of the 8 examples have it. The color of a `box` is the part of
+its text that mermaid.js asks the browser about (`color-candidate`); when the
+browser does not take it for a color, mermaid.js takes the whole text of the box
+for its title, and the spaces would change the title. So the printer touches
+only a function of the form that every browser reads: `rgb(` with three
+arguments and `rgba(` with four (`rgb(10%,20,30)` is no color), `hsl(` with
+three and `hsla(` with four, the second and the third of an `hsl` a percentage,
+all in lower case. `box rgb(33,66,99) Team (x)` stays as written, since the
+pattern of mermaid.js reads up to the last `)`, and so do
+`box RGB(33,66,99) Team`, `box rgb (33,66,99) Team`, and a `rect` with more text
+than the function. The whitespace before a comma, immediately after the opening
+`(`, and immediately before the closing `)` stays as written. [fixture:
+colors/functions-spaced] [fixture: colors/function-padding-kept] [fixture:
+colors/functions-as-written] [fixture:
+colors/functions-beside-comments-and-directives] A directive within a channel is
+removed before the function is recognized, and stays as written while the commas
+take their ordinary spacing. [fixture: colors/directive-in-channel] See
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)
+for the versions that were run and the Db.
+
+Input
+([colors/functions-spaced-input.mmd](../tests/fixtures/sequence/colors/functions-spaced-input.mmd)):
+
+```mmd
+sequenceDiagram
+participant A
+participant B
+rect rgb(191,223,255)
+A->>B: one
+end
+rect rgba(0,0,255,.1)
+A->>B: two
+end
+rect hsl(120,100%,50%)
+A->>B: three
+end
+rect hsla(120,100%,50%,0.5)
+A->>B: four
+end
+rect rgb(10%,20%,30%)
+A->>B: five
+end
+rect rgb(191,223, 255)
+A->>B: six
+end
+rect rgb(191,  223,   255)
+A->>B: seven
+end
+box rgb(33,66,99)
+participant C
+end
+box rgba(33,66,99,0.5) Team
+participant D
+end
+box hsl(10,40%,90%) Team
+participant E
+end
+box hsla(10,40%,90%,0.5)Team
+participant F
+end
+```
+
+Output
+([colors/functions-spaced-output.mmd](../tests/fixtures/sequence/colors/functions-spaced-output.mmd)):
+
+```mmd
+sequenceDiagram
+  participant A
+  participant B
+  rect rgb(191, 223, 255)
+    A ->> B: one
+  end
+  rect rgba(0, 0, 255, .1)
+    A ->> B: two
+  end
+  rect hsl(120, 100%, 50%)
+    A ->> B: three
+  end
+  rect hsla(120, 100%, 50%, 0.5)
+    A ->> B: four
+  end
+  rect rgb(10%, 20%, 30%)
+    A ->> B: five
+  end
+  rect rgb(191, 223, 255)
+    A ->> B: six
+  end
+  rect rgb(191, 223, 255)
+    A ->> B: seven
+  end
+  box rgb(33, 66, 99)
+    participant C
+  end
+  box rgba(33, 66, 99, 0.5) Team
+    participant D
+  end
+  box hsl(10, 40%, 90%) Team
+    participant E
+  end
+  box hsla(10, 40%, 90%, 0.5)Team
+    participant F
+  end
 ```
 
 ### Arrow spacing
 
 A message has one space before and after its arrow, as a flowchart link does:
 `Alice->>Bob: hi` becomes `Alice ->> Bob: hi`. [fixture: arrow-spacing/spaced]
-The `+`, `-`, or `()` after the arrow touches the target, and the `()` before
-the arrow touches the source: `A ->> + B` is printed `A ->> +B`, and
-`A () ->> () B` is printed `A() ->> ()B`. [fixture:
-arrow-spacing/plus-and-minus-touching] [fixture:
-arrow-spacing/parentheses-touching] mermaid.js reads the spellings with and
-without the whitespace as the same message, except for a `-` before a target
-that would read as an arrow with it (below), so nothing else forces the form.
-The printer already gives `A->>+B` the form `A ->> +B`, and ten of the twelve
-messages with a `+` or `-` in the documentation of mermaid.js write the sign
-touching the target (`->>+John`, `-->>-Alice`;
+The `+` or `-` after the arrow touches the target: `A ->> + B` is printed
+`A ->> +B`. [fixture: arrow-spacing/plus-and-minus-touching] The whitespace
+beside a `()` stays as written, touching, one space, or a run, and a directive
+there stays between its whitespace: `A () ->> () B` is printed as it is,
+`A   () ->> () B` keeps its three spaces, and `A()->>()B` is printed
+`A() ->> ()B`, since some versions that count read the `()` as part of the name
+next to it, with the whitespace (see
+[Sequence messages with a central connection](./compatibility.md#sequence-messages-with-a-central-connection)
+and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+[fixture: arrow-spacing/parentheses-touching] [fixture:
+arrow-spacing/parentheses-gap-run-kept] [fixture:
+arrow-spacing/parentheses-gap-directive-kept] mermaid.js reads the spellings of
+a `+` or `-` with and without the whitespace as the same message, except for a
+`-` before a target that would read as an arrow with it (below), so nothing else
+forces the form. The printer already gives `A->>+B` the form `A ->> +B`, and ten
+of the twelve messages with a `+` or `-` in the documentation of mermaid.js
+write the sign touching the target (`->>+John`, `-->>-Alice`;
 [the activation examples](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L413-L424)
 and
 [the nested ones](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L664-L669)).
 The other two write the sign touching the arrow, `->>+ John`
 ([here](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L671-L672)),
-and are printed with the sign on the target as well. Its three messages with
-`()` write it touching its id
-([central connections](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L392-L394)).
-The whitespace is dropped only where a gap holds nothing but whitespace. A
-directive in the gap is placed as under [Directives](#directives):
-`A%%{init: {}}%%->>B: v` is printed `A %%{init: {}}%%->> B: v`, and
-`A ->> +%%{init: {}}%% B: v` is printed `A ->> +%%{init: {}}%%B: v`, since the
-`+` touches the target. [fixture: arrow-spacing/directive-beside-arrow]
-[fixture: arrow-spacing/directive-beside-arrow-runs] [fixture:
+and are printed with the sign on the target as well. The whitespace is dropped
+only where a gap holds nothing but whitespace. A directive in the gap is placed
+as under [Directives](#directives): `A%%{init: {}}%%->>B: v` is printed
+`A %%{init: {}}%%->> B: v`, and `A ->> +%%{init: {}}%% B: v` is printed
+`A ->> +%%{init: {}}%%B: v`, since the `+` touches the target. [fixture:
+arrow-spacing/directive-beside-arrow] [fixture:
+arrow-spacing/directive-beside-arrow-runs] [fixture:
 arrow-spacing/touching-beside-directive] A line break in the gap is joined as in
 [Multi-line statements](#multi-line-statements), and the whitespace goes with
 it; a comment line keeps the lines. [fixture:
@@ -559,7 +709,18 @@ of mermaid.js ignores follows
 [Statements one per line](#statements-one-per-line): `A ->> + B: style:#x;` is
 printed `A ->> +B: style:#x;`, while `A () ->> () B: style:#x;;` stays as
 written. [fixture: arrow-spacing/touching-with-ignored-semicolon] The arrow is
-printed as written. [fixture: arrow-spacing/arrows-kept]
+printed as written. [fixture: arrow-spacing/arrows-kept] The whitespace before
+`<<->>` and `<<-->>` stays as written, since a version that counts has no such
+arrow and reads the `<<` as part of the name before it: `A<<->>B` is printed
+`A<<->> B`, and `A <<->> B` and `A   <<->> B` are printed as they are, and so is
+a message with a `()` before the arrow, `A ()   <<->> B`, since the name runs
+from the id to the `<<` (see
+[Sequence messages with a central connection](./compatibility.md#sequence-messages-with-a-central-connection)
+and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+[fixture: arrow-spacing/bidirectional-arrow-gap-before-kept] [fixture:
+arrow-spacing/bidirectional-arrow-gap-run-kept] [fixture:
+arrow-spacing/parentheses-then-bidirectional-arrow-gap-kept]
 
 The `-` keeps its space before a target that would read as an arrow with it:
 `-x` and `-X`, since the lexer ignores case, `-|\`, and `-|/` are arrows, so
@@ -642,15 +803,58 @@ sequenceDiagram
 The `:` before the text of a message, a note, and a `links`, `link`,
 `properties`, or `details` statement, and the `:` after `accTitle` and
 `accDescr`, touch what comes before them and have one space after them, as the
-documentation of mermaid.js writes a sequence diagram, also next to a directive,
-which is placed as under [Directives](#directives). [fixture: colons/spaced]
-[fixture: colons/other-statements-spaced] [fixture:
+documentation of mermaid.js writes a sequence diagram (of its messages with a
+space after the colon, 107 have no space before it and none has one, and so do
+the 8 notes and the 2 `links`; counted as under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)),
+also next to a directive, which is placed as under [Directives](#directives).
+[fixture: colons/spaced] [fixture: colons/other-statements-spaced] [fixture:
 colons/directive-around-colon] mermaid.js reads the text without the whitespace
-at its ends. When the text is empty, nothing follows the `:`. [fixture:
-colons/spaced] [fixture: colons/empty-text] A line break after the `:` of
-`accTitle` is whitespace for mermaid.js, so the next line is its text: an
-`accTitle:` with no text cannot stand before another statement. [fixture:
-colons/acc-title-colon-line-break]
+at its ends. When the text is empty, nothing follows the `:`, except that one
+whitespace character stays, the first one as written, where spaces and tabs only
+followed the `:` up to the end of the line or to a `;` that the printer drops:
+`A->>B: ` is a message with an empty text, while some versions that count reject
+`A->>B:` (their text rule needs a character at least, and that of the later
+versions does not), and so they reject a note and a `links`, `link`,
+`properties`, or `details` statement the same way (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Parsed in Chromium, the text without that character was rejected by some of the
+versions that count and read by the others. [fixture: colons/spaced] [fixture:
+colons/empty-text] [fixture: colons/whitespace-only-text] [fixture:
+colons/semicolon-after-whitespace-kept] A `;` that the line rule ignores before
+that whitespace is removed before the whitespace is recognized. Where it stands
+directly after the `:`, the line stays as written so that the ignored `;` and
+the whitespace after it stay together. [fixture:
+colons/ignored-semicolon-before-empty-text-whitespace] The whitespace character
+that stays is lost at the end of the last line of a code block in Markdown,
+where Prettier removes it whatever the plugin prints (see
+[Markdown code blocks](./compatibility.md#markdown-code-blocks)); `mmdfmt` keeps
+it.
+
+Where a directive or a whitespace character other than a space and a tab (a
+no-break space, an ideographic space, a byte order mark, U+2028, U+2029) follows
+the `:` directly, with whitespace in the place of the text, the line is printed
+as written, as the line of a task of a [Gantt chart](./gantt.md#task-data) or a
+[user journey](./journey.md#task-data) is. A version that counts takes a
+whitespace character of any kind for the character that it needs after the `:`,
+and removes a directive before it reads the line, so the whitespace after a
+directive is that character. The printer drops whitespace at the end of a line
+and prints another whitespace character as a space, so it would leave `A->>B:`,
+which such a version rejects: `A->>B:%%{init: {}}%%` followed by two spaces is
+accepted by every version that counts, and the text without the spaces is
+rejected by some of them. A space or a tab right after the `:` is the character
+that such a version needs, so the line is printed as usual and the rest is left
+out: `A->>B: %%{init: {}}%%` followed by two spaces is printed
+`A ->> B: %%{init: {}}%%`. [fixture: colons/directive-then-whitespace-kept]
+[test: U+00A0 as the entire text of a message] [test: U+3000 as the entire text
+of a note] [test: U+FEFF as the entire text of a `links` statement] [test:
+U+2029 as the entire text of a `link` statement] [test: a space and U+2028 as
+the entire text of a message] [test: U+00A0 as the entire text of a message,
+with a `;` after it] [test: U+00A0 as the entire text of a message in a block]
+
+A line break after the `:` of `accTitle` is whitespace for mermaid.js, so the
+next line is its text: an `accTitle:` with no text cannot stand before another
+statement. [fixture: colons/acc-title-colon-line-break]
 
 Input
 ([colons/spaced-input.mmd](../tests/fixtures/sequence/colons/spaced-input.mmd)):
@@ -708,8 +912,15 @@ fixture: sequence/db-title-next-line-indented] [fixture:
 title/tab-and-colon-line-break] [fixture: title/line-break-indented] The
 whitespace at the end of a title is left out, also where a `;` follows it.
 [fixture: title/trailing-whitespace-dropped] [fixture:
-title/semicolon-after-whitespace-dropped] It is at the end of a line, so the
-example is written as strings, in which `\n` is a line break:
+title/semicolon-after-whitespace-dropped] A `;` that the line rule ignores
+between the keyword and a text on the next line stays, on the line of the
+trigger of the rule, which is part of the line that stays together:
+`participant A@{"style":"x:#y"};title;` and `T` are printed
+`participant A@{"style":"x:#y"};title; T`, the text joined to the keyword (see
+[A `;` that the line rule ignores before the value of its statement](./compatibility.md#a--that-the-line-rule-ignores-before-the-value-of-its-statement)).
+[fixture: title/ignored-semicolon-before-text-on-next-line-kept] [fixture:
+title/ignored-semicolon-before-text-on-kept-line-kept] It is at the end of a
+line, so the example is written as strings, in which `\n` is a line break:
 `"sequenceDiagram\ntitle Kept   \nA->>B: x\n"` is printed as
 `"sequenceDiagram\n  title Kept\n  A ->> B: x\n"`.
 

@@ -181,15 +181,17 @@ requirementDiagram
 ### Fields
 
 A field is printed on one line: its keyword, the `:` touching it, and its value
-after one space, as the documentation of mermaid.js writes the fields and as a
-user journey puts a value after one space. Comments or directives keep their
-line breaks; structural continuations and intervening trivia stand one level
-inside the field. [fixture: fields/comment-and-directive-continuations]
-[fixture: fields/colon-touches-keyword] [fixture:
-fields/spaces-around-colon-and-value] [fixture: fields/value-after-one-space]
-The whitespace at the ends of an unquoted value is not in the Db and is dropped;
-a run of spaces and tabs inside the value, or between the quotes of a string, is
-in the Db and is printed as one space (see
+after one space. The colon is the colon of a key: the line gives the field its
+one value (step 2 of
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)). Comments or
+directives keep their line breaks; structural continuations and intervening
+trivia stand one level inside the field. [fixture:
+fields/comment-and-directive-continuations] [fixture:
+fields/colon-touches-keyword] [fixture: fields/spaces-around-colon-and-value]
+[fixture: fields/value-after-one-space] The whitespace at the ends of an
+unquoted value is not in the Db and is dropped; a run of spaces and tabs inside
+the value, or between the quotes of a string, is in the Db and is printed as one
+space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 [fixture: fields/value-outer-whitespace-dropped] [fixture:
 fields/value-inner-runs-collapsed] [fixture:
@@ -433,10 +435,10 @@ requirementDiagram
 ### Class lists
 
 The classes after `:::`, in a requirement, in an element, and in a statement of
-a name and its classes, touch the `:::`, and the `,` between them touches the
-classes on both sides: `requirement r ::: a , b {` is printed
-`requirement r:::a,b {`, as the classes of an ER diagram and the documentation
-of mermaid.js are written. [fixture: class-lists/in-requirement-and-element]
+a name and its classes, the first class touches the `:::`, and the `,` between
+them touches the class before it and has one space after it:
+`requirement r ::: a , b {` is printed `requirement r:::a, b {`, as the classes
+of an ER diagram are. [fixture: class-lists/in-requirement-and-element]
 [fixture: class-lists/shorthand] A class is a string, or an unquoted text that
 may hold whitespace between its words, which is part of the class. [fixture:
 class-lists/string-classes] [fixture: class-lists/classes-with-spaces] A
@@ -462,12 +464,12 @@ Output
 
 ```mmd
 requirementDiagram
-  requirement r:::a,b {
+  requirement r:::a, b {
     id: 1
   }
   element e:::c {
   }
-  requirement s:::a,b,c {
+  requirement s:::a, b, c {
   }
 ```
 
@@ -486,25 +488,26 @@ Output
 
 ```mmd
 requirementDiagram
-  requirement r:::"a b",c {
+  requirement r:::"a b", c {
   }
   r:::"d"
 ```
 
 ### Styles and classes
 
-Name and class lists use commas without surrounding spaces. The two lists of a
-`class` statement remain separated by one space. Statement-ending whitespace is
-dropped where the style context ends at LF. The first style stands after one
-space. For ordinary single-line property/value styles in `style` or `classDef`,
-put no space before the first colon of each style and one before its nonempty
-value; separate styles with a comma and one following space. [fixture:
-styles-and-classes/empty-style-value] Print a run of spaces or tabs between two
-words of a style as one space, in a style with a `:` and in one without:
-`stroke-dasharray:  5    5` becomes `stroke-dasharray: 5 5`, and `4px    wide`
-becomes `4px wide`. Whether whitespace stands between two words stays as
-written: `fill #f00` and `fill#f00` are kept apart, since a word that touches
-the next stays touching, as a gap does elsewhere (see
+Name and class lists use a comma that touches the name before it and has one
+space after it, as Prettier prints a comma where mermaid.js reads the list the
+same. The two lists of a `class` statement remain separated by one space.
+Statement-ending whitespace is dropped where the style context ends at LF. The
+first style stands after one space. For ordinary single-line property/value
+styles in `style` or `classDef`, put no space before the first colon of each
+style and one before its nonempty value; separate styles with a comma and one
+following space. [fixture: styles-and-classes/empty-style-value] Print a run of
+spaces or tabs between two words of a style as one space, in a style with a `:`
+and in one without: `stroke-dasharray:  5    5` becomes `stroke-dasharray: 5 5`,
+and `4px    wide` becomes `4px wide`. Whether whitespace stands between two
+words stays as written: `fill #f00` and `fill#f00` are kept apart, since a word
+that touches the next stays touching, as a gap does elsewhere (see
 [Directives](#directives)), and joining the words would hide where one word
 ends. Mermaid concatenates the native style units whatever whitespace separates
 them: `stroke-dasharray: 5 5` still means `stroke-dasharray:55`, so the Db does
@@ -572,7 +575,7 @@ Output
 
 ```mmd
 requirementDiagram
-  classDef a,b,c fill: red
+  classDef a, b, c fill: red
   classDef default fill: #f9f, stroke-width: 4px
   classDef d fill: red
 ```
@@ -626,9 +629,9 @@ requirementDiagram
     id: 1
   }
   class r c
-  class r c,d
-  class r c,d
-  class r c,d
+  class r c, d
+  class r c, d
+  class r c, d
 ```
 
 Input
@@ -1024,8 +1027,13 @@ the text `accTitle:` before `direction`. So an `accTitle`, `accDescr:`, or
 whitespace characters, and one of `TB`, `BT`, `RL`, and `LR`, in any case, keeps
 the first column. The line is judged as the lexer reads it, without the
 directives and the comment lines. [fixture:
-accessibility-statements/first-column-kept] A line that holds no such direction
-is indented as any statement is. [fixture:
+accessibility-statements/first-column-kept] A text written on a later line is
+brought to the `:`, so `accTitle:`, a line break, and `direction LR` are printed
+`accTitle: direction LR` at the first column, also where `accTitle:` was written
+after an indentation: the written statement is a title, and an indented
+`accTitle: direction LR` would be a direction line. [fixture:
+accessibility-statements/first-column-text-brought-to-the-colon-from-indentation]
+A line that holds no such direction is indented as any statement is. [fixture:
 accessibility-statements/first-column-not-needed] The line counts as a whole:
 where other statements follow on it (`accDescr {x}; title direction RL`), the
 `direction` in them counts too, as the lexer reads the whole line from its
@@ -1654,7 +1662,14 @@ inside a value] [test: U+2029 inside a string] [test: U+2028 before the colon of
 a field] [test: U+2028 before the arrow of a relationship] [test: U+2028 after
 the name of a relationship] [test: U+2028 between direction and its value]
 [test: U+2028 after the colon of accTitle] [test: U+2028 inside an accessibility
-text]
+text] A string that a U+2028 or U+2029 follows right away keeps its quotes where
+a comment after the character removes the line feed that ends the line, so that
+the line is read with the next one and printed as written: a name without quotes
+goes on over the character, and the comment would be text. [test: U+2028 and a
+comment after the target in quotes of a relationship, with a statement after the
+comment] [test: U+2028 and a comment after a value in quotes, with a statement
+after the comment] [test: U+2028 and a comment after the class in quotes of a
+class statement, with a statement after the comment]
 
 ### Whitespace characters
 

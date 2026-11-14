@@ -8,7 +8,12 @@ import {
   lineStartOf,
 } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
-import { findTokensBetween, isCommentLine, isStructural } from "./source.ts"
+import {
+  findTokensBetween,
+  holdsRemoved,
+  isCommentLine,
+  isStructural,
+} from "./source.ts"
 
 /**
  * Venn has no separating semicolons. A swallowed header fragment also
@@ -76,6 +81,13 @@ export function vennDiagramLineEnd(source: Source, offset: number): number {
         .filter((item) => offset <= item.range[0] && item.range[0] < end)
         .map((item) => item.range[1]),
     ),
+    // The whitespace that a directive that is not closed takes is read with
+    // it, so it is no padding.
+    maxOf(
+      source.removed
+        .filter(([from]) => offset <= from && from < end)
+        .map(([, to]) => Math.min(to, end)),
+    ),
   )
   while (
     end > protectedEnd &&
@@ -117,7 +129,8 @@ export function vennKeptGapEnd(
   let stop = end
   while (
     stop > start &&
-    (source.text[stop - 1] === " " || source.text[stop - 1] === "\t")
+    (source.text[stop - 1] === " " || source.text[stop - 1] === "\t") &&
+    !holdsRemoved(source, stop - 1, stop)
   )
     stop--
   return stop

@@ -9,11 +9,10 @@ import {
   findLinesAfterWords,
   findLinesAfterEmptyStyle,
   findStyleLinesWithLineSeparators,
-  textWithoutDirectives,
   hasDirectionTextOnFirstLine,
 } from "./graph-kept-lines.ts"
 import { walk } from "./layout.ts"
-import { findTriviaBetween } from "./source.ts"
+import { findTriviaBetween, textRead } from "./source.ts"
 import type { Source } from "./source.ts"
 
 const keptLinesBySource = new WeakMap<Source, KeptLines>()
@@ -43,8 +42,8 @@ export function findAgentflowKeptLines(source: Source): KeptLines {
       value !== null &&
       findTriviaBetween(source, statement.range[0], value.range[0]).length === 0
     const text = joinsValue
-      ? textWithoutDirectives(source, value.range).trimStart()
-      : textWithoutDirectives(source, statement.range)
+      ? textRead(source, ...value.range).trimStart()
+      : textRead(source, ...statement.range)
     if (hasDirectionTextOnFirstLine(text))
       directionText.add(lineStartOf(source, statement.range[0]))
   })

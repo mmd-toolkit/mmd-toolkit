@@ -9,7 +9,7 @@ Code:
   2 |   title First
   3 |   title Second
     |   ^~~~~~~~~~~~ [1]
-  4 |   "A" : 1
+  4 |   "A": 1
   5 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
@@ -18,13 +18,13 @@ Code:
         Output:
           1 | pie
           2 |   title First
-          3 |   "A" : 1
+          3 |   "A": 1
           4 |
       - Remove the earlier statement that sets the title.
         Output:
           1 | pie
           2 |   title Second
-          3 |   "A" : 1
+          3 |   "A": 1
           4 |
 ---
 

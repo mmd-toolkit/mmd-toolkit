@@ -24,6 +24,7 @@ import {
   keptAsWritten,
   layoutCompactEmptyDescriptionBlock,
   spansLinesThatCannotJoin,
+  walk,
 } from "./layout.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import { holdsJoiningRegion, lineStartOf } from "./kept-lines.ts"
@@ -41,7 +42,8 @@ import {
   findTokenEndingBefore,
   findTriviaBetween,
   isWhitespace,
-  skipSpacesAndTabs,
+  skipBlanksAndRemoved,
+  textRead,
 } from "./source.ts"
 
 type GraphLabel = AgentflowLabel | FlowchartLabel
@@ -142,6 +144,40 @@ export function addLinkRules(
 }
 
 /**
+ * Adds the rule that the edge id of a link touches the data block before it:
+ * `A@{ shape: circle }e1@--> B`, not `A@{ shape: circle } e1@--> B`
+ * (docs/flowchart.md, Arrow spacing; docs/agentflow.md, Arrows). The pinned
+ * mermaid.js reads both forms the same in a flowchart, but some versions that
+ * count have no rule for a space after a data block before an edge id
+ * (docs/compatibility.md, Forms kept for versions of mermaid.js that count),
+ * and the agentflow diagram rejects it in every version. A directive or an ignored
+ * `;` between them is removed before the text is read, so the edge id touches
+ * it too. Call it after the rules of the links are set.
+ */
+export function addEdgeIdAfterDataBlockRules(
+  source: Source,
+  statement: Node,
+  rules: Map<number, GapRule>,
+): void {
+  const dataBlockEnds = new Set<number>()
+  walk(statement, (node) => {
+    if (
+      node.type === "FlowchartDataBlock" ||
+      node.type === "AgentflowDataBlock"
+    )
+      dataBlockEnds.add(node.range[1])
+  })
+  if (dataBlockEnds.size === 0) return
+  walk(statement, (node) => {
+    if (node.type !== "FlowchartLink" && node.type !== "AgentflowLink") return
+    if (node.id === null) return
+    const before = findStructuralTokenEndingBefore(source, node.range[0])
+    if (before !== undefined && dataBlockEnds.has(before.range[1]))
+      rules.set(node.range[0], "none")
+  })
+}
+
+/**
  * Whether an edge id starts as an arrow does (diagrams/flowchart.md, Arrows
  * and the lexical rule of the edge id; diagrams/agentflow.md, Arrows). Such an
  * id is an edge id only where no whitespace stands before it, as in
@@ -207,11 +243,9 @@ export function labelEdgeRule(source: Source, label: GraphLabel): GapRule {
     "the bracket before a label",
   )
   const hasWhitespaceBefore = [
-    ...source.text.slice(before.range[1], label.range[0]),
+    ...textRead(source, before.range[1], label.range[0]),
   ].some(isWhitespace)
-  return hasWhitespaceBefore && keepsLeadingWhitespace(label, before)
-    ? "space"
-    : "none"
+  return hasWhitespaceBefore && keepsLeadingWhitespace(label) ? "space" : "none"
 }
 
 /**
@@ -225,32 +259,40 @@ export function labelEdgeRule(source: Source, label: GraphLabel): GapRule {
  *   with the label `/x/`, `A[/x/]` a lean-right with the label `x`;
  *   `A( -x-)` is a rounded, `A(-x-)` an ellipse; `A[/ "x /]` has the
  *   label `"x`, and `A[/"x/]` is rejected.
- * - a label whose first word, up to whitespace or a `"`, holds a `@`, in
- *   agentflow and after the `>` of a flowchart shape: `A>x@]` is rejected,
- *   because `A>x@` is read as an edge id, and `A> x@]` has the label `x@`. In
- *   flowchart, the run of an edge id stops at the brackets and at `|`, so
- *   `A[x@]` and `A-->|x@|B` are accepted with the same label as with the
- *   whitespace, and it is dropped. In agentflow, `A[x@]` is rejected too.
+ * - a label whose first word, up to whitespace or a `"`, holds a `@` that no
+ *   `{` or `"` follows: after the `>` of a flowchart shape and in agentflow,
+ *   `A>x@]` is rejected, because `A>x@` is read as an edge id, and `A> x@]`
+ *   has the label `x@`.
+ *   The pinned mermaid.js stops the run of an edge id at the other brackets
+ *   and at `|`, so it reads `A[x@]` and `A-->|x@|B` as it reads them with the
+ *   whitespace. Some versions that count do not stop it there and reject
+ *   them, and the formatted text is drawn by those versions too
+ *   (docs/compatibility.md, Whitespace at the start of a label).
  *
- * Apart from the `@`, the rule is the same for every shape and for the text
- * between `|`, so that it does not depend on which brackets a label has. The
- * label's value is its text without directives, as mermaid.js reads it.
+ * The rule is the same for every shape and for the text between `|`, so that
+ * it does not depend on which brackets a label has. The label's value is its
+ * text without directives, as mermaid.js reads it.
  */
-function keepsLeadingWhitespace(label: GraphLabel, opening: Token): boolean {
+function keepsLeadingWhitespace(label: GraphLabel): boolean {
   const first = label.value.charAt(0)
   if (first === "/" || first === "\\" || first === "-" || first === '"') {
     return true
   }
-  if (label.type !== "AgentflowLabel" && opening.value !== ">") return false
-  let wordEnd = 0
-  while (
-    wordEnd < label.value.length &&
-    !isWhitespace(label.value.charAt(wordEnd)) &&
-    label.value.charAt(wordEnd) !== '"'
+  // The lexers that read an edge id take a run of characters that are no
+  // whitespace and no `"`, an `@`, and a character that is no `{` and no `"`.
+  for (
+    let index = 0;
+    index < label.value.length &&
+    !isWhitespace(label.value.charAt(index)) &&
+    label.value.charAt(index) !== '"';
+    index++
   ) {
-    wordEnd++
+    const next = label.value.charAt(index + 1)
+    if (label.value.charAt(index) === "@" && next !== "{" && next !== '"') {
+      return true
+    }
   }
-  return label.value.slice(0, wordEnd).includes("@")
+  return false
 }
 
 /**
@@ -308,8 +350,9 @@ export function findStyleStatementEnd(
   if (!statement.type.endsWith("LinkStyleStatement")) return statement.range[1]
   // The whitespace after the last style of a `linkStyle` that mermaid.js reads
   // (see `normalizeStyleList`).
-  const tail = skipSpacesAndTabs(source, last.range[1], written)
-  if (hasBlankStrokeValue(source.text.slice(last.range[0], tail))) {
+  const tail = skipBlanksAndRemoved(source, last.range[1], written)
+  const styleStart = statement.styles.at(-1)?.range[0] ?? last.range[0]
+  if (hasBlankStrokeValue(textRead(source, styleStart, tail))) {
     return written
   }
   return Math.max(statement.range[1], endOfJoinedStyle(source, last.range))

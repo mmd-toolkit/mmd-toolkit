@@ -159,11 +159,11 @@ is printed `accelerator "Market"`. A name is plain where it is words of ASCII
 letters, digits, and `_` that start with a letter, with a space between them,
 and it does not start with a word that the lexer reads as a command or a
 strategy (`build`, `component`, `title`, and the others, in lower case). A name
-with a `-` keeps its quotes, since 11.14.0, the first release with the diagram
-type, rejects it without them (see
-[Versions of mermaid.js](./compatibility.md#versions-of-mermaidjs)). The name of
-a link without an arrow, `"A" "B"`, and a name that touches the `---` of a
-hidden YAML block keep their quotes. [fixture:
+with a `-` keeps its quotes, since the first release with the diagram type
+rejects it without them (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The name of a link without an arrow, `"A" "B"`, and a name that touches the
+`---` of a hidden YAML block keep their quotes. [fixture:
 names-and-quotes/plain-names-without-quotes] [fixture:
 names-and-quotes/names-that-need-quotes] Keep WardleyIdentifier and
 StringLiteral source spans otherwise, including internal spaces/tabs, hyphens,
@@ -244,9 +244,10 @@ wardley-beta
 ### Coordinates
 
 Print coordinate pairs as [a, b], with tight inner edges, no space before the
-comma and one after it. This selects readable punctuation among Db-equal padded
-forms. Keep visibility before evolution and keep integer or decimal spellings;
-hidden/global trivia use their shared gap rules.
+comma and one after it. This is the whitespace that Prettier prints beside a
+comma, chosen among Db-equal padded forms. Keep visibility before evolution and
+keep integer or decimal spellings; hidden/global trivia use their shared gap
+rules.
 
 [fixture: wardley/coordinates/coordinates-decimal]
 
@@ -341,8 +342,9 @@ wardley-beta
 
 Print label [-1, 2]: attach each ordinary minus to its unsigned integer
 magnitude. Keep the sign even for -0 and preserve the magnitude spelling. Spaced
-signs can share the Db, but attachment makes their operand clear. Hidden/global
-trivia between sign and magnitude retain their boundary.
+signs can share the Db, but the sign touches its magnitude, as Prettier prints a
+unary minus. Hidden/global trivia between sign and magnitude retain their
+boundary.
 
 [fixture: wardley/label-offsets/offset-sign-gap]
 
@@ -362,13 +364,24 @@ wardley-beta
 
 Separate complete AST names, ports and arrows by one ordinary space, including
 arrowless links. Preserve every port and arrow spelling. A-->B is the name A-
-and arrow ->, so it prints A- -> B; do not search the source for arrow-shaped
-text. A -->B instead keeps -->. This spacing exposes the components already read
-by the parser.
+and arrow ->, but the first version with the diagram rejects a name with a `-`
+in it and reads the same text as the name A and the arrow -->, so an arrow is
+not separated from a name that ends with `-`: A-->B prints A--> B, which every
+version draws as it draws A-->B, not A- -> B (see
+[Wardley authored text and required line breaks](./compatibility.md#wardley-authored-text-and-required-line-breaks)).
+A directive between the name and the arrow does not part them, as mermaid.js
+takes the directive away before it reads the text: A-%%{init: {}}%%->B prints
+A-%%{init: {}}%%-> B. [fixture: wardley/links/link-glued-directive-between] Do
+not search the source for arrow-shaped text. A -->B instead keeps -->. This
+spacing follows the components already read by the parser.
 
 [fixture: wardley/links/link-short]
 
 [fixture: wardley/links/link-long-glued]
+
+[fixture: wardley/links/link-name-dashes-glued]
+
+[fixture: wardley/links/link-name-dash-spaced]
 
 [fixture: wardley/links/link-long-spaced]
 
@@ -529,9 +542,8 @@ wardley-beta
 
 Attach @ on both sides and put one ordinary space around / and each stage arrow
 ->. Preserve optional boundaries, second names, empty quoted names and source
-stage order. The tight annotation mark and separated alternatives make the
-stages readable without filling missing values; bare title retains Name
-boundaries.
+stage order. The annotation mark is tight and the alternatives are separated,
+without filling missing values; bare title retains Name boundaries.
 
 [fixture: wardley/evolution/stage-all-gaps]
 

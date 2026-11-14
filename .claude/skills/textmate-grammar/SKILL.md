@@ -111,9 +111,7 @@ mermaid.js reaches it only through a change of the specification.
 
 This work writes only to `packages/textmate-grammar`, its changesets
 (`.changeset/`), and this skill. A gap in the specification is fixed with the
-spec skill, never by a rule that guesses. Commit and push only when asked
-(AGENTS.md). Do not change the staging area; do not use `git mv`, `git stash`,
-`git checkout` or `git restore`.
+spec skill, never by a rule that guesses.
 
 ## 2. How the files fit together
 
@@ -224,10 +222,10 @@ spec skill, never by a rule that guesses. Commit and push only when asked
 ## 6. When mermaid.js is updated
 
 The grammar takes nothing from mermaid.js. Wait until the specification is
-updated with the tests skill and the spec skill, then apply section 5. Nothing
-in the grammar is tied to the version of mermaid.js; the playground's examples
-(`@mermaid-js/examples`, a dependency of the playground) follow its releases, so
-color them again as section 7 says.
+updated with the tests-mermaid-update skill and the spec skill, then apply
+section 5. Nothing in the grammar is tied to the version of mermaid.js; the
+playground's examples (`@mermaid-js/examples`, a dependency of the playground)
+follow its releases, so color them again as section 7 says.
 
 ## 7. Checking a change
 

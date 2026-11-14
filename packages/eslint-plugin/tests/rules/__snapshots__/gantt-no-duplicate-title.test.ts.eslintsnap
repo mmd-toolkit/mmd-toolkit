@@ -10,7 +10,7 @@ Code:
   3 |   title second
     |   ^~~~~~~~~~~~ [1]
   4 |   dateFormat YYYY-MM-DD
-  5 |   Design :2024-01-06, 3d
+  5 |   Design : 2024-01-06, 3d
   6 |
 
 [1] mermaid.js replaces the earlier title with the one of this `title`.
@@ -20,14 +20,14 @@ Code:
           1 | gantt
           2 |   title first
           3 |   dateFormat YYYY-MM-DD
-          4 |   Design :2024-01-06, 3d
+          4 |   Design : 2024-01-06, 3d
           5 |
       - Remove the earlier statement that sets the title.
         Output:
           1 | gantt
           2 |   title second
           3 |   dateFormat YYYY-MM-DD
-          4 |   Design :2024-01-06, 3d
+          4 |   Design : 2024-01-06, 3d
           5 |
 ---
 
@@ -41,7 +41,7 @@ Code:
   3 |   accTitle: second
     |   ^~~~~~~~~~~~~~~~ [1]
   4 |   dateFormat YYYY-MM-DD
-  5 |   Design :2024-01-06, 3d
+  5 |   Design : 2024-01-06, 3d
   6 |
 
 [1] mermaid.js replaces the earlier accessible title with the one of this `accTitle`.
@@ -51,14 +51,14 @@ Code:
           1 | gantt
           2 |   accTitle: first
           3 |   dateFormat YYYY-MM-DD
-          4 |   Design :2024-01-06, 3d
+          4 |   Design : 2024-01-06, 3d
           5 |
       - Remove the earlier `accTitle` statement.
         Output:
           1 | gantt
           2 |   accTitle: second
           3 |   dateFormat YYYY-MM-DD
-          4 |   Design :2024-01-06, 3d
+          4 |   Design : 2024-01-06, 3d
           5 |
 ---
 

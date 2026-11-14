@@ -136,7 +136,16 @@ accDescr: d ; direction LR
 
 ### Statements one per line
 
-Each statement stands on a line of its own. [fixture:
+A `;` that the line rule ignores after a word does not separate it from the next
+surviving `;`: only that surviving separator determines the line kept with the
+word. [fixture: statements-one-per-line/word-before-ignored-semicolon]
+
+Each statement stands on a line of its own, as Prettier prints the statements of
+the languages it formats (`a(); b()` in JavaScript becomes two lines), and as
+the documentation of mermaid.js writes them: none of the 257 lines of statements
+in its flowchart examples holds two. A `;` that separates two statements and a
+line break both end a statement for mermaid.js, so the split changes neither the
+Db nor the figure. [fixture:
 statements-one-per-line/compat-empty-description-block-after-statement]
 [fixture:
 statements-one-per-line/compat-empty-description-block-before-separator]
@@ -144,8 +153,8 @@ statements-one-per-line/compat-empty-description-block-before-separator]
 statements-one-per-line/compat-empty-description-block-before-statement]
 [fixture:
 statements-one-per-line/compat-empty-description-block-after-data-block]
-Statements written on one line and separated by `;` are split into lines: a `;`
-only separates them, and a line of several statements is hard to read. [fixture:
+Statements written on one line and separated by `;` are split into lines, and
+the `;` goes with the split, since it only separates them. [fixture:
 statements-one-per-line/separated-by-semicolons-meets-others] [fixture:
 statements-one-per-line/separated-by-semicolons-after-data-block]
 
@@ -644,6 +653,10 @@ flowchart LR
 
 ### Whitespace between tokens
 
+A call argument that contains only spaces and tabs after the ignored `;` is
+removed keeps the argument list as written, like any other blank argument.
+[fixture: whitespace-between-tokens/call-blank-ignored-part]
+
 Within a line, a run of spaces and tabs between two tokens becomes one space, so
 that a line has one form whoever wrote it, and tokens that touch keep touching,
 except where a rule below says otherwise (Arrow spacing): mermaid.js reads some
@@ -662,6 +675,7 @@ and `subgraph " S "` have the id `S`), and a diagram that names `swimlane` (see
 [fixture: whitespace-between-tokens/subgraph-name-runs-collapsed] [fixture:
 subgraph-header/markdown-title-runs-kept] [fixture:
 subgraph-header/collapsed-title-runs-kept] [fixture:
+flowchart/subgraph-header/id-directive-in-data-target-kept] [fixture:
 subgraph-header/collapsed-quoted-name-title-runs-kept] [fixture:
 subgraph-header/collapsed-markdown-name-title-runs-kept] [fixture:
 subgraph-header/collapsed-spaced-name-title-runs-kept] [fixture:
@@ -694,11 +708,78 @@ styles of a link to colour its arrowheads. [fixture:
 whitespace-between-tokens/link-style-stroke-before-colon-kept] [fixture:
 whitespace-between-tokens/class-def-stroke-before-colon-kept] A `style` styles a
 node, and uses the one form. [fixture:
-whitespace-between-tokens/style-stroke-before-colon-spaced] A space after a
-backslash that ends a style of a `style` is read as nothing:
-`style A stroke-width:3px\ ,stroke:#0f0` is printed
-`style A stroke-width: 3px\, stroke: #0f0`. [fixture:
-whitespace-between-tokens/style-backslash-space-dropped] A style of a
+whitespace-between-tokens/style-stroke-before-colon-spaced] A `style` keeps
+whether whitespace stands before a style that starts with `color:` or
+`text-align:`, and, for the first style of the statement, between such a name
+and the `:`, a run of whitespace becoming one space, since a version that counts
+puts a style that starts so in the style of the label of the node:
+`style A color   :red,fill:#f00` is printed `style A color : red, fill: #f00`. A
+style with whitespace before it does not start so, with the gap or without it:
+`style A fill:#f00, color :red` is printed `style A fill: #f00, color: red`. A
+style that follows a `,` directly and has a gap before its `:` is printed so
+too, with whitespace before it: `style A fill:#f00,color   :red` is printed
+`style A fill: #f00, color: red`. `style A fill:#f00,color:white` is printed
+`style A fill: #f00,color: white`, and `style A fill:#f00 ,   color:white` is
+printed `style A fill: #f00, color: white` (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)
+and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+[fixture: whitespace-between-tokens/style-color-touching-kept] [fixture:
+whitespace-between-tokens/style-color-spaced] [fixture:
+whitespace-between-tokens/style-color-first] [fixture:
+whitespace-between-tokens/style-text-align-touching-kept] [fixture:
+whitespace-between-tokens/style-label-name-colon-gap-first-kept] [fixture:
+whitespace-between-tokens/style-label-name-colon-gap-after-comma-spaced]
+[fixture:
+whitespace-between-tokens/style-label-name-colon-gap-after-space-spaced] A
+`linkStyle` keeps the same whitespace for a style that starts with `color:` or
+`text-align:`, which a version that counts puts in the style of the label of a
+link. [fixture: whitespace-between-tokens/link-style-label-names-kept] A
+`linkStyle` keeps whether whitespace stands between a name that ends with `fill`
+and the `:`, a run of whitespace becoming one space: `linkStyle 0 fill  :#f00`
+is printed `linkStyle 0 fill : #f00`. A version that counts makes the style of
+the label of a link from the styles of the link and puts `color:` in the place
+of the first `fill:` in them, or, in a swimlane diagram, in the first style
+only, and `fill :` is no `fill:` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)
+and
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+[fixture: whitespace-between-tokens/link-style-fill-colon-gap-kept] [fixture:
+whitespace-between-tokens/link-style-fill-colon-gap-swimlane-kept] A style that
+the label does not read is printed in the one form: a style after a style that
+has `fill:` in its text, or, in a swimlane diagram, a style that is not the
+first: `linkStyle 0 fill:#f00,fill  :#0f0` is printed
+`linkStyle 0 fill: #f00,fill: #0f0`. [fixture:
+whitespace-between-tokens/link-style-fill-colon-gap-after-fill-spaced] [fixture:
+whitespace-between-tokens/link-style-fill-colon-gap-swimlane-not-first-spaced]
+The styles of a statement that a later one replaces are printed in the one form
+too: a `linkStyle` that a later `linkStyle` replaces for every link it numbers,
+and a `linkStyle default` that a later `linkStyle default` replaces. The styles
+of a `linkStyle` that is replaced for some of its links only stay. [fixture:
+whitespace-between-tokens/link-style-fill-colon-gap-replaced-spaced] [fixture:
+whitespace-between-tokens/link-style-fill-colon-gap-replaced-for-one-link-kept]
+The styles of a `linkStyle default` stand before those of a numbered `linkStyle`
+in the styles of a link, so a numbered `linkStyle` after them is printed in the
+one form where the label reads them first: in a flowchart when one of them has
+`fill:`, and in a swimlane diagram whatever they are. [fixture:
+whitespace-between-tokens/link-style-fill-colon-gap-default-fill-spaced]
+[fixture:
+flowchart/whitespace-between-tokens/link-style-directive-before-fill-colon-kept]
+[fixture: flowchart/whitespace-between-tokens/link-style-directive-in-fill-kept]
+[fixture:
+whitespace-between-tokens/link-style-fill-colon-gap-swimlane-default-spaced]
+[fixture:
+whitespace-between-tokens/link-style-fill-colon-gap-swimlane-default-kept] No
+version that counts reads an agentflow diagram so, and its `linkStyle` uses the
+one form. [fixture:
+agentflow/single-space-gaps/link-style-fill-colon-gap-spaced] A style of a
+`style` that ends with a backslash keeps whether whitespace stands after it, a
+run of whitespace becoming its first character, since a version that counts
+joins the styles of a node with `;` as they are, and the backslash would escape
+the `;`: `style A stroke-width:3px\ ,stroke:#0f0` is printed
+`style A stroke-width: 3px\ , stroke: #0f0` (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+[fixture: whitespace-between-tokens/style-backslash-space-kept] A style of a
 `linkStyle` with a name that ends with `stroke` and a value of spaces and tabs
 only stays as written, since mermaid.js draws no colour of the arrowheads from
 it and does not try a later `stroke:`: `linkStyle 0 stroke: ,   stroke:#f00` is
@@ -771,6 +852,14 @@ whitespace-between-tokens/style-colon-first-run-spaced] [fixture:
 whitespace-between-tokens/style-escaped-space-run-spaced] A comment that is not
 closed runs to the end of the style, and the runs in it stay. [fixture:
 whitespace-between-tokens/style-unclosed-comment-runs-kept]
+
+The `,` of a `class`, `click`, and `linkStyle` statement stays as written,
+without a space after it, since mermaid.js rejects `class A, B c` and the like.
+In a `classDef`, a space after the `,` between the names would move the name
+after it into the style (`classDef a, b fill:red` gives `a` the style
+`b fill:red`), so those names stay as written too (see
+[Lists separated by commas](./compatibility.md#lists-separated-by-commas)).
+[fixture: whitespace-between-tokens/comma-lists-without-space-kept]
 
 U+2028 and U+2029 after the `end` of a subgraph are whitespace to mermaid.js,
 and are dropped with the whitespace at the end of the line: `end`, U+2028, and a
@@ -963,6 +1052,23 @@ arrow-spacing/edge-id-arrow-like-after-directive-runs] [fixture:
 arrow-spacing/edge-id-arrow-like-after-ignored-semicolon] [fixture:
 arrow-spacing/edge-id-arrow-like-after-ignored-semicolon-runs-collapsed]
 
+An edge id after a data block touches the block: `A@{ shape: circle } e1@--> B`
+is printed `A@{ shape: circle }e1@--> B`. mermaid.js 12.3.0 reads the two forms
+the same, and draws the same figure from them. Some of the versions that count
+have no rule for a space after a data block before an edge id, so they reject
+the form with the space (another has no data block, and rejects both; see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The touching form is the one that every version that reads a data block reads. A
+directive or an ignored `;` between the block and the edge id is removed before
+the text is read, so the block, the directive or the `;`, and the edge id touch
+one another: `A@{ shape: circle }%%{init: {}}%%e1@--> B`. After the closing
+bracket of a shape the edge id has one space (`A[x] e1@--> B`), since the same
+versions reject `A[x]e1@--> B`. A swimlane diagram follows the same rule.
+[fixture: arrow-spacing/edge-id-after-data-block-touches] [fixture:
+arrow-spacing/edge-id-after-data-block-directive] [fixture:
+arrow-spacing/edge-id-after-data-block-semicolon] [fixture:
+arrow-spacing/edge-id-after-data-block-touches-swimlane]
+
 Input
 ([arrow-spacing/plain-input.mmd](../tests/fixtures/flowchart/arrow-spacing/plain-input.mmd)):
 
@@ -1061,6 +1167,30 @@ flowchart LR
   I[x]~~~i@~~~ J
 ```
 
+Input
+([arrow-spacing/edge-id-after-data-block-touches-input.mmd](../tests/fixtures/flowchart/arrow-spacing/edge-id-after-data-block-touches-input.mmd)):
+
+```mmd
+flowchart LR
+A@{ shape: circle } e1@--> B
+C@{ shape: rect }e2@-.->D
+E@{ shape: rect }   e3@-->|x| F@{ shape: circle } e4@==> G
+H[x] e5@--> I
+J[x]e6@--> K
+```
+
+Output
+([arrow-spacing/edge-id-after-data-block-touches-output.mmd](../tests/fixtures/flowchart/arrow-spacing/edge-id-after-data-block-touches-output.mmd)):
+
+```mmd
+flowchart LR
+  A@{ shape: circle }e1@--> B
+  C@{ shape: rect }e2@-.-> D
+  E@{ shape: rect }e3@-->|x| F@{ shape: circle }e4@==> G
+  H[x] e5@--> I
+  J[x] e6@--> K
+```
+
 ### Label inner whitespace
 
 Whitespace at the ends of a label without quotes is dropped, as mermaid.js drops
@@ -1090,29 +1220,42 @@ label-inner-whitespace/pipe-string-closing-touches] [test: U+2028 between the
 closing quote and the `|` of a flowchart edge label]
 
 The whitespace at the start of a label is kept, as one space, when the label
-would be read differently without it: when the label starts with `/`, `\`, `-`,
-or `"`, and when the label of a `>` shape has a `@` in its first word, up to
-whitespace or a `"`. [fixture:
-label-inner-whitespace/compat-leading-backslash-kept] [fixture:
-label-inner-whitespace/leading-whitespace-trimmed-without-trigger] [fixture:
-label-inner-whitespace/leading-whitespace-run-becomes-one] Without the space,
-`A[ /x/]` would become a lean-right shape with the label `x`, `A( -x-)` an
-ellipse, and `A>x@ ]` would be rejected, because the run of an edge id does not
-stop at `>` and reads `A>x` as an edge id. Such a label then has one space at
-its end too: `A[ /x/]` becomes `A[ /x/ ]`, except before the closing `?]` or
+would be read differently without it, or not read at all: when the label starts
+with `/`, `\`, `-`, or `"`, and when its first word, up to whitespace or a `"`,
+has a `@`. [fixture: label-inner-whitespace/compat-leading-backslash-kept]
+[fixture: label-inner-whitespace/leading-whitespace-trimmed-without-trigger]
+[fixture: flowchart/label-inner-whitespace/label-directive-with-whitespace-kept]
+[fixture: label-inner-whitespace/leading-whitespace-run-becomes-one] Without the
+space, `A[ /x/]` would become a lean-right shape with the label `x`, `A( -x-)`
+an ellipse, and `A>x@ ]` would be rejected, because the run of an edge id does
+not stop at `>` and reads `A>x` as an edge id. Such a label then has one space
+at its end too: `A[ /x/]` becomes `A[ /x/ ]`, except before the closing `?]` or
 `=]` of a slanted shape, where mermaid.js would read the space and the `?` or
 `=` as text: `A[/ -x/?]` stays as it is. The rule is the same for every shape
-and for the text between `|`, except for the `@`. [fixture:
+and for the text between `|`. [fixture:
 label-inner-whitespace/leading-whitespace-every-shape-kept] [fixture:
 label-inner-whitespace/leading-whitespace-pipe-label-kept]
 
-After any other opening than `>`, a `@` in a label needs no space. The run of an
-edge id stops at the brackets and at `|`, so `A[x@]` and `A-->|x@|B` have the
-label `x@` with or without the whitespace, and `A[ user@example.com ]` becomes
-`A[user@example.com]`. [fixture:
-label-inner-whitespace/leading-whitespace-at-sign-trimmed] Agentflow differs:
-its edge id run does not stop there, `A[x@]` is rejected, and so the space stays
-before a label whose first word has a `@` (see [Labels](./agentflow.md#labels)).
+The `@` in the first word depends on the version of mermaid.js. The pinned
+version stops the run of an edge id at a bracket and at `|`, so it reads
+`A[user@example.com]` and `A-->|x@|B` with the same labels as it reads them with
+the whitespace. Some versions that count do not stop it there: their lexers read
+a run of characters that are no whitespace and no `"`, then an `@` that no `{`
+or `"` follows, as an edge id, so they reject the two without the whitespace and
+accept them with it (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A text printed without the space would be rejected by versions that read the
+text as it is written, so the space stays after every opening, in the title of a
+subgraph, and in a flowchart, a swimlane diagram, and an agentflow diagram
+alike, with one space at the end of the label too, except before the closing
+`?]` or `=]` of a slanted shape, as above (`A[/ x@/?]` stays as it is). An `@`
+that a `{` or a `"` follows is no edge id to those lexers, so a label with only
+such an `@` loses its space (`A[/ a@"b" /]` is printed `A[/a@"b"/]`). [fixture:
+label-inner-whitespace/leading-whitespace-at-sign-kept] [fixture:
+label-inner-whitespace/leading-whitespace-at-sign-every-shape-kept] [fixture:
+label-inner-whitespace/leading-whitespace-at-sign-before-question-end-kept]
+[fixture: label-inner-whitespace/leading-whitespace-at-sign-swimlane-kept]
+[fixture: label-inner-whitespace/leading-whitespace-at-sign-before-quote]
 
 Input
 ([label-inner-whitespace/trimmed-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/trimmed-input.mmd)):
@@ -1212,6 +1355,34 @@ Output
 flowchart LR
   B[/ -x/?]
   C[/ -x/=]
+```
+
+Input
+([label-inner-whitespace/leading-whitespace-at-sign-kept-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept-input.mmd)):
+
+```mmd
+flowchart LR
+A[ user@example.com ]
+B-->| x@ |C
+D-->| y@z |E
+F[ @x ]
+G[ x@ y ]
+H[ a@b@ ]
+I(( x@ ))
+```
+
+Output
+([label-inner-whitespace/leading-whitespace-at-sign-kept-output.mmd](../tests/fixtures/flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept-output.mmd)):
+
+```mmd
+flowchart LR
+  A[ user@example.com ]
+  B -->| x@ | C
+  D -->| y@z | E
+  F[ @x ]
+  G[ x@ y ]
+  H[ a@b@ ]
+  I(( x@ ))
 ```
 
 ### Link label form
@@ -1571,10 +1742,15 @@ cb
 ### Data blocks
 
 Keep each `@{ ... }` attached to its vertex, without formatting its YAML or
-changing its keys and values. Three things change: the ends of a block on one
-line, the margin of an eligible multiline block, and a block on one line whose
-line is too long, which prints on several lines. Only whitespace, line breaks
-and the `,` between entries change.
+changing its keys and values. The tree holds the body of a block whole, as one
+text that mermaid.js reads as YAML, so the whitespace beside the marks inside it
+is not decided by the rules of
+[How the printed form is decided](./printed-form.md): the colon of a key stays
+as written (`A@{ shape : circle }` keeps the space before its colon; see
+[A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)).
+Three things change: the ends of a block on one line, the margin of an eligible
+multiline block, and a block on one line whose line is too long, which prints on
+several lines. Only whitespace, line breaks and the `,` between entries change.
 
 A block on one line is printed with one space inside each end:
 `A@{shape: circle}` and `A@{   shape: circle   }` become `A@{ shape: circle }`.
@@ -1627,23 +1803,23 @@ data-blocks/one-line-surrounding-trivia] [test: data blocks: flowchart one line
 CRLF] [test: data blocks: flowchart one line CR]
 
 A block on one line whose line is longer than `printWidth` prints on several
-lines where that reads better: one entry on each line, one level inside the
-statement, with the `}` alone on a line at the column of the statement, as in a
-block of several lines that moves (see below). Prettier chooses between the two
-forms: the block stays on its line where the line fits, and where the line would
-still be too long up to the `{` (a long text of the node stands before it), the
-lines would not shorten what is too long, so the block stays. [fixture:
-data-blocks/long-split] [fixture: data-blocks/long-prefix-too-long-kept] The
-width of the line is the width that Prettier measures, in which a tab counts for
-nothing, so a line with tabs can be wider on the screen than it measures and
-stay on its line. [fixture: data-blocks/long-tabs-not-counted] mermaid.js reads
-the text of a block on one line as a YAML flow mapping, whose entries a `,`
-separates, and the text of a block of several lines as a block mapping, whose
-entries stand on lines of their own (the sources above). Both read the same
-where every entry is a key and a value that the two readings read alike, which
-the conditions below ensure. The entries print as written, without the spaces
-and tabs at their ends: only the whitespace, the line breaks and the `,` between
-entries change, and the Db is the same. The block splits only if
+lines: one entry on each line, one level inside the statement, with the `}`
+alone on a line at the column of the statement, as in a block of several lines
+that moves (see below). Prettier chooses between the two forms: the block stays
+on its line where the line fits, and where the line would still be too long up
+to the `{` (a long text of the node stands before it), the lines would not
+shorten what is too long, so the block stays. [fixture: data-blocks/long-split]
+[fixture: data-blocks/long-prefix-too-long-kept] The width of the line is the
+width that Prettier measures, in which a tab counts for nothing, so a line with
+tabs can be wider on the screen than it measures and stay on its line. [fixture:
+data-blocks/long-tabs-not-counted] mermaid.js reads the text of a block on one
+line as a YAML flow mapping, whose entries a `,` separates, and the text of a
+block of several lines as a block mapping, whose entries stand on lines of their
+own (the sources above). Both read the same where every entry is a key and a
+value that the two readings read alike, which the conditions below ensure. The
+entries print as written, without the spaces and tabs at their ends: only the
+whitespace, the line breaks and the `,` between entries change, and the Db is
+the same. The block splits only if
 
 - it belongs to a flowchart, an agentflow or a kanban diagram. A sequence
   diagram rejects the lines of a block mapping, and the `@{` of a use case
@@ -1660,9 +1836,9 @@ entries change, and the Db is the same. The block splits only if
   on its line; [fixture: data-blocks/long-use-tabs-kept]
 - it is the only block of its statement and the last thing in it, on the first
   line of the statement: text after its `}` would stand after the `}` on a line
-  of its own, which reads worse than the block on its line, and the first line
-  supplies the level of the statement; [fixture:
-  data-blocks/long-text-after-kept] [fixture: data-blocks/long-two-blocks-kept]
+  of its own, which changes the form of the block, and the first line supplies
+  the level of the statement; [fixture: data-blocks/long-text-after-kept]
+  [fixture: data-blocks/long-two-blocks-kept]
 - it has at least two entries: the lines of a single entry would not shorten the
   line, and only add lines; [fixture: data-blocks/long-one-entry-kept]
 - every entry is a key and a value separated by a colon and whitespace, the
@@ -2238,31 +2414,75 @@ the examples are written as strings, in which `\n` is a line break:
 
 ### Direction
 
-The direction is kept as written: `TD` is not changed to `TB`, and `TB` is not
-changed to `TD`, in the header or in a `direction` statement. mermaid.js 12.3.0
-draws the two the same, but mermaid.js 11.9.0 draws a flowchart with `TB` in its
-header differently from the same text with `TD`, and the header keyword is kept
-as written too (see
-[Versions of mermaid.js](./compatibility.md#versions-of-mermaidjs) and
+The `TB` in the header of a flowchart is printed `TD`, as the examples of the
+documentation write `TD` 70 times and `TB` 7 times: `flowchart TB` becomes
+`flowchart TD`, `graph TB` becomes `graph TD`, and `flowchart-elk TB` becomes
+`flowchart-elk TD`. It stays `TB` where some version that counts draws the
+figure differently with `TB` and with `TD`. The dagre layout of those versions
+takes a subgraph out of the figure and lays it out alone, in `LR` where the
+direction of the figure is `TB` and in `TB` where it is not, and it does so for
+a subgraph that has no `direction` statement of its own, has a member, and has
+no link between a vertex inside it and a vertex outside it. So the header stays
+as written where the flowchart has such a subgraph, and is printed `TD`
+otherwise: with no subgraph, with only subgraphs that a link joins to the
+outside, that have a `direction` statement, or that are empty. The members of a
+subgraph are those that the specification defines (a vertex that an earlier
+subgraph has belongs to that one; a nested subgraph is a member of the one
+around it, so its vertices are inside both), except that the value of an
+`accTitle` or `accDescr` statement and a `;`, which the list of the
+specification holds too, are no node of the figure: a subgraph that holds only
+them is empty, also where a `click` names the same id as such a value. A link to
+the id of a subgraph, or from it, does not join the subgraph to the outside, and
+a `subgraph` in a label, an id, or a comment is no subgraph. Every other version
+that counts draws the figure the same with the two, with the layout that each
+version uses by default and with the other one where it has two (see
+[Layouts that the versions were drawn with](./compatibility.md#layouts-that-the-versions-were-drawn-with)
+and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The header keyword is kept as written too (see
 [The names of a header](./compatibility.md#the-names-of-a-header)). [fixture:
-direction/header-td-kept] [fixture: direction/header-tb-kept] [fixture:
+direction/header-tb-without-subgraph] [fixture:
+flowchart/direction/header-directive-before-direction-kept] [fixture:
+direction/header-graph-tb-without-subgraph] [fixture:
+direction/header-tb-subgraph-word-is-no-subgraph] [fixture:
+direction/header-tb-with-direction-statement] [fixture:
+direction/header-td-kept] [fixture: direction/header-tb-unlinked-subgraph-kept]
+[fixture: direction/header-tb-subgraph-linked-out] [fixture:
+direction/header-tb-link-to-subgraph-id-kept] [fixture:
+direction/header-tb-link-from-inside-to-subgraph-id-kept] [fixture:
+direction/header-tb-nested-inner-unlinked-kept] [fixture:
+direction/header-tb-nested-inner-linked] [fixture:
+direction/header-tb-subgraph-own-direction] [fixture:
+direction/header-tb-empty-subgraph] [fixture:
+direction/header-tb-subgraph-acc-title-only] [fixture:
+direction/header-tb-subgraph-acc-descr-only] [fixture:
+direction/header-tb-subgraph-semicolon-only] [fixture:
+direction/header-tb-subgraph-acc-title-and-vertex-kept] [fixture:
+direction/header-tb-subgraph-acc-title-with-click-id] [fixture:
+direction/header-tb-two-subgraphs-linked-to-each-other] [fixture:
+direction/header-tb-two-subgraphs-one-unlinked-kept] [fixture:
+direction/header-tb-subgraph-member-of-earlier-kept] [fixture:
+direction/header-elk-tb-without-subgraph] [fixture:
+direction/header-elk-tb-unlinked-subgraph-kept] [fixture:
+direction/header-elk-tb-linked-subgraph] [fixture:
 direction/header-keyword-kept] [fixture:
 direction/statement-td-kept-with-other-header] [fixture:
-direction/statement-values-kept] mermaid.js keeps the `TD` of a `direction`
-statement in a subgraph as written, so changing it there would change the
-diagram, and changing only the header would make the two disagree. The header of
-a swimlane diagram is printed with `TB` for `TD`, as the header of an agentflow
-diagram is (see [Header](./agentflow.md#header)); both diagram types are later
-than the version that made `TD` behave as `TB`. A `TD` that stands after a
-directive which follows the header (`swimlane-beta%%{init: {}}%% TD`) stays as
-written. [fixture: direction/swimlane-header-td-one-form] [fixture:
-direction/swimlane-header-td-after-directive-kept] In a `direction` statement
-mermaid.js reads the text before `direction` and after the value as text, which
-may hold labels and strings, and a `;` after the value belongs to that text and
-is no separator. The text is kept as written; the whitespace between it and
-`direction`, and between `direction` and the value, becomes one space, as
-between any tokens. A line such as `A[direction TB]` is a `direction` statement
-too, its vertices and links are not read, and it is printed so, at the
+direction/statement-values-kept] A `direction` statement is kept as written:
+mermaid.js keeps the `TD` of a `direction` statement in a subgraph as written,
+so changing it there would change the diagram. The header of a swimlane diagram
+is printed with `TB` for `TD`, as the header of an agentflow diagram is (see
+[Header](./agentflow.md#header)); both diagram types are later than the version
+that made `TD` behave as `TB`. A `TD` that stands after a directive which
+follows the header is printed `TB` too (`swimlane-beta%%{init: {}}%% TD` becomes
+`swimlane-beta %%{init: {}}%%TB`). [fixture:
+direction/swimlane-header-td-one-form] [fixture:
+direction/swimlane-header-td-one-form-after-directive] In a `direction`
+statement mermaid.js reads the text before `direction` and after the value as
+text, which may hold labels and strings, and a `;` after the value belongs to
+that text and is no separator. The text is kept as written; the whitespace
+between it and `direction`, and between `direction` and the value, becomes one
+space, as between any tokens. A line such as `A[direction TB]` is a `direction`
+statement too, its vertices and links are not read, and it is printed so, at the
 indentation of its level. [fixture: direction/statement-holds-text-kept] The
 direction of the header stands after one space, also where a symbol touched the
 keyword: `graph>` is printed `graph >`, and `flowchart^` is printed
@@ -2387,6 +2607,37 @@ that a line break follows is read as the line break, and does not count.
 on the line of the header, as written, with the `;` and the directives after
 them: on a line of their own, the whitespace would be read otherwise, and a `;`
 after a block and a directive would be read as a vertex.
+
+The whitespace before a name of one word, written without a title, stays as
+written when more than one whitespace character stands between `subgraph` and
+the name, with the directives left out, and another statement names the name as
+an id: a vertex, a `style`, a `class`, a `click`, or a subgraph with the same
+name. Some versions that count read the first of those characters as the
+separator after the keyword and the others as the start of the name text, so the
+subgraph has a generated id there, while the form with one space has the name as
+its id. In `subgraph  S`, a later `S --> Z` is an edge between two vertices
+there, and in `subgraph S` it is an edge from the subgraph, and a later
+`click S href "u"` sets its link on the subgraph in the form with one space and
+on nothing in the other. Some of the versions that count that draw a swimlane
+diagram read it so there too. Where no statement names the id, nobody sees it,
+and the whitespace becomes one space, as it does before a name with a title,
+before a name of several words, and where a single tab stands. [fixture:
+subgraph-header/name-leading-space-run-named-kept] [fixture:
+subgraph-header/name-leading-space-run-style-kept] [fixture:
+subgraph-header/name-leading-space-run-class-kept] [fixture:
+subgraph-header/name-leading-space-tab-kept] [fixture:
+subgraph-header/name-leading-space-directive-kept] [fixture:
+subgraph-header/name-leading-space-nested-kept] [fixture:
+subgraph-header/name-leading-space-same-name-twice-kept] [fixture:
+subgraph-header/name-leading-space-swimlane-kept] [fixture:
+subgraph-header/name-leading-space-unnamed-collapsed] [fixture:
+subgraph-header/name-leading-space-click-kept] [fixture:
+subgraph-header/name-leading-space-click-call-kept] [fixture:
+subgraph-header/name-leading-space-click-tooltip-kept] [fixture:
+subgraph-header/name-leading-space-title-collapsed] [fixture:
+subgraph-header/name-leading-space-several-words-collapsed] [fixture:
+subgraph-header/name-leading-tab-one-space-collapsed] [fixture:
+subgraph-header/name-leading-space-directive-touching-collapsed]
 
 A name that ends with an `end` unit, as in `subgraph Front end`, takes the line
 break after it and the whitespace of the next line (see
@@ -2518,10 +2769,10 @@ Output
 flowchart LR
   A --> B
   C:::c
-  style A fill: #f9f, stroke: #abcdef, color: #c0ffee
+  style A fill: #f9f, stroke: #abcdef,color: #c0ffee
   style B fill: #abcd, stroke: #abcdef12
   classDef c fill: #deadbe, stroke: #abcdef
-  linkStyle 0 stroke: #ff0000, color: #00ff00
+  linkStyle 0 stroke: #ff0000,color: #00ff00
   linkStyle default stroke: #abcdef
 ```
 
@@ -2571,17 +2822,17 @@ markdown string stay as written. A name that ends with `direction`, such as
 `"xdirection"` or `"my xdirection"`, stays in quotes whatever follows it: the
 lexer reads `direction`, white space (a line break too), and `TB`, `BT`, `RL`,
 `LR`, or `TD` as one line, which `subgraph xdirection` and a next line
-`TB --> C` would form. In a `flowchart`, the lexer of 9.0.0 to 10.3.0 starts a
-token after a `-`, a `_`, and a digit, so a name also stays in quotes where
-`end` or `interpolate` ends it (`"x-end"`, `"x_end"`), where `click` or `call`
-stands before whitespace (`"x-click"`, `"x1call"`), and where `_self`, `_blank`,
-`_parent`, or `_top` stands (`"x_self"`, `"a b_top"`); a swimlane diagram prints
-these names without quotes. A name that a word touches on its line
-(`subgraph "S"accDescr {}`) and a name that a comment follows
-(`subgraph "C" %% note`) keep their quotes, since a text without quotes would
-take the word or the comment into itself, as does a name of two spaces in a
-subgraph that has a title, since there the name is an id, and two ids that
-differ by a run are two ids (see
+`TB --> C` would form. A word of that list that is only a part of a longer word,
+or stands after a `-`, a `_`, or a digit, does not keep a name in quotes: the
+versions of mermaid.js that count draw `x-end`, `x_end`, `x1click`, and `x_self`
+the same with and without quotes, so `subgraph "x_self"` is printed
+`subgraph x_self` (see
+[Versions of mermaid.js that count](./compatibility.md#versions-of-mermaidjs-that-count)).
+A name that a word touches on its line (`subgraph "S"accDescr {}`) and a name
+that a comment follows (`subgraph "C" %% note`) keep their quotes, since a text
+without quotes would take the word or the comment into itself, as does a name of
+two spaces in a subgraph that has a title, since there the name is an id, and
+two ids that differ by a run are two ids (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 A `;` or a directive after a name takes nothing into it, and the name loses its
 quotes: `subgraph "D"%%{init: {}}%%` is printed `subgraph D%%{init: {}}%%`.
@@ -2589,8 +2840,7 @@ quotes: `subgraph "D"%%{init: {}}%%` is printed `subgraph D%%{init: {}}%%`.
 quotes/subgraph-names-with-hyphens] [fixture:
 quotes/swimlane-lane-names-without-quotes] [fixture:
 quotes/subgraph-names-that-need-quotes] [fixture:
-quotes/subgraph-names-the-old-lexer-reads] [fixture:
-quotes/swimlane-lane-names-the-old-lexer-reads] [fixture:
+quotes/subgraph-names-that-look-like-keywords] [fixture:
 quotes/subgraph-names-next-to-a-direction-line] [fixture:
 quotes/subgraph-names-with-runs-without-quotes] [fixture:
 quotes/subgraph-names-before-a-comment] [fixture:
@@ -2611,22 +2861,19 @@ first and `text` for the second, but it draws the same figure (see
 [Labels that are drawn the same](./compatibility.md#labels-that-are-drawn-the-same)).
 A `.` stays in quotes in a label between two dotted arrows (`-. "a.b" .->`),
 which a `.` ends, and a `--` in a label between two solid arrows
-(`-- "a--b" -->`), which it ends too. In a `flowchart`, which the lexer of 9.0.0
-to 10.3.0 reads with the tokens of a statement, a label also stays in quotes
-where it holds a `-` at its end (`("go-")`), an arrow (`---`, `--x`, `--o`,
-`.-`), `:::`, `_self`, `_blank`, `_parent`, `_top`, `interpolate`, `click` or
-`call` before a space or the end of the label, or `accTitle` or `accDescr`; a
-swimlane diagram prints them without quotes. Any other text stays in quotes
-(`"x (y)"`, `"a/b"`, `"a & b"`, `"_x"`, `"x "`, `" x"`), and so does a markdown
-string, and a label on a line that the printer writes as it is, such as a line
-that the line rule of mermaid.js reads whole (see
-[Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)). A label written
-without quotes stays without them. [fixture: quotes/shape-labels-without-quotes]
-[fixture: quotes/link-labels-without-quotes] [fixture:
-quotes/subgraph-titles-without-quotes] [fixture: quotes/labels-that-need-quotes]
-[fixture: quotes/labels-next-to-trivia] [fixture:
-quotes/labels-the-old-lexer-reads] [fixture:
-quotes/swimlane-labels-the-old-lexer-reads] [fixture:
+(`-- "a--b" -->`), which it ends too. A text that holds what is another token
+outside a label loses its quotes like any other: the versions that count draw a
+`-` at the end (`("go-")`), an arrow (`"a---b"`, `"a.-b"`), `:::`, `_self`,
+`click` or `call` before a space, and `accTitle` the same with and without
+quotes. Any other text stays in quotes (`"x (y)"`, `"a/b"`, `"a & b"`, `"_x"`,
+`"x "`, `" x"`), and so does a markdown string, and a label on a line that the
+printer writes as it is, such as a line that the line rule of mermaid.js reads
+whole (see [Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)). A
+label written without quotes stays without them. [fixture:
+quotes/shape-labels-without-quotes] [fixture: quotes/link-labels-without-quotes]
+[fixture: quotes/subgraph-titles-without-quotes] [fixture:
+quotes/labels-that-need-quotes] [fixture: quotes/labels-next-to-trivia]
+[fixture: quotes/labels-that-look-like-other-tokens] [fixture:
 quotes/labels-with-two-dashes-between-arrows] [fixture:
 quotes/swimlane-labels-with-two-dashes-between-arrows] [fixture:
 quotes/swimlane-labels-without-quotes]
@@ -2761,15 +3008,27 @@ flowchart LR
 
 ### Style trailing whitespace
 
-Whitespace at the end of a `style`, `classDef`, or `linkStyle` statement is
-dropped. [fixture: style-trailing-whitespace/removed] [fixture:
+Whitespace taken by an unclosed directive at the end of the input is not a style
+suffix; it does not prevent ordinary style spacing. [test: style trailing NBSP
+taken by an unclosed directive]
+
+Spaces and tabs at the end of a `style`, `classDef`, or `linkStyle` statement
+are dropped, except where the figure depends on them, in the statements that the
+paragraphs below and the document of the diagram type name: a space or a tab
+after a backslash that ends the last style stays as one character, and a style
+of whitespace only stays as written. [fixture:
+style-trailing-whitespace/removed] [fixture:
 style-trailing-whitespace/removed-tab] [fixture:
-style-trailing-whitespace/removed-after-directive] mermaid.js keeps it at the
+style-trailing-whitespace/removed-after-directive] mermaid.js keeps them at the
 end of the last style, so this is one of the rules that change what mermaid.js
 stores (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same));
-the tests compare styles without their trailing whitespace. The whitespace of a
-`linkStyle` after a `stroke:` is kept as well (see
+the tests compare styles without their trailing spaces and tabs. Whitespace of
+another kind at the end, such as a no-break space, stays, and the line is
+printed as written (see
+[Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style)).
+[test: keeps whitespace other than a space and a tab at the end of a style] The
+whitespace of a `linkStyle` after a `stroke:` is kept as well (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):
 `linkStyle default stroke: ` followed by `linkStyle 0 stroke:#f00` keeps the
 space. [fixture:
@@ -2818,6 +3077,18 @@ a value can change what mermaid.js reads. [fixture:
 frontmatter-yaml/compat-tag-start-digit-kept] [fixture:
 frontmatter-yaml/compat-tag-start-underscore-kept] [fixture:
 frontmatter-yaml/compat-less-than-without-tag-formatted]
+
+The text after the frontmatter is kept as written when a tag starts in the
+frontmatter and ends after it, since mermaid.js rewrites the quotes of a value
+in that tag up to its first `>`, which can lie in the text, while the
+specification reads the text without that tag (see
+[HTML tags that start in the frontmatter](./compatibility.md#html-tags-that-start-in-the-frontmatter)).
+[fixture: frontmatter-yaml/tag-open-into-body-kept] [fixture:
+frontmatter-yaml/tag-open-ends-in-comment-kept] [fixture:
+frontmatter-yaml/tag-open-ends-in-directive-kept] [fixture:
+frontmatter-yaml/tag-second-open-kept] [fixture:
+frontmatter-yaml/tag-open-no-gt-after-formatted] [fixture:
+frontmatter-yaml/tag-closed-by-later-line-formatted]
 
 Input
 ([frontmatter-yaml/formatted-input.mmd](../tests/fixtures/flowchart/frontmatter-yaml/formatted-input.mmd)):

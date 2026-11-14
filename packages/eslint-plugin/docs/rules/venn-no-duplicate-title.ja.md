@@ -43,9 +43,9 @@ mermaid.js は後の `title` をエラーなしに受理して後のタイトル
 ```mmd
 %% eslint @mmd-toolkit/venn-no-duplicate-title: error
 venn-beta
-title Audience
-title Coverage
-set A
+  title Audience
+  title Coverage
+  set A
 ```
 
 この規則に**従う**コードの例:
@@ -53,8 +53,8 @@ set A
 ```mmd
 %% eslint @mmd-toolkit/venn-no-duplicate-title: error
 venn-beta
-title Audience
-set A
+  title Audience
+  set A
 ```
 
 ## オプション

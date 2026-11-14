@@ -26,9 +26,9 @@ const cases: readonly MarkdownCase[] = [
   {
     name: "pie Markdown: top-level",
     input: '```mermaid\npie showData "Fence":2\n```\n',
-    output: '```mermaid\npie showData\n  "Fence" : 2\n```\n',
+    output: '```mermaid\npie showData\n  "Fence": 2\n```\n',
     payloadInput: 'pie showData "Fence":2',
-    payloadOutput: 'pie showData\n  "Fence" : 2\n',
+    payloadOutput: 'pie showData\n  "Fence": 2\n',
     options: {},
   },
   {
@@ -36,25 +36,25 @@ const cases: readonly MarkdownCase[] = [
     input:
       '- item\n\n  ```mermaid\n  pie\n  accDescr {\n   one\n     two\n  }\n  "Fence":2\n  ```\n',
     output:
-      '- item\n\n  ```mermaid\n  pie\n    accDescr {\n      one\n      two\n    }\n    "Fence" : 2\n  ```\n',
+      '- item\n\n  ```mermaid\n  pie\n    accDescr {\n      one\n      two\n    }\n    "Fence": 2\n  ```\n',
     payloadInput: 'pie\naccDescr {\n one\n   two\n}\n"Fence":2',
-    payloadOutput: 'pie\n  accDescr {\n    one\n    two\n  }\n  "Fence" : 2\n',
+    payloadOutput: 'pie\n  accDescr {\n    one\n    two\n  }\n  "Fence": 2\n',
     options: {},
   },
   {
     name: "pie Markdown: quote",
     input: '> ```mmd\n> pie\n> "first\n>    second":3\n> ```\n',
-    output: '> ```mmd\n> pie\n>   "first\n>    second" : 3\n> ```\n',
+    output: '> ```mmd\n> pie\n>   "first\n>    second": 3\n> ```\n',
     payloadInput: 'pie\n"first\n   second":3',
-    payloadOutput: 'pie\n  "first\n   second" : 3\n',
+    payloadOutput: 'pie\n  "first\n   second": 3\n',
     options: {},
   },
   {
     name: "pie Markdown: zero",
     input: '```mermaid\npie\n"Zero host":2\naccTitle:  direction LR  \n```\n',
-    output: '```mermaid\npie\n"Zero host" : 2\naccTitle: direction LR\n```\n',
+    output: '```mermaid\npie\n"Zero host": 2\naccTitle: direction LR\n```\n',
     payloadInput: 'pie\n"Zero host":2\naccTitle:  direction LR  ',
-    payloadOutput: 'pie\n"Zero host" : 2\naccTitle: direction LR\n',
+    payloadOutput: 'pie\n"Zero host": 2\naccTitle: direction LR\n',
     options: {
       tabWidth: 0,
     },
@@ -62,9 +62,9 @@ const cases: readonly MarkdownCase[] = [
   {
     name: "pie Markdown: tabs",
     input: '```mermaid\npie\n"Tabs host":4\n```\n',
-    output: '```mermaid\npie\n\t"Tabs host" : 4\n```\n',
+    output: '```mermaid\npie\n\t"Tabs host": 4\n```\n',
     payloadInput: 'pie\n"Tabs host":4',
-    payloadOutput: 'pie\n\t"Tabs host" : 4\n',
+    payloadOutput: 'pie\n\t"Tabs host": 4\n',
     options: {
       useTabs: true,
     },
@@ -72,18 +72,18 @@ const cases: readonly MarkdownCase[] = [
   {
     name: "pie Markdown: hidden-gap",
     input: '```mermaid\npie\n"Hidden host":%%{}%%\n6\n```\n',
-    output: '```mermaid\npie\n  "Hidden host" :%%{}%%\n6\n```\n',
+    output: '```mermaid\npie\n  "Hidden host":%%{}%%\n6\n```\n',
     payloadInput: 'pie\n"Hidden host":%%{}%%\n6',
-    payloadOutput: 'pie\n  "Hidden host" :%%{}%%\n6\n',
+    payloadOutput: 'pie\n  "Hidden host":%%{}%%\n6\n',
     options: {},
   },
   {
     name: "pie Markdown: hidden-boundary",
     input: '```mermaid\npie\n"Boundary host":1%%{}%% \n"After host":2\n```\n',
     output:
-      '```mermaid\npie\n  "Boundary host" : 1%%{}%% \n  "After host" : 2\n```\n',
+      '```mermaid\npie\n  "Boundary host": 1%%{}%% \n  "After host": 2\n```\n',
     payloadInput: 'pie\n"Boundary host":1%%{}%% \n"After host":2',
-    payloadOutput: 'pie\n  "Boundary host" : 1%%{}%% \n  "After host" : 2\n',
+    payloadOutput: 'pie\n  "Boundary host": 1%%{}%% \n  "After host": 2\n',
     options: {},
   },
   {
@@ -91,10 +91,10 @@ const cases: readonly MarkdownCase[] = [
     input:
       '```mermaid\n\n---\ntitle: Hidden host title\n---\npie\n"Prefix host":2\n```\n',
     output:
-      '```mermaid\n\n---\ntitle: Hidden host title\n---\npie\n  "Prefix host" : 2\n```\n',
+      '```mermaid\n\n---\ntitle: Hidden host title\n---\npie\n  "Prefix host": 2\n```\n',
     payloadInput: '\n---\ntitle: Hidden host title\n---\npie\n"Prefix host":2',
     payloadOutput:
-      '\n---\ntitle: Hidden host title\n---\npie\n  "Prefix host" : 2\n',
+      '\n---\ntitle: Hidden host title\n---\npie\n  "Prefix host": 2\n',
     options: {},
   },
   {
@@ -102,9 +102,9 @@ const cases: readonly MarkdownCase[] = [
     input:
       '```mermaid\n---\ntitle:   Real host title\n---\npie\n"Yaml host":2\n```\n',
     output:
-      '```mermaid\n---\ntitle: Real host title\n---\npie\n  "Yaml host" : 2\n```\n',
+      '```mermaid\n---\ntitle: Real host title\n---\npie\n  "Yaml host": 2\n```\n',
     payloadInput: '---\ntitle:   Real host title\n---\npie\n"Yaml host":2',
-    payloadOutput: '---\ntitle: Real host title\n---\npie\n  "Yaml host" : 2\n',
+    payloadOutput: '---\ntitle: Real host title\n---\npie\n  "Yaml host": 2\n',
     options: {},
   },
   {
@@ -112,26 +112,26 @@ const cases: readonly MarkdownCase[] = [
     input:
       '```mermaid\n%%{wrap}%%\npie title style:#a;b\n"style:#c;d":3\n```\n',
     output:
-      '```mermaid\n%%{wrap}%%\npie title style:#a;b\n  "style:#c;d" : 3\n```\n',
+      '```mermaid\n%%{wrap}%%\npie title style:#a;b\n  "style:#c;d": 3\n```\n',
     payloadInput: '%%{wrap}%%\npie title style:#a;b\n"style:#c;d":3',
-    payloadOutput: '%%{wrap}%%\npie title style:#a;b\n  "style:#c;d" : 3\n',
+    payloadOutput: '%%{wrap}%%\npie title style:#a;b\n  "style:#c;d": 3\n',
     options: {},
   },
   {
     name: "pie Markdown: final-comment",
     input: '```mermaid\npie\n"Comment host":3%% final  \n```\n',
-    output: '```mermaid\npie\n  "Comment host" : 3%% final\n```\n',
+    output: '```mermaid\npie\n  "Comment host": 3%% final\n```\n',
     payloadInput: 'pie\n"Comment host":3%% final  ',
-    payloadOutput: 'pie\n  "Comment host" : 3%% final\n',
+    payloadOutput: 'pie\n  "Comment host": 3%% final\n',
     options: {},
     hostTrims: true,
   },
   {
     name: "pie Markdown: final-hidden-padding",
     input: '```mermaid\npie\n"Last":2%%{}%% \n```\n',
-    output: '```mermaid\npie\n  "Last" : 2%%{}%%\n```\n',
+    output: '```mermaid\npie\n  "Last": 2%%{}%%\n```\n',
     payloadInput: 'pie\n"Last":2%%{}%% ',
-    payloadOutput: 'pie\n  "Last" : 2%%{}%%\n',
+    payloadOutput: 'pie\n  "Last": 2%%{}%%\n',
     options: {},
     hostTrims: true,
   },

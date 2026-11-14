@@ -84,63 +84,24 @@ Correctness is defined by the pinned mermaid.js.
    their arguments, tooltips, and accessibility texts. Generated ids and
    whitespace that the drawing ignores (around a CSS declaration, in a run of
    HTML characters) are not compared. A way of writing that draws the same is
-   printed in one form; a way of writing that draws something else is kept as
-   written. For a gap, the form is the one that the other diagram types print
-   for the same kind of gap. For a spelling (the case of a keyword, the quotes
-   of a string, the digits of a number, the direction of a header), the form is
-   the one that the examples in the documentation of the pinned mermaid.js use
-   at least twice as often as any other; where no form is used that often, or
-   the examples use none, the spelling is kept as written. The check uses the
-   pinned mermaid.js only, while the formatted text is also drawn by other
-   versions of mermaid.js. So a spelling is also kept as written where the form
-   that would be printed is not accepted by every version that accepts the form
-   that was written, or is drawn differently by one of them: the name of a
-   header (`block-beta` and `block`), which the versions accept differently, the
-   colon after the header of a gitGraph, which older versions require, and the
-   direction of the header of a flowchart (`TB` and `TD`), which the versions
-   before 11.10.0 draw differently. The CHANGELOG.md of mermaid.js, or the
-   history of its grammar, shows which version added or changed a form. The
-   check is that formatting does not change the Db. A formatting that changes
-   the Db but not the drawing is an exception. Each kind of exception has a
-   section that defines it, with links to the code of the pinned mermaid.js that
-   shows why the drawing stays the same and the result of drawing both texts,
-   and the tests compare the Db with the differences of that kind restored, one
-   function for each kind, which
-   `packages/prettier-plugin-mmd/tests/db-comparison.ts` calls. When the pinned
-   mermaid.js is updated, each exception is checked again by drawing. The kinds
-   are:
-   - the limited ASCII space margin changes to eventmodeling block bodies,
-     defined in
-     [Data blocks](packages/prettier-plugin-mmd/docs/eventmodeling.md#data-blocks);
-   - the margin changes to eligible state note paragraphs, defined in
-     [Notes](packages/prettier-plugin-mmd/docs/state.md#notes);
-   - the whitespace around the first `:` and the `,` of styles, the runs of
-     spaces and tabs between the words of a style, which become one space, and
-     the whitespace at the end of a style, defined in
-     [Styles that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#styles-that-are-drawn-the-same);
-   - the whitespace at the start and at the end of a title, of the date format
-     and the axis format of a Gantt chart, and of a description of a C4 diagram,
-     and at the end of the last event of a line of a timeline, of the second
-     description of an alias of a state diagram, and of the name of a task of a
-     Gantt chart, defined in
-     [Texts after a keyword that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#texts-after-a-keyword-that-are-drawn-the-same);
-   - the runs of spaces and tabs inside the texts that mermaid.js draws without
-     them: titles, accessibility descriptions, and the labels of the diagram
-     types that draw them as SVG text, defined in
-     [Runs of whitespace in a text that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same);
-   - the whitespace around the arguments of a `click` call in flowchart,
-     agentflow, class, and Gantt diagrams, defined in
-     [Call arguments that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#call-arguments-that-are-drawn-the-same);
-   - the spaces and tabs at the ends of the texts of a mindmap node and of a
-     kanban card, defined in
-     [Mindmap texts that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#mindmap-texts-that-are-drawn-the-same);
-   - the `labelType` of the labels of flowchart, swimlane, and agentflow
-     diagrams, which differs between a label in quotes and a label without them,
-     defined in
-     [Labels that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#labels-that-are-drawn-the-same);
-   - the case of the hexadecimal digits of a color in a style, which the
-     formatter prints in lower case, defined in
-     [Colors that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#colors-that-are-drawn-the-same).
+   printed in one form, the one that reads best; a way of writing that draws
+   something else is kept as written. Which form reads best is decided by rules
+   that are applied in a fixed order, so that it does not depend on who judges:
+   first the whitespace that Prettier prints beside the same kind of mark, then
+   the form that the other diagram types print for the same kind of gap, then
+   the spelling that the examples in the documentation of the pinned mermaid.js
+   use. A rule whose form reads worse than another form that draws the same is
+   the rule to correct. In that case, and where none of them gives a form, the
+   output of the released version is not changed on the judgment of whoever is
+   working on it: the form that seems to read better is proposed to the user,
+   with a text as written, the present output, and the output in that form, and
+   the user decides. The formatted text is also drawn by other versions of
+   mermaid.js, so a form is printed only where every version that counts reads
+   and draws it the same. The check is that formatting does not change the Db; a
+   formatting that changes the Db but not the drawing is an exception of a kind
+   that a section of the documents of the formatter defines. The rules, the
+   versions that count, and the kinds of exceptions are in
+   [How the printed form is decided](packages/prettier-plugin-mmd/docs/printed-form.md).
 
 ## What each package is responsible for
 
@@ -152,12 +113,16 @@ package.
   defines the fixture format, and holds the conformance corpus and the tools
   that generate and check it. It also checks the trees that the corpus records:
   it builds the Db from a recorded tree and compares it with the Db of
-  mermaid.js, and it checks the invariants of the tree. Skill `tests`.
+  mermaid.js, and it checks the invariants of the tree. Its work follows the
+  skill `tests`; adding a diagram type, writing the Db builder and the tree
+  checker, and updating mermaid.js follow, with it, the skills
+  `tests-diagram-type`, `tests-tree-checks`, and `tests-mermaid-update`.
 - `packages/spec`: defines the syntax and the shape of the abstract syntax tree
   (node types, fields, values), and whatever decides whether an input is
   accepted. It is the source of the definition; implementations follow it. Its
   documents do not refer to the parser's specification of tokens and positions.
-  Skill `spec`.
+  Its work follows the skill `spec`; adding a diagram type follows, with it, the
+  skill `spec-diagram-type`.
 - `packages/ast`: the TypeScript types of the tree, which follow the definition
   in the specification. It holds types only. The parser, the formatter, and the
   linter have it as an optional peer dependency, so that their users download it
@@ -170,20 +135,22 @@ package.
   specification and the fixtures, never from the source of mermaid.js. A parser
   is to be writable in another language from the specification, these documents,
   and the corpus, so the tests of the parser compare its results with what the
-  fixtures record and run neither mermaid.js nor generated inputs. Skill
-  `parser`.
+  fixtures record and run neither mermaid.js nor generated inputs. Its work
+  follows the skill `parser`; a requested review of its performance follows the
+  skill `parser-performance-review`.
 - `packages/prettier-plugin-mmd`: the formatter, with one printer for each
   diagram type, following formatting choices that are decided explicitly, item
   by item. Skill `prettier-plugin`.
 - `packages/mmdfmt`: the command-line formatter. It formats `.mmd` and
   `.mermaid` files and the diagrams in the code blocks of Markdown files with
   Prettier and `prettier-plugin-mmd`, and changes nothing else; its README
-  defines what it does. Skill `prettier-plugin`.
+  defines what it does. Skill `mmdfmt`.
 - `packages/eslint-plugin`: the linter, an ESLint language plugin. A rule
   reports a mistake of the author that mermaid.js accepts without a word and
   reads as something other than what was meant. Which rules exist is decided
-  with the skill `rule-ideas`; their documents follow the skill `eslint-plugin`,
-  and their implementation the skill `eslint-plugin-rules`.
+  with the skill `rule-ideas`, and the suggestions and the fix of a kept rule
+  with the skill `rule-ideas-suggestions`; their documents follow the skill
+  `eslint-plugin`, and their implementation the skill `eslint-plugin-rules`.
 - `packages/textmate-grammar`: the TextMate grammar that colors Mermaid text in
   editors and on sites (Shiki, VS Code, Monaco). Its rules come from the
   specification alone, never from another grammar of Mermaid. It follows a
@@ -257,10 +224,11 @@ same change.
     does. Every sentence that defines a behavior (in the specification, in the
     parser's documents of tokens and positions, in the documents of
     `dbFromTree`, in the formatting rules) has a fixture for each case it
-    distinguishes, and for each other rule that meets it at the place it names
-    (a directive, an ignored `;`, a comment line, an empty line, a line
-    separator, an empty description block); the fixtures are written with the
-    sentence and checked against mermaid.js once. A review checks each sentence
-    for the cases it lacks. No input is chosen by a random source or by a number
-    (a seed, a count).
+    distinguishes, and for each other rule that meets it at the place it names:
+    a directive, an ignored `;`, a comment line, an empty line, a line separator
+    (U+2028, U+2029), an empty description block, the end of the text, and
+    whatever else the sentence's own words name. The fixtures are written with
+    the sentence and checked against mermaid.js once. A review checks each
+    sentence for the cases it lacks. No input is chosen by a random source or by
+    a number (a seed, a count).
 - Commit and push only when the user says so.

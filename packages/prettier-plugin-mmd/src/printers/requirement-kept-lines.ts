@@ -1,5 +1,9 @@
 import type { RequirementDiagram, RequirementStatement } from "@mmd-toolkit/ast"
-import { holdsDirection, holdsStatementAfter } from "./accessibility-lines.ts"
+import {
+  holdsDirection,
+  holdsDirectionOnlyWhenJoined,
+  holdsStatementAfter,
+} from "./accessibility-lines.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import {
   findKeptBreaks,
@@ -127,20 +131,78 @@ function findAccessibilityLines(
   const lines: number[] = []
   for (const statement of statements) {
     if (
-      (statement.type === "RequirementAccTitleStatement" ||
-        statement.type === "RequirementAccDescrStatement" ||
-        statement.type === "RequirementAccDescrBlockStatement") &&
-      holdsDirection(source, {
-        range: [statement.range[0], lineEndOf(source, statement.range[1])],
-        text:
-          statement.type === "RequirementAccDescrBlockStatement" ||
-          holdsStatementAfter(source, statement.range[1])
-            ? null
-            : statement.value.value,
-      })
+      isAccessibilityStatement(statement) &&
+      holdsDirection(source, directionStatementOf(source, statement))
     ) {
       lines.push(lineStartOf(source, statement.range[0]))
     }
   }
   return lines
+}
+
+/** The statements of `accTitle` and `accDescr`, the ones that can hold a direction. */
+function isAccessibilityStatement(
+  statement: RequirementStatement,
+): statement is Extract<
+  RequirementStatement,
+  {
+    type:
+      | "RequirementAccTitleStatement"
+      | "RequirementAccDescrStatement"
+      | "RequirementAccDescrBlockStatement"
+  }
+> {
+  return (
+    statement.type === "RequirementAccTitleStatement" ||
+    statement.type === "RequirementAccDescrStatement" ||
+    statement.type === "RequirementAccDescrBlockStatement"
+  )
+}
+
+/** What `holdsDirection` reads of an `accTitle` or `accDescr` statement. */
+function directionStatementOf(
+  source: Source,
+  statement: Extract<
+    RequirementStatement,
+    {
+      type:
+        | "RequirementAccTitleStatement"
+        | "RequirementAccDescrStatement"
+        | "RequirementAccDescrBlockStatement"
+    }
+  >,
+): Parameters<typeof holdsDirection>[1] {
+  return {
+    range: [statement.range[0], lineEndOf(source, statement.range[1])],
+    text:
+      statement.type === "RequirementAccDescrBlockStatement" ||
+      holdsStatementAfter(source, statement.range[1])
+        ? null
+        : statement.value.value,
+    valueStart:
+      statement.type === "RequirementAccDescrBlockStatement"
+        ? undefined
+        : statement.value.range[0],
+  }
+}
+
+/**
+ * Whether the printer brings the text of a statement to the `:` and the line
+ * then holds a direction, which the written line does not. The statement then
+ * starts at the first column: at the first column `accTitle: direction LR` is
+ * a title, as the statement is read when its text stands on a later line,
+ * while after an indentation it is a direction line (see
+ * `findAccessibilityLines`).
+ */
+export function isDirectionBroughtToTheColon(
+  source: Source,
+  statement: RequirementStatement,
+): boolean {
+  return (
+    isAccessibilityStatement(statement) &&
+    holdsDirectionOnlyWhenJoined(
+      source,
+      directionStatementOf(source, statement),
+    )
+  )
 }

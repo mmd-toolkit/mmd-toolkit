@@ -101,8 +101,10 @@ Each statement stands on a line of its own. Nothing separates statements in a
 timeline (diagrams/timeline.md, Diagram and statements), and the header and an
 `accDescr` block are followed on their line by the next statement: the statement
 after either of them goes to a line of its own. The direction of the header
-stays on its line. [fixture: statements-one-per-line/header-then-title]
-[fixture: statements-one-per-line/header-then-period] [fixture:
+stays on its line, and so does the text after it (see
+[Header and direction](#header-and-direction)). [fixture:
+statements-one-per-line/header-then-title] [fixture:
+statements-one-per-line/header-then-period] [fixture:
 statements-one-per-line/header-then-section] [fixture:
 statements-one-per-line/header-direction-then-title] [fixture:
 statements-one-per-line/description-block-then-period] [fixture:
@@ -161,8 +163,7 @@ Output
 ([statements-one-per-line/header-direction-then-title-output.mmd](../tests/fixtures/timeline/statements-one-per-line/header-direction-then-title-output.mmd)):
 
 ```mmd
-timeline TD
-  title T
+timeline TD title T
 ```
 
 Input
@@ -291,24 +292,36 @@ timeline
 
 A period and its events are printed as written, with the whitespace between
 their texts and their colons, except for the whitespace at the end of the last
-event of a line: mermaid.js keeps it in the Db, but draws the same event without
-it (see
+event of a line and for a space that is added before a colon: mermaid.js keeps
+both in the Db, but draws the same text without them (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 The Db keeps the whitespace at the end of a period, which is the whitespace
 before its colon, and the whitespace at both ends of an event beyond the one
 character after its colon: `2004 : a` and `2004: a` are different periods,
 `a :   e` has the event `  e`, and `a : e   ` the event `e   `. So the padding
-that aligns the colons of a timeline stays, and a colon that touches its period
-keeps touching it; `a : e   ` at the end of a line is printed `a : e`, and
-`c : g   : h` stays as written. An event that a line break separates from the
-next colon ends its line too: in `2020 : e1  ` followed by a line `: e2`, the
-whitespace after `e1` is left out. The directives that end such an event are
-printed with one space before each that has whitespace before it, and the
-whitespace after the last one is left out: `2020 : e1   %%{x}%%  ` is printed
-`2020 : e1 %%{x}%%` (see
+that aligns the colons of a timeline stays; `a : e   ` at the end of a line is
+printed `a : e`, and `c : g   : h` stays as written. A colon that follows a text
+without whitespace at its end gets one space before it, as the examples in the
+documentation of mermaid.js write every colon after a text (88 of them have a
+space before them, and none touches the text; counted as under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)):
+`2004: Facebook: Google` is printed `2004 : Facebook : Google`. A colon that no
+whitespace follows is a character of the text and stays where it is. After a
+period that is the word `title` or `section`, in any case, the colon keeps
+touching it, since the lexer reads `title` and whitespace as the keyword of a
+title: `title: x` is a period with the event `x`, and `title : x` is a title
+with the text `: x`. A directive between the text and the colon keeps the gap as
+written (see [Directives](#directives)). An event that a line break separates
+from the next colon ends its line too: in `2020 : e1  ` followed by a line
+`: e2`, the whitespace after `e1` is left out. The directives that end such an
+event are printed with one space before each that has whitespace before it, and
+the whitespace after the last one is left out: `2020 : e1   %%{x}%%  ` is
+printed `2020 : e1 %%{x}%%` (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 [fixture: periods-and-events/event-trailing-directive-blanks-dropped] [fixture:
 periods-and-events/event-two-directives-trailing-blanks-dropped] [fixture:
+periods-and-events/space-before-colon-added] [fixture:
+periods-and-events/space-before-colon-keyword-period] [fixture:
 periods-and-events/period-whitespace-kept] [fixture:
 periods-and-events/event-padding-kept-end-dropped] [fixture:
 periods-and-events/whitespace-only-event] [fixture:
@@ -341,7 +354,7 @@ periods-and-events/event-on-the-line-after-the-period] [fixture:
 periods-and-events/events-on-both]
 
 When the first colon immediately follows the period on its line, align later
-event colons under it. This makes the events of one period easy to follow,
+event colons under it. This puts the colons of one period in one column,
 including inside a section. Keep tabs as tab stops in the alignment padding and
 use Prettier's display width for the remaining text, including wide characters.
 Count the period's written text, including a directive inside it, since that is
@@ -404,7 +417,7 @@ Output
 ```mmd
 timeline
   2002   : LinkedIn
-  2004: Facebook
+  2004 : Facebook
   2005 : YouTube
 ```
 
@@ -597,12 +610,28 @@ printed after the keyword on one line; a comment line between them makes the
 statement printed as written (see
 [Multi-line statements](#multi-line-statements)). [fixture:
 titles-and-sections/value-on-next-line] [fixture:
-titles-and-sections/comment-line-inside-kept] The value holds `:`, `#`, `%`, and
-`%%` as characters, except that the name of a section ends at a `:`, which
-starts an event. [fixture: titles-and-sections/special-characters-in-values]
-[fixture: titles-and-sections/section-ends-at-colon] A directive between the
-keyword and the value stays where it is (see [Directives](#directives)).
-[fixture: titles-and-sections/directive-between-keyword-and-value]
+titles-and-sections/comment-line-inside-kept] A title whose value starts with a
+`#` after more than one whitespace character stays as written: `title` and two
+spaces, or a tab and a space, or a line break and an indentation, and then
+`# c`. Some versions that count read `title`, that whitespace, and `# c` as a
+title of whitespace only and a comment, and `title # c` with one whitespace
+character as the period `title` and a comment, while the others read both as the
+title `# c` (drawn the same; see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A `#` at the start of its line is no such text to them, and both forms are the
+period `title`, so the value is joined to the keyword; and one whitespace
+character before the `#`, a space or a tab, is printed as one space. [fixture:
+titles-and-sections/title-hash-on-next-line-kept] [fixture:
+titles-and-sections/title-hash-after-padding-kept] [fixture:
+titles-and-sections/title-hash-after-tab-and-space-kept] [fixture:
+titles-and-sections/title-hash-after-tab-joined] [fixture:
+titles-and-sections/title-hash-at-line-start-joined] The value holds `:`, `#`,
+`%`, and `%%` as characters, except that the name of a section ends at a `:`,
+which starts an event. [fixture:
+titles-and-sections/special-characters-in-values] [fixture:
+titles-and-sections/section-ends-at-colon] A directive between the keyword and
+the value stays where it is (see [Directives](#directives)). [fixture:
+titles-and-sections/directive-between-keyword-and-value]
 
 Input
 ([titles-and-sections/special-characters-in-values-input.mmd](../tests/fixtures/timeline/titles-and-sections/special-characters-in-values-input.mmd)):
@@ -678,17 +707,39 @@ timeline
 ### Header and direction
 
 The header may carry a direction, `LR` or `TD` in any case, after whitespace on
-its line. It is printed on the line of the header after one space, `td` as `TD`,
-as the examples in the documentation of mermaid.js write it (see
-[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
-and `lr` in the case in which it was written; the Db reads it in upper case. The
-space is the one of the whitespace between tokens (see
+its line. It is printed on the line of the header after one space, in the case
+in which it was written; the Db reads it in upper case. The space is the one of
+the whitespace between tokens (see
 [Whitespace between tokens](#whitespace-between-tokens)). [fixture:
 header-and-direction/direction-kept] [fixture:
 header-and-direction/direction-case-kept] [fixture:
-header-and-direction/spaces-before-the-direction] A second word is a period and
-goes to a line of its own, and so is a direction on a line of its own. [fixture:
-header-and-direction/second-word-is-a-period] [fixture:
+header-and-direction/spaces-before-the-direction]
+
+Some of the versions that count (see
+[Versions of mermaid.js that count](./compatibility.md#versions-of-mermaidjs-that-count)
+and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count))
+read no direction: they read the words after `timeline` as the text of a period,
+and the others read the direction. So `timeline td` and `timeline TD` are
+periods that differ by their case there, and `td` is not printed `TD`, though
+the examples in the documentation of mermaid.js write `TD`. The text that
+follows a direction stays on the line of the header, after its gap as written:
+`timeline TD title T` is one period in those versions, and `timeline TD`
+followed by a line `title T` is a period and a title, and likewise
+`timeline TD LR` (a direction and the period `LR`) and `timeline LR 2004 : a`. A
+text after the header without a direction goes to a line of its own
+(`timeline History` is printed with `History` below the header), which every
+version that counts for timeline draws the same. A period that stays on the line
+of the header has its later events at the ordinary continuation indentation,
+since its colon is not at the column of a period on a line of its own. A
+direction on a line of its own is a period. The line breaks that count are the
+ones that mermaid.js reads, so a directive that spans lines is no break:
+`timeline TD%%{init:`, a line break, and `{}}%% title T` is
+`timeline TD title T`, and the text stays. [fixture:
+header-and-direction/second-word-stays-on-the-header-line] [fixture:
+header-and-direction/direction-then-period-stays] [fixture:
+header-and-direction/text-after-a-directive-over-lines-stays] [fixture:
+header-and-direction/text-after-the-header-without-direction-moves] [fixture:
 header-and-direction/direction-on-its-own-line-is-a-period]
 
 A comment after the direction stays on the line (see [Comments](#comments)), and
@@ -700,7 +751,7 @@ header-and-direction/directive-after-the-direction] [fixture:
 header-and-direction/trailing-whitespace-dropped]
 
 Input
-([header-and-direction/second-word-is-a-period-input.mmd](../tests/fixtures/timeline/header-and-direction/second-word-is-a-period-input.mmd)):
+([header-and-direction/second-word-stays-on-the-header-line-input.mmd](../tests/fixtures/timeline/header-and-direction/second-word-stays-on-the-header-line-input.mmd)):
 
 ```mmd
 timeline TD LR
@@ -708,11 +759,10 @@ title T
 ```
 
 Output
-([header-and-direction/second-word-is-a-period-output.mmd](../tests/fixtures/timeline/header-and-direction/second-word-is-a-period-output.mmd)):
+([header-and-direction/second-word-stays-on-the-header-line-output.mmd](../tests/fixtures/timeline/header-and-direction/second-word-stays-on-the-header-line-output.mmd)):
 
 ```mmd
-timeline TD
-  LR
+timeline TD LR
   title T
 ```
 
@@ -1196,8 +1246,8 @@ Output
 ```mmd
 timeline
   a %%{init: {}}%%: e
-  b: %%{init: {}}%%e
-  c : e%%{init: {}}%%: f
+  b : %%{init: {}}%%e
+  c : e %%{init: {}}%%: f
 ```
 
 ### Frontmatter YAML

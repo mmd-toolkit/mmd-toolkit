@@ -35,9 +35,9 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/gantt-no-duplicate-id: error
 gantt
   dateFormat YYYY-MM-DD
-  Design :des1, 2024-01-06, 3d
-  Build :des1, 2024-01-09, 5d
-  Test :after des1, 2d
+  Design : des1, 2024-01-06, 3d
+  Build : des1, 2024-01-09, 5d
+  Test : after des1, 2d
 ```
 
 Examples of **correct** code for this rule:
@@ -46,9 +46,9 @@ Examples of **correct** code for this rule:
 %% eslint @mmd-toolkit/gantt-no-duplicate-id: error
 gantt
   dateFormat YYYY-MM-DD
-  Design :des1, 2024-01-06, 3d
-  Build :des2, 2024-01-09, 5d
-  Test :after des1, 2d
+  Design : des1, 2024-01-06, 3d
+  Build : des2, 2024-01-09, 5d
+  Test : after des1, 2d
 ```
 
 ## Options

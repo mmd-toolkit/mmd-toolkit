@@ -1,10 +1,12 @@
 import type { Doc } from "prettier"
 import type { Frontmatter, Root } from "@mmd-toolkit/ast"
 import { readGap } from "./gap.ts"
+import { startsTagInFrontmatter } from "./frontmatter-yaml.ts"
 import type { Line } from "./lines.ts"
 import {
   joinLines,
   printAsWritten,
+  printVerbatim,
   withLeading,
   withTrailing,
 } from "./lines.ts"
@@ -51,6 +53,12 @@ export function printRoot(
       endsWithWhitespace: end > root.frontmatter.range[1],
     })
     offset = end
+    // The text after the frontmatter is read with a tag that starts there, so
+    // it stays as written (docs/compatibility.md, HTML tags that start in the
+    // frontmatter).
+    if (startsTagInFrontmatter(source, root.frontmatter)) {
+      return [frontmatterDoc, printVerbatim(source, offset, source.text.length)]
+    }
   }
   // A detection-skipped prefix must not become leading frontmatter after
   // ordinary root blank/comment cleanup (docs/pie.md, Frontmatter yaml).

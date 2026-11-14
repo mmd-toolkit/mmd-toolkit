@@ -15,11 +15,11 @@ HWS は ASCII の水平空白、U+0020 SPACE と U+0009 TAB を指します。
 LS は U+2028 LINE SEPARATOR、PS は U+2029 PARAGRAPH SEPARATOR を指します。
 
 整形は共有の失敗経路に従います。
-単独ファイルの parser の失敗は `SyntaxError` とし、
+単独ファイルのパーサーの失敗は `SyntaxError` とし、
 拒否する Markdown 本文はホストへ返します。
 ヘッダー、セミコロンで区切った文、別名、連鎖、入れ子の境界、未解決 note、
-native 検証、未完の文字列は修復しません。
-usecase は、native metadata を含む未完の一重引用文字列も拒否します。
+図種固有の検証、未完の文字列は修復しません。
+usecase は、固有のメタデータを含む未完の一重引用文字列も拒否します。
 class の未完のバッククォート名の EOF 規則は適用しません。
 [corpus fixture: usecase/header-uppercase]
 [corpus fixture: usecase/gram-two-statements-line]
@@ -58,12 +58,12 @@ class の未完のバッククォート名の EOF 規則は適用しません。
 外側の ASCII 空白とタブを除き、方向は独立した文のままにします。
 ヘッダーだけの入力も受理し、通常の末尾改行を加えます。
 大文字、安定版の名前、同じ行の本文を持つ拒否入力は、共有の失敗経路に従います。
-前のコメントと directive は後述の規則に従います。
+前のコメントとディレクティブは後述の規則に従います。
 
 [fixture: header/header-column] [fixture: header/leading-trivia-empty]
 [corpus fixture: usecase/spec-usecase-parser-7ae00acb]
 
-入力（escape 表記）: `" \tusecase-beta  \nA"`
+入力（エスケープ表記）: `" \tusecase-beta  \nA"`
 
 出力
 ([header/header-column-output.mmd](../tests/fixtures/usecase/header/header-column-output.mmd)):
@@ -75,16 +75,16 @@ usecase-beta
 
 ### Indentation
 
-所属を見える形にするため、class の[字下げ](./class.ja.md#字下げ)を再利用します。
+class の[字下げ](./class.ja.md#字下げ)を再利用します。
 ヘッダーの下を設定の 1 段、境界内の宣言を 2 段とし、`end` は開始文に揃えます。
 [fixture: system-boundaries/boundary-header-comment-empty]
 1 段は `tabWidth` と `useTabs` に従い、既定は空白 2 個、
 タブを使う場合は各段に 1 個です。
 usecase では字下げが読みを決めないので、`tabWidth: 0` は 0 のままです。
-accessibility は先頭列でも ASCII 空白の後でも accessibility のままです。
+アクセシビリティは先頭列でも ASCII 空白の後でもアクセシビリティのままです。
 YAML は共有の最小幅 1 を保ちます。
-値と directive の継続行は書かれた列を保ち、
-対象となる JSON の余白は [JSON tables](#json-tables) に従います。
+値とディレクティブの継続行は書かれた列を保ち、
+対象となる JSON の余白は [JSON の表](#json-tables) に従います。
 [fixture: native-metadata/metadata-key-multiline-directive]
 [fixture: native-metadata/metadata-scalar-multiline-directive]
 [fixture: classes-and-styles/css-name-multiline-directive]
@@ -97,7 +97,7 @@ YAML は共有の最小幅 1 を保ちます。
 [fixture: indentation/zero-tabs-boundary]
 [fixture: indentation/value-and-json-columns]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"usecase-beta\nsystemBoundary Portal\nactor User\nTask(Work)\nend\nUser-->Task"`
 
 出力
@@ -114,7 +114,7 @@ usecase-beta
 
 ### Statements and semicolons
 
-各 native 文は、文法が要求する物理行を保ちます。
+図種固有の各文は、文法が要求する物理行を保ちます。
 セミコロンは文を区切らず、actor の一覧はコンマを使います。
 [スタイル文の末尾のセミコロン](#semicolons-at-the-end-of-a-style-statement)
 の例外を除き、セミコロンを保ちます。
@@ -135,7 +135,7 @@ usecase-beta
 [fixture: json-tables/kept-body-line]
 [fixture: native-metadata/metadata-selected-semicolon-between-properties]
 二つの文字列処理、コロンとハッシュの間の空白の有無、Unicode の区間境界、
-未完 directive を止めるセミコロンの読みを保ちます。
+未完ディレクティブを止めるセミコロンの読みを保ちます。
 
 [fixture: statements-and-semicolons/statements-lines]
 [fixture: statements-and-semicolons/semicolon-label-content]
@@ -144,7 +144,7 @@ usecase-beta
 [fixture: statements-and-semicolons/safe-suffix-after-kept-value]
 [fixture: statements-and-semicolons/selected-directive-prefix]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"usecase-beta\n actor  Reader\nRead(Inspect)\nReader-->Read"`
 
 出力
@@ -160,15 +160,15 @@ usecase-beta
 ### Declarations
 
 ER の[実体](./er.ja.md#実体)を再利用します。
-`actor` の後は空白 1 個、id と形の区切り、metadata と class の接尾辞は詰め、
+`actor` の後は空白 1 個、id と形の区切り、メタデータと class の接尾辞は詰め、
 ラベルの外側の ASCII 空白を除き、actor の項目はコンマと空白で区切ります。
-一つの `actor` キーワードの下にある別々の actor の出現を見える形にするためです。
-stereotype の隙間は、[class に揃えた規則](#stereotypes)に従います。
+1 つの `actor` キーワードが導入する別々のアクターの出現を、見える形にします。
+ステレオタイプの隙間は、[class に揃えた規則](#stereotypes)に従います。
 明示 id、楕円と長方形の綴り、markdown ラベル、接尾辞の順序、
 宣言と参照のすべての出現を保ちます。
-名前とラベルは、例で使われている形で印字します（[Quotes](#quotes) を参照）。
+名前とラベルは、例で使われている形で印字します（[引用符](#quotes) を参照）。
 生成 id や解決後の actor を、書かれた端点の代わりにはしません。
-境界内の metadata 形式は宣言、最上位の形式は更新のままです。
+境界内のメタデータ形式は宣言、最上位の形式は更新のままです。
 別名や形を作らず、書かれた構文を見える形にします。
 
 [fixture: declarations/actor-list] [fixture: declarations/entity-shapes]
@@ -177,7 +177,7 @@ stereotype の隙間は、[class に揃えた規則](#stereotypes)に従いま�
 [fixture: declarations/reference-not-redeclared]
 [fixture: declarations/actor-source-occurrence]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"usecase-beta\nactor  User ( Person ) , Clerk('Desk') , \"Guest\""`
 
 出力
@@ -193,13 +193,42 @@ usecase-beta
 C4 の[引数の形](./c4.ja.md#引数の形)を再利用します。
 markdown はラベルの種類を変えるため、markdown ラベルは種類を保ちます。
 どのラベルも、空の引用値を含め、内部の文字を保ちます。
-通常のラベルは、例で使われている形で印字します（[Quotes](#quotes) を参照）。
+通常のラベルは、例で使われている形で印字します（[引用符](#quotes) を参照）。
 裸のラベルを構成する単位の外側にある ASCII の水平空白だけを除きます。
-内部の空白、Unicode の余白、バックスラッシュ、entity、HTML は保ちます。
+内部の空白、Unicode の余白、バックスラッシュ、文字参照、HTML は保ちます。
 `'` で囲まれた文字列は、テキストに `'`、`"`、バックスラッシュ、改行、U+2028、
 U+2029、バッククォート、`&`、`#`、`<` を含む場合を除き、`"` で囲んで印字します。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 `singleQuote` は読みません。 [fixture: labels/single-quote-sensitive-kept]
+
+引用符で囲んでいないラベルのテキストが U+2028 か U+2029 で終わり、その後に、
+空白、改行、ディレクティブだけを挟んでコメントが続くときは、引用符で囲みません。
+その文字はコメントを始めます。
+詳しくは [コメント行](../../spec/docs/common.ja.md#コメント行)
+を参照してください。
+引用符で囲むと、閉じの引用符がその文字とコメントの間に入り、
+`%%` がラベルのテキストになって、mermaid.js が拒否するからです。
+そのような文字の前にあるテキストも同じです。
+コメントのある行は、次の行と合わせて読まれるので、
+引用符も含めて書かれたまま印字します。
+後ろにコメントがない同じラベルは、その文字を含むほかのラベルと同じく、
+引用符で囲みます。
+[test: usecase: U+2028 alone in the parentheses of an actor label, before a comment]
+[test: usecase: U+2028 alone in the parentheses of an entity label, before a comment]
+[test: usecase: U+2029 alone in the parentheses of an entity label, before a comment]
+[test: usecase: U+2028 after a letter in the parentheses of an entity label, before a comment]
+[test: usecase: U+2028 alone as a note text, before a comment]
+[test: usecase: U+2028 alone as an edge label, before a comment]
+[test: usecase: U+2028 alone in the parentheses of a boundary title, before a comment]
+[test: usecase: U+2028 alone in the brackets of a boundary title, before a comment]
+[test: usecase: U+2028 alone in the parentheses of an entity label, at the end of its line]
+[test: usecase: U+2028, a space, and a comment after a label text]
+[test: usecase: U+2028, a tab, and a comment after a label text]
+[test: usecase: U+2028, a directive, a space, and a comment after a label text]
+[test: usecase: U+2028, a directive, and a comment after a label text]
+[test: usecase: U+2028, a line feed, and a comment after a label text]
+[test: usecase: U+2029, a directive, and a comment after a label text]
+[test: usecase: U+2028, a space, and a comment after a note text that holds a percent mark]
 
 [fixture: labels/label-quote-kinds] [fixture: labels/label-empty-quotes]
 [fixture: labels/label-quote-rewrite-one-form]
@@ -210,7 +239,7 @@ U+2029、バッククォート、`&`、`#`、`<` を含む場合を除き、`"` 
 [fixture: labels/empty-shape-labels]
 [corpus fixture: usecase/div-c4-inline-percent-eof]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 ``"usecase-beta\nA(unquoted  words)\nB(' single  text ')\nC(\" double  text \" )\nD(\"` markdown  text `\")"``
 
 出力
@@ -236,6 +265,7 @@ usecase 図の `style`、`classDef` 文のスタイルの色が対象です。
 （[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
 [fixture: colors/colors-in-lower-case]
 [fixture: colors/words-that-are-not-colors-as-written]
+[fixture: usecase/colors/color-directive-in-url-name-kept]
 
 入力
 ([colors/colors-in-lower-case-input.mmd](../tests/fixtures/usecase/colors/colors-in-lower-case-input.mmd)):
@@ -283,7 +313,7 @@ usecase-beta
 
 ### Quotes
 
-名前、ラベル、native metadata の語は、
+名前、ラベル、固有のメタデータの語は、
 mermaid.js の文書の例で使われている形で印字します。
 （[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
 mermaid.js は、単独で引用符に囲まれた名前の、ASCII の英字、数字、
@@ -293,7 +323,7 @@ mermaid.js は、単独で引用符に囲まれた名前の、ASCII の英字、
 そのため、`actor "Alice"` の id とラベルは、`actor Alice` と同じ `Alice` です。
 
 単独で引用符に囲まれた名前（`actor "Alice"` の actor、
-`"Login" --> "Logout"` の use case、systemBoundary、metadata 更新の対象）は、
+`"Login" --> "Logout"` の use case、systemBoundary、メタデータ更新の対象）は、
 ASCII の英字、数字、`_` からなり、
 字句解析器が独立した単位として読む次の語のいずれでもない場合に、
 引用符なしで印字します。
@@ -301,7 +331,7 @@ ASCII の英字、数字、`_` からなり、
 `note`、`for`、`json`、`classDef`、`class`、`style`、`true`、`false`、
 `accTitle`、`accDescr` は、この綴りが対象です。
 文の先頭の `accTitle` または `accDescr` の後ろに `:` があると、
-accessibility のタイトルまたは説明の行になります。
+アクセシビリティのタイトルまたは説明の行になります。
 `include` と `extend` は、大文字小文字を問いません。
 `allowmixing`、`newpage`、`package`、`rectangle`、`skinparam` は、
 文法が文の先頭の名前として拒否する語であり、大文字小文字を問いません。
@@ -311,7 +341,7 @@ accessibility のタイトルまたは説明の行になります。
 [fixture: quotes/names-that-need-quotes]
 
 actor または use case の丸括弧内のラベル、id がある systemBoundary のタイトル、
-分割した association のラベル、note のラベルは、引用符で囲んで印字します。
+分割した関連のラベル、note のラベルは、引用符で囲んで印字します。
 `actor Bob(Display B)` は `actor Bob("Display B")`、
 `A -- likes --> B` は `A -- "likes" --> B`、
 `note for A text` は `note for A "text"` と印字します。
@@ -324,7 +354,7 @@ use case の角括弧内のラベルは、ASCII の英字、数字、
 [fixture: quotes/labels-in-quotes] [fixture: quotes/labels-as-written]
 [fixture: quotes/square-bracket-labels]
 
-native metadata では、引用符に囲まれたキーと、
+固有のメタデータでは、引用符に囲まれたキーと、
 `icon` 以外のプロパティのスカラーは、そのような語であれば、
 引用符なしで印字します。
 `"type": "hollow"` は `type: hollow` と印字します。
@@ -332,6 +362,13 @@ native metadata では、引用符に囲まれたキーと、
 `icon: user` は `icon: "user"` と印字します。
 `"fa:user"` のような、語ではないスカラーはそのままにします。
 [fixture: quotes/metadata]
+木は固有のメタデータの各プロパティを、キー、コロン、スカラーとして持ちます。
+flowchart や kanban のデータブロックは、木が丸ごと持つので違います。
+そのため、プロパティのコロンはキーのコロンで、
+`type : hollow` は `type: hollow` と印字します。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
+の手順 2 を参照してください。 [fixture: native-metadata/metadata-newline]
 
 原文で単位に接している名前やラベルも、印字でその間に空白か区切りを置くため、
 同じように印字します。
@@ -375,7 +412,7 @@ class の[トークンの間の空白](./class.ja.md#トークンの間の空白
 の隙間を再利用します。
 `<<` の前に空白を 1 つ置き、区切りの内側には何も置きません。
 `A[a]<<R>>` と `A[a] <<  R  >>` は `A[a] <<R>>` になります。
-mermaid.js は文字を trim するので、どの書き方も同じ Db になります。
+mermaid.js はテキストの両端の空白を除くので、どの書き方も同じ Db になります。
 mermaid.js の文書の例 5 件も、`<<...>>` を空白の後に、文字に接して書いています。
 その 3 件は、
 [ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/usecase.md#L141-L144)
@@ -398,7 +435,7 @@ Mermaid は内部の両端を除き、`<<` の前の空白は構造上の空白�
 
 内部のテキストは書かれたままです。
 語の間の隙間、入れ子の開始記号、引用、バックスラッシュ、句読点、
-directive を保ちます。
+ディレクティブを保ちます。
 LS、PS、NBSP は内部の内容になれます。
 外側の共通空白は余白の規則に従います。
 [fixture: stereotypes/stereotype-plain-backslash]
@@ -421,7 +458,7 @@ LS、PS、NBSP は内部の内容になれます。
 [fixture: stereotypes/stereotype-punctuation]
 [fixture: stereotypes/directive-and-selected-semicolon]
 
-入力（escape 表記）: `"usecase-beta\nactor User <<  service  user  >>"`
+入力（エスケープ表記）: `"usecase-beta\nactor User <<  service  user  >>"`
 
 出力
 ([stereotypes/stereotype-padding-output.mmd](../tests/fixtures/usecase/stereotypes/stereotype-padding-output.mmd)):
@@ -443,8 +480,8 @@ flowchart の [subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダ
 `systemBoundary S (t)` は `systemBoundary S("t")` になります。
 mermaid.js は、空白のある書き方も接する書き方も同じ境界として読みます。
 括弧の内側の空白とタブは落とします。
-mermaid.js がそれらを trim するからです（no-break space は trim
-しないので残ります）。
+mermaid.js が括弧内の両端の空白を除くからです。
+改行しない空白は取り除かないので残ります。
 `systemBoundary S[ x ]` は `systemBoundary S["x"]` に、
 `S("x" )` は `S("x")` になります。
 [fixture: system-boundaries/boundary-title-padding-dropped]
@@ -452,7 +489,7 @@ mermaid.js がそれらを trim するからです（no-break space は trim
 タイトルの端にディレクティブがあれば、隙間に空白を置かないので、
 括弧とタイトルに接します（`S[ %%{x}%% T ]` は `S[%%{x}%%"T"]` になります）。
 保つ `;` のある行でも空白は落とします。
-ただし、[Statements and semicolons](#statements-and-semicolons)のとおり、
+ただし、[文とセミコロン](#statements-and-semicolons)のとおり、
 行の規則が読む範囲は除きます。
 その範囲の外の空白を落としても `;` は動かないので、
 行の規則は同じ `;` を選びます。
@@ -475,7 +512,7 @@ U+2028 や U+2029 を含む空白は、書かれたまま残します。
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 [fixture: system-boundaries/boundary-id-title-directed-gap]
 [fixture: system-boundaries/boundary-id-title-directed-gap-runs]
-native metadata、class、繰り返しの宣言を保ち、
+固有のメタデータ、class、繰り返しの宣言を保ち、
 所属は AST の 1 段の宣言本文から決めます。
 
 [fixture: system-boundaries/boundary-headings]
@@ -486,7 +523,7 @@ native metadata、class、繰り返しの宣言を保ち、
 [fixture: system-boundaries/repeated-boundaries]
 [fixture: system-boundaries/quoted-markdown-title]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"usecase-beta\nsystemBoundary Box [ Display ] @{ type : 'package' } ::: box , group\nactor User\nA@{ business : true }\nend"`
 
 出力
@@ -494,7 +531,7 @@ native metadata、class、繰り返しの宣言を保ち、
 
 ```mmd
 usecase-beta
-  systemBoundary Box["Display"]@{ type: package }:::box,group
+  systemBoundary Box["Display"]@{ type: package }:::box, group
     actor User
     A@{ business: true }
   end
@@ -502,8 +539,7 @@ usecase-beta
 
 ### Arrows
 
-読みやすい class
-の[矢印の前後の空白](./class.ja.md#矢印の前後の空白)を再利用し、
+class の[矢印の前後の空白](./class.ja.md#矢印の前後の空白)を再利用し、
 実際の usecase 演算子全体の両側を通常の空白 1 個にします。
 方向、マーカー、ダッシュと点の数を保ちます。
 Db の長さが固定される分割矢印の長い右半分も同じです。
@@ -511,7 +547,10 @@ Db の長さが固定される分割矢印の長い右半分も同じです。
 `..> : include` と `..> : extend` と印字します。
 mermaid.js の文書の例はこの形を 7 回使い、
 コロンを接して書く形は一度も使いません。
-（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+数え方は
+[コロンの前の空白を決める例](./compatibility.ja.md#コロンの前の空白を決める例)
+を参照してください。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)も参照）。
 その後、端点の前を空白 1 個にします。
 矢印の後のコロンは、class、ER、state 図でも同じ空白を取ります。
 mermaid.js は `..>:include`、`..> :include`、`..>: include`、
@@ -533,7 +572,8 @@ mermaid.js は `..>:include`、`..> :include`、`..>: include`、
 [fixture: arrows/arrows-generalization-actors]
 [fixture: arrows/extended-split-lengths]
 
-入力（escape 表記）: `"usecase-beta\nA..>:InClUdE B\nB..> : EXTEND C\nC--|>D"`
+入力（エスケープ表記）:
+`"usecase-beta\nA..>:InClUdE B\nB..> : EXTEND C\nC--|>D"`
 
 出力
 ([arrows/arrows-semantic-output.mmd](../tests/fixtures/usecase/arrows/arrows-semantic-output.mmd)):
@@ -598,7 +638,7 @@ usecase-beta
 [fixture: arrow-id-boundaries/marker-uppercase-is-id]
 [fixture: arrow-id-boundaries/circle-prefix-suffixes]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"usecase-beta\nStart --order\nrder@{business:true}\nclass rder current"`
 
 出力
@@ -616,11 +656,12 @@ usecase-beta
 flowchart
 の[辺のラベルの書き方](./flowchart.ja.md#辺のラベルの書き方)を保つ考え方と、
 辺 id を詰める配置を再利用します。
-分割ラベルの外側は空白 1 個とし、明示 id は `@` と開始側の矢印に接して置きます。
+分割ラベルの外側は空白 1 個とし、明示 id は `@` と、
+分割した矢印の開始側または単独の矢印に接して置きます。
 usecase が許す矢印の半分、markdown ラベル、空の引用ラベル、
 actor の開始キーワード、二つの端点の出現を保ちます。
-通常のラベルは、引用符で囲んで印字します（[Quotes](#quotes) を参照）。
-明示 id は、後の metadata、class、style の対象のままです。
+通常のラベルは、引用符で囲んで印字します（[引用符](#quotes) を参照）。
+明示 id は、後のメタデータ、class、style の対象のままです。
 パイプや class 風のコロンラベルは別の文法であり、
 連鎖を有効な関係へ分割することもしません。
 
@@ -631,7 +672,7 @@ actor の開始キーワード、二つの端点の出現を保ちます。
 [fixture: relationship-labels-and-ids/edge-pipe-convert-kept]
 [fixture: relationship-labels-and-ids/split-circle-and-cross]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 ``"usecase-beta\nA--  likes  -->B\nB<--'uses'--C\nC o-- part --- D\nD x--\"`blocks`\"----E"``
 
 出力
@@ -647,12 +688,12 @@ usecase-beta
 
 ### Native metadata
 
-native metadata は解析と検証を行う構文です。
+固有のメタデータは解析と検証を行う構文です。
 構造の空白だけを整え、対象と `@{` は詰め、プロパティのコロンの前は詰め、
 後は空白 1 個、同じ行のコンマの後と波括弧の内側も空白 1 個にします。
 空の場合は `@{ }` です。
 整数風の文字列、真偽値、順序、重複、独立した更新、区切り、末尾コンマを保ちます。
-キーとスカラーの引用符は、[Quotes](#quotes) のとおりに印字します。
+キーとスカラーの引用符は、[引用符](#quotes) のとおりに印字します。
 順序と重複は、
 最終的な形状を変えたり競合で拒否されたりする場合があるため保ちます。
 `U@{icon:'x',icon:''}` を `icon: '', icon: 'x'` の順にすると最終的な icon
@@ -663,19 +704,19 @@ native metadata は解析と検証を行う構文です。
 改行は一つのプロパティを分けられないためです。
 [fixture: native-metadata/metadata-key-multiline-directive]
 [fixture: native-metadata/metadata-scalar-multiline-directive]
-YAML や flowchart、Agentflow の不透明な metadata の整形は当てはまりません。
+YAML や flowchart、Agentflow の不透明なメタデータの整形は当てはまりません。
 
 最初のプロパティが開始行にあるか次行にあるかを保ちます。
 [fixture: native-metadata/metadata-first-gap-standalone-directive]
-通常のプロパティ、コメント、directive の行は含む文より 1 段深くし、
+通常のプロパティ、コメント、ディレクティブの行は含む文より 1 段深くし、
 独立した閉じ波括弧はその文に揃えます。
 [fixture: native-metadata/metadata-comma-comment-close]
 [fixture: native-metadata/metadata-closer-directive-own-line]
-metadata のすべての空行と、コンマか改行かの区切りを保ちます。
+メタデータのすべての空行と、コンマか改行かの区切りを保ちます。
 キー、コロン、値からなる一つのプロパティ内に改行を挿入しません。
 [fixture: native-metadata/metadata-first-gap-standalone-directive]
 [fixture: native-metadata/metadata-selected-semicolon-between-properties]
-native の検証や宣言と更新の役割を変えず、構造を読みやすくします。
+固有の検証や宣言と更新の役割を変えず、Prettier がキーと値に印字する形にします。
 
 共通コメント領域と改行の処理後、最後のプロパティから `}` までの、
 末尾コンマと物理改行の合計は 2 個以下で、コンマは改行の前にだけ置けます。
@@ -730,7 +771,7 @@ usecase/gram-metadata-no-trailing-comma-two-properties-three-newlines]
 [fixture: native-metadata/spelling-and-trailing-comma-option]
 [fixture: native-metadata/multiline-directive-value-gap]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"usecase-beta\nactor U @{\n type : hollow\n , business : true,\n}"`
 
 出力
@@ -764,7 +805,7 @@ mermaid.js の文書でも `@{` と書いているためです
 キーの並べ替えは `propertyOrder` を変える場合があります。
 釣り合った不正な内容は指定の不透明な読み、括弧の釣り合いの失敗は拒否のままです。
 Db の検査は共有のデータブロックの経路に従います。
-効果を渡さない整形 fixture の比較は null とし、
+効果を渡さない整形 fixture の比較は `null` とし、
 書かれた埋め込み文字列を比較します。
 コーパスは、存在する場合に記録済みの効果を使います。
 原文の比較では、一定量の移動だけを許します。
@@ -783,12 +824,13 @@ Mermaid が `Bad control character in string literal` として拒否するた�
 
 共有の移動条件と理由は、
 [データブロック](./flowchart.ja.md#データブロック)に従います。
-特に、開きの行から始まる JSON、内部の directive、行全体を保つ行、行頭のタブ、
-`tabWidth: 0` は書かれたまま残し、
+特に、開きの行から始まる JSON、内部のディレクティブ、行全体を保つ行、
+行頭のタブ、`tabWidth: 0` は書かれたまま残し、
 `useTabs` のときは JSON を持つ文全体を書かれたまま残します。
-外側のコメント、directive、空行、空の説明ブロックはそれぞれの規則に従います。
+外側のコメント、ディレクティブ、空行、
+空の説明ブロックはそれぞれの規則に従います。
 CR と LF は `endOfLine` に従い、
-文字列の Unicode separator は文字として保ちます。
+文字列の Unicode の区切り文字は文字として保ちます。
 [fixture: json-tables/inline-opening-kept]
 [fixture: json-tables/directive-inside-kept]
 [fixture: json-tables/kept-body-line] [fixture: json-tables/zero-width-kept]
@@ -797,7 +839,7 @@ CR と LF は `endOfLine` に従い、
 [test: data blocks: JSON leading tab kept] [test: data blocks: usecase U+2029]
 [test: data blocks: usecase CRLF]
 
-1 行の JSON table は、`@` と `{` の間の空白を除いて、書かれたままにします。
+1 行の JSON の表は、`@` と `{` の間の空白を除いて、書かれたままにします。
 `{` と `}` は JSON 自身の括弧であり、
 mermaid.js が括弧を付けて読むブロックの両端ではないので、
 [データブロック](./flowchart.ja.md#データブロック)の空白 1
@@ -810,7 +852,7 @@ mermaid.js が括弧を付けて読むブロックの両端ではないので、
 [fixture: json-tables/json-directive-opaque]
 [fixture: json-tables/numbers-escapes-and-comment-text]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"usecase-beta\njson  Table  @ {\n \"2\": 2, \"1\": {\"z\":1}, \"2\": 3\n} ::: data , table"`
 
 出力
@@ -820,7 +862,7 @@ mermaid.js が括弧を付けて読むブロックの両端ではないので、
 usecase-beta
   json Table @{
     "2": 2, "1": {"z":1}, "2": 3
-  }:::data,table
+  }:::data, table
 ```
 
 ### Semicolons at the end of a style statement
@@ -837,7 +879,7 @@ usecase-beta
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
 文の前後の空行とコメント行は、通常の配置に従います。
 [fixture: semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines]
-空の description block も通常の配置に従い、スタイルの終端は削除します。
+空の説明ブロックも通常の配置に従い、スタイルの終端は削除します。
 [fixture: semicolons-at-the-end-of-a-style-statement/empty-description-block]
 
 同じ行でセミコロンの後にディレクティブが続く場合は、`;` を保ちます。
@@ -869,7 +911,7 @@ usecase-beta
 ### Classes and styles
 
 ER の[スタイルとクラス](./er.ja.md#スタイルとクラス)を再利用し、
-対象名と class 名の間のコンマは詰め、
+対象名と class 名の間のコンマは前の名前に接して後ろに空白 1 個を置き、
 一覧同士と最初の宣言の前は空白 1 個にします。
 CSS 宣言同士はコンマと空白で区切ります。
 宣言の最初のコロンの前には空白を置かず、後ろには空白を 1 つ置きます。
@@ -884,8 +926,8 @@ mermaid.js は `stroke:` だけでその矢印の先端を着色するため、
 連続する空白を 1 つにします。
 宣言の名前の始まりから最後の値の成分までのテキストは、
 それ以外は書かれたままです。
-ダッシュの隙間の directive、引用またはエスケープしたコンマ、空文字の成分、関数、
-順序、繰り返しを保ちます。
+ダッシュの隙間のディレクティブ、引用またはエスケープしたコンマ、空文字の成分、
+関数、順序、繰り返しを保ちます。
 ただし、ほかの図種と同じく、
 語と語の間の空白とタブの連続は空白 1 つで印字します。
 （[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)）。
@@ -895,7 +937,7 @@ mermaid.js は `stroke:` だけでその矢印の先端を着色するため、
 バックスラッシュの後ろのエスケープは、書かれたまま残します。
 [fixture: classes-and-styles/css-name-multiline-directive]
 最後の成分の後ろの外側の水平空白だけが消えることがあります。
-保持するセミコロンを含む接頭部、文中のコメントや directive、
+保持するセミコロンを含む接頭部、文中のコメントやディレクティブ、
 複数行にわたる宣言は、通常の一覧の配置より優先します。
 
 [fixture: classes-and-styles/class-lists]
@@ -924,7 +966,7 @@ mermaid.js は `stroke:` だけでその矢印の先端を着色するため、
 [fixture: classes-and-styles/css-inline-percent]
 [fixture: classes-and-styles/trailing-after-comma]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"usecase-beta\nA\nstyle  A   fill   :  red   ,  stroke-width : 2px  "`
 
 出力
@@ -940,16 +982,16 @@ usecase-beta
 
 `note for <target> <label>` の各部分の間を通常の空白 1 個にします。
 対象、markdown または空のラベル、および note の順序を保ちます。
-通常のラベルは、引用符で囲んで印字します（[Quotes](#quotes) を参照）。
+通常のラベルは、引用符で囲んで印字します（[引用符](#quotes) を参照）。
 class の[トークンの間の空白](./class.ja.md#トークンの間の空白)と同じ、
-値の原文と読みやすいキーワード間隔を保つ理由です。
+値の原文とキーワード間隔を保つ理由と同じです。
 前方参照の解決で id、位置、宣言を作りません。
 行内のパーセント文字はラベルの内容のままです。
 
 [fixture: notes/notes-forms] [fixture: notes/notes-forward]
 [fixture: notes/notes-empty-markdown] [fixture: notes/empty-and-markdown-order]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"usecase-beta\nA\nnote  for  A'quoted note'\nnote for A bare  note %% literal"`
 
 出力
@@ -970,7 +1012,7 @@ class の[ラベル](./class.ja.md#ラベル)と C4
 の[アクセシビリティの行](./c4.ja.md#アクセシビリティの行)を再利用し、
 コロンをキーワードに接し、両端の空白を除いた値の前を空白 1 個にします。
 Db が同じになる外側の空白を、兄弟の図種と同じ形に揃えるためです。
-内部の文字と空白、コメント、directive、パーセントとセミコロンを保ちます。
+内部の文字と空白、コメント、ディレクティブ、パーセントとセミコロンを保ちます。
 空と空白だけの行は、値のないコロン形式にします。
 次の物理行は別の文のままで、兄弟の次行の結合は取り込みません。
 空のコロン行の次の方向の文字も、値の文字ではなく独立した方向文のままです。
@@ -1009,8 +1051,8 @@ Mermaid が説明から LF 後の字下げを除くためです。
 [fixture: direction-and-accessibility/empty-block-lines]
 書かれた原文を保つ共有コメント領域とセミコロンの規則は、そのまま優先します。
 
-`accTitle` か `accDescr` の値の最後にある directive は、
-タイトルの最後にある directive と同じに印字します。
+`accTitle` か `accDescr` の値の最後にあるディレクティブは、
+タイトルの最後にあるディレクティブと同じに印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 `accTitle: Column zero  %%{x}%%  ` も `accTitle: Column zero  %%{x}%%` も、
 `accTitle: Column zero %%{x}%%` と印字します。
@@ -1028,7 +1070,7 @@ Mermaid が説明から LF 後の字下げを除くためです。
 [fixture: direction-and-accessibility/literal-directives-semicolons]
 [fixture: direction-and-accessibility/empty-block-lines]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"usecase-beta\ndirection  TD\nA\ndirection\tBT\ndirection RL"`
 
 出力
@@ -1042,7 +1084,7 @@ usecase-beta
   direction RL
 ```
 
-入力（escape 表記）: `"usecase-beta\naccDescr{ a }\nA[Keyword gap]"`。
+入力（エスケープ表記）: `"usecase-beta\naccDescr{ a }\nA[Keyword gap]"`。
 
 出力
 ([direction-and-accessibility/keyword-brace-touching-output.mmd](../tests/fixtures/usecase/direction-and-accessibility/keyword-brace-touching-output.mmd)):
@@ -1059,8 +1101,8 @@ class の[空行](./class.ja.md#空行)を再利用し、通常の空行の連�
 図と境界の本文の両端の空行を除きます。
 1 行でまとまりを区切れ、それ以上は意味を加えないためです。
 ASCII 空白とタブだけの行も通常の空行です。
-裸の native コメントの後や、独立した directive の前後も同じです。
-値、native metadata、JSON、directive、保護された共通領域の結合は、
+裸の固有コメントの後や、独立したディレクティブの前後も同じです。
+値、固有のメタデータ、JSON、ディレクティブ、保護された共通領域の結合は、
 それぞれの空行を保ちます。
 C4 の復帰用の隙間や Ishikawa の空行の対の規則は取り込みません。
 
@@ -1068,7 +1110,7 @@ C4 の復帰用の隙間や Ishikawa の空行の対の規則は取り込みま�
 [fixture: blank-lines/blank-comments] [fixture: blank-lines/blank-in-value]
 [fixture: blank-lines/directives-and-boundary-edges]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"usecase-beta\nsystemBoundary Box\n\nactor U\n\n\nA\n\nend"`
 
 出力
@@ -1090,11 +1132,11 @@ usecase-beta
 末尾の水平空白を含むコメント全体を保ちます。
 [fixture: system-boundaries/boundary-header-comment-empty]
 [test: usecase: terminal-comment-tab]
-native コメントは、物理行の前方が ASCII 水平空白だけの位置で始まり、
+固有コメントは、物理行の前方が ASCII 水平空白だけの位置で始まり、
 LS と PS を越えて LF または EOF まで続きます。
-裸のパーセント対と directive ではない波括弧形式もコメントです。
-native の文末コメントはなく、許される行内のパーセント文字は、ラベル、note、CSS、
-accessibility の内容のままです。
+裸のパーセント対とディレクティブではない波括弧形式もコメントです。
+固有の文末コメントはなく、許される行内のパーセント文字は、ラベル、note、CSS、
+アクセシビリティの内容のままです。
 共通のコメント領域はすべての文脈で先に適用されます。
 隠れた後続部分、結合、継続列を保ち、
 文字を露出させたり値に字下げを加えたりしません。
@@ -1107,7 +1149,7 @@ Agentflow のサイズによる分岐は適用しません。
 [fixture: comments/inline-note-css-accessibility]
 [fixture: comments/common-region-inside-values]
 
-入力（escape 表記）: `"usecase-beta\n%%\n%%{}%%\nA"`
+入力（エスケープ表記）: `"usecase-beta\n%%\n%%{}%%\nA"`
 
 出力
 ([comments/comments-bare-output.mmd](../tests/fixtures/usecase/comments/comments-bare-output.mmd)):
@@ -1123,21 +1165,21 @@ usecase-beta
 
 共有の[ディレクティブ](./class.ja.md#ディレクティブ)を再利用します。
 除去は区切りを補いません。
-内容、順序、複数行の列を保ち、独立した directive は揃えます。
+内容、順序、複数行の列を保ち、独立したディレクティブは揃えます。
 同じ印字行の中のディレクティブは、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 [fixture: system-boundaries/boundary-id-title-directed-gap]
 [fixture: arrows/semantic-operator-directives]
 [fixture: arrow-id-boundaries/arrow-marker-both-gap-sides]
-ヘッダー行の directive はヘッダーと同じ行に残します。
+ヘッダー行のディレクティブはヘッダーと同じ行に残します。
 値側の隙間、CSS の名前と値の範囲、不透明な JSON は、
-[JSON tables](#json-tables) の余白を除いて正確に保ちます。
+[JSON の表](#json-tables) の余白を除いて正確に保ちます。
 独立した JSON の id、`@`、波括弧の境界も含みます。
 [fixture: classes-and-styles/css-name-multiline-directive]
 [fixture: json-tables/json-prefix-id-at-multiline-directive]
-native の `@{`、引用のない語、矢印は原子的な単位のままです。
-EOF まで続く directive の末尾と、止めるセミコロンの位置を保ちます。
-native の引用キーと値は directive の断片を含められます。
+固有の `@{`、引用のない語、矢印は原子的な単位のままです。
+EOF まで続くディレクティブの末尾と、止めるセミコロンの位置を保ちます。
+固有の引用キーと値はディレクティブの断片を含められます。
 [fixture: native-metadata/metadata-key-multiline-directive]
 [fixture: native-metadata/metadata-scalar-multiline-directive]
 
@@ -1156,7 +1198,7 @@ native の引用キーと値は directive の断片を含められます。
 [fixture: directives/header-at-eof] [fixture: directives/before-boundary-end]
 [fixture: directives/open-word-stop]
 
-入力（escape 表記）: `"usecase-beta\nactor  %%{init: {}}%%  User"`
+入力（エスケープ表記）: `"usecase-beta\nactor  %%{init: {}}%%  User"`
 
 出力
 ([directives/directives-ordinary-gap-output.mmd](../tests/fixtures/usecase/directives/directives-ordinary-gap-output.mmd)):
@@ -1171,16 +1213,16 @@ usecase-beta
 C4 の[複数行の値](./c4.ja.md#複数行の値)と、
 flowchart の[折り返し](./flowchart.ja.md#折り返し)を再利用します。
 書かれた行と列は文字であり、`printWidth` で長い文を折り返しません。
-markdown、JSON、directive、共通領域の継続を保ちます。
-通常の文字列と stereotype に物理改行を足しません。
+markdown、JSON、ディレクティブ、共通領域の継続を保ちます。
+通常の文字列とステレオタイプに物理改行を足しません。
 usecase は行指向なので、構造としての改行は関係を拒否させることがあります。
 `A-->` の次の行に `B` を置いた入力は拒否され、
 `LongSource-->LongTarget` を小さな `printWidth` で折り返すと、
 受理される入力が拒否される入力になります。
 markdown 文字列、JSON、説明ブロックは、値の文字として実際の改行を持てます。
-説明本文の列は [Direction and accessibility](#direction-and-accessibility)
+説明本文の列は [方向とアクセシビリティ](#direction-and-accessibility)
 に従います。
-native metadata の構造は専用の規則に従います。
+固有のメタデータの構造は専用の規則に従います。
 [fixture: native-metadata/metadata-key-multiline-directive]
 [fixture: native-metadata/metadata-scalar-multiline-directive]
 互換な宣言、境界、関係、note、class の定義と割り当て、更新は、
@@ -1193,7 +1235,7 @@ native metadata の構造は専用の規則に従います。
 [fixture: multiline-values-and-order/wrap-arrow-kept]
 [fixture: multiline-values-and-order/repeated-notes-and-updates]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"usecase-beta\nVeryLongSourceIdentifier-- a deliberately long label -->VeryLongTargetIdentifier"`
 
 出力
@@ -1209,11 +1251,11 @@ usecase-beta
 [末尾空白](./c4.ja.md#末尾空白)を再利用します。
 完了した構造と CSS の最後の成分の後の、無害な ASCII 空白とタブを除きます。
 CSS 宣言のコロンの前後の余白は、
-[Classes and styles](#classes-and-styles) に従います。
-accessibility 行と stereotype の両端の空白は、兄弟の規則に従って整えます。
+[クラスとスタイル](#classes-and-styles) に従います。
+アクセシビリティ行とステレオタイプの両端の空白は、兄弟の規則に従って整えます。
 [fixture: stereotypes/side-padding]
-引用と markdown の値、JSON、native プロパティの文字列、コメント、
-directive 内の末尾の全文字は保ちます。 [test: usecase: terminal-comment-tab]
+引用と markdown の値、JSON、固有プロパティの文字列、コメント、
+ディレクティブ内の末尾の全文字は保ちます。 [test: usecase: terminal-comment-tab]
 [test: usecase: terminal-a11y-tab]
 Unicode 文字を自動的に外側の水平空白とせず、空の CSS style も作りません。
 
@@ -1222,7 +1264,7 @@ Unicode 文字を自動的に外側の水平空白とせず、空の CSS style �
 [fixture: trailing-whitespace/trailing-global-trim-kept]
 [fixture: trailing-whitespace/opaque-and-metadata-lines]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"usecase-beta  \nactor U \t\nA-->B  \nA@{ }\t\nstyle A fill:red \t"`
 
 出力
@@ -1241,18 +1283,19 @@ usecase-beta
 共有の[行末](./compatibility.ja.md#行末)を再利用します。
 Mermaid は読む前に物理的な CR と CRLF を LF にし、
 出力は `endOfLine` に従います。
-metadata、JSON、markdown、accessibility、CSS、directive の内部も同じです。
-LS と PS は文脈に従う文字として、ラベル、stereotype の本文、note、
-native と CSS の引用値、accessibility、コメントに保ちます。
-accessibility と stereotype の外側の空白は、それぞれの規則に従って整えます。
+メタデータ、JSON、markdown、アクセシビリティ、CSS、
+ディレクティブの内部も同じです。
+LS と PS は文脈に従う文字として、ラベル、ステレオタイプの本文、note、
+固有の構文と CSS の、引用符で囲んだ値、アクセシビリティ、コメントに保ちます。
+アクセシビリティとステレオタイプの外側の空白は、それぞれの規則に従って整えます。
 [test: usecase: a11y-unicode-exterior]
 [test: usecase: stereotype-unicode-exterior-padding]
 JSON では文字列内または構造内の不透明な内容のままです。
-native コメントはそれらを越えて LF まで続き、
+固有コメントはそれらを越えて LF まで続き、
 文字列のセミコロン区間は Unicode の境界を保ちます。
 id、隙間、プロパティ、CSS の拒否位置を修復しません。
-ヘッダー前の共通 trivia だけが広い空白集合を使います。
-ファイル先頭の BOM と frontmatter の共有の制限も同じです。
+ヘッダー前の共通注釈だけが広い空白集合を使います。
+ファイル先頭の BOM とフロントマターの共有の制限も同じです。
 これらの文字は、パッケージのファイルに直接書かず、テストでエスケープします。
 例えば `"usecase-beta\rA\rA-->B\r"` は、
 `"usecase-beta\n  A\n  A --> B\n"` になります。
@@ -1276,11 +1319,11 @@ id、隙間、プロパティ、CSS の拒否位置を修復しません。
 安全な設定は YAML 整形で読みやすくし、不正な本文、字下げした区切り、
 原文または整形後の YAML の HTML タグ開始、
 整形で現れる終了区切りは読みを保ちます。
-区切りと終了行の余白、ヘッダー前のコメントと directive を保ちます。
-frontmatter のタイトルは accessibility 文ではなく、
+区切りと終了行の余白、ヘッダー前のコメントとディレクティブを保ちます。
+フロントマターのタイトルはアクセシビリティ文ではなく、
 この版の usecase は共通のタイトルを消去します。
 `tabWidth: 0` でも YAML は共有の正の最小幅、本文は 0 のままです。
-frontmatter をまたぐ HTML は本文だけを見る指定の読みに従い、
+フロントマターをまたぐ HTML は本文だけを見る指定の読みに従い、
 元の Mermaid に合わせるための本文の引用の書き換えはしません。
 
 [fixture: frontmatter-yaml/frontmatter-safe]
@@ -1296,7 +1339,7 @@ frontmatter をまたぐ HTML は本文だけを見る指定の読みに従い�
 [fixture: frontmatter-yaml/malformed-title]
 [fixture: frontmatter-yaml/ineffective-title-types]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"---\ntitle:   T\nconfig: {usecase: {useMaxWidth:  true}}\n---\nusecase-beta\nA"`
 
 出力
@@ -1315,12 +1358,12 @@ usecase-beta
 
 共有の[末尾の改行](./c4.ja.md#末尾の改行)を再利用し、
 通常の受理入力は設定された改行 1 個で終えます。
-ヘッダーだけ、裸のコメント、空の accessibility 行も同じです。
-各規則が残す値の余白を改行の前に保ち、accessibility 行の外側の空白は、
+ヘッダーだけ、裸のコメント、空のアクセシビリティ行も同じです。
+各規則が残す値の余白を改行の前に保ち、アクセシビリティ行の外側の空白は、
 その規則に従って除きます。
-EOF まで続く directive の値に文字を加えません。
+EOF まで続くディレクティブの値に文字を加えません。
 [test: usecase: terminal-comment-tab] [test: usecase: terminal-a11y-tab]
-directive の外側の末尾空白は共有の範囲の規則に従います。
+ディレクティブの外側の末尾空白は共有の範囲の規則に従います。
 拒否された構文を末尾の追加で受理させることはしません。
 
 [fixture: final-newline/final-ordinary]
@@ -1331,7 +1374,7 @@ directive の外側の末尾空白は共有の範囲の規則に従います。
 [fixture: final-newline/directive-exterior-whitespace]
 [corpus fixture: usecase/db-acctitle-eof]
 
-入力（escape 表記）: `"usecase-beta\nA\n\n\n"`
+入力（エスケープ表記）: `"usecase-beta\nA\n\n\n"`
 
 出力
 ([final-newline/final-ordinary-output.mmd](../tests/fixtures/usecase/final-newline/final-ordinary-output.mmd)):
@@ -1346,14 +1389,14 @@ usecase-beta
 共有の
 [Markdown のコードブロック](./compatibility.ja.md#markdown-のコードブロック)
 を再利用します。
-字下げを除いた本文に同じ規則を適用し、ホストが fence、リスト、
+字下げを除いた本文に同じ規則を適用し、ホストが囲みの区切り、リスト、
 引用の字下げを補います。
-固定したホストのテストは stereotype の接尾辞、native metadata、JSON、
-複数行の値、directive、幅 0、タブ、空のヘッダー、拒否された本文を扱います。
+固定したホストのテストはステレオタイプの接尾辞、固有のメタデータ、JSON、
+複数行の値、ディレクティブ、幅 0、タブ、空のヘッダー、拒否された本文を扱います。
 [test: usecase Markdown: stereotype-suffixes]
-accessibility 行の外側の空白は、単独ファイルと Markdown の両方で除きます。
+アクセシビリティ行の外側の空白は、単独ファイルと Markdown の両方で除きます。
 例えば `accTitle:  Title  ` は、どちらでも `accTitle: Title` になります。
-拒否した fence には、ホストの空白と改行の処理だけを適用します。
+拒否したコードブロックには、ホストの空白と改行の処理だけを適用します。
 
 [fixture: markdown-fences/markdown-top-payload]
 [fixture: markdown-fences/markdown-list-payload]
@@ -1365,7 +1408,7 @@ accessibility 行の外側の空白は、単独ファイルと Markdown の両�
 [test: usecase Markdown: rejected-payload]
 [test: usecase Markdown: empty-header]
 
-入力（escape 表記）: `"usecase-beta\nactor U\nU-->A"`
+入力（エスケープ表記）: `"usecase-beta\nactor U\nU-->A"`
 
 出力
 ([markdown-fences/markdown-top-payload-output.mmd](../tests/fixtures/usecase/markdown-fences/markdown-top-payload-output.mmd)):

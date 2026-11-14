@@ -13,6 +13,8 @@ import {
   findTokenStartingAt,
   findTriviaBetween,
   isWhitespace,
+  previousRead,
+  textRead,
 } from "./source.ts"
 
 const { replaceEndOfLine } = utils
@@ -326,7 +328,7 @@ function countGapsBeforePercentBrace(
     (part) =>
       part.item.type === "Comment" &&
       part.item.mark === "%%" &&
-      source.text[part.item.range[0] + 2] === "{",
+      textRead(source, ...part.item.range).startsWith("%%{"),
   )
   if (index === -1) return null
   return parts.slice(1, index + 1).filter((part) => part.spaceBefore).length
@@ -479,19 +481,17 @@ function isAfterKeptLineSeparator(
   let position = offset
   while (position > 0) {
     const directive = findDirectiveEndingAt(source, position)
-    if (directive !== undefined) {
-      // The character that stops a directive that is not closed is part of
-      // the directive, which is printed as written (see `createSource`).
-      if (isLineSeparator(source.text[position - 1])) return true
-      position = directive.range[0]
-      continue
+    if (directive !== undefined && isLineSeparator(source.text[position - 1])) {
+      // Keep the written terminator of an open directive with its semicolon;
+      // removing it would extend the directive into the following line.
+      return true
     }
-    const character = source.text[position - 1]
-    if (isLineSeparator(character)) {
-      return position - 1 < gapStart
-    }
+    const before = previousRead(source, position)
+    if (before < 0) return false
+    const character = source.text[before]
+    if (isLineSeparator(character)) return before < gapStart
     if (character === "\n" || !isWhitespace(character)) return false
-    position--
+    position = before
   }
   return false
 }

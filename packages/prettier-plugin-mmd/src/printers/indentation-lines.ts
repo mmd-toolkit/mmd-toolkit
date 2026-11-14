@@ -7,6 +7,7 @@ import {
   findCommentLineEnds,
   findFirstIndex,
   findTriviaBetween,
+  textRead,
 } from "./source.ts"
 
 /** Directives before node text, whose intervening gaps count as indentation. */
@@ -113,10 +114,10 @@ export function findNodeLineEnd(source: Source, offset: number): number {
  * `textStart`, and the whitespace after each of them. The text of a node is
  * read without its directives, so all the whitespace before it is its
  * indentation (diagrams/kanban.md, Directives inside units;
- * diagrams/ishikawa.md, Directives). A gap is the length of whatever lies
- * between two directives, or between the last one and the text: this function
- * does not check that it is whitespace, which `findLeadingDirectiveRun` of a
- * mindmap does.
+ * diagrams/ishikawa.md, Directives). A gap is the length of the read text
+ * between two directives, or between the last one and the text: removed comment
+ * regions count for nothing. This function does not check that it is
+ * whitespace, which `findLeadingDirectiveRun` of a mindmap does.
  */
 export function findLeadingDirectives(
   source: Source,
@@ -128,7 +129,7 @@ export function findLeadingDirectives(
     .map((item) => item.range)
   const gaps = directives.map((range, index) => {
     const next = directives[index + 1]?.[0] ?? textStart
-    return source.text.slice(range[1], next).length
+    return textRead(source, range[1], next).length
   })
   return { directives, gaps, textStart }
 }

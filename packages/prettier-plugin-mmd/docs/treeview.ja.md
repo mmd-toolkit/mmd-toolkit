@@ -5,10 +5,10 @@
 `treeView-beta` の整形規則です。
 [構文](../../spec/docs/diagrams/treeview.ja.md)と
 [原文の木](../../spec/docs/ast/treeview.ja.md)が読みを定義します。
-printer は共有の blocks、atoms、gaps、共通の配置と root の経路を使い、
+印字処理は共有のブロック、単位、隙間、共通の配置と最上位の経路を使い、
 入れ子の木から親子の列を計画し、原文からモードを読みます。
-parser が拒否する入力は、単独ファイルでは構文エラーを報告し、
-fence では Markdown host に任せます。
+パーサーが拒否する入力は、単独ファイルでは構文エラーを報告し、
+Markdown のコードブロックでは Markdown 側に任せます。
 [互換性](./compatibility.ja.md)も参照してください。
 
 ## Rules
@@ -17,7 +17,7 @@ fence では Markdown host に任せます。
 
 `treeView-beta` を第 1 列に置き、普通の本文は次の行へ移します。
 見出しを独立させ、末尾の空白、同じ行の名前や拒否される綴りは修復しません。
-空の本文は空のままとし、接する directive の境界を保ちます。
+空の本文は空のままとし、接するディレクティブの境界を保ちます。
 
 [fixture: treeview/header/header-leading]
 
@@ -27,7 +27,7 @@ fence では Markdown host に任せます。
 
 [corpus fixture: treeview/header-nbsp-custom-boundary]
 
-入力（escape 表記）: `"\n  treeView-beta\nRoot"`
+入力（エスケープ表記）: `"\n  treeView-beta\nRoot"`
 
 出力
 ([header/header-leading-output.mmd](../tests/fixtures/treeview/header/header-leading-output.mmd)):
@@ -43,9 +43,9 @@ treeView-beta
 `ICON(logos:react)` は名前なので、書かれたままにします。
 [fixture: keyword-case/icon-kept]
 
-Input (escaped): `"treeView-beta\n'plain'\nICON(logos:react)"`.
+入力（エスケープ表記）: `"treeView-beta\n'plain'\nICON(logos:react)"`.
 
-Output
+出力
 ([keyword-case/icon-kept-output.mmd](../tests/fixtures/treeview/keyword-case/icon-kept-output.mmd)):
 
 ```mmd
@@ -58,12 +58,12 @@ treeView-beta
 
 字下げと罫線のモードを保ちます。
 モードは見出し後の論理 LF 行で判定し、値の内部も調べます。
-空白だけ、コメント形、metadata 形、縦線だけの行を除きます。
-prefix の有無だけでは判定しません。
+空白だけ、コメント形、メタデータ形、縦線だけの行を除きます。
+前置部分の有無だけでは判定しません。
 罫線モードの普通の外側の構造は AST の森から描き直し、
 字下げモードの入力を罫線の図へは変えません。
-Branch prefixes の本文保持の条件によって、モードと値内の罫線の読みを保ちます。
-共通文の prefix は外し、普通の共通文は第 1 列に置き、子のように見せません。
+枝の前置部分の本文保持の条件によって、モードと値内の罫線の読みを保ちます。
+共通文の前置部分は外し、普通の共通文は第 1 列に置き、子のように見せません。
 
 コメント行内の罫線文字は罫線モードを選ばず、
 字下げモードのコメントは次の文にそろえます。
@@ -133,7 +133,7 @@ Branch prefixes の本文保持の条件によって、モードと値内の罫�
 
 [corpus fixture: treeview/box-metadata-only]
 
-入力（escape 表記）: `"treeView-beta\naccDescr {\nx\u2500\n}\n"`
+入力（エスケープ表記）: `"treeView-beta\naccDescr {\nx\u2500\n}\n"`
 
 出力
 ([modes/block-interior-active-output.mmd](../tests/fixtures/treeview/modes/block-interior-active-output.mmd)):
@@ -208,16 +208,16 @@ treeview/description-blocks/box-redraw-opener-prefix-with-directive-gap]
 
 ### Branch prefixes
 
-親子は AST の children から読み、file も親として扱い、
+親子は AST の `children` から読み、ファイルも親として扱い、
 原文の深さの飛びを詰めます。
 次の兄弟があるノードは `├── `、最後の兄弟は `└── ` で描きます。
-次の兄弟がある祖先の段は `│   `、それ以外は 4 spaces です。
+次の兄弟がある祖先の段は `│   `、それ以外は空白 4 つです。
 共通文、注釈、コメントと装飾は兄弟に数えません。
-根に prefix が無い図は、根と第 1 世代の枝を第 1 列、
+根に前置部分が無い図は、根と第 1 世代の枝を第 1 列、
 孫の枝を 0 起算の列 4 に置きます。
-どれかの根に元の prefix があれば、混在する根もすべて第 1 列の枝に揃えます。
-この forest の形で親子と罫線モードを保ちます。
-細い罫線、dash 2 個、固定の 4 列の部品を選びます。
+どれかの根に元の前置部分があれば、混在する根もすべて第 1 列の枝に揃えます。
+この森の形で親子と罫線モードを保ちます。
+細い罫線、ダッシュ 2 個、固定の 4 列の部品を選びます。
 元の深さや兄弟の印、太さの混在を残さず、読む木を一貫して描くためです。
 
 [fixture: treeview/statements-one-per-line/review159-box-quoted-two]
@@ -263,22 +263,23 @@ treeview/description-blocks/box-redraw-opener-prefix-with-directive-gap]
 [fixture: treeview/branch-prefixes/box-redraw-nested-mixed-weights]
 
 名前が `;` だけの枝もノードです。
-prefix の後に何も続かず、prefix はほかと同じように描きます。
+前置部分の後に何も続かず、前置部分はほかと同じように描きます。
 [fixture: treeview/branch-prefixes/branch-semicolon-name]
 
 描く前に、本文を保つかを一度に判断します。
-外側の prefix と区切りが任意文字、directive、選ばれる semicolon、
-comment region と交わる図や、
-装飾の行が共有の trivia と交わる図は本文を保ちます。
+外側の前置部分と区切りが任意文字、ディレクティブ、選ばれるセミコロン、
+コメント領域と交わる図や、
+装飾の行が共有の付随要素（コメントやディレクティブなど）と交わる図は、
+本文を保ちます。
 固定された原文の行の境界、安全に寄せられない注釈、モードの喪失、
-値内の prefix の有効な indent の変化も本文保持の理由です。
-枝の追加や除去で値の tab や末尾の読みが変わる図も本文を保ちます。
+値内の前置部分の有効な字下げの変化も本文保持の理由です。
+枝の追加や除去で値のタブや末尾の読みが変わる図も本文を保ちます。
 罫線モードの論理行を分けることで、
 名前の先頭の Unicode 空白が新しい枝なしの行に露出する場合も本文を保ちます。
 条件は同じ図で重ねて適用します。
-一つの保護行の最初の正の branch 列が、ほかの全行の幅を決めうるためです。
+一つの保護行の最初の正の枝列が、ほかの全行の幅を決めうるためです。
 本文を保った図には見た目の一致を約束しません。
-名前、値、prefix の任意文字と共有の trivia は捨てません。
+名前、値、前置部分の任意文字と共有の付随要素は捨てません。
 
 [test: treeview/branch-prefixes/uppercase-entity-and-tab-column]
 
@@ -338,7 +339,7 @@ comment region と交わる図や、
 
 [corpus fixture: treeview/box-skip-space-before-dash]
 
-入力（escape 表記）: `"treeView-beta\na\n    ├─ b\n  └─ c\n"`
+入力（エスケープ表記）: `"treeView-beta\na\n    ├─ b\n  └─ c\n"`
 
 出力
 ([branch-prefixes/rounding-half-output.mmd](../tests/fixtures/treeview/branch-prefixes/rounding-half-output.mmd)):
@@ -542,19 +543,19 @@ treeview/semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
 [fixture: treeview/decorations/pending-name-before-first-root]
 
 普通の外側の装飾は、次のノードへ続く木の案内線として 1 回描き直します。
-続く木が無ければ空行にし、Blank lines と Final newline に従って整理します。
-body、名前待ち、注釈、opener の gap の各所有位置で適用します。
-移した空行は、後続の gap の最初の trivia の前も含めて、
+続く木が無ければ空行にし、空行と末尾の改行に従って整理します。
+本文、名前待ち、注釈、開始記号の隙間の各所有位置で適用します。
+移した空行は、後続の隙間の最初の付随要素の前も含めて、
 空行が最大 1 個になる共有の配置へまとめます。
 枝付き注釈を同じ行へ寄せたときは、その装飾をノードの行の後、
 続く木の前に残します。
-古い縦線、太い線や dash だけの形を、読む木の続きに置き換えるためです。
+古い縦線、太い線やダッシュだけの形を、読む木の続きに置き換えるためです。
 罫線モードの選択に必要な装飾は保ちます。
-それが `accDescr` の opener 前の唯一の選び手なら、
-装飾を含む gap 全体だけを保ち、block の残りと本文は普通に整形します。
+それが `accDescr` の開始記号前の唯一の選び手なら、装飾を含む隙間全体だけを保ち、
+block の残りと本文は普通に整形します。
 関係の無い title の空白や空行を固定せずにモードを保つためです。
 値に所有された装飾の範囲は保ちます。
-装飾の行に共有の trivia があれば、削除せず本文を保ちます。
+装飾の行に共有の付随要素があれば、削除せず本文を保ちます。
 
 [fixture: treeview/decorations/review159-sole-opener-selector-line-rule-semicolon]
 
@@ -614,7 +615,7 @@ body、名前待ち、注釈、opener の gap の各所有位置で適用しま�
 
 [corpus fixture: treeview/box-unicode-decoration]
 
-入力（escape 表記）: `"treeView-beta\na\n\u2502\n\u2514\u2500 :::x\n"`
+入力（エスケープ表記）: `"treeView-beta\na\n\u2502\n\u2514\u2500 :::x\n"`
 
 出力
 ([decorations/annotation-owner-output.mmd](../tests/fixtures/treeview/decorations/annotation-owner-output.mmd)):
@@ -692,9 +693,10 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 
 ### Indentation
 
-字下げのモードでは AST の children から親子を読み、file も親として扱います。
+字下げのモードでは AST の `children` から親子を読み、
+ファイルも親として扱います。
 根は設定の 1 段、子は親より 1 段深く置きます。
-space の 1 段は `max(1, tabWidth)`、useTabs は 1 tab です。
+空白の 1 段は `max(1, tabWidth)`、`useTabs` は 1 タブです。
 最初のノードが深い場合、後の根が浅い場合、不揃いな増分、重複名と空名でも、
 Db の等しい一定幅を選びます。
 
@@ -730,7 +732,7 @@ Db の等しい一定幅を選びます。
 
 [corpus fixture: treeview/nested-child-empty-block]
 
-入力（escape 表記）: `"treeView-beta\nR\n A\n  B\n"`
+入力（エスケープ表記）: `"treeView-beta\nR\n A\n  B\n"`
 
 設定: `{"tabWidth":4}`
 
@@ -746,29 +748,29 @@ treeView-beta
 
 ### Carried indentation
 
-引用名、class、icon の後や空白だけの行の run は、
-割り当て済みの indent を反映した AST の親子に従い、
+引用名、class、icon の後や空白だけの行の連なりは、
+割り当て済みの字下げを反映した AST の親子に従い、
 次のノードの予定位置へ 1 回だけ移します。
-コメント、directive、空行や装飾を越す場合も同じです。
-罫線モードでは枝の位置に反映して元の gap の run を消し、
+コメント、ディレクティブ、空行や装飾を越す場合も同じです。
+罫線モードでは枝の位置に反映して元の隙間の連なりを消し、
 字下げモードでは設定の段を使います。
-語彙の読みで除外された branch 行の末尾は持ち越しません。
-字下げの run を重ねず親子を保つためです。
-固定された境界や値の境界は Branch prefixes に従います。
+語彙の読みで除外された枝行の末尾は持ち越しません。
+字下げの連なりを重ねず親子を保つためです。
+固定された境界や値の境界は枝の前置部分に従います。
 
 行の規則が無視する `;` が引用名や class の後ろに残るときも、
 持ち越しは止まりません。
-`;` の前、`;` の後ろ、`;` に続くコメントや directive の前の run を、
+`;` の前、`;` の後ろ、`;` に続くコメントやディレクティブの前の連なりを、
 同じように移します。
-間にコメント行、空行、directive の行があっても同じです。
-mermaid.js は改行を隠すので、引用名や class の後ろの run の後で、
+間にコメント行、空行、ディレクティブの行があっても同じです。
+mermaid.js は改行を隠すので、引用名や class の後ろの連なりの後で、
 間に行の規則が無視する `;` があるときも、
-次の行にもう 1 つ run があると拒否します
+次の行にもう 1 つ連なりがあると拒否します
 ([字下げと行](../../spec/docs/diagrams/treeview.ja.md#字下げと行))。
 [corpus fixture: treeview/gram-quoted-tail-space-next-indent]
 [corpus fixture: treeview/gram-class-tail-space-next-indent]
 [corpus fixture: treeview/gram-quoted-ignored-semicolon-tail-space-next-indent]
-移した後は、`;`、コメント、directive、ノードが互いに接します。
+移した後は、`;`、コメント、ディレクティブ、ノードが互いに接します。
 [fixture: treeview/carried-indentation/carry-quote-semicolon-comment]
 [fixture: treeview/carried-indentation/carry-quote-semicolon-directive]
 [fixture: treeview/carried-indentation/carry-quote-run-before-semicolon]
@@ -828,7 +830,7 @@ mermaid.js は改行を隠すので、引用名や class の後ろの run の後
 
 [corpus fixture: treeview/box-tail-decoration-empty-block]
 
-入力（escape 表記）: `"treeView-beta\nR :::hot   \nC\n"`
+入力（エスケープ表記）: `"treeView-beta\nR :::hot   \nC\n"`
 
 出力
 ([carried-indentation/carry-class-output.mmd](../tests/fixtures/treeview/carried-indentation/carry-class-output.mmd)):
@@ -897,12 +899,12 @@ treeview/semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
 
 ### Tabs
 
-普通の字下げは space と tab を各 1 と数え、設定の正の段を使います。
-罫線の構造は useTabs と tabWidth によらず、常に 4 列の space の部品で描きます。
+普通の字下げは空白とタブを各 1 と数え、設定の正の段を使います。
+罫線の構造は `useTabs` と `tabWidth` によらず、常に 4 列の空白の部品で描きます。
 幅 0 でも同じです。
-値の tab は原文のまま保ち、元から branch がある行の tab の読みを変えません。
-枝の無かった値の行への枝の追加や、共通文や注釈の prefix の除去で、
-tab や末尾の空白の読みが変わる図は本文を保ちます。
+値のタブは原文のまま保ち、元から枝がある行のタブの読みを変えません。
+枝の無かった値の行への枝の追加や、共通文や注釈の前置部分の除去で、
+タブや末尾の空白の読みが変わる図は本文を保ちます。
 構造の描画と値の綴りを分けるためです。
 
 [fixture: treeview/tabs/tabs-mixed]
@@ -925,7 +927,7 @@ tab や末尾の空白の読みが変わる図は本文を保ちます。
 
 [corpus fixture: treeview/space-indent-nbsp]
 
-入力（escape 表記）: `"treeView-beta\na\n\t\u2514\u2500 b\tc\n"`
+入力（エスケープ表記）: `"treeView-beta\na\n\t\u2514\u2500 b\tc\n"`
 
 出力
 ([tabs/branch-tab-output.mmd](../tests/fixtures/treeview/tabs/branch-tab-output.mmd)):
@@ -965,13 +967,13 @@ a
 ### Statements one per line
 
 どちらのモードでも普通のノードは原順で行を分け、
-AST の children から親子を読みます。
+AST の `children` から親子を読みます。
 罫線モードでは、同じ物理行の複数の引用ノードもその森から枝を描き直します。
 誤解を招く同じ行の配置を保たず、見た目の親子を読みと一致させるためです。
 裸名の中の引用らしい文字は名前に残します。
-固定された原文の行の境界や、値の tab、末尾、
+固定された原文の行の境界や、値のタブ、末尾、
 新しく露出する先頭の Unicode 空白が安全な行分けを妨げる図は、
-Branch prefixes に従って本文を保ちます。
+枝の前置部分に従って本文を保ちます。
 
 [fixture: treeview/statements-one-per-line/review159-box-quoted-line-rule-semicolon]
 
@@ -1031,10 +1033,10 @@ Branch prefixes に従って本文を保ちます。
 
 [corpus fixture: treeview/gram-inline-quoted]
 
-罫線モードで同じ行のノードを分けるとき、間の directive は、
-次のノードの行の直前に、directive だけの行として第 1 列に置きます。
+罫線モードで同じ行のノードを分けるとき、間のディレクティブは、
+次のノードの行の直前に、ディレクティブだけの行として第 1 列に置きます。
 次のノードが裸名や枝のない根の場合も、3 つ以上のノードを分ける各箇所も同じです。
-directive を枝の外に置き、見た目のずれを防いで、
+ディレクティブを枝の外に置き、見た目のずれを防いで、
 後の整形でも木を描き直せるようにします。
 
 [fixture: treeview/statements-one-per-line/review159-box-quoted-inline-directive]
@@ -1051,7 +1053,8 @@ directive を枝の外に置き、見た目のずれを防いで、
 
 [test: treeview split directives remain redrawable]
 
-入力（escape 表記）: `"treeView-beta\nroot\n├── \"a\" %%{x}%% \"b\"\n└── c\n"`
+入力（エスケープ表記）:
+`"treeView-beta\nroot\n├── \"a\" %%{x}%% \"b\"\n└── c\n"`
 
 出力
 ([statements-one-per-line/review159-box-quoted-inline-directive-output.mmd](../tests/fixtures/treeview/statements-one-per-line/review159-box-quoted-inline-directive-output.mmd)):
@@ -1065,12 +1068,13 @@ root
     └── c
 ```
 
-複数の directive は原順を保ちます。
+複数のディレクティブは原順を保ちます。
 並びの両側の空白の有無によらず同じ配置にし、
-directive の内部の改行は内部に残します。
-この行分けで作る directive だけの行では、
-directive 間の space と tab を消します。
-残すと directive を除いた後に空白だけの行が残り、mermaid.js が拒否するためです。
+ディレクティブの内部の改行は内部に残します。
+この行分けで作るディレクティブだけの行では、
+ディレクティブ間の空白とタブを消します。
+残すとディレクティブを除いた後に空白だけの行が残り、
+mermaid.js が拒否するためです。
 
 [fixture: treeview/statements-one-per-line/review159-split-directives-touching]
 
@@ -1088,10 +1092,10 @@ directive 間の space と tab を消します。
 
 [fixture: treeview/statements-one-per-line/review159-split-directive-multiline]
 
-既にある directive だけの行、コメント行と空行は、
-分けた箇所の gap の配置を保ちます。
+既にあるディレクティブだけの行、コメント行と空行は、
+分けた箇所の隙間の配置を保ちます。
 共通の前置の文に空の説明ブロックがあっても、
-この directive の配置は変わりません。
+このディレクティブの配置は変わりません。
 
 [fixture: treeview/statements-one-per-line/review159-split-directive-own-line]
 
@@ -1107,11 +1111,11 @@ directive 間の space と tab を消します。
 
 [fixture: treeview/statements-one-per-line/review159-split-directives-empty-block]
 
-選ばれる、または選ばれない semicolon と、
+選ばれる、または選ばれないセミコロンと、
 安全に分けられない LS・PS で始まる値には、既存の本文保持の条件を適用します。
 値が持つコメント領域はその値に保ち、
-その前でノードの間から移す directive は独立した行に置きます。
-字下げモードでは、前置の directive をノードとともに置く既存の配置を保ちます。
+その前でノードの間から移すディレクティブは独立した行に置きます。
+字下げモードでは、前置のディレクティブをノードとともに置く既存の配置を保ちます。
 
 [fixture: treeview/statements-one-per-line/review159-split-directive-selected-semicolon]
 
@@ -1139,7 +1143,7 @@ directive 間の space と tab を消します。
 
 [fixture: treeview/statements-one-per-line/review159-split-directive-indent-control]
 
-入力（escape 表記）: `"treeView-beta\n\"A\"\"B\"'C'\n"`
+入力（エスケープ表記）: `"treeView-beta\n\"A\"\"B\"'C'\n"`
 
 出力
 ([statements-one-per-line/adjacent-quoted-output.mmd](../tests/fixtures/treeview/statements-one-per-line/adjacent-quoted-output.mmd)):
@@ -1161,12 +1165,42 @@ treeView-beta
 
 [fixture: treeview/semicolons/protected-row-body]
 
+罫線の文字がないとき、空白とタブ以外の空白文字（U+2028、U+2029、
+ノーブレークスペースなど、
+`String.prototype.trim` が取り除く文字）で始まるノードは、
+同じ行のほかのノードの後にあり、その空白の後に、空白、改行、
+ディレクティブだけを挟んでコメントが続くとき、その行に残します。
+そのとき、本文は書かれたまま印字します。
+mermaid.js は、その空白か、その空白と後ろの `%%` を名前にするノードを、
+そこに描きます。
+その空白だけを 1 行に置くと、空白はコメント行のものになり、
+ノードは描かれません。
+コメント行は、`%%` の前の空白と改行を一緒に取るからです。
+行の末尾にあって次がディレクティブのときと、後ろにコメントがないときは、
+ほかのノードと同じく、前のノードから分けます。
+
+[test: treeview/statements-one-per-line/separator-node-before-comment-ls]
+
+[test: treeview/statements-one-per-line/separator-node-before-comment-ps]
+
+[test: treeview/statements-one-per-line/separator-node-at-line-end]
+
+[test: treeview/statements-one-per-line/whitespace-node-before-comment-no-break-space]
+
+[test: treeview/statements-one-per-line/whitespace-node-before-comment-ideographic-space]
+
+[test: treeview/statements-one-per-line/whitespace-node-at-line-end-before-comment-line]
+
+[test: treeview/statements-one-per-line/whitespace-node-at-line-end-before-separator-comment-line]
+
+[test: treeview/statements-one-per-line/whitespace-node-at-line-end-before-directive-line]
+
 ### Annotation gaps
 
-普通の同じ行の注釈の前は ASCII space 1 個にします。
-正の前置の gap が注釈と名前の文字を区別します。
-名前の中の空白は保ち、
-trivia の両側は普通の gap の規則でなく接触と分離を保ちます。
+普通の同じ行の注釈の前は ASCII の空白 1 個にします。
+正の前置の隙間が注釈と名前の文字を区別します。
+名前の中の空白は保ち、付随要素の両側は、普通の隙間の規則を適用せず、
+接しているか離れているかを保ちます。
 
 [fixture: treeview/annotation-gaps/annotation-outer]
 
@@ -1180,7 +1214,7 @@ trivia の両側は普通の gap の規則でなく接触と分離を保ちま�
 
 [corpus fixture: treeview/directive-class-value-parts]
 
-入力（escape 表記）: `"treeView-beta\nR   text   :::hot\n"`
+入力（エスケープ表記）: `"treeView-beta\nR   text   :::hot\n"`
 
 出力
 ([annotation-gaps/annotation-bare-owned-gap-output.mmd](../tests/fixtures/treeview/annotation-gaps/annotation-bare-owned-gap-output.mmd)):
@@ -1214,7 +1248,7 @@ Db の最後の値だけでは原文を再現できません。
 
 [corpus fixture: treeview/db-repeat-icon]
 
-入力（escape 表記）: `"treeView-beta\nR :::first :::last\n"`
+入力（エスケープ表記）: `"treeView-beta\nR :::first :::last\n"`
 
 出力
 ([repeated-annotations/repeat-class-output.mmd](../tests/fixtures/treeview/repeated-annotations/repeat-class-output.mmd)):
@@ -1228,17 +1262,18 @@ treeView-beta
 
 字下げモードの別行の注釈は、その行を保ち、
 正の前置空白を残して所有ノードに揃えます。
-罫線モードの枝付き注釈は、所有ノードの行へ、原順で space 1 個を挟んで寄せます。
-ただし、前に description が無く、間にコメント、directive、
-選ばれる semicolon や comment region が無い場合だけです。
-寄せることで値の枝が露出する、値の tab の読みが変わる、モードが失われる場合も、
-本文を保ちます。
-comment region や除かれた directive の後の物理行から始まる注釈は、
-前置の spaces を所有ノードの名前の列に揃え、最低 1 space を残します。
+罫線モードの枝付き注釈は、所有ノードの行へ、原順で空白 1 個を挟んで寄せます。
+ただし、前に description が無く、間にコメント、ディレクティブ、
+選ばれるセミコロンやコメント領域が無い場合だけです。
+それ以外の場合は、本文全体を保ちます。
+寄せることで値の枝が露出する、値のタブの読みが変わる、
+罫線モードが失われる場合も含みます。
+コメント領域や除かれたディレクティブの後の物理行から始まる注釈は、
+前置の空白を所有ノードの名前の列に揃え、最低でも空白 1 つを残します。
 物理 LF が論理行から消えても、class、icon、
 description の印を名前の続きではなく注釈として読むために、正の幅が必要です。
 罫線の図で、実際に別の論理行にある字下げだけの注釈は拒否されます。
-偽の子の枝を無くすためです。
+結合すると偽の子の枝がなくなります。
 枝を縦の案内線に置き換えると、縦線が別ノードになります。
 class、icon と description の反復はすべて残します。
 
@@ -1342,7 +1377,7 @@ class、icon と description の反復はすべて残します。
 
 [corpus fixture: treeview/box-annotation-prefix]
 
-入力（escape 表記）: `"treeView-beta\n\"head\n tail\"\n    :::X\n"`
+入力（エスケープ表記）: `"treeView-beta\n\"head\n tail\"\n    :::X\n"`
 
 出力
 ([annotation-lines/after-multiline-output.mmd](../tests/fixtures/treeview/annotation-lines/after-multiline-output.mmd)):
@@ -1426,8 +1461,8 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 
 普通の class の部品は `:::Name`、icon は `icon(reference)` に詰めます。
 `icon()` と `icon(:file)` も同様で、名前の綴りは保ちます。
-marker 後を詰めると class がまとまり、icon の内側の空白は文法にありません。
-完全な部品の間の trivia は境界を保ちます。
+印後を詰めると class がまとまり、icon の内側の空白は文法にありません。
+完全な部品の間の付随要素は境界を保ちます。
 
 [fixture: treeview/annotation-components/class-post-marker]
 
@@ -1455,7 +1490,7 @@ marker 後を詰めると class がまとまり、icon の内側の空白は文�
 
 [corpus fixture: treeview/icon-name-close-directive]
 
-入力（escape 表記）: `"treeView-beta\nentry :::%%{wrap}%%  X\n"`
+入力（エスケープ表記）: `"treeView-beta\nentry :::%%{wrap}%%  X\n"`
 
 出力
 ([annotation-components/class-directive-output.mmd](../tests/fixtures/treeview/annotation-components/class-directive-output.mmd)):
@@ -1472,12 +1507,12 @@ treeView-beta
 mermaid.js が description からそれらを取り除いて同じ図を描くので、
 `##   text` と `##text` は `## text` と印字します。
 description の末尾の空白とタブも同じ理由で除きます。
-（[Trailing whitespace](#trailing-whitespace)を参照）。
-description の残りの literal は、空白だけの値、LS・PS、
-percent の文字と注釈らしい文字を含めて丸ごと保ちます。
-null は null のままです。
+（[行末の空白](#trailing-whitespace)を参照）。
+description の残りの原文は、空白だけの値、LS・PS、
+`%` の文字と注釈らしい文字を含めて丸ごと保ちます。
+`null` は `null` のままです。
 内部の空白の変更は description を変ええます。
-`##` の前の gap は Annotation gaps に従います。
+`##` の前の隙間は注釈の隙間に従います。
 
 [fixture: treeview/descriptions/description-padding]
 [fixture: treeview/descriptions/description-touches-marker]
@@ -1498,7 +1533,7 @@ null は null のままです。
 
 [corpus fixture: treeview/directive-description-middle]
 
-入力（escape 表記）: `"treeView-beta\nR ##\n"`
+入力（エスケープ表記）: `"treeView-beta\nR ##\n"`
 
 出力
 ([descriptions/description-empty-output.mmd](../tests/fixtures/treeview/descriptions/description-empty-output.mmd)):
@@ -1510,18 +1545,25 @@ treeView-beta
 
 ### Names
 
-裸名と StringLiteral の原文の範囲を丸ごと保ちます。
-空名、backslash、内部の空白、引用符の中の空白、HTML と entity の綴り、
-directory の slash を含みます。
+裸名と `StringLiteral` の原文の範囲を丸ごと保ちます。
+空名、バックスラッシュ、内部の空白、引用符の中の空白、HTML と文字参照の綴り、
+ディレクトリのスラッシュを含みます。
 行末にある裸名の末尾の空白とタブだけを除きます。
-（[Trailing whitespace](#trailing-whitespace)を参照）。
-`'` で囲んだ文字列は `"` で囲んで印字しますが、内容に `'`、`"`、backslash、
-改行、U+2028、U+2029、バッククォート、`&`、`#`、
+（[行末の空白](#trailing-whitespace)を参照）。
+`'` で囲んだ文字列は `"` で囲んで印字しますが、内容に `'`、`"`、
+バックスラッシュ、改行、U+2028、U+2029、バッククォート、`&`、`#`、
 `<` が含まれる場合は書かれたままにします。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 `singleQuote` は読みません。
-padding のある裸の directory を引用すると名前と種類が変わりえます。
+余白のある裸のディレクトリを引用すると名前と種類が変わりえます。
+引用符で囲んだ名前は、引用符を残します。
+文書の例は、引用符なしの名前を 58 回、引用符付きの名前を 8 回書きますが、
+対象にする版に、引用符で囲んだ名前だけを読むものがあるためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。 [fixture: treeview/names/quoted-name-kept]
 [fixture: treeview/names/single-quote-sensitive-kept]
+[fixture: treeview/names/name-quote-tail]
 
 [fixture: treeview/names/name-bare-tail]
 
@@ -1545,7 +1587,7 @@ padding のある裸の directory を引用すると名前と種類が変わり�
 
 [corpus fixture: treeview/db-directory-trailing-space]
 
-入力（escape 表記）: `"treeView-beta\nA   B\n"`
+入力（エスケープ表記）: `"treeView-beta\nA   B\n"`
 
 出力
 ([names/name-bare-internal-output.mmd](../tests/fixtures/treeview/names/name-bare-internal-output.mmd)):
@@ -1559,10 +1601,10 @@ treeView-beta
 
 引用名の継続列、内部の空行、LS・PS と内包する罫線の綴りを保ちます。
 ノードの最初の行だけに予定した描画を加えます。
-新しい外側の枝と、保った値内の prefix を原順に見て、
-最初の正の branch 列を求めます。
+新しい外側の枝と、保った値内の前置部分を原順に見て、最初の正の枝列を求めます。
 値内の `4 * (round(column / width) + 1)` が変わる図は本文を保ちます。
-原文の範囲だけでは外側の幅の変化を防げないため、値の読みも確認します。
+これで、綴りだけでなく値の読みも保ちます。
+原文の範囲を固定するだけでは、その字下げを外側の幅の変化から守れないからです。
 
 [fixture: treeview/multiline-values/multiline-keep]
 
@@ -1590,7 +1632,7 @@ treeView-beta
 
 [corpus fixture: treeview/box-trim-string-closing-quote]
 
-入力（escape 表記）: `"treeView-beta\n'first\n\n last'\n"`
+入力（エスケープ表記）: `"treeView-beta\n'first\n\n last'\n"`
 
 出力
 ([multiline-values/multiline-blank-output.mmd](../tests/fixtures/treeview/multiline-values/multiline-blank-output.mmd)):
@@ -1634,8 +1676,8 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 ### Title
 
 共通文は最初のノードの前で原順に保ちます。
-共有の `title value` を使い、外側の共通の空白だけを trim します。
-null と空白だけの値は bare の `title` とします。
+共有の `title value` を使い、外側の共通の空白だけを除きます。
+`null` と空白だけの値は引用符なしの `title` とします。
 テキストの中の空白とタブの連なりは、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
@@ -1643,12 +1685,39 @@ null と空白だけの値は bare の `title` とします。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 [fixture: title/title-directives-end-blanks-dropped]
 次の行から値を取らず、Db の等しい一定の外側の配置を選ぶためです。
-`titlex` と `title"node"` は AST の境界に従い、
-summary に出ない title も残します。
+`titlex` と `title"node"` は AST の境界に従い、要約に出ない title も残します。
 値の最初の文字より前にある、行の規則が無視する `;` は、
 その前の空白が 1 文字でもそれ以上でも、隙間の項目です。
 `title  ;T` と `title ;T` は同じように印字します。
 [fixture: treeview/semicolons/ignored-semicolon-title-value-second-space]
+
+テキストのない `title` は、
+同じ行のディレクティブかコメントの前に空白が書かれていれば、
+その最初のものの前に空白 1 つを置いて印字します。
+空白が 1 文字でもそれ以上でも、タブでも同じです。
+ディレクティブの前では、
+空白と U+2028 か U+2029 の組でも同じです（空白だけの title は、
+値のない `title` です）。
+キーワードとディレクティブの間に何も書かれていなければ、空白は置きません。
+`title`、空白 1 つ、`%%{init: {}}%%` はそのまま印字し、`title`、空白 3 つ、
+`%%{init: {}}%%` も同じ形に印字します。
+次の行と合わせて読まれるコメントの前に U+2028 か U+2029 がある形（`title`、
+空白 2 つ、その文字、`%% c` の後に行が続く形）は、行を書かれたまま残します。
+コメントが、その文字の後から始まるからです。
+キーワードの後の 1 文字の空白は、mermaid.js にとってキーワードの一部なので、
+テキストのない title はキーワードで終わります。
+その 1 文字は、テキストのある title の後の空白と同じく、行の隙間です。
+2 回目の整形は、1 回目と同じ形になります。
+[fixture: title/bare-title-directive-one-space]
+[fixture: title/bare-title-directive-spaces]
+[fixture: title/bare-title-directive-tab]
+[fixture: title/bare-title-directive-touching]
+[fixture: title/bare-title-comment-spaces]
+[fixture: title/bare-title-unclosed-directive-spaces]
+[test: treeview/title/bare-title-directive-space-and-line-separator]
+[test: treeview/title/bare-title-directive-space-and-paragraph-separator]
+[test: treeview/title/bare-title-directive-spaces-and-line-separator]
+[test: treeview/title/bare-title-comment-after-line-separator-kept]
 
 [fixture: treeview/title/title-shared]
 
@@ -1692,7 +1761,7 @@ summary に出ない title も残します。
 
 [corpus fixture: treeview/common-title-percent-boundary]
 
-入力（escape 表記）: `"treeView-beta\ntitle\t\nR\n"`
+入力（エスケープ表記）: `"treeView-beta\ntitle\t\nR\n"`
 
 出力
 ([title/common-bare-title-separator-tab-output.mmd](../tests/fixtures/treeview/title/common-bare-title-separator-tab-output.mmd)):
@@ -1706,14 +1775,14 @@ treeView-beta
 ### Accessibility lines
 
 共有の `accTitle: value` と `accDescr: value` を使います。
-colon は keyword に付け、trim した非空値の前は space 1 個、
-空なら colon までです。
+コロンはキーワードに付け、両端の空白を除いた非空値の前は空白 1 個、
+空ならコロンまでです。
 `accDescr` の値の中の空白とタブの連なりは空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 `accTitle` はブラウザがツールチップとして表示するので、
 その連なりは書かれたまま残します。
-brace らしい行値と trivia の境界を保ちます。
-共通の converter が許す同等の外側の gap を選びます。
+波括弧らしい行値と付随要素の境界を保ちます。
+共通の変換処理が許す同等の外側の隙間を選びます。
 次の行の文字を値に取りません。
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
@@ -1760,7 +1829,7 @@ brace らしい行値と trivia の境界を保ちます。
 
 [corpus fixture: treeview/text-accline-ps]
 
-入力（escape 表記）: `"treeView-beta\naccDescr:\n%%{init: {}}%%\nR\n"`
+入力（エスケープ表記）: `"treeView-beta\naccDescr:\n%%{init: {}}%%\nR\n"`
 
 出力
 ([accessibility-lines/acc-empty-next-directive-output.mmd](../tests/fixtures/treeview/accessibility-lines/acc-empty-next-directive-output.mmd)):
@@ -1784,30 +1853,36 @@ treeView-beta
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
 その場合、キーワードの前と、キーワードと `{` の間にある罫線の文字は、
 印字せずに描き直します。
-本文が罫線の文字を含むブロックと、罫線モードで opener の gap を保つブロックは、
+本文が罫線の文字を含むブロックと、罫線モードで開始記号の隙間を保つブロックは、
 ブロックのままにします。 [fixture: treeview/modes/ordinary-block]
 [fixture: treeview/modes/box-common-block-zero-column]
 [fixture: treeview/modes/block-interior-active]
 [fixture: treeview/description-blocks/box-redraw-remove-opener-prefixes]
 [fixture: treeview/description-blocks/block-after-directive]
+罫線の文字の判定は、ディレクティブを取り除いたテキストで行うので、
+ディレクティブ内の罫線の文字を理由に波括弧を残すことはありません。
+[fixture: description-blocks/block-hidden-box-glyph]
 普通の空白だけの内部は `{}` です。
+行の規則が無視する `;` もテキストではありません。
+書かれた `;` があるために縮められないときは、
+`;` を残して空のブロックの配置にします。
+[fixture: description-blocks/block-ignored-semicolon-interior]
 波括弧を残すブロックは、`accDescr` と `{` の間を、
 元が接していても空白 1 つにします。
 キーワードと本文の開始を見分けやすくするためです。
-普通の opener の前の空白は寄せ、本文行を文より 1 段深くそろえます。
-trivia の内容は保ちます。
-別行の closer は文の段に揃えます。
+普通の開始記号の前の空白は寄せ、本文行を文より 1 段深くそろえます。
+付随要素の内容は保ちます。
+別行の閉じ記号は文の段に揃えます。
 Mermaid が説明から LF 後の字下げを除くためです。
 本文も設定の字下げを使い、タブと幅 0 の正の最小段幅も同じです。
-罫線モードでは keyword と opener の普通の prefix を外し、
+罫線モードではキーワードと開始記号の普通の前置部分を外し、
 共通文を第 1 列に置きます。
 本文の列は原文どおり保ちます。
 普通の物理行を字下げすると、罫線構文として拒否される場合があるためです。
-値内に罫線がある場合は、引き続き brace の範囲を丸ごと保ちます。
-最初の有効な `}` が closer のままです。
-共通値の tab など、安全に外せない形は Branch prefixes の本文保持に従います。
-opener の gap の唯一のモードの選び手は、
-Decorations に従って gap だけを保ちます。
+値内に罫線がある場合は、引き続き波括弧の範囲を丸ごと保ちます。
+最初の有効な `}` が閉じ記号のままです。
+共通値のタブなど、安全に外せない形は枝の前置部分の本文保持に従います。
+開始記号の隙間の唯一のモードの選び手は、装飾に従って隙間だけを保ちます。
 `}` の前の空白はテキストではないので、コメント行の後でも、
 毎回の整形で `}` を文と同じ段にそろえます。
 [fixture: treeview/description-blocks/block-comment-line-after-the-text]
@@ -1896,7 +1971,7 @@ Decorations に従って gap だけを保ちます。
 
 [corpus fixture: treeview/semicolon-block-parts]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"treeView-beta\naccDescr {\n  first\n\n    second\n}\nR\n"`
 
 出力
@@ -1968,7 +2043,7 @@ treeView-beta
 `%% text`、`%%!`、`%%!x`、`%%%`、`%%` の後が空白の行、`%% {x}` は、
 そろえるコメント行です。 [fixture: treeview/comments/aligned-forms]
 [fixture: treeview/comments/comment-mark-spliced-directive]
-文と同じ設定の字下げを使い、tab と tabWidth 0 での正の最小幅にも従います。
+文と同じ設定の字下げを使い、タブと `tabWidth` 0 での正の最小幅にも従います。
 [fixture: treeview/comments/aligned-tabs]
 [fixture: treeview/comments/aligned-zero]
 見出しの前のコメントと、文のない本文のコメントは第 1 列に置きます。
@@ -1981,8 +2056,8 @@ mermaid.js は字下げしたコメント行も受理しますが、
 字下げすると前後の行の始まりとずれるためです。
 [fixture: treeview/comments/box-standalone]
 
-文の間では、`%%` だけの行、directive ではない `%%{` 始まりの行、
-独立した directive を第 1 列に置きます。
+文の間では、`%%` だけの行、ディレクティブではない `%%{` 始まりの行、
+独立したディレクティブを第 1 列に置きます。
 字下げモードでは、字下げすると mermaid.js が拒否するためです。
 混在する列と末尾でも、この区別を保ちます。
 [fixture: treeview/comments/comment-bare-native]
@@ -1990,20 +2065,20 @@ mermaid.js は字下げしたコメント行も受理しますが、
 [fixture: treeview/comments/unclosed-directive]
 [fixture: treeview/comments/mixed-directives]
 [fixture: treeview/comments/native-final]
-空の description block やセミコロンで保護された title の前後でも、
+空の説明ブロックやセミコロンで保護された title の前後でも、
 コメント行は次の文にそろえます。
 [fixture: treeview/comments/aligned-empty-description]
 [fixture: treeview/comments/aligned-protected-title]
 
-inline のコメントは同じ行に置きます。
-印、内容、末尾と native comment の LS・PS を保ちます。
+行内のコメントは同じ行に置きます。
+印、内容、末尾と図種固有のコメントの LS・PS を保ちます。
 [test: treeview/comments/standalone-ls] [test: treeview/comments/standalone-ps]
-有意な字下げ run は割り当て済みのノードへ 1 回だけ移します。
-描き直せる罫線の図では、native comment の構造の prefix を外し、
+有意な字下げ連なりは割り当て済みのノードへ 1 回だけ移します。
+描き直せる罫線の図では、図種固有のコメントの構造の前置部分を外し、
 その枝をノードの名前の行へ 1 回だけ描きます。
 コメントは木の子として扱いません。
-名前、description と block の percent は値に残し、
-共通の結合領域や危険な prefix の交差は本文保持に従います。
+名前、description と block の `%` は値に残し、
+共通の結合領域や危険な前置部分の交差は本文保持に従います。
 
 [fixture: treeview/comments/comment-standalone-aligned]
 
@@ -2037,7 +2112,7 @@ inline のコメントは同じ行に置きます。
 
 [corpus fixture: treeview/common-title-percent-boundary]
 
-入力（escape 表記）: `"treeView-beta\nR %% literal\n"`
+入力（エスケープ表記）: `"treeView-beta\nR %% literal\n"`
 
 出力
 ([comments/comment-bare-is-value-output.mmd](../tests/fixtures/treeview/comments/comment-bare-is-value-output.mmd)):
@@ -2107,24 +2182,24 @@ treeView-beta
 
 ### Directives
 
-directive の原文と順序を保ちます。
-同じ印字行では、title、accessibility の文、
+ディレクティブの原文と順序を保ちます。
+同じ印字行では、title、アクセシビリティの文、
 または `:::` の後のクラスの隙間にあるディレクティブは、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 それ以外の隙間では、両側の接触と分離を保ちます。
 ただし、
-[Statements one per line](#statements-one-per-line) に従って新しく作る directive
-だけの行へ移す directive の間は例外です。
+[1 行に 1 文](#statements-one-per-line)
+に従って新しく作るディレクティブだけの行へ移すディレクティブの間は例外です。
 単位を行に分けるときは次の単位に付け、右の境界を保ちます。
-独立した directive は第 1 列です。
-行頭の字下げ単位では、後ろの gap を収まるだけ残し、超過を最後の gap から短くし、
-残りの字下げを最初の directive の前に置きます。
-前の行の run を重ねず、割り当て済みの indent を保つためです。
-複数行の内部、値の中の形と EOF の未完の directive は原文のままです。
+独立したディレクティブは第 1 列です。
+行頭の字下げ単位では、後ろの隙間を収まるだけ残し、超過を最後の隙間から短くし、
+残りの字下げを最初のディレクティブの前に置きます。
+前の行の連なりを重ねず、割り当て済みの字下げを保つためです。
+複数行の内部、値の中の形と EOF の未完のディレクティブは原文のままです。
 
-useTabs のときは、
-行頭の字下げ単位の保つ gap も補う字下げもすべて tab で印字します。
-その単位の各文字は種類を問わず一つと数えるためです（[Tabs](#tabs) を参照）。
+`useTabs` のときは、
+行頭の字下げ単位の保つ隙間も補う字下げもすべてタブで印字します。
+その単位の各文字は種類を問わず一つと数えるためです（[タブ](#tabs) を参照）。
 [fixture: treeview/directives/directive-leading-use-tabs]
 
 [fixture: treeview/directives/before-unprefixed-box-root]
@@ -2193,7 +2268,7 @@ useTabs のときは、
 
 [corpus fixture: treeview/directive-icon-parts-parts]
 
-入力（escape 表記）: `"treeView-beta\nA%%{init: {}}%%B\n"`
+入力（エスケープ表記）: `"treeView-beta\nA%%{init: {}}%%B\n"`
 
 出力
 ([directives/directive-in-bare-output.mmd](../tests/fixtures/treeview/directives/directive-in-bare-output.mmd)):
@@ -2205,7 +2280,7 @@ treeView-beta
 
 ### Semicolons
 
-すべての semicolon を残します。
+すべてのセミコロンを残します。
 保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
 ほかの場所と同じように整形します。
 この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
@@ -2221,13 +2296,13 @@ treeView-beta
 [fixture: semicolons/stretch-kept-rest-formatted]
 [fixture: semicolons/no-stretch-formatted]
 [fixture: semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
-treeview に文法上の semicolon はなく、
+treeview に文法上のセミコロンはなく、
 style・classDef の語だけでは行を固定しません。
 保護された内容の外側の安全な罫線は描き直し、内部と値の列は原文のまま保ちます。
-保護行の境界が親子を制約する場合や、Branch prefixes のほかの条件に当たる場合は、
+保護行の境界が親子を制約する場合や、枝の前置部分のほかの条件に当たる場合は、
 本文をまとめて保ちます。
-同じ行や同じ図の値内の prefix の保持とも重ねて適用します。
-semicolon を捨てたり、危険な本文を部分的に描き直したりする許可ではありません。
+同じ行や同じ図の値内の前置部分の保持とも重ねて適用します。
+セミコロンを捨てたり、危険な本文を部分的に描き直したりする許可ではありません。
 
 [corpus fixture: treeview/semicolon-selected]
 
@@ -2271,7 +2346,7 @@ semicolon を捨てたり、危険な本文を部分的に描き直したりす�
 
 [corpus fixture: treeview/semicolon-block-parts]
 
-入力（escape 表記）: `"treeView-beta\n   \"style:#z;\"\n"`
+入力（エスケープ表記）: `"treeView-beta\n   \"style:#z;\"\n"`
 
 出力
 ([semicolons/first-line-baseline-output.mmd](../tests/fixtures/treeview/semicolons/first-line-baseline-output.mmd)):
@@ -2324,10 +2399,10 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 
 ### Blank lines
 
-有意な字下げ run を移し、外側の装飾を置き換えてから、
+有意な字下げ連なりを移し、外側の装飾を置き換えてから、
 普通の ASCII 空行を項目間に最大 1 個とし、端の空行を除きます。
 親子を保ちながら区切りを一定にするためです。
-値、directive と comment region の内部は保ち、
+値、ディレクティブとコメント領域の内部は保ち、
 Unicode だけの名前を空行扱いしません。
 本文を保つ図は原文の境界を保ちます。
 
@@ -2343,7 +2418,7 @@ Unicode だけの名前を空行扱いしません。
 
 [corpus fixture: treeview/space-line-nbsp]
 
-入力（escape 表記）: `"treeView-beta\nR\n%% note\n\n\n C\n"`
+入力（エスケープ表記）: `"treeView-beta\nR\n%% note\n\n\n C\n"`
 
 出力
 ([blank-lines/blank-between-comments-output.mmd](../tests/fixtures/treeview/blank-lines/blank-between-comments-output.mmd)):
@@ -2472,16 +2547,16 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 ### Trailing whitespace
 
 裸名か description で終わる行では、末尾の空白とタブを除きます。
-mermaid.js は節点の名前と description を trim するので、
+mermaid.js は節点の名前と description の両端の空白を除くので、
 除いても Db と図は同じです。
 空白とタブだけの description、引用符で囲む名前の中の空白、
 独立した comment のテキスト、それ以外の空白文字は、書かれたまま保ちます。
-名前や description の後に続く directive の前の gap は、
+名前や description の後に続くディレクティブの前の隙間は、
 字下げの形でも罫線の形でも空白 1 つにします。
-mermaid.js は値を読む前に directive を取り除き、
-値の末尾の空白とタブを落とすので、この gap は Db にも図にもありません。
+mermaid.js は値を読む前にディレクティブを取り除き、
+値の末尾の空白とタブを落とすので、この隙間は Db にも図にもありません。
 `R   %%{x}%%` は title と同じ形の `R %%{x}%%` と印字します。
-複数の directive も title の末尾と同じように印字します。
+複数のディレクティブも title の末尾と同じように印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 `R   %%{x}%%   %%{y}%%  ` は `R %%{x}%% %%{y}%%` と印字します。
 [fixture: trailing-whitespace/directives-end-blanks-dropped]
@@ -2490,10 +2565,11 @@ mermaid.js は値を読む前に directive を取り除き、
 その前の空白は残します。
 [test: treeview/trailing-whitespace/spaces-after-trailing-line-separator]
 [test: treeview/trailing-whitespace/description-spaces-after-trailing-line-separator]
-構造の持ち越し run は 1 回だけ移し、共通の行値は共有の外側の trim に従います。
-branch 行で値から除外された末尾は削り、持ち越しません。
-枝の追加で値の末尾が新たに trim される図は本文を保ちます。
-値と構造の padding を混同しないためです。
+構造の持ち越し連なりは 1 回だけ移し、
+共通の行値は共有の外端の空白除去に従います。
+枝行で値から除外された末尾は削り、持ち越しません。
+枝の追加で値の末尾の空白が新たに除かれる図は本文を保ちます。
+値と構造の余白を混同しないためです。
 有意な fixture の末尾はコードブロックには示しません。
 
 [fixture: treeview/trailing-whitespace/trailing-bare-dropped]
@@ -2568,7 +2644,7 @@ branch 行で値から除外された末尾は削り、持ち越しません。
 
 ### Long lines
 
-printWidth で折り返しません。
+`printWidth` で折り返しません。
 ノード、注釈、description と共通値は書かれた改行を保ちます。
 新しい改行はノードや名前、description の文字を変えうるため、
 幅を意味の境界にしません。
@@ -2577,7 +2653,7 @@ printWidth で折り返しません。
 
 [fixture: treeview/long-lines/long-annotations-kept]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"treeView-beta\nR :::long-class-name icon(long-pack:long-icon-name) ## long description with words\n"`
 
 設定: `{"printWidth":20}`
@@ -2592,12 +2668,12 @@ treeView-beta
 
 ### Frontmatter yaml
 
-安全な実効 frontmatter だけを共有の guard 付き YAML formatter で整えます。
-字下げされた fence、closer の padding、不正な YAML、
-HTML の引用符の危険と fence を作る本文は保ちます。
-入れ子と scalar は tabWidth 0 でも最低 1 space です。
-普通の見出し前の trivia は root の配置に従い、
-second scan の Comment と内部の Root directive は各 1 回印字します。
+安全な実効フロントマターだけを共有の保護条件付き YAML の整形処理で整えます。
+字下げされた囲みの区切り、閉じ記号の余白、不正な YAML、
+HTML の引用符の危険と囲みの区切りを作る本文は保ちます。
+入れ子とスカラー値は `tabWidth` 0 でも最低でも空白 1 つです。
+普通の見出し前の付随要素は最上位の配置に従い、
+2 回目の走査の `Comment` と内部の大域的なディレクティブは各 1 回印字します。
 本文の `---` は名前のまま、拒否される保持 YAML は昇格も修復もしません。
 
 [fixture: treeview/frontmatter-yaml/frontmatter-safe]
@@ -2626,7 +2702,7 @@ second scan の Comment と内部の Root directive は各 1 回印字します�
 
 [fixture: treeview/frontmatter-yaml/frontmatter-delimiter-guard]
 
-入力（escape 表記）: `"treeView-beta\n---\nkey: value\n---\n"`
+入力（エスケープ表記）: `"treeView-beta\n---\nkey: value\n---\n"`
 
 出力
 ([frontmatter-yaml/body-yaml-is-name-output.mmd](../tests/fixtures/treeview/frontmatter-yaml/body-yaml-is-name-output.mmd)):
@@ -2640,12 +2716,12 @@ treeView-beta
 
 ### Line terminators and unicode
 
-共有の host の EOL 処理を使います。
-CR と CRLF は LF として printer に届き、引用、
-block と directive の中も出力は endOfLine に従います。
-LS・PS は値と native comment の文字として保ち、
+共有の呼び出し側の EOL 処理を使います。
+CR と CRLF は LF として印字処理に届き、引用、
+block とディレクティブの中も出力は `endOfLine` に従います。
+LS・PS は値と図種固有のコメントの文字として保ち、
 Unicode の空白は ASCII の字下げへ変えません。
-先頭の BOM は host が除去・復元し、共有の frontmatter の制限に従います。
+先頭の BOM は呼び出し側が除去・復元し、共有のフロントマターの制限に従います。
 
 [test: treeview/line-terminators-and-unicode/eol-cr-structure]
 
@@ -2673,12 +2749,12 @@ Unicode の空白は ASCII の字下げへ変えません。
 
 ### Source order
 
-ノード、名前、注釈、共通の代入と共有の trivia は、重複、
+ノード、名前、注釈、共通の代入と共有の付随要素は、重複、
 空値と上書きも含めて全出現を原順に保ちます。
-上の規則で許された構造の罫線と、
-条件を満たす枝付き注釈および装飾だけを置き換えます。
-prefix の任意文字と値内の罫線の綴りは保ち、Db から原文を作り直しません。
-構造の太さ、dash の数、兄弟の印と普通の外側の装飾は、
+上の規則で許された構造の罫線だけを描き直し、
+条件を満たす枝付き注釈とその装飾を移します。
+前置部分の任意文字と値内の罫線の綴りは保ち、Db から原文を作り直しません。
+構造の太さ、ダッシュの数、兄弟の印と普通の外側の装飾は、
 読む森を示すために選び直します。
 
 [fixture: treeview/source-order/source-duplicate]
@@ -2687,7 +2763,7 @@ prefix の任意文字と値内の罫線の綴りは保ち、Db から原文を�
 
 [fixture: treeview/source-order/source-empty-common]
 
-入力（escape 表記）: `"treeView-beta\nR\n X\n X\nR\n"`
+入力（エスケープ表記）: `"treeView-beta\nR\n X\n X\nR\n"`
 
 出力
 ([source-order/source-duplicate-output.mmd](../tests/fixtures/treeview/source-order/source-duplicate-output.mmd)):
@@ -2873,8 +2949,8 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 普通の受理入力は、空本文、ノード、共通文、閉じた block と comment を含め、
 設定の改行 1 個で終えます。
 値の末尾は保ち、
-EOF の未完 directive と保護・原文保持の終端は共有の例外に従います。
-拒否される未使用の字下げ run を trim して受理させません。
+EOF の未完ディレクティブと保護・原文保持の終端は共有の例外に従います。
+拒否される未使用の字下げの連なりは、両端の空白を除いて受理させません。
 
 [fixture: treeview/final-newline/eof-node]
 
@@ -2896,7 +2972,7 @@ EOF の未完 directive と保護・原文保持の終端は共有の例外に�
 
 [corpus fixture: treeview/gram-quoted-tail-space-next-indent]
 
-入力（escape 表記）: `"treeView-beta\naccDescr {}"`
+入力（エスケープ表記）: `"treeView-beta\naccDescr {}"`
 
 出力
 ([final-newline/eof-block-output.mmd](../tests/fixtures/treeview/final-newline/eof-block-output.mmd)):
@@ -2913,8 +2989,10 @@ directive-as-token-boundary、ignored-semicolon-as-token-boundary、
 html-tag-in-frontmatter、embedded-data-opaque、bare-percent-line-before-header、
 c4-keyword-anywhere です。
 空の引用名と `icon()` は受理される構文です。
-拒否される文法を修復せず、記録があれば仕様の Db で比較します。
-raw の拒否に raw の Db はなく、treeview 固有の opaque の受理設定はありません。
+拒否される文法は修復しません。
+受理されたコーパスの入力を、記録があれば仕様の Db と比較します。
+素の mermaid.js が拒否した場合、素の Db はなく、
+treeview 固有の内容を解釈しない受理設定はありません。
 
 [corpus fixture: treeview/directive-header-inside]
 
@@ -2938,14 +3016,15 @@ raw の拒否に raw の Db はなく、treeview 固有の opaque の受理設�
 
 ### Markdown fences
 
-dedent 後の本文へ同じ規則を適用し、fence、
-list と quote の列は Markdown host に任せます。
-値の継続列へ host の列を足しません。
-host の出力と冪等性は本文の Db とは別に検査します。
-host は最後のコード行の padding を落としうるため、
-原文の byte 保持に制限があります。
-引用内の padding は引用内に残します。
-拒否される fence は host の経路に戻り、その経路も原文の padding を落としえます。
+外側の字下げを除いた本文へ同じ規則を適用し、囲みの区切り、
+リストと引用の列は Markdown 側に任せます。
+値の継続列へ呼び出し側の列を足しません。
+呼び出し側の出力と冪等性は本文の Db とは別に検査します。
+呼び出し側は最後のコード行の余白を落としうるため、
+原文のバイト保持に制限があります。
+引用内の余白は引用内に残します。
+拒否されるコードブロックは呼び出し側の経路に従い、
+その経路も原文の余白を落としえます。
 
 [test: treeview Markdown: top-level]
 

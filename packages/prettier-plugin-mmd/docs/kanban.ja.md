@@ -17,7 +17,7 @@ Db は、ノードごとに、セクションかどうかと、どのセクシ�
 その字下げに書かれたノードはセクションで、ほかのノードは、
 どれだけ深く書かれていても、直前のセクションの項目です。
 前の項目より深い項目も、その項目の子ではありません。
-印字は Diagram.body から列を、各列の children からカードを読みます。
+印字は `Diagram.body`から列を、各列の children からカードを読みます。
 どの行も原順と役割を保ち、
 字下げは印字が決めます（[インデント](#インデント)を参照）。
 
@@ -233,7 +233,7 @@ kanban
 
 ### ノードは 1 行に 1 つ
 
-Diagram.body からセクションを、children からその項目を読みます。
+`Diagram.body`からセクションを、children からその項目を読みます。
 この役割は入力を反映しています。
 最初の行のノードがセクションの字下げを決め、
 その字下げのノードがセクションを始め、ほかのノードは、
@@ -329,7 +329,7 @@ kanban
 ### ラベル
 
 ラベルは、裸（`A[x y]`）か markdown（`C["`x y`"]`）で印字します。
-平易な文字列 `B["x y"]` は引用符を外します（[Quotes](#quotes)を参照）。
+平易な文字列 `B["x y"]` は引用符を外します（[引用符](#quotes)を参照）。
 ラベルの中の空白は Db に入るので残します。
 空白だけのラベル（`S[ ]`、`A[" "]`）も同じです。
 裸のラベルの両端の空白とタブは落とし、`S[  x  ]` は `S[x]` と印字します。
@@ -348,7 +348,7 @@ mermaid.js はそれらがなくても同じノードを描くからです（詳
 
 印字は、ラベルに引用符や余白を足すことも、符号化することも、戻すこともしません。
 裸のラベルの両端では、空白とタブだけを取り除きます。
-`A[x y]` と `A["x y"]` の Db は同じで、書き方は [Quotes](#quotes) に従います。
+`A[x y]` と `A["x y"]` の Db は同じで、書き方は [引用符](#quotes) に従います。
 文字列の閉じ引用符の後の空白（`S["x" ]`）は拒否されるので、
 印字する形にはなりません（[整形しない場合](../README.ja.md#整形しない場合)
 を参照）。 [fixture: labels/bare-to-quoted]
@@ -390,8 +390,17 @@ kanban
 `(-` が別の形の開きになり、`)` の前の `-` が閉じになるため）、
 ダッシュの形のダッシュに接する文字列（`card4(-"x"-)`）、
 余白や改行を持つラベルです。
-markdown 文字列は書かれたまま残します。 [fixture: quotes/labels-without-quotes]
+開きの `(-` の後の文字列は、引用符を外します。
+mermaid.js は `card8(-x)` を `card8(-"x")` と同じに読むからです。
+markdown 文字列は書かれたまま残します。
+文字列とダッシュの間にディレクティブがあっても、変わりません。
+mermaid.js は、テキストを読む前にそれらを取り除くので、
+`card7("x"%%{init: {}}%%-)` は引用符を残し、
+`card9(-%%{init: {}}%%"y z")` は引用符を外します。
+[fixture: quotes/labels-without-quotes]
 [fixture: quotes/labels-that-need-quotes]
+[fixture: quotes/dash-closer-after-a-directive-kept]
+[fixture: quotes/dash-opener-string-unquoted]
 
 入力
 ([quotes/labels-without-quotes-input.mmd](../tests/fixtures/kanban/quotes/labels-without-quotes-input.mmd)):
@@ -518,6 +527,11 @@ mermaid.js がノードの属性（`ticket` や `assigned`）の YAML として�
 印字は、これを不透明なものとして、以下の一定量の字下げ、
 1 行のブロックの両端の空白、
 行が長すぎる 1 行のブロックを複数行に分ける場合を除き、区切りと中身を保ちます。
+木はブロックの本体を丸ごと持つので、
+キーのコロンは書かれたままです（`A@{ ticket : MC-1 }`
+はコロンの前の空白を残します）。
+詳しくは [木が丸ごと持つテキスト](./printed-form.ja.md#木が丸ごと持つテキスト)
+を参照してください。
 YAML を整形することも、ブロックをまとめることも、並べ替えることも、
 直すこともしません。
 ブロックが空（`A@{}`）でも、キーが未知か重複（`A@{ticket: X, ticket: Y}`）でも、
@@ -572,12 +586,12 @@ section の本文はヘッダーから 2 段、item の本文は 3 段で、
 
 空白だけの行も同じ量だけ動かし、空白がなくなる場合は空行にします。
 空行は空のままにし、末尾空白も保ちます。
-literal block scalar は末尾空白と空白行の幅を読むため、
+改行を保つブロックスカラーは末尾空白と空白行の幅を読むため、
 捨てると Db が変わる場合があります。 [fixture: data-blocks/scalar-blank-lines]
 [fixture: data-blocks/scalar-blank-lines-outdent]
 
 共有の条件を満たさない場合は桁を保ちます。
-開きの行の本文は最初の桁を `@{` から数え、内部の directive は桁を保ち、
+開きの行の本文は最初の桁を `@{` から数え、内部のディレクティブは桁を保ち、
 行全体を保つ行は一部だけ動かせず、`tabWidth: 0` では内側の段がありません。
 Mermaid はタブで字下げした YAML を拒否し、
 0 桁の文書の印を動かしても拒否される場合があります。
@@ -600,8 +614,9 @@ mermaid.js は字下げをノードの段として読むため、
 [fixture: data-blocks/use-tabs-empty-lines-kept]
 [fixture: data-blocks/use-tabs-folded-empty-lines-kept]
 
-外側のコメント、directive、空行はそれぞれの規則に従います。
-CRLF と CR は `endOfLine` に従い、値の Unicode separator は文字として保ちます。
+外側のコメント、ディレクティブ、空行はそれぞれの規則に従います。
+CRLF と CR は `endOfLine` に従い、
+値の Unicode の区切り文字は文字として保ちます。
 [fixture: data-blocks/surrounding-trivia] [test: kanban: multiline-data-crlf]
 [test: kanban: multiline-data-cr] [test: data blocks: kanban U+2028]
 
@@ -651,7 +666,7 @@ kanban
 ### 空行
 
 ヘッダーの後の、空行、コメント行、図のコメントは、ノードの間でも、飾りの前でも、
-ボードの終わりでも、Db を変えません（diagrams/kanban.md、Blank lines）。
+ボードの終わりでも、Db を変えません（diagrams/kanban.md、空行）。
 文の間の空行の並びは 1 つの空行にし、空白だけの行は空行とみなし、
 ボードの始まりと終わりの空行は、ほかの図種と同じに落とします。
 `kanban`、空行 2 つ、` S` は、`kanban` と `  S` になります。
@@ -681,12 +696,19 @@ mermaid.js は、
 たとえば、`S`、`%%` の行、空行、`   A` は、mermaid.js が拒否し、
 仕様が受理します。
 印字はそれを直しません。
-図のコメントの後に空行、別のコメント、U+2028 か U+2029 が続く隙間は、
-書かれたまま、全体を残します。
+読み取るテキストで、図のコメントの後に空行、別の図のコメント、
+U+2028 か U+2029 が続く隙間は、書かれたまま、全体を残します。
 空行とコメントを、次の文の字下げの前までです。
 字下げは印字が決めます（[インデント](#インデント)を参照）。
 コメント行だけの隙間（`S`、`%% note`、空行、`A`）は通常どおり整形し、
 コメント行を揃えます（[コメント](#コメント)を参照）。
+改行を含むディレクティブの後や、図の `%%` コメントの後のコメント行も、
+この判定の前に取り除き、通常どおり揃えます。
+そのコメント行の中の U+2028 と U+2029 も取り除くため、
+それらが隙間を書かれたまま残す理由にはなりません。
+[test: kanban: comment-line-ls-taken]
+[fixture: blank-lines/common-comment-after-multiline-directive]
+[fixture: blank-lines/native-then-common-comment]
 ボードの終わりにあるこの種の隙間も、後ろに字下げするものがありませんが、
 全体を残します。
 `kanban`、` S`、`%%`、空行 2 つは、`  S`、`%%`、同じ空行 2 つを出力します。
@@ -1092,7 +1114,7 @@ Prettier がプラグインより前に扱うからです。 [test: kanban: whit
 
 mermaid.js は、区切りの後ろのコメント行を、
 その前の空白とディレクティブごと取り除きます。
-ノードの行はその後ろから続くので（common.md の Comment）、ノードの字下げは、
+ノードの行はその後ろから続くので（`common.md` のコメント）、ノードの字下げは、
 区切りと、コメント行の後ろの空白です。
 コメント行の後ろのディレクティブは、
 [ディレクティブ](#ディレクティブ)と同じくノードの行を始めます。

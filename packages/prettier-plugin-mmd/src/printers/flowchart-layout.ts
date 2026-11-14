@@ -7,13 +7,19 @@ import type {
 import {
   addHeadingTitleRules,
   addShapeRules,
+  addEdgeIdAfterDataBlockRules,
   addLinkRules,
   breaksBetweenParts,
   addBlankCallbackRule,
   findCallArgumentsParentheses,
   layoutGraphAccessibility,
 } from "./graph-layout.ts"
+import {
+  hasSpaceBeforeOneWordName,
+  isSubgraphIdNamedElsewhere,
+} from "./flowchart-clusters.ts"
 import { findFlowchartKeptLines } from "./flowchart-kept-lines.ts"
+import { findFillOfLabel } from "./flowchart-link-styles.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import {
   collectAtoms,
@@ -148,6 +154,27 @@ function endsLine(
 }
 
 /**
+ * Whether the header keeps the whitespace between `subgraph` and its name as
+ * written: a name of one word without a title, with more than one whitespace
+ * character before it, that another statement names (see
+ * `hasSpaceBeforeOneWordName` and `isSubgraphIdNamedElsewhere`). The versions
+ * that read the extra whitespace as the start of the name give the subgraph a
+ * generated id, and a statement that names the id of the form with one space
+ * reads a vertex there (docs/flowchart.md, Subgraph header).
+ */
+function keepsSpaceBeforeName(
+  source: Source,
+  subgraph: FlowchartSubgraphStatement,
+): boolean {
+  const { body } = source.root
+  return (
+    body.type === "FlowchartDiagram" &&
+    hasSpaceBeforeOneWordName(source, subgraph) &&
+    isSubgraphIdNamedElsewhere(source, body, subgraph)
+  )
+}
+
+/**
  * The layout of the `subgraph` line. A name of one word without a title is
  * printed with the whitespace after it, which mermaid.js reads as part of the
  * name; the whitespace at the end of the line of a name of several words
@@ -158,7 +185,10 @@ export function layoutSubgraphHeader(
   subgraph: FlowchartSubgraphStatement,
   headerEnd: number,
 ): AtomLayout {
-  if (holdsJoiningRegion(source, subgraph.range[0], headerEnd)) {
+  if (
+    holdsJoiningRegion(source, subgraph.range[0], headerEnd) ||
+    keepsSpaceBeforeName(source, subgraph)
+  ) {
     return keptAsWritten(subgraph.range[0], headerEnd)
   }
   // A block, a `;` that stays or a directive on the line stands after the
@@ -265,16 +295,28 @@ export function layoutStatement(
     // mermaid.js draws the same figure whatever the whitespace around the `:`
     // and the `,` of the styles, except before a style that starts with `fill`
     // in a `linkStyle` with link numbers, in the styles of a `linkStyle` where
-    // mermaid.js reads them as the styles of a link, and between `stroke` and
-    // the `:` in the styles that can reach a link (docs/flowchart.md, Styles).
+    // mermaid.js reads them as the styles of a link, between `stroke` and the
+    // `:` in the styles that can reach a link, and between `fill` and the `:`
+    // in a `linkStyle` (docs/flowchart.md, Styles).
     const isLinkStyle =
       statement.type === "FlowchartLinkStyleStatement" ||
       statement.type === "FlowchartDefaultLinkStyleStatement"
     normalizeStyleList(source, atoms, statement, {
       keepsSpaceBeforeFill: statement.type === "FlowchartLinkStyleStatement",
+      labelStyleNames:
+        (statement.type === "FlowchartStyleStatement" || isLinkStyle) &&
+        source.root.diagramType !== "swimlane"
+          ? ["color", "text-align"]
+          : [],
+      labelStyleGaps: "first",
       isLinkStyle,
-      joinsStyles: isLinkStyle,
+      joinsStyles: isLinkStyle || statement.type === "FlowchartStyleStatement",
       keepsGapAfterStroke: statement.type !== "FlowchartStyleStatement",
+      fillOfLabel:
+        statement.type === "FlowchartLinkStyleStatement" ||
+        statement.type === "FlowchartDefaultLinkStyleStatement"
+          ? findFillOfLabel(source, statement)
+          : null,
       escapesComma: statement.type === "FlowchartClassDefStatement",
       collapsesWordGaps: true,
     })
@@ -407,8 +449,8 @@ function findStylesStart(
  *   whitespace).
  * - A link has one space before and after it, and one space on each side of
  *   text between two arrows (docs/flowchart.md, Arrow spacing). An edge id
- *   touches its `@` and the arrow. Text between `|` touches the `|` and the
- *   `|` touch the arrow.
+ *   touches its `@` and the arrow, and touches the data block before it. Text
+ *   between `|` touches the `|` and the `|` touch the arrow.
  */
 function vertexStatementRules(
   source: Source,
@@ -419,5 +461,6 @@ function vertexStatementRules(
     if (node.type === "FlowchartShape") addShapeRules(source, node, rules)
     if (node.type === "FlowchartLink") addLinkRules(source, node, rules)
   })
+  addEdgeIdAfterDataBlockRules(source, statement, rules)
   return rules
 }

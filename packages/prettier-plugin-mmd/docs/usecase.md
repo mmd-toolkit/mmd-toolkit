@@ -70,7 +70,7 @@ usecase-beta
 
 Reuse structural [class indentation](./class.md#indentation): one configured
 step below the header, two for boundary declarations, and `end` aligned with its
-opener make membership visible. [fixture:
+opener, as in class diagrams. [fixture:
 system-boundaries/boundary-header-comment-empty] A step follows `tabWidth` and
 `useTabs`, two spaces by default or one tab per level. Indentation does not
 determine usecase syntax, so `tabWidth: 0` stays zero; accessibility remains
@@ -190,6 +190,32 @@ U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
 and `singleQuote` is not read. [fixture: labels/single-quote-sensitive-kept]
 
+A plain label whose text ends with a U+2028 or U+2029, and that a comment
+follows with only whitespace, line breaks, and directives between, is not put in
+quotes: the character starts the comment (see
+[Comment lines](../../spec/docs/common.md#comment-lines)), the closing quote
+would stand between them, the `%%` would be text of the label, and mermaid.js
+rejects it. The same holds for a text that stands before such a character: the
+line that holds the comment is read with the next one, and printed as written,
+with its quotes. The same label with no comment after it is put in quotes as any
+label with that character is. [test: usecase: U+2028 alone in the parentheses of
+an actor label, before a comment] [test: usecase: U+2028 alone in the
+parentheses of an entity label, before a comment] [test: usecase: U+2029 alone
+in the parentheses of an entity label, before a comment] [test: usecase: U+2028
+after a letter in the parentheses of an entity label, before a comment] [test:
+usecase: U+2028 alone as a note text, before a comment] [test: usecase: U+2028
+alone as an edge label, before a comment] [test: usecase: U+2028 alone in the
+parentheses of a boundary title, before a comment] [test: usecase: U+2028 alone
+in the brackets of a boundary title, before a comment] [test: usecase: U+2028
+alone in the parentheses of an entity label, at the end of its line] [test:
+usecase: U+2028, a space, and a comment after a label text] [test: usecase:
+U+2028, a tab, and a comment after a label text] [test: usecase: U+2028, a
+directive, a space, and a comment after a label text] [test: usecase: U+2028, a
+directive, and a comment after a label text] [test: usecase: U+2028, a line
+feed, and a comment after a label text] [test: usecase: U+2029, a directive, and
+a comment after a label text] [test: usecase: U+2028, a space, and a comment
+after a note text that holds a percent mark]
+
 [fixture: labels/label-quote-kinds] [fixture: labels/label-empty-quotes]
 [fixture: labels/label-quote-rewrite-one-form] [fixture:
 labels/label-quote-remove-kept] [fixture: labels/label-interior-kept] [fixture:
@@ -223,7 +249,8 @@ and 3, 4, 6, or 8 hexadecimal digits that stand alone in the value of a style;
 it is never shortened, and a text that is no color stays as written (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
 [fixture: colors/colors-in-lower-case] [fixture:
-colors/words-that-are-not-colors-as-written]
+colors/words-that-are-not-colors-as-written] [fixture:
+usecase/colors/color-directive-in-url-name-kept]
 
 Input
 ([colors/colors-in-lower-case-input.mmd](../tests/fixtures/usecase/colors/colors-in-lower-case-input.mmd)):
@@ -311,7 +338,13 @@ In the native metadata, a key in quotes and the scalar of a property but `icon`
 are printed without quotes where they are such a word (`"type": "hollow"` is
 printed `type: hollow`), and the scalar of `icon` is printed in quotes where it
 is such a word (`icon: user` is printed `icon: "user"`). A scalar that is not a
-word, such as `"fa:user"`, stays. [fixture: quotes/metadata]
+word, such as `"fa:user"`, stays. [fixture: quotes/metadata] The tree holds each
+property of the native metadata as a key, a colon, and a scalar, unlike the data
+block of a flowchart or a kanban board, which it holds whole. So the colon of a
+property is the colon of a key (step 2 of
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)):
+`type : hollow` is printed `type: hollow`. [fixture:
+native-metadata/metadata-newline]
 
 A name or a label that touches a unit in the source is printed in the same way,
 since the printer sets a space or a delimiter between them: `A--important-->B`
@@ -451,7 +484,7 @@ Output
 
 ```mmd
 usecase-beta
-  systemBoundary Box["Display"]@{ type: package }:::box,group
+  systemBoundary Box["Display"]@{ type: package }:::box, group
     actor User
     A@{ business: true }
   end
@@ -459,13 +492,15 @@ usecase-beta
 
 ### Arrows
 
-Reuse readable [arrow spacing](./class.md#arrow-spacing): one ordinary gap on
-each side of the actual complete usecase operator. Keep direction, marker, and
-every dash/dot, including long split closing halves whose Db length is fixed.
-Semantic operators print `..> : include` and `..> : extend`, with one space
-before and after the colon and the keyword in lower case, as the examples in the
+Reuse [arrow spacing](./class.md#arrow-spacing): one ordinary gap on each side
+of the actual complete usecase operator. Keep direction, marker, and every
+dash/dot, including long split closing halves whose Db length is fixed. Semantic
+operators print `..> : include` and `..> : extend`, with one space before and
+after the colon and the keyword in lower case, as the examples in the
 documentation of mermaid.js write it, 7 times and never with the colon touching
-(see
+(counted as under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon);
+see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
 then one target gap; the colon after an arrow takes the same gap in a class, an
 ER, and a state diagram. mermaid.js reads `..>:include`, `..> :include`,
@@ -620,9 +655,9 @@ native-metadata/metadata-closer-directive-own-line] Preserve every metadata
 blank line and comma-versus-newline separator; never insert a newline within a
 key/colon/value property. [fixture:
 native-metadata/metadata-first-gap-standalone-directive] [fixture:
-native-metadata/metadata-selected-semicolon-between-properties] This improves
-structural readability without changing native validation or the
-declaration/update roles.
+native-metadata/metadata-selected-semicolon-between-properties] This gives the
+property the form that Prettier prints for a key and its value, without changing
+native validation or the declaration/update roles.
 
 After common comment-region and line-terminator handling, the optional trailing
 comma and physical line breaks between the last property and `}` total at most
@@ -757,7 +792,7 @@ Output
 usecase-beta
   json Table @{
     "2": 2, "1": {"z":1}, "2": 3
-  }:::data,table
+  }:::data, table
 ```
 
 ### Semicolons at the end of a style statement
@@ -804,10 +839,11 @@ usecase-beta
 
 ### Classes and styles
 
-Reuse [ER's tight class lists](./er.md#styles-and-classes): commas touch target
-and class names, with one gap between lists and before the first declaration;
-CSS declarations use comma-space. A declaration has no whitespace before its
-first colon and one space after it, as in the other diagram types (see
+Reuse [ER's class lists](./er.md#styles-and-classes): a comma touches the target
+or class name before it and has one space after it, with one gap between lists
+and before the first declaration; CSS declarations use comma-space. A
+declaration has no whitespace before its first colon and one space after it, as
+in the other diagram types (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 Mermaid stores the padding before and after the colon, so the Db changes, but it
 draws the same figure. A name that ends with `stroke` is the exception, since a
@@ -869,10 +905,10 @@ usecase-beta
 
 Print `note for <target> <label>` with one ordinary gap between parts, keeping
 the target, markdown or empty label and note order; a plain label is printed in
-quotes (see [Quotes](#quotes)). This reuses the source-value and readable
-keyword-spacing reasons of [class notes](./class.md#whitespace-between-tokens).
-Forward resolution never manufactures an id, position or declaration; inline
-percent text remains label content.
+quotes (see [Quotes](#quotes)). This reuses the source-value and keyword-spacing
+reasons of [class notes](./class.md#whitespace-between-tokens). Forward
+resolution never manufactures an id, position or declaration; inline percent
+text remains label content.
 
 [fixture: notes/notes-forms] [fixture: notes/notes-forward] [fixture:
 notes/notes-empty-markdown] [fixture: notes/empty-and-markdown-order]

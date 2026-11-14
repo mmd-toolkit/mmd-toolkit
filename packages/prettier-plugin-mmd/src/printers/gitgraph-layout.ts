@@ -3,19 +3,27 @@ import type {
   GitgraphDiagram,
   GitgraphIgnoredText,
   Node,
+  Range,
   Token,
 } from "@mmd-toolkit/ast"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
+import { isReadAsAccValueByOlderVersions } from "./acc-value-join.ts"
 import { layoutCommonDescription, layoutCommonLine } from "./common-layout.ts"
 import { protectHiddenGaps } from "./hidden-forms.ts"
+import { findRespellings } from "./spelling.ts"
 import {
   collectAtoms,
   collectValueNodes,
   expectToken,
+  keptAsWritten,
   protectSemicolonPrefixes,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
-import { findStructuralToken, findTokenStartingAt } from "./source.ts"
+import {
+  findStructuralToken,
+  findTokenStartingAt,
+  isSpaceOrTab,
+} from "./source.ts"
 
 /** Written leaves retain quotes, digits and hidden source (docs/gitgraph.md). */
 export const gitgraphValueNodeTypes: ReadonlySet<Node["type"]> = new Set([
@@ -65,10 +73,32 @@ export function layoutGitgraphHeader(
   )
   if (colon?.value === ":") end = colon.range[1]
   const hidden = [...diagram.textBeforeDirection, ...diagram.textBeforeColon]
-  const atoms = collectAtoms(source, keyword.range[0], end, hidden, [])
+  const atoms = [...collectAtoms(source, keyword.range[0], end, hidden, [])]
+  // A dropped colon belongs to the body gap, so standalone trivia before it
+  // uses the same indentation as trivia before the first statement. Omit its
+  // own line's preceding LF as well, leaving no empty colon line behind
+  // (docs/gitgraph.md, Header).
+  const yaml = diagram.textBeforeColon.at(-1)
+  const omittedRanges: Range[] = []
+  if (
+    yaml !== undefined &&
+    colon !== undefined &&
+    findRespellings(source).get(colon.range[0])?.text === ""
+  ) {
+    const lineStart = source.text.lastIndexOf("\n", colon.range[0] - 1) + 1
+    const onOwnLine = [...source.text.slice(lineStart, colon.range[0])].every(
+      isSpaceOrTab,
+    )
+    omittedRanges.push([
+      onOwnLine ? Math.max(yaml.range[1], lineStart - 1) : colon.range[0],
+      colon.range[1],
+    ])
+    const colonIndex = atoms.findIndex((atom) => atom.start === colon.range[0])
+    if (colonIndex >= 0) atoms.splice(colonIndex, 1)
+  }
   const rules = gitgraphGapRules(source, atoms)
   return protectHiddenGaps(
-    { atoms, rules, outdented: new Set(), lineBreaks: "kept" },
+    { atoms, rules, outdented: new Set(), lineBreaks: "kept", omittedRanges },
     hidden,
   )
 }
@@ -83,6 +113,9 @@ export function layoutGitgraphStatement(
   statement: GitgraphBodyItem,
 ): AtomLayout {
   const [start, end] = statement.range
+  if (isReadAsAccValueByOlderVersions(source, statement)) {
+    return keptAsWritten(start, end)
+  }
   const values = collectValueNodes(statement, gitgraphValueNodeTypes)
   const hidden = values.filter(
     (value): value is GitgraphIgnoredText =>

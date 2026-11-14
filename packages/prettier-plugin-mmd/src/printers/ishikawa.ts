@@ -4,9 +4,15 @@ import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
 import type { BlockRules } from "./blocks.ts"
 import { openingLine, printBlock, printDiagramBlock } from "./blocks.ts"
+import type { KeptLines } from "./kept-lines.ts"
+import { lineStartOf } from "./kept-lines.ts"
 import { findIshikawaKeptLines } from "./ishikawa-kept-lines.ts"
 import type { IshikawaLine } from "./ishikawa-layout.ts"
-import { ishikawaLines, layoutIshikawaLine } from "./ishikawa-layout.ts"
+import {
+  indentationShowsTree,
+  ishikawaLines,
+  layoutIshikawaLine,
+} from "./ishikawa-layout.ts"
 import { findNodeLineEnd, placeLeadingDirectives } from "./indentation-lines.ts"
 import { expectToken, layoutKeywordHeader } from "./layout.ts"
 import {
@@ -20,6 +26,7 @@ import {
   findTokenStartingAt,
   isCommentLine,
   skipIgnoredSemicolons,
+  textRead,
 } from "./source.ts"
 
 /** Prints Ishikawa's nested tree with one configured step per depth. */
@@ -39,17 +46,36 @@ export function printIshikawa(
     "the ishikawa header",
   )
   const lines = ishikawaLines(source, diagram, keyword.range[1])
+  // Where the written indentation does not show the tree by nesting alone,
+  // the nodes keep it (see `indentationShowsTree`).
+  const keepsWrittenIndentation = !indentationShowsTree(lines)
   const placements = new Map(
     lines.map((line) => {
       const column = significantIndentationOf(options, line.depth)
       const width = column.length - line.separatorWidth
       const character = options.useTabs ? "\t" : " "
+      // The separator that ends a comment before the line is printed with the
+      // comment, and the written whitespace of the line starts with it.
       return [
         line,
         line.leading === null
-          ? { indentation: character.repeat(width), head: "", column }
+          ? {
+              indentation:
+                keepsWrittenIndentation && line.indentation !== null
+                  ? line.indentation.slice(line.separatorWidth)
+                  : character.repeat(width),
+              head: "",
+              column,
+            }
           : {
-              ...placeLeadingDirectives(source, line.leading, width, character),
+              ...placeLeadingDirectives(
+                source,
+                line.leading,
+                keepsWrittenIndentation
+                  ? line.column - line.separatorWidth
+                  : width,
+                character,
+              ),
               column,
             },
       ]
@@ -68,8 +94,23 @@ export function printIshikawa(
     return placed
   }
 
+  /** The kept lines, and the lines that keep their written indentation. */
+  function keptLinesOf(): KeptLines {
+    const kept = findIshikawaKeptLines(source, lines)
+    if (!keepsWrittenIndentation) return kept
+    return {
+      ...kept,
+      ownIndentation: new Set([
+        ...kept.ownIndentation,
+        ...lines
+          .filter((line) => line.indentation !== null && line.leading === null)
+          .map((line) => lineStartOf(source, line.range[0])),
+      ]),
+    }
+  }
+
   const rules: BlockRules<IshikawaLine> = {
-    kept: findIshikawaKeptLines(source, lines),
+    kept: keptLinesOf(),
     printedEnd: (line) => line.range[1],
     blankBeforeStatement: (line, gap) => {
       if (line !== lines[0]) return gap.blankAfter
@@ -80,7 +121,9 @@ export function printIshikawa(
             keyword.range[1] <= comment.range[0] &&
             comment.range[1] <= line.range[0] &&
             (!isCommentLine(source.text, source.root, comment) ||
-              comment.range[0] < source.text.indexOf("\n", keyword.range[1])),
+              !textRead(source, keyword.range[1], comment.range[0]).includes(
+                "\n",
+              )),
         )
       )
     },

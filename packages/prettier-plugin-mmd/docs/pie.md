@@ -11,9 +11,9 @@ output reparsing. Invisible-character examples are escaped test cases.
 
 Reuse [XY chart header/body layout](./xychart.md#header-and-orientation): an
 exact lower-case `pie` starts at column one and a written `showData` follows one
-space, for a consistent visible heading. An ordinary inline first statement
-moves below it. Hidden predecessors of the flag retain their position and
-consumed breaks; moving them would end the flag opportunity.
+space, as in the other diagram types. An ordinary inline first statement moves
+below it. Hidden predecessors of the flag retain their position and consumed
+breaks; moving them would end the flag opportunity.
 
 Fixed cases: [fixture: pie/header/header-space] [fixture:
 pie/header/header-absent] [fixture: pie/header/flag-hidden-yaml] [fixture:
@@ -31,14 +31,14 @@ Output
 
 ```mmd
 pie showData
-  "Revenue" : 8
+  "Revenue": 8
 ```
 
 ### Indentation
 
 Reuse [XY chart indentation](./xychart.md#indentation): ordinary statements and
-standalone comments/directives stand one configured step below the header, for
-readable structure. A pie section is a slice and adds no nested level.
+standalone comments/directives stand one configured step below the header, as
+the other diagram types do. A pie section is a slice and adds no nested level.
 `tabWidth: 0` gives zero body spaces; `useTabs` gives one tab, including with
 width zero, because pie columns have no grammatical meaning. Other value
 continuation columns and hidden closers retain their source columns; YAML alone
@@ -59,19 +59,19 @@ Output
 
 ```mmd
 pie
-"Zero" : 0
+"Zero": 0
 accTitle: direction LR
 accDescr: direction TB
 ```
 
 ### Statements one per line
 
-Reuse [one statement per line](./xychart.md#statements-one-per-line) for
-readability, subject to pie EOL and protected source groups. Keep sections and
-common assignments interleaved in written order, including empty description
-blocks. Pie has no separator semicolon: semicolons in labels and common values
-stay text. Invalid adjacent statements are handled by the corpus failure path
-rather than repaired.
+Reuse [one statement per line](./xychart.md#statements-one-per-line) as the
+other diagram types do, subject to pie EOL and protected source groups. Keep
+sections and common assignments interleaved in written order, including empty
+description blocks. Pie has no separator semicolon: semicolons in labels and
+common values stay text. Invalid adjacent statements are handled by the corpus
+failure path rather than repaired.
 
 Fixed cases: [fixture: pie/statements-one-per-line/body-lines] [fixture:
 pie/statements-one-per-line/semicolon-values] [fixture:
@@ -84,19 +84,23 @@ Output
 
 ```mmd
 pie
-  "Line" : 2
+  "Line": 2
   accTitle: Data; title Later
-  "Next" : 3
+  "Next": 3
 ```
 
 ### Sections
 
-Print a section as `"label" : value`, with one space on both sides of the colon
-and no width alignment. This pie-specific choice follows the spelling in
-[Mermaid pie examples](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/pie.md#L68-L73).
-Both quoted label forms and empty labels follow this rule. A gap containing a
-directive is placed as under [Directives](./flowchart.md#directives); a hidden
-form keeps its physical boundary, since these items supply no separator.
+Print a section as `"label": value`, with the colon touching the label, one
+space after it, and no width alignment. The colon of a section is the colon of a
+key: what follows it is the one value of the label before it, so the whitespace
+is the one that Prettier prints beside the colon of a key, none before it and
+one space after it, though the
+[Mermaid pie examples](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/pie.md#L68-L73)
+write a space before it. Both quoted label forms and empty labels follow this
+rule. A gap containing a directive is placed as under
+[Directives](./flowchart.md#directives); a hidden form keeps its physical
+boundary, since these items supply no separator.
 
 Fixed cases: [fixture: pie/sections/section-colon] [fixture:
 pie/sections/section-colon-tight-authored] [fixture:
@@ -110,9 +114,9 @@ Output
 
 ```mmd
 pie
-  "Wide" : 12
-  "Narrow" : 3
-  "" : 1
+  "Wide": 12
+  "Narrow": 3
+  "": 1
 ```
 
 ### Labels
@@ -144,9 +148,9 @@ Output
 
 ```mmd
 pie
-  " single  label " : 3
-  " double  label " : 4
-  "" : 2
+  " single  label ": 3
+  " double  label ": 4
+  "": 2
 ```
 
 ### Numbers
@@ -176,9 +180,9 @@ Output
 
 ```mmd
 pie showData
-  "negative zero" : -0
-  "fraction" : 0007.2300
-  "precision" : 0.12345678901234567890123456789
+  "negative zero": -0
+  "fraction": 0007.2300
+  "precision": 0.12345678901234567890123456789
 ```
 
 ### Title
@@ -212,7 +216,7 @@ Output
 ```mmd
 pie
   title Sales report
-  "Sales" : 8
+  "Sales": 8
 ```
 
 ### Accessibility lines
@@ -225,13 +229,26 @@ of an `accDescr` is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 and that of an `accTitle` stays as written, since the browser shows it as a
 tooltip; quotes and line-form braces remain text; repeated assignments and
-percent comment attachment remain. Pie never joins next-line values, including
-after blank/comment/directive gaps, because its composite line forms stop at
-physical EOL. Hidden forms and protected textual groups retain their gaps. The
-directives that end the value are printed with one space before each that has
-whitespace before it, and the whitespace after the last one is left out (see
+percent comment attachment remain. The pinned grammar never joins next-line
+values, including after blank/comment/directive gaps, because its composite line
+forms stop at physical EOL, but the oldest version that counts does: its lexer
+takes the whitespace after the `:` of an empty `accTitle:` or `accDescr:` for
+the line breaks too, and reads the next statement, after the blank lines and the
+comments and directives that mermaid.js removes first, as the value. That
+statement stays as written (`"A":1` is not printed `"A": 1`), as does the
+whitespace before a `%%` that follows an `accTitle` value, which that version
+reads as part of the title (`accTitle: Value   %% note`); a comment after the
+`}` of a description block keeps the block, since the text of the form with the
+colon would take the comment (see
+[Accessibility lines that the oldest version reads to the end](./compatibility.md#accessibility-lines-that-the-oldest-version-reads-to-the-end)).
+Hidden forms and protected textual groups retain their gaps. The directives that
+end the value are printed with one space before each that has whitespace before
+it, and the whitespace after the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
+accessibility-lines/acc-title-percent-gap-kept] [fixture:
+accessibility-lines/acc-value-after-blank-and-directive-kept] [fixture:
+accessibility-lines/acc-value-with-value-then-row-split]
 
 Fixed cases: [fixture: pie/accessibility-lines/a11y-lines] [fixture:
 pie/accessibility-lines/a11y-empty] [fixture:
@@ -254,7 +271,7 @@ Output
 pie
   accTitle: Title  words
   accDescr: Description text
-  "Line" : 1
+  "Line": 1
 ```
 
 ### Description blocks
@@ -270,12 +287,12 @@ across physical or Unicode line boundaries; a real comment/directive keeps its
 break. Empty whitespace-only interiors print `{}` because no text needs
 surrounding whitespace. Keep comment-only blocks with comments one level inside
 and a separate closer at statement level. Ordinary later-line text and
-standalone comment lines align one level inside the statement, making the body
-readable. Keep line breaks, blank lines and trailing whitespace; a separate `}`
-aligns with the statement. Directives and shared removed comment regions keep
-their complete source. Trivia-bearing interiors keep their trivia. The first
-closing brace still closes the block, even inside quote/backslash/hidden-looking
-text.
+standalone comment lines align one level inside the statement, as the other
+diagram types do. Keep line breaks, blank lines and trailing whitespace; a
+separate `}` aligns with the statement. Directives and shared removed comment
+regions keep their complete source. Trivia-bearing interiors keep their trivia.
+The first closing brace still closes the block, even inside
+quote/backslash/hidden-looking text.
 
 Fixed cases: [fixture: pie/description-blocks/block-runs] [fixture:
 pie/description-blocks/block-empty] [fixture:
@@ -306,7 +323,7 @@ pie
     first
     second
   }
-  "Data" : 2
+  "Data": 2
 ```
 
 ### Hidden yaml
@@ -434,7 +451,7 @@ Output
 
 ```mmd
 pie
-  "Hidden" :%%{}%%
+  "Hidden":%%{}%%
 7
 ```
 
@@ -467,7 +484,7 @@ Output
 
 ```mmd
 pie
-  "percent %% label" : 3
+  "percent %% label": 3
   accDescr { a%% text }
   accTitle: a%% real comment
 ```
@@ -582,9 +599,9 @@ Output
 
 ```mmd
 pie
-  "First" : 2
+  "First": 2
 
-  "Second" : 3
+  "Second": 3
 ```
 
 ### Trailing whitespace
@@ -616,7 +633,7 @@ Output
 
 ```mmd
 pie showData
-  "Data" : 2
+  "Data": 2
   accDescr: a
 ```
 
@@ -647,14 +664,14 @@ Output
 
 ```mmd
 pie
-  "10" : 3
-  "2" : 4
-  "__proto__" : 5
-  "constructor" : 6
-  "10" : 8
-  "a\n" : 1
+  "10": 3
+  "2": 4
+  "__proto__": 5
+  "constructor": 6
+  "10": 8
+  "a\n": 1
   "a
-" : 7
+": 7
 ```
 
 ### Line terminators and unicode
@@ -708,7 +725,7 @@ Input (escaped):
 `"pie\n\"x\u2028y\u2029z\":2\ntitle x\u2028y\naccTitle: x\u2029y\naccDescr {x\u2028y}"`.
 
 Output (escaped):
-`"pie\n  \"x\u2028y\u2029z\" : 2\n  title x\u2028y\n  accTitle: x\u2029y\n  accDescr {x\u2028y}\n"`.
+`"pie\n  \"x\u2028y\u2029z\": 2\n  title x\u2028y\n  accTitle: x\u2029y\n  accDescr {x\u2028y}\n"`.
 
 ### Frontmatter yaml
 
@@ -751,7 +768,7 @@ Output
 title: Hidden
 ---
 pie
-  "Leading" : 2
+  "Leading": 2
 ```
 
 ### Specified readings
@@ -806,7 +823,7 @@ Output
 
 ```mmd
 pie
-  "End" : 2
+  "End": 2
 ```
 
 ### Markdown fences
@@ -830,4 +847,4 @@ final-hidden-padding] [test: pie Markdown: rejected]
 
 Input (escaped): `"```mermaid\npie showData \"Fence\":2\n```\n"`.
 
-Output (escaped): `"```mermaid\npie showData\n  \"Fence\" : 2\n```\n"`.
+Output (escaped): `"```mermaid\npie showData\n  \"Fence\": 2\n```\n"`.

@@ -4,10 +4,13 @@ import type { Range } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
 import { openingLine, printBlock, printDiagramBlock } from "./blocks.ts"
+import { relocatedWhitespaceStart } from "./common-layout.ts"
 import {
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
+  becomesCommentLineOnItsOwnLine,
   lineStartOf,
+  withJoinedLines,
 } from "./kept-lines.ts"
 import { expectToken, findLayoutEnd, layoutKeywordHeader } from "./layout.ts"
 import { placeLeadingDirectives } from "./indentation-lines.ts"
@@ -40,8 +43,19 @@ export function printTreeview(
     "the treeview header",
   )
   const boxMode = treeviewBoxMode(source, keyword.range[1])
-  const ownSemicolons = findLinesWithOwnSemicolons(source)
-  const verbatim = findLinesEndedBySemicolon(source)
+  const keptLines = {
+    joined: findLinesWithOwnSemicolons(source),
+    verbatim: findLinesEndedBySemicolon(source),
+    ownIndentation: new Set<number>(),
+  }
+  // Without the box characters the indentation of a node is read from its
+  // line, so the lines that mermaid.js reads over several lines of the source,
+  // because a comment line or a directive that is not closed removes a line
+  // feed, are kept lines too: the nodes on them are read with the indentation
+  // of the first. The box mode plans these lines itself (see `planTreeviewBox`).
+  const { joined: ownSemicolons, verbatim } = boxMode
+    ? keptLines
+    : withJoinedLines(source, keptLines)
   const originalLines = treeviewLines(
     source,
     diagram,
@@ -76,6 +90,11 @@ export function printTreeview(
               )),
         ),
     )
+  // A node that starts with whitespace and a comment, after another node on
+  // its line, stays on its line (docs/treeview.md, Statements one per line).
+  const holdsHiddenCommentLine = nodes.some((node) =>
+    becomesCommentLineOnItsOwnLine(source, treeviewStatementRange(node)[0]),
+  )
   const plan = boxMode
     ? planTreeviewBox(
         source,
@@ -85,7 +104,10 @@ export function printTreeview(
         protectedRows,
       )
     : undefined
-  if (plan?.kind === "written" || (!boxMode && protectedRows))
+  if (
+    plan?.kind === "written" ||
+    (!boxMode && (protectedRows || holdsHiddenCommentLine))
+  )
     return printAsWritten(source, diagram.range[0], source.text.length)
   const drawing = plan?.kind === "drawn" ? plan : undefined
   const lines = drawing?.lines ?? originalLines
@@ -131,7 +153,13 @@ export function printTreeview(
     }),
   )
   const relocatedWhitespace: Range[] = lines.map((line, index) => [
-    lines[index - 1]?.range[1] ?? keyword.range[1],
+    index === 0
+      ? keyword.range[1]
+      : relocatedWhitespaceStart(
+          source,
+          lines[index - 1].item,
+          lines[index - 1].range[1],
+        ),
     line.range[0],
   ])
   const layouts = new Map(

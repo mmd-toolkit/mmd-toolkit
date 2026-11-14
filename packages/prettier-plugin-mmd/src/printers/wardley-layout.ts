@@ -26,6 +26,7 @@ import {
   findTokenStartingAt,
   findTokensBetween,
   isStructural,
+  skipRemoved,
 } from "./source.ts"
 
 /** Authored names, numbers, strings and hidden forms keep their source spans. */
@@ -172,6 +173,17 @@ function layoutComponents(
       before?.value === "-" ||
       before?.value === ";"
     rules.set(atom.start, touches ? "none" : "space")
+    // The name `A-` and the arrow `->` of `A-->B` touch as written: a version
+    // that counts reads `-->` there, and rejects a name with a `-`
+    // (docs/wardley.md, Links). mermaid.js takes a directive between them away
+    // first, so a directive there does not part them.
+    if (
+      statement.type === "WardleyLinkStatement" &&
+      statement.arrow?.range[0] === atom.start &&
+      skipRemoved(source, previous.end) === atom.start &&
+      source.text[previous.end - 1] === "-"
+    )
+      rules.set(atom.start, "none")
     // A bare title followed by whitespace starts metadata instead of a name.
     // Preserve its authored boundary, including before ports, @ and slash
     // (diagrams/wardley.md, Keyword and name boundaries; Name boundaries).

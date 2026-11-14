@@ -6,10 +6,10 @@ Filename: venn-no-duplicate-subset-incorrect-1.mmd
 
 Code:
   1 | venn-beta
-  2 | set A["Alpha"]:20
-  3 | set B["Beta"]
-  4 | set A["Gamma"]:5
-    | ^~~~~~~~~~~~~~~~ [1]
+  2 |   set A["Alpha"] : 20
+  3 |   set B["Beta"]
+  4 |   set A["Gamma"] : 5
+    |   ^~~~~~~~~~~~~~~~~~ [1]
   5 |
 
 [1] mermaid.js draws this area again; an earlier declaration already has these names.
@@ -21,11 +21,11 @@ Filename: venn-no-duplicate-subset-incorrect-2.mmd
 
 Code:
   1 | venn-beta
-  2 | set A
-  3 | set B
-  4 | union A, B["Shared"]
-  5 | union B, A["Both"]
-    | ^~~~~~~~~~~~~~~~~~ [1]
+  2 |   set A
+  3 |   set B
+  4 |   union A, B["Shared"]
+  5 |   union B, A["Both"]
+    |   ^~~~~~~~~~~~~~~~~~ [1]
   6 |
 
 [1] mermaid.js draws this area again; an earlier declaration already has these names.
@@ -37,12 +37,12 @@ Filename: venn-no-duplicate-subset-incorrect-3.mmd
 
 Code:
   1 | venn-beta
-  2 | set A["Frontend"]:20
-  3 |   text A1["React"]
-  4 | set B
-  5 | set A
-    | ^~~~~ [1]
-  6 |   text A3["Vue"]
+  2 |   set A["Frontend"] : 20
+  3 |     text A1["React"]
+  4 |   set B
+  5 |   set A
+    |   ^~~~~ [1]
+  6 |     text A3["Vue"]
   7 |
 
 [1] mermaid.js draws this area again; an earlier declaration already has these names.

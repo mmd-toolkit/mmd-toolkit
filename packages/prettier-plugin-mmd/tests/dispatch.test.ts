@@ -124,7 +124,7 @@ describe("dispatch to diagram printers", () => {
     )
     parse.mockImplementation(actual.parse)
     expect(await formatMermaid('gitGraph:commit id:"Dispatch"')).toBe(
-      'gitGraph:\n  commit id: "Dispatch"\n',
+      'gitGraph\n  commit id: "Dispatch"\n',
     )
   })
   it("registers the pie body printer", async () => {
@@ -133,7 +133,7 @@ describe("dispatch to diagram printers", () => {
     )
     parse.mockImplementation(actual.parse)
     expect(await formatMermaid('pie showData "Dispatch":2')).toBe(
-      'pie showData\n  "Dispatch" : 2\n',
+      'pie showData\n  "Dispatch": 2\n',
     )
   })
   it("registers the usecase body printer", async () => {
@@ -159,7 +159,7 @@ describe("dispatch to diagram printers", () => {
       "@mmd-toolkit/parser",
     )
     parse.mockImplementation(actual.parse)
-    expect(await formatMermaid("ishikawa R\n A\n   B")).toBe(
+    expect(await formatMermaid("ishikawa R\n  A\n    B")).toBe(
       "ishikawa\n  R\n    A\n      B\n",
     )
   })
@@ -169,7 +169,7 @@ describe("dispatch to diagram printers", () => {
     )
     parse.mockImplementation(actual.parse)
     expect(await formatMermaid("venn-beta set A\n text item")).toBe(
-      "venn-beta\nset A\n  text item\n",
+      "venn-beta\n  set A\n    text item\n",
     )
   })
   it("registers the C4 body printer", async () => {

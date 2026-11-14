@@ -116,6 +116,19 @@ member-bodies/empty-unified] [fixture:
 member-bodies/comment-only-over-lines-kept] [fixture:
 member-bodies/directive-only-over-lines-kept] [fixture:
 member-bodies/percent-member-kept] [corpus fixture: class/lex-member-percent]
+The start of the member is read after the `;` that the line rule ignores is
+removed: a member written as `%;% c` still starts with `%%`, and stays on the
+line of the `{`. [fixture: member-bodies/percent-member-ignored-semicolon-kept]
+The `}` of a body, and of a namespace, stays on the line of the member before it
+where a `;` that the line rule ignores follows it on the line
+(`class Alpha { +style:#x };`): the `;` is ignored because of the text before
+it, which a line break before the `}` would part from it. The `}` that closes a
+namespace does not keep the `}` of a class body inside it on the line, since it
+stands on a line of its own: `namespace Alpha { class Beta { +style:#x; } }` is
+printed with each `}` on a line of its own. [fixture:
+member-bodies/closing-brace-before-ignored-semicolon-kept] [fixture:
+member-bodies/namespace-closing-brace-before-ignored-semicolon-kept] [fixture:
+member-bodies/nested-closing-braces-after-ignored-semicolon]
 
 Input
 ([member-bodies/split-input.mmd](../tests/fixtures/class/member-bodies/split-input.mmd)):
@@ -302,16 +315,18 @@ target of a link] [test: U+2028 between the cssClass keyword and its string]
 [test: U+2029 between a callback and its tooltip] [test: U+2028 between a
 generic type and the call of a callback]
 
-The names of a `classDef` statement are separated by a `,` that touches both
-names: `classDef c1 , c2 fill:#f00` is printed `classDef c1,c2 fill: #f00`, as
-the lists of ER, requirement, and usecase are (see
-[Styles and classes](./er.md#styles-and-classes)). mermaid.js reads every
+The names of a `classDef` statement are separated by a `,` that touches the name
+before it and has one space after it: `classDef c1 , c2 fill:#f00` is printed
+`classDef c1, c2 fill: #f00`, as the lists of ER, requirement, and usecase are
+(see [Styles and classes](./er.md#styles-and-classes)). mermaid.js reads every
 spelling as the same statement, so nothing forces the form, and its
-documentation writes the one example touching
+documentation writes the one example without the space, which does not decide
+the form: Prettier prints a space after a comma
 ([`classDef firstClassName,secondClassName`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L761)).
 [fixture: whitespace-between-tokens/classdef-names-touching] A directive in the
-gap is placed as under [Directives](#directives): the gaps beside a `,` have no
-space, so the directive touches the names and the `,`. [fixture:
+gap is placed as under [Directives](#directives): the gap before the `,` has no
+space, so the directive touches the name and the `,`, and the gap after it has
+one, which stands before the directive. [fixture:
 whitespace-between-tokens/classdef-names-beside-directive] [fixture:
 whitespace-between-tokens/classdef-names-beside-directive-runs] A `;` or a `#`
 that ends the statement follows
@@ -348,10 +363,27 @@ a directive between its words keeps them as written. [fixture:
 whitespace-between-tokens/style-words-directive-kept] A backslash does not
 escape a `,` here: `fill:a\,b ,stroke:c` is printed `fill: a\, b, stroke: c`.
 [fixture: whitespace-between-tokens/style-backslash-before-comma] A `style`
-whose last style ends with a backslash keeps whether whitespace stands after it,
-a run of whitespace becoming its first character, also at the end of the
-statement, since mermaid.js joins the styles of a class with `;` as they are,
-and the backslash would escape the `;` (see
+keeps whether whitespace stands before a style that starts with `color:` or
+`text-align:`, since a version that counts puts a style that follows a `,`
+directly and starts so in the style of the label of the class. The first style
+of the statement, and a style with whitespace before it, are not read so, with a
+gap between the name and the `:` or without it: `style A color :red` is printed
+`style A color: red`. Nor is a style that follows a `,` directly and has such a
+gap: it is printed with whitespace before it, `style A fill:#f00,color :red` as
+`style A fill: #f00, color: red`. `style A fill:#f00,color:white` is printed
+`style A fill: #f00,color: white` (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)
+and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+[fixture: whitespace-between-tokens/style-color-touching-kept] [fixture:
+whitespace-between-tokens/style-color-spaced] [fixture:
+whitespace-between-tokens/style-text-align-touching-kept] [fixture:
+whitespace-between-tokens/style-label-name-colon-gap-after-comma-spaced]
+[fixture: whitespace-between-tokens/style-label-name-colon-gap-first-spaced] A
+`style` whose last style ends with a backslash keeps whether whitespace stands
+after it, a run of whitespace becoming its first character, also at the end of
+the statement, since mermaid.js joins the styles of a class with `;` as they
+are, and the backslash would escape the `;` (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):
 `style A fill:abc\  ,stroke:green` is printed
 `style A fill: abc\ , stroke: green`. [fixture:
@@ -548,6 +580,8 @@ rule 10). So an arrow or the `:` of a label that touches a name that ends with
 the word `call` stays touching: with a space before it, `A call()--> B` would be
 a callback of the class A, and `call-->C` would start one. [fixture:
 arrow-spacing/touching-call-kept] [fixture:
+class/arrow-spacing/call-directive-in-word-kept] [fixture:
+class/arrow-spacing/call-directive-before-parens-kept] [fixture:
 arrow-spacing/touching-call-colon-kept] [corpus fixture: class/lex-call-prefix]
 
 Inside an ASCII word, after a letter, digit, or `_`, `call` starts no keyword,
@@ -576,14 +610,21 @@ classDiagram
 
 ### Labels
 
-The `:` of a label after a relation or a class name has one space on each side,
-as mermaid.js's documentation writes it: `A-->B:x` becomes `A --> B : x`, and
-`A:+int x` becomes `A : +int x`. [fixture: labels/spaced] [fixture:
-labels/directive-around-colon] A sequence diagram writes the `:` touching what
-comes before it (see [Colons in the sequence rules](./sequence.md#colons)); each
-follows the documentation of its diagram type. The `:` after `accTitle` and
-`accDescr` touches the keyword and has one space after it, as in the other
-diagram types and in the documentation of mermaid.js. [fixture:
+The `:` of a label after a relation or a class name has one space on each side:
+`A-->B:x` becomes `A --> B : x`, and `A:+int x` becomes `A : +int x`. The colon
+can be read as a mark that stands between two things, a relation and its label,
+or a class and the member that the line adds to it, so the whitespace before it
+is the one that the examples in the documentation of mermaid.js write at least
+twice as often as any other: 26 labels of relations have a space before the
+colon and none touches it, and 16 member lines have one and 2 do not (counted as
+under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)).
+[fixture: labels/spaced] [fixture: labels/directive-around-colon] A sequence
+diagram writes the `:` touching what comes before it (see
+[Colons in the sequence rules](./sequence.md#colons)); each follows the
+documentation of its diagram type. The `:` after `accTitle` and `accDescr`
+touches the keyword and has one space after it, as in the other diagram types
+and in the documentation of mermaid.js. [fixture:
 labels/accessibility-text-runs-collapsed] [fixture:
 multi-line-statements/joined] [fixture: multi-line-statements/acc-descr-joined]
 The text of a label after a relation is kept as written: a label that wraps
@@ -692,9 +733,18 @@ member-lines/directive-inside-kept] [corpus fixture: class/lex-member-percent]
 mermaid.js divides each member into its parts by its text, and the whitespace
 after a visibility mark is part of the name: `+ foo()` has the name ` foo`, with
 a space, and `+foo()` the name `foo`. [fixture: member-lines/runs-collapsed]
-[corpus fixture: class/gram-member-visibility-whitespace-body-0184dca2] An
-annotation line, `<< y z >>`, keeps the whitespace around its text in the Db.
-[fixture: member-lines/runs-collapsed]
+[corpus fixture: class/gram-member-visibility-whitespace-body-0184dca2] A gap
+after the mark that starts with a tab depends on the kind of member. After the
+mark of an attribute it stays one tab: a version that counts reads the tab as
+part of the name, as it reads a space, and the others trim it, so `+\tint x` is
+neither printed `+int x` nor `+ int x` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+After the mark of a method every version that counts ignores it, so `+\tm()` is
+printed `+m()`. A gap that starts with a space is read as a space by all of
+them, and is printed as one space whatever follows it: `+ \tint x` is printed
+`+ int x`. [fixture: member-lines/visibility-tab-kept] An annotation line,
+`<< y z >>`, keeps the whitespace around its text in the Db. [fixture:
+member-lines/runs-collapsed]
 
 Input
 ([member-lines/runs-collapsed-input.mmd](../tests/fixtures/class/member-lines/runs-collapsed-input.mmd)):
@@ -950,12 +1000,25 @@ A color in a style is printed in lower case, as the examples in the
 documentation of mermaid.js write it and as the CSS formatter of Prettier prints
 it: `style A fill:#F9F,stroke:#ABCDEF` is printed
 `style A fill: #f9f, stroke: #abcdef`. The colors in the styles of the `style`
-and `classDef` statements of a class diagram are printed so. A color is a `#`
-and 3, 4, 6, or 8 hexadecimal digits that stand alone in the value of a style;
-it is never shortened, and a text that is no color stays as written (see
+statement of a class diagram are printed so, and those of a `classDef` stay as
+written: a version that counts has no `classDef` in a class diagram and draws
+its words as the text of classes, so `#DEADBE` and `#deadbe` are drawn as
+different texts (see
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+A color is a `#` and 3, 4, 6, or 8 hexadecimal digits that stand alone in the
+value of a style; it is never shortened, and a text that is no color stays as
+written (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
 [fixture: colors/colors-in-lower-case] [fixture:
-colors/words-that-are-not-colors-as-written]
+class/colors/color-directive-after-digits-kept] [fixture:
+class/colors/color-directive-before-hash-kept] [fixture:
+class/colors/color-directive-in-digits-kept] [fixture:
+colors/words-that-are-not-colors-as-written] [fixture:
+class/colors/color-directive-with-quote-kept] [fixture:
+class/colors/color-directive-with-comment-closer-kept] [fixture:
+class/colors/color-directive-in-comment-opener-kept] [fixture:
+class/colors/color-directive-before-url-opener-kept] [fixture:
+class/colors/color-directive-in-url-name-kept]
 
 Input
 ([colors/colors-in-lower-case-input.mmd](../tests/fixtures/class/colors/colors-in-lower-case-input.mmd)):
@@ -978,8 +1041,8 @@ classDiagram
   class A
   class B
   A --> B
-  style A fill: #f9f, stroke: #abcdef, color: #c0ffee
-  classDef c fill: #deadbe, stroke: #abcdef
+  style A fill: #f9f, stroke: #abcdef,color: #c0ffee
+  classDef c fill: #DEADBE, stroke: #ABCDEF
   cssClass "B" c
 ```
 
@@ -1021,14 +1084,25 @@ none of `_blank`, `_parent`, `_self`, `_top`, `accDescr`, `accTitle`, `call`,
 of its own where they stand as a name. A name of two words (`` `A B` ``) is the
 two words joined without the space, so it keeps its backquotes, as does a name
 with another character (`` `a-b` ``, `` `Animal Class!` ``, `` `é` ``) and a
-name on a line that holds a comment or a directive. A name that ends with
+name on a line that holds a comment or a directive, except one that starts after
+a U+2028 or U+2029, which the printer puts on a line of its own
+(`` class `A_Car` ``, the character, and `%% c` is printed `class A_Car` and the
+comment on the next line), and so does the text of a body after its `{`, which
+the printer puts on lines of its own: ``class `Alpha` {Word %% c}`` is printed
+`class Alpha {` and `Word %% c` on the next lines, while a name inside the body
+keeps its backquotes on a line with a comment. [fixture:
+quotes/name-before-a-body-with-a-comment-unquoted] [fixture:
+quotes/name-in-a-body-line-with-a-comment-as-written] A name that ends with
 `direction` or starts with `TB`, `BT`, `RL`, or `LR` keeps its backquotes too,
 since the lexer reads `direction`, white space (a line break too), and the name
 of a direction as one line, which a name without backquotes would join with the
 line before or after it: ``A --> `direction` `` followed by a line `TB --> C`
 keeps its backquotes. [fixture: quotes/names-without-quotes] [fixture:
 quotes/names-that-need-quotes] [fixture: quotes/names-next-to-a-direction-line]
-[fixture: quotes/names-on-a-kept-line-as-written]
+[fixture: quotes/names-on-a-kept-line-as-written] [test: U+2028 and a comment
+after a name in backquotes] [test: U+2028, a directive, and a comment after a
+name in backquotes] [test: U+2028, a directive, and a body with a comment after
+a name in backquotes]
 
 The printer adds no quotes. Where the grammar needs a string, mermaid.js rejects
 the text without quotes: `class A["Label"]` is read and `class A[Label]` is
@@ -1306,6 +1380,8 @@ whitespace and uppercase TB, BT, LR or RL, even within longer text. Continuation
 values use the previous multiline layout, one level deeper than the keyword, so
 the accessibility value is not consumed as a direction statement. [fixture:
 multi-line-statements/title-next-direction-tb] [fixture:
+class/multi-line-statements/direction-directive-in-value-kept] [fixture:
+class/multi-line-statements/title-next-direction-directive-in-value] [fixture:
 multi-line-statements/title-next-direction-bt] [fixture:
 multi-line-statements/title-next-direction-lr] [fixture:
 multi-line-statements/title-next-direction-rl] [fixture:

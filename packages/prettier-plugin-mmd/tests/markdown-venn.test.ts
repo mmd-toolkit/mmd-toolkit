@@ -24,7 +24,7 @@ describe("venn in Markdown", () => {
         "```mermaid\n venn-beta set A   style A fill : red\n     text item [ L ]\n```\n",
       ),
     ).toBe(
-      '```mermaid\nvenn-beta\nset A style A fill:red\n  text item["L"]\n```\n',
+      '```mermaid\nvenn-beta\n  set A style A fill: red\n    text item["L"]\n```\n',
     )
   })
 
@@ -45,7 +45,7 @@ describe("venn in Markdown", () => {
       "> - item\n>\n>   ```mermaid\n>    venn-beta\n>    set A   style A fill : red\n>         text item [ L ]\n>   ```\n"
     const output = await twice(input)
     expect(output).toBe(
-      '> - item\n>\n>   ```mermaid\n>   venn-beta\n>   set A style A fill:red\n>     text item["L"]\n>   ```\n',
+      '> - item\n>\n>   ```mermaid\n>   venn-beta\n>     set A style A fill: red\n>       text item["L"]\n>   ```\n',
     )
     const lines = output.split("\n")
     const opening = lines.indexOf(">   ```mermaid")
@@ -64,13 +64,13 @@ describe("venn in Markdown", () => {
 
   it("retains multiline values and a swallowed fragment", async () => {
     const markdown =
-      '```mermaid\nvenn-beta\nset A["L\n  M"] Q%% tail\n  text "id\n next"\n```\n'
+      '```mermaid\nvenn-beta\n  set A["L\n  M"] Q%% tail\n    text "id\n next"\n```\n'
     expect(await twice(markdown)).toBe(markdown)
   })
 
   it("retains blank and directive mode boundaries", async () => {
     const markdown =
-      "```mermaid\nvenn-beta\nset A\n\n%%{ }%%\ntext A item\n```\n"
+      "```mermaid\nvenn-beta\n  set A\n\n%%{ }%%\ntext A item\n```\n"
     expect(await twice(markdown)).toBe(markdown)
   })
 

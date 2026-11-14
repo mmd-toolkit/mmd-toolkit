@@ -261,6 +261,11 @@
   use in one form, or that changes what mermaid.js reads, stays as written, and so
   do the `direction` statements. The option `singleQuote` has no effect on these
   strings.
+  
+  > **NOTE:**\
+  > Overturned in the next release: `direction`, its value, `subgraph`, and
+  > `end` of an `erDiagram` keep their case, as in `SUBGRAPH S`, and so does
+  > the direction of a `timeline` header, as in `timeline td`.
 
 - [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the `:` and the text of a one-line `note` in `stateDiagram` with one space
   before the `:` and one after it where mermaid.js drops them:
@@ -282,6 +287,10 @@
   there, the whitespace between `stroke` and its `:` in a `classDef` or a
   `linkStyle` of `flowchart` and `agentflow`, a backslash in a style, and the
   `color:` and `text-align:` of a `block` `style`.
+  
+  > **NOTE:**\
+  > Overturned in the next release: in a `stateDiagram`, the commas of a `style`
+  > with one style stay as written, as in `style A fill: rgb(1,2,3)`.
 
 - [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print a run of spaces and tabs inside a title, an `accDescr`, and the labels
   that mermaid.js draws as SVG text (the texts of a C4 statement, the strings of a
@@ -334,11 +343,19 @@
   `participant A@{ "type": "queue" }`, the form in the Mermaid documentation.
   mermaid.js reads the same diagram either way. A directive, U+2028, or U+2029
   between the id and the block keeps the whitespace as written.
+  
+  > **NOTE:**\
+  > Overturned in the next release: a block that mermaid.js 10.9.8 and 11.7.0
+  > read as a part of the name stays as written, as in `participant A @{x}`.
 
 - [#58](https://github.com/mmd-toolkit/mmd-toolkit/pull/58) [`1f30d00`](https://github.com/mmd-toolkit/mmd-toolkit/commit/1f30d0065688ed391e4af58353532282b8070dda) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Drop the `;` at the end of `classDef` and `style` lines in `class`, `state`,
   `er`, `requirement`, `block`, `venn`, and `usecase`, as in `flowchart`, when
   mermaid.js reads the line the same without it. A `;` that is part of the value,
   as in `style A fill:red;` in `requirement`, stays.
+  
+  > **NOTE:**\
+  > Overturned in the next release: the `;` that ends a `style` of a `state`
+  > diagram stays, as in `style A fill:red;`.
 
 - [#59](https://github.com/mmd-toolkit/mmd-toolkit/pull/59) [`4a6be00`](https://github.com/mmd-toolkit/mmd-toolkit/commit/4a6be00cd4dc012d5a75e17540419e6d81eaf4de) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Drop the `;` that ends a `classDef` line in `treemap`, as in the other diagram
   types. `classDef important fill:#f96;` now prints as
@@ -362,6 +379,11 @@
   touches another block, holds a directive, holds only whitespace, or starts with
   a YAML document marker stays as written, and so do the JSON tables of `usecase`,
   whose braces are part of the JSON.
+  
+  > **NOTE:**\
+  > Overturned in the next release: in `sequence`, a block that mermaid.js
+  > 10.9.8 and 11.7.0 read as a part of the name of a participant stays as
+  > written, as in `participant A@{x}`.
 
 - [#60](https://github.com/mmd-toolkit/mmd-toolkit/pull/60) [`f41858e`](https://github.com/mmd-toolkit/mmd-toolkit/commit/f41858ef670c82de824f7a0f875b4968abdbf8b8) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print a one-line `accDescr { ... }` with one space inside each end, as a
   one-line `@{ ... }` already is: `accDescr {a b}` now prints as
@@ -373,12 +395,21 @@
   `classDef` statement without whitespace around their commas: `class A, B c` now
   prints as `class A,B c`. In `state`, whitespace before a comma ends the ids, so
   it stays as written.
+  
+  > **NOTE:**\
+  > Overturned in the next release: these commas are printed with one space
+  > after them, as in `class A, B c`.
 
 - [#60](https://github.com/mmd-toolkit/mmd-toolkit/pull/60) [`f41858e`](https://github.com/mmd-toolkit/mmd-toolkit/commit/f41858ef670c82de824f7a0f875b4968abdbf8b8) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the punctuation of a `sequence` message or note one way. `+`, `-`, and
   `()` touch the participant, as in `A ->> +B` and `A() ->> ()B`, and the comma of
   a note touches both ids, as in `Note over A,B`. mermaid.js reads the same
   diagram either way. Whitespace around a directive stays as written, and so does
   the space in `A ->> - x`, where `-x` would be read as an arrow.
+  
+  > **NOTE:**\
+  > Overturned in the next release: whitespace beside `()` stays as written,
+  > as in `A () ->> () B`, and the comma of a note is printed with one space
+  > after it, as in `Note over A, B`.
 
 ### Patch Changes
 
@@ -421,6 +452,10 @@
   no longer turns it into link text. In `agentflow`, an edge id after a data
   block, as in `A@{ shape: rect }e1@-->B`, stays attached to the block, so that
   the output is no longer rejected.
+  
+  > **NOTE:**\
+  > Overturned in the next release: `A[ user@example.com ]` keeps its spaces
+  > again in `flowchart` and `swimlane-beta`.
 
 ### Patch Changes
 

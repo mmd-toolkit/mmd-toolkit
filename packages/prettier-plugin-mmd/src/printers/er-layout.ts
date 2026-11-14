@@ -15,6 +15,7 @@ import {
   gapKeepsLineBreak,
   holdsJoiningRegion,
   isDroppedSemicolon,
+  isFirstOnItsLine,
   spansKeptBreaks,
 } from "./kept-lines.ts"
 import {
@@ -27,6 +28,10 @@ import {
   layoutDescriptionBlock,
   toAsciiLowerCase,
 } from "./layout.ts"
+import {
+  followsSplitKeyword,
+  isDirectionBroughtToTheColon,
+} from "./er-kept-lines.ts"
 import type { Source } from "./source.ts"
 import { printedToken } from "./spelling.ts"
 import {
@@ -40,6 +45,7 @@ import {
 } from "./statement-rules.ts"
 import {
   findStructuralToken,
+  previousRead,
   findTokenEndingBefore,
   findTokensBetween,
   findTriviaBetween,
@@ -168,6 +174,36 @@ export function findAttributeBraces(
 }
 
 /**
+ * Whether a unit that starts with a `-` touches the keyword before it, as in
+ * `class-A a`, `subgraph-x`, and `end-x`. The lexer of the pinned version ends a
+ * keyword at a `-`, so these are `class` and the id `-A`, and so on; a version
+ * that counts reads `class-A` as one name and rejects `class -A a`, and some
+ * read `subgraph-x` and `end-x` as entities and draw them differently from
+ * `subgraph -x` and `end` with `-x`, so no space is set between them (the
+ * statements `class`, `subgraph`, and `end` only: no version tells `classDef-x`
+ * from `classDef -x`; docs/compatibility.md, Forms kept for versions of
+ * mermaid.js that count; docs/er.md, Whitespace between tokens).
+ */
+export function touchesKeywordWithDash(source: Source, start: number): boolean {
+  if (source.text[start] !== "-") return false
+  const keywordEnd = previousRead(source, start) + 1
+  const before = findTokenEndingBefore(source, keywordEnd)
+  return before?.type === "Keyword" && before.range[1] === keywordEnd
+}
+
+/** Sets no gap before the units that `touchesKeywordWithDash` finds. */
+function keepKeywordDashTouching(
+  source: Source,
+  atoms: readonly Atom[],
+  rules: Map<number, GapRule>,
+): void {
+  for (const atom of atoms) {
+    if (touchesKeywordWithDash(source, atom.start))
+      rules.set(atom.start, "none")
+  }
+}
+
+/**
  * The layout of the line that opens a subgraph: its keyword, name, and title
  * with its brackets, up to the end of the title or of the name. The empty
  * description blocks that may follow stand on the line as statements of the
@@ -189,7 +225,16 @@ export function layoutSubgraphOpening(
     // comment line after U+2028 or U+2029).
     return keptAsWritten(statement.range[0], end)
   }
-  const rules = new Map<number, GapRule>([[statement.id.range[0], "space"]])
+  // The keyword and a name that a whitespace character that is no space or
+  // tab (a U+2028, a U+2029, a U+00A0, ...) or a character outside ASCII
+  // separates from it are one name to a version that counts, so no space is
+  // set between them (docs/er.md, Subgraphs).
+  const rules = new Map<number, GapRule>([
+    [
+      statement.id.range[0],
+      followsSplitKeyword(source, statement.id.range[0]) ? "none" : "space",
+    ],
+  ])
   if (statement.title !== null) {
     const opening = expectToken(
       findStructuralToken(source, statement.id.range[1]),
@@ -207,20 +252,42 @@ export function layoutSubgraphOpening(
     expectValue(closing, "]")
     rules.set(closing.range[0], "none")
   }
-  return {
-    atoms: collectAtoms(
-      source,
-      statement.range[0],
-      end,
-      collectValueNodes(statement, erValueNodeTypes).filter(
-        (value) => value.range[1] <= end,
-      ),
-      [],
+  const atoms = collectAtoms(
+    source,
+    statement.range[0],
+    end,
+    collectValueNodes(statement, erValueNodeTypes).filter(
+      (value) => value.range[1] <= end,
     ),
+    [],
+  )
+  keepKeywordDashTouching(source, atoms, rules)
+  return {
+    atoms,
     rules,
     outdented: new Set(),
     lineBreaks: "kept",
+    writtenGapsBefore: ignoredKeywordGaps(source, atoms),
   }
+}
+
+/**
+ * The gap after `class` or `subgraph` when it holds an ignored `;`.
+ * The line rule removes that character before the lexer tests the keyword
+ * boundary, so the whole gap keeps its contacts (diagrams/er.md, The
+ * statement context; docs/er.md, Statements one per line).
+ */
+function ignoredKeywordGaps(
+  source: Source,
+  atoms: readonly Atom[],
+): ReadonlySet<number> {
+  const [keyword, name] = atoms
+  if (keyword === undefined || name === undefined) return new Set()
+  return findTokensBetween(source, keyword.end, name.start).some((token) =>
+    source.ignoredSemicolons.has(token.range[0]),
+  )
+    ? new Set([name.start])
+    : new Set()
 }
 
 /**
@@ -308,6 +375,16 @@ export function layoutErStatement(
   if (keepsLineBreaks && holdsJoiningRegion(source, start, end)) {
     return keptAsWritten(start, end)
   }
+  // The text of a statement that is brought to its `:` makes a direction line
+  // when the statement does not start its line, where it is read as a title
+  // at the first column (see `isDirectionBroughtToTheColon`): the statement
+  // stays as written then.
+  if (
+    isDirectionBroughtToTheColon(source, statement) &&
+    !isFirstOnItsLine(source, start)
+  ) {
+    return keptAsWritten(start, end)
+  }
   const kept = findKeptStretches(source, statement)
   // A statement with a kept line break keeps its styles as written: printing
   // them changes whether joining its lines is safe, so a second pass would
@@ -332,13 +409,20 @@ export function layoutErStatement(
     collectValueNodes(statement, erValueNodeTypes),
     kept,
   )
+  const rules = statementRules(source, statement, styles.length > 0)
+  if (statement.type === "ErClassStatement")
+    keepKeywordDashTouching(source, atoms, rules)
   return {
     atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
       gapKeepsLineBreak(source, keptBreaks, from, to),
     ),
-    rules: statementRules(source, statement, styles.length > 0),
+    rules,
     outdented: new Set(),
     lineBreaks: "joined",
+    writtenGapsBefore:
+      statement.type === "ErClassStatement"
+        ? ignoredKeywordGaps(source, atoms)
+        : undefined,
   }
 }
 

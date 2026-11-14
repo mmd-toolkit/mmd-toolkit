@@ -45,6 +45,7 @@ import type {
   TreemapAccDescrStatement,
   TreemapAccDescrBlockStatement,
 } from "@mmd-toolkit/ast"
+import { diagramTypesWithJisonAccessibilityLines } from "./acc-value-join.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { collectAtoms, expectToken, layoutDescriptionBlock } from "./layout.ts"
 import {
@@ -58,7 +59,9 @@ import {
   findStructuralToken,
   findTokensBetween,
   findTriviaBetween,
+  isSpaceOrTab,
   isStructural,
+  skipRemoved,
 } from "./source.ts"
 
 type CommonStatement = (
@@ -111,6 +114,46 @@ type CommonStatement = (
   readonly textBeforeOpen?: readonly Node[]
 }
 
+/** Whether a `%%` comment, and no directive, starts at `offset`. */
+function startsPlainComment(source: Source, offset: number): boolean {
+  return (
+    source.text.startsWith("%%", offset) &&
+    !source.text.startsWith("%%{", offset)
+  )
+}
+
+/** Whether the statement is an `accTitle:` line. */
+function isAccTitle(statement: CommonStatement): boolean {
+  return statement.type.includes("AccTitle")
+}
+
+/**
+ * Where the whitespace that the planned indentation of the next line supplies
+ * starts, after a line that ends with `statement`. A `title` with no text ends
+ * where its keyword ends, and the whitespace after it is no part of its range,
+ * unlike the whitespace after a title with text. That whitespace, when a
+ * directive or a comment follows it on the line, is a gap of the line, which a
+ * gap rule prints as one space, and no indentation of the next line, so the
+ * run starts after the last of those items (docs/treemap.md and
+ * docs/treeview.md, Title).
+ */
+export function relocatedWhitespaceStart(
+  source: Source,
+  statement: Node,
+  end: number,
+): number {
+  if (!statement.type.endsWith("TitleStatement")) return end
+  let position = end
+  let after = end
+  for (;;) {
+    while (isSpaceOrTab(source.text.charAt(position))) position++
+    const item = findTriviaBetween(source, position, position + 1)[0]
+    if (item === undefined) return after
+    position = item.range[1]
+    after = position
+  }
+}
+
 /**
  * Shared compact line forms never read the next physical line (docs/pie.md,
  * Accessibility lines; docs/gitgraph.md, Title and common values).
@@ -134,8 +177,18 @@ export function layoutCommonLine(
   const value = statement.value
   const hasTrivia =
     value !== null && findTriviaBetween(source, ...value.range).length > 0
+  // A `%%` right after the value of an `accTitle`, also after the directives
+  // that mermaid.js removes first, is a part of the title to the oldest version
+  // that counts, with the whitespace before it, so the line stays as written
+  // (docs/pie.md, Accessibility lines).
+  const titleReachesComment =
+    isAccTitle(statement) &&
+    diagramTypesWithJisonAccessibilityLines.has(source.root.diagramType) &&
+    value !== null &&
+    startsPlainComment(source, skipRemoved(source, value.range[1]))
   const endsInDirectives =
     hasTrivia &&
+    !titleReachesComment &&
     (statement.textAfter?.length ?? 0) === 0 &&
     endsWithDirectives(source, value.range)
   let valueStart = value?.range[0] ?? delimiter.range[1]
@@ -151,8 +204,15 @@ export function layoutCommonLine(
         source.ignoredSemicolons.has(valueStart))
     )
       valueStart++
-    while (valueStart < valueEnd && source.text[valueEnd - 1].trim() === "")
-      valueEnd--
+    // A `%%` right after the value of an `accTitle` is a comment to the
+    // pinned grammar and the end of the title to the later versions, and a part
+    // of the title to the oldest version that counts, which shows the title as
+    // a tooltip: the whitespace before the `%%` stays (docs/pie.md,
+    // Accessibility lines).
+    if (!titleReachesComment) {
+      while (valueStart < valueEnd && source.text[valueEnd - 1].trim() === "")
+        valueEnd--
+    }
   } else if (endsInDirectives) {
     while (valueStart < valueEnd && source.text[valueStart].trim() === "")
       valueStart++
@@ -182,7 +242,7 @@ export function layoutCommonLine(
           // compatibility.md, Runs of whitespace in a text that are drawn
           // the same), except in an `accTitle`, which the browser shows as
           // a tooltip.
-          statement.type.includes("AccTitle")
+          isAccTitle(statement)
             ? { start: valueStart, end: valueEnd }
             : collapsedRunsAtom(source, { start: valueStart, end: valueEnd }),
         ]),

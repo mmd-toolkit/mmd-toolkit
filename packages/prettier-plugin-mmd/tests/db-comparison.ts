@@ -6,7 +6,7 @@ import {
 } from "./click-call-margins.ts"
 import {
   colorCaseDbForFormattingComparison,
-  colorCaseDiagramTypes,
+  colorFormDiagramTypes,
 } from "./color-case-differences.ts"
 import { eventmodelingDbForFormattingComparison } from "./eventmodeling-data-margins.ts"
 import {
@@ -38,7 +38,7 @@ import {
 /**
  * The Db of a formatted text with the differences restored that the formatter
  * is permitted to make, so that it can be compared with the Db of the written
- * text. The permitted differences are listed in AGENTS.md, item 4; each has
+ * text. The permitted differences are listed in docs/printed-form.md; each has
  * its own function, and a text is compared by the ones of its diagram type.
  */
 export function dbForFormattingComparison(
@@ -66,7 +66,7 @@ export function dbForFormattingComparison(
     compared = keywordTextDbForFormattingComparison(before, compared, type)
   // The colors come before the whitespace: a style that has both differences
   // takes the written case of its colors, and then the written whitespace.
-  if (colorCaseDiagramTypes.has(type))
+  if (colorFormDiagramTypes.has(type))
     compared = colorCaseDbForFormattingComparison(before, compared, type)
   if (styleDiagramTypes.has(type))
     compared = styleDbForFormattingComparison(before, compared, type)

@@ -66,15 +66,17 @@ ESLint Online Playground の
 
 基準は mermaid.js です。
 版は[仕様](./packages/spec/docs/index.ja.md)に記録していて、今は 12.3.0 です。
-フォーマッターは、トークンの綴り（キーワードの大文字小文字など）を変えるとき、
-mermaid.js の履歴（変更履歴と、過去の版の文法）から、
-古い版が変えた後の綴りを読まないか、別に読むと分かる場合は、
-書かれたまま残します。
-それ以外の整形は、12.3.0 だけで確かめています。
-綴りの種類ごとに何を読んだかは、
-フォーマッターの
-[互換性の文書](./packages/prettier-plugin-mmd/docs/compatibility.ja.md#mermaidjs-の版)
+整形した図は別の版でも描かれるので、フォーマッターは、印字するものを、
+図種ごとに多くて 5 つの版の mermaid.js で確かめています。
+書き方（キーワードの大文字小文字など）を変えるとき、
+その図種で対象にする版のうち、書かれた形を読む版が、変えた後の形を読まないか、
+違う図として描く場合は、書かれたまま残します。
+図種ごとに対象にする版は
+[対象にする mermaid.js の版](./packages/prettier-plugin-mmd/docs/compatibility.ja.md#対象にする-mermaidjs-の版)
 に挙げています。
+書かれたまま残す形は、
+[対象にする版の mermaid.js のために残す形](./packages/prettier-plugin-mmd/docs/compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+に 1 つずつ挙げています。
 
 - パーサーは、mermaid.js と同じテキストを受理し、同じテキストを拒否します。
   受理したテキストは、同じ図として読みます。
@@ -110,7 +112,7 @@ mermaid.js は拒否しますが、ここでは受理し、整形します。
 | ソースを受理し、拒否する         | 仕様の [common.ja.md](./packages/spec/docs/common.ja.md)、[detection.ja.md](./packages/spec/docs/detection.ja.md)、`diagrams/<図種>.ja.md`、[known-divergences.ja.md](./packages/spec/docs/known-divergences.ja.md)                                                                                                                                                  |
 | 木を作る（ノードの型、欄、値）   | 仕様の [ast.ja.md](./packages/spec/docs/ast.ja.md)、`ast/<図種>.ja.md`                                                                                                                                                                                                                                                                                               |
 | 木にトークンと位置を付ける       | パーサーの [tokens.ja.md](./packages/parser/docs/tokens.ja.md)、`tokens/<図種>.ja.md`、[positions.ja.md](./packages/parser/docs/positions.ja.md)、`positions/<図種>.ja.md`                                                                                                                                                                                           |
-| 結果を適合性のコーパスと比べる   | テストの [fixture](./packages/tests/README.ja.md#fixture-の中身) と [`ast.json` と `parse-error.json`](./packages/tests/docs/maintaining-fixtures.ja.md#astjson-と-parse-errorjson)                                                                                                                                                                                  |
+| 結果を適合性のコーパスと比べる   | テストの [テストケース](./packages/tests/README.ja.md#fixture-の中身) と [`ast.json` と `parse-error.json`](./packages/tests/docs/maintaining-fixtures.ja.md#astjson-と-parse-errorjson)                                                                                                                                                                             |
 | 記録した木を mermaid.js と照らす | テストの [db-summaries.ja.md](./packages/tests/docs/db-summaries.ja.md)、[db-from-tree.ja.md](./packages/tests/docs/db-from-tree.ja.md)、`db-from-tree/<図種>.ja.md`、[check-tree.ja.md](./packages/tests/docs/check-tree.ja.md)、[configuration.ja.md](./packages/tests/docs/configuration.ja.md)、[embedded-data.ja.md](./packages/tests/docs/embedded-data.ja.md) |
 
 ## 開発に参加する

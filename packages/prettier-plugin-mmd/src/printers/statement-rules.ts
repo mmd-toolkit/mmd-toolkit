@@ -2,6 +2,7 @@ import type { Node, Range } from "@mmd-toolkit/ast"
 import type { Doc } from "prettier"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { appendItems } from "./collections.ts"
+import type { FillOfLabel } from "./flowchart-link-styles.ts"
 import type { TextEdit } from "./layout.ts"
 import {
   expectToken,
@@ -25,9 +26,12 @@ import {
   findTokensBetween,
   findTriviaBetween,
   hasTriviaBesidesTrailingDirectives,
+  holdsRemoved,
   isSpaceOrTab,
   isStructural,
+  skipRemoved,
   skipSpacesAndTabs,
+  textRead,
 } from "./source.ts"
 
 /**
@@ -40,8 +44,9 @@ import {
  */
 
 /**
- * Adds the rules of a list of classes after `:::`: the `:::`, the `,`, and
- * the names touch what is before them. The list lies after `start`.
+ * Adds the rules of a list of classes after `:::`: the `:::`, the first class,
+ * and each `,` touch what is before them, and each class after a `,` stands
+ * after one space. The list lies after `start`.
  */
 export function addClassListRules(
   source: Source,
@@ -51,7 +56,8 @@ export function addClassListRules(
 ): void {
   const last = classes.at(-1)
   if (last === undefined) return
-  for (const name of classes) rules.set(name.range[0], "none")
+  for (const [index, name] of classes.entries())
+    rules.set(name.range[0], index === 0 ? "none" : "space")
   for (const token of findTokensBetween(source, start, last.range[1])) {
     if (
       isStructural(source, token) &&
@@ -82,8 +88,8 @@ export function addCssClassRules(
 
 /**
  * Adds the rules of a list of names separated by `,`: the first name stands
- * after one space, and the others touch the `,` before them, which touches
- * the name before it.
+ * after one space, each `,` touches the name before it, and each other name
+ * stands after one space, as Prettier prints a comma.
  */
 export function addNameListRules(
   source: Source,
@@ -94,7 +100,7 @@ export function addNameListRules(
   const last = names.at(-1)
   if (first === undefined || last === undefined) return
   rules.set(first.range[0], "space")
-  for (const name of names.slice(1)) rules.set(name.range[0], "none")
+  for (const name of names.slice(1)) rules.set(name.range[0], "space")
   for (const token of findTokensBetween(
     source,
     first.range[1],
@@ -108,7 +114,7 @@ export function addNameListRules(
 
 /**
  * The rules of a `classDef` or `style` statement: its names are separated by
- * `,` without whitespace, and the first style stands after one space. The
+ * `,` followed by one space, and the first style stands after one space. The
  * default style/comma gaps follow the source. Safe ER and requirement units
  * instead use no space before a comma and one after it (docs/er.md and
  * docs/requirement.md, Styles and classes).
@@ -143,7 +149,7 @@ export function styleStatementRules(
  */
 export function printStyleUnitSpacing(source: Source, style: Node): Doc {
   const [start, end] = style.range
-  const gap = findColonGap(source.text, start, end)
+  const gap = findColonGap(source, start, end)
   if (gap === undefined) return printWordGaps(source, start, end)
   return [
     printWordGaps(source, start, gap.nameEnd),
@@ -240,12 +246,33 @@ export interface StyleListUse {
    */
   readonly joinsStyles?: boolean
   /**
-   * The statement is a `style` of a block diagram: mermaid.js sorts its styles
-   * into those of the label and those of the shape by how they start.
+   * The names of the styles that mermaid.js puts in the style of the label of
+   * a node by how they start: `color` and `text-align` in the `style` of a
+   * block diagram, of a flowchart, and of a class diagram (see below). A style that starts with one of them keeps whether whitespace
+   * stands before it, and whether whitespace stands between the name and the
+   * `:`.
    */
-  readonly splitsLabelStyles?: boolean
+  readonly labelStyleNames?: readonly string[]
+  /**
+   * Which of those styles keep whether whitespace stands between their name
+   * and the `:`: `all`, the default; `first`, the first style of the statement
+   * only; or `none`. A style after a `,` is printed with a space before it
+   * unless it starts with a label name and the `:` (see `touchesWord`), and a
+   * style that has whitespace before it is no style of the label, with the gap
+   * before its `:` or without it. The first style of the statement has no `,`
+   * before it to print a space after, so the gap decides whether it starts with
+   * a label name and the `:`; in a class diagram it has whitespace before it
+   * already.
+   */
+  readonly labelStyleGaps?: "all" | "first" | "none"
   /** The styles can reach a link: a `linkStyle`, a `classDef`. */
   readonly keepsGapAfterStroke?: boolean
+  /**
+   * The statement is a `linkStyle` of a flowchart whose styles some versions
+   * that count put in the style of the label of a link, and which part of them
+   * (see `keepsGapAfterFill` below).
+   */
+  readonly fillOfLabel?: FillOfLabel | null
   /**
    * A backslash escapes a `,`: `a\,b` is one style, and a space between the
    * backslash and a `,` decides that. Only the `classDef` of flowchart and
@@ -265,6 +292,17 @@ export interface StyleListUse {
    * left out too.
    */
   readonly trimsEnd?: boolean
+}
+
+/**
+ * Whether a style keeps whether whitespace stands between its label name and
+ * the `:` (see `StyleListUse.labelStyleGaps`).
+ */
+function keepsLabelStyleGap(
+  gaps: NonNullable<StyleListUse["labelStyleGaps"]>,
+  isFirst: boolean,
+): boolean {
+  return gaps === "all" || (gaps === "first" && isFirst)
 }
 
 /**
@@ -310,13 +348,26 @@ export interface StyleListUse {
  *   its value, which reaches up to the `,` after it. The gap after that `,`
  *   follows the rules above.
  *
- * `splitsLabelStyles` is set for the `style` of a block diagram. mermaid.js
- * puts a style that starts with `color:` or `text-align:` in the style of the
- * label of a node and every other style in the style of its shape, and a block
- * arrow takes the style of its label as it is. A style that starts with
- * whitespace, or has whitespace between its name and the `:`, does not start
- * so. So such a style keeps whether whitespace stands before it, and between
- * `color` or `text-align` and the `:`, a run of whitespace becoming one space.
+ * `fillOfLabel` is set for a `linkStyle` of a flowchart. Some versions that
+ * count make the style of the label of a link from the styles of the link and
+ * put `color:` in the place of the first `fill:` in it (`first-fill`), or in
+ * the first style only (`first-style`, in a swimlane diagram), so a name that
+ * ends with `fill` keeps whether whitespace stands between it and the `:`, a
+ * run of whitespace becoming one space: with the gap, the label keeps the
+ * `fill`, and without it, the label has `color`. Where the part is the first
+ * `fill:`, a style after a style that has `fill:` in its text uses the one
+ * form, and where it is the first style, so does every style but the first.
+ *
+ * `labelStyleNames` is set for the `style` of a block diagram, of a flowchart,
+ * and of a class diagram. mermaid.js puts a style that starts with `color:` or
+ * `text-align:` in the style of the label of a node and every other style in
+ * the style of its shape (a block arrow takes the style of its label as it
+ * is), in a block diagram, and, in a version that counts, in a flowchart (both
+ * names) and in a class diagram (both). A style that starts with whitespace, or has
+ * whitespace between its name and the `:`, does not start so. So such a style
+ * keeps whether whitespace stands before it, and between the name and the `:`,
+ * a run of whitespace becoming one space (docs/compatibility.md, Styles that
+ * are drawn the same; Forms kept for versions of mermaid.js that count).
  *
  * `joinsStyles` is set for the statements whose styles mermaid.js joins with
  * `;` into one CSS text without taking their whitespace away: a `linkStyle`
@@ -354,8 +405,10 @@ export function normalizeStyleList(
     keepsSpaceBeforeFill = false,
     isLinkStyle = false,
     joinsStyles = false,
-    splitsLabelStyles = false,
+    labelStyleNames = [],
+    labelStyleGaps = "all",
     keepsGapAfterStroke = false,
+    fillOfLabel = null,
     escapesComma = false,
     collapsesWordGaps = false,
     trimsEnd = false,
@@ -381,11 +434,12 @@ export function normalizeStyleList(
   const edits: TextEdit[] = []
   const [from, to] = [first.range[0], last.range[1]]
   let previousEnd = -1
+  let hasFillColonBefore = false
   for (let start = from; start <= to;) {
     let comma = start
     while (comma < to && !endsStyle(source, comma, escapesComma)) comma++
     const keepsValue =
-      isLinkStyle && hasBlankStrokeValue(source.text.slice(start, comma))
+      isLinkStyle && hasBlankStrokeValue(textRead(source, start, comma))
     let core: Range = keepsValue
       ? [skipSpacesAndTabs(source, start, comma), comma]
       : trimStyle(source, [start, comma], { keepsEscapedSpace: escapesComma })
@@ -394,14 +448,20 @@ export function normalizeStyleList(
       joinsStyles &&
       !keepsValue &&
       core[1] < comma &&
-      endsWithEscape(source.text.slice(core[0], core[1]))
+      endsWithEscape(textRead(source, core[0], core[1]))
     ) {
       core = [core[0], core[1] + 1]
     }
     if (!keepsValue) {
       addColonEdit(source, core, edits, {
         keepsGapAfterStroke,
-        keepsGapAfterLabelName: splitsLabelStyles,
+        keepsGapAfterFill:
+          fillOfLabel === "first-style"
+            ? previousEnd === -1
+            : fillOfLabel === "first-fill" && !hasFillColonBefore,
+        labelStyleNames: keepsLabelStyleGap(labelStyleGaps, previousEnd === -1)
+          ? labelStyleNames
+          : [],
       })
       if (collapsesWordGaps) addWordGapEdits(source, core, edits)
     }
@@ -420,15 +480,16 @@ export function normalizeStyleList(
         core[0] === start &&
         ((keepsSpaceBeforeFill && source.text.startsWith("fill", core[0])) ||
           (isLinkStyle && source.text.startsWith("stroke:", core[0])) ||
-          (splitsLabelStyles &&
-            (source.text.startsWith("color:", core[0]) ||
-              source.text.startsWith("text-align:", core[0]))))
+          labelStyleNames.some((name) =>
+            source.text.startsWith(`${name}:`, core[0]),
+          ))
       edits.push(
         { range: [previousEnd, start - 1], replacement: "" },
         { range: [start, core[0]], replacement: touchesWord ? "" : " " },
       )
     }
     previousEnd = core[1]
+    hasFillColonBefore ||= source.text.slice(start, comma).includes("fill:")
     start = comma + 1
   }
   // An insertion at the edge of an atom is the business of the gap rules.
@@ -647,7 +708,12 @@ export function normalizeCallArguments(
     while (to > from && isSpaceOrTab(text[to - 1])) to--
     return [from, to]
   })
-  if (trimmed.some(([from, to]) => from === to)) return
+  if (
+    trimmed.some(([from, to]) =>
+      [...textRead(source, range[0] + from, range[0] + to)].every(isSpaceOrTab),
+    )
+  )
+    return
   const edits: TextEdit[] = []
   const [offset] = range
   for (const [index, [from, to]] of trimmed.entries()) {
@@ -778,9 +844,12 @@ export function endsWithEscape(text: string): boolean {
  */
 export function endOfJoinedStyle(source: Source, range: Range): number {
   const [start, end] = range
-  return isSpaceOrTab(source.text[end]) &&
-    endsWithEscape(source.text.slice(start, end))
-    ? end + 1
+  // The character after the style is the one that the lexer reads next, past a
+  // directive that stands between them.
+  const next = skipRemoved(source, end)
+  return isSpaceOrTab(source.text[next]) &&
+    endsWithEscape(textRead(source, start, end))
+    ? next + 1
     : end
 }
 
@@ -808,8 +877,9 @@ function trimStyle(
  * a name before the `:` has no whitespace before it to take away. The space
  * that a backslash before the `:` escapes stays, and the whitespace after it
  * goes: CSS reads the escaped space as part of the name. Where
- * `keepsGapAfterStroke` is set and the name ends with `stroke`, one space
- * stays before the `:` if whitespace stood there.
+ * `keepsGapAfterStroke` is set and the name ends with `stroke`, or
+ * `keepsGapAfterFill` is set and the name ends with `fill`, one space stays
+ * before the `:` if whitespace stood there.
  */
 export function addColonEdit(
   source: Source,
@@ -817,20 +887,23 @@ export function addColonEdit(
   edits: TextEdit[],
   {
     keepsGapAfterStroke = false,
-    keepsGapAfterLabelName = false,
+    keepsGapAfterFill = false,
+    labelStyleNames = [],
   }: {
     readonly keepsGapAfterStroke?: boolean
-    readonly keepsGapAfterLabelName?: boolean
+    readonly keepsGapAfterFill?: boolean
+    readonly labelStyleNames?: readonly string[]
   } = {},
 ): void {
-  const gap = findColonGap(source.text, start, end)
+  const gap = findColonGap(source, start, end)
   if (gap === undefined) return
   const { nameEnd, colon, valueStart } = gap
   const name = source.text.slice(start, nameEnd)
   const spaceBeforeColon =
     nameEnd < colon &&
     ((keepsGapAfterStroke && name.endsWith("stroke")) ||
-      (keepsGapAfterLabelName && (name === "color" || name === "text-align")))
+      (keepsGapAfterFill && name.endsWith("fill")) ||
+      labelStyleNames.includes(name))
   edits.push({
     range: [nameEnd, valueStart],
     replacement: `${spaceBeforeColon ? " " : ""}:${valueStart < end ? " " : ""}`,
@@ -858,10 +931,15 @@ interface ColonGap {
  * that space stays and the whitespace after it goes.
  */
 function findColonGap(
-  text: string,
+  source: Source,
   start: number,
   end: number,
 ): ColonGap | undefined {
+  // The colon's padding cannot replace an indivisible removed item. Keep the
+  // style as written, including escapes beside it (docs/state.md,
+  // Semicolons at the end of a style statement).
+  if (holdsRemoved(source, start, end)) return undefined
+  const { text } = source
   const colon = text.indexOf(":", start)
   if (colon === -1 || colon >= end) return undefined
   let valueStart = colon + 1
@@ -876,8 +954,8 @@ function findColonGap(
 
 /**
  * The rules of a `class` statement: the names of the entities and the
- * classes are lists separated by `,` without whitespace, and the first class
- * stands after one space.
+ * classes are lists separated by `,` followed by one space, and the first
+ * class stands after one space.
  */
 export function classStatementRules(
   source: Source,

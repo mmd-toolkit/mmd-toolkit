@@ -39,7 +39,7 @@ mermaid.js は、空の `accDescr {}` のブロックをエラーなしに受理
 %% eslint @mmd-toolkit/pie-no-empty-description-block: error
 pie
   accDescr {}
-  "A" : 1
+  "A": 1
 ```
 
 この規則に**従う**コードの例:
@@ -51,7 +51,7 @@ pie
     Revenue by product
     in the last quarter
   }
-  "A" : 1
+  "A": 1
 ```
 
 ## オプション

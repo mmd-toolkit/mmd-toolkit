@@ -1179,6 +1179,39 @@ treeView-beta
 
 [fixture: treeview/semicolons/protected-row-body]
 
+Without branch characters, a node that starts with a whitespace character other
+than a space or a tab (U+2028, U+2029, a no-break space, and the others that
+`String.prototype.trim` removes), after another node on its line, stays on its
+line, and the body is printed as written, when a comment follows that
+whitespace, with only whitespace, line breaks, and directives between:
+mermaid.js draws a node there, named by the whitespace, or by the whitespace and
+the `%%` after it, while on a line of its own the whitespace belongs to a
+comment line, which takes it with the whitespace and line breaks before its
+`%%`, and no node is drawn. At the end of its line before a directive, or with
+no comment after it, the node is split from the node before it like any other
+node.
+
+[test: treeview/statements-one-per-line/separator-node-before-comment-ls]
+
+[test: treeview/statements-one-per-line/separator-node-before-comment-ps]
+
+[test: treeview/statements-one-per-line/separator-node-at-line-end]
+
+[test:
+treeview/statements-one-per-line/whitespace-node-before-comment-no-break-space]
+
+[test:
+treeview/statements-one-per-line/whitespace-node-before-comment-ideographic-space]
+
+[test:
+treeview/statements-one-per-line/whitespace-node-at-line-end-before-comment-line]
+
+[test:
+treeview/statements-one-per-line/whitespace-node-at-line-end-before-separator-comment-line]
+
+[test:
+treeview/statements-one-per-line/whitespace-node-at-line-end-before-directive-line]
+
 ### Annotation gaps
 
 Use one ASCII space before an ordinary same-line annotation. Its required
@@ -1541,8 +1574,13 @@ A string between `'` is printed between `"`, unless its text holds a `'`, a `"`,
 a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
 and `singleQuote` is not read. Quoting a padded bare directory can change its
-name and file/directory type. [fixture:
-treeview/names/single-quote-sensitive-kept]
+name and file/directory type. A name in quotes keeps its quotes, though the
+examples write 58 names without quotes and 8 in quotes: some versions that count
+read a name in quotes only (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+[fixture: treeview/names/quoted-name-kept] [fixture:
+treeview/names/single-quote-sensitive-kept] [fixture:
+treeview/names/name-quote-tail]
 
 [fixture: treeview/names/name-bare-tail]
 
@@ -1672,6 +1710,28 @@ summary omits it. A `;` that the line rule ignores before the first character of
 the value is a gap item whether one whitespace character or more comes before
 it: `title  ;T` and `title ;T` are printed alike. [fixture:
 treeview/semicolons/ignored-semicolon-title-value-second-space]
+
+A `title` with no text, written with whitespace before a directive or a comment
+on its line, is printed with one space before the first of them, whether the
+whitespace is one character or more, a tab, or, before a directive, a space and
+a U+2028 or U+2029 (a title of whitespace only is a bare `title`), and with none
+where nothing is written between the keyword and the directive: `title`, a
+space, and `%%{init: {}}%%` is printed as it is, and `title`, three spaces, and
+`%%{init: {}}%%` as the first. A U+2028 or U+2029 before a comment that joins
+the next line (`title`, two spaces, the character, and `%% c`, with a row after
+it) keeps the line as written, as the comment starts after the character. The
+one whitespace character after the keyword is part of the keyword to mermaid.js,
+so a title with no text ends at its keyword, and that character is a gap of the
+line like the whitespace after a title with text; the second formatting finds
+the form of the first. [fixture: title/bare-title-directive-one-space] [fixture:
+title/bare-title-directive-spaces] [fixture: title/bare-title-directive-tab]
+[fixture: title/bare-title-directive-touching] [fixture:
+title/bare-title-comment-spaces] [fixture:
+title/bare-title-unclosed-directive-spaces] [test:
+treeview/title/bare-title-directive-space-and-line-separator] [test:
+treeview/title/bare-title-directive-space-and-paragraph-separator] [test:
+treeview/title/bare-title-directive-spaces-and-line-separator] [test:
+treeview/title/bare-title-comment-after-line-separator-kept]
 
 [fixture: treeview/title/title-shared]
 
@@ -1810,23 +1870,29 @@ block. [fixture: treeview/modes/ordinary-block] [fixture:
 treeview/modes/box-common-block-zero-column] [fixture:
 treeview/modes/block-interior-active] [fixture:
 treeview/description-blocks/box-redraw-remove-opener-prefixes] [fixture:
-treeview/description-blocks/block-after-directive] Ordinary whitespace-only
-interiors become `{}`. For blocks that keep their braces, put one space between
-`accDescr` and `{`, even when originally touching, to distinguish the keyword
-from its body. Join plain opener whitespace, align ordinary body lines one step
-inside the statement, preserve trivia contents, and align separate closers with
-the statement. Mermaid discards indentation after LF from the description. The
-body uses the configured indentation, including tabs and the positive minimum
-step at width zero. In box mode remove ordinary keyword/opener prefixes and
-place the common statement at column one, while keeping the body's authored
-columns: indenting a plain physical line can make box syntax reject it.
-Value-owned box geometry still keeps its complete brace span. The first
-effective `}` remains the closer. Unsafe removal follows Branch prefixes,
-including common-value tabs. A sole mode selector in the opener gap keeps just
-that gap, as described in Decorations. The whitespace before the `}` is no text,
-so the `}` stays aligned with the statement in every pass, also after a comment
-line. [fixture: treeview/description-blocks/block-comment-line-after-the-text] A
-block with one line of text on a line of its own follows
+treeview/description-blocks/block-after-directive] The box-character test reads
+the text after directives are removed, so a box glyph inside a directive does
+not keep the braces. [fixture: description-blocks/block-hidden-box-glyph]
+Ordinary whitespace-only interiors become `{}`. A `;` that the line rule ignores
+is no text either; when its written source prevents compaction, retain the `;`
+and use the empty block layout. [fixture:
+description-blocks/block-ignored-semicolon-interior] For blocks that keep their
+braces, put one space between `accDescr` and `{`, even when originally touching,
+to distinguish the keyword from its body. Join plain opener whitespace, align
+ordinary body lines one step inside the statement, preserve trivia contents, and
+align separate closers with the statement. Mermaid discards indentation after LF
+from the description. The body uses the configured indentation, including tabs
+and the positive minimum step at width zero. In box mode remove ordinary
+keyword/opener prefixes and place the common statement at column one, while
+keeping the body's authored columns: indenting a plain physical line can make
+box syntax reject it. Value-owned box geometry still keeps its complete brace
+span. The first effective `}` remains the closer. Unsafe removal follows Branch
+prefixes, including common-value tabs. A sole mode selector in the opener gap
+keeps just that gap, as described in Decorations. The whitespace before the `}`
+is no text, so the `}` stays aligned with the statement in every pass, also
+after a comment line. [fixture:
+treeview/description-blocks/block-comment-line-after-the-text] A block with one
+line of text on a line of its own follows
 [A description block on one line](./compatibility.md#a-description-block-on-one-line)
 too, also where the text has runs of spaces and tabs. [fixture:
 treeview/description-blocks/block-text-on-its-own-line-runs-collapsed]

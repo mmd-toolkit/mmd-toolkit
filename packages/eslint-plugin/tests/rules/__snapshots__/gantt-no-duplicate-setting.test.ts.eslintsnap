@@ -7,10 +7,10 @@ Filename: gantt-no-duplicate-setting-incorrect-1.mmd
 Code:
   1 | gantt
   2 |   dateFormat DD-MM-YYYY
-  3 |   Design :01-02-2024, 3d
+  3 |   Design : 01-02-2024, 3d
   4 |   dateFormat YYYY-MM-DD
     |   ^~~~~~~~~~~~~~~~~~~~~ [1]
-  5 |   Build :2024-02-05, 5d
+  5 |   Build : 2024-02-05, 5d
   6 |
 
 [1] mermaid.js replaces the earlier `dateFormat` with the one of this statement.
@@ -19,15 +19,15 @@ Code:
         Output:
           1 | gantt
           2 |   dateFormat DD-MM-YYYY
-          3 |   Design :01-02-2024, 3d
-          4 |   Build :2024-02-05, 5d
+          3 |   Design : 01-02-2024, 3d
+          4 |   Build : 2024-02-05, 5d
           5 |
       - Remove the earlier statement.
         Output:
           1 | gantt
-          2 |   Design :01-02-2024, 3d
+          2 |   Design : 01-02-2024, 3d
           3 |   dateFormat YYYY-MM-DD
-          4 |   Build :2024-02-05, 5d
+          4 |   Build : 2024-02-05, 5d
           5 |
 ---
 
@@ -41,7 +41,7 @@ Code:
   3 |   axisFormat %m-%d
   4 |   axisFormat %d
     |   ^~~~~~~~~~~~~ [1]
-  5 |   Design :2024-01-06, 3d
+  5 |   Design : 2024-01-06, 3d
   6 |
 
 [1] mermaid.js replaces the earlier `axisFormat` with the one of this statement.
@@ -51,14 +51,14 @@ Code:
           1 | gantt
           2 |   dateFormat YYYY-MM-DD
           3 |   axisFormat %m-%d
-          4 |   Design :2024-01-06, 3d
+          4 |   Design : 2024-01-06, 3d
           5 |
       - Remove the earlier statement.
         Output:
           1 | gantt
           2 |   dateFormat YYYY-MM-DD
           3 |   axisFormat %d
-          4 |   Design :2024-01-06, 3d
+          4 |   Design : 2024-01-06, 3d
           5 |
 ---
 

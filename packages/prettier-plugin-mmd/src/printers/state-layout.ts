@@ -56,6 +56,7 @@ import {
   isSpaceOrTab,
   isStructural,
   isWhitespace,
+  textRead,
 } from "./source.ts"
 import { findStateSemicolonLines } from "./state-kept-lines.ts"
 import {
@@ -65,6 +66,7 @@ import {
   printStyleWithColon,
   styleUnitsCanCompact,
 } from "./statement-rules.ts"
+import { readsStyleAsDescription } from "./style-text.ts"
 
 /**
  * The node types of a state diagram whose text is a value, printed as
@@ -370,6 +372,7 @@ export function layoutStateStatement(
     holdsDirection(source, {
       range: statement.range,
       text: statement.value.value,
+      valueStart: statement.value.range[0],
     })
   const atoms = collectAtoms(
     source,
@@ -1041,16 +1044,7 @@ function isOnlyTriviaOrWhitespace(
   start: number,
   end: number,
 ): boolean {
-  const trivia = findTriviaBetween(source, start, end)
-  for (let offset = start; offset < end; offset++) {
-    if (
-      !isWhitespace(source.text[offset]) &&
-      !trivia.some(({ range }) => range[0] <= offset && offset < range[1])
-    ) {
-      return false
-    }
-  }
-  return true
+  return [...textRead(source, start, end)].every(isWhitespace)
 }
 
 /** The gap rules of a statement. */
@@ -1079,7 +1073,7 @@ function statementRules(
         : "space"
       rules.set(arrow.range[0], arrowRule)
       rules.set(statement.to.range[0], arrowRule)
-      addDescriptionRules(source, statement.to, statement.label, rules)
+      addDescriptionRules(source, statement.to, statement.label, "space", rules)
       break
     }
     case "StateDefinitionStatement":
@@ -1087,6 +1081,7 @@ function statementRules(
         source,
         statement.reference,
         statement.description,
+        "none",
         rules,
       )
       break
@@ -1161,7 +1156,11 @@ function addStyleCommaRules(
       statement.range[0],
       statement.range[1],
       styles,
-    )
+    ) ||
+    // mermaid.js 10.9.8 draws the commas of such a `style` as the characters
+    // of a description, so a space after one changes the drawing there.
+    (statement.type === "StateStyleStatement" &&
+      readsStyleAsDescription(source, styles))
   ) {
     return
   }
@@ -1198,9 +1197,10 @@ function addFloatingNoteRules(
 
 /**
  * Adds the rules of the `,` between the ids of a `class` statement: an id
- * after a `,` touches it. The ids end at whitespace before a `,`, and mermaid.js
- * reads the rest as the name of the class, so `class A ,B c` has the one id `A`
- * and stays as written (docs/state.md, Whitespace between tokens).
+ * after a `,` stands after one space. The ids end at whitespace before a `,`,
+ * and mermaid.js reads the rest as the name of the class, so `class A ,B c` has
+ * the one id `A` and stays as written (docs/state.md, Whitespace between
+ * tokens).
  */
 function addClassIdListRules(
   source: Source,
@@ -1215,16 +1215,18 @@ function addClassIdListRules(
       ),
       ",",
     )
-    rules.set(states[index].range[0], "none")
+    rules.set(states[index].range[0], "space")
   }
 }
 
 /**
  * Adds the rules of the `:` of a description or a label after a state
- * reference: one space on each side (docs/state.md, Descriptions and
- * labels), except before the `:` after a reference that a space would make
- * a keyword (see `isReadOtherwiseBeforeWhitespace`). A description of only
- * whitespace is a kept stretch (see `findBlankDescriptionStretches`).
+ * reference: one space after it, and before it the space of `colonRule`, none
+ * for the description of a state and one for the label of a transition
+ * (docs/state.md, Descriptions and labels), except before the `:` after a
+ * reference that a space would make a keyword (see
+ * `isReadOtherwiseBeforeWhitespace`). A description of only whitespace is a
+ * kept stretch (see `findBlankDescriptionStretches`).
  *
  * On a line that holds a `;`, whether whitespace follows the `:` is kept as
  * written. The line rule (common.md, `style` and `classDef` lines) ignores
@@ -1236,13 +1238,14 @@ function addDescriptionRules(
   source: Source,
   reference: StateReference,
   text: Node | null,
+  colonRule: GapRule,
   rules: Map<number, GapRule>,
 ): void {
   if (text === null) return
   const colon = findStructuralToken(source, reference.range[1])
   if (colon?.value !== ":" || colon.range[0] >= text.range[0]) return
   if (!isReadOtherwiseBeforeWhitespace(reference)) {
-    rules.set(colon.range[0], "space")
+    rules.set(colon.range[0], colonRule)
   }
   if (
     findStateSemicolonLines(source).has(lineStartOf(source, colon.range[0]))

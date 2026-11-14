@@ -61,11 +61,10 @@ xychart
 ### 1 行 1 文
 
 どの文も、自分の行に置きます。
-XY チャートでは、文の間に何も要りません（diagrams/xychart.md、
-Diagram and statements）。
+XY チャートでは、文の間に何も要りません（diagrams/xychart.md、図と文）。
 そのため、`title T line [1]`、`x-axis [a] line [1]`、`line [1]bar [2]` や、
 ヘッダーの行でヘッダーの後に続く文は、1 行に複数の文があります。
-1 行に 2 つの文があると読みにくいので、それぞれ自分の行に移します。
+それぞれ自分の行に移します。
 ほかの図も同じです（[1 行に 1 文](./flowchart.ja.md#1-行に-1-文)を参照）。
 ヘッダーの向きは、
 ヘッダーの行に残します（[ヘッダーと向き](#ヘッダーと向き)を参照）。
@@ -221,13 +220,17 @@ xychart
 ヘッダーは、`xychart` と `xychart-beta` のどちらも、
 書かれた大文字小文字のまま印字します。
 mermaid.js 12.3.0 はどちらも同じ図種として読みますが、
-mermaid.js 11.9.0 は `xychart-beta` だけを検出するため、
+対象にする版に `xychart-beta` だけを検出するものがあるため、
 綴りは整形器ではなく書き手が決めます。
-（[ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)を参照）。
+詳しくは [ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)
+を参照してください。
+残す版は
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+の表にあります。
 2 つ目以降のヘッダーは自分の行に置き、取り除きません。
 向きを持つ後のヘッダーは向きを変え、向きのないものは何も変えませんが、
 書かれたテキストは書き手のものだからです。
-gap にコメント行か指令があるヘッダーは、その改行を保ち、
+隙間にコメント行か指令があるヘッダーは、その改行を保ち、
 続きの列をヘッダーより 1 段深くそろえます（[複数行の文](#複数行の文)を参照）。
 [fixture: header-and-orientation/plain-header]
 [fixture: header-and-orientation/beta-header-kept]
@@ -387,8 +390,8 @@ xychart
 mermaid.js の文書の例の多くがこの形で（`[jan, feb, mar]`、
 `[5000, 6000, 7500]`）、
 コンマの後に空白がない例もあります（`[12,2,20,25,17,24]`）が、
-どのチャートでも形が 1 つのほうが、2 つあるより読みやすくなります。
-コンマの後の空白は、英文の読みでもあります。
+どのチャートでも形を 1 つにします。
+コンマの後の空白は、Prettier がコンマに印字する形です。
 [fixture: brackets-and-commas/spaces-inside-and-around-commas]
 [fixture: brackets-and-commas/bracket-touching-the-keyword]
 [fixture: brackets-and-commas/bracket-touching-the-title]
@@ -642,6 +645,11 @@ xychart
   bar [1 ""]
 ```
 
+キーワードとタイトルの間のディレクティブは、
+トークンの接触を判定する前に取り除かれます。
+そのため、`title %%{wrap x}%%abc` はタイトルを引用符で囲んで印字します。
+ディレクティブは書かれたまま残します。 [fixture: quotes/title-after-directive]
+
 ### アクセシビリティの文
 
 `accTitle` と `accDescr` の `:` は、キーワードに接し、
@@ -685,11 +693,21 @@ mermaid.js はそのブロックのテキストを読まず、印字が `}` を�
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
 [fixture: accessibility-statements/block-then-statement-on-the-closing-line]
+ブロックに続く文の後のコメントは、その文のものです。
+その文は別の行に移るので、このコメントは、
+ブロックを書かれたまま残す理由になりません。
+[fixture: accessibility-statements/block-then-statement-and-comment-on-the-closing-line]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
 [fixture: accessibility-statements/block-not-closed-kept-as-written]
 [fixture: accessibility-statements/block-not-closed-text-on-the-opening-line]
 [fixture: accessibility-statements/block-not-closed-without-text]
 [fixture: accessibility-statements/block-not-closed-after-a-statement-on-its-line]
+
+キーワードとコロンまたは括弧の間や、その後ろにあるディレクティブは、
+その位置に残します。
+括弧の横にディレクティブがある 1 行のブロックは、まずコロンの形にして、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック)
+に従って印字します。
 [fixture: accessibility-statements/directive-around-colon-and-braces]
 
 入力
@@ -763,8 +781,8 @@ xychart
 `accDescr{  }` は `accDescr {}` にします。
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: xychart Unicode and tab interiors]
-指令かコメント行を持つブロックは、内容と改行を保ち、
-独立した trivia を 1 段内側、閉じ括弧を文の段に置きます。
+指令かコメント行を持つブロックは、内容と改行を保ち、独立した注釈を 1 段内側、
+閉じ括弧を文の段に置きます。
 ヘッダーの後でも、ほかの文の後でも、自分の行に置きます。
 テキストの最後で閉じていないブロックは、
 `}` を足さずに `accDescr {` と印字します（詳しくは、
@@ -838,11 +856,11 @@ mermaid.js が複数行にわたって読む文は、
 [fixture: multi-line-statements/text-over-several-line-breaks-joined]
 [fixture: multi-line-statements/next-statement-after-trailing-whitespace]
 
-title、ヘッダー、軸、plot、アクセシビリティの行の文では、
-構造部分の gap にコメントや指令がある場合、その改行を保ちます。
-後続の部分と独立した trivia 行を、その文より 1 段深くそろえます。
-文を続ける空白は LF より前から始まる必要があるため、各 gap の最初の行の末尾と、
-その中の完全な inline 指令を保ちます。
+title、ヘッダー、軸、プロット、アクセシビリティの行の文では、
+構造部分の隙間にコメントや指令がある場合、その改行を保ちます。
+後続の部分と独立した注釈行を、その文より 1 段深くそろえます。
+文を続ける空白は LF より前から始まる必要があるため、各隙間の最初の行の末尾と、
+その中の完全な行内の指令を保ちます。
 [fixture: multi-line-statements/breaks-decided-one-by-one]
 [fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
 [fixture: multi-line-statements/structural-trivia-continuations]
@@ -986,7 +1004,7 @@ xychart
 `title T%% c` は拒否され、`title A B%% c` の title は `A` です。
 コメントの前に必ず空白を書く規則は、そのような入力を mermaid.js が読む形を変え、
 書き手の誤りを、何も知らせずに別のチャートとして読ませます。
-印字はコメントが接しているかどうかを保ち、報告する場所は lint の規則です。
+印字はコメントが接しているかどうかを保ち、報告する場所はリンターの規則です。
 ほかの図も同じです（[コメント](./journey.ja.md#コメント)を参照）。
 [fixture: comments/comment-after-a-statement-spaced]
 [fixture: comments/comment-after-a-statement-touching]
@@ -1058,7 +1076,7 @@ xychart
 [fixture: directives/directive-and-comment-on-a-line]
 
 元は同じ行にあった単位を別の行へ分けるときは、
-間の directive を次の単位に付けます。
+間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
 
 [fixture: xychart/directives/directive-after-the-header-then-statement]

@@ -9,6 +9,7 @@ import {
   isBareKeywordPeriod,
   layoutTimelineHeader,
   layoutTimelineStatement,
+  staysOnTimelineHeaderLine,
 } from "./timeline-layout.ts"
 
 /** The timeline as a diagram that a `section` groups. */
@@ -22,6 +23,7 @@ const timelineDiagram: SectionedDiagram<TimelineStatement> = {
   layoutStatement: layoutTimelineStatement,
   readsCommentsByWhitespaceBefore: false,
   readsDirectiveLineWhitespaceAfter: isBareKeywordPeriod,
+  staysOnHeaderLine: staysOnTimelineHeaderLine,
 }
 
 /**

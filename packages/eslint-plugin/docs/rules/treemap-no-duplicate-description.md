@@ -52,7 +52,7 @@ Examples of **incorrect** code for this rule:
 
 ```mmd
 %% eslint @mmd-toolkit/treemap-no-duplicate-description: error
-treemap-beta
+treemap
   accDescr: First
   accDescr: Second
   "Revenue": 10
@@ -62,7 +62,7 @@ Examples of **correct** code for this rule:
 
 ```mmd
 %% eslint @mmd-toolkit/treemap-no-duplicate-description: error
-treemap-beta
+treemap
   accDescr: Second
   "Revenue": 10
 ```

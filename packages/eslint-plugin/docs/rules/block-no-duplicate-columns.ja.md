@@ -52,7 +52,7 @@ block
 %% eslint @mmd-toolkit/block-no-duplicate-columns: error
 block
   columns 2
-  block:G
+  block: G
     columns 3
     A
   end

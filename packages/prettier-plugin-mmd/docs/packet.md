@@ -11,11 +11,12 @@ escaped fixed tests.
 ### Header
 
 Keep the authored `packet` or `packet-beta` keyword at column one. Move an
-ordinary first statement below it for a visible heading. Only `packet` requires
-a following boundary; never create a glued spelling. Hidden boundaries and
-protected header/body groups take precedence. Keep the authored synonym:
-mermaid.js before 11.9.0 reads `packet-beta` only (see
-[The names of a header](./compatibility.md#the-names-of-a-header)).
+ordinary first statement below it, as in the other diagram types. Only `packet`
+requires a following boundary; never create a glued spelling. Hidden boundaries
+and protected header/body groups take precedence. Keep the authored synonym:
+some versions that count read `packet-beta` only (see
+[The names of a header](./compatibility.md#the-names-of-a-header) and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: packet/header/header-packet]
 
@@ -65,10 +66,10 @@ packet
 
 ### Statements one per line
 
-Print each ordinary statement on its own line for readability. A common line
-value owns apparent later keywords through physical EOL; do not split that text.
-Semicolons are not packet separators. Invalid adjacent blocks or block/common
-forms follow the shared failure path rather than being repaired.
+Print each ordinary statement on its own line, as the other diagram types do. A
+common line value owns apparent later keywords through physical EOL; do not
+split that text. Semicolons are not packet separators. Invalid adjacent blocks
+or block/common forms follow the shared failure path rather than being repaired.
 
 [fixture: packet/statements-one-per-line/inline-title]
 
@@ -183,9 +184,15 @@ packet
 ### Block colons
 
 Print `0-15: "Source Port"`, `16: "Flag"` and `+3: "Payload"`: zero ordinary
-spaces before the colon, one after it, without column alignment. This follows
-gitgraph option colons and shared accessibility colons. Pie spacing is a
-pie-specific choice. Trivia-bearing gaps retain their boundaries.
+spaces before the colon, one after it, without column alignment. Each line adds
+a block, so the colon is not the colon of a key, and it can be read as a mark
+that stands between the range and its label. The examples in the documentation
+of mermaid.js decide the whitespace before it (step 3 of
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)): of the
+examples that write a space after the colon, 29 write no space before it and
+none writes one (counted as under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)).
+Trivia-bearing gaps retain their boundaries.
 
 [fixture: packet/block-colons/colon-compact]
 

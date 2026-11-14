@@ -11,6 +11,7 @@ import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import {
   addHeadingTitleRules,
+  addEdgeIdAfterDataBlockRules,
   addLinkRules,
   addShapeRules,
   breaksBetweenParts,
@@ -42,6 +43,9 @@ import {
   findTriviaBetween,
   isSpaceOrTab,
   isWhitespace,
+  previousRead,
+  skipRemoved,
+  textRead,
 } from "./source.ts"
 
 /** Written leaf values; the leaf coverage test accounts for the other leaves. */
@@ -103,7 +107,11 @@ export function layoutContainerHeader(
     while (nameStart < nameEnd) {
       const trivia = findTriviaBetween(source, nameStart, nameStart + 1).at(0)
       if (trivia !== undefined) nameStart = Math.min(trivia.range[1], nameEnd)
-      else if (isWhitespace(source.text[nameStart])) nameStart++
+      else if (
+        isWhitespace(source.text[nameStart]) ||
+        source.ignoredSemicolons.has(nameStart)
+      )
+        nameStart++
       else break
     }
     // The data block of a heading without a title touches the name, whose
@@ -116,12 +124,29 @@ export function layoutContainerHeader(
     const touchesData =
       node.title === null && node.data.length > 0 && holdsNoTrivia
     if (node.title !== null || touchesData) {
-      while (nameEnd > nameStart && isWhitespace(source.text[nameEnd - 1]))
-        nameEnd--
+      if (holdsNoTrivia) {
+        for (;;) {
+          const previous = previousRead(source, nameEnd)
+          if (previous < nameStart || !isWhitespace(source.text[previous]))
+            break
+          nameEnd = previous
+        }
+      } else {
+        // A name with trivia keeps its authored gap before the last item;
+        // only its written trailing padding is exterior to that item.
+        while (nameEnd > nameStart && isWhitespace(source.text[nameEnd - 1]))
+          nameEnd--
+      }
     } else if (holdsNoTrivia) {
       // At the end of the heading only the spaces and tabs go: U+2028 and
       // U+2029 are characters of the text there.
-      while (nameEnd > nameStart && isSpaceOrTab(source.text[nameEnd - 1]))
+      // A `;` that the line rule ignores is removed like the whitespace
+      // around it.
+      while (
+        nameEnd > nameStart &&
+        (isSpaceOrTab(source.text[nameEnd - 1]) ||
+          source.ignoredSemicolons.has(nameEnd - 1))
+      )
         nameEnd--
     }
     // A whitespace-only name still needs its written character.
@@ -224,6 +249,8 @@ export function findNamePrintedEnd(
   }
   let position = name.range[1]
   while (position < source.text.length) {
+    position = skipRemoved(source, position)
+    if (position >= source.text.length) break
     const { element, end } = readGapElement(source, position)
     if (element.kind === "item" && element.item.type !== "Comment")
       position = end
@@ -235,7 +262,7 @@ export function findNamePrintedEnd(
         : end
     } else if (
       element.kind === "lineTerminator" &&
-      source.text.slice(end).trim() !== ""
+      textRead(source, end, source.text.length).trim() !== ""
     )
       return end
     else return name.range[1]
@@ -250,6 +277,8 @@ export function findNamePrintedEnd(
 function endsTheInput(source: Source, offset: number): boolean {
   let position = offset
   while (position < source.text.length) {
+    position = skipRemoved(source, position)
+    if (position >= source.text.length) break
     const { element, end } = readGapElement(source, position)
     if (
       element.kind !== "whitespace" &&
@@ -465,20 +494,11 @@ export function layoutStatement(
         rules.set(position, rule)
       break
     case "AgentflowVertexStatement": {
-      const dataBlockEnds = new Set<number>()
-      walk(statement, (node) => {
-        if (node.type === "AgentflowDataBlock") dataBlockEnds.add(node.range[1])
-      })
       walk(statement, (node) => {
         if (node.type === "AgentflowShape") addShapeRules(source, node, rules)
-        if (node.type !== "AgentflowLink") return
-        addLinkRules(source, node, rules)
-        // A vertex statement takes no whitespace after a data block but the
-        // one that an arrow reads, so an edge id touches the block
-        // (diagrams/agentflow.md, Vertices, shapes, and labels).
-        if (node.id !== null && dataBlockEnds.has(node.range[0]))
-          rules.set(node.range[0], "none")
+        if (node.type === "AgentflowLink") addLinkRules(source, node, rules)
       })
+      addEdgeIdAfterDataBlockRules(source, statement, rules)
       break
     }
     default:

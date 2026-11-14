@@ -38,8 +38,8 @@ Examples of **incorrect** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/pie-no-duplicate-label: error
 pie
-  "Revenue" : 8
-  "Revenue" : 3
+  "Revenue": 8
+  "Revenue": 3
 ```
 
 Examples of **correct** code for this rule:
@@ -47,8 +47,8 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/pie-no-duplicate-label: error
 pie
-  "Revenue" : 8
-  "Costs" : 3
+  "Revenue": 8
+  "Costs": 3
 ```
 
 ## Options

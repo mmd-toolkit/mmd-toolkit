@@ -1,0 +1,24 @@
+sequenceDiagram
+  participant A
+  participant B
+  rect rgb(1,2,3) %% c
+    A ->> B: one
+  end
+  rect rgb(1, %%{init: {}}%%2, 3)
+    A ->> B: two
+  end
+  rect rgb(1, 2, 3)
+    A ->> B: three
+  end
+  rect wrap: rgb(1, 2, 3)
+    A ->> B: four
+  end
+  box rgb(1, 2, 3) %%{init: {}}%%
+    participant C
+  end
+  box rgb(1, 2, 3) T %% c
+    participant D
+  end
+  box rgb(1, 2, 3)T
+    participant E
+  end

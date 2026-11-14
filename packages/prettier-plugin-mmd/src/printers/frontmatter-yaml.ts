@@ -3,7 +3,8 @@ import type { Doc, Options, ParserOptions } from "prettier"
 import { printer } from "prettier/doc"
 import type { MermaidAst } from "../parser.ts"
 import { significantIndentationWidth } from "./lines.ts"
-import { isWhitespace } from "./source.ts"
+import type { Source } from "./source.ts"
+import { isWhitespace, isWordCharacter } from "./source.ts"
 
 const { printDocToString } = printer
 
@@ -89,14 +90,40 @@ function holdsHtmlTagStart(text: string): boolean {
   return false
 }
 
-/** Whether a character is a word character (common.md, Notation). */
-function isWordCharacter(character: string): boolean {
-  return (
-    ("A" <= character && character <= "Z") ||
-    ("a" <= character && character <= "z") ||
-    ("0" <= character && character <= "9") ||
-    character === "_"
-  )
+/**
+ * Whether an HTML tag starts in the frontmatter and ends in the text after it
+ * (common.md, HTML attribute quotes; known-divergences/html-tag-in-frontmatter).
+ * mermaid.js turns the `="` and the `"` that follow it in such a tag into `='`
+ * and `'` over the whole text, from the frontmatter to the first `>`, while the
+ * specification looks for tags only after the frontmatter. A text printed from
+ * the tree can therefore change what mermaid.js reads there, so the plugin
+ * keeps the text after the frontmatter as written
+ * (docs/compatibility.md, HTML tags that start in the frontmatter).
+ *
+ * The tags are found as common.md finds them: from left to right, a `<` and a
+ * word, then everything up to the first `>`, and the search goes on after that
+ * `>`; a tag with no `>` anywhere after it is no tag.
+ */
+export function startsTagInFrontmatter(
+  source: Source,
+  frontmatter: Frontmatter,
+): boolean {
+  const { text } = source
+  const frontmatterEnd = frontmatter.range[1]
+  let start = text.indexOf("<")
+  while (start !== -1 && start < frontmatterEnd) {
+    let nameEnd = start + 1
+    while (isWordCharacter(text.charAt(nameEnd))) nameEnd++
+    if (nameEnd === start + 1) {
+      start = text.indexOf("<", nameEnd)
+      continue
+    }
+    const end = text.indexOf(">", nameEnd)
+    if (end === -1) return false
+    if (end >= frontmatterEnd) return true
+    start = text.indexOf("<", end + 1)
+  }
+  return false
 }
 
 /**

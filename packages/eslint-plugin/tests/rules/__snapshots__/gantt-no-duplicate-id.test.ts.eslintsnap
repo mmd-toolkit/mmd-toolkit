@@ -7,10 +7,10 @@ Filename: gantt-no-duplicate-id-incorrect-1.mmd
 Code:
   1 | gantt
   2 |   dateFormat YYYY-MM-DD
-  3 |   Design :des1, 2024-01-06, 3d
-  4 |   Build :des1, 2024-01-09, 5d
-    |          ^~~~ [1]
-  5 |   Test :after des1, 2d
+  3 |   Design : des1, 2024-01-06, 3d
+  4 |   Build : des1, 2024-01-09, 5d
+    |           ^~~~ [1]
+  5 |   Test : after des1, 2d
   6 |
 
 [1] mermaid.js replaces the earlier target of the id `des1` with this task.
