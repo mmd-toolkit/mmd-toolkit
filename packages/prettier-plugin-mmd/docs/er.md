@@ -1992,7 +1992,36 @@ line; any other line break is joined as usual, also in a statement that holds a
 multi-line-statements/semicolon-joining-changes-kept] [fixture:
 multi-line-statements/style-comment-continuation] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
-multi-line-statements/directive-inside-kept]
+multi-line-statements/directive-inside-kept] A name that goes on across a
+joining region is part of such a statement: `A`, U+2028, `%% c`, and a line
+`Bar` are the one name `A`, U+2028, `Bar`. It makes no difference where the name
+stands: in an entity, at an end of a relationship, as the name or the type of an
+attribute, as the name or the title of a subgraph, or in a `class`, `classDef`,
+or `style` statement. The statement is printed as written from its first line to
+its end, and only its first line is indented; of an entity with an attribute
+block over several lines, that is the line that opens the block, and the
+attributes stand below it as usual. [test: a comment line after U+2028 inside
+the name of an ER entity] [test: a comment line after U+2029 inside the name of
+an ER entity] [test: two comment lines after U+2028 inside the name of an ER
+entity] [test: a directive and a comment line after U+2028 inside the name of an
+ER entity] [test: a comment line after U+2028 inside the name of an ER entity
+that follows a name in quotes] [test: an indented line after a comment line
+after U+2028 inside the name of an ER entity] [test: a comment line after U+2028
+inside the name of an ER entity with an alias] [test: a comment line after
+U+2028 inside the name of an ER entity with an attribute block on one line]
+[test: a comment line after U+2028 inside the name of an ER entity with an
+attribute block over several lines] [test: a comment line after U+2028 inside
+the name of an ER entity with a CSS class] [test: a comment line after U+2028
+inside the first entity of an ER relationship] [test: a comment line after
+U+2028 inside the second entity of an ER relationship] [test: a comment line
+after U+2028 inside both entities of an ER relationship] [test: a comment line
+after U+2028 inside the name of an ER attribute] [test: a comment line after
+U+2028 inside the type of an ER attribute] [test: a comment line after U+2028
+inside the name of an ER subgraph] [test: a comment line after U+2028 inside the
+title of an ER subgraph] [test: a comment line after U+2028 inside the name of
+an ER class statement] [test: a comment line after U+2028 inside the name of an
+ER class definition] [test: a comment line after U+2028 inside the name of an ER
+style statement]
 
 Input
 ([multi-line-statements/accessibility-text-joined-input.mmd](../tests/fixtures/er/multi-line-statements/accessibility-text-joined-input.mmd)):

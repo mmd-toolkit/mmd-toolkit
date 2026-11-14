@@ -836,6 +836,17 @@ mermaid.js が複数行にわたって読む文は、
 [fixture: multi-line-statements/directive-inside-kept]
 `;` があるだけでは、行をつなぐ妨げにはなりません。
 [fixture: multi-line-statements/semicolon-on-the-last-line-joined]
+`classDef` のクラスの名前が、コメントで結合される領域をまたいで続くときも、
+文は書かれたままにします。
+たとえば、`classDef a`、U+2028、`%% c`、行 `b color: #f00` では、
+クラスの名前は `a`、U+2028、`b` です。
+字下げするのは最初の行だけで、その後の文は別の行に印字します。
+[test: a comment line after U+2028 inside the name of a class]
+[test: a comment line after U+2029 inside the name of a class]
+[test: a comment line after a U+2028 that starts the name of a class]
+[test: two comment lines after U+2028 inside the name of a class]
+[test: a comment line after U+2028 inside the name of a class, and a point after
+it]
 
 ### 複数行の値
 

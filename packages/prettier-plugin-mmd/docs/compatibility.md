@@ -4832,7 +4832,16 @@ common/comment-after-u2028] [corpus fixture:
 flowchart/comment-lines-after-separator-006f79fb] A `#` comment is no such
 region: the lexer of its diagram reads it. Nor is a `%%` with nothing after it,
 or a line that starts with `%%{` without being a directive: mermaid.js does not
-remove these as comment lines, and a class diagram reads them itself.
+remove these as comment lines, and a class diagram reads them itself. Where no
+whitespace stands after the region, the text after it goes on with the text
+before it: in an ER diagram, `A`, U+2028, `%% c`, and a line `Bar` are the one
+name `A`, U+2028, `Bar`, and in a quadrant chart the name of a class of
+`classDef` goes on in the same way. [corpus fixture:
+er/lex-name-line-separator-comment-line] [corpus fixture:
+er/lex-name-two-comment-regions] [corpus fixture:
+er/lex-quoted-name-line-separator-comment-line] [corpus fixture:
+quadrant/lex-classdef-name-line-separator-comment-line] [corpus fixture:
+quadrant/lex-classdef-name-starts-with-line-separator-comment-line]
 
 A line that mermaid.js reads this way runs over several lines of the source. The
 formatter prints it as written, from its first line to its end, with the
@@ -4840,16 +4849,23 @@ statements that stand on it: it does not format the whitespace between them, and
 it does not indent the lines after the comment line. This is one rule for every
 statement, block opening, and header; a diagram comment that such a comment line
 cuts is printed as written as well (see
-[Line separators](./sequence.md#line-separators)). The line ends at the first
-line break that no region removes, so what stands on the line after the comment
-lines is part of it: a `;` there ends the name of a `subgraph` line without a
-title and stays where it is. An empty line or a line of only whitespace ends the
-line, unless a comment line follows it: before a comment line, such lines belong
-to the region and are removed with it. A U+2028 or U+2029 inside a directive is
-removed with the directive, so it ends no diagram comment and cuts none: the
-comment fragments before and after such a directive stay one comment, printed as
-written. [test: a diagram comment joined past a closed directive that holds
-U+2028]
+[Line separators](./sequence.md#line-separators)). The same holds where the
+region lies inside a name, in an ER diagram and in a quadrant chart (see
+[Multi-line statements](./er.md#multi-line-statements) and
+[Multi-line statements](./quadrant.md#multi-line-statements)). [test: a comment
+line after U+2028 inside the name of an ER entity] [test: a comment line after
+U+2029 inside the name of an ER entity] [test: a comment line after U+2028
+inside the name of an ER entity that follows a name in quotes] [test: a comment
+line after U+2028 inside the name of a class] [test: a comment line after U+2029
+inside the name of a class] The line ends at the first line break that no region
+removes, so what stands on the line after the comment lines is part of it: a `;`
+there ends the name of a `subgraph` line without a title and stays where it is.
+An empty line or a line of only whitespace ends the line, unless a comment line
+follows it: before a comment line, such lines belong to the region and are
+removed with it. A U+2028 or U+2029 inside a directive is removed with the
+directive, so it ends no diagram comment and cuts none: the comment fragments
+before and after such a directive stay one comment, printed as written. [test: a
+diagram comment joined past a closed directive that holds U+2028]
 
 ## Frontmatter
 

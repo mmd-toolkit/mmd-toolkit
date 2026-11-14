@@ -5202,6 +5202,15 @@ mermaid.js は、本文を読む前に、コメント行を取り除きます。
 `%%` の後に何もない行や、ディレクティブではないのに `%%{` で始まる行も、
 領域ではありません。
 mermaid.js はこれらをコメント行として取り除かず、class 図が自分で読みます。
+領域の後ろに空白がなければ、その後のテキストは前のテキストに続きます。
+ER 図では、`A`、U+2028、`%% c`、行 `Bar` が 1 つの名前になります。
+その名前は `A`、U+2028、`Bar` です。
+quadrant 図では、`classDef` のクラスの名前が同じように続きます。
+[corpus fixture: er/lex-name-line-separator-comment-line]
+[corpus fixture: er/lex-name-two-comment-regions]
+[corpus fixture: er/lex-quoted-name-line-separator-comment-line]
+[corpus fixture: quadrant/lex-classdef-name-line-separator-comment-line]
+[corpus fixture: quadrant/lex-classdef-name-starts-with-line-separator-comment-line]
 
 mermaid.js がこう読む行は、ソースの何行にもまたがります。
 整形は、その行を、最初の行から終わりまで、その上にある文ごと、
@@ -5210,6 +5219,15 @@ mermaid.js がこう読む行は、ソースの何行にもまたがります。
 これはすべての文、ブロックの開始行、ヘッダーに共通の 1 つの規則です。
 そのようなコメント行が途中で切る図のコメントも、
 書かれたまま印字します（[行区切り](./sequence.ja.md#行区切り)を参照）。
+領域が名前の中にあるときも同じです。
+ER 図と quadrant 図が、これにあたります。
+[ER の複数行の文](./er.ja.md#複数行の文)と、
+[quadrant の複数行の文](./quadrant.ja.md#複数行の文)を参照してください。
+[test: a comment line after U+2028 inside the name of an ER entity]
+[test: a comment line after U+2029 inside the name of an ER entity]
+[test: a comment line after U+2028 inside the name of an ER entity that follows
+a name in quotes] [test: a comment line after U+2028 inside the name of a class]
+[test: a comment line after U+2029 inside the name of a class]
 行は、領域が取り除かない最初の改行で終わります。
 そのため、コメント行の後の行にあるものは、その行の一部です。
 タイトルのない `subgraph` 行の名前は、そこにある `;` で終わり、

@@ -1791,6 +1791,106 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     'erDiagram\n"Alpha"\u00a0 "B"\n',
     "erDiagram\n  Alpha\n  \u00a0\n  B\n",
   ],
+  [
+    "a comment line after U+2028 inside the name of an ER entity",
+    "erDiagram\nA\u2028%% c\nBar\n",
+    "erDiagram\n  A\u2028%% c\nBar\n",
+  ],
+  [
+    "a comment line after U+2029 inside the name of an ER entity",
+    "erDiagram\nA\u2029%% c\nBar\n",
+    "erDiagram\n  A\u2029%% c\nBar\n",
+  ],
+  [
+    "two comment lines after U+2028 inside the name of an ER entity",
+    "erDiagram\nA\u2028%% c\n%% d\nBar\n",
+    "erDiagram\n  A\u2028%% c\n%% d\nBar\n",
+  ],
+  [
+    "a directive and a comment line after U+2028 inside the name of an ER entity",
+    "erDiagram\nA\u2028%%{x}%% %% c\nBar\n",
+    "erDiagram\n  A\u2028%%{x}%% %% c\nBar\n",
+  ],
+  [
+    "a comment line after U+2028 inside the name of an ER entity that follows a name in quotes",
+    'erDiagram\n"A"\u2028%% c\nBar\n',
+    'erDiagram\n  "A"\u2028%% c\nBar\n',
+  ],
+  [
+    "an indented line after a comment line after U+2028 inside the name of an ER entity",
+    "erDiagram\nA\u2028%% c\n  Bar\n",
+    "erDiagram\n  A\u2028%% c\n  Bar\n",
+  ],
+  [
+    "a comment line after U+2028 inside the name of an ER entity with an alias",
+    'erDiagram\nA\u2028%% c\nBar["x"]\n',
+    'erDiagram\n  A\u2028%% c\nBar["x"]\n',
+  ],
+  [
+    "a comment line after U+2028 inside the name of an ER entity with an attribute block on one line",
+    "erDiagram\nA\u2028%% c\nBar { int id }\n",
+    "erDiagram\n  A\u2028%% c\nBar { int id }\n",
+  ],
+  [
+    "a comment line after U+2028 inside the name of an ER entity with an attribute block over several lines",
+    "erDiagram\nA\u2028%% c\nBar {\n  int id\n}\n",
+    "erDiagram\n  A\u2028%% c\nBar {\n    int id\n  }\n",
+  ],
+  [
+    "a comment line after U+2028 inside the name of an ER entity with a CSS class",
+    "erDiagram\nA\u2028%% c\nBar:::c\n",
+    "erDiagram\n  A\u2028%% c\nBar:::c\n",
+  ],
+  [
+    "a comment line after U+2028 inside the first entity of an ER relationship",
+    "erDiagram\nA\u2028%% c\nBar ||--o{ C : x\n",
+    "erDiagram\n  A\u2028%% c\nBar ||--o{ C : x\n",
+  ],
+  [
+    "a comment line after U+2028 inside the second entity of an ER relationship",
+    "erDiagram\nC ||--o{ A\u2028%% c\nBar : x\n",
+    "erDiagram\n  C ||--o{ A\u2028%% c\nBar : x\n",
+  ],
+  [
+    "a comment line after U+2028 inside both entities of an ER relationship",
+    "erDiagram\nA\u2028%% c\nBar ||--o{ C\u2028%% d\nDee : x\n",
+    "erDiagram\n  A\u2028%% c\nBar ||--o{ C\u2028%% d\nDee : x\n",
+  ],
+  [
+    "a comment line after U+2028 inside the name of an ER attribute",
+    "erDiagram\nC {\n  int a\u2028%% c\nb\n}\n",
+    "erDiagram\n  C {\n    int a\u2028%% c\nb\n  }\n",
+  ],
+  [
+    "a comment line after U+2028 inside the type of an ER attribute",
+    "erDiagram\nC {\n  in\u2028%% c\nt a\n}\n",
+    "erDiagram\n  C {\n    in\u2028%% c\nt a\n  }\n",
+  ],
+  [
+    "a comment line after U+2028 inside the name of an ER subgraph",
+    "erDiagram\nsubgraph A\u2028%% c\nBar\nC\nend\n",
+    "erDiagram\n  subgraph A\u2028%% c\nBar\n    C\n  end\n",
+  ],
+  [
+    "a comment line after U+2028 inside the title of an ER subgraph",
+    "erDiagram\nsubgraph S[A\u2028%% c\nBar]\nC\nend\n",
+    "erDiagram\n  subgraph S[A\u2028%% c\nBar]\n    C\n  end\n",
+  ],
+  [
+    "a comment line after U+2028 inside the name of an ER class statement",
+    "erDiagram\nclass A\u2028%% c\nBar cls\n",
+    "erDiagram\n  class A\u2028%% c\nBar cls\n",
+  ],
+  [
+    "a comment line after U+2028 inside the name of an ER class definition",
+    "erDiagram\nclassDef A\u2028%% c\nBar fill:#f00\n",
+    "erDiagram\n  classDef A\u2028%% c\nBar fill:#f00\n",
+  ],
+  [
+    "a comment line after U+2028 inside the name of an ER style statement",
+    "erDiagram\nstyle A\u2028%% c\nBar fill:#f00\n",
+    "erDiagram\n  style A\u2028%% c\nBar fill:#f00\n",
+  ],
 ]
 
 /**
@@ -3047,6 +3147,31 @@ const quadrantLineSeparatorExamples: readonly (readonly [
     "U+2029 between a quadrant keyword and its text",
     "quadrantChart\nquadrant-1\u2029Plan\n",
     "quadrantChart\n  quadrant-1 \u2029Plan\n",
+  ],
+  [
+    "a comment line after U+2028 inside the name of a class",
+    "quadrantChart\nclassDef A\u2028%% c\nBar color: #ff0000\n",
+    "quadrantChart\n  classDef A\u2028%% c\nBar color: #ff0000\n",
+  ],
+  [
+    "a comment line after U+2029 inside the name of a class",
+    "quadrantChart\nclassDef A\u2029%% c\nBar color: #ff0000\n",
+    "quadrantChart\n  classDef A\u2029%% c\nBar color: #ff0000\n",
+  ],
+  [
+    "a comment line after a U+2028 that starts the name of a class",
+    "quadrantChart\nclassDef \u2028%% c\nBar color: #ff0000\n",
+    "quadrantChart\n  classDef \u2028%% c\nBar color: #ff0000\n",
+  ],
+  [
+    "two comment lines after U+2028 inside the name of a class",
+    "quadrantChart\nclassDef A\u2028%% c\n%% d\nBar color: #ff0000\n",
+    "quadrantChart\n  classDef A\u2028%% c\n%% d\nBar color: #ff0000\n",
+  ],
+  [
+    "a comment line after U+2028 inside the name of a class, and a point after it",
+    "quadrantChart\nclassDef A\u2028%% c\nBar color: #ff0000\nP: [0.1, 0.2]\n",
+    "quadrantChart\n  classDef A\u2028%% c\nBar color: #ff0000\n  P: [0.1, 0.2]\n",
   ],
 ]
 

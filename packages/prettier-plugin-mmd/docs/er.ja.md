@@ -2051,6 +2051,43 @@ mermaid.js が複数行にわたって読む文は、
 [fixture: multi-line-statements/style-comment-continuation]
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
+コメントで結合される領域をまたいで続く名前も、そのような文の一部です。
+`A`、U+2028、`%% c`、行 `Bar` は、1 つの名前 `A`、U+2028、`Bar` です。
+名前がどこにあっても同じです。
+エンティティ、関係の端、属性の名前と型、サブグラフの名前と題、`class`、
+`classDef`、`style` の文の中の名前が、これにあたります。
+文は、最初の行から終わりまで、書かれたまま印字します。
+字下げするのは最初の行だけです。
+複数行の属性ブロックを持つエンティティでは、ブロックを開く行がそれにあたり、
+属性はその下に、通常どおり置きます。
+[test: a comment line after U+2028 inside the name of an ER entity]
+[test: a comment line after U+2029 inside the name of an ER entity]
+[test: two comment lines after U+2028 inside the name of an ER entity]
+[test: a directive and a comment line after U+2028 inside the name of an ER
+entity]
+[test: a comment line after U+2028 inside the name of an ER entity that follows
+a name in quotes]
+[test: an indented line after a comment line after U+2028 inside the name of an
+ER entity]
+[test: a comment line after U+2028 inside the name of an ER entity with an
+alias]
+[test: a comment line after U+2028 inside the name of an ER entity with an
+attribute block on one line]
+[test: a comment line after U+2028 inside the name of an ER entity with an
+attribute block over several lines]
+[test: a comment line after U+2028 inside the name of an ER entity with a CSS
+class] [test: a comment line after U+2028 inside the first entity of an ER
+relationship]
+[test: a comment line after U+2028 inside the second entity of an ER
+relationship]
+[test: a comment line after U+2028 inside both entities of an ER relationship]
+[test: a comment line after U+2028 inside the name of an ER attribute]
+[test: a comment line after U+2028 inside the type of an ER attribute]
+[test: a comment line after U+2028 inside the name of an ER subgraph]
+[test: a comment line after U+2028 inside the title of an ER subgraph]
+[test: a comment line after U+2028 inside the name of an ER class statement]
+[test: a comment line after U+2028 inside the name of an ER class definition]
+[test: a comment line after U+2028 inside the name of an ER style statement]
 
 入力
 ([multi-line-statements/accessibility-text-joined-input.mmd](../tests/fixtures/er/multi-line-statements/accessibility-text-joined-input.mmd)):
