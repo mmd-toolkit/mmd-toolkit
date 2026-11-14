@@ -140,6 +140,11 @@ export function isSpaceOrTab(character: string): boolean {
   return character === " " || character === "\t"
 }
 
+/** Whether a character is whitespace in CSS, other than a line break: a space, a tab, or a form feed. */
+export function isCssWhitespace(character: string): boolean {
+  return isSpaceOrTab(character) || character === "\u000c"
+}
+
 /**
  * Whether a character is an ASCII letter, an ASCII digit, or `_`: the
  * characters that the lexers read as a word (common.md, Notation).

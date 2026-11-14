@@ -55,7 +55,7 @@ function isHexDigit(character: string | undefined): boolean {
 
 /** Whether a character is whitespace between the words of a style. */
 function isSpace(character: string | undefined): boolean {
-  return character === " " || character === "\t"
+  return character === " " || character === "\t" || character === "\f"
 }
 
 /**

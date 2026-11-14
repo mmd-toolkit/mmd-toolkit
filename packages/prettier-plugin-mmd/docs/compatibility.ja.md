@@ -1962,8 +1962,9 @@ requirement 図は空白を落とします。
 `#F9Fab` は色ではないので、`fill: #F9F ab` のまま残します。
 `style A fill:#F9F stroke:#ABC` は `fill: #F9F stroke:#abc` と印字します。
 どの図種でも、スタイルのテキストが色の後ろに残す文字（U+2028、U+2029、U+00A0、
-U+3000、ER 図と requirement 図以外では、空白とタブでない空白文字）は、
-色をその文字に接した語にするので、色は書かれたまま残します。
+U+3000、垂直タブ、ER 図と requirement 図以外では、CSS が空白として読む空白、
+タブ、改ページのどれでもない空白文字）は、色をその文字に接した語にするので、
+色は書かれたまま残します。
 ただし、文の終わりで整形ツールがその文字を除くときは、
 色が印字したテキストの終わりになるので、最初の整形で小文字にします。
 2 回目の整形で変わらないようにするためです。
@@ -1972,7 +1973,7 @@ U+3000、ER 図と requirement 図以外では、空白とタブでない空白�
 [fixture: er/colors/color-word-over-ignored-semicolon]
 [fixture: requirement/colors/color-words-as-read]
 [test: agentflow color words before a comma keep their padding]
-[test: flowchart color words before a comma keep form feed]
+[test: flowchart color before a form feed and a comma is lower case]
 [test: state color before a semicolon follows the trimmed Db end]
 [test: agentflow color at EOF after dropped U+2028]
 [test: agentflow color before LF after dropped U+2028]

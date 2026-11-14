@@ -43,9 +43,9 @@ const colorWordsAsRead: readonly (readonly [string, string, string])[] = [
     "agentflow-beta TB\n  A\n  style A color: #C0FFEE\u00a0, color: #C0FFEE\u2028, color: red\n",
   ],
   [
-    "flowchart color words before a comma keep form feed",
+    "flowchart color before a form feed and a comma is lower case",
     "flowchart TD\nA\nstyle A fill:#C0FFEE\f,color:red\n",
-    "flowchart TD\n  A\n  style A fill: #C0FFEE\f,color: red\n",
+    "flowchart TD\n  A\n  style A fill: #c0ffee\f,color: red\n",
   ],
   [
     "state color before a semicolon follows the trimmed Db end",

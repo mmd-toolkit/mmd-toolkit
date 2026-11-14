@@ -10,6 +10,7 @@ import {
   findTokensBetween,
   findTriviaBetween,
   isAtLineEnd,
+  isCssWhitespace,
   isSpaceOrTab,
   isWhitespace,
   previousRead,
@@ -893,11 +894,6 @@ export function joinsNextLine(source: Source, offset: number): boolean {
   return [...source.removedLineFeeds].some(
     (lineFeed) => lineStartOf(source, lineFeed) === line,
   )
-}
-
-/** Whether a character is whitespace in CSS, other than a line break: a space, a tab, or a form feed. */
-function isCssWhitespace(character: string): boolean {
-  return isSpaceOrTab(character) || character === "\u000c"
 }
 
 /**

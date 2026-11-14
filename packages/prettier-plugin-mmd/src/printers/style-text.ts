@@ -2,6 +2,7 @@ import type { TextEdit } from "./layout.ts"
 import type { Source } from "./source.ts"
 import {
   findTriviaAt,
+  isCssWhitespace,
   isSpaceOrTab,
   previousRead,
   skipRemoved,
@@ -174,9 +175,10 @@ export function readsStyleAsDescription(
 
 /**
  * How a style reads whitespace beside a color: ER drops ASCII whitespace,
- * requirement drops spaces, and other styles keep spaces and tabs as word
- * boundaries. Other characters continue the word, including Unicode whitespace
- * kept in a value (docs/compatibility.md, Colors that are drawn the same).
+ * requirement drops spaces, and other styles keep the whitespace of CSS, a
+ * space, a tab, and a form feed, as word boundaries. Other characters continue
+ * the word, including Unicode whitespace kept in a value
+ * (docs/compatibility.md, Colors that are drawn the same).
  */
 function styleWordWhitespace(
   source: Source,
@@ -188,7 +190,7 @@ function styleWordWhitespace(
     case "RequirementDiagram":
       return character === " " ? "removed" : undefined
     default:
-      return isSpaceOrTab(character) ? "boundary" : undefined
+      return isCssWhitespace(character) ? "boundary" : undefined
   }
 }
 
