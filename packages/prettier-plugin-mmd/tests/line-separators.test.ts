@@ -2162,6 +2162,31 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     'erDiagram\n  "style:#x"; B {\n\u00a0\n  } A["x;y"]\n',
   ],
   [
+    "an empty ER attribute block that stays over several lines with U+2029 after its opening brace, after a semicolon that the line rule ignores",
+    'erDiagram\n"style:#x"; B {\u2029\n} A["x;y"]\n',
+    'erDiagram\n  "style:#x"; B {\u2029\n} A["x;y"]\n',
+  ],
+  [
+    "an empty ER attribute block that stays over several lines with U+2028 on a line between its braces, after a semicolon that the line rule ignores",
+    'erDiagram\n"style:#x"; B {\n\u2028\n    } A["x;y"]\n',
+    'erDiagram\n  "style:#x"; B {\n\u2028\n  } A["x;y"]\n',
+  ],
+  [
+    "an empty ER attribute block that stays over several lines with U+2028 after its opening brace, after a tilde in an attribute block",
+    "erDiagram\nT { int a List~int~ b } B {\u2028\n} subgraph S accDescr {}\nend\n",
+    "erDiagram\n  T { int a List~int~ b } B {\u2028\n  } subgraph S accDescr {}\n  end\n",
+  ],
+  [
+    "an empty ER attribute block that stays over several lines with U+2029 after its opening brace, after a tilde in an attribute block",
+    "erDiagram\nT { int a List~int~ b } B {\u2029\n} subgraph S accDescr {}\nend\n",
+    "erDiagram\n  T { int a List~int~ b } B {\u2029\n  } subgraph S accDescr {}\n  end\n",
+  ],
+  [
+    "an empty ER attribute block that stays over several lines with U+2028 after its opening brace, after a tilde in an attribute block, in a subgraph",
+    "erDiagram\nsubgraph G\nT { int a List~int~ b } B {\u2028\n} subgraph S accDescr {}\nend\nend\n",
+    "erDiagram\n  subgraph G\n    T { int a List~int~ b } B {\u2028\n    } subgraph S accDescr {}\n    end\n  end\n",
+  ],
+  [
     "an empty attribute block over several lines after a name in quotes and U+2028",
     'erDiagram\n"Z"\u2028 {\n}\n',
     'erDiagram\n  "Z"\u2028 { }\n',

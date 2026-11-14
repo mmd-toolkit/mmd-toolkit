@@ -130,10 +130,17 @@ mermaid.js が拒否します。
 実体の字下げに `}` を置きます。
 行末の `{` の後ろの空白と、波括弧の間の空行は何も描かず、
 つないだ形の `{ }` でも落とすからです。
-波括弧の間に、空白でもタブでもない空白文字（たとえば U+00A0）があるときは、
+波括弧の間に、
+空白でもタブでもない空白文字（たとえば U+00A0 や U+2028）があるときは、
 文は書かれたままにします。
 ただし `}` の前の同じ行に空白とタブだけがあれば、`}` は実体の字下げに置きます。
-U+2028 か U+2029 があるときは、`}` まで書かれたままにします。
+例外は、`;` が終わらせる行です。
+この行は、その行の文と一緒に書かれたまま印字します。
+詳しくは
+[`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照してください。
+行の規則が無視する `;` の後ろの、`{` と同じ行に U+2028 か U+2029 があるときは、
+`}` は書かれた位置に残ります。
+`"style:#x"; B {`、U+2028、改行、`}` がその例です。
 [fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-both-lines]
 [fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-closing-line-ends]
 [fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-in-subgraph]
@@ -153,6 +160,11 @@ U+2028 か U+2029 があるときは、`}` まで書かれたままにします�
 [test: an empty ER attribute block that stays over several lines with U+00A0 after its opening brace]
 [test: an empty ER attribute block that stays over several lines with U+2028 after its opening brace]
 [test: an empty ER attribute block that stays over several lines with a U+00A0 line between its braces]
+[test: an empty ER attribute block that stays over several lines with U+2029 after its opening brace, after a semicolon that the line rule ignores]
+[test: an empty ER attribute block that stays over several lines with U+2028 on a line between its braces, after a semicolon that the line rule ignores]
+[test: an empty ER attribute block that stays over several lines with U+2028 after its opening brace, after a tilde in an attribute block]
+[test: an empty ER attribute block that stays over several lines with U+2029 after its opening brace, after a tilde in an attribute block]
+[test: an empty ER attribute block that stays over several lines with U+2028 after its opening brace, after a tilde in an attribute block, in a subgraph]
 `}` が、書かれたまま残る行にあるブロックは、`A {`、改行、`}1b` のように、
 属性があってもなくても、その行と一緒に書かれたままにします。
 `;` を含み、ほかに書かれたまま残る理由がない行は整形します。
