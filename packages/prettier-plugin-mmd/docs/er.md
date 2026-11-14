@@ -2465,19 +2465,20 @@ erDiagram
 ```
 
 A `;` that ends a `classDef` or `style` statement and stands after a U+2028 or
-U+2029, with only spaces and tabs between them, stays where a comment line
-follows its line: without the `;` the statement goes on after the comment line,
-which mermaid.js removes (the specification's
+U+2029, with only spaces and tabs between them, is dropped together with that
+character and those spaces and tabs where a comment line follows its line:
+without the `;` the statement goes on after the comment line, which mermaid.js
+removes (the specification's
 [The style context](../../spec/docs/diagrams/er.md#the-style-context)), and
-takes the statement after it, so `style A fill:red`, U+2028, `;`, a line break,
-`%% c`, a line break, and `x` keeps the `;` and the entity `x`. Directive lines
-between the `;` and the comment line are removed with it, so they change
-nothing. Where the end of the text or a statement follows, a directive line and
-a statement included, the `;` is dropped as above. Where whitespace stands
-before the U+2028 or U+2029, the `;` and that whitespace and character are
-dropped together, as they were: `style A fill:red`, a space, U+2028, `;`, a line
-break, `%% c`, a line break, and `x` is printed `style A fill: red`, a line
-break, `%% c`, a line break, and `x`.
+takes the statement after it, and the `;` alone cannot be dropped. So
+`style A fill:red`, U+2028, `;`, a line break, `%% c`, a line break, and `x` is
+printed `style A fill: red`, a line break, `%% c`, a line break, and `x`, as it
+is where whitespace stands before the U+2028 or U+2029. Directive lines between
+the `;` and the comment line are removed with it, so they change nothing. Where
+other whitespace stands between the character and the `;`, a no-break space for
+instance, the `;` stays with it. Where the end of the text or a statement
+follows, a directive line and a statement included, the `;` is dropped as above
+and the character stays as written.
 
 [fixture:
 semicolons-at-the-end-of-a-style-statement/comment-and-directive-controls]
@@ -2490,7 +2491,16 @@ EOF control] [test: ER directive lines, direct statements, NBSP controls] [test:
 ER directive lines before a comment line] [test: ER directive line then a
 statement after a style terminator] [test: ER an unclosed directive line before
 a comment line] [test: flowchart directive line before a comment line] [test: ER
-whitespace before the character goes with the terminator]
+whitespace before the character goes with the terminator] [test: ER whitespace
+other than spaces and tabs after the character keeps the terminator]
+
+mermaid.js keeps a U+2028 or U+2029 that directly follows the last style in the
+text of that style, and draws the same figure without it, so the Db of the
+printed text differs from the Db of the written text by that character at the
+end of the style. This is a difference of the kind of
+[Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style):
+the tests compare the styles of an ER diagram without those characters at their
+end.
 
 ### Multi-line statements
 

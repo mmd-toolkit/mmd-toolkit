@@ -647,7 +647,9 @@ of whitespace only stays as written.
 mermaid.js keeps them at the end of the last style, so this changes what
 mermaid.js stores, separately from the permitted eventmodeling body margins in
 [Data blocks](./eventmodeling.md#data-blocks). The tests compare styles without
-their trailing spaces and tabs.
+their trailing spaces and tabs, and those of an ER diagram also without the
+U+2028 and U+2029 that the formatter drops with a `;` (see
+[Semicolons at the end of a style statement](./er.md#semicolons-at-the-end-of-a-style-statement)).
 
 Whitespace of another kind at the end (a no-break space, U+3000, a vertical tab,
 a byte order mark) is not removed where mermaid.js draws another figure without
@@ -659,18 +661,18 @@ each diagram type, for the `style`, `classDef`, and `linkStyle` of each diagram
 type that has them. The figure differs, in the pinned version and in others that
 count, for the `style` of a class diagram, for the `classDef` of a class diagram
 that stands after its class, for the `linkStyle` of a flowchart and of an
-agentflow diagram, for the `classDef` of a flowchart and of an agentflow
-diagram, and for a vertical tab and a form feed in the `classDef` of an ER
-diagram. It differs in another version that counts for the `style` of a
+agentflow diagram, for the `classDef` of a flowchart, of an agentflow diagram,
+and of a treemap, and for a vertical tab and a form feed in the `classDef` of an
+ER diagram. It differs in another version that counts for the `style` of a
 flowchart (see
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
 These statements keep the character. A form feed is no exception in a class
-diagram or a flowchart, where it is whitespace in CSS and the figure is the
-same. The figure is the same without the character for a block diagram, a state
-diagram, and the `style` of an agentflow diagram, and a requirement, a use case,
-a Venn diagram, and a quadrant chart reject the text with the character and
-accept the text without it, so there the character is removed, as the formatter
-formats other text that mermaid.js rejects.
+diagram, a flowchart, or a treemap, where it is whitespace in CSS and the figure
+is the same. The figure is the same without the character for a block diagram, a
+state diagram, and the `style` of an agentflow diagram, and a requirement, a use
+case, a Venn diagram, and a quadrant chart reject the text with the character
+and accept the text without it, so there the character is removed, as the
+formatter formats other text that mermaid.js rejects.
 
 [test: keeps whitespace other than a space and a tab at the end of a style]
 
@@ -694,6 +696,15 @@ without it, and the text as written and as formatted, were drawn. Of the 168
 texts, the formatter reads 153, and in none of them does the formatted text draw
 differently from the written text, or get rejected, in a version that draws the
 written one.
+
+The `classDef` of a treemap was drawn in the same way, by the versions that
+count for it: 204 texts made of one or two of the characters, a `;`, a comment,
+a directive, and a statement after the line. Of them the formatter reads 192 and
+changes 127, and in none of those does the formatted text draw differently from
+the written text. The `style` and the `classDef` of an ER diagram, with runs of
+a U+2028, a U+2029, a no-break space, a space, and a tab at the end, before a
+`;`, a comment, a directive, and a statement, made 144 texts, and in none of
+them does the formatted text draw differently in a version that reads them.
 
 ## Styles that are drawn the same
 
@@ -749,10 +760,12 @@ the same. For a relationship (`style e1 stroke-width:3px,fill:none` and
 pixels were the same, and so was the SVG without the whitespace around `:` and
 `;` in the `style` attribute of its path.
 
-A `classDef` in a treemap drops the whitespace at the end of its styles:
-`classDef zz color:red  ` is printed `classDef zz color:red`. mermaid.js keeps
-it in the Db and draws the same figure: the pixels were the same with the class
-put on a node.
+A `classDef` in a treemap drops the spaces, tabs, and form feeds at the end of
+its styles: `classDef zz color:red  ` is printed `classDef zz color:red`.
+mermaid.js keeps them in the Db and draws the same figure: the pixels were the
+same with the class put on a node. A character that CSS does not read as
+whitespace stays (see
+[Whitespace at the end of a style](#whitespace-at-the-end-of-a-style)).
 
 [fixture: treemap/styles/trailing-before-semicolon] [fixture:
 treemap/trailing-whitespace/style-content]
@@ -3769,25 +3782,40 @@ state/descriptions-and-labels/semicolon-line-kept]
 
 See [Statements one per line](./flowchart.md#statements-one-per-line).
 
-A `;` that ends a `classDef` or `style` statement is kept in an ER, flowchart,
-swimlane, and agentflow diagram where a U+2028 or U+2029 stands before it and a
-comment line follows its line, directive lines between them included: without
-the `;` the statement goes on after the comment line, which mermaid.js removes,
-and takes the statement after it (see
-[Semicolons at the end of a style statement](./er.md#semicolons-at-the-end-of-a-style-statement)
-and [Semicolons](./flowchart.md#semicolons)). A block diagram and a treemap do
-not read on after the comment line, and an ER diagram with whitespace before the
-character drops the `;` with that whitespace and the character, as before: the
-line is printed `classDef c fill: coral`, and the comment line and the statement
-after it stay.
+A `;` that ends a `classDef` or `style` statement is kept in a flowchart,
+swimlane, and agentflow diagram, and a `;` that ends a `classDef` is kept in a
+treemap, where a U+2028 or U+2029 stands before it and a comment line follows
+its line, directive lines between them included: without the `;` the statement
+goes on after the comment line, which mermaid.js removes, and takes the
+statement after it (see [Semicolons](./flowchart.md#semicolons) and
+[Semicolons](./treemap.md#semicolons)). These statements keep the character too
+(see [Whitespace at the end of a style](#whitespace-at-the-end-of-a-style)).
+
+[fixture: flowchart/semicolons/style-terminator-comment-and-directive-controls]
+[test: treemap style terminators kept after U+2028 and U+2029 before comments]
+[test: treemap whitespace after U+2028 and U+2029 keeps the terminator before
+comments]
+
+An ER diagram draws the same figure without the character, so it drops the `;`
+together with the U+2028 or U+2029 where only spaces and tabs stand between
+them, also where whitespace stands before the character: the line is printed
+`style A fill: red`, and the comment line and the statement after it stay.
+mermaid.js keeps the character in the text of the last style where no whitespace
+stands before it, so the Db of the printed text differs from that of the written
+text by that character: a difference of the kind of
+[Whitespace at the end of a style](#whitespace-at-the-end-of-a-style), which the
+tests compare without (see
+[Semicolons at the end of a style statement](./er.md#semicolons-at-the-end-of-a-style-statement)).
+Where other whitespace stands between them, the `;` stays. A block diagram does
+not read on after the comment line, and drops the `;` and the character: the
+line is printed `classDef c fill: coral`.
 
 [fixture:
 er/semicolons-at-the-end-of-a-style-statement/comment-and-directive-controls]
-[fixture: flowchart/semicolons/style-terminator-comment-and-directive-controls]
 [test: block style terminators and U+2028 and U+2029 dropped before comments]
-[test: treemap style terminators and U+2028 and U+2029 dropped before comments]
 [test: ER whitespace before the character goes with the terminator] [test: ER
-directive lines before a comment line]
+directive lines before a comment line] [test: ER whitespace other than spaces
+and tabs after the character keeps the terminator]
 
 In class, state, ER, requirement, block, Venn and usecase diagrams, line-ending
 `classDef` and `style` semicolons are dropped where this leaves the Db

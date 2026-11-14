@@ -22,6 +22,7 @@ import {
 import {
   endingSemicolonOf,
   isDroppedSemicolon,
+  keepsStyleEndCharacter,
   lineEndOf,
   lineStartOf,
 } from "./kept-lines.ts"
@@ -214,6 +215,21 @@ function findDroppedSemicolonStretches(
   const semicolon = endingSemicolonOf(source, statement.range, statement.style)
   if (semicolon === undefined || !isDroppedSemicolon(source, semicolon))
     return []
+  // A character that CSS does not read as whitespace, before the `;` or after
+  // one that the line rule ignores, is a character of the last style:
+  // mermaid.js draws another figure without it, so the style and the `;` stay
+  // as written (docs/compatibility.md, Whitespace at the end of a style).
+  for (
+    let before = semicolon;
+    before > start && isWhitespace(source.text[before - 1]);
+    before--
+  ) {
+    if (keepsStyleEndCharacter(statement.type, source.text[before - 1]))
+      return []
+  }
+  for (let after = semicolon + 1; after < end; after++) {
+    if (keepsStyleEndCharacter(statement.type, source.text[after])) return []
+  }
   // The style is printed as in a statement without that `;` (see
   // `normalizeTreemapStyle`), so that a second formatting finds the same text.
   let styleEnd = semicolon

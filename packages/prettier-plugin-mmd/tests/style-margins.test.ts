@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest"
 import type { DbSummary } from "@mmd-toolkit/tests"
-import { styleDbForFormattingComparison } from "./style-margins.ts"
+import {
+  styleDbForFormattingComparison,
+  styleEndSeparatorDbForFormattingComparison,
+} from "./style-margins.ts"
 
 /** Two Dbs of a text, before and after it is formatted. */
 interface DbPair {
@@ -410,5 +413,41 @@ describe("the margins of styles that the formatter changes", () => {
     expect(
       styleDbForFormattingComparison(null, null, "flowchart-v2"),
     ).toBeNull()
+  })
+})
+
+describe("the U+2028 and U+2029 at the end of a style of an ER diagram", () => {
+  it("restores them, with the spaces and tabs among them", () => {
+    const before = {
+      entities: [
+        { id: "A", cssStyles: ["fill:coral\u2028", "stroke:red\u2029 \t"] },
+      ],
+      classes: [{ id: "c", styles: ["fill:coral\u2028"] }],
+    }
+    const after = {
+      entities: [{ id: "A", cssStyles: ["fill:coral", "stroke:red"] }],
+      classes: [{ id: "c", styles: ["fill:coral"] }],
+    }
+    expect(styleEndSeparatorDbForFormattingComparison(before, after)).toEqual(
+      before,
+    )
+  })
+
+  it("keeps the other differences", () => {
+    const before = {
+      entities: [
+        { id: "A", cssStyles: ["fill:coral\u00a0", "stroke:red\u2028x"] },
+      ],
+    }
+    const after = {
+      entities: [{ id: "A", cssStyles: ["fill:coral", "stroke:red"] }],
+    }
+    expect(styleEndSeparatorDbForFormattingComparison(before, after)).toEqual(
+      after,
+    )
+  })
+
+  it("passes a Db that is missing through", () => {
+    expect(styleEndSeparatorDbForFormattingComparison(null, null)).toBeNull()
   })
 })

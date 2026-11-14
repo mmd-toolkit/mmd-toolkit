@@ -66,7 +66,7 @@ export const treemapCases: readonly TreemapCase[] = [
     input:
       'treemap\n"N\u2028S\u2029E\u00a0W\ufeff":3\naccTitle: A\u2028B\nclassDef zz x:1\u2028y:2\u2029;\n',
     output:
-      'treemap\n  "N\u2028S\u2029E\u00a0W\ufeff": 3\naccTitle: A\u2028B\n  classDef zz x:1\u2028y:2\n',
+      'treemap\n  "N\u2028S\u2029E\u00a0W\ufeff": 3\naccTitle: A\u2028B\n  classDef zz x:1\u2028y:2\u2029\n',
     options: {},
   },
   {
@@ -133,11 +133,11 @@ export const treemapCases: readonly TreemapCase[] = [
     options: {},
   },
   {
-    name: "treemap/semicolons/class-terminator-unicode-space-before-dropped",
+    name: "treemap/semicolons/class-terminator-unicode-space-before-kept",
     input:
       'treemap\nclassDef aa fill:red\u00a0;\nclassDef bb fill:blue\u2028;\nclassDef cc fill:blue\ufeff;\n"Leaf":1\n',
     output:
-      'treemap\n  classDef aa fill: red\n  classDef bb fill: blue\n  classDef cc fill: blue\n  "Leaf": 1\n',
+      'treemap\n  classDef aa fill: red\u00a0\n  classDef bb fill:blue\u2028\n  classDef cc fill: blue\ufeff\n  "Leaf": 1\n',
     options: {},
   },
   {

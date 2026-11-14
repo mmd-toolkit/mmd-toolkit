@@ -689,6 +689,10 @@ mermaid.js はそれらを最後のスタイルの末尾に残すので、
 eventmodeling の [データブロック](./eventmodeling.ja.md#data-blocks)
 も限定した本文の字下げの変更を認めています。
 テストは、末尾の空白とタブを除いたスタイルを比べます。
+ER 図のスタイルは、`;` といっしょに消す U+2028 と U+2029 も除いて比べます。
+詳しくは、
+[スタイル文の末尾のセミコロン](./er.ja.md#スタイル文の末尾のセミコロン)
+を参照してください。
 
 末尾にあるほかの種類の空白（ノーブレークスペース、U+3000、垂直タブ、
 バイト順マーク）は、なくすと mermaid.js が違う図を描く所では取り除かず、
@@ -700,14 +704,14 @@ mermaid.js は、図種によって、それらを最後のスタイルの値に
 その図種で対象にする版を使い、Chromium で描きました。
 図が違ったのは、固定した版を含む版で、class 図の `style`、
 クラスの後にある class 図の `classDef`、
-flowchart と agentflow 図の `linkStyle` と `classDef`、
+flowchart と agentflow 図の `linkStyle` と `classDef`、treemap の `classDef`、
 ER 図の `classDef` の垂直タブと改ページです。
 対象にする版の別の一部では、flowchart の `style` でも違いました。
 詳しくは
 [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
 これらの文は、その文字を残します。
-class 図と flowchart の改ページは、CSS で空白なので、図が同じで、
+class 図、flowchart、treemap の改ページは、CSS で空白なので、図が同じで、
 例外ではありません。
 block 図、state 図の `style` と `classDef` と、agentflow 図の `style` は、
 その文字がなくても図が同じなので、取り除きます。
@@ -739,6 +743,17 @@ U+2028 か U+2029 が文字の隣にある形です。
 168 のテキストのうち、整形ツールが読むのは 153 です。
 そのどれでも、書かれたテキストを描く版で、
 整形したテキストが違って描かれることも、拒否されることもありませんでした。
+
+treemap の `classDef` も、その図種で対象にする版で同じように描きました。
+1 つか 2 つの文字、`;`、コメント、指令、
+行の後の文を組み合わせた 204 のテキストのうち、整形ツールが読むのは 192 で、
+127 を変えます。
+その 127 のどれでも、整形したテキストは、
+書かれたテキストと違って描かれませんでした。
+ER 図の `style` と `classDef` は、U+2028、U+2029、ノーブレークスペース、空白、
+タブの並びが末尾にあり、その後に `;`、コメント、指令、
+文が続く 144 のテキストを描きました。
+それを読む版で、整形したテキストが違って描かれることはありませんでした。
 
 ## 同じに描かれるスタイル
 
@@ -796,10 +811,12 @@ actor に付けた `classDef c stroke:#d33,fill:#fee` と
 それに関係に付けた `classDef` では、画素が同じで、
 path の `style` 属性の `:` と `;` の前後の空白を除いた SVG も同じでした。
 
-treemap の `classDef` は、スタイルの末尾の空白を落とします。
+treemap の `classDef` は、スタイルの末尾の空白、タブ、改ページを落とします。
 `classDef zz color:red  ` は `classDef zz color:red` と印字します。
-mermaid.js はその空白を Db に残しますが、同じ図を描きます。
+mermaid.js はそれらを Db に残しますが、同じ図を描きます。
 クラスをノードに付けて描いたところ、画素は同じでした。
+CSS が空白として読まない文字は残します。
+[スタイルの末尾の空白](#スタイルの末尾の空白)を参照してください。
 
 [fixture: treemap/styles/trailing-before-semicolon]
 [fixture: treemap/trailing-whitespace/style-content]
@@ -4018,24 +4035,43 @@ mermaid.js は、`style`、続いて空白をはさまずに `#` が後に続く
 
 [1 行に 1 文](./flowchart.ja.md#1-行に-1-文)を参照してください。
 
-ER、flowchart、swimlane、agentflow の図で、U+2028 または U+2029 が前にあり、
-その `;` の行にコメント行が続くときは、間に指令の行があっても、
-`classDef` や `style` の文を終わらせる `;` を残します。
+flowchart、swimlane、
+agentflow の図の `classDef` と `style` を終わらせる `;` と、
+treemap の `classDef` を終わらせる `;` は、U+2028 または U+2029 が前にあり、
+その `;` の行にコメント行が続くときは、間に指令の行があっても残します。
 `;` がないと、文は mermaid.js が取り除くコメント行の後ろまで続き、
 その後ろの文を取り込むからです。
-[スタイル文の末尾のセミコロン](./er.ja.md#スタイル文の末尾のセミコロン)と
-[セミコロン](./flowchart.ja.md#セミコロン)を参照してください。
-block 図と treemap は、コメント行の後ろまで読み続けません。
-ER の図で文字の前に空白があるときは、これまでと同じく、
-`;` とその空白と文字をいっしょに削除します。
-`classDef c fill: coral` と印字し、コメント行とその後ろの文は残ります。
+[セミコロン](./flowchart.ja.md#セミコロン)と
+[Semicolons](./treemap.ja.md#semicolons)を参照してください。
+これらの文は、
+その文字も残します（[スタイルの末尾の空白](#スタイルの末尾の空白)を参照）。
+
+[fixture: flowchart/semicolons/style-terminator-comment-and-directive-controls]
+[test: treemap style terminators kept after U+2028 and U+2029 before comments]
+[test: treemap whitespace after U+2028 and U+2029 keeps the terminator before comments]
+
+ER の図は、その文字がなくても同じ図を描くので、
+U+2028 または U+2029 と `;` の間に空白とタブしかないときは、
+`;` といっしょにその文字を削除します。
+文字の前に空白があるときも同じです。
+`style A fill: red` と印字し、コメント行とその後ろの文は残ります。
+mermaid.js は、前に空白がないとき、
+その文字を最後のスタイルのテキストに残すので、印字したテキストの Db は、
+書かれたテキストの Db と、その文字の分だけ違います。
+これは[スタイルの末尾の空白](#スタイルの末尾の空白)の種類の違いです。
+テストは、これを除いて比べます。
+詳しくは、
+[スタイル文の末尾のセミコロン](./er.ja.md#スタイル文の末尾のセミコロン)
+を参照してください。
+間にほかの空白があるときは、`;` を残します。
+block 図はコメント行の後ろまで読み続けないので、`;` とその文字を削除し、
+`classDef c fill: coral` と印字します。
 
 [fixture: er/semicolons-at-the-end-of-a-style-statement/comment-and-directive-controls]
-[fixture: flowchart/semicolons/style-terminator-comment-and-directive-controls]
 [test: block style terminators and U+2028 and U+2029 dropped before comments]
-[test: treemap style terminators and U+2028 and U+2029 dropped before comments]
 [test: ER whitespace before the character goes with the terminator]
 [test: ER directive lines before a comment line]
+[test: ER whitespace other than spaces and tabs after the character keeps the terminator]
 
 class、state、ER、requirement、block、Venn、usecase の図では、
 `classDef` と `style` の行末のセミコロンを、Db が変わらない形で削除します。

@@ -2435,23 +2435,22 @@ erDiagram
 
 U+2028 または U+2029 の後ろにある、
 `classDef` や `style` の文を終わらせる `;` は、間に空白とタブだけがあり、
-その `;` の行にコメント行が続くときは残します。
+その `;` の行にコメント行が続くときは、
+その文字と空白とタブをいっしょに削除します。
 `;` がないと、文は mermaid.js が取り除くコメント行の後ろまで続き、
-その後ろの文を取り込むからです。
+その後ろの文を取り込むので、`;` だけを消すことはできません。
 詳しくは、
 仕様の [style の文脈](../../spec/docs/diagrams/er.ja.md#style-の文脈)
 を参照してください。
 `style A fill:red`、U+2028、`;`、改行、`%% c`、改行、`x` は、
-`;` と entity `x` を保ちます。
+`style A fill: red`、改行、`%% c`、改行、`x` と印字します。
+U+2028 や U+2029 の前に空白があるときも同じです。
 `;` とコメント行の間の指令の行は、コメント行とともに取り除かれるので、
 何も変えません。
+文字と `;` の間にほかの空白（たとえばノーブレークスペース）があるときは、
+`;` をその空白とともに残します。
 テキストの終わりや文が続くとき（指令の行のあとに文が続くときも）は、
-上のとおり `;` を削除します。
-U+2028 や U+2029 の前に空白があるときは、
-`;` とその空白と文字をいっしょに削除します。
-これまでと同じです。
-`style A fill:red`、空白、U+2028、`;`、改行、`%% c`、改行、`x` は、
-`style A fill: red`、改行、`%% c`、改行、`x` と印字します。
+上のとおり `;` を削除し、文字は書かれたまま残します。
 
 [fixture: semicolons-at-the-end-of-a-style-statement/comment-and-directive-controls]
 [test: ER direct comments] [test: ER two comment lines]
@@ -2467,6 +2466,16 @@ U+2028 や U+2029 の前に空白があるときは、
 [test: ER an unclosed directive line before a comment line]
 [test: flowchart directive line before a comment line]
 [test: ER whitespace before the character goes with the terminator]
+[test: ER whitespace other than spaces and tabs after the character keeps the terminator]
+
+mermaid.js は、最後のスタイルの直後にある U+2028 や U+2029 を、
+そのスタイルのテキストに残し、なくしても同じ図を描きます。
+そのため、印字したテキストの Db は、書かれたテキストの Db と、
+スタイルの末尾にあるその文字の分だけ違います。
+これは、
+[スタイルの末尾の空白](./compatibility.ja.md#スタイルの末尾の空白)
+の種類の違いです。
+テストは ER 図のスタイルを、末尾のその文字を除いて比べます。
 
 ### 複数行の文
 

@@ -5759,19 +5759,49 @@ describe("style semicolons", () => {
       "block\n  A\n  classDef c fill: coral\n  %% c\n  x\n  classDef d fill: coral\n  %% d\n  y\n",
     ],
     [
-      "treemap style terminators and U+2028 and U+2029 dropped before comments",
+      "treemap style terminators kept after U+2028 and U+2029 before comments",
       'treemap\nclassDef aa fill:coral\u2028;\n%% c\n"x": 1\nclassDef bb fill:coral\u2029;\n%% d\n"y": 2\n',
+      'treemap\n  classDef aa fill:coral\u2028;\n  %% c\n  "x": 1\n  classDef bb fill:coral\u2029;\n  %% d\n  "y": 2\n',
+    ],
+    [
+      "treemap style terminators dropped and U+2028 and U+2029 kept before statements",
+      'treemap\nclassDef aa fill:coral\u2028;\n"x": 1\nclassDef bb fill:coral\u2029;\n"y": 2\n',
+      'treemap\n  classDef aa fill:coral\u2028\n  "x": 1\n  classDef bb fill:coral\u2029\n  "y": 2\n',
+    ],
+    [
+      "treemap whitespace after U+2028 and U+2029 keeps the terminator before comments",
+      'treemap\nclassDef aa fill:coral\u2028\u00a0;\n%% c\n"x": 1\nclassDef bb fill:coral\u2029\u00a0\u2028 ;\n%% d\n"y": 2\nclassDef cc fill:red\t\u000b\f\u00a0\u2028\u2029\u3000\ufeff;\n%% e\n"z": 3\n',
+      'treemap\n  classDef aa fill:coral\u2028\u00a0;\n  %% c\n  "x": 1\n  classDef bb fill:coral\u2029\u00a0\u2028 ;\n  %% d\n  "y": 2\n  classDef cc fill:red\t\u000b\f\u00a0\u2028\u2029\u3000\ufeff;\n  %% e\n  "z": 3\n',
+    ],
+    [
+      "treemap directive and comment lines after a style terminator that follows U+2028",
+      'treemap\nclassDef aa fill:coral\u2028;\n%%{init: {}}%%\n%% c\n"x": 1\n',
+      'treemap\n  classDef aa fill:coral\u2028;\n%%{init: {}}%%\n  %% c\n  "x": 1\n',
+    ],
+    [
+      "treemap style terminators dropped and whitespace that CSS does not read kept",
+      'treemap\nclassDef aa fill:coral\u00a0;\n%% c\n"x": 1\nclassDef bb fill:coral\u3000;\n%% d\n"y": 2\nclassDef cc fill:coral\u000b;\n%% e\n"z": 3\n',
+      'treemap\n  classDef aa fill: coral\u00a0\n  %% c\n  "x": 1\n  classDef bb fill: coral\u3000\n  %% d\n  "y": 2\n  classDef cc fill: coral\u000b\n  %% e\n  "z": 3\n',
+    ],
+    [
+      "treemap style terminators dropped with a form feed, a space, and a tab",
+      'treemap\nclassDef aa fill:coral\u000c;\n%% c\n"x": 1\nclassDef bb fill:coral \t;\n%% d\n"y": 2\n',
       'treemap\n  classDef aa fill: coral\n  %% c\n  "x": 1\n  classDef bb fill: coral\n  %% d\n  "y": 2\n',
     ],
     [
       "ER directives before comments on the same line",
       "erDiagram\nA\nstyle A fill:coral\u2028;\n%%{init: {}}%% %% c\nx\nclassDef c fill:coral\u2029;\n%%{init: {}}%% %% d\ny\n",
-      "erDiagram\n  A\n  style A fill:coral\u2028;\n  %%{init: {}}%% %% c\n  x\n  classDef c fill:coral\u2029;\n  %%{init: {}}%% %% d\n  y\n",
+      "erDiagram\n  A\n  style A fill: coral\n  %%{init: {}}%% %% c\n  x\n  classDef c fill: coral\n  %%{init: {}}%% %% d\n  y\n",
+    ],
+    [
+      "ER whitespace other than spaces and tabs after the character keeps the terminator",
+      "erDiagram\nA\nstyle A fill:coral\u2028\u00a0;\n%% c\nx\nclassDef c fill:coral \u2029\u00a0;\n%% c\ny\n",
+      "erDiagram\n  A\n  style A fill:coral\u2028\u00a0;\n  %% c\n  x\n  classDef c fill:coral \u2029\u00a0;\n  %% c\n  y\n",
     ],
     [
       "ER directive lines before a comment line",
       "erDiagram\nA\nstyle A fill:coral\u2028;\n%%{init: {}}%%\n%% c\nx\nstyle A fill:coral\u2029;\n%%{init: {}}%%\n%%{init: {}}%%\n%% c\ny\nclassDef c fill:coral\u2028;\n%%{init: {}}%%\n%% c\nz\n",
-      "erDiagram\n  A\n  style A fill:coral\u2028;\n  %%{init: {}}%%\n  %% c\n  x\n  style A fill:coral\u2029;\n  %%{init: {}}%%\n  %%{init: {}}%%\n  %% c\n  y\n  classDef c fill:coral\u2028;\n  %%{init: {}}%%\n  %% c\n  z\n",
+      "erDiagram\n  A\n  style A fill: coral\n  %%{init: {}}%%\n  %% c\n  x\n  style A fill: coral\n  %%{init: {}}%%\n  %%{init: {}}%%\n  %% c\n  y\n  classDef c fill: coral\n  %%{init: {}}%%\n  %% c\n  z\n",
     ],
     [
       "ER directive line then a statement after a style terminator",
@@ -5781,7 +5811,7 @@ describe("style semicolons", () => {
     [
       "ER an unclosed directive line before a comment line",
       "erDiagram\nA\nstyle A fill:coral\u2028;\n%%{init: x\n%% c\nx\n",
-      "erDiagram\n  A\n  style A fill:coral\u2028;\n  %%{init: x\n%% c\n  x\n",
+      "erDiagram\n  A\n  style A fill: coral\n  %%{init: x\n%% c\n  x\n",
     ],
     [
       "flowchart directive line before a comment line",
@@ -5806,32 +5836,32 @@ describe("style semicolons", () => {
     [
       "ER direct comments",
       "erDiagram\nA\nstyle A fill:coral\u2028;\n%% c\nx\nstyle A fill:coral\u2029;\n%% c\ny\nstyle A fill:coral\u2028 ;\n%% c\nz\nclassDef c fill:coral\u2028;\n%% c\nu\nclassDef d fill:coral\u2029;\n%% c\nv\nclassDef e fill:coral\u2028 ;\n%% c\nw\n",
-      "erDiagram\n  A\n  style A fill:coral\u2028;\n  %% c\n  x\n  style A fill:coral\u2029;\n  %% c\n  y\n  style A fill:coral\u2028 ;\n  %% c\n  z\n  classDef c fill:coral\u2028;\n  %% c\n  u\n  classDef d fill:coral\u2029;\n  %% c\n  v\n  classDef e fill:coral\u2028 ;\n  %% c\n  w\n",
+      "erDiagram\n  A\n  style A fill: coral\n  %% c\n  x\n  style A fill: coral\n  %% c\n  y\n  style A fill: coral\n  %% c\n  z\n  classDef c fill: coral\n  %% c\n  u\n  classDef d fill: coral\n  %% c\n  v\n  classDef e fill: coral\n  %% c\n  w\n",
     ],
     [
       "ER two comment lines",
       "erDiagram\nA\nstyle A fill:coral\u2028;\n%% c\n%% d\nx\nstyle A fill:coral\u2029;\n%% c\n%% d\ny\nstyle A fill:coral\u2028 ;\n%% c\n%% d\nz\nclassDef c fill:coral\u2028;\n%% c\n%% d\nu\nclassDef d fill:coral\u2029;\n%% c\n%% d\nv\nclassDef e fill:coral\u2028 ;\n%% c\n%% d\nw\n",
-      "erDiagram\n  A\n  style A fill:coral\u2028;\n  %% c\n  %% d\n  x\n  style A fill:coral\u2029;\n  %% c\n  %% d\n  y\n  style A fill:coral\u2028 ;\n  %% c\n  %% d\n  z\n  classDef c fill:coral\u2028;\n  %% c\n  %% d\n  u\n  classDef d fill:coral\u2029;\n  %% c\n  %% d\n  v\n  classDef e fill:coral\u2028 ;\n  %% c\n  %% d\n  w\n",
+      "erDiagram\n  A\n  style A fill: coral\n  %% c\n  %% d\n  x\n  style A fill: coral\n  %% c\n  %% d\n  y\n  style A fill: coral\n  %% c\n  %% d\n  z\n  classDef c fill: coral\n  %% c\n  %% d\n  u\n  classDef d fill: coral\n  %% c\n  %% d\n  v\n  classDef e fill: coral\n  %% c\n  %% d\n  w\n",
     ],
     [
       "ER empty lines before comments",
       "erDiagram\nA\nstyle A fill:coral\u2028;\n\n%% c\nx\nstyle A fill:coral\u2029;\n\n%% c\ny\nstyle A fill:coral\u2028 ;\n\n%% c\nz\nclassDef c fill:coral\u2028;\n\n%% c\nu\nclassDef d fill:coral\u2029;\n\n%% c\nv\nclassDef e fill:coral\u2028 ;\n\n%% c\nw\n",
-      "erDiagram\n  A\n  style A fill:coral\u2028;\n\n  %% c\n  x\n  style A fill:coral\u2029;\n\n  %% c\n  y\n  style A fill:coral\u2028 ;\n\n  %% c\n  z\n  classDef c fill:coral\u2028;\n\n  %% c\n  u\n  classDef d fill:coral\u2029;\n\n  %% c\n  v\n  classDef e fill:coral\u2028 ;\n\n  %% c\n  w\n",
+      "erDiagram\n  A\n  style A fill: coral\n\n  %% c\n  x\n  style A fill: coral\n\n  %% c\n  y\n  style A fill: coral\n\n  %% c\n  z\n  classDef c fill: coral\n\n  %% c\n  u\n  classDef d fill: coral\n\n  %% c\n  v\n  classDef e fill: coral\n\n  %% c\n  w\n",
     ],
     [
       "ER directives on comment lines",
       "erDiagram\nA\nstyle A fill:coral\u2028;\n%% c %%{init: {}}%%\nx\nstyle A fill:coral\u2029;\n%% c %%{init: {}}%%\ny\nstyle A fill:coral\u2028 ;\n%% c %%{init: {}}%%\nz\nclassDef c fill:coral\u2028;\n%% c %%{init: {}}%%\nu\nclassDef d fill:coral\u2029;\n%% c %%{init: {}}%%\nv\nclassDef e fill:coral\u2028 ;\n%% c %%{init: {}}%%\nw\n",
-      "erDiagram\n  A\n  style A fill:coral\u2028;\n  %% c %%{init: {}}%%\n  x\n  style A fill:coral\u2029;\n  %% c %%{init: {}}%%\n  y\n  style A fill:coral\u2028 ;\n  %% c %%{init: {}}%%\n  z\n  classDef c fill:coral\u2028;\n  %% c %%{init: {}}%%\n  u\n  classDef d fill:coral\u2029;\n  %% c %%{init: {}}%%\n  v\n  classDef e fill:coral\u2028 ;\n  %% c %%{init: {}}%%\n  w\n",
+      "erDiagram\n  A\n  style A fill: coral\n  %% c %%{init: {}}%%\n  x\n  style A fill: coral\n  %% c %%{init: {}}%%\n  y\n  style A fill: coral\n  %% c %%{init: {}}%%\n  z\n  classDef c fill: coral\n  %% c %%{init: {}}%%\n  u\n  classDef d fill: coral\n  %% c %%{init: {}}%%\n  v\n  classDef e fill: coral\n  %% c %%{init: {}}%%\n  w\n",
     ],
     [
       "ER indented comments",
       "erDiagram\nA\nstyle A fill:coral\u2028;\n %% c\nx\nstyle A fill:coral\u2029;\n %% c\ny\nstyle A fill:coral\u2028 ;\n %% c\nz\nclassDef c fill:coral\u2028;\n %% c\nu\nclassDef d fill:coral\u2029;\n %% c\nv\nclassDef e fill:coral\u2028 ;\n %% c\nw\n",
-      "erDiagram\n  A\n  style A fill:coral\u2028;\n  %% c\n  x\n  style A fill:coral\u2029;\n  %% c\n  y\n  style A fill:coral\u2028 ;\n  %% c\n  z\n  classDef c fill:coral\u2028;\n  %% c\n  u\n  classDef d fill:coral\u2029;\n  %% c\n  v\n  classDef e fill:coral\u2028 ;\n  %% c\n  w\n",
+      "erDiagram\n  A\n  style A fill: coral\n  %% c\n  x\n  style A fill: coral\n  %% c\n  y\n  style A fill: coral\n  %% c\n  z\n  classDef c fill: coral\n  %% c\n  u\n  classDef d fill: coral\n  %% c\n  v\n  classDef e fill: coral\n  %% c\n  w\n",
     ],
     [
       "ER indented following statements",
       "erDiagram\nA\nstyle A fill:coral\u2028;\n%% c\n x\nstyle A fill:coral\u2029;\n%% c\n y\nstyle A fill:coral\u2028 ;\n%% c\n z\nclassDef c fill:coral\u2028;\n%% c\n u\nclassDef d fill:coral\u2029;\n%% c\n v\nclassDef e fill:coral\u2028 ;\n%% c\n w\n",
-      "erDiagram\n  A\n  style A fill:coral\u2028;\n  %% c\n  x\n  style A fill:coral\u2029;\n  %% c\n  y\n  style A fill:coral\u2028 ;\n  %% c\n  z\n  classDef c fill:coral\u2028;\n  %% c\n  u\n  classDef d fill:coral\u2029;\n  %% c\n  v\n  classDef e fill:coral\u2028 ;\n  %% c\n  w\n",
+      "erDiagram\n  A\n  style A fill: coral\n  %% c\n  x\n  style A fill: coral\n  %% c\n  y\n  style A fill: coral\n  %% c\n  z\n  classDef c fill: coral\n  %% c\n  u\n  classDef d fill: coral\n  %% c\n  v\n  classDef e fill: coral\n  %% c\n  w\n",
     ],
     [
       "flowchart LF before terminator and comments",
@@ -5881,7 +5911,7 @@ describe("style semicolons", () => {
     [
       "ER tab and whitespace-only line before a comment",
       "erDiagram\nA\nstyle A fill:coral\u2028\t;\n \t\n %% c\nx\n",
-      "erDiagram\n  A\n  style A fill:coral\u2028\t;\n\n  %% c\n  x\n",
+      "erDiagram\n  A\n  style A fill: coral\n\n  %% c\n  x\n",
     ],
     [
       "style semicolons: class before U+2028",

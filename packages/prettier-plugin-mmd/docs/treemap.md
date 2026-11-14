@@ -505,15 +505,31 @@ ignores, as in `classDef zz color:#f00;`.
 [fixture: semicolons/class-terminator-dropped] [fixture:
 semicolons/class-terminator-hash-dropped]
 
-Whitespace immediately before the dropped `;` is dropped with it, also a U+00A0,
-U+2028, U+2029 or U+FEFF.
+Spaces, tabs, and form feeds immediately before the dropped `;` are dropped with
+it.
 
-[fixture: semicolons/class-terminator-space-before-dropped] [test:
-treemap/line-terminators-and-unicode/unicode-values] [test:
-treemap/semicolons/class-terminator-unicode-space-before-dropped]
+[fixture: semicolons/class-terminator-space-before-dropped]
 
-Whitespace after a `;` that the line rule ignores belongs to the style and is
-dropped too.
+A U+00A0, U+2028, U+2029, U+3000, U+000B (a vertical tab), or U+FEFF before the
+`;` stays, and so does one after a `;` that the line rule ignores: CSS does not
+read it as whitespace, so it ends the last style, and mermaid.js draws another
+figure without it (see
+[Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style)).
+Only the `;` is dropped, so `classDef zz fill:red`, U+00A0, `;` is printed
+`classDef zz fill: red`, U+00A0. A line that holds a U+2028 or U+2029 stays as
+written, without the `;`, and a line with such a character after a `;` that the
+line rule ignores stays as written with it.
+
+[test: treemap/line-terminators-and-unicode/unicode-values] [test:
+treemap/semicolons/class-terminator-unicode-space-before-kept] [test: treemap
+style terminators dropped and whitespace that CSS does not read kept] [test:
+treemap style terminators dropped and U+2028 and U+2029 kept before statements]
+[test: keeps whitespace other than a space and a tab at the end of a style]
+[test: keeps the whitespace after a `;` and after a directive that the line rule
+removes]
+
+Spaces, tabs, and form feeds after a `;` that the line rule ignores belong to
+the style and are dropped too.
 
 [fixture: semicolons/class-terminator-hash-trailing-whitespace-dropped]
 
@@ -555,6 +571,18 @@ no whitespace of the line rule and the comment line is removed, so dropping the
 printed as written.
 
 [test: treemap/semicolons/class-terminator-after-separator-and-comment-kept]
+
+The `;` stays too, with the character, where a U+2028 or U+2029 stands before
+it, with whitespace between them if any, and a comment line follows its line,
+directive lines between them included: without the `;` the statement goes on
+after the comment line, which mermaid.js removes, and takes the statement after
+it.
+
+[test: treemap style terminators kept after U+2028 and U+2029 before comments]
+[test: treemap whitespace after U+2028 and U+2029 keeps the terminator before
+comments] [test: treemap directive and comment lines after a style terminator
+that follows U+2028] [test: treemap style terminators dropped with a form feed,
+a space, and a tab]
 
 A directive before a `;` that the line rule ignores stays and the `;` is
 dropped, as in the other diagram types.

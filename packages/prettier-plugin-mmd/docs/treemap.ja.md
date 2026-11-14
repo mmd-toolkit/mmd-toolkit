@@ -517,13 +517,34 @@ mermaid.js は `;` がなくても同じ文として読むからです。
 [fixture: semicolons/class-terminator-dropped]
 [fixture: semicolons/class-terminator-hash-dropped]
 
-消す `;` の直前の空白も、U+00A0、U+2028、U+2029、U+FEFF を含めて一緒に消します。
+消す `;` の直前の空白、タブ、改ページも、一緒に消します。
 
 [fixture: semicolons/class-terminator-space-before-dropped]
-[test: treemap/line-terminators-and-unicode/unicode-values]
-[test: treemap/semicolons/class-terminator-unicode-space-before-dropped]
 
-行の規則が無視する `;` の後ろの空白は style に属するので、これも消します。
+`;` の前にある U+00A0、U+2028、U+2029、U+3000、U+000B（垂直タブ）、
+U+FEFF は残します。
+行の規則が無視する `;` の後ろにあるものも残します。
+CSS はこれらを空白として読まないので、最後のスタイルの末尾に残り、
+なくすと mermaid.js が違う図を描くからです。
+詳しくは、
+[スタイルの末尾の空白](./compatibility.ja.md#スタイルの末尾の空白)
+を参照してください。
+消すのは `;` だけです。
+`classDef zz fill:red`、U+00A0、`;` は、`classDef zz fill: red`、
+U+00A0 と印字します。
+U+2028 か U+2029 を含む行は、`;` だけを消して書かれたまま残します。
+行の規則が無視する `;` の後ろにそれらの文字があるときは、
+`;` も含めて書かれたまま残します。
+
+[test: treemap/line-terminators-and-unicode/unicode-values]
+[test: treemap/semicolons/class-terminator-unicode-space-before-kept]
+[test: treemap style terminators dropped and whitespace that CSS does not read kept]
+[test: treemap style terminators dropped and U+2028 and U+2029 kept before statements]
+[test: keeps whitespace other than a space and a tab at the end of a style]
+[test: keeps the whitespace after a `;` and after a directive that the line rule removes]
+
+行の規則が無視する `;` の後ろの空白、タブ、改ページは style に属するので、
+これも消します。
 
 [fixture: semicolons/class-terminator-hash-trailing-whitespace-dropped]
 
@@ -572,6 +593,17 @@ U+2028 か U+2029 の後にコメント行が続き、その後にある `;` も
 その行は書かれたまま印字します。
 
 [test: treemap/semicolons/class-terminator-after-separator-and-comment-kept]
+
+U+2028 か U+2029 が `;` の前にあり、間に空白があってもよく、
+その `;` の行にコメント行が続くときも、間に指令の行があっても、
+文字とともに `;` を残します。
+`;` がないと、文は mermaid.js が取り除くコメント行の後ろまで続き、
+その後ろの文を取り込むからです。
+
+[test: treemap style terminators kept after U+2028 and U+2029 before comments]
+[test: treemap whitespace after U+2028 and U+2029 keeps the terminator before comments]
+[test: treemap directive and comment lines after a style terminator that follows U+2028]
+[test: treemap style terminators dropped with a form feed, a space, and a tab]
 
 行の規則が無視する `;` の前にディレクティブがあるときは、
 ディレクティブを残して `;` を消します。
