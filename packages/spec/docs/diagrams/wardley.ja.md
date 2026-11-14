@@ -439,6 +439,17 @@ ignored node を重複して作らない。
 native に見える文字で先の単位が終わることもある。
 hidden form の中でも共有 Directive、comment region、
 選ばれた semicolon の範囲は共通規則のまま。
+値の中の U+2028 か U+2029 の後の物理行の残りは、その改行も含めて、
+共通のコメント領域が取り除くことがある。
+そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
+`accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
+U+2028、`B` である。
+[fixture: wardley/db-string-line-separator-then-comment-line]
+[fixture: wardley/db-string-paragraph-separator-then-comment-line]
+[fixture: wardley/db-title-line-separator-then-comment-line]
+[fixture: wardley/db-acc-title-line-separator-then-comment-line]
+[fixture: wardley/db-acc-descr-line-separator-then-comment-line]
+[fixture: wardley/db-acc-descr-block-line-separator-then-comment-line]
 その除去による hidden の句読点や comment mark の接合を許す。
 [fixture: wardley/hidden-directive-string] [fixture: wardley/hidden-yaml-string]
 [fixture: wardley/hidden-yaml-title] [fixture: wardley/hidden-yaml-acctitle]

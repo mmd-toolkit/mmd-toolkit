@@ -546,7 +546,17 @@ regions are distinct and may remove source lines before this native reading.
 railroad/ebnf-enclosing-string-hidden] [fixture:
 railroad/abnf-enclosing-string-hidden] [fixture:
 railroad/peg-comment-in-literal] [fixture: railroad/ir-common-block-comment]
-[fixture: railroad/ir-common-block-gap-comment]
+[fixture: railroad/ir-common-block-gap-comment] A common comment region can
+remove the rest of a physical line after U+2028 or U+2029 inside a value, its
+line break included; the value then goes on with the next physical line, so a
+line value does not end there: `accTitle: A`, U+2028, `%% c`, a line break, and
+`B` has the accessibility title `A`, U+2028, and `B`. [fixture:
+railroad/db-string-line-separator-then-comment-line] [fixture:
+railroad/db-string-paragraph-separator-then-comment-line] [fixture:
+railroad/db-title-line-separator-then-comment-line] [fixture:
+railroad/db-acc-title-line-separator-then-comment-line] [fixture:
+railroad/db-acc-descr-line-separator-then-comment-line] [fixture:
+railroad/db-acc-descr-block-line-separator-then-comment-line]
 
 ### Common directive and semicolon boundaries
 

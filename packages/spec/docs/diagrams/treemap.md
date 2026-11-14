@@ -373,7 +373,18 @@ treemap/lex-description-block-native-percent] [fixture:
 treemap/hidden-comment-title] [fixture: treemap/comment-leaf-separator-indent]
 [fixture: treemap/comment-value-selector-gap] [fixture:
 treemap/comment-selector-forbidden-indent] [fixture:
-treemap/comment-mark-joined-by-directive]
+treemap/comment-mark-joined-by-directive] A common comment region can remove the
+rest of a physical line after U+2028 or U+2029 inside a value, its line break
+included; the value then goes on with the next physical line, so a line value
+does not end there: `accTitle: A`, U+2028, `%% c`, a line break, and `B` has the
+accessibility title `A`, U+2028, and `B`. [fixture:
+treemap/db-string-line-separator-then-comment-line] [fixture:
+treemap/db-string-paragraph-separator-then-comment-line] [fixture:
+treemap/db-class-style-line-separator-then-comment-line] [fixture:
+treemap/db-title-line-separator-then-comment-line] [fixture:
+treemap/db-acc-title-line-separator-then-comment-line] [fixture:
+treemap/db-acc-descr-line-separator-then-comment-line] [fixture:
+treemap/db-acc-descr-block-line-separator-then-comment-line]
 
 Ordinary word-start global directives, including `%%{other: x}%%`, are common
 trivia, not native hidden directives. A remaining nonword form such as `%%{!}%%`

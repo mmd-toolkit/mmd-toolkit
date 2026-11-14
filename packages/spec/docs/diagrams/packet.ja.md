@@ -413,6 +413,17 @@ native comment を残し得る。 [fixture: packet/common-block-bare]
 
 共通 directive、comment region、選ばれた semicolon は、
 値や hidden な形の中でも共通の適用範囲を持つ。
+値の中の U+2028 か U+2029 の後の物理行の残りは、その改行も含めて、
+共通のコメント領域が取り除くことがある。
+そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
+`accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
+U+2028、`B` である。
+[fixture: packet/db-string-line-separator-then-comment-line]
+[fixture: packet/db-string-paragraph-separator-then-comment-line]
+[fixture: packet/db-title-line-separator-then-comment-line]
+[fixture: packet/db-acc-title-line-separator-then-comment-line]
+[fixture: packet/db-acc-descr-line-separator-then-comment-line]
+[fixture: packet/db-acc-descr-block-line-separator-then-comment-line]
 書かれた値の欄ではそれらを除き、範囲は内部 trivia をまたぐ。
 除去により hidden な delimiter や native comment の mark の句読点を連結できる。
 完全な共通 keyword と colon・brace・title の区切りの間にも置ける。

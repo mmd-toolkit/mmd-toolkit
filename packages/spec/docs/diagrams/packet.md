@@ -356,11 +356,21 @@ packet/common-block-comment] [fixture: packet/lex-description-comment-only]
 [fixture: packet/lex-description-hidden-first-brace]
 
 Common directives, comment regions and selected semicolons retain their shared
-scope inside values and hidden forms. Written value fields leave them out, while
-source ranges span internal trivia. Removal can join punctuation in hidden
-delimiters or a native comment mark; it may also occur between a complete common
-keyword and colon/brace/title separator. Fixed-word and integer interiors
-instead follow the atomic divergences below. [fixture:
+scope inside values and hidden forms. A common comment region can remove the
+rest of a physical line after U+2028 or U+2029 inside a value, its line break
+included; the value then goes on with the next physical line, so a line value
+does not end there: `accTitle: A`, U+2028, `%% c`, a line break, and `B` has the
+accessibility title `A`, U+2028, and `B`. [fixture:
+packet/db-string-line-separator-then-comment-line] [fixture:
+packet/db-string-paragraph-separator-then-comment-line] [fixture:
+packet/db-title-line-separator-then-comment-line] [fixture:
+packet/db-acc-title-line-separator-then-comment-line] [fixture:
+packet/db-acc-descr-line-separator-then-comment-line] [fixture:
+packet/db-acc-descr-block-line-separator-then-comment-line] Written value fields
+leave them out, while source ranges span internal trivia. Removal can join
+punctuation in hidden delimiters or a native comment mark; it may also occur
+between a complete common keyword and colon/brace/title separator. Fixed-word
+and integer interiors instead follow the atomic divergences below. [fixture:
 packet/directive-label-middle] [fixture: packet/directive-title-value] [fixture:
 packet/directive-acctitle-value] [fixture: packet/directive-accdescr-value]
 [fixture: packet/directive-description-value] [fixture:

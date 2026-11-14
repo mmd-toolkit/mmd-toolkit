@@ -280,6 +280,16 @@ global directive と comment region には共通規則を適用する。
 [fixture: radar/lex-common-description-only-directive]
 [fixture: radar/lex-common-description-only-comment]
 [fixture: radar/gram-native-description-gap]
+値の中の U+2028 か U+2029 の後の物理行の残りは、その改行も含めて、
+共通のコメント領域が取り除くことがある。
+そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
+`accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
+U+2028、`B` である。 [fixture: radar/db-string-line-separator-then-comment-line]
+[fixture: radar/db-string-paragraph-separator-then-comment-line]
+[fixture: radar/db-title-line-separator-then-comment-line]
+[fixture: radar/db-acc-title-line-separator-then-comment-line]
+[fixture: radar/db-acc-descr-line-separator-then-comment-line]
+[fixture: radar/db-acc-descr-block-line-separator-then-comment-line]
 
 空の block も含む全 common 形に、可視 EOL または EOF を要求する。
 完成した block に次の文を接着できないが、

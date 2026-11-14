@@ -384,7 +384,18 @@ architecture/lex-bare-percent-in-quoted-label] [fixture:
 architecture/comment-in-quoted-label] [fixture:
 architecture/common-description-block-comment] [fixture:
 architecture/comment-directive-in-mark] [fixture:
-architecture/comment-directive-in-value]
+architecture/comment-directive-in-value] A common comment region can remove the
+rest of a physical line after U+2028 or U+2029 inside a value, its line break
+included; the value then goes on with the next physical line, so a line value
+does not end there: `accTitle: A`, U+2028, `%% c`, a line break, and `B` has the
+accessibility title `A`, U+2028, and `B`. [fixture:
+architecture/db-title-line-separator-then-comment-line] [fixture:
+architecture/db-acc-title-line-separator-then-comment-line] [fixture:
+architecture/db-acc-descr-line-separator-then-comment-line] [fixture:
+architecture/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+architecture/db-bracket-label-line-separator-then-comment-line] [fixture:
+architecture/db-icon-text-string-line-separator-then-comment-line] [fixture:
+architecture/db-icon-text-string-paragraph-separator-then-comment-line]
 
 ## Grammar
 

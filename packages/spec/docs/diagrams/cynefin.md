@@ -154,7 +154,17 @@ cynefin/lex-string-escaped-quotes] [fixture: cynefin/lex-string-conversion]
 cynefin/lex-string-dangling-backslash] [fixture: cynefin/lex-string-escaped-lf]
 [fixture: cynefin/lex-string-escaped-ls] [fixture:
 cynefin/lex-string-escaped-ps] [fixture: cynefin/directive-every-field]
-[fixture: cynefin/comment-line-in-string]
+[fixture: cynefin/comment-line-in-string] A common comment region can remove the
+rest of a physical line after U+2028 or U+2029 inside a value, its line break
+included; the value then goes on with the next physical line, so a line value
+does not end there: `accTitle: A`, U+2028, `%% c`, a line break, and `B` has the
+accessibility title `A`, U+2028, and `B`. [fixture:
+cynefin/db-string-line-separator-then-comment-line] [fixture:
+cynefin/db-string-paragraph-separator-then-comment-line] [fixture:
+cynefin/db-title-line-separator-then-comment-line] [fixture:
+cynefin/db-acc-title-line-separator-then-comment-line] [fixture:
+cynefin/db-acc-descr-line-separator-then-comment-line] [fixture:
+cynefin/db-acc-descr-block-line-separator-then-comment-line]
 
 Item and transition-label strings use shared StringLiteral. Its raw preserves
 the entire authored spelling including quotes and common trivia; value preserves

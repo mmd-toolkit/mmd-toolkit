@@ -383,7 +383,17 @@ before native hidden rules are tried; they do not create duplicate ignored
 nodes. A common line value stops at %% and a description block at its first
 brace, so native-looking text can stop those earlier units. Shared directives,
 comment regions and selected semicolons retain their common scope inside hidden
-forms. Their removal can join hidden punctuation or comment marks. [fixture:
+forms. A common comment region can remove the rest of a physical line after
+U+2028 or U+2029 inside a value, its line break included; the value then goes on
+with the next physical line, so a line value does not end there: `accTitle: A`,
+U+2028, `%% c`, a line break, and `B` has the accessibility title `A`, U+2028,
+and `B`. [fixture: wardley/db-string-line-separator-then-comment-line] [fixture:
+wardley/db-string-paragraph-separator-then-comment-line] [fixture:
+wardley/db-title-line-separator-then-comment-line] [fixture:
+wardley/db-acc-title-line-separator-then-comment-line] [fixture:
+wardley/db-acc-descr-line-separator-then-comment-line] [fixture:
+wardley/db-acc-descr-block-line-separator-then-comment-line] Their removal can
+join hidden punctuation or comment marks. [fixture:
 wardley/hidden-directive-string] [fixture: wardley/hidden-yaml-string] [fixture:
 wardley/hidden-yaml-title] [fixture: wardley/hidden-yaml-acctitle] [fixture:
 wardley/hidden-yaml-description] [fixture: wardley/hidden-yaml-block] [fixture:

@@ -276,6 +276,17 @@ order は符号、先頭の 0、小数、指数、非有限値の語を拒否し
 先に始まった文字列や説明のブロックは、
 隠れた YAML／DIRECTIVE に見える形や裸の `%%` を内容として持ちます。
 値の中でも、共通のディレクティブとソースのコメント領域は共通の効果を持ちます。
+値の中の U+2028 か U+2029 の後の物理行の残りは、その改行も含めて、
+共通のコメント領域が取り除くことがあります。
+そのとき値は次の物理行へ続くので、行の値はそこで終わりません。
+`accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
+U+2028、`B` です。
+[fixture: gitgraph/db-string-line-separator-then-comment-line]
+[fixture: gitgraph/db-string-paragraph-separator-then-comment-line]
+[fixture: gitgraph/db-title-line-separator-then-comment-line]
+[fixture: gitgraph/db-acc-title-line-separator-then-comment-line]
+[fixture: gitgraph/db-acc-descr-line-separator-then-comment-line]
+[fixture: gitgraph/db-acc-descr-block-line-separator-then-comment-line]
 これらは図固有のコメントとは別です。
 [fixture: gitgraph/lex-hidden-directive-string]
 [fixture: gitgraph/lex-hidden-directive-block]

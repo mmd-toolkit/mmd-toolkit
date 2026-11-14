@@ -250,6 +250,12 @@ LS、PS、単独の percent、セミコロン、コロン、引用符、バッ�
 [fixture: info/end-acctitle-semicolons] [fixture: info/end-accdescr-semicolons]
 [fixture: info/line-ls-in-value] [fixture: info/line-ps-in-value]
 [fixture: info/lex-block-colon-first]
+値の中の U+2028 か U+2029 の後の物理行の残りは、その改行も含めて、
+共通のコメント領域が取り除くことがあります。
+そのとき値は次の物理行へ続くので、行の値はそこで終わりません。
+`accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
+U+2028、`B` です。 [fixture: info/lex-line-comment-region-ls]
+[fixture: info/lex-acc-title-line-separator-then-comment-line]
 
 ブロックの選択肢は `accDescr`、0 個以上の共通の空白、`{`、
 最初の `}` までの任意の内容を読みます。

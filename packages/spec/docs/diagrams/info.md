@@ -209,7 +209,13 @@ info/common-title-comment-gap] [fixture: info/common-acctitle-comment-gap]
 info/lex-accdescr-directive-gap] [fixture: info/lex-accdescr-comment-gap]
 [fixture: info/end-title-semicolons] [fixture: info/end-acctitle-semicolons]
 [fixture: info/end-accdescr-semicolons] [fixture: info/line-ls-in-value]
-[fixture: info/line-ps-in-value] [fixture: info/lex-block-colon-first]
+[fixture: info/line-ps-in-value] [fixture: info/lex-block-colon-first] A common
+comment region can remove the rest of a physical line after U+2028 or U+2029
+inside a value, its line break included; the value then goes on with the next
+physical line, so a line value does not end there: `accTitle: A`, U+2028,
+`%% c`, a line break, and `B` has the accessibility title `A`, U+2028, and `B`.
+[fixture: info/lex-line-comment-region-ls] [fixture:
+info/lex-acc-title-line-separator-then-comment-line]
 
 The block alternative reads `accDescr`, zero or more common whitespace
 characters, `{` and arbitrary content through the first `}`. Its opening gap may

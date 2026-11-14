@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md Composite common forms: a common comment region after a U+2028 removes the rest of the line with its line break, so the accessibility title goes on with `B`; the Db has no field that shows it, so the fixture records that the input is accepted."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

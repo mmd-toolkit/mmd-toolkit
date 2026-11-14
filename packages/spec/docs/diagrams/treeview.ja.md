@@ -357,6 +357,19 @@ native の hidden directive node にはしない。 [fixture: treeview/comment-i
 [fixture: treeview/common-title-percent-boundary]
 [fixture: treeview/detect-secondscan-singleline]
 [fixture: treeview/comment-native-mark-directive]
+値の中の U+2028 か U+2029 の後の物理行の残りは、その改行も含めて、
+共通のコメント領域が取り除くことがある。
+そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
+`accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
+U+2028、`B` である。
+[fixture: treeview/db-quoted-name-line-separator-then-comment-line]
+[fixture: treeview/db-quoted-name-paragraph-separator-then-comment-line]
+[fixture: treeview/db-bare-name-line-separator-then-comment-line]
+[fixture: treeview/db-description-line-separator-then-comment-line]
+[fixture: treeview/db-title-line-separator-then-comment-line]
+[fixture: treeview/db-acc-title-line-separator-then-comment-line]
+[fixture: treeview/db-acc-descr-line-separator-then-comment-line]
+[fixture: treeview/db-acc-descr-block-line-separator-then-comment-line]
 
 directive と選択されたセミコロンについて、
 見出し・共通 keyword・語 `icon`・class 名・icon 参照全体は atom とする。

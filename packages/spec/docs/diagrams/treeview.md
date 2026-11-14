@@ -322,7 +322,19 @@ treeview/comment-in-quotes] [fixture: treeview/tail-description-comment]
 [fixture: treeview/common-block-bare-percent] [fixture:
 treeview/common-title-percent-boundary] [fixture:
 treeview/detect-secondscan-singleline] [fixture:
-treeview/comment-native-mark-directive]
+treeview/comment-native-mark-directive] A common comment region can remove the
+rest of a physical line after U+2028 or U+2029 inside a value, its line break
+included; the value then goes on with the next physical line, so a line value
+does not end there: `accTitle: A`, U+2028, `%% c`, a line break, and `B` has the
+accessibility title `A`, U+2028, and `B`. [fixture:
+treeview/db-quoted-name-line-separator-then-comment-line] [fixture:
+treeview/db-quoted-name-paragraph-separator-then-comment-line] [fixture:
+treeview/db-bare-name-line-separator-then-comment-line] [fixture:
+treeview/db-description-line-separator-then-comment-line] [fixture:
+treeview/db-title-line-separator-then-comment-line] [fixture:
+treeview/db-acc-title-line-separator-then-comment-line] [fixture:
+treeview/db-acc-descr-line-separator-then-comment-line] [fixture:
+treeview/db-acc-descr-block-line-separator-then-comment-line]
 
 For directives and selected semicolons, the header, common keywords, the word
 `icon`, class names and complete icon references are atoms. `:::` and `##` are

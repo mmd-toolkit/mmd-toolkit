@@ -423,6 +423,18 @@ global な comment region と directive は、
 [fixture: architecture/common-description-block-comment]
 [fixture: architecture/comment-directive-in-mark]
 [fixture: architecture/comment-directive-in-value]
+値の中の U+2028 か U+2029 の後の物理行の残りは、その改行も含めて、
+共通のコメント領域が取り除くことがある。
+そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
+`accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
+U+2028、`B` である。
+[fixture: architecture/db-title-line-separator-then-comment-line]
+[fixture: architecture/db-acc-title-line-separator-then-comment-line]
+[fixture: architecture/db-acc-descr-line-separator-then-comment-line]
+[fixture: architecture/db-acc-descr-block-line-separator-then-comment-line]
+[fixture: architecture/db-bracket-label-line-separator-then-comment-line]
+[fixture: architecture/db-icon-text-string-line-separator-then-comment-line]
+[fixture: architecture/db-icon-text-string-paragraph-separator-then-comment-line]
 
 ## 文法
 

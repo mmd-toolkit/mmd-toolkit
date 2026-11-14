@@ -253,7 +253,17 @@ still have their shared effect inside values; these are distinct from native
 diagram comments. [fixture: gitgraph/lex-hidden-directive-string] [fixture:
 gitgraph/lex-hidden-directive-block] [fixture: gitgraph/lex-yaml-string]
 [fixture: gitgraph/lex-yaml-block] [fixture: gitgraph/comment-bare-string]
-[fixture: gitgraph/comment-block] [fixture: gitgraph/directive-in-string]
+[fixture: gitgraph/comment-block] [fixture: gitgraph/directive-in-string] A
+common comment region can remove the rest of a physical line after U+2028 or
+U+2029 inside a value, its line break included; the value then goes on with the
+next physical line, so a line value does not end there: `accTitle: A`, U+2028,
+`%% c`, a line break, and `B` has the accessibility title `A`, U+2028, and `B`.
+[fixture: gitgraph/db-string-line-separator-then-comment-line] [fixture:
+gitgraph/db-string-paragraph-separator-then-comment-line] [fixture:
+gitgraph/db-title-line-separator-then-comment-line] [fixture:
+gitgraph/db-acc-title-line-separator-then-comment-line] [fixture:
+gitgraph/db-acc-descr-line-separator-then-comment-line] [fixture:
+gitgraph/db-acc-descr-block-line-separator-then-comment-line]
 
 ### Composite common forms
 
