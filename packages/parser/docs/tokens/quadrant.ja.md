@@ -93,3 +93,12 @@ U+00A0、U+2028、U+2029、U+3000、U+FEFF は、
 一方、`A:::c%%{init: {}}%%1: [0.3, 0.6]` は拒否されます。
 [fixture: quadrant/db-directive-two-in-text]
 [fixture: quadrant/div-class-directive-inside]
+コメント領域は、`classDef` のクラスの名前の `Identifier` トークンも切ります。
+名前は、その中の U+2028 か U+2029 の後で、領域をまたいで続くからです。
+[トークンの中のコメント領域](../tokens.ja.md#トークンの中のコメント領域)
+を参照。
+名前が U+2028 で始まるときも、断片は `Identifier` トークンです。
+一方、領域の後の無視される `;` は名前の中にあり、入力を拒否させます。
+[fixture: quadrant/lex-classdef-name-line-separator-comment-line]
+[fixture: quadrant/lex-classdef-name-starts-with-line-separator-comment-line]
+[fixture: quadrant/div-classdef-name-comment-line-ignored-semicolon]
