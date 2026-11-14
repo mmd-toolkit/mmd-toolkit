@@ -140,7 +140,7 @@ value `first`, U+2028, a line break, and `second`. [fixture:
 agentflow/lex-comment-in-label-after-ls] In an eventmodeling data block, the
 comment line stays in the value: `a`, U+2028, `%% c`, a line break, and `b` are
 in it as written. [fixture:
-eventmodeling/db-block-line-separator-then-comment-line]
+eventmodeling/lex-block-line-separator-then-comment-line]
 
 Leading whitespace is not read, and the end of the text is one more `\n`. In
 flowchart, the whitespace after a `}` up to its last line feed is one line feed.

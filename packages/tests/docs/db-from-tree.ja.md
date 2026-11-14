@@ -152,7 +152,7 @@ U+2028、改行、`second` の値になります。
 [fixture: agentflow/lex-comment-in-label-after-ls]
 eventmodeling のデータブロックでは、コメント行は値に残り、`a`、U+2028、`%% c`、
 改行、`b` は書かれたままで値に入ります。
-[fixture: eventmodeling/db-block-line-separator-then-comment-line]
+[fixture: eventmodeling/lex-block-line-separator-then-comment-line]
 
 先頭の空白は読みません。
 テキストの終わりには、`\n` がもう 1 つあります。
