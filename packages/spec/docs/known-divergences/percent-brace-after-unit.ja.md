@@ -24,6 +24,7 @@ gantt
 ```
 
 この例はタスクの間に `%%{ }%%` のコメントを置きます。
+
 [fixture: gantt/lex-percent-brace-line-after-task]
 
 この文書は、
@@ -101,13 +102,14 @@ mermaid.js が直接たどり着く（[コメント](../diagrams/gantt.ja.md#コ
 | 7   | 同じ       | タイトル T を持つチャート |
 
 表で比較した読みを次の fixture が記録します。
-[fixture: gantt/div-percent-brace-glued-after-header] [fixture:
-gantt/div-percent-brace-glued-after-keyword] [fixture:
-gantt/div-percent-brace-glued-after-string] [fixture:
-gantt/div-percent-brace-after-two-spaces] [fixture:
-gantt/div-percent-brace-after-blank-line] [fixture:
-gantt/div-percent-brace-after-glued-percent-comment] [fixture:
-gantt/lex-percent-brace-after-line-feed-space]
+
+[fixture: gantt/div-percent-brace-glued-after-header]
+[fixture: gantt/div-percent-brace-glued-after-keyword]
+[fixture: gantt/div-percent-brace-glued-after-string]
+[fixture: gantt/div-percent-brace-after-two-spaces]
+[fixture: gantt/div-percent-brace-after-blank-line]
+[fixture: gantt/div-percent-brace-after-glued-percent-comment]
+[fixture: gantt/lex-percent-brace-after-line-feed-space]
 
 ほかの形も同じに読まれます。
 ヘッダーの直後の `%%{}` と `%%{`、曜日名、説明ブロック、
@@ -117,27 +119,30 @@ mermaid.js は拒否します。
 一方、改行とタブの後、単位と空白 1 つの後（行の残りを取ります）、
 `%` のコメント行の次の行、click の文の後の `%%{ }%%` と、
 独立した行の `%%{}` や `%%{-x}%%` はどちらでもコメントです。
-[fixture: gantt/div-percent-brace-glued-empty-after-header] [fixture:
-gantt/div-percent-brace-open-glued-after-header] [fixture:
-gantt/div-percent-brace-glued-after-day] [fixture:
-gantt/div-percent-brace-glued-after-block] [fixture:
-gantt/div-percent-brace-glued-after-empty-block] [fixture:
-gantt/div-percent-brace-after-space-line-feed] [fixture:
-gantt/div-percent-brace-after-percent-comment-blank-line] [fixture:
-gantt/lex-percent-brace-after-tab] [fixture:
-gantt/lex-percent-brace-after-unit-space] [fixture:
-gantt/lex-percent-brace-after-percent-comment-line] [fixture:
-gantt/lex-percent-brace-after-call-line-feed] [fixture:
-gantt/lex-percent-brace-after-href-space] [fixture:
-gantt/lex-percent-brace-empty-line] [fixture:
-gantt/lex-percent-brace-non-word-line]
+
+[fixture: gantt/div-percent-brace-glued-empty-after-header]
+[fixture: gantt/div-percent-brace-open-glued-after-header]
+[fixture: gantt/div-percent-brace-glued-after-day]
+[fixture: gantt/div-percent-brace-glued-after-block]
+[fixture: gantt/div-percent-brace-glued-after-empty-block]
+[fixture: gantt/div-percent-brace-after-space-line-feed]
+[fixture: gantt/div-percent-brace-after-percent-comment-blank-line]
+[fixture: gantt/lex-percent-brace-after-tab]
+[fixture: gantt/lex-percent-brace-after-unit-space]
+[fixture: gantt/lex-percent-brace-after-percent-comment-line]
+[fixture: gantt/lex-percent-brace-after-call-line-feed]
+[fixture: gantt/lex-percent-brace-after-href-space]
+[fixture: gantt/lex-percent-brace-empty-line]
+[fixture: gantt/lex-percent-brace-non-word-line]
+
 差異は一方向です。
 この仕様は mermaid.js が拒否する入力を受理し、
 mermaid.js がここで受理する入力を拒否することはありません。
 タイトルのテキスト、タスクのデータ、
 ほかのテキストの中の `%%{` はどちらでもテキストです。
-[fixture: gantt/lex-percent-brace-in-title-text] [fixture:
-gantt/lex-percent-brace-in-task-data]
+
+[fixture: gantt/lex-percent-brace-in-title-text]
+[fixture: gantt/lex-percent-brace-in-task-data]
 
 ## 書き手にとっての結果
 

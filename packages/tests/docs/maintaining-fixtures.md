@@ -55,11 +55,13 @@ Db can be derived. Embedded configuration can change acceptance in either
 direction. Its comparison reference omits only blocks rejected during Mermaid's
 configuration derivation and removes only the specification-named acceptance
 keys from valid text configuration. Keep the other derived values, including
-Mermaid's frontmatter title and Db settings such as `wrap`. [fixture:
-gitgraph/div-frontmatter-main-branch-preserves-title] [fixture:
-sequence/div-invalid-frontmatter-preserves-wrap-directive] Keep a missing
-comparison Db explicit rather than inventing one or treating mermaid.js's
-rejection as the specification's rejection.
+Mermaid's frontmatter title and Db settings such as `wrap`.
+
+[fixture: gitgraph/div-frontmatter-main-branch-preserves-title] [fixture:
+sequence/div-invalid-frontmatter-preserves-wrap-directive]
+
+Keep a missing comparison Db explicit rather than inventing one or treating
+mermaid.js's rejection as the specification's rejection.
 
 ## Special characters in the inputs
 
@@ -231,8 +233,9 @@ field, since no other field can hold such a number. The `raw` of the node has
 the number as written, and `checkTree()` accepts `null`, `Infinity`, and
 `-Infinity` for the `value` of a NumericLiteral whose written text is such a
 number, and no `null` for any other. `dbFromTree()` reads the number from the
-text of the node, so it needs no conversion. [fixture:
-xychart/db-plot-values-overflow]
+text of the node, so it needs no conversion.
+
+[fixture: xychart/db-plot-values-overflow]
 
 ## Exports for the tools
 
@@ -373,6 +376,18 @@ digits of the SHA-256 of the input, for example `spec-flow-edges-3f2a9c1b`. A
 name depends only on the input and where it was first found, so collecting again
 after mermaid.js changes adds only new inputs and renames nothing. Two different
 inputs of one file whose hashes begin alike stop the run, to be named by hand.
+
+A fixture whose `source` has `kind` `mermaid` is not written with a sentence,
+and a sentence need not cite it. Its input is mermaid.js's own, taken in bulk
+from its tests, its documents, and its demos, so that what the parser and
+`dbFromTree()` do with the inputs is checked against what mermaid.js does; by
+how it is made, it answers no one sentence. The tree of such a fixture is
+checked by `checkTree()`, by the Db that `dbFromTree()` builds from it against
+the Db of mermaid.js, and by the parser's comparison of its output with the
+recorded tree. A sentence may still cite one of them, and then its tree is read
+against that sentence like the tree of any other fixture; the tree of one that
+no sentence cites is read against no sentence. An input that the parser rejects
+has no tree, only the `parse-error.json` that the parser's tests compare.
 
 How to prepare the checkout and run the collection, and how to check the inputs
 mermaid.js rejects, is in [tools/README.md](../../../tools/README.md).

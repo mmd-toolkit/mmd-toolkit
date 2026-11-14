@@ -17,8 +17,9 @@ mermaid.js での正解の出どころ:
 [detection.ja.md](../detection.ja.md) の項目 15 がこの文法を選びます。
 テキストが、空白の後に、
 ちょうどこの大文字小文字で `sequenceDiagram` から始まるときです。
-[fixture: common/detect-minimal-sequence] [fixture:
-common/detect-case-sensitive-sequence]
+
+[fixture: common/detect-minimal-sequence]
+[fixture: common/detect-case-sensitive-sequence]
 [fixture: sequence/docs-config-accessibility-6016a981]
 
 検出は検出点だけを見ます（[図種の検出](../common.ja.md#図種の検出) を参照）。
@@ -27,8 +28,9 @@ common/detect-case-sensitive-sequence]
 そのため、`sequenceDiagramX` は sequence と判定され、拒否されます。
 最初の文は、キーワードと同じ行に続けてかまいません。
 `sequenceDiagram A->>B: x` は、A から B へのメッセージを持ちます。
-[fixture: sequence/header-word-after-keyword] [fixture:
-sequence/header-statement-same-line]
+
+[fixture: sequence/header-word-after-keyword]
+[fixture: sequence/header-statement-same-line]
 
 `%%` だけの行や、ディレクティブではない `%%{ }%%` は、
 キーワードの前にあってかまいません。
@@ -44,17 +46,19 @@ mermaid.js の字句解析器もそう読みます（[文の文脈](#文の文�
 キーワードの前のそれ以外のテキスト（`#` や `;` の行、
 キーワードと同じ行の `%%`）は検出点の図のテキストで、どの検出器も一致せず、
 mermaid.js と同じく入力は拒否されます。
-[fixture: sequence/header-after-bare-percent-line] [fixture:
-sequence/header-after-empty-braces-line] [fixture:
-sequence/header-after-empty-braces-semicolon] [fixture:
-sequence/header-after-empty-braces-line-text] [fixture:
-sequence/header-after-non-word-brace-line] [fixture:
-sequence/header-after-empty-braces-then-keyword-same-line] [fixture:
-sequence/header-after-non-word-brace-then-keyword-same-line] [fixture:
-sequence/header-after-two-bare-percent-lines] [fixture:
-sequence/header-after-hash-line] [fixture:
-sequence/header-after-semicolon-line] [fixture:
-sequence/header-after-bare-percent-on-same-line]
+
+[fixture: sequence/header-after-bare-percent-line]
+[fixture: sequence/header-after-empty-braces-line]
+[fixture: sequence/header-after-empty-braces-semicolon]
+[fixture: sequence/header-after-empty-braces-line-text]
+[fixture: sequence/header-after-non-word-brace-line]
+[fixture: sequence/header-after-empty-braces-then-keyword-same-line]
+[fixture: sequence/header-after-non-word-brace-then-keyword-same-line]
+[fixture: sequence/header-after-two-bare-percent-lines]
+[fixture: sequence/header-after-hash-line]
+[fixture: sequence/header-after-semicolon-line]
+[fixture: sequence/header-after-bare-percent-on-same-line]
+
 flowchart では、同じ `%%` の行は、
 mermaid.js と同じく拒否されます（[検出](./flowchart.ja.md#検出) を参照）。
 
@@ -79,8 +83,9 @@ mermaid.js と同じく拒否されます（[検出](./flowchart.ja.md#検出) �
 `participant A` と `note left of A: x` として読まれます。
 単位のテキストは書かれた大文字小文字を保ち、id は書かれたとおりに比べます。
 `participant A` と `participant a` は、2 つの参加者を挙げます。
-[fixture: sequence/lex-keyword-upper-case] [fixture:
-sequence/lex-keyword-mixed-case] [fixture: sequence/lex-id-case]
+
+[fixture: sequence/lex-keyword-upper-case]
+[fixture: sequence/lex-keyword-mixed-case] [fixture: sequence/lex-id-case]
 
 ### 単位と文脈
 
@@ -105,8 +110,10 @@ sequence/lex-keyword-mixed-case] [fixture: sequence/lex-id-case]
 そのコメント領域が図のコメントを 2 つに切ります。
 `A->>B: y #c`、U+2029、行 `%% d`、行 `C->>D: z` のメッセージは、
 A から B への 1 つだけです。
+
 [fixture: sequence/lex-hash-comment-across-comment-line]
 [fixture: sequence/tokens-sequence-hash-comment-alone-u2028-94dfcd06]
+
 これは [common.ja.md](../common.ja.md#コメント行) のコメント行ではありません。
 コメント行は字句解析器が読む前に除かれますが、
 図のコメントは行の途中からも始まります。
@@ -114,17 +121,20 @@ A から B への 1 つだけです。
 それ以外は `%` で、その値は印の後のテキストです。
 `%% c` の値は、コメント行と同じく空白と `c` で、`% c` の値も同じです。
 `%%% c` の値は `%`、空白、`c` です。
-[fixture: sequence/lex-percent-comment-after-unit] [fixture:
-sequence/lex-single-percent-comment] [fixture:
-sequence/lex-percent-comment-three-percent]
+
+[fixture: sequence/lex-percent-comment-after-unit]
+[fixture: sequence/lex-single-percent-comment]
+[fixture: sequence/lex-percent-comment-three-percent]
+
 印は、字句解析器が読むディレクティブを除いたテキストの上で見つけます。
 値は、コメント行と同じく、ディレクティブを含む、印の後のソースのテキストです。
 `autonumber %%%{a}%%%` は、最初と最後の `%` を印 `%%` とし、
 値が空のコメントを持ちます。
 `autonumber %%%{a}%% c` では、ディレクティブを除いたテキストは `% c` なので、
 印は最初の `%` で、値は `%%{a}%% c` です。
-[fixture: sequence/lex-diagram-comment-directive-between-marks] [fixture:
-sequence/lex-diagram-comment-directive-after-single-mark]
+
+[fixture: sequence/lex-diagram-comment-directive-between-marks]
+[fixture: sequence/lex-diagram-comment-directive-after-single-mark]
 
 下の**キーワード**は、字句解析器が大文字小文字を区別せずに読み、
 後に語の文字が続かないところでだけ読む語です（[表記](../common.ja.md#表記)
@@ -132,8 +142,9 @@ sequence/lex-diagram-comment-directive-after-single-mark]
 `ender->>B: x` と `notes->>B: x` は参加者 `ender` と `notes` を持ちます。
 一方、`loop-a->>B: x` では、`-` は語の文字でないので、
 字句解析器はキーワード `loop` を読みます。
-[fixture: sequence/lex-keyword-prefix-of-id] [fixture:
-sequence/lex-keyword-before-dash]
+
+[fixture: sequence/lex-keyword-prefix-of-id]
+[fixture: sequence/lex-keyword-before-dash]
 
 ### 単位の中のディレクティブ
 
@@ -157,13 +168,15 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 - `A->>B: x%%{init: {}}%%y` のメッセージは `xy`、
   `Al%%{init: {}}%%ice->>B: x` の参加者は `Alice`、
   `participant A%%{init: {}}%%B` の参加者は `AB` で、
-  どれも mermaid.js と同じです。 [fixture: sequence/lex-directive-in-text]
-  [fixture:
-  sequence/lex-directive-in-id-run] [fixture:
-  sequence/lex-directive-in-participant-id]
+  どれも mermaid.js と同じです。
+
+  [fixture: sequence/lex-directive-in-text]
+  [fixture: sequence/lex-directive-in-id-run]
+  [fixture: sequence/lex-directive-in-participant-id]
   [fixture: sequence/lex-directive-in-title-text]
   [fixture: sequence/lex-directive-in-acc-descr-text]
   [fixture: sequence/lex-directive-in-acc-descr-block-text]
+
   ディレクティブの隣の空白は、
   1 つの単位である id
   に残ります（[SequenceIdentifier](../ast/sequence.ja.md#sequenceidentifier)
@@ -171,20 +184,26 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
   `participant A%%{init: {}}%% c%%B` の参加者は `A c%%B`、
   `Al%%{init: {}}%% c%%ice->>B: x` の参加者は `Al c%%ice`、
   `participant A %%{init: {}}%% B` の参加者は `A`、空白 2 つ、`B` です。
-  [fixture: sequence/lex-directive-in-id-before-space] [fixture:
-  sequence/lex-directive-in-id-run-before-space] [fixture:
-  sequence/tokens-directive-participant-spaces]
+
+  [fixture: sequence/lex-directive-in-id-before-space]
+  [fixture: sequence/lex-directive-in-id-run-before-space]
+  [fixture: sequence/tokens-directive-participant-spaces]
+
   無視される `;` も同じで、`style` の規則に当たる行では、
   `participant B;C` の参加者は `BC`、`B;C->>E: m` は `BC` からのメッセージです。
-  [fixture: sequence/tokens-ignored-semicolon-in-participant-id] [fixture:
-  sequence/tokens-ignored-semicolon-in-message-id]
+
+  [fixture: sequence/tokens-ignored-semicolon-in-participant-id]
+  [fixture: sequence/tokens-ignored-semicolon-in-message-id]
+
 - `parti%%{init: {}}%%cipant A`、`A-%%{init: {}}%%>>B: x`、
   `autonumber 1%%{init: {}}%%0`、`A->>B: wr%%{init: {}}%%ap:x` では、
   ディレクティブがキーワード、矢印、数、`wrap-prefix` の単位の中にあり、
   入力は拒否されます。
   mermaid.js はそれを受理します（[既知の差異](#既知の差異) を参照）。
-  [fixture: sequence/div-directive-in-keyword] [fixture:
-  sequence/div-directive-in-arrow] [fixture: sequence/div-directive-in-number]
+
+  [fixture: sequence/div-directive-in-keyword]
+  [fixture: sequence/div-directive-in-arrow]
+  [fixture: sequence/div-directive-in-number]
   [fixture: sequence/div-directive-in-wrap-prefix]
 
 ### 文の文脈
@@ -192,47 +211,70 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 文の文脈では、字句解析器は次の規則を順に試します。
 
 1. 1 個以上の改行: `newline` の単位。
+
    [fixture: sequence/lex-autonumber-line-break]
+
 2. 1 個以上の空白で、最初の 1 個が改行でないもの: 何もしない。
    この並びは、空白の後に続く改行も取るので、
    空白の後の改行は `newline` の単位になりません。
    ほかの文脈と、行の終わりまで読む規則は、改行を残します。
+
    [fixture: sequence/lex-trailing-space-hides-line-break]
+
 3. `#` と、改行の前までのその行の残り: 図のコメント。
+
    [fixture: sequence/lex-hash-comment-after-unit]
+
 4. 後に `{` が続かない `%` と、その行の残り: 図のコメント。
    `%` は 1 つで足ります。
    `autonumber % c` と、`% hello` の行はコメントです。
    一方、始まりに `%%` のある行は、
    [common.ja.md](../common.ja.md#コメント行) のコメント行で、
    字句解析器が読む前に除かれます。
-   [fixture: sequence/lex-single-percent-comment] [fixture:
-   sequence/lex-single-percent-comment-line]
+
+   [fixture: sequence/lex-single-percent-comment]
+   [fixture: sequence/lex-single-percent-comment-line]
+
 5. **数**: 1 個以上の数字に、省略可能な `.` と 1 個か 2 個の数字が続くもの、
    または `.` と 1 個か 2 個の数字。
    その後に、読まずに、空白（U+0020）、改行、`%%` のどれかが、
    続かなければなりません。
-   `number` の単位。 [fixture: sequence/db-autonumber-start]
+   `number` の単位。
+
+   [fixture: sequence/db-autonumber-start]
    [fixture: sequence/db-autonumber-fraction]
    [fixture: sequence/lex-number-before-space]
    [fixture: sequence/lex-number-three-decimals]
    [fixture: sequence/spec-sequence-diagram-0c1ce079]
+
 6. キーワード `box`: `box` の単位。
-   行の文脈に入ります。 [fixture: sequence/db-box-empty]
+   行の文脈に入ります。
+
+   [fixture: sequence/db-box-empty]
+
 7. キーワード `participant` と `actor`: キーワードを名前とする単位。
-   id の文脈に入ります。 [fixture: sequence/lex-alias-tabs]
-   [fixture: sequence/demo-sequence-6c40b039]
+   id の文脈に入ります。
+
+   [fixture: sequence/lex-alias-tabs] [fixture: sequence/demo-sequence-6c40b039]
+
 8. キーワード `create`: `create` の単位。
+
    [fixture: sequence/db-create-participant-before-message]
+
 9. キーワード `destroy`: `destroy` の単位。
-   id の文脈に入ります。 [fixture: sequence/gram-destroy-last]
+   id の文脈に入ります。
+
+   [fixture: sequence/gram-destroy-last]
+
 10. キーワード `loop`、`rect`、`opt`、`alt`、`else`、`par`、`par_over`、`and`、
     `critical`、`option`、`break`: キーワードを名前とする単位。
-    行の文脈に入ります。 [fixture: sequence/gram-block-empty-text]
-    [fixture: sequence/db-block-rect] [fixture: sequence/db-block-opt]
-    [fixture: sequence/db-block-alt] [fixture: sequence/db-block-par]
-    [fixture: sequence/db-block-par-over] [fixture: sequence/db-block-critical]
-    [fixture: sequence/db-block-break]
+    行の文脈に入ります。
+
+    [fixture: sequence/gram-block-empty-text] [fixture: sequence/db-block-rect]
+    [fixture: sequence/db-block-opt] [fixture: sequence/db-block-alt]
+    [fixture: sequence/db-block-par] [fixture: sequence/db-block-par-over]
+    [fixture: sequence/db-block-critical] [fixture: sequence/db-block-break]
+
 11. キーワード `end`、`over`、`note`: キーワードを名前とする単位。
     キーワード `links`、`link`、`properties`、
     `details`（`links` を `link` より先に試す）で、
@@ -255,6 +297,7 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
     行 `link %% c` も拒否されます。
     `link` の後に空白と `%` が続くのでキーワードで、
     その後に id が続かないからです。
+
     [fixture: sequence/lex-link-word-before-arrow]
     [fixture: sequence/lex-link-word-space-before-arrow]
     [fixture: sequence/lex-link-word-space-before-reverse-arrow]
@@ -271,6 +314,7 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
     [fixture: sequence/lex-link-word-space-directive-before-arrow]
     [fixture: sequence/lex-link-word-line-separator]
     [fixture: sequence/lex-link-keyword-before-comment]
+
     2 語の間が空白 1 個のキーワード `left of` か `right of`: `left` か `right`
     の単位と、`of` の単位。
     語の間が空白 2 個かタブなら、入力は拒否されます。
@@ -281,70 +325,108 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
     `style` の規則に当たる行の `Note left; of A: t` もそうです。
     `Note left %%{init: {}}%% of A: t` は空白が 2 個なので拒否されます。
     どれも mermaid.js と同じです。
-    [fixture: sequence/lex-note-position-two-spaces] [fixture:
-    sequence/lex-note-position-tab] [fixture:
-    sequence/lex-directive-between-left-and-of] [fixture:
-    sequence/lex-directive-between-space-and-of] [fixture:
-    sequence/lex-directive-between-right-and-of] [fixture:
-    sequence/tokens-ignored-semicolon-between-left-and-of] [fixture:
-    sequence/tokens-ignored-semicolon-between-space-and-of] [fixture:
-    sequence/lex-note-position-directive-between-spaces]
+
+    [fixture: sequence/lex-note-position-two-spaces]
+    [fixture: sequence/lex-note-position-tab]
+    [fixture: sequence/lex-directive-between-left-and-of]
+    [fixture: sequence/lex-directive-between-space-and-of]
+    [fixture: sequence/lex-directive-between-right-and-of]
+    [fixture: sequence/tokens-ignored-semicolon-between-left-and-of]
+    [fixture: sequence/tokens-ignored-semicolon-between-space-and-of]
+    [fixture: sequence/lex-note-position-directive-between-spaces]
     [fixture: sequence/gram-statement-after-end]
     [fixture: sequence/db-links-empty] [fixture: sequence/db-link-without-at]
     [fixture: sequence/db-properties-empty] [fixture: sequence/db-details-empty]
     [fixture: sequence/db-note-over-two]
     [fixture: sequence/lex-keyword-mixed-case]
+
 12. キーワード `activate` と `deactivate`: キーワードを名前とする単位。
-    id の文脈に入ります。 [fixture: sequence/lex-activate-id-space]
+    id の文脈に入ります。
+
+    [fixture: sequence/lex-activate-id-space]
     [fixture: sequence/db-deactivate-after-plus]
+
 13. `title`、改行でもよい 1 個の空白、`#`、`;`、
     改行以外の 1 個以上の文字: 語と空白の `title` の単位と、
-    残りの `title-text` の単位。 [fixture: sequence/lex-title-line-break]
+    残りの `title-text` の単位。
+
+    [fixture: sequence/lex-title-line-break]
     [fixture: sequence/lex-title-rest-of-line]
+
 14. `title:`、1 個の空白、`#`、`;`、改行以外の 1 個以上の文字: 同じように、
-    `title:` の単位と `title-text` の単位。 [fixture: sequence/db-title-legacy]
+    `title:` の単位と `title-text` の単位。
+
+    [fixture: sequence/db-title-legacy]
+
 15. `accTitle`、0 個以上の空白、`:`、
     0 個以上の空白: `accTitle` の単位と `:` の単位。
-    タイトルの文脈に入ります。 [fixture: sequence/lex-acc-title-line-feed]
+    タイトルの文脈に入ります。
+
+    [fixture: sequence/lex-acc-title-line-feed]
     [fixture: sequence/lex-acc-title-directive-before-colon]
     [fixture: sequence/lex-acc-title-no-whitespace]
     [fixture: sequence/lex-acc-title-line-feed-before-colon]
+
 16. `accDescr`、0 個以上の空白、`:`、
     0 個以上の空白: `accDescr` の単位と `:` の単位。
-    説明の文脈に入ります。 [fixture: sequence/db-acc-descr-empty-replaces]
+    説明の文脈に入ります。
+
+    [fixture: sequence/db-acc-descr-empty-replaces]
     [fixture: sequence/lex-acc-descr-no-whitespace]
     [fixture: sequence/lex-acc-descr-space-before-colon]
     [fixture: sequence/lex-acc-descr-line-feed-before-colon]
+
 17. `accDescr`、0 個以上の空白、`{`、
     0 個以上の空白: `accDescr` の単位と `{` の単位。
     説明のブロックの文脈に入ります。
+
     [fixture: sequence/db-acc-descr-empty-block-after-message]
     [fixture: sequence/lex-acc-descr-block-no-whitespace]
     [fixture: sequence/lex-acc-descr-block-line-feed-before-brace]
+
 18. キーワード `sequenceDiagram`、`autonumber`、
     `off`: キーワードを名前とする単位。
+
     [fixture: sequence/header-statement-same-line]
     [fixture: sequence/lex-autonumber-line-break]
     [fixture: sequence/db-autonumber-off]
-19. `,`: `,` の単位。 [fixture: sequence/db-note-over-two]
-20. `;`: `newline` の単位。 [fixture: sequence/spec-sequence-diagram-543d2299]
+
+19. `,`: `,` の単位。
+
+    [fixture: sequence/db-note-over-two]
+
+20. `;`: `newline` の単位。
+
+    [fixture: sequence/spec-sequence-diagram-543d2299]
+
 21. **id の並び**: [id の並び](#id-の並び) で述べる文字の並び。
     `id` の単位で、そのテキストは並びから両端の空白を除いたものです。
+
     [fixture: sequence/lex-id-run-space]
+
 22. 矢印。
     次のうち最初に当たるもの: `->>`、`<<->>`、`-->>`、`<<-->>`、`->`、`-->`、
     `-x`、`--x`、`-)`、`--)`、`--|\`、`--|/`、`--\\`、`--//`、`/|--`、`\|--`、
     `//--`、`\\--`、`-|\`、`-|/`、`-\\`、`-//`、`/|-`、`\|-`、`//-`、`\\-`。
-    `arrow` の単位。 [fixture: sequence/db-arrow-types]
+    `arrow` の単位。
+
+    [fixture: sequence/db-arrow-types]
+
 23. `:` と、`#`、`;`、改行の前までのその行の残り: `:` の単位と、その後の残りを、
-    テキスト部分として読んだもの。 [fixture: sequence/lex-empty-text]
-    [fixture: sequence/lex-hash-ends-text]
+    テキスト部分として読んだもの。
+
+    [fixture: sequence/lex-empty-text] [fixture: sequence/lex-hash-ends-text]
     [fixture: sequence/spec-sequence-diagram-543d2299]
+
     [テキスト部分](#テキスト部分) を参照してください。
+
 24. `+`、`-`、`()`: そのテキストを名前とする単位。
+
     [fixture: sequence/db-message-activate-target]
     [fixture: sequence/db-message-central-connection-both]
+
 25. ほかの 1 文字: `invalid` の単位。
+
     [fixture: sequence/lex-invalid-line-parenthesis]
 
 テキストの終わりで、字句解析器は、文の文脈にいれば `newline` の単位を読み、
@@ -352,6 +434,7 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 テキストの終わりの `accDescr {` や `accDescr { x` のように、
 テキストが終える説明ブロックの後には `newline` の単位がなく、その文は、
 テキストとともに終わります（産出規則 `accessibility-statement` を参照）。
+
 [fixture: sequence/lex-acc-descr-block-unclosed-empty]
 [fixture: sequence/db-acc-descr-block-unclosed]
 [fixture: sequence/demo-sequence-6c40b039]
@@ -369,53 +452,49 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
   テキストの中では、`%%` はテキストの一部で、`#` はテキストを終えます。
   `A->>B: y %% c` のメッセージは `y %% c` で、
   `A->>B: x # c` のメッセージは `x` です。
-  [fixture: sequence/lex-hash-inside-id] [fixture:
-  sequence/lex-hash-inside-id-run] [fixture: sequence/lex-percent-in-text]
-  [fixture: sequence/lex-hash-ends-text] [fixture:
-  sequence/lex-hash-comment-after-unit] [fixture:
-  sequence/lex-percent-comment-after-unit]
+
+  [fixture: sequence/lex-hash-inside-id]
+  [fixture: sequence/lex-hash-inside-id-run]
+  [fixture: sequence/lex-percent-in-text] [fixture: sequence/lex-hash-ends-text]
+  [fixture: sequence/lex-hash-comment-after-unit]
+  [fixture: sequence/lex-percent-comment-after-unit]
+
   U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
   値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
-  [fixture:
-  sequence/db-message-text-line-separator-then-comment-line] [fixture:
-  sequence/lex-message-text-line-separator-comment-line-directive-next]
-  [fixture:
-  sequence/lex-message-text-line-separator-comment-line-space-next] [fixture:
-  sequence/lex-message-text-line-separator-comment-line-separator-next]
-  [fixture:
-  sequence/gram-message-text-line-separator-comment-line-empty-line] [fixture:
-  sequence/lex-message-text-line-separator-comment-line-end-of-text] [fixture:
-  sequence/lex-message-text-line-separator-comment-line-cr] [fixture:
-  sequence/lex-message-text-line-separator-comment-line-crlf] [fixture:
-  sequence/lex-message-text-line-separator-comment-line-two-comment-lines]
+
+  [fixture: sequence/db-message-text-line-separator-then-comment-line]
+  [fixture: sequence/lex-message-text-line-separator-comment-line-directive-next]
+  [fixture: sequence/lex-message-text-line-separator-comment-line-space-next]
+  [fixture: sequence/lex-message-text-line-separator-comment-line-separator-next]
+  [fixture: sequence/gram-message-text-line-separator-comment-line-empty-line]
+  [fixture: sequence/lex-message-text-line-separator-comment-line-end-of-text]
+  [fixture: sequence/lex-message-text-line-separator-comment-line-cr]
+  [fixture: sequence/lex-message-text-line-separator-comment-line-crlf]
+  [fixture: sequence/lex-message-text-line-separator-comment-line-two-comment-lines]
   [fixture: sequence/lex-message-text-line-separator-comment-line-two-regions]
   [fixture: sequence/lex-message-text-line-separator-comment-line-spaces-before]
-  [fixture:
-  sequence/lex-message-text-line-separator-comment-line-line-feed-before]
-  [fixture:
-  sequence/lex-message-text-line-separator-comment-line-directive-before]
-  [fixture:
-  sequence/lex-message-text-line-separator-comment-line-line-rule-before]
-  [fixture:
-  sequence/lex-message-text-line-separator-comment-line-line-rule-after]
+  [fixture: sequence/lex-message-text-line-separator-comment-line-line-feed-before]
+  [fixture: sequence/lex-message-text-line-separator-comment-line-directive-before]
+  [fixture: sequence/lex-message-text-line-separator-comment-line-line-rule-before]
+  [fixture: sequence/lex-message-text-line-separator-comment-line-line-rule-after]
   [fixture: sequence/gram-message-text-line-separator-comment-line-bare-percent]
-  [fixture:
-  sequence/gram-message-text-line-separator-comment-line-percent-brace]
-  [fixture: sequence/lex-note-text-line-separator-then-comment-line] [fixture:
-  sequence/lex-loop-text-line-separator-then-comment-line] [fixture:
-  sequence/lex-alt-text-line-separator-then-comment-line] [fixture:
-  sequence/lex-else-text-line-separator-then-comment-line] [fixture:
-  sequence/lex-opt-text-line-separator-then-comment-line] [fixture:
-  sequence/lex-par-text-line-separator-then-comment-line] [fixture:
-  sequence/lex-and-text-line-separator-then-comment-line] [fixture:
-  sequence/lex-critical-text-line-separator-then-comment-line] [fixture:
-  sequence/lex-option-text-line-separator-then-comment-line] [fixture:
-  sequence/lex-break-text-line-separator-then-comment-line] [fixture:
-  sequence/lex-rect-text-line-separator-then-comment-line] [fixture:
-  sequence/lex-links-text-line-separator-then-comment-line] [fixture:
-  sequence/lex-link-text-line-separator-then-comment-line] [fixture:
-  sequence/lex-properties-text-line-separator-then-comment-line] [fixture:
-  sequence/lex-details-text-line-separator-then-comment-line]
+  [fixture: sequence/gram-message-text-line-separator-comment-line-percent-brace]
+  [fixture: sequence/lex-note-text-line-separator-then-comment-line]
+  [fixture: sequence/lex-loop-text-line-separator-then-comment-line]
+  [fixture: sequence/lex-alt-text-line-separator-then-comment-line]
+  [fixture: sequence/lex-else-text-line-separator-then-comment-line]
+  [fixture: sequence/lex-opt-text-line-separator-then-comment-line]
+  [fixture: sequence/lex-par-text-line-separator-then-comment-line]
+  [fixture: sequence/lex-and-text-line-separator-then-comment-line]
+  [fixture: sequence/lex-critical-text-line-separator-then-comment-line]
+  [fixture: sequence/lex-option-text-line-separator-then-comment-line]
+  [fixture: sequence/lex-break-text-line-separator-then-comment-line]
+  [fixture: sequence/lex-rect-text-line-separator-then-comment-line]
+  [fixture: sequence/lex-links-text-line-separator-then-comment-line]
+  [fixture: sequence/lex-link-text-line-separator-then-comment-line]
+  [fixture: sequence/lex-properties-text-line-separator-then-comment-line]
+  [fixture: sequence/lex-details-text-line-separator-then-comment-line]
+
 - 図のコメントはその印から始まり、その前の単位は文字をすべて保ちます。
   数の後には `%%` が続いてよいので、
   `autonumber 5%% c` は `autonumber 5 %% c` と同じく 5 から始まり、
@@ -427,33 +506,36 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
   `:` の後では、テキストの文字です。
   `A->>B:%% c` のメッセージは `%% c` です。
   mermaid.js はこれらの入力を別に読みます（[既知の差異](#既知の差異) を参照）。
-  [fixture: sequence/lex-percent-comment-takes-number] [fixture:
-  sequence/lex-percent-comment-after-space] [fixture:
-  sequence/div-comment-after-two-digit-number] [fixture:
-  sequence/lex-number-before-single-percent] [fixture:
-  sequence/div-comment-after-one-character-id] [fixture:
-  sequence/div-comment-after-text-colon]
+
+  [fixture: sequence/lex-percent-comment-takes-number]
+  [fixture: sequence/lex-percent-comment-after-space]
+  [fixture: sequence/div-comment-after-two-digit-number]
+  [fixture: sequence/lex-number-before-single-percent]
+  [fixture: sequence/div-comment-after-one-character-id]
+  [fixture: sequence/div-comment-after-text-colon]
+
   id の並びの中では、U+2028 や U+2029 の後のコメントは読み飛ばされ、
   並びはその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
-  [fixture:
-  sequence/lex-id-run-line-separator-then-comment-line] [fixture:
-  sequence/lex-id-run-paragraph-separator-then-comment-line] [fixture:
-  sequence/lex-id-run-line-separator-comment-line-directive-next] [fixture:
-  sequence/lex-id-run-line-separator-comment-line-space-next] [fixture:
-  sequence/lex-id-run-line-separator-comment-line-separator-next] [fixture:
-  sequence/gram-id-run-line-separator-comment-line-empty-line] [fixture:
-  sequence/gram-id-run-line-separator-comment-line-end-of-text] [fixture:
-  sequence/lex-participant-id-run-line-separator-comment-line-end-of-text]
-  [fixture: sequence/lex-id-run-line-separator-comment-line-cr] [fixture:
-  sequence/lex-id-run-line-separator-comment-line-crlf] [fixture:
-  sequence/lex-id-run-line-separator-comment-line-two-comment-lines] [fixture:
-  sequence/lex-id-run-line-separator-comment-line-two-regions] [fixture:
-  sequence/lex-id-run-line-separator-comment-line-spaces-before] [fixture:
-  sequence/lex-id-run-line-separator-comment-line-line-feed-before] [fixture:
-  sequence/lex-id-run-line-separator-comment-line-directive-before] [fixture:
-  sequence/lex-id-run-line-separator-comment-line-line-rule-after] [fixture:
-  sequence/gram-id-run-line-separator-comment-line-bare-percent] [fixture:
-  sequence/gram-id-run-line-separator-comment-line-percent-brace]
+
+  [fixture: sequence/lex-id-run-line-separator-then-comment-line]
+  [fixture: sequence/lex-id-run-paragraph-separator-then-comment-line]
+  [fixture: sequence/lex-id-run-line-separator-comment-line-directive-next]
+  [fixture: sequence/lex-id-run-line-separator-comment-line-space-next]
+  [fixture: sequence/lex-id-run-line-separator-comment-line-separator-next]
+  [fixture: sequence/gram-id-run-line-separator-comment-line-empty-line]
+  [fixture: sequence/gram-id-run-line-separator-comment-line-end-of-text]
+  [fixture: sequence/lex-participant-id-run-line-separator-comment-line-end-of-text]
+  [fixture: sequence/lex-id-run-line-separator-comment-line-cr]
+  [fixture: sequence/lex-id-run-line-separator-comment-line-crlf]
+  [fixture: sequence/lex-id-run-line-separator-comment-line-two-comment-lines]
+  [fixture: sequence/lex-id-run-line-separator-comment-line-two-regions]
+  [fixture: sequence/lex-id-run-line-separator-comment-line-spaces-before]
+  [fixture: sequence/lex-id-run-line-separator-comment-line-line-feed-before]
+  [fixture: sequence/lex-id-run-line-separator-comment-line-directive-before]
+  [fixture: sequence/lex-id-run-line-separator-comment-line-line-rule-after]
+  [fixture: sequence/gram-id-run-line-separator-comment-line-bare-percent]
+  [fixture: sequence/gram-id-run-line-separator-comment-line-percent-brace]
+
 - 規則 2 によって、行末の空白は、`newline` の単位を要る文から改行を隠します。
   `autonumber`、空白 2 個、改行、`A->>B: y` は拒否され、
   空白のない同じものは受理されます。
@@ -463,17 +545,21 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
   [issue #4293](https://github.com/mermaid-js/mermaid/issues/4293) は、
   この入力を報告していて、2026-10-01 の時点で未解決で、
   ラベルは `Type: Bug / Error` と `Status: Triage` です。
-  [fixture: sequence/lex-trailing-space-hides-line-break] [fixture:
-  sequence/lex-autonumber-line-break] [fixture:
-  sequence/lex-autonumber-space-before-comment-line]
+
+  [fixture: sequence/lex-trailing-space-hides-line-break]
+  [fixture: sequence/lex-autonumber-line-break]
+  [fixture: sequence/lex-autonumber-space-before-comment-line]
+
 - 数の後には、空白、改行、`%%` のどれかが続かなければなりません。
   `autonumber 10.001` と、`autonumber 5`、タブ、`6` は拒否されます。
   字句解析器はそこで id の並びを読むからです。
   `1->>2: x` は参加者 `1` と `2` を持ちますが、`1 ->>2: x` は拒否されます。
   空白が続く `1` は数だからです。
-  [fixture: sequence/spec-sequence-diagram-e6409a58] [fixture:
-  sequence/lex-number-before-tab] [fixture: sequence/lex-number-as-id]
+
+  [fixture: sequence/spec-sequence-diagram-e6409a58]
+  [fixture: sequence/lex-number-before-tab] [fixture: sequence/lex-number-as-id]
   [fixture: sequence/lex-number-before-space]
+
 - `title` は、改行でもよい 1 個の空白と、次の行の残りを取ります。
   `title`、改行、`A->>B: x` のタイトルは `A->>B: x` で、メッセージはありません。
   `title x A->>B: y` のタイトルは `x A->>B: y` です。
@@ -483,17 +569,20 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
   `#` か `;` はタイトルを終えます。
   `title a;;` のタイトルは `a` で、
   その後のそれぞれの `;` は `newline` の単位です。
-  [fixture: sequence/lex-title-line-break] [fixture:
-  sequence/lex-title-rest-of-line] [fixture:
-  sequence/db-title-next-line-indented] [fixture:
-  sequence/gram-title-then-separators]
+
+  [fixture: sequence/lex-title-line-break]
+  [fixture: sequence/lex-title-rest-of-line]
+  [fixture: sequence/db-title-next-line-indented]
+  [fixture: sequence/gram-title-then-separators]
+
 - id の並びは、[id の並び](#id-の並び) のとおりに終わります。
   id の並びも規則 22 から 24 の単位も始まらない文字は `invalid` の単位で、
   `invalid` の単位の行は受理されます（[文法](#文法) を参照）。
   `)`、`/`、`\`、`<`、`>` だけの行は受理されます。
-  [fixture: sequence/lex-invalid-line-parenthesis] [fixture:
-  sequence/lex-invalid-line-slash] [fixture:
-  sequence/lex-invalid-line-two-units]
+
+  [fixture: sequence/lex-invalid-line-parenthesis]
+  [fixture: sequence/lex-invalid-line-slash]
+  [fixture: sequence/lex-invalid-line-two-units]
 
 ### id の並び
 
@@ -501,14 +590,18 @@ id の並びは、左から右へ、2 つの手順で読みます。
 
 1. `/`、`\`、`+`、`(`、`)`、`<`、`-`、`>`、`:`、`,`、`;`、改行以外の文字を、
    できるだけ多く（1 個以上）。
-   その後に、 [fixture: sequence/lex-id-run-space]
+   その後に、
+
+   [fixture: sequence/lex-id-run-space]
+
 2. 続きを、並びの終わりで始められる限り、次々に。
    続きは、0 個以上の `-` の後に、`+`、`<`、`-`、`>`、`:`、`,`、`;`、
    改行以外の文字をできるだけ多く（1 個以上）読んだものです。
    続きは、次のどれかが続く位置からは始まりません: `-x`、`-)`、`-\`、`-/`、
    `-|\`、`-|/`、`--`、`/|-`、`\|-`、`//-`、`\\-`、`()`。
-   最初の 11 個は矢印の始まりです。 [fixture: sequence/lex-id-run-dash]
-   [fixture: sequence/db-arrow-types]
+   最初の 11 個は矢印の始まりです。
+
+   [fixture: sequence/lex-id-run-dash] [fixture: sequence/db-arrow-types]
 
 どちらの手順も、前の手順に文字を返しません。
 `Alice()->>John: x` では、手順 1 が `Alice` を読み、
@@ -517,9 +610,10 @@ id の並びは、左から右へ、2 つの手順で読みます。
 `Al()ice->>B: x` は拒否されます。
 `()` の例外は、続きが始まる位置でだけ見ます。
 `A(x)()->>B: x` では、続き `(x)()` が `()` を含み、参加者は `A(x)()` です。
-[fixture: sequence/lex-id-run-empty-parentheses-ends-run] [fixture:
-sequence/lex-id-run-empty-parentheses-inside-rejected] [fixture:
-sequence/lex-id-run-empty-parentheses-in-continuation]
+
+[fixture: sequence/lex-id-run-empty-parentheses-ends-run]
+[fixture: sequence/lex-id-run-empty-parentheses-inside-rejected]
+[fixture: sequence/lex-id-run-empty-parentheses-in-continuation]
 
 そのため、id の並びは、空白、`#`、`=` を含められ、最初の文字の後なら `/`、`\`、
 `(`、`)` も含められます。
@@ -531,11 +625,12 @@ sequence/lex-id-run-empty-parentheses-in-continuation]
 `A-xB: x` は A から B への矢印 `-x` のメッセージです。
 矢印の前の空白は並びの一部で、単位のテキストには入りません。
 `A ->> B : x` は `A` から `B` へのメッセージです。
+
 [fixture: sequence/lex-id-run-space] [fixture: sequence/lex-id-run-dash]
-[fixture: sequence/lex-id-run-slash] [fixture:
-sequence/lex-id-run-parentheses] [fixture: sequence/lex-id-run-double-dash]
-[fixture: sequence/lex-id-run-cross-arrow] [fixture:
-sequence/lex-id-run-spaces-around-arrow]
+[fixture: sequence/lex-id-run-slash] [fixture: sequence/lex-id-run-parentheses]
+[fixture: sequence/lex-id-run-double-dash]
+[fixture: sequence/lex-id-run-cross-arrow]
+[fixture: sequence/lex-id-run-spaces-around-arrow]
 
 ### id の文脈
 
@@ -543,32 +638,54 @@ id の文脈には、`participant`、`actor`、`destroy`、`activate`、
 `deactivate` で入ります。
 1 つの id を読みます。
 
-1. 改行以外の空白: 何もしない。 [fixture: sequence/lex-id-context-space]
+1. 改行以外の空白: 何もしない。
+
+   [fixture: sequence/lex-id-context-space]
+
 2. `#` とその行の残り: 図のコメント。
+
    [fixture: sequence/lex-id-context-hash-comment]
+
 3. `@{`: `@{` の単位。
-   データの文脈に入ります。 [fixture: sequence/gram-data-block-line-break-only]
+   データの文脈に入ります。
+
+   [fixture: sequence/gram-data-block-line-break-only]
+
 4. `<`、`>`、`:`、`,`、`;`、`@`、空白、改行以外の 1 個以上の文字で、
    その後に 0 個以上の空白（改行を含む）と `@{` が続くもの（それらは読まない）:
-   `id` の単位。 [fixture: sequence/db-data-block-create-participant]
+   `id` の単位。
+
+   [fixture: sequence/db-data-block-create-participant]
    [fixture: sequence/lex-id-before-data-dash]
    [fixture: sequence/lex-id-space-before-data]
+
 5. `<`、`>`、`:`、`,`、`;`、`@`、空白、改行以外の 1 個以上の文字で、
    その後に空白、キーワード `as`、
    1 個の空白が続くもの（それらは読まない）: `id` の単位。
-   別名の文脈に入ります。 [fixture: sequence/lex-alias-upper-case]
+   別名の文脈に入ります。
+
+   [fixture: sequence/lex-alias-upper-case]
    [fixture: sequence/lex-id-context-line-separator-before-as]
+
 6. `<`、`>`、`:`、`,`、`;`、`@`、改行以外の 1 個以上の文字の並びのうち、
    その後に 0 個以上の空白と、改行、`;`、
    `#` のどれかが続く最長のもの（それらは読まない）: `id` の単位で、
    そのテキストは並びから両端の空白を除いたもの。
-   id の文脈を出ます。 [fixture: sequence/lex-id-context-space]
+   id の文脈を出ます。
+
+   [fixture: sequence/lex-id-context-space]
    [fixture: sequence/lex-id-context-line-separator-in-id]
+
 7. `<`、`>`、`:`、`,`、`;`、`@`、改行以外の 0 個以上の文字、`<`、
    その行の残り: `invalid` の単位。
-   id の文脈を出ます。 [fixture: sequence/lex-id-context-hash-before-invalid]
+   id の文脈を出ます。
+
+   [fixture: sequence/lex-id-context-hash-before-invalid]
+
 8. 改行以外の 1 個以上の文字: `invalid` の単位。
-   id の文脈を出ます。 [fixture: sequence/lex-id-context-colon]
+   id の文脈を出ます。
+
+   [fixture: sequence/lex-id-context-colon]
 
 規則 6 の並びは `#` を含められ、行が許す最長のものです。
 `participant A # c` は id `A # c` を持ちます。
@@ -576,9 +693,10 @@ id の文脈には、`participant`、`actor`、`destroy`、`activate`、
 `participant A # c <x` では、`c` までの並びの後には `<` が続くので、
 並びは `A` で、`# c <x` は文の文脈の図のコメントです。
 `participant A # b # c <x` は id `A # b` を持ちます。
-[fixture: sequence/lex-hash-inside-id] [fixture:
-sequence/lex-id-context-hash-before-invalid] [fixture:
-sequence/lex-id-context-two-hashes-before-invalid]
+
+[fixture: sequence/lex-hash-inside-id]
+[fixture: sequence/lex-id-context-hash-before-invalid]
+[fixture: sequence/lex-id-context-two-hashes-before-invalid]
 
 そのため、`participant` の後の id は、空白、`#`、`=` を含められ、行の終わり、
 `;`、`as` の前で終わります。
@@ -592,6 +710,7 @@ sequence/lex-id-context-two-hashes-before-invalid]
 一方、`participant A B@{ "type": "queue" }` は拒否され、
 `@{` の前の改行も拒否されます。
 id の文脈には改行を読む規則がないからです。
+
 [fixture: sequence/lex-id-equals-before-data]
 [fixture: sequence/lex-id-space-before-data]
 [fixture: sequence/lex-id-tab-before-data]
@@ -599,29 +718,40 @@ id の文脈には改行を読む規則がないからです。
 [fixture: sequence/lex-id-space-directive-before-data]
 [fixture: sequence/lex-id-two-words-before-data]
 [fixture: sequence/lex-id-line-feed-before-data]
+
 `:` や `<` を含む id は拒否され、行の終わりの `participant` も拒否されます。
-改行を読む規則がないからです。 [fixture: sequence/lex-id-context-space]
-[fixture:
-sequence/lex-id-context-equals] [fixture: sequence/lex-activate-id-space]
-[fixture: sequence/lex-id-before-data-dash] [fixture:
-sequence/lex-id-context-colon] [fixture: sequence/lex-id-context-line-break]
+改行を読む規則がないからです。
+
+[fixture: sequence/lex-id-context-space]
+[fixture: sequence/lex-id-context-equals]
+[fixture: sequence/lex-activate-id-space]
+[fixture: sequence/lex-id-before-data-dash]
+[fixture: sequence/lex-id-context-colon]
+[fixture: sequence/lex-id-context-line-break]
 
 ### 別名の文脈
 
 別名の文脈には、`as` が続く id の後と、`as` が続くデータブロックの後で入ります。
 
-1. 改行以外の空白: 何もしない。 [fixture: sequence/lex-alias-tabs]
+1. 改行以外の空白: 何もしない。
+
+   [fixture: sequence/lex-alias-tabs]
    [fixture: sequence/lex-alias-line-separator-after-as]
+
 2. キーワード `as`: `as` の単位。
    別名の文脈と id の文脈を出て、行の文脈に入ります。
+
    [fixture: sequence/lex-alias-upper-case]
+
 3. 改行のところで、何も読まない: 文字を読まない `newline` の単位。
    別名の文脈と id の文脈を出ます。
+
    [fixture: sequence/lex-alias-lookahead-line-break-participant]
 
 このキーワードは大文字小文字を区別せず、
 その前後の空白は改行以外のどの空白でもかまいません。
 `participant A AS B` とタブを使った同じものは、A に説明 `B` を与えます。
+
 [fixture: sequence/lex-alias-upper-case] [fixture: sequence/lex-alias-tabs]
 
 規則 3 は、id かデータブロックと `as` の間に改行があるときに当たります。
@@ -635,17 +765,18 @@ id の文脈の規則 5 とデータの文脈の規則 2 が、
 id の文脈に入るどのキーワードの後でも、id が `as` のときも、
 データブロックの後でも、改行が何個あっても同じです。
 `as B` や `as` だけのように、次の行が文でなければ、入力は拒否されます。
-[fixture: sequence/lex-alias-lookahead-line-break-participant] [fixture:
-sequence/lex-alias-lookahead-line-break-id-as] [fixture:
-sequence/lex-alias-lookahead-line-break-activate] [fixture:
-sequence/lex-alias-lookahead-line-break-deactivate] [fixture:
-sequence/lex-alias-lookahead-line-break-destroy] [fixture:
-sequence/lex-alias-lookahead-line-break-create] [fixture:
-sequence/lex-alias-lookahead-line-break-data-block] [fixture:
-sequence/lex-alias-lookahead-line-break-blank-line] [fixture:
-sequence/lex-alias-lookahead-space-before-line-break] [fixture:
-sequence/lex-alias-lookahead-line-break-as-text] [fixture:
-sequence/lex-alias-lookahead-line-break-as-alone]
+
+[fixture: sequence/lex-alias-lookahead-line-break-participant]
+[fixture: sequence/lex-alias-lookahead-line-break-id-as]
+[fixture: sequence/lex-alias-lookahead-line-break-activate]
+[fixture: sequence/lex-alias-lookahead-line-break-deactivate]
+[fixture: sequence/lex-alias-lookahead-line-break-destroy]
+[fixture: sequence/lex-alias-lookahead-line-break-create]
+[fixture: sequence/lex-alias-lookahead-line-break-data-block]
+[fixture: sequence/lex-alias-lookahead-line-break-blank-line]
+[fixture: sequence/lex-alias-lookahead-space-before-line-break]
+[fixture: sequence/lex-alias-lookahead-line-break-as-text]
+[fixture: sequence/lex-alias-lookahead-line-break-as-alone]
 
 ### 行の文脈
 
@@ -654,72 +785,92 @@ sequence/lex-alias-lookahead-line-break-as-alone]
 
 1. 改行以外の空白。
    ただし色の候補の直後を除く: 何もしない。
+
    [fixture: sequence/spec-sequence-diagram-01f0c47f]
+
 2. `#` とその行の残り: 図のコメント。
+
    [fixture: sequence/spec-sequence-diagram-01f0c47f]
+
 3. `box` の後の最初の単位としてだけ、**色の候補**。
    小文字の `rgb`、`rgba`、`hsl`、`hsla` のどれかに、0 個以上の空白、`(`、
    次の `#`、`;`、改行より前の最後の `)` までの文字が続くもの。
    そうでなければ、1 個以上の語の文字（ASCII の英字、数字、`_`）。
-   `color-candidate` の単位。 [fixture: sequence/db-box-colour-without-space]
+   `color-candidate` の単位。
+
+   [fixture: sequence/db-box-colour-without-space]
    [fixture: sequence/db-box-colour-rgba] [fixture: sequence/db-box-colour-hsl]
    [fixture: sequence/db-box-colour-hsla]
+
 4. `#`、`;`、改行以外の 0 個以上の文字: `box` の後では、
    すべて U+2028 と U+2029 のほかの空白でなければ `text` の単位。
    それ以外では、
    テキスト部分として読みます（[テキスト部分](#テキスト部分) を参照）。
-   行の文脈を出ます。 [fixture: sequence/db-box-no-colour-candidate]
+   行の文脈を出ます。
+
+   [fixture: sequence/db-box-no-colour-candidate]
 
 そのため、`loop x # c` のテキストは `x` と空白で、
 `alt;B->>A: y` は空のテキストの `alt` のブロックと、それに続くメッセージです。
-[fixture: sequence/spec-sequence-diagram-01f0c47f] [fixture:
-sequence/spec-sequence-diagram-453b7670]
+
+[fixture: sequence/spec-sequence-diagram-01f0c47f]
+[fixture: sequence/spec-sequence-diagram-453b7670]
+
 色の候補の後では、規則 4 が、候補の終わりから、空白を含めて行の残りを読みます。
 mermaid.js は、`box` の後の空白を飛ばした後、
 その後のテキスト全体を 1 つの単位として読むからです。
 `box aqua`、空白 2 個、U+2028 は、候補 `aqua` と、
 空白 2 個と U+2028 のテキストを持ち、空白 2 個が続く `box red-team` は、
 テキスト `-team` と空白 2 個を持ちます。
-[fixture: sequence/db-box-colour-then-spaces-and-line-separator] [fixture:
-sequence/tokens-box-text-trailing-spaces]
+
+[fixture: sequence/db-box-colour-then-spaces-and-line-separator]
+[fixture: sequence/tokens-box-text-trailing-spaces]
 
 ### データの文脈
 
 データの文脈には、id の後の `@{` で入ります。
 
 1. `}` 以外の 1 個以上の文字: `data-text` の単位。
+
    [fixture: sequence/db-data-block-create-participant]
+
 2. 後に空白、キーワード `as`、
    1 個の空白が続く `}`（それらは読まない）: `}` の単位。
    データの文脈を出て、別名の文脈に入ります。
+
    [fixture: sequence/db-data-block-alias-and-as]
+
 3. `}`: `}` の単位。
    データの文脈と id の文脈を出ます。
+
    [fixture: sequence/db-data-block-create-participant]
 
 そのため、データブロックは最初の `}` で終わり、その中身は `}` を含められません。
-[fixture: sequence/docs-syntax-sequence-diagram-1371ae9a] [fixture:
-sequence/lex-data-block-nested-brace]
+
+[fixture: sequence/docs-syntax-sequence-diagram-1371ae9a]
+[fixture: sequence/lex-data-block-nested-brace]
+
 中身にあるコメント行は、中身の文字列の中の U+2028 や U+2029 の後でも取り除かれ、
 中身はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
-[fixture: sequence/lex-data-alias-line-separator-then-comment-line] [fixture:
-sequence/lex-data-alias-line-separator-comment-line-directive-next] [fixture:
-sequence/lex-data-alias-line-separator-comment-line-space-next] [fixture:
-sequence/lex-data-alias-line-separator-comment-line-separator-next] [fixture:
-sequence/div-data-alias-line-separator-comment-line-empty-line] [fixture:
-sequence/gram-data-alias-line-separator-comment-line-end-of-text] [fixture:
-sequence/lex-data-alias-line-separator-comment-line-cr] [fixture:
-sequence/lex-data-alias-line-separator-comment-line-crlf] [fixture:
-sequence/lex-data-alias-line-separator-comment-line-two-comment-lines] [fixture:
-sequence/lex-data-alias-line-separator-comment-line-two-regions] [fixture:
-sequence/lex-data-alias-line-separator-comment-line-spaces-before] [fixture:
-sequence/lex-data-alias-line-separator-comment-line-line-feed-before] [fixture:
-sequence/lex-data-alias-line-separator-comment-line-directive-before] [fixture:
-sequence/lex-data-alias-line-separator-comment-line-line-rule-before] [fixture:
-sequence/lex-data-alias-line-separator-comment-line-line-rule-after] [fixture:
-sequence/div-data-alias-line-separator-comment-line-bare-percent] [fixture:
-sequence/gram-data-alias-line-separator-comment-line-percent-brace] [fixture:
-sequence/lex-data-plain-alias-line-separator-then-comment-line]
+
+[fixture: sequence/lex-data-alias-line-separator-then-comment-line]
+[fixture: sequence/lex-data-alias-line-separator-comment-line-directive-next]
+[fixture: sequence/lex-data-alias-line-separator-comment-line-space-next]
+[fixture: sequence/lex-data-alias-line-separator-comment-line-separator-next]
+[fixture: sequence/div-data-alias-line-separator-comment-line-empty-line]
+[fixture: sequence/gram-data-alias-line-separator-comment-line-end-of-text]
+[fixture: sequence/lex-data-alias-line-separator-comment-line-cr]
+[fixture: sequence/lex-data-alias-line-separator-comment-line-crlf]
+[fixture: sequence/lex-data-alias-line-separator-comment-line-two-comment-lines]
+[fixture: sequence/lex-data-alias-line-separator-comment-line-two-regions]
+[fixture: sequence/lex-data-alias-line-separator-comment-line-spaces-before]
+[fixture: sequence/lex-data-alias-line-separator-comment-line-line-feed-before]
+[fixture: sequence/lex-data-alias-line-separator-comment-line-directive-before]
+[fixture: sequence/lex-data-alias-line-separator-comment-line-line-rule-before]
+[fixture: sequence/lex-data-alias-line-separator-comment-line-line-rule-after]
+[fixture: sequence/div-data-alias-line-separator-comment-line-bare-percent]
+[fixture: sequence/gram-data-alias-line-separator-comment-line-percent-brace]
+[fixture: sequence/lex-data-plain-alias-line-separator-then-comment-line]
 
 ### アクセシビリティの値
 
@@ -729,8 +880,9 @@ sequence/lex-data-plain-alias-line-separator-then-comment-line]
 そのため、これらは `#` と `;` を含めて行の残りを読みます。
 説明のブロックの文脈では、`}` は `}` の単位で文脈を出て、
 他の 1 個以上の文字は `description-block-text` の単位です。
-[fixture: sequence/lex-acc-title-line-feed] [fixture:
-sequence/lex-acc-title-hash]
+
+[fixture: sequence/lex-acc-title-line-feed]
+[fixture: sequence/lex-acc-title-hash]
 [fixture: sequence/tokens-acc-descr-ignored-semicolon]
 [fixture: sequence/tokens-acc-descr-block-ignored-semicolon]
 
@@ -743,7 +895,10 @@ sequence/lex-acc-title-hash]
 その接頭辞は `wrap-prefix` の単位です。
 それはテキストではないので、その中のディレクティブは入力を拒否させます。
 一方、mermaid.js は `A->>B: wr%%{init: {}}%%ap:x` を受理し、
-メッセージ `x` を折り返します。 [fixture: sequence/div-directive-in-wrap-prefix]
+メッセージ `x` を折り返します。
+
+[fixture: sequence/div-directive-in-wrap-prefix]
+
 [単位の中のディレクティブ](#単位の中のディレクティブ) を参照してください。
 折り返しの接頭辞は `wrap:` か `nowrap:` で、前に `:` を 1 つ置いてもよく、
 大文字小文字を区別して比べます。
@@ -755,10 +910,10 @@ mermaid.js は、テキスト部分を、テキストとその折り返しの設
 `A->>B: :nowrap: x` は折り返さないメッセージ `x` を持ちます。
 一方、`A->>B: WRAP:x` のメッセージは `WRAP:x` です。
 テキスト部分は空でもかまいません。
-`A->>B:` は空のメッセージを持ちます。 [fixture: sequence/lex-wrap-prefix]
-[fixture:
-sequence/lex-nowrap-prefix-colon] [fixture:
-sequence/lex-wrap-prefix-upper-case]
+`A->>B:` は空のメッセージを持ちます。
+
+[fixture: sequence/lex-wrap-prefix] [fixture: sequence/lex-nowrap-prefix-colon]
+[fixture: sequence/lex-wrap-prefix-upper-case]
 [fixture: sequence/config-wrap-site-nowrap-prefix]
 [fixture: sequence/db-block-loop-wrap] [fixture: sequence/lex-empty-text]
 [fixture: sequence/lex-wrap-prefix-colon]
@@ -777,12 +932,13 @@ mermaid.js も、候補が色かを問い合わせる前に、同じように分
 候補が色かどうかは答えに依り、折り返しの接頭辞の位置も依ります。
 候補が色でなければ、接頭辞は候補と残りを合わせたテキストから読むからです。
 そのため、`box` の後に `wrap-prefix` の単位はありません。
-[fixture: sequence/spec-sequence-diagram-9f31df65] [fixture:
-sequence/db-box-colour-without-space] [fixture:
-sequence/db-box-colour-function-last-parenthesis] [fixture:
-sequence/db-box-colour-function-unclosed] [fixture:
-sequence/db-box-no-colour-candidate] [fixture:
-sequence/db-box-wrap-without-colour]
+
+[fixture: sequence/spec-sequence-diagram-9f31df65]
+[fixture: sequence/db-box-colour-without-space]
+[fixture: sequence/db-box-colour-function-last-parenthesis]
+[fixture: sequence/db-box-colour-function-unclosed]
+[fixture: sequence/db-box-no-colour-candidate]
+[fixture: sequence/db-box-wrap-without-colour]
 
 ## 文法
 
@@ -802,6 +958,7 @@ jison の文法は、id を取る所で `link` の単位も取ります。
 そのため、下の文法はそれを含めません。
 `A->>link B: x` では `link` は `link` の単位で、
 テキストが始まるべき所に `B` があるので、入力は拒否されます。
+
 [fixture: sequence/gram-link-keyword-message-target]
 
 次の各規則が、[ast/sequence.ja.md](../ast/sequence.ja.md) で定める、
@@ -857,20 +1014,25 @@ statement           = participant-statement
 タイトルとアクセシビリティの文は行の終わりまで続くので、
 `end` の後の同じ行に別の文を続けられます。
 `loop x`、メッセージ、`end A->>B: z` は、ループの後にメッセージを持ちます。
+
 [fixture: sequence/gram-statement-after-end]
 [fixture: sequence/spec-sequence-diagram-543d2299]
 [fixture: sequence/spec-sequence-diagram-8e03af61]
 [fixture: sequence/gram-block-nested-end-end-same-line]
 [fixture: sequence/gram-block-nested-statement-after-end]
+
 `invalid` の単位の行は受理されて、木では SequenceIgnoredStatement になります。
 `end` の後の同じ行でも同じです。
-[fixture: sequence/lex-invalid-line-parenthesis] [fixture:
-sequence/gram-invalid-after-end]
+
+[fixture: sequence/lex-invalid-line-parenthesis]
+[fixture: sequence/gram-invalid-after-end]
 [fixture: sequence/gram-block-nested-invalid-line]
+
 テキストが続くつもりだったメッセージの後の `)` の行も、そのような行です。
 `A->>B: call(x`、改行、`)` のメッセージは `call(x` です。
-[fixture: sequence/db-ignored-line-after-wrapped-message] [fixture:
-sequence/db-wrapped-message-closed]
+
+[fixture: sequence/db-ignored-line-after-wrapped-message]
+[fixture: sequence/db-wrapped-message-closed]
 
 ### 区切りの前の空の説明ブロック
 
@@ -900,21 +1062,26 @@ details の文です。
 `autonumber` の後です。
 `participant A@{ "type": "actor" } accDescr {}`、空白なしの同じもの、
 `autonumber accDescr {}` は受理されます。
+
 [fixture: sequence/gram-empty-description-block-after-participant-data]
 [fixture: sequence/gram-empty-description-block-after-actor-data-glued]
 [fixture: sequence/gram-empty-description-block-after-autonumber]
 [fixture: sequence/gram-empty-description-block-in-message-text]
 [fixture: sequence/gram-empty-description-block-in-participant-id]
 [fixture: sequence/gram-empty-description-block-in-alias-text]
+
 ブロックの前の空白は単独で読まれるので、
 ブロックの後の改行が文の `newline` の単位です。
 `autonumber`、空白 2 つ、`accDescr {}`、改行は受理されますが、`autonumber`、
 空白 2 つ、改行は、
 空白が改行を隠すので拒否されます（[文の文脈](#文の文脈) を参照）。
+
 [fixture: sequence/gram-empty-description-block-after-autonumber-spaces]
 [fixture: sequence/lex-trailing-space-hides-line-break]
+
 同じ行でブロックの後にほかの文が続くと、mermaid.js と同じく拒否されます。
 `autonumber accDescr {} A->>B: x` です。
+
 [fixture: sequence/gram-empty-description-block-after-autonumber-then-message]
 
 キーワード `sequenceDiagram` のすぐ後、
@@ -923,6 +1090,7 @@ details の文です。
 それは文が始まるところにあり、図の最初の文です。
 `sequenceDiagram accDescr {}`、改行、`A->>B: x` は、
 mermaid.js と同じく受理されます。
+
 [fixture: sequence/header-empty-description-block]
 
 ### 参加者と箱
@@ -940,29 +1108,39 @@ box-text              = color-candidate text? | text
 データブロックは中身を要します。
 `participant A@{}` は mermaid.js と同じく拒否され、`participant A@{ }` と、
 波括弧の間に改行のあるものは受理されます。
+
 [fixture: sequence/gram-data-block-empty]
 [fixture: sequence/gram-data-block-line-break-only]
+
 `create` は、`destroy` を含め、どの参加者の文の前にも置けます。
 `create destroy A` は `create` の付いた destroy の文です。
+
 [fixture: sequence/gram-create-destroy]
 [fixture: sequence/spec-sequence-diagram-a7618b16]
+
 [文法の外での拒否](#文法の外での拒否) を参照してください。
 箱が持てるのは、参加者の文、空の説明ブロック、空の行だけで、
 `create` もメッセージも置けません。
-[fixture: sequence/gram-box-create-participant] [fixture:
-sequence/gram-box-message-inside] [fixture: sequence/gram-block-loop-in-box]
+
+[fixture: sequence/gram-box-create-participant]
+[fixture: sequence/gram-box-message-inside]
+[fixture: sequence/gram-block-loop-in-box]
 [fixture: sequence/gram-block-section-in-box-in-alt]
+
 箱の中の空の説明ブロックは、ほかの文が始まる位置と同じく、
 テキストのない説明のブロックの文です。
 それだけの行にあっても、括弧の間が空白だけで何行かにわたっても、
 同じ行に参加者の文や `end` が続いてもかまいません。
-[fixture: sequence/gram-box-empty-description-block-line] [fixture:
-sequence/gram-box-empty-description-block-lines] [fixture:
-sequence/gram-box-empty-description-block-then-participant] [fixture:
-sequence/gram-box-empty-description-block-before-end]
+
+[fixture: sequence/gram-box-empty-description-block-line]
+[fixture: sequence/gram-box-empty-description-block-lines]
+[fixture: sequence/gram-box-empty-description-block-then-participant]
+[fixture: sequence/gram-box-empty-description-block-before-end]
+
 テキストのある説明のブロックと説明の文は箱の文ではなく、どちらも拒否します。
-[fixture: sequence/gram-box-description-block-with-text] [fixture:
-sequence/gram-box-description-line]
+
+[fixture: sequence/gram-box-description-block-with-text]
+[fixture: sequence/gram-box-description-line]
 
 ### メッセージ
 
@@ -975,24 +1153,28 @@ message-statement = id arrow ( "+" | "-" | "()" )? id ":" text-part
 またはその両方に `()` を持てますが、`+` と `-` は `()` と組み合わせられません。
 メッセージはテキストを要りますが、それは `:` の後が空でもかまいません。
 `A->>B` は拒否され、`A->>B:` は受理されます。
+
 [fixture: sequence/gram-message-without-text]
 [fixture: sequence/db-message-central-connection-both]
 [fixture: sequence/gram-message-activation-then-central-connection]
-[fixture: sequence/gram-message-central-connection-then-activation] [fixture:
-sequence/lex-empty-text]
+[fixture: sequence/gram-message-central-connection-then-activation]
+[fixture: sequence/lex-empty-text]
 
 矢印は `-` の単位より先に読むので（規則 22 と 24）、
 最初の矢印の後で矢印を始める `-` は、その矢印になります。
 `A ->> -x: b`、`A ->> -X: b`、`A ->> -|\: b`、`A ->> -|/: b`、
 `A ->> -xy: b` は、2 つ目の矢印を持ち、拒否されます。
+
 [fixture: sequence/lex-minus-glued-x-arrow]
 [fixture: sequence/lex-minus-glued-upper-x-arrow]
 [fixture: sequence/lex-minus-glued-bar-backslash-arrow]
 [fixture: sequence/lex-minus-glued-bar-slash-arrow]
 [fixture: sequence/lex-minus-glued-x-name-arrow]
+
 `-` の後の空白は、それを `-` の単位のままにします。
 `A ->> - x: b` は `-` と行き先 `x` を持ち、`X`、`|\`、`|/`、`xy` も同じで、
 空白の代わりにタブや U+2028 でも同じです。
+
 [fixture: sequence/lex-minus-space-destination-x]
 [fixture: sequence/lex-minus-space-destination-upper-x]
 [fixture: sequence/lex-minus-space-destination-bar-backslash]
@@ -1000,31 +1182,39 @@ sequence/lex-empty-text]
 [fixture: sequence/lex-minus-space-destination-x-name]
 [fixture: sequence/lex-minus-tab-destination-x]
 [fixture: sequence/lex-minus-line-separator-destination-x]
+
 ディレクティブは先に除かれるので、それだけでは両者を分けません。
 `A ->> -%%{init: {}}%%x: b` は拒否され、
 `A ->> - %%{init: {}}%%x: b` と `A ->> -%%{init: {}}%% x: b` は受理されます。
+
 [fixture: sequence/lex-minus-space-directive-destination-x]
 [fixture: sequence/lex-minus-directive-space-destination-x]
 [fixture: sequence/lex-minus-glued-directive-x-arrow]
+
 矢印を始めない行き先に空白は要りません。
 `A ->> -y: b` は `-` と行き先 `y` を持ちます。
+
 [fixture: sequence/lex-minus-glued-destination-y]
+
 `-` の直後の改行は `newline` の単位で、
 メッセージはそこでそれを取りません（規則 1）。
 そのため、`A ->> -`、改行、`x: b` は拒否されます。
 改行の後に空行やコメント行が続いても、`x` の前に字下げがあっても、
 改行の前にディレクティブがあっても同じで、
 改行の前に空白と空の説明ブロックがあるものも同じです。
+
 [fixture: sequence/lex-minus-line-feed-destination-x]
 [fixture: sequence/lex-minus-comment-line-destination-x]
 [fixture: sequence/lex-minus-empty-line-destination-x]
 [fixture: sequence/lex-minus-line-feed-indent-destination-x]
 [fixture: sequence/lex-minus-directive-line-feed-destination-x]
 [fixture: sequence/lex-minus-empty-description-block-line-feed-destination-x]
+
 改行の前から始まる空白は、改行を越えます（規則 2）。
 `A ->> -`、空白、改行、`x: b` は `-` と行き先 `x` を持ちます。
 空白の代わりにタブや U+2028 でも、改行の後に空行やコメント行が続いても、
 `x` の前に字下げがあっても、空白の後にディレクティブがあっても同じです。
+
 [fixture: sequence/lex-minus-trailing-space-destination-x]
 [fixture: sequence/lex-minus-trailing-tab-destination-x]
 [fixture: sequence/lex-minus-trailing-line-separator-destination-x]
@@ -1032,10 +1222,12 @@ sequence/lex-empty-text]
 [fixture: sequence/lex-minus-trailing-space-empty-line-destination-x]
 [fixture: sequence/lex-minus-trailing-space-indent-destination-x]
 [fixture: sequence/lex-minus-trailing-space-directive-destination-x]
+
 その間の空の説明ブロックはメッセージの中にあるので、ここでは拒否されます。
 mermaid.js は `A ->> -accDescr {}x: b` を受理します。
 [`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md)
 を参照してください。
+
 [fixture: sequence/div-empty-description-block-between-minus-and-destination]
 
 ### ほかの文
@@ -1062,13 +1254,16 @@ block-statement = ( "loop" | "rect" | "opt" | "break" ) text-part line* "end"
 
 ブロックと節のテキストは空でもかまわず、行もなくてかまいません。
 `loop`、改行、`end` は、空のテキストのループです。
+
 [fixture: sequence/gram-block-empty-text]
 [fixture: sequence/gram-block-empty-sections]
 [fixture: sequence/gram-block-rect-empty-text]
+
 どのキーワードもそれぞれの種類のブロックを始め、`else`、`and`、`option` は、
 `alt` のブロック、`par` か `par_over` のブロック、
-`critical` のブロックの節を始めます。 [fixture: sequence/db-block-rect]
-[fixture: sequence/gram-block-loop-else]
+`critical` のブロックの節を始めます。
+
+[fixture: sequence/db-block-rect] [fixture: sequence/gram-block-loop-else]
 [fixture: sequence/gram-block-alt-option]
 [fixture: sequence/gram-block-critical-and] [fixture: sequence/db-block-opt]
 [fixture: sequence/db-block-break] [fixture: sequence/db-block-alt]
@@ -1083,7 +1278,9 @@ block-statement = ( "loop" | "rect" | "opt" | "break" ) text-part line* "end"
 [fixture: sequence/gram-block-option-in-par]
 
 ブロックと節の行は図の行と同じなので、ブロックと箱は、
-どの深さまでも入れ子にできます。 [fixture: sequence/gram-block-nested-all-kinds]
+どの深さまでも入れ子にできます。
+
+[fixture: sequence/gram-block-nested-all-kinds]
 [fixture: sequence/gram-block-loop-in-rect]
 [fixture: sequence/gram-block-rect-in-loop]
 [fixture: sequence/gram-block-rect-in-rect]
@@ -1105,6 +1302,7 @@ block-statement = ( "loop" | "rect" | "opt" | "break" ) text-part line* "end"
 `end` は、いちばん内側の開いているブロックか箱を閉じ、
 どれも自分の `end` が要ります。
 `end` が足りない入力と、開いているものがないときの `end` は拒否します。
+
 [fixture: sequence/gram-block-box-end-closes-box]
 [fixture: sequence/gram-block-extra-end]
 [fixture: sequence/gram-block-nested-extra-end]
@@ -1119,6 +1317,7 @@ block-statement = ( "loop" | "rect" | "opt" | "break" ) text-part line* "end"
 節のキーワードは、いちばん内側の開いているブロックのものです。
 そのブロックにその節がないときと、開いているブロックがないときは、
 外側のブロックにその節があっても、入力を拒否します。
+
 [fixture: sequence/gram-block-else-in-loop-in-alt]
 [fixture: sequence/gram-block-and-in-alt-in-par]
 [fixture: sequence/gram-block-option-in-par-in-critical]
@@ -1144,6 +1343,7 @@ mermaid.js は、文法が受理する入力の一部を、Db を作る間に拒
 どれも、ソースの順の文から決まります。
 ブロックや節の中の文は、書かれた場所で 1 回だけ数えます。
 ブロックは繰り返さず、ブロックの節は互いを排除しません。
+
 [fixture: sequence/db-block-activate-before-deactivate-sections]
 [fixture: sequence/db-block-activate-in-nested-body]
 [fixture: sequence/db-block-deactivate-after-nested-body]
@@ -1177,7 +1377,9 @@ mermaid.js は、文法が受理する入力の一部を、Db を作る間に拒
   矢印の後に `-` のあるメッセージ（その出どころについて）で**非活性化**します。
   矢印の前か後の `()` は、どちらもしません。
   非活性化は、その前の、その参加者の活性化が非活性化より多くないとき、
-  拒否されます。 [fixture: sequence/gram-deactivate-inactive]
+  拒否されます。
+
+  [fixture: sequence/gram-deactivate-inactive]
   [fixture: sequence/gram-deactivate-after-message]
   [fixture: sequence/db-activation-plus-then-minus]
   [fixture: sequence/db-activation-twice-deactivation-twice]
@@ -1185,12 +1387,14 @@ mermaid.js は、文法が受理する入力の一部を、Db を作る間に拒
   [fixture: sequence/gram-deactivate-after-central-connection]
   [fixture: sequence/db-deactivate-after-plus]
   [fixture: sequence/db-minus-after-activate]
+
 - **すでにある参加者の create。**
   それより前に**加えられた**参加者の id の `create`。
   参加者を加えるのは、参加者の文、`create` の付いた destroy の文、
   そしてメッセージ、ノート、`links`、`link`、`properties`、`details` の文で、
   それが挙げる各 id についてです。
   `activate`、`deactivate`、`create` の付かない destroy の文は加えません。
+
   [fixture: sequence/gram-create-existing]
   [fixture: sequence/gram-create-after-message]
   [fixture: sequence/gram-create-after-note]
@@ -1202,14 +1406,19 @@ mermaid.js は、文法が受理する入力の一部を、Db を作る間に拒
   [fixture: sequence/gram-create-after-message-and-destroy]
   [fixture: sequence/db-create-after-activate]
   [fixture: sequence/db-create-after-destroy-only]
+
 - **`create` や `destroy` の後のメッセージ。**
-  下を参照。 [fixture: sequence/gram-create-without-message] [fixture:
-  sequence/gram-destroy-without-message]
+  下を参照。
+
+  [fixture: sequence/gram-create-without-message]
+  [fixture: sequence/gram-destroy-without-message]
+
 - **2 つの箱に入る参加者。**
   ほかの箱をすでに持つ参加者についての、箱の中の参加者の文。
   参加者は、箱を持たないときに箱の中の参加者の文が挙げると、
   **その箱を持ちます**。
   箱の外の参加者の文と、箱の中の destroy の文は、どの箱も変えません。
+
   [fixture: sequence/gram-box-participant-in-two-boxes]
   [fixture: sequence/gram-box-participant-added-by-message]
   [fixture: sequence/db-box-existing-participant-joins-box]
@@ -1250,25 +1459,26 @@ E だけが作られるのを待ち、次のメッセージは E へ向かわな
 その次のメッセージは D からか D へのものでなければなりません。
 `destroy D` と `destroy E` の後では、
 次のメッセージは E に関わらなければなりません。
-[fixture: sequence/gram-create-two-last-waits] [fixture:
-sequence/gram-create-two-first-rejected] [fixture:
-sequence/gram-create-then-destroy-message-to-other] [fixture:
-sequence/gram-create-then-destroy-message-to-destroyed] [fixture:
-sequence/gram-destroy-then-create] [fixture:
-sequence/gram-destroy-then-create-message-to-other] [fixture:
-sequence/gram-destroy-two-last-waits] [fixture:
-sequence/gram-destroy-two-first-rejected] [fixture:
-sequence/gram-create-message-from-created] [fixture:
-sequence/gram-create-self-message] [fixture:
-sequence/gram-destroy-message-from-destroyed] [fixture:
-sequence/gram-create-wait-across-other-statements] [fixture:
-sequence/gram-create-wait-note-not-message] [fixture:
-sequence/gram-create-wait-into-block] [fixture:
-sequence/gram-create-wait-out-of-block] [fixture:
-sequence/gram-create-wait-across-else] [fixture: sequence/gram-create-last]
-[fixture: sequence/gram-destroy-last] [fixture:
-sequence/gram-create-destroy-waits-for-creation] [fixture:
-sequence/gram-create-destroy-message-to-other]
+
+[fixture: sequence/gram-create-two-last-waits]
+[fixture: sequence/gram-create-two-first-rejected]
+[fixture: sequence/gram-create-then-destroy-message-to-other]
+[fixture: sequence/gram-create-then-destroy-message-to-destroyed]
+[fixture: sequence/gram-destroy-then-create]
+[fixture: sequence/gram-destroy-then-create-message-to-other]
+[fixture: sequence/gram-destroy-two-last-waits]
+[fixture: sequence/gram-destroy-two-first-rejected]
+[fixture: sequence/gram-create-message-from-created]
+[fixture: sequence/gram-create-self-message]
+[fixture: sequence/gram-destroy-message-from-destroyed]
+[fixture: sequence/gram-create-wait-across-other-statements]
+[fixture: sequence/gram-create-wait-note-not-message]
+[fixture: sequence/gram-create-wait-into-block]
+[fixture: sequence/gram-create-wait-out-of-block]
+[fixture: sequence/gram-create-wait-across-else]
+[fixture: sequence/gram-create-last] [fixture: sequence/gram-destroy-last]
+[fixture: sequence/gram-create-destroy-waits-for-creation]
+[fixture: sequence/gram-create-destroy-message-to-other]
 
 ## 既知の差異
 
@@ -1281,36 +1491,45 @@ sequence/gram-create-destroy-message-to-other]
   mermaid.js はそれを受理します。
   `parti%%{init: {}}%%cipant A`、`A-%%{init: {}}%%>>B: x`、
   `autonumber 1%%{init: {}}%%0`、`A->>B: wr%%{init: {}}%%ap:x` がそうです。
+
   [fixture: sequence/div-directive-in-keyword]
   [fixture: sequence/div-directive-in-arrow]
   [fixture: sequence/div-directive-in-number]
   [fixture: sequence/div-directive-in-wrap-prefix]
+
   [単位の中のディレクティブ](#単位の中のディレクティブ) を参照してください。
+
 - **[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.ja.md)。**
   `participant Z@{ "style": "x:#y" };` の後のような、
   `style` の規則に当たる行で、数、キーワード、矢印の中の無視される `;` は、
   ここでは入力を拒否させ、mermaid.js はそれを受理します。
   `autonumber 1;0`、`autonumber 1 1;0`、`parti;cipant B`、`Note le;ft of A: t`、
   `A-;>>B: m` がそうです。
-  [fixture: sequence/div-ignored-semicolon-in-autonumber-start] [fixture:
-  sequence/div-ignored-semicolon-in-autonumber-step] [fixture:
-  sequence/div-ignored-semicolon-in-keyword] [fixture:
-  sequence/div-ignored-semicolon-in-position-word] [fixture:
-  sequence/div-ignored-semicolon-in-arrow]
+
+  [fixture: sequence/div-ignored-semicolon-in-autonumber-start]
+  [fixture: sequence/div-ignored-semicolon-in-autonumber-step]
+  [fixture: sequence/div-ignored-semicolon-in-keyword]
+  [fixture: sequence/div-ignored-semicolon-in-position-word]
+  [fixture: sequence/div-ignored-semicolon-in-arrow]
+
 - **[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.ja.md)。**
   参加者のデータブロックの中身は読みません。
   mermaid.js はそれを YAML として読み、正しい YAML でない中身を拒否しますが、
-  ここでは受理します。 [fixture: sequence/spec-sequence-diagram-b8d593b1]
-  [fixture:
-  sequence/spec-sequence-diagram-335c8c00]
+  ここでは受理します。
+
+  [fixture: sequence/spec-sequence-diagram-b8d593b1]
+  [fixture: sequence/spec-sequence-diagram-335c8c00]
+
 - **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.ja.md)。**
   フロントマターに `title: <a` があると、`A-xB: b="c">d` のメッセージは、
   mermaid.js では `b='c'>d`、ここでは `b="c">d` です。
   mermaid.js のタグは `"c"` の後の `>` まで届きます。
   `A->>B: b="c">d` のように `>` を持つ矢印が間にあると、
   mermaid.js ではその `>` がタグを終え、両方が `b="c">d` を与えます。
-  [fixture: sequence/div-html-tag-starts-in-frontmatter-message] [fixture:
-  sequence/lex-html-tag-frontmatter-arrow-ends-tag]
+
+  [fixture: sequence/div-html-tag-starts-in-frontmatter-message]
+  [fixture: sequence/lex-html-tag-frontmatter-arrow-ends-tag]
+
 - **[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md)。**
   文の始まりでも `newline` の前でもない、文の中の空の説明ブロックは、
   ここでは入力を拒否させます。
@@ -1318,10 +1537,12 @@ sequence/gram-create-destroy-message-to-other]
   `A->>accDescr {}B: x` と `note left of accDescr {} A: x` がそうです。
   文が始まる位置の空の説明ブロックは、箱の中でも、
   テキストのない説明のブロックの文で、何も変えません。
-  [fixture: sequence/gram-box-empty-description-block-line] [fixture:
-  sequence/gram-empty-description-block-after-arrow] [fixture:
-  sequence/gram-empty-description-block-after-placement] [fixture:
-  sequence/gram-acc-descr-block-empty-then-statement]
+
+  [fixture: sequence/gram-box-empty-description-block-line]
+  [fixture: sequence/gram-empty-description-block-after-arrow]
+  [fixture: sequence/gram-empty-description-block-after-placement]
+  [fixture: sequence/gram-acc-descr-block-empty-then-statement]
+
 - **[`comment-takes-character`](../known-divergences/comment-takes-character.ja.md)。**
   空白でない文字の直後の `%%` は、
   ここでは [文の文脈](#文の文脈) のとおりに読みます。
@@ -1335,12 +1556,16 @@ sequence/gram-create-destroy-message-to-other]
   ここでは受理されます。
   `autonumber 5%% c` は、ここでは 5 から始まり、
   mermaid.js では始まりを持ちません。
-  [fixture: sequence/div-comment-after-one-character-id] [fixture:
-  sequence/div-comment-after-text-colon] [fixture:
-  sequence/div-comment-after-two-digit-number] [fixture:
-  sequence/lex-percent-comment-takes-number]
+
+  [fixture: sequence/div-comment-after-one-character-id]
+  [fixture: sequence/div-comment-after-text-colon]
+  [fixture: sequence/div-comment-after-two-digit-number]
+  [fixture: sequence/lex-percent-comment-takes-number]
+
 - **[`c4-keyword-anywhere`](../known-divergences/c4-keyword-anywhere.ja.md)。**
   ヘッダーの後のどこかにある `C4Container`、`C4Component`、`C4Dynamic`、
   `C4Deployment`（参加者、メッセージのテキスト、ノートなど）は、
   mermaid.js ではテキストを C4 のパーサーに渡させ、拒否されます。
-  ここではテキストは sequence 図です。 [fixture: common/detect-c4-anywhere]
+  ここではテキストは sequence 図です。
+
+  [fixture: common/detect-c4-anywhere]

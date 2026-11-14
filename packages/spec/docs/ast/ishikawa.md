@@ -11,9 +11,10 @@ defined by the
 The body is an IshikawaDiagram containing a nested tree, with each node's
 written indentation retained. The parent rule is Ishikawa's own, defined under
 [Indentation and parents](../diagrams/ishikawa.md#indentation-and-parents).
-Siblings remain in source order and repeated text stays separate. [fixture:
-ishikawa/db-indent-first-cause] [fixture: ishikawa/db-indent-clamped] [fixture:
-ishikawa/db-three-definitions]
+Siblings remain in source order and repeated text stays separate.
+
+[fixture: ishikawa/db-indent-first-cause] [fixture: ishikawa/db-indent-clamped]
+[fixture: ishikawa/db-three-definitions]
 
 ## Nodes
 
@@ -26,16 +27,19 @@ ishikawa/db-three-definitions]
 Child fields: `root`. The header has no node or beta flag. Blank lines,
 comments, and directives create no diagram-specific node. There are no title or
 accessibility fields: title-looking text is a node and frontmatter remains on
-the shared root. [fixture: ishikawa/header-only-lf] [fixture:
-ishikawa/header-beta-only-lf] [fixture: ishikawa/header-lf-directive-eof]
-[fixture: ishikawa/gram-root-comment-only-document] [fixture:
+the shared root.
+
+[fixture: ishikawa/header-only-lf] [fixture: ishikawa/header-beta-only-lf]
+[fixture: ishikawa/header-lf-directive-eof] [fixture:
+ishikawa/gram-root-comment-only-document] [fixture:
 ishikawa/gram-whitespace-only-document] [fixture:
 ishikawa/db-title-line-is-node] [fixture: ishikawa/db-accdescr-empty-keeps-node]
 [fixture: ishikawa/db-frontmatter-title]
 
 Its range covers the header and the diagram body, including all descendant
-nodes. A rootless diagram still has its header. [fixture:
-ishikawa/header-only-lf] [fixture: ishikawa/db-all-fields] [fixture:
+nodes. A rootless diagram still has its header.
+
+[fixture: ishikawa/header-only-lf] [fixture: ishikawa/db-all-fields] [fixture:
 ishikawa/header-same-line-root]
 
 ### IshikawaNode
@@ -49,14 +53,17 @@ ishikawa/header-same-line-root]
 Child fields: `text`, `children`. `children` is empty when the node has no
 children. The node range covers its text through its last descendant, or just
 its text when there are none; its leading indentation is whitespace, not a text
-value. [fixture: ishikawa/gram-root-lf] [fixture:
-ishikawa/db-indent-first-cause] [fixture: ishikawa/db-indent-pop-several]
+value.
+
+[fixture: ishikawa/gram-root-lf] [fixture: ishikawa/db-indent-first-cause]
+[fixture: ishikawa/db-indent-pop-several]
 
 `indent` counts every line whitespace character as one, including tab, U+00A0,
 U+3000, and the U+2028 or U+2029 that ends a preceding diagram comment. It
 excludes directives; on the header line it counts whitespace after the header.
-Root indentation is retained but does not decide parents. [fixture:
-ishikawa/db-indent-tab-character] [fixture:
+Root indentation is retained but does not decide parents.
+
+[fixture: ishikawa/db-indent-tab-character] [fixture:
 ishikawa/db-indent-equal-mixed-whitespace] [fixture:
 ishikawa/lex-ideographic-positions] [fixture: ishikawa/comment-preserved-u2028]
 [fixture: ishikawa/comment-preserved-u2029] [fixture:
@@ -67,7 +74,9 @@ ishikawa/db-indent-around-directives] [fixture: ishikawa/header-same-line-root]
 The first cause is a root child. A later node whose indentation is at most the
 first cause's is a root child; otherwise its parent is the nearest preceding
 cause with strictly smaller indentation. No inferred indentation or level
-replaces `indent`. [fixture: ishikawa/db-indent-first-cause] [fixture:
+replaces `indent`.
+
+[fixture: ishikawa/db-indent-first-cause] [fixture:
 ishikawa/db-indent-clamp-below-base] [fixture: ishikawa/db-indent-relative-zero]
 [fixture: ishikawa/db-indent-nearest-smaller-cause]
 
@@ -82,7 +91,9 @@ text, including trailing whitespace. `value` follows the
 [written text](../ast.md#nodes) rule: quotes, backticks, entities, and interior
 or trailing whitespace remain written; directives, common comment regions, and
 selected ignored semicolons are excluded. Its range can contain those excluded
-regions. [fixture: ishikawa/gram-root-trailing-space] [fixture:
+regions.
+
+[fixture: ishikawa/gram-root-trailing-space] [fixture:
 ishikawa/lex-trailing-ls-ps-whitespace] [fixture: ishikawa/gram-quotes-padding]
 [fixture: ishikawa/gram-empty-backticks-text] [fixture:
 ishikawa/header-root-inline-entity] [fixture: ishikawa/directive-root-middle]
@@ -107,9 +118,13 @@ ishikawa/lex-root-style-three-semicolons-padding]
 
 The value is never empty. Numeric-looking text is also IshikawaLiteral, as are
 empty quote and bracket spellings; there is no StringLiteral or NumericLiteral
-alternative. [fixture: ishikawa/db-number-labels] [fixture:
-ishikawa/gram-empty-quotes] [fixture: ishikawa/gram-empty-brackets] [fixture:
+alternative.
+
+[fixture: ishikawa/db-number-labels] [fixture: ishikawa/gram-empty-quotes]
+[fixture: ishikawa/gram-empty-brackets] [fixture:
 ishikawa/lex-directive-in-numeric-looking-text]
 
 Quotes are content, not delimiters, so a missing closing quote needs no `closed`
-field. [fixture: ishikawa/gram-root-unclosed-quote]
+field.
+
+[fixture: ishikawa/gram-root-unclosed-quote]

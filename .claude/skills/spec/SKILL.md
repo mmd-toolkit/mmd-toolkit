@@ -166,13 +166,16 @@ pnpm run -s lint:chars
 `pnpm run lint:docs` fails when a fixture citation in the documents of the
 specification, the parser, or the tests points to nothing
 (`scripts/check-doc-citations.mjs`; it also reads citations wrapped after
-`[fixture:`, which a line-by-line search misses), when a link to mermaid.js does
-not point to the commit recorded in `packages/spec/docs/index.md`
-(`scripts/check-mermaid-links.mjs`), and when a `.ja.md` has no English original
-(`scripts/check-ja-docs.mjs`). It only lists a document without a Japanese
-version, a Japanese version older than the English, and one whose citations or
-heading structure differ (behind). Write the Japanese version of such a document
-of the specification then, with the same citations and heading structure.
+`[fixture:`, which a line-by-line search misses), when a citation stands
+anywhere but in a paragraph of citations or a `Fixtures` cell, in these
+documents and in those of the formatter (the same script), when a link to
+mermaid.js does not point to the commit recorded in
+`packages/spec/docs/index.md` (`scripts/check-mermaid-links.mjs`), and when a
+`.ja.md` has no English original (`scripts/check-ja-docs.mjs`). It only lists a
+document without a Japanese version, a Japanese version older than the English,
+and one whose citations or heading structure differ (behind). Write the Japanese
+version of such a document of the specification then, with the same citations
+and heading structure.
 
 When fixtures were added, also run `pnpm run -s fixtures:check` in
 `packages/tests`, which runs every fixture through mermaid.js again and fails
@@ -263,8 +266,9 @@ Each time a claim is written:
    `specified.json`; never decide from how the input looks.
 3. Otherwise add one (2.3). Add a contrasting example too: the closest input to
    which the rule does not apply.
-4. Cite it in the sentence of the specification as
-   `[fixture: <category>/<name>]`. Cite the same set in English and in Japanese.
+4. Cite it after the sentence of the specification, in the paragraph of
+   citations of that sentence, as `[fixture: <category>/<name>]` (the skill
+   conventions, Documents). Cite the same set in English and in Japanese.
 5. Give an input that mermaid.js and the specification decide differently (Known
    divergences) its identifier with `fixtures:set-divergence`. Choose the
    identifier by the definitions in known-divergences.md, and match the existing
@@ -281,9 +285,10 @@ it from the cases that its sentences distinguish.
    list each case that it distinguishes, and each other rule that meets it at
    the place it names, as
    [the Principles of AGENTS.md](../../../AGENTS.md#principles) list them. Each
-   case is one input that answers one question about the sentence. Products of
-   places and strings are not written, and no input is chosen by a random source
-   or by a number (a seed, a count).
+   case is one input that answers one question about the sentence. A product of
+   places and strings is written only as the skill conventions allows (Running
+   tests), and no input is chosen by a random source or by a number (a seed, a
+   count).
 2. Check each case once with mermaid.js and with the parser's `parse()` and
    `dbOf()` (2.1). For a diagram type that the parser does not read yet, compare
    mermaid.js's result with what the sentence says. Each case then has a fixture

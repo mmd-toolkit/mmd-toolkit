@@ -56,11 +56,16 @@ reads it with its JSON schema (`JSON_SCHEMA`):
 
 - A YAML syntax error makes mermaid.js reject the input with a `YAMLException`.
   A mapping that has the same key twice, and a body that holds more than one
-  YAML document, are syntax errors. [fixture: common/frontmatter-yaml-error]
-  [fixture: common/frontmatter-duplicate-key] [fixture:
-  common/frontmatter-two-documents]
+  YAML document, are syntax errors.
+
+  [fixture: common/frontmatter-yaml-error] [fixture:
+  common/frontmatter-duplicate-key] [fixture: common/frontmatter-two-documents]
+
 - A body that is not a mapping (for example a plain scalar) counts as an empty
-  mapping. [fixture: common/frontmatter-scalar]
+  mapping.
+
+  [fixture: common/frontmatter-scalar]
+
 - A quoted scalar is a string. A plain scalar is read as the first of the
   following kinds whose form it has, and as a string otherwise. Letters in these
   forms are ASCII letters, and the letter cases shown are the only ones allowed.
@@ -99,36 +104,50 @@ mapping is empty.
   [`cleanupText()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/preprocess.ts#L6-L17)
   has rewritten `="..."` inside HTML tags, so `title: <b class="x">T</b>` gives
   the title `<b class='x'>T</b>`, while `title: "<a b=\"c\">"` has no `="` in
-  its tag and gives the title `<a b="c">`. [fixture:
-  flowchart/frontmatter-title-html-attribute] [fixture:
-  common/frontmatter-title-escaped-quotes-in-tag] As plain scalars, `0x1F` gives
-  `31`, `017` gives `17`, `TRUE` gives `true`, `1e400` stays the string `1e400`,
-  and `~` is null, so there is no title. [fixture: common/config-title-list]
-  [fixture: common/config-title-number] [fixture: common/config-title-mapping]
-  [fixture: common/config-title-hex] [fixture: common/config-title-leading-zero]
-  [fixture: common/config-title-bool-uppercase] [fixture:
+  its tag and gives the title `<a b="c">`.
+
+  [fixture: flowchart/frontmatter-title-html-attribute] [fixture:
+  common/frontmatter-title-escaped-quotes-in-tag]
+
+  As plain scalars, `0x1F` gives `31`, `017` gives `17`, `TRUE` gives `true`,
+  `1e400` stays the string `1e400`, and `~` is null, so there is no title.
+
+  [fixture: common/config-title-list] [fixture: common/config-title-number]
+  [fixture: common/config-title-mapping] [fixture: common/config-title-hex]
+  [fixture: common/config-title-leading-zero] [fixture:
+  common/config-title-bool-uppercase] [fixture:
   common/config-title-float-overflow] [fixture: common/config-title-null-tilde]
+
 - When `config` in the frontmatter mapping is not empty, it is the **frontmatter
   configuration**. Otherwise the frontmatter configuration is an empty mapping.
   It applies as it is written; for example a `flowchart` mapping in it
-  configures a flowchart. [fixture: flowchart/config-inherit-dir-frontmatter]
+  configures a flowchart.
+
+  [fixture: flowchart/config-inherit-dir-frontmatter]
+
 - When `displayMode` in the frontmatter mapping is not empty, its string form is
   copied into the frontmatter configuration:
   - When the frontmatter configuration is a string, a number, or true,
     mermaid.js rejects the input with a `TypeError`. Without a non-empty
     `displayMode`, such a frontmatter configuration is accepted by mermaid.js
-    too. [fixture: common/frontmatter-display-mode-primitive-config] [fixture:
+    too.
+
+    [fixture: common/frontmatter-display-mode-primitive-config] [fixture:
     common/frontmatter-primitive-config]
+
   - When the frontmatter configuration is a mapping, its `gantt` entry is first
     replaced by an empty mapping if it is absent or empty. If `gantt` is then a
     string, a number, or true, mermaid.js rejects the input with a `TypeError`.
-    Otherwise `displayMode` in `gantt` is set to the string form. [fixture:
-    common/config-display-mode-gantt-primitive]
+    Otherwise `displayMode` in `gantt` is set to the string form.
+
+    [fixture: common/config-display-mode-gantt-primitive]
+
   - When the frontmatter configuration is a list, nothing is copied, and the
     list contributes nothing (see
     [The text configuration](#the-text-configuration)). `config: null` with a
-    `displayMode` is accepted, because a null `config` is empty. [fixture:
-    common/config-display-mode-list-config] [fixture:
+    `displayMode` is accepted, because a null `config` is empty.
+
+    [fixture: common/config-display-mode-list-config] [fixture:
     common/config-display-mode-null-config]
 
 ### The configuration scan
@@ -143,6 +162,7 @@ does, and prepares it in this order. Of these steps, only the second can change
 which directives are found.
 
 1. Leading and trailing whitespace is removed.
+
 2. Every **closing-marker line** is removed. A closing-marker line starts at a
    `%%` that is directly followed by `}%%`, and extends through the next line
    terminator, provided that neither U+2028 nor U+2029 lies between the `%%` and
@@ -150,18 +170,26 @@ which directives are found.
    do not overlap. A `%%}%%` with no line terminator after it, or with U+2028 or
    U+2029 between it and the next line terminator, starts no closing-marker
    line.
+
 3. Every `'` is read as `"`, so arguments with single-quoted keys and strings
-   are valid JSON. [fixture: common/directive-single-quotes]
+   are valid JSON.
+
+   [fixture: common/directive-single-quotes]
 
 In the result, directives are found as in
 [Where a directive is](../../spec/docs/common.md#where-a-directive-is). This
 scan does not look at comment lines, so a directive on a comment line configures
-the diagram like any other. [fixture: common/directive-in-comment] [fixture:
-common/config-directive-in-comment] A directive on a closing-marker line,
-however, is removed with the line: `%%}%% %%{init: ...}%%` is a comment line
-that configures nothing. When U+2028 separates the directive from the `%%}%%`,
-the line is not removed, and the directive applies. [fixture:
-common/config-closing-marker-line] [fixture:
+the diagram like any other.
+
+[fixture: common/directive-in-comment] [fixture:
+common/config-directive-in-comment]
+
+A directive on a closing-marker line, however, is removed with the line:
+`%%}%% %%{init: ...}%%` is a comment line that configures nothing. When U+2028
+separates the directive from the `%%}%%`, the line is not removed, and the
+directive applies.
+
+[fixture: common/config-closing-marker-line] [fixture:
 common/config-closing-marker-line-u2028]
 
 The **argument value** of a directive is the argument's word as a string when
@@ -176,35 +204,50 @@ that the steps below look at.
 An **init directive** is a directive whose name ends with `init` or with
 `initialize`, compared exactly: `init`, `initialize`, `myinit`, and
 `reinitialize` are init directives, while `INIT`, `Init`, and `init2` are not.
-The name `wrap` and other names are not. [fixture:
-common/config-init-name-suffix] [fixture: common/config-init-name-reinitialize]
-[fixture: common/config-init-name-uppercase] [fixture:
+The name `wrap` and other names are not.
+
+[fixture: common/config-init-name-suffix] [fixture:
+common/config-init-name-reinitialize] [fixture:
+common/config-init-name-uppercase] [fixture:
 common/config-init-name-capitalized] [fixture:
 common/config-init-name-digit-after] [fixture: common/directive-unknown-name]
 
 The init directives are taken in source order. When the argument of one of them
 is not valid JSON, the scan stops at that directive, and there is no init
 configuration at all: the init directives before it do not apply either.
-mermaid.js still accepts the input. [fixture: common/directive-bad-json]
-[fixture: common/config-bad-json-drops-other-inits] A comma before a closing `}`
-is not valid JSON either: `%%{init: {"flowchart": {"inheritDir": true},}}%%`
-gives no init configuration. [fixture: common/config-init-trailing-comma] A
-closed init directive with valid JSON, such as `%%{init: {"theme": "dark"}}%%`
+mermaid.js still accepts the input.
+
+[fixture: common/directive-bad-json] [fixture:
+common/config-bad-json-drops-other-inits]
+
+A comma before a closing `}` is not valid JSON either:
+`%%{init: {"flowchart": {"inheritDir": true},}}%%` gives no init configuration.
+
+[fixture: common/config-init-trailing-comma]
+
+A closed init directive with valid JSON, such as `%%{init: {"theme": "dark"}}%%`
 before `flowchart LR` and `A-->B`, changes nothing in how the diagram text is
-read. [fixture: common/directive-init-theme] Otherwise the **init
-configuration** is:
+read.
+
+[fixture: common/directive-init-theme]
+
+Otherwise the **init configuration** is:
 
 - with no init directive, none;
+
 - with one init directive, its argument value, unless that is empty, in which
   case there is none. The value need not be a mapping: `%%{init: 5}%%` gives the
   string `5`, because a word argument is a string;
+
 - with two or more, a mapping: each argument value is first filtered with the
   key filter (see [The text configuration](#the-text-configuration)), and the
   values are then merged, in source order, into an empty mapping with the
   depth-limited merge (see
   [The effective configuration](#the-effective-configuration)). Values that are
   not containers contribute nothing, and a list contributes its elements one by
-  one. [fixture: common/config-two-inits-merged] [fixture:
+  one.
+
+  [fixture: common/config-two-inits-merged] [fixture:
   common/directive-two-primitive-inits-wrap]
 
 When there is an init configuration, mermaid.js tries the detectors once more,
@@ -218,16 +261,19 @@ when the detection of
 `error`, a line break, and `%% x` at the end of the text is the `error`
 pseudo-diagram, but with an init directive before it, mermaid.js rejects it:
 here the `%%` has no line break after it, so the `%%` removal leaves it in
-place. This specification does not run this second detection. [fixture:
-common/error-trailing-comment-line] [fixture:
+place. This specification does not run this second detection.
+
+[fixture: common/error-trailing-comment-line] [fixture:
 common/config-init-detection-rejects]
 
 When a detector matches and the init configuration is a mapping with a `config`
 entry, that entry moves to the key named after the detected id, replacing any
 entry there. The key is the id itself, except that `flowchart-v2` gives
 `flowchart`. With two or more init directives the key filter has already removed
-`config`, so nothing moves. [fixture: common/config-key-moves-to-diagram]
-[fixture: common/config-key-dropped-with-two-inits]
+`config`, so nothing moves.
+
+[fixture: common/config-key-moves-to-diagram] [fixture:
+common/config-key-dropped-with-two-inits]
 
 ### Wrap directives
 
@@ -249,7 +295,9 @@ directive configuration is a string, a number, or true, mermaid.js rejects the
 input with a `TypeError`. When it is a list, nothing changes. So mermaid.js
 rejects `%%{init: 5}%%` with `%%{wrap}%%`, accepts `%%{init: 5}%%` with only
 `%%{nowrap}%%`, and rejects `%%{init: 5}%%` with both `%%{nowrap}%%` and
-`%%{wrapper}%%`. [fixture: common/directive-primitive-init-wrap] [fixture:
+`%%{wrapper}%%`.
+
+[fixture: common/directive-primitive-init-wrap] [fixture:
 common/directive-primitive-init-nowrap] [fixture:
 common/directive-primitive-init-two-wrap-substrings]
 
@@ -278,8 +326,9 @@ So directives win over frontmatter, and a string or number in the directive
 configuration replaces a mapping in the frontmatter configuration. A list merged
 into the text configuration itself creates the keys `0`, `1`, and so on, which
 the key filter removes, so a list as the frontmatter configuration or the
-directive configuration contributes nothing. [fixture:
-common/config-directive-after-frontmatter] [fixture:
+directive configuration contributes nothing.
+
+[fixture: common/config-directive-after-frontmatter] [fixture:
 common/config-primitive-replaces-frontmatter-mapping]
 
 The text configuration is then processed in three steps.
@@ -299,6 +348,7 @@ element. For a mapping, each entry is visited in order:
   which takes its values from
   [`config.schema.yaml`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/schemas/config.schema.yaml)
   and from the variables of the default theme).
+
 - When the value is a container, it is filtered in turn. The keys `nodeColors`,
   `filenameIcons`, and `extensionIcons` are filtered differently: each of their
   entries is removed when its key starts with `__`, contains `proto`, or
@@ -310,21 +360,25 @@ element. For a mapping, each entry is visited in order:
   `filenameIcons` and `extensionIcons` the allowed form is one or more
   characters that are word characters or `-`, optionally followed by `:` and one
   or more such characters.
+
 - When the value is not a container and the key contains `themeCSS`,
   `fontFamily`, or `altFontFamily`, compared exactly, the value must be a
   string: for a number or a boolean, mermaid.js rejects the input with a
   `TypeError`. A string whose braces are unbalanced is replaced by the text
   `{ /* ERROR: Unbalanced CSS */ }`. The braces are **unbalanced** when the
   string has a different number of `{` and `}`, or when some beginning of it has
-  more `}` than `{`. [fixture: common/config-css-key-not-string]
+  more `}` than `{`.
+
+  [fixture: common/config-css-key-not-string]
 
 After its entries, when the mapping has a non-empty `themeVariables`, each
 string in `themeVariables` that is empty or contains a character other than an
 ASCII letter, an ASCII digit, space, `"`, `#`, `%`, `(`, `)`, `,`, `.`, or `;`
 is replaced by the empty string. This covers the entry values of a mapping and
 the elements of a list. When `themeVariables` is itself a string and contains
-such a character, mermaid.js rejects the input with a `TypeError`. [fixture:
-common/config-theme-variables-string-rejected]
+such a character, mermaid.js rejects the input with a `TypeError`.
+
+[fixture: common/config-theme-variables-string-rejected]
 
 **2. The font family**
 ([`addDirective()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/config.ts#L277-L290)).
@@ -345,7 +399,9 @@ list leaves its position empty, and later merges skip it. The
 [default `secure` list](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/schemas/config.schema.yaml#L343-L356)
 is `secure`, `securityLevel`, `startOnLoad`, `maxTextSize`,
 `suppressErrorRendering`, and `maxEdges`; `secure` is in it, so the text cannot
-change it. [fixture: common/config-secure-key-ignored]
+change it.
+
+[fixture: common/config-secure-key-ignored]
 
 The result is the text configuration. It is what
 [`mermaid.parse()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/mermaidAPI.ts#L96-L117)
@@ -387,15 +443,17 @@ a depth, which starts at 2:
 So a text value changes a default only when both are containers, which are
 merged, or when neither is, and then it replaces the default:
 `%%{init: {"flowchart": {"inheritDir": {"a": 1}}}}%%` leaves
-`flowchart.inheritDir` at its default. [fixture:
-common/config-mapping-does-not-replace-default]
+`flowchart.inheritDir` at its default.
+
+[fixture: common/config-mapping-does-not-replace-default]
 
 The effective configuration also derives the theme and the other appearance
 settings. These affect rendering, but deriving them can make mermaid.js reject
 the input: it reads colour values from `themeVariables` and rejects the input
 when it cannot parse one, as for
-`%%{init: {"themeVariables": {"primaryColor": "notacolor"}}}%%`. [fixture:
-common/config-theme-colour-rejected]
+`%%{init: {"themeVariables": {"primaryColor": "notacolor"}}}%%`.
+
+[fixture: common/config-theme-colour-rejected]
 
 [`renderDiagram()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/mermaidAPI.ts#L477-L682)
 applies the text configuration and the title before it parses. `mermaid.parse()`

@@ -40,8 +40,9 @@ The child fields of every node below are in source order, except those of a
 A StringLiteral of this diagram type, the URL or the tooltip of a click
 statement, is always closed and never empty: an empty string `""` is an
 `empty-string` unit, which no rule of the grammar takes (see
-[Strings](../diagrams/flowchart.md#strings)). [fixture:
-flowchart/lex-empty-string-line] [fixture:
+[Strings](../diagrams/flowchart.md#strings)).
+
+[fixture: flowchart/lex-empty-string-line] [fixture:
 flowchart/gram-click-href-empty-string] [fixture:
 flowchart/gram-click-href-tooltip-empty-string] [fixture:
 flowchart/gram-click-call-tooltip-empty-string] [fixture:
@@ -109,8 +110,10 @@ One occurrence of a vertex.
 | `cssClass` | Identifier or null         | The CSS class after `:::`, commas included; null when there is none.                                          |
 | `data`     | list of FlowchartDataBlock | The data blocks written right after the vertex, one after another, in source order; empty when there is none. |
 
-Child fields: `id`, `shape`, `cssClass`, `data`. [fixture:
-flowchart/gram-vertex-id-comma] [fixture: flowchart/gram-vertex-class-comma]
+Child fields: `id`, `shape`, `cssClass`, `data`.
+
+[fixture: flowchart/gram-vertex-id-comma] [fixture:
+flowchart/gram-vertex-class-comma]
 
 ### FlowchartShape
 
@@ -150,6 +153,7 @@ written between the opening and the closing arrow; in the second way, the order
 of the child fields is not the source order, which is `opening`, `label`,
 `arrow` (see [Nodes](../ast.md#nodes)). The label stays one field, so that a
 tool finds the label of a link in one place, whichever way it is written.
+
 [fixture: flowchart/gram-pipe-label-space-after] [fixture:
 flowchart/gram-link-text-string-then-text]
 
@@ -172,7 +176,9 @@ marker; in `A x==>B` the arrow `x==>` has the start marker `cross` and the line
 `thick`; and `-..->` has the line `dotted` and the length 2. The `-` around the
 `.` of a dotted line are not counted, and the first of them is optional (`.->`
 and `-.->` are both dotted arrows of length 1); which of the two is written is
-in `value`, not in a field. [fixture: flowchart/db-arrow-single-forms] [fixture:
+in `value`, not in a field.
+
+[fixture: flowchart/db-arrow-single-forms] [fixture:
 flowchart/lex-arrow-head-x-before-id]
 
 ### FlowchartOpeningArrow
@@ -193,7 +199,9 @@ arrow of the same kind leaves the link text context (see
 [The link text contexts](../diagrams/flowchart.md#the-link-text-contexts)). In
 `A<-- t -->B`, the opening arrow has the start marker `arrow`, and in
 `A== t x==>B`, both arrows have the line `thick` and the closing arrow has the
-start marker `cross`. [fixture: flowchart/db-arrow-double] [fixture:
+start marker `cross`.
+
+[fixture: flowchart/db-arrow-double] [fixture:
 flowchart/db-arrow-thick-head-invalid] [fixture:
 flowchart/db-arrow-dash-head-length]
 
@@ -205,6 +213,7 @@ flowchart/db-arrow-dash-head-length]
 | `value` | string | The content of the string or markdown string that it starts with, followed by the written text of the rest of the label; for a label that starts with a text run, its written text (see [flowchart.md](../diagrams/flowchart.md#labels)). |
 
 No child fields. The value of a label that is all whitespace is that whitespace.
+
 [fixture: flowchart/tokens-label-all-whitespace] [fixture:
 flowchart/tokens-edge-label-all-whitespace] [fixture:
 flowchart/tokens-subgraph-title-all-whitespace]
@@ -244,6 +253,7 @@ another, as in `A@{ shape: rect }@{ label: x }`, are a node each.
 
 No child fields. The tree does not read the value (see
 [`embedded-data-opaque`](../known-divergences/embedded-data-opaque.md)).
+
 [fixture: flowchart/gram-data-consecutive-blocks]
 
 ### FlowchartIgnoredText
@@ -258,8 +268,9 @@ direction line before `direction` and after the value (see
 | ------- | ------ | ------------------------------------------------- |
 | `value` | string | Its written text (see [ast.md](../ast.md#nodes)). |
 
-No child fields. Its value has no whitespace at its ends. [fixture:
-flowchart/lex-direction-line-text-before-directive-inside] [fixture:
+No child fields. Its value has no whitespace at its ends.
+
+[fixture: flowchart/lex-direction-line-text-before-directive-inside] [fixture:
 flowchart/lex-direction-line-text-after-directive-inside]
 
 ### FlowchartSubgraphStatement
@@ -284,25 +295,34 @@ whitespace after it, up to the separator or the first empty description block
 after it, and its value holds that whitespace: `subgraph S` followed by a space
 has the name `S` and a space, and so has `subgraph S accDescr {}`; after a
 string, the whitespace is part of the name too, as in `subgraph "S"` followed by
-a space. [fixture: flowchart/db-subgraph-name-trailing-space] [fixture:
+a space.
+
+[fixture: flowchart/db-subgraph-name-trailing-space] [fixture:
 flowchart/db-subgraph-name-space-before-empty-description-block] [fixture:
-flowchart/db-subgraph-string-name-trailing-space] With a title, mermaid.js reads
-no whitespace before the `[`, and the name ends at its last character that is
-not whitespace: `subgraph a  [T]` has the id `a`. [fixture:
-flowchart/db-subgraph-title-spaces-before-bracket] Only where empty description
-blocks follow the name right after it, the whitespace between them, or between
-the last of them and a `;`, belongs to no node, since the blocks are statements
-of `body`, while mermaid.js reads it into the name:
-`subgraph "S"accDescr {} accDescr {}` and `subgraph "S"accDescr {} ;` get a
-generated id. In these forms only, the Db reads that whitespace from the source.
+flowchart/db-subgraph-string-name-trailing-space]
+
+With a title, mermaid.js reads no whitespace before the `[`, and the name ends
+at its last character that is not whitespace: `subgraph a  [T]` has the id `a`.
+
+[fixture: flowchart/db-subgraph-title-spaces-before-bracket]
+
+Only where empty description blocks follow the name right after it, the
+whitespace between them, or between the last of them and a `;`, belongs to no
+node, since the blocks are statements of `body`, while mermaid.js reads it into
+the name: `subgraph "S"accDescr {} accDescr {}` and `subgraph "S"accDescr {} ;`
+get a generated id. In these forms only, the Db reads that whitespace from the
+source.
+
 [fixture: flowchart/db-subgraph-name-space-between-empty-description-blocks]
 [fixture:
 flowchart/db-subgraph-name-space-after-empty-description-block-before-semicolon]
+
 The empty description blocks after the name or the title, before the separator,
 are the first statements of `body`, so that the child nodes stay in source
 order: `subgraph S accDescr {}`, a line `A`, and `end` has the body of a
-FlowchartAccDescrBlockStatement and a FlowchartVertexStatement. [fixture:
-flowchart/gram-empty-description-block-after-subgraph-name]
+FlowchartAccDescrBlockStatement and a FlowchartVertexStatement.
+
+[fixture: flowchart/gram-empty-description-block-after-subgraph-name]
 
 ### FlowchartStyleStatement
 
@@ -318,14 +338,19 @@ style starts with `fill`. So the literal of a style starts right after the `,`
 before it, and the first style after the whitespace that the statement reads
 before it, and ends at its last character that is not whitespace: in
 `style A fill:#f00 ,  stroke:#333 `, the styles are `fill:#f00` and
-`stroke:#333` after two spaces. [fixture: flowchart/db-style-tabs-after-comma]
-[fixture: flowchart/db-linkstyle-leading-space-fill] A style that is all
-whitespace is null, whatever the amount of whitespace, which mermaid.js reads as
-the empty text: the styles of `style A fill:#f00, ` are a literal and null. As
-the line rule ignores the `;`, `style A fill:#f00;` followed by two spaces has
-the style `fill:#f00`, and `style A fill:#f00;stroke:#0f0` the one style
-`fill:#f00stroke:#0f0`. `style A fill:#f00, %%{init: {}}%%` followed by two
-spaces and `stroke:#333` has the second style of three spaces and `stroke:#333`.
+`stroke:#333` after two spaces.
+
+[fixture: flowchart/db-style-tabs-after-comma] [fixture:
+flowchart/db-linkstyle-leading-space-fill]
+
+A style that is all whitespace is null, whatever the amount of whitespace, which
+mermaid.js reads as the empty text: the styles of `style A fill:#f00, ` are a
+literal and null. As the line rule ignores the `;`, `style A fill:#f00;`
+followed by two spaces has the style `fill:#f00`, and
+`style A fill:#f00;stroke:#0f0` the one style `fill:#f00stroke:#0f0`.
+`style A fill:#f00, %%{init: {}}%%` followed by two spaces and `stroke:#333` has
+the second style of three spaces and `stroke:#333`.
+
 [fixture: flowchart/tokens-style-ignored-semicolon-then-spaces] [fixture:
 common/entity-style-semicolon-between-styles] [fixture:
 flowchart/tokens-style-directive-after-comma] [fixture:
@@ -339,8 +364,9 @@ flowchart/gram-style-id-comma] [fixture: flowchart/gram-style-whitespace]
 | `cssClasses` | list of (Identifier or null)       | The CSS classes: the parts of the `id-list` after `classDef` between its `,` units, in source order; null for a part that is empty (see [flowchart.md](../diagrams/flowchart.md#style-class-and-link-style-statements)).   |
 | `styles`     | list of (FlowchartLiteral or null) | The styles, as in FlowchartStyleStatement, except that a `,` right after a `\` does not separate two styles but is part of the style (see [flowchart.md](../diagrams/flowchart.md#style-class-and-link-style-statements)). |
 
-Child fields: `cssClasses`, `styles`. [fixture:
-flowchart/db-classdef-names-empty] [fixture:
+Child fields: `cssClasses`, `styles`.
+
+[fixture: flowchart/db-classdef-names-empty] [fixture:
 flowchart/db-classdef-names-trailing-comma]
 
 ### FlowchartClassStatement
@@ -350,9 +376,10 @@ flowchart/db-classdef-names-trailing-comma]
 | `ids`      | list of (Identifier or null) | The first id after `class`, as a list: the parts of its `id-list` between its `,` units; null for a part that is empty. |
 | `cssClass` | Identifier                   | The second id, the CSS class, commas included.                                                                          |
 
-Child fields: `ids`, `cssClass`. [fixture: flowchart/db-class-ids-empty-first]
-[fixture: flowchart/db-class-ids-only-comma] [fixture:
-flowchart/gram-class-name-comma]
+Child fields: `ids`, `cssClass`.
+
+[fixture: flowchart/db-class-ids-empty-first] [fixture:
+flowchart/db-class-ids-only-comma] [fixture: flowchart/gram-class-name-comma]
 
 ### FlowchartClickCallbackStatement
 
@@ -372,6 +399,7 @@ of the function: `click A call f (x)` calls the function named `f` and a space.
 mermaid.js passes the arguments on as they are written, and then divides them at
 each `,` outside quotes and trims each of them: `click A call f( x, y )` has the
 arguments of a space, `x, y`, and a space, which call `f` with `x` and `y`.
+
 [fixture: flowchart/tokens-callback-name-trailing-space] [fixture:
 flowchart/tokens-callback-arguments-spaces-at-ends]
 
@@ -387,12 +415,15 @@ A click statement that links to a URL: `click A href "url"`,
 | `tooltip` | StringLiteral or null        | As in FlowchartClickCallbackStatement.                                                                                                                                   |
 | `target`  | string or null               | The link target, one of `_self`, `_blank`, `_parent`, and `_top` (see [The statement context](../diagrams/flowchart.md#the-statement-context)); null when there is none. |
 
-Child fields: `ids`, `url`, `tooltip`. [fixture:
-flowchart/db-click-ids-empty-tooltip] [fixture: flowchart/lex-click-id-comma]
+Child fields: `ids`, `url`, `tooltip`.
+
+[fixture: flowchart/db-click-ids-empty-tooltip] [fixture:
+flowchart/lex-click-id-comma]
 
 A statement has no other `click` unit (see
-[Click and callbacks](../diagrams/flowchart.md#click-and-callbacks)). [fixture:
-flowchart/gram-click-href]
+[Click and callbacks](../diagrams/flowchart.md#click-and-callbacks)).
+
+[fixture: flowchart/gram-click-href]
 
 ### FlowchartLinkStyleStatement
 
@@ -431,15 +462,18 @@ not empty, or both.
 Child fields: `textBefore`, `textAfter`. `A-->B direction TB` has the text
 `A-->B` before `direction`, and `  accDescr: d ; direction LR` the text
 `accDescr: d ;`; `A[direction TB]` has the text `A[` before it and `]` after the
-value, and `direction LR trailing` the text `trailing` after it. [fixture:
-flowchart/lex-direction-line-swallows-edge] [fixture:
+value, and `direction LR trailing` the text `trailing` after it.
+
+[fixture: flowchart/lex-direction-line-swallows-edge] [fixture:
 flowchart/lex-direction-line-acc-descr-subgraph-indented] [fixture:
 flowchart/lex-direction-line-text-before-directive-inside] [fixture:
 flowchart/lex-direction-line-in-label] [fixture:
 flowchart/lex-direction-line-text-after-value] [fixture:
-flowchart/lex-direction-line-text-after-directive-inside] `direction`, a line
-break, and `TB` has neither. [fixture:
-flowchart/lex-direction-line-top-level-next-line]
+flowchart/lex-direction-line-text-after-directive-inside]
+
+`direction`, a line break, and `TB` has neither.
+
+[fixture: flowchart/lex-direction-line-top-level-next-line]
 
 ### FlowchartAccTitleStatement
 
@@ -448,8 +482,9 @@ flowchart/lex-direction-line-top-level-next-line]
 | `value` | FlowchartLiteral or null | The text after `accTitle:`, up to the end of the line; null when there is none. |
 
 Child fields: `value`. The whitespace after `:` is read with it, line breaks
-included, so the value is null only at the end of the text. [fixture:
-flowchart/lex-acc-title-next-line] [fixture:
+included, so the value is null only at the end of the text.
+
+[fixture: flowchart/lex-acc-title-next-line] [fixture:
 flowchart/gram-acc-title-empty-at-end]
 
 ### FlowchartAccDescrStatement
@@ -461,8 +496,9 @@ An `accDescr:` statement with its text.
 | `value` | FlowchartLiteral or null | The text after `accDescr:`, up to the end of the line; null when there is none. |
 
 Child fields: `value`. The whitespace after `:` is read with it, line breaks
-included, so the value is null only at the end of the text. [fixture:
-flowchart/db-acc-descr-empty-replaces]
+included, so the value is null only at the end of the text.
+
+[fixture: flowchart/db-acc-descr-empty-replaces]
 
 ### FlowchartAccDescrBlockStatement
 
@@ -478,18 +514,22 @@ changes nothing.
 | `closed` | boolean                  | Whether the block ends with `}`. It is false when the text ends inside the block.                                       |
 
 Child fields: `value`. The value of `accDescr { x` at the end of the text is
-`x`. [fixture: flowchart/lex-acc-descr-block-unclosed] `accDescr {  }` is a
-closed block without text, whose value is null: the whitespace after `{` is read
-with the `{`. Such a block is a statement where a statement starts and also
-after the last unit of a statement, before its separator: `A accDescr {}` is a
-vertex statement and a FlowchartAccDescrBlockStatement, and after the name of a
-subgraph it is the first statement of the subgraph's body; after the direction
-of the header, before its separator, it is the first statement of the diagram's
-`body` (see
+`x`.
+
+[fixture: flowchart/lex-acc-descr-block-unclosed]
+
+`accDescr {  }` is a closed block without text, whose value is null: the
+whitespace after `{` is read with the `{`. Such a block is a statement where a
+statement starts and also after the last unit of a statement, before its
+separator: `A accDescr {}` is a vertex statement and a
+FlowchartAccDescrBlockStatement, and after the name of a subgraph it is the
+first statement of the subgraph's body; after the direction of the header,
+before its separator, it is the first statement of the diagram's `body` (see
 [flowchart.md](../diagrams/flowchart.md#empty-description-blocks-before-a-separator)).
 Elsewhere it lies inside a statement, and the input is rejected (see
-[flowchart.md](../diagrams/flowchart.md#accessibility-values)). [fixture:
-flowchart/gram-acc-descr-block-empty] [fixture:
+[flowchart.md](../diagrams/flowchart.md#accessibility-values)).
+
+[fixture: flowchart/gram-acc-descr-block-empty] [fixture:
 flowchart/db-acc-descr-empty-block-keeps] [fixture:
 flowchart/gram-empty-description-block-after-vertex] [fixture:
 flowchart/header-empty-description-block-after-direction]

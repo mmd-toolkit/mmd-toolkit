@@ -19,8 +19,9 @@ sequenceDiagram
   John -->> Alice: Great!
 ```
 
-The example puts a comment on its own line between messages. [fixture:
-sequence/docs-syntax-sequence-diagram-c404e4ed]
+The example puts a comment on its own line between messages.
+
+[fixture: sequence/docs-syntax-sequence-diagram-c404e4ed]
 
 This document is about a `%%` that comes right after another character on its
 line, with no whitespace between them, as in `autonumber 10%% c`. In this
@@ -92,8 +93,9 @@ Each example is a whole sequence diagram.
 | 5       | numbering with no start    | numbering from 5                    |
 | 6       | numbering from 10          | the same                            |
 
-The fixtures record the readings compared in the table. [fixture:
-sequence/div-comment-after-one-character-id] [fixture:
+The fixtures record the readings compared in the table.
+
+[fixture: sequence/div-comment-after-one-character-id] [fixture:
 sequence/div-comment-after-id-run-first-character-target] [fixture:
 sequence/div-comment-after-text-colon] [fixture:
 sequence/div-comment-after-two-digit-number] [fixture:
@@ -117,8 +119,10 @@ reads as an id run. Both accept with a different Db where what is left after the
 comment of mermaid.js is still accepted: example 5; `autonumber 5 2%% c`, with
 the step 2 in this specification and 1 in mermaid.js; and
 `A%% clice->>Bob: Hello`, a message from `A%% clice` in this specification and
-no message in mermaid.js. [fixture: sequence/div-comment-after-one-digit-line]
-[fixture: sequence/div-comment-after-first-letter-of-keyword] [fixture:
+no message in mermaid.js.
+
+[fixture: sequence/div-comment-after-one-digit-line] [fixture:
+sequence/div-comment-after-first-letter-of-keyword] [fixture:
 sequence/div-comment-after-dot-before-number] [fixture:
 sequence/div-comment-after-fraction-number] [fixture:
 sequence/div-comment-after-step-number] [fixture:
@@ -128,8 +132,9 @@ Where the character that mermaid.js loses changes nothing, as with a `;` before
 `%%`, both give the same result, and the input is not a divergence. A space
 before the `%%` makes both read the same in most places, as in example 6, and
 `A->>B: %% c` has the message `%% c` in both; but in an id run the space stays,
-so `A %% clice->>Bob: Hello` is a message from `A %% clice` in both. [fixture:
-sequence/lex-comment-after-semicolon] [fixture:
+so `A %% clice->>Bob: Hello` is a message from `A %% clice` in both.
+
+[fixture: sequence/lex-comment-after-semicolon] [fixture:
 sequence/lex-comment-after-invalid-unit] [fixture:
 sequence/lex-space-before-comment-after-text-colon] [fixture:
 sequence/lex-space-before-comment-in-id-run]
@@ -137,6 +142,7 @@ sequence/lex-space-before-comment-in-id-run]
 Whether a `%%` comes right after a character is decided on the diagram text
 without its directives, which is the text that both lexers read: in
 `autonumber 1%%{init: {}}%%%% c0`, the `%%` comes right after the number 1.
+
 [fixture: sequence/div-comment-after-number-across-directive]
 
 In a Gantt chart, the lexer of mermaid.js has the same rule for a single `%`:
@@ -151,9 +157,11 @@ data or a setting text, `#%c` after task data, and `"%c` after a URL string, so
 these inputs are rejected, while `a :%c` is the task `a ` with the end `%c`,
 which mermaid.js rejects. The difference goes both ways in gantt. `ab% : 1d` and
 `}%c : 1d` are tasks in both, and a space before the `%` makes both read a
-comment (see [Comments](../diagrams/gantt.md#comments)). [fixture:
-gantt/lex-colon-then-percent] [fixture: gantt/div-comment-after-task-text-start]
-[fixture: gantt/div-comment-after-keyword-start] [fixture:
+comment (see [Comments](../diagrams/gantt.md#comments)).
+
+[fixture: gantt/lex-colon-then-percent] [fixture:
+gantt/div-comment-after-task-text-start] [fixture:
+gantt/div-comment-after-keyword-start] [fixture:
 gantt/div-comment-after-semicolon-after-data] [fixture:
 gantt/div-comment-after-semicolon-after-setting] [fixture:
 gantt/lex-comment-after-two-characters] [fixture:
@@ -173,8 +181,9 @@ are rejected, while `A:%% c` is the task `A` with the score part `%% c`, which
 mermaid.js rejects. The difference goes both ways in journey. A single `%` after
 a character, as in `a%: 5`, is a character of the task text in both, `}%% c` is
 a task text without data in both, and a `#` before the `%%` makes both read a
-comment (see [Comments](../diagrams/journey.md#comments)). [fixture:
-journey/div-comment-after-task-text-start] [fixture:
+comment (see [Comments](../diagrams/journey.md#comments)).
+
+[fixture: journey/div-comment-after-task-text-start] [fixture:
 journey/div-comment-after-semicolon-after-data] [fixture:
 journey/div-comment-after-semicolon-after-title] [fixture:
 journey/div-comment-after-colon-after-section] [fixture:
@@ -189,8 +198,9 @@ comments in mermaid.js and periods in this specification, and `:%% c` is a
 comment in mermaid.js and rejected here, as no whitespace follows the colon. The
 difference goes both ways in timeline too. `}%% c` is a period in both, and a
 `#` before the `%%` makes both read a comment (see
-[Comments](../diagrams/timeline.md#comments)). [fixture:
-timeline/div-comment-after-period-start] [fixture:
+[Comments](../diagrams/timeline.md#comments)).
+
+[fixture: timeline/div-comment-after-period-start] [fixture:
 timeline/div-comment-after-semicolon] [fixture:
 timeline/div-comment-after-non-ascii-letter] [fixture:
 timeline/div-comment-after-semicolon-after-header] [fixture:
@@ -213,10 +223,11 @@ of a string are read the same by both (see
 feed before a line that is `%%` alone from its start, which changes no statement
 and counts only for
 [`title-digit-after-axis-statement`](./title-digit-after-axis-statement.md):
-there it takes away no level. [fixture:
-xychart/div-title-digit-after-bare-percent-line-after-axis-and-plot] [fixture:
-xychart/db-title-digit-after-bare-percent-line-and-empty-line] [fixture:
-xychart/header-bare-percent-line-after-header] [fixture:
+there it takes away no level.
+
+[fixture: xychart/div-title-digit-after-bare-percent-line-after-axis-and-plot]
+[fixture: xychart/db-title-digit-after-bare-percent-line-and-empty-line]
+[fixture: xychart/header-bare-percent-line-after-header] [fixture:
 xychart/div-comment-glued-after-title-word] [fixture:
 xychart/div-comment-glued-after-axis-title] [fixture:
 xychart/div-comment-glued-after-bracket] [fixture:
@@ -250,8 +261,9 @@ the arrow and no right text in mermaid.js and the texts `L` and `R` here, and
 mermaid.js and `ab,` and `a b` here. `quadrant-1 ab12%% c`, a run of characters
 outside ASCII before `%%`, `x-axis L;%% c`, a `%%` right after the `]` of a
 point, and a `%%` right after the `}` of a block are read the same by both (see
-[Comments](../diagrams/quadrant.md#comments)). [fixture:
-quadrant/div-after-x-axis-glued-comment] [fixture:
+[Comments](../diagrams/quadrant.md#comments)).
+
+[fixture: quadrant/div-after-x-axis-glued-comment] [fixture:
 quadrant/div-after-y-axis-glued-comment] [fixture:
 quadrant/div-comment-unit-letter-then-non-ascii] [fixture:
 quadrant/div-comment-unit-letters-then-digit] [fixture:

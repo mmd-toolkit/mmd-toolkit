@@ -46,8 +46,9 @@ statements followed by a blank line, and blank lines at the end of the text.
 
 Kanban uses the same blank-line rule and the four cases above. Node, icon, and
 class lines are statements. Data suffixes belong to their node lines. Header
-whitespace or blank lines before the first node are accepted. [fixture:
-kanban/gram-grid-comment-line-header-line] [fixture:
+whitespace or blank lines before the first node are accepted.
+
+[fixture: kanban/gram-grid-comment-line-header-line] [fixture:
 kanban/gram-grid-directive-line-header-line] [fixture:
 kanban/gram-grid-lf-header-line] [fixture: kanban/gram-grid-spaces-header-line]
 [fixture: kanban/header-bom-trailing] [fixture: kanban/header-crlf-trailing]
@@ -61,23 +62,38 @@ kanban/lex-cr-whitespace-first] [fixture: kanban/lex-crlf-whitespace-first]
 kanban/lex-ls-whitespace-first] [fixture: kanban/lex-nbsp-whitespace-first]
 [fixture: kanban/lex-ps-whitespace-first] [fixture:
 kanban/lex-tab-whitespace-first] [fixture: kanban/div-header-space-node]
+
 Comments followed by blank lines before nodes or decorations are accepted.
+
 [fixture: kanban/div-header-comments-blank] [fixture:
 kanban/div-between-comment-blank] [fixture:
 kanban/div-comment-blank-before-icon] [fixture:
-kanban/div-comment-blank-before-class] Comments ending at U+2028 or U+2029
-before the next statement are accepted. mermaid.js rejects these inputs (see
-[Blank lines](../diagrams/kanban.md#blank-lines)). [fixture:
-kanban/div-header-comment-ls-node] [fixture: kanban/div-header-comment-ps-node]
-[fixture: kanban/div-between-real-comments-ls-node] [fixture:
+kanban/div-comment-blank-before-class]
+
+Comments ending at U+2028 or U+2029 before the next statement are accepted.
+mermaid.js rejects these inputs (see
+[Blank lines](../diagrams/kanban.md#blank-lines)).
+
+[fixture: kanban/div-header-comment-ls-node] [fixture:
+kanban/div-header-comment-ps-node] [fixture:
+kanban/div-between-real-comments-ls-node] [fixture:
 kanban/div-between-real-comments-ps-node]
 
-In kanban, one diagram comment after the header is accepted by both. [fixture:
-kanban/header-header-comment-blank] Two diagram comments between nodes are
-accepted by both. [fixture: kanban/gram-between-comments-blank] A blank line
-before an icon is accepted by both. [fixture: kanban/gram-blank-before-icon]
-Blank lines at the end are accepted by both. [fixture:
-kanban/gram-shallower-then-empty]
+In kanban, one diagram comment after the header is accepted by both.
+
+[fixture: kanban/header-header-comment-blank]
+
+Two diagram comments between nodes are accepted by both.
+
+[fixture: kanban/gram-between-comments-blank]
+
+A blank line before an icon is accepted by both.
+
+[fixture: kanban/gram-blank-before-icon]
+
+Blank lines at the end are accepted by both.
+
+[fixture: kanban/gram-shallower-then-empty]
 
 Ishikawa applies the same direct rule (see
 [Blank lines](../diagrams/ishikawa.md#blank-lines)). A statement here is a node
@@ -86,8 +102,9 @@ here and rejected by mermaid.js:
 
 1. After the header, an even diagram-comment count, including zero, followed by
    a blank before the first node is accepted. With zero comments, trailing
-   header whitespace or a blank line suffices. [fixture:
-   ishikawa/div-header-two-comments-blank-node] [fixture:
+   header whitespace or a blank line suffices.
+
+   [fixture: ishikawa/div-header-two-comments-blank-node] [fixture:
    ishikawa/div-header-blank-node] [fixture:
    ishikawa/div-header-blank-indented-node] [fixture:
    ishikawa/div-header-whitespace-indented-node] [fixture:
@@ -106,8 +123,9 @@ here and rejected by mermaid.js:
    ishikawa/div-header-two-comments-common-gap]
 
 2. After the header, an odd diagram-comment count ending at U+2028 or U+2029
-   before a node on the same physical line is accepted. [fixture:
-   ishikawa/div-header-comment-ls-node] [fixture:
+   before a node on the same physical line is accepted.
+
+   [fixture: ishikawa/div-header-comment-ls-node] [fixture:
    ishikawa/div-header-comment-ps-node] [fixture:
    ishikawa/div-header-inline-comment-ls-node] [fixture:
    ishikawa/div-header-inline-comment-ps-node] [fixture:
@@ -116,8 +134,10 @@ here and rejected by mermaid.js:
 
 3. Between nodes, an odd diagram-comment count followed by a blank before the
    next node is accepted, including a separator followed by a line feed at the
-   end of the comment. [fixture: ishikawa/div-between-comment-blank-node]
-   [fixture: ishikawa/div-between-comment-ls-blank-node] [fixture:
+   end of the comment.
+
+   [fixture: ishikawa/div-between-comment-blank-node] [fixture:
+   ishikawa/div-between-comment-ls-blank-node] [fixture:
    ishikawa/div-between-comment-ps-blank-node] [fixture:
    ishikawa/div-between-comment-blank-cr] [fixture:
    ishikawa/div-between-comment-blank-crlf] [fixture:
@@ -125,14 +145,17 @@ here and rejected by mermaid.js:
    ishikawa/div-between-comment-common-gap-blank-node]
 
 4. Between nodes, an even nonzero diagram-comment count ending at U+2028 or
-   U+2029 before a node on the same physical line is accepted. [fixture:
-   ishikawa/div-between-two-comments-ls-node] [fixture:
+   U+2029 before a node on the same physical line is accepted.
+
+   [fixture: ishikawa/div-between-two-comments-ls-node] [fixture:
    ishikawa/div-between-two-comments-ps-node]
 
 The counterparts accepted by both keep their tree: an odd count after the header
 followed by a blank, an even count between nodes followed by a blank, two
 comments before a header-line separator and node, and blanks before comments or
-at the end. [fixture: ishikawa/gram-header-comment-blank-node] [fixture:
+at the end.
+
+[fixture: ishikawa/gram-header-comment-blank-node] [fixture:
 ishikawa/gram-between-two-comments-blank-node] [fixture:
 ishikawa/gram-header-comment-spaces-node] [fixture:
 ishikawa/gram-header-two-comments-ls-node] [fixture:
@@ -143,8 +166,9 @@ ishikawa/gram-header-two-comments-ps-node]
 
 The header alone at the end of the source, with no written line break or other
 following content, is still rejected; removed directives and the appended line
-feed do not supply that content. It is not this divergence. [fixture:
-ishikawa/header-only] [fixture: ishikawa/header-beta-only] [fixture:
+feed do not supply that content. It is not this divergence.
+
+[fixture: ishikawa/header-only] [fixture: ishikawa/header-beta-only] [fixture:
 ishikawa/header-directive-only-eof] [fixture: ishikawa/header-only-lf]
 
 ## The difference
@@ -202,8 +226,9 @@ described in words.
 | 4       | rejected   | the root with the children a and b |
 | 5       | rejected   | the root                           |
 
-The fixtures record the readings compared in the table. [fixture:
-mindmap/db-blank-line-after-header] [fixture:
+The fixtures record the readings compared in the table.
+
+[fixture: mindmap/db-blank-line-after-header] [fixture:
 mindmap/div-header-two-comments-then-blank] [fixture:
 mindmap/div-comment-then-blank-between-nodes] [fixture:
 mindmap/div-shape-comment-then-blank] [fixture:
@@ -217,6 +242,7 @@ them:
   line and the next line, and a comment line, which is removed with its line
   feed, before an empty line; while one or three comments and an empty line, an
   empty line before a comment, and a comment line alone are accepted by both.
+
   [fixture: mindmap/db-whitespace-line-after-header] [fixture:
   mindmap/div-tab-line-after-header] [fixture:
   mindmap/db-directive-between-header-and-first-node] [fixture:
@@ -228,16 +254,20 @@ them:
   mindmap/gram-header-line-comment-then-blank] [fixture:
   mindmap/gram-header-blank-then-comment] [fixture:
   mindmap/db-comment-line-after-header]
+
 - Case 2: `mindmap %% c`, a U+2028, and `root`; while two comments before such a
-  node are accepted by both. [fixture:
-  mindmap/div-header-comment-line-separator-node] [fixture:
+  node are accepted by both.
+
+  [fixture: mindmap/div-header-comment-line-separator-node] [fixture:
   mindmap/gram-header-two-comments-line-separator-node]
+
 - Case 3: three comments, a comment after an icon, a line `%%{ }%%`, a comment
   after a class line, and a comment followed by a U+2028 and a line feed, before
   a blank line; and a blank line before an icon or a class line after a comment;
   while two comments, a comment line, and a blank line between two comments are
-  accepted by both. [fixture:
-  mindmap/div-three-comments-then-blank-between-nodes] [fixture:
+  accepted by both.
+
+  [fixture: mindmap/div-three-comments-then-blank-between-nodes] [fixture:
   mindmap/div-icon-comment-then-blank] [fixture:
   mindmap/div-percent-brace-then-blank-between-nodes] [fixture:
   mindmap/div-class-then-comment-then-blank] [fixture:
@@ -252,9 +282,11 @@ them:
   mindmap/gram-blank-then-comment-between-nodes] [fixture:
   mindmap/gram-comment-then-blank-at-end] [fixture:
   mindmap/gram-blank-then-icon]
+
 - Case 4: a comment after a shape, a line `%%{ }%%`, a U+2028, and the next
-  node; while one comment before such a node is accepted by both. [fixture:
-  mindmap/div-two-comments-line-separator-between-nodes] [fixture:
+  node; while one comment before such a node is accepted by both.
+
+  [fixture: mindmap/div-two-comments-line-separator-between-nodes] [fixture:
   mindmap/lex-comment-ends-at-line-separator]
 
 The difference goes one way: this specification accepts inputs that mermaid.js
@@ -286,6 +318,7 @@ The kanban lexical rules and grammar pair whitespace and statements in the same
 way
 ([`kanban.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/parser/kanban.jison#L48-L138)).
 The pairing changes nothing held by the tree. The same direct rule applies.
+
 [fixture: kanban/gram-grid-comment-line-header-line] [fixture:
 kanban/gram-grid-directive-line-header-line] [fixture:
 kanban/gram-grid-lf-header-line] [fixture: kanban/gram-grid-spaces-header-line]
@@ -315,8 +348,9 @@ a statement end. Neither is a node: whitespace and line terminators are trivia,
 and comments are already held as comments. No node can preserve an acceptance
 condition that depends only on pairing those trivia units. The direct rule
 leaves all written node text and indentation intact; it accepts more inputs and
-rejects none that mermaid.js accepts for this reason. [fixture:
-ishikawa/div-header-blank-node] [fixture:
+rejects none that mermaid.js accepts for this reason.
+
+[fixture: ishikawa/div-header-blank-node] [fixture:
 ishikawa/div-between-comment-blank-node] [fixture:
 ishikawa/gram-header-comment-blank-node] [fixture:
 ishikawa/gram-between-two-comments-blank-node]
@@ -336,8 +370,9 @@ indentation of every node: its blank lines are removed, the directives on them
 kept; the whitespace at the end of the header line is removed; and a U+2028 or a
 U+2029 that ends a diagram comment is removed with the whitespace after it when
 only whitespace follows it up to the line feed, and gets a line feed before it
-when a statement follows it on its line. [fixture:
-mindmap/db-directive-between-header-and-first-node] [fixture:
+when a statement follows it on its line.
+
+[fixture: mindmap/db-directive-between-header-and-first-node] [fixture:
 mindmap/div-header-trailing-spaces-then-node] [fixture:
 mindmap/div-shape-comment-line-separator-then-blank] [fixture:
 mindmap/div-two-comments-line-separator-between-nodes]

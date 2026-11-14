@@ -48,6 +48,7 @@ A `String` token that a comment region or a directive cuts becomes
 `StringFragment` tokens (see
 [Comment regions in tokens](../tokens.md#comment-regions-in-tokens) and
 [A token that a directive cuts](../tokens.md#a-token-that-a-directive-cuts)).
+
 [fixture: state/tokens-comment-region-in-alias-string] [fixture:
 state/lex-directive-in-state-string]
 
@@ -55,19 +56,23 @@ A **token** is a maximal run of units of one item and one kind that follow one
 another with nothing between them, and, for the `RawText` items, also with
 whitespace between them; a token holds no whitespace at its ends, except where
 mermaid.js reads it as part of a value (see [Tokens](../tokens.md#tokens)): the
-token of a `second-description` unit holds the whole unit, [fixture:
-state/db-alias-blank-second-description] and where the `:` of a note on one line
-starts its text, the token of the `note-text` unit after it keeps the whitespace
-at its start, which the text holds: `note left of A`, two spaces, and `: hi` has
-the tokens `:` and ` hi`, while with no space after the `:`, the text `:hi` has
-the tokens `:` and `hi`. [fixture:
+token of a `second-description` unit holds the whole unit, and where the `:` of
+a note on one line starts its text, the token of the `note-text` unit after it
+keeps the whitespace at its start, which the text holds: `note left of A`, two
+spaces, and `: hi` has the tokens `:` and ` hi`, while with no space after the
+`:`, the text `:hi` has the tokens `:` and `hi`.
+
+[fixture: state/db-alias-blank-second-description] [fixture:
 state/tokens-note-two-spaces-before-colon-space] [fixture:
-state/lex-note-two-spaces-before-colon] A directive, a comment region, or an
-ignored `;` inside such a run cuts it into fragments, as
+state/lex-note-two-spaces-before-colon]
+
+A directive, a comment region, or an ignored `;` inside such a run cuts it into
+fragments, as
 [A token that a directive cuts](../tokens.md#a-token-that-a-directive-cuts)
 says, when the run is a `RawText` or a `String` token; inside a run of any other
 kind, a directive or an ignored `;` makes the input rejected (see
 [Directives inside units](../../../spec/docs/diagrams/state.md#directives-inside-units)).
+
 [fixture: state/lex-directive-in-second-description] [fixture:
 state/tokens-comment-region-in-note-block] [fixture:
 state/tokens-description-ignored-semicolon-inside] [fixture:
@@ -79,22 +84,31 @@ state/div-ignored-semicolon-in-state-name-without-body]
 - Each word of the keywords `left of`, `right of`, `end note`, and
   `hide empty description` is a `Keyword` token of its own. A directive next to
   the space between two words lies between two tokens:
-  `note left%%{init: {}}%% of A: t` is a note, as in mermaid.js. [fixture:
-  state/lex-directive-between-left-and-of] [fixture:
+  `note left%%{init: {}}%% of A: t` is a note, as in mermaid.js.
+
+  [fixture: state/lex-directive-between-left-and-of] [fixture:
   state/lex-directive-between-end-and-note] [fixture:
   state/lex-directive-between-hide-and-empty]
+
 - A description is one unit, from its `:`, and two tokens: the `:` and the text
-  without the whitespace around it. [fixture:
-  state/lex-description-without-space] [fixture: state/db-label-trimmed]
+  without the whitespace around it.
+
+  [fixture: state/lex-description-without-space] [fixture:
+  state/db-label-trimmed]
+
 - Each `"` unit of a floating note is a `Punctuator` token of its own, also
   where two follow one another: `note ""x" as N` has three `"` tokens, two
-  before the `RawText` token `x` and one after it. [fixture:
-  state/lex-floating-note-extra-quote-before-text]
+  before the `RawText` token `x` and one after it.
+
+  [fixture: state/lex-floating-note-extra-quote-before-text]
+
 - The units of an empty description block keep their kinds in the
   `textBeforeBody` of a statement too: a `Keyword` token `accDescr` and the
   `Punctuator` tokens `{` and `}`, inside the range of the StateIgnoredText (see
   [StateIgnoredText](../../../spec/docs/ast/state.md#stateignoredtext)).
+
   [fixture: state/gram-empty-description-block-after-empty-string-before-body]
+
 - A `;` that the line rule ignores is an `IgnoredSemicolon` token, and it cuts a
   `RawText` or a `String` token that it lies inside (see
   [Tokens](../tokens.md#tokens)). In `classDef c fill:#f00;`, the style is
@@ -104,8 +118,9 @@ state/div-ignored-semicolon-in-state-name-without-body]
   `A : x;`, which the line rule does not change, the `;` is an `Identifier`
   token, the id of a state. In `A : style:#x; B`, the `;` cuts the description
   into the `RawText` tokens `style:#x` and ` B`, with the space after the `;`,
-  and the description is `style:#x B`. [fixture:
-  state/tokens-classdef-ignored-semicolon] [fixture:
+  and the description is `style:#x B`.
+
+  [fixture: state/tokens-classdef-ignored-semicolon] [fixture:
   state/tokens-acc-title-ignored-semicolon] [fixture:
   state/tokens-note-block-ignored-semicolon] [fixture:
   state/tokens-alias-ignored-semicolon] [fixture:

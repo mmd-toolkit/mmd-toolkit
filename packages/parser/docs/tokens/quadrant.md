@@ -38,6 +38,7 @@ inside a style or a name are characters of its token, not `Punctuator` tokens. A
 keyword, the header, the arrow, and a `]` leave out the spaces that their units
 read around them: `x-axis L -->` has the tokens `x-axis`, `L`, and `-->`. A
 `space` unit and a `newline` unit are all whitespace and make no token.
+
 [fixture: quadrant/db-quadrant-spaces-trimmed] [fixture: quadrant/db-style-two]
 [fixture: quadrant/db-classdef-two-styles] [fixture:
 quadrant/db-x-axis-left-with-arrow] [fixture: quadrant/db-point-plain]
@@ -49,25 +50,30 @@ U+2029, U+3000, and U+FEFF are characters of a word in this diagram type (see
 so they stay in the token of a text, a name, and the name of a class, at its
 ends too: `quadrant-1 A` and U+00A0 has the `RawText` token of `A` and the
 U+00A0, and `x-axis L`, U+00A0, `-->`, U+00A0, and `R` the `RawText` tokens `L`
-with the U+00A0 after it and `R` with the U+00A0 before it. [fixture:
-quadrant/db-ends-quadrant-nbsp-end] [fixture:
+with the U+00A0 after it and `R` with the U+00A0 before it.
+
+[fixture: quadrant/db-ends-quadrant-nbsp-end] [fixture:
 quadrant/db-x-axis-nbsp-around-arrow] [fixture: quadrant/db-name-after-nbsp]
-[fixture: quadrant/db-grid-nbsp-classdef-name] The token of a title, an
-accessibility text, and the text of a description block leaves out every
-whitespace character of Notation at its ends, U+00A0 included, as its value does
-(see [ast/quadrant.md](../../../spec/docs/ast/quadrant.md#quadrantliteral)):
-`title`, U+00A0, and `T` has the `RawText` token `T`, and `title` and U+3000
-only the token of `title`. [fixture: quadrant/db-title-nbsp-before-text]
-[fixture: quadrant/db-ends-title-nbsp-end] [fixture:
-quadrant/db-title-ideographic-only] [fixture:
-quadrant/db-acc-descr-nbsp-around-text] [fixture:
+[fixture: quadrant/db-grid-nbsp-classdef-name]
+
+The token of a title, an accessibility text, and the text of a description block
+leaves out every whitespace character of Notation at its ends, U+00A0 included,
+as its value does (see
+[ast/quadrant.md](../../../spec/docs/ast/quadrant.md#quadrantliteral)): `title`,
+U+00A0, and `T` has the `RawText` token `T`, and `title` and U+3000 only the
+token of `title`.
+
+[fixture: quadrant/db-title-nbsp-before-text] [fixture:
+quadrant/db-ends-title-nbsp-end] [fixture: quadrant/db-title-ideographic-only]
+[fixture: quadrant/db-acc-descr-nbsp-around-text] [fixture:
 quadrant/db-acc-descr-block-nbsp-before-brace-close]
 
 A text that starts with a string has the `String` token of the string and a
 `RawText` token of its rest: `quadrant-1 "a" b` has the tokens `"a"` and `b`. A
 title with no text has the token of `title` only, and an empty description block
-the tokens of `accDescr`, `{`, and `}`. [fixture:
-quadrant/db-quadrant-quoted-then-bare] [fixture:
+the tokens of `accDescr`, `{`, and `}`.
+
+[fixture: quadrant/db-quadrant-quoted-then-bare] [fixture:
 quadrant/db-title-keyword-alone] [fixture:
 quadrant/db-acc-descr-block-empty-braces] [fixture:
 quadrant/db-empty-block-after-point]
@@ -80,14 +86,18 @@ directive or an ignored `;` makes the input rejected (see
 [Directives inside units](../../../spec/docs/diagrams/quadrant.md#directives-inside-units)):
 `quadrant-1 a%%{init: {}}%%b%%{init: {}}%%c` has the `RawText` tokens `a`, `b`,
 and `c` with a `Directive` token between each two, while
-`A:::c%%{init: {}}%%1: [0.3, 0.6]` is rejected. [fixture:
-quadrant/db-directive-two-in-text] [fixture:
-quadrant/div-class-directive-inside] A comment region also cuts the `Identifier`
-token of the name of a class of `classDef`, which goes on across the region
-after a U+2028 or a U+2029 in it (see
-[Comment regions in tokens](../tokens.md#comment-regions-in-tokens)): its
+`A:::c%%{init: {}}%%1: [0.3, 0.6]` is rejected.
+
+[fixture: quadrant/db-directive-two-in-text] [fixture:
+quadrant/div-class-directive-inside]
+
+A comment region also cuts the `Identifier` token of the name of a class of
+`classDef`, which goes on across the region after a U+2028 or a U+2029 in it
+(see [Comment regions in tokens](../tokens.md#comment-regions-in-tokens)): its
 fragments are `Identifier` tokens, also when the name starts with the U+2028,
 while an ignored `;` after the region lies inside the name and makes the input
-rejected. [fixture: quadrant/lex-classdef-name-line-separator-comment-line]
-[fixture: quadrant/db-classdef-name-starts-with-line-separator-comment-line]
-[fixture: quadrant/div-classdef-name-comment-line-ignored-semicolon]
+rejected.
+
+[fixture: quadrant/lex-classdef-name-line-separator-comment-line] [fixture:
+quadrant/db-classdef-name-starts-with-line-separator-comment-line] [fixture:
+quadrant/div-classdef-name-comment-line-ignored-semicolon]
