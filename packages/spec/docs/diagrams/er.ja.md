@@ -210,45 +210,65 @@ U+2028 や U+2029 を文字として持つ名前は、コメント行の後も�
 `A`、U+2028、`%% c`、改行、`Bar` は、1 つのエンティティ `A`、U+2028、
 `Bar` です。
 U+2029 でも同じです。
-`%%` の前に空白があっても、U+2028 と `%%` の間に改行があっても同じです。
-`%%` の前にディレクティブがあっても同じです。
+U+2028 と `%%` の間に空白や改行があっても同じです。
+`%%` の前に U+2028 がもう 1 つあっても同じで、名前には U+2028 が 1 つ残ります。
+`%%` の前や、その 2 つの `%` の間にディレクティブがあっても同じです。
 改行の位置が CRLF や単独の CR でも同じです。
 コメント行が 2 つあるとき、`A`、U+2028、`%% c`、`%% d`、`Bar` は、
 1 つのエンティティ `A`、U+2028、`Bar` です。
+2 つの間に空行や、ディレクティブだけの行があっても同じです。
 `A`、U+2028、`%% c`、`B`、U+2028、`%% d`、`C` は、1 つのエンティティ `A`、
 U+2028、`B`、U+2028、`C` です。
 [fixture: er/tokens-comment-line-in-name-line-separator]
 [fixture: er/tokens-comment-line-in-name-paragraph-separator]
 [fixture: er/tokens-comment-line-in-name-spaces-before-comment]
 [fixture: er/tokens-comment-line-in-name-line-feed-before-comment]
+[fixture: er/tokens-comment-line-in-name-blank-line-before-comment]
+[fixture: er/tokens-comment-line-in-name-two-line-separators]
 [fixture: er/tokens-comment-line-in-name-directive-before-comment]
+[fixture: er/tokens-comment-line-in-name-directive-between-percents]
 [fixture: er/tokens-comment-line-in-name-crlf]
 [fixture: er/tokens-comment-line-in-name-lone-cr]
 [fixture: er/tokens-comment-lines-consecutive-in-name]
+[fixture: er/tokens-comment-lines-consecutive-blank-line-between]
+[fixture: er/tokens-comment-lines-consecutive-directive-line-between]
 [fixture: er/tokens-comment-lines-with-name-part-between]
-次の行の先頭にある空白かタブは、名前を終わらせます。
+次の行が、空白かタブで始まるとき、空のとき、空白だけのとき、
+名前の文字でない文字で始まるときは、名前は終わります。
 `Bar` を 2 つの空白かタブで字下げすると、エンティティは `A`、
 U+2028 と `Bar` です。
-テキストの終わりのコメント行は、`A`、U+2028 というエンティティを残します。
+`Bar` の代わりに `{`、`:::`、`[`、関係の `||` が来ると、`A`、
+U+2028 というエンティティは、属性ブロック、クラス、別名、関係を持ちます。
+テキストの終わりのコメント行は、後ろに改行があってもなくても、`A`、
+U+2028 というエンティティを残します。
 [fixture: er/tokens-comment-line-in-name-line-separator-indented-name]
 [fixture: er/tokens-comment-line-in-name-paragraph-separator-indented-name]
 [fixture: er/tokens-comment-line-in-name-line-separator-tab-indented-name]
+[fixture: er/tokens-comment-line-in-name-then-empty-line]
+[fixture: er/tokens-comment-line-in-name-then-space-only-line]
+[fixture: er/tokens-comment-line-in-name-then-attribute-block]
+[fixture: er/tokens-comment-line-in-name-then-class-separator]
+[fixture: er/tokens-comment-line-in-name-then-alias]
+[fixture: er/tokens-comment-line-in-name-then-relationship]
 [fixture: er/tokens-comment-line-in-name-line-separator-at-end]
 [fixture: er/tokens-comment-line-in-name-paragraph-separator-at-end]
+[fixture: er/tokens-comment-line-in-name-line-separator-at-end-without-line-feed]
 説明ブロックの `}` の後の U+2028 は、それ自身の名前を始めます。
 `accDescr {x}`、U+2028、`%% c`、`Bar` は、説明 `x` とエンティティ U+2028、
 `Bar` です。
 [fixture: er/tokens-comment-line-after-acc-descr-block-line-separator]
 名前は、どこにあっても同じように切られます。
 関係の 2 つ目のエンティティ、引用符のない役割、別名、
-`:::` の後や `class` 文のクラス、subgraph の id、`style` の対象、
-`classDef` の id がそうです。
+`:::` の後や `class` 文のクラス、`class` 文の対象、subgraph の id と題、
+`style` の対象、`classDef` の id がそうです。
 [fixture: er/tokens-comment-line-in-relationship-entity-line-separator]
 [fixture: er/tokens-comment-line-in-relationship-role-line-separator]
 [fixture: er/tokens-comment-line-in-alias-line-separator]
 [fixture: er/tokens-comment-line-in-class-separator-line-separator]
 [fixture: er/tokens-comment-line-in-class-statement-line-separator]
+[fixture: er/tokens-comment-line-in-class-statement-target-line-separator]
 [fixture: er/tokens-comment-line-in-subgraph-id-line-separator]
+[fixture: er/tokens-comment-line-in-subgraph-title-line-separator]
 [fixture: er/tokens-comment-line-in-style-target-line-separator]
 [fixture: er/tokens-comment-line-in-classdef-id-line-separator]
 属性ブロックの語も、
@@ -267,7 +287,11 @@ U+2029 でも同じです。
 拒否されます（[単位の中のディレクティブ](#単位の中のディレクティブ) を参照）。
 `A`、U+2028、`%% c`、`B%%{init: {}}%%C` は拒否されますが、
 mermaid.js は 1 つのエンティティ `A`、U+2028、`BC` として読みます。
+コメント行の直後に来て、名前の続きになるディレクティブ、
+`%%{init: {}}%%Bar` も拒否されますが、mermaid.js は 1 つのエンティティ `A`、
+U+2028、`Bar` として読みます。
 [fixture: er/div-directive-in-name-after-comment-line]
+[fixture: er/div-directive-in-name-right-after-comment-line]
 
 ### 単位の中のディレクティブ
 

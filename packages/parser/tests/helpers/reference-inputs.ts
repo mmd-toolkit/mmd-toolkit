@@ -105,6 +105,17 @@ function lineEntriesOf(text: string): LineEntry[] {
 }
 
 /**
+ * common.md, Comment lines: the ranges of the comment regions of `text`, in
+ * source order, each with the whitespace-only lines before its comment and the
+ * line terminator that ends it, as the parser's look-ahead decides them.
+ */
+export function commentRegionsOf(text: string): Range[] {
+  return lineEntriesOf(text).flatMap((entry) =>
+    entry.kind === "region" ? [[entry.start, entry.end] as Range] : [],
+  )
+}
+
+/**
  * `text` with every directive removed and the text around it joined: the
  * reference input for `directive-as-token-boundary`. The specification
  * reads the text without its directives, as mermaid.js does, and differs

@@ -380,8 +380,7 @@ describe("SourceLexer.recordTokens", () => {
   it("cuts a token of any kind at a comment region that follows a U+2028 inside it", () => {
     // docs/tokens.md, Comment regions in tokens: a name holds the U+2028 as
     // one of its characters, so the comment line after it lies inside the
-    // name, which is cut into tokens of its own kind; a directive inside it
-    // still makes the input rejected.
+    // name, which is cut into tokens of its own kind.
     const text = "A\u2028%% c\nBar"
     const lexer = lexerOf(text)
     lexer.recordTokens(
@@ -409,10 +408,15 @@ describe("SourceLexer.recordTokens", () => {
       ["Comment", "%% d"],
       ["Identifier", "Bar"],
     ])
-    const directive = "A\u2028%% c\nB%%{x}%%C"
+  })
+
+  it("rejects a directive inside a name that a comment region has cut before it", () => {
+    // docs/tokens.md, A token that a directive cuts: only a `RawText` token
+    // and a `String` token may be cut at a directive, whatever else cuts them.
+    const text = "A\u2028%% c\nB%%{x}%%C"
     expect(() => {
-      lexerOf(directive).recordTokens(
-        [{ kind: "Identifier", range: [0, directive.length] }],
+      lexerOf(text).recordTokens(
+        [{ kind: "Identifier", range: [0, text.length] }],
         [],
         null,
       )

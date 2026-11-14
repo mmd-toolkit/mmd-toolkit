@@ -152,7 +152,7 @@ interface Cut {
  * rejected. A comment region cuts a token of every kind (see
  * {@link SourceLexer.rejectCut}).
  */
-function mayBeCutAtDirective(kind: DiagramTokenKind): boolean {
+function mayBeCutAtDirectiveOrSemicolon(kind: DiagramTokenKind): boolean {
   return kind === "String" || kind === "RawText"
 }
 
@@ -642,18 +642,19 @@ export class SourceLexer {
    * common.md, A directive is a token boundary, and `style` and `classDef`
    * lines: throws `ParseError` at the first directive, or the first `;` that
    * the line rule ignores, among the cuts `cuts` of the token `token` when
-   * its kind may not be cut at one (see {@link mayBeCutAtDirective}). A
-   * comment region cuts a token of every kind: a unit that reads U+2028 or
-   * U+2029 as one of its characters, such as an ER name, goes on after the
-   * comment line that follows it (`docs/tokens.md`, Comment regions in
-   * tokens). Only a `String` token and a `RawText` token span lines, so the
-   * first region of a run of regions inside a token of another kind starts
-   * after a U+2028 or U+2029, and each next region starts where the one
-   * before it ends, after its line terminator; a region that starts after a
-   * line terminator otherwise is a bug of the diagram's parser.
+   * its kind may not be cut at one (see
+   * {@link mayBeCutAtDirectiveOrSemicolon}). A comment region cuts a token of
+   * every kind: a unit that reads U+2028 or U+2029 as one of its characters,
+   * such as an ER name, goes on after the comment line that follows it
+   * (`docs/tokens.md`, Comment regions in tokens). Only a `String` token and
+   * a `RawText` token span lines, so the first region of a run of regions
+   * inside a token of another kind starts after a U+2028 or U+2029, and each
+   * next region starts where the one before it ends, after its line
+   * terminator; a region that starts after a line terminator otherwise is a
+   * bug of the diagram's parser.
    */
   private rejectCut(token: PendingToken, cuts: readonly Cut[]): void {
-    if (mayBeCutAtDirective(token.kind)) return
+    if (mayBeCutAtDirectiveOrSemicolon(token.kind)) return
     let previous: Cut | null = null
     for (const cut of cuts) {
       switch (cut.cause) {

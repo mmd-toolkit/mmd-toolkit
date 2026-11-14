@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Units and contexts, Names: the target of a class statement goes on after a comment line that follows its U+2028: the target A, U+2028, B, with the class c."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

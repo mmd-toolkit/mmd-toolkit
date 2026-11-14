@@ -71,6 +71,19 @@ U+00A0、U+2028、U+2029、U+3000、U+FEFF は、
 [fixture: quadrant/db-acc-descr-nbsp-around-text]
 [fixture: quadrant/db-acc-descr-block-nbsp-before-brace-close]
 
+U+2028 や U+2029 を持つクラスの名前は、それに続くコメント行の後も続くので、
+コメント領域がその `Identifier` トークンを切ります。
+[トークンの中のコメント領域](../tokens.ja.md#トークンの中のコメント領域)
+を参照。
+`classDef A`、U+2028、行 `%% c`、行 `B color: #f00` は 1 つのクラスです。
+そのノードは領域にまたがり、値は `A`、U+2028、`B` です。
+そのトークンは、U+2028 を後ろに持つ `A` と `B` の `Identifier` で、
+その間にコメントがあります。
+コメント行の後の名前の中のディレクティブは、どの名前でもそうであるように、
+入力を拒否させます。
+[fixture: quadrant/tokens-comment-line-in-classdef-name-line-separator]
+[fixture: quadrant/div-directive-in-classdef-name-after-comment-line]
+
 文字列で始まるテキストは、文字列の `String` トークンと、
 残りの `RawText` トークンを持ちます。
 `quadrant-1 "a" b` は、トークン `"a"` と `b` を持ちます。

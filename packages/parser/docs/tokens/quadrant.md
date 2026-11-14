@@ -63,6 +63,17 @@ quadrant/db-title-ideographic-only] [fixture:
 quadrant/db-acc-descr-nbsp-around-text] [fixture:
 quadrant/db-acc-descr-block-nbsp-before-brace-close]
 
+A class name that holds a U+2028 or a U+2029 goes on after a comment line that
+follows it, so a comment region cuts its `Identifier` token (see
+[Comment regions in tokens](../tokens.md#comment-regions-in-tokens)):
+`classDef A`, U+2028, a line `%% c`, and a line `B color: #f00` is one class,
+whose node spans the region and whose value is `A`, U+2028, `B`; its tokens are
+the `Identifier` tokens `A` with the U+2028 after it, and `B`, with the comment
+between them. A directive inside the name after the comment line makes the input
+rejected, as in any name. [fixture:
+quadrant/tokens-comment-line-in-classdef-name-line-separator] [fixture:
+quadrant/div-directive-in-classdef-name-after-comment-line]
+
 A text that starts with a string has the `String` token of the string and a
 `RawText` token of its rest: `quadrant-1 "a" b` has the tokens `"a"` and `b`. A
 title with no text has the token of `title` only, and an empty description block

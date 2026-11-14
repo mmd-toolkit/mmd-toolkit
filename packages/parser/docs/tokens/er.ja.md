@@ -83,50 +83,71 @@
 そのノードは領域にまたがり、値は `A`、U+2028、`Bar` です。
 そのトークンは、U+2028 を後ろに持つ `A` と `Bar` の `Identifier` で、
 その間にコメントがあります。
-U+2029 でも、`%%` の前に空白があっても、同じです。
-U+2028 と `%%` の間に改行があっても、同じです。
-コメント行を終えるのが CRLF や単独の CR でも、属性ブロックの語でも、同じです。
-`%%` の前にディレクティブがあるときは、
+U+2029 でも、U+2028 と `%%` の間に空白や改行があっても、同じです。
+`%%` の前に U+2028 がもう 1 つあっても、同じです。
+コメント行を終えるのが CRLF や単独の CR でも、属性ブロックの語や型でも、
+同じです。
+`%%` の前や、その 2 つの `%` の間にディレクティブがあるときは、
 2 つのトークンの間に `Directive` トークンがあります。
-コメント行が 2 つあるときは、連続していても、間に名前の一部があっても、
-名前は 2 つか 3 つのトークンを持ち、その間にコメントがあります。
+コメント行が連続しているとき、間に空行やディレクティブだけの行があるとき、
+間に名前の一部があるときは、名前は 2 つか 3 つのトークンを持ち、
+その間にコメントがあります。
 [fixture: er/tokens-comment-line-in-name-line-separator]
 [fixture: er/tokens-comment-line-in-name-paragraph-separator]
 [fixture: er/tokens-comment-line-in-name-spaces-before-comment]
 [fixture: er/tokens-comment-line-in-name-line-feed-before-comment]
+[fixture: er/tokens-comment-line-in-name-blank-line-before-comment]
+[fixture: er/tokens-comment-line-in-name-two-line-separators]
 [fixture: er/tokens-comment-line-in-name-directive-before-comment]
+[fixture: er/tokens-comment-line-in-name-directive-between-percents]
 [fixture: er/tokens-comment-line-in-name-crlf]
 [fixture: er/tokens-comment-line-in-name-lone-cr]
 [fixture: er/tokens-comment-lines-consecutive-in-name]
+[fixture: er/tokens-comment-lines-consecutive-blank-line-between]
+[fixture: er/tokens-comment-lines-consecutive-directive-line-between]
 [fixture: er/tokens-comment-lines-with-name-part-between]
 [fixture: er/tokens-comment-line-in-attribute-word-line-separator]
 [fixture: er/tokens-comment-line-in-attribute-word-paragraph-separator]
 [fixture: er/tokens-comment-line-in-attribute-type-line-separator]
 名前は、どこにあっても同じトークンを持ちます。
-関係の 2 つ目のエンティティ、役割、別名、クラス、subgraph の id、
-`style` の対象、`classDef` の id がそうです。
+関係の 2 つ目のエンティティ、役割、別名、クラス、`class` 文の対象、
+subgraph の id と題、`style` の対象、`classDef` の id がそうです。
 [fixture: er/tokens-comment-line-in-relationship-entity-line-separator]
 [fixture: er/tokens-comment-line-in-relationship-role-line-separator]
 [fixture: er/tokens-comment-line-in-alias-line-separator]
 [fixture: er/tokens-comment-line-in-class-separator-line-separator]
 [fixture: er/tokens-comment-line-in-class-statement-line-separator]
+[fixture: er/tokens-comment-line-in-class-statement-target-line-separator]
 [fixture: er/tokens-comment-line-in-subgraph-id-line-separator]
+[fixture: er/tokens-comment-line-in-subgraph-title-line-separator]
 [fixture: er/tokens-comment-line-in-style-target-line-separator]
 [fixture: er/tokens-comment-line-in-classdef-id-line-separator]
 コメント行が名前の中にないときは、
 名前は U+2028 の後で終わる 1 つのトークンを持ちます。
-それは、コメント行がテキストの終わりにあるときと、
-次の行が空白かタブで始まるときです。
+それは、
+コメント行がテキストの終わりにあるとき（後ろの改行はあってもなくても）と、
+次の行が空白かタブで始まるとき、空のとき、空白だけのとき、`{`、`:::`、`[`、
+関係の `||` のように、名前の文字でない文字で始まるときです。
 [fixture: er/tokens-comment-line-in-name-line-separator-indented-name]
 [fixture: er/tokens-comment-line-in-name-paragraph-separator-indented-name]
 [fixture: er/tokens-comment-line-in-name-line-separator-tab-indented-name]
+[fixture: er/tokens-comment-line-in-name-then-empty-line]
+[fixture: er/tokens-comment-line-in-name-then-space-only-line]
+[fixture: er/tokens-comment-line-in-name-then-attribute-block]
+[fixture: er/tokens-comment-line-in-name-then-class-separator]
+[fixture: er/tokens-comment-line-in-name-then-alias]
+[fixture: er/tokens-comment-line-in-name-then-relationship]
 [fixture: er/tokens-comment-line-in-name-line-separator-at-end]
 [fixture: er/tokens-comment-line-in-name-paragraph-separator-at-end]
+[fixture: er/tokens-comment-line-in-name-line-separator-at-end-without-line-feed]
 説明ブロックの `}` の後の U+2028 は、それ自身の名前を始め、
 その最初のトークンはその 1 文字です。
 [fixture: er/tokens-comment-line-after-acc-descr-block-line-separator]
-コメント行の後の名前の中のディレクティブは、どの名前でもそうであるように、
-入力を拒否させます。 [fixture: er/div-directive-in-name-after-comment-line]
+コメント行の後の名前の中のディレクティブや、
+コメント行の直後に来て名前の続きになるディレクティブは、
+どの名前でもそうであるように、入力を拒否させます。
+[fixture: er/div-directive-in-name-after-comment-line]
+[fixture: er/div-directive-in-name-right-after-comment-line]
 
 - 文である空の説明ブロックは、`Keyword` トークン `accDescr` と、
   `Punctuator` トークン `{` と `}` を持ちます。

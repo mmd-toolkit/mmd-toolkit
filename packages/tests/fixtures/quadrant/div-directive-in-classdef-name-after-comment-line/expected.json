@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Classes: a directive inside a class name that a comment line has cut makes the input rejected (directive-as-token-boundary); mermaid.js reads the class A, U+2028, BC."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": [
+      {
+        "name": "A BC",
+        "color": "#f00"
+      }
+    ]
+  }
+}

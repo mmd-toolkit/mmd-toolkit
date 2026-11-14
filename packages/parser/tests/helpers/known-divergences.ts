@@ -18,6 +18,7 @@ import { diagramInputOf, openSource } from "../../src/parse.ts"
 import { readGitgraphDiagram } from "../../src/diagrams/gitgraph/index.ts"
 import { checkGitgraphHistory } from "../../src/diagrams/gitgraph/history.ts"
 import {
+  commentRegionsOf,
   commentsAfterMatchStarts,
   commentsAfterUnits,
   commentsAfterOneCharacterUnits,
@@ -211,6 +212,7 @@ function cutsInsideTokens(
   const referenceOutcome = outcomeOf(reference, config)
   if (referenceOutcome.kind !== "tree") return inside
   const { root } = referenceOutcome
+  const wholes = wholeTokensThatMayNotBeCut(reference, root)
 
   /**
    * Where the offset `at` of the text without directives lies in the
@@ -238,14 +240,14 @@ function cutsInsideTokens(
   }))
   for (const [index, directive] of directives.entries()) {
     const at = inReference(removals[index].at)
-    if (isInsideTokenThatMayNotBeCut(reference, root, at)) {
+    if (isInsideTokenThatMayNotBeCut(reference, wholes, at)) {
       inside.directives.push(directive.range)
     }
   }
   for (const { semicolons } of segments) {
     for (const semicolon of semicolons) {
       if (
-        !isInsideTokenThatMayNotBeCut(reference, root, inReference(semicolon))
+        !isInsideTokenThatMayNotBeCut(reference, wholes, inReference(semicolon))
       ) {
         continue
       }
@@ -274,24 +276,90 @@ function mayBeCut(kind: TokenKind): boolean {
 }
 
 /**
- * Whether the place `at` of the reference input `reference` lies inside a
- * token of `root`, the tree of `reference`, that may not be cut
- * ({@link mayBeCut}), between two of its characters that are not
- * whitespace: one before the place and one after it. The tree of
- * `reference` is compared with mermaid.js on its own, so its tokens can be
- * relied on; a token that may not be cut is whole in it, since the parser
- * rejects a tree where one is cut.
+ * A token that may not be cut ({@link mayBeCut}) of the reference input, whole:
+ * the pieces that a comment region cuts it into
+ * (`docs/tokens.md`, Comment regions in tokens) are taken together, each
+ * with the comment regions between them.
+ */
+interface WholeToken {
+  readonly start: number
+  end: number
+  /** The comment regions between the pieces. */
+  readonly regions: Range[]
+}
+
+/**
+ * The comment regions, one after another, that start at `from` and end at
+ * `to`; null when the regions that start at `from` do not end at `to`, or
+ * when there is none.
+ */
+function regionsBetween(
+  regions: readonly Range[],
+  from: number,
+  to: number,
+): Range[] | null {
+  const joining: Range[] = []
+  let offset = from
+  for (const region of regions) {
+    if (region[0] === offset) {
+      joining.push(region)
+      offset = region[1]
+    }
+  }
+  return joining.length > 0 && offset === to ? joining : null
+}
+
+/**
+ * The tokens of `root`, the tree of the reference input `reference`, that
+ * may not be cut ({@link mayBeCut}), whole. The tree of `reference` is
+ * compared with mermaid.js on its own, so its tokens can be relied on. A
+ * token that may not be cut is one token in it, or the pieces of one token
+ * that comment regions cut: pieces of the same kind that follow one another
+ * with nothing but one or more comment regions between them. Pieces with
+ * nothing between them are two tokens, as `{` and `}` are.
+ */
+function wholeTokensThatMayNotBeCut(
+  reference: string,
+  root: Root,
+): WholeToken[] {
+  const regions = commentRegionsOf(reference)
+  const wholes: WholeToken[] = []
+  root.tokens.forEach((token, index) => {
+    if (mayBeCut(token.type)) return
+    const before = root.tokens[index - 1]
+    const joining =
+      before !== undefined && before.type === token.type
+        ? regionsBetween(regions, before.range[1], token.range[0])
+        : null
+    const last = wholes.at(-1)
+    if (joining !== null && last !== undefined) {
+      last.end = token.range[1]
+      for (const region of joining) last.regions.push(region)
+    } else {
+      wholes.push({ start: token.range[0], end: token.range[1], regions: [] })
+    }
+  })
+  return wholes
+}
+
+/**
+ * Whether the place `at` of the reference input `reference` lies inside one
+ * of the tokens `wholes` that may not be cut
+ * ({@link wholeTokensThatMayNotBeCut}), between two of its characters that
+ * are not whitespace: one before the place and one after it. A place in a
+ * comment region that cuts a token, which a directive before the comment's
+ * `%%` has, lies in no token.
  */
 function isInsideTokenThatMayNotBeCut(
   reference: string,
-  root: Root,
+  wholes: readonly WholeToken[],
   at: number,
 ): boolean {
-  return root.tokens.some(
-    (token) =>
-      !mayBeCut(token.type) &&
-      holdsNonWhitespace(reference, token.range[0], at) &&
-      holdsNonWhitespace(reference, at, token.range[1]),
+  return wholes.some(
+    (whole) =>
+      !whole.regions.some(([start, end]) => start <= at && at < end) &&
+      holdsNonWhitespace(reference, whole.start, at) &&
+      holdsNonWhitespace(reference, at, whole.end),
   )
 }
 

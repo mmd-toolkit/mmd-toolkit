@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Units and contexts, Names: a comment line that ends with the text, without a line break, after the U+2028 of a name: the entity A followed by U+2028."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A -0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A ",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

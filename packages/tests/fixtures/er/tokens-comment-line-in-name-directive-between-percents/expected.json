@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Units and contexts, Names: a directive between the two % of the %% of the comment line is part of the comment region: the one entity A, U+2028, Bar."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A Bar-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A Bar",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}
