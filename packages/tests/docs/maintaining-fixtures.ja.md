@@ -128,6 +128,46 @@ mermaid.js から取った入力に付けるのと同じ）。
 1 つの入力が複数のものを示すときは、失敗が何についてのものになるかで、
 接頭辞を選びます。
 
+入力に `%%` がある場合、上の一覧は、
+読む人ごとに同じ接頭辞を与えるとは限りません。
+そのような入力の失敗は、単位、文、値のどれについてのものにもなりえ、
+コーパスにも、同じ図種の同じ種類の入力に、別々の接頭辞が付いたものがあります。
+コーパスは、図種ごとにすでにある接頭辞に従っています。
+そこで、入力のテキストのどこかに `%%` があり、上の一覧が `lex-`、`gram-`、
+`db-` のどれかの接頭辞を与える新しい fixture は、一覧ではなく、次の手順で、
+順に接頭辞を決めます。
+この `%%` は、コメントやディレクティブを始めるものでなくてもかまいません。
+そのような fixture の接頭辞は、図種の慣習を示し、
+その fixture の失敗が何の失敗かを、いつも示すとは限りません。
+手順が数える fixture は、プルリクエストの merge base の時点の main にある、
+同じ図種（fixture のフォルダ）で、同じ種類のものです。
+生成された一連のもの（名前に `-grid-` を含むか、
+16 進数 8 桁で終わるもの）は除きます。
+入力に `%%` がない新しい fixture は、上の一覧で接頭辞を決め、
+この手順の対象にはなりません。
+
+1. 入力は、`expected.json` が mermaid.js の受理を示すなら受理される入力で、
+   `parse-error.json` があれば拒否される入力です。
+   この 2 つは別の判定なので、mermaid.js が受理し、パーサーが拒否する入力は、
+   両方に数えます。
+   受理される入力の種類は、テキストに `%%` があることです。
+   拒否される入力（`parse-error.json` があるもの）の種類は、
+   そのファイルのメッセージの始まりです。
+   `Unexpected character`、`Unexpected token`、
+   またはテキストの終わり（`Unexpected end of text`、
+   または `before the end of the text` で終わるメッセージ）です。
+   ほかのメッセージの拒否される入力には、種類がありません。
+2. その種類の fixture のうち、接頭辞が `lex-` か `db-`（受理）、
+   `lex-` か `gram-`（拒否）のものを数えます。
+   2 つの接頭辞の fixture が合わせて 5 件以上あり、
+   一方の接頭辞が他方の 2 倍以上あるときは、新しい fixture は、
+   多いほうの接頭辞にします。
+3. そうでないときは、受理される入力は `lex-` にします。
+   拒否される入力は、メッセージが `Unexpected character` で始まるか、
+   `before the end of the text` で終わるものなら `lex-` にします（単位の規則:
+   文脈のどの規則も読まない文字、閉じていない単位）。
+   それ以外はすべて `gram-` にします（文とノードの規則）。
+
 話題の後に、入力が持つものの印を付けてよく、複数あるときはこの順です。
 `u2028` か `u2029`（その文字が入力にある）、
 `directive` か `open-directive`（ディレクティブ、または閉じていないもの）、
@@ -144,13 +184,26 @@ mermaid.js から取った入力に付けるのと同じ）。
 `parse-error.json` は parser が `ParseError` で拒否する入力にだけあります。
 `parse-error.json` は、その `ParseError` の `message`、`range`、`loc` です。
 入力と一緒に読めるよう、入力の隣に置きます。
-このパッケージはこれらを読みも書きも検査もせず、parser にも依存しません。
+このパッケージはこれらを書かず、parser にも依存しません。
 生成器、`add`、`add-many`、`set-divergence`、`set-note`、収集の道具、
 `loadFixtures()` が扱うのは `input.mmd`、`expected.json`、
 `specified.json` だけで、
 fixture のディレクトリにあるほかのファイルはそのまま残します。
 ここで足した fixture には、
 parser のテストが走るまでどちらのファイルもありません。
+parser のテストは、parser が記録した木を返すことを確かめます。
+このパッケージは、記録した木が正しいことを、`ast.json` と入力だけを読み、
+parser を呼ばない 2 つのテストで確かめます。
+`tests/check-tree-corpus.test.ts` は、
+記録した木のすべてに `checkTree()` を当て、
+問題がないことを求めます（[check-tree.ja.md](./check-tree.ja.md)）。
+`tests/db-from-tree.test.ts` は、記録した木から `dbFromTree()` で作った Db を、
+mermaid.js の Db と比べ、
+等しいことを求めます（[db-from-tree.ja.md](./db-from-tree.ja.md)）。
+仕様が入力を違って読む場合は、
+mermaid.js の Db の代わりに `specified` の Db と比べます。
+`parse-error.json` について、2 つ目のテストは、
+木のない fixture にそれがあるかどうかだけを見ます。
 
 **記録した木は JSON です。**
 JSON が書けない数は、`JSON.stringify` が書くとおり、

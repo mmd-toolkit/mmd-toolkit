@@ -224,10 +224,7 @@ const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
   { type: "RailroadLiteral", message: NOT_WRITTEN_TEXT },
   { type: "RailroadIgnoredText", message: NOT_WRITTEN_TEXT },
   { type: "RailroadNumericValue", message: NOT_WRITTEN_TEXT },
-  {
-    type: "RailroadSpecialSequence",
-    message: "value is not its written special-sequence interior",
-  },
+  { type: "RailroadSpecialSequence", message: NOT_WRITTEN_TEXT },
   { type: "TreemapLiteral", message: NOT_WRITTEN_TEXT },
   { type: "RadarLiteral", message: NOT_WRITTEN_TEXT },
   { type: "RadarIgnoredText", message: NOT_WRITTEN_TEXT },
@@ -657,6 +654,20 @@ const VALUE_CASES: readonly ValueCase[] = [
       {
         where: "RailroadIgnoredText at 0-18",
         message: `${JOINED}: "%%{wrap}%%", not "%%{\\nwrap}%%"`,
+      },
+    ],
+  },
+  {
+    type: "RailroadSpecialSequence",
+    name: "railroad special sequences keep a U+2028 before a comment region in the fragment before it",
+    diagram: "railroad",
+    fixture: "db-ebnf-special-sequence-line-separator-then-comment-line",
+    token: { type: "RawText", value: `?A${LINE_SEPARATOR}` },
+    side: "end",
+    problems: [
+      {
+        where: "RailroadSpecialSequence at 21-31",
+        message: `${JOINED}: "AB", not "A${LINE_SEPARATOR}B"`,
       },
     ],
   },
@@ -1761,12 +1772,6 @@ const TYPES_WITHOUT_TOKEN_WHITESPACE: Readonly<
     fixture: "db-inertia-forms",
     reason:
       "the fixed strategy is one Keyword and this fixture has no native gap forms",
-  },
-  RailroadSpecialSequence: {
-    diagram: "railroad",
-    fixture: "ebnf-special-whitespace",
-    reason:
-      "the whole RawText item includes its question marks, without an internal cut in this fixture",
   },
   RailroadNumericValue: {
     diagram: "railroad",

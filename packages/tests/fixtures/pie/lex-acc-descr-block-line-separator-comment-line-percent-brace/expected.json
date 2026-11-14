@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Comments: a `%%{ }%%`, which starts no directive and no comment, follows a U+2028 in the description block; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 3, column 1: unexpected character: ->B<- at offset: 25, skipped 1 characters.\nLexer error on line 3, column 3: unexpected character: ->}<- at offset: 27, skipped 1 characters. "
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Native padding, hidden forms and EOL: a comment line after a U+2028 in the quoted pipeline parent name is read through, and the value goes on after it; the Db summary holds `A`, U+2028, and `B`."
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "A B",
+        "label": "A B",
+        "x": 0,
+        "y": 0,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "A B_X",
+        "label": "X",
+        "x": 0,
+        "y": 0,
+        "className": "pipeline-component"
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [
+      {
+        "nodeId": "A B",
+        "componentIds": [
+          "A B_X"
+        ]
+      }
+    ],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

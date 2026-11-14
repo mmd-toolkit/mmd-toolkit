@@ -407,6 +407,35 @@ selector の前で禁じた字下げを隠すことはできない。
 [fixture: treemap/comment-value-selector-gap]
 [fixture: treemap/comment-selector-forbidden-indent]
 [fixture: treemap/comment-mark-joined-by-directive]
+値の中の U+2028 か U+2029 の後の物理行の残りは、その改行も含めて、
+共通のコメント領域が取り除くことがある。
+そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
+`accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
+U+2028、`B` である。 [fixture:
+treemap/lex-string-line-separator-then-comment-line] [fixture:
+treemap/lex-string-paragraph-separator-then-comment-line] [fixture:
+treemap/lex-class-style-line-separator-then-comment-line] [fixture:
+treemap/lex-title-line-separator-then-comment-line] [fixture:
+treemap/lex-acc-title-line-separator-then-comment-line] [fixture:
+treemap/lex-acc-descr-line-separator-then-comment-line] [fixture:
+treemap/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+treemap/lex-string-line-separator-comment-line-directive-next] [fixture:
+treemap/lex-string-line-separator-comment-line-space-next] [fixture:
+treemap/lex-string-line-separator-comment-line-separator-next] [fixture:
+treemap/lex-string-line-separator-comment-line-empty-line] [fixture:
+treemap/gram-string-line-separator-comment-line-end-of-text] [fixture:
+treemap/lex-class-style-line-separator-comment-line-end-of-text] [fixture:
+treemap/lex-string-line-separator-comment-line-cr] [fixture:
+treemap/lex-string-line-separator-comment-line-crlf] [fixture:
+treemap/lex-string-line-separator-comment-line-two-comment-lines] [fixture:
+treemap/lex-string-line-separator-comment-line-two-regions] [fixture:
+treemap/lex-string-line-separator-comment-line-spaces-before] [fixture:
+treemap/lex-string-line-separator-comment-line-line-feed-before] [fixture:
+treemap/lex-string-line-separator-comment-line-directive-before] [fixture:
+treemap/lex-string-line-separator-comment-line-line-rule-before] [fixture:
+treemap/lex-string-line-separator-comment-line-line-rule-after] [fixture:
+treemap/lex-string-line-separator-comment-line-bare-percent] [fixture:
+treemap/lex-string-line-separator-comment-line-percent-brace]
 
 `%%{other: x}%%` を含む通常の word 始まりの global directive は共通の trivia
 であり、native hidden directive ではない。

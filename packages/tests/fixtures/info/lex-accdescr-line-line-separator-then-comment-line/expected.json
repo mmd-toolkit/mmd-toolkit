@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md Composite common forms: a comment line after a U+2028 in the one-line accDescr is read through, and the value goes on after it; accepted, and the Db summary holds no one-line accDescr."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

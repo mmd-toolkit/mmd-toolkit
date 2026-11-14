@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4.md Title and accessibility contexts: a U+2028 at the start of the line after a comment line that follows a U+2028 in the accessibility title; the Db summary holds `A`, U+2028, U+2028, and `B`."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "A  B",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

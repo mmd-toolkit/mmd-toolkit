@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4.md Title and accessibility contexts: a `%%{ }%%`, which starts no directive and no comment, follows a U+2028 in the accessibility title; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 3. Unrecognized text.\n...accTitle: A %%{ }%%B\n----------------------^"
+  }
+}

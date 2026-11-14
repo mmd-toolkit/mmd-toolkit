@@ -484,13 +484,6 @@ function checkLeaf(reading: Reading, node: CheckedNode): void {
     checkRangeIsHull(reading, node, ownOf(reading.root, node))
     checkRawUnit(reading, node)
     checkTokenKinds(reading, node, ["RawText"], "a railroad text unit")
-    if (special)
-      reading.problems.expectEqual(
-        node.value,
-        reading.written.of(node.range).slice(1, -1),
-        label(node),
-        "value is not its written special-sequence interior",
-      )
   }
 }
 

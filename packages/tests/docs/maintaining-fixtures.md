@@ -114,6 +114,40 @@ The prefix tells what a failure on the fixture would be a failure of:
 An input that shows more than one thing takes the prefix of the thing a failure
 on it would be about.
 
+For an input that has `%%`, the list above does not give every reader the same
+prefix: a failure on such an input can be about the units, the statements, or
+the values, and the corpus has the same kind of input under different prefixes
+in one diagram type. The corpus follows the prefixes that each diagram type
+already has, so a new fixture whose input contains `%%` anywhere in its text
+(whether or not it starts a comment or a directive) and that the list above
+gives the prefix `lex-`, `gram-`, or `db-` takes its prefix by these steps, in
+order, and not by the list. The prefix of such a fixture shows the habit of its
+diagram type, and does not always say what a failure on the fixture would be a
+failure of. The fixtures that the steps count are those of main as it stands at
+the merge base of the pull request, of the same diagram type (the folder of the
+fixture) and the same kind, without the generated sets (a name that contains
+`-grid-` or ends with eight hexadecimal digits). A new fixture whose input has
+no `%%` takes its prefix from the list above; these steps do not cover it.
+
+1. An input is accepted if its `expected.json` says that mermaid.js accepts it,
+   and rejected if it has a `parse-error.json`; the two are separate tests, so
+   an input that mermaid.js accepts and the parser rejects is both. The kind of
+   an accepted input is that it has `%%` in its text. The kind of a rejected
+   input, one that has a `parse-error.json`, is how the message in that file
+   begins: `Unexpected character`, `Unexpected token`, or an end of the text,
+   which is `Unexpected end of text` or a message that ends with
+   `before the end of the text`. A rejected input with another message has no
+   kind.
+2. Count the fixtures of that kind whose prefix is `lex-` or `db-` (accepted) or
+   `lex-` or `gram-` (rejected). If the two prefixes together have at least five
+   fixtures, and one prefix has at least twice as many as the other, the new
+   fixture takes the prefix that has more.
+3. Otherwise an accepted input takes `lex-`. A rejected input takes `lex-` if
+   its message begins with `Unexpected character` or ends with
+   `before the end of the text` (a rule of the units: a character that no rule
+   of the context reads, a unit that is not closed), and `gram-` in every other
+   case (a rule of the statements and nodes).
+
 After the topic, a name may carry marks of what the input holds, in this order
 where there are several: `u2028` or `u2029` (the character is in the input),
 `directive` or `open-directive` (a directive, or one that is not closed), and
@@ -128,12 +162,20 @@ specification (`@mmd-toolkit/parser`), whose tests write them as file snapshots:
 `ast.json` for the inputs the parser accepts, and `parse-error.json` (the
 `message`, `range` and `loc` of the `ParseError`) for the inputs it rejects with
 a `ParseError`. They sit next to the input so that both can be read together.
-Nothing in this package reads, writes or checks them, and this package does not
-depend on the parser: the generator, `add`, `add-many`, `set-divergence`,
-`set-note`, the collector and `loadFixtures()` handle only `input.mmd`,
-`expected.json` and `specified.json`, and leave any other file in a fixture's
-directory as it is. A fixture added here has neither file until the parser's
-tests run.
+This package does not write them and does not depend on the parser: the
+generator, `add`, `add-many`, `set-divergence`, `set-note`, the collector and
+`loadFixtures()` handle only `input.mmd`, `expected.json` and `specified.json`,
+and leave any other file in a fixture's directory as it is. A fixture added here
+has neither file until the parser's tests run. The parser's tests check that the
+parser returns the recorded tree. This package checks that the recorded tree is
+right, in two tests that read `ast.json` and the input and call no parser:
+`tests/check-tree-corpus.test.ts` requires `checkTree()` to find no problem in
+any recorded tree ([check-tree.md](./check-tree.md)), and
+`tests/db-from-tree.test.ts` requires the Db that `dbFromTree()` builds from
+each recorded tree to be the Db of mermaid.js, or the `specified` Db where the
+specification reads the input differently
+([db-from-tree.md](./db-from-tree.md)). Of `parse-error.json`, the second test
+only looks whether it exists, for a fixture without a tree.
 
 **The recorded tree is JSON.** A number that JSON cannot write is `null` in
 `ast.json`, as `JSON.stringify` writes it: the `value` of a NumericLiteral for a

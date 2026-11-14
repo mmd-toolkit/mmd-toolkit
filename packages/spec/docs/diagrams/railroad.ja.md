@@ -626,6 +626,52 @@ body の文や RailroadIgnoredText にはしない。
 [fixture: railroad/peg-comment-in-literal]
 [fixture: railroad/ir-common-block-comment]
 [fixture: railroad/ir-common-block-gap-comment]
+値の中の U+2028 か U+2029 の後の物理行の残りは、その改行も含めて、
+共通のコメント領域が取り除くことがある。
+そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
+`accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
+U+2028、`B` である。 [fixture:
+railroad/lex-string-line-separator-then-comment-line] [fixture:
+railroad/lex-string-paragraph-separator-then-comment-line] [fixture:
+railroad/lex-title-line-separator-then-comment-line] [fixture:
+railroad/lex-acc-title-line-separator-then-comment-line] [fixture:
+railroad/lex-acc-descr-line-separator-then-comment-line] [fixture:
+railroad/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+railroad/lex-string-line-separator-comment-line-directive-next] [fixture:
+railroad/lex-string-line-separator-comment-line-space-next] [fixture:
+railroad/lex-string-line-separator-comment-line-separator-next] [fixture:
+railroad/lex-string-line-separator-comment-line-empty-line] [fixture:
+railroad/lex-string-line-separator-comment-line-end-of-text] [fixture:
+railroad/lex-acc-title-line-separator-comment-line-end-of-text] [fixture:
+railroad/lex-string-line-separator-comment-line-cr] [fixture:
+railroad/lex-string-line-separator-comment-line-crlf] [fixture:
+railroad/lex-string-line-separator-comment-line-two-comment-lines] [fixture:
+railroad/lex-string-line-separator-comment-line-two-regions] [fixture:
+railroad/lex-string-line-separator-comment-line-spaces-before] [fixture:
+railroad/lex-string-line-separator-comment-line-line-feed-before] [fixture:
+railroad/lex-string-line-separator-comment-line-directive-before] [fixture:
+railroad/lex-string-line-separator-comment-line-line-rule-before] [fixture:
+railroad/lex-string-line-separator-comment-line-bare-percent] [fixture:
+railroad/lex-string-line-separator-comment-line-percent-brace] [fixture:
+railroad/lex-ir-nonterminal-string-line-separator-then-comment-line] [fixture:
+railroad/lex-ir-special-string-line-separator-then-comment-line] [fixture:
+railroad/lex-ebnf-string-line-separator-then-comment-line] [fixture:
+railroad/lex-abnf-string-line-separator-then-comment-line] [fixture:
+railroad/lex-peg-string-line-separator-then-comment-line] [fixture:
+railroad/db-ebnf-special-sequence-line-separator-then-comment-line] [fixture:
+railroad/lex-ebnf-title-line-separator-then-comment-line] [fixture:
+railroad/lex-ebnf-acc-title-line-separator-then-comment-line] [fixture:
+railroad/lex-ebnf-acc-descr-line-separator-then-comment-line] [fixture:
+railroad/lex-ebnf-acc-descr-block-line-separator-then-comment-line] [fixture:
+railroad/lex-abnf-title-line-separator-then-comment-line] [fixture:
+railroad/lex-abnf-acc-title-line-separator-then-comment-line] [fixture:
+railroad/lex-abnf-acc-descr-line-separator-then-comment-line] [fixture:
+railroad/lex-abnf-acc-descr-block-line-separator-then-comment-line] [fixture:
+railroad/lex-peg-title-line-separator-then-comment-line] [fixture:
+railroad/lex-peg-acc-title-line-separator-then-comment-line] [fixture:
+railroad/lex-peg-acc-descr-line-separator-then-comment-line] [fixture:
+railroad/lex-peg-acc-descr-block-line-separator-then-comment-line] [fixture:
+railroad/lex-string-line-separator-comment-line-line-rule-after]
 
 ### 共通 directive とセミコロンの境界
 

@@ -465,6 +465,26 @@ U+0085 は空白ではありません。 [fixture: venn/lex-tab-header-before]
 [fixture: venn/lex-after-text-string-comment-glued]
 [fixture: venn/lex-bare-percent-inside-quoted-name]
 [fixture: venn/lex-bare-percent-inside-bare-label]
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture:
+venn/lex-title-line-separator-then-comment-line] [fixture:
+venn/lex-title-line-separator-comment-line-directive-next] [fixture:
+venn/lex-title-line-separator-comment-line-space-next] [fixture:
+venn/lex-title-line-separator-comment-line-separator-next] [fixture:
+venn/gram-title-line-separator-comment-line-empty-line] [fixture:
+venn/lex-title-line-separator-comment-line-end-of-text] [fixture:
+venn/lex-title-line-separator-comment-line-cr] [fixture:
+venn/lex-title-line-separator-comment-line-crlf] [fixture:
+venn/lex-title-line-separator-comment-line-two-comment-lines] [fixture:
+venn/lex-title-line-separator-comment-line-two-regions] [fixture:
+venn/lex-title-line-separator-comment-line-spaces-before] [fixture:
+venn/lex-title-line-separator-comment-line-line-feed-before] [fixture:
+venn/lex-title-line-separator-comment-line-directive-before] [fixture:
+venn/gram-title-line-separator-comment-line-bare-percent] [fixture:
+venn/gram-title-line-separator-comment-line-percent-brace] [fixture:
+venn/lex-title-line-separator-comment-line-line-rule-before] [fixture:
+venn/lex-title-line-separator-comment-line-line-rule-after]
 文字列かラベル全体の中の行内の連続する `%` は値のテキストです。
 [fixture: venn/db-title-quotes] [fixture: venn/db-grid-comment-title]
 [fixture: venn/db-grid-comment-label-bare]
@@ -472,6 +492,34 @@ U+0085 は空白ではありません。 [fixture: venn/lex-tab-header-before]
 [fixture: venn/lex-after-text-string-comment-glued]
 [fixture: venn/lex-bare-percent-inside-quoted-name]
 [fixture: venn/lex-bare-percent-inside-bare-label]
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture:
+venn/lex-quoted-name-line-separator-then-comment-line] [fixture:
+venn/lex-quoted-name-paragraph-separator-then-comment-line] [fixture:
+venn/lex-bare-label-line-separator-then-comment-line] [fixture:
+venn/lex-quoted-label-line-separator-then-comment-line] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-directive-next] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-space-next] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-separator-next] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-empty-line] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-end-of-text] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-cr] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-crlf] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-two-comment-lines] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-two-regions] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-spaces-before] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-line-feed-before] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-directive-before] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-line-rule-before] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-line-rule-after] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-bare-percent] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-percent-brace] [fixture:
+venn/lex-union-quoted-name-line-separator-then-comment-line] [fixture:
+venn/lex-text-quoted-name-line-separator-then-comment-line] [fixture:
+venn/lex-style-quoted-name-line-separator-then-comment-line] [fixture:
+venn/lex-quoted-text-id-line-separator-then-comment-line] [fixture:
+venn/lex-quoted-style-value-line-separator-then-comment-line]
 
 タイトルは最初の空白の区切りの後の文字を、追加の空白も含めて保持します。
 [fixture: venn/db-title-padding] [fixture: venn/db-title-only-whitespace]

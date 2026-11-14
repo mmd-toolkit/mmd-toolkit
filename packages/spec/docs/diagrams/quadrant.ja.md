@@ -1550,6 +1550,51 @@ U+2029 以外の 1 文字と 1 つ以上の数字が続くもの（省略可）�
 [fixture: quadrant/db-bare-percent-line-after-point]
 [fixture: quadrant/db-comment-glued-after-semicolon]
 [fixture: quadrant/db-empty-braces-line-between-statements]
+テキスト、名前、タイトル、アクセシビリティのテキスト、説明ブロック、
+文字列の中の U+2028 や U+2029 の後のコメント行は、その改行ごと取り除かれ、
+値は次の行に続き（[コメント行](../common.ja.md#コメント行) を参照）、
+`quadrant-1 a`、U+2028、`%% c`、改行、`b` はテキスト `a`、U+2028、
+`b` を持ちます。
+[fixture: quadrant/db-quadrant-text-line-separator-then-comment-line]
+[fixture: quadrant/db-quadrant-text-paragraph-separator-then-comment-line]
+[fixture: quadrant/db-title-line-separator-then-comment-line] [fixture:
+quadrant/db-axis-text-line-separator-then-comment-line] [fixture:
+quadrant/db-point-name-line-separator-then-comment-line] [fixture:
+quadrant/db-acc-title-line-separator-then-comment-line] [fixture:
+quadrant/db-acc-descr-line-separator-then-comment-line] [fixture:
+quadrant/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+quadrant/db-string-line-separator-then-comment-line] [fixture:
+quadrant/db-quadrant-text-line-separator-comment-line-directive-next] [fixture:
+quadrant/db-quadrant-text-line-separator-comment-line-space-next] [fixture:
+quadrant/db-quadrant-text-line-separator-comment-line-separator-next] [fixture:
+quadrant/gram-quadrant-text-line-separator-comment-line-empty-line] [fixture:
+quadrant/db-quadrant-text-line-separator-comment-line-end-of-text] [fixture:
+quadrant/db-quadrant-text-line-separator-comment-line-cr] [fixture:
+quadrant/db-quadrant-text-line-separator-comment-line-crlf] [fixture:
+quadrant/db-quadrant-text-line-separator-comment-line-two-comment-lines]
+[fixture: quadrant/db-quadrant-text-line-separator-comment-line-two-regions]
+[fixture: quadrant/db-quadrant-text-line-separator-comment-line-spaces-before]
+[fixture:
+quadrant/db-quadrant-text-line-separator-comment-line-line-feed-before]
+[fixture:
+quadrant/db-quadrant-text-line-separator-comment-line-directive-before]
+[fixture: quadrant/gram-quadrant-text-line-separator-comment-line-bare-percent]
+[fixture: quadrant/gram-quadrant-text-line-separator-comment-line-percent-brace]
+[fixture: quadrant/db-x-right-text-line-separator-then-comment-line] [fixture:
+quadrant/db-y-bottom-text-line-separator-then-comment-line] [fixture:
+quadrant/db-y-top-text-line-separator-then-comment-line] [fixture:
+quadrant/db-x-left-string-line-separator-then-comment-line] [fixture:
+quadrant/db-x-right-string-line-separator-then-comment-line] [fixture:
+quadrant/db-y-bottom-string-line-separator-then-comment-line] [fixture:
+quadrant/db-y-top-string-line-separator-then-comment-line] [fixture:
+quadrant/db-point-name-string-line-separator-then-comment-line] [fixture:
+quadrant/db-x-left-markdown-line-separator-then-comment-line] [fixture:
+quadrant/db-x-right-markdown-line-separator-then-comment-line] [fixture:
+quadrant/db-y-bottom-markdown-line-separator-then-comment-line] [fixture:
+quadrant/db-y-top-markdown-line-separator-then-comment-line] [fixture:
+quadrant/db-point-name-markdown-line-separator-then-comment-line] [fixture:
+quadrant/db-title-line-separator-comment-line-line-rule-before] [fixture:
+quadrant/db-title-line-separator-comment-line-line-rule-after]
 
 mermaid.js は、1 文字の単位にくっついたコメントを、その文字とともに読みます。
 字句解析器は、英字の並び、数字の並び、ASCII 外の文字の並び、

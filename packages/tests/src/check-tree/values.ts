@@ -42,7 +42,7 @@ import { XYCHART_ACCESSIBILITY_STATEMENTS } from "./xychart.ts"
 type ValueKind = "written-text" | "units-joined" | "trimmed-text" | "derived"
 
 /** Where the delimiters that a value leaves out lie in the range of the node. */
-type DelimitersKind = "string" | "data-block"
+type DelimitersKind = "string" | "data-block" | "special-sequence"
 
 /** The way the value of a node type is made, and the sentence of the specification that says so. */
 export interface ValueRule {
@@ -206,7 +206,8 @@ export const VALUE_RULES: Readonly<Record<string, ValueRule>> = {
   },
   RailroadSpecialSequence: {
     field: "value",
-    kind: "derived",
+    kind: "written-text",
+    delimiters: "special-sequence",
     spec: "Authored interior without the two question marks (ast/railroad.md).",
   },
   RailroadNumericValue: {
@@ -712,6 +713,11 @@ function delimitersOf(
   }
   if (kind === "string") return delimitersOfStrings(node, problems)
   const [start, end] = node.range
+  if (kind === "special-sequence")
+    return [
+      [start, start + 1],
+      [end - 1, end],
+    ]
   return [
     [start, start + 2],
     [end - 1, end],

@@ -209,7 +209,30 @@ info/common-title-comment-gap] [fixture: info/common-acctitle-comment-gap]
 info/lex-accdescr-directive-gap] [fixture: info/lex-accdescr-comment-gap]
 [fixture: info/end-title-semicolons] [fixture: info/end-acctitle-semicolons]
 [fixture: info/end-accdescr-semicolons] [fixture: info/line-ls-in-value]
-[fixture: info/line-ps-in-value] [fixture: info/lex-block-colon-first]
+[fixture: info/line-ps-in-value] [fixture: info/lex-block-colon-first] A common
+comment region can remove the rest of a physical line after U+2028 or U+2029
+inside a value, its line break included; the value then goes on with the next
+physical line, so a line value does not end there: `accTitle: A`, U+2028,
+`%% c`, a line break, and `B` has the accessibility title `A`, U+2028, and `B`.
+[fixture: info/lex-line-comment-region-ls] [fixture:
+info/lex-acc-title-line-separator-then-comment-line] [fixture:
+info/lex-acc-title-line-separator-comment-line-directive-next] [fixture:
+info/lex-acc-title-line-separator-comment-line-space-next] [fixture:
+info/lex-acc-title-line-separator-comment-line-separator-next] [fixture:
+info/lex-acc-title-line-separator-comment-line-empty-line] [fixture:
+info/lex-acc-title-line-separator-comment-line-end-of-text] [fixture:
+info/lex-acc-title-line-separator-comment-line-cr] [fixture:
+info/lex-acc-title-line-separator-comment-line-crlf] [fixture:
+info/lex-acc-title-line-separator-comment-line-two-comment-lines] [fixture:
+info/lex-acc-title-line-separator-comment-line-two-regions] [fixture:
+info/lex-acc-title-line-separator-comment-line-spaces-before] [fixture:
+info/lex-acc-title-line-separator-comment-line-line-feed-before] [fixture:
+info/lex-acc-title-line-separator-comment-line-directive-before] [fixture:
+info/lex-acc-title-line-separator-comment-line-line-rule-before] [fixture:
+info/lex-acc-title-line-separator-comment-line-line-rule-after] [fixture:
+info/lex-acc-title-line-separator-comment-line-bare-percent] [fixture:
+info/lex-acc-title-line-separator-comment-line-percent-brace] [fixture:
+info/lex-accdescr-line-line-separator-then-comment-line]
 
 The block alternative reads `accDescr`, zero or more common whitespace
 characters, `{` and arbitrary content through the first `}`. Its opening gap may

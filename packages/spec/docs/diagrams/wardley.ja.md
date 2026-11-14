@@ -453,6 +453,48 @@ hidden form の中でも共有 Directive、comment region、
 [fixture: wardley/directive-native-directive-opener]
 [fixture: wardley/lex-selected-native-yaml-opener]
 [fixture: wardley/lex-selected-native-directive-opener]
+値の中の U+2028 か U+2029 の後の物理行の残りは、その改行も含めて、
+共通のコメント領域が取り除くことがある。
+そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
+`accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
+U+2028、`B` である。 [fixture:
+wardley/lex-string-line-separator-then-comment-line] [fixture:
+wardley/lex-string-paragraph-separator-then-comment-line] [fixture:
+wardley/lex-title-line-separator-then-comment-line] [fixture:
+wardley/lex-acc-title-line-separator-then-comment-line] [fixture:
+wardley/lex-acc-descr-line-separator-then-comment-line] [fixture:
+wardley/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+wardley/lex-string-line-separator-comment-line-directive-next] [fixture:
+wardley/lex-string-line-separator-comment-line-space-next] [fixture:
+wardley/lex-string-line-separator-comment-line-separator-next] [fixture:
+wardley/lex-string-line-separator-comment-line-empty-line] [fixture:
+wardley/lex-string-line-separator-comment-line-end-of-text] [fixture:
+wardley/lex-title-line-separator-comment-line-end-of-text] [fixture:
+wardley/lex-string-line-separator-comment-line-cr] [fixture:
+wardley/lex-string-line-separator-comment-line-crlf] [fixture:
+wardley/lex-string-line-separator-comment-line-two-comment-lines] [fixture:
+wardley/lex-string-line-separator-comment-line-two-regions] [fixture:
+wardley/lex-string-line-separator-comment-line-spaces-before] [fixture:
+wardley/lex-string-line-separator-comment-line-line-feed-before] [fixture:
+wardley/lex-string-line-separator-comment-line-directive-before] [fixture:
+wardley/lex-string-line-separator-comment-line-line-rule-before] [fixture:
+wardley/lex-string-line-separator-comment-line-line-rule-after] [fixture:
+wardley/lex-string-line-separator-comment-line-bare-percent] [fixture:
+wardley/lex-string-line-separator-comment-line-percent-brace] [fixture:
+wardley/lex-anchor-name-line-separator-then-comment-line] [fixture:
+wardley/lex-link-source-name-line-separator-then-comment-line] [fixture:
+wardley/lex-link-target-name-line-separator-then-comment-line] [fixture:
+wardley/lex-pipeline-parent-name-line-separator-then-comment-line] [fixture:
+wardley/lex-pipeline-child-name-line-separator-then-comment-line] [fixture:
+wardley/lex-evolve-name-line-separator-then-comment-line] [fixture:
+wardley/lex-accelerator-name-line-separator-then-comment-line] [fixture:
+wardley/lex-deaccelerator-name-line-separator-then-comment-line] [fixture:
+wardley/lex-stage-name-line-separator-then-comment-line] [fixture:
+wardley/lex-stage-second-name-line-separator-then-comment-line] [fixture:
+wardley/lex-note-string-line-separator-then-comment-line] [fixture:
+wardley/lex-annotation-string-line-separator-then-comment-line] [fixture:
+wardley/lex-flow-body-line-separator-then-comment-line] [fixture:
+wardley/lex-link-label-line-separator-then-comment-line]
 
 whole hidden form は WardleyIgnoredText。
 開始から適格な閉じまでを範囲にし、

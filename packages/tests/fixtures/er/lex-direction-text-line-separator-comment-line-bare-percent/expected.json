@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The statement context: a `%%` with nothing after it follows a U+2028 in the text after the direction and starts no comment; accepted, and the Db summary holds no value with the U+2028."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-y-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "y",
+        "classes": []
+      },
+      {
+        "id": "entity-A-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

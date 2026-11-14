@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Comments: `title style:#p` before a U+2028 in the title, with `style`, `:`, and `#` in its line segment, and `#x;` on the line after the comment line, a line segment of its own for the line rule of style and classDef lines, which does not match there, so its `;` is not ignored; the Db summary holds `style:#p`, U+2028, and `ﬂ°x¶ß`."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "style:#p ﬂ°x¶ß",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": []
+  }
+}
