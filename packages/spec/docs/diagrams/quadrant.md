@@ -2091,7 +2091,47 @@ quadrant/db-classdef-prototype-to-string-redefined] [fixture:
 quadrant/db-classdef-prototype-twice] [fixture:
 quadrant/db-classdef-prototype-used] [fixture:
 quadrant/db-classdef-radius-semicolon] [fixture: quadrant/db-classdef-tabs]
-[fixture: quadrant/db-classdef-name-colon-between-letters]
+[fixture: quadrant/db-classdef-name-colon-between-letters] A U+2028 or a U+2029
+in the name is a character of a word and a comment start, and the name goes on
+across a comment region after it, as every unit does (see
+[Comment lines](../common.md#comment-lines)): `classDef a`, U+2028, `%% c`, a
+line break, and `b color: #109060` defines the class `a`, U+2028, and `b`, and
+so it is with U+2029. [fixture:
+quadrant/lex-classdef-name-line-separator-comment-line] [fixture:
+quadrant/lex-classdef-name-paragraph-separator-comment-line] So it is with the
+whitespace, the second U+2028, the line breaks, and the directive that the
+comment region takes between the U+2028 and the `%%`, with a CRLF ending the
+comment, with a directive at the start of the next line, with a second comment
+line, across a second region after a second U+2028, with a `-` after the region,
+which is part of a name, and with a name that starts at the U+2028 after
+`classDef` and a space. [fixture:
+quadrant/lex-classdef-name-line-separator-spaces-comment-line] [fixture:
+quadrant/lex-classdef-name-two-line-separators-comment-line] [fixture:
+quadrant/lex-classdef-name-line-separator-line-feed-comment-line] [fixture:
+quadrant/lex-classdef-name-line-separator-directive-comment-line] [fixture:
+quadrant/lex-classdef-name-line-separator-comment-line-crlf] [fixture:
+quadrant/lex-classdef-name-line-separator-comment-line-directive-next] [fixture:
+quadrant/lex-classdef-name-line-separator-two-comment-lines] [fixture:
+quadrant/lex-classdef-name-two-comment-regions] [fixture:
+quadrant/lex-classdef-name-line-separator-comment-line-dash] [fixture:
+quadrant/lex-classdef-name-starts-with-line-separator-comment-line] A space at
+the start of the next line ends the name and is the whitespace before the
+styles, so the class is `a` and U+2028. Two spaces there, an empty line after
+the comment line, the end of the text, and a space before the U+2028 make the
+input rejected, and so does a `%%` with nothing after it, which is no comment
+line but a comment of this diagram type that runs to the end of its line.
+[fixture: quadrant/lex-classdef-name-line-separator-comment-line-space]
+[fixture: quadrant/gram-classdef-name-line-separator-comment-line-two-spaces]
+[fixture: quadrant/gram-classdef-name-line-separator-comment-line-empty-line]
+[fixture: quadrant/gram-classdef-name-line-separator-comment-line-last-line]
+[fixture: quadrant/gram-classdef-name-space-line-separator-comment-line]
+[fixture: quadrant/gram-classdef-name-line-separator-bare-percent-line] An empty
+description block after the region lies inside the statement, and a `;` that the
+line rule ignores after the region lies inside the name; both make the input
+rejected here, while mermaid.js accepts it (see
+[Known divergences](#known-divergences)). [fixture:
+quadrant/div-classdef-name-comment-line-empty-description-block] [fixture:
+quadrant/div-classdef-name-comment-line-ignored-semicolon]
 
 ### Empty description blocks
 

@@ -2324,6 +2324,45 @@ class-def-name      = ( word-of-name | "-" | "," | ":" )+
 [fixture: quadrant/db-classdef-tabs]
 [fixture: quadrant/db-classdef-name-colon-between-letters]
 
+名前の中の U+2028 と U+2029 は語の文字であるとともにコメントの始まりで、名前は、
+どの単位もそうであるように、
+その後のコメント領域をまたいで続くので（[コメント行](../common.ja.md#コメント行)
+を参照）、`classDef a`、U+2028、`%% c`、改行、`b color: #109060` は、
+名前が `a`、U+2028、`b` のクラスを定め、U+2029 でも同じです。
+[fixture: quadrant/lex-classdef-name-line-separator-comment-line]
+[fixture: quadrant/lex-classdef-name-paragraph-separator-comment-line]
+コメント領域が U+2028 と `%%` の間で取る空白、2 つ目の U+2028、改行、
+ディレクティブ、コメントを終える CRLF、次の行の始めのディレクティブ、
+2 つ目のコメント行、2 つ目の U+2028 の後の 2 つ目の領域をまたぐとき、
+領域の後の名前の一部である `-`、
+`classDef` とスペースの後の U+2028 から始まる名前でも同じです。
+[fixture: quadrant/lex-classdef-name-line-separator-spaces-comment-line]
+[fixture: quadrant/lex-classdef-name-two-line-separators-comment-line]
+[fixture: quadrant/lex-classdef-name-line-separator-line-feed-comment-line]
+[fixture: quadrant/lex-classdef-name-line-separator-directive-comment-line]
+[fixture: quadrant/lex-classdef-name-line-separator-comment-line-crlf]
+[fixture: quadrant/lex-classdef-name-line-separator-comment-line-directive-next]
+[fixture: quadrant/lex-classdef-name-line-separator-two-comment-lines]
+[fixture: quadrant/lex-classdef-name-two-comment-regions]
+[fixture: quadrant/lex-classdef-name-line-separator-comment-line-dash]
+[fixture: quadrant/lex-classdef-name-starts-with-line-separator-comment-line]
+次の行の始めのスペースは名前を終え、スタイルの前の空白となるので、
+クラスは `a` と U+2028 です。
+そこの 2 つのスペース、コメント行の後の空行、テキストの終わり、
+U+2028 の前のスペースは入力を拒否させ、後ろに何もない `%%` も同じで、
+それはコメント行ではなく、その行の終わりまで続くこの図種のコメントです。
+[fixture: quadrant/lex-classdef-name-line-separator-comment-line-space]
+[fixture: quadrant/gram-classdef-name-line-separator-comment-line-two-spaces]
+[fixture: quadrant/gram-classdef-name-line-separator-comment-line-empty-line]
+[fixture: quadrant/gram-classdef-name-line-separator-comment-line-last-line]
+[fixture: quadrant/gram-classdef-name-space-line-separator-comment-line]
+[fixture: quadrant/gram-classdef-name-line-separator-bare-percent-line]
+領域の後の空の説明ブロックは文の中にあり、領域の後の、
+行の規則が無視する `;` は名前の中にあり、どちらもここでは入力を拒否させますが、
+mermaid.js は受理します（[既知の差異](#既知の差異) を参照）。
+[fixture: quadrant/div-classdef-name-comment-line-empty-description-block]
+[fixture: quadrant/div-classdef-name-comment-line-ignored-semicolon]
+
 ### 空の説明ブロック
 
 `description-block-text` の単位のない説明ブロックの文は、

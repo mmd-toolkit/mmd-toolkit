@@ -175,6 +175,63 @@ quote of a string takes it with it, and the string is then not closed:
 `A ||--o{ B : "x`, a line break, and `%% c"` is rejected. [fixture:
 er/lex-comment-line-takes-closing-quote]
 
+**Comment regions inside names.** A `name` unit and a `word` of an attribute
+block go on across a comment region, as every unit does (see
+[Comment lines](../common.md#comment-lines)): a U+2028 or a U+2029 is a
+character of the name and a comment start, so `A`, U+2028, `%% c`, a line break,
+and `Bar` is the one entity whose name is `A`, U+2028, and `Bar`, and so it is
+with U+2029. [fixture: er/lex-name-line-separator-comment-line] [fixture:
+er/lex-name-paragraph-separator-comment-line] So it is with the whitespace, the
+second U+2028, the line breaks, and the directive that the comment region takes
+between the U+2028 and the `%%`, with a CRLF or a CR ending the comment, with a
+directive inside the comment or at the start of the next line, with a second
+comment line, and across a second region after a second U+2028, and a U+2028 at
+the start of the next line is a character of the name. [fixture:
+er/lex-name-line-separator-spaces-comment-line] [fixture:
+er/lex-name-two-line-separators-comment-line] [fixture:
+er/lex-name-line-separator-line-feed-comment-line] [fixture:
+er/lex-name-line-separator-empty-line-comment-line] [fixture:
+er/lex-name-line-separator-directive-comment-line] [fixture:
+er/lex-name-line-separator-comment-line-crlf] [fixture:
+er/lex-name-line-separator-comment-line-cr] [fixture:
+er/lex-name-line-separator-comment-line-with-directive] [fixture:
+er/lex-name-line-separator-comment-line-directive-next] [fixture:
+er/lex-name-line-separator-two-comment-lines] [fixture:
+er/lex-name-two-comment-regions] [fixture:
+er/lex-name-comment-line-line-separator-next] So it is for every name: an entity
+of a relationship, a role, an alias, a class after `:::`, a name after
+`classDef`, `class`, or `style`, the id of a subgraph, and the name of an
+attribute. [fixture: er/lex-relationship-first-name-comment-line] [fixture:
+er/lex-relationship-second-name-comment-line] [fixture:
+er/lex-role-name-comment-line] [fixture: er/lex-alias-name-comment-line]
+[fixture: er/lex-class-shorthand-name-comment-line] [fixture:
+er/lex-classdef-name-comment-line] [fixture:
+er/lex-class-statement-name-comment-line] [fixture:
+er/lex-style-statement-name-comment-line] [fixture:
+er/lex-subgraph-id-comment-line] [fixture: er/lex-attribute-name-comment-line]
+The name goes on with the characters of a name after the region: a line
+`accDescr {}` after it gives the entity `A`, U+2028, and `accDescr` with an
+empty attribute block, and the line after the region is a segment of its own for
+the line rule of `style` and `classDef` lines, so after `classDef c`, U+2028,
+and a comment line, the line `style fill:#f00;` gives the class `c`, U+2028, and
+`style` with the style `fill:#f00`. [fixture:
+er/lex-name-line-separator-comment-line-acc-descr] [fixture:
+er/lex-classdef-name-comment-line-style-line] The name ends where no character
+of a name follows the region: with spaces at the start of the next line, an
+empty line after the comment line, or the end of the text, the name is `A` and
+U+2028. A U+2028 after a space or after a quoted name starts a name of its own:
+`A`, a space, U+2028, `%% c`, a line break, and `Bar` are the entities `A`, and
+U+2028 and `Bar`. [fixture: er/lex-name-line-separator-comment-line-indented]
+[fixture: er/lex-name-line-separator-comment-line-empty-line] [fixture:
+er/lex-name-line-separator-comment-line-last-line] [fixture:
+er/lex-name-line-separator-comment-end-of-text] [fixture:
+er/lex-name-space-line-separator-comment-line] [fixture:
+er/lex-quoted-name-line-separator-comment-line] A `%%` with nothing after it is
+no comment and makes the input rejected, since `%` is no character of a name,
+and a directive alone after the U+2028 is no comment line, so the line feed
+after it ends the name. [fixture: er/lex-name-line-separator-bare-percent-line]
+[fixture: er/lex-name-line-separator-directive-line]
+
 ### Directives inside units
 
 The lexer reads the diagram text, which has no directives, as mermaid.js reads

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Classes: two spaces after the comment region end the name, and the text after them is no style, so the input is rejected by both."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "style named b color is not supported."
+  }
+}

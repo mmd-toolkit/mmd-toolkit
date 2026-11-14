@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Names: the name goes on across the comment region, as every unit does with the characters of a name that follow: the entity is `A`, U+2028, and `accDescr`, and `{}` is its empty attribute block."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A accDescr-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A accDescr",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

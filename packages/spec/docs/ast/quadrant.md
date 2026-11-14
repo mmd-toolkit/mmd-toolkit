@@ -285,4 +285,8 @@ is `a`, U+00A0, and `b`. The name holds no ASCII whitespace, and its dashes,
 colons, and commas are part of it: `classDef c-1 color: #f00` defines `c-1`.
 [fixture: quadrant/db-grid-nbsp-classdef-name] [fixture:
 quadrant/db-classdef-dash-name] [fixture:
-quadrant/db-classdef-name-colon-between-letters]
+quadrant/db-classdef-name-colon-between-letters] A comment region inside the
+name, after a U+2028 or a U+2029, is left out of its written text: `classDef a`,
+U+2028, `%% c`, a line break, and `b color: #f00` defines the class whose `name`
+is `a`, U+2028, and `b` (see [Classes](../diagrams/quadrant.md#classes)).
+[fixture: quadrant/lex-classdef-name-line-separator-comment-line]

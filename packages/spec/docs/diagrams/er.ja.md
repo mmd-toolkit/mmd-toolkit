@@ -197,6 +197,67 @@ er/tokens-comment-line-in-backquoted-word]
 `A ||--o{ B : "x`、改行、`%% c"` は拒否されます。
 [fixture: er/lex-comment-line-takes-closing-quote]
 
+**名前の中のコメント領域。**
+`name` の単位と属性ブロックの `word` は、どの単位もそうであるように、
+コメント領域をまたいで続き（[コメント行](../common.ja.md#コメント行) を参照）、
+U+2028 と U+2029 は名前の文字であるとともにコメントの始まりなので、`A`、U+2028、
+`%% c`、改行、`Bar` は、名前が `A`、U+2028、`Bar` の 1 つの実体で、
+U+2029 を使ったときも同じです。
+[fixture: er/lex-name-line-separator-comment-line]
+[fixture: er/lex-name-paragraph-separator-comment-line]
+コメント領域が U+2028 と `%%` の間で取る空白、2 つ目の U+2028、改行、
+ディレクティブ、コメントを終える CRLF や CR、
+コメントの中や次の行の始めのディレクティブ、2 つ目のコメント行、
+2 つ目の U+2028 の後の 2 つ目の領域をまたぐときも同じで、
+次の行の始めの U+2028 は名前の文字です。
+[fixture: er/lex-name-line-separator-spaces-comment-line]
+[fixture: er/lex-name-two-line-separators-comment-line]
+[fixture: er/lex-name-line-separator-line-feed-comment-line]
+[fixture: er/lex-name-line-separator-empty-line-comment-line]
+[fixture: er/lex-name-line-separator-directive-comment-line]
+[fixture: er/lex-name-line-separator-comment-line-crlf]
+[fixture: er/lex-name-line-separator-comment-line-cr]
+[fixture: er/lex-name-line-separator-comment-line-with-directive]
+[fixture: er/lex-name-line-separator-comment-line-directive-next]
+[fixture: er/lex-name-line-separator-two-comment-lines]
+[fixture: er/lex-name-two-comment-regions]
+[fixture: er/lex-name-comment-line-line-separator-next]
+どの名前でも同じで、関係の実体、ロール、別名、`:::` の後のクラス、`classDef`、
+`class`、`style` の後の名前、subgraph の id、属性の名前もそうです。
+[fixture: er/lex-relationship-first-name-comment-line]
+[fixture: er/lex-relationship-second-name-comment-line]
+[fixture: er/lex-role-name-comment-line]
+[fixture: er/lex-alias-name-comment-line]
+[fixture: er/lex-class-shorthand-name-comment-line]
+[fixture: er/lex-classdef-name-comment-line]
+[fixture: er/lex-class-statement-name-comment-line]
+[fixture: er/lex-style-statement-name-comment-line]
+[fixture: er/lex-subgraph-id-comment-line]
+[fixture: er/lex-attribute-name-comment-line]
+名前は領域の後の名前の文字へ続くので、その後の行 `accDescr {}` は名前が `A`、
+U+2028、`accDescr` で空の属性ブロックを持つ実体となり、
+領域の後の行は `style` と `classDef` の行の規則にとって独立した区間なので、
+`classDef c`、U+2028、コメント行の後の行 `style fill:#f00;` は、名前が `c`、
+U+2028、`style` でスタイルが `fill:#f00` のクラスとなります。
+[fixture: er/lex-name-line-separator-comment-line-acc-descr]
+[fixture: er/lex-classdef-name-comment-line-style-line]
+領域の後に名前の文字が続かないところで名前は終わり、
+次の行の始めにスペースがあるとき、コメント行の後に空行があるとき、
+テキストの終わりでは、名前は `A` と U+2028 です。
+スペースや引用符付きの名前の後の U+2028 は別の名前を始めるので、`A`、スペース、
+U+2028、`%% c`、改行、`Bar` は、実体 `A` と、名前が U+2028 と `Bar` の実体です。
+[fixture: er/lex-name-line-separator-comment-line-indented]
+[fixture: er/lex-name-line-separator-comment-line-empty-line]
+[fixture: er/lex-name-line-separator-comment-line-last-line]
+[fixture: er/lex-name-line-separator-comment-end-of-text]
+[fixture: er/lex-name-space-line-separator-comment-line]
+[fixture: er/lex-quoted-name-line-separator-comment-line]
+後ろに何もない `%%` はコメントではなく、`%` は名前の文字ではないので、
+入力を拒否させ、U+2028 の後のディレクティブだけではコメント行にならないので、
+その後の改行文字は名前を終えます。
+[fixture: er/lex-name-line-separator-bare-percent-line]
+[fixture: er/lex-name-line-separator-directive-line]
+
 ### 単位の中のディレクティブ
 
 字句解析器は、ディレクティブを持たない図のテキストを、

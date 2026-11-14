@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Names: the comment region ends with its line feed, and the empty line after it ends the name: the entities are `A` with U+2028, and `Bar`."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A -0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A ",
+        "classes": []
+      },
+      {
+        "id": "entity-Bar-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "Bar",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

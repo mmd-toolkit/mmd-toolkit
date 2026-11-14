@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Classes: the name starts at the U+2028 after `classDef` and a space, and the name goes on across the comment region, as every unit does: the class is U+2028 and `b`."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "T",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": [
+      {
+        "name": " b",
+        "color": "#109060"
+      }
+    ]
+  }
+}
