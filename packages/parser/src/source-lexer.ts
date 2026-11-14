@@ -646,8 +646,9 @@ export class SourceLexer {
    * lines: throws `ParseError` at the first of the cuts `cuts` of the token
    * `token` that its kind may not have (see {@link mayBeCut}): a directive,
    * or a `;` that the line rule ignores. A comment region cuts only tokens
-   * whose units span lines (see {@link mayHoldCommentRegion}); one inside
-   * another token is a bug of the diagram's parser.
+   * whose units span lines (see
+   * {@link SourceLexer.mayHoldCommentRegion}); one inside another token is a
+   * bug of the diagram's parser.
    */
   private rejectCut(token: PendingToken, cuts: readonly Cut[]): void {
     if (mayBeCut(token.kind)) return
