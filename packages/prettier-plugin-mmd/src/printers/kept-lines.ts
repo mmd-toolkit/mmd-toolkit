@@ -12,6 +12,7 @@ import {
   isAtLineEnd,
   isSpaceOrTab,
   isWhitespace,
+  isWordCharacter,
   previousRead,
   skipRemoved,
   textRead,
@@ -214,7 +215,13 @@ export function findLinesWithOwnSemicolons(
     ])
   }
   for (const offset of source.ignoredSemicolons) {
-    if (rules.kind === "required" || !isLastOnItsLine(source, offset))
+    const comment = root.comments.find((item) => item.range[1] === offset)
+    if (
+      rules.kind === "required" ||
+      !isLastOnItsLine(source, offset) ||
+      (comment !== undefined &&
+        !staysIgnoredAlone(source, offset, comment.range[0]))
+    )
       lines.add(lineStartOf(source, offset))
   }
   return lines
@@ -243,9 +250,55 @@ export function ignoredSemicolonAtCommentEnd(
         lineStartOf(source, semicolon),
         lineEndOf(source, semicolon),
       ),
-    ).includes(semicolon)
+    ).includes(semicolon) &&
+    staysIgnoredAlone(source, semicolon, range[0])
     ? semicolon
     : undefined
+}
+
+/**
+ * Whether the `;` at `offset` would end an entity: a `#`, one or more word
+ * characters, and the `;` (common.md, Entities). Only then does the line rule
+ * that ignores the `;` decide how mermaid.js reads the text before it.
+ */
+function endsEntityName(source: Source, offset: number): boolean {
+  let start = offset
+  while (start > 0 && isWordCharacter(source.text[start - 1])) start--
+  return start < offset && source.text[start - 1] === "#"
+}
+
+/**
+ * Whether the line rule still ignores the `;` at `semicolon`, which ends the
+ * comment that starts at `commentStart`, when the statement that holds the
+ * comment or stands before it, the last that starts on the line, stands on a
+ * line of its own with it, as the printer puts it where the line does not keep
+ * its statements together. A trigger in another statement of the
+ * line (`accDescr {style:#x}`) is no longer on that line then, and the `;`,
+ * which the printer prints with the comment, is read: `x #a;` has the entity
+ * `#a;` (common.md, `style` and `classDef` lines; docs/sequence.md, Statements
+ * one per line).
+ */
+function staysIgnoredAlone(
+  source: Source,
+  semicolon: number,
+  commentStart: number,
+): boolean {
+  if (!endsEntityName(source, semicolon)) return true
+  const lineStart = lineStartOf(source, semicolon)
+  let holder: Node | undefined
+  for (const node of nodesOf(source)) {
+    if (
+      node.type.endsWith("Statement") &&
+      node.range[0] < commentStart &&
+      lineStartOf(source, node.range[0]) === lineStart &&
+      (holder === undefined || node.range[0] > holder.range[0])
+    )
+      holder = node
+  }
+  if (holder === undefined) return true
+  return ignoredSemicolonsIn(
+    readSegments(source, holder.range[0], lineEndOf(source, semicolon)),
+  ).includes(semicolon)
 }
 
 /**
@@ -483,6 +536,16 @@ export function isLastOnItsLine(source: Source, offset: number): boolean {
 /** The nodes of each source, found once. */
 const nodesBySource = new WeakMap<Source, readonly Node[]>()
 
+/** The nodes of the source. */
+function nodesOf(source: Source): readonly Node[] {
+  let nodes = nodesBySource.get(source)
+  if (nodes === undefined) {
+    nodes = findNodes(source.root, () => true)
+    nodesBySource.set(source, nodes)
+  }
+  return nodes
+}
+
 /**
  * Whether the statement that holds the `;` at `offset` goes on after the end
  * of its line, with a value of its own: a value that stands on a later line,
@@ -494,11 +557,7 @@ const nodesBySource = new WeakMap<Source, readonly Node[]>()
  * that closes the statement (`end`), which are no values of the statement.
  */
 function statementContinuesAfter(source: Source, offset: number): boolean {
-  let nodes = nodesBySource.get(source)
-  if (nodes === undefined) {
-    nodes = findNodes(source.root, () => true)
-    nodesBySource.set(source, nodes)
-  }
+  const nodes = nodesOf(source)
   let holder: Node | undefined
   for (const node of nodes) {
     if (

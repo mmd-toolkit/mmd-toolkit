@@ -2627,6 +2627,7 @@ mermaid.js は読まず、書き手のテキストだからです。
 [fixture: comments/trailing-whitespace-kept]
 [fixture: comments/leading-whitespace-kept]
 [fixture: comments/statement-text-kept] [fixture: comments/directive-text-kept]
+[fixture: comments/line-ending-ignored-semicolon-trailing-whitespace-kept]
 
 入力
 ([comments/indented-input.mmd](../tests/fixtures/flowchart/comments/indented-input.mmd)):

@@ -2561,7 +2561,8 @@ mermaid.js does not read it, and it is the author's text.
 
 [fixture: comments/trailing-whitespace-kept] [fixture:
 comments/leading-whitespace-kept] [fixture: comments/statement-text-kept]
-[fixture: comments/directive-text-kept]
+[fixture: comments/directive-text-kept] [fixture:
+comments/line-ending-ignored-semicolon-trailing-whitespace-kept]
 
 Input
 ([comments/indented-input.mmd](../tests/fixtures/flowchart/comments/indented-input.mmd)):

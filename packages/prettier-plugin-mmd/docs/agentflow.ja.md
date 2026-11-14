@@ -934,6 +934,7 @@ agentflow-beta TB
 独立したコメントを近隣の文に揃え、著者の全文と末尾空白を保ちます。
 
 [fixture: comments/comments-align] [fixture: comments/comment-trailing]
+[fixture: comments/comment-line-ending-ignored-semicolon-trailing-whitespace-kept]
 
 害のない末尾コメント前の隙間は空白1つにします。
 agentflowではセミコロンや説明の閉じ記号の後も実コメントです。

@@ -3,6 +3,7 @@ import type { Doc } from "prettier"
 import { utils } from "prettier/doc"
 import {
   isDroppedSemicolon,
+  isFirstOnItsLine,
   isInsideStyleRuleStretch,
   ignoredSemicolonAtCommentEnd,
 } from "./kept-lines.ts"
@@ -713,14 +714,16 @@ function toRun(
         }))
       : null,
     // The same comment-end decision that allows statements to split also
-    // lets hardline remove the whitespace (docs/sequence.md, Statements one
-    // per line).
+    // lets hardline remove the whitespace after the comment of a statement; a
+    // comment line keeps it, as every comment does (docs/sequence.md,
+    // Statements one per line; docs/flowchart.md, Comments).
     endsWithWhitespace:
       endsWithSpaceOrTab(
         source.text.slice(printed.item.range[0], printed.item.range[1]),
       ) &&
       !(
         printed.item.type === "Comment" &&
+        !isFirstOnItsLine(source, printed.item.range[0]) &&
         ignoredSemicolonAtCommentEnd(source, printed.item.range) !== undefined
       ),
   }

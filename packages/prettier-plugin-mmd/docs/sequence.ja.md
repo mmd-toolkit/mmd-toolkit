@@ -1155,6 +1155,7 @@ sequenceDiagram
 [corpus fixture: sequence/lex-single-percent-comment-line]
 [fixture: comments/percent-line-kept] [fixture: comments/block-edges-kept]
 [fixture: comments/text-whitespace-kept]
+[fixture: comments/line-ending-ignored-semicolon-trailing-whitespace-kept]
 
 文の後のコメントはその行に残し、印の前に空白が書かれているかどうかを保ちます。
 mermaid.js は `autonumber 5%% c` を数 5 なしで読み、
@@ -1219,6 +1220,7 @@ sequenceDiagram
 `A->>B: x #style:#x;` に空白が続くメッセージは、
 空白がないときと同じく 2 行に印字します。
 1 回目に 1 行、2 回目に 2 行にはしません。
+コメントだけの行は、`;` の後の空白も、コメントのほかのテキストと一緒に残します。
 
 [fixture: statements-one-per-line/message-comment-ignored-semicolon-trailing-whitespace]
 [fixture: statements-one-per-line/loop-comment-ignored-semicolon-trailing-whitespace]
@@ -1229,6 +1231,17 @@ sequenceDiagram
 行の規則が無視しない `;` は、コメントの中に残り、行も一緒に残ります。
 
 [fixture: statements-one-per-line/comment-nonignored-semicolon-trailing-whitespace]
+
+行の規則の引き金が行のほかの文にあるとき、
+たとえば `accDescr {style:#x} A->>B: x #a;` の `style:#x` のときは、
+`;` が無視されるのは文が 1 行にあるあいだだけです。
+文を別の行に分けると、メッセージには引き金がなく、
+mermaid.js は `#a;` をそのテキストの文字参照として読みます。
+そのため、`;` の後に空白があってもなくても、行は `;` ごと 1 行に残します。
+`loop` の見出しも同じです。
+
+[fixture: statements-one-per-line/message-comment-ignored-semicolon-trigger-in-other-statement]
+[fixture: statements-one-per-line/loop-comment-ignored-semicolon-trigger-in-other-statement]
 
 入力
 ([comments/semicolon-after-comment-kept-input.mmd](../tests/fixtures/sequence/comments/semicolon-after-comment-kept-input.mmd)):

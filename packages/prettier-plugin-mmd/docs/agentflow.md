@@ -893,6 +893,8 @@ comments with neighbouring statements and retain the author's complete text,
 including trailing spaces.
 
 [fixture: comments/comments-align] [fixture: comments/comment-trailing]
+[fixture:
+comments/comment-line-ending-ignored-semicolon-trailing-whitespace-kept]
 
 A harmless trailing-comment gap becomes one space. Agentflow recognizes real
 comments after semicolons and description closers; ordinary separator semicolons

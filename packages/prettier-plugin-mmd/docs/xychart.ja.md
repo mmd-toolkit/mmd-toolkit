@@ -1037,6 +1037,7 @@ xychart
 [fixture: comments/comment-mark-in-an-accessibility-text]
 [fixture: comments/comment-marks-and-empty-lines]
 [fixture: comments/bare-percent-comment]
+[fixture: comments/comment-line-ending-ignored-semicolon-trailing-whitespace-kept]
 
 文の後ろのコメントは、文の行に残します。
 前に空白が書かれていれば空白 1 つ、書かれていなければ接したままにします。

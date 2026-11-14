@@ -1107,6 +1107,7 @@ statements around it, and its text is kept as written.
 [fixture: comments/kept] [corpus fixture:
 sequence/lex-single-percent-comment-line] [fixture: comments/percent-line-kept]
 [fixture: comments/block-edges-kept] [fixture: comments/text-whitespace-kept]
+[fixture: comments/line-ending-ignored-semicolon-trailing-whitespace-kept]
 
 A comment after a statement stays on its line, and whether whitespace is written
 before its mark is kept: mermaid.js reads `autonumber 5%% c` without the number
@@ -1171,7 +1172,8 @@ it is without the whitespace: the `;` is then the last `;` of the line, which
 does not keep the statements of the line together, so `accDescr {}` and a
 message `A->>B: x #style:#x;` followed by a space are printed on two lines, as
 they are without the space, and not on one line at the first formatting and on
-two at the second.
+two at the second. A comment on a line of its own keeps the whitespace after its
+`;` with the rest of its text.
 
 [fixture:
 statements-one-per-line/message-comment-ignored-semicolon-trailing-whitespace]
@@ -1188,6 +1190,18 @@ stays together.
 
 [fixture:
 statements-one-per-line/comment-nonignored-semicolon-trailing-whitespace]
+
+Where the trigger of the line rule stands in another statement of the line, as
+`style:#x` does in `accDescr {style:#x} A->>B: x #a;`, the `;` is ignored only
+while the statements stand on one line: on a line of its own, the message has no
+trigger, and mermaid.js reads `#a;` as an entity of its text. So the line stays
+together, with the `;`, whether or not whitespace follows it, and the same holds
+for a `loop` header.
+
+[fixture:
+statements-one-per-line/message-comment-ignored-semicolon-trigger-in-other-statement]
+[fixture:
+statements-one-per-line/loop-comment-ignored-semicolon-trigger-in-other-statement]
 
 Input
 ([comments/semicolon-after-comment-kept-input.mmd](../tests/fixtures/sequence/comments/semicolon-after-comment-kept-input.mmd)):
