@@ -108,7 +108,11 @@ mermaid.js は属性ブロックを改行に関係なく読むので、同じ属
 U+2028）、波括弧の間に何があっても、行の終わりが ` { }` になります。
 `}` が、書かれたまま残る行にあるブロックは、`A {`、改行、`}1b` のように、
 属性があってもなくても、その行と一緒に書かれたままにします。
-`;` を含む行は整形しますが、その文は行に一緒に残ります。
+`;` を含み、ほかに書かれたまま残る理由がない行は整形します。
+空の description ブロックがある subgraph の見出しの行も、
+テキストを `:` に寄せると `direction` を持つ `accTitle` と `accDescr` の行も、
+同じです。
+そのような行の文は、行に一緒に残ります。
 その上にあるブロックはブロックとして印字し、`{` の行にある属性はそこに残り、
 `{` の後ろの空白とタブは落とします。
 [fixture: attribute-blocks/written-line-number-name]
@@ -149,6 +153,11 @@ a letter and U+2028 after its opening brace]
 [test: an empty attribute block of an entity after the end of an ER subgraph and U+2028, and a comment line after U+2028 after its closing brace]
 [test: an attribute block of an entity after the end of an ER subgraph and U+2028, and a comment line after U+2028 at the end of the text]
 [test: an attribute block of an entity after the end of an ER subgraph and U+2029, and a comment line after U+2029 after its closing brace]
+[fixture: attribute-blocks/written-line-closing-line-kinds]
+[fixture: attribute-blocks/written-line-unclosed-directive-semicolon]
+[test: an empty attribute block over several lines before a name that is a no-break space and a comment line]
+[test: an attribute block over several lines before a name that is a no-break space and a comment line]
+[test: an attribute block over several lines of an entity after a statement, before a name that is a no-break space and a comment line]
 波括弧と同じ行にディレクティブがある属性のないブロックは、
 ディレクティブをその行に書かれたまま残します。
 コメント行や、行に単独で置かれたディレクティブがあるブロックは、
@@ -675,8 +684,6 @@ mermaid.js が行をどう読むかを決めないかぎり通常どおり整形
 [test: an attribute block over several lines after a semicolon that the line rule ignores and U+2028]
 [test: an attribute block over several lines of an entity after a statement that starts with U+2028 and a comment line]
 [test: an empty attribute block over several lines of an entity after a statement that starts with U+2028 and a comment line]
-
-
 `end` の後ろにあって、`end` の行に残る実体は、
 その前の隙間だけを書かれたままにし、ブロックはほかの行と同じに印字します。
 [test: an attribute block over several lines of an entity after the end of an ER subgraph and U+2028]
@@ -2118,8 +2125,9 @@ mermaid.js が複数行にわたって読む文は、改行が、
 その場所は、仕様の[文の文脈](../../spec/docs/diagrams/er.ja.md#文の文脈)、
 [属性ブロックの文脈](../../spec/docs/diagrams/er.ja.md#属性ブロックの文脈)、
 [style の文脈](../../spec/docs/diagrams/er.ja.md#style-の文脈)が定めます。
-`accTitle` と `accDescr` の `:` と `{` の前後、`direction` と値の間、
-属性の単位の間、空白の後の `classDef` と `style` の文の中です。
+`accTitle` と `accDescr` の `:` の前後、`accDescr` の `{` の前後、
+`direction` と値の間、属性の単位の間、
+空白の後の `classDef` と `style` の文の中です。
 [fixture: multi-line-statements/acc-colon-and-brace-joined]
 [fixture: multi-line-statements/acc-descr-brace-joined]
 [fixture: multi-line-statements/attribute-over-lines-joined]
@@ -2291,8 +2299,9 @@ comment line after U+2028 inside the name of an ER entity]
 同じように印字します。
 `{` までは、その前の隙間と一緒に書かれたままで、属性と `}` は、
 ほかのエンティティと同じ位置に置きます。
-ただし `}` が、コメント行が始まる行にあるときは、
+ただし `}` が、書かれたまま残る行にあるときは、
 ブロックはその行と一緒に書かれたままにします。
+行を始めるエンティティと同じです。
 [test: an attribute block of an entity that follows another entity on the line,
 after a comment line after U+2028]
 [test: an attribute block of an entity after a statement on its line, with a

@@ -2491,6 +2491,21 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "erDiagram\nsubgraph S\nend\u2029A {\nint id\n}\u2029%% d\nQux\n",
     "erDiagram\n  subgraph S\n  end\u2029A {\nint id\n}\u2029%% d\nQux\n",
   ],
+  [
+    "an empty attribute block over several lines before a name that is a no-break space and a comment line",
+    "erDiagram\nA {\n}\u00a0\n%% c\nQ\n",
+    "erDiagram\n  A {\n}\u00a0\n  %% c\n  Q\n",
+  ],
+  [
+    "an attribute block over several lines before a name that is a no-break space and a comment line",
+    "erDiagram\nA {\nint id\n}\u00a0\n%% c\nQ\n",
+    "erDiagram\n  A {\nint id\n}\u00a0\n  %% c\n  Q\n",
+  ],
+  [
+    "an attribute block over several lines of an entity after a statement, before a name that is a no-break space and a comment line",
+    "erDiagram\nX A {\nint id\n}\u00a0\n%% c\nQ\n",
+    "erDiagram\n  X\n  A {\nint id\n}\u00a0\n  %% c\n  Q\n",
+  ],
 ]
 
 /**

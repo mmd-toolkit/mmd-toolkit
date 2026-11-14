@@ -106,7 +106,10 @@ any entity. An empty block over several lines ends the line with ` { }`,
 whatever stands after the `{` (spaces, a tab, a U+2028) or between the braces. A
 block whose `}` stands on a line that stays as written, as in `A {`, a line
 break, and `}1b`, stays as written with that line, whether it holds attributes
-or not. A line that holds a `;` is formatted, and its statements stay together
+or not. A line that holds a `;` and stays as written for no other reason is
+formatted, and so is the line of a subgraph header that holds an empty
+description block and the line of an `accTitle` or `accDescr` whose text goes to
+the `:` and then holds `direction`; the statements of such a line stay together
 on it: a block on it is printed as a block, an attribute on the line of its `{`
 stays there, and the spaces and tabs after the `{` are dropped. [fixture:
 attribute-blocks/written-line-number-name] [fixture:
@@ -141,10 +144,17 @@ U+2028, and a comment line after U+2028 after its closing brace] [test: an
 attribute block of an entity after the end of an ER subgraph and U+2028, and a
 comment line after U+2028 at the end of the text] [test: an attribute block of
 an entity after the end of an ER subgraph and U+2029, and a comment line after
-U+2029 after its closing brace] A block without attributes that holds a
-directive on the line of its braces keeps the directive there, as written, and a
-block that holds a comment line or a directive on a line of its own is printed
-as a block. [fixture: attribute-blocks/empty-with-directive-kept] [fixture:
+U+2029 after its closing brace] [fixture:
+attribute-blocks/written-line-closing-line-kinds] [fixture:
+attribute-blocks/written-line-unclosed-directive-semicolon] [test: an empty
+attribute block over several lines before a name that is a no-break space and a
+comment line] [test: an attribute block over several lines before a name that is
+a no-break space and a comment line] [test: an attribute block over several
+lines of an entity after a statement, before a name that is a no-break space and
+a comment line] A block without attributes that holds a directive on the line of
+its braces keeps the directive there, as written, and a block that holds a
+comment line or a directive on a line of its own is printed as a block.
+[fixture: attribute-blocks/empty-with-directive-kept] [fixture:
 attribute-blocks/empty-with-comment-line-over-lines] [fixture:
 attribute-blocks/empty-with-directive-line-over-lines]
 
@@ -2057,9 +2067,9 @@ specification's
 [The statement context](../../spec/docs/diagrams/er.md#the-statement-context),
 [The attribute block context](../../spec/docs/diagrams/er.md#the-attribute-block-context),
 and [The style context](../../spec/docs/diagrams/er.md#the-style-context)):
-around the `:` and the `{` of `accTitle` and `accDescr`, between `direction` and
-its value, between the units of an attribute, and in a `classDef` or `style`
-statement after whitespace. [fixture:
+around the `:` of `accTitle` and `accDescr` and the `{` of `accDescr`, between
+`direction` and its value, between the units of an attribute, and in a
+`classDef` or `style` statement after whitespace. [fixture:
 multi-line-statements/acc-colon-and-brace-joined] [fixture:
 multi-line-statements/acc-descr-brace-joined] [fixture:
 multi-line-statements/attribute-over-lines-joined] [fixture:
@@ -2231,51 +2241,52 @@ and an attribute after it, after a comment line after U+2028 inside the name of
 an ER entity] An entity that stands after another statement on that line, or
 after a name that the line goes on with, is printed so too: the line up to its
 `{` is printed as written, with the gap before it, and its attributes and its
-`}` stand as those of any entity, unless its `}` stands on a line that holds the
-start of a comment line, which stays as written with the block. [test: an
-attribute block of an entity that follows another entity on the line, after a
-comment line after U+2028] [test: an attribute block of an entity after a
-statement on its line, with a comment line after U+2028 inside its name] [test:
-an attribute block of an entity after a name in quotes, with a comment line
-after U+2028 inside its name] [test: an empty attribute block of an entity that
-follows another entity on the line, after a comment line after U+2028] [test: an
-empty attribute block of an entity after a statement on its line, after a
-comment line after U+2028 and a space] [test: an attribute and a closing brace
-with other indentation of an entity that follows another entity on the line,
-after a comment line after U+2028] [test: a statement after the closing brace of
-an entity that follows another entity on the line, after a comment line after
-U+2028] [test: an attribute block on one line of an entity that follows another
-entity on the line, after a comment line after U+2028] [test: an attribute block
-inside a subgraph, of an entity that follows another entity on the line, after a
-comment line after U+2028] [test: an attribute block of an entity that follows a
-name that a comment line cuts, and a comment line after U+2028 after its closing
-brace] [test: an empty attribute block of an entity that follows a name that a
-comment line cuts, and a comment line after U+2028 after its closing brace]
-[test: an empty attribute block with an empty line before its closing brace, of
-an entity that follows a name that a comment line cuts, and a comment line after
-U+2028 after its closing brace] [test: an attribute block of an entity that
-follows a name that a comment line cuts, and a comment line after U+2028 at the
-end of the text] [test: an attribute block of an entity that follows a name that
-a comment line cuts, and two comment lines after U+2028 after its closing brace]
-[test: an attribute block of an entity that follows a name that a comment line
-cuts, and a comment line after U+2029 after its closing brace] [test: an
+`}` stand as those of any entity, unless its `}` stands on a line that stays as
+written, which stays with the block, as it does for an entity that starts the
+line. [test: an attribute block of an entity that follows another entity on the
+line, after a comment line after U+2028] [test: an attribute block of an entity
+after a statement on its line, with a comment line after U+2028 inside its name]
+[test: an attribute block of an entity after a name in quotes, with a comment
+line after U+2028 inside its name] [test: an empty attribute block of an entity
+that follows another entity on the line, after a comment line after U+2028]
+[test: an empty attribute block of an entity after a statement on its line,
+after a comment line after U+2028 and a space] [test: an attribute and a closing
+brace with other indentation of an entity that follows another entity on the
+line, after a comment line after U+2028] [test: a statement after the closing
+brace of an entity that follows another entity on the line, after a comment line
+after U+2028] [test: an attribute block on one line of an entity that follows
+another entity on the line, after a comment line after U+2028] [test: an
+attribute block inside a subgraph, of an entity that follows another entity on
+the line, after a comment line after U+2028] [test: an attribute block of an
+entity that follows a name that a comment line cuts, and a comment line after
+U+2028 after its closing brace] [test: an empty attribute block of an entity
+that follows a name that a comment line cuts, and a comment line after U+2028
+after its closing brace] [test: an empty attribute block with an empty line
+before its closing brace, of an entity that follows a name that a comment line
+cuts, and a comment line after U+2028 after its closing brace] [test: an
 attribute block of an entity that follows a name that a comment line cuts, and a
-statement touching its closing brace] [test: an attribute block of an entity
-that follows a name that a comment line cuts, with an indented closing brace and
-a comment line after U+2028] [test: two attribute blocks of entities that follow
-a name that a comment line cuts, with a comment line after U+2028 between them]
-[test: two spaces before the opening brace of an entity that follows a name that
-a comment line cuts] [test: two spaces before the opening brace of an empty
-attribute block of an entity that follows a name that a comment line cuts]
-[test: a tab before the opening brace of an entity that follows a name that a
-comment line cuts] [test: an alias with spaces before the opening brace of an
-entity that follows a name that a comment line cuts] [test: CSS classes with
+comment line after U+2028 at the end of the text] [test: an attribute block of
+an entity that follows a name that a comment line cuts, and two comment lines
+after U+2028 after its closing brace] [test: an attribute block of an entity
+that follows a name that a comment line cuts, and a comment line after U+2029
+after its closing brace] [test: an attribute block of an entity that follows a
+name that a comment line cuts, and a statement touching its closing brace]
+[test: an attribute block of an entity that follows a name that a comment line
+cuts, with an indented closing brace and a comment line after U+2028] [test: two
+attribute blocks of entities that follow a name that a comment line cuts, with a
+comment line after U+2028 between them] [test: two spaces before the opening
+brace of an entity that follows a name that a comment line cuts] [test: two
+spaces before the opening brace of an empty attribute block of an entity that
+follows a name that a comment line cuts] [test: a tab before the opening brace
+of an entity that follows a name that a comment line cuts] [test: an alias with
 spaces before the opening brace of an entity that follows a name that a comment
-line cuts] [test: a directive before the opening brace of an entity that follows
-a name that a comment line cuts] [test: two spaces before the opening brace of
-an entity that starts the line, after a comment line after U+2028] [test: an
-attribute that starts on the line of the opening brace and goes on over the next
-line, of an entity that follows a name that a comment line cuts]
+line cuts] [test: CSS classes with spaces before the opening brace of an entity
+that follows a name that a comment line cuts] [test: a directive before the
+opening brace of an entity that follows a name that a comment line cuts] [test:
+two spaces before the opening brace of an entity that starts the line, after a
+comment line after U+2028] [test: an attribute that starts on the line of the
+opening brace and goes on over the next line, of an entity that follows a name
+that a comment line cuts]
 
 Input
 ([multi-line-statements/accessibility-text-joined-input.mmd](../tests/fixtures/er/multi-line-statements/accessibility-text-joined-input.mmd)):
