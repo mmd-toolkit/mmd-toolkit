@@ -423,7 +423,7 @@ treemap/lex-string-line-separator-comment-line-directive-next] [fixture:
 treemap/lex-string-line-separator-comment-line-space-next] [fixture:
 treemap/lex-string-line-separator-comment-line-separator-next] [fixture:
 treemap/lex-string-line-separator-comment-line-empty-line] [fixture:
-treemap/lex-string-line-separator-comment-line-end-of-text] [fixture:
+treemap/gram-string-line-separator-comment-line-end-of-text] [fixture:
 treemap/lex-class-style-line-separator-comment-line-end-of-text] [fixture:
 treemap/lex-string-line-separator-comment-line-cr] [fixture:
 treemap/lex-string-line-separator-comment-line-crlf] [fixture:

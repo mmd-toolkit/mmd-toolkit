@@ -218,8 +218,8 @@ block/db-style-line-separator-then-comment-line] [fixture:
 block/db-class-name-line-separator-comment-line-directive-next] [fixture:
 block/db-class-name-line-separator-comment-line-space-next] [fixture:
 block/db-class-name-line-separator-comment-line-separator-next] [fixture:
-block/lex-class-name-line-separator-comment-line-empty-line] [fixture:
-block/lex-class-name-line-separator-comment-line-end-of-text] [fixture:
+block/db-class-name-line-separator-comment-line-empty-line] [fixture:
+block/db-class-name-line-separator-comment-line-end-of-text] [fixture:
 block/db-class-name-line-separator-comment-line-cr] [fixture:
 block/db-class-name-line-separator-comment-line-crlf] [fixture:
 block/db-class-name-line-separator-comment-line-two-comment-lines] [fixture:
@@ -235,21 +235,21 @@ block/db-classdef-styles-line-separator-then-comment-line] An id ends at a
 U+2028 or U+2029, which separates two ids (see Whitespace and line breaks
 above), so `a`, U+2028, `%% c`, a line break, and `b` are the blocks `a` and
 `b`. [fixture: block/db-id-line-separator-then-comment-line] [fixture:
-block/lex-id-line-separator-comment-line-directive-next] [fixture:
-block/lex-id-line-separator-comment-line-space-next] [fixture:
-block/lex-id-line-separator-comment-line-separator-next] [fixture:
-block/lex-id-line-separator-comment-line-empty-line] [fixture:
-block/lex-id-line-separator-comment-line-end-of-text] [fixture:
-block/lex-id-line-separator-comment-line-cr] [fixture:
-block/lex-id-line-separator-comment-line-crlf] [fixture:
-block/lex-id-line-separator-comment-line-two-comment-lines] [fixture:
-block/lex-id-line-separator-comment-line-two-regions] [fixture:
-block/lex-id-line-separator-comment-line-spaces-before] [fixture:
-block/lex-id-line-separator-comment-line-line-feed-before] [fixture:
-block/lex-id-line-separator-comment-line-directive-before] [fixture:
+block/db-id-line-separator-comment-line-directive-next] [fixture:
+block/db-id-line-separator-comment-line-space-next] [fixture:
+block/db-id-line-separator-comment-line-separator-next] [fixture:
+block/db-id-line-separator-comment-line-empty-line] [fixture:
+block/db-id-line-separator-comment-line-end-of-text] [fixture:
+block/db-id-line-separator-comment-line-cr] [fixture:
+block/db-id-line-separator-comment-line-crlf] [fixture:
+block/db-id-line-separator-comment-line-two-comment-lines] [fixture:
+block/db-id-line-separator-comment-line-two-regions] [fixture:
+block/db-id-line-separator-comment-line-spaces-before] [fixture:
+block/db-id-line-separator-comment-line-line-feed-before] [fixture:
+block/db-id-line-separator-comment-line-directive-before] [fixture:
 block/db-id-line-separator-comment-line-line-rule-before] [fixture:
 block/db-id-line-separator-comment-line-line-rule-after] [fixture:
-block/lex-id-line-separator-comment-line-bare-percent] [fixture:
+block/db-id-line-separator-comment-line-bare-percent] [fixture:
 block/gram-id-line-separator-comment-line-percent-brace]
 
 **Entities, HTML attribute quotes, and `style` lines.** In a string, a class

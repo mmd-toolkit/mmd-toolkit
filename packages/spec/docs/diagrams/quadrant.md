@@ -1409,7 +1409,7 @@ quadrant/db-quadrant-text-line-separator-comment-line-directive-next] [fixture:
 quadrant/db-quadrant-text-line-separator-comment-line-space-next] [fixture:
 quadrant/db-quadrant-text-line-separator-comment-line-separator-next] [fixture:
 quadrant/gram-quadrant-text-line-separator-comment-line-empty-line] [fixture:
-quadrant/lex-quadrant-text-line-separator-comment-line-end-of-text] [fixture:
+quadrant/db-quadrant-text-line-separator-comment-line-end-of-text] [fixture:
 quadrant/db-quadrant-text-line-separator-comment-line-cr] [fixture:
 quadrant/db-quadrant-text-line-separator-comment-line-crlf] [fixture:
 quadrant/db-quadrant-text-line-separator-comment-line-two-comment-lines]
