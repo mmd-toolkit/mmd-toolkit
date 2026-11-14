@@ -899,20 +899,34 @@ export function printBlock<Statement extends Positioned>(
       // across removed trivia. Preserve it before ordinary line selection
       // (docs/eventmodeling.md, Common boundaries).
       const previous = lines.pop()
+      // A statement that holds statements and ends on a kept line is part of
+      // the stretch of that line, as it is where it starts one (see
+      // `startsStretch`): the stretch is printed after the gap.
+      const stretch =
+        rules.holdsStatements(statement) && isKept(end - 1)
+          ? findStretch(printedStartOf(statement), index, index + 1, end)
+          : undefined
+      const printed = stretch === undefined ? undefined : printStretch(stretch)
       pushLine({
         ...(previous ?? { blankBefore: false }),
         doc: [
           previous?.doc ?? "",
           printAsWritten(source, offset, printedStartOf(statement)),
-          docs[index],
+          printed?.doc ?? docs[index],
         ],
-        endsWithWhitespace: endsWithSpaceOrTab(
-          source.text.slice(printedStartOf(statement), end),
-        ),
+        endsWithWhitespace:
+          printed?.endsWithWhitespace ??
+          endsWithSpaceOrTab(source.text.slice(printedStartOf(statement), end)),
       })
       if (previous === undefined) continuesOpeningLine = true
-      next++
-      offset = end
+      if (stretch === undefined) {
+        next++
+        offset = end
+      } else {
+        stretchEndsWithComment = endsWithComment(stretch.end)
+        next = stretch.after
+        offset = stretch.end
+      }
       continue
     }
     const startsStretch =

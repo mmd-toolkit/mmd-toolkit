@@ -97,13 +97,20 @@ mermaid.js は属性ブロックを改行に関係なく読むので、同じ属
 その行と一緒に書かれたままにします。
 複数行にまたがるブロックは、`}` が、書かれたまま残らない行にあるとき、
 ブロックとして印字します。
-実体は、その前にある文と一緒に行に残し、属性と `}` は、
+行の文は、その行に一緒に残し、文の単位の間の空白は通常どおり整形します。
+ただし、mermaid.js がその行をどう読むかを決める空白は書かれたまま残します。
+`1` と次の名前の接触、空白でもタブでもない空白文字、`class` の後の隙間です。
+コメント行がつなぐ行も例外で、
+`{` までを書かれたままにします（[複数行の文](#複数行の文)を参照）。
+`{` の後ろにあるものは、その行に書かれたまま残し、その後の属性と `}` は、
 ほかの実体と同じに置きます。
 そのため、複数行にまたがる空のブロックは、`{` の後ろに何があっても（空白、タブ、
 U+2028）、波括弧の間に何があっても、行の終わりが ` { }` になります。
 `}` が、書かれたまま残る行にあるブロックは、`A {`、改行、`}1b` のように、
 属性があってもなくても、その行と一緒に書かれたままにします。
-`;` を含む行は整形するので、その上にあるブロックは、どこでもと同じに印字します。
+`;` を含む行は整形しますが、その文は行に一緒に残ります。
+その上にあるブロックはブロックとして印字し、`{` の行にある属性はそこに残り、
+`{` の後ろの空白とタブは落とします。
 [fixture: attribute-blocks/written-line-number-name]
 [fixture: attribute-blocks/written-line-tilde-line]
 [fixture: attribute-blocks/written-line-unclosed-directive]
@@ -138,6 +145,10 @@ entity 1 that touches a letter]
 rule ignores and U+2028]
 [test: an attribute block over several lines after the ER entity 1 that touches
 a letter and U+2028 after its opening brace]
+[test: an attribute block of an entity after the end of an ER subgraph and U+2028, and a comment line after U+2028 after its closing brace]
+[test: an empty attribute block of an entity after the end of an ER subgraph and U+2028, and a comment line after U+2028 after its closing brace]
+[test: an attribute block of an entity after the end of an ER subgraph and U+2028, and a comment line after U+2028 at the end of the text]
+[test: an attribute block of an entity after the end of an ER subgraph and U+2029, and a comment line after U+2029 after its closing brace]
 波括弧と同じ行にディレクティブがある属性のないブロックは、
 ディレクティブをその行に書かれたまま残します。
 コメント行や、行に単独で置かれたディレクティブがあるブロックは、
@@ -643,6 +654,33 @@ U+FEFF などが 1 つか複数）の文が、同じ行のほかの文の後に�
 [fixture: attribute-spacing/attributes-with-tilde-in-quotes-on-one-line-split]
 [fixture: attribute-spacing/attributes-with-tilde-in-directive-on-one-line-split]
 [corpus fixture: er/lex-tilde-after-quoted]
+書かれたまま残るこれらの行のどれでも、複数行の属性ブロックを持つ実体は、
+[属性ブロック](#属性ブロック)と同じに、ブロックとして印字します。
+行の文はその行に一緒に残り、文の単位の間の空白は、
+mermaid.js が行をどう読むかを決めないかぎり通常どおり整形します。
+`{` の後ろにあるものは書かれたまま残り、
+属性と `}` はほかの実体と同じに置きます。
+そのため、`1A`、改行、`{`、改行、`}` は、`1A { }` で終わります。
+[fixture: attribute-blocks/written-line-number-name]
+[fixture: attribute-blocks/written-line-tilde-line]
+[fixture: attribute-blocks/written-line-unclosed-directive]
+[fixture: attribute-blocks/written-line-closing-brace]
+[fixture: attribute-blocks/semicolon-line]
+[test: an empty attribute block over several lines after U+2028 and class]
+[test: an attribute block over several lines after U+2028 and class]
+[test: an empty attribute block over several lines after a name in quotes and U+2028]
+[test: an attribute block over several lines after a name in quotes and U+2028]
+[test: an empty attribute block over several lines after a name in quotes and U+2029]
+[test: an empty attribute block over several lines after a semicolon that the line rule ignores and U+2028]
+[test: an attribute block over several lines after a semicolon that the line rule ignores and U+2028]
+[test: an attribute block over several lines of an entity after a statement that starts with U+2028 and a comment line]
+[test: an empty attribute block over several lines of an entity after a statement that starts with U+2028 and a comment line]
+
+
+`end` の後ろにあって、`end` の行に残る実体は、
+その前の隙間だけを書かれたままにし、ブロックはほかの行と同じに印字します。
+[test: an attribute block over several lines of an entity after the end of an ER subgraph and U+2028]
+[test: an empty attribute block over several lines of an entity after the end of an ER subgraph and U+2028]
 また、保持する `;` がある行は、その文を一緒に残します。
 mermaid.js の行の規則は行のテキストを読み、テキストを別の行に動かすと、
 規則に合う行と、規則が無視する `;` が、

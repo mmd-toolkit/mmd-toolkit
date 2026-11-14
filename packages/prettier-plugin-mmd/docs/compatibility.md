@@ -3637,6 +3637,15 @@ break, and `;` is accepted, and without the second `;` the whitespace at the end
 of the line hides the line break, and it is rejected. [corpus fixture:
 sequence/ignored-semicolon-then-separator-line-1902f8c5]
 
+In an ER diagram, an entity on such a line that holds an attribute block over
+several lines is printed as a block, and the whitespace between the units of the
+line is formatted as usual (see [Attribute blocks](./er.md#attribute-blocks)):
+`"style:#x" ;`, U+2028, ` A {`, a line break, and `}` become `"style:#x"; `,
+U+2028, ` A { }`, and with an attribute between the braces the line ends with
+` A {`. [test: an empty attribute block over several lines after a semicolon
+that the line rule ignores and U+2028] [test: an attribute block over several
+lines after a semicolon that the line rule ignores and U+2028]
+
 See [Statements one per line](./flowchart.md#statements-one-per-line).
 
 ## A line that a directive that is not closed joins
@@ -3670,7 +3679,11 @@ the diagram, while `%%{x: wB` has the argument `wB`. The tree leaves that
 whitespace outside the directive, but the printers read it as a part of the
 directive and print it as written: `"style:#x" end; %%{x: w B` of an ER diagram
 stays as it is. [fixture:
-er/directives/unclosed-directive-argument-then-text-kept]
+er/directives/unclosed-directive-argument-then-text-kept] An ER entity on such a
+line that holds an attribute block over several lines is printed as a block (see
+[Attribute blocks](./er.md#attribute-blocks)): `%%{wrap foo`, a line break,
+`A {`, a line break, and `}` become `%%{wrap foo`, a line break, and `A { }`.
+[fixture: er/attribute-blocks/written-line-unclosed-directive]
 
 A directive with a free-text argument, such as `init`, and no `}%%` extends to
 the end of the text (the specification's
@@ -4057,6 +4070,20 @@ around them decide, so formatting keeps them as they are written. See
 [Accessibility statements](./er.md#accessibility-statements),
 [Statements one per line](./er.md#statements-one-per-line), and
 [Relationship spacing](./er.md#relationship-spacing).
+
+An entity on any of these lines that holds an attribute block over several lines
+is printed as a block (see [Attribute blocks](./er.md#attribute-blocks)): the
+statements of the line stay together on it, with the whitespace between their
+units formatted as usual where it does not decide how mermaid.js reads the line,
+what follows the `{` on its line stays as written, and the attributes after it
+and the `}` stand as those of any entity, so that `1A`, a line break, `{`, a
+line break, and `}` end with `1A { }`. [fixture:
+er/attribute-blocks/written-line-number-name] [fixture:
+er/attribute-blocks/written-line-tilde-line] [test: an empty attribute block
+over several lines after U+2028 and class] [test: an empty attribute block over
+several lines after a name in quotes and U+2028] [test: an attribute block over
+several lines of an entity after a statement that starts with U+2028 and a
+comment line]
 
 - A closing `end` with an ignored `;` stays on the line that supplies the
   line-rule trigger, as in `"style:#x" end;`. An ignored `;` after a `class` or
@@ -4852,12 +4879,23 @@ line of a node on a line of its own at the level of the node (see
 [Line separators](./mindmap.md#line-separators)). A diagram comment that such a
 comment line cuts is printed as written as well (see
 [Line separators](./sequence.md#line-separators)). The same holds where the
-region lies inside a name, in an ER diagram and in a quadrant chart. [test: a
-comment line after U+2028 inside the name of an ER entity] [test: a comment line
-after U+2029 inside the name of an ER entity] [test: a comment line after U+2028
-inside the name of an ER entity that follows a name in quotes] [test: a comment
-line after U+2028 inside the name of a class] [test: a comment line after U+2029
-inside the name of a class]
+region lies inside a name, in an ER diagram and in a quadrant chart. In an ER
+diagram, the block of an entity on such a line is the one part that is not
+printed as written to its end: the line up to the `{`, and what follows the `{`
+on its line, stay as written, and the attributes after it and the `}` stand as
+those of any entity, unless the `}` stands on a line that holds the start of
+such a comment line (see [ER](./er.md#multi-line-statements)). [test: a comment
+line after U+2028 inside the name of an ER entity with an attribute block over
+several lines] [test: an attribute block of an entity that follows another
+entity on the line, after a comment line after U+2028] [test: an attribute block
+of an entity that follows a name that a comment line cuts, and a comment line
+after U+2028 after its closing brace] [test: two spaces before the opening brace
+of an entity that follows a name that a comment line cuts] [test: a comment line
+after U+2028 inside the name of an ER entity] [test: a comment line after U+2029
+inside the name of an ER entity] [test: a comment line after U+2028 inside the
+name of an ER entity that follows a name in quotes] [test: a comment line after
+U+2028 inside the name of a class] [test: a comment line after U+2029 inside the
+name of a class]
 
 What the line holds, and where it ends, follow from what mermaid.js removes. The
 documents of the diagram types say what is theirs:

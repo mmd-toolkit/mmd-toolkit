@@ -3938,6 +3938,15 @@ U+2029 を空白にすると拒否されます。
 2 つ目の `;` がないと、行末の空白が改行を隠すので、拒否されます。
 [corpus fixture: sequence/ignored-semicolon-then-separator-line-1902f8c5]
 
+ER 図では、そのような行にある、複数行の属性ブロックを持つ実体は、
+ブロックとして印字し、行の単位の間の空白は通常どおり整形します。
+[属性ブロック](./er.ja.md#属性ブロック)を参照してください。
+`"style:#x" ;`、U+2028、` A {`、改行、`}` は、`"style:#x"; `、U+2028、
+` A { }` になります。
+波括弧の間に属性があるときは、行は ` A {` で終わります。
+[test: an empty attribute block over several lines after a semicolon that the line rule ignores and U+2028]
+[test: an attribute block over several lines after a semicolon that the line rule ignores and U+2028]
+
 [1 行に 1 文](./flowchart.ja.md#1-行に-1-文)を参照してください。
 
 ## 閉じていないディレクティブがつなぐ行
@@ -3973,6 +3982,11 @@ class 図と state 図では、その行送りの後の文は、その段の字�
 印字するときはディレクティブの一部として読み、書かれたまま印字します。
 ER 図の `"style:#x" end; %%{x: w B` は、書かれたまま残ります。
 [fixture: er/directives/unclosed-directive-argument-then-text-kept]
+そのような行にある ER の実体が複数行の属性ブロックを持つときは、
+ブロックとして印字します（[属性ブロック](./er.ja.md#属性ブロック)を参照）。
+`%%{wrap foo`、改行、`A {`、改行、`}` は、`%%{wrap foo`、改行、
+`A { }` になります。
+[fixture: er/attribute-blocks/written-line-unclosed-directive]
 
 `init` のような自由なテキストの引数を持ち、`}%%` で閉じないディレクティブは、
 テキストの終わりまで続きます（仕様の
@@ -4385,6 +4399,20 @@ mermaid.js は、一部の ER の行を、置かれた場所や周りの空白�
 [アクセシビリティの文](./er.ja.md#アクセシビリティの文)、
 [1 行に 1 文](./er.ja.md#1-行に-1-文)、
 [関係の空白](./er.ja.md#関係の空白)を参照してください。
+
+これらの行のどれでも、複数行の属性ブロックを持つ実体は、
+ブロックとして印字します（[属性ブロック](./er.ja.md#属性ブロック)を参照）。
+行の文はその行に一緒に残り、文の単位の間の空白は、
+mermaid.js が行をどう読むかを決めないかぎり、通常どおり整形します。
+`{` の後ろにあるものは書かれたまま残り、
+その後の属性と `}` はほかの実体と同じに置きます。
+そのため、`1A`、改行、`{`、改行、`}` は、`1A { }` で終わります。
+[fixture: er/attribute-blocks/written-line-number-name]
+[fixture: er/attribute-blocks/written-line-tilde-line]
+[test: an empty attribute block over several lines after U+2028 and class]
+[test: an empty attribute block over several lines after a name in quotes and U+2028]
+
+[test: an attribute block over several lines of an entity after a statement that starts with U+2028 and a comment line]
 
 - 閉じる `end` の後に無視される `;` があるときは、`"style:#x" end;` のように、
   行規則の根拠を持つ行に残します。
@@ -5224,6 +5252,16 @@ mindmap は、ノードのコメント行を、ノードの段の自分の行に
 書かれたまま印字します（[行区切り](./sequence.ja.md#行区切り)を参照）。
 領域が名前の中にあるときも同じです。
 ER 図と quadrant 図が、これにあたります。
+ER 図では、そのような行にある実体のブロックだけは、
+最後まで書かれたままにはしません。
+`{` までの行と、`{` の後ろにあるものは書かれたまま残り、その後の属性と `}` は、
+ほかの実体と同じに置きます。
+ただし `}` が、そのようなコメント行が始まる行にあるときは、
+書かれたまま残ります（[ER](./er.ja.md#複数行の文)を参照）。
+[test: a comment line after U+2028 inside the name of an ER entity with an attribute block over several lines]
+[test: an attribute block of an entity that follows another entity on the line, after a comment line after U+2028]
+[test: an attribute block of an entity that follows a name that a comment line cuts, and a comment line after U+2028 after its closing brace]
+[test: two spaces before the opening brace of an entity that follows a name that a comment line cuts]
 [test: a comment line after U+2028 inside the name of an ER entity]
 [test: a comment line after U+2029 inside the name of an ER entity]
 [test: a comment line after U+2028 inside the name of an ER entity that follows

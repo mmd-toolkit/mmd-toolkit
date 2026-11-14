@@ -2451,6 +2451,46 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "erDiagram\nA {\nint id\u2028%% c\n%%{init: {}}%%\n   PK\n}\n",
     "erDiagram\n  A {\n    int id\u2028%% c\n%%{init: {}}%%\n   PK\n  }\n",
   ],
+  [
+    "an attribute block over several lines of an entity after a statement that starts with U+2028 and a comment line",
+    "erDiagram\nX \u2028%% c\nA {\nint id\n}\n",
+    "erDiagram\n  X \u2028%% c\nA {\n    int id\n  }\n",
+  ],
+  [
+    "an empty attribute block over several lines of an entity after a statement that starts with U+2028 and a comment line",
+    "erDiagram\nX \u2028%% c\nA {\n}\n",
+    "erDiagram\n  X \u2028%% c\nA { }\n",
+  ],
+  [
+    "an attribute block over several lines of an entity after the end of an ER subgraph and U+2028",
+    "erDiagram\nsubgraph S\nend\u2028A {\nint id\n}\n",
+    "erDiagram\n  subgraph S\n  end\u2028A {\n    int id\n  }\n",
+  ],
+  [
+    "an empty attribute block over several lines of an entity after the end of an ER subgraph and U+2028",
+    "erDiagram\nsubgraph S\nend\u2028A {\n}\n",
+    "erDiagram\n  subgraph S\n  end\u2028A { }\n",
+  ],
+  [
+    "an attribute block of an entity after the end of an ER subgraph and U+2028, and a comment line after U+2028 after its closing brace",
+    "erDiagram\nsubgraph S\nend\u2028A {\nint id\n}\u2028%% d\nQux\n",
+    "erDiagram\n  subgraph S\n  end\u2028A {\nint id\n}\u2028%% d\nQux\n",
+  ],
+  [
+    "an empty attribute block of an entity after the end of an ER subgraph and U+2028, and a comment line after U+2028 after its closing brace",
+    "erDiagram\nsubgraph S\nend\u2028A {\n}\u2028%% d\nQux\n",
+    "erDiagram\n  subgraph S\n  end\u2028A {\n}\u2028%% d\nQux\n",
+  ],
+  [
+    "an attribute block of an entity after the end of an ER subgraph and U+2028, and a comment line after U+2028 at the end of the text",
+    "erDiagram\nsubgraph S\nend\u2028A {\nint id\n}\u2028%% d\n",
+    "erDiagram\n  subgraph S\n  end\u2028A {\nint id\n}\u2028%% d\n",
+  ],
+  [
+    "an attribute block of an entity after the end of an ER subgraph and U+2029, and a comment line after U+2029 after its closing brace",
+    "erDiagram\nsubgraph S\nend\u2029A {\nint id\n}\u2029%% d\nQux\n",
+    "erDiagram\n  subgraph S\n  end\u2029A {\nint id\n}\u2029%% d\nQux\n",
+  ],
 ]
 
 /**
