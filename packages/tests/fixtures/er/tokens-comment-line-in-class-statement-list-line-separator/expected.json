@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Units and contexts, A comment line after a U+2028 or U+2029: the second target of a list of a class statement goes on after a comment line that follows its U+2028: the targets A and B, U+2028, C."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": [
+          "c"
+        ]
+      },
+      {
+        "id": "entity-B-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "B",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Units and contexts, A comment line after a U+2028 or U+2029: the second class of a list after ::: goes on after a comment line that follows its U+2028: the classes x and y, U+2028, z."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": [
+          "x",
+          "y z"
+        ]
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

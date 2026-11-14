@@ -70,7 +70,7 @@ or a U+2029 as one of their characters, can hold one: `A`, U+2028, a line
 `%% c`, and a line `Bar` is one name, whose node spans the region and whose
 value is `A`, U+2028, `Bar`; its tokens are the `Identifier` tokens `A` with the
 U+2028 after it, and `Bar`, with the comment between them. It is the same with
-U+2029, with spaces or line breaks between the U+2028 and the `%%`, with a
+U+2029, with whitespace or line breaks between the U+2028 and the `%%`, with a
 second U+2028 before the `%%`, with a CRLF or a lone CR ending the comment line,
 and in a word or the type of an attribute block; with a directive before the
 `%%` or between its two `%`, the `Directive` token lies between the two tokens;
@@ -80,6 +80,7 @@ two or three tokens, with each comment between them. [fixture:
 er/tokens-comment-line-in-name-line-separator] [fixture:
 er/tokens-comment-line-in-name-paragraph-separator] [fixture:
 er/tokens-comment-line-in-name-spaces-before-comment] [fixture:
+er/tokens-comment-line-in-name-tab-and-nbsp-before-comment] [fixture:
 er/tokens-comment-line-in-name-line-feed-before-comment] [fixture:
 er/tokens-comment-line-in-name-blank-line-before-comment] [fixture:
 er/tokens-comment-line-in-name-two-line-separators] [fixture:
@@ -93,25 +94,34 @@ er/tokens-comment-lines-consecutive-directive-line-between] [fixture:
 er/tokens-comment-lines-with-name-part-between] [fixture:
 er/tokens-comment-line-in-attribute-word-line-separator] [fixture:
 er/tokens-comment-line-in-attribute-word-paragraph-separator] [fixture:
-er/tokens-comment-line-in-attribute-type-line-separator] The name has the same
-tokens wherever it stands: the second entity of a relationship, a role, an
-alias, a class, the target of a `class` statement, the id and the title of a
-subgraph, and the target of `style` or the id of `classDef`. [fixture:
+er/tokens-comment-line-in-attribute-type-line-separator] [fixture:
+er/tokens-comment-line-in-attribute-word-then-ideographic-space] The name has
+the same tokens wherever it stands: the first or the second entity of a
+relationship, a role, an alias, a class, the target of a `class` statement, the
+id and the title of a subgraph, and the target of `style` or the id of
+`classDef`, also the second of a list. [fixture:
+er/tokens-comment-line-in-relationship-first-entity-line-separator] [fixture:
 er/tokens-comment-line-in-relationship-entity-line-separator] [fixture:
 er/tokens-comment-line-in-relationship-role-line-separator] [fixture:
 er/tokens-comment-line-in-alias-line-separator] [fixture:
 er/tokens-comment-line-in-class-separator-line-separator] [fixture:
+er/tokens-comment-line-in-class-separator-list-line-separator] [fixture:
 er/tokens-comment-line-in-class-statement-line-separator] [fixture:
+er/tokens-comment-line-in-class-statement-list-line-separator] [fixture:
 er/tokens-comment-line-in-class-statement-target-line-separator] [fixture:
 er/tokens-comment-line-in-subgraph-id-line-separator] [fixture:
 er/tokens-comment-line-in-subgraph-title-line-separator] [fixture:
 er/tokens-comment-line-in-style-target-line-separator] [fixture:
-er/tokens-comment-line-in-classdef-id-line-separator] Where the comment line
+er/tokens-comment-line-in-style-target-with-entity-line-separator] [fixture:
+er/tokens-comment-line-in-style-list-line-separator] [fixture:
+er/tokens-comment-line-in-classdef-id-line-separator] [fixture:
+er/tokens-comment-line-in-classdef-list-line-separator] Where the comment line
 does not lie inside the name, the name has one token, which ends after the
 U+2028: at the end of the text, with a line break after the comment line or
 without, and before a next line that starts with a space or a tab, that is empty
 or holds spaces only, or that starts with a character that is no character of a
-name, such as `{`, `:::`, `[`, or the `||` of a relationship. [fixture:
+name, such as `{`, `:::`, `[`, or the `||` of a relationship, or with an empty
+description block. [fixture:
 er/tokens-comment-line-in-name-line-separator-indented-name] [fixture:
 er/tokens-comment-line-in-name-paragraph-separator-indented-name] [fixture:
 er/tokens-comment-line-in-name-line-separator-tab-indented-name] [fixture:
@@ -121,11 +131,16 @@ er/tokens-comment-line-in-name-then-attribute-block] [fixture:
 er/tokens-comment-line-in-name-then-class-separator] [fixture:
 er/tokens-comment-line-in-name-then-alias] [fixture:
 er/tokens-comment-line-in-name-then-relationship] [fixture:
+er/tokens-comment-line-in-name-then-empty-description-block] [fixture:
 er/tokens-comment-line-in-name-line-separator-at-end] [fixture:
 er/tokens-comment-line-in-name-paragraph-separator-at-end] [fixture:
-er/tokens-comment-line-in-name-line-separator-at-end-without-line-feed] The
-U+2028 after the `}` of a description block starts a name of its own, whose
-first token is that one character. [fixture:
+er/tokens-comment-line-in-name-line-separator-at-end-without-line-feed] A U+00A0
+or a U+3000 at the start of the next line is a character of the name, so the
+name goes on with a token of its own. [fixture:
+er/tokens-comment-line-in-name-then-nbsp-name] [fixture:
+er/tokens-comment-line-in-name-then-ideographic-space-name] The U+2028 after the
+`}` of a description block starts a name of its own, whose first token is that
+one character. [fixture:
 er/tokens-comment-line-after-acc-descr-block-line-separator] A directive inside
 the name after the comment line, or one that follows the comment line and goes
 on with the name, makes the input rejected, as in any name. [fixture:

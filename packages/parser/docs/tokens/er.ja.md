@@ -95,6 +95,7 @@ U+2029 でも、U+2028 と `%%` の間に空白や改行があっても、同じ
 [fixture: er/tokens-comment-line-in-name-line-separator]
 [fixture: er/tokens-comment-line-in-name-paragraph-separator]
 [fixture: er/tokens-comment-line-in-name-spaces-before-comment]
+[fixture: er/tokens-comment-line-in-name-tab-and-nbsp-before-comment]
 [fixture: er/tokens-comment-line-in-name-line-feed-before-comment]
 [fixture: er/tokens-comment-line-in-name-blank-line-before-comment]
 [fixture: er/tokens-comment-line-in-name-two-line-separators]
@@ -109,25 +110,34 @@ U+2029 でも、U+2028 と `%%` の間に空白や改行があっても、同じ
 [fixture: er/tokens-comment-line-in-attribute-word-line-separator]
 [fixture: er/tokens-comment-line-in-attribute-word-paragraph-separator]
 [fixture: er/tokens-comment-line-in-attribute-type-line-separator]
+[fixture: er/tokens-comment-line-in-attribute-word-then-ideographic-space]
 名前は、どこにあっても同じトークンを持ちます。
-関係の 2 つ目のエンティティ、役割、別名、クラス、`class` 文の対象、
-subgraph の id と題、`style` の対象、`classDef` の id がそうです。
+関係の 1 つ目や 2 つ目のエンティティ、役割、別名、クラス、`class` 文の対象、
+subgraph の id と題、`style` の対象、`classDef` の id がそうで、
+リストの 2 つ目もそうです。
+[fixture: er/tokens-comment-line-in-relationship-first-entity-line-separator]
 [fixture: er/tokens-comment-line-in-relationship-entity-line-separator]
 [fixture: er/tokens-comment-line-in-relationship-role-line-separator]
 [fixture: er/tokens-comment-line-in-alias-line-separator]
 [fixture: er/tokens-comment-line-in-class-separator-line-separator]
+[fixture: er/tokens-comment-line-in-class-separator-list-line-separator]
 [fixture: er/tokens-comment-line-in-class-statement-line-separator]
+[fixture: er/tokens-comment-line-in-class-statement-list-line-separator]
 [fixture: er/tokens-comment-line-in-class-statement-target-line-separator]
 [fixture: er/tokens-comment-line-in-subgraph-id-line-separator]
 [fixture: er/tokens-comment-line-in-subgraph-title-line-separator]
 [fixture: er/tokens-comment-line-in-style-target-line-separator]
+[fixture: er/tokens-comment-line-in-style-target-with-entity-line-separator]
+[fixture: er/tokens-comment-line-in-style-list-line-separator]
 [fixture: er/tokens-comment-line-in-classdef-id-line-separator]
+[fixture: er/tokens-comment-line-in-classdef-list-line-separator]
 コメント行が名前の中にないときは、
 名前は U+2028 の後で終わる 1 つのトークンを持ちます。
 それは、
 コメント行がテキストの終わりにあるとき（後ろの改行はあってもなくても）と、
-次の行が空白かタブで始まるとき、空のとき、空白だけのとき、`{`、`:::`、`[`、
-関係の `||` のように、名前の文字でない文字で始まるときです。
+次の行が U+0020 かタブで始まるとき、空のとき、U+0020 だけのとき、`{`、`:::`、
+`[`、関係の `||` のように、名前の文字でない文字で始まるとき、
+空の説明ブロックで始まるときです。
 [fixture: er/tokens-comment-line-in-name-line-separator-indented-name]
 [fixture: er/tokens-comment-line-in-name-paragraph-separator-indented-name]
 [fixture: er/tokens-comment-line-in-name-line-separator-tab-indented-name]
@@ -137,9 +147,14 @@ subgraph の id と題、`style` の対象、`classDef` の id がそうです�
 [fixture: er/tokens-comment-line-in-name-then-class-separator]
 [fixture: er/tokens-comment-line-in-name-then-alias]
 [fixture: er/tokens-comment-line-in-name-then-relationship]
+[fixture: er/tokens-comment-line-in-name-then-empty-description-block]
 [fixture: er/tokens-comment-line-in-name-line-separator-at-end]
 [fixture: er/tokens-comment-line-in-name-paragraph-separator-at-end]
 [fixture: er/tokens-comment-line-in-name-line-separator-at-end-without-line-feed]
+次の行の先頭の U+00A0 や U+3000 は、名前の文字なので、
+名前はそれ自身のトークンで続きます。
+[fixture: er/tokens-comment-line-in-name-then-nbsp-name]
+[fixture: er/tokens-comment-line-in-name-then-ideographic-space-name]
 説明ブロックの `}` の後の U+2028 は、それ自身の名前を始め、
 その最初のトークンはその 1 文字です。
 [fixture: er/tokens-comment-line-after-acc-descr-block-line-separator]

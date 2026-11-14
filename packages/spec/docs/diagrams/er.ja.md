@@ -198,30 +198,28 @@ er/tokens-comment-line-in-backquoted-word]
 `A ||--o{ B : "x`、改行、`%% c"` は拒否されます。
 [fixture: er/lex-comment-line-takes-closing-quote]
 
-**U+2028 や U+2029 の後のコメント行。**
-U+2028 と U+2029 は、
-コメントのための行の始まりです（[コメント行](../common.ja.md#コメント行)
-を参照）。
-そのため、間に空白とディレクティブしかない `%%` は、その行の前に単位があっても、
-コメント行です。
-字句解析器は、ほかのコメント行と同じく、それを通り抜けて読みます。
-U+2028 や U+2029 を文字として持つ名前は、コメント行の後も続きます。
-コメント行の前後の文字は、1 つの名前です。
+**U+2028 や U+2029 の後のコメント。**
+U+2028 と U+2029
+はコメントの開始位置です（[コメント行](../common.ja.md#コメント行) を参照）。
+そのため、その後のコメントは、行の前に単位があっても、コメントです。
+字句解析器は、そのコメント領域を通り抜けて読みます。
+領域は、`%%` まで空白、行終端、ディレクティブだけでたどれる、
+最初の U+2028 や U+2029 の直後から、コメントを終える行終端の後までです。
 `A`、U+2028、`%% c`、改行、`Bar` は、1 つのエンティティ `A`、U+2028、
 `Bar` です。
-U+2029 でも同じです。
-U+2028 と `%%` の間に空白や改行があっても同じです。
-`%%` の前に U+2028 がもう 1 つあっても同じで、名前には U+2028 が 1 つ残ります。
-`%%` の前や、その 2 つの `%` の間にディレクティブがあっても同じです。
-改行の位置が CRLF や単独の CR でも同じです。
-コメント行が 2 つあるとき、`A`、U+2028、`%% c`、`%% d`、`Bar` は、
-1 つのエンティティ `A`、U+2028、`Bar` です。
-2 つの間に空行や、ディレクティブだけの行があっても同じです。
-`A`、U+2028、`%% c`、`B`、U+2028、`%% d`、`C` は、1 つのエンティティ `A`、
-U+2028、`B`、U+2028、`C` です。
+U+2028 や U+2029 を文字として持つ名前は、
+領域の直後の文字が名前の中で続けられる文字なら、その文字で続くからです。
+領域は `%%` の前にあるものを取るので、U+2029 でも、U+2028 と `%%` の間に空白、
+タブ、U+00A0、改行、もう 1 つの U+2028 があっても、名前は続きます。
+もう 1 つの U+2028 があるときは、名前には U+2028 が 1 つ残ります。
+`%%` の前や、その 2 つの `%` の間にディレクティブがあっても、
+改行の位置が CRLF や単独の CR でも、同じです。
+コメント行が続けて何行もあるとき、間に空行や、
+ディレクティブだけの行があるときも、同じです。
 [fixture: er/tokens-comment-line-in-name-line-separator]
 [fixture: er/tokens-comment-line-in-name-paragraph-separator]
 [fixture: er/tokens-comment-line-in-name-spaces-before-comment]
+[fixture: er/tokens-comment-line-in-name-tab-and-nbsp-before-comment]
 [fixture: er/tokens-comment-line-in-name-line-feed-before-comment]
 [fixture: er/tokens-comment-line-in-name-blank-line-before-comment]
 [fixture: er/tokens-comment-line-in-name-two-line-separators]
@@ -233,14 +231,29 @@ U+2028、`B`、U+2028、`C` です。
 [fixture: er/tokens-comment-lines-consecutive-blank-line-between]
 [fixture: er/tokens-comment-lines-consecutive-directive-line-between]
 [fixture: er/tokens-comment-lines-with-name-part-between]
-次の行が、空白かタブで始まるとき、空のとき、空白だけのとき、
-名前の文字でない文字で始まるときは、名前は終わります。
-`Bar` を 2 つの空白かタブで字下げすると、エンティティは `A`、
-U+2028 と `Bar` です。
-`Bar` の代わりに `{`、`:::`、`[`、関係の `||` が来ると、`A`、
-U+2028 というエンティティは、属性ブロック、クラス、別名、関係を持ちます。
+コメントでない `%%` は、テキストのままで、拒否されます。
+`A`、U+2028 の後の、行の残りに `%%` だけがあるとき、`%%{ }%%` のとき、
+前に `x %% c` のようにほかの文字があるとき、`A%%{init: {}`、U+2028、
+`}%%%% c` のように、
+ディレクティブの中に U+2028 があるとき（コメントの開始位置になりません）です。
+[fixture: er/lex-percent-after-line-separator-alone]
+[fixture: er/lex-percent-after-line-separator-brace]
+[fixture: er/lex-percent-after-line-separator-text-between]
+[fixture: er/lex-percent-after-line-separator-inside-directive]
+
+**コメントで切れた名前が終わる所。**
+領域の直後の文字が、空白（U+0020）、タブ、改行、テキストの終わりなら、
+名前はそこで終わります。
+`Bar` を空白 2 つか、タブ 1 つで字下げすると、エンティティは `A`、
+U+2028 と `Bar` の 2 つです。
+コメント行の後が空行や、空白だけの行のときも同じです。
 テキストの終わりのコメント行は、後ろに改行があってもなくても、`A`、
 U+2028 というエンティティを残します。
+次の行が、名前の文字でない文字で始まるときも、名前は終わります。
+`Bar` の代わりに `{`、`:::`、`[`、関係の `||` が来ると、`A`、
+U+2028 というエンティティは、属性ブロック、クラス、別名、関係を持ちます。
+空白の後の空の説明ブロック ` accDescr {}` は、それだけで 1 つの文を始めるので、
+その後の `Bar` は別のエンティティです。
 [fixture: er/tokens-comment-line-in-name-line-separator-indented-name]
 [fixture: er/tokens-comment-line-in-name-paragraph-separator-indented-name]
 [fixture: er/tokens-comment-line-in-name-line-separator-tab-indented-name]
@@ -250,39 +263,56 @@ U+2028 というエンティティを残します。
 [fixture: er/tokens-comment-line-in-name-then-class-separator]
 [fixture: er/tokens-comment-line-in-name-then-alias]
 [fixture: er/tokens-comment-line-in-name-then-relationship]
+[fixture: er/tokens-comment-line-in-name-then-empty-description-block]
 [fixture: er/tokens-comment-line-in-name-line-separator-at-end]
 [fixture: er/tokens-comment-line-in-name-paragraph-separator-at-end]
 [fixture: er/tokens-comment-line-in-name-line-separator-at-end-without-line-feed]
+次の行の先頭の U+00A0 や U+3000 は、名前の文字なので、名前は続きます。
+`A`、U+2028、`%% c`、改行、U+00A0、`Bar` は、1 つのエンティティ `A`、U+2028、
+U+00A0、`Bar` です。 [fixture: er/tokens-comment-line-in-name-then-nbsp-name]
+[fixture: er/tokens-comment-line-in-name-then-ideographic-space-name]
 説明ブロックの `}` の後の U+2028 は、それ自身の名前を始めます。
 `accDescr {x}`、U+2028、`%% c`、`Bar` は、説明 `x` とエンティティ U+2028、
 `Bar` です。
 [fixture: er/tokens-comment-line-after-acc-descr-block-line-separator]
-名前は、どこにあっても同じように切られます。
-関係の 2 つ目のエンティティ、引用符のない役割、別名、
+
+**コメントで切れた名前がある所。**
+名前は、どこにあっても同じように読まれます。
+関係の 1 つ目や 2 つ目のエンティティ、引用符のない役割、別名、
 `:::` の後や `class` 文のクラス、`class` 文の対象、subgraph の id と題、
-`style` の対象、`classDef` の id がそうです。
+`style` の対象（その名前のエンティティにスタイルを与えます）、
+`classDef` の id がそうで、クラスや対象や id のリストの 2 つ目もそうです。
+[fixture: er/tokens-comment-line-in-relationship-first-entity-line-separator]
 [fixture: er/tokens-comment-line-in-relationship-entity-line-separator]
 [fixture: er/tokens-comment-line-in-relationship-role-line-separator]
 [fixture: er/tokens-comment-line-in-alias-line-separator]
 [fixture: er/tokens-comment-line-in-class-separator-line-separator]
+[fixture: er/tokens-comment-line-in-class-separator-list-line-separator]
 [fixture: er/tokens-comment-line-in-class-statement-line-separator]
+[fixture: er/tokens-comment-line-in-class-statement-list-line-separator]
 [fixture: er/tokens-comment-line-in-class-statement-target-line-separator]
 [fixture: er/tokens-comment-line-in-subgraph-id-line-separator]
 [fixture: er/tokens-comment-line-in-subgraph-title-line-separator]
 [fixture: er/tokens-comment-line-in-style-target-line-separator]
+[fixture: er/tokens-comment-line-in-style-target-with-entity-line-separator]
+[fixture: er/tokens-comment-line-in-style-list-line-separator]
 [fixture: er/tokens-comment-line-in-classdef-id-line-separator]
-属性ブロックの語も、
-同じように U+2028 や U+2029
-を持ちます（[属性ブロックの文脈](#属性ブロックの文脈) を参照）。
+[fixture: er/tokens-comment-line-in-classdef-list-line-separator]
+属性ブロックの語は、
+語の文字でしか続きません（[属性ブロックの文脈](#属性ブロックの文脈) を参照）。
+U+3000 は続き、U+00A0、空白、タブ、改行は語を終わらせて、
+次の語がその属性を不正にします。
 ブロックの中の `string x`、U+2028、`%% c`、`y` は、型 `string`、名前 `x`、
 U+2028、`y` の属性です。
-U+2029 でも同じです。
-型も同じように続きます。
-`string`、U+2028、`%% c`、`x y` は、型 `string`、U+2028、
-`x` と名前 `y` の属性です。
+U+2029 でも、名前でなく型でも、同じです。
+`y` の前に U+3000 があっても同じですが、
+U+00A0 や 2 つの空白があると拒否されます。
 [fixture: er/tokens-comment-line-in-attribute-word-line-separator]
 [fixture: er/tokens-comment-line-in-attribute-word-paragraph-separator]
 [fixture: er/tokens-comment-line-in-attribute-type-line-separator]
+[fixture: er/tokens-comment-line-in-attribute-word-then-ideographic-space]
+[fixture: er/lex-attribute-word-then-nbsp-after-comment-line]
+[fixture: er/lex-attribute-word-then-indent-after-comment-line]
 このような名前の中のディレクティブは、どの名前でもそうであるように、
 拒否されます（[単位の中のディレクティブ](#単位の中のディレクティブ) を参照）。
 `A`、U+2028、`%% c`、`B%%{init: {}}%%C` は拒否されますが、
@@ -539,7 +569,8 @@ er/lex-relationship-spec-next-line]
   [fixture: er/lex-end-then-relationship] [fixture:
   er/lex-end-space-before-line-feed] [fixture:
   er/lex-end-line-feeds-then-classdef]
-- 単位の後の `%%` や `#` は拒否されます（[名前](#単位と文脈) を参照）。
+- 単位の後の `#`、と、その行で U+2028 や U+2029 が前にない、単位の後の `%%` は、
+  拒否されます（[名前](#単位と文脈) を参照）。
   `;` は区切りでも名前の文字でもありません。
   `A;` は拒否されますが、
   行の規則がそれを無視するところ（詳しくは
@@ -1136,7 +1167,9 @@ er/lex-acc-descr-block-unclosed]
 ### コメント
 
 この図にはコメントの規則がありません。
-`#` と `%%` は単位の後ではコメントではなく、この図のコメントは、
+`#` は単位の後ではコメントではなく、`%%` も、
+その行で U+2028 や U+2029 が前にあるときを除いて、
+単位の後ではコメントではなく（[名前](#単位と文脈) を参照）、この図のコメントは、
 字句解析器の前に読まれる、
 コメント行と `%%` だけの行だけです（[名前](#単位と文脈) と、
 [検出](#検出) を参照）。

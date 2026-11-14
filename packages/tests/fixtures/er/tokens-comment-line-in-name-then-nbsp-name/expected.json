@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Units and contexts, A comment line after a U+2028 or U+2029: a U+00A0 at the start of the next line is a character of a name, so the name goes on: the one entity A, U+2028, U+00A0, Bar."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A  Bar-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A  Bar",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

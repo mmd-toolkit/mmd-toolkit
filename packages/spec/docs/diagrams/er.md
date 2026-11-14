@@ -176,23 +176,25 @@ quote of a string takes it with it, and the string is then not closed:
 `A ||--o{ B : "x`, a line break, and `%% c"` is rejected. [fixture:
 er/lex-comment-line-takes-closing-quote]
 
-**A comment line after a U+2028 or U+2029.** A U+2028 or U+2029 starts a line
-for a comment (see [Comment lines](../common.md#comment-lines)), so a `%%` after
-one of them, with only whitespace and directives between, is a comment line,
-though a unit lies before it on the line, and the lexer reads through it as
-through any comment line. A name that holds the U+2028 or U+2029 goes on after
-the comment line, and the characters before and after it are one name: `A`,
-U+2028, `%% c`, a line break, and `Bar` is the one entity `A`, U+2028, `Bar`. It
-is the same with U+2029, with spaces or line breaks between the U+2028 and the
-`%%`, with a second U+2028 before the `%%`, which leaves one U+2028 in the name,
-with a directive before the `%%` or between its two `%`, and with a CRLF or a
-lone CR where the line break stands. With two comment lines, `A`, U+2028,
-`%% c`, `%% d`, and `Bar` is the one entity `A`, U+2028, `Bar`, also with an
-empty line or a line of a directive only between them, and `A`, U+2028, `%% c`,
-`B`, U+2028, `%% d`, and `C` the one entity `A`, U+2028, `B`, U+2028, `C`.
-[fixture: er/tokens-comment-line-in-name-line-separator] [fixture:
+**A comment after a U+2028 or U+2029.** A U+2028 or U+2029 is a comment start
+(see [Comment lines](../common.md#comment-lines)), so a comment after one of
+them is a comment also where a unit lies before it on its line, and the lexer
+reads through its comment region: from right after the first U+2028 or U+2029
+from which only whitespace, line terminators, and directives lead to the `%%`,
+to after the line terminator that ends the comment. So `A`, U+2028, `%% c`, a
+line break, and `Bar` is the one entity `A`, U+2028, `Bar`: a name that holds
+the U+2028 or U+2029 goes on with the character right after the region when that
+character can go on in a name. The region takes what lies before the `%%`, so
+the name goes on also with U+2029 in place of U+2028, with spaces, a tab, a
+U+00A0, a line break, or a second U+2028 between the U+2028 and the `%%`, which
+leaves one U+2028 in the name, with a directive before the `%%` or between its
+two `%`, with a CRLF or a lone CR where the line break stands, and with several
+comment lines one after the other, also with an empty line or a line of a
+directive only between them. [fixture:
+er/tokens-comment-line-in-name-line-separator] [fixture:
 er/tokens-comment-line-in-name-paragraph-separator] [fixture:
 er/tokens-comment-line-in-name-spaces-before-comment] [fixture:
+er/tokens-comment-line-in-name-tab-and-nbsp-before-comment] [fixture:
 er/tokens-comment-line-in-name-line-feed-before-comment] [fixture:
 er/tokens-comment-line-in-name-blank-line-before-comment] [fixture:
 er/tokens-comment-line-in-name-two-line-separators] [fixture:
@@ -203,14 +205,26 @@ er/tokens-comment-line-in-name-lone-cr] [fixture:
 er/tokens-comment-lines-consecutive-in-name] [fixture:
 er/tokens-comment-lines-consecutive-blank-line-between] [fixture:
 er/tokens-comment-lines-consecutive-directive-line-between] [fixture:
-er/tokens-comment-lines-with-name-part-between] The next line ends the name
-where it starts with a space or a tab, where it is empty or holds spaces only,
-and where it starts with a character that is no character of a name: with `Bar`
-indented by two spaces or by a tab, the entities are `A` followed by U+2028, and
-`Bar`, and with `{`, `:::`, `[`, or the `||` of a relationship in place of
-`Bar`, the entity `A` followed by U+2028 has the attribute block, the class, the
-alias, or the relationship. A comment line at the end of the text, with a line
-break after it or without, leaves the entity `A` followed by U+2028. [fixture:
+er/tokens-comment-lines-with-name-part-between] A `%%` that is no comment stays
+text and is rejected: `A`, U+2028, and a `%%` alone on the rest of its line,
+`%%{ }%%`, or `x %% c` with other characters before it, and a U+2028 inside a
+directive, which starts no comment, as in `A%%{init: {}`, U+2028, `}%%%% c`.
+[fixture: er/lex-percent-after-line-separator-alone] [fixture:
+er/lex-percent-after-line-separator-brace] [fixture:
+er/lex-percent-after-line-separator-text-between] [fixture:
+er/lex-percent-after-line-separator-inside-directive]
+
+**Where a name that a comment cuts ends.** The name ends right after the region
+where the next character is a space, a tab, a line feed, or the end of the text:
+with `Bar` indented by two spaces or by a tab, the entities are `A` followed by
+U+2028, and `Bar`, and so they are with an empty line or a line of spaces only
+after the comment line. A comment line at the end of the text, with a line break
+after it or without, leaves the entity `A` followed by U+2028. It ends too where
+the next line starts with a character that is no character of a name: with `{`,
+`:::`, `[`, or the `||` of a relationship in place of `Bar`, the entity `A`
+followed by U+2028 has the attribute block, the class, the alias, or the
+relationship, and an empty description block after a space, ` accDescr {}`,
+starts a statement of its own, so `Bar` after it is another entity. [fixture:
 er/tokens-comment-line-in-name-line-separator-indented-name] [fixture:
 er/tokens-comment-line-in-name-paragraph-separator-indented-name] [fixture:
 er/tokens-comment-line-in-name-line-separator-tab-indented-name] [fixture:
@@ -220,37 +234,55 @@ er/tokens-comment-line-in-name-then-attribute-block] [fixture:
 er/tokens-comment-line-in-name-then-class-separator] [fixture:
 er/tokens-comment-line-in-name-then-alias] [fixture:
 er/tokens-comment-line-in-name-then-relationship] [fixture:
+er/tokens-comment-line-in-name-then-empty-description-block] [fixture:
 er/tokens-comment-line-in-name-line-separator-at-end] [fixture:
 er/tokens-comment-line-in-name-paragraph-separator-at-end] [fixture:
-er/tokens-comment-line-in-name-line-separator-at-end-without-line-feed] The
-U+2028 after the `}` of a description block starts a name of its own, so
-`accDescr {x}`, U+2028, `%% c`, and `Bar` are the description `x` and the entity
-U+2028, `Bar`. [fixture:
-er/tokens-comment-line-after-acc-descr-block-line-separator] The name is cut in
-the same way wherever it stands: the second entity of a relationship, a role
+er/tokens-comment-line-in-name-line-separator-at-end-without-line-feed] A U+00A0
+or a U+3000 at the start of the next line is a character of a name, so the name
+goes on: `A`, U+2028, `%% c`, a line break, U+00A0, and `Bar` is the one entity
+`A`, U+2028, U+00A0, `Bar`. [fixture:
+er/tokens-comment-line-in-name-then-nbsp-name] [fixture:
+er/tokens-comment-line-in-name-then-ideographic-space-name] The U+2028 after the
+`}` of a description block starts a name of its own, so `accDescr {x}`, U+2028,
+`%% c`, and `Bar` are the description `x` and the entity U+2028, `Bar`.
+[fixture: er/tokens-comment-line-after-acc-descr-block-line-separator]
+
+**Where a name that a comment cuts stands.** The name is read in the same way
+wherever it stands: the first or the second entity of a relationship, a role
 without quotes, an alias, a class after `:::` or in a `class` statement, the
 target of a `class` statement, the id and the title of a subgraph, the target of
-`style`, and the id of `classDef`. [fixture:
-er/tokens-comment-line-in-relationship-entity-line-separator] [fixture:
-er/tokens-comment-line-in-relationship-role-line-separator] [fixture:
+`style`, which gives the style to the entity of that name, and the id of
+`classDef`, and so is the second of a list of classes, of targets, or of ids.
+[fixture: er/tokens-comment-line-in-relationship-first-entity-line-separator]
+[fixture: er/tokens-comment-line-in-relationship-entity-line-separator]
+[fixture: er/tokens-comment-line-in-relationship-role-line-separator] [fixture:
 er/tokens-comment-line-in-alias-line-separator] [fixture:
 er/tokens-comment-line-in-class-separator-line-separator] [fixture:
+er/tokens-comment-line-in-class-separator-list-line-separator] [fixture:
 er/tokens-comment-line-in-class-statement-line-separator] [fixture:
+er/tokens-comment-line-in-class-statement-list-line-separator] [fixture:
 er/tokens-comment-line-in-class-statement-target-line-separator] [fixture:
 er/tokens-comment-line-in-subgraph-id-line-separator] [fixture:
 er/tokens-comment-line-in-subgraph-title-line-separator] [fixture:
 er/tokens-comment-line-in-style-target-line-separator] [fixture:
-er/tokens-comment-line-in-classdef-id-line-separator] A word of an attribute
-block holds a U+2028 or U+2029 in the same way (see
-[The attribute block context](#the-attribute-block-context)): `string x`,
-U+2028, `%% c`, and `y` in a block is the attribute with the type `string` and
-the name `x`, U+2028, `y`, and with U+2029 it is the same. The type goes on in
-the same way: `string`, U+2028, `%% c`, and `x y` is the attribute with the type
-`string`, U+2028, `x` and the name `y`. [fixture:
-er/tokens-comment-line-in-attribute-word-line-separator] [fixture:
+er/tokens-comment-line-in-style-target-with-entity-line-separator] [fixture:
+er/tokens-comment-line-in-style-list-line-separator] [fixture:
+er/tokens-comment-line-in-classdef-id-line-separator] [fixture:
+er/tokens-comment-line-in-classdef-list-line-separator] A word of an attribute
+block goes on only with a character of a word (see
+[The attribute block context](#the-attribute-block-context)): a U+3000 goes on,
+while a U+00A0, a space, a tab, or a line feed ends the word, and the next word
+then makes the attribute invalid. `string x`, U+2028, `%% c`, and `y` in a block
+is the attribute with the type `string` and the name `x`, U+2028, `y`, and with
+U+2029 or with the type in place of the name it is the same, and so it is with a
+U+3000 before the `y`, while a U+00A0 or two spaces before the `y` is rejected.
+[fixture: er/tokens-comment-line-in-attribute-word-line-separator] [fixture:
 er/tokens-comment-line-in-attribute-word-paragraph-separator] [fixture:
-er/tokens-comment-line-in-attribute-type-line-separator] A directive inside such
-a name is rejected as in any name (see
+er/tokens-comment-line-in-attribute-type-line-separator] [fixture:
+er/tokens-comment-line-in-attribute-word-then-ideographic-space] [fixture:
+er/lex-attribute-word-then-nbsp-after-comment-line] [fixture:
+er/lex-attribute-word-then-indent-after-comment-line] A directive inside such a
+name is rejected as in any name (see
 [Directives inside units](#directives-inside-units)): `A`, U+2028, `%% c`, and
 `B%%{init: {}}%%C` is rejected, and so is a directive that follows the comment
 line and goes on with the name, `%%{init: {}}%%Bar`, while mermaid.js reads the
@@ -478,9 +510,10 @@ rejected. [fixture: er/lex-hash-after-name] [fixture: er/lex-single-quote]
   er/lex-end-blank-line-then-name] [fixture: er/lex-end-then-name] [fixture:
   er/lex-end-then-relationship] [fixture: er/lex-end-space-before-line-feed]
   [fixture: er/lex-end-line-feeds-then-classdef]
-- A line of `%%` or `#` after a unit is rejected (see
-  [Names](#units-and-contexts)). A `;` is no separator and no character of a
-  name: `A;` is rejected, except where the line rule ignores it (see
+- A line of `#` after a unit, or of `%%` after a unit with no U+2028 or U+2029
+  before it on its line, is rejected (see [Names](#units-and-contexts)). A `;`
+  is no separator and no character of a name: `A;` is rejected, except where the
+  line rule ignores it (see
   [`style` and `classDef` lines](../common.md#style-and-classdef-lines)):
   `A ||--o{ Bstyle : "x:#y";` is accepted, with the role `x:#y`, and
   `A ||--o{ B : "x:#y";` is rejected. [fixture: er/lex-semicolon-after-name]
@@ -993,12 +1026,13 @@ an attribute block and in the style context, `accTitle` and `accDescr` are words
 
 ### Comments
 
-This diagram has no comment rule: `#` and `%%` are no comments after a unit, and
-the only comments of the diagram are the comment lines and bare `%%` lines that
-are read before the lexer (see [Names](#units-and-contexts) and
-[Detection](#detection)). Their mark is `%%`, and their value is the text after
-the mark. [fixture: er/comment-line] [fixture: er/lex-percent-after-statement]
-[fixture: er/header-after-bare-percent-line]
+This diagram has no comment rule: `#` is no comment after a unit, and neither is
+`%%`, unless a U+2028 or U+2029 comes before it on its line (see
+[Names](#units-and-contexts)), and the only comments of the diagram are the
+comment lines and bare `%%` lines that are read before the lexer (see
+[Names](#units-and-contexts) and [Detection](#detection)). Their mark is `%%`,
+and their value is the text after the mark. [fixture: er/comment-line] [fixture:
+er/lex-percent-after-statement] [fixture: er/header-after-bare-percent-line]
 
 ## Grammar
 

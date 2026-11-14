@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Units and contexts, A comment line after a U+2028 or U+2029: the second id of a list of a classDef statement goes on after a comment line that follows its U+2028: the classes a and b, U+2028, c."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "a",
+        "styles": [
+          "fill:red"
+        ]
+      },
+      {
+        "id": "b c",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ],
+    "subGraphs": []
+  }
+}
