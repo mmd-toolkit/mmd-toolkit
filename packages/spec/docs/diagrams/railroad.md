@@ -561,7 +561,8 @@ railroad/db-string-line-separator-comment-line-directive-next] [fixture:
 railroad/db-string-line-separator-comment-line-space-next] [fixture:
 railroad/db-string-line-separator-comment-line-separator-next] [fixture:
 railroad/db-string-line-separator-comment-line-empty-line] [fixture:
-railroad/gram-string-line-separator-comment-line-end-of-text] [fixture:
+railroad/lex-string-line-separator-comment-line-end-of-text] [fixture:
+railroad/db-acc-title-line-separator-comment-line-end-of-text] [fixture:
 railroad/db-string-line-separator-comment-line-cr] [fixture:
 railroad/db-string-line-separator-comment-line-crlf] [fixture:
 railroad/db-string-line-separator-comment-line-two-comment-lines] [fixture:
@@ -589,7 +590,8 @@ railroad/db-abnf-acc-descr-block-line-separator-then-comment-line] [fixture:
 railroad/lex-peg-title-line-separator-then-comment-line] [fixture:
 railroad/db-peg-acc-title-line-separator-then-comment-line] [fixture:
 railroad/db-peg-acc-descr-line-separator-then-comment-line] [fixture:
-railroad/db-peg-acc-descr-block-line-separator-then-comment-line]
+railroad/db-peg-acc-descr-block-line-separator-then-comment-line] [fixture:
+railroad/db-string-line-separator-comment-line-line-rule-after]
 
 ### Common directive and semicolon boundaries
 

@@ -1592,7 +1592,9 @@ quadrant/db-x-left-markdown-line-separator-then-comment-line] [fixture:
 quadrant/db-x-right-markdown-line-separator-then-comment-line] [fixture:
 quadrant/db-y-bottom-markdown-line-separator-then-comment-line] [fixture:
 quadrant/db-y-top-markdown-line-separator-then-comment-line] [fixture:
-quadrant/db-point-name-markdown-line-separator-then-comment-line]
+quadrant/db-point-name-markdown-line-separator-then-comment-line] [fixture:
+quadrant/db-title-line-separator-comment-line-line-rule-before] [fixture:
+quadrant/db-title-line-separator-comment-line-line-rule-after]
 
 mermaid.js は、1 文字の単位にくっついたコメントを、その文字とともに読みます。
 字句解析器は、英字の並び、数字の並び、ASCII 外の文字の並び、

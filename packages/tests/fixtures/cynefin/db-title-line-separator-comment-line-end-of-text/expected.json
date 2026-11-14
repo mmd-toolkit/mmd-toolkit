@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Strings and common values: the text ends with a comment line that follows a U+2028 in the title, and the comment is left out; the Db summary holds the title `A`, the U+2028 at its end left out."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "A",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": []
+  }
+}

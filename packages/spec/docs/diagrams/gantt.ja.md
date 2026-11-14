@@ -566,6 +566,8 @@ gantt/lex-task-colon-only]
   [fixture: gantt/db-task-line-separator-comment-line-spaces-before]
   [fixture: gantt/db-task-line-separator-comment-line-line-feed-before]
   [fixture: gantt/db-task-line-separator-comment-line-directive-before]
+
+
   [fixture: gantt/gram-task-line-separator-comment-line-bare-percent]
   [fixture: gantt/gram-task-line-separator-comment-line-percent-brace]
 - 文は改行ではなく自分の単位で終わります。
@@ -1130,6 +1132,8 @@ id `a1` のタスクの後で、`click a1`、U+2028、`%% c`、改行、
 [fixture: gantt/lex-click-id-line-separator-comment-line-spaces-before]
 [fixture: gantt/lex-click-id-line-separator-comment-line-line-feed-before]
 [fixture: gantt/lex-click-id-line-separator-comment-line-directive-before]
+[fixture: gantt/gram-click-id-line-separator-comment-line-line-rule-before]
+[fixture: gantt/gram-click-id-line-separator-comment-line-line-rule-after]
 [fixture: gantt/gram-click-id-line-separator-comment-line-bare-percent]
 [fixture: gantt/gram-click-id-line-separator-comment-line-percent-brace]
 

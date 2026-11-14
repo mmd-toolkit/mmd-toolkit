@@ -275,7 +275,7 @@ id は U+2028 や U+2029 で終わり、
 [fixture: block/lex-id-line-separator-comment-line-line-feed-before]
 [fixture: block/lex-id-line-separator-comment-line-directive-before]
 [fixture: block/lex-id-line-separator-comment-line-bare-percent]
-[fixture: block/gram-id-line-separator-comment-line-percent-brace]
+[fixture: block/lex-id-line-separator-comment-line-percent-brace]
 
 **エンティティ、HTML 属性の引用符、`style` 行。**
 文字列、クラス名、スタイルの中では、エンティティは、

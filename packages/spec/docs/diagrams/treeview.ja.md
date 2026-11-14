@@ -375,6 +375,7 @@ treeview/db-quoted-name-line-separator-comment-line-space-next] [fixture:
 treeview/db-quoted-name-line-separator-comment-line-separator-next] [fixture:
 treeview/db-quoted-name-line-separator-comment-line-empty-line] [fixture:
 treeview/lex-quoted-name-line-separator-comment-line-end-of-text] [fixture:
+treeview/db-bare-name-line-separator-comment-line-end-of-text] [fixture:
 treeview/db-quoted-name-line-separator-comment-line-cr] [fixture:
 treeview/db-quoted-name-line-separator-comment-line-crlf] [fixture:
 treeview/db-quoted-name-line-separator-comment-line-two-comment-lines] [fixture:

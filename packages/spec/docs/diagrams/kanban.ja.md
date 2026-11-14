@@ -168,7 +168,7 @@ CRLF と単独の CR は改行です。 [fixture: kanban/lex-crlf-quoted-value]
 [fixture: kanban/db-node-text-line-separator-comment-line-line-rule-before]
 [fixture: kanban/db-node-text-line-separator-comment-line-line-rule-after]
 [fixture: kanban/db-node-text-line-separator-comment-line-bare-percent]
-[fixture: kanban/gram-node-text-line-separator-comment-line-percent-brace]
+[fixture: kanban/lex-node-text-line-separator-comment-line-percent-brace]
 class 本文は U+2028 や U+2029 で終わるので、`:::a`、U+2028、`%% c`、改行、
 `b` は、コメント行がない場合と同じく、1 行の 2 文となり、拒否されます。
 [fixture: kanban/gram-class-line-separator-then-comment-line]
@@ -184,6 +184,8 @@ class 本文は U+2028 や U+2029 で終わるので、`:::a`、U+2028、`%% c`�
 [fixture: kanban/gram-class-line-separator-comment-line-spaces-before]
 [fixture: kanban/gram-class-line-separator-comment-line-line-feed-before]
 [fixture: kanban/gram-class-line-separator-comment-line-directive-before]
+[fixture: kanban/gram-class-line-separator-comment-line-line-rule-before]
+[fixture: kanban/gram-class-line-separator-comment-line-line-rule-after]
 [fixture: kanban/lex-class-line-separator-comment-line-bare-percent]
 [fixture: kanban/lex-class-line-separator-comment-line-percent-brace]
 

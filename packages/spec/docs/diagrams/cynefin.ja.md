@@ -167,7 +167,7 @@ string は対になる単一引用符または二重引用符を使い、空で�
 backslash の後には CR、LF、U+2028、U+2029 以外の一文字が必要である。
 単独の backslash、escape した行区切り、対応する閉じの欠落は拒否する。
 他方の引用符では閉じない。
-共通の除去は内側にも適用する。 [fixture: cynefin/db-empty-texts]
+全域の共通の除去は、内側にも適用する。 [fixture: cynefin/db-empty-texts]
 [fixture: cynefin/lex-string-escaped-quotes]
 [fixture: cynefin/lex-string-conversion] [fixture: cynefin/line-string-values]
 [fixture: cynefin/lex-string-open-double]
@@ -194,6 +194,7 @@ cynefin/db-string-line-separator-comment-line-space-next] [fixture:
 cynefin/db-string-line-separator-comment-line-separator-next] [fixture:
 cynefin/db-string-line-separator-comment-line-empty-line] [fixture:
 cynefin/lex-string-line-separator-comment-line-end-of-text] [fixture:
+cynefin/db-title-line-separator-comment-line-end-of-text] [fixture:
 cynefin/db-string-line-separator-comment-line-cr] [fixture:
 cynefin/db-string-line-separator-comment-line-crlf] [fixture:
 cynefin/db-string-line-separator-comment-line-two-comment-lines] [fixture:

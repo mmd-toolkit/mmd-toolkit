@@ -170,6 +170,7 @@ cynefin/db-string-line-separator-comment-line-space-next] [fixture:
 cynefin/db-string-line-separator-comment-line-separator-next] [fixture:
 cynefin/db-string-line-separator-comment-line-empty-line] [fixture:
 cynefin/lex-string-line-separator-comment-line-end-of-text] [fixture:
+cynefin/db-title-line-separator-comment-line-end-of-text] [fixture:
 cynefin/db-string-line-separator-comment-line-cr] [fixture:
 cynefin/db-string-line-separator-comment-line-crlf] [fixture:
 cynefin/db-string-line-separator-comment-line-two-comment-lines] [fixture:

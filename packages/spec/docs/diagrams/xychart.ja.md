@@ -1087,6 +1087,7 @@ xychart/db-string-line-separator-comment-line-space-next] [fixture:
 xychart/db-string-line-separator-comment-line-separator-next] [fixture:
 xychart/db-string-line-separator-comment-line-empty-line] [fixture:
 xychart/gram-string-line-separator-comment-line-end-of-text] [fixture:
+xychart/db-acc-title-line-separator-comment-line-end-of-text] [fixture:
 xychart/db-string-line-separator-comment-line-cr] [fixture:
 xychart/db-string-line-separator-comment-line-crlf] [fixture:
 xychart/db-string-line-separator-comment-line-two-comment-lines] [fixture:

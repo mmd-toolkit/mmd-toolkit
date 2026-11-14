@@ -326,6 +326,7 @@ usecase/db-string-line-separator-comment-line-space-next] [fixture:
 usecase/db-string-line-separator-comment-line-separator-next] [fixture:
 usecase/lex-string-line-separator-comment-line-empty-line] [fixture:
 usecase/lex-string-line-separator-comment-line-end-of-text] [fixture:
+usecase/db-acc-title-line-separator-comment-line-end-of-text] [fixture:
 usecase/db-string-line-separator-comment-line-cr] [fixture:
 usecase/db-string-line-separator-comment-line-crlf] [fixture:
 usecase/db-string-line-separator-comment-line-two-comment-lines] [fixture:

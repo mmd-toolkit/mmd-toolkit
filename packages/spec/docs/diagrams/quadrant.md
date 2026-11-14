@@ -1433,7 +1433,9 @@ quadrant/db-x-left-markdown-line-separator-then-comment-line] [fixture:
 quadrant/db-x-right-markdown-line-separator-then-comment-line] [fixture:
 quadrant/db-y-bottom-markdown-line-separator-then-comment-line] [fixture:
 quadrant/db-y-top-markdown-line-separator-then-comment-line] [fixture:
-quadrant/db-point-name-markdown-line-separator-then-comment-line]
+quadrant/db-point-name-markdown-line-separator-then-comment-line] [fixture:
+quadrant/db-title-line-separator-comment-line-line-rule-before] [fixture:
+quadrant/db-title-line-separator-comment-line-line-rule-after]
 
 mermaid.js reads a comment that is glued to a unit of one character together
 with that character, the lexer reading a run of letters, a run of digits, a run

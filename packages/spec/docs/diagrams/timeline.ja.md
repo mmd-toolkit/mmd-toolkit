@@ -767,7 +767,9 @@ timeline/db-period-line-separator-comment-line-spaces-before] [fixture:
 timeline/db-period-line-separator-comment-line-line-feed-before] [fixture:
 timeline/db-period-line-separator-comment-line-directive-before] [fixture:
 timeline/db-period-line-separator-comment-line-bare-percent] [fixture:
-timeline/db-period-line-separator-comment-line-percent-brace]
+timeline/db-period-line-separator-comment-line-percent-brace] [fixture:
+timeline/db-event-line-separator-comment-line-line-rule-before] [fixture:
+timeline/db-event-line-separator-comment-line-line-rule-after]
 
 mermaid.js は `%` をもう 1 つの読み方で読みます。
 それがこの規則と違うのは、単位が始まるところで、

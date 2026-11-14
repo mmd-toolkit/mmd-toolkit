@@ -453,7 +453,8 @@ packet/db-string-line-separator-comment-line-directive-next] [fixture:
 packet/db-string-line-separator-comment-line-space-next] [fixture:
 packet/db-string-line-separator-comment-line-separator-next] [fixture:
 packet/db-string-line-separator-comment-line-empty-line] [fixture:
-packet/gram-string-line-separator-comment-line-end-of-text] [fixture:
+packet/lex-string-line-separator-comment-line-end-of-text] [fixture:
+packet/db-title-line-separator-comment-line-end-of-text] [fixture:
 packet/db-string-line-separator-comment-line-cr] [fixture:
 packet/db-string-line-separator-comment-line-crlf] [fixture:
 packet/db-string-line-separator-comment-line-two-comment-lines] [fixture:

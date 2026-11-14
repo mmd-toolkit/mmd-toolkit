@@ -338,8 +338,8 @@ JSON と stereotype 文脈に空白を飛ばす規則はなく、内容として
 [fixture: usecase/lex-style-unicode-trailing]
 [fixture: usecase/lex-native-label-separators]
 
-共通のコメント領域は文字列、metadata、JSON、アクセシビリティを含む全域です。
-[fixture:
+共通のコメント領域は文字列、metadata、JSON、
+アクセシビリティのブロックを含む全域です。 [fixture:
 usecase/db-string-line-separator-then-comment-line] [fixture:
 usecase/db-string-paragraph-separator-then-comment-line] [fixture:
 usecase/db-markdown-string-line-separator-then-comment-line] [fixture:
@@ -353,6 +353,7 @@ usecase/db-string-line-separator-comment-line-space-next] [fixture:
 usecase/db-string-line-separator-comment-line-separator-next] [fixture:
 usecase/lex-string-line-separator-comment-line-empty-line] [fixture:
 usecase/lex-string-line-separator-comment-line-end-of-text] [fixture:
+usecase/db-acc-title-line-separator-comment-line-end-of-text] [fixture:
 usecase/db-string-line-separator-comment-line-cr] [fixture:
 usecase/db-string-line-separator-comment-line-crlf] [fixture:
 usecase/db-string-line-separator-comment-line-two-comment-lines] [fixture:

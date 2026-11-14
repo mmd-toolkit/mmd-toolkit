@@ -269,6 +269,7 @@ gitgraph/db-string-line-separator-comment-line-space-next] [fixture:
 gitgraph/db-string-line-separator-comment-line-separator-next] [fixture:
 gitgraph/db-string-line-separator-comment-line-empty-line] [fixture:
 gitgraph/lex-string-line-separator-comment-line-end-of-text] [fixture:
+gitgraph/db-title-line-separator-comment-line-end-of-text] [fixture:
 gitgraph/db-string-line-separator-comment-line-cr] [fixture:
 gitgraph/db-string-line-separator-comment-line-crlf] [fixture:
 gitgraph/db-string-line-separator-comment-line-two-comment-lines] [fixture:

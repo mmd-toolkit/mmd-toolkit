@@ -90,7 +90,7 @@ flowchart/db-acc-descr-block-line-separator-comment-line-line-rule-before]
 flowchart/db-acc-descr-block-line-separator-comment-line-line-rule-after]
 [fixture: flowchart/db-acc-descr-block-line-separator-comment-line-bare-percent]
 [fixture:
-flowchart/gram-acc-descr-block-line-separator-comment-line-percent-brace]
+flowchart/lex-acc-descr-block-line-separator-comment-line-percent-brace]
 最後の文字の後に字句解析器が読む `\n` は、
 図のテキストの一部です（[テキストの終わり](../common.ja.md#テキストの終わり)）。
 規則は、他の改行と同じくそれを読み、それについての条件を確かめます。

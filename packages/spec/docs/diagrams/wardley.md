@@ -410,7 +410,8 @@ wardley/db-string-line-separator-comment-line-directive-next] [fixture:
 wardley/db-string-line-separator-comment-line-space-next] [fixture:
 wardley/db-string-line-separator-comment-line-separator-next] [fixture:
 wardley/db-string-line-separator-comment-line-empty-line] [fixture:
-wardley/gram-string-line-separator-comment-line-end-of-text] [fixture:
+wardley/lex-string-line-separator-comment-line-end-of-text] [fixture:
+wardley/db-title-line-separator-comment-line-end-of-text] [fixture:
 wardley/db-string-line-separator-comment-line-cr] [fixture:
 wardley/db-string-line-separator-comment-line-crlf] [fixture:
 wardley/db-string-line-separator-comment-line-two-comment-lines] [fixture:

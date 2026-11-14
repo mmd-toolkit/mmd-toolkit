@@ -667,7 +667,9 @@ timeline/db-period-line-separator-comment-line-spaces-before] [fixture:
 timeline/db-period-line-separator-comment-line-line-feed-before] [fixture:
 timeline/db-period-line-separator-comment-line-directive-before] [fixture:
 timeline/db-period-line-separator-comment-line-bare-percent] [fixture:
-timeline/db-period-line-separator-comment-line-percent-brace]
+timeline/db-period-line-separator-comment-line-percent-brace] [fixture:
+timeline/db-event-line-separator-comment-line-line-rule-before] [fixture:
+timeline/db-event-line-separator-comment-line-line-rule-after]
 
 mermaid.js reads `%` in one more way, which differs from this rule where a
 character other than `}` and whitespace stands right before `%%` where a unit

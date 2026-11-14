@@ -184,7 +184,7 @@ mindmap/db-node-text-line-separator-comment-line-directive-before] [fixture:
 mindmap/db-node-text-line-separator-comment-line-line-rule-before] [fixture:
 mindmap/db-node-text-line-separator-comment-line-line-rule-after] [fixture:
 mindmap/gram-node-text-line-separator-comment-line-bare-percent] [fixture:
-mindmap/gram-node-text-line-separator-comment-line-percent-brace]
+mindmap/lex-node-text-line-separator-comment-line-percent-brace]
 
 ### Directives inside units
 
@@ -417,6 +417,8 @@ mindmap/gram-class-line-separator-comment-line-two-regions] [fixture:
 mindmap/gram-class-line-separator-comment-line-spaces-before] [fixture:
 mindmap/gram-class-line-separator-comment-line-line-feed-before] [fixture:
 mindmap/gram-class-line-separator-comment-line-directive-before] [fixture:
+mindmap/gram-class-line-separator-comment-line-line-rule-before] [fixture:
+mindmap/gram-class-line-separator-comment-line-line-rule-after] [fixture:
 mindmap/gram-class-line-separator-comment-line-bare-percent] [fixture:
 mindmap/gram-class-line-separator-comment-line-percent-brace]
 

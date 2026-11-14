@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md Lexical structure: `style:#a` before a U+2028, and `#b;` on the line after the comment line; class text ends at the U+2028, so the line after the comment line is a second statement on the line of the class; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...S   I :::astyle:#a ﬂ°b¶ßb\n---------------------^\nExpecting 'SPACELINE', 'NL', 'EOF', got 'SPACELIST'"
+  }
+}

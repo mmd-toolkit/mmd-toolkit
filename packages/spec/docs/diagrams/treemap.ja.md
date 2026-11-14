@@ -424,6 +424,7 @@ treemap/db-string-line-separator-comment-line-space-next] [fixture:
 treemap/db-string-line-separator-comment-line-separator-next] [fixture:
 treemap/db-string-line-separator-comment-line-empty-line] [fixture:
 treemap/lex-string-line-separator-comment-line-end-of-text] [fixture:
+treemap/db-class-style-line-separator-comment-line-end-of-text] [fixture:
 treemap/db-string-line-separator-comment-line-cr] [fixture:
 treemap/db-string-line-separator-comment-line-crlf] [fixture:
 treemap/db-string-line-separator-comment-line-two-comment-lines] [fixture:

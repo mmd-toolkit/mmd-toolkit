@@ -482,7 +482,9 @@ venn/db-title-line-separator-comment-line-spaces-before] [fixture:
 venn/db-title-line-separator-comment-line-line-feed-before] [fixture:
 venn/db-title-line-separator-comment-line-directive-before] [fixture:
 venn/gram-title-line-separator-comment-line-bare-percent] [fixture:
-venn/gram-title-line-separator-comment-line-percent-brace]
+venn/gram-title-line-separator-comment-line-percent-brace] [fixture:
+venn/db-title-line-separator-comment-line-line-rule-before] [fixture:
+venn/db-title-line-separator-comment-line-line-rule-after]
 文字列かラベル全体の中の行内の連続する `%` は値のテキストです。
 [fixture: venn/db-title-quotes] [fixture: venn/db-grid-comment-title]
 [fixture: venn/db-grid-comment-label-bare]
@@ -501,7 +503,7 @@ venn/db-quoted-name-line-separator-comment-line-directive-next] [fixture:
 venn/db-quoted-name-line-separator-comment-line-space-next] [fixture:
 venn/db-quoted-name-line-separator-comment-line-separator-next] [fixture:
 venn/db-quoted-name-line-separator-comment-line-empty-line] [fixture:
-venn/gram-quoted-name-line-separator-comment-line-end-of-text] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-end-of-text] [fixture:
 venn/db-quoted-name-line-separator-comment-line-cr] [fixture:
 venn/db-quoted-name-line-separator-comment-line-crlf] [fixture:
 venn/db-quoted-name-line-separator-comment-line-two-comment-lines] [fixture:

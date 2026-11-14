@@ -369,6 +369,8 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
   class/db-relation-label-line-separator-comment-line-line-feed-before]
   [fixture:
   class/db-relation-label-line-separator-comment-line-directive-before]
+
+
   [fixture: class/db-relation-label-line-separator-comment-line-bare-percent]
   [fixture: class/db-relation-label-line-separator-comment-line-percent-brace]
 - `;`、`{`、`}`、`|`、`)` の続かない `(`、`)`、`@`、`^` は、

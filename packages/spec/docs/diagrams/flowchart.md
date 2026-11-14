@@ -85,7 +85,7 @@ flowchart/db-acc-descr-block-line-separator-comment-line-line-rule-before]
 flowchart/db-acc-descr-block-line-separator-comment-line-line-rule-after]
 [fixture: flowchart/db-acc-descr-block-line-separator-comment-line-bare-percent]
 [fixture:
-flowchart/gram-acc-descr-block-line-separator-comment-line-percent-brace] The
+flowchart/lex-acc-descr-block-line-separator-comment-line-percent-brace] The
 `\n` that the lexer reads after the last character
 ([End of text](../common.md#end-of-text)) is part of the diagram text: the rules
 read it, and check conditions on it, like any other line feed, and `end-of-text`

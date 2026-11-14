@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Comments and boundaries: the text ends with a comment line that follows a U+2028 in the bare name, and the comment is left out; the Db summary holds the node `A` and U+2028."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A ",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

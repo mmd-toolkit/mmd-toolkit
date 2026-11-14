@@ -248,7 +248,7 @@ block/lex-id-line-separator-comment-line-spaces-before] [fixture:
 block/lex-id-line-separator-comment-line-line-feed-before] [fixture:
 block/lex-id-line-separator-comment-line-directive-before] [fixture:
 block/lex-id-line-separator-comment-line-bare-percent] [fixture:
-block/gram-id-line-separator-comment-line-percent-brace]
+block/lex-id-line-separator-comment-line-percent-brace]
 
 **Entities, HTML attribute quotes, and `style` lines.** In a string, a class
 name, and a style, an entity is read as its placeholder (see

@@ -972,8 +972,8 @@ style の文脈には `style` と `classDef` で入ります。
    [fixture: er/db-style-line-separator-comment-line-directive-before]
    [fixture: er/db-style-line-separator-comment-line-line-rule-before]
    [fixture: er/db-style-line-separator-comment-line-line-rule-after]
-   [fixture: er/gram-style-line-separator-comment-line-bare-percent]
-   [fixture: er/gram-style-line-separator-comment-line-percent-brace]
+   [fixture: er/lex-style-line-separator-comment-line-bare-percent]
+   [fixture: er/lex-style-line-separator-comment-line-percent-brace]
    [fixture: er/db-classdef-styles-line-separator-then-comment-line]
 7. `;`: `;` の単位。 [fixture: er/lex-classdef-semicolon-line-feed]
 

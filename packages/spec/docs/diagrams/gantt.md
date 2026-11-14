@@ -1017,6 +1017,8 @@ gantt/gram-click-id-line-separator-comment-line-two-regions] [fixture:
 gantt/lex-click-id-line-separator-comment-line-spaces-before] [fixture:
 gantt/lex-click-id-line-separator-comment-line-line-feed-before] [fixture:
 gantt/lex-click-id-line-separator-comment-line-directive-before] [fixture:
+gantt/gram-click-id-line-separator-comment-line-line-rule-before] [fixture:
+gantt/gram-click-id-line-separator-comment-line-line-rule-after] [fixture:
 gantt/gram-click-id-line-separator-comment-line-bare-percent] [fixture:
 gantt/gram-click-id-line-separator-comment-line-percent-brace]
 

@@ -296,6 +296,7 @@ radar/db-string-line-separator-comment-line-space-next] [fixture:
 radar/db-string-line-separator-comment-line-separator-next] [fixture:
 radar/db-string-line-separator-comment-line-empty-line] [fixture:
 radar/lex-string-line-separator-comment-line-end-of-text] [fixture:
+radar/db-title-line-separator-comment-line-end-of-text] [fixture:
 radar/db-string-line-separator-comment-line-cr] [fixture:
 radar/db-string-line-separator-comment-line-crlf] [fixture:
 radar/db-string-line-separator-comment-line-two-comment-lines] [fixture:
