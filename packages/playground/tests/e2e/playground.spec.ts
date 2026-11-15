@@ -555,7 +555,22 @@ test("opens official examples beside their diagram families without scrolling th
 
 test("loads only local browser assets at the Pages path", async ({ page }) => {
   const failures: string[] = []
-  const errors: string[] = []
+  // Errors are collected inside the reloaded document. The pageerror event of
+  // Playwright also reports one that the replaced document raises while WebKit
+  // tears it down ("Cannot load blob: ... due to access control checks", about
+  // its editor worker), and that is not a property of the reloaded page.
+  await page.addInitScript(() => {
+    const collected: string[] = []
+    Object.defineProperty(window, "collectedErrors", { value: collected })
+    window.addEventListener(
+      "error",
+      (event) => collected.push(event.message || String(event.target)),
+      true,
+    )
+    window.addEventListener("unhandledrejection", (event) =>
+      collected.push(String(event.reason)),
+    )
+  })
   page.on("requestfailed", (request) => {
     // A request the browser itself cancelled, for a worker it replaced or a
     // navigation, is not a failed load; Firefox reports such cancellations here.
@@ -563,7 +578,6 @@ test("loads only local browser assets at the Pages path", async ({ page }) => {
     if (!/aborted|cancel/iu.test(reason))
       failures.push(`${request.url()} (${reason})`)
   })
-  page.on("pageerror", (error) => errors.push(error.message))
   const requests: string[] = []
   page.on("request", (request) => requests.push(request.url()))
   await page.reload()
@@ -576,7 +590,9 @@ test("loads only local browser assets at the Pages path", async ({ page }) => {
     }),
   ).toBeAttached()
   expect(failures).toEqual([])
-  expect(errors).toEqual([])
+  expect(
+    await page.evaluate(() => Reflect.get(window, "collectedErrors")),
+  ).toEqual([])
   expect(requests.some((url) => url.includes("editor.worker.start"))).toBe(true)
   expect(requests.some((url) => url.includes("wasm-"))).toBe(true)
   expect(
