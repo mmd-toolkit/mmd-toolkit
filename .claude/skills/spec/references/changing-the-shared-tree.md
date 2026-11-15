@@ -13,7 +13,8 @@ Section numbers below are those of [SKILL.md](../SKILL.md). The steps of section
    read the tree. Wait for the decision.
 3. Write the revision in one change, in English and in Japanese. Check the
    records against the changed sentences with
-   [When the tree, token, or position documents change in recorded-trees](../../recorded-trees/SKILL.md#8-when-the-tree-token-or-position-documents-change).
+   [When the tree, token, or position documents change](../../ast-json-validity/SKILL.md#5-when-the-tree-token-or-position-documents-change)
+   in ast-json-validity.
 4. Write one list of changes for the packages that read the tree, outside the
    repository: for each package what it must change, which records or ranges
    change, how to find the fixtures whose `ast.json` changes, and the invariants

@@ -199,10 +199,9 @@ everything after every change.
 - A result already reported for the same state of the tree is not run again; a
   check of another kind (other inputs, another method) is.
 - The report says what was run and what was not.
-- A run of `recorded-trees:check` names the changed trees and the document items
-  to read. It shows only that an answer exists for each required item and tree,
-  not that the answer is right or that the trees satisfy the documents. A report
-  never says "no problems" for more than that.
+- AI agents check changed recorded trees with the checklist and procedure of
+  [ast-json-validity](../ast-json-validity/SKILL.md) and record the result under
+  [Report the result](../ast-json-validity/SKILL.md#7-report-the-result).
 - A report of a change in behavior (acceptance, the tree, the Db, formatting, a
   rule) goes to review with a table of its cases: for each sentence the change
   concerns, every case the sentence distinguishes, the fixture that holds it,

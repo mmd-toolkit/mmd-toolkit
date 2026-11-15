@@ -295,9 +295,6 @@ they are listed in
   leaves out.
 - [docs/db-from-tree.md](./docs/db-from-tree.md): building the Db from a
   recorded tree, and what it reads.
-- [docs/recorded-trees.md](./docs/recorded-trees.md): the command that lists the
-  recorded trees a change adds or rewrites, the items to read, and whether they
-  have answers.
 - [docs/maintaining-fixtures.md](./docs/maintaining-fixtures.md): for
   maintainers, adding, changing, renaming and collecting fixtures.
 - [tools/README.md](../../tools/README.md): for maintainers, the command-line

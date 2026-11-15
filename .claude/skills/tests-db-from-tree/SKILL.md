@@ -44,7 +44,7 @@ extraction procedure, not the rules that the tree implements.
    pair and fixtures for each distinguishing case. Before trees are recorded,
    implement from the specification and fixed hand-built trees; do not infer the
    contract from records. AI agents read changed recorded trees with
-   [recorded-trees](../recorded-trees/SKILL.md). Compare every comparable
+   [ast-json-validity](../ast-json-validity/SKILL.md). Compare every comparable
    `dbFromTree` result with its recorded reading, using the shared
    embedded-value helpers. Report actual tree and Db counts, missing records,
    and each mismatch with its input; do not silently skip a missing tree or an

@@ -328,8 +328,6 @@ pin した mermaid.js を Node で動かします。
   の要約が持つものと捨てるもの。
 - [docs/db-from-tree.ja.md](./docs/db-from-tree.ja.md): 記録した木から Db
   を作ることと、その読む欄。
-- [docs/recorded-trees.ja.md](./docs/recorded-trees.ja.md):
-  変更が足すか書き換える記録した木、読む項目、回答の有無を一覧にするコマンド。
 - [docs/maintaining-fixtures.ja.md](./docs/maintaining-fixtures.ja.md):
   保守する人向け。
   fixture を足す、変える、改名する、集める方法。

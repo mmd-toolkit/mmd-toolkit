@@ -117,49 +117,6 @@ jobs:
       - name: Test
         run: pnpm test --shard=${{ matrix.shard }}
 
-  recorded-trees:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7.0.1
-        with:
-          fetch-depth: 0
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.sha }}
-      - name: Check for a Claude co-author
-        id: claude
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: |
-          trailers=$(git log --format='%(trailers:key=Co-Authored-By,valueonly)' "$BASE_SHA..$HEAD_SHA")
-          required=false
-          while IFS= read -r trailer; do
-            if [[ "$trailer" == "Claude "*"<noreply@anthropic.com>" ]]; then
-              required=true
-              break
-            fi
-          done <<< "$trailers"
-          if [[ "$required" == true ]]; then
-            echo "required=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "No Claude Co-Authored-By trailer found; no recorded-tree answers are required."
-          fi
-      - uses: pnpm/action-setup@v6.1.1
-        if: steps.claude.outputs.required == 'true'
-      - uses: actions/setup-node@v7.1.0
-        if: steps.claude.outputs.required == 'true'
-        with:
-          node-version: "lts/*"
-      - name: Install Packages
-        if: steps.claude.outputs.required == 'true'
-        run: pnpm install --frozen-lockfile
-      - name: Check recorded-tree answers
-        if: steps.claude.outputs.required == 'true'
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        run: pnpm --filter @mmd-toolkit/tests run recorded-trees:check --base "$BASE_SHA"
-
   fixtures:
     name: Fixtures match mermaid
     runs-on: ubuntu-latest

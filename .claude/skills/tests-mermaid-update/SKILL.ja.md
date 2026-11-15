@@ -93,7 +93,8 @@ SKILL [tests](../tests/SKILL.ja.md) の 1〜4 の節（方針と基準、最初�
      その文書 `docs/db-from-tree/<図種>.md`（日本語の対を含む）を直し、
      パッケージのテスト全体を実行する。
      AI エージェントは、
-     変更した記録の木を [recorded-trees](../recorded-trees/SKILL.ja.md) で読む。
+     変更した記録の木を [ast-json-validity](../ast-json-validity/SKILL.ja.md)
+     で読む。
      新しい版にない図種は、それを載せた `common/` の fixture で、
      `UnknownDiagramError` への `acceptance` として出る。
      これは下の検出の項に入れる。

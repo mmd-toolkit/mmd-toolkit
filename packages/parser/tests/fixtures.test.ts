@@ -6,7 +6,8 @@
  * must be what the fixture records of mermaid.js, as its `knownDivergence`
  * mark asks. `@mmd-toolkit/tests` compares the Db of the recorded trees
  * with the Db of mermaid.js (`db-from-tree.test.ts`). AI agents read changed
- * recorded trees against the specification with the skill `recorded-trees`.
+ * recorded trees against the specification with the checklist and procedure
+ * of the skill `ast-json-validity`.
  *
  * The files: for an input that the parser accepts, the tree, as
  * `JSON.stringify(root, null, 2)`, locations included, in `ast.json`; for an

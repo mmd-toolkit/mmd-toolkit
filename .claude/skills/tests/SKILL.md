@@ -88,47 +88,44 @@ mermaid.js in [tests-mermaid-update](../tests-mermaid-update/SKILL.md); sections
   ["Running tests"](../conventions/SKILL.md#running-tests) in the skill
   `conventions`. For this package:
 
-  | Code changed                                                       | Test files to run (`tests/`)                                 |
-  | ------------------------------------------------------------------ | ------------------------------------------------------------ |
-  | `src/index.ts` (format, loader, `KNOWN_DIVERGENCES`)               | `fixtures.test.ts`, `expected-changes.test.ts`               |
-  | `src/fixture-acceptance.ts`                                        | `fixture-acceptance.test.ts`, `fixtures.test.ts`             |
-  | `src/mermaid.ts`, `rejections.ts`, `run-mermaid-options.ts`        | `mermaid.test.ts`, `mermaid-run-store.test.ts`               |
-  | `src/mermaid-run-store.ts`                                         | `mermaid-run-store.test.ts`                                  |
-  | `src/divergence-removals.ts`                                       | `divergence-removals.test.ts`, `mermaid.test.ts`             |
-  | `src/normalizers/<diagram>.ts`, `normalizers/index.ts`             | `mermaid.test.ts`, `fixtures.test.ts`, then `fixtures:check` |
-  | `src/normalizers/data-blocks.ts`                                   | `data-blocks.test.ts`, `mermaid.test.ts`                     |
-  | `src/normalizers/browser-stand-ins.ts`                             | `browser-stand-ins.test.ts`, `mermaid.test.ts`               |
-  | `src/normalizers/json.ts`                                          | `json.test.ts`, then `fixtures:check`                        |
-  | `src/expected-changes.ts`                                          | `expected-changes.test.ts`                                   |
-  | `src/recorded-embedded.ts`                                         | `recorded-embedded.test.ts`, then `fixtures:check`           |
-  | `src/fixture-shapes.ts`                                            | `fixture-shapes.test.ts`                                     |
-  | `src/db-from-tree/`                                                | `db-from-tree.test.ts`, `converted-text.test.ts`             |
-  | `src/source-scan.ts`                                               | `source-scan.test.ts`                                        |
-  | `src/ordered-json.ts`                                              | `ordered-json.test.ts`, `tools-fixture-store.test.ts`        |
-  | `tools/src/diagrams.ts`                                            | `tools-diagrams.test.ts`                                     |
-  | `tools/src/fixture-store.ts`                                       | `tools-fixture-store.test.ts`                                |
-  | `tools/src/spec-recorder.ts`                                       | `tools-spec-recorder.test.ts`                                |
-  | `tools/src/specified-reading.ts`                                   | `tools-specified-reading.test.ts`                            |
-  | `tools/src/recorded-tree*.ts`, `fixture-citations.ts`              | `tools-recorded-trees.test.ts`                               |
-  | `tools/src/runtime-imports.ts`                                     | `tools-recorded-trees.test.ts`, `mermaid-run-store.test.ts`  |
-  | `tools/fixtures.ts`, `tools/collect.ts`, `tools/recorded-trees.ts` | no test file; see below                                      |
+  | Code changed                                                | Test files to run (`tests/`)                                 |
+  | ----------------------------------------------------------- | ------------------------------------------------------------ |
+  | `src/index.ts` (format, loader, `KNOWN_DIVERGENCES`)        | `fixtures.test.ts`, `expected-changes.test.ts`               |
+  | `src/fixture-acceptance.ts`                                 | `fixture-acceptance.test.ts`, `fixtures.test.ts`             |
+  | `src/mermaid.ts`, `rejections.ts`, `run-mermaid-options.ts` | `mermaid.test.ts`, `mermaid-run-store.test.ts`               |
+  | `src/mermaid-run-store.ts`                                  | `mermaid-run-store.test.ts`                                  |
+  | `src/divergence-removals.ts`                                | `divergence-removals.test.ts`, `mermaid.test.ts`             |
+  | `src/normalizers/<diagram>.ts`, `normalizers/index.ts`      | `mermaid.test.ts`, `fixtures.test.ts`, then `fixtures:check` |
+  | `src/normalizers/data-blocks.ts`                            | `data-blocks.test.ts`, `mermaid.test.ts`                     |
+  | `src/normalizers/browser-stand-ins.ts`                      | `browser-stand-ins.test.ts`, `mermaid.test.ts`               |
+  | `src/normalizers/json.ts`                                   | `json.test.ts`, then `fixtures:check`                        |
+  | `src/expected-changes.ts`                                   | `expected-changes.test.ts`                                   |
+  | `src/recorded-embedded.ts`                                  | `recorded-embedded.test.ts`, then `fixtures:check`           |
+  | `src/fixture-shapes.ts`                                     | `fixture-shapes.test.ts`                                     |
+  | `src/db-from-tree/`                                         | `db-from-tree.test.ts`, `converted-text.test.ts`             |
+  | `src/source-scan.ts`                                        | `source-scan.test.ts`                                        |
+  | `src/ordered-json.ts`                                       | `ordered-json.test.ts`, `tools-fixture-store.test.ts`        |
+  | `tools/src/diagrams.ts`                                     | `tools-diagrams.test.ts`                                     |
+  | `tools/src/fixture-store.ts`                                | `tools-fixture-store.test.ts`                                |
+  | `tools/src/spec-recorder.ts`                                | `tools-spec-recorder.test.ts`                                |
+  | `tools/src/specified-reading.ts`                            | `tools-specified-reading.test.ts`                            |
+  | `tools/fixtures.ts`, `tools/collect.ts`                     | no test file; see below                                      |
 
   The functions of `tools/src` that decide what a fixture's recorded files
   contain are tested by the `tests/tools-*.test.ts` files listed above; the
   recorder runs in a process of its own there, since it needs Node.js's own
-  `import()`. The command-line files (`tools/fixtures.ts`, `tools/collect.ts`,
-  `tools/recorded-trees.ts`) have no test file; each command is checked by
-  running it: `add-many`, `set-divergence` and `set-note` with `--dry-run`,
-  reading what they would change; `generate` with `fixtures:check`;
-  `tools/collect.ts` with `--out` pointing outside the repository, reading the
-  file it writes; `tools/recorded-trees.ts` with
-  `recorded-trees:check --base HEAD`, reading what it prints. What to keep when
+  `import()`. The command-line files (`tools/fixtures.ts`, `tools/collect.ts`)
+  have no test file; each command is checked by running it: `add-many`,
+  `set-divergence` and `set-note` with `--dry-run`, reading what they would
+  change; `generate` with `fixtures:check`; `tools/collect.ts` with `--out`
+  pointing outside the repository, reading the file it writes. What to keep when
   the recorder (`tools/src/spec-recorder.ts`) changes is in step 3 of
   [references/collecting-fixtures.md](../tests-diagram-type/references/collecting-fixtures.md)
   of the skill tests-diagram-type.
 
-  AI agents read changed recorded trees and changed document items with the
-  skill [recorded-trees](../recorded-trees/SKILL.md).
+  AI agents check changed recorded trees and the accepted fixtures cited by
+  changed document blocks with the checklist and procedure of
+  [ast-json-validity](../ast-json-validity/SKILL.md).
 
   Run one file with
   `pnpm --filter @mmd-toolkit/tests exec vitest run tests/<file>`.

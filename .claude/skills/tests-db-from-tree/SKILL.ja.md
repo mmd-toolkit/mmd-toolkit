@@ -42,7 +42,8 @@ SKILL [tests](../tests/SKILL.ja.md#51-保持する形式と埋め込みデータ
    木が記録される前は、記録から契約を推測せず、
    仕様と固定の手組みの木で実装する。
    AI エージェントは、
-   変更の記録した木を [recorded-trees](../recorded-trees/SKILL.ja.md) で読む。
+   変更の記録した木を [ast-json-validity](../ast-json-validity/SKILL.ja.md)
+   で読む。
    共有の埋め込み値の helper を使い、比較可能な `dbFromTree` の結果すべてを、
    記録された読みと比べる。
    木と Db の実数、記録の不足、不一致ごとの入力を報告する。

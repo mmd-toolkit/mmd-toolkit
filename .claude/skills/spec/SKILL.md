@@ -298,8 +298,9 @@ it from the cases that its sentences distinguish.
    When a change alters a block of `ast.md` or `ast/<diagram>.md`, or a section
    of `common.md` or `diagrams/<diagram>.md` that a block of the tree, token, or
    position documents links to, follow
-   [When the tree, token, or position documents change in recorded-trees](../recorded-trees/SKILL.md#8-when-the-tree-token-or-position-documents-change)
-   for the fixtures that its script lists for the items whose key changed.
+   [When the tree, token, or position documents change](../ast-json-validity/SKILL.md#5-when-the-tree-token-or-position-documents-change)
+   in ast-json-validity to read the document diff against the base and check the
+   accepted fixtures cited by the changed blocks.
 
 3. Sort the cases that the sentence does not explain into kinds, and explain
    each kind with one rule. Write mermaid.js's mechanism as one rule instead of

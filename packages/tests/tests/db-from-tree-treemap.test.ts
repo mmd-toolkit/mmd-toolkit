@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { nodesOf } from "../src/recorded-tree.ts"
+import { nodesOf } from "../src/tree-walk.ts"
 import { dbFromTree } from "../src/db-from-tree/index.ts"
 import type { DbTreeRoot } from "../src/db-from-tree/index.ts"
 import type { EmbeddedValues } from "../src/mermaid.ts"

@@ -38,10 +38,10 @@ The reviewer edits nothing in the working tree.
 - A change whose diff has an `ast.json`, or that changes a block of the tree,
   token, or position documents or a section that such a block links to, also
   follows
-  [Reviewing a change in recorded-trees](../recorded-trees/SKILL.md#7-reviewing-a-change).
-  Read its answer files, their diff, and the answers in the author's report and
-  description only after writing your own answers, as those steps say; this is
-  the one exception to reading every file the change touched.
+  [Review independently](../ast-json-validity/SKILL.md#6-review-independently)
+  in ast-json-validity. Check the same `ast.json` files by that procedure before
+  reading the author's findings in the commits and pull request description,
+  then compare them with your own findings, as those steps require.
 - A review of a branch or a pull request covers the whole of it, also when the
   request names only its last commit: every file it changed since its base, and
   the released behavior that the same sentences govern. What an earlier round

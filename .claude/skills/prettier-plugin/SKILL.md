@@ -62,8 +62,8 @@ SKILL, fixtures with the tests SKILL).
 - `@mmd-toolkit/tests` has the corpus of the diagram type
   (`packages/tests/fixtures/<diagram>/`) and its Db summary.
 - AI agents read changed recorded trees with the skill
-  [recorded-trees](../recorded-trees/SKILL.md). Parser acceptance is checked by
-  comparing its tree/error results with `fixtureAccepts` from
+  [ast-json-validity](../ast-json-validity/SKILL.md). Parser acceptance is
+  checked by comparing its tree/error results with `fixtureAccepts` from
   `@mmd-toolkit/tests`.
 - Checks of a declared divergence mark's lexical form belong in the parser's
   shared `expectDivergenceForm` path, separately from acceptance, rather than in

@@ -83,8 +83,8 @@ for these steps too. Read them first.
      `docs/db-from-tree/<diagram>.md` with its Japanese pair, following
      [tests-db-from-tree](../tests-db-from-tree/SKILL.md), then run the whole
      test suite of the package. AI agents read any changed recorded trees with
-     [recorded-trees](../recorded-trees/SKILL.md). A diagram type that the new
-     version lacks shows as `acceptance` to `UnknownDiagramError` on the
+     [ast-json-validity](../ast-json-validity/SKILL.md). A diagram type that the
+     new version lacks shows as `acceptance` to `UnknownDiagramError` on the
      `common/` fixtures that use it; that belongs with detection below;
    - `summary fields`: a change inside the Db, unless the keys are ones an
      author wrote. Decide, in the same table as in section 2 of the skill

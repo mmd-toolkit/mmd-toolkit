@@ -11,7 +11,7 @@ import { embeddedValuesOf, loadFixtures } from "../src/index.ts"
 import { cssSupportsColor } from "../src/normalizers/browser-stand-ins.ts"
 import { scanSource } from "../src/source-scan.ts"
 import { sourceCutsOf } from "../src/db-from-tree/converted-text.ts"
-import { nodesOf } from "../src/recorded-tree.ts"
+import { nodesOf } from "../src/tree-walk.ts"
 import { commentOf, directiveOf, locationOf } from "./tree-pieces.ts"
 import { setField } from "./fixture-trees.ts"
 

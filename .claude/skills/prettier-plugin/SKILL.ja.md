@@ -61,7 +61,7 @@ fixture は tests の SKILL で直す。
 - `@mmd-toolkit/tests` に、
   図種のコーパス（`packages/tests/fixtures/<図種>/`）と Db の要約がある。
 - AI エージェントは、変更した記録の木を、
-  スキル [recorded-trees](../recorded-trees/SKILL.ja.md) で読む。
+  スキル [ast-json-validity](../ast-json-validity/SKILL.ja.md) で読む。
   受理は parser の木・エラーの結果と、
   `@mmd-toolkit/tests` の `fixtureAccepts` を比べて確かめる。
 - 宣言した差異の印の字句の形は、受理とは別に、

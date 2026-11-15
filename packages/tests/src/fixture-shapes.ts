@@ -7,7 +7,8 @@
  * U+2029, a comment, a line break, whether two names are one, or the way the
  * grammar cut the text into tokens, do not.
  */
-import { DATA_BLOCK_NODE_TYPES, nodesOf } from "./recorded-tree.ts"
+import { DATA_BLOCK_NODE_TYPES } from "./data-block-node-types.ts"
+import { nodesOf } from "./tree-walk.ts"
 import type { TreeRoot } from "./db-from-tree/tree.ts"
 import { IDS_WITHOUT_NODE } from "./db-from-tree/state.ts"
 

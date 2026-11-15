@@ -46,7 +46,7 @@ pin した mermaid.js の更新を扱う。
   その隣に記録したもの（`ast.json` か `parse-error.json`）と同じであること、
   受理・拒否が、既知の差異の印の求めるとおりに mermaid.js と合うこと。
   変更が記録する木は、
-  スキル [recorded-trees](../recorded-trees/SKILL.ja.md) で確かめる。
+  スキル [ast-json-validity](../ast-json-validity/SKILL.ja.md) で確かめる。
   `@mmd-toolkit/tests` は、すべての記録した木から組んだ Db を、
   各 fixture が記録した Db と比べる（`db-from-tree.test.ts`）。
   テストは mermaid.js も生成した入力も動かさず、
@@ -431,7 +431,7 @@ fixture を図種と名前で引用して読み込む。
    `@mmd-toolkit/tests` は、すべての記録した木の Db を、
    記録した mermaid.js の Db と比べる（`db-from-tree.test.ts`）。
    変更が記録する木の条件は、
-   スキル [recorded-trees](../recorded-trees/SKILL.ja.md) で確かめる。
+   スキル [ast-json-validity](../ast-json-validity/SKILL.ja.md) で確かめる。
    parser のテストは、それを確かめるために fixture をパースし直さない。
    図種のテストは、確かめる場合の fixture を名前で指し、
    その木が持つものを述べる。
@@ -486,6 +486,9 @@ fixture のテストが、各結果をそのファイルと比べる。
 
 3. 新しい結果を、仕様と照らして読む（`packages/parser` で）。
 
+   受理の木は、記録を開いたり `show-trees` を走らせたりする前に、
+   [期待する木を書き出す](../ast-json-validity/SKILL.ja.md#1-入力を読み期待する木を書き出す)。
+
    ```sh
    pnpm run show-trees <図種> <fixture 名> <fixture 名>
    ```
@@ -502,42 +505,11 @@ fixture のテストが、各結果をそのファイルと比べる。
    受理されるはずの fixture が拒否される、またはその逆なら、
    そのファイルを残さずに、それを示す。
 
-   新しい木のそれぞれを、その fixture を引く文とも照らして読む。
-   どの木も、それが足された場合について読まれるようにするためである。
-   引用は、
-   スキル [recorded-trees](../recorded-trees/SKILL.ja.md)
-   のコマンドの出力「Sentences that cite each changed tree」から取る。
-   コマンドは、仕様、パーサー、tests、整形ツールの文書を読む。
-   整形ツールの文書では、`[corpus fixture: ...]` だけがコーパスを引く。
-   引用は、引用の段落か、
-   表の行の `fixture` の列（英語の文書では `Fixtures`）のセルにある（スキル
-   `conventions` の「文書」）。
-   fixture を引く文は、その引用の段落のすぐ前の文で、前の引用の段落か、
-   段落か箇条書きの項目の始まりまでさかのぼる。
-   表のすぐ後ろの引用の段落は表の全体を、
-   コードの例のすぐ後ろの引用の段落はその例を、
-   `fixture` の列（英語の文書では `Fixtures`）のセルはその行を引く。
-   それらの文は、それを持つ段落、箇条書きの項目、表の全体とともに読む。
-   その文ごとに、その fixture が示す場合（何を受理するか、何を何と読むか、
-   テキストをどう出力するか）を言う。
-   そして、その場合が触れる木の部分（ノード、トークン、コメント、位置）を、
-   その文がそれについて言うことと、
-   木の文書がそのノードの型とトークンの種類について述べることと比べる。
-   木の文書は、`packages/spec/docs/ast.md` と `ast/<図種>.md`、
-   このパッケージの `docs/tokens.md`、`docs/tokens/<図種>.md`、
-   `docs/positions.md`、`docs/positions/<図種>.md` である。
-   木の文書の図種は、
-   木の本体のノードの図種である（`FlowchartDiagram` なら `flowchart`）。
-   `common/` の fixture でも同じである。
-   テキストをどう出力するかを言う整形ツールの文のように、
-   場合が木のどの部分にも触れないときは、そう書く。
-   木ごとの答えは、スキル `recorded-trees` のとおり答えのファイルに書く。
-   続けて、そのコマンドが出す項目について同スキルに従う。
-   どの文にも引かれない木は、この段では比べず、答えにそう書く。
-   fixture をこの変更が足したか、収集した入力かは、コマンドが示す。
-   この変更が足した、手で書いた fixture についてだけ、欠けた文を仕様に伝える。
-   スキル `conventions` の「テストの実行」は、
-   収集した入力（`source.kind` が `mermaid`）を例外とする。
+   新しい木のそれぞれを、それを引く文が示す場合も含めて、
+   [ast-json-validity](../ast-json-validity/SKILL.ja.md) で読む。
+   引く文との照合の詳しい手順は、
+   [fixture を引く文を読む](../ast-json-validity/SKILL.ja.md#3-fixture-を引く文を読む)
+   に従う。
 
 4. `-u` を使うのは、既存の結果が変わる変更のときだけ。
    その変更の前に、fixture をリポジトリの外の新しいディレクトリに写す。
@@ -559,9 +531,10 @@ fixture のテストが、各結果をそのファイルと比べる。
    エラーの同じ欄）、その後に違いを 1 つずつ出す。
    違いの種類がすべて、変更で説明できなければならない。
    説明できない種類があれば、`-u` の結果を受け入れずに調べる。
-   書き直した木のそれぞれも、手順 3 のとおり読み、
-   スキル `recorded-trees` に従う。
-   新しい中身に、この変更の答えのファイルで答える。
+   書き直した木のそれぞれも、手順 3 のとおり読む。
+   結果は、
+   [結果を報告する](../ast-json-validity/SKILL.ja.md#7-結果を報告する)
+   に従って記録する。
    変更で拒否されるようになった fixture には `parse-error.json` が書かれ、
    古い `ast.json` が残る。
    取り残しを探すテストがそれを挙げるので、
@@ -577,7 +550,7 @@ fixture のテストが、各結果をそのファイルと比べる。
    葉のノードの値の文字列と、状態図の note の位置が、そうした欄である。
    記録との比較だけでは再現性しか確かめないため、
    書き直すときも AI エージェントは
-   [recorded-trees](../recorded-trees/SKILL.ja.md) で木の条件を読み、
+   [ast-json-validity](../ast-json-validity/SKILL.ja.md) で木の条件を読み、
    Db の比較を保つ。
    lib を参照する検査は、パーサーのビルドが完了してから始める。
    その後、`packages/tests` で Db の検査を行う。
@@ -598,7 +571,6 @@ CI=true pnpm run test
 
 ```sh
 npx vitest run tests/db-from-tree.test.ts
-pnpm run recorded-trees:check --base origin/main
 ```
 
 リポジトリのルートで:
@@ -615,11 +587,10 @@ pnpm run format:check
 
 すべての fixture が fixture のテストを通り、
 記録した木がコーパスの記録した Db を与え、
-スキル `recorded-trees` のコマンドが終了コード 0 になり、記録と答えが読め、
-出された項目と変更の木のすべてに答えがあり、
-この変更が自分のもの以外の答えのファイルを足すことも直すこともなく、
-作業で書いたか変えた文のすべてが、その場合ごとに fixture を持てば（3 節）、
-作業は終わり。
+木を [ast-json-validity](../ast-json-validity/SKILL.ja.md) で確かめ、
+[結果を報告する](../ast-json-validity/SKILL.ja.md#7-結果を報告する)
+に従って結果を記録し、作業で書いたか変えた文のすべてが、
+その場合ごとに fixture を持てば（3 節）、作業は終わり。
 
 ### 4.9 文書
 
@@ -640,7 +611,8 @@ pnpm run format:check
 結果として、次を示す。
 実装したもの（ファイルごと）、見つけた仕様の欠落と、そのうち残っているもの、
 テストの件数と結果、記録した結果の数（新しいもの、変わったものの種類ごとの数）、
-この変更の答えのファイルの道（4.7 の手順 3）、公開した型、直した文書。
+[結果を報告する](../ast-json-validity/SKILL.ja.md#7-結果を報告する)
+に従って記録した結果、公開した型、直した文書。
 
 ## 5. 最初の一致を採る字句規則、隠れた形式、意味による受理条件
 
@@ -694,8 +666,8 @@ pnpm run format:check
   報告の前に 4.8 節で確かめ、4.10 節の形で結果を示す。
 - `docs/tokens.md`、`docs/tokens/<図種>.md`、`docs/positions.md`、
   `docs/positions/<図種>.md` の文が変わる:
-  [木とトークンと位置の文書が変わったとき](../recorded-trees/SKILL.ja.md#8-木とトークンと位置の文書が変わったとき)
-  に従い、コマンドが出す fixture を読む。
+  [木とトークンと位置の文書が変わったとき](../ast-json-validity/SKILL.ja.md#5-木とトークンと位置の文書が変わったとき)
+  に従って基準との差分を読み、変わったブロックが引く受理の fixture を確かめる。
 - 共通検査を集約するときは、前後で `(fixture, check)` の対象と実行回数を比べ、
   減った重複呼び出しと増えた場合を説明し、
   回数を合わせるための図種の除外は作らない。

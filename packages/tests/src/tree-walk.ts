@@ -1,14 +1,6 @@
-import type { TreeNode, TreeRoot } from "./db-from-tree/tree.ts"
+// Walks an ast.json tree node by node, following its recorded order.
 
-/** The node types of the data blocks, whose delimiters lie in their range. */
-export const DATA_BLOCK_NODE_TYPES: ReadonlySet<string> = new Set([
-  "EventmodelingDataBlock",
-  "AgentflowDataBlock",
-  "KanbanDataBlock",
-  "FlowchartDataBlock",
-  "SequenceDataBlock",
-  "UsecaseJsonDataBlock",
-])
+import type { TreeNode, TreeRoot } from "./db-from-tree/tree.ts"
 
 /** Whether a field holds a node: an object with a string type and two offsets. */
 export function isNode(value: unknown): value is TreeNode {

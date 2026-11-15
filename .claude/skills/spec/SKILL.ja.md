@@ -312,8 +312,9 @@ pin した commit は `packages/spec/docs/index.md` に記録してある。
    変更が `ast.md` か `ast/<図種>.md` のブロック、
    または木とトークンと位置の文書のブロックが指す `common.md` か
    `diagrams/<図種>.md` の節を変えるときは、
-   [recorded-trees の8節](../recorded-trees/SKILL.ja.md#8-木とトークンと位置の文書が変わったとき)
-   に従い、スクリプトが鍵の変わった項目について挙げる fixture を読む。
+   ast-json-validity の
+   [木とトークンと位置の文書が変わったとき](../ast-json-validity/SKILL.ja.md#5-木とトークンと位置の文書が変わったとき)
+   に従って基準との差分を読み、変わったブロックが引く受理の fixture を確かめる。
 
 3. 文が説明しない場合を種類に分け、種類ごとに 1 つの規則で説明する。
    例外を足していく形ではなく、mermaid.js の仕組みを 1 つの規則として書く。
