@@ -4240,6 +4240,35 @@ direction texts too, in a flowchart and in an ER diagram.
 
 See [Indentation](./flowchart.md#indentation).
 
+A line that the printer keeps together, that starts at the first column with a
+description block that has a text, and that holds a direction statement after
+the block in the same segment of the line, is kept at its written indentation
+too: at the first column `accDescr {D;} direction TB;` is the block `D;` and
+then a direction line, while after an indentation the first whitespace character
+starts a direction line that takes the block with it, and the description of the
+figure is empty. The statements of the line are printed by their ordinary rules.
+A block without a text reads the same empty description with and without the
+indentation, a line that the printer splits has its statements on lines of their
+own, and what a line feed, a U+2028, or a U+2029 ends is another segment, which
+the direction line does not reach back over: this rule keeps none of these at
+its column.
+
+[fixture: flowchart/indentation/joined-direction-column-zero] [fixture:
+flowchart/indentation/joined-direction-end-of-text] [fixture:
+flowchart/indentation/swimlane-joined-direction-end-of-text] [fixture:
+agentflow/direction/joined-direction-end-of-text] [fixture:
+flowchart/indentation/swimlane-joined-direction-column-zero] [fixture:
+flowchart/indentation/joined-direction-separators-and-trivia] [fixture:
+flowchart/indentation/unclosed-directive-before-direction] [fixture:
+flowchart/indentation/split-direction-after-description] [fixture:
+flowchart/indentation/empty-description-before-direction-control] [fixture:
+flowchart/indentation/whitespace-description-before-direction-control] [fixture:
+agentflow/direction/joined-direction-column-zero] [fixture:
+agentflow/direction/split-direction-after-description] [fixture:
+agentflow/direction/unclosed-directive-before-direction] [test: flowchart
+direction after a U+2028 and a joined comment line] [test: agentflow direction
+after a U+2029 and a comment line]
+
 Flowchart bodies use the shared significant indentation minimum, at least one
 space per level even with `tabWidth: 0`. This prevents a direction statement
 from gaining column-one accessibility or keyword priority when its indentation

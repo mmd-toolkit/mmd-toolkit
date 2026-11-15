@@ -4460,6 +4460,35 @@ flowchart と ER 図で同じです。
 
 [字下げ](./flowchart.ja.md#字下げ)を参照してください。
 
+印字器が 1 行に保つ行で、先頭の桁から中身のある説明ブロックで始まり、
+同じ区間のブロックの後ろに direction の文がある行は、字下げも元のまま保ちます。
+先頭の桁では `accDescr {D;} direction TB;` はブロック `D;` とそのあとの
+direction 行ですが、
+字下げすると最初の空白文字から始まる direction 行がブロックごと読み、
+図の説明は空になります。
+行の文は通常の規則で印字します。
+中身のないブロックは、字下げがあってもなくても同じ空の説明を読みます。
+印字器が分ける行は、文を別々の行に印字します。
+改行、U+2028、U+2029 で終わる部分は別の区間で、
+direction 行はそれより前へは届きません。
+この規則はどれも桁を保ちません。
+
+[fixture: flowchart/indentation/joined-direction-column-zero]
+[fixture: flowchart/indentation/joined-direction-end-of-text]
+[fixture: flowchart/indentation/swimlane-joined-direction-end-of-text]
+[fixture: agentflow/direction/joined-direction-end-of-text]
+[fixture: flowchart/indentation/swimlane-joined-direction-column-zero]
+[fixture: flowchart/indentation/joined-direction-separators-and-trivia]
+[fixture: flowchart/indentation/unclosed-directive-before-direction]
+[fixture: flowchart/indentation/split-direction-after-description]
+[fixture: flowchart/indentation/empty-description-before-direction-control]
+[fixture: flowchart/indentation/whitespace-description-before-direction-control]
+[fixture: agentflow/direction/joined-direction-column-zero]
+[fixture: agentflow/direction/split-direction-after-description]
+[fixture: agentflow/direction/unclosed-directive-before-direction]
+[test: flowchart direction after a U+2028 and a joined comment line]
+[test: agentflow direction after a U+2029 and a comment line]
+
 flowchart本文は共有の意味を持つ字下げの下限を使い、
 `tabWidth: 0`でも1段に最低1つの空白を置きます。
 字下げを落として、方向文が1桁目のアクセシビリティやキーワードの優先順位を、

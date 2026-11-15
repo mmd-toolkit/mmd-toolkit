@@ -6,6 +6,7 @@ import {
 } from "./kept-lines.ts"
 import {
   findDirectionTextLines,
+  findLinesBeforeDirectionStatement,
   findLinesAfterWords,
   findLinesAfterEmptyStyle,
   findStyleLinesWithLineSeparators,
@@ -47,27 +48,33 @@ export function findAgentflowKeptLines(source: Source): KeptLines {
     if (hasDirectionTextOnFirstLine(text))
       directionText.add(lineStartOf(source, statement.range[0]))
   })
-  const kept: KeptLines = {
-    joined: new Set([
-      ...findLinesWithOwnSemicolons(source),
-      // end/global never take LF, and %% after a separator is a real comment
-      // (diagrams/agentflow.md, Shared units and Preserved comments;
-      // docs/agentflow.md, Kept lines and Comments).
-      ...findLinesAfterWords(source, statements, [
-        "accTitle",
-        "accDescr",
-        "click",
-        "call",
-        "href",
-      ]),
-      ...findLinesAfterEmptyStyle(source, statements),
+  const joined = new Set([
+    ...findLinesWithOwnSemicolons(source),
+    // end/global never take LF, and %% after a separator is a real comment
+    // (diagrams/agentflow.md, Shared units and Preserved comments;
+    // docs/agentflow.md, Kept lines and Comments).
+    ...findLinesAfterWords(source, statements, [
+      "accTitle",
+      "accDescr",
+      "click",
+      "call",
+      "href",
     ]),
+    ...findLinesAfterEmptyStyle(source, statements),
+  ])
+  const beforeDirection = findLinesBeforeDirectionStatement(
+    source,
+    statements,
+    joined,
+  )
+  const kept: KeptLines = {
+    joined,
     verbatim: new Set([
       ...directionText,
       ...findStyleLinesWithLineSeparators(source, statements),
       ...findLinesEndedBySemicolon(source),
     ]),
-    ownIndentation: directionText,
+    ownIndentation: new Set([...directionText, ...beforeDirection]),
   }
   keptLinesBySource.set(source, kept)
   return kept
