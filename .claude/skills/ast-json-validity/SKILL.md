@@ -124,17 +124,9 @@ deleted block or a block whose own text is unchanged.
 
 ## 6. Review independently
 
-Before reading the author's findings in commits or the pull request description,
-check the same `ast.json` files and changed document blocks by sections 1 to 5.
-Write the independent comparisons, then compare them with the author's findings.
-Report differences with evidence of which tree or document is wrong, following
+Before reading the author's fixes in the commits of the change, check the same
+`ast.json` files and changed document blocks by sections 1 to 5. Write the
+independent comparisons, then compare them with the author's fixes. Report
+differences with evidence of which tree or document is wrong, following
 [review section 5, Findings and the report](../review/SKILL.md#5-findings-and-the-report).
 Reviewers edit nothing in the working tree.
-
-## 7. Report the result
-
-In the pull request description, write the mismatches found and their fixes:
-which `ast.json`, where in it, and against which sentence of the specification
-or the parser's documents. Write the same information in the commit of each fix.
-With no mismatch, write one line with the number of `ast.json` checked and the
-base. This also applies to a document-only change.

@@ -479,20 +479,18 @@ for acceptance without adding configuration parameters or options to `parse()`.
    of difference, the same field of the same node type or of the error, and then
    each difference. Every kind must be explained by the change; if one is not,
    do not accept the result of `-u`, and look into it. Read each rewritten tree
-   as in step 3, and record the result under
-   [Report the result](../ast-json-validity/SKILL.md#7-report-the-result). A
-   fixture that the change makes rejected gets a `parse-error.json`, and its old
-   `ast.json` is left behind, which the test that looks for files left behind
-   names; delete it with `rm` (and the reverse for a fixture that becomes
-   accepted). `-u` also writes the result of every fixture that has none,
-   including fixtures added meanwhile for rules not implemented yet; each `new:`
-   line must be a fixture whose rule is implemented, and the file of any other
-   is deleted (step 1). Show the number of fixtures of each kind in the result.
-   A node whose fields the Db does not read shows a wrong change only here (in
-   state, an edit that makes a floating note id end at its first character; the
-   value strings of the leaf nodes and the position of a state note are such
-   fields). A snapshot comparison alone establishes repeatability, so AI agents
-   read the tree conditions with
+   as in step 3. A fixture that the change makes rejected gets a
+   `parse-error.json`, and its old `ast.json` is left behind, which the test
+   that looks for files left behind names; delete it with `rm` (and the reverse
+   for a fixture that becomes accepted). `-u` also writes the result of every
+   fixture that has none, including fixtures added meanwhile for rules not
+   implemented yet; each `new:` line must be a fixture whose rule is
+   implemented, and the file of any other is deleted (step 1). Show the number
+   of fixtures of each kind in the result. A node whose fields the Db does not
+   read shows a wrong change only here (in state, an edit that makes a floating
+   note id end at its first character; the value strings of the leaf nodes and
+   the position of a state note are such fields). A snapshot comparison alone
+   establishes repeatability, so AI agents read the tree conditions with
    [ast-json-validity](../ast-json-validity/SKILL.md), and the Db comparison is
    kept when records are rewritten. Complete the parser build before starting
    checks that import its `lib` output, then run the Db check in
@@ -532,9 +530,8 @@ change.
 
 The work is done when every fixture passes the fixture test, the recorded trees
 give the Db that the corpus records, the trees have been checked by
-[ast-json-validity](../ast-json-validity/SKILL.md) and the result recorded under
-[Report the result](../ast-json-validity/SKILL.md#7-report-the-result), and
-every sentence that the work wrote or changed has a fixture for each of its
+[ast-json-validity](../ast-json-validity/SKILL.md) and every mismatch resolved,
+and every sentence that the work wrote or changed has a fixture for each of its
 cases (section 3).
 
 ### 4.9 Documents
@@ -557,9 +554,9 @@ Run `npx prettier --write` on them, and pass `pnpm run lint:docs` and
 Show as the result: what was implemented, file by file; the gaps in the
 specification that were found, and which of them are still open; the number of
 tests and their results; the number of recorded results (new, and changed, by
-kind); the result recorded under
-[Report the result](../ast-json-validity/SKILL.md#7-report-the-result); the
-exported types; the changed documents.
+kind); the result of the check of
+[ast-json-validity](../ast-json-validity/SKILL.md) (the number of trees checked,
+and each mismatch with its fix); the exported types; the changed documents.
 
 ## 5. First-match lexical rules, hidden forms and semantic acceptance
 

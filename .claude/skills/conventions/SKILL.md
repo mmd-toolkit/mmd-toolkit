@@ -200,8 +200,7 @@ everything after every change.
   check of another kind (other inputs, another method) is.
 - The report says what was run and what was not.
 - AI agents check changed recorded trees with the checklist and procedure of
-  [ast-json-validity](../ast-json-validity/SKILL.md) and record the result under
-  [Report the result](../ast-json-validity/SKILL.md#7-report-the-result).
+  [ast-json-validity](../ast-json-validity/SKILL.md).
 - A report of a change in behavior (acceptance, the tree, the Db, formatting, a
   rule) goes to review with a table of its cases: for each sentence the change
   concerns, every case the sentence distinguishes, the fixture that holds it,

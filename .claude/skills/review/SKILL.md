@@ -40,8 +40,8 @@ The reviewer edits nothing in the working tree.
   follows
   [Review independently](../ast-json-validity/SKILL.md#6-review-independently)
   in ast-json-validity. Check the same `ast.json` files by that procedure before
-  reading the author's findings in the commits and pull request description,
-  then compare them with your own findings, as those steps require.
+  reading the author's fixes in the commits, then compare them with your own
+  findings, as those steps require.
 - A review of a branch or a pull request covers the whole of it, also when the
   request names only its last commit: every file it changed since its base, and
   the released behavior that the same sentences govern. What an earlier round
