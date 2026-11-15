@@ -592,6 +592,16 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
  */
 const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
+    "flowchart LS semicolon inside block",
+    "flowchart LR\naccDescr {style:#x}; accDescr {\nd;e\u2028f\n} Z\n",
+    "flowchart LR\n  accDescr {style:#x}; accDescr {\n    d;e\u2028f\n  }\n  Z\n",
+  ],
+  [
+    "flowchart PS semicolon inside block",
+    "flowchart LR\naccDescr {style:#x}; accDescr {\nd;e\u2029f\n} Z\n",
+    "flowchart LR\n  accDescr {style:#x}; accDescr {\n    d;e\u2029f\n  }\n  Z\n",
+  ],
+  [
     "U+2028 after a `;` before an edge id",
     "flowchart LR\nA[style:#x];\u2028e1@-->B\n",
     "flowchart LR\n  A[style:#x];\u2028e1@-->B\n",
