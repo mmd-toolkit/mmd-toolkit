@@ -1,13 +1,12 @@
-import type { CheckedNode } from "../src/check-tree/types.ts"
 import type { TreeRange } from "../src/db-from-tree/tree.ts"
-import { buildTree } from "./check-tree-built.ts"
-import type { Built, Kit } from "./check-tree-built.ts"
+import { buildTree } from "./tree-built.ts"
+import type { Built, Kit, RecordedNode } from "./tree-built.ts"
 import { hull } from "./statement-tree-built.ts"
 
 /** Fixed source with explicitly authored nodes; this helper does not parse. */
 export function buildTreeview(
   source: string,
-  make: (kit: Kit) => CheckedNode[],
+  make: (kit: Kit) => RecordedNode[],
 ): Built {
   return buildTree(
     {
@@ -21,7 +20,7 @@ export function buildTreeview(
 }
 
 /** One retained source branch, with its marker supplied by the test. */
-export function prefix(kit: Kit, raw: string, marker = "├"): CheckedNode {
+export function prefix(kit: Kit, raw: string, marker = "├"): RecordedNode {
   return kit.node("TreeviewBranchPrefix", kit.token("RawText", raw).range, {
     value: raw,
     marker,
@@ -29,7 +28,7 @@ export function prefix(kit: Kit, raw: string, marker = "├"): CheckedNode {
 }
 
 /** One whole branchless decoration, without its outer padding or LF. */
-export function decoration(kit: Kit, raw = "│"): CheckedNode {
+export function decoration(kit: Kit, raw = "│"): RecordedNode {
   return kit.node("TreeviewIgnoredText", kit.token("RawText", raw).range, {
     kind: "box-decoration",
     value: raw,
@@ -41,10 +40,10 @@ export function row(
   kit: Kit,
   indent: number,
   raw: string,
-  annotations: () => CheckedNode[] = () => [],
-  branch: CheckedNode | null = null,
-  textBeforeName: CheckedNode[] = [],
-): CheckedNode {
+  annotations: () => RecordedNode[] = () => [],
+  branch: RecordedNode | null = null,
+  textBeforeName: RecordedNode[] = [],
+): RecordedNode {
   const quoted = raw.startsWith('"') || raw.startsWith("'")
   const token = kit.token(quoted ? "String" : "RawText", raw)
   const name = kit.node(
@@ -78,9 +77,9 @@ export function annotation(
   kit: Kit,
   kind: "Class" | "Icon" | "Description",
   raw: string | null,
-  before: CheckedNode[] = [],
-  branch: CheckedNode | null = null,
-): CheckedNode {
+  before: RecordedNode[] = [],
+  branch: RecordedNode | null = null,
+): RecordedNode {
   const pieces: { range: TreeRange }[] = [
     ...before,
     ...(branch === null ? [] : [branch]),
@@ -115,9 +114,9 @@ export function common(
   kit: Kit,
   kind: "Title" | "AccTitle" | "AccDescr" | "AccDescrBlock",
   raw: string | null,
-  branch: CheckedNode | null = null,
-  gapBeforeOpen: () => CheckedNode[] = () => [],
-): CheckedNode {
+  branch: RecordedNode | null = null,
+  gapBeforeOpen: () => RecordedNode[] = () => [],
+): RecordedNode {
   const word =
     kind === "Title" ? "title" : kind === "AccTitle" ? "accTitle" : "accDescr"
   const pieces: { range: TreeRange }[] = [

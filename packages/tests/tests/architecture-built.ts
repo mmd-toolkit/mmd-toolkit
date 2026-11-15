@@ -1,12 +1,11 @@
-import type { CheckedNode } from "../src/check-tree/types.ts"
-import { buildTree } from "./check-tree-built.ts"
-import type { Built, Kit } from "./check-tree-built.ts"
+import { buildTree } from "./tree-built.ts"
+import type { Built, Kit, RecordedNode } from "./tree-built.ts"
 import { hull } from "./statement-tree-built.ts"
 
 /** A fixed source with explicitly supplied occurrences, without a parser. */
 export function buildArchitecture(
   source: string,
-  make: (kit: Kit) => CheckedNode[],
+  make: (kit: Kit) => RecordedNode[],
 ): Built {
   return buildTree(
     {
@@ -21,7 +20,7 @@ export function buildArchitecture(
 }
 
 /** A whole authored name, or the interior of an explicitly parenthesized icon. */
-export function identifier(kit: Kit, name: string): CheckedNode {
+export function identifier(kit: Kit, name: string): RecordedNode {
   return kit.node("Identifier", kit.token("Identifier", name).range, { name })
 }
 
@@ -30,7 +29,7 @@ export function architectureLabel(
   kit: Kit,
   raw: string,
   kind: "text" | "string" = "text",
-): CheckedNode {
+): RecordedNode {
   const open = kit.token("Punctuator", "[")
   kit.token(kind === "string" ? "String" : "RawText", raw.slice(1, -1))
   const close = kit.token("Punctuator", "]")
@@ -42,7 +41,7 @@ export function architectureLabel(
 }
 
 /** Each callback supplies only the hidden forms in its named source position. */
-export type Gaps = Readonly<Record<string, (() => CheckedNode[]) | undefined>>
+export type Gaps = Readonly<Record<string, (() => RecordedNode[]) | undefined>>
 
 /** A flat declaration with explicitly supplied optional components. */
 export function declaration(
@@ -56,7 +55,7 @@ export function declaration(
     readonly parent?: string
     readonly gaps?: Gaps
   } = {},
-): CheckedNode {
+): RecordedNode {
   const pieces: { range: readonly [number, number] }[] = [
     kit.token("Keyword", kind.toLowerCase()),
   ]
@@ -75,7 +74,7 @@ export function declaration(
   pieces.push(id)
   if (kind !== "Junction") {
     gap("textBeforeIcon")
-    let icon: CheckedNode | null = null
+    let icon: RecordedNode | null = null
     if (options.icon !== undefined) {
       const raw = options.icon
       if (raw.startsWith("(")) {
@@ -130,7 +129,7 @@ export function edge(
     readonly gaps?: Gaps
     readonly arrowGaps?: Gaps
   },
-): CheckedNode {
+): RecordedNode {
   const pieces: { range: readonly [number, number] }[] = []
   const fields: Record<string, unknown> = {}
 
@@ -223,11 +222,11 @@ export function alignment(
   direction: "row" | "column",
   members: readonly string[],
   options: {
-    readonly beforeDirection?: () => CheckedNode[]
-    readonly beforeMembers?: readonly (() => CheckedNode[])[]
-    readonly after?: () => CheckedNode[]
+    readonly beforeDirection?: () => RecordedNode[]
+    readonly beforeMembers?: readonly (() => RecordedNode[])[]
+    readonly after?: () => RecordedNode[]
   } = {},
-): CheckedNode {
+): RecordedNode {
   const start = kit.token("Keyword", "align")
   const textBeforeDirection = options.beforeDirection?.() ?? []
   const word = kit.token("Keyword", direction)

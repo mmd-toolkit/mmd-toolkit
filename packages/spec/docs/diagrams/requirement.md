@@ -1033,7 +1033,8 @@ Each rule below makes a node of the tree, defined in
 | `empty-description-block` where a statement starts                                                        | RequirementAccDescrBlockStatement without text, a statement of its own                           |
 | `empty-description-block` in a body                                                                       | RequirementIgnoredText, an item of the `body` list                                               |
 | `string`                                                                                                  | StringLiteral                                                                                    |
-| `unquoted-text` that is a name, or `style-word` that is a name                                            | RequirementIdentifier                                                                            |
+| `style-word` that is a name after `style` or `classDef`                                                   | Identifier                                                                                       |
+| `unquoted-text` that is a name, or `style-word` that is a name or a class after `class`                   | RequirementIdentifier                                                                            |
 | `unquoted-text` that is a value, `style-item`, `title-text`, `description-text`, `description-block-text` | RequirementLiteral                                                                               |
 | `direction-text`                                                                                          | RequirementIgnoredText                                                                           |
 

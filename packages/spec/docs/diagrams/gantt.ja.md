@@ -1259,7 +1259,7 @@ click の id の後のコメントは行を終え、click の文に部分がな�
 U+2028 や U+2029 の後のコメントは読み飛ばされ、
 値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
 
-[fixture: gantt/db-title-line-separator-then-comment-line]
+[fixture: gantt/lex-title-line-separator-then-comment-line]
 [fixture: gantt/lex-section-line-separator-then-comment-line]
 [fixture: gantt/lex-axis-format-line-separator-then-comment-line]
 [fixture: gantt/lex-axis-format-paragraph-separator-then-comment-line]

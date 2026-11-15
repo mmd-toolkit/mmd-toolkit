@@ -1,71 +1,5 @@
-import type { CheckedNode } from "../src/check-tree/types.ts"
-import type { Kit } from "./check-tree-built.ts"
-import { buildTree } from "./check-tree-built.ts"
-import type { Built } from "./check-tree-built.ts"
-import { setField } from "./check-tree-recorded.ts"
-import { commentOf, locationOf, tokenOf } from "./check-tree-trees.ts"
-
-/** Retained prefixes supplied as complete occurrences, with explicit cuts and Comments. */
-export function withPreheader(
-  built: Built,
-  prefix:
-    | "Architecture"
-    | "Cynefin"
-    | "Eventmodeling"
-    | "Gitgraph"
-    | "Info"
-    | "Packet"
-    | "Radar"
-    | "Wardley",
-  parts: readonly (readonly [
-    string,
-    "yaml-block" | "directive",
-    (readonly string[])?,
-  ])[],
-  comments: readonly string[],
-): Built {
-  const forms: CheckedNode[] = []
-  const tokens = []
-  let from = 0
-  for (const [raw, kind, fragments] of parts) {
-    const whole = tokenOf(built.source, "RawText", { text: raw, from })
-    let pieceFrom = from
-    for (const text of fragments ?? [raw]) {
-      const token = tokenOf(built.source, "RawText", { text, from: pieceFrom })
-      tokens.push(token)
-      pieceFrom = token.range[1]
-    }
-    forms.push({
-      type: `${prefix}IgnoredText`,
-      kind,
-      value: fragments?.join("") ?? raw,
-      range: whole.range,
-      loc: whole.loc,
-    })
-    from = whole.range[1]
-  }
-  const range = [
-    forms[0]?.range[0] ?? built.tree.body.range[0],
-    built.tree.body.range[1],
-  ] as const
-  setField(built.tree.body, "textBeforeHeader", forms)
-  setField(built.tree.body, "range", range)
-  setField(built.tree.body, "loc", locationOf(built.source, range))
-  setField(built.tree, "tokens", [...tokens, ...built.tree.tokens])
-  let commentFrom = 0
-  setField(
-    built.tree,
-    "comments",
-    comments.map((text) => {
-      if (text === "%%")
-        commentFrom = built.source.indexOf("\n%%\n", commentFrom) + 1
-      const comment = commentOf(built.source, "%%", { text, from: commentFrom })
-      commentFrom = comment.range[1]
-      return comment
-    }),
-  )
-  return built
-}
+import type { Built, Kit, RecordedNode } from "./tree-built.ts"
+import { buildTree } from "./tree-built.ts"
 
 /** The range of the supplied authored components, without lexing or parsing. */
 export function hull(
@@ -91,7 +25,7 @@ export function ignored(
     | "Wardley",
   raw: string,
   kind: "yaml-block" | "directive",
-): CheckedNode {
+): RecordedNode {
   return kit.node(`${prefix}IgnoredText`, kit.token("RawText", raw).range, {
     kind,
     value: raw,
@@ -111,8 +45,8 @@ export function common(
     | "Wardley",
   kind: "Title" | "AccTitle" | "AccDescr" | "AccDescrBlock",
   value: string | null,
-  after: () => CheckedNode[] = () => [],
-): CheckedNode {
+  after: () => RecordedNode[] = () => [],
+): RecordedNode {
   const block = kind === "AccDescrBlock"
   const word =
     kind === "Title" ? "title" : kind === "AccTitle" ? "accTitle" : "accDescr"
@@ -139,11 +73,11 @@ export function common(
 /** A fixed info input and explicitly supplied occurrences. */
 export function buildInfo(
   source: string,
-  make: (kit: Kit) => CheckedNode[],
+  make: (kit: Kit) => RecordedNode[],
   showInfo = false,
-  beforeFlag: (kit: Kit) => CheckedNode[] = () => [],
+  beforeFlag: (kit: Kit) => RecordedNode[] = () => [],
 ): Built {
-  let textBeforeShowInfo: CheckedNode[] = []
+  let textBeforeShowInfo: RecordedNode[] = []
   return buildTree(
     {
       header: "info",
@@ -170,16 +104,16 @@ export function buildInfo(
 /** A fixed gitgraph input and authored header components. */
 export function buildGitgraph(
   source: string,
-  make: (kit: Kit) => CheckedNode[],
+  make: (kit: Kit) => RecordedNode[],
   direction: "LR" | "TB" | "BT" | null = null,
   colon: boolean = direction !== null,
   gaps: {
-    readonly beforeDirection?: (kit: Kit) => CheckedNode[]
-    readonly beforeColon?: (kit: Kit) => CheckedNode[]
+    readonly beforeDirection?: (kit: Kit) => RecordedNode[]
+    readonly beforeColon?: (kit: Kit) => RecordedNode[]
   } = {},
 ): Built {
-  let textBeforeDirection: CheckedNode[] = []
-  let textBeforeColon: CheckedNode[] = []
+  let textBeforeDirection: RecordedNode[] = []
+  let textBeforeColon: RecordedNode[] = []
   return buildTree(
     {
       header: "gitGraph",

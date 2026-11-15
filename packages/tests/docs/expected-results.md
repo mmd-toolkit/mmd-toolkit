@@ -829,8 +829,8 @@ Db computes its dates from both, so its summary leaves the dates out (see
   `pnpm-lock.yaml`; the installed version of mermaid.js; and the versions of
   Node.js and V8. A change to any of them gives new keys, so a stored result
   never outlives the code or the mermaid.js that made it. A change to the other
-  files of `src/` (the loader of the fixtures, the checks of trees) keeps the
-  stored results.
+  files of `src/` (the loader of the fixtures, the Db builders) keeps the stored
+  results.
 - What is stored: the results of runs. An error thrown instead of a result
   (`MermaidEnvironmentError`, an error of the options) is not stored.
 - Reading and writing: each file is written under another name and then renamed,

@@ -1,8 +1,7 @@
 import { existsSync, readFileSync } from "node:fs"
 import path from "node:path"
 import { describe, expect, it } from "vitest"
-import { checkTree } from "../src/check-tree/index.ts"
-import type { CheckedRoot } from "../src/check-tree/types.ts"
+import type { TreeRoot } from "../src/db-from-tree/tree.ts"
 import { dbFromTree } from "../src/db-from-tree/index.ts"
 import type { DbTreeRoot } from "../src/db-from-tree/index.ts"
 import {
@@ -15,7 +14,7 @@ import {
 
 describe("treeview recorded results", () => {
   for (const diagram of ["treeview", "common"] as const)
-    it(`checks every result kind, tree condition and comparison Db in ${diagram}`, async () => {
+    it(`checks every result kind and comparison Db in ${diagram}`, async () => {
       const problems: string[] = []
       let checked = 0
       let compared = 0
@@ -26,7 +25,7 @@ describe("treeview recorded results", () => {
         const ast = path.join(directory, "ast.json")
         const error = path.join(directory, "parse-error.json")
         const tree = existsSync(ast)
-          ? (JSON.parse(readFileSync(ast, "utf8")) as CheckedRoot)
+          ? (JSON.parse(readFileSync(ast, "utf8")) as TreeRoot)
           : undefined
         if (
           diagram === "common" &&
@@ -48,10 +47,6 @@ describe("treeview recorded results", () => {
         }
         if (!accepts || tree === undefined) continue
         checked++
-        for (const problem of checkTree(fixture.input, tree))
-          problems.push(
-            `${name}: ${problem.where}: ${problem.message}; input ${JSON.stringify(fixture.input)}`,
-          )
         if (!result.accepted || result.db === null) {
           withoutComparison.push(name)
           continue

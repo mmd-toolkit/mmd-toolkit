@@ -237,9 +237,8 @@ const diagrams: readonly DiagramValues[] = [
       // their tokens.
       "RequirementRiskField",
       "RequirementVerifyMethodField",
-      // The shared leaf nodes that are no nodes of a requirement diagram:
-      // its ids and numbers are the text of a name or a value.
-      "Identifier",
+      // The shared leaf node that is no node of a requirement diagram: its
+      // numbers are the text of a name or a value.
       "NumericLiteral",
     ]),
   },

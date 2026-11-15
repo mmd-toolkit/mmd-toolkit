@@ -751,9 +751,13 @@ inside a comment line and in the middle of what would otherwise be a unit.
 Consequences, each confirmed against mermaid.js:
 
 - The closing `}%%` is optional. A directive with a free-text argument and no
-  `}%%` extends to the end of the text.
+  `}%%` extends to the end of the text, unless a U+2028 or U+2029 stops its
+  argument first: then the directive ends before that character, and the text
+  after it is read.
 
-  [fixture: common/directive-unclosed]
+  [fixture: common/directive-unclosed] [fixture:
+  ishikawa/directive-open-object-u2028] [fixture:
+  ishikawa/directive-open-object-u2029]
 
   Right after the header, it takes the rest of the diagram: `flowchart LR`,
   `%%{init: {"theme": "dark"}}`, and `A-->B` has no vertices and no edges.

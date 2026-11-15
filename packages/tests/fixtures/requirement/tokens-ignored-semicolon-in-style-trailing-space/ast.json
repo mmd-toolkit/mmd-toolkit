@@ -46,7 +46,7 @@
         "type": "RequirementStyleStatement",
         "names": [
           {
-            "type": "RequirementIdentifier",
+            "type": "Identifier",
             "name": "r",
             "range": [
               43,

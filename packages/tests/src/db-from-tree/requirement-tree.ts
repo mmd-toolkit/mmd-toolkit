@@ -4,7 +4,7 @@
  * others (the fields `textBefore` and `textAfter` of a direction statement are
  * not read: the Db has nothing of the text around the direction).
  */
-import type { StringLiteral, TreeNode } from "./tree.ts"
+import type { Identifier, StringLiteral, TreeNode } from "./tree.ts"
 
 /** ast/requirement.md: RequirementDiagram. */
 export interface RequirementDiagram extends TreeNode {
@@ -124,14 +124,14 @@ export interface RequirementDirectionStatement extends TreeNode {
 /** ast/requirement.md: RequirementStyleStatement. */
 export interface RequirementStyleStatement extends TreeNode {
   readonly type: "RequirementStyleStatement"
-  readonly names: readonly RequirementName[]
+  readonly names: readonly (Identifier | StringLiteral)[]
   readonly styles: readonly RequirementLiteral[]
 }
 
 /** ast/requirement.md: RequirementClassDefStatement. */
 export interface RequirementClassDefStatement extends TreeNode {
   readonly type: "RequirementClassDefStatement"
-  readonly cssClasses: readonly RequirementName[]
+  readonly cssClasses: readonly (Identifier | StringLiteral)[]
   readonly styles: readonly RequirementLiteral[]
 }
 

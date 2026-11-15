@@ -6,8 +6,8 @@
 パーサーを、[`@mmd-toolkit/tests`](../../tests) の fixture に照らして、
 確かめます。
 パーサーがすべきことは、仕様と fixture が述べます。
-記録した木が仕様の条件を保つか、mermaid.js の Db を与えるかは、
-コーパスの確かめで、`@mmd-toolkit/tests` が記録した木に行います。
+`@mmd-toolkit/tests` は、記録した木から作った Db を、
+mermaid.js の Db と比べます。
 パーサーのテストは、パーサーがその木を与えることを確かめ、
 mermaid.js も生成した入力も動かしません。
 コーパスに欠けている場合は、それを定める仕様かパーサーの文書の文とともに、
@@ -25,9 +25,7 @@ fixture としてコーパスに足します。
   fixture の `knownDivergence` の印が求めるとおりに合うこと。
   印がなければ mermaid.js の結果、印があれば仕様の結果です。
 
-ここでは木も Db も確かめません。
-`@mmd-toolkit/tests` が、記録した各木を確かめ（`check-tree-corpus.test.ts`。
-[木の検査](#木の検査)を参照）、その木から Db を組んで、
+`@mmd-toolkit/tests` が、記録した各木から Db を組んで、
 fixture が記録した Db と比べます（`db-from-tree.test.ts`）。
 
 `tests/kanban.test.ts` は、名前で指した fixture で、
@@ -44,7 +42,7 @@ CRLF を含む引用符付きのラベル、対にならない形の区切り、
 `tests/fixtures.test.ts` は、`c4/` の外にある C4 検出 fixture も含めて、
 解析結果の記録と受理判定を比べます。
 `tests/ast-c4-examples.test.ts` は、
-型のコメントの例の範囲と木の不変条件を検査します。
+型のコメントの例の範囲とノード型を検査します。
 
 `tests/venn.test.ts` は、名前で指した fixture で、部分集合、
 明示と暗黙のテキスト、スタイルの原子とそのトークンの種類、
@@ -309,32 +307,6 @@ mermaid.js と仕様は、2 つの入力で同じ図のテキストを読みま�
 `html-tag-in-frontmatter` は両方向の差異なので、
 fixture には参照入力が要りません。
 
-## 木の検査
-
-[不変条件](./positions.ja.md#不変条件)と、各図種の文書が木について述べることは、
-`@mmd-toolkit/tests` が確かめます（`checkTree`）。
-それは、木が破る条件を一覧にします。
-コーパスの記録したすべての木を確かめ、パーサーのテストも、
-自分の入力の木にそれを使い（`tests/helpers/tree-problems.ts`）、
-一覧が空であることを求めます。
-
-子の欄の順は、各ノード型の節が述べるものです。
-[ast.ja.md の「ノード」](../../spec/docs/ast.ja.md#ノード) を参照。
-`visitorKeys` の順に子の欄をたどる道具は、子のノードにソースの順で出会います。
-ただし、開く矢印とラベルを持つ FlowchartLink では、ラベルは矢印より前に書かれ、
-矢印より後にたどられます。
-閉じる矢印より前にラベルが書かれた AgentflowLink と、
-call より前にリンクが書かれた GanttClickStatement でも、
-ラベルやリンクは後にたどられます。
-
-[fixture: agentflow/gram-split-edge-id]
-[fixture: gantt/gram-click-href-then-call]
-
-`tests/traverse.test.ts` は、各ノード型の節にある子の欄の文を読み、
-すべてのノード型で `visitorKeys` が同じ欄を同じ順に挙げることを確かめます。
-その順で子のノードにソースの順で出会うことは、
-`@mmd-toolkit/tests` が記録したすべての木で確かめます。
-
 ## 記録したパースの結果
 
 すべての fixture について、`parse()` の結果を、
@@ -381,10 +353,9 @@ CI かどうかによらず、求めない限り、テストを走らせても�
 2. 新しい `ast.json` と `parse-error.json` を読み、
    木とエラーが仕様どおりであることを確かめる。
 3. `packages/tests` で、記録した木へのコーパスの確かめを回す。
-   `npx vitest run tests/check-tree-corpus.test.ts tests/db-from-tree.test.ts`
-   である。
-   パーサーのテストは、記録した木がどうであっても通るので、
-   条件を破る木や別の Db を与える木は、これでしか分からない。
+   `npx vitest run tests/db-from-tree.test.ts` である。
+   パーサーのテストは、記録した木がどうであっても通るので、Db の比較は、
+   木が表すものを独立に確かめる。
 4. fixture と一緒にコミットする。
 
 コーパスに fixture があり、パーサーに本体がまだない図種は、
@@ -403,8 +374,8 @@ fixture を改名・削除するときは、古いファイルも一緒に動か
   `src/ast/class.ts`、`src/ast/state.ts` にあります。
   `^` が示す範囲を、ノードの範囲と比べます。
 - README の「使い方」の例を parse し、示している値と木を結果と比べます。
-- 単体テストが、`common.md` の各規則、検出器の表、`visitorKeys`（子の欄の順も。
-  [木の検査](#木の検査)を参照）と `traverseNodes`、
+- 単体テストが、`common.md` の各規則、検出器の表、
+  `visitorKeys`（子の欄の順も含む）と `traverseNodes`、
   flowchart の木とそのトークン、
   シーケンス図とクラス図と状態図の木とそのトークンと文法の外の拒否を扱います。
 

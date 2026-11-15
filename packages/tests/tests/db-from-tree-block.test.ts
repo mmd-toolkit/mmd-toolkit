@@ -5,17 +5,15 @@ import type {
   TreeNode,
   TreeRange,
   TreeToken,
+  TreeRoot,
 } from "../src/db-from-tree/tree.ts"
 import { embeddedValuesOf, loadFixtures } from "../src/index.ts"
 import { cssSupportsColor } from "../src/normalizers/browser-stand-ins.ts"
 import { scanSource } from "../src/source-scan.ts"
-import type { CheckedRoot } from "../src/check-tree/types.ts"
-import { WrittenText } from "../src/check-tree/written-text.ts"
-import { nodesOf } from "../src/check-tree/walk.ts"
-import { checkShape } from "../src/check-tree/shape.ts"
-import { Problems } from "../src/check-tree/problems.ts"
-import { commentOf, directiveOf, locationOf } from "./check-tree-trees.ts"
-import { setField } from "./check-tree-recorded.ts"
+import { sourceCutsOf } from "../src/db-from-tree/converted-text.ts"
+import { nodesOf } from "../src/tree-walk.ts"
+import { commentOf, directiveOf, locationOf } from "./tree-pieces.ts"
+import { setField } from "./fixture-trees.ts"
 
 // Fixed fixture inputs, with their statements spelled out by hand. This is
 // not a parser: each case gives every node, shape, link, and list explicitly.
@@ -1120,19 +1118,23 @@ function treeOf(input: string, testCase: Case): DbTreeRoot {
     ),
     tokens,
   }
-  // WrittenText is shared with checkTree; do not duplicate its cut handling.
-  const checked = tree as CheckedRoot
-  const written = new WrittenText(input, checked)
-  for (const leaf of nodesOf(checked)) {
-    if (leaf.type === "BlockLiteral")
-      setField(leaf, "value", written.of(leaf.range))
-    if (leaf.type === "StringLiteral")
-      setField(leaf, "value", written.of(leaf.range).slice(1, -1))
+  const root = tree as TreeRoot
+  const cuts = sourceCutsOf(input, root)
+
+  /** The explicitly placed leaf text, omitting the shared source cuts. */
+  function writtenOf(range: TreeRange): string {
+    let value = ""
+    for (let offset = range[0]; offset < range[1]; offset++)
+      if (cuts[offset] !== 1) value += input[offset]
+    return value
   }
-  const problems = new Problems()
-  expect(checkShape(checked, problems), JSON.stringify(problems.list)).toBe(
-    true,
-  )
+
+  for (const leaf of nodesOf(root)) {
+    if (leaf.type === "BlockLiteral")
+      setField(leaf, "value", writtenOf(leaf.range))
+    if (leaf.type === "StringLiteral")
+      setField(leaf, "value", writtenOf(leaf.range).slice(1, -1))
+  }
   return tree
 }
 

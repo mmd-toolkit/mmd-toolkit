@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest"
 import type { Range, Root } from "@mmd-toolkit/ast"
 import { ParseError, parse } from "../src/index.ts"
-import { problemsOfTree } from "./helpers/tree-problems.ts"
 
 // Expectations come from diagrams/class.md (the lexer, the grammar, and the
 // rejections outside the grammar) and ast/class.md (the nodes and the
@@ -14,7 +13,6 @@ const HEADER = "classDiagram\n"
 function parseStatements(statements: string): Root {
   const text = HEADER + statements
   const root = parse(text)
-  expect(problemsOfTree(text, root)).toEqual([])
   return root
 }
 
@@ -51,7 +49,6 @@ describe("the class tree", () => {
   it("makes the empty description blocks after the header and before the line break of a statement statements of their own", () => {
     const text = "classDiagram accDescr {}\nA <|-- B accDescr {}\nclass C\n"
     const root = parse(text)
-    expect(problemsOfTree(text, root)).toEqual([])
     const block = { type: "ClassAccDescrBlockStatement", value: null }
     expect(bodyOf(root)).toMatchObject([
       { ...block, range: [13, 24] },

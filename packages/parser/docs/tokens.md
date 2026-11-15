@@ -59,7 +59,7 @@ kinds its tokens have; a kind is added here when a diagram needs it.
 | `Identifier`       | [flowchart](./tokens/flowchart.md#tokens), [class](./tokens/class.md#tokens), [state](./tokens/state.md#tokens), [er](./tokens/er.md#tokens), [gantt](./tokens/gantt.md#tokens), [requirement](./tokens/requirement.md#tokens), [quadrant](./tokens/quadrant.md#tokens), [block](./tokens/block.md#tokens), [venn](./tokens/venn.md#tokens), [agentflow](./tokens/agentflow.md#tokens), [usecase](./tokens/usecase.md#tokens), [gitgraph](./tokens/gitgraph.md#tokens), [architecture](./tokens/architecture.md#tokens), [radar](./tokens/radar.md#tokens), [treemap](./tokens/treemap.md#tokens), [railroad](./tokens/railroad.md#tokens), [wardley](./tokens/wardley.md#tokens), [eventmodeling](./tokens/eventmodeling.md#tokens), [treeview](./tokens/treeview.md#tokens)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | A name that the author chooses.                                                                                                                                                                                                     |
 | `Numeric`          | [flowchart](./tokens/flowchart.md#tokens), [sequence](./tokens/sequence.md#tokens), [state](./tokens/state.md#tokens), [xychart](./tokens/xychart.md#tokens), [block](./tokens/block.md#tokens), [venn](./tokens/venn.md#tokens), [agentflow](./tokens/agentflow.md#tokens), [pie](./tokens/pie.md#tokens), [gitgraph](./tokens/gitgraph.md#tokens), [packet](./tokens/packet.md#tokens), [radar](./tokens/radar.md#tokens), [treemap](./tokens/treemap.md#tokens), [railroad](./tokens/railroad.md#tokens), [wardley](./tokens/wardley.md#tokens)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | A number.                                                                                                                                                                                                                           |
 | `String`           | [flowchart](./tokens/flowchart.md#tokens), [class](./tokens/class.md#tokens), [state](./tokens/state.md#tokens), [er](./tokens/er.md#tokens), [gantt](./tokens/gantt.md#tokens), [requirement](./tokens/requirement.md#tokens), [mindmap](./tokens/mindmap.md#tokens), [sankey](./tokens/sankey.md#tokens), [xychart](./tokens/xychart.md#tokens), [quadrant](./tokens/quadrant.md#tokens), [block](./tokens/block.md#tokens), [kanban](./tokens/kanban.md#tokens), [c4](./tokens/c4.md#tokens), [venn](./tokens/venn.md#tokens), [agentflow](./tokens/agentflow.md#tokens), [usecase](./tokens/usecase.md#tokens), [pie](./tokens/pie.md#tokens), [gitgraph](./tokens/gitgraph.md#tokens), [packet](./tokens/packet.md#tokens), [architecture](./tokens/architecture.md#tokens), [radar](./tokens/radar.md#tokens), [treemap](./tokens/treemap.md#tokens), [railroad](./tokens/railroad.md#tokens), [wardley](./tokens/wardley.md#tokens), [cynefin](./tokens/cynefin.md#tokens), [eventmodeling](./tokens/eventmodeling.md#tokens), [treeview](./tokens/treeview.md#tokens)                                                                                                                                                                                                                                                                                                                                | A quoted string, with its quotes.                                                                                                                                                                                                   |
-| `StringFragment`   | [flowchart](./tokens/flowchart.md#tokens), [class](./tokens/class.md#tokens), [state](./tokens/state.md#tokens), [er](./tokens/er.md#tokens), [gantt](./tokens/gantt.md#tokens), [requirement](./tokens/requirement.md#tokens), [mindmap](./tokens/mindmap.md#tokens), [sankey](./tokens/sankey.md#tokens), [xychart](./tokens/xychart.md#tokens), [quadrant](./tokens/quadrant.md#tokens), [block](./tokens/block.md#tokens), [kanban](./tokens/kanban.md#tokens), [venn](./tokens/venn.md#tokens), [agentflow](./tokens/agentflow.md#tokens), [usecase](./tokens/usecase.md#tokens), [pie](./tokens/pie.md#tokens), [gitgraph](./tokens/gitgraph.md#tokens), [railroad](./tokens/railroad.md#tokens), [wardley](./tokens/wardley.md#tokens), [cynefin](./tokens/cynefin.md#tokens), [eventmodeling](./tokens/eventmodeling.md#tokens), [treeview](./tokens/treeview.md#tokens)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | A fragment of a quoted string that a comment region, an ignored `;`, or a directive cuts: the text before or after it, without the closing or the opening quote (see [Comment](#comment), and below for the `;` and the directive). |
+| `StringFragment`   | [flowchart](./tokens/flowchart.md#tokens), [class](./tokens/class.md#tokens), [state](./tokens/state.md#tokens), [er](./tokens/er.md#tokens), [gantt](./tokens/gantt.md#tokens), [requirement](./tokens/requirement.md#tokens), [mindmap](./tokens/mindmap.md#tokens), [sankey](./tokens/sankey.md#tokens), [xychart](./tokens/xychart.md#tokens), [quadrant](./tokens/quadrant.md#tokens), [block](./tokens/block.md#tokens), [kanban](./tokens/kanban.md#tokens), [c4](./tokens/c4.md#tokens), [venn](./tokens/venn.md#tokens), [agentflow](./tokens/agentflow.md#tokens), [usecase](./tokens/usecase.md#tokens), [pie](./tokens/pie.md#tokens), [gitgraph](./tokens/gitgraph.md#tokens), [packet](./tokens/packet.md#tokens), [architecture](./tokens/architecture.md#tokens), [radar](./tokens/radar.md#tokens), [treemap](./tokens/treemap.md#tokens), [railroad](./tokens/railroad.md#tokens), [wardley](./tokens/wardley.md#tokens), [cynefin](./tokens/cynefin.md#tokens), [eventmodeling](./tokens/eventmodeling.md#tokens), [treeview](./tokens/treeview.md#tokens)                                                                                                                                                                                                                                                                                                                                | A fragment of a quoted string that a comment region, an ignored `;`, or a directive cuts: the text before or after it, without the closing or the opening quote (see [Comment](#comment), and below for the `;` and the directive). |
 | `RawText`          | every diagram (the frontmatter body), the `error` pseudo-diagram (see [ErrorDiagram](../../spec/docs/ast.md#errordiagram)), [flowchart](./tokens/flowchart.md#tokens), [sequence](./tokens/sequence.md#tokens), [class](./tokens/class.md#tokens), [state](./tokens/state.md#tokens), [er](./tokens/er.md#tokens), [gantt](./tokens/gantt.md#tokens), [journey](./tokens/journey.md#tokens), [requirement](./tokens/requirement.md#tokens), [mindmap](./tokens/mindmap.md#tokens), [timeline](./tokens/timeline.md#tokens), [sankey](./tokens/sankey.md#tokens), [xychart](./tokens/xychart.md#tokens), [quadrant](./tokens/quadrant.md#tokens), [block](./tokens/block.md#tokens), [kanban](./tokens/kanban.md#tokens), [c4](./tokens/c4.md#tokens), [venn](./tokens/venn.md#tokens), [ishikawa](./tokens/ishikawa.md#tokens), [agentflow](./tokens/agentflow.md#tokens), [usecase](./tokens/usecase.md#tokens), [pie](./tokens/pie.md#tokens), [gitgraph](./tokens/gitgraph.md#tokens), [info](./tokens/info.md#tokens), [packet](./tokens/packet.md#tokens), [architecture](./tokens/architecture.md#tokens), [radar](./tokens/radar.md#tokens), [treemap](./tokens/treemap.md#tokens), [railroad](./tokens/railroad.md#tokens), [wardley](./tokens/wardley.md#tokens), [cynefin](./tokens/cynefin.md#tokens), [eventmodeling](./tokens/eventmodeling.md#tokens), [treeview](./tokens/treeview.md#tokens) | Characters that the parser takes as one content without reading any structure in them, not enclosed in quotes (enclosed, they are a `String`), such as the text of a label or a style.                                              |
 | `Punctuator`       | every diagram (the frontmatter delimiters), [flowchart](./tokens/flowchart.md#tokens), [sequence](./tokens/sequence.md#tokens), [class](./tokens/class.md#tokens), [state](./tokens/state.md#tokens), [er](./tokens/er.md#tokens), [gantt](./tokens/gantt.md#tokens), [journey](./tokens/journey.md#tokens), [requirement](./tokens/requirement.md#tokens), [mindmap](./tokens/mindmap.md#tokens), [timeline](./tokens/timeline.md#tokens), [sankey](./tokens/sankey.md#tokens), [xychart](./tokens/xychart.md#tokens), [quadrant](./tokens/quadrant.md#tokens), [block](./tokens/block.md#tokens), [kanban](./tokens/kanban.md#tokens), [c4](./tokens/c4.md#tokens), [venn](./tokens/venn.md#tokens), [agentflow](./tokens/agentflow.md#tokens), [usecase](./tokens/usecase.md#tokens), [pie](./tokens/pie.md#tokens), [gitgraph](./tokens/gitgraph.md#tokens), [info](./tokens/info.md#tokens), [packet](./tokens/packet.md#tokens), [architecture](./tokens/architecture.md#tokens), [radar](./tokens/radar.md#tokens), [treemap](./tokens/treemap.md#tokens), [railroad](./tokens/railroad.md#tokens), [wardley](./tokens/wardley.md#tokens), [cynefin](./tokens/cynefin.md#tokens), [eventmodeling](./tokens/eventmodeling.md#tokens), [treeview](./tokens/treeview.md#tokens)                                                                                                                          | A delimiter, separator, or operator, such as `[` or `-->`.                                                                                                                                                                          |
 | `Directive`        | every diagram                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | A directive (see [Directive](../../spec/docs/ast.md#directive)).                                                                                                                                                                    |
@@ -130,6 +130,15 @@ the space after it, the `IgnoredSemicolon` token, and `:blue`, and so does
 
 [fixture: class/tokens-style-ignored-semicolon-after-space] [fixture:
 class/tokens-class-def-ignored-semicolon-after-space]
+
+The `accDescr` of eventmodeling is the exception: mermaid.js keeps its leading
+indentation and the whitespace between `accDescr` and its `{` as part of the
+value, but they belong to no token (see
+[Eventmodeling](./tokens/eventmodeling.md#tokens)).
+
+[fixture: eventmodeling/gram-common-leading-directive-both-sides] [fixture:
+eventmodeling/gram-common-block-leading-directive] [fixture:
+eventmodeling/common-inline]
 
 This holds for the text that mermaid.js reads as a value. A node of text that
 mermaid.js does not read (see [Nodes](../../spec/docs/ast.md#nodes)), such as a
@@ -326,7 +335,62 @@ segments (see
 
 [fixture: sequence/tokens-comment-then-ignored-semicolon] [fixture:
 eventmodeling/tokens-comment-line-ignored-semicolon] [fixture:
-eventmodeling/tokens-comment-line-semicolon-before-text]
+eventmodeling/tokens-comment-line-semicolon-before-text] [fixture:
+agentflow/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+architecture/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+c4/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+class/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+cynefin/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+eventmodeling/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+eventmodeling/tokens-slash-slash-comment-then-ignored-semicolon] [fixture:
+eventmodeling/tokens-slash-star-comment-then-ignored-semicolon] [fixture:
+gantt/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+gantt/tokens-percent-comment-then-ignored-semicolon] [fixture:
+gitgraph/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+info/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+ishikawa/tokens-double-percent-comment-then-ignored-semicolon-then-line-separator-comment-line]
+[fixture:
+ishikawa/tokens-double-percent-comment-then-ignored-semicolon-then-paragraph-separator-comment-line]
+[fixture: journey/tokens-double-percent-comment-then-ignored-semicolon]
+[fixture: journey/tokens-ignored-semicolon-in-hash-comment] [fixture:
+journey/tokens-percent-comment-then-ignored-semicolon] [fixture:
+kanban/lex-indent-comment-ls-selected-semicolon-touching] [fixture:
+kanban/lex-indent-comment-ps-selected-semicolon-indent-directive] [fixture:
+kanban/lex-indent-comment-ps-selected-semicolon-touching] [fixture:
+kanban/tokens-double-percent-comment-then-ignored-semicolon-then-line-separator-comment-line]
+[fixture:
+kanban/tokens-double-percent-comment-then-ignored-semicolon-then-paragraph-separator-comment-line]
+[fixture: mindmap/tokens-double-percent-comment-then-ignored-semicolon]
+[fixture:
+mindmap/tokens-double-percent-comment-then-ignored-semicolon-then-line-separator-comment-line]
+[fixture:
+mindmap/tokens-double-percent-comment-then-ignored-semicolon-then-paragraph-separator-comment-line]
+[fixture: packet/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+pie/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+quadrant/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+radar/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+railroad/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+railroad/tokens-hash-comment-then-ignored-semicolon] [fixture:
+railroad/tokens-paren-star-comment-then-ignored-semicolon] [fixture:
+railroad/tokens-semicolon-comment-then-ignored-semicolon] [fixture:
+railroad/tokens-slash-star-comment-then-ignored-semicolon] [fixture:
+requirement/tokens-hash-comment-then-ignored-semicolon] [fixture:
+requirement/tokens-percent-comment-then-ignored-semicolon] [fixture:
+sequence/lex-id-run-line-separator-comment-line-line-rule-after] [fixture:
+sequence/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+sequence/tokens-loop-comment-then-ignored-semicolon] [fixture:
+sequence/tokens-percent-comment-then-ignored-semicolon] [fixture:
+sequence/tokens-title-comment-then-ignored-semicolon] [fixture:
+state/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+state/tokens-hash-comment-then-ignored-semicolon] [fixture:
+timeline/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+timeline/tokens-hash-comment-then-ignored-semicolon] [fixture:
+timeline/tokens-percent-comment-then-ignored-semicolon] [fixture:
+treemap/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+treeview/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+venn/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+wardley/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+xychart/tokens-double-percent-comment-then-ignored-semicolon]
 
 A diagram whose Db sets
 [`preserveCommentsWhenParsing`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/Diagram.ts#L66-L76)
@@ -747,14 +811,23 @@ through child fields, and its `name` is the texts of its units joined in order
 (see [Identifier](../../spec/docs/ast.md#identifier)). A token is only in
 `Root.tokens`, and its `value` is the source text of its range.
 
-An Identifier's token is one `Identifier` token, whose range is that of the
-node: no whitespace lies inside or between its units, and a directive or a `;`
-that the line rule ignores inside it makes the input rejected (see
+An Identifier's tokens are the tokens of its units. Where they are name units,
+the node has one `Identifier` token, whose range is that of the node: no
+whitespace lies inside or between its units, and a directive or a `;` that the
+line rule ignores inside it makes the input rejected (see
 [A directive is a token boundary](../../spec/docs/common.md#a-directive-is-a-token-boundary)).
 `A%%{init: {}}%%B-->C` is rejected at the directive.
 
 [fixture: flowchart/div-directive-in-id] [fixture:
 flowchart/div-ignored-semicolon-in-id]
+
+Where the grammar reads a text unit as an Identifier, as the tag of a Gantt
+task, its token is a `RawText` token, which a directive or an ignored `;` cuts
+as any text: `a : do%%{init: {}}%%ne, t1, 2024-01-01, 1d` has the tag `done`
+with the `RawText` tokens `do` and `ne` (see [Gantt](./tokens/gantt.md#tokens)).
+
+[fixture: gantt/gram-task-tag-cut-by-directive] [fixture:
+gantt/gram-task-tag-cut-by-ignored-semicolon]
 
 A name that may contain whitespace is a name node of the diagram type instead
 (see [Shared leaf nodes](../../spec/docs/ast.md#shared-leaf-nodes)). Its tokens
@@ -834,4 +907,7 @@ The other name nodes use RawText as follows:
 
   [fixture: flowchart/tokens-directive-label-space-after] [fixture:
   flowchart/tokens-directives-label-space-between] [fixture:
-  common/directive-in-string]
+  common/directive-in-string] [fixture:
+  ishikawa/tokens-space-between-directive-and-comment-region-after-line-separator]
+  [fixture:
+  ishikawa/tokens-space-between-directive-and-comment-region-after-paragraph-separator]

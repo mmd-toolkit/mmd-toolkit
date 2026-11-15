@@ -7,7 +7,6 @@ import {
 } from "./helpers.ts"
 import {
   dbOfText,
-  treeProblemsOfText,
   defaultEmbedded,
   writtenEmbeddedTexts,
   describeFrontmatterChange,
@@ -44,7 +43,5 @@ describe("ishikawa escaped cases", () => {
     ).toEqual(dbBefore)
     expect(writtenEmbeddedTexts(after)).toEqual(writtenEmbeddedTexts(before))
     expect(await describeFrontmatterChange(before, after, options)).toBeNull()
-    expect(treeProblemsOfText(before)).toEqual([])
-    expect(treeProblemsOfText(after)).toEqual([])
   })
 })

@@ -6,8 +6,8 @@ description: >-
   (adding, renaming, and marking fixtures, known divergence identifiers,
   specified readings). Use for any work on packages/tests or tools/, and when a
   fixture, a rename or a known divergence identifier is needed. Adding a diagram
-  type, the tree checks, and updating mermaid.js have skills of their own that
-  use this one.
+  type, the Db builder from a tree, and updating mermaid.js have skills of their
+  own that use this one.
 ---
 
 # 正解の取り出しと fixture（tests）
@@ -17,8 +17,7 @@ description: >-
 このパッケージの方針と基準は 1 の節にある。
 すべてのパッケージに当たるものは AGENTS.md と SKILL `conventions` にある。
 図種を足すことは SKILL [tests-diagram-type](../tests-diagram-type/SKILL.ja.md)、
-木からの Db と木の検査は SKILL
-[tests-tree-checks](../tests-tree-checks/SKILL.ja.md)、
+木からの Db は SKILL [tests-db-from-tree](../tests-db-from-tree/SKILL.ja.md)、
 pin した mermaid.js の更新は SKILL
 [tests-mermaid-update](../tests-mermaid-update/SKILL.ja.md) にある。
 この SKILL の 1〜4 の節は、それらの手順にも当たる。
@@ -48,7 +47,7 @@ pin した mermaid.js の更新は SKILL
 
 ## 3. これらの SKILL が書くもの
 
-- この SKILL と、SKILL `tests-diagram-type`、`tests-tree-checks`、
+- この SKILL と、SKILL `tests-diagram-type`、`tests-db-from-tree`、
   `tests-mermaid-update` の手順が書くのは、`packages/tests`、`tools/`、
   これらの SKILL の文書だけ。
   ほかのパッケージ（`packages/spec`、`packages/parser`、
@@ -111,7 +110,6 @@ pin した mermaid.js の更新は SKILL
   | `src/db-from-tree/`                                         | `db-from-tree.test.ts`、`converted-text.test.ts`               |
   | `src/source-scan.ts`                                        | `source-scan.test.ts`                                          |
   | `src/ordered-json.ts`                                       | `ordered-json.test.ts`, `tools-fixture-store.test.ts`          |
-  | `src/check-tree/`                                           | `check-tree-corpus.test.ts`、`check-tree*.test.ts`             |
   | `tools/src/diagrams.ts`                                     | `tools-diagrams.test.ts`                                       |
   | `tools/src/fixture-store.ts`                                | `tools-fixture-store.test.ts`                                  |
   | `tools/src/spec-recorder.ts`                                | `tools-spec-recorder.test.ts`                                  |
@@ -119,12 +117,11 @@ pin した mermaid.js の更新は SKILL
   | `tools/fixtures.ts`、`tools/collect.ts`                     | テストのファイルはない。下を参照                               |
 
   `tools/src` の関数のうち、fixture の記録ファイルの中身を決めるものは、
-  モジュールごとに 1 つの `tests/tools-*.test.ts` でテストする。
+  上の表にある `tests/tools-*.test.ts` のファイルでテストする。
   記録器は Node.js 自身の `import()` を必要とするので、
   そのテストでは別のプロセスで動かす。
-  コマンドラインのファイル（`tools/fixtures.ts`、
-  `tools/collect.ts`）にはテストのファイルがなく、
-  それぞれのコマンドを動かして確かめる。
+  コマンドラインのファイル（`tools/fixtures.ts`、`tools/collect.ts`）には、
+  テストのファイルがなく、それぞれのコマンドを動かして確かめる。
   `add-many`、`set-divergence`、`set-note` は `--dry-run` を付け、
   変える予定のものを読む。
   `generate` は `fixtures:check` で確かめる。
@@ -134,6 +131,11 @@ pin した mermaid.js の更新は SKILL
   SKILL tests-diagram-type の
   [references/collecting-fixtures.ja.md](../tests-diagram-type/references/collecting-fixtures.ja.md)
   の手順 3 にある。
+
+  AI エージェントは、変更の記録した木と、
+  変更した文書のブロックが引く受理の fixture を、
+  [ast-json-validity](../ast-json-validity/SKILL.ja.md)
+  のチェックリストと手順で確かめる。
 
   1 つのファイルは
   `pnpm --filter @mmd-toolkit/tests exec vitest run tests/<ファイル>` で回す。

@@ -251,7 +251,7 @@ Use the diagram names and node prefixes defined by
    where no token can hold what mermaid.js reads, because it runs across other
    nodes, say why in the field's description in `ast/<diagram>.md`;
    `docs/db-from-tree/<diagram>.md` of `@mmd-toolkit/tests` says that the Db
-   reads it from the source, written with the steps of the tests-tree-checks
+   reads it from the source, written with the steps of the tests-db-from-tree
    SKILL. Flowchart example: the whitespace between the empty description blocks
    right after the name of a subgraph.
 
@@ -294,6 +294,14 @@ it from the cases that its sentences distinguish.
    mermaid.js's result with what the sentence says. Each case then has a fixture
    that the sentence cites (section 5). Cite at least one fixture for each case,
    not every fixture of the same case.
+
+   When a change alters a block of `ast.md` or `ast/<diagram>.md`, or a section
+   of `common.md` or `diagrams/<diagram>.md` that a block of the tree, token, or
+   position documents links to, follow
+   [When the tree, token, or position documents change](../ast-json-validity/SKILL.md#5-when-the-tree-token-or-position-documents-change)
+   in ast-json-validity to read the document diff against the base and check the
+   accepted fixtures cited by the changed blocks.
+
 3. Sort the cases that the sentence does not explain into kinds, and explain
    each kind with one rule. Write mermaid.js's mechanism as one rule instead of
    adding exceptions (flowchart example: the empty string, the empty call, and
@@ -336,7 +344,6 @@ the fixtures for which the parser needs an `ast.json`.
 
 The output also names these steps of the other packages:
 
-- For `checkTree`, follow [tests-tree-checks](../tests-tree-checks/SKILL.md).
 - For divergence-form checks, follow
   [parser §6](../parser/SKILL.md#6-when-fixtures-are-added-or-a-rule-changes).
 - For printer work, follow [prettier-plugin](../prettier-plugin/SKILL.md).

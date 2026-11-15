@@ -7,10 +7,9 @@ import {
   embeddedValuesOf,
   loadFixture,
 } from "../src/index.ts"
-import type { Built, Kit } from "./check-tree-built.ts"
-import type { CheckedNode } from "../src/check-tree/types.ts"
-import { setField } from "./check-tree-recorded.ts"
-import { frontmatterOf } from "./check-tree-trees.ts"
+import type { Built, Kit, RecordedNode } from "./tree-built.ts"
+import { setField } from "./fixture-trees.ts"
+import { frontmatterOf } from "./tree-pieces.ts"
 import {
   buildEventmodeling,
   common,
@@ -43,7 +42,7 @@ function summary(
 /** A test supplies occurrences without parsing its fixed source. */
 function reading(
   source: string,
-  make: (kit: Kit) => CheckedNode[],
+  make: (kit: Kit) => RecordedNode[],
   embedded?: EmbeddedValues,
 ) {
   return summary(buildEventmodeling(source, make), embedded)

@@ -1,6 +1,5 @@
-import type { CheckedNode } from "../src/check-tree/types.ts"
-import { buildTree } from "./check-tree-built.ts"
-import type { Built, Kit } from "./check-tree-built.ts"
+import { buildTree } from "./tree-built.ts"
+import type { Built, Kit, RecordedNode } from "./tree-built.ts"
 import { hull } from "./statement-tree-built.ts"
 
 /** Explicit dialect headers, independently supplied by each fixed test. */
@@ -11,7 +10,7 @@ export type RailroadDialect =
 export function buildRailroad(
   source: string,
   dialect: RailroadDialect,
-  make: (kit: Kit) => CheckedNode[],
+  make: (kit: Kit) => RecordedNode[],
 ): Built {
   const headers = {
     railroad: "railroad-beta",
@@ -32,15 +31,15 @@ export function buildRailroad(
 }
 
 /** Named gap callbacks are supplied in authored order by the fixed test. */
-export type Gaps = Readonly<Record<string, (() => CheckedNode[]) | undefined>>
+export type Gaps = Readonly<Record<string, (() => RecordedNode[]) | undefined>>
 
 /** A complete Identifier occurrence. */
-export function identifier(kit: Kit, name: string): CheckedNode {
+export function identifier(kit: Kit, name: string): RecordedNode {
   return kit.node("Identifier", kit.token("Identifier", name).range, { name })
 }
 
 /** A complete quoted spelling, whose written value has not been decoded. */
-export function string(kit: Kit, raw: string): CheckedNode {
+export function string(kit: Kit, raw: string): RecordedNode {
   return kit.node("StringLiteral", kit.token("String", raw).range, {
     raw,
     value: raw.slice(1, -1),
@@ -49,7 +48,7 @@ export function string(kit: Kit, raw: string): CheckedNode {
 }
 
 /** One explicit decimal count, including a non-finite double after conversion. */
-export function count(kit: Kit, raw: string): CheckedNode {
+export function count(kit: Kit, raw: string): RecordedNode {
   return kit.node("NumericLiteral", kit.token("Numeric", raw).range, {
     raw,
     value: Number(raw),
@@ -66,9 +65,9 @@ export function call(
     | "optional"
     | "zeroOrMore"
     | "oneOrMore",
-  operand: () => CheckedNode,
+  operand: () => RecordedNode,
   gaps: Gaps = {},
-): CheckedNode {
+): RecordedNode {
   const keyword = kit.token("Keyword", word)
   const textBeforeOpen = gaps.textBeforeOpen?.() ?? []
   const open = kit.token("Punctuator", "(")
@@ -104,9 +103,9 @@ export function call(
 /** A list member owns only the before/after forms that the test names. */
 export function member(
   kit: Kit,
-  make: () => CheckedNode,
+  make: () => RecordedNode,
   gaps: Gaps = {},
-): CheckedNode {
+): RecordedNode {
   const textBefore = gaps.textBefore?.() ?? []
   const expression = make()
   const textAfter = gaps.textAfter?.() ?? []
@@ -122,10 +121,10 @@ export function list(
   kit: Kit,
   kind:
     "SequenceCall" | "ChoiceCall" | "SequenceExpression" | "ChoiceExpression",
-  make: readonly (() => CheckedNode)[],
+  make: readonly (() => RecordedNode)[],
   separators: readonly string[],
   gaps: Gaps = {},
-): CheckedNode {
+): RecordedNode {
   const isCall = kind.endsWith("Call")
   const pieces: { range: readonly [number, number] }[] = []
   if (isCall)
@@ -135,7 +134,7 @@ export function list(
   const textBeforeOpen = isCall ? (gaps.textBeforeOpen?.() ?? []) : []
   pieces.push(...textBeforeOpen)
   if (isCall) pieces.push(kit.token("Punctuator", "("))
-  const members: CheckedNode[] = []
+  const members: RecordedNode[] = []
   for (const [index, build] of make.entries()) {
     if (index > 0) {
       const separator = separators[index - 1]
@@ -161,9 +160,9 @@ export function list(
 export function group(
   kit: Kit,
   open: "(" | "[" | "{",
-  make: () => CheckedNode,
+  make: () => RecordedNode,
   gaps: Gaps = {},
-): CheckedNode {
+): RecordedNode {
   const opening = kit.token("Punctuator", open)
   const textBeforeElement = gaps.textBeforeElement?.() ?? []
   const element = make()
@@ -186,10 +185,10 @@ export function group(
 /** A suffix wraps the complete preceding expression. */
 export function postfix(
   kit: Kit,
-  make: () => CheckedNode,
+  make: () => RecordedNode,
   operator: "?" | "*" | "+",
-  before: () => CheckedNode[] = () => [],
-): CheckedNode {
+  before: () => RecordedNode[] = () => [],
+): RecordedNode {
   const element = make()
   const textBeforeOperator = before()
   const token = kit.token("Punctuator", operator)
@@ -203,10 +202,10 @@ export function postfix(
 /** EBNF exception children retain their written left and right roles. */
 export function exception(
   kit: Kit,
-  leftOf: () => CheckedNode,
-  rightOf: () => CheckedNode,
+  leftOf: () => RecordedNode,
+  rightOf: () => RecordedNode,
   gaps: Gaps = {},
-): CheckedNode {
+): RecordedNode {
   const left = leftOf()
   const textBeforeOperator = gaps.textBeforeOperator?.() ?? []
   const minus = kit.token("Punctuator", "-")
@@ -220,14 +219,14 @@ export function exception(
 }
 
 /** A special sequence is one RawText item with untrimmed authored interior. */
-export function special(kit: Kit, raw: string): CheckedNode {
+export function special(kit: Kit, raw: string): RecordedNode {
   return kit.node("RailroadSpecialSequence", kit.token("RawText", raw).range, {
     value: raw.slice(1, -1),
   })
 }
 
 /** An ABNF numeric value is one authored text item, without numeric conversion. */
-export function numeric(kit: Kit, value: string): CheckedNode {
+export function numeric(kit: Kit, value: string): RecordedNode {
   return kit.node("RailroadNumericValue", kit.token("RawText", value).range, {
     value,
   })
@@ -238,7 +237,7 @@ export function repeatRange(
   kit: Kit,
   min: string | null,
   max: string | null,
-): CheckedNode {
+): RecordedNode {
   const minimum = min === null ? null : count(kit, min)
   const star = kit.token("Punctuator", "*")
   const maximum = max === null ? null : count(kit, max)
@@ -256,10 +255,10 @@ export function repeatRange(
 /** A complete repeat and its primary have an independently named native gap. */
 export function repeat(
   kit: Kit,
-  countOf: () => CheckedNode,
-  elementOf: () => CheckedNode,
-  before: () => CheckedNode[] = () => [],
-): CheckedNode {
+  countOf: () => RecordedNode,
+  elementOf: () => RecordedNode,
+  before: () => RecordedNode[] = () => [],
+): RecordedNode {
   const countNode = countOf()
   const textBeforeElement = before()
   const element = elementOf()
@@ -274,9 +273,9 @@ export function repeat(
 export function predicate(
   kit: Kit,
   operator: "&" | "!",
-  make: () => CheckedNode,
-  before: () => CheckedNode[] = () => [],
-): CheckedNode {
+  make: () => RecordedNode,
+  before: () => RecordedNode[] = () => [],
+): RecordedNode {
   const token = kit.token("Punctuator", operator)
   const textBeforeElement = before()
   const element = make()
@@ -288,7 +287,7 @@ export function predicate(
 }
 
 /** A PEG dot remains a dedicated primary. */
-export function any(kit: Kit): CheckedNode {
+export function any(kit: Kit): RecordedNode {
   return kit.node(
     "RailroadAnyExpression",
     kit.token("Punctuator", ".").range,
@@ -300,10 +299,10 @@ export function any(kit: Kit): CheckedNode {
 export function rule(
   kit: Kit,
   nameText: string,
-  definitionOf: () => CheckedNode,
+  definitionOf: () => RecordedNode,
   operator: "=" | "::=" | "<-" = "=",
   gaps: Gaps = {},
-): CheckedNode {
+): RecordedNode {
   const name = identifier(kit, nameText)
   const textBeforeOperator = gaps.textBeforeOperator?.() ?? []
   const assignment = kit.token("Punctuator", operator)
@@ -337,7 +336,7 @@ export function common(
   kit: Kit,
   kind: "Title" | "AccTitle" | "AccDescr" | "AccDescrBlock",
   value: string | null,
-): CheckedNode {
+): RecordedNode {
   const block = kind === "AccDescrBlock"
   const word =
     kind === "Title" ? "title" : kind === "AccTitle" ? "accTitle" : "accDescr"
@@ -354,16 +353,4 @@ export function common(
   if (literal !== null) parts.push(literal)
   if (block) parts.push(kit.token("Punctuator", "}"))
   return kit.node(`Railroad${kind}Statement`, hull(parts), { value: literal })
-}
-
-/** The exact retained match; consumed LF is outside its supplied raw text. */
-export function ignored(
-  kit: Kit,
-  raw: string,
-  kind: "yaml-block" | "directive" = "directive",
-): CheckedNode {
-  return kit.node("RailroadIgnoredText", kit.token("RawText", raw).range, {
-    kind,
-    value: raw,
-  })
 }

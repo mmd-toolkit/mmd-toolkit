@@ -111,7 +111,7 @@
 [fixture: ishikawa/div-header-comment-multiline-directive-ls]
 
 共通の変換は、仕様に従いフロントマターの HTML 文脈を除く。
-選ばれたヘッダーの分割は木の検査で拒否する。
+選ばれたヘッダーを分割した入力では、パーサーの拒否を記録する。
 不透明な埋込みデータで mermaid.js が拒否を記録し、受理する指定の読みがなければ、
 Db の比較はない。
 

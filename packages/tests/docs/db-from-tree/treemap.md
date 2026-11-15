@@ -36,11 +36,11 @@ Japanese version: [treemap.ja.md](./treemap.ja.md)
 3. Read roots and outer statements from Diagram.body. Before each section or
    leaf, apply its statementsBefore in source order, then project its own values
    and recursively visit a section's children. Only sections have children;
-   leaves remain leaves. Do not read indent or reconstruct parents: the parser
-   builds the nesting and checkTree independently checks it. Class definitions
-   and common assignments in leading gaps still have diagram-wide effects;
-   entering or leaving a section does not reset them. Keep duplicate and empty
-   names and multiple roots.
+   leaves remain leaves. Do not read indent or reconstruct parents: read the
+   nesting defined by [ast/treemap.md](../../../spec/docs/ast/treemap.md). Class
+   definitions and common assignments in leading gaps still have diagram-wide
+   effects; entering or leaving a section does not reset them. Keep duplicate
+   and empty names and multiple roots.
 
    [fixture: treemap/db-indent-pop] [fixture: treemap/db-leaf-not-parent]
    [fixture: treemap/db-first-indented] [fixture: treemap/db-duplicate-names]

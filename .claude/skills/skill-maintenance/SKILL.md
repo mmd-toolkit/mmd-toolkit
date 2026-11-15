@@ -179,10 +179,10 @@ skill that does not hold the step points to it at the step of its own procedure
 at which the shared step is done (the lists of the diagram types without
 recorded trees are filled during the steps of `tests-diagram-type`,
 [whose step](../tests-diagram-type/SKILL.md#2-the-normalizer) says how to fill
-and empty them, and emptied once the trees are recorded, during step 8 of
-[`tests-tree-checks`](../tests-tree-checks/SKILL.md), which points to that step
-there). Where a step moves out of a section that other pieces of work also read,
-a pointer to it stands where it stood.
+and empty them, and emptied once the trees are recorded, during step 3 of
+[`tests-db-from-tree`](../tests-db-from-tree/SKILL.md), which points to that
+step there). Where a step moves out of a section that other pieces of work also
+read, a pointer to it stands where it stood.
 
 ## 3. Moving text without changing it
 

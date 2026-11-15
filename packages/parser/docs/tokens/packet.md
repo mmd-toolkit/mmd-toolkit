@@ -51,8 +51,10 @@ packet/hidden-directive-block-eof] [fixture: packet/hidden-yaml-block-eof]
 packet/hidden-yaml-adjacent-later] [fixture: packet/lex-dash-before-yaml]
 
 Common directives, comment regions and selected semicolons cut text and string
-items. A cut inside a fixed keyword or integer rejects under the shared atomic
-boundary rules.
+items; the fragments of a cut `String` are `StringFragment` tokens, so
+`0: "A%%{init:{}}%%B"` has the `StringFragment` tokens `"A` and `B"` with the
+`Directive` token between them. A cut inside a fixed keyword or integer rejects
+under the shared atomic boundary rules.
 
 [fixture: packet/directive-label-middle] [fixture: packet/directive-title-value]
 [fixture: packet/common-block-comment] [fixture: packet/style-label] [fixture:

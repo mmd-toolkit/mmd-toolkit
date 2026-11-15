@@ -131,9 +131,9 @@ packet/div-html-frontmatter-value] [fixture: packet/div-c4-hidden-yaml]
 packet/directive-number-middle] [fixture: packet/div-selected-integer-interior]
 
 Parser records use the parser's default settings. A recorded tree can therefore
-have a rejecting comparison reading under site configuration; still check its
-tree conditions, but compare no Db for that rejecting reading. The parser tests
-apply the externally held site width when checking acceptance.
+have a rejecting comparison reading under site configuration; compare no Db for
+that rejecting reading. The parser tests apply the externally held site width
+when checking acceptance.
 
 [fixture: packet/config-fraction-reject] [fixture:
 packet/config-directive-overrides-site] [fixture:

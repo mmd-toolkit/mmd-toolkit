@@ -16,8 +16,7 @@ nested-string reading and the numbered linkStyle, class and click Db steps.
 **Converted text.** Read ranges through the common conversion: exclude
 directives and selected ignored semicolons, normalize CR/CRLF, replace entities
 by their placeholders, and convert HTML attribute quotes using the whole body
-source after frontmatter. Written values are checked separately and keep their
-source spelling.
+source after frontmatter. Written values keep their source spelling.
 
 [fixture: agentflow/lex-cr] [fixture: agentflow/lex-crlf] [fixture:
 agentflow/entity-label-contexts] [fixture: agentflow/html-attribute-quotes]
@@ -144,9 +143,9 @@ agentflow/lex-empty-string-in-flow-name] [fixture:
 agentflow/lex-directive-in-name-empty-block-padding]
 
 AgentflowIgnoredText.kind records the recognized erased form or direction-line
-text for tree checks. The Db builder reads neither kind nor value from these
-nodes: names use only Label parts, direction statements use their direction
-field, and click steps use their operands.
+text. The Db builder reads neither kind nor value from these nodes: names use
+only Label parts, direction statements use their direction field, and click
+steps use their operands.
 
 [fixture: agentflow/lex-flow-name-click-state] [fixture:
 agentflow/lex-direction-line-greedy] [fixture:
@@ -342,7 +341,7 @@ agentflow/db-diagnostics-no-semantic-checks]
 Compare with `specified.json` when present, otherwise `expected.json`. The
 body-only frontmatter HTML and bare-percent pre-header readings use their
 specified results; opaque content rejections with no accepted recorded Db have
-only a tree check. Whole-unit boundary and tokenless-empty-form rejections are
+no Db comparison. Whole-unit boundary and tokenless-empty-form rejections are
 checked without reconstructing an atom or inventing an ignored statement. No
 Agentflow registration is needed in `divergence-removals.ts`: it has no
 flowchart registrations either; these six identifiers use the existing common

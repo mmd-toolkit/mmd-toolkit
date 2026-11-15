@@ -104,9 +104,9 @@ accepted reading.
 ishikawa/div-header-comment-multiline-directive-ls]
 
 Frontmatter HTML context is excluded by the shared converter, as the
-specification requires. Split selected headers are rejected by the tree check,
-and opaque embedded data needs no Db comparison when mermaid.js records a
-rejection without an accepted specified reading.
+specification requires. The parser records a rejection for a split selected
+header, and opaque embedded data needs no Db comparison when mermaid.js records
+a rejection without an accepted specified reading.
 
 [fixture: ishikawa/div-header-blank-node] [fixture:
 ishikawa/div-header-inline-comment-ls-node] [fixture:

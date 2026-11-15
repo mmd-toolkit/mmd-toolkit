@@ -156,9 +156,7 @@ describe("visitorKeys", () => {
   })
 
   // ast.md, Nodes: the section of each node type states its child fields in
-  // the order of the visit. That the child nodes meet in source order, in
-  // that order, is checked on every recorded tree by `@mmd-toolkit/tests`
-  // (`check-tree-corpus.test.ts`).
+  // the order of the visit.
   it("lists the child fields that the section of each node type states, in its order", () => {
     const { fields, problems } = statedChildFields()
     expect(problems).toEqual([])

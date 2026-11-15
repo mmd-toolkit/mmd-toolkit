@@ -128,9 +128,9 @@ ESTree の `Literal` と同じく、欄 `raw` も持ちます。
 何も除かないので、文字列の引用符やその中のディレクティブとコメント領域のように、
 書かれたテキストが除くものも保ちます。
 
-mermaid.js が読まないテキストのノード、
-つまり `<図種>IgnoredText` か `<図種>IgnoredStatement` と名づけたノードの型は、
-書き手がそこに書いたものを、書かれたとおりに見せます。
+`<図種>IgnoredText` か `<図種>IgnoredStatement` と名づけた型、
+つまり mermaid.js が読まないテキストの型のノードは、書き手がそこに書いたものを、
+書かれたとおりに見せます。
 [FlowchartIgnoredText](./ast/flowchart.ja.md#flowchartignoredtext) や、
 [StateIgnoredStatement](./ast/state.ja.md#stateignoredstatement)
 などがそうです（[図ごとのノード](#図ごとのノード) を参照）。
@@ -194,11 +194,18 @@ ESTree の配列の穴と同じです。
 末尾の空白を除いたものです。
 探索は、フロントマターの後のソースのテキストに対して行います。
 [common.ja.md](./common.ja.md#ディレクティブの位置) を参照してください。
-そのため、閉じていないディレクティブは、テキストの終わりまで伸びるか、
-語の引数の後で終わります。
-探索が引数の後に取る空白は、
+そのため、閉じていないディレクティブは、引数の終わるところで終わります。
+つまり、テキストの終わり、語の引数の後、
+または自由形式の引数を止める U+2028 か U+2029 の手前です。
+探索が引数の後に取る空白は、そのような区切りの文字も含めて、
 コメント領域の空白だけの行がコメントと一緒に除かれるのと同じく、
 ディレクティブと一緒に除かれ、木では、ディレクティブの外の空白です。
+
+[fixture: common/directive-unclosed]
+[fixture: common/comment-directive-word-argument-takes-next-lines]
+[fixture: ishikawa/directive-open-object-u2028]
+[fixture: ishikawa/directive-open-object-u2029]
+
 `name` は、そこで定めたディレクティブの名前です。
 木は引数を解析しません。
 `value` は、フロントマターの `value` と同じく、区切りの間に書かれたものを、
@@ -368,6 +375,8 @@ ESTree のノードの `kind` と同じです。
 [FlowchartIgnoredText](./ast/flowchart.ja.md#flowchartignoredtext) のように、
 それを表す図の型を持ちます。
 道具がソースのテキストを探さずにそれを見つけられるようにするためです。
+ただし、文法がそこでそれをほかのノードの型の形として読むなら、
+その型のノードです（[図ごとのノード](#図ごとのノード) を参照）。
 そのようなテキストをノードにすることは、入力を拒否することより先です。
 図の文書がそのようなテキストのために入力を拒否するのは、
 木にそのノードを置く場所がないところだけで、
@@ -431,7 +440,11 @@ ER 図のバッククォートの属性の語では、バッククォートで�
 
 [fixture: flowchart/lex-directive-in-click-href-string]
 
-文字列は図の字句規則に従い、次の対応する引用符で閉じます。
+文字列は、対応する引用符のうち、図の字句規則が定めるもので閉じます。
+
+[fixture: eventmodeling/lex-inline-quote-greedy]
+[fixture: eventmodeling/lex-inline-quote-conversion]
+
 図がテキストの終わりまで閉じていない文字列を受理するところでは、
 その書かれたテキストは、ディレクティブにもコメント領域にも入らない、
 ソースの最後の文字まで続き、終わりの空白と行終端を含みます。
@@ -586,10 +599,19 @@ raw は数の先頭部分として読まれない文字も含め、元の綴り�
 ノードの型の名前は、すべての図種で 1 つの集まりを共有するからです。
 [共通の葉のノード](#共通の葉のノード) は、すべての図種で共有し、
 接頭辞を付けません。
-mermaid.js が読まないテキストのノードの型は `<図種>IgnoredText`、
-文として立つものは `<図種>IgnoredStatement` と名づけ、
+どのノードも mermaid.js が読まないテキストであるノードの型は
+`<図種>IgnoredText`、文として立つものは `<図種>IgnoredStatement` と名づけ、
 `FlowchartIgnoredText` や `StateIgnoredStatement` がそうです。
 ほかのノードの型の名前は、そのように終わりません。
+mermaid.js が読まないテキストは、文法がそれをほかの型の形として読むところでは、
+その型のノードです。
+文が始まるところの空の説明ブロックは、テキストのない説明ブロックの文で、
+`value` が null の `ErAccDescrBlockStatement` などがそうです。
+一方、文の始まらない requirement の本体の行では、`RequirementIgnoredText` です。
+
+[fixture: er/gram-acc-descr-block-empty]
+[fixture: requirement/gram-acc-descr-block-empty]
+[fixture: requirement/gram-empty-description-block-in-body]
 
 - [gitgraph](./ast/gitgraph.ja.md): 図種 `gitGraph`。
 

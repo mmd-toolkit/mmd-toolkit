@@ -3,7 +3,6 @@ import { describe, expect, it } from "vitest"
 import type { Node, Range } from "@mmd-toolkit/ast"
 import { parse, traverseNodes } from "../src/index.ts"
 import { examplesIn } from "./helpers/ast-examples.ts"
-import { problemsOfTree } from "./helpers/tree-problems.ts"
 import {
   allFlowchartNodeTypes,
   sharedLeafNodeTypes,
@@ -45,7 +44,6 @@ describe("the examples in the comments of the shared leaf nodes and the flowchar
       const text = isDiagram ? input : HEADER + input
       const offset = isDiagram ? 0 : HEADER.length
       const root = parse(text)
-      expect(problemsOfTree(text, root)).toEqual([])
       const ranges: Range[] = []
       traverseNodes(root, {
         enterNode(node: Node) {

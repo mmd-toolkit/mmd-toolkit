@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokens.md Comments: the `;` that the line rule ignores right after a `%%` comment is an IgnoredSemicolon token, not part of the comment."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

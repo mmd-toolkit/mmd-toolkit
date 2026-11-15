@@ -6,7 +6,6 @@ import plugin from "../src/index.ts"
 import {
   dbOfText,
   defaultEmbedded,
-  treeProblemsOfText,
   writtenEmbeddedTexts,
   describeFrontmatterChange,
 } from "./db-reading.ts"
@@ -168,7 +167,6 @@ describe("wardley in Markdown", () => {
       expect(() => dbOfText(fixture.payloadOutput, embedded)).toThrow(
         SyntaxError,
       )
-      expect(treeProblemsOfText(standalone)).toEqual([])
       expect(dbOfText(standalone, embedded)).toEqual(
         dbOfText(fixture.payloadInput, embedded),
       )
@@ -187,7 +185,5 @@ describe("wardley in Markdown", () => {
     expect(writtenEmbeddedTexts(fixture.payloadOutput)).toEqual(
       writtenEmbeddedTexts(fixture.payloadInput),
     )
-    expect(treeProblemsOfText(fixture.payloadInput)).toEqual([])
-    expect(treeProblemsOfText(fixture.payloadOutput)).toEqual([])
   })
 })

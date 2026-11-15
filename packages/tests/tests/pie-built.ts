@@ -1,7 +1,6 @@
-import type { CheckedNode } from "../src/check-tree/types.ts"
 import type { TreeRange } from "../src/db-from-tree/tree.ts"
-import { buildTree } from "./check-tree-built.ts"
-import type { Built, Kit } from "./check-tree-built.ts"
+import { buildTree } from "./tree-built.ts"
+import type { Built, Kit, RecordedNode } from "./tree-built.ts"
 
 /** Hull of explicitly supplied occurrences; these helpers never lex or parse an input. */
 function hull(pieces: readonly { readonly range: TreeRange }[]): TreeRange {
@@ -14,7 +13,7 @@ function hull(pieces: readonly { readonly range: TreeRange }[]): TreeRange {
 /** A fixed pie source with explicitly supplied statement occurrences. */
 export function buildPie(
   source: string,
-  make: (kit: Kit) => CheckedNode[],
+  make: (kit: Kit) => RecordedNode[],
   showData = false,
 ): Built {
   return buildTree(
@@ -42,7 +41,7 @@ export function ignored(
   kit: Kit,
   raw: string,
   kind: "yaml-block" | "directive",
-): CheckedNode {
+): RecordedNode {
   return kit.node("PieIgnoredText", kit.token("RawText", raw).range, {
     kind,
     value: raw,
@@ -51,9 +50,9 @@ export function ignored(
 
 /** The explicitly written gaps surrounding a section's fixed colon and numeric unit. */
 export interface SectionGaps {
-  readonly beforeColon?: () => CheckedNode[]
-  readonly beforeValue?: () => CheckedNode[]
-  readonly after?: () => CheckedNode[]
+  readonly beforeColon?: () => RecordedNode[]
+  readonly beforeValue?: () => RecordedNode[]
+  readonly after?: () => RecordedNode[]
 }
 
 /** A section occurrence retaining its raw label, number and named hidden gaps. */
@@ -62,7 +61,7 @@ export function section(
   label: string,
   number: string,
   gaps: SectionGaps = {},
-): CheckedNode {
+): RecordedNode {
   const string = kit.node("StringLiteral", kit.token("String", label).range, {
     raw: label,
     value: label.slice(1, -1),
@@ -94,8 +93,8 @@ export function common(
     | "PieAccDescrStatement"
     | "PieAccDescrBlockStatement",
   value: string | null,
-  after: () => CheckedNode[] = () => [],
-): CheckedNode {
+  after: () => RecordedNode[] = () => [],
+): RecordedNode {
   const title = type === "PieTitleStatement"
   const block = type === "PieAccDescrBlockStatement"
   const keyword = kit.token(

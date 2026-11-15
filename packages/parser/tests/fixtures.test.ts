@@ -4,10 +4,8 @@
  * in `ast.json` or the error in `parse-error.json`, next to its input in
  * `packages/tests/fixtures/<diagram>/<fixture name>/`; and the acceptance
  * must be what the fixture records of mermaid.js, as its `knownDivergence`
- * mark asks. Whether the recorded trees keep the conditions of the
- * specification and give the Db of mermaid.js is a check of the corpus
- * (`@mmd-toolkit/tests`, `check-tree-corpus.test.ts` and
- * `db-from-tree.test.ts`), not of the parser.
+ * mark asks. `@mmd-toolkit/tests` compares the Db of the recorded trees
+ * with the Db of mermaid.js (`db-from-tree.test.ts`).
  *
  * The files: for an input that the parser accepts, the tree, as
  * `JSON.stringify(root, null, 2)`, locations included, in `ast.json`; for an

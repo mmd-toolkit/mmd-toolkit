@@ -118,8 +118,8 @@ character, with nothing left out, so it keeps what the written text leaves out,
 such as the quotes of a string and a directive or a comment region inside the
 string.
 
-A node of text that mermaid.js does not read, a node type named
-`<Diagram>IgnoredText` or `<Diagram>IgnoredStatement` (see
+A node of a type named `<Diagram>IgnoredText` or `<Diagram>IgnoredStatement`, a
+type of text that mermaid.js does not read (see
 [Diagram nodes](#diagram-nodes)), such as
 [FlowchartIgnoredText](./ast/flowchart.md#flowchartignoredtext) and
 [StateIgnoredStatement](./ast/state.md#stateignoredstatement), shows what the
@@ -181,13 +181,21 @@ them. Each record has a `type`; the fields below hold its content.
 
 A directive is one match of the directive scan, which runs over the source text
 after the frontmatter (see [common.md](./common.md#where-a-directive-is)),
-without the whitespace at its end. An unclosed directive therefore runs to the
-end of the text, or ends after a word argument; the whitespace that the scan
-takes after the argument is removed with the directive, as the whitespace-only
-lines of a comment region are with a comment, and in the tree it is whitespace,
-outside the directive. `name` is the directive's name as defined there. The tree
-does not parse the argument. `value` holds what is written between the
-delimiters, the name included, as the `value` of the frontmatter does.
+without the whitespace at its end. An unclosed directive therefore ends where
+its argument ends: at the end of the text, after a word argument, or before the
+U+2028 or U+2029 that stops a free-text argument; the whitespace that the scan
+takes after the argument, such a separator included, is removed with the
+directive, as the whitespace-only lines of a comment region are with a comment,
+and in the tree it is whitespace, outside the directive.
+
+[fixture: common/directive-unclosed] [fixture:
+common/comment-directive-word-argument-takes-next-lines] [fixture:
+ishikawa/directive-open-object-u2028] [fixture:
+ishikawa/directive-open-object-u2029]
+
+`name` is the directive's name as defined there. The tree does not parse the
+argument. `value` holds what is written between the delimiters, the name
+included, as the `value` of the frontmatter does.
 
 `Root.directives` plays no part in configuration: this specification does not
 parse directive arguments, and mermaid.js finds the directives that configure
@@ -343,10 +351,12 @@ and which units each one is made of.
 Text that the author writes but that the diagram does not read, and that has no
 effect, is a leaf node too, of a type of the diagram that says so, such as
 [FlowchartIgnoredText](./ast/flowchart.md#flowchartignoredtext), so that a tool
-can find it without searching the source text. Making such text a node comes
-before rejecting the input: a diagram document rejects an input because of such
-text only where the tree has no place for a node of it, and then as a known
-divergence (see [known-divergences.md](./known-divergences.md)).
+can find it without searching the source text, unless the grammar reads it there
+as a form of another node type (see [Diagram nodes](#diagram-nodes)). Making
+such text a node comes before rejecting the input: a diagram document rejects an
+input because of such text only where the tree has no place for a node of it,
+and then as a known divergence (see
+[known-divergences.md](./known-divergences.md)).
 
 ### Identifier
 
@@ -403,9 +413,14 @@ In the same way, the URL of `click A href "u%%{init: {}}%%v"` has the value
 
 [fixture: flowchart/lex-directive-in-click-href-string]
 
-A string is closed by the next matching quote, as its diagram's lexical rules
-define. Where a diagram accepts a string that is not closed when the text ends,
-which only a backquoted name in a class diagram is (see
+A string is closed by a matching quote, the one that its diagram's lexical rules
+define.
+
+[fixture: eventmodeling/lex-inline-quote-greedy] [fixture:
+eventmodeling/lex-inline-quote-conversion]
+
+Where a diagram accepts a string that is not closed when the text ends, which
+only a backquoted name in a class diagram is (see
 [Strings, backquoted names, and generic types](./diagrams/class.md#strings-backquoted-names-and-generic-types)),
 its written text runs to the last character of the source that is not part of a
 directive or a comment region, the whitespace and line terminators at the end
@@ -550,11 +565,19 @@ in a document of their own under `ast/`:
 The name of every node type of a diagram type starts with the name of the
 diagram type, such as `FlowchartVertex`, because node types share one set of
 names across all diagram types. The [shared leaf nodes](#shared-leaf-nodes) are
-shared by all diagram types and have no prefix. A node type of text that
-mermaid.js does not read is named `<Diagram>IgnoredText`, or
+shared by all diagram types and have no prefix. A node type whose every node is
+text that mermaid.js does not read is named `<Diagram>IgnoredText`, or
 `<Diagram>IgnoredStatement` where it stands as a statement, such as
 `FlowchartIgnoredText` and `StateIgnoredStatement`, and no other node type has a
-name that ends so.
+name that ends so. Text that mermaid.js does not read is a node of another type
+where the grammar reads it as a form of that type: an empty description block
+where a statement starts is a description block statement without text, such as
+an `ErAccDescrBlockStatement` whose `value` is null, while on a line of the body
+of a requirement, where no statement starts, it is a `RequirementIgnoredText`.
+
+[fixture: er/gram-acc-descr-block-empty] [fixture:
+requirement/gram-acc-descr-block-empty] [fixture:
+requirement/gram-empty-description-block-in-body]
 
 - [gitgraph](./ast/gitgraph.md): the diagram type `gitGraph`.
 

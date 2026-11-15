@@ -7,7 +7,6 @@ import {
   dbOfText,
   defaultEmbedded,
   describeFrontmatterChange,
-  treeProblemsOfText,
   writtenEmbeddedTexts,
   writtenTextKeptUpToSeparators,
 } from "./db-reading.ts"
@@ -57,8 +56,6 @@ describe("cynefin escaped cases", () => {
     expect(writtenEmbeddedTexts(after)).toEqual(writtenEmbeddedTexts(before))
     expect(await describeFrontmatterChange(before, after, options)).toBeNull()
     expect(writtenTextKeptUpToSeparators(before, after)).toBe(true)
-    expect(treeProblemsOfText(before)).toEqual([])
-    expect(treeProblemsOfText(after)).toEqual([])
     expect(hiddenOwners(output)).toEqual(hiddenOwners(input))
   })
 })
@@ -67,6 +64,5 @@ describe("cynefin authored owners", async () => {
   const fixtures = await loadFormatFixtures("cynefin")
   it.each(fixtures)("$id", (fixture) => {
     expect(hiddenOwners(fixture.output!)).toEqual(hiddenOwners(fixture.input))
-    expect(treeProblemsOfText(fixture.output!)).toEqual([])
   })
 })

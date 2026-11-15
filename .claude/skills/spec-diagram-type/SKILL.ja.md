@@ -126,7 +126,7 @@ index.md の「How to read a diagram document」の 4 節で書く。
 `@mmd-toolkit/tests` の文書（`docs/db-summaries.md` と
 `docs/db-from-tree/<図種>.md`）である。
 そこに要るものは、
-tests-diagram-type のスキル（要約）と tests-tree-checks
+tests-diagram-type のスキル（要約）と tests-db-from-tree
 のスキル（木から作る手順）の手順で書く。
 
 ## 4. parser が仕様を読む前の点検
@@ -168,7 +168,7 @@ parser は仕様だけから書く。
    値がある、の 3 つの場合を数える。
    現れた場合は、どれも tests の `docs/db-from-tree/<図種>.md` の文で説明され、
    fixture を持つ。
-   説明する文のない場合の文は、tests-tree-checks のスキルの手順で書く。
+   説明する文のない場合の文は、tests-db-from-tree のスキルの手順で書く。
    最初の訪れでだけ決まるもの、積み重なるもの、
    更新がそのまま残すもの（`Object.assign`
    は新しいオブジェクトにないキーを残す）を、Db のクラスで探す。

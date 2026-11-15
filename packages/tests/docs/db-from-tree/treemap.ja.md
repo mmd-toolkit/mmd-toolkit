@@ -40,7 +40,8 @@
    自身の値を写してから section.children を再帰的に訪れる。
    children を持つのは section だけで、leaf は葉のままである。
    indent を読んだり親を再計算したりしない。
-   parser が入れ子を作り、checkTree が独立に確かめる。
+   [ast/treemap.md](../../../spec/docs/ast/treemap.ja.md)
+   が定義する入れ子を読む。
    前置 gap の classDef と共通の代入も図全体に効き、
    section の出入りでは履歴をリセットしない。
    重複名、空名、複数の根を保つ。

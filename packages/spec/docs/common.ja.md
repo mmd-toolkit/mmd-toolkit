@@ -821,8 +821,12 @@ mermaid.js で確かめた帰結は次のとおりです。
 - 閉じる `}%%` は省略できます。
   自由形式の引数を持ち `}%%` のないディレクティブは、
   テキストの終わりまで伸びます。
+  ただし、U+2028 か U+2029 が先に引数を止めれば、
+  ディレクティブはその文字の手前で終わり、その後のテキストは読まれます。
 
   [fixture: common/directive-unclosed]
+  [fixture: ishikawa/directive-open-object-u2028]
+  [fixture: ishikawa/directive-open-object-u2029]
 
   ヘッダーの直後にあれば、図の残りを取ります。
   `flowchart LR`、`%%{init: {"theme": "dark"}}`、`A-->B` は、

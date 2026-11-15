@@ -1,13 +1,12 @@
-import type { CheckedNode } from "../src/check-tree/types.ts"
-import type { Kit } from "./check-tree-built.ts"
+import type { Kit, RecordedNode } from "./tree-built.ts"
 import { hull } from "./statement-tree-built.ts"
 
 /** Attach explicitly supplied children; no indentation or source is interpreted. */
 export function withChildren(
   kit: Kit,
-  node: CheckedNode,
-  children: CheckedNode[],
-): CheckedNode {
+  node: RecordedNode,
+  children: RecordedNode[],
+): RecordedNode {
   return {
     ...node,
     ...kit.node(node.type, hull([node, ...children]), {}),
@@ -18,10 +17,10 @@ export function withChildren(
 /** Attach an explicitly supplied leading gap and extend the owned range. */
 export function withBefore(
   kit: Kit,
-  node: CheckedNode,
+  node: RecordedNode,
   field: "textBefore" | "statementsBefore",
-  before: CheckedNode[],
-): CheckedNode {
+  before: RecordedNode[],
+): RecordedNode {
   return {
     ...node,
     ...kit.node(node.type, hull([...before, node]), {}),

@@ -210,9 +210,9 @@ export function finishDiagram(
 /**
  * The promises of {@link DiagramAnalysis}: the tokens `tokens` are in source
  * order, do not overlap, are not empty, and lie in the source. Where a token
- * starts or ends with whitespace is the diagram's to say, and the check of
- * the tree checks it against the values (`docs/positions.md`, Invariants). A broken
- * promise is a bug of the diagram's parser.
+ * starts or ends with whitespace is defined by the diagram and
+ * `docs/positions.md`, Invariants. A broken promise is a bug of the diagram's
+ * parser.
  */
 function checkAnalysis(source: string, tokens: readonly PendingToken[]): void {
   let previousEnd = 0

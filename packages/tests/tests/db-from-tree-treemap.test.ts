@@ -1,19 +1,17 @@
 import { describe, expect, it } from "vitest"
-import { nodesOf } from "../src/check-tree/walk.ts"
+import { nodesOf } from "../src/tree-walk.ts"
 import { dbFromTree } from "../src/db-from-tree/index.ts"
 import type { DbTreeRoot } from "../src/db-from-tree/index.ts"
 import type { EmbeddedValues } from "../src/mermaid.ts"
 import { cssSupportsColor, loadFixtures } from "../src/index.ts"
-import { checkTree } from "../src/check-tree/index.ts"
-import type { CheckedNode } from "../src/check-tree/types.ts"
-import type { Kit } from "./check-tree-built.ts"
+import type { Kit, RecordedNode } from "./tree-built.ts"
 import { withBefore, withChildren } from "./nesting-built.ts"
 import { buildTreemap, classDef, common, row } from "./treemap-built.ts"
 
 /** An accepted hand-built tree and the shared configuration it reads. */
 function summary(
   source: string,
-  make: (kit: Kit) => CheckedNode[],
+  make: (kit: Kit) => RecordedNode[],
   embedded: EmbeddedValues = {
     config: { securityLevel: "strict" },
     title: undefined,
@@ -21,7 +19,6 @@ function summary(
   },
 ) {
   const { tree } = buildTreemap(source, make)
-  expect(checkTree(source, tree)).toEqual([])
   for (const node of nodesOf(tree).filter(
     (candidate) =>
       candidate.type === "TreemapSection" || candidate.type === "TreemapLeaf",

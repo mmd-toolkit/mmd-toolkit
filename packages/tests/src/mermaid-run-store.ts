@@ -59,7 +59,7 @@ export function isMermaidRunStoreOn(): boolean {
 /**
  * The files of `src/` that decide a result: `mermaid.ts` and every file it
  * imports at run time, directly or not. A test checks that the list is that
- * set. The other files of `src/` (the loader of the fixtures, the checks of trees)
+ * set. The other files of `src/` (the loader of the fixtures, the Db builders)
  * do not change a result, so changing them keeps the stored results.
  */
 export const RESULT_FILES: readonly string[] = [

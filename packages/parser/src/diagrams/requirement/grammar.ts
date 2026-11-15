@@ -1,6 +1,7 @@
 import { appendItems } from "../../append-items.ts"
 import type {
   DiagramTokenKind,
+  Identifier,
   StringLiteral,
   RequirementAccDescrBlockStatement,
   RequirementAccDescrStatement,
@@ -23,6 +24,7 @@ import type {
   RequirementRisk,
   RequirementRiskField,
   RequirementStatement,
+  RequirementStyleName,
   RequirementStyleStatement,
   RequirementValueField,
   RequirementVerifyMethod,
@@ -514,7 +516,7 @@ export class RequirementGrammar extends UnitGrammar<UnitName, Unit> {
   private parseStyleStatement(): RequirementStyleStatement {
     const start = this.next
     this.addItem("Keyword", [this.take("style")])
-    const names = this.parseNameList(STYLE_NAMES)
+    const names = this.parseStyleNameList()
     return {
       type: "RequirementStyleStatement",
       names,
@@ -527,7 +529,7 @@ export class RequirementGrammar extends UnitGrammar<UnitName, Unit> {
   private parseClassDefStatement(): RequirementClassDefStatement {
     const start = this.next
     this.addItem("Keyword", [this.take("classDef")])
-    const cssClasses = this.parseNameList(STYLE_NAMES)
+    const cssClasses = this.parseStyleNameList()
     return {
       type: "RequirementClassDefStatement",
       cssClasses,
@@ -605,14 +607,47 @@ export class RequirementGrammar extends UnitGrammar<UnitName, Unit> {
    * otherwise.
    */
   private parseName(names: readonly UnitName[]): RequirementName {
+    const unit = this.takeNameUnit(names)
+    return unit.name === "string"
+      ? this.closedStringLiteralOf(unit)
+      : this.requirementIdentifierOf(unit)
+  }
+
+  /**
+   * Styles and classes: the names of a `style` or `classDef` statement,
+   * `style-name ( "," style-name )*`; the list ends at the first name that
+   * no `,` precedes.
+   */
+  private parseStyleNameList(): RequirementStyleName[] {
+    const list = [this.parseStyleName()]
+    while (this.statementGoesOn([","])) {
+      this.addItem("Punctuator", [this.take(",")])
+      list.push(this.parseStyleName())
+    }
+    return list
+  }
+
+  /**
+   * Styles and classes: one name after `style` or `classDef`: a
+   * StringLiteral for a `string` unit, an Identifier for a `style-word`
+   * unit, as its position reads a name without whitespace
+   * (ast/requirement.md, RequirementStyleStatement).
+   */
+  private parseStyleName(): RequirementStyleName {
+    const unit = this.takeNameUnit(STYLE_NAMES)
+    return unit.name === "string"
+      ? this.closedStringLiteralOf(unit)
+      : this.identifierOfStyleWord(unit)
+  }
+
+  /** The next unit, which must be one of the units named in `names`. */
+  private takeNameUnit(names: readonly UnitName[]): Unit {
     const unit = this.peek()
     if (unit === null || !names.includes(unit.name)) {
       throw this.unexpected(unit)
     }
     this.advance()
-    return unit.name === "string"
-      ? this.closedStringLiteralOf(unit)
-      : this.identifierOfName(unit)
+    return unit
   }
 
   /** Styles and classes: `"accTitle" ":" title-text`. */
@@ -659,6 +694,18 @@ export class RequirementGrammar extends UnitGrammar<UnitName, Unit> {
   }
 
   /**
+   * ast/requirement.md, Identifier: the `style-word` unit `unit` after
+   * `style` or `classDef`, whose name is its written text. diagrams/
+   * requirement.md, Directives inside units: a `style-word` is a name
+   * unit, one `Identifier` item.
+   */
+  private identifierOfStyleWord(unit: Unit): Identifier {
+    this.addItem("Identifier", [unit])
+    const place = this.placeOf([unit])
+    return { type: "Identifier", name: this.textOf(place.range), ...place }
+  }
+
+  /**
    * ast/requirement.md, RequirementIdentifier: the `unquoted-text` or
    * `style-word` unit `unit`, whose name is its written text without the
    * whitespace at its end. diagrams/requirement.md, Directives inside
@@ -666,7 +713,7 @@ export class RequirementGrammar extends UnitGrammar<UnitName, Unit> {
    * hold several words; a `style-word` is a name unit, one `Identifier`
    * item.
    */
-  private identifierOfName(unit: Unit): RequirementIdentifier {
+  private requirementIdentifierOf(unit: Unit): RequirementIdentifier {
     this.addItem(unit.name === "unquoted-text" ? "RawText" : "Identifier", [
       unit,
     ])

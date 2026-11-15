@@ -61,9 +61,10 @@ SKILL, fixtures with the tests SKILL).
   no code that depends on the tree before the tree is settled.
 - `@mmd-toolkit/tests` has the corpus of the diagram type
   (`packages/tests/fixtures/<diagram>/`) and its Db summary.
-- `checkTree` checks tree conditions (fields, ranges and tokens), while parser
-  acceptance is checked by comparing its tree/error results with
-  `fixtureAccepts` from `@mmd-toolkit/tests`.
+- AI agents read changed recorded trees with the skill
+  [ast-json-validity](../ast-json-validity/SKILL.md). Parser acceptance is
+  checked by comparing its tree/error results with `fixtureAccepts` from
+  `@mmd-toolkit/tests`.
 - Checks of a declared divergence mark's lexical form belong in the parser's
   shared `expectDivergenceForm` path, separately from acceptance, rather than in
   per-diagram printer tests.

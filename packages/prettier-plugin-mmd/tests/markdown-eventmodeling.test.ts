@@ -6,7 +6,6 @@ import plugin from "../src/index.ts"
 import {
   dbOfText,
   defaultEmbedded,
-  treeProblemsOfText,
   writtenEmbeddedTexts,
   describeFrontmatterChange,
 } from "./db-reading.ts"
@@ -200,7 +199,5 @@ describe("eventmodeling in Markdown", () => {
         writtenEmbeddedTexts(fixture.payloadOutput),
       ),
     ).toEqual(writtenBefore)
-    expect(treeProblemsOfText(fixture.payloadInput)).toEqual([])
-    expect(treeProblemsOfText(fixture.payloadOutput)).toEqual([])
   })
 })

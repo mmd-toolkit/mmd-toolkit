@@ -6,14 +6,13 @@ import {
   loadFixture,
   cssSupportsColor,
 } from "../src/index.ts"
-import type { CheckedNode } from "../src/check-tree/types.ts"
-import type { Kit } from "./check-tree-built.ts"
+import type { Kit, RecordedNode } from "./tree-built.ts"
 import { branch, checkout, commit, merge, option } from "./gitgraph-built.ts"
 import { buildGitgraph, common } from "./statement-tree-built.ts"
-import { setField } from "./check-tree-recorded.ts"
+import { setField } from "./fixture-trees.ts"
 
 /** The fixed A/b/B/main prefix of the merge and cherry-pick fixtures. */
-function prefix(kit: Kit): CheckedNode[] {
+function prefix(kit: Kit): RecordedNode[] {
   return [
     commit(kit, () => [option(kit, "Id", '"A"')]),
     branch(kit, "b"),
@@ -26,7 +25,7 @@ const CASES: readonly {
   name: string
   direction?: "TB"
   frontmatter?: boolean
-  make: (kit: Kit) => CheckedNode[]
+  make: (kit: Kit) => RecordedNode[]
 }[] = [
   { name: "header-only", make: () => [] },
   {

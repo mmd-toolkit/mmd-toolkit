@@ -141,7 +141,7 @@ eventmodeling/validator-command-invalid]
 
 The summary omits model entities, notes, GWT, unused data, type tags, native
 ignored forms and drawing computations. Their authored nodes still belong to the
-tree and its checker.
+tree.
 
 [fixture: eventmodeling/db-entities-notes-gwt] [fixture:
 eventmodeling/db-data-unused] [fixture: eventmodeling/gram-written-tree]

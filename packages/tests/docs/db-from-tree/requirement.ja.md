@@ -75,9 +75,9 @@ requirement と element の本体だけです（**Requirements** を参照）。
 **テキスト。**
 木の葉ノードのテキストは、次のように読みます。
 
-- RequirementIdentifier と RequirementLiteral は、
-  その範囲の変換した形を持ちます。
-  `value` がある場合、それは木が持つ書かれたとおりのテキストで、
+- RequirementIdentifier、RequirementLiteral、
+  `style` や `classDef` の後の Identifier は、その範囲の変換した形を持ちます。
+  `name` または `value` は木が持つ書かれたとおりのテキストで、
   Db が持つのは mermaid.js が読むとおりのテキストです。
   そのため、`a`、U+00A0、`b` は、ノーブレークスペースを含む 1 つの名前です。
   行の上で名前や値の後ろにある空白は、その一部ではありません。

@@ -3,6 +3,7 @@ import type {
   RequirementClassStatement,
   RequirementName,
   RequirementRelationshipStatement,
+  RequirementStyleName,
   RequirementStyleStatement,
 } from "@mmd-toolkit/ast"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
@@ -53,7 +54,7 @@ export const requirementNoUndef: MermaidRuleDefinition<{
 
     /** Reports the name `name` when it is the name of no requirement and no element. */
     function check(
-      name: RequirementName,
+      name: RequirementName | RequirementStyleName,
       messageId: "styling" | "relationship",
     ) {
       const text = requirementNameText(name)

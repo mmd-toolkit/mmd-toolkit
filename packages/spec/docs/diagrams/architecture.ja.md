@@ -464,7 +464,7 @@ U+2028、`B` である。
 [fixture: architecture/lex-acc-descr-block-line-separator-then-comment-line]
 [fixture: architecture/lex-bracket-label-line-separator-then-comment-line]
 [fixture: architecture/lex-icon-text-string-line-separator-then-comment-line]
-[fixture: architecture/db-icon-text-string-paragraph-separator-then-comment-line]
+[fixture: architecture/lex-icon-text-string-paragraph-separator-then-comment-line]
 [fixture: architecture/lex-title-line-separator-comment-line-directive-next]
 [fixture: architecture/lex-title-line-separator-comment-line-space-next]
 [fixture: architecture/lex-title-line-separator-comment-line-separator-next]

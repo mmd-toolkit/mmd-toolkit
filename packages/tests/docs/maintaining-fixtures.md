@@ -216,24 +216,19 @@ generator, `add`, `add-many`, `set-divergence`, `set-note`, the collector and
 `loadFixtures()` handle only `input.mmd`, `expected.json` and `specified.json`,
 and leave any other file in a fixture's directory as it is. A fixture added here
 has neither file until the parser's tests run. The parser's tests check that the
-parser returns the recorded tree. This package checks that the recorded tree is
-right, in two tests that read `ast.json` and the input and call no parser:
-`tests/check-tree-corpus.test.ts` requires `checkTree()` to find no problem in
-any recorded tree ([check-tree.md](./check-tree.md)), and
-`tests/db-from-tree.test.ts` requires the Db that `dbFromTree()` builds from
-each recorded tree to be the Db of mermaid.js, or the `specified` Db where the
-specification reads the input differently
-([db-from-tree.md](./db-from-tree.md)). Of `parse-error.json`, the second test
-only looks whether it exists, for a fixture without a tree.
+parser returns the recorded tree. This package reads `ast.json` and the input
+without calling a parser: `tests/db-from-tree.test.ts` requires the Db that
+`dbFromTree()` builds from each recorded tree to be the Db of mermaid.js, or the
+`specified` Db where the specification reads the input differently
+([db-from-tree.md](./db-from-tree.md)). Of `parse-error.json`, the test only
+looks whether it exists, for a fixture without a tree.
 
 **The recorded tree is JSON.** A number that JSON cannot write is `null` in
 `ast.json`, as `JSON.stringify` writes it: the `value` of a NumericLiteral for a
 number that a double cannot hold (`Infinity` or `-Infinity`), and no other
 field, since no other field can hold such a number. The `raw` of the node has
-the number as written, and `checkTree()` accepts `null`, `Infinity`, and
-`-Infinity` for the `value` of a NumericLiteral whose written text is such a
-number, and no `null` for any other. `dbFromTree()` reads the number from the
-text of the node, so it needs no conversion.
+the number as written. `dbFromTree()` reads the number from the text of the
+node, so it needs no conversion.
 
 [fixture: xychart/db-plot-values-overflow]
 
@@ -381,13 +376,13 @@ A fixture whose `source` has `kind` `mermaid` is not written with a sentence,
 and a sentence need not cite it. Its input is mermaid.js's own, taken in bulk
 from its tests, its documents, and its demos, so that what the parser and
 `dbFromTree()` do with the inputs is checked against what mermaid.js does; by
-how it is made, it answers no one sentence. The tree of such a fixture is
-checked by `checkTree()`, by the Db that `dbFromTree()` builds from it against
-the Db of mermaid.js, and by the parser's comparison of its output with the
-recorded tree. A sentence may still cite one of them, and then its tree is read
-against that sentence like the tree of any other fixture; the tree of one that
-no sentence cites is read against no sentence. An input that the parser rejects
-has no tree, only the `parse-error.json` that the parser's tests compare.
+how it is made, it answers no one sentence. For such a fixture, the Db that
+`dbFromTree()` builds from its tree is compared with the Db of mermaid.js, and
+the parser's output is compared with the recorded tree. A sentence may still
+cite one of them, and then its tree is read against that sentence like the tree
+of any other fixture; the tree of one that no sentence cites is read against no
+sentence. An input that the parser rejects has no tree, only the
+`parse-error.json` that the parser's tests compare.
 
 How to prepare the checkout and run the collection, and how to check the inputs
 mermaid.js rejects, is in [tools/README.md](../../../tools/README.md).

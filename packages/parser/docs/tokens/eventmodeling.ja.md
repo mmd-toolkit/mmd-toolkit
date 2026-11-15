@@ -55,6 +55,9 @@ metadata の先行字下げはトークンにせず、Db 導出時にソース�
 [fixture: eventmodeling/gram-description-block-empty-after-removal]
 [fixture: eventmodeling/lex-inline-empty]
 [fixture: eventmodeling/gram-common-leading-directive-both-sides]
+[fixture: eventmodeling/lex-common-title-separator-then-directive]
+[fixture: eventmodeling/lex-common-title-directive-then-separator]
+[fixture: eventmodeling/lex-common-title-spaces-around-directive]
 
 native YAML/directive は消費した閉じ LF を除く一つの RawText item です。
 共通 directive と選ばれた semicolon は RawText と String を切ります。

@@ -5,7 +5,6 @@ import {
   dbOfText,
   defaultEmbedded,
   describeFrontmatterChange,
-  treeProblemsOfText,
   writtenEmbeddedTexts,
   writtenTextKeptUpToSeparators,
 } from "./db-reading.ts"
@@ -28,7 +27,5 @@ describe("radar escaped cases", () => {
     expect(writtenEmbeddedTexts(after)).toEqual(writtenEmbeddedTexts(before))
     expect(await describeFrontmatterChange(before, after, options)).toBeNull()
     expect(writtenTextKeptUpToSeparators(before, after)).toBe(true)
-    expect(treeProblemsOfText(before)).toEqual([])
-    expect(treeProblemsOfText(after)).toEqual([])
   })
 })

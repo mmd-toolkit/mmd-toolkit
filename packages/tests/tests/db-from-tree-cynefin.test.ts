@@ -7,17 +7,16 @@ import {
   embeddedValuesOf,
   loadFixture,
 } from "../src/index.ts"
-import type { CheckedNode } from "../src/check-tree/types.ts"
-import type { Kit } from "./check-tree-built.ts"
-import { setField } from "./check-tree-recorded.ts"
-import { frontmatterOf } from "./check-tree-trees.ts"
+import type { Kit, RecordedNode } from "./tree-built.ts"
+import { setField } from "./fixture-trees.ts"
+import { frontmatterOf } from "./tree-pieces.ts"
 import { buildCynefin, domain, item, transition } from "./cynefin-built.ts"
 import { common, ignored } from "./statement-tree-built.ts"
 
 /** Explicit authored trees use the public builder and shared converted/embedded readings. */
 function summary(
   source: string,
-  make: (kit: Kit) => CheckedNode[],
+  make: (kit: Kit) => RecordedNode[],
   embedded: EmbeddedValues = {
     config: {},
     title: undefined,

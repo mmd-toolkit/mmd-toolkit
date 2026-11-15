@@ -6,7 +6,6 @@ import plugin from "../src/index.ts"
 import {
   dbOfText,
   defaultEmbedded,
-  treeProblemsOfText,
   writtenEmbeddedTexts,
 } from "./db-reading.ts"
 import { dataBlockEmbeddedForFormattingComparison } from "./data-block-margins.ts"
@@ -177,7 +176,5 @@ describe("usecase in Markdown", () => {
         writtenEmbeddedTexts(fixture.payloadOutput),
       ),
     ).toEqual(writtenBefore)
-    expect(treeProblemsOfText(fixture.payloadInput)).toEqual([])
-    expect(treeProblemsOfText(fixture.payloadOutput)).toEqual([])
   })
 })

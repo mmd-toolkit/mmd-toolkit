@@ -35,19 +35,13 @@ The reviewer edits nothing in the working tree.
 - Read the whole of every file the change touched, not the part the report
   points at. A document that covers several diagram types is read for all of
   them.
-- In a change whose diff has an `ast.json`, read each tree that it adds or
-  rewrites against the sentences that cite its fixture, as the last paragraphs
-  of step 3 of
-  [section 4.7 of the skill parser](../parser/SKILL.md#47-recorded-parse-results)
-  say. Read what the author says of those trees (in the report, the description,
-  or a request for review that passes on the author's report) only after that,
-  and compare the two. A tree that does not agree with a sentence is a finding
-  against the parser or the specification, whichever is wrong; a changed tree
-  that the author gives no answer for is a finding; and a fixture that the
-  change added and that no sentence cites is a finding against the
-  specification, unless its `source` has `kind` `mermaid`, an input that the
-  collector took from mermaid.js (the skill conventions, Running tests). The
-  review report carries the answers.
+- A change whose diff has an `ast.json`, or that changes a block of the tree,
+  token, or position documents or a section that such a block links to, also
+  follows
+  [Review independently](../ast-json-validity/SKILL.md#6-review-independently)
+  in ast-json-validity. Check the same `ast.json` files by that procedure before
+  reading the author's fixes in the commits, then compare them with your own
+  findings, as those steps require.
 - A review of a branch or a pull request covers the whole of it, also when the
   request names only its last commit: every file it changed since its base, and
   the released behavior that the same sentences govern. What an earlier round

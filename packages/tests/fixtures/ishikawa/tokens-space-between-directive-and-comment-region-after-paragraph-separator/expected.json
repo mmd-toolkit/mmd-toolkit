@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokens.md Comment regions in tokens: after U+2029, the space between a directive and a comment region is removed with the comment line, so mermaid.js does not read it as part of the value and it belongs to no token; the node text is R, U+2029, and a space and A."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R  A",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R  A",
+      "children": []
+    }
+  }
+}

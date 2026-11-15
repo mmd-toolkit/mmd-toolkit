@@ -154,7 +154,7 @@ parser の結果の記録が決める。
 
 要約は model entity、note、GWT、未使用の data、型タグ、native の無視された形、
 描画時の計算を除く。
-書かれた node は木と checker の対象として残る。
+書かれた node は木に残る。
 
 [fixture: eventmodeling/db-entities-notes-gwt]
 [fixture: eventmodeling/db-data-unused]

@@ -51,6 +51,11 @@ between them included, while its value leaves them out: the first style of
 [fixture: requirement/db-requirement-name-spaces] [fixture:
 requirement/db-acc-title-descr] [fixture: requirement/lex-style-spaces]
 
+A name after `style` or `classDef` is an Identifier, not a
+RequirementIdentifier, and its range is that of its `style-word` token.
+
+[fixture: requirement/db-style-statement] [fixture: requirement/db-class-def]
+
 ### RequirementIgnoredText
 
 The text of a direction line covers it without the whitespace at its ends:

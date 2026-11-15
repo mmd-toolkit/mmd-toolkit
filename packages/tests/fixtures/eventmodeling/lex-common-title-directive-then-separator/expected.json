@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokens/eventmodeling.md: the payload of a title starts after exactly one ASCII separator, here with a directive between the keyword and the one ASCII separator of a title; the separator belongs to no token."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

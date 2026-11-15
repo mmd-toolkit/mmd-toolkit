@@ -6,8 +6,8 @@ description: >-
   (adding, renaming, and marking fixtures, known divergence identifiers,
   specified readings). Use for any work on packages/tests or tools/, and when a
   fixture, a rename or a known divergence identifier is needed. Adding a diagram
-  type, the tree checks, and updating mermaid.js have skills of their own that
-  use this one.
+  type, the Db builder from a tree, and updating mermaid.js have skills of their
+  own that use this one.
 ---
 
 # The truth from mermaid.js, and the fixtures (tests)
@@ -16,11 +16,10 @@ The steps of the work on `@mmd-toolkit/tests` and `tools/` that every piece of
 work follows, and the fixture tools and lists that the other packages use. The
 policies and criteria are in section 1; what holds for every package is in
 AGENTS.md and the skill `conventions`. Adding a diagram type is in the skill
-[tests-diagram-type](../tests-diagram-type/SKILL.md), the Db builder and the
-tree checker in [tests-tree-checks](../tests-tree-checks/SKILL.md), and updating
-the pinned mermaid.js in
-[tests-mermaid-update](../tests-mermaid-update/SKILL.md); sections 1 to 4 of
-this skill hold for their steps too.
+[tests-diagram-type](../tests-diagram-type/SKILL.md), the Db builder in
+[tests-db-from-tree](../tests-db-from-tree/SKILL.md), and updating the pinned
+mermaid.js in [tests-mermaid-update](../tests-mermaid-update/SKILL.md); sections
+1 to 4 of this skill hold for their steps too.
 
 ## 1. Policies and criteria
 
@@ -48,7 +47,7 @@ this skill hold for their steps too.
 ## 3. What these skills write
 
 - The steps of this skill and of the skills `tests-diagram-type`,
-  `tests-tree-checks`, and `tests-mermaid-update` write only `packages/tests`,
+  `tests-db-from-tree`, and `tests-mermaid-update` write only `packages/tests`,
   `tools/`, and the documents of these skills. When another package
   (`packages/spec`, `packages/parser`, `packages/prettier-plugin-mmd`) needs a
   change, make it by the steps of that package's skill. When taking inputs from
@@ -106,7 +105,6 @@ this skill hold for their steps too.
   | `src/db-from-tree/`                                         | `db-from-tree.test.ts`, `converted-text.test.ts`             |
   | `src/source-scan.ts`                                        | `source-scan.test.ts`                                        |
   | `src/ordered-json.ts`                                       | `ordered-json.test.ts`, `tools-fixture-store.test.ts`        |
-  | `src/check-tree/`                                           | `check-tree-corpus.test.ts`, `check-tree*.test.ts`           |
   | `tools/src/diagrams.ts`                                     | `tools-diagrams.test.ts`                                     |
   | `tools/src/fixture-store.ts`                                | `tools-fixture-store.test.ts`                                |
   | `tools/src/spec-recorder.ts`                                | `tools-spec-recorder.test.ts`                                |
@@ -114,7 +112,7 @@ this skill hold for their steps too.
   | `tools/fixtures.ts`, `tools/collect.ts`                     | no test file; see below                                      |
 
   The functions of `tools/src` that decide what a fixture's recorded files
-  contain are tested by `tests/tools-*.test.ts`, one file for each module; the
+  contain are tested by the `tests/tools-*.test.ts` files listed above; the
   recorder runs in a process of its own there, since it needs Node.js's own
   `import()`. The command-line files (`tools/fixtures.ts`, `tools/collect.ts`)
   have no test file; each command is checked by running it: `add-many`,
@@ -124,6 +122,10 @@ this skill hold for their steps too.
   the recorder (`tools/src/spec-recorder.ts`) changes is in step 3 of
   [references/collecting-fixtures.md](../tests-diagram-type/references/collecting-fixtures.md)
   of the skill tests-diagram-type.
+
+  AI agents check changed recorded trees and the accepted fixtures cited by
+  changed document blocks with the checklist and procedure of
+  [ast-json-validity](../ast-json-validity/SKILL.md).
 
   Run one file with
   `pnpm --filter @mmd-toolkit/tests exec vitest run tests/<file>`.

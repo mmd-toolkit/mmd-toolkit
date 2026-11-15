@@ -25,6 +25,6 @@
    rather than on the text, such as `window.CSS` or `document` (sequence: the
    colour of a box). Such a value is supplied from outside, as a site
    configuration is; `docs/db-from-tree/<diagram>.md` of `@mmd-toolkit/tests`
-   says so, written with the steps of the tests-tree-checks SKILL.
+   says so, written with the steps of the tests-db-from-tree SKILL.
 4. Check the order of the preprocessing (Reading a source in common.md) and the
    detection (detection.md).

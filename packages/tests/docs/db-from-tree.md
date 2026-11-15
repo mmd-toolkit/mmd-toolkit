@@ -30,9 +30,8 @@ dbFromTree(text, tree, embedded, isColor)
   `src/db-from-tree/*-tree.ts` list the fields that the Db reads, and no others;
   they are the fields that an implementation has to give. The tree is plain
   JSON: the function does not use a parser, a lexer, or the units of either. It
-  reads the fields without checking them: a tree that lacks one is found by
-  [checkTree()](./check-tree.md), and the reading of such a tree fails with the
-  error of the missing field.
+  reads the fields without checking them; reading a tree that lacks a required
+  field fails with the error of the missing field.
 - `embedded` holds the values that mermaid.js derives from the embedded data of
   the input, which a tree does not hold (see
   [embedded-data.md](./embedded-data.md)). A fixture gives them through
@@ -53,12 +52,11 @@ line terminator as `\n`, each attribute quote as `'`, and each entity as its
 placeholder, for the characters outside directives, comment regions, and the `;`
 that the line rule ignores. The directives and the comment lines are found in
 the text itself, with the rules of common.md, Where a directive is, and Comment
-lines (`scanSource()` in `src/source-scan.ts`, which the check of a recorded
-tree uses too, so that the rules are written once): a directive and what its
-scan takes after it, and a comment line, which is a `%%` with only whitespace
-and directives between it and a comment start, and with a character after it
-that is not `{` or a line terminator, from the earliest such comment start to
-the end of its line.
+lines (`scanSource()` in `src/source-scan.ts`): a directive and what its scan
+takes after it, and a comment line, which is a `%%` with only whitespace and
+directives between it and a comment start, and with a character after it that is
+not `{` or a line terminator, from the earliest such comment start to the end of
+its line.
 
 [fixture: common/comment-bare-then-u2028] [fixture:
 common/comment-bare-then-u2029]
@@ -78,7 +76,7 @@ whether the value is a string, a text, or a description block.
 
 [fixture: flowchart/lex-string-line-separator-then-comment-line] [fixture:
 block/db-string-paragraph-separator-then-comment-line] [fixture:
-gantt/db-title-line-separator-then-comment-line] [fixture:
+gantt/lex-title-line-separator-then-comment-line] [fixture:
 flowchart/lex-square-label-paragraph-separator-then-comment-line] [fixture:
 flowchart/lex-acc-descr-block-line-separator-then-comment-line]
 
@@ -261,8 +259,9 @@ are read from the tree like this:
 
 - **Venn declarations**: names, labels, numbers, style values and titles use
   their written values and converted leaf ranges; null text targets use the
-  latest subset after `checkTree` validates implicit mode (the steps are in
-  [db-from-tree/venn.md](./db-from-tree/venn.md)).
+  latest subset, as defined by
+  [Text and implicit text mode](../../spec/docs/diagrams/venn.md#text-and-implicit-text-mode)
+  (the steps are in [db-from-tree/venn.md](./db-from-tree/venn.md)).
 
   [fixture: venn/db-all-fields]
 

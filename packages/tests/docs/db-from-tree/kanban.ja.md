@@ -54,8 +54,9 @@
    各列の children は `isGroup: false` のカードとして読む。
    所有する列の変換した id を `parentId` にし、列をカードより先に原順で訪れる。
    indent を読んだり所属を再計算したりしない。
-   parser が2段の入れ子を作り、checkTree が独立に確かめる。
-   最後の浅いカードも同じである。
+   最後の浅いカードも含め、
+   [KanbanNode](../../../spec/docs/ast/kanban.ja.md#kanbannode) が定義する 2
+   段の入れ子を読む。
 
    [fixture: kanban/db-sections-items] [fixture: kanban/db-indent-unindented]
    [fixture: kanban/db-indent-tabs] [fixture: kanban/db-indent-deeper]

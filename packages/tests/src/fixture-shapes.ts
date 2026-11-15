@@ -7,9 +7,9 @@
  * U+2029, a comment, a line break, whether two names are one, or the way the
  * grammar cut the text into tokens, do not.
  */
-import { DATA_BLOCK_NODE_TYPES } from "./check-tree/node-types.ts"
-import { nodesOf } from "./check-tree/walk.ts"
-import type { CheckedRoot } from "./check-tree/types.ts"
+import { DATA_BLOCK_NODE_TYPES } from "./data-block-node-types.ts"
+import { nodesOf } from "./tree-walk.ts"
+import type { TreeRoot } from "./db-from-tree/tree.ts"
 import { IDS_WITHOUT_NODE } from "./db-from-tree/state.ts"
 
 /** A token of a text, as the shape reads it: its type and where it lies. */
@@ -56,7 +56,7 @@ export interface ShapeSource {
  * parser returns: its tokens, and the ranges of its frontmatter and of its data
  * block nodes, taken from the tree and not found again in the text.
  */
-export function shapeSourceOf(tree: CheckedRoot): ShapeSource {
+export function shapeSourceOf(tree: TreeRoot): ShapeSource {
   const writtenRanges: (readonly [number, number])[] = []
   if (tree.frontmatter !== null) writtenRanges.push(tree.frontmatter.range)
   for (const node of nodesOf(tree)) {

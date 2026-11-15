@@ -7,15 +7,14 @@ import {
   embeddedValuesOf,
   loadFixtures,
 } from "../src/index.ts"
-import type { Kit } from "./check-tree-built.ts"
-import type { CheckedNode } from "../src/check-tree/types.ts"
+import type { Kit, RecordedNode } from "./tree-built.ts"
 import { buildPacket, range, relative, single } from "./packet-built.ts"
 import { common } from "./statement-tree-built.ts"
 
 /** Read an explicitly built tree using the ordinary shared embedded-value path. */
 function summary(
   source: string,
-  make: (kit: Kit) => CheckedNode[],
+  make: (kit: Kit) => RecordedNode[],
   embedded: EmbeddedValues = {
     config: { securityLevel: "strict" },
     title: undefined,
@@ -132,7 +131,7 @@ describe("packet Db from hand-built trees", () => {
 })
 
 /** Fixed fixture inputs with every contributing occurrence supplied explicitly. */
-const CASES: readonly { name: string; make: (kit: Kit) => CheckedNode[] }[] = [
+const CASES: readonly { name: string; make: (kit: Kit) => RecordedNode[] }[] = [
   {
     name: "gram-mixed",
     make: (kit) => [
