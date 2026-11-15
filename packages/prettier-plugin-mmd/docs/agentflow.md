@@ -274,8 +274,12 @@ keeps the space before `;;`, also where spaces follow the semicolons. A
 directive after the name changes nothing, since mermaid.js removes it before it
 reads the text: `flow F%% style:#x %%{init: {}}%%;;` keeps the space before the
 directive, and without it the text is rejected by mermaid.js, whether one
-directive, several directives, or three semicolons stand there, and in a
-connector heading as well.
+directive, directives that touch each other, or three semicolons stand there,
+and in a connector heading as well. Where whitespace follows the directive, no
+entity forms with or without the space before it, and that space stays as
+written: `flow F%% style:#x %%{init: {}}%% %%{a}%%;;` and
+`flow F%% style:#x %%{init: {}}%% ;;` are unchanged, as is
+`accDescr {style:#x} flow F %%{init: {}}%% %%{a}%%;;`.
 
 [fixture: names-and-headings/heading-entity-gap-before-kept-semicolons]
 [fixture: names-and-headings/heading-entity-gap-before-kept-semicolons-trailing]
@@ -286,8 +290,6 @@ names-and-headings/heading-entity-gap-before-directive-and-kept-semicolons-trail
 [fixture:
 names-and-headings/heading-entity-gap-before-directive-and-three-semicolons]
 [fixture:
-names-and-headings/heading-entity-gap-before-two-directives-and-kept-semicolons]
-[fixture:
 names-and-headings/heading-entity-gap-before-touching-directives-and-kept-semicolons]
 [fixture:
 names-and-headings/heading-entity-gap-digits-before-directive-and-kept-semicolons]
@@ -295,6 +297,13 @@ names-and-headings/heading-entity-gap-digits-before-directive-and-kept-semicolon
 names-and-headings/heading-entity-gap-short-before-directive-and-kept-semicolons]
 [fixture:
 names-and-headings/heading-entity-gap-connector-before-directive-and-kept-semicolons]
+
+[fixture:
+names-and-headings/heading-entity-gap-before-two-directives-and-kept-semicolons]
+[fixture:
+names-and-headings/heading-entity-gap-before-directive-and-space-and-kept-semicolons]
+[fixture:
+names-and-headings/heading-nonentity-gap-before-two-directives-and-kept-semicolons]
 
 Where removing the whitespace forms no entity, the usual trimming still applies:
 `accDescr {style:#x} flow F ;;` is printed with `flow F;;`, and
