@@ -35,7 +35,11 @@ import { checkSequenceTree } from "./sequence.ts"
 import { checkStateTree } from "./state.ts"
 import { checkTimelineTree } from "./timeline.ts"
 import { checkPunctuatorsAreWhole } from "./punctuators.ts"
-import { checkStringsAreWhole, checkTokensAreNotCut } from "./tokens.ts"
+import {
+  checkStringsAreWhole,
+  checkTokensAreNotCut,
+  checkValueTokensAreNotSplit,
+} from "./tokens.ts"
 import { checkValues, quoteDelimitersOf } from "./values.ts"
 import { checkQuadrantTree } from "./quadrant.ts"
 import { checkXychartTree } from "./xychart.ts"
@@ -88,6 +92,7 @@ function checkShapedTree(
   checkSharedLeaves(text, root, problems)
   checkNullFields(text, root, problems)
   checkTokensAreNotCut(root, problems)
+  checkValueTokensAreNotSplit(root, problems)
   checkStringsAreWhole(root, problems)
   checkPunctuatorsAreWhole(root, problems)
   // The strings of a flowchart nest delimiters; the strings of a mindmap are

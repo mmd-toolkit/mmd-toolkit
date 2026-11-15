@@ -90,6 +90,23 @@ export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
 ])
 
 /**
+ * The value nodes whose tokens are the units of several items, so that two
+ * tokens of one kind may touch in them: a node of text that mermaid.js does
+ * not read, which has the tokens of its units (ast.md, Nodes; its type is named
+ * `<Diagram>IgnoredText`, and no other type is named so); a SequenceBoxText,
+ * whose colour candidate and remainder are two parts (parser/docs/tokens/
+ * sequence.md, Tokens); and a VennLiteral, whose atoms of a bare style value
+ * keep their own tokens even when adjacent (parser/docs/tokens/venn.md,
+ * Tokens). Every other value node is one item, and a token is a run of the
+ * units of one item and one kind.
+ */
+export const VALUE_NODE_TYPES_OF_SEVERAL_ITEMS: ReadonlySet<string> = new Set([
+  ...[...VALUE_NODE_TYPES].filter((type) => type.endsWith("IgnoredText")),
+  "SequenceBoxText",
+  "VennLiteral",
+])
+
+/**
  * The node types that are not value nodes. Together with
  * {@link VALUE_NODE_TYPES} they are every node type of the trees of the
  * specification; a test requires every type that a recorded tree has to be in

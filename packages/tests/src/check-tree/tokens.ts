@@ -7,6 +7,7 @@ import {
   DATA_BLOCK_NODE_TYPES,
   NODE_TYPES_WITH_TOKENS_OF_ANY_KIND,
   VALUE_NODE_TYPES,
+  VALUE_NODE_TYPES_OF_SEVERAL_ITEMS,
 } from "./node-types.ts"
 import { KEYWORD_TEXTS } from "./keywords.ts"
 import { label, withArticle } from "./problems.ts"
@@ -143,12 +144,13 @@ const TOKEN_KINDS_WITHOUT_TABLE_OF_TEXTS: ReadonlySet<string> = new Set([
 /**
  * The runs of the tokens of `tokens` (in source order) in which each token is
  * glued to the next by cuts: with a directive or an ignored `;` between them
- * and nothing else. A token that no token of `tokens` is glued to is a run of
- * its own.
+ * and nothing else, or, where `touching` is true, with nothing between them at
+ * all. A token that no token of `tokens` is glued to is a run of its own.
  */
 function runsGluedByCuts(
   root: CheckedRoot,
   tokens: readonly CheckedToken[],
+  touching: boolean,
 ): CheckedToken[][] {
   const runs: CheckedToken[][] = []
   for (const token of tokens) {
@@ -157,7 +159,8 @@ function runsGluedByCuts(
     if (
       run !== undefined &&
       last !== undefined &&
-      gluedByCuts(root, last, token)
+      (gluedByCuts(root, last, token) ||
+        (touching && last.range[1] === token.range[0]))
     ) {
       run.push(token)
     } else {
@@ -180,9 +183,10 @@ function fragmentsOfEntries(
   root: CheckedRoot,
   tokens: readonly CheckedToken[],
   isEntry: (joined: string) => boolean,
+  touching: boolean,
 ): CheckedToken[][] {
   const found: CheckedToken[][] = []
-  for (const glued of runsGluedByCuts(root, tokens)) {
+  for (const glued of runsGluedByCuts(root, tokens, touching)) {
     for (let from = 0; from < glued.length; from++) {
       for (let to = from + 1; to < glued.length; to++) {
         const run = glued.slice(from, to + 1)
@@ -197,15 +201,19 @@ function fragmentsOfEntries(
  * Reports each run of fragments of `fragmentsOfEntries()` at its first
  * fragment, with the fragments in order and the text that they make: the one
  * report of a cut `Keyword` token (`checkTokensAreNotCut()`) and of a cut
- * `Punctuator` token (`checkPunctuatorsAreWhole()`).
+ * `Punctuator` token (`checkPunctuatorsAreWhole()`). A keyword is one unit, so
+ * its fragments also touch with no cut between them (`touching`); the units of
+ * a `Punctuator` text touch as units of their own, as the `--` and the `>` of
+ * `-->` do, so those are asked for cuts only.
  */
 export function reportCutEntries(
   root: CheckedRoot,
   tokens: readonly CheckedToken[],
   isEntry: (joined: string) => boolean,
   problems: Problems,
+  touching = false,
 ): void {
-  for (const run of fragmentsOfEntries(root, tokens, isEntry)) {
+  for (const run of fragmentsOfEntries(root, tokens, isEntry, touching)) {
     const first = run[0]
     if (first === undefined) continue
     problems.report(
@@ -222,10 +230,11 @@ export function reportCutEntries(
  * tokens of the kind `Identifier` or `Numeric`, with a cut and nothing else
  * between them, are the fragments of a cut token, as `A%%{init: {}}%%B` is for
  * the `Identifier` `AB`. Tokens of the kind `Keyword` are the fragments of a
- * cut keyword when they are a run that cuts glue together and their texts
- * joined are the text of a keyword (`KEYWORD_TEXTS`), as `sub`, a directive,
- * and `graph` are for `subgraph`, and `su`, `bgr`, and `aph` with a cut between
- * each; tokens that lie apart, with whitespace between them, are units of
+ * cut keyword when they are a run that cuts glue together, or that touch, and
+ * their texts joined are the text of a keyword (`KEYWORD_TEXTS`), as `sub`, a
+ * directive, and `graph` are for `subgraph`, and `su`, `bgr`, and `aph` with a
+ * cut between each, and `sub` and `graph` touching; tokens that lie apart, with
+ * whitespace between them, are units of
  * their own, and so are keywords that a diagram lets follow each other with
  * nothing between (`<<choice>>accDescr {}`). The `Punctuator` tokens are
  * checked by `checkPunctuatorsAreWhole()`, and the arrows and the shapes by
@@ -255,7 +264,50 @@ export function checkTokensAreNotCut(
     tokens.filter((token) => token.type === "Keyword"),
     (joined) => isKeywordText(root, joined),
     problems,
+    true,
   )
+}
+
+/**
+ * parser/docs/tokens/<diagram>.md, Tokens: a value node is made of the units
+ * of one item of the grammar, and a token is a run of the units of one item and
+ * one kind that follow one another with nothing between them. So two tokens of
+ * a value node that are of one kind and touch (no whitespace, directive,
+ * comment region, or ignored `;` between them) are one token that was split,
+ * as `fill:` and `#f9f` are for the style `fill:#f9f`, and `spa` and `ced name`
+ * for the name `spaced name`. `Punctuator` tokens are units of their own that
+ * touch, as `{` and `}` do, so they are not asked; the value nodes of several
+ * items ({@link VALUE_NODE_TYPES_OF_SEVERAL_ITEMS}) are not asked; and a token
+ * that a directive or an ignored `;` cuts is a different case
+ * (`checkTokensAreNotCut()`).
+ */
+export function checkValueTokensAreNotSplit(
+  root: CheckedRoot,
+  problems: Problems,
+): void {
+  for (const node of nodesOf(root)) {
+    if (
+      !VALUE_NODE_TYPES.has(node.type) ||
+      VALUE_NODE_TYPES_OF_SEVERAL_ITEMS.has(node.type)
+    ) {
+      continue
+    }
+    const tokens = nodeTokensIn(root, node.range)
+    for (const [index, token] of tokens.entries()) {
+      const previous = tokens[index - 1]
+      if (
+        previous !== undefined &&
+        previous.type === token.type &&
+        token.type !== "Punctuator" &&
+        previous.range[1] === token.range[0]
+      ) {
+        problems.report(
+          label(token),
+          `${withArticle(token.type)} token is split: ${label(previous)} and this touch in ${label(node)}, so they are one token`,
+        )
+      }
+    }
+  }
 }
 
 /** Whether `text` is the text of a `Keyword` token of the diagram of `root`, in any case. */
