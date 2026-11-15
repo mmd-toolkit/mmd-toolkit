@@ -4092,6 +4092,65 @@ mermaid.js は、`style`、続いて空白をはさまずに `#` が後に続く
 [fixture: class/labels/semicolon-line-kept]
 [fixture: state/descriptions-and-labels/semicolon-line-kept]
 
+行の規則が無視する `;` の後ろの、行末までの空白は印字しません。
+印字した行が、2 回目の整形が読む行と同じになるようにするためです。
+木は、空白が `;` の後ろに続くとき、その `;` を文のテキストの内側に置き、
+続かないとき、テキストの後ろに置きます。
+テキストの末尾を削る規則は、前者では `;` の前の空白を残し、
+後者では取り除きます。
+そこで、テキストは `;` の後ろの空白がないものとして決めます。
+`style fill:#f00 ;` の後ろに空白があるタイトルは、
+空白がないときと同じく `style fill:#f00;` と印字します。
+1 回目に空白を残し、2 回目に取り除くことはしません。
+末尾を削るテキストが対象です。
+timeline、journey、treeView、radar、use case、cynefin、info、pie、gitGraph、
+packet、architecture、treemap、ishikawa の各図のテキストと、
+Gantt 図のタイトルです。
+末尾の空白が Db の一部になるテキストは、空白を残します。
+Gantt 図のセクション名と `todayMarker`（`section style:#x;y; ` と空白 1 つ）は、
+書かれたままです。
+行の規則が無視しない `;` はテキストの一部で、前の空白とともに残ります。
+空白の後ろの U+2028 や U+2029 はテキストの文字で、末尾を削る対象ではないので、
+変わりません。
+
+[fixture: timeline/statements-one-per-line/ignored-semicolon-trailing-space]
+[fixture: timeline/statements-one-per-line/ignored-semicolon-trailing-tab]
+[fixture: timeline/statements-one-per-line/ignored-semicolon-trailing-directive]
+[fixture: timeline/statements-one-per-line/ignored-semicolon-trailing-event-space]
+[fixture: timeline/statements-one-per-line/ignored-semicolon-trailing-event-directive]
+[fixture: timeline/statements-one-per-line/nonignored-semicolon-trailing-space]
+[fixture: journey/statements-one-per-line/ignored-semicolon-trailing-space-title]
+[fixture: treeview/semicolons/ignored-semicolon-trailing-space]
+[fixture: treeview/semicolons/ignored-semicolon-trailing-tab]
+[fixture: treeview/semicolons/ignored-semicolon-trailing-directive]
+[fixture: treeview/semicolons/ignored-semicolon-trailing-whole-value]
+[fixture: treeview/semicolons/nonignored-semicolon-trailing-space]
+[fixture: radar/semicolons/ignored-semicolon-trailing-space]
+[fixture: radar/semicolons/ignored-semicolon-trailing-tab]
+[fixture: radar/semicolons/nonignored-semicolon-trailing-space]
+[fixture: usecase/statements-and-semicolons/ignored-semicolon-trailing-space]
+[fixture: usecase/statements-and-semicolons/ignored-semicolon-trailing-tab]
+[fixture: usecase/statements-and-semicolons/ignored-semicolon-trailing-directive]
+[fixture: usecase/statements-and-semicolons/nonignored-semicolon-trailing-space]
+[fixture: cynefin/semicolons/ignored-semicolon-trailing-space]
+[fixture: info/semicolons/ignored-semicolon-trailing-space]
+[fixture: pie/directives-and-semicolons/ignored-semicolon-trailing-space]
+[fixture: ishikawa/line-rule-and-kept-lines/ignored-semicolon-trailing-space]
+[fixture: ishikawa/line-rule-and-kept-lines/ignored-semicolon-trailing-tab]
+[fixture: ishikawa/line-rule-and-kept-lines/ignored-semicolon-trailing-directive]
+[fixture: ishikawa/line-rule-and-kept-lines/nonignored-semicolon-trailing-space]
+[fixture: gantt/titles-and-sections/ignored-semicolon-trailing-section]
+[fixture: gantt/titles-and-sections/ignored-semicolon-trailing-today-marker]
+[test: ignored semicolon trailing blanks: pie/nbsp]
+[test: ignored semicolon trailing blanks: pie/ideographic-space]
+[test: ignored semicolon trailing blanks: pie/form-feed]
+[test: ignored semicolon trailing blanks: timeline/ls]
+[test: ignored semicolon trailing blanks: timeline/ps]
+[test: ignored semicolon trailing blanks: pie/ls]
+[test: ignored semicolon trailing blanks: pie/ps]
+[test: ignored semicolon trailing blanks: treeview/ls]
+[test: ignored semicolon trailing blanks: treeview/ps]
+
 flowchart、swimlane、
 agentflow の図の `classDef` と `style` を終わらせる `;` と、
 treemap の `classDef` を終わらせる `;` は、
@@ -4455,6 +4514,35 @@ flowchart と ER 図で同じです。
 [fixture: flowchart/indentation/direction-text-split-by-ignored-semicolon-kept]
 [fixture: flowchart/indentation/direction-text-value-after-comment-line-kept]
 [fixture: er/indentation/direction-text-split-by-ignored-semicolon-kept]
+
+印字器が 1 行に保つ行で、先頭の桁から中身のある説明ブロックで始まり、
+同じ区間のブロックの後ろに direction の文がある行は、字下げも元のまま保ちます。
+先頭の桁では `accDescr {D;} direction TB;` はブロック `D;` とそのあとの
+direction 行ですが、
+字下げすると最初の空白文字から始まる direction 行がブロックごと読み、
+図の説明は空になります。
+行の文は通常の規則で印字します。
+中身のないブロックは、字下げがあってもなくても同じ空の説明を読みます。
+印字器が分ける行は、文を別々の行に印字します。
+改行、U+2028、U+2029 で終わる部分は別の区間で、
+direction 行はそれより前へは届きません。
+この規則はどれも桁を保ちません。
+
+[fixture: flowchart/indentation/joined-direction-column-zero]
+[fixture: flowchart/indentation/joined-direction-end-of-text]
+[fixture: flowchart/indentation/swimlane-joined-direction-end-of-text]
+[fixture: agentflow/direction/joined-direction-end-of-text]
+[fixture: flowchart/indentation/swimlane-joined-direction-column-zero]
+[fixture: flowchart/indentation/joined-direction-separators-and-trivia]
+[fixture: flowchart/indentation/unclosed-directive-before-direction]
+[fixture: flowchart/indentation/split-direction-after-description]
+[fixture: flowchart/indentation/empty-description-before-direction-control]
+[fixture: flowchart/indentation/whitespace-description-before-direction-control]
+[fixture: agentflow/direction/joined-direction-column-zero]
+[fixture: agentflow/direction/split-direction-after-description]
+[fixture: agentflow/direction/unclosed-directive-before-direction]
+[test: flowchart direction after a U+2028 and a joined comment line]
+[test: agentflow direction after a U+2029 and a comment line]
 
 flowchart本文は共有の意味を持つ字下げの下限を使い、
 `tabWidth: 0`でも1段に最低1つの空白を置きます。
