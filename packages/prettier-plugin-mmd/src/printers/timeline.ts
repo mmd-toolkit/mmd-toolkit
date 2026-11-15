@@ -4,12 +4,12 @@ import type { MermaidAst } from "../parser.ts"
 import type { SectionedDiagram } from "./sectioned.ts"
 import { printSectionedDiagram } from "./sectioned.ts"
 import type { Source } from "./source.ts"
+import { staysOnTimelineHeaderLine } from "./timeline-header-line.ts"
 import { findTimelineKeptLines } from "./timeline-kept-lines.ts"
 import {
   isBareKeywordPeriod,
   layoutTimelineHeader,
   layoutTimelineStatement,
-  staysOnTimelineHeaderLine,
 } from "./timeline-layout.ts"
 
 /** The timeline as a diagram that a `section` groups. */
