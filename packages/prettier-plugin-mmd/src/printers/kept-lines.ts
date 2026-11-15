@@ -239,6 +239,37 @@ export function ignoredSemicolonAtCommentEnd(
   source: Source,
   range: Range,
 ): number | undefined {
+  const semicolon = ignoredSemicolonEndingComment(source, range)
+  return semicolon !== undefined &&
+    staysIgnoredAlone(source, semicolon, range[0])
+    ? semicolon
+    : undefined
+}
+
+/**
+ * Whether the comment at `range` ends with a `;` that the line rule ignores,
+ * with only spaces and tabs after it, and that must stay together with the
+ * text that makes the rule ignore it, because the comment is read otherwise on
+ * a line of its own (see `staysIgnoredAlone`).
+ */
+export function commentEndsInSemicolonThatNeedsItsLine(
+  source: Source,
+  range: Range,
+): boolean {
+  const semicolon = ignoredSemicolonEndingComment(source, range)
+  return (
+    semicolon !== undefined && !staysIgnoredAlone(source, semicolon, range[0])
+  )
+}
+
+/**
+ * The `;` that the line rule ignores on the line as written and that ends the
+ * comment at `range`, with only spaces and tabs after it, or undefined.
+ */
+function ignoredSemicolonEndingComment(
+  source: Source,
+  range: Range,
+): number | undefined {
   if (semicolonRulesOf(source).kind !== "separators") return undefined
   let end = range[1]
   while (end > range[0] && isSpaceOrTab(source.text[end - 1])) end--
@@ -251,8 +282,7 @@ export function ignoredSemicolonAtCommentEnd(
         lineStartOf(source, semicolon),
         lineEndOf(source, semicolon),
       ),
-    ).includes(semicolon) &&
-    staysIgnoredAlone(source, semicolon, range[0])
+    ).includes(semicolon)
     ? semicolon
     : undefined
 }
@@ -320,6 +350,26 @@ function staysIgnoredAlone(
   return ignoredSemicolonsIn(
     readSegments(source, holderStart, lineEndOf(source, semicolon)),
   ).includes(semicolon)
+}
+
+/**
+ * Whether the line of the `;` at `semicolon`, which the line rule ignores, must
+ * stay together with the text that makes the rule ignore it: the `;` ends a
+ * comment whose end is read as an entity on a line of its own (see
+ * `staysIgnoredAlone`). A `;` that follows no comment stays with the line
+ * either way.
+ */
+export function ignoredSemicolonNeedsItsLine(
+  source: Source,
+  semicolon: number,
+): boolean {
+  const comment = source.root.comments.find(
+    (item) => item.range[1] === semicolon,
+  )
+  return (
+    comment === undefined ||
+    !staysIgnoredAlone(source, semicolon, comment.range[0])
+  )
 }
 
 /**
@@ -1351,6 +1401,26 @@ export function isInsideStyleRuleStretch(
 }
 
 /**
+ * Whether the line rule ignores a `;` on the line of `offset` after it: a `;`
+ * token that it ignores, or the `;` that ends a comment with only spaces and
+ * tabs after it.
+ */
+function ignoresSemicolonAfter(source: Source, offset: number): boolean {
+  const lineEnd = lineEndOf(source, offset)
+  return (
+    [...source.ignoredSemicolons].some(
+      (semicolon) => offset <= semicolon && semicolon < lineEnd,
+    ) ||
+    source.root.comments.some(
+      (comment) =>
+        offset <= comment.range[0] &&
+        comment.range[0] < lineEnd &&
+        ignoredSemicolonEndingComment(source, comment.range) !== undefined,
+    )
+  )
+}
+
+/**
  * Whether the token at `range` lies in a stretch of the line rule (see
  * `isInsideStyleRuleStretch`) that holds whitespace between its start and the
  * token. The whitespace before the token in the stretch keeps whether it is
@@ -1367,7 +1437,9 @@ export function followsGapsOfStyleRuleStretch(
   const stretch = findStyleRuleStretches(source).find(
     ([first, last]) => first < range[0] && range[1] <= last,
   )
-  if (stretch === undefined) return false
+  if (stretch === undefined || !ignoresSemicolonAfter(source, range[1])) {
+    return false
+  }
   let end = range[0]
   while (end > stretch[0] && isSpaceOrTab(source.text[end - 1])) end--
   for (let at = stretch[0]; at < end; at++) {

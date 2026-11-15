@@ -2938,11 +2938,21 @@ treeView、ユースケース、wardley の図（残りの 12 図種）では、
 `A --> B; accDescr {a;b}` は `A --> B; accDescr: a;b` になり、
 C4 図で空のブロックの後にあるブロック `accDescr {}accDescr {D}` は、
 `accDescr {}accDescr: D` になります。
+ブロックの後に、コメントかディレクティブが続く、行に残る `;` があるときは、
+これに当たりません。
+mermaid.js の行の規則はその `;` を無視せず、コロンの形にすると、
+その `;` をテキストの文字として読むためです。
+ブロックは残します（quadrant 図の `accDescr {style:#x}; %% #a;`、
+XY チャートの `accDescr {D}; %% c`、
+agentflow 図の `accDescr {style:#x} ; %% #a;`）。
 枝の文字で描く treeView 図（箱）では、
 キーワードの前とキーワードと `{` の間の描画の文字は、印字せずに描き直すため、
 それらの文字があることは、ブロックを残す理由になりません。
 
 [fixture: flowchart/accessibility-lines/block-last-on-a-line-with-a-semicolon]
+[fixture: quadrant/titles-and-accessibility-statements/block-followed-by-a-kept-semicolon-and-a-comment]
+[fixture: agentflow/accessibility/block-followed-by-a-kept-semicolon-and-a-comment]
+[fixture: xychart/accessibility-statements/block-followed-by-a-kept-semicolon-and-a-comment]
 [fixture: c4/description-blocks/block-starts-on-kept-line-statement-after-brace]
 [fixture: c4/description-blocks/block-starts-on-kept-line-semicolon-text-statement-after-brace]
 [fixture: c4/description-blocks/block-ends-on-kept-line-statement-after-brace]

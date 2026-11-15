@@ -2762,11 +2762,22 @@ on a line that keeps its statements together is printed in the form with the
 colon where it is the last statement of the line and only whitespace, comments,
 and directives follow it: `A --> B; accDescr {a;b}` is `A --> B; accDescr: a;b`,
 and in a C4 diagram a block after an empty block, `accDescr {}accDescr {D}`, is
-`accDescr {}accDescr: D`. In a treeView diagram drawn with branch characters (a
+`accDescr {}accDescr: D`. A `;` that stays on the line after the block, with a
+comment or a directive after it, is none of these: the line rule of mermaid.js
+does not ignore it, and the form with the colon would read it as a character of
+the text, so the block stays (`accDescr {style:#x}; %% #a;` in a quadrant
+diagram, `accDescr {D}; %% c` in an XY chart, `accDescr {style:#x} ; %% #a;` in
+an agentflow diagram). In a treeView diagram drawn with branch characters (a
 box), the characters of the drawing before the keyword and between the keyword
 and the `{` are redrawn, not printed, so they do not keep the block.
 
 [fixture: flowchart/accessibility-lines/block-last-on-a-line-with-a-semicolon]
+[fixture:
+quadrant/titles-and-accessibility-statements/block-followed-by-a-kept-semicolon-and-a-comment]
+[fixture:
+agentflow/accessibility/block-followed-by-a-kept-semicolon-and-a-comment]
+[fixture:
+xychart/accessibility-statements/block-followed-by-a-kept-semicolon-and-a-comment]
 [fixture: c4/description-blocks/block-starts-on-kept-line-statement-after-brace]
 [fixture:
 c4/description-blocks/block-starts-on-kept-line-semicolon-text-statement-after-brace]

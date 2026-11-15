@@ -14,6 +14,7 @@ import {
 } from "./gap.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import {
+  commentEndsInSemicolonThatNeedsItsLine,
   followsGapsOfStyleRuleStretch,
   holdsJoiningRegion,
   holdsKeptSemicolon,
@@ -21,6 +22,7 @@ import {
   keepsTrailingLineSeparators,
   lineEndOf,
   lineStartOf,
+  ignoredSemicolonNeedsItsLine,
   completeKeptLines,
 } from "./kept-lines.ts"
 import { toAsciiLowerCase } from "./layout.ts"
@@ -788,11 +790,20 @@ export function printBlock<Statement extends Positioned>(
    * line (`BlockRules.writtenGapBefore`). A statement that the stretch does not
    * cover goes to a line of its own, so the last statement is printed alone on
    * its line, as one that starts a line is (docs/compatibility.md, A
-   * description block on one line; see `accessibilityLineOf`).
+   * description block on one line; see `accessibilityLineOf`). The closing of
+   * the block, which the stretch ends before, stays on the line only where it
+   * joins it (see `findClosingJoin`).
    */
   function staysAfterStretch(stretch: Stretch, last: Statement): boolean {
     const after = findStatementAfter(source, rules.printedEnd(last))
-    if (after !== undefined && after < stretch.end) return true
+    if (after !== undefined) {
+      let content = after
+      while (isWhitespace(source.text[content])) content++
+      if (content === bounds.end && !bounds.isTopLevel) {
+        return findClosingJoin(stretch.end, true) !== null
+      }
+      if (after < stretch.end) return true
+    }
     const following = statements[stretch.after]
     return (
       following !== undefined && rules.writtenGapBefore?.(following) === true
@@ -958,12 +969,15 @@ export function printBlock<Statement extends Positioned>(
    * line of the block when that line is kept, as written, or together with a
    * statement that follows the closing on it.
    */
-  function findClosingJoin(): string | null {
-    if (bounds.isTopLevel || lines.length === 0) return null
+  function findClosingJoin(
+    printedEnd: number,
+    hasLines: boolean,
+  ): string | null {
+    if (bounds.isTopLevel || !hasLines) return null
     const closingLine = lineStartOf(source, bounds.end)
     if (
       !isKept(bounds.end) ||
-      lineStartOf(source, offset - 1) !== closingLine
+      lineStartOf(source, printedEnd - 1) !== closingLine
     ) {
       return null
     }
@@ -973,12 +987,14 @@ export function printBlock<Statement extends Positioned>(
     if (closing === undefined) return null
     const lineEnd = lineEndOf(source, bounds.end)
     // A `;` that the line rule ignores stays with the text on the line that
-    // makes it ignored (`style:#x` before the closing), which a line break
-    // before the closing would part from it. So does the `#` of a comment after
-    // the closing, which ends a stretch of the line rule that holds whitespace
-    // of the line before the closing: the comment has no token of its own where
-    // whitespace follows its `;`, but a line break before the closing would end
-    // the stretch earlier (see `followsGapsOfStyleRuleStretch`).
+    // makes it ignored (`style:#x` before the closing) where a line of its own
+    // would make it read: it ends a comment as an entity (`end #a;`, see
+    // `ignoredSemicolonNeedsItsLine`), also where whitespace follows it and it
+    // has no token of its own (`commentEndsInSemicolonThatNeedsItsLine`). The
+    // `#` of a comment after the closing also keeps the closing on the line
+    // where it ends a stretch of the line rule that holds whitespace of the
+    // line before the closing: a line break would end the stretch earlier (see
+    // `followsGapsOfStyleRuleStretch`).
     // The `}` that closes a block around this one is on a line of its own
     // after this block, unless something follows it, so it does not keep the
     // closing of this block on the line: the second formatting would move it.
@@ -990,7 +1006,14 @@ export function printBlock<Statement extends Positioned>(
         (semicolon) =>
           closing.range[1] <= semicolon &&
           semicolon < lineEnd &&
-          !isDroppedSemicolon(source, semicolon),
+          !isDroppedSemicolon(source, semicolon) &&
+          ignoredSemicolonNeedsItsLine(source, semicolon),
+      ) ||
+      source.root.comments.some(
+        (comment) =>
+          closing.range[1] <= comment.range[0] &&
+          comment.range[0] < lineEnd &&
+          commentEndsInSemicolonThatNeedsItsLine(source, comment.range),
       ) ||
       followsGapsOfStyleRuleStretch(source, closing.range)
     return followed ? " " : null
@@ -1161,7 +1184,7 @@ export function printBlock<Statement extends Positioned>(
     },
   )
   addItemLines(gap, lastStatement)
-  const closingJoin = findClosingJoin()
+  const closingJoin = findClosingJoin(offset, lines.length > 0)
   const triviaEnd = triviaBreakBefore(bounds.end, bounds.isTopLevel)
   const endsInsideValue = rules.endsInsideValue?.() ?? false
   return {

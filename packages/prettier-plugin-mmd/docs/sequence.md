@@ -1242,25 +1242,101 @@ statements-one-per-line/end-comment-ignored-semicolon-trigger-in-other-statement
 [fixture:
 statements-one-per-line/end-comment-empty-entity-trigger-in-other-statement]
 
-The `end` that closes a block stays on the line of the text before it, with its
-comment, where that text holds whitespace in the stretch that the line rule of
-mermaid.js may read: the whitespace between a `:` and a later `#` keeps whether
-it is there, but only while the `#` of the comment after the `end` stands on the
-line. With the `end` and the comment on a line of their own, a second formatting
-would print that whitespace as anywhere else. The line
-`loop style:#x;; loop x; A->>B: body; end #;` followed by two spaces stays on
-one line, with `A->>B` as written. Where the text before the `end` holds no
-whitespace in that stretch, or the comment holds no `#` that ends it (`%% a;`),
-the `end` and its comment are printed on a line of their own.
+The `end` that closes a block is decided as the line of any other statement is.
+Where the comment after it is read the same on a line of its own, because it
+ends in `#;`, `# a;`, or another form that is no entity, or starts with `%%`,
+the `end` and its comment are printed on a line of their own, with or without
+whitespace after the `;`: `A->>B: style:#x;; end #;` is printed on two lines, as
+it is with two spaces or a tab after the `;`. Where the comment ends in an
+entity, as `end #a;` does, the `end` stays on the line of the text before it,
+also where whitespace follows the `;`, and also where a directive splits the
+name (`end #a%%{init: {}}%%;`). An `accDescr {…}` block before the `end` is
+printed as `accDescr: …` where the `end` goes to a line of its own, also in a
+block that stands before the `else` or `and` of the block around it, and it
+stays as written where the `end` stays on its line.
 
 [fixture:
-statements-one-per-line/end-comment-ignored-semicolon-after-gaps-in-style-rule-stretch]
-[fixture:
-statements-one-per-line/end-comment-ignored-semicolon-after-gaps-in-style-rule-stretch-body-line]
+statements-one-per-line/end-comment-ignored-semicolon-no-gaps-in-style-rule-stretch-without-whitespace]
 [fixture:
 statements-one-per-line/end-comment-ignored-semicolon-no-gaps-in-style-rule-stretch]
 [fixture:
+statements-one-per-line/end-comment-ignored-semicolon-no-gaps-in-style-rule-stretch-tab]
+[fixture:
+statements-one-per-line/end-percent-comment-ignored-semicolon-after-gaps-before-the-stretch-ends-without-whitespace]
+[fixture:
 statements-one-per-line/end-percent-comment-ignored-semicolon-after-gaps-before-the-stretch-ends]
+[fixture:
+statements-one-per-line/end-percent-comment-ignored-semicolon-after-gaps-before-the-stretch-ends-tab]
+[fixture:
+statements-one-per-line/end-comment-ignored-semicolon-trigger-in-other-statement-trailing-whitespace]
+[fixture:
+statements-one-per-line/end-comment-ignored-semicolon-trigger-in-other-statement-trailing-tab]
+[fixture:
+statements-one-per-line/end-comment-entity-split-by-directive-trigger-in-other-statement-trailing-whitespace]
+[fixture:
+statements-one-per-line/end-comment-empty-entity-trigger-in-other-statement-before-a-divider]
+[fixture:
+statements-one-per-line/end-comment-ignored-semicolon-trigger-in-other-statement-before-a-divider]
+[fixture:
+statements-one-per-line/end-comment-own-trigger-trailing-whitespace-before-a-divider]
+
+The `end` also stays on the line of the text before it, with its comment, for
+another reason: that text holds whitespace in the stretch that the line rule of
+mermaid.js may read, where the whitespace between a `:` and a later `#` keeps
+whether it is there, but only while the `#` of the comment after the `end`
+stands on the line. With the `end` and the comment on a line of their own, a
+second formatting would print that whitespace as anywhere else. The line
+`loop style:#x;; loop x; A->>B: body; end #;` stays on one line, with `A->>B` as
+written, with or without whitespace after the `;`. This reason adds to the one
+above, and neither makes the other unnecessary: an `end` whose comment ends in
+an entity stays on the line also where the text before it holds no whitespace in
+the stretch. Where neither reason holds, as where the comment holds no `#` that
+ends the stretch (`%% a;`), the `end` and its comment are printed on a line of
+their own.
+
+[fixture:
+statements-one-per-line/end-comment-ignored-semicolon-after-gaps-in-style-rule-stretch-without-whitespace]
+[fixture:
+statements-one-per-line/end-comment-ignored-semicolon-after-gaps-in-style-rule-stretch]
+[fixture:
+statements-one-per-line/end-comment-ignored-semicolon-after-gaps-in-style-rule-stretch-tab]
+[fixture:
+statements-one-per-line/end-comment-ignored-semicolon-after-gaps-in-style-rule-stretch-body-line]
+[fixture:
+statements-one-per-line/box-end-comment-in-style-rule-stretch-trigger-in-other-statement]
+
+An `end` or a divider (`else`, `and`, `option`) that touches the `}` of a
+description block or the `;` before it is decided in the same way as one that
+whitespace parts from them: `accDescr {style:#x}end #a;` stays on one line, with
+the block as written, since the form with the colon would take the `end` into
+the text, and `accDescr {style: x}end #;`, whose comment is read the same on a
+line of its own, is printed `accDescr: style: x` and `end #;`. So is a divider:
+`accDescr {style:#x}else x#a;` stays on one line.
+
+[fixture:
+statements-one-per-line/end-touching-description-block-without-trigger]
+[fixture:
+statements-one-per-line/end-touching-description-block-with-trigger-entity]
+[fixture:
+statements-one-per-line/else-touching-description-block-with-trigger-entity]
+[fixture: statements-one-per-line/end-touching-semicolon-comment-not-entity]
+[fixture: statements-one-per-line/end-touching-semicolon-comment-entity]
+
+The line of every statement is decided by how mermaid.js reads the comment, not
+by what the statement draws. `details A: https://example.com #a;`,
+`links A: {…} #a;`, and `properties A: {…} #a;` stay on one line with the
+trigger in the same way as a message does, although the entity shows in no
+figure, and so does a `participant` with a data block and `as`, whose name the
+entity changes (`participant C@{ "type": "boundary" } as x #a%%{init: {}}%%;`).
+
+[fixture:
+statements-one-per-line/details-comment-entity-split-by-directive-trigger-in-other-statement]
+[fixture:
+statements-one-per-line/links-comment-entity-trigger-in-other-statement]
+[fixture:
+statements-one-per-line/properties-comment-entity-trigger-in-other-statement]
+[fixture:
+statements-one-per-line/participant-data-as-comment-entity-split-by-directive-trigger-in-other-statement]
 
 Input
 ([comments/semicolon-after-comment-kept-input.mmd](../tests/fixtures/sequence/comments/semicolon-after-comment-kept-input.mmd)):

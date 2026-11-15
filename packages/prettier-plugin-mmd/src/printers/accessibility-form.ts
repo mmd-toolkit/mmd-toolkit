@@ -362,6 +362,7 @@ export function printAccessibilityLine(
     block.beforeText.length > 0 ||
     (keepsFollowingOnItsLine &&
       holdsStatementAfter(source, statement.range[1])) ||
+    holdsKeptSemicolonAfter(source, statement.range[1]) ||
     !commentsAfterAllowed(source, statement.range[1])
   ) {
     return undefined
@@ -391,6 +392,60 @@ export function printAccessibilityLine(
       ? block.text
       : collapseRuns(block.text)
   }${trailingDirectives}`
+}
+
+/**
+ * Whether a `;` that stays on the line follows the block that ends at `end`,
+ * with only a comment or a directive after it on the line: the `;` is no `;` that
+ * the line rule of mermaid.js ignores, the printer prints it with what follows,
+ * and the form with the `:` would read it as a character of the text, which
+ * changes the description (docs/compatibility.md, A description block on one
+ * line).
+ */
+function holdsKeptSemicolonAfter(source: Source, end: number): boolean {
+  const lineEnd = lineEndOf(source, end)
+  return source.root.tokens.some(
+    (token) =>
+      token.value === ";" &&
+      end <= token.range[0] &&
+      token.range[1] <= lineEnd &&
+      !source.ignoredSemicolons.has(token.range[0]) &&
+      findTriviaBetween(source, token.range[1], lineEnd).length > 0 &&
+      findStatementAfter(source, token.range[1]) === undefined &&
+      !isEmptyStatementInBlock(source, token.range),
+  )
+}
+
+/**
+ * Whether the `;` at `range` is an empty statement of a block, which the
+ * printer prints as a statement on a line of its own, so that it stays no `;`
+ * on the line of the description block: an empty statement of the body of the
+ * diagram is dropped, and the `;` stays with the line.
+ */
+function isEmptyStatementInBlock(source: Source, range: Range): boolean {
+  let found = false
+
+  /** Looks for the empty statement below `node`, whose depth is `depth`. */
+  function visit(node: Node, depth: number): void {
+    if (
+      depth > 1 &&
+      node.type.endsWith("EmptyStatement") &&
+      node.range[0] === range[0] &&
+      node.range[1] === range[1]
+    ) {
+      found = true
+    }
+    for (const key of visitorKeys[node.type]) {
+      const value = (node as unknown as Record<string, unknown>)[key]
+      for (const child of Array.isArray(value) ? value : [value]) {
+        if (child !== null && child !== undefined)
+          visit(child as Node, depth + 1)
+      }
+    }
+  }
+
+  visit(source.root.body, 0)
+  return found
 }
 
 /**
