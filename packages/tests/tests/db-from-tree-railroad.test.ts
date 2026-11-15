@@ -1,16 +1,15 @@
 /* eslint max-nested-callbacks: off -- These callbacks mirror the fixed authored expression trees. */
 import { describe, expect, it } from "vitest"
-import { checkTree } from "../src/check-tree/index.ts"
 import { dbFromTree } from "../src/db-from-tree/index.ts"
 import type { DbTreeRoot } from "../src/db-from-tree/index.ts"
-import type { CheckedNode } from "../src/check-tree/types.ts"
+import type { RecordedNode } from "../src/recorded-tree.ts"
 import type { EmbeddedValues } from "../src/mermaid.ts"
 import {
   cssSupportsColor,
   embeddedValuesOf,
   loadFixture,
 } from "../src/index.ts"
-import type { Kit } from "./check-tree-built.ts"
+import type { Kit } from "./tree-built.ts"
 import {
   any,
   buildRailroad,
@@ -37,7 +36,7 @@ import type { RailroadDialect } from "./railroad-built.ts"
 function summary(
   source: string,
   dialect: RailroadDialect,
-  make: (kit: Kit) => CheckedNode[],
+  make: (kit: Kit) => RecordedNode[],
   embedded: EmbeddedValues = {
     config: { securityLevel: "strict" },
     title: undefined,
@@ -45,7 +44,6 @@ function summary(
   },
 ) {
   const { tree } = buildRailroad(source, dialect, make)
-  expect(checkTree(source, tree)).toEqual([])
   return dbFromTree(
     source,
     tree as unknown as DbTreeRoot,
@@ -691,7 +689,7 @@ describe("railroad Db from hand-built trees", () => {
     dialect: RailroadDialect
     ruleName: string
     operator: "=" | "<-"
-    definition: (kit: Kit) => CheckedNode
+    definition: (kit: Kit) => RecordedNode
   }[] = [
     {
       name: "ir-config-security-level-other",

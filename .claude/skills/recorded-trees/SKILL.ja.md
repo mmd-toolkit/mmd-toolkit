@@ -1,34 +1,36 @@
 ---
 name: recorded-trees
 description: >-
-  Check the recorded trees of the conformance corpus (ast.json) that a change
-  adds or rewrites: run recorded-trees:check with a base, read each changed tree
+  For AI agents, read changed conformance trees (ast.json), including changes
+  to their input: run recorded-trees:check with a base, read each changed tree
   against the sentences that cite its fixture, and answer each item that the
   command lists to read by comparing the tree, token, and position documents
   with the values of the trees. Use after pnpm run test:record or test:update in
   packages/parser, when reviewing a change whose diff has an ast.json, and when
   a change alters a block of those documents or a section that such a block
-  links to.
+  links to, or a fixture input changes.
 ---
 
 # 記録した木を確かめる
 
 English version: [SKILL.md](./SKILL.md)
 
+この手順は AI エージェント専用であり、人には実施を求めない。
+
 先に [conventions](../conventions/SKILL.ja.md) を読む。
 レビューする人は、
 [review](../review/SKILL.ja.md) の 2 節「入力」と 5 節「指摘と報告」にも従う。
-コマンド、出力、表、
+コマンド、出力、
 答えのファイルの形は
 [recorded-trees.ja.md](../../../packages/tests/docs/recorded-trees.ja.md)
 が定める。
 この手順の前に、
-その「走らせ方」「ブロックと項目」「確かめの表」「答え」「出すもの」の節を読む。
+その「走らせ方」「ブロックと項目」「答え」「出すもの」の節を読む。
 
 ## 方針と基準
 
-- 変更が足すか書き換える `ast.json` を、fixture を引く文と、
-  木とトークンと位置の条件で確かめる。
+- 変更の木（入力か `ast.json` が変わり、いま `ast.json` がある fixture）を、
+  fixture を引く文と、木とトークンと位置の条件で確かめる。
   文書の条件を変えたときも、その場合の記録を読む（8 節）。
   `parse-error.json` はこの読み方の範囲に入らない。
   パーサーの記録の手順では、新しい拒否の記録を引き続き読む。
@@ -53,8 +55,7 @@ pnpm --filter @mmd-toolkit/tests run recorded-trees:check --base HEAD --places
 コマンドには、その履歴を持つ git checkout が要り、archive では走らない。
 
 出力を絞らずに最後まで読む。
-最初の節に、変更の木か、すべての記録した木かと、その理由が出る。
-決まりのファイルを手で並べず、出力が示す範囲を使う。
+変更の木と、その図種も読む。
 
 終了コード 2 は呼び方か git の誤りなので、呼び方や履歴を直して走らせ直す。
 答えがないための終了コード 1 は、3〜5 節で行う作業の一覧である。
@@ -63,10 +64,9 @@ pnpm --filter @mmd-toolkit/tests run recorded-trees:check --base HEAD --places
 ## 2. 問題が出たとき
 
 「Problems」を読む。
-読めない記録、分類されていない節点の型、読めない答えや表のファイルも含む。
-`checkTree()` の問題は、
-そのメッセージを [検査](../../../packages/tests/docs/check-tree.ja.md#検査)
-で探し、その条件を定める木とトークンと位置のブロックを読む。
+読めない記録と答えのファイルも含む。
+読み比べて不一致が見つかれば、
+その条件を定める木とトークンと位置のブロックを読む。
 答える前に、どこが誤っているかを決める。
 
 - パーサー: 直し、
@@ -75,8 +75,8 @@ pnpm --filter @mmd-toolkit/tests run recorded-trees:check --base HEAD --places
 - 仕様: 定義の欠けか誤りを、
   [parser の 4.2 節](../parser/SKILL.ja.md#42-仕様を読み欠落を先に扱う) の手順 2
   のとおり伝える。
-- 確かめの決まり、節点の分類、表: tests のパッケージに伝える。
-  読めない答えは、9 節に従ってこの変更のファイルで直す。
+- 読めない記録や答え: 原因を直す。
+  答えを直すのは、9 節に従ってこの変更のファイルだけ。
 
 `ast.json` を手で直さない。
 [parser の 4.6 節](../parser/SKILL.ja.md#46-テスト) のとおり、
@@ -154,12 +154,10 @@ JSON の記録には、日本語の Markdown の対はない。
 合わないものは記録を残す前に解消し、ファイルには合う答えを残す。
 コマンドを走らせ直し、問題も、項目と木の答えの欠けもなく、
 終了コード 0 になるまで続ける。
-これで 8 節の表の判断が済むわけではない。
 
 ## 6. 報告とマージの後
 
-コマンドと基点、範囲とその理由、木の数、問題と直し方、
-答えのファイルの道を報告する。
+コマンドと基点、変更の木の数、問題と直し方、答えのファイルの道を報告する。
 作者の報告に答えを写さない。
 「Records this check does not read」に出る、変更した `parse-error.json` を並べ、
 別に読んだ結果を parser の 4.7 節に従って示す。
@@ -169,11 +167,11 @@ JSON の記録には、日本語の Markdown の対はない。
 何の証拠とするかは、conventions の「テストの実行」に従う。
 `--base HEAD` の結果は、PR の全体の確かめにはならない。
 
-[表を判断し終えるまで](../../../packages/tests/docs/recorded-trees.ja.md#表を判断し終えるまで)
-のとおり、表のすべての項目を判断するまで、コマンドは CI に入らない。
-その不在を報告し、手元の結果を使う。
-CI で走るときは、その範囲と問題も読む。
-決まりの変更と木の変更が main で合流した場合も含め、
+CI は、`Co-Authored-By` trailer に `Claude` を含む commit がある PR で、
+PR の base SHA と head を使ってコマンドを走らせる。
+その PR の変更の木すべてに答えを求める。
+木の数と問題も読む。
+文書の変更と木の変更が main で合流した場合も含め、
 マージの後の問題は 2 節で扱う。
 
 ## 7. 変更をレビューする
@@ -187,8 +185,6 @@ CI で走るときは、その範囲と問題も読む。
    走っていなければ、その不在を報告する。
 2. 問題を読む。
    条件を破る木は review の 5 節での重い指摘で、答えの欠けは読みの漏れである。
-   ランナーか、それがたどるファイルの変更で、すべての木に当たることを、
-   出力の説明で確かめる。
 3. 作者の答えを見る前に、同じ項目と木について 3 節と 4 節を行い、
    文書で変わった項目には 8 節も行う。
    自分の答えをレビューの報告に書く。
@@ -200,32 +196,6 @@ CI で走るときは、その範囲と問題も読む。
    答えのファイルの差分は、道と種類を見て、この変更のファイルを足す以外に、
    ほかの変更のファイルを消したり、書き換えたりしていれば指摘する。
    この確かめに答えの本文を読む必要はない。
-4. この変更が足すか変えた表の行と、名指したテストのファイルを変えた行を読む。
-   `shown` は、名指したテストを読み、ほかの条件ではなく、
-   このブロックの条件のすべての場合を合わせて破っていることを確かめる。
-   読むだけで足りなければ、その場合を持つ名指した記録の木と入力を、
-   自分の scratchpad に写して、その場合のとおりに壊し、
-   小さなスクリプトから `node` でリポジトリの
-   `packages/tests/src/check-tree/index.ts` を呼ぶ。
-   たとえば、種類の条件には、
-   `ErIdentifier` のトークンを `Identifier` から `RawText` に変える。
-   ビルドは要らない。
-   木は場合で選び、数や無作為では選ばない。
-   報告しない場合があれば `shown` の行は誤りで、tests のパッケージへの重い指摘。
-5. `no-condition` は、ブロック全体を読み、
-   kind と note を
-   [確かめの表](../../../packages/tests/docs/recorded-trees.ja.md#確かめの表)
-   と照らす。
-   `not-in-diagram` で名指した文書も読む。
-   条件の例は場合であり、条件と紹介が混じるブロックにも条件がある。
-   どちらも `no-condition` に隠すのは、その項目をだれも読まなくするため、
-   重い指摘。
-6. 「Stale rows of the coverage table」と「Items not judged by the coverage
-   table」を読む。
-   出力の基点との比較を使い、この変更で増えた行や項目を指摘する。
-   前からある欠けは、この変更の指摘にしない。
-   コマンドは落ちなくても、増えた分は、同じ PR で tests のパッケージが判断する。
-   文書だけの変更と `checkTree()` のテストの変更にも、この確かめを行う。
 
 review の 5 節に従い、自分の答えと run/read の根拠を報告する。
 
@@ -253,17 +223,13 @@ review の 5 節に従い、自分の答えと run/read の根拠を報告する
 その中身の鍵を覆う項目の答えを 1 つ、この変更のファイルに書く。
 前の答えは 9 節のとおり残す。
 
-古い行とまだ判断していない項目は、同じ PR で tests のパッケージに、
-[tests-tree-checks](../tests-tree-checks/SKILL.ja.md) の手順 8 での判断を頼む。
-文書の作業として判断しない。
 新しいか書き換えたブロックに引用した fixture がなければ、
 conventions に従って場合ごとの fixture が要るので、仕様のレビューが求める。
 リンク先の節で変わったブロックにも当たるが、消えたブロックと、
 本文の変わらないブロックには求めない。
 
 レビューする人は、作者の答えを見る前に同じ比較を行い、その後で比べる。
-答えのファイルの変更と、
-古い行やまだ判断していない項目が基点より増えていないかも、7 節のとおり確かめる。
+答えのファイルの変更も、7 節のとおり確かめる。
 
 ## 9. 答えのファイルを保つ
 
@@ -271,6 +237,6 @@ conventions に従って場合ごとの fixture が要るので、仕様のレ�
 マージの後も残し、後の変更で書き換えない。
 ほかの変更の答えのファイルは、足すことも、消すことも、書き換えることもしない。
 記録が変わったら、新しい中身に、この変更のファイルで答える。
-項目や中身の鍵が合わなくなった答えも、項目が `shown` になった答えも残す。
+項目や中身の鍵が合わなくなった答えも残す。
 中身が同じ改名や移動は、recorded-trees.ja.md の「答え」が定めるとおり、
 既存の答えが覆う。

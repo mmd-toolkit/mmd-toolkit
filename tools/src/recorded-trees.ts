@@ -1,32 +1,19 @@
 /**
- * The check of the recorded trees that a change adds or rewrites:
- * `checkTree` on each of them (on every recorded tree when a file that
- * decides its result changes), the conditions of the documents of the tree
- * that `checkTree` is not shown to check and that a person reads instead
- * (the items), and the answers to them. `tools/recorded-trees.ts` prints the
- * report; `packages/tests/docs/recorded-trees.md` defines what it holds.
+ * The recorded trees that a change adds or rewrites, the blocks of their
+ * tree, token and position documents (the items), and the answers to them.
+ * `tools/recorded-trees.ts` prints the report; `packages/tests/docs/recorded-trees.md` defines what it holds.
  */
 import { execFileSync } from "node:child_process"
 import { existsSync, readFileSync, readdirSync } from "node:fs"
 import path from "node:path"
-import {
-  STRUCTURE_NODE_TYPES,
-  VALUE_NODE_TYPES,
-} from "../../packages/tests/src/check-tree/node-types.ts"
+import { visitorKeys } from "../../packages/parser/src/visitor-keys.ts"
 import type {
-  CheckedNode,
-  CheckedRoot,
-} from "../../packages/tests/src/check-tree/types.ts"
-import { nodesOf } from "../../packages/tests/src/check-tree/walk.ts"
+  TreeNode,
+  TreeRoot,
+} from "../../packages/tests/src/db-from-tree/tree.ts"
+import { nodesOf } from "../../packages/tests/src/recorded-tree.ts"
 import { getFixturesRoot } from "../../packages/tests/src/index.ts"
 import type { FixtureSource } from "../../packages/tests/src/index.ts"
-import { coverageOf, isRead, readCoverageTable } from "./coverage-table.ts"
-import type {
-  Coverage,
-  CoverageJudgment,
-  CoverageTable,
-  StaleRow,
-} from "./coverage-table.ts"
 import { citationsIn, withoutCitations } from "./fixture-citations.ts"
 import type { CitationForm } from "./fixture-citations.ts"
 import {
@@ -45,10 +32,6 @@ import type {
   DocumentReader,
   Section,
 } from "./recorded-tree-documents.ts"
-import { checkRecordedTree } from "./recorded-trees-run.ts"
-import type { RecordedTreeResult } from "./recorded-trees-run.ts"
-import { runtimeClosureOf } from "./runtime-imports.ts"
-import type { ReachedFile } from "./runtime-imports.ts"
 
 /** The root of this repository, which holds these tools. */
 const REPOSITORY = path.join(import.meta.dirname, "..", "..")
@@ -59,15 +42,11 @@ const FIXTURES = path
   .join("/")
 /** The answer files, relative to the root of the repository. */
 export const ANSWERS = "packages/tests/recorded-trees/answers"
-/** The module that runs the check on one tree; what it reaches decides the result. */
-const RUNNER = path.join(import.meta.dirname, "recorded-trees-run.ts")
 /** The directories of the documents of the tree and of the sections they link to. */
 const DOCUMENT_DIRECTORIES: readonly string[] = [
   "packages/spec/docs",
   "packages/parser/docs",
 ]
-/** The test files that the cases of the coverage table are in. */
-const COVERAGE_TESTS = "packages/tests/tests"
 /** The documents searched for the sentences that cite a fixture, and the form of their citation. */
 const CITING_DOCUMENTS: readonly {
   readonly directory: string
@@ -183,101 +162,16 @@ export function changedRecordsOf(
   }
 }
 
-/** Every fixture that has an `ast.json`, for a change that checks them all. */
-function everyTreeIn(root: string): string[] {
-  const fixtures: string[] = []
-  const top = path.join(root, FIXTURES)
-  for (const directory of readdirSync(top, { withFileTypes: true })) {
-    if (!directory.isDirectory()) continue
-    for (const name of readdirSync(path.join(top, directory.name))) {
-      if (existsSync(path.join(top, directory.name, name, "ast.json"))) {
-        fixtures.push(`${directory.name}/${name}`)
-      }
-    }
-  }
-  return fixtures.sort()
-}
-
-/** Why every recorded tree is checked, or nothing when only the changed ones are. */
-export interface EveryTreeReason {
-  /** The files that decide the result of the check and that the change changes. */
-  readonly changedFiles: readonly string[]
-  /** The files that decide the result and whose reads cannot be followed, with each read. */
-  readonly untraceable: readonly {
-    readonly file: string
-    readonly read: string
-  }[]
-}
-
-/**
- * Whether the change checks every recorded tree: when it changes the runner
- * or a file that the runner reaches (the files of the rules), or when one of
- * them reads something that cannot be followed to a file. The paths of
- * `changed` are relative to the root of this repository.
- */
-export function everyTreeReasonOf(
-  changed: readonly string[],
-): EveryTreeReason | undefined {
-  return everyTreeReasonFrom(
-    runtimeClosureOf(RUNNER),
-    RUNNER,
-    REPOSITORY,
-    changed,
-  )
-}
-
-/**
- * Whether the change checks every recorded tree, from `closure`, the files
- * that the runner `runner` reaches, under the root `root`. The runner reads
- * the files of the trees, so it may import built-in modules of Node.js; any
- * other read that cannot be followed, in it or in a file it reaches, makes the
- * files that decide the result unknown.
- */
-export function everyTreeReasonFrom(
-  closure: readonly ReachedFile[],
-  runner: string,
-  root: string,
-  changed: readonly string[],
-): EveryTreeReason | undefined {
-  /** The path of `file` relative to the root, with slashes. */
-  function relativeOf(file: string): string {
-    return path.relative(root, file).split(path.sep).join("/")
-  }
-
-  const changedFiles = closure
-    .map((reached) => relativeOf(reached.file))
-    .filter((file) => changed.includes(file))
-  const untraceable = closure.flatMap((reached) =>
-    [
-      ...reached.modules
-        .filter(
-          (module) => reached.file !== runner || !module.startsWith("node:"),
-        )
-        .map((module) => `an import of "${module}"`),
-      ...reached.dynamic,
-    ].map((read) => ({ file: relativeOf(reached.file), read })),
-  )
-  return changedFiles.length === 0 && untraceable.length === 0
-    ? undefined
-    : { changedFiles, untraceable }
-}
-
 // ---------------------------------------------------------------------------
 // The trees
-
-/** A recorded tree that the change checks. */
-export interface CheckedTree {
-  readonly fixture: string
-  readonly result: RecordedTreeResult
-}
 
 /** A changed tree, read for its items. */
 export interface ChangedTree {
   readonly fixture: string
   /** The kind of the fixture's source, or undefined when it cannot be read. */
   readonly sourceKind: FixtureSource["kind"] | undefined
-  /** The tree, or undefined when it cannot be read or breaks the specification. */
-  readonly root: CheckedRoot | undefined
+  /** The tree, or undefined when it cannot be read. */
+  readonly root: TreeRoot | undefined
   /** The diagram type of its items, or undefined when it has none. */
   readonly diagram: string | undefined
   /** The key of its content: the git blob ids of its `input.mmd` and `ast.json`; undefined when one of them is missing. */
@@ -332,12 +226,34 @@ function contentKeysOf(
   )
 }
 
-/** Reads the tree of `fixture` if it can be read. */
-function readTree(root: string, fixture: string): CheckedRoot | undefined {
+/** Whether a record has the type and offsets needed to list its places. */
+function hasPlace(value: unknown): boolean {
+  return (
+    isRecord(value) &&
+    typeof value.type === "string" &&
+    Array.isArray(value.range) &&
+    value.range.length === 2 &&
+    typeof value.range[0] === "number" &&
+    typeof value.range[1] === "number"
+  )
+}
+
+/** Reads the fields needed to list a tree's items and places, if they can be read. */
+function readTree(root: string, fixture: string): TreeRoot | undefined {
   try {
-    return JSON.parse(
+    const tree: unknown = JSON.parse(
       readFileSync(path.join(root, FIXTURES, fixture, "ast.json"), "utf8"),
-    ) as CheckedRoot
+    )
+    if (
+      !isRecord(tree) ||
+      !hasPlace(tree) ||
+      !hasPlace(tree.body) ||
+      !Array.isArray(tree.tokens) ||
+      !tree.tokens.every(hasPlace)
+    ) {
+      return undefined
+    }
+    return tree as unknown as TreeRoot
   } catch {
     return undefined
   }
@@ -360,28 +276,11 @@ function sourceKindOf(
 }
 
 // ---------------------------------------------------------------------------
-// The coverage table
+// The item keys
 
 /** The key of the item of `block` for `diagram`. */
 export function itemKeyOf(block: DocumentBlock, diagram: string): string {
   return `${block.key}@${diagram}`
-}
-
-/** The diagram types that the documents of a version know, with `error`: the names a row may give. */
-function allDiagramsOf(blocks: DocumentBlocks): string[] {
-  return [...blocks.diagrams, ERROR_DIAGRAM]
-}
-
-/** The blocks with the diagram types whose items a coverage table does not judge. */
-function unjudgedOf(blocks: DocumentBlocks, coverage: Coverage): HeldBlock[] {
-  return blocks.list
-    .map(({ block, diagrams }) => ({
-      block,
-      diagrams: diagrams.filter(
-        (diagram) => !coverage.judgments.has(itemKeyOf(block, diagram)),
-      ),
-    }))
-    .filter((held) => held.diagrams.length > 0)
 }
 
 // ---------------------------------------------------------------------------
@@ -511,15 +410,15 @@ export interface Place {
 export interface PlacedTree {
   readonly fixture: string
   readonly input: string
-  readonly nodes: readonly CheckedNode[]
-  readonly root: CheckedRoot
+  readonly nodes: readonly TreeNode[]
+  readonly root: TreeRoot
 }
 
 /** Reads the tree of `fixture` for its places. */
 function placedTreeOf(
   root: string,
   fixture: string,
-  tree: CheckedRoot,
+  tree: TreeRoot,
 ): PlacedTree {
   return {
     fixture,
@@ -560,10 +459,10 @@ export function placesOf(block: DocumentBlock, tree: PlacedTree): Place[] {
  * parent.
  */
 function innermostNodeOf(
-  nodes: readonly CheckedNode[],
+  nodes: readonly TreeNode[],
   range: readonly [number, number],
-): CheckedNode | undefined {
-  let innermost: CheckedNode | undefined
+): TreeNode | undefined {
+  let innermost: TreeNode | undefined
   for (const node of nodes) {
     if (node.range[0] > range[0] || node.range[1] < range[1]) continue
     if (
@@ -587,7 +486,6 @@ export interface DocumentBlocks {
   readonly diagrams: readonly string[]
   /** The blocks in the order of the documents. */
   readonly list: readonly HeldBlock[]
-  readonly byKey: ReadonlyMap<string, HeldBlock>
   readonly sections: LinkedSections
 }
 
@@ -595,7 +493,7 @@ export interface DocumentBlocks {
 export function documentBlocksOf(reader: DocumentReader): DocumentBlocks {
   const tokens = reader.read("packages/parser/docs/tokens.md")
   const vocabulary: BlockVocabulary = {
-    nodeTypes: new Set([...VALUE_NODE_TYPES, ...STRUCTURE_NODE_TYPES]),
+    nodeTypes: new Set(Object.keys(visitorKeys)),
     tokenKinds: tokens === undefined ? new Set() : tokenKindsOf(tokens),
   }
   const sections = new LinkedSections(reader)
@@ -610,7 +508,6 @@ export function documentBlocksOf(reader: DocumentReader): DocumentBlocks {
   return {
     diagrams: diagramTypesOf(reader),
     list,
-    byKey: new Map(list.map((held) => [held.block.key, held])),
     sections,
   }
 }
@@ -765,8 +662,6 @@ export interface ReadItem {
   readonly key: string
   readonly block: DocumentBlock
   readonly diagram: string
-  /** The judgment of the coverage table: "not shown", or undefined when it is not judged yet. */
-  readonly judgment: CoverageJudgment | undefined
   /** The changed trees of its diagram type that no answer of the base covers, with the places in each. */
   readonly trees: readonly ItemTree[]
   /** Those of `trees` that an answer of this change covers. */
@@ -787,9 +682,7 @@ export interface ChangedItemFixture {
 /** What the check of a change found. */
 export interface RecordedTreesReport {
   readonly base: string
-  readonly everyTree: EveryTreeReason | undefined
   readonly records: ChangedRecords
-  readonly checked: readonly CheckedTree[]
   readonly changedTrees: readonly ChangedTree[]
   readonly readItems: readonly ReadItem[]
   /** The items whose every changed tree an answer of the base covers. */
@@ -801,14 +694,11 @@ export interface RecordedTreesReport {
   /** The changed trees that no answer of the reading by citing sentences covers. */
   readonly unansweredTrees: readonly KeyedTree[]
   readonly unreadableAnswers: Answers["unreadable"]
-  /** The files of the coverage table of the working tree that cannot be read, with why. */
-  readonly unreadableTable: CoverageTable["unreadable"]
-  /** The stale rows, each with whether the base has it as a stale row too. */
-  readonly staleRows: readonly (StaleRow & { readonly atBase: boolean })[]
-  /** The blocks of every document with the diagram types that the coverage table does not judge and the base judged or did not have. */
-  readonly unjudged: readonly HeldBlock[]
-  /** The blocks with the diagram types that neither the table of now nor that of the base judges. */
-  readonly unjudgedAtBase: readonly HeldBlock[]
+  /** The changed records whose input or JSON tree cannot be read, with why. */
+  readonly unreadableTrees: readonly {
+    readonly fixture: string
+    readonly reason: string
+  }[]
   readonly changedItems: readonly (ChangedItem & {
     readonly trees: readonly ChangedItemFixture[]
   })[]
@@ -855,18 +745,6 @@ export function checkRecordedTrees(
   options: { readonly places: boolean },
 ): RecordedTreesReport {
   const records = changedRecordsOf(root, changed)
-  const everyTree = everyTreeReasonOf(changed)
-  const checked = (
-    everyTree === undefined ? records.trees : everyTreeIn(root)
-  ).map((fixture) => ({
-    fixture,
-    result: checkRecordedTree({
-      input: path.join(root, FIXTURES, fixture, "input.mmd"),
-      tree: path.join(root, FIXTURES, fixture, "ast.json"),
-    }),
-  }))
-  const resultOf = new Map(checked.map((tree) => [tree.fixture, tree.result]))
-
   const working = workingTreeReader(root)
   const atBase = commitReader(root, base)
   const now = documentBlocksOf(working)
@@ -877,18 +755,35 @@ export function checkRecordedTrees(
   )
   const before = documentsChanged ? documentBlocksOf(atBase) : now
 
-  // The items of a tree that breaks the specification are not read: its
-  // problems fail the check already.
   const contentKeys = contentKeysOf(root, records.trees)
   const placed = new Map<string, PlacedTree>()
+  const unreadableTrees: { fixture: string; reason: string }[] = []
   const changedTrees: ChangedTree[] = records.trees.map((fixture) => {
-    const result = resultOf.get(fixture)
-    const tree =
-      result?.kind === "checked" && result.problems.length === 0
-        ? readTree(root, fixture)
-        : undefined
-    if (tree !== undefined)
-      placed.set(fixture, placedTreeOf(root, fixture, tree))
+    let tree: TreeRoot | undefined, input: string | undefined
+    try {
+      input = readFileSync(
+        path.join(root, FIXTURES, fixture, "input.mmd"),
+        "utf8",
+      )
+    } catch {
+      unreadableTrees.push({ fixture, reason: "input.mmd cannot be read" })
+    }
+    if (input !== undefined) {
+      tree = readTree(root, fixture)
+      if (tree === undefined) {
+        unreadableTrees.push({
+          fixture,
+          reason: "ast.json cannot be read as a tree",
+        })
+      } else {
+        placed.set(fixture, {
+          fixture,
+          input,
+          nodes: nodesOf(tree),
+          root: tree,
+        })
+      }
+    }
     return {
       fixture,
       sourceKind: sourceKindOf(root, fixture),
@@ -901,51 +796,6 @@ export function checkRecordedTrees(
     }
   })
 
-  const table = readCoverageTable(working, new Set(allDiagramsOf(now)))
-  const baseTable = readCoverageTable(atBase, new Set(allDiagramsOf(before)))
-  const coverage = coverageOf(
-    table.rows,
-    now.byKey,
-    (file) => working.read(`${COVERAGE_TESTS}/${file}`),
-    working,
-    { reader: atBase, rows: baseTable.rows },
-  )
-  // A stale row or an item that is not judged is the change's own only when
-  // the base does not have it so. Read the base separately: a not-in-diagram
-  // row can rely on a document outside the directories of the tree documents.
-  const baseCoverage = coverageOf(
-    baseTable.rows,
-    before.byKey,
-    (file) => atBase.read(`${COVERAGE_TESTS}/${file}`),
-    atBase,
-  )
-  const baseStale = new Set(
-    baseCoverage.staleRows.map((stale) => JSON.stringify(stale.row)),
-  )
-  const baseUnjudged = new Set(
-    unjudgedOf(before, baseCoverage).flatMap(({ block, diagrams }) =>
-      diagrams.map((diagram) => itemKeyOf(block, diagram)),
-    ),
-  )
-  const unjudged = unjudgedOf(now, coverage)
-
-  /**
-   * The blocks of `unjudged` with those of their diagram types whose item the
-   * base does not judge either, for `notJudgedAtBase`, or else whose item the
-   * base judged or did not have.
-   */
-  function unjudgedWhere(notJudgedAtBase: boolean): HeldBlock[] {
-    return unjudged
-      .map(({ block, diagrams }) => ({
-        block,
-        diagrams: diagrams.filter(
-          (diagram) =>
-            baseUnjudged.has(itemKeyOf(block, diagram)) === notJudgedAtBase,
-        ),
-      }))
-      .filter((held) => held.diagrams.length > 0)
-  }
-
   const baseAnswers = answersIn(atBase)
   const workingAnswers = answersIn(working)
 
@@ -954,8 +804,6 @@ export function checkRecordedTrees(
   for (const { block, diagrams } of now.list) {
     for (const diagram of diagrams) {
       const key = itemKeyOf(block, diagram)
-      const judgment = coverage.judgments.get(key)
-      if (!isRead(judgment)) continue
       const trees = changedTrees
         .filter(hasContentKey)
         .filter((tree) => tree.diagram === diagram)
@@ -971,7 +819,6 @@ export function checkRecordedTrees(
         key,
         block,
         diagram,
-        judgment,
         trees: notAtBase.map((tree) => ({
           tree,
           places: placesOf(block, placed.get(tree.fixture)!),
@@ -1018,9 +865,7 @@ export function checkRecordedTrees(
 
   return {
     base,
-    everyTree,
     records,
-    checked,
     changedTrees,
     readItems,
     answeredItems,
@@ -1038,13 +883,7 @@ export function checkRecordedTrees(
           !workingAnswers.trees.has(tree.contentKey),
       ),
     unreadableAnswers: workingAnswers.unreadable,
-    unreadableTable: table.unreadable,
-    staleRows: coverage.staleRows.map((stale) => ({
-      ...stale,
-      atBase: baseStale.has(JSON.stringify(stale.row)),
-    })),
-    unjudged: unjudgedWhere(false),
-    unjudgedAtBase: unjudgedWhere(true),
+    unreadableTrees,
     changedItems: changedItems.map((item) => ({
       ...item,
       trees: item.fixtures.map((fixture) => {

@@ -19,7 +19,7 @@ class、click の Db 手順を置く。
 directive と選ばれた無視されるセミコロンを除き、CR/CRLF を正規化し、
 文字参照をプレースホルダーに置き換える。
 HTML 属性の引用符は frontmatter 後の本文全体を文脈として変換する。
-書かれた値は別途検査し、ソースの綴りを保つ。
+書かれた値はソースの綴りを保つ。
 
 [fixture: agentflow/lex-cr] [fixture: agentflow/lex-crlf]
 [fixture: agentflow/entity-label-contexts]
@@ -158,7 +158,7 @@ Label の parts だけを変換し、初期文字列の区切りを除いて連�
 [fixture: agentflow/lex-directive-in-name-empty-block-padding]
 
 AgentflowIgnoredText.kind は、
-認識された消される形式や direction 行のテキストを、木の検査のために記録する。
+認識された消される形式や direction 行のテキストを記録する。
 Db ビルダーはこれらのノードの kind も value も読まない。
 名前は Label の parts、方向文は direction フィールド、
 click の手順はオペランドを使う。
@@ -376,7 +376,7 @@ YAML の構文をノードにはしない。
 `specified.json` があればそれを、なければ `expected.json` と比較する。
 frontmatter の HTML を本文の文脈に含めない読みと、
 ヘッダー前のパーセント行は記録された specified の読みを使う。
-不透明な内容による拒否に、受理された Db の記録がなければ木だけを検査する。
+不透明な内容による拒否に、受理された Db の記録がなければ Db を比較しない。
 単位の境界と tokenless-empty-forms の拒否は、
 単位の再構築や無視する文の新設なしで検査する。
 `divergence-removals.ts` に Agentflow の登録は不要である。

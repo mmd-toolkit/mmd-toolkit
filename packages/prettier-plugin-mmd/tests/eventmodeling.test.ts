@@ -7,7 +7,6 @@ import {
   dbOfText,
   defaultEmbedded,
   describeFrontmatterChange,
-  treeProblemsOfText,
   writtenEmbeddedTexts,
   writtenTextKeptUpToSeparators,
 } from "./db-reading.ts"
@@ -73,8 +72,6 @@ describe("eventmodeling escaped cases", () => {
     ).toEqual(writtenBefore)
     expect(await describeFrontmatterChange(before, after, options)).toBeNull()
     expect(writtenTextKeptUpToSeparators(before, after)).toBe(true)
-    expect(treeProblemsOfText(before)).toEqual([])
-    expect(treeProblemsOfText(after)).toEqual([])
     expect(hiddenOwners(output)).toEqual(hiddenOwners(input))
   })
 })
@@ -83,6 +80,5 @@ describe("eventmodeling authored owners", async () => {
   const fixtures = await loadFormatFixtures("eventmodeling")
   it.each(fixtures)("$id", (fixture) => {
     expect(hiddenOwners(fixture.output!)).toEqual(hiddenOwners(fixture.input))
-    expect(treeProblemsOfText(fixture.output!)).toEqual([])
   })
 })

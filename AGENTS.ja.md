@@ -116,14 +116,15 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
 - `packages/tests`（CLI は `tools/`）: mermaid.js を pin し、
   その Db を取り出し、fixture の形式を定め、適合コーパスと、
   それを作って確かめる道具を持つ。
-  コーパスが記録する木の確かめも持つ。
   記録した木から Db を作って mermaid.js の Db と比べる。
-  スクリプトは、変更が記録する木を、木の不変条件と照らして確かめる。
-  スクリプトが確かめないものについては、答えを保持する。
+  コマンドは、AI エージェントが変更の記録した木と照らして読む文書の項目と、
+  答えの有無を並べる。
+  読む手順は `recorded-trees` に従う。
+  この手順は AI エージェント専用であり、人には実施を求めない。
   作業は SKILL `tests` に従う。
-  図種を足す作業、木から Db を作る関数と木の検査を書く作業、
-  mermaid.js を更新する作業は、それに加えて、SKILL `tests-diagram-type`、
-  `tests-tree-checks`、`tests-mermaid-update` に従う。
+  図種を足す作業、木から Db を作る関数を書く作業、mermaid.js を更新する作業は、
+  それに加えて、SKILL `tests-diagram-type`、`tests-db-from-tree`、
+  `tests-mermaid-update` に従う。
 - `packages/spec`: 構文と、抽象構文木の形（ノードの型、欄、値）を定義する。
   入力を受理するかどうかを決めるものは、すべてここで定める。
   定義の出どころはここで、実装はこれに従う。
@@ -131,7 +132,7 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
   作業は SKILL `spec` に従う。
   図種を足す作業は、それに加えて、SKILL `spec-diagram-type` に従う。
   木の文書のブロックか、木とトークンと位置の文書のブロックが指す節の変更は、
-  SKILL `recorded-trees` で確かめる。
+  AI エージェントが SKILL `recorded-trees` で読む。
 - `packages/ast`: 木の TypeScript の型で、仕様の定義に従う。
   持つのは型だけである。
   パーサー、フォーマッター、リンターは、これを任意の peer 依存にする。
@@ -148,7 +149,7 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
   そのため、parser のテストは、結果を fixture の記録と比べ、
   mermaid.js も生成した入力も動かさない。
   作業は SKILL `parser` に従う。
-  記録する木は、SKILL `recorded-trees` で確かめる。
+  記録する木は、AI エージェントが SKILL `recorded-trees` で読む。
   頼まれた性能のレビューは、SKILL `parser-performance-review` に従う。
 - `packages/prettier-plugin-mmd`: フォーマッター。
   図種ごとに printer を持ち、項目ごとに明示的に決めた整形方針に従う。
@@ -183,7 +184,7 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
 | fixture の形式とローダー                                                     | tests           | spec、parser、prettier-plugin、textmate-grammar |
 | mermaid の Db を取り出す関数                                                 | tests           | parser、prettier-plugin                         |
 | fixture の CLI（`tools/fixtures.ts`）                                        | tests           | spec、parser                                    |
-| Db の要約と、記録した木を確かめるスクリプト                                  | tests           | parser                                          |
+| Db の要約と、記録した木の読取りを並べるコマンド                              | tests           | parser                                          |
 | AST の定義（`docs/ast.md`、`docs/ast/*.md`）                                 | spec            | tests、parser、prettier-plugin、eslint-plugin   |
 | 木とトークンと位置の文書が指す `docs/common.md` と `docs/diagrams/*.md` の節 | spec            | tests                                           |
 | トークンと位置（`docs/tokens.md` ほか）                                      | parser          | tests、prettier-plugin、eslint-plugin           |

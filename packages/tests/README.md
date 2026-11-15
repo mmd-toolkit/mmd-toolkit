@@ -213,9 +213,6 @@ Reads the fixtures. It does not load mermaid.js.
   `exceedsMaxEdges(tree, config)`, `flowchartEdgeCount(tree)` and
   `agentflowEdgeCount(tree)` for the limit on graph-family edges. See
   [docs/db-from-tree.md](./docs/db-from-tree.md).
-- `checkTree(text, tree)`: the conditions that the specification states for a
-  recorded tree (`ast.json`) that do not hold, none for a tree that satisfies
-  them all. See [docs/check-tree.md](./docs/check-tree.md).
 - `cssSupportsColor(value)`: what the browser's `CSS.supports("color", value)`
   answers, as the stand-in that runs mermaid.js here gives it (a sequence `box`
   line asks it). For an implementation that takes this answer from outside. See
@@ -298,11 +295,9 @@ they are listed in
   leaves out.
 - [docs/db-from-tree.md](./docs/db-from-tree.md): building the Db from a
   recorded tree, and what it reads.
-- [docs/check-tree.md](./docs/check-tree.md): checking a recorded tree against
-  the conditions of the specification.
-- [docs/recorded-trees.md](./docs/recorded-trees.md): for maintainers, the check
-  of the recorded trees that a change adds or rewrites, the coverage table of
-  `checkTree()`, and the answers of the conditions that a person reads.
+- [docs/recorded-trees.md](./docs/recorded-trees.md): the command that lists the
+  recorded trees a change adds or rewrites, the items to read, and whether they
+  have answers.
 - [docs/maintaining-fixtures.md](./docs/maintaining-fixtures.md): for
   maintainers, adding, changing, renaming and collecting fixtures.
 - [tools/README.md](../../tools/README.md): for maintainers, the command-line

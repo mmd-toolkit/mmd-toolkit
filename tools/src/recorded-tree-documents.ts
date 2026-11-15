@@ -1,8 +1,8 @@
 /**
  * The documents of the tree read as blocks: the paragraphs, the items of the
  * lists and the rows of the tables of the documents that state what a tree
- * holds, each with the key that ties the answers and the rows of the coverage
- * table to its text. `packages/tests/docs/recorded-trees.md` defines them.
+ * holds, each with the key that ties the answers to its text.
+ * `packages/tests/docs/recorded-trees.md` defines them.
  */
 import { createHash } from "node:crypto"
 import { existsSync, readFileSync, readdirSync } from "node:fs"

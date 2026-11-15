@@ -6,8 +6,8 @@ import {
   afAccessibility,
   afString,
 } from "./agentflow-built.ts"
-import type { CheckedNode } from "../src/check-tree/types.ts"
-import type { Built, Kit } from "./check-tree-built.ts"
+import type { RecordedNode } from "../src/recorded-tree.ts"
+import type { Built, Kit } from "./tree-built.ts"
 import {
   afArrow,
   afContainer,
@@ -28,7 +28,7 @@ import type { VertexForm } from "./agentflow-built.ts"
 /** One fixed corpus input, with all written productions supplied by hand. */
 export interface AgentflowCase {
   readonly fixture: string
-  readonly make: (kit: Kit) => CheckedNode[]
+  readonly make: (kit: Kit) => RecordedNode[]
   readonly direction?: string | null
   readonly db?: false
 }
@@ -39,12 +39,12 @@ function one(
   id: string,
   form: VertexForm | null = null,
   data: readonly string[] = [],
-): CheckedNode {
+): RecordedNode {
   return afGroup(kit, [() => afVertex(kit, id, form, null, data)])
 }
 
 /** One ordinary contributing fragment. */
-function name(kit: Kit, value: string): CheckedNode {
+function name(kit: Kit, value: string): RecordedNode {
   return afName(kit, [afLabel(kit, value)])
 }
 
@@ -57,7 +57,7 @@ function edge(
   line = "solid",
   length = 2,
   marker = "arrow",
-): CheckedNode {
+): RecordedNode {
   const first = one(kit, start)
   return afStatement(kit, first, [
     afLink(
@@ -115,7 +115,7 @@ const METADATA: readonly (readonly [string, string])[] = [
 export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   {
     fixture: "lex-direction-line-greedy",
-    make: (kit: Kit): CheckedNode[] => {
+    make: (kit: Kit): RecordedNode[] => {
       const before = afIgnored(kit, "A", "direction-text")
       const keyword = kit.token("Keyword", "direction")
       const value = kit.token("Keyword", "LR")
@@ -131,7 +131,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "lex-direction-value-priority",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afContainer(
         kit,
         "flow",
@@ -157,7 +157,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "gram-class-double-semicolon",
-    make: (kit: Kit): CheckedNode[] => {
+    make: (kit: Kit): RecordedNode[] => {
       const vertex = afStatement(kit, one(kit, "A"))
       const classes = afStyling(kit, "class", ["A"], ["hot"])
       kit.token("Punctuator", ";")
@@ -168,24 +168,26 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "db-acctitle-eof",
-    make: (kit: Kit): CheckedNode[] => [afAccessibility(kit, "accTitle", null)],
+    make: (kit: Kit): RecordedNode[] => [
+      afAccessibility(kit, "accTitle", null),
+    ],
   },
   {
     fixture: "lex-title-inline-percent-content",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afAccessibility(kit, "accTitle", "T %% c"),
       afStatement(kit, one(kit, "A")),
     ],
   },
   {
     fixture: "lex-accessibility-block-comment",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afAccessibility(kit, "accDescr", "first\n%% literal\nsecond", true),
     ],
   },
   {
     fixture: "gram-style-null-before-comment-nbsp",
-    make: (kit: Kit): CheckedNode[] => {
+    make: (kit: Kit): RecordedNode[] => {
       const vertex = afStatement(kit, one(kit, "A"))
       const style = afStyling(kit, "style", ["A"], [null])
       kit.comment("%%", "%% c")
@@ -195,7 +197,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   {
     fixture: "div-metadata-yaml-self-alias",
     db: false,
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afStatement(
         kit,
         one(kit, "A", null, ["@{\ncustom: &self\n  deep: *self\n}"]),
@@ -205,14 +207,14 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   {
     fixture: "div-data-percent-line-is-content",
     db: false,
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afStatement(kit, one(kit, "A", null, ["@{\n%% c\nlabel: x\n}"])),
     ],
   },
 
   {
     fixture: "gram-flow-name-whitespace-only",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afContainer(
         kit,
         "flow",
@@ -223,7 +225,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "db-connector-empty-id-data",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afContainer(
         kit,
         "connector",
@@ -239,12 +241,12 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   { fixture: "header-only", direction: null, make: () => [] },
   {
     fixture: "gram-bracket-shapes",
-    make: (kit: Kit): CheckedNode[] =>
+    make: (kit: Kit): RecordedNode[] =>
       SHAPES.map(([id, shape]) => afStatement(kit, one(kit, id, shape))),
   },
   {
     fixture: "gram-props",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afStatement(
         kit,
         one(kit, "A", {
@@ -259,7 +261,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "gram-three-edge-kinds",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       edge(kit, "A", "B"),
       edge(kit, "B", "C", "-.-", "dotted", 1, "none"),
       edge(kit, "C", "D", "--x", "solid", 2, "cross"),
@@ -267,14 +269,14 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "db-edge-length-cap",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       edge(kit, "A", "B", "-------------->", "solid", 14),
       edge(kit, "B", "C", "-............-", "dotted", 12, "none"),
     ],
   },
   {
     fixture: "gram-edge-chain",
-    make: (kit: Kit): CheckedNode[] => {
+    make: (kit: Kit): RecordedNode[] => {
       const first = one(kit, "A")
       const a = afLink(
         kit,
@@ -296,7 +298,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "gram-split-failure-label",
-    make: (kit: Kit): CheckedNode[] => {
+    make: (kit: Kit): RecordedNode[] => {
       const first = one(kit, "A")
       const mark = kit.token("Punctuator", "--")
       const opening = kit.node("AgentflowOpeningArrow", mark.range, {
@@ -322,7 +324,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "gram-flow-all-forms",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afContainer(
         kit,
         "flow",
@@ -341,7 +343,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "gram-flow-nested",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afContainer(
         kit,
         "flow",
@@ -362,7 +364,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "gram-global-after-flow",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afContainer(
         kit,
         "flow",
@@ -374,7 +376,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "db-global-flow-id",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afContainer(kit, "global", null, () => [
         afContainer(
           kit,
@@ -393,7 +395,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "gram-connector-all-forms",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afContainer(
         kit,
         "connector",
@@ -417,7 +419,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "db-duplicate-flow-empty-last-title",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afContainer(
         kit,
         "flow",
@@ -435,7 +437,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "lex-flow-name-click-state",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afContainer(kit, "flow", () =>
         afName(kit, [
           afIgnored(kit, "click", "click"),
@@ -447,7 +449,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "lex-flow-name-click-mixed",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afContainer(kit, "flow", () =>
         afName(kit, [
           afLabel(kit, "Handle "),
@@ -460,7 +462,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "gram-flow-name-quoted-padding",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afContainer(
         kit,
         "flow",
@@ -471,7 +473,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "gram-classdef-multi",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afStyling(kit, "classDef", ["hot", "cold"], ["fill:red", "color:blue"]),
       afStatement(kit, afGroup(kit, [() => afVertex(kit, "A", null, "hot")])),
       afStyling(kit, "class", ["A"], ["cold"]),
@@ -479,7 +481,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "gram-click-callback-forms",
-    make: (kit: Kit): CheckedNode[] =>
+    make: (kit: Kit): RecordedNode[] =>
       ["A", "B", "C", "D"]
         .map((id) => afStatement(kit, one(kit, id)))
         .concat([
@@ -491,7 +493,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "gram-click-link-forms",
-    make: (kit: Kit): CheckedNode[] =>
+    make: (kit: Kit): RecordedNode[] =>
       ["A", "B", "C", "D"]
         .map((id) => afStatement(kit, one(kit, id)))
         .concat([
@@ -503,14 +505,14 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "gram-linkstyle-default",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afLinkStyle(kit, null, null, ["stroke:red"]),
       edge(kit, "A", "B"),
     ],
   },
   {
     fixture: "gram-linkstyle-interpolate-default",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afLinkStyle(kit, null, "linear", []),
       edge(kit, "A", "B"),
       afLinkStyle(kit, null, "basis", ["stroke:red"]),
@@ -519,19 +521,19 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "db-acctitle-next-line",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afAccessibility(kit, "accTitle", "A-->B"),
     ],
   },
   {
     fixture: "db-accdescr-next-line",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afAccessibility(kit, "accDescr", "A-->B"),
     ],
   },
   {
     fixture: "db-accessibility-empty-block",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afAccessibility(kit, "accDescr", "First"),
       afAccessibility(kit, "accDescr", null, true),
       afStatement(kit, one(kit, "A")),
@@ -539,14 +541,14 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "db-metadata-before-connector",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afStatement(kit, one(kit, "C", null, ["@{ instruction: before }"])),
       afContainer(kit, "connector", () => name(kit, "C")),
     ],
   },
   {
     fixture: "db-flow-three-definitions",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afContainer(
         kit,
         "flow",
@@ -579,7 +581,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "gram-group-spaces",
-    make: (kit: Kit): CheckedNode[] => {
+    make: (kit: Kit): RecordedNode[] => {
       const first = afGroup(kit, [
         () => afVertex(kit, "A"),
         () => afVertex(kit, "B"),
@@ -601,7 +603,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "gram-reference-quoted-pipe-label",
-    make: (kit: Kit): CheckedNode[] => {
+    make: (kit: Kit): RecordedNode[] => {
       const first = one(kit, "A")
       return [
         afStatement(kit, first, [
@@ -618,13 +620,13 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   ...METADATA.map(([fixture, raw]): AgentflowCase => ({
     fixture,
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afStatement(kit, one(kit, "A", null, [raw])),
     ],
   })),
   {
     fixture: "db-data-block-adjacent",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afStatement(
         kit,
         one(kit, "A", null, ["@{ shape: tool, }", "@{ label: Work }"]),
@@ -633,7 +635,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "gram-flow-inline-data",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afContainer(
         kit,
         "flow",
@@ -646,7 +648,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "db-props-proto-after-bare",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afStatement(kit, one(kit, "A")),
       afStatement(
         kit,
@@ -662,7 +664,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "gram-style-whitespace-after-comma",
-    make: (kit: Kit): CheckedNode[] => {
+    make: (kit: Kit): RecordedNode[] => {
       const vertex = afStatement(kit, one(kit, "A"))
       const keyword = kit.token("Keyword", "style")
       const id = afId(kit, "A")
@@ -679,7 +681,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "db-style-leading-whitespace",
-    make: (kit: Kit): CheckedNode[] => {
+    make: (kit: Kit): RecordedNode[] => {
       const vertex = edge(kit, "A", "B")
       const keyword = kit.token("Keyword", "linkStyle")
       const raw = kit.token("Numeric", "0")
@@ -700,7 +702,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "gram-click-erased-before-url",
-    make: (kit: Kit): CheckedNode[] => {
+    make: (kit: Kit): RecordedNode[] => {
       const vertex = afStatement(kit, one(kit, "A"))
       const keyword = kit.token("Keyword", "click")
       const id = afId(kit, "A")
@@ -726,63 +728,63 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "gram-style-all-null",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afStatement(kit, one(kit, "A")),
       afStyling(kit, "style", ["A"], [null]),
     ],
   },
   {
     fixture: "gram-classdef-all-null",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afStyling(kit, "classDef", ["c"], [null]),
     ],
   },
   {
     fixture: "gram-classdef-trailing-empty-name",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afStyling(kit, "classDef", ["hot", null], ["fill:red"]),
     ],
   },
   {
     fixture: "gram-class-target-empty-ends",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afStatement(kit, one(kit, "A")),
       afStyling(kit, "class", [null, "A", null], ["hot"]),
     ],
   },
   {
     fixture: "gram-linkstyle-all-null",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       edge(kit, "A", "B"),
       afLinkStyle(kit, ["0"], null, [null]),
     ],
   },
   {
     fixture: "gram-linkstyle-trailing-null-style",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       edge(kit, "A", "B"),
       afLinkStyle(kit, ["0"], null, ["stroke:red", null]),
     ],
   },
   {
     fixture: "gram-default-linkstyle-all-null",
-    make: (kit: Kit): CheckedNode[] => [afLinkStyle(kit, null, null, [null])],
+    make: (kit: Kit): RecordedNode[] => [afLinkStyle(kit, null, null, [null])],
   },
   {
     fixture: "gram-default-linkstyle-trailing-null-style",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afLinkStyle(kit, null, null, ["stroke:red", null]),
     ],
   },
   {
     fixture: "gram-click-id-empty-ends",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afUrl(kit, [null, "A", null], '"u"', true, '"tip"'),
     ],
   },
   {
     fixture: "gram-callback-arguments-after-second-call",
-    make: (kit: Kit): CheckedNode[] => {
+    make: (kit: Kit): RecordedNode[] => {
       const vertex = afStatement(kit, one(kit, "A"))
       const first = kit.token("Keyword", "click")
       const id = afId(kit, "A")
@@ -808,7 +810,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "gram-click-erased-before-url-tooltip",
-    make: (kit: Kit): CheckedNode[] => {
+    make: (kit: Kit): RecordedNode[] => {
       const vertex = afStatement(kit, one(kit, "A"))
       const first = kit.token("Keyword", "click")
       const id = afId(kit, "A")
@@ -831,7 +833,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "gram-click-erased-before-callback-tooltip",
-    make: (kit: Kit): CheckedNode[] => {
+    make: (kit: Kit): RecordedNode[] => {
       const vertex = afStatement(kit, one(kit, "A"))
       const first = kit.token("Keyword", "click")
       const id = afId(kit, "A")
@@ -855,7 +857,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "gram-empty-description-before-href",
-    make: (kit: Kit): CheckedNode[] => {
+    make: (kit: Kit): RecordedNode[] => {
       const vertex = afStatement(kit, one(kit, "A"))
       const first = kit.token("Keyword", "click")
       const id = afId(kit, "A")
@@ -877,7 +879,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "lex-mixed-empty-forms-before-url-tooltip",
-    make: (kit: Kit): CheckedNode[] => {
+    make: (kit: Kit): RecordedNode[] => {
       const vertex = afStatement(kit, one(kit, "A"))
       const first = kit.token("Keyword", "click")
       const id = afId(kit, "A")
@@ -903,7 +905,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "lex-empty-string-in-flow-name",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afContainer(
         kit,
         "flow",
@@ -918,7 +920,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "lex-empty-markdown-in-flow-name",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afContainer(
         kit,
         "flow",
@@ -933,7 +935,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "lex-empty-call-in-connector-name",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afContainer(
         kit,
         "connector",
@@ -949,7 +951,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "gram-global-nested",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afContainer(
         kit,
         "flow",
@@ -965,7 +967,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "db-flow-self-reference",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afContainer(
         kit,
         "flow",
@@ -976,13 +978,13 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "db-data-block-reserved-connectors",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afStatement(kit, one(kit, "connectors", null, ["@{ instruction: go }"])),
     ],
   },
   {
     fixture: "db-connector-edge-id-collision",
-    make: (kit: Kit): CheckedNode[] => {
+    make: (kit: Kit): RecordedNode[] => {
       const connector = afContainer(kit, "connector", () => name(kit, "same"))
       const first = one(kit, "A")
       const link = afLink(
@@ -1000,20 +1002,20 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "db-accessibility-unclosed-block",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afAccessibility(kit, "accDescr", "open\nA\n", true, false),
     ],
   },
   {
     fixture: "db-accessibility-empty-unclosed",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afAccessibility(kit, "accDescr", "First"),
       afAccessibility(kit, "accDescr", null, true, false),
     ],
   },
   {
     fixture: "gram-hasownproperty-last-member",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afContainer(
         kit,
         "flow",
@@ -1027,7 +1029,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "db-flow-repeat-before-unnamed",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afContainer(
         kit,
         "flow",
@@ -1047,7 +1049,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "db-connector-repeated-without-title",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afContainer(
         kit,
         "connector",
@@ -1068,7 +1070,7 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   },
   {
     fixture: "lex-directive-in-name-empty-block-padding",
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afContainer(
         kit,
         "flow",
@@ -1092,219 +1094,15 @@ export const AGENTFLOW_CASES: readonly AgentflowCase[] = [
   {
     fixture: "db-data-block-invalid-yaml",
     db: false,
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afStatement(kit, one(kit, "A", null, ["@{ key: *, }"])),
     ],
   },
   {
     fixture: "db-data-block-unknown-shape",
     db: false,
-    make: (kit: Kit): CheckedNode[] => [
+    make: (kit: Kit): RecordedNode[] => [
       afStatement(kit, one(kit, "A", null, ["@{ shape: nonexistent }"])),
-    ],
-  },
-]
-
-/** Fixed rejected inputs with a deliberately representable, but invalid, reading. */
-interface AgentflowRejectionCase extends AgentflowCase {
-  readonly problem: string
-}
-
-export const AGENTFLOW_REJECTION_CASES: readonly AgentflowRejectionCase[] = [
-  {
-    fixture: "gram-style-null-before-comment",
-    problem: "a null style needs a written whitespace style unit",
-    make: (kit: Kit): CheckedNode[] => {
-      const vertex = afStatement(kit, one(kit, "A"))
-      const style = afStyling(kit, "style", ["A"], [null])
-      kit.comment("%%", "%% c")
-      return [vertex, style]
-    },
-  },
-  {
-    fixture: "gram-style-empty-value",
-    problem: "a null style needs a written whitespace style unit",
-    make: (kit: Kit): CheckedNode[] => [
-      afStatement(kit, one(kit, "A")),
-      afStyling(kit, "style", ["A"], [null]),
-    ],
-  },
-  {
-    fixture: "gram-class-one-operand",
-    problem: "an id list needs a written id or comma",
-    make: (kit: Kit): CheckedNode[] => [
-      afStyling(kit, "class", [null], ["hot"]),
-    ],
-  },
-
-  {
-    fixture: "lex-linkstyle-leading-zero",
-    problem: "not canonical",
-    make: (kit: Kit): CheckedNode[] => [
-      edge(kit, "A", "B"),
-      afLinkStyle(kit, ["00"], null, ["stroke:red"]),
-    ],
-  },
-  {
-    fixture: "gram-linkstyle-style-out-of-bounds",
-    problem: "names no preceding edge",
-    make: (kit: Kit): CheckedNode[] => [
-      edge(kit, "A", "B"),
-      afLinkStyle(kit, ["1"], null, ["stroke:red"]),
-    ],
-  },
-  {
-    fixture: "gram-flow-named-member-hasownproperty",
-    problem: "hasOwnProperty is followed",
-    make: (kit: Kit): CheckedNode[] => [
-      afContainer(
-        kit,
-        "flow",
-        () => name(kit, "Outer"),
-        () => [
-          afContainer(
-            kit,
-            "flow",
-            () => name(kit, "hasOwnProperty"),
-            () => [afStatement(kit, one(kit, "A"))],
-          ),
-          afStatement(kit, one(kit, "B")),
-        ],
-      ),
-    ],
-  },
-  {
-    fixture: "gram-group-unspaced",
-    problem: "needs whitespace on both sides",
-    make: (kit: Kit): CheckedNode[] => {
-      const first = afGroup(kit, [
-        () => afVertex(kit, "A"),
-        () => afVertex(kit, "B"),
-      ])
-      return [
-        afStatement(kit, first, [
-          afLink(
-            kit,
-            () => afArrow(kit, "-->", "solid", 2, "arrow"),
-            () =>
-              afGroup(kit, [
-                () => afVertex(kit, "C"),
-                () => afVertex(kit, "D"),
-              ]),
-          ),
-        ]),
-      ]
-    },
-  },
-  {
-    fixture: "gram-pipe-label-two-spaces-after",
-    problem: "at most one following space",
-    make: (kit: Kit): CheckedNode[] => {
-      const first = one(kit, "A")
-      return [
-        afStatement(kit, first, [
-          afLink(
-            kit,
-            () => afArrow(kit, "-->", "solid", 2, "arrow"),
-            () => one(kit, "B"),
-            null,
-            () => afLabel(kit, "x"),
-          ),
-        ]),
-      ]
-    },
-  },
-  {
-    fixture: "lex-data-block-caret",
-    problem: "unprotected brace or caret",
-    make: (kit: Kit): CheckedNode[] => [
-      afStatement(kit, one(kit, "A", null, ["@{ label: a^b }"])),
-    ],
-  },
-  {
-    fixture: "div-empty-string-statement",
-    problem: "the field body holds an AgentflowIgnoredText",
-    make: (kit: Kit): CheckedNode[] => [
-      afIgnored(kit, '""', "empty-string"),
-      afStatement(kit, one(kit, "A")),
-    ],
-  },
-  {
-    fixture: "div-directive-in-arrow",
-    direction: "LR",
-    problem: "the tokens of the arrow",
-    make: (kit: Kit): CheckedNode[] => {
-      const first = one(kit, "A")
-      const start = kit.token("Punctuator", "-")
-      kit.directive("%%{init: {}}%%")
-      const end = kit.token("Punctuator", "->")
-      const arrow = afNode(kit, "Arrow", [start, end], {
-        value: "-->",
-        startMarker: "none",
-        line: "solid",
-        length: 2,
-        endMarker: "arrow",
-      })
-      const target = one(kit, "B")
-      return [
-        afStatement(kit, first, [
-          afNode(kit, "Link", [arrow, target], {
-            id: null,
-            opening: null,
-            arrow,
-            label: null,
-            target,
-          }),
-        ]),
-      ]
-    },
-  },
-  {
-    fixture: "div-ignored-semicolon-in-arrow",
-    direction: "LR",
-    problem: "the tokens of the arrow",
-    make: (kit: Kit): CheckedNode[] => {
-      const first = one(kit, "A", {
-        opening: "[",
-        closing: "]",
-        name: "rectangle",
-        raw: "style:#x",
-      })
-      const start = kit.token("Punctuator", "-")
-      kit.token("IgnoredSemicolon", ";")
-      const end = kit.token("Punctuator", "->")
-      const arrow = afNode(kit, "Arrow", [start, end], {
-        value: "-->",
-        startMarker: "none",
-        line: "solid",
-        length: 2,
-        endMarker: "arrow",
-      })
-      const target = one(kit, "B")
-      return [
-        afStatement(kit, first, [
-          afNode(kit, "Link", [arrow, target], {
-            id: null,
-            opening: null,
-            arrow,
-            label: null,
-            target,
-          }),
-        ]),
-      ]
-    },
-  },
-  {
-    fixture: "gram-flow-title-space-before-newline",
-    problem: "heading padding",
-    make: (kit: Kit): CheckedNode[] => [
-      afContainer(
-        kit,
-        "flow",
-        () => name(kit, "F"),
-        () => [afStatement(kit, one(kit, "A"))],
-        () => afLabel(kit, "T"),
-      ),
     ],
   },
 ]

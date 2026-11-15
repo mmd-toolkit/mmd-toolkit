@@ -6,7 +6,7 @@
 import { describe, expect, it } from "vitest"
 import * as prettier from "prettier"
 import plugin from "../src/index.ts"
-import { dbOfText, defaultEmbedded, treeProblemsOfText } from "./db-reading.ts"
+import { dbOfText, defaultEmbedded } from "./db-reading.ts"
 import { formatMarkdown, formatMarkdownWithoutPlugin } from "./helpers.ts"
 
 /** Formats Markdown, and checks that formatting the result changes nothing. */
@@ -28,8 +28,6 @@ describe("a flowchart in a Markdown code block", () => {
     expect(dbOfText(after, defaultEmbedded())).toEqual(
       dbOfText(before, defaultEmbedded()),
     )
-    expect(treeProblemsOfText(before)).toEqual([])
-    expect(treeProblemsOfText(after)).toEqual([])
   })
 
   it("is formatted at the top level", async () => {

@@ -199,11 +199,10 @@ everything after every change.
 - A result already reported for the same state of the tree is not run again; a
   check of another kind (other inputs, another method) is.
 - The report says what was run and what was not.
-- A run of `recorded-trees:check` is evidence only for the trees it ran on,
-  which its output names (the trees changed since its base, or every tree), and
-  only for the blocks that its table shows as checked: for the items it lists to
-  read, it shows only that an answer exists, not that the answer is right. A
-  report never says "no problems" for more than that.
+- A run of `recorded-trees:check` names the changed trees and the document items
+  to read. It shows only that an answer exists for each required item and tree,
+  not that the answer is right or that the trees satisfy the documents. A report
+  never says "no problems" for more than that.
 - A report of a change in behavior (acceptance, the tree, the Db, formatting, a
   rule) goes to review with a table of its cases: for each sentence the change
   concerns, every case the sentence distinguishes, the fixture that holds it,
@@ -217,7 +216,7 @@ Generated inputs, random mutation of fixtures, and products of a fixed set of
 strings over the places of the corpus are not used: a product repeats one rule
 per context, costs hours, and finds little beyond the rule's own example;
 reading the sentences finds missing citations, wrong definitions, unreachable
-rules, and holes in the tree check, which no product sees; and a generator lets
-a change be reported done without anyone listing the cases of its sentence. The
-rule names the habit: write the sentence, list its cases, give each a fixture,
-cite them, and let the review read the sentence again.
+rules, and holes in the recorded trees, which no product sees; and a generator
+lets a change be reported done without anyone listing the cases of its sentence.
+The rule names the habit: write the sentence, list its cases, give each a
+fixture, cite them, and let the review read the sentence again.

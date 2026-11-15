@@ -1,9 +1,9 @@
-import type { CheckedNode } from "../src/check-tree/types.ts"
-import type { Kit } from "./check-tree-built.ts"
+import type { RecordedNode } from "../src/recorded-tree.ts"
+import type { Kit } from "./tree-built.ts"
 import { hull } from "./statement-tree-built.ts"
 
 /** A branch reference whose complete spelling is supplied, without a lexer. */
-export function reference(kit: Kit, raw: string): CheckedNode {
+export function reference(kit: Kit, raw: string): RecordedNode {
   const quoted = raw.startsWith('"') || raw.startsWith("'")
   const token = kit.token(quoted ? "String" : "Identifier", raw)
   return kit.node(
@@ -15,9 +15,9 @@ export function reference(kit: Kit, raw: string): CheckedNode {
 
 /** Named hidden lists are explicit occurrences in each hand-built tree. */
 export interface Gaps {
-  readonly before?: () => CheckedNode[]
-  readonly beforeValue?: () => CheckedNode[]
-  readonly after?: () => CheckedNode[]
+  readonly before?: () => RecordedNode[]
+  readonly beforeValue?: () => RecordedNode[]
+  readonly after?: () => RecordedNode[]
 }
 
 /** One authored option, including its exact introducer choice and value. */
@@ -27,7 +27,7 @@ export function option(
   raw: string,
   gaps: Gaps = {},
   bare = false,
-): CheckedNode {
+): RecordedNode {
   const textBefore = gaps.before?.() ?? []
   const pieces: { range: readonly [number, number] }[] = [...textBefore]
   if (!bare) {
@@ -38,7 +38,7 @@ export function option(
   }
   const textBeforeValue = gaps.beforeValue?.() ?? []
   pieces.push(...textBeforeValue)
-  let value: CheckedNode | string
+  let value: RecordedNode | string
   if (kind === "Type") {
     pieces.push(kit.token("Keyword", raw))
     value = raw
@@ -63,10 +63,10 @@ export function option(
 /** Commit or cherry-pick with explicit source-order option occurrences. */
 export function commit(
   kit: Kit,
-  make: () => CheckedNode[] = () => [],
-  after: () => CheckedNode[] = () => [],
+  make: () => RecordedNode[] = () => [],
+  after: () => RecordedNode[] = () => [],
   cherryPick = false,
-): CheckedNode {
+): RecordedNode {
   const keyword = kit.token("Keyword", cherryPick ? "cherry-pick" : "commit")
   const options = make()
   const textAfter = after()
@@ -81,9 +81,9 @@ export function commit(
 export function branch(
   kit: Kit,
   raw: string,
-  order: (() => CheckedNode) | null = null,
+  order: (() => RecordedNode) | null = null,
   gaps: Gaps = {},
-): CheckedNode {
+): RecordedNode {
   const keyword = kit.token("Keyword", "branch")
   const textBeforeName = gaps.before?.() ?? []
   const name = reference(kit, raw)
@@ -107,7 +107,7 @@ export function checkout(
   raw: string,
   keyword: "checkout" | "switch" = "checkout",
   gaps: Gaps = {},
-): CheckedNode {
+): RecordedNode {
   const word = kit.token("Keyword", keyword)
   const textBeforeBranch = gaps.before?.() ?? []
   const name = reference(kit, raw)
@@ -123,9 +123,9 @@ export function checkout(
 export function merge(
   kit: Kit,
   raw: string,
-  make: () => CheckedNode[] = () => [],
+  make: () => RecordedNode[] = () => [],
   gaps: Gaps = {},
-): CheckedNode {
+): RecordedNode {
   const keyword = kit.token("Keyword", "merge")
   const textBeforeBranch = gaps.before?.() ?? []
   const name = reference(kit, raw)

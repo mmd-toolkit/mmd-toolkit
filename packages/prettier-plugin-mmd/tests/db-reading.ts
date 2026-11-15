@@ -20,15 +20,8 @@ import { treeviewBoxCharacters } from "../src/printers/treeview-characters.ts"
  * Permitted margins are checked by `eventmodeling-data-margins.ts` and
  * `state-note-margins.ts`; this module preserves both raw Db differences.
  */
-import type {
-  CheckedRoot,
-  TreeProblem,
-  DbSummary,
-  DbTreeRoot,
-  EmbeddedValues,
-} from "@mmd-toolkit/tests"
+import type { DbSummary, DbTreeRoot, EmbeddedValues } from "@mmd-toolkit/tests"
 import {
-  checkTree,
   DATA_BLOCK_NODE_TYPES,
   cssSupportsColor,
   dbFromTree,
@@ -202,11 +195,6 @@ export async function describeFrontmatterChange(
   return body === withLineFeeds(printed.value)
     ? null
     : "the frontmatter is neither as written nor formatted as YAML"
-}
-
-/** Checks the public parser tree as the corpus's JSON-shaped tree interface. */
-export function treeProblemsOfText(text: string): TreeProblem[] {
-  return checkTree(text, JSON.parse(JSON.stringify(parse(text))) as CheckedRoot)
 }
 
 /**

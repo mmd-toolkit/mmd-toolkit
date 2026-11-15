@@ -6,8 +6,8 @@ description: >-
   (adding, renaming, and marking fixtures, known divergence identifiers,
   specified readings). Use for any work on packages/tests or tools/, and when a
   fixture, a rename or a known divergence identifier is needed. Adding a diagram
-  type, the tree checks, and updating mermaid.js have skills of their own that
-  use this one.
+  type, the Db builder from a tree, and updating mermaid.js have skills of their
+  own that use this one.
 ---
 
 # The truth from mermaid.js, and the fixtures (tests)
@@ -16,11 +16,10 @@ The steps of the work on `@mmd-toolkit/tests` and `tools/` that every piece of
 work follows, and the fixture tools and lists that the other packages use. The
 policies and criteria are in section 1; what holds for every package is in
 AGENTS.md and the skill `conventions`. Adding a diagram type is in the skill
-[tests-diagram-type](../tests-diagram-type/SKILL.md), the Db builder and the
-tree checker in [tests-tree-checks](../tests-tree-checks/SKILL.md), and updating
-the pinned mermaid.js in
-[tests-mermaid-update](../tests-mermaid-update/SKILL.md); sections 1 to 4 of
-this skill hold for their steps too.
+[tests-diagram-type](../tests-diagram-type/SKILL.md), the Db builder in
+[tests-db-from-tree](../tests-db-from-tree/SKILL.md), and updating the pinned
+mermaid.js in [tests-mermaid-update](../tests-mermaid-update/SKILL.md); sections
+1 to 4 of this skill hold for their steps too.
 
 ## 1. Policies and criteria
 
@@ -48,7 +47,7 @@ this skill hold for their steps too.
 ## 3. What these skills write
 
 - The steps of this skill and of the skills `tests-diagram-type`,
-  `tests-tree-checks`, and `tests-mermaid-update` write only `packages/tests`,
+  `tests-db-from-tree`, and `tests-mermaid-update` write only `packages/tests`,
   `tools/`, and the documents of these skills. When another package
   (`packages/spec`, `packages/parser`, `packages/prettier-plugin-mmd`) needs a
   change, make it by the steps of that package's skill. When taking inputs from
@@ -89,32 +88,30 @@ this skill hold for their steps too.
   ["Running tests"](../conventions/SKILL.md#running-tests) in the skill
   `conventions`. For this package:
 
-  | Code changed                                                               | Test files to run (`tests/`)                                 |
-  | -------------------------------------------------------------------------- | ------------------------------------------------------------ |
-  | `src/index.ts` (format, loader, `KNOWN_DIVERGENCES`)                       | `fixtures.test.ts`, `expected-changes.test.ts`               |
-  | `src/fixture-acceptance.ts`                                                | `fixture-acceptance.test.ts`, `fixtures.test.ts`             |
-  | `src/mermaid.ts`, `rejections.ts`, `run-mermaid-options.ts`                | `mermaid.test.ts`, `mermaid-run-store.test.ts`               |
-  | `src/mermaid-run-store.ts`                                                 | `mermaid-run-store.test.ts`                                  |
-  | `src/divergence-removals.ts`                                               | `divergence-removals.test.ts`, `mermaid.test.ts`             |
-  | `src/normalizers/<diagram>.ts`, `normalizers/index.ts`                     | `mermaid.test.ts`, `fixtures.test.ts`, then `fixtures:check` |
-  | `src/normalizers/data-blocks.ts`                                           | `data-blocks.test.ts`, `mermaid.test.ts`                     |
-  | `src/normalizers/browser-stand-ins.ts`                                     | `browser-stand-ins.test.ts`, `mermaid.test.ts`               |
-  | `src/normalizers/json.ts`                                                  | `json.test.ts`, then `fixtures:check`                        |
-  | `src/expected-changes.ts`                                                  | `expected-changes.test.ts`                                   |
-  | `src/recorded-embedded.ts`                                                 | `recorded-embedded.test.ts`, then `fixtures:check`           |
-  | `src/fixture-shapes.ts`                                                    | `fixture-shapes.test.ts`                                     |
-  | `src/db-from-tree/`                                                        | `db-from-tree.test.ts`, `converted-text.test.ts`             |
-  | `src/source-scan.ts`                                                       | `source-scan.test.ts`                                        |
-  | `src/ordered-json.ts`                                                      | `ordered-json.test.ts`, `tools-fixture-store.test.ts`        |
-  | `src/check-tree/`                                                          | `check-tree*.test.ts`                                        |
-  | `tools/src/diagrams.ts`                                                    | `tools-diagrams.test.ts`                                     |
-  | `tools/src/fixture-store.ts`                                               | `tools-fixture-store.test.ts`                                |
-  | `tools/src/spec-recorder.ts`                                               | `tools-spec-recorder.test.ts`                                |
-  | `tools/src/specified-reading.ts`                                           | `tools-specified-reading.test.ts`                            |
-  | `tools/src/recorded-tree*.ts`, `coverage-table.ts`, `fixture-citations.ts` | `tools-recorded-trees.test.ts`                               |
-  | `tools/src/runtime-imports.ts`                                             | `tools-recorded-trees.test.ts`, `mermaid-run-store.test.ts`  |
-  | `tools/fixtures.ts`, `tools/collect.ts`, `tools/recorded-trees.ts`         | no test file; see below                                      |
-  | `recorded-trees/coverage-table/*.json`                                     | no test file; see below                                      |
+  | Code changed                                                       | Test files to run (`tests/`)                                 |
+  | ------------------------------------------------------------------ | ------------------------------------------------------------ |
+  | `src/index.ts` (format, loader, `KNOWN_DIVERGENCES`)               | `fixtures.test.ts`, `expected-changes.test.ts`               |
+  | `src/fixture-acceptance.ts`                                        | `fixture-acceptance.test.ts`, `fixtures.test.ts`             |
+  | `src/mermaid.ts`, `rejections.ts`, `run-mermaid-options.ts`        | `mermaid.test.ts`, `mermaid-run-store.test.ts`               |
+  | `src/mermaid-run-store.ts`                                         | `mermaid-run-store.test.ts`                                  |
+  | `src/divergence-removals.ts`                                       | `divergence-removals.test.ts`, `mermaid.test.ts`             |
+  | `src/normalizers/<diagram>.ts`, `normalizers/index.ts`             | `mermaid.test.ts`, `fixtures.test.ts`, then `fixtures:check` |
+  | `src/normalizers/data-blocks.ts`                                   | `data-blocks.test.ts`, `mermaid.test.ts`                     |
+  | `src/normalizers/browser-stand-ins.ts`                             | `browser-stand-ins.test.ts`, `mermaid.test.ts`               |
+  | `src/normalizers/json.ts`                                          | `json.test.ts`, then `fixtures:check`                        |
+  | `src/expected-changes.ts`                                          | `expected-changes.test.ts`                                   |
+  | `src/recorded-embedded.ts`                                         | `recorded-embedded.test.ts`, then `fixtures:check`           |
+  | `src/fixture-shapes.ts`                                            | `fixture-shapes.test.ts`                                     |
+  | `src/db-from-tree/`                                                | `db-from-tree.test.ts`, `converted-text.test.ts`             |
+  | `src/source-scan.ts`                                               | `source-scan.test.ts`                                        |
+  | `src/ordered-json.ts`                                              | `ordered-json.test.ts`, `tools-fixture-store.test.ts`        |
+  | `tools/src/diagrams.ts`                                            | `tools-diagrams.test.ts`                                     |
+  | `tools/src/fixture-store.ts`                                       | `tools-fixture-store.test.ts`                                |
+  | `tools/src/spec-recorder.ts`                                       | `tools-spec-recorder.test.ts`                                |
+  | `tools/src/specified-reading.ts`                                   | `tools-specified-reading.test.ts`                            |
+  | `tools/src/recorded-tree*.ts`, `fixture-citations.ts`              | `tools-recorded-trees.test.ts`                               |
+  | `tools/src/runtime-imports.ts`                                     | `tools-recorded-trees.test.ts`, `mermaid-run-store.test.ts`  |
+  | `tools/fixtures.ts`, `tools/collect.ts`, `tools/recorded-trees.ts` | no test file; see below                                      |
 
   The functions of `tools/src` that decide what a fixture's recorded files
   contain are tested by the `tests/tools-*.test.ts` files listed above; the
@@ -125,24 +122,13 @@ this skill hold for their steps too.
   reading what they would change; `generate` with `fixtures:check`;
   `tools/collect.ts` with `--out` pointing outside the repository, reading the
   file it writes; `tools/recorded-trees.ts` with
-  `recorded-trees:check --base HEAD`, reading what it prints. A change to the
-  tables of `recorded-trees/coverage-table/` is checked with
-  `recorded-trees:check --base origin/main`, whose output lists no stale row
-  added or made stale by the change. What to keep when the recorder
-  (`tools/src/spec-recorder.ts`) changes is in step 3 of
+  `recorded-trees:check --base HEAD`, reading what it prints. What to keep when
+  the recorder (`tools/src/spec-recorder.ts`) changes is in step 3 of
   [references/collecting-fixtures.md](../tests-diagram-type/references/collecting-fixtures.md)
   of the skill tests-diagram-type.
 
-  A change to `src/`, `tools/`, or a test file of `checkTree`
-  (`tests/check-tree*.test.ts`) also runs
-  `pnpm --filter @mmd-toolkit/tests run recorded-trees:check --base origin/main`
-  before it is reported. The command runs `checkTree` on every recorded tree
-  when the change touches the runner or a file it reaches at run time, and says
-  why in its first lines; use that output rather than a list of paths kept by
-  hand. It also lists stale table rows and items not judged yet. Have
-  `packages/tests` judge those that the change adds or makes stale in the same
-  pull request, as step 8 of [tests-tree-checks](../tests-tree-checks/SKILL.md)
-  says.
+  AI agents read changed recorded trees and changed document items with the
+  skill [recorded-trees](../recorded-trees/SKILL.md).
 
   Run one file with
   `pnpm --filter @mmd-toolkit/tests exec vitest run tests/<file>`.

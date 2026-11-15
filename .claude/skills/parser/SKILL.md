@@ -151,9 +151,9 @@ type.
   no "To be written", and `packages/spec/docs/ast/<diagram>.md` exists (the
   spec-diagram-type and spec skills).
 - The fixtures of the diagram, its Db summary
-  (`packages/tests/docs/db-from-tree/<diagram>.md`), and the checks of its
-  recorded trees exist in `packages/tests` (the skills tests-diagram-type and
-  tests-tree-checks).
+  (`packages/tests/docs/db-from-tree/<diagram>.md`), and the builder of its Db
+  from recorded trees exist in `packages/tests` (the skills tests-diagram-type
+  and tests-db-from-tree).
 
 ### 4.2 Reading the specification, and its gaps first
 
@@ -388,12 +388,10 @@ Steps:
    of the trees that a change records are checked with the skill
    [recorded-trees](../recorded-trees/SKILL.md). No test of the parser parses
    the fixtures again to check them. A diagram test names the fixtures of the
-   cases that it checks and states what their trees hold;
-   `tests/helpers/tree-problems.ts` wraps the check of the tree conditions
-   (`checkTree`) for such a test. When `db-from-tree.test.ts` fails for a
-   recorded tree because its accepted reading has no embedded values to build
-   the Db with, report it to the specification with the input and the recorded
-   reading.
+   cases that it checks and states what their trees hold. When
+   `db-from-tree.test.ts` fails for a recorded tree because its accepted reading
+   has no embedded values to build the Db with, report it to the specification
+   with the input and the recorded reading.
 2. Find where text outside a node's range decides a reading. Example from the
    flowchart: the name text of a subgraph runs to its separator, and where empty
    description blocks follow the name, the whitespace between them lies outside
@@ -516,7 +514,8 @@ for acceptance without adding configuration parameters or options to `parse()`.
    read shows a wrong change only here (in state, an edit that makes a floating
    note id end at its first character; the value strings of the leaf nodes and
    the position of a state note are such fields). A snapshot comparison alone
-   establishes repeatability, so retain independent tree-condition and Db checks
+   establishes repeatability, so AI agents read the tree conditions with
+   [recorded-trees](../recorded-trees/SKILL.md), and the Db comparison is kept
    when records are rewritten. Complete the parser build before starting checks
    that import its `lib` output, then run the Db check in `packages/tests`:
 
@@ -555,10 +554,10 @@ change.
 
 The work is done when every fixture passes the fixture test, the recorded trees
 give the Db that the corpus records, the command of the skill `recorded-trees`
-exits with 0 (no problem in the trees, and an answer for every item and changed
-tree it lists), the change adds or edits no answer file but its own, and every
-sentence that the work wrote or changed has a fixture for each of its cases
-(section 3).
+exits with 0 (the records and answers can be read, and an answer exists for
+every item and changed tree it lists), the change adds or edits no answer file
+but its own, and every sentence that the work wrote or changed has a fixture for
+each of its cases (section 3).
 
 ### 4.9 Documents
 
@@ -639,9 +638,7 @@ wiring, tests and records.
 - A sentence of `docs/tokens.md`, `docs/tokens/<diagram>.md`,
   `docs/positions.md`, or `docs/positions/<diagram>.md` changes: follow
   [When the tree, token, or position documents change](../recorded-trees/SKILL.md#8-when-the-tree-token-or-position-documents-change)
-  for the fixtures that the command lists, and ask the tests package to judge,
-  in the same pull request, the table rows it lists as stale and the items not
-  judged yet.
+  for the fixtures that the command lists.
 - When shared checks are centralized, compare `(fixture, check)` coverage and
   execution counts before and after, explaining removed duplicate calls and
   added cases without introducing diagram exemptions to equalize totals.

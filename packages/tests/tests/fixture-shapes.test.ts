@@ -1,9 +1,9 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs"
 import path from "node:path"
 import { describe, expect, it } from "vitest"
-import { NODE_FIELDS } from "../src/check-tree/node-fields.ts"
-import { DATA_BLOCK_NODE_TYPES } from "../src/check-tree/node-types.ts"
-import type { CheckedRoot } from "../src/check-tree/types.ts"
+import { DATA_BLOCK_NODE_TYPES, nodesOf } from "../src/recorded-tree.ts"
+import type { RecordedNode } from "../src/recorded-tree.ts"
+import type { TreeRoot } from "../src/db-from-tree/tree.ts"
 import {
   SHAPE_CONTENT_TYPES,
   shapeOf,
@@ -12,7 +12,6 @@ import {
 import type { ShapeSource, ShapeToken } from "../src/fixture-shapes.ts"
 import type { DiagramType } from "../src/index.ts"
 import { getFixturesRoot, loadFixtures } from "../src/index.ts"
-import { mayHaveRecordedTrees } from "./check-tree-recorded.ts"
 
 // docs/maintaining-fixtures.md, Choosing inputs by shape: two texts of one
 // shape differ only in what the author named, as far as the names are the same
@@ -443,7 +442,7 @@ describe("the shape source of a recorded tree", () => {
           "ast.json",
         )
         if (!existsSync(file)) continue
-        const tree = JSON.parse(readFileSync(file, "utf8")) as CheckedRoot
+        const tree = JSON.parse(readFileSync(file, "utf8")) as TreeRoot
         const { tokens, writtenRanges } = shapeSourceOf(tree)
         expect(tokens).toBe(tree.tokens)
         for (const [start, end] of writtenRanges) {
@@ -459,6 +458,32 @@ describe("the shape source of a recorded tree", () => {
     expect(frontmatters).toBeGreaterThan(0)
     expect(dataBlocks).toBeGreaterThan(0)
   }, 120_000)
+})
+
+describe("recorded node order", () => {
+  it("follows object keys and lists, leaving the root's source records out", () => {
+    const first = { type: "Identifier", range: [8, 9] as const, name: "A" }
+    const second = { type: "FlowchartDataBlock", range: [9, 11] as const }
+    const third = { type: "Identifier", range: [12, 13] as const, name: "B" }
+    const body: RecordedNode = {
+      type: "FlowchartDiagram",
+      range: [0, 13],
+      // Deliberately put the node fields in a different order from source.
+      right: third,
+      left: [first, null, { text: "no node" }, second],
+    }
+    const tree: TreeRoot = {
+      type: "Root",
+      range: [0, 13],
+      diagramType: "flowchart",
+      body,
+      frontmatter: { type: "Frontmatter", range: [0, 0] },
+      comments: [{ type: "Comment", range: [0, 0], mark: "%%" }],
+      directives: [{ type: "Directive", range: [0, 0], closed: true }],
+      tokens: [{ type: "Keyword", range: [0, 7], value: "flowchart" }],
+    }
+    expect(nodesOf(tree)).toEqual([tree, body, third, first, second])
+  })
 })
 
 describe("the data block node types of the shape", () => {
@@ -483,10 +508,6 @@ describe("the data block node types of the shape", () => {
       }
     }
     expect([...headings].sort()).toEqual([...DATA_BLOCK_NODE_TYPES].sort())
-    for (const type of DATA_BLOCK_NODE_TYPES) {
-      if (!mayHaveRecordedTrees(type)) continue
-      expect(NODE_FIELDS[type], type).toBeDefined()
-    }
   })
 })
 

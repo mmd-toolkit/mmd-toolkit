@@ -71,5 +71,6 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    [collecting-fixtures.ja.md](collecting-fixtures.ja.md) の手順 3
    の既存の明示的な許可を使える。
    normalizer、固定 fixture、安定した生成は 2 節と 3 節に従う。
-   AST の定義後は SKILL [tests-tree-checks](../../tests-tree-checks/SKILL.ja.md)
-   の手順で Db builder と checker を実装する。
+   AST の定義後は SKILL
+   [tests-db-from-tree](../../tests-db-from-tree/SKILL.ja.md) の手順で Db
+   builder を実装する。

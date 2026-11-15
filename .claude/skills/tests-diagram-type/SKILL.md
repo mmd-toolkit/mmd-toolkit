@@ -23,7 +23,7 @@ summary fields (`docs/db-summaries.md`), and the claims of the specification and
 the tests of the parser use the fixtures. The steps that build the summary from
 a tree are written in `docs/db-from-tree/<diagram>.md` and
 `src/db-from-tree/<diagram>.ts` after the tree document of the specification, as
-the skill [tests-tree-checks](../tests-tree-checks/SKILL.md) says.
+the skill [tests-db-from-tree](../tests-db-from-tree/SKILL.md) says.
 
 For a Chevrotain diagram, apply the same procedure with the token definitions as
 lexer rules: token order, active modes and explicit `longer_alt` decide the
@@ -168,13 +168,7 @@ For a Langium diagram, read mermaid.js's grammar first with the steps of
    `DIAGRAM_TYPES_WITHOUT_RECORDED_TREES` in `tests/db-from-tree.test.ts`, and
    remove it when the parser has recorded the trees, and add the diagram type to
    `DIAGRAMS` of the same file then, so that the builder runs on the recorded
-   trees. Add also the prefix of the node types of the diagram type
-   (`Requirement`) to `NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES` in
-   `tests/check-tree-recorded.ts`, which the tests that need a recorded tree of
-   every node type leave out, and remove it at the same time, when the rows of
-   the value fields of the diagram type (`VALUE_FIELD_REPORTS` and the other
-   tables of the tests of fields and values) are written. The list stays empty
-   between two diagram types.
+   trees.
 8. Write the section of the diagram type in `docs/db-summaries.md` and `.ja.md`
    (what is dropped, and why).
 9. Show as the result the summary fields, and the dropped fields with their

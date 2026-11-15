@@ -6,7 +6,6 @@ import plugin from "../src/index.ts"
 import {
   dbOfText,
   defaultEmbedded,
-  treeProblemsOfText,
   writtenEmbeddedTexts,
 } from "./db-reading.ts"
 import { formatMarkdownWithoutPlugin } from "./helpers.ts"
@@ -164,7 +163,5 @@ describe("ishikawa in Markdown", () => {
     expect(writtenEmbeddedTexts(fixture.payloadOutput)).toEqual(
       writtenEmbeddedTexts(fixture.payloadInput),
     )
-    expect(treeProblemsOfText(fixture.payloadInput)).toEqual([])
-    expect(treeProblemsOfText(fixture.payloadOutput)).toEqual([])
   })
 })

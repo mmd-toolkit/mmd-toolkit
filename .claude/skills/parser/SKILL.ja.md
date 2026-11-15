@@ -161,8 +161,8 @@ pin した mermaid.js の更新を扱う。
   SKILL）。
 - その図種の fixture、
   Db の要約（`packages/tests/docs/db-from-tree/<図種>.md`）、
-  記録した木の検査が、
-  `packages/tests` にある（tests-diagram-type と tests-tree-checks の SKILL）。
+  記録した木から Db を作る関数が、
+  `packages/tests` にある（tests-diagram-type と tests-db-from-tree の SKILL）。
 
 ### 4.2 仕様を読み、欠落を先に扱う
 
@@ -435,8 +435,6 @@ fixture を図種と名前で引用して読み込む。
    parser のテストは、それを確かめるために fixture をパースし直さない。
    図種のテストは、確かめる場合の fixture を名前で指し、
    その木が持つものを述べる。
-   `tests/helpers/tree-problems.ts` は、
-   そうしたテストのために木の条件の検査（`checkTree`）を包む。
    記録された木について、受理する読みに Db を組む埋め込みの値がなく、
    `db-from-tree.test.ts` が失敗したときは、入力と記録された読みを添え、
    仕様に知らせる。
@@ -578,7 +576,9 @@ fixture のテストが、各結果をそのファイルと比べる。
    そうした変化である。
    葉のノードの値の文字列と、状態図の note の位置が、そうした欄である。
    記録との比較だけでは再現性しか確かめないため、
-   書き直すときも木の条件と Db の独立した検査を保つ。
+   書き直すときも AI エージェントは
+   [recorded-trees](../recorded-trees/SKILL.ja.md) で木の条件を読み、
+   Db の比較を保つ。
    lib を参照する検査は、パーサーのビルドが完了してから始める。
    その後、`packages/tests` で Db の検査を行う。
 
@@ -615,7 +615,7 @@ pnpm run format:check
 
 すべての fixture が fixture のテストを通り、
 記録した木がコーパスの記録した Db を与え、
-スキル `recorded-trees` のコマンドが終了コード 0 になり、木の問題がなく、
+スキル `recorded-trees` のコマンドが終了コード 0 になり、記録と答えが読め、
 出された項目と変更の木のすべてに答えがあり、
 この変更が自分のもの以外の答えのファイルを足すことも直すこともなく、
 作業で書いたか変えた文のすべてが、その場合ごとに fixture を持てば（3 節）、
@@ -696,8 +696,6 @@ pnpm run format:check
   `docs/positions/<図種>.md` の文が変わる:
   [木とトークンと位置の文書が変わったとき](../recorded-trees/SKILL.ja.md#8-木とトークンと位置の文書が変わったとき)
   に従い、コマンドが出す fixture を読む。
-  古いと出された表の行と、まだ判断していない項目は、
-  同じプルリクエストで tests パッケージに判断を頼む。
 - 共通検査を集約するときは、前後で `(fixture, check)` の対象と実行回数を比べ、
   減った重複呼び出しと増えた場合を説明し、
   回数を合わせるための図種の除外は作らない。

@@ -1,13 +1,13 @@
 import type { TreeRange } from "../src/db-from-tree/tree.ts"
-import type { CheckedNode } from "../src/check-tree/types.ts"
-import { buildTree } from "./check-tree-built.ts"
-import type { Built, Kit } from "./check-tree-built.ts"
+import type { RecordedNode } from "../src/recorded-tree.ts"
+import { buildTree } from "./tree-built.ts"
+import type { Built, Kit } from "./tree-built.ts"
 import { hull } from "./statement-tree-built.ts"
 
 /** Fixed source and explicitly supplied statements, without parsing the source. */
 export function buildTreemap(
   source: string,
-  make: (kit: Kit) => CheckedNode[],
+  make: (kit: Kit) => RecordedNode[],
   beta = false,
 ): Built {
   return buildTree(
@@ -29,14 +29,14 @@ export function row(
   number: string | null = null,
   selector: string | null = null,
   separator = ":",
-): CheckedNode {
+): RecordedNode {
   const name = kit.node("StringLiteral", kit.token("String", raw).range, {
     raw,
     value: raw.slice(1, -1),
     closed: true,
   })
   const pieces: { range: TreeRange }[] = [name]
-  let value: CheckedNode | null = null
+  let value: RecordedNode | null = null
   if (number !== null) {
     pieces.push(kit.token("Punctuator", separator))
     value = kit.node("NumericLiteral", kit.token("Numeric", number).range, {
@@ -45,7 +45,7 @@ export function row(
     })
     pieces.push(value)
   }
-  let classSelector: CheckedNode | null = null
+  let classSelector: RecordedNode | null = null
   if (selector !== null) {
     pieces.push(kit.token("Punctuator", ":::"))
     classSelector = kit.node(
@@ -75,7 +75,7 @@ export function classDef(
   id: string,
   raw: string | null,
   semicolon = true,
-): CheckedNode {
+): RecordedNode {
   const keyword = kit.token("Keyword", "classDef")
   const name = kit.node("Identifier", kit.token("Identifier", id).range, {
     name: id,
@@ -100,7 +100,7 @@ export function common(
   kit: Kit,
   kind: "Title" | "AccTitle" | "AccDescr" | "AccDescrBlock",
   value: string | null,
-): CheckedNode {
+): RecordedNode {
   const block = kind === "AccDescrBlock"
   const word =
     kind === "Title" ? "title" : kind === "AccTitle" ? "accTitle" : "accDescr"

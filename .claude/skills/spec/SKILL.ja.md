@@ -264,7 +264,7 @@ pin した commit は `packages/spec/docs/index.md` に記録してある。
    どのトークンも持てないところだけ、`ast/<diagram>.md` の欄の説明に理由を書く。
    Db がそれをソースから読むことは、
    `@mmd-toolkit/tests` の `docs/db-from-tree/<図種>.md` が書く。
-   それは tests-tree-checks のスキルの手順で書く。
+   それは tests-db-from-tree のスキルの手順で書く。
    flowchart の例: subgraph の名前のすぐ後の空の説明ブロックの間の空白。
 
 ## 5. 主張と fixture を対応させる
@@ -314,8 +314,6 @@ pin した commit は `packages/spec/docs/index.md` に記録してある。
    `diagrams/<図種>.md` の節を変えるときは、
    [recorded-trees の8節](../recorded-trees/SKILL.ja.md#8-木とトークンと位置の文書が変わったとき)
    に従い、スクリプトが鍵の変わった項目について挙げる fixture を読む。
-   古い表の行とまだ判断していない項目としてスクリプトが挙げるものは、
-   同じプルリクエストで判断するよう、tests のパッケージに頼む。
 
 3. 文が説明しない場合を種類に分け、種類ごとに 1 つの規則で説明する。
    例外を足していく形ではなく、mermaid.js の仕組みを 1 つの規則として書く。
@@ -362,7 +360,6 @@ pin した commit は `packages/spec/docs/index.md` に記録してある。
 
 出力には、ほかのパッケージの次の手順も示す。
 
-- `checkTree` は、[tests-tree-checks](../tests-tree-checks/SKILL.ja.md)に従う。
 - 差異の形の検査は、
   [parser §6](../parser/SKILL.ja.md#6-fixture-が足されたとき規則が変わったとき)
   に従う。

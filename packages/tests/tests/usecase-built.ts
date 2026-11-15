@@ -1,7 +1,7 @@
-import type { CheckedNode, CheckedToken } from "../src/check-tree/types.ts"
-import type { TreeRange } from "../src/db-from-tree/tree.ts"
-import { buildTree } from "./check-tree-built.ts"
-import type { Built, Kit } from "./check-tree-built.ts"
+import type { RecordedNode } from "../src/recorded-tree.ts"
+import type { TreeToken, TreeRange } from "../src/db-from-tree/tree.ts"
+import { buildTree } from "./tree-built.ts"
+import type { Built, Kit } from "./tree-built.ts"
 
 /** Hand-written source occurrences; no input is lexed or parsed by these builders. */
 export const USECASE = {
@@ -12,7 +12,7 @@ export const USECASE = {
 
 /** The hull of explicitly supplied written pieces. */
 export function hull(
-  ...pieces: readonly (CheckedNode | CheckedToken)[]
+  ...pieces: readonly (RecordedNode | TreeToken)[]
 ): TreeRange {
   return [
     Math.min(...pieces.map((piece) => piece.range[0])),
@@ -21,12 +21,12 @@ export function hull(
 }
 
 /** One explicit id token. */
-export function id(kit: Kit, name: string): CheckedNode {
+export function id(kit: Kit, name: string): RecordedNode {
   return kit.node("Identifier", kit.token("Identifier", name).range, { name })
 }
 
 /** One explicit raw literal. */
-export function literal(kit: Kit, value: string): CheckedNode {
+export function literal(kit: Kit, value: string): RecordedNode {
   return kit.node("UsecaseLiteral", kit.token("RawText", value).range, {
     value,
   })
@@ -37,7 +37,7 @@ export function label(
   kit: Kit,
   raw: string,
   kind: "text" | "string" | "markdown" = "text",
-): CheckedNode {
+): RecordedNode {
   const token = kit.token(kind === "text" ? "RawText" : "String", raw)
   const size = kind === "markdown" ? 2 : kind === "string" ? 1 : 0
   return kit.node("UsecaseLabel", token.range, {
@@ -47,7 +47,7 @@ export function label(
 }
 
 /** A metadata scalar string, including its shared raw/closed fields. */
-export function string(kit: Kit, raw: string): CheckedNode {
+export function string(kit: Kit, raw: string): RecordedNode {
   return kit.node("StringLiteral", kit.token("String", raw).range, {
     raw,
     value: raw.slice(1, -1),
@@ -63,7 +63,7 @@ export function metadata(
     value: string,
     separator?: string,
   ])[],
-): CheckedNode {
+): RecordedNode {
   const open = kit.token("Punctuator", "@{")
   const children = properties.map(([key, value, separator], index) => {
     if (index > 0 && separator?.includes(",")) kit.token("Punctuator", ",")
@@ -103,8 +103,8 @@ export function element(
   name: string | null,
   isActor = false,
   fields: ElementFields = {},
-): CheckedNode {
-  const pieces: (CheckedNode | CheckedToken)[] = []
+): RecordedNode {
+  const pieces: (RecordedNode | TreeToken)[] = []
   const identifier = name === null ? null : id(kit, name)
   if (identifier !== null) pieces.push(identifier)
   if (fields.shape !== undefined)
@@ -117,7 +117,7 @@ export function element(
   const meta =
     fields.metadata === undefined ? null : metadata(kit, fields.metadata)
   if (meta !== null) pieces.push(meta)
-  let stereotype: CheckedNode | null = null
+  let stereotype: RecordedNode | null = null
   if (fields.stereotype !== undefined) {
     pieces.push(kit.token("Punctuator", "<<"))
     stereotype = literal(kit, fields.stereotype)
@@ -144,7 +144,7 @@ export function entity(
   kit: Kit,
   name: string | null,
   fields: ElementFields = {},
-): CheckedNode {
+): RecordedNode {
   const child = element(kit, name, false, fields)
   return kit.node("UsecaseEntityStatement", child.range, { entity: child })
 }
@@ -154,7 +154,7 @@ export function actor(
   kit: Kit,
   name: string | null,
   fields: ElementFields = {},
-): CheckedNode {
+): RecordedNode {
   const keyword = kit.token("Keyword", "actor")
   const child = element(kit, name, true, fields)
   return kit.node("UsecaseActorStatement", hull(keyword, child), {
@@ -168,7 +168,7 @@ export function arrow(
   value: string,
   fields: Readonly<Record<string, unknown>> = {},
   opening = false,
-): CheckedNode {
+): RecordedNode {
   return kit.node(
     opening ? "UsecaseOpeningArrow" : "UsecaseArrow",
     kit.token("Punctuator", value).range,
@@ -188,7 +188,7 @@ export function relationship(
   kit: Kit,
   source: string,
   target: string,
-): CheckedNode {
+): RecordedNode {
   const a = element(kit, source)
   const mark = arrow(kit, "-->")
   const b = element(kit, target)
@@ -204,7 +204,7 @@ export function relationship(
 }
 
 /** A JSON block's interior is supplied whole and opaque, not interpreted. */
-export function json(kit: Kit, name: string, interior: string): CheckedNode {
+export function json(kit: Kit, name: string, interior: string): RecordedNode {
   const keyword = kit.token("Keyword", "json")
   const identifier = id(kit, name)
   const at = kit.token("Punctuator", "@")
@@ -226,7 +226,7 @@ export function update(
   kit: Kit,
   target: string,
   properties: readonly (readonly [string, string, string?])[],
-): CheckedNode {
+): RecordedNode {
   const name = id(kit, target)
   const data = metadata(kit, properties)
   return kit.node("UsecaseMetadataAssignmentStatement", hull(name, data), {
@@ -236,7 +236,7 @@ export function update(
 }
 
 /** A CSS declaration with explicitly supplied padding/value text. */
-export function css(kit: Kit, name: string, value: string): CheckedNode {
+export function css(kit: Kit, name: string, value: string): RecordedNode {
   const prefix = name.startsWith("--") ? kit.token("Punctuator", "--") : null
   const word = kit.token(
     "Identifier",
@@ -261,7 +261,7 @@ export function style(
   target: string,
   name: string,
   value: string,
-): CheckedNode {
+): RecordedNode {
   const keyword = kit.token("Keyword", "style")
   const identifier = id(kit, target)
   const declaration = css(kit, name, value)
@@ -276,7 +276,7 @@ export function accessibility(
   kit: Kit,
   kind: "title" | "description" | "block",
   value: string,
-): CheckedNode {
+): RecordedNode {
   const keyword = kit.token(
     "Keyword",
     kind === "title" ? "accTitle" : "accDescr",
@@ -299,7 +299,7 @@ export function accessibility(
 /** Build a named fixed input without creating or recording a parser. */
 export function built(
   source: string,
-  statements: (kit: Kit) => CheckedNode[],
+  statements: (kit: Kit) => RecordedNode[],
 ): Built {
   return buildTree(USECASE, source, statements)
 }

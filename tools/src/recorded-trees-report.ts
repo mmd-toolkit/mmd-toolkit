@@ -8,7 +8,6 @@ import type { DocumentBlock } from "./recorded-tree-documents.ts"
 import { ANSWERS } from "./recorded-trees.ts"
 import type {
   AnswerFile,
-  HeldBlock,
   KeyedTree,
   Place,
   ReadItem,
@@ -53,12 +52,8 @@ function itemLines(items: readonly ReadItem[], places: boolean): string[] {
 /** The lines of one item to read. */
 function itemEntry(item: ReadItem, places: boolean): string[] {
   const count = item.trees.reduce((sum, tree) => sum + tree.places.length, 0)
-  const judged =
-    item.judgment?.status === "not-shown"
-      ? `not shown (${item.judgment.reason})`
-      : "not judged yet"
   const out = [
-    `- \`${item.key}\` (${item.block.document}:${item.block.line}, ${judged}): ${openingOf(item.block)}`,
+    `- \`${item.key}\` (${item.block.document}:${item.block.line}): ${openingOf(item.block)}`,
     `  - places: ${count} in ${item.trees.length} trees`,
   ]
   if (item.block.cases.length > 0) {
@@ -76,24 +71,6 @@ function itemEntry(item: ReadItem, places: boolean): string[] {
     for (const tree of item.trees) {
       for (const place of tree.places) out.push(`  - ${placeLine(place)}`)
     }
-  }
-  return out
-}
-
-/** The items not judged, counted and listed by document and line. */
-function unjudgedLines(unjudged: readonly HeldBlock[]): string[] {
-  if (unjudged.length === 0) return []
-  const byDocument = new Map<string, number[]>()
-  let items = 0
-  for (const { block, diagrams } of unjudged) {
-    items += diagrams.length
-    const list = byDocument.get(block.document) ?? []
-    list.push(block.line)
-    byDocument.set(block.document, list)
-  }
-  const out = [`${items} items of ${unjudged.length} blocks:`, ""]
-  for (const [document, blockLines] of byDocument) {
-    out.push(`- ${document}: lines ${blockLines.join(", ")}`)
   }
   return out
 }
@@ -122,18 +99,6 @@ function answerTemplate(report: RecordedTreesReport): AnswerFile {
   }
 }
 
-/** The checked trees that have a problem: they cannot be read, break a condition, or have a node type that is not classified. */
-function treesWithProblems(
-  report: RecordedTreesReport,
-): RecordedTreesReport["checked"] {
-  return report.checked.filter(
-    ({ result }) =>
-      result.kind === "unreadable" ||
-      result.problems.length > 0 ||
-      result.unclassified.length > 0,
-  )
-}
-
 /** The items to read that some changed tree has no answer for. */
 function unansweredItemsOf(report: RecordedTreesReport): ReadItem[] {
   return report.readItems.filter(
@@ -142,15 +107,13 @@ function unansweredItemsOf(report: RecordedTreesReport): ReadItem[] {
 }
 
 /**
- * Whether the report fails the check: a checked tree has a problem, an answer
- * file or a file of the coverage table cannot be read, or an item or a
- * changed tree has no answer.
+ * Whether the report fails the check: a tree or answer file cannot be read,
+ * or an item or a changed tree has no answer.
  */
 export function failsOf(report: RecordedTreesReport): boolean {
   return (
-    treesWithProblems(report).length > 0 ||
+    report.unreadableTrees.length > 0 ||
     report.unreadableAnswers.length > 0 ||
-    report.unreadableTable.length > 0 ||
     unansweredItemsOf(report).length > 0 ||
     report.unansweredTrees.length > 0
   )
@@ -162,25 +125,9 @@ export function formatReport(
   places: boolean,
 ): string {
   const out: string[] = []
-  const problems = treesWithProblems(report)
   const unansweredItems = unansweredItemsOf(report)
 
-  out.push(`# Recorded trees since ${report.base}`, "", "## Trees checked", "")
-  if (report.everyTree === undefined) {
-    out.push("The changed trees only.")
-  } else {
-    out.push("Every recorded tree, because:")
-    for (const file of report.everyTree.changedFiles) {
-      out.push(
-        `- the change changes ${file}, which decides the result of the check`,
-      )
-    }
-    for (const { file, read } of report.everyTree.untraceable) {
-      out.push(
-        `- ${file} has ${read}, so the files that decide the result cannot be known`,
-      )
-    }
-  }
+  out.push(`# Recorded trees since ${report.base}`)
 
   const byDiagram = new Map<string, number>()
   for (const tree of report.changedTrees) {
@@ -191,7 +138,7 @@ export function formatReport(
     "",
     "## Counts",
     "",
-    `- trees checked: ${report.checked.length}`,
+    `- trees read: ${report.changedTrees.length - report.unreadableTrees.length}`,
     `- changed trees: ${report.changedTrees.length}${byDiagram.size === 0 ? "" : ` (${[...byDiagram].map(([diagram, count]) => `${diagram} ${count}`).join(", ")})`}`,
     `- removed ast.json: ${report.records.removedTrees.length}`,
     `- changed parse-error.json: ${report.records.rejections.length}`,
@@ -199,30 +146,15 @@ export function formatReport(
 
   out.push("", "## Problems", "")
   if (
-    problems.length === 0 &&
-    report.unreadableAnswers.length === 0 &&
-    report.unreadableTable.length === 0
+    report.unreadableTrees.length === 0 &&
+    report.unreadableAnswers.length === 0
   ) {
     out.push("None.")
   }
-  for (const { fixture, result } of problems) {
-    if (result.kind === "unreadable") {
-      out.push(`- ${fixture}: ${result.reason}`)
-      continue
-    }
-    for (const problem of result.problems) {
-      out.push(`- ${fixture}: ${problem.where}: ${problem.message}`)
-    }
-    if (result.unclassified.length > 0) {
-      out.push(
-        `- ${fixture}: node types classified neither as a value node nor as a structure node: ${result.unclassified.join(", ")}`,
-      )
-    }
+  for (const { fixture, reason } of report.unreadableTrees) {
+    out.push(`- ${fixture}: ${reason}`)
   }
-  for (const { file, reason } of [
-    ...report.unreadableAnswers,
-    ...report.unreadableTable,
-  ]) {
+  for (const { file, reason } of report.unreadableAnswers) {
     out.push(`- ${file}: ${reason}`)
   }
 
@@ -279,31 +211,6 @@ export function formatReport(
       "```",
     )
   }
-
-  const newStale = report.staleRows.filter((stale) => !stale.atBase)
-  const oldStale = report.staleRows.filter((stale) => stale.atBase)
-  out.push("", "## Stale rows of the coverage table", "")
-  out.push(
-    `Made stale or added by this change: ${newStale.length === 0 ? "none." : ""}`,
-  )
-  for (const { row, reason } of newStale) {
-    out.push(`- \`${row.block}\` (${row.diagrams.join(", ")}): ${reason}`)
-  }
-  out.push("", `Stale at the base too: ${oldStale.length === 0 ? "none." : ""}`)
-  for (const { row, reason } of oldStale) {
-    out.push(`- \`${row.block}\` (${row.diagrams.join(", ")}): ${reason}`)
-  }
-
-  out.push("", "## Items not judged by the coverage table", "")
-  out.push(
-    `Added or left not judged by this change: ${report.unjudged.length === 0 ? "none." : ""}`,
-  )
-  appendItems(out, unjudgedLines(report.unjudged))
-  out.push(
-    "",
-    `Not judged at the base too: ${report.unjudgedAtBase.length === 0 ? "none." : ""}`,
-  )
-  appendItems(out, unjudgedLines(report.unjudgedAtBase))
 
   out.push("", "## Items whose key changed", "")
   if (report.changedItems.length === 0) out.push("None.")

@@ -17,4 +17,4 @@ Section numbers below are those of [SKILL.md](../SKILL.md). The steps of section
 4. Write one list of changes for the packages that read the tree, outside the
    repository: for each package what it must change, which records or ranges
    change, how to find the fixtures whose `ast.json` changes, and the invariants
-   that the tree check must test.
+   that AI agents must read against the recorded trees.

@@ -9,7 +9,6 @@ import type {
 } from "@mmd-toolkit/ast"
 import { parse, ParseError, traverseNodes, visitorKeys } from "../src/index.ts"
 import { treeviewLexingOf } from "./helpers/reference-inputs.ts"
-import { problemsOfTree } from "./helpers/tree-problems.ts"
 
 /** ast/treeview.md: fixed authored block interiors, including tails skipped by box reading. */
 const blockTailPayloads: Readonly<
@@ -290,7 +289,6 @@ describe("treeview fixtures", async () => {
     it(`retains the complete authored block payload: ${name}`, () => {
       const fixture = fixtureOf(name)
       const root = parse(fixture.input)
-      expect(problemsOfTree(fixture.input, root)).toEqual([])
       const values: (TreeviewLiteral | null)[] = []
       traverseNodes(root, {
         enterNode(node) {

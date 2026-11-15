@@ -66,5 +66,5 @@ diagram; an imported common rule does not establish how the diagram uses it.
    allowance of step 3 of [collecting-fixtures.md](collecting-fixtures.md) only
    after proving that no input was lost. Continue with the normalizer,
    fixed-fixture and stable-generation steps in sections 2 and 3; once the AST
-   is defined, implement its Db builder and checker with the skill
-   [tests-tree-checks](../../tests-tree-checks/SKILL.md).
+   is defined, implement its Db builder with the skill
+   [tests-db-from-tree](../../tests-db-from-tree/SKILL.md).

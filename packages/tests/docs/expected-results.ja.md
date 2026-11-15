@@ -958,7 +958,7 @@ gantt の Db は日付をその両方から計算するので、
   `pnpm-lock.yaml`、入っている mermaid.js の版、Node.js と V8 の版。
   どれかが変わると鍵が変わるので、貯めた結果が、
   それを作ったコードや mermaid.js より長く残ることはありません。
-  `src/` のほかのファイル（fixture の読み込み、木の検査）を変えても、
+  `src/` のほかのファイル（fixture の読み込み、Db の作り手）を変えても、
   貯めた結果は残ります。
 - 貯めるもの: 実行の結果。
   結果の代わりに投げられた例外（`MermaidEnvironmentError`、

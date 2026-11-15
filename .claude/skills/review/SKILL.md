@@ -41,10 +41,7 @@ The reviewer edits nothing in the working tree.
   [Reviewing a change in recorded-trees](../recorded-trees/SKILL.md#7-reviewing-a-change).
   Read its answer files, their diff, and the answers in the author's report and
   description only after writing your own answers, as those steps say; this is
-  the one exception to reading every file the change touched. The reviewer of
-  such a change, and of a change to a test file of `checkTree`, also checks that
-  the change adds no stale table row and no item not judged yet to the lists
-  that the command gives for its base.
+  the one exception to reading every file the change touched.
 - A review of a branch or a pull request covers the whole of it, also when the
   request names only its last commit: every file it changed since its base, and
   the released behavior that the same sentences govern. What an earlier round

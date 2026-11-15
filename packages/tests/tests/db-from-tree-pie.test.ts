@@ -3,9 +3,9 @@ import { dbFromTree } from "../src/db-from-tree/index.ts"
 import type { DbTreeRoot } from "../src/db-from-tree/index.ts"
 import { embeddedValuesOf, loadFixture } from "../src/index.ts"
 import { cssSupportsColor } from "../src/normalizers/browser-stand-ins.ts"
-import type { CheckedNode } from "../src/check-tree/types.ts"
-import type { Kit } from "./check-tree-built.ts"
-import { setField } from "./check-tree-recorded.ts"
+import type { RecordedNode } from "../src/recorded-tree.ts"
+import type { Kit } from "./tree-built.ts"
+import { setField } from "./fixture-trees.ts"
 import { buildPie, common, ignored, section } from "./pie-built.ts"
 
 /** Explicit occurrences of fixed corpus inputs, independent of the parser and the expected Db. */
@@ -13,7 +13,7 @@ const CASES: readonly {
   name: string
   showData?: boolean
   frontmatter?: boolean
-  make: (kit: Kit) => CheckedNode[]
+  make: (kit: Kit) => RecordedNode[]
 }[] = [
   { name: "header-only", make: () => [] },
   {

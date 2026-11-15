@@ -3,7 +3,7 @@ import { dbFromTree } from "../src/db-from-tree/index.ts"
 import type { DbTreeRoot } from "../src/db-from-tree/index.ts"
 import { embeddedValuesOf, loadFixture } from "../src/index.ts"
 import { cssSupportsColor } from "../src/normalizers/browser-stand-ins.ts"
-import type { Built } from "./check-tree-built.ts"
+import type { Built } from "./tree-built.ts"
 import {
   actor,
   built,

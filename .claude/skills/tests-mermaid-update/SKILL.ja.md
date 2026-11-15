@@ -88,16 +88,12 @@ SKILL [tests](../tests/SKILL.ja.md) の 1〜4 の節（方針と基準、最初�
      このパッケージにも関わる。
      新しい Db がテキストを違うふうに読む場合（繰り返された定義の併合、
      残るコメント行など）は、
-     `src/db-from-tree/<図種>.ts` と `src/check-tree/` の検査、
-     その文書 `docs/db-from-tree/<図種>.md` と
-     `docs/check-tree.md`（日本語の対を含む）を直し、
-     パッケージのテスト全体と
-     `pnpm --filter @mmd-toolkit/tests run recorded-trees:check --base origin/main`
-     を実行する。
-     決まりのファイルが変わると、すべての記録木に `checkTree` を当てるので、
-     最初の行でその範囲を確かめる。
-     SKILL [tests-tree-checks](../tests-tree-checks/SKILL.ja.md) の手順 8
-     のとおり、変えた決まりの表の行も、同じ変更で直す。
+     [tests-db-from-tree](../tests-db-from-tree/SKILL.ja.md) に従い、
+     `src/db-from-tree/<図種>.ts` と、
+     その文書 `docs/db-from-tree/<図種>.md`（日本語の対を含む）を直し、
+     パッケージのテスト全体を実行する。
+     AI エージェントは、
+     変更した記録の木を [recorded-trees](../recorded-trees/SKILL.ja.md) で読む。
      新しい版にない図種は、それを載せた `common/` の fixture で、
      `UnknownDiagramError` への `acceptance` として出る。
      これは下の検出の項に入れる。

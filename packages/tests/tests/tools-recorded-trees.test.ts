@@ -10,16 +10,9 @@ import {
 import os from "node:os"
 import path from "node:path"
 import { afterEach, beforeEach, describe, expect, it } from "vitest"
-import type { CheckedRoot } from "../src/check-tree/types.ts"
-import { nodesOf } from "../src/check-tree/walk.ts"
+import type { TreeRoot } from "../src/db-from-tree/tree.ts"
+import { nodesOf } from "../src/recorded-tree.ts"
 import { getFixturesRoot } from "../src/index.ts"
-import {
-  COVERAGE_TABLE,
-  coverageOf,
-  isRead,
-  readCoverageTable,
-} from "../../../tools/src/coverage-table.ts"
-import type { CoverageRow } from "../../../tools/src/coverage-table.ts"
 import {
   citationsIn,
   withoutCitations,
@@ -45,7 +38,6 @@ import {
   checkRecordedTrees,
   citationsOf,
   documentBlocksOf,
-  everyTreeReasonFrom,
   placesOf,
 } from "../../../tools/src/recorded-trees.ts"
 import {
@@ -164,72 +156,6 @@ describe("runtimeReadsOfSource", () => {
         ].join("\n"),
       ).dynamic,
     ).toEqual([])
-  })
-})
-
-describe("everyTreeReasonFrom", () => {
-  const runner = {
-    file: "/r/tools/src/run.ts",
-    modules: ["node:fs"],
-    dynamic: [],
-  }
-  const rule = {
-    file: "/r/packages/tests/src/rule.ts",
-    modules: [],
-    dynamic: [],
-  }
-
-  it("checks only the changed trees when the change changes no file that decides the result", () => {
-    expect(
-      everyTreeReasonFrom([runner, rule], runner.file, "/r", [
-        "packages/tests/src/other.ts",
-      ]),
-    ).toBeUndefined()
-  })
-
-  it("checks every tree when the change changes the runner or a file that it reaches", () => {
-    expect(
-      everyTreeReasonFrom([runner, rule], runner.file, "/r", [
-        "tools/src/run.ts",
-        "packages/tests/src/rule.ts",
-      ]),
-    ).toEqual({
-      changedFiles: ["tools/src/run.ts", "packages/tests/src/rule.ts"],
-      untraceable: [],
-    })
-  })
-
-  it("lets the runner import built-in modules, and nothing else that cannot be followed", () => {
-    expect(
-      everyTreeReasonFrom(
-        [
-          {
-            ...runner,
-            modules: ["node:fs", "pkg"],
-            dynamic: ["the global process at line 9"],
-          },
-          {
-            ...rule,
-            modules: ["node:path"],
-            dynamic: ["import.meta at line 3"],
-          },
-        ],
-        runner.file,
-        "/r",
-        [],
-      ),
-    ).toEqual({
-      changedFiles: [],
-      untraceable: [
-        { file: "tools/src/run.ts", read: 'an import of "pkg"' },
-        { file: "tools/src/run.ts", read: "the global process at line 9" },
-        {
-          file: "packages/tests/src/rule.ts",
-          read: 'an import of "node:path"',
-        },
-        { file: "packages/tests/src/rule.ts", read: "import.meta at line 3" },
-      ],
-    })
   })
 })
 
@@ -604,580 +530,6 @@ describe("changedItemsOf", () => {
   })
 })
 
-describe("coverageOf", () => {
-  const [block] = blocks("A condition.\n")
-  const held = new Map([[block.key, { block, diagrams: ["er", "gantt"] }]])
-  const shown: CoverageRow["judgment"] = {
-    status: "shown",
-    cases: [
-      {
-        case: "A condition.",
-        tests: [{ file: "check-tree-er.test.ts", text: "er/gram-alias" }],
-      },
-    ],
-  }
-
-  /** The text of a test file of this test. */
-  function tests(file: string): string | undefined {
-    return file === "check-tree-er.test.ts"
-      ? 'it("breaks er/gram-alias")'
-      : undefined
-  }
-
-  it("gives the judgment of a row to each diagram type it names", () => {
-    const coverage = coverageOf(
-      [
-        {
-          block: block.key,
-          diagrams: ["er"],
-          about: "A condition.",
-          judgment: shown,
-        },
-      ],
-      held,
-      tests,
-      memoryReader({}),
-    )
-    expect([...coverage.judgments.keys()]).toEqual([`${block.key}@er`])
-    expect(coverage.staleRows).toEqual([])
-  })
-
-  it("counts no row whose block, case or diagram type is not there, or whose item an earlier row covers", () => {
-    const rows: CoverageRow[] = [
-      {
-        block: "packages/spec/docs/ast/er.md:000000000000",
-        diagrams: ["er"],
-        about: "",
-        judgment: shown,
-      },
-      {
-        block: block.key,
-        diagrams: ["er"],
-        about: "",
-        judgment: {
-          status: "shown",
-          cases: [
-            {
-              case: "A condition.",
-              tests: [{ file: "check-tree-er.test.ts", text: "er/other" }],
-            },
-          ],
-        },
-      },
-      {
-        block: block.key,
-        diagrams: ["flowchart"],
-        about: "",
-        judgment: shown,
-      },
-      { block: block.key, diagrams: ["gantt"], about: "", judgment: shown },
-      {
-        block: block.key,
-        diagrams: ["gantt"],
-        about: "",
-        judgment: { status: "not-shown", reason: "no-rule", note: "" },
-      },
-    ]
-    const coverage = coverageOf(rows, held, tests, memoryReader({}))
-    expect(coverage.staleRows.map((stale) => stale.reason)).toEqual([
-      "no block has this key now: its text, its node type, or a section it links to changed, or it was removed",
-      'the test file check-tree-er.test.ts no longer holds "er/other"',
-      "the block does not hold for the diagram type flowchart",
-      "an earlier row covers the diagram type gantt",
-    ])
-    expect([...coverage.judgments.keys()]).toEqual([`${block.key}@gantt`])
-  })
-
-  it("checks every test of every case, including a missing file", () => {
-    const coverage = coverageOf(
-      [
-        {
-          block: block.key,
-          diagrams: ["er"],
-          about: "",
-          judgment: {
-            status: "shown",
-            cases: [
-              {
-                case: "The first condition.",
-                tests: [
-                  { file: "check-tree-er.test.ts", text: "er/gram-alias" },
-                  { file: "check-tree-er.test.ts", text: "er/other" },
-                ],
-              },
-            ],
-          },
-        },
-        {
-          block: block.key,
-          diagrams: ["gantt"],
-          about: "",
-          judgment: {
-            status: "shown",
-            cases: [
-              {
-                case: "The first condition.",
-                tests: [
-                  { file: "check-tree-er.test.ts", text: "er/gram-alias" },
-                ],
-              },
-              {
-                case: "The second condition.",
-                tests: [{ file: "missing.test.ts", text: "gantt/other" }],
-              },
-            ],
-          },
-        },
-      ],
-      held,
-      tests,
-      memoryReader({}),
-    )
-    expect(coverage.judgments.size).toBe(0)
-    expect(coverage.staleRows.map((row) => row.reason)).toEqual([
-      'the test file check-tree-er.test.ts no longer holds "er/other"',
-      'the test file missing.test.ts no longer holds "gantt/other"',
-    ])
-  })
-})
-
-describe("coverageOf with a block that states no condition", () => {
-  const [block] = blocks("This document defines the tree.\n")
-  it("takes the judgment for the diagram types named", () => {
-    const coverage = coverageOf(
-      [
-        {
-          block: block.key,
-          diagrams: ["er"],
-          about: "",
-          judgment: { status: "no-condition", kind: "introduction", note: "" },
-        },
-      ],
-      new Map([[block.key, { block, diagrams: ["er"] }]]),
-      () => undefined,
-      memoryReader({}),
-    )
-    expect(coverage.staleRows).toEqual([])
-    expect(coverage.judgments.get(`${block.key}@er`)?.status).toBe(
-      "no-condition",
-    )
-  })
-})
-
-describe("coverageOf with not-in-diagram documents", () => {
-  const [block] = blocks("A condition.\n")
-  const held = new Map([[block.key, { block, diagrams: ["er"] }]])
-  const syntax = "packages/spec/docs/diagrams/er.md"
-  const tree = "packages/spec/docs/ast/er.md"
-  const row = {
-    block: block.key,
-    diagrams: ["er"],
-    about: "A condition.",
-    judgment: {
-      status: "no-condition",
-      kind: "not-in-diagram",
-      documents: [syntax, tree],
-      note: "Neither document defines anything to which the condition applies.",
-    },
-  } satisfies CoverageRow
-  const base = {
-    rows: [row],
-    reader: memoryReader({ [syntax]: "Syntax.", [tree]: "Tree." }),
-  }
-
-  it.each([syntax, tree])(
-    "makes an unchanged row stale when its document %s changes",
-    (document) => {
-      const coverage = coverageOf(
-        [row],
-        held,
-        () => undefined,
-        memoryReader({
-          [syntax]: "Syntax.",
-          [tree]: "Tree.",
-          [document]: "Changed.",
-        }),
-        base,
-      )
-      expect(coverage.judgments.size).toBe(0)
-      expect(coverage.staleRows).toEqual([
-        {
-          row,
-          reason: `the document ${document} changed since the base; judge the row again`,
-        },
-      ])
-    },
-  )
-
-  it("counts a row judged again after its document changes", () => {
-    const judgedAgain: CoverageRow = {
-      ...row,
-      judgment: { ...row.judgment, note: "The new syntax still has no case." },
-    }
-    const coverage = coverageOf(
-      [judgedAgain],
-      held,
-      () => undefined,
-      memoryReader({ [syntax]: "New syntax.", [tree]: "Tree." }),
-      base,
-    )
-    expect(coverage.staleRows).toEqual([])
-    expect(coverage.judgments.get(`${block.key}@er`)).toEqual(
-      judgedAgain.judgment,
-    )
-  })
-
-  it("counts an unchanged row whose documents are unchanged", () => {
-    const coverage = coverageOf([row], held, () => undefined, base.reader, base)
-    expect(coverage.staleRows).toEqual([])
-    expect(coverage.judgments.get(`${block.key}@er`)).toEqual(row.judgment)
-  })
-
-  it("counts a new row after its document changes", () => {
-    const coverage = coverageOf(
-      [row],
-      held,
-      () => undefined,
-      memoryReader({ [syntax]: "New syntax.", [tree]: "Tree." }),
-      { ...base, rows: [] },
-    )
-    expect(coverage.staleRows).toEqual([])
-    expect(coverage.judgments.get(`${block.key}@er`)).toEqual(row.judgment)
-  })
-
-  it.each([syntax, tree])(
-    "makes a row stale when its document %s is missing now",
-    (document) => {
-      const files: Record<string, string> = {
-        [syntax]: "Syntax.",
-        [tree]: "Tree.",
-      }
-      delete files[document]
-      const coverage = coverageOf(
-        [row],
-        held,
-        () => undefined,
-        memoryReader(files),
-        base,
-      )
-      expect(coverage.judgments.size).toBe(0)
-      expect(coverage.staleRows).toEqual([
-        {
-          row,
-          reason: `the document ${document} is not there now; judge the row again`,
-        },
-      ])
-    },
-  )
-})
-
-describe("readCoverageTable", () => {
-  const diagrams = new Set(["er", "gantt", "error"])
-  const row = {
-    block: "packages/spec/docs/ast/er.md:0123456789ab",
-    diagrams: ["er"],
-    about: "A condition.",
-    judgment: {
-      status: "no-condition",
-      kind: "introduction",
-      note: "It introduces the document.",
-    },
-  }
-
-  /** The table of the files `files`, each of them under the table's folder. */
-  function tableOf(files: Record<string, unknown>) {
-    return readCoverageTable(
-      memoryReader(
-        Object.fromEntries(
-          Object.entries(files).map(([name, value]) => [
-            `${COVERAGE_TABLE}/${name}`,
-            typeof value === "string" ? value : JSON.stringify(value),
-          ]),
-        ),
-      ),
-      diagrams,
-    )
-  }
-
-  it("reads the rows of every file in the order of their names", () => {
-    const second = {
-      ...row,
-      block: "packages/spec/docs/ast/er.md:ba9876543210",
-    }
-    expect(
-      tableOf({ "b.json": { rows: [second] }, "a.json": { rows: [row] } }),
-    ).toEqual({
-      rows: [row, second],
-      unreadable: [],
-    })
-  })
-
-  it("reads named cases with one or more test references", () => {
-    const shown = {
-      ...row,
-      judgment: {
-        status: "shown",
-        cases: [
-          {
-            case: "The first condition.",
-            tests: [
-              { file: "a.test.ts", text: "first" },
-              { file: "b.test.ts", text: "also first" },
-            ],
-          },
-          {
-            case: "The second condition.",
-            tests: [{ file: "b.test.ts", text: "second" }],
-          },
-        ],
-      },
-    }
-    expect(tableOf({ "a.json": { rows: [shown] } })).toEqual({
-      rows: [shown],
-      unreadable: [],
-    })
-  })
-
-  it("reads no-condition with kind not-about-tree", () => {
-    const notAboutTree = {
-      ...row,
-      judgment: {
-        status: "no-condition",
-        kind: "not-about-tree",
-        note: "The block says only that an input is rejected.",
-      },
-    }
-    expect(tableOf({ "a.json": { rows: [notAboutTree] } })).toEqual({
-      rows: [notAboutTree],
-      unreadable: [],
-    })
-  })
-
-  it("reads no-condition with kind not-in-diagram", () => {
-    const notInDiagram = {
-      ...row,
-      judgment: {
-        status: "no-condition",
-        kind: "not-in-diagram",
-        documents: [
-          "packages/spec/docs/diagrams/er.md",
-          "packages/spec/docs/ast/er.md",
-        ],
-        note: "Neither document defines anything to which the condition applies.",
-      },
-    }
-    expect(tableOf({ "a.json": { rows: [notInDiagram] } })).toEqual({
-      rows: [notInDiagram],
-      unreadable: [],
-    })
-  })
-
-  it.each([
-    ["missing documents", undefined],
-    ["empty documents", []],
-    ["documents that are no list", "packages/spec/docs/ast/er.md"],
-    ["a nonstring document", [1]],
-    ["an empty document", [""]],
-  ])("rejects not-in-diagram with %s", (_name, documents) => {
-    expect(
-      tableOf({
-        "a.json": {
-          rows: [
-            {
-              ...row,
-              judgment: {
-                status: "no-condition",
-                kind: "not-in-diagram",
-                note: "The documents define no case.",
-                ...(documents === undefined ? {} : { documents }),
-              },
-            },
-          ],
-        },
-      }),
-    ).toEqual({
-      rows: [],
-      unreadable: [
-        {
-          file: `${COVERAGE_TABLE}/a.json`,
-          reason:
-            "rows[0] states not-in-diagram without nonempty documents of nonempty strings",
-        },
-      ],
-    })
-  })
-
-  it.each([
-    { status: "no-condition", kind: "introduction", note: "" },
-    { status: "no-condition", kind: "pointer", note: "" },
-    { status: "no-condition", kind: "reason", note: "" },
-    { status: "not-shown", reason: "no-rule", note: "" },
-    {
-      status: "shown",
-      cases: [{ case: "A condition.", tests: [{ file: "a", text: "a" }] }],
-    },
-  ])("rejects documents on another judgment: $status $kind", (judgment) => {
-    expect(
-      tableOf({
-        "a.json": {
-          rows: [
-            {
-              ...row,
-              judgment: {
-                ...judgment,
-                documents: ["packages/spec/docs/ast/er.md"],
-              },
-            },
-          ],
-        },
-      }),
-    ).toEqual({
-      rows: [],
-      unreadable: [
-        {
-          file: `${COVERAGE_TABLE}/a.json`,
-          reason:
-            "rows[0] has documents without kind not-in-diagram of no-condition",
-        },
-      ],
-    })
-  })
-
-  it.each([
-    ["the former flat references", [{ file: "a.test.ts", text: "a" }]],
-    ["a missing case", [{ tests: [{ file: "a.test.ts", text: "a" }] }]],
-    [
-      "an empty case",
-      [{ case: "", tests: [{ file: "a.test.ts", text: "a" }] }],
-    ],
-    [
-      "a nonstring case",
-      [{ case: 1, tests: [{ file: "a.test.ts", text: "a" }] }],
-    ],
-    ["missing tests", [{ case: "A condition." }]],
-    ["empty tests", [{ case: "A condition.", tests: [] }]],
-    ["tests that are no list", [{ case: "A condition.", tests: {} }]],
-    ["a test that is no object", [{ case: "A condition.", tests: [null] }]],
-    ["a missing file", [{ case: "A condition.", tests: [{ text: "a" }] }]],
-    [
-      "a missing text",
-      [{ case: "A condition.", tests: [{ file: "a.test.ts" }] }],
-    ],
-    [
-      "an empty text",
-      [{ case: "A condition.", tests: [{ file: "a.test.ts", text: "" }] }],
-    ],
-  ])("rejects shown with %s", (_name, cases) => {
-    expect(
-      tableOf({
-        "a.json": { rows: [{ ...row, judgment: { status: "shown", cases } }] },
-      }),
-    ).toEqual({
-      rows: [],
-      unreadable: [
-        {
-          file: `${COVERAGE_TABLE}/a.json`,
-          reason:
-            "rows[0] is shown without cases of { case, tests: [{ file, text }] }, with a nonempty case and tests",
-        },
-      ],
-    })
-  })
-
-  it("names a file that is not of the form of the table, and takes no row of it", () => {
-    const table = tableOf({
-      "a.json": "{",
-      "b.json": { rows: [{ ...row, diagrams: ["er", "flowchart"] }] },
-      "c.json": { rows: [{ ...row, diagrams: [] }] },
-      "d.json": {
-        rows: [{ ...row, judgment: { status: "shown", cases: [] } }],
-      },
-      "e.json": {
-        rows: [
-          {
-            ...row,
-            judgment: { status: "not-shown", reason: "unknown", note: "" },
-          },
-        ],
-      },
-      "f.json": {
-        rows: [{ ...row, judgment: { status: "no-condition", note: "" } }],
-      },
-      "g.json": { rows: [{ ...row, judgment: { status: "maybe" } }] },
-      "h.json": { items: [] },
-      "i.json": {
-        rows: [
-          {
-            ...row,
-            judgment: { status: "no-condition", kind: "unknown", note: "" },
-          },
-        ],
-      },
-    })
-    expect(table).toEqual({
-      rows: [],
-      unreadable: [
-        { file: `${COVERAGE_TABLE}/a.json`, reason: "it is not JSON" },
-        {
-          file: `${COVERAGE_TABLE}/b.json`,
-          reason: 'rows[0] names "flowchart", which is no diagram type',
-        },
-        {
-          file: `${COVERAGE_TABLE}/c.json`,
-          reason: "rows[0] names no diagram types",
-        },
-        {
-          file: `${COVERAGE_TABLE}/d.json`,
-          reason:
-            "rows[0] is shown without cases of { case, tests: [{ file, text }] }, with a nonempty case and tests",
-        },
-        {
-          file: `${COVERAGE_TABLE}/e.json`,
-          reason:
-            "rows[0] is not shown without a reason (no-rule or rule-misses-condition) and a note",
-        },
-        {
-          file: `${COVERAGE_TABLE}/f.json`,
-          reason:
-            "rows[0] states no condition without a kind (introduction, pointer, reason, not-about-tree or not-in-diagram) and a note",
-        },
-        {
-          file: `${COVERAGE_TABLE}/g.json`,
-          reason:
-            "rows[0] has a status other than shown, not-shown and no-condition",
-        },
-        {
-          file: `${COVERAGE_TABLE}/h.json`,
-          reason: "it is not a JSON object with a list `rows`",
-        },
-        {
-          file: `${COVERAGE_TABLE}/i.json`,
-          reason:
-            "rows[0] states no condition without a kind (introduction, pointer, reason, not-about-tree or not-in-diagram) and a note",
-        },
-      ],
-    })
-  })
-
-  it("reads an item as one to read only when it is not shown or not judged", () => {
-    expect(isRead(undefined)).toBe(true)
-    expect(isRead({ status: "not-shown", reason: "no-rule", note: "" })).toBe(
-      true,
-    )
-    expect(
-      isRead({
-        status: "shown",
-        cases: [
-          { case: "A condition.", tests: [{ file: "a.test.ts", text: "a" }] },
-        ],
-      }),
-    ).toBe(false)
-    expect(isRead({ status: "no-condition", kind: "pointer", note: "" })).toBe(
-      false,
-    )
-  })
-})
-
 describe("citationsOf", () => {
   let root: string
   beforeEach(() => {
@@ -1361,7 +713,7 @@ describe("placesOf", () => {
       { ...placed("Keyword", 0, 9), value: "erDiagram" },
       { ...placed("Identifier", 12, 13), value: "A" },
     ],
-  } as unknown as CheckedRoot
+  } as unknown as TreeRoot
   const placedTree = {
     fixture: "er/x",
     input,
@@ -1461,6 +813,76 @@ describe("checkRecordedTrees and failsOf, on a repository of one change", () => 
     rmSync(root, { recursive: true, force: true })
   })
 
+  it("lists every block of the shared and diagram documents, including one with no places", () => {
+    const documents = {
+      "packages/spec/docs/ast.md": "A shared tree condition.\n",
+      "packages/parser/docs/tokens.md":
+        "| Kind | Meaning |\n| --- | --- |\n| Identifier | A name. |\n",
+      "packages/parser/docs/positions.md": "A shared position condition.\n",
+      "packages/spec/docs/ast/pie.md":
+        "### PieSectionStatement\n\nA section condition.\n\n- An item condition.\n\n| Field | Meaning |\n| --- | --- |\n| value | A field condition. |\n",
+      "packages/parser/docs/tokens/pie.md": "A pie token condition.\n",
+      "packages/parser/docs/positions/pie.md": "A pie position condition.\n",
+    }
+    for (const [file, text] of Object.entries(documents)) {
+      mkdirSync(path.dirname(path.join(root, file)), { recursive: true })
+      writeFileSync(path.join(root, file), text)
+    }
+    const report = check()
+    expect(report.readItems.map((item) => item.block.text)).toEqual([
+      "A shared tree condition.",
+      "| Identifier | A name. |",
+      "A shared position condition.",
+      "A section condition.",
+      "An item condition.",
+      "| value | A field condition. |",
+      "A pie token condition.",
+      "A pie position condition.",
+    ])
+    expect(report.readItems.every((item) => item.diagram === "pie")).toBe(true)
+    expect(report.readItems[3].trees[0].places).toEqual([])
+    expect(failsOf(report)).toBe(true)
+  })
+
+  it("exits with zero when answers cover the item and the changed tree", () => {
+    const document = path.join(root, "packages/spec/docs/ast/pie.md")
+    mkdirSync(path.dirname(document), { recursive: true })
+    writeFileSync(document, "A pie tree condition.\n")
+    const report = check()
+    const [tree] = report.changedTrees
+    expect(report.readItems).toHaveLength(1)
+    mkdirSync(path.join(root, ANSWERS), { recursive: true })
+    writeFileSync(
+      path.join(root, ANSWERS, "change.json"),
+      JSON.stringify({
+        items: [
+          {
+            item: report.readItems[0].key,
+            trees: [{ key: tree.contentKey }],
+            answer: "Compared the condition with the tree.",
+          },
+        ],
+        trees: [
+          {
+            key: tree.contentKey,
+            answer: "Read against the sentences that cite it.",
+          },
+        ],
+      }),
+    )
+    expect(failsOf(check())).toBe(false)
+    const output = execFileSync(
+      process.execPath,
+      [
+        path.join(import.meta.dirname, "../../../tools/recorded-trees.ts"),
+        "--base",
+        "HEAD",
+      ],
+      { cwd: root, encoding: "utf8" },
+    )
+    expect(output).toContain("## Missing answers\n\nNone.")
+  })
+
   it("fails a changed tree that no answer reads against the sentences that cite it", () => {
     const report = check()
     expect(report.changedTrees.map((tree) => tree.fixture)).toEqual([
@@ -1544,90 +966,41 @@ describe("checkRecordedTrees and failsOf, on a repository of one change", () => 
     expect(failsOf(check())).toBe(true)
   })
 
+  it.each([
+    "null",
+    "{}",
+    '{"type":"Root","range":[0,1],"body":null,"tokens":[]}',
+  ])(
+    "reports a tree whose required listing fields cannot be read: %s",
+    (json) => {
+      writeFileSync(path.join(root, changedFixture, "ast.json"), json)
+      const report = check()
+      expect(report.unreadableTrees).toEqual([
+        {
+          fixture: "pie/header-only",
+          reason: "ast.json cannot be read as a tree",
+        },
+      ])
+      expect(failsOf(report)).toBe(true)
+    },
+  )
+
   it("fails, and does not stop, when the tree is no JSON or the input is missing", () => {
     writeFileSync(path.join(root, changedFixture, "ast.json"), "{")
     const unreadable = check()
-    expect(unreadable.checked.map(({ result }) => result.kind)).toEqual([
-      "unreadable",
+    expect(unreadable.unreadableTrees).toEqual([
+      {
+        fixture: "pie/header-only",
+        reason: "ast.json cannot be read as a tree",
+      },
     ])
     expect(failsOf(unreadable)).toBe(true)
     copyFixture("pie/header-only")
     rmSync(path.join(root, changedFixture, "input.mmd"))
     const missing = check()
-    expect(missing.checked.map(({ result }) => result)).toEqual([
-      { kind: "unreadable", reason: "input.mmd cannot be read" },
+    expect(missing.unreadableTrees).toEqual([
+      { fixture: "pie/header-only", reason: "input.mmd cannot be read" },
     ])
     expect(failsOf(missing)).toBe(true)
   })
-
-  it("fails a file of the coverage table that cannot be read", () => {
-    mkdirSync(path.join(root, COVERAGE_TABLE), { recursive: true })
-    writeFileSync(path.join(root, COVERAGE_TABLE, "a.json"), "{")
-    const report = check()
-    expect(report.unreadableTable).toEqual([
-      { file: `${COVERAGE_TABLE}/a.json`, reason: "it is not JSON" },
-    ])
-    expect(failsOf(report)).toBe(true)
-  })
-
-  it.each([
-    "packages/spec/docs/diagrams/er.md",
-    "packages/tests/docs/er-notes.md",
-  ])(
-    "lists an unchanged not-in-diagram row as made stale by a change to %s",
-    (document) => {
-      const treeDocument = "packages/spec/docs/ast/er.md"
-      const files = {
-        [treeDocument]: "A condition.\n",
-        "packages/spec/docs/diagrams/er.md": "Syntax.\n",
-        "packages/tests/docs/er-notes.md": "Notes.\n",
-      }
-      for (const [file, text] of Object.entries(files)) {
-        mkdirSync(path.dirname(path.join(root, file)), { recursive: true })
-        writeFileSync(path.join(root, file), text)
-      }
-      const [block] = blocks(files[treeDocument])
-      const row = {
-        block: block.key,
-        diagrams: ["er"],
-        about: "A condition.",
-        judgment: {
-          status: "no-condition",
-          kind: "not-in-diagram",
-          documents: Object.keys(files),
-          note: "None of the documents defines a case of this condition.",
-        },
-      } satisfies CoverageRow
-      mkdirSync(path.join(root, COVERAGE_TABLE), { recursive: true })
-      const tableFile = path.join(root, COVERAGE_TABLE, "a.json")
-      writeFileSync(tableFile, JSON.stringify({ rows: [row] }))
-      git("add", ".")
-      git("commit", "--quiet", "-m", "judgment")
-      writeFileSync(path.join(root, document), "Changed.\n")
-
-      const report = check()
-      const reason = `the document ${document} changed since the base; judge the row again`
-      expect(report.staleRows).toEqual([{ row, reason, atBase: false }])
-      expect(report.unjudged.some((held) => held.block.key === block.key)).toBe(
-        true,
-      )
-      expect(formatReport(report, false)).toContain(
-        `Made stale or added by this change: \n- \`${block.key}\` (er): ${reason}\n\nStale at the base too: none.`,
-      )
-
-      const judgedAgain: CoverageRow = {
-        ...row,
-        judgment: {
-          ...row.judgment,
-          note: "The changed document still defines no case of this condition.",
-        },
-      }
-      writeFileSync(tableFile, JSON.stringify({ rows: [judgedAgain] }))
-      const rechecked = check()
-      expect(rechecked.staleRows).toEqual([])
-      expect(
-        rechecked.unjudged.some((held) => held.block.key === block.key),
-      ).toBe(false)
-    },
-  )
 })

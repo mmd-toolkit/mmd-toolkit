@@ -1,15 +1,11 @@
 /**
  * What a module of this repository reads at run time, read from its source
- * with the TypeScript parser, and the set of files that a module reaches
- * through its relative imports.
+ * with the TypeScript parser.
  *
  * `packages/tests` uses it to check that the files whose code is in the key
- * of the stored mermaid.js results are those that `mermaid.ts` reaches, and
- * `tools/recorded-trees.ts` to know which files decide the result of
- * `checkTree`, so that a change to one of them checks every recorded tree.
+ * of the stored mermaid.js results are those that `mermaid.ts` reaches.
  */
-import { existsSync, readFileSync } from "node:fs"
-import path from "node:path"
+import { readFileSync } from "node:fs"
 import ts from "typescript"
 
 /**
@@ -140,35 +136,4 @@ export function runtimeReadsOfSource(file: string, text: string): RuntimeReads {
 /** The line, from 1, where `node` starts. */
 function lineOf(source: ts.SourceFile, node: ts.Node): number {
   return source.getLineAndCharacterOfPosition(node.getStart(source)).line + 1
-}
-
-/** A file that a module reaches, with the reads of it that cannot be followed. */
-export interface ReachedFile {
-  /** The absolute path of the file. */
-  readonly file: string
-  /** The modules that it imports by a path that is not relative. */
-  readonly modules: readonly string[]
-  /** Its other reads that cannot be followed, and the relative paths that name no file. */
-  readonly dynamic: readonly string[]
-}
-
-/**
- * The files that `entry` reaches by its relative imports at run time,
- * `entry` itself first, each once, with what cannot be followed in each.
- */
-export function runtimeClosureOf(entry: string): ReachedFile[] {
-  const reached = new Map<string, ReachedFile>()
-  const waiting = [path.resolve(entry)]
-  for (let file = waiting.pop(); file !== undefined; file = waiting.pop()) {
-    if (reached.has(file)) continue
-    const reads = runtimeReadsOf(file)
-    const dynamic = [...reads.dynamic]
-    for (const imported of reads.relative) {
-      const target = path.resolve(path.dirname(file), imported)
-      if (existsSync(target)) waiting.push(target)
-      else dynamic.push(`"${imported}", which names no file`)
-    }
-    reached.set(file, { file, modules: reads.modules, dynamic })
-  }
-  return [...reached.values()]
 }

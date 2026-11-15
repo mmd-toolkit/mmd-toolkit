@@ -193,8 +193,9 @@ Claude Code はその一覧をコンテキストの 1% の予算に切り詰め�
 `tests-diagram-type` の手順の中で足し、
 [その手順](../tests-diagram-type/SKILL.ja.md#2-正規化関数)
 が足し方と外し方を述べ、木が記録されると、
-そこでその手順へ案内する [`tests-tree-checks`](../tests-tree-checks/SKILL.ja.md)
-の手順 8 の中で外す）。
+そこでその手順へ案内する
+[`tests-db-from-tree`](../tests-db-from-tree/SKILL.ja.md) の手順 3
+の中で外す）。
 ほかの作業も読む節から手順を移すときは、その手順があった所に、
 移した先への案内を置く。
 

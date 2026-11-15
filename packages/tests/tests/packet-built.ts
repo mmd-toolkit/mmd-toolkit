@@ -1,12 +1,12 @@
-import type { CheckedNode } from "../src/check-tree/types.ts"
-import { buildTree } from "./check-tree-built.ts"
-import type { Built, Kit } from "./check-tree-built.ts"
+import type { RecordedNode } from "../src/recorded-tree.ts"
+import { buildTree } from "./tree-built.ts"
+import type { Built, Kit } from "./tree-built.ts"
 import { hull } from "./statement-tree-built.ts"
 
 /** A fixed source and its explicitly supplied packet occurrences, without a parser. */
 export function buildPacket(
   source: string,
-  make: (kit: Kit) => CheckedNode[],
+  make: (kit: Kit) => RecordedNode[],
   header: "packet" | "packet-beta" = "packet",
 ): Built {
   return buildTree(
@@ -22,7 +22,7 @@ export function buildPacket(
 }
 
 /** A complete written number, including its rounded double value. */
-export function number(kit: Kit, raw: string): CheckedNode {
+export function number(kit: Kit, raw: string): RecordedNode {
   return kit.node("NumericLiteral", kit.token("Numeric", raw).range, {
     raw,
     value: Number(raw),
@@ -30,7 +30,7 @@ export function number(kit: Kit, raw: string): CheckedNode {
 }
 
 /** A complete quoted label; its value keeps authored escapes. */
-export function string(kit: Kit, raw: string): CheckedNode {
+export function string(kit: Kit, raw: string): RecordedNode {
   return kit.node("StringLiteral", kit.token("String", raw).range, {
     raw,
     value: raw.slice(1, -1),
@@ -40,9 +40,9 @@ export function string(kit: Kit, raw: string): CheckedNode {
 
 /** Hidden occurrences are supplied in their named authored gaps. */
 interface LabelGaps {
-  readonly beforeColon?: () => CheckedNode[]
-  readonly beforeLabel?: () => CheckedNode[]
-  readonly after?: () => CheckedNode[]
+  readonly beforeColon?: () => RecordedNode[]
+  readonly beforeLabel?: () => RecordedNode[]
+  readonly after?: () => RecordedNode[]
 }
 
 /** The common authored colon/label/suffix, after each form's numeric components. */
@@ -71,10 +71,10 @@ export function range(
   endRaw: string,
   raw: string,
   gaps: LabelGaps & {
-    readonly beforeDash?: () => CheckedNode[]
-    readonly beforeEnd?: () => CheckedNode[]
+    readonly beforeDash?: () => RecordedNode[]
+    readonly beforeEnd?: () => RecordedNode[]
   } = {},
-): CheckedNode {
+): RecordedNode {
   const start = number(kit, startRaw)
   const textBeforeDash = gaps.beforeDash?.() ?? []
   const dash = kit.token("Punctuator", "-")
@@ -107,7 +107,7 @@ export function single(
   raw: string,
   labelRaw: string,
   gaps: LabelGaps = {},
-): CheckedNode {
+): RecordedNode {
   const start = number(kit, raw)
   const label = labelFields(kit, labelRaw, gaps)
   return kit.node(
@@ -122,8 +122,8 @@ export function relative(
   kit: Kit,
   raw: string,
   labelRaw: string,
-  gaps: LabelGaps & { readonly beforeCount?: () => CheckedNode[] } = {},
-): CheckedNode {
+  gaps: LabelGaps & { readonly beforeCount?: () => RecordedNode[] } = {},
+): RecordedNode {
   const plus = kit.token("Punctuator", "+")
   const textBeforeCount = gaps.beforeCount?.() ?? []
   const count = number(kit, raw)

@@ -3,15 +3,15 @@ import { dbFromTree } from "../src/db-from-tree/index.ts"
 import type { DbTreeRoot } from "../src/db-from-tree/index.ts"
 import type { EmbeddedValues } from "../src/mermaid.ts"
 import { cssSupportsColor, loadFixture } from "../src/index.ts"
-import type { CheckedNode } from "../src/check-tree/types.ts"
-import type { Kit } from "./check-tree-built.ts"
+import type { RecordedNode } from "../src/recorded-tree.ts"
+import type { Kit } from "./tree-built.ts"
 import { axis, buildRadar, curve, entry, group, option } from "./radar-built.ts"
 import { common, ignored } from "./statement-tree-built.ts"
 
 /** Read explicit authored components through the public builder and shared embedded values. */
 function summary(
   source: string,
-  make: (kit: Kit) => CheckedNode[],
+  make: (kit: Kit) => RecordedNode[],
   embedded: EmbeddedValues = {
     config: { securityLevel: "strict" },
     title: undefined,

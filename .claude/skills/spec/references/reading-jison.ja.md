@@ -26,6 +26,6 @@
    sequence の例: box の色。
    そのような値は、サイトの設定と同じく外から与えられる。
    `@mmd-toolkit/tests` の `docs/db-from-tree/<図種>.md` がそう書き、
-   それは tests-tree-checks のスキルの手順で書く。
+   それは tests-db-from-tree のスキルの手順で書く。
 4. 前処理の順序（common.md の Reading a source）と、
    検出（detection.md）を確かめる。

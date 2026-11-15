@@ -1,16 +1,16 @@
-import type { CheckedNode } from "../src/check-tree/types.ts"
-import { buildTree } from "./check-tree-built.ts"
-import type { Built, Kit } from "./check-tree-built.ts"
+import type { RecordedNode } from "../src/recorded-tree.ts"
+import { buildTree } from "./tree-built.ts"
+import type { Built, Kit } from "./tree-built.ts"
 import { hull } from "./statement-tree-built.ts"
 
 /** A fixed source with explicitly supplied authored occurrences, without a parser. */
 export function buildRadar(
   source: string,
-  make: (kit: Kit) => CheckedNode[],
+  make: (kit: Kit) => RecordedNode[],
   colon = false,
-  beforeColon: (kit: Kit) => CheckedNode[] = () => [],
+  beforeColon: (kit: Kit) => RecordedNode[] = () => [],
 ): Built {
-  let textBeforeColon: CheckedNode[] = []
+  let textBeforeColon: RecordedNode[] = []
   return buildTree(
     {
       header: "radar-beta",
@@ -30,7 +30,7 @@ export function buildRadar(
 }
 
 /** A fixed numeric spelling and its shared double value. */
-export function number(kit: Kit, raw: string): CheckedNode {
+export function number(kit: Kit, raw: string): RecordedNode {
   return kit.node("NumericLiteral", kit.token("Numeric", raw).range, {
     raw,
     value: Number(raw),
@@ -38,13 +38,13 @@ export function number(kit: Kit, raw: string): CheckedNode {
 }
 
 /** One complete authored name. */
-function identifier(kit: Kit, name: string): CheckedNode {
+function identifier(kit: Kit, name: string): RecordedNode {
   return kit.node("Identifier", kit.token("Identifier", name).range, { name })
 }
 
 /** Every native gap is supplied explicitly by the test, never inferred from source. */
 export type RadarGaps = Readonly<
-  Record<string, (() => CheckedNode[]) | undefined>
+  Record<string, (() => RecordedNode[]) | undefined>
 >
 
 /** The common declaration name and optional bracketed label. */
@@ -100,7 +100,7 @@ export function axis(
   name: string,
   labelRaw: string | null = null,
   gaps: RadarGaps = {},
-): CheckedNode {
+): RecordedNode {
   const declaration = declarationFields(kit, name, labelRaw, gaps)
   const textAfter = gaps.textAfter?.() ?? []
   return kit.node("RadarAxis", hull([...declaration.pieces, ...textAfter]), {
@@ -116,7 +116,7 @@ export function entry(
   name: string | null = null,
   colon: boolean = name !== null,
   gaps: RadarGaps = {},
-): CheckedNode {
+): RecordedNode {
   const textBefore = gaps.textBefore?.() ?? []
   const axisNode = name === null ? null : identifier(kit, name)
   const textBeforeColon = colon ? (gaps.textBeforeColon?.() ?? []) : []
@@ -153,14 +153,14 @@ export function entry(
 export function curve(
   kit: Kit,
   name: string,
-  entries: readonly (() => CheckedNode)[],
+  entries: readonly (() => RecordedNode)[],
   labelRaw: string | null = null,
   gaps: RadarGaps = {},
-): CheckedNode {
+): RecordedNode {
   const declaration = declarationFields(kit, name, labelRaw, gaps)
   const textBeforeEntries = gaps.textBeforeEntries?.() ?? []
   const open = kit.token("Punctuator", "{")
-  const values: CheckedNode[] = []
+  const values: RecordedNode[] = []
   for (const [index, make] of entries.entries()) {
     if (index > 0) kit.token("Punctuator", ",")
     values.push(make())
@@ -187,7 +187,7 @@ export function option(
   word: "showLegend" | "ticks" | "max" | "min" | "graticule",
   raw: string,
   gaps: RadarGaps = {},
-): CheckedNode {
+): RecordedNode {
   const textBefore = gaps.textBefore?.() ?? []
   const keyword = kit.token("Keyword", word)
   const textBeforeValue = gaps.textBeforeValue?.() ?? []
@@ -215,13 +215,13 @@ export function option(
 export function group(
   kit: Kit,
   kind: "Axis" | "Curve" | "Options",
-  members: readonly (() => CheckedNode)[],
-): CheckedNode {
+  members: readonly (() => RecordedNode)[],
+): RecordedNode {
   const pieces =
     kind === "Options"
       ? []
       : [kit.token("Keyword", kind === "Axis" ? "axis" : "curve")]
-  const values: CheckedNode[] = []
+  const values: RecordedNode[] = []
   for (const [index, make] of members.entries()) {
     if (index > 0) pieces.push(kit.token("Punctuator", ","))
     values.push(make())

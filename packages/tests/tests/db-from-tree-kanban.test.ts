@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest"
 import { dbFromTree } from "../src/db-from-tree/index.ts"
 import type { DbTreeRoot } from "../src/db-from-tree/index.ts"
-import type { TreeRange } from "../src/db-from-tree/tree.ts"
+import type { TreeRange, TreeRoot } from "../src/db-from-tree/tree.ts"
 import { embeddedValuesOf, loadFixtures } from "../src/index.ts"
 import { cssSupportsColor } from "../src/normalizers/browser-stand-ins.ts"
-import { nodesOf } from "../src/check-tree/walk.ts"
-import type { CheckedNode, CheckedRoot } from "../src/check-tree/types.ts"
-import { locationOf } from "./check-tree-trees.ts"
+import { nodesOf } from "../src/recorded-tree.ts"
+import type { RecordedNode } from "../src/recorded-tree.ts"
+import { locationOf } from "./tree-pieces.ts"
 
 /** An explicitly specified row, with written leaf values, never inferred from its expected Db. */
 interface Row {
@@ -530,12 +530,12 @@ function treeOf(input: string, testCase: Case): DbTreeRoot {
     type: string,
     range: TreeRange,
     fields: Record<string, unknown> = {},
-  ): CheckedNode {
+  ): RecordedNode {
     return { type, range, loc: locationOf(input, range), ...fields }
   }
 
   /** A leaf placed at its explicitly written text. */
-  function literal(value: string): CheckedNode {
+  function literal(value: string): RecordedNode {
     return node("KanbanLiteral", take(value), {
       value: testCase.values?.[value] ?? value,
     })
@@ -543,7 +543,7 @@ function treeOf(input: string, testCase: Case): DbTreeRoot {
 
   const occurrences = testCase.rows.map((row) => {
     const id = row.id === null ? null : literal(row.id)
-    let shape: CheckedNode | null = null
+    let shape: RecordedNode | null = null
     if (row.shape !== undefined) {
       const [opener, raw, kind, closer] = row.shape
       const start = take(opener)[0]
@@ -583,14 +583,14 @@ function treeOf(input: string, testCase: Case): DbTreeRoot {
       children: [],
     })
   })
-  const body: CheckedNode[] = []
+  const body: RecordedNode[] = []
   for (const [index, occurrence] of occurrences.entries()) {
     if ((testCase.columns ?? [0]).includes(index)) body.push(occurrence)
     else {
       const column = body.at(-1)
       if (column === undefined)
         throw new Error("a hand-built card has no column")
-      ;(column.children as CheckedNode[]).push(occurrence)
+      ;(column.children as RecordedNode[]).push(occurrence)
       Object.assign(column, {
         range: [column.range[0], occurrence.range[1]],
         loc: locationOf(input, [column.range[0], occurrence.range[1]]),
@@ -662,7 +662,7 @@ describe("dbFromTree of kanban trees made by hand", async () => {
       if (embedded === undefined) throw new Error("no embedded values")
       const tree = treeOf(fixture.input, testCase)
       const plain = JSON.parse(JSON.stringify(tree)) as DbTreeRoot
-      for (const node of nodesOf(tree as unknown as CheckedRoot).filter(
+      for (const node of nodesOf(tree as unknown as TreeRoot).filter(
         (candidate) => candidate.type === "KanbanNode",
       ))
         Object.defineProperty(node, "indent", {
@@ -680,7 +680,7 @@ describe("dbFromTree of kanban trees made by hand", async () => {
           throw new Error("read tokens")
         },
       })
-      const ranges = nodesOf(plain as unknown as CheckedRoot)
+      const ranges = nodesOf(plain as unknown as TreeRoot)
         .filter(
           (node) =>
             node.type === "KanbanLiteral" || node.type === "KanbanLabel",

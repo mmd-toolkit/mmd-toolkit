@@ -1,12 +1,13 @@
-import type { CheckedNode } from "../src/check-tree/types.ts"
-import { buildTree } from "./check-tree-built.ts"
-import type { Built, Kit } from "./check-tree-built.ts"
+import type { TokenKind } from "@mmd-toolkit/ast"
+import type { RecordedNode } from "../src/recorded-tree.ts"
+import { buildTree } from "./tree-built.ts"
+import type { Built, Kit } from "./tree-built.ts"
 import { hull } from "./statement-tree-built.ts"
 
 /** Every occurrence and lexical role is supplied by the fixed test, without a parser. */
 export function buildWardley(
   source: string,
-  make: (kit: Kit) => CheckedNode[],
+  make: (kit: Kit) => RecordedNode[],
 ): Built {
   return buildTree(
     {
@@ -21,7 +22,7 @@ export function buildWardley(
 }
 
 /** Named native forms are explicitly supplied, rather than discovered in source text. */
-export type Gaps = Readonly<Record<string, (() => CheckedNode[]) | undefined>>
+export type Gaps = Readonly<Record<string, (() => RecordedNode[]) | undefined>>
 
 /** Collect the explicitly authored parts of one node in their source order. */
 function parts(kit: Kit, type: string, gaps: Gaps = {}) {
@@ -39,12 +40,12 @@ function parts(kit: Kit, type: string, gaps: Gaps = {}) {
       fields[field] = nodes
       pieces.push(...nodes)
     },
-    child(field: string, make: () => CheckedNode | null): void {
+    child(field: string, make: () => RecordedNode | null): void {
       const node = make()
       fields[field] = node
       if (node !== null) pieces.push(node)
     },
-    list(field: string, make: () => CheckedNode[]): void {
+    list(field: string, make: () => RecordedNode[]): void {
       const nodes = make()
       fields[field] = nodes
       pieces.push(...nodes)
@@ -52,14 +53,18 @@ function parts(kit: Kit, type: string, gaps: Gaps = {}) {
     value(field: string, value: unknown): void {
       fields[field] = value
     },
-    finish(): CheckedNode {
+    finish(): RecordedNode {
       return kit.node(type, hull(pieces), fields)
     },
   }
 }
 
 /** A quoted name or one explicitly identified bare-name unit. */
-export function name(kit: Kit, raw: string, kind = "RawText"): CheckedNode {
+export function name(
+  kit: Kit,
+  raw: string,
+  kind: TokenKind = "RawText",
+): RecordedNode {
   if (raw.startsWith('"') || raw.startsWith("'"))
     return kit.node("StringLiteral", kit.token("String", raw).range, {
       raw,
@@ -72,7 +77,7 @@ export function name(kit: Kit, raw: string, kind = "RawText"): CheckedNode {
 }
 
 /** An unsigned written number; the value is its double before normalization. */
-export function number(kit: Kit, raw: string): CheckedNode {
+export function number(kit: Kit, raw: string): RecordedNode {
   return kit.node("NumericLiteral", kit.token("Numeric", raw).range, {
     raw,
     value: Number(raw),
@@ -85,7 +90,7 @@ export function coordinates(
   visibility: string,
   evolution: string,
   gaps: Gaps = {},
-): CheckedNode {
+): RecordedNode {
   const p = parts(kit, "WardleyCoordinates", gaps)
   p.token("[")
   p.gap("textBeforeVisibility")
@@ -105,7 +110,7 @@ export function offset(
   x: string,
   y: string,
   gaps: Gaps = {},
-): CheckedNode {
+): RecordedNode {
   const p = parts(kit, "WardleyLabelOffsetDecoration", gaps)
   p.gap("textBefore")
   p.word("label")
@@ -137,7 +142,7 @@ export function decoration(
   kit: Kit,
   value: string,
   gaps: Gaps = {},
-): CheckedNode {
+): RecordedNode {
   const bare = value === "inertia"
   const inertia = bare || value === "(inertia)"
   const p = parts(
@@ -176,10 +181,10 @@ export function declaration(
   options: {
     readonly gaps?: Gaps
     readonly coordinateGaps?: Gaps
-    readonly decorations?: () => CheckedNode[]
-    readonly nameKind?: string
+    readonly decorations?: () => RecordedNode[]
+    readonly nameKind?: TokenKind
   } = {},
-): CheckedNode {
+): RecordedNode {
   const p = parts(
     kit,
     `Wardley${kind.charAt(0).toUpperCase()}${kind.slice(1)}Statement`,
@@ -203,8 +208,8 @@ export function pipelineChild(
   kit: Kit,
   raw: string,
   evolution: string,
-  options: { readonly gaps?: Gaps; readonly offset?: () => CheckedNode } = {},
-): CheckedNode {
+  options: { readonly gaps?: Gaps; readonly offset?: () => RecordedNode } = {},
+): RecordedNode {
   const p = parts(kit, "WardleyPipelineComponent", options.gaps)
   p.word("component")
   p.gap("textBeforeName")
@@ -224,9 +229,9 @@ export function pipelineChild(
 export function pipeline(
   kit: Kit,
   parent: string,
-  body: () => CheckedNode[],
+  body: () => RecordedNode[],
   gaps: Gaps = {},
-): CheckedNode {
+): RecordedNode {
   const p = parts(kit, "WardleyPipelineStatement", gaps)
   p.word("pipeline")
   p.gap("textBeforeParent")
@@ -245,9 +250,9 @@ export function arrow(
   kit: Kit,
   glyph: string,
   flowLabel?: string,
-): CheckedNode {
+): RecordedNode {
   const pieces: { range: readonly [number, number] }[] = []
-  let label: CheckedNode | null = null
+  let label: RecordedNode | null = null
   if (flowLabel === undefined) pieces.push(kit.token("Punctuator", glyph))
   else {
     pieces.push(kit.token("Punctuator", "+"))
@@ -275,10 +280,10 @@ export function link(
     readonly gaps?: Gaps
     readonly fromPort?: string
     readonly toPort?: string
-    readonly arrow?: () => CheckedNode
+    readonly arrow?: () => RecordedNode
     readonly label?: string
   } = {},
-): CheckedNode {
+): RecordedNode {
   const p = parts(kit, "WardleyLinkStatement", options.gaps)
   p.child("from", () => name(kit, from))
   p.gap("textBeforeFromPort")
@@ -322,7 +327,7 @@ export function evolve(
   raw: string,
   target: string,
   gaps: Gaps = {},
-): CheckedNode {
+): RecordedNode {
   const p = parts(kit, "WardleyEvolveStatement", gaps)
   p.word("evolve")
   p.gap("textBeforeComponent")
@@ -343,7 +348,7 @@ export function positioned(
   index = "1",
   gaps: Gaps = {},
   coordinateGaps: Gaps = {},
-): CheckedNode {
+): RecordedNode {
   const p = parts(
     kit,
     `Wardley${kind.charAt(0).toUpperCase()}${kind.slice(1)}Statement`,
@@ -378,7 +383,7 @@ export function size(
   width: string,
   height: string,
   gaps: Gaps = {},
-): CheckedNode {
+): RecordedNode {
   const p = parts(kit, "WardleySizeStatement", gaps)
   p.word("size")
   p.gap("textBeforeOpen")
@@ -404,7 +409,7 @@ export function stage(
     readonly secondName?: string
     readonly gaps?: Gaps
   } = {},
-): CheckedNode {
+): RecordedNode {
   const p = parts(kit, "WardleyEvolutionStage", options.gaps)
   p.gap("textBefore")
   p.child("name", () => name(kit, raw))
@@ -427,8 +432,8 @@ export function stage(
 /** Stage separators are supplied between explicitly built stage nodes. */
 export function evolutionStatement(
   kit: Kit,
-  stages: readonly (() => CheckedNode)[],
-): CheckedNode {
+  stages: readonly (() => RecordedNode)[],
+): RecordedNode {
   const word = kit.token("Keyword", "evolution")
   const nodes = stages.map((make, index) => {
     if (index > 0) kit.token("Punctuator", "->")

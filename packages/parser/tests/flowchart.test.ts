@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest"
 import type { FlowchartLink, FlowchartStatement, Root } from "@mmd-toolkit/ast"
 import { ParseError, parse } from "../src/index.ts"
-import { problemsOfTree } from "./helpers/tree-problems.ts"
 
 // Expectations come from diagrams/flowchart.md (the lexer and the grammar)
 // and ast/flowchart.md (the nodes and the tokens).
@@ -16,7 +15,6 @@ const DIRECTIVE = "%%{init: {}}%%"
 function parseStatements(statements: string): Root {
   const text = HEADER + statements
   const root = parse(text)
-  expect(problemsOfTree(text, root)).toEqual([])
   return root
 }
 
@@ -48,7 +46,6 @@ describe("the flowchart tree", () => {
   it("has the header's direction and the statements, with the tokens on the root", () => {
     const text = "flowchart LR\nA[x] -->|t| B;"
     const root = parse(text)
-    expect(problemsOfTree(text, root)).toEqual([])
     expect(root.diagramType).toBe("flowchart-v2")
     expect(root.tokens.map((token) => [token.type, token.value])).toEqual([
       ["Keyword", "flowchart"],
@@ -418,7 +415,6 @@ describe("the flowchart tree", () => {
     const text =
       "flowchart LR accDescr {}\nA accDescr {} ;B\nsubgraph S accDescr {}\nC\nend\n"
     const root = parse(text)
-    expect(problemsOfTree(text, root)).toEqual([])
     const block = {
       type: "FlowchartAccDescrBlockStatement",
       value: null,
@@ -1105,7 +1101,6 @@ describe("directives in a flowchart", () => {
   it("reads through a directive between tokens or in whitespace", () => {
     const text = "flowchart LR\nA --> %%{init: {}}%% B\n%%{wrap}%%\nC"
     const root = parse(text)
-    expect(problemsOfTree(text, root)).toEqual([])
     expect(root.directives.map((directive) => directive.name)).toEqual([
       "init",
       "wrap",

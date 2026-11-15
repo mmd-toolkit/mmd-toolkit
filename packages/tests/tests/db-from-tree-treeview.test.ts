@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest"
-import { nodesOf } from "../src/check-tree/walk.ts"
-import { checkTree } from "../src/check-tree/index.ts"
-import type { CheckedNode } from "../src/check-tree/types.ts"
+import { nodesOf } from "../src/recorded-tree.ts"
+import type { RecordedNode } from "../src/recorded-tree.ts"
 import { dbFromTree } from "../src/db-from-tree/index.ts"
 import type { DbTreeRoot } from "../src/db-from-tree/index.ts"
 import {
@@ -10,10 +9,10 @@ import {
   loadFixture,
 } from "../src/index.ts"
 import type { EmbeddedValues } from "../src/mermaid.ts"
-import type { Kit } from "./check-tree-built.ts"
+import type { Kit } from "./tree-built.ts"
 import { withBefore, withChildren } from "./nesting-built.ts"
-import { setField } from "./check-tree-recorded.ts"
-import { frontmatterOf, tokenOf } from "./check-tree-trees.ts"
+import { setField } from "./fixture-trees.ts"
+import { frontmatterOf, tokenOf } from "./tree-pieces.ts"
 import {
   annotation,
   buildTreeview,
@@ -23,10 +22,10 @@ import {
   row,
 } from "./treeview-built.ts"
 
-/** A fixed accepted tree, checked before interpreting its Db fields. */
+/** Interpret the Db fields of a fixed accepted tree. */
 function summary(
   source: string,
-  make: (kit: Kit) => CheckedNode[],
+  make: (kit: Kit) => RecordedNode[],
   embedded: EmbeddedValues = {
     config: { securityLevel: "strict" },
     title: undefined,
@@ -34,7 +33,6 @@ function summary(
   },
 ) {
   const built = buildTreeview(source, make)
-  expect(checkTree(source, built.tree)).toEqual([])
   for (const node of nodesOf(built.tree).filter(
     (candidate) => candidate.type === "TreeviewNode",
   ))
@@ -202,7 +200,6 @@ describe("treeview Db from hand-built trees", () => {
         annotation(kit, "Description", " a<b>=c<BR>d"),
       ]),
     ])
-    expect(checkTree(fixture.input, built.tree)).toEqual([])
     expect(
       dbFromTree(
         fixture.input,
@@ -232,7 +229,6 @@ describe("treeview Db from hand-built trees", () => {
       tokenOf(fixture.input, "Punctuator", { text: "---", from: end - 3 }),
       ...built.tree.tokens,
     ])
-    expect(checkTree(fixture.input, built.tree)).toEqual([])
     expect(
       dbFromTree(
         fixture.input,
