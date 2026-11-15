@@ -430,6 +430,64 @@ describe("the whitespace at the end of a style", () => {
     }
   })
 
+  it("keeps a form feed beside a character that CSS does not read as whitespace at the end of the classDef of a treemap", async () => {
+    // The spaces and tabs after the last such character are left out as at the
+    // end of any style, and a run before it is one space.
+    for (const [blanks, kept] of [
+      ["\u00a0\f", "\u00a0\f"],
+      ["\f\u00a0", "\f\u00a0"],
+      ["\u000b\f", "\u000b\f"],
+      [" \u000b\f", " \u000b\f"],
+      ["\u00a0 \t", "\u00a0"],
+      ["\u00a0\f \t", "\u00a0\f"],
+      ["\t\u00a0", " \u00a0"],
+    ]) {
+      const formatted = await formatMermaid(
+        `treemap\nclassDef kk fill:red${blanks}\n"A"\n`,
+      )
+      expect(formatted, JSON.stringify(blanks)).toBe(
+        `treemap\n  classDef kk fill: red${kept}\n  "A"\n`,
+      )
+      expect(await formatMermaid(formatted), "treemap twice").toBe(formatted)
+    }
+  })
+
+  it("keeps the whitespace after a directive at the end of the classDef of a treemap where a character that CSS does not read as whitespace is among it or before the directive", async () => {
+    for (const [before, after] of [
+      ["", "\u00a0\f"],
+      ["", "\f\u00a0"],
+      ["", " \u000b "],
+      ["", "\u00a0  "],
+      ["", "  \u00a0"],
+      ["\u00a0", "  "],
+      ["\u000b", "\f"],
+    ]) {
+      const written = `treemap\nclassDef kk fill:red${before} %%{init: {}}%%${after}\n"A"\n`
+      const formatted = await formatMermaid(written)
+      expect(formatted, JSON.stringify([before, after])).toBe(
+        `treemap\n  classDef kk fill:red${before} %%{init: {}}%%${after}\n  "A"\n`,
+      )
+      expect(await formatMermaid(formatted), "treemap twice").toBe(formatted)
+    }
+  })
+
+  it("keeps a form feed beside a character that CSS does not read as whitespace in a line that stays as written", async () => {
+    for (const written of [
+      "\u00a0\f",
+      "\f\u00a0",
+      "\u000b\f",
+      " \f\u3000 \f",
+    ]) {
+      for (const [title, input, output] of printsLineAsWritten) {
+        const formatted = await formatMermaid(input.replace("@", written))
+        expect(
+          formatted,
+          `${JSON.stringify(written)} at the end of ${title}`,
+        ).toBe(output.replace("@", written))
+      }
+    }
+  })
+
   it("prints a form feed before a comment as one space", async () => {
     for (const [title, input, output] of beforeComment) {
       const formatted = await formatMermaid(input.replace("@", "\f"))
