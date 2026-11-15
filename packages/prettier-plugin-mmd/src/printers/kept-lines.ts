@@ -556,7 +556,7 @@ function continuesWhitespaceRun(
  * Whether whitespace that stands after a U+2028 or U+2029 before the `;` of a
  * `classDef` or `style` statement is no text of the style: a space or a tab,
  * and in an ER diagram a vertical tab and a form feed too, which its Db leaves
- * out there (a vertical tab or form feed that touches the text is part of it).
+ * out there.
  */
 function isTrimmedAfterSeparator(character: string, bodyType: string): boolean {
   return (

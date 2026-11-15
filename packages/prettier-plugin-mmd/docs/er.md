@@ -2489,8 +2489,8 @@ after them. The `;` is handled as follows.
   Otherwise it is dropped, as it is where a statement or the end of the text
   follows without a comment line, and the character stays as written. A vertical
   tab and a form feed that stand after the U+2028 or U+2029 are no text of the
-  style in the Db of an ER diagram (one that touches the text of the style is),
-  which is why they are no reason to keep the `;`.
+  style in the Db of an ER diagram, which is why they are no reason to keep the
+  `;`.
 
 [fixture:
 semicolons-at-the-end-of-a-style-statement/comment-and-directive-controls]
