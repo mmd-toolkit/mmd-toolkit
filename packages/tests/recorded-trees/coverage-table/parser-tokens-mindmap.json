@@ -1,0 +1,502 @@
+{
+  "rows": [
+    {
+      "block": "packages/parser/docs/tokens/mindmap.md:592d7582f868",
+      "diagrams": ["mindmap"],
+      "about": "This document defines the tokens of the diagram type `mindmap` in the tree that\n",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It introduces the token document and points to the tree document and tokens.md."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/mindmap.md:5f22d52bffb5",
+      "diagrams": ["mindmap"],
+      "about": "The tokens are made from the units of\n[diagrams/mindmap.md](../../../spec/docs/d",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Every unit that is not all whitespace has a token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a mindmap node text without its token"
+              }
+            ]
+          },
+          {
+            "case": "Its token has the kind that the table gives for the item.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "the node text as an Identifier token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/mindmap.md:c6491c43117a",
+      "diagrams": ["mindmap"],
+      "about": "| `Keyword`    | a `header` unit; an `::icon(` unit                             ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A `header` unit is a `Keyword` token.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "the header as a RawText token"
+              }
+            ]
+          },
+          {
+            "case": "An `::icon(` unit is a `Keyword` token.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "`::icon(` as a Punctuator token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/mindmap.md:ad39fedbe899",
+      "diagrams": ["mindmap"],
+      "about": "| `RawText`    | the text units of [Directives inside units](../../../spec/docs/",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A `node-text` unit is a `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "the node text as an Identifier token"
+              }
+            ]
+          },
+          {
+            "case": "A `shape-text` unit is a `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "the text of a label as a String token"
+              }
+            ]
+          },
+          {
+            "case": "An `icon-text` unit is a `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "the icon as a Keyword token"
+              }
+            ]
+          },
+          {
+            "case": "A `class-text` unit is a `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "the class as a Keyword token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/mindmap.md:d322253165b9",
+      "diagrams": ["mindmap"],
+      "about": "| `String`     | the string units of [Directives inside units](../../../spec/doc",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A `string` unit is a `String` token.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "a string as a RawText token"
+              }
+            ]
+          },
+          {
+            "case": "A `markdown-string` unit is a `String` token.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "a markdown string as a RawText token"
+              }
+            ]
+          },
+          {
+            "case": "A string token holds its delimiters.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the quotes of a mindmap string left out of its token"
+              }
+            ]
+          },
+          {
+            "case": "A markdown-string token holds its delimiters.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the delimiters of a mindmap markdown string left out of its token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/mindmap.md:4f0ea4d4b6b5",
+      "diagrams": ["mindmap"],
+      "about": "| `Punctuator` | a `:::` unit and the `)` unit of an icon line; an `opener` and ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A `:::` unit is a `Punctuator` token.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "the `:::` of a class line as a Keyword token"
+              }
+            ]
+          },
+          {
+            "case": "The `)` unit of an icon line is a `Punctuator` token.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "the `)` of an icon line as a Keyword token"
+              }
+            ]
+          },
+          {
+            "case": "An `opener` unit is a `Punctuator` token.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "the opener of a shape as a Keyword token"
+              }
+            ]
+          },
+          {
+            "case": "A `closer` unit is a `Punctuator` token.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "the closer of a shape as a Keyword token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/mindmap.md:45cca880b811",
+      "diagrams": ["mindmap"],
+      "about": "Every item is one unit, and so one **token**: `r[\"text with ( paren\"]` has the\n`",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Every item is one token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a mindmap node text split into two RawText tokens"
+              }
+            ]
+          },
+          {
+            "case": "The node text `r` is a `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "the node text as an Identifier token"
+              }
+            ]
+          },
+          {
+            "case": "The shape's `[` and `]` are `Punctuator` tokens.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "the opener of a shape as a Keyword token"
+              },
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "the closer of a shape as a Keyword token"
+              }
+            ]
+          },
+          {
+            "case": "The string is a `String` token, its quotes included.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "a string as a RawText token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the quotes of a mindmap string left out of its token"
+              }
+            ]
+          },
+          {
+            "case": "`::icon(` is a `Keyword` token.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "`::icon(` as a Punctuator token"
+              }
+            ]
+          },
+          {
+            "case": "The icon text `fa fa-book` is a `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "the icon as a Keyword token"
+              }
+            ]
+          },
+          {
+            "case": "The `)` of the icon line is a `Punctuator` token.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "the `)` of an icon line as a Keyword token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/mindmap.md:4d8d971b2873",
+      "diagrams": ["mindmap"],
+      "about": "A token holds no whitespace at its ends, except where mermaid.js reads it as\npar",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A token holds no whitespace at its ends except where it is part of a value.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the token of a mindmap header widened over its following line feed"
+              }
+            ]
+          },
+          {
+            "case": "A node-text token keeps the whitespace at its end.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the trailing whitespace left out of a mindmap node text token"
+              }
+            ]
+          },
+          {
+            "case": "A shape-text token keeps the whitespace at both ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the leading whitespace left out of a mindmap shape text token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the trailing whitespace left out of a mindmap shape text token"
+              }
+            ]
+          },
+          {
+            "case": "An icon token keeps the whitespace at both ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the leading whitespace left out of a mindmap icon token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the trailing whitespace left out of a mindmap icon token"
+              }
+            ]
+          },
+          {
+            "case": "A class token keeps the whitespace at both ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the leading whitespace left out of a mindmap class token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the trailing whitespace left out of a mindmap class token"
+              }
+            ]
+          },
+          {
+            "case": "A shape-text token holds the line feeds inside it.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a mindmap shape text token that ends before the line feed inside it"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/mindmap.md:4bdf60c48b57",
+      "diagrams": ["mindmap"],
+      "about": "A directive, a comment region, or a `;` that the line rule ignores inside a\n`Raw",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A directive inside a `RawText` token cuts it into fragments with its `Directive` token between them.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a mindmap node text held in one token over its directive"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-631-mindmap-The directive between fragments has its Directive token"
+              }
+            ]
+          },
+          {
+            "case": "A directive cuts a `String` token into `StringFragment` tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-56-mindmap-fragment-Directive-before"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-56-mindmap-fragment-Directive-after"
+              }
+            ]
+          },
+          {
+            "case": "A comment region cuts a `RawText` token into fragments.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-mindmap-region-cut-RawText"
+              }
+            ]
+          },
+          {
+            "case": "A comment region cuts a `String` token into `StringFragment` tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-mindmap-region-cut-StringFragment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-56-mindmap-fragment-Comment-before"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-56-mindmap-fragment-Comment-after"
+              }
+            ]
+          },
+          {
+            "case": "An ignored `;` cuts a `RawText` token into fragments.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-mindmap-No other token spans the ignored semicolon"
+              }
+            ]
+          },
+          {
+            "case": "An ignored `;` cuts a `String` token into `StringFragment` tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-56-mindmap-fragment-IgnoredSemicolon-before"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-56-mindmap-fragment-IgnoredSemicolon-after"
+              }
+            ]
+          },
+          {
+            "case": "A directive between the two characters of a markdown-string delimiter cuts its token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-56-mindmap-fragment-Directive-before"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-56-mindmap-fragment-Directive-after"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-631-mindmap-A token is cut at an internal directive"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/mindmap.md:f3da6b718b33",
+      "diagrams": ["mindmap"],
+      "about": "A `;` that the line rule ignores is an `IgnoredSemicolon` token: the node text\n`",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A `;` that the line rule ignores has an `IgnoredSemicolon` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-mindmap-An ignored semicolon has its own token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-mindmap-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              }
+            ]
+          },
+          {
+            "case": "The node text has `RawText` tokens on either side of the ignored `;`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the fragment before an ignored semicolon of a mindmap node text as a Keyword token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the fragment after an ignored semicolon of a mindmap node text as a Keyword token"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

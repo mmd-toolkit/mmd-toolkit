@@ -1,0 +1,1627 @@
+{
+  "rows": [
+    {
+      "block": "packages/spec/docs/ast/timeline.md:0a9f5734a34c",
+      "diagrams": ["timeline"],
+      "about": "This document defines the nodes of the tree for the diagram type `timeline`. The",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It introduces the tree document and points to ast.md and the syntax document."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:e22c9800d300",
+      "diagrams": ["timeline"],
+      "about": "The body of this diagram type is a [TimelineDiagram](#timelinediagram). The\nvalu",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The body is a TimelineDiagram.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the body of a timeline diagram as a PieDiagram"
+              }
+            ]
+          },
+          {
+            "case": "The fields keep their written values.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the period value of a timeline that is not its written text"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an event value of a timeline that is not its written text"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the title value of a timeline that is not its written text"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the section name of a timeline that is not its written text"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the accessibility title of a timeline that is not its written text"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the accessibility description of a timeline that is not its written text"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the description block text of a timeline that is not its written text"
+              }
+            ]
+          },
+          {
+            "case": "A period starts with no whitespace outside its unit.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "a period that starts with whitespace"
+              }
+            ]
+          },
+          {
+            "case": "A period keeps the whitespace before its colon.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline period without its whitespace before a colon"
+              }
+            ]
+          },
+          {
+            "case": "A period keeps the whitespace before its `#`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline period without its whitespace before a hash"
+              }
+            ]
+          },
+          {
+            "case": "A period keeps the whitespace before its line feed.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline period without its whitespace before a line feed"
+              }
+            ]
+          },
+          {
+            "case": "An event keeps the whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline event without its leading whitespace"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline event without its trailing whitespace"
+              }
+            ]
+          },
+          {
+            "case": "A title keeps the whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline title without its leading whitespace"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline title without its trailing whitespace"
+              }
+            ]
+          },
+          {
+            "case": "A section name keeps the whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline section name without its leading whitespace"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline section name without its trailing whitespace"
+              }
+            ]
+          },
+          {
+            "case": "An accessibility text is read without the whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline accessibility title that keeps leading whitespace"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline accessibility title that keeps trailing whitespace"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline accessibility description that keeps leading whitespace"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline accessibility description that keeps trailing whitespace"
+              },
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "a description block whose text starts with whitespace"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline description block that keeps trailing whitespace"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:faf8989620b1",
+      "diagrams": ["timeline"],
+      "about": "A **period** is a point of the timeline, such as a year, with the **events**\nwri",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It defines what a period, an event, and a section are in the drawing."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:562416f42f83",
+      "diagrams": ["timeline"],
+      "about": "This diagram type has no strings in quotes, so no node of it is a StringLiteral:",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A period is no StringLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a period of a timeline as a StringLiteral"
+              }
+            ]
+          },
+          {
+            "case": "An event is no StringLiteral; its quotes are characters of its text.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a quoted event of a timeline as a StringLiteral"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:d015974db989",
+      "diagrams": ["timeline"],
+      "about": "| `direction` | string or null            | The direction of the header as writt",
+      "judgment": {
+        "status": "not-shown",
+        "reason": "rule-misses-condition",
+        "note": "In timeline/header-direction-line-feed (`timeline\\nTD\\n  a\\n`), removing the first TimelinePeriodStatement at [9,11] from TimelineDiagram.body, retyping its RawText token at [9,11] to Keyword, and changing direction from null to \"TD\" gives checkTree() = []. It treats the period on the next line as the header direction. In timeline/header-direction-line-separator (`timeline\\u2028TD\\n`), the same three changes give checkTree() = [] and treat a period after U+2028 as the direction, although only spaces or tabs may separate it from the header. Both the field meaning and the header-line/space-or-tab condition are missed. The other cases are reported: an invalid direction (check-tree-timeline.test.ts, \"a direction that is none of the directions\"), changed written case (check-tree-shared-ast.test.ts, \"fails a timeline direction whose written case is changed\"), an omitted written direction (\"fails a timeline direction that leaves out its written keyword\"), and a direction where none is written (check-tree-timeline.test.ts, \"a direction where the header has none\"). The child field and the absence of a header field are checked by check-tree-shared-ast.test.ts, \"reports a child field whose value is a primitive instead of a child node\", and check-tree-shape.test.ts, \"reports a field that the type does not have\"."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:e56bd75b73c4",
+      "diagrams": ["timeline"],
+      "about": "| `body`      | list of TimelineStatement | The statements, in source order.    ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`body` is a list of nodes.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a list that is a string, and a value of another type"
+              }
+            ]
+          },
+          {
+            "case": "Each item is a TimelineStatement.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "a literal among the statements of the body"
+              }
+            ]
+          },
+          {
+            "case": "The items are the written statements.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline diagram without its period statement"
+              }
+            ]
+          },
+          {
+            "case": "The statements are in source order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails a list that is not in source order"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:fe1061af27b9",
+      "diagrams": ["timeline"],
+      "about": "Child fields: `body`. The header keyword is not a field. The direction is the\nke",
+      "judgment": {
+        "status": "not-shown",
+        "reason": "rule-misses-condition",
+        "note": "In timeline/header-direction-line-feed (`timeline\\nTD\\n  a\\n`), removing the first TimelinePeriodStatement at [9,11] from TimelineDiagram.body, retyping its RawText token at [9,11] to Keyword, and changing direction from null to \"TD\" gives checkTree() = []. It treats the period on the next line as the header direction. In timeline/header-direction-line-separator (`timeline\\u2028TD\\n`), the same three changes give checkTree() = [] and treat a period after U+2028 as the direction, although only spaces or tabs may separate it from the header. Both the field meaning and the header-line/space-or-tab condition are missed. The other cases are reported: an invalid direction (check-tree-timeline.test.ts, \"a direction that is none of the directions\"), changed written case (check-tree-shared-ast.test.ts, \"fails a timeline direction whose written case is changed\"), an omitted written direction (\"fails a timeline direction that leaves out its written keyword\"), and a direction where none is written (check-tree-timeline.test.ts, \"a direction where the header has none\"). The child field and the absence of a header field are checked by check-tree-shared-ast.test.ts, \"reports a child field whose value is a primitive instead of a child node\", and check-tree-shape.test.ts, \"reports a field that the type does not have\"."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:18bd76bd1fd0",
+      "diagrams": ["timeline"],
+      "about": "**TimelineStatement** is a TimelinePeriodStatement, TimelineEventStatement,\nTime",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A TimelineStatement is a TimelinePeriodStatement, TimelineEventStatement, TimelineTitleStatement, TimelineSectionStatement, TimelineAccTitleStatement, TimelineAccDescrStatement, or TimelineAccDescrBlockStatement.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "a literal among the statements of the body"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:3cd7fef2fdf9",
+      "diagrams": ["timeline"],
+      "about": "A line break belongs to no statement, and an empty line makes no node. Several\ns",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A line break belongs to no statement.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline period statement that covers the line feed after it"
+              }
+            ]
+          },
+          {
+            "case": "An empty line makes no node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a node for an empty line of a timeline diagram"
+              }
+            ]
+          },
+          {
+            "case": "The child fields of every node are in source order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails child fields that are not in source order"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:8cc0d420747c",
+      "diagrams": ["timeline"],
+      "about": "A period with the events that follow it: `2004 : Facebook : Google`, and the\nsam",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It introduces a period statement with examples of its events on the same line and on later lines."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:81b05b42ef78",
+      "diagrams": ["timeline"],
+      "about": "| `period` | TimelineLiteral         | The period, as written.                  ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`period` is a node, never null.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a required node that is null"
+              }
+            ]
+          },
+          {
+            "case": "`period` is a TimelineLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "a statement as the period of a period statement"
+              }
+            ]
+          },
+          {
+            "case": "It is the period as written.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the period value of a timeline that is not its written text"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:7cfe9fdb8313",
+      "diagrams": ["timeline"],
+      "about": "| `events` | list of TimelineLiteral | The events right after the period, in sou",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`events` is a list of nodes.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a list that is a string, and a value of another type"
+              }
+            ]
+          },
+          {
+            "case": "Each event is a TimelineLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "a statement among the events of a period statement"
+              }
+            ]
+          },
+          {
+            "case": "They are the events right after the period.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the events on the line of a timeline period as a separate statement"
+              }
+            ]
+          },
+          {
+            "case": "The events are in source order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails a list that is not in source order"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:d2ead8423c06",
+      "diagrams": ["timeline"],
+      "about": "Child fields: `period`, `events`. The events of a period are the events that\nfol",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The child fields are `period` and `events`, in that order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails child fields that are not in source order"
+              }
+            ]
+          },
+          {
+            "case": "The events on the line of the period belong to its statement.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the events on the line of a timeline period as a separate statement"
+              }
+            ]
+          },
+          {
+            "case": "The events on the lines after the period belong to its statement.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the events on later lines of a timeline period as a separate statement"
+              }
+            ]
+          },
+          {
+            "case": "An event after another event stays in the same period statement.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the later event after a timeline event as a separate statement"
+              }
+            ]
+          },
+          {
+            "case": "An empty line does not separate the events from their period.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the event after an empty line of a timeline period as a separate statement"
+              }
+            ]
+          },
+          {
+            "case": "A comment line does not separate the events from their period.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the event after a comment line of a timeline period as a separate statement"
+              }
+            ]
+          },
+          {
+            "case": "A line `# c` does not separate the events from their period.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the event after a hash line of a timeline period as a separate statement"
+              }
+            ]
+          },
+          {
+            "case": "An event after another statement is a TimelineEventStatement.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the events after a timeline title held by the earlier period"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the events after a timeline section held by the earlier period"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the events after a timeline accessibility title held by the earlier period"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the events after a timeline description block held by the earlier period"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the events after an empty timeline description block held by the earlier period"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:795768467b9a",
+      "diagrams": ["timeline"],
+      "about": "The period keeps the whitespace before the colon, `#`, or line feed that ends\nit",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A period keeps the whitespace before its colon.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline period without its whitespace before a colon"
+              }
+            ]
+          },
+          {
+            "case": "A period keeps the whitespace before its `#`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline period without its whitespace before a hash"
+              }
+            ]
+          },
+          {
+            "case": "A period keeps the whitespace before its line feed.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline period without its whitespace before a line feed"
+              }
+            ]
+          },
+          {
+            "case": "An event starts after its colon and one whitespace character.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "an event that starts one character early"
+              },
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "an event that starts one character late"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline event after a colon and line feed that keeps that line feed"
+              }
+            ]
+          },
+          {
+            "case": "The rest of the whitespace at the event's ends is kept.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline event without its leading whitespace"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline event without its trailing whitespace"
+              }
+            ]
+          },
+          {
+            "case": "An event of whitespace only keeps that whitespace.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline event of whitespace only whose value is empty"
+              }
+            ]
+          },
+          {
+            "case": "A `:` that no whitespace follows stays in the event.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline event that leaves out its colon before a nonwhitespace character"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:e953d727c810",
+      "diagrams": ["timeline"],
+      "about": "Events after a statement that is not a period: after a title, a section, an\nacce",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Events after a title are a statement of their own.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the events after a timeline title held by the earlier period"
+              }
+            ]
+          },
+          {
+            "case": "Events after a section are a statement of their own.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the events after a timeline section held by the earlier period"
+              }
+            ]
+          },
+          {
+            "case": "Events after an accessibility statement are a statement of their own.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the events after a timeline accessibility title held by the earlier period"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the events after a timeline description block held by the earlier period"
+              }
+            ]
+          },
+          {
+            "case": "Events after an empty description block are a statement of their own.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the events after an empty timeline description block held by the earlier period"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:61d0874fc83e",
+      "diagrams": ["timeline"],
+      "about": "| `events` | list of TimelineLiteral | The events, in source order; at least one",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`events` is a list of nodes.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a list that is a string, and a value of another type"
+              }
+            ]
+          },
+          {
+            "case": "Each event is a TimelineLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "a statement among the events of an event statement"
+              }
+            ]
+          },
+          {
+            "case": "The list holds the events.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "an event of an event statement that starts one character late"
+              }
+            ]
+          },
+          {
+            "case": "The events are in source order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails a list that is not in source order"
+              }
+            ]
+          },
+          {
+            "case": "There is at least one event.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "an event statement with no event"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:5391f1cc048d",
+      "diagrams": ["timeline"],
+      "about": "A `title` statement.\n\n| Field   | Type            | Meaning                     ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It names the title statement."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:c490e271e9e9",
+      "diagrams": ["timeline"],
+      "about": "| `value` | TimelineLiteral | The text after `title` and one whitespace characte",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`value` is a node, never null.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a required node that is null"
+              }
+            ]
+          },
+          {
+            "case": "`value` is a TimelineLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "a statement as the value of a title statement"
+              }
+            ]
+          },
+          {
+            "case": "Its text starts after `title` and one whitespace character.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "a title that starts at the whitespace character after the keyword"
+              }
+            ]
+          },
+          {
+            "case": "Its text runs up to a line feed.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "a title that holds a line feed"
+              },
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "a title that ends before the whitespace at its end"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:5d1f9addfdcb",
+      "diagrams": ["timeline"],
+      "about": "Child fields: `value`. The value keeps the whitespace at its ends and holds `:`,",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The child field is `value`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child field whose value is a primitive instead of a child node"
+              }
+            ]
+          },
+          {
+            "case": "The value keeps the whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline title without its leading whitespace"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline title without its trailing whitespace"
+              }
+            ]
+          },
+          {
+            "case": "A `:` is a character of the value.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline title without its colon"
+              }
+            ]
+          },
+          {
+            "case": "A `#` is a character of the value.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline title without its hash"
+              }
+            ]
+          },
+          {
+            "case": "A `%%` is a character of the value.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline title without its percent marks"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:5184a74b929c",
+      "diagrams": ["timeline"],
+      "about": "A `section` statement.\n\n| Field  | Type            | Meaning                    ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It names the section statement."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:895e8fd5cc12",
+      "diagrams": ["timeline"],
+      "about": "| `name` | TimelineLiteral | The text after `section` and one whitespace charact",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`name` is a node, never null.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a required node that is null"
+              }
+            ]
+          },
+          {
+            "case": "`name` is a TimelineLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "a statement as the name of a section statement"
+              }
+            ]
+          },
+          {
+            "case": "Its text starts after `section` and one whitespace character.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "a section name that starts at the whitespace character after the keyword"
+              }
+            ]
+          },
+          {
+            "case": "Its text runs up to a `:` or a line feed.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "a section name that holds a colon"
+              },
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "a section name that holds a line feed"
+              },
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "a section name that ends before the whitespace at its end"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:9e7be1534415",
+      "diagrams": ["timeline"],
+      "about": "Child fields: `name`. The name is a text that may contain whitespace, which\nnoth",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The child field is `name`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child field whose value is a primitive instead of a child node"
+              }
+            ]
+          },
+          {
+            "case": "The name is a TimelineLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "a statement as the name of a section statement"
+              }
+            ]
+          },
+          {
+            "case": "It keeps the whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline section name without its leading whitespace"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline section name without its trailing whitespace"
+              }
+            ]
+          },
+          {
+            "case": "A name of whitespace only has that whitespace as its value.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline section name of whitespace only whose value is empty"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:d18be5aa8d5d",
+      "diagrams": ["timeline"],
+      "about": "An `accTitle:` statement with its text.\n\n| Field   | Type            | Meaning  ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It introduces the accessibility title statement."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:be669058af68",
+      "diagrams": ["timeline"],
+      "about": "| `value` | TimelineLiteral | The text after `accTitle:`, up to the end of its l",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`value` is a node, never null.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a required node that is null"
+              }
+            ]
+          },
+          {
+            "case": "`value` is a TimelineLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "a statement as the value of an accessibility title"
+              }
+            ]
+          },
+          {
+            "case": "It is the text after `accTitle:`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline accessibility title whose text starts at its colon"
+              }
+            ]
+          },
+          {
+            "case": "It runs up to the end of its line.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline accessibility title whose text ends before its last character"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:3e1296394e52",
+      "diagrams": ["timeline"],
+      "about": "Child fields: `value`. The whitespace after the `:` is read with it, line feeds\n",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The child field is `value`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child field whose value is a primitive instead of a child node"
+              }
+            ]
+          },
+          {
+            "case": "Whitespace after the colon, line feeds included, is outside the value.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline accessibility title on a later line whose value starts at the line feed"
+              }
+            ]
+          },
+          {
+            "case": "The value is never null.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a required node that is null"
+              }
+            ]
+          },
+          {
+            "case": "The value leaves out whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline accessibility title that keeps leading whitespace"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline accessibility title that keeps trailing whitespace"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:c11c03c57c57",
+      "diagrams": ["timeline"],
+      "about": "An `accDescr:` statement with its text.\n\n| Field   | Type            | Meaning  ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It introduces the accessibility description statement."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:41b211fd4821",
+      "diagrams": ["timeline"],
+      "about": "| `value` | TimelineLiteral | The text after `accDescr:`, up to the end of its l",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`value` is a node, never null.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a required node that is null"
+              }
+            ]
+          },
+          {
+            "case": "`value` is a TimelineLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an accessibility description of a timeline as a title statement"
+              }
+            ]
+          },
+          {
+            "case": "It is the text after `accDescr:`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline accessibility description whose text starts at its colon"
+              }
+            ]
+          },
+          {
+            "case": "It runs up to the end of its line.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline accessibility description whose text ends before its last character"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:91577792a3fe",
+      "diagrams": ["timeline"],
+      "about": "Child fields: `value`. As for TimelineAccTitleStatement, the value is never\nnull",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The child field is `value`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child field whose value is a primitive instead of a child node"
+              }
+            ]
+          },
+          {
+            "case": "`value` is a node, never null.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a required node that is null"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:ae336c701d8d",
+      "diagrams": ["timeline"],
+      "about": "An `accDescr { … }` statement with its text, or without text: an empty\ndescripti",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The block is always closed.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline description block without its closing brace token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:12e461c8b37b",
+      "diagrams": ["timeline"],
+      "about": "| `value` | TimelineLiteral or null | The text between `accDescr {` and `}`, wit",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`value` is a TimelineLiteral or null.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "a statement as the value of a description block"
+              }
+            ]
+          },
+          {
+            "case": "It is the text between `accDescr {` and `}`.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "a description block whose text starts before the brace"
+              },
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "a description block whose text ends before its last character"
+              }
+            ]
+          },
+          {
+            "case": "It leaves out the whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "a description block whose text starts with whitespace"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline description block that keeps trailing whitespace"
+              }
+            ]
+          },
+          {
+            "case": "A block without text has value null.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails text for a timeline description block with only braces"
+              }
+            ]
+          },
+          {
+            "case": "Written block text is not null.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "a description block without text that has text between its braces"
+              }
+            ]
+          },
+          {
+            "case": "A block with only whitespace has value null.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails text for a timeline description block with only whitespace and line breaks"
+              }
+            ]
+          },
+          {
+            "case": "A block with only directives has value null.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails text for a timeline description block with only a directive"
+              }
+            ]
+          },
+          {
+            "case": "A block with only comment lines has value null.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails text for a timeline description block with only a comment line"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:9d075706b7a6",
+      "diagrams": ["timeline"],
+      "about": "Child fields: `value`. `accDescr {}`, a block of whitespace and line breaks\nonly",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The child field is `value`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child field whose value is a primitive instead of a child node"
+              }
+            ]
+          },
+          {
+            "case": "A block of braces only has value null.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails text for a timeline description block with only braces"
+              }
+            ]
+          },
+          {
+            "case": "A block of whitespace and line breaks only has value null.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails text for a timeline description block with only whitespace and line breaks"
+              }
+            ]
+          },
+          {
+            "case": "A block of directives only has value null.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails text for a timeline description block with only a directive"
+              }
+            ]
+          },
+          {
+            "case": "A block of comment lines only has value null.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails text for a timeline description block with only a comment line"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:1565712a7744",
+      "diagrams": ["timeline"],
+      "about": "A text without quotes that may contain whitespace: a period, an event, a title,\n",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It introduces a literal and lists the kinds of texts it represents."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:2f8114bc5b44",
+      "diagrams": ["timeline"],
+      "about": "| `value` | string | Its written text (see [Nodes](../ast.md#nodes)). |\n\nNo chil",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`value` is its written text.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the period value of a timeline that is not its written text"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an event value of a timeline that is not its written text"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the title value of a timeline that is not its written text"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the section name of a timeline that is not its written text"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the accessibility title of a timeline that is not its written text"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the accessibility description of a timeline that is not its written text"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the description block text of a timeline that is not its written text"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:78a53c13bf49",
+      "diagrams": ["timeline"],
+      "about": "No child fields. Each TimelineLiteral is one unit, so its value is the text of\nt",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "It has no child fields.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a field that the type does not have"
+              }
+            ]
+          },
+          {
+            "case": "Each TimelineLiteral is one unit.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline period literal that holds its event"
+              }
+            ]
+          },
+          {
+            "case": "Its value is the text of its unit as written.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the period value of a timeline that is not its written text"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an event value of a timeline that is not its written text"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the title value of a timeline that is not its written text"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the section name of a timeline that is not its written text"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the accessibility title of a timeline that is not its written text"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the accessibility description of a timeline that is not its written text"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the description block text of a timeline that is not its written text"
+              }
+            ]
+          },
+          {
+            "case": "A period keeps the whitespace before what ends it.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline period without its whitespace before a colon"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline period without its whitespace before a hash"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline period without its whitespace before a line feed"
+              }
+            ]
+          },
+          {
+            "case": "An event keeps the whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline event without its leading whitespace"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline event without its trailing whitespace"
+              }
+            ]
+          },
+          {
+            "case": "A title keeps the whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline title without its leading whitespace"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline title without its trailing whitespace"
+              }
+            ]
+          },
+          {
+            "case": "A section name keeps the whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline section name without its leading whitespace"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline section name without its trailing whitespace"
+              }
+            ]
+          },
+          {
+            "case": "An accessibility text leaves out the whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline accessibility title that keeps leading whitespace"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline accessibility title that keeps trailing whitespace"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline accessibility description that keeps leading whitespace"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline accessibility description that keeps trailing whitespace"
+              },
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "a description block whose text starts with whitespace"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline description block that keeps trailing whitespace"
+              }
+            ]
+          },
+          {
+            "case": "A line feed inside a description block is part of the value.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a timeline description block without its internal line feed"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/timeline.md:41e1a55fe2be",
+      "diagrams": ["timeline"],
+      "about": "Child fields: `events`. Its events are those that follow one another with\nnothin",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The child field is `events`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child field whose value is a primitive instead of a child node"
+              }
+            ]
+          },
+          {
+            "case": "Events that follow one another with whitespace between them belong to one event statement.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "a timeline event statement split before its second event on the same line"
+              }
+            ]
+          },
+          {
+            "case": "Line breaks do not separate consecutive events into statements.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "a timeline event statement split before its second event on a later line"
+              }
+            ]
+          },
+          {
+            "case": "An empty line does not separate consecutive events into statements.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "a timeline event statement split before its second event after an empty line"
+              }
+            ]
+          },
+          {
+            "case": "A comment line does not separate consecutive events into statements.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "a timeline event statement split before its second event after a percent comment line"
+              }
+            ]
+          },
+          {
+            "case": "A line `# c` does not separate consecutive events into statements.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "a timeline event statement split before its second event after a hash comment line"
+              }
+            ]
+          },
+          {
+            "case": "An event statement follows no period statement.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the events on the line of a timeline period as a separate statement"
+              }
+            ]
+          },
+          {
+            "case": "Events after a title are a statement of their own.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the events after a timeline title held by the earlier period"
+              }
+            ]
+          },
+          {
+            "case": "Events after a section are a statement of their own, also on the section's line.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the events after a timeline section held by the earlier period"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the events on a timeline section line held by the earlier period"
+              }
+            ]
+          },
+          {
+            "case": "Events after an accessibility statement are a statement of their own.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the events after a timeline accessibility title held by the earlier period"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "events after a timeline accessibility description held by the earlier period"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the events after a timeline description block held by the earlier period"
+              }
+            ]
+          },
+          {
+            "case": "Events after an empty description block are a statement of their own.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the events after an empty timeline description block held by the earlier period"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,314 @@
+{
+  "rows": [
+    {
+      "block": "packages/parser/docs/positions/mindmap.md:425e8d800ff5",
+      "diagrams": ["mindmap"],
+      "about": "This document defines the ranges of the nodes of the diagram type in the tree\nth",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It introduces the position document of the diagram type and points to positions.md, the tree document, and the token document."
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions/mindmap.md:b9fb30ee52e4",
+      "diagrams": ["mindmap"],
+      "about": "The ranges of the nodes of this diagram type, besides the rules of\n[positions.md",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It introduces the list of the ranges of the nodes of the diagram type."
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions/mindmap.md:d95a40a2e898",
+      "diagrams": ["mindmap"],
+      "about": "The range is that of the node in `Root.body` of every diagram (see\n[Node ranges]",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The range of the MindmapDiagram is that of the node in `Root.body`.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "a diagram that ends before its root"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions/mindmap.md:562357728340",
+      "diagrams": ["mindmap"],
+      "about": "The range runs from the first token of the node, its node text or its opener, to",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The range starts at the node text, not the indentation before it.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "a node whose range starts in the indentation before it"
+              },
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "a root on the line of the header that starts at the header"
+              }
+            ]
+          },
+          {
+            "case": "The range of a node with only a shape starts at its opener.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a mindmap node with only a shape that starts after its opener"
+              }
+            ]
+          },
+          {
+            "case": "The range ends at the last token of its last descendant when that comes last.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "a node that ends before the last token of its last descendant"
+              },
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "a node whose range covers the line break after its last descendant"
+              }
+            ]
+          },
+          {
+            "case": "The range ends at the last token of its last decoration when that comes last.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a mindmap node that ends before its last decoration"
+              }
+            ]
+          },
+          {
+            "case": "The node covers the line break and indentation before the descendant below it.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "a node that ends before the last token of its last descendant"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions/mindmap.md:a5cbe3dbad46",
+      "diagrams": ["mindmap"],
+      "about": "A shape runs from its opener to its closer, and an icon line from `::icon(` to\ni",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A shape runs from its opener to its closer.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a mindmap shape that starts after its opener"
+              },
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "a shape that ends before its closer"
+              }
+            ]
+          },
+          {
+            "case": "An icon line runs from `::icon(` to its `)`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a mindmap icon line that starts after its keyword"
+              },
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "an icon line that ends before its `)`"
+              }
+            ]
+          },
+          {
+            "case": "A class line runs from `:::` to the end of its class, the trailing whitespace included.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a mindmap class line that starts after its mark"
+              },
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "a class line that ends before the whitespace at the end of its class"
+              },
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "a class line that covers the line feed after its class"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions/mindmap.md:c8605122b079",
+      "diagrams": ["mindmap"],
+      "about": "The range is that of its token, with the whitespace at its ends that the token\nk",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The range of a node text is that of its token, the whitespace at its end included.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "a node text whose range leaves out the whitespace at its end"
+              }
+            ]
+          },
+          {
+            "case": "The range of a shape text is that of its token, the whitespace at both ends included.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a mindmap text label whose range leaves out its leading whitespace"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a mindmap text label whose range leaves out its trailing whitespace"
+              }
+            ]
+          },
+          {
+            "case": "The range of an icon is that of its token, the whitespace at both ends included.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a mindmap icon whose range leaves out its leading whitespace"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a mindmap icon whose range leaves out its trailing whitespace"
+              }
+            ]
+          },
+          {
+            "case": "The range of a class is that of its token, the whitespace at both ends included.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a mindmap class whose range leaves out its leading whitespace"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a mindmap class whose range leaves out its trailing whitespace"
+              }
+            ]
+          },
+          {
+            "case": "The range of a string holds both its delimiters.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "a string whose range ends before its closing quote"
+              },
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "a string whose range starts after its opening quote"
+              }
+            ]
+          },
+          {
+            "case": "The range of a markdown string holds both its delimiters.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "a markdown string whose range ends before its closing delimiter"
+              },
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "a markdown string whose range starts after its opening delimiter"
+              }
+            ]
+          },
+          {
+            "case": "A delimiter remains in the range where a directive cuts it.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a mindmap markdown label that ends before the quote after its internal directive"
+              }
+            ]
+          },
+          {
+            "case": "The value of a string is its content between its delimiters.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "a string label that keeps its quotes"
+              }
+            ]
+          },
+          {
+            "case": "The value of a markdown string is its content between its delimiters, also where a directive cuts one.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "a markdown label that keeps one of its backquotes"
+              },
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "a markdown string cut by a directive after its backquote whose value keeps a backquote"
+              },
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "a markdown string cut by a directive before its backquote whose value keeps a backquote"
+              }
+            ]
+          },
+          {
+            "case": "The value of a node text is the written text of its range.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "a node text that is not the written one"
+              }
+            ]
+          },
+          {
+            "case": "The value of a shape text is the written text of its range.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "a text label that is not the written one"
+              }
+            ]
+          },
+          {
+            "case": "The value of an icon is the written text of its range.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "an icon that is not the written one"
+              }
+            ]
+          },
+          {
+            "case": "The value of a class is the written text of its range.",
+            "tests": [
+              {
+                "file": "check-tree-mindmap.test.ts",
+                "text": "a class that is not the written one"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

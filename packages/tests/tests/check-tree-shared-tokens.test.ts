@@ -52921,3 +52921,1272 @@ describe("checkTree: the tokens of a sankey diagram (tokens/sankey.md)", () => {
     },
   ])
 })
+
+describe("checkTree: the tokens of a mindmap diagram (tokens/mindmap.md)", () => {
+  itFailsEachRecorded("mindmap", [
+    {
+      name: "fails a mindmap node text without its token",
+      fixture: "db-icon-line",
+      mutate: (root) => {
+        setField(
+          root,
+          "tokens",
+          root.tokens.filter((item) => item.range[0] !== 10),
+        )
+      },
+      expected:
+        'offset 10: the character outside the tokens and comments is not whitespace: "r"',
+    },
+    {
+      name: "fails a mindmap node text split into two RawText tokens",
+      fixture: "db-icon-line",
+      mutate: (root) => {
+        replaceToken(root, token(root, "root"), [
+          ["RawText", 0, 2],
+          ["RawText", 2, 4],
+        ])
+      },
+      expected:
+        "RawText at 12-14: a RawText token is split: RawText at 10-12 and this touch in MindmapLiteral at 10-14, so they are one token",
+    },
+    {
+      name: "fails the quotes of a mindmap string left out of its token",
+      fixture: "db-shape-string",
+      mutate: widenTokenAt(12, [13, 30]),
+      expected:
+        'String at 13-30: a String token does not start with a quote: "text with ( paren"',
+    },
+    {
+      name: "fails the token of a mindmap header widened over its following line feed",
+      fixture: "db-header-only",
+      mutate: widenTokenAt(0, [0, 8]),
+      expected:
+        "Keyword at 0-8: ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails the trailing whitespace left out of a mindmap node text token",
+      fixture: "db-node-trailing-whitespace",
+      mutate: widenTokenAt(10, [10, 14]),
+      expected:
+        "MindmapLiteral at 10-17: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the leading whitespace left out of a mindmap shape text token",
+      fixture: "gram-shape-text-quoted-with-space",
+      mutate: widenTokenAt(17, [18, 22]),
+      expected:
+        "MindmapLabel at 17-22: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the trailing whitespace left out of a mindmap shape text token",
+      fixture: "gram-shape-text-quoted-with-space",
+      mutate: widenTokenAt(17, [17, 21]),
+      expected:
+        "MindmapLabel at 17-22: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the leading whitespace left out of a mindmap icon token",
+      fixture: "db-icon-surrounding-whitespace",
+      mutate: widenTokenAt(26, [27, 29]),
+      expected:
+        "MindmapLiteral at 26-29: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the trailing whitespace left out of a mindmap icon token",
+      fixture: "db-icon-surrounding-whitespace",
+      mutate: widenTokenAt(26, [26, 28]),
+      expected:
+        "MindmapLiteral at 26-29: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the leading whitespace left out of a mindmap class token",
+      fixture: "db-class-leading-whitespace",
+      mutate: widenTokenAt(22, [24, 25]),
+      expected:
+        "MindmapLiteral at 22-25: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the trailing whitespace left out of a mindmap class token",
+      fixture: "db-class-trailing-space",
+      mutate: widenTokenAt(22, [22, 25]),
+      expected:
+        "MindmapLiteral at 22-27: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a mindmap shape text token that ends before the line feed inside it",
+      fixture: "gram-shape-text-line-feed",
+      mutate: widenTokenAt(17, [17, 18]),
+      expected:
+        "MindmapLabel at 17-20: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a mindmap node text held in one token over its directive",
+      fixture: "lex-directive-in-node-text",
+      mutate: oneTokenOver("RawText", [15, 31]),
+      expected: "Directive at 16-30: lies inside RawText at 15-31",
+    },
+    {
+      name: "fails the delimiters of a mindmap markdown string left out of its token",
+      fixture: "db-shape-markdown-string",
+      mutate: widenTokenAt(12, [14, 27]),
+      expected:
+        'String at 14-27: a String token does not start with a quote: "**bold** text"',
+    },
+    {
+      name: "fails the fragment before an ignored semicolon of a mindmap node text as a Keyword token",
+      fixture: "tokens-ignored-semicolon-in-node-text",
+      mutate: retypeTokenAt(15, "Keyword"),
+      expected:
+        'Keyword at 15-23 of "style:#x": lies in the value node MindmapLiteral at 15-25',
+    },
+    {
+      name: "fails the fragment after an ignored semicolon of a mindmap node text as a Keyword token",
+      fixture: "tokens-ignored-semicolon-in-node-text",
+      mutate: retypeTokenAt(24, "Keyword"),
+      expected:
+        'Keyword at 24-25 of "y": lies in the value node MindmapLiteral at 15-25',
+    },
+  ])
+})
+
+describe("checkTree: the tokens of a timeline diagram (tokens/timeline.md)", () => {
+  itFailsEachRecorded("timeline", [
+    {
+      name: "fails a timeline period without its token",
+      fixture: "db-event-two-on-a-line",
+      mutate: (root) => {
+        setField(
+          root,
+          "tokens",
+          root.tokens.filter((item) => item.range[0] !== 11),
+        )
+      },
+      expected:
+        'offset 11: the character outside the tokens and comments is not whitespace: "a"',
+    },
+    {
+      name: "fails a timeline event split into two RawText tokens",
+      fixture: "db-event-two-on-a-line",
+      mutate: (root) => {
+        replaceToken(root, token(root, "e1 "), [
+          ["RawText", 0, 1],
+          ["RawText", 1, 3],
+        ])
+      },
+      expected:
+        "RawText at 16-18: a RawText token is split: RawText at 15-16 and this touch in TimelineLiteral at 15-18, so they are one token",
+    },
+    {
+      name: "fails a timeline section text as a Keyword token",
+      fixture: "db-section-statement",
+      mutate: retypeTokenAt(19, "Keyword"),
+      expected:
+        'Keyword at 19-20 of "S": lies in the value node TimelineLiteral at 19-20',
+    },
+    {
+      name: "fails a timeline accessibility title text as a Keyword token",
+      fixture: "db-acc-title-statement",
+      mutate: retypeTokenAt(21, "Keyword"),
+      expected:
+        'Keyword at 21-22 of "T": lies in the value node TimelineLiteral at 21-22',
+    },
+    {
+      name: "fails a timeline accessibility description text as a Keyword token",
+      fixture: "db-acc-descr-statement",
+      mutate: retypeTokenAt(21, "Keyword"),
+      expected:
+        'Keyword at 21-22 of "D": lies in the value node TimelineLiteral at 21-22',
+    },
+    {
+      name: "fails a timeline description block text as a Keyword token",
+      fixture: "db-acc-descr-block",
+      mutate: retypeTokenAt(24, "Keyword"),
+      expected:
+        'Keyword at 24-37 of "line1\\n  line2": lies in the value node TimelineLiteral at 24-37',
+    },
+    {
+      name: "fails the token of a timeline header widened over its following line feed",
+      fixture: "db-header-only",
+      mutate: widenTokenAt(0, [0, 9]),
+      expected:
+        "Keyword at 0-9: ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails the trailing whitespace left out of a timeline period token",
+      fixture: "db-period-trailing-spaces",
+      mutate: widenTokenAt(11, [11, 12]),
+      expected:
+        "TimelineLiteral at 11-15: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the leading whitespace left out of a timeline event token",
+      fixture: "db-event-leading-spaces",
+      mutate: widenTokenAt(15, [17, 18]),
+      expected:
+        "TimelineLiteral at 15-18: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the trailing whitespace left out of a timeline event token",
+      fixture: "db-event-trailing-spaces",
+      mutate: widenTokenAt(15, [15, 16]),
+      expected:
+        "TimelineLiteral at 15-19: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a whitespace-only timeline event without its token",
+      fixture: "db-event-two-spaces",
+      mutate: (root) => {
+        setField(
+          root,
+          "tokens",
+          root.tokens.filter((item) => item.range[0] !== 15),
+        )
+      },
+      expected:
+        "TimelineLiteral at 15-16: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the leading whitespace left out of a timeline title token",
+      fixture: "db-title-two-spaces",
+      mutate: widenTokenAt(17, [18, 19]),
+      expected:
+        "TimelineLiteral at 17-19: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the trailing whitespace left out of a timeline title token",
+      fixture: "db-title-trailing-spaces",
+      mutate: widenTokenAt(17, [17, 18]),
+      expected:
+        "TimelineLiteral at 17-21: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the leading whitespace left out of a timeline section token",
+      fixture: "db-section-two-spaces",
+      mutate: widenTokenAt(19, [20, 21]),
+      expected:
+        "TimelineLiteral at 19-21: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the trailing whitespace left out of a timeline section token",
+      fixture: "db-section-trailing-spaces",
+      mutate: widenTokenAt(19, [19, 20]),
+      expected:
+        "TimelineLiteral at 19-23: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a timeline accessibility title token widened over its leading whitespace",
+      fixture: "db-acc-title-statement",
+      mutate: widenTokenAt(21, [20, 22]),
+      expected:
+        "RawText at 20-22: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails a timeline accessibility title token widened over its trailing whitespace",
+      fixture: "db-acc-title-trailing-spaces",
+      mutate: widenTokenAt(21, [21, 25]),
+      expected:
+        "RawText at 21-25: ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails a timeline accessibility description token widened over its leading whitespace",
+      fixture: "db-acc-descr-statement",
+      mutate: widenTokenAt(21, [20, 22]),
+      expected:
+        "RawText at 20-22: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails a timeline accessibility description token widened over its trailing whitespace",
+      fixture: "lex-acc-descr-trailing-tab",
+      mutate: widenTokenAt(21, [21, 23]),
+      expected:
+        "RawText at 21-23: ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails a timeline description block token widened over its leading whitespace",
+      fixture: "db-acc-descr-block",
+      mutate: widenTokenAt(24, [21, 37]),
+      expected:
+        "RawText at 21-37: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails a timeline description block token widened over its trailing whitespace",
+      fixture: "db-acc-descr-block",
+      mutate: widenTokenAt(24, [24, 40]),
+      expected:
+        "RawText at 24-40: ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails a timeline description block token that ends before the line feed and indentation inside it",
+      fixture: "db-acc-descr-block",
+      mutate: widenTokenAt(24, [24, 29]),
+      expected:
+        "TimelineLiteral at 24-37: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the keyword of an empty timeline description block as a RawText token",
+      fixture: "db-acc-descr-block-braces-only",
+      mutate: retypeTokenAt(11, "RawText"),
+      expected: 'RawText at 11-19 of "accDescr": lies in no value node',
+    },
+    {
+      name: "fails the opening brace of an empty timeline description block as a Keyword token",
+      fixture: "db-acc-descr-block-braces-only",
+      mutate: retypeTokenAt(20, "Keyword"),
+      expected:
+        'Keyword at 20-21 of "{" in TimelineAccDescrBlockStatement at 11-22: the kind of a token that the node writes itself: "Keyword", not "Punctuator"',
+    },
+    {
+      name: "fails the closing brace of an empty timeline description block as a Keyword token",
+      fixture: "db-acc-descr-block-braces-only",
+      mutate: retypeTokenAt(21, "Keyword"),
+      expected:
+        'Keyword at 21-22 of "}" in TimelineAccDescrBlockStatement at 11-22: the kind of a token that the node writes itself: "Keyword", not "Punctuator"',
+    },
+    {
+      name: "fails the fragment before an ignored semicolon of a timeline period as a Keyword token",
+      fixture: "tokens-ignored-semicolon-in-period",
+      mutate: retypeTokenAt(33, "Keyword"),
+      expected:
+        'Keyword at 33-34 of "a": lies in the value node TimelineLiteral at 33-36',
+    },
+    {
+      name: "fails the fragment after an ignored semicolon of a timeline period as a Keyword token",
+      fixture: "tokens-ignored-semicolon-in-period",
+      mutate: retypeTokenAt(35, "Keyword"),
+      expected:
+        'Keyword at 35-36 of "b": lies in the value node TimelineLiteral at 33-36',
+    },
+  ])
+})
+
+describe("checkTree: the tokens of an info diagram (tokens/info.md)", () => {
+  itFailsEachRecorded("info", [
+    {
+      name: "fails an info title held in one token with its keyword and value",
+      fixture: "common-all",
+      mutate: oneTokenOver("RawText", [5, 12]),
+      expected:
+        "InfoLiteral at 11-12: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info accessibility title held in one token with its keyword colon and value",
+      fixture: "common-all",
+      mutate: oneTokenOver("RawText", [13, 24]),
+      expected:
+        "InfoLiteral at 22-24: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info accessibility description held in one token with its keyword colon and value",
+      fixture: "common-flag-all",
+      mutate: oneTokenOver("RawText", [14, 25]),
+      expected:
+        "InfoLiteral at 23-25: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info description block held in one token with its keyword braces and value",
+      fixture: "common-all",
+      mutate: oneTokenOver("RawText", [25, 39]),
+      expected:
+        "InfoLiteral at 36-37: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the info header as a RawText token",
+      fixture: "common-all",
+      mutate: retypeTokenAt(0, "RawText"),
+      expected: 'RawText at 0-4 of "info": lies in no value node',
+    },
+    {
+      name: "fails the info showInfo flag as a RawText token",
+      fixture: "common-flag-all",
+      mutate: retypeTokenAt(5, "RawText"),
+      expected: 'RawText at 5-13 of "showInfo": lies in no value node',
+    },
+    {
+      name: "fails the keyword title of info as a RawText token",
+      fixture: "common-all",
+      mutate: retypeTokenAt(5, "RawText"),
+      expected: 'RawText at 5-10 of "title": lies in no value node',
+    },
+    {
+      name: "fails the keyword accTitle of info as a RawText token",
+      fixture: "common-all",
+      mutate: retypeTokenAt(13, "RawText"),
+      expected: 'RawText at 13-21 of "accTitle": lies in no value node',
+    },
+    {
+      name: "fails the keyword accDescr of info as a RawText token",
+      fixture: "common-flag-all",
+      mutate: retypeTokenAt(14, "RawText"),
+      expected: 'RawText at 14-22 of "accDescr": lies in no value node',
+    },
+    {
+      name: "fails an info accessibility colon as a Keyword token",
+      fixture: "common-all",
+      mutate: retypeTokenAt(21, "Keyword"),
+      expected:
+        'Keyword at 21-22 of ":" in InfoAccTitleStatement at 13-24: the kind of a token that the node writes itself: "Keyword", not "Punctuator"',
+    },
+    {
+      name: "fails the opening brace of an info description block as a Keyword token",
+      fixture: "common-all",
+      mutate: retypeTokenAt(34, "Keyword"),
+      expected:
+        'Keyword at 34-35 of "{" in InfoAccDescrBlockStatement at 25-39: the kind of a token that the node writes itself: "Keyword", not "Punctuator"',
+    },
+    {
+      name: "fails the closing brace of an info description block as a Keyword token",
+      fixture: "common-all",
+      mutate: retypeTokenAt(38, "Keyword"),
+      expected:
+        'Keyword at 38-39 of "}" in InfoAccDescrBlockStatement at 25-39: the kind of a token that the node writes itself: "Keyword", not "Punctuator"',
+    },
+    {
+      name: "fails an info title value as a Keyword token",
+      fixture: "common-all",
+      mutate: retypeTokenAt(11, "Keyword"),
+      expected:
+        'Keyword at 11-12 of "T": lies in the value node InfoLiteral at 11-12',
+    },
+    {
+      name: "fails an info accessibility title value as a Keyword token",
+      fixture: "common-all",
+      mutate: retypeTokenAt(22, "Keyword"),
+      expected:
+        'Keyword at 22-24 of " A": lies in the value node InfoLiteral at 22-24',
+    },
+    {
+      name: "fails an info accessibility description value as a Keyword token",
+      fixture: "common-flag-all",
+      mutate: retypeTokenAt(23, "Keyword"),
+      expected:
+        'Keyword at 23-25 of " D": lies in the value node InfoLiteral at 23-25',
+    },
+    {
+      name: "fails an info description block value as a Keyword token",
+      fixture: "common-all",
+      mutate: retypeTokenAt(36, "Keyword"),
+      expected:
+        'Keyword at 36-37 of "D": lies in the value node InfoLiteral at 36-37',
+    },
+    {
+      name: "fails a hidden YAML form of info as a Keyword token",
+      fixture: "hidden-yaml-body",
+      mutate: retypeTokenAt(5, "Keyword"),
+      expected:
+        'Keyword at 5-17 of "---\\nx: y\\n---": lies in the value node InfoIgnoredText at 5-17',
+    },
+    {
+      name: "fails a hidden DIRECTIVE form of info as a Keyword token",
+      fixture: "hidden-directive-body",
+      mutate: retypeTokenAt(5, "Keyword"),
+      expected:
+        'Keyword at 5-11 of "%%{}%%": lies in the value node InfoIgnoredText at 5-11',
+    },
+    {
+      name: "fails a nonempty info common value without its token",
+      fixture: "common-all",
+      mutate: (root) => {
+        setField(
+          root,
+          "tokens",
+          root.tokens.filter((item) => item.range[0] !== 11),
+        )
+      },
+      expected:
+        'offset 11: the character outside the tokens and comments is not whitespace: "T"',
+    },
+    {
+      name: "fails an info common value split into two RawText tokens",
+      fixture: "title-double-quotes",
+      mutate: (root) => {
+        replaceToken(root, token(root, '"a\\n\\q"'), [
+          ["RawText", 0, 2],
+          ["RawText", 2, 7],
+        ])
+      },
+      expected:
+        "RawText at 13-18: a RawText token is split: RawText at 11-13 and this touch in InfoLiteral at 11-18, so they are one token",
+    },
+    {
+      name: "fails a hidden YAML form of info split into two RawText tokens",
+      fixture: "hidden-yaml-body",
+      mutate: (root, input) => {
+        setField(root, "tokens", [
+          root.tokens[0],
+          tokenOf(input, "RawText", { text: "---", from: 5 }),
+          tokenOf(input, "RawText", { text: input.slice(8, 17), from: 8 }),
+          ...root.tokens.slice(2),
+        ])
+      },
+      expected:
+        "RawText at 8-17: a RawText token is split: RawText at 5-8 and this touch in InfoIgnoredText at 5-17, so they are one token",
+    },
+    {
+      name: "fails a hidden DIRECTIVE form of info split into two RawText tokens",
+      fixture: "hidden-directive-body",
+      mutate: (root) => {
+        replaceToken(root, token(root, "%%{}%%"), [
+          ["RawText", 0, 3],
+          ["RawText", 3, 6],
+        ])
+      },
+      expected:
+        "RawText at 8-11: a RawText token is split: RawText at 5-8 and this touch in InfoIgnoredText at 5-11, so they are one token",
+    },
+    {
+      name: "fails the leading padding left out of an info title token after its tab separator",
+      fixture: "title-tabs",
+      mutate: widenTokenAt(11, [12, 18]),
+      expected:
+        "InfoLiteral at 11-18: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info title token that includes its one tab separator",
+      fixture: "title-tabs",
+      mutate: widenTokenAt(11, [10, 18]),
+      expected:
+        "RawText at 10-18: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails an info title token that includes its one space separator",
+      fixture: "lex-title-two-spaces",
+      mutate: widenTokenAt(11, [10, 12]),
+      expected:
+        "RawText at 10-12: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails the trailing padding left out of an info title token",
+      fixture: "title-tabs",
+      mutate: widenTokenAt(11, [11, 16]),
+      expected:
+        "InfoLiteral at 11-18: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a whitespace-only info title without its value token after a space separator",
+      fixture: "lex-title-two-spaces",
+      mutate: (root) => {
+        setField(
+          root,
+          "tokens",
+          root.tokens.filter((item) => item.range[0] !== 11),
+        )
+      },
+      expected:
+        "InfoLiteral at 11-12: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the leading padding left out of an info accessibility title token",
+      fixture: "space-common-interior",
+      mutate: widenTokenAt(27, [29, 33]),
+      expected:
+        "InfoLiteral at 27-33: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the trailing padding left out of an info accessibility title token",
+      fixture: "space-common-interior",
+      mutate: widenTokenAt(27, [27, 32]),
+      expected:
+        "InfoLiteral at 27-33: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the leading padding left out of an info accessibility description token",
+      fixture: "space-common-interior",
+      mutate: widenTokenAt(43, [45, 49]),
+      expected:
+        "InfoLiteral at 43-49: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the trailing padding left out of an info accessibility description token",
+      fixture: "space-common-interior",
+      mutate: widenTokenAt(43, [43, 48]),
+      expected:
+        "InfoLiteral at 43-49: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a whitespace-only info accessibility description without its token",
+      fixture: "lex-accdescr-line-whitespace",
+      mutate: (root) => {
+        setField(
+          root,
+          "tokens",
+          root.tokens.filter((item) => item.range[0] !== 14),
+        )
+      },
+      expected:
+        "InfoLiteral at 14-16: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a value token for empty info title content after one space",
+      fixture: "lex-title-one-space",
+      mutate: oneTokenOver("RawText", [11, 11]),
+      expected: 'RawText at 11-11 of "": lies in no value node',
+    },
+    {
+      name: "fails a value token for empty info title content after one tab",
+      fixture: "lex-title-one-tab",
+      mutate: oneTokenOver("RawText", [11, 11]),
+      expected: 'RawText at 11-11 of "": lies in no value node',
+    },
+    {
+      name: "fails a value token for an empty info accessibility title",
+      fixture: "acctitle-empty",
+      mutate: oneTokenOver("RawText", [14, 14]),
+      expected: 'RawText at 14-14 of "": lies in no value node',
+    },
+    {
+      name: "fails a value token for an empty info accessibility description",
+      fixture: "accdescr-line-empty",
+      mutate: oneTokenOver("RawText", [14, 14]),
+      expected: 'RawText at 14-14 of "": lies in no value node',
+    },
+    {
+      name: "fails an info block value token widened over its leading common whitespace",
+      fixture: "space-block-interior",
+      mutate: widenTokenAt(17, [15, 25]),
+      expected:
+        "RawText at 15-25: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails an info block value token widened over its trailing common whitespace",
+      fixture: "space-block-interior",
+      mutate: widenTokenAt(17, [17, 26]),
+      expected:
+        "RawText at 17-26: ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails a value token for an empty info description block",
+      fixture: "accdescr-block-empty",
+      mutate: (root, input) => {
+        setField(root, "tokens", [
+          ...root.tokens.slice(0, 3),
+          tokenOf(input, "RawText", { text: "", from: 15 }),
+          ...root.tokens.slice(3),
+        ])
+      },
+      expected: 'RawText at 15-15 of "": lies in no value node',
+    },
+    {
+      name: "fails a value token for a whitespace-only info description block",
+      fixture: "lex-block-whitespace-only",
+      mutate: oneTokenOver("RawText", [15, 16]),
+      expected: 'RawText at 15-16 of " ": lies in no value node',
+    },
+    {
+      name: "fails a value token for a directive-only info description block",
+      fixture: "lex-block-directive-only",
+      mutate: oneTokenOver("RawText", [15, 16]),
+      expected: 'RawText at 15-16 of " ": lies in no value node',
+    },
+    {
+      name: "fails a value token for a comment-region-only info description block",
+      fixture: "lex-block-comment-only",
+      mutate: oneTokenOver("RawText", [15, 16]),
+      expected: 'RawText at 15-16 of "\\n": lies in no value node',
+    },
+    {
+      name: "fails an open quote-looking info common value as a String token",
+      fixture: "title-open-quote",
+      mutate: retypeTokenAt(11, "String"),
+      expected:
+        "InfoLiteral at 11-22: the tokens of a common value or hidden form are not all of the kind RawText: String",
+    },
+    {
+      name: "fails a double-quoted info common value as a String token",
+      fixture: "title-double-quotes",
+      mutate: retypeTokenAt(11, "String"),
+      expected:
+        "InfoLiteral at 11-18: the tokens of a common value or hidden form are not all of the kind RawText: String",
+    },
+    {
+      name: "fails a single-quoted info common value as a String token",
+      fixture: "title-single-quotes",
+      mutate: retypeTokenAt(11, "String"),
+      expected:
+        "InfoLiteral at 11-18: the tokens of a common value or hidden form are not all of the kind RawText: String",
+    },
+    {
+      name: "fails an info common value token that leaves out its quotes",
+      fixture: "title-double-quotes",
+      mutate: (root) => {
+        setField(token(root, '"a\\n\\q"'), "value", "a\\n\\q")
+      },
+      expected:
+        'RawText at 11-18: value: "a\\\\n\\\\q", not "\\"a\\\\n\\\\q\\""',
+    },
+    {
+      name: "fails an info common value token that decodes its backslashes",
+      fixture: "title-double-quotes",
+      mutate: (root) => {
+        setField(token(root, '"a\\n\\q"'), "value", '"a\nq"')
+      },
+      expected:
+        'RawText at 11-18: value: "\\"a\\nq\\"", not "\\"a\\\\n\\\\q\\""',
+    },
+    {
+      name: "fails an info common value token that decodes its entity",
+      fixture: "html-all-common",
+      mutate: (root) => {
+        const value = root.tokens.find((item) => item.range[0] === 11)!
+        setField(value, "value", value.value.replace("#35;", "#"))
+      },
+      expected:
+        'RawText at 11-40: value: "<b class=\\"x\\">T</b> &amp; #", not "<b class=\\"x\\">T</b> &amp; #35;"',
+    },
+    {
+      name: "fails an info common value token that converts its attribute quotes",
+      fixture: "html-all-common",
+      mutate: (root) => {
+        const value = root.tokens.find((item) => item.range[0] === 11)!
+        setField(value, "value", value.value.replace('"x"', "'x'"))
+      },
+      expected:
+        'RawText at 11-40: value: "<b class=\'x\'>T</b> &amp; #35;", not "<b class=\\"x\\">T</b> &amp; #35;"',
+    },
+    {
+      name: "fails an info common value token that converts its CRLF to LF",
+      fixture: "line-crlf",
+      mutate: (root) => {
+        setField(token(root, "A\r\nB"), "value", "A\nB")
+      },
+      expected: 'RawText at 27-31: value: "A\\nB", not "A\\r\\nB"',
+    },
+    {
+      name: "fails an info block value token that leaves out its interior line feeds and indentation",
+      fixture: "accdescr-block-lines",
+      mutate: widenTokenAt(18, [18, 22]),
+      expected:
+        "InfoLiteral at 18-27: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the opener left out of a hidden YAML token of info",
+      fixture: "hidden-yaml-body",
+      mutate: widenTokenAt(5, [8, 17]),
+      expected:
+        "InfoIgnoredText at 5-17: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the closer left out of a hidden YAML token of info",
+      fixture: "hidden-yaml-body",
+      mutate: widenTokenAt(5, [5, 14]),
+      expected:
+        "InfoIgnoredText at 5-17: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the opener left out of a hidden DIRECTIVE token of info",
+      fixture: "hidden-directive-body",
+      mutate: widenTokenAt(5, [8, 11]),
+      expected:
+        "InfoIgnoredText at 5-11: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the closer left out of a hidden DIRECTIVE token of info",
+      fixture: "hidden-directive-body",
+      mutate: widenTokenAt(5, [5, 8]),
+      expected:
+        "InfoIgnoredText at 5-11: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a hidden DIRECTIVE token of info widened over preceding padding",
+      fixture: "hidden-directive-padding",
+      mutate: widenTokenAt(7, [5, 16]),
+      expected:
+        "RawText at 5-16: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails a hidden YAML token of info widened over the following LF",
+      fixture: "hidden-yaml-open-padding",
+      mutate: widenTokenAt(5, [5, 20]),
+      expected:
+        "RawText at 5-20: ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails a hidden DIRECTIVE token of info widened over the following LF",
+      fixture: "hidden-directive-body",
+      mutate: widenTokenAt(5, [5, 12]),
+      expected:
+        "RawText at 5-12: ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails a hidden YAML token of info that leaves out its interior padding",
+      fixture: "hidden-yaml-open-padding",
+      mutate: (root) => {
+        setField(token(root, "--- \t\nx: y\n---"), "value", "---\nx: y\n---")
+      },
+      expected:
+        'RawText at 5-19: value: "---\\nx: y\\n---", not "--- \\t\\nx: y\\n---"',
+    },
+    {
+      name: "fails a hidden YAML token of info that converts its internal CR to LF",
+      fixture: "hidden-yaml-cr",
+      mutate: (root) => {
+        setField(token(root, "---\rx: y\r---"), "value", "---\nx: y\n---")
+      },
+      expected:
+        'RawText at 19-31: value: "---\\nx: y\\n---", not "---\\rx: y\\r---"',
+    },
+    {
+      name: "fails ASCII space between info units as a token",
+      fixture: "common-flag-all",
+      mutate: oneTokenOver("RawText", [4, 5]),
+      expected:
+        "RawText at 4-5: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails ASCII tab between info units as a token",
+      fixture: "space-header-tab",
+      mutate: oneTokenOver("RawText", [4, 5]),
+      expected:
+        "RawText at 4-5: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails a visible empty line of info as a token",
+      fixture: "common-blank-lines",
+      mutate: oneTokenOver("RawText", [13, 14]),
+      expected:
+        "RawText at 13-14: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails a hidden YAML token of info that includes the appended LF at EOF",
+      fixture: "hidden-yaml-block-eof",
+      mutate: (root, input) => {
+        const hidden = token(root, "---\nx: y\n---")
+        const range = [19, input.length + 1] as const
+        setField(hidden, "range", range)
+        setField(hidden, "loc", locationOf(input, range))
+        setField(hidden, "value", `${hidden.value}\n`)
+      },
+      expected: "RawText at 19-32: lies outside the input",
+    },
+    {
+      name: "fails a hidden DIRECTIVE token of info that includes the appended LF at EOF",
+      fixture: "hidden-directive-title-eof",
+      mutate: (root, input) => {
+        const hidden = token(root, "%%{}%%")
+        const range = [12, input.length + 1] as const
+        setField(hidden, "range", range)
+        setField(hidden, "loc", locationOf(input, range))
+        setField(hidden, "value", `${hidden.value}\n`)
+      },
+      expected: "RawText at 12-19: lies outside the input",
+    },
+    {
+      name: "fails a hidden YAML token of info widened before its opener",
+      fixture: "hidden-yaml-body",
+      mutate: widenTokenAt(5, [4, 17]),
+      expected:
+        "RawText at 4-17: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails an info native comment with the mark hash",
+      fixture: "comment-header",
+      mutate: (root) => {
+        setField(root.comments[0], "mark", "#")
+      },
+      expected:
+        "Comment at 4-8: the mark # is no mark of the comments of an InfoDiagram",
+    },
+    {
+      name: "fails an info native comment whose range leaves out its first percent",
+      fixture: "comment-header",
+      mutate: (root, input) => {
+        setField(root.comments[0], "range", [5, 8])
+        setField(root.comments[0], "loc", locationOf(input, [5, 8]))
+      },
+      expected: 'Comment at 5-8: mark: "%%", not "%"',
+    },
+    {
+      name: "fails an info native comment whose range starts at its preceding padding",
+      fixture: "c4component-flag-comment-lf",
+      mutate: (root, input) => {
+        setField(root.comments[0], "range", [13, 28])
+        setField(root.comments[0], "loc", locationOf(input, [13, 28]))
+      },
+      expected:
+        'Comment at 13-28: value of a diagram comment: " C4Component", not "% C4Component"',
+    },
+    {
+      name: "fails an info native comment whose range includes its physical LF",
+      fixture: "comment-header",
+      mutate: (root, input) => {
+        const comment = root.comments[0]
+        setField(comment, "range", [4, 9])
+        setField(comment, "loc", locationOf(input, [4, 9]))
+        setField(comment, "value", input.slice(6, 9))
+      },
+      expected: "Comment at 4-9: ends with a line terminator",
+    },
+    {
+      name: "fails an info native comment whose range ends at U+2029",
+      fixture: "lex-native-comment-ps",
+      mutate: (root, input) => {
+        const comment = root.comments[0]
+        setField(comment, "range", [4, 8])
+        setField(comment, "loc", locationOf(input, [4, 8]))
+        setField(comment, "value", input.slice(6, 8))
+      },
+      expected: "Comment at 4-8: does not end where its line ends",
+    },
+    {
+      name: "fails an info native comment held in one record across a common comment region",
+      fixture: "lex-comment-ls-bridge",
+      mutate: (root, input) => {
+        const comment = root.comments[0]
+        setField(comment, "range", [4, 22])
+        setField(comment, "loc", locationOf(input, [4, 22]))
+        setField(comment, "value", input.slice(6, 22))
+        setField(
+          root,
+          "comments",
+          root.comments.filter((item) => item.range[0] !== 14),
+        )
+      },
+      expected:
+        "Comment at 9-13: overlaps the Comment before it, or comes before it",
+    },
+  ])
+})
+
+describe("checkTree: the tokens of a journey diagram (tokens/journey.md)", () => {
+  itFailsEachRecorded("journey", [
+    {
+      name: "fails the journey section keyword as a RawText token",
+      fixture: "db-sections",
+      mutate: retypeTokenAt(10, "RawText"),
+      expected:
+        'RawText at 10-17 of "section" in JourneySectionStatement at 10-20: the kind of a token that the node writes itself: "RawText", not "Keyword"',
+    },
+    {
+      name: "fails the journey accessibility title keyword as a RawText token",
+      fixture: "db-acc-title",
+      mutate: retypeTokenAt(10, "RawText"),
+      expected:
+        'RawText at 10-18 of "accTitle" in JourneyAccTitleStatement at 10-29: the kind of a token that the node writes itself: "RawText", not "Keyword"',
+    },
+    {
+      name: "fails the journey accessibility description keyword as a RawText token",
+      fixture: "db-acc-descr",
+      mutate: retypeTokenAt(10, "RawText"),
+      expected:
+        'RawText at 10-18 of "accDescr" in JourneyAccDescrStatement at 10-35: the kind of a token that the node writes itself: "RawText", not "Keyword"',
+    },
+    {
+      name: "fails the journey description block keyword as a RawText token",
+      fixture: "db-acc-descr-block",
+      mutate: retypeTokenAt(10, "RawText"),
+      expected:
+        'RawText at 10-18 of "accDescr" in JourneyAccDescrBlockStatement at 10-48: the kind of a token that the node writes itself: "RawText", not "Keyword"',
+    },
+    {
+      name: "fails the journey section text as a Keyword token",
+      fixture: "db-sections",
+      mutate: retypeTokenAt(18, "Keyword"),
+      expected:
+        "JourneyLiteral at 18-20: the tokens of a JourneyLiteral are not all of the kind RawText: Keyword",
+    },
+    {
+      name: "fails the journey person as a Keyword token",
+      fixture: "db-task-people",
+      mutate: retypeTokenAt(16, "Keyword"),
+      expected:
+        "JourneyLiteral at 16-18: the tokens of a JourneyLiteral are not all of the kind RawText: Keyword",
+    },
+    {
+      name: "fails the journey accessibility title text as a Keyword token",
+      fixture: "db-acc-title",
+      mutate: retypeTokenAt(20, "Keyword"),
+      expected:
+        "JourneyLiteral at 20-29: the tokens of a JourneyLiteral are not all of the kind RawText: Keyword",
+    },
+    {
+      name: "fails the journey accessibility description text as a Keyword token",
+      fixture: "db-acc-descr",
+      mutate: retypeTokenAt(20, "Keyword"),
+      expected:
+        "JourneyLiteral at 20-35: the tokens of a JourneyLiteral are not all of the kind RawText: Keyword",
+    },
+    {
+      name: "fails the journey description block text as a Keyword token",
+      fixture: "db-acc-descr-block",
+      mutate: retypeTokenAt(24, "Keyword"),
+      expected:
+        "JourneyLiteral at 24-44: the tokens of a JourneyLiteral are not all of the kind RawText: Keyword",
+    },
+    {
+      name: "fails the journey opening brace as a Keyword token",
+      fixture: "db-acc-descr-block",
+      mutate: retypeTokenAt(19, "Keyword"),
+      expected:
+        'Keyword at 19-20 of "{" in JourneyAccDescrBlockStatement at 10-48: the kind of a token that the node writes itself: "Keyword", not "Punctuator"',
+    },
+    {
+      name: "fails journey person text split into touching RawText tokens",
+      fixture: "db-task-people",
+      mutate: (root, input) => {
+        const target = token(root, "Me")
+        setField(
+          root,
+          "tokens",
+          root.tokens.flatMap((item) =>
+            item === target
+              ? [
+                  tokenOf(input, "RawText", { text: "M", from: 16 }),
+                  tokenOf(input, "RawText", { text: "e", from: 17 }),
+                ]
+              : [item],
+          ),
+        )
+      },
+      expected:
+        "RawText at 17-18: a RawText token is split: RawText at 16-17 and this touch in JourneyLiteral at 16-18, so they are one token",
+    },
+    {
+      name: "fails the journey task text token without its trailing spaces",
+      fixture: "db-task-description-spaces",
+      mutate: widenTokenAt(10, [10, 18]),
+      expected:
+        "JourneyLiteral at 10-20: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the journey title text token without its leading space",
+      fixture: "lex-title-two-spaces",
+      mutate: widenTokenAt(16, [17, 18]),
+      expected:
+        "JourneyLiteral at 16-18: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the journey title text token without its trailing spaces",
+      fixture: "lex-title-trailing-spaces",
+      mutate: widenTokenAt(16, [16, 17]),
+      expected:
+        "JourneyLiteral at 16-20: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the journey section text token without its leading space",
+      fixture: "lex-section-two-spaces",
+      mutate: widenTokenAt(18, [19, 20]),
+      expected:
+        "JourneyLiteral at 18-20: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the journey section text token without its trailing spaces",
+      fixture: "db-sections",
+      mutate: widenTokenAt(44, [44, 48]),
+      expected:
+        "JourneyLiteral at 44-50: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the journey accessibility title token with its leading whitespace",
+      fixture: "db-acc-title",
+      mutate: widenTokenAt(20, [19, 29]),
+      expected:
+        "RawText at 19-29: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails the journey accessibility title token with its trailing whitespace",
+      fixture: "gram-acc-title-trailing-spaces",
+      mutate: widenTokenAt(20, [20, 24]),
+      expected:
+        "RawText at 20-24: ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails the journey accessibility description token with its leading whitespace",
+      fixture: "db-acc-descr",
+      mutate: widenTokenAt(20, [19, 35]),
+      expected:
+        "RawText at 19-35: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails the journey description block token with its leading whitespace",
+      fixture: "db-acc-descr-block",
+      mutate: widenTokenAt(24, [20, 44]),
+      expected:
+        "RawText at 20-44: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails the journey description block token with its trailing whitespace",
+      fixture: "db-acc-descr-block",
+      mutate: widenTokenAt(24, [24, 47]),
+      expected:
+        "RawText at 24-47: ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails the journey description block token without its interior line break",
+      fixture: "db-acc-descr-block",
+      mutate: widenTokenAt(24, [24, 32]),
+      expected:
+        "JourneyLiteral at 24-44: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the journey score token with its leading NBSP",
+      fixture: "lex-task-score-nbsp-trimmed",
+      mutate: widenTokenAt(13, [12, 14]),
+      expected:
+        "RawText at 12-14: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails the journey score token with its trailing NBSP",
+      fixture: "lex-task-score-nbsp-trimmed",
+      mutate: widenTokenAt(13, [13, 15]),
+      expected:
+        "RawText at 13-15: ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails the journey person token with its leading NBSP",
+      fixture: "gram-task-people-nbsp-trimmed",
+      mutate: widenTokenAt(16, [15, 18]),
+      expected:
+        "RawText at 15-18: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails the journey person token with its trailing NBSP",
+      fixture: "gram-task-people-nbsp-trimmed",
+      mutate: widenTokenAt(16, [16, 19]),
+      expected:
+        "RawText at 16-19: ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails the journey ignored data token with its trailing spaces",
+      fixture: "gram-task-ignored-data-trailing-spaces",
+      mutate: widenTokenAt(18, [18, 23]),
+      expected:
+        "RawText at 18-23: ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails the journey title token without its space before a closed directive",
+      fixture: "lex-directive-at-end-of-title-line",
+      mutate: widenTokenAt(16, [16, 17]),
+      expected:
+        "JourneyLiteral at 16-18: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the journey section token without its space before a closed directive",
+      fixture: "lex-directive-at-end-of-section-line",
+      mutate: widenTokenAt(18, [18, 19]),
+      expected:
+        "JourneyLiteral at 18-20: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the journey title token containing its glued closed directive",
+      fixture: "lex-directive-glued-at-end-of-title",
+      mutate: widenTokenAt(16, [16, 31]),
+      expected: "Directive at 17-31: lies inside RawText at 16-31",
+    },
+    {
+      name: "fails the journey section token containing its glued closed directive",
+      fixture: "lex-directive-glued-at-end-of-section",
+      mutate: widenTokenAt(18, [18, 33]),
+      expected: "Directive at 19-33: lies inside RawText at 18-33",
+    },
+    {
+      name: "fails the journey title token with its CRLF",
+      fixture: "lex-title-crlf-value",
+      mutate: widenTokenAt(17, [17, 20]),
+      expected:
+        "RawText at 17-20: ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails the journey title token with its CR",
+      fixture: "lex-title-cr-value",
+      mutate: widenTokenAt(16, [16, 18]),
+      expected:
+        "RawText at 16-18: ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails the journey section token with its CRLF",
+      fixture: "lex-section-crlf-value",
+      mutate: widenTokenAt(19, [19, 22]),
+      expected:
+        "RawText at 19-22: ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails the journey section token with its CR",
+      fixture: "lex-section-cr-value",
+      mutate: widenTokenAt(18, [18, 20]),
+      expected:
+        "RawText at 18-20: ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails the keyword of an empty journey description block as a RawText token",
+      fixture: "gram-acc-descr-block-empty",
+      mutate: retypeTokenAt(10, "RawText"),
+      expected:
+        'RawText at 10-18 of "accDescr" in JourneyAccDescrBlockStatement at 10-21: the kind of a token that the node writes itself: "RawText", not "Keyword"',
+    },
+    {
+      name: "fails the opening brace of an empty journey description block as a RawText token",
+      fixture: "gram-acc-descr-block-empty",
+      mutate: retypeTokenAt(19, "RawText"),
+      expected:
+        'RawText at 19-20 of "{" in JourneyAccDescrBlockStatement at 10-21: the kind of a token that the node writes itself: "RawText", not "Punctuator"',
+    },
+    {
+      name: "fails the closing brace of an empty journey description block as a RawText token",
+      fixture: "gram-acc-descr-block-empty",
+      mutate: retypeTokenAt(20, "RawText"),
+      expected:
+        'RawText at 20-21 of "}" in JourneyAccDescrBlockStatement at 10-21: the kind of a token that the node writes itself: "RawText", not "Punctuator"',
+    },
+    {
+      name: "fails the ignored semicolon after a journey accessibility title as a Punctuator",
+      fixture: "tokens-ignored-semicolon-in-acc-title",
+      mutate: retypeTokenAt(28, "Punctuator"),
+      expected:
+        'Punctuator at 28-29: the Punctuator text ";" is none of those of a JourneyDiagram',
+    },
+    {
+      name: "fails the ignored semicolon inside journey task text as a Punctuator",
+      fixture: "tokens-ignored-semicolon-in-task-text",
+      mutate: retypeTokenAt(33, "Punctuator"),
+      expected:
+        'Punctuator at 33-34: the Punctuator text ";" is none of those of a JourneyDiagram',
+    },
+    {
+      name: "fails the journey task text token with its leading indentation",
+      fixture: "db-task-description-spaces",
+      mutate: widenTokenAt(10, [9, 20]),
+      expected:
+        "RawText at 9-20: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails the journey accessibility description token with its trailing line feed",
+      fixture: "db-acc-descr",
+      mutate: widenTokenAt(20, [20, 36]),
+      expected:
+        "RawText at 20-36: ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails the colon inside journey ignored data as a separate punctuation token",
+      fixture: "db-task-extra-colon",
+      mutate: (root, input) => {
+        const target = token(root, ": c, d")
+        setField(
+          root,
+          "tokens",
+          root.tokens.flatMap((item) =>
+            item === target
+              ? [
+                  tokenOf(input, "Punctuator", { text: ":", from: 19 }),
+                  tokenOf(input, "RawText", { text: " c, d", from: 20 }),
+                ]
+              : [item],
+          ),
+        )
+      },
+      expected:
+        "JourneyIgnoredText at 19-25: the tokens of a JourneyIgnoredText are not all of the kind RawText: Punctuator, RawText",
+    },
+    {
+      name: "fails a journey nonwhitespace person unit without its token",
+      fixture: "db-task-people",
+      mutate: (root) => {
+        setField(
+          root,
+          "tokens",
+          root.tokens.filter((item) => item.range[0] !== 16),
+        )
+      },
+      expected:
+        'offset 16: the character outside the tokens and comments is not whitespace: "M"',
+    },
+  ])
+})

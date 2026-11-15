@@ -1,0 +1,748 @@
+{
+  "rows": [
+    {
+      "block": "packages/parser/docs/positions/info.md:45dc91b4cd89",
+      "diagrams": ["info"],
+      "about": "Ranges implement the specification's\n[info nodes](../../../spec/docs/ast/info.md",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Ranges use original UTF-16 offsets.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an offset that counts a character outside the Basic Multilingual Plane as one"
+              }
+            ]
+          },
+          {
+            "case": "Ranges use physical source line endings.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info literal whose range counts CRLF as one source unit"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions/info.md:494deb2ede0d",
+      "diagrams": ["info"],
+      "about": "Root covers the entire input; InfoDiagram runs from its first retained\npre-heade",
+      "judgment": {
+        "status": "not-shown",
+        "reason": "rule-misses-condition",
+        "note": "In info/lex-comment-ls-bridge, showInfo at [14,22] is the unmarked continuation of the native comment, not a flag unit. Remove the unmarked Comment at [14,22], add a Keyword token with value showInfo at [14,22] and loc {start:{line:2,column:0},end:{line:2,column:8}}, set InfoDiagram.showInfo from false to true, and extend InfoDiagram.range from [0,4] to [0,22] with loc {start:{line:1,column:0},end:{line:2,column:8}}. checkTree() returned []. The diagram range now includes the native comment continuation instead of ending at its last written header/flag/body form. The other cases are reported in check-tree-shared-positions.test.ts: Root covers the whole input (\"fails an info root that ends before the end of the input\"); the first retained pre-header YAML or directive starts the diagram (\"fails an info diagram that starts at its header after retained YAML\", \"fails an info diagram that starts at its header after a retained directive\"); without a retained form the header starts it (\"fails an info diagram that starts after the first character of its header\"); the last header, flag, or body token ends it (\"fails an info diagram that covers the line feed after its header\", \"fails an info diagram that ends before its last flag character\", \"fails an info diagram that ends before its last body token\"); and ordinary comments outside it do not extend it (\"fails an info diagram that covers its trailing native comment\", \"fails an info diagram that covers the comment before its first retained form\")."
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions/info.md:7271a3064c5e",
+      "diagrams": ["info"],
+      "about": "Passed bare lines and accompanying trivia do not extend the diagram range or\nbec",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Passed bare lines and accompanying trivia do not extend the diagram range.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info diagram that starts at a passed percent-brace line"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info diagram that starts at a passed unclosed percent-brace line"
+              }
+            ]
+          },
+          {
+            "case": "Passed bare lines do not become ignored-text children, including between retained forms.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a passed percent-brace line before info held as ignored text"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a passed unclosed percent-brace line before info held as ignored text"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a passed bare line between retained info forms held as ignored text"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions/info.md:83ac2b8f4ac8",
+      "diagrams": ["info"],
+      "about": "A title statement starts at title and ends at its last value character or, for\nn",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A title statement starts at title.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info title statement that starts after its keyword starts"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info title statement whose range holds the outside padding before it"
+              }
+            ]
+          },
+          {
+            "case": "It ends at its last value character.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info title statement that ends before its last value character"
+              }
+            ]
+          },
+          {
+            "case": "For a null title value it ends at its keyword.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a null info title statement that covers the line feed after its keyword"
+              }
+            ]
+          },
+          {
+            "case": "An accessibility title line statement starts at its keyword.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info accessibility title statement that starts after its keyword starts"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info accessibility title statement whose range holds the outside padding before it"
+              }
+            ]
+          },
+          {
+            "case": "It ends at its last value character.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info accessibility title statement that ends before its last value character"
+              }
+            ]
+          },
+          {
+            "case": "For a null accessibility title value it ends at its colon.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a null info accessibility title statement that covers the line feed after its colon"
+              }
+            ]
+          },
+          {
+            "case": "An accessibility description line statement starts at its keyword.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info accessibility description statement that starts after its keyword starts"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "an info accessibility description statement whose range holds the outside padding before it"
+              }
+            ]
+          },
+          {
+            "case": "It ends at its last value character.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info accessibility description statement that ends before its last value character"
+              }
+            ]
+          },
+          {
+            "case": "For a null accessibility description value it ends at its colon.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a null info accessibility description statement that covers the line feed after its colon"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions/info.md:a475b21b69a5",
+      "diagrams": ["info"],
+      "about": "A description-block statement runs from accDescr through the first closing\nbrace",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A description-block statement starts at accDescr.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info description block statement that starts after its keyword starts"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info description block statement whose range holds the outside padding before it"
+              }
+            ]
+          },
+          {
+            "case": "It runs through the first closing brace.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info description block statement that ends before its first closing brace"
+              }
+            ]
+          },
+          {
+            "case": "An empty block runs through its closing brace.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an empty info description block statement that ends before its closing brace"
+              }
+            ]
+          },
+          {
+            "case": "A whitespace-only block runs through its closing brace.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a whitespace-only info description block statement that ends before its closing brace"
+              }
+            ]
+          },
+          {
+            "case": "A common-directive-only block runs through its closing brace.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a directive-only info description block statement that ends before its closing brace"
+              }
+            ]
+          },
+          {
+            "case": "A comment-region-only block runs through its closing brace.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a comment-only info description block statement that ends before its closing brace"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions/info.md:229059ed9960",
+      "diagrams": ["info"],
+      "about": "Each common statement extends through its last textAfter form before visible\nEOL",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A title statement extends through its last textAfter form before visible EOL.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info title statement that ends at its value before its hidden suffix"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails hidden text after an info title moved into the body"
+              }
+            ]
+          },
+          {
+            "case": "An accessibility title statement extends through its last textAfter form before visible EOL.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info accessibility title statement that ends at its value before its hidden suffix"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails hidden text after an info accessibility title moved into the body"
+              }
+            ]
+          },
+          {
+            "case": "An accessibility description statement extends through its last textAfter form before visible EOL.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info accessibility description statement that ends at its value before its hidden suffix"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails hidden text after an info accessibility description moved into the body"
+              }
+            ]
+          },
+          {
+            "case": "A description-block statement extends through its last textAfter form before visible EOL.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info description block statement that ends at its brace before its hidden suffix"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info description block statement that ends before the last of its two hidden suffixes"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails hidden text after an info description block moved into the body"
+              }
+            ]
+          },
+          {
+            "case": "A form after visible EOL belongs to body instead of a title suffix.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails hidden info body text after visible EOL moved into a title suffix"
+              }
+            ]
+          },
+          {
+            "case": "A form after visible EOL belongs to body instead of an accessibility title suffix.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "hidden info body text after visible EOL moved into an accessibility title suffix"
+              }
+            ]
+          },
+          {
+            "case": "A form after visible EOL belongs to body instead of an accessibility description suffix.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "hidden info body text after visible EOL moved into an accessibility description suffix"
+              }
+            ]
+          },
+          {
+            "case": "A form after visible EOL belongs to body instead of a description-block suffix.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "hidden info body text after visible EOL moved into a description block suffix"
+              }
+            ]
+          },
+          {
+            "case": "EOL does not extend a common statement's range.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a null info title statement that covers the line feed after its keyword"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a null info accessibility title statement that covers the line feed after its colon"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a null info accessibility description statement that covers the line feed after its colon"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info description block statement that covers the line feed after its closing brace"
+              }
+            ]
+          },
+          {
+            "case": "A native comment does not extend a common statement's range.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info title statement that covers its native comment"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info accessibility title statement that covers its native comment"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info accessibility description statement that covers its native comment"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info description block statement that covers its native comment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions/info.md:4f3eb4740a67",
+      "diagrams": ["info"],
+      "about": "InfoLiteral covers the nonempty line value, padding included, or the block\ninter",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A title literal covers its nonempty line value with its padding.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info title literal whose range leaves out its leading padding"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info title literal whose range leaves out its trailing padding"
+              }
+            ]
+          },
+          {
+            "case": "An accessibility title literal covers its nonempty line value with its padding.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info accessibility title literal whose range leaves out its leading padding"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info accessibility title literal whose range leaves out its trailing whitespace"
+              }
+            ]
+          },
+          {
+            "case": "An accessibility description literal covers its nonempty line value with its padding.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info accessibility description literal whose range leaves out its leading whitespace"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info accessibility description literal whose range leaves out its trailing whitespace"
+              }
+            ]
+          },
+          {
+            "case": "A block literal covers its interior without common whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info block literal whose range holds its leading common whitespace"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info block literal whose range holds its trailing common whitespace"
+              }
+            ]
+          },
+          {
+            "case": "Null has no leaf.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an info title without content that has an empty literal"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an info accessibility title without content that has an empty literal"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an info accessibility description without content that has an empty literal"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an empty info description block that has an empty literal"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions/info.md:27a303dfe41f",
+      "diagrams": ["info"],
+      "about": "InfoIgnoredText includes its opener, interior and qualifying closer with source\n",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The range of hidden DIRECTIVE includes its opener, interior and qualifying closer.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info hidden directive whose range leaves out its opener character"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info hidden directive whose range leaves out its closer character"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info hidden directive that ends at a nonqualifying closer"
+              }
+            ]
+          },
+          {
+            "case": "The range of hidden YAML includes its opener, interior and qualifying closer.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info hidden YAML whose range leaves out its opener character"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info hidden YAML whose range leaves out its closer character"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info hidden YAML that ends at a nonqualifying closer"
+              }
+            ]
+          },
+          {
+            "case": "Source line endings and internal padding remain in the hidden form.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an info hidden YAML value with its CR written as LF"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an info hidden directive value without its internal line feed"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an info hidden YAML value without its internal indentation"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an info hidden directive value with its internal spaces collapsed"
+              }
+            ]
+          },
+          {
+            "case": "Preceding ASCII padding is outside the hidden form's range.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info hidden directive whose range holds its preceding ASCII padding"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info hidden YAML whose range holds its preceding ASCII padding"
+              }
+            ]
+          },
+          {
+            "case": "The immediately following LF consumed by the lexical rule is outside its range.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info hidden directive whose range holds its consumed following line feed"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info hidden YAML whose range holds its consumed following line feed"
+              }
+            ]
+          },
+          {
+            "case": "The appended LF never extends a range.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info hidden directive whose range holds the appended line feed beyond source EOF"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info hidden YAML whose range holds the appended line feed beyond source EOF"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions/info.md:899e06196671",
+      "diagrams": ["info"],
+      "about": "Body-present YAML priority can make three adjacent fences one ignored leaf; each",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Body-present YAML priority makes three adjacent fences one ignored leaf.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails info YAML split before its third adjacent fence"
+              }
+            ]
+          },
+          {
+            "case": "A separately matched form has exactly one owner.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an info hidden form duplicated in its owner"
+              }
+            ]
+          },
+          {
+            "case": "A retained form before the header belongs to textBeforeHeader.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails retained hidden text before info moved into its body"
+              }
+            ]
+          },
+          {
+            "case": "A form before showInfo belongs to textBeforeShowInfo.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails hidden text before showInfo moved into the info body"
+              }
+            ]
+          },
+          {
+            "case": "A body form belongs to body.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails hidden text after showInfo moved before the flag"
+              }
+            ]
+          },
+          {
+            "case": "A statement suffix belongs to textAfter.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails hidden text after an info title moved into the body"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions/info.md:935c162ef8cd",
+      "diagrams": ["info"],
+      "about": "Common directives, comment regions and selected semicolons remain inside\nspannin",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A common directive remains inside a spanning node range.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info literal whose range ends before its internal common directive"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info hidden form whose range ends before its internal common directive"
+              }
+            ]
+          },
+          {
+            "case": "A comment region remains inside a spanning node range.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info literal whose range ends before its internal comment region"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info hidden form whose range ends before its internal comment region"
+              }
+            ]
+          },
+          {
+            "case": "A selected semicolon remains inside a spanning node range.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info literal whose range ends before its internal selected semicolon"
+              },
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an info hidden form whose range ends before its internal selected semicolon"
+              }
+            ]
+          },
+          {
+            "case": "Written values leave common directives out.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an info value that keeps its common directive"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an info hidden directive value that keeps its nested global directive"
+              }
+            ]
+          },
+          {
+            "case": "Written values leave comment regions out.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an info value that keeps its comment region"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an info hidden YAML value that keeps a common comment region"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an info hidden directive value that keeps a common comment region"
+              }
+            ]
+          },
+          {
+            "case": "Written values leave selected semicolons out.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an info value that keeps its selected semicolon"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an info hidden YAML value that keeps a selected semicolon"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an info hidden directive value that keeps a selected semicolon in its opener"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an info hidden directive value that keeps a selected semicolon in its closer"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -17,7 +17,13 @@ import type { InputCase, MutationCase } from "./check-tree-recorded.ts"
 import { itFailsEach } from "./check-tree-built.ts"
 import type { Built } from "./check-tree-built.ts"
 import { buildPacket, range as rangeBlock, relative } from "./packet-built.ts"
-import { ignored } from "./statement-tree-built.ts"
+import {
+  buildTimeline,
+  period as timelinePeriod,
+  eventStatement as timelineEvents,
+  keywordAndText as timelineKeyword,
+} from "./timeline-built.ts"
+import { buildInfo, common, ignored } from "./statement-tree-built.ts"
 import {
   directiveOf,
   frontmatterOf,
@@ -14827,6 +14833,2616 @@ describe("checkTree: the nodes of a sankey diagram (ast/sankey.md)", () => {
       },
       expected:
         'SankeyLiteral at 11-12: value is not its written text without the whitespace at its ends: " ", not ""',
+    },
+  ])
+})
+
+/** Places an unwritten root of a mindmap diagram at the given range. */
+function mindmapRootAt(range: readonly [number, number]): InputCase["mutate"] {
+  return (root, input) => {
+    const literal = {
+      type: "MindmapLiteral",
+      value: input.slice(...range),
+      range,
+      loc: locationOf(input, range),
+    }
+    setField(root.body, "root", {
+      type: "MindmapNode",
+      indent: 0,
+      id: literal,
+      shape: null,
+      decorations: [],
+      children: [],
+      range,
+      loc: locationOf(input, range),
+    })
+  }
+}
+
+describe("checkTree: the nodes of a mindmap diagram (ast/mindmap.md)", () => {
+  itFailsEachRecorded("mindmap", [
+    {
+      name: "fails a class line of a mindmap node among the decorations of its parent",
+      fixture: "db-icon-and-class-on-child",
+      mutate: (root) => {
+        const parent = nodeOf(root, "MindmapNode")
+        const child = firstIn(parent, "children")
+        const decorations = child.decorations as CheckedNode[]
+        const cssClass = nodeOf(root, "MindmapClassStatement")
+        setField(
+          child,
+          "decorations",
+          decorations.filter((item) => item !== cssClass),
+        )
+        setField(parent, "decorations", [cssClass])
+      },
+      expected:
+        "MindmapNode at 10-51: the decoration MindmapClassStatement at 47-51 does not end before the next node starts, which it decorates",
+    },
+    {
+      name: "fails a mindmap shape alone whose node text is its label",
+      fixture: "db-shape-without-id",
+      mutate: (root) => {
+        const label = nodeOf(root, "MindmapLabel")
+        const { kind: _kind, ...literal } = label
+        setField(nodeOf(root, "MindmapNode"), "id", {
+          ...literal,
+          type: "MindmapLiteral",
+        })
+      },
+      expected:
+        "MindmapLiteral at 11-15: overlaps the child node MindmapShape at 10-16 of MindmapNode at 10-16",
+    },
+    {
+      name: "fails a mindmap node text held as its shape",
+      fixture: "db-first-node-unindented",
+      mutate: (root) => {
+        const node = nodeOf(root, "MindmapNode")
+        const id = firstIn(node, "id")
+        setField(node, "id", null)
+        setField(node, "shape", {
+          type: "MindmapShape",
+          opener: "[",
+          closer: "]",
+          label: { ...id, type: "MindmapLabel", kind: "text" },
+          range: id.range,
+          loc: id.loc,
+        })
+      },
+      expected:
+        'MindmapShape at 8-12: the tokens of the node outside its child nodes, joined: "", not "[]"',
+    },
+    {
+      name: "fails a mindmap node text as an Identifier",
+      fixture: "db-node-trailing-whitespace",
+      mutate: remakeChild(
+        "MindmapNode",
+        "id",
+        "Identifier",
+        ["value"],
+        (node) => ({ name: node.value }),
+      ),
+      expected:
+        "MindmapNode at 10-28: the field id holds an Identifier, not a MindmapLiteral",
+    },
+    {
+      name: "fails an icon of a mindmap as an Identifier",
+      fixture: "db-icon-line",
+      mutate: remakeChild(
+        "MindmapIconStatement",
+        "icon",
+        "Identifier",
+        ["value"],
+        (node) => ({ name: node.value }),
+      ),
+      expected:
+        "MindmapIconStatement at 19-37: the field icon holds an Identifier, not a MindmapLiteral",
+    },
+    {
+      name: "fails a class of a mindmap as an Identifier",
+      fixture: "db-class-line",
+      mutate: remakeChild(
+        "MindmapClassStatement",
+        "cssClass",
+        "Identifier",
+        ["value"],
+        (node) => ({ name: node.value }),
+      ),
+      expected:
+        "MindmapClassStatement at 19-29: the field cssClass holds an Identifier, not a MindmapLiteral",
+    },
+    {
+      name: "fails a root for the header of a mindmap without nodes",
+      fixture: "db-header-only",
+      mutate: mindmapRootAt([0, 7]),
+      expected:
+        'Keyword at 0-7 of "mindmap": lies in the value node MindmapLiteral at 0-7',
+    },
+    {
+      name: "fails a root for a comment after a mindmap header",
+      fixture: "db-header-then-comment-line-only",
+      mutate: mindmapRootAt([8, 12]),
+      expected: "MindmapNode at 8-12: lies outside MindmapDiagram at 0-7",
+    },
+    {
+      name: "fails the body of a mindmap diagram as a PieDiagram",
+      fixture: "db-header-only",
+      mutate: (root) => {
+        delete (root.body as Record<string, unknown>).root
+        setField(root.body, "type", "PieDiagram")
+        setField(root.body, "body", [])
+        setField(root.body, "showData", false)
+        setField(root.body, "textBeforeHeader", [])
+        setField(root.body, "textBeforeShowData", [])
+      },
+      expected:
+        "Root: the diagram type mindmap is not one of those of a PieDiagram: pie",
+    },
+    {
+      name: "fails a mindmap diagram whose written root is null",
+      fixture: "db-first-node-unindented",
+      mutate: (root) => {
+        setField(root.body, "root", null)
+      },
+      expected: 'RawText at 8-12 of "root": lies in no value node',
+    },
+    {
+      name: "fails a mindmap diagram whose root is its first child",
+      fixture: "db-first-node-unindented",
+      mutate: (root) => {
+        setField(
+          root.body,
+          "root",
+          firstIn(nodeOf(root, "MindmapNode"), "children"),
+        )
+      },
+      expected: 'RawText at 8-12 of "root": lies in no value node',
+    },
+    {
+      name: "fails a mindmap node text value without its trailing whitespace",
+      fixture: "db-node-trailing-whitespace",
+      mutate: (root) => {
+        setField(nodeOf(root, "MindmapLiteral"), "value", "root")
+      },
+      expected:
+        'MindmapLiteral at 10-17: value is not its written text: "root", not "root   "',
+    },
+    {
+      name: "fails an icon value of a mindmap without its leading whitespace",
+      fixture: "db-icon-surrounding-whitespace",
+      mutate: (root) => {
+        setField(
+          firstIn(nodeOf(root, "MindmapIconStatement"), "icon"),
+          "value",
+          "x ",
+        )
+      },
+      expected:
+        'MindmapLiteral at 26-29: value is not its written text: "x ", not " x "',
+    },
+    {
+      name: "fails an icon value of a mindmap without its trailing whitespace",
+      fixture: "db-icon-surrounding-whitespace",
+      mutate: (root) => {
+        setField(
+          firstIn(nodeOf(root, "MindmapIconStatement"), "icon"),
+          "value",
+          " x",
+        )
+      },
+      expected:
+        'MindmapLiteral at 26-29: value is not its written text: " x", not " x "',
+    },
+    {
+      name: "fails the class value of a mindmap without its leading whitespace",
+      fixture: "db-class-leading-whitespace",
+      mutate: (root) => {
+        setField(
+          firstIn(nodeOf(root, "MindmapClassStatement"), "cssClass"),
+          "value",
+          "x",
+        )
+      },
+      expected:
+        'MindmapLiteral at 22-25: value is not its written text: "x", not "  x"',
+    },
+    {
+      name: "fails the class value of a mindmap without its trailing whitespace",
+      fixture: "db-class-trailing-space",
+      mutate: (root) => {
+        setField(
+          firstIn(nodeOf(root, "MindmapClassStatement"), "cssClass"),
+          "value",
+          "a b",
+        )
+      },
+      expected:
+        'MindmapLiteral at 22-27: value is not its written text: "a b", not "a b  "',
+    },
+    {
+      name: "fails a shape text of a mindmap without its leading whitespace",
+      fixture: "gram-shape-text-quoted-with-space",
+      mutate: (root) => {
+        setField(nodeOf(root, "MindmapLabel"), "value", '"x" ')
+      },
+      expected:
+        'MindmapLabel at 17-22: value is not its written text: "\\"x\\" ", not " \\"x\\" "',
+    },
+    {
+      name: "fails a shape text of a mindmap without its trailing whitespace",
+      fixture: "gram-shape-text-quoted-with-space",
+      mutate: (root) => {
+        setField(nodeOf(root, "MindmapLabel"), "value", ' "x"')
+      },
+      expected:
+        'MindmapLabel at 17-22: value is not its written text: " \\"x\\"", not " \\"x\\" "',
+    },
+    {
+      name: "fails a multiline shape text of a mindmap without its line feed",
+      fixture: "gram-shape-text-line-feed",
+      mutate: (root) => {
+        const label = nodeOf(root, "MindmapLabel")
+        setField(label, "value", (label.value as string).replace("\n", ""))
+      },
+      expected:
+        'MindmapLabel at 17-20: value is not its written text: "xy", not "x\\ny"',
+    },
+    {
+      name: "fails a multiline icon of a mindmap without its line feed",
+      fixture: "gram-icon-line-feed",
+      mutate: (root) => {
+        const icon = firstIn(nodeOf(root, "MindmapIconStatement"), "icon")
+        setField(icon, "value", (icon.value as string).replace("\n", ""))
+      },
+      expected:
+        'MindmapLiteral at 20-25: value is not its written text: "x  a", not "x\\n  a"',
+    },
+  ])
+})
+
+/** Sets the text of the child in `field` of the first timeline node of `type`. */
+function timelineText(
+  type: string,
+  field: string,
+  value: string,
+): InputCase["mutate"] {
+  return (root) => {
+    setField(firstIn(nodeOf(root, type), field), "value", value)
+  }
+}
+
+/** Splits the events of the first period into an event statement immediately after it. */
+function splitTimelineEvents(root: CheckedRoot, input: string, from = 0): void {
+  const period = nodeOf(root, "TimelinePeriodStatement", (node) =>
+    holdsNode(node, "events"),
+  )
+  const allEvents = period.events as CheckedNode[]
+  const kept = allEvents.slice(0, from)
+  const events = allEvents.slice(from)
+  const text = kept.at(-1) ?? firstIn(period, "period")
+  const colon = root.tokens.find(
+    (token) =>
+      token.value === ":" &&
+      token.range[0] >= text.range[1] &&
+      token.range[1] <= events[0].range[0],
+  )!
+  const range = [colon.range[0], period.range[1]] as const
+  const statement = {
+    type: "TimelineEventStatement",
+    events,
+    range,
+    loc: locationOf(input, range),
+  }
+  setField(period, "events", kept)
+  placeAt(period, input, [period.range[0], text.range[1]])
+  const body = root.body.body as CheckedNode[]
+  const at = body.indexOf(period)
+  setField(root.body, "body", [
+    ...body.slice(0, at + 1),
+    statement,
+    ...body.slice(at + 1),
+  ])
+}
+
+/** Moves the first event statement's events across the intervening statement into the first period. */
+function joinTimelineEvents(root: CheckedRoot, input: string): void {
+  const period = nodeOf(root, "TimelinePeriodStatement")
+  const statement = nodeOf(root, "TimelineEventStatement")
+  setField(period, "events", [
+    ...(period.events as CheckedNode[]),
+    ...(statement.events as CheckedNode[]),
+  ])
+  placeAt(period, input, [period.range[0], statement.range[1]])
+  setField(
+    root.body,
+    "body",
+    (root.body.body as CheckedNode[]).filter((item) => item !== statement),
+  )
+}
+
+/** Gives an empty description block an empty literal instead of null. */
+function timelineEmptyBlockText(root: CheckedRoot, input: string): void {
+  const block = nodeOf(
+    root,
+    "TimelineAccDescrBlockStatement",
+    (node) => node.value === null,
+  )
+  const open = root.tokens.find(
+    (token) => token.value === "{" && token.range[0] >= block.range[0],
+  )!
+  const close = root.tokens.find(
+    (token) => token.value === "}" && token.range[0] >= open.range[1],
+  )!
+  const range = [open.range[1], close.range[0]] as const
+  setField(block, "value", {
+    type: "TimelineLiteral",
+    value: "",
+    range,
+    loc: locationOf(input, range),
+  })
+}
+
+describe("checkTree: the nodes of a timeline diagram (ast/timeline.md)", () => {
+  itFailsEachRecorded("timeline", [
+    {
+      name: "fails the body of a timeline diagram as a PieDiagram",
+      fixture: "db-header-only",
+      mutate: (root) => {
+        delete (root.body as Record<string, unknown>).direction
+        setField(root.body, "type", "PieDiagram")
+        setField(root.body, "showData", false)
+        setField(root.body, "textBeforeHeader", [])
+        setField(root.body, "textBeforeShowData", [])
+      },
+      expected:
+        "Root: the diagram type timeline is not one of those of a PieDiagram: pie",
+    },
+    {
+      name: "fails the period value of a timeline that is not its written text",
+      fixture: "db-period-and-event",
+      mutate: timelineText("TimelinePeriodStatement", "period", "different"),
+      expected:
+        'TimelineLiteral at 11-13: value is not its written text: "different", not "a "',
+    },
+    {
+      name: "fails an event value of a timeline that is not its written text",
+      fixture: "db-period-and-event",
+      mutate: timelineText("TimelinePeriodStatement", "events", "different"),
+      expected:
+        'TimelineLiteral at 15-16: value is not its written text: "different", not "e"',
+    },
+    {
+      name: "fails the title value of a timeline that is not its written text",
+      fixture: "db-title-statement",
+      mutate: timelineText("TimelineTitleStatement", "value", "different"),
+      expected:
+        'TimelineLiteral at 17-18: value is not its written text: "different", not "T"',
+    },
+    {
+      name: "fails the section name of a timeline that is not its written text",
+      fixture: "db-section-statement",
+      mutate: timelineText("TimelineSectionStatement", "name", "different"),
+      expected:
+        'TimelineLiteral at 19-20: value is not its written text: "different", not "S"',
+    },
+    {
+      name: "fails the accessibility title of a timeline that is not its written text",
+      fixture: "db-acc-title-statement",
+      mutate: timelineText("TimelineAccTitleStatement", "value", "different"),
+      expected:
+        'TimelineLiteral at 21-22: value is not its written text: "different", not "T"',
+    },
+    {
+      name: "fails the accessibility description of a timeline that is not its written text",
+      fixture: "db-acc-descr-statement",
+      mutate: timelineText("TimelineAccDescrStatement", "value", "different"),
+      expected:
+        'TimelineLiteral at 21-22: value is not its written text: "different", not "D"',
+    },
+    {
+      name: "fails the description block text of a timeline that is not its written text",
+      fixture: "db-acc-descr-block",
+      mutate: timelineText(
+        "TimelineAccDescrBlockStatement",
+        "value",
+        "different",
+      ),
+      expected:
+        'TimelineLiteral at 24-37: value is not its written text: "different", not "line1\\n  line2"',
+    },
+    {
+      name: "fails a period of a timeline as a StringLiteral",
+      fixture: "lex-html-tag-in-period",
+      mutate: remakeChild(
+        "TimelinePeriodStatement",
+        "period",
+        "StringLiteral",
+        [],
+        (node) => ({ raw: node.value, closed: true }),
+      ),
+      expected:
+        "TimelinePeriodStatement at 11-23: the field period holds a StringLiteral, not a TimelineLiteral",
+    },
+    {
+      name: "fails a quoted event of a timeline as a StringLiteral",
+      fixture: "db-event-quotes-and-brackets",
+      mutate: remakeChild(
+        "TimelinePeriodStatement",
+        "events",
+        "StringLiteral",
+        [],
+        (node) => ({ raw: node.value, closed: true }),
+      ),
+      expected:
+        "TimelinePeriodStatement at 11-42: the field events holds a StringLiteral, not a TimelineLiteral",
+    },
+    {
+      name: "fails a timeline direction whose written case is changed",
+      fixture: "db-direction-lower-case",
+      mutate: (root) => {
+        setField(root.body, "direction", "TD")
+      },
+      expected:
+        'TimelineDiagram at 0-15: the direction of the header is not the token after the header keyword, or null when there is none: "TD", not "td"',
+    },
+    {
+      name: "fails a timeline direction that leaves out its written keyword",
+      fixture: "db-direction-td",
+      mutate: (root) => {
+        setField(root.body, "direction", null)
+      },
+      expected:
+        'TimelineDiagram at 0-15: the direction of the header is not the token after the header keyword, or null when there is none: null, not "TD"',
+    },
+    {
+      name: "fails a timeline period statement that covers the line feed after it",
+      fixture: "db-period-only",
+      mutate: (root, input) => {
+        const node = nodeOf(root, "TimelinePeriodStatement")
+        placeAt(node, input, [node.range[0], node.range[1] + 1])
+      },
+      expected:
+        "TimelinePeriodStatement at 11-13: lies outside TimelineDiagram at 0-12",
+    },
+    {
+      name: "fails a node for an empty line of a timeline diagram",
+      fixture: "db-blank-line-between-tasks",
+      mutate: (root, input) => {
+        const period = nodeOf(root, "TimelinePeriodStatement")
+        const range = [17, 17] as const
+        const empty = { ...period, range, loc: locationOf(input, range) }
+        const body = root.body.body as CheckedNode[]
+        setField(root.body, "body", [body[0], empty, ...body.slice(1)])
+      },
+      expected:
+        "TimelinePeriodStatement at 17-17: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the events on the line of a timeline period as a separate statement",
+      fixture: "db-event-two-on-a-line",
+      mutate: splitTimelineEvents,
+      expected:
+        "TimelineEventStatement at 13-22: follows a period statement or an event statement, or starts the body, where its events would be those of the period statement",
+    },
+    {
+      name: "fails the events on later lines of a timeline period as a separate statement",
+      fixture: "db-event-own-line",
+      mutate: splitTimelineEvents,
+      expected:
+        "TimelineEventStatement at 17-30: follows a period statement or an event statement, or starts the body, where its events would be those of the period statement",
+    },
+    {
+      name: "fails the later event after a timeline event as a separate statement",
+      fixture: "db-event-own-line-after-event",
+      mutate: (root, input) => {
+        splitTimelineEvents(root, input, 1)
+      },
+      expected:
+        "TimelineEventStatement at 19-22: follows a period statement or an event statement, or starts the body, where its events would be those of the period statement",
+    },
+    {
+      name: "fails the event after an empty line of a timeline period as a separate statement",
+      fixture: "db-event-own-line-after-blank-line",
+      mutate: splitTimelineEvents,
+      expected:
+        "TimelineEventStatement at 16-19: follows a period statement or an event statement, or starts the body, where its events would be those of the period statement",
+    },
+    {
+      name: "fails the event after a comment line of a timeline period as a separate statement",
+      fixture: "db-event-own-line-after-comment-line",
+      mutate: splitTimelineEvents,
+      expected:
+        "TimelineEventStatement at 22-25: follows a period statement or an event statement, or starts the body, where its events would be those of the period statement",
+    },
+    {
+      name: "fails the event after a hash line of a timeline period as a separate statement",
+      fixture: "db-event-own-line-after-hash-line",
+      mutate: splitTimelineEvents,
+      expected:
+        "TimelineEventStatement at 21-24: follows a period statement or an event statement, or starts the body, where its events would be those of the period statement",
+    },
+    {
+      name: "fails the events after a timeline title held by the earlier period",
+      fixture: "db-event-own-line-after-title",
+      mutate: joinTimelineEvents,
+      expected:
+        'TimelinePeriodStatement at 11-28: the written text before the event "e", after the item before it, is "\\n  title T\\n  : ", not whitespace, a `:`, and one whitespace character',
+    },
+    {
+      name: "fails the events after a timeline section held by the earlier period",
+      fixture: "db-event-after-section-joins-earlier-task",
+      mutate: joinTimelineEvents,
+      expected:
+        'TimelinePeriodStatement at 11-30: the written text before the event "e", after the item before it, is "\\n  section S\\n  : ", not whitespace, a `:`, and one whitespace character',
+    },
+    {
+      name: "fails the events on a timeline section line held by the earlier period",
+      fixture: "db-section-with-event-after-task",
+      mutate: joinTimelineEvents,
+      expected:
+        'TimelinePeriodStatement at 11-28: the written text before the event "x", after the item before it, is "\\n  section S : ", not whitespace, a `:`, and one whitespace character',
+    },
+    {
+      name: "fails the events after a timeline accessibility title held by the earlier period",
+      fixture: "db-event-own-line-after-acc-title",
+      mutate: joinTimelineEvents,
+      expected:
+        'TimelinePeriodStatement at 11-32: the written text before the event "e", after the item before it, is "\\n  accTitle: T\\n  : ", not whitespace, a `:`, and one whitespace character',
+    },
+    {
+      name: "fails the events after a timeline description block held by the earlier period",
+      fixture: "db-event-own-line-after-acc-descr-block",
+      mutate: joinTimelineEvents,
+      expected:
+        'TimelinePeriodStatement at 11-39: the written text before the event "e", after the item before it, is "\\n  accDescr {\\n  D\\n  }\\n  : ", not whitespace, a `:`, and one whitespace character',
+    },
+    {
+      name: "fails the events after an empty timeline description block held by the earlier period",
+      fixture: "gram-event-after-empty-description-block",
+      mutate: joinTimelineEvents,
+      expected:
+        'TimelinePeriodStatement at 11-32: the written text before the event "e", after the item before it, is "\\n  accDescr {}\\n  : ", not whitespace, a `:`, and one whitespace character',
+    },
+    {
+      name: "fails a timeline period without its whitespace before a colon",
+      fixture: "db-period-and-event",
+      mutate: timelineText("TimelinePeriodStatement", "period", "a"),
+      expected:
+        'TimelineLiteral at 11-13: value is not its written text: "a", not "a "',
+    },
+    {
+      name: "fails a timeline period without its whitespace before a hash",
+      fixture: "db-comment-hash-after-period-only",
+      mutate: timelineText("TimelinePeriodStatement", "period", "a"),
+      expected:
+        'TimelineLiteral at 11-13: value is not its written text: "a", not "a "',
+    },
+    {
+      name: "fails a timeline period without its whitespace before a line feed",
+      fixture: "db-period-trailing-spaces",
+      mutate: timelineText("TimelinePeriodStatement", "period", "a"),
+      expected:
+        'TimelineLiteral at 11-15: value is not its written text: "a", not "a   "',
+    },
+    {
+      name: "fails a timeline event without its leading whitespace",
+      fixture: "db-event-leading-spaces",
+      mutate: timelineText("TimelinePeriodStatement", "events", "e"),
+      expected:
+        'TimelineLiteral at 15-18: value is not its written text: "e", not "  e"',
+    },
+    {
+      name: "fails a timeline event without its trailing whitespace",
+      fixture: "db-event-trailing-spaces",
+      mutate: (root) => {
+        const event = firstIn(nodeOf(root, "TimelinePeriodStatement"), "events")
+        setField(event, "value", (event.value as string).trimEnd())
+      },
+      expected:
+        'TimelineLiteral at 15-19: value is not its written text: "e", not "e   "',
+    },
+    {
+      name: "fails a timeline event of whitespace only whose value is empty",
+      fixture: "db-event-two-spaces",
+      mutate: timelineText("TimelinePeriodStatement", "events", ""),
+      expected: "TimelineLiteral at 15-16: the event is empty",
+    },
+    {
+      name: "fails a timeline event that leaves out its colon before a nonwhitespace character",
+      fixture: "db-event-colon-glued-inside",
+      mutate: timelineText("TimelinePeriodStatement", "events", "bc"),
+      expected:
+        'TimelineLiteral at 15-18: value is not its written text: "bc", not "b:c"',
+    },
+    {
+      name: "fails a timeline title without its leading whitespace",
+      fixture: "db-title-two-spaces",
+      mutate: timelineText("TimelineTitleStatement", "value", "T"),
+      expected:
+        'TimelineLiteral at 17-19: value is not its written text: "T", not " T"',
+    },
+    {
+      name: "fails a timeline title without its trailing whitespace",
+      fixture: "db-title-trailing-spaces",
+      mutate: timelineText("TimelineTitleStatement", "value", "T"),
+      expected:
+        'TimelineLiteral at 17-21: value is not its written text: "T", not "T   "',
+    },
+    {
+      name: "fails a timeline title without its colon",
+      fixture: "db-title-colon",
+      mutate: (root) => {
+        const value = firstIn(nodeOf(root, "TimelineTitleStatement"), "value")
+        setField(value, "value", (value.value as string).replace(":", ""))
+      },
+      expected:
+        'TimelineLiteral at 17-22: value is not its written text: "T  U", not "T : U"',
+    },
+    {
+      name: "fails a timeline title without its hash",
+      fixture: "db-title-hash",
+      mutate: (root) => {
+        const value = firstIn(nodeOf(root, "TimelineTitleStatement"), "value")
+        setField(value, "value", (value.value as string).replace("#", ""))
+      },
+      expected:
+        'TimelineLiteral at 17-22: value is not its written text: "T  c", not "T # c"',
+    },
+    {
+      name: "fails a timeline title without its percent marks",
+      fixture: "db-title-percent",
+      mutate: (root) => {
+        const value = firstIn(nodeOf(root, "TimelineTitleStatement"), "value")
+        setField(value, "value", (value.value as string).replace("%%", ""))
+      },
+      expected:
+        'TimelineLiteral at 17-23: value is not its written text: "T  c", not "T %% c"',
+    },
+    {
+      name: "fails a timeline section name without its leading whitespace",
+      fixture: "db-section-two-spaces",
+      mutate: (root) => {
+        const value = firstIn(nodeOf(root, "TimelineSectionStatement"), "name")
+        setField(value, "value", (value.value as string).trimStart())
+      },
+      expected:
+        'TimelineLiteral at 19-21: value is not its written text: "S", not " S"',
+    },
+    {
+      name: "fails a timeline section name without its trailing whitespace",
+      fixture: "db-section-trailing-spaces",
+      mutate: (root) => {
+        const value = firstIn(nodeOf(root, "TimelineSectionStatement"), "name")
+        setField(value, "value", (value.value as string).trimEnd())
+      },
+      expected:
+        'TimelineLiteral at 19-23: value is not its written text: "S", not "S   "',
+    },
+    {
+      name: "fails a timeline section name of whitespace only whose value is empty",
+      fixture: "db-section-only-space",
+      mutate: timelineText("TimelineSectionStatement", "name", ""),
+      expected: "TimelineSectionStatement at 11-20: the name is empty",
+    },
+    {
+      name: "fails an accessibility description of a timeline as a title statement",
+      fixture: "db-acc-descr-statement",
+      mutate: remakeChild(
+        "TimelineAccDescrStatement",
+        "value",
+        "TimelineTitleStatement",
+        ["value"],
+        (node) => ({ value: { ...node } }),
+      ),
+      expected:
+        "TimelineAccDescrStatement at 11-22: the field value holds a TimelineTitleStatement, not a TimelineLiteral",
+    },
+    {
+      name: "fails a timeline accessibility title that keeps leading whitespace",
+      fixture: "db-acc-title-statement",
+      mutate: timelineText("TimelineAccTitleStatement", "value", " T"),
+      expected:
+        'TimelineAccTitleStatement at 11-22: the value " T" starts or ends with whitespace, which is not part of it',
+    },
+    {
+      name: "fails a timeline accessibility title that keeps trailing whitespace",
+      fixture: "db-acc-title-trailing-spaces",
+      mutate: timelineText("TimelineAccTitleStatement", "value", "T   "),
+      expected:
+        'TimelineAccTitleStatement at 11-22: the value "T   " starts or ends with whitespace, which is not part of it',
+    },
+    {
+      name: "fails a timeline accessibility description that keeps leading whitespace",
+      fixture: "db-acc-descr-statement",
+      mutate: (root) => {
+        const value = firstIn(
+          nodeOf(root, "TimelineAccDescrStatement"),
+          "value",
+        )
+        setField(value, "value", ` ${value.value as string}`)
+      },
+      expected:
+        'TimelineAccDescrStatement at 11-22: the value " D" starts or ends with whitespace, which is not part of it',
+    },
+    {
+      name: "fails a timeline accessibility description that keeps trailing whitespace",
+      fixture: "db-acc-descr-trailing-spaces",
+      mutate: (root) => {
+        const value = firstIn(
+          nodeOf(root, "TimelineAccDescrStatement"),
+          "value",
+        )
+        setField(value, "value", `${value.value as string} `)
+      },
+      expected:
+        'TimelineAccDescrStatement at 11-22: the value "D " starts or ends with whitespace, which is not part of it',
+    },
+    {
+      name: "fails a timeline description block that keeps trailing whitespace",
+      fixture: "db-acc-descr-block",
+      mutate: (root) => {
+        const value = firstIn(
+          nodeOf(root, "TimelineAccDescrBlockStatement"),
+          "value",
+        )
+        setField(value, "value", `${value.value as string} `)
+      },
+      expected:
+        'TimelineAccDescrBlockStatement at 11-41: the value "line1\\n  line2 " starts or ends with whitespace, which is not part of it',
+    },
+    {
+      name: "fails a timeline accessibility title on a later line whose value starts at the line feed",
+      fixture: "lex-acc-title-value-on-next-line",
+      mutate: (root, input) => {
+        const value = firstIn(
+          nodeOf(root, "TimelineAccTitleStatement"),
+          "value",
+        )
+        placeAt(value, input, [input.indexOf(":") + 1, value.range[1]])
+        setField(value, "value", input.slice(...value.range))
+      },
+      expected:
+        'TimelineAccTitleStatement at 11-22: the value "\\nT" starts or ends with whitespace, which is not part of it',
+    },
+    {
+      name: "fails a timeline description block without its closing brace token",
+      fixture: "db-acc-descr-block",
+      mutate: (root) => {
+        setField(
+          root,
+          "tokens",
+          root.tokens.filter((token) => token.value !== "}"),
+        )
+      },
+      expected:
+        'TimelineAccDescrBlockStatement at 11-41: the tokens of the node outside its child nodes, joined: "accdescr{", not "accdescr{}"',
+    },
+    {
+      name: "fails text for a timeline description block with only braces",
+      fixture: "db-acc-descr-block-braces-only",
+      mutate: timelineEmptyBlockText,
+      expected: "TimelineAccDescrBlockStatement at 11-22: the value is empty",
+    },
+    {
+      name: "fails text for a timeline description block with only whitespace and line breaks",
+      fixture: "db-acc-descr-block-empty",
+      mutate: timelineEmptyBlockText,
+      expected: "TimelineAccDescrBlockStatement at 11-25: the value is empty",
+    },
+    {
+      name: "fails text for a timeline description block with only a directive",
+      fixture: "gram-empty-description-block-directive-only",
+      mutate: timelineEmptyBlockText,
+      expected: "TimelineAccDescrBlockStatement at 11-38: the value is empty",
+    },
+    {
+      name: "fails text for a timeline description block with only a comment line",
+      fixture: "gram-empty-description-block-comment-line-only",
+      mutate: timelineEmptyBlockText,
+      expected: "TimelineAccDescrBlockStatement at 11-32: the value is empty",
+    },
+    {
+      name: "fails a timeline description block without its internal line feed",
+      fixture: "db-acc-descr-block",
+      mutate: (root) => {
+        const value = firstIn(
+          nodeOf(root, "TimelineAccDescrBlockStatement"),
+          "value",
+        )
+        setField(value, "value", (value.value as string).replace("\n", ""))
+      },
+      expected:
+        'TimelineLiteral at 24-37: value is not its written text: "line1  line2", not "line1\\n  line2"',
+    },
+    {
+      name: "fails a timeline event after a colon and line feed that keeps that line feed",
+      fixture: "db-event-line-feed-after-colon",
+      mutate: (root, input) => {
+        const event = firstIn(nodeOf(root, "TimelinePeriodStatement"), "events")
+        placeAt(event, input, [event.range[0] - 1, event.range[1]])
+        setField(event, "value", input.slice(...event.range))
+      },
+      expected:
+        'TimelineLiteral at 14-16: the event "\\ne" holds a line terminator, which ends it',
+    },
+    {
+      name: "fails a timeline accessibility title whose text starts at its colon",
+      fixture: "db-acc-title-statement",
+      mutate: (root, input) => {
+        const value = firstIn(
+          nodeOf(root, "TimelineAccTitleStatement"),
+          "value",
+        )
+        placeAt(value, input, [input.indexOf(":"), value.range[1]])
+      },
+      expected:
+        "TimelineAccTitleStatement at 11-22: the value does not follow the keyword acctitle, a `:`, and whitespace",
+    },
+    {
+      name: "fails a timeline accessibility description whose text starts at its colon",
+      fixture: "db-acc-descr-statement",
+      mutate: (root, input) => {
+        const value = firstIn(
+          nodeOf(root, "TimelineAccDescrStatement"),
+          "value",
+        )
+        placeAt(value, input, [input.indexOf(":"), value.range[1]])
+      },
+      expected:
+        "TimelineAccDescrStatement at 11-22: the value does not follow the keyword accdescr, a `:`, and whitespace",
+    },
+    {
+      name: "fails a timeline accessibility title whose text ends before its last character",
+      fixture: "db-acc-title-entity",
+      mutate: (root, input) => {
+        const value = firstIn(
+          nodeOf(root, "TimelineAccTitleStatement"),
+          "value",
+        )
+        placeAt(value, input, [value.range[0], value.range[1] - 1])
+      },
+      expected:
+        "TimelineAccTitleStatement at 11-29: the value does not run to the end of its line",
+    },
+    {
+      name: "fails a timeline accessibility description whose text ends before its last character",
+      fixture: "db-acc-descr-entity",
+      mutate: (root, input) => {
+        const value = firstIn(
+          nodeOf(root, "TimelineAccDescrStatement"),
+          "value",
+        )
+        placeAt(value, input, [value.range[0], value.range[1] - 1])
+      },
+      expected:
+        "TimelineAccDescrStatement at 11-29: the value does not run to the end of its line",
+    },
+    {
+      name: "fails a timeline diagram without its period statement",
+      fixture: "db-period-and-event",
+      mutate: withoutBodyItem(0),
+      expected: 'RawText at 11-13 of "a ": lies in no value node',
+    },
+    {
+      name: "fails a timeline period literal that holds its event",
+      fixture: "db-period-and-event",
+      mutate: (root, input) => {
+        setField(nodeOf(root, "TimelinePeriodStatement"), "events", [])
+        rangeOf("TimelineLiteral", [11, 16])(root, input)
+      },
+      expected:
+        'TimelineLiteral at 11-16: the period "a : e" holds ":", which ends a period',
+    },
+  ])
+})
+
+describe("checkTree: the gaps of a timeline diagram that no recorded tree holds (ast/timeline.md)", () => {
+  // The corpus has no event statement with more than one event, and no event
+  // statement after an accDescr line. These trees supply those missing shapes.
+
+  /** Separates the second event from the first event of their statement. */
+  function splitEventStatement(root: CheckedRoot, input: string): void {
+    const statement = nodeOf(root, "TimelineEventStatement")
+    const [first, second] = statement.events as CheckedNode[]
+    const colon = root.tokens.find(
+      (token) =>
+        token.value === ":" &&
+        token.range[0] >= first.range[1] &&
+        token.range[1] <= second.range[0],
+    )!
+    const range = [colon.range[0], statement.range[1]] as const
+    const separate = {
+      type: "TimelineEventStatement",
+      events: [second],
+      range,
+      loc: locationOf(input, range),
+    }
+    setField(statement, "events", [first])
+    placeAt(statement, input, [statement.range[0], first.range[1]])
+    const body = root.body.body as CheckedNode[]
+    const at = body.indexOf(statement)
+    setField(root.body, "body", [
+      ...body.slice(0, at + 1),
+      separate,
+      ...body.slice(at + 1),
+    ])
+  }
+
+  itFailsEach([
+    {
+      name: "a timeline event statement split before its second event on the same line",
+      built: () =>
+        buildTimeline(
+          "timeline\n  a\n  section S\n  : e : f\n",
+          null,
+          (kit) => [
+            timelinePeriod(kit, "a", []),
+            timelineKeyword(
+              kit,
+              "TimelineSectionStatement",
+              "section",
+              "name",
+              "S",
+            ),
+            timelineEvents(kit, ["e ", "f"]),
+          ],
+        ),
+      mutate: splitEventStatement,
+      expected:
+        "TimelineEventStatement at 31-34: follows a period statement or an event statement, or starts the body, where its events would be those of the period statement",
+    },
+    {
+      name: "a timeline event statement split before its second event on a later line",
+      built: () =>
+        buildTimeline(
+          "timeline\n  a\n  section S\n  : e\n  : f\n",
+          null,
+          (kit) => [
+            timelinePeriod(kit, "a", []),
+            timelineKeyword(
+              kit,
+              "TimelineSectionStatement",
+              "section",
+              "name",
+              "S",
+            ),
+            timelineEvents(kit, ["e", "f"]),
+          ],
+        ),
+      mutate: splitEventStatement,
+      expected:
+        "TimelineEventStatement at 33-36: follows a period statement or an event statement, or starts the body, where its events would be those of the period statement",
+    },
+    {
+      name: "a timeline event statement split before its second event after an empty line",
+      built: () =>
+        buildTimeline(
+          "timeline\n  a\n  section S\n  : e\n\n  : f\n",
+          null,
+          (kit) => [
+            timelinePeriod(kit, "a", []),
+            timelineKeyword(
+              kit,
+              "TimelineSectionStatement",
+              "section",
+              "name",
+              "S",
+            ),
+            timelineEvents(kit, ["e", "f"]),
+          ],
+        ),
+      mutate: splitEventStatement,
+      expected:
+        "TimelineEventStatement at 34-37: follows a period statement or an event statement, or starts the body, where its events would be those of the period statement",
+    },
+    {
+      name: "a timeline event statement split before its second event after a percent comment line",
+      built: () =>
+        buildTimeline(
+          "timeline\n  a\n  section S\n  : e\n  %% c\n  : f\n",
+          null,
+          (kit) => [
+            timelinePeriod(kit, "a", []),
+            timelineKeyword(
+              kit,
+              "TimelineSectionStatement",
+              "section",
+              "name",
+              "S",
+            ),
+            timelineEvents(kit, ["e", "f"], () => kit.comment("%%", "%% c")),
+          ],
+        ),
+      mutate: splitEventStatement,
+      expected:
+        "TimelineEventStatement at 40-43: follows a period statement or an event statement, or starts the body, where its events would be those of the period statement",
+    },
+    {
+      name: "a timeline event statement split before its second event after a hash comment line",
+      built: () =>
+        buildTimeline(
+          "timeline\n  a\n  section S\n  : e\n  # c\n  : f\n",
+          null,
+          (kit) => [
+            timelinePeriod(kit, "a", []),
+            timelineKeyword(
+              kit,
+              "TimelineSectionStatement",
+              "section",
+              "name",
+              "S",
+            ),
+            timelineEvents(kit, ["e", "f"], () => kit.comment("#", "# c")),
+          ],
+        ),
+      mutate: splitEventStatement,
+      expected:
+        "TimelineEventStatement at 39-42: follows a period statement or an event statement, or starts the body, where its events would be those of the period statement",
+    },
+    {
+      name: "events after a timeline accessibility description held by the earlier period",
+      built: () =>
+        buildTimeline("timeline\n  a\n  accDescr: D\n  : e\n", null, (kit) => [
+          timelinePeriod(kit, "a", []),
+          timelineKeyword(
+            kit,
+            "TimelineAccDescrStatement",
+            "accDescr",
+            "value",
+            "D",
+            ":",
+          ),
+          timelineEvents(kit, ["e"]),
+        ]),
+      mutate: joinTimelineEvents,
+      expected:
+        'TimelinePeriodStatement at 11-32: the written text before the event "e", after the item before it, is "\\n  accDescr: D\\n  : ", not whitespace, a `:`, and one whitespace character',
+    },
+  ])
+})
+
+/** Sets the written value held by a common info statement. */
+function infoValue(
+  type: string,
+  value: string,
+  index = 0,
+): InputCase["mutate"] {
+  return (root) => {
+    setField(firstIn(nthNode(root, type, index), "value"), "value", value)
+  }
+}
+
+/** Replaces the null value of a common info statement by an empty literal. */
+function infoEmptyLiteral(type: string): InputCase["mutate"] {
+  return (root, input) => {
+    const owner = nodeOf(root, type)
+    const at = owner.range[1]
+    const range = [at, at] as const
+    setField(owner, "value", {
+      type: "InfoLiteral",
+      value: "",
+      range,
+      loc: locationOf(input, range),
+    })
+  }
+}
+
+describe("checkTree: the nodes of an info diagram (ast/info.md)", () => {
+  itFailsEachRecorded("info", [
+    {
+      name: "fails the value of an info accessibility title as a FlowchartLiteral",
+      fixture: "acctitle-gap",
+      mutate: remakeChild(
+        "InfoAccTitleStatement",
+        "value",
+        "FlowchartLiteral",
+        [],
+        () => ({}),
+      ),
+      expected:
+        "InfoAccTitleStatement at 5-18: the field value holds a FlowchartLiteral, not an InfoLiteral",
+    },
+    {
+      name: "fails the value of an info accessibility description as a FlowchartLiteral",
+      fixture: "accdescr-line-repeat",
+      mutate: remakeChild(
+        "InfoAccDescrStatement",
+        "value",
+        "FlowchartLiteral",
+        [],
+        () => ({}),
+      ),
+      expected:
+        "InfoAccDescrStatement at 5-16: the field value holds a FlowchartLiteral, not an InfoLiteral",
+    },
+    {
+      name: "fails the value of an info description block as a FlowchartLiteral",
+      fixture: "common-all",
+      mutate: remakeChild(
+        "InfoAccDescrBlockStatement",
+        "value",
+        "FlowchartLiteral",
+        [],
+        () => ({}),
+      ),
+      expected:
+        "InfoAccDescrBlockStatement at 25-39: the field value holds a FlowchartLiteral, not an InfoLiteral",
+    },
+    {
+      name: "fails the hidden suffix of an info title as an InfoLiteral",
+      fixture: "hidden-directive-title-eof",
+      mutate: remakeChild(
+        "InfoTitleStatement",
+        "textAfter",
+        "InfoLiteral",
+        ["kind"],
+        () => ({}),
+      ),
+      expected:
+        "InfoTitleStatement at 5-18: the field textAfter holds an InfoLiteral, not an InfoIgnoredText",
+    },
+    {
+      name: "fails the hidden suffix of an info accessibility title as an InfoLiteral",
+      fixture: "hidden-directive-acctitle-eof",
+      mutate: remakeChild(
+        "InfoAccTitleStatement",
+        "textAfter",
+        "InfoLiteral",
+        ["kind"],
+        () => ({}),
+      ),
+      expected:
+        "InfoAccTitleStatement at 5-22: the field textAfter holds an InfoLiteral, not an InfoIgnoredText",
+    },
+    {
+      name: "fails the hidden suffix of an info accessibility description as an InfoLiteral",
+      fixture: "hidden-directive-accdescr-eof",
+      mutate: remakeChild(
+        "InfoAccDescrStatement",
+        "textAfter",
+        "InfoLiteral",
+        ["kind"],
+        () => ({}),
+      ),
+      expected:
+        "InfoAccDescrStatement at 5-22: the field textAfter holds an InfoLiteral, not an InfoIgnoredText",
+    },
+    {
+      name: "fails the hidden suffix of an info description block as an InfoLiteral",
+      fixture: "hidden-directive-block-eof",
+      mutate: remakeChild(
+        "InfoAccDescrBlockStatement",
+        "textAfter",
+        "InfoLiteral",
+        ["kind"],
+        () => ({}),
+      ),
+      expected:
+        "InfoAccDescrBlockStatement at 5-25: the field textAfter holds an InfoLiteral, not an InfoIgnoredText",
+    },
+    {
+      name: "fails the written value of an info title that is null",
+      fixture: "title-tabs",
+      mutate: (root) => {
+        setField(nodeOf(root, "InfoTitleStatement"), "value", null)
+      },
+      expected:
+        "InfoTitleStatement at 5-18: the common value is not the complete composite lexical value (or null when empty)",
+    },
+    {
+      name: "fails the written value of an info accessibility title that is null",
+      fixture: "acctitle-gap",
+      mutate: (root) => {
+        setField(nodeOf(root, "InfoAccTitleStatement"), "value", null)
+      },
+      expected:
+        "InfoAccTitleStatement at 5-18: the common value is not the complete composite lexical value (or null when empty)",
+    },
+    {
+      name: "fails the written value of an info accessibility description that is null",
+      fixture: "accdescr-line-repeat",
+      mutate: (root) => {
+        setField(nodeOf(root, "InfoAccDescrStatement"), "value", null)
+      },
+      expected:
+        "InfoAccDescrStatement at 5-16: the common value is not the complete composite lexical value (or null when empty)",
+    },
+    {
+      name: "fails the written value of an info description block that is null",
+      fixture: "common-all",
+      mutate: (root) => {
+        setField(nodeOf(root, "InfoAccDescrBlockStatement"), "value", null)
+      },
+      expected:
+        "InfoAccDescrBlockStatement at 25-39: the common value is not the complete composite lexical value (or null when empty)",
+    },
+    {
+      name: "fails an info title without content that has an empty literal",
+      fixture: "title-empty",
+      mutate: infoEmptyLiteral("InfoTitleStatement"),
+      expected:
+        "InfoTitleStatement at 5-10: the common value is not the complete composite lexical value (or null when empty)",
+    },
+    {
+      name: "fails an info title with only its one separating space that has an empty literal",
+      fixture: "lex-title-one-space",
+      mutate: infoEmptyLiteral("InfoTitleStatement"),
+      expected:
+        "InfoTitleStatement at 5-10: the common value is not the complete composite lexical value (or null when empty)",
+    },
+    {
+      name: "fails an info title with only its one separating tab that has an empty literal",
+      fixture: "lex-title-one-tab",
+      mutate: infoEmptyLiteral("InfoTitleStatement"),
+      expected:
+        "InfoTitleStatement at 5-10: the common value is not the complete composite lexical value (or null when empty)",
+    },
+    {
+      name: "fails an info title with only a common directive that has an empty literal",
+      fixture: "lex-title-directive-only",
+      mutate: infoEmptyLiteral("InfoTitleStatement"),
+      expected:
+        "InfoTitleStatement at 5-10: the common value is not the complete composite lexical value (or null when empty)",
+    },
+    {
+      name: "fails an info accessibility title without content that has an empty literal",
+      fixture: "acctitle-empty",
+      mutate: infoEmptyLiteral("InfoAccTitleStatement"),
+      expected:
+        "InfoAccTitleStatement at 5-14: the common value is not the complete composite lexical value (or null when empty)",
+    },
+    {
+      name: "fails an info accessibility title with only a common directive that has an empty literal",
+      fixture: "lex-acctitle-directive-only",
+      mutate: infoEmptyLiteral("InfoAccTitleStatement"),
+      expected:
+        "InfoAccTitleStatement at 5-14: the common value is not the complete composite lexical value (or null when empty)",
+    },
+    {
+      name: "fails an info accessibility description without content that has an empty literal",
+      fixture: "accdescr-line-empty",
+      mutate: infoEmptyLiteral("InfoAccDescrStatement"),
+      expected:
+        "InfoAccDescrStatement at 5-14: the common value is not the complete composite lexical value (or null when empty)",
+    },
+    {
+      name: "fails an info accessibility description with only a common directive that has an empty literal",
+      fixture: "lex-accdescr-directive-only",
+      mutate: infoEmptyLiteral("InfoAccDescrStatement"),
+      expected:
+        "InfoAccDescrStatement at 5-14: the common value is not the complete composite lexical value (or null when empty)",
+    },
+    {
+      name: "fails an empty info description block that has an empty literal",
+      fixture: "accdescr-block-empty",
+      mutate: infoEmptyLiteral("InfoAccDescrBlockStatement"),
+      expected:
+        "InfoAccDescrBlockStatement at 5-16: the common value is not the complete composite lexical value (or null when empty)",
+    },
+    {
+      name: "fails an info description block with only whitespace that has an empty literal",
+      fixture: "lex-block-whitespace-only",
+      mutate: infoEmptyLiteral("InfoAccDescrBlockStatement"),
+      expected:
+        "InfoAccDescrBlockStatement at 5-21: the common value is not the complete composite lexical value (or null when empty)",
+    },
+    {
+      name: "fails an info description block with only a common directive that has an empty literal",
+      fixture: "lex-block-directive-only",
+      mutate: infoEmptyLiteral("InfoAccDescrBlockStatement"),
+      expected:
+        "InfoAccDescrBlockStatement at 5-28: the common value is not the complete composite lexical value (or null when empty)",
+    },
+    {
+      name: "fails an info description block with only a comment region that has an empty literal",
+      fixture: "lex-block-comment-only",
+      mutate: infoEmptyLiteral("InfoAccDescrBlockStatement"),
+      expected:
+        "InfoAccDescrBlockStatement at 5-22: the common value is not the complete composite lexical value (or null when empty)",
+    },
+    {
+      name: "fails an info title value that includes its one separating tab",
+      fixture: "title-tabs",
+      mutate: infoValue("InfoTitleStatement", "\t A\t\tB \t"),
+      expected:
+        'InfoLiteral at 11-18: value is not its written text: "\\t A\\t\\tB \\t", not " A\\t\\tB \\t"',
+    },
+    {
+      name: "fails an info title value without its leading padding",
+      fixture: "title-tabs",
+      mutate: infoValue("InfoTitleStatement", "A\t\tB \t"),
+      expected:
+        'InfoLiteral at 11-18: value is not its written text: "A\\t\\tB \\t", not " A\\t\\tB \\t"',
+    },
+    {
+      name: "fails an info title value without its trailing padding",
+      fixture: "title-tabs",
+      mutate: infoValue("InfoTitleStatement", " A\t\tB"),
+      expected:
+        'InfoLiteral at 11-18: value is not its written text: " A\\t\\tB", not " A\\t\\tB \\t"',
+    },
+    {
+      name: "fails the second space after an info title left out of its value",
+      fixture: "lex-title-two-spaces",
+      mutate: infoValue("InfoTitleStatement", ""),
+      expected:
+        'InfoLiteral at 11-12: value is not its written text: "", not " "',
+    },
+    {
+      name: "fails an info accessibility title without its leading padding",
+      fixture: "space-common-interior",
+      mutate: infoValue("InfoAccTitleStatement", "A\u1680B\u3000"),
+      expected:
+        'InfoLiteral at 27-33: value is not its written text: "A\u1680B\u3000", not " \u3000A\u1680B\u3000"',
+    },
+    {
+      name: "fails an info accessibility title without its trailing padding",
+      fixture: "space-common-interior",
+      mutate: infoValue("InfoAccTitleStatement", " \u3000A\u1680B"),
+      expected:
+        'InfoLiteral at 27-33: value is not its written text: " \u3000A\u1680B", not " \u3000A\u1680B\u3000"',
+    },
+    {
+      name: "fails a whitespace-only info accessibility title whose value is empty",
+      fixture: "acctitle-repeat-empty",
+      mutate: infoValue("InfoAccTitleStatement", "", 2),
+      expected:
+        'InfoLiteral at 38-40: value is not its written text: "", not " \\t"',
+    },
+    {
+      name: "fails an info accessibility description without its leading padding",
+      fixture: "space-common-interior",
+      mutate: infoValue("InfoAccDescrStatement", "A\u2000B\u00a0"),
+      expected:
+        'InfoLiteral at 43-49: value is not its written text: "A\u2000B\u00a0", not " \u00a0A\u2000B\u00a0"',
+    },
+    {
+      name: "fails an info accessibility description without its trailing padding",
+      fixture: "space-common-interior",
+      mutate: infoValue("InfoAccDescrStatement", " \u00a0A\u2000B"),
+      expected:
+        'InfoLiteral at 43-49: value is not its written text: " \u00a0A\u2000B", not " \u00a0A\u2000B\u00a0"',
+    },
+    {
+      name: "fails a whitespace-only info accessibility description whose value is empty",
+      fixture: "lex-accdescr-line-whitespace",
+      mutate: infoValue("InfoAccDescrStatement", ""),
+      expected:
+        'InfoLiteral at 14-16: value is not its written text: "", not " \\t"',
+    },
+    {
+      name: "fails brace-looking info description text as a block statement",
+      fixture: "lex-block-colon-first",
+      mutate: (root) => {
+        setField(
+          nodeOf(root, "InfoAccDescrStatement"),
+          "type",
+          "InfoAccDescrBlockStatement",
+        )
+      },
+      expected:
+        'InfoAccDescrBlockStatement at 5-28: the common statement\'s fixed components: "accDescr:", not "accDescr{}"',
+    },
+    {
+      name: "fails an info description block value that keeps outer leading whitespace",
+      fixture: "space-block-interior",
+      mutate: infoValue("InfoAccDescrBlockStatement", " A\t\tB\ufeff\n\u3000C"),
+      expected:
+        "InfoLiteral at 17-25: a common literal must be nonempty, with a block interior trimmed",
+    },
+    {
+      name: "fails an info description block value that keeps outer trailing whitespace",
+      fixture: "space-block-interior",
+      mutate: infoValue("InfoAccDescrBlockStatement", "A\t\tB\ufeff\n\u3000C "),
+      expected:
+        "InfoLiteral at 17-25: a common literal must be nonempty, with a block interior trimmed",
+    },
+    {
+      name: "fails an info description block value without its internal indentation",
+      fixture: "space-block-interior",
+      mutate: infoValue("InfoAccDescrBlockStatement", "A\t\tB\ufeff\nC"),
+      expected:
+        'InfoLiteral at 17-25: value is not its written text: "A\\t\\tB\ufeff\\nC", not "A\\t\\tB\ufeff\\n\u3000C"',
+    },
+    {
+      name: "fails an info block value that writes its CRLF as LF",
+      fixture: "line-crlf",
+      mutate: infoValue("InfoAccDescrBlockStatement", "A\nB"),
+      expected:
+        'InfoLiteral at 27-31: value is not its written text: "A\\nB", not "A\\r\\nB"',
+    },
+    {
+      name: "fails a bare percent line removed from an info block value",
+      fixture: "comment-bare-block",
+      mutate: infoValue("InfoAccDescrBlockStatement", "A\n\nB"),
+      expected:
+        'InfoLiteral at 16-22: value is not its written text: "A\\n\\nB", not "A\\n%%\\nB"',
+    },
+    {
+      name: "fails a quote removed from an info block value",
+      fixture: "accdescr-block-quoted",
+      mutate: infoValue("InfoAccDescrBlockStatement", 'a\\n\' "b\\q"'),
+      expected:
+        'InfoLiteral at 16-27: value is not its written text: "a\\\\n\' \\"b\\\\q\\"", not "\'a\\\\n\' \\"b\\\\q\\""',
+    },
+    {
+      name: "fails an info block value whose backslash escape is decoded",
+      fixture: "accdescr-block-quoted",
+      mutate: infoValue("InfoAccDescrBlockStatement", "'a\n' \"b\\q\""),
+      expected:
+        'InfoLiteral at 16-27: value is not its written text: "\'a\\n\' \\"b\\\\q\\"", not "\'a\\\\n\' \\"b\\\\q\\""',
+    },
+    {
+      name: "fails a repeated info title that is left out",
+      fixture: "title-repeat-empty",
+      mutate: withoutBodyItem(0),
+      expected: 'RawText at 11-12 of "A": lies in no value node',
+    },
+    {
+      name: "fails a repeated info accessibility title that is left out",
+      fixture: "acctitle-repeat-empty",
+      mutate: withoutBodyItem(0),
+      expected: 'RawText at 14-16 of " A": lies in no value node',
+    },
+    {
+      name: "fails a repeated info accessibility description that is left out",
+      fixture: "accdescr-line-repeat",
+      mutate: withoutBodyItem(0),
+      expected: 'RawText at 14-16 of " A": lies in no value node',
+    },
+    {
+      name: "fails a repeated info description block that is left out",
+      fixture: "accdescr-block-repeat",
+      mutate: withoutBodyItem(0),
+      expected: 'RawText at 16-17 of "A": lies in no value node',
+    },
+    {
+      name: "fails an empty info title that is left out",
+      fixture: "title-empty",
+      mutate: withoutBodyItem(0),
+      expected:
+        'InfoDiagram at 0-10: the header and showInfo flag: ["info","title"], not ["info"]',
+    },
+    {
+      name: "fails an empty info accessibility title that is left out",
+      fixture: "acctitle-empty",
+      mutate: withoutBodyItem(0),
+      expected:
+        'InfoDiagram at 0-14: the header and showInfo flag: ["info","accTitle",":"], not ["info"]',
+    },
+    {
+      name: "fails an empty info accessibility description that is left out",
+      fixture: "accdescr-line-empty",
+      mutate: withoutBodyItem(0),
+      expected:
+        'InfoDiagram at 0-14: the header and showInfo flag: ["info","accDescr",":"], not ["info"]',
+    },
+    {
+      name: "fails an empty info description block that is left out",
+      fixture: "accdescr-block-empty",
+      mutate: withoutBodyItem(0),
+      expected:
+        'InfoDiagram at 0-16: the header and showInfo flag: ["info","accDescr","{","}"], not ["info"]',
+    },
+    {
+      name: "fails an info value that keeps its common directive",
+      fixture: "directive-block-value",
+      mutate: infoValue("InfoAccDescrBlockStatement", "A%%{wrap}%%B"),
+      expected:
+        'InfoLiteral at 16-28: value is not its written text: "A%%{wrap}%%B", not "AB"',
+    },
+    {
+      name: "fails an info value that keeps its comment region",
+      fixture: "lex-line-comment-region-ls",
+      mutate: (root, input) => {
+        const node = nodeOf(root, "InfoLiteral")
+        setField(node, "value", input.slice(...node.range))
+      },
+      expected:
+        'InfoLiteral at 11-19: value is not its written text: "A\u2028%% c\\nB", not "A\u2028B"',
+    },
+    {
+      name: "fails an info value that keeps its selected semicolon",
+      fixture: "lex-acc-title-line-separator-comment-line-line-rule-after",
+      mutate: infoValue("InfoAccTitleStatement", " A\u2028style:#b;B"),
+      expected:
+        'InfoLiteral at 14-32: value is not its written text: " A\u2028style:#b;B", not " A\u2028style:#bB"',
+    },
+    {
+      name: "fails an info value whose attribute quotes are converted",
+      fixture: "html-all-common",
+      mutate: (root) => {
+        const node = nodeOf(root, "InfoLiteral")
+        setField(node, "value", (node.value as string).replaceAll('"', "'"))
+      },
+      expected:
+        'InfoLiteral at 11-40: value is not its written text: "<b class=\'x\'>T</b> &amp; #35;", not "<b class=\\"x\\">T</b> &amp; #35;"',
+    },
+    {
+      name: "fails an info value whose entity is decoded",
+      fixture: "html-all-common",
+      mutate: (root) => {
+        const node = nodeOf(root, "InfoLiteral")
+        setField(node, "value", (node.value as string).replace("#35;", "#"))
+      },
+      expected:
+        'InfoLiteral at 11-40: value is not its written text: "<b class=\\"x\\">T</b> &amp; #", not "<b class=\\"x\\">T</b> &amp; #35;"',
+    },
+    {
+      name: "fails an info value whose whitespace is collapsed",
+      fixture: "title-tabs",
+      mutate: infoValue("InfoTitleStatement", " A B "),
+      expected:
+        'InfoLiteral at 11-18: value is not its written text: " A B ", not " A\\t\\tB \\t"',
+    },
+    {
+      name: "fails double-quoted info text as a StringLiteral",
+      fixture: "title-double-quotes",
+      mutate: remakeChild(
+        "InfoTitleStatement",
+        "value",
+        "StringLiteral",
+        [],
+        (node) => ({
+          raw: node.value,
+          value: (node.value as string).slice(1, -1),
+          closed: true,
+        }),
+      ),
+      expected:
+        "InfoTitleStatement at 5-18: the field value holds a StringLiteral, not an InfoLiteral",
+    },
+    {
+      name: "fails single-quoted info text as a StringLiteral",
+      fixture: "title-single-quotes",
+      mutate: remakeChild(
+        "InfoTitleStatement",
+        "value",
+        "StringLiteral",
+        [],
+        (node) => ({
+          raw: node.value,
+          value: (node.value as string).slice(1, -1),
+          closed: true,
+        }),
+      ),
+      expected:
+        "InfoTitleStatement at 5-18: the field value holds a StringLiteral, not an InfoLiteral",
+    },
+    {
+      name: "fails unclosed-quote info text as a StringLiteral",
+      fixture: "title-open-quote",
+      mutate: remakeChild(
+        "InfoTitleStatement",
+        "value",
+        "StringLiteral",
+        [],
+        (node) => ({
+          raw: node.value,
+          value: (node.value as string).slice(1),
+          closed: false,
+        }),
+      ),
+      expected:
+        "InfoTitleStatement at 5-22: the field value holds a StringLiteral, not an InfoLiteral",
+    },
+    {
+      name: "fails an info line value whose backslash escape is decoded",
+      fixture: "title-double-quotes",
+      mutate: infoValue("InfoTitleStatement", '"a\n\\q"'),
+      expected:
+        'InfoLiteral at 11-18: value is not its written text: "\\"a\\n\\\\q\\"", not "\\"a\\\\n\\\\q\\""',
+    },
+  ])
+})
+
+/** Adds an ignored form at a range that the source actually assigns to a Comment. */
+function infoIgnoredCommentAt(
+  field: string,
+  index: number,
+  range: readonly [number, number],
+): InputCase["mutate"] {
+  return (root, input) => {
+    const forms = [...(root.body[field] as CheckedNode[])]
+    forms.splice(index, 0, {
+      type: "InfoIgnoredText",
+      kind: "directive",
+      value: input.slice(...range),
+      range,
+      loc: locationOf(input, range),
+    })
+    setField(root.body, field, forms)
+  }
+}
+
+/** Moves a common statement's suffix into the body without changing the source. */
+function infoSuffixToBody(type: string): InputCase["mutate"] {
+  return (root, input) => {
+    const owner = nodeOf(root, type)
+    const [hidden, ...rest] = owner.textAfter as CheckedNode[]
+    setField(owner, "textAfter", rest)
+    const end =
+      type === "InfoAccDescrBlockStatement"
+        ? root.tokens.find(
+            (token) =>
+              token.value === "}" &&
+              token.range[0] >= owner.range[0] &&
+              token.range[1] <= owner.range[1],
+          )!.range[1]
+        : firstIn(owner, "value").range[1]
+    placeAt(owner, input, [owner.range[0], end])
+    const body = root.body.body as CheckedNode[]
+    const at = body.indexOf(owner)
+    setField(root.body, "body", [
+      ...body.slice(0, at + 1),
+      hidden,
+      ...body.slice(at + 1),
+    ])
+  }
+}
+
+/** Moves a hidden body form across its preceding visible EOL into a suffix. */
+function infoBodyToSuffix(type: string): InputCase["mutate"] {
+  return (root, input) => {
+    const owner = nodeOf(root, type)
+    const body = root.body.body as CheckedNode[]
+    const hidden = body.find((item) => item.type === "InfoIgnoredText")!
+    setField(
+      root.body,
+      "body",
+      body.filter((item) => item !== hidden),
+    )
+    setField(owner, "textAfter", [
+      ...(owner.textAfter as CheckedNode[]),
+      hidden,
+    ])
+    placeAt(owner, input, [owner.range[0], hidden.range[1]])
+  }
+}
+
+describe("checkTree: the hidden forms of an info diagram (ast/info.md)", () => {
+  itFailsEachRecorded("info", [
+    {
+      name: "fails a false showInfo flag where info writes the keyword",
+      fixture: "header-inline-flag",
+      mutate: (root) => {
+        setField(root.body, "showInfo", false)
+      },
+      expected:
+        'InfoDiagram at 0-13: the header and showInfo flag: ["info","showInfo"], not ["info"]',
+    },
+    {
+      name: "fails a false showInfo flag where info writes the keyword on a later line",
+      fixture: "header-flag-next-line",
+      mutate: (root) => {
+        setField(root.body, "showInfo", false)
+      },
+      expected:
+        'InfoDiagram at 0-13: the header and showInfo flag: ["info","showInfo"], not ["info"]',
+    },
+    {
+      name: "fails a true showInfo flag where info writes no keyword",
+      fixture: "header-lf",
+      mutate: (root) => {
+        setField(root.body, "showInfo", true)
+      },
+      expected:
+        'InfoDiagram at 0-4: the header and showInfo flag: ["info"], not ["info","showInfo"]',
+    },
+    {
+      name: "fails retained hidden text before info as an InfoLiteral",
+      fixture: "frontmatter-nonleading-comment",
+      mutate: remakeChild(
+        "InfoDiagram",
+        "textBeforeHeader",
+        "InfoLiteral",
+        ["kind"],
+        () => ({}),
+      ),
+      expected:
+        "InfoDiagram at 5-32: the field textBeforeHeader holds an InfoLiteral, not an InfoIgnoredText",
+    },
+    {
+      name: "fails a flag-gap hidden form of info as an InfoLiteral",
+      fixture: "lex-flag-hidden-two",
+      mutate: remakeChild(
+        "InfoDiagram",
+        "textBeforeShowInfo",
+        "InfoLiteral",
+        ["kind"],
+        () => ({}),
+      ),
+      expected:
+        "InfoDiagram at 0-34: the field textBeforeShowInfo holds an InfoLiteral, not an InfoIgnoredText",
+    },
+    {
+      name: "fails a body hidden form of info as an InfoLiteral",
+      fixture: "lex-hidden-without-flag",
+      mutate: remakeChild(
+        "InfoDiagram",
+        "body",
+        "InfoLiteral",
+        ["kind"],
+        () => ({}),
+      ),
+      expected:
+        "InfoDiagram at 0-19: the field body holds an InfoLiteral, not an InfoTitleStatement or InfoAccTitleStatement or InfoAccDescrStatement or InfoAccDescrBlockStatement or InfoIgnoredText",
+    },
+    {
+      name: "fails a literal among the body items of an info diagram",
+      fixture: "common-all",
+      mutate: (root) => {
+        setField(root.body, "body", [
+          nodeOf(root, "InfoLiteral"),
+          ...(root.body.body as CheckedNode[]),
+        ])
+      },
+      expected:
+        "InfoDiagram at 0-39: the field body holds an InfoLiteral, not an InfoTitleStatement or InfoAccTitleStatement or InfoAccDescrStatement or InfoAccDescrBlockStatement or InfoIgnoredText",
+    },
+    {
+      name: "fails retained hidden text before info moved into its body",
+      fixture: "frontmatter-nonleading-comment",
+      mutate: moveFirst("InfoDiagram", "textBeforeHeader", "body"),
+      expected:
+        'InfoDiagram at 5-32: the gap is not ASCII whitespace and LF: "---\\ntitle: Ignored\\n---\\n"',
+    },
+    {
+      name: "fails a missing retained hidden form before info",
+      fixture: "detect-second-scan-directive",
+      mutate: (root) => {
+        setField(root.body, "textBeforeHeader", [])
+      },
+      expected: 'RawText at 0-4 of "%%{\\n": lies in no value node',
+    },
+    {
+      name: "fails hidden text before showInfo moved into the info body",
+      fixture: "lex-flag-hidden-two",
+      mutate: moveFirst("InfoDiagram", "textBeforeShowInfo", "body"),
+      expected:
+        'InfoDiagram at 0-34: the gap is not ASCII whitespace and LF: "\\n%%{}%%\\n"',
+    },
+    {
+      name: "fails post-header hidden text without showInfo held before a flag",
+      fixture: "lex-hidden-without-flag",
+      mutate: moveFirst("InfoDiagram", "body", "textBeforeShowInfo"),
+      expected:
+        "InfoDiagram at 0-19: textBeforeShowInfo must be empty without showInfo",
+    },
+    {
+      name: "fails hidden text after showInfo moved before the flag",
+      fixture: "hidden-yaml-after-flag",
+      mutate: moveFirst("InfoDiagram", "body", "textBeforeShowInfo"),
+      expected:
+        'InfoDiagram at 0-34: the gap is not ASCII whitespace and LF: " showInfo "',
+    },
+    {
+      name: "fails a passed percent-brace line before info held as ignored text",
+      fixture: "lex-detect-preheader-empty-braces",
+      mutate: infoIgnoredCommentAt("textBeforeHeader", 0, [0, 6]),
+      expected:
+        "InfoIgnoredText at 0-6: a pre-header hidden directive must be found by the second word-type scan; bare percent forms are Comments",
+    },
+    {
+      name: "fails a passed unclosed percent-brace line before info held as ignored text",
+      fixture: "lex-detect-preheader-open-brace",
+      mutate: infoIgnoredCommentAt("textBeforeHeader", 0, [0, 4]),
+      expected:
+        "InfoIgnoredText at 0-4: a pre-header hidden directive must be found by the second word-type scan; bare percent forms are Comments",
+    },
+    {
+      name: "fails a passed bare line between retained info forms held as ignored text",
+      fixture: "div-detect-yaml-bare-directive",
+      mutate: infoIgnoredCommentAt("textBeforeHeader", 1, [18, 20]),
+      expected:
+        "InfoIgnoredText at 18-20: a pre-header hidden directive must be found by the second word-type scan; bare percent forms are Comments",
+    },
+    {
+      name: "fails a native comment duplicated as an ignored body form of info",
+      fixture: "comment-bare-body",
+      mutate: infoIgnoredCommentAt("body", 0, [5, 7]),
+      expected:
+        "InfoIgnoredText at 5-7: the value is not one complete hidden YAML or DIRECTIVE form without its following LF",
+    },
+    {
+      name: "fails a failed directive-looking comment held as an ignored form of info",
+      fixture: "hidden-directive-close-glued",
+      mutate: infoIgnoredCommentAt("body", 0, [5, 11]),
+      expected:
+        "InfoIgnoredText at 5-11: the value is not one complete hidden YAML or DIRECTIVE form without its following LF",
+    },
+    {
+      name: "fails a node for an empty line in the info body",
+      fixture: "common-blank-lines",
+      mutate: (root, input) => {
+        const range = [13, 13] as const
+        const body = root.body.body as CheckedNode[]
+        setField(root.body, "body", [
+          body[0],
+          {
+            type: "InfoTitleStatement",
+            value: null,
+            textAfter: [],
+            range,
+            loc: locationOf(input, range),
+          },
+          ...body.slice(1),
+        ])
+      },
+      expected:
+        "InfoTitleStatement at 13-13: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info diagram with a separate header field",
+      fixture: "header-lf",
+      mutate: (root) => {
+        setField(root.body, "header", "info")
+      },
+      expected:
+        "InfoDiagram at 0-4: has the field header, which its type does not have",
+    },
+    {
+      name: "fails an info diagram with a synthesized effective title",
+      fixture: "common-all",
+      mutate: (root) => {
+        setField(root.body, "effectiveTitle", "T")
+      },
+      expected:
+        "InfoDiagram at 0-39: has the field effectiveTitle, which its type does not have",
+    },
+    {
+      name: "fails an info diagram with a synthesized version",
+      fixture: "header-lf",
+      mutate: (root) => {
+        setField(root.body, "version", "11")
+      },
+      expected:
+        "InfoDiagram at 0-4: has the field version, which its type does not have",
+    },
+    {
+      name: "fails hidden text after an info title moved into the body",
+      fixture: "hidden-directive-title-eof",
+      mutate: infoSuffixToBody("InfoTitleStatement"),
+      expected:
+        "InfoTitleStatement at 5-12: a following statement requires visible EOL; a hidden form consumed the only LF",
+    },
+    {
+      name: "fails hidden text after an info accessibility title moved into the body",
+      fixture: "hidden-directive-acctitle-eof",
+      mutate: infoSuffixToBody("InfoAccTitleStatement"),
+      expected:
+        "InfoAccTitleStatement at 5-16: a following statement requires visible EOL; a hidden form consumed the only LF",
+    },
+    {
+      name: "fails hidden text after an info accessibility description moved into the body",
+      fixture: "hidden-directive-accdescr-eof",
+      mutate: infoSuffixToBody("InfoAccDescrStatement"),
+      expected:
+        "InfoAccDescrStatement at 5-16: a following statement requires visible EOL; a hidden form consumed the only LF",
+    },
+    {
+      name: "fails hidden text after an info description block moved into the body",
+      fixture: "hidden-directive-block-eof",
+      mutate: infoSuffixToBody("InfoAccDescrBlockStatement"),
+      expected:
+        "InfoAccDescrBlockStatement at 5-19: a following statement requires visible EOL; a hidden form consumed the only LF",
+    },
+    {
+      name: "fails hidden info body text after visible EOL moved into a title suffix",
+      fixture: "lex-hidden-after-visible-eol",
+      mutate: infoBodyToSuffix("InfoTitleStatement"),
+      expected:
+        'InfoTitleStatement at 5-19: the gap is not hidden ASCII whitespace: "\\n"',
+    },
+    {
+      name: "fails an info hidden form with an unknown kind",
+      fixture: "hidden-yaml-empty",
+      mutate: (root) => {
+        setField(nodeOf(root, "InfoIgnoredText"), "kind", "yaml")
+      },
+      expected:
+        'InfoIgnoredText at 5-12: the field kind is "yaml", none of yaml-block, directive',
+    },
+    {
+      name: "fails a native info YAML form recorded with directive kind",
+      fixture: "hidden-yaml-empty",
+      mutate: (root) => {
+        setField(nodeOf(root, "InfoIgnoredText"), "kind", "directive")
+      },
+      expected:
+        "InfoIgnoredText at 5-12: the value is not one complete hidden YAML or DIRECTIVE form without its following LF",
+    },
+    {
+      name: "fails a native info directive recorded with YAML kind",
+      fixture: "hidden-directive-body",
+      mutate: (root) => {
+        setField(nodeOf(root, "InfoIgnoredText"), "kind", "yaml-block")
+      },
+      expected:
+        "InfoIgnoredText at 5-11: the value is not one complete hidden YAML or DIRECTIVE form without its following LF",
+    },
+    {
+      name: "fails an info hidden YAML value without its opening fence",
+      fixture: "hidden-yaml-empty",
+      mutate: (root) => {
+        const n = nodeOf(root, "InfoIgnoredText")
+        setField(n, "value", (n.value as string).slice(3))
+      },
+      expected:
+        'InfoIgnoredText at 5-12: value is not its written text: "\\n---", not "---\\n---"',
+    },
+    {
+      name: "fails an info hidden directive value without its closing fence",
+      fixture: "hidden-directive-body",
+      mutate: (root) => {
+        const n = nodeOf(root, "InfoIgnoredText")
+        setField(n, "value", (n.value as string).slice(0, -3))
+      },
+      expected:
+        'InfoIgnoredText at 5-11: value is not its written text: "%%{", not "%%{}%%"',
+    },
+    {
+      name: "fails an empty-bodied info YAML form with an empty value",
+      fixture: "hidden-yaml-empty",
+      mutate: (root) => {
+        setField(nodeOf(root, "InfoIgnoredText"), "value", "")
+      },
+      expected:
+        'InfoIgnoredText at 5-12: value is not its written text: "", not "---\\n---"',
+    },
+    {
+      name: "fails an empty-bodied info directive with an empty value",
+      fixture: "hidden-directive-body",
+      mutate: (root) => {
+        setField(nodeOf(root, "InfoIgnoredText"), "value", "")
+      },
+      expected:
+        'InfoIgnoredText at 5-11: value is not its written text: "", not "%%{}%%"',
+    },
+    {
+      name: "fails an info hidden form with a closed field",
+      fixture: "hidden-yaml-empty",
+      mutate: (root) => {
+        setField(nodeOf(root, "InfoIgnoredText"), "closed", true)
+      },
+      expected:
+        "InfoIgnoredText at 5-12: has the field closed, which its type does not have",
+    },
+    {
+      name: "fails an info hidden YAML value with its CR written as LF",
+      fixture: "hidden-yaml-cr",
+      mutate: (root) => {
+        const n = nodeOf(root, "InfoIgnoredText")
+        setField(n, "value", (n.value as string).replaceAll("\r", "\n"))
+      },
+      expected:
+        'InfoIgnoredText at 19-31: value is not its written text: "---\\nx: y\\n---", not "---\\rx: y\\r---"',
+    },
+    {
+      name: "fails an info hidden directive value without its internal line feed",
+      fixture: "detect-second-scan-directive",
+      mutate: (root) => {
+        const n = nodeOf(root, "InfoIgnoredText")
+        setField(n, "value", (n.value as string).replace("\n", ""))
+      },
+      expected:
+        'InfoIgnoredText at 0-16: value is not its written text: "%%{wrap}%%", not "%%{\\nwrap}%%"',
+    },
+    {
+      name: "fails an info hidden YAML value without its internal indentation",
+      fixture: "hidden-yaml-config-ignored",
+      mutate: (root) => {
+        const n = nodeOf(root, "InfoIgnoredText")
+        setField(n, "value", (n.value as string).replace("  theme", "theme"))
+      },
+      expected:
+        'InfoIgnoredText at 5-49: value is not its written text: "---\\nconfig:\\ntheme: dark\\ntitle: Ignored\\n---", not "---\\nconfig:\\n  theme: dark\\ntitle: Ignored\\n---"',
+    },
+    {
+      name: "fails an info hidden directive value with its internal spaces collapsed",
+      fixture: "lex-hidden-nested-global",
+      mutate: (root) => {
+        const n = nodeOf(root, "InfoIgnoredText")
+        setField(n, "value", (n.value as string).replace("  ", " "))
+      },
+      expected:
+        'InfoIgnoredText at 5-25: value is not its written text: "%%{! !}%%", not "%%{!  !}%%"',
+    },
+    {
+      name: "fails an info hidden directive value that keeps its nested global directive",
+      fixture: "lex-hidden-nested-global",
+      mutate: (root, input) => {
+        const n = nodeOf(root, "InfoIgnoredText")
+        setField(n, "value", input.slice(...n.range))
+      },
+      expected:
+        'InfoIgnoredText at 5-25: value is not its written text: "%%{! %%{wrap}%% !}%%", not "%%{!  !}%%"',
+    },
+    {
+      name: "fails an info hidden YAML value that keeps a common comment region",
+      fixture: "lex-yaml-common-comment",
+      mutate: (root, input) => {
+        const n = nodeOf(root, "InfoIgnoredText")
+        setField(n, "value", input.slice(...n.range))
+      },
+      expected:
+        'InfoIgnoredText at 5-22: value is not its written text: "---\\n%% c\\nx: y\\n---", not "---\\nx: y\\n---"',
+    },
+    {
+      name: "fails an info hidden directive value that keeps a common comment region",
+      fixture: "lex-hidden-common-comment",
+      mutate: (root, input) => {
+        const n = nodeOf(root, "InfoIgnoredText")
+        setField(n, "value", input.slice(...n.range))
+      },
+      expected:
+        'InfoIgnoredText at 5-19: value is not its written text: "%%{!\\n%% c\\n!}%%", not "%%{!\\n!}%%"',
+    },
+    {
+      name: "fails an info hidden YAML value that keeps a selected semicolon",
+      fixture: "lex-yaml-fences-selected",
+      mutate: (root, input) => {
+        const n = nodeOf(
+          root,
+          "InfoIgnoredText",
+          (item) => item.kind === "yaml-block",
+        )
+        setField(n, "value", input.slice(...n.range))
+      },
+      expected:
+        'InfoIgnoredText at 23-36: value is not its written text: "--;-\\nx: y\\n---", not "---\\nx: y\\n---"',
+    },
+    {
+      name: "fails an info hidden directive value that keeps a selected semicolon in its opener",
+      fixture: "lex-hidden-opener-selected",
+      mutate: (root, input) => {
+        const n = nthNode(root, "InfoIgnoredText", 1)
+        setField(n, "value", input.slice(...n.range))
+      },
+      expected:
+        'InfoIgnoredText at 23-30: value is not its written text: "%;%{}%%", not "%%{}%%"',
+    },
+    {
+      name: "fails an info hidden directive value that keeps a selected semicolon in its closer",
+      fixture: "lex-hidden-closer-selected",
+      mutate: (root, input) => {
+        const n = nodeOf(root, "InfoIgnoredText")
+        setField(n, "value", input.slice(...n.range))
+      },
+      expected:
+        'InfoIgnoredText at 5-23: value is not its written text: "%%{! style:#x };%%", not "%%{! style:#x }%%"',
+    },
+    {
+      name: "fails an info hidden form duplicated in its owner",
+      fixture: "lex-flag-hidden-two",
+      mutate: (root) => {
+        const forms = root.body.textBeforeShowInfo as CheckedNode[]
+        setField(root.body, "textBeforeShowInfo", [
+          forms[0],
+          forms[0],
+          ...forms.slice(1),
+        ])
+      },
+      expected:
+        "InfoIgnoredText at 5-11: overlaps the child node InfoIgnoredText at 5-11 of InfoDiagram at 0-34",
+    },
+    {
+      name: "fails an info hidden directive duplicated in Root.directives",
+      fixture: "hidden-directive-body",
+      mutate: (root, input) => {
+        const n = nodeOf(root, "InfoIgnoredText")
+        setField(root, "directives", [
+          ...root.directives,
+          directiveOf(input, input.slice(...n.range)),
+        ])
+      },
+      expected: "Directive at 5-11: lies inside RawText at 5-11",
+    },
+    {
+      name: "fails an info hidden YAML duplicated in Root.frontmatter",
+      fixture: "frontmatter-nonleading-comment",
+      mutate: (root, input) => {
+        const n = nodeOf(root, "InfoIgnoredText")
+        setField(
+          root,
+          "frontmatter",
+          frontmatterOf(input, input.slice(...n.range), [
+            n.range[0] + 4,
+            n.range[1] - 4,
+          ]),
+        )
+      },
+      expected:
+        'the tokens in the range of the frontmatter: are not the opening delimiter, the body, and the closing delimiter: [["RawText",[5,27]]], not [["Punctuator",[5,8]],["RawText",[9,23]],["Punctuator",[24,27]]]',
+    },
+    {
+      name: "fails a missing independent global directive inside an info hidden form",
+      fixture: "lex-hidden-nested-global",
+      mutate: (root) => {
+        setField(root, "directives", [])
+      },
+      expected:
+        "the Directive tokens: are not those of the directives outside all other tokens and all comments: [[10,20]], not []",
+    },
+    {
+      name: "fails hidden-looking YAML extracted from an info block value",
+      fixture: "hidden-yaml-inside-block",
+      mutate: (root, input) => {
+        const start = input.indexOf("---")
+        const end = input.indexOf("---", start + 3) + 3
+        setField(root.body, "body", [
+          ...(root.body.body as CheckedNode[]),
+          {
+            type: "InfoIgnoredText",
+            kind: "yaml-block",
+            value: input.slice(start, end),
+            range: [start, end],
+            loc: locationOf(input, [start, end]),
+          },
+        ])
+      },
+      expected:
+        "InfoIgnoredText at 18-30: overlaps the child node InfoAccDescrBlockStatement at 5-34 of InfoDiagram at 0-34",
+    },
+    {
+      name: "fails hidden-looking directive text extracted from an info block value",
+      fixture: "hidden-directive-block-first-brace",
+      mutate: (root, input) => {
+        const range = [18, 24] as const
+        setField(root.body, "body", [
+          ...(root.body.body as CheckedNode[]),
+          {
+            type: "InfoIgnoredText",
+            kind: "directive",
+            value: input.slice(...range),
+            range,
+            loc: locationOf(input, range),
+          },
+        ])
+      },
+      expected:
+        "InfoIgnoredText at 18-24: overlaps the child node InfoAccDescrBlockStatement at 5-22 of InfoDiagram at 0-32",
+    },
+    {
+      name: "fails info YAML split before its third adjacent fence",
+      fixture: "lex-yaml-three-fences",
+      mutate: rangeOf("InfoIgnoredText", [5, 12]),
+      expected:
+        "InfoIgnoredText at 5-12: the value is not one complete hidden YAML or DIRECTIVE form without its following LF",
+    },
+    {
+      name: "fails two nonempty info YAML forms merged into one ignored leaf",
+      fixture: "lex-yaml-two-before-flag",
+      mutate: (root, input) => {
+        const [first, second] = root.body.textBeforeShowInfo as CheckedNode[]
+        setField(root.body, "textBeforeShowInfo", [first])
+        placeAt(first, input, [first.range[0], second.range[1]])
+        setField(first, "value", input.slice(...first.range))
+      },
+      expected:
+        "InfoIgnoredText at 5-30: the value is not one complete hidden YAML or DIRECTIVE form without its following LF",
+    },
+  ])
+})
+
+describe("checkTree: the gaps of an info diagram that no recorded tree holds (ast/info.md)", () => {
+  // The corpus has hidden body forms after a title's visible EOL, but none
+  // after the visible EOL of the other three common statement kinds.
+  // No recorded line value holds hidden-looking appended YAML dashes either.
+  itFailsEach([
+    {
+      name: "hidden info body text after visible EOL moved into an accessibility title suffix",
+      built: () =>
+        buildInfo("info\naccTitle: A\n%%{}%%", (kit) => [
+          common(kit, "Info", "AccTitle", " A"),
+          ignored(kit, "Info", "%%{}%%", "directive"),
+        ]),
+      mutate: infoBodyToSuffix("InfoAccTitleStatement"),
+      expected:
+        'InfoAccTitleStatement at 5-23: the gap is not hidden ASCII whitespace: "\\n"',
+    },
+    {
+      name: "hidden info body text after visible EOL moved into an accessibility description suffix",
+      built: () =>
+        buildInfo("info\naccDescr: A\n%%{}%%", (kit) => [
+          common(kit, "Info", "AccDescr", " A"),
+          ignored(kit, "Info", "%%{}%%", "directive"),
+        ]),
+      mutate: infoBodyToSuffix("InfoAccDescrStatement"),
+      expected:
+        'InfoAccDescrStatement at 5-23: the gap is not hidden ASCII whitespace: "\\n"',
+    },
+    {
+      name: "hidden info body text after visible EOL moved into a description block suffix",
+      built: () =>
+        buildInfo("info\naccDescr { A }\n%%{}%%", (kit) => [
+          common(kit, "Info", "AccDescrBlock", "A"),
+          ignored(kit, "Info", "%%{}%%", "directive"),
+        ]),
+      mutate: infoBodyToSuffix("InfoAccDescrBlockStatement"),
+      expected:
+        'InfoAccDescrBlockStatement at 5-26: the gap is not hidden ASCII whitespace: "\\n"',
+    },
+    {
+      name: "hidden-looking YAML dashes removed from an info title value",
+      built: () =>
+        buildInfo("info\ntitle T---", (kit) => [
+          common(kit, "Info", "Title", "T---"),
+        ]),
+      mutate: infoValue("InfoTitleStatement", "T"),
+      expected:
+        'InfoLiteral at 11-15: value is not its written text: "T", not "T---"',
+    },
+    {
+      name: "hidden-looking YAML dashes removed from an info accessibility title value",
+      built: () =>
+        buildInfo("info\naccTitle: A---", (kit) => [
+          common(kit, "Info", "AccTitle", " A---"),
+        ]),
+      mutate: infoValue("InfoAccTitleStatement", " A"),
+      expected:
+        'InfoLiteral at 14-19: value is not its written text: " A", not " A---"',
+    },
+    {
+      name: "hidden-looking YAML dashes removed from an info accessibility description value",
+      built: () =>
+        buildInfo("info\naccDescr: A---", (kit) => [
+          common(kit, "Info", "AccDescr", " A---"),
+        ]),
+      mutate: infoValue("InfoAccDescrStatement", " A"),
+      expected:
+        'InfoLiteral at 14-19: value is not its written text: " A", not " A---"',
+    },
+  ])
+})
+
+/** Gives a native comment the additional, incorrect owner of a hidden suffix. */
+function infoCommentSuffix(type: string): InputCase["mutate"] {
+  return (root, input) => {
+    const owner = nodeOf(root, type)
+    const [comment] = root.comments
+    setField(owner, "textAfter", [
+      {
+        type: "InfoIgnoredText",
+        kind: "directive",
+        value: input.slice(...comment.range),
+        range: comment.range,
+        loc: comment.loc,
+      },
+    ])
+    placeAt(owner, input, [owner.range[0], comment.range[1]])
+  }
+}
+
+describe("checkTree: the native comment suffixes of an info diagram (ast/info.md)", () => {
+  itFailsEachRecorded("info", [
+    {
+      name: "fails a native comment after an info title held as a hidden suffix",
+      fixture: "comment-title",
+      mutate: infoCommentSuffix("InfoTitleStatement"),
+      expected:
+        "InfoIgnoredText at 12-16: the value is not one complete hidden YAML or DIRECTIVE form without its following LF",
+    },
+    {
+      name: "fails a native comment after an info accessibility title held as a hidden suffix",
+      fixture: "comment-acctitle",
+      mutate: infoCommentSuffix("InfoAccTitleStatement"),
+      expected:
+        "InfoIgnoredText at 16-20: the value is not one complete hidden YAML or DIRECTIVE form without its following LF",
+    },
+    {
+      name: "fails a native comment after an info accessibility description held as a hidden suffix",
+      fixture: "comment-accdescr",
+      mutate: infoCommentSuffix("InfoAccDescrStatement"),
+      expected:
+        "InfoIgnoredText at 16-20: the value is not one complete hidden YAML or DIRECTIVE form without its following LF",
+    },
+    {
+      name: "fails a native comment after an info description block held as a hidden suffix",
+      fixture: "comment-after-block",
+      mutate: infoCommentSuffix("InfoAccDescrBlockStatement"),
+      expected:
+        "InfoIgnoredText at 19-23: the value is not one complete hidden YAML or DIRECTIVE form without its following LF",
+    },
+  ])
+})
+
+describe("checkTree: the separating space and source EOF of an info diagram (ast/info.md)", () => {
+  itFailsEachRecorded("info", [
+    {
+      name: "fails an info title value that includes its one separating space",
+      fixture: "lex-title-two-spaces",
+      mutate: infoValue("InfoTitleStatement", "  "),
+      expected:
+        'InfoLiteral at 11-12: value is not its written text: "  ", not " "',
+    },
+    {
+      name: "fails an info hidden directive value that holds the appended line feed",
+      fixture: "hidden-directive-title-eof",
+      mutate: (root) => {
+        const node = nodeOf(root, "InfoIgnoredText")
+        setField(node, "value", `${node.value as string}\n`)
+      },
+      expected:
+        'InfoIgnoredText at 12-18: value is not its written text: "%%{}%%\\n", not "%%{}%%"',
+    },
+    {
+      name: "fails an info hidden YAML value that holds the appended line feed",
+      fixture: "hidden-yaml-block-eof",
+      mutate: (root) => {
+        const node = nodeOf(root, "InfoIgnoredText")
+        setField(node, "value", `${node.value as string}\n`)
+      },
+      expected:
+        'InfoIgnoredText at 19-31: value is not its written text: "---\\nx: y\\n---\\n", not "---\\nx: y\\n---"',
+    },
+  ])
+})
+
+describe("checkTree: the nodes of a journey diagram (ast/journey.md)", () => {
+  itFailsEachRecorded("journey", [
+    {
+      name: "fails the body of a journey diagram as a PieDiagram",
+      fixture: "header-only",
+      mutate: (root) => {
+        setField(root.body, "type", "PieDiagram")
+        setField(root.body, "showData", false)
+        setField(root.body, "textBeforeHeader", [])
+        setField(root.body, "textBeforeShowData", [])
+      },
+      expected: "Root: the diagram type journey is not one of those of a PieDiagram: pie",
+    },
+    {
+      name: "fails a journey diagram with a header field",
+      fixture: "header-only",
+      mutate: (root) => setField(root.body, "header", "journey"),
+      expected: "JourneyDiagram at 0-7: has the field header, which its type does not have",
+    },
+    {
+      name: "fails a journey description block without its closing brace token",
+      fixture: "gram-acc-descr-block-empty",
+      mutate: (root) => setField(root, "tokens", root.tokens.filter((token) => token.value !== "}")),
+      expected: "JourneyAccDescrBlockStatement at 10-21: the tokens of the node outside its child nodes, joined: \"accdescr{\", not \"accdescr{}\"",
+    },
+    {
+      name: "fails a journey description block with an empty literal instead of null",
+      fixture: "gram-acc-descr-block-empty",
+      mutate: (root, input) => {
+        const block = nodeOf(root, "JourneyAccDescrBlockStatement")
+        const at = root.tokens.find((token) => token.value === "{")!.range[1]
+        setField(block, "value", { type: "JourneyLiteral", value: "", range: [at, at], loc: locationOf(input, [at, at]) })
+      },
+      expected: "JourneyLiteral at 20-20: the value of a JourneyLiteral is empty",
+    },
+    {
+      name: "fails a journey score of whitespace with a literal instead of null",
+      fixture: "gram-task-data-whitespace-only",
+      mutate: (root, input) => {
+        const task = nodeOf(root, "JourneyTaskStatement")
+        const at = task.range[1]
+        setField(task, "score", { type: "JourneyLiteral", value: " ", range: [at, at + 1], loc: locationOf(input, [at, at + 1]) })
+      },
+      expected: "JourneyTaskStatement at 10-12: the score starts or ends with whitespace: \" \"",
+    },
+    {
+      name: "fails an empty person of a journey task held as an empty literal",
+      fixture: "db-task-people-empty-item",
+      mutate: (root, input) => {
+        const task = nodeOf(root, "JourneyTaskStatement")
+        const people = task.people as (CheckedNode | null)[]
+        const at = input.indexOf(",,") + 1
+        setField(task, "people", people.map((person) => person ?? { type: "JourneyLiteral", value: "", range: [at, at], loc: locationOf(input, [at, at]) }))
+      },
+      expected: "JourneyLiteral at 18-18: the value of a JourneyLiteral is empty",
+    },
+    {
+      name: "fails a journey task without a second colon that has a null person",
+      fixture: "db-task-score-only",
+      mutate: (root) => setField(nodeOf(root, "JourneyTaskStatement"), "people", [null]),
+      expected: "JourneyTaskStatement at 10-14: the number of the person, which is one more than the separators: 1, not 0",
+    },
+    {
+      name: "fails a journey literal whose value is not its written text",
+      fixture: "db-task-score-only",
+      mutate: (root) => setField(nodeOf(root, "JourneyLiteral"), "value", "wrong"),
+      expected: "JourneyLiteral at 10-11: value is not its written text: \"wrong\", not \"A\"",
+    },
+    {
+      name: "fails journey ignored data whose value is not its written text",
+      fixture: "db-task-extra-colon",
+      mutate: (root) => setField(nodeOf(root, "JourneyIgnoredText"), "value", ": other"),
+      expected: "JourneyIgnoredText at 19-25: value is not its written text: \": other\", not \": c, d\"",
+    },
+    {
+      name: "fails a journey title whose attribute quotes are converted",
+      fixture: "lex-html-tag-in-title",
+      mutate: (root) => {
+        const value = nodeOf(root, "JourneyLiteral")
+        setField(value, "value", (value.value as string).replaceAll('"', "'"))
+      },
+      expected: "JourneyLiteral at 16-30: value is not its written text: \"<b a='x'>t</b>\", not \"<b a=\\\"x\\\">t</b>\"",
+    },
+    {
+      name: "fails a journey description block whose line feed is removed from its value",
+      fixture: "db-acc-descr-block",
+      mutate: (root) => {
+        const value = nodeOf(root, "JourneyLiteral")
+        setField(value, "value", (value.value as string).replaceAll("\n", ""))
+      },
+      expected: "JourneyLiteral at 24-44: value is not its written text: \"line one   line two\", not \"line one\\n   line two\"",
+    },
+    {
+      name: "fails the whitespace-only name of a journey section held as an empty value",
+      fixture: "lex-section-whitespace-only",
+      mutate: (root) => setField(nodeOf(root, "JourneyLiteral"), "value", ""),
+      expected: "JourneyLiteral at 18-19: the value of a JourneyLiteral is empty",
+    },
+    {
+      name: "fails a journey title with its colon removed from its value",
+      fixture: "lex-title-colon-inside",
+      mutate: (root) => {
+        const value = nodeOf(root, "JourneyLiteral")
+        setField(value, "value", (value.value as string).replaceAll(":", ""))
+      },
+      expected: "JourneyLiteral at 16-19: value is not its written text: \"Tx\", not \"T:x\"",
+    },
+    {
+      name: "fails a journey title with percent signs removed from its value",
+      fixture: "lex-title-percent-inside",
+      mutate: (root) => {
+        const value = nodeOf(root, "JourneyLiteral")
+        setField(value, "value", (value.value as string).replaceAll("%", ""))
+      },
+      expected: "JourneyLiteral at 16-22: value is not its written text: \"T  c\", not \"T %% c\"",
+    },
+    {
+      name: "fails a journey task whose score replaces its description",
+      fixture: "db-task-score-only",
+      mutate: (root) => {
+        const task = nodeOf(root, "JourneyTaskStatement")
+        const description = task.description
+        setField(task, "description", task.score)
+        setField(task, "score", description)
+      },
+      expected: "JourneyLiteral at 10-11: comes before the child node JourneyLiteral at 13-14 of JourneyTaskStatement at 10-14, which the child fields list before it",
+    },
+    {
+      name: "fails a journey task with its people reversed",
+      fixture: "db-task-people",
+      mutate: (root) => setField(nodeOf(root, "JourneyTaskStatement"), "people", [...nodeOf(root, "JourneyTaskStatement").people as CheckedNode[]].reverse()),
+      expected: "JourneyLiteral at 20-23: comes before the child node JourneyLiteral at 27-31 of JourneyTaskStatement at 10-31, which the child fields list before it",
+    },
+  ])
+})
+
+describe("checkTree: the further nodes of a journey diagram (ast/journey.md)", () => {
+  itFailsEachRecorded("journey", [
+    {
+      name: "fails a journey section name that leaves out its leading space",
+      fixture: "lex-section-two-spaces",
+      mutate: (root) => setField(nodeOf(root, "JourneyLiteral"), "value", (nodeOf(root, "JourneyLiteral").value as string).trimStart()),
+      expected: "JourneyLiteral at 18-20: value is not its written text: \"S\", not \" S\"",
+    },
+    {
+      name: "fails an empty journey score held as an empty literal",
+      fixture: "db-task-score-empty",
+      mutate: (root, input) => {
+        const task = nodeOf(root, "JourneyTaskStatement")
+        const at = root.tokens.find((t) => t.value === ":")!.range[1]
+        setField(task, "score", { type: "JourneyLiteral", value: "", range: [at, at], loc: locationOf(input, [at, at]) })
+      },
+      expected: "JourneyLiteral at 12-12: the value of a JourneyLiteral is empty",
+    },
+    {
+      name: "fails a whitespace-only journey person held as a literal",
+      fixture: "db-task-people-blank",
+      mutate: (root, input) => {
+        const task = nodeOf(root, "JourneyTaskStatement")
+        const at = root.tokens.filter((t) => t.value === ":")[1].range[1]
+        setField(task, "people", [{ type: "JourneyLiteral", value: " ", range: [at, at + 1], loc: locationOf(input, [at, at + 1]) }])
+      },
+      expected: "JourneyTaskStatement at 10-15: a person starts or ends with whitespace: \" \"",
+    },
+    {
+      name: "fails a blank journey description block held as a literal",
+      fixture: "gram-acc-descr-block-whitespace-only",
+      mutate: (root, input) => {
+        const block = nodeOf(root, "JourneyAccDescrBlockStatement")
+        const at = root.tokens.find((t) => t.value === "{")!.range[1]
+        setField(block, "value", { type: "JourneyLiteral", value: " ", range: [at, at + 1], loc: locationOf(input, [at, at + 1]) })
+      },
+      expected: "JourneyAccDescrBlockStatement at 10-29: the value of a description block starts or ends with whitespace: \" \"",
+    },
+    {
+      name: "fails a journey task omitted from the body",
+      fixture: "db-task-score-only",
+      mutate: withoutBodyItem(0),
+      expected: "JourneyDiagram at 0-14: the tokens of the node outside its child nodes, joined: \"journeyA:5\", not \"journey\"",
+    },
+    {
+      name: "fails a node for an empty line in a journey diagram",
+      fixture: "lex-newline-runs",
+      mutate: (root, input) => {
+        const at = input.indexOf("\n\n") + 1
+        const node = { type: "JourneyLiteral", value: "\n", range: [at, at + 1], loc: locationOf(input, [at, at + 1]) }
+        setField(root.body, "body", [node, ...root.body.body as CheckedNode[]])
+      },
+      expected: "JourneyLiteral at 8-9: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a nonnumeric journey score omitted from its task",
+      fixture: "db-task-score-not-a-number",
+      mutate: (root) => setField(nodeOf(root, "JourneyTaskStatement"), "score", null),
+      expected: "JourneyTaskStatement at 10-19: the score part 0 is null, but \" abc\" lies in its stretch",
+    },
+    {
+      name: "fails a journey score whose comma is removed",
+      fixture: "gram-task-score-comma",
+      mutate: (root) => {
+        const score = firstIn(nodeOf(root, "JourneyTaskStatement"), "score")
+        setField(score, "value", (score.value as string).replaceAll(",", ""))
+      },
+      expected: "JourneyLiteral at 13-17: value is not its written text: \"5 6\", not \"5, 6\"",
+    },
+    {
+      name: "fails journey ignored data consisting of its third colon omitted",
+      fixture: "gram-task-third-colon-at-end",
+      mutate: (root) => setField(nodeOf(root, "JourneyTaskStatement"), "textAfter", null),
+      expected: "RawText at 18-19 of \":\": lies in no value node",
+    },
+    {
+      name: "fails journey ignored data without its further colon",
+      fixture: "gram-task-four-colons",
+      mutate: (root) => {
+        const node = nodeOf(root, "JourneyIgnoredText")
+        setField(node, "value", ":" + (node.value as string).slice(1).replaceAll(":", ""))
+      },
+      expected: "JourneyIgnoredText at 18-24: value is not its written text: \": x y\", not \": x: y\"",
+    },
+  ])
+})
+
+describe("checkTree: the remaining nodes of a journey diagram (ast/journey.md)", () => {
+  itFailsEachRecorded("journey", [
+    {
+      name: "fails a journey literal whose value is not a string",
+      fixture: "db-task-score-only",
+      mutate: (root) => setField(nodeOf(root, "JourneyLiteral"), "value", 1),
+      expected: "JourneyLiteral at 10-11: the field value is number, not string",
+    },
+    {
+      name: "fails a journey ignored value that is not a string",
+      fixture: "db-task-extra-colon",
+      mutate: (root) => setField(nodeOf(root, "JourneyIgnoredText"), "value", 1),
+      expected: "JourneyIgnoredText at 19-25: the field value is number, not string",
+    },
+    {
+      name: "fails a journey ignored text whose value keeps its directive",
+      fixture: "lex-directive-after-space-in-ignored-data",
+      mutate: (root, input) => {
+        const node = nodeOf(root, "JourneyIgnoredText")
+        setField(node, "value", input.slice(...node.range))
+      },
+      expected: "JourneyIgnoredText at 18-37: value is not its written text: \": a %%{init: {}}%%b\", not \": a b\"",
+    },
+    {
+      name: "fails a journey ignored value with its trailing source spaces",
+      fixture: "gram-task-ignored-data-trailing-spaces",
+      mutate: (root) => {
+        const node = nodeOf(root, "JourneyIgnoredText")
+        setField(node, "value", `${node.value as string}  `)
+      },
+      expected: "JourneyTaskStatement at 10-21: the text after the people part \": x  \" does not start with the third colon or ends with whitespace",
+    },
+    {
+      name: "fails a space-only journey description block held as a literal",
+      fixture: "gram-empty-description-blocks-adjacent",
+      mutate: (root, input) => {
+        const block = nthNode(root, "JourneyAccDescrBlockStatement", 1)
+        const at = block.range[1] - 2
+        setField(block, "value", { type: "JourneyLiteral", value: " ", range: [at, at + 1], loc: locationOf(input, [at, at + 1]) })
+      },
+      expected: "JourneyAccDescrBlockStatement at 21-33: the value of a description block starts or ends with whitespace: \" \"",
     },
   ])
 })

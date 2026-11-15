@@ -13,7 +13,6 @@ import {
 } from "./check-tree-recorded.ts"
 import type { Built, Kit } from "./check-tree-built.ts"
 import {
-  buildTree,
   endAt,
   endOfSource,
   itFailsEach,
@@ -23,6 +22,7 @@ import {
   tokenWith,
 } from "./check-tree-built.ts"
 import type { BrokenCase } from "./check-tree-built.ts"
+import { buildJourney as build } from "./journey-built.ts"
 
 // The trees of a journey diagram made by hand: they are the smallest trees
 // that hold the case they are about (see `check-tree-built.ts`); the recorded
@@ -30,22 +30,6 @@ import type { BrokenCase } from "./check-tree-built.ts"
 // the kinds that the table of Tokens of parser/docs/tokens/journey.md gives
 // them, and the ranges follow ast/journey.md and parser/docs/positions/
 // journey.md.
-
-/** A journey tree: the header `journey`, a line feed, and the statements. */
-function build(
-  source: string,
-  makeStatements: (kit: Kit) => CheckedNode[],
-): Built {
-  return buildTree(
-    {
-      header: "journey",
-      diagramType: "journey",
-      bodyType: "JourneyDiagram",
-    },
-    source,
-    makeStatements,
-  )
-}
 
 /** A text unit: its `RawText` token, and the `JourneyLiteral` that holds it. */
 function literal(kit: Kit, text: string, value = text): CheckedNode {

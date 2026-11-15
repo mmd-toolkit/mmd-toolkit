@@ -1,0 +1,557 @@
+{
+  "rows": [
+    {
+      "block": "packages/parser/docs/tokens/timeline.md:8031eedbe933",
+      "diagrams": ["timeline"],
+      "about": "This document defines the tokens of the diagram type `timeline` in the tree that",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It introduces the token document and points to the tree document and tokens.md."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/timeline.md:8ba5adfd204f",
+      "diagrams": ["timeline"],
+      "about": "The tokens are made from the units of\n[diagrams/timeline.md](../../../spec/docs/",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Every unit that is not all whitespace has a token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a timeline period without its token"
+              }
+            ]
+          },
+          {
+            "case": "Its token has the kind that the table gives for the item.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "the period as a Keyword token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/timeline.md:d74740386be1",
+      "diagrams": ["timeline"],
+      "about": "| `Keyword`    | a `header` unit and a `direction` unit; the `title`, `section`,",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A `header` unit is a `Keyword` token.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "the header as a RawText token"
+              }
+            ]
+          },
+          {
+            "case": "A `direction` unit is a `Keyword` token.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "the direction as a Punctuator token"
+              }
+            ]
+          },
+          {
+            "case": "A `title` unit is a `Keyword` token.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "the keyword of a title statement as a RawText token"
+              }
+            ]
+          },
+          {
+            "case": "A `section` unit is a `Keyword` token.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "the keyword of a section statement as a Punctuator token"
+              }
+            ]
+          },
+          {
+            "case": "An `accTitle` unit is a `Keyword` token.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "the keyword of an accessibility title as a RawText token"
+              }
+            ]
+          },
+          {
+            "case": "An `accDescr` unit is a `Keyword` token.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "the keyword of an accessibility description as a RawText token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/timeline.md:e9e970057fbd",
+      "diagrams": ["timeline"],
+      "about": "| `RawText`    | the text units of [Directives inside units](../../../spec/docs/",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A `period-text` unit is a `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "the period as a Keyword token"
+              }
+            ]
+          },
+          {
+            "case": "An `event-text` unit is a `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "an event as a Punctuator token"
+              }
+            ]
+          },
+          {
+            "case": "A `title-text` unit is a `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "the title as a Keyword token"
+              }
+            ]
+          },
+          {
+            "case": "A `section-text` unit is a `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a timeline section text as a Keyword token"
+              }
+            ]
+          },
+          {
+            "case": "An `acc-title-text` unit is a `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a timeline accessibility title text as a Keyword token"
+              }
+            ]
+          },
+          {
+            "case": "An `acc-description-text` unit is a `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a timeline accessibility description text as a Keyword token"
+              }
+            ]
+          },
+          {
+            "case": "An `acc-description-block-text` unit is a `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a timeline description block text as a Keyword token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/timeline.md:c0e13b6f0b80",
+      "diagrams": ["timeline"],
+      "about": "| `Punctuator` | `:`, `{`, and `}`                                              ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A `:` unit is a `Punctuator` token.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "the colon of an event as a Keyword token"
+              },
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "the colon of an accessibility title as a Keyword token"
+              }
+            ]
+          },
+          {
+            "case": "A `{` unit is a `Punctuator` token.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "the opening brace of a description block as a Keyword token"
+              }
+            ]
+          },
+          {
+            "case": "A `}` unit is a `Punctuator` token.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "the closing brace of a description block as a Keyword token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/timeline.md:8c94f05ff9a0",
+      "diagrams": ["timeline"],
+      "about": "Every item is one unit, and so one **token**: `timeline TD` has the `Keyword`\nto",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Every item is one token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a timeline event split into two RawText tokens"
+              }
+            ]
+          },
+          {
+            "case": "`timeline` is a `Keyword` token.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "the header as a RawText token"
+              }
+            ]
+          },
+          {
+            "case": "`TD` is a `Keyword` token.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "the direction as a Punctuator token"
+              }
+            ]
+          },
+          {
+            "case": "The period `a` and its space are a `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "the period as a Keyword token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the trailing whitespace left out of a timeline period token"
+              }
+            ]
+          },
+          {
+            "case": "Each event, with the space it keeps, is a `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "an event as a Punctuator token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the trailing whitespace left out of a timeline event token"
+              }
+            ]
+          },
+          {
+            "case": "The `:` before each event is a `Punctuator` token.",
+            "tests": [
+              {
+                "file": "check-tree-timeline.test.ts",
+                "text": "the colon of an event as a Keyword token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/timeline.md:8103b4bffe66",
+      "diagrams": ["timeline"],
+      "about": "A `:` unit that starts no event is taken by no rule of the grammar, so the input",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-about-tree",
+        "note": "It says that an eventless colon makes the input rejected, so no tree can break this condition."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/timeline.md:32a176734097",
+      "diagrams": ["timeline"],
+      "about": "A token holds no whitespace at its ends, except where mermaid.js reads it as\npar",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A token holds no whitespace at its ends except where it is part of a value.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the token of a timeline header widened over its following line feed"
+              }
+            ]
+          },
+          {
+            "case": "A `period-text` token keeps the whitespace before what ends it.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the trailing whitespace left out of a timeline period token"
+              }
+            ]
+          },
+          {
+            "case": "An `event-text` token keeps the whitespace after the one whitespace character that follows its colon.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the leading whitespace left out of a timeline event token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the trailing whitespace left out of a timeline event token"
+              }
+            ]
+          },
+          {
+            "case": "An event of one space has the token of that space.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a whitespace-only timeline event without its token"
+              }
+            ]
+          },
+          {
+            "case": "A `title-text` token keeps the whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the leading whitespace left out of a timeline title token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the trailing whitespace left out of a timeline title token"
+              }
+            ]
+          },
+          {
+            "case": "A `section-text` token keeps the whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the leading whitespace left out of a timeline section token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the trailing whitespace left out of a timeline section token"
+              }
+            ]
+          },
+          {
+            "case": "An `acc-title-text` token leaves out the whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a timeline accessibility title token widened over its leading whitespace"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a timeline accessibility title token widened over its trailing whitespace"
+              }
+            ]
+          },
+          {
+            "case": "An `acc-description-text` token leaves out the whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a timeline accessibility description token widened over its leading whitespace"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a timeline accessibility description token widened over its trailing whitespace"
+              }
+            ]
+          },
+          {
+            "case": "An `acc-description-block-text` token leaves out the whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a timeline description block token widened over its leading whitespace"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a timeline description block token widened over its trailing whitespace"
+              }
+            ]
+          },
+          {
+            "case": "A description-block token keeps its internal line break and indentation.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a timeline description block token that ends before the line feed and indentation inside it"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/timeline.md:68322e51e202",
+      "diagrams": ["timeline"],
+      "about": "A directive, a comment region, or a `;` that the line rule ignores inside a\n`Raw",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A directive cuts a `RawText` token into fragments with its `Directive` token between them.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-631-timeline-A token is cut at an internal directive"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-631-timeline-RawText fragments cut by a directive keep their kind"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-631-timeline-The directive between fragments has its Directive token"
+              }
+            ]
+          },
+          {
+            "case": "A comment region cuts a `RawText` token into fragments.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-timeline-region-cut-RawText"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-timeline-RawText-fragment-kind"
+              }
+            ]
+          },
+          {
+            "case": "An ignored `;` cuts a `RawText` token into fragments.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-timeline-No other token spans the ignored semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-timeline-RawText fragments around an ignored semicolon keep their kind"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/timeline.md:bb1d2991f3b6",
+      "diagrams": ["timeline"],
+      "about": "- An empty description block has the `Keyword` token `accDescr` and the\n  `Punct",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An empty description block has the `Keyword` token `accDescr`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the keyword of an empty timeline description block as a RawText token"
+              }
+            ]
+          },
+          {
+            "case": "It has the `Punctuator` token `{`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the opening brace of an empty timeline description block as a Keyword token"
+              }
+            ]
+          },
+          {
+            "case": "It has the `Punctuator` token `}`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the closing brace of an empty timeline description block as a Keyword token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/timeline.md:a0a846a223ea",
+      "diagrams": ["timeline"],
+      "about": "- A `;` that the line rule ignores is an `IgnoredSemicolon` token: after\n  `accD",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A `;` that the line rule ignores has an `IgnoredSemicolon` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-timeline-An ignored semicolon has its own token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-timeline-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              }
+            ]
+          },
+          {
+            "case": "The period text before the ignored semicolon is a `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the fragment before an ignored semicolon of a timeline period as a Keyword token"
+              }
+            ]
+          },
+          {
+            "case": "The period text after the ignored semicolon is a `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the fragment after an ignored semicolon of a timeline period as a Keyword token"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

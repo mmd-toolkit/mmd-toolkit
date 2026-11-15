@@ -6,6 +6,7 @@ import type {
   Location,
 } from "../src/check-tree/types.ts"
 import { nodesOf } from "../src/check-tree/walk.ts"
+import { itFailsEach } from "./check-tree-built.ts"
 import {
   copyOf,
   firstNode,
@@ -21,6 +22,8 @@ import {
   locationOf,
   tokenOf,
 } from "./check-tree-trees.ts"
+import { buildInfo, common } from "./statement-tree-built.ts"
+import { buildJourney } from "./journey-built.ts"
 
 // The conditions of packages/parser/docs/positions.md, and of the position
 // documents of the diagram types (packages/parser/docs/positions/<diagram>.md),
@@ -1281,6 +1284,1089 @@ describe("checkTree: the ranges of the nodes of a sankey diagram (positions/sank
       },
       expected:
         "SankeyIdentifier at 13-13: does not run from the start of a token to the end of a token",
+    },
+  ])
+})
+
+describe("checkTree: the ranges of the nodes of a mindmap diagram (positions/mindmap.md)", () => {
+  itFailsEachRecorded("mindmap", [
+    {
+      name: "fails a mindmap node with only a shape that starts after its opener",
+      fixture: "db-shape-without-id",
+      mutate: placeFirst("MindmapNode", [11, 16]),
+      expected:
+        "MindmapNode at 11-16: the range, which runs from the first of its tokens and child nodes to the last: [11,16], not [10,16]",
+    },
+    {
+      name: "fails a mindmap node that ends before its last decoration",
+      fixture: "db-icon-line",
+      mutate: placeFirst("MindmapNode", [10, 14]),
+      expected:
+        "MindmapNode at 10-14: the range, which runs from the first of its tokens and child nodes to the last: [10,14], not [10,37]",
+    },
+    {
+      name: "fails a mindmap shape that starts after its opener",
+      fixture: "db-shape-without-id",
+      mutate: placeFirst("MindmapShape", [11, 16]),
+      expected:
+        'MindmapShape at 11-16: the tokens of the node outside its child nodes, joined: "]", not "[]"',
+    },
+    {
+      name: "fails a mindmap icon line that starts after its keyword",
+      fixture: "db-icon-line",
+      mutate: placeFirst("MindmapIconStatement", [26, 37]),
+      expected:
+        'MindmapIconStatement at 26-37: the tokens of the node outside its child nodes, joined: ")", not "::icon()"',
+    },
+    {
+      name: "fails a mindmap class line that starts after its mark",
+      fixture: "db-class-trailing-space",
+      mutate: placeFirst("MindmapClassStatement", [22, 27]),
+      expected:
+        'MindmapClassStatement at 22-27: the tokens of the node outside its child nodes, joined: "", not ":::"',
+    },
+    {
+      name: "fails a mindmap text label whose range leaves out its leading whitespace",
+      fixture: "gram-shape-text-quoted-with-space",
+      mutate: placeFirst("MindmapLabel", [18, 22]),
+      expected:
+        "MindmapLabel at 18-22: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a mindmap text label whose range leaves out its trailing whitespace",
+      fixture: "gram-shape-text-quoted-with-space",
+      mutate: placeFirst("MindmapLabel", [17, 21]),
+      expected:
+        "MindmapLabel at 17-21: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a mindmap icon whose range leaves out its leading whitespace",
+      fixture: "db-icon-surrounding-whitespace",
+      mutate: (root, input) => {
+        const icon = firstNode(root, "MindmapIconStatement").icon!
+        setField(icon, "range", [27, 29])
+        setField(icon, "loc", locationOf(input, [27, 29]))
+      },
+      expected:
+        "MindmapLiteral at 27-29: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a mindmap icon whose range leaves out its trailing whitespace",
+      fixture: "db-icon-surrounding-whitespace",
+      mutate: (root, input) => {
+        const icon = firstNode(root, "MindmapIconStatement").icon!
+        setField(icon, "range", [26, 28])
+        setField(icon, "loc", locationOf(input, [26, 28]))
+      },
+      expected:
+        "MindmapLiteral at 26-28: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a mindmap class whose range leaves out its leading whitespace",
+      fixture: "db-class-leading-whitespace",
+      mutate: (root, input) => {
+        const cssClass = firstNode(root, "MindmapClassStatement").cssClass!
+        setField(cssClass, "range", [24, 25])
+        setField(cssClass, "loc", locationOf(input, [24, 25]))
+      },
+      expected:
+        "MindmapLiteral at 24-25: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a mindmap class whose range leaves out its trailing whitespace",
+      fixture: "db-class-trailing-space",
+      mutate: (root, input) => {
+        const cssClass = firstNode(root, "MindmapClassStatement").cssClass!
+        setField(cssClass, "range", [22, 25])
+        setField(cssClass, "loc", locationOf(input, [22, 25]))
+      },
+      expected:
+        "MindmapLiteral at 22-25: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a mindmap markdown label that ends before the quote after its internal directive",
+      fixture: "lex-directive-between-backquote-and-quote",
+      mutate: placeFirst("MindmapLabel", [12, 16]),
+      expected:
+        'MindmapLabel at 12-16: the written text "\\"`x`" of a markdown does not start with "\\"`" and end with "`\\""',
+    },
+  ])
+})
+
+describe("checkTree: the ranges of the nodes of a timeline diagram (positions/timeline.md)", () => {
+  itFailsEachRecorded("timeline", [
+    {
+      name: "fails a timeline period statement that ends before its last event on a later line",
+      fixture: "db-event-own-line",
+      mutate: placeFirst("TimelinePeriodStatement", [11, 21]),
+      expected:
+        "TimelinePeriodStatement at 11-21: the range, which runs from the first of its tokens and child nodes to the last: [11,21], not [11,30]",
+    },
+    {
+      name: "fails a timeline period statement that ends before the event after an empty line",
+      fixture: "db-event-own-line-after-blank-line",
+      mutate: placeFirst("TimelinePeriodStatement", [11, 12]),
+      expected:
+        "TimelinePeriodStatement at 11-12: the range, which runs from the first of its tokens and child nodes to the last: [11,12], not [11,19]",
+    },
+    {
+      name: "fails a timeline event statement that ends before its event",
+      fixture: "db-event-after-section-joins-earlier-task",
+      mutate: placeFirst("TimelineEventStatement", [27, 29]),
+      expected:
+        "TimelineEventStatement at 27-29: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a timeline period statement that ends before the trailing whitespace of its period",
+      fixture: "db-period-trailing-spaces",
+      mutate: placeFirst("TimelinePeriodStatement", [11, 14]),
+      expected:
+        "TimelinePeriodStatement at 11-14: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a timeline period statement that leaves out its whitespace-only event",
+      fixture: "db-event-two-spaces",
+      mutate: placeFirst("TimelinePeriodStatement", [11, 15]),
+      expected:
+        "TimelinePeriodStatement at 11-15: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a timeline title statement that starts after the start of its keyword",
+      fixture: "db-title-trailing-spaces",
+      mutate: placeFirst("TimelineTitleStatement", [12, 21]),
+      expected:
+        "TimelineTitleStatement at 12-21: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a timeline section statement that starts after the start of its keyword",
+      fixture: "db-section-trailing-spaces",
+      mutate: placeFirst("TimelineSectionStatement", [12, 23]),
+      expected:
+        "TimelineSectionStatement at 12-23: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a timeline title statement that ends before its trailing whitespace",
+      fixture: "db-title-trailing-spaces",
+      mutate: placeFirst("TimelineTitleStatement", [11, 20]),
+      expected:
+        "TimelineTitleStatement at 11-20: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a timeline section statement that ends before its trailing whitespace",
+      fixture: "db-section-trailing-spaces",
+      mutate: placeFirst("TimelineSectionStatement", [11, 22]),
+      expected:
+        "TimelineSectionStatement at 11-22: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a timeline accessibility title statement that starts after the start of its keyword",
+      fixture: "db-acc-title-trailing-spaces",
+      mutate: placeFirst("TimelineAccTitleStatement", [12, 22]),
+      expected:
+        "TimelineAccTitleStatement at 12-22: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a timeline accessibility description statement that starts after the start of its keyword",
+      fixture: "db-acc-descr-trailing-spaces",
+      mutate: placeFirst("TimelineAccDescrStatement", [12, 22]),
+      expected:
+        "TimelineAccDescrStatement at 12-22: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a timeline accessibility description statement that covers the trailing whitespace of its line",
+      fixture: "db-acc-descr-trailing-spaces",
+      mutate: placeFirst("TimelineAccDescrStatement", [11, 25]),
+      expected:
+        "TimelineAccDescrStatement at 11-25: the range, which runs from the first of its tokens and child nodes to the last: [11,25], not [11,22]",
+    },
+    {
+      name: "fails a timeline event whose range leaves out its leading whitespace",
+      fixture: "db-event-leading-spaces",
+      mutate: (root, input) => {
+        const node = nodesOf(root).find(
+          (candidate) =>
+            candidate.type === "TimelineLiteral" && candidate.range[0] === 15,
+        )!
+        setField(node, "range", [16, 18])
+        setField(node, "loc", locationOf(input, [16, 18]))
+      },
+      expected:
+        "TimelineLiteral at 16-18: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a timeline event whose range leaves out its trailing whitespace",
+      fixture: "db-event-trailing-spaces",
+      mutate: (root, input) => {
+        const node = nodesOf(root).find(
+          (candidate) =>
+            candidate.type === "TimelineLiteral" && candidate.range[0] === 15,
+        )!
+        setField(node, "range", [15, 18])
+        setField(node, "loc", locationOf(input, [15, 18]))
+      },
+      expected:
+        "TimelineLiteral at 15-18: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a timeline title text whose range leaves out its leading whitespace",
+      fixture: "db-title-two-spaces",
+      mutate: placeFirst("TimelineLiteral", [18, 19]),
+      expected:
+        "TimelineLiteral at 18-19: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a timeline section name whose range leaves out its leading whitespace",
+      fixture: "db-section-two-spaces",
+      mutate: placeFirst("TimelineLiteral", [20, 21]),
+      expected:
+        "TimelineLiteral at 20-21: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a timeline accessibility title text whose range covers its leading whitespace",
+      fixture: "db-acc-title-trailing-spaces",
+      mutate: placeFirst("TimelineLiteral", [20, 22]),
+      expected:
+        "TimelineLiteral at 20-22: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a timeline accessibility title text whose range covers its trailing whitespace",
+      fixture: "db-acc-title-trailing-spaces",
+      mutate: placeFirst("TimelineLiteral", [21, 23]),
+      expected:
+        "TimelineLiteral at 21-23: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a timeline accessibility description text whose range covers its leading whitespace",
+      fixture: "db-acc-descr-trailing-spaces",
+      mutate: placeFirst("TimelineLiteral", [20, 22]),
+      expected:
+        "TimelineLiteral at 20-22: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a timeline accessibility description text whose range covers its trailing whitespace",
+      fixture: "db-acc-descr-trailing-spaces",
+      mutate: placeFirst("TimelineLiteral", [21, 23]),
+      expected:
+        "TimelineLiteral at 21-23: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a timeline description block text whose range covers its leading whitespace",
+      fixture: "db-acc-descr-block",
+      mutate: placeFirst("TimelineLiteral", [23, 37]),
+      expected:
+        "TimelineLiteral at 23-37: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a timeline description block text whose range covers its trailing whitespace",
+      fixture: "db-acc-descr-block",
+      mutate: placeFirst("TimelineLiteral", [24, 38]),
+      expected:
+        "TimelineLiteral at 24-38: does not run from the start of a token to the end of a token",
+    },
+  ])
+})
+
+describe("checkTree: the ranges of the nodes of an info diagram (positions/info.md)", () => {
+  itFailsEachRecorded("info", [
+    {
+      name: "fails an info root that ends before the end of the input",
+      fixture: "header-lf",
+      mutate: (root, input) => {
+        setField(root, "range", [0, 4])
+        setField(root, "loc", locationOf(input, [0, 4]))
+      },
+      expected:
+        "Root: the root does not cover the whole input: [0,4], not [0,5]",
+    },
+    {
+      name: "fails an info diagram that starts at its header after retained YAML",
+      fixture: "frontmatter-nonleading-comment",
+      mutate: placeFirst("InfoDiagram", [28, 32]),
+      expected:
+        "InfoDiagram at 28-32: the range, which runs from the first of its tokens and child nodes to the last: [28,32], not [5,32]",
+    },
+    {
+      name: "fails an info diagram that starts at its header after a retained directive",
+      fixture: "detect-second-scan-directive",
+      mutate: placeFirst("InfoDiagram", [17, 21]),
+      expected:
+        "InfoDiagram at 17-21: the range, which runs from the first of its tokens and child nodes to the last: [17,21], not [0,21]",
+    },
+    {
+      name: "fails an info diagram that starts after the first character of its header",
+      fixture: "header-lf",
+      mutate: placeFirst("InfoDiagram", [1, 4]),
+      expected:
+        "InfoDiagram at 1-4: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info diagram that covers the line feed after its header",
+      fixture: "header-lf",
+      mutate: placeFirst("InfoDiagram", [0, 5]),
+      expected:
+        "InfoDiagram at 0-5: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info diagram that ends before its last flag character",
+      fixture: "header-inline-flag",
+      mutate: placeFirst("InfoDiagram", [0, 12]),
+      expected:
+        "InfoDiagram at 0-12: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info diagram that ends before its last body token",
+      fixture: "common-all",
+      mutate: placeFirst("InfoDiagram", [0, 38]),
+      expected:
+        "InfoDiagram at 0-38: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info diagram that covers its trailing native comment",
+      fixture: "comment-eof",
+      mutate: placeFirst("InfoDiagram", [0, 17]),
+      expected:
+        "InfoDiagram at 0-17: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info diagram that covers the comment before its first retained form",
+      fixture: "frontmatter-nonleading-comment",
+      mutate: placeFirst("InfoDiagram", [0, 32]),
+      expected:
+        "InfoDiagram at 0-32: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info diagram that starts at a passed percent-brace line",
+      fixture: "lex-detect-preheader-empty-braces",
+      mutate: placeFirst("InfoDiagram", [0, 11]),
+      expected:
+        "InfoDiagram at 0-11: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info diagram that starts at a passed unclosed percent-brace line",
+      fixture: "lex-detect-preheader-open-brace",
+      mutate: placeFirst("InfoDiagram", [0, 9]),
+      expected:
+        "InfoDiagram at 0-9: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info title statement that starts after its keyword starts",
+      fixture: "title-tabs",
+      mutate: placeFirst("InfoTitleStatement", [6, 18]),
+      expected:
+        "InfoTitleStatement at 6-18: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info title statement that ends before its last value character",
+      fixture: "title-tabs",
+      mutate: placeFirst("InfoTitleStatement", [5, 17]),
+      expected:
+        "InfoTitleStatement at 5-17: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a null info title statement that covers the line feed after its keyword",
+      fixture: "title-empty",
+      mutate: placeFirst("InfoTitleStatement", [5, 11]),
+      expected:
+        "InfoTitleStatement at 5-11: the range, which runs from the first of its tokens and child nodes to the last: [5,11], not [5,10]",
+    },
+    {
+      name: "fails an info accessibility title statement that starts after its keyword starts",
+      fixture: "acctitle-gap",
+      mutate: placeFirst("InfoAccTitleStatement", [6, 18]),
+      expected:
+        "InfoAccTitleStatement at 6-18: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info accessibility title statement that ends before its last value character",
+      fixture: "acctitle-gap",
+      mutate: placeFirst("InfoAccTitleStatement", [5, 17]),
+      expected:
+        "InfoAccTitleStatement at 5-17: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a null info accessibility title statement that covers the line feed after its colon",
+      fixture: "acctitle-empty",
+      mutate: placeFirst("InfoAccTitleStatement", [5, 15]),
+      expected:
+        "InfoAccTitleStatement at 5-15: the range, which runs from the first of its tokens and child nodes to the last: [5,15], not [5,14]",
+    },
+    {
+      name: "fails an info accessibility description statement that starts after its keyword starts",
+      fixture: "accdescr-line-quoted",
+      mutate: placeFirst("InfoAccDescrStatement", [6, 22]),
+      expected:
+        "InfoAccDescrStatement at 6-22: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info accessibility description statement that ends before its last value character",
+      fixture: "accdescr-line-quoted",
+      mutate: placeFirst("InfoAccDescrStatement", [5, 21]),
+      expected:
+        "InfoAccDescrStatement at 5-21: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a null info accessibility description statement that covers the line feed after its colon",
+      fixture: "accdescr-line-empty",
+      mutate: placeFirst("InfoAccDescrStatement", [5, 15]),
+      expected:
+        "InfoAccDescrStatement at 5-15: the range, which runs from the first of its tokens and child nodes to the last: [5,15], not [5,14]",
+    },
+    {
+      name: "fails an info description block statement that starts after its keyword starts",
+      fixture: "space-block-interior",
+      mutate: placeFirst("InfoAccDescrBlockStatement", [6, 27]),
+      expected:
+        "InfoAccDescrBlockStatement at 6-27: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info description block statement that ends before its first closing brace",
+      fixture: "hidden-directive-block-first-brace",
+      mutate: placeFirst("InfoAccDescrBlockStatement", [5, 21]),
+      expected:
+        'InfoAccDescrBlockStatement at 5-21: the common statement\'s fixed components: "accDescr{", not "accDescr{}"',
+    },
+    {
+      name: "fails an empty info description block statement that ends before its closing brace",
+      fixture: "accdescr-block-empty",
+      mutate: placeFirst("InfoAccDescrBlockStatement", [5, 15]),
+      expected:
+        'InfoAccDescrBlockStatement at 5-15: the common statement\'s fixed components: "accDescr{", not "accDescr{}"',
+    },
+    {
+      name: "fails a whitespace-only info description block statement that ends before its closing brace",
+      fixture: "lex-block-whitespace-only",
+      mutate: placeFirst("InfoAccDescrBlockStatement", [5, 20]),
+      expected:
+        "InfoAccDescrBlockStatement at 5-20: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a directive-only info description block statement that ends before its closing brace",
+      fixture: "lex-block-directive-only",
+      mutate: placeFirst("InfoAccDescrBlockStatement", [5, 27]),
+      expected:
+        "InfoAccDescrBlockStatement at 5-27: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a comment-only info description block statement that ends before its closing brace",
+      fixture: "lex-block-comment-only",
+      mutate: placeFirst("InfoAccDescrBlockStatement", [5, 21]),
+      expected:
+        "InfoAccDescrBlockStatement at 5-21: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info title statement that ends at its value before its hidden suffix",
+      fixture: "hidden-directive-title-eof",
+      mutate: placeFirst("InfoTitleStatement", [5, 12]),
+      expected:
+        "InfoTitleStatement at 5-12: the range, which runs from the first of its tokens and child nodes to the last: [5,12], not [5,18]",
+    },
+    {
+      name: "fails an info accessibility title statement that ends at its value before its hidden suffix",
+      fixture: "hidden-directive-acctitle-eof",
+      mutate: placeFirst("InfoAccTitleStatement", [5, 16]),
+      expected:
+        "InfoAccTitleStatement at 5-16: the range, which runs from the first of its tokens and child nodes to the last: [5,16], not [5,22]",
+    },
+    {
+      name: "fails an info accessibility description statement that ends at its value before its hidden suffix",
+      fixture: "hidden-directive-accdescr-eof",
+      mutate: placeFirst("InfoAccDescrStatement", [5, 16]),
+      expected:
+        "InfoAccDescrStatement at 5-16: the range, which runs from the first of its tokens and child nodes to the last: [5,16], not [5,22]",
+    },
+    {
+      name: "fails an info description block statement that ends at its brace before its hidden suffix",
+      fixture: "hidden-directive-block-eof",
+      mutate: placeFirst("InfoAccDescrBlockStatement", [5, 19]),
+      expected:
+        "InfoAccDescrBlockStatement at 5-19: the range, which runs from the first of its tokens and child nodes to the last: [5,19], not [5,25]",
+    },
+    {
+      name: "fails an info description block statement that ends before the last of its two hidden suffixes",
+      fixture: "lex-hidden-tail-two",
+      mutate: placeFirst("InfoAccDescrBlockStatement", [5, 25]),
+      expected:
+        "InfoAccDescrBlockStatement at 5-25: the range, which runs from the first of its tokens and child nodes to the last: [5,25], not [5,38]",
+    },
+    {
+      name: "fails an info description block statement that covers the line feed after its closing brace",
+      fixture: "accdescr-block-empty",
+      mutate: placeFirst("InfoAccDescrBlockStatement", [5, 17]),
+      expected:
+        "InfoAccDescrBlockStatement at 5-17: the range, which runs from the first of its tokens and child nodes to the last: [5,17], not [5,16]",
+    },
+    {
+      name: "fails an info title statement that covers its native comment",
+      fixture: "comment-title",
+      mutate: placeFirst("InfoTitleStatement", [5, 16]),
+      expected:
+        "InfoTitleStatement at 5-16: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info accessibility title statement that covers its native comment",
+      fixture: "comment-acctitle",
+      mutate: placeFirst("InfoAccTitleStatement", [5, 20]),
+      expected:
+        "InfoAccTitleStatement at 5-20: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info accessibility description statement that covers its native comment",
+      fixture: "comment-accdescr",
+      mutate: placeFirst("InfoAccDescrStatement", [5, 20]),
+      expected:
+        "InfoAccDescrStatement at 5-20: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info description block statement that covers its native comment",
+      fixture: "comment-after-block",
+      mutate: placeFirst("InfoAccDescrBlockStatement", [5, 23]),
+      expected:
+        "InfoAccDescrBlockStatement at 5-23: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info title literal whose range leaves out its leading padding",
+      fixture: "title-tabs",
+      mutate: placeFirst("InfoLiteral", [12, 18]),
+      expected:
+        "InfoLiteral at 12-18: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info title literal whose range leaves out its trailing padding",
+      fixture: "title-tabs",
+      mutate: placeFirst("InfoLiteral", [11, 17]),
+      expected:
+        "InfoLiteral at 11-17: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info accessibility title literal whose range leaves out its leading padding",
+      fixture: "acctitle-gap",
+      mutate: placeFirst("InfoLiteral", [17, 18]),
+      expected:
+        "InfoLiteral at 17-18: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info accessibility title literal whose range leaves out its trailing whitespace",
+      fixture: "acctitle-repeat-empty",
+      mutate: (root, input) => {
+        const node = nodesOf(root).find(
+          (candidate) =>
+            candidate.type === "InfoLiteral" && candidate.range[0] === 38,
+        )!
+        setField(node, "range", [38, 39])
+        setField(node, "loc", locationOf(input, [38, 39]))
+      },
+      expected:
+        "InfoLiteral at 38-39: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info accessibility description literal whose range leaves out its leading whitespace",
+      fixture: "lex-accdescr-line-whitespace",
+      mutate: placeFirst("InfoLiteral", [15, 16]),
+      expected:
+        "InfoLiteral at 15-16: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info accessibility description literal whose range leaves out its trailing whitespace",
+      fixture: "lex-accdescr-line-whitespace",
+      mutate: placeFirst("InfoLiteral", [14, 15]),
+      expected:
+        "InfoLiteral at 14-15: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info block literal whose range holds its leading common whitespace",
+      fixture: "space-block-interior",
+      mutate: placeFirst("InfoLiteral", [16, 25]),
+      expected:
+        "InfoLiteral at 16-25: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info block literal whose range holds its trailing common whitespace",
+      fixture: "space-block-interior",
+      mutate: placeFirst("InfoLiteral", [17, 26]),
+      expected:
+        "InfoLiteral at 17-26: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info hidden directive whose range leaves out its opener character",
+      fixture: "hidden-directive-padding",
+      mutate: placeFirst("InfoIgnoredText", [8, 16]),
+      expected:
+        "InfoIgnoredText at 8-16: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info hidden directive whose range leaves out its closer character",
+      fixture: "hidden-directive-padding",
+      mutate: placeFirst("InfoIgnoredText", [7, 15]),
+      expected:
+        "InfoIgnoredText at 7-15: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info hidden YAML whose range leaves out its opener character",
+      fixture: "hidden-yaml-empty",
+      mutate: placeFirst("InfoIgnoredText", [6, 12]),
+      expected:
+        "InfoIgnoredText at 6-12: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info hidden YAML whose range leaves out its closer character",
+      fixture: "hidden-yaml-empty",
+      mutate: placeFirst("InfoIgnoredText", [5, 11]),
+      expected:
+        "InfoIgnoredText at 5-11: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info hidden directive whose range holds its preceding ASCII padding",
+      fixture: "hidden-directive-padding",
+      mutate: placeFirst("InfoIgnoredText", [6, 16]),
+      expected:
+        "InfoIgnoredText at 6-16: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info hidden YAML whose range holds its preceding ASCII padding",
+      fixture: "hidden-yaml-after-flag",
+      mutate: placeFirst("InfoIgnoredText", [13, 26]),
+      expected:
+        "InfoIgnoredText at 13-26: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info hidden directive whose range holds its consumed following line feed",
+      fixture: "hidden-directive-padding",
+      mutate: placeFirst("InfoIgnoredText", [7, 17]),
+      expected:
+        "InfoIgnoredText at 7-17: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info hidden YAML whose range holds its consumed following line feed",
+      fixture: "hidden-yaml-empty",
+      mutate: placeFirst("InfoIgnoredText", [5, 13]),
+      expected:
+        "InfoIgnoredText at 5-13: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info hidden directive whose range holds the appended line feed beyond source EOF",
+      fixture: "hidden-directive-title-eof",
+      mutate: placeFirst("InfoIgnoredText", [12, 19]),
+      expected: "InfoIgnoredText at 12-19: lies outside the input",
+    },
+    {
+      name: "fails an info hidden YAML whose range holds the appended line feed beyond source EOF",
+      fixture: "hidden-yaml-block-eof",
+      mutate: placeFirst("InfoIgnoredText", [19, 32]),
+      expected: "InfoIgnoredText at 19-32: lies outside the input",
+    },
+    {
+      name: "fails an info literal whose range ends before its internal common directive",
+      fixture: "directive-title-value",
+      mutate: placeFirst("InfoLiteral", [11, 12]),
+      expected:
+        'InfoLiteral at 11-12: value is not its written text: "ab", not "a"',
+    },
+    {
+      name: "fails an info literal whose range ends before its internal comment region",
+      fixture: "lex-line-comment-region-ls",
+      mutate: placeFirst("InfoLiteral", [11, 13]),
+      expected:
+        'InfoLiteral at 11-13: value is not its written text: "A\u2028B", not "A\u2028"',
+    },
+    {
+      name: "fails an info literal whose range ends before its internal selected semicolon",
+      fixture: "lex-acc-title-line-separator-comment-line-line-rule-after",
+      mutate: placeFirst("InfoLiteral", [14, 30]),
+      expected:
+        'InfoLiteral at 14-30: value is not its written text: " A\u2028style:#bB", not " A\u2028style:#b"',
+    },
+    {
+      name: "fails an info hidden form whose range ends before its internal common directive",
+      fixture: "lex-hidden-nested-global",
+      mutate: placeFirst("InfoIgnoredText", [5, 10]),
+      expected:
+        "InfoIgnoredText at 5-10: the value is not one complete hidden YAML or DIRECTIVE form without its following LF",
+    },
+    {
+      name: "fails an info hidden form whose range ends before its internal comment region",
+      fixture: "lex-yaml-common-comment",
+      mutate: placeFirst("InfoIgnoredText", [5, 9]),
+      expected:
+        "InfoIgnoredText at 5-9: the value is not one complete hidden YAML or DIRECTIVE form without its following LF",
+    },
+    {
+      name: "fails an info hidden form whose range ends before its internal selected semicolon",
+      fixture: "lex-yaml-fences-selected",
+      mutate: (root, input) => {
+        const node = nodesOf(root).find(
+          (candidate) =>
+            candidate.type === "InfoIgnoredText" && candidate.range[0] === 23,
+        )!
+        setField(node, "range", [23, 25])
+        setField(node, "loc", locationOf(input, [23, 25]))
+      },
+      expected:
+        "InfoIgnoredText at 23-25: the value is not one complete hidden YAML or DIRECTIVE form without its following LF",
+    },
+    {
+      name: "fails an info hidden directive that ends at a nonqualifying closer",
+      fixture: "hidden-directive-nonqualifying-closer",
+      mutate: placeFirst("InfoIgnoredText", [5, 11]),
+      expected:
+        "InfoIgnoredText at 5-11: the value is not one complete hidden YAML or DIRECTIVE form without its following LF",
+    },
+    {
+      name: "fails an info hidden YAML that ends at a nonqualifying closer",
+      fixture: "hidden-yaml-nonqualifying-closer",
+      mutate: placeFirst("InfoIgnoredText", [5, 17]),
+      expected:
+        "InfoIgnoredText at 5-17: the value is not one complete hidden YAML or DIRECTIVE form without its following LF",
+    },
+    {
+      name: "fails an info literal whose range counts CRLF as one source unit",
+      fixture: "line-crlf",
+      mutate: placeFirst("InfoLiteral", [25, 28]),
+      expected:
+        "InfoLiteral at 25-28: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an info title statement whose range holds the outside padding before it",
+      fixture: "header-common-inline",
+      mutate: placeFirst("InfoTitleStatement", [4, 12]),
+      expected:
+        "InfoTitleStatement at 4-12: the range, which runs from the first of its tokens and child nodes to the last: [4,12], not [5,12]",
+    },
+    {
+      name: "fails an info accessibility title statement whose range holds the outside padding before it",
+      fixture: "lex-selected-colon-boundary",
+      mutate: placeFirst("InfoAccTitleStatement", [22, 35]),
+      expected:
+        "InfoAccTitleStatement at 22-35: the range, which runs from the first of its tokens and child nodes to the last: [22,35], not [23,35]",
+    },
+    {
+      name: "fails an info description block statement whose range holds the outside padding before it",
+      fixture: "lex-selected-brace-boundary",
+      mutate: placeFirst("InfoAccDescrBlockStatement", [22, 37]),
+      expected:
+        "InfoAccDescrBlockStatement at 22-37: the range, which runs from the first of its tokens and child nodes to the last: [22,37], not [23,37]",
+    },
+  ])
+})
+
+describe("checkTree: the gaps of an info diagram that no recorded tree holds (positions/info.md)", () => {
+  // The corpus has no accessibility description line with ASCII padding before
+  // its keyword, so this tree is made by hand with the diagram's own builder.
+  itFailsEach([
+    {
+      name: "an info accessibility description statement whose range holds the outside padding before it",
+      built: () =>
+        buildInfo("info\n accDescr: A\n", (kit) => [
+          common(kit, "Info", "AccDescr", " A"),
+        ]),
+      mutate: placeFirst("InfoAccDescrStatement", [5, 17]),
+      expected:
+        "InfoAccDescrStatement at 5-17: the range, which runs from the first of its tokens and child nodes to the last: [5,17], not [6,17]",
+    },
+  ])
+})
+
+describe("checkTree: the ranges of the nodes of a journey diagram (positions/journey.md)", () => {
+  itFailsEachRecorded("journey", [
+    {
+      name: "fails a journey diagram whose range starts after its header starts",
+      fixture: "db-task-people",
+      mutate: placeFirst("JourneyDiagram", [1, 31]),
+      expected:
+        "Root.body: does not run from its first token to its last: [1,31], not [0,31]",
+    },
+    {
+      name: "fails a journey diagram whose range ends before its last token",
+      fixture: "db-task-people",
+      mutate: placeFirst("JourneyDiagram", [0, 30]),
+      expected:
+        "Root.body: does not run from its first token to its last: [0,30], not [0,31]",
+    },
+    {
+      name: "fails a journey task whose range starts after its description starts",
+      fixture: "db-task-people",
+      mutate: placeFirst("JourneyTaskStatement", [11, 31]),
+      expected:
+        "JourneyTaskStatement at 11-31: the range, which runs from the first of its tokens and child nodes to the last: [11,31], not [10,31]",
+    },
+    {
+      name: "fails a journey task whose range ends before its ignored data ends",
+      fixture: "db-task-extra-colon",
+      mutate: placeFirst("JourneyTaskStatement", [10, 24]),
+      expected:
+        "JourneyTaskStatement at 10-24: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey task whose range ends before its last person ends",
+      fixture: "db-task-people",
+      mutate: placeFirst("JourneyTaskStatement", [10, 30]),
+      expected:
+        "JourneyTaskStatement at 10-30: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey title statement whose range starts after its keyword starts",
+      fixture: "lex-title-trailing-spaces",
+      mutate: placeFirst("JourneyTitleStatement", [11, 20]),
+      expected:
+        "JourneyTitleStatement at 11-20: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey section statement whose range starts after its keyword starts",
+      fixture: "lex-section-whitespace-only",
+      mutate: placeFirst("JourneySectionStatement", [11, 19]),
+      expected:
+        "JourneySectionStatement at 11-19: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey title statement whose range leaves out its trailing whitespace",
+      fixture: "lex-title-trailing-spaces",
+      mutate: placeFirst("JourneyTitleStatement", [10, 17]),
+      expected:
+        "JourneyTitleStatement at 10-17: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey section statement whose range leaves out its whitespace-only name",
+      fixture: "lex-section-whitespace-only",
+      mutate: placeFirst("JourneySectionStatement", [10, 17]),
+      expected:
+        "JourneySectionStatement at 10-17: the range, which runs from the first of its tokens and child nodes to the last: [10,17], not [10,19]",
+    },
+    {
+      name: "fails a journey accessibility title statement whose range starts after its keyword starts",
+      fixture: "db-acc-title",
+      mutate: placeFirst("JourneyAccTitleStatement", [11, 29]),
+      expected:
+        "JourneyAccTitleStatement at 11-29: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey accessibility description statement whose range starts after its keyword starts",
+      fixture: "db-acc-descr",
+      mutate: placeFirst("JourneyAccDescrStatement", [11, 35]),
+      expected:
+        "JourneyAccDescrStatement at 11-35: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey accessibility description statement whose range holds its following line feed",
+      fixture: "db-acc-descr",
+      mutate: placeFirst("JourneyAccDescrStatement", [10, 36]),
+      expected:
+        "JourneyAccDescrStatement at 10-36: the range, which runs from the first of its tokens and child nodes to the last: [10,36], not [10,35]",
+    },
+    {
+      name: "fails a journey description whose range leaves out the whitespace before its colon",
+      fixture: "db-task-description-spaces",
+      mutate: placeFirst("JourneyLiteral", [10, 18]),
+      expected:
+        "JourneyLiteral at 10-18: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey title text whose range leaves out its leading whitespace",
+      fixture: "lex-title-two-spaces",
+      mutate: placeFirst("JourneyLiteral", [17, 18]),
+      expected:
+        "JourneyLiteral at 17-18: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey title text whose range leaves out its trailing whitespace",
+      fixture: "lex-title-trailing-spaces",
+      mutate: placeFirst("JourneyLiteral", [16, 17]),
+      expected:
+        "JourneyLiteral at 16-17: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey section name whose range leaves out its leading whitespace",
+      fixture: "lex-section-two-spaces",
+      mutate: placeFirst("JourneyLiteral", [19, 20]),
+      expected:
+        "JourneyLiteral at 19-20: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey section name whose range leaves out its trailing whitespace",
+      fixture: "db-section-ends-at-hash",
+      mutate: placeFirst("JourneyLiteral", [18, 19]),
+      expected:
+        "JourneyLiteral at 18-19: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey score whose range holds its leading whitespace",
+      fixture: "lex-task-score-nbsp-trimmed",
+      mutate: (root, input) => {
+        const node = nodesOf(root).find(
+          (candidate) =>
+            candidate.type === "JourneyLiteral" && candidate.range[0] === 13,
+        )!
+        setField(node, "range", [12, 14])
+        setField(node, "loc", locationOf(input, [12, 14]))
+      },
+      expected:
+        "JourneyLiteral at 12-14: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey score whose range holds its trailing whitespace",
+      fixture: "lex-task-score-nbsp-trimmed",
+      mutate: (root, input) => {
+        const node = nodesOf(root).find(
+          (candidate) =>
+            candidate.type === "JourneyLiteral" && candidate.range[0] === 13,
+        )!
+        setField(node, "range", [13, 15])
+        setField(node, "loc", locationOf(input, [13, 15]))
+      },
+      expected:
+        "JourneyLiteral at 13-15: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey person whose range holds its leading whitespace",
+      fixture: "db-task-people",
+      mutate: (root, input) => {
+        const node = nodesOf(root).find(
+          (candidate) =>
+            candidate.type === "JourneyLiteral" && candidate.range[0] === 20,
+        )!
+        setField(node, "range", [19, 23])
+        setField(node, "loc", locationOf(input, [19, 23]))
+      },
+      expected:
+        "JourneyLiteral at 19-23: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey person whose range holds its trailing whitespace",
+      fixture: "db-task-people",
+      mutate: (root, input) => {
+        const node = nodesOf(root).find(
+          (candidate) =>
+            candidate.type === "JourneyLiteral" && candidate.range[0] === 20,
+        )!
+        setField(node, "range", [20, 24])
+        setField(node, "loc", locationOf(input, [20, 24]))
+      },
+      expected:
+        "JourneyLiteral at 20-24: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey accessibility title text whose range holds its leading whitespace",
+      fixture: "db-acc-title",
+      mutate: placeFirst("JourneyLiteral", [19, 29]),
+      expected:
+        "JourneyLiteral at 19-29: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey accessibility title text whose range holds its trailing whitespace",
+      fixture: "gram-acc-title-trailing-spaces",
+      mutate: placeFirst("JourneyLiteral", [20, 22]),
+      expected:
+        "JourneyLiteral at 20-22: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey accessibility description text whose range holds its leading whitespace",
+      fixture: "db-acc-descr",
+      mutate: placeFirst("JourneyLiteral", [19, 35]),
+      expected:
+        "JourneyLiteral at 19-35: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey accessibility description text whose range holds its following line feed",
+      fixture: "db-acc-descr",
+      mutate: placeFirst("JourneyLiteral", [20, 36]),
+      expected:
+        "JourneyLiteral at 20-36: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey description block text whose range holds its leading whitespace",
+      fixture: "db-acc-descr-block",
+      mutate: placeFirst("JourneyLiteral", [23, 44]),
+      expected:
+        "JourneyLiteral at 23-44: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey description block text whose range holds its trailing line feed",
+      fixture: "db-acc-descr-block",
+      mutate: placeFirst("JourneyLiteral", [24, 45]),
+      expected:
+        "JourneyLiteral at 24-45: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey description block text whose range leaves out its last line",
+      fixture: "db-acc-descr-block",
+      mutate: placeFirst("JourneyLiteral", [24, 32]),
+      expected:
+        "JourneyLiteral at 24-32: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey ignored text whose range starts after its third colon",
+      fixture: "db-task-extra-colon",
+      mutate: placeFirst("JourneyIgnoredText", [20, 25]),
+      expected:
+        "JourneyIgnoredText at 20-25: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey ignored text whose range ends before its last character",
+      fixture: "db-task-extra-colon",
+      mutate: placeFirst("JourneyIgnoredText", [19, 24]),
+      expected:
+        "JourneyIgnoredText at 19-24: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey ignored text whose range holds its trailing whitespace",
+      fixture: "gram-task-ignored-data-trailing-spaces",
+      mutate: placeFirst("JourneyIgnoredText", [18, 23]),
+      expected:
+        "JourneyIgnoredText at 18-23: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a journey task whose range holds the whitespace after its ignored data",
+      fixture: "gram-task-ignored-data-trailing-spaces",
+      mutate: placeFirst("JourneyTaskStatement", [10, 23]),
+      expected:
+        "JourneyTaskStatement at 10-23: the range, which runs from the first of its tokens and child nodes to the last: [10,23], not [10,21]",
+    },
+    {
+      name: "fails a journey ignored text whose range ends before its internal directive",
+      fixture: "lex-directive-after-space-in-ignored-data",
+      mutate: placeFirst("JourneyIgnoredText", [18, 22]),
+      expected:
+        'JourneyIgnoredText at 18-22: value is not its written text: ": a b", not ": a "',
+    },
+    {
+      name: "fails a journey ignored text whose range leaves out its sole third colon",
+      fixture: "gram-task-third-colon-at-end",
+      mutate: placeFirst("JourneyIgnoredText", [18, 18]),
+      expected:
+        'JourneyIgnoredText at 18-18: value is not its written text: ":", not ""',
+    },
+  ])
+})
+
+describe("checkTree: the gaps of a journey diagram that no recorded tree holds (positions/journey.md)", () => {
+  // The corpus has no accessibility description line with trailing spaces,
+  // so these trees use the diagram's own builder.
+  const descriptionWithSpaces = () =>
+    buildJourney("journey\naccDescr: D  ", (kit) => {
+      const keyword = kit.token("Keyword", "accDescr")
+      kit.token("Punctuator", ":")
+      const text = kit.token("RawText", "D")
+      const value = kit.node("JourneyLiteral", text.range, { value: "D" })
+      return [
+        kit.node(
+          "JourneyAccDescrStatement",
+          [keyword.range[0], value.range[1]],
+          { value },
+        ),
+      ]
+    })
+  itFailsEach([
+    {
+      name: "a journey accessibility description statement whose range holds trailing spaces",
+      built: descriptionWithSpaces,
+      mutate: placeFirst("JourneyAccDescrStatement", [8, 21]),
+      expected:
+        "JourneyAccDescrStatement at 8-21: the range, which runs from the first of its tokens and child nodes to the last: [8,21], not [8,19]",
+    },
+    {
+      name: "a journey accessibility description text whose range holds trailing spaces",
+      built: descriptionWithSpaces,
+      mutate: placeFirst("JourneyLiteral", [18, 20]),
+      expected:
+        "JourneyLiteral at 18-20: does not run from the start of a token to the end of a token",
     },
   ])
 })
