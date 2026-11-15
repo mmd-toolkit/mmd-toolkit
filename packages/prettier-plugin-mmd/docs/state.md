@@ -1465,10 +1465,23 @@ A `style` statement whose styles after the first hold no `:` keeps its colors as
 written (`style A fill:#ABC` is printed `style A fill: #ABC`), because
 mermaid.js 10.9.8 draws the line as text, as a description of a state (see
 [Whitespace between tokens](#whitespace-between-tokens)); the `classDef`
-statement is printed in lower case in any case.
+statement follows the color rule above.
 
 [fixture: colors/style-read-as-description-kept] [fixture:
 colors/style-read-as-description-kept-v1]
+
+A hexadecimal color immediately followed by a `;` that the line rule does not
+ignore forms an entity and keeps its case, including when that `;` precedes a
+directive and a later `;` that the line rule ignores, with no padding, a space,
+or a form feed after the later `;`: `classDef k fill:#F9F;%%{init: {}}%%;` keeps
+`#F9F`.
+
+[fixture: colors/kept-entity-classdef] [fixture:
+colors/kept-entity-classdef-multiple] [fixture: colors/kept-entity-style] [test:
+state classDef entity before a directive and an ignored semicolon with a form
+feed] [test: state classDef final entity before a directive and an ignored
+semicolon with a form feed] [test: state style entity before a directive and an
+ignored semicolon with a form feed]
 
 Input
 ([colors/colors-in-lower-case-input.mmd](../tests/fixtures/state/colors/colors-in-lower-case-input.mmd)):

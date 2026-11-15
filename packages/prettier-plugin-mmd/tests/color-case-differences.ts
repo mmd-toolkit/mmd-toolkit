@@ -131,10 +131,13 @@ function colorRanges(text: string): [number, number][] {
  * color is the written one in lower case; any other text is returned as it is.
  */
 function withWrittenColors(written: string, printed: string): string {
-  // A removed end is not part of the color word; an end that is still printed
-  // remains one (docs/compatibility.md, Colors that are drawn the same).
-  const writtenText =
-    printed.trimEnd() === printed ? written.trimEnd() : written
+  // A removed end is not part of the color word. A gap before a directive
+  // can print CSS whitespace in its place; a kept non-CSS character still
+  // belongs to the word (docs/compatibility.md, Colors that are drawn the same).
+  const printedTail = printed.slice(printed.trimEnd().length)
+  const writtenText = [...printedTail].every(isSpace)
+    ? written.trimEnd()
+    : written
   const writtenColors = colorRanges(writtenText)
   const printedColors = colorRanges(printed)
   if (writtenColors.length !== printedColors.length) return printed
