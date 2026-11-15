@@ -147,6 +147,11 @@ export function isCssWhitespace(character: string): boolean {
   return isSpaceOrTab(character) || character === "\u000c"
 }
 
+/** Whether a character is U+2028 or U+2029. */
+export function isLineSeparator(character: string | undefined): boolean {
+  return character === "\u2028" || character === "\u2029"
+}
+
 /**
  * Whether a character is an ASCII letter, an ASCII digit, or `_`: the
  * characters that the lexers read as a word (common.md, Notation).

@@ -11,6 +11,7 @@ import {
   findTriviaBetween,
   isAtLineEnd,
   isCssWhitespace,
+  isLineSeparator,
   isSpaceOrTab,
   isWhitespace,
   previousRead,
@@ -792,7 +793,7 @@ function leavesNoTextOfTheStyleAfter(
       (item) => item.type === "Comment",
     )
   )
-    return rest.includes("\u2028") || rest.includes("\u2029")
+    return [...rest].some(isLineSeparator)
   return findDirectiveTouchingSeparator(source, end, lineEnd) >= 0
 }
 
@@ -822,11 +823,6 @@ export function findDirectiveTouchingSeparator(
   )
     return -1
   return first.range[0]
-}
-
-/** Whether a character is a U+2028 or a U+2029. */
-function isLineSeparator(character: string | undefined): boolean {
-  return character === "\u2028" || character === "\u2029"
 }
 
 /**

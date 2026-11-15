@@ -14,6 +14,7 @@ import {
   findFirstIndex,
   isCommentLine,
   isDiagramKeywordEnd,
+  isLineSeparator,
   findTokenStartingAt,
   findTriviaBetween,
   isWhitespace,
@@ -498,11 +499,6 @@ function isAfterKeptLineSeparator(
     position = before
   }
   return false
-}
-
-/** Whether a character is U+2028 or U+2029. */
-function isLineSeparator(character: string | undefined): boolean {
-  return character === "\u2028" || character === "\u2029"
 }
 
 /**
