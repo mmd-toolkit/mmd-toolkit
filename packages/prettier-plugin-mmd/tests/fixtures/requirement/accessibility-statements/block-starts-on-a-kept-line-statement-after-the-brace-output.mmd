@@ -1,0 +1,12 @@
+requirementDiagram
+  requirement "x;y" {
+    id: 1
+    text: t
+    risk: low
+    verifymethod: test
+  }
+  element e {
+    type: x
+  }
+  e - satisfies -> "x;y" accDescr: d
+  direction TB

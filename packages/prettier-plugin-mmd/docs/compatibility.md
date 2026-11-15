@@ -207,6 +207,8 @@ whatever the other versions are, so it has no row.
 | [pie, gitGraph](./pie.md#accessibility-lines)                  | `accTitle: Value   %% note`, whitespace before a `%%` after the value                                                                                                        | `accTitle: Value %% note`                                             | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 reads the `%%` and what follows as part of the title                                                 | [fixture: pie/accessibility-lines/acc-title-percent-gap-kept]                                                                                               |
 | [pie, gitGraph](./pie.md#accessibility-lines)                  | `accDescr {a} %% c`, a comment after the `}` of a block                                                                                                                      | `accDescr: a %% c`                                                    | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 reads the `%% c` as part of the description of the form with the colon                               | [fixture: pie/description-blocks/block-then-comment]                                                                                                        |
 | [timeline](./timeline.md#header-and-direction)                 | `timeline td`; `timeline TD title T`                                                                                                                                         | `timeline TD`; the text on a line of its own                          | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 and 11.7.0 read the words as a period                                                                | [fixture: timeline/header-and-direction/direction-case-kept]                                                                                                |
+| [timeline](./timeline.md#header-and-direction)                 | `timeline TD accDescr {alpha} Phase : done`, and `accDescr {%%{init: {}}%%alpha}`, a description block that starts on the line of the header                                 | `accDescr: alpha`; `Phase : done` on a line of its own                | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 and 11.7.0 read the line as the text of a period                                                     | [fixture: timeline/header-and-direction/description-block-then-period-on-the-header-line-kept]                                                              |
+| [timeline](./timeline.md#header-and-direction)                 | a whitespace character that is no space or tab (U+00A0, U+2003, and so on) in the line of the header                                                                         | one space                                                             | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 and 11.7.0 draw the character                                                                        | [test: U+00A0 between the direction and a text on the header line]                                                                                          |
 | [timeline](./timeline.md#titles-and-sections)                  | `title`, two spaces or a line break and an indentation, `# c`                                                                                                                | `title # c`                                                           | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 reads them as a title of whitespace and a comment                                                    | [fixture: timeline/titles-and-sections/title-hash-on-next-line-kept]                                                                                        |
 | [ER](./er.md#whitespace-between-tokens)                        | `class-A a`                                                                                                                                                                  | `class -A a`                                                          | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 rejects the form with a space                                                                        | [fixture: er/whitespace-between-tokens/keyword-then-dash-touching-kept]                                                                                     |
 | [ER](./er.md#whitespace-between-tokens)                        | `subgraph-x`, `end-x`                                                                                                                                                        | `subgraph -x`; `end` and `-x` on a line of its own                    | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 rejects the form with a space; 11.7.0 draws it differently                                           | [fixture: er/whitespace-between-tokens/subgraph-then-dash-touching-kept]                                                                                    |
@@ -2623,11 +2625,14 @@ in the form with the colon, on a line of its own: `accDescr {a}`,
 `accDescr { a }`, and `accDescr{ a }` become `accDescr: a`. The keyword and the
 `{` can stand apart in any whitespace, a line break included, and so can the
 text and the braces: `accDescr {`, `a`, and `}` on three lines are `accDescr: a`
-too. A `;` after the `}` is dropped like any `;` that separates statements. The
-text can hold a `{`, a `:`, a `#`, a directive, and any whitespace character
-that is no line break (a no-break space, U+3000, a vertical tab, a form feed,
-U+FEFF, U+2028, or U+2029), and a run of spaces and tabs in it is printed by the
-rule of
+too. A `;` after the `}` is dropped like any `;` that separates statements. A
+block that starts on the line of the header of a timeline, after a direction,
+stays a block with what follows it on its line, which the versions that read no
+direction draw as text (see
+[Header and direction](./timeline.md#header-and-direction)). The text can hold a
+`{`, a `:`, a `#`, a directive, and any whitespace character that is no line
+break (a no-break space, U+3000, a vertical tab, a form feed, U+FEFF, U+2028, or
+U+2029), and a run of spaces and tabs in it is printed by the rule of
 [Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same).
 A directive stays where it is, and the block is printed as the same text written
 with the colon is. A directive after the text, inside the braces or after the
@@ -2708,16 +2713,54 @@ diagram types that end the text of the form with the colon before a `%%`, as the
 list below says. A statement that follows the block on its line goes to a line
 of its own, as any statement does, where the line does not keep its statements
 together: `accDescr { %%{init: {}}%% a } A` is `accDescr: %%{init: {}}%%a` and
-`A`, on two lines. A block on a line that keeps its statements together is
-printed in the form with the colon where it is the last statement of the line
-and only whitespace, comments, and directives follow it:
-`A --> B; accDescr {a;b}` is `A --> B; accDescr: a;b`, and in a C4 diagram a
-block after an empty block, `accDescr {}accDescr {D}`, is
+`A`, on two lines. The line that counts is the one that the block ends on: a
+block that starts on a line that keeps its statements together and ends on one
+that does not is printed in the form with the colon too, with the statement
+after its `}` on a line of its own, so that `A["x;y"] accDescr {`, `d`, and
+`} Z` are `A["x;y"] accDescr: d` and `Z` at once, and not the block the first
+time and the form with the colon the second. Where the line that the block ends
+on keeps its statements together, as in `} B["x;y"]`, the block stays. A block
+on a line that keeps its statements together is printed in the form with the
+colon where it is the last statement of the line and only whitespace, comments,
+and directives follow it: `A --> B; accDescr {a;b}` is `A --> B; accDescr: a;b`,
+and in a C4 diagram a block after an empty block, `accDescr {}accDescr {D}`, is
 `accDescr {}accDescr: D`. In a treeView diagram drawn with branch characters (a
 box), the characters of the drawing before the keyword and between the keyword
 and the `{` are redrawn, not printed, so they do not keep the block.
 
 [fixture: flowchart/accessibility-lines/block-last-on-a-line-with-a-semicolon]
+[fixture: c4/description-blocks/block-starts-on-kept-line-statement-after-brace]
+[fixture:
+c4/description-blocks/block-starts-on-kept-line-semicolon-text-statement-after-brace]
+[fixture: c4/description-blocks/block-ends-on-kept-line-statement-after-brace]
+[fixture:
+er/accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture:
+er/accessibility-statements/block-starts-on-a-kept-line-block-after-the-brace]
+[fixture:
+er/accessibility-statements/block-starts-on-a-kept-line-text-on-the-brace-line]
+[fixture:
+er/accessibility-statements/block-starts-on-a-direction-line-statement-after-the-brace]
+[fixture:
+er/accessibility-statements/block-followed-by-a-statement-on-a-kept-line-kept]
+[fixture:
+state/multi-line-values/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture:
+xychart/accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture:
+journey/accessibility-statements/block-starts-on-a-kept-line-text-on-the-brace-line]
+[fixture:
+gantt/accessibility-statements/block-starts-on-a-kept-line-text-on-the-brace-line]
+[fixture:
+gantt/accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture:
+requirement/accessibility-statements/block-starts-on-a-kept-line-text-on-the-brace-line]
+[fixture:
+requirement/accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture:
+quadrant/titles-and-accessibility-statements/block-starts-on-a-kept-line-text-on-the-brace-line]
+[fixture:
+quadrant/titles-and-accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
 [fixture: flowchart/accessibility-lines/block-text-with-semicolon] [fixture:
 c4/description-blocks/block-after-an-empty-block] [fixture:
 treeview/modes/ordinary-block] [fixture:
@@ -2842,6 +2885,44 @@ block holds, or would not be read as the block is:
   flowchart/accessibility-lines/block-before-another-statement-on-a-kept-line]
   [fixture: flowchart/accessibility-lines/block-on-style-line-kept] [fixture:
   c4/statements-one-per-line/description-null-adjacency]
+
+- The text holds a `;`, and the form with the colon would put the text on a line
+  that stays as written, so that the line rule of mermaid.js (see
+  [Lines that hold a `;`](#lines-that-hold-a-)) ignores another `;` than it does
+  in the block, or the last line of the block is a line that a `;` ends (see
+  [A line that a `;` ends](#a-line-that-a--ends)). The rule reads the statements
+  before the block on the line that it would stand on: in
+  `A["style:#x"]; accDescr {`, `d;e`, and `} Z`, the rule ignores the `;` after
+  the string with the block, and the `;` of `d;e` in the form with the colon,
+  which leaves the first `;` as a separator that mermaid.js rejects (an ER
+  diagram) or reads as other text (a flowchart). The block stays as it is.
+
+  [fixture:
+  er/accessibility-statements/block-text-semicolon-after-style-text-statement-after-brace]
+  [fixture:
+  er/accessibility-statements/block-text-semicolon-after-style-text-no-following-statement]
+  [fixture:
+  er/accessibility-statements/block-text-semicolon-after-style-text-on-opening-line]
+  [fixture:
+  er/accessibility-statements/block-text-semicolon-after-style-text-on-closing-line]
+  [fixture:
+  flowchart/accessibility-lines/block-text-semicolon-after-style-text-kept]
+  [fixture: state/multi-line-values/block-last-line-ended-by-semicolon-kept]
+  [test: flowchart LS semicolon inside block] [test: flowchart PS semicolon
+  inside block]
+
+  Where the statement before the block is printed on a line of its own, or the
+  rule ignores the same `;` in both forms, the block is printed in the form with
+  the colon.
+
+  [fixture:
+  flowchart/accessibility-lines/block-text-semicolon-after-plain-text-converted]
+  [fixture:
+  er/accessibility-statements/block-text-semicolon-after-style-text-on-separate-printed-line-statement-after-brace]
+  [fixture:
+  er/accessibility-statements/block-text-semicolon-after-style-text-on-separate-printed-line-no-following-statement]
+  [fixture:
+  er/accessibility-statements/block-text-semicolon-after-style-text-on-separate-printed-line-on-closing-line]
 
 - The text holds a `%%`, or a U+2028 or U+2029, in an architecture, cynefin,
   gitGraph, info, packet, pie, radar, railroad, treemap, treeView, or wardley
