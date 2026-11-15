@@ -2505,7 +2505,7 @@ mermaid.js はコメント行を、
 style を終える U+2028 か U+2029 は、その後ろから行末までの空白、タブ、垂直タブ、
 改ページとともに落とし、`style A fill:red`、U+2028、
 改行は `style A fill: red` と印字します。
-テキストの終わりのコメント行が続くときも同じです。
+テキストの終わりのコメント行が（何行でも）続くときも同じです。
 文字を落とすと mermaid.js の読む値が変わるおそれのあるときは、
 行を書かれたまま残します。
 文字の後にコメント行が続き、
@@ -2523,6 +2523,7 @@ style が `;` を含むときです。
 [test: ER a style that no semicolon ends is printed without the U+2028 that ends it before a directive line]
 [test: ER a style that no semicolon ends keeps the U+2028 that ends it before a comment line and a statement]
 [test: ER a style that no semicolon ends is printed without the U+2028 or U+2029 that ends it before a comment line at the end of the text]
+[test: ER a style that no semicolon ends is printed without the U+2028 that ends it before several comment lines at the end of the text]
 [test: ER a classDef that no semicolon ends is printed without the U+2029 and the space after it before a comment line at the end of the text]
 [test: ER a style that no semicolon ends keeps the U+2028 that whitespace and a statement follow]
 [test: ER a style that no semicolon ends keeps the U+2028 that a comment follows on its line]

@@ -667,6 +667,13 @@ function findCommentRegions(
       hasTextAfter: end < contentEnd,
     })
   }
+  // Regions that touch are removed together: text follows all of them, and the
+  // last one decides, not the next comment line, which is removed too.
+  for (let index = joining.length - 2; index >= 0; index--) {
+    const [region, next] = [joining[index], joining[index + 1]]
+    if (next.start === region.end)
+      joining[index] = { ...region, hasTextAfter: next.hasTextAfter }
+  }
   return { all, joining }
 }
 
