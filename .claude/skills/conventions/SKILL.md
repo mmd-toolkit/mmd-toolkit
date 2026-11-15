@@ -199,6 +199,8 @@ everything after every change.
 - A result already reported for the same state of the tree is not run again; a
   check of another kind (other inputs, another method) is.
 - The report says what was run and what was not.
+- AI agents check changed recorded trees with the checklist and procedure of
+  [ast-json-validity](../ast-json-validity/SKILL.md).
 - A report of a change in behavior (acceptance, the tree, the Db, formatting, a
   rule) goes to review with a table of its cases: for each sentence the change
   concerns, every case the sentence distinguishes, the fixture that holds it,
@@ -212,7 +214,7 @@ Generated inputs, random mutation of fixtures, and products of a fixed set of
 strings over the places of the corpus are not used: a product repeats one rule
 per context, costs hours, and finds little beyond the rule's own example;
 reading the sentences finds missing citations, wrong definitions, unreachable
-rules, and holes in the tree check, which no product sees; and a generator lets
-a change be reported done without anyone listing the cases of its sentence. The
-rule names the habit: write the sentence, list its cases, give each a fixture,
-cite them, and let the review read the sentence again.
+rules, and holes in the recorded trees, which no product sees; and a generator
+lets a change be reported done without anyone listing the cases of its sentence.
+The rule names the habit: write the sentence, list its cases, give each a
+fixture, cite them, and let the review read the sentence again.

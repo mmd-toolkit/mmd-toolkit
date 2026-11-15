@@ -4,12 +4,11 @@ Japanese version: [testing.ja.md](./testing.ja.md)
 
 The tests are in `tests/`. They check the parser against the fixtures of
 [`@mmd-toolkit/tests`](../../tests): what the parser must do is stated by the
-specification and by the fixtures. Whether the recorded trees keep the
-conditions of the specification and give the Db of mermaid.js are checks of the
-corpus, which `@mmd-toolkit/tests` makes on the recorded trees; the tests of the
-parser check that the parser gives those trees, and run neither mermaid.js nor
-generated inputs. A case that the corpus lacks is added to it as a fixture, with
-the sentence of the specification or of the parser's documents that defines it.
+specification and by the fixtures. `@mmd-toolkit/tests` compares the Db built
+from the recorded trees with the Db of mermaid.js; the tests of the parser check
+that the parser gives those trees, and run neither mermaid.js nor generated
+inputs. A case that the corpus lacks is added to it as a fixture, with the
+sentence of the specification or of the parser's documents that defines it.
 
 ## Fixtures
 
@@ -22,10 +21,8 @@ the sentence of the specification or of the parser's documents that defines it.
   mermaid.js, as the `knownDivergence` mark of the fixture asks: the result of
   mermaid.js without a mark, the result of the specification with one.
 
-Neither the tree nor the Db is checked here: `@mmd-toolkit/tests` checks each
-recorded tree (`check-tree-corpus.test.ts`; see
-[The tree check](#the-tree-check)) and builds its Db and compares it with the Db
-that the fixture records (`db-from-tree.test.ts`).
+`@mmd-toolkit/tests` builds the Db of each recorded tree and compares it with
+the Db that the fixture records (`db-from-tree.test.ts`).
 
 `tests/kanban.test.ts` checks, on named fixtures, cards under columns with their
 indentation and ranges, adjacent data blocks, quoted labels with CRLF,
@@ -38,8 +35,8 @@ the boundary gap, bare and quoted arguments, named keys, null entries,
 directives in values, title whitespace, and the places of rejections.
 `tests/fixtures.test.ts` compares their recorded parse results and acceptance,
 including the C4 detection fixtures outside `c4/`.
-`tests/ast-c4-examples.test.ts` checks the ranges and tree invariants in the
-type comment examples.
+`tests/ast-c4-examples.test.ts` checks the ranges and node types in the type
+comment examples.
 
 `tests/venn.test.ts` checks, on named fixtures, subsets, explicit and implicit
 text, style atoms and their token kinds, labels emptied by trivia, line
@@ -276,31 +273,6 @@ read the same diagram text in both inputs.
 `html-tag-in-frontmatter` goes both ways, so the fixtures need no reference
 input.
 
-## The tree check
-
-The [invariants](./positions.md#invariants) and what the documents of each
-diagram type state about the tree are checked by `@mmd-toolkit/tests`
-(`checkTree`), which lists the conditions that a tree breaks. It checks every
-recorded tree of the corpus, and the tests of the parser use it on the trees of
-their own inputs (`tests/helpers/tree-problems.ts`), which expect it to list
-nothing.
-
-The order of the child fields is the one that the section of each node type
-states ([ast.md, Nodes](../../spec/docs/ast.md#nodes)): a tool that walks the
-child fields in the order of `visitorKeys` meets the child nodes in source
-order, but in a FlowchartLink with an opening arrow and a label, whose label is
-written before its arrow and visited after it, in an AgentflowLink whose label
-is written before its closing arrow, and in a GanttClickStatement whose link is
-written before its call and visited after it.
-
-[fixture: agentflow/gram-split-edge-id] [fixture:
-gantt/gram-click-href-then-call]
-
-`tests/traverse.test.ts` reads the sentence of the child fields in the section
-of each node type and checks that `visitorKeys` lists the same fields in the
-same order for every node type. That the child nodes meet in source order in
-that order is checked on every recorded tree by `@mmd-toolkit/tests`.
-
 ## Recorded parse results
 
 What `parse()` gives for every fixture is recorded next to the fixture's input
@@ -340,9 +312,9 @@ Whoever adds fixtures therefore:
 2. reads the new `ast.json` and `parse-error.json` files to see that the trees
    and the errors are what the specification says;
 3. runs the checks of the corpus on the recorded trees, in `packages/tests`:
-   `npx vitest run tests/check-tree-corpus.test.ts tests/db-from-tree.test.ts`;
-   the parser tests pass with any recorded tree, so only these show a tree that
-   breaks a condition or gives another Db;
+   `npx vitest run tests/db-from-tree.test.ts`; the parser tests pass with any
+   recorded tree, so the Db comparison provides an independent check of what the
+   tree denotes;
 4. commits them with the fixtures.
 
 A diagram type whose fixtures the corpus has and whose body the parser does not
@@ -363,10 +335,9 @@ looks for files left behind names any that remain.
 - The example in the Usage section of the README is parsed, and the values and
   the tree it shows are compared with the result.
 - Unit tests cover each rule of `common.md`, the detector table, `visitorKeys`
-  (the order of the child fields too; see [The tree check](#the-tree-check)) and
-  `traverseNodes`, the flowchart tree and its tokens, and the sequence tree, the
-  class tree, and the state tree, their tokens, and the rejections outside their
-  grammars.
+  (including the order of the child fields) and `traverseNodes`, the flowchart
+  tree and its tokens, and the sequence tree, the class tree, and the state
+  tree, their tokens, and the rejections outside their grammars.
 
 `tests/agentflow.test.ts` checks, on named fixtures, the Name, comment, heading,
 arrow, metadata, and click-prefix structures. Site maxEdges acceptance is

@@ -21,7 +21,7 @@ printer（prettier-plugin の SKILL）の順に終えてから次の図種に進
 仕様と parser は要約の欄の一覧（`docs/db-summaries.ja.md`）を参照し、
 仕様の主張と parser のテストは fixture を使う。
 木から要約を作る手順は、仕様の木の文書の後に、
-SKILL [tests-tree-checks](../tests-tree-checks/SKILL.ja.md) のとおり、
+SKILL [tests-db-from-tree](../tests-db-from-tree/SKILL.ja.md) のとおり、
 `docs/db-from-tree/<図種>.ja.md` と `src/db-from-tree/<図種>.ts` に書く。
 
 Chevrotain の図種にも同じ手順を適用し、トークン定義を字句規則として読む。
@@ -186,14 +186,6 @@ Langium の図種では、
    `tests/db-from-tree.test.ts` の `DIAGRAM_TYPES_WITHOUT_RECORDED_TREES`
    にその図種を足し、parser が木を記録したら外して、
    builder を記録した木で走らせるよう、同じファイルの `DIAGRAMS` に足す。
-   その図種のノードの型の接頭辞（`Requirement`）も、
-   `tests/check-tree-recorded.ts` の `NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES`
-   に足す。
-   ノードの型ごとに記録した木を求めるテストはこの接頭辞の型を除く。
-   これも同じときに外す。
-   外すときは、その図種の値の欄の行（`VALUE_FIELD_REPORTS` ほか、
-   欄と値のテストの表）を書いておく。
-   この一覧は図種の間は空のままにする。
 8. `docs/db-summaries.md` と `.ja.md` に、その図種の節（何を落とし、
    なぜか）を書く。
 9. 結果として、要約の欄の一覧と、落とした欄とその理由を示す。

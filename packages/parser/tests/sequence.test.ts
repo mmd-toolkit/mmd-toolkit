@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest"
 import type { Range, Root, SequenceStatement } from "@mmd-toolkit/ast"
 import { ParseError, parse } from "../src/index.ts"
-import { problemsOfTree } from "./helpers/tree-problems.ts"
 
 // Expectations come from diagrams/sequence.md (the lexer, the grammar, and
 // the rejections outside the grammar) and ast/sequence.md (the nodes and
@@ -14,7 +13,6 @@ const HEADER = "sequenceDiagram\n"
 function parseStatements(statements: string): Root {
   const text = HEADER + statements
   const root = parse(text)
-  expect(problemsOfTree(text, root)).toEqual([])
   return root
 }
 

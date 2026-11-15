@@ -571,6 +571,16 @@ mermaid.js が読まない `""` も同じです。
 [fixture: whitespace-between-tokens/style-backslash-run-spaced]
 [fixture: whitespace-between-tokens/style-hex-escape-run-spaced]
 
+`classDef` の最後のスタイルと同じ行の `%%` コメントの間の空白、タブ、
+改ページの連続は、別の理由で行を書かれたまま残す場合を除き、
+空白 1 つで印字します。
+`style` は改ページを残します。
+[スタイルの末尾の空白](./compatibility.ja.md#スタイルの末尾の空白)
+を参照してください。
+
+[test: prints a form feed before a comment as one space]
+[test: keeps a form feed before a comment where a version that counts reads the text as words]
+
 mermaid.js は state 図では `,` の前後の空白を何もないものとして読むので、
 その空白では Db は変わりませんが、`:` の前後の空白は Db に残します。
 描かれる図は同じです。

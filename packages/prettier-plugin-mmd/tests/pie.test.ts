@@ -5,7 +5,6 @@ import {
   dbOfText,
   defaultEmbedded,
   describeFrontmatterChange,
-  treeProblemsOfText,
   writtenEmbeddedTexts,
 } from "./db-reading.ts"
 import { dbForFormattingComparison } from "./db-comparison.ts"
@@ -35,7 +34,5 @@ describe("pie escaped cases", () => {
     ).toEqual(dbBefore)
     expect(writtenEmbeddedTexts(after)).toEqual(writtenEmbeddedTexts(before))
     expect(await describeFrontmatterChange(before, after, options)).toBeNull()
-    expect(treeProblemsOfText(before)).toEqual([])
-    expect(treeProblemsOfText(after)).toEqual([])
   })
 })

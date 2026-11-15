@@ -57,7 +57,8 @@
 3. Diagram.body の根を読み、各 TreeviewNode.children を原順で再帰的に写す。
    file も directory も子を持てる。
    indent を読んだり親を再計算したりしない。
-   parser が入れ子を作り、checkTree が独立に確かめる。
+   [TreeviewNode](../../../spec/docs/ast/treeview.ja.md#treeviewnode)
+   が定義する入れ子を読む。
    重複名、空名、すべての根、空の children リストを保つ。
    node の textBefore とほかの所有する装飾は Db の node を作らない。
 

@@ -111,7 +111,7 @@ The result has exactly the
 
    [fixture: architecture/lex-title-line-separator-then-comment-line]
 
-## Checking recorded trees
+## Comparing with the Db of mermaid.js
 
 The shared comparison uses `embeddedValuesOf` and the fixture's specified
 reading when present. Error records are skipped only when the mark's reading

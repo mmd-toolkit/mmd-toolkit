@@ -36,8 +36,7 @@ dbFromTree(text, tree, embedded, isColor)
   実装が与えなければならない欄の一覧です。
   木は JSON そのままで、関数はパーサーも字句解析器も、その単位も使いません。
   関数は欄を確かめずに読みます。
-  欄のない木は [checkTree()](./check-tree.ja.md) が見つけ、
-  そのような木の読み込みは、欄がないことの誤りで失敗します。
+  必須の欄がない木の読み込みは、欄がないことの誤りで失敗します。
 - `embedded` は、入力の埋め込みデータから mermaid.js が導く値で、
   木は持ちません（[embedded-data.ja.md](./embedded-data.ja.md) を参照）。
   fixture からは `embeddedValuesOf()` で得ます。
@@ -57,8 +56,7 @@ mermaid.js が読むとおりの木の値から作ります。
 各行終端を `\n`、各属性の引用符を `'`、各エンティティをその置換文字列とします。
 ディレクティブとコメント行は、
 common.md の Where a directive is と Comment lines の規則で、
-テキストそのものから見つけます（`src/source-scan.ts` の `scanSource()`。
-記録した木の検査も使うので、規則は 1 か所に書きます）。
+テキストそのものから見つけます（`src/source-scan.ts` の `scanSource()`）。
 ディレクティブと、その走査が後ろに取るもの、そしてコメント行です。
 コメント行は、`%%` のうち、次の 2 つを満たすものです。
 コメントの始まりとの間に、空白とディレクティブだけがあること。
@@ -85,7 +83,7 @@ common.md の Where a directive is と Comment lines の規則で、
 
 [fixture: flowchart/lex-string-line-separator-then-comment-line]
 [fixture: block/db-string-paragraph-separator-then-comment-line]
-[fixture: gantt/db-title-line-separator-then-comment-line]
+[fixture: gantt/lex-title-line-separator-then-comment-line]
 [fixture: flowchart/lex-square-label-paragraph-separator-then-comment-line]
 [fixture: flowchart/lex-acc-descr-block-line-separator-then-comment-line]
 
@@ -286,8 +284,9 @@ Db の値のうち、ノードが直接は与えない範囲のテキストを�
 
 - **Venn の宣言**: 名前、ラベル、数、スタイルの値、タイトルは、
   書かれた値と葉の変換済みの範囲を使います。
-  null の text の対象は、
-  `checkTree` が暗黙のモードを検査した後の最後の部分集合です。
+  null の text の対象は、最後の部分集合です。
+  [text と暗黙 text モード](../../spec/docs/diagrams/venn.ja.md#text-と暗黙-text-モード)
+  の定義に従います。
   手順は [db-from-tree/venn.md](./db-from-tree/venn.md) にあります。
 
   [fixture: venn/db-all-fields]

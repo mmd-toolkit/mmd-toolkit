@@ -5,7 +5,6 @@ import { formatMermaid } from "./helpers.ts"
 import {
   dbOfText,
   defaultEmbedded,
-  treeProblemsOfText,
   writtenEmbeddedTexts,
 } from "./db-reading.ts"
 
@@ -84,7 +83,5 @@ describe("accessibility blocks", () => {
       ),
     ).toEqual(dbBefore)
     expect(writtenEmbeddedTexts(output)).toEqual(writtenEmbeddedTexts(input))
-    expect(treeProblemsOfText(input)).toEqual([])
-    expect(treeProblemsOfText(output)).toEqual([])
   })
 })

@@ -6,8 +6,7 @@
 [ast/usecase.md](../../../spec/docs/ast/usecase.ja.md) の記述された出現から、
 [db-summaries.md](../db-summaries.ja.md#usecase) の保存済み要約を作ります。
 ネイティブな受理条件は
-[diagrams/usecase.md](../../../spec/docs/diagrams/usecase.ja.md) に従い、
-同じモデル検証を `checkTree` も使います。
+[diagrams/usecase.md](../../../spec/docs/diagrams/usecase.ja.md) に従います。
 JSON の内部は不透明に保ちます。
 
 ## 木から要約を作る手順
@@ -148,7 +147,7 @@ JSON の内部は不透明に保ちます。
    `{ id, set: { value, propertyOrder } }` を記述順に消費します。
    対応する id と両フィールドを必須とし、不足・余分・順序違いを拒否します。
    この二つだけを設定し、classes/styles は構文から取ります。
-   builder も木の検査も JSON のプロパティを読まず、内容を検証しません。
+   builder は JSON のプロパティを読まず、内容を検証しません。
    Map の順序は effect の消費と別に解決します。
 
    [fixture: usecase/db-json-source-map-order]

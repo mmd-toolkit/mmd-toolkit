@@ -26,9 +26,7 @@ export type {
 // not judge colors asks it the same question (see docs/expected-results.md).
 export { cssSupportsColor } from "./normalizers/browser-stand-ins.ts"
 export type { EmbeddedValues } from "./mermaid.ts"
-export { checkTree } from "./check-tree/index.ts"
-export { DATA_BLOCK_NODE_TYPES } from "./check-tree/node-types.ts"
-export type { CheckedRoot, TreeProblem } from "./check-tree/index.ts"
+export { DATA_BLOCK_NODE_TYPES } from "./data-block-node-types.ts"
 export { dbFromTree } from "./db-from-tree/index.ts"
 export { DIVERGENCE_PROPERTIES, fixtureAccepts } from "./fixture-acceptance.ts"
 export type {

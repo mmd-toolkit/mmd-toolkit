@@ -247,17 +247,13 @@ fixture のディレクトリにあるほかのファイルはそのまま残し
 ここで足した fixture には、
 parser のテストが走るまでどちらのファイルもありません。
 parser のテストは、parser が記録した木を返すことを確かめます。
-このパッケージは、記録した木が正しいことを、`ast.json` と入力だけを読み、
-parser を呼ばない 2 つのテストで確かめます。
-`tests/check-tree-corpus.test.ts` は、
-記録した木のすべてに `checkTree()` を当て、
-問題がないことを求めます（[check-tree.ja.md](./check-tree.ja.md)）。
+このパッケージは `ast.json` と入力だけを読み、parser を呼びません。
 `tests/db-from-tree.test.ts` は、記録した木から `dbFromTree()` で作った Db を、
 mermaid.js の Db と比べ、
 等しいことを求めます（[db-from-tree.ja.md](./db-from-tree.ja.md)）。
 仕様が入力を違って読む場合は、
 mermaid.js の Db の代わりに `specified` の Db と比べます。
-`parse-error.json` について、2 つ目のテストは、
+`parse-error.json` について、このテストは、
 木のない fixture にそれがあるかどうかだけを見ます。
 
 **記録した木は JSON です。**
@@ -267,10 +263,6 @@ double に収まらない数（`Infinity` と `-Infinity`）を持つ、
 NumericLiteral の `value` がそうで、ほかの欄はそのような数を持てないので、
 それ以外の欄にはありません。
 ノードの `raw` には書かれたとおりの数があります。
-`checkTree()` は、
-書かれたテキストがそのような数である NumericLiteral の `value` に、`null`、
-`Infinity`、`-Infinity` を認めます。
-ほかの `value` の `null` は認めません。
 `dbFromTree()` はノードのテキストから数を読むので、変換は要りません。
 
 [fixture: xychart/db-plot-values-overflow]
@@ -434,8 +426,7 @@ mermaid.js が変わった後に集め直しても、新しい入力だけが足
 parser と `dbFromTree()` がそれらにすることを、
 mermaid.js がすることと比べて確かめるためで、作りからして、
 1 つの文に答えるものではありません。
-その木は、`checkTree()` と、
-`dbFromTree()` が木から作った Db と mermaid.js の Db の比べと、
+その木は、`dbFromTree()` が木から作った Db と mermaid.js の Db の比べと、
 parser の出力と記録した木の比べで確かめます。
 文が引いたものの木は、ほかの fixture と同じく、引いた文と照らして読みます。
 どの文にも引かれていないものの木は、文と照らして読みません。

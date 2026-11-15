@@ -25,7 +25,7 @@ import type {
 } from "./usecase-tree.ts"
 import { descriptionOf, trimmed } from "./values.ts"
 
-/** A native-model rejection, retaining the written occurrence for checkTree. */
+/** diagrams/usecase.md, Rejections outside the grammar: a rejection with its written occurrence. */
 export class UsecaseModelError extends TreeError {
   public readonly node: TreeNode
 
@@ -657,15 +657,6 @@ class UsecaseModel {
       classDefs: [...this.classDefs.values()],
     }
   }
-}
-
-/** Native acceptance conditions shared by checkTree; opaque JSON values are neither read nor fabricated. */
-export function validateUsecaseModel(
-  source: string,
-  root: TreeRoot,
-  diagram: UsecaseDiagram,
-): void {
-  new UsecaseModel(source, root).build(diagram)
 }
 
 /** docs/db-from-tree/usecase.md: the stored Db, with JSON values supplied only by Mermaid effects. */

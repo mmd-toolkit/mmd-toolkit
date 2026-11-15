@@ -20,7 +20,7 @@ import type {
 } from "./requirement-tree.ts"
 import type { TextReplacement } from "./text-replacement.ts"
 import { textReplacementOf } from "./text-replacement.ts"
-import type { TreeRoot } from "./tree.ts"
+import type { Identifier, TreeRoot } from "./tree.ts"
 import { descriptionOf, trimmed } from "./values.ts"
 
 // docs/db-from-tree/requirement.md: the summary of the Db that a requirement
@@ -388,14 +388,16 @@ class RequirementDbBuilder {
    * The text of a name or a value: the converted form of its range, or, for a
    * string, of its range between the quotes.
    */
-  private textOf(node: RequirementName | RequirementLiteral): string {
+  private textOf(
+    node: RequirementName | RequirementLiteral | Identifier,
+  ): string {
     if (node.type !== "StringLiteral") return this.text.of(node.range)
     const [start, end] = node.range
     return this.text.of([start + 1, end - 1])
   }
 
   /** The texts of the names `names`. */
-  private namesOf(names: readonly RequirementName[]): string[] {
+  private namesOf(names: readonly (RequirementName | Identifier)[]): string[] {
     return names.map((name) => this.textOf(name))
   }
 

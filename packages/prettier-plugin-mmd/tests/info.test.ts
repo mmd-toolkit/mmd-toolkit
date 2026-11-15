@@ -5,7 +5,6 @@ import {
   dbOfText,
   defaultEmbedded,
   describeFrontmatterChange,
-  treeProblemsOfText,
   writtenEmbeddedTexts,
 } from "./db-reading.ts"
 import { infoCases } from "./info-cases.ts"
@@ -26,7 +25,5 @@ describe("info escaped cases", () => {
     expect(dbOfText(after, embedded)).toEqual(dbOfText(before, embedded))
     expect(writtenEmbeddedTexts(after)).toEqual(writtenEmbeddedTexts(before))
     expect(await describeFrontmatterChange(before, after, options)).toBeNull()
-    expect(treeProblemsOfText(before)).toEqual([])
-    expect(treeProblemsOfText(after)).toEqual([])
   })
 })

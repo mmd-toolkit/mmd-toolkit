@@ -191,10 +191,11 @@ export function addWordGapEdits(
   source: Source,
   [start, end]: Range,
   edits: TextEdit[],
+  joinsFormFeeds = false,
 ): void {
   const colon = source.text.indexOf(":", start)
   const hasColon = colon !== -1 && colon < end
-  for (const edit of styleRunEdits(source, start, end)) {
+  for (const edit of styleRunEdits(source, start, end, joinsFormFeeds)) {
     const [from, to] = edit.range
     if (hasColon && (to === colon || from === colon + 1)) continue
     if (!edits.some((other) => other.range[0] < to && from < other.range[1]))
@@ -286,6 +287,15 @@ export interface StyleListUse {
    * `addWordGapEdits`).
    */
   readonly collapsesWordGaps?: boolean
+  /**
+   * A form feed before a comment on the line belongs to the run of whitespace
+   * there, which is printed as one space: every version of mermaid.js that
+   * counts draws the same figure with it and without it. Not where a version
+   * that counts reads the text as the words of another statement (the
+   * `classDef` of a class diagram and the `style` of a state diagram in
+   * 10.9.8; docs/compatibility.md, Whitespace at the end of a style).
+   */
+  readonly joinsFormFeeds?: boolean
   /**
    * The text of the last style reaches over the whitespace after it, as in a
    * treemap, where the style runs to the end of the line: that whitespace is
@@ -411,6 +421,7 @@ export function normalizeStyleList(
     fillOfLabel = null,
     escapesComma = false,
     collapsesWordGaps = false,
+    joinsFormFeeds = false,
     trimsEnd = false,
   }: StyleListUse = {},
 ): void {
@@ -463,7 +474,8 @@ export function normalizeStyleList(
           ? labelStyleNames
           : [],
       })
-      if (collapsesWordGaps) addWordGapEdits(source, core, edits)
+      if (collapsesWordGaps)
+        addWordGapEdits(source, core, edits, joinsFormFeeds)
     }
     if (trimsEnd && comma === to && core[1] < comma) {
       // A directive right after the whitespace keeps whether whitespace stands

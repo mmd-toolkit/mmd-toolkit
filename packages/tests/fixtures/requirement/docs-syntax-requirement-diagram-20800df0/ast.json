@@ -250,7 +250,7 @@
         "type": "RequirementClassDefStatement",
         "cssClasses": [
           {
-            "type": "RequirementIdentifier",
+            "type": "Identifier",
             "name": "important",
             "range": [
               194,
@@ -364,7 +364,7 @@
         "type": "RequirementStyleStatement",
         "names": [
           {
-            "type": "RequirementIdentifier",
+            "type": "Identifier",
             "name": "test_entity",
             "range": [
               256,

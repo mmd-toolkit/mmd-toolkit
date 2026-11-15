@@ -31,6 +31,25 @@ const runCollapsingDiagramTypes: ReadonlySet<string> = new Set([
   "usecase",
 ])
 
+/**
+ * The diagram types whose printer prints a run of spaces, tabs, and form feeds
+ * before a `%%` comment on the line of the last style as one space in every
+ * statement that has styles (docs/compatibility.md, Whitespace at the end of a
+ * style). A state diagram does so in its `classDef` only, which the Db keeps
+ * apart from the `style` of a state (`classDefs`, see `joinsFormFeedsAt`), and
+ * a class diagram in its `style` only, which the Db does not keep apart from
+ * its `classDef`: both put their styles in `classes`, so the form feed before
+ * a comment in a class diagram is compared as it is.
+ */
+const formFeedJoiningDiagramTypes: ReadonlySet<string> = new Set([
+  "agentflow",
+  "block",
+  "flowchart-elk",
+  "flowchart-v2",
+  "swimlane",
+  "treemap",
+])
+
 /** The diagram types whose styles can reach a link. */
 const linkStyleDiagramTypes: ReadonlySet<string> = new Set([
   "agentflow",
@@ -77,6 +96,15 @@ interface StyleReading {
    * whitespace stands between two words is.
    */
   readonly collapsesWordGaps: boolean
+  /**
+   * The printer prints a run before a `%%` comment, which the Db keeps in the
+   * text of the style, as one space also where it holds form feeds, which CSS
+   * reads as whitespace, so that run is no margin. Elsewhere a form feed is
+   * part of the text of a style, and the printer keeps it before a comment
+   * where a version that counts reads the text as the words of another
+   * statement.
+   */
+  readonly joinsFormFeeds: boolean
 }
 
 /**
@@ -93,9 +121,12 @@ function withoutStyleMargins(
     joinsStyles,
     splitsLabelStyles,
     collapsesWordGaps,
+    joinsFormFeeds,
   }: StyleReading,
 ): string {
-  const style = collapsesWordGaps ? withoutWordRuns(written) : written
+  const style = collapsesWordGaps
+    ? withoutWordRuns(written, joinsFormFeeds)
+    : written
   const trimmed = style.trim()
   const escapedTail =
     joinsStyles && escapesNext(trimmed) && style !== style.trimEnd()
@@ -131,13 +162,15 @@ function withoutStyleMargins(
 
 /**
  * The text of a style with each run of spaces and tabs replaced by one space,
- * except inside a string (`"…"` or `'…'`), a comment (`/*…*\/`), or the
+ * and, where `joinsFormFeeds` is set, a run before a `%%` comment, which the Db
+ * keeps in the text of the style, also where it holds form feeds, which CSS
+ * reads as whitespace, except inside a string (`"…"` or `'…'`), a comment (`/*…*\/`), or the
  * parentheses of `url(`, and the escape after a backslash, where CSS reads it
  * as part of the value: the hexadecimal digits (at most six) and the one space
  * or tab after them, or else the next character. What is not closed runs to
  * the end of the text.
  */
-function withoutWordRuns(text: string): string {
+function withoutWordRuns(text: string, joinsFormFeeds: boolean): string {
   let result = ""
   let position = 0
   while (position < text.length) {
@@ -159,11 +192,18 @@ function withoutWordRuns(text: string): string {
         next++
       }
       next = Math.min(next + 1, text.length)
-    } else if (character === " " || character === "\t") {
-      while (text[next] === " " || text[next] === "\t") next++
-      result += " "
-      position = next
-      continue
+    } else if (character === " " || character === "\t" || character === "\f") {
+      // A form feed belongs to a run only before a comment.
+      let blanksEnd = position
+      while (" \t\f".includes(text[blanksEnd] ?? "-")) blanksEnd++
+      let runEnd = position
+      if (joinsFormFeeds && text.startsWith("%%", blanksEnd)) runEnd = blanksEnd
+      else while (text[runEnd] === " " || text[runEnd] === "\t") runEnd++
+      if (runEnd > position) {
+        result += " "
+        position = runEnd
+        continue
+      }
     }
     result += text.slice(position, next)
     position = next
@@ -235,6 +275,16 @@ function joinsStylesAt(
 }
 
 /**
+ * Whether the printer prints a form feed before a comment as one space in the
+ * styles at a place of the Db: in every statement of the diagram types of
+ * `formFeedJoiningDiagramTypes`, and in the `classDef` of a state diagram.
+ */
+function joinsFormFeedsAt(path: DbPath, diagramType: string): boolean {
+  if (formFeedJoiningDiagramTypes.has(diagramType)) return true
+  return diagramType === "stateDiagram" && path.at(-2) === "classDefs"
+}
+
+/**
  * Checks the styles of a formatted diagram even though their text changed.
  * The formatter puts no whitespace before the first `:` of a style or before a
  * `,` and one space after them (docs/compatibility.md, Styles that are drawn
@@ -251,7 +301,9 @@ function joinsStylesAt(
  * and where mermaid.js joins the styles as they are, neither is the
  * whitespace after a backslash that ends a style, and in the diagram types of
  * `runCollapsingDiagramTypes` a run of spaces and tabs between the words of a
- * style is no margin (see `StyleReading`).
+ * style is no margin, and where the printer prints a form feed before a comment
+ * as one space, neither is a run with a form feed before a comment (see
+ * `StyleReading`).
  */
 export function styleDbForFormattingComparison(
   before: DbSummary | null,
@@ -271,6 +323,7 @@ export function styleDbForFormattingComparison(
         key === "styles" &&
         path.at(-2) === "children",
       collapsesWordGaps: runCollapsingDiagramTypes.has(diagramType),
+      joinsFormFeeds: joinsFormFeedsAt(path, diagramType),
     }
     return key !== undefined &&
       isStyleKey(key) &&

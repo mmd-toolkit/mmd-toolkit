@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokens.md Comments: the `;` that the line rule ignores right after a `%%` comment is an IgnoredSemicolon token, when U+2028 ends the comment and a comment line follows."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "root": null
+  }
+}

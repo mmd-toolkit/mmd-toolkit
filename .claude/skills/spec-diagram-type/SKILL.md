@@ -122,8 +122,8 @@ Write `docs/diagrams/<diagram>.md` and its `.ja.md` with the four sections of
 The Db summary of a diagram type and how it is built from the tree are documents
 of `@mmd-toolkit/tests` (`docs/db-summaries.md` and
 `docs/db-from-tree/<diagram>.md`); what they need is written there with the
-steps of the tests-diagram-type SKILL (the summary) and of the tests-tree-checks
-SKILL (how it is built from the tree).
+steps of the tests-diagram-type SKILL (the summary) and of the
+tests-db-from-tree SKILL (how it is built from the tree).
 
 ## 4. Checks before the parser reads the specification
 
@@ -161,7 +161,7 @@ these checks for the diagram type, and write the result of each in the output
    is missing, the value is empty, the value is set. Each case that occurs is
    explained, with a fixture, by a sentence of `docs/db-from-tree/<diagram>.md`
    of the tests package; a sentence for a case that no sentence explains is
-   written with the steps of the tests-tree-checks SKILL. Look in the Db class
+   written with the steps of the tests-db-from-tree SKILL. Look in the Db class
    for what is set only on the first visit, what accumulates, and what an update
    leaves as it was (`Object.assign` keeps the keys that the new object does not
    have).

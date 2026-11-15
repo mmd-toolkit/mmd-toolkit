@@ -686,6 +686,13 @@ Db は変わりますが、mermaid.js が描く図は同じです。
 [fixture: styles/style-string-runs-kept] [fixture: styles/style-url-runs-kept]
 [fixture: styles/style-hex-escape-run-spaced]
 
+最後のスタイルと同じ行の `%%` コメントの間の空白、タブ、改ページの連続は、
+別の理由で行を書かれたまま残す場合を除き、空白 1 つで印字します。
+[スタイルの末尾の空白](./compatibility.ja.md#スタイルの末尾の空白)
+を参照してください。
+
+[test: prints a form feed before a comment as one space]
+
 ここではバックスラッシュは `,` をエスケープしません。
 `fill:a\,b ,stroke:c` は `fill: a\, b, stroke: c` と印字します。
 バックスラッシュの後で `:` の前にある空白は、

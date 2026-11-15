@@ -83,7 +83,7 @@
         "type": "RequirementStyleStatement",
         "names": [
           {
-            "type": "RequirementIdentifier",
+            "type": "Identifier",
             "name": "test_requirement",
             "range": [
               84,
@@ -101,7 +101,7 @@
             }
           },
           {
-            "type": "RequirementIdentifier",
+            "type": "Identifier",
             "name": "test_element",
             "range": [
               101,

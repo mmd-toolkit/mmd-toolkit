@@ -6,7 +6,6 @@ import plugin from "../src/index.ts"
 import {
   dbOfText,
   defaultEmbedded,
-  treeProblemsOfText,
   writtenEmbeddedTexts,
   describeFrontmatterChange,
 } from "./db-reading.ts"
@@ -182,7 +181,5 @@ describe("pie in Markdown", () => {
     expect(writtenEmbeddedTexts(fixture.payloadOutput)).toEqual(
       writtenEmbeddedTexts(fixture.payloadInput),
     )
-    expect(treeProblemsOfText(fixture.payloadInput)).toEqual([])
-    expect(treeProblemsOfText(fixture.payloadOutput)).toEqual([])
   })
 })

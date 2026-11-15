@@ -133,7 +133,7 @@
 
    [fixture: architecture/lex-title-line-separator-then-comment-line]
 
-## 記録した木の検査
+## mermaid.js の Db との比較
 
 共有の比較は `embeddedValuesOf` と、
 あれば fixture の specified の読みを使います。

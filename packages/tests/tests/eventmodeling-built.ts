@@ -1,12 +1,11 @@
-import type { CheckedNode } from "../src/check-tree/types.ts"
-import { buildTree } from "./check-tree-built.ts"
-import type { Built, Kit } from "./check-tree-built.ts"
+import { buildTree } from "./tree-built.ts"
+import type { Built, Kit, RecordedNode } from "./tree-built.ts"
 import { hull } from "./statement-tree-built.ts"
 
 /** Explicit authored components only; no parser or lexer supplies the tree. */
 export function buildEventmodeling(
   source: string,
-  make: (kit: Kit) => CheckedNode[],
+  make: (kit: Kit) => RecordedNode[],
 ): Built {
   return buildTree(
     {
@@ -21,10 +20,10 @@ export function buildEventmodeling(
 }
 
 /** Each test supplies hidden occurrences to their named ownership field. */
-type Gaps = Readonly<Record<string, (() => CheckedNode[]) | undefined>>
+type Gaps = Readonly<Record<string, (() => RecordedNode[]) | undefined>>
 
 /** A digit identity and an ASCII name both use the shared Identifier node. */
-export function identifier(kit: Kit, name: string): CheckedNode {
+export function identifier(kit: Kit, name: string): RecordedNode {
   return kit.node("Identifier", kit.token("Identifier", name).range, { name })
 }
 
@@ -33,7 +32,7 @@ export function qualified(
   kit: Kit,
   headName: string,
   tail: readonly { name: string; gaps?: Gaps }[] = [],
-): CheckedNode {
+): RecordedNode {
   const head = identifier(kit, headName)
   const members = tail.map((part) => {
     const textBeforeDot = part.gaps?.textBeforeDot?.() ?? []
@@ -57,7 +56,7 @@ export function sourceReference(
   kit: Kit,
   frameName: string,
   gaps: Gaps = {},
-): CheckedNode {
+): RecordedNode {
   const textBefore = gaps.textBefore?.() ?? []
   const arrow = kit.node(
     "EventmodelingArrow",
@@ -78,7 +77,7 @@ export function dataReference(
   kit: Kit,
   dataName: string,
   gaps: Gaps = {},
-): CheckedNode {
+): RecordedNode {
   const textBefore = gaps.textBefore?.() ?? []
   const open = kit.token("Punctuator", "[[")
   const textBeforeName = gaps.textBeforeName?.() ?? []
@@ -106,12 +105,12 @@ export function data(
   block = false,
   dataType: string | null = null,
   gaps: Gaps = {},
-): CheckedNode {
+): RecordedNode {
   const textBefore = gaps.textBefore?.() ?? []
   const pieces: { range: readonly [number, number] }[] = [...textBefore]
-  const textBeforeDataType: CheckedNode[] = []
-  const textBeforeTypeClose: CheckedNode[] = []
-  const textBeforeValue: CheckedNode[] = []
+  const textBeforeDataType: RecordedNode[] = []
+  const textBeforeTypeClose: RecordedNode[] = []
+  const textBeforeValue: RecordedNode[] = []
   if (dataType !== null) {
     pieces.push(kit.token("Punctuator", "`"))
     textBeforeDataType.push(...(gaps.textBeforeDataType?.() ?? []))
@@ -123,7 +122,7 @@ export function data(
     textBeforeValue.push(...(gaps.textBeforeValue?.() ?? []))
     pieces.push(...textBeforeValue)
   }
-  let value: CheckedNode | null
+  let value: RecordedNode | null
   if (raw.startsWith('"') || raw.startsWith("'")) {
     value = kit.node("StringLiteral", kit.token("String", raw).range, {
       raw,
@@ -164,15 +163,15 @@ export function frame(
   kit: Kit,
   nameText: string,
   modelEntityType: string,
-  makeName: () => CheckedNode,
+  makeName: () => RecordedNode,
   options: {
     keyword?: string
     gaps?: Gaps
-    sources?: readonly (() => CheckedNode)[]
-    reference?: () => CheckedNode
-    data?: () => CheckedNode
+    sources?: readonly (() => RecordedNode)[]
+    reference?: () => RecordedNode
+    data?: () => RecordedNode
   } = {},
-): CheckedNode {
+): RecordedNode {
   const word = kit.token("Keyword", options.keyword ?? "tf")
   const textBeforeName = options.gaps?.textBeforeName?.() ?? []
   const name = identifier(kit, nameText)
@@ -220,7 +219,7 @@ export function common(
   kit: Kit,
   kind: "Title" | "AccTitle" | "AccDescr" | "AccDescrBlock",
   payload: string | null,
-): CheckedNode {
+): RecordedNode {
   const word =
     kind === "Title" ? "title" : kind === "AccTitle" ? "accTitle" : "accDescr"
   const pieces: { range: readonly [number, number] }[] = [
@@ -242,9 +241,9 @@ export function common(
 /** Model declarations retain their qualified name even though the Db omits them. */
 export function entity(
   kit: Kit,
-  makeName: () => CheckedNode,
-  before: () => CheckedNode[] = () => [],
-): CheckedNode {
+  makeName: () => RecordedNode,
+  before: () => RecordedNode[] = () => [],
+): RecordedNode {
   const word = kit.token("Keyword", "entity")
   const textBeforeName = before()
   const name = makeName()
@@ -260,9 +259,9 @@ export function blockStatement(
   kit: Kit,
   wordText: "data" | "note",
   nameText: string,
-  makeData: () => CheckedNode,
-  before: () => CheckedNode[] = () => [],
-): CheckedNode {
+  makeData: () => RecordedNode,
+  before: () => RecordedNode[] = () => [],
+): RecordedNode {
   const word = kit.token("Keyword", wordText)
   const gap = before()
   const name = identifier(kit, nameText)
@@ -284,7 +283,7 @@ export function gwtItem(
   modelEntityType: string,
   name: string,
   gaps: Gaps = {},
-): CheckedNode {
+): RecordedNode {
   const textBefore = gaps.textBefore?.() ?? []
   const word = kit.token("Keyword", modelEntityType)
   const textBeforeEntityIdentifier = gaps.textBeforeEntityIdentifier?.() ?? []
@@ -310,9 +309,9 @@ export function gwtItem(
 export function clause(
   kit: Kit,
   kind: string,
-  items: readonly (() => CheckedNode)[],
-  before: () => CheckedNode[] = () => [],
-): CheckedNode {
+  items: readonly (() => RecordedNode)[],
+  before: () => RecordedNode[] = () => [],
+): RecordedNode {
   const textBefore = before()
   const word = kit.token("Keyword", kind)
   const body = items.map((make) => make())
@@ -327,11 +326,11 @@ export function clause(
 export function gwt(
   kit: Kit,
   name: string,
-  given: () => CheckedNode,
-  then: () => CheckedNode,
-  when: (() => CheckedNode) | null = null,
-  before: () => CheckedNode[] = () => [],
-): CheckedNode {
+  given: () => RecordedNode,
+  then: () => RecordedNode,
+  when: (() => RecordedNode) | null = null,
+  before: () => RecordedNode[] = () => [],
+): RecordedNode {
   const word = kit.token("Keyword", "gwt")
   const textBeforeSourceFrame = before()
   const sourceFrame = identifier(kit, name)

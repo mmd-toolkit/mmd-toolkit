@@ -148,7 +148,7 @@ Root.diagramType で IR、EBNF、ABNF、PEG を選び、
 
    [fixture: railroad/lex-title-line-separator-then-comment-line]
 
-## 記録された木の検査
+## mermaid.js の Db との比較
 
 fixture に指定の読みがあればそれを使い、同じ読みの `embeddedValuesOf` を使う。
 比較可能な受理の読みで木が無ければ失敗とし、

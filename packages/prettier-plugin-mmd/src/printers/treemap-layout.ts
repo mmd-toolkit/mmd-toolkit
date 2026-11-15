@@ -197,16 +197,10 @@ export function treemapLines(
 }
 
 /**
- * Where a style ends before a dropped final semicolon, without the whitespace
- * before it that CSS reads as whitespace; undefined when no semicolon is
- * dropped, or when a character that CSS does not read as whitespace stands
- * after a `;` that the line rule ignores: that character is a character of the
- * last style, mermaid.js draws another figure without it, and the style and
- * the `;` stay as written (docs/treemap.md, Styles and Semicolons;
- * docs/compatibility.md, Whitespace at the end of a style). A character of
- * that kind before the `;` stays with the style, and the spaces, tabs, and
- * form feeds after it go with the `;`. Both the printed stretch and the color
- * word use this boundary.
+ * Where a style ends without the whitespace and the final `;` that the printer
+ * drops, or undefined where it drops neither (docs/treemap.md, Styles and
+ * Semicolons; docs/compatibility.md, Whitespace at the end of a style). Both
+ * the printed stretch and the color word use this boundary.
  */
 export function findTreemapStyleEnd(
   source: Source,
@@ -215,8 +209,27 @@ export function findTreemapStyleEnd(
   const { style } = statement
   if (style === null) return undefined
   const semicolon = endingSemicolonOf(source, statement.range, style)
-  if (semicolon === undefined || !isDroppedSemicolon(source, semicolon))
-    return undefined
+  return semicolon === undefined
+    ? findStyleEndWithoutSemicolon(source, statement, style)
+    : findStyleEndBeforeDroppedSemicolon(source, statement, style, semicolon)
+}
+
+/**
+ * Where a style ends before a dropped final semicolon, without the whitespace
+ * before it that CSS reads as whitespace; undefined when the semicolon is not
+ * dropped, or when a character that CSS does not read as whitespace stands
+ * after a `;` that the line rule ignores: that character is a character of the
+ * last style, mermaid.js draws another figure without it, and the style and
+ * the `;` stay as written. A character of that kind before the `;` stays with
+ * the style, and the spaces, tabs, and form feeds after it go with the `;`.
+ */
+function findStyleEndBeforeDroppedSemicolon(
+  source: Source,
+  statement: TreemapClassDefStatement,
+  style: Node,
+  semicolon: number,
+): number | undefined {
+  if (!isDroppedSemicolon(source, semicolon)) return undefined
   for (let after = semicolon + 1; after < statement.range[1]; after++) {
     if (keepsStyleEndCharacter(statement.type, source.text[after]))
       return undefined
@@ -232,14 +245,57 @@ export function findTreemapStyleEnd(
 }
 
 /**
- * The style of a `classDef` together with what follows it, printed without the
- * `;` that ends the statement and without the whitespace around that `;`,
- * where the printer drops that `;` (see `isDroppedSemicolon`); none where it
- * keeps it. The `;` is a unit at the end of the statement, or one that the
- * line rule ignores: right after the statement, or inside its style, which then
- * holds the whitespace that follows the `;`.
+ * Where a style that no `;` ends stops before the whitespace that CSS reads as
+ * whitespace, at the end of the line or after the directive that ends it; or
+ * undefined where there is none to drop, where the style holds a `;`, a U+2028,
+ * or a U+2029, which the line rule may read, where a comment follows, and
+ * where a character that CSS does not read as whitespace stands at its end:
+ * mermaid.js removes a directive before it reads the style, so such a
+ * character counts before a directive too. A space after a backslash stays,
+ * since CSS reads the escaped space as part of the value.
  */
-function findDroppedSemicolonStretches(
+function findStyleEndWithoutSemicolon(
+  source: Source,
+  statement: TreemapClassDefStatement,
+  style: Node,
+): number | undefined {
+  const written = textRead(source, ...style.range)
+  if (
+    written.trim() === "" ||
+    [";", "\u2028", "\u2029"].some((character) => written.includes(character))
+  )
+    return undefined
+  for (let index = written.length - 1; index >= 0; index--) {
+    if (!isWhitespace(written[index])) break
+    if (keepsStyleEndCharacter(statement.type, written[index])) return undefined
+  }
+  let end = style.range[1]
+  while (
+    end > style.range[0] &&
+    isWhitespace(source.text[end - 1]) &&
+    !keepsStyleEndCharacter(statement.type, source.text[end - 1]) &&
+    source.text[end - 2] !== "\\"
+  )
+    end--
+  const last = findTriviaBetween(
+    source,
+    style.range[0],
+    lineEndOf(source, style.range[0]),
+  ).at(-1)
+  const endsAtDirective =
+    last === undefined || (last.type === "Directive" && last.range[1] === end)
+  return end < style.range[1] && endsAtDirective ? end : undefined
+}
+
+/**
+ * The style of a `classDef` together with what follows it, printed without the
+ * trailing whitespace or `;` that `findTreemapStyleEnd` drops, including the
+ * whitespace around that `;`; none where the complete suffix stays. The `;`
+ * is a unit at the end of the statement, or one that the line rule ignores:
+ * right after the statement, or inside its style, which then holds the
+ * whitespace that follows the `;`.
+ */
+function findTrimmedStyleStretches(
   source: Source,
   statement: TreemapBodyItem,
 ): Atom[] {
@@ -337,7 +393,7 @@ export function layoutTreemapStatement(
     case "TreemapSection":
     case "TreemapLeaf":
     case "TreemapClassDefStatement": {
-      const dropped = findDroppedSemicolonStretches(source, statement)
+      const dropped = findTrimmedStyleStretches(source, statement)
       const atoms = collectAtoms(
         source,
         start,
@@ -444,9 +500,9 @@ export function layoutTreemapStatement(
  * stays as written (see `normalizeStyleList`), and so does a style that holds a
  * `;`, or that has a comment or a directive on its line: they may take part in
  * the line rule, and a second formatting must find the same. `styleEnd` is
- * where the style ends when a `;` that the printer drops ends it (see
- * `findDroppedSemicolonStretches`), so that the whitespace before that `;` and
- * what is dropped with it decide nothing.
+ * where the style ends before a dropped suffix (see
+ * `findTrimmedStyleStretches`), so that the whitespace and the `;` that are
+ * dropped decide nothing.
  */
 function normalizeTreemapStyle(
   source: Source,
@@ -466,6 +522,11 @@ function normalizeTreemapStyle(
     source,
     atoms,
     { range: [statement.range[0], styleEnd], styles: [{ ...style, range }] },
-    { escapesComma: true, collapsesWordGaps: true, trimsEnd: true },
+    {
+      escapesComma: true,
+      collapsesWordGaps: true,
+      joinsFormFeeds: true,
+      trimsEnd: true,
+    },
   )
 }

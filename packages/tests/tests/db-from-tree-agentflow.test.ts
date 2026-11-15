@@ -3,7 +3,7 @@ import { dbFromTree } from "../src/db-from-tree/index.ts"
 import type { DbTreeRoot } from "../src/db-from-tree/index.ts"
 import { embeddedValuesOf, loadFixture } from "../src/index.ts"
 import { cssSupportsColor } from "../src/normalizers/browser-stand-ins.ts"
-import { recordedTree } from "./check-tree-recorded.ts"
+import { recordedTree } from "./fixture-trees.ts"
 import { AGENTFLOW_CASES, buildAgentflowCase } from "./agentflow-cases.ts"
 
 /** Mermaid's recorded result and the hand-supplied productions are independent. */

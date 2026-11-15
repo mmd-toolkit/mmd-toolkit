@@ -48,9 +48,9 @@ corpus tests also check recorded kanban trees and common detection fixtures.
 3. **Membership.** Read Diagram.body as columns with `isGroup: true` and each
    column's children as cards with `isGroup: false`, using the enclosing
    column's converted id as `parentId`. Visit a column before its cards, in
-   source order. Do not read indent or reconstruct membership; the parser builds
-   the two-level nesting and checkTree independently checks it, including the
-   final shallower card.
+   source order. Do not read indent or reconstruct membership; read the
+   two-level nesting, including the final shallower card, as defined by
+   [KanbanNode](../../../spec/docs/ast/kanban.md#kanbannode).
 
    [fixture: kanban/db-sections-items] [fixture: kanban/db-indent-unindented]
    [fixture: kanban/db-indent-tabs] [fixture: kanban/db-indent-deeper] [fixture:

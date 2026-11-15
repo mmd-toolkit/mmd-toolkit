@@ -8,7 +8,7 @@
         "type": "RequirementClassDefStatement",
         "cssClasses": [
           {
-            "type": "RequirementIdentifier",
+            "type": "Identifier",
             "name": "firstClass",
             "range": [
               29,
@@ -26,7 +26,7 @@
             }
           },
           {
-            "type": "RequirementIdentifier",
+            "type": "Identifier",
             "name": "secondClass",
             "range": [
               40,

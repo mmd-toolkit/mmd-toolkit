@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest"
 import { dbFromTree } from "../src/db-from-tree/index.ts"
 import type { DbTreeRoot } from "../src/db-from-tree/index.ts"
-import type { TreeRange } from "../src/db-from-tree/tree.ts"
+import type { TreeRange, TreeRoot } from "../src/db-from-tree/tree.ts"
 import { embeddedValuesOf, loadFixtures } from "../src/index.ts"
 import { cssSupportsColor } from "../src/normalizers/browser-stand-ins.ts"
-import { nodesOf } from "../src/check-tree/walk.ts"
-import type { CheckedNode, CheckedRoot } from "../src/check-tree/types.ts"
-import { locationOf } from "./check-tree-trees.ts"
+import { nodesOf } from "../src/tree-walk.ts"
+import type { RecordedNode } from "./tree-built.ts"
+import { locationOf } from "./tree-pieces.ts"
 
 /** Written argument pieces, supplied by hand rather than read from the expected Db. */
 type Arg = string | null | readonly [key: string, quoted: string]
@@ -828,12 +828,12 @@ function treeOf(input: string, testCase: Case): DbTreeRoot {
     type: string,
     range: TreeRange,
     fields: Record<string, unknown>,
-  ): CheckedNode {
+  ): RecordedNode {
     return { type, range, loc: locationOf(input, range), ...fields }
   }
 
   /** A written value, with any common cuts stated by the case. */
-  function leaf(raw: string, quoted = false): CheckedNode {
+  function leaf(raw: string, quoted = false): RecordedNode {
     return node(quoted ? "StringLiteral" : "C4Literal", take(raw), {
       value: testCase.values?.[raw] ?? (quoted ? raw.slice(1, -1) : raw),
       ...(quoted
@@ -846,7 +846,7 @@ function treeOf(input: string, testCase: Case): DbTreeRoot {
   }
 
   /** Place one explicitly described statement and its children. */
-  function statement(piece: Statement): CheckedNode {
+  function statement(piece: Statement): RecordedNode {
     if (piece.args !== undefined) {
       const start = take(piece.keyword)[0]
       take("(")
@@ -999,7 +999,7 @@ describe("dbFromTree of C4 trees made by hand", async () => {
           throw new Error("read tokens")
         },
       })
-      const ranges = nodesOf(plain as unknown as CheckedRoot)
+      const ranges = nodesOf(plain as unknown as TreeRoot)
         .filter(
           (node) => node.type === "C4Literal" || node.type === "StringLiteral",
         )

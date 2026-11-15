@@ -89,16 +89,19 @@ shared HTML quote-context scan reads the source once.
 
 6. **Text targets.** Append text declarations in order with sorted explicit
    targets, including unknown targets and repetitions, or use the latest
-   subset's sorted names for null targets; `checkTree` checks that null occurs
-   only at an enabled indented implicit marker, with subsets enabling the mode,
-   ordinary statement starts after a newline ending it, same-line statements
-   preserving it, and blank lines, removed comments and common directives
-   preserving it; an unindented `%%{ }%%` after an empty line ends the mode,
-   while that comment immediately after the declaration, or prefixed by exactly
-   one ASCII space or tab, and bare `%%` lines preserve it, as does an
-   intervening nonempty line of only spaces or tabs; two or more leading spaces
-   or tabs are skipped as one run, and rule 7 then ends the mode at `%%{` unless
-   rule 2 swallows a separate prefix character before the comment.
+   subset's sorted names for null targets.
+   [VennTextStatement](../../../spec/docs/ast/venn.md#venntextstatement) defines
+   null targets for implicit text, whose
+   [mode](../../../spec/docs/diagrams/venn.md#text-and-implicit-text-mode)
+   starts at a subset and permits an indented implicit marker, with ordinary
+   statement starts after a newline ending it, same-line statements preserving
+   it, and blank lines, removed comments and common directives preserving it; an
+   unindented `%%{ }%%` after an empty line ends the mode, while that comment
+   immediately after the declaration, or prefixed by exactly one ASCII space or
+   tab, and bare `%%` lines preserve it, as does an intervening nonempty line of
+   only spaces or tabs; two or more leading spaces or tabs are skipped as one
+   run, and rule 7 then ends the mode at `%%{` unless rule 2 swallows a separate
+   prefix character before the comment.
 
    [fixture: venn/db-text-three-definitions] [fixture: venn/db-text-comma-list]
    [fixture: venn/gram-repeated-target-lists] [fixture: venn/db-form-indent-id]

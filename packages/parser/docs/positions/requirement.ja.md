@@ -57,6 +57,12 @@
 [fixture: requirement/db-acc-title-descr]
 [fixture: requirement/lex-style-spaces]
 
+`style` と `classDef` の後の名前は、
+RequirementIdentifier ではなく Identifier で、
+その範囲は `style-word` のトークンの範囲です。
+
+[fixture: requirement/db-style-statement] [fixture: requirement/db-class-def]
+
 ### RequirementIgnoredText
 
 方向の行のテキストは、両端の空白を除いてそれを覆います。

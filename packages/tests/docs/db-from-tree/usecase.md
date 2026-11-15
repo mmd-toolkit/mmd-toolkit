@@ -5,8 +5,8 @@ Japanese version: [usecase.ja.md](./usecase.ja.md)
 `src/db-from-tree/usecase.ts` builds the stored summary of
 [db-summaries.md](../db-summaries.md#usecase) from the written occurrences of
 [ast/usecase.md](../../../spec/docs/ast/usecase.md). Native acceptance follows
-[diagrams/usecase.md](../../../spec/docs/diagrams/usecase.md); the same model
-validation serves `checkTree`. JSON interiors stay opaque.
+[diagrams/usecase.md](../../../spec/docs/diagrams/usecase.md). JSON interiors
+stay opaque.
 
 ## Building the summary from the tree
 
@@ -136,9 +136,9 @@ validation serves `checkTree`. JSON interiors stay opaque.
    `{ id, set: { value, propertyOrder } }` effect per UsecaseJsonStatement in
    authored order. Require the corresponding id and both fields, and reject
    missing, extra or reordered effects. Assign only those two supplied fields;
-   classes/styles still come from syntax. Neither the builder nor the tree check
-   reads JSON properties or validates JSON content. Map ordering is resolved
-   separately from effect consumption.
+   classes/styles still come from syntax. The builder does not read JSON
+   properties or validate JSON content. Map ordering is resolved separately from
+   effect consumption.
 
    [fixture: usecase/db-json-source-map-order] [fixture:
    usecase/db-json-integer-order] [fixture: usecase/db-json-duplicate-order]

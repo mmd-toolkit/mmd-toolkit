@@ -41,12 +41,14 @@ type.
   parser generators.
 - The tests on the fixtures: the parse result of each fixture equals the one
   recorded next to it (`ast.json` or `parse-error.json`), and the acceptance
-  agrees with mermaid.js as the marks of known divergences ask. The recorded
-  trees are checked by `@mmd-toolkit/tests`: the conditions of the tree
-  (`checkTree`), and the Db that it builds from them against the Db that each
-  fixture records. The tests run neither mermaid.js nor generated inputs, and no
-  command of this package does. Each sentence of the parser's documents that
-  defines a behavior has a fixture for each of its cases (section 3).
+  agrees with mermaid.js as the marks of known divergences ask. The trees that a
+  change records are checked with the skill
+  [ast-json-validity](../ast-json-validity/SKILL.md); `@mmd-toolkit/tests`
+  compares the Db that it builds from every recorded tree with the Db that its
+  fixture records (`db-from-tree.test.ts`). The tests run neither mermaid.js nor
+  generated inputs, and no command of this package does. Each sentence of the
+  parser's documents that defines a behavior has a fixture for each of its cases
+  (section 3).
 
 ## 1. What to read first
 
@@ -149,9 +151,9 @@ type.
   no "To be written", and `packages/spec/docs/ast/<diagram>.md` exists (the
   spec-diagram-type and spec skills).
 - The fixtures of the diagram, its Db summary
-  (`packages/tests/docs/db-from-tree/<diagram>.md`), and the checks of its
-  recorded trees exist in `packages/tests` (the skills tests-diagram-type and
-  tests-tree-checks).
+  (`packages/tests/docs/db-from-tree/<diagram>.md`), and the builder of its Db
+  from recorded trees exist in `packages/tests` (the skills tests-diagram-type
+  and tests-db-from-tree).
 
 ### 4.2 Reading the specification, and its gaps first
 
@@ -381,17 +383,15 @@ Steps:
 
 1. Only `tests/fixtures.test.ts` writes the corpus records (4.7). It compares
    each parse result with its record and checks acceptance with the shared
-   helper above. That the recorded trees keep the conditions of the tree and
-   give the Db of mermaid.js is a check of the corpus, which
-   `@mmd-toolkit/tests` makes on every recorded tree
-   (`check-tree-corpus.test.ts` and `db-from-tree.test.ts`); no test of the
-   parser parses the fixtures again to check them. A diagram test names the
-   fixtures of the cases that it checks and states what their trees hold;
-   `tests/helpers/tree-problems.ts` wraps the check of the tree conditions
-   (`checkTree`) for such a test. When `db-from-tree.test.ts` fails for a
-   recorded tree because its accepted reading has no embedded values to build
-   the Db with, report it to the specification with the input and the recorded
-   reading.
+   helper above. `@mmd-toolkit/tests` compares the Db of every recorded tree
+   with the recorded Db of mermaid.js (`db-from-tree.test.ts`); the conditions
+   of the trees that a change records are checked with the skill
+   [ast-json-validity](../ast-json-validity/SKILL.md). No test of the parser
+   parses the fixtures again to check them. A diagram test names the fixtures of
+   the cases that it checks and states what their trees hold. When
+   `db-from-tree.test.ts` fails for a recorded tree because its accepted reading
+   has no embedded values to build the Db with, report it to the specification
+   with the input and the recorded reading.
 2. Find where text outside a node's range decides a reading. Example from the
    flowchart: the name text of a subgraph runs to its separator, and where empty
    description blocks follow the name, the whitespace between them lies outside
@@ -438,6 +438,10 @@ for acceptance without adding configuration parameters or options to `parse()`.
 
 3. Read the new results against the specification, in `packages/parser`:
 
+   For an accepted tree, first
+   [write the expected tree](../ast-json-validity/SKILL.md#1-read-the-input-and-write-the-expected-tree)
+   before opening its record or running `show-trees`.
+
    ```sh
    pnpm run show-trees <diagram> <fixture> <fixture>
    ```
@@ -451,52 +455,10 @@ for acceptance without adding configuration parameters or options to `parse()`.
    side in the result, fixture by fixture. When a fixture that should be
    accepted is rejected, or the reverse, do not keep its file, and show that.
 
-   Read each new tree also against the sentences that cite its fixture, so that
-   every tree is read for the case that it was added for. Find the citations at
-   the root of the repository, with the folder of the fixture under
-   `packages/tests/fixtures/`, the one that `show-trees` takes (`common` for a
-   fixture of `common/`); `grep` also finds a document that is not committed
-   yet, and runs in a copy without `.git`:
-
-   ```sh
-   grep -rn -F --include='*.md' --exclude='*.ja.md' "<folder>/<fixture>]" packages/spec/docs packages/parser/docs packages/tests/docs packages/prettier-plugin-mmd/docs
-   ```
-
-   A citation is told by the bracket around the name, which starts on the line
-   before the one found when the citation runs over two lines. In the documents
-   of the specification, the parser, and the tests, a name inside
-   `[fixture: ...]` cites the fixture. In the documents of the formatter, only a
-   name inside `[corpus fixture: ...]` does; a `[fixture: ...]` there names a
-   fixture of the formatter, also when it starts on the same line. A citation
-   stands in a paragraph of citations or in the `Fixtures` cell of a table row
-   (the skill `conventions`, Documents). The sentences that cite the fixture are
-   those right before its paragraph of citations, back to the paragraph of
-   citations before it or to the start of the paragraph or of the list item; a
-   paragraph of citations right after a table cites for the whole table, one
-   right after a code block for that example, and a `Fixtures` cell for its row.
-   Read them with the whole paragraph, list item, or table that holds them. For
-   each such sentence, say which case the fixture shows (what is accepted, what
-   is read as what, or how a text is printed), and compare the parts of the tree
-   that the case touches (nodes, tokens, comments, positions) with what the
-   sentence says of them and with what the documents of the tree say of those
-   node types and token kinds: `packages/spec/docs/ast.md` and
-   `ast/<diagram>.md`, and this package's `docs/tokens.md`,
-   `docs/tokens/<diagram>.md`, `docs/positions.md`, and
-   `docs/positions/<diagram>.md`, where the diagram is that of the body node of
-   the tree (`FlowchartDiagram` is `flowchart`), also for a fixture of
-   `common/`. When the case touches no part of the tree, as a sentence of the
-   formatter on how a text is printed may, say so. Show one answer for each tree
-   in the result: the sentences, the case, the parts compared, the paragraphs
-   compared with, and whether they agree; that a tree was read is no answer. A
-   tree that no sentence cites gets an answer that says so, and is not compared.
-   When the work added its fixture, report the missing sentence to the
-   specification: a fixture is written with the sentence that cites it (the
-   skill `conventions`, Running tests). A fixture whose `source` has `kind`
-   `mermaid`, an input that the collector took from mermaid.js, is not reported:
-   the same paragraph of `conventions` excepts it. Whether the work added it is
-   the one thing here that needs the history of the repository:
-   `git cat-file -e origin/main:packages/tests/fixtures/<folder>/<fixture>/input.mmd`
-   fails for a fixture that the work added.
+   Read each new tree, including the case its citing sentences show, with
+   [ast-json-validity](../ast-json-validity/SKILL.md); its
+   [Read the citing sentences](../ast-json-validity/SKILL.md#3-read-the-citing-sentences)
+   gives that reading in detail.
 
 4. Use `-u` only for a change that changes existing results. Before such a
    change, copy the fixtures to a new directory outside the repository; after
@@ -517,24 +479,25 @@ for acceptance without adding configuration parameters or options to `parse()`.
    of difference, the same field of the same node type or of the error, and then
    each difference. Every kind must be explained by the change; if one is not,
    do not accept the result of `-u`, and look into it. Read each rewritten tree
-   against the sentences that cite its fixture, as the last paragraphs of step 3
-   say. A fixture that the change makes rejected gets a `parse-error.json`, and
-   its old `ast.json` is left behind, which the test that looks for files left
-   behind names; delete it with `rm` (and the reverse for a fixture that becomes
-   accepted). `-u` also writes the result of every fixture that has none,
-   including fixtures added meanwhile for rules not implemented yet; each `new:`
-   line must be a fixture whose rule is implemented, and the file of any other
-   is deleted (step 1). Show the number of fixtures of each kind in the result.
-   A node whose fields the Db does not read shows a wrong change only here (in
-   state, an edit that makes a floating note id end at its first character; the
-   value strings of the leaf nodes and the position of a state note are such
-   fields). A snapshot comparison alone establishes repeatability, so retain
-   independent tree-condition and Db checks when records are rewritten. Complete
-   the parser build before starting checks that import its `lib` output, then
-   run the corpus checks in `packages/tests`:
+   as in step 3. A fixture that the change makes rejected gets a
+   `parse-error.json`, and its old `ast.json` is left behind, which the test
+   that looks for files left behind names; delete it with `rm` (and the reverse
+   for a fixture that becomes accepted). `-u` also writes the result of every
+   fixture that has none, including fixtures added meanwhile for rules not
+   implemented yet; each `new:` line must be a fixture whose rule is
+   implemented, and the file of any other is deleted (step 1). Show the number
+   of fixtures of each kind in the result. A node whose fields the Db does not
+   read shows a wrong change only here (in state, an edit that makes a floating
+   note id end at its first character; the value strings of the leaf nodes and
+   the position of a state note are such fields). A snapshot comparison alone
+   establishes repeatability, so AI agents read the tree conditions with
+   [ast-json-validity](../ast-json-validity/SKILL.md), and the Db comparison is
+   kept when records are rewritten. Complete the parser build before starting
+   checks that import its `lib` output, then run the Db check in
+   `packages/tests`:
 
    ```sh
-   npx vitest run tests/check-tree-corpus.test.ts tests/db-from-tree.test.ts
+   npx vitest run tests/db-from-tree.test.ts
    ```
 
 ### 4.8 Checks before finishing
@@ -549,7 +512,7 @@ In `packages/tests`, the checks of the corpus on the recorded trees (4.7, step
 4):
 
 ```sh
-npx vitest run tests/check-tree-corpus.test.ts tests/db-from-tree.test.ts
+npx vitest run tests/db-from-tree.test.ts
 ```
 
 At the root:
@@ -566,10 +529,10 @@ Run the whole suite once, before the work is reported as done, not after each
 change.
 
 The work is done when every fixture passes the fixture test, the recorded trees
-pass the tree check of `@mmd-toolkit/tests` and give the Db that the corpus
-records, each new or rewritten tree has its answer (4.7, step 3), and every
-sentence that the work wrote or changed has a fixture for each of its cases
-(section 3).
+give the Db that the corpus records, the trees have been checked by
+[ast-json-validity](../ast-json-validity/SKILL.md) and every mismatch resolved,
+and every sentence that the work wrote or changed has a fixture for each of its
+cases (section 3).
 
 ### 4.9 Documents
 
@@ -591,8 +554,7 @@ Run `npx prettier --write` on them, and pass `pnpm run lint:docs` and
 Show as the result: what was implemented, file by file; the gaps in the
 specification that were found, and which of them are still open; the number of
 tests and their results; the number of recorded results (new, and changed, by
-kind); the answer for each new or rewritten tree (4.7, step 3); the exported
-types; the changed documents.
+kind); the exported types; the changed documents.
 
 ## 5. First-match lexical rules, hidden forms and semantic acceptance
 
@@ -647,6 +609,11 @@ wiring, tests and records.
   sections, check them as in 4.2, step 2, and implement them. When existing
   trees change, do 4.7, step 4. Before reporting it, check as in 4.8, and show
   the result as in 4.10.
+- A sentence of `docs/tokens.md`, `docs/tokens/<diagram>.md`,
+  `docs/positions.md`, or `docs/positions/<diagram>.md` changes: follow
+  [When the tree, token, or position documents change](../ast-json-validity/SKILL.md#5-when-the-tree-token-or-position-documents-change)
+  to read the document diff against the base and check the accepted fixtures
+  cited by the changed blocks.
 - When shared checks are centralized, compare `(fixture, check)` coverage and
   execution counts before and after, explaining removed duplicate calls and
   added cases without introducing diagram exemptions to equalize totals.

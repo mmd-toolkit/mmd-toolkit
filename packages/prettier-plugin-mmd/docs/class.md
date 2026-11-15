@@ -425,6 +425,14 @@ whitespace-between-tokens/style-value-words-spaced] [fixture:
 whitespace-between-tokens/style-url-runs-kept] [fixture:
 whitespace-between-tokens/style-comment-runs-kept]
 
+A run of spaces, tabs, and form feeds between the last style and a `%%` comment
+on the same line of a `style` is printed as one space, unless the line stays as
+written for another reason; the `classDef` keeps a form feed there (see
+[Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style)).
+
+[test: prints a form feed before a comment as one space] [test: keeps a form
+feed before a comment where a version that counts reads the text as words]
+
 The same holds for styles that are words without a `:`, which mermaid.js reads
 as tokens of their own: `style A bold ,italic` is printed
 `style A bold, italic`, and `style A fill   #f00` is printed

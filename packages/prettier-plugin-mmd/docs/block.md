@@ -642,6 +642,13 @@ next character. The Db changes, but mermaid.js draws the same figure (see
 [fixture: styles/style-string-runs-kept] [fixture: styles/style-url-runs-kept]
 [fixture: styles/style-hex-escape-run-spaced]
 
+A run of spaces, tabs, and form feeds between the last style and a `%%` comment
+on the same line is printed as one space, unless the line stays as written for
+another reason (see
+[Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style)).
+
+[test: prints a form feed before a comment as one space]
+
 A backslash does not escape a `,` here: `fill:a\,b ,stroke:c` is printed
 `fill: a\, b, stroke: c`. A space after a backslash before the `:` stays, since
 taking it away would escape the `:`, and the whitespace after that space goes.

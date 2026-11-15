@@ -6,6 +6,7 @@ import {
   isSpaceOrTab,
   previousRead,
   skipRemoved,
+  skipSpacesAndTabs,
   textRead,
 } from "./source.ts"
 
@@ -16,12 +17,16 @@ import {
  * a string (`"…"` or `'…'`), inside a comment, inside the parentheses of
  * `url(`, and the escape after a backslash (see `endOfEscape`). A string, a
  * comment, or `url(` that is not closed runs to the end of the text.
- * The runs at the ends of the text are the business of the caller.
+ * Where `joinsFormFeeds` is set, a run immediately before a same-line `%%`
+ * comment also includes form feeds, which CSS reads as whitespace
+ * (docs/compatibility.md, Whitespace at the end of a style). The runs at the
+ * ends of the text are the business of the caller.
  */
 export function styleRunEdits(
   source: Source,
   start: number,
   end: number,
+  joinsFormFeeds = false,
 ): TextEdit[] {
   const { text } = source
   const edits: TextEdit[] = []
@@ -36,9 +41,22 @@ export function styleRunEdits(
     const character = text[position]
     if (regionEnd !== undefined) {
       position = regionEnd
-    } else if (isSpaceOrTab(character)) {
-      let runEnd = position
-      while (runEnd < end && isSpaceOrTab(text[runEnd])) runEnd++
+    } else if (isCssWhitespace(character)) {
+      // A run of form feeds, spaces, and tabs before a comment is one run;
+      // elsewhere a form feed is no part of a run, and stays.
+      let cssEnd = position
+      while (cssEnd < end && isCssWhitespace(text[cssEnd])) cssEnd++
+      const beforeComment =
+        joinsFormFeeds &&
+        text.startsWith("%%", cssEnd) &&
+        findTriviaAt(source, cssEnd)?.type !== "Directive"
+      const runEnd = beforeComment
+        ? cssEnd
+        : skipSpacesAndTabs(source, position, end)
+      if (runEnd === position) {
+        position++
+        continue
+      }
       if (
         position > start &&
         runEnd < end &&

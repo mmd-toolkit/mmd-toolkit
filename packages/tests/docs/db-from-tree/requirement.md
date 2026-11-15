@@ -65,11 +65,12 @@ requirement/entity-placeholder-in-quoted-class-name]
 
 **Texts.** The text of a leaf node of the tree is read as follows.
 
-- A RequirementIdentifier and a RequirementLiteral have the converted form of
-  their range. Their `value`, where they have one, is the written text, which
-  the tree keeps, and the Db has the text as mermaid.js reads it. So `a`,
-  U+00A0, and `b` is one name with the no-break space in it, and the whitespace
-  after a name or a value on its line is no part of it.
+- A RequirementIdentifier, a RequirementLiteral, and an Identifier after `style`
+  or `classDef` have the converted form of their range. Their `name` or `value`
+  is the written text, which the tree keeps, and the Db has the text as
+  mermaid.js reads it. So `a`, U+00A0, and `b` is one name with the no-break
+  space in it, and the whitespace after a name or a value on its line is no part
+  of it.
 
   [fixture: requirement/db-requirement-name-spaces] [fixture:
   requirement/lex-whitespace-nbsp-in-name] [fixture:

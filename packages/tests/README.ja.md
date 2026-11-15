@@ -240,10 +240,6 @@ mermaid.js は読み込みません。
   `exceedsMaxEdges(tree, config)`、`flowchartEdgeCount(tree)`、
   `agentflowEdgeCount(tree)` は、グラフ系の木の辺の上限を確かめる。
   [docs/db-from-tree.ja.md](./docs/db-from-tree.ja.md) を参照。
-- `checkTree(text, tree)`: 記録した木（`ast.json`）について、
-  仕様が述べる条件のうち成り立たないもの。
-  すべてを満たす木では空。
-  [docs/check-tree.ja.md](./docs/check-tree.ja.md) を参照。
 - `cssSupportsColor(value)`: ブラウザの `CSS.supports("color", value)`
   が答えるもの。
   ここで mermaid.js を動かすときに与えている代役と同じ。
@@ -332,8 +328,6 @@ pin した mermaid.js を Node で動かします。
   の要約が持つものと捨てるもの。
 - [docs/db-from-tree.ja.md](./docs/db-from-tree.ja.md): 記録した木から Db
   を作ることと、その読む欄。
-- [docs/check-tree.ja.md](./docs/check-tree.ja.md):
-  記録した木が仕様の条件を満たすことの検査。
 - [docs/maintaining-fixtures.ja.md](./docs/maintaining-fixtures.ja.md):
   保守する人向け。
   fixture を足す、変える、改名する、集める方法。

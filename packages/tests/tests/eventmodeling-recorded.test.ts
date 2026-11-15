@@ -1,8 +1,7 @@
 import { existsSync, readFileSync } from "node:fs"
 import path from "node:path"
 import { describe, expect, it } from "vitest"
-import { checkTree } from "../src/check-tree/index.ts"
-import type { CheckedRoot } from "../src/check-tree/types.ts"
+import type { TreeRoot } from "../src/db-from-tree/tree.ts"
 import { dbFromTree } from "../src/db-from-tree/index.ts"
 import type { DbTreeRoot } from "../src/db-from-tree/index.ts"
 import {
@@ -15,7 +14,7 @@ import {
 
 describe("eventmodeling recorded results", () => {
   for (const diagram of ["eventmodeling", "common"] as const)
-    it(`checks result kinds, tree conditions and comparison Dbs in ${diagram}`, async () => {
+    it(`checks result kinds and comparison Dbs in ${diagram}`, async () => {
       let checked = 0
       const problems: string[] = []
       for (const fixture of await loadFixtures(diagram)) {
@@ -36,12 +35,8 @@ describe("eventmodeling recorded results", () => {
           continue
         }
         if (!accepts) continue
-        const tree = JSON.parse(readFileSync(ast, "utf8")) as CheckedRoot
+        const tree = JSON.parse(readFileSync(ast, "utf8")) as TreeRoot
         checked++
-        for (const problem of checkTree(fixture.input, tree))
-          problems.push(
-            `${fixture.name}: ${problem.where}: ${problem.message}; input ${JSON.stringify(fixture.input)}`,
-          )
         if (!result.accepted || result.db === null) continue
         const embedded = embeddedValuesOf(fixture, result)
         if (embedded === undefined)

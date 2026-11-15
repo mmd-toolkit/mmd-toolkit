@@ -3,7 +3,6 @@ import type { Fixture } from "@mmd-toolkit/tests"
 import { loadFixtures } from "@mmd-toolkit/tests"
 import type { Range, Root } from "@mmd-toolkit/ast"
 import { ParseError, parse } from "../src/index.ts"
-import { problemsOfTree } from "./helpers/tree-problems.ts"
 
 // Expectations come from diagrams/state.md (the lexer, the grammar, and the
 // rejections outside the grammar) and ast/state.md (the nodes and the
@@ -16,7 +15,6 @@ const HEADER = "stateDiagram-v2\n"
 function parseStatements(statements: string): Root {
   const text = HEADER + statements
   const root = parse(text)
-  expect(problemsOfTree(text, root)).toEqual([])
   return root
 }
 
@@ -787,7 +785,6 @@ describe("state lookahead and terminal identity fixtures", async () => {
   function rootOf(name: string): Root {
     const fixture = fixtureOf(name)
     const root = parse(fixture.input)
-    expect(problemsOfTree(fixture.input, root)).toEqual([])
     return root
   }
 

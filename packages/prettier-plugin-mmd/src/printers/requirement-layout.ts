@@ -61,6 +61,7 @@ import {
  * is left out on purpose.
  */
 export const requirementValueNodeTypes: ReadonlySet<Node["type"]> = new Set([
+  "Identifier",
   "StringLiteral",
   "RequirementIdentifier",
   "RequirementLiteral",

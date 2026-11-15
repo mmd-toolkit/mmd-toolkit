@@ -1,12 +1,11 @@
-import type { CheckedNode } from "../src/check-tree/types.ts"
-import { buildTree } from "./check-tree-built.ts"
-import type { Built, Kit } from "./check-tree-built.ts"
+import { buildTree } from "./tree-built.ts"
+import type { Built, Kit, RecordedNode } from "./tree-built.ts"
 import { hull } from "./statement-tree-built.ts"
 
 /** A fixed input and explicitly supplied occurrences, without a parser or lexer. */
 export function buildCynefin(
   source: string,
-  make: (kit: Kit) => CheckedNode[],
+  make: (kit: Kit) => RecordedNode[],
   colon = false,
 ): Built {
   return buildTree(
@@ -25,10 +24,10 @@ export function buildCynefin(
 }
 
 /** Every hidden gap is supplied explicitly, rather than inferred from the input. */
-type Gaps = Readonly<Record<string, (() => CheckedNode[]) | undefined>>
+type Gaps = Readonly<Record<string, (() => RecordedNode[]) | undefined>>
 
 /** One authored quoted string, retaining its escapes and empty interior. */
-export function string(kit: Kit, raw: string): CheckedNode {
+export function string(kit: Kit, raw: string): RecordedNode {
   return kit.node("StringLiteral", kit.token("String", raw).range, {
     raw,
     value: raw.slice(1, -1),
@@ -37,7 +36,7 @@ export function string(kit: Kit, raw: string): CheckedNode {
 }
 
 /** One item with independently supplied before/after ownership. */
-export function item(kit: Kit, raw: string, gaps: Gaps = {}): CheckedNode {
+export function item(kit: Kit, raw: string, gaps: Gaps = {}): RecordedNode {
   const textBefore = gaps.textBefore?.() ?? []
   const label = string(kit, raw)
   const textAfter = gaps.textAfter?.() ?? []
@@ -56,9 +55,9 @@ export function item(kit: Kit, raw: string, gaps: Gaps = {}): CheckedNode {
 export function domain(
   kit: Kit,
   name: string,
-  items: readonly (() => CheckedNode)[] = [],
-  afterName: () => CheckedNode[] = () => [],
-): CheckedNode {
+  items: readonly (() => RecordedNode)[] = [],
+  afterName: () => RecordedNode[] = () => [],
+): RecordedNode {
   const keyword = kit.token("Keyword", name)
   const textAfterName = afterName()
   const members = items.map((make) => make())
@@ -80,7 +79,7 @@ export function transition(
   to: string,
   labelRaw: string | null = null,
   gaps: Gaps = {},
-): CheckedNode {
+): RecordedNode {
   const source = kit.token("Keyword", from)
   const textBeforeArrow = gaps.textBeforeArrow?.() ?? []
   const arrow = kit.node("CynefinArrow", kit.token("Punctuator", "-->").range, {

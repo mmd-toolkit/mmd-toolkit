@@ -111,12 +111,11 @@ package.
 
 - `packages/tests`, with the CLIs in `tools/`: pins mermaid.js, extracts its Db,
   defines the fixture format, and holds the conformance corpus and the tools
-  that generate and check it. It also checks the trees that the corpus records:
-  it builds the Db from a recorded tree and compares it with the Db of
-  mermaid.js, and it checks the invariants of the tree. Its work follows the
-  skill `tests`; adding a diagram type, writing the Db builder and the tree
-  checker, and updating mermaid.js follow, with it, the skills
-  `tests-diagram-type`, `tests-tree-checks`, and `tests-mermaid-update`.
+  that generate and check it. It builds the Db from a recorded tree and compares
+  it with the Db of mermaid.js. The package's work follows the skill `tests`;
+  adding a diagram type, writing the Db builder, and updating mermaid.js follow,
+  with it, the skills `tests-diagram-type`, `tests-db-from-tree`, and
+  `tests-mermaid-update`.
 - `packages/spec`: defines the syntax and the shape of the abstract syntax tree
   (node types, fields, values), and whatever decides whether an input is
   accepted. It is the source of the definition; implementations follow it. Its
@@ -136,8 +135,11 @@ package.
   is to be writable in another language from the specification, these documents,
   and the corpus, so the tests of the parser compare its results with what the
   fixtures record and run neither mermaid.js nor generated inputs. Its work
-  follows the skill `parser`; a requested review of its performance follows the
-  skill `parser-performance-review`.
+  follows the skill `parser`; AI agents check the trees it records against the
+  specification with the checklist and procedure of the skill
+  `ast-json-validity`, also when the tree, token, or position documents change,
+  and people are not asked to follow it; a requested review of its performance
+  follows the skill `parser-performance-review`.
 - `packages/prettier-plugin-mmd`: the formatter, with one printer for each
   diagram type, following formatting choices that are decided explicitly, item
   by item. Skill `prettier-plugin`.
@@ -167,8 +169,8 @@ same change.
 | Fixture format and loader                        | tests           | spec, parser, prettier-plugin, textmate-grammar |
 | Function that extracts mermaid's Db              | tests           | parser, prettier-plugin                         |
 | Fixture CLIs (`tools/fixtures.ts`)               | tests           | spec, parser                                    |
-| Db summaries and the checks of recorded trees    | tests           | parser                                          |
-| AST definition (`docs/ast.md`, `docs/ast/*.md`)  | spec            | parser, prettier-plugin, eslint-plugin          |
+| Db summaries                                     | tests           | parser                                          |
+| AST definition (`docs/ast.md`, `docs/ast/*.md`)  | spec            | tests, parser, prettier-plugin, eslint-plugin   |
 | Tokens and positions (`docs/tokens.md`, …)       | parser          | tests, prettier-plugin, eslint-plugin           |
 | Types of the tree (`src/ast.ts`, `src/ast/*.ts`) | ast             | parser, prettier-plugin, eslint-plugin          |
 | The parser API (`parse()`, errors, traversal)    | parser          | prettier-plugin, eslint-plugin, mmdfmt          |

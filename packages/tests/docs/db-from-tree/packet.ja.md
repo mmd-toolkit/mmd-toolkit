@@ -158,7 +158,7 @@ packet 専用の specified reading は作りません。
 [fixture: packet/div-selected-integer-interior]
 
 parser の記録は既定の設定を使います。
-記録した木がサイト設定の比較読みでは拒否になる場合も、木の条件を検査し、
+記録した木がサイト設定の比較読みでは拒否になる場合は、
 その拒否の読みとは Db を比べません。
 parser のテストが外部で保持するサイトの幅を適用して受理を検査します。
 

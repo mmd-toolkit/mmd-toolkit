@@ -60,7 +60,8 @@ fixture は tests の SKILL で直す。
   木が定まるまで、木に依存するコードを書かない。
 - `@mmd-toolkit/tests` に、
   図種のコーパス（`packages/tests/fixtures/<図種>/`）と Db の要約がある。
-- `checkTree` は木の条件（欄・範囲・トークン）を確かめ、
+- AI エージェントは、変更した記録の木を、
+  スキル [ast-json-validity](../ast-json-validity/SKILL.ja.md) で読む。
   受理は parser の木・エラーの結果と、
   `@mmd-toolkit/tests` の `fixtureAccepts` を比べて確かめる。
 - 宣言した差異の印の字句の形は、受理とは別に、

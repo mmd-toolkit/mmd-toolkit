@@ -53,7 +53,10 @@ eventmodeling/common-whitespace] [fixture:
 eventmodeling/lex-common-block-whitespace-only] [fixture:
 eventmodeling/gram-description-block-empty-after-removal] [fixture:
 eventmodeling/lex-inline-empty] [fixture:
-eventmodeling/gram-common-leading-directive-both-sides]
+eventmodeling/gram-common-leading-directive-both-sides] [fixture:
+eventmodeling/lex-common-title-separator-then-directive] [fixture:
+eventmodeling/lex-common-title-directive-then-separator] [fixture:
+eventmodeling/lex-common-title-spaces-around-directive]
 
 Native YAML/directive forms are whole RawText items without their consumed
 closing LF. Shared directives and selected semicolons cut RawText and String

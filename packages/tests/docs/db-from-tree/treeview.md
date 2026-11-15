@@ -53,10 +53,10 @@ Japanese version: [treeview.ja.md](./treeview.ja.md)
 
 3. Read roots from Diagram.body and recursively project each TreeviewNode's
    children in source order. Files and directories can both own children. Do not
-   read indent or reconstruct parents: the parser builds the nesting and
-   checkTree independently checks it. Keep duplicate names, empty names, every
-   root and empty children lists. The node's textBefore and the other owned
-   decorations contribute no Db node.
+   read indent or reconstruct parents: read the nesting defined by
+   [TreeviewNode](../../../spec/docs/ast/treeview.md#treeviewnode). Keep
+   duplicate names, empty names, every root and empty children lists. The node's
+   textBefore and the other owned decorations contribute no Db node.
 
    [fixture: treeview/db-indent-pop] [fixture: treeview/db-file-parent]
    [fixture: treeview/db-first-indented] [fixture: treeview/db-duplicate-names]

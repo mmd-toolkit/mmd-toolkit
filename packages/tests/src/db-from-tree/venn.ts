@@ -111,8 +111,8 @@ export function vennDbOf(
         break
       }
       case "VennTextStatement": {
-        // checkTree validates the marker's mode and indentation. A valid null
-        // target list always refers to the latest subset, never explicit text.
+        // ast/venn.md, VennTextStatement: null targets mean implicit text;
+        // diagrams/venn.md, Text and implicit text mode, ties it to the latest subset.
         const targets = statement.targets?.map(nameOf).sort() ?? current
         if (targets === undefined)
           throw new TreeError("venn", statement.type, "no current subset")

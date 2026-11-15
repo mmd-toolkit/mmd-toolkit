@@ -6,7 +6,7 @@ export interface IshikawaLiteral extends TreeNode {
   readonly value: string
 }
 
-/** The Db reads the tree's nesting; indentation is checked by checkTree. */
+/** ast/ishikawa.md, IshikawaNode: children follow diagrams/ishikawa.md, Indentation and parents. */
 export interface IshikawaNode extends TreeNode {
   readonly type: "IshikawaNode"
   readonly text: IshikawaLiteral

@@ -1,15 +1,15 @@
 import { describe, expect, it } from "vitest"
 import { dbFromTree } from "../src/db-from-tree/index.ts"
 import type { DbTreeRoot } from "../src/db-from-tree/index.ts"
-import type { CheckedNode, CheckedRoot } from "../src/check-tree/types.ts"
+import type { TreeRoot } from "../src/db-from-tree/tree.ts"
 import {
   cssSupportsColor,
   embeddedValuesOf,
   loadFixture,
 } from "../src/index.ts"
-import type { Kit } from "./check-tree-built.ts"
-import { setField } from "./check-tree-recorded.ts"
-import { frontmatterOf } from "./check-tree-trees.ts"
+import type { Kit, RecordedNode } from "./tree-built.ts"
+import { setField } from "./fixture-trees.ts"
+import { frontmatterOf } from "./tree-pieces.ts"
 import { common } from "./statement-tree-built.ts"
 import {
   arrow,
@@ -30,12 +30,12 @@ import {
 /** Fixed hand-built trees are compared with the fixture's actual or specified Db. */
 interface Case {
   readonly name: string
-  readonly make: (kit: Kit) => CheckedNode[]
-  readonly prepare?: (source: string, tree: CheckedRoot) => void
+  readonly make: (kit: Kit) => RecordedNode[]
+  readonly prepare?: (source: string, tree: TreeRoot) => void
 }
 
 /** Mark real frontmatter for the shared converted-text path; it is not a native form. */
-function realFrontmatter(source: string, tree: CheckedRoot): void {
+function realFrontmatter(source: string, tree: TreeRoot): void {
   const end = source.indexOf("\n---", 4) + 4
   const contentEnd = end - 4
   const start = 4
