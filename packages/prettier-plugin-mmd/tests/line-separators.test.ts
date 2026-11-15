@@ -6314,6 +6314,16 @@ describe("style semicolons", () => {
       "erDiagram\n  A\n  style A fill:red\u2028 %% c\nx\n",
     ],
     [
+      "ER a style that no semicolon ends keeps the U+2028 that whitespace and a directive follow on its line",
+      "erDiagram\nA\nstyle A fill:red\u2028 %%{init: {}}%%\n%% c\n",
+      "erDiagram\n  A\n  style A fill:red\u2028 %%{init: {}}%%\n  %% c\n",
+    ],
+    [
+      "ER a style that no semicolon ends keeps the U+2028 that a directive touches",
+      "erDiagram\nA\nstyle A fill:red\u2028%%{init: {}}%%\nx\n",
+      "erDiagram\n  A\n  style A fill:red\u2028%%{init: {}}%%\n  x\n",
+    ],
+    [
       "ER a style that no semicolon ends keeps the U+2028 that a no-break space follows",
       "erDiagram\nA\nstyle A fill:red\u2028\u00a0\nx\n",
       "erDiagram\n  A\n  style A fill:red\u2028\u00a0\n  x\n",
