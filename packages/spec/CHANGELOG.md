@@ -1,5 +1,44 @@
 # @mmd-toolkit/spec
 
+## 0.5.0
+
+### Minor Changes
+
+- [#95](https://github.com/mmd-toolkit/mmd-toolkit/pull/95) [`c037353`](https://github.com/mmd-toolkit/mmd-toolkit/commit/c037353e31afdc2b8069071afdf00dae3e5281be) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Make a name written without quotes after `style` or `classDef` in
+  `requirementDiagram` an `Identifier` node instead of a `RequirementIdentifier`,
+  in `names` of `RequirementStyleStatement` and `cssClasses` of
+  `RequirementClassDefStatement`, as every other name whose position allows no
+  whitespace is (`ast/requirement.md`). An implementation that builds a
+  `RequirementIdentifier` there builds an `Identifier` instead.
+
+### Patch Changes
+
+- [#99](https://github.com/mmd-toolkit/mmd-toolkit/pull/99) [`85b6deb`](https://github.com/mmd-toolkit/mmd-toolkit/commit/85b6deb47de8d161a3873a6f106162de833a7f37) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Move every fixture citation out of the sentence it backs, in every document of
+  the specification. An implementation finds the fixtures of a sentence in the
+  paragraph of citations that follows it, or, for a table row, in its `Fixtures`
+  cell.
+
+- [#105](https://github.com/mmd-toolkit/mmd-toolkit/pull/105) [`44a4c19`](https://github.com/mmd-toolkit/mmd-toolkit/commit/44a4c199bd72909b25285ddc3b370ae1d9a51f41) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Put each sentence that only points to another section, such as `See …` or
+  `…を参照。`, back right after the sentence it belongs to and before that
+  sentence's fixture citations, where moving the citations out of the sentences
+  had left it after them.
+
+- [#88](https://github.com/mmd-toolkit/mmd-toolkit/pull/88) [`32f4196`](https://github.com/mmd-toolkit/mmd-toolkit/commit/32f419663a7c1304b17560520d6bbdaf715a3de1) Thanks [@ota-meshi](https://github.com/ota-meshi)! - State which names and texts go on across a comment line after a U+2028 or U+2029
+  in them, as the comment lines of `common.md` define, and which end at the U+2028
+  instead, in the lexical sections (units, contexts, strings, and comments) of
+  every diagram type except `agentflow-beta`, `eventmodeling`, `ishikawa-beta`,
+  and `sankey`, in the classes of `quadrantChart`, and in the nodes `ErIdentifier`
+  and `QuadrantIdentifier` of the tree: in `stateDiagram`, `X: A`, U+2028, a line
+  `%% c`, and a line `B` give X the description `A`, U+2028, `B`, while in
+  `block-beta` the id `a` ends at the U+2028. An implementation reads the values
+  that go on as one value with the comment line left out, also in the `name` of
+  those two nodes.
+
+- [#95](https://github.com/mmd-toolkit/mmd-toolkit/pull/95) [`c037353`](https://github.com/mmd-toolkit/mmd-toolkit/commit/c037353e31afdc2b8069071afdf00dae3e5281be) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Make the shared sentences of `ast.md` and `common.md` on where an unclosed
+  directive ends, which quote closes a string, and which node types are named
+  `IgnoredText` or `IgnoredStatement` agree with the detailed rules they sum up.
+  An implementation that follows the detailed rules needs no change.
+
 ## 0.4.0
 
 ### Minor Changes
