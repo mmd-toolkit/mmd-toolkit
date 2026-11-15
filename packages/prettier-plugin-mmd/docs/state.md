@@ -1471,17 +1471,20 @@ statement follows the color rule above.
 colors/style-read-as-description-kept-v1]
 
 A hexadecimal color immediately followed by a `;` that the line rule does not
-ignore forms an entity and keeps its case, including when that `;` precedes a
-directive and a later `;` that the line rule ignores, with no padding, a space,
-or a form feed after the later `;`: `classDef k fill:#F9F;%%{init: {}}%%;` keeps
-`#F9F`.
+ignore forms an entity and keeps its case: `classDef k fill: #F9F;` and
+`classDef k fill:#F9F;;` keep `#F9F`. The `;` may stand before a directive and a
+later `;` that the line rule ignores, whether nothing, a space, or a form feed
+follows that later `;`: `classDef k fill:#F9F;%%{init: {}}%%;` keeps `#F9F`.
 
 [fixture: colors/kept-entity-classdef] [fixture:
-colors/kept-entity-classdef-multiple] [fixture: colors/kept-entity-style] [test:
-state classDef entity before a directive and an ignored semicolon with a form
-feed] [test: state classDef final entity before a directive and an ignored
-semicolon with a form feed] [test: state style entity before a directive and an
-ignored semicolon with a form feed]
+colors/kept-entity-classdef-multiple] [fixture: colors/kept-entity-style]
+[fixture: colors/kept-entity-classdef-spaced] [fixture:
+colors/kept-entity-classdef-doubled-semicolons] [fixture:
+colors/kept-entity-style-doubled-semicolons] [test: state classDef entity before
+a directive and an ignored semicolon with a form feed] [test: state classDef
+final entity before a directive and an ignored semicolon with a form feed]
+[test: state style entity before a directive and an ignored semicolon with a
+form feed]
 
 Input
 ([colors/colors-in-lower-case-input.mmd](../tests/fixtures/state/colors/colors-in-lower-case-input.mmd)):

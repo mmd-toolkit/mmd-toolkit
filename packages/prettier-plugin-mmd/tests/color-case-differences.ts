@@ -131,9 +131,14 @@ function colorRanges(text: string): [number, number][] {
  * color is the written one in lower case; any other text is returned as it is.
  */
 function withWrittenColors(written: string, printed: string): string {
-  // A removed end is not part of the color word. A gap before a directive
-  // can print CSS whitespace in its place; a kept non-CSS character still
-  // belongs to the word (docs/compatibility.md, Colors that are drawn the same).
+  // A removed end is not part of the color word. Where the printed text ends
+  // in CSS whitespace only (a gap before a directive can print a space in place
+  // of a character), the written text loses all the whitespace at its end that
+  // `trimEnd` takes away: a vertical tab, a no-break space, U+3000, a byte order
+  // mark, and U+2028 or U+2029, as well as spaces, tabs, and form feeds, since
+  // the printer removed or replaced it. A kept character of another kind at the
+  // end of the printed text still belongs to the word (docs/compatibility.md,
+  // Colors that are drawn the same).
   const printedTail = printed.slice(printed.trimEnd().length)
   const writtenText = [...printedTail].every(isSpace)
     ? written.trimEnd()

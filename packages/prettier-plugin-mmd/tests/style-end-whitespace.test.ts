@@ -222,37 +222,37 @@ describe("the whitespace at the end of a style", () => {
 /** Fixed failures where a directive follows the end of a style. */
 const directiveStyleEnds: readonly (readonly [string, string, string])[] = [
   [
-    "r0007957|ends|agent-style|hex-upper|vt|semi-dir",
+    "agentflow style: a vertical tab before a semicolon and a directive becomes a space, and the color is in lower case",
     "agentflow-beta TB\nflow F\nA --> B\nend\nstyle A fill:#F9F\u000b;%%{init: {}}%%\n",
     "agentflow-beta TB\n  flow F\n    A --> B\n  end\n  style A fill:#f9f ;%%{init: {}}%%\n",
   ],
   [
-    "r0007962|ends|agent-style|hex-upper|vt|dir-nb",
+    "agentflow style: a vertical tab before a directive that a no-break space follows",
     "agentflow-beta TB\nflow F\nA --> B\nend\nstyle A fill:#F9F\u000b%%{init: {}}%%\u00a0\n",
     "agentflow-beta TB\n  flow F\n    A --> B\n  end\n  style A fill: #f9f %%{init: {}}%%\n",
   ],
   [
-    "block-before-directive-vt",
+    "block style: a vertical tab before a semicolon and a directive",
     "block-beta\nA B\nstyle A fill:#F9F\u000b;%%{init: {}}%%\n",
     "block-beta\n  A B\n  style A fill:#f9f ;%%{init: {}}%%\n",
   ],
   [
-    "state-before-directive-nbsp",
+    "state classDef: a no-break space before a directive",
     "stateDiagram-v2\nA --> B\nclassDef k fill:#F9F\u00a0%%{init: {}}%%\n",
     "stateDiagram-v2\n  A --> B\n  classDef k fill: #f9f %%{init: {}}%%\n",
   ],
   [
-    "r0008005|ends|agent-style|hex-upper|bom|dir",
+    "agentflow style: a byte order mark before a directive",
     "agentflow-beta TB\nflow F\nA --> B\nend\nstyle A fill:#F9F\ufeff%%{init: {}}%%\n",
     "agentflow-beta TB\n  flow F\n    A --> B\n  end\n  style A fill: #f9f %%{init: {}}%%\n",
   ],
   [
-    "r0008020|ends|agent-style|hex-upper|ls|dir",
+    "agentflow style: U+2028 before a directive",
     "agentflow-beta TB\nflow F\nA --> B\nend\nstyle A fill:#F9F\u2028%%{init: {}}%%\n",
     "agentflow-beta TB\n  flow F\n    A --> B\n  end\n  style A fill: #f9f %%{init: {}}%%\n",
   ],
   [
-    "r0008035|ends|agent-style|hex-upper|ps|dir",
+    "agentflow style: U+2029 before a directive",
     "agentflow-beta TB\nflow F\nA --> B\nend\nstyle A fill:#F9F\u2029%%{init: {}}%%\n",
     "agentflow-beta TB\n  flow F\n    A --> B\n  end\n  style A fill: #f9f %%{init: {}}%%\n",
   ],
