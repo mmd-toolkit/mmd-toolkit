@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest"
 import { nodesOf } from "../src/recorded-tree.ts"
-import type { RecordedNode } from "../src/recorded-tree.ts"
 import { dbFromTree } from "../src/db-from-tree/index.ts"
 import type { DbTreeRoot } from "../src/db-from-tree/index.ts"
 import {
@@ -9,7 +8,7 @@ import {
   loadFixture,
 } from "../src/index.ts"
 import type { EmbeddedValues } from "../src/mermaid.ts"
-import type { Kit } from "./tree-built.ts"
+import type { Kit, RecordedNode } from "./tree-built.ts"
 import { withBefore, withChildren } from "./nesting-built.ts"
 import { setField } from "./fixture-trees.ts"
 import { frontmatterOf, tokenOf } from "./tree-pieces.ts"

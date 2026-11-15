@@ -1,7 +1,6 @@
 import type { TokenKind } from "@mmd-toolkit/ast"
-import type { RecordedNode } from "../src/recorded-tree.ts"
 import { buildTree } from "./tree-built.ts"
-import type { Built, Kit } from "./tree-built.ts"
+import type { Built, Kit, RecordedNode } from "./tree-built.ts"
 import { hull } from "./statement-tree-built.ts"
 
 /** Every occurrence and lexical role is supplied by the fixed test, without a parser. */

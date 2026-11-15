@@ -6,8 +6,7 @@ import {
   afAccessibility,
   afString,
 } from "./agentflow-built.ts"
-import type { RecordedNode } from "../src/recorded-tree.ts"
-import type { Built, Kit } from "./tree-built.ts"
+import type { Built, Kit, RecordedNode } from "./tree-built.ts"
 import {
   afArrow,
   afContainer,

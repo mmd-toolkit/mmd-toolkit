@@ -1,9 +1,13 @@
-import type { RecordedNode } from "../src/recorded-tree.ts"
-import type { TreeRoot, TreeRange } from "../src/db-from-tree/tree.ts"
+import type { TreeNode, TreeRoot, TreeRange } from "../src/db-from-tree/tree.ts"
 import type { Comment, Directive, Token, TokenKind } from "@mmd-toolkit/ast"
 import { commentOf, directiveOf, locationOf, tokenOf } from "./tree-pieces.ts"
 
 // Trees made by hand from explicit source occurrences for the Db tests.
+
+/** A recorded node whose diagram-specific fields are read or built by name. */
+export interface RecordedNode extends TreeNode {
+  readonly [field: string]: unknown
+}
 
 /** What a test builds a tree with: the next token, a node, a directive, and a comment. */
 export interface Kit {

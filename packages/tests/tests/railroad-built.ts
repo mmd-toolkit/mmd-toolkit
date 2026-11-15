@@ -1,6 +1,5 @@
-import type { RecordedNode } from "../src/recorded-tree.ts"
 import { buildTree } from "./tree-built.ts"
-import type { Built, Kit } from "./tree-built.ts"
+import type { Built, Kit, RecordedNode } from "./tree-built.ts"
 import { hull } from "./statement-tree-built.ts"
 
 /** Explicit dialect headers, independently supplied by each fixed test. */

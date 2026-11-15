@@ -7,8 +7,7 @@ import {
   embeddedValuesOf,
   loadFixtures,
 } from "../src/index.ts"
-import type { Kit } from "./tree-built.ts"
-import type { RecordedNode } from "../src/recorded-tree.ts"
+import type { Kit, RecordedNode } from "./tree-built.ts"
 import { buildPacket, range, relative, single } from "./packet-built.ts"
 import { common } from "./statement-tree-built.ts"
 

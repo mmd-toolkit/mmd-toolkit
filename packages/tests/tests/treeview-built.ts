@@ -1,7 +1,6 @@
-import type { RecordedNode } from "../src/recorded-tree.ts"
 import type { TreeRange } from "../src/db-from-tree/tree.ts"
 import { buildTree } from "./tree-built.ts"
-import type { Built, Kit } from "./tree-built.ts"
+import type { Built, Kit, RecordedNode } from "./tree-built.ts"
 import { hull } from "./statement-tree-built.ts"
 
 /** Fixed source with explicitly authored nodes; this helper does not parse. */

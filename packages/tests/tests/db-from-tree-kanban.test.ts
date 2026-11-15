@@ -5,7 +5,7 @@ import type { TreeRange, TreeRoot } from "../src/db-from-tree/tree.ts"
 import { embeddedValuesOf, loadFixtures } from "../src/index.ts"
 import { cssSupportsColor } from "../src/normalizers/browser-stand-ins.ts"
 import { nodesOf } from "../src/recorded-tree.ts"
-import type { RecordedNode } from "../src/recorded-tree.ts"
+import type { RecordedNode } from "./tree-built.ts"
 import { locationOf } from "./tree-pieces.ts"
 
 /** An explicitly specified row, with written leaf values, never inferred from its expected Db. */

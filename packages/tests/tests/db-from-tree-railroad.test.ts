@@ -2,14 +2,13 @@
 import { describe, expect, it } from "vitest"
 import { dbFromTree } from "../src/db-from-tree/index.ts"
 import type { DbTreeRoot } from "../src/db-from-tree/index.ts"
-import type { RecordedNode } from "../src/recorded-tree.ts"
 import type { EmbeddedValues } from "../src/mermaid.ts"
 import {
   cssSupportsColor,
   embeddedValuesOf,
   loadFixture,
 } from "../src/index.ts"
-import type { Kit } from "./tree-built.ts"
+import type { Kit, RecordedNode } from "./tree-built.ts"
 import {
   any,
   buildRailroad,

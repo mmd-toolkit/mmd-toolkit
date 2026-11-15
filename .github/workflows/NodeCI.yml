@@ -124,6 +124,7 @@ jobs:
       - uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Check for a Claude co-author
         id: claude
@@ -131,11 +132,18 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
-          trailers=$(git log --format='%(trailers:key=Co-Authored-By)' "$BASE_SHA..$HEAD_SHA")
-          if [[ "$trailers" == *Claude* ]]; then
+          trailers=$(git log --format='%(trailers:key=Co-Authored-By,valueonly)' "$BASE_SHA..$HEAD_SHA")
+          required=false
+          while IFS= read -r trailer; do
+            if [[ "$trailer" == "Claude "*"<noreply@anthropic.com>" ]]; then
+              required=true
+              break
+            fi
+          done <<< "$trailers"
+          if [[ "$required" == true ]]; then
             echo "required=true" >> "$GITHUB_OUTPUT"
           else
-            echo "No Co-Authored-By trailer contains Claude; no recorded-tree answers are required."
+            echo "No Claude Co-Authored-By trailer found; no recorded-tree answers are required."
           fi
       - uses: pnpm/action-setup@v6.1.1
         if: steps.claude.outputs.required == 'true'

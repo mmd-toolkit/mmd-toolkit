@@ -2,7 +2,6 @@ import { existsSync, readdirSync, readFileSync } from "node:fs"
 import path from "node:path"
 import { describe, expect, it } from "vitest"
 import { DATA_BLOCK_NODE_TYPES, nodesOf } from "../src/recorded-tree.ts"
-import type { RecordedNode } from "../src/recorded-tree.ts"
 import type { TreeRoot } from "../src/db-from-tree/tree.ts"
 import {
   SHAPE_CONTENT_TYPES,
@@ -12,6 +11,7 @@ import {
 import type { ShapeSource, ShapeToken } from "../src/fixture-shapes.ts"
 import type { DiagramType } from "../src/index.ts"
 import { getFixturesRoot, loadFixtures } from "../src/index.ts"
+import type { RecordedNode } from "./tree-built.ts"
 
 // docs/maintaining-fixtures.md, Choosing inputs by shape: two texts of one
 // shape differ only in what the author named, as far as the names are the same

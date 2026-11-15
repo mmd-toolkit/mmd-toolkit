@@ -1,7 +1,5 @@
-import type { RecordedNode } from "../src/recorded-tree.ts"
-import type { Kit } from "./tree-built.ts"
+import type { Built, Kit, RecordedNode } from "./tree-built.ts"
 import { buildTree } from "./tree-built.ts"
-import type { Built } from "./tree-built.ts"
 
 /** The range of the supplied authored components, without lexing or parsing. */
 export function hull(

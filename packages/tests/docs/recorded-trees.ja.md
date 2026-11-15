@@ -12,6 +12,10 @@ pnpm --filter @mmd-toolkit/tests run recorded-trees:check --base <ref> [--places
 
 ## 走らせ方
 
+CI の `recorded-trees` ジョブは、
+pull request の base と head の間の commit に Claude の `Co-Authored-By` trailer
+がある場合にだけ、コマンドを走らせます。
+
 - `--base <ref>` は必ず渡します。
   基点は `<ref>` と `HEAD` の merge base で、変更は、
   作業ツリーのうち基点と違うものすべてです。

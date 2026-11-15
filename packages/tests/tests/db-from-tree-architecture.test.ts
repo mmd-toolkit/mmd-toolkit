@@ -3,8 +3,7 @@ import { dbFromTree } from "../src/db-from-tree/index.ts"
 import type { DbTreeRoot } from "../src/db-from-tree/index.ts"
 import type { EmbeddedValues } from "../src/mermaid.ts"
 import { cssSupportsColor } from "../src/index.ts"
-import type { RecordedNode } from "../src/recorded-tree.ts"
-import type { Kit } from "./tree-built.ts"
+import type { Kit, RecordedNode } from "./tree-built.ts"
 import {
   buildArchitecture,
   declaration,

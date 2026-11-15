@@ -11,7 +11,7 @@ import type {
   TreeNode,
   TreeRoot,
 } from "../../packages/tests/src/db-from-tree/tree.ts"
-import { nodesOf } from "../../packages/tests/src/recorded-tree.ts"
+import { isNode, nodesOf } from "../../packages/tests/src/recorded-tree.ts"
 import { getFixturesRoot } from "../../packages/tests/src/index.ts"
 import type { FixtureSource } from "../../packages/tests/src/index.ts"
 import { citationsIn, withoutCitations } from "./fixture-citations.ts"
@@ -226,18 +226,6 @@ function contentKeysOf(
   )
 }
 
-/** Whether a record has the type and offsets needed to list its places. */
-function hasPlace(value: unknown): boolean {
-  return (
-    isRecord(value) &&
-    typeof value.type === "string" &&
-    Array.isArray(value.range) &&
-    value.range.length === 2 &&
-    typeof value.range[0] === "number" &&
-    typeof value.range[1] === "number"
-  )
-}
-
 /** Reads the fields needed to list a tree's items and places, if they can be read. */
 function readTree(root: string, fixture: string): TreeRoot | undefined {
   try {
@@ -246,10 +234,10 @@ function readTree(root: string, fixture: string): TreeRoot | undefined {
     )
     if (
       !isRecord(tree) ||
-      !hasPlace(tree) ||
-      !hasPlace(tree.body) ||
+      !isNode(tree) ||
+      !isNode(tree.body) ||
       !Array.isArray(tree.tokens) ||
-      !tree.tokens.every(hasPlace)
+      !tree.tokens.every(isNode)
     ) {
       return undefined
     }

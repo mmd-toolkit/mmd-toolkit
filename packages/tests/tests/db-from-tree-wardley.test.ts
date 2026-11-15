@@ -1,14 +1,13 @@
 import { describe, expect, it } from "vitest"
 import { dbFromTree } from "../src/db-from-tree/index.ts"
 import type { DbTreeRoot } from "../src/db-from-tree/index.ts"
-import type { RecordedNode } from "../src/recorded-tree.ts"
 import type { TreeRoot } from "../src/db-from-tree/tree.ts"
 import {
   cssSupportsColor,
   embeddedValuesOf,
   loadFixture,
 } from "../src/index.ts"
-import type { Kit } from "./tree-built.ts"
+import type { Kit, RecordedNode } from "./tree-built.ts"
 import { setField } from "./fixture-trees.ts"
 import { frontmatterOf } from "./tree-pieces.ts"
 import { common } from "./statement-tree-built.ts"

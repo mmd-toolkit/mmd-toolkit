@@ -1,5 +1,4 @@
-import type { RecordedNode } from "../src/recorded-tree.ts"
-import type { Kit } from "./tree-built.ts"
+import type { Kit, RecordedNode } from "./tree-built.ts"
 import { hull } from "./statement-tree-built.ts"
 
 /** A branch reference whose complete spelling is supplied, without a lexer. */

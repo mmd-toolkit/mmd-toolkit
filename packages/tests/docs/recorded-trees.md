@@ -12,6 +12,9 @@ pnpm --filter @mmd-toolkit/tests run recorded-trees:check --base <ref> [--places
 
 ## Running it
 
+The CI job `recorded-trees` runs the command on a pull request only when a
+commit between its base and head carries a `Co-Authored-By` trailer of Claude.
+
 - `--base <ref>` is required. The base is the merge base of `<ref>` and `HEAD`,
   and the change is everything of the working tree that differs from it: the
   commits after the base, what is not committed, and the files that git does not

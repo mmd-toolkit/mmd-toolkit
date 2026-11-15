@@ -7,8 +7,7 @@ import {
   embeddedValuesOf,
   loadFixture,
 } from "../src/index.ts"
-import type { Built, Kit } from "./tree-built.ts"
-import type { RecordedNode } from "../src/recorded-tree.ts"
+import type { Built, Kit, RecordedNode } from "./tree-built.ts"
 import { setField } from "./fixture-trees.ts"
 import { frontmatterOf } from "./tree-pieces.ts"
 import {

@@ -6,8 +6,7 @@ import {
   loadFixture,
   cssSupportsColor,
 } from "../src/index.ts"
-import type { RecordedNode } from "../src/recorded-tree.ts"
-import type { Kit } from "./tree-built.ts"
+import type { Kit, RecordedNode } from "./tree-built.ts"
 import { branch, checkout, commit, merge, option } from "./gitgraph-built.ts"
 import { buildGitgraph, common } from "./statement-tree-built.ts"
 import { setField } from "./fixture-trees.ts"
