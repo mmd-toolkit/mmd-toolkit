@@ -440,6 +440,22 @@ Db は各スタイルの空白を保つので変わりますが、描かれる�
 [fixture: treemap/styles/trailing-before-semicolon]
 [fixture: treemap/styles/escaped-comma-spaced]
 
+スタイルの末尾の改ページは、後ろに `;` がなくても、
+空白やタブと同じく除きますが、
+末尾の空白の中にノーブレークスペースや垂直タブなど、
+CSS が空白として読まない文字があるときは別です。
+その文字が最後のスタイルを終えるので、隣の改ページは残します。
+最後のその文字の後の空白とタブは、ほかのスタイルの末尾と同じく落とし、
+その前の空白とタブの連なりは空白 1 つで印字します。
+同じ行の `%%` コメントの前の空白、タブ、改ページの連続は、
+ほかの図種と同じく空白 1 つで印字します。
+[スタイルの末尾の空白](./compatibility.ja.md#スタイルの末尾の空白)
+を参照してください。
+
+[test: leaves out a form feed at the end of a style that CSS reads as whitespace]
+[test: keeps a form feed beside a character that CSS does not read as whitespace at the end of the classDef of a treemap]
+[test: prints a form feed before a comment as one space]
+
 バックスラッシュでエスケープされた `,` はスタイルの一部です。
 文字列の引用符と `%` のテキストは書かれた値の一部で、文字列、コメント、
 `url(` の括弧の中の連続は保ちます。
@@ -454,12 +470,21 @@ Db は各スタイルの空白を保つので変わりますが、描かれる�
 その `;` は mermaid.js の行の規則で無視されることがあり、
 その規則は `:` と後の `#` の間の空白を読むため、
 2 回目の整形でも同じテキストである必要があります。
+その行の末尾のディレクティブの後の空白、タブ、改ページは、
+ほかの行末の空白と同じく除きますが、
+スタイル末尾の空白の中のディレクティブの前か後に、
+CSS が空白として読まない文字があるときは別です。
+そのときはディレクティブの後の空白をすべて書かれたまま残します。
+スタイルの内側の空白は、書かれたまま残します。
 スタイルとクラス名を隔てる空白は、
 スタイルの一部ではありません（[スタイルの隙間](#style-gaps)を参照）。
 
 [fixture: treemap/styles/written] [fixture: treemap/styles/empty-entry-kept]
-[fixture: treemap/styles/directive-line-kept]
+[fixture: treemap/styles/directive-line-kept] [fixture:
+treemap/styles/directive-trailing-whitespace]
 [fixture: semicolons/protected-class-column]
+[test: leaves out the whitespace after a directive at the end of the classDef of a treemap]
+[test: keeps the whitespace after a directive at the end of the classDef of a treemap where a character that CSS does not read as whitespace is among it or before the directive]
 
 入力（エスケープ表記）:
 `"treemap\nclassDef zz color:red , fill:blue,stroke:rgb(1\\,2\\,3),;"`
@@ -513,6 +538,7 @@ mermaid.js は `;` がなくても同じ文として読むからです。
 `classDef zz color:#f00;` のように
 [mermaid.js の行の規則](../../spec/docs/common.ja.md#style-行と-classdef-行)
 が無視する最後の `;` も、同じく消します。
+同じ行にある別の `;` が下の規則で残るときは、この `;` も残ります。
 
 [fixture: semicolons/class-terminator-dropped]
 [fixture: semicolons/class-terminator-hash-dropped]
@@ -548,8 +574,11 @@ U+2028 か U+2029 を含む行は、`;` だけを消して書かれたまま残�
 
 行の規則が無視する `;` の後ろの空白、タブ、改ページは style に属するので、
 これも消します。
+ただし、別の `;` が残るために行が書かれたまま残るときは、
+行といっしょに残ります。
 
 [fixture: semicolons/class-terminator-hash-trailing-whitespace-dropped]
+[test: keeps the whitespace after the last `;` of a line that holds another `;` that stays]
 
 文がテキストの末尾で終わっていても同じです。
 
@@ -587,8 +616,10 @@ style のない `classDef` の `;` は、消すと次の行が style になり�
 [fixture: semicolons/class-terminator-entity-kept]
 
 別の `;` が隣にあるときも残します。
+間にディレクティブがあってもなくても同じです。
 
 [fixture: semicolons/class-terminator-beside-semicolon-kept]
+[fixture: semicolons/class-terminator-beside-semicolon-directive-kept]
 
 U+2028 か U+2029 の後にコメント行が続き、その後にある `;` も残します。
 その文字は行の規則の空白ではなく、コメント行は取り除かれるので、

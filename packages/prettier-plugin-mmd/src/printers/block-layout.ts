@@ -503,6 +503,7 @@ function addStyledStatementRules(
             ? ["color", "text-align"]
             : [],
         collapsesWordGaps: true,
+        joinsFormFeeds: true,
       },
     )
   }

@@ -3509,6 +3509,13 @@ printed as written (see
 
 [test: keeps whitespace other than a space and a tab at the end of a style]
 
+In flowchart and swimlane, a run of spaces, tabs, and form feeds between the
+last style and a `%%` comment on the same line is printed as one space, unless
+the line stays as written for another reason (see
+[Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style)).
+
+[test: prints a form feed before a comment as one space]
+
 The whitespace of a `linkStyle` after a `stroke:` is kept as well (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):
 `linkStyle default stroke: ` followed by `linkStyle 0 stroke:#f00` keeps the

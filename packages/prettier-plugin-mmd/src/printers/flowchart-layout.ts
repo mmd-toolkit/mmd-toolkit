@@ -319,6 +319,7 @@ export function layoutStatement(
           : null,
       escapesComma: statement.type === "FlowchartClassDefStatement",
       collapsesWordGaps: true,
+      joinsFormFeeds: true,
     })
   }
   if (statement.type !== "FlowchartAccDescrBlockStatement") return layout

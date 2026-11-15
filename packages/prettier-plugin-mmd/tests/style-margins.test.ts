@@ -15,6 +15,23 @@ interface DbPair {
 
 const restored: readonly DbPair[] = [
   {
+    name: "a form feed before a comment in a style of a flowchart",
+    before: { vertices: [{ id: "A", styles: ["fill:red\f %% c"] }] },
+    after: { vertices: [{ id: "A", styles: ["fill: red %% c"] }] },
+  },
+  {
+    name: "a form feed before a comment in a classDef of a treemap",
+    diagramType: "treemap",
+    before: { classDefs: [{ id: "c", styles: ["fill:red\f %% c"] }] },
+    after: { classDefs: [{ id: "c", styles: ["fill: red %% c"] }] },
+  },
+  {
+    name: "a form feed before a comment in a classDef of a state diagram",
+    diagramType: "stateDiagram",
+    before: { classDefs: [{ id: "c", styles: ["fill:red\f %% c"] }] },
+    after: { classDefs: [{ id: "c", styles: ["fill: red %% c"] }] },
+  },
+  {
     name: "a run between the words of a style of a treemap",
     diagramType: "treemap",
     before: {
@@ -213,6 +230,23 @@ const restored: readonly DbPair[] = [
 ]
 
 const kept: readonly DbPair[] = [
+  {
+    name: "a form feed before a comment in a style of a state diagram",
+    diagramType: "stateDiagram",
+    before: { states: [{ id: "A", styles: ["fill:red\f %% c"] }] },
+    after: { states: [{ id: "A", styles: ["fill: red %% c"] }] },
+  },
+  {
+    name: "a form feed before a comment in the styles of a class diagram",
+    diagramType: "classDiagram",
+    before: { classes: [{ id: "A", styles: ["fill:red\f %% c"] }] },
+    after: { classes: [{ id: "A", styles: ["fill: red %% c"] }] },
+  },
+  {
+    name: "a form feed between two words of a style of a flowchart",
+    before: { vertices: [{ id: "A", styles: ["font-family:a\fb"] }] },
+    after: { vertices: [{ id: "A", styles: ["font-family: a b"] }] },
+  },
   {
     name: "no whitespace before the colon of stroke in a link",
     before: { edges: [{ id: "L", style: ["stroke :#f00"] }] },

@@ -557,6 +557,14 @@ whitespace-between-tokens/style-comment-runs-kept] [fixture:
 whitespace-between-tokens/style-backslash-run-spaced] [fixture:
 whitespace-between-tokens/style-hex-escape-run-spaced]
 
+A run of spaces, tabs, and form feeds between the last style and a `%%` comment
+on the same line of a `classDef` is printed as one space, unless the line stays
+as written for another reason; the `style` keeps a form feed there (see
+[Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style)).
+
+[test: prints a form feed before a comment as one space] [test: keeps a form
+feed before a comment where a version that counts reads the text as words]
+
 mermaid.js reads the whitespace around the `,` as nothing in a state diagram,
 but keeps the whitespace around the `:` in the Db; the figure is the same (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).

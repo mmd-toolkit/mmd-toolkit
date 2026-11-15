@@ -404,6 +404,7 @@ export function layoutClassStatement(
         statement.type === "ClassStyleStatement" ? ["color", "text-align"] : [],
       labelStyleGaps: "none",
       collapsesWordGaps: true,
+      joinsFormFeeds: statement.type === "ClassStyleStatement",
     })
   }
   return {

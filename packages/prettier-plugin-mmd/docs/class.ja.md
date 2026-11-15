@@ -452,6 +452,16 @@ mermaid.js は余白と語の間の空白の連続を Db に残しますが、�
 [fixture: whitespace-between-tokens/style-url-runs-kept]
 [fixture: whitespace-between-tokens/style-comment-runs-kept]
 
+`style` の最後のスタイルと同じ行の `%%` コメントの間の空白、タブ、
+改ページの連続は、別の理由で行を書かれたまま残す場合を除き、
+空白 1 つで印字します。
+`classDef` は改ページを残します。
+[スタイルの末尾の空白](./compatibility.ja.md#スタイルの末尾の空白)
+を参照してください。
+
+[test: prints a form feed before a comment as one space]
+[test: keeps a form feed before a comment where a version that counts reads the text as words]
+
 `:` のない語だけのスタイルでも同じです。
 mermaid.js はこれらを独立したトークンとして読み、
 `style A bold ,italic` は `style A bold, italic` と印字し、

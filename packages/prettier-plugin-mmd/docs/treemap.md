@@ -429,6 +429,21 @@ checked by drawing the chart before and after.
 treemap/styles/trailing-before-semicolon] [fixture:
 treemap/styles/escaped-comma-spaced]
 
+A form feed at the end of the styles is dropped like a space or a tab, also
+without a `;` after it, except where a character that CSS does not read as
+whitespace (a no-break space or a vertical tab, for instance) is among the
+whitespace at the end. That character ends the last style, and the form feeds
+beside it stay: the spaces and tabs after the last such character are dropped as
+at the end of any style, and a run of them before it is one space. Before a `%%`
+comment on the same line, a run of spaces, tabs, and form feeds is printed as
+one space, as in the other diagram types (see
+[Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style)).
+
+[test: leaves out a form feed at the end of a style that CSS reads as
+whitespace] [test: keeps a form feed beside a character that CSS does not read
+as whitespace at the end of the classDef of a treemap] [test: prints a form feed
+before a comment as one space]
+
 A `,` that a backslash escapes is part of its style, the quotes of a string and
 percent text are part of the value as written, and the runs inside a string, a
 comment, and the parentheses of `url(` stay.
@@ -442,12 +457,21 @@ or after the last one, stays, since the number of styles is in the Db. A style
 that holds a `;`, or that has a comment or a directive on its line, stays too: a
 `;` there may be ignored by the line rule of mermaid.js, which reads the
 whitespace between a `:` and a later `#`, and a second formatting must find the
-same text. The whitespace that separates the style from the name of the class is
-not part of the style (see [Style gaps](#style-gaps)).
+same text. Spaces, tabs, and form feeds after a directive at the end of that
+line are dropped like the whitespace at the end of other lines, unless a
+character that CSS does not read as whitespace is in the whitespace at the end
+of the style, before or after the directive: all the whitespace after the
+directive then stays as written. The spacing inside the style stays as written.
+The whitespace that separates the style from the name of the class is not part
+of the style (see [Style gaps](#style-gaps)).
 
 [fixture: treemap/styles/written] [fixture: treemap/styles/empty-entry-kept]
 [fixture: treemap/styles/directive-line-kept] [fixture:
-semicolons/protected-class-column]
+treemap/styles/directive-trailing-whitespace] [fixture:
+semicolons/protected-class-column] [test: leaves out the whitespace after a
+directive at the end of the classDef of a treemap] [test: keeps the whitespace
+after a directive at the end of the classDef of a treemap where a character that
+CSS does not read as whitespace is among it or before the directive]
 
 Input (escaped):
 `"treemap\nclassDef zz color:red , fill:blue,stroke:rgb(1\\,2\\,3),;"`.
@@ -500,7 +524,8 @@ dropped: mermaid.js reads the statement the same without it. This holds for the
 `;` that is a unit of the statement, as in `classDef zz fill:red;`, and for the
 last `;` that the
 [line rule of mermaid.js](../../spec/docs/common.md#style-and-classdef-lines)
-ignores, as in `classDef zz color:#f00;`.
+ignores, as in `classDef zz color:#f00;`. Where another `;` of the line stays,
+as the paragraphs below describe, this one stays with it.
 
 [fixture: semicolons/class-terminator-dropped] [fixture:
 semicolons/class-terminator-hash-dropped]
@@ -532,9 +557,12 @@ treemap style terminators dropped and U+2028 and U+2029 kept before statements]
 removes]
 
 Spaces, tabs, and form feeds after a `;` that the line rule ignores belong to
-the style and are dropped too.
+the style and are dropped too, except in a line that stays as written because
+another `;` of it stays: they stay with the line.
 
-[fixture: semicolons/class-terminator-hash-trailing-whitespace-dropped]
+[fixture: semicolons/class-terminator-hash-trailing-whitespace-dropped] [test:
+keeps the whitespace after the last `;` of a line that holds another `;` that
+stays]
 
 The statement can end the text.
 
@@ -561,12 +589,13 @@ It stays too when a comment or a directive follows it on its line, when a
 directive stands right before the `;` that is a unit of the statement, with or
 without whitespace between, when it is part of the style, as in
 `classDef zz fill: #f00;`, where `#f00;` is an entity, and when another `;` is
-beside it.
+beside it, with a directive between the two or not.
 
 [fixture: semicolons/class-terminator-comment-kept] [fixture:
 semicolons/class-terminator-directive-kept] [fixture:
 semicolons/class-terminator-entity-kept] [fixture:
-semicolons/class-terminator-beside-semicolon-kept]
+semicolons/class-terminator-beside-semicolon-kept] [fixture:
+semicolons/class-terminator-beside-semicolon-directive-kept]
 
 It stays too after a U+2028 or U+2029 and then a comment line: the character is
 no whitespace of the line rule and the comment line is removed, so dropping the
