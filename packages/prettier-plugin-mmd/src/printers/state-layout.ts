@@ -675,6 +675,17 @@ function secondDescriptionEndEdits(
 }
 
 /**
+ * Where the text before a style's final semicolon ends, without the whitespace
+ * that the Db trims there. The printer uses this end when it drops that
+ * semicolon (docs/state.md, Styles; Semicolons).
+ */
+export function findStateStyleEnd(source: Source, style: StateLiteral): number {
+  let end = style.range[1] - 1
+  while (end > style.range[0] && isWhitespace(source.text[end - 1])) end--
+  return end
+}
+
+/**
  * The last style of a `classDef` or `style` statement, printed without the `;`
  * that ends it, and without the whitespace before it, where the printer drops
  * that `;` (see `isDroppedSemicolon`): the `;` is a character of the style.
@@ -693,12 +704,7 @@ function findDroppedSemicolonStretches(
   if (style === undefined || style === null) return []
   const semicolon = style.range[1] - 1
   if (!isDroppedSemicolon(source, semicolon)) return []
-  let printedEnd = semicolon
-  while (
-    printedEnd > style.range[0] &&
-    isWhitespace(source.text[printedEnd - 1])
-  )
-    printedEnd--
+  const printedEnd = findStateStyleEnd(source, style)
   return [
     {
       start: style.range[0],

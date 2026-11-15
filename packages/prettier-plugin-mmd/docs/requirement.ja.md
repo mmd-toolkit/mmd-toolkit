@@ -1753,6 +1753,12 @@ requirement 図の `style`、`classDef` 文のスタイルの色が対象です�
 [fixture: colors/colors-in-lower-case]
 [fixture: colors/words-that-are-not-colors-as-written]
 
+スタイルのテキストの空白は読まないので、色の後ろに空白を挟んで文字が続くと、
+色はより長い語の一部になり、書かれたまま残します。
+`style r fill:#F9F ab` は `style r fill: #F9F ab` と印字します。
+
+[fixture: colors/color-words-as-read]
+
 入力
 ([colors/colors-in-lower-case-input.mmd](../tests/fixtures/requirement/colors/colors-in-lower-case-input.mmd)):
 

@@ -17,6 +17,7 @@ import {
   holdsJoiningRegion,
   holdsKeptSemicolon,
   isDroppedSemicolon,
+  keepsTrailingLineSeparators,
   lineEndOf,
   lineStartOf,
   completeKeptLines,
@@ -912,8 +913,7 @@ export function printBlock<Statement extends Positioned>(
         : null
     const trailing =
       textTrailing ??
-      (written.trim() === "" &&
-      (written.includes("\u2028") || written.includes("\u2029"))
+      (keepsTrailingLineSeparators(source, position, stretch.end)
         ? printAsWritten(source, position, stretch.end)
         : printInlineGap(
             source,
