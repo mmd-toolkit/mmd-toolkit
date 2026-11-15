@@ -7,7 +7,7 @@ import {
   DATA_BLOCK_NODE_TYPES,
   NODE_TYPES_WITH_TOKENS_OF_ANY_KIND,
   VALUE_NODE_TYPES,
-  VALUE_NODE_TYPES_OF_SEVERAL_ITEMS,
+  TOKEN_KINDS_THAT_TOUCH_IN_VALUE_NODES,
 } from "./node-types.ts"
 import { KEYWORD_TEXTS } from "./keywords.ts"
 import { label, withArticle } from "./problems.ts"
@@ -266,13 +266,15 @@ export function checkTokensAreNotCut(
  * parser/docs/tokens/<diagram>.md, Tokens: a value node is made of the units
  * of one item of the grammar, and a token is a run of the units of one item and
  * one kind that follow one another with nothing between them. So two tokens of
- * a value node that are of one kind and touch (no whitespace, directive,
- * comment region, or ignored `;` between them) are one token that was split,
- * as `fill:` and `#f9f` are for the style `fill:#f9f`, and `spa` and `ced name`
- * for the name `spaced name`. `Punctuator` tokens are units of their own that
- * touch, as `{` and `}` do, so they are not asked; the value nodes of several
- * items ({@link VALUE_NODE_TYPES_OF_SEVERAL_ITEMS}) are not asked; and a token
- * that a directive or an ignored `;` cuts is a different case
+ * a value node, among the tokens that the node writes itself (those of a child
+ * node are asked with it), that are of one kind and touch (no whitespace,
+ * directive, comment region, or ignored `;` between them) are one token that
+ * was split, as `fill:` and `#f9f` are for the style `fill:#f9f`, and `spa` and
+ * `ced name` for the name `spaced name`. `Punctuator` tokens are units of their
+ * own that touch, as `{` and `}` do, so they are not asked here (see
+ * `checkPunctuatorsAreWhole()`); the kinds that touch in the value nodes of
+ * several items ({@link TOKEN_KINDS_THAT_TOUCH_IN_VALUE_NODES}) are not asked;
+ * and a token that a directive or an ignored `;` cuts is a different case
  * (`checkTokensAreNotCut()`).
  */
 export function checkValueTokensAreNotSplit(
@@ -280,19 +282,16 @@ export function checkValueTokensAreNotSplit(
   problems: Problems,
 ): void {
   for (const node of nodesOf(root)) {
-    if (
-      !VALUE_NODE_TYPES.has(node.type) ||
-      VALUE_NODE_TYPES_OF_SEVERAL_ITEMS.has(node.type)
-    ) {
-      continue
-    }
-    const tokens = nodeTokensIn(root, node.range)
+    if (!VALUE_NODE_TYPES.has(node.type)) continue
+    const touching = TOKEN_KINDS_THAT_TOUCH_IN_VALUE_NODES.get(node.type)
+    const tokens = ownTokensOf(root, node)
     for (const [index, token] of tokens.entries()) {
       const previous = tokens[index - 1]
       if (
         previous !== undefined &&
         previous.type === token.type &&
         token.type !== "Punctuator" &&
+        touching?.has(token.type) !== true &&
         previous.range[1] === token.range[0]
       ) {
         problems.report(

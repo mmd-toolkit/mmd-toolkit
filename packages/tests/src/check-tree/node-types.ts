@@ -90,20 +90,28 @@ export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
 ])
 
 /**
- * The value nodes whose tokens are the units of several items, so that two
- * tokens of one kind may touch in them: a node of text that mermaid.js does
- * not read, which has the tokens of its units (ast.md, Nodes; its type is named
- * `<Diagram>IgnoredText`, and no other type is named so); a SequenceBoxText,
- * whose colour candidate and remainder are two parts (parser/docs/tokens/
- * sequence.md, Tokens); and a VennLiteral, whose atoms of a bare style value
- * keep their own tokens even when adjacent (parser/docs/tokens/venn.md,
- * Tokens). Every other value node is one item, and a token is a run of the
- * units of one item and one kind.
+ * The value nodes that are made of the units of several items, with the kinds
+ * of token that may touch in them; in any other value node, two tokens of one
+ * kind that touch are one token that was split, since a token is a run of the
+ * units of one item and one kind (parser/docs/tokens/<diagram>.md, Tokens).
+ * A node of text that mermaid.js does not read (its type is named
+ * `<Diagram>IgnoredText`, and no other type is named so; ast.md, Nodes) has the
+ * tokens of its units: a `String` unit ends at its closing quote, so two
+ * strings touch (`""` and `""` in state, two empty backquotes in er), and every
+ * other unit of it is a whole item of its own, such as a direction text or a
+ * hidden form. A VennLiteral has the atoms of a bare style value, which keep
+ * their own tokens even when adjacent (parser/docs/tokens/venn.md, Tokens). A
+ * SequenceBoxText is not here: it holds its colour candidate and its remainder
+ * in child nodes, which are asked on their own.
  */
-export const VALUE_NODE_TYPES_OF_SEVERAL_ITEMS: ReadonlySet<string> = new Set([
-  ...[...VALUE_NODE_TYPES].filter((type) => type.endsWith("IgnoredText")),
-  "SequenceBoxText",
-  "VennLiteral",
+export const TOKEN_KINDS_THAT_TOUCH_IN_VALUE_NODES: ReadonlyMap<
+  string,
+  ReadonlySet<string>
+> = new Map([
+  ...[...VALUE_NODE_TYPES]
+    .filter((type) => type.endsWith("IgnoredText"))
+    .map((type): [string, ReadonlySet<string>] => [type, new Set(["String"])]),
+  ["VennLiteral", new Set(["Identifier", "Numeric", "RawText"])],
 ])
 
 /**

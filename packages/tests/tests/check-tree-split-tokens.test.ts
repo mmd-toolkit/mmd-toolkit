@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { checkTree } from "../src/check-tree/index.ts"
-import { VALUE_NODE_TYPES_OF_SEVERAL_ITEMS } from "../src/check-tree/node-types.ts"
+import { TOKEN_KINDS_THAT_TOUCH_IN_VALUE_NODES } from "../src/check-tree/node-types.ts"
 import { withArticle } from "../src/check-tree/problems.ts"
 import type { CheckedRoot, CheckedToken } from "../src/check-tree/types.ts"
 import { nodesOf } from "../src/check-tree/walk.ts"
@@ -189,6 +189,12 @@ const CASES: readonly SplitCase[] = [
   },
   {
     diagram: "sequence",
+    fixture: "db-box-colour-candidate-word-prefix",
+    node: "SequenceLiteral",
+    token: "-team",
+  },
+  {
+    diagram: "sequence",
     fixture: "db-links-null",
     node: "SequenceLiteral",
     token: "null",
@@ -236,6 +242,108 @@ const CASES: readonly SplitCase[] = [
     fixture: "db-data-everything",
     node: "XychartLiteral",
     token: "AT",
+  },
+  {
+    diagram: "agentflow",
+    fixture: "lex-name-click-exit-ls",
+    node: "AgentflowIgnoredText",
+    token: "click",
+  },
+  {
+    diagram: "architecture",
+    fixture: "hidden-yaml-cr",
+    node: "ArchitectureIgnoredText",
+    token: "---\rignored\r---",
+  },
+  {
+    diagram: "class",
+    fixture: "db-direction-then-comment",
+    node: "ClassIgnoredText",
+    token: "%% vertical",
+  },
+  {
+    diagram: "cynefin",
+    fixture: "hidden-yaml-cr",
+    node: "CynefinIgnoredText",
+    token: "---\nx\n---",
+  },
+  {
+    diagram: "er",
+    fixture: "lex-direction-line-as-role",
+    node: "ErIgnoredText",
+    token: "A ||--o{ B :",
+  },
+  {
+    diagram: "eventmodeling",
+    fixture: "hidden-yaml-cr",
+    node: "EventmodelingIgnoredText",
+    token: "---\rx\r---",
+  },
+  {
+    diagram: "flowchart",
+    fixture: "lex-direction-line-in-label",
+    node: "FlowchartIgnoredText",
+    token: "A[",
+  },
+  {
+    diagram: "gitgraph",
+    fixture: "lex-yaml-crlf",
+    node: "GitgraphIgnoredText",
+    token: "---\r\nx: y\r\n---",
+  },
+  {
+    diagram: "info",
+    fixture: "hidden-yaml-cr",
+    node: "InfoIgnoredText",
+    token: "---\rx: y\r---",
+  },
+  {
+    diagram: "journey",
+    fixture: "db-task-extra-colon",
+    node: "JourneyIgnoredText",
+    token: ": c, d",
+  },
+  {
+    diagram: "packet",
+    fixture: "hidden-yaml-cr",
+    node: "PacketIgnoredText",
+    token: "---\rx\r---",
+  },
+  {
+    diagram: "pie",
+    fixture: "review-yaml-hidden-cr",
+    node: "PieIgnoredText",
+    token: "---\rx: y\r---",
+  },
+  {
+    diagram: "radar",
+    fixture: "hidden-yaml-body",
+    node: "RadarIgnoredText",
+    token: "---\nnot: [valid\n---",
+  },
+  {
+    diagram: "railroad",
+    fixture: "ir-hidden-yaml-cr",
+    node: "RailroadIgnoredText",
+    token: "---\rx\r---",
+  },
+  {
+    diagram: "requirement",
+    fixture: "lex-direction-tb-first",
+    node: "RequirementIgnoredText",
+    token: "direction LR x",
+  },
+  {
+    diagram: "state",
+    fixture: "lex-alias-third-part",
+    node: "StateIgnoredText",
+    token: ": y",
+  },
+  {
+    diagram: "wardley",
+    fixture: "hidden-yaml-eof",
+    node: "WardleyIgnoredText",
+    token: "---\nx\n---",
   },
 ]
 
@@ -311,13 +419,18 @@ describe("checkTree: a token of a value node split into two touching tokens", ()
 
   it("does not ask the value nodes of several items, whose tokens may touch", () => {
     // A node of text that mermaid.js does not read has the tokens of its
-    // units, a sequence box text a colour candidate and a remainder, and a
-    // venn literal the atoms of a bare style value.
-    expect([...VALUE_NODE_TYPES_OF_SEVERAL_ITEMS]).toContain("SequenceBoxText")
-    expect([...VALUE_NODE_TYPES_OF_SEVERAL_ITEMS]).toContain("VennLiteral")
-    expect([...VALUE_NODE_TYPES_OF_SEVERAL_ITEMS]).toContain("StateIgnoredText")
+    // units, and a venn literal the atoms of a bare style value. A sequence
+    // box text holds its colour candidate and remainder in child nodes, whose
+    // tokens touch at the boundary of the two, and which are asked on their own.
+    expect(TOKEN_KINDS_THAT_TOUCH_IN_VALUE_NODES.get("VennLiteral")).toEqual(
+      new Set(["Identifier", "Numeric", "RawText"]),
+    )
+    expect(
+      TOKEN_KINDS_THAT_TOUCH_IN_VALUE_NODES.get("StateIgnoredText"),
+    ).toEqual(new Set(["String"]))
     for (const [diagram, fixture] of [
       ["sequence", "db-box-colour-candidate-word-prefix"],
+      ["sequence", "tokens-box-text-space-between-parts"],
       ["venn", "db-style-adjacent-numeric-tokens"],
       ["state", "gram-state-empty-strings-adjacent"],
     ] as const) {

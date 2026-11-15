@@ -232,12 +232,19 @@ const problems: TreeProblem[] = checkTree(text, tree)
     `src/check-tree/tokens.ts`), covers every diagram type, and the values would
     not find it, since the tokens joined are the same text. `Punctuator` tokens
     are not asked here, because their units touch (`{` and `}`); a split one
-    outside an arrow is found by the next item. The value nodes of several items
-    (`VALUE_NODE_TYPES_OF_SEVERAL_ITEMS` in `src/check-tree/node-types.ts`) are
-    not asked either: a node of text that mermaid.js does not read, which has
-    the tokens of its units, a sequence box text, whose colour candidate and
-    remainder are two parts, and a venn literal, whose atoms of a bare style
-    value keep their tokens even when adjacent.
+    outside an arrow is found by the next item. The kinds that may touch in some
+    value nodes (`TOKEN_KINDS_THAT_TOUCH_IN_VALUE_NODES` in
+    `src/check-tree/node-types.ts`) are not asked: in a node of text that
+    mermaid.js does not read, two `String` tokens, since a string ends at its
+    closing quote (`""` and `""` in state, two empty backquotes in er), and in a
+    venn literal, the atoms of a bare style value, which keep their tokens even
+    when adjacent. Every other unit of such a node is a whole item of its own (a
+    direction text, a hidden form, the rest of a task line), so two `RawText`
+    tokens that touch there are one token that was split. A node is asked for
+    the tokens that it writes itself, not for those of its child nodes, which
+    are asked with them: a sequence box text holds its colour candidate and its
+    remainder in child nodes, so the two tokens that touch at their boundary are
+    not a pair, and each part is asked on its own.
   - A `Keyword` token and a `Punctuator` token have a text that the table of
     their diagram lists, and one decision, made in one place
     (`fragmentsOfEntries()` in `src/check-tree/tokens.ts`), tells the fragments
