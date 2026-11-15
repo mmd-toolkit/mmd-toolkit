@@ -525,3 +525,42 @@ describe("checkTree: a Punctuator token split into two touching tokens", () => {
     })
   }
 })
+
+describe("checkTree: an atom of a venn style value split into two touching tokens", () => {
+  // diagrams/venn.md, rules 16, 17, and 20, and parser/docs/tokens/venn.md,
+  // Tokens: the atoms of a bare style value (a number, a hexadecimal colour, a
+  // name) keep their own tokens even when adjacent, and the lexer takes each as
+  // many characters as it can. The check of a venn diagram reads the atoms of
+  // the value from its written text, so a token that splits an atom is found
+  // there, not by the check of the value nodes.
+  const ATOMS = [
+    ["db-form-style-tokens", "one", 1],
+    ["db-form-style-tokens", "#abc", 2],
+    ["db-style-adjacent-numeric-tokens", "1.2", 1],
+    ["lex-style-adjacent-units", "red", 1],
+  ] as const
+
+  for (const [fixture, text, at] of ATOMS) {
+    it(`fails the atom ${text} of venn/${fixture} split after ${at} characters`, () => {
+      const { input, tree } = recordedTree("venn", fixture)
+      const token = tree.tokens.find(
+        (candidate) => candidate.value === text && candidate.range[0] > 12,
+      )
+      if (token === undefined) throw new Error("the tree has no such token")
+      const literal = nodesOf(tree).find(
+        (node) =>
+          node.type === "VennLiteral" &&
+          node.range[0] <= token.range[0] &&
+          token.range[1] <= node.range[1],
+      )
+      if (literal === undefined) throw new Error("the token is in no literal")
+      expect(
+        checkTree(input, withSplit(input, tree, token, at)),
+      ).toContainEqual({
+        where: `VennLiteral at ${literal.range[0]}-${literal.range[1]}`,
+        message:
+          "the bare style atom token kinds or boundaries do not match the written units",
+      })
+    })
+  }
+})
