@@ -22,10 +22,11 @@ import {
 import {
   endingSemicolonOf,
   isDroppedSemicolon,
+  keepsStyleEndCharacter,
   lineEndOf,
   lineStartOf,
 } from "./kept-lines.ts"
-import { printAsWrittenTrimmed } from "./lines.ts"
+import { printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
 import {
   findTokenStartingAt,
@@ -197,8 +198,15 @@ export function treemapLines(
 
 /**
  * Where a style ends before a dropped final semicolon, without the whitespace
- * before it; undefined when no semicolon is dropped (docs/treemap.md, Styles).
- * Both the printed stretch and the color word use this boundary.
+ * before it that CSS reads as whitespace; undefined when no semicolon is
+ * dropped, or when a character that CSS does not read as whitespace stands
+ * after a `;` that the line rule ignores: that character is a character of the
+ * last style, mermaid.js draws another figure without it, and the style and
+ * the `;` stay as written (docs/treemap.md, Styles and Semicolons;
+ * docs/compatibility.md, Whitespace at the end of a style). A character of
+ * that kind before the `;` stays with the style, and the spaces, tabs, and
+ * form feeds after it go with the `;`. Both the printed stretch and the color
+ * word use this boundary.
  */
 export function findTreemapStyleEnd(
   source: Source,
@@ -209,8 +217,17 @@ export function findTreemapStyleEnd(
   const semicolon = endingSemicolonOf(source, statement.range, style)
   if (semicolon === undefined || !isDroppedSemicolon(source, semicolon))
     return undefined
+  for (let after = semicolon + 1; after < statement.range[1]; after++) {
+    if (keepsStyleEndCharacter(statement.type, source.text[after]))
+      return undefined
+  }
   let end = semicolon
-  while (end > style.range[0] && isWhitespace(source.text[end - 1])) end--
+  while (
+    end > style.range[0] &&
+    isWhitespace(source.text[end - 1]) &&
+    !keepsStyleEndCharacter(statement.type, source.text[end - 1])
+  )
+    end--
   return end
 }
 
@@ -240,7 +257,7 @@ function findDroppedSemicolonStretches(
     {
       start,
       end,
-      doc: style[0].doc ?? printAsWrittenTrimmed(source, start, styleEnd),
+      doc: style[0].doc ?? printAsWritten(source, start, styleEnd),
     },
   ]
 }

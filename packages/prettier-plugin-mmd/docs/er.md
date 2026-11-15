@@ -2473,6 +2473,55 @@ erDiagram
   style A fill: #0f0, stroke: #00f
 ```
 
+mermaid.js removes a comment line with a pattern whose `^` also matches after a
+U+2028 or U+2029, and whose `\s*` takes the whitespace up to the line feed with
+the line (the specification's
+[The style context](../../spec/docs/diagrams/er.md#the-style-context)). So where
+a comment line follows the line of a `;` that ends a `classDef` or `style`
+statement and stands after a U+2028 or U+2029, the `;` is more than a
+terminator: without it the comment line, the line feed, and the whitespace
+between the character and the `;` go, and the style continues with the text
+after them. The `;` is handled as follows.
+
+- Where a statement follows the comment line, directive lines between them
+  included, and nothing but U+2028, U+2029, spaces, and tabs stands after the
+  first of those characters, the `;` is dropped together with them:
+  `style A fill:red`, U+2028, `;`, a line break, `%% c`, a line break, and `x`
+  is printed `style A fill: red`, a line break, `%% c`, a line break, and `x`,
+  as it is where whitespace stands before the U+2028 or U+2029.
+- Where other whitespace stands after the first character, a no-break space for
+  instance, the `;` stays, with the character and that whitespace.
+- Where the end of the text follows the comment line, nothing continues, and the
+  `;` stays only where whitespace that is no space or tab stands between the
+  character and the `;` on the line of the style. Otherwise it is dropped, as it
+  is where a statement or the end of the text follows without a comment line,
+  and the character stays as written.
+
+[fixture:
+semicolons-at-the-end-of-a-style-statement/comment-and-directive-controls]
+[test: ER direct comments] [test: ER two comment lines] [test: ER empty lines
+before comments] [test: ER directives on comment lines] [test: ER directives
+before comments on the same line] [test: ER indented comments] [test: ER
+indented following statements] [test: ER tab and whitespace-only line before a
+comment] [test: ER style comment at EOF control] [test: ER classDef comment at
+EOF control] [test: ER directive lines, direct statements, NBSP controls] [test:
+ER directive lines before a comment line] [test: ER directive line then a
+statement after a style terminator] [test: ER an unclosed directive line before
+a comment line] [test: flowchart directive line before a comment line] [test: ER
+whitespace before the character goes with the terminator] [test: ER whitespace
+other than spaces and tabs after the character keeps the terminator] [test: ER a
+comment line at the end of the text keeps the terminator after whitespace that
+is no space or tab] [test: ER a terminator after spaces and tabs is dropped
+before a comment line at the end of the text]
+
+mermaid.js keeps a U+2028 or U+2029 that directly follows the last style in the
+text of that style, and draws the same figure without it, so the Db of the
+printed text differs from the Db of the written text by that character at the
+end of the style. This is a difference of the kind of
+[Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style):
+the tests compare the styles of an ER diagram without those characters at their
+end.
+
 ### Multi-line statements
 
 A statement that mermaid.js reads over several lines is printed on one line

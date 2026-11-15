@@ -143,6 +143,30 @@ accDescr: d ; direction LR
   end
 ```
 
+A line that the printer keeps together, that starts at the first column with a
+description block that has a text, and that holds a direction statement after
+the block in the same segment of the line, is kept at its written indentation
+too. At the first column the lexer reads `accDescr {D;}` as the block and then
+the direction line; after an indentation the first whitespace character starts a
+direction line that takes the block with it, and the description is empty. The
+statements of the line are printed by their ordinary rules, and the line stays
+on one line. A block without a text reads the same empty description with and
+without the indentation, a line that the printer splits has its statements on
+lines of their own, and what a line feed, a U+2028, or a U+2029 ends is another
+segment, which the direction line does not reach back over: none of these is
+kept at its column by this rule.
+
+[fixture: indentation/joined-direction-column-zero] [fixture:
+indentation/joined-direction-end-of-text] [fixture:
+indentation/swimlane-joined-direction-end-of-text] [fixture:
+indentation/swimlane-joined-direction-column-zero] [fixture:
+indentation/joined-direction-separators-and-trivia] [fixture:
+indentation/unclosed-directive-before-direction] [fixture:
+indentation/split-direction-after-description] [fixture:
+indentation/empty-description-before-direction-control] [fixture:
+indentation/whitespace-description-before-direction-control] [test: flowchart
+direction after a U+2028 and a joined comment line]
+
 ### Statements one per line
 
 A `;` that the line rule ignores after a word does not separate it from the next
@@ -662,6 +686,35 @@ semicolons/ignored-semicolon-before-edge-id-spaced] [test: U+2028 after a `;`
 before an edge id] [test: U+2028 after a `;` and a space before an edge id]
 [test: U+2029 after a `;` before an edge id] [test: U+2029 after a `;` and a
 space before an edge id]
+
+A `;` that ends a `style` or `classDef` statement and stands after a U+2028 or
+U+2029 that follows the statement on its line, with only whitespace and line
+feeds between them, stays where a comment line follows its line, for the reason
+given for an ER diagram (see
+[Semicolons at the end of a style statement](./er.md#semicolons-at-the-end-of-a-style-statement)):
+the statement reads through line feeds, so without the `;` it goes on after the
+comment line and takes the statement after it. Directive lines between the `;`
+and the comment line are removed with it, so they change nothing. Where the end
+of the text follows the comment line, the `;` stays only where whitespace that
+is no space or tab stands between the character and the `;` before the next line
+feed. Where the end of the text or a statement follows without a comment line,
+the `;` is dropped. A character that stands after a line feed that follows the
+statement does not belong to it, since the line feed ended the statement, and
+the `;` is dropped there too.
+
+[fixture: semicolons/style-terminator-comment-and-directive-controls] [test:
+flowchart LF before terminator and comments] [test: swimlane LF before
+terminator and comments] [test: flowchart directive before a comment on the same
+line] [test: flowchart directive line before a comment line] [test: swimlane
+directive before a comment on the same line] [test: flowchart directive, direct,
+NBSP and bare percent controls] [test: flowchart comment at EOF control] [test:
+swimlane directive, direct and NBSP controls] [test: swimlane comment at EOF
+control] [test: flowchart a line feed before U+2028 ended the style, so the
+terminator is dropped] [test: swimlane a line feed before U+2028 ended the
+style, so the terminator is dropped] [test: flowchart whitespace after a line
+feed after U+2028 is no text of the style] [test: flowchart whitespace after
+U+2028 on the line of the style keeps the terminator before a comment line at
+the end of the text]
 
 ### Blank lines
 

@@ -29,6 +29,7 @@ import { stateDbForFormattingComparison } from "./state-note-margins.ts"
 import {
   styleDbForFormattingComparison,
   styleDiagramTypes,
+  styleEndSeparatorDbForFormattingComparison,
 } from "./style-margins.ts"
 import {
   textRunDbForFormattingComparison,
@@ -70,6 +71,8 @@ export function dbForFormattingComparison(
     compared = colorCaseDbForFormattingComparison(before, compared, type)
   if (styleDiagramTypes.has(type))
     compared = styleDbForFormattingComparison(before, compared, type)
+  if (type === "er")
+    compared = styleEndSeparatorDbForFormattingComparison(before, compared)
   if (clickCallDiagramTypes.has(type))
     compared = clickCallDbForFormattingComparison(before, compared)
   if (mindmapTextDiagramTypes.has(type))

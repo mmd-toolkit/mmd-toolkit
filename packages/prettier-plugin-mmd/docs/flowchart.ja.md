@@ -146,6 +146,30 @@ accDescr: d ; direction LR
   end
 ```
 
+印字器が 1 行に保つ行で、先頭の桁から中身のある説明ブロックで始まり、
+同じ区間のブロックの後ろに direction の文がある行は、字下げも元のまま保ちます。
+先頭の桁では、字句解析器は `accDescr {D;}` をブロックとして読み、
+そのあとを direction 行として読みます。
+字下げすると、最初の空白文字から始まる direction 行がブロックごと読み、
+説明は空になります。
+行の文は通常の規則で印字し、行は 1 行のままです。
+中身のないブロックは、字下げがあってもなくても同じ空の説明を読みます。
+印字器が分ける行は、文を別々の行に印字します。
+改行、U+2028、U+2029 で終わる部分は別の区間で、
+direction 行はそれより前へは届きません。
+どれもこの規則では桁を保ちません。
+
+[fixture: indentation/joined-direction-column-zero]
+[fixture: indentation/joined-direction-end-of-text]
+[fixture: indentation/swimlane-joined-direction-end-of-text]
+[fixture: indentation/swimlane-joined-direction-column-zero]
+[fixture: indentation/joined-direction-separators-and-trivia]
+[fixture: indentation/unclosed-directive-before-direction]
+[fixture: indentation/split-direction-after-description]
+[fixture: indentation/empty-description-before-direction-control]
+[fixture: indentation/whitespace-description-before-direction-control]
+[test: flowchart direction after a U+2028 and a joined comment line]
+
 ### 1 行に 1 文
 
 語の後で行の規則が無視する `;` は、その語と次に残る `;` を分けません。
@@ -666,6 +690,38 @@ flowchart LR
 [test: U+2028 after a `;` and a space before an edge id]
 [test: U+2029 after a `;` before an edge id]
 [test: U+2029 after a `;` and a space before an edge id]
+
+文と同じ行でその後ろにある U+2028 または U+2029 の後ろにある、
+`style` や `classDef` の文を終わらせる `;` は、間に空白と改行だけがあり、
+その `;` の行にコメント行が続くときは残します。
+理由は ER の図と同じです。
+詳しくは、
+[スタイル文の末尾のセミコロン](./er.ja.md#スタイル文の末尾のセミコロン)
+を参照してください。
+この文は改行をまたいで読むので、`;` がないと、コメント行の後ろまで続き、
+その後ろの文を取り込みます。
+`;` とコメント行の間の指令の行は、コメント行とともに取り除かれるので、
+何も変えません。
+コメント行の後ろがテキストの終わりのときは、文字と `;` の間に、
+空白でもタブでもない空白が次の改行の前にあるときだけ、`;` を残します。
+コメント行がなく、文やテキストの終わりが続くときは、`;` を削除します。
+文の後ろの改行の後にある文字は、改行が文を終えているので、文に属しません。
+そのときも `;` を削除します。
+
+[fixture: semicolons/style-terminator-comment-and-directive-controls]
+[test: flowchart LF before terminator and comments]
+[test: swimlane LF before terminator and comments]
+[test: flowchart directive before a comment on the same line]
+[test: flowchart directive line before a comment line]
+[test: swimlane directive before a comment on the same line]
+[test: flowchart directive, direct, NBSP and bare percent controls]
+[test: flowchart comment at EOF control]
+[test: swimlane directive, direct and NBSP controls]
+[test: swimlane comment at EOF control]
+[test: flowchart a line feed before U+2028 ended the style, so the terminator is dropped]
+[test: swimlane a line feed before U+2028 ended the style, so the terminator is dropped]
+[test: flowchart whitespace after a line feed after U+2028 is no text of the style]
+[test: flowchart whitespace after U+2028 on the line of the style keeps the terminator before a comment line at the end of the text]
 
 ### 空行
 

@@ -2442,6 +2442,63 @@ erDiagram
   style A fill: #0f0, stroke: #00f
 ```
 
+mermaid.js はコメント行を、
+`^` が U+2028 や U+2029 の後ろにも合うパターンで取り除きます。
+そのパターンの `\s*` は、行の終わりまでの空白も行といっしょに取ります。
+詳しくは、
+仕様の [style の文脈](../../spec/docs/diagrams/er.ja.md#style-の文脈)
+を参照してください。
+そのため、U+2028 または U+2029 の後ろにある、
+`classDef` や `style` の文を終わらせる `;` の行にコメント行が続くときは、
+`;` は終端以上のものです。
+`;` がないと、コメント行と改行と、文字から `;` までの空白がなくなり、
+スタイルがその後ろのテキストへ続くからです。
+`;` は次のように扱います。
+
+- コメント行の後ろに文が続き（間に指令の行があってもよい）、
+  最初のその文字の後ろに U+2028、U+2029、空白、タブしかないときは、
+  それらといっしょに `;` を削除します。
+  `style A fill:red`、U+2028、`;`、改行、`%% c`、改行、`x` は、
+  `style A fill: red`、改行、`%% c`、改行、`x` と印字します。
+  U+2028 や U+2029 の前に空白があるときも同じです。
+- 最初の文字の後ろにほかの空白（たとえばノーブレークスペース）があるときは、
+  `;` を、その文字とその空白とともに残します。
+- コメント行の後ろがテキストの終わりのときは、何も続かないので、
+  文字と `;` の間、スタイルの行に、
+  空白でもタブでもない空白があるときだけ `;` を残します。
+  そうでないときは、コメント行がなく文やテキストの終わりが続くときと同じく、
+  `;` を削除し、文字は書かれたまま残します。
+
+`;` とコメント行の間の指令の行は、コメント行とともに取り除かれるので、
+何も変えません。
+
+[fixture: semicolons-at-the-end-of-a-style-statement/comment-and-directive-controls]
+[test: ER direct comments] [test: ER two comment lines]
+[test: ER empty lines before comments] [test: ER directives on comment lines]
+[test: ER directives before comments on the same line]
+[test: ER indented comments] [test: ER indented following statements]
+[test: ER tab and whitespace-only line before a comment]
+[test: ER style comment at EOF control]
+[test: ER classDef comment at EOF control]
+[test: ER directive lines, direct statements, NBSP controls]
+[test: ER directive lines before a comment line]
+[test: ER directive line then a statement after a style terminator]
+[test: ER an unclosed directive line before a comment line]
+[test: flowchart directive line before a comment line]
+[test: ER whitespace before the character goes with the terminator]
+[test: ER whitespace other than spaces and tabs after the character keeps the terminator]
+[test: ER a comment line at the end of the text keeps the terminator after whitespace that is no space or tab]
+[test: ER a terminator after spaces and tabs is dropped before a comment line at the end of the text]
+
+mermaid.js は、最後のスタイルの直後にある U+2028 や U+2029 を、
+そのスタイルのテキストに残し、なくしても同じ図を描きます。
+そのため、印字したテキストの Db は、書かれたテキストの Db と、
+スタイルの末尾にあるその文字の分だけ違います。
+これは、
+[スタイルの末尾の空白](./compatibility.ja.md#スタイルの末尾の空白)
+の種類の違いです。
+テストは ER 図のスタイルを、末尾のその文字を除いて比べます。
+
 ### 複数行の文
 
 mermaid.js が複数行にわたって読む文は、改行が、
