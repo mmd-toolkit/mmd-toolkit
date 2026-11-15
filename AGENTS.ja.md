@@ -178,19 +178,19 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
 これらを変えると使う側のパッケージも変わる。
 同じ変更で直す。
 
-| インターフェース                                                   | 定義する側           | 使う側                                          |
-| ---------------------------------------------------------- | --------------- | -------------------------------------------- |
-| fixture の形式とローダー                                           | tests           | spec、parser、prettier-plugin、textmate-grammar |
-| mermaid の Db を取り出す関数                                       | tests           | parser、prettier-plugin                       |
-| fixture の CLI（`tools/fixtures.ts`）                         | tests           | spec、parser                                  |
-| Db の要約と、記録した木を確かめるスクリプト                                    | tests           | parser                                       |
-| AST の定義（`docs/ast.md`、`docs/ast/*.md`）                     | spec            | tests、parser、prettier-plugin、eslint-plugin   |
-| 木とトークンと位置の文書が指す `docs/common.md` と `docs/diagrams/*.md` の節 | spec            | tests                                        |
-| トークンと位置（`docs/tokens.md` ほか）                               | parser          | tests、prettier-plugin、eslint-plugin          |
-| 木の型（`src/ast.ts`、`src/ast/*.ts`）                           | ast             | parser、prettier-plugin、eslint-plugin         |
-| parser の API（`parse()`、エラー、木の走査）                           | parser          | prettier-plugin、eslint-plugin、mmdfmt         |
-| プラグインとその言語、構文エラー                                           | prettier-plugin | mmdfmt                                       |
-| 規則の文書の例の印字される形                                             | prettier-plugin | eslint-plugin                                |
+| インターフェース                                                             | 定義する側      | 使う側                                          |
+| ---------------------------------------------------------------------------- | --------------- | ----------------------------------------------- |
+| fixture の形式とローダー                                                     | tests           | spec、parser、prettier-plugin、textmate-grammar |
+| mermaid の Db を取り出す関数                                                 | tests           | parser、prettier-plugin                         |
+| fixture の CLI（`tools/fixtures.ts`）                                        | tests           | spec、parser                                    |
+| Db の要約と、記録した木を確かめるスクリプト                                  | tests           | parser                                          |
+| AST の定義（`docs/ast.md`、`docs/ast/*.md`）                                 | spec            | tests、parser、prettier-plugin、eslint-plugin   |
+| 木とトークンと位置の文書が指す `docs/common.md` と `docs/diagrams/*.md` の節 | spec            | tests                                           |
+| トークンと位置（`docs/tokens.md` ほか）                                      | parser          | tests、prettier-plugin、eslint-plugin           |
+| 木の型（`src/ast.ts`、`src/ast/*.ts`）                                       | ast             | parser、prettier-plugin、eslint-plugin          |
+| parser の API（`parse()`、エラー、木の走査）                                 | parser          | prettier-plugin、eslint-plugin、mmdfmt          |
+| プラグインとその言語、構文エラー                                             | prettier-plugin | mmdfmt                                          |
+| 規則の文書の例の印字される形                                                 | prettier-plugin | eslint-plugin                                   |
 
 ## 行動原則
 

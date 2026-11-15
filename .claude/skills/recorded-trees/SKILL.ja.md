@@ -73,8 +73,8 @@ pnpm --filter @mmd-toolkit/tests run recorded-trees:check --base HEAD --places
   [parser の 4.7 節](../parser/SKILL.ja.md#47-記録したパースの結果) の手順 4
   で記録し直す。
 - 仕様: 定義の欠けか誤りを、
-  [parser の 4.2 節](../parser/SKILL.ja.md#42-仕様を読み欠落を先に扱う) の手順
-  2 のとおり伝える。
+  [parser の 4.2 節](../parser/SKILL.ja.md#42-仕様を読み欠落を先に扱う) の手順 2
+  のとおり伝える。
 - 確かめの決まり、節点の分類、表: tests のパッケージに伝える。
   読めない答えは、9 節に従ってこの変更のファイルで直す。
 

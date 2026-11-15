@@ -45,8 +45,8 @@ pin した mermaid.js の更新を扱う。
 - fixture に対するテスト: 各 fixture のパースの結果が、
   その隣に記録したもの（`ast.json` か `parse-error.json`）と同じであること、
   受理・拒否が、既知の差異の印の求めるとおりに mermaid.js と合うこと。
-  変更が記録する木は、スキル
-  [recorded-trees](../recorded-trees/SKILL.ja.md) で確かめる。
+  変更が記録する木は、
+  スキル [recorded-trees](../recorded-trees/SKILL.ja.md) で確かめる。
   `@mmd-toolkit/tests` は、すべての記録した木から組んだ Db を、
   各 fixture が記録した Db と比べる（`db-from-tree.test.ts`）。
   テストは mermaid.js も生成した入力も動かさず、
@@ -430,8 +430,8 @@ fixture を図種と名前で引用して読み込む。
    `tests/fixtures.test.ts` だけにする（4.7 節）。
    `@mmd-toolkit/tests` は、すべての記録した木の Db を、
    記録した mermaid.js の Db と比べる（`db-from-tree.test.ts`）。
-   変更が記録する木の条件は、スキル
-   [recorded-trees](../recorded-trees/SKILL.ja.md) で確かめる。
+   変更が記録する木の条件は、
+   スキル [recorded-trees](../recorded-trees/SKILL.ja.md) で確かめる。
    parser のテストは、それを確かめるために fixture をパースし直さない。
    図種のテストは、確かめる場合の fixture を名前で指し、
    その木が持つものを述べる。
@@ -506,7 +506,8 @@ fixture のテストが、各結果をそのファイルと比べる。
 
    新しい木のそれぞれを、その fixture を引く文とも照らして読む。
    どの木も、それが足された場合について読まれるようにするためである。
-   引用は、スキル [recorded-trees](../recorded-trees/SKILL.ja.md)
+   引用は、
+   スキル [recorded-trees](../recorded-trees/SKILL.ja.md)
    のコマンドの出力「Sentences that cite each changed tree」から取る。
    コマンドは、仕様、パーサー、tests、整形ツールの文書を読む。
    整形ツールの文書では、`[corpus fixture: ...]` だけがコーパスを引く。
@@ -536,8 +537,7 @@ fixture のテストが、各結果をそのファイルと比べる。
    続けて、そのコマンドが出す項目について同スキルに従う。
    どの文にも引かれない木は、この段では比べず、答えにそう書く。
    fixture をこの変更が足したか、収集した入力かは、コマンドが示す。
-   この変更が足した、手で書いた fixture についてだけ、
-   欠けた文を仕様に伝える。
+   この変更が足した、手で書いた fixture についてだけ、欠けた文を仕様に伝える。
    スキル `conventions` の「テストの実行」は、
    収集した入力（`source.kind` が `mermaid`）を例外とする。
 
@@ -615,8 +615,8 @@ pnpm run format:check
 
 すべての fixture が fixture のテストを通り、
 記録した木がコーパスの記録した Db を与え、
-スキル `recorded-trees` のコマンドが終了コード 0 になり、
-木の問題がなく、出された項目と変更の木のすべてに答えがあり、
+スキル `recorded-trees` のコマンドが終了コード 0 になり、木の問題がなく、
+出された項目と変更の木のすべてに答えがあり、
 この変更が自分のもの以外の答えのファイルを足すことも直すこともなく、
 作業で書いたか変えた文のすべてが、その場合ごとに fixture を持てば（3 節）、
 作業は終わり。
