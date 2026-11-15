@@ -1531,10 +1531,27 @@ state 図の `style`、`classDef` 文のスタイルの色が対象です。
 と印字します）。
 mermaid.js 10.9.8 が、その行を、状態の説明として、
 テキストのまま描くからです（[トークンの間の空白](#トークンの間の空白)を参照）。
-`classDef` 文は、どの場合も小文字で印字します。
+`classDef` 文は、上記の色の規則に従います。
 
 [fixture: colors/style-read-as-description-kept]
 [fixture: colors/style-read-as-description-kept-v1]
+
+16 進数の色の直後に行規則が無視しない `;` がある場合、その色は実体なので、
+大文字と小文字を保ちます。
+`classDef k fill: #F9F;` と `classDef k fill:#F9F;;` は `#F9F` を保ちます。
+その `;` の後に指令と行規則が無視する別の `;` が続き、
+後の `;` の後に何もない場合も、スペースや改ページが続く場合も同じです。
+`classDef k fill:#F9F;%%{init: {}}%%;` は `#F9F` を保ちます。
+
+[fixture: colors/kept-entity-classdef]
+[fixture: colors/kept-entity-classdef-multiple]
+[fixture: colors/kept-entity-style]
+[fixture: colors/kept-entity-classdef-spaced]
+[fixture: colors/kept-entity-classdef-doubled-semicolons]
+[fixture: colors/kept-entity-style-doubled-semicolons]
+[test: state classDef entity before a directive and an ignored semicolon with a form feed]
+[test: state classDef final entity before a directive and an ignored semicolon with a form feed]
+[test: state style entity before a directive and an ignored semicolon with a form feed]
 
 入力
 ([colors/colors-in-lower-case-input.mmd](../tests/fixtures/state/colors/colors-in-lower-case-input.mmd)):

@@ -14,7 +14,12 @@ import {
 import { findTreemapStyleEnd } from "./treemap-layout.ts"
 import { findStateStyleEnd } from "./state-layout.ts"
 import type { Source } from "./source.ts"
-import { isSpaceOrTab, readDiagramText, textRead } from "./source.ts"
+import {
+  isSpaceOrTab,
+  isWhitespace,
+  readDiagramText,
+  textRead,
+} from "./source.ts"
 import { readsStyleAsDescription, styleColorEdits } from "./style-text.ts"
 
 /**
@@ -177,14 +182,17 @@ function styleColorEnd(
   isLast: boolean,
 ): number {
   const end = style.range[1]
-  // State removes the final semicolon before trimming its Db style. A
-  // classDef removes only the first one, so a later one still joins the word.
+  // State removes a literal semicolon before trimming its Db style. An
+  // entity's semicolon stays part of the color word; whitespace before the
+  // semicolon or the line rule prevents it from ending an entity.
   if (
     isLast &&
     (statement.type === "StateClassDefStatement" ||
       statement.type === "StateStyleStatement") &&
     style.type === "StateLiteral" &&
     source.text[end - 1] === ";" &&
+    (source.ignoredSemicolons.has(end - 1) ||
+      isWhitespace(source.text[end - 2])) &&
     (statement.type === "StateStyleStatement" ||
       !textRead(source, style.range[0], end - 1).includes(";"))
   )

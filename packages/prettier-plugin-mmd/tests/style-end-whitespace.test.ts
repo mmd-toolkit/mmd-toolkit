@@ -13,6 +13,8 @@
  */
 import { describe, expect, it } from "vitest"
 import { formatMermaid } from "./helpers.ts"
+import { dbForFormattingComparison } from "./db-comparison.ts"
+import { dbOfText, defaultEmbedded } from "./db-reading.ts"
 
 /** The whitespace characters other than a space and a tab, with their names. */
 const unusualWhitespace: readonly (readonly [string, string])[] = [
@@ -526,5 +528,85 @@ describe("the whitespace at the end of a style", () => {
     expect(
       await formatMermaid('treemap\nclassDef aa font-family:Arial\\ \n"A"\n'),
     ).toBe('treemap\n  classDef aa font-family: Arial\\ \n  "A"\n')
+  })
+})
+
+/** Fixed failures where a directive follows the end of a style. */
+const directiveStyleEnds: readonly (readonly [string, string, string])[] = [
+  [
+    "agentflow style: a vertical tab before a semicolon and a directive becomes a space, and the color is in lower case",
+    "agentflow-beta TB\nflow F\nA --> B\nend\nstyle A fill:#F9F\u000b;%%{init: {}}%%\n",
+    "agentflow-beta TB\n  flow F\n    A --> B\n  end\n  style A fill:#f9f ;%%{init: {}}%%\n",
+  ],
+  [
+    "agentflow style: a vertical tab before a directive that a no-break space follows",
+    "agentflow-beta TB\nflow F\nA --> B\nend\nstyle A fill:#F9F\u000b%%{init: {}}%%\u00a0\n",
+    "agentflow-beta TB\n  flow F\n    A --> B\n  end\n  style A fill: #f9f %%{init: {}}%%\n",
+  ],
+  [
+    "block style: a vertical tab before a semicolon and a directive",
+    "block-beta\nA B\nstyle A fill:#F9F\u000b;%%{init: {}}%%\n",
+    "block-beta\n  A B\n  style A fill:#f9f ;%%{init: {}}%%\n",
+  ],
+  [
+    "state classDef: a no-break space before a directive",
+    "stateDiagram-v2\nA --> B\nclassDef k fill:#F9F\u00a0%%{init: {}}%%\n",
+    "stateDiagram-v2\n  A --> B\n  classDef k fill: #f9f %%{init: {}}%%\n",
+  ],
+  [
+    "agentflow style: a byte order mark before a directive",
+    "agentflow-beta TB\nflow F\nA --> B\nend\nstyle A fill:#F9F\ufeff%%{init: {}}%%\n",
+    "agentflow-beta TB\n  flow F\n    A --> B\n  end\n  style A fill: #f9f %%{init: {}}%%\n",
+  ],
+  [
+    "agentflow style: U+2028 before a directive",
+    "agentflow-beta TB\nflow F\nA --> B\nend\nstyle A fill:#F9F\u2028%%{init: {}}%%\n",
+    "agentflow-beta TB\n  flow F\n    A --> B\n  end\n  style A fill: #f9f %%{init: {}}%%\n",
+  ],
+  [
+    "agentflow style: U+2029 before a directive",
+    "agentflow-beta TB\nflow F\nA --> B\nend\nstyle A fill:#F9F\u2029%%{init: {}}%%\n",
+    "agentflow-beta TB\n  flow F\n    A --> B\n  end\n  style A fill: #f9f %%{init: {}}%%\n",
+  ],
+  [
+    "state classDef entity before a directive and an ignored semicolon with a form feed",
+    "stateDiagram-v2\nA --> B\nclass A k\nclassDef k fill:#F9F;%%{init: {}}%%;\f\n",
+    "stateDiagram-v2\n  A --> B\n  class A k\n  classDef k fill:#F9F;%%{init: {}}%%;\f\n",
+  ],
+  [
+    "state classDef final entity before a directive and an ignored semicolon with a form feed",
+    "stateDiagram-v2\nA --> B\nclass A k\nclassDef k fill:red,stroke:#ABC;%%{init: {}}%%;\f\n",
+    "stateDiagram-v2\n  A --> B\n  class A k\n  classDef k fill:red,stroke:#ABC;%%{init: {}}%%;\f\n",
+  ],
+  [
+    "state style entity before a directive and an ignored semicolon with a form feed",
+    "stateDiagram-v2\nA --> B\nstyle A fill:red,stroke:#ABC;%%{init: {}}%%;\f\n",
+    "stateDiagram-v2\n  A --> B\n  style A fill:red,stroke:#ABC;%%{init: {}}%%;\f\n",
+  ],
+]
+
+describe("style ends before directives", () => {
+  it.each(directiveStyleEnds)("%s", async (_name, input, output) => {
+    const formatted = await formatMermaid(input)
+    expect(formatted).toBe(output)
+    expect(await formatMermaid(formatted)).toBe(formatted)
+    const embedded = defaultEmbedded()
+    const before = dbOfText(input, embedded)
+    const after = dbOfText(formatted, embedded)
+    expect(dbForFormattingComparison(before, after, input, formatted)).toEqual(
+      before,
+    )
+  })
+
+  it("does not restore a changed color before a kept non-CSS character", () => {
+    const input = "flowchart LR\nA\nstyle A fill:#ABC,stroke:#F9F\u00a0 \n"
+    const output =
+      "flowchart LR\n  A\n  style A fill: #abc,stroke: #f9f\u00a0 \n"
+    const embedded = defaultEmbedded()
+    const before = dbOfText(input, embedded)
+    const after = dbOfText(output, embedded)
+    expect(dbForFormattingComparison(before, after, input, output)).not.toEqual(
+      before,
+    )
   })
 })
