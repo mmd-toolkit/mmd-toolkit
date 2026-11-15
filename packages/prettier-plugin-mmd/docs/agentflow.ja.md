@@ -244,6 +244,17 @@ mermaid.js が名前を trim するので Db は同じであり、
 上に書いたとおり書かれたまま残します。
 名前の末尾では、U+2028 と U+2029 は空白やタブではなく名前の文字なので、
 その後の空白は落とし、前の空白は残します。
+ディレクティブを含む名前は、末尾まで書かれたまま残しますが、
+行の規則が無視する `;` が末尾にあるときは、その前後の空白とともに落とします。
+ディレクティブのない名前と同じです。
+`accDescr {style:#x} flow F #%%{init: {}}%%;` の後に空白が 2 つ続くときは、
+`accDescr: style:#x` と `flow F #%%{init: {}}%%` に印字します。
+`;` の後に空白がないときと同じです。
+末尾のディレクティブも、その空白がないときと同じ形で並べ、その前の空白は、
+ほかの名前の末尾と同じく落とします。
+`flow F%% style:#x %%{init: {}}%%;` の後に空白が 2 つ続くときは、
+`flow F%% style:#x%%{init: {}}%%` に印字します。
+`;` の後がタブのときと、`;` の前に空白があるときも同じです。
 
 [test: agentflow: U+2028 and spaces at the end of a flow name]
 [test: agentflow: U+2029 and spaces at the end of a connector name]
@@ -251,6 +262,54 @@ mermaid.js が名前を trim するので Db は同じであり、
 [fixture: containers/end-name-not-greedy]
 [fixture: names-and-headings/heading-word-gap-before-semicolon]
 [fixture: names-and-headings/name-directive-trailing-kept]
+[fixture: names-and-headings/heading-with-directive-ignored-semicolon-after-whitespace-dropped]
+[fixture: names-and-headings/heading-with-directive-after-hash-ignored-semicolon-after-whitespace-dropped]
+[fixture: names-and-headings/heading-with-comment-and-directive-ignored-semicolon-after-whitespace-dropped]
+[fixture: names-and-headings/heading-with-comment-and-directive-ignored-semicolon-after-tab-dropped]
+[fixture: names-and-headings/heading-with-comment-and-directive-ignored-semicolon-after-space-dropped]
+[fixture: names-and-headings/heading-with-comment-and-directive-short-ignored-semicolon-after-whitespace-dropped]
+[fixture: names-and-headings/heading-with-comment-and-directive-two-directives-ignored-semicolon-after-whitespace-dropped]
+[fixture: names-and-headings/heading-with-comment-and-directive-touching-directives-ignored-semicolon-after-whitespace-dropped]
+[fixture: names-and-headings/heading-with-comment-and-directive-directive-before-ignored-semicolon-after-whitespace-dropped]
+[fixture: names-and-headings/heading-with-comment-and-directive-connector-ignored-semicolon-after-whitespace-dropped]
+
+書かれたまま残す行の `;` の前では、空白を除くとエンティティになる場合、
+名前の末尾の空白を保ちます。
+`flow F%% style:#x ;;` は `;;` の前の空白を保ち、
+セミコロンの後ろに空白がある場合も同じです。
+名前の後のディレクティブは、結果を変えません。
+mermaid.js がテキストを読む前に取り除くからです。
+`flow F%% style:#x %%{init: {}}%%;;` はディレクティブの前の空白を保ちます。
+空白を除くと、mermaid.js がそのテキストを拒否します。
+ディレクティブが互いに接して複数あるとき、セミコロンが 3 つのとき、
+connector の見出しのときも同じです。
+ディレクティブの後に空白があるときは、
+空白があってもなくてもエンティティができず、
+ディレクティブの前の空白は書かれたまま残します。
+`flow F%% style:#x %%{init: {}}%% %%{a}%%;;` と
+`flow F%% style:#x %%{init: {}}%% ;;` は変わらず、
+`accDescr {style:#x} flow F %%{init: {}}%% %%{a}%%;;` も同じです。
+
+[fixture: names-and-headings/heading-entity-gap-before-kept-semicolons]
+[fixture: names-and-headings/heading-entity-gap-before-kept-semicolons-trailing]
+[fixture: names-and-headings/heading-entity-gap-before-directive-and-kept-semicolons]
+[fixture: names-and-headings/heading-entity-gap-before-directive-and-kept-semicolons-trailing]
+[fixture: names-and-headings/heading-entity-gap-before-directive-and-three-semicolons]
+[fixture: names-and-headings/heading-entity-gap-before-touching-directives-and-kept-semicolons]
+[fixture: names-and-headings/heading-entity-gap-digits-before-directive-and-kept-semicolons]
+[fixture: names-and-headings/heading-entity-gap-short-before-directive-and-kept-semicolons]
+[fixture: names-and-headings/heading-entity-gap-connector-before-directive-and-kept-semicolons]
+[fixture: names-and-headings/heading-entity-gap-before-two-directives-and-kept-semicolons]
+[fixture: names-and-headings/heading-entity-gap-before-directive-and-space-and-kept-semicolons]
+[fixture: names-and-headings/heading-nonentity-gap-before-two-directives-and-kept-semicolons]
+
+空白を除いてもエンティティにならない場合は、通常どおり末尾の空白を除きます。
+`accDescr {style:#x} flow F ;;` の `flow F ;;` は、`flow F;;` と印字します。
+`accDescr {style:#x} flow F %%{init: {}}%%;;` は `flow F%%{init: {}}%%;;`
+と印字します。
+
+[fixture: names-and-headings/heading-nonentity-gap-before-kept-semicolons]
+[fixture: names-and-headings/heading-nonentity-gap-before-directive-and-kept-semicolons]
 
 `flow`、`connector`、`global` の後ろの空白は、
 空白やタブがいくつ書かれていても空白 1 つにします。
@@ -934,6 +993,7 @@ agentflow-beta TB
 独立したコメントを近隣の文に揃え、著者の全文と末尾空白を保ちます。
 
 [fixture: comments/comments-align] [fixture: comments/comment-trailing]
+[fixture: comments/comment-line-ending-ignored-semicolon-trailing-whitespace-kept]
 
 害のない末尾コメント前の隙間は空白1つにします。
 agentflowではセミコロンや説明の閉じ記号の後も実コメントです。
@@ -1084,6 +1144,16 @@ Mermaidは順に試す方向の選択肢と、その選択肢内の最後の出�
 [fixture: direction/split-direction-after-description]
 [fixture: direction/unclosed-directive-before-direction]
 [test: agentflow direction after a U+2029 and a comment line]
+
+無視される `;` が別の `;` と隣り合い、行を書かれたまま残す場合も同じです。
+`accDescr {style:#x} direction LR;;` は、`flow` の中でも、先頭の桁に残します。
+字下げすると、mermaid.js が空の説明を読むからです。
+`;` がない場合や 1 つだけの場合は、これまでどおり、
+説明と方向を別の行に移します。
+
+[fixture: direction/verbatim-direction-description]
+[fixture: direction/verbatim-direction-description-in-flow]
+[fixture: direction/style-description-direction-split]
 
 入力（エスケープ表記）: `"agentflow-beta TB\nflow F\ndirection TD\nA\nend"`。
 

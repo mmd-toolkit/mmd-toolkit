@@ -977,6 +977,8 @@ comments/comment-line-at-the-end] [fixture:
 comments/comment-line-before-the-header] [fixture: comments/comment-line-only]
 [fixture: comments/comment-mark-in-an-accessibility-text] [fixture:
 comments/comment-marks-and-empty-lines] [fixture: comments/bare-percent-comment]
+[fixture:
+comments/comment-line-ending-ignored-semicolon-trailing-whitespace-kept]
 
 A comment after a statement stays on the line of the statement, with one space
 before it where whitespace was written, and touching where it was not. The Db is

@@ -231,14 +231,87 @@ spaces is printed `flow F`, and so is `flow F ;` followed by a line, where the
 directive or a comment, a name of several parts, and a name of whitespace only
 are kept as written, as above. At the end of the name, U+2028 and U+2029 are
 characters of the name and no spaces or tabs: the spaces after one go, and the
-spaces before it stay.
+spaces before it stay. A name that holds a directive stays as written up to its
+end, but a `;` that the line rule ignores at its end, with the whitespace around
+it, goes with it, as it does from a name without a directive:
+`accDescr {style:#x} flow F #%%{init: {}}%%;` followed by two spaces is printed
+`accDescr: style:#x` and `flow F #%%{init: {}}%%`, as it is without the
+whitespace after the `;`. The directives at its end then stand as they do
+without that whitespace: the whitespace before them is dropped, as at the end of
+any name, so `flow F%% style:#x %%{init: {}}%%;` followed by two spaces is
+printed `flow F%% style:#x%%{init: {}}%%`, and so is the same text with a tab,
+or a space before the `;`, after the `;`.
 
 [test: agentflow: U+2028 and spaces at the end of a flow name] [test: agentflow:
 U+2029 and spaces at the end of a connector name] [fixture:
 trailing-whitespace/trailing-name-dropped] [fixture:
 containers/end-name-not-greedy] [fixture:
 names-and-headings/heading-word-gap-before-semicolon] [fixture:
-names-and-headings/name-directive-trailing-kept]
+names-and-headings/name-directive-trailing-kept] [fixture:
+names-and-headings/heading-with-directive-ignored-semicolon-after-whitespace-dropped]
+[fixture:
+names-and-headings/heading-with-directive-after-hash-ignored-semicolon-after-whitespace-dropped]
+[fixture:
+names-and-headings/heading-with-comment-and-directive-ignored-semicolon-after-whitespace-dropped]
+[fixture:
+names-and-headings/heading-with-comment-and-directive-ignored-semicolon-after-tab-dropped]
+[fixture:
+names-and-headings/heading-with-comment-and-directive-ignored-semicolon-after-space-dropped]
+[fixture:
+names-and-headings/heading-with-comment-and-directive-short-ignored-semicolon-after-whitespace-dropped]
+[fixture:
+names-and-headings/heading-with-comment-and-directive-two-directives-ignored-semicolon-after-whitespace-dropped]
+[fixture:
+names-and-headings/heading-with-comment-and-directive-touching-directives-ignored-semicolon-after-whitespace-dropped]
+[fixture:
+names-and-headings/heading-with-comment-and-directive-directive-before-ignored-semicolon-after-whitespace-dropped]
+[fixture:
+names-and-headings/heading-with-comment-and-directive-connector-ignored-semicolon-after-whitespace-dropped]
+
+Before a `;` that stays on a line printed as written, the end of a name keeps
+its whitespace where removing it would form an entity: `flow F%% style:#x ;;`
+keeps the space before `;;`, also where spaces follow the semicolons. A
+directive after the name changes nothing, since mermaid.js removes it before it
+reads the text: `flow F%% style:#x %%{init: {}}%%;;` keeps the space before the
+directive, and without it the text is rejected by mermaid.js, whether one
+directive, directives that touch each other, or three semicolons stand there,
+and in a connector heading as well. Where whitespace follows the directive, no
+entity forms with or without the space before it, and that space stays as
+written: `flow F%% style:#x %%{init: {}}%% %%{a}%%;;` and
+`flow F%% style:#x %%{init: {}}%% ;;` are unchanged, as is
+`accDescr {style:#x} flow F %%{init: {}}%% %%{a}%%;;`.
+
+[fixture: names-and-headings/heading-entity-gap-before-kept-semicolons]
+[fixture: names-and-headings/heading-entity-gap-before-kept-semicolons-trailing]
+[fixture:
+names-and-headings/heading-entity-gap-before-directive-and-kept-semicolons]
+[fixture:
+names-and-headings/heading-entity-gap-before-directive-and-kept-semicolons-trailing]
+[fixture:
+names-and-headings/heading-entity-gap-before-directive-and-three-semicolons]
+[fixture:
+names-and-headings/heading-entity-gap-before-touching-directives-and-kept-semicolons]
+[fixture:
+names-and-headings/heading-entity-gap-digits-before-directive-and-kept-semicolons]
+[fixture:
+names-and-headings/heading-entity-gap-short-before-directive-and-kept-semicolons]
+[fixture:
+names-and-headings/heading-entity-gap-connector-before-directive-and-kept-semicolons]
+
+[fixture:
+names-and-headings/heading-entity-gap-before-two-directives-and-kept-semicolons]
+[fixture:
+names-and-headings/heading-entity-gap-before-directive-and-space-and-kept-semicolons]
+[fixture:
+names-and-headings/heading-nonentity-gap-before-two-directives-and-kept-semicolons]
+
+Where removing the whitespace forms no entity, the usual trimming still applies:
+`accDescr {style:#x} flow F ;;` is printed with `flow F;;`, and
+`accDescr {style:#x} flow F %%{init: {}}%%;;` with `flow F%%{init: {}}%%;;`.
+
+[fixture: names-and-headings/heading-nonentity-gap-before-kept-semicolons]
+[fixture:
+names-and-headings/heading-nonentity-gap-before-directive-and-kept-semicolons]
 
 The whitespace after the word `flow`, `connector`, or `global` is one space,
 however many spaces or tabs were written: the word takes one whitespace
@@ -893,6 +966,8 @@ comments with neighbouring statements and retain the author's complete text,
 including trailing spaces.
 
 [fixture: comments/comments-align] [fixture: comments/comment-trailing]
+[fixture:
+comments/comment-line-ending-ignored-semicolon-trailing-whitespace-kept]
 
 A harmless trailing-comment gap becomes one space. Agentflow recognizes real
 comments after semicolons and description closers; ordinary separator semicolons
@@ -1042,6 +1117,16 @@ direction/joined-direction-end-of-text] [fixture:
 direction/split-direction-after-description] [fixture:
 direction/unclosed-directive-before-direction] [test: agentflow direction after
 a U+2029 and a comment line]
+
+This includes a line that stays as written because an ignored `;` stands next to
+another `;`: `accDescr {style:#x} direction LR;;` stays at the first column,
+also in a `flow`, since mermaid.js reads an empty description where it is
+indented. Without the `;`, or with only one, the description and the direction
+move to lines of their own, as before.
+
+[fixture: direction/verbatim-direction-description] [fixture:
+direction/verbatim-direction-description-in-flow] [fixture:
+direction/style-description-direction-split]
 
 Input (escaped): `"agentflow-beta TB\nflow F\ndirection TD\nA\nend"`.
 

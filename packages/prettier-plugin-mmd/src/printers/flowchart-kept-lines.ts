@@ -67,19 +67,20 @@ export function findFlowchartKeptLines(source: Source): KeptLines {
     ...findLinesAfterEmptyStyle(source, statements),
     ...findLinesOfSubgraphBlocks(source, statements),
   ])
+  const verbatim = new Set([
+    ...directionText,
+    ...findStyleLinesWithLineSeparators(source, statements),
+    ...findLinesEndedBySemicolon(source),
+    ...findLinesOfPercentStatements(source, statements),
+  ])
   const beforeDirection = findLinesBeforeDirectionStatement(
     source,
     statements,
-    joined,
+    { joined, verbatim },
   )
   const kept: KeptLines = {
     joined,
-    verbatim: new Set([
-      ...directionText,
-      ...findStyleLinesWithLineSeparators(source, statements),
-      ...findLinesEndedBySemicolon(source),
-      ...findLinesOfPercentStatements(source, statements),
-    ]),
+    verbatim,
     ownIndentation: new Set([...directionText, ...beforeDirection]),
   }
   keptLinesBySource.set(source, kept)

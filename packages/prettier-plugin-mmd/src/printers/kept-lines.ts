@@ -13,6 +13,7 @@ import {
   isCssWhitespace,
   isSpaceOrTab,
   isWhitespace,
+  isWordCharacter,
   previousRead,
   skipRemoved,
   textRead,
@@ -179,43 +180,276 @@ export function grammaticalSemicolonsOf(source: Source): ReadonlySet<number> {
 export function findLinesWithOwnSemicolons(
   source: Source,
 ): ReadonlySet<number> {
+  const lines = new Set<number>()
+  visitOwnSemicolons(
+    source,
+    [0, source.text.length],
+    (offset) => isLastOnItsLine(source, offset),
+    (offset) => lines.add(lineStartOf(source, offset)),
+  )
+  return lines
+}
+
+/**
+ * Whether the text from `start` to `end`, printed on a line of its own, holds a
+ * `;` of the kind that `findLinesWithOwnSemicolons` finds: a `;` that the line
+ * rule ignores counts only where something stands after it in the range.
+ * Where the whole line stays together because of such a `;` that lies after
+ * the range, the range alone keeps its statements together only if it holds
+ * one itself.
+ */
+export function holdsOwnSemicolonIn(
+  source: Source,
+  start: number,
+  end: number,
+): boolean {
+  let found = false
+  visitOwnSemicolons(
+    source,
+    [start, end],
+    (offset) =>
+      findTokensBetween(source, offset + 1, end).every(
+        (token) => source.text.slice(...token.range).trim() === "",
+      ) && findTriviaBetween(source, offset + 1, end).length === 0,
+    () => {
+      found = true
+    },
+  )
+  return found
+}
+
+/**
+ * Calls `visit` with the offset of every `;` of the kind that
+ * `findLinesWithOwnSemicolons` describes that lies in `range`. `isLast` says
+ * whether a `;` that the line rule ignores is the last one of its line.
+ */
+function visitOwnSemicolons(
+  source: Source,
+  range: Range,
+  isLast: (offset: number) => boolean,
+  visit: (offset: number) => void,
+): void {
   const { root, text } = source
   const rules = semicolonRulesOf(source)
-  const lines = new Set<number>()
 
-  /** Adds the lines of the `;` characters in a range. */
-  function addSemicolonsIn(range: Range): void {
-    for (let offset = range[0]; offset < range[1]; offset++) {
+  /** Whether the offset lies in the range. */
+  function inRange(offset: number): boolean {
+    return range[0] <= offset && offset < range[1]
+  }
+
+  /** Visits the `;` characters in a range. */
+  function visitSemicolonsIn(from: number, to: number): void {
+    for (
+      let offset = Math.max(from, range[0]);
+      offset < Math.min(to, range[1]);
+      offset++
+    ) {
       if (
         text[offset] === ";" &&
         !rules.grammatical.has(offset) &&
         !isDroppedSemicolon(source, offset)
       )
-        lines.add(lineStartOf(source, offset))
+        visit(offset)
     }
   }
 
-  for (const token of root.tokens) {
+  for (const token of findTokensBetween(source, range[0], range[1])) {
     if (token.value !== ";") {
-      addSemicolonsIn(token.range)
+      visitSemicolonsIn(token.range[0], token.range[1])
     } else if (
       !rules.grammatical.has(token.range[0]) &&
       ((rules.kind === "text" && !isDroppedSemicolon(source, token.range[0])) ||
         (source.ignoredSemicolons.has(token.range[0]) &&
-          (rules.kind === "required" ||
-            !isLastOnItsLine(source, token.range[0]))))
+          (rules.kind === "required" || !isLast(token.range[0]))))
     ) {
-      lines.add(lineStartOf(source, token.range[0]))
+      visit(token.range[0])
     }
   }
   for (const comment of root.comments) {
-    addSemicolonsIn(comment.range)
+    if (comment.range[1] <= range[0] || range[1] <= comment.range[0]) continue
+    visitSemicolonsIn(
+      comment.range[0],
+      ignoredSemicolonAtCommentEnd(source, comment.range) ?? comment.range[1],
+    )
   }
   for (const offset of source.ignoredSemicolons) {
-    if (rules.kind === "required" || !isLastOnItsLine(source, offset))
-      lines.add(lineStartOf(source, offset))
+    if (!inRange(offset)) continue
+    const comment = root.comments.find((item) => item.range[1] === offset)
+    if (
+      rules.kind === "required" ||
+      !isLast(offset) ||
+      (comment !== undefined &&
+        !staysIgnoredAlone(source, offset, comment.range[0]))
+    )
+      visit(offset)
   }
-  return lines
+}
+
+/**
+ * The ignored `;` at a comment's printed end, or undefined. Spaces and tabs
+ * after it disappear at a hard line break, so it keeps neither the line nor
+ * that whitespace, just like the IgnoredSemicolon token in the printed text.
+ * Other comment characters remain as written (common.md, `style` and
+ * `classDef` lines; docs/sequence.md, Statements one per line).
+ */
+export function ignoredSemicolonAtCommentEnd(
+  source: Source,
+  range: Range,
+): number | undefined {
+  const semicolon = ignoredSemicolonEndingComment(source, range)
+  return semicolon !== undefined &&
+    staysIgnoredAlone(source, semicolon, range[0])
+    ? semicolon
+    : undefined
+}
+
+/**
+ * Whether the comment at `range` holds a `;` that the line rule ignores and
+ * that must stay with the text that makes the rule ignore it. A directive or
+ * U+2028 after the entity does not prevent it from being read on a line of
+ * its own (common.md, Entities; docs/sequence.md, Comments).
+ */
+export function commentHasIgnoredSemicolonThatNeedsItsLine(
+  source: Source,
+  range: Range,
+): boolean {
+  if (semicolonRulesOf(source).kind !== "separators") return false
+  const ending = ignoredSemicolonEndingComment(source, range)
+  if (ending !== undefined) return !staysIgnoredAlone(source, ending, range[0])
+  return ignoredSemicolonsIn(
+    readSegments(
+      source,
+      lineStartOf(source, range[0]),
+      lineEndOf(source, range[0]),
+    ),
+  ).some(
+    (semicolon) =>
+      range[0] <= semicolon &&
+      semicolon < range[1] &&
+      endsEntityName(source, semicolon, range[0]) &&
+      !staysIgnoredAlone(source, semicolon, range[0]),
+  )
+}
+
+/**
+ * The `;` that the line rule ignores on the line as written and that ends the
+ * comment at `range`, with only spaces and tabs after it, or undefined.
+ */
+function ignoredSemicolonEndingComment(
+  source: Source,
+  range: Range,
+): number | undefined {
+  if (semicolonRulesOf(source).kind !== "separators") return undefined
+  let end = range[1]
+  while (end > range[0] && isSpaceOrTab(source.text[end - 1])) end--
+  const semicolon = end - 1
+  return source.text[semicolon] === ";" &&
+    isLastOnItsLine(source, semicolon) &&
+    ignoredSemicolonsIn(
+      readSegments(
+        source,
+        lineStartOf(source, semicolon),
+        lineEndOf(source, semicolon),
+      ),
+    ).includes(semicolon)
+    ? semicolon
+    : undefined
+}
+
+/**
+ * Whether the text before `offset` ends with an entity name: a `#` and one
+ * or more word characters, which a `;` there would complete (common.md,
+ * Entities). Only then does the line rule
+ * that ignores the `;` decide how mermaid.js reads the text before it. The
+ * name is read as mermaid.js reads it, without the directives in it:
+ * `#a%%{init: {}}%%;` ends the entity `#a;`. When `start` is given,
+ * the `#` must stand at that exact offset, as when it starts a comment.
+ */
+export function endsEntityName(
+  source: Source,
+  offset: number,
+  start?: number,
+): boolean {
+  let at = previousRead(source, offset)
+  let words = 0
+  while (at >= 0 && isWordCharacter(source.text[at])) {
+    words++
+    at = previousRead(source, at)
+  }
+  return (
+    words > 0 &&
+    at >= 0 &&
+    source.text[at] === "#" &&
+    (start === undefined || at === start)
+  )
+}
+
+/**
+ * Whether the line rule still ignores the `;` at `semicolon`, which ends the
+ * comment that starts at `commentStart`, when the statement that holds the
+ * comment or stands before it, the last that starts on the line, stands on a
+ * line of its own with it, as the printer puts it where the line does not keep
+ * its statements together. A trigger in another statement of the
+ * line (`accDescr {style:#x}`) is no longer on that line then, and the `;`,
+ * which the printer prints with the comment, is read: `x #a;` has the entity
+ * `#a;` (common.md, `style` and `classDef` lines; docs/sequence.md, Statements
+ * one per line). With another end of the comment (`#;`, `# a;`, `%% #a;`) the
+ * reading does not change, and the line is split.
+ */
+function staysIgnoredAlone(
+  source: Source,
+  semicolon: number,
+  commentStart: number,
+): boolean {
+  if (!endsEntityName(source, semicolon)) return true
+  // The entity changes what is read only where its `#` starts the comment: a
+  // `;` inside a comment of another mark is a character of the comment.
+  const comment = source.root.comments.find(
+    (item) => item.range[0] === commentStart,
+  )
+  if (comment?.mark !== "#") return true
+  const lineStart = lineStartOf(source, semicolon)
+  // The item that the printer puts on a line of its own with the comment: the
+  // last statement or divider (a section of a block: `else`, `and`, `option`)
+  // that starts on the line before the comment, or the `end` that closes a
+  // block there.
+  let holderStart = -1
+  for (const node of nodesOf(source)) {
+    if (
+      isLineItem(node) &&
+      node.range[0] < commentStart &&
+      lineStartOf(source, node.range[0]) === lineStart
+    )
+      holderStart = Math.max(holderStart, node.range[0])
+  }
+  for (const token of findTokensBetween(source, lineStart, commentStart)) {
+    if (token.type === "Keyword" && token.value === "end")
+      holderStart = Math.max(holderStart, token.range[0])
+  }
+  if (holderStart < 0) return true
+  return ignoredSemicolonsIn(
+    readSegments(source, holderStart, lineEndOf(source, semicolon)),
+  ).includes(semicolon)
+}
+
+/**
+ * Whether the line of the `;` at `semicolon`, which the line rule ignores, must
+ * stay together with the text that makes the rule ignore it: the `;` ends a
+ * comment whose end is read as an entity on a line of its own (see
+ * `staysIgnoredAlone`). A `;` that follows no comment stays with the line
+ * either way.
+ */
+export function ignoredSemicolonNeedsItsLine(
+  source: Source,
+  semicolon: number,
+): boolean {
+  const comment = source.root.comments.find(
+    (item) => item.range[1] === semicolon,
+  )
+  return (
+    comment === undefined ||
+    !staysIgnoredAlone(source, semicolon, comment.range[0])
+  )
 }
 
 /**
@@ -454,6 +688,24 @@ export function isLastOnItsLine(source: Source, offset: number): boolean {
 const nodesBySource = new WeakMap<Source, readonly Node[]>()
 
 /**
+ * Whether a node is an item that the printer puts on a line of its own: a
+ * statement, or a divider of a block (a section: `else`, `and`, `option`).
+ */
+function isLineItem(node: Node): boolean {
+  return node.type.endsWith("Statement") || node.type.endsWith("Section")
+}
+
+/** The nodes of the source. */
+function nodesOf(source: Source): readonly Node[] {
+  let nodes = nodesBySource.get(source)
+  if (nodes === undefined) {
+    nodes = findNodes(source.root, () => true)
+    nodesBySource.set(source, nodes)
+  }
+  return nodes
+}
+
+/**
  * Whether the statement that holds the `;` at `offset` goes on after the end
  * of its line, with a value of its own: a value that stands on a later line,
  * as the text of `accTitle:;` and of `title;` does. The `;` then is not at the
@@ -464,11 +716,7 @@ const nodesBySource = new WeakMap<Source, readonly Node[]>()
  * that closes the statement (`end`), which are no values of the statement.
  */
 function statementContinuesAfter(source: Source, offset: number): boolean {
-  let nodes = nodesBySource.get(source)
-  if (nodes === undefined) {
-    nodes = findNodes(source.root, () => true)
-    nodesBySource.set(source, nodes)
-  }
+  const nodes = nodesOf(source)
   let holder: Node | undefined
   for (const node of nodes) {
     if (
@@ -493,12 +741,13 @@ function statementContinuesAfter(source: Source, offset: number): boolean {
   if (next >= holder.range[1]) return false
   const start = holder.range[0]
   const end = holder.range[1]
-  // A statement of its own that holds the next text is no value of the holder.
+  // A statement of its own, or a divider of a block (`else`, `and`, `option`),
+  // that holds the next text is no value of the holder.
   if (
     nodes.some(
       (node) =>
         node !== holder &&
-        node.type.endsWith("Statement") &&
+        isLineItem(node) &&
         start <= node.range[0] &&
         node.range[1] <= end &&
         node.range[0] <= next &&
@@ -1233,6 +1482,54 @@ export function isInsideStyleRuleStretch(
 }
 
 /**
+ * Whether the line rule ignores a `;` on the line of `offset` after it: a `;`
+ * token that it ignores, or the `;` that ends a comment with only spaces and
+ * tabs after it.
+ */
+function ignoresSemicolonAfter(source: Source, offset: number): boolean {
+  const lineEnd = lineEndOf(source, offset)
+  return (
+    [...source.ignoredSemicolons].some(
+      (semicolon) => offset <= semicolon && semicolon < lineEnd,
+    ) ||
+    source.root.comments.some(
+      (comment) =>
+        offset <= comment.range[0] &&
+        comment.range[0] < lineEnd &&
+        ignoredSemicolonEndingComment(source, comment.range) !== undefined,
+    )
+  )
+}
+
+/**
+ * Whether the token at `range` lies in a stretch of the line rule (see
+ * `isInsideStyleRuleStretch`) that holds whitespace between its start and the
+ * token. The whitespace before the token in the stretch keeps whether it is
+ * there only while the `#` that ends the stretch stands on the line of the
+ * token: printed with that `#` on a line of its own, the line rule ends the
+ * stretch earlier, and a second formatting would print the whitespace as
+ * anywhere else.
+ */
+export function followsGapsOfStyleRuleStretch(
+  source: Source,
+  range: Range,
+): boolean {
+  if (usesVerbatimStyleLines(source)) return false
+  const stretch = findStyleRuleStretches(source).find(
+    ([first, last]) => first < range[0] && range[1] <= last,
+  )
+  if (stretch === undefined || !ignoresSemicolonAfter(source, range[1])) {
+    return false
+  }
+  let end = range[0]
+  while (end > stretch[0] && isSpaceOrTab(source.text[end - 1])) end--
+  for (let at = stretch[0]; at < end; at++) {
+    if (isSpaceOrTab(source.text[at])) return true
+  }
+  return false
+}
+
+/**
  * The end of the stretch that the line rule may read (see
  * `isInsideStyleRuleStretch`) that holds the whitespace after `offset`, or
  * `offset` when no stretch does.
@@ -1251,14 +1548,39 @@ const styleRuleStretchesBySource = new WeakMap<
   readonly (readonly [number, number])[]
 >()
 
+/** The `;` that end a comment and that the line rule ignores, of each source. */
+const commentEndSemicolonsBySource = new WeakMap<Source, ReadonlySet<number>>()
+
+/**
+ * The offsets of the `;` that end a comment and that the line rule ignores,
+ * with only spaces and tabs after them (see `ignoredSemicolonAtCommentEnd`).
+ * Where whitespace follows, the comment holds the `;`, so no token starts
+ * there, but the printer prints the `;` without that whitespace, as the token
+ * that it is where nothing follows.
+ */
+function commentEndSemicolonsOf(source: Source): ReadonlySet<number> {
+  let found = commentEndSemicolonsBySource.get(source)
+  if (found === undefined) {
+    found = new Set(
+      source.root.comments
+        .map((comment) => ignoredSemicolonAtCommentEnd(source, comment.range))
+        .filter((offset) => offset !== undefined),
+    )
+    commentEndSemicolonsBySource.set(source, found)
+  }
+  return found
+}
+
 /**
  * The index in `segment` of its last `;` that the printer keeps, or -1. The
  * printer drops the `;` that the line rule ignores at the end of the line (see
  * `isDroppedSemicolon`), and the `;` tokens that separate statements on a line
  * that keeps no `;` of its own (see `findSemicolonLines`). A `;` inside a token
- * stays. The line that it prints has the rule only through the `;` that stay,
- * so a stretch is decided by those, or a second formatting would find none.
- * `lineStart` is the start of the line that holds the segment.
+ * stays, except one that ends a comment and that the line rule ignores, which
+ * the printer prints as the token that it is where no whitespace follows. The
+ * line that it prints has the rule only through the `;` that stay, so a stretch
+ * is decided by those, or a second formatting would find none. `lineStart` is
+ * the start of the line that holds the segment.
  */
 function findLastKeptSemicolon(
   source: Source,
@@ -1268,7 +1590,9 @@ function findLastKeptSemicolon(
   const keepsSeparators = findSemicolonLines(source).has(lineStart)
   for (let index = segment.text.lastIndexOf(";"); index !== -1;) {
     const offset = segment.offsets[index]
-    const isToken = findTokenStartingAt(source, offset)?.value === ";"
+    const isToken =
+      findTokenStartingAt(source, offset)?.value === ";" ||
+      commentEndSemicolonsOf(source).has(offset)
     if (!isToken || (keepsSeparators && !isDroppedSemicolon(source, offset))) {
       return index
     }

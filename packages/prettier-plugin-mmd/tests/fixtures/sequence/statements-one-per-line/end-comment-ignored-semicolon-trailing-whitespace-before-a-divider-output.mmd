@@ -1,0 +1,8 @@
+sequenceDiagram
+  alt outer
+    loop x
+      A ->> B: body
+      accDescr {style:#x} end #a;
+  else other
+    B ->> A: other
+  end

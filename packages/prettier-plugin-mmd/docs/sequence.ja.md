@@ -1073,9 +1073,23 @@ mermaid.js はそのように読みます。
 [fixture: title/tab-and-colon-line-break] [fixture: title/line-break-indented]
 
 タイトルの末尾の空白は、後ろに `;` がある場合も除きます。
+行のほかの文に引き金があるために、行の規則が無視する `;` も、
+その後ろの空白とともに、タイトルのテキストではありません。
+`accDescr {style:#x} title x;` の後に空白が 2 つ続くときは、
+`accDescr: style:#x` と `title x` に印字します。
+空白がないときと同じです。
+行にそれ自身の別の `;` があるときは残します。
+実体の `#35;` や、その前にある `;` がそうです。
+文は行に残り、この `;` を落とすと、行の規則がもう一方の `;` を無視します。
+`A->>B: style:#x;; title x;` の後に空白が 2 つ続くときは、
+`A ->> B: style:#x;; title x;` と印字します。
 
 [fixture: title/trailing-whitespace-dropped]
 [fixture: title/semicolon-after-whitespace-dropped]
+[fixture: title/ignored-semicolon-after-whitespace-dropped-trigger-in-other-statement]
+[fixture: title/colon-ignored-semicolon-after-whitespace-dropped-trigger-in-other-statement]
+[fixture: title/ignored-semicolon-after-whitespace-kept-with-an-entity-in-the-line]
+[fixture: title/ignored-semicolon-after-whitespace-kept-after-another-semicolon-of-the-line]
 
 キーワードと次の行のテキストの間にある、行の規則が無視する `;` は、
 ひとまとまりで残る行の一部として、規則の条件となる部分と同じ行に残します。
@@ -1154,6 +1168,7 @@ sequenceDiagram
 [corpus fixture: sequence/lex-single-percent-comment-line]
 [fixture: comments/percent-line-kept] [fixture: comments/block-edges-kept]
 [fixture: comments/text-whitespace-kept]
+[fixture: comments/line-ending-ignored-semicolon-trailing-whitespace-kept]
 
 文の後のコメントはその行に残し、印の前に空白が書かれているかどうかを保ちます。
 mermaid.js は `autonumber 5%% c` を数 5 なしで読み、
@@ -1206,12 +1221,186 @@ sequenceDiagram
 [corpus fixture: sequence/tokens-loop-comment-then-ignored-semicolon]
 [fixture: comments/semicolon-after-percent-comment-kept]
 
-その `;` の後に空白が書かれていると、`;` はコメントの中にあり、
+その `;` の後に空白と、さらに文字が書かれていると、`;` はコメントの中にあり、
 コメントごと印字されます。
 
 [fixture: comments/semicolon-inside-comment-kept]
 
 片方で落とし、片方で残すと、2 回目の整形が 1 回目と違う結果になります。
+`;` の後に、行の終わりまで空白だけがあるときは、その空白は印字せず、
+行は空白がないときと同じに決めます。
+`;` はその行の最後の `;` になり、行の文を一緒に残さないので、`accDescr {}` と、
+`A->>B: x #style:#x;` に空白が続くメッセージは、
+空白がないときと同じく 2 行に印字します。
+1 回目に 1 行、2 回目に 2 行にはしません。
+コメントだけの行は、`;` の後の空白も、コメントのほかのテキストと一緒に残します。
+
+[fixture: statements-one-per-line/message-comment-ignored-semicolon-trailing-whitespace]
+[fixture: statements-one-per-line/loop-comment-ignored-semicolon-trailing-whitespace]
+[fixture: statements-one-per-line/autonumber-comment-ignored-semicolon-trailing-whitespace]
+[test: an ignored `;` at a message comment end before U+2029 and a directive]
+[test: an ignored `;` at an autonumber comment end before U+2029 and a directive]
+
+行の規則が無視しない `;` は、コメントの中に残り、行も一緒に残ります。
+
+[fixture: statements-one-per-line/comment-nonignored-semicolon-trailing-whitespace]
+
+行の規則の引き金が行のほかの文にあるとき、
+たとえば `accDescr {style:#x} A->>B: x #a;` の `style:#x` のときは、
+`;` が無視されるのは文が 1 行にあるあいだだけです。
+文を別の行に分けると、メッセージには引き金がなく、
+mermaid.js は `#a;` をそのテキストの文字参照として読みます。
+そのため、`;` の後に空白があってもなくても、行は `;` ごと 1 行に残します。
+`loop` の見出しも同じです。
+
+[fixture: statements-one-per-line/message-comment-ignored-semicolon-trigger-in-other-statement]
+[fixture: statements-one-per-line/loop-comment-ignored-semicolon-trigger-in-other-statement]
+
+1 行にしたときに読みが変わらないときは、`;` の後に空白があってもなくても、
+行を分け、メッセージは 1 行にしたときと同じに印字します。
+2 回目の整形も同じ結果になります。
+コメントが `#;`、`# a;` などの文字参照でない形で終わるとき、
+`;` がコメント自身の `style:#x` の後にあるとき、コメントが `%%` で始まり、
+`#a;` がそのコメントの文字であるときが、これに当たります。
+
+[fixture: statements-one-per-line/message-comment-empty-entity-trigger-in-other-statement]
+[fixture: statements-one-per-line/message-comment-space-trigger-in-other-statement]
+[fixture: statements-one-per-line/message-comment-own-trigger-trailing-whitespace]
+[fixture: statements-one-per-line/autonumber-percent-comment-entity-trigger-in-other-statement]
+
+文字参照の名前は、mermaid.js が読むとおりに、
+その中のディレクティブを除いて読みます。
+`x #a%%{init: {}}%%;` は文字参照 `#a;` で、
+`x #a%%{init: {}}%%b;` は `#ab;` で終わるので、これらの行は 1 行に残します。
+`x #%%{init: {}}%%;` は `#;` で終わり、文字参照ではないので、行を分けます。
+ブロックの分かれ目（`else`、`and`、`option`）の行と、
+ブロックを閉じる `end` の行も、同じに決めます。
+文を印字すると、それらも 1 行ずつになるからです。
+
+[fixture: statements-one-per-line/message-comment-entity-split-by-directive-trigger-in-other-statement]
+[fixture: statements-one-per-line/message-comment-entity-name-split-in-two-by-directive-trigger-in-other-statement]
+[fixture: statements-one-per-line/message-comment-directive-after-hash-trigger-in-other-statement]
+[fixture: statements-one-per-line/par-and-comment-ignored-semicolon-trigger-in-other-statement]
+[fixture: statements-one-per-line/alt-else-comment-ignored-semicolon-trigger-in-other-statement]
+[fixture: statements-one-per-line/critical-option-comment-ignored-semicolon-trigger-in-other-statement]
+[fixture: statements-one-per-line/end-comment-ignored-semicolon-trigger-in-other-statement]
+[fixture: statements-one-per-line/end-comment-empty-entity-trigger-in-other-statement]
+
+ブロックを閉じる `end` は、ほかの文の行と同じに決めます。
+`end` の後のコメントが、別の行にしても同じに読まれるとき、つまり `#;`、
+`# a;` など文字参照でない形で終わるとき、または `%%` で始まるときは、
+`;` の後に空白があってもなくても、`end` とそのコメントを別の行に印字します。
+`A->>B: style:#x;; end #;` は、`;` の後に空白 2 つやタブがあるときと同じに、
+2 行に印字します。
+コメントが `end #a;` のように文字参照で終わるときは、`;` の後に空白があっても、
+ディレクティブが名前を分けるとき（`end #a%%{init: {}}%%;`）も、
+`end` をその前のテキストの行に残します。
+`end` の前の `accDescr {…}` は、`end` を別の行にするとき、
+`accDescr: …` の形に印字します。
+外側のブロックの `else` や `and` の前にあるブロックでも同じです。
+`end` が行に残るときは、書いたままにします。
+
+[fixture: statements-one-per-line/end-comment-ignored-semicolon-no-gaps-in-style-rule-stretch-without-whitespace]
+[fixture: statements-one-per-line/end-comment-ignored-semicolon-no-gaps-in-style-rule-stretch]
+[fixture: statements-one-per-line/end-comment-ignored-semicolon-no-gaps-in-style-rule-stretch-tab]
+[fixture: statements-one-per-line/end-percent-comment-ignored-semicolon-after-gaps-before-the-stretch-ends-without-whitespace]
+[fixture: statements-one-per-line/end-percent-comment-ignored-semicolon-after-gaps-before-the-stretch-ends]
+[fixture: statements-one-per-line/end-percent-comment-ignored-semicolon-after-gaps-before-the-stretch-ends-tab]
+[fixture: statements-one-per-line/end-comment-ignored-semicolon-trigger-in-other-statement-trailing-whitespace]
+[fixture: statements-one-per-line/end-comment-ignored-semicolon-trigger-in-other-statement-trailing-tab]
+[fixture: statements-one-per-line/end-comment-entity-split-by-directive-trigger-in-other-statement-trailing-whitespace]
+[fixture: statements-one-per-line/end-comment-empty-entity-trigger-in-other-statement-before-a-divider]
+[fixture: statements-one-per-line/end-comment-ignored-semicolon-trigger-in-other-statement-before-a-divider]
+[fixture: statements-one-per-line/end-comment-own-trigger-trailing-whitespace-before-a-divider]
+
+`end #12;` のように `#` コメントがエンティティの形で終わり、
+その後に `%%{init: {}}%%` がある場合や、
+`and` 区切りの前で U+2028 が続く場合も同じです。
+エンティティがない `end #; %%{init: {}}%%` は、通常どおり別の行に移します。
+
+[fixture: statements-one-per-line/end-comment-entity-before-directive]
+[fixture: statements-one-per-line/end-comment-no-entity-before-directive]
+[test: an ignored entity semicolon before U+2028 keeps end with its description block before and]
+
+`;` の後にディレクティブがあり、
+`end # note #12; %%{init: {}}%%` のようにコメントの途中に文字参照がある場合は、
+`end` を別の行に印字します。
+先頭の `#` が、その行でもコメントを始めるためです。
+
+[fixture: statements-one-per-line/end-comment-internal-entity-before-directive]
+
+`end` は、別の理由でも、コメントとともに、その前のテキストの行に残します。
+その前のテキストが、
+mermaid.js の行の規則が読むかもしれない範囲に空白を含むときです。
+`:` と後ろの `#` のあいだの空白は、あるかないかを保ちますが、
+それは `end` の後のコメントの `#` が行にあるあいだだけです。
+`end` とコメントを別の行にすると、2 回目の整形は、
+その空白をほかの場所と同じに印字します。
+`loop style:#x;; loop x; A->>B: body; end #;` は、
+`;` の後に空白があってもなくても、`A->>B` を書いたままにして、1 行に残します。
+この理由は上の理由に加わるもので、どちらもほかの理由を不要にはしません。
+コメントが文字参照で終わる `end` は、
+その前のテキストにその範囲の空白がなくても、行に残します。
+どちらの理由も当たらないとき、
+たとえばコメントにその範囲を終わらせる `#` がないとき（`%% a;`）は、
+`end` とコメントを別の行に印字します。
+
+[fixture: statements-one-per-line/end-comment-ignored-semicolon-after-gaps-in-style-rule-stretch-without-whitespace]
+[fixture: statements-one-per-line/end-comment-ignored-semicolon-after-gaps-in-style-rule-stretch]
+[fixture: statements-one-per-line/end-comment-ignored-semicolon-after-gaps-in-style-rule-stretch-tab]
+[fixture: statements-one-per-line/end-comment-ignored-semicolon-after-gaps-in-style-rule-stretch-body-line]
+[fixture: statements-one-per-line/box-end-comment-in-style-rule-stretch-trigger-in-other-statement]
+
+`end` が別の行になるとき、その後ろの行の規則が無視する `;` は、
+`end` が自分の行にあるときと同じに、前の行に何があっても落とします。
+`A->>B: style:#x;; end;` は、`A ->> B: style:#x;;` と `end` に印字します。
+`end` の後のコメントにある `;` のためにひとまとまりで残る行で、
+`end` の前のテキストに、文を区切るだけの `;` しかないときは、`end` も残します。
+`A->>B: x;end #;` は `A ->> B: x; end #;` と印字します。
+コメントがないと、`x` の後の `;` は 2 回目の整形で落ち、
+行の文も別の行に印字するからです。
+
+[fixture: statements-one-per-line/end-semicolon-dropped-where-the-end-goes-to-its-own-line]
+[fixture: statements-one-per-line/end-space-semicolon-dropped-where-the-end-goes-to-its-own-line]
+[fixture: statements-one-per-line/end-kept-with-the-semicolon-of-its-comment-after-a-separator-semicolon]
+[fixture: statements-one-per-line/end-kept-with-the-semicolon-of-its-comment-after-two-statements]
+
+次の行の分かれ目（`else`、`and`、`option`）は、どの文とも同じく、
+それ自身の文です。
+前の行の値ではないので、その行を終わらせる `;` は、その行の最後の `;` です。
+空白と `else` が次の行に続く `end #a;` は、テキストの終わりにあるときと同じく、
+引き金の行に残します。
+
+[fixture: statements-one-per-line/end-comment-ignored-semicolon-trailing-whitespace-before-a-divider]
+
+説明ブロックの `}` や、その前の `;` に接する `end` や分かれ目（`else`、`and`、
+`option`）も、空白が離すときと同じに決めます。
+`accDescr {style:#x}end #a;` は、ブロックを書いたままにして 1 行に残します。
+コロンの形にすると `end` がテキストに入るからです。
+コメントが別の行にしても同じに読まれる `accDescr {style: x}end #;` は、
+`accDescr: style: x` と `end #;` の 2 行に印字します。
+分かれ目も同じで、`accDescr {style:#x}else x#a;` は 1 行に残します。
+
+[fixture: statements-one-per-line/end-touching-description-block-without-trigger]
+[fixture: statements-one-per-line/end-touching-description-block-with-trigger-entity]
+[fixture: statements-one-per-line/else-touching-description-block-with-trigger-entity]
+[fixture: statements-one-per-line/end-touching-semicolon-comment-not-entity]
+[fixture: statements-one-per-line/end-touching-semicolon-comment-entity]
+
+どの文の行も、文が何を描くかではなく、
+mermaid.js がコメントをどう読むかで決めます。
+`details A: https://example.com #a;`、`links A: {…} #a;`、
+`properties A: {…} #a;` は、文字参照がどの図にも現れませんが、
+メッセージと同じに、引き金とともに 1 行に残します。
+データブロックと `as` を持つ `participant` も同じです。
+こちらは文字参照で名前が変わります。
+`participant C@{ "type": "boundary" } as x #a;` の `#a;`
+をディレクティブが分けた形（`#a%%{init: {}}%%;`）も、1 行に残します。
+
+[fixture: statements-one-per-line/details-comment-entity-split-by-directive-trigger-in-other-statement]
+[fixture: statements-one-per-line/links-comment-entity-trigger-in-other-statement]
+[fixture: statements-one-per-line/properties-comment-entity-trigger-in-other-statement]
+[fixture: statements-one-per-line/participant-data-as-comment-entity-split-by-directive-trigger-in-other-statement]
 
 入力
 ([comments/semicolon-after-comment-kept-input.mmd](../tests/fixtures/sequence/comments/semicolon-after-comment-kept-input.mmd)):

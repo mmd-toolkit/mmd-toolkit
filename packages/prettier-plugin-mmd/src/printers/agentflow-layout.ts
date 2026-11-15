@@ -31,7 +31,12 @@ import {
   walk,
 } from "./layout.ts"
 import { readGapElement } from "./gap.ts"
-import { holdsJoiningRegion, lineStartOf } from "./kept-lines.ts"
+import {
+  endsEntityName,
+  holdsJoiningRegion,
+  isDroppedSemicolon,
+  lineStartOf,
+} from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
   normalizeBlankLabels,
@@ -95,6 +100,9 @@ export function layoutContainerHeader(
   let nameStart = name.range[0]
   let nameEnd = name.range[1]
   const rules = new Map<number, GapRule>()
+  // The directives that end a name from which the printer drops a `;` and the
+  // whitespace around it (see below); they are no text of the name atom.
+  let endingDirectives: readonly Atom[] = []
   // Only an ordinary single-fragment heading shares flowchart's heading
   // rules. Erased click/empty forms and their context-exit gaps are Name text
   // (diagrams/agentflow.md, Names; docs/agentflow.md, Names and headings).
@@ -148,6 +156,46 @@ export function layoutContainerHeader(
           source.ignoredSemicolons.has(nameEnd - 1))
       )
         nameEnd--
+      // A retained separator must stay apart from an entity-shaped name end:
+      // removing the gap would form an entity (common.md, Entities;
+      // docs/agentflow.md, Names and headings). The directives after the name
+      // are removed before mermaid.js reads the text, so a separator behind
+      // them touches the name as well.
+      if (
+        source.text[skipDirectivesAt(source, name.range[1])] === ";" &&
+        findAgentflowKeptLines(source).verbatim.has(
+          lineStartOf(source, name.range[0]),
+        ) &&
+        endsEntityName(source, nameEnd)
+      )
+        nameEnd = name.range[1]
+    } else if (node.title === null && node.data.length === 0) {
+      // A name that holds a directive or a comment keeps its text as written,
+      // but a `;` that the line rule ignores and that the printer drops lies at
+      // its end where whitespace follows the `;`, and it is no text of the
+      // name with the spaces and tabs around it. The name is then read as it
+      // is without the whitespace after the `;`: the directives at its end
+      // stand after it, and the whitespace before them goes, as it does at the
+      // end of any name (docs/agentflow.md, Names and headings).
+      let trimmed = nameEnd
+      while (trimmed > nameStart && isSpaceOrTab(source.text[trimmed - 1]))
+        trimmed--
+      if (
+        trimmed > nameStart &&
+        source.ignoredSemicolons.has(trimmed - 1) &&
+        isDroppedSemicolon(source, trimmed - 1)
+      ) {
+        nameEnd = trimmed - 1
+        while (nameEnd > nameStart && isSpaceOrTab(source.text[nameEnd - 1]))
+          nameEnd--
+        endingDirectives = findEndingDirectives(source, nameStart, nameEnd)
+        if (endingDirectives.length > 0) {
+          rules.set(endingDirectives[0].start, "none")
+          nameEnd = endingDirectives[0].start
+          while (nameEnd > nameStart && isSpaceOrTab(source.text[nameEnd - 1]))
+            nameEnd--
+        }
+      }
     }
     // A whitespace-only name still needs its written character.
     if (nameEnd === nameStart) {
@@ -197,7 +245,7 @@ export function layoutContainerHeader(
     node.range[0],
     end,
     values,
-    [nameAtom],
+    [nameAtom, ...endingDirectives],
     rules,
   )
   return {
@@ -205,10 +253,49 @@ export function layoutContainerHeader(
     atoms: layout.atoms.filter(
       (atom) =>
         atom === nameAtom ||
+        endingDirectives.includes(atom) ||
         atom.start < name.range[0] ||
         atom.start >= name.range[1],
     ),
   }
+}
+
+/**
+ * The offset after the directives that start at `offset` and follow each other
+ * without whitespace between them; `offset` where none starts there.
+ */
+function skipDirectivesAt(source: Source, offset: number): number {
+  let position = offset
+  for (;;) {
+    const item = findTriviaBetween(source, position, position + 1).at(0)
+    if (item?.type !== "Directive") return position
+    position = item.range[1]
+  }
+}
+
+/**
+ * The directives that end the text from `start` to `end` as atoms: a run of
+ * directives with only spaces and tabs between them, the last of which ends at
+ * `end`; none where the text does not end in a directive.
+ */
+function findEndingDirectives(
+  source: Source,
+  start: number,
+  end: number,
+): readonly Atom[] {
+  const directives: Atom[] = []
+  let position = end
+  const items = findTriviaBetween(source, start, end)
+  for (let index = items.length - 1; index >= 0; index--) {
+    const item = items[index]
+    if (item.type !== "Directive") break
+    let itemEnd = item.range[1]
+    while (itemEnd < position && isSpaceOrTab(source.text[itemEnd])) itemEnd++
+    if (itemEnd !== position) break
+    directives.unshift({ start: item.range[0], end: item.range[1] })
+    position = item.range[0]
+  }
+  return directives
 }
 
 /**

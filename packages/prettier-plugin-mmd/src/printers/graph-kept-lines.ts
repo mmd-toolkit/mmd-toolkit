@@ -16,6 +16,7 @@ import type {
   Range,
   Root,
 } from "@mmd-toolkit/ast"
+import type { KeptLines } from "./kept-lines.ts"
 import { joinsNextLine, lineEndOf, lineStartOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
@@ -285,8 +286,9 @@ export function findLinesAfterEmptyStyle(
  * The lines that keep their written indentation (`ownIndentation`) where it
  * would change what a description block says: a line that the printer keeps
  * together, that starts at the first column with a block that has a text, and
- * that holds a direction statement after it in the same lexer segment. The
- * lexer reads the block at the first column, and the direction line, which
+ * that holds a direction statement after it in the same lexer segment, also
+ * where a semicolon requires verbatim printing. The lexer reads the block
+ * at the first column, and the direction line, which
  * takes the rest of its segment, starts after it; after an indentation the
  * first whitespace character starts a direction line that takes the block too,
  * and the description is empty (diagrams/flowchart.md, The statement context,
@@ -301,7 +303,7 @@ export function findLinesAfterEmptyStyle(
 export function findLinesBeforeDirectionStatement(
   source: Source,
   statements: readonly GraphStatement[],
-  joined: ReadonlySet<number>,
+  kept: Pick<KeptLines, "joined" | "verbatim">,
 ): number[] {
   const lines: number[] = []
   let first: GraphStatement | undefined, description: GraphStatement | undefined
@@ -326,7 +328,9 @@ export function findLinesBeforeDirectionStatement(
         statement.type === "AgentflowDirectionStatement") &&
       first?.range[0] === line &&
       description !== undefined &&
-      (joined.has(line) || joinsNextLine(source, line))
+      (kept.joined.has(line) ||
+        kept.verbatim.has(line) ||
+        joinsNextLine(source, line))
     ) {
       const between = textRead(source, description.range[0], statement.range[0])
       if (
@@ -340,7 +344,7 @@ export function findLinesBeforeDirectionStatement(
     if (holdsStatements(statement)) {
       appendItems(
         lines,
-        findLinesBeforeDirectionStatement(source, statement.body, joined),
+        findLinesBeforeDirectionStatement(source, statement.body, kept),
       )
     }
   }

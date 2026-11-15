@@ -170,6 +170,21 @@ direction 行はそれより前へは届きません。
 [fixture: indentation/whitespace-description-before-direction-control]
 [test: flowchart direction after a U+2028 and a joined comment line]
 
+無視される `;` が別の `;` と隣り合い、行を書かれたまま残す場合も同じです。
+`accDescr {style:#x} direction LR;;` は、subgraph の中や swimlane 図でも、
+先頭の桁に残します。
+字下げすると、mermaid.js が空の説明を読むからです。
+その行で方向の値より後ろにあるテキストは文ではなく、書かれたまま残します。
+
+[fixture: indentation/verbatim-direction-description]
+[fixture: indentation/verbatim-direction-description-in-subgraph]
+[fixture: indentation/swimlane-verbatim-direction-description]
+[fixture: indentation/verbatim-direction-description-followed-by-text]
+
+`;` がない場合や 1 つだけの場合は、説明と方向を従来どおり別の行に移します。
+
+[fixture: indentation/style-description-direction-split]
+
 ### 1 行に 1 文
 
 語の後で行の規則が無視する `;` は、その語と次に残る `;` を分けません。
@@ -2683,6 +2698,7 @@ mermaid.js は読まず、書き手のテキストだからです。
 [fixture: comments/trailing-whitespace-kept]
 [fixture: comments/leading-whitespace-kept]
 [fixture: comments/statement-text-kept] [fixture: comments/directive-text-kept]
+[fixture: comments/line-ending-ignored-semicolon-trailing-whitespace-kept]
 
 入力
 ([comments/indented-input.mmd](../tests/fixtures/flowchart/comments/indented-input.mmd)):

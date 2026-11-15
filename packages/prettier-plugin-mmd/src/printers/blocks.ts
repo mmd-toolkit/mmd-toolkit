@@ -14,12 +14,16 @@ import {
 } from "./gap.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import {
+  commentHasIgnoredSemicolonThatNeedsItsLine,
+  followsGapsOfStyleRuleStretch,
   holdsJoiningRegion,
   holdsKeptSemicolon,
+  holdsOwnSemicolonIn,
   isDroppedSemicolon,
   keepsTrailingLineSeparators,
   lineEndOf,
   lineStartOf,
+  ignoredSemicolonNeedsItsLine,
   completeKeptLines,
 } from "./kept-lines.ts"
 import { toAsciiLowerCase } from "./layout.ts"
@@ -787,15 +791,50 @@ export function printBlock<Statement extends Positioned>(
    * line (`BlockRules.writtenGapBefore`). A statement that the stretch does not
    * cover goes to a line of its own, so the last statement is printed alone on
    * its line, as one that starts a line is (docs/compatibility.md, A
-   * description block on one line; see `accessibilityLineOf`).
+   * description block on one line; see `accessibilityLineOf`). The closing of
+   * the block, which the stretch ends before, stays on the line only where it
+   * joins it (see `findClosingJoin`).
    */
   function staysAfterStretch(stretch: Stretch, last: Statement): boolean {
     const after = findStatementAfter(source, rules.printedEnd(last))
-    if (after !== undefined && after < stretch.end) return true
+    if (after !== undefined) {
+      let content = after
+      while (isWhitespace(source.text[content])) content++
+      if (content === bounds.end && !bounds.isTopLevel) {
+        return findClosingJoin(stretch.end, true) !== null
+      }
+      if (after < stretch.end) return true
+    }
     const following = statements[stretch.after]
     return (
       following !== undefined && rules.writtenGapBefore?.(following) === true
     )
+  }
+
+  /**
+   * Where the closing of the block that `last` is stands, which ends at
+   * `position`, where the printer puts it on a line of its own (see
+   * `findClosingJoinAt`), or undefined. What follows the closing on its line
+   * goes to that line, and the `;` that the line rule ignores there is dropped
+   * as it is on a line of its own, whatever the lines before it hold.
+   */
+  function startOfSplitClosing(
+    position: number,
+    last: Statement | undefined,
+  ): number | undefined {
+    if (last === undefined || !rules.holdsStatements(last)) return undefined
+    const closing = findTokenEndingBefore(source, position)
+    if (closing === undefined || closing.range[1] !== position) return undefined
+    let printedEnd = closing.range[0]
+    while (
+      printedEnd > 0 &&
+      isWhitespace(source.text[printedEnd - 1]) &&
+      source.text[printedEnd - 1] !== "\n"
+    )
+      printedEnd--
+    return findClosingJoinAt(closing.range[0], printedEnd) === null
+      ? closing.range[0]
+      : undefined
   }
 
   /**
@@ -922,6 +961,7 @@ export function printBlock<Statement extends Positioned>(
             {
               atLineStart: false,
               atLineEnd: true,
+              printedLineStart: startOfSplitClosing(position, last),
             },
             rules.keptInlineGapEnd,
             undefined,
@@ -957,23 +997,49 @@ export function printBlock<Statement extends Positioned>(
    * line of the block when that line is kept, as written, or together with a
    * statement that follows the closing on it.
    */
-  function findClosingJoin(): string | null {
-    if (bounds.isTopLevel || lines.length === 0) return null
-    const closingLine = lineStartOf(source, bounds.end)
+  function findClosingJoin(
+    printedEnd: number,
+    hasLines: boolean,
+  ): string | null {
+    return bounds.isTopLevel || !hasLines
+      ? null
+      : findClosingJoinAt(bounds.end, printedEnd)
+  }
+
+  /**
+   * What stands before the closing that starts at `closingStart` on its line,
+   * or null, where the last line of the block before it ends at `printedEnd`.
+   */
+  function findClosingJoinAt(
+    closingStart: number,
+    printedEnd: number,
+  ): string | null {
+    const closingLine = lineStartOf(source, closingStart)
     if (
-      !isKept(bounds.end) ||
-      lineStartOf(source, offset - 1) !== closingLine
+      !isKept(closingStart) ||
+      lineStartOf(source, printedEnd - 1) !== closingLine
     ) {
       return null
     }
     if (kept.verbatim.has(closingLine)) return ""
     if (rules.keptClosingJoin !== undefined) return rules.keptClosingJoin
-    const closing = findTokenStartingAt(source, bounds.end)
+    const closing = findTokenStartingAt(source, closingStart)
     if (closing === undefined) return null
-    const lineEnd = lineEndOf(source, bounds.end)
+    const lineEnd = lineEndOf(source, closingStart)
     // A `;` that the line rule ignores stays with the text on the line that
-    // makes it ignored (`style:#x` before the closing), which a line break
-    // before the closing would part from it.
+    // makes it ignored (`style:#x` before the closing) where a line of its own
+    // would make it read: it ends a comment as an entity (`end #a;`, see
+    // `ignoredSemicolonNeedsItsLine`), also where whitespace follows it and it
+    // has no token of its own (`commentHasIgnoredSemicolonThatNeedsItsLine`). The
+    // `#` of a comment after the closing also keeps the closing on the line
+    // where it ends a stretch of the line rule that holds whitespace of the
+    // line before the closing: a line break would end the stretch earlier (see
+    // `followsGapsOfStyleRuleStretch`).
+    // A line that stays together because of a `;` after the closing, with a
+    // `;` before the closing that only separates statements, keeps the closing
+    // too: the part before it holds no `;` of its own, so a second formatting
+    // would not keep its statements and its `;` together (see
+    // `holdsOwnSemicolonIn`).
     // The `}` that closes a block around this one is on a line of its own
     // after this block, unless something follows it, so it does not keep the
     // closing of this block on the line: the second formatting would move it.
@@ -985,8 +1051,21 @@ export function printBlock<Statement extends Positioned>(
         (semicolon) =>
           closing.range[1] <= semicolon &&
           semicolon < lineEnd &&
-          !isDroppedSemicolon(source, semicolon),
-      )
+          !isDroppedSemicolon(source, semicolon) &&
+          ignoredSemicolonNeedsItsLine(source, semicolon),
+      ) ||
+      source.root.comments.some(
+        (comment) =>
+          closing.range[1] <= comment.range[0] &&
+          comment.range[0] < lineEnd &&
+          commentHasIgnoredSemicolonThatNeedsItsLine(source, comment.range),
+      ) ||
+      followsGapsOfStyleRuleStretch(source, closing.range) ||
+      (findTokensBetween(source, closingLine, closingStart).some(
+        (token) => token.value === ";",
+      ) &&
+        !holdsOwnSemicolonIn(source, closingLine, closingStart) &&
+        holdsOwnSemicolonIn(source, closingStart, lineEnd))
     return followed ? " " : null
   }
 
@@ -1155,7 +1234,7 @@ export function printBlock<Statement extends Positioned>(
     },
   )
   addItemLines(gap, lastStatement)
-  const closingJoin = findClosingJoin()
+  const closingJoin = findClosingJoin(offset, lines.length > 0)
   const triviaEnd = triviaBreakBefore(bounds.end, bounds.isTopLevel)
   const endsInsideValue = rules.endsInsideValue?.() ?? false
   return {
@@ -1343,6 +1422,12 @@ interface InlinePlace {
   readonly atLineStart: boolean
   /** Whether nothing is printed after the gap on its line. */
   readonly atLineEnd: boolean
+  /**
+   * Where the printed line starts where it starts after the line of the source
+   * does, as a closing that goes to a line of its own; only the `;` of that
+   * part decide whether the line keeps its `;`.
+   */
+  readonly printedLineStart?: number
 }
 
 /**
@@ -1376,7 +1461,7 @@ export function printInlineGap(
   // the end of a style statement).
   const keepsSeparators = holdsKeptSemicolon(
     source,
-    lineStartOf(source, start),
+    place.printedLineStart ?? lineStartOf(source, start),
     lineEndOf(source, start),
   )
   const gap = readGap(source, start, end, keepsSeparators, {
