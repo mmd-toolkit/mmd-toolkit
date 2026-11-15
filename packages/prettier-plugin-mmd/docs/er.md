@@ -2532,64 +2532,87 @@ statement and at the end of the text]
 The same holds where no `;` ends the style: the U+2028 or U+2029 that ends it is
 dropped, with the spaces, tabs, vertical tabs, and form feeds after it up to the
 line break, and `style A fill:red`, U+2028, and a line break are printed
-`style A fill: red`, also where comment lines that nothing follows end the text:
-the comment line takes the whitespace after the character with it, a no-break
-space included, and a comment that stands after a second U+2028 or U+2029 on the
-line, with a directive before it or not, is such a comment line, which is
-printed on a line of its own. The line stays as written where dropping the
-character could change what mermaid.js reads: where a comment line follows it
-and a statement follows the comment line (the comment line is removed after the
-character, so the statement joins the style), where whitespace stands between
-the character and the line break and a statement follows (the line break is then
-whitespace of the style, and the next line joins it), where a comment follows
-the character on its line with no second U+2028 or U+2029 between them
-(mermaid.js removes such a comment as a comment line only because the character
-stands before it, and rejects a comment on the line of the style itself, so
-`style A fill:red %% c` is rejected), where whitespace and a directive follow
-the character on its line (the directive leaves the whitespace behind, so the
-text without the character is rejected where comment lines end the text, and the
-style takes the next statement into its text where one follows), where
-whitespace of another kind, a no-break space for instance, stands after it and
-no comment line removes it, and where the style holds a `;`. It stays as written
-also where a directive touches the character, though mermaid.js draws the same
-figure without it. Where a second U+2028 or U+2029, or whitespace, stands
-between the character and a directive and only comment lines follow the line of
-the directive, the first character stays and what stands after it up to the
-directive is printed as one space: `style A fill:red`, U+2028, U+2029, a
-directive, and a comment line are printed with `fill:red`, U+2028, a space, and
-the directive. Where a directive line or the end of the text follows instead,
-the line stays as written. A color before the dropped character is printed in
-lower case at once: `fill:#F9F` and U+2028 is printed `fill: #f9f`.
+`style A fill: red`. Where the line holds more after the character, or the text
+goes on with something other than comment lines, the output depends on what
+stands after the character on its line, and on what follows the line. The table
+gives it for a text that ends there or that comment lines follow (E), and for a
+text that a directive line or a statement follows, with a comment line before
+the statement or not (S). "Dropped" means that the character, a second one, and
+the whitespace after them are left out; where a character stays and whitespace
+stands between it and what follows on its line, that whitespace is printed as
+one space.
+
+| After the character on its line           | E: the text ends, or comment lines follow                                            | S: a directive line or a statement follows                                                                                                    |
+| ----------------------------------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| nothing                                   | dropped                                                                              | dropped; as written where whitespace stands after the character and a statement follows, and where a comment line and then a statement follow |
+| a no-break space                          | as written where the text ends; dropped before comment lines                         | as written                                                                                                                                    |
+| a comment, one character                  | the character stays                                                                  | as written                                                                                                                                    |
+| a comment, two characters                 | dropped, and the comment is printed on a line of its own                             | as written                                                                                                                                    |
+| a directive, one character                | the character stays                                                                  | as written                                                                                                                                    |
+| a directive, two characters               | as written; before comment lines, the first character stays and one space follows it | as written                                                                                                                                    |
+| a directive and a comment, one character  | the character stays                                                                  | as written                                                                                                                                    |
+| a directive and a comment, two characters | dropped, and the directive and the comment are printed on a line of their own        | as written                                                                                                                                    |
+
+A line that stays as written keeps the characters and the whitespace where they
+are, and a line whose style holds a `;` stays as written. The line stays where
+dropping the character could change what mermaid.js reads. A comment line is
+removed by mermaid.js after a U+2028 or U+2029 too, together with the whitespace
+in front of it, so a comment after one character is a comment line only because
+the character stands before it: mermaid.js rejects a comment on the line of the
+style itself, and `style A fill:red %% c` is rejected. A comment after a second
+character is a comment line whether the first character stays or not, and it is
+printed on a line of its own. A directive is removed before the text is read and
+leaves its whitespace behind: where comment lines end the text, the text without
+the character is rejected, and where a statement follows, the style takes the
+statement into its text, as it does after whitespace between the character and
+the line break and after a comment line. A directive that touches the character
+stays as written too, although mermaid.js draws the same figure without the
+character. A color before the dropped character is printed in lower case at
+once: `fill:#F9F` and U+2028 is printed `fill: #f9f`.
 
 [test: ER a style that no semicolon ends is printed without the U+2028 or U+2029
 that ends it, before a statement and at the end of the text] [test: ER a style
 that no semicolon ends is printed without the U+2028 that ends it before a
 directive line] [test: ER a style that no semicolon ends keeps the U+2028 that
 ends it before a comment line and a statement] [test: ER a style that no
-semicolon ends is printed without the U+2028 or U+2029 that ends it before a
-comment line at the end of the text] [test: ER a style that no semicolon ends is
-printed without the U+2028 that ends it before several comment lines at the end
-of the text] [test: ER a classDef that no semicolon ends is printed without the
-U+2029 and the space after it before a comment line at the end of the text]
-[test: ER a style that no semicolon ends keeps the U+2028 that whitespace and a
-statement follow] [test: ER a style that no semicolon ends keeps the U+2028 that
-a comment follows on its line] [test: ER a style that no semicolon ends keeps
-the U+2028 that whitespace and a directive follow on its line] [test: ER a style
-that no semicolon ends prints the characters after the first U+2028 as one space
-before a directive that comment lines follow] [test: ER a style that no
+semicolon ends keeps the U+2028 that whitespace and a statement follow] [test:
+ER a style that no semicolon ends is printed without the U+2028 or U+2029 that
+ends it before a comment line at the end of the text] [test: ER a style that no
+semicolon ends is printed without the U+2028 that ends it before several comment
+lines at the end of the text] [test: ER a classDef that no semicolon ends is
+printed without the U+2029 and the space after it before a comment line at the
+end of the text] [test: ER a style that no semicolon ends keeps the U+2028 that
+a no-break space follows] [test: ER a style that no semicolon ends keeps the
+U+2028 and the no-break space after it where the text ends] [test: ER a style
+that no semicolon ends is printed without the U+2028 and the no-break space
+after it before a comment line at the end of the text] [test: ER a terminator
+after U+2028 and whitespace of another kind is dropped with all of them] [test:
+ER a style that no semicolon ends keeps the U+2028 that a comment follows on its
+line] [test: ER a style that no semicolon ends prints two spaces between the
+U+2028 and a comment on its line as one space] [test: ER a style that no
+semicolon ends prints a tab between the U+2028 and a comment on its line as one
+space] [test: ER a style that no semicolon ends is printed without two U+2028 or
+U+2029 that a comment follows on its line] [test: ER a style that no semicolon
+ends keeps the two characters before a comment on their line that a statement
+follows] [test: ER a style that no semicolon ends keeps the U+2028 that
+whitespace and a directive follow on its line] [test: ER a style that no
+semicolon ends keeps the U+2028 that a directive touches] [test: ER a style that
+no semicolon ends prints two spaces between the U+2028 and a directive that
+comment lines follow as one space] [test: ER a style that no semicolon ends
+keeps the two characters before a directive that ends the text] [test: ER a
+style that no semicolon ends prints the characters after the first U+2028 as one
+space before a directive that comment lines follow] [test: ER a style that no
 semicolon ends keeps the two characters before a directive that a directive line
 follows] [test: ER a style that no semicolon ends keeps the two characters
-before a directive that ends the text] [test: ER a style that no semicolon ends
-keeps the U+2028 that a directive touches] [test: ER a style that no semicolon
-ends keeps the U+2028 that a no-break space follows] [test: ER a style that no
-semicolon ends is printed with its color in lower case once the U+2028 is
-dropped] [test: ER a terminator after U+2028 and whitespace of another kind is
-dropped with all of them] [test: ER a style that no semicolon ends is printed
-without two U+2028 or U+2029 that a comment follows on its line] [test: ER a
-classDef that no semicolon ends is printed without U+2029 and U+2028 before a
-directive and a comment at the end of the text] [test: ER a style that no
-semicolon ends is printed without the U+2028 and the no-break space after it
-before a comment line at the end of the text]
+before a directive that a statement follows] [test: ER a style that no semicolon
+ends keeps the two characters before a directive that a comment line and a
+statement follow] [test: ER a style that no semicolon ends prints two spaces
+between the U+2028 and a directive and a comment on their line as one space]
+[test: ER a classDef that no semicolon ends is printed without U+2029 and U+2028
+before a directive and a comment at the end of the text] [test: ER a style that
+no semicolon ends keeps the two characters before a directive and a comment that
+a statement follows] [test: ER a style that no semicolon ends is printed with
+its color in lower case once the U+2028 is dropped]
 
 mermaid.js keeps a U+2028 or U+2029 that directly follows the last style in the
 text of that style, and draws the same figure without it, so the Db of the
