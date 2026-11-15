@@ -644,14 +644,13 @@ mermaid.js は、`accTitle`、`accDescr`、`direction`、`click`、`call`、
 そのため、文がこれらの id か、`direction` で終わる id で終わり、
 次の文との間を `;` が区切るときは、文を行にまとめ、`;` をその位置に残します。
 文の中の空白は通常どおり整形します。
+[1 行に 1 文](./flowchart.ja.md#1-行に-1-文)を参照してください。
 
 [fixture: flowchart/statements-one-per-line/semicolon-after-word-kept]
 [fixture: flowchart/statements-one-per-line/semicolon-after-link-to-word-kept]
 [corpus fixture: flowchart/lex-acc-title-semicolon-before-colon]
 [corpus fixture: flowchart/lex-direction-line-semicolon-before-value]
 [corpus fixture: flowchart/lex-call-keyword-semicolon]
-
-[1 行に 1 文](./flowchart.ja.md#1-行に-1-文)を参照してください。
 
 そのような行の最後の `;` を印字が落とすかどうかは、
 印字した行で規則が無視する `;` がどれかを決めます。
@@ -3967,10 +3966,9 @@ mermaid.js はディレクティブを取り除き、その両側のテキスト
 mermaid.js の行の規則が隙間の空白を読む可能性のある所と、
 ディレクティブが印字行の先頭か末尾にある所では、隙間の空白の有無を保ち、
 空白の連続は空白 1 つにします。
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)を参照してください。
 
 [fixture: flowchart/directives/line-edge-whitespace]
-
-[ディレクティブ](./flowchart.ja.md#ディレクティブ)を参照してください。
 
 ## コメントやディレクティブの前後の構造の継続行
 
@@ -4086,14 +4084,13 @@ mermaid.js は、`style`、続いて空白をはさまずに `#` が後に続く
 そのため、文を区切る `;` と文の終わりの `;` 以外の `;` を含む行は、
 規則が当てはまるかどうかにかかわらず、文を行に残し、`;` をその位置に残します。
 規則はほかのトークンの間の空白を読まないので、そこは通常どおり整形します。
+[1 行に 1 文](./flowchart.ja.md#1-行に-1-文)を参照してください。
 
 [fixture: flowchart/statements-one-per-line/line-with-semicolon-kept]
 [fixture: flowchart/statements-one-per-line/compat-semicolon-in-label-without-style-kept]
 [fixture: sequence/comments/semicolon-after-comment-kept]
 [fixture: class/labels/semicolon-line-kept]
 [fixture: state/descriptions-and-labels/semicolon-line-kept]
-
-[1 行に 1 文](./flowchart.ja.md#1-行に-1-文)を参照してください。
 
 行の規則が無視する `;` の後ろの、行末までの空白は印字しません。
 印字した行が、2 回目の整形が読む行と同じになるようにするためです。
@@ -4512,12 +4509,11 @@ mermaid.js は、字句解析器がテキストを読む前に、コメント行
 値がコメント行の後の行にある `direction` も同じです。
 例は `accTitle:direction`、コメント行、`TB` です。
 flowchart と ER 図で同じです。
+[字下げ](./flowchart.ja.md#字下げ)を参照してください。
 
 [fixture: flowchart/indentation/direction-text-split-by-ignored-semicolon-kept]
 [fixture: flowchart/indentation/direction-text-value-after-comment-line-kept]
 [fixture: er/indentation/direction-text-split-by-ignored-semicolon-kept]
-
-[字下げ](./flowchart.ja.md#字下げ)を参照してください。
 
 印字器が 1 行に保つ行で、先頭の桁から中身のある説明ブロックで始まり、
 同じ区間のブロックの後ろに direction の文がある行は、字下げも元のまま保ちます。
@@ -4576,10 +4572,9 @@ sequence のメッセージは、矢印の両側に空白を 1 つずつ置き�
 `title->>B: x` の `title ->> B: x` はタイトルです（仕様の
 [文の文脈](../../spec/docs/diagrams/sequence.ja.md#文の文脈)）。
 そうしたメッセージは、矢印の両側を接したままにします。
+[矢印の前後の空白](./sequence.ja.md#矢印の前後の空白)を参照してください。
 
 [fixture: sequence/arrow-spacing/touching-before-read-otherwise-kept]
-
-[矢印の前後の空白](./sequence.ja.md#矢印の前後の空白)を参照してください。
 
 ## central 接続のある sequence のメッセージ
 
@@ -4607,6 +4602,7 @@ sequence 図で対象にする版のすべてで同じに描かれました。
 `A ()   <<->> B` は書かれたまま残し、
 その空白にディレクティブがあっても同じです。
 矢印の後の空白は、どの版でも問題になりません。
+[矢印の前後の空白](./sequence.ja.md#矢印の前後の空白)を参照してください。
 
 [fixture: sequence/arrow-spacing/parentheses-then-bidirectional-arrow-gap-kept]
 [fixture: sequence/arrow-spacing/bidirectional-arrow-gap-before-kept]
@@ -4618,8 +4614,6 @@ sequence 図で対象にする版のすべてで同じに描かれました。
 [fixture: sequence/arrow-spacing/touching-with-comment-line-kept]
 [fixture: sequence/arrow-spacing/minus-before-arrow-like-target-spaced]
 [corpus fixture: sequence/spec-sequence-diagram-c8d8bf08]
-
-[矢印の前後の空白](./sequence.ja.md#矢印の前後の空白)を参照してください。
 
 ## 複数行の sequence の文
 
@@ -4638,10 +4632,9 @@ sequence 図では、改行の前に空白があると、文は次の行に続�
 全体を原文のまま残します。
 コメント行は mermaid.js がテキストを読む前に取り除かれるので、
 その次の行がタイトルになります。
+[複数行の文](./sequence.ja.md#複数行の文)を参照してください。
 
 [fixture: sequence/title/comment-line-kept]
-
-[複数行の文](./sequence.ja.md#複数行の文)を参照してください。
 
 ## コメントの後の空白だけの行
 
@@ -4688,22 +4681,20 @@ class の属性、注釈、メソッドの各値とジェネリック型の内�
 
 `;` を含む行では、ラベルの `:` の後に空白があるかどうかを書かれたまま残します。
 mermaid.js の行単位の規則は、`:` の直後から `#` までのテキストを読むからです。
-
-[fixture: class/labels/semicolon-line-kept]
-
 [ラベル](./class.ja.md#ラベル)と[メンバーの行](./class.ja.md#メンバーの行)
 を参照してください。
+
+[fixture: class/labels/semicolon-line-kept]
 
 ## 閉じていないバッククォートの名前
 
 閉じていないバッククォートの名前は、末尾の空白と改行を含めて、
 テキストの終わりまで続きます。
 テキストの終わりまで書かれたまま印字し、後に改行を足しません。
-
-[fixture: class/unclosed-backquoted-names/kept]
-
 [閉じていないバッククォートの名前](./class.ja.md#閉じていないバッククォートの名前)
 を参照してください。
+
+[fixture: class/unclosed-backquoted-names/kept]
 
 ## 説明ブロックの字下げ
 
@@ -4770,12 +4761,11 @@ state 図では、`scale`、`classDef`、`class`、`style`、`state`、`note`、
 `scale-->B` のように矢印の両側を接したまま残し、
 その id の後の説明は `:` を接したまま残します。
 `scale -->B` と `style :x` は拒否されるからです。
+[矢印の前後の空白](./state.ja.md#矢印の前後の空白)を参照してください。
 
 [fixture: state/arrow-spacing/touching-before-keyword-kept]
 [fixture: state/arrow-spacing/compat-keyword-ids-transition]
 [fixture: state/descriptions-and-labels/compat-keyword-ids-description]
-
-[矢印の前後の空白](./state.ja.md#矢印の前後の空白)を参照してください。
 
 ## state のノート、別名、名前
 
@@ -4848,6 +4838,9 @@ Mermaid はこの余白を取り除くため、mermaid.js の素の Db は一致
 [fixture: state/statements-one-per-line/state-names-kept]
 
 `{` の直前の `%%` と空の説明ブロックは、`{` まで書かれたまま残します。
+[ノート](./state.ja.md#ノート)、[別名](./state.ja.md#別名)、
+[1 行に 1 文](./state.ja.md#1-行に-1-文)、
+[複合状態](./state.ja.md#複合状態) を参照してください。
 
 [fixture: state/composite-states/compat-comment-after-name-before-body]
 [fixture: state/composite-states/compat-comment-line-before-body]
@@ -4855,19 +4848,14 @@ Mermaid はこの余白を取り除くため、mermaid.js の素の Db は一致
 [fixture: state/composite-states/empty-block-before-body-kept]
 [corpus fixture: state/gram-ignored-state-comment-before-brace]
 
-[ノート](./state.ja.md#ノート)、[別名](./state.ja.md#別名)、
-[1 行に 1 文](./state.ja.md#1-行に-1-文)、
-[複合状態](./state.ja.md#複合状態) を参照してください。
-
 ## 行区切り文字を含む state の行
 
 state 図では、U+2028 か U+2029 を含む行は書かれたまま残します。
 mermaid.js は擬似状態の印、方向の行、`{` の前の 2 つ目の名前を探すとき、
 これらの文字で止まりますが、プラグインはこれらを空白として読むからです。
+[行区切り文字](./state.ja.md#行区切り文字)を参照してください。
 
 [corpus fixture: state/lex-pseudostate-mark-after-line-separator]
-
-[行区切り文字](./state.ja.md#行区切り文字)を参照してください。
 
 ## 置かれた場所や空白で読みが決まる ER の行
 
@@ -6431,12 +6419,10 @@ CSS 宣言の最初のコロンの前後の空白は、
 説明本文は[説明ブロックの字下げ](#説明ブロックの字下げ)に従い、
 文字と改行を保ちながら普通の行頭の字下げと独立した閉じ波括弧をそろえます。
 コメントだけの本文も同じ本文・閉じ括弧の配置にします。
-
-[fixture: usecase/direction-and-accessibility/a11y-comment-empty-tabs]
-
 [usecase の規則](./usecase.ja.md#direction-and-accessibility)
 を参照してください。
 
+[fixture: usecase/direction-and-accessibility/a11y-comment-empty-tabs]
 [fixture: usecase/direction-and-accessibility/a11y-padding]
 [fixture: usecase/direction-and-accessibility/a11y-closer-aligned]
 

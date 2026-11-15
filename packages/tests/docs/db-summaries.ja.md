@@ -371,19 +371,17 @@ lollipop の関係が作るインターフェース（描画が描く）です�
   です。
 - `classes[].haveCallback` は保つ。
   flowchart と違い、`setClickEvent` はどの `securityLevel` でもこれを付ける。
-
-  [fixture: class/config-security-level-loose-click]
-
   [`setClickEvent`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classDb.ts#L434-L444)
   を参照。
+
+  [fixture: class/config-security-level-loose-click]
 
 - `classes[].link` は書かれたとおりの URL（trim 済み）、
   `classes[].linkTarget` は書かれた target か `_blank` で、
   どの `securityLevel` でも同じ。
+  [expected-results.ja.md](./expected-results.ja.md) を参照。
 
   [fixture: class/config-security-level-loose-click]
-
-  [expected-results.ja.md](./expected-results.ja.md) を参照。
 
 ## state
 
@@ -481,6 +479,7 @@ Db はほかに 2 つの形を持ちますが、どちらも要約しません�
 mermaid.js が文字を置き換えるのでなければ同じです。
 ほかの `securityLevel` で HTML ラベルが有効なときは、状態のラベルと説明、
 note のテキスト、遷移のラベルが置き換えた文字を持ちます。
+[db-from-tree.ja.md](./db-from-tree.ja.md) の文字の置き換えを参照。
 
 [fixture: state/config-security-level-sandbox-click]
 [fixture: state/config-look-hand-drawn]
@@ -488,8 +487,6 @@ note のテキスト、遷移のラベルが置き換えた文字を持ちます
 [fixture: state/config-security-level-other-description]
 [fixture: state/config-security-level-other-note]
 [fixture: state/config-security-level-other-transition-label]
-
-[db-from-tree.ja.md](./db-from-tree.ja.md) の文字の置き換えを参照。
 
 ## er
 
@@ -1102,11 +1099,10 @@ Db は、
 - コールバックを結び付ける呼び出し。
   Db は関数名と引数をクロージャーに持ち、`securityLevel: loose` のときだけです。
   パッチは、文法が行った呼び出しをそれぞれ記録します。
+  `src/normalizers/click-calls.ts` を参照。
 
   [fixture: gantt/config-security-level-loose-click-call]
   [fixture: gantt/config-security-level-antiscript-click-call]
-
-  `src/normalizers/click-calls.ts` を参照。
 
 `weekend` には getter がありません。
 それを使うメソッド
@@ -1910,11 +1906,10 @@ Db はブラウザの機能も、時刻も、乱数も読まず、構文にリ�
 - `nodeId`、`descr`、`icon`、`class` は `sanitizeText` を通ります。
   `securityLevel` が mermaid.js の値のどれでもなく、HTML のラベルが有効なら、
   文字を置き換えたものを持ちます。
+  [db-from-tree.md](./db-from-tree.md) の文字の置き換えを参照。
 
   [fixture: mindmap/config-security-level-other-texts]
   [fixture: mindmap/config-security-level-other-html-labels-false]
-
-  [db-from-tree.md](./db-from-tree.md) の文字の置き換えを参照。
 
 値は、空白を含めて Db が持つままで記録します。
 
@@ -19313,14 +19308,13 @@ flow の種類からレイアウトの `containerType` を作る。
 `animate` と `animation` は block 専用の昇格フィールドである。
 icon と image の設定は metadata に残り、
 flowchart の asset フィールドへは昇格しない。
+[embedded-data.ja.md](./embedded-data.ja.md) を参照。
 
 [fixture: agentflow/db-data-block-routing]
 [fixture: agentflow/db-data-block-presentation-metadata]
 [fixture: agentflow/gram-edge-id]
 [fixture: agentflow/docs-syntax-agentflow-69451cfd]
 [fixture: agentflow/db-flow-collapse]
-
-[embedded-data.ja.md](./embedded-data.ja.md) を参照。
 
 metadata の非有限数は配列や mapping 内も再帰的に、
 共通の `numberOrText()` の規則で文字列 `"Infinity"`、`"-Infinity"`、

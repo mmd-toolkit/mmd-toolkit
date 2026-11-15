@@ -356,6 +356,8 @@ mermaid.js がそれを 1 つの名前として読むからです。
   `style r fi%%{init: {}}%%ll:red` のスタイルは `fill:red` で、
   mermaid.js と同じです。
   スタイルはその単位のテキストをつないだものだからです。
+  [RequirementLiteral](../ast/requirement.ja.md#requirementliteral)
+  を参照してください。
 
   [fixture: requirement/lex-directive-in-name]
   [fixture: requirement/lex-directive-in-target]
@@ -370,9 +372,6 @@ mermaid.js がそれを 1 つの名前として読むからです。
   [fixture: requirement/lex-directive-in-acc-descr-block]
   [fixture: requirement/lex-directive-in-direction-text]
   [fixture: requirement/lex-directive-in-style]
-
-  [RequirementLiteral](../ast/requirement.ja.md#requirementliteral)
-  を参照してください。
 
 - 2 つの単位の間のディレクティブは、単位の種類によらず許されます。
   `requirement r%%{init: {}}%%{`、`id:%%{init: {}}%% 1`、
@@ -492,6 +491,7 @@ mermaid.js がそれを 1 つの名前として読むからです。
 `class r`・改行・`"style:#x",c;d` は r にクラス `style:#x` と `cd` を与えます。
 それ以外の単位（キーワードや区切りを含む）の中では入力を拒否させ、
 mermaid.js は 2 つの部分を 1 つとして読みます。
+[既知の差異](#既知の差異) を参照してください。
 
 [fixture: requirement/tokens-ignored-semicolon-in-name]
 [fixture: requirement/tokens-ignored-semicolon-in-class-list-next-line]
@@ -506,8 +506,6 @@ mermaid.js は 2 つの部分を 1 つとして読みます。
 [fixture: requirement/tokens-ignored-semicolon-in-direction-text]
 [fixture: requirement/tokens-ignored-semicolon-first-of-two-in-style]
 [fixture: requirement/div-ignored-semicolon-in-relationship-keyword]
-
-[既知の差異](#既知の差異) を参照してください。
 
 ### 文の文脈
 

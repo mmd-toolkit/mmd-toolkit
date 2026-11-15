@@ -225,11 +225,10 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 - `san%%{init: {}}%%key` と `sankey-%%{init: {}}%%beta` では、
   ディレクティブはヘッダーのキーワードの中にあります。
   入力は拒否され、mermaid.js は 2 つの部分を 1 つとして読んで受理します。
+  [既知の差異](#既知の差異) を参照してください。
 
   [fixture: sankey/div-directive-in-header-keyword]
   [fixture: sankey/div-directive-in-beta-header-keyword]
-
-  [既知の差異](#既知の差異) を参照してください。
 
 **単位の間のトリビア。**
 [common.ja.md](../common.ja.md) のトリビアは、
@@ -381,11 +380,10 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 この図種には図のコメントがありません。
 その字句解析器は `%%` と `#` を欄か文字列の文字として読みます。
 コメント行は字句解析器がテキストを読む前に取り除かれます。
+[単位の間のトリビア](#単位の中のディレクティブ) を参照してください。
 
 [fixture: sankey/db-text-percent-in-field]
 [fixture: sankey/db-text-hash-leading] [fixture: sankey/db-comment-line]
-
-[単位の間のトリビア](#単位の中のディレクティブ) を参照してください。
 
 ## 文法
 
@@ -512,12 +510,11 @@ mermaid.js の Db は、その文法が受理するどの入力でも例外を�
   そうした行の後の空白だけの行は、ここではコメントか何もないもので、
   mermaid.js は入力を拒否します。
   その字句解析器が `%%` をヘッダーの前の欄として読むからです。
+  [検出](#検出) を参照してください。
 
   [fixture: sankey/header-after-bare-percent-line]
   [fixture: sankey/header-after-empty-braces-line]
   [fixture: sankey/header-after-bare-percent-line-and-whitespace-line]
-
-  [検出](#検出) を参照してください。
 
 - **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.ja.md)。**
   フロントマターに `title: <a` があると、

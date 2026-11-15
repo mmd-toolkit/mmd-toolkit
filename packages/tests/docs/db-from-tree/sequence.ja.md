@@ -88,12 +88,12 @@ id を挙げるどの文も同じです。
 `note over A: a#amp;b` のテキストは `aﬂ°amp¶ßb` で、`as` の後の説明、
 ブロックのテキスト、色の後の箱の名前も同じです。
 タイトルとアクセシビリティの値も同じです。
+**タイトル** を参照。
 
 [fixture: sequence/db-note-text-entity]
 [fixture: sequence/db-participant-alias-entity]
 [fixture: sequence/db-block-text-entity] [fixture: sequence/db-box-text-entity]
 
-**タイトル** を参照。
 テキストの変換した形は、
 HTML 属性の値の引用符も `'`
 にします（[HTML 属性の引用符](../../../spec/docs/common.ja.md#html-属性の引用符)
@@ -237,14 +237,13 @@ id、説明、種類、データブロックを持つ参加者を加えると、
 種類が `participant` で、id を説明とする参加者を加え、
 `createdActors` に記録します。
 `destroyedActors` には何も記録せず、`create` の後の検査が当てはまります。
+[文法の外での拒否](../../../spec/docs/diagrams/sequence.ja.md#文法の外での拒否)
+を参照。
 
 [fixture: sequence/gram-create-destroy]
 [fixture: sequence/db-create-destroy-then-destroy]
 [fixture: sequence/gram-create-destroy-without-message]
 [fixture: sequence/gram-create-destroy-existing]
-
-[文法の外での拒否](../../../spec/docs/diagrams/sequence.ja.md#文法の外での拒否)
-を参照。
 
 **メッセージ。**
 メッセージの文は、`messages` に項目を 1 つ加えます。

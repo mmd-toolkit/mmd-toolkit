@@ -982,11 +982,10 @@ mermaid.js と同じく拒否されます。
 mermaid.js はそれを受理します。
 mermaid.js は `end%%{init: {}}%%x` をキーワード `end` でなく頂点 `endx` と読み、
 ここではディレクティブは名前の中にあります。
-
-[fixture: common/directive-keyword-followed-by-text]
-
 [`directive-as-token-boundary`](./known-divergences/directive-as-token-boundary.ja.md)
 を見てください。
+
+[fixture: common/directive-keyword-followed-by-text]
 
 コメント行の上で `%%` の後にあるディレクティブはコメントの一部で、
 `%%` の前にあるものはそうではありません（[コメント行](#コメント行) を参照）。
@@ -1404,6 +1403,8 @@ class はそのような行の後の空白だけの行を `newline` の単位と
 `%%{init: {}}%%sequenceDiagram` は sequence です。
 `flow%%{init: {}}%%chart LR` は flowchart として検出され、その後、
 ディレクティブがヘッダーのキーワードの中にあるために拒否されます。
+[`directive-as-token-boundary`](./known-divergences/directive-as-token-boundary.ja.md)
+を参照してください。
 
 [fixture: common/leading-trivia-before-header]
 [fixture: common/leading-whitespace-before-header]
@@ -1415,9 +1416,6 @@ class はそのような行の後の空白だけの行を `newline` の単位と
 [fixture: common/directive-in-header-whitespace]
 [fixture: common/detect-directive-adjacent-before-header]
 [fixture: common/directive-in-header-keyword]
-
-[`directive-as-token-boundary`](./known-divergences/directive-as-token-boundary.ja.md)
-を参照してください。
 
 すべての実際の図より前に、2 つの疑似図種が登録されています。
 
@@ -1897,6 +1895,7 @@ sequence では、`A->>B: x #a`、ディレクティブ、
 メッセージは `x` と `y` です。
 sequence では、メッセージのテキストは `#` の手前で終わり、
 `#` からは行の残りを取る図のコメントになるからです。
+[文の文脈](./diagrams/sequence.ja.md#文の文脈) を参照してください。
 
 [fixture: common/entity-hash-inside-word-second-hash-starts]
 [fixture: common/entity-double-hash]
@@ -1913,8 +1912,6 @@ sequence では、メッセージのテキストは `#` の手前で終わり、
 [fixture: common/entity-directive-before-semicolon-in-message]
 [fixture: common/entity-two-directives-before-semicolon-in-message]
 [fixture: common/entity-not-across-comment-line-in-message]
-
-[文の文脈](./diagrams/sequence.ja.md#文の文脈) を参照してください。
 
 字句の規則: 字句解析器は、エンティティをそのプレースホルダとして読みます。
 語が ASCII の数字だけからなる場合、`#` _語_ `;` を `ﬂ°°` _語_ `¶ß` として読み、

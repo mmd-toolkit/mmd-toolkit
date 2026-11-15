@@ -1023,10 +1023,9 @@ mermaid.js も拒否します。
 3. その種類の文字（破線は `-`、太線は `=`、点線は `.`）以外の 1 文字、または、
    破線の文脈では、`-` が後に続かない `-`: `link-text-char` の単位。
    エンティティのプレースホルダは、1 つのそのような単位です。
+   [エンティティ](../common.ja.md#エンティティ) を参照してください。
 
    [fixture: flowchart/lex-link-text-double-dash]
-
-   [エンティティ](../common.ja.md#エンティティ) を参照してください。
 
 そのため、破線のリンクのテキストの中の `--` は、
 リンクを閉じるのでなければ拒否されます。
@@ -1851,11 +1850,10 @@ id は `subGraph0` です。
 区切りが続かないブロックは文の中にあります。
 `A accDescr {} B` は両方が拒否し、mermaid.js が受理する `A accDescr {}-->B` は、
 既知の差異 `tokenless-empty-forms` です。
+[既知の差異](#既知の差異) を参照してください。
 
 [fixture: flowchart/gram-empty-description-block-then-vertex]
 [fixture: flowchart/gram-empty-description-block-before-link]
-
-[既知の差異](#既知の差異) を参照してください。
 
 方向のあるヘッダーにも区切りが要ります。
 `;` か、前に空白だけがある改行です（[図と文](#図と文) を参照）。
@@ -1940,10 +1938,9 @@ data             = ( data-start ( data-text | data-quote )* "}" )+
 - `A%%{init: {}}%%B-->C` は拒否されます。
   mermaid.js はそれに頂点 `AB` を与えます。
   ディレクティブは、名前の単位である id の並び `AB` の中にあります。
+  [単位の中のディレクティブ](#単位の中のディレクティブ) を参照してください。
 
   [fixture: flowchart/div-directive-in-id]
-
-  [単位の中のディレクティブ](#単位の中のディレクティブ) を参照してください。
 
 - id とその形の間に空白を置くことはできません。
   `A [x]` は拒否されます。
@@ -2373,12 +2370,11 @@ name                 = ( number | letter | id-run | "v" | "-" | "," | ":" | "&" 
 そこの空白を含めて始まり、空白でない最後の文字で終わります。
 `style A fill:#f00 ,  stroke:#333 ` のスタイルは、`fill:#f00` と、
 空白 2 つの後の `stroke:#333` で、すべて空白のスタイルは null です。
+[ast/flowchart.ja.md](../ast/flowchart.ja.md#flowchartstylestatement)
+を参照してください。
 
 [fixture: flowchart/db-style-written-text-whitespace]
 [fixture: flowchart/db-style-whitespace-only]
-
-[ast/flowchart.ja.md](../ast/flowchart.ja.md#flowchartstylestatement)
-を参照してください。
 
 `classDef` の文では、図のテキストで `\` の直後にある `,` は、
 木の 2 つのスタイルを分けません。
@@ -2498,6 +2494,7 @@ mermaid.js と同じです。
 ブロックが文の最後の単位の後にある `A accDescr {}` は、
 頂点の文と説明のブロックの文です。
 一方、ブロックが文の中にある `A accDescr {}-->B` は拒否されます。
+[アクセシビリティの値](#アクセシビリティの値) を参照してください。
 
 [fixture: flowchart/gram-acc-descr-block-empty]
 [fixture: flowchart/gram-acc-descr-block-empty-then-statement]
@@ -2505,7 +2502,6 @@ mermaid.js と同じです。
 [fixture: flowchart/gram-empty-description-block-after-vertex]
 [fixture: flowchart/gram-empty-description-block-before-link]
 
-[アクセシビリティの値](#アクセシビリティの値) を参照してください。
 タイトルは、`;` と `#` を含めて行の残りです。
 `accTitle: a;b #c` のタイトルは `a;b #c` です。
 
@@ -2900,8 +2896,7 @@ mermaid.js は、文法が受理する入力の一部を、Db を作る途中で
   ヘッダーの前の `%%` だけの行や `%%{ }%%` の行は、ここではコメントです。
   mermaid.js は入力を拒否します。
   flowchart の字句解析器が `%%` をヘッダーの前の id として読むからです。
+  [検出](#検出) を参照してください。
 
   [fixture: flowchart/header-after-bare-percent-line]
   [fixture: flowchart/header-after-empty-braces-line]
-
-  [検出](#検出) を参照してください。

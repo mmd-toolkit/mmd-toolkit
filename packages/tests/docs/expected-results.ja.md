@@ -131,11 +131,11 @@ URL を書かれたとおり（trim 済み）に保存させます。
 [`FlowDB.setLink`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L579-L588)
 です。
 class 図の Db も同じことをします。
+[`ClassDB.setLink`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classDb.ts#L404-L425)
+を参照。
 
 [fixture: class/db-click-link-javascript-url-as-written]
 
-[`ClassDB.setLink`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classDb.ts#L404-L425)
-を参照。
 さらに `securityLevel: sandbox` のときはリンクの target を `_top` にします。
 そのパッチは、ほかの値のときと同じく、
 書かれた target（なければ `_blank`）を保存させます。

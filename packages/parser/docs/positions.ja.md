@@ -162,6 +162,8 @@ ESTree の木をたどる道具はこれを前提にします。
   無視される `;` の隣にあるところ、
   前のトークンが始めた値を続けるトークンの始まりだけである。
   最後のものは、flowchart のラベルが始める文字列の後のテキストなどである。
+  [トークン](./tokens.ja.md#トークン) と、
+  [flowchart のトークン](./tokens/flowchart.ja.md#トークン) を参照。
 
   [fixture: class/db-generic-spaces]
   [fixture: flowchart/tokens-directive-label-space-after]
@@ -169,16 +171,13 @@ ESTree の木をたどる道具はこれを前提にします。
   [fixture: class/tokens-style-ignored-semicolon-after-space]
   [fixture: flowchart/gram-label-string-then-text]
 
-  [トークン](./tokens.ja.md#トークン) と、
-  [flowchart のトークン](./tokens/flowchart.ja.md#トークン) を参照。
   空白だけのトークンは、それが属する値に属するトークンが直後に続くところでも、
   空白で終わりうる。
   sequence の箱のテキストの、色の候補と残りの間の空白がそうである。
+  [sequence のトークン](./tokens/sequence.ja.md#トークン) を参照。
 
   [fixture: sequence/tokens-box-text-space-between-parts]
   [fixture: sequence/db-box-colour-then-spaces-and-line-separator]
-
-  [sequence のトークン](./tokens/sequence.ja.md#トークン) を参照。
 
 - コメントは、どのトークンの外にもある。
 
@@ -225,23 +224,21 @@ ESTree の木をたどる道具はこれを前提にします。
   すべて空白の
   [FlowchartLabel](../../spec/docs/ast/flowchart.ja.md#flowchartlabel) は、
   その空白のトークンを持つ。
+  [error 疑似図種のトークン](./tokens.ja.md#error-疑似図種のトークン) と、
+  [flowchart のトークン](./tokens/flowchart.ja.md#トークン) を参照。
 
   [fixture: common/error-split-by-directive]
   [fixture: flowchart/gram-label-space]
-
-  [error 疑似図種のトークン](./tokens.ja.md#error-疑似図種のトークン) と、
-  [flowchart のトークン](./tokens/flowchart.ja.md#トークン) を参照。
 
 - ノードの範囲は、その子のノードの範囲を覆う。
   ノードの子のノードは重ならない。
   文書がそうでないと述べるノードを除き、子の欄の順に、
   各一覧はその中の順に取ると、子のノードはソースの順に並ぶ。
+  [ノード](../../spec/docs/ast.ja.md#ノード) を参照。
 
   [fixture: flowchart/gram-data-consecutive-blocks]
   [fixture: flowchart/gram-pipe-label-space-after]
   [fixture: flowchart/db-arrow-dash-head-length]
-
-  [ノード](../../spec/docs/ast.ja.md#ノード) を参照。
 
 - `raw` を持つノード、つまり StringLiteral と NumericLiteral の `raw` は、
   その範囲のソースのテキストに等しい。
@@ -254,14 +251,13 @@ ESTree の木をたどる道具はこれを前提にします。
   コメントとディレクティブは少なくともその印を含む。
   空として読む値でトークンを持つのは、sankey 図の空白だけの欄だけである。
   これはノードを作るので、その空白のトークンを持つ。
+  [sankey のトークン](./tokens/sankey.ja.md#トークン) を参照。
 
   [fixture: flowchart/gram-acc-title-empty-at-end]
   [fixture: flowchart/tokens-rawtext-comment-line-then-closing-bracket]
   [fixture: class/lex-bare-percent-line-between-statements]
   [fixture: common/directive-empty-argument]
   [fixture: sankey/db-spaces-only-target-id]
-
-  [sankey のトークン](./tokens/sankey.ja.md#トークン) を参照。
 
 2 つ目の条件はソースのテキストについてのものです。
 `Token.value` と、どのコメント、ディレクティブ、フロントマターのテキストも、
