@@ -280,3 +280,43 @@ export function styleDbForFormattingComparison(
       : printed
   }) as DbSummary
 }
+
+/**
+ * Checks the styles of a formatted ER diagram even though the printer left a
+ * U+2028 or U+2029 out of the end of one. mermaid.js keeps the character in
+ * the text of the last style when no whitespace stands before it, and the
+ * printer drops it together with the `;` that ends the statement where a
+ * comment line follows, since the `;` alone cannot be dropped there
+ * (docs/er.md, Semicolons at the end of a style statement). The figure is the
+ * same without the character (docs/compatibility.md, Whitespace at the end of
+ * a style). A style whose text differs from the written one only by those
+ * characters and the spaces and tabs among them at its end is restored from
+ * the written Db.
+ */
+export function styleEndSeparatorDbForFormattingComparison(
+  before: DbSummary | null,
+  after: DbSummary | null,
+): DbSummary | null {
+  if (before === null || after === null) return after
+  return restoreStrings(before, after, (written, printed, path) => {
+    const key = path.at(-1)
+    return (key === "cssStyles" || key === "styles") &&
+      withoutEndSeparators(written) === printed
+      ? written
+      : printed
+  }) as DbSummary
+}
+
+/** The text without the U+2028, U+2029, spaces, and tabs at its end. */
+function withoutEndSeparators(text: string): string {
+  let end = text.length
+  while (
+    end > 0 &&
+    (text[end - 1] === "\u2028" ||
+      text[end - 1] === "\u2029" ||
+      text[end - 1] === " " ||
+      text[end - 1] === "\t")
+  )
+    end--
+  return text.slice(0, end)
+}
