@@ -6091,7 +6091,7 @@ describe("style semicolons", () => {
     [
       "ER a terminator after spaces and tabs is dropped before a comment line at the end of the text",
       "erDiagram\nA\nstyle A fill:red\u2028 ;\n%% c\nclassDef c fill:red\u2029\t;\n%% d\n",
-      "erDiagram\n  A\n  style A fill: red\n  %% c\n  classDef c fill:red\u2029\n  %% d\n",
+      "erDiagram\n  A\n  style A fill: red\n  %% c\n  classDef c fill: red\n  %% d\n",
     ],
     [
       "flowchart a line feed before U+2028 ended the style, so the terminator is dropped",
@@ -6141,12 +6141,12 @@ describe("style semicolons", () => {
     [
       "ER a vertical tab after U+2028 is no text of the style before a comment line at the end of the text",
       "erDiagram\nA\nstyle A fill:red\u2028\u000b;\n%% c\n",
-      "erDiagram\n  A\n  style A fill:red\u2028\n  %% c\n",
+      "erDiagram\n  A\n  style A fill: red\n  %% c\n",
     ],
     [
       "ER a form feed after U+2028 is no text of the classDef before a comment line at the end of the text",
       "erDiagram\nA:::c\nclassDef c fill:red\u2028\u000c;\n%% d\n",
-      "erDiagram\n  A:::c\n  classDef c fill:red\u2028\n  %% d\n",
+      "erDiagram\n  A:::c\n  classDef c fill: red\n  %% d\n",
     ],
     [
       "ER a vertical tab and a form feed after U+2028 go with the terminator before a comment line and a statement",
@@ -6161,7 +6161,7 @@ describe("style semicolons", () => {
     [
       "ER directive line then a statement after a style terminator",
       "erDiagram\nA\nstyle A fill:coral\u2028;\n%%{init: {}}%%\nx\n",
-      "erDiagram\n  A\n  style A fill:coral\u2028\n  %%{init: {}}%%\n  x\n",
+      "erDiagram\n  A\n  style A fill: coral\n  %%{init: {}}%%\n  x\n",
     ],
     [
       "ER an unclosed directive line before a comment line",
@@ -6231,17 +6231,22 @@ describe("style semicolons", () => {
     [
       "ER directive lines, direct statements, NBSP controls",
       "erDiagram\nA\nstyle A fill:coral\u2028;\n%%{init: {}}%%\nx\nclassDef c fill:coral\u2029;\n%%{init: {}}%%\ny\nstyle A fill:coral\u2028 ;\nz\nclassDef d fill:coral\u2029;\nu\nstyle A fill:coral\u00a0;\n%% c\nv\nclassDef e fill:coral\u00a0;\n%% c\nw\n",
-      "erDiagram\n  A\n  style A fill:coral\u2028\n  %%{init: {}}%%\n  x\n  classDef c fill:coral\u2029\n  %%{init: {}}%%\n  y\n  style A fill:coral\u2028\n  z\n  classDef d fill:coral\u2029\n  u\n  style A fill: coral\u00a0\n  %% c\n  v\n  classDef e fill: coral\u00a0\n  %% c\n  w\n",
+      "erDiagram\n  A\n  style A fill: coral\n  %%{init: {}}%%\n  x\n  classDef c fill: coral\n  %%{init: {}}%%\n  y\n  style A fill: coral\n  z\n  classDef d fill: coral\n  u\n  style A fill: coral\u00a0\n  %% c\n  v\n  classDef e fill: coral\u00a0\n  %% c\n  w\n",
     ],
     [
       "ER style comment at EOF control",
       "erDiagram\nA\nstyle A fill:coral\u2028;\n%% c\n",
-      "erDiagram\n  A\n  style A fill:coral\u2028\n  %% c\n",
+      "erDiagram\n  A\n  style A fill: coral\n  %% c\n",
     ],
     [
       "ER classDef comment at EOF control",
       "erDiagram\nclassDef c fill:coral\u2029;\n%% c\n",
-      "erDiagram\n  classDef c fill:coral\u2029\n  %% c\n",
+      "erDiagram\n  classDef c fill: coral\n  %% c\n",
+    ],
+    [
+      "ER a style terminator after U+2028 or U+2029 is dropped with the character before a statement and at the end of the text",
+      "erDiagram\nA\nstyle A fill:red\u2028;\nx\nclassDef c fill:red\u2029;\ny\nstyle A fill:red\u2028 ;\n",
+      "erDiagram\n  A\n  style A fill: red\n  x\n  classDef c fill: red\n  y\n  style A fill: red\n",
     ],
     [
       "flowchart directive, direct, NBSP and bare percent controls",

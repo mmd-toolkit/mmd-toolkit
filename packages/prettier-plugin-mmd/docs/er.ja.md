@@ -2467,9 +2467,14 @@ mermaid.js はコメント行を、
   文字と `;` の間、スタイルの行に、空白、タブ、垂直タブ、
   改ページのどれでもない空白があるときだけ `;` を残します。
   そうでないときは、コメント行がなく文やテキストの終わりが続くときと同じく、
-  `;` を削除し、文字は書かれたまま残します。
+  文字とともに `;` を削除します。
   U+2028 や U+2029 の後ろの垂直タブと改ページは、
   ER 図の Db ではスタイルのテキストに入らないので、`;` を残す理由になりません。
+
+したがって、`;` を削除するときは、その前の U+2028 や U+2029 もいっしょに削除し、
+どちらもない文として印字します。
+`style A fill:red`、U+2028、`;` は、後ろに文、コメント行、
+テキストの終わりのどれが続いても、`style A fill: red` と印字します。
 
 `;` とコメント行の間の指令の行は、コメント行とともに取り除かれるので、
 何も変えません。
@@ -2494,6 +2499,7 @@ mermaid.js はコメント行を、
 [test: ER a vertical tab after U+2028 is no text of the style before a comment line at the end of the text]
 [test: ER a form feed after U+2028 is no text of the classDef before a comment line at the end of the text]
 [test: ER a vertical tab and a form feed after U+2028 go with the terminator before a comment line and a statement]
+[test: ER a style terminator after U+2028 or U+2029 is dropped with the character before a statement and at the end of the text]
 
 mermaid.js は、最後のスタイルの直後にある U+2028 や U+2029 を、
 そのスタイルのテキストに残し、なくしても同じ図を描きます。

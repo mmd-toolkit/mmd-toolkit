@@ -688,8 +688,29 @@ export function findSeparatorDroppedWithTerminator(
 ): number {
   return source.root.body.type === "ErDiagram" &&
     isDroppedSemicolon(source, offset)
-    ? (findSeparatorBeforeCommentTerminator(source, offset)?.separator ?? -1)
+    ? (findSeparatorBeforeCommentTerminator(source, offset)?.separator ??
+        findSeparatorBeforeTerminator(source, offset))
     : -1
+}
+
+/**
+ * The first U+2028 or U+2029 of the whitespace right before the `;` at
+ * `offset` of an ER `classDef` or `style` statement, or -1: where nothing but
+ * U+2028, U+2029, spaces, tabs, vertical tabs, and form feeds stands between it
+ * and the `;`, and no line feed lies in the whitespace. The `;` is dropped, no
+ * comment line that mermaid.js removes follows it (see
+ * `findSeparatorBeforeCommentTerminator`), and the character is no text of the
+ * style that the figure needs: it is dropped with the `;` (docs/er.md,
+ * Semicolons at the end of a style statement).
+ */
+function findSeparatorBeforeTerminator(source: Source, offset: number): number {
+  let separator = -1
+  for (let at = offset - 1; at >= 0; at--) {
+    const character = source.text[at]
+    if (character === "\u2028" || character === "\u2029") separator = at
+    else if (!isTrimmedAfterSeparator(character, "ErDiagram")) break
+  }
+  return separator
 }
 
 /**

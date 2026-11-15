@@ -2495,11 +2495,15 @@ after them. The `;` is handled as follows.
 - Where the end of the text follows the comment line, nothing continues, and the
   `;` stays only where whitespace that is no space, tab, vertical tab, or form
   feed stands between the character and the `;` on the line of the style.
-  Otherwise it is dropped, as it is where a statement or the end of the text
-  follows without a comment line, and the character stays as written. A vertical
-  tab and a form feed that stand after the U+2028 or U+2029 are no text of the
-  style in the Db of an ER diagram, which is why they are no reason to keep the
-  `;`.
+  Otherwise it is dropped with the character, as it is where a statement or the
+  end of the text follows without a comment line. A vertical tab and a form feed
+  that stand after the U+2028 or U+2029 are no text of the style in the Db of an
+  ER diagram, which is why they are no reason to keep the `;`.
+
+So wherever the `;` is dropped, the U+2028 or U+2029 before it is dropped with
+it, and the statement is printed as one that has neither: `style A fill:red`,
+U+2028, `;` is printed `style A fill: red` whatever follows, a statement, a
+comment line, or the end of the text.
 
 [fixture:
 semicolons-at-the-end-of-a-style-statement/comment-and-directive-controls]
@@ -2520,7 +2524,9 @@ before a comment line at the end of the text] [test: ER a vertical tab after
 U+2028 is no text of the style before a comment line at the end of the text]
 [test: ER a form feed after U+2028 is no text of the classDef before a comment
 line at the end of the text] [test: ER a vertical tab and a form feed after
-U+2028 go with the terminator before a comment line and a statement]
+U+2028 go with the terminator before a comment line and a statement] [test: ER a
+style terminator after U+2028 or U+2029 is dropped with the character before a
+statement and at the end of the text]
 
 mermaid.js keeps a U+2028 or U+2029 that directly follows the last style in the
 text of that style, and draws the same figure without it, so the Db of the
