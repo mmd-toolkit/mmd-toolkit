@@ -6139,6 +6139,21 @@ describe("style semicolons", () => {
       "erDiagram\n  A\n  style A fill:coral\u2028\u00a0;\n  %% c\n  x\n  classDef c fill:coral \u2029\u00a0;\n  %% c\n  y\n",
     ],
     [
+      "ER a vertical tab after U+2028 is no text of the style before a comment line at the end of the text",
+      "erDiagram\nA\nstyle A fill:red\u2028\u000b;\n%% c\n",
+      "erDiagram\n  A\n  style A fill:red\u2028\n  %% c\n",
+    ],
+    [
+      "ER a form feed after U+2028 is no text of the classDef before a comment line at the end of the text",
+      "erDiagram\nA:::c\nclassDef c fill:red\u2028\u000c;\n%% d\n",
+      "erDiagram\n  A:::c\n  classDef c fill:red\u2028\n  %% d\n",
+    ],
+    [
+      "ER a vertical tab and a form feed after U+2028 go with the terminator before a comment line and a statement",
+      "erDiagram\nA:::c\nstyle A fill:red\u2028\u000b;\n%% c\nx\nclassDef c fill:red\u2028\u000c;\n%% d\ny\n",
+      "erDiagram\n  A:::c\n  style A fill: red\n  %% c\n  x\n  classDef c fill: red\n  %% d\n  y\n",
+    ],
+    [
       "ER directive lines before a comment line",
       "erDiagram\nA\nstyle A fill:coral\u2028;\n%%{init: {}}%%\n%% c\nx\nstyle A fill:coral\u2029;\n%%{init: {}}%%\n%%{init: {}}%%\n%% c\ny\nclassDef c fill:coral\u2028;\n%%{init: {}}%%\n%% c\nz\n",
       "erDiagram\n  A\n  style A fill: coral\n  %%{init: {}}%%\n  %% c\n  x\n  style A fill: coral\n  %%{init: {}}%%\n  %%{init: {}}%%\n  %% c\n  y\n  classDef c fill: coral\n  %%{init: {}}%%\n  %% c\n  z\n",

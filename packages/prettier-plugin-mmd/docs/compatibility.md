@@ -3964,14 +3964,14 @@ comments]
 
 An ER diagram draws the same figure without the character, so where a statement
 follows the comment line, it drops the `;` together with the U+2028 or U+2029
-and what stands after it, if that is nothing but U+2028, U+2029, spaces, and
-tabs, also where whitespace stands before the character: the line is printed
-`style A fill: red`, and the comment line and the statement after it stay.
-mermaid.js keeps the character in the text of the last style where no whitespace
-stands before it, so the Db of the printed text differs from that of the written
-text by that character: a difference of the kind of
-[Whitespace at the end of a style](#whitespace-at-the-end-of-a-style), which the
-tests compare without (see
+and what stands after it, if that is nothing but U+2028, U+2029, spaces, tabs,
+vertical tabs, and form feeds, also where whitespace stands before the
+character: the line is printed `style A fill: red`, and the comment line and the
+statement after it stay. mermaid.js keeps the character in the text of the last
+style where no whitespace stands before it, so the Db of the printed text
+differs from that of the written text by that character: a difference of the
+kind of [Whitespace at the end of a style](#whitespace-at-the-end-of-a-style),
+which the tests compare without (see
 [Semicolons at the end of a style statement](./er.md#semicolons-at-the-end-of-a-style-statement)).
 Where other whitespace stands after the character, the `;` stays. A block
 diagram does not read on after the comment line, and drops the `;` and the

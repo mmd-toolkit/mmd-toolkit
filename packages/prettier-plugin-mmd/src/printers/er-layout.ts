@@ -586,8 +586,8 @@ function findEndingSemicolonStretches(
 
 /**
  * The styles of a `classDef` or `style` statement that ends at `statementEnd`,
- * the last one without the U+2028 and U+2029 at its end where the printer drops
- * them with the `;` that ends the statement (see
+ * the last one without the whitespace from the first U+2028 or U+2029 on, where
+ * the printer drops them with the `;` that ends the statement (see
  * `findSeparatorDroppedWithTerminator`): the `;` is a unit of the statement or
  * one that the line rule ignores right after it, and the character is a
  * character of the last style only where no whitespace stands before it
@@ -607,18 +607,11 @@ function withoutDroppedSeparator(
       : source.ignoredSemicolons.has(statementEnd)
         ? statementEnd
         : -1
-  if (
-    semicolon < 0 ||
-    findSeparatorDroppedWithTerminator(source, semicolon) < 0
-  )
-    return styles
-  let end = last.range[1]
-  while (
-    isSpaceOrTab(source.text[end - 1]) ||
-    source.text[end - 1] === "\u2028" ||
-    source.text[end - 1] === "\u2029"
-  )
-    end--
+  const separator =
+    semicolon < 0 ? -1 : findSeparatorDroppedWithTerminator(source, semicolon)
+  if (separator < 0) return styles
+  let end = Math.min(last.range[1], separator)
+  while (isSpaceOrTab(source.text[end - 1])) end--
   return [...styles.slice(0, -1), { ...last, range: [last.range[0], end] }]
 }
 

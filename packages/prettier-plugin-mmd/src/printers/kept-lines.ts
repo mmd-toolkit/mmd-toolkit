@@ -553,6 +553,20 @@ function continuesWhitespaceRun(
   return isWhitespace(character) && (readsLineFeeds || character !== "\n")
 }
 
+/**
+ * Whether whitespace that stands after a U+2028 or U+2029 before the `;` of a
+ * `classDef` or `style` statement is no text of the style: a space or a tab,
+ * and in an ER diagram a vertical tab and a form feed too, which its Db leaves
+ * out there.
+ */
+function isTrimmedAfterSeparator(character: string, bodyType: string): boolean {
+  return (
+    isSpaceOrTab(character) ||
+    (bodyType === "ErDiagram" &&
+      (character === "\u000b" || character === "\u000c"))
+  )
+}
+
 /** A U+2028 or U+2029 before the `;` of a `classDef` or `style` statement. */
 interface SeparatorBeforeTerminator {
   /** The offset of the first U+2028 or U+2029 of the whitespace before the `;`. */
@@ -621,11 +635,12 @@ function findSeparatorBeforeCommentTerminator(
     if (
       character !== "\u2028" &&
       character !== "\u2029" &&
-      !isSpaceOrTab(character)
+      !isTrimmedAfterSeparator(character, bodyType)
     )
       narrow = false
     // What stands after a line feed is no text of the style.
-    if (!endsStyle && !isSpaceOrTab(character)) loses = true
+    if (!endsStyle && !isTrimmedAfterSeparator(character, bodyType))
+      loses = true
   }
   const followed = textRead(source, region[1], source.text.length).trim() !== ""
   return followed || loses ? { separator, narrow, followed } : undefined

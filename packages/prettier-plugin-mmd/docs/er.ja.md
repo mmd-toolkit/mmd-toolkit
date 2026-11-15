@@ -2456,18 +2456,20 @@ mermaid.js はコメント行を、
 `;` は次のように扱います。
 
 - コメント行の後ろに文が続き（間に指令の行があってもよい）、
-  最初のその文字の後ろに U+2028、U+2029、空白、タブしかないときは、
-  それらといっしょに `;` を削除します。
+  最初のその文字の後ろに U+2028、U+2029、空白、タブ、垂直タブ、
+  改ページしかないときは、それらといっしょに `;` を削除します。
   `style A fill:red`、U+2028、`;`、改行、`%% c`、改行、`x` は、
   `style A fill: red`、改行、`%% c`、改行、`x` と印字します。
   U+2028 や U+2029 の前に空白があるときも同じです。
 - 最初の文字の後ろにほかの空白（たとえばノーブレークスペース）があるときは、
   `;` を、その文字とその空白とともに残します。
 - コメント行の後ろがテキストの終わりのときは、何も続かないので、
-  文字と `;` の間、スタイルの行に、
-  空白でもタブでもない空白があるときだけ `;` を残します。
+  文字と `;` の間、スタイルの行に、空白、タブ、垂直タブ、
+  改ページのどれでもない空白があるときだけ `;` を残します。
   そうでないときは、コメント行がなく文やテキストの終わりが続くときと同じく、
   `;` を削除し、文字は書かれたまま残します。
+  U+2028 や U+2029 の後ろの垂直タブと改ページは、
+  ER 図の Db ではスタイルのテキストに入らないので、`;` を残す理由になりません。
 
 `;` とコメント行の間の指令の行は、コメント行とともに取り除かれるので、
 何も変えません。
@@ -2489,6 +2491,9 @@ mermaid.js はコメント行を、
 [test: ER whitespace other than spaces and tabs after the character keeps the terminator]
 [test: ER a comment line at the end of the text keeps the terminator after whitespace that is no space or tab]
 [test: ER a terminator after spaces and tabs is dropped before a comment line at the end of the text]
+[test: ER a vertical tab after U+2028 is no text of the style before a comment line at the end of the text]
+[test: ER a form feed after U+2028 is no text of the classDef before a comment line at the end of the text]
+[test: ER a vertical tab and a form feed after U+2028 go with the terminator before a comment line and a statement]
 
 mermaid.js は、最後のスタイルの直後にある U+2028 や U+2029 を、
 そのスタイルのテキストに残し、なくしても同じ図を描きます。
