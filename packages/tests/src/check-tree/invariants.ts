@@ -190,6 +190,8 @@ export class CommentIndex {
 
   public readonly regionStartByEnd: ReadonlyMap<number, number>
 
+  public readonly regionEndByStart: ReadonlyMap<number, number>
+
   public readonly directiveEnds: ReadonlyMap<number, number>
 
   public readonly directives: RangeIndex<ScannedDirective>
@@ -200,6 +202,7 @@ export class CommentIndex {
     // Comment boundaries repeatedly consult the same source regions and directives.
     this.regionStarts = new Set(regions.map(([start]) => start))
     this.regionStartByEnd = new Map(regions.map(([start, end]) => [end, start]))
+    this.regionEndByStart = new Map(regions.map(([start, end]) => [start, end]))
     this.directiveEnds = new Map(
       scan.directives.map((directive) => [
         directive.range[0],
@@ -489,6 +492,11 @@ function checkComments(
   const commentStarts = new Set(
     root.comments.map((comment) => comment.range[0]),
   )
+  const fragmentStarts = new Set(
+    root.comments
+      .filter((comment) => comment.mark === null)
+      .map((comment) => comment.range[0]),
+  )
   const ignoredSemicolonStarts = new Set(
     root.tokens
       .filter((token) => token.type === "IgnoredSemicolon")
@@ -645,6 +653,34 @@ function checkComments(
         problems,
         index,
         lineRule,
+      )
+    }
+    if (
+      line === undefined &&
+      !COMMENT_ENDS_AT_LINE_SEGMENT.has(body) &&
+      body !== "EventmodelingDiagram" &&
+      body !== "RailroadDiagram" &&
+      regionFollowsOnLine(text, comment.range[1], index.regionStarts)
+    ) {
+      // A region removes its line terminator, so the diagram comment goes
+      // on after all adjacent regions, unless a remaining line ends it.
+      let after = comment.range[1]
+      for (;;) {
+        const regionEnd = index.regionEndByStart.get(after)
+        if (regionEnd !== undefined) {
+          after = regionEnd
+          continue
+        }
+        const code = text.charCodeAt(after)
+        if (!isWhitespace(code) || isLineTerminatorCode(code)) break
+        after += 1
+      }
+      problems.expect(
+        after === text.length ||
+          isLineTerminatorCode(text.charCodeAt(after)) ||
+          fragmentStarts.has(after),
+        where,
+        "a comment region cuts it, but the text after the region to the end of its line is no Comment fragment",
       )
     }
   }

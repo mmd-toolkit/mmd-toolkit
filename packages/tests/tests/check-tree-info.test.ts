@@ -1,9 +1,9 @@
-import { commentOf } from "./check-tree-trees.ts"
+import { commentOf, locationOf, tokenOf } from "./check-tree-trees.ts"
 import { describe, expect, it } from "vitest"
 import { checkTree } from "../src/check-tree/index.ts"
 import { INFO_CHILD_TYPES, INFO_FIELD_WORDS } from "../src/check-tree/info.ts"
 import { buildTree, nodeWith, tokenWith } from "./check-tree-built.ts"
-import { setField } from "./check-tree-recorded.ts"
+import { copyOf, recordedTree, setField } from "./check-tree-recorded.ts"
 import {
   buildInfo,
   common,
@@ -114,6 +114,38 @@ const VALID = [
       ]),
   },
 ]
+
+describe("info recorded comment fragments", () => {
+  it("reports showInfo read as a flag instead of a comment fragment after a comment region", () => {
+    const { input, tree } = recordedTree("info", "lex-comment-ls-bridge")
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    setField(
+      broken,
+      "comments",
+      broken.comments.filter(
+        (comment) =>
+          !(
+            comment.mark === null &&
+            comment.range[0] === 14 &&
+            comment.range[1] === 22
+          ),
+      ),
+    )
+    setField(broken, "tokens", [
+      ...broken.tokens,
+      tokenOf(input, "Keyword", "showInfo"),
+    ])
+    setField(broken.body, "showInfo", true)
+    setField(broken.body, "range", [0, 22])
+    setField(broken.body, "loc", locationOf(input, [0, 22]))
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "Comment at 4-8",
+      message:
+        "a comment region cuts it, but the text after the region to the end of its line is no Comment fragment",
+    })
+  })
+})
 
 describe("info hand-built trees", () => {
   for (const row of VALID)

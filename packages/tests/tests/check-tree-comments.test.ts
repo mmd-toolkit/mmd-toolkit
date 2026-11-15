@@ -1032,6 +1032,8 @@ describe("checkTree: a fragment of a diagram comment after a comment region", ()
   // it is the next line, which the diagram reads.
   const NOT_CUT =
     "has no mark and follows a comment region that cuts no diagram comment"
+  const MISSING_FRAGMENT =
+    "a comment region cuts it, but the text after the region to the end of its line is no Comment fragment"
 
   /** The tree of `source` whose comments are the diagram comment `%% c` at its first `%%`, the comment lines `%% r` and `%% s`, and the fragments at `fragments` (each one character, `x` or `y`). */
   function withFragments(
@@ -1081,7 +1083,12 @@ describe("checkTree: a fragment of a diagram comment after a comment region", ()
     }
   }
 
-  for (const bodyType of ["SequenceDiagram", "StateDiagram", "ClassDiagram"]) {
+  for (const bodyType of [
+    "SequenceDiagram",
+    "StateDiagram",
+    "ClassDiagram",
+    "InfoDiagram",
+  ]) {
     it(`passes the fragment after a comment line that cuts a ${bodyType} comment, also after two comment lines, and after a fragment`, () => {
       for (const separator of ["\u2028", "\u2029"]) {
         const one = `header\nA %% c${separator}%% r\nx\n`
@@ -1102,6 +1109,55 @@ describe("checkTree: a fragment of a diagram comment after a comment region", ()
             ]),
           ),
         ).toEqual([])
+      }
+    })
+
+    it(`fails a missing fragment after one or two comment lines that cut a ${bodyType} comment`, () => {
+      for (const separator of ["\u2028", "\u2029"]) {
+        for (const lines of ["%% r\n", "%% r\n%% s\n"]) {
+          for (const spaces of ["", "  "]) {
+            const source = `header\nA %% c${separator}${lines}${spaces}x\n`
+            const root = withFragments(source, bodyType, [])
+            expect(root.tokens).toContainEqual(
+              expect.objectContaining({ type: "RawText", value: "x" }),
+            )
+            const at = source.indexOf("%% c")
+            expect(checkTree(source, root)).toEqual([
+              {
+                where: `Comment at ${at}-${at + 4}`,
+                message: MISSING_FRAGMENT,
+              },
+            ])
+          }
+        }
+      }
+    })
+
+    it(`fails a missing continuation after a fragment of a ${bodyType} comment`, () => {
+      for (const separator of ["\u2028", "\u2029"]) {
+        const source = `header\nA %% c${separator}%% r\nx${separator}%% s\ny\n`
+        const at = source.indexOf("x")
+        expect(
+          checkTree(source, withFragments(source, bodyType, [at])),
+        ).toEqual([
+          {
+            where: `Comment at ${at}-${at + 1}`,
+            message: MISSING_FRAGMENT,
+          },
+        ])
+      }
+    })
+
+    it(`passes no fragment after a region that cuts a ${bodyType} comment when only whitespace or no text follows on its line`, () => {
+      for (const separator of ["\u2028", "\u2029"]) {
+        for (const lines of ["%% r\n", "%% r\n%% s\n"]) {
+          for (const rest of ["  \n", "\n", "  ", ""]) {
+            const source = `header\nA %% c${separator}${lines}${rest}`
+            expect(
+              checkTree(source, withFragments(source, bodyType, [])),
+            ).toEqual([])
+          }
+        }
       }
     })
 

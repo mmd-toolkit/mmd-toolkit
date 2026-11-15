@@ -603,7 +603,8 @@ function ownTextOf(
  * timeline.md, Ranges: the tokens that a node writes itself are `Punctuator`
  * tokens for `:`, `{`, and `}` and `Keyword` tokens for the others; they are
  * those of the grammar rule of the node (see {@link ownTextOf}); the direction
- * of the diagram is the token after the header, or null where there is none;
+ * of the diagram is the token after the header, or null where there is none,
+ * follows the header after spaces or tabs, and has no word character after it;
  * the tokens of a text are `RawText` tokens; and the range of a node is the
  * hull of its tokens and child nodes.
  */
@@ -625,6 +626,29 @@ function checkTokensAndRange(reading: Reading, node: CheckedNode): void {
       label(node),
       "the direction of the header is not the token after the header keyword, or null when there is none",
     )
+    const header = own.tokens[0]
+    const direction = own.tokens[1]
+    if (
+      typeof node.direction === "string" &&
+      header !== undefined &&
+      direction !== undefined
+    ) {
+      const gap = between(reading, header.range[1], direction.range[0])
+      reading.problems.expect(
+        gap !== "" &&
+          [...gap].every(
+            (character) => character === " " || character === "\t",
+          ),
+        label(node),
+        "the direction does not follow the header after spaces or tabs",
+      )
+      const next = nextWrittenCharacter(reading, direction.range[1])
+      reading.problems.expect(
+        next === undefined || !isWordCharacter(next.charCodeAt(0)),
+        label(node),
+        "the direction is followed by a word character",
+      )
+    }
   }
 }
 

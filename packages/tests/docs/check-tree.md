@@ -158,7 +158,11 @@ const problems: TreeProblem[] = checkTree(text, tree)
   feed ends, and none cuts a mindmap, ishikawa, or kanban comment, which a
   U+2028 or a U+2029 ends too; the text after such a region is the next line,
   which the diagram reads, so the check reports a fragment there, as it does one
-  after a comment line that follows no comment.
+  after a comment line that follows no comment. The other way round, where a
+  region cuts a comment, the text after the region to the end of its line, if it
+  is not all whitespace, must be a fragment, also after several regions in a
+  row: a `showInfo` after `info%% x`, a U+2028, and a comment line is a part of
+  the comment, not the flag (parser/docs/tokens.md, Comment).
 
   [fixture: state/lex-diagram-comment-across-comment-line] [fixture:
   state/lex-diagram-comment-across-two-comment-lines] [fixture:
@@ -526,8 +530,11 @@ const problems: TreeProblem[] = checkTree(text, tree)
     statement and of an event statement, the keyword (in any case) for a title
     and a section, the keyword and `:` for an accessibility statement, and the
     keyword and the braces for a block; the `direction` is the token after the
-    header, or null where there is none. The range of a node and of a statement
-    is the hull of its tokens and child nodes
+    header, or null where there is none; it follows the header after spaces or
+    tabs only (a U+00A0, a U+3000, a U+2028, or a line feed before `TD` makes it
+    a period), and no word character follows it (`TDx` is a period)
+    (diagrams/timeline.md, Detection). The range of a node and of a statement is
+    the hull of its tokens and child nodes
     (`parser/docs/positions/timeline.md`); the range of a literal runs from the
     start of a token to the end of a token, which the checks of every tree read.
   - sankey: the checks read the tree and the text of the source. The child nodes

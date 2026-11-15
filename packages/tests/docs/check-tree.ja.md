@@ -180,6 +180,11 @@ const problems: TreeProblem[] = checkTree(text, tree)
   そのような領域の後のテキストは、図が読む次の行です。
   そのため、そこにある断片は、コメントに続かないコメント行の後の断片と同じく、
   報告します。
+  逆に、領域がコメントを切るときは、領域の後の、行の終わりまでのテキストが、
+  空白だけでなければ、断片でなければなりません。
+  領域が続けて並ぶ場合も同じです。
+  `info%% x`、U+2028、コメント行の後の `showInfo` は、フラグでなく、
+  コメントの一部です（parser/docs/tokens.md の Comment）。
 
   [fixture: state/lex-diagram-comment-across-comment-line]
   [fixture: state/lex-diagram-comment-across-two-comment-lines]
@@ -614,6 +619,10 @@ const problems: TreeProblem[] = checkTree(text, tree)
     アクセシビリティの文ではキーワードと `:`、
     ブロックではキーワードと波括弧です。
     `direction` はヘッダーの後ろのトークンで、なければ null です。
+    ヘッダーの後の空白かタブの後にだけ、direction になります。
+    U+00A0、U+3000、U+2028、改行の後の `TD` は、period です。
+    後ろに単語の文字が続く `TDx` も、period です。
+    出典は diagrams/timeline.md の Detection です。
     ノードと文の範囲は、トークンと子ノードの最初から最後までです。
     出典は `parser/docs/positions/timeline.md` です。
     リテラルの範囲は、トークンの始まりから終わりまでで、
