@@ -527,17 +527,21 @@ describe("checkTree: a Punctuator token split into two touching tokens", () => {
 })
 
 describe("checkTree: an atom of a venn style value split into two touching tokens", () => {
-  // diagrams/venn.md, rules 16, 17, and 20, and parser/docs/tokens/venn.md,
-  // Tokens: the atoms of a bare style value (a number, a hexadecimal colour, a
-  // name) keep their own tokens even when adjacent, and the lexer takes each as
-  // many characters as it can. The check of a venn diagram reads the atoms of
-  // the value from its written text, so a token that splits an atom is found
-  // there, not by the check of the value nodes.
+  // diagrams/venn.md, rules 16 to 20, and parser/docs/tokens/venn.md, Tokens:
+  // the atoms of a bare style value (a number, a hexadecimal colour, an rgb or
+  // rgba colour, a name) keep their own tokens even when adjacent, and the
+  // lexer takes each as many characters as it can. The check of a venn diagram
+  // reads the atoms of the value from its written text, so a token that splits
+  // an atom is found there, not by the check of the value nodes.
   const ATOMS = [
     ["db-form-style-tokens", "one", 1],
     ["db-form-style-tokens", "#abc", 2],
     ["db-style-adjacent-numeric-tokens", "1.2", 1],
     ["lex-style-adjacent-units", "red", 1],
+    ["db-style-adjacent-numeric-tokens", "1.2", 2],
+    ["lex-style-value-hex-eight", "#abcdef12", 5],
+    ["db-form-style-rgb", "rgb(1, 2, 3)", 4],
+    ["db-form-style-rgba", "rgba(1, 2, 3, .5)", 9],
   ] as const
 
   for (const [fixture, text, at] of ATOMS) {

@@ -239,14 +239,15 @@ const problems: TreeProblem[] = checkTree(text, tree)
     closing quote (`""` and `""` in state, two empty backquotes in er), and in a
     venn literal, the atoms of a bare style value, which keep their tokens even
     when adjacent; the check of a venn diagram reads those atoms from the
-    written text (diagrams/venn.md, rules 16, 17, and 20), so an atom that is
-    split is reported there. Every other unit of such a node is a whole item of
-    its own (a direction text, a hidden form, the rest of a task line), so two
-    `RawText` tokens that touch there are one token that was split. A node is
-    asked for the tokens that it writes itself, not for those of its child
-    nodes, which are asked with them: a sequence box text holds its colour
-    candidate and its remainder in child nodes, so the two tokens that touch at
-    their boundary are not a pair, and each part is asked on its own.
+    written text (diagrams/venn.md, rules 16 to 20: a number, a hexadecimal
+    colour, an rgb or rgba colour, and a name), so an atom that is split is
+    reported there. Every other unit of such a node is a whole item of its own
+    (a direction text, a hidden form, the rest of a task line), so two `RawText`
+    tokens that touch there are one token that was split. A node is asked for
+    the tokens that it writes itself, not for those of its child nodes, which
+    are asked with them: a sequence box text holds its colour candidate and its
+    remainder in child nodes, so the two tokens that touch at their boundary are
+    not a pair, and each part is asked on its own.
   - A `Keyword` token and a `Punctuator` token have a text that the table of
     their diagram lists, and one decision, made in one place
     (`fragmentsOfEntries()` in `src/check-tree/tokens.ts`), tells the fragments
