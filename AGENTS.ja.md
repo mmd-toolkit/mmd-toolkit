@@ -117,9 +117,6 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
   その Db を取り出し、fixture の形式を定め、適合コーパスと、
   それを作って確かめる道具を持つ。
   記録した木から Db を作って mermaid.js の Db と比べる。
-  AI エージェントは、変更の記録した木を、
-  `ast-json-validity` のチェックリストと手順で確かめる。
-  人にはこの手順の実施を求めない。
   作業は SKILL `tests` に従う。
   図種を足す作業、木から Db を作る関数を書く作業、mermaid.js を更新する作業は、
   それに加えて、SKILL `tests-diagram-type`、`tests-db-from-tree`、
@@ -130,8 +127,6 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
   仕様の文書は、parser のトークンと位置の仕様に言及しない。
   作業は SKILL `spec` に従う。
   図種を足す作業は、それに加えて、SKILL `spec-diagram-type` に従う。
-  木の文書のブロックか、木とトークンと位置の文書のブロックが指す節の変更は、
-  AI エージェントが SKILL `ast-json-validity` で読む。
 - `packages/ast`: 木の TypeScript の型で、仕様の定義に従う。
   持つのは型だけである。
   パーサー、フォーマッター、リンターは、これを任意の peer 依存にする。
@@ -148,7 +143,11 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
   そのため、parser のテストは、結果を fixture の記録と比べ、
   mermaid.js も生成した入力も動かさない。
   作業は SKILL `parser` に従う。
-  記録する木は、AI エージェントが SKILL `ast-json-validity` で読む。
+  記録する木は、
+  AI エージェントが SKILL `ast-json-validity` のチェックリストと手順で、
+  仕様に照らして確かめる。
+  木とトークンと位置の文書が変わったときも同じである。
+  人にはこの手順の実施を求めない。
   頼まれた性能のレビューは、SKILL `parser-performance-review` に従う。
 - `packages/prettier-plugin-mmd`: フォーマッター。
   図種ごとに printer を持ち、項目ごとに明示的に決めた整形方針に従う。

@@ -112,19 +112,16 @@ package.
 - `packages/tests`, with the CLIs in `tools/`: pins mermaid.js, extracts its Db,
   defines the fixture format, and holds the conformance corpus and the tools
   that generate and check it. It builds the Db from a recorded tree and compares
-  it with the Db of mermaid.js. AI agents check changed recorded trees with the
-  checklist and procedure of `ast-json-validity`; people are not asked to follow
-  it. The package's work follows the skill `tests`; adding a diagram type,
-  writing the Db builder, and updating mermaid.js follow, with it, the skills
-  `tests-diagram-type`, `tests-db-from-tree`, and `tests-mermaid-update`.
+  it with the Db of mermaid.js. The package's work follows the skill `tests`;
+  adding a diagram type, writing the Db builder, and updating mermaid.js follow,
+  with it, the skills `tests-diagram-type`, `tests-db-from-tree`, and
+  `tests-mermaid-update`.
 - `packages/spec`: defines the syntax and the shape of the abstract syntax tree
   (node types, fields, values), and whatever decides whether an input is
   accepted. It is the source of the definition; implementations follow it. Its
   documents do not refer to the parser's specification of tokens and positions.
   Its work follows the skill `spec`; adding a diagram type follows, with it, the
-  skill `spec-diagram-type`; a change to a block of its tree documents, or to a
-  section that a block of the tree, token, or position documents links to, is
-  read by AI agents with the skill `ast-json-validity`.
+  skill `spec-diagram-type`.
 - `packages/ast`: the TypeScript types of the tree, which follow the definition
   in the specification. It holds types only. The parser, the formatter, and the
   linter have it as an optional peer dependency, so that their users download it
@@ -138,9 +135,11 @@ package.
   is to be writable in another language from the specification, these documents,
   and the corpus, so the tests of the parser compare its results with what the
   fixtures record and run neither mermaid.js nor generated inputs. Its work
-  follows the skill `parser`; AI agents read the trees it records with the skill
-  `ast-json-validity`; a requested review of its performance follows the skill
-  `parser-performance-review`.
+  follows the skill `parser`; AI agents check the trees it records against the
+  specification with the checklist and procedure of the skill
+  `ast-json-validity`, also when the tree, token, or position documents change,
+  and people are not asked to follow it; a requested review of its performance
+  follows the skill `parser-performance-review`.
 - `packages/prettier-plugin-mmd`: the formatter, with one printer for each
   diagram type, following formatting choices that are decided explicitly, item
   by item. Skill `prettier-plugin`.

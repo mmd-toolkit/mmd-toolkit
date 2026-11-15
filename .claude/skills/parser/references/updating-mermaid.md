@@ -27,8 +27,6 @@ specification does.
    share) still agree with it.
 5. Classify the differences of the trees as in 4.7, step 4, and check as in 4.8.
 6. Show as the result: what was fixed, the number of differences of the trees by
-   kind, the result of the check of
-   [ast-json-validity](../../ast-json-validity/SKILL.md) (the number of trees
-   checked, and each mismatch with its fix), and the mismatches that remain.
+   kind, and the mismatches that remain.
 
 Where a step does not hold at an update, correct it.

@@ -24,7 +24,10 @@ description: >-
 git diff --name-only <base> -- 'packages/tests/fixtures/**/ast.json' 'packages/tests/fixtures/**/input.mmd'
 ```
 
-未コミットの作業には `HEAD`、PR 全体には `origin/main` を使う。
+未コミットの作業には `HEAD` を使う。
+PR 全体には、
+main との merge base（`$(git merge-base origin/main HEAD)`）を使う。
+後から main に入ったコミットが混ざらないようにするためである。
 `git status` の未追跡の fixture も加える。
 入力と木のどちらが変わったかによらず、
 現在 `ast.json` がある fixture を一度ずつ確認する。
@@ -66,10 +69,14 @@ git diff --name-only <base> -- 'packages/tests/fixtures/**/ast.json' 'packages/t
 fixture を引く文を探す。
 
 ```sh
-git grep -n "<diagram>/<fixture>]" -- packages/spec/docs packages/parser/docs packages/tests/docs packages/prettier-plugin-mmd/docs
+git grep --untracked -n "<folder>/<fixture>]" -- packages/spec/docs packages/parser/docs packages/tests/docs packages/prettier-plugin-mmd/docs
 ```
 
-`[fixture: <diagram>/<fixture>]` と `[corpus fixture: <diagram>/<fixture>]` は、
+`<folder>` は、`packages/tests/fixtures/` の下の fixture のフォルダの名前で、
+入力から決めた図種ではない。
+`common/` の fixture は `common/<fixture>` で引かれる。
+`--untracked` は、まだ git に加えていない文書も探す。
+`[fixture: <folder>/<fixture>]` と `[corpus fixture: <folder>/<fixture>]` は、
 `fixture:` の後で折り返されていても見つかる。
 フォーマッターの文書でこのコーパスを引くのは `corpus fixture` だけである。
 

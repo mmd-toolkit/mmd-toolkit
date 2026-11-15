@@ -25,10 +25,12 @@ From the repository root, list changed fixture inputs and trees:
 git diff --name-only <base> -- 'packages/tests/fixtures/**/ast.json' 'packages/tests/fixtures/**/input.mmd'
 ```
 
-Use `HEAD` for uncommitted work and `origin/main` for the whole pull request.
-Include untracked fixture paths from `git status`. Check each listed fixture
-once if it has an `ast.json` now, whether its input, tree, or both changed.
-Rejection records (`parse-error.json`) are outside this procedure.
+Use `HEAD` for uncommitted work. For the whole pull request, use the merge base
+with main, `$(git merge-base origin/main HEAD)`, so that commits added to main
+later do not mix in. Include untracked fixture paths from `git status`. Check
+each listed fixture once if it has an `ast.json` now, whether its input, tree,
+or both changed. Rejection records (`parse-error.json`) are outside this
+procedure.
 
 For each fixture, before opening `ast.json`:
 
@@ -65,11 +67,14 @@ itself account for that text.
 Find the sentences that cite the fixture:
 
 ```sh
-git grep -n "<diagram>/<fixture>]" -- packages/spec/docs packages/parser/docs packages/tests/docs packages/prettier-plugin-mmd/docs
+git grep --untracked -n "<folder>/<fixture>]" -- packages/spec/docs packages/parser/docs packages/tests/docs packages/prettier-plugin-mmd/docs
 ```
 
-This finds `[fixture: <diagram>/<fixture>]` and
-`[corpus fixture: <diagram>/<fixture>]`, including a citation wrapped after
+`<folder>` is the folder of the fixture under `packages/tests/fixtures/`, not
+the diagram type read from its input: a fixture in `common/` is cited as
+`common/<fixture>`. `--untracked` also searches documents not yet added to git.
+This finds `[fixture: <folder>/<fixture>]` and
+`[corpus fixture: <folder>/<fixture>]`, including a citation wrapped after
 `fixture:`. In formatter documents, only `corpus fixture` cites this corpus.
 
 A citation stands in a paragraph of citations or in a table's `Fixtures` cell.

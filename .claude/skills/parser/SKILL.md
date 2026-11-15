@@ -554,9 +554,7 @@ Run `npx prettier --write` on them, and pass `pnpm run lint:docs` and
 Show as the result: what was implemented, file by file; the gaps in the
 specification that were found, and which of them are still open; the number of
 tests and their results; the number of recorded results (new, and changed, by
-kind); the result of the check of
-[ast-json-validity](../ast-json-validity/SKILL.md) (the number of trees checked,
-and each mismatch with its fix); the exported types; the changed documents.
+kind); the exported types; the changed documents.
 
 ## 5. First-match lexical rules, hidden forms and semantic acceptance
 

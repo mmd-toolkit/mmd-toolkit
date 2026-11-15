@@ -131,7 +131,7 @@ railroad/ebnf-gram-written-tree] [fixture: railroad/abnf-gram-written-tree]
 
    [fixture: railroad/lex-title-line-separator-then-comment-line]
 
-## Checking recorded trees
+## Comparing with the Db of mermaid.js
 
 Use the fixture's specified reading when present and `embeddedValuesOf` for the
 same reading. A missing tree for an accepted comparable reading is a failure; an
