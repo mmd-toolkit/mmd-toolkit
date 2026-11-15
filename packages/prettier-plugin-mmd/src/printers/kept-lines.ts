@@ -304,18 +304,30 @@ export function ignoredSemicolonAtCommentEnd(
 }
 
 /**
- * Whether the comment at `range` ends with a `;` that the line rule ignores,
- * with only spaces and tabs after it, and that must stay together with the
- * text that makes the rule ignore it, because the comment is read otherwise on
- * a line of its own (see `staysIgnoredAlone`).
+ * Whether the comment at `range` holds a `;` that the line rule ignores and
+ * that must stay with the text that makes the rule ignore it. A directive or
+ * U+2028 after the entity does not prevent it from being read on a line of
+ * its own (common.md, Entities; docs/sequence.md, Comments).
  */
-export function commentEndsInSemicolonThatNeedsItsLine(
+export function commentHasIgnoredSemicolonThatNeedsItsLine(
   source: Source,
   range: Range,
 ): boolean {
-  const semicolon = ignoredSemicolonEndingComment(source, range)
-  return (
-    semicolon !== undefined && !staysIgnoredAlone(source, semicolon, range[0])
+  if (semicolonRulesOf(source).kind !== "separators") return false
+  const ending = ignoredSemicolonEndingComment(source, range)
+  if (ending !== undefined) return !staysIgnoredAlone(source, ending, range[0])
+  return ignoredSemicolonsIn(
+    readSegments(
+      source,
+      lineStartOf(source, range[0]),
+      lineEndOf(source, range[0]),
+    ),
+  ).some(
+    (semicolon) =>
+      range[0] <= semicolon &&
+      semicolon < range[1] &&
+      endsEntityName(source, semicolon, range[0]) &&
+      !staysIgnoredAlone(source, semicolon, range[0]),
   )
 }
 
@@ -345,20 +357,31 @@ function ignoredSemicolonEndingComment(
 }
 
 /**
- * Whether the `;` at `offset` would end an entity: a `#`, one or more word
- * characters, and the `;` (common.md, Entities). Only then does the line rule
+ * Whether the text before `offset` ends with an entity name: a `#` and one
+ * or more word characters, which a `;` there would complete (common.md,
+ * Entities). Only then does the line rule
  * that ignores the `;` decide how mermaid.js reads the text before it. The
  * name is read as mermaid.js reads it, without the directives in it:
- * `#a%%{init: {}}%%;` ends the entity `#a;`.
+ * `#a%%{init: {}}%%;` ends the entity `#a;`. When `start` is given,
+ * the `#` must stand at that exact offset, as when it starts a comment.
  */
-function endsEntityName(source: Source, offset: number): boolean {
+export function endsEntityName(
+  source: Source,
+  offset: number,
+  start?: number,
+): boolean {
   let at = previousRead(source, offset)
   let words = 0
   while (at >= 0 && isWordCharacter(source.text[at])) {
     words++
     at = previousRead(source, at)
   }
-  return words > 0 && at >= 0 && source.text[at] === "#"
+  return (
+    words > 0 &&
+    at >= 0 &&
+    source.text[at] === "#" &&
+    (start === undefined || at === start)
+  )
 }
 
 /**

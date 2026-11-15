@@ -1295,6 +1295,21 @@ statements-one-per-line/end-comment-ignored-semicolon-trigger-in-other-statement
 [fixture:
 statements-one-per-line/end-comment-own-trigger-trailing-whitespace-before-a-divider]
 
+This also holds when `%%{init: {}}%%` follows an entity-shaped end of a `#`
+comment, such as `end #12;`, or U+2028 follows it before an `and` divider;
+without an entity, `end #; %%{init: {}}%%` moves to its own line as usual.
+
+[fixture: statements-one-per-line/end-comment-entity-before-directive] [fixture:
+statements-one-per-line/end-comment-no-entity-before-directive] [test: an
+ignored entity semicolon before U+2028 keeps end with its description block
+before and]
+
+When a directive follows the `;`, an entity later in the comment, as in
+`end # note #12; %%{init: {}}%%`, leaves `end` on a line of its own: the initial
+`#` still starts the comment there.
+
+[fixture: statements-one-per-line/end-comment-internal-entity-before-directive]
+
 The `end` also stays on the line of the text before it, with its comment, for
 another reason: that text holds whitespace in the stretch that the line rule of
 mermaid.js may read, where the whitespace between a `:` and a later `#` keeps

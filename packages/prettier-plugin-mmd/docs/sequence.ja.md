@@ -1313,6 +1313,22 @@ mermaid.js は `#a;` をそのテキストの文字参照として読みます�
 [fixture: statements-one-per-line/end-comment-ignored-semicolon-trigger-in-other-statement-before-a-divider]
 [fixture: statements-one-per-line/end-comment-own-trigger-trailing-whitespace-before-a-divider]
 
+`end #12;` のように `#` コメントがエンティティの形で終わり、
+その後に `%%{init: {}}%%` がある場合や、
+`and` 区切りの前で U+2028 が続く場合も同じです。
+エンティティがない `end #; %%{init: {}}%%` は、通常どおり別の行に移します。
+
+[fixture: statements-one-per-line/end-comment-entity-before-directive]
+[fixture: statements-one-per-line/end-comment-no-entity-before-directive]
+[test: an ignored entity semicolon before U+2028 keeps end with its description block before and]
+
+`;` の後にディレクティブがあり、
+`end # note #12; %%{init: {}}%%` のようにコメントの途中に文字参照がある場合は、
+`end` を別の行に印字します。
+先頭の `#` が、その行でもコメントを始めるためです。
+
+[fixture: statements-one-per-line/end-comment-internal-entity-before-directive]
+
 `end` は、別の理由でも、コメントとともに、その前のテキストの行に残します。
 その前のテキストが、
 mermaid.js の行の規則が読むかもしれない範囲に空白を含むときです。

@@ -32,6 +32,7 @@ import {
 } from "./layout.ts"
 import { readGapElement } from "./gap.ts"
 import {
+  endsEntityName,
   holdsJoiningRegion,
   isDroppedSemicolon,
   lineStartOf,
@@ -152,6 +153,17 @@ export function layoutContainerHeader(
           source.ignoredSemicolons.has(nameEnd - 1))
       )
         nameEnd--
+      // A retained separator must stay apart from an entity-shaped name end:
+      // removing the gap would form an entity (common.md, Entities;
+      // docs/agentflow.md, Names and headings).
+      if (
+        source.text[name.range[1]] === ";" &&
+        findAgentflowKeptLines(source).verbatim.has(
+          lineStartOf(source, name.range[0]),
+        ) &&
+        endsEntityName(source, nameEnd)
+      )
+        nameEnd = name.range[1]
     } else if (node.title === null && node.data.length === 0) {
       // A name that holds a directive or a comment keeps its text as written,
       // but a `;` that the line rule ignores and that the printer drops lies at

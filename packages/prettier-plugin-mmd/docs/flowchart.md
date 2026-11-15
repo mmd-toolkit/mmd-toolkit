@@ -167,6 +167,22 @@ indentation/empty-description-before-direction-control] [fixture:
 indentation/whitespace-description-before-direction-control] [test: flowchart
 direction after a U+2028 and a joined comment line]
 
+This includes a line that stays as written because an ignored `;` stands next to
+another `;`: `accDescr {style:#x} direction LR;;` stays at the first column,
+also in a subgraph and in a swimlane diagram, since mermaid.js reads an empty
+description where it is indented. The text after the direction value on that
+line is not a statement, and stays as written.
+
+[fixture: indentation/verbatim-direction-description] [fixture:
+indentation/verbatim-direction-description-in-subgraph] [fixture:
+indentation/swimlane-verbatim-direction-description] [fixture:
+indentation/verbatim-direction-description-followed-by-text]
+
+Without the `;`, or with only one, the description and direction still move to
+lines of their own.
+
+[fixture: indentation/style-description-direction-split]
+
 ### Statements one per line
 
 A `;` that the line rule ignores after a word does not separate it from the next

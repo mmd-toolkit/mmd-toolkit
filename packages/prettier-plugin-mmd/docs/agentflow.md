@@ -248,6 +248,18 @@ names-and-headings/heading-with-directive-ignored-semicolon-after-whitespace-dro
 [fixture:
 names-and-headings/heading-with-directive-after-hash-ignored-semicolon-after-whitespace-dropped]
 
+Before a `;` that stays on a line printed as written, the end of a name keeps
+its whitespace where removing it would form an entity: `flow F%% style:#x ;;`
+keeps the space before `;;`, also where spaces follow the semicolons.
+
+[fixture: names-and-headings/heading-entity-gap-before-kept-semicolons]
+[fixture: names-and-headings/heading-entity-gap-before-kept-semicolons-trailing]
+
+Where removing the whitespace forms no entity, the usual trimming still applies:
+`accDescr {style:#x} flow F ;;` is printed with `flow F;;`.
+
+[fixture: names-and-headings/heading-nonentity-gap-before-kept-semicolons]
+
 The whitespace after the word `flow`, `connector`, or `global` is one space,
 however many spaces or tabs were written: the word takes one whitespace
 character, and mermaid.js trims the rest from the name. `flow   F["T"]` is
@@ -1052,6 +1064,16 @@ direction/joined-direction-end-of-text] [fixture:
 direction/split-direction-after-description] [fixture:
 direction/unclosed-directive-before-direction] [test: agentflow direction after
 a U+2029 and a comment line]
+
+This includes a line that stays as written because an ignored `;` stands next to
+another `;`: `accDescr {style:#x} direction LR;;` stays at the first column,
+also in a `flow`, since mermaid.js reads an empty description where it is
+indented. Without the `;`, or with only one, the description and the direction
+move to lines of their own, as before.
+
+[fixture: direction/verbatim-direction-description] [fixture:
+direction/verbatim-direction-description-in-flow] [fixture:
+direction/style-description-direction-split]
 
 Input (escaped): `"agentflow-beta TB\nflow F\ndirection TD\nA\nend"`.
 

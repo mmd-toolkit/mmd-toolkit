@@ -14,7 +14,7 @@ import {
 } from "./gap.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import {
-  commentEndsInSemicolonThatNeedsItsLine,
+  commentHasIgnoredSemicolonThatNeedsItsLine,
   followsGapsOfStyleRuleStretch,
   holdsJoiningRegion,
   holdsKeptSemicolon,
@@ -1030,7 +1030,7 @@ export function printBlock<Statement extends Positioned>(
     // makes it ignored (`style:#x` before the closing) where a line of its own
     // would make it read: it ends a comment as an entity (`end #a;`, see
     // `ignoredSemicolonNeedsItsLine`), also where whitespace follows it and it
-    // has no token of its own (`commentEndsInSemicolonThatNeedsItsLine`). The
+    // has no token of its own (`commentHasIgnoredSemicolonThatNeedsItsLine`). The
     // `#` of a comment after the closing also keeps the closing on the line
     // where it ends a stretch of the line rule that holds whitespace of the
     // line before the closing: a line break would end the stretch earlier (see
@@ -1058,7 +1058,7 @@ export function printBlock<Statement extends Positioned>(
         (comment) =>
           closing.range[1] <= comment.range[0] &&
           comment.range[0] < lineEnd &&
-          commentEndsInSemicolonThatNeedsItsLine(source, comment.range),
+          commentHasIgnoredSemicolonThatNeedsItsLine(source, comment.range),
       ) ||
       followsGapsOfStyleRuleStretch(source, closing.range) ||
       (findTokensBetween(source, closingLine, closingStart).some(

@@ -641,6 +641,11 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
     "sequenceDiagram\n  accDescr {}\n  autonumber % style:#x;\n  %%{init: {}}%% %% e\n",
   ],
   [
+    "an ignored entity semicolon before U+2028 keeps end with its description block before and",
+    "sequenceDiagram\npar outer\nloop x\nA->>B: body\naccDescr {style:#x} end #ab1;\u2028\nand other\nA->>C: other\nend\n",
+    "sequenceDiagram\n  par outer\n    loop x\n      A ->> B: body\n      accDescr {style:#x} end #ab1;\u2028\n  and other\n    A ->> C: other\n  end\n",
+  ],
+  [
     "U+2029 at the end of the text of a box",
     "sequenceDiagram\nbox aqua\u2029\nparticipant A\nend\n",
     "sequenceDiagram\n  box aqua\u2029\n    participant A\n  end\n",

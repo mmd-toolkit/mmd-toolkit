@@ -62,18 +62,19 @@ export function findAgentflowKeptLines(source: Source): KeptLines {
     ]),
     ...findLinesAfterEmptyStyle(source, statements),
   ])
+  const verbatim = new Set([
+    ...directionText,
+    ...findStyleLinesWithLineSeparators(source, statements),
+    ...findLinesEndedBySemicolon(source),
+  ])
   const beforeDirection = findLinesBeforeDirectionStatement(
     source,
     statements,
-    joined,
+    { joined, verbatim },
   )
   const kept: KeptLines = {
     joined,
-    verbatim: new Set([
-      ...directionText,
-      ...findStyleLinesWithLineSeparators(source, statements),
-      ...findLinesEndedBySemicolon(source),
-    ]),
+    verbatim,
     ownIndentation: new Set([...directionText, ...beforeDirection]),
   }
   keptLinesBySource.set(source, kept)

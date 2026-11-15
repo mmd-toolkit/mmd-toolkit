@@ -260,6 +260,19 @@ mermaid.js が名前を trim するので Db は同じであり、
 [fixture: names-and-headings/heading-with-directive-ignored-semicolon-after-whitespace-dropped]
 [fixture: names-and-headings/heading-with-directive-after-hash-ignored-semicolon-after-whitespace-dropped]
 
+書かれたまま残す行の `;` の前では、空白を除くとエンティティになる場合、
+名前の末尾の空白を保ちます。
+`flow F%% style:#x ;;` は `;;` の前の空白を保ち、
+セミコロンの後ろに空白がある場合も同じです。
+
+[fixture: names-and-headings/heading-entity-gap-before-kept-semicolons]
+[fixture: names-and-headings/heading-entity-gap-before-kept-semicolons-trailing]
+
+空白を除いてもエンティティにならない場合は、通常どおり末尾の空白を除きます。
+`accDescr {style:#x} flow F ;;` の `flow F ;;` は、`flow F;;` と印字します。
+
+[fixture: names-and-headings/heading-nonentity-gap-before-kept-semicolons]
+
 `flow`、`connector`、`global` の後ろの空白は、
 空白やタブがいくつ書かれていても空白 1 つにします。
 キーワードが空白を 1 文字取り、残りは mermaid.js が名前から trim するからです。
@@ -1093,6 +1106,16 @@ Mermaidは順に試す方向の選択肢と、その選択肢内の最後の出�
 [fixture: direction/split-direction-after-description]
 [fixture: direction/unclosed-directive-before-direction]
 [test: agentflow direction after a U+2029 and a comment line]
+
+無視される `;` が別の `;` と隣り合い、行を書かれたまま残す場合も同じです。
+`accDescr {style:#x} direction LR;;` は、`flow` の中でも、先頭の桁に残します。
+字下げすると、mermaid.js が空の説明を読むからです。
+`;` がない場合や 1 つだけの場合は、これまでどおり、
+説明と方向を別の行に移します。
+
+[fixture: direction/verbatim-direction-description]
+[fixture: direction/verbatim-direction-description-in-flow]
+[fixture: direction/style-description-direction-split]
 
 入力（エスケープ表記）: `"agentflow-beta TB\nflow F\ndirection TD\nA\nend"`。
 
