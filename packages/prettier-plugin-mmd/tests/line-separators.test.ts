@@ -637,6 +637,16 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
  */
 const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
+    "flowchart LS semicolon inside block",
+    "flowchart LR\naccDescr {style:#x}; accDescr {\nd;e\u2028f\n} Z\n",
+    "flowchart LR\n  accDescr {style:#x}; accDescr {\n    d;e\u2028f\n  }\n  Z\n",
+  ],
+  [
+    "flowchart PS semicolon inside block",
+    "flowchart LR\naccDescr {style:#x}; accDescr {\nd;e\u2029f\n} Z\n",
+    "flowchart LR\n  accDescr {style:#x}; accDescr {\n    d;e\u2029f\n  }\n  Z\n",
+  ],
+  [
     "U+2028 after a `;` before an edge id",
     "flowchart LR\nA[style:#x];\u2028e1@-->B\n",
     "flowchart LR\n  A[style:#x];\u2028e1@-->B\n",
@@ -3575,6 +3585,26 @@ const timelineLineSeparatorExamples: readonly (readonly [
     "timeline\n  title\u2029 # c\n  2004 : a\n",
   ],
   [
+    "U+2028 after a description block on the header line",
+    "timeline TD accDescr {alpha}\u2028Phase : done\n",
+    "timeline TD accDescr {alpha}\u2028Phase : done\n",
+  ],
+  [
+    "U+2029 between the direction and a description block on the header line",
+    "timeline TD\u2029accDescr {alpha}\n",
+    "timeline TD\u2029accDescr {alpha}\n",
+  ],
+  [
+    "U+2028 after the closing brace of a description block over lines on the header line",
+    "timeline TD accDescr {\nalpha\n}\u2028Phase : done\n",
+    "timeline TD accDescr {\n    alpha\n  }\u2028Phase : done\n",
+  ],
+  [
+    "U+2029 between two description blocks on the header line",
+    "timeline TD accDescr {a}\u2029accDescr {b}\n",
+    "timeline TD accDescr {a}\u2029accDescr {b}\n",
+  ],
+  [
     "a line separator and a comment line after the closing brace of a description block that starts on the line of the timeline header, before a period",
     "timeline LR accDescr {\nalpha}\u2028%% joined\nPhase : done\n",
     "timeline LR accDescr {\nalpha}\u2028%% joined\nPhase : done\n",
@@ -3647,6 +3677,56 @@ const timelineWhitespaceExamples: readonly (readonly [
     "U+00A0 inside a section name",
     "timeline\nsection S\u00a0T\n",
     "timeline\n  section S\u00a0T\n",
+  ],
+  [
+    "U+00A0 between the direction and a text on the header line",
+    "timeline TD\u00a0title T\n",
+    "timeline TD\u00a0title T\n",
+  ],
+  [
+    "a run of spaces and tabs around U+00A0 between the direction and a text on the header line",
+    "timeline TD  \u00a0\t title T\n",
+    "timeline TD \u00a0 title T\n",
+  ],
+  [
+    "U+00A0 between the direction and a description block on the header line",
+    "timeline TD\u00a0accDescr {alpha}\n",
+    "timeline TD\u00a0accDescr {alpha}\n",
+  ],
+  [
+    "U+00A0 between the keyword and the brace of a description block on the header line",
+    "timeline TD accDescr\u00a0{alpha}\n",
+    "timeline TD accDescr\u00a0{alpha}\n",
+  ],
+  [
+    "U+00A0 inside the braces of a description block on the header line",
+    "timeline TD accDescr {\u00a0alpha   \u00a0}\n",
+    "timeline TD accDescr {\u00a0alpha \u00a0}\n",
+  ],
+  [
+    "U+00A0 after a description block on the header line",
+    "timeline TD accDescr {alpha}\u00a0Phase : done\n",
+    "timeline TD accDescr {alpha}\u00a0Phase : done\n",
+  ],
+  [
+    "a run of spaces around U+00A0 after a description block on the header line",
+    "timeline TD accDescr {alpha}  \u00a0  Phase : done\n",
+    "timeline TD accDescr {alpha} \u00a0 Phase : done\n",
+  ],
+  [
+    "U+2003 between two description blocks on the header line",
+    "timeline TD accDescr {a}\u2003accDescr {b}\n",
+    "timeline TD accDescr {a}\u2003accDescr {b}\n",
+  ],
+  [
+    "U+00A0 before a comment after a description block on the header line",
+    "timeline TD accDescr {alpha}\u00a0%% c\n",
+    "timeline TD accDescr {alpha}\u00a0%% c\n",
+  ],
+  [
+    "U+00A0 after the closing brace of a description block over lines on the header line",
+    "timeline TD accDescr {\nalpha\n}\u00a0Phase : done\n",
+    "timeline TD accDescr {\n    alpha\n  }\u00a0Phase : done\n",
   ],
 ]
 
@@ -5798,6 +5878,206 @@ describe("Venn whitespace and line boundaries", () => {
 /** Style terminators retain Unicode line-rule and directive boundaries. */
 describe("style semicolons", () => {
   it.each([
+    [
+      "block style terminators and U+2028 and U+2029 dropped before comments",
+      "block\nA\nclassDef c fill:coral\u2028;\n%% c\nx\nclassDef d fill:coral\u2029;\n%% d\ny\n",
+      "block\n  A\n  classDef c fill: coral\n  %% c\n  x\n  classDef d fill: coral\n  %% d\n  y\n",
+    ],
+    [
+      "treemap style terminators kept after U+2028 and U+2029 before comments",
+      'treemap\nclassDef aa fill:coral\u2028;\n%% c\n"x": 1\nclassDef bb fill:coral\u2029;\n%% d\n"y": 2\n',
+      'treemap\n  classDef aa fill:coral\u2028;\n  %% c\n  "x": 1\n  classDef bb fill:coral\u2029;\n  %% d\n  "y": 2\n',
+    ],
+    [
+      "treemap style terminators dropped and U+2028 and U+2029 kept before statements",
+      'treemap\nclassDef aa fill:coral\u2028;\n"x": 1\nclassDef bb fill:coral\u2029;\n"y": 2\n',
+      'treemap\n  classDef aa fill:coral\u2028\n  "x": 1\n  classDef bb fill:coral\u2029\n  "y": 2\n',
+    ],
+    [
+      "treemap whitespace after U+2028 and U+2029 keeps the terminator before comments",
+      'treemap\nclassDef aa fill:coral\u2028\u00a0;\n%% c\n"x": 1\nclassDef bb fill:coral\u2029\u00a0\u2028 ;\n%% d\n"y": 2\nclassDef cc fill:red\t\u000b\f\u00a0\u2028\u2029\u3000\ufeff;\n%% e\n"z": 3\n',
+      'treemap\n  classDef aa fill:coral\u2028\u00a0;\n  %% c\n  "x": 1\n  classDef bb fill:coral\u2029\u00a0\u2028 ;\n  %% d\n  "y": 2\n  classDef cc fill:red\t\u000b\f\u00a0\u2028\u2029\u3000\ufeff;\n  %% e\n  "z": 3\n',
+    ],
+    [
+      "treemap a comment line at the end of the text keeps the terminator after whitespace that is no space or tab",
+      "treemap\nclassDef aa fill:red\u2028\u00a0;\n%% c\nclassDef bb fill:red\u2028\u2028;\n%% d\n",
+      "treemap\n  classDef aa fill:red\u2028\u00a0;\n  %% c\n  classDef bb fill:red\u2028\u2028;\n  %% d\n",
+    ],
+    [
+      "treemap spaces and tabs after U+2028 or U+2029 go with the dropped terminator",
+      'treemap\nclassDef aa fill:red\u2028 ;\n"x": 1\nclassDef bb fill:red\u2028\t;\n"y": 2\nclassDef cc fill:red\u2029 ;\n',
+      'treemap\n  classDef aa fill:red\u2028\n  "x": 1\n  classDef bb fill:red\u2028\n  "y": 2\n  classDef cc fill:red\u2029\n',
+    ],
+    [
+      "ER a comment line at the end of the text keeps the terminator after whitespace that is no space or tab",
+      "erDiagram\nA\nstyle A fill:red\u2028\u00a0;\n%% c\nclassDef c fill:red\u2028\u2028;\n%% d\n",
+      "erDiagram\n  A\n  style A fill:red\u2028\u00a0;\n  %% c\n  classDef c fill:red\u2028\u2028;\n  %% d\n",
+    ],
+    [
+      "ER a terminator after spaces and tabs is dropped before a comment line at the end of the text",
+      "erDiagram\nA\nstyle A fill:red\u2028 ;\n%% c\nclassDef c fill:red\u2029\t;\n%% d\n",
+      "erDiagram\n  A\n  style A fill: red\n  %% c\n  classDef c fill:red\u2029\n  %% d\n",
+    ],
+    [
+      "flowchart a line feed before U+2028 ended the style, so the terminator is dropped",
+      "flowchart LR\nA --> B\nstyle A fill:red\n\u2028;\n%% c\nx\nclassDef k fill:red\n\u2029 ;\n%% d\ny\n",
+      "flowchart LR\n  A --> B\n  style A fill: red\n  %% c\n  x\n  classDef k fill: red\n  %% d\n  y\n",
+    ],
+    [
+      "swimlane a line feed before U+2028 ended the style, so the terminator is dropped",
+      "swimlane-beta TB\nsubgraph L\nA --> B\nend\nstyle A fill:red\n\u2028;\n%% c\nx\n",
+      "swimlane-beta TB\n  subgraph L\n    A --> B\n  end\n  style A fill: red\n  %% c\n  x\n",
+    ],
+    [
+      "flowchart whitespace after a line feed after U+2028 is no text of the style",
+      "flowchart LR\nA --> B\nstyle A fill:red\u2028\n\u00a0;\n%% c\n",
+      "flowchart LR\n  A --> B\n  style A fill:red\u2028\n  %% c\n",
+    ],
+    [
+      "flowchart whitespace after U+2028 on the line of the style keeps the terminator before a comment line at the end of the text",
+      "flowchart LR\nA --> B\nstyle A fill:red\u2028\u00a0\n;\n%% c\n",
+      "flowchart LR\n  A --> B\n  style A fill:red\u2028\u00a0\n  ;\n  %% c\n",
+    ],
+    [
+      "treemap directive and comment lines after a style terminator that follows U+2028",
+      'treemap\nclassDef aa fill:coral\u2028;\n%%{init: {}}%%\n%% c\n"x": 1\n',
+      'treemap\n  classDef aa fill:coral\u2028;\n%%{init: {}}%%\n  %% c\n  "x": 1\n',
+    ],
+    [
+      "treemap style terminators dropped and whitespace that CSS does not read kept",
+      'treemap\nclassDef aa fill:coral\u00a0;\n%% c\n"x": 1\nclassDef bb fill:coral\u3000;\n%% d\n"y": 2\nclassDef cc fill:coral\u000b;\n%% e\n"z": 3\n',
+      'treemap\n  classDef aa fill: coral\u00a0\n  %% c\n  "x": 1\n  classDef bb fill: coral\u3000\n  %% d\n  "y": 2\n  classDef cc fill: coral\u000b\n  %% e\n  "z": 3\n',
+    ],
+    [
+      "treemap style terminators dropped with a form feed, a space, and a tab",
+      'treemap\nclassDef aa fill:coral\u000c;\n%% c\n"x": 1\nclassDef bb fill:coral \t;\n%% d\n"y": 2\n',
+      'treemap\n  classDef aa fill: coral\n  %% c\n  "x": 1\n  classDef bb fill: coral\n  %% d\n  "y": 2\n',
+    ],
+    [
+      "ER directives before comments on the same line",
+      "erDiagram\nA\nstyle A fill:coral\u2028;\n%%{init: {}}%% %% c\nx\nclassDef c fill:coral\u2029;\n%%{init: {}}%% %% d\ny\n",
+      "erDiagram\n  A\n  style A fill: coral\n  %%{init: {}}%% %% c\n  x\n  classDef c fill: coral\n  %%{init: {}}%% %% d\n  y\n",
+    ],
+    [
+      "ER whitespace other than spaces and tabs after the character keeps the terminator",
+      "erDiagram\nA\nstyle A fill:coral\u2028\u00a0;\n%% c\nx\nclassDef c fill:coral \u2029\u00a0;\n%% c\ny\n",
+      "erDiagram\n  A\n  style A fill:coral\u2028\u00a0;\n  %% c\n  x\n  classDef c fill:coral \u2029\u00a0;\n  %% c\n  y\n",
+    ],
+    [
+      "ER directive lines before a comment line",
+      "erDiagram\nA\nstyle A fill:coral\u2028;\n%%{init: {}}%%\n%% c\nx\nstyle A fill:coral\u2029;\n%%{init: {}}%%\n%%{init: {}}%%\n%% c\ny\nclassDef c fill:coral\u2028;\n%%{init: {}}%%\n%% c\nz\n",
+      "erDiagram\n  A\n  style A fill: coral\n  %%{init: {}}%%\n  %% c\n  x\n  style A fill: coral\n  %%{init: {}}%%\n  %%{init: {}}%%\n  %% c\n  y\n  classDef c fill: coral\n  %%{init: {}}%%\n  %% c\n  z\n",
+    ],
+    [
+      "ER directive line then a statement after a style terminator",
+      "erDiagram\nA\nstyle A fill:coral\u2028;\n%%{init: {}}%%\nx\n",
+      "erDiagram\n  A\n  style A fill:coral\u2028\n  %%{init: {}}%%\n  x\n",
+    ],
+    [
+      "ER an unclosed directive line before a comment line",
+      "erDiagram\nA\nstyle A fill:coral\u2028;\n%%{init: x\n%% c\nx\n",
+      "erDiagram\n  A\n  style A fill: coral\n  %%{init: x\n%% c\n  x\n",
+    ],
+    [
+      "flowchart directive line before a comment line",
+      "flowchart LR\nA --> B\nstyle A fill:coral\u2028;\n%%{init: {}}%%\n%% c\nx\n",
+      "flowchart LR\n  A --> B\n  style A fill:coral\u2028;\n  %%{init: {}}%%\n  %% c\n  x\n",
+    ],
+    [
+      "ER whitespace before the character goes with the terminator",
+      "erDiagram\nA\nstyle A fill:coral \u2028;\n%% c\nx\nstyle A fill:coral\t\u2029;\n%% c\ny\n",
+      "erDiagram\n  A\n  style A fill: coral\n  %% c\n  x\n  style A fill: coral\n  %% c\n  y\n",
+    ],
+    [
+      "flowchart directive before a comment on the same line",
+      "flowchart LR\nA --> B\nstyle A fill:coral\u2028\n;\n%%{init: {}}%% %% c\nx\n",
+      "flowchart LR\n  A --> B\n  style A fill:coral\u2028\n  ;\n  %%{init: {}}%% %% c\n  x\n",
+    ],
+    [
+      "swimlane directive before a comment on the same line",
+      "swimlane-beta TB\nsubgraph L\nA --> B\nend\nstyle A fill:coral\u2028\n;\n%%{init: {}}%% %% c\nx\n",
+      "swimlane-beta TB\n  subgraph L\n    A --> B\n  end\n  style A fill:coral\u2028\n  ;\n  %%{init: {}}%% %% c\n  x\n",
+    ],
+    [
+      "ER direct comments",
+      "erDiagram\nA\nstyle A fill:coral\u2028;\n%% c\nx\nstyle A fill:coral\u2029;\n%% c\ny\nstyle A fill:coral\u2028 ;\n%% c\nz\nclassDef c fill:coral\u2028;\n%% c\nu\nclassDef d fill:coral\u2029;\n%% c\nv\nclassDef e fill:coral\u2028 ;\n%% c\nw\n",
+      "erDiagram\n  A\n  style A fill: coral\n  %% c\n  x\n  style A fill: coral\n  %% c\n  y\n  style A fill: coral\n  %% c\n  z\n  classDef c fill: coral\n  %% c\n  u\n  classDef d fill: coral\n  %% c\n  v\n  classDef e fill: coral\n  %% c\n  w\n",
+    ],
+    [
+      "ER two comment lines",
+      "erDiagram\nA\nstyle A fill:coral\u2028;\n%% c\n%% d\nx\nstyle A fill:coral\u2029;\n%% c\n%% d\ny\nstyle A fill:coral\u2028 ;\n%% c\n%% d\nz\nclassDef c fill:coral\u2028;\n%% c\n%% d\nu\nclassDef d fill:coral\u2029;\n%% c\n%% d\nv\nclassDef e fill:coral\u2028 ;\n%% c\n%% d\nw\n",
+      "erDiagram\n  A\n  style A fill: coral\n  %% c\n  %% d\n  x\n  style A fill: coral\n  %% c\n  %% d\n  y\n  style A fill: coral\n  %% c\n  %% d\n  z\n  classDef c fill: coral\n  %% c\n  %% d\n  u\n  classDef d fill: coral\n  %% c\n  %% d\n  v\n  classDef e fill: coral\n  %% c\n  %% d\n  w\n",
+    ],
+    [
+      "ER empty lines before comments",
+      "erDiagram\nA\nstyle A fill:coral\u2028;\n\n%% c\nx\nstyle A fill:coral\u2029;\n\n%% c\ny\nstyle A fill:coral\u2028 ;\n\n%% c\nz\nclassDef c fill:coral\u2028;\n\n%% c\nu\nclassDef d fill:coral\u2029;\n\n%% c\nv\nclassDef e fill:coral\u2028 ;\n\n%% c\nw\n",
+      "erDiagram\n  A\n  style A fill: coral\n\n  %% c\n  x\n  style A fill: coral\n\n  %% c\n  y\n  style A fill: coral\n\n  %% c\n  z\n  classDef c fill: coral\n\n  %% c\n  u\n  classDef d fill: coral\n\n  %% c\n  v\n  classDef e fill: coral\n\n  %% c\n  w\n",
+    ],
+    [
+      "ER directives on comment lines",
+      "erDiagram\nA\nstyle A fill:coral\u2028;\n%% c %%{init: {}}%%\nx\nstyle A fill:coral\u2029;\n%% c %%{init: {}}%%\ny\nstyle A fill:coral\u2028 ;\n%% c %%{init: {}}%%\nz\nclassDef c fill:coral\u2028;\n%% c %%{init: {}}%%\nu\nclassDef d fill:coral\u2029;\n%% c %%{init: {}}%%\nv\nclassDef e fill:coral\u2028 ;\n%% c %%{init: {}}%%\nw\n",
+      "erDiagram\n  A\n  style A fill: coral\n  %% c %%{init: {}}%%\n  x\n  style A fill: coral\n  %% c %%{init: {}}%%\n  y\n  style A fill: coral\n  %% c %%{init: {}}%%\n  z\n  classDef c fill: coral\n  %% c %%{init: {}}%%\n  u\n  classDef d fill: coral\n  %% c %%{init: {}}%%\n  v\n  classDef e fill: coral\n  %% c %%{init: {}}%%\n  w\n",
+    ],
+    [
+      "ER indented comments",
+      "erDiagram\nA\nstyle A fill:coral\u2028;\n %% c\nx\nstyle A fill:coral\u2029;\n %% c\ny\nstyle A fill:coral\u2028 ;\n %% c\nz\nclassDef c fill:coral\u2028;\n %% c\nu\nclassDef d fill:coral\u2029;\n %% c\nv\nclassDef e fill:coral\u2028 ;\n %% c\nw\n",
+      "erDiagram\n  A\n  style A fill: coral\n  %% c\n  x\n  style A fill: coral\n  %% c\n  y\n  style A fill: coral\n  %% c\n  z\n  classDef c fill: coral\n  %% c\n  u\n  classDef d fill: coral\n  %% c\n  v\n  classDef e fill: coral\n  %% c\n  w\n",
+    ],
+    [
+      "ER indented following statements",
+      "erDiagram\nA\nstyle A fill:coral\u2028;\n%% c\n x\nstyle A fill:coral\u2029;\n%% c\n y\nstyle A fill:coral\u2028 ;\n%% c\n z\nclassDef c fill:coral\u2028;\n%% c\n u\nclassDef d fill:coral\u2029;\n%% c\n v\nclassDef e fill:coral\u2028 ;\n%% c\n w\n",
+      "erDiagram\n  A\n  style A fill: coral\n  %% c\n  x\n  style A fill: coral\n  %% c\n  y\n  style A fill: coral\n  %% c\n  z\n  classDef c fill: coral\n  %% c\n  u\n  classDef d fill: coral\n  %% c\n  v\n  classDef e fill: coral\n  %% c\n  w\n",
+    ],
+    [
+      "flowchart LF before terminator and comments",
+      "flowchart LR\nA --> B\nstyle A fill:coral\u2028\n;\n%% c\nx\nstyle A fill:coral\u2028\n;\n%% c\n%% d\ny\nstyle A fill:coral\u2028\n;\n\n%% c\nz\nstyle A fill:coral\u2028\n;\n%% c %%{init: {}}%%\nu\nstyle A fill:coral\u2028\n;\n %% c\nv\nstyle A fill:coral\u2028\n;\n%% c\n w\n",
+      "flowchart LR\n  A --> B\n  style A fill:coral\u2028\n  ;\n  %% c\n  x\n  style A fill:coral\u2028\n  ;\n  %% c\n  %% d\n  y\n  style A fill:coral\u2028\n  ;\n\n  %% c\n  z\n  style A fill:coral\u2028\n  ;\n  %% c %%{init: {}}%%\n  u\n  style A fill:coral\u2028\n  ;\n  %% c\n  v\n  style A fill:coral\u2028\n  ;\n  %% c\n  w\n",
+    ],
+    [
+      "swimlane LF before terminator and comments",
+      "swimlane-beta TB\nsubgraph L\nA --> B\nend\nstyle A fill:coral\u2028\n;\n%% c\nx\nstyle A fill:coral\u2028\n;\n%% c\n%% d\ny\nstyle A fill:coral\u2028\n;\n\n%% c\nz\nstyle A fill:coral\u2028\n;\n%% c %%{init: {}}%%\nu\nstyle A fill:coral\u2028\n;\n %% c\nv\nstyle A fill:coral\u2028\n;\n%% c\n w\n",
+      "swimlane-beta TB\n  subgraph L\n    A --> B\n  end\n  style A fill:coral\u2028\n  ;\n  %% c\n  x\n  style A fill:coral\u2028\n  ;\n  %% c\n  %% d\n  y\n  style A fill:coral\u2028\n  ;\n\n  %% c\n  z\n  style A fill:coral\u2028\n  ;\n  %% c %%{init: {}}%%\n  u\n  style A fill:coral\u2028\n  ;\n  %% c\n  v\n  style A fill:coral\u2028\n  ;\n  %% c\n  w\n",
+    ],
+    [
+      "ER directive lines, direct statements, NBSP controls",
+      "erDiagram\nA\nstyle A fill:coral\u2028;\n%%{init: {}}%%\nx\nclassDef c fill:coral\u2029;\n%%{init: {}}%%\ny\nstyle A fill:coral\u2028 ;\nz\nclassDef d fill:coral\u2029;\nu\nstyle A fill:coral\u00a0;\n%% c\nv\nclassDef e fill:coral\u00a0;\n%% c\nw\n",
+      "erDiagram\n  A\n  style A fill:coral\u2028\n  %%{init: {}}%%\n  x\n  classDef c fill:coral\u2029\n  %%{init: {}}%%\n  y\n  style A fill:coral\u2028\n  z\n  classDef d fill:coral\u2029\n  u\n  style A fill: coral\u00a0\n  %% c\n  v\n  classDef e fill: coral\u00a0\n  %% c\n  w\n",
+    ],
+    [
+      "ER style comment at EOF control",
+      "erDiagram\nA\nstyle A fill:coral\u2028;\n%% c\n",
+      "erDiagram\n  A\n  style A fill:coral\u2028\n  %% c\n",
+    ],
+    [
+      "ER classDef comment at EOF control",
+      "erDiagram\nclassDef c fill:coral\u2029;\n%% c\n",
+      "erDiagram\n  classDef c fill:coral\u2029\n  %% c\n",
+    ],
+    [
+      "flowchart directive, direct, NBSP and bare percent controls",
+      "flowchart LR\nA --> B\nstyle A fill:coral\u2028\n;\n%%{init: {}}%%\nx\nstyle A fill:coral\u2028\n;\ny\nstyle A fill:coral\u00a0;\n%% c\nz\nstyle A fill:coral\u2028\n;\n%%\nu\n",
+      "flowchart LR\n  A --> B\n  style A fill:coral\u2028\n  %%{init: {}}%%\n  x\n  style A fill:coral\u2028\n  y\n  style A fill:coral\u00a0;\n  %% c\n  z\n  style A fill:coral\u2028\n  %%\n  u\n",
+    ],
+    [
+      "flowchart comment at EOF control",
+      "flowchart LR\nA --> B\nstyle A fill:coral\u2028\n;\n%% c\n",
+      "flowchart LR\n  A --> B\n  style A fill:coral\u2028\n  %% c\n",
+    ],
+    [
+      "swimlane directive, direct and NBSP controls",
+      "swimlane-beta TB\nsubgraph L\nA --> B\nend\nstyle A fill:coral\u2028\n;\n%%{init: {}}%%\nx\nstyle A fill:coral\u2028\n;\ny\nstyle A fill:coral\u00a0;\n%% c\nz\n",
+      "swimlane-beta TB\n  subgraph L\n    A --> B\n  end\n  style A fill:coral\u2028\n  %%{init: {}}%%\n  x\n  style A fill:coral\u2028\n  y\n  style A fill:coral\u00a0;\n  %% c\n  z\n",
+    ],
+    [
+      "swimlane comment at EOF control",
+      "swimlane-beta TB\nsubgraph L\nA --> B\nend\nstyle A fill:coral\u2028\n;\n%% c\n",
+      "swimlane-beta TB\n  subgraph L\n    A --> B\n  end\n  style A fill:coral\u2028\n  %% c\n",
+    ],
+    [
+      "ER tab and whitespace-only line before a comment",
+      "erDiagram\nA\nstyle A fill:coral\u2028\t;\n \t\n %% c\nx\n",
+      "erDiagram\n  A\n  style A fill: coral\n\n  %% c\n  x\n",
+    ],
     [
       "style semicolons: class before U+2028",
       "classDiagram\nclass A\nstyle A fill:#f00;\u2028\n",

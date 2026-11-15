@@ -57,9 +57,11 @@ export interface SectionedDiagram<Statement extends Node> {
    */
   readonly readsDirectiveLineWhitespaceAfter?: (statement: Statement) => boolean
   /**
-   * Whether a statement stays on the line of the header, after its gap as
-   * written, instead of going to a line of its own (see
-   * `BlockRules.writtenGapBefore`). Without it, none does.
+   * Whether a statement stays on a line of the header, which a version of
+   * mermaid.js draws as a text, instead of going to a line of its own: its gap
+   * is printed as the whitespace of a text (see `BlockRules.textGapBefore`),
+   * and a description block there is not written with the `:`. Without it,
+   * none does.
    */
   readonly staysOnHeaderLine?: (source: Source, statement: Statement) => boolean
 }
@@ -198,8 +200,12 @@ function statementBlockRules<Statement extends Node>(
       deeper.has(statement) ? indentationOf(options, 1) : "",
     readsDirectiveLineWhitespaceAfter:
       diagram.readsDirectiveLineWhitespaceAfter,
-    writtenGapBefore: (statement) =>
+    textGapBefore: (statement) =>
       diagram.staysOnHeaderLine?.(source, statement) === true,
+    onlyStatementOf: (statement) =>
+      diagram.staysOnHeaderLine?.(source, statement) === true
+        ? undefined
+        : { statement, head: "" },
     oneCharacterIndentation: diagram.readsCommentsByWhitespaceBefore
       ? options.useTabs
         ? "\t"

@@ -76,6 +76,8 @@ export interface Source {
    * order.
    */
   readonly joiningRegions: readonly JoiningRegion[]
+  /** All removed comment regions, including their preceding whitespace (common.md, Comment lines). */
+  readonly commentRegions: readonly Range[]
   /**
    * The offsets of the line feeds that mermaid.js does not read as line
    * ends, so that the lines they end go on: the line feeds that the joining
@@ -797,6 +799,7 @@ export function createSource(
     removed: removed.all,
     removedBeforeLineRule: removed.beforeLineRule,
     joiningRegions,
+    commentRegions: commentRegions.all,
     removedLineFeeds: findRemovedLineFeeds(text, root, joiningRegions),
     commentsEndAtLineSeparators:
       root.body.type === "MindmapDiagram" ||
