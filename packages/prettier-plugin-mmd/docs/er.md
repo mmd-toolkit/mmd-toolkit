@@ -2552,8 +2552,14 @@ style takes the next statement into its text where one follows), where
 whitespace of another kind, a no-break space for instance, stands after it and
 no comment line removes it, and where the style holds a `;`. It stays as written
 also where a directive touches the character, though mermaid.js draws the same
-figure without it. A color before the dropped character is printed in lower case
-at once: `fill:#F9F` and U+2028 is printed `fill: #f9f`.
+figure without it. Where a second U+2028 or U+2029, or whitespace, stands
+between the character and a directive and only comment lines follow the line of
+the directive, the first character stays and what stands after it up to the
+directive is printed as one space: `style A fill:red`, U+2028, U+2029, a
+directive, and a comment line are printed with `fill:red`, U+2028, a space, and
+the directive. Where a directive line or the end of the text follows instead,
+the line stays as written. A color before the dropped character is printed in
+lower case at once: `fill:#F9F` and U+2028 is printed `fill: #f9f`.
 
 [test: ER a style that no semicolon ends is printed without the U+2028 or U+2029
 that ends it, before a statement and at the end of the text] [test: ER a style
@@ -2569,15 +2575,20 @@ U+2029 and the space after it before a comment line at the end of the text]
 statement follow] [test: ER a style that no semicolon ends keeps the U+2028 that
 a comment follows on its line] [test: ER a style that no semicolon ends keeps
 the U+2028 that whitespace and a directive follow on its line] [test: ER a style
-that no semicolon ends keeps the U+2028 that a directive touches] [test: ER a
-style that no semicolon ends keeps the U+2028 that a no-break space follows]
-[test: ER a style that no semicolon ends is printed with its color in lower case
-once the U+2028 is dropped] [test: ER a terminator after U+2028 and whitespace
-of another kind is dropped with all of them] [test: ER a style that no semicolon
-ends is printed without two U+2028 or U+2029 that a comment follows on its line]
-[test: ER a classDef that no semicolon ends is printed without U+2029 and U+2028
-before a directive and a comment at the end of the text] [test: ER a style that
-no semicolon ends is printed without the U+2028 and the no-break space after it
+that no semicolon ends prints the characters after the first U+2028 as one space
+before a directive that comment lines follow] [test: ER a style that no
+semicolon ends keeps the two characters before a directive that a directive line
+follows] [test: ER a style that no semicolon ends keeps the two characters
+before a directive that ends the text] [test: ER a style that no semicolon ends
+keeps the U+2028 that a directive touches] [test: ER a style that no semicolon
+ends keeps the U+2028 that a no-break space follows] [test: ER a style that no
+semicolon ends is printed with its color in lower case once the U+2028 is
+dropped] [test: ER a terminator after U+2028 and whitespace of another kind is
+dropped with all of them] [test: ER a style that no semicolon ends is printed
+without two U+2028 or U+2029 that a comment follows on its line] [test: ER a
+classDef that no semicolon ends is printed without U+2029 and U+2028 before a
+directive and a comment at the end of the text] [test: ER a style that no
+semicolon ends is printed without the U+2028 and the no-break space after it
 before a comment line at the end of the text]
 
 mermaid.js keeps a U+2028 or U+2029 that directly follows the last style in the
