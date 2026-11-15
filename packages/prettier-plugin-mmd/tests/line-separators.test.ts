@@ -6319,19 +6319,94 @@ describe("style semicolons", () => {
       "erDiagram\n  A\n  style A fill:red\u2028 %%{init: {}}%%\n  %% c\n",
     ],
     [
-      "ER a style that no semicolon ends prints the characters after the first U+2028 as one space before a directive that comment lines follow",
+      "ER a style that no semicolon ends is printed without the U+2028 that a directive touches",
+      "erDiagram\nA\nstyle A fill:red\u2028%%{init: {}}%%\nx\n",
+      "erDiagram\n  A\n  style A fill: red%%{init: {}}%%\n  x\n",
+    ],
+    [
+      "ER a style that no semicolon ends is printed without the U+2028 that a directive touches before a comment line",
+      "erDiagram\nA\nstyle A fill:red\u2028%%{init: {}}%%\n%% d\n",
+      "erDiagram\n  A\n  style A fill: red%%{init: {}}%%\n  %% d\n",
+    ],
+    [
+      "ER a style that no semicolon ends keeps the U+2028 that a directive touches where a comment line and a statement follow",
+      "erDiagram\nA\nstyle A fill:red\u2028%%{init: {}}%%\n%% d\nx\n",
+      "erDiagram\n  A\n  style A fill:red\u2028%%{init: {}}%%\n%% d\nx\n",
+    ],
+    [
+      "ER a style that no semicolon ends is printed without the two characters that a directive touches before a comment line",
       "erDiagram\nA\nstyle A fill:red\u2028\u2029%%{init: {}}%%\n%% d\n",
-      "erDiagram\n  A\n  style A fill:red\u2028 %%{init: {}}%%\n  %% d\n",
+      "erDiagram\n  A\n  style A fill: red%%{init: {}}%%\n  %% d\n",
     ],
     [
-      "ER a style that no semicolon ends keeps the two characters before a directive that a directive line follows",
+      "ER a style that no semicolon ends is printed without the two characters that a directive touches where a directive line follows",
       "erDiagram\nA\nstyle A fill:red\u2028\u2029%%{init: {}}%%\n%%{init: {}}%%\n",
-      "erDiagram\n  A\n  style A fill:red\u2028\u2029%%{init: {}}%%\n  %%{init: {}}%%\n",
+      "erDiagram\n  A\n  style A fill: red%%{init: {}}%%\n  %%{init: {}}%%\n",
     ],
     [
-      "ER a style that no semicolon ends keeps the two characters before a directive that ends the text",
+      "ER a style that no semicolon ends is printed without the two characters that a directive touches where the text ends",
       "erDiagram\nA\nstyle A fill:red\u2028\u2029%%{init: {}}%%\n",
-      "erDiagram\n  A\n  style A fill:red\u2028\u2029%%{init: {}}%%\n",
+      "erDiagram\n  A\n  style A fill: red%%{init: {}}%%\n",
+    ],
+    [
+      "ER a style that no semicolon ends is printed without the two characters that a directive touches where a statement follows",
+      "erDiagram\nA\nstyle A fill:red\u2028\u2029%%{init: {}}%%\nx\n",
+      "erDiagram\n  A\n  style A fill: red%%{init: {}}%%\n  x\n",
+    ],
+    [
+      "ER a style that no semicolon ends is printed without the two characters that a directive touches where a directive line and then a comment line follow",
+      "erDiagram\nA\nstyle A fill:red\u2028\u2029%%{init: {}}%%\n%%{init: {}}%%\n%% d\n",
+      "erDiagram\n  A\n  style A fill: red%%{init: {}}%%\n  %%{init: {}}%%\n  %% d\n",
+    ],
+    [
+      "ER a style that no semicolon ends is printed without the two characters that a directive touches where a directive line and then a statement follow",
+      "erDiagram\nA\nstyle A fill:red\u2028\u2029%%{init: {}}%%\n%%{init: {}}%%\nx\n",
+      "erDiagram\n  A\n  style A fill: red%%{init: {}}%%\n  %%{init: {}}%%\n  x\n",
+    ],
+    [
+      "ER a classDef that no semicolon ends is printed without the U+2029 that a directive touches",
+      "erDiagram\nA:::k\nclassDef k fill:red\u2029%%{init: {}}%%\nx\n",
+      "erDiagram\n  A:::k\n  classDef k fill: red%%{init: {}}%%\n  x\n",
+    ],
+    [
+      "ER a style that no semicolon ends is printed without two U+2028 or U+2029 that a comment with a semicolon follows on its line",
+      "erDiagram\nA\nstyle A fill:red\u2028\u2029 %% c;\n",
+      "erDiagram\n  A\n  style A fill: red\n  %% c;\n",
+    ],
+    [
+      "ER a style that no semicolon ends is printed without two U+2028 or U+2029 that a comment with a semicolon follows on its line before a comment line",
+      "erDiagram\nA\nstyle A fill:red\u2028\u2029 %% c;\n%% d\n",
+      "erDiagram\n  A\n  style A fill: red\n  %% c;\n  %% d\n",
+    ],
+    [
+      "ER a style that no semicolon ends keeps the U+2028 that a comment with a semicolon follows on its line",
+      "erDiagram\nA\nstyle A fill:red\u2028 %% c;\n",
+      "erDiagram\n  A\n  style A fill:red\u2028 %% c;\n",
+    ],
+    [
+      "ER a style that no semicolon ends keeps the two characters before a comment with a semicolon on their line that a statement follows",
+      "erDiagram\nA\nstyle A fill:red\u2028\u2029 %% c;\nx\n",
+      "erDiagram\n  A\n  style A fill:red\u2028\u2029 %% c;\nx\n",
+    ],
+    [
+      "ER a style that no semicolon ends is printed without two U+2028 or U+2029 that a directive and a comment with a semicolon follow on their line",
+      "erDiagram\nA\nstyle A fill:red\u2028\u2029 %%{init: {}}%% %% c;\n",
+      "erDiagram\n  A\n  style A fill: red\n  %%{init: {}}%% %% c;\n",
+    ],
+    [
+      "ER a style that no semicolon ends is printed without two U+2028 or U+2029 that a comment with a semicolon follows on its line, with a color",
+      "erDiagram\nA\nstyle A fill:#f00\u2028\u2029 %% #a;\n",
+      "erDiagram\n  A\n  style A fill: #f00\n  %% #a;\n",
+    ],
+    [
+      "ER a style that no semicolon ends keeps the two characters of a style that holds a semicolon before a comment with a semicolon",
+      "erDiagram\nA\nstyle A fill:#f0;\u2028\u2029 %% c;\n",
+      "erDiagram\n  A\n  style A fill:#f0;\u2028\u2029 %% c;\n",
+    ],
+    [
+      "ER a classDef that no semicolon ends is printed without two U+2028 or U+2029 that a comment with a semicolon follows on its line",
+      "erDiagram\nA:::k\nclassDef k fill:red\u2028\u2029 %% c;\n",
+      "erDiagram\n  A:::k\n  classDef k fill: red\n  %% c;\n",
     ],
     [
       "ER a style that no semicolon ends keeps the U+2028 and the no-break space after it where the text ends",
@@ -6357,11 +6432,6 @@ describe("style semicolons", () => {
       "ER a style that no semicolon ends prints two spaces between the U+2028 and a directive that comment lines follow as one space",
       "erDiagram\nA\nstyle A fill:red\u2028  %%{init: {}}%%\n%% d\n",
       "erDiagram\n  A\n  style A fill:red\u2028 %%{init: {}}%%\n  %% d\n",
-    ],
-    [
-      "ER a style that no semicolon ends keeps the two characters before a directive that a statement follows",
-      "erDiagram\nA\nstyle A fill:red\u2028\u2029%%{init: {}}%%\nx\n",
-      "erDiagram\n  A\n  style A fill:red\u2028\u2029%%{init: {}}%%\n  x\n",
     ],
     [
       "ER a style that no semicolon ends keeps the two characters before a directive that a comment line and a statement follow",
@@ -6394,11 +6464,6 @@ describe("style semicolons", () => {
       "erDiagram\n  A\n  style A fill:red\u2028\n%% d\n\n  x\n",
     ],
     [
-      "ER a style that no semicolon ends prints the characters after the first U+2028 as one space before a directive that a directive line and then a comment line follow",
-      "erDiagram\nA\nstyle A fill:red\u2028\u2029%%{init: {}}%%\n%%{init: {}}%%\n%% d\n",
-      "erDiagram\n  A\n  style A fill:red\u2028 %%{init: {}}%%\n  %%{init: {}}%%\n  %% d\n",
-    ],
-    [
       "ER a style that no semicolon ends keeps the two characters before a directive that a comment line and then a directive line follow",
       "erDiagram\nA\nstyle A fill:red\u2028\u2029%%{init: {}}%%\n%% d\n%%{init: {}}%%\n",
       "erDiagram\n  A\n  style A fill:red\u2028\u2029%%{init: {}}%%\n%% d\n%%{init: {}}%%\n",
@@ -6414,19 +6479,9 @@ describe("style semicolons", () => {
       "erDiagram\n  A\n  style A fill: red\n  %%{init: {}}%%\n  x\n",
     ],
     [
-      "ER a style that no semicolon ends keeps the two characters before a directive that a directive line and then a statement follow",
-      "erDiagram\nA\nstyle A fill:red\u2028\u2029%%{init: {}}%%\n%%{init: {}}%%\nx\n",
-      "erDiagram\n  A\n  style A fill:red\u2028\u2029%%{init: {}}%%\n  %%{init: {}}%%\n  x\n",
-    ],
-    [
       "ER a style that no semicolon ends keeps the two characters before a directive and a comment that a statement follows",
       "erDiagram\nA\nstyle A fill:red\u2028\u2029 %%{init: {}}%% %% c\nx\n",
       "erDiagram\n  A\n  style A fill:red\u2028\u2029 %%{init: {}}%% %% c\nx\n",
-    ],
-    [
-      "ER a style that no semicolon ends keeps the U+2028 that a directive touches",
-      "erDiagram\nA\nstyle A fill:red\u2028%%{init: {}}%%\nx\n",
-      "erDiagram\n  A\n  style A fill:red\u2028%%{init: {}}%%\n  x\n",
     ],
     [
       "ER a style that no semicolon ends keeps the U+2028 that a no-break space follows",

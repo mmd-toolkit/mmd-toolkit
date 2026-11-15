@@ -2523,8 +2523,9 @@ Sは、文や、テキストを終えるディレクティブの行の前に、�
 | ノーブレークスペース                | テキストが終わるときは書かれたまま、コメント行の前では落とす        | 書かれたまま                                                                                               |
 | コメント、文字 1 つ                 | 文字を残す                                                          | 書かれたまま                                                                                               |
 | コメント、文字 2 つ                 | 落とし、コメントは別の行に印字する                                  | 書かれたまま                                                                                               |
-| ディレクティブ、文字 1 つ           | 文字を残す                                                          | 書かれたまま                                                                                               |
-| ディレクティブ、文字 2 つ           | 書かれたまま。コメント行の前では、最初の文字を残し、空白 1 つが続く | 書かれたまま                                                                                               |
+| 文字に接するディレクティブ          | 落とし、ディレクティブは style の直後に印字する                     | 同じ。文やディレクティブの行の前にコメント行があるときは書かれたまま                                       |
+| 空白の後のディレクティブ、文字 1 つ | 文字を残す                                                          | 書かれたまま                                                                                               |
+| 空白の後のディレクティブ、文字 2 つ | 書かれたまま。コメント行の前では、最初の文字を残し、空白 1 つが続く | 書かれたまま                                                                                               |
 | ディレクティブとコメント、文字 1 つ | 文字を残す                                                          | 書かれたまま                                                                                               |
 | ディレクティブとコメント、文字 2 つ | 落とし、ディレクティブとコメントは別の行に印字する                  | 書かれたまま                                                                                               |
 
@@ -2539,12 +2540,17 @@ mermaid.js は style 自身の行にあるコメントを拒否し、
 `style A fill:red %% c` は拒否されます。
 2 つ目の文字の後のコメントは、最初の文字が残っても落ちても、コメント行です。
 そのコメントは別の行に印字します。
+そのコメントの `;` は、書かれた行の `;` ではありません。
+`;` のないコメントと同じく、行を書かれたまま残す理由になりません。
 ディレクティブはテキストを読む前に取り除かれ、その空白が残ります。
-コメント行がテキストの終わりに続くときは、文字のないテキストは拒否されます。
+文字とディレクティブの間に空白があるときは、
+コメント行がテキストの終わりに続くと、文字のないテキストは拒否されます。
 文が続くときは、style のテキストがその文を取り込みます。
 文字と改行の間に空白があるとき、コメント行の後に文が続くときも同じです。
-文字に接するディレクティブも書かれたまま残しますが、
-mermaid.js は文字がなくても同じ図を描きます。
+文字に接するディレクティブは何も残さないので、style は文字のあった所で終わり、
+ディレクティブは style の直後に印字します。
+`style A fill:red`、U+2028、ディレクティブは、
+`style A fill: red` とディレクティブに印字します。
 落とす文字の前の色は、すぐに小文字で印字します。
 `fill:#F9F` と U+2028 は `fill: #f9f` と印字します。
 
@@ -2563,12 +2569,7 @@ mermaid.js は文字がなくても同じ図を描きます。
 [test: ER a style that no semicolon ends is printed without two U+2028 or U+2029 that a comment follows on its line]
 [test: ER a style that no semicolon ends keeps the two characters before a comment on their line that a statement follows]
 [test: ER a style that no semicolon ends keeps the U+2028 that whitespace and a directive follow on its line]
-[test: ER a style that no semicolon ends keeps the U+2028 that a directive touches]
 [test: ER a style that no semicolon ends prints two spaces between the U+2028 and a directive that comment lines follow as one space]
-[test: ER a style that no semicolon ends keeps the two characters before a directive that ends the text]
-[test: ER a style that no semicolon ends prints the characters after the first U+2028 as one space before a directive that comment lines follow]
-[test: ER a style that no semicolon ends keeps the two characters before a directive that a directive line follows]
-[test: ER a style that no semicolon ends keeps the two characters before a directive that a statement follows]
 [test: ER a style that no semicolon ends keeps the two characters before a directive that a comment line and a statement follow]
 [test: ER a style that no semicolon ends prints two spaces between the U+2028 and a directive and a comment on their line as one space]
 [test: ER a classDef that no semicolon ends is printed without U+2029 and U+2028 before a directive and a comment at the end of the text]
@@ -2576,12 +2577,28 @@ mermaid.js は文字がなくても同じ図を描きます。
 [test: ER a style that no semicolon ends is printed without the U+2028 that a directive line and then a comment line follow]
 [test: ER a style that no semicolon ends is printed without the U+2028 that a blank line and then a comment line follow]
 [test: ER a style that no semicolon ends keeps the U+2028 that a comment line, a blank line, and a statement follow]
-[test: ER a style that no semicolon ends prints the characters after the first U+2028 as one space before a directive that a directive line and then a comment line follow]
 [test: ER a style that no semicolon ends keeps the two characters before a directive that a comment line and then a directive line follow]
 [test: ER a style that no semicolon ends keeps the U+2028 before a directive and a comment on its line that a statement follows]
 [test: ER a style that no semicolon ends is printed without the U+2028 that a directive line and then a statement follow]
-[test: ER a style that no semicolon ends keeps the two characters before a directive that a directive line and then a statement follow]
 [test: ER a style that no semicolon ends keeps the two characters before a directive and a comment that a statement follows]
+[test: ER a style that no semicolon ends is printed without the U+2028 that a directive touches]
+[test: ER a style that no semicolon ends is printed without the U+2028 that a directive touches before a comment line]
+[test: ER a style that no semicolon ends keeps the U+2028 that a directive touches where a comment line and a statement follow]
+[test: ER a style that no semicolon ends is printed without the two characters that a directive touches before a comment line]
+[test: ER a style that no semicolon ends is printed without the two characters that a directive touches where a directive line follows]
+[test: ER a style that no semicolon ends is printed without the two characters that a directive touches where the text ends]
+[test: ER a style that no semicolon ends is printed without the two characters that a directive touches where a statement follows]
+[test: ER a style that no semicolon ends is printed without the two characters that a directive touches where a directive line and then a comment line follow]
+[test: ER a style that no semicolon ends is printed without the two characters that a directive touches where a directive line and then a statement follow]
+[test: ER a classDef that no semicolon ends is printed without the U+2029 that a directive touches]
+[test: ER a style that no semicolon ends is printed without two U+2028 or U+2029 that a comment with a semicolon follows on its line]
+[test: ER a style that no semicolon ends is printed without two U+2028 or U+2029 that a comment with a semicolon follows on its line before a comment line]
+[test: ER a style that no semicolon ends keeps the U+2028 that a comment with a semicolon follows on its line]
+[test: ER a style that no semicolon ends keeps the two characters before a comment with a semicolon on their line that a statement follows]
+[test: ER a style that no semicolon ends is printed without two U+2028 or U+2029 that a directive and a comment with a semicolon follow on their line]
+[test: ER a style that no semicolon ends is printed without two U+2028 or U+2029 that a comment with a semicolon follows on its line, with a color]
+[test: ER a style that no semicolon ends keeps the two characters of a style that holds a semicolon before a comment with a semicolon]
+[test: ER a classDef that no semicolon ends is printed without two U+2028 or U+2029 that a comment with a semicolon follows on its line]
 [test: ER a style that no semicolon ends is printed with its color in lower case once the U+2028 is dropped]
 
 mermaid.js は、最後のスタイルの直後にある U+2028 や U+2029 を、

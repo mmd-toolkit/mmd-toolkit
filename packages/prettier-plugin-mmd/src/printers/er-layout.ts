@@ -13,6 +13,7 @@ import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import {
   findKeptBreaks,
+  findStyleTerminator,
   gapKeepsLineBreak,
   findSeparatorDroppedWithTerminator,
   findSeparatorEndingStyle,
@@ -612,13 +613,7 @@ export function findDroppedSeparator(
   last: Node,
   statementEnd: number,
 ): number {
-  const unit = findTokenEndingBefore(source, statementEnd)
-  const semicolon =
-    unit?.value === ";"
-      ? unit.range[0]
-      : source.ignoredSemicolons.has(statementEnd)
-        ? statementEnd
-        : -1
+  const semicolon = findStyleTerminator(source, statementEnd)
   if (semicolon < 0)
     return findSeparatorEndingStyle(source, last.range[0], last.range[1])
   const separator = findSeparatorDroppedWithTerminator(source, semicolon)
