@@ -117,7 +117,9 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
   その Db を取り出し、fixture の形式を定め、適合コーパスと、
   それを作って確かめる道具を持つ。
   コーパスが記録する木の確かめも持つ。
-  記録した木から Db を作って mermaid.js の Db と比べ、木の不変条件を確かめる。
+  記録した木から Db を作って mermaid.js の Db と比べる。
+  スクリプトは、変更が記録する木を、木の不変条件と照らして確かめる。
+  スクリプトが確かめないものについては、答えを保持する。
   作業は SKILL `tests` に従う。
   図種を足す作業、木から Db を作る関数と木の検査を書く作業、
   mermaid.js を更新する作業は、それに加えて、SKILL `tests-diagram-type`、
@@ -128,6 +130,8 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
   仕様の文書は、parser のトークンと位置の仕様に言及しない。
   作業は SKILL `spec` に従う。
   図種を足す作業は、それに加えて、SKILL `spec-diagram-type` に従う。
+  木の文書のブロックか、木とトークンと位置の文書のブロックが指す節の変更は、
+  SKILL `recorded-trees` で確かめる。
 - `packages/ast`: 木の TypeScript の型で、仕様の定義に従う。
   持つのは型だけである。
   パーサー、フォーマッター、リンターは、これを任意の peer 依存にする。
@@ -144,6 +148,7 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
   そのため、parser のテストは、結果を fixture の記録と比べ、
   mermaid.js も生成した入力も動かさない。
   作業は SKILL `parser` に従う。
+  記録する木は、SKILL `recorded-trees` で確かめる。
   頼まれた性能のレビューは、SKILL `parser-performance-review` に従う。
 - `packages/prettier-plugin-mmd`: フォーマッター。
   図種ごとに printer を持ち、項目ごとに明示的に決めた整形方針に従う。
@@ -173,18 +178,19 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
 これらを変えると使う側のパッケージも変わる。
 同じ変更で直す。
 
-| インターフェース                             | 定義する側      | 使う側                                          |
-| -------------------------------------------- | --------------- | ----------------------------------------------- |
-| fixture の形式とローダー                     | tests           | spec、parser、prettier-plugin、textmate-grammar |
-| mermaid の Db を取り出す関数                 | tests           | parser、prettier-plugin                         |
-| fixture の CLI（`tools/fixtures.ts`）        | tests           | spec、parser                                    |
-| Db の要約と、記録した木の確かめ              | tests           | parser                                          |
-| AST の定義（`docs/ast.md`、`docs/ast/*.md`） | spec            | parser、prettier-plugin、eslint-plugin          |
-| トークンと位置（`docs/tokens.md` ほか）      | parser          | tests、prettier-plugin、eslint-plugin           |
-| 木の型（`src/ast.ts`、`src/ast/*.ts`）       | ast             | parser、prettier-plugin、eslint-plugin          |
-| parser の API（`parse()`、エラー、木の走査） | parser          | prettier-plugin、eslint-plugin、mmdfmt          |
-| プラグインとその言語、構文エラー             | prettier-plugin | mmdfmt                                          |
-| 規則の文書の例の印字される形                 | prettier-plugin | eslint-plugin                                   |
+| インターフェース                                                   | 定義する側           | 使う側                                          |
+| ---------------------------------------------------------- | --------------- | -------------------------------------------- |
+| fixture の形式とローダー                                           | tests           | spec、parser、prettier-plugin、textmate-grammar |
+| mermaid の Db を取り出す関数                                       | tests           | parser、prettier-plugin                       |
+| fixture の CLI（`tools/fixtures.ts`）                         | tests           | spec、parser                                  |
+| Db の要約と、記録した木を確かめるスクリプト                                    | tests           | parser                                       |
+| AST の定義（`docs/ast.md`、`docs/ast/*.md`）                     | spec            | tests、parser、prettier-plugin、eslint-plugin   |
+| 木とトークンと位置の文書が指す `docs/common.md` と `docs/diagrams/*.md` の節 | spec            | tests                                        |
+| トークンと位置（`docs/tokens.md` ほか）                               | parser          | tests、prettier-plugin、eslint-plugin          |
+| 木の型（`src/ast.ts`、`src/ast/*.ts`）                           | ast             | parser、prettier-plugin、eslint-plugin         |
+| parser の API（`parse()`、エラー、木の走査）                           | parser          | prettier-plugin、eslint-plugin、mmdfmt         |
+| プラグインとその言語、構文エラー                                           | prettier-plugin | mmdfmt                                       |
+| 規則の文書の例の印字される形                                             | prettier-plugin | eslint-plugin                                |
 
 ## 行動原則
 

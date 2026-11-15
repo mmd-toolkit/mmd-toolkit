@@ -294,6 +294,15 @@ it from the cases that its sentences distinguish.
    mermaid.js's result with what the sentence says. Each case then has a fixture
    that the sentence cites (section 5). Cite at least one fixture for each case,
    not every fixture of the same case.
+
+   When a change alters a block of `ast.md` or `ast/<diagram>.md`, or a section
+   of `common.md` or `diagrams/<diagram>.md` that a block of the tree, token, or
+   position documents links to, follow
+   [When the tree, token, or position documents change in recorded-trees](../recorded-trees/SKILL.md#8-when-the-tree-token-or-position-documents-change)
+   for the fixtures that its script lists for the items whose key changed. Ask
+   the tests package to judge, in the same pull request, the table rows that the
+   script lists as stale and the items not judged yet.
+
 3. Sort the cases that the sentence does not explain into kinds, and explain
    each kind with one rule. Write mermaid.js's mechanism as one rule instead of
    adding exceptions (flowchart example: the empty string, the empty call, and

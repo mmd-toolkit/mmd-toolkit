@@ -113,16 +113,19 @@ package.
   defines the fixture format, and holds the conformance corpus and the tools
   that generate and check it. It also checks the trees that the corpus records:
   it builds the Db from a recorded tree and compares it with the Db of
-  mermaid.js, and it checks the invariants of the tree. Its work follows the
-  skill `tests`; adding a diagram type, writing the Db builder and the tree
-  checker, and updating mermaid.js follow, with it, the skills
-  `tests-diagram-type`, `tests-tree-checks`, and `tests-mermaid-update`.
+  mermaid.js; its script checks the trees that a change records against the
+  invariants of the tree, and it holds the answers for what the script does not
+  check. Its work follows the skill `tests`; adding a diagram type, writing the
+  Db builder and the tree checker, and updating mermaid.js follow, with it, the
+  skills `tests-diagram-type`, `tests-tree-checks`, and `tests-mermaid-update`.
 - `packages/spec`: defines the syntax and the shape of the abstract syntax tree
   (node types, fields, values), and whatever decides whether an input is
   accepted. It is the source of the definition; implementations follow it. Its
   documents do not refer to the parser's specification of tokens and positions.
   Its work follows the skill `spec`; adding a diagram type follows, with it, the
-  skill `spec-diagram-type`.
+  skill `spec-diagram-type`; a change to a block of its tree documents, or to a
+  section that a block of the tree, token, or position documents links to, is
+  checked with the skill `recorded-trees`.
 - `packages/ast`: the TypeScript types of the tree, which follow the definition
   in the specification. It holds types only. The parser, the formatter, and the
   linter have it as an optional peer dependency, so that their users download it
@@ -136,8 +139,9 @@ package.
   is to be writable in another language from the specification, these documents,
   and the corpus, so the tests of the parser compare its results with what the
   fixtures record and run neither mermaid.js nor generated inputs. Its work
-  follows the skill `parser`; a requested review of its performance follows the
-  skill `parser-performance-review`.
+  follows the skill `parser`; the trees it records are checked with the skill
+  `recorded-trees`; a requested review of its performance follows the skill
+  `parser-performance-review`.
 - `packages/prettier-plugin-mmd`: the formatter, with one printer for each
   diagram type, following formatting choices that are decided explicitly, item
   by item. Skill `prettier-plugin`.
@@ -162,18 +166,19 @@ package.
 A change to one of these reaches the packages that use it; change them in the
 same change.
 
-| Interface                                        | Defined in      | Used by                                         |
-| ------------------------------------------------ | --------------- | ----------------------------------------------- |
-| Fixture format and loader                        | tests           | spec, parser, prettier-plugin, textmate-grammar |
-| Function that extracts mermaid's Db              | tests           | parser, prettier-plugin                         |
-| Fixture CLIs (`tools/fixtures.ts`)               | tests           | spec, parser                                    |
-| Db summaries and the checks of recorded trees    | tests           | parser                                          |
-| AST definition (`docs/ast.md`, `docs/ast/*.md`)  | spec            | parser, prettier-plugin, eslint-plugin          |
-| Tokens and positions (`docs/tokens.md`, …)       | parser          | tests, prettier-plugin, eslint-plugin           |
-| Types of the tree (`src/ast.ts`, `src/ast/*.ts`) | ast             | parser, prettier-plugin, eslint-plugin          |
-| The parser API (`parse()`, errors, traversal)    | parser          | prettier-plugin, eslint-plugin, mmdfmt          |
-| The plugin, its language, and its syntax errors  | prettier-plugin | mmdfmt                                          |
-| The printed form of the rule documents' examples | prettier-plugin | eslint-plugin                                   |
+| Interface                                                                                                  | Defined in      | Used by                                         |
+| ---------------------------------------------------------------------------------------------------------- | --------------- | ----------------------------------------------- |
+| Fixture format and loader                                                                                  | tests           | spec, parser, prettier-plugin, textmate-grammar |
+| Function that extracts mermaid's Db                                                                        | tests           | parser, prettier-plugin                         |
+| Fixture CLIs (`tools/fixtures.ts`)                                                                         | tests           | spec, parser                                    |
+| Db summaries and the script that checks recorded trees                                                     | tests           | parser                                          |
+| AST definition (`docs/ast.md`, `docs/ast/*.md`)                                                            | spec            | tests, parser, prettier-plugin, eslint-plugin   |
+| Sections of `docs/common.md` and `docs/diagrams/*.md` that the tree, token, and position documents link to | spec            | tests                                           |
+| Tokens and positions (`docs/tokens.md`, …)                                                                 | parser          | tests, prettier-plugin, eslint-plugin           |
+| Types of the tree (`src/ast.ts`, `src/ast/*.ts`)                                                           | ast             | parser, prettier-plugin, eslint-plugin          |
+| The parser API (`parse()`, errors, traversal)                                                              | parser          | prettier-plugin, eslint-plugin, mmdfmt          |
+| The plugin, its language, and its syntax errors                                                            | prettier-plugin | mmdfmt                                          |
+| The printed form of the rule documents' examples                                                           | prettier-plugin | eslint-plugin                                   |
 
 ## Principles
 

@@ -99,20 +99,50 @@ extraction procedure, not the rules that the tree implements.
    allow, and names in a comment the document and the section of the sentence
    that allows it, as the tests of block do
    (`diagrams/block.md, Directives inside units`).
-8. Document the builder in `docs/db-from-tree/<diagram>.md` and the checks in
-   `docs/check-tree.md`, both with Japanese pairs and fixtures for each
-   distinguishing case. Before trees are recorded, implement from the
-   specification and fixed hand-built trees; do not infer the contract from
-   records. Once trees are recorded, run the checker on every recorded tree and
-   compare every comparable `dbFromTree` result with its recorded reading, using
-   the shared embedded-value helpers. Report actual tree and Db counts, missing
-   records, and each mismatch with its input; do not silently skip a missing
-   tree or an error record for an accepting reading, and skip an error record
-   only when its mark's reading rejects. Keep cases without a comparison Db
-   explicit as in section 5.1 of the skill
+8. Document the builder in `docs/db-from-tree/<diagram>.md`, with a Japanese
+   pair and fixtures for each distinguishing case. Describe how each check works
+   in `docs/check-tree.md`, with its Japanese pair; the sole record of which
+   conditions it is shown to check is the coverage table in
+   `recorded-trees/coverage-table/`. Add or update its rows in the same change,
+   in the form of
+   [The coverage table](../../../packages/tests/docs/recorded-trees.md#the-coverage-table).
+   Before trees are recorded, implement from the specification and fixed
+   hand-built trees; do not infer the contract from records. Once trees are
+   recorded, run the checker with
+   `pnpm --filter @mmd-toolkit/tests run recorded-trees:check --base origin/main`.
+   The change touches the rule files, so it checks every recorded tree; confirm
+   that scope and its reason in the first lines. Compare every comparable
+   `dbFromTree` result with its recorded reading, using the shared
+   embedded-value helpers. Report actual tree and Db counts, missing records,
+   and each mismatch with its input; do not silently skip a missing tree or an
+   error record for an accepting reading, and skip an error record only when its
+   mark's reading rejects. Keep cases without a comparison Db explicit as in
+   section 5.1 of the skill
    [tests](../tests/SKILL.md#51-specified-readings-for-retained-forms-and-embedded-data).
    For the builder to run on the recorded trees, the diagram type leaves the
    lists of the diagram types and the node types without recorded trees and
    enters `DIAGRAMS`, as step 7 of
    [The normalizer](../tests-diagram-type/SKILL.md#2-the-normalizer) in the
    skill tests-diagram-type says.
+
+   Maintain the table in the same pull request that adds or changes a rule or a
+   test case that breaks a condition. Update rows whose named test string a
+   change removes: name its replacement or judge the condition again. Judge rows
+   that the command lists as made stale by the change and items it lists as
+   added or left not judged by the change, including after a document changes or
+   a diagram type is added. The documents and the test references that make a
+   row stale are defined in
+   [The coverage table](../../../packages/tests/docs/recorded-trees.md#the-coverage-table).
+
+   Read each block and its linked sections for the named diagram types. When it
+   has no tree condition for them, use `no-condition` with the kind, note and,
+   where required, documents that the table defines. An example of a condition,
+   or a condition mixed with an introduction, is a condition. Otherwise, for
+   every case the block distinguishes, name a test that reports a tree breaking
+   that case's condition of that block. When none exists, write a fixed case in
+   `tests/check-tree*.test.ts` that breaks a named recorded tree in that way and
+   run it. Keep it only when `checkTree()` reports that break, as step 7 says.
+   Use `shown` only when every case has such evidence; otherwise use `not-shown`
+   with the reason and note of step 7, and report each miss. Deciding whether to
+   add a rule remains separate. Have the reviewer read the cases that the row
+   names.

@@ -106,7 +106,7 @@ this skill hold for their steps too.
   | `src/db-from-tree/`                                                        | `db-from-tree.test.ts`, `converted-text.test.ts`             |
   | `src/source-scan.ts`                                                       | `source-scan.test.ts`                                        |
   | `src/ordered-json.ts`                                                      | `ordered-json.test.ts`, `tools-fixture-store.test.ts`        |
-  | `src/check-tree/`                                                          | `check-tree-corpus.test.ts`, `check-tree*.test.ts`           |
+  | `src/check-tree/`                                                          | `check-tree*.test.ts`                                        |
   | `tools/src/diagrams.ts`                                                    | `tools-diagrams.test.ts`                                     |
   | `tools/src/fixture-store.ts`                                               | `tools-fixture-store.test.ts`                                |
   | `tools/src/spec-recorder.ts`                                               | `tools-spec-recorder.test.ts`                                |
@@ -117,7 +117,7 @@ this skill hold for their steps too.
   | `recorded-trees/coverage-table/*.json`                                     | no test file; see below                                      |
 
   The functions of `tools/src` that decide what a fixture's recorded files
-  contain are tested by `tests/tools-*.test.ts`, one file for each module; the
+  contain are tested by the `tests/tools-*.test.ts` files listed above; the
   recorder runs in a process of its own there, since it needs Node.js's own
   `import()`. The command-line files (`tools/fixtures.ts`, `tools/collect.ts`,
   `tools/recorded-trees.ts`) have no test file; each command is checked by
@@ -127,10 +127,22 @@ this skill hold for their steps too.
   file it writes; `tools/recorded-trees.ts` with
   `recorded-trees:check --base HEAD`, reading what it prints. A change to the
   tables of `recorded-trees/coverage-table/` is checked with
-  `recorded-trees:check`, whose output lists no stale row. What to keep when the
-  recorder (`tools/src/spec-recorder.ts`) changes is in step 3 of
+  `recorded-trees:check --base origin/main`, whose output lists no stale row
+  added or made stale by the change. What to keep when the recorder
+  (`tools/src/spec-recorder.ts`) changes is in step 3 of
   [references/collecting-fixtures.md](../tests-diagram-type/references/collecting-fixtures.md)
   of the skill tests-diagram-type.
+
+  A change to `src/`, `tools/`, or a test file of `checkTree`
+  (`tests/check-tree*.test.ts`) also runs
+  `pnpm --filter @mmd-toolkit/tests run recorded-trees:check --base origin/main`
+  before it is reported. The command runs `checkTree` on every recorded tree
+  when the change touches the runner or a file it reaches at run time, and says
+  why in its first lines; use that output rather than a list of paths kept by
+  hand. It also lists stale table rows and items not judged yet. Have
+  `packages/tests` judge those that the change adds or makes stale in the same
+  pull request, as step 8 of [tests-tree-checks](../tests-tree-checks/SKILL.md)
+  says.
 
   Run one file with
   `pnpm --filter @mmd-toolkit/tests exec vitest run tests/<file>`.

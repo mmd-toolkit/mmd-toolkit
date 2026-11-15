@@ -81,10 +81,14 @@ for these steps too. Read them first.
      merge of repeated definitions, a comment line that is kept), change
      `src/db-from-tree/<diagram>.ts` and the checks in `src/check-tree/`, and
      their documents `docs/db-from-tree/<diagram>.md` and `docs/check-tree.md`
-     with their Japanese pairs, then run the whole test suite of the package. A
-     diagram type that the new version lacks shows as `acceptance` to
-     `UnknownDiagramError` on the `common/` fixtures that use it; that belongs
-     with detection below;
+     with their Japanese pairs, then run the whole test suite of the package and
+     `pnpm --filter @mmd-toolkit/tests run recorded-trees:check --base origin/main`.
+     When the rule files change, the command runs `checkTree` on every recorded
+     tree; confirm that scope in its first lines. Update the changed rules' rows
+     in the coverage table in the same change, as step 8 of
+     [tests-tree-checks](../tests-tree-checks/SKILL.md) says. A diagram type
+     that the new version lacks shows as `acceptance` to `UnknownDiagramError`
+     on the `common/` fixtures that use it; that belongs with detection below;
    - `summary fields`: a change inside the Db, unless the keys are ones an
      author wrote. Decide, in the same table as in section 2 of the skill
      [tests-diagram-type](../tests-diagram-type/SKILL.md#2-the-normalizer),

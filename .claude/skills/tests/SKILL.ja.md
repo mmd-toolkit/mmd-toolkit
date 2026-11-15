@@ -111,7 +111,7 @@ pin した mermaid.js の更新は SKILL
   | `src/db-from-tree/`                                                        | `db-from-tree.test.ts`、`converted-text.test.ts`               |
   | `src/source-scan.ts`                                                       | `source-scan.test.ts`                                          |
   | `src/ordered-json.ts`                                                      | `ordered-json.test.ts`, `tools-fixture-store.test.ts`          |
-  | `src/check-tree/`                                                          | `check-tree-corpus.test.ts`、`check-tree*.test.ts`             |
+  | `src/check-tree/`                                                          | `check-tree*.test.ts`                                           |
   | `tools/src/diagrams.ts`                                                    | `tools-diagrams.test.ts`                                       |
   | `tools/src/fixture-store.ts`                                               | `tools-fixture-store.test.ts`                                  |
   | `tools/src/spec-recorder.ts`                                               | `tools-spec-recorder.test.ts`                                  |
@@ -122,7 +122,7 @@ pin した mermaid.js の更新は SKILL
   | `recorded-trees/coverage-table/*.json`                                     | テストのファイルはない。下を参照                               |
 
   `tools/src` の関数のうち、fixture の記録ファイルの中身を決めるものは、
-  モジュールごとに 1 つの `tests/tools-*.test.ts` でテストする。
+  上の表にある `tests/tools-*.test.ts` のファイルでテストする。
   記録器は Node.js 自身の `import()` を必要とするので、
   そのテストでは別のプロセスで動かす。
   コマンドラインのファイル（`tools/fixtures.ts`、`tools/collect.ts`、
@@ -136,11 +136,26 @@ pin した mermaid.js の更新は SKILL
   `tools/recorded-trees.ts` は、`recorded-trees:check --base HEAD` を動かし、
   出力を読む。
   `recorded-trees/coverage-table/` の表を変えたときは、
-  `recorded-trees:check` を動かし、古い行が出ないことを見る。
+  `recorded-trees:check --base origin/main` を動かし、
+  この変更が足したか古くした行が出ないことを見る。
   記録器（`tools/src/spec-recorder.ts`）を変えるときに守ることは、
   SKILL tests-diagram-type の
   [references/collecting-fixtures.ja.md](../tests-diagram-type/references/collecting-fixtures.ja.md)
   の手順 3 にある。
+
+  `src/`、`tools/`、`checkTree` のテストのファイル
+  （`tests/check-tree*.test.ts`）を変えたときは、報告の前に、
+  `pnpm --filter @mmd-toolkit/tests run recorded-trees:check --base origin/main`
+  も動かす。
+  ランナーか、実行時にそこからたどれるファイルを変えた場合は、
+  すべての記録木に `checkTree` を当て、その理由を最初の行に出す。
+  手で保つパスの一覧ではなく、その出力で確かめる。
+  表の古い行と、まだ判断していない項目も出る。
+  この変更が足したか古くした分は、
+  SKILL
+  [tests-tree-checks](../tests-tree-checks/SKILL.ja.md)
+  の手順 8 のとおり、
+  同じプルリクエストで `packages/tests` が判断する。
 
   1 つのファイルは
   `pnpm --filter @mmd-toolkit/tests exec vitest run tests/<ファイル>` で回す。

@@ -199,6 +199,11 @@ everything after every change.
 - A result already reported for the same state of the tree is not run again; a
   check of another kind (other inputs, another method) is.
 - The report says what was run and what was not.
+- A run of `recorded-trees:check` is evidence only for the trees it ran on,
+  which its output names (the trees changed since its base, or every tree), and
+  only for the blocks that its table shows as checked: for the items it lists to
+  read, it shows only that an answer exists, not that the answer is right. A
+  report never says "no problems" for more than that.
 - A report of a change in behavior (acceptance, the tree, the Db, formatting, a
   rule) goes to review with a table of its cases: for each sentence the change
   concerns, every case the sentence distinguishes, the fixture that holds it,
