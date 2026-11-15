@@ -2532,17 +2532,21 @@ statement and at the end of the text]
 The same holds where no `;` ends the style: the U+2028 or U+2029 that ends it is
 dropped, with the spaces, tabs, vertical tabs, and form feeds after it up to the
 line break, and `style A fill:red`, U+2028, and a line break are printed
-`style A fill: red`, also where comment lines that nothing follows end the text.
-The line stays as written where dropping the character could change what
-mermaid.js reads: where a comment line follows it and a statement follows the
-comment line (the comment line is removed after the character, so the statement
-joins the style), where whitespace stands between the character and the line
-break and a statement follows (the line break is then whitespace of the style,
-and the next line joins it), where a comment or a directive follows the
-character on its line, where whitespace of another kind, a no-break space for
-instance, stands after it, and where the style holds a `;`. A color before the
-dropped character is printed in lower case at once: `fill:#F9F` and U+2028 is
-printed `fill: #f9f`.
+`style A fill: red`, also where comment lines that nothing follows end the text:
+the comment line takes the whitespace after the character with it, a no-break
+space included, and a comment that stands after a second U+2028 or U+2029 on the
+line, with a directive before it or not, is such a comment line, which is
+printed on a line of its own. The line stays as written where dropping the
+character could change what mermaid.js reads: where a comment line follows it
+and a statement follows the comment line (the comment line is removed after the
+character, so the statement joins the style), where whitespace stands between
+the character and the line break and a statement follows (the line break is then
+whitespace of the style, and the next line joins it), where a comment or a
+directive follows the character on its line with no second U+2028 or U+2029
+between them (it is then part of the style), where whitespace of another kind, a
+no-break space for instance, stands after it and no comment line removes it, and
+where the style holds a `;`. A color before the dropped character is printed in
+lower case at once: `fill:#F9F` and U+2028 is printed `fill: #f9f`.
 
 [test: ER a style that no semicolon ends is printed without the U+2028 or U+2029
 that ends it, before a statement and at the end of the text] [test: ER a style
@@ -2560,7 +2564,12 @@ a comment follows on its line] [test: ER a style that no semicolon ends keeps
 the U+2028 that a no-break space follows] [test: ER a style that no semicolon
 ends is printed with its color in lower case once the U+2028 is dropped] [test:
 ER a terminator after U+2028 and whitespace of another kind is dropped with all
-of them]
+of them] [test: ER a style that no semicolon ends is printed without two U+2028
+or U+2029 that a comment follows on its line] [test: ER a classDef that no
+semicolon ends is printed without U+2029 and U+2028 before a directive and a
+comment at the end of the text] [test: ER a style that no semicolon ends is
+printed without the U+2028 and the no-break space after it before a comment line
+at the end of the text]
 
 mermaid.js keeps a U+2028 or U+2029 that directly follows the last style in the
 text of that style, and draws the same figure without it, so the Db of the

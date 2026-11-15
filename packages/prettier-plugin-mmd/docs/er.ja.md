@@ -2506,16 +2506,20 @@ style を終える U+2028 か U+2029 は、その後ろから行末までの空�
 改ページとともに落とし、`style A fill:red`、U+2028、
 改行は `style A fill: red` と印字します。
 テキストの終わりのコメント行が（何行でも）続くときも同じです。
+コメント行は、文字の後の空白をノーブレークスペースも含めて取り除きます。
+同じ行で 2 つ目の U+2028 や U+2029 の後にあるコメントも、
+前にディレクティブがあってもなくても、コメント行なので別の行に印字します。
 文字を落とすと mermaid.js の読む値が変わるおそれのあるときは、
 行を書かれたまま残します。
 文字の後にコメント行が続き、
 そのコメント行の後に文が続くとき（コメント行は文字の後で取り除かれ、
 文が style に続きます）、
 文字と改行の間に空白があって文が続くとき（改行が style の空白になり、
-次の行が style に続きます）、
-文字の後に同じ行でコメントやディレクティブが続くとき、
-文字の後にノーブレークスペースなどそのほかの空白があるとき、
-style が `;` を含むときです。
+次の行が style に続きます）、文字の後に同じ行で、
+2 つ目の U+2028 や U+2029 をはさまずに、
+コメントやディレクティブが続くとき（style の一部になります）、
+文字の後にノーブレークスペースなどそのほかの空白があり、
+コメント行がそれを取り除かないとき、style が `;` を含むときです。
 落とす文字の前の色は、すぐに小文字で印字します。
 `fill:#F9F` と U+2028 は `fill: #f9f` と印字します。
 
@@ -2530,6 +2534,9 @@ style が `;` を含むときです。
 [test: ER a style that no semicolon ends keeps the U+2028 that a no-break space follows]
 [test: ER a style that no semicolon ends is printed with its color in lower case once the U+2028 is dropped]
 [test: ER a terminator after U+2028 and whitespace of another kind is dropped with all of them]
+[test: ER a style that no semicolon ends is printed without two U+2028 or U+2029 that a comment follows on its line]
+[test: ER a classDef that no semicolon ends is printed without U+2029 and U+2028 before a directive and a comment at the end of the text]
+[test: ER a style that no semicolon ends is printed without the U+2028 and the no-break space after it before a comment line at the end of the text]
 
 mermaid.js は、最後のスタイルの直後にある U+2028 や U+2029 を、
 そのスタイルのテキストに残し、なくしても同じ図を描きます。

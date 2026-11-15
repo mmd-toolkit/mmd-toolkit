@@ -720,15 +720,17 @@ function findSeparatorBeforeTerminator(source: Source, offset: number): number {
  * vertical tabs, and form feeds stands between it and the line feed. mermaid.js
  * keeps the character in the text of the style and draws the same figure
  * without it, so it is dropped where it ends the style. The line stays as
- * written where dropping the character could change what mermaid.js reads: a
- * comment line follows (the `^` that removes it matches after the character, so
- * the text after the comment line joins the style, and a second formatting
- * would read the style in another shape), the style takes text after the line
- * feed (whitespace between the character and the line feed joins the next
+ * written where dropping the character could change what mermaid.js reads: the
+ * style takes text after the line feed (a comment line with a statement after
+ * it, or whitespace between the character and the line feed, joins the next
  * line to the style), or a comment or a directive follows the character on its
- * line. Other whitespace, such as a no-break space, is text of the style, and
- * so is a `;` that the style holds: the line rule may read it (docs/er.md,
- * Semicolons at the end of a style statement).
+ * line with no line separator between them, where the comment is part of the
+ * style. Where a second U+2028 or U+2029 stands before the comment on the line,
+ * the comment is a comment line, which mermaid.js removes: it is printed on a
+ * line of its own, and the characters before it are dropped as before a
+ * comment line. Other whitespace, such as a no-break space, is text of the
+ * style, and so is a `;` that the style holds: the line rule may read it
+ * (docs/er.md, Semicolons at the end of a style statement).
  */
 export function findSeparatorEndingStyle(
   source: Source,
@@ -739,12 +741,32 @@ export function findSeparatorEndingStyle(
   let lineEnd = start
   while (lineEnd < source.text.length && !isAtLineEnd(source, lineEnd))
     lineEnd++
-  if (
-    (lineEnd > end && source.text.slice(end, lineEnd).trim() !== "") ||
-    (lineEnd < end && textRead(source, lineEnd, end).trim() !== "")
-  )
+  if (lineEnd > end && !isRemovedCommentLineAfter(source, end, lineEnd))
     return -1
+  if (lineEnd < end && textRead(source, lineEnd, end).trim() !== "") return -1
   return findSeparatorRunStart(source, start, Math.min(end, lineEnd))
+}
+
+/**
+ * Whether what stands from `end` to the end of the line at `lineEnd` is
+ * whitespace, or comment lines that mermaid.js removes, after a U+2028 or
+ * U+2029 that starts them, with a directive before the comment or not. A
+ * directive alone stays on the line of the style.
+ */
+function isRemovedCommentLineAfter(
+  source: Source,
+  end: number,
+  lineEnd: number,
+): boolean {
+  const rest = source.text.slice(end, lineEnd)
+  if (rest.trim() === "") return true
+  return (
+    (rest.includes("\u2028") || rest.includes("\u2029")) &&
+    findTriviaBetween(source, end, lineEnd).some(
+      (item) => item.type === "Comment",
+    ) &&
+    textRead(source, end, lineEnd).trim() === ""
+  )
 }
 
 /**
