@@ -51,6 +51,51 @@ function format(text: string, options: Options = {}): Promise<string> {
  */
 const examples: readonly (readonly [string, string, string])[] = [
   [
+    "ignored semicolon trailing blanks: pie/nbsp",
+    'pie\naccDescr: style fill:#f00 "A":1 ;\u00a0\n',
+    'pie\n  accDescr: style fill:#f00 "A":1;\n',
+  ],
+  [
+    "ignored semicolon trailing blanks: pie/ideographic-space",
+    'pie\naccDescr: style fill:#f00 "A":1 ;\u3000\n',
+    'pie\n  accDescr: style fill:#f00 "A":1;\n',
+  ],
+  [
+    "ignored semicolon trailing blanks: pie/form-feed",
+    'pie\naccDescr: style fill:#f00 "A":1 ;\f\n',
+    'pie\n  accDescr: style fill:#f00 "A":1;\n',
+  ],
+  [
+    "ignored semicolon trailing blanks: timeline/ls",
+    "timeline\ntitle style fill:#f00 ; \u2028\n",
+    "timeline\n  title style fill:#f00 ; \u2028\n",
+  ],
+  [
+    "ignored semicolon trailing blanks: timeline/ps",
+    "timeline\ntitle style fill:#f00 ; \u2029\n",
+    "timeline\n  title style fill:#f00 ; \u2029\n",
+  ],
+  [
+    "ignored semicolon trailing blanks: pie/ls",
+    'pie\naccDescr: style fill:#f00 "A":1 ; \u2028\n',
+    'pie\n  accDescr: style fill:#f00 "A":1 ; \u2028\n',
+  ],
+  [
+    "ignored semicolon trailing blanks: pie/ps",
+    'pie\naccDescr: style fill:#f00 "A":1 ; \u2029\n',
+    'pie\n  accDescr: style fill:#f00 "A":1 ; \u2029\n',
+  ],
+  [
+    "ignored semicolon trailing blanks: treeview/ls",
+    "treeView-beta\nstyle fill:#f00 ; \u2028\n",
+    "treeView-beta\n  style fill:#f00 ; \u2028\n",
+  ],
+  [
+    "ignored semicolon trailing blanks: treeview/ps",
+    "treeView-beta\nstyle fill:#f00 ; \u2029\n",
+    "treeView-beta\n  style fill:#f00 ; \u2029\n",
+  ],
+  [
     "a state line starting with a directive before U+2028",
     "stateDiagram-v2\n%%{wrap foo}%%\u2028A",
     "stateDiagram-v2\n%%{wrap foo}%%\u2028A\n",

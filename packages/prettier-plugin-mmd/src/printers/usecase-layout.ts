@@ -44,6 +44,7 @@ import {
   classStatementRules,
   collectTextEndEdits,
   endsWithDirectives,
+  trimmedTextEnd,
   styleUnitsCanCompact,
 } from "./statement-rules.ts"
 
@@ -468,6 +469,16 @@ function layoutUsecaseAccessibility(
   rules.set(separator.range[0], "none")
   if (valueRange !== null) {
     atoms.push({ start: valueRange[0], end: valueRange[1] })
+    const textEnd = trimmedTextEnd(
+      source,
+      statement.value!.range[0],
+      statement.value!.range[1],
+      isWhitespace,
+    )
+    if (textEnd.trailingBlanks !== null) {
+      atoms.push({ start: textEnd.end, end: textEnd.end + 1 })
+      rules.set(textEnd.end, "none")
+    }
     rules.set(valueRange[0], "space")
     joinedBefore.add(valueRange[0])
     // The directives that end the value are printed as those that end a title
@@ -503,6 +514,8 @@ function trimmedLiteralRange(
   if (value === null) return null
   let [start, end] = value.range
   while (start < end && isWhitespace(source.text[start])) start++
+  const textEnd = trimmedTextEnd(source, start, end, isWhitespace)
+  end = textEnd.end
   while (end > start && isWhitespace(source.text[end - 1])) end--
   for (const trivia of findTriviaBetween(source, ...value.range)) {
     start = Math.min(start, trivia.range[0])
