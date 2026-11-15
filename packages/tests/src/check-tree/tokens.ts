@@ -144,13 +144,12 @@ const TOKEN_KINDS_WITHOUT_TABLE_OF_TEXTS: ReadonlySet<string> = new Set([
 /**
  * The runs of the tokens of `tokens` (in source order) in which each token is
  * glued to the next by cuts: with a directive or an ignored `;` between them
- * and nothing else, or, where `touching` is true, with nothing between them at
- * all. A token that no token of `tokens` is glued to is a run of its own.
+ * and nothing else, or touching it, with nothing between them at all. A token
+ * that no token of `tokens` is glued to is a run of its own.
  */
 function runsGluedByCuts(
   root: CheckedRoot,
   tokens: readonly CheckedToken[],
-  touching: boolean,
 ): CheckedToken[][] {
   const runs: CheckedToken[][] = []
   for (const token of tokens) {
@@ -159,8 +158,7 @@ function runsGluedByCuts(
     if (
       run !== undefined &&
       last !== undefined &&
-      (gluedByCuts(root, last, token) ||
-        (touching && last.range[1] === token.range[0]))
+      (gluedByCuts(root, last, token) || last.range[1] === token.range[0])
     ) {
       run.push(token)
     } else {
@@ -183,10 +181,9 @@ function fragmentsOfEntries(
   root: CheckedRoot,
   tokens: readonly CheckedToken[],
   isEntry: (joined: string) => boolean,
-  touching: boolean,
 ): CheckedToken[][] {
   const found: CheckedToken[][] = []
-  for (const glued of runsGluedByCuts(root, tokens, touching)) {
+  for (const glued of runsGluedByCuts(root, tokens)) {
     for (let from = 0; from < glued.length; from++) {
       for (let to = from + 1; to < glued.length; to++) {
         const run = glued.slice(from, to + 1)
@@ -201,19 +198,17 @@ function fragmentsOfEntries(
  * Reports each run of fragments of `fragmentsOfEntries()` at its first
  * fragment, with the fragments in order and the text that they make: the one
  * report of a cut `Keyword` token (`checkTokensAreNotCut()`) and of a cut
- * `Punctuator` token (`checkPunctuatorsAreWhole()`). A keyword is one unit, so
- * its fragments also touch with no cut between them (`touching`); the units of
- * a `Punctuator` text touch as units of their own, as the `--` and the `>` of
- * `-->` do, so those are asked for cuts only.
+ * `Punctuator` token (`checkPunctuatorsAreWhole()`). A keyword and a
+ * `Punctuator` text outside an arrow are one unit, so fragments of one that
+ * touch, with no cut between them, are reported too.
  */
 export function reportCutEntries(
   root: CheckedRoot,
   tokens: readonly CheckedToken[],
   isEntry: (joined: string) => boolean,
   problems: Problems,
-  touching = false,
 ): void {
-  for (const run of fragmentsOfEntries(root, tokens, isEntry, touching)) {
+  for (const run of fragmentsOfEntries(root, tokens, isEntry)) {
     const first = run[0]
     if (first === undefined) continue
     problems.report(
@@ -264,7 +259,6 @@ export function checkTokensAreNotCut(
     tokens.filter((token) => token.type === "Keyword"),
     (joined) => isKeywordText(root, joined),
     problems,
-    true,
   )
 }
 

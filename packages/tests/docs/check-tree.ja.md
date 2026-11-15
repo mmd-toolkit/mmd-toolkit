@@ -262,7 +262,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     判定は、全図種を対象に、1 か所で行います。
     場所は、`src/check-tree/tokens.ts` の `checkValueTokensAreNotSplit()` です。
     つないだテキストは同じなので、値の検査では見つかりません。
-    `Punctuator` のトークンは、単位どうしが接するので（`{` と `}`）問いません。
+    `Punctuator` のトークンは、この検査では問いません。
+    単位どうしが接するのが普通だからです（`{` と `}`）。
+    矢印の外の `Punctuator` が分けられた場合は、次の項目の判定が調べます。
     複数の項目でできた値のノードも問いません。
     その一覧は、
     `src/check-tree/node-types.ts` の `VALUE_NODE_TYPES_OF_SEVERAL_ITEMS` です。
@@ -276,7 +278,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     1 か所（`src/check-tree/tokens.ts` の `fragmentsOfEntries()`）で行います。
     同じ種類の 2 つ以上のトークンが、切れ目だけを間に持って続き、
     つないだテキストが表の 1 つのテキストであれば報告します。
-    `Keyword` では、間に何もなく接する場合も同じです。
+    間に何もなく接する連続も同じです。
     トークンの数は問わず、切れ目がつながる長い連続の中の短い連続も調べます。
     切れ目が前後のどのトークンをつないでいても同じです。
     報告は連続ごとに 1 つで、1 か所（`reportCutEntries()`）で作り、
@@ -2845,8 +2847,8 @@ fixture の元の木に問題がないことも求めます。
 値のノードのトークンを取り、同じ種類の接する 2 つのトークンに分けて、
 正確な場所とメッセージの問題を求めます。
 requirement 図ではスタイル `fill:#f9f`、名前 `spaced name`、値、題を取ります。
-3 つの図種のキーワードも同じように分け、複数の項目でできた値のノードは、
-記録した木に問題がないことを求めます。
+3 つの図種のキーワードと、21 の図種の `Punctuator` も同じように分け、
+複数の項目でできた値のノードは、記録した木に問題がないことを求めます。
 `tests/check-tree-keywords.test.ts` は、`Keyword` のテキストの表が、
 各図種の行の語と、その行がテキストを挙げずに名前で示す単位のテキストで、
 それ以外を含まないことと、

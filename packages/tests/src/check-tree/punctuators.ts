@@ -174,11 +174,11 @@ const ARROW_NODE_TYPES: ReadonlySet<string> = new Set([
 /**
  * Checks that a directive or an ignored `;` cuts no `Punctuator` token: the
  * text of each `Punctuator` token outside the arrows is one that its diagram
- * has, and no run of two tokens or more that cuts glue together is the
- * fragments of an entry (`:`, `::`, and `:` for `:::`, `@` and `{` for `@{`),
- * whatever token the cut attaches to the run (`)` and `:::` in
- * `A(x)%%{init: {}}%%:::c`). A shape's opening and closing are checked with
- * the shape.
+ * has, and no run of two tokens or more that cuts glue together, or that touch
+ * with nothing between them, is the fragments of an entry (`:`, `::`, and `:`
+ * for `:::`, `@` and `{` for `@{`), whatever token the cut attaches to the run
+ * (`)` and `:::` in `A(x)%%{init: {}}%%:::c`). A shape's opening and closing
+ * are checked with the shape.
  */
 export function checkPunctuatorsAreWhole(
   root: CheckedRoot,

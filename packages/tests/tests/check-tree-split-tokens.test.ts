@@ -366,3 +366,49 @@ describe("checkTree: a Keyword token split into two touching tokens", () => {
     })
   }
 })
+
+describe("checkTree: a Punctuator token split into two touching tokens", () => {
+  // A `Punctuator` text outside an arrow is one unit, so two fragments that
+  // touch, whose texts joined are a text of the diagram, are one token.
+  const PUNCTUATORS = [
+    ["agentflow", "db-shape-hex", "@{"],
+    ["architecture", "db-mixed", "--"],
+    ["block", "db-arrow-x", "<["],
+    ["c4", "db-grid-empty-alias-argument-bare", "(,"],
+    ["class", "db-class-def-names", ":::"],
+    ["cynefin", "db-all-fields", "-->"],
+    ["er", "db-role-word", "||"],
+    ["eventmodeling", "db-all-fields", "->>"],
+    ["flowchart", "db-props-merge", "[|"],
+    ["kanban", "db-shape-bang", "))"],
+    ["mindmap", "db-class-line", ":::"],
+    ["quadrant", "db-class-plain", ":::"],
+    ["railroad", "peg-line-cr", "<-"],
+    ["requirement", "db-class-colon-form", ":::"],
+    ["sequence", "db-data-block-alias-and-as", "@{"],
+    ["state", "db-classes-order", ":::"],
+    ["treemap", "db-all-fields", ":::"],
+    ["treeview", "db-all-fields", ":::"],
+    ["usecase", "db-all-fields", "@{"],
+    ["wardley", "db-all-fields", "->"],
+    ["xychart", "db-x-axis-range", "-->"],
+  ] as const
+
+  for (const [diagram, fixture, text] of PUNCTUATORS) {
+    it(`fails ${text} of ${diagram}/${fixture} split in two`, () => {
+      const { input, tree } = recordedTree(diagram, fixture)
+      const token = tree.tokens.find(
+        (candidate) =>
+          candidate.type === "Punctuator" && candidate.value === text,
+      )
+      if (token === undefined) throw new Error("the tree has no such token")
+      const middle = token.range[0] + 1
+      expect(checkTree(input, withSplit(input, tree, token, 1))).toContainEqual(
+        {
+          where: `Punctuator at ${token.range[0]}-${middle}`,
+          message: `a Punctuator token is cut: Punctuator at ${token.range[0]}-${middle}, Punctuator at ${middle}-${token.range[1]} are the fragments of ${JSON.stringify(text)}`,
+        },
+      )
+    })
+  }
+})
