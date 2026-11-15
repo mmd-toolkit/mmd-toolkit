@@ -33,9 +33,65 @@
       "diagrams": ["requirement"],
       "about": "An unquoted name is a `RawText` token, not an `Identifier` token, because it may",
       "judgment": {
-        "status": "not-shown",
-        "reason": "rule-misses-condition",
-        "note": "A class after `class` on the line of `class` is a `style-word` unit, an `Identifier` token, but the check takes an `Identifier` or a `RawText` token for every class of a class statement, without telling a class on that line from one after a line feed, which is an `unquoted-text` unit and a `RawText` token. In requirement/db-class-statement (`class r,e a,b`), changing the token of the class `a` at [61,62] to `RawText` is not reported. The other cases are reported: an unquoted name as an `Identifier` token (check-tree-requirement.test.ts, \"the name of a requirement as an Identifier token\"); a name that holds whitespace split into two tokens, or its token widened over the spaces before it; a name after `class` as a `RawText` token (check-tree-shared-tokens.test.ts); and a name after `style` or `classDef` as a `RawText` token (check-tree-requirement.test.ts)."
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An unquoted name is a `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "the name of a requirement as an Identifier token"
+              },
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a class after the line feed that ends the style context as an Identifier token"
+              }
+            ]
+          },
+          {
+            "case": "A name that holds whitespace between its words is one `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a name that holds whitespace split into two RawText tokens"
+              },
+              {
+                "file": "check-tree-split-tokens.test.ts",
+                "text": "token: \"spaced name\""
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the token of a name that holds whitespace widened over the spaces before it"
+              }
+            ]
+          },
+          {
+            "case": "A `style-word` name after `style` or `classDef` is an `Identifier` token.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a name of a style as a RawText token"
+              },
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a class of a class definition as a RawText token"
+              }
+            ]
+          },
+          {
+            "case": "A `style-word` name or class after `class` is an `Identifier` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a name after `class` as a RawText token"
+              },
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a class on the line of `class` as a RawText token"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -177,9 +233,45 @@
       "diagrams": ["requirement"],
       "about": "| `Identifier` | the name units of [Directives inside units](../../../spec/docs/",
       "judgment": {
-        "status": "not-shown",
-        "reason": "rule-misses-condition",
-        "note": "A class after `class` on the line of `class` is a `style-word` unit, an `Identifier` token, but the check takes an `Identifier` or a `RawText` token for every class of a class statement, without telling a class on that line from one after a line feed, which is an `unquoted-text` unit and a `RawText` token. In requirement/db-class-statement (`class r,e a,b`), changing the token of the class `a` at [61,62] to `RawText` is not reported. The other cases are reported: a name after `style` or `classDef` as a `RawText` token (check-tree-requirement.test.ts, \"a name of a style as a RawText token\" and \"a class of a class definition as a RawText token\"), and a name after `class` as a `RawText` token (check-tree-shared-tokens.test.ts)."
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A name after `style` is an `Identifier` token.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a name of a style as a RawText token"
+              }
+            ]
+          },
+          {
+            "case": "A name after `classDef` is an `Identifier` token.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a class of a class definition as a RawText token"
+              }
+            ]
+          },
+          {
+            "case": "A name after `class` is an `Identifier` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a name after `class` as a RawText token"
+              }
+            ]
+          },
+          {
+            "case": "A class after `class` on its line is an `Identifier` token.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a class on the line of `class` as a RawText token"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -350,9 +442,31 @@
       "diagrams": ["requirement"],
       "about": "A **token** is a maximal run of units of one item and one kind that follow one\na",
       "judgment": {
-        "status": "not-shown",
-        "reason": "rule-misses-condition",
-        "note": "A token is a maximal run of the units of one item, but a run cut into touching tokens is not reported: in requirement/db-style-statement, cutting the `RawText` token `fill:#f9f` at [61,70] into `fill:` and `#f9f`, which touch, gives no problem; the value of the style is still the texts of its tokens joined. The other cases are reported: two units of a style with whitespace between them made one token (check-tree-shared-tokens.test.ts, \"fails two units of a style with a space between them as one token\" and \"fails a style and the hash unit after its space as one token\")."
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A run of the units of one style with nothing between them is one token.",
+            "tests": [
+              {
+                "file": "check-tree-split-tokens.test.ts",
+                "text": "token: \"fill:#f9f\""
+              }
+            ]
+          },
+          {
+            "case": "Whitespace between two units of a style breaks the run.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails two units of a style with a space between them as one token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a style and the hash unit after its space as one token"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -360,9 +474,36 @@
       "diagrams": ["requirement"],
       "about": "Every other item is one unit, and so one token.\n\nA token holds no whitespace at ",
       "judgment": {
-        "status": "not-shown",
-        "reason": "rule-misses-condition",
-        "note": "An item of one unit is one token, but a token cut into two touching tokens of its kind is not reported: in requirement/db-requirement-name-spaces, cutting the `RawText` token `spaced name` into `spa` and `ced name`, in requirement/db-requirement-all-fields the value `the text` into `the` and ` text`, and in requirement/db-acc-title-descr the title `t1` into `t` and `1`, gives no problem. The same miss is recorded for the `RawText` row of tokens.md. A cut that changes the joined text, or a cut `String` token, is reported."
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A name is one token.",
+            "tests": [
+              {
+                "file": "check-tree-split-tokens.test.ts",
+                "text": "token: \"spaced name\""
+              }
+            ]
+          },
+          {
+            "case": "A value is one token.",
+            "tests": [
+              {
+                "file": "check-tree-split-tokens.test.ts",
+                "text": "token: \"spaced out\""
+              }
+            ]
+          },
+          {
+            "case": "An accessibility text is one token.",
+            "tests": [
+              {
+                "file": "check-tree-split-tokens.test.ts",
+                "text": "token: \"t1\""
+              }
+            ]
+          }
+        ]
       }
     },
     {

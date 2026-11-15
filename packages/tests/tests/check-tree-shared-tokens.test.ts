@@ -1555,7 +1555,7 @@ describe("checkTree: common/error-trailing-percent (tokens.md)", () => {
     setField(broken, "comments", [commentOf(input, "%%", "%% x")])
     expect(checkTree(input, broken)).toContainEqual({
       where: "Comment at 6-10",
-      message: "the mark %% is no mark of the comments of a ErrorDiagram",
+      message: "the mark %% is no mark of the comments of an ErrorDiagram",
     })
   })
 })
@@ -1663,7 +1663,7 @@ describe("checkTree: usecase/lex-class-property-custom-gap (tokens.md)", () => {
     setField(firstNode(broken, "UsecaseIdentifier"), "type", "Identifier")
     expect(checkTree(input, broken)).toContainEqual({
       where: "UsecaseStyleDeclaration at 23-35",
-      message: "the field name holds a Identifier, not a UsecaseIdentifier",
+      message: "the field name holds an Identifier, not a UsecaseIdentifier",
     })
   })
 })
@@ -6011,7 +6011,7 @@ const tokenKindReplacementCases = [
     problem: {
       where: "Punctuator at 0-14",
       message:
-        'the Punctuator text "agentflow-beta" is none of those of a AgentflowDiagram',
+        'the Punctuator text "agentflow-beta" is none of those of an AgentflowDiagram',
     },
     type: "Punctuator",
   },
@@ -6022,7 +6022,7 @@ const tokenKindReplacementCases = [
     problem: {
       where: "Punctuator at 0-17",
       message:
-        'the Punctuator text "architecture-beta" is none of those of a ArchitectureDiagram',
+        'the Punctuator text "architecture-beta" is none of those of an ArchitectureDiagram',
     },
     type: "Punctuator",
   },
@@ -6077,7 +6077,7 @@ const tokenKindReplacementCases = [
     problem: {
       where: "Punctuator at 0-9",
       message:
-        'the Punctuator text "erDiagram" is none of those of a ErDiagram',
+        'the Punctuator text "erDiagram" is none of those of an ErDiagram',
     },
     type: "Punctuator",
   },
@@ -6088,7 +6088,7 @@ const tokenKindReplacementCases = [
     problem: {
       where: "Punctuator at 0-13",
       message:
-        'the Punctuator text "eventmodeling" is none of those of a EventmodelingDiagram',
+        'the Punctuator text "eventmodeling" is none of those of an EventmodelingDiagram',
     },
     type: "Punctuator",
   },
@@ -6130,7 +6130,7 @@ const tokenKindReplacementCases = [
     index: 0,
     problem: {
       where: "Punctuator at 4-8",
-      message: 'the Punctuator text "info" is none of those of a InfoDiagram',
+      message: 'the Punctuator text "info" is none of those of an InfoDiagram',
     },
     type: "Punctuator",
   },
@@ -6141,7 +6141,7 @@ const tokenKindReplacementCases = [
     problem: {
       where: "Punctuator at 0-8",
       message:
-        'the Punctuator text "ishikawa" is none of those of a IshikawaDiagram',
+        'the Punctuator text "ishikawa" is none of those of an IshikawaDiagram',
     },
     type: "Punctuator",
   },
@@ -6362,7 +6362,8 @@ const tokenKindReplacementCases = [
     index: 0,
     problem: {
       where: "Punctuator at 0-5",
-      message: 'the Punctuator text "error" is none of those of a ErrorDiagram',
+      message:
+        'the Punctuator text "error" is none of those of an ErrorDiagram',
     },
     type: "Punctuator",
   },
@@ -7888,6 +7889,174 @@ const splitQuotedStringTokenCases = [
         "one RawText lexical unit can fragment only at common source trivia",
     },
     splitAt: 2,
+    type: "RawText",
+  },
+  {
+    case: "tokens-kind-57-agentflow-opaque-unit",
+    fixture: ["agentflow", "comment-after-style"],
+    index: 5,
+    problem: {
+      where: "RawText at 29-36",
+      message:
+        "a RawText token is split: RawText at 28-29 and this touch in AgentflowLiteral at 28-36, so they are one token",
+    },
+    splitAt: 1,
+    type: "RawText",
+  },
+  {
+    case: "tokens-kind-57-c4-opaque-unit",
+    fixture: ["c4", "db-acc-title"],
+    index: 3,
+    problem: {
+      where: "RawText at 21-36",
+      message:
+        "a RawText token is split: RawText at 20-21 and this touch in C4Literal at 20-36, so they are one token",
+    },
+    splitAt: 1,
+    type: "RawText",
+  },
+  {
+    case: "tokens-kind-57-class-opaque-unit",
+    fixture: ["class", "config-security-level-other-acc-title"],
+    index: 3,
+    problem: {
+      where: "RawText at 26-36",
+      message:
+        "a RawText token is split: RawText at 25-26 and this touch in ClassLiteral at 25-36, so they are one token",
+    },
+    splitAt: 1,
+    type: "RawText",
+  },
+  {
+    case: "tokens-kind-57-er-opaque-unit",
+    fixture: ["er", "config-security-level-other-acc-title"],
+    index: 3,
+    problem: {
+      where: "RawText at 23-33",
+      message:
+        "a RawText token is split: RawText at 22-23 and this touch in ErLiteral at 22-33, so they are one token",
+    },
+    splitAt: 1,
+    type: "RawText",
+  },
+  {
+    case: "tokens-kind-57-flowchart-opaque-unit",
+    fixture: ["flowchart", "config-security-level-other-acc-title"],
+    index: 4,
+    problem: {
+      where: "RawText at 26-36",
+      message:
+        "a RawText token is split: RawText at 25-26 and this touch in FlowchartLiteral at 25-36, so they are one token",
+    },
+    splitAt: 1,
+    type: "RawText",
+  },
+  {
+    case: "tokens-kind-57-gantt-opaque-unit",
+    fixture: ["gantt", "config-security-level-other-acc-title"],
+    index: 3,
+    problem: {
+      where: "RawText at 19-23",
+      message:
+        "a RawText token is split: RawText at 18-19 and this touch in GanttLiteral at 18-23, so they are one token",
+    },
+    splitAt: 1,
+    type: "RawText",
+  },
+  {
+    case: "tokens-kind-57-journey-opaque-unit",
+    fixture: ["journey", "config-security-level-other-acc-title"],
+    index: 3,
+    problem: {
+      where: "RawText at 21-25",
+      message:
+        "a RawText token is split: RawText at 20-21 and this touch in JourneyLiteral at 20-25, so they are one token",
+    },
+    splitAt: 1,
+    type: "RawText",
+  },
+  {
+    case: "tokens-kind-57-mindmap-opaque-unit",
+    fixture: ["mindmap", "config-mindmap-padding-and-width"],
+    index: 1,
+    problem: {
+      where: "RawText at 11-14",
+      message:
+        "a RawText token is split: RawText at 10-11 and this touch in MindmapLiteral at 10-14, so they are one token",
+    },
+    splitAt: 1,
+    type: "RawText",
+  },
+  {
+    case: "tokens-kind-57-requirement-opaque-unit",
+    fixture: ["requirement", "config-security-level-other-acc-title"],
+    index: 3,
+    problem: {
+      where: "RawText at 30-38",
+      message:
+        "a RawText token is split: RawText at 29-30 and this touch in RequirementLiteral at 29-38, so they are one token",
+    },
+    splitAt: 1,
+    type: "RawText",
+  },
+  {
+    case: "tokens-kind-57-sankey-opaque-unit",
+    fixture: ["sankey", "config-security-level-loose-ids"],
+    index: 4,
+    problem: {
+      where: "RawText at 33-47",
+      message:
+        "a RawText token is split: RawText at 32-33 and this touch in SankeyIdentifier at 32-47, so they are one token",
+    },
+    splitAt: 1,
+    type: "RawText",
+  },
+  {
+    case: "tokens-kind-57-sequence-opaque-unit",
+    fixture: ["sequence", "config-security-level-other-acc-title"],
+    index: 3,
+    problem: {
+      where: "RawText at 29-39",
+      message:
+        "a RawText token is split: RawText at 28-29 and this touch in SequenceLiteral at 28-39, so they are one token",
+    },
+    splitAt: 1,
+    type: "RawText",
+  },
+  {
+    case: "tokens-kind-57-state-opaque-unit",
+    fixture: ["state", "config-security-level-other-acc-title"],
+    index: 3,
+    problem: {
+      where: "RawText at 29-39",
+      message:
+        "a RawText token is split: RawText at 28-29 and this touch in StateLiteral at 28-39, so they are one token",
+    },
+    splitAt: 1,
+    type: "RawText",
+  },
+  {
+    case: "tokens-kind-57-timeline-opaque-unit",
+    fixture: ["timeline", "db-acc-title-colon"],
+    index: 3,
+    problem: {
+      where: "RawText at 22-26",
+      message:
+        "a RawText token is split: RawText at 21-22 and this touch in TimelineLiteral at 21-26, so they are one token",
+    },
+    splitAt: 1,
+    type: "RawText",
+  },
+  {
+    case: "tokens-kind-57-xychart-opaque-unit",
+    fixture: ["xychart", "db-acc-title"],
+    index: 3,
+    problem: {
+      where: "RawText at 25-31",
+      message:
+        "a RawText token is split: RawText at 24-25 and this touch in XychartLiteral at 24-31, so they are one token",
+    },
+    splitAt: 1,
     type: "RawText",
   },
   {
@@ -9938,7 +10107,7 @@ const sharedTokenValueCases: readonly {
     expected: {
       where: "Punctuator at 61-62",
       message:
-        'the Punctuator text ";" is none of those of a EventmodelingDiagram',
+        'the Punctuator text ";" is none of those of an EventmodelingDiagram',
     },
   },
   {
@@ -17657,7 +17826,7 @@ const sharedTokenValueCases: readonly {
     expected: {
       where: "SankeyLinkStatement at 12-17",
       message:
-        "the field source holds a Identifier, not a SankeyIdentifier or StringLiteral",
+        "the field source holds an Identifier, not a SankeyIdentifier or StringLiteral",
     },
   },
   {
@@ -21552,7 +21721,7 @@ const sharedCommentWrongMarkCases = [
     commentFrom: 0,
     expected: {
       where: "Comment at 0-2",
-      message: "the mark # is no mark of the comments of a ErDiagram",
+      message: "the mark # is no mark of the comments of an ErDiagram",
     },
     mark: "#",
     value: "%",
@@ -21603,7 +21772,7 @@ const sharedCommentWrongMarkCases = [
     commentFrom: 0,
     expected: {
       where: "Comment at 0-2",
-      message: "the mark # is no mark of the comments of a AgentflowDiagram",
+      message: "the mark # is no mark of the comments of an AgentflowDiagram",
     },
     mark: "#",
     value: "%",
@@ -21620,7 +21789,8 @@ const sharedCommentWrongMarkCases = [
     commentFrom: 0,
     expected: {
       where: "Comment at 0-2",
-      message: "the mark # is no mark of the comments of a ArchitectureDiagram",
+      message:
+        "the mark # is no mark of the comments of an ArchitectureDiagram",
     },
     mark: "#",
     value: "%",
@@ -21739,7 +21909,7 @@ const sharedCommentWrongMarkCases = [
     commentFrom: 0,
     expected: {
       where: "Comment at 0-2",
-      message: "the mark # is no mark of the comments of a InfoDiagram",
+      message: "the mark # is no mark of the comments of an InfoDiagram",
     },
     mark: "#",
     value: "%",
@@ -21756,7 +21926,7 @@ const sharedCommentWrongMarkCases = [
     commentFrom: 0,
     expected: {
       where: "Comment at 0-2",
-      message: "the mark # is no mark of the comments of a IshikawaDiagram",
+      message: "the mark # is no mark of the comments of an IshikawaDiagram",
     },
     mark: "#",
     value: "%",
@@ -28334,7 +28504,7 @@ const directionPercentCommentCases = [
     directionEnd: 22,
     expected: {
       where: "Comment at 23-27",
-      message: "the mark %% is no mark of the comments of a ErDiagram",
+      message: "the mark %% is no mark of the comments of an ErDiagram",
     },
     nodeType: "ErDirectionStatement",
   },
@@ -28350,7 +28520,7 @@ const errorPercentCommentCases = [
     bodyEnd: 5,
     expected: {
       where: "Comment at 6-10",
-      message: "the mark %% is no mark of the comments of a ErrorDiagram",
+      message: "the mark %% is no mark of the comments of an ErrorDiagram",
     },
   },
 ] as const
@@ -32512,6 +32682,32 @@ const unreadWhitespaceTokenAddedCases = [
         "starts with whitespace or a line terminator where no value starts",
     },
   },
+  {
+    case: "tokens-631b-ishikawa-unread-fragment-beside-directive-after-line-separator",
+    diagram: "ishikawa",
+    fixture:
+      "tokens-space-between-directive-and-comment-region-after-line-separator",
+    index: 3,
+    range: [25, 26],
+    expected: {
+      where: "IshikawaLiteral at 9-33",
+      message:
+        'the texts of its tokens joined are not its written text: "R\u2028  A", not "R\u2028 A"',
+    },
+  },
+  {
+    case: "tokens-631b-ishikawa-unread-fragment-beside-directive-after-paragraph-separator",
+    diagram: "ishikawa",
+    fixture:
+      "tokens-space-between-directive-and-comment-region-after-paragraph-separator",
+    index: 3,
+    range: [25, 26],
+    expected: {
+      where: "IshikawaLiteral at 9-33",
+      message:
+        'the texts of its tokens joined are not its written text: "R\u2029  A", not "R\u2029 A"',
+    },
+  },
 ] as const
 
 it.each(unreadWhitespaceTokenAddedCases)(
@@ -32932,7 +33128,7 @@ const commentRegionPercentLineCases = [
     comment: 0,
     expected: {
       where: "Comment at 38-40",
-      message: "the mark %% is no mark of the comments of a ErDiagram",
+      message: "the mark %% is no mark of the comments of an ErDiagram",
     },
     valueAt: 2,
   },
@@ -42516,7 +42712,7 @@ it.each([
     expected: {
       where: "Identifier at 51-58",
       message:
-        "the tokens of a Identifier in cssClasses are not all of the kind Identifier: RawText",
+        "the tokens of an Identifier in cssClasses are not all of the kind Identifier: RawText",
     },
   },
   {
@@ -42649,7 +42845,7 @@ it.each([
     indices: [2],
     expected: {
       where: "QuadrantClassDefStatement at 14-37",
-      message: "the field name holds a Identifier, not a QuadrantIdentifier",
+      message: "the field name holds an Identifier, not a QuadrantIdentifier",
     },
   },
   {
@@ -42664,7 +42860,7 @@ it.each([
     expected: {
       where: "RequirementRequirementStatement at 25-42",
       message:
-        "the field name holds a Identifier, not a RequirementIdentifier or StringLiteral",
+        "the field name holds an Identifier, not a RequirementIdentifier or StringLiteral",
     },
   },
   {
@@ -42679,7 +42875,7 @@ it.each([
     expected: {
       where: "TreeviewNode at 16-20",
       message:
-        "the field name holds a Identifier, not a TreeviewIdentifier or StringLiteral",
+        "the field name holds an Identifier, not a TreeviewIdentifier or StringLiteral",
     },
   },
   {
@@ -42693,7 +42889,7 @@ it.each([
     indices: [3],
     expected: {
       where: "UsecaseStyleDeclaration at 26-45",
-      message: "the field name holds a Identifier, not a UsecaseIdentifier",
+      message: "the field name holds an Identifier, not a UsecaseIdentifier",
     },
   },
   {
@@ -42708,7 +42904,7 @@ it.each([
     expected: {
       where: "WardleyComponentStatement at 24-45",
       message:
-        "the field name holds a Identifier, not a WardleyIdentifier or StringLiteral",
+        "the field name holds an Identifier, not a WardleyIdentifier or StringLiteral",
     },
   },
 ] as const)(
@@ -52494,7 +52690,7 @@ describe("checkTree: the tokens of an ishikawa diagram (tokens/ishikawa.md)", ()
         ])
       },
       expected:
-        'Punctuator at 13-14: the Punctuator text ";" is none of those of a IshikawaDiagram',
+        'Punctuator at 13-14: the Punctuator text ";" is none of those of an IshikawaDiagram',
     },
     {
       name: "fails the indentation of an ishikawa node as a token",
@@ -52553,7 +52749,7 @@ describe("checkTree: the tokens of an ishikawa diagram (tokens/ishikawa.md)", ()
       fixture: "lex-root-style-semicolon-padding",
       mutate: retypeTokenAt(26, "Punctuator"),
       expected:
-        'Punctuator at 26-27: the Punctuator text ";" is none of those of a IshikawaDiagram',
+        'Punctuator at 26-27: the Punctuator text ";" is none of those of an IshikawaDiagram',
     },
     {
       name: "fails the whitespace-only fragment after an ignored semicolon of an ishikawa text without its token",
@@ -52575,7 +52771,7 @@ describe("checkTree: the tokens of an ishikawa diagram (tokens/ishikawa.md)", ()
         setField(root.comments[0], "mark", "#")
       },
       expected:
-        "Comment at 11-17: the mark # is no mark of the comments of a IshikawaDiagram",
+        "Comment at 11-17: the mark # is no mark of the comments of an IshikawaDiagram",
     },
     {
       name: "fails an ishikawa comment that runs over the U+2028 that ends it",

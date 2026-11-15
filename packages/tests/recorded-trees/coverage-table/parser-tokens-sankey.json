@@ -137,9 +137,45 @@
       "diagrams": ["sankey"],
       "about": "Every item is one unit, and so one **token**: `a,b,1` has the `RawText` tokens\n`",
       "judgment": {
-        "status": "not-shown",
-        "reason": "rule-misses-condition",
-        "note": "Every item is one unit and one token, but a field cut into two touching tokens of its kind is not reported: in sankey/db-text-with-spaces, cutting the `RawText` token `a b` at [7,10] into `a` and ` b`, which touch, gives no problem, since the value of the SankeyIdentifier is still the texts of its tokens joined. The same miss is recorded for the `RawText` row of tokens.md. The other cases are reported: a line feed as a token (check-tree-shared-tokens.test.ts, \"fails the line feed after a sankey record as a token\"), an unquoted id as an `Identifier` token (\"fails an unquoted sankey id as an Identifier token\"), and an unquoted value as a `Numeric` token (\"fails an unquoted sankey value as a Numeric token\")."
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Every item is one token.",
+            "tests": [
+              {
+                "file": "check-tree-split-tokens.test.ts",
+                "text": "token: \"12.5\""
+              }
+            ]
+          },
+          {
+            "case": "A line feed makes no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the line feed after a sankey record as a token"
+              }
+            ]
+          },
+          {
+            "case": "A field without quotes is a `RawText` token also as an id.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an unquoted sankey id as an Identifier token"
+              }
+            ]
+          },
+          {
+            "case": "A value is no number.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an unquoted sankey value as a Numeric token"
+              }
+            ]
+          }
+        ]
       }
     },
     {

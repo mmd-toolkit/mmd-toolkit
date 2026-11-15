@@ -9349,31 +9349,6 @@
     {
       "block": "packages/parser/docs/tokens.md:e234d765139f",
       "diagrams": [
-        "agentflow",
-        "c4",
-        "class",
-        "er",
-        "flowchart",
-        "gantt",
-        "journey",
-        "mindmap",
-        "requirement",
-        "sankey",
-        "sequence",
-        "state",
-        "timeline",
-        "xychart"
-      ],
-      "about": "| `RawText`          | every diagram (the frontmatter body), the `error` pseudo-diagram (s",
-      "judgment": {
-        "status": "not-shown",
-        "reason": "rule-misses-condition",
-        "note": "agentflow: agentflow/comment-after-style, split its RawText token into two touching RawText tokens; checkTree() returned []. c4: c4/db-acc-title, split its RawText token into two touching RawText tokens; checkTree() returned []. class: class/config-security-level-other-acc-title, split its RawText token into two touching RawText tokens; checkTree() returned []. er: er/config-security-level-other-acc-title, split its RawText token into two touching RawText tokens; checkTree() returned []. flowchart: flowchart/config-security-level-other-acc-title, split its RawText token into two touching RawText tokens; checkTree() returned []. gantt: gantt/config-security-level-other-acc-title, split its RawText token into two touching RawText tokens; checkTree() returned []. journey: journey/config-security-level-other-acc-title, split its RawText token into two touching RawText tokens; checkTree() returned []. mindmap: mindmap/config-mindmap-padding-and-width, split its RawText token into two touching RawText tokens; checkTree() returned []. requirement: requirement/config-security-level-other-acc-title, split its RawText token into two touching RawText tokens; checkTree() returned []. sankey: sankey/config-security-level-loose-ids, split its RawText token into two touching RawText tokens; checkTree() returned []. sequence: sequence/config-security-level-other-acc-title, split its RawText token into two touching RawText tokens; checkTree() returned []. state: state/config-security-level-other-acc-title, split its RawText token into two touching RawText tokens; checkTree() returned []. timeline: timeline/db-acc-title-colon, split its RawText token into two touching RawText tokens; checkTree() returned []. xychart: xychart/db-acc-title, split its RawText token into two touching RawText tokens; checkTree() returned []."
-      }
-    },
-    {
-      "block": "packages/parser/docs/tokens.md:e234d765139f",
-      "diagrams": [
         "architecture",
         "block",
         "cynefin",
@@ -9392,7 +9367,21 @@
         "usecase",
         "venn",
         "wardley",
-        "error"
+        "error",
+        "agentflow",
+        "c4",
+        "class",
+        "er",
+        "flowchart",
+        "gantt",
+        "journey",
+        "mindmap",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "xychart"
       ],
       "about": "| `RawText`          | every diagram (the frontmatter body), the `error` pseudo-diagram (s",
       "judgment": {
@@ -9476,6 +9465,62 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-kind-57-error-opaque-unit"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-57-agentflow-opaque-unit"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-57-c4-opaque-unit"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-57-class-opaque-unit"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-57-er-opaque-unit"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-57-flowchart-opaque-unit"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-57-gantt-opaque-unit"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-57-journey-opaque-unit"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-57-mindmap-opaque-unit"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-57-requirement-opaque-unit"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-57-sankey-opaque-unit"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-57-sequence-opaque-unit"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-57-state-opaque-unit"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-57-timeline-opaque-unit"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-57-xychart-opaque-unit"
               }
             ]
           }
@@ -27740,6 +27785,19 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-review4-read-whitespace-only-ishikawa"
+              }
+            ]
+          },
+          {
+            "case": "A whitespace-only fragment of a value that a directive cuts has no token when mermaid.js does not read it as part of the value.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-631b-ishikawa-unread-fragment-beside-directive-after-line-separator"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-631b-ishikawa-unread-fragment-beside-directive-after-paragraph-separator"
               }
             ]
           }

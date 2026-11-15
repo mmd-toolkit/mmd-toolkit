@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { checkTree } from "../src/check-tree/index.ts"
+import { withArticle } from "../src/check-tree/problems.ts"
 import type { CheckedNode, CheckedRoot } from "../src/check-tree/types.ts"
 import type { DiagramType } from "../src/index.ts"
 import { nodesOf } from "../src/check-tree/walk.ts"
@@ -138,7 +139,7 @@ describe("checkTree: the form of nodes (ast.md, Design goals and ErrorDiagram)",
       {
         where: "Root",
         message:
-          "the diagram type --- is not one of those of a ErrorDiagram: error",
+          "the diagram type --- is not one of those of an ErrorDiagram: error",
       },
     ])
   })
@@ -468,11 +469,13 @@ describe("checkTree: frontmatter records (ast.md, Frontmatter)", () => {
       },
       {
         where: "Punctuator at 0-3",
-        message: 'the Punctuator text "---" is none of those of a ErrorDiagram',
+        message:
+          'the Punctuator text "---" is none of those of an ErrorDiagram',
       },
       {
         where: "Punctuator at 18-21",
-        message: 'the Punctuator text "---" is none of those of a ErrorDiagram',
+        message:
+          'the Punctuator text "---" is none of those of an ErrorDiagram',
       },
       {
         where: "Punctuator at 0-3",
@@ -845,7 +848,7 @@ describe("checkTree: empty description blocks in written text (ast.md, Nodes)", 
     expect(checkTree(text, broken)).toEqual([
       {
         where: "EventmodelingTimeFrameStatement at 30-81",
-        message: "the field name holds a NumericLiteral, not a Identifier",
+        message: "the field name holds a NumericLiteral, not an Identifier",
       },
     ])
   })
@@ -1323,7 +1326,7 @@ describe("checkTree: Wardley name node types (ast.md, Diagram nodes)", () => {
       {
         where: "WardleyEvolutionStage at 76-89",
         message:
-          "the field secondName holds a Identifier, not a WardleyIdentifier or StringLiteral",
+          "the field secondName holds an Identifier, not a WardleyIdentifier or StringLiteral",
       },
     ])
   })
@@ -1444,7 +1447,7 @@ describe("checkTree: Treeview name node types (ast.md, Diagram nodes)", () => {
       {
         where: "TreeviewNode at 90-160",
         message:
-          "the field name holds a Identifier, not a TreeviewIdentifier or StringLiteral",
+          "the field name holds an Identifier, not a TreeviewIdentifier or StringLiteral",
       },
       {
         where: "Identifier at 90-95",
@@ -1496,7 +1499,7 @@ describe("checkTree: Treeview name node types (ast.md, Diagram nodes)", () => {
     expect(checkTree(text, broken)).toEqual([
       {
         where: "TreeviewClassAnnotation at 96-104",
-        message: "the field name holds a TreeviewIdentifier, not a Identifier",
+        message: "the field name holds a TreeviewIdentifier, not an Identifier",
       },
       {
         where: "TreeviewIdentifier at 99-104",
@@ -1721,7 +1724,7 @@ describe("checkTree: Treeview icon names (ast.md, Diagram nodes)", () => {
     expect(checkTree(text, broken)).toEqual([
       {
         where: "TreeviewIconAnnotation at 105-120",
-        message: "the field name holds a TreeviewIdentifier, not a Identifier",
+        message: "the field name holds a TreeviewIdentifier, not an Identifier",
       },
       {
         where: "TreeviewIdentifier at 110-119",
@@ -2262,7 +2265,7 @@ describe("checkTree: unread text keeps the leaf type of its diagram", () => {
         checkTree(input, tree).map((problem) => problem.message),
       ).toContainEqual(
         expect.stringContaining(
-          `the field ${field} holds a ${literal}, not a `,
+          `the field ${field} holds ${withArticle(literal)}, not `,
         ),
       )
     })
@@ -3223,7 +3226,7 @@ describe("checkTree: the remaining shared AST conditions", () => {
       field: "cssClass",
       expected: {
         where: "BlockClassStatement at 17-36",
-        message: "the field cssClass holds a Identifier, not a BlockLiteral",
+        message: "the field cssClass holds an Identifier, not a BlockLiteral",
       },
     },
     {
@@ -3245,7 +3248,7 @@ describe("checkTree: the remaining shared AST conditions", () => {
       field: "name",
       expected: {
         where: "TimelineSectionStatement at 11-20",
-        message: "the field name holds a Identifier, not a TimelineLiteral",
+        message: "the field name holds an Identifier, not a TimelineLiteral",
       },
     },
     {
@@ -3256,7 +3259,7 @@ describe("checkTree: the remaining shared AST conditions", () => {
       field: "key",
       expected: {
         where: "C4NamedAttribute at 34-43",
-        message: "the field key holds a Identifier, not a C4Literal",
+        message: "the field key holds an Identifier, not a C4Literal",
       },
     },
   ] as const
@@ -3291,7 +3294,7 @@ describe("checkTree: the remaining shared AST conditions", () => {
       {
         where: "EventmodelingTimeFrameStatement at 14-25",
         message:
-          "the field entityIdentifier holds a Identifier, not a EventmodelingQualifiedName",
+          "the field entityIdentifier holds an Identifier, not an EventmodelingQualifiedName",
       },
     ])
   })
@@ -3317,7 +3320,7 @@ describe("checkTree: the remaining shared AST conditions", () => {
     })
     expect(checkTree(input, tree)).toContainEqual({
       where: "TreeviewIconAnnotation at 19-30",
-      message: "the field name holds a NumericLiteral, not a Identifier",
+      message: "the field name holds a NumericLiteral, not an Identifier",
     })
   })
 })
@@ -3405,7 +3408,8 @@ describe("checkTree: the diagram ids named by ast.md, Diagram nodes", () => {
       name: "reports er/header-only with another diagram type",
       diagram: "er",
       fixture: "header-only",
-      expected: "the diagram type error is not one of those of a ErDiagram: er",
+      expected:
+        "the diagram type error is not one of those of an ErDiagram: er",
     },
     {
       name: "reports gantt/header-only with another diagram type",
@@ -3489,14 +3493,14 @@ describe("checkTree: the diagram ids named by ast.md, Diagram nodes", () => {
       diagram: "ishikawa",
       fixture: "header-only-lf",
       expected:
-        "the diagram type error is not one of those of a IshikawaDiagram: ishikawa",
+        "the diagram type error is not one of those of an IshikawaDiagram: ishikawa",
     },
     {
       name: "reports agentflow/header-only with another diagram type",
       diagram: "agentflow",
       fixture: "header-only",
       expected:
-        "the diagram type error is not one of those of a AgentflowDiagram: agentflow",
+        "the diagram type error is not one of those of an AgentflowDiagram: agentflow",
     },
     {
       name: "reports usecase/header-lf with another diagram type",
@@ -3524,7 +3528,7 @@ describe("checkTree: the diagram ids named by ast.md, Diagram nodes", () => {
       diagram: "info",
       fixture: "header-lf",
       expected:
-        "the diagram type error is not one of those of a InfoDiagram: info",
+        "the diagram type error is not one of those of an InfoDiagram: info",
     },
     {
       name: "reports packet/gram-mixed with another diagram type",
@@ -3538,7 +3542,7 @@ describe("checkTree: the diagram ids named by ast.md, Diagram nodes", () => {
       diagram: "architecture",
       fixture: "header-beta",
       expected:
-        "the diagram type error is not one of those of a ArchitectureDiagram: architecture",
+        "the diagram type error is not one of those of an ArchitectureDiagram: architecture",
     },
     {
       name: "reports radar/gram-written-tree with another diagram type",
@@ -3701,28 +3705,28 @@ describe("checkTree: digit-string names use Identifier (ast.md, Diagram nodes)",
       diagram: "agentflow",
       fixture: "gram-id-numbers-unicode",
       written: "123",
-      expected: "the field id holds a NumericLiteral, not a Identifier",
+      expected: "the field id holds a NumericLiteral, not an Identifier",
     },
     {
       name: "reports architecture digit-string Identifier replaced by NumericLiteral (lex-id-numeric)",
       diagram: "architecture",
       fixture: "lex-id-numeric",
       written: "12",
-      expected: "the field id holds a NumericLiteral, not a Identifier",
+      expected: "the field id holds a NumericLiteral, not an Identifier",
     },
     {
       name: "reports block digit-string Identifier replaced by NumericLiteral (db-class-def-digits)",
       diagram: "block",
       fixture: "db-class-def-digits",
       written: "1",
-      expected: "the field name holds a NumericLiteral, not a Identifier",
+      expected: "the field name holds a NumericLiteral, not an Identifier",
     },
     {
       name: "reports quadrant digit-string Identifier replaced by NumericLiteral (db-class-digits)",
       diagram: "quadrant",
       fixture: "db-class-digits",
       written: "1",
-      expected: "the field className holds a NumericLiteral, not a Identifier",
+      expected: "the field className holds a NumericLiteral, not an Identifier",
     },
     {
       name: "reports usecase digit-string Identifier replaced by NumericLiteral (gram-metadata-number-icon)",
@@ -3730,7 +3734,7 @@ describe("checkTree: digit-string names use Identifier (ast.md, Diagram nodes)",
       fixture: "gram-metadata-number-icon",
       written: "1",
       expected:
-        "the field value holds a NumericLiteral, not a Identifier or StringLiteral",
+        "the field value holds a NumericLiteral, not an Identifier or StringLiteral",
     },
   ]
   for (const testCase of cases) {
@@ -8084,7 +8088,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       additionalFields: {},
       expected: {
         where: "AgentflowVertex at 73-74",
-        message: "the field id holds a AgentflowLiteral, not a Identifier",
+        message: "the field id holds an AgentflowLiteral, not an Identifier",
       },
     },
     {
@@ -8098,7 +8102,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       additionalFields: {},
       expected: {
         where: "ArchitectureJunctionStatement at 71-94",
-        message: "the field id holds a ArchitectureLiteral, not a Identifier",
+        message: "the field id holds an ArchitectureLiteral, not an Identifier",
       },
     },
     {
@@ -8112,7 +8116,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       additionalFields: {},
       expected: {
         where: "BlockNode at 19-20",
-        message: "the field id holds a BlockLiteral, not a Identifier",
+        message: "the field id holds a BlockLiteral, not an Identifier",
       },
     },
     {
@@ -8127,7 +8131,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       expected: {
         where: "EventmodelingTimeFrameStatement at 25-36",
         message:
-          "the field name holds a EventmodelingLiteral, not a Identifier",
+          "the field name holds an EventmodelingLiteral, not an Identifier",
       },
     },
     {
@@ -8142,7 +8146,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       expected: {
         where: "GitgraphBranchStatement at 9-17",
         message:
-          "the field name holds a GitgraphLiteral, not a Identifier or StringLiteral",
+          "the field name holds a GitgraphLiteral, not an Identifier or StringLiteral",
       },
     },
     {
@@ -8157,7 +8161,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       expected: {
         where: "QuadrantPointStatement at 14-32",
         message:
-          "the field className holds a QuadrantLiteral, not a Identifier",
+          "the field className holds a QuadrantLiteral, not an Identifier",
       },
     },
     {
@@ -8171,7 +8175,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       additionalFields: {},
       expected: {
         where: "RadarAxis at 26-27",
-        message: "the field name holds a RadarLiteral, not a Identifier",
+        message: "the field name holds a RadarLiteral, not an Identifier",
       },
     },
     {
@@ -8185,7 +8189,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       additionalFields: {},
       expected: {
         where: "RailroadRule at 99-156",
-        message: "the field name holds a RailroadLiteral, not a Identifier",
+        message: "the field name holds a RailroadLiteral, not an Identifier",
       },
     },
     {
@@ -8200,7 +8204,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       expected: {
         where: "RequirementStyleStatement at 51-82",
         message:
-          "the field names holds a RequirementLiteral, not a Identifier or StringLiteral",
+          "the field names holds a RequirementLiteral, not an Identifier or StringLiteral",
       },
     },
     {
@@ -8215,7 +8219,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       expected: {
         where: "TreemapSection at 23-115",
         message:
-          "the field classSelector holds a TreemapLiteral, not a Identifier",
+          "the field classSelector holds a TreemapLiteral, not an Identifier",
       },
     },
     {
@@ -8229,7 +8233,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       additionalFields: {},
       expected: {
         where: "TreeviewClassAnnotation at 96-104",
-        message: "the field name holds a TreeviewLiteral, not a Identifier",
+        message: "the field name holds a TreeviewLiteral, not an Identifier",
       },
     },
     {
@@ -8243,7 +8247,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       additionalFields: {},
       expected: {
         where: "UsecaseEntity at 27-28",
-        message: "the field id holds a UsecaseLiteral, not a Identifier",
+        message: "the field id holds a UsecaseLiteral, not an Identifier",
       },
     },
     {
@@ -8258,7 +8262,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       expected: {
         where: "VennSubsetStatement at 17-22",
         message:
-          "the field sets holds a VennLiteral, not a Identifier or StringLiteral",
+          "the field sets holds a VennLiteral, not an Identifier or StringLiteral",
       },
     },
     {
@@ -8273,7 +8277,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       expected: {
         where: "AgentflowStyleStatement at 20-36",
         message:
-          "the field styles holds a FlowchartLiteral, not a AgentflowLiteral",
+          "the field styles holds a FlowchartLiteral, not an AgentflowLiteral",
       },
     },
     {
@@ -8288,7 +8292,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       expected: {
         where: "ArchitectureAccTitleStatement at 18-35",
         message:
-          "the field value holds a FlowchartLiteral, not a ArchitectureLiteral",
+          "the field value holds a FlowchartLiteral, not an ArchitectureLiteral",
       },
     },
     {
@@ -8347,7 +8351,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       expected: {
         where: "EventmodelingAccDescrStatement at 25-36",
         message:
-          "the field value holds a FlowchartLiteral, not a EventmodelingLiteral",
+          "the field value holds a FlowchartLiteral, not an EventmodelingLiteral",
       },
     },
     {
@@ -8376,7 +8380,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       additionalFields: {},
       expected: {
         where: "InfoTitleStatement at 5-12",
-        message: "the field value holds a FlowchartLiteral, not a InfoLiteral",
+        message: "the field value holds a FlowchartLiteral, not an InfoLiteral",
       },
     },
     {
@@ -8391,7 +8395,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       expected: {
         where: "IshikawaNode at 16-17",
         message:
-          "the field text holds a FlowchartLiteral, not a IshikawaLiteral",
+          "the field text holds a FlowchartLiteral, not an IshikawaLiteral",
       },
     },
     {
@@ -8660,7 +8664,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       additionalFields: {},
       expected: {
         where: "AgentflowClickUrlStatement at 143-186",
-        message: "the field url holds a AgentflowLiteral, not a StringLiteral",
+        message: "the field url holds an AgentflowLiteral, not a StringLiteral",
       },
     },
     {
@@ -8674,7 +8678,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       expected: {
         where: "ArchitectureServiceStatement at 95-133",
         message:
-          "the field icon holds a ArchitectureLiteral, not a Identifier or StringLiteral",
+          "the field icon holds an ArchitectureLiteral, not an Identifier or StringLiteral",
       },
     },
     {
@@ -8835,7 +8839,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       expected: {
         where: "UsecaseMetadataProperty at 144-158",
         message:
-          "the field value holds a UsecaseLiteral, not a Identifier or StringLiteral",
+          "the field value holds a UsecaseLiteral, not an Identifier or StringLiteral",
       },
     },
     {
@@ -8849,7 +8853,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       expected: {
         where: "UsecaseMetadataProperty at 22-37",
         message:
-          "the field key holds a UsecaseLiteral, not a Identifier or StringLiteral",
+          "the field key holds a UsecaseLiteral, not an Identifier or StringLiteral",
       },
     },
     {
@@ -8863,7 +8867,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       expected: {
         where: "VennSubsetStatement at 10-29",
         message:
-          "the field sets holds a VennLiteral, not a Identifier or StringLiteral",
+          "the field sets holds a VennLiteral, not an Identifier or StringLiteral",
       },
     },
     {
@@ -8891,7 +8895,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       expected: {
         where: "AgentflowLinkStyleStatement at 278-300",
         message:
-          "the field indices holds a AgentflowLiteral, not a NumericLiteral",
+          "the field indices holds an AgentflowLiteral, not a NumericLiteral",
       },
     },
     {
@@ -8998,7 +9002,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       expected: {
         where: "VennTextStatement at 17-23",
         message:
-          "the field id holds a VennLiteral, not a Identifier or StringLiteral or NumericLiteral",
+          "the field id holds a VennLiteral, not an Identifier or StringLiteral or NumericLiteral",
       },
     },
     {
@@ -9038,7 +9042,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       additionalFields: {},
       expected: {
         where: "QuadrantClassDefStatement at 14-37",
-        message: "the field name holds a Identifier, not a QuadrantIdentifier",
+        message: "the field name holds an Identifier, not a QuadrantIdentifier",
       },
     },
     {
@@ -9052,7 +9056,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       expected: {
         where: "RequirementRequirementStatement at 25-42",
         message:
-          "the field name holds a Identifier, not a RequirementIdentifier or StringLiteral",
+          "the field name holds an Identifier, not a RequirementIdentifier or StringLiteral",
       },
     },
     {
@@ -9066,7 +9070,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       expected: {
         where: "SankeyLinkStatement at 12-17",
         message:
-          "the field source holds a Identifier, not a SankeyIdentifier or StringLiteral",
+          "the field source holds an Identifier, not a SankeyIdentifier or StringLiteral",
       },
     },
     {
@@ -9080,7 +9084,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       expected: {
         where: "TreeviewNode at 16-20",
         message:
-          "the field name holds a Identifier, not a TreeviewIdentifier or StringLiteral",
+          "the field name holds an Identifier, not a TreeviewIdentifier or StringLiteral",
       },
     },
     {
@@ -9093,7 +9097,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       additionalFields: {},
       expected: {
         where: "UsecaseStyleDeclaration at 26-45",
-        message: "the field name holds a Identifier, not a UsecaseIdentifier",
+        message: "the field name holds an Identifier, not a UsecaseIdentifier",
       },
     },
     {
@@ -9107,7 +9111,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       expected: {
         where: "WardleyComponentStatement at 13-65",
         message:
-          "the field name holds a Identifier, not a WardleyIdentifier or StringLiteral",
+          "the field name holds an Identifier, not a WardleyIdentifier or StringLiteral",
       },
     },
     {
@@ -9121,7 +9125,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       expected: {
         where: "AgentflowName at 71-72",
         message:
-          "the field parts holds a AgentflowLiteral, not a AgentflowLabel or AgentflowIgnoredText",
+          "the field parts holds an AgentflowLiteral, not an AgentflowLabel or AgentflowIgnoredText",
       },
     },
     {
@@ -9135,7 +9139,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       expected: {
         where: "ArchitectureServiceStatement at 95-133",
         message:
-          "the field title holds a ArchitectureLiteral, not a ArchitectureLabel",
+          "the field title holds an ArchitectureLiteral, not an ArchitectureLabel",
       },
     },
     {
@@ -9253,7 +9257,7 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       expected: {
         where: "EventmodelingInlineData at 26-39",
         message:
-          "the field value holds a FlowchartLabel, not a EventmodelingLiteral or StringLiteral",
+          "the field value holds a FlowchartLabel, not an EventmodelingLiteral or StringLiteral",
       },
     },
     {
@@ -11794,7 +11798,7 @@ describe("checkTree: the nodes of a requirement diagram (ast/requirement.md)", (
         "Identifier",
       ),
       expected:
-        "the field name holds a Identifier, not a RequirementIdentifier or StringLiteral",
+        "the field name holds an Identifier, not a RequirementIdentifier or StringLiteral",
     },
     {
       name: "fails the quoted name of a requirement as a RequirementIdentifier",
@@ -11833,7 +11837,7 @@ describe("checkTree: the nodes of a requirement diagram (ast/requirement.md)", (
         "Identifier",
       ),
       expected:
-        "the field cssClasses holds a Identifier, not a RequirementIdentifier or StringLiteral",
+        "the field cssClasses holds an Identifier, not a RequirementIdentifier or StringLiteral",
     },
     {
       name: "fails a quoted class after the `:::` of a requirement as a RequirementIdentifier",
@@ -11913,7 +11917,7 @@ describe("checkTree: the nodes of a requirement diagram (ast/requirement.md)", (
       fixture: "db-class-shorthand-requirement-and-element",
       mutate: retypeChild("RequirementElementStatement", "name", "Identifier"),
       expected:
-        "the field name holds a Identifier, not a RequirementIdentifier or StringLiteral",
+        "the field name holds an Identifier, not a RequirementIdentifier or StringLiteral",
     },
     {
       name: "fails a class after the `:::` of an element as an Identifier",
@@ -11924,7 +11928,7 @@ describe("checkTree: the nodes of a requirement diagram (ast/requirement.md)", (
         "Identifier",
       ),
       expected:
-        "the field cssClasses holds a Identifier, not a RequirementIdentifier or StringLiteral",
+        "the field cssClasses holds an Identifier, not a RequirementIdentifier or StringLiteral",
     },
     {
       name: "fails an element without its `:::`",
@@ -12038,7 +12042,7 @@ describe("checkTree: the nodes of a requirement diagram (ast/requirement.md)", (
         "Identifier",
       ),
       expected:
-        "the field left holds a Identifier, not a RequirementIdentifier or StringLiteral",
+        "the field left holds an Identifier, not a RequirementIdentifier or StringLiteral",
     },
     {
       name: "fails the second end of a relationship as an Identifier",
@@ -12049,7 +12053,7 @@ describe("checkTree: the nodes of a requirement diagram (ast/requirement.md)", (
         "Identifier",
       ),
       expected:
-        "the field right holds a Identifier, not a RequirementIdentifier or StringLiteral",
+        "the field right holds an Identifier, not a RequirementIdentifier or StringLiteral",
     },
     // RequirementDirectionStatement.
     {
@@ -12116,7 +12120,7 @@ describe("checkTree: the nodes of a requirement diagram (ast/requirement.md)", (
         (node) => ({ name: node.value }),
       ),
       expected:
-        "Identifier at 48-54: the tokens of a Identifier in names are not all of the kind Identifier: String",
+        "Identifier at 48-54: the tokens of an Identifier in names are not all of the kind Identifier: String",
     },
     {
       name: "fails a style without the comma between its styles",
@@ -12160,7 +12164,7 @@ describe("checkTree: the nodes of a requirement diagram (ast/requirement.md)", (
         (node) => ({ name: node.value }),
       ),
       expected:
-        "Identifier at 46-52: the tokens of a Identifier in cssClasses are not all of the kind Identifier: String",
+        "Identifier at 46-52: the tokens of an Identifier in cssClasses are not all of the kind Identifier: String",
     },
     // RequirementClassStatement.
     {
@@ -12168,7 +12172,7 @@ describe("checkTree: the nodes of a requirement diagram (ast/requirement.md)", (
       fixture: "db-class-statement",
       mutate: retypeChild("RequirementClassStatement", "names", "Identifier"),
       expected:
-        "the field names holds a Identifier, not a RequirementIdentifier or StringLiteral",
+        "the field names holds an Identifier, not a RequirementIdentifier or StringLiteral",
     },
     {
       name: "fails a class after `class` as an Identifier",
@@ -12179,7 +12183,7 @@ describe("checkTree: the nodes of a requirement diagram (ast/requirement.md)", (
         "Identifier",
       ),
       expected:
-        "the field cssClasses holds a Identifier, not a RequirementIdentifier or StringLiteral",
+        "the field cssClasses holds an Identifier, not a RequirementIdentifier or StringLiteral",
     },
     {
       name: "fails a quoted name after `class` as a RequirementIdentifier",
@@ -12205,7 +12209,7 @@ describe("checkTree: the nodes of a requirement diagram (ast/requirement.md)", (
         (node) => ({ name: node.value }),
       ),
       expected:
-        "RequirementIdentifier at 45-51: the tokens of a RequirementIdentifier in cssClasses are not all of the kind Identifier or RawText: String",
+        "RequirementIdentifier at 45-51: the tokens of a RequirementIdentifier in cssClasses are not all of the kind Identifier: String",
     },
     {
       name: "fails a class statement without the comma between its names",
@@ -12229,7 +12233,7 @@ describe("checkTree: the nodes of a requirement diagram (ast/requirement.md)", (
         "Identifier",
       ),
       expected:
-        "the field name holds a Identifier, not a RequirementIdentifier or StringLiteral",
+        "the field name holds an Identifier, not a RequirementIdentifier or StringLiteral",
     },
     {
       name: "fails a class after the `:::` of a shorthand as an Identifier",
@@ -12240,7 +12244,7 @@ describe("checkTree: the nodes of a requirement diagram (ast/requirement.md)", (
         "Identifier",
       ),
       expected:
-        "the field cssClasses holds a Identifier, not a RequirementIdentifier or StringLiteral",
+        "the field cssClasses holds an Identifier, not a RequirementIdentifier or StringLiteral",
     },
     {
       name: "fails a shorthand without the comma between its classes",
@@ -14194,7 +14198,7 @@ describe("checkTree: the nodes of an ishikawa diagram (ast/ishikawa.md)", () => 
         setField(root.body, "root", (root.body.root as CheckedNode).text)
       },
       expected:
-        "IshikawaDiagram at 0-13: the field root holds a IshikawaLiteral, not a IshikawaNode",
+        "IshikawaDiagram at 0-13: the field root holds an IshikawaLiteral, not an IshikawaNode",
     },
     {
       name: "fails an ishikawa diagram whose written root is null",
@@ -14310,7 +14314,7 @@ describe("checkTree: the nodes of an ishikawa diagram (ast/ishikawa.md)", () => 
         (node) => ({ raw: node.value, closed: true }),
       ),
       expected:
-        "IshikawaNode at 9-13: the field text holds a StringLiteral, not a IshikawaLiteral",
+        "IshikawaNode at 9-13: the field text holds a StringLiteral, not an IshikawaLiteral",
     },
     {
       name: "fails the text of an ishikawa node that is empty",
@@ -14338,7 +14342,7 @@ describe("checkTree: the nodes of an ishikawa diagram (ast/ishikawa.md)", () => 
         setField(r, "children", [first.text, ...rest])
       },
       expected:
-        "IshikawaNode at 9-30: the field children holds a IshikawaLiteral, not a IshikawaNode",
+        "IshikawaNode at 9-30: the field children holds an IshikawaLiteral, not an IshikawaNode",
     },
     {
       name: "fails a leaf of an ishikawa diagram with a child it does not have",
@@ -14507,7 +14511,7 @@ describe("checkTree: the nodes of an ishikawa diagram (ast/ishikawa.md)", () => 
         (node) => ({ raw: node.value, value: -0 }),
       ),
       expected:
-        "IshikawaNode at 9-52: the field text holds a NumericLiteral, not a IshikawaLiteral",
+        "IshikawaNode at 9-52: the field text holds a NumericLiteral, not an IshikawaLiteral",
     },
     {
       name: "fails an ishikawa text of empty quotes as a StringLiteral",
@@ -14520,7 +14524,7 @@ describe("checkTree: the nodes of an ishikawa diagram (ast/ishikawa.md)", () => 
         (node) => ({ raw: node.value, value: "", closed: true }),
       ),
       expected:
-        "IshikawaNode at 9-15: the field text holds a StringLiteral, not a IshikawaLiteral",
+        "IshikawaNode at 9-15: the field text holds a StringLiteral, not an IshikawaLiteral",
     },
     {
       name: "fails an ishikawa text with an open quote that has a closed field",
