@@ -714,6 +714,75 @@ function findSeparatorBeforeTerminator(source: Source, offset: number): number {
 }
 
 /**
+ * The first U+2028 or U+2029 of the whitespace that ends the line of the last
+ * style, which runs from `start` to `end`, of an ER `classDef` or `style`
+ * statement that no `;` ends, or -1: nothing but U+2028, U+2029, spaces, tabs,
+ * vertical tabs, and form feeds stands between it and the line feed. mermaid.js
+ * keeps the character in the text of the style and draws the same figure
+ * without it, so it is dropped where it ends the style. The line stays as
+ * written where dropping the character could change what mermaid.js reads: a
+ * comment line follows (the `^` that removes it matches after the character, so
+ * the text after the comment line joins the style, and a second formatting
+ * would read the style in another shape), the style takes text after the line
+ * feed (whitespace between the character and the line feed joins the next
+ * line to the style), or a comment or a directive follows the character on its
+ * line. Other whitespace, such as a no-break space, is text of the style, and
+ * so is a `;` that the style holds: the line rule may read it (docs/er.md,
+ * Semicolons at the end of a style statement).
+ */
+export function findSeparatorEndingStyle(
+  source: Source,
+  start: number,
+  end: number,
+): number {
+  if (source.text.slice(start, end).includes(";")) return -1
+  let lineEnd = start
+  while (lineEnd < source.text.length && !isAtLineEnd(source, lineEnd))
+    lineEnd++
+  if (
+    lineEnd > end ||
+    (lineEnd < end && textRead(source, lineEnd, end).trim() !== "")
+  )
+    return -1
+  // The region starts where the `^` matches after the character, and takes the
+  // line terminator with it.
+  const nextLine = lineEnd + (source.text.startsWith("\r\n", lineEnd) ? 2 : 1)
+  if (
+    source.commentRegions.some(
+      ([from, to]) =>
+        from <= nextLine &&
+        lineEnd < to &&
+        findTriviaBetween(source, from, to).some(
+          (item) => item.type === "Comment",
+        ),
+    )
+  )
+    return -1
+  return findSeparatorRunStart(source, start, lineEnd)
+}
+
+/**
+ * The first U+2028 or U+2029 of the run of U+2028, U+2029, spaces, tabs,
+ * vertical tabs, and form feeds that ends at `end`, or -1. The last style of
+ * an ER `classDef` or `style` statement whose `;` the printer drops ends in
+ * such a run where no other whitespace follows the character in its range, and
+ * the printer drops the character with it (see `findSeparatorEndingStyle`).
+ */
+export function findSeparatorRunStart(
+  source: Source,
+  start: number,
+  end: number,
+): number {
+  let separator = -1
+  for (let at = end - 1; at >= start; at--) {
+    const character = source.text[at]
+    if (character === "\u2028" || character === "\u2029") separator = at
+    else if (!isTrimmedAfterSeparator(character, "ErDiagram")) break
+  }
+  return separator
+}
+
+/**
  * Whether the printer drops the `;` at `offset`: one that the line rule
  * ignores at the end of its line, which is dropped as a `;` that separates
  * statements is, since mermaid.js removes it from the text, and the `;` that

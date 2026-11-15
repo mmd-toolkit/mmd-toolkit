@@ -649,7 +649,7 @@ mermaid.js keeps them at the end of the last style, so this changes what
 mermaid.js stores, separately from the permitted eventmodeling body margins in
 [Data blocks](./eventmodeling.md#data-blocks). The tests compare styles without
 their trailing spaces and tabs, and those of an ER diagram also without the
-U+2028 and U+2029 that the formatter drops with a `;` (see
+U+2028 and U+2029 that the formatter drops at the end of a style (see
 [Semicolons at the end of a style statement](./er.md#semicolons-at-the-end-of-a-style-statement)).
 
 Whitespace of another kind at the end (a no-break space, U+3000, a vertical tab,

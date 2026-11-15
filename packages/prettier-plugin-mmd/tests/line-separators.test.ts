@@ -6249,6 +6249,46 @@ describe("style semicolons", () => {
       "erDiagram\n  A\n  style A fill: red\n  x\n  classDef c fill: red\n  y\n  style A fill: red\n",
     ],
     [
+      "ER a style that no semicolon ends is printed without the U+2028 or U+2029 that ends it, before a statement and at the end of the text",
+      "erDiagram\nA\nstyle A fill:red\u2028\nx\nclassDef c fill:red,stroke:#333\u2029\ny\nstyle A fill:red\u2028\n",
+      "erDiagram\n  A\n  style A fill: red\n  x\n  classDef c fill: red, stroke: #333\n  y\n  style A fill: red\n",
+    ],
+    [
+      "ER a style that no semicolon ends is printed with its color in lower case once the U+2028 is dropped",
+      "erDiagram\nA\nstyle A fill:#F9F\u2028\nx\n",
+      "erDiagram\n  A\n  style A fill: #f9f\n  x\n",
+    ],
+    [
+      "ER a terminator after U+2028 and whitespace of another kind is dropped with all of them",
+      "erDiagram\nA\nstyle A fill:red\u2028 \u00a0;\nx\n",
+      "erDiagram\n  A\n  style A fill: red\n  x\n",
+    ],
+    [
+      "ER a style that no semicolon ends is printed without the U+2028 that ends it before a directive line",
+      "erDiagram\nA\nstyle A fill:red\u2028\n%%{init: {}}%%\nx\n",
+      "erDiagram\n  A\n  style A fill: red\n  %%{init: {}}%%\n  x\n",
+    ],
+    [
+      "ER a style that no semicolon ends keeps the U+2028 that ends it before a comment line",
+      "erDiagram\nA\nstyle A fill:red\u2028\n%% c\nx\nclassDef c fill:red\u2029\n%% d\n",
+      "erDiagram\n  A\n  style A fill:red\u2028\n%% c\nx\n  classDef c fill:red\u2029\n  %% d\n",
+    ],
+    [
+      "ER a style that no semicolon ends keeps the U+2028 that whitespace and a statement follow",
+      "erDiagram\nA\nstyle A fill:red\u2028  \nx\n",
+      "erDiagram\n  A\n  style A fill:red\u2028  \nx\n",
+    ],
+    [
+      "ER a style that no semicolon ends keeps the U+2028 that a comment follows on its line",
+      "erDiagram\nA\nstyle A fill:red\u2028 %% c\nx\n",
+      "erDiagram\n  A\n  style A fill:red\u2028 %% c\nx\n",
+    ],
+    [
+      "ER a style that no semicolon ends keeps the U+2028 that a no-break space follows",
+      "erDiagram\nA\nstyle A fill:red\u2028\u00a0\nx\n",
+      "erDiagram\n  A\n  style A fill:red\u2028\u00a0\n  x\n",
+    ],
+    [
       "flowchart directive, direct, NBSP and bare percent controls",
       "flowchart LR\nA --> B\nstyle A fill:coral\u2028\n;\n%%{init: {}}%%\nx\nstyle A fill:coral\u2028\n;\ny\nstyle A fill:coral\u00a0;\n%% c\nz\nstyle A fill:coral\u2028\n;\n%%\nu\n",
       "flowchart LR\n  A --> B\n  style A fill:coral\u2028\n  %%{init: {}}%%\n  x\n  style A fill:coral\u2028\n  y\n  style A fill:coral\u00a0;\n  %% c\n  z\n  style A fill:coral\u2028\n  %%\n  u\n",

@@ -2472,7 +2472,7 @@ mermaid.js はコメント行を、
   ER 図の Db ではスタイルのテキストに入らないので、`;` を残す理由になりません。
 
 したがって、`;` を削除するときは、その前の U+2028 や U+2029 もいっしょに削除し、
-どちらもない文として印字します。
+間にそのほかの空白があるときも同じで、どちらもない文として印字します。
 `style A fill:red`、U+2028、`;` は、後ろに文、コメント行、
 テキストの終わりのどれが続いても、`style A fill: red` と印字します。
 
@@ -2500,6 +2500,30 @@ mermaid.js はコメント行を、
 [test: ER a form feed after U+2028 is no text of the classDef before a comment line at the end of the text]
 [test: ER a vertical tab and a form feed after U+2028 go with the terminator before a comment line and a statement]
 [test: ER a style terminator after U+2028 or U+2029 is dropped with the character before a statement and at the end of the text]
+
+`;` が style を終えないときも同じです。
+style を終える U+2028 か U+2029 は、その後ろから行末までの空白、タブ、垂直タブ、
+改ページとともに落とし、`style A fill:red`、U+2028、
+改行は `style A fill: red` と印字します。
+文字を落とすと mermaid.js の読む値が変わるおそれのあるときは、
+行を書かれたまま残します。
+文字の後にコメント行が続くとき（コメント行は文字の後で取り除かれ、
+コメント行の後のテキストが style に続くかどうかが、文字の有無で変わります）、
+文字と改行の間に空白があって文が続くとき（改行が style の空白になり、
+次の行が style に続きます）、
+文字の後に同じ行でコメントやディレクティブが続くとき、
+文字の後にノーブレークスペースなどそのほかの空白があるときです。
+落とす文字の前の色は、すぐに小文字で印字します。
+`fill:#F9F` と U+2028 は `fill: #f9f` と印字します。
+
+[test: ER a style that no semicolon ends is printed without the U+2028 or U+2029 that ends it, before a statement and at the end of the text]
+[test: ER a style that no semicolon ends is printed without the U+2028 that ends it before a directive line]
+[test: ER a style that no semicolon ends keeps the U+2028 that ends it before a comment line]
+[test: ER a style that no semicolon ends keeps the U+2028 that whitespace and a statement follow]
+[test: ER a style that no semicolon ends keeps the U+2028 that a comment follows on its line]
+[test: ER a style that no semicolon ends keeps the U+2028 that a no-break space follows]
+[test: ER a style that no semicolon ends is printed with its color in lower case once the U+2028 is dropped]
+[test: ER a terminator after U+2028 and whitespace of another kind is dropped with all of them]
 
 mermaid.js は、最後のスタイルの直後にある U+2028 や U+2029 を、
 そのスタイルのテキストに残し、なくしても同じ図を描きます。

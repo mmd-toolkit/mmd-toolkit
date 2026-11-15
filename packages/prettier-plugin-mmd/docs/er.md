@@ -2501,9 +2501,10 @@ after them. The `;` is handled as follows.
   ER diagram, which is why they are no reason to keep the `;`.
 
 So wherever the `;` is dropped, the U+2028 or U+2029 before it is dropped with
-it, and the statement is printed as one that has neither: `style A fill:red`,
-U+2028, `;` is printed `style A fill: red` whatever follows, a statement, a
-comment line, or the end of the text.
+it, also where other whitespace stands between them, and the statement is
+printed as one that has neither: `style A fill:red`, U+2028, `;` is printed
+`style A fill: red` whatever follows, a statement, a comment line, or the end of
+the text.
 
 [fixture:
 semicolons-at-the-end-of-a-style-statement/comment-and-directive-controls]
@@ -2527,6 +2528,32 @@ line at the end of the text] [test: ER a vertical tab and a form feed after
 U+2028 go with the terminator before a comment line and a statement] [test: ER a
 style terminator after U+2028 or U+2029 is dropped with the character before a
 statement and at the end of the text]
+
+The same holds where no `;` ends the style: the U+2028 or U+2029 that ends it is
+dropped, with the spaces, tabs, vertical tabs, and form feeds after it up to the
+line break, and `style A fill:red`, U+2028, and a line break are printed
+`style A fill: red`. The line stays as written where dropping the character
+could change what mermaid.js reads: where a comment line follows it (the comment
+line is removed after the character, so the text after it would join the style
+or not depending on the character), where whitespace stands between the
+character and the line break and a statement follows (the line break is then
+whitespace of the style, and the next line joins it), where a comment or a
+directive follows the character on its line, and where whitespace of another
+kind, a no-break space for instance, stands after it. A color before the dropped
+character is printed in lower case at once: `fill:#F9F` and U+2028 is printed
+`fill: #f9f`.
+
+[test: ER a style that no semicolon ends is printed without the U+2028 or U+2029
+that ends it, before a statement and at the end of the text] [test: ER a style
+that no semicolon ends is printed without the U+2028 that ends it before a
+directive line] [test: ER a style that no semicolon ends keeps the U+2028 that
+ends it before a comment line] [test: ER a style that no semicolon ends keeps
+the U+2028 that whitespace and a statement follow] [test: ER a style that no
+semicolon ends keeps the U+2028 that a comment follows on its line] [test: ER a
+style that no semicolon ends keeps the U+2028 that a no-break space follows]
+[test: ER a style that no semicolon ends is printed with its color in lower case
+once the U+2028 is dropped] [test: ER a terminator after U+2028 and whitespace
+of another kind is dropped with all of them]
 
 mermaid.js keeps a U+2028 or U+2029 that directly follows the last style in the
 text of that style, and draws the same figure without it, so the Db of the

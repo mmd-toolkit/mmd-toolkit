@@ -15,6 +15,8 @@ import {
   findKeptBreaks,
   gapKeepsLineBreak,
   findSeparatorDroppedWithTerminator,
+  findSeparatorEndingStyle,
+  findSeparatorRunStart,
   holdsJoiningRegion,
   isDroppedSemicolon,
   isFirstOnItsLine,
@@ -585,13 +587,41 @@ function findEndingSemicolonStretches(
 }
 
 /**
+ * The offset of the first U+2028 or U+2029 that the printer drops from the end
+ * of the last style `last` of a `classDef` or `style` statement that ends at
+ * `statementEnd`, or -1. The character is a character of the last style only
+ * where no whitespace stands before it, and it is dropped where it ends the
+ * style: with the `;` that ends the statement, which the printer drops (see
+ * `findSeparatorDroppedWithTerminator`), also where other whitespace stands
+ * between them, and where no `;` ends the statement (see
+ * `findSeparatorEndingStyle`; docs/er.md, Semicolons at the end of a style
+ * statement). The color rule asks the same, so that a color before the dropped
+ * character is printed as a color at once.
+ */
+export function findDroppedSeparator(
+  source: Source,
+  last: Node,
+  statementEnd: number,
+): number {
+  const unit = findTokenEndingBefore(source, statementEnd)
+  const semicolon =
+    unit?.value === ";"
+      ? unit.range[0]
+      : source.ignoredSemicolons.has(statementEnd)
+        ? statementEnd
+        : -1
+  if (semicolon < 0)
+    return findSeparatorEndingStyle(source, last.range[0], last.range[1])
+  const separator = findSeparatorDroppedWithTerminator(source, semicolon)
+  return separator >= 0 || !isDroppedSemicolon(source, semicolon)
+    ? separator
+    : findSeparatorRunStart(source, last.range[0], last.range[1])
+}
+
+/**
  * The styles of a `classDef` or `style` statement that ends at `statementEnd`,
  * the last one without the whitespace from the first U+2028 or U+2029 on, where
- * the printer drops them with the `;` that ends the statement (see
- * `findSeparatorDroppedWithTerminator`): the `;` is a unit of the statement or
- * one that the line rule ignores right after it, and the character is a
- * character of the last style only where no whitespace stands before it
- * (docs/er.md, Semicolons at the end of a style statement).
+ * the printer drops them (see `findDroppedSeparator`).
  */
 function withoutDroppedSeparator(
   source: Source,
@@ -600,15 +630,7 @@ function withoutDroppedSeparator(
 ): readonly Node[] {
   const last = styles.at(-1)
   if (last === undefined) return styles
-  const unit = findTokenEndingBefore(source, statementEnd)
-  const semicolon =
-    unit?.value === ";"
-      ? unit.range[0]
-      : source.ignoredSemicolons.has(statementEnd)
-        ? statementEnd
-        : -1
-  const separator =
-    semicolon < 0 ? -1 : findSeparatorDroppedWithTerminator(source, semicolon)
+  const separator = findDroppedSeparator(source, last, statementEnd)
   if (separator < 0) return styles
   let end = Math.min(last.range[1], separator)
   while (isSpaceOrTab(source.text[end - 1])) end--
