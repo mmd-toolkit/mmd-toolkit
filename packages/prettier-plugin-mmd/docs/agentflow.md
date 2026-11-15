@@ -270,15 +270,39 @@ names-and-headings/heading-with-comment-and-directive-connector-ignored-semicolo
 
 Before a `;` that stays on a line printed as written, the end of a name keeps
 its whitespace where removing it would form an entity: `flow F%% style:#x ;;`
-keeps the space before `;;`, also where spaces follow the semicolons.
+keeps the space before `;;`, also where spaces follow the semicolons. A
+directive after the name changes nothing, since mermaid.js removes it before it
+reads the text: `flow F%% style:#x %%{init: {}}%%;;` keeps the space before the
+directive, and without it the text is rejected by mermaid.js, whether one
+directive, several directives, or three semicolons stand there, and in a
+connector heading as well.
 
 [fixture: names-and-headings/heading-entity-gap-before-kept-semicolons]
 [fixture: names-and-headings/heading-entity-gap-before-kept-semicolons-trailing]
+[fixture:
+names-and-headings/heading-entity-gap-before-directive-and-kept-semicolons]
+[fixture:
+names-and-headings/heading-entity-gap-before-directive-and-kept-semicolons-trailing]
+[fixture:
+names-and-headings/heading-entity-gap-before-directive-and-three-semicolons]
+[fixture:
+names-and-headings/heading-entity-gap-before-two-directives-and-kept-semicolons]
+[fixture:
+names-and-headings/heading-entity-gap-before-touching-directives-and-kept-semicolons]
+[fixture:
+names-and-headings/heading-entity-gap-digits-before-directive-and-kept-semicolons]
+[fixture:
+names-and-headings/heading-entity-gap-short-before-directive-and-kept-semicolons]
+[fixture:
+names-and-headings/heading-entity-gap-connector-before-directive-and-kept-semicolons]
 
 Where removing the whitespace forms no entity, the usual trimming still applies:
-`accDescr {style:#x} flow F ;;` is printed with `flow F;;`.
+`accDescr {style:#x} flow F ;;` is printed with `flow F;;`, and
+`accDescr {style:#x} flow F %%{init: {}}%%;;` with `flow F%%{init: {}}%%;;`.
 
 [fixture: names-and-headings/heading-nonentity-gap-before-kept-semicolons]
+[fixture:
+names-and-headings/heading-nonentity-gap-before-directive-and-kept-semicolons]
 
 The whitespace after the word `flow`, `connector`, or `global` is one space,
 however many spaces or tabs were written: the word takes one whitespace

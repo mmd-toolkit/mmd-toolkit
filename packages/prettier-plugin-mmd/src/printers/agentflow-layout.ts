@@ -158,9 +158,11 @@ export function layoutContainerHeader(
         nameEnd--
       // A retained separator must stay apart from an entity-shaped name end:
       // removing the gap would form an entity (common.md, Entities;
-      // docs/agentflow.md, Names and headings).
+      // docs/agentflow.md, Names and headings). The directives after the name
+      // are removed before mermaid.js reads the text, so a separator behind
+      // them touches the name as well.
       if (
-        source.text[name.range[1]] === ";" &&
+        source.text[skipDirectivesAt(source, name.range[1])] === ";" &&
         findAgentflowKeptLines(source).verbatim.has(
           lineStartOf(source, name.range[0]),
         ) &&
@@ -255,6 +257,19 @@ export function layoutContainerHeader(
         atom.start < name.range[0] ||
         atom.start >= name.range[1],
     ),
+  }
+}
+
+/**
+ * The offset after the directives that start at `offset` and follow each other
+ * without whitespace between them; `offset` where none starts there.
+ */
+function skipDirectivesAt(source: Source, offset: number): number {
+  let position = offset
+  for (;;) {
+    const item = findTriviaBetween(source, position, position + 1).at(0)
+    if (item?.type !== "Directive") return position
+    position = item.range[1]
   }
 }
 

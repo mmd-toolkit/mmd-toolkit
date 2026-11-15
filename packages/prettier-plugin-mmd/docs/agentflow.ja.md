@@ -277,14 +277,31 @@ mermaid.js が名前を trim するので Db は同じであり、
 名前の末尾の空白を保ちます。
 `flow F%% style:#x ;;` は `;;` の前の空白を保ち、
 セミコロンの後ろに空白がある場合も同じです。
+名前の後のディレクティブは、結果を変えません。
+mermaid.js がテキストを読む前に取り除くからです。
+`flow F%% style:#x %%{init: {}}%%;;` はディレクティブの前の空白を保ちます。
+空白を除くと、mermaid.js がそのテキストを拒否します。
+ディレクティブが複数のとき、セミコロンが 3 つのとき、
+connector の見出しのときも同じです。
 
 [fixture: names-and-headings/heading-entity-gap-before-kept-semicolons]
 [fixture: names-and-headings/heading-entity-gap-before-kept-semicolons-trailing]
+[fixture: names-and-headings/heading-entity-gap-before-directive-and-kept-semicolons]
+[fixture: names-and-headings/heading-entity-gap-before-directive-and-kept-semicolons-trailing]
+[fixture: names-and-headings/heading-entity-gap-before-directive-and-three-semicolons]
+[fixture: names-and-headings/heading-entity-gap-before-two-directives-and-kept-semicolons]
+[fixture: names-and-headings/heading-entity-gap-before-touching-directives-and-kept-semicolons]
+[fixture: names-and-headings/heading-entity-gap-digits-before-directive-and-kept-semicolons]
+[fixture: names-and-headings/heading-entity-gap-short-before-directive-and-kept-semicolons]
+[fixture: names-and-headings/heading-entity-gap-connector-before-directive-and-kept-semicolons]
 
 空白を除いてもエンティティにならない場合は、通常どおり末尾の空白を除きます。
 `accDescr {style:#x} flow F ;;` の `flow F ;;` は、`flow F;;` と印字します。
+`accDescr {style:#x} flow F %%{init: {}}%%;;` は `flow F%%{init: {}}%%;;`
+と印字します。
 
 [fixture: names-and-headings/heading-nonentity-gap-before-kept-semicolons]
+[fixture: names-and-headings/heading-nonentity-gap-before-directive-and-kept-semicolons]
 
 `flow`、`connector`、`global` の後ろの空白は、
 空白やタブがいくつ書かれていても空白 1 つにします。
