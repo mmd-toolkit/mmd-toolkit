@@ -2538,11 +2538,12 @@ stands after the character on its line, and on what follows the line. The table
 gives it for a text that ends there or that comment lines end (E: no statement
 follows, and the last line that is not blank is a comment line, with directive
 lines and blank lines possibly before the comment lines), and for a text that a
-statement follows or that a directive line ends (S: comment lines and blank
-lines may stand before the statement or the directive line). "Dropped" means
-that the character, a second one, and the whitespace after them are left out;
-where a character stays and whitespace stands between it and what follows on its
-line, that whitespace is printed as one space.
+statement follows or that a directive line ends (S: comment lines, directive
+lines, and blank lines may stand before the statement or the directive line that
+ends the text). "Dropped" means that the character, a second one, and the
+whitespace after them are left out; where a character stays and whitespace
+stands between it and what follows on its line, that whitespace is printed as
+one space.
 
 | After the character on its line           | E: the text ends, or comment lines end it                                            | S: a statement follows, or a directive line ends the text                                                                                                          |
 | ----------------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -2623,10 +2624,13 @@ before a directive that a directive line and then a comment line follow] [test:
 ER a style that no semicolon ends keeps the two characters before a directive
 that a comment line and then a directive line follow] [test: ER a style that no
 semicolon ends keeps the U+2028 before a directive and a comment on its line
-that a statement follows] [test: ER a style that no semicolon ends keeps the two
-characters before a directive and a comment that a statement follows] [test: ER
-a style that no semicolon ends is printed with its color in lower case once the
-U+2028 is dropped]
+that a statement follows] [test: ER a style that no semicolon ends is printed
+without the U+2028 that a directive line and then a statement follow] [test: ER
+a style that no semicolon ends keeps the two characters before a directive that
+a directive line and then a statement follow] [test: ER a style that no
+semicolon ends keeps the two characters before a directive and a comment that a
+statement follows] [test: ER a style that no semicolon ends is printed with its
+color in lower case once the U+2028 is dropped]
 
 mermaid.js keeps a U+2028 or U+2029 that directly follows the last style in the
 text of that style, and draws the same figure without it, so the Db of the

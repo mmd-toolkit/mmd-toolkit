@@ -2511,7 +2511,8 @@ style を終える U+2028 か U+2029 は、その後ろから行末までの空�
 文が続くかディレクティブの行で終わる場合（S）の出力です。
 Eは、文が続かず、空行でない最後の行がコメント行で、
 コメント行の前にディレクティブの行や空行があってもよい場合です。
-Sは、文やディレクティブの行の前に、コメント行や空行があってもよい場合です。
+Sは、文や、テキストを終えるディレクティブの行の前に、コメント行、
+ディレクティブの行、空行があってもよい場合です。
 「落とす」は、文字、2 つ目の文字、その後の空白を除くことです。
 文字が残り、その後ろから行の続きまでに空白があるときは、
 その空白を空白 1 つで印字します。
@@ -2578,6 +2579,8 @@ mermaid.js は文字がなくても同じ図を描きます。
 [test: ER a style that no semicolon ends prints the characters after the first U+2028 as one space before a directive that a directive line and then a comment line follow]
 [test: ER a style that no semicolon ends keeps the two characters before a directive that a comment line and then a directive line follow]
 [test: ER a style that no semicolon ends keeps the U+2028 before a directive and a comment on its line that a statement follows]
+[test: ER a style that no semicolon ends is printed without the U+2028 that a directive line and then a statement follow]
+[test: ER a style that no semicolon ends keeps the two characters before a directive that a directive line and then a statement follow]
 [test: ER a style that no semicolon ends keeps the two characters before a directive and a comment that a statement follows]
 [test: ER a style that no semicolon ends is printed with its color in lower case once the U+2028 is dropped]
 
