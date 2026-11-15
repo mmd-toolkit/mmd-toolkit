@@ -1,0 +1,501 @@
+{
+  "rows": [
+    {
+      "block": "packages/spec/docs/ast/sankey.md:7903170ff88e",
+      "diagrams": ["sankey"],
+      "about": "This document defines the nodes of the tree for the diagram type `sankey`. The\ns",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It introduces the tree document and points to ast.md and to the syntax document."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/sankey.md:447cb5232249",
+      "diagrams": ["sankey"],
+      "about": "The body of this diagram type is a [SankeyDiagram](#sankeydiagram). The values\no",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The body is a SankeyDiagram.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the body of a sankey diagram as a PieDiagram"
+              }
+            ]
+          },
+          {
+            "case": "A value keeps what the author wrote, not the converted form.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a quoted sankey field that writes its CRLF as LF"
+              }
+            ]
+          },
+          {
+            "case": "A field without quotes is read without the whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an unquoted sankey field that keeps the space before it"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an unquoted sankey value that keeps the space before it"
+              }
+            ]
+          },
+          {
+            "case": "A field of spaces only has the empty value.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a sankey field of spaces only whose name is its spaces"
+              }
+            ]
+          },
+          {
+            "case": "A field in quotes is a StringLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a quoted sankey value as a SankeyLiteral"
+              }
+            ]
+          },
+          {
+            "case": "Its value is what lies between its quotes as written.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a quoted sankey field whose value is not what lies between its quotes"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/sankey.md:6c50992f0a22",
+      "diagrams": ["sankey"],
+      "about": "A **link** is a record of three fields: the **source** node, the **target**\nnode",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It says what a link and a node are in the drawing and how mermaid.js names nodes; the node sections state the conditions."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/sankey.md:d5e5d05a4bcf",
+      "diagrams": ["sankey"],
+      "about": "| `body` | list of SankeyLinkStatement | The links, in source order; at least on",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`body` is a list of nodes.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a list that is a string, and a value of another type"
+              }
+            ]
+          },
+          {
+            "case": "Each item is a SankeyLinkStatement.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a sankey link among the statements as a SankeyIdentifier"
+              }
+            ]
+          },
+          {
+            "case": "The links are in source order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails a list that is not in source order"
+              }
+            ]
+          },
+          {
+            "case": "There is at least one link.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a sankey diagram without its links"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/sankey.md:faa24f0a997b",
+      "diagrams": ["sankey"],
+      "about": "Child fields: `body`. The header keyword, `sankey` or `sankey-beta`, is not a\nfi",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The child field `body` holds child nodes.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child field whose value is a primitive instead of a child node"
+              }
+            ]
+          },
+          {
+            "case": "The header keyword is not a field.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a sankey diagram with a header field"
+              }
+            ]
+          },
+          {
+            "case": "`sankey-beta` gives the same diagram type.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a `sankey-beta` diagram whose diagram type is `sankey-beta`"
+              }
+            ]
+          },
+          {
+            "case": "A line break belongs to no link.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a sankey link that runs over the line feed after it"
+              }
+            ]
+          },
+          {
+            "case": "An empty line makes no node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a node for an empty line of a sankey diagram"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/sankey.md:771acd5dfa17",
+      "diagrams": ["sankey"],
+      "about": "A record: `Pumped heat,\"Heating and cooling, homes\",193.026`.\n\n| Field    | Type",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It gives an example of a record."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/sankey.md:0b4d52043127",
+      "diagrams": ["sankey"],
+      "about": "| `source` | SankeyIdentifier or StringLiteral | The first field, the id of the ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`source` is a node, never null.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a required node that is null"
+              }
+            ]
+          },
+          {
+            "case": "It is a SankeyIdentifier or a StringLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the source of a sankey link as a SankeyLiteral"
+              }
+            ]
+          },
+          {
+            "case": "It is the first field.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a sankey link whose source and target are swapped"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/sankey.md:34cc7ef86b26",
+      "diagrams": ["sankey"],
+      "about": "| `target` | SankeyIdentifier or StringLiteral | The second field, the id of the",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`target` is a node, never null.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a required node that is null"
+              }
+            ]
+          },
+          {
+            "case": "It is a SankeyIdentifier or a StringLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the target of a sankey link as a SankeyLiteral"
+              }
+            ]
+          },
+          {
+            "case": "It is the second field.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a sankey link whose source and target are swapped"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/sankey.md:73e4c22d41f9",
+      "diagrams": ["sankey"],
+      "about": "| `value`  | SankeyLiteral or StringLiteral    | The third field, the value.    ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`value` is a node, never null.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a required node that is null"
+              }
+            ]
+          },
+          {
+            "case": "It is a SankeyLiteral or a StringLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the value of a sankey link as a SankeyIdentifier"
+              }
+            ]
+          },
+          {
+            "case": "It is the third field.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a sankey link whose target and value are swapped"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/sankey.md:aca2923bb185",
+      "diagrams": ["sankey"],
+      "about": "Child fields: `source`, `target`, `value`. Each field is written without quotes\n",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The child fields are `source`, `target`, and `value`, in that order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails child fields that are not in source order"
+              }
+            ]
+          },
+          {
+            "case": "A field in quotes is a StringLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a quoted sankey source as a SankeyIdentifier"
+              }
+            ]
+          },
+          {
+            "case": "A field without quotes is a SankeyIdentifier as an id.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an unquoted sankey source as a StringLiteral"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/sankey.md:daa71f7a49db",
+      "diagrams": ["sankey"],
+      "about": "The id of a node written without quotes: a name that may contain whitespace,\nwhi",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It says what a SankeyIdentifier is; the table and the sentences after it state the conditions."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/sankey.md:41ab38e0d7c1",
+      "diagrams": ["sankey"],
+      "about": "| `name` | string | The field without the whitespace at its ends, as written. |\n",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`name` is the field as written.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a sankey name that is not its written text"
+              }
+            ]
+          },
+          {
+            "case": "It is without the whitespace at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an unquoted sankey field that keeps the space before it"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/sankey.md:87d531f7c68d",
+      "diagrams": ["sankey"],
+      "about": "No child fields. The name holds the spaces between its characters and every\nprin",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "It has no child fields.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a field that the type does not have"
+              }
+            ]
+          },
+          {
+            "case": "The name holds the spaces between its characters.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a sankey name that leaves out the space between its words"
+              }
+            ]
+          },
+          {
+            "case": "A name is read without the spaces at its ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an unquoted sankey field that keeps the space before it"
+              }
+            ]
+          },
+          {
+            "case": "A field of spaces only has the empty name.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a sankey field of spaces only whose name is its spaces"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/sankey.md:86203d7ea33d",
+      "diagrams": ["sankey"],
+      "about": "The value of a link written without quotes.\n\n| Field   | Type   | Meaning       ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It says what a SankeyLiteral is."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/sankey.md:6247e796f7fc",
+      "diagrams": ["sankey"],
+      "about": "| `value` | string | The field without the whitespace at its ends, as written. |",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`value` is the field without the whitespace at its ends, as written.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an unquoted sankey value that keeps the space before it"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/sankey.md:57edd4bf5597",
+      "diagrams": ["sankey"],
+      "about": "No child fields. It is no [NumericLiteral](../ast.md#numericliteral), because\nth",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "It has no child fields.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a field that the type does not have"
+              }
+            ]
+          },
+          {
+            "case": "It is no NumericLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a sankey value as a NumericLiteral"
+              }
+            ]
+          },
+          {
+            "case": "A field of spaces only before another record has the empty value.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a sankey value of spaces only whose value is its spaces"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

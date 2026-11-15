@@ -14077,3 +14077,752 @@ describe("checkTree: the gaps of a packet diagram that no recorded tree holds (a
     },
   ])
 })
+
+/** The IshikawaNode whose text has the value `text`. */
+function ishikawaNode(root: CheckedRoot, text: string): CheckedNode {
+  return nodeOf(
+    root,
+    "IshikawaNode",
+    (node) => (node.text as CheckedNode).value === text,
+  )
+}
+
+/** Moves the IshikawaNode with the text `child` from its parent to the end of the children of the IshikawaNode with the text `parent`. */
+function moveIshikawaNode(child: string, parent: string): InputCase["mutate"] {
+  return (root) => {
+    const node = ishikawaNode(root, child)
+    const from = nodeOf(root, "IshikawaNode", (candidate) =>
+      (candidate.children as CheckedNode[]).includes(node),
+    )
+    setField(
+      from,
+      "children",
+      (from.children as CheckedNode[]).filter((item) => item !== node),
+    )
+    const to = ishikawaNode(root, parent)
+    setField(to, "children", [...(to.children as CheckedNode[]), node])
+  }
+}
+
+/** Sets the field `field` of the IshikawaNode with the text `text` to `value`. */
+function setIshikawaField(
+  text: string,
+  field: string,
+  value: unknown,
+): InputCase["mutate"] {
+  return (root) => {
+    setField(ishikawaNode(root, text), field, value)
+  }
+}
+
+/** Puts first among the children of the IshikawaNode with the text `parent` a leaf whose text is the input at `range`. */
+function ishikawaNodeAt(
+  parent: string,
+  range: readonly [number, number],
+): InputCase["mutate"] {
+  return (root, input) => {
+    const node = ishikawaNode(root, parent)
+    const text = {
+      type: "IshikawaLiteral",
+      value: input.slice(...range),
+      range,
+      loc: locationOf(input, range),
+    }
+    setField(node, "children", [
+      {
+        type: "IshikawaNode",
+        indent: 0,
+        text,
+        children: [],
+        range,
+        loc: locationOf(input, range),
+      },
+      ...(node.children as CheckedNode[]),
+    ])
+  }
+}
+
+describe("checkTree: the nodes of an ishikawa diagram (ast/ishikawa.md)", () => {
+  itFailsEachRecorded("ishikawa", [
+    {
+      name: "fails an ishikawa node whose indentation is not the written one",
+      fixture: "db-indent-first-cause",
+      mutate: setIshikawaField("A", "indent", 5),
+      expected:
+        "IshikawaNode at 15-24: the indent is not the written line whitespace count: 5, not 4",
+    },
+    {
+      name: "fails a cause held as a child of the cause before it at the same indentation",
+      fixture: "db-indent-first-cause",
+      mutate: moveIshikawaNode("C", "A"),
+      expected:
+        "IshikawaNode at 9-30: the children do not follow the Ishikawa first-cause and nearest-smaller-indent parent rule",
+    },
+    {
+      name: "fails two causes of an ishikawa root out of source order",
+      fixture: "db-all-fields",
+      mutate: (root) => {
+        const effect = ishikawaNode(root, "Effect")
+        setField(
+          effect,
+          "children",
+          [...(effect.children as CheckedNode[])].reverse(),
+        )
+      },
+      expected:
+        "IshikawaNode at 46-65: comes before the child node IshikawaNode at 67-86 of IshikawaNode at 38-86, which the child fields list before it",
+    },
+    {
+      name: "fails a repeated ishikawa text held once",
+      fixture: "db-three-definitions",
+      mutate: (root) => {
+        const r = ishikawaNode(root, "R")
+        setField(
+          r,
+          "children",
+          (r.children as CheckedNode[]).filter(
+            (child) => child.range[0] !== 26,
+          ),
+        )
+      },
+      expected: 'RawText at 26-27 of "A": lies in no value node',
+    },
+    {
+      name: "fails the root of an ishikawa diagram as an IshikawaLiteral",
+      fixture: "gram-root-lf",
+      mutate: (root) => {
+        setField(root.body, "root", (root.body.root as CheckedNode).text)
+      },
+      expected:
+        "IshikawaDiagram at 0-13: the field root holds a IshikawaLiteral, not a IshikawaNode",
+    },
+    {
+      name: "fails an ishikawa diagram whose written root is null",
+      fixture: "gram-root-lf",
+      mutate: (root) => {
+        setField(root.body, "root", null)
+      },
+      expected: 'RawText at 9-13 of "Root": lies in no value node',
+    },
+    {
+      name: "fails an ishikawa diagram whose root is its first cause",
+      fixture: "db-all-fields",
+      mutate: (root) => {
+        setField(root.body, "root", ishikawaNode(root, "Cause B"))
+      },
+      expected: 'RawText at 38-44 of "Effect": lies in no value node',
+    },
+    {
+      name: "fails an ishikawa diagram with a beta flag",
+      fixture: "header-beta-only-lf",
+      mutate: (root) => {
+        setField(root.body, "beta", true)
+      },
+      expected:
+        "IshikawaDiagram at 0-13: has the field beta, which its type does not have",
+    },
+    {
+      name: "fails a node for a comment line of an ishikawa diagram",
+      fixture: "gram-preserved-comment-after-root",
+      mutate: ishikawaNodeAt("R", [11, 17]),
+      expected:
+        "IshikawaNode at 11-17: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a node for a blank line of an ishikawa diagram",
+      fixture: "gram-between-spaces-line",
+      mutate: ishikawaNodeAt("A", [15, 18]),
+      expected:
+        "IshikawaNode at 15-18: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a node for a directive of an ishikawa diagram",
+      fixture: "header-lf-directive-eof",
+      mutate: (root, input) => {
+        const range = [9, 23] as const
+        setField(root.body, "root", {
+          type: "IshikawaNode",
+          indent: 0,
+          text: {
+            type: "IshikawaLiteral",
+            value: input.slice(...range),
+            range,
+            loc: locationOf(input, range),
+          },
+          children: [],
+          range,
+          loc: locationOf(input, range),
+        })
+      },
+      expected: "IshikawaNode at 9-23: lies outside IshikawaDiagram at 0-8",
+    },
+    {
+      name: "fails a title line of an ishikawa diagram left out of the nodes",
+      fixture: "db-title-line-is-node",
+      mutate: (root) => {
+        setField(root.body, "root", null)
+      },
+      expected: 'RawText at 9-16 of "title T": lies in no value node',
+    },
+    {
+      name: "fails the frontmatter of an ishikawa diagram left out of the root",
+      fixture: "db-frontmatter-title",
+      mutate: (root) => {
+        setField(root, "frontmatter", null)
+      },
+      expected:
+        "Root.body: does not run from its first token to its last: [33,48], not [0,48]",
+    },
+    {
+      name: "fails an ishikawa diagram that ends before its last descendant",
+      fixture: "db-all-fields",
+      mutate: rangeOf("IshikawaDiagram", [29, 44]),
+      expected: "IshikawaNode at 38-86: lies outside IshikawaDiagram at 29-44",
+    },
+    {
+      name: "fails a rootless ishikawa diagram that ends before its header",
+      fixture: "header-only-lf",
+      mutate: rangeOf("IshikawaDiagram", [0, 4]),
+      expected:
+        "IshikawaDiagram at 0-4: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an ishikawa node whose indentation is negative",
+      fixture: "db-indent-first-cause",
+      mutate: setIshikawaField("R", "indent", -1),
+      expected: "IshikawaNode at 9-30: the indent is not a nonnegative integer",
+    },
+    {
+      name: "fails an ishikawa node whose indentation is not an integer",
+      fixture: "db-indent-first-cause",
+      mutate: setIshikawaField("A", "indent", 4.5),
+      expected:
+        "IshikawaNode at 15-24: the indent is not a nonnegative integer",
+    },
+    {
+      name: "fails the text of an ishikawa node as a StringLiteral",
+      fixture: "gram-root-lf",
+      mutate: remakeChild(
+        "IshikawaNode",
+        "text",
+        "StringLiteral",
+        [],
+        (node) => ({ raw: node.value, closed: true }),
+      ),
+      expected:
+        "IshikawaNode at 9-13: the field text holds a StringLiteral, not a IshikawaLiteral",
+    },
+    {
+      name: "fails the text of an ishikawa node that is empty",
+      fixture: "gram-root-lf",
+      mutate: (root) => {
+        setField(nodeOf(root, "IshikawaLiteral"), "value", "")
+      },
+      expected: "IshikawaLiteral at 9-13: the literal is empty",
+    },
+    {
+      name: "fails the text of an ishikawa node that is not its written text",
+      fixture: "gram-root-lf",
+      mutate: (root) => {
+        setField(nodeOf(root, "IshikawaLiteral"), "value", "Rot")
+      },
+      expected:
+        'IshikawaLiteral at 9-13: value is not its written text: "Rot", not "Root"',
+    },
+    {
+      name: "fails a child of an ishikawa node as an IshikawaLiteral",
+      fixture: "db-indent-first-cause",
+      mutate: (root) => {
+        const r = ishikawaNode(root, "R")
+        const [first, ...rest] = r.children as CheckedNode[]
+        setField(r, "children", [first.text, ...rest])
+      },
+      expected:
+        "IshikawaNode at 9-30: the field children holds a IshikawaLiteral, not a IshikawaNode",
+    },
+    {
+      name: "fails a leaf of an ishikawa diagram with a child it does not have",
+      fixture: "db-indent-first-cause",
+      mutate: (root) => {
+        setField(ishikawaNode(root, "C"), "children", [ishikawaNode(root, "B")])
+      },
+      expected: "IshikawaNode at 23-24: lies outside IshikawaNode at 29-30",
+    },
+    {
+      name: "fails an ishikawa node that ends at its text before its last descendant",
+      fixture: "db-indent-first-cause",
+      mutate: (root, input) => {
+        placeAt(ishikawaNode(root, "R"), input, [9, 10])
+      },
+      expected: "IshikawaNode at 15-24: lies outside IshikawaNode at 9-10",
+    },
+    {
+      name: "fails an ishikawa leaf that runs over the line feed after its text",
+      fixture: "db-indent-first-cause",
+      mutate: (root, input) => {
+        placeAt(ishikawaNode(root, "C"), input, [29, 31])
+      },
+      expected: "IshikawaNode at 29-31: lies outside IshikawaNode at 9-30",
+    },
+    {
+      name: "fails the text of an ishikawa node that holds its indentation",
+      fixture: "db-indent-first-cause",
+      mutate: (root, input) => {
+        const text = ishikawaNode(root, "C").text as CheckedNode
+        placeAt(text, input, [25, 30])
+        setField(text, "value", input.slice(25, 30))
+      },
+      expected: "IshikawaLiteral at 25-30: lies outside IshikawaNode at 29-30",
+    },
+    {
+      name: "fails an ishikawa node indented by a tab whose indentation counts the tab as four",
+      fixture: "db-indent-tab-character",
+      mutate: setIshikawaField("A", "indent", 4),
+      expected:
+        "IshikawaNode at 12-17: the indent is not the written line whitespace count: 4, not 1",
+    },
+    {
+      name: "fails an ishikawa node indented by U+3000 whose indentation leaves it out",
+      fixture: "lex-ideographic-positions",
+      mutate: setIshikawaField("A\u3000B\u3000", "indent", 0),
+      expected:
+        "IshikawaNode at 14-22: the indent is not the written line whitespace count: 0, not 1",
+    },
+    {
+      name: "fails an ishikawa node after a comment that ends at U+2028 whose indentation leaves it out",
+      fixture: "comment-preserved-u2028",
+      mutate: setIshikawaField("A", "indent", 0),
+      expected:
+        "IshikawaNode at 19-20: the indent is not the written line whitespace count: 0, not 1",
+    },
+    {
+      name: "fails an ishikawa node whose indentation counts the directive before it",
+      fixture: "db-indent-around-directives",
+      mutate: setIshikawaField("R", "indent", 18),
+      expected:
+        "IshikawaNode at 27-51: the indent is not the written line whitespace count: 18, not 4",
+    },
+    {
+      name: "fails an ishikawa root on the header line whose indentation leaves out the space after the header",
+      fixture: "header-same-line-root",
+      mutate: setIshikawaField("R", "indent", 0),
+      expected:
+        "IshikawaNode at 9-13: the indent is not the written line whitespace count: 0, not 1",
+    },
+    {
+      name: "fails an ishikawa root deeper than its causes whose indentation is not the written one",
+      fixture: "db-indent-root-deeper",
+      mutate: setIshikawaField("R", "indent", 0),
+      expected:
+        "IshikawaNode at 17-29: the indent is not the written line whitespace count: 0, not 8",
+    },
+    {
+      name: "fails an ishikawa cause at the indentation of the first cause held as a child of a deeper cause",
+      fixture: "db-indent-clamp-below-base",
+      mutate: moveIshikawaNode("B", "A"),
+      expected:
+        "IshikawaNode at 9-22: the children do not follow the Ishikawa first-cause and nearest-smaller-indent parent rule",
+    },
+    {
+      name: "fails an ishikawa cause held as a child of a cause that is not the nearest with a smaller indentation",
+      fixture: "db-indent-nearest-smaller-cause",
+      mutate: moveIshikawaNode("D", "A"),
+      expected:
+        "IshikawaNode at 13-35: the children do not follow the Ishikawa first-cause and nearest-smaller-indent parent rule",
+    },
+    {
+      name: "fails an ishikawa text that leaves out its trailing whitespace",
+      fixture: "gram-root-trailing-space",
+      mutate: (root, input) => {
+        const text = nodeOf(root, "IshikawaLiteral")
+        placeAt(text, input, [9, 10])
+        setField(text, "value", "R")
+      },
+      expected:
+        "RawText at 9-13: ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails an ishikawa text that leaves out its quotes",
+      fixture: "gram-quotes-padding",
+      mutate: (root) => {
+        setField(nodeOf(root, "IshikawaLiteral"), "value", "  R  ")
+      },
+      expected:
+        'IshikawaLiteral at 9-16: value is not its written text: "  R  ", not "\\"  R  \\""',
+    },
+    {
+      name: "fails an ishikawa text that decodes its entities",
+      fixture: "header-root-inline-entity",
+      mutate: (root) => {
+        setField(nodeOf(root, "IshikawaLiteral"), "value", "R#&")
+      },
+      expected:
+        'IshikawaLiteral at 9-19: value is not its written text: "R#&", not "R#35;#amp;"',
+    },
+    {
+      name: "fails an ishikawa text that leaves out the whitespace at its end",
+      fixture: "lex-trailing-ls-ps-whitespace",
+      mutate: (root) => {
+        setField(nodeOf(root, "IshikawaLiteral"), "value", "A")
+      },
+      expected:
+        'IshikawaLiteral at 9-15: value is not its written text: "A", not "A \\t\u00a0\u2028\u2029"',
+    },
+    {
+      name: "fails an ishikawa text that holds the directive inside it",
+      fixture: "directive-root-middle",
+      mutate: (root, input) => {
+        setField(nodeOf(root, "IshikawaLiteral"), "value", input.slice(9, 27))
+      },
+      expected:
+        'IshikawaLiteral at 9-27: value is not its written text: "Ro%%{init: {}}%%ot", not "Root"',
+    },
+    {
+      name: "fails an ishikawa text that holds the semicolon that the line rule ignores",
+      fixture: "lex-root-style-semicolon-padding",
+      mutate: (root, input) => {
+        setField(nodeOf(root, "IshikawaLiteral"), "value", input.slice(9, 29))
+      },
+      expected:
+        'IshikawaLiteral at 9-29: value is not its written text: "style R fill:#abc;  ", not "style R fill:#abc  "',
+    },
+    {
+      name: "fails an ishikawa text that ends before the directive inside it",
+      fixture: "directive-root-middle",
+      mutate: (root, input) => {
+        const text = nodeOf(root, "IshikawaLiteral")
+        placeAt(text, input, [9, 11])
+        setField(text, "value", "Ro")
+      },
+      expected: 'RawText at 25-27 of "ot": lies in no value node',
+    },
+    {
+      name: "fails a numeric-looking ishikawa text as a NumericLiteral",
+      fixture: "db-number-labels",
+      mutate: remakeChild(
+        "IshikawaNode",
+        "text",
+        "NumericLiteral",
+        [],
+        (node) => ({ raw: node.value, value: -0 }),
+      ),
+      expected:
+        "IshikawaNode at 9-52: the field text holds a NumericLiteral, not a IshikawaLiteral",
+    },
+    {
+      name: "fails an ishikawa text of empty quotes as a StringLiteral",
+      fixture: "gram-empty-quotes",
+      mutate: remakeChild(
+        "IshikawaNode",
+        "text",
+        "StringLiteral",
+        [],
+        (node) => ({ raw: node.value, value: "", closed: true }),
+      ),
+      expected:
+        "IshikawaNode at 9-15: the field text holds a StringLiteral, not a IshikawaLiteral",
+    },
+    {
+      name: "fails an ishikawa text with an open quote that has a closed field",
+      fixture: "gram-root-unclosed-quote",
+      mutate: (root) => {
+        setField(nodeOf(root, "IshikawaLiteral"), "closed", false)
+      },
+      expected:
+        "IshikawaLiteral at 9-14: has the field closed, which its type does not have",
+    },
+  ])
+})
+
+describe("checkTree: the nodes of a sankey diagram (ast/sankey.md)", () => {
+  itFailsEachRecorded("sankey", [
+    {
+      name: "fails the body of a sankey diagram as a PieDiagram",
+      fixture: "db-link-basic",
+      mutate: (root) => {
+        setField(root.body, "type", "PieDiagram")
+        setField(root.body, "showData", false)
+        setField(root.body, "textBeforeHeader", [])
+        setField(root.body, "textBeforeShowData", [])
+      },
+      expected:
+        "Root: the diagram type sankey is not one of those of a PieDiagram: pie",
+    },
+    {
+      name: "fails a quoted sankey field that writes its CRLF as LF",
+      fixture: "db-quoted-crlf",
+      mutate: (root) => {
+        const string = nodeOf(root, "StringLiteral")
+        setField(
+          string,
+          "value",
+          (string.value as string).replace("\r\n", "\n"),
+        )
+      },
+      expected:
+        'StringLiteral at 8-14: value is not its written text: "a\\nb", not "a\\r\\nb"',
+    },
+    {
+      name: "fails an unquoted sankey field that keeps the space before it",
+      fixture: "db-fields-trimmed",
+      mutate: (root) => {
+        setField(nodeOf(root, "SankeyIdentifier"), "name", " a")
+      },
+      expected:
+        'SankeyIdentifier at 9-10: name is not its written text without the whitespace at its ends: " a", not "a"',
+    },
+    {
+      name: "fails a sankey field of spaces only whose name is its spaces",
+      fixture: "db-spaces-only-target-id",
+      mutate: (root) => {
+        setField(nthNode(root, "SankeyIdentifier", 1), "name", " ")
+      },
+      expected:
+        'SankeyIdentifier at 9-10: name is not its written text without the whitespace at its ends: " ", not ""',
+    },
+    {
+      name: "fails a quoted sankey value as a SankeyLiteral",
+      fixture: "db-quoted-value",
+      mutate: remakeChild(
+        "SankeyLinkStatement",
+        "value",
+        "SankeyLiteral",
+        ["raw", "closed"],
+        () => ({}),
+      ),
+      expected:
+        'SankeyLiteral at 11-14: value is not its written text without the whitespace at its ends: "1", not "\\"1\\""',
+    },
+    {
+      name: "fails a quoted sankey field whose value is not what lies between its quotes",
+      fixture: "db-quoted-line-feed",
+      mutate: (root) => {
+        setField(nodeOf(root, "StringLiteral"), "value", "a b")
+      },
+      expected:
+        'StringLiteral at 7-12: value is not its written text: "a b", not "a\\nb"',
+    },
+    {
+      name: "fails a sankey link among the statements as a SankeyIdentifier",
+      fixture: "db-link-basic",
+      mutate: (root) => {
+        setField(root.body, "body", [nodeOf(root, "SankeyIdentifier")])
+      },
+      expected:
+        "SankeyDiagram at 0-12: the field body holds a SankeyIdentifier, not a SankeyLinkStatement",
+    },
+    {
+      name: "fails a sankey diagram without its links",
+      fixture: "db-link-basic",
+      mutate: (root) => {
+        setField(root.body, "body", [])
+      },
+      expected: 'RawText at 7-8 of "a": lies in no value node',
+    },
+    {
+      name: "fails a sankey diagram with a header field",
+      fixture: "db-link-basic",
+      mutate: (root) => {
+        setField(root.body, "header", "sankey")
+      },
+      expected:
+        "SankeyDiagram at 0-12: has the field header, which its type does not have",
+    },
+    {
+      name: "fails a `sankey-beta` diagram whose diagram type is `sankey-beta`",
+      fixture: "db-header-beta",
+      mutate: (root) => {
+        setField(root, "diagramType", "sankey-beta")
+      },
+      expected:
+        "Root: the diagram type sankey-beta is not one of those of a SankeyDiagram: sankey",
+    },
+    {
+      name: "fails a sankey link that runs over the line feed after it",
+      fixture: "db-link-basic",
+      mutate: rangeOf("SankeyLinkStatement", [7, 13]),
+      expected:
+        "SankeyLinkStatement at 7-13: lies outside SankeyDiagram at 0-12",
+    },
+    {
+      name: "fails a node for an empty line of a sankey diagram",
+      fixture: "db-blank-lines-between",
+      mutate: (root, input) => {
+        const [first, second] = root.body.body as CheckedNode[]
+        // The empty line between the records, at 15.
+        setField(root.body, "body", [
+          first,
+          { ...first, range: [15, 15], loc: locationOf(input, [15, 15]) },
+          second,
+        ])
+      },
+      expected:
+        "SankeyLinkStatement at 15-15: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the source of a sankey link as a SankeyLiteral",
+      fixture: "db-link-basic",
+      mutate: remakeChild(
+        "SankeyLinkStatement",
+        "source",
+        "SankeyLiteral",
+        ["name"],
+        (node) => ({ value: node.name }),
+      ),
+      expected:
+        "SankeyLinkStatement at 7-12: the field source holds a SankeyLiteral, not a SankeyIdentifier or StringLiteral",
+    },
+    {
+      name: "fails a sankey link without its source",
+      fixture: "db-link-basic",
+      mutate: (root) => {
+        setField(nodeOf(root, "SankeyLinkStatement"), "source", null)
+      },
+      expected:
+        "SankeyLinkStatement at 7-12: the field source is null, not a node",
+    },
+    {
+      name: "fails a sankey link whose source and target are swapped",
+      fixture: "db-link-basic",
+      mutate: (root) => {
+        const link = nodeOf(root, "SankeyLinkStatement")
+        const { source, target } = link
+        setField(link, "source", target)
+        setField(link, "target", source)
+      },
+      expected:
+        "SankeyIdentifier at 7-8: comes before the child node SankeyIdentifier at 9-10 of SankeyLinkStatement at 7-12, which the child fields list before it",
+    },
+    {
+      name: "fails the target of a sankey link as a SankeyLiteral",
+      fixture: "db-link-basic",
+      mutate: remakeChild(
+        "SankeyLinkStatement",
+        "target",
+        "SankeyLiteral",
+        ["name"],
+        (node) => ({ value: node.name }),
+      ),
+      expected:
+        "SankeyLinkStatement at 7-12: the field target holds a SankeyLiteral, not a SankeyIdentifier or StringLiteral",
+    },
+    {
+      name: "fails a sankey link without its target",
+      fixture: "db-link-basic",
+      mutate: (root) => {
+        setField(nodeOf(root, "SankeyLinkStatement"), "target", null)
+      },
+      expected:
+        "SankeyLinkStatement at 7-12: the field target is null, not a node",
+    },
+    {
+      name: "fails the value of a sankey link as a SankeyIdentifier",
+      fixture: "db-link-basic",
+      mutate: remakeChild(
+        "SankeyLinkStatement",
+        "value",
+        "SankeyIdentifier",
+        ["value"],
+        (node) => ({ name: node.value }),
+      ),
+      expected:
+        "SankeyLinkStatement at 7-12: the field value holds a SankeyIdentifier, not a SankeyLiteral or StringLiteral",
+    },
+    {
+      name: "fails a sankey link without its value",
+      fixture: "db-link-basic",
+      mutate: (root) => {
+        setField(nodeOf(root, "SankeyLinkStatement"), "value", null)
+      },
+      expected:
+        "SankeyLinkStatement at 7-12: the field value is null, not a node",
+    },
+    {
+      name: "fails a sankey link whose target and value are swapped",
+      fixture: "db-link-basic",
+      mutate: (root) => {
+        const link = nodeOf(root, "SankeyLinkStatement")
+        const { target, value } = link
+        setField(link, "target", value)
+        setField(link, "value", target)
+      },
+      expected:
+        "SankeyIdentifier at 9-10: comes before the child node SankeyLiteral at 11-12 of SankeyLinkStatement at 7-12, which the child fields list before it",
+    },
+    {
+      name: "fails a quoted sankey source as a SankeyIdentifier",
+      fixture: "db-quoted-and-unquoted-same-id",
+      mutate: remakeChild(
+        "SankeyLinkStatement",
+        "source",
+        "SankeyIdentifier",
+        STRING_FIELDS,
+        (node) => ({ name: node.value }),
+      ),
+      expected:
+        "SankeyIdentifier at 7-10: the tokens of a SankeyIdentifier are not all of the kind RawText: String",
+    },
+    {
+      name: "fails an unquoted sankey source as a StringLiteral",
+      fixture: "db-link-basic",
+      mutate: remakeChild(
+        "SankeyLinkStatement",
+        "source",
+        "StringLiteral",
+        ["name"],
+        (node) => ({ raw: node.name, value: node.name, closed: true }),
+      ),
+      expected:
+        "StringLiteral at 7-8: the tokens of the string are not one String token or StringFragment tokens: RawText",
+    },
+    {
+      name: "fails a sankey name that leaves out the space between its words",
+      fixture: "db-text-with-spaces",
+      mutate: (root) => {
+        setField(nodeOf(root, "SankeyIdentifier"), "name", "ab")
+      },
+      expected:
+        'SankeyIdentifier at 7-10: name is not its written text without the whitespace at its ends: "ab", not "a b"',
+    },
+    {
+      name: "fails a sankey name that is not its written text",
+      fixture: "db-link-basic",
+      mutate: (root) => {
+        setField(nodeOf(root, "SankeyIdentifier"), "name", "x")
+      },
+      expected:
+        'SankeyIdentifier at 7-8: name is not its written text without the whitespace at its ends: "x", not "a"',
+    },
+    {
+      name: "fails an unquoted sankey value that keeps the space before it",
+      fixture: "db-fields-trimmed",
+      mutate: (root) => {
+        setField(nodeOf(root, "SankeyLiteral"), "value", " 1")
+      },
+      expected:
+        'SankeyLiteral at 17-18: value is not its written text without the whitespace at its ends: " 1", not "1"',
+    },
+    {
+      name: "fails a sankey value as a NumericLiteral",
+      fixture: "db-value-exponent",
+      mutate: remakeChild(
+        "SankeyLinkStatement",
+        "value",
+        "NumericLiteral",
+        [],
+        (node) => ({ raw: node.value, value: 1000 }),
+      ),
+      expected:
+        "SankeyLinkStatement at 7-14: the field value holds a NumericLiteral, not a SankeyLiteral or StringLiteral",
+    },
+    {
+      name: "fails a sankey value of spaces only whose value is its spaces",
+      fixture: "db-spaces-only-value",
+      mutate: (root) => {
+        setField(nodeOf(root, "SankeyLiteral"), "value", " ")
+      },
+      expected:
+        'SankeyLiteral at 11-12: value is not its written text without the whitespace at its ends: " ", not ""',
+    },
+  ])
+})

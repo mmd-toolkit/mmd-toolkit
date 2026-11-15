@@ -1,0 +1,301 @@
+{
+  "rows": [
+    {
+      "block": "packages/parser/docs/tokens/ishikawa.md:2107436b3a21",
+      "diagrams": ["ishikawa"],
+      "about": "These tokens supplement [tokens.md](../tokens.md). The nodes are defined in\n[ast",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to tokens.md, the tree document, and the lexical rules of the syntax document."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/ishikawa.md:004bac8edbbb",
+      "diagrams": ["ishikawa"],
+      "about": "| `Keyword` | The selected `ishikawa` or `ishikawa-beta` header |\n| `RawText` | ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The `ishikawa` header is a `Keyword` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the header `ishikawa` as a RawText token"
+              }
+            ]
+          },
+          {
+            "case": "The `ishikawa-beta` header is a `Keyword` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the header `ishikawa-beta` as a RawText token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/ishikawa.md:59532b314123",
+      "diagrams": ["ishikawa"],
+      "about": "| `RawText` | Each complete node text                           |\n\nEach item mak",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A node text is a `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the text of an ishikawa node as a Keyword token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/ishikawa.md:ba024a8ae9cd",
+      "diagrams": ["ishikawa"],
+      "about": "Each item makes one token before common trivia cuts it. Header spelling keeps\nit",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Each item is one token before common trivia cuts it.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the text of an ishikawa node cut into two RawText tokens"
+              }
+            ]
+          },
+          {
+            "case": "The header keeps its case.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an upper-case ishikawa header whose token is in lower case"
+              }
+            ]
+          },
+          {
+            "case": "A beta suffix whose word boundary fails belongs to the node text.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a beta suffix that fails its word boundary held in the header token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/ishikawa.md:997ece332ead",
+      "diagrams": ["ishikawa"],
+      "about": "A node-text token keeps all interior and trailing whitespace, including at EOF,\n",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A node-text token keeps its trailing whitespace.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the token of an ishikawa text without its trailing whitespace"
+              }
+            ]
+          },
+          {
+            "case": "Quotes are part of the `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the quotes of an ishikawa text as a String token"
+              }
+            ]
+          },
+          {
+            "case": "Numbers are part of the `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a numeric-looking ishikawa text as a Numeric token"
+              }
+            ]
+          },
+          {
+            "case": "Unselected semicolons are part of the `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an unselected semicolon of an ishikawa text as a Punctuator token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/ishikawa.md:daa12ab9d0c3",
+      "diagrams": ["ishikawa"],
+      "about": "Indentation, blank-line whitespace, and newline units make no tokens. CR and\nCRL",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Indentation makes no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the indentation of an ishikawa node as a token"
+              }
+            ]
+          },
+          {
+            "case": "Newline units make no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the line feed after an ishikawa node as a token"
+              }
+            ]
+          },
+          {
+            "case": "CR ends node text.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the token of an ishikawa text widened over the CR after it"
+              }
+            ]
+          },
+          {
+            "case": "U+2028 inside node text does not end it.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an ishikawa text cut at the U+2028 inside it"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/ishikawa.md:70fc6ac1d60b",
+      "diagrams": ["ishikawa"],
+      "about": "Directives, common comment regions, and selected ignored semicolons cut node\ntex",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Directives cut node text into `RawText` fragments.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an ishikawa text held in one token over the directive inside it"
+              }
+            ]
+          },
+          {
+            "case": "A whitespace-only fragment next to a cut has its token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the whitespace-only fragment after an ignored semicolon of an ishikawa text without its token"
+              }
+            ]
+          },
+          {
+            "case": "A directive has its `Directive` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the directive inside an ishikawa text as a RawText token"
+              }
+            ]
+          },
+          {
+            "case": "A selected ignored semicolon has its `IgnoredSemicolon` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the semicolon that the line rule ignores in an ishikawa text as a Punctuator token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/ishikawa.md:eff213a5e8e7",
+      "diagrams": ["ishikawa"],
+      "about": "Diagram comments have mark `%%` and end before LF, U+2028, or U+2029, or at EOF.",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Diagram comments have the mark `%%`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an ishikawa comment with the mark `#`"
+              }
+            ]
+          },
+          {
+            "case": "A comment ends before U+2028.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an ishikawa comment that runs over the U+2028 that ends it"
+              }
+            ]
+          },
+          {
+            "case": "Leading whitespace is outside the comment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an ishikawa comment that starts at the whitespace before it"
+              }
+            ]
+          },
+          {
+            "case": "A directive between its marks is inside the comment's range.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an ishikawa comment that starts after the directive between its marks"
+              }
+            ]
+          },
+          {
+            "case": "A `%%` after node text has begun stays in its `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a `%%` after the text of an ishikawa node held as a comment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/ishikawa.md:217f27cdeee4",
+      "diagrams": ["ishikawa"],
+      "about": "A directive inside the selected header keyword rejects the input under the\nshare",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-about-tree",
+        "note": "It says which inputs a directive inside the header or inside node text makes rejected or accepted; whether an input is accepted is no condition of a tree."
+      }
+    }
+  ]
+}

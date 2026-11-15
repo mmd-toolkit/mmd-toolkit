@@ -1123,3 +1123,164 @@ describe("checkTree: the ranges of the nodes of a packet diagram (positions/pack
     },
   ])
 })
+
+describe("checkTree: the ranges of the nodes of an ishikawa diagram (positions/ishikawa.md)", () => {
+  itFailsEachRecorded("ishikawa", [
+    {
+      name: "fails an ishikawa diagram that ends before the trailing whitespace of its last text",
+      fixture: "gram-root-trailing-space",
+      mutate: placeFirst("IshikawaDiagram", [0, 14]),
+      expected:
+        "IshikawaDiagram at 0-14: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an ishikawa diagram that starts at the comments before its header",
+      fixture: "header-before-comments",
+      mutate: placeFirst("IshikawaDiagram", [0, 31]),
+      expected:
+        "IshikawaDiagram at 0-31: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an ishikawa diagram that runs over the comment after its last token",
+      fixture: "gram-last-comment-blank-line",
+      mutate: placeFirst("IshikawaDiagram", [0, 13]),
+      expected:
+        "IshikawaDiagram at 0-13: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a rootless ishikawa-beta diagram that ends before its beta suffix",
+      fixture: "header-beta-only-lf",
+      mutate: placeFirst("IshikawaDiagram", [0, 8]),
+      expected:
+        "IshikawaDiagram at 0-8: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an ishikawa node that starts at its indentation",
+      fixture: "db-indent-first-cause",
+      mutate: (root, input) => {
+        const node = nodesOf(root).find(
+          (candidate) =>
+            candidate.type === "IshikawaNode" && candidate.range[0] === 15,
+        )!
+        setField(node, "range", [11, 24])
+        setField(node, "loc", locationOf(input, [11, 24]))
+      },
+      expected:
+        "IshikawaNode at 11-24: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an ishikawa node whose indentation counts the whitespace of the comment body before it",
+      fixture: "lex-comment-ps-indent-excludes-body-padding",
+      mutate: (root) => {
+        const node = nodesOf(root).find(
+          (candidate) =>
+            candidate.type === "IshikawaNode" && candidate.range[0] === 21,
+        )!
+        setField(node, "indent", 6)
+      },
+      expected:
+        "IshikawaNode at 21-22: the indent is not the written line whitespace count: 6, not 2",
+    },
+    {
+      name: "fails an ishikawa text whose range leaves out its quotes",
+      fixture: "gram-quotes-padding",
+      mutate: (root, input) => {
+        const text = firstNode(root, "IshikawaLiteral")
+        setField(text, "range", [10, 15])
+        setField(text, "loc", locationOf(input, [10, 15]))
+        setField(text, "value", input.slice(10, 15))
+      },
+      expected:
+        "IshikawaLiteral at 10-15: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an ishikawa text without the token of its fragment after the directive inside it",
+      fixture: "directive-root-middle",
+      mutate: (root) => {
+        setField(
+          root,
+          "tokens",
+          root.tokens.filter((candidate) => candidate.range[0] !== 25),
+        )
+      },
+      expected:
+        'offset 25: the character outside the tokens and comments is not whitespace: "o"',
+    },
+    {
+      name: "fails an ishikawa node after a CR whose location stays on the line of the CR",
+      fixture: "lex-cr-lines",
+      mutate: (root) => {
+        const node = nodesOf(root).find(
+          (candidate) =>
+            candidate.type === "IshikawaNode" && candidate.range[0] === 12,
+        )!
+        setField(node, "loc", {
+          start: { line: 2, column: 4 },
+          end: { line: 3, column: 2 },
+        })
+      },
+      expected:
+        'IshikawaNode at 12-17: loc: {"end":{"column":2,"line":3},"start":{"column":4,"line":2}}, not {"end":{"column":3,"line":4},"start":{"column":1,"line":3}}',
+    },
+    {
+      name: "fails an ishikawa text whose location starts a new line at the U+2028 inside it",
+      fixture: "lex-u2028-in-root",
+      mutate: (root) => {
+        const text = firstNode(root, "IshikawaLiteral")
+        setField(text, "loc", {
+          start: text.loc.start,
+          end: { line: 3, column: 5 },
+        })
+      },
+      expected:
+        'IshikawaLiteral at 9-16: loc: {"end":{"column":5,"line":3},"start":{"column":0,"line":2}}, not {"end":{"column":7,"line":2},"start":{"column":0,"line":2}}',
+    },
+  ])
+})
+
+describe("checkTree: the ranges of the nodes of a sankey diagram (positions/sankey.md)", () => {
+  itFailsEachRecorded("sankey", [
+    {
+      name: "fails a sankey diagram that ends before the last token of its last record",
+      fixture: "db-link-basic",
+      mutate: placeFirst("SankeyDiagram", [0, 11]),
+      expected:
+        "SankeyLinkStatement at 7-12: lies outside SankeyDiagram at 0-11",
+    },
+    {
+      name: "fails a sankey link whose range leaves out the closing quote of its value",
+      fixture: "db-quoted-value",
+      mutate: placeFirst("SankeyLinkStatement", [7, 13]),
+      expected:
+        "SankeyLinkStatement at 7-13: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a sankey link that runs over the spaces before its source",
+      fixture: "db-fields-trimmed",
+      mutate: placeFirst("SankeyLinkStatement", [7, 18]),
+      expected:
+        "SankeyLinkStatement at 7-18: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an unquoted sankey field that runs over the space before it",
+      fixture: "db-fields-trimmed",
+      mutate: placeFirst("SankeyIdentifier", [8, 10]),
+      expected:
+        "SankeyIdentifier at 8-10: lies outside SankeyLinkStatement at 9-18",
+    },
+    {
+      name: "fails a sankey field of spaces only whose range is empty",
+      fixture: "db-spaces-only-source-id",
+      mutate: (root, input) => {
+        const node = nodesOf(root).find(
+          (candidate) =>
+            candidate.type === "SankeyIdentifier" && candidate.range[0] === 13,
+        )!
+        setField(node, "range", [13, 13])
+        setField(node, "loc", locationOf(input, [13, 13]))
+      },
+      expected:
+        "SankeyIdentifier at 13-13: does not run from the start of a token to the end of a token",
+    },
+  ])
+})

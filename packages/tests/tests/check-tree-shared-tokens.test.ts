@@ -52404,3 +52404,324 @@ describe("checkTree: the tokens of a packet diagram (tokens/packet.md)", () => {
     },
   ])
 })
+
+describe("checkTree: the tokens of an ishikawa diagram (tokens/ishikawa.md)", () => {
+  itFailsEachRecorded("ishikawa", [
+    {
+      name: "fails the header `ishikawa` as a RawText token",
+      fixture: "gram-root-lf",
+      mutate: retypeTokenAt(0, "RawText"),
+      expected: 'RawText at 0-8 of "ishikawa": lies in no value node',
+    },
+    {
+      name: "fails the header `ishikawa-beta` as a RawText token",
+      fixture: "header-beta-only-lf",
+      mutate: retypeTokenAt(0, "RawText"),
+      expected: 'RawText at 0-13 of "ishikawa-beta": lies in no value node',
+    },
+    {
+      name: "fails the text of an ishikawa node as a Keyword token",
+      fixture: "gram-root-lf",
+      mutate: retypeTokenAt(9, "Keyword"),
+      expected:
+        'Keyword at 9-13 of "Root": lies in the value node IshikawaLiteral at 9-13',
+    },
+    {
+      name: "fails the text of an ishikawa node cut into two RawText tokens",
+      fixture: "gram-root-lf",
+      mutate: (root, input) => {
+        const at = root.tokens.findIndex(
+          (candidate) => candidate.range[0] === 9,
+        )
+        setField(root, "tokens", [
+          ...root.tokens.slice(0, at),
+          tokenOf(input, "RawText", { text: "Ro", from: 9 }),
+          tokenOf(input, "RawText", { text: "ot", from: 11 }),
+          ...root.tokens.slice(at + 1),
+        ])
+      },
+      expected:
+        "IshikawaLiteral at 9-13: the literal token count, split only at common trivia cuts: 2, not 1",
+    },
+    {
+      name: "fails an upper-case ishikawa header whose token is in lower case",
+      fixture: "header-uppercase",
+      mutate: (root) => {
+        setField(root.tokens[0], "value", "ishikawa")
+      },
+      expected: 'Keyword at 0-8: value: "ishikawa", not "ISHIKAWA"',
+    },
+    {
+      name: "fails a beta suffix that fails its word boundary held in the header token",
+      fixture: "header-beta-letter-suffix",
+      mutate: oneTokenOver("Keyword", [0, 14]),
+      expected:
+        "IshikawaNode at 8-16: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the token of an ishikawa text without its trailing whitespace",
+      fixture: "gram-root-trailing-space",
+      mutate: widenTokenAt(9, [9, 10]),
+      expected:
+        "IshikawaLiteral at 9-13: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the quotes of an ishikawa text as a String token",
+      fixture: "gram-quotes-padding",
+      mutate: retypeTokenAt(9, "String"),
+      expected:
+        "IshikawaLiteral at 9-16: the tokens of Ishikawa node text are not all of the kind RawText: String",
+    },
+    {
+      name: "fails a numeric-looking ishikawa text as a Numeric token",
+      fixture: "db-number-labels",
+      mutate: retypeTokenAt(9, "Numeric"),
+      expected:
+        "IshikawaLiteral at 9-11: the tokens of Ishikawa node text are not all of the kind RawText: Numeric",
+    },
+    {
+      name: "fails an unselected semicolon of an ishikawa text as a Punctuator token",
+      fixture: "gram-after-child-semicolon",
+      mutate: (root, input) => {
+        const at = root.tokens.findIndex(
+          (candidate) => candidate.range[0] === 12,
+        )
+        setField(root, "tokens", [
+          ...root.tokens.slice(0, at),
+          tokenOf(input, "RawText", { text: "A", from: 12 }),
+          tokenOf(input, "Punctuator", { text: ";", from: 13 }),
+          ...root.tokens.slice(at + 1),
+        ])
+      },
+      expected:
+        'Punctuator at 13-14: the Punctuator text ";" is none of those of a IshikawaDiagram',
+    },
+    {
+      name: "fails the indentation of an ishikawa node as a token",
+      fixture: "db-indent-first-cause",
+      mutate: oneTokenOver("RawText", [11, 15]),
+      expected:
+        "RawText at 11-15: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails the line feed after an ishikawa node as a token",
+      fixture: "gram-root-lf",
+      mutate: oneTokenOver("RawText", [13, 14]),
+      expected:
+        "RawText at 13-14: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails the token of an ishikawa text widened over the CR after it",
+      fixture: "lex-cr-lines",
+      mutate: widenTokenAt(9, [9, 11]),
+      expected:
+        "RawText at 9-11: ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails an ishikawa text cut at the U+2028 inside it",
+      fixture: "lex-u2028-in-root",
+      mutate: (root, input) => {
+        const at = root.tokens.findIndex(
+          (candidate) => candidate.range[0] === 9,
+        )
+        setField(root, "tokens", [
+          ...root.tokens.slice(0, at),
+          tokenOf(input, "RawText", { text: "R", from: 9 }),
+          tokenOf(input, "RawText", { text: input.slice(10, 16), from: 10 }),
+          ...root.tokens.slice(at + 1),
+        ])
+      },
+      expected:
+        "IshikawaLiteral at 9-16: the literal token count, split only at common trivia cuts: 2, not 1",
+    },
+    {
+      name: "fails an ishikawa text held in one token over the directive inside it",
+      fixture: "directive-root-middle",
+      mutate: (root, input) => {
+        oneTokenOver("RawText", [9, 27])(root, input)
+      },
+      expected: "Directive at 11-25: lies inside RawText at 9-27",
+    },
+    {
+      name: "fails the directive inside an ishikawa text as a RawText token",
+      fixture: "directive-root-middle",
+      mutate: retypeTokenAt(11, "RawText"),
+      expected: "Directive at 11-25: lies inside RawText at 11-25",
+    },
+    {
+      name: "fails the semicolon that the line rule ignores in an ishikawa text as a Punctuator token",
+      fixture: "lex-root-style-semicolon-padding",
+      mutate: retypeTokenAt(26, "Punctuator"),
+      expected:
+        'Punctuator at 26-27: the Punctuator text ";" is none of those of a IshikawaDiagram',
+    },
+    {
+      name: "fails the whitespace-only fragment after an ignored semicolon of an ishikawa text without its token",
+      fixture: "lex-root-style-semicolon-padding",
+      mutate: (root) => {
+        setField(
+          root,
+          "tokens",
+          root.tokens.filter((candidate) => candidate.range[0] !== 27),
+        )
+      },
+      expected:
+        "IshikawaDiagram at 0-29: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an ishikawa comment with the mark `#`",
+      fixture: "gram-preserved-comment-after-root",
+      mutate: (root) => {
+        setField(root.comments[0], "mark", "#")
+      },
+      expected:
+        "Comment at 11-17: the mark # is no mark of the comments of a IshikawaDiagram",
+    },
+    {
+      name: "fails an ishikawa comment that runs over the U+2028 that ends it",
+      fixture: "comment-preserved-u2028",
+      mutate: (root, input) => {
+        const [comment] = root.comments
+        setField(comment, "range", [12, 19])
+        setField(comment, "loc", locationOf(input, [12, 19]))
+        setField(comment, "value", input.slice(14, 19))
+      },
+      expected: "Comment at 12-19: ends with a line terminator",
+    },
+    {
+      name: "fails an ishikawa comment that starts at the whitespace before it",
+      fixture: "comment-preserved-u2028",
+      mutate: (root, input) => {
+        const [comment] = root.comments
+        setField(comment, "range", [11, 18])
+        setField(comment, "loc", locationOf(input, [11, 18]))
+      },
+      expected:
+        'Comment at 11-18: value of a diagram comment: "{}%%", not "%{}%%"',
+    },
+    {
+      name: "fails an ishikawa comment that starts after the directive between its marks",
+      fixture: "comment-directive-between-marks",
+      mutate: (root, input) => {
+        const [comment] = root.comments
+        setField(comment, "range", [27, 30])
+        setField(comment, "loc", locationOf(input, [27, 30]))
+      },
+      expected:
+        'offset 12: the character outside the tokens and comments is not whitespace: "%"',
+    },
+    {
+      name: "fails a `%%` after the text of an ishikawa node held as a comment",
+      fixture: "comment-root-inline-glued",
+      mutate: (root, input) => {
+        setField(root, "comments", [
+          commentOf(input, "%%", { text: "%% tail", from: 10 }),
+        ])
+        widenTokenAt(9, [9, 10])(root, input)
+      },
+      expected:
+        "IshikawaLiteral at 9-17: does not run from the start of a token to the end of a token",
+    },
+  ])
+})
+
+describe("checkTree: the tokens of a sankey diagram (tokens/sankey.md)", () => {
+  itFailsEachRecorded("sankey", [
+    {
+      name: "fails a sankey field without its token",
+      fixture: "db-link-basic",
+      mutate: (root) => {
+        setField(
+          root,
+          "tokens",
+          root.tokens.filter((candidate) => candidate.range[0] !== 9),
+        )
+      },
+      expected:
+        'offset 9: the character outside the tokens and comments is not whitespace: "b"',
+    },
+    {
+      name: "fails the header `sankey` as a RawText token",
+      fixture: "db-link-basic",
+      mutate: retypeTokenAt(0, "RawText"),
+      expected:
+        'RawText at 0-6 of "sankey" in SankeyDiagram at 0-12: the kind of a token that the node writes itself: "RawText", not "Keyword"',
+    },
+    {
+      name: "fails the header `sankey-beta` as a RawText token",
+      fixture: "db-header-beta",
+      mutate: retypeTokenAt(0, "RawText"),
+      expected:
+        'RawText at 0-11 of "sankey-beta" in SankeyDiagram at 0-17: the kind of a token that the node writes itself: "RawText", not "Keyword"',
+    },
+    {
+      name: "fails an unquoted sankey id as a Keyword token",
+      fixture: "db-link-basic",
+      mutate: retypeTokenAt(7, "Keyword"),
+      expected:
+        'Keyword at 7-8 of "a": lies in the value node SankeyIdentifier at 7-8',
+    },
+    {
+      name: "fails an unquoted sankey id as an Identifier token",
+      fixture: "db-text-with-spaces",
+      mutate: retypeTokenAt(7, "Identifier"),
+      expected:
+        "SankeyIdentifier at 7-10: the tokens of a SankeyIdentifier are not all of the kind RawText: Identifier",
+    },
+    {
+      name: "fails an unquoted sankey value as a Numeric token",
+      fixture: "db-value-exponent",
+      mutate: retypeTokenAt(11, "Numeric"),
+      expected:
+        "SankeyLiteral at 11-14: the tokens of a SankeyLiteral are not all of the kind RawText: Numeric",
+    },
+    {
+      name: "fails a quoted sankey field as a RawText token",
+      fixture: "db-quoted-value",
+      mutate: retypeTokenAt(11, "RawText"),
+      expected:
+        "StringLiteral at 11-14: the tokens of the string are not one String token or StringFragment tokens: RawText",
+    },
+    {
+      name: "fails the comma of a sankey record as a Keyword token",
+      fixture: "db-link-basic",
+      mutate: retypeTokenAt(8, "Keyword"),
+      expected:
+        'Keyword at 8-9 of "," in SankeyLinkStatement at 7-12: the kind of a token that the node writes itself: "Keyword", not "Punctuator"',
+    },
+    {
+      name: "fails the line feed after a sankey record as a token",
+      fixture: "db-link-basic",
+      mutate: oneTokenOver("RawText", [12, 13]),
+      expected:
+        "RawText at 12-13: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails the token of an unquoted sankey field widened over the space before it",
+      fixture: "db-fields-trimmed",
+      mutate: widenTokenAt(9, [8, 10]),
+      expected:
+        "RawText at 8-10: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails a sankey field of spaces only without its token",
+      fixture: "db-spaces-only-target-id",
+      mutate: (root) => {
+        setField(
+          root,
+          "tokens",
+          root.tokens.filter((candidate) => candidate.range[0] !== 9),
+        )
+      },
+      expected:
+        "SankeyIdentifier at 9-10: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the token of a quoted sankey field that ends at the line feed inside it",
+      fixture: "db-quoted-line-feed",
+      mutate: widenTokenAt(7, [7, 9]),
+      expected:
+        'offset 10: the character outside the tokens and comments is not whitespace: "b"',
+    },
+  ])
+})

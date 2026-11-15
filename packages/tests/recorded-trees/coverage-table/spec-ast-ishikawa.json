@@ -1,0 +1,626 @@
+{
+  "rows": [
+    {
+      "block": "packages/spec/docs/ast/ishikawa.md:c2d06c5eb43a",
+      "diagrams": ["ishikawa"],
+      "about": "This document defines the tree for `ishikawa`. Shared parts are in\n[ast.md](../a",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It introduces the tree document and points to ast.md, the syntax document, and the Db summary."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/ishikawa.md:4df05f6e2007",
+      "diagrams": ["ishikawa"],
+      "about": "The body is an IshikawaDiagram containing a nested tree, with each node's\nwritte",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Each node keeps its written indentation.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa node whose indentation is not the written one"
+              }
+            ]
+          },
+          {
+            "case": "The nesting follows the parent rule of ishikawa.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a cause held as a child of the cause before it at the same indentation"
+              }
+            ]
+          },
+          {
+            "case": "Siblings stay in source order.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails two causes of an ishikawa root out of source order"
+              }
+            ]
+          },
+          {
+            "case": "Repeated text stays separate.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a repeated ishikawa text held once"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/ishikawa.md:c0b259ebe5ae",
+      "diagrams": ["ishikawa"],
+      "about": "| `root` | IshikawaNode or null | The first node, or null when no node is writte",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`root` is an IshikawaNode or null.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the root of an ishikawa diagram as an IshikawaLiteral"
+              }
+            ]
+          },
+          {
+            "case": "It is the first node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa diagram whose root is its first cause"
+              }
+            ]
+          },
+          {
+            "case": "It is null only when no node is written.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa diagram whose written root is null"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/ishikawa.md:1045d2f66687",
+      "diagrams": ["ishikawa"],
+      "about": "Child fields: `root`. The header has no node or beta flag. Blank lines,\ncomments",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The child field is `root`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a child field whose value is a primitive instead of a child node"
+              }
+            ]
+          },
+          {
+            "case": "The header has no node or beta flag.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa diagram with a beta flag"
+              }
+            ]
+          },
+          {
+            "case": "Blank lines make no diagram-specific node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a node for a blank line of an ishikawa diagram"
+              }
+            ]
+          },
+          {
+            "case": "Comments make no diagram-specific node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a node for a comment line of an ishikawa diagram"
+              }
+            ]
+          },
+          {
+            "case": "Directives make no diagram-specific node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a node for a directive of an ishikawa diagram"
+              }
+            ]
+          },
+          {
+            "case": "Title-looking text is a node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a title line of an ishikawa diagram left out of the nodes"
+              }
+            ]
+          },
+          {
+            "case": "The frontmatter stays on the shared root.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the frontmatter of an ishikawa diagram left out of the root"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/ishikawa.md:36efa9004695",
+      "diagrams": ["ishikawa"],
+      "about": "Its range covers the header and the diagram body, including all descendant\nnodes",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The range covers the header and all descendant nodes.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa diagram that ends before its last descendant"
+              }
+            ]
+          },
+          {
+            "case": "A rootless diagram still covers its header.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a rootless ishikawa diagram that ends before its header"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/ishikawa.md:458045010db3",
+      "diagrams": ["ishikawa"],
+      "about": "| `indent`   | integer              | The nonnegative count of preceding line wh",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`indent` is a nonnegative integer.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa node whose indentation is negative"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa node whose indentation is not an integer"
+              }
+            ]
+          },
+          {
+            "case": "It is the count of the line whitespace before the node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa node whose indentation is not the written one"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/ishikawa.md:2b0da6420a29",
+      "diagrams": ["ishikawa"],
+      "about": "| `text`     | IshikawaLiteral      | The nonempty written node text.           ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`text` is an IshikawaLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the text of an ishikawa node as a StringLiteral"
+              }
+            ]
+          },
+          {
+            "case": "It is nonempty.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the text of an ishikawa node that is empty"
+              }
+            ]
+          },
+          {
+            "case": "It is the written node text.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the text of an ishikawa node that is not its written text"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/ishikawa.md:97f736b8cc34",
+      "diagrams": ["ishikawa"],
+      "about": "| `children` | list of IshikawaNode | Its children, in source order.            ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`children` is a list of nodes.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a list that is a string, and a value of another type"
+              }
+            ]
+          },
+          {
+            "case": "Each child is an IshikawaNode.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a child of an ishikawa node as an IshikawaLiteral"
+              }
+            ]
+          },
+          {
+            "case": "The children are in source order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails a list that is not in source order"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/ishikawa.md:d55a5abf5672",
+      "diagrams": ["ishikawa"],
+      "about": "Child fields: `text`, `children`. `children` is empty when the node has no\nchild",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The child fields are `text` and `children`, in that order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails child fields that are not in source order"
+              }
+            ]
+          },
+          {
+            "case": "`children` is empty when the node has no children.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a leaf of an ishikawa diagram with a child it does not have"
+              }
+            ]
+          },
+          {
+            "case": "The node covers its text through its last descendant.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa node that ends at its text before its last descendant"
+              }
+            ]
+          },
+          {
+            "case": "A leaf covers just its text.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa leaf that runs over the line feed after its text"
+              }
+            ]
+          },
+          {
+            "case": "The leading indentation is whitespace, not text.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the text of an ishikawa node that holds its indentation"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/ishikawa.md:d92f0b7856e4",
+      "diagrams": ["ishikawa"],
+      "about": "`indent` counts every line whitespace character as one, including tab, U+00A0,\nU",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A tab counts as one.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa node indented by a tab whose indentation counts the tab as four"
+              }
+            ]
+          },
+          {
+            "case": "U+3000 counts as one.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa node indented by U+3000 whose indentation leaves it out"
+              }
+            ]
+          },
+          {
+            "case": "The U+2028 that ends a diagram comment counts as one.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa node after a comment that ends at U+2028 whose indentation leaves it out"
+              }
+            ]
+          },
+          {
+            "case": "Directives are not counted.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa node whose indentation counts the directive before it"
+              }
+            ]
+          },
+          {
+            "case": "On the header line the whitespace after the header is counted.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa root on the header line whose indentation leaves out the space after the header"
+              }
+            ]
+          },
+          {
+            "case": "The root's indentation is kept.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa root deeper than its causes whose indentation is not the written one"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/ishikawa.md:e2cd64149ecf",
+      "diagrams": ["ishikawa"],
+      "about": "The first cause is a root child. A later node whose indentation is at most the\nf",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A later node at most as indented as the first cause is a root child.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa cause at the indentation of the first cause held as a child of a deeper cause"
+              }
+            ]
+          },
+          {
+            "case": "Otherwise its parent is the nearest preceding cause with a smaller indentation.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa cause held as a child of a cause that is not the nearest with a smaller indentation"
+              }
+            ]
+          },
+          {
+            "case": "The first cause is a root child.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a cause held as a child of the cause before it at the same indentation"
+              }
+            ]
+          },
+          {
+            "case": "No inferred indentation replaces `indent`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa node whose indentation is not the written one"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/ishikawa.md:bdcb32552d73",
+      "diagrams": ["ishikawa"],
+      "about": "| `value` | string | The node text as written. |\n\nNo child fields. The range run",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`value` is the node text as written.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the text of an ishikawa node that is not its written text"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/ishikawa.md:51e6915d3d25",
+      "diagrams": ["ishikawa"],
+      "about": "No child fields. The range runs from the first to the last character of node\ntex",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "It has no child fields.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a field that the type does not have"
+              }
+            ]
+          },
+          {
+            "case": "The range runs to the last character of the node text, trailing whitespace included.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa text that leaves out its trailing whitespace"
+              }
+            ]
+          },
+          {
+            "case": "Quotes stay written.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa text that leaves out its quotes"
+              }
+            ]
+          },
+          {
+            "case": "Entities stay written.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa text that decodes its entities"
+              }
+            ]
+          },
+          {
+            "case": "Trailing whitespace stays written.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa text that leaves out the whitespace at its end"
+              }
+            ]
+          },
+          {
+            "case": "Directives are left out of the value.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa text that holds the directive inside it"
+              }
+            ]
+          },
+          {
+            "case": "Selected ignored semicolons are left out of the value.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa text that holds the semicolon that the line rule ignores"
+              }
+            ]
+          },
+          {
+            "case": "The range can contain the regions that the value leaves out.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa text that ends before the directive inside it"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/ishikawa.md:395ef542cca3",
+      "diagrams": ["ishikawa"],
+      "about": "The value is never empty. Numeric-looking text is also IshikawaLiteral, as are\ne",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The value is never empty.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the text of an ishikawa node that is empty"
+              }
+            ]
+          },
+          {
+            "case": "Numeric-looking text is an IshikawaLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a numeric-looking ishikawa text as a NumericLiteral"
+              }
+            ]
+          },
+          {
+            "case": "Empty quote spellings are IshikawaLiterals.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa text of empty quotes as a StringLiteral"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/ishikawa.md:db321e3321a7",
+      "diagrams": ["ishikawa"],
+      "about": "Quotes are content, not delimiters, so a missing closing quote needs no `closed`",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An IshikawaLiteral has no `closed` field.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ishikawa text with an open quote that has a closed field"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
