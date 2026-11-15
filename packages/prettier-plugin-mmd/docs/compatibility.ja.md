@@ -696,8 +696,7 @@ ER 図のスタイルは、`;` といっしょに消す U+2028 と U+2029 も除
 を参照してください。
 
 末尾にあるほかの種類の空白（ノーブレークスペース、U+3000、垂直タブ、
-バイト順マーク）は、なくすと mermaid.js が違う図を描く所では取り除かず、
-その行を書かれたままにします。
+バイト順マーク）は、なくすと mermaid.js が違う図を描く所では取り除きません。
 CSS は空白、タブ、改ページを空白として読みますが、これらの文字は読みません。
 mermaid.js は、図種によって、それらを最後のスタイルの値に残します。
 文字のあるテキストとないテキストを、これらの文字と改ページのそれぞれについて、
@@ -712,8 +711,14 @@ ER 図の `classDef` の垂直タブと改ページです。
 [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
 これらの文は、その文字を残します。
-class 図、flowchart、treemap の改ページは、CSS で空白なので、図が同じで、
-例外ではありません。
+class 図、flowchart、agentflow 図は、
+その文字で終わる行を書かれたまま印字します。
+ER 図は、垂直タブと改ページで終わる行について同じです。
+treemap は、`classDef` のスタイルをほかの所と同じように印字し、
+その文字をスタイルの後に残します。
+行末の改ページは、class 図、flowchart、agentflow 図では、CSS で空白なので、
+図が同じで、例外ではありません。
+空白やタブと同じく取り除きます。
 block 図、state 図の `style` と `classDef` と、agentflow 図の `style` は、
 その文字がなくても図が同じなので、取り除きます。
 requirement 図、use case 図、Venn 図、象限チャートは、
@@ -721,6 +726,8 @@ requirement 図、use case 図、Venn 図、象限チャートは、
 mermaid.js が拒否するほかのテキストと同じく、文字を取り除きます。
 
 [test: keeps whitespace other than a space and a tab at the end of a style]
+[test: keeps a vertical tab and a form feed at the end of the classDef of an ER diagram]
+[test: leaves out a form feed at the end of a style that CSS reads as whitespace]
 
 mermaid.js の line rule は、`style` と `classDef` の行の最後の `;` を取り除き、
 指令も取り除きます。
@@ -728,9 +735,18 @@ mermaid.js の line rule は、`style` と `classDef` の行の最後の `;` を
 そのため、そうした `;` の後や指令の後の文字も、最後のスタイルの末尾にあります。
 `style A fill:#f00;` の後にノーブレークスペースがある形と、
 `style A fill:red %%{init: {}}%%` の後にそれがある形は、
-上と同じ文で書かれたまま残し、そこにある空白とタブは落とします。
+上と同じ文で書かれたまま残します。
+そうした `;` や指令の後の空白とタブは落としますが、
+行が書かれたまま残るときは別です。
+書かれたまま残るのは、class 図、flowchart、agentflow 図で上の文字を含む行、
+treemap でその文字が `;` の後にある行、
+残る別の `;` を含む行です（[`;` を含む行](#-を含む行)を参照）。
+treemap は、`classDef` の末尾にある指令の後の空白も残します。
 
 [test: keeps the whitespace after a `;` and after a directive that the line rule removes]
+[test: keeps the whitespace after the character in a line that stays as written]
+[test: keeps the whitespace after the last `;` of a line that holds another `;` that stays]
+[test: keeps the whitespace after a directive at the end of the classDef of a treemap]
 
 この末尾の形は、図種ごとに、その図種で対象にする版で描きました。
 対象は、class 図と flowchart の `style`、
@@ -812,15 +828,18 @@ actor に付けた `classDef c stroke:#d33,fill:#fee` と
 それに関係に付けた `classDef` では、画素が同じで、
 path の `style` 属性の `:` と `;` の前後の空白を除いた SVG も同じでした。
 
-treemap の `classDef` は、スタイルの末尾の空白、タブ、改ページを落とします。
-`classDef zz color:red  ` は `classDef zz color:red` と印字します。
+treemap の `classDef` は、スタイルの末尾の空白とタブと、
+消す `;` の前の改ページを落とします。
+`classDef zz color:red  ` は `classDef zz color: red` と印字します。
 mermaid.js はそれらを Db に残しますが、同じ図を描きます。
 クラスをノードに付けて描いたところ、画素は同じでした。
 CSS が空白として読まない文字は残します。
 [スタイルの末尾の空白](#スタイルの末尾の空白)を参照してください。
 
+[fixture: treemap/styles/trailing]
 [fixture: treemap/styles/trailing-before-semicolon]
 [fixture: treemap/trailing-whitespace/style-content]
+[test: treemap style terminators dropped with a form feed, a space, and a tab]
 
 番号を指定した `linkStyle` は、`,` の後のスタイルが空白で始まるときに、
 描かれる図が変わります。
@@ -1970,8 +1989,14 @@ Prettier 3.9.9 で、以下の各値を `fill: <値>` として整形し、
 そのため、その色は書かれたまま残します。
 文を終える `;` は整形ツールが除くので、その前の色は小文字で印字します。
 色に接するディレクティブ（`fill:#ABCDEF%%{init: {}}%%`）は、
-mermaid.js が取り除いた後で、その前の語を後の語と結ぶことがあるので、
-その色も書かれたまま残します。
+mermaid.js が取り除くので、色は残った語になります。
+ディレクティブの後に空白、`,`、文を終える `;` だけが続くとき、
+後に何も続かないとき、ディレクティブの後の 16 進数字で色が長くなるときは、
+小文字で印字します。
+`fill:#ABC%%{init: {}}%%F` は `#ABCF` なので、
+`#abc%%{init: {}}%%f` と印字します。
+ディレクティブが色でない語と結ぶときは、書かれたまま残します。
+`fill:#ABC%%{init: {}}%%x` は `#ABCx` です。
 ER 図と requirement 図では、スタイルのテキストを空白なしで読みます。
 ER 図は空白、タブ、改行を落とし、行の規則が無視する `;` の次の行もつなぎます。
 requirement 図は空白を落とします。
@@ -2008,6 +2033,8 @@ U+3000、垂直タブ、ER 図と requirement 図以外では、CSS が空白と
 [fixture: flowchart/colors/color-before-the-final-semicolon]
 [fixture: flowchart/colors/colors-before-a-semicolon-as-written]
 [fixture: flowchart/colors/colors-next-to-comments-and-directives]
+[fixture: flowchart/colors/colors-touching-a-directive]
+[fixture: treemap/colors/colors-touching-a-directive]
 [fixture: class/colors/words-that-are-not-colors-as-written]
 [fixture: state/colors/words-that-are-not-colors-as-written]
 [fixture: er/colors/words-that-are-not-colors-as-written]

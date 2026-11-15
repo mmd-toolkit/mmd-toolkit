@@ -654,38 +654,53 @@ U+2028 and U+2029 that the formatter drops with a `;` (see
 
 Whitespace of another kind at the end (a no-break space, U+3000, a vertical tab,
 a byte order mark) is not removed where mermaid.js draws another figure without
-it: the line stays as written. CSS reads a space, a tab, and a form feed as
-whitespace, but not these characters, and mermaid.js keeps them in the value of
-the last style in some diagram types. The texts with and without each of these
-characters and a form feed were drawn in Chromium by the versions that count for
-each diagram type, for the `style`, `classDef`, and `linkStyle` of each diagram
-type that has them. The figure differs, in the pinned version and in others that
-count, for the `style` of a class diagram, for the `classDef` of a class diagram
-that stands after its class, for the `linkStyle` of a flowchart and of an
-agentflow diagram, for the `classDef` of a flowchart, of an agentflow diagram,
-and of a treemap, and for a vertical tab and a form feed in the `classDef` of an
-ER diagram. It differs in another version that counts for the `style` of a
-flowchart (see
+it. CSS reads a space, a tab, and a form feed as whitespace, but not these
+characters, and mermaid.js keeps them in the value of the last style in some
+diagram types. The texts with and without each of these characters and a form
+feed were drawn in Chromium by the versions that count for each diagram type,
+for the `style`, `classDef`, and `linkStyle` of each diagram type that has them.
+The figure differs, in the pinned version and in others that count, for the
+`style` of a class diagram, for the `classDef` of a class diagram that stands
+after its class, for the `linkStyle` of a flowchart and of an agentflow diagram,
+for the `classDef` of a flowchart, of an agentflow diagram, and of a treemap,
+and for a vertical tab and a form feed in the `classDef` of an ER diagram. It
+differs in another version that counts for the `style` of a flowchart (see
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
-These statements keep the character. A form feed is no exception in a class
-diagram, a flowchart, or a treemap, where it is whitespace in CSS and the figure
-is the same. The figure is the same without the character for a block diagram, a
-state diagram, and the `style` of an agentflow diagram, and a requirement, a use
-case, a Venn diagram, and a quadrant chart reject the text with the character
-and accept the text without it, so there the character is removed, as the
-formatter formats other text that mermaid.js rejects.
+These statements keep the character: a class diagram, a flowchart, and an
+agentflow diagram print a line that ends in it as written, an ER diagram does so
+for a vertical tab and a form feed, and a treemap prints the styles of a
+`classDef` as it does elsewhere, with the character after them. A form feed at
+the end of a line is no exception in a class diagram, a flowchart, or an
+agentflow diagram, where it is whitespace in CSS and the figure is the same: it
+is left out like a space or a tab. The figure is the same without the character
+for a block diagram, a state diagram, and the `style` of an agentflow diagram,
+and a requirement, a use case, a Venn diagram, and a quadrant chart reject the
+text with the character and accept the text without it, so there the character
+is removed, as the formatter formats other text that mermaid.js rejects.
 
 [test: keeps whitespace other than a space and a tab at the end of a style]
+[test: keeps a vertical tab and a form feed at the end of the classDef of an ER
+diagram] [test: leaves out a form feed at the end of a style that CSS reads as
+whitespace]
 
 The line rule of mermaid.js removes the last `;` of a `style` or `classDef` line
 (see [Lines that hold a `;`](#lines-that-hold-a-)), and mermaid.js removes a
 directive too, so a character after such a `;` or after a directive is at the
 end of the last style as well: `style A fill:#f00;` followed by a no-break
 space, and `style A fill:red %%{init: {}}%%` followed by one, are kept as
-written in the same statements as above, and a space or a tab there is left out.
+written in the same statements as above. A space or a tab after such a `;` or
+directive is left out, except where the line stays as written: the line that
+holds one of the characters above in a class diagram, a flowchart, or an
+agentflow diagram, in a treemap where the character follows a `;`, and the line
+that holds another `;` that stays (see
+[Lines that hold a `;`](#lines-that-hold-a-)). A treemap also keeps the
+whitespace after a directive at the end of a `classDef`.
 
 [test: keeps the whitespace after a `;` and after a directive that the line rule
-removes]
+removes] [test: keeps the whitespace after the character in a line that stays as
+written] [test: keeps the whitespace after the last `;` of a line that holds
+another `;` that stays] [test: keeps the whitespace after a directive at the end
+of the classDef of a treemap]
 
 The endings were drawn by the versions that count for each diagram type, for the
 `style` of a class diagram and of a flowchart, the `classDef` of a class
@@ -761,15 +776,17 @@ the same. For a relationship (`style e1 stroke-width:3px,fill:none` and
 pixels were the same, and so was the SVG without the whitespace around `:` and
 `;` in the `style` attribute of its path.
 
-A `classDef` in a treemap drops the spaces, tabs, and form feeds at the end of
-its styles: `classDef zz color:red  ` is printed `classDef zz color:red`.
-mermaid.js keeps them in the Db and draws the same figure: the pixels were the
-same with the class put on a node. A character that CSS does not read as
-whitespace stays (see
+A `classDef` in a treemap drops the spaces and tabs at the end of its styles,
+and the form feeds before a `;` that it drops: `classDef zz color:red  ` is
+printed `classDef zz color: red`. mermaid.js keeps them in the Db and draws the
+same figure: the pixels were the same with the class put on a node. A character
+that CSS does not read as whitespace stays (see
 [Whitespace at the end of a style](#whitespace-at-the-end-of-a-style)).
 
-[fixture: treemap/styles/trailing-before-semicolon] [fixture:
-treemap/trailing-whitespace/style-content]
+[fixture: treemap/styles/trailing] [fixture:
+treemap/styles/trailing-before-semicolon] [fixture:
+treemap/trailing-whitespace/style-content] [test: treemap style terminators
+dropped with a form feed, a space, and a tab]
 
 A `linkStyle` with link numbers is drawn differently where a style after a `,`
 starts with whitespace.
@@ -1861,22 +1878,26 @@ an entity, or joins it to the word after the `;`
 [`style` and `classDef` lines](../../spec/docs/common.md#style-and-classdef-lines)),
 so it stays; the `;` that ends the statement is dropped by the formatter, and
 the color before it is printed in lower case. A directive that touches the color
-(`fill:#ABCDEF%%{init: {}}%%`) can join the word before it to the word after it
-once mermaid.js has taken it away, so that color stays as written too. In an ER
-diagram and in a requirement diagram the text of a style is read without its
-whitespace (an ER diagram drops spaces, tabs, and line feeds, and so joins the
-line that follows a `;` that the line rule ignores; a requirement diagram drops
-spaces), so a color that more characters follow after whitespace is a word that
-they touch: `style A fill:#F9F ab` is the text `fill:#F9Fab`, whose `#F9Fab` is
-no color, and stays `fill: #F9F ab`, and `style A fill:#F9F stroke:#ABC` is
-printed `fill: #F9F stroke:#abc`. In every diagram type a character that the
-text of the style keeps after a color (a U+2028, a U+2029, a U+00A0, a U+3000, a
-vertical tab, and in the other types every whitespace character that is no
-space, tab, or form feed, the three that CSS reads as whitespace) makes it a
-word that the character touches, and the color stays, except where the printer
-removes that character at the end of the statement: the color then ends the
-printed text and is printed in lower case at once, so that a second formatting
-changes nothing.
+(`fill:#ABCDEF%%{init: {}}%%`) is taken away by mermaid.js, so the color is the
+word that is left: it is printed in lower case where nothing but whitespace, a
+`,`, or the `;` that ends the statement follows the directive, and where a
+hexadecimal digit after the directive makes it a longer color
+(`fill:#ABC%%{init: {}}%%F` is `#ABCF` and is printed `#abc%%{init: {}}%%f`); it
+stays as written where the directive joins it to a word that is no color
+(`fill:#ABC%%{init: {}}%%x` is `#ABCx`). In an ER diagram and in a requirement
+diagram the text of a style is read without its whitespace (an ER diagram drops
+spaces, tabs, and line feeds, and so joins the line that follows a `;` that the
+line rule ignores; a requirement diagram drops spaces), so a color that more
+characters follow after whitespace is a word that they touch:
+`style A fill:#F9F ab` is the text `fill:#F9Fab`, whose `#F9Fab` is no color,
+and stays `fill: #F9F ab`, and `style A fill:#F9F stroke:#ABC` is printed
+`fill: #F9F stroke:#abc`. In every diagram type a character that the text of the
+style keeps after a color (a U+2028, a U+2029, a U+00A0, a U+3000, a vertical
+tab, and in the other types every whitespace character that is no space, tab, or
+form feed, the three that CSS reads as whitespace) makes it a word that the
+character touches, and the color stays, except where the printer removes that
+character at the end of the statement: the color then ends the printed text and
+is printed in lower case at once, so that a second formatting changes nothing.
 
 [fixture: er/colors/color-words-as-read] [fixture:
 er/colors/color-word-over-ignored-semicolon] [fixture:
@@ -1895,6 +1916,8 @@ padding] [fixture: flowchart/colors/words-that-are-not-colors-as-written]
 [fixture: flowchart/colors/color-before-the-final-semicolon] [fixture:
 flowchart/colors/colors-before-a-semicolon-as-written] [fixture:
 flowchart/colors/colors-next-to-comments-and-directives] [fixture:
+flowchart/colors/colors-touching-a-directive] [fixture:
+treemap/colors/colors-touching-a-directive] [fixture:
 class/colors/words-that-are-not-colors-as-written] [fixture:
 state/colors/words-that-are-not-colors-as-written] [fixture:
 er/colors/words-that-are-not-colors-as-written] [fixture:

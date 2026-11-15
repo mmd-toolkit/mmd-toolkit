@@ -25,8 +25,8 @@ const unusualWhitespace: readonly (readonly [string, string])[] = [
 /** A statement, as written with `@` at its end, and as printed when `@` stays. */
 type Case = readonly [title: string, input: string, kept: string]
 
-/** The statements that keep a no-break space, U+3000, a vertical tab, and a byte order mark. */
-const keepsCharacters: readonly Case[] = [
+/** The statements that keep a no-break space, U+3000, a vertical tab, and a byte order mark, and print the line as written. */
+const printsLineAsWritten: readonly Case[] = [
   [
     "the style of a class diagram",
     "classDiagram\nclass A\nstyle A fill:red@\n",
@@ -67,6 +67,10 @@ const keepsCharacters: readonly Case[] = [
     "agentflow-beta TB\nflow F\nA\nB\nA --> B\nend\nlinkStyle 0 stroke:#f00@\n",
     "agentflow-beta TB\n  flow F\n    A\n    B\n    A --> B\n  end\n  linkStyle 0 stroke:#f00@\n",
   ],
+]
+
+/** The classDef of a treemap: its styles are printed as elsewhere, and the character stays after them. */
+const keepsCharactersInTreemap: readonly Case[] = [
   [
     "the classDef of a treemap",
     'treemap\nclassDef kk fill:red@\n"A"\n',
@@ -77,6 +81,12 @@ const keepsCharacters: readonly Case[] = [
     'treemap\nclassDef kk fill:#f00@;\n"A"\n',
     'treemap\n  classDef kk fill: #f00@\n  "A"\n',
   ],
+]
+
+/** The statements that keep a no-break space, U+3000, a vertical tab, and a byte order mark. */
+const keepsCharacters: readonly Case[] = [
+  ...printsLineAsWritten,
+  ...keepsCharactersInTreemap,
 ]
 
 /** The statements that keep the character after a `;` or a directive that comes first. */
@@ -139,6 +149,79 @@ const dropsCharacters: readonly Case[] = [
     "the style of an agentflow diagram",
     "agentflow-beta TB\nflow F\nA\nend\nstyle A fill:#f00@\n",
     "agentflow-beta TB\n  flow F\n    A\n  end\n  style A fill: #f00\n",
+  ],
+]
+
+/** The statements that leave out a form feed at the end of the line, with the line as printed. */
+const dropsFormFeed: readonly Case[] = [
+  [
+    "the style of a class diagram",
+    "classDiagram\nclass A\nstyle A fill:red@\n",
+    "classDiagram\n  class A\n  style A fill: red\n",
+  ],
+  [
+    "the classDef of a class diagram",
+    "classDiagram\nclass A:::k\nclassDef k fill:red ,stroke:#333@\n",
+    "classDiagram\n  class A:::k\n  classDef k fill: red, stroke: #333\n",
+  ],
+  [
+    "the linkStyle of a flowchart",
+    "flowchart LR\nA-->B\nlinkStyle 0 stroke:#f00@\n",
+    "flowchart LR\n  A --> B\n  linkStyle 0 stroke: #f00\n",
+  ],
+  [
+    "the default linkStyle of a flowchart",
+    "flowchart LR\nA-->B\nlinkStyle default stroke:#f00@\n",
+    "flowchart LR\n  A --> B\n  linkStyle default stroke: #f00\n",
+  ],
+  [
+    "the classDef of an agentflow diagram",
+    "agentflow-beta TB\nflow F\nA:::ka\nend\nclassDef ka fill:#f00@\n",
+    "agentflow-beta TB\n  flow F\n    A:::ka\n  end\n  classDef ka fill: #f00\n",
+  ],
+  [
+    "the style of a flowchart",
+    "flowchart LR\nA-->B\nstyle A fill:#f00@\n",
+    "flowchart LR\n  A --> B\n  style A fill: #f00\n",
+  ],
+  [
+    "the classDef of a flowchart",
+    "flowchart LR\nA-->B\nclassDef k fill:#f00@\n",
+    "flowchart LR\n  A --> B\n  classDef k fill: #f00\n",
+  ],
+  [
+    "the linkStyle of an agentflow diagram",
+    "agentflow-beta TB\nflow F\nA\nB\nA --> B\nend\nlinkStyle 0 stroke:#f00@\n",
+    "agentflow-beta TB\n  flow F\n    A\n    B\n    A --> B\n  end\n  linkStyle 0 stroke: #f00\n",
+  ],
+]
+
+/** The statements with a second `;` that stays, so that the whole line stays as written. */
+const keepsSecondSemicolon: readonly Case[] = [
+  [
+    "the style of a class diagram",
+    "classDiagram\nclass A\nstyle A fill:#F9F;%%{init: {}}%%;@\n",
+    "classDiagram\n  class A\n  style A fill:#F9F;%%{init: {}}%%;@\n",
+  ],
+  [
+    "the classDef of a class diagram",
+    "classDiagram\nclass A:::k\nclassDef k fill:#F9F;%%{init: {}}%%;@\n",
+    "classDiagram\n  class A:::k\n  classDef k fill:#F9F;%%{init: {}}%%;@\n",
+  ],
+  [
+    "the style of a flowchart",
+    "flowchart LR\nA-->B\nstyle A fill:#f00 ;%%{init: {}}%%;@\n",
+    "flowchart LR\n  A --> B\n  style A fill:#f00 ;%%{init: {}}%%;@\n",
+  ],
+  [
+    "the classDef of a flowchart",
+    "flowchart LR\nA-->B\nclassDef k fill:#f00 ;%%{init: {}}%%;@\n",
+    "flowchart LR\n  A --> B\n  classDef k fill:#f00 ;%%{init: {}}%%;@\n",
+  ],
+  [
+    "the classDef of a treemap",
+    'treemap\nclassDef aa fill:#F9F;%%{init: {}}%%;@\n"A"\n',
+    'treemap\n  classDef aa fill:#F9F;%%{init: {}}%%;@\n  "A"\n',
   ],
 ]
 
@@ -213,6 +296,52 @@ describe("the whitespace at the end of a style", () => {
       expect(formatted, title).not.toContain(" \n")
       expect(formatted, title).not.toContain("\t\n")
       expect(await formatMermaid(formatted), `${title} twice`).toBe(formatted)
+    }
+  })
+
+  it("leaves out a form feed at the end of a style that CSS reads as whitespace", async () => {
+    for (const [title, input, output] of dropsFormFeed) {
+      const formatted = await formatMermaid(input.replace("@", "\u000c"))
+      expect(formatted, `a form feed at the end of ${title}`).toBe(output)
+      expect(await formatMermaid(formatted), `${title} twice`).toBe(formatted)
+    }
+  })
+
+  it("keeps the whitespace after the character in a line that stays as written", async () => {
+    for (const [name, character] of unusualWhitespace) {
+      const written = `${character} \t `
+      for (const [title, input, output] of [
+        ...printsLineAsWritten,
+        ...keepsCharactersAfterIgnoredText,
+      ]) {
+        const formatted = await formatMermaid(input.replace("@", written))
+        expect(formatted, `${name} and blanks at the end of ${title}`).toBe(
+          output.replace("@", written),
+        )
+      }
+    }
+  })
+
+  it("keeps the whitespace after the last `;` of a line that holds another `;` that stays", async () => {
+    for (const blanks of ["", " ", "\t", " \t ", "\u000c"]) {
+      for (const [title, input, output] of keepsSecondSemicolon) {
+        const formatted = await formatMermaid(input.replace("@", blanks))
+        expect(formatted, `${JSON.stringify(blanks)} after ${title}`).toBe(
+          output.replace("@", blanks),
+        )
+        expect(await formatMermaid(formatted), `${title} twice`).toBe(formatted)
+      }
+    }
+  })
+
+  it("keeps the whitespace after a directive at the end of the classDef of a treemap", async () => {
+    for (const blanks of [" ", "\t", "\u000c", "  "]) {
+      const formatted = await formatMermaid(
+        `treemap\nclassDef kk fill:red %%{init: {}}%%${blanks}\n"A"\n`,
+      )
+      expect(formatted, JSON.stringify(blanks)).toBe(
+        `treemap\n  classDef kk fill:red %%{init: {}}%%${blanks}\n  "A"\n`,
+      )
     }
   })
 })

@@ -513,6 +513,7 @@ mermaid.js は `;` がなくても同じ文として読むからです。
 `classDef zz color:#f00;` のように
 [mermaid.js の行の規則](../../spec/docs/common.ja.md#style-行と-classdef-行)
 が無視する最後の `;` も、同じく消します。
+同じ行にある別の `;` が下の規則で残るときは、この `;` も残ります。
 
 [fixture: semicolons/class-terminator-dropped]
 [fixture: semicolons/class-terminator-hash-dropped]
@@ -548,8 +549,11 @@ U+2028 か U+2029 を含む行は、`;` だけを消して書かれたまま残�
 
 行の規則が無視する `;` の後ろの空白、タブ、改ページは style に属するので、
 これも消します。
+ただし、別の `;` が残るために行が書かれたまま残るときは、
+行といっしょに残ります。
 
 [fixture: semicolons/class-terminator-hash-trailing-whitespace-dropped]
+[test: keeps the whitespace after the last `;` of a line that holds another `;` that stays]
 
 文がテキストの末尾で終わっていても同じです。
 
@@ -587,8 +591,10 @@ style のない `classDef` の `;` は、消すと次の行が style になり�
 [fixture: semicolons/class-terminator-entity-kept]
 
 別の `;` が隣にあるときも残します。
+間にディレクティブがあってもなくても同じです。
 
 [fixture: semicolons/class-terminator-beside-semicolon-kept]
+[fixture: semicolons/class-terminator-beside-semicolon-directive-kept]
 
 U+2028 か U+2029 の後にコメント行が続き、その後にある `;` も残します。
 その文字は行の規則の空白ではなく、コメント行は取り除かれるので、

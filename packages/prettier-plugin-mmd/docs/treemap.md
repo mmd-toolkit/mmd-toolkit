@@ -500,7 +500,8 @@ dropped: mermaid.js reads the statement the same without it. This holds for the
 `;` that is a unit of the statement, as in `classDef zz fill:red;`, and for the
 last `;` that the
 [line rule of mermaid.js](../../spec/docs/common.md#style-and-classdef-lines)
-ignores, as in `classDef zz color:#f00;`.
+ignores, as in `classDef zz color:#f00;`. Where another `;` of the line stays,
+as the paragraphs below describe, this one stays with it.
 
 [fixture: semicolons/class-terminator-dropped] [fixture:
 semicolons/class-terminator-hash-dropped]
@@ -532,9 +533,12 @@ treemap style terminators dropped and U+2028 and U+2029 kept before statements]
 removes]
 
 Spaces, tabs, and form feeds after a `;` that the line rule ignores belong to
-the style and are dropped too.
+the style and are dropped too, except in a line that stays as written because
+another `;` of it stays: they stay with the line.
 
-[fixture: semicolons/class-terminator-hash-trailing-whitespace-dropped]
+[fixture: semicolons/class-terminator-hash-trailing-whitespace-dropped] [test:
+keeps the whitespace after the last `;` of a line that holds another `;` that
+stays]
 
 The statement can end the text.
 
@@ -561,12 +565,13 @@ It stays too when a comment or a directive follows it on its line, when a
 directive stands right before the `;` that is a unit of the statement, with or
 without whitespace between, when it is part of the style, as in
 `classDef zz fill: #f00;`, where `#f00;` is an entity, and when another `;` is
-beside it.
+beside it, with a directive between the two or not.
 
 [fixture: semicolons/class-terminator-comment-kept] [fixture:
 semicolons/class-terminator-directive-kept] [fixture:
 semicolons/class-terminator-entity-kept] [fixture:
-semicolons/class-terminator-beside-semicolon-kept]
+semicolons/class-terminator-beside-semicolon-kept] [fixture:
+semicolons/class-terminator-beside-semicolon-directive-kept]
 
 It stays too after a U+2028 or U+2029 and then a comment line: the character is
 no whitespace of the line rule and the comment line is removed, so dropping the
