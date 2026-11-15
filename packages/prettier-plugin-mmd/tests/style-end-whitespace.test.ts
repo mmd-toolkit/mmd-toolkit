@@ -3,9 +3,9 @@
  * by whitespace. Where mermaid.js keeps the character in the value of the last
  * style, so that the figure changes without it, the whitespace stays and the
  * line is printed as written: a no-break space, U+3000, a vertical tab, and a
- * byte order mark in a class diagram, a flowchart, and the `classDef` and the
- * `linkStyle` of an agentflow diagram, and a vertical tab and a form feed in the `classDef` of an
- * ER diagram. The whitespace also counts after a `;` that the line rule of
+ * byte order mark in a class diagram, a flowchart, the `classDef` of a treemap,
+ * and the `classDef` and the `linkStyle` of an agentflow diagram, and a
+ * vertical tab and a form feed in the `classDef` of an ER diagram. The whitespace also counts after a `;` that the line rule of
  * mermaid.js removes and after a directive, which it removes too. Elsewhere,
  * and for a space and a tab, it is left out (docs/compatibility.md, Whitespace
  * at the end of a style). The characters are written as escapes, and no fixture
@@ -67,6 +67,16 @@ const keepsCharacters: readonly Case[] = [
     "agentflow-beta TB\nflow F\nA\nB\nA --> B\nend\nlinkStyle 0 stroke:#f00@\n",
     "agentflow-beta TB\n  flow F\n    A\n    B\n    A --> B\n  end\n  linkStyle 0 stroke:#f00@\n",
   ],
+  [
+    "the classDef of a treemap",
+    'treemap\nclassDef kk fill:red@\n"A"\n',
+    'treemap\n  classDef kk fill: red@\n  "A"\n',
+  ],
+  [
+    "the classDef of a treemap, before the `;` that ends it",
+    'treemap\nclassDef kk fill:#f00@;\n"A"\n',
+    'treemap\n  classDef kk fill: #f00@\n  "A"\n',
+  ],
 ]
 
 /** The statements that keep the character after a `;` or a directive that comes first. */
@@ -105,6 +115,11 @@ const keepsCharactersAfterIgnoredText: readonly Case[] = [
     "a directive after the linkStyle of a flowchart",
     "flowchart LR\nA-->B\nlinkStyle 0 stroke:#f00 %%{init: {}}%%@\n",
     "flowchart LR\n  A --> B\n  linkStyle 0 stroke:#f00 %%{init: {}}%%@\n",
+  ],
+  [
+    "a `;` after the classDef of a treemap",
+    'treemap\nclassDef kk fill:#f00;@\n"A"\n',
+    'treemap\n  classDef kk fill:#f00;@\n  "A"\n',
   ],
 ]
 

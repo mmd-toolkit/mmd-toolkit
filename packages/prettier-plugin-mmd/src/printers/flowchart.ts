@@ -8,7 +8,7 @@ import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
 import type { StatementListsOf } from "./data-blocks.ts"
 import { formatDataBlocks, writtenIndentationRule } from "./data-blocks.ts"
-import { lineEndOf } from "./kept-lines.ts"
+import { keepsStyleTerminator, lineEndOf } from "./kept-lines.ts"
 import type { BlockRules } from "./blocks.ts"
 import {
   openingLine,
@@ -216,8 +216,11 @@ function flowchartBlockRules(
       options.useTabs,
       statementListsOf,
     ),
+    // A style terminator on a later line still ends the style before a
+    // removed comment (docs/flowchart.md, Semicolons).
     isDroppedAtTopLevel: (statement) =>
-      statement.type === "FlowchartEmptyStatement",
+      statement.type === "FlowchartEmptyStatement" &&
+      !keepsStyleTerminator(source, statement.range[0]),
     keepsWhitespaceLineAfterComment: false,
     keepsDirectiveLinesUnindented: false,
   }

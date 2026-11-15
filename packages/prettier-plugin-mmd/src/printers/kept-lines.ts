@@ -541,6 +541,142 @@ function followsLineSeparator(source: Source, offset: number): boolean {
 }
 
 /**
+ * Whether a character is part of the whitespace before a `;` of a `classDef`
+ * or `style` statement: whitespace, and a line feed only where the statement
+ * reads through line feeds.
+ */
+function continuesWhitespaceRun(
+  character: string,
+  readsLineFeeds: boolean,
+): boolean {
+  return isWhitespace(character) && (readsLineFeeds || character !== "\n")
+}
+
+/** A U+2028 or U+2029 before the `;` of a `classDef` or `style` statement. */
+interface SeparatorBeforeTerminator {
+  /** The offset of the first U+2028 or U+2029 of the whitespace before the `;`. */
+  readonly separator: number
+  /**
+   * Whether nothing but U+2028, U+2029, spaces, and tabs stands between that
+   * character and the `;`.
+   */
+  readonly narrow: boolean
+  /** Whether text that mermaid.js reads follows the removed comment line. */
+  readonly followed: boolean
+}
+
+/**
+ * The first U+2028 or U+2029 of the whitespace right before the `;` at
+ * `offset`, where a removed comment line follows the line of that `;` and the
+ * `;` ends a `classDef` or `style` statement, or undefined. The `^` that
+ * removes a comment line matches after such a character, and its `\s*` takes
+ * the whitespace up to the line feed, so without the `;` the comment line, the
+ * whitespace, and the line feed go: the style continues with the text after
+ * them, and it loses the whitespace that it held after the character
+ * (diagrams/er.md, The style context; common.md, Comment lines). Where no text
+ * follows the comment line, nothing continues, and the `;` is needed only for
+ * the whitespace after the character that is no space or tab and stands on the
+ * line of the style. The character must stand on that line too: a line feed
+ * before it ends the style.
+ * Use the source's comment regions, which already distinguish indentation,
+ * blank lines, directives, and a bare `%%`. A directive before the comment, on
+ * its line or on lines of its own after the style, belongs to that region:
+ * the directive lines are removed with it.
+ */
+function findSeparatorBeforeCommentTerminator(
+  source: Source,
+  offset: number,
+): SeparatorBeforeTerminator | undefined {
+  const bodyType = source.root.body.type
+  const lineFeed = source.text.indexOf("\n", offset)
+  if (lineFeed < 0) return undefined
+  const region = source.commentRegions.find(([start]) => start === lineFeed + 1)
+  if (region === undefined) return undefined
+  const comment = findTriviaBetween(source, region[0], region[1]).find(
+    (item) => item.type === "Comment",
+  )
+  if (comment === undefined) return undefined
+  const readsLineFeeds =
+    bodyType === "FlowchartDiagram" || bodyType === "AgentflowDiagram"
+  let runStart = offset
+  while (
+    runStart > 0 &&
+    continuesWhitespaceRun(source.text[runStart - 1], readsLineFeeds)
+  )
+    runStart--
+  let separator = -1
+  for (let at = runStart; at < offset && separator < 0; at++) {
+    const character = source.text[at]
+    if (character === "\u2028" || character === "\u2029") separator = at
+    else if (character === "\n") return undefined
+  }
+  if (separator < 0 || !endsStyleStatement(source, offset)) return undefined
+  let narrow = true
+  let loses = false
+  let endsStyle = false
+  for (let at = separator + 1; at < offset; at++) {
+    const character = source.text[at]
+    if (character === "\n") endsStyle = true
+    if (
+      character !== "\u2028" &&
+      character !== "\u2029" &&
+      !isSpaceOrTab(character)
+    )
+      narrow = false
+    // What stands after a line feed is no text of the style.
+    if (!endsStyle && !isSpaceOrTab(character)) loses = true
+  }
+  const followed = textRead(source, region[1], source.text.length).trim() !== ""
+  return followed || loses ? { separator, narrow, followed } : undefined
+}
+
+/**
+ * Keep the style terminator when removing it would change what mermaid.js
+ * reads after a removed comment line (see
+ * `findSeparatorBeforeCommentTerminator`), with the characters before it kept
+ * as written. An ER diagram drops a U+2028 or U+2029 with the terminator where
+ * text follows the comment line and nothing but U+2028, U+2029, spaces, and
+ * tabs stands after the first of them, and keeps the terminator otherwise (see
+ * `findSeparatorDroppedWithTerminator`).
+ */
+function keepsStyleTerminatorBeforeComment(
+  source: Source,
+  offset: number,
+): boolean {
+  const bodyType = source.root.body.type
+  if (
+    bodyType !== "ErDiagram" &&
+    bodyType !== "FlowchartDiagram" &&
+    bodyType !== "AgentflowDiagram" &&
+    bodyType !== "TreemapDiagram"
+  )
+    return false
+  const found = findSeparatorBeforeCommentTerminator(source, offset)
+  return (
+    found !== undefined &&
+    (bodyType !== "ErDiagram" || !found.narrow || !found.followed)
+  )
+}
+
+/**
+ * The offset of the first U+2028 or U+2029 that an ER diagram drops with the
+ * `;` at `offset`, which ends a `classDef` or `style` statement and stands
+ * before a removed comment line, or -1: the `;` alone cannot be dropped there
+ * (see `findSeparatorBeforeCommentTerminator`), and the character alone cannot,
+ * since it would end the style (docs/er.md, Semicolons at the end of a style
+ * statement). Where other whitespace stands after the character, the `;` stays.
+ */
+export function findSeparatorDroppedWithTerminator(
+  source: Source,
+  offset: number,
+): number {
+  return source.root.body.type === "ErDiagram" &&
+    isDroppedSemicolon(source, offset)
+    ? (findSeparatorBeforeCommentTerminator(source, offset)?.separator ?? -1)
+    : -1
+}
+
+/**
  * Whether the printer drops the `;` at `offset`: one that the line rule
  * ignores at the end of its line, which is dropped as a `;` that separates
  * statements is, since mermaid.js removes it from the text, and the `;` that
@@ -552,13 +688,16 @@ function followsLineSeparator(source: Source, offset: number): boolean {
  * statements, unless it ends such a statement: there the line that holds it is
  * kept as written, with the `;`. Required punctuation is never dropped,
  * including selected semicolons in a diagram with required terminators (see
- * `semicolonRulesOf`).
+ * `semicolonRulesOf`). A style terminator after U+2028 or U+2029 stays
+ * before a removed comment line with text after it: otherwise the style
+ * takes that text (diagrams/er.md, The style context).
  */
 export function isDroppedSemicolon(source: Source, offset: number): boolean {
   if (
     !isLastOnItsLine(source, offset) ||
     source.root.comments.some((comment) => comment.range[1] === offset) ||
-    followsLineSeparator(source, offset)
+    followsLineSeparator(source, offset) ||
+    keepsStyleTerminatorBeforeComment(source, offset)
   ) {
     return false
   }
@@ -570,6 +709,23 @@ export function isDroppedSemicolon(source: Source, offset: number): boolean {
     )
   }
   return kind === "text" && styleSemicolonsOf(source).terminators.has(offset)
+}
+
+/**
+ * Whether the printer keeps the `;` at `offset` that separates statements and
+ * ends a `classDef` or `style` statement, which the printer drops otherwise as
+ * it drops a `;` that separates statements: one after U+2028 or U+2029 that
+ * stays before a removed comment line with text after it, since the style
+ * would take that text without it (see `keepsStyleTerminatorBeforeComment`).
+ */
+export function keepsStyleTerminator(source: Source, offset: number): boolean {
+  return (
+    source.text[offset] === ";" &&
+    semicolonRulesOf(source).kind === "separators" &&
+    !source.ignoredSemicolons.has(offset) &&
+    endsStyleStatement(source, offset) &&
+    keepsStyleTerminatorBeforeComment(source, offset)
+  )
 }
 
 /**
@@ -642,6 +798,11 @@ interface StyleSemicolons {
  * dropped.
  */
 const styleStatementTypes: ReadonlySet<string> = new Set([
+  "FlowchartClassDefStatement",
+  "FlowchartStyleStatement",
+  "AgentflowClassDefStatement",
+  "AgentflowStyleStatement",
+  "QuadrantClassDefStatement",
   "ClassClassDefStatement",
   "ClassStyleStatement",
   "StateClassDefStatement",
@@ -735,12 +896,17 @@ function styleSemicolonsOf(source: Source): StyleSemicolons {
 }
 
 /**
- * Whether the `;` that the line rule ignores at `offset` ends a `classDef` or
- * `style` statement: only whitespace and directives lie between the end of the
- * statement and the `;`.
+ * Whether the `;` at `offset` ends a `classDef` or `style` statement: a
+ * terminator in its range, or one after it with only whitespace and directives
+ * between. Flowchart and agentflow styles read through line feeds too
+ * (diagrams/flowchart.md, Style, class, and link style statements).
  */
-function endsStyleStatement(source: Source, offset: number): boolean {
-  const { ends } = styleSemicolonsOf(source)
+export function endsStyleStatement(source: Source, offset: number): boolean {
+  const { ends, terminators } = styleSemicolonsOf(source)
+  if (terminators.has(offset)) return true
+  const readsLineFeeds =
+    source.root.body.type === "FlowchartDiagram" ||
+    source.root.body.type === "AgentflowDiagram"
   let position = offset
   while (position > 0) {
     if (ends.has(position)) return true
@@ -750,7 +916,8 @@ function endsStyleStatement(source: Source, offset: number): boolean {
       continue
     }
     const character = source.text[position - 1]
-    if (character === "\n" || !isWhitespace(character)) return false
+    if ((!readsLineFeeds && character === "\n") || !isWhitespace(character))
+      return false
     position--
   }
   return false
@@ -919,6 +1086,7 @@ const styleEndCharactersKept: ReadonlyMap<
   (character: string) => boolean
 > = new Map([
   ["ErClassDefStatement", (c) => c === "\u000b" || c === "\u000c"],
+  ["TreemapClassDefStatement", (c) => !isCssWhitespace(c)],
   ["ClassStyleStatement", (c) => !isCssWhitespace(c)],
   ["ClassClassDefStatement", (c) => !isCssWhitespace(c)],
   ["FlowchartStyleStatement", (c) => !isCssWhitespace(c)],
@@ -929,6 +1097,17 @@ const styleEndCharactersKept: ReadonlyMap<
   ["AgentflowLinkStyleStatement", (c) => !isCssWhitespace(c)],
   ["AgentflowDefaultLinkStyleStatement", (c) => !isCssWhitespace(c)],
 ])
+
+/**
+ * Whether a character at the end of the style of a statement of that type is
+ * one that `styleEndCharactersKept` selects.
+ */
+export function keepsStyleEndCharacter(
+  type: string,
+  character: string,
+): boolean {
+  return styleEndCharactersKept.get(type)?.(character) === true
+}
 
 const unusualStyleEndsBySource = new WeakMap<Source, ReadonlySet<number>>()
 

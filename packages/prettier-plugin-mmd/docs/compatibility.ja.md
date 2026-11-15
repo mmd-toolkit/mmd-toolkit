@@ -227,6 +227,8 @@ ELK の配置のパッケージのどのリリースも、
 | [pie、gitGraph](./pie.ja.md#accessibility-lines)            | `accTitle: Value   %% note`。値の後の `%%` の前の空白                                                                                         | `accTitle: Value %% note`                       | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 は、`%%` とその後ろを title の一部として読む                                                                 | [fixture: pie/accessibility-lines/acc-title-percent-gap-kept]                                                                                               |
 | [pie、gitGraph](./pie.ja.md#accessibility-lines)            | `accDescr {a} %% c`。ブロックの `}` の後のコメント                                                                                            | `accDescr: a %% c`                              | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 は、コロンの形の説明に `%% c` を含めて読む                                                                   | [fixture: pie/description-blocks/block-then-comment]                                                                                                        |
 | [timeline](./timeline.ja.md#ヘッダーと方向)                 | `timeline td`、`timeline TD title T`                                                                                                          | `timeline TD`、テキストは単独の行               | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 と 11.7.0 が、後の語を期間として読む                                                                         | [fixture: timeline/header-and-direction/direction-case-kept]                                                                                                |
+| [timeline](./timeline.ja.md#ヘッダーと方向)                 | `timeline TD accDescr {alpha} Phase : done` と `accDescr {%%{init: {}}%%alpha}`、ヘッダーの行で始まる説明ブロック                             | `accDescr: alpha`、`Phase : done` は単独の行    | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 と 11.7.0 が、その行を period のテキストとして読む                                                           | [fixture: timeline/header-and-direction/description-block-then-period-on-the-header-line-kept]                                                              |
+| [timeline](./timeline.ja.md#ヘッダーと方向)                 | ヘッダーの行にある、空白とタブでない空白文字（U+00A0、U+2003 など）                                                                           | 空白 1 つ                                       | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 と 11.7.0 が、その文字のまま描く                                                                             | [test: U+00A0 between the direction and a text on the header line]                                                                                          |
 | [timeline](./timeline.ja.md#title-と-section)               | `title`、空白 2 つか、改行と字下げ、`# c`                                                                                                     | `title # c`                                     | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、空白だけの title とコメントとして読む                                                                    | [fixture: timeline/titles-and-sections/title-hash-on-next-line-kept]                                                                                        |
 | [ER](./er.ja.md#トークンの間の空白)                         | `class-A a`                                                                                                                                   | `class -A a`                                    | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、空白を入れた形を拒否する                                                                                 | [fixture: er/whitespace-between-tokens/keyword-then-dash-touching-kept]                                                                                     |
 | [ER](./er.ja.md#トークンの間の空白)                         | `subgraph-x`、`end-x`                                                                                                                         | `subgraph -x`、`end` と単独の行の `-x`          | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が空白を入れた形を拒否し、11.7.0 が違って描く                                                                | [fixture: er/whitespace-between-tokens/subgraph-then-dash-touching-kept]                                                                                    |
@@ -688,6 +690,10 @@ mermaid.js はそれらを最後のスタイルの末尾に残すので、
 eventmodeling の [データブロック](./eventmodeling.ja.md#data-blocks)
 も限定した本文の字下げの変更を認めています。
 テストは、末尾の空白とタブを除いたスタイルを比べます。
+ER 図のスタイルは、`;` といっしょに消す U+2028 と U+2029 も除いて比べます。
+詳しくは、
+[スタイル文の末尾のセミコロン](./er.ja.md#スタイル文の末尾のセミコロン)
+を参照してください。
 
 末尾にあるほかの種類の空白（ノーブレークスペース、U+3000、垂直タブ、
 バイト順マーク）は、なくすと mermaid.js が違う図を描く所では取り除かず、
@@ -699,14 +705,14 @@ mermaid.js は、図種によって、それらを最後のスタイルの値に
 その図種で対象にする版を使い、Chromium で描きました。
 図が違ったのは、固定した版を含む版で、class 図の `style`、
 クラスの後にある class 図の `classDef`、
-flowchart と agentflow 図の `linkStyle` と `classDef`、
+flowchart と agentflow 図の `linkStyle` と `classDef`、treemap の `classDef`、
 ER 図の `classDef` の垂直タブと改ページです。
 対象にする版の別の一部では、flowchart の `style` でも違いました。
 詳しくは
 [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
 これらの文は、その文字を残します。
-class 図と flowchart の改ページは、CSS で空白なので、図が同じで、
+class 図、flowchart、treemap の改ページは、CSS で空白なので、図が同じで、
 例外ではありません。
 block 図、state 図の `style` と `classDef` と、agentflow 図の `style` は、
 その文字がなくても図が同じなので、取り除きます。
@@ -738,6 +744,17 @@ U+2028 か U+2029 が文字の隣にある形です。
 168 のテキストのうち、整形ツールが読むのは 153 です。
 そのどれでも、書かれたテキストを描く版で、
 整形したテキストが違って描かれることも、拒否されることもありませんでした。
+
+treemap の `classDef` も、その図種で対象にする版で同じように描きました。
+1 つか 2 つの文字、`;`、コメント、指令、
+行の後の文を組み合わせた 204 のテキストのうち、整形ツールが読むのは 192 で、
+127 を変えます。
+その 127 のどれでも、整形したテキストは、
+書かれたテキストと違って描かれませんでした。
+ER 図の `style` と `classDef` は、U+2028、U+2029、ノーブレークスペース、空白、
+タブの並びが末尾にあり、その後に `;`、コメント、指令、
+文が続く 144 のテキストを描きました。
+それを読む版で、整形したテキストが違って描かれることはありませんでした。
 
 ## 同じに描かれるスタイル
 
@@ -795,10 +812,12 @@ actor に付けた `classDef c stroke:#d33,fill:#fee` と
 それに関係に付けた `classDef` では、画素が同じで、
 path の `style` 属性の `:` と `;` の前後の空白を除いた SVG も同じでした。
 
-treemap の `classDef` は、スタイルの末尾の空白を落とします。
+treemap の `classDef` は、スタイルの末尾の空白、タブ、改ページを落とします。
 `classDef zz color:red  ` は `classDef zz color:red` と印字します。
-mermaid.js はその空白を Db に残しますが、同じ図を描きます。
+mermaid.js はそれらを Db に残しますが、同じ図を描きます。
 クラスをノードに付けて描いたところ、画素は同じでした。
+CSS が空白として読まない文字は残します。
+[スタイルの末尾の空白](#スタイルの末尾の空白)を参照してください。
 
 [fixture: treemap/styles/trailing-before-semicolon]
 [fixture: treemap/trailing-whitespace/style-content]
@@ -2782,6 +2801,10 @@ mermaid.js は、`accDescr {text}` と `accDescr: text` を、
 本文と波かっこの間も同じです。
 `accDescr {`、`a`、`}` を 3 行に書いたものも、`accDescr: a` になります。
 `}` の後の `;` は、文を区切るほかの `;` と同じく除きます。
+方向のある timeline で、ヘッダーの行から始まるブロックは、
+その行の後ろの文とともに、ブロックのまま残します。
+方向を読まない版が、その行をテキストとして描くからです。
+詳しくは [ヘッダーと方向](./timeline.ja.md#ヘッダーと方向)を参照してください。
 本文は `{`、`:`、`#`、ディレクティブと、
 改行でない任意の空白文字（ノーブレークスペース、U+3000、垂直タブ、改ページ、
 U+FEFF、U+2028、U+2029）を含んでよく、本文の空白とタブの連なりは、
@@ -2872,6 +2895,14 @@ treeView、ユースケース、wardley の図（残りの 12 図種）では、
 ほかの文と同じく独立した行に移します。
 `accDescr { %%{init: {}}%% a } A` は、
 `accDescr: %%{init: {}}%%a` と `A` の 2 行になります。
+数えるのは、ブロックが終わる行です。
+文を同じ行に保つ行で始まり、そうでない行で終わるブロックも、コロンの形で印字し、
+`}` の後の文は独立した行に移します。
+`A["x;y"] accDescr {`、`d`、`} Z` は、`A["x;y"] accDescr: d` と `Z` に、
+1 回で置き換わります。
+1 回目はブロックのまま、2 回目にコロンの形になる、ということはありません。
+ブロックが終わる行が文を同じ行に保つ行のとき（`} B["x;y"]`）は、
+ブロックのままです。
 文を同じ行に保つ行のブロックは、その行の最後の文で、後ろに空白、コメント、
 ディレクティブだけが続く場合に、コロンの形で印字します。
 `A --> B; accDescr {a;b}` は `A --> B; accDescr: a;b` になり、
@@ -2882,6 +2913,23 @@ C4 図で空のブロックの後にあるブロック `accDescr {}accDescr {D}`
 それらの文字があることは、ブロックを残す理由になりません。
 
 [fixture: flowchart/accessibility-lines/block-last-on-a-line-with-a-semicolon]
+[fixture: c4/description-blocks/block-starts-on-kept-line-statement-after-brace]
+[fixture: c4/description-blocks/block-starts-on-kept-line-semicolon-text-statement-after-brace]
+[fixture: c4/description-blocks/block-ends-on-kept-line-statement-after-brace]
+[fixture: er/accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture: er/accessibility-statements/block-starts-on-a-kept-line-block-after-the-brace]
+[fixture: er/accessibility-statements/block-starts-on-a-kept-line-text-on-the-brace-line]
+[fixture: er/accessibility-statements/block-starts-on-a-direction-line-statement-after-the-brace]
+[fixture: er/accessibility-statements/block-followed-by-a-statement-on-a-kept-line-kept]
+[fixture: state/multi-line-values/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture: xychart/accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture: journey/accessibility-statements/block-starts-on-a-kept-line-text-on-the-brace-line]
+[fixture: gantt/accessibility-statements/block-starts-on-a-kept-line-text-on-the-brace-line]
+[fixture: gantt/accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture: requirement/accessibility-statements/block-starts-on-a-kept-line-text-on-the-brace-line]
+[fixture: requirement/accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture: quadrant/titles-and-accessibility-statements/block-starts-on-a-kept-line-text-on-the-brace-line]
+[fixture: quadrant/titles-and-accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
 [fixture: flowchart/accessibility-lines/block-text-with-semicolon]
 [fixture: c4/description-blocks/block-after-an-empty-block]
 [fixture: treeview/modes/ordinary-block]
@@ -3003,6 +3051,35 @@ C4 図で空のブロックの後にあるブロック `accDescr {}accDescr {D}`
   [fixture: flowchart/accessibility-lines/block-before-another-statement-on-a-kept-line]
   [fixture: flowchart/accessibility-lines/block-on-style-line-kept]
   [fixture: c4/statements-one-per-line/description-null-adjacency]
+
+- 本文に `;` があり、コロンの形にすると、本文が書かれたまま残る行に移り、
+  mermaid.js の行の規則（[`;` を含む行](#-を含む行)を参照）が、
+  ブロックのときとは別の `;` を無視する場合です。
+  ブロックの最後の行が、`;` が終わらせる行になる場合も同じです。
+  その行は、[`;` が終わらせる行](#-が終わらせる行)を参照してください。
+  規則は、ブロックが立つ行にある、ブロックの前の文も読みます。
+  `A["style:#x"]; accDescr {`、`d;e`、`} Z` では、ブロックのままなら、
+  規則は文字列の後ろの `;` を無視しますが、
+  コロンの形では `d;e` の `;` を無視し、最初の `;` が区切りとして残ります。
+  mermaid.js は、ER の図ではそれを拒否し、flowchart では別の本文として読みます。
+  ブロックはそのまま残します。
+
+  [fixture: er/accessibility-statements/block-text-semicolon-after-style-text-statement-after-brace]
+  [fixture: er/accessibility-statements/block-text-semicolon-after-style-text-no-following-statement]
+  [fixture: er/accessibility-statements/block-text-semicolon-after-style-text-on-opening-line]
+  [fixture: er/accessibility-statements/block-text-semicolon-after-style-text-on-closing-line]
+  [fixture: flowchart/accessibility-lines/block-text-semicolon-after-style-text-kept]
+  [fixture: state/multi-line-values/block-last-line-ended-by-semicolon-kept]
+  [test: flowchart LS semicolon inside block]
+  [test: flowchart PS semicolon inside block]
+
+  ブロックの前の文が別の行に印字されるとき、または規則が、
+  どちらの形でも同じ `;` を無視するときは、ブロックをコロンの形で印字します。
+
+  [fixture: flowchart/accessibility-lines/block-text-semicolon-after-plain-text-converted]
+  [fixture: er/accessibility-statements/block-text-semicolon-after-style-text-on-separate-printed-line-statement-after-brace]
+  [fixture: er/accessibility-statements/block-text-semicolon-after-style-text-on-separate-printed-line-no-following-statement]
+  [fixture: er/accessibility-statements/block-text-semicolon-after-style-text-on-separate-printed-line-on-closing-line]
 
 - architecture、cynefin、gitGraph、info、packet、pie、radar、railroad、treemap、
   treeView、wardley の図で、本文に `%%`、U+2028、U+2029 がある場合です。
@@ -4014,6 +4091,50 @@ mermaid.js は、`style`、続いて空白をはさまずに `#` が後に続く
 [fixture: sequence/comments/semicolon-after-comment-kept]
 [fixture: class/labels/semicolon-line-kept]
 [fixture: state/descriptions-and-labels/semicolon-line-kept]
+
+flowchart、swimlane、
+agentflow の図の `classDef` と `style` を終わらせる `;` と、
+treemap の `classDef` を終わらせる `;` は、
+文の行で U+2028 または U+2029 が前にあり、
+その `;` の行にコメント行が続くときは、間に指令の行があっても残します。
+`;` がないと、文は mermaid.js が取り除くコメント行の後ろまで続き、
+その後ろの文を取り込むからです。
+コメント行の後ろがテキストの終わりのときは、何も続かないので、
+文字と `;` の間に空白でもタブでもない空白があるときだけ、`;` を残します。
+コメント行がその空白を取ってしまうからです。
+[セミコロン](./flowchart.ja.md#セミコロン)と
+[Semicolons](./treemap.ja.md#semicolons)を参照してください。
+これらの文は、
+その文字も残します（[スタイルの末尾の空白](#スタイルの末尾の空白)を参照）。
+
+[fixture: flowchart/semicolons/style-terminator-comment-and-directive-controls]
+[test: treemap style terminators kept after U+2028 and U+2029 before comments]
+[test: treemap whitespace after U+2028 and U+2029 keeps the terminator before comments]
+[test: treemap a comment line at the end of the text keeps the terminator after whitespace that is no space or tab]
+
+ER の図は、その文字がなくても同じ図を描くので、コメント行の後ろに文が続き、
+最初の U+2028 または U+2029 の後ろに U+2028、U+2029、空白、タブしかないときは、
+`;` といっしょにそれらを削除します。
+文字の前に空白があるときも同じです。
+`style A fill: red` と印字し、コメント行とその後ろの文は残ります。
+mermaid.js は、前に空白がないとき、
+その文字を最後のスタイルのテキストに残すので、印字したテキストの Db は、
+書かれたテキストの Db と、その文字の分だけ違います。
+これは[スタイルの末尾の空白](#スタイルの末尾の空白)の種類の違いです。
+テストは、これを除いて比べます。
+詳しくは、
+[スタイル文の末尾のセミコロン](./er.ja.md#スタイル文の末尾のセミコロン)
+を参照してください。
+文字の後ろにほかの空白があるときは、`;` を残します。
+block 図はコメント行の後ろまで読み続けないので、`;` とその文字を削除し、
+`classDef c fill: coral` と印字します。
+
+[fixture: er/semicolons-at-the-end-of-a-style-statement/comment-and-directive-controls]
+[test: block style terminators and U+2028 and U+2029 dropped before comments]
+[test: ER whitespace before the character goes with the terminator]
+[test: ER directive lines before a comment line]
+[test: ER whitespace other than spaces and tabs after the character keeps the terminator]
+[test: ER a comment line at the end of the text keeps the terminator after whitespace that is no space or tab]
 
 class、state、ER、requirement、block、Venn、usecase の図では、
 `classDef` と `style` の行末のセミコロンを、Db が変わらない形で削除します。

@@ -30,8 +30,10 @@ import {
   replaceInAtoms,
   spansLinesThatCannotJoin,
   layoutDescriptionBlock,
+  layoutEmptyDescriptionBlock,
   toAsciiLowerCase,
 } from "./layout.ts"
+import { staysOnTimelineHeaderLine } from "./timeline-header-line.ts"
 import {
   accessibilityRules,
   collectTextEndEdits,
@@ -114,42 +116,6 @@ export function layoutTimelineHeader(
   return { atoms, rules, outdented: new Set(), lineBreaks: "kept" }
 }
 
-/**
- * Whether a statement stays on the line of the header, after its gap as
- * written: the first statement, when the header has a direction and the
- * statement starts on its line. A version of mermaid.js that counts and has no
- * direction reads the words after `timeline` as the text of a period,
- * so `timeline TD title T` is one period there and `timeline TD` followed by a
- * line `title T` is a period and a title; the text after a direction stays
- * where it is (docs/timeline.md, Header and direction).
- */
-export function staysOnTimelineHeaderLine(
-  source: Source,
-  statement: TimelineStatement,
-): boolean {
-  const { body } = source.root
-  if (
-    body.type !== "TimelineDiagram" ||
-    body.direction === null ||
-    body.body[0] !== statement
-  ) {
-    return false
-  }
-  const keyword = expectToken(
-    findStructuralToken(source, body.range[0]),
-    "the header keyword",
-  )
-  const direction = expectToken(
-    findStructuralToken(source, keyword.range[1]),
-    "the direction of the header",
-  )
-  // The line breaks that count are the ones mermaid.js reads: a line break
-  // inside a directive is removed with it.
-  return !textRead(source, direction.range[1], statement.range[0]).includes(
-    "\n",
-  )
-}
-
 /** The offset after the `;` that the line rule ignores at `offset`, if any. */
 function skipIgnoredSemicolons(source: Source, offset: number): number {
   let position = offset
@@ -181,13 +147,36 @@ export function layoutTimelineStatement(
 ): AtomLayout {
   const start = statement.range[0]
   switch (statement.type) {
-    case "TimelineAccDescrBlockStatement":
-      return layoutDescriptionBlock(
-        source,
-        statement,
-        end,
-        timelineValueNodeTypes,
-      )
+    case "TimelineAccDescrBlockStatement": {
+      if (!staysOnTimelineHeaderLine(source, statement)) {
+        return layoutDescriptionBlock(
+          source,
+          statement,
+          end,
+          timelineValueNodeTypes,
+        )
+      }
+      // A block that stands on the line of the header: an old version draws
+      // each of its lines as the text of a period, so the lines stay lines,
+      // also where the block holds no text, and the whitespace between two of
+      // its tokens on a line is the whitespace of a text.
+      const emptyOverLines =
+        statement.value === null && source.text.slice(start, end).includes("\n")
+      const layout = emptyOverLines
+        ? layoutEmptyDescriptionBlock(source, start, end, true)
+        : layoutDescriptionBlock(source, statement, end, timelineValueNodeTypes)
+      return {
+        ...layout,
+        // The `}` of a block without text stands at the level of the statement,
+        // as the `}` of a block with text does.
+        outdented: emptyOverLines
+          ? new Set([layout.atoms.at(-1)!.start])
+          : layout.outdented,
+        textGapsBefore: new Set(
+          layout.atoms.slice(1).map((atom) => atom.start),
+        ),
+      }
+    }
     case "TimelinePeriodStatement":
     case "TimelineEventStatement":
       return layoutEvents(source, statement, end)

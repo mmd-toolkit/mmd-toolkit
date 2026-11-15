@@ -207,6 +207,8 @@ whatever the other versions are, so it has no row.
 | [pie, gitGraph](./pie.md#accessibility-lines)                  | `accTitle: Value   %% note`, whitespace before a `%%` after the value                                                                                                        | `accTitle: Value %% note`                                             | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 reads the `%%` and what follows as part of the title                                                 | [fixture: pie/accessibility-lines/acc-title-percent-gap-kept]                                                                                               |
 | [pie, gitGraph](./pie.md#accessibility-lines)                  | `accDescr {a} %% c`, a comment after the `}` of a block                                                                                                                      | `accDescr: a %% c`                                                    | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 reads the `%% c` as part of the description of the form with the colon                               | [fixture: pie/description-blocks/block-then-comment]                                                                                                        |
 | [timeline](./timeline.md#header-and-direction)                 | `timeline td`; `timeline TD title T`                                                                                                                                         | `timeline TD`; the text on a line of its own                          | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 and 11.7.0 read the words as a period                                                                | [fixture: timeline/header-and-direction/direction-case-kept]                                                                                                |
+| [timeline](./timeline.md#header-and-direction)                 | `timeline TD accDescr {alpha} Phase : done`, and `accDescr {%%{init: {}}%%alpha}`, a description block that starts on the line of the header                                 | `accDescr: alpha`; `Phase : done` on a line of its own                | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 and 11.7.0 read the line as the text of a period                                                     | [fixture: timeline/header-and-direction/description-block-then-period-on-the-header-line-kept]                                                              |
+| [timeline](./timeline.md#header-and-direction)                 | a whitespace character that is no space or tab (U+00A0, U+2003, and so on) in the line of the header                                                                         | one space                                                             | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 and 11.7.0 draw the character                                                                        | [test: U+00A0 between the direction and a text on the header line]                                                                                          |
 | [timeline](./timeline.md#titles-and-sections)                  | `title`, two spaces or a line break and an indentation, `# c`                                                                                                                | `title # c`                                                           | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 reads them as a title of whitespace and a comment                                                    | [fixture: timeline/titles-and-sections/title-hash-on-next-line-kept]                                                                                        |
 | [ER](./er.md#whitespace-between-tokens)                        | `class-A a`                                                                                                                                                                  | `class -A a`                                                          | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 rejects the form with a space                                                                        | [fixture: er/whitespace-between-tokens/keyword-then-dash-touching-kept]                                                                                     |
 | [ER](./er.md#whitespace-between-tokens)                        | `subgraph-x`, `end-x`                                                                                                                                                        | `subgraph -x`; `end` and `-x` on a line of its own                    | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 rejects the form with a space; 11.7.0 draws it differently                                           | [fixture: er/whitespace-between-tokens/subgraph-then-dash-touching-kept]                                                                                    |
@@ -646,7 +648,9 @@ of whitespace only stays as written.
 mermaid.js keeps them at the end of the last style, so this changes what
 mermaid.js stores, separately from the permitted eventmodeling body margins in
 [Data blocks](./eventmodeling.md#data-blocks). The tests compare styles without
-their trailing spaces and tabs.
+their trailing spaces and tabs, and those of an ER diagram also without the
+U+2028 and U+2029 that the formatter drops with a `;` (see
+[Semicolons at the end of a style statement](./er.md#semicolons-at-the-end-of-a-style-statement)).
 
 Whitespace of another kind at the end (a no-break space, U+3000, a vertical tab,
 a byte order mark) is not removed where mermaid.js draws another figure without
@@ -658,18 +662,18 @@ each diagram type, for the `style`, `classDef`, and `linkStyle` of each diagram
 type that has them. The figure differs, in the pinned version and in others that
 count, for the `style` of a class diagram, for the `classDef` of a class diagram
 that stands after its class, for the `linkStyle` of a flowchart and of an
-agentflow diagram, for the `classDef` of a flowchart and of an agentflow
-diagram, and for a vertical tab and a form feed in the `classDef` of an ER
-diagram. It differs in another version that counts for the `style` of a
+agentflow diagram, for the `classDef` of a flowchart, of an agentflow diagram,
+and of a treemap, and for a vertical tab and a form feed in the `classDef` of an
+ER diagram. It differs in another version that counts for the `style` of a
 flowchart (see
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
 These statements keep the character. A form feed is no exception in a class
-diagram or a flowchart, where it is whitespace in CSS and the figure is the
-same. The figure is the same without the character for a block diagram, a state
-diagram, and the `style` of an agentflow diagram, and a requirement, a use case,
-a Venn diagram, and a quadrant chart reject the text with the character and
-accept the text without it, so there the character is removed, as the formatter
-formats other text that mermaid.js rejects.
+diagram, a flowchart, or a treemap, where it is whitespace in CSS and the figure
+is the same. The figure is the same without the character for a block diagram, a
+state diagram, and the `style` of an agentflow diagram, and a requirement, a use
+case, a Venn diagram, and a quadrant chart reject the text with the character
+and accept the text without it, so there the character is removed, as the
+formatter formats other text that mermaid.js rejects.
 
 [test: keeps whitespace other than a space and a tab at the end of a style]
 
@@ -693,6 +697,15 @@ without it, and the text as written and as formatted, were drawn. Of the 168
 texts, the formatter reads 153, and in none of them does the formatted text draw
 differently from the written text, or get rejected, in a version that draws the
 written one.
+
+The `classDef` of a treemap was drawn in the same way, by the versions that
+count for it: 204 texts made of one or two of the characters, a `;`, a comment,
+a directive, and a statement after the line. Of them the formatter reads 192 and
+changes 127, and in none of those does the formatted text draw differently from
+the written text. The `style` and the `classDef` of an ER diagram, with runs of
+a U+2028, a U+2029, a no-break space, a space, and a tab at the end, before a
+`;`, a comment, a directive, and a statement, made 144 texts, and in none of
+them does the formatted text draw differently in a version that reads them.
 
 ## Styles that are drawn the same
 
@@ -748,10 +761,12 @@ the same. For a relationship (`style e1 stroke-width:3px,fill:none` and
 pixels were the same, and so was the SVG without the whitespace around `:` and
 `;` in the `style` attribute of its path.
 
-A `classDef` in a treemap drops the whitespace at the end of its styles:
-`classDef zz color:red  ` is printed `classDef zz color:red`. mermaid.js keeps
-it in the Db and draws the same figure: the pixels were the same with the class
-put on a node.
+A `classDef` in a treemap drops the spaces, tabs, and form feeds at the end of
+its styles: `classDef zz color:red  ` is printed `classDef zz color:red`.
+mermaid.js keeps them in the Db and draws the same figure: the pixels were the
+same with the class put on a node. A character that CSS does not read as
+whitespace stays (see
+[Whitespace at the end of a style](#whitespace-at-the-end-of-a-style)).
 
 [fixture: treemap/styles/trailing-before-semicolon] [fixture:
 treemap/trailing-whitespace/style-content]
@@ -2622,11 +2637,14 @@ in the form with the colon, on a line of its own: `accDescr {a}`,
 `accDescr { a }`, and `accDescr{ a }` become `accDescr: a`. The keyword and the
 `{` can stand apart in any whitespace, a line break included, and so can the
 text and the braces: `accDescr {`, `a`, and `}` on three lines are `accDescr: a`
-too. A `;` after the `}` is dropped like any `;` that separates statements. The
-text can hold a `{`, a `:`, a `#`, a directive, and any whitespace character
-that is no line break (a no-break space, U+3000, a vertical tab, a form feed,
-U+FEFF, U+2028, or U+2029), and a run of spaces and tabs in it is printed by the
-rule of
+too. A `;` after the `}` is dropped like any `;` that separates statements. A
+block that starts on the line of the header of a timeline, after a direction,
+stays a block with what follows it on its line, which the versions that read no
+direction draw as text (see
+[Header and direction](./timeline.md#header-and-direction)). The text can hold a
+`{`, a `:`, a `#`, a directive, and any whitespace character that is no line
+break (a no-break space, U+3000, a vertical tab, a form feed, U+FEFF, U+2028, or
+U+2029), and a run of spaces and tabs in it is printed by the rule of
 [Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same).
 A directive stays where it is, and the block is printed as the same text written
 with the colon is. A directive after the text, inside the braces or after the
@@ -2707,16 +2725,54 @@ diagram types that end the text of the form with the colon before a `%%`, as the
 list below says. A statement that follows the block on its line goes to a line
 of its own, as any statement does, where the line does not keep its statements
 together: `accDescr { %%{init: {}}%% a } A` is `accDescr: %%{init: {}}%%a` and
-`A`, on two lines. A block on a line that keeps its statements together is
-printed in the form with the colon where it is the last statement of the line
-and only whitespace, comments, and directives follow it:
-`A --> B; accDescr {a;b}` is `A --> B; accDescr: a;b`, and in a C4 diagram a
-block after an empty block, `accDescr {}accDescr {D}`, is
+`A`, on two lines. The line that counts is the one that the block ends on: a
+block that starts on a line that keeps its statements together and ends on one
+that does not is printed in the form with the colon too, with the statement
+after its `}` on a line of its own, so that `A["x;y"] accDescr {`, `d`, and
+`} Z` are `A["x;y"] accDescr: d` and `Z` at once, and not the block the first
+time and the form with the colon the second. Where the line that the block ends
+on keeps its statements together, as in `} B["x;y"]`, the block stays. A block
+on a line that keeps its statements together is printed in the form with the
+colon where it is the last statement of the line and only whitespace, comments,
+and directives follow it: `A --> B; accDescr {a;b}` is `A --> B; accDescr: a;b`,
+and in a C4 diagram a block after an empty block, `accDescr {}accDescr {D}`, is
 `accDescr {}accDescr: D`. In a treeView diagram drawn with branch characters (a
 box), the characters of the drawing before the keyword and between the keyword
 and the `{` are redrawn, not printed, so they do not keep the block.
 
 [fixture: flowchart/accessibility-lines/block-last-on-a-line-with-a-semicolon]
+[fixture: c4/description-blocks/block-starts-on-kept-line-statement-after-brace]
+[fixture:
+c4/description-blocks/block-starts-on-kept-line-semicolon-text-statement-after-brace]
+[fixture: c4/description-blocks/block-ends-on-kept-line-statement-after-brace]
+[fixture:
+er/accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture:
+er/accessibility-statements/block-starts-on-a-kept-line-block-after-the-brace]
+[fixture:
+er/accessibility-statements/block-starts-on-a-kept-line-text-on-the-brace-line]
+[fixture:
+er/accessibility-statements/block-starts-on-a-direction-line-statement-after-the-brace]
+[fixture:
+er/accessibility-statements/block-followed-by-a-statement-on-a-kept-line-kept]
+[fixture:
+state/multi-line-values/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture:
+xychart/accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture:
+journey/accessibility-statements/block-starts-on-a-kept-line-text-on-the-brace-line]
+[fixture:
+gantt/accessibility-statements/block-starts-on-a-kept-line-text-on-the-brace-line]
+[fixture:
+gantt/accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture:
+requirement/accessibility-statements/block-starts-on-a-kept-line-text-on-the-brace-line]
+[fixture:
+requirement/accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture:
+quadrant/titles-and-accessibility-statements/block-starts-on-a-kept-line-text-on-the-brace-line]
+[fixture:
+quadrant/titles-and-accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
 [fixture: flowchart/accessibility-lines/block-text-with-semicolon] [fixture:
 c4/description-blocks/block-after-an-empty-block] [fixture:
 treeview/modes/ordinary-block] [fixture:
@@ -2841,6 +2897,44 @@ block holds, or would not be read as the block is:
   flowchart/accessibility-lines/block-before-another-statement-on-a-kept-line]
   [fixture: flowchart/accessibility-lines/block-on-style-line-kept] [fixture:
   c4/statements-one-per-line/description-null-adjacency]
+
+- The text holds a `;`, and the form with the colon would put the text on a line
+  that stays as written, so that the line rule of mermaid.js (see
+  [Lines that hold a `;`](#lines-that-hold-a-)) ignores another `;` than it does
+  in the block, or the last line of the block is a line that a `;` ends (see
+  [A line that a `;` ends](#a-line-that-a--ends)). The rule reads the statements
+  before the block on the line that it would stand on: in
+  `A["style:#x"]; accDescr {`, `d;e`, and `} Z`, the rule ignores the `;` after
+  the string with the block, and the `;` of `d;e` in the form with the colon,
+  which leaves the first `;` as a separator that mermaid.js rejects (an ER
+  diagram) or reads as other text (a flowchart). The block stays as it is.
+
+  [fixture:
+  er/accessibility-statements/block-text-semicolon-after-style-text-statement-after-brace]
+  [fixture:
+  er/accessibility-statements/block-text-semicolon-after-style-text-no-following-statement]
+  [fixture:
+  er/accessibility-statements/block-text-semicolon-after-style-text-on-opening-line]
+  [fixture:
+  er/accessibility-statements/block-text-semicolon-after-style-text-on-closing-line]
+  [fixture:
+  flowchart/accessibility-lines/block-text-semicolon-after-style-text-kept]
+  [fixture: state/multi-line-values/block-last-line-ended-by-semicolon-kept]
+  [test: flowchart LS semicolon inside block] [test: flowchart PS semicolon
+  inside block]
+
+  Where the statement before the block is printed on a line of its own, or the
+  rule ignores the same `;` in both forms, the block is printed in the form with
+  the colon.
+
+  [fixture:
+  flowchart/accessibility-lines/block-text-semicolon-after-plain-text-converted]
+  [fixture:
+  er/accessibility-statements/block-text-semicolon-after-style-text-on-separate-printed-line-statement-after-brace]
+  [fixture:
+  er/accessibility-statements/block-text-semicolon-after-style-text-on-separate-printed-line-no-following-statement]
+  [fixture:
+  er/accessibility-statements/block-text-semicolon-after-style-text-on-separate-printed-line-on-closing-line]
 
 - The text holds a `%%`, or a U+2028 or U+2029, in an architecture, cynefin,
   gitGraph, info, packet, pie, radar, railroad, treemap, treeView, or wardley
@@ -3765,6 +3859,46 @@ flowchart/statements-one-per-line/compat-semicolon-in-label-without-style-kept]
 [fixture: sequence/comments/semicolon-after-comment-kept] [fixture:
 class/labels/semicolon-line-kept] [fixture:
 state/descriptions-and-labels/semicolon-line-kept]
+
+A `;` that ends a `classDef` or `style` statement is kept in a flowchart,
+swimlane, and agentflow diagram, and a `;` that ends a `classDef` is kept in a
+treemap, where a U+2028 or U+2029 stands before it on the line of the statement
+and a comment line follows its line, directive lines between them included:
+without the `;` the statement goes on after the comment line, which mermaid.js
+removes, and takes the statement after it (see
+[Semicolons](./flowchart.md#semicolons) and
+[Semicolons](./treemap.md#semicolons)). Where the end of the text follows the
+comment line, nothing continues, and the `;` stays only where whitespace that is
+no space or tab stands between the character and the `;`, which the comment line
+would take with it. These statements keep the character too (see
+[Whitespace at the end of a style](#whitespace-at-the-end-of-a-style)).
+
+[fixture: flowchart/semicolons/style-terminator-comment-and-directive-controls]
+[test: treemap style terminators kept after U+2028 and U+2029 before comments]
+[test: treemap whitespace after U+2028 and U+2029 keeps the terminator before
+comments]
+
+An ER diagram draws the same figure without the character, so where a statement
+follows the comment line, it drops the `;` together with the U+2028 or U+2029
+and what stands after it, if that is nothing but U+2028, U+2029, spaces, and
+tabs, also where whitespace stands before the character: the line is printed
+`style A fill: red`, and the comment line and the statement after it stay.
+mermaid.js keeps the character in the text of the last style where no whitespace
+stands before it, so the Db of the printed text differs from that of the written
+text by that character: a difference of the kind of
+[Whitespace at the end of a style](#whitespace-at-the-end-of-a-style), which the
+tests compare without (see
+[Semicolons at the end of a style statement](./er.md#semicolons-at-the-end-of-a-style-statement)).
+Where other whitespace stands after the character, the `;` stays. A block
+diagram does not read on after the comment line, and drops the `;` and the
+character: the line is printed `classDef c fill: coral`.
+
+[fixture:
+er/semicolons-at-the-end-of-a-style-statement/comment-and-directive-controls]
+[test: block style terminators and U+2028 and U+2029 dropped before comments]
+[test: ER whitespace before the character goes with the terminator] [test: ER
+directive lines before a comment line] [test: ER whitespace other than spaces
+and tabs after the character keeps the terminator]
 
 In class, state, ER, requirement, block, Venn and usecase diagrams, line-ending
 `classDef` and `style` semicolons are dropped where this leaves the Db
