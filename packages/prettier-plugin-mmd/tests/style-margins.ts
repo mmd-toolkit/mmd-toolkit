@@ -131,7 +131,9 @@ function withoutStyleMargins(
 
 /**
  * The text of a style with each run of spaces and tabs replaced by one space,
- * except inside a string (`"…"` or `'…'`), a comment (`/*…*\/`), or the
+ * and a run before a `%%` comment, which the Db keeps in the text of the style,
+ * also where it holds form feeds, which CSS reads as whitespace, except inside
+ * a string (`"…"` or `'…'`), a comment (`/*…*\/`), or the
  * parentheses of `url(`, and the escape after a backslash, where CSS reads it
  * as part of the value: the hexadecimal digits (at most six) and the one space
  * or tab after them, or else the next character. What is not closed runs to
@@ -159,11 +161,18 @@ function withoutWordRuns(text: string): string {
         next++
       }
       next = Math.min(next + 1, text.length)
-    } else if (character === " " || character === "\t") {
-      while (text[next] === " " || text[next] === "\t") next++
-      result += " "
-      position = next
-      continue
+    } else if (character === " " || character === "\t" || character === "\f") {
+      // A form feed belongs to a run only before a comment.
+      let blanksEnd = position
+      while (" \t\f".includes(text[blanksEnd] ?? "-")) blanksEnd++
+      let runEnd = position
+      if (text.startsWith("%%", blanksEnd)) runEnd = blanksEnd
+      else while (text[runEnd] === " " || text[runEnd] === "\t") runEnd++
+      if (runEnd > position) {
+        result += " "
+        position = runEnd
+        continue
+      }
     }
     result += text.slice(position, next)
     position = next

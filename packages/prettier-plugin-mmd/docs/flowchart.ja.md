@@ -3618,6 +3618,14 @@ mermaid.js はそれらを最後のスタイルの末尾に残すので、
 
 [test: keeps whitespace other than a space and a tab at the end of a style]
 
+flowchart と swimlane では、最後のスタイルと同じ行の `%%` コメントの間の空白、
+タブ、改ページの連続は、別の理由で行を書かれたまま残す場合を除き、
+空白 1 つで印字します。
+[スタイルの末尾の空白](./compatibility.ja.md#スタイルの末尾の空白)
+を参照してください。
+
+[test: prints a form feed before a comment as one space]
+
 `linkStyle` の `stroke:` の後の空白も保ちます。
 （[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)）。
 `linkStyle default stroke: ` の後に `linkStyle 0 stroke:#f00` がある場合も、

@@ -92,6 +92,11 @@ const keepsCharacters: readonly Case[] = [
 /** The statements that keep the character after a `;` or a directive that comes first. */
 const keepsCharactersAfterIgnoredText: readonly Case[] = [
   [
+    "a directive after the classDef of a treemap",
+    'treemap\nclassDef kk fill:red %%{init: {}}%%@\n"A"\n',
+    'treemap\n  classDef kk fill:red %%{init: {}}%%@\n  "A"\n',
+  ],
+  [
     "a `;` after the style of a class diagram",
     "classDiagram\nclass A\nstyle A fill:#f00;@\n",
     "classDiagram\n  class A\n  style A fill:#f00;@\n",
@@ -154,6 +159,11 @@ const dropsCharacters: readonly Case[] = [
 
 /** The statements that leave out a form feed at the end of the line, with the line as printed. */
 const dropsFormFeed: readonly Case[] = [
+  [
+    "the classDef of a treemap",
+    'treemap\n"R"\n  "x": 1:::aa\nclassDef aa fill:red@\n',
+    'treemap\n  "R"\n    "x": 1:::aa\n  classDef aa fill: red\n',
+  ],
   [
     "the style of a class diagram",
     "classDiagram\nclass A\nstyle A fill:red@\n",
@@ -222,6 +232,80 @@ const keepsSecondSemicolon: readonly Case[] = [
     "the classDef of a treemap",
     'treemap\nclassDef aa fill:#F9F;%%{init: {}}%%;@\n"A"\n',
     'treemap\n  classDef aa fill:#F9F;%%{init: {}}%%;@\n  "A"\n',
+  ],
+]
+
+/** The statements whose last style has a form feed before a same-line comment. */
+const beforeComment: readonly Case[] = [
+  [
+    "a form feed touching the comment of a flowchart style",
+    "flowchart LR\nA\nstyle A fill:red@%% c\n",
+    "flowchart LR\n  A\n  style A fill: red %% c\n",
+  ],
+  [
+    "the style of a flowchart",
+    "flowchart LR\nA\nstyle A fill:red@ %% c\n",
+    "flowchart LR\n  A\n  style A fill: red %% c\n",
+  ],
+  [
+    "the classDef of a flowchart",
+    "flowchart LR\nA:::aa\nclassDef aa fill:red@ %% c\n",
+    "flowchart LR\n  A:::aa\n  classDef aa fill: red %% c\n",
+  ],
+  [
+    "the linkStyle of a flowchart",
+    "flowchart LR\nA-->B\nlinkStyle 0 stroke:red@ %% c\n",
+    "flowchart LR\n  A --> B\n  linkStyle 0 stroke: red %% c\n",
+  ],
+  [
+    "the default linkStyle of a flowchart",
+    "flowchart LR\nA-->B\nlinkStyle default stroke:red@ %% c\n",
+    "flowchart LR\n  A --> B\n  linkStyle default stroke: red %% c\n",
+  ],
+  [
+    "the style of a class diagram",
+    "classDiagram\nclass A\nstyle A fill:red@ %% c\n",
+    "classDiagram\n  class A\n  style A fill: red %% c\n",
+  ],
+  [
+    "the classDef of a treemap",
+    'treemap\n"R"\n  "x": 1:::aa\nclassDef aa fill:red@ %% c\n',
+    'treemap\n  "R"\n    "x": 1:::aa\n  classDef aa fill: red %% c\n',
+  ],
+  [
+    "the classDef of a state diagram",
+    "stateDiagram-v2\nA:::aa\nclassDef aa fill:red@ %% c\n",
+    "stateDiagram-v2\n  A:::aa\n  classDef aa fill: red %% c\n",
+  ],
+  [
+    "the style of a block diagram",
+    "block-beta\nA\nstyle A fill:red@ %% c\n",
+    "block-beta\n  A\n  style A fill: red %% c\n",
+  ],
+  [
+    "the classDef of a block diagram",
+    "block-beta\nA\nclassDef aa fill:red@ %% c\nclass A aa\n",
+    "block-beta\n  A\n  classDef aa fill: red %% c\n  class A aa\n",
+  ],
+  [
+    "the style of a swimlane diagram",
+    "swimlane-beta\nA\nstyle A fill:red@ %% c\n",
+    "swimlane-beta\n  A\n  style A fill: red %% c\n",
+  ],
+  [
+    "the classDef of a swimlane diagram",
+    "swimlane-beta\nA:::aa\nclassDef aa fill:red@ %% c\n",
+    "swimlane-beta\n  A:::aa\n  classDef aa fill: red %% c\n",
+  ],
+  [
+    "the linkStyle of a swimlane diagram",
+    "swimlane-beta\nA-->B\nlinkStyle 0 stroke:red@ %% c\n",
+    "swimlane-beta\n  A --> B\n  linkStyle 0 stroke: red %% c\n",
+  ],
+  [
+    "the default linkStyle of a swimlane diagram",
+    "swimlane-beta\nA-->B\nlinkStyle default stroke:red@ %% c\n",
+    "swimlane-beta\n  A --> B\n  linkStyle default stroke: red %% c\n",
   ],
 ]
 
@@ -334,14 +418,55 @@ describe("the whitespace at the end of a style", () => {
     }
   })
 
-  it("keeps the whitespace after a directive at the end of the classDef of a treemap", async () => {
-    for (const blanks of [" ", "\t", "\u000c", "  "]) {
+  it("leaves out the whitespace after a directive at the end of the classDef of a treemap", async () => {
+    for (const blanks of ["", " ", "\t", "\u000c", "  "]) {
       const formatted = await formatMermaid(
         `treemap\nclassDef kk fill:red %%{init: {}}%%${blanks}\n"A"\n`,
       )
       expect(formatted, JSON.stringify(blanks)).toBe(
-        `treemap\n  classDef kk fill:red %%{init: {}}%%${blanks}\n  "A"\n`,
+        'treemap\n  classDef kk fill:red %%{init: {}}%%\n  "A"\n',
       )
+      expect(await formatMermaid(formatted), "treemap twice").toBe(formatted)
     }
+  })
+
+  it("prints a form feed before a comment as one space", async () => {
+    for (const [title, input, output] of beforeComment) {
+      const formatted = await formatMermaid(input.replace("@", "\f"))
+      expect(formatted, title).toBe(output)
+      expect(await formatMermaid(formatted), `${title} twice`).toBe(formatted)
+    }
+  })
+
+  it("keeps a form feed before a comment where a version that counts reads the text as words", async () => {
+    expect(
+      await formatMermaid(
+        "classDiagram\nclass A:::aa\nclassDef aa fill:red\f %% c\n",
+      ),
+    ).toBe("classDiagram\n  class A:::aa\n  classDef aa fill: red\f %% c\n")
+    expect(
+      await formatMermaid(
+        "stateDiagram-v2\nA --> B\nstyle A fill:red\f %% c\n",
+      ),
+    ).toBe("stateDiagram-v2\n  A --> B\n  style A fill: red\f %% c\n")
+  })
+
+  it("prints a mixed whitespace run before a comment as one space", async () => {
+    expect(
+      await formatMermaid("flowchart LR\nA\nstyle A fill:red\t\f \f\t%% c\n"),
+    ).toBe("flowchart LR\n  A\n  style A fill: red %% c\n")
+  })
+
+  it("keeps form feeds in other parts of a style", async () => {
+    const input =
+      'treemap\nclassDef aa font-family:Arial\f Black,fill:red\f,stroke:blue\f %%{init: {}}%%\n"A"\n'
+    const formatted = await formatMermaid(input)
+    expect(formatted).toBe(
+      'treemap\n  classDef aa font-family:Arial\f Black,fill:red\f,stroke:blue\f %%{init: {}}%%\n  "A"\n',
+    )
+    expect(await formatMermaid(formatted)).toBe(formatted)
+    expect(
+      await formatMermaid('treemap\nclassDef aa font-family:Arial\\ \n"A"\n'),
+    ).toBe('treemap\n  classDef aa font-family: Arial\\ \n  "A"\n')
   })
 })

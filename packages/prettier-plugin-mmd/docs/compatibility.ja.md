@@ -689,7 +689,8 @@ mermaid.js はそれらを最後のスタイルの末尾に残すので、
 これとは別に、
 eventmodeling の [データブロック](./eventmodeling.ja.md#data-blocks)
 も限定した本文の字下げの変更を認めています。
-テストは、末尾の空白とタブを除いたスタイルを比べます。
+テストは、末尾の空白とタブを除き、`%%` コメントの前の空白、タブ、
+改ページの連なりを空白 1 つにしたスタイルを比べます。
 ER 図のスタイルは、`;` といっしょに消す U+2028 と U+2029 も除いて比べます。
 詳しくは、
 [スタイル文の末尾のセミコロン](./er.ja.md#スタイル文の末尾のセミコロン)
@@ -716,8 +717,8 @@ class 図、flowchart、agentflow 図は、
 ER 図は、垂直タブと改ページで終わる行について同じです。
 treemap は、`classDef` のスタイルをほかの所と同じように印字し、
 その文字をスタイルの後に残します。
-行末の改ページは、class 図、flowchart、agentflow 図では、CSS で空白なので、
-図が同じで、例外ではありません。
+行末の改ページは、class 図、flowchart、agentflow 図、treemap では、
+CSS で空白なので、図が同じで、例外ではありません。
 空白やタブと同じく取り除きます。
 block 図、state 図の `style` と `classDef` と、agentflow 図の `style` は、
 その文字がなくても図が同じなので、取り除きます。
@@ -741,12 +742,25 @@ mermaid.js の line rule は、`style` と `classDef` の行の最後の `;` を
 書かれたまま残るのは、class 図、flowchart、agentflow 図で上の文字を含む行、
 treemap でその文字が `;` の後にある行、
 残る別の `;` を含む行です（[`;` を含む行](#-を含む行)を参照）。
-treemap は、`classDef` の末尾にある指令の後の空白も残します。
+treemap でも、`classDef` の末尾にある指令の後の空白、タブ、改ページは除きます。
+その行のスタイルの内側の空白は、書かれたまま残します。
 
 [test: keeps the whitespace after a `;` and after a directive that the line rule removes]
 [test: keeps the whitespace after the character in a line that stays as written]
 [test: keeps the whitespace after the last `;` of a line that holds another `;` that stays]
-[test: keeps the whitespace after a directive at the end of the classDef of a treemap]
+[test: leaves out the whitespace after a directive at the end of the classDef of a treemap]
+
+flowchart、swimlane、block 図、treemap、class 図の `style`、
+state 図の `classDef` では、最後のスタイルと同じ行の `%%` コメントの間の空白、
+タブ、改ページの連続を、別の理由で行を書かれたまま残す場合を除き、
+空白 1 つで印字します。
+改ページは CSS で空白なので、そこの空白とタブの連続と同じ形にします。
+class 図の `classDef` と state 図の `style` は、改ページを残します。
+10.9.8 にはそこにその文がなく、別の文の語として描き、
+改ページと空白で図が違うからです。
+
+[test: prints a form feed before a comment as one space]
+[test: keeps a form feed before a comment where a version that counts reads the text as words]
 
 この末尾の形は、図種ごとに、その図種で対象にする版で描きました。
 対象は、class 図と flowchart の `style`、
@@ -828,8 +842,8 @@ actor に付けた `classDef c stroke:#d33,fill:#fee` と
 それに関係に付けた `classDef` では、画素が同じで、
 path の `style` 属性の `:` と `;` の前後の空白を除いた SVG も同じでした。
 
-treemap の `classDef` は、スタイルの末尾の空白とタブと、
-消す `;` の前の改ページを落とします。
+treemap の `classDef` は、スタイルの末尾の空白、タブ、改ページを落とします。
+消す `;` の前でも同じです。
 `classDef zz color:red  ` は `classDef zz color: red` と印字します。
 mermaid.js はそれらを Db に残しますが、同じ図を描きます。
 クラスをノードに付けて描いたところ、画素は同じでした。
@@ -840,6 +854,7 @@ CSS が空白として読まない文字は残します。
 [fixture: treemap/styles/trailing-before-semicolon]
 [fixture: treemap/trailing-whitespace/style-content]
 [test: treemap style terminators dropped with a form feed, a space, and a tab]
+[test: leaves out a form feed at the end of a style that CSS reads as whitespace]
 
 番号を指定した `linkStyle` は、`,` の後のスタイルが空白で始まるときに、
 描かれる図が変わります。
