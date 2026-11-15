@@ -1243,6 +1243,18 @@ mermaid.js は `#a;` をそのテキストの文字参照として読みます�
 [fixture: statements-one-per-line/message-comment-ignored-semicolon-trigger-in-other-statement]
 [fixture: statements-one-per-line/loop-comment-ignored-semicolon-trigger-in-other-statement]
 
+1 行にしたときに読みが変わらないときは、`;` の後に空白があってもなくても、
+行を分け、メッセージは 1 行にしたときと同じに印字します。
+2 回目の整形も同じ結果になります。
+コメントが `#;`、`# a;` などの文字参照でない形で終わるとき、
+`;` がコメント自身の `style:#x` の後にあるとき、コメントが `%%` で始まり、
+`#a;` がそのコメントの文字であるときが、これに当たります。
+
+[fixture: statements-one-per-line/message-comment-empty-entity-trigger-in-other-statement]
+[fixture: statements-one-per-line/message-comment-space-trigger-in-other-statement]
+[fixture: statements-one-per-line/message-comment-own-trigger-trailing-whitespace]
+[fixture: statements-one-per-line/autonumber-percent-comment-entity-trigger-in-other-statement]
+
 入力
 ([comments/semicolon-after-comment-kept-input.mmd](../tests/fixtures/sequence/comments/semicolon-after-comment-kept-input.mmd)):
 

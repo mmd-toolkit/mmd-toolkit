@@ -276,7 +276,8 @@ function endsEntityName(source: Source, offset: number): boolean {
  * line (`accDescr {style:#x}`) is no longer on that line then, and the `;`,
  * which the printer prints with the comment, is read: `x #a;` has the entity
  * `#a;` (common.md, `style` and `classDef` lines; docs/sequence.md, Statements
- * one per line).
+ * one per line). With another end of the comment (`#;`, `# a;`, `%% #a;`) the
+ * reading does not change, and the line is split.
  */
 function staysIgnoredAlone(
   source: Source,
@@ -284,6 +285,12 @@ function staysIgnoredAlone(
   commentStart: number,
 ): boolean {
   if (!endsEntityName(source, semicolon)) return true
+  // The entity changes what is read only where its `#` starts the comment: a
+  // `;` inside a comment of another mark is a character of the comment.
+  const comment = source.root.comments.find(
+    (item) => item.range[0] === commentStart,
+  )
+  if (comment?.mark !== "#") return true
   const lineStart = lineStartOf(source, semicolon)
   let holder: Node | undefined
   for (const node of nodesOf(source)) {
@@ -1134,14 +1141,39 @@ const styleRuleStretchesBySource = new WeakMap<
   readonly (readonly [number, number])[]
 >()
 
+/** The `;` that end a comment and that the line rule ignores, of each source. */
+const commentEndSemicolonsBySource = new WeakMap<Source, ReadonlySet<number>>()
+
+/**
+ * The offsets of the `;` that end a comment and that the line rule ignores,
+ * with only spaces and tabs after them (see `ignoredSemicolonAtCommentEnd`).
+ * Where whitespace follows, the comment holds the `;`, so no token starts
+ * there, but the printer prints the `;` without that whitespace, as the token
+ * that it is where nothing follows.
+ */
+function commentEndSemicolonsOf(source: Source): ReadonlySet<number> {
+  let found = commentEndSemicolonsBySource.get(source)
+  if (found === undefined) {
+    found = new Set(
+      source.root.comments
+        .map((comment) => ignoredSemicolonAtCommentEnd(source, comment.range))
+        .filter((offset) => offset !== undefined),
+    )
+    commentEndSemicolonsBySource.set(source, found)
+  }
+  return found
+}
+
 /**
  * The index in `segment` of its last `;` that the printer keeps, or -1. The
  * printer drops the `;` that the line rule ignores at the end of the line (see
  * `isDroppedSemicolon`), and the `;` tokens that separate statements on a line
  * that keeps no `;` of its own (see `findSemicolonLines`). A `;` inside a token
- * stays. The line that it prints has the rule only through the `;` that stay,
- * so a stretch is decided by those, or a second formatting would find none.
- * `lineStart` is the start of the line that holds the segment.
+ * stays, except one that ends a comment and that the line rule ignores, which
+ * the printer prints as the token that it is where no whitespace follows. The
+ * line that it prints has the rule only through the `;` that stay, so a stretch
+ * is decided by those, or a second formatting would find none. `lineStart` is
+ * the start of the line that holds the segment.
  */
 function findLastKeptSemicolon(
   source: Source,
@@ -1151,7 +1183,9 @@ function findLastKeptSemicolon(
   const keepsSeparators = findSemicolonLines(source).has(lineStart)
   for (let index = segment.text.lastIndexOf(";"); index !== -1;) {
     const offset = segment.offsets[index]
-    const isToken = findTokenStartingAt(source, offset)?.value === ";"
+    const isToken =
+      findTokenStartingAt(source, offset)?.value === ";" ||
+      commentEndSemicolonsOf(source).has(offset)
     if (!isToken || (keepsSeparators && !isDroppedSemicolon(source, offset))) {
       return index
     }

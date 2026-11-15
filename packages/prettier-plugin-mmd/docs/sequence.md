@@ -1203,6 +1203,22 @@ statements-one-per-line/message-comment-ignored-semicolon-trigger-in-other-state
 [fixture:
 statements-one-per-line/loop-comment-ignored-semicolon-trigger-in-other-statement]
 
+Where the reading does not change on a line of its own, the line is split, with
+or without whitespace after the `;`, and the message is printed as it is printed
+on a line of its own, so that a second formatting prints it again. That is so
+where the comment ends in `#;`, `# a;`, or another form that is no entity, where
+the `;` follows a `style:#x` of the comment itself, and where the comment starts
+with `%%`, whose `#a;` is a character of the comment.
+
+[fixture:
+statements-one-per-line/message-comment-empty-entity-trigger-in-other-statement]
+[fixture:
+statements-one-per-line/message-comment-space-trigger-in-other-statement]
+[fixture:
+statements-one-per-line/message-comment-own-trigger-trailing-whitespace]
+[fixture:
+statements-one-per-line/autonumber-percent-comment-entity-trigger-in-other-statement]
+
 Input
 ([comments/semicolon-after-comment-kept-input.mmd](../tests/fixtures/sequence/comments/semicolon-after-comment-kept-input.mmd)):
 
