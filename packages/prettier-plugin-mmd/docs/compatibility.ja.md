@@ -4116,8 +4116,8 @@ treemap の `classDef` を終わらせる `;` は、
 [test: treemap a comment line at the end of the text keeps the terminator after whitespace that is no space or tab]
 
 ER の図は、その文字がなくても同じ図を描くので、コメント行の後ろに文が続き、
-最初の U+2028 または U+2029 の後ろに U+2028、U+2029、空白、タブしかないときは、
-`;` といっしょにそれらを削除します。
+最初の U+2028 または U+2029 の後ろに U+2028、U+2029、空白、タブ、垂直タブ、
+改ページしかないときは、`;` といっしょにそれらを削除します。
 文字の前に空白があるときも同じです。
 `style A fill: red` と印字し、コメント行とその後ろの文は残ります。
 mermaid.js は、前に空白がないとき、
