@@ -740,25 +740,11 @@ export function findSeparatorEndingStyle(
   while (lineEnd < source.text.length && !isAtLineEnd(source, lineEnd))
     lineEnd++
   if (
-    lineEnd > end ||
+    (lineEnd > end && source.text.slice(end, lineEnd).trim() !== "") ||
     (lineEnd < end && textRead(source, lineEnd, end).trim() !== "")
   )
     return -1
-  // The region starts where the `^` matches after the character, and takes the
-  // line terminator with it.
-  const nextLine = lineEnd + (source.text.startsWith("\r\n", lineEnd) ? 2 : 1)
-  if (
-    source.commentRegions.some(
-      ([from, to]) =>
-        from <= nextLine &&
-        lineEnd < to &&
-        findTriviaBetween(source, from, to).some(
-          (item) => item.type === "Comment",
-        ),
-    )
-  )
-    return -1
-  return findSeparatorRunStart(source, start, lineEnd)
+  return findSeparatorRunStart(source, start, Math.min(end, lineEnd))
 }
 
 /**

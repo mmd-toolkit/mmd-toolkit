@@ -2505,20 +2505,25 @@ mermaid.js はコメント行を、
 style を終える U+2028 か U+2029 は、その後ろから行末までの空白、タブ、垂直タブ、
 改ページとともに落とし、`style A fill:red`、U+2028、
 改行は `style A fill: red` と印字します。
+テキストの終わりのコメント行が続くときも同じです。
 文字を落とすと mermaid.js の読む値が変わるおそれのあるときは、
 行を書かれたまま残します。
-文字の後にコメント行が続くとき（コメント行は文字の後で取り除かれ、
-コメント行の後のテキストが style に続くかどうかが、文字の有無で変わります）、
+文字の後にコメント行が続き、
+そのコメント行の後に文が続くとき（コメント行は文字の後で取り除かれ、
+文が style に続きます）、
 文字と改行の間に空白があって文が続くとき（改行が style の空白になり、
 次の行が style に続きます）、
 文字の後に同じ行でコメントやディレクティブが続くとき、
-文字の後にノーブレークスペースなどそのほかの空白があるときです。
+文字の後にノーブレークスペースなどそのほかの空白があるとき、
+style が `;` を含むときです。
 落とす文字の前の色は、すぐに小文字で印字します。
 `fill:#F9F` と U+2028 は `fill: #f9f` と印字します。
 
 [test: ER a style that no semicolon ends is printed without the U+2028 or U+2029 that ends it, before a statement and at the end of the text]
 [test: ER a style that no semicolon ends is printed without the U+2028 that ends it before a directive line]
-[test: ER a style that no semicolon ends keeps the U+2028 that ends it before a comment line]
+[test: ER a style that no semicolon ends keeps the U+2028 that ends it before a comment line and a statement]
+[test: ER a style that no semicolon ends is printed without the U+2028 or U+2029 that ends it before a comment line at the end of the text]
+[test: ER a classDef that no semicolon ends is printed without the U+2029 and the space after it before a comment line at the end of the text]
 [test: ER a style that no semicolon ends keeps the U+2028 that whitespace and a statement follow]
 [test: ER a style that no semicolon ends keeps the U+2028 that a comment follows on its line]
 [test: ER a style that no semicolon ends keeps the U+2028 that a no-break space follows]

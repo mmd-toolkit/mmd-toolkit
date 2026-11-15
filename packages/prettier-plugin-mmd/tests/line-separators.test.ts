@@ -6269,9 +6269,19 @@ describe("style semicolons", () => {
       "erDiagram\n  A\n  style A fill: red\n  %%{init: {}}%%\n  x\n",
     ],
     [
-      "ER a style that no semicolon ends keeps the U+2028 that ends it before a comment line",
-      "erDiagram\nA\nstyle A fill:red\u2028\n%% c\nx\nclassDef c fill:red\u2029\n%% d\n",
-      "erDiagram\n  A\n  style A fill:red\u2028\n%% c\nx\n  classDef c fill:red\u2029\n  %% d\n",
+      "ER a style that no semicolon ends keeps the U+2028 that ends it before a comment line and a statement",
+      "erDiagram\nA\nstyle A fill:red\u2028\n%% c\nx\n",
+      "erDiagram\n  A\n  style A fill:red\u2028\n%% c\nx\n",
+    ],
+    [
+      "ER a style that no semicolon ends is printed without the U+2028 or U+2029 that ends it before a comment line at the end of the text",
+      "erDiagram\nA\nstyle A fill:red\u2028\n%% c\n",
+      "erDiagram\n  A\n  style A fill: red\n  %% c\n",
+    ],
+    [
+      "ER a classDef that no semicolon ends is printed without the U+2029 and the space after it before a comment line at the end of the text",
+      "erDiagram\nA:::k\nclassDef k fill:red\u2029 \n%% c",
+      "erDiagram\n  A:::k\n  classDef k fill: red\n  %% c\n",
     ],
     [
       "ER a style that no semicolon ends keeps the U+2028 that whitespace and a statement follow",

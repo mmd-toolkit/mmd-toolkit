@@ -482,9 +482,23 @@ export function layoutErStatement(
       preservesBodyColumns: preservesDescriptionColumns,
     })
   }
-  const keptBreaks = findKeptBreaks(source, start, end)
-  const keepsLineBreaks = spansKeptBreaks(source, keptBreaks, start, end)
-  if (keepsLineBreaks && holdsJoiningRegion(source, start, end)) {
+  // The line breaks after a U+2028 or U+2029 that the printer drops from the
+  // end of the last style are no line breaks of the statement: only whitespace
+  // and comment lines that mermaid.js removes follow it (`findDroppedSeparator`).
+  const written =
+    statement.type === "ErStyleStatement" ||
+    statement.type === "ErClassDefStatement"
+      ? statement.styles
+      : []
+  const last = written.at(-1)
+  const separator =
+    last === undefined
+      ? -1
+      : findDroppedSeparator(source, last, statement.range[1])
+  const readEnd = separator < 0 ? end : separator
+  const keptBreaks = findKeptBreaks(source, start, readEnd)
+  const keepsLineBreaks = spansKeptBreaks(source, keptBreaks, start, readEnd)
+  if (keepsLineBreaks && holdsJoiningRegion(source, start, readEnd)) {
     return keptAsWritten(start, end)
   }
   // The text of a statement that is brought to its `:` makes a direction line
@@ -501,11 +515,6 @@ export function layoutErStatement(
   // A statement with a kept line break keeps its styles as written: printing
   // them changes whether joining its lines is safe, so a second pass would
   // join them.
-  const written =
-    statement.type === "ErStyleStatement" ||
-    statement.type === "ErClassDefStatement"
-      ? statement.styles
-      : []
   const styles = withoutDroppedSeparator(source, written, statement.range[1])
   const printsStyles =
     styles.length > 0 &&

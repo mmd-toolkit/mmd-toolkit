@@ -9,4 +9,4 @@ Before, the line stayed as written (`style A fill:red` and the character), which
 character that cannot be seen, although mermaid.js draws the same figure without
 it. Now the character goes, with the `;` where there is one, and stays only
 where dropping it would change what mermaid.js reads, such as before a comment
-line or where a no-break space follows it.
+line and a statement or where a no-break space follows it.
