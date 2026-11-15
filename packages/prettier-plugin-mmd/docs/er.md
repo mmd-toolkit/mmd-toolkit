@@ -2535,23 +2535,25 @@ line break, and `style A fill:red`, U+2028, and a line break are printed
 `style A fill: red`. Where the line holds more after the character, or the text
 goes on with something other than comment lines, the output depends on what
 stands after the character on its line, and on what follows the line. The table
-gives it for a text that ends there or that comment lines follow (E), and for a
-text that a directive line or a statement follows, with a comment line before
-the statement or not (S). "Dropped" means that the character, a second one, and
-the whitespace after them are left out; where a character stays and whitespace
-stands between it and what follows on its line, that whitespace is printed as
-one space.
+gives it for a text that ends there or that comment lines end (E: no statement
+follows, and the last line that is not blank is a comment line, with directive
+lines and blank lines possibly before the comment lines), and for a text that a
+statement follows or that a directive line ends (S: comment lines and blank
+lines may stand before the statement or the directive line). "Dropped" means
+that the character, a second one, and the whitespace after them are left out;
+where a character stays and whitespace stands between it and what follows on its
+line, that whitespace is printed as one space.
 
-| After the character on its line           | E: the text ends, or comment lines follow                                            | S: a directive line or a statement follows                                                                                                    |
-| ----------------------------------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| nothing                                   | dropped                                                                              | dropped; as written where whitespace stands after the character and a statement follows, and where a comment line and then a statement follow |
-| a no-break space                          | as written where the text ends; dropped before comment lines                         | as written                                                                                                                                    |
-| a comment, one character                  | the character stays                                                                  | as written                                                                                                                                    |
-| a comment, two characters                 | dropped, and the comment is printed on a line of its own                             | as written                                                                                                                                    |
-| a directive, one character                | the character stays                                                                  | as written                                                                                                                                    |
-| a directive, two characters               | as written; before comment lines, the first character stays and one space follows it | as written                                                                                                                                    |
-| a directive and a comment, one character  | the character stays                                                                  | as written                                                                                                                                    |
-| a directive and a comment, two characters | dropped, and the directive and the comment are printed on a line of their own        | as written                                                                                                                                    |
+| After the character on its line           | E: the text ends, or comment lines end it                                            | S: a statement follows, or a directive line ends the text                                                                                                          |
+| ----------------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| nothing                                   | dropped                                                                              | dropped; as written where whitespace stands after the character and a statement follows, and where a comment line comes before the statement or the directive line |
+| a no-break space                          | as written where the text ends; dropped before comment lines                         | as written                                                                                                                                                         |
+| a comment, one character                  | the character stays                                                                  | as written                                                                                                                                                         |
+| a comment, two characters                 | dropped, and the comment is printed on a line of its own                             | as written                                                                                                                                                         |
+| a directive, one character                | the character stays                                                                  | as written                                                                                                                                                         |
+| a directive, two characters               | as written; before comment lines, the first character stays and one space follows it | as written                                                                                                                                                         |
+| a directive and a comment, one character  | the character stays                                                                  | as written                                                                                                                                                         |
+| a directive and a comment, two characters | dropped, and the directive and the comment are printed on a line of their own        | as written                                                                                                                                                         |
 
 A line that stays as written keeps the characters and the whitespace where they
 are, and a line whose style holds a `;` stays as written. The line stays where
@@ -2610,9 +2612,21 @@ statement follow] [test: ER a style that no semicolon ends prints two spaces
 between the U+2028 and a directive and a comment on their line as one space]
 [test: ER a classDef that no semicolon ends is printed without U+2029 and U+2028
 before a directive and a comment at the end of the text] [test: ER a style that
-no semicolon ends keeps the two characters before a directive and a comment that
-a statement follows] [test: ER a style that no semicolon ends is printed with
-its color in lower case once the U+2028 is dropped]
+no semicolon ends keeps the U+2028 that a comment line and then a directive line
+follow] [test: ER a style that no semicolon ends is printed without the U+2028
+that a directive line and then a comment line follow] [test: ER a style that no
+semicolon ends is printed without the U+2028 that a blank line and then a
+comment line follow] [test: ER a style that no semicolon ends keeps the U+2028
+that a comment line, a blank line, and a statement follow] [test: ER a style
+that no semicolon ends prints the characters after the first U+2028 as one space
+before a directive that a directive line and then a comment line follow] [test:
+ER a style that no semicolon ends keeps the two characters before a directive
+that a comment line and then a directive line follow] [test: ER a style that no
+semicolon ends keeps the U+2028 before a directive and a comment on its line
+that a statement follows] [test: ER a style that no semicolon ends keeps the two
+characters before a directive and a comment that a statement follows] [test: ER
+a style that no semicolon ends is printed with its color in lower case once the
+U+2028 is dropped]
 
 mermaid.js keeps a U+2028 or U+2029 that directly follows the last style in the
 text of that style, and draws the same figure without it, so the Db of the
