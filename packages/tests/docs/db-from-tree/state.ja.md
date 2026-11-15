@@ -298,12 +298,11 @@ id が空、`</choice>`、`</join></fork>` の状態は、ノードを作りま�
 [fixture: state/lex-composite-divider]
 
 本体があり、説明が 2 つ以上の状態は拒否されます。
+[文法の外での拒否](../../../spec/docs/diagrams/state.ja.md#文法の外での拒否)
+を参照。
 
 [fixture: state/db-composite-two-descriptions]
 [fixture: state/gram-region-two-descriptions]
-
-[文法の外での拒否](../../../spec/docs/diagrams/state.ja.md#文法の外での拒否)
-を参照。
 
 **クラスとスタイル。**
 状態の `classes` と `styles` は、最上位の文だけから来て、その id の状態に、

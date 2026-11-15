@@ -597,15 +597,14 @@ and `:` on two lines is an accessibility title. So when a statement ends with
 one of these ids, or with an id that ends with `direction` (a direction line
 takes `direction` after any run of characters), and a `;` separates it from the
 next one, the statements stay on the line and the `;` stays in place; the
-whitespace within the statements is formatted as usual.
+whitespace within the statements is formatted as usual. See
+[Statements one per line](./flowchart.md#statements-one-per-line).
 
 [fixture: flowchart/statements-one-per-line/semicolon-after-word-kept] [fixture:
 flowchart/statements-one-per-line/semicolon-after-link-to-word-kept] [corpus
 fixture: flowchart/lex-acc-title-semicolon-before-colon] [corpus fixture:
 flowchart/lex-direction-line-semicolon-before-value] [corpus fixture:
 flowchart/lex-call-keyword-semicolon]
-
-See [Statements one per line](./flowchart.md#statements-one-per-line).
 
 Whether the printer drops the `;` that ends such a line decides which `;` the
 rule ignores in the printed line, so the printer asks one question for both the
@@ -1863,11 +1862,37 @@ an entity, or joins it to the word after the `;`
 so it stays; the `;` that ends the statement is dropped by the formatter, and
 the color before it is printed in lower case. A directive that touches the color
 (`fill:#ABCDEF%%{init: {}}%%`) can join the word before it to the word after it
-once mermaid.js has taken it away, so that color stays as written too.
+once mermaid.js has taken it away, so that color stays as written too. In an ER
+diagram and in a requirement diagram the text of a style is read without its
+whitespace (an ER diagram drops spaces, tabs, and line feeds, and so joins the
+line that follows a `;` that the line rule ignores; a requirement diagram drops
+spaces), so a color that more characters follow after whitespace is a word that
+they touch: `style A fill:#F9F ab` is the text `fill:#F9Fab`, whose `#F9Fab` is
+no color, and stays `fill: #F9F ab`, and `style A fill:#F9F stroke:#ABC` is
+printed `fill: #F9F stroke:#abc`. In every diagram type a character that the
+text of the style keeps after a color (a U+2028, a U+2029, a U+00A0, a U+3000, a
+vertical tab, and in the other types every whitespace character that is no
+space, tab, or form feed, the three that CSS reads as whitespace) makes it a
+word that the character touches, and the color stays, except where the printer
+removes that character at the end of the statement: the color then ends the
+printed text and is printed in lower case at once, so that a second formatting
+changes nothing.
 
-[fixture: flowchart/colors/words-that-are-not-colors-as-written] [fixture:
-flowchart/colors/colors-in-quotes-and-after-a-backslash-as-written] [fixture:
-flowchart/colors/color-before-the-final-semicolon] [fixture:
+[fixture: er/colors/color-words-as-read] [fixture:
+er/colors/color-word-over-ignored-semicolon] [fixture:
+requirement/colors/color-words-as-read] [test: agentflow color words before a
+comma keep their padding] [test: flowchart color before a form feed and a comma
+is lower case] [test: state color before a semicolon follows the trimmed Db end]
+[test: agentflow color at EOF after dropped U+2028] [test: agentflow color
+before LF after dropped U+2028] [test: agentflow color at EOF after dropped
+U+00A0] [test: agentflow color before LF after dropped U+00A0] [test: agentflow
+color before a semicolon after dropped U+00A0] [test: agentflow color after
+other dropped Unicode whitespace] [test: flowchart color after dropped form
+feed] [test: swimlane color after dropped form feed] [test: class color after
+dropped form feed] [test: treemap color before a dropped semicolon and its
+padding] [fixture: flowchart/colors/words-that-are-not-colors-as-written]
+[fixture: flowchart/colors/colors-in-quotes-and-after-a-backslash-as-written]
+[fixture: flowchart/colors/color-before-the-final-semicolon] [fixture:
 flowchart/colors/colors-before-a-semicolon-as-written] [fixture:
 flowchart/colors/colors-next-to-comments-and-directives] [fixture:
 class/colors/words-that-are-not-colors-as-written] [fixture:
@@ -3738,11 +3763,10 @@ state/directives/compat-whitespace-on-one-side-of-directive]
 
 The gap keeps whether it holds whitespace, a run becoming one space, where the
 line rule of mermaid.js may read its whitespace, and where a directive stands at
-the start or at the end of the printed line.
+the start or at the end of the printed line. See
+[Directives](./flowchart.md#directives).
 
 [fixture: flowchart/directives/line-edge-whitespace]
-
-See [Directives](./flowchart.md#directives).
 
 ## Structural continuations around comments and directives
 
@@ -3853,7 +3877,8 @@ Both are accepted, so only the diagram shows the change. A line that holds a `;`
 other than one that separates statements or ends a statement therefore keeps its
 statements on it and its `;` where they are, whether the rule applies to it or
 not; the rule does not read the whitespace between other tokens, so that is
-formatted as usual.
+formatted as usual. See
+[Statements one per line](./flowchart.md#statements-one-per-line).
 
 [fixture: flowchart/statements-one-per-line/line-with-semicolon-kept] [fixture:
 flowchart/statements-one-per-line/compat-semicolon-in-label-without-style-kept]
@@ -3861,7 +3886,63 @@ flowchart/statements-one-per-line/compat-semicolon-in-label-without-style-kept]
 class/labels/semicolon-line-kept] [fixture:
 state/descriptions-and-labels/semicolon-line-kept]
 
-See [Statements one per line](./flowchart.md#statements-one-per-line).
+Whitespace after a `;` that the line rule ignores, up to the end of its line, is
+not printed, so the line that is printed is the line that a second formatting
+reads. The tree holds that `;` inside the text of a statement where whitespace
+follows it, and after the text where nothing does, and the rules that trim the
+end of a text would keep the whitespace before the `;` in the first case and
+remove it in the second. The text is therefore decided as it is without the
+whitespace after the `;`: a title `style fill:#f00 ;` followed by a space is
+printed `style fill:#f00;`, as it is without the space, and not with the space
+at the first formatting and without it at the second. This holds for the texts
+that the formatter trims at their end: those of a timeline, journey, treeView,
+radar, use case, cynefin, info, pie, gitGraph, packet, architecture, treemap,
+and ishikawa diagram, and the title of a Gantt chart. A text whose whitespace at
+the end is part of the Db keeps it: the name of a Gantt section and its
+`todayMarker`, `section style:#x;y; ` followed by a space, stay as written. A
+`;` that the line rule does not ignore is part of the text and stays with the
+whitespace before it. A U+2028 or U+2029 after the whitespace is a character of
+the text, which the formatter does not trim at its end, so nothing changes
+there.
+
+[fixture: timeline/statements-one-per-line/ignored-semicolon-trailing-space]
+[fixture: timeline/statements-one-per-line/ignored-semicolon-trailing-tab]
+[fixture: timeline/statements-one-per-line/ignored-semicolon-trailing-directive]
+[fixture:
+timeline/statements-one-per-line/ignored-semicolon-trailing-event-space]
+[fixture:
+timeline/statements-one-per-line/ignored-semicolon-trailing-event-directive]
+[fixture: timeline/statements-one-per-line/nonignored-semicolon-trailing-space]
+[fixture:
+journey/statements-one-per-line/ignored-semicolon-trailing-space-title]
+[fixture: treeview/semicolons/ignored-semicolon-trailing-space] [fixture:
+treeview/semicolons/ignored-semicolon-trailing-tab] [fixture:
+treeview/semicolons/ignored-semicolon-trailing-directive] [fixture:
+treeview/semicolons/ignored-semicolon-trailing-whole-value] [fixture:
+treeview/semicolons/nonignored-semicolon-trailing-space] [fixture:
+radar/semicolons/ignored-semicolon-trailing-space] [fixture:
+radar/semicolons/ignored-semicolon-trailing-tab] [fixture:
+radar/semicolons/nonignored-semicolon-trailing-space] [fixture:
+usecase/statements-and-semicolons/ignored-semicolon-trailing-space] [fixture:
+usecase/statements-and-semicolons/ignored-semicolon-trailing-tab] [fixture:
+usecase/statements-and-semicolons/ignored-semicolon-trailing-directive]
+[fixture: usecase/statements-and-semicolons/nonignored-semicolon-trailing-space]
+[fixture: cynefin/semicolons/ignored-semicolon-trailing-space] [fixture:
+info/semicolons/ignored-semicolon-trailing-space] [fixture:
+pie/directives-and-semicolons/ignored-semicolon-trailing-space] [fixture:
+ishikawa/line-rule-and-kept-lines/ignored-semicolon-trailing-space] [fixture:
+ishikawa/line-rule-and-kept-lines/ignored-semicolon-trailing-tab] [fixture:
+ishikawa/line-rule-and-kept-lines/ignored-semicolon-trailing-directive]
+[fixture: ishikawa/line-rule-and-kept-lines/nonignored-semicolon-trailing-space]
+[fixture: gantt/titles-and-sections/ignored-semicolon-trailing-section]
+[fixture: gantt/titles-and-sections/ignored-semicolon-trailing-today-marker]
+[test: ignored semicolon trailing blanks: pie/nbsp] [test: ignored semicolon
+trailing blanks: pie/ideographic-space] [test: ignored semicolon trailing
+blanks: pie/form-feed] [test: ignored semicolon trailing blanks: timeline/ls]
+[test: ignored semicolon trailing blanks: timeline/ps] [test: ignored semicolon
+trailing blanks: pie/ls] [test: ignored semicolon trailing blanks: pie/ps]
+[test: ignored semicolon trailing blanks: treeview/ls] [test: ignored semicolon
+trailing blanks: treeview/ps]
 
 A `;` that ends a `classDef` or `style` statement is kept in a flowchart,
 swimlane, and agentflow diagram, and a `;` that ends a `classDef` is kept in a
@@ -3883,14 +3964,14 @@ comments]
 
 An ER diagram draws the same figure without the character, so where a statement
 follows the comment line, it drops the `;` together with the U+2028 or U+2029
-and what stands after it, if that is nothing but U+2028, U+2029, spaces, and
-tabs, also where whitespace stands before the character: the line is printed
-`style A fill: red`, and the comment line and the statement after it stay.
-mermaid.js keeps the character in the text of the last style where no whitespace
-stands before it, so the Db of the printed text differs from that of the written
-text by that character: a difference of the kind of
-[Whitespace at the end of a style](#whitespace-at-the-end-of-a-style), which the
-tests compare without (see
+and what stands after it, if that is nothing but U+2028, U+2029, spaces, tabs,
+vertical tabs, and form feeds, also where whitespace stands before the
+character: the line is printed `style A fill: red`, and the comment line and the
+statement after it stay. mermaid.js keeps the character in the text of the last
+style where no whitespace stands before it, so the Db of the printed text
+differs from that of the written text by that character: a difference of the
+kind of [Whitespace at the end of a style](#whitespace-at-the-end-of-a-style),
+which the tests compare without (see
 [Semicolons at the end of a style statement](./er.md#semicolons-at-the-end-of-a-style-statement)).
 Where other whitespace stands after the character, the `;` stays. A block
 diagram does not read on after the comment line, and drops the `;` and the
@@ -4232,13 +4313,41 @@ It also removes the comment lines and the `;` that the line rule ignores before
 the lexer reads the text, so a `direction` that such a `;` splits
 (`accTitle:style:#x,direc;tion TB`), and one whose value stands on a later line
 after a comment line (`accTitle:direction`, a comment line, and `TB`), are
-direction texts too, in a flowchart and in an ER diagram.
+direction texts too, in a flowchart and in an ER diagram. See
+[Indentation](./flowchart.md#indentation).
 
 [fixture: flowchart/indentation/direction-text-split-by-ignored-semicolon-kept]
 [fixture: flowchart/indentation/direction-text-value-after-comment-line-kept]
 [fixture: er/indentation/direction-text-split-by-ignored-semicolon-kept]
 
-See [Indentation](./flowchart.md#indentation).
+A line that the printer keeps together, that starts at the first column with a
+description block that has a text, and that holds a direction statement after
+the block in the same segment of the line, is kept at its written indentation
+too: at the first column `accDescr {D;} direction TB;` is the block `D;` and
+then a direction line, while after an indentation the first whitespace character
+starts a direction line that takes the block with it, and the description of the
+figure is empty. The statements of the line are printed by their ordinary rules.
+A block without a text reads the same empty description with and without the
+indentation, a line that the printer splits has its statements on lines of their
+own, and what a line feed, a U+2028, or a U+2029 ends is another segment, which
+the direction line does not reach back over: this rule keeps none of these at
+its column.
+
+[fixture: flowchart/indentation/joined-direction-column-zero] [fixture:
+flowchart/indentation/joined-direction-end-of-text] [fixture:
+flowchart/indentation/swimlane-joined-direction-end-of-text] [fixture:
+agentflow/direction/joined-direction-end-of-text] [fixture:
+flowchart/indentation/swimlane-joined-direction-column-zero] [fixture:
+flowchart/indentation/joined-direction-separators-and-trivia] [fixture:
+flowchart/indentation/unclosed-directive-before-direction] [fixture:
+flowchart/indentation/split-direction-after-description] [fixture:
+flowchart/indentation/empty-description-before-direction-control] [fixture:
+flowchart/indentation/whitespace-description-before-direction-control] [fixture:
+agentflow/direction/joined-direction-column-zero] [fixture:
+agentflow/direction/split-direction-after-description] [fixture:
+agentflow/direction/unclosed-directive-before-direction] [test: flowchart
+direction after a U+2028 and a joined comment line] [test: agentflow direction
+after a U+2029 and a comment line]
 
 Flowchart bodies use the shared significant indentation minimum, at least one
 space per level even with `tabWidth: 0`. This prevents a direction statement
@@ -4266,11 +4375,10 @@ source is an id that whitespace after it would make another unit: a number, as
 in `1->>2: x`, where `1 ->>2: x` is rejected, and `title` in any case, as in
 `title->>B: x`, where `title ->> B: x` is a title (the specification's
 [The statement context](../../spec/docs/diagrams/sequence.md#the-statement-context)).
-Such a message keeps its arrow touching on both sides.
+Such a message keeps its arrow touching on both sides. See
+[Arrow spacing](./sequence.md#arrow-spacing).
 
 [fixture: sequence/arrow-spacing/touching-before-read-otherwise-kept]
-
-See [Arrow spacing](./sequence.md#arrow-spacing).
 
 ## Sequence messages with a central connection
 
@@ -4291,7 +4399,8 @@ arrow and read the `<<` as part of the name before it, and `Alice<<->>Bob` and
 After a `()` it is the same: the name that these versions read runs from the id
 to the `<<`, so the whitespace between the `()` and the `<<` is part of it, and
 `A ()   <<->> B` stays as written, with a directive in that whitespace too. The
-whitespace after the arrow is not at stake in any version.
+whitespace after the arrow is not at stake in any version. See
+[Arrow spacing](./sequence.md#arrow-spacing).
 
 [fixture: sequence/arrow-spacing/parentheses-then-bidirectional-arrow-gap-kept]
 [fixture: sequence/arrow-spacing/bidirectional-arrow-gap-before-kept] [fixture:
@@ -4303,8 +4412,6 @@ sequence/arrow-spacing/touching-over-line-breaks-joined] [fixture:
 sequence/arrow-spacing/touching-with-comment-line-kept] [fixture:
 sequence/arrow-spacing/minus-before-arrow-like-target-spaced] [corpus fixture:
 sequence/spec-sequence-diagram-c8d8bf08]
-
-See [Arrow spacing](./sequence.md#arrow-spacing).
 
 ## Sequence statements over several lines
 
@@ -4321,11 +4428,10 @@ retained because it can join the lines for the lexer.
 
 A title with a comment line between `title` and its text keeps its complete
 source instead, including value-owned indentation: the comment line is removed
-before mermaid.js reads the text, so the line after it is the title.
+before mermaid.js reads the text, so the line after it is the title. See
+[Multi-line statements](./sequence.md#multi-line-statements).
 
 [fixture: sequence/title/comment-line-kept]
-
-See [Multi-line statements](./sequence.md#multi-line-statements).
 
 ## A line of only whitespace after a comment
 
@@ -4369,21 +4475,19 @@ line: `A --> B : ` has an empty title and `A --> B` none.
 
 On a line that holds a `;`, whether whitespace follows the `:` of a label is
 kept as written, since the line rule of mermaid.js reads a `:` directly followed
-by text up to a `#`.
+by text up to a `#`. See [Labels](./class.md#labels) and
+[Member lines](./class.md#member-lines).
 
 [fixture: class/labels/semicolon-line-kept]
-
-See [Labels](./class.md#labels) and [Member lines](./class.md#member-lines).
 
 ## Unclosed backquoted names
 
 A backquoted name that is not closed runs to the end of the text, with the
 whitespace and line breaks at its end. It is printed as written to the end of
-the text, and no line break is added after it.
+the text, and no line break is added after it. See
+[Unclosed backquoted names](./class.md#unclosed-backquoted-names).
 
 [fixture: class/unclosed-backquoted-names/kept]
-
-See [Unclosed backquoted names](./class.md#unclosed-backquoted-names).
 
 ## Description block indentation
 
@@ -4452,13 +4556,12 @@ In a state diagram, `scale`, `classDef`, `class`, `style`, `state`, `note`, and
 `stateDiagram`, in any case, are keywords only when whitespace follows them. A
 transition from an id spelled so keeps its arrow touching on both sides, as in
 `scale-->B`, and a description after such an id keeps its `:` touching it:
-`scale -->B` and `style :x` are rejected.
+`scale -->B` and `style :x` are rejected. See
+[Arrow spacing](./state.md#arrow-spacing).
 
 [fixture: state/arrow-spacing/touching-before-keyword-kept] [fixture:
 state/arrow-spacing/compat-keyword-ids-transition] [fixture:
 state/descriptions-and-labels/compat-keyword-ids-description]
-
-See [Arrow spacing](./state.md#arrow-spacing).
 
 ## State notes, aliases, and names
 
@@ -4524,7 +4627,9 @@ line of its own, a second name would add a state.
 [fixture: state/statements-one-per-line/state-names-kept]
 
 A `%%` or an empty description block right before a `{` is kept as written up to
-the `{`.
+the `{`. See [Notes](./state.md#notes), [Aliases](./state.md#aliases),
+[Statements one per line](./state.md#statements-one-per-line), and
+[Composite states](./state.md#composite-states).
 
 [fixture: state/composite-states/compat-comment-after-name-before-body]
 [fixture: state/composite-states/compat-comment-line-before-body] [fixture:
@@ -4532,20 +4637,14 @@ state/composite-states/percent-before-body-kept] [fixture:
 state/composite-states/empty-block-before-body-kept] [corpus fixture:
 state/gram-ignored-state-comment-before-brace]
 
-See [Notes](./state.md#notes), [Aliases](./state.md#aliases),
-[Statements one per line](./state.md#statements-one-per-line), and
-[Composite states](./state.md#composite-states).
-
 ## State lines that hold a line separator
 
 In a state diagram, a line that holds U+2028 or U+2029 is kept as written:
 mermaid.js stops at these characters when it looks for a pseudostate mark, a
 direction line, and a second name before a `{`, while the plugin reads them as
-whitespace.
+whitespace. See [Line separators](./state.md#line-separators).
 
 [corpus fixture: state/lex-pseudostate-mark-after-line-separator]
-
-See [Line separators](./state.md#line-separators).
 
 ## ER lines that the place or the whitespace decides
 

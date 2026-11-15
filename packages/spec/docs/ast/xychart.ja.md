@@ -273,6 +273,8 @@ XychartAccTitleStatement と同じく、テキストはテキストを持つ最�
 閉じていないブロックはテキストの終わりまで続きます。
 テキストの終わりの `accDescr {`、改行、`a` は値 `a` を持ち、閉じていません。
 空の説明ブロックは、文が始まるところでだけ文で、ほかでは入力を拒否させます。
+[空の説明ブロック](../diagrams/xychart.ja.md#空の説明ブロック)
+を参照してください。
 
 [fixture: xychart/db-acc-descr-block]
 [fixture: xychart/db-acc-descr-block-empty]
@@ -280,9 +282,6 @@ XychartAccTitleStatement と同じく、テキストはテキストを持つ最�
 [fixture: xychart/db-acc-descr-empty-block-line-feed-inside]
 [fixture: xychart/db-acc-descr-unclosed-block]
 [fixture: xychart/div-empty-description-block-inside-title-text]
-
-[空の説明ブロック](../diagrams/xychart.ja.md#空の説明ブロック)
-を参照してください。
 
 ### XychartLiteral
 

@@ -71,11 +71,10 @@ mermaid.js は前後をつないで受理します。
 [fixture: kanban/db-metadata-directive]
 
 完全なデータブロックの間にはディレクティブを置けます。
-
-[fixture: kanban/db-metadata-adjacent-directive]
-
 [単位の中のディレクティブ](../diagrams/kanban.ja.md#単位の中のディレクティブ)
 を参照してください。
+
+[fixture: kanban/db-metadata-adjacent-directive]
 
 C4 では見出し語、呼び出し語、`accTitle`、`accDescr` の内部の、
 ディレクティブを拒否し、mermaid.js は前後をつなぎます。

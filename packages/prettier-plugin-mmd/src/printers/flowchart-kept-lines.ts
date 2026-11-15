@@ -19,6 +19,7 @@ import {
   findLinesAfterWords,
   findLinesAfterEmptyStyle,
   findDirectionTextLines,
+  findLinesBeforeDirectionStatement,
   textUpToLastWord,
   findWordEnd,
   endsWithWordReadWithLineBreaks,
@@ -60,20 +61,26 @@ export function findFlowchartKeptLines(source: Source): KeptLines {
   }
   const statements = root.body.body
   const directionText = findDirectionTextLines(source, statements)
+  const joined = new Set([
+    ...findLinesWithOwnSemicolons(source),
+    ...findLinesAfterWords(source, statements, wordsReadWithLineBreaks),
+    ...findLinesAfterEmptyStyle(source, statements),
+    ...findLinesOfSubgraphBlocks(source, statements),
+  ])
+  const beforeDirection = findLinesBeforeDirectionStatement(
+    source,
+    statements,
+    joined,
+  )
   const kept: KeptLines = {
-    joined: new Set([
-      ...findLinesWithOwnSemicolons(source),
-      ...findLinesAfterWords(source, statements, wordsReadWithLineBreaks),
-      ...findLinesAfterEmptyStyle(source, statements),
-      ...findLinesOfSubgraphBlocks(source, statements),
-    ]),
+    joined,
     verbatim: new Set([
       ...directionText,
       ...findStyleLinesWithLineSeparators(source, statements),
       ...findLinesEndedBySemicolon(source),
       ...findLinesOfPercentStatements(source, statements),
     ]),
-    ownIndentation: directionText,
+    ownIndentation: new Set([...directionText, ...beforeDirection]),
   }
   keptLinesBySource.set(source, kept)
   return kept

@@ -52,6 +52,7 @@ import {
   accessibilityRules,
   endsWithDirectives,
   trimTextAfterKeyword,
+  trimmedTextEnd,
 } from "./statement-rules.ts"
 import { collapsedRunsAtom } from "./text-runs.ts"
 import type { Source } from "./source.ts"
@@ -61,6 +62,7 @@ import {
   findTriviaBetween,
   isSpaceOrTab,
   isStructural,
+  isWhitespace,
   skipRemoved,
 } from "./source.ts"
 
@@ -193,6 +195,14 @@ export function layoutCommonLine(
     endsWithDirectives(source, value.range)
   let valueStart = value?.range[0] ?? delimiter.range[1]
   let valueEnd = value?.range[1] ?? valueStart
+  const valueTextEnd = trimmedTextEnd(
+    source,
+    valueStart,
+    valueEnd,
+    isWhitespace,
+  )
+  const trimsEnd = !titleReachesComment && (!hasTrivia || endsInDirectives)
+  if (trimsEnd) valueEnd = valueTextEnd.end
   if (!hasTrivia) {
     // The text of a value that follows a second whitespace character starts
     // at that character, so a `;` that the line rule ignores can come before
@@ -261,6 +271,12 @@ export function layoutCommonLine(
       [valueStart, valueEnd],
       !statement.type.includes("AccTitle"),
     )
+  }
+  // An ignored `;` at the trimmed end stays against the text, as when its
+  // trailing blanks lie outside the value (docs/pie.md, Accessibility lines).
+  if (trimsEnd && valueTextEnd.trailingBlanks !== null) {
+    atoms.push({ start: valueTextEnd.end, end: valueTextEnd.end + 1 })
+    lineRules.set(valueTextEnd.end, "none")
   }
   let layout: AtomLayout = {
     atoms,

@@ -339,6 +339,8 @@ mermaid.js は部分をつなぎます。
 `space:` にそれと `2` が続くもの、
 形やブロック矢印の文字列と開き・閉じの間のものがそうです。
 閉じないディレクティブはテキストの終わりまで続きます。
+[ディレクティブの位置](../common.ja.md#ディレクティブの位置)
+を参照してください。
 
 [fixture: block/div-directive-in-id]
 [fixture: block/div-directive-inside-direction]
@@ -395,9 +397,6 @@ mermaid.js は部分をつなぎます。
 [fixture: block/db-tail-class-def-directive-unclosed]
 [fixture: block/db-tail-composite-end-directive]
 [fixture: block/db-tail-composite-end-keyword-directive]
-
-[ディレクティブの位置](../common.ja.md#ディレクティブの位置)
-を参照してください。
 
 ### 文の文脈
 

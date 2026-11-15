@@ -11,10 +11,9 @@ class 図の木から Db の要約を作る手順です。
 
 フロントマターの図のタイトルは、木から来ません。
 Db の値を確かめる人は、それを mermaid.js 自身の関数で求めます。
+[設定（参考）](../configuration.ja.md#設定参考) を参照。
 
 [fixture: class/docs-syntax-class-diagram-2f728b32]
-
-[設定（参考）](../configuration.ja.md#設定参考) を参照。
 
 ## 木から要約を作る
 
@@ -501,7 +500,6 @@ ASCII の数字で始まる語は、`classId-` を付けて探しません。
 
 ラベルのないクラスの名前だけの文は、何も変えません。
 `Foo` の行はクラスを宣言せず、名前 `ClassA` である `Class A` も同じです。
+[字句構造](../../../spec/docs/diagrams/class.ja.md#字句構造) を参照。
 
 [fixture: class/gram-name-alone] [fixture: class/lex-keyword-upper-case]
-
-[字句構造](../../../spec/docs/diagrams/class.ja.md#字句構造) を参照。

@@ -2208,6 +2208,15 @@ style; it is never shortened, and a text that is no color stays as written (see
 [fixture: colors/colors-in-lower-case] [fixture:
 colors/words-that-are-not-colors-as-written]
 
+The text of a style is read without its whitespace, so a color that characters
+follow after whitespace is part of a longer word and stays as written:
+`style A fill:#F9F ab` is printed `style A fill: #F9F ab`, and
+`style A fill:#F9F ;`, a line break, and `ab` (the unit goes on over the `;`
+that the line rule ignores) stays as written.
+
+[fixture: colors/color-words-as-read] [fixture:
+colors/color-word-over-ignored-semicolon]
+
 Input
 ([colors/colors-in-lower-case-input.mmd](../tests/fixtures/er/colors/colors-in-lower-case-input.mmd)):
 
@@ -2475,18 +2484,22 @@ between the character and the `;` go, and the style continues with the text
 after them. The `;` is handled as follows.
 
 - Where a statement follows the comment line, directive lines between them
-  included, and nothing but U+2028, U+2029, spaces, and tabs stands after the
-  first of those characters, the `;` is dropped together with them:
-  `style A fill:red`, U+2028, `;`, a line break, `%% c`, a line break, and `x`
-  is printed `style A fill: red`, a line break, `%% c`, a line break, and `x`,
-  as it is where whitespace stands before the U+2028 or U+2029.
+  included, and nothing but U+2028, U+2029, spaces, tabs, vertical tabs, and
+  form feeds stands after the first of those characters, the `;` is dropped
+  together with them: `style A fill:red`, U+2028, `;`, a line break, `%% c`, a
+  line break, and `x` is printed `style A fill: red`, a line break, `%% c`, a
+  line break, and `x`, as it is where whitespace stands before the U+2028 or
+  U+2029.
 - Where other whitespace stands after the first character, a no-break space for
   instance, the `;` stays, with the character and that whitespace.
 - Where the end of the text follows the comment line, nothing continues, and the
-  `;` stays only where whitespace that is no space or tab stands between the
-  character and the `;` on the line of the style. Otherwise it is dropped, as it
-  is where a statement or the end of the text follows without a comment line,
-  and the character stays as written.
+  `;` stays only where whitespace that is no space, tab, vertical tab, or form
+  feed stands between the character and the `;` on the line of the style.
+  Otherwise it is dropped, as it is where a statement or the end of the text
+  follows without a comment line, and the character stays as written. A vertical
+  tab and a form feed that stand after the U+2028 or U+2029 are no text of the
+  style in the Db of an ER diagram, which is why they are no reason to keep the
+  `;`.
 
 [fixture:
 semicolons-at-the-end-of-a-style-statement/comment-and-directive-controls]
@@ -2503,7 +2516,11 @@ whitespace before the character goes with the terminator] [test: ER whitespace
 other than spaces and tabs after the character keeps the terminator] [test: ER a
 comment line at the end of the text keeps the terminator after whitespace that
 is no space or tab] [test: ER a terminator after spaces and tabs is dropped
-before a comment line at the end of the text]
+before a comment line at the end of the text] [test: ER a vertical tab after
+U+2028 is no text of the style before a comment line at the end of the text]
+[test: ER a form feed after U+2028 is no text of the classDef before a comment
+line at the end of the text] [test: ER a vertical tab and a form feed after
+U+2028 go with the terminator before a comment line and a statement]
 
 mermaid.js keeps a U+2028 or U+2029 that directly follows the last style in the
 text of that style, and draws the same figure without it, so the Db of the

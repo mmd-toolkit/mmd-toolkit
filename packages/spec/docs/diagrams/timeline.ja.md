@@ -995,6 +995,7 @@ period の文ではない文の後にあります。
 mermaid.js がその event をどの period に与えるかは、
 tests パッケージの要約にあります。
 最初の period より前の event の文は入力を拒否させます。
+[文法の外の拒否](#文法の外の拒否) を参照してください。
 
 [fixture: timeline/db-event-own-line-after-title]
 [fixture: timeline/db-event-own-line-after-acc-title]
@@ -1004,8 +1005,6 @@ tests パッケージの要約にあります。
 [fixture: timeline/db-event-after-section-joins-earlier-task]
 [fixture: timeline/db-section-with-event-after-task]
 [fixture: timeline/gram-event-after-section-joins-last-period]
-
-[文法の外の拒否](#文法の外の拒否) を参照してください。
 
 ### タイトルと section
 

@@ -107,6 +107,7 @@ URL の文字列は、属性の引用符である引用符では終わりませ�
   それを除いたテキストを持ちます。
   `todayMarker` のテキストもそうで、`;` はそうでなければそれを終えます。
   click の id やリスト項目では、`;` がその単位を切り、入力は拒否されます。
+  [既知の差異](../../../spec/docs/diagrams/gantt.ja.md#既知の差異)を参照。
 
   [fixture: gantt/tokens-ignored-semicolon-in-title-text]
   [fixture: gantt/tokens-ignored-semicolon-in-section-text]
@@ -120,8 +121,6 @@ URL の文字列は、属性の引用符である引用符では終わりませ�
   [fixture: gantt/tokens-ignored-semicolon-todaymarker]
   [fixture: gantt/div-ignored-semicolon-in-click-id]
   [fixture: gantt/div-ignored-semicolon-in-list-item]
-
-  [既知の差異](../../../spec/docs/diagrams/gantt.ja.md#既知の差異)を参照。
 
 - テキストの両端の空白は、木が持つとおりに残ります。
   説明のテキストはコロンの前の空白を保ちます。

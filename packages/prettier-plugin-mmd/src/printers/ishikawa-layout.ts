@@ -12,7 +12,12 @@ import {
 } from "./indentation-lines.ts"
 import type { LeadingDirectives } from "./indentation-lines.ts"
 import { keptAsWritten, replaceInAtoms } from "./layout.ts"
-import { collectTextEndEdits, endsWithDirectives } from "./statement-rules.ts"
+import type { TextEdit } from "./layout.ts"
+import {
+  collectTextEndEdits,
+  endsWithDirectives,
+  trimmedTextEnd,
+} from "./statement-rules.ts"
 import type { Source } from "./source.ts"
 import {
   findTriviaBetween,
@@ -122,15 +127,20 @@ export function layoutIshikawaLine(
   line: IshikawaLine,
 ): AtomLayout {
   const start = line.leading?.textStart ?? line.range[0]
-  let end = line.range[1]
+  const textEnd = trimmedTextEnd(source, start, line.range[1], isSpaceOrTab)
+  let end = textEnd.end
   const atoms: Atom[] = []
   if (endsWithDirectives(source, [start, end])) {
     // The literal ends with directives, which are printed as at the end of a
     // line, with the whitespace before them as the same literal has when the
     // directives stand after it: one space each (docs/ishikawa.md, Trailing
     // whitespace).
-    atoms.push({ start, end })
-    replaceInAtoms(source, atoms, collectTextEndEdits(source, start, end, true))
+    atoms.push({ start, end: line.range[1] })
+    replaceInAtoms(
+      source,
+      atoms,
+      collectTextEndEdits(source, start, line.range[1], true),
+    )
   } else {
     // The gap before a directive that follows the literal is that of the
     // directive, so the literal keeps its end there.
@@ -140,9 +150,18 @@ export function layoutIshikawaLine(
     if (!directiveFollows) {
       while (end > start + 1 && isSpaceOrTab(source.text[end - 1])) end--
     }
-    atoms.push({ start, end })
+    atoms.push({
+      start,
+      end: textEnd.trailingBlanks === null ? end : line.range[1],
+    })
+    const edits: TextEdit[] = []
+    if (end < textEnd.end)
+      edits.push({ range: [end, textEnd.end], replacement: "" })
+    if (textEnd.trailingBlanks !== null)
+      edits.push({ range: textEnd.trailingBlanks, replacement: "" })
+    replaceInAtoms(source, atoms, edits)
   }
-  return { ...keptAsWritten(start, end), atoms }
+  return { ...keptAsWritten(start, line.range[1]), atoms }
 }
 
 /**

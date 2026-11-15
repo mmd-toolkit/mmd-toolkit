@@ -321,13 +321,12 @@ mermaid.js はタイトルを空白を含めて書かれたとおりに保つの
 [sequence.ja.md](../diagrams/sequence.ja.md#区切りの前の空の説明ブロック)
 を参照してください。
 ほかの場所では入力は拒否されます。
+[sequence.ja.md](../diagrams/sequence.ja.md#既知の差異) を参照してください。
 
 [fixture: sequence/db-acc-descr-spaces-block-keeps]
 [fixture: sequence/gram-acc-descr-block-empty-then-statement]
 [fixture: sequence/gram-box-empty-description-block-line]
 [fixture: sequence/header-empty-description-block]
-
-[sequence.ja.md](../diagrams/sequence.ja.md#既知の差異) を参照してください。
 
 ### SequenceLoopStatement、SequenceOptStatement、SequenceBreakStatement
 

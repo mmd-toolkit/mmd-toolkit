@@ -17,7 +17,11 @@ import {
   protectSemicolonPrefixes,
   replaceInAtoms,
 } from "./layout.ts"
-import { collectTextEndEdits, endsWithDirectives } from "./statement-rules.ts"
+import {
+  collectTextEndEdits,
+  endsWithDirectives,
+  trimmedTextEnd,
+} from "./statement-rules.ts"
 import type { TreeviewBoxPlan } from "./treeview-box.ts"
 import { treeviewContentStart } from "./treeview-box.ts"
 import {
@@ -250,7 +254,8 @@ function treeviewNodeParts(node: TreeviewNode): readonly Node[] {
  * of a title does.
  */
 function trimAtomEnd(source: Source, atom: Atom): Atom {
-  if (endsWithDirectives(source, [atom.start, atom.end])) {
+  const textEnd = trimmedTextEnd(source, atom.start, atom.end, isSpaceOrTab)
+  if (endsWithDirectives(source, [atom.start, textEnd.end])) {
     // The atom ends with directives, printed as at the end of a line (see
     // `collectTextEndEdits`).
     const atoms = [atom]
@@ -263,9 +268,18 @@ function trimAtomEnd(source: Source, atom: Atom): Atom {
   }
   if (findTriviaAt(source, atom.end - 1) !== undefined) return atom
   if (findTriviaBetween(source, atom.end, atom.end + 1).length > 0) return atom
-  let end = atom.end
+  let end = textEnd.end
   while (end > atom.start && isSpaceOrTab(source.text[end - 1])) end--
-  return end === atom.start || end === atom.end ? atom : { ...atom, end }
+  if (end === atom.start) return atom
+  if (textEnd.trailingBlanks !== null) {
+    const atoms = [atom]
+    replaceInAtoms(source, atoms, [
+      { range: [end, textEnd.end], replacement: "" },
+      { range: textEnd.trailingBlanks, replacement: "" },
+    ])
+    return atoms[0]
+  }
+  return end === atom.end ? atom : { ...atom, end }
 }
 
 /**

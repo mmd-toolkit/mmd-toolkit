@@ -507,6 +507,42 @@ export function normalizeStyleList(
 }
 
 /**
+ * The end that a text-trimming rule reads before an ignored `;` with only
+ * blanks to the physical line end (docs/compatibility.md, Lines that hold a
+ * `;`). The rule supplies its own blanks. Look beyond `end` too: the text's
+ * last token need not hold the blanks after the `;`. A Unicode line separator
+ * leaves the run inside the text, as do comments and directives after it.
+ * `trailingBlanks` is the part after the `;` that the text holds and removes.
+ */
+export function trimmedTextEnd(
+  source: Source,
+  start: number,
+  end: number,
+  isBlank: (character: string) => boolean,
+): { readonly end: number; readonly trailingBlanks: Range | null } {
+  let position = end
+  while (
+    position > start &&
+    !["\n", "\r", "\u2028", "\u2029"].includes(source.text[position - 1]) &&
+    isBlank(source.text[position - 1])
+  )
+    position--
+  const semicolon = position - 1
+  if (semicolon < start || !source.ignoredSemicolons.has(semicolon))
+    return { end, trailingBlanks: null }
+  let after = position
+  while (
+    after < source.text.length &&
+    !["\n", "\r", "\u2028", "\u2029"].includes(source.text[after]) &&
+    isBlank(source.text[after])
+  )
+    after++
+  if (after < source.text.length && !["\n", "\r"].includes(source.text[after]))
+    return { end, trailingBlanks: null }
+  return { end: semicolon, trailingBlanks: [position, end] }
+}
+
+/**
  * Whether the text in `range` ends with directives: its content, then
  * directives with spaces and tabs between them and after the last, and nothing
  * else, no `;`, line break, or line separator. The last directive may start at
@@ -611,10 +647,14 @@ export function trimTextAfterKeyword(
 export function collectTextEndEdits(
   source: Source,
   offset: number,
-  to: number,
+  end: number,
   collapsesRuns: boolean,
 ): TextEdit[] {
   const edits: TextEdit[] = []
+  const textEnd = trimmedTextEnd(source, offset, end, isSpaceOrTab)
+  if (textEnd.trailingBlanks !== null)
+    edits.push({ range: textEnd.trailingBlanks, replacement: "" })
+  const to = textEnd.end
   const directiveFollows = findTriviaBetween(source, to, to + 1).some(
     (item) => item.type === "Directive" && item.range[0] === to,
   )

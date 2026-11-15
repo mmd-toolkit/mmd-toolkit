@@ -197,6 +197,41 @@ export function treemapLines(
 }
 
 /**
+ * Where a style ends before a dropped final semicolon, without the whitespace
+ * before it that CSS reads as whitespace; undefined when no semicolon is
+ * dropped, or when a character that CSS does not read as whitespace stands
+ * after a `;` that the line rule ignores: that character is a character of the
+ * last style, mermaid.js draws another figure without it, and the style and
+ * the `;` stay as written (docs/treemap.md, Styles and Semicolons;
+ * docs/compatibility.md, Whitespace at the end of a style). A character of
+ * that kind before the `;` stays with the style, and the spaces, tabs, and
+ * form feeds after it go with the `;`. Both the printed stretch and the color
+ * word use this boundary.
+ */
+export function findTreemapStyleEnd(
+  source: Source,
+  statement: TreemapClassDefStatement,
+): number | undefined {
+  const { style } = statement
+  if (style === null) return undefined
+  const semicolon = endingSemicolonOf(source, statement.range, style)
+  if (semicolon === undefined || !isDroppedSemicolon(source, semicolon))
+    return undefined
+  for (let after = semicolon + 1; after < statement.range[1]; after++) {
+    if (keepsStyleEndCharacter(statement.type, source.text[after]))
+      return undefined
+  }
+  let end = semicolon
+  while (
+    end > style.range[0] &&
+    isWhitespace(source.text[end - 1]) &&
+    !keepsStyleEndCharacter(statement.type, source.text[end - 1])
+  )
+    end--
+  return end
+}
+
+/**
  * The style of a `classDef` together with what follows it, printed without the
  * `;` that ends the statement and without the whitespace around that `;`,
  * where the printer drops that `;` (see `isDroppedSemicolon`); none where it
@@ -212,27 +247,8 @@ function findDroppedSemicolonStretches(
     return []
   const [start] = statement.style.range
   const end = statement.range[1]
-  const semicolon = endingSemicolonOf(source, statement.range, statement.style)
-  if (semicolon === undefined || !isDroppedSemicolon(source, semicolon))
-    return []
-  // A character that CSS does not read as whitespace, after a `;` that the
-  // line rule ignores, is a character of the last style: mermaid.js draws
-  // another figure without it, so the style and the `;` stay as written
-  // (docs/compatibility.md, Whitespace at the end of a style).
-  for (let after = semicolon + 1; after < end; after++) {
-    if (keepsStyleEndCharacter(statement.type, source.text[after])) return []
-  }
-  // The style ends where the `;` and the whitespace before it end, except
-  // that a character that CSS does not read as whitespace before the `;` stays
-  // with the style, which is then printed as written up to it: the spaces,
-  // tabs, and form feeds after it go with the `;`.
-  let styleEnd = semicolon
-  while (
-    styleEnd > start &&
-    isWhitespace(source.text[styleEnd - 1]) &&
-    !keepsStyleEndCharacter(statement.type, source.text[styleEnd - 1])
-  )
-    styleEnd--
+  const styleEnd = findTreemapStyleEnd(source, statement)
+  if (styleEnd === undefined) return []
   // The style is printed as in a statement without that `;` (see
   // `normalizeTreemapStyle`), so that a second formatting finds the same text.
   const style: Atom[] = [{ start, end: styleEnd }]

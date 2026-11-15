@@ -10,6 +10,7 @@ import {
   findTokensBetween,
   findTriviaBetween,
   isAtLineEnd,
+  isCssWhitespace,
   isSpaceOrTab,
   isWhitespace,
   isWordCharacter,
@@ -670,6 +671,20 @@ function continuesWhitespaceRun(
   return isWhitespace(character) && (readsLineFeeds || character !== "\n")
 }
 
+/**
+ * Whether whitespace that stands after a U+2028 or U+2029 before the `;` of a
+ * `classDef` or `style` statement is no text of the style: a space or a tab,
+ * and in an ER diagram a vertical tab and a form feed too, which its Db leaves
+ * out there.
+ */
+function isTrimmedAfterSeparator(character: string, bodyType: string): boolean {
+  return (
+    isSpaceOrTab(character) ||
+    (bodyType === "ErDiagram" &&
+      (character === "\u000b" || character === "\u000c"))
+  )
+}
+
 /** A U+2028 or U+2029 before the `;` of a `classDef` or `style` statement. */
 interface SeparatorBeforeTerminator {
   /** The offset of the first U+2028 or U+2029 of the whitespace before the `;`. */
@@ -738,11 +753,12 @@ function findSeparatorBeforeCommentTerminator(
     if (
       character !== "\u2028" &&
       character !== "\u2029" &&
-      !isSpaceOrTab(character)
+      !isTrimmedAfterSeparator(character, bodyType)
     )
       narrow = false
     // What stands after a line feed is no text of the style.
-    if (!endsStyle && !isSpaceOrTab(character)) loses = true
+    if (!endsStyle && !isTrimmedAfterSeparator(character, bodyType))
+      loses = true
   }
   const followed = textRead(source, region[1], source.text.length).trim() !== ""
   return followed || loses ? { separator, narrow, followed } : undefined
@@ -1180,11 +1196,6 @@ export function joinsNextLine(source: Source, offset: number): boolean {
   )
 }
 
-/** Whether a character is whitespace in CSS, other than a line break: a space, a tab, or a form feed. */
-function isCssWhitespace(character: string): boolean {
-  return isSpaceOrTab(character) || character === "\u000c"
-}
-
 /**
  * The whitespace characters at the end of a statement that a version of
  * mermaid.js that counts draws a figure differently for, with the character
@@ -1264,6 +1275,23 @@ export function findLinesWithUnusualStyleEnd(
   }
   unusualStyleEndsBySource.set(source, lines)
   return lines
+}
+
+/**
+ * Whether the whitespace after a kept statement holds a line separator, which
+ * stays as written (docs/state.md, Line separators). The color rule uses this
+ * same printed suffix when deciding where a color word ends.
+ */
+export function keepsTrailingLineSeparators(
+  source: Source,
+  start: number,
+  end: number,
+): boolean {
+  const written = source.text.slice(start, end)
+  return (
+    written.trim() === "" &&
+    (written.includes("\u2028") || written.includes("\u2029"))
+  )
 }
 
 /**

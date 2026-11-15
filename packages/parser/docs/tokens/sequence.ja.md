@@ -61,13 +61,13 @@ U+2028 か U+2029 を持つ箱の `text` の単位は、1 つのトークンで�
 `title` か `title:` の文の `title-text` の単位のトークンは単位の全体で、
 `accTitle:` のものは、mermaid.js が削る両端の空白を除いたものです。
 箱のテキストでは U+2028 と U+2029 を空白に数えません。
+[SequenceBoxText](../../../spec/docs/ast/sequence.ja.md#sequenceboxtext)
+を参照。
 
 [fixture: sequence/db-title-spaces]
 [fixture: sequence/db-acc-title-whitespace-ends]
 [fixture: sequence/db-box-colour-then-spaces-and-line-separator]
 
-[SequenceBoxText](../../../spec/docs/ast/sequence.ja.md#sequenceboxtext)
-を参照。
 箱のテキストで、色の候補と残りの間の空白は、SequenceBoxText の値に入り、
 そのどちらの部分にも入りません。
 この空白は、SequenceBoxText が持つ、それ自体の `RawText` のトークンです。
@@ -101,15 +101,14 @@ U+2028 か U+2029 を持つ箱の `text` の単位は、1 つのトークンで�
 
 `RawText` でないトークンの中のディレクティブと無視される `;` は、
 入力を拒否させます。
+[単位の中のディレクティブ](../../../spec/docs/diagrams/sequence.ja.md#単位の中のディレクティブ)
+を参照。
 
 [fixture: sequence/div-directive-in-keyword]
 [fixture: sequence/div-directive-in-arrow]
 [fixture: sequence/div-directive-in-number]
 [fixture: sequence/div-ignored-semicolon-in-keyword]
 [fixture: sequence/div-ignored-semicolon-in-arrow]
-
-[単位の中のディレクティブ](../../../spec/docs/diagrams/sequence.ja.md#単位の中のディレクティブ)
-を参照。
 
 - 参加者の id は 1 つの `RawText` のトークンで、
   mermaid.js が id の一部として読む、中の空白もそのトークンに入ります。
