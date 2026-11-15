@@ -9,6 +9,7 @@ import { nodesOf } from "../src/check-tree/walk.ts"
 import {
   copyOf,
   firstNode,
+  itFailsEachRecorded,
   recordedTree,
   setField,
 } from "./check-tree-recorded.ts"
@@ -1028,4 +1029,97 @@ describe("checkTree: the ranges of the nodes of a requirement diagram (positions
         'value is not the texts of its tokens joined: "fill: red", not "fill:red"',
     })
   })
+})
+
+/** Sets the range of the first node of the type `type` to `range`, with its location. */
+function placeFirst(
+  type: string,
+  range: readonly [number, number],
+): (root: CheckedRoot, input: string) => void {
+  return (root, input) => {
+    const node = firstNode(root, type)
+    setField(node, "range", range)
+    setField(node, "loc", locationOf(input, range))
+  }
+}
+
+describe("checkTree: the ranges of the nodes of a packet diagram (positions/packet.md)", () => {
+  itFailsEachRecorded("packet", [
+    {
+      name: "fails a packet root that ends before the end of the input",
+      fixture: "gram-mixed",
+      mutate: (root, input) => {
+        setField(root, "range", [0, 38])
+        setField(root, "loc", locationOf(input, [0, 38]))
+      },
+      expected:
+        "Root: the root does not cover the whole input: [0,38], not [0,39]",
+    },
+    {
+      name: "fails a packet diagram that runs over the comment after its last form",
+      fixture: "comment-eof",
+      mutate: placeFirst("PacketDiagram", [0, 19]),
+      expected:
+        "PacketDiagram at 0-19: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a bare comment line passed before the header held as a hidden form of the diagram",
+      fixture: "detect-empty-braces-bare",
+      mutate: (root, input) => {
+        const node = {
+          type: "PacketIgnoredText",
+          kind: "directive",
+          value: "%%{}%%",
+          range: [0, 6] as const,
+          loc: locationOf(input, [0, 6]),
+        }
+        setField(root.body, "textBeforeHeader", [node])
+        placeFirst("PacketDiagram", [0, 13])(root, input)
+        setField(root, "comments", [])
+        setField(root, "tokens", [
+          tokenOf(input, "RawText", { text: "%%{}%%" }),
+          ...root.tokens,
+        ])
+      },
+      expected:
+        "PacketIgnoredText at 0-6: a pre-header hidden directive must be found by the second word-type scan; bare percent forms are Comments",
+    },
+    {
+      name: "fails a count whose range holds the colon after its digits",
+      fixture: "db-cap-following-block-unpublished",
+      mutate: placeFirst("NumericLiteral", [8, 15]),
+      expected: 'NumericLiteral at 8-15: raw: "320000", not "320000:"',
+    },
+    {
+      name: "fails an empty label whose range leaves out its closing quote",
+      fixture: "db-label-empty-double",
+      mutate: placeFirst("StringLiteral", [9, 10]),
+      expected:
+        "StringLiteral at 9-10: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a label whose raw is not the source at its range",
+      fixture: "gram-mixed",
+      mutate: (root) => {
+        setField(firstNode(root, "StringLiteral"), "raw", "'two'")
+      },
+      expected: 'StringLiteral at 10-15: raw: "\'two\'", not "\\"two\\""',
+    },
+    {
+      name: "fails a label that a directive cuts whose range ends before the directive",
+      fixture: "directive-label-middle",
+      mutate: placeFirst("StringLiteral", [9, 11]),
+      expected:
+        'StringLiteral at 9-11: raw: "\\"A%%{init:{}}%%B\\"", not "\\"A"',
+    },
+    {
+      name: "fails a label that a directive cuts whose value holds the directive",
+      fixture: "directive-label-middle",
+      mutate: (root, input) => {
+        setField(firstNode(root, "StringLiteral"), "value", input.slice(10, 25))
+      },
+      expected:
+        'StringLiteral at 9-26: value is not its written text: "A%%{init:{}}%%B", not "AB"',
+    },
+  ])
 })

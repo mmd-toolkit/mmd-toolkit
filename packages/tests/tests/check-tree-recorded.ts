@@ -335,3 +335,30 @@ export function expectWhitespaceCases(cases: readonly WhitespaceCase[]): void {
     })
   }
 }
+
+/** A case of a recorded tree whose change may read the input: the change of the copy of the tree, and a part of `where: message` of the problem that it causes. */
+export interface InputCase {
+  readonly name: string
+  readonly fixture: string
+  readonly mutate: (root: CheckedRoot, input: string) => void
+  readonly expected: string
+}
+
+/** Registers a test for each case of `diagram`: the recorded tree passes the check, and the copy after the change fails it with the problem the case expects. */
+export function itFailsEachRecorded(
+  diagram: DiagramType,
+  cases: readonly InputCase[],
+): void {
+  for (const testCase of cases) {
+    it(testCase.name, () => {
+      const { input, tree } = recordedTree(diagram, testCase.fixture)
+      expect(checkTree(input, tree)).toEqual([])
+      const broken = copyOf(tree)
+      testCase.mutate(broken, input)
+      const problems = checkTree(input, broken)
+      expect(says(problems, testCase.expected), JSON.stringify(problems)).toBe(
+        true,
+      )
+    })
+  }
+}

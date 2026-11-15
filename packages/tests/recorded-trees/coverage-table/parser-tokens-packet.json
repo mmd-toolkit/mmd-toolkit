@@ -99,6 +99,452 @@
           }
         ]
       }
+    },
+    {
+      "block": "packages/parser/docs/tokens/packet.md:a65589856e1c",
+      "diagrams": ["packet"],
+      "about": "Tokens follow the specification's\n[ordered rules](../../../spec/docs/diagrams/pa",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A composite common form is cut into tokens at its authored component boundaries.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the keyword and the colon of an accessibility title as one token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/packet.md:07da2bb98837",
+      "diagrams": ["packet"],
+      "about": "| `Keyword`    | `packet`, `packet-beta`, `title`, `accTitle`, `accDescr`.    | ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`packet` is a `Keyword` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the header `packet` as a RawText token"
+              }
+            ]
+          },
+          {
+            "case": "`packet-beta` is a `Keyword` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the header `packet-beta` as a RawText token"
+              }
+            ]
+          },
+          {
+            "case": "`title` is a `Keyword` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the keyword `title` as a RawText token"
+              }
+            ]
+          },
+          {
+            "case": "`accTitle` is a `Keyword` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the keyword `accTitle` of a packet diagram as a RawText token"
+              }
+            ]
+          },
+          {
+            "case": "`accDescr` is a `Keyword` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the keyword `accDescr` of a packet diagram as a RawText token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/packet.md:57778a0a7188",
+      "diagrams": ["packet"],
+      "about": "| `Punctuator` | Range dash, relative plus, colon, and description braces.    | ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The range dash is a `Punctuator` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the dash of a range block as a Keyword token"
+              }
+            ]
+          },
+          {
+            "case": "The relative plus is a `Punctuator` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the plus of a relative block as a Keyword token"
+              }
+            ]
+          },
+          {
+            "case": "The colon is a `Punctuator` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the colon of a block as a Keyword token"
+              }
+            ]
+          },
+          {
+            "case": "The description braces are `Punctuator` tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the opening brace of a description block as a Keyword token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the closing brace of a description block as a Keyword token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/packet.md:60ff0491e360",
+      "diagrams": ["packet"],
+      "about": "| `Numeric`    | One written unsigned integer; relative plus is separate.     | ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A written unsigned integer is a `Numeric` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the count of a relative block as a RawText token"
+              }
+            ]
+          },
+          {
+            "case": "It is one token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a count cut into two Numeric tokens"
+              }
+            ]
+          },
+          {
+            "case": "The relative plus is separate.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the plus and the count of a relative block as one Numeric token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/packet.md:9427f50492c7",
+      "diagrams": ["packet"],
+      "about": "| `String`     | One complete quoted label, including both matching quotes.   | ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A quoted label is a `String` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a label as a RawText token"
+              }
+            ]
+          },
+          {
+            "case": "The token holds both matching quotes.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a label token without its closing quote"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/packet.md:6d1f7085169c",
+      "diagrams": ["packet"],
+      "about": "| `RawText`    | One common value or one complete hidden YAML/DIRECTIVE form. | ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A common value is a `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a common value as a Keyword token"
+              }
+            ]
+          },
+          {
+            "case": "A hidden YAML or DIRECTIVE form is one `RawText` token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a hidden YAML form as a Keyword token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a hidden YAML form cut into two RawText tokens"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/packet.md:5cdd03ee5ecd",
+      "diagrams": ["packet"],
+      "about": "A line-value token keeps all content after title's one ASCII separator or an\nacc",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A line-value token keeps all content after the separator or the colon, padding included.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the token of an accessibility title value without the space after its colon"
+              }
+            ]
+          },
+          {
+            "case": "Whitespace-only line text has a token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a whitespace-only accessibility description without its token"
+              }
+            ]
+          },
+          {
+            "case": "Empty line content has no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the separator of a title with nothing after it as a token"
+              }
+            ]
+          },
+          {
+            "case": "A block-value token leaves out the common whitespace at its outer ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the token of a description block value widened over the whitespace before it"
+              }
+            ]
+          },
+          {
+            "case": "A common-trivia-only interior has no value token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the whitespace of a whitespace-only description block as a token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/packet.md:7e2c95b4724f",
+      "diagrams": ["packet"],
+      "about": "Quoted labels and common values keep their source spelling, including escapes,\ne",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A quoted label keeps its escapes.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the token of a label that decodes an escape"
+              }
+            ]
+          },
+          {
+            "case": "A common value keeps its entities.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the token of a title value that decodes its entities"
+              }
+            ]
+          },
+          {
+            "case": "A common value keeps HTML attribute quotes.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the token of a title value that writes an HTML attribute quote as `'`"
+              }
+            ]
+          },
+          {
+            "case": "A quoted label keeps its source line endings.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the token of a label that writes its CRLF as LF"
+              }
+            ]
+          },
+          {
+            "case": "Quotes in a common value stay `RawText`, also when unclosed.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a title value with an open quote as a String token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/packet.md:cf9a26ee729d",
+      "diagrams": ["packet"],
+      "about": "A hidden form is one RawText item from its opener through its qualifying closer,",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A hidden form's token starts at its opener, without the padding before it.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the token of a hidden directive widened over the space before it"
+              }
+            ]
+          },
+          {
+            "case": "It leaves out the line terminator consumed after the closer.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the token of a hidden YAML form widened over the line ending after it"
+              }
+            ]
+          },
+          {
+            "case": "Body-present YAML takes priority over its opening range dash, which stays its own token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the dash before a YAML form held in the token of the form"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/packet.md:a8c504ff8a5d",
+      "diagrams": ["packet"],
+      "about": "ASCII spaces/tabs between units, visible newline units and the appended LF have\n",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Spaces and tabs between units have no tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a tab between the units of a block as a token"
+              }
+            ]
+          },
+          {
+            "case": "Visible newline units have no tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a line feed between two statements as a token"
+              }
+            ]
+          },
+          {
+            "case": "Native comments have the mark `%%`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a native comment with the mark `#`"
+              }
+            ]
+          },
+          {
+            "case": "A native comment keeps LS and PS as content.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a native comment that ends at a line separator inside it"
+              }
+            ]
+          },
+          {
+            "case": "Comments are shared records.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a native comment as a RawText token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/packet.md:da8012b89d40",
+      "diagrams": ["packet"],
+      "about": "Bare percent lines and accompanying trivia passed by detection are not read\nagai",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A bare percent line passed by detection is a shared Comment, not read again.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a bare comment line passed before the header as a RawText token"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a bare comment line passed before the header left out of the comments"
+              }
+            ]
+          }
+        ]
+      }
     }
   ]
 }

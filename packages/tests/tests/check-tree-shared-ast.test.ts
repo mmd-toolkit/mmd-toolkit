@@ -7,11 +7,16 @@ import {
   copyOf,
   firstNode,
   problemsOf,
+  itFailsEachRecorded,
   recordedTree,
   says,
   setField,
 } from "./check-tree-recorded.ts"
-import type { MutationCase } from "./check-tree-recorded.ts"
+import type { InputCase, MutationCase } from "./check-tree-recorded.ts"
+import { itFailsEach } from "./check-tree-built.ts"
+import type { Built } from "./check-tree-built.ts"
+import { buildPacket, range as rangeBlock, relative } from "./packet-built.ts"
+import { ignored } from "./statement-tree-built.ts"
 import {
   directiveOf,
   frontmatterOf,
@@ -12492,4 +12497,1583 @@ describe("checkTree: the nodes of a requirement diagram (ast/requirement.md)", (
       ).toBe(true)
     })
   }
+})
+
+/** The `index`th node of the type `type` of `root`, in the order of the walk. */
+function nthNode(root: CheckedRoot, type: string, index = 0): CheckedNode {
+  return nodesOf(root).filter((node) => node.type === type)[index]
+}
+
+/** Sets the range of `node` to `range` of `input`, with its location. */
+function placeAt(
+  node: CheckedNode,
+  input: string,
+  range: readonly [number, number],
+): void {
+  setField(node, "range", range)
+  setField(node, "loc", locationOf(input, range))
+}
+
+/** Moves the first node of the list `from` of the first node of the type `type` that holds one there to the end of its list `to`. */
+function moveFirst(
+  type: string,
+  from: string,
+  to: string,
+): InputCase["mutate"] {
+  return (root) => {
+    const owner = nodeOf(root, type, (node) => holdsNode(node, from))
+    const [first, ...rest] = owner[from] as CheckedNode[]
+    setField(owner, from, rest)
+    setField(owner, to, [...(owner[to] as CheckedNode[]), first])
+  }
+}
+
+/** Moves the first node of the list `field` of the first node of the type `type` that holds one there into the body of the diagram, after that node. */
+function moveToBody(type: string, field: string): InputCase["mutate"] {
+  return (root) => {
+    const owner = nodeOf(root, type, (node) => holdsNode(node, field))
+    const [first, ...rest] = owner[field] as CheckedNode[]
+    setField(owner, field, rest)
+    const body = root.body.body as CheckedNode[]
+    const at = body.indexOf(owner) + 1
+    setField(root.body, "body", [
+      ...body.slice(0, at),
+      first,
+      ...body.slice(at),
+    ])
+  }
+}
+
+/** Makes the first PacketIgnoredText in the list `field` of the first node of the type `type` that holds one there a PacketLiteral with the same value. */
+function hiddenAsLiteral(type: string, field: string): InputCase["mutate"] {
+  return (root) => {
+    const owner = nodeOf(root, type, (node) => holdsNode(node, field))
+    const node = firstIn(owner, field)
+    delete (node as Record<string, unknown>).kind
+    setField(node, "type", "PacketLiteral")
+  }
+}
+
+/** Leaves the `index`th item out of the body of the diagram. */
+function withoutBodyItem(index: number): InputCase["mutate"] {
+  return (root) => {
+    setField(
+      root.body,
+      "body",
+      (root.body.body as CheckedNode[]).filter((_item, at) => at !== index),
+    )
+  }
+}
+
+/** Sets the range of the `index`th node of the type `type` to `range`, and its value to the input there when it has one. */
+function rangeOf(
+  type: string,
+  range: readonly [number, number],
+  index = 0,
+): InputCase["mutate"] {
+  return (root, input) => {
+    const node = nthNode(root, type, index)
+    placeAt(node, input, range)
+    if (typeof node.value === "string")
+      setField(node, "value", input.slice(...range))
+  }
+}
+
+/** Makes the first node of the type `type` hold a NumericLiteral `raw` in place of its number in `field`. */
+function numberOf(
+  type: string,
+  field: string,
+  raw: string,
+): InputCase["mutate"] {
+  return (root) => {
+    const number = firstIn(nodeOf(root, type), field)
+    setField(number, "raw", raw)
+    setField(number, "value", Number(raw))
+  }
+}
+
+/** Gives the first node of the type `type` the value `value`, a PacketLiteral at `range` of the input. */
+function packetValueAt(
+  type: string,
+  range: readonly [number, number],
+): InputCase["mutate"] {
+  return (root, input) => {
+    setField(nodeOf(root, type), "value", {
+      type: "PacketLiteral",
+      value: input.slice(...range),
+      range,
+      loc: locationOf(input, range),
+    })
+  }
+}
+
+/** Makes the first diagram comment a hidden directive in the suffix of the first node of the type `type`, with its RawText token. */
+function commentAsSuffix(type: string): InputCase["mutate"] {
+  return (root, input) => {
+    const [comment] = root.comments
+    const node = {
+      type: "PacketIgnoredText",
+      kind: "directive",
+      value: input.slice(...comment.range),
+      range: comment.range,
+      loc: comment.loc,
+    }
+    setField(nodeOf(root, type), "textAfter", [node])
+    setField(root, "comments", [])
+    setField(
+      root,
+      "tokens",
+      [
+        ...root.tokens,
+        {
+          type: "RawText",
+          value: node.value,
+          range: node.range,
+          loc: node.loc,
+        },
+      ].sort((first, second) => first.range[0] - second.range[0]),
+    )
+  }
+}
+
+describe("checkTree: the nodes of a packet diagram (ast/packet.md)", () => {
+  itFailsEachRecorded("packet", [
+    // The fields keep authored values; null, empty lists, and source order.
+    {
+      name: "fails a packet label that is not its written text",
+      fixture: "gram-mixed",
+      mutate: (root) => {
+        setField(nodeOf(root, "StringLiteral"), "value", "twoZ")
+      },
+      expected:
+        'StringLiteral at 10-15: value is not its written text: "twoZ", not "two"',
+    },
+    {
+      name: "fails a packet title without its null value field",
+      fixture: "title-empty",
+      mutate: (root) => {
+        delete (nodeOf(root, "PacketTitleStatement") as Record<string, unknown>)
+          .value
+      },
+      expected: "PacketTitleStatement at 7-12: lacks the field value",
+    },
+    {
+      name: "fails an absent gap of a relative block that is null instead of an empty list",
+      fixture: "gram-mixed",
+      mutate: (root) => {
+        setField(
+          nodeOf(root, "PacketRelativeBlockStatement"),
+          "textBeforeCount",
+          null,
+        )
+      },
+      expected:
+        "PacketRelativeBlockStatement at 7-15: the field textBeforeCount is null, not a list",
+    },
+    {
+      name: "fails two hidden suffixes out of source order",
+      fixture: "lex-hidden-two-suffixes",
+      mutate: (root) => {
+        const statement = nodeOf(root, "PacketSingleBlockStatement")
+        setField(
+          statement,
+          "textAfter",
+          [...(statement.textAfter as CheckedNode[])].reverse(),
+        )
+      },
+      expected:
+        "PacketIgnoredText at 12-22: comes before the child node PacketIgnoredText at 23-33 of PacketSingleBlockStatement at 7-33, which the child fields list before it",
+    },
+    // PacketDiagram.
+    {
+      name: "fails a YAML form retained before the header as a PacketLiteral",
+      fixture: "detect-one-block",
+      mutate: hiddenAsLiteral("PacketDiagram", "textBeforeHeader"),
+      expected:
+        "PacketDiagram at 11-33: the field textBeforeHeader holds a PacketLiteral, not a PacketIgnoredText",
+    },
+    {
+      name: "fails a diagram without the YAML form retained before its header",
+      fixture: "detect-one-block",
+      mutate: (root) => {
+        setField(root.body, "textBeforeHeader", [])
+      },
+      expected: 'RawText at 11-20 of "---\\nx\\n---": lies in no value node',
+    },
+    {
+      name: "fails a diagram without the directive retained before its header",
+      fixture: "detect-second-scan-directive",
+      mutate: (root) => {
+        setField(root.body, "textBeforeHeader", [])
+      },
+      expected: 'RawText at 0-4 of "%%{\\n": lies in no value node',
+    },
+    {
+      name: "fails a label among the items of a packet body",
+      fixture: "gram-mixed",
+      mutate: (root) => {
+        setField(root.body, "body", [
+          ...(root.body.body as CheckedNode[]),
+          nodeOf(root, "StringLiteral"),
+        ])
+      },
+      expected:
+        "PacketDiagram at 0-38: the field body holds a StringLiteral, not a PacketRangeBlockStatement or PacketSingleBlockStatement or PacketRelativeBlockStatement or PacketTitleStatement or PacketAccTitleStatement or PacketAccDescrStatement or PacketAccDescrBlockStatement or PacketIgnoredText",
+    },
+    {
+      name: "fails a body without the hidden form after a visible line feed",
+      fixture: "lex-hidden-after-visible-eol",
+      mutate: withoutBodyItem(1),
+      expected: 'RawText at 13-20 of "%%{!}%%": lies in no value node',
+    },
+    {
+      name: "fails a diagram that starts at its header after a retained form",
+      fixture: "detect-one-block",
+      mutate: rangeOf("PacketDiagram", [21, 33]),
+      expected:
+        "PacketIgnoredText at 11-20: lies outside PacketDiagram at 21-33",
+    },
+    {
+      name: "fails a diagram that starts at a bare comment line before its header",
+      fixture: "detect-empty-braces-bare",
+      mutate: rangeOf("PacketDiagram", [0, 13]),
+      expected:
+        "PacketDiagram at 0-13: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a diagram that runs over the line feed after its last form",
+      fixture: "lex-title-two-spaces",
+      mutate: rangeOf("PacketDiagram", [0, 15]),
+      expected:
+        "PacketDiagram at 0-15: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the header `packet-beta` as a RawText token",
+      fixture: "spec-packet-c4580507",
+      mutate: (root) => {
+        setField(root.tokens[0], "type", "RawText")
+      },
+      expected: 'RawText at 0-11 of "packet-beta": lies in no value node',
+    },
+    {
+      name: "fails a `packet-beta` diagram whose diagram type is `packet-beta`",
+      fixture: "spec-packet-c4580507",
+      mutate: (root) => {
+        setField(root, "diagramType", "packet-beta")
+      },
+      expected:
+        "Root: the diagram type packet-beta is not one of those of a PacketDiagram: packet",
+    },
+    {
+      name: "fails a bare comment line passed before the header left out of the comments",
+      fixture: "detect-empty-braces-bare",
+      mutate: (root) => {
+        setField(root, "comments", [])
+      },
+      expected:
+        'offset 0: the character outside the tokens and comments is not whitespace: "%"',
+    },
+    {
+      name: "fails a retained YAML form that starts at the line feed before it",
+      fixture: "detect-one-block",
+      mutate: rangeOf("PacketIgnoredText", [10, 20]),
+      expected:
+        "PacketIgnoredText at 10-20: lies outside PacketDiagram at 11-33",
+    },
+    {
+      name: "fails a retained YAML form that ends before its closing fence",
+      fixture: "detect-one-block",
+      mutate: rangeOf("PacketIgnoredText", [11, 19]),
+      expected:
+        "PacketIgnoredText at 11-19: does not run from the start of a token to the end of a token",
+    },
+    // PacketBodyItem.
+    {
+      name: "fails a repeated title left out of the body",
+      fixture: "title-repeat-empty",
+      mutate: withoutBodyItem(1),
+      expected: 'RawText at 25-31 of "Second": lies in no value node',
+    },
+    {
+      name: "fails an empty title left out of the body",
+      fixture: "title-repeat-empty",
+      mutate: withoutBodyItem(2),
+      expected:
+        'PacketTitleStatement at 19-31: the gap is not ASCII whitespace and LF: "\\ntitle\\n"',
+    },
+    {
+      name: "fails a block beyond the publication cap left out of the body",
+      fixture: "db-cap-following-block-unpublished",
+      mutate: withoutBodyItem(1),
+      expected: 'Numeric at 20-21 of "1": lies in no value node',
+    },
+    {
+      name: "fails a range block that publication splits held as two nodes",
+      fixture: "db-row-split",
+      mutate: (root) => {
+        const body = root.body.body as CheckedNode[]
+        setField(root.body, "body", [
+          ...body,
+          (copyOf(root).body.body as CheckedNode[])[1],
+        ])
+      },
+      expected:
+        "PacketRangeBlockStatement at 20-33: overlaps the child node PacketRangeBlockStatement at 20-33 of PacketDiagram at 0-33",
+    },
+    {
+      name: "fails a relative block with a start field",
+      fixture: "gram-mixed",
+      mutate: (root) => {
+        const statement = nodeOf(root, "PacketRelativeBlockStatement")
+        setField(statement, "start", statement.count)
+      },
+      expected:
+        "PacketRelativeBlockStatement at 7-15: has the field start, which its type does not have",
+    },
+    {
+      name: "fails a node for the blank line between two blocks",
+      fixture: "gram-block-blank-lines",
+      mutate: (root, input) => {
+        const body = root.body.body as CheckedNode[]
+        // The empty line between the blocks, at 13.
+        const node = {
+          type: "PacketIgnoredText",
+          kind: "directive",
+          value: "",
+          range: [13, 13],
+          loc: locationOf(input, [13, 13]),
+        } as CheckedNode
+        setField(root.body, "body", [body[0], node, body[1]])
+      },
+      expected:
+        "PacketIgnoredText at 13-13: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the YAML form before a block left out of the body",
+      fixture: "gram-yaml-around-range",
+      mutate: withoutBodyItem(0),
+      expected: 'RawText at 7-16 of "---\\nx\\n---": lies in no value node',
+    },
+    // PacketRangeBlockStatement.
+    {
+      name: "fails the start of a range block as a StringLiteral",
+      fixture: "gram-zero-range",
+      mutate: remakeChild(
+        "PacketRangeBlockStatement",
+        "start",
+        "StringLiteral",
+        [],
+        (node) => ({ value: node.raw, closed: true }),
+      ),
+      expected:
+        "PacketRangeBlockStatement at 7-14: the field start holds a StringLiteral, not a NumericLiteral",
+    },
+    {
+      name: "fails the start of a range block that is not the written number",
+      fixture: "gram-zero-range",
+      mutate: numberOf("PacketRangeBlockStatement", "start", "1"),
+      expected: 'NumericLiteral at 7-8: raw: "1", not "0"',
+    },
+    {
+      name: "fails a range block without its start",
+      fixture: "gram-zero-range",
+      mutate: (root) => {
+        setField(nodeOf(root, "PacketRangeBlockStatement"), "start", null)
+      },
+      expected:
+        "PacketRangeBlockStatement at 7-14: the field start is null, not a node",
+    },
+    {
+      name: "fails the end of a range block as a StringLiteral",
+      fixture: "gram-zero-range",
+      mutate: remakeChild(
+        "PacketRangeBlockStatement",
+        "end",
+        "StringLiteral",
+        [],
+        (node) => ({ value: node.raw, closed: true }),
+      ),
+      expected:
+        "PacketRangeBlockStatement at 7-14: the field end holds a StringLiteral, not a NumericLiteral",
+    },
+    {
+      name: "fails the end of a range block that is not the written number",
+      fixture: "gram-zero-range",
+      mutate: numberOf("PacketRangeBlockStatement", "end", "1"),
+      expected: 'NumericLiteral at 9-10: raw: "1", not "0"',
+    },
+    {
+      name: "fails the end of a range block that publication splits that is not its written end",
+      fixture: "db-row-split",
+      mutate: (root) => {
+        const end = nthNode(root, "PacketRangeBlockStatement", 1)
+          .end as CheckedNode
+        setField(end, "raw", "31")
+        setField(end, "value", 31)
+      },
+      expected: 'NumericLiteral at 23-25: raw: "31", not "90"',
+    },
+    {
+      name: "fails a range block without its label",
+      fixture: "gram-zero-range",
+      mutate: (root) => {
+        setField(nodeOf(root, "PacketRangeBlockStatement"), "label", null)
+      },
+      expected:
+        "PacketRangeBlockStatement at 7-14: the field label is null, not a node",
+    },
+    {
+      name: "fails the label of a range block as a PacketLiteral",
+      fixture: "gram-zero-range",
+      mutate: remakeChild(
+        "PacketRangeBlockStatement",
+        "label",
+        "PacketLiteral",
+        ["raw", "closed"],
+        () => ({}),
+      ),
+      expected:
+        "PacketRangeBlockStatement at 7-14: the field label holds a PacketLiteral, not a StringLiteral",
+    },
+    {
+      name: "fails a range block with equal endpoints as a single block",
+      fixture: "gram-zero-range",
+      mutate: (root) => {
+        const statement = nodeOf(root, "PacketRangeBlockStatement")
+        for (const field of ["end", "textBeforeDash", "textBeforeEnd"])
+          delete (statement as Record<string, unknown>)[field]
+        setField(statement, "type", "PacketSingleBlockStatement")
+      },
+      expected: 'Numeric at 9-10 of "0": lies in no value node',
+    },
+    {
+      name: "fails a hidden form before the range dash as a PacketLiteral",
+      fixture: "gram-hidden-range-gap-spaced",
+      mutate: hiddenAsLiteral("PacketRangeBlockStatement", "textBeforeDash"),
+      expected:
+        "PacketRangeBlockStatement at 7-38: the field textBeforeDash holds a PacketLiteral, not a PacketIgnoredText",
+    },
+    {
+      name: "fails a hidden form before the range dash moved after the dash",
+      fixture: "gram-hidden-range-gap-spaced",
+      mutate: moveFirst(
+        "PacketRangeBlockStatement",
+        "textBeforeDash",
+        "textBeforeEnd",
+      ),
+      expected:
+        "PacketIgnoredText at 8-15: comes before the child node PacketIgnoredText at 17-24 of PacketRangeBlockStatement at 7-38, which the child fields list before it",
+    },
+    {
+      name: "fails a hidden form after the range dash as a PacketLiteral",
+      fixture: "gram-hidden-range-gap-spaced",
+      mutate: hiddenAsLiteral("PacketRangeBlockStatement", "textBeforeEnd"),
+      expected:
+        "PacketRangeBlockStatement at 7-38: the field textBeforeEnd holds a PacketLiteral, not a PacketIgnoredText",
+    },
+    {
+      name: "fails a hidden form after the range dash moved before the dash",
+      fixture: "gram-hidden-range-gap-spaced",
+      mutate: moveFirst(
+        "PacketRangeBlockStatement",
+        "textBeforeEnd",
+        "textBeforeDash",
+      ),
+      expected:
+        'PacketRangeBlockStatement at 7-38: the gap is not hidden ASCII whitespace: " -"',
+    },
+    {
+      name: "fails a hidden form before the colon of a range block as a PacketLiteral",
+      fixture: "gram-hidden-range-gap-spaced",
+      mutate: hiddenAsLiteral("PacketRangeBlockStatement", "textBeforeColon"),
+      expected:
+        "PacketRangeBlockStatement at 7-38: the field textBeforeColon holds a PacketLiteral, not a PacketIgnoredText",
+    },
+    {
+      name: "fails a hidden form before the colon of a range block moved before its end",
+      fixture: "gram-hidden-range-gap-spaced",
+      mutate: moveFirst(
+        "PacketRangeBlockStatement",
+        "textBeforeColon",
+        "textBeforeEnd",
+      ),
+      expected:
+        "NumericLiteral at 25-26: comes before the child node PacketIgnoredText at 26-33 of PacketRangeBlockStatement at 7-38, which the child fields list before it",
+    },
+    {
+      name: "fails a hidden suffix of a range block as a PacketLiteral",
+      fixture: "gram-yaml-around-range",
+      mutate: hiddenAsLiteral("PacketRangeBlockStatement", "textAfter"),
+      expected:
+        "PacketRangeBlockStatement at 17-33: the field textAfter holds a PacketLiteral, not a PacketIgnoredText",
+    },
+    {
+      name: "fails a hidden suffix of a range block moved to the body",
+      fixture: "gram-yaml-around-range",
+      mutate: moveToBody("PacketRangeBlockStatement", "textAfter"),
+      expected:
+        "PacketIgnoredText at 24-33: overlaps the child node PacketRangeBlockStatement at 17-33 of PacketDiagram at 0-33",
+    },
+    {
+      name: "fails a range block that starts before its first digit",
+      fixture: "gram-zero-range",
+      mutate: rangeOf("PacketRangeBlockStatement", [6, 14]),
+      expected:
+        "PacketRangeBlockStatement at 6-14: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a range block that ends before its closing quote",
+      fixture: "gram-zero-range",
+      mutate: rangeOf("PacketRangeBlockStatement", [7, 13]),
+      expected:
+        "PacketRangeBlockStatement at 7-13: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a range block that runs over the line feed after it",
+      fixture: "gram-zero-range",
+      mutate: rangeOf("PacketRangeBlockStatement", [7, 15]),
+      expected:
+        "PacketRangeBlockStatement at 7-15: lies outside PacketDiagram at 0-14",
+    },
+    {
+      name: "fails a range block that ends at its label before its hidden suffix",
+      fixture: "gram-yaml-around-range",
+      mutate: rangeOf("PacketRangeBlockStatement", [17, 24]),
+      expected:
+        "PacketIgnoredText at 24-33: lies outside PacketRangeBlockStatement at 17-24",
+    },
+    // PacketSingleBlockStatement.
+    {
+      name: "fails the start of a single block as a StringLiteral",
+      fixture: "gram-block-blank-lines",
+      mutate: remakeChild(
+        "PacketSingleBlockStatement",
+        "start",
+        "StringLiteral",
+        [],
+        (node) => ({ value: node.raw, closed: true }),
+      ),
+      expected:
+        "PacketSingleBlockStatement at 7-12: the field start holds a StringLiteral, not a NumericLiteral",
+    },
+    {
+      name: "fails the start of a single block that is not the written number",
+      fixture: "gram-block-blank-lines",
+      mutate: numberOf("PacketSingleBlockStatement", "start", "5"),
+      expected: 'NumericLiteral at 7-8: raw: "5", not "0"',
+    },
+    {
+      name: "fails a single block without its label",
+      fixture: "gram-block-blank-lines",
+      mutate: (root) => {
+        setField(nodeOf(root, "PacketSingleBlockStatement"), "label", null)
+      },
+      expected:
+        "PacketSingleBlockStatement at 7-12: the field label is null, not a node",
+    },
+    {
+      name: "fails the label of a single block as a PacketLiteral",
+      fixture: "gram-block-blank-lines",
+      mutate: remakeChild(
+        "PacketSingleBlockStatement",
+        "label",
+        "PacketLiteral",
+        ["raw", "closed"],
+        () => ({}),
+      ),
+      expected:
+        "PacketSingleBlockStatement at 7-12: the field label holds a PacketLiteral, not a StringLiteral",
+    },
+    {
+      name: "fails a single block with an end field",
+      fixture: "gram-block-blank-lines",
+      mutate: (root) => {
+        const statement = nodeOf(root, "PacketSingleBlockStatement")
+        setField(statement, "end", statement.start)
+      },
+      expected:
+        "PacketSingleBlockStatement at 7-12: has the field end, which its type does not have",
+    },
+    {
+      name: "fails a hidden form before the colon of a single block as a PacketLiteral",
+      fixture: "gram-single-hidden-gaps",
+      mutate: hiddenAsLiteral("PacketSingleBlockStatement", "textBeforeColon"),
+      expected:
+        "PacketSingleBlockStatement at 7-30: the field textBeforeColon holds a PacketLiteral, not a PacketIgnoredText",
+    },
+    {
+      name: "fails a hidden form before the colon of a single block moved after the colon",
+      fixture: "gram-single-hidden-gaps",
+      mutate: moveFirst(
+        "PacketSingleBlockStatement",
+        "textBeforeColon",
+        "textBeforeLabel",
+      ),
+      expected:
+        "PacketIgnoredText at 8-16: comes before the child node PacketIgnoredText at 18-26 of PacketSingleBlockStatement at 7-30, which the child fields list before it",
+    },
+    {
+      name: "fails a hidden form before the label of a single block as a PacketLiteral",
+      fixture: "gram-single-hidden-gaps",
+      mutate: hiddenAsLiteral("PacketSingleBlockStatement", "textBeforeLabel"),
+      expected:
+        "PacketSingleBlockStatement at 7-30: the field textBeforeLabel holds a PacketLiteral, not a PacketIgnoredText",
+    },
+    {
+      name: "fails a hidden form before the label of a single block moved before the colon",
+      fixture: "gram-single-hidden-gaps",
+      mutate: moveFirst(
+        "PacketSingleBlockStatement",
+        "textBeforeLabel",
+        "textBeforeColon",
+      ),
+      expected:
+        'PacketSingleBlockStatement at 7-30: the gap is not hidden ASCII whitespace: " :"',
+    },
+    {
+      name: "fails a global directive record among the gaps of a single block",
+      fixture: "gram-single-hidden-gaps",
+      mutate: remakeChild(
+        "PacketSingleBlockStatement",
+        "textBeforeColon",
+        "Directive",
+        ["kind"],
+        (node) => ({ name: "", value: node.value, closed: true }),
+      ),
+      expected:
+        "PacketSingleBlockStatement at 7-30: the field textBeforeColon holds a Directive, not a PacketIgnoredText",
+    },
+    {
+      name: "fails a hidden suffix of a single block as a PacketLiteral",
+      fixture: "lex-hidden-two-suffixes",
+      mutate: hiddenAsLiteral("PacketSingleBlockStatement", "textAfter"),
+      expected:
+        "PacketSingleBlockStatement at 7-33: the field textAfter holds a PacketLiteral, not a PacketIgnoredText",
+    },
+    {
+      name: "fails a hidden suffix of a single block moved to the body",
+      fixture: "lex-hidden-two-suffixes",
+      mutate: moveToBody("PacketSingleBlockStatement", "textAfter"),
+      expected:
+        "PacketIgnoredText at 12-22: overlaps the child node PacketSingleBlockStatement at 7-33 of PacketDiagram at 0-33",
+    },
+    {
+      name: "fails a single block that starts before its digit",
+      fixture: "gram-block-blank-lines",
+      mutate: rangeOf("PacketSingleBlockStatement", [6, 12]),
+      expected:
+        "PacketSingleBlockStatement at 6-12: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a single block that ends at its label before its hidden suffixes",
+      fixture: "lex-hidden-two-suffixes",
+      mutate: rangeOf("PacketSingleBlockStatement", [7, 12]),
+      expected:
+        "PacketIgnoredText at 12-22: lies outside PacketSingleBlockStatement at 7-12",
+    },
+    // PacketRelativeBlockStatement.
+    {
+      name: "fails the count of a relative block as a StringLiteral",
+      fixture: "gram-mixed",
+      mutate: remakeChild(
+        "PacketRelativeBlockStatement",
+        "count",
+        "StringLiteral",
+        [],
+        (node) => ({ value: node.raw, closed: true }),
+      ),
+      expected:
+        "PacketRelativeBlockStatement at 7-15: the field count holds a StringLiteral, not a NumericLiteral",
+    },
+    {
+      name: "fails the count of a relative block that is not the written number",
+      fixture: "gram-mixed",
+      mutate: numberOf("PacketRelativeBlockStatement", "count", "3"),
+      expected: 'NumericLiteral at 8-9: raw: "3", not "2"',
+    },
+    {
+      name: "fails the count of a relative block that holds its plus",
+      fixture: "gram-mixed",
+      mutate: (root, input) => {
+        const count = firstIn(
+          nodeOf(root, "PacketRelativeBlockStatement"),
+          "count",
+        )
+        placeAt(count, input, [7, 9])
+        setField(count, "raw", "+2")
+      },
+      expected:
+        "NumericLiteral at 7-9: has 2 tokens, not the one that a node of this type has",
+    },
+    {
+      name: "fails a relative block without its label",
+      fixture: "gram-mixed",
+      mutate: (root) => {
+        setField(nodeOf(root, "PacketRelativeBlockStatement"), "label", null)
+      },
+      expected:
+        "PacketRelativeBlockStatement at 7-15: the field label is null, not a node",
+    },
+    {
+      name: "fails the label of a relative block as a PacketLiteral",
+      fixture: "gram-mixed",
+      mutate: remakeChild(
+        "PacketRelativeBlockStatement",
+        "label",
+        "PacketLiteral",
+        ["raw", "closed"],
+        () => ({}),
+      ),
+      expected:
+        "PacketRelativeBlockStatement at 7-15: the field label holds a PacketLiteral, not a StringLiteral",
+    },
+    {
+      name: "fails a relative block with an end field",
+      fixture: "gram-mixed",
+      mutate: (root) => {
+        const statement = nodeOf(root, "PacketRelativeBlockStatement")
+        setField(statement, "end", statement.count)
+      },
+      expected:
+        "PacketRelativeBlockStatement at 7-15: has the field end, which its type does not have",
+    },
+    {
+      name: "fails a relative block that starts at its count",
+      fixture: "gram-mixed",
+      mutate: rangeOf("PacketRelativeBlockStatement", [8, 15]),
+      expected:
+        'PacketRelativeBlockStatement at 8-15: the block\'s authored operators: [":"], not ["+",":"]',
+    },
+    {
+      name: "fails a hidden form before the count of a relative block as a PacketLiteral",
+      fixture: "gram-hidden-gap",
+      mutate: hiddenAsLiteral(
+        "PacketRelativeBlockStatement",
+        "textBeforeCount",
+      ),
+      expected:
+        "PacketRelativeBlockStatement at 7-29: the field textBeforeCount holds a PacketLiteral, not a PacketIgnoredText",
+    },
+    {
+      name: "fails a hidden form before the count of a relative block moved before its label",
+      fixture: "gram-hidden-gap",
+      mutate: moveFirst(
+        "PacketRelativeBlockStatement",
+        "textBeforeCount",
+        "textBeforeLabel",
+      ),
+      expected:
+        "PacketIgnoredText at 8-15: comes before the child node PacketIgnoredText at 18-25 of PacketRelativeBlockStatement at 7-29, which the child fields list before it",
+    },
+    {
+      name: "fails a relative block without the YAML form between its plus and its count",
+      fixture: "gram-hidden-yaml-gap",
+      mutate: (root) => {
+        setField(
+          nodeOf(root, "PacketRelativeBlockStatement"),
+          "textBeforeCount",
+          [],
+        )
+      },
+      expected: 'RawText at 8-17 of "---\\nx\\n---": lies in no value node',
+    },
+    {
+      name: "fails a hidden form before the label of a relative block as a PacketLiteral",
+      fixture: "gram-hidden-gap",
+      mutate: hiddenAsLiteral(
+        "PacketRelativeBlockStatement",
+        "textBeforeLabel",
+      ),
+      expected:
+        "PacketRelativeBlockStatement at 7-29: the field textBeforeLabel holds a PacketLiteral, not a PacketIgnoredText",
+    },
+    {
+      name: "fails a hidden form before the label of a relative block moved before its count",
+      fixture: "gram-hidden-gap",
+      mutate: moveFirst(
+        "PacketRelativeBlockStatement",
+        "textBeforeLabel",
+        "textBeforeCount",
+      ),
+      expected:
+        "NumericLiteral at 16-17: comes before the child node PacketIgnoredText at 18-25 of PacketRelativeBlockStatement at 7-29, which the child fields list before it",
+    },
+    {
+      name: "fails a hidden form before the colon of a relative block as a PacketLiteral",
+      fixture: "gram-relative-hidden-colon",
+      mutate: hiddenAsLiteral(
+        "PacketRelativeBlockStatement",
+        "textBeforeColon",
+      ),
+      expected:
+        "PacketRelativeBlockStatement at 7-21: the field textBeforeColon holds a PacketLiteral, not a PacketIgnoredText",
+    },
+    {
+      name: "fails a hidden form before the colon of a relative block moved before its count",
+      fixture: "gram-relative-hidden-colon",
+      mutate: moveFirst(
+        "PacketRelativeBlockStatement",
+        "textBeforeColon",
+        "textBeforeCount",
+      ),
+      expected:
+        "NumericLiteral at 8-9: comes before the child node PacketIgnoredText at 9-16 of PacketRelativeBlockStatement at 7-21, which the child fields list before it",
+    },
+    // The hidden suffixes and the leaves of the three block nodes.
+    {
+      name: "fails two hidden suffixes held as one node",
+      fixture: "lex-hidden-two-suffixes",
+      mutate: (root, input) => {
+        const statement = nodeOf(root, "PacketSingleBlockStatement")
+        const [first] = statement.textAfter as CheckedNode[]
+        placeAt(first, input, [12, 33])
+        setField(first, "value", input.slice(12, 33))
+        setField(statement, "textAfter", [first])
+      },
+      expected:
+        'PacketIgnoredText at 12-33: the texts of its tokens joined are not its written text: "%%{!one}%%%%{!two}%%", not "%%{!one}%% %%{!two}%%"',
+    },
+    {
+      name: "fails a hidden suffix whose range holds the line feed after it",
+      fixture: "hidden-yaml-crlf",
+      mutate: rangeOf("PacketIgnoredText", [13, 26]),
+      expected:
+        "PacketIgnoredText at 13-26: lies outside PacketSingleBlockStatement at 8-24",
+    },
+    {
+      name: "fails a body form after a visible line feed moved into the hidden suffixes of the block before it",
+      fixture: "lex-hidden-after-visible-eol",
+      mutate: (root) => {
+        const [first, hidden, ...rest] = root.body.body as CheckedNode[]
+        setField(first, "textAfter", [hidden])
+        setField(root.body, "body", [first, ...rest])
+      },
+      expected:
+        "PacketIgnoredText at 13-20: lies outside PacketSingleBlockStatement at 7-12",
+    },
+    {
+      name: "fails a label whose value decodes an escape",
+      fixture: "db-label-escapes",
+      mutate: (root) => {
+        const label = nodeOf(root, "StringLiteral")
+        setField(label, "value", (label.value as string).replace("\\b", "\b"))
+      },
+      expected:
+        'StringLiteral at 9-42: value is not its written text: "a\\b\\\\f\\\\n\\\\r\\\\t\\\\v\\\\0\\\\q\\\\u0041\\\\x41\\\\\\\\\\\\\\"", not "a\\\\b\\\\f\\\\n\\\\r\\\\t\\\\v\\\\0\\\\q\\\\u0041\\\\x41\\\\\\\\\\\\\\""',
+    },
+    {
+      name: "fails a label that is not closed",
+      fixture: "gram-mixed",
+      mutate: (root) => {
+        setField(nodeOf(root, "StringLiteral"), "closed", false)
+      },
+      expected: "StringLiteral at 10-15: closed: false, not true",
+    },
+    {
+      name: "fails a count whose value is not the double of its digits",
+      fixture: "db-precision-rounded",
+      mutate: (root) => {
+        setField(nodeOf(root, "NumericLiteral"), "value", 9007199254740994)
+      },
+      expected:
+        "NumericLiteral at 8-24: value is not the number that its written text writes: 9007199254740994, not 9007199254740992",
+    },
+    // PacketTitleStatement.
+    {
+      name: "fails the value of a title as a StringLiteral",
+      fixture: "comment-title",
+      mutate: remakeChild(
+        "PacketTitleStatement",
+        "value",
+        "StringLiteral",
+        [],
+        (node) => ({ raw: node.value, closed: true }),
+      ),
+      expected:
+        "PacketTitleStatement at 7-14: the field value holds a StringLiteral, not a PacketLiteral",
+    },
+    {
+      name: "fails a title value that is not its written text",
+      fixture: "comment-title",
+      mutate: (root) => {
+        setField(nodeOf(root, "PacketLiteral"), "value", "B")
+      },
+      expected:
+        'PacketLiteral at 13-14: value is not its written text: "B", not "A"',
+    },
+    {
+      name: "fails a hidden suffix of a title as a PacketLiteral",
+      fixture: "hidden-directive-title-eof",
+      mutate: hiddenAsLiteral("PacketTitleStatement", "textAfter"),
+      expected:
+        "PacketTitleStatement at 7-21: the field textAfter holds a PacketLiteral, not a PacketIgnoredText",
+    },
+    {
+      name: "fails a hidden suffix of a title moved to the body",
+      fixture: "hidden-directive-title-spare",
+      mutate: moveToBody("PacketTitleStatement", "textAfter"),
+      expected:
+        "PacketIgnoredText at 14-21: overlaps the child node PacketTitleStatement at 7-21 of PacketDiagram at 0-28",
+    },
+    {
+      name: "fails a title value that starts at its first separator",
+      fixture: "lex-title-two-spaces",
+      mutate: rangeOf("PacketLiteral", [12, 14]),
+      expected:
+        "PacketLiteral at 12-14: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a title value that leaves out the padding at its end",
+      fixture: "common-whitespace",
+      mutate: rangeOf("PacketLiteral", [13, 22]),
+      expected:
+        "PacketLiteral at 13-22: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a title without a separator with a value",
+      fixture: "title-empty",
+      mutate: packetValueAt("PacketTitleStatement", [12, 12]),
+      expected:
+        "PacketLiteral at 12-12: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a title with one separator and nothing after it with a value",
+      fixture: "lex-title-one-space",
+      mutate: packetValueAt("PacketTitleStatement", [13, 13]),
+      expected:
+        "PacketLiteral at 13-13: lies outside PacketTitleStatement at 7-12",
+    },
+    {
+      name: "fails a title whose second separator is null instead of a whitespace value",
+      fixture: "lex-title-two-spaces",
+      mutate: (root) => {
+        setField(nodeOf(root, "PacketTitleStatement"), "value", null)
+      },
+      expected:
+        "RawText at 13-14: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails a title that runs over the line feed after its value",
+      fixture: "lex-title-two-spaces",
+      mutate: rangeOf("PacketTitleStatement", [7, 15]),
+      expected:
+        "PacketTitleStatement at 7-15: lies outside PacketDiagram at 0-14",
+    },
+    {
+      name: "fails a null title that runs over its separator after its keyword",
+      fixture: "lex-title-one-space",
+      mutate: rangeOf("PacketTitleStatement", [7, 13]),
+      expected:
+        "PacketTitleStatement at 7-13: lies outside PacketDiagram at 0-12",
+    },
+    {
+      name: "fails a title that ends at its value before its hidden suffix",
+      fixture: "hidden-directive-title-eof",
+      mutate: rangeOf("PacketTitleStatement", [7, 14]),
+      expected:
+        "PacketIgnoredText at 14-21: lies outside PacketTitleStatement at 7-14",
+    },
+    {
+      name: "fails a native comment after a title held as its hidden suffix",
+      fixture: "comment-title",
+      mutate: commentAsSuffix("PacketTitleStatement"),
+      expected:
+        "PacketIgnoredText at 14-20: lies outside PacketTitleStatement at 7-14",
+    },
+    // PacketAccTitleStatement.
+    {
+      name: "fails the value of an accessibility title as a StringLiteral",
+      fixture: "comment-acctitle",
+      mutate: remakeChild(
+        "PacketAccTitleStatement",
+        "value",
+        "StringLiteral",
+        [],
+        (node) => ({ raw: node.value, closed: true }),
+      ),
+      expected:
+        "PacketAccTitleStatement at 7-18: the field value holds a StringLiteral, not a PacketLiteral",
+    },
+    {
+      name: "fails an accessibility title value that is not its written text",
+      fixture: "comment-acctitle",
+      mutate: (root) => {
+        setField(nodeOf(root, "PacketLiteral"), "value", " B")
+      },
+      expected:
+        'PacketLiteral at 16-18: value is not its written text: " B", not " A"',
+    },
+    {
+      name: "fails a hidden suffix of an accessibility title as a PacketLiteral",
+      fixture: "hidden-directive-acctitle-eof",
+      mutate: hiddenAsLiteral("PacketAccTitleStatement", "textAfter"),
+      expected:
+        "PacketAccTitleStatement at 7-25: the field textAfter holds a PacketLiteral, not a PacketIgnoredText",
+    },
+    {
+      name: "fails a hidden suffix of an accessibility title moved to the body",
+      fixture: "hidden-directive-acctitle-spare",
+      mutate: moveToBody("PacketAccTitleStatement", "textAfter"),
+      expected:
+        "PacketIgnoredText at 18-25: overlaps the child node PacketAccTitleStatement at 7-25 of PacketDiagram at 0-32",
+    },
+    {
+      name: "fails an accessibility title value that leaves out the space after its colon",
+      fixture: "comment-acctitle",
+      mutate: rangeOf("PacketLiteral", [17, 18]),
+      expected:
+        "PacketLiteral at 17-18: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an empty accessibility title with a value",
+      fixture: "acctitle-empty",
+      mutate: packetValueAt("PacketAccTitleStatement", [16, 16]),
+      expected:
+        "PacketLiteral at 16-16: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an accessibility title of a directive only with a value",
+      fixture: "lex-acctitle-directive-only",
+      mutate: packetValueAt("PacketAccTitleStatement", [26, 26]),
+      expected:
+        "PacketLiteral at 26-26: lies outside PacketAccTitleStatement at 7-16",
+    },
+    {
+      name: "fails a whitespace-only accessibility title that is null",
+      fixture: "acctitle-repeat-empty",
+      mutate: (root) => {
+        setField(nthNode(root, "PacketAccTitleStatement", 2), "value", null)
+      },
+      expected:
+        "RawText at 49-51: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails an accessibility title that runs over the line feed after its value",
+      fixture: "comment-acctitle",
+      mutate: rangeOf("PacketAccTitleStatement", [7, 19]),
+      expected:
+        "PacketAccTitleStatement at 7-19: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an empty accessibility title that runs over the line feed after its colon",
+      fixture: "acctitle-empty",
+      mutate: rangeOf("PacketAccTitleStatement", [7, 17]),
+      expected:
+        "PacketAccTitleStatement at 7-17: lies outside PacketDiagram at 0-16",
+    },
+    {
+      name: "fails an accessibility title that ends at its value before its hidden suffix",
+      fixture: "hidden-directive-acctitle-eof",
+      mutate: rangeOf("PacketAccTitleStatement", [7, 18]),
+      expected:
+        "PacketIgnoredText at 18-25: lies outside PacketAccTitleStatement at 7-18",
+    },
+    {
+      name: "fails a native comment after an accessibility title held as its hidden suffix",
+      fixture: "comment-acctitle",
+      mutate: commentAsSuffix("PacketAccTitleStatement"),
+      expected:
+        "PacketIgnoredText at 18-24: lies outside PacketAccTitleStatement at 7-18",
+    },
+    // PacketAccDescrStatement.
+    {
+      name: "fails the value of an accessibility description as a StringLiteral",
+      fixture: "comment-accdescr",
+      mutate: remakeChild(
+        "PacketAccDescrStatement",
+        "value",
+        "StringLiteral",
+        [],
+        (node) => ({ raw: node.value, closed: true }),
+      ),
+      expected:
+        "PacketAccDescrStatement at 7-18: the field value holds a StringLiteral, not a PacketLiteral",
+    },
+    {
+      name: "fails an accessibility description value that is not its written text",
+      fixture: "comment-accdescr",
+      mutate: (root) => {
+        setField(nodeOf(root, "PacketLiteral"), "value", " B")
+      },
+      expected:
+        'PacketLiteral at 16-18: value is not its written text: " B", not " A"',
+    },
+    {
+      name: "fails a hidden suffix of an accessibility description as a PacketLiteral",
+      fixture: "hidden-directive-accdescr-eof",
+      mutate: hiddenAsLiteral("PacketAccDescrStatement", "textAfter"),
+      expected:
+        "PacketAccDescrStatement at 7-25: the field textAfter holds a PacketLiteral, not a PacketIgnoredText",
+    },
+    {
+      name: "fails a hidden suffix of an accessibility description moved to the body",
+      fixture: "hidden-directive-accdescr-spare",
+      mutate: moveToBody("PacketAccDescrStatement", "textAfter"),
+      expected:
+        "PacketIgnoredText at 18-25: overlaps the child node PacketAccDescrStatement at 7-25 of PacketDiagram at 0-32",
+    },
+    {
+      name: "fails an accessibility description value that leaves out the space after its colon",
+      fixture: "comment-accdescr",
+      mutate: rangeOf("PacketLiteral", [17, 18]),
+      expected:
+        "PacketLiteral at 17-18: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an empty accessibility description with a value",
+      fixture: "accdescr-line-empty",
+      mutate: packetValueAt("PacketAccDescrStatement", [16, 16]),
+      expected:
+        "PacketLiteral at 16-16: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an accessibility description of a directive only with a value",
+      fixture: "lex-accdescr-directive-only",
+      mutate: packetValueAt("PacketAccDescrStatement", [26, 26]),
+      expected:
+        "PacketLiteral at 26-26: lies outside PacketAccDescrStatement at 7-16",
+    },
+    {
+      name: "fails a whitespace-only accessibility description that is null",
+      fixture: "lex-accdescr-whitespace-only",
+      mutate: (root) => {
+        setField(nodeOf(root, "PacketAccDescrStatement"), "value", null)
+      },
+      expected:
+        "RawText at 16-18: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails an accessibility description written with a brace after its colon as a description block",
+      fixture: "lex-description-colon-first",
+      mutate: (root) => {
+        setField(
+          nodeOf(root, "PacketAccDescrStatement"),
+          "type",
+          "PacketAccDescrBlockStatement",
+        )
+      },
+      expected:
+        'PacketAccDescrBlockStatement at 7-22: the common statement\'s fixed components: "accDescr:", not "accDescr{}"',
+    },
+    {
+      name: "fails an accessibility description that runs over the line feed after its value",
+      fixture: "comment-accdescr",
+      mutate: rangeOf("PacketAccDescrStatement", [7, 19]),
+      expected:
+        "PacketAccDescrStatement at 7-19: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an empty accessibility description that runs over the line feed after its colon",
+      fixture: "accdescr-line-empty",
+      mutate: rangeOf("PacketAccDescrStatement", [7, 17]),
+      expected:
+        "PacketAccDescrStatement at 7-17: lies outside PacketDiagram at 0-16",
+    },
+    {
+      name: "fails an accessibility description that ends at its value before its hidden suffix",
+      fixture: "hidden-directive-accdescr-eof",
+      mutate: rangeOf("PacketAccDescrStatement", [7, 18]),
+      expected:
+        "PacketIgnoredText at 18-25: lies outside PacketAccDescrStatement at 7-18",
+    },
+    {
+      name: "fails a native comment after an accessibility description held as its hidden suffix",
+      fixture: "comment-accdescr",
+      mutate: commentAsSuffix("PacketAccDescrStatement"),
+      expected:
+        "PacketIgnoredText at 18-24: lies outside PacketAccDescrStatement at 7-18",
+    },
+    // PacketAccDescrBlockStatement.
+    {
+      name: "fails the value of a description block as a StringLiteral",
+      fixture: "accdescr-block-lines",
+      mutate: remakeChild(
+        "PacketAccDescrBlockStatement",
+        "value",
+        "StringLiteral",
+        [],
+        (node) => ({ raw: node.value, closed: true }),
+      ),
+      expected:
+        "PacketAccDescrBlockStatement at 7-31: the field value holds a StringLiteral, not a PacketLiteral",
+    },
+    {
+      name: "fails a hidden suffix of a description block as a PacketLiteral",
+      fixture: "hidden-directive-description-eof",
+      mutate: hiddenAsLiteral("PacketAccDescrBlockStatement", "textAfter"),
+      expected:
+        "PacketAccDescrBlockStatement at 7-28: the field textAfter holds a PacketLiteral, not a PacketIgnoredText",
+    },
+    {
+      name: "fails a hidden suffix of a description block moved to the body",
+      fixture: "hidden-directive-description-spare",
+      mutate: moveToBody("PacketAccDescrBlockStatement", "textAfter"),
+      expected:
+        "PacketIgnoredText at 21-28: overlaps the child node PacketAccDescrBlockStatement at 7-28 of PacketDiagram at 0-35",
+    },
+    {
+      name: "fails a description block value that keeps the whitespace at its ends",
+      fixture: "accdescr-block-lines",
+      mutate: rangeOf("PacketLiteral", [18, 30]),
+      expected:
+        "PacketLiteral at 18-30: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a description block value that leaves out its internal indentation",
+      fixture: "accdescr-block-lines",
+      mutate: (root) => {
+        setField(nodeOf(root, "PacketLiteral"), "value", "A  B\n\nC")
+      },
+      expected:
+        'PacketLiteral at 20-29: value is not its written text: "A  B\\n\\nC", not "A  B\\n\\n  C"',
+    },
+    {
+      name: "fails an empty packet description block with a value",
+      fixture: "gram-empty-description",
+      mutate: packetValueAt("PacketAccDescrBlockStatement", [17, 17]),
+      expected:
+        "PacketAccDescrBlockStatement at 7-18: the common value is not the complete composite lexical value (or null when empty)",
+    },
+    {
+      name: "fails a whitespace-only description block with a value",
+      fixture: "lex-description-whitespace-only",
+      mutate: packetValueAt("PacketAccDescrBlockStatement", [18, 18]),
+      expected:
+        "PacketLiteral at 18-18: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a directive-only description block with a value",
+      fixture: "lex-description-directive-only",
+      mutate: packetValueAt("PacketAccDescrBlockStatement", [27, 27]),
+      expected:
+        "PacketLiteral at 27-27: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a comment-only description block with a value",
+      fixture: "lex-description-comment-only",
+      mutate: packetValueAt("PacketAccDescrBlockStatement", [29, 29]),
+      expected:
+        "PacketLiteral at 29-29: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an empty description block left out of the body",
+      fixture: "gram-empty-description",
+      mutate: withoutBodyItem(0),
+      expected:
+        'PacketDiagram at 0-24: the gap is not ASCII whitespace and LF: "\\naccDescr {}\\n"',
+    },
+    {
+      name: "fails a description block that ends before its closing brace",
+      fixture: "accdescr-block-lines",
+      mutate: rangeOf("PacketAccDescrBlockStatement", [7, 30]),
+      expected:
+        "PacketAccDescrBlockStatement at 7-30: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails an empty description block that ends before its closing brace",
+      fixture: "gram-empty-description",
+      mutate: rangeOf("PacketAccDescrBlockStatement", [7, 17]),
+      expected:
+        'PacketAccDescrBlockStatement at 7-17: the gap is not ASCII whitespace and LF: "}\\n"',
+    },
+    {
+      name: "fails a description block that ends at its brace before its hidden suffix",
+      fixture: "hidden-directive-description-eof",
+      mutate: rangeOf("PacketAccDescrBlockStatement", [7, 21]),
+      expected:
+        "PacketIgnoredText at 21-28: lies outside PacketAccDescrBlockStatement at 7-21",
+    },
+    {
+      name: "fails a native comment after a description block held as its hidden suffix",
+      fixture: "comment-block-description",
+      mutate: commentAsSuffix("PacketAccDescrBlockStatement"),
+      expected:
+        "PacketIgnoredText at 21-27: lies outside PacketAccDescrBlockStatement at 7-21",
+    },
+    // PacketLiteral.
+    {
+      name: "fails a title value that holds the directive inside it",
+      fixture: "directive-title-value",
+      mutate: (root, input) => {
+        setField(nodeOf(root, "PacketLiteral"), "value", input.slice(13, 28))
+      },
+      expected:
+        'PacketLiteral at 13-28: value is not its written text: "A%%{init:{}}%%B", not "AB"',
+    },
+    {
+      name: "fails a title value that ends before the directive inside it",
+      fixture: "directive-title-value",
+      mutate: rangeOf("PacketLiteral", [13, 14]),
+      expected: 'RawText at 27-28 of "B": lies in no value node',
+    },
+    {
+      name: "fails a title value that decodes its entities",
+      fixture: "entity-all-text",
+      mutate: (root) => {
+        setField(nodeOf(root, "PacketLiteral"), "value", "& #")
+      },
+      expected:
+        'PacketLiteral at 13-23: value is not its written text: "& #", not "&amp; #35;"',
+    },
+    {
+      name: "fails a title value whose whitespace runs are collapsed",
+      fixture: "common-whitespace",
+      mutate: (root) => {
+        setField(nodeOf(root, "PacketLiteral"), "value", " A B C ")
+      },
+      expected:
+        'PacketLiteral at 13-24: value is not its written text: " A B C ", not "\\t A  B\\t\\tC \\t"',
+    },
+    {
+      name: "fails a title value with an open quote as a StringLiteral",
+      fixture: "title-open-quote",
+      mutate: remakeChild(
+        "PacketTitleStatement",
+        "value",
+        "StringLiteral",
+        [],
+        (node) => ({ raw: node.value, value: "open", closed: false }),
+      ),
+      expected:
+        "PacketTitleStatement at 7-18: the field value holds a StringLiteral, not a PacketLiteral",
+    },
+    // PacketIgnoredText.
+    {
+      name: "fails a hidden form whose kind is `yaml`",
+      fixture: "detect-one-block",
+      mutate: (root) => {
+        setField(nodeOf(root, "PacketIgnoredText"), "kind", "yaml")
+      },
+      expected:
+        'PacketIgnoredText at 11-20: the field kind is "yaml", none of yaml-block, directive',
+    },
+    {
+      name: "fails a hidden YAML form whose kind is `directive`",
+      fixture: "detect-one-block",
+      mutate: (root) => {
+        setField(nodeOf(root, "PacketIgnoredText"), "kind", "directive")
+      },
+      expected:
+        "PacketIgnoredText at 11-20: the value is not one complete hidden YAML or DIRECTIVE form without its following LF",
+    },
+    {
+      name: "fails a hidden form that is not its written text",
+      fixture: "detect-one-block",
+      mutate: (root) => {
+        setField(nodeOf(root, "PacketIgnoredText"), "value", "---\ny\n---")
+      },
+      expected:
+        'PacketIgnoredText at 11-20: value is not its written text: "---\\ny\\n---", not "---\\nx\\n---"',
+    },
+    {
+      name: "fails a hidden directive that starts at the space before it",
+      fixture: "lex-hidden-two-suffixes",
+      mutate: rangeOf("PacketIgnoredText", [22, 33], 1),
+      expected:
+        "PacketIgnoredText at 22-33: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a hidden YAML form that leaves out the padding after its opening fence",
+      fixture: "hidden-yaml-padding",
+      mutate: (root) => {
+        setField(nodeOf(root, "PacketIgnoredText"), "value", "---\nx\n---")
+      },
+      expected:
+        'PacketIgnoredText at 7-18: value is not its written text: "---\\nx\\n---", not "--- \\t\\nx\\n---"',
+    },
+    {
+      name: "fails a hidden directive whose range holds the CR after it",
+      fixture: "hidden-directive-crlf",
+      mutate: rangeOf("PacketIgnoredText", [13, 21]),
+      expected:
+        "PacketIgnoredText at 13-21: lies outside PacketSingleBlockStatement at 8-20",
+    },
+    {
+      name: "fails a hidden YAML form that writes its CRLF line endings as LF",
+      fixture: "hidden-yaml-crlf",
+      mutate: (root) => {
+        setField(nodeOf(root, "PacketIgnoredText"), "value", "---\nx\n---")
+      },
+      expected:
+        'PacketIgnoredText at 13-24: value is not its written text: "---\\nx\\n---", not "---\\r\\nx\\r\\n---"',
+    },
+    {
+      name: "fails a hidden YAML form at the end of the text that runs over the appended line feed",
+      fixture: "hidden-yaml-block-eof",
+      mutate: (root, input) => {
+        const node = nodeOf(root, "PacketIgnoredText")
+        setField(node, "range", [12, input.length + 1])
+        setField(node, "value", `${input.slice(12)}\n`)
+      },
+      expected: "PacketIgnoredText at 12-22: lies outside the input",
+    },
+    {
+      name: "fails a hidden directive whose value holds the global directive inside it",
+      fixture: "lex-hidden-nested-global",
+      mutate: (root, input) => {
+        setField(nodeOf(root, "PacketIgnoredText"), "value", input.slice(7, 27))
+      },
+      expected:
+        'PacketIgnoredText at 7-27: value is not its written text: "%%{! %%{wrap}%% !}%%", not "%%{!  !}%%"',
+    },
+    {
+      name: "fails a global directive inside a hidden directive left out of the directives",
+      fixture: "lex-hidden-nested-global",
+      mutate: (root) => {
+        setField(root, "directives", [])
+      },
+      expected:
+        "the directives: the directives of the tree are not those of the source: [], not [[[12,22],true]]",
+    },
+    {
+      name: "fails a hidden YAML form before the header held as the frontmatter as well",
+      fixture: "detect-one-block",
+      mutate: (root, input) => {
+        setField(root, "frontmatter", {
+          type: "Frontmatter",
+          value: "x",
+          valueRange: [15, 16],
+          range: [11, 20],
+          loc: locationOf(input, [11, 20]),
+        })
+      },
+      expected:
+        'the tokens in the range of the frontmatter: are not the opening delimiter, the body, and the closing delimiter: [["RawText",[11,20]]], not [["Punctuator",[11,14]],["RawText",[15,16]],["Punctuator",[17,20]]]',
+    },
+    {
+      name: "fails a hidden form held in two gaps",
+      fixture: "gram-hidden-range-gap-spaced",
+      mutate: (root) => {
+        const statement = nodeOf(root, "PacketRangeBlockStatement")
+        setField(statement, "textBeforeEnd", [
+          ...(statement.textBeforeDash as CheckedNode[]),
+          ...(statement.textBeforeEnd as CheckedNode[]),
+        ])
+      },
+      expected:
+        "PacketIgnoredText at 8-15: overlaps the child node PacketIgnoredText at 8-15 of PacketRangeBlockStatement at 7-38",
+    },
+    {
+      name: "fails a YAML form of three fences held as two forms",
+      fixture: "hidden-yaml-adjacent-later",
+      mutate: (root, input) => {
+        const [first, ...rest] = root.body.body as CheckedNode[]
+        const second = (copyOf(root).body.body as CheckedNode[])[0]
+        placeAt(first, input, [7, 14])
+        setField(first, "value", input.slice(7, 14))
+        placeAt(second, input, [15, 18])
+        setField(second, "value", input.slice(15, 18))
+        setField(root.body, "body", [first, second, ...rest])
+      },
+      expected:
+        "PacketIgnoredText at 7-14: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails two nonempty YAML forms held as one form",
+      fixture: "lex-yaml-two-nonempty",
+      mutate: (root, input) => {
+        const [first, , ...rest] = root.body.body as CheckedNode[]
+        placeAt(first, input, [7, 26])
+        setField(first, "value", input.slice(7, 26))
+        setField(root.body, "body", [first, ...rest])
+      },
+      expected:
+        'PacketIgnoredText at 7-26: the texts of its tokens joined are not its written text: "---\\nx\\n------\\ny\\n---", not "---\\nx\\n---\\n---\\ny\\n---"',
+    },
+    {
+      name: "fails a description block value that leaves out a bare percent line",
+      fixture: "common-block-bare",
+      mutate: (root) => {
+        setField(nodeOf(root, "PacketLiteral"), "value", "A\nB")
+      },
+      expected:
+        'PacketLiteral at 18-24: value is not its written text: "A\\nB", not "A\\n%%\\nB"',
+    },
+    {
+      name: "fails a description block value that leaves out its quotes and decodes its escape",
+      fixture: "accdescr-block-quoted",
+      mutate: (root) => {
+        setField(nodeOf(root, "PacketLiteral"), "value", "A\n B")
+      },
+      expected:
+        'PacketLiteral at 18-25: value is not its written text: "A\\n B", not "\'A\\\\n B\'"',
+    },
+    {
+      name: "fails a title value that writes an HTML attribute quote as `'`",
+      fixture: "html-all-fields",
+      mutate: (root) => {
+        setField(nodeOf(root, "PacketLiteral"), "value", "<b x='q'>T</b>")
+      },
+      expected:
+        'PacketLiteral at 13-27: value is not its written text: "<b x=\'q\'>T</b>", not "<b x=\\"q\\">T</b>"',
+    },
+    {
+      name: "fails a label that writes its CRLF as LF",
+      fixture: "line-crlf-label",
+      mutate: (root) => {
+        setField(nodeOf(root, "StringLiteral"), "value", "A\nB")
+      },
+      expected:
+        'StringLiteral at 9-15: value is not its written text: "A\\nB", not "A\\r\\nB"',
+    },
+  ])
+})
+
+describe("checkTree: the gaps of a packet diagram that no recorded tree holds (ast/packet.md)", () => {
+  // A range block with a hidden form after its colon, and a relative block
+  // with a hidden suffix: the corpus has neither, so the trees are made by
+  // hand.
+
+  /** A range block with a hidden directive between its colon and its label. */
+  function rangeWithLabelGap(): Built {
+    return buildPacket('packet\n0-1:%%{!}%% "A"', (kit) => [
+      rangeBlock(kit, "0", "1", '"A"', {
+        beforeLabel: () => [ignored(kit, "Packet", "%%{!}%%", "directive")],
+      }),
+    ])
+  }
+
+  /** A relative block with a hidden directive after its label. */
+  function relativeWithSuffix(): Built {
+    return buildPacket('packet\n+1:"A"%%{!}%%', (kit) => [
+      relative(kit, "1", '"A"', {
+        after: () => [ignored(kit, "Packet", "%%{!}%%", "directive")],
+      }),
+    ])
+  }
+
+  itFailsEach([
+    {
+      name: "a hidden form before the label of a range block as a PacketLiteral",
+      built: rangeWithLabelGap,
+      mutate: hiddenAsLiteral("PacketRangeBlockStatement", "textBeforeLabel"),
+      expected:
+        "PacketRangeBlockStatement at 7-22: the field textBeforeLabel holds a PacketLiteral, not a PacketIgnoredText",
+    },
+    {
+      name: "a hidden form before the label of a range block moved before its colon",
+      built: rangeWithLabelGap,
+      mutate: moveFirst(
+        "PacketRangeBlockStatement",
+        "textBeforeLabel",
+        "textBeforeColon",
+      ),
+      expected:
+        'PacketRangeBlockStatement at 7-22: the gap is not hidden ASCII whitespace: ":"',
+    },
+    {
+      name: "a hidden suffix of a relative block as a PacketLiteral",
+      built: relativeWithSuffix,
+      mutate: hiddenAsLiteral("PacketRelativeBlockStatement", "textAfter"),
+      expected:
+        "PacketRelativeBlockStatement at 7-20: the field textAfter holds a PacketLiteral, not a PacketIgnoredText",
+    },
+    {
+      name: "a hidden suffix of a relative block moved to the body",
+      built: relativeWithSuffix,
+      mutate: moveToBody("PacketRelativeBlockStatement", "textAfter"),
+      expected:
+        "PacketIgnoredText at 13-20: overlaps the child node PacketRelativeBlockStatement at 7-20 of PacketDiagram at 0-20",
+    },
+  ])
 })

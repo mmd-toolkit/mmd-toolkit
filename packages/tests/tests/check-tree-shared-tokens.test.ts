@@ -12,11 +12,12 @@ import {
   recordedTree,
   setField,
   firstNode,
+  itFailsEachRecorded,
   problemsOf,
   replaceToken,
   says,
 } from "./check-tree-recorded.ts"
-import type { MutationCase } from "./check-tree-recorded.ts"
+import type { InputCase, MutationCase } from "./check-tree-recorded.ts"
 import {
   handMadeRoot,
   tokenOf,
@@ -52028,4 +52029,378 @@ describe("checkTree: the ends and the runs of the tokens of a requirement diagra
       })
     })
   }
+})
+
+/** Sets the kind of the token that starts at `start` to `to`. */
+function retypeTokenAt(start: number, to: string): InputCase["mutate"] {
+  return (root) => {
+    setField(
+      root.tokens.find((candidate) => candidate.range[0] === start)!,
+      "type",
+      to,
+    )
+  }
+}
+
+/** Sets the range of the token that starts at `start` to `range`, and its text to the input there. */
+function widenTokenAt(
+  start: number,
+  range: readonly [number, number],
+): InputCase["mutate"] {
+  return (root, input) => {
+    const target = root.tokens.find(
+      (candidate) => candidate.range[0] === start,
+    )!
+    setField(target, "range", range)
+    setField(target, "loc", locationOf(input, range))
+    setField(target, "value", input.slice(...range))
+  }
+}
+
+/** Puts in place of the tokens within `range` one token of the kind `kind` over it, in source order. */
+function oneTokenOver(
+  kind: string,
+  range: readonly [number, number],
+): InputCase["mutate"] {
+  return (root, input) => {
+    setField(
+      root,
+      "tokens",
+      [
+        ...root.tokens.filter(
+          (candidate) =>
+            candidate.range[0] < range[0] || candidate.range[1] > range[1],
+        ),
+        tokenOf(input, kind, { text: input.slice(...range), from: range[0] }),
+      ].sort((first, second) => first.range[0] - second.range[0]),
+    )
+  }
+}
+
+describe("checkTree: the tokens of a packet diagram (tokens/packet.md)", () => {
+  itFailsEachRecorded("packet", [
+    {
+      name: "fails the keyword and the colon of an accessibility title as one token",
+      fixture: "common-whitespace",
+      mutate: oneTokenOver("Keyword", [25, 36]),
+      expected:
+        'PacketAccTitleStatement at 25-47: the common statement\'s fixed components: "accTitle \\t:", not "accTitle:"',
+    },
+    // Keyword.
+    {
+      name: "fails the header `packet` as a RawText token",
+      fixture: "gram-mixed",
+      mutate: retypeTokenAt(0, "RawText"),
+      expected:
+        'RawText at 0-6 of "packet" in PacketDiagram at 0-38: the kind of a token that the node writes itself: "RawText", not "Keyword"',
+    },
+    {
+      name: "fails the keyword `title` as a RawText token",
+      fixture: "title-empty",
+      mutate: retypeTokenAt(7, "RawText"),
+      expected: 'RawText at 7-12 of "title": lies in no value node',
+    },
+    {
+      name: "fails the keyword `accTitle` of a packet diagram as a RawText token",
+      fixture: "acctitle-empty",
+      mutate: retypeTokenAt(7, "RawText"),
+      expected: 'RawText at 7-15 of "accTitle": lies in no value node',
+    },
+    {
+      name: "fails the keyword `accDescr` of a packet diagram as a RawText token",
+      fixture: "accdescr-line-empty",
+      mutate: retypeTokenAt(7, "RawText"),
+      expected: 'RawText at 7-15 of "accDescr": lies in no value node',
+    },
+    // Punctuator.
+    {
+      name: "fails the dash of a range block as a Keyword token",
+      fixture: "gram-zero-range",
+      mutate: retypeTokenAt(8, "Keyword"),
+      expected:
+        'Keyword at 8-9 of "-" in PacketRangeBlockStatement at 7-14: the kind of a token that the node writes itself: "Keyword", not "Punctuator"',
+    },
+    {
+      name: "fails the plus of a relative block as a Keyword token",
+      fixture: "gram-mixed",
+      mutate: retypeTokenAt(7, "Keyword"),
+      expected:
+        'Keyword at 7-8 of "+" in PacketRelativeBlockStatement at 7-15: the kind of a token that the node writes itself: "Keyword", not "Punctuator"',
+    },
+    {
+      name: "fails the colon of a block as a Keyword token",
+      fixture: "gram-mixed",
+      mutate: retypeTokenAt(9, "Keyword"),
+      expected:
+        'Keyword at 9-10 of ":" in PacketRelativeBlockStatement at 7-15: the kind of a token that the node writes itself: "Keyword", not "Punctuator"',
+    },
+    {
+      name: "fails the opening brace of a description block as a Keyword token",
+      fixture: "accdescr-block-lines",
+      mutate: retypeTokenAt(16, "Keyword"),
+      expected:
+        'Keyword at 16-17 of "{" in PacketAccDescrBlockStatement at 7-31: the kind of a token that the node writes itself: "Keyword", not "Punctuator"',
+    },
+    {
+      name: "fails the closing brace of a description block as a Keyword token",
+      fixture: "accdescr-block-lines",
+      mutate: retypeTokenAt(30, "Keyword"),
+      expected:
+        'Keyword at 30-31 of "}" in PacketAccDescrBlockStatement at 7-31: the kind of a token that the node writes itself: "Keyword", not "Punctuator"',
+    },
+    // Numeric.
+    {
+      name: "fails the count of a relative block as a RawText token",
+      fixture: "gram-mixed",
+      mutate: retypeTokenAt(8, "RawText"),
+      expected:
+        "NumericLiteral at 8-9: the tokens of an unsigned integer are not all of the kind Numeric: RawText",
+    },
+    {
+      name: "fails the plus and the count of a relative block as one Numeric token",
+      fixture: "gram-mixed",
+      mutate: oneTokenOver("Numeric", [7, 9]),
+      expected:
+        "NumericLiteral at 8-9: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a count cut into two Numeric tokens",
+      fixture: "db-cap-following-block-unpublished",
+      mutate: (root, input) => {
+        const at = root.tokens.findIndex(
+          (candidate) => candidate.range[0] === 8,
+        )
+        setField(root, "tokens", [
+          ...root.tokens.slice(0, at),
+          tokenOf(input, "Numeric", { text: "320", from: 8 }),
+          tokenOf(input, "Numeric", { text: "000", from: 11 }),
+          ...root.tokens.slice(at + 1),
+        ])
+      },
+      expected:
+        "NumericLiteral at 8-14: has 2 tokens, not the one that a node of this type has",
+    },
+    // String.
+    {
+      name: "fails a label as a RawText token",
+      fixture: "gram-mixed",
+      mutate: retypeTokenAt(10, "RawText"),
+      expected:
+        "StringLiteral at 10-15: the tokens of the string are not one String token or StringFragment tokens: RawText",
+    },
+    {
+      name: "fails a label token without its closing quote",
+      fixture: "gram-mixed",
+      mutate: widenTokenAt(10, [10, 14]),
+      expected:
+        'offset 14: the character outside the tokens and comments is not whitespace: "\\""',
+    },
+    // RawText.
+    {
+      name: "fails a common value as a Keyword token",
+      fixture: "comment-title",
+      mutate: retypeTokenAt(13, "Keyword"),
+      expected:
+        'Keyword at 13-14 of "A": lies in the value node PacketLiteral at 13-14',
+    },
+    {
+      name: "fails a hidden YAML form as a Keyword token",
+      fixture: "detect-one-block",
+      mutate: retypeTokenAt(11, "Keyword"),
+      expected:
+        'Keyword at 11-20 of "---\\nx\\n---": lies in the value node PacketIgnoredText at 11-20',
+    },
+    {
+      name: "fails a hidden YAML form cut into two RawText tokens",
+      fixture: "detect-one-block",
+      mutate: (root, input) => {
+        const at = root.tokens.findIndex(
+          (candidate) => candidate.range[0] === 11,
+        )
+        setField(root, "tokens", [
+          ...root.tokens.slice(0, at),
+          tokenOf(input, "RawText", { text: "---\n", from: 11 }),
+          tokenOf(input, "RawText", { text: "x\n---", from: 15 }),
+          ...root.tokens.slice(at + 1),
+        ])
+      },
+      expected:
+        "RawText at 11-15: ends with whitespace or a line terminator where no value ends",
+    },
+    // The tokens of the values.
+    {
+      name: "fails the token of an accessibility title value without the space after its colon",
+      fixture: "comment-acctitle",
+      mutate: widenTokenAt(16, [17, 18]),
+      expected:
+        "PacketLiteral at 16-18: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails a whitespace-only accessibility description without its token",
+      fixture: "lex-accdescr-whitespace-only",
+      mutate: (root) => {
+        setField(
+          root,
+          "tokens",
+          root.tokens.filter((candidate) => candidate.range[0] !== 16),
+        )
+      },
+      expected:
+        "PacketDiagram at 0-18: does not run from the start of a token to the end of a token",
+    },
+    {
+      name: "fails the separator of a title with nothing after it as a token",
+      fixture: "lex-title-one-space",
+      mutate: oneTokenOver("RawText", [12, 13]),
+      expected:
+        "RawText at 12-13: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails the token of a description block value widened over the whitespace before it",
+      fixture: "accdescr-block-lines",
+      mutate: widenTokenAt(20, [18, 29]),
+      expected:
+        "RawText at 18-29: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails the whitespace of a whitespace-only description block as a token",
+      fixture: "lex-description-whitespace-only",
+      mutate: oneTokenOver("RawText", [17, 21]),
+      expected:
+        "RawText at 17-21: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails the token of a label that decodes an escape",
+      fixture: "db-label-escapes",
+      mutate: (root) => {
+        const label = root.tokens.find(
+          (candidate) => candidate.type === "String",
+        )!
+        setField(label, "value", label.value.replace("\\b", "\b"))
+      },
+      expected:
+        'String at 9-42: value: "\\"a\\b\\\\f\\\\n\\\\r\\\\t\\\\v\\\\0\\\\q\\\\u0041\\\\x41\\\\\\\\\\\\\\"\\"", not "\\"a\\\\b\\\\f\\\\n\\\\r\\\\t\\\\v\\\\0\\\\q\\\\u0041\\\\x41\\\\\\\\\\\\\\"\\""',
+    },
+    {
+      name: "fails the token of a title value that decodes its entities",
+      fixture: "entity-all-text",
+      mutate: (root) => {
+        setField(
+          root.tokens.find((candidate) => candidate.range[0] === 13)!,
+          "value",
+          "& #",
+        )
+      },
+      expected: 'RawText at 13-23: value: "& #", not "&amp; #35;"',
+    },
+    {
+      name: "fails a title value with an open quote as a String token",
+      fixture: "title-open-quote",
+      mutate: retypeTokenAt(13, "String"),
+      expected:
+        "PacketLiteral at 13-18: the tokens of a common value or hidden form are not all of the kind RawText: String",
+    },
+    // The tokens of the hidden forms.
+    {
+      name: "fails the token of a hidden directive widened over the space before it",
+      fixture: "lex-hidden-two-suffixes",
+      mutate: widenTokenAt(23, [22, 33]),
+      expected:
+        "RawText at 22-33: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails the token of a hidden YAML form widened over the line ending after it",
+      fixture: "hidden-yaml-crlf",
+      mutate: widenTokenAt(13, [13, 26]),
+      expected:
+        "RawText at 13-26: ends with whitespace or a line terminator where no value ends",
+    },
+    {
+      name: "fails the dash before a YAML form held in the token of the form",
+      fixture: "lex-dash-before-yaml",
+      mutate: oneTokenOver("RawText", [8, 18]),
+      expected:
+        "PacketIgnoredText at 9-18: does not run from the start of a token to the end of a token",
+    },
+    // Whitespace, line feeds, and comments.
+    {
+      name: "fails a tab between the units of a block as a token",
+      fixture: "space-count-tab",
+      mutate: oneTokenOver("RawText", [9, 10]),
+      expected:
+        "RawText at 9-10: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails a line feed between two statements as a token",
+      fixture: "gram-mixed",
+      mutate: oneTokenOver("RawText", [15, 16]),
+      expected:
+        "RawText at 15-16: starts with whitespace or a line terminator where no value starts",
+    },
+    {
+      name: "fails a native comment with the mark `#`",
+      fixture: "comment-block",
+      mutate: (root) => {
+        setField(root.comments[0], "mark", "#")
+      },
+      expected:
+        "Comment at 12-19: the mark # is no mark of the comments of a PacketDiagram",
+    },
+    {
+      name: "fails a native comment that ends at a line separator inside it",
+      fixture: "lex-native-comment-ls",
+      mutate: (root, input) => {
+        const [comment] = root.comments
+        setField(comment, "range", [7, 10])
+        setField(comment, "loc", locationOf(input, [7, 10]))
+        setField(comment, "value", input.slice(9, 10))
+      },
+      expected:
+        "Comment at 7-10: the range of a comment line: [7,10], not [7,23]",
+    },
+    {
+      name: "fails a native comment as a RawText token",
+      fixture: "comment-block",
+      mutate: (root, input) => {
+        setField(root, "comments", [])
+        oneTokenOver("RawText", [12, 19])(root, input)
+      },
+      expected: 'RawText at 12-19 of "%% tail": lies in no value node',
+    },
+    {
+      name: "fails a bare comment line passed before the header as a RawText token",
+      fixture: "detect-empty-braces-bare",
+      mutate: (root, input) => {
+        setField(root, "comments", [])
+        oneTokenOver("RawText", [0, 6])(root, input)
+      },
+      expected:
+        "Root.body: does not run from its first token to its last: [7,13], not [0,13]",
+    },
+    {
+      name: "fails the token of a label that writes its CRLF as LF",
+      fixture: "line-crlf-label",
+      mutate: (root) => {
+        setField(
+          root.tokens.find((candidate) => candidate.type === "String")!,
+          "value",
+          '"A\nB"',
+        )
+      },
+      expected: 'String at 9-15: value: "\\"A\\nB\\"", not "\\"A\\r\\nB\\""',
+    },
+    {
+      name: "fails the token of a title value that writes an HTML attribute quote as `'`",
+      fixture: "html-all-fields",
+      mutate: (root) => {
+        setField(
+          root.tokens.find((candidate) => candidate.range[0] === 13)!,
+          "value",
+          "<b x='q'>T</b>",
+        )
+      },
+      expected:
+        'RawText at 13-27: value: "<b x=\'q\'>T</b>", not "<b x=\\"q\\">T</b>"',
+    },
+  ])
 })
