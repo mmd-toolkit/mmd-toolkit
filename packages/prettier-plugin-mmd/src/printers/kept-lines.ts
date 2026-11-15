@@ -259,12 +259,18 @@ export function ignoredSemicolonAtCommentEnd(
 /**
  * Whether the `;` at `offset` would end an entity: a `#`, one or more word
  * characters, and the `;` (common.md, Entities). Only then does the line rule
- * that ignores the `;` decide how mermaid.js reads the text before it.
+ * that ignores the `;` decide how mermaid.js reads the text before it. The
+ * name is read as mermaid.js reads it, without the directives in it:
+ * `#a%%{init: {}}%%;` ends the entity `#a;`.
  */
 function endsEntityName(source: Source, offset: number): boolean {
-  let start = offset
-  while (start > 0 && isWordCharacter(source.text[start - 1])) start--
-  return start < offset && source.text[start - 1] === "#"
+  let at = previousRead(source, offset)
+  let words = 0
+  while (at >= 0 && isWordCharacter(source.text[at])) {
+    words++
+    at = previousRead(source, at)
+  }
+  return words > 0 && at >= 0 && source.text[at] === "#"
 }
 
 /**
@@ -292,19 +298,26 @@ function staysIgnoredAlone(
   )
   if (comment?.mark !== "#") return true
   const lineStart = lineStartOf(source, semicolon)
-  let holder: Node | undefined
+  // The item that the printer puts on a line of its own with the comment: the
+  // last statement or divider (a section of a block: `else`, `and`, `option`)
+  // that starts on the line before the comment, or the `end` that closes a
+  // block there.
+  let holderStart = -1
   for (const node of nodesOf(source)) {
     if (
-      node.type.endsWith("Statement") &&
+      isLineItem(node) &&
       node.range[0] < commentStart &&
-      lineStartOf(source, node.range[0]) === lineStart &&
-      (holder === undefined || node.range[0] > holder.range[0])
+      lineStartOf(source, node.range[0]) === lineStart
     )
-      holder = node
+      holderStart = Math.max(holderStart, node.range[0])
   }
-  if (holder === undefined) return true
+  for (const token of findTokensBetween(source, lineStart, commentStart)) {
+    if (token.type === "Keyword" && token.value === "end")
+      holderStart = Math.max(holderStart, token.range[0])
+  }
+  if (holderStart < 0) return true
   return ignoredSemicolonsIn(
-    readSegments(source, holder.range[0], lineEndOf(source, semicolon)),
+    readSegments(source, holderStart, lineEndOf(source, semicolon)),
   ).includes(semicolon)
 }
 
@@ -542,6 +555,14 @@ export function isLastOnItsLine(source: Source, offset: number): boolean {
 
 /** The nodes of each source, found once. */
 const nodesBySource = new WeakMap<Source, readonly Node[]>()
+
+/**
+ * Whether a node is an item that the printer puts on a line of its own: a
+ * statement, or a divider of a block (a section: `else`, `and`, `option`).
+ */
+function isLineItem(node: Node): boolean {
+  return node.type.endsWith("Statement") || node.type.endsWith("Section")
+}
 
 /** The nodes of the source. */
 function nodesOf(source: Source): readonly Node[] {
@@ -1299,6 +1320,32 @@ export function isInsideStyleRuleStretch(
   return findStyleRuleStretches(source).some(
     ([first, last]) => first < start && end <= last,
   )
+}
+
+/**
+ * Whether the token at `range` lies in a stretch of the line rule (see
+ * `isInsideStyleRuleStretch`) that holds whitespace between its start and the
+ * token. The whitespace before the token in the stretch keeps whether it is
+ * there only while the `#` that ends the stretch stands on the line of the
+ * token: printed with that `#` on a line of its own, the line rule ends the
+ * stretch earlier, and a second formatting would print the whitespace as
+ * anywhere else.
+ */
+export function followsGapsOfStyleRuleStretch(
+  source: Source,
+  range: Range,
+): boolean {
+  if (usesVerbatimStyleLines(source)) return false
+  const stretch = findStyleRuleStretches(source).find(
+    ([first, last]) => first < range[0] && range[1] <= last,
+  )
+  if (stretch === undefined) return false
+  let end = range[0]
+  while (end > stretch[0] && isSpaceOrTab(source.text[end - 1])) end--
+  for (let at = stretch[0]; at < end; at++) {
+    if (isSpaceOrTab(source.text[at])) return true
+  }
+  return false
 }
 
 /**

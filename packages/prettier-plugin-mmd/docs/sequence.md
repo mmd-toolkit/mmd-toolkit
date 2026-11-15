@@ -1219,6 +1219,51 @@ statements-one-per-line/message-comment-own-trigger-trailing-whitespace]
 [fixture:
 statements-one-per-line/autonumber-percent-comment-entity-trigger-in-other-statement]
 
+The name of the entity is read as mermaid.js reads it, without a directive in
+it: `x #a%%{init: {}}%%;` ends in the entity `#a;`, and `x #a%%{init: {}}%%b;`
+in `#ab;`, so those lines stay together, while `x #%%{init: {}}%%;` ends in
+`#;`, which is no entity, and the line is split. The line of a divider of a
+block (`else`, `and`, `option`) and the line of the `end` that closes a block
+are decided in the same way, since each of them stands on a line of its own once
+the statements are printed.
+
+[fixture:
+statements-one-per-line/message-comment-entity-split-by-directive-trigger-in-other-statement]
+[fixture:
+statements-one-per-line/message-comment-entity-name-split-in-two-by-directive-trigger-in-other-statement]
+[fixture:
+statements-one-per-line/message-comment-directive-after-hash-trigger-in-other-statement]
+[fixture:
+statements-one-per-line/par-and-comment-ignored-semicolon-trigger-in-other-statement]
+[fixture:
+statements-one-per-line/alt-else-comment-ignored-semicolon-trigger-in-other-statement]
+[fixture:
+statements-one-per-line/critical-option-comment-ignored-semicolon-trigger-in-other-statement]
+[fixture:
+statements-one-per-line/end-comment-ignored-semicolon-trigger-in-other-statement]
+[fixture:
+statements-one-per-line/end-comment-empty-entity-trigger-in-other-statement]
+
+The `end` that closes a block stays on the line of the text before it, with its
+comment, where that text holds whitespace in the stretch that the line rule of
+mermaid.js may read: the whitespace between a `:` and a later `#` keeps whether
+it is there, but only while the `#` of the comment after the `end` stands on the
+line. With the `end` and the comment on a line of their own, a second formatting
+would print that whitespace as anywhere else. The line
+`loop style:#x;; loop x; A->>B: body; end #;` followed by two spaces stays on
+one line, with `A->>B` as written. Where the text before the `end` holds no
+whitespace in that stretch, or the comment holds no `#` that ends it (`%% a;`),
+the `end` and its comment are printed on a line of their own.
+
+[fixture:
+statements-one-per-line/end-comment-ignored-semicolon-after-gaps-in-style-rule-stretch]
+[fixture:
+statements-one-per-line/end-comment-ignored-semicolon-after-gaps-in-style-rule-stretch-body-line]
+[fixture:
+statements-one-per-line/end-comment-ignored-semicolon-no-gaps-in-style-rule-stretch]
+[fixture:
+statements-one-per-line/end-percent-comment-ignored-semicolon-after-gaps-before-the-stretch-ends]
+
 Input
 ([comments/semicolon-after-comment-kept-input.mmd](../tests/fixtures/sequence/comments/semicolon-after-comment-kept-input.mmd)):
 

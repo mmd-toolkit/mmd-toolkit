@@ -1255,6 +1255,42 @@ mermaid.js は `#a;` をそのテキストの文字参照として読みます�
 [fixture: statements-one-per-line/message-comment-own-trigger-trailing-whitespace]
 [fixture: statements-one-per-line/autonumber-percent-comment-entity-trigger-in-other-statement]
 
+文字参照の名前は、mermaid.js が読むとおりに、
+その中のディレクティブを除いて読みます。
+`x #a%%{init: {}}%%;` は文字参照 `#a;` で、
+`x #a%%{init: {}}%%b;` は `#ab;` で終わるので、これらの行は 1 行に残します。
+`x #%%{init: {}}%%;` は `#;` で終わり、文字参照ではないので、行を分けます。
+ブロックの分かれ目（`else`、`and`、`option`）の行と、
+ブロックを閉じる `end` の行も、同じに決めます。
+文を印字すると、それらも 1 行ずつになるからです。
+
+[fixture: statements-one-per-line/message-comment-entity-split-by-directive-trigger-in-other-statement]
+[fixture: statements-one-per-line/message-comment-entity-name-split-in-two-by-directive-trigger-in-other-statement]
+[fixture: statements-one-per-line/message-comment-directive-after-hash-trigger-in-other-statement]
+[fixture: statements-one-per-line/par-and-comment-ignored-semicolon-trigger-in-other-statement]
+[fixture: statements-one-per-line/alt-else-comment-ignored-semicolon-trigger-in-other-statement]
+[fixture: statements-one-per-line/critical-option-comment-ignored-semicolon-trigger-in-other-statement]
+[fixture: statements-one-per-line/end-comment-ignored-semicolon-trigger-in-other-statement]
+[fixture: statements-one-per-line/end-comment-empty-entity-trigger-in-other-statement]
+
+ブロックを閉じる `end` は、その前のテキストが、
+mermaid.js の行の規則が読むかもしれない範囲に空白を含むとき、コメントとともに、
+そのテキストの行に残します。
+`:` と後ろの `#` のあいだの空白は、あるかないかを保ちますが、
+それは `end` の後のコメントの `#` が行にあるあいだだけです。
+`end` とコメントを別の行にすると、2 回目の整形は、
+その空白をほかの場所と同じに印字します。
+`loop style:#x;; loop x; A->>B: body; end #;` の後に空白が 2 つ続く行は、
+`A->>B` を書いたままにして、1 行に残します。
+`end` の前のテキストにその範囲の空白がないとき、
+またはコメントにその範囲を終わらせる `#` がないとき（`%% a;`）は、
+`end` とコメントを別の行に印字します。
+
+[fixture: statements-one-per-line/end-comment-ignored-semicolon-after-gaps-in-style-rule-stretch]
+[fixture: statements-one-per-line/end-comment-ignored-semicolon-after-gaps-in-style-rule-stretch-body-line]
+[fixture: statements-one-per-line/end-comment-ignored-semicolon-no-gaps-in-style-rule-stretch]
+[fixture: statements-one-per-line/end-percent-comment-ignored-semicolon-after-gaps-before-the-stretch-ends]
+
 入力
 ([comments/semicolon-after-comment-kept-input.mmd](../tests/fixtures/sequence/comments/semicolon-after-comment-kept-input.mmd)):
 

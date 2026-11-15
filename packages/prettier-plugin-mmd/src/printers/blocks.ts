@@ -14,6 +14,7 @@ import {
 } from "./gap.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import {
+  followsGapsOfStyleRuleStretch,
   holdsJoiningRegion,
   holdsKeptSemicolon,
   isDroppedSemicolon,
@@ -973,7 +974,11 @@ export function printBlock<Statement extends Positioned>(
     const lineEnd = lineEndOf(source, bounds.end)
     // A `;` that the line rule ignores stays with the text on the line that
     // makes it ignored (`style:#x` before the closing), which a line break
-    // before the closing would part from it.
+    // before the closing would part from it. So does the `#` of a comment after
+    // the closing, which ends a stretch of the line rule that holds whitespace
+    // of the line before the closing: the comment has no token of its own where
+    // whitespace follows its `;`, but a line break before the closing would end
+    // the stretch earlier (see `followsGapsOfStyleRuleStretch`).
     // The `}` that closes a block around this one is on a line of its own
     // after this block, unless something follows it, so it does not keep the
     // closing of this block on the line: the second formatting would move it.
@@ -986,7 +991,8 @@ export function printBlock<Statement extends Positioned>(
           closing.range[1] <= semicolon &&
           semicolon < lineEnd &&
           !isDroppedSemicolon(source, semicolon),
-      )
+      ) ||
+      followsGapsOfStyleRuleStretch(source, closing.range)
     return followed ? " " : null
   }
 
