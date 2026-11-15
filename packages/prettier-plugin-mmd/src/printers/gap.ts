@@ -6,6 +6,7 @@ import {
   isFirstOnItsLine,
   isInsideStyleRuleStretch,
   ignoredSemicolonAtCommentEnd,
+  keepsStyleTerminator,
 } from "./kept-lines.ts"
 import type { Source, Trivia } from "./source.ts"
 import {
@@ -565,7 +566,9 @@ function scanLines(
         break
       case "separator": {
         const staysWithPrevious =
-          !keepsSeparators && isAfterKeptLineSeparator(source, start, offset)
+          !keepsSeparators &&
+          (isAfterKeptLineSeparator(source, start, offset) ||
+            keepsStyleTerminator(source, offset))
         addPart(element.token, !(keepsSeparators || staysWithPrevious))
         // A `;` that stays after a U+2028 or U+2029 ends what stands with
         // the thing before the gap, as a `;` that is dropped does.

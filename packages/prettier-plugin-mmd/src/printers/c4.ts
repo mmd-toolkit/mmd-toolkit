@@ -78,7 +78,6 @@ function printStatements(
   keepsOpeningLine = true,
 ): PrintedBlock {
   const units = groupC4Units(source, statements)
-  const kept = findC4KeptLines(source)
   return printBlock(
     units.map((unit) =>
       unit.statements.map((statement, index) => {
@@ -100,13 +99,13 @@ function printStatements(
         const classified = classifyC4Statement(statement)
         // The last statement of a line that holds an empty block and a block
         // before it (`accDescr {}accDescr {D}`) is printed with the colon too.
-        const lineStart = lineStartOf(source, statement.range[0])
         const line =
           unit.statements.length > 1 && index === unit.statements.length - 1
             ? printAccessibilityLine(
                 source,
                 statement,
-                kept.joined.has(lineStart) || kept.verbatim.has(lineStart),
+                unit.range[0],
+                keepsFollowingOnC4Line(source, statement),
               )
             : undefined
         if (line !== undefined) return [before, line]
@@ -158,6 +157,22 @@ function printStatements(
     { statements: units, ...bounds },
     blockRules(source, keepsOpeningLine),
   )
+}
+
+/**
+ * Whether what follows the last statement of a C4 unit stays on its printed
+ * line: the shared block printer extends the stretch through the rest of the
+ * line that the unit ends on when that line is kept. Otherwise, following
+ * units go to lines of their own; C4 has no rule that attaches them by their
+ * gaps (docs/compatibility.md, A description block on one line).
+ */
+function keepsFollowingOnC4Line(
+  source: Source,
+  statement: C4Statement,
+): boolean {
+  const kept = findC4KeptLines(source)
+  const line = lineStartOf(source, statement.range[1] - 1)
+  return kept.joined.has(line) || kept.verbatim.has(line)
 }
 
 /** C4 drops no statements or semicolons; protected gaps keep recovery lines. */

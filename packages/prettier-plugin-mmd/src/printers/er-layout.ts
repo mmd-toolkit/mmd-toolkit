@@ -14,6 +14,7 @@ import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import {
   findKeptBreaks,
   gapKeepsLineBreak,
+  findSeparatorDroppedWithTerminator,
   holdsJoiningRegion,
   isDroppedSemicolon,
   isFirstOnItsLine,
@@ -498,19 +499,23 @@ export function layoutErStatement(
   // A statement with a kept line break keeps its styles as written: printing
   // them changes whether joining its lines is safe, so a second pass would
   // join them.
-  const styles =
-    (statement.type === "ErStyleStatement" ||
-      statement.type === "ErClassDefStatement") &&
-    !keepsLineBreaks &&
-    styleUnitsCanCompact(source, start, end, statement.styles)
+  const written =
+    statement.type === "ErStyleStatement" ||
+    statement.type === "ErClassDefStatement"
       ? statement.styles
       : []
-  for (const style of styles)
-    kept.push({
-      start: style.range[0],
-      end: style.range[1],
-      doc: printStyleUnitSpacing(source, style),
-    })
+  const styles = withoutDroppedSeparator(source, written, statement.range[1])
+  const printsStyles =
+    styles.length > 0 &&
+    !keepsLineBreaks &&
+    styleUnitsCanCompact(source, start, end, styles)
+  if (printsStyles)
+    for (const [index, style] of styles.entries())
+      kept.push({
+        start: style.range[0],
+        end: written[index].range[1],
+        doc: printStyleUnitSpacing(source, style),
+      })
   const atoms = collectAtoms(
     source,
     start,
@@ -518,7 +523,7 @@ export function layoutErStatement(
     collectValueNodes(statement, erValueNodeTypes),
     kept,
   )
-  const rules = statementRules(source, statement, styles.length > 0)
+  const rules = statementRules(source, statement, printsStyles)
   if (statement.type === "ErClassStatement")
     keepKeywordDashTouching(source, atoms, rules)
   return {
@@ -577,6 +582,44 @@ function findEndingSemicolonStretches(
       end: statement.range[1],
     },
   ]
+}
+
+/**
+ * The styles of a `classDef` or `style` statement that ends at `statementEnd`,
+ * the last one without the U+2028 and U+2029 at its end where the printer drops
+ * them with the `;` that ends the statement (see
+ * `findSeparatorDroppedWithTerminator`): the `;` is a unit of the statement or
+ * one that the line rule ignores right after it, and the character is a
+ * character of the last style only where no whitespace stands before it
+ * (docs/er.md, Semicolons at the end of a style statement).
+ */
+function withoutDroppedSeparator(
+  source: Source,
+  styles: readonly Node[],
+  statementEnd: number,
+): readonly Node[] {
+  const last = styles.at(-1)
+  if (last === undefined) return styles
+  const unit = findTokenEndingBefore(source, statementEnd)
+  const semicolon =
+    unit?.value === ";"
+      ? unit.range[0]
+      : source.ignoredSemicolons.has(statementEnd)
+        ? statementEnd
+        : -1
+  if (
+    semicolon < 0 ||
+    findSeparatorDroppedWithTerminator(source, semicolon) < 0
+  )
+    return styles
+  let end = last.range[1]
+  while (
+    isSpaceOrTab(source.text[end - 1]) ||
+    source.text[end - 1] === "\u2028" ||
+    source.text[end - 1] === "\u2029"
+  )
+    end--
+  return [...styles.slice(0, -1), { ...last, range: [last.range[0], end] }]
 }
 
 /**
