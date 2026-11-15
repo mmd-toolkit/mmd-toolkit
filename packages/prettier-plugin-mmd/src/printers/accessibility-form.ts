@@ -400,15 +400,24 @@ export function printAccessibilityLine(
  * the line rule of mermaid.js ignores, the printer prints it with what follows,
  * and the form with the `:` would read it as a character of the text, which
  * changes the description (docs/compatibility.md, A description block on one
- * line).
+ * line). A `;` that a statement after the block holds is not on the line of the
+ * block: that statement is printed on a line of its own, with its `;`.
  */
 function holdsKeptSemicolonAfter(source: Source, end: number): boolean {
   const lineEnd = lineEndOf(source, end)
+  const following = source.root.tokens.find(
+    (token) =>
+      end <= token.range[0] &&
+      token.range[0] < lineEnd &&
+      token.value !== ";" &&
+      token.type !== "Directive",
+  )
+  const limit = following?.range[0] ?? lineEnd
   return source.root.tokens.some(
     (token) =>
       token.value === ";" &&
       end <= token.range[0] &&
-      token.range[1] <= lineEnd &&
+      token.range[1] <= limit &&
       !source.ignoredSemicolons.has(token.range[0]) &&
       findTriviaBetween(source, token.range[1], lineEnd).length > 0 &&
       findStatementAfter(source, token.range[1]) === undefined &&

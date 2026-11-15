@@ -250,6 +250,11 @@ mermaid.js が名前を trim するので Db は同じであり、
 `accDescr {style:#x} flow F #%%{init: {}}%%;` の後に空白が 2 つ続くときは、
 `accDescr: style:#x` と `flow F #%%{init: {}}%%` に印字します。
 `;` の後に空白がないときと同じです。
+末尾のディレクティブも、その空白がないときと同じ形で並べ、その前の空白は、
+ほかの名前の末尾と同じく落とします。
+`flow F%% style:#x %%{init: {}}%%;` の後に空白が 2 つ続くときは、
+`flow F%% style:#x%%{init: {}}%%` に印字します。
+`;` の後がタブのときと、`;` の前に空白があるときも同じです。
 
 [test: agentflow: U+2028 and spaces at the end of a flow name]
 [test: agentflow: U+2029 and spaces at the end of a connector name]
@@ -259,6 +264,14 @@ mermaid.js が名前を trim するので Db は同じであり、
 [fixture: names-and-headings/name-directive-trailing-kept]
 [fixture: names-and-headings/heading-with-directive-ignored-semicolon-after-whitespace-dropped]
 [fixture: names-and-headings/heading-with-directive-after-hash-ignored-semicolon-after-whitespace-dropped]
+[fixture: names-and-headings/heading-with-comment-and-directive-ignored-semicolon-after-whitespace-dropped]
+[fixture: names-and-headings/heading-with-comment-and-directive-ignored-semicolon-after-tab-dropped]
+[fixture: names-and-headings/heading-with-comment-and-directive-ignored-semicolon-after-space-dropped]
+[fixture: names-and-headings/heading-with-comment-and-directive-short-ignored-semicolon-after-whitespace-dropped]
+[fixture: names-and-headings/heading-with-comment-and-directive-two-directives-ignored-semicolon-after-whitespace-dropped]
+[fixture: names-and-headings/heading-with-comment-and-directive-touching-directives-ignored-semicolon-after-whitespace-dropped]
+[fixture: names-and-headings/heading-with-comment-and-directive-directive-before-ignored-semicolon-after-whitespace-dropped]
+[fixture: names-and-headings/heading-with-comment-and-directive-connector-ignored-semicolon-after-whitespace-dropped]
 
 書かれたまま残す行の `;` の前では、空白を除くとエンティティになる場合、
 名前の末尾の空白を保ちます。

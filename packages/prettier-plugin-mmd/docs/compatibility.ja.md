@@ -2945,11 +2945,27 @@ mermaid.js の行の規則はその `;` を無視せず、コロンの形にす�
 ブロックは残します（quadrant 図の `accDescr {style:#x}; %% #a;`、
 XY チャートの `accDescr {D}; %% c`、
 agentflow 図の `accDescr {style:#x} ; %% #a;`）。
+ブロックの後の文が持つ `;` は、これに当たりません。
+その文は、その `;` とともに独立した行に印字し、
+ブロックはコロンの形で印字します（sequence 図の
+`accDescr {x} A->>B: x #a%%{init: {}}%%; %%{init: {}}%%` と
+`accDescr {x} activate A; %% c`、railroad 図の `accDescr {x} r = "a"; %% c`）。
 枝の文字で描く treeView 図（箱）では、
 キーワードの前とキーワードと `{` の間の描画の文字は、印字せずに描き直すため、
 それらの文字があることは、ブロックを残す理由になりません。
 
 [fixture: flowchart/accessibility-lines/block-last-on-a-line-with-a-semicolon]
+[fixture: sequence/multi-line-values/accdescr-block-before-message-with-kept-semicolon-between-directives]
+[fixture: sequence/multi-line-values/accdescr-block-before-message-with-kept-semicolon-touching-directives]
+[fixture: sequence/multi-line-values/accdescr-block-before-message-with-kept-semicolon-on-the-next-line]
+[fixture: sequence/multi-line-values/accdescr-block-before-else-with-kept-semicolon-between-directives]
+[fixture: sequence/multi-line-values/accdescr-block-before-and-with-kept-semicolon-between-directives]
+[fixture: sequence/multi-line-values/accdescr-block-before-option-with-kept-semicolon-between-directives]
+[fixture: sequence/multi-line-values/accdescr-block-before-activate-with-semicolon-and-comment]
+[fixture: railroad/accessibility-lines/block-before-rule-with-semicolon-and-comment-ebnf]
+[fixture: railroad/accessibility-lines/block-before-rule-with-semicolon-and-comment-peg]
+[fixture: railroad/accessibility-lines/block-before-rule-with-semicolon-and-comment-ir]
+[fixture: railroad/accessibility-lines/block-before-rule-with-semicolon-and-directive-abnf]
 [fixture: quadrant/titles-and-accessibility-statements/block-followed-by-a-kept-semicolon-and-a-comment]
 [fixture: agentflow/accessibility/block-followed-by-a-kept-semicolon-and-a-comment]
 [fixture: xychart/accessibility-statements/block-followed-by-a-kept-semicolon-and-a-comment]

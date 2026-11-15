@@ -100,6 +100,9 @@ export function layoutContainerHeader(
   let nameStart = name.range[0]
   let nameEnd = name.range[1]
   const rules = new Map<number, GapRule>()
+  // The directives that end a name from which the printer drops a `;` and the
+  // whitespace around it (see below); they are no text of the name atom.
+  let endingDirectives: readonly Atom[] = []
   // Only an ordinary single-fragment heading shares flowchart's heading
   // rules. Erased click/empty forms and their context-exit gaps are Name text
   // (diagrams/agentflow.md, Names; docs/agentflow.md, Names and headings).
@@ -168,8 +171,10 @@ export function layoutContainerHeader(
       // A name that holds a directive or a comment keeps its text as written,
       // but a `;` that the line rule ignores and that the printer drops lies at
       // its end where whitespace follows the `;`, and it is no text of the
-      // name with the spaces and tabs around it (docs/agentflow.md, Names and
-      // headings).
+      // name with the spaces and tabs around it. The name is then read as it
+      // is without the whitespace after the `;`: the directives at its end
+      // stand after it, and the whitespace before them goes, as it does at the
+      // end of any name (docs/agentflow.md, Names and headings).
       let trimmed = nameEnd
       while (trimmed > nameStart && isSpaceOrTab(source.text[trimmed - 1]))
         trimmed--
@@ -181,6 +186,13 @@ export function layoutContainerHeader(
         nameEnd = trimmed - 1
         while (nameEnd > nameStart && isSpaceOrTab(source.text[nameEnd - 1]))
           nameEnd--
+        endingDirectives = findEndingDirectives(source, nameStart, nameEnd)
+        if (endingDirectives.length > 0) {
+          rules.set(endingDirectives[0].start, "none")
+          nameEnd = endingDirectives[0].start
+          while (nameEnd > nameStart && isSpaceOrTab(source.text[nameEnd - 1]))
+            nameEnd--
+        }
       }
     }
     // A whitespace-only name still needs its written character.
@@ -231,7 +243,7 @@ export function layoutContainerHeader(
     node.range[0],
     end,
     values,
-    [nameAtom],
+    [nameAtom, ...endingDirectives],
     rules,
   )
   return {
@@ -239,10 +251,36 @@ export function layoutContainerHeader(
     atoms: layout.atoms.filter(
       (atom) =>
         atom === nameAtom ||
+        endingDirectives.includes(atom) ||
         atom.start < name.range[0] ||
         atom.start >= name.range[1],
     ),
   }
+}
+
+/**
+ * The directives that end the text from `start` to `end` as atoms: a run of
+ * directives with only spaces and tabs between them, the last of which ends at
+ * `end`; none where the text does not end in a directive.
+ */
+function findEndingDirectives(
+  source: Source,
+  start: number,
+  end: number,
+): readonly Atom[] {
+  const directives: Atom[] = []
+  let position = end
+  const items = findTriviaBetween(source, start, end)
+  for (let index = items.length - 1; index >= 0; index--) {
+    const item = items[index]
+    if (item.type !== "Directive") break
+    let itemEnd = item.range[1]
+    while (itemEnd < position && isSpaceOrTab(source.text[itemEnd])) itemEnd++
+    if (itemEnd !== position) break
+    directives.unshift({ start: item.range[0], end: item.range[1] })
+    position = item.range[0]
+  }
+  return directives
 }
 
 /**

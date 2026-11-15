@@ -236,7 +236,11 @@ end, but a `;` that the line rule ignores at its end, with the whitespace around
 it, goes with it, as it does from a name without a directive:
 `accDescr {style:#x} flow F #%%{init: {}}%%;` followed by two spaces is printed
 `accDescr: style:#x` and `flow F #%%{init: {}}%%`, as it is without the
-whitespace after the `;`.
+whitespace after the `;`. The directives at its end then stand as they do
+without that whitespace: the whitespace before them is dropped, as at the end of
+any name, so `flow F%% style:#x %%{init: {}}%%;` followed by two spaces is
+printed `flow F%% style:#x%%{init: {}}%%`, and so is the same text with a tab,
+or a space before the `;`, after the `;`.
 
 [test: agentflow: U+2028 and spaces at the end of a flow name] [test: agentflow:
 U+2029 and spaces at the end of a connector name] [fixture:
@@ -247,6 +251,22 @@ names-and-headings/name-directive-trailing-kept] [fixture:
 names-and-headings/heading-with-directive-ignored-semicolon-after-whitespace-dropped]
 [fixture:
 names-and-headings/heading-with-directive-after-hash-ignored-semicolon-after-whitespace-dropped]
+[fixture:
+names-and-headings/heading-with-comment-and-directive-ignored-semicolon-after-whitespace-dropped]
+[fixture:
+names-and-headings/heading-with-comment-and-directive-ignored-semicolon-after-tab-dropped]
+[fixture:
+names-and-headings/heading-with-comment-and-directive-ignored-semicolon-after-space-dropped]
+[fixture:
+names-and-headings/heading-with-comment-and-directive-short-ignored-semicolon-after-whitespace-dropped]
+[fixture:
+names-and-headings/heading-with-comment-and-directive-two-directives-ignored-semicolon-after-whitespace-dropped]
+[fixture:
+names-and-headings/heading-with-comment-and-directive-touching-directives-ignored-semicolon-after-whitespace-dropped]
+[fixture:
+names-and-headings/heading-with-comment-and-directive-directive-before-ignored-semicolon-after-whitespace-dropped]
+[fixture:
+names-and-headings/heading-with-comment-and-directive-connector-ignored-semicolon-after-whitespace-dropped]
 
 Before a `;` that stays on a line printed as written, the end of a name keeps
 its whitespace where removing it would form an entity: `flow F%% style:#x ;;`

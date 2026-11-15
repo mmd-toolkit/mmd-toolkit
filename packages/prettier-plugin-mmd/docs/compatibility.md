@@ -2767,11 +2767,39 @@ comment or a directive after it, is none of these: the line rule of mermaid.js
 does not ignore it, and the form with the colon would read it as a character of
 the text, so the block stays (`accDescr {style:#x}; %% #a;` in a quadrant
 diagram, `accDescr {D}; %% c` in an XY chart, `accDescr {style:#x} ; %% #a;` in
-an agentflow diagram). In a treeView diagram drawn with branch characters (a
-box), the characters of the drawing before the keyword and between the keyword
-and the `{` are redrawn, not printed, so they do not keep the block.
+an agentflow diagram). A `;` that a statement after the block holds is none of
+these: that statement is printed on a line of its own with its `;`, and the
+block is printed in the form with the colon
+(`accDescr {x} A->>B: x #a%%{init: {}}%%; %%{init: {}}%%` and
+`accDescr {x} activate A; %% c` in a sequence diagram,
+`accDescr {x} r = "a"; %% c` in a railroad diagram). In a treeView diagram drawn
+with branch characters (a box), the characters of the drawing before the keyword
+and between the keyword and the `{` are redrawn, not printed, so they do not
+keep the block.
 
 [fixture: flowchart/accessibility-lines/block-last-on-a-line-with-a-semicolon]
+[fixture:
+sequence/multi-line-values/accdescr-block-before-message-with-kept-semicolon-between-directives]
+[fixture:
+sequence/multi-line-values/accdescr-block-before-message-with-kept-semicolon-touching-directives]
+[fixture:
+sequence/multi-line-values/accdescr-block-before-message-with-kept-semicolon-on-the-next-line]
+[fixture:
+sequence/multi-line-values/accdescr-block-before-else-with-kept-semicolon-between-directives]
+[fixture:
+sequence/multi-line-values/accdescr-block-before-and-with-kept-semicolon-between-directives]
+[fixture:
+sequence/multi-line-values/accdescr-block-before-option-with-kept-semicolon-between-directives]
+[fixture:
+sequence/multi-line-values/accdescr-block-before-activate-with-semicolon-and-comment]
+[fixture:
+railroad/accessibility-lines/block-before-rule-with-semicolon-and-comment-ebnf]
+[fixture:
+railroad/accessibility-lines/block-before-rule-with-semicolon-and-comment-peg]
+[fixture:
+railroad/accessibility-lines/block-before-rule-with-semicolon-and-comment-ir]
+[fixture:
+railroad/accessibility-lines/block-before-rule-with-semicolon-and-directive-abnf]
 [fixture:
 quadrant/titles-and-accessibility-statements/block-followed-by-a-kept-semicolon-and-a-comment]
 [fixture:
