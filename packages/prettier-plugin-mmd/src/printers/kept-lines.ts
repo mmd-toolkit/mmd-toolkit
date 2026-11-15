@@ -180,52 +180,109 @@ export function grammaticalSemicolonsOf(source: Source): ReadonlySet<number> {
 export function findLinesWithOwnSemicolons(
   source: Source,
 ): ReadonlySet<number> {
+  const lines = new Set<number>()
+  visitOwnSemicolons(
+    source,
+    [0, source.text.length],
+    (offset) => isLastOnItsLine(source, offset),
+    (offset) => lines.add(lineStartOf(source, offset)),
+  )
+  return lines
+}
+
+/**
+ * Whether the text from `start` to `end`, printed on a line of its own, holds a
+ * `;` of the kind that `findLinesWithOwnSemicolons` finds: a `;` that the line
+ * rule ignores counts only where something stands after it in the range.
+ * Where the whole line stays together because of such a `;` that lies after
+ * the range, the range alone keeps its statements together only if it holds
+ * one itself.
+ */
+export function holdsOwnSemicolonIn(
+  source: Source,
+  start: number,
+  end: number,
+): boolean {
+  let found = false
+  visitOwnSemicolons(
+    source,
+    [start, end],
+    (offset) =>
+      findTokensBetween(source, offset + 1, end).every(
+        (token) => source.text.slice(...token.range).trim() === "",
+      ) && findTriviaBetween(source, offset + 1, end).length === 0,
+    () => {
+      found = true
+    },
+  )
+  return found
+}
+
+/**
+ * Calls `visit` with the offset of every `;` of the kind that
+ * `findLinesWithOwnSemicolons` describes that lies in `range`. `isLast` says
+ * whether a `;` that the line rule ignores is the last one of its line.
+ */
+function visitOwnSemicolons(
+  source: Source,
+  range: Range,
+  isLast: (offset: number) => boolean,
+  visit: (offset: number) => void,
+): void {
   const { root, text } = source
   const rules = semicolonRulesOf(source)
-  const lines = new Set<number>()
 
-  /** Adds the lines of the `;` characters in a range. */
-  function addSemicolonsIn(range: Range): void {
-    for (let offset = range[0]; offset < range[1]; offset++) {
+  /** Whether the offset lies in the range. */
+  function inRange(offset: number): boolean {
+    return range[0] <= offset && offset < range[1]
+  }
+
+  /** Visits the `;` characters in a range. */
+  function visitSemicolonsIn(from: number, to: number): void {
+    for (
+      let offset = Math.max(from, range[0]);
+      offset < Math.min(to, range[1]);
+      offset++
+    ) {
       if (
         text[offset] === ";" &&
         !rules.grammatical.has(offset) &&
         !isDroppedSemicolon(source, offset)
       )
-        lines.add(lineStartOf(source, offset))
+        visit(offset)
     }
   }
 
-  for (const token of root.tokens) {
+  for (const token of findTokensBetween(source, range[0], range[1])) {
     if (token.value !== ";") {
-      addSemicolonsIn(token.range)
+      visitSemicolonsIn(token.range[0], token.range[1])
     } else if (
       !rules.grammatical.has(token.range[0]) &&
       ((rules.kind === "text" && !isDroppedSemicolon(source, token.range[0])) ||
         (source.ignoredSemicolons.has(token.range[0]) &&
-          (rules.kind === "required" ||
-            !isLastOnItsLine(source, token.range[0]))))
+          (rules.kind === "required" || !isLast(token.range[0]))))
     ) {
-      lines.add(lineStartOf(source, token.range[0]))
+      visit(token.range[0])
     }
   }
   for (const comment of root.comments) {
-    addSemicolonsIn([
+    if (comment.range[1] <= range[0] || range[1] <= comment.range[0]) continue
+    visitSemicolonsIn(
       comment.range[0],
       ignoredSemicolonAtCommentEnd(source, comment.range) ?? comment.range[1],
-    ])
+    )
   }
   for (const offset of source.ignoredSemicolons) {
+    if (!inRange(offset)) continue
     const comment = root.comments.find((item) => item.range[1] === offset)
     if (
       rules.kind === "required" ||
-      !isLastOnItsLine(source, offset) ||
+      !isLast(offset) ||
       (comment !== undefined &&
         !staysIgnoredAlone(source, offset, comment.range[0]))
     )
-      lines.add(lineStartOf(source, offset))
+      visit(offset)
   }
-  return lines
 }
 
 /**
@@ -661,12 +718,13 @@ function statementContinuesAfter(source: Source, offset: number): boolean {
   if (next >= holder.range[1]) return false
   const start = holder.range[0]
   const end = holder.range[1]
-  // A statement of its own that holds the next text is no value of the holder.
+  // A statement of its own, or a divider of a block (`else`, `and`, `option`),
+  // that holds the next text is no value of the holder.
   if (
     nodes.some(
       (node) =>
         node !== holder &&
-        node.type.endsWith("Statement") &&
+        isLineItem(node) &&
         start <= node.range[0] &&
         node.range[1] <= end &&
         node.range[0] <= next &&

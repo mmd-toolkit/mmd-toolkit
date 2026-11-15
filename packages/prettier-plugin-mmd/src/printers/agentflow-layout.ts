@@ -31,7 +31,11 @@ import {
   walk,
 } from "./layout.ts"
 import { readGapElement } from "./gap.ts"
-import { holdsJoiningRegion, lineStartOf } from "./kept-lines.ts"
+import {
+  holdsJoiningRegion,
+  isDroppedSemicolon,
+  lineStartOf,
+} from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
   normalizeBlankLabels,
@@ -148,6 +152,24 @@ export function layoutContainerHeader(
           source.ignoredSemicolons.has(nameEnd - 1))
       )
         nameEnd--
+    } else if (node.title === null && node.data.length === 0) {
+      // A name that holds a directive or a comment keeps its text as written,
+      // but a `;` that the line rule ignores and that the printer drops lies at
+      // its end where whitespace follows the `;`, and it is no text of the
+      // name with the spaces and tabs around it (docs/agentflow.md, Names and
+      // headings).
+      let trimmed = nameEnd
+      while (trimmed > nameStart && isSpaceOrTab(source.text[trimmed - 1]))
+        trimmed--
+      if (
+        trimmed > nameStart &&
+        source.ignoredSemicolons.has(trimmed - 1) &&
+        isDroppedSemicolon(source, trimmed - 1)
+      ) {
+        nameEnd = trimmed - 1
+        while (nameEnd > nameStart && isSpaceOrTab(source.text[nameEnd - 1]))
+          nameEnd--
+      }
     }
     // A whitespace-only name still needs its written character.
     if (nameEnd === nameStart) {

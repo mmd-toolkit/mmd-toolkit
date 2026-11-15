@@ -1027,10 +1027,25 @@ shows that the next line is the title: mermaid.js reads it so.
 [corpus fixture: sequence/db-title-next-line-indented] [fixture:
 title/tab-and-colon-line-break] [fixture: title/line-break-indented]
 
-The whitespace at the end of a title is left out, also where a `;` follows it.
+The whitespace at the end of a title is left out, also where a `;` follows it. A
+`;` that the line rule ignores, because a trigger stands in another statement of
+the line, is no text of the title either, with the whitespace after it:
+`accDescr {style:#x} title x;` followed by two spaces is printed
+`accDescr: style:#x` and `title x`, as it is without the whitespace. It stays
+where the line holds another `;` of its own, such as the one of an entity
+(`#35;`) or one before it: the statements stay on their line, and without this
+`;` the line rule would ignore the other one. `A->>B: style:#x;; title x;`
+followed by two spaces is printed `A ->> B: style:#x;; title x;`.
 
 [fixture: title/trailing-whitespace-dropped] [fixture:
-title/semicolon-after-whitespace-dropped]
+title/semicolon-after-whitespace-dropped] [fixture:
+title/ignored-semicolon-after-whitespace-dropped-trigger-in-other-statement]
+[fixture:
+title/colon-ignored-semicolon-after-whitespace-dropped-trigger-in-other-statement]
+[fixture:
+title/ignored-semicolon-after-whitespace-kept-with-an-entity-in-the-line]
+[fixture:
+title/ignored-semicolon-after-whitespace-kept-after-another-semicolon-of-the-line]
 
 A `;` that the line rule ignores between the keyword and a text on the next line
 stays, on the line of the trigger of the rule, which is part of the line that
@@ -1304,6 +1319,33 @@ statements-one-per-line/end-comment-ignored-semicolon-after-gaps-in-style-rule-s
 statements-one-per-line/end-comment-ignored-semicolon-after-gaps-in-style-rule-stretch-body-line]
 [fixture:
 statements-one-per-line/box-end-comment-in-style-rule-stretch-trigger-in-other-statement]
+
+The `;` that the line rule ignores after an `end` that goes to a line of its own
+is dropped, as it is on a line of its own, whatever the lines before it hold:
+`A->>B: style:#x;; end;` is printed `A ->> B: style:#x;;` and `end`. A line that
+stays together because of a `;` in the comment after the `end`, where the text
+before the `end` holds only a `;` that separates statements, keeps the `end`:
+`A->>B: x;end #;` is printed `A ->> B: x; end #;`, since without the comment the
+`;` after `x` would be dropped by a second formatting, and the statements of the
+line printed on lines of their own.
+
+[fixture:
+statements-one-per-line/end-semicolon-dropped-where-the-end-goes-to-its-own-line]
+[fixture:
+statements-one-per-line/end-space-semicolon-dropped-where-the-end-goes-to-its-own-line]
+[fixture:
+statements-one-per-line/end-kept-with-the-semicolon-of-its-comment-after-a-separator-semicolon]
+[fixture:
+statements-one-per-line/end-kept-with-the-semicolon-of-its-comment-after-two-statements]
+
+A divider on the next line (`else`, `and`, `option`) is a statement of its own,
+as any statement is: it holds no value of the line before it, so the `;` that
+ends that line is the last of it. `end #a;` followed by whitespace and `else` on
+the next line stays on the line of its trigger, as it does at the end of the
+text.
+
+[fixture:
+statements-one-per-line/end-comment-ignored-semicolon-trailing-whitespace-before-a-divider]
 
 An `end` or a divider (`else`, `and`, `option`) that touches the `}` of a
 description block or the `;` before it is decided in the same way as one that

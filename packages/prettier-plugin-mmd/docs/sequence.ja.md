@@ -1073,9 +1073,23 @@ mermaid.js はそのように読みます。
 [fixture: title/tab-and-colon-line-break] [fixture: title/line-break-indented]
 
 タイトルの末尾の空白は、後ろに `;` がある場合も除きます。
+行のほかの文に引き金があるために、行の規則が無視する `;` も、
+その後ろの空白とともに、タイトルのテキストではありません。
+`accDescr {style:#x} title x;` の後に空白が 2 つ続くときは、
+`accDescr: style:#x` と `title x` に印字します。
+空白がないときと同じです。
+行にそれ自身の別の `;` があるときは残します。
+実体の `#35;` や、その前にある `;` がそうです。
+文は行に残り、この `;` を落とすと、行の規則がもう一方の `;` を無視します。
+`A->>B: style:#x;; title x;` の後に空白が 2 つ続くときは、
+`A ->> B: style:#x;; title x;` と印字します。
 
 [fixture: title/trailing-whitespace-dropped]
 [fixture: title/semicolon-after-whitespace-dropped]
+[fixture: title/ignored-semicolon-after-whitespace-dropped-trigger-in-other-statement]
+[fixture: title/colon-ignored-semicolon-after-whitespace-dropped-trigger-in-other-statement]
+[fixture: title/ignored-semicolon-after-whitespace-kept-with-an-entity-in-the-line]
+[fixture: title/ignored-semicolon-after-whitespace-kept-after-another-semicolon-of-the-line]
 
 キーワードと次の行のテキストの間にある、行の規則が無視する `;` は、
 ひとまとまりで残る行の一部として、規則の条件となる部分と同じ行に残します。
@@ -1320,6 +1334,28 @@ mermaid.js の行の規則が読むかもしれない範囲に空白を含むと
 [fixture: statements-one-per-line/end-comment-ignored-semicolon-after-gaps-in-style-rule-stretch-tab]
 [fixture: statements-one-per-line/end-comment-ignored-semicolon-after-gaps-in-style-rule-stretch-body-line]
 [fixture: statements-one-per-line/box-end-comment-in-style-rule-stretch-trigger-in-other-statement]
+
+`end` が別の行になるとき、その後ろの行の規則が無視する `;` は、
+`end` が自分の行にあるときと同じに、前の行に何があっても落とします。
+`A->>B: style:#x;; end;` は、`A ->> B: style:#x;;` と `end` に印字します。
+`end` の後のコメントにある `;` のためにひとまとまりで残る行で、
+`end` の前のテキストに、文を区切るだけの `;` しかないときは、`end` も残します。
+`A->>B: x;end #;` は `A ->> B: x; end #;` と印字します。
+コメントがないと、`x` の後の `;` は 2 回目の整形で落ち、
+行の文も別の行に印字するからです。
+
+[fixture: statements-one-per-line/end-semicolon-dropped-where-the-end-goes-to-its-own-line]
+[fixture: statements-one-per-line/end-space-semicolon-dropped-where-the-end-goes-to-its-own-line]
+[fixture: statements-one-per-line/end-kept-with-the-semicolon-of-its-comment-after-a-separator-semicolon]
+[fixture: statements-one-per-line/end-kept-with-the-semicolon-of-its-comment-after-two-statements]
+
+次の行の分かれ目（`else`、`and`、`option`）は、どの文とも同じく、
+それ自身の文です。
+前の行の値ではないので、その行を終わらせる `;` は、その行の最後の `;` です。
+空白と `else` が次の行に続く `end #a;` は、テキストの終わりにあるときと同じく、
+引き金の行に残します。
+
+[fixture: statements-one-per-line/end-comment-ignored-semicolon-trailing-whitespace-before-a-divider]
 
 説明ブロックの `}` や、その前の `;` に接する `end` や分かれ目（`else`、`and`、
 `option`）も、空白が離すときと同じに決めます。

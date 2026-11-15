@@ -27,6 +27,9 @@ import {
   findKeptBreaks,
   gapKeepsLineBreak,
   holdsJoiningRegion,
+  holdsOwnSemicolonIn,
+  isDroppedSemicolon,
+  lineStartOf,
   printedEndOf,
   spansKeptBreaks,
 } from "./kept-lines.ts"
@@ -387,7 +390,24 @@ function layoutTitle(
   source: Source,
   statement: SequenceTitleStatement,
 ): AtomLayout {
-  const { separator, end } = findTitleText(source, statement)
+  const { separator, end: valueEnd } = findTitleText(source, statement)
+  // An ignored `;` that the printer drops is no text of the title, and the
+  // whitespace before it goes with it: mermaid.js removes the `;` before it
+  // reads the title, and a `;` that whitespace follows lies in the range of the
+  // value, whitespace at its end included. Not where the line holds another `;`
+  // of its own, such as the one of an entity: the line stays together, and the
+  // `;` is the last one that the line rule ignores, which it ignores in place
+  // of the other.
+  const end = Math.min(
+    valueEnd,
+    [...source.ignoredSemicolons].find(
+      (offset) =>
+        separator < offset &&
+        offset < valueEnd &&
+        isDroppedSemicolon(source, offset) &&
+        !holdsOwnSemicolonIn(source, lineStartOf(source, offset), offset),
+    ) ?? valueEnd,
+  )
   const keepsSeparator =
     source.text[separator] === "\u2028" || source.text[separator] === "\u2029"
   const text: Atom = { start: keepsSeparator ? separator : separator + 1, end }

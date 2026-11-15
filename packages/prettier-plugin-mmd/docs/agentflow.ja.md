@@ -244,6 +244,12 @@ mermaid.js が名前を trim するので Db は同じであり、
 上に書いたとおり書かれたまま残します。
 名前の末尾では、U+2028 と U+2029 は空白やタブではなく名前の文字なので、
 その後の空白は落とし、前の空白は残します。
+ディレクティブを含む名前は、末尾まで書かれたまま残しますが、
+行の規則が無視する `;` が末尾にあるときは、その前後の空白とともに落とします。
+ディレクティブのない名前と同じです。
+`accDescr {style:#x} flow F #%%{init: {}}%%;` の後に空白が 2 つ続くときは、
+`accDescr: style:#x` と `flow F #%%{init: {}}%%` に印字します。
+`;` の後に空白がないときと同じです。
 
 [test: agentflow: U+2028 and spaces at the end of a flow name]
 [test: agentflow: U+2029 and spaces at the end of a connector name]
@@ -251,6 +257,8 @@ mermaid.js が名前を trim するので Db は同じであり、
 [fixture: containers/end-name-not-greedy]
 [fixture: names-and-headings/heading-word-gap-before-semicolon]
 [fixture: names-and-headings/name-directive-trailing-kept]
+[fixture: names-and-headings/heading-with-directive-ignored-semicolon-after-whitespace-dropped]
+[fixture: names-and-headings/heading-with-directive-after-hash-ignored-semicolon-after-whitespace-dropped]
 
 `flow`、`connector`、`global` の後ろの空白は、
 空白やタブがいくつ書かれていても空白 1 つにします。

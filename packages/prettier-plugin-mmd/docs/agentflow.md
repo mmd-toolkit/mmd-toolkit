@@ -231,14 +231,22 @@ spaces is printed `flow F`, and so is `flow F ;` followed by a line, where the
 directive or a comment, a name of several parts, and a name of whitespace only
 are kept as written, as above. At the end of the name, U+2028 and U+2029 are
 characters of the name and no spaces or tabs: the spaces after one go, and the
-spaces before it stay.
+spaces before it stay. A name that holds a directive stays as written up to its
+end, but a `;` that the line rule ignores at its end, with the whitespace around
+it, goes with it, as it does from a name without a directive:
+`accDescr {style:#x} flow F #%%{init: {}}%%;` followed by two spaces is printed
+`accDescr: style:#x` and `flow F #%%{init: {}}%%`, as it is without the
+whitespace after the `;`.
 
 [test: agentflow: U+2028 and spaces at the end of a flow name] [test: agentflow:
 U+2029 and spaces at the end of a connector name] [fixture:
 trailing-whitespace/trailing-name-dropped] [fixture:
 containers/end-name-not-greedy] [fixture:
 names-and-headings/heading-word-gap-before-semicolon] [fixture:
-names-and-headings/name-directive-trailing-kept]
+names-and-headings/name-directive-trailing-kept] [fixture:
+names-and-headings/heading-with-directive-ignored-semicolon-after-whitespace-dropped]
+[fixture:
+names-and-headings/heading-with-directive-after-hash-ignored-semicolon-after-whitespace-dropped]
 
 The whitespace after the word `flow`, `connector`, or `global` is one space,
 however many spaces or tabs were written: the word takes one whitespace
