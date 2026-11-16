@@ -79,9 +79,12 @@ opener, as in class diagrams.
 A step follows `tabWidth` and `useTabs`, two spaces by default or one tab per
 level. Indentation does not determine usecase syntax, so `tabWidth: 0` stays
 zero; accessibility remains accessibility at column zero and after ASCII
-whitespace. YAML retains the shared minimum of one. Value and directive
-continuation columns stay authored; eligible JSON margins follow
-[JSON tables](#json-tables).
+whitespace. YAML retains the shared minimum of one. For a YAML block scalar
+title, the `x` line stays indented, since mermaid.js rejects the same line at
+column one (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Value and directive continuation columns stay authored; eligible JSON margins
+follow [JSON tables](#json-tables).
 
 [fixture: native-metadata/metadata-key-multiline-directive] [fixture:
 native-metadata/metadata-scalar-multiline-directive] [fixture:
@@ -505,9 +508,9 @@ rule may read, as in architecture and venn. A usecase id cannot hold a `:`, and
 a `:` inside a directive is not read by the line rule, so no `:` stands before
 the title for the rule: `systemBoundary mystyle%%{init:{}}%%[ #x; ]` is printed
 `systemBoundary mystyle%%{init:{}}%%[#x;]`. A padding with a U+2028 or U+2029 in
-it stays. For `systemBoundary S` with a title of U+2028 followed by `x`, the
-leading character stays, since mermaid.js reads `systemBoundary S[x]` with a
-different boundary label in the Db and draws different geometry (see
+it stays. For the bracketed title of `systemBoundary S`, U+2028 before `x`
+stays, since mermaid.js reads the same title without U+2028 as a different
+boundary label in the Db and draws different geometry (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: system-boundaries/boundary-title-directive-or-semicolon] [fixture:
@@ -1296,14 +1299,9 @@ boundaries normalize exterior whitespace by their sibling rules.
 [fixture: stereotypes/side-padding]
 
 Quoted/markdown values, JSON, native property strings, comments and directive
-contents keep their trailing characters. For a markdown use case label, the two
-spaces after `first` at the end of its line stay, since mermaid.js draws
-different label text and geometry when that line ends directly after `first`
-(see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+contents keep their trailing characters.
 
 [test: usecase: terminal-comment-tab] [test: usecase: terminal-a11y-tab]
-[fixture: trailing-whitespace/trailing-values]
 
 Unicode characters are not automatically exterior HWS; no dangling null CSS
 style is synthesized.
