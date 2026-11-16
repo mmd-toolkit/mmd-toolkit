@@ -107,9 +107,9 @@ decided as section 4 of that document says.
    (section 6). Attach the results, marked as checked by running.
 4. Implement the forms that the rules decide. Where a rule gives a form that
    reads worse than another form that draws the same, or no rule gives a form,
-   decide the form that reads best and add it to the rules with its reason
-   first, as AGENTS.md (item 4) says. A form that changes what a released
-   version printed goes with a changeset.
+   decide the form that reads best and add it to the rules first with a reason
+   that anyone would accept, as AGENTS.md (item 4) says. A form that changes
+   what a released version printed goes with a changeset.
 5. Write each decision into the rules document `docs/<diagram>.md` (English and
    Japanese) as a rule with its reason. The reason is the rule of that document
    that decided the form, with the facts that rule needs. A reason that says
