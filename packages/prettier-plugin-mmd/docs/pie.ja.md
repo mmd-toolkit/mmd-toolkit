@@ -73,11 +73,7 @@ accDescr: direction TB
 ほかの図種と同じく、[1 行 1 文](./xychart.ja.md#1-行-1-文)を再利用します。
 ただし pie の EOL と保持する原文のまとまりを優先します。
 空の説明ブロックも含め、区分と共通文を元の順序で残します。
-たとえば `accDescr {}` の前後の `"B":2` と `"A":1` を入れ替えると、
-Db の区分の順序と mermaid.js が描く図形の形状が変わります。
 pie のセミコロンは文の区切りではなく、ラベルや共通値の文字です。
-たとえば `"A;B":1` を `"AB":1` にすると、mermaid.js が読み、
-描くラベルは `A;B` から `AB` に変わります。
 不正に並ぶ文は修復せず、コーパスの失敗経路で扱います。
 
 [fixture: pie/statements-one-per-line/body-lines]
@@ -211,8 +207,6 @@ C4 の[アクセシビリティの行](./c4.ja.md#アクセシビリティの行
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 引用符、バックスラッシュ、
 重複代入と代わりに使われるフロントマターの値は残します。
-たとえば `title "A\n"` と `title A\n` では、
-mermaid.js が描く題のテキストが異なります。
 pie は次の物理行を title に結合しません。
 空行・コメント・ディレクティブを挟んでも次の区分は別文です。
 保持する注釈類とセミコロンのまとまりを優先します。
@@ -309,11 +303,20 @@ flowchart の[複数行の値](./flowchart.ja.md#複数行の値)を再利用し
 保護対象の注釈類やセミコロンの配置では、その隙間を保ちます。
 開き括弧の前が空白だけなら改行や Unicode の境界も結合できます。
 コメント・ディレクティブの改行は残します。
-たとえば `accDescr %% c` の次の行に `{D}` を置く形は、mermaid.js が拒否します。
+`accDescr`、`%% c`、`{D}` を別行に置く形を残すのは、
+`accDescr %% c` と `{D}` を別行に置くと、
+mermaid.js が拒否するためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 空白だけの内部は囲む値がないため `{}` にします。
 コメントだけなら1段内側に置き、別行の閉じを文の列に揃えます。
-たとえば、`accDescr {%% c` の次の行が `}` または `D}` のブロックから、
-最初の行の `%% c` と直後の改行を除くと、mermaid.js が読む説明が変わります。
+`accDescr {%% c` の次行が `}` または `D}` のブロックで、
+`{` の後の `%% c` を説明のテキストとしてその位置に残すのは、
+`%% c` をブロックの 1 段内側の独立した行へ移し、
+後者では `D` と `}` も別行に置くと、mermaid.js が `%% c` をコメントとして読み、
+説明がそれぞれ空または `D` だけになるためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 ほかの図種と同じく、通常の後続本文と独立したコメント行は、
 文より1段内側に揃えます。
 改行、空行、行末空白は保ちます。
@@ -340,6 +343,7 @@ flowchart の[複数行の値](./flowchart.ja.md#複数行の値)を再利用し
 [fixture: pie/description-blocks/block-quotes-backslashes]
 [fixture: pie/description-blocks/opener-comment-only-kept]
 [fixture: pie/description-blocks/opener-comment-with-text-kept]
+[fixture: pie/description-blocks/opener-comment-break-kept]
 
 入力（エスケープ表記）:
 `"pie\naccDescr {\n  first\n    second\n        }\n\"Data\":2"`
@@ -547,7 +551,9 @@ pie
 範囲の外は、この図種の通常の規則に従います。
 どの部分の配置も持たないテキストは、書かれたまま残します。
 たとえば `accDescr {style:#x;y}` を `accDescr {style: #x;y}` にすると、
-mermaid.js が描く説明のテキストが変わります。
+mermaid.js が描く説明のテキストが変わります（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 複数行にわたる文の行を空白 1 つか何も挟まずにつなぐと、
 行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
 書かれたまま残します。
@@ -555,6 +561,7 @@ mermaid.js が描く説明のテキストが変わります。
 
 [fixture: directives-and-semicolons/stretch-kept-rest-formatted]
 [fixture: directives-and-semicolons/no-stretch-formatted]
+[fixture: pie/directives-and-semicolons/block-style-colon-gap-kept]
 
 保護したヘッダーと本文を分割しません。
 全セミコロン、style/classDef の両段階、
