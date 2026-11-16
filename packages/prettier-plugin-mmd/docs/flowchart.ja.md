@@ -401,7 +401,11 @@ flowchart LR
 [corpus fixture: flowchart/semicolon-after-end-name-2a3a795c]
 [fixture: statements-one-per-line/name-semicolon-after-directive-line]
 
-名前の後の改行を読むのは `end` と `click` だけで、一覧のほかの単語は、
+名前の後の改行を読むのは `end`、`click`、`call`、`href` です。
+`end` は前に書いたとおり改行を名前に取り込みます。
+`subgraph X call` に改行と `B` が続くと、mermaid.js は拒否します。
+`subgraph X href` と `subgraph X click` も同じなので、`;` を残します。
+一覧のほかの単語（`accTitle`、`accDescr`、`direction`）は、
 文のテキストと一覧を共用しているために入っています。
 そこで `;` を残しても、mermaid.js が読むものは変わりません。
 
@@ -2694,8 +2698,19 @@ flowchart LR
 
 コメントのテキストは、末尾の空白も含めて書かれたまま残します。
 mermaid.js は読まず、書き手のテキストだからです。
+その空白が、行をコメントにしていることもあります。
+コメントには `%%` の後に 1 文字が必要で、
+`%%` の後に改行かテキストの終わりが続くと、
+mermaid.js は id が `%%` の頂点として読み、ほかの頂点と同じに出力します。
+そのため、`%% ` はコメントのまま、`%%` は頂点のままです。
+行にディレクティブがあっても同じです。
+mermaid.js はディレクティブを、テキストを読む前に取り除くので、
+`%%` にディレクティブと改行が続く形も頂点です。
 
 [fixture: comments/trailing-whitespace-kept]
+[fixture: comments/bare-percent-is-a-vertex]
+[fixture: comments/bare-percent-at-end-of-text]
+[fixture: comments/bare-percent-before-directive]
 [fixture: comments/leading-whitespace-kept]
 [fixture: comments/statement-text-kept] [fixture: comments/directive-text-kept]
 [fixture: comments/line-ending-ignored-semicolon-trailing-whitespace-kept]

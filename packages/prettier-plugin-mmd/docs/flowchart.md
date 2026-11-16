@@ -400,9 +400,13 @@ whitespace before it as written, as part of the `subgraph` line.
 [corpus fixture: flowchart/semicolon-after-end-name-2a3a795c] [fixture:
 statements-one-per-line/name-semicolon-after-directive-line]
 
-In a name, only `end` and `click` read the line break after them; the other
-words of the list are there because the list is shared with the text of a
-statement, and keeping a `;` there changes nothing that mermaid.js reads.
+In a name, `end`, `click`, `call`, and `href` read the line break after them:
+`end` takes it into the name, as above, and `subgraph X call` followed by a line
+break and `B` is rejected by mermaid.js, as `subgraph X href` and
+`subgraph X click` are, so the `;` stays. The other words of the list,
+`accTitle`, `accDescr`, and `direction`, are there because the list is shared
+with the text of a statement, and keeping a `;` there changes nothing that
+mermaid.js reads.
 
 [fixture: statements-one-per-line/semicolon-after-name-word-kept] [corpus
 fixture: flowchart/name-semicolon-whitespace-0c9483e4] [corpus fixture:
@@ -2626,9 +2630,18 @@ comments/after-frontmatter-before-header] [fixture: comments/before-header]
 [fixture: comments/before-end] [fixture: comments/at-end-of-text]
 
 The text of a comment is kept as written, including whitespace at its end:
-mermaid.js does not read it, and it is the author's text.
+mermaid.js does not read it, and it is the author's text. The whitespace can be
+what makes the line a comment: a comment needs a character after its `%%`, and a
+`%%` that a line break or the end of the text follows is read as a vertex with
+the id `%%`, which is printed like any other vertex. So `%% ` stays a comment,
+and `%%` stays a vertex. A directive on the line does not change that, since
+mermaid.js removes directives before it reads the text: `%%` followed by a
+directive and a line break is a vertex too.
 
 [fixture: comments/trailing-whitespace-kept] [fixture:
+comments/bare-percent-is-a-vertex] [fixture:
+comments/bare-percent-at-end-of-text] [fixture:
+comments/bare-percent-before-directive] [fixture:
 comments/leading-whitespace-kept] [fixture: comments/statement-text-kept]
 [fixture: comments/directive-text-kept] [fixture:
 comments/line-ending-ignored-semicolon-trailing-whitespace-kept]

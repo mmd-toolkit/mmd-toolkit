@@ -58,6 +58,11 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
     "flowchart LR\n  A --> B\n  subgraph S\n    C\n  end\n  %%{init: {}}%%\n",
   ],
   [
+    "flowchart, a `%%` that the line ends after, and one with a space after it",
+    ["flowchart LR", "%%", "A   -->   B", "%% "],
+    "flowchart LR\n  %%\n  A --> B\n  %% \n",
+  ],
+  [
     "sequence",
     ["sequenceDiagram", "A->>B: x", "loop y", "B->>A: z # c", "end"],
     "sequenceDiagram\n  A ->> B: x\n  loop y\n    B ->> A: z # c\n  end\n",
