@@ -83,10 +83,7 @@ architecture-beta
 通常の文は、ほかの図種と同じく1行ずつ印字します。
 共通の行値は物理行末までのキーワードに見える文字も所有するため、分割しません。
 セミコロンは文の区切りではありません。
-隣接する不正な文や部品の隙間に使われた空の説明は、
-失敗のままです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照）。
+隣接する不正な文や部品の隙間に使われた空の説明は、失敗のままです。
 
 [fixture: architecture/statements-one-per-line/line-value-owns-keywords]
 
@@ -639,11 +636,6 @@ architecture-beta
 共通規則が読む空白だけを除きます。
 `null` と空白だけの値は `title` とし、同じ意味の外側の空白を詰めます。
 注釈類を挟んでも次の物理行を値にしません。
-`title` と `service a` が続く 2 行の改行は、
-`title service a` では mermaid.js が Db に service `a` を作らず、
-図も違って描くため保ちます（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照）。
 architecture の要約が title を公開しなくても、文と内容を保ちます。
 注釈類のある値と保護された隠れた形の境界は原文の隙間を保ちます。
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
@@ -654,8 +646,6 @@ architecture の要約が title を公開しなくても、文と内容を保ち
 [corpus fixture: architecture/directive-fields]
 
 [fixture: architecture/title/empty-next-statement]
-
-[fixture: architecture/title/empty-title-before-service]
 
 [fixture: architecture/title/title-edge-trim]
 
@@ -692,12 +682,6 @@ architecture-beta
 空ならコロンで終えます。
 これにより外側の空白を統一します。
 次行の文を取り込まず、コロン後の波括弧は行値のまま保ちます。
-`accTitle:` と `service a` が続く 2 行の改行は、`accTitle: service a` では、
-mermaid.js が `service a` をアクセシビリティの題と読み、
-Db に service `a` を作らず、
-図も違って描くため保ちます（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照）。
 保護された注釈類と隠れた形の隙間を優先します。
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
@@ -1289,10 +1273,6 @@ architecture-beta
 値と隠れた形の内部も同じです。
 内容の LS・PS・NBSP・BOM は保ち、共通の行値の端からだけ、
 共通規則が読む空白を除きます。
-`service a` のラベルで `A` と `B` の間にある U+2028 は、
-mermaid.js が同じラベルで LF に置き換えた形を拒否するため保ちます（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照）。
 構造の非 ASCII 区切りは拒否のままです。
 先頭 BOM はバイト同一性でなく埋め込み先の Prettierの処理に従います。
 
