@@ -745,8 +745,7 @@ The `+` or `-` after the arrow touches the target: `A ->> + B` is printed
 The whitespace beside a `()` stays as written, touching, one space, or a run,
 and a directive there stays between its whitespace: `A () ->> () B` is printed
 as it is, `A   () ->> () B` keeps its three spaces, and `A()->>()B` is printed
-`A() ->> ()B`, since some versions that count read the `()` as part of the name
-next to it, with the whitespace (see
+`A() ->> ()B` (see
 [Sequence messages with a central connection](./compatibility.md#sequence-messages-with-a-central-connection)
 and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
@@ -799,7 +798,9 @@ arrow-spacing/touching-after-blank-lines]
 A line with a `;` that the line rule of mermaid.js ignores follows
 [Statements one per line](#statements-one-per-line): `A ->> + B: style:#x;` is
 printed `A ->> +B: style:#x;`, while `A () ->> () B: style:#x;;` stays as
-written.
+written, since `A() ->> ()B: style:#x;;` changes the figure's text and `name`
+attributes in some versions that count (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: arrow-spacing/touching-with-ignored-semicolon]
 
@@ -917,14 +918,10 @@ colons/directive-around-colon]
 mermaid.js reads the text without the whitespace at its ends. When the text is
 empty, nothing follows the `:`, except that one whitespace character stays, the
 first one as written, where spaces and tabs only followed the `:` up to the end
-of the line or to a `;` that the printer drops: `A->>B: ` is a message with an
-empty text, while some versions that count reject `A->>B:` (their text rule
-needs a character at least, and that of the later versions does not), and so
-they reject a note and a `links`, `link`, `properties`, or `details` statement
-the same way (see
+of the line or to a `;` that the printer drops. `A->>B:` followed by three
+spaces is accepted with empty text, while some versions that count reject
+`A->>B:` with no spaces after the colon (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Parsed in Chromium, the text without that character was rejected by some of the
-versions that count and read by the others.
 
 [fixture: colons/spaced] [fixture: colons/empty-text] [fixture:
 colons/whitespace-only-text] [fixture: colons/semicolon-after-whitespace-kept]
@@ -1132,8 +1129,9 @@ sequence/lex-single-percent-comment-line] [fixture: comments/percent-line-kept]
 [fixture: comments/line-ending-ignored-semicolon-trailing-whitespace-kept]
 
 A comment after a statement stays on its line, and whether whitespace is written
-before its mark is kept: mermaid.js reads `autonumber 5%% c` without the number
-5, and a space before `%%` would give it the number (see
+before its mark is kept: replacing `autonumber 5%% touching` with
+`autonumber 5 %% touching` changes the starting number and step in the Db and
+the text in the figure (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A run of whitespace before the mark is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
@@ -1283,6 +1281,10 @@ stays as written where the `end` stays on its line.
 stays on one line, since mermaid.js rejects the same text with `end #a;` on its
 own line (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+With those two trailing spaces, the block in `accDescr {style:#x} end #a;`
+stays, since mermaid.js rejects `accDescr: style:#x end #a;` with the same
+spaces (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture:
 statements-one-per-line/end-comment-ignored-semicolon-no-gaps-in-style-rule-stretch-without-whitespace]
@@ -1386,11 +1388,9 @@ statements-one-per-line/end-comment-ignored-semicolon-trailing-whitespace-before
 An `end` or a divider (`else`, `and`, `option`) that touches the `}` of a
 description block or the `;` before it is decided in the same way as one that
 whitespace parts from them: `accDescr {style:#x}end #a;` stays on one line, with
-the block as written, since the form with the colon would take the `end` into
-the text, and `accDescr {style: x}end #;`, whose comment is read the same on a
-line of its own, is printed `accDescr: style: x` and `end #;` (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-So is a divider: `accDescr {style:#x}else x#a;` stays on one line. In
+the block as written, and `accDescr {style: x}end #;`, whose comment is read the
+same on a line of its own, is printed `accDescr: style: x` and `end #;`. So is a
+divider: `accDescr {style:#x}else x#a;` stays on one line. In
 `accDescr {style:#x}else x#a;`, the divider stays on that line, since moving
 `else x#a;` to its own line changes the divider text in the Db and the figure
 (see
@@ -1455,8 +1455,8 @@ characters as escapes too (see
 [tests/line-separators.test.ts](../tests/line-separators.test.ts)).
 
 - At the end of the text of a `box`, after the whitespace that may stand before
-  them. mermaid.js gives a box whose text holds such a character the fill
-  `transparent` and no name, and without it `box aqua` has the fill `aqua` (see
+  them. With U+2028 after `box red`, mermaid.js gives the box the fill
+  `transparent`; without U+2028, `box red` has the fill `red` (see
   [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
   The whitespace after the last of them is dropped. A block header other than a
   box, `loop x`, U+2028, and ` ;` for one, is trimmed by mermaid.js, and the
