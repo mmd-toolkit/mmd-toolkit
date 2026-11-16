@@ -582,6 +582,11 @@ sequenceDiagram
 
 文の 2 つのトークンの間で行の規則が無視する `;` は、直前のトークンに付けます。
 隙間に空白が書かれていれば後ろに空白 1 つを置き、なければ接したままにします。
+同じ行の前の部分に参加者の別名 `style:#x` があるとき、
+`Note left; of A: t` を残すのは、
+そこを `Note left;of A: t` にすると mermaid.js が拒否するためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 
 [fixture: whitespace-between-tokens/ignored-semicolon-before-of-attached]
 [fixture: whitespace-between-tokens/ignored-semicolon-before-of-spaced-after-kept]
@@ -644,6 +649,11 @@ mermaid.js の正規表現が最後の `)` まで読むので、書かれたま�
 `box RGB(33,66,99) Team`、`box rgb (33,66,99) Team`、
 関数のほかにテキストがある `rect` も、書かれたままです。
 コンマの前、開き括弧 `(` の直後、閉じ括弧 `)` の直前の空白は、書かれたままです。
+`rect` の `rgb(191 ,223 ,255)` のコンマの前の空白を残すのは、
+mermaid.js が `rgb(191,223,255)` を Db
+の別のメッセージ値として読むためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 
 [fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
 [fixture: colors/functions-as-written]
@@ -1048,6 +1058,10 @@ sequenceDiagram
 [fixture: title/text-padding-dropped-colon]
 
 半角空白とタブだけのタイトルは、書かれたままにします。
+テキストの終わりで `title` の後に空白 2 つ、タブ、空白 1 つが続く形を残すのは、
+`title` だけの行を mermaid.js が拒否するためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 
 [fixture: title/title-blank-kept]
 
@@ -1172,7 +1186,9 @@ sequenceDiagram
 
 文の後のコメントはその行に残し、印の前に空白が書かれているかどうかを保ちます。
 mermaid.js は `autonumber 5%% c` を数 5 なしで読み、
-`%%` の前に空白を入れると数を読むからです。
+`%%` の前に空白を入れると数を読むからです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 印の前の空白の連なりは、空白 1 つで印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 
@@ -1299,6 +1315,11 @@ mermaid.js は `#a;` をそのテキストの文字参照として読みます�
 `accDescr: …` の形に印字します。
 外側のブロックの `else` や `and` の前にあるブロックでも同じです。
 `end` が行に残るときは、書いたままにします。
+`accDescr {style:#x} end #a;` に空白 2 つが続いてテキストが終わる形を、
+1 行に残すのは、
+mermaid.js が `end #a;` を単独の行に置く同じテキストを拒否するためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 
 [fixture: statements-one-per-line/end-comment-ignored-semicolon-no-gaps-in-style-rule-stretch-without-whitespace]
 [fixture: statements-one-per-line/end-comment-ignored-semicolon-no-gaps-in-style-rule-stretch]
@@ -1317,6 +1338,12 @@ mermaid.js は `#a;` をそのテキストの文字参照として読みます�
 その後に `%%{init: {}}%%` がある場合や、
 `and` 区切りの前で U+2028 が続く場合も同じです。
 エンティティがない `end #; %%{init: {}}%%` は、通常どおり別の行に移します。
+テキストの終わりで `accDescr {style:#x} end #12; %%{init: {}}%%` を 1
+行に残すのは、
+mermaid.js が `end #12; %%{init: {}}%%`
+を単独の行に置く形を拒否するためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 
 [fixture: statements-one-per-line/end-comment-entity-before-directive]
 [fixture: statements-one-per-line/end-comment-no-entity-before-directive]
@@ -1370,16 +1397,29 @@ mermaid.js の行の規則が読むかもしれない範囲に空白を含むと
 前の行の値ではないので、その行を終わらせる `;` は、その行の最後の `;` です。
 空白と `else` が次の行に続く `end #a;` は、テキストの終わりにあるときと同じく、
 引き金の行に残します。
+`accDescr {style:#x}` の後の `end #a;` に空白、タブ、次の `else` 行が続くとき、
+`end #a;` を説明ブロックと同じ行に残すのは、
+mermaid.js が `else` の前で `end #a;`
+を単独の行に置く形を拒否するためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 
 [fixture: statements-one-per-line/end-comment-ignored-semicolon-trailing-whitespace-before-a-divider]
 
 説明ブロックの `}` や、その前の `;` に接する `end` や分かれ目（`else`、`and`、
 `option`）も、空白が離すときと同じに決めます。
 `accDescr {style:#x}end #a;` は、ブロックを書いたままにして 1 行に残します。
-コロンの形にすると `end` がテキストに入るからです。
+コロンの形にすると `end` がテキストに入るからです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 コメントが別の行にしても同じに読まれる `accDescr {style: x}end #;` は、
 `accDescr: style: x` と `end #;` の 2 行に印字します。
 分かれ目も同じで、`accDescr {style:#x}else x#a;` は 1 行に残します。
+`accDescr {style:#x}else x#a;` の分かれ目を同じ行に残すのは、
+`else x#a;` を単独の行にすると、
+Db と図の分かれ目のテキストが変わるためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 
 [fixture: statements-one-per-line/end-touching-description-block-without-trigger]
 [fixture: statements-one-per-line/end-touching-description-block-with-trigger-entity]
@@ -1440,7 +1480,9 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
 
 - `box` のテキストの末尾で、その前に空白があっても、そこまで。
   テキストにこの文字がある box は、塗りが `transparent` で名前がなくなります。
-  なければ `box aqua` の塗りは `aqua` です。
+  なければ `box aqua` の塗りは `aqua` です（詳しくは
+  [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+  を参照）。
   最後の文字より後の空白は落とします。
   `box` 以外のブロックの見出しは、mermaid.js がテキストの両端を取り除くので、
   文字は、テキストの末尾の空白と一緒に落とします（`loop x`、U+2028、
@@ -1815,6 +1857,11 @@ Mermaid はデータブロック全体の両端の空白を除くので、最初
 空の説明ブロックはそれぞれの規則に従います。
 CRLF と CR は `endOfLine` に従い、
 値内の Unicode の区切り文字は文字として保ちます。
+参加者のデータブロックの `"type":` と `"queue"` の間の U+2028 を残すのは、
+空白に替えると、Db の参加者の型と、図の構造、形状、
+スタイルが変わるためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 
 [fixture: multi-line-values/data-surrounding-trivia]
 [test: data blocks: sequence U+2028] [test: data blocks: sequence CR]
