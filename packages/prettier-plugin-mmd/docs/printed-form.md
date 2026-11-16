@@ -27,6 +27,63 @@ A form that drops one is never the form printed, even where it draws the same:
 Prettier, beside whose output a diagram stands, keeps every comment and every
 directive of the code it formats, also two directives that say the same.
 
+The forms compared never include a form that does any of the following, and the
+formatter keeps the affected text as written within the limits below.
+
+1. The formatter never applies the rules of mark spacing or spellings inside the
+   text of a value that the tree holds whole, since [its contents are text
+   rather than separate syntax tokens][pf-whole-text]. Only the normalizations
+   defined in the document of that diagram type apply there, under the
+   conditions it defines. This includes [printing a run of spaces and tabs as
+   one space][pf-text-runs] only where that document permits it.
+2. The formatter never rewrites the words, marks, or internal spacing of an
+   ordinary comment or changes its comment form, since [Prettier leaves comment
+   contents as written][pf-comments]. It never reformats the contents of a
+   directive either, since [the formatter does not parse them][pf-embedded].
+3. The formatter never formats an opaque data or hidden body as inner code,
+   since [the tree holds the body as whole text][pf-whole-text]. Only the
+   changes to that text and its layout defined for the diagram type apply, under
+   the conditions that document defines.
+4. The formatter never adds or drops an authored statement, field, value, or
+   other item to reproduce the same Db, since [Prettier excludes code
+   transformations from formatting][pf-no-transforms]. This restriction concerns
+   authored item occurrences and excludes syntactic separators. Documented
+   spelling normalizations still apply.
+5. The formatter never removes the last ordinary blank line separating items,
+   comments, or directives inside a file or block, since [Prettier preserves the
+   separation][pf-empty-lines]. Several blank lines may become one, and blank
+   lines at the start and end of a file or block may be removed.
+6. The formatter never adds a final newline inside an unfinished directive that
+   reaches the end of the source, since [the directive takes the rest of the
+   text][pf-directive-end], and the newline would become part of it.
+7. The formatter never merges or splits statements, removes a call, or replaces
+   one kind of value or reference with another to reproduce the same Db. This
+   project infers this restriction from [Prettier's exclusion of code
+   transformations from formatting][pf-no-transforms]. The spelling and
+   syntactic-form normalizations defined in the diagram documents still apply.
+8. The formatter never sorts statements, sections, entries, or directives or
+   moves one past another. This project infers this restriction from [Prettier's
+   exclusion of code transformations from formatting][pf-no-transforms].
+9. The formatter never uses the colour rule to lowercase text that is not a
+   colour, since [that rule applies only where the text cannot be anything
+   else][pf-colours].
+10. The formatter never replaces a written number with mermaid.js's rounded,
+    capped, or default value, since those are transformations by mermaid.js and
+    [Prettier excludes code transformations from formatting][pf-no-transforms].
+    The numeric spelling changes defined for the diagram type still apply.
+
+[pf-whole-text]: ./printed-form.md#a-text-that-the-tree-holds-whole
+[pf-text-runs]:
+  ./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same
+[pf-comments]: https://prettier.io/docs/rationale#comments
+[pf-embedded]: ./compatibility.md#embedded-data-is-not-checked
+[pf-no-transforms]:
+  https://prettier.io/docs/rationale#what-prettier-is-not-concerned-about
+[pf-empty-lines]: https://prettier.io/docs/rationale#empty-lines
+[pf-directive-end]:
+  ./compatibility.md#a-line-that-a-directive-that-is-not-closed-joins
+[pf-colours]: ./compatibility.md#colors-that-are-drawn-the-same
+
 1. The whitespace beside a mark is the whitespace that Prettier prints beside
    the same kind of mark. The formatter is a plugin of Prettier, and a diagram
    stands in a file beside code that Prettier formats, so a kind of mark reads
