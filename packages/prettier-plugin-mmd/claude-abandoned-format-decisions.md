@@ -24,7 +24,10 @@ proposed to the user, as AGENTS.md (item 4) says. A form leaves this list when
 it is decided, and this file is deleted when the list is empty.
 
 The list is not complete: the rules of every diagram type are still being
-searched for forms kept as written without a reason.
+searched for forms kept as written without a reason. When every form whose rules
+document states no reason is listed here, this sentence and the step of the
+prettier-plugin skill that adds forms to this list (section 3, step 5), with the
+exception for that step in the review skill, are deleted.
 
 ## Decisions still to be made
 
