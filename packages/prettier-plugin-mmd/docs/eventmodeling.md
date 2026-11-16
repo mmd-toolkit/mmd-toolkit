@@ -19,8 +19,9 @@ Keep `eventmodeling` at column one and move an ordinary first statement to the
 next line, making the header easy to find. Hidden forms, retained prefixes and
 protected lines use their shared rules: when the header line is kept, its first
 statement stays on that line. This gives diagram types the same treatment. A
-first common statement retains its original connection and padding: moving it to
-line start can make identifier win and reject the input (see
+first common statement retains its original connection and padding. For
+`eventmodeling accTitle: T`, the space stays, since mermaid.js rejects the same
+text with LF in place of that space (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: eventmodeling/header/ordinary-frame]
@@ -69,12 +70,13 @@ eventmodeling tf 01 evt A %%{{x}}%%
 Start ordinary top-level statements at column one: frames, model entities,
 `data`, `note` and `gwt`.
 
-The pinned Mermaid requires `data` and `note` block closers at column one; the
-formatter aligns their headers there and keeps peer statements at the same level
-to avoid suggesting a hierarchy (see
+For `data D {`, LF, `x`, LF and `}`, the closer stays at column one, since
+mermaid.js rejects the same block with two spaces before `}` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Reconsider this choice if the pinned Mermaid later accepts whitespace before
-block closers, checking that raw body values and rendering remain unchanged.
+The formatter aligns block headers there and keeps peer statements at the same
+level to avoid suggesting a hierarchy. Reconsider this choice if the pinned
+Mermaid later accepts whitespace before block closers, checking that raw body
+values and rendering remain unchanged.
 
 GWT clauses use one configured step and items two. Ordinary structural
 continuation lines, including a line completing a `data` or `note` header, stand
@@ -83,7 +85,13 @@ further step inside that continued header line. Columns do not define parents,
 so `tabWidth: 0` adds no spaces; `useTabs` adds one tab per step even at width
 zero. Value continuations, metadata padding and hidden consumed-LF boundaries
 retain their authored columns, apart from the block-body margin adjustment in
-[Data blocks](#data-blocks).
+[Data blocks](#data-blocks). For `Alpha.%%{{native}}%%` followed by LF and
+`title`, `title` stays at column one, since mermaid.js rejects the same line
+indented two spaces (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+
+[fixture:
+eventmodeling/qualified-names/hidden-before-title-segment-keep-no-prefix-space]
 
 [fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]
 
@@ -148,9 +156,11 @@ note 01 {
 Put ordinary top-level AST statements on separate lines in source order, without
 adding semicolons. The grammar needs no visible EOL between complete units, so
 this does not change the Db. A common successor keeps its connection to the
-preceding unit. Apparent statements inside greedy inline data remain part of
-that single value; a closed description can instead be followed by an ordinary
-new statement.
+preceding unit. For `accDescr {}  title Next`, the two spaces stay, since
+mermaid.js rejects `accDescr {}` followed by LF and ` title Next` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Apparent statements inside greedy inline data remain part of that single value;
+a closed description can instead be followed by an ordinary new statement.
 
 [fixture: eventmodeling/statements-one-per-line/adjacent-frame-reset-entity]
 
@@ -397,7 +407,10 @@ note
 Separate declaration and note components with one ordinary space:
 `entity Shop.Buy`, `data D` and `note 01`. Put a block opener on its header line
 after one space. Values and closing boundaries follow the data rules. A required
-name `title` keeps its safe preceding boundary, as for frames.
+name `title` keeps its safe preceding boundary, as for frames. For `data`
+followed by LF and `title {`, that LF stays, since mermaid.js rejects the same
+block with a space in its place (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: eventmodeling/declarations-and-notes/entity-ordinary]
 
@@ -439,7 +452,10 @@ another step deeper. This shows the authored clause/item relationship without
 inventing closing punctuation. Keep required given/then, optional when, item
 order, repetition and type words. Ordinary item components use one space;
 required `title` boundaries, hidden forms, trivia and protected opening edges
-take precedence.
+take precedence. For `given evt` followed by LF and
+`title then cmd accTitle tf 02 evt Alpha`, that LF stays, since mermaid.js
+rejects the same text with a space in its place (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: eventmodeling/gwt-clauses-and-items/given-when-then-nested]
 
@@ -483,9 +499,11 @@ tf 01 evt End
 Print each inline body from its complete source span, retaining braces or
 quotes, backslashes, padding, empty forms and native-looking text. `singleQuote`
 does not rewrite these terminals. The lexer takes the last matching same-line
-closer: apparent later frames inside that span are data, not statements.
-Trimming, requoting or splitting that text changes the raw terminal in the Db
-(see
+closer: apparent later frames inside that span are data, not statements. For
+`tf 01 evt Alpha {x} tf 02 evt Beta {y}`, the inline value
+`{x} tf 02 evt Beta {y}` stays on one line: LF before `tf 02 evt Beta {y}`
+changes the Db's first data value to `{x}`, adds a frame and changes the
+figure's structure and geometry (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: eventmodeling/inline-data/inline-braces-unchanged]
@@ -558,8 +576,10 @@ eventmodeling/declarations-and-notes/header-inline-multiline-directive]
 
 Only the first physical body line may gain a space prefix where it had none.
 Every later nonblank physical line must have at least one leading ASCII space
-both before and after the change. Otherwise keep the complete body as written:
-adding the first space on a later line can change the rendered label (see
+both before and after the change. Otherwise keep the complete body as written.
+For `data D` with the type tag `json` and `"quantity": 2` at column one on the
+second body line, that line stays: indenting it two spaces changes the rendered
+text and geometry and the Db's data value (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A leading empty line does not make the next line the first physical line.
 
@@ -618,12 +638,12 @@ which splits it at every space and drops the empty pieces
 A run of spaces at the start of a line after the first therefore draws as one
 space, whatever its length, and no space at all draws as none. The spaces at the
 start of the first line draw as none. Both texts of each case were drawn with
-mermaid.js 12.3.0 in Chromium, and the SVG, without the generated ids, and the
-pixels were the same for a margin of another length on every line and for a
-margin added to the first line; a margin added to a later line that had none
-changed the figure, which is why such a body stays as written. The tests compare
-the Db of the printed text with the margins of the bodies restored from the Db
-of the written text (`eventmodelingDbForFormattingComparison` in
+mermaid.js in Chromium, and the SVG, without the generated ids, and the pixels
+were the same for a margin of another length on every line and for a margin
+added to the first line; a margin added to a later line that had none changed
+the figure, which is why such a body stays as written. The tests compare the Db
+of the printed text with the margins of the bodies restored from the Db of the
+written text (`eventmodelingDbForFormattingComparison` in
 `tests/eventmodeling-data-margins.ts`). When the pinned mermaid.js is updated,
 draw both texts of each case again before the exception stays.
 
@@ -679,9 +699,7 @@ to a new line. LS/PS lookahead remains outside the terminal rather than becoming
 LF. Before a common successor, retain the first LF or its absence, the complete
 leading run and its connection to the prior unit, even at width zero: adding a
 spare LF, removing indentation or trimming closing padding can change the Db or
-reject the text (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-EOF's logical LF may become one explicit final LF.
+reject the text. EOF's logical LF may become one explicit final LF.
 
 [fixture: eventmodeling/data-boundaries/block-eof-logical-lf-kept]
 
@@ -823,7 +841,10 @@ Keep the complete description block and its leading run, including opener
 newlines, whitespace-only interiors and closing columns. Empty, whitespace-only
 and removal-only interiors remain distinct authored forms. This is the single
 selection point that bypasses shared `layoutDescriptionBlock`: its ordinary `{}`
-compaction and closer alignment would rewrite an EM_ACC_DESCR value (see
+compaction and closer alignment would rewrite an EM_ACC_DESCR value. For
+`accDescr {` followed by a space, a tab, LF and `  }`, that whitespace stays:
+mermaid.js draws different accessibility text and changes the Db's `accDescr`
+value for `accDescr {}` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 No diagram-local empty-block normalization replaces it.
 
@@ -859,8 +880,14 @@ pre-header/body forms, required and optional named gaps, qualified-name tails,
 tags and GWT clause/item gaps. Do not parse retained YAML or native DIRECTIVE as
 configuration. The shared hidden path preserves internal columns, consumed LF
 and closing lookahead padding; ordinary body openers align with their body.
-Required opening gaps and common successors keep their authored boundaries. A
-fallback percent comment stays a comment.
+Required opening gaps and common successors keep their authored boundaries. For
+` accDescr: D` after `%%{{x}}%%` and LF, the leading space stays, since
+mermaid.js rejects `accDescr: D` without it (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A fallback percent comment stays a comment.
+
+[fixture:
+eventmodeling/hidden-forms/hidden-next-common-keep-consumed-lf-padding]
 
 Forms at authored body boundaries keep their line through GWT clause and item
 openings too. The header and nested bodies share that decision so moving an item
@@ -935,7 +962,11 @@ across diagram types. Keep marks, contents, trailing padding and block-comment
 continuation columns. Native `//` and `%%` run through LS/PS to physical LF. A
 `%%` comment line inside a data block, a note, an `accDescr` block, a slash
 block comment or a hidden form is part of that text. Its columns stay written
-except for the block-body margin adjustment in [Data blocks](#data-blocks).
+except for the block-body margin adjustment in [Data blocks](#data-blocks). For
+`%% c` at column one after the first body line `x` in `data D`, that column
+stays: indenting the comment two spaces changes the rendered text and geometry
+and the Db's data value (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Boundaries needed for metadata or a required `title` take precedence. For
 `entity/*anchor*/title`, contact after the comment stays, since mermaid.js
 rejects `entity/*anchor*/ title` (see
@@ -1012,21 +1043,26 @@ default-size-branches/size-frontmatter-trivia-not-counted] [fixture:
 default-size-branches/size-directive-not-counted] [fixture:
 default-size-branches/size-utf16-surrogate]
 
-At or above 50000 retain the complete diagram text and its ending.
+At or above 50000 retain the complete diagram text and its ending. For `first`
+at column one in `data D` in a diagram of length 50000, that column stays:
+indenting the line two spaces removes the following comment from the Db's data
+value and changes the rendered text, structure and geometry (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: default-size-branches/size-preserving-to-fallback-unsafe]
 
 Below it apply ordinary layout only when the planned printed measurement also
 stays strictly below 50000; otherwise retain the complete diagram and its
-ending.
+ending. For `x` at column one in `data D` in a diagram of length 49999, that
+column stays: indenting the line two spaces removes the following comment from
+the Db's data value and changes the rendered text, structure and geometry (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: default-size-branches/size-below-planned-crossing]
 
 This keeps indentation or the final line break from moving the text across the
 limit, where the comment lines in a value would be removed and the Db would
-change (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-The boundary itself is covered by the corpus, also with CRLF, an inline
+change. The boundary itself is covered by the corpus, also with CRLF, an inline
 directive and frontmatter.
 
 [corpus fixture: eventmodeling/comment-default-size-equal] [corpus fixture:
@@ -1124,7 +1160,18 @@ remain authored. Required identifier and common-value padding takes precedence
 over structural indentation. Keep a child body's opening edge on the protected
 line too, so a second formatting cannot split it differently. This grammar has
 no grammatical semicolon, so `verbatimStyleLines` is false: a `style` or
-`classDef` word alone does not freeze the whole line.
+`classDef` word alone does not freeze the whole line. For
+`given evt %%{{native}}%%` followed by LF and `title/*style:#x;*/then cmd Beta`,
+`title` stays at column one, since mermaid.js rejects the same line indented two
+spaces (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+For ` accDescr: style:#x;` after a `data D` block and LF, the leading space
+stays, since mermaid.js rejects `accDescr: style:#x;` without it (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+
+[fixture: eventmodeling/semicolons/protected-gwt-title-hidden-gap-remains-zero]
+[fixture:
+eventmodeling/semicolons/protected-metadata-prefix-is-value-whitespace]
 
 A line that holds a `;` keeps its statements together, also where the `;` stands
 in the last line of a description block over several lines and a statement
