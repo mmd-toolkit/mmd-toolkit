@@ -15,8 +15,8 @@
 - [#86](https://github.com/mmd-toolkit/mmd-toolkit/pull/86) [`ff4b39a`](https://github.com/mmd-toolkit/mmd-toolkit/commit/ff4b39ae943932cc050b479dd1e44af024a67cfa) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Read a name in `erDiagram`, and the name of a class of `classDef` in
   `quadrantChart`, across a comment line that follows a U+2028 or a U+2029 in it,
   as one name, which threw an internal error.
-- Updated dependencies [[`c037353`](https://github.com/mmd-toolkit/mmd-toolkit/commit/c037353e31afdc2b8069071afdf00dae3e5281be)]:
-  - @mmd-toolkit/ast@0.4.0
+- Updated dependencies:
+  - [@mmd-toolkit/ast@0.4.0](https://github.com/mmd-toolkit/mmd-toolkit/releases/tag/%40mmd-toolkit%2Fast%400.4.0)
 
 ## 0.3.1
 
@@ -28,8 +28,8 @@
 
 - [#64](https://github.com/mmd-toolkit/mmd-toolkit/pull/64) [`b817905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/b8179056e2aebd764c260fbd7fee9a65fe27d00d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Rewrite the README for users: it links to the documentation site and gives an
   overview of the API and of the differences from mermaid.js.
-- Updated dependencies [[`b817905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/b8179056e2aebd764c260fbd7fee9a65fe27d00d)]:
-  - @mmd-toolkit/ast@0.3.1
+- Updated dependencies:
+  - [@mmd-toolkit/ast@0.3.1](https://github.com/mmd-toolkit/mmd-toolkit/releases/tag/%40mmd-toolkit%2Fast%400.3.1)
 
 ## 0.3.0
 
@@ -49,8 +49,8 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`e6b2eb3`](https://github.com/mmd-toolkit/mmd-toolkit/commit/e6b2eb3a11064a761d92fb11cd8190ece250e7e9)]:
-  - @mmd-toolkit/ast@0.3.0
+- Updated dependencies:
+  - [@mmd-toolkit/ast@0.3.0](https://github.com/mmd-toolkit/mmd-toolkit/releases/tag/%40mmd-toolkit%2Fast%400.3.0)
 
 ## 0.2.1
 
