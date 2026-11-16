@@ -287,10 +287,10 @@ lines (see
 Empty whitespace-only interiors print `{}` because no text needs surrounding
 whitespace. Keep comment-only blocks with comments one level inside and a
 separate closer at statement level. In `accDescr {%% c` followed by `}` or `D}`
-on the next line, `%% c` stays after `{` as description text, since mermaid.js
-reads it as a comment on its own line one level inside the block, with `D` and
-`}` on separate lines in the second form, leaving the description empty or just
-`D`, respectively (see
+on the next line, `%% c` stays after `{` as description text, since moving it to
+its own line one level inside the block, with `D` and `}` also on separate lines
+in the second case, makes mermaid.js read it as a comment, leaving the
+description empty or just `D`, respectively (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Ordinary later-line text and standalone comment lines align one level inside the
 statement, as the other diagram types do. Keep line breaks, blank lines and
