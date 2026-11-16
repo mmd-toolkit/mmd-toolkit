@@ -105,12 +105,12 @@ and both outputs, and what is decided is added to those rules.
    pinned mermaid.js and the versions that count (that document), and check that
    the Db does not change and that every one of those versions accepts the form
    and draws it the same. A form that one of them rejects or draws differently
-   is not printed. An item whose choice keeps a form as written is a choice too:
-   run the forms that the rules would print instead, and keep the written form
-   only where, in one of those versions, one of them changes the Db in a way
-   that no kind of exception allows or changes the drawing, or is rejected, or
-   where the user decided it. Each case that the choice distinguishes has a
-   fixture (section 6). Attach the results, marked as checked by running.
+   is not printed. Where an item keeps a form as written, run the forms that the
+   rules would print instead, and keep the written form only where, in one of
+   those versions, one of them changes the Db in a way that no kind of exception
+   allows or changes the drawing, or is rejected, or where the user decided it.
+   Each case that the choice distinguishes has a fixture (section 6). Attach the
+   results, marked as checked by running.
 4. Implement the forms that the rules decide. A form that would change what a
    released version printed, and a form that seems better where no rule gives
    one, is shown to the user first, with a text as written, the old and the new
@@ -188,9 +188,10 @@ How it is built (under `src/printers/`):
   between atoms are items, printed as written, and each side of an item keeps
   whether the source has whitespace there. Keeping that whitespace is a form
   kept as written, so it needs the reason that `docs/printed-form.md` asks for;
-  where it has none, the gap is printed by the rules of that document. The rules
-  that add or remove whitespace apply only to gaps without items. How a gap is
-  read is decided in one place, `readGapElement`, which the other scans use too.
+  where it has none, the gap is decided as that document says (section 4). The
+  rules that add or remove whitespace apply only to gaps without items. How a
+  gap is read is decided in one place, `readGapElement`, which the other scans
+  use too.
 - What all diagram types share (the frontmatter, comments and directives before
   the body, the line break at the end of the file, Markdown code blocks) is in
   `root.ts`, `frontmatter-yaml.ts`, `parser.ts`, and `printer.ts`. The printer

@@ -86,26 +86,26 @@ Correctness is defined by the pinned mermaid.js.
    HTML characters) are not compared. A way of writing that draws the same is
    printed in one form, the one that reads best; a way of writing that draws
    something else is kept as written. Keeping a form as written is a decision as
-   any other is, and its reason is one of three, each shown by running the other
-   form: in a version that counts, the other form changes the Db (in a way that
-   no kind of exception allows) or the drawing; a version that counts rejects
-   the other form; or the user decided it. Without one of them, the form is one
-   that none of the rules below gives. Which form reads best is decided by rules
-   that are applied in a fixed order, so that it does not depend on who judges:
-   first the whitespace that Prettier prints beside the same kind of mark, then
-   the form that the other diagram types print for the same kind of gap, then
-   the spelling that the examples in the documentation of the pinned mermaid.js
-   use. A rule whose form reads worse than another form that draws the same is
-   the rule to correct. In that case, and where none of them gives a form, the
-   output of the released version is not changed on the judgment of whoever is
-   working on it: the form that seems to read better is proposed to the user,
-   with a text as written, the present output, and the output in that form, and
-   the user decides. The formatted text is also drawn by other versions of
-   mermaid.js, so a form is printed only where every version that counts reads
-   and draws it the same. The check is that formatting does not change the Db; a
-   formatting that changes the Db but not the drawing is an exception of a kind
-   that a section of the documents of the formatter defines. The rules, the
-   versions that count, and the kinds of exceptions are in
+   any other is, and its reason is one of three, the first two shown by running
+   the other form: in a version that counts, the other form changes the Db (in a
+   way that no kind of exception allows) or the drawing; a version that counts
+   rejects the other form; or the user decided it. Without one of them, the form
+   is one that none of the rules below gives. Which form reads best is decided
+   by rules that are applied in a fixed order, so that it does not depend on who
+   judges: first the whitespace that Prettier prints beside the same kind of
+   mark, then the form that the other diagram types print for the same kind of
+   gap, then the spelling that the examples in the documentation of the pinned
+   mermaid.js use. A rule whose form reads worse than another form that draws
+   the same is the rule to correct. In that case, and where none of them gives a
+   form, the output of the released version is not changed on the judgment of
+   whoever is working on it: the form that seems to read better is proposed to
+   the user, with a text as written, the present output, and the output in that
+   form, and the user decides. The formatted text is also drawn by other
+   versions of mermaid.js, so a form is printed only where every version that
+   counts reads and draws it the same. The check is that formatting does not
+   change the Db; a formatting that changes the Db but not the drawing is an
+   exception of a kind that a section of the documents of the formatter defines.
+   The rules, the versions that count, and the kinds of exceptions are in
    [How the printed form is decided](packages/prettier-plugin-mmd/docs/printed-form.md).
 
 ## What each package is responsible for

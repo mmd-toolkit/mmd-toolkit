@@ -3,11 +3,11 @@
 Formatting does not change what mermaid.js draws (AGENTS.md, item 4). A way of
 writing that draws the same is printed in one form; a way of writing that draws
 something else is kept as written. Keeping a form as written is a decision too,
-and its reason is one of three, each shown by running the other form: in a
-version that counts, the other form changes the Db (in a way that no kind of
-exception below allows) or the drawing; a version that counts rejects the other
-form; or the user decided it (AGENTS.md, item 4). This document says which form
-is printed, and why.
+and its reason is one of three, the first two shown by running the other form:
+in a version that counts, the other form changes the Db (in a way that no kind
+of exception below allows) or the drawing; a version that counts rejects the
+other form; or the user decided it (AGENTS.md, item 4). This document says which
+form is printed, and why.
 
 The rules of a diagram type are in its own document (`flowchart.md`, `gantt.md`,
 and so on). The reason of each of those rules is one of the rules below.
