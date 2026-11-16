@@ -468,7 +468,11 @@ block is read without regard to line breaks.
 er/gram-attribute-split-lines] [corpus fixture: er/gram-name-then-key-next-line]
 
 An attribute with a comment line or a directive between its parts keeps its line
-breaks. Later structural parts and standalone trivia stand one level inside the
+breaks. The type `int`, `%% a comment line`, and the name `a` stay on separate
+lines, since mermaid.js rejects `int %% a comment line` followed by `a` on the
+next line (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Later structural parts and standalone trivia stand one level inside the
 attribute, also in a subgraph; type, name and quoted-comment interiors stay as
 written.
 
@@ -1631,7 +1635,10 @@ A value written on a later line is printed after `direction` on one line.
 er/lex-direction-value-next-line]
 
 A direction line with a directive or comment keeps its line breaks and indents
-structural continuations one level deeper.
+structural continuations one level deeper. `direction`, `%% a comment line`, and
+`RL` stay on separate lines, since mermaid.js rejects
+`direction %% a comment line` followed by `RL` on the next line (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: direction/directive-and-comment-line-kept]
 
@@ -1835,7 +1842,11 @@ it; the text is without the whitespace at its ends.
 [fixture: accessibility-statements/title-and-description]
 
 A text written on a later line is printed after the `:` on one line, and a
-comment line before it makes the statement kept as written.
+comment line before it makes the statement kept as written. `accTitle:`,
+`%% a comment line`, and `T` stay on separate lines, since mermaid.js reads
+`accTitle: %% a comment line` followed by `T` on the next line as a title of
+`%% a comment line` and an entity `T`, instead of the title `T` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept] [corpus fixture:
@@ -1870,7 +1881,11 @@ and usecase.
 [test: accessibility revisions: er empty-description-nbsp]
 
 Blocks with comments or directives keep their line breaks and complete contents,
-while ordinary standalone trivia aligns inside the block.
+while ordinary standalone trivia aligns inside the block. In an otherwise empty
+`accDescr` block, `%% a comment line` stays on the line after `{`: mermaid.js
+reads an empty description in that form, and reads `%% a comment line` as the
+description when it is on the opening line instead (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: accessibility-statements/empty-blocks] [fixture:
 accessibility-statements/empty-block-with-directive-or-comment-line] [corpus
