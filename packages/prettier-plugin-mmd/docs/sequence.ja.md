@@ -644,6 +644,10 @@ mermaid.js の正規表現が最後の `)` まで読むので、書かれたま�
 `box RGB(33,66,99) Team`、`box rgb (33,66,99) Team`、
 関数のほかにテキストがある `rect` も、書かれたままです。
 コンマの前、開き括弧 `(` の直後、閉じ括弧 `)` の直前の空白は、書かれたままです。
+mermaid.js は色のテキストを書かれたまま Db に入れるので、
+この空白を消すと Db が変わります（`rgb( 1,2,3 )` と `rgb(1 ,2 ,3)` は
+`rgb(1,2,3)` と違う Db です）。
+同じに描かれる例外の種類になっているのは、コンマの後の空白だけです。
 
 [fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
 [fixture: colors/functions-as-written]

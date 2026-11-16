@@ -114,14 +114,18 @@ decided as section 4 of that document says.
    Japanese) as a rule with its reason. The reason is the rule of that document
    that decided the form, with the facts that rule needs. A reason that says
    only "reads better" tells a reader nothing: name the rule that says why it
-   reads better. A form found printed as written without such a reason, and not
-   decided yet, is added to `claude-abandoned-format-decisions.md` of this
-   package until it is decided. Where a rule gives a form that reads worse than
-   another form that draws the same, say so and propose the other form to the
-   user as under step 4 of this section, since the rule is then what is wrong.
-   Write what is kept as written because it affects the Db, and the differences
-   from mermaid.js, into `docs/compatibility.md` too. Keep decisions in these
-   two documents only.
+   reads better. A form found printed as written whose rules document states no
+   such reason is added to `claude-abandoned-format-decisions.md` of this
+   package, but only after its reason has been searched for in the records of
+   the conversations in which it was decided (the Claude Code transcripts of
+   this repository, one JSONL file per session under `~/.claude/projects/`): to
+   the reasons still to be written where a run of the other form shows one, and
+   otherwise, unless the user decided it, to the decisions still to be made.
+   Where a rule gives a form that reads worse than another form that draws the
+   same, say so and propose the other form to the user as under step 4 of this
+   section, since the rule is then what is wrong. Write what is kept as written
+   because it affects the Db, and the differences from mermaid.js, into
+   `docs/compatibility.md` too. Keep decisions in these two documents only.
 
 ## 4. Writing the printer
 

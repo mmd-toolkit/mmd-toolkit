@@ -627,7 +627,11 @@ all in lower case. `box rgb(33,66,99) Team (x)` stays as written, since the
 pattern of mermaid.js reads up to the last `)`, and so do
 `box RGB(33,66,99) Team`, `box rgb (33,66,99) Team`, and a `rect` with more text
 than the function. The whitespace before a comma, immediately after the opening
-`(`, and immediately before the closing `)` stays as written.
+`(`, and immediately before the closing `)` stays as written: mermaid.js keeps
+the text of the color in the Db as it is written, so removing that whitespace
+changes the Db (`rgb( 1,2,3 )` and `rgb(1 ,2 ,3)` give another Db than
+`rgb(1,2,3)`), and only the space after a comma is a kind of exception that is
+drawn the same.
 
 [fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
 [fixture: colors/functions-as-written] [fixture:

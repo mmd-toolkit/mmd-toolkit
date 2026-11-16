@@ -26,10 +26,12 @@ it is decided, and this file is deleted when the list is empty.
 The list is not complete: the rules of every diagram type are still being
 searched for forms kept as written without a reason.
 
+## Decisions still to be made
+
 | Diagram                                      | Form printed as written                                                                 |
 | -------------------------------------------- | --------------------------------------------------------------------------------------- |
 | flowchart, agentflow                         | The whitespace before the colon of `accTitle :%%{init: {}}%% x`                         |
-| flowchart, class                             | The whitespace of a `style` or `classDef` with a comment or a directive in it           |
+| flowchart, class                             | The whitespace of a `style` or `classDef` with a directive in it                        |
 | every diagram type                           | Spaces and tabs at the end of the `---` lines of the frontmatter                        |
 | venn                                         | Whitespace before a comma in a color of a style, as in `rgb(1 ,2 ,3)`                   |
 | sankey                                       | The case of `sankey-BETA`                                                               |
@@ -42,3 +44,11 @@ searched for forms kept as written without a reason.
 | railroad                                     | A comma of EBNF, kept or left out as written                                            |
 | sequence                                     | No space between `participant` and a quoted name, as in `participant"A"`                |
 | journey                                      | A score with a leading zero, such as `05`                                               |
+
+## Reasons still to be written
+
+The forms of this section are kept as written for a reason, since a run of the
+other form changes the Db in a way that no kind of exception allows, changes the
+drawing, or is rejected, but Claude did not write that reason into the rules of
+the diagram type. Each reason is written there with its fixture, and the form
+leaves this list. No form is listed here now.
