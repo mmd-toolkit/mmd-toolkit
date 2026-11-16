@@ -49,8 +49,10 @@ exception for that step in the review skill, are deleted.
 
 ## Reasons still to be written
 
-The forms of this section are kept as written for a reason, since a run of the
-other form changes the Db in a way that no kind of exception allows, changes the
-drawing, or is rejected, but Claude did not write that reason into the rules of
-the diagram type. Each reason is written there with its fixture, and the form
-leaves this list. No form is listed here now.
+The forms of this section have a reason that Claude did not write into the rules
+of the diagram type: a form kept as written whose other form, when it is run,
+changes the Db in a way that no kind of exception allows, changes the drawing,
+or is rejected; and a form that the formatter prints changed, which Claude chose
+in a conversation for a reason (also where the reason is only that it reads
+better). Each reason is written into the rules of the diagram type, with its
+fixture, and the form leaves this list. No form is listed here now.
