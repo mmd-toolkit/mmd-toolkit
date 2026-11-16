@@ -113,9 +113,9 @@ indentation.
 indentation/direction-text-with-directive-kept] [fixture:
 indentation/acc-descr-block-direction-text-kept]
 
-mermaid.js reads an indented line that holds such a text as a direction
-statement: `accTitle: t;direction TB` is an accessibility title, and the same
-line indented is the direction `TB` (see
+The line `accTitle: t;direction TB` stays unindented: mermaid.js reads its
+accessibility title as `t;direction TB`, but as empty when the same line is
+indented by two spaces, and draws a different figure (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 Input
@@ -872,8 +872,7 @@ A `style` styles a node, and uses the one form.
 
 A `style` keeps whether whitespace stands before a style that starts with
 `color:` or `text-align:`, and, for the first style of the statement, between
-such a name and the `:`, a run of whitespace becoming one space, since a version
-that counts puts a style that starts so in the style of the label of the node:
+such a name and the `:`, a run of whitespace becoming one space:
 `style A color   :red,fill:#f00` is printed `style A color : red, fill: #f00`. A
 style with whitespace before it does not start so, with the gap or without it:
 `style A fill:#f00, color :red` is printed `style A fill: #f00, color: red`. A
@@ -903,10 +902,7 @@ link.
 
 A `linkStyle` keeps whether whitespace stands between a name that ends with
 `fill` and the `:`, a run of whitespace becoming one space:
-`linkStyle 0 fill  :#f00` is printed `linkStyle 0 fill : #f00`. A version that
-counts makes the style of the label of a link from the styles of the link and
-puts `color:` in the place of the first `fill:` in them, or, in a swimlane
-diagram, in the first style only, and `fill :` is no `fill:` (see
+`linkStyle 0 fill  :#f00` is printed `linkStyle 0 fill : #f00` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)
 and
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
@@ -926,7 +922,11 @@ whitespace-between-tokens/link-style-fill-colon-gap-swimlane-not-first-spaced]
 The styles of a statement that a later one replaces are printed in the one form
 too: a `linkStyle` that a later `linkStyle` replaces for every link it numbers,
 and a `linkStyle default` that a later `linkStyle default` replaces. The styles
-of a `linkStyle` that is replaced for some of its links only stay.
+of a `linkStyle` that is replaced for some of its links only stay. With
+`linkStyle 0,1 fill :#f00` followed by `linkStyle 0 stroke:#000`, the space
+before `:` stays, since a version that counts draws different styles for
+`linkStyle 0,1 fill:#f00` followed by the same statement (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: whitespace-between-tokens/link-style-fill-colon-gap-replaced-spaced]
 [fixture:
@@ -991,6 +991,10 @@ would escape the `:`, and the whitespace after that space goes, as before any
 `:`: `style A fill\   :#f00` is printed `style A fill\ : #f00`. A statement
 stays as written where it holds a comment or a directive, where a style is all
 whitespace, or where a style holds a line break or its line holds a kept `;`.
+For `style A fill:#f00 %%{x}%% ,color:white`, the gap after `,` stays empty,
+since a version that counts draws different styles for
+`style A fill:#f00 %%{x}%% , color:white` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: whitespace-between-tokens/style-blank-style-kept] [fixture:
 whitespace-between-tokens/style-colon-escaped-space-kept] [fixture:
@@ -1287,10 +1291,10 @@ arrow-spacing/edge-id-arrow-like-after-ignored-semicolon] [fixture:
 arrow-spacing/edge-id-arrow-like-after-ignored-semicolon-runs-collapsed]
 
 An edge id after a data block touches the block: `A@{ shape: circle } e1@--> B`
-is printed `A@{ shape: circle }e1@--> B`. mermaid.js 12.3.0 reads the two forms
-the same, and draws the same figure from them. Some of the versions that count
-have no rule for a space after a data block before an edge id, so they reject
-the form with the space (another has no data block, and rejects both; see
+is printed `A@{ shape: circle }e1@--> B`. The pinned mermaid.js reads the two
+forms the same, and draws the same figure from them. Some of the versions that
+count have no rule for a space after a data block before an edge id, so they
+reject the form with the space (another has no data block, and rejects both; see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The touching form is the one that every version that reads a data block reads. A
 directive or an ignored `;` between the block and the edge id is removed before
@@ -1648,8 +1652,7 @@ the first form 14 times and the second 8 times, which is not twice as often (see
 link-label-form/flowchart-header-both-forms-kept]
 
 Turning one form into the other would need rules for labels that hold a `|`:
-`A -- a|b --> B` is accepted, and `A -->|a|b| B` is not (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+`A -- a|b --> B` is accepted, and `A -->|a|b| B` is not.
 
 [fixture: link-label-form/pipe-in-text-between-arrows-kept]
 
@@ -1658,7 +1661,10 @@ examples in the documentation of mermaid.js use that form 12 times and the other
 none. This holds for a label of plain text (letters, digits, spaces, `_`, `,`,
 `?`, and `!`) and for the eight arrows `-->`, `---`, `--o`, `--x`, `-.->`,
 `-.-`, `==>`, and `===`: `A -- text --> B` is printed `A -->|text| B`. A label
-that holds a `|` or a `%%`, a string, and a Markdown label stay as written.
+that holds a `|` or a `%%`, a string, and a Markdown label stay as written. In
+`swimlane-beta TB`, `I -- left|right --> J` stays, since mermaid.js rejects
+`I -->|left|right| J` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: link-label-form/swimlane-arrows-to-pipes]
 
@@ -1813,7 +1819,11 @@ priority.
 accessibility-lines/next-line-direction-kept]
 
 Configured indentation, including its minimum at `tabWidth: 0` and `useTabs`,
-applies to ordinary lines; those options also retain these exceptions.
+applies to ordinary lines; those options also retain these exceptions. The line
+`accTitle : direction LR` stays unindented after `accTitle :Zero width title`:
+mermaid.js reads the title as `direction LR`, but as `Zero width title` when the
+later line is indented by two spaces, and draws different text (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: accessibility-lines/zero-width] [fixture: accessibility-lines/tabs]
 
@@ -3090,13 +3100,13 @@ subgraph-header/name-whitespace-after-directive-kept]
 So does the whitespace around the empty description blocks written on the line
 of the header: before a block, between two blocks, and between the last block
 and a `;`, as in `subgraph "S"accDescr {} accDescr {}` and
-`subgraph "U"accDescr {} ;`.
+`subgraph "U"accDescr {} ;`. In `subgraph "S" accDescr {}`, the space before the
+block stays: mermaid.js reads the id as `subGraph0`, and as `S` in
+`subgraph "S"accDescr {}` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: subgraph-header/whitespace-before-first-block-kept]
 
-The blocks read no token, so that whitespace follows the name: the subgraph has
-the id `subGraph0`, and the id `S` without it (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 That the whitespace is there is kept; how wide it is, only before the first
 block, where it follows the name as written, and a run between two blocks or
 before a `;` becomes one space.
@@ -3559,15 +3569,15 @@ space.
 
 A `linkStyle` that ends with a backslash keeps the whitespace after it too, as
 one character: `linkStyle default stroke-width:4px\ ` followed by
-`linkStyle 0 stroke:#0f0` keeps the space (see
+`linkStyle 0 stroke:#0f0` keeps the space, since a version that counts draws
+different styles when that final space after the backslash is removed (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: style-trailing-whitespace/link-style-backslash-at-end-kept]
 
-The whitespace is kept when mermaid.js reads it as a style of its own, after a
-`,` at the end of the list, because the statement would be rejected without it:
-in `style A fill:#f00, ` and in `classDef c fill:x\, ` (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The whitespace after a `,` at the end of the list is kept because the statement
+would be rejected without it: in `style A fill:#f00, ` and in
+`classDef c fill:x\, `.
 
 [fixture: style-trailing-whitespace/whitespace-only-value-kept] [fixture:
 style-trailing-whitespace/whitespace-only-value-in-link-style-kept] [fixture:
@@ -3576,7 +3586,9 @@ style-trailing-whitespace/escaped-comma-kept]
 
 The same holds for a style that is all whitespace after a directive or after a
 `;` that mermaid.js ignores, as in `style A fill:red,%%{init: {}}%% ` and
-`style A fill:#f00,; `.
+`style A fill:#f00,; `. The final space in `style A fill:red,%%{init: {}}%% `
+stays, since mermaid.js rejects `style A fill:red,%%{init: {}}%%` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: style-trailing-whitespace/whitespace-only-value-after-directive-kept]
 [fixture:
