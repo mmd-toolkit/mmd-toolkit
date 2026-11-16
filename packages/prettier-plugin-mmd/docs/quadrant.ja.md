@@ -800,6 +800,11 @@ quadrantChart
 指令かコメント行の内容と改行は保ち、
 本文の字下げは
 [title とアクセシビリティの文](#title-とアクセシビリティの文)に従います。
+`%% c` の行だけを含む `accDescr` ブロックを複数行のまま残すのは、
+mermaid.js が `accDescr { %% c }` を、
+空の説明ではなく説明 `%% c` と読むためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 ヘッダーの後でも、ほかの文の後でも、自分の行に置きます。
 文法がブロックを受け入れるのは、文の始まりと、文の最後の単位の後です。
 mermaid.js は、どこにあってもトークンのないものとして読みます。
@@ -863,6 +868,11 @@ mermaid.js が複数行にわたって読む文は、
 それ以外の複数行の文は、改行が残る場合、書かれたままにします。
 最終行の別の文にある `;` も、同じ判定をします。
 [1 行 1 文](#1-行-1-文)を参照してください。
+`style` と空白 1 つに続く、`: [0.2, 0.7]; title x:#y;` の前の改行を残すのは、
+mermaid.js が `style : [0.2, 0.7]; title x:#y;` では、
+異なる title のテキストを描くためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 
 [fixture: multi-line-statements/breaks-decided-one-by-one]
 [fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
@@ -879,6 +889,11 @@ mermaid.js が複数行にわたって読む文は、
 たとえば、`classDef a`、U+2028、`%% c`、行 `b color: #f00` では、
 クラスの名前は `a`、U+2028、`b` です。
 字下げするのは最初の行だけで、その後の文は別の行に印字します。
+この形で行 `b color: #f00` を字下げせずに残すのは、
+同じ行の前に空白を 2 つ置くと、
+mermaid.js が拒否するためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 
 [test: a comment line after U+2028 inside the name of a class]
 [test: a comment line after U+2029 inside the name of a class]
@@ -1197,6 +1212,11 @@ U+00A0、U+3000、U+FEFF は、テキスト、名前、クラスの名前の中�
 そのまま残ります。
 点の `:`、角括弧、コンマの周りと、アクセシビリティの文のコロンと括弧の周りでは、
 mermaid.js が空白として読むので、その場所に空白を印字します。
+`quadrant-1` のテキストの `A` と `B` の間の U+00A0 を残すのは、
+mermaid.js が `quadrant-1 A B` では、
+異なるテキストを描くためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 点の `]` の後では受理されません（[行区切り文字](#行区切り文字)を参照）。
 
 [test: U+00A0 between the words of a text]
