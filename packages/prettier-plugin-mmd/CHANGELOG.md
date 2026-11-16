@@ -629,9 +629,9 @@
 
 - [#84](https://github.com/mmd-toolkit/mmd-toolkit/pull/84) [`d795bf6`](https://github.com/mmd-toolkit/mmd-toolkit/commit/d795bf650d56953f3e745a4a10e7c49337263061) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the title of an `xychart-beta` in quotes also where a directive stands
   before it: `title %%{wrap x}%%abc` becomes `title %%{wrap x}%%"abc"`.
-- Updated dependencies [[`ff4b39a`](https://github.com/mmd-toolkit/mmd-toolkit/commit/ff4b39ae943932cc050b479dd1e44af024a67cfa), [`c037353`](https://github.com/mmd-toolkit/mmd-toolkit/commit/c037353e31afdc2b8069071afdf00dae3e5281be), [`c037353`](https://github.com/mmd-toolkit/mmd-toolkit/commit/c037353e31afdc2b8069071afdf00dae3e5281be)]:
-  - @mmd-toolkit/parser@0.4.0
-  - @mmd-toolkit/ast@0.4.0
+- Updated dependencies:
+  - [@mmd-toolkit/parser@0.4.0](https://github.com/mmd-toolkit/mmd-toolkit/releases/tag/%40mmd-toolkit%2Fparser%400.4.0)
+  - [@mmd-toolkit/ast@0.4.0](https://github.com/mmd-toolkit/mmd-toolkit/releases/tag/%40mmd-toolkit%2Fast%400.4.0)
 
 ## 0.8.0
 
@@ -954,9 +954,9 @@
 
 - [#64](https://github.com/mmd-toolkit/mmd-toolkit/pull/64) [`b817905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/b8179056e2aebd764c260fbd7fee9a65fe27d00d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Rewrite the README for users: it links to the documentation site, and one list
   leads to the formatting rules of each diagram type.
-- Updated dependencies [[`b817905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/b8179056e2aebd764c260fbd7fee9a65fe27d00d), [`dd2658b`](https://github.com/mmd-toolkit/mmd-toolkit/commit/dd2658b2c36a1406aeb5c49a922f724820ebb151), [`b817905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/b8179056e2aebd764c260fbd7fee9a65fe27d00d)]:
-  - @mmd-toolkit/ast@0.3.1
-  - @mmd-toolkit/parser@0.3.1
+- Updated dependencies:
+  - [@mmd-toolkit/ast@0.3.1](https://github.com/mmd-toolkit/mmd-toolkit/releases/tag/%40mmd-toolkit%2Fast%400.3.1)
+  - [@mmd-toolkit/parser@0.3.1](https://github.com/mmd-toolkit/mmd-toolkit/releases/tag/%40mmd-toolkit%2Fparser%400.3.1)
 
 ## 0.5.0
 
@@ -1063,16 +1063,16 @@
   
   The plugins now depend on `@mmd-toolkit/parser` with a caret range, so that the
   formatter and the linter share one parser while both ask for the same minor.
-- Updated dependencies [[`e6b2eb3`](https://github.com/mmd-toolkit/mmd-toolkit/commit/e6b2eb3a11064a761d92fb11cd8190ece250e7e9)]:
-  - @mmd-toolkit/ast@0.3.0
-  - @mmd-toolkit/parser@0.3.0
+- Updated dependencies:
+  - [@mmd-toolkit/ast@0.3.0](https://github.com/mmd-toolkit/mmd-toolkit/releases/tag/%40mmd-toolkit%2Fast%400.3.0)
+  - [@mmd-toolkit/parser@0.3.0](https://github.com/mmd-toolkit/mmd-toolkit/releases/tag/%40mmd-toolkit%2Fparser%400.3.0)
 
 ## 0.4.1
 
 ### Patch Changes
 
-- Updated dependencies [[`7e28e77`](https://github.com/mmd-toolkit/mmd-toolkit/commit/7e28e770d7d6e30c51a4fcf94918b7e46f165116)]:
-  - @mmd-toolkit/parser@0.2.1
+- Updated dependencies:
+  - [@mmd-toolkit/parser@0.2.1](https://github.com/mmd-toolkit/mmd-toolkit/releases/tag/%40mmd-toolkit%2Fparser%400.2.1)
 
 ## 0.4.0
 
@@ -1092,8 +1092,8 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`73b1cf3`](https://github.com/mmd-toolkit/mmd-toolkit/commit/73b1cf3c2e92370094cd7d8c5ab72a2a4f6348d1)]:
-  - @mmd-toolkit/parser@0.2.0
+- Updated dependencies:
+  - [@mmd-toolkit/parser@0.2.0](https://github.com/mmd-toolkit/mmd-toolkit/releases/tag/%40mmd-toolkit%2Fparser%400.2.0)
 
 ## 0.3.0
 
@@ -1118,8 +1118,8 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`1620a8f`](https://github.com/mmd-toolkit/mmd-toolkit/commit/1620a8f03f15f82aeb19b2fb7df3266714669c6b), [`8514d3a`](https://github.com/mmd-toolkit/mmd-toolkit/commit/8514d3a11f485a1a7970136b2d0c1004cbdc2523), [`1620a8f`](https://github.com/mmd-toolkit/mmd-toolkit/commit/1620a8f03f15f82aeb19b2fb7df3266714669c6b), [`8514d3a`](https://github.com/mmd-toolkit/mmd-toolkit/commit/8514d3a11f485a1a7970136b2d0c1004cbdc2523), [`8514d3a`](https://github.com/mmd-toolkit/mmd-toolkit/commit/8514d3a11f485a1a7970136b2d0c1004cbdc2523), [`8514d3a`](https://github.com/mmd-toolkit/mmd-toolkit/commit/8514d3a11f485a1a7970136b2d0c1004cbdc2523), [`1620a8f`](https://github.com/mmd-toolkit/mmd-toolkit/commit/1620a8f03f15f82aeb19b2fb7df3266714669c6b), [`8514d3a`](https://github.com/mmd-toolkit/mmd-toolkit/commit/8514d3a11f485a1a7970136b2d0c1004cbdc2523)]:
-  - @mmd-toolkit/parser@0.1.1
+- Updated dependencies:
+  - [@mmd-toolkit/parser@0.1.1](https://github.com/mmd-toolkit/mmd-toolkit/releases/tag/%40mmd-toolkit%2Fparser%400.1.1)
 
 ## 0.2.0
 
@@ -1138,5 +1138,5 @@
 
 ### Patch Changes
 
-- Updated dependencies [[`c05ce11`](https://github.com/mmd-toolkit/mmd-toolkit/commit/c05ce112065146b267e4735fab1cf2049c037ea6)]:
-  - @mmd-toolkit/parser@0.1.0
+- Updated dependencies:
+  - [@mmd-toolkit/parser@0.1.0](https://github.com/mmd-toolkit/mmd-toolkit/releases/tag/%40mmd-toolkit%2Fparser%400.1.0)
