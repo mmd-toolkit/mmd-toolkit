@@ -20,11 +20,6 @@
 詳しくは [ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)
 を参照してください。
 コロンは足さず、空本文も保ちます。
-空本文の `treemap-beta` にコロンを足さないのは、
-mermaid.js が同じ空本文の `treemap-beta:` を拒否するためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 
 [fixture: treemap/header/stable]
 
@@ -565,13 +560,13 @@ mermaid.js は `;` がなくても同じ文として読むからです。
 `;` の前にある U+00A0、U+2028、U+2029、U+3000、U+000B（垂直タブ）、
 U+FEFF は残します。
 行の規則が無視する `;` の後ろにあるものも残します。
-CSS はこれらを空白として読まないので、最後のスタイルの末尾に残り、
-なくすと mermaid.js が違う図を描くからです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 詳しくは、
 [スタイルの末尾の空白](./compatibility.ja.md#スタイルの末尾の空白)
+を参照してください。
+`classDef zz fill:red`、U+00A0、`;` を `classDef zz fill:red;` にすると、
+mermaid.js が違う文字を描きます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
 消すのは `;` と、最後のそれらの文字の後ろの空白、タブ、改ページだけです。
 `classDef zz fill:red`、U+00A0、`;` は、`classDef zz fill: red`、
