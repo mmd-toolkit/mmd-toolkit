@@ -93,14 +93,14 @@ Correctness is defined by the pinned mermaid.js.
    use. A rule whose form reads worse than another form that draws the same is
    the rule to correct. In that case, and where none of them gives a form,
    whoever is working on the formatter decides the form that reads best and
-   writes it into the rules with its reason, so that the next case of the same
-   kind is decided by a rule and not by judgment again. The formatted text is
-   also drawn by other versions of mermaid.js, so a form is printed only where
-   every version that counts reads and draws it the same. The check is that
-   formatting does not change the Db; a formatting that changes the Db but not
-   the drawing is an exception of a kind that a section of the documents of the
-   formatter defines. The rules, the versions that count, and the kinds of
-   exceptions are in
+   writes it into the rules with a reason that anyone would accept, so that the
+   next case of the same kind is decided by a rule and not by judgment again.
+   The formatted text is also drawn by other versions of mermaid.js, so a form
+   is printed only where every version that counts reads and draws it the same.
+   The check is that formatting does not change the Db; a formatting that
+   changes the Db but not the drawing is an exception of a kind that a section
+   of the documents of the formatter defines. The rules, the versions that
+   count, and the kinds of exceptions are in
    [How the printed form is decided](packages/prettier-plugin-mmd/docs/printed-form.md).
 
 ## What each package is responsible for
