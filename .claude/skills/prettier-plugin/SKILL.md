@@ -116,15 +116,12 @@ decided as section 4 of that document says.
    only "reads better" tells a reader nothing: name the rule that says why it
    reads better. A form found printed as written whose rules document states no
    such reason is added to `claude-abandoned-format-decisions.md` of this
-   package, but only after its reason has been searched for in the records of
-   the conversations in which it was decided: to the reasons still to be written
-   where a run of the other form shows one, and otherwise, unless the user
-   decided it, to the decisions still to be made. Where a rule gives a form that
-   reads worse than another form that draws the same, say so and propose the
-   other form to the user as under step 4 of this section, since the rule is
-   then what is wrong. Write what is kept as written because it affects the Db,
-   and the differences from mermaid.js, into `docs/compatibility.md` too. Keep
-   decisions in these two documents only.
+   package, in the way that file says. Where a rule gives a form that reads
+   worse than another form that draws the same, say so and propose the other
+   form to the user as under step 4 of this section, since the rule is then what
+   is wrong. Write what is kept as written because it affects the Db, and the
+   differences from mermaid.js, into `docs/compatibility.md` too. Keep decisions
+   in these two documents only.
 
 ## 4. Writing the printer
 
