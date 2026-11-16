@@ -105,8 +105,12 @@ and both outputs, and what is decided is added to those rules.
    pinned mermaid.js and the versions that count (that document), and check that
    the Db does not change and that every one of those versions accepts the form
    and draws it the same. A form that one of them rejects or draws differently
-   is not printed. Each case that the choice distinguishes has a fixture
-   (section 6). Attach the results, marked as checked by running.
+   is not printed. An item whose choice keeps a form as written is a choice too:
+   run the forms that the rules would print instead, and keep the written form
+   only where one of them changes the Db or the drawing in one of those
+   versions, or where the user decided it. Each case that the choice
+   distinguishes has a fixture (section 6). Attach the results, marked as
+   checked by running.
 4. Implement the forms that the rules decide. A form that would change what a
    released version printed, and a form that seems better where no rule gives
    one, is shown to the user first, with a text as written, the old and the new
@@ -116,12 +120,14 @@ and both outputs, and what is decided is added to those rules.
    Japanese) as a rule with its reason. The reason is the rule of that document
    that decided the form, with the facts that rule needs. A reason that says
    only "reads better" tells a reader nothing: name the rule that says why it
-   reads better. Where a rule gives a form that reads worse than another form
-   that draws the same, say so and propose the other form to the user as under
-   step 4 of this section, since the rule is then what is wrong. Write what is
-   kept as written because it affects the Db, and the differences from
-   mermaid.js, into `docs/compatibility.md` too. Keep decisions in these two
-   documents only.
+   reads better. The reason of a form kept as written is the run in which
+   another form changed the Db or the drawing, or the decision of the user; "as
+   written", or the author's form, is no reason. Where a rule gives a form that
+   reads worse than another form that draws the same, say so and propose the
+   other form to the user as under step 4 of this section, since the rule is
+   then what is wrong. Write what is kept as written because it affects the Db,
+   and the differences from mermaid.js, into `docs/compatibility.md` too. Keep
+   decisions in these two documents only.
 
 ## 4. Writing the printer
 
@@ -419,7 +425,8 @@ The steps are in
     rejection after the grammar accepts, including defaults, site configuration
     and the treatment of settings embedded in the text.
   - Comparison values: read the specified conversion order and equality rules
-    separately from the authored spelling, which the printer preserves.
+    separately from the written spelling; which spelling the printer prints is
+    decided by `docs/printed-form.md`.
   - Hidden YAML/directive forms, when its lexical rules define them. Keep each
     retained node as written in its specified AST field or body entry. Preserve
     any LF the rule consumes outside the node range and whitespace after its

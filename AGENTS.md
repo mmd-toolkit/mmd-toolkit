@@ -85,7 +85,11 @@ Correctness is defined by the pinned mermaid.js.
    whitespace that the drawing ignores (around a CSS declaration, in a run of
    HTML characters) are not compared. A way of writing that draws the same is
    printed in one form, the one that reads best; a way of writing that draws
-   something else is kept as written. Which form reads best is decided by rules
+   something else is kept as written. Keeping a form as written is a decision as
+   any other is, and its reason is one of three: another form was run and drawn
+   differently, a version that counts rejects another form or draws it
+   differently, or the user decided it. Without one of them, the form is one
+   that none of the rules below gives. Which form reads best is decided by rules
    that are applied in a fixed order, so that it does not depend on who judges:
    first the whitespace that Prettier prints beside the same kind of mark, then
    the form that the other diagram types print for the same kind of gap, then

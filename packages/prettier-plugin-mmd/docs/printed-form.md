@@ -2,8 +2,10 @@
 
 Formatting does not change what mermaid.js draws (AGENTS.md, item 4). A way of
 writing that draws the same is printed in one form; a way of writing that draws
-something else is kept as written. This document says which form is printed, and
-why.
+something else is kept as written. Keeping a form as written is a decision too:
+its reason is a run in which another form was drawn differently, a version that
+counts that rejects another form or draws it differently, or a decision of the
+user (AGENTS.md, item 4). This document says which form is printed, and why.
 
 The rules of a diagram type are in its own document (`flowchart.md`, `gantt.md`,
 and so on). The reason of each of those rules is one of the rules below.
@@ -161,7 +163,8 @@ to keep in them. Where a text is a table, Prettier lines its columns up: it pads
 the cells of a table of Markdown to the width of their column.
 
 So whether lines are lined up is decided for each kind of line, in the document
-of its diagram type.
+of its diagram type, by the rules of this document; padding that stays as
+written has a reason as any form kept as written has.
 
 - The tasks of a section of a Gantt chart are rows of a name and its data. The
   printer puts the colons of a section in one column where its names were
@@ -192,11 +195,11 @@ of a block is printed `a:2`, also where `a :2` was written.
 ### A text that the tree holds whole
 
 This rule decides the whitespace beside the marks that the syntax tree of the
-parser holds as tokens. A text that the tree holds whole is printed as written
-inside: the text of a label and of a string, and the body of a data block
-(`@{ … }`) that mermaid.js reads as YAML, so that `A@{ shape : circle }` in a
-flowchart keeps the space before its colon. What the formatter changes in such a
-text is defined in the document of its diagram type.
+parser holds as tokens. A text that the tree holds whole is the text of a label
+and of a string, and the body of a data block (`@{ … }`) that mermaid.js reads
+as YAML. What the formatter changes inside such a text, and what it keeps, is
+defined in the document of its diagram type by the rules of this document, and
+what it keeps has a reason as any form kept as written has.
 
 ## 2. A gap of a kind that Prettier does not have
 
@@ -212,7 +215,8 @@ number, the direction of a header) takes the form that the examples in the
 documentation of the pinned mermaid.js use at least twice as often as any other:
 `"CUSTOMER" ||--o{ "ORDER" : places` in an ER diagram is printed
 `CUSTOMER ||--o{ ORDER : places`. Where no form is used that often, or the
-examples use none, the spelling is kept as written.
+examples use none, this rule gives no form, and the spelling is decided as under
+[4](#4-where-none-of-these-rules-gives-a-form).
 
 The name of a header with and without `-beta` is an exception. Where every
 version that counts and has the diagram type reads both names and draws them the
@@ -230,7 +234,9 @@ that name.
 Where none of these rules gives a form, it is not decided yet which form reads
 best. The output of the released version is then not changed on the judgment of
 whoever is working on it: the form is decided as AGENTS.md (item 4) says, added
-to these rules, and printed after that.
+to these rules, and printed after that. Until then the text is printed as
+written, and the document of its diagram type names the form as not decided yet,
+with the form that seems to read better, not as a form kept on purpose.
 
 ## The versions of mermaid.js that count
 
