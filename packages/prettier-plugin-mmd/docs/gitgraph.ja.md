@@ -735,7 +735,8 @@ opaque
 ディレクティブの `GitgraphIgnoredText` は隠れた YAML
 と同じく原文と境界を保持し、9 種すべての文の後置部分でも同じです。
 次行に `commit` が続く `commit%%{}%% ` の末尾の空白は残します。
-mermaid.js は、その空白のない `commit%%{}%%` を拒否するためです。
+空白を除く [決まり 1](./printed-form.ja.md#1-記号の横の空白) の形 `commit%%{}%%`
+を mermaid.js が拒否するためです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
