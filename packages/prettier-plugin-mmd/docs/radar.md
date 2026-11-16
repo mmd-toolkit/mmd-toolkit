@@ -250,8 +250,10 @@ commented list as a block as written. Hidden boundaries, value lines and
 protected semicolon segments remain written, including their continuation
 columns. No continuation indentation is added inside a protected segment;
 ordinary spacing still applies after it. Shared joining checks also keep a
-terminal line containing another statement's semicolon: joining a preceding
-style-like label could change that statement's Db (see
+terminal line containing another statement's semicolon. The entry newlines in
+`curve c["style:#a"]` before `} title tail;` stay, since mermaid.js reads the
+title as `tail;` there but as `tail` in `curve c["style:#a"]{ 1 } title tail;`,
+drawing different title text (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: radar/multi-line-statements/leading-trailing-entry-lines]
@@ -323,10 +325,7 @@ radar-beta
 
 Keep authored optional colons. Print `A: 1` with no ordinary space before the
 colon and one after, or `A 1` with one space and no alignment. This retains
-punctuation while giving equivalent padding a consistent form. Adding a colon is
-unsafe for axis names `accTitle` and `accDescr`: common composite tokens would
-take priority (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+punctuation while giving equivalent padding a consistent form.
 
 [fixture: radar/named-entries/named-colon-gap]
 
@@ -511,9 +510,12 @@ an `accDescr` is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 and that of an `accTitle` stays as written, since the browser shows it as a
 tooltip. Braces after a colon remain line text. Trivia/hidden and semicolon
-protection take precedence. The directives that end the value are printed with
-one space before each that has whitespace before it, and the whitespace after
-the last one is left out (see
+protection take precedence. For `accTitle: style:#red;;`, the colon after
+`style` stays without a following space, since mermaid.js draws different
+accessibility title text for `accTitle: style: #red;;` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The directives that end the value are printed with one space before each that
+has whitespace before it, and the whitespace after the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
@@ -524,6 +526,8 @@ radar/accessibility-lines/a11y-lines-fixed]
 [fixture: radar/accessibility-lines/a11y-line-braces-fixed]
 
 [fixture: radar/accessibility-lines/a11y-no-next-comment]
+
+[fixture: radar/accessibility-lines/acc-title-semicolon-colon-gap]
 
 Input (escaped):
 `"radar-beta\naccTitle \t:   Access  words\t\naccDescr\t:   Detail  words \n"`.
@@ -542,14 +546,18 @@ radar-beta
 Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
 For blocks that keep their braces, separate the keyword and opening brace with
-one space so the block boundary is clear. Whitespace-only interiors become `{}`
-because no text needs surrounding space. Plain opener whitespace joins; real
-trivia keeps its break. Preserve comment/directive-only interiors. Ordinary
-description body and standalone comment lines align one level inside the
-statement: the Db removes indentation after LF. Keep line breaks, internal
-blanks and trailing whitespace; align a separate opener or closer with the
-statement. Directives and shared removed comment regions keep their complete
-source. The first closing brace still ends the value.
+one space so the block boundary is clear. For `accDescr {a%%literal}`, the
+braces stay, since mermaid.js reads the description as `a%%literal` there but as
+`a` in `accDescr : a%%literal`, drawing different text (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Whitespace-only interiors become `{}` because no text needs surrounding space.
+Plain opener whitespace joins; real trivia keeps its break. Preserve
+comment/directive-only interiors. Ordinary description body and standalone
+comment lines align one level inside the statement: the Db removes indentation
+after LF. Keep line breaks, internal blanks and trailing whitespace; align a
+separate opener or closer with the statement. Directives and shared removed
+comment regions keep their complete source. The first closing brace still ends
+the value.
 
 [fixture: radar/description-blocks/block-empty-fixed]
 
@@ -568,6 +576,8 @@ source. The first closing brace still ends the value.
 [fixture: radar/description-blocks/block-comment-opener-fixed]
 
 [fixture: radar/description-blocks/block-multiline-global]
+
+[fixture: radar/comments/value-percent-owned]
 
 [test: radar/description-blocks/unicode-empty]
 

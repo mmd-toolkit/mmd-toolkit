@@ -264,7 +264,10 @@ radar-beta
 保護区間内に継続の字下げを足しません。
 その後の普通の間隙には通常の空白規則を適用します。
 終端行に別の文のセミコロンがある場合も共有の結合検査で保ちます。
-前の style に似たラベルと結合すると、その文の Db が変わりうるためです。
+`curve c["style:#a"]` の項目の改行は、`} title tail;` の前でも残します。
+mermaid.js はこの形の題を `tail;` と読みますが、
+`curve c["style:#a"]{ 1 } title tail;` では `tail` と読み、
+異なる題の文字を描くためです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
@@ -338,11 +341,6 @@ radar-beta
 `A: 1` はコロンの前を詰め、後を空白 1 つにします。
 `A 1` は間を空白 1 つにし、列揃えはしません。
 句読法を保ちながら、同じ意味の空白をそろえるためです。
-軸名 `accTitle` と `accDescr` へのコロン追加は安全ではありません。
-共通の複合トークンが優先してしまうためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 
 [fixture: radar/named-entries/named-colon-gap]
 
@@ -532,6 +530,12 @@ radar-beta
 その連なりは書かれたまま残します。
 コロン後の波括弧は行値のままです。
 注釈類・隠れた形・セミコロンの保護を優先します。
+`accTitle: style:#red;;` では、`style` の後のコロンに空白を続けません。
+mermaid.js が `accTitle: style: #red;;` では、
+異なるアクセシビリティの題の文字を描くためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
@@ -544,6 +548,8 @@ radar-beta
 [fixture: radar/accessibility-lines/a11y-line-braces-fixed]
 
 [fixture: radar/accessibility-lines/a11y-no-next-comment]
+
+[fixture: radar/accessibility-lines/acc-title-semicolon-colon-gap]
 
 入力（エスケープ表記）:
 `"radar-beta\naccTitle \t:   Access  words\t\naccDescr\t:   Detail  words \n"`
@@ -563,6 +569,12 @@ radar-beta
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
 波括弧を残すブロックは、境界がわかるよう、
 キーワードと開始波括弧の間に空白を 1 つ置きます。
+`accDescr {a%%literal}` の波括弧を残します。
+mermaid.js が説明を `a%%literal` と読み、
+`accDescr : a%%literal` では `a` と読み、異なる文字を描くためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 空白だけの内部は、空白で囲む文字がないため `{}` にします。
 開始記号前の普通の空白は結合し、実際の注釈類のある改行は残します。
 コメント・ディレクティブだけの内部を保ちます。
@@ -590,6 +602,8 @@ Db で LF 後の字下げが取り除かれるためです。
 [fixture: radar/description-blocks/block-comment-opener-fixed]
 
 [fixture: radar/description-blocks/block-multiline-global]
+
+[fixture: radar/comments/value-percent-owned]
 
 [test: radar/description-blocks/unicode-empty]
 
