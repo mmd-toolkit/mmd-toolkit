@@ -228,12 +228,11 @@ that name.
 ## 4. Where none of these rules gives a form
 
 Where none of these rules gives a form, it is not decided yet which form reads
-best. The output of the released version is then not changed on the judgment of
-whoever is working on it: the form is decided as AGENTS.md (item 4) says, added
-to these rules, and printed after that. Until then the output stays as the
-released version prints it, or as written where no released version printed it,
-and the document of its diagram type names the form as not decided yet, with the
-form that seems to read better, not as a form kept on purpose.
+best. The form is decided as AGENTS.md (item 4) says, added to these rules, and
+printed after that. Until then the output stays as the released version prints
+it, or as written where no released version printed it, and the document of its
+diagram type names the form as not decided yet, with the form that seems to read
+better, not as a form kept on purpose.
 
 ## The versions of mermaid.js that count
 
