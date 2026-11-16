@@ -69,8 +69,15 @@ stateDiagram-v2
 注釈を挟んで見出しが続く場合、開始括弧のある行を最初のキーワードにそろえ、
 本文がさらに 1 段深く見えるようにします。
 その行をまたぐ値や保護された原文の境界は変えません。
+状態の引用符付きラベルで `long` と ` name` が別の行にある形は、
+2 行のまま残します。
+`"long name"` では mermaid.js の Db のラベルと図のテキストが変わるからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: composite-states/header-completion-after-comment]
+[fixture: composite-states/multiline-alias-label-kept]
 
 複合状態と、本体を持つ別名の定義の `{` は、空白 1 つの後に、名前の行に置きます。
 次の行に書かれた `{` は、その行に移します。
@@ -402,6 +409,11 @@ mermaid.js は、テキストを読む前にそれらを取り除くので、
 [corpus fixture: state/lex-state-without-body]
 
 `state x "" y` と `state z ""` の、mermaid.js が読まない `""` も同じです。
+`state x "" y` は 1 行に残します。
+`state x` の次の行に `"" y` を置くと、mermaid.js が拒否するからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: statements-one-per-line/state-names-kept]
 
@@ -698,6 +710,12 @@ mermaid.js の文書は、この文の例 2 件を `,` の後ろに空白を置�
 `,` の後ろの隙間のディレクティブは、
 [ディレクティブ](#ディレクティブ)のとおりに置きます。
 行の規則が無視する `;` のある行は、書かれたまま残します。
+`style A fill:#f00;;` は残します。
+`style A fill: #f00;;` では、対象にする版の mermaid.js の 1 つが、
+構造とスタイルの違う図を描くからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: whitespace-between-tokens/class-ids-beside-directive]
 [fixture: whitespace-between-tokens/class-ids-beside-directive-runs]
@@ -990,6 +1008,13 @@ ASCII 以外の文字を含むノートも書かれたままにします。
 id の前の空白は空白 1 つにします。
 `note left of%%x A` のように位置の直後にある、mermaid.js が読まないテキストは、
 位置に接したまま残します。
+`note left of%%x   A : t` の `%%x` は `of` に接したまま残します。
+mermaid.js が `note left of %%x   A : t` を拒否するからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+
+[fixture: notes/kept]
 
 固定版の Mermaid は、`stateDiagram-v2` のノートを Markdown として描画します。
 [`dataFetcher.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/state/dataFetcher.ts#L380-L386)
@@ -1161,6 +1186,9 @@ Mermaid がブロックの原文を文字どおりに表示する場合は、
 その余白も表示されるためです。
 たとえば空行後の空白を 2 個から 4 個に増やすと、
 表示されていた 3 つの段落が別の配置に変わる場合があります。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 一般の Markdown を再整形するものではありません。
 
 [fixture: notes/over-lines-empty-lines-kept]
@@ -1344,6 +1372,11 @@ mermaid.js は、それを両端の空白ごと読むので、
 最後のディレクティブの後ろの空白は除きます。
 `state "d" as A : x   %%{x}%%  ` は `state "d" as A : x %%{x}%%` と印字します。
 空白とタブだけの説明と、`;` を含む説明は、書かれたままにします。
+`state "d" as A :` の後の空白 3 つからなる 2 つ目の説明は残します。
+その空白を除くと、mermaid.js が構造の違う図を描くからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [corpus fixture: state/db-alias-colon-spaces-second]
 [fixture: aliases/second-description-kept]
@@ -1482,6 +1515,11 @@ flowchart と同じです。
 元は同じ行にあった単位を別の行へ分けるときは、
 間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
+`stateDiagram-v2%%{wrap}%% A-->B` の `%%{wrap}%%` の後の空白は残します。
+mermaid.js が `stateDiagram-v2%%{wrap}%%A-->B` を拒否するからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: state/directives/split-directive-gap]
 
@@ -1988,6 +2026,11 @@ stateDiagram-v2
 U+2028 か U+2029 を含む行は、書かれたまま残します。
 別名の 2 つ目の説明も、その文字の後の空白も含めて残します。
 `state "d" as A : x`、空白 2 つ、U+2028、空白 2 つは、書かれたまま残します。
+`state "d" as A : x` の後の空白 2 つ、U+2028、空白 2 つは残します。
+代わりに `x` の後を空白 1 つにすると、mermaid.js が図の形を変えるからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [test: a second description of an alias with spaces after a U+2028]
 
@@ -2004,6 +2047,11 @@ U+2028 か U+2029 を含む行は、書かれたまま残します。
 閉じる行にあるときも同じです。
 `state A {`、本体の行 `B`、U+2028 が後ろにある `}` では、
 `}` の後ろの空白を文字ごと書かれたまま残し、本体は字下げします。
+`state a b`、U+2028、`{` は区切り文字を残します。
+mermaid.js が `state a b {` を拒否するからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [test: U+2028 before the brace of a composite statement]
 [test: U+2028 on the closing line of a composite statement]
@@ -2039,6 +2087,9 @@ state 図では、mermaid.js が擬似状態の印、方向の行、
 `{` の前の 2 つ目の名前を探す範囲を、これらの文字が区切るからです。
 `state a`、U+2028、`b <<fork>>` は名前 `a` とフォーク `b` ですが、
 U+2028 の代わりに空白を置くと、フォーク `a b` になります。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [corpus fixture: state/lex-pseudostate-mark-after-line-separator]
 
