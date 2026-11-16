@@ -376,6 +376,9 @@ block-beta
 mermaid.js はそこのどの空白も同じに読むので、形は 1 行になります。
 `space:2` は `:` を接して印字します。
 mermaid.js は `space :2` と `space: 2` を拒否するからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 `space` と `columns` は、ほかの場所へ動かしません。
 ブロックの最後の `columns` が、どこにあってもそのブロックの列数で、
 ブロックの順はテキストの順だからです。
@@ -481,6 +484,12 @@ mermaid.js は向きの後の空白と、
 
 そこにあるコメント行やディレクティブは行ごと残り、
 U+2028 と U+2029 はそのまま残します。
+ブロック矢印の向きの間のコンマの前で、
+`right` とコメント `%% c` の間の改行を残すのは、mermaid.js が、
+同じ行に `right %% c` を置く形を拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: shapes/block-arrow-comma-space]
 [fixture: shapes/block-arrow-comma-comment-line]
@@ -663,6 +672,9 @@ block-beta
 `class A c   d` のクラス名は `c   d` で、
 `class A , B   c1` のクラス名は `, B   c1` です。
 `A` の後の空白が id を終わらせるからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 `classDef` 文と `style` 文では、各スタイルの最初の `:` の前に空白を置かず、
 値が空でなければ、後ろに空白を 1 つ置きます。
 スタイルを区切る `,` は、ER と requirement と同じく、
@@ -926,6 +938,12 @@ composite の見出しの中の改行もそうです。
 を参照）。
 node/shape/width と辺の部分、`columns`、class/style の先頭、
 composite の見出しなどの構造隙間では、注釈類の改行を保ちます。
+`columns` と個数 `2` の間で、コメント `%% count` の前の改行を残すのは、
+`columns %% count` を同じ行に置くと、mermaid.js が違う文字と形状の図を描き、
+その composite の列数が Db からなくなるためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 後続の部分と独立した注釈類行は、ノードの行や composite の内側でも、
 その文より 1 段深くそろえます。
 各隙間の最初の行の末尾、指令の内部全体、値の範囲全体を保ちます。
@@ -934,6 +952,13 @@ block-arrow の方向は、`,` の後の空白を除いて原文のままです�
 [fixture: multi-line-statements/structural-trivia-continuations]
 
 物理行を結ぶコメント領域は、元の配置を保ちます。
+`block: G` の後のコメント `%% c` の前では、U+2028 を残します。
+空白に置き換えて `block: G %% c` を同じ行に置くと、
+mermaid.js が子の id として `%%` と `c` を Db に入れ、
+違う文字と形状の図を描くためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [test: block: ls-comment-in-composite-head]
 [test: block: ps-comment-in-composite-head]
@@ -1137,6 +1162,11 @@ block-beta
 
 指令かコメント行を持つブロックは、内容と改行を保ち、独立した注釈類を 1 段内側、
 閉じ括弧を文の段に置きます。
+`accDescr {` とコメント `%% c` の間の改行を残すのは、mermaid.js が、
+同じ行に `accDescr {%% c` を置く形を拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: empty-description-blocks/trivia-continuations]
 

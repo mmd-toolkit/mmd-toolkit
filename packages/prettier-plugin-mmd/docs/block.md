@@ -356,10 +356,11 @@ block-beta
 `columns` is followed by its number or `auto` after one space, whatever
 whitespace was written between them (a tab, a line break): mermaid.js reads any
 whitespace there, and the form is one line. `space:2` is printed with the `:`
-touching, as mermaid.js rejects `space :2` and `space: 2`. A `space` and a
-`columns` are never moved to another place: the last `columns` of a block is its
-columns, wherever it stands, and the order of the blocks is the order of the
-text.
+touching, as mermaid.js rejects `space :2` and `space: 2` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A `space` and a `columns` are never moved to another place: the last `columns`
+of a block is its columns, wherever it stands, and the order of the blocks is
+the order of the text.
 
 [fixture: columns-and-space/one-space-after-columns] [fixture:
 columns-and-space/tab-after-columns] [fixture:
@@ -451,7 +452,10 @@ printed with the space.
 [fixture: shapes/block-arrow-comma-on-kept-line]
 
 A comment line or a directive there keeps its line, and a U+2028 or U+2029 stays
-where it is.
+where it is. For a comment before the comma between block-arrow directions, the
+line break between `right` and `%% c` stays, since mermaid.js rejects the form
+with `right %% c` on one line (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: shapes/block-arrow-comma-space] [fixture:
 shapes/block-arrow-comma-comment-line] [test: U+2028 after the comma between the
@@ -623,11 +627,12 @@ In a `style` and a `class` the whitespace is in the Db.
 ` stroke:#333`; `class A, B c1` looks up the id ` B` with its whitespace, finds
 no block `B`, and gives the class to a new block that the diagram does not show;
 and the class name of `class A c   d` is `c   d`, and that of `class A , B   c1`
-is `, B   c1`, since the whitespace after `A` ends the ids. In a `classDef` or a
-`style` statement, each style has no whitespace before its first `:` and one
-space after it where the value is not empty. The `,` between styles has no
-whitespace before it and one space after it, as in ER and requirement (see
-[Styles and classes](./er.md#styles-and-classes)):
+is `, B   c1`, since the whitespace after `A` ends the ids (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+In a `classDef` or a `style` statement, each style has no whitespace before its
+first `:` and one space after it where the value is not empty. The `,` between
+styles has no whitespace before it and one space after it, as in ER and
+requirement (see [Styles and classes](./er.md#styles-and-classes)):
 `classDef c fill:#f00 , color:white` is printed
 `classDef c fill: #f00, color: white`, and the styles of a `style` statement use
 the same form. A run of spaces and tabs between the words of a style is printed
@@ -876,15 +881,23 @@ an edge, a width, a shape, and the head of a composite. The line break is
 replaced by one space; this is how the other diagrams join the lines of a
 statement (see [Multi-line statements](./xychart.md#multi-line-statements)).
 Keep trivia line breaks in structural gaps, including node/shape/width and edge
-parts, `columns`, class/style heads and composite heads. Place later parts and
-standalone trivia one continuation level inside the statement, also within rows
-and composites. Preserve first gap-line tails, complete directive interiors and
-whole value ranges; block-arrow directions remain as written, except for the
-whitespace after a `,`.
+parts, `columns`, class/style heads and composite heads. Between `columns` and
+its count `2`, the line break before `%% count` stays, since with
+`columns %% count` mermaid.js draws different text and geometry and the
+composite's column count is absent from the Db (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Place later parts and standalone trivia one continuation level inside the
+statement, also within rows and composites. Preserve first gap-line tails,
+complete directive interiors and whole value ranges; block-arrow directions
+remain as written, except for the whitespace after a `,`.
 
 [fixture: multi-line-statements/structural-trivia-continuations]
 
-Joining comment regions retain their original layout.
+Joining comment regions retain their original layout. After `block: G`, U+2028
+before `%% c` stays, since replacing it with a space in `block: G %% c` makes
+mermaid.js draw different text and geometry and read `%%` and `c` as child ids
+in the Db (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [test: block: ls-comment-in-composite-head] [test: block:
 ps-comment-in-composite-head]
@@ -1080,7 +1093,10 @@ keyword from its body: `accDescr{  }` becomes `accDescr {}`.
 Unicode and tab interiors]
 
 A block with a directive or comment line keeps its contents and line breaks,
-with standalone trivia one level inside and its closer at statement level.
+with standalone trivia one level inside and its closer at statement level. The
+line break between `accDescr {` and the comment `%% c` stays, since mermaid.js
+rejects the form with `accDescr {%% c` on one line (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: empty-description-blocks/trivia-continuations]
 
