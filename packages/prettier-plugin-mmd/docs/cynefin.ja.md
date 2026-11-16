@@ -18,6 +18,11 @@ mermaid.js は `cynefin-beta:` と `cynefin-beta` を同じ見出しとして読
 （[ヘッダーの後のコロン](./compatibility.ja.md#ヘッダーの後のコロン)を参照）。
 語との間に隠れた形か大域的なディレクティブがあるときと、
 `;` か隠れた YAML ブロックの `---` が接するときは、コロンを保ちます。
+`%%{%%{wrap}%%init: {"label":"style:#keep"}}%%` の後では、
+`cynefin-beta:;complex 'Kept colon'` のコロンを保ちます。
+mermaid.js が `cynefin-beta;complex 'Kept colon'` を拒否するためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 
 [fixture: cynefin/header/colon-removed]
 [fixture: cynefin/header/colon-semicolon-kept]
@@ -780,7 +785,9 @@ cynefin-beta
 先頭 LF、通過した注釈類、再走査で読むディレクティブ、
 実際の YAML と保持された YAML の順を保ちます。
 掃除すると無視された YAML が有効なフロントマターになり、title、設定、
-受理を変え得るためです。
+受理を変え得るためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 
 [fixture: cynefin/retained-prefix/prefix-retained-yaml]
 
@@ -1068,6 +1075,11 @@ cynefin-beta
 直前のトークンに付け、後ろに空白 1 つを置きます。
 文の間の隙間には空白 1 つを置くからです。
 キーワードの直後の隙間は、書かれたままの空白を保ちます。
+`%%{%%{wrap}%%init: {"label":"style:#x"}}%%` の後では、
+`cynefin-beta ;complex "A"` の空白を保ちます。
+mermaid.js が `cynefin-beta;complex "A"` を拒否するためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 
 [fixture: semicolons/ignored-semicolon-space-before-attached]
 [fixture: semicolons/ignored-semicolon-space-both-attached]
@@ -1083,7 +1095,9 @@ cynefin-beta
 内部空行を保ちます。
 説明本文は前述の共有の字下げを使います。
 折り返し直しや字下げの変更で Db が変わることがあり、
-遷移部品の折り返しは拒否を招くことがあります。
+遷移部品の折り返しは拒否を招くことがあります（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 独立した説明の閉じ記号は共有規則でそろえます。
 
 [fixture: cynefin/multiline-values/long-line-unwrapped]
