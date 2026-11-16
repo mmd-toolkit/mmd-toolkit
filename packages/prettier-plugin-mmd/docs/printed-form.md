@@ -23,10 +23,9 @@ the same, the rule is what is wrong: the form is decided again, and the rule is
 corrected. AGENTS.md (item 4) says how it is decided.
 
 The forms compared are those that keep every comment and directive of the text.
-A form that drops one is never the form printed, even where it draws the same: a
-comment and a directive are what the author wrote for the readers of the text,
-and Prettier, beside whose output a diagram stands, keeps every comment of the
-code it formats.
+A form that drops one is never the form printed, even where it draws the same:
+Prettier, beside whose output a diagram stands, keeps every comment and every
+directive of the code it formats, also two directives that say the same.
 
 1. The whitespace beside a mark is the whitespace that Prettier prints beside
    the same kind of mark. The formatter is a plugin of Prettier, and a diagram
