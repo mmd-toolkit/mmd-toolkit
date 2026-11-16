@@ -171,6 +171,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@changesets/git@4.0.1': a4f455fe00fa713e445dda6037e800e749183db95d71b7a84da5da12fa379cb0
+
 importers:
 
   .:
@@ -3529,7 +3532,7 @@ snapshots:
     dependencies:
       '@changesets/config': 4.0.1
       '@changesets/format': 0.1.2
-      '@changesets/git': 4.0.1
+      '@changesets/git': 4.0.1(patch_hash=a4f455fe00fa713e445dda6037e800e749183db95d71b7a84da5da12fa379cb0)
       '@changesets/should-skip-package': 1.0.0
       '@changesets/types': 7.0.0
       import-meta-resolve: 4.2.0
@@ -3561,7 +3564,7 @@ snapshots:
       '@changesets/config': 4.0.1
       '@changesets/errors': 1.0.0
       '@changesets/get-dependents-graph': 3.0.0
-      '@changesets/git': 4.0.1
+      '@changesets/git': 4.0.1(patch_hash=a4f455fe00fa713e445dda6037e800e749183db95d71b7a84da5da12fa379cb0)
       '@changesets/pre': 3.0.0
       '@changesets/read': 1.0.1
       '@changesets/should-skip-package': 1.0.0
@@ -3601,7 +3604,7 @@ snapshots:
     dependencies:
       dataloader: 2.2.3
 
-  '@changesets/git@4.0.1':
+  '@changesets/git@4.0.1(patch_hash=a4f455fe00fa713e445dda6037e800e749183db95d71b7a84da5da12fa379cb0)':
     dependencies:
       '@changesets/errors': 1.0.0
       '@changesets/types': 7.0.0
@@ -3622,7 +3625,7 @@ snapshots:
 
   '@changesets/read@1.0.1':
     dependencies:
-      '@changesets/git': 4.0.1
+      '@changesets/git': 4.0.1(patch_hash=a4f455fe00fa713e445dda6037e800e749183db95d71b7a84da5da12fa379cb0)
       '@changesets/parse': 1.0.0
       '@changesets/types': 7.0.0
 

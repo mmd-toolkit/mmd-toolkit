@@ -1,0 +1,80 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index cb8aea9b38fa1ef49e88a312bdacd89a9f032e68..08b5906ea63358f218488cae50064c77c39c4feb 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -47,25 +47,60 @@ async function getDivergedCommit(cwd, ref) {
+ * @param gitPaths - Paths to fetch
+ * @param options - `cwd` and `short`
+ */
++// Patched from changesets/changesets#2382 (issue #2364): `git log --follow`
++// compares each changeset with every file of the parent trees, which on git 2.56
++// takes about 290 MB a lookup in this repository, and the lookups run in
++// parallel, one for each changeset. Find the add with renames off, then look for
++// a rename only in that commit, in the directory of the file.
++async function getCommitThatAddsFile(gitPath, { cwd, short, from = "HEAD", seen = /* @__PURE__ */ new Set() }) {
++	const [commitSha, parentSha] = (await exec("git", [
++		"log",
++		from,
++		"--diff-filter=A",
++		"--no-renames",
++		"--max-count=1",
++		short ? "--pretty=format:%h:%p" : "--pretty=format:%H:%p",
++		"--",
++		gitPath
++	], { nodeOptions: { cwd } })).stdout.toString().split(":");
++	const info = {
++		path: gitPath,
++		commitSha,
++		parentSha
++	};
++	if (!commitSha || !parentSha || seen.has(gitPath)) return info;
++	seen.add(gitPath);
++	const parent = parentSha.split(" ")[0];
++	const renameSource = (await exec("git", [
++		"diff",
++		"--name-status",
++		"-M",
++		"--diff-filter=R",
++		parent,
++		commitSha,
++		"--",
++		path.posix.dirname(gitPath)
++	], { nodeOptions: { cwd } })).stdout.toString().split("\n").map((line) => line.split("\t")).find(([, , to]) => to === gitPath)?.[1];
++	if (!renameSource) return info;
++	const earlier = await getCommitThatAddsFile(renameSource, {
++		cwd,
++		short,
++		from: parent,
++		seen
++	});
++	return earlier.commitSha ? {
++		...earlier,
++		path: gitPath
++	} : info;
++}
+ async function getCommitsThatAddFiles(gitPaths, { cwd, short = false }) {
+ 	const map = /* @__PURE__ */ new Map();
+ 	let remaining = gitPaths;
+ 	do {
+-		const commitInfos = await Promise.all(remaining.map(async (gitPath) => {
+-			const [commitSha, parentSha] = (await exec("git", [
+-				"log",
+-				"--diff-filter=AC",
+-				"--follow",
+-				"--max-count=1",
+-				short ? "--pretty=format:%h:%p" : "--pretty=format:%H:%p",
+-				gitPath
+-			], { nodeOptions: { cwd } })).stdout.toString().split(":");
+-			return {
+-				path: gitPath,
+-				commitSha,
+-				parentSha
+-			};
+-		}));
++		const commitInfos = await Promise.all(remaining.map((gitPath) => getCommitThatAddsFile(gitPath, {
++			cwd,
++			short
++		})));
+ 		const commitsWithMissingParents = [];
+ 		for (const info of commitInfos) if (info.commitSha) if (info.parentSha) map.set(info.path, info.commitSha);
+ 		else commitsWithMissingParents.push(info);
