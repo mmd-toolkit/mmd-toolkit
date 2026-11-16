@@ -19,6 +19,10 @@ mermaid.js との差をまとめます。
 方言を見つけやすくするためです。
 IR は `railroad-beta`、EBNF は `railroad-ebnf-beta`、
 ABNF は `railroad-abnf-beta`、PEG は `railroad-peg-beta` を保ちます。
+IR では、同じ規則の本文を持つ `railroad` を mermaid.js が拒否するため、
+`railroad-beta` を保ちます（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 コロンや指定は加えません。
 隠れた形、共有注釈類、保護されたセミコロン区間は共有の境界規則に従い、
 空の本文は空のままにします。
@@ -195,7 +199,9 @@ railroad-peg-beta
 構文を変えずに、規則の境界を見やすくします。
 4方言とも最後の規則にも終端が必要です。
 ABNF の終端の直後は LF または EOF にします。
-`; note` はコメントなので終端にはなりません。
+`; note` はコメントなので終端にはなりません（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 そのコメントと本当の終端は改行を越えて動かしません。
 共有のセミコロン保護を優先します。
 
@@ -1043,11 +1049,20 @@ last";
 引用符に見える内容とエスケープは保ち、
 値の中の空白とタブの連なりは空白 1 つにして印字します。
 次の物理行から値を取りません。
+IR では、裸の `title` と次行の `r=terminal("x");` を別の文にし、
+`titlex=terminal("title prefix");` も 2 つの文にします。
+それぞれ `title r=terminal("x");` と `title x=terminal("title prefix");`
+にすると、mermaid.js はその規則を Db に含めず、
+図の構造も違って描くためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 裸の title 前置部分と後続の規則は別の文にし、規則を値に取り込みません。
 比較 Db は本文の title を除きますが、内容を書き換える理由にはなりません。
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+
+[fixture: railroad/title/ir-rule-on-next-line]
 
 [fixture: title/title-directives-end-blanks-dropped]
 [fixture: railroad/title/abnf-next-line]
@@ -1155,10 +1170,19 @@ railroad-peg-beta
 `accTitle` はブラウザがツールチップとして表示するので、
 その連なりは書かれたまま残します。
 次行の値は join しません。
+IR では、`accTitle:` と次行の `r=terminal("x");` を別に保ちます。
+`accTitle: r=terminal("x");` にすると、
+mermaid.js は規則のテキストを accessibility のタイトルにし、
+その規則を Db に含めず、
+図のテキストと構造が変わるためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 他の図種と同じ配置にするためです。
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+
+[fixture: railroad/accessibility-lines/ir-acc-title-before-rule]
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 [fixture: railroad/accessibility-lines/abnf-empty]
@@ -1954,7 +1978,9 @@ U+2028 や U+2029 の後のコメント行が、語を含む行の前、後、
 mermaid.js は、これらの文字列を含む行の最後のセミコロンを無視し得ます。
 railroad では、規則の必須終端や ABNF のコメントの印がその対象になり得ます。
 行を変えると規則が拒否されたり、コメントの中身がコードとして読まれたりするため、
-原文の行を保つことで両方の句読点を守ります。
+原文の行を保つことで両方の句読点を守ります（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 内容を移した後の行規則の効き方は予測しません。
 
 払うものは、規則名、文字列、コメントに style や classDef を含む行が、

@@ -16,7 +16,10 @@ records preserved text and differences from mermaid.js.
 
 Print the authored header at column one and put an ordinary first statement on
 the next line, making the dialect easy to find. IR keeps `railroad-beta`, EBNF
-`railroad-ebnf-beta`, ABNF `railroad-abnf-beta`, and PEG `railroad-peg-beta`.
+`railroad-ebnf-beta`, ABNF `railroad-abnf-beta`, and PEG `railroad-peg-beta`. In
+IR, `railroad-beta` stays, since mermaid.js rejects `railroad` with the same
+rule body (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Add no colon or flags. Hidden forms, global trivia and protected semicolon
 segments retain their shared boundaries; an empty body stays empty.
 
@@ -192,9 +195,10 @@ Print each ordinary rule on its own line and attach its required final `;`
 without an ordinary preceding space. This exposes rule boundaries without
 changing their syntax. All four dialects require the last terminator too. ABNF
 terminators must be followed immediately by LF or EOF: `; note` is a comment and
-cannot replace a terminator. Keep such a comment and the real terminator on
-their original sides of the line break. Shared semicolon protection takes
-precedence.
+cannot replace a terminator (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Keep such a comment and the real terminator on their original sides of the line
+break. Shared semicolon protection takes precedence.
 
 [fixture: railroad/statements-one-per-line/abnf-terminator]
 
@@ -1017,13 +1021,20 @@ Use the shared common-line layout: trim ordinary exterior whitespace around a
 nonempty value and print `title value`; null or whitespace-only values print
 bare `title`. Keep quote-looking content and escape spelling, and print a run of
 spaces and tabs inside the value as one space. Do not read a value from the next
-physical line. A bare title prefix followed by a rule becomes two statements,
-keeping the rule out of the title. The comparison Db omits body titles, which
-gives no permission to rewrite their contents. The directives that end a title
-are printed with one space before each that has whitespace before it, and the
-whitespace after the last one is left out, whatever the whitespace at the end of
-the line (see
+physical line. In IR, a bare `title` stays separate from the next-line rule
+`r=terminal("x");` and the rule in `titlex=terminal("title prefix");`, since
+mermaid.js omits the rule from the Db and draws a different figure structure for
+`title r=terminal("x");` and `title x=terminal("title prefix");`, respectively
+(see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A bare title prefix followed by a rule becomes two statements, keeping the rule
+out of the title. The comparison Db omits body titles, which gives no permission
+to rewrite their contents. The directives that end a title are printed with one
+space before each that has whitespace before it, and the whitespace after the
+last one is left out, whatever the whitespace at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+
+[fixture: railroad/title/ir-rule-on-next-line]
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
 railroad/title/abnf-next-line]
@@ -1128,11 +1139,17 @@ retaining internal text and brace-looking line values, except that a run of
 spaces and tabs inside the value of an `accDescr` is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 and that of an `accTitle` stays as written, since the browser shows it as a
-tooltip. Keep next-line values separate. This gives the same form as the other
-diagrams. The directives that end the value are printed with one space before
-each that has whitespace before it, and the whitespace after the last one is
-left out (see
+tooltip. Keep next-line values separate. In IR, `accTitle:` stays separate from
+the next-line rule `r=terminal("x");`, since mermaid.js uses the rule text as
+the accessibility title and omits the rule from the Db in
+`accTitle: r=terminal("x");`, changing the figure's text and structure (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+This gives the same form as the other diagrams. The directives that end the
+value are printed with one space before each that has whitespace before it, and
+the whitespace after the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+
+[fixture: railroad/accessibility-lines/ir-acc-title-before-rule]
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
 railroad/accessibility-lines/abnf-empty]
@@ -1913,9 +1930,11 @@ crosses the line too; later lines retain their written columns.
 
 mermaid.js can ignore the last semicolon of a line containing these strings. In
 railroad that semicolon can be a required rule terminator or an ABNF comment
-mark. Changing the line can therefore reject a rule or read comment text as
-code. Keeping the source line protects both kinds of punctuation without
-predicting how moving its contents would affect the common line rule.
+mark. Changing the line can therefore reject a rule or read comment text as code
+(see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Keeping the source line protects both kinds of punctuation without predicting
+how moving its contents would affect the common line rule.
 
 The cost is that a rule name, string or comment containing `style` or `classDef`
 leaves that line unformatted, even when no colon or hash follows. Other lines
