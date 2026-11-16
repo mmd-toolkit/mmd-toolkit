@@ -23,8 +23,10 @@ Section numbers below are those of [SKILL.md](../SKILL.md).
    `docs/compatibility.md`, Versions of mermaid.js that count) and go through
    the table Forms kept for versions of mermaid.js that count, row by row. A row
    that names the pinned version is run again with the new pinned version: the
-   other form that it names, and the written form. For a diagram type added
-   during the period, its first minor version replaces the smallest minor
+   other form that it names, and the written form; where the new pinned version
+   still rejects, reads, or draws the other form differently, the row names the
+   new pinned version, and otherwise the row is taken out. For a diagram type
+   added during the period, its first minor version replaces the smallest minor
    version of its major version for that diagram type only. A rule none of whose
    named versions counts any longer for its diagram type is taken out, and the
    form that the rules of `docs/printed-form.md` give is printed; the published

@@ -164,8 +164,10 @@ A row is a rule that
 [How the printed form is decided](./printed-form.md#the-versions-of-mermaidjs-that-count)
 takes out when none of the versions that the row names counts any longer.
 
-A form that the pinned version itself rejects or draws differently stays
-whatever the other versions are, so it has no row.
+A form that the pinned version itself rejects, reads, or draws differently has a
+row too, which names the pinned version and the other form that was run. The
+rows of the forms kept before this rule are added as the rules of each diagram
+type are reviewed.
 
 | Diagram                                                        | Kept as written                                                                                                                                                              | The rules would print                                                 | Rule                                                                 | Needed by                                                                                                   | Fixtures                                                                                                                                                    |
 | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
