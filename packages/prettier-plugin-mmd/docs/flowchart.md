@@ -115,7 +115,8 @@ indentation/acc-descr-block-direction-text-kept]
 
 mermaid.js reads an indented line that holds such a text as a direction
 statement: `accTitle: t;direction TB` is an accessibility title, and the same
-line indented is the direction `TB`.
+line indented is the direction `TB` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 Input
 ([indentation/direction-text-kept-input.mmd](../tests/fixtures/flowchart/indentation/direction-text-kept-input.mmd)):
@@ -1647,7 +1648,8 @@ the first form 14 times and the second 8 times, which is not twice as often (see
 link-label-form/flowchart-header-both-forms-kept]
 
 Turning one form into the other would need rules for labels that hold a `|`:
-`A -- a|b --> B` is accepted, and `A -->|a|b| B` is not.
+`A -- a|b --> B` is accepted, and `A -->|a|b| B` is not (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: link-label-form/pipe-in-text-between-arrows-kept]
 
@@ -1777,7 +1779,10 @@ A real comment or directive prevents compact joining. Keep the previous
 including comment and directive lines, stand one level deeper than the keyword;
 the comment/directive text and the authored statement breaks remain. Flowchart
 skips a comment after the colon to read the later value. This preserves the
-existing continuation rule when ordinary joining does not apply.
+existing continuation rule when ordinary joining does not apply. The comment
+`%% actual comment` between `accTitle:` and its next-line value keeps its own
+line, since mermaid.js rejects it on the `accTitle:` line (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: accessibility-lines/next-line-comment-kept] [fixture:
 accessibility-lines/description-comment-continuation] [fixture:
@@ -1840,7 +1845,11 @@ Accepted NBSP, U+2028 and U+2029 inside an otherwise empty block also disappear.
 [test: accessibility blocks: flowchart empty-block-unicode]
 
 Kept-line exceptions still take priority, and blocks with comments or directives
-retain their existing layout.
+retain their existing layout. In the comment-only block, the line break after
+`accDescr {` stays, since mermaid.js reads an empty description with
+`%% only a comment` on its own line and the description `%% only a comment` with
+it on the opening line (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: accessibility-lines/empty-block-semicolon-kept] [fixture:
 accessibility-lines/empty-block-directive-kept] [fixture:
@@ -2626,7 +2635,10 @@ comments/after-frontmatter-before-header] [fixture: comments/before-header]
 [fixture: comments/before-end] [fixture: comments/at-end-of-text]
 
 The text of a comment is kept as written, including whitespace at its end:
-mermaid.js does not read it, and it is the author's text.
+mermaid.js does not read it, and it is the author's text. An otherwise empty
+comment line keeps `%% `, since mermaid.js reads `%%` as a vertex named `%%` and
+draws a different figure (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: comments/trailing-whitespace-kept] [fixture:
 comments/leading-whitespace-kept] [fixture: comments/statement-text-kept]
@@ -2996,7 +3008,10 @@ title of a flowchart subgraph header]
 On a line that the line rule may read, the whitespace after the `[` of a title
 that follows `style:` stays: `subgraph style:[ #x; ]` is printed
 `subgraph style:[ #x;]`, while `subgraph a: [ #x; ]` is printed
-`subgraph a:[#x;]`, since no `style` stands before its `:`.
+`subgraph a:[#x;]`, since no `style` stands before its `:`. The space after `[`
+in `subgraph style:[ #x; ]` stays, since mermaid.js reads a different subgraph
+title and draws different text and geometry for `subgraph style:[#x; ]` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: subgraph-header/title-padding-on-line-rule-line]
 
@@ -3080,9 +3095,11 @@ and a `;`, as in `subgraph "S"accDescr {} accDescr {}` and
 [fixture: subgraph-header/whitespace-before-first-block-kept]
 
 The blocks read no token, so that whitespace follows the name: the subgraph has
-the id `subGraph0`, and the id `S` without it. That the whitespace is there is
-kept; how wide it is, only before the first block, where it follows the name as
-written, and a run between two blocks or before a `;` becomes one space.
+the id `subGraph0`, and the id `S` without it (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+That the whitespace is there is kept; how wide it is, only before the first
+block, where it follows the name as written, and a run between two blocks or
+before a `;` becomes one space.
 
 [fixture: subgraph-header/runs-between-blocks-become-one]
 
@@ -3542,13 +3559,15 @@ space.
 
 A `linkStyle` that ends with a backslash keeps the whitespace after it too, as
 one character: `linkStyle default stroke-width:4px\ ` followed by
-`linkStyle 0 stroke:#0f0` keeps the space.
+`linkStyle 0 stroke:#0f0` keeps the space (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: style-trailing-whitespace/link-style-backslash-at-end-kept]
 
 The whitespace is kept when mermaid.js reads it as a style of its own, after a
 `,` at the end of the list, because the statement would be rejected without it:
-in `style A fill:#f00, ` and in `classDef c fill:x\, `.
+in `style A fill:#f00, ` and in `classDef c fill:x\, ` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: style-trailing-whitespace/whitespace-only-value-kept] [fixture:
 style-trailing-whitespace/whitespace-only-value-in-link-style-kept] [fixture:

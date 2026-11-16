@@ -973,7 +973,9 @@ visible parentage match the reading rather than preserving a misleading shared
 row. Quote-looking text inside a bare name stays name text. Retain the body when
 shared source row boundaries or changed value tabs, tails or newly exposed
 leading Unicode whitespace prevent safe splitting, as described in Branch
-prefixes.
+prefixes. For the row `├── "a" "b";`, the shared line stays: mermaid.js rejects
+splitting before `"b";` onto a new unprefixed line with one leading space (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture:
 treeview/statements-one-per-line/review159-box-quoted-line-rule-semicolon]
@@ -1123,10 +1125,14 @@ treeview/statements-one-per-line/review159-split-directive-empty-block]
 treeview/statements-one-per-line/review159-split-directives-empty-block]
 
 Keep the existing body-retention conditions for selected or unselected
-semicolons and unsafe LS/PS-leading values. Comment regions held inside a value
-stay in that value while an intervening directive before it takes the separate
-line. In indentation mode keep the existing placement of a leading directive
-with its node.
+semicolons and unsafe LS/PS-leading values. The shared row
+`"style:#x" %%{x}%%; "b"` stays: moving `"b"` to a line of its own makes it a
+root instead of a child in mermaid.js, changing the Db and the figure's
+structure and geometry (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Comment regions held inside a value stay in that value while an intervening
+directive before it takes the separate line. In indentation mode keep the
+existing placement of a leading directive with its node.
 
 [fixture:
 treeview/statements-one-per-line/review159-split-directive-selected-semicolon]
@@ -1219,7 +1225,10 @@ treeview/statements-one-per-line/whitespace-node-at-line-end-before-directive-li
 Use one ASCII space before an ordinary same-line annotation. Its required
 positive leading gap distinguishes an annotation from name text. Keep authored
 internal name whitespace, and preserve contact or separation on each side of
-trivia instead of applying the plain-gap rule there.
+trivia instead of applying the plain-gap rule there. Before `:::hot`, the name
+`R   text` stays with three spaces: mermaid.js reads `R text` as a different
+node name in the Db and draws a different figure (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: treeview/annotation-gaps/annotation-outer]
 
@@ -1248,7 +1257,10 @@ treeView-beta
 Keep every class, icon and description occurrence in order, including
 overwritten assignments and empty resets. The final Db value is insufficient to
 reproduce the authored syntax; moving a later annotation into a description can
-also change that value.
+also change that value (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+
+[fixture: treeview/annotation-lines/box-redraw-keep-after-description]
 
 [fixture: treeview/repeated-annotations/repeat-class]
 
@@ -1572,6 +1584,9 @@ Keep complete bare-name and StringLiteral source spans: empty names,
 backslashes, internal whitespace, the whitespace inside quotes, HTML/entity
 spelling and directory slashes; only the spaces and tabs at the end of a bare
 name at the end of a line go (see [Trailing whitespace](#trailing-whitespace)).
+The bare name `A   B` stays with three spaces: mermaid.js reads `A B` as a
+different node name in the Db and draws a different figure (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A string between `'` is printed between `"`, unless its text holds a `'`, a `"`,
 a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
@@ -2219,12 +2234,20 @@ Keep directive text and order. Within one printed line a directive in the gap of
 a title, an accessibility statement, or the class after `:::` is placed as under
 [Directives](./flowchart.md#directives); in the other gaps it retains contact or
 separation on each side, except between directives moved to a new directive-only
-line as described in [Statements one per line](#statements-one-per-line). When
-units split, attach the directive to the following unit and retain its right
-boundary. Standalone directives use column one. For a leading indentation unit,
-keep following gaps while they fit, shorten excess from the last gap, then
-supply the remaining indentation before the first directive. This preserves the
-assigned indent without duplicating earlier carried runs. Multiline interiors,
+line as described in [Statements one per line](#statements-one-per-line). In a
+bare name, `A%%{init: {}}%%B` stays in contact: mermaid.js reads
+`A %%{init: {}}%%B` as the node name `A B` rather than `AB`, changing the Db and
+the figure (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+When units split, attach the directive to the following unit and retain its
+right boundary. The right contact in `"A"%%{init: {}}%%"B"` stays: mermaid.js
+reads `"A"%%{init: {}}%% "B"` with `B` as a child of `A` rather than a separate
+root, changing the Db and the figure's structure and geometry (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Standalone directives use column one. For a leading indentation unit, keep
+following gaps while they fit, shorten excess from the last gap, then supply the
+remaining indentation before the first directive. This preserves the assigned
+indent without duplicating earlier carried runs. Multiline interiors,
 value-owned forms and unfinished EOF directives remain written.
 
 With useTabs, the retained gaps and the supplied indentation of a leading
@@ -2435,7 +2458,13 @@ Keep at most one ordinary ASCII blank line between items and remove edge blanks,
 after relocating meaningful indentation runs and replacing outer decoration.
 This gives bounded separation while preserving parentage. Keep value, directive
 and comment-region interiors unchanged; Unicode-only names are not ordinary
-blank lines. Body-retained diagrams keep their source boundaries.
+blank lines. Body-retained diagrams keep their source boundaries. The shared row
+`"p" "style:#z;"` before `"other"` stays: mermaid.js reads `"style:#z;"` on its
+own line as a root rather than a child of `p`, changing the Db and the figure's
+structure and geometry (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+
+[fixture: treeview/semicolons/protected-row-body]
 
 [fixture: treeview/blank-lines/blank-collapse]
 
@@ -2595,7 +2624,10 @@ the end of a title (see
 
 At the end of a name or a description, U+2028 and U+2029 are characters of the
 text and no spaces or tabs: the spaces after one are left out, and the spaces
-before it stay.
+before it stay. For `R` followed by two spaces, U+2028 and two spaces, the
+spaces before U+2028 stay: mermaid.js reads the form with no spaces before
+U+2028 as a different node name in the Db and draws a different figure (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [test: treeview/trailing-whitespace/spaces-after-trailing-line-separator] [test:
 treeview/trailing-whitespace/description-spaces-after-trailing-line-separator]
