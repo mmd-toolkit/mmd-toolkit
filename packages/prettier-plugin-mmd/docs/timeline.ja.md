@@ -456,7 +456,9 @@ period の後ろのコメントは行に残し、
 その後ろに指令だけの行が続くと（間にコメント行があってもかまいません）、
 その行は、mermaid.js が指令を取り除いた後に空になります。
 指令の前に空白があると、その空白が title や section のテキストになり、
-Db が変わります。
+Db が変わります（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 空行の後では、その空白は読まれません。
 印字はこの 2 つを分けず、次の文までの間にある指令だけの行を、
 すべて 1 列目に置きます。
@@ -678,6 +680,11 @@ Db はその空白を持ちますが、図では描かれません。
 その空白で名前が異なる 2 つのセクションは別々に描かれ、
 除くとそうならないからです。
 半角空白とタブだけのタイトルは、書かれたままにします。
+`title` の後ろに空白 2 つ、タブ、空白 1 つがある形は残します。
+mermaid.js は、`title` の後ろに空白 1 つだけの形を、
+空白の title ではなく period として読むためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 
 [fixture: titles-and-sections/title-padding-dropped]
 [fixture: titles-and-sections/title-blank-kept]
@@ -1140,6 +1147,11 @@ period と event は、後ろの行の行頭に `:` を書く別の形で複数�
 
 `accTitle` と `accDescr:` の文では、注釈の改行を保ち、
 section の下でも後続の構造部分と独立した注釈行を文より 1 段深くそろえます。
+`section S` の下で、`accTitle:` と `%% title` の間の改行は残します。
+`accTitle: %% title` とつなぐと、mermaid.js は、
+accessibility のタイトルを `T` ではなく `%% title` と読みます（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 各隙間の最初の行の末尾と、指令の内部全体を保ちます。
 物理行を結ぶコメント領域は、元の配置を保ちます。
 セミコロンの保護は、後述の行をつなぐ判定に従います。
