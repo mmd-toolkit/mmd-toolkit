@@ -749,9 +749,6 @@ agentflow-beta TB
 [書かれたまま残すもの](./flowchart.ja.md#書かれたまま残すもの)
 と同じ規則と理由です。
 接触は字句の区別で、&の両側の空白がグループと1つのIDを分けます。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 ID、形、:::、データの接触、プロパティのIdentifier、
 実際のコンマ区切りリストの穴と空の両端、コンマを含む単一ID、
 出現と順序を保ちます。
@@ -824,12 +821,6 @@ mermaid.js は `A@{%%{init: {}}%%x: 1}` を、
 `flow` の本文でも同じです。
 入れ子の YAML の字下げの差を保ち、単独行の `}` は文の段に揃え、
 本文の後の閉じ括弧はその行と一緒に動かします。
-入れ子の YAML では、`x:` より深い `y: 1` の字下げを保ちます。
-mermaid.js は両行を同じ字下げにした形を、`x` の中の `y` ではなく、
-別々のメタデータのキー `x` と `y` として読むためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 
 [fixture: metadata-blocks/zero-and-shallow]
 [fixture: metadata-blocks/deep-nested-yaml]
@@ -989,11 +980,6 @@ agentflow-beta TB
 それ以上の連続する空行を1つにします。
 空白だけの行も同じで、文書とflow/globalの本文の両端の空行を落とします。
 値、データ、ディレクティブの内部の空行を保ちます。
-引用符付きの頂点ラベルでは、`x` と `y` の間の空行を保ちます。
-この 2 行を隣り合わせにすると、mermaid.js が違う形状に描くためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 agentflowのコメントはLFを残し、後続の空行を取りません。
 空行の対応付けの既知の差異は適用しません。
 既定のサイズによる分岐が通常の空行規則に優先します。
@@ -1107,6 +1093,13 @@ frontmatterとディレクティブを除き、CRLFを1単位、
 [fixture: default-size-branches/size-utf16-surrogate]
 
 50000以上なら図の全文と末尾をそのまま保ちます。
+引用符付きの頂点ラベルに `before`、コメントに見える行、`after` がある、
+50000 単位の境界の図では、`A` を 0 桁目に保ちます。
+`A` の前に空白を 2 つ足すと、
+mermaid.js がコメントに見える行をラベルから落とすためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: default-size-branches/size-preserving-to-fallback-unsafe]
 
@@ -1117,9 +1110,6 @@ frontmatterとディレクティブを除き、CRLFを1単位、
 
 コメントの除去によるDbの変化を防ぐためです。
 ホストが戻すBOM、字下げや末尾LFによる増加、空白削除による減少も含みます。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 上限に合わせて著者のコメントを消しません。
 frontmatterには保護付きYAML整形を使え、CR/LF変換も共通のままです。
 ホストが戻すBOMはエスケープしたテストの文字列で、
@@ -1428,18 +1418,8 @@ idと呼び出しの後のclickの隙間に、余分な空白単位を足すと�
 拒否される場合があります。
 詳しくは[clickの文](#click-statements)を参照してください。
 agentflowが閉じ波括弧の後で畳むのは直後のLF前の行空白だけです。
-引用符付きのラベルでは、`a}` と字下げされた `b` の間の空行を保ちます。
-この空行を落とすと、mermaid.js が違う形状に描くためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 それ以降の空のLFと、LS/PS/VT/FF/NBSPを含む元の値の行を保ちます。
 不透明なデータの閉じ括弧をアクセシビリティの閉じ括弧として揃えません。
-引用符付きの頂点ラベルでは、`x` と `y` の間の U+2028 を保ちます。
-LF に置き換えると、mermaid.js が違う文字と形状で描くためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 
 [fixture: multiline-statements-and-values/brace-blank-kept]
 [fixture: multiline-statements-and-values/multiline-chain]
@@ -1819,11 +1799,17 @@ agentflow-beta TB
 EOFまで続くディレクティブと値、およびサイズ保護された末尾は保ちます。
 値の文字を足したりサイズ境界を越えたりすると読みが変わるためです。
 nullのstyleに必要な空白とコメントの文字は改行の前に保ちます。
+EOF では、`style A` の後の空白 2 つを保ちます。
+空白を除いた `style A` は、mermaid.js が拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 未閉鎖ディレクティブの後にある外側の空白には共通の末尾空白規則を使い、
 EOFで終わるディレクティブには値の文字を足しません。
 
 [fixture: final-newline/final-comment]
 [fixture: final-newline/final-open-description]
+[fixture: final-newline/final-empty-style-spaces]
 
 入力（エスケープ表記）: `"agentflow-beta TB\nA\n\n\n"`。
 
@@ -1848,9 +1834,6 @@ Prettierはブロック最終行の末尾空白を落とし、
 最後の空白だけのstyleが拒否され得ます。
 この制限は処理を返した失敗入力にも適用し、
 単独ファイルの値を削る許可にはなりません。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 サイズ境界は外側の字下げを除いた本文で判断します。
 
 [fixture: markdown-fences/markdown-list-payload]
@@ -1876,11 +1859,6 @@ callの括弧前の空白は名前で、引数と文字列は著者の文字だ�
 ID・リスト・値以降と後続行の桁位置を保ちます。
 href/callの有無、target、記号・数値・プロトタイプ名のID、穴、
 URLとtooltipの空白、引数を渡す2つ目のcallも含みます。
-`click A cb "x  y"` では、tooltip 内の空白 2 つを保ちます。
-`click A cb "x y"` では、mermaid.js が違う tooltip の文字にするためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 agentflowのtextBeforeUrl/textBeforeTooltipには、消されるclick、
 空の説明・文字列・markdown・callを各節点と元の隙間で保ちます。
 hrefの両側も同じです。
