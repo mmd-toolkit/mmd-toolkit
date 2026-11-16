@@ -2,12 +2,8 @@
 
 Formatting does not change what mermaid.js draws (AGENTS.md, item 4). A way of
 writing that draws the same is printed in one form; a way of writing that draws
-something else is kept as written. Keeping a form as written is a decision too,
-and its reason is one of three, the first two shown by running the other form:
-in a version that counts, the other form changes the Db (in a way that no kind
-of exception below allows) or the drawing; a version that counts rejects the
-other form; or the user decided it (AGENTS.md, item 4). This document says which
-form is printed, and why.
+something else is kept as written. This document says which form is printed, and
+why.
 
 The rules of a diagram type are in its own document (`flowchart.md`, `gantt.md`,
 and so on). The reason of each of those rules is one of the rules below.
@@ -165,8 +161,7 @@ to keep in them. Where a text is a table, Prettier lines its columns up: it pads
 the cells of a table of Markdown to the width of their column.
 
 So whether lines are lined up is decided for each kind of line, in the document
-of its diagram type, by the rules of this document; padding that stays as
-written has a reason as any form kept as written has.
+of its diagram type, by the rules of this document.
 
 - The tasks of a section of a Gantt chart are rows of a name and its data. The
   printer puts the colons of a section in one column where its names were
@@ -200,8 +195,7 @@ This rule decides the whitespace beside the marks that the syntax tree of the
 parser holds as tokens. A text that the tree holds whole is the text of a label
 and of a string, and the body of a data block (`@{ … }`) that mermaid.js reads
 as YAML. What the formatter changes inside such a text, and what it keeps, is
-defined in the document of its diagram type by the rules of this document, and
-what it keeps has a reason as any form kept as written has.
+defined in the document of its diagram type by the rules of this document.
 
 ## 2. A gap of a kind that Prettier does not have
 

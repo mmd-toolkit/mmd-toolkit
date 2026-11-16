@@ -105,12 +105,8 @@ and both outputs, and what is decided is added to those rules.
    pinned mermaid.js and the versions that count (that document), and check that
    the Db does not change and that every one of those versions accepts the form
    and draws it the same. A form that one of them rejects or draws differently
-   is not printed. Where an item keeps a form as written, run the forms that the
-   rules would print instead, and keep the written form only where, in one of
-   those versions, one of them changes the Db in a way that no kind of exception
-   allows or changes the drawing, or is rejected, or where the user decided it.
-   Each case that the choice distinguishes has a fixture (section 6). Attach the
-   results, marked as checked by running.
+   is not printed. Each case that the choice distinguishes has a fixture
+   (section 6). Attach the results, marked as checked by running.
 4. Implement the forms that the rules decide. A form that would change what a
    released version printed, and a form that seems better where no rule gives
    one, is shown to the user first, with a text as written, the old and the new
@@ -120,13 +116,10 @@ and both outputs, and what is decided is added to those rules.
    Japanese) as a rule with its reason. The reason is the rule of that document
    that decided the form, with the facts that rule needs. A reason that says
    only "reads better" tells a reader nothing: name the rule that says why it
-   reads better. The reason of a form kept as written is the run in which
-   another form changed the Db (beyond the kinds of exceptions) or the drawing,
-   or was rejected, or the decision of the user; "as written", or the author's
-   form, is no reason. Where a rule gives a form that reads worse than another
-   form that draws the same, say so and propose the other form to the user as
-   under step 4 of this section, since the rule is then what is wrong. Write
-   what is kept as written because it affects the Db, and the differences from
+   reads better. Where a rule gives a form that reads worse than another form
+   that draws the same, say so and propose the other form to the user as under
+   step 4 of this section, since the rule is then what is wrong. Write what is
+   kept as written because it affects the Db, and the differences from
    mermaid.js, into `docs/compatibility.md` too. Keep decisions in these two
    documents only.
 
@@ -186,12 +179,9 @@ How it is built (under `src/printers/`):
   diagram type adds its list to that test.
 - Gaps (`gap.ts`): comments, directives, and the `;` that the line rule ignores
   between atoms are items, printed as written, and each side of an item keeps
-  whether the source has whitespace there. Keeping that whitespace is a form
-  kept as written, so it needs the reason that `docs/printed-form.md` asks for;
-  where it has none, the gap is decided as that document says (section 4). The
-  rules that add or remove whitespace apply only to gaps without items. How a
-  gap is read is decided in one place, `readGapElement`, which the other scans
-  use too.
+  whether the source has whitespace there. The rules that add or remove
+  whitespace apply only to gaps without items. How a gap is read is decided in
+  one place, `readGapElement`, which the other scans use too.
 - What all diagram types share (the frontmatter, comments and directives before
   the body, the line break at the end of the file, Markdown code blocks) is in
   `root.ts`, `frontmatter-yaml.ts`, `parser.ts`, and `printer.ts`. The printer
@@ -429,8 +419,7 @@ The steps are in
     rejection after the grammar accepts, including defaults, site configuration
     and the treatment of settings embedded in the text.
   - Comparison values: read the specified conversion order and equality rules
-    separately from the written spelling; which spelling the printer prints is
-    decided by `docs/printed-form.md`.
+    separately from the authored spelling, which the printer preserves.
   - Hidden YAML/directive forms, when its lexical rules define them. Keep each
     retained node as written in its specified AST field or body entry. Preserve
     any LF the rule consumes outside the node range and whitespace after its
