@@ -170,6 +170,12 @@ Ishikawa の見出しは、
 これは、書かれた字下げが入れ子だけで木を示すときです（[字下げ](#indentation)）。
 見出しと根の間の空白より深くない原因があるときは、根は見出しの行に残り、
 原因は書かれた字下げを残します。
+見出し行の根 `R style:#x;y;` は全体を保ちます。
+mermaid.js は `style:#x;y;` を独立した行にすると最初の子として読み、
+根を `R` と読むので、図の構造と形状が変わるためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: ishikawa/root-on-header-line/header-root-irregular-kept]
 [fixture: ishikawa/root-on-header-line/header-root-directive-irregular-kept]
@@ -569,6 +575,11 @@ title、アクセシビリティ、style、装飾、データらしい形も同�
 
 他の文法のトークン間隔や値変換は適用しません。
 Db からラベルを再構築せず、書かれた形と設定による読みを保つためです。
+節点のテキスト `A : b` のコロンの前の空白を除いて `A: b` と印字すると、
+mermaid.js が描くテキストと形状、Db の子節点のテキストが変わります。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: ishikawa/node-text/values-spacing-unsafe]
 [fixture: ishikawa/node-text/value-single-space-and-colon]
@@ -640,6 +651,9 @@ Ishikawa の節点を分けるセミコロンはありません。
 コロンとハッシュ記号の隙間、不一致、実体参照、Unicode の区間境界、
 閉じていないディレクティブを止めるセミコロンの違いも保ちます。
 変えると選ばれるセミコロンが変わるためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: ishikawa/line-rule-and-kept-lines/line-rule-colon-unsafe]
 [fixture: ishikawa/line-rule-and-kept-lines/line-rule-spaced-hash]
