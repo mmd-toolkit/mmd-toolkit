@@ -734,6 +734,11 @@ opaque
 
 ディレクティブの `GitgraphIgnoredText` は隠れた YAML
 と同じく原文と境界を保持し、9 種すべての文の後置部分でも同じです。
+次行に `commit` が続く `commit%%{}%% ` の末尾の空白は残します。
+mermaid.js は、その空白のない `commit%%{}%%` を拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 図固有の形は大域的なディレクティブと別です。
 空・記号・複数行の内容と、先行する文字列やブロックの所有を残します。
 不成立の閉じ記号は後の閉じ記号まで内容になるか、図固有のコメントとして扱います。
@@ -789,6 +794,7 @@ opaque
 [fixture: gitgraph/hidden-directives/standalone-closing-padding]
 [test: gitgraph/hidden-directives/hidden-physical-multiline]
 [fixture: gitgraph/hidden-directives/option-consumed-lf]
+[fixture: gitgraph/hidden-directives/commit-closing-padding]
 
 入力（エスケープ表記）: `"gitGraph commit id:%%{!}%%\n'root'\n"`
 

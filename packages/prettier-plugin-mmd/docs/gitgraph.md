@@ -690,12 +690,15 @@ opaque
 ### Hidden directives
 
 Use the same source/boundary preservation as Hidden yaml for directive-kind
-GitgraphIgnoredText, including all nine statement suffix kinds. This native form
-is distinct from a global directive. Keep empty/punctuation/multiline contents
-and earlier string/block ownership. A nonqualifying closer can remain inside the
-form until a later closer, or fall back to a native comment; do not insert a
-boundary that changes that classification. Required missing components still
-reject.
+GitgraphIgnoredText, including all nine statement suffix kinds. When `commit`
+follows on the next line, `commit%%{}%% ` keeps its final space, since
+mermaid.js rejects `commit%%{}%%` without that space (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+This native form is distinct from a global directive. Keep
+empty/punctuation/multiline contents and earlier string/block ownership. A
+nonqualifying closer can remain inside the form until a later closer, or fall
+back to a native comment; do not insert a boundary that changes that
+classification. Required missing components still reject.
 
 [fixture: gitgraph/hidden-directives/hidden-directive-body] [corpus fixture:
 gitgraph/lex-option-before-type-value-hidden] [corpus fixture:
@@ -745,7 +748,8 @@ gitgraph/lex-hidden-directive-between-option-value] [fixture:
 gitgraph/hidden-directives/hidden-add-boundary-invalid] [fixture:
 gitgraph/hidden-directives/standalone-closing-padding] [test:
 gitgraph/hidden-directives/hidden-physical-multiline] [fixture:
-gitgraph/hidden-directives/option-consumed-lf]
+gitgraph/hidden-directives/option-consumed-lf] [fixture:
+gitgraph/hidden-directives/commit-closing-padding]
 
 Input (escaped): `"gitGraph commit id:%%{!}%%\n'root'\n"`.
 
