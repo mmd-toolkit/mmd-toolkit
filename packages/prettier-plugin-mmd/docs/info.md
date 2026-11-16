@@ -335,7 +335,7 @@ InfoIgnoredText, separately from Root directives. Preserve its owner,
 arbitrary/multiline body, global cuts, consumed/spare LF and closing padding.
 All four common statements retain hidden textAfter forms, including space/tab,
 spare-LF and EOF boundaries. For example, mermaid.js rejects removing the
-trailing space after `title T%%{! ignored }%%` when `accTitle: A` follows on the
+trailing space after `title Topic%%{}%%` when `accTitle: Access` follows on the
 next line (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Forms after visible EOL belong to the body. Keep fallback comments classified as

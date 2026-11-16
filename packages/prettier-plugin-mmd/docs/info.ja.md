@@ -338,7 +338,7 @@ showInfo
 所有位置、任意の複数行本文、大域的な処理による分断、消費・予備の LF、
 閉じの余白を保ちます。
 4種類の共通文の `textAfter` は、空白・タブ、予備の LF、EOF の境界を保ちます。
-たとえば、`title T%%{! ignored }%%` の次の行が `accTitle: A` のとき、
+たとえば、`title Topic%%{}%%` の次の行が `accTitle: Access` のとき、
 タイトル行の末尾の空白を削除すると mermaid.js が拒否します（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください）。
