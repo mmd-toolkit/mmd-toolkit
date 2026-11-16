@@ -20,6 +20,11 @@
 詳しくは [ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)
 を参照してください。
 コロンは足さず、空本文も保ちます。
+空本文の `treemap-beta` にコロンを足さないのは、
+mermaid.js が同じ空本文の `treemap-beta:` を拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: treemap/header/stable]
 
@@ -103,6 +108,11 @@ treemap
 空白だけの行の連なりが、LF を越えて次行の字下げになりえます。
 その情報を次行の予定の列へ一度だけ移します。
 物理行の先頭だけを測り直したり、二つ目の連なりを足したりしません。
+section の行末に空白 2 つがあり、次の leaf が行頭にある形では、
+leaf の前にも空白 2 つを足した入力を mermaid.js が拒否します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 数える連なりは共通の除去処理で既に決まっています。
 
 共通コメントの除去で前の空白だけの連なりが消えていても、
@@ -324,6 +334,11 @@ treemap
 改行、バッククォート、`&`、`#`、`<` が含まれる場合は書かれたままにします。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 `singleQuote` は読みません。
+名前 `'  Other "quote"  '` の単一引用符を保つのは、
+mermaid.js が二重引用符の形 `"  Other \"quote\"  "` を拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 バックスラッシュは引用符をエスケープせず、`\n` も復号しません。
 これらの書き方は名前や受理を変えうるためです。
 
@@ -552,6 +567,9 @@ U+FEFF は残します。
 行の規則が無視する `;` の後ろにあるものも残します。
 CSS はこれらを空白として読まないので、最後のスタイルの末尾に残り、
 なくすと mermaid.js が違う図を描くからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 詳しくは、
 [スタイルの末尾の空白](./compatibility.ja.md#スタイルの末尾の空白)
 を参照してください。
@@ -774,11 +792,17 @@ Db の等しい外側の空白から 1 つを選び、引用符に見える文�
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 コメントやディレクティブを越えて次の物理行から値を取りません。
 注釈を持つ値は書かれた境界を保ちます。
+`title A%%{wrap}%%B` のディレクティブ前の接触を保つのは、
+mermaid.js が `title A %%{wrap}%%B` を `AB` ではなく `A B` と読むためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: title/title-directives-end-blanks-dropped]
+[fixture: title/inline-directive-contact-kept]
 
 テキストのない `title` は、
 同じ行のディレクティブかコメントの前に空白が書かれていれば、
@@ -1145,6 +1169,11 @@ treemap
 余れば最後の隙間から縮め、残りを最初のディレクティブ前に置きます。
 前の行から渡る単位は、代わりに一度だけ次行へ移します。
 class キーワードと名前の必須空白を保ち、ディレクティブで代用しません。
+`classDef %%{wrap}%% zz color:red` の区切りの空白を保つのは、
+mermaid.js が `classDef%%{wrap}%%zz color:red` を拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 閉じていないディレクティブは引数の後の空白を改行も含めて取り込むため、
 次の行はディレクティブと同じ行に続きます。
@@ -1154,6 +1183,9 @@ class キーワードと名前の必須空白を保ち、ディレクティブ�
 つながった行はすべて、最初の行の前の字下げを基準に読まれます。
 `"A" %%{x: w`、改行、`  "B": 1` は `B` を `A` の子にし、
 `A` を空白 2 つで字下げすると `B` はその兄弟になります。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 そのような行を含む本文は、保持する行が行の境界を拘束する場合と同じく、
 書かれたまま印字します（[セミコロン](#semicolons)を参照）。
 二つの行を 1 行に書き、その間に閉じていないディレクティブがある場合も同じです。
@@ -1161,6 +1193,7 @@ class キーワードと名前の必須空白を保ち、ディレクティブ�
 
 [fixture: treemap/directives/unclosed-directive-joins-rows-kept]
 [fixture: treemap/directives/unclosed-directive-between-rows-kept]
+[fixture: treemap/directives/unclosed-directive-child-kept]
 
 `useTabs` のときは、保つ隙間も補う字下げもすべてタブで印字します。
 ディレクティブの前後の空白は一つの字下げ単位で、
