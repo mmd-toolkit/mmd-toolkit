@@ -873,7 +873,10 @@ mermaid.js: `+attr string *` is printed `+attr string*`.
 Attribute and annotation lines, in a body or after the `:` of a class name, keep
 their contents as written, apart from the runs of spaces and tabs inside.
 Methods preserve their name, parameter and return-type contents, including
-generic spelling and classifier-related tails, apart from the runs.
+generic spelling and classifier-related tails, apart from the runs. The space
+before the comma in the parameters `a ,  b` stays, since mermaid.js draws
+different parameter text and geometry for `a, b` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: member-lines/runs-collapsed] [fixture:
 member-lines/percent-text-runs-collapsed] [fixture:
@@ -899,7 +902,9 @@ them, and is printed as one space whatever follows it: `+ \tint x` is printed
 
 [fixture: member-lines/visibility-tab-kept]
 
-An annotation line, `<< y z >>`, keeps the whitespace around its text in the Db.
+An annotation line, `<< y z >>`, keeps the whitespace around its text in the Db
+(see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: member-lines/runs-collapsed]
 
@@ -1024,10 +1029,11 @@ of only whitespace comes between them (the known divergence
 `comment-takes-line-break`, see
 [A line of only whitespace after a comment](./compatibility.md#a-line-of-only-whitespace-after-a-comment)).
 Such a line is printed as a line of one space, where an empty line would let
-mermaid.js read the next statement as part of the commented one. The space is at
-the end of a line, so the example is written as strings, in which `\n` is a line
-break: `"classDiagram\nA --> B %% c\n  \nA : +int age\n"` is printed as
-`"classDiagram\n  A --> B %% c\n \n  A : +int age\n"` (the fixture
+mermaid.js read the next statement as part of the commented one (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The space is at the end of a line, so the example is written as strings, in
+which `\n` is a line break: `"classDiagram\nA --> B %% c\n  \nA : +int age\n"`
+is printed as `"classDiagram\n  A --> B %% c\n \n  A : +int age\n"` (the fixture
 `whitespace-line-kept` is in the [folder](../tests/fixtures/class/comments)). It
 is so also after the comment of the line that holds the header and a statement,
 as in `classDiagram accDescr {} %% c`

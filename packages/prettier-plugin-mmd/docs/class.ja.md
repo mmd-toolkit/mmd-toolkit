@@ -918,6 +918,11 @@ mermaid.js の文書と同じく、属性の分類記号はそのテキストに
 内部の空白とタブの連なりを除き、中身を保ちます。
 メソッドの名前・引数・戻り値の中身も、連なりを除いて保ちます。
 総称型のつづりと分類記号に伴う末尾も保ちます。
+引数 `a ,  b` のコンマの前の空白は残します。
+`a, b` では、mermaid.js が引数のテキストと図形の形状を違って描くからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: member-lines/runs-collapsed]
 [fixture: member-lines/percent-text-runs-collapsed]
@@ -948,6 +953,9 @@ mermaid.js はメンバーの行をそのテキストで部分に分け、
 [fixture: member-lines/visibility-tab-kept]
 
 注釈の行 `<< y z >>` は、テキストの周りの空白も Db に残ります。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: member-lines/runs-collapsed]
 
@@ -1076,6 +1084,9 @@ mermaid.js は、文の後のコメントの後の改行をコメントの一部
 を参照）。
 そうした行は、空白 1 つの行として印字します。
 空行にすると、mermaid.js が次の文をコメントのある文の一部として読むからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 空白が行末にあるので、例は、`\n` を改行とする文字列で書きます。
 `"classDiagram\nA --> B %% c\n  \nA : +int age\n"` は
 `"classDiagram\n  A --> B %% c\n \n  A : +int age\n"` と印字します（fixture
