@@ -1,5 +1,15 @@
 # @mmd-toolkit/ast
 
+## 0.4.0
+
+### Minor Changes
+
+- [#95](https://github.com/mmd-toolkit/mmd-toolkit/pull/95) [`c037353`](https://github.com/mmd-toolkit/mmd-toolkit/commit/c037353e31afdc2b8069071afdf00dae3e5281be) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Type `RequirementStyleStatement.names` and
+  `RequirementClassDefStatement.cssClasses` as `RequirementStyleName`, an
+  `Identifier` or a `StringLiteral`, instead of a `RequirementIdentifier` or a
+  `StringLiteral`. Code that narrows those fields to `RequirementIdentifier`
+  narrows them to `Identifier` instead.
+
 ## 0.3.1
 
 ### Patch Changes
