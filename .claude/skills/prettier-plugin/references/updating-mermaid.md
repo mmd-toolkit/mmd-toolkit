@@ -25,12 +25,13 @@ Section numbers below are those of [SKILL.md](../SKILL.md).
    that names the pinned version is run again with the new pinned version: the
    other form that it names, and the written form; where the new pinned version
    still rejects, reads, or draws the other form differently, the row names the
-   new pinned version, and otherwise the row is taken out. For a diagram type
-   added during the period, its first minor version replaces the smallest minor
-   version of its major version for that diagram type only. A rule none of whose
-   named versions counts any longer for its diagram type is taken out, and the
-   form that the rules of `docs/printed-form.md` give is printed; the published
-   output changes, so a changeset goes with it. Write only the versions that
-   still count for each diagram type into the rows that stay, and add a row, in
-   the same change, for each new kind that the drawings of the new versions
-   show.
+   new pinned version in place of the old one, and otherwise the old pinned
+   version is taken out of the row; a row that then names no version that counts
+   is taken out. For a diagram type added during the period, its first minor
+   version replaces the smallest minor version of its major version for that
+   diagram type only. A rule none of whose named versions counts any longer for
+   its diagram type is taken out, and the form that the rules of
+   `docs/printed-form.md` give is printed; the published output changes, so a
+   changeset goes with it. Write only the versions that still count for each
+   diagram type into the rows that stay, and add a row, in the same change, for
+   each new kind that the drawings of the new versions show.
