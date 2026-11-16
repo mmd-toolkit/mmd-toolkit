@@ -499,7 +499,10 @@ whitespace-between-tokens/class-def-backslash-at-end-kept]
 
 A statement stays as written where it holds a comment or a directive, where a
 style is all whitespace, or where a style holds a line break or its line holds a
-kept `;`.
+kept `;`. `style A fill:#f00 %%{x}%% ,color:white` stays as written, since a
+version that counts draws different styles for
+`style A fill: #f00 %%{x}%%, color: white` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: whitespace-between-tokens/style-comma-before-dropped] [fixture:
 whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
@@ -902,8 +905,8 @@ them, and is printed as one space whatever follows it: `+ \tint x` is printed
 
 [fixture: member-lines/visibility-tab-kept]
 
-An annotation line, `<< y z >>`, keeps the whitespace around its text in the Db
-(see
+An annotation line in a body, `<< y  z >>`, keeps its whitespace, since
+mermaid.js draws different text and geometry for `<<y z>>` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: member-lines/runs-collapsed]
@@ -1028,8 +1031,9 @@ part of the comment, and the next line as part of the statement, unless a line
 of only whitespace comes between them (the known divergence
 `comment-takes-line-break`, see
 [A line of only whitespace after a comment](./compatibility.md#a-line-of-only-whitespace-after-a-comment)).
-Such a line is printed as a line of one space, where an empty line would let
-mermaid.js read the next statement as part of the commented one (see
+Such a line is printed as a line of one space. Replacing the line of two spaces
+between `classDiagram accDescr {} %% c` and `class A` with an empty line makes
+mermaid.js reject the input (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The space is at the end of a line, so the example is written as strings, in
 which `\n` is a line break: `"classDiagram\nA --> B %% c\n  \nA : +int age\n"`

@@ -534,6 +534,12 @@ mermaid.js はスタイルをクラスのスタイルへ書かれたまま足し
 
 コメントやディレクティブがある文、空白だけのスタイルがある文、
 スタイルに改行があるか、行に保つ `;` がある文は、書かれたままにします。
+`style A fill:#f00 %%{x}%% ,color:white` は、書かれたまま残します。
+`style A fill: #f00 %%{x}%%, color: white` では、
+対象にする版の一部がスタイルを違って描くからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: whitespace-between-tokens/style-comma-before-dropped]
 [fixture: whitespace-between-tokens/style-comma-beside-directive-kept]
@@ -952,7 +958,8 @@ mermaid.js はメンバーの行をそのテキストで部分に分け、
 
 [fixture: member-lines/visibility-tab-kept]
 
-注釈の行 `<< y z >>` は、テキストの周りの空白も Db に残ります。
+本体内の注釈の行 `<< y  z >>` は、空白を残します。
+`<<y z>>` では、mermaid.js がテキストと形状を違って描くからです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
@@ -1083,7 +1090,8 @@ mermaid.js は、文の後のコメントの後の改行をコメントの一部
 [互換性の、コメントの後の空白だけの行](./compatibility.ja.md#コメントの後の空白だけの行)
 を参照）。
 そうした行は、空白 1 つの行として印字します。
-空行にすると、mermaid.js が次の文をコメントのある文の一部として読むからです。
+`classDiagram accDescr {} %% c` と `class A` の間の、
+空白 2 つの行を空行にすると、mermaid.js がその入力を拒否します。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
