@@ -1,4 +1,4 @@
-# Format decisions abandoned without a reason, to be fixed
+# Format decisions abandoned, to be fixed
 
 Whoever decided the format of the forms below gave the decision up and printed
 them as written, although no rule of
