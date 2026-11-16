@@ -165,9 +165,7 @@ A row is a rule that
 takes out when none of the versions that the row names counts any longer.
 
 A form that the pinned version itself rejects, reads, or draws differently has a
-row too, which names the pinned version and the other form that was run. The
-rows of the forms kept before this rule are added as the rules of each diagram
-type are reviewed.
+row too, which names the pinned version and the other form that was run.
 
 | Diagram                                                        | Kept as written                                                                                                                                                              | The rules would print                                                 | Rule                                                                 | Needed by                                                                                                   | Fixtures                                                                                                                                                    |
 | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |

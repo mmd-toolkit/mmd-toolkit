@@ -189,9 +189,7 @@ Every review has a section on proper form, also when the behavior is right:
   counts, the other form changes the Db in a way that no kind of exception
   allows or changes the drawing, or is rejected, as a run of the other form
   shows; or the user decided it. A form kept as written without one of them is a
-  finding, also where a rules document states it, unless the document names it
-  as not decided yet (`docs/printed-form.md`, section 4): such a form is listed
-  as a proposal to the user instead.
+  finding, also where a rules document states it.
 - Does it take the form the repository already uses for the same kind of thing?
 - Is its only reason an earlier decision of its author's own? Then that decision
   is reconsidered first.

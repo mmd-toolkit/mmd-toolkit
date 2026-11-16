@@ -229,10 +229,7 @@ that name.
 
 Where none of these rules gives a form, it is not decided yet which form reads
 best. The form is decided as AGENTS.md (item 4) says, added to these rules, and
-printed after that. Until then the output stays as the released version prints
-it, or as written where no released version printed it, and the document of its
-diagram type names the form as not decided yet, with the form that seems to read
-better, not as a form kept on purpose.
+printed after that.
 
 ## The versions of mermaid.js that count
 
@@ -262,15 +259,14 @@ Every such case has a row in
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count),
 and the row names the versions that the form is kept for. A form that the pinned
 version itself rejects, reads, or draws differently has a row too, which names
-the pinned version and the other form that was run (the rows of the forms kept
-before this rule are added as the rules of each diagram type are reviewed), so
-that the form is checked again when the pinned version is raised or the versions
-that count change. The versions that a form is kept for are named in that table
-only: the document of a diagram type gives the reason and points to the row. A
-record of a check may say with how many versions, and with which, a text was
-drawn, since nothing changes there when a version stops counting. When the
-pinned version is raised and none of the versions of a row counts any longer,
-the rule is taken out, and the form is the one that the rules above give.
+the pinned version and the other form that was run, so that the form is checked
+again when the pinned version is raised or the versions that count change. The
+versions that a form is kept for are named in that table only: the document of a
+diagram type gives the reason and points to the row. A record of a check may say
+with how many versions, and with which, a text was drawn, since nothing changes
+there when a version stops counting. When the pinned version is raised and none
+of the versions of a row counts any longer, the rule is taken out, and the form
+is the one that the rules above give.
 
 The CHANGELOG.md of mermaid.js, or the history of its grammar, shows which
 version added or changed a form.
