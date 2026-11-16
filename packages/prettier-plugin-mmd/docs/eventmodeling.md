@@ -20,7 +20,8 @@ next line, making the header easy to find. Hidden forms, retained prefixes and
 protected lines use their shared rules: when the header line is kept, its first
 statement stays on that line. This gives diagram types the same treatment. A
 first common statement retains its original connection and padding: moving it to
-line start can make identifier win and reject the input.
+line start can make identifier win and reject the input (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: eventmodeling/header/ordinary-frame]
 
@@ -70,9 +71,10 @@ Start ordinary top-level statements at column one: frames, model entities,
 
 The pinned Mermaid requires `data` and `note` block closers at column one; the
 formatter aligns their headers there and keeps peer statements at the same level
-to avoid suggesting a hierarchy. Reconsider this choice if the pinned Mermaid
-later accepts whitespace before block closers, checking that raw body values and
-rendering remain unchanged.
+to avoid suggesting a hierarchy (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Reconsider this choice if the pinned Mermaid later accepts whitespace before
+block closers, checking that raw body values and rendering remain unchanged.
 
 GWT clauses use one configured step and items two. Ordinary structural
 continuation lines, including a line completing a `data` or `note` header, stand
@@ -482,7 +484,9 @@ Print each inline body from its complete source span, retaining braces or
 quotes, backslashes, padding, empty forms and native-looking text. `singleQuote`
 does not rewrite these terminals. The lexer takes the last matching same-line
 closer: apparent later frames inside that span are data, not statements.
-Trimming, requoting or splitting that text changes the raw terminal in the Db.
+Trimming, requoting or splitting that text changes the raw terminal in the Db
+(see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: eventmodeling/inline-data/inline-braces-unchanged]
 
@@ -555,8 +559,9 @@ eventmodeling/declarations-and-notes/header-inline-multiline-directive]
 Only the first physical body line may gain a space prefix where it had none.
 Every later nonblank physical line must have at least one leading ASCII space
 both before and after the change. Otherwise keep the complete body as written:
-adding the first space on a later line can change the rendered label. A leading
-empty line does not make the next line the first physical line.
+adding the first space on a later line can change the rendered label (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A leading empty line does not make the next line the first physical line.
 
 [fixture: eventmodeling/data-blocks/body-first-line-zero-margin]
 
@@ -674,7 +679,9 @@ to a new line. LS/PS lookahead remains outside the terminal rather than becoming
 LF. Before a common successor, retain the first LF or its absence, the complete
 leading run and its connection to the prior unit, even at width zero: adding a
 spare LF, removing indentation or trimming closing padding can change the Db or
-reject the text. EOF's logical LF may become one explicit final LF.
+reject the text (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+EOF's logical LF may become one explicit final LF.
 
 [fixture: eventmodeling/data-boundaries/block-eof-logical-lf-kept]
 
@@ -776,9 +783,16 @@ tf 01 evt Alpha
 
 Keep accessibility line forms as written: leading padding, the keyword/colon
 gap, colon-side and trailing padding, empty payloads, quotes and brace-looking
-text. EM_ACC_TITLE and EM_ACC_DESCR include these parts in their values. An
-empty payload is still a nonempty terminal; the colon form is not converted into
-a description block. LS/PS inside line values remain content.
+text. For the `accTitle` line with a space and a tab before `:`, that gap stays:
+mermaid.js draws different accessibility text and changes the Db's `accTitle`
+value when the gap is removed (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+EM_ACC_TITLE and EM_ACC_DESCR include these parts in their values. An empty
+payload is still a nonempty terminal; the colon form is not converted into a
+description block. LS/PS inside line values remain content. For `accDescr: A`
+followed by U+2028 and `B`, U+2028 stays, since mermaid.js rejects the same
+value with LF in its place (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: eventmodeling/accessibility-lines/accessibility-lines-exact]
 
@@ -809,8 +823,9 @@ Keep the complete description block and its leading run, including opener
 newlines, whitespace-only interiors and closing columns. Empty, whitespace-only
 and removal-only interiors remain distinct authored forms. This is the single
 selection point that bypasses shared `layoutDescriptionBlock`: its ordinary `{}`
-compaction and closer alignment would rewrite an EM_ACC_DESCR value. No
-diagram-local empty-block normalization replaces it.
+compaction and closer alignment would rewrite an EM_ACC_DESCR value (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+No diagram-local empty-block normalization replaces it.
 
 [fixture:
 eventmodeling/description-blocks/description-whitespace-literal-retained]
@@ -921,8 +936,12 @@ continuation columns. Native `//` and `%%` run through LS/PS to physical LF. A
 `%%` comment line inside a data block, a note, an `accDescr` block, a slash
 block comment or a hidden form is part of that text. Its columns stay written
 except for the block-body margin adjustment in [Data blocks](#data-blocks).
-Boundaries needed for metadata or a required `title` take precedence. Slash
-comments are not moved before the header, where detection would reject them.
+Boundaries needed for metadata or a required `title` take precedence. For
+`entity/*anchor*/title`, contact after the comment stays, since mermaid.js
+rejects `entity/*anchor*/ title` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Slash comments are not moved before the header, where detection would reject
+them.
 
 [fixture: eventmodeling/comments/standalone-native-comments]
 
@@ -1005,7 +1024,9 @@ ending.
 
 This keeps indentation or the final line break from moving the text across the
 limit, where the comment lines in a value would be removed and the Db would
-change. The boundary itself is covered by the corpus, also with CRLF, an inline
+change (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The boundary itself is covered by the corpus, also with CRLF, an inline
 directive and frontmatter.
 
 [corpus fixture: eventmodeling/comment-default-size-equal] [corpus fixture:
@@ -1026,10 +1047,14 @@ eventmodeling/frontmatter-extra-whitespace-line-boundary]
 Use the shared directive placement: on the same printed line place a directive
 as under [Directives](./flowchart.md#directives). When statements, clauses or
 items split into lines, attach an intervening directive to the following unit,
-retaining right contact. Keep content, order, multiline interiors, positions
-inside values and unfinished EOF endings. Standalone starts align with the
-owning body. Common boundaries retain the full original gap instead of this
-ordinary spacing; a removed directive cannot replace required whitespace.
+retaining right contact. Between `%%{wrap}%%` and `rf 02 cmd Beta` after
+`tf 01 evt Alpha`, the space stays, since mermaid.js rejects the same text with
+no space there (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Keep content, order, multiline interiors, positions inside values and unfinished
+EOF endings. Standalone starts align with the owning body. Common boundaries
+retain the full original gap instead of this ordinary spacing; a removed
+directive cannot replace required whitespace.
 
 A directive that is not closed takes the whitespace after its argument, line
 breaks included, so the next line goes on its line, which is printed as written
