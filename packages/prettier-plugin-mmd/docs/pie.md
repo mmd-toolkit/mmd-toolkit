@@ -68,9 +68,12 @@ accDescr: direction TB
 Reuse [one statement per line](./xychart.md#statements-one-per-line) as the
 other diagram types do, subject to pie EOL and protected source groups. Keep
 sections and common assignments interleaved in written order, including empty
-description blocks. Pie has no separator semicolon: semicolons in labels and
-common values stay text. Invalid adjacent statements are handled by the corpus
-failure path rather than repaired.
+description blocks. For example, swapping `"B":2` and `"A":1` on either side of
+`accDescr {}` changes the section order in the Db and the geometry of the figure
+mermaid.js draws. Pie has no separator semicolon: semicolons in labels and
+common values stay text. For example, changing `"A;B":1` to `"AB":1` makes
+mermaid.js read and draw the label as `AB` instead of `A;B`. Invalid adjacent
+statements are handled by the corpus failure path rather than repaired.
 
 [fixture: pie/statements-one-per-line/body-lines] [fixture:
 pie/statements-one-per-line/semicolon-values] [fixture:
@@ -191,12 +194,13 @@ value; a null/empty/whitespace-only value prints bare `title`. Print a run of
 spaces and tabs inside the value as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 and preserve quotes and backslashes, and all repeated assignments, including
-frontmatter fallback. Pie never joins the next physical line into a title: even
-across blank/comment/directive gaps, a following section is a separate
-statement. Protected trivia and semicolon groups take precedence. The directives
-that end a title are printed with one space before each that has whitespace
-before it, and the whitespace after the last one is left out, whatever the
-whitespace at the end of the line (see
+frontmatter fallback. For example, mermaid.js draws different title text for
+`title "A\n"` and `title A\n`. Pie never joins the next physical line into a
+title: even across blank/comment/directive gaps, a following section is a
+separate statement. Protected trivia and semicolon groups take precedence. The
+directives that end a title are printed with one space before each that has
+whitespace before it, and the whitespace after the last one is left out,
+whatever the whitespace at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
@@ -280,9 +284,12 @@ after LF is absent from the description Db. The keyword and opener use one
 ordinary space, even when written touching. Protected trivia and semicolon
 layouts keep their gaps. Plain whitespace before the opener can join, including
 across physical or Unicode line boundaries; a real comment/directive keeps its
-break. Empty whitespace-only interiors print `{}` because no text needs
+break. For example, mermaid.js rejects `accDescr %% c` followed by `{D}` on the
+next line. Empty whitespace-only interiors print `{}` because no text needs
 surrounding whitespace. Keep comment-only blocks with comments one level inside
-and a separate closer at statement level. Ordinary later-line text and
+and a separate closer at statement level. For example, when `accDescr {%% c` is
+followed by `}` or `D}` on the next line, removing `%% c` and its line break
+changes the description mermaid.js reads. Ordinary later-line text and
 standalone comment lines align one level inside the statement, as the other
 diagram types do. Keep line breaks, blank lines and trailing whitespace; a
 separate `}` aligns with the statement. Directives and shared removed comment
@@ -305,7 +312,9 @@ pie/description-blocks/block-keyword-tab] [fixture:
 pie/description-blocks/block-mixed-trivia] [fixture:
 pie/description-blocks/block-trailing-comment] [fixture:
 pie/description-blocks/block-opener-directive] [fixture:
-pie/description-blocks/block-quotes-backslashes]
+pie/description-blocks/block-quotes-backslashes] [fixture:
+pie/description-blocks/opener-comment-only-kept] [fixture:
+pie/description-blocks/opener-comment-with-text-kept]
 
 Input (escaped):
 `"pie\naccDescr {\n  first\n    second\n        }\n\"Data\":2"`.
@@ -499,11 +508,12 @@ its last kept `;`, with no whitespace between the `:` and the `#` (see
 [Semicolons](./flowchart.md#semicolons)), so the gaps and the padding inside
 that stretch keep whether they hold whitespace, a run becoming one space, and
 the rest of the segment follows the ordinary rules of this diagram. Text that no
-part of the layout holds stays as written. A statement over several lines whose
-lines, joined with one space or with nothing, could change which `;` the line
-rule ignores keeps the text of each segment, up to its last kept `;`, as
-written; any other statement over several lines is formatted like one on a
-single line.
+part of the layout holds stays as written. For example, changing
+`accDescr {style:#x;y}` to `accDescr {style: #x;y}` changes the description text
+mermaid.js draws. A statement over several lines whose lines, joined with one
+space or with nothing, could change which `;` the line rule ignores keeps the
+text of each segment, up to its last kept `;`, as written; any other statement
+over several lines is formatted like one on a single line.
 
 [fixture: directives-and-semicolons/stretch-kept-rest-formatted] [fixture:
 directives-and-semicolons/no-stretch-formatted]
