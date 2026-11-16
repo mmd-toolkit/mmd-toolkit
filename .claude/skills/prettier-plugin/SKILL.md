@@ -105,11 +105,11 @@ decided as section 4 of that document says.
    and draws it the same. A form that one of them rejects or draws differently
    is not printed. Each case that the choice distinguishes has a fixture
    (section 6). Attach the results, marked as checked by running.
-4. Implement the forms that the rules decide. A form that would change what a
-   released version printed, and a form that seems better where no rule gives
-   one, is shown to the user first, with a text as written, the old and the new
-   output, the rule that gives the new form if there is one, and a
-   recommendation; the user decides it, and the decision is added to the rules.
+4. Implement the forms that the rules decide. Where a rule gives a form that
+   reads worse than another form that draws the same, or no rule gives a form,
+   decide the form that reads best and add it to the rules with its reason
+   first, as AGENTS.md (item 4) says. A form that changes what a released
+   version printed goes with a changeset.
 5. Write each decision into the rules document `docs/<diagram>.md` (English and
    Japanese) as a rule with its reason. The reason is the rule of that document
    that decided the form, with the facts that rule needs. A reason that says
@@ -117,11 +117,11 @@ decided as section 4 of that document says.
    reads better. A form found printed as written whose rules document states no
    such reason is added to `claude-abandoned-format-decisions.md` of this
    package, in the way that file says. Where a rule gives a form that reads
-   worse than another form that draws the same, say so and propose the other
-   form to the user as under step 4 of this section, since the rule is then what
-   is wrong. Write what is kept as written because it affects the Db, and the
-   differences from mermaid.js, into `docs/compatibility.md` too. Keep decisions
-   in these two documents only.
+   worse than another form that draws the same, say so and correct the rule as
+   under step 4 of this section, since the rule is then what is wrong. Write
+   what is kept as written because it affects the Db, and the differences from
+   mermaid.js, into `docs/compatibility.md` too. Keep decisions in these two
+   documents only.
 
 ## 4. Writing the printer
 
@@ -212,8 +212,8 @@ and an example to that rule in `docs/<diagram>.md` (and to
 `docs/compatibility.md` when needed) in the same change. Show as the result: the
 wording of the rule, an input that shows it, mermaid.js's results before and
 after formatting, and the reason in the specification. A rule that changes a
-decided choice needs a decision before it is implemented; ask for it with that
-evidence.
+choice that the user decided needs the user's decision before it is implemented;
+ask for it with that evidence.
 
 Write a narrow exception (for example, no space before the closing `?]` or `=]`
 of a slanted shape) into the document in the same way.

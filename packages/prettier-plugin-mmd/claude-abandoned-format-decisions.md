@@ -18,9 +18,10 @@ count. Where it changes the Db in a way that no kind of exception allows,
 changes the drawing, or is rejected, the reason goes into the rules of the
 diagram type, with a row in
 [Forms kept for versions of mermaid.js that count](./docs/compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)
-where a version that counts needs it. Otherwise the form that reads better is
-proposed to the user, as AGENTS.md (item 4) says. A form leaves this list when
-it is decided, and this file is deleted when the list is empty.
+where a version that counts needs it. Otherwise the form that reads best is
+decided as AGENTS.md (item 4) says and written into the rules with its reason. A
+form leaves this list when it is decided, and this file is deleted when the list
+is empty.
 
 The list is not complete: the rules of every diagram type are still being
 searched for forms kept as written without a reason. When every form whose rules

@@ -20,8 +20,7 @@ person to the next: the same kind of mark would be printed in one way in one
 diagram type and in another way in the next. A rule is there to make a text read
 well. So where a rule gives a form that reads worse than another form that draws
 the same, the rule is what is wrong: the form is decided again, and the rule is
-corrected. Whoever is working on the formatter does not decide that alone;
-AGENTS.md (item 4) says how it is decided.
+corrected. AGENTS.md (item 4) says how it is decided.
 
 1. The whitespace beside a mark is the whitespace that Prettier prints beside
    the same kind of mark. The formatter is a plugin of Prettier, and a diagram
