@@ -195,10 +195,12 @@ Print each ordinary rule on its own line and attach its required final `;`
 without an ordinary preceding space. This exposes rule boundaries without
 changing their syntax. All four dialects require the last terminator too. ABNF
 terminators must be followed immediately by LF or EOF: `; note` is a comment and
-cannot replace a terminator (see
+cannot replace a terminator. Keep such a comment and the real terminator on
+their original sides of the line break. In ABNF, the line break between
+`r="comment"; note` and `;` stays, since mermaid.js rejects
+`r="comment"; note ;` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Keep such a comment and the real terminator on their original sides of the line
-break. Shared semicolon protection takes precedence.
+Shared semicolon protection takes precedence.
 
 [fixture: railroad/statements-one-per-line/abnf-terminator]
 
@@ -1022,10 +1024,8 @@ nonempty value and print `title value`; null or whitespace-only values print
 bare `title`. Keep quote-looking content and escape spelling, and print a run of
 spaces and tabs inside the value as one space. Do not read a value from the next
 physical line. In IR, a bare `title` stays separate from the next-line rule
-`r=terminal("x");` and the rule in `titlex=terminal("title prefix");`, since
-mermaid.js omits the rule from the Db and draws a different figure structure for
-`title r=terminal("x");` and `title x=terminal("title prefix");`, respectively
-(see
+`r=terminal("x");`, since mermaid.js omits the rule from the Db and draws a
+different figure structure for `title r=terminal("x");` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A bare title prefix followed by a rule becomes two statements, keeping the rule
 out of the title. The comparison Db omits body titles, which gives no permission
@@ -1930,11 +1930,14 @@ crosses the line too; later lines retain their written columns.
 
 mermaid.js can ignore the last semicolon of a line containing these strings. In
 railroad that semicolon can be a required rule terminator or an ABNF comment
-mark. Changing the line can therefore reject a rule or read comment text as code
-(see
+mark. Changing the line can therefore reject a rule or read comment text as
+code. Keeping the source line protects both kinds of punctuation without
+predicting how moving its contents would affect the common line rule. ABNF keeps
+the line break between `style=(":"` and `)%%{!#}%% ;`, and PEG keeps the line
+break between `r<-("sty%%{wrap}%%le:"` and `)%%{!#}%% ;`, since mermaid.js
+rejects the joined forms `style=(":")%%{!#}%% ;` and
+`r<-("sty%%{wrap}%%le:")%%{!#}%% ;`, respectively (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Keeping the source line protects both kinds of punctuation without predicting
-how moving its contents would affect the common line rule.
 
 The cost is that a rule name, string or comment containing `style` or `classDef`
 leaves that line unformatted, even when no colon or hash follows. Other lines
