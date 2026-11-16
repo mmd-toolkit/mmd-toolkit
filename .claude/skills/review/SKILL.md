@@ -185,10 +185,11 @@ Every review has a section on proper form, also when the behavior is right:
 - A behavior that a change keeps on purpose names the caller or the sentence of
   a document that needs it. What only the old code did is a finding, and so is a
   test that fixes it.
-- A form that a printer keeps as written names its reason: a run in which
-  another form changed the Db or the drawing in a version that counts, a version
-  that rejects another form, or a decision of the user. A form kept as written
-  without one of them is a finding, also where a rules document states it.
+- A form that a printer keeps as written names its reason, shown by running the
+  other form: in a version that counts, the other form changes the Db in a way
+  that no kind of exception allows or changes the drawing, or is rejected; or
+  the user decided it. A form kept as written without one of them is a finding,
+  also where a rules document states it.
 - Does it take the form the repository already uses for the same kind of thing?
 - Is its only reason an earlier decision of its author's own? Then that decision
   is reconsidered first.

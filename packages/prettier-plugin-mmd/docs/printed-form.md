@@ -2,10 +2,12 @@
 
 Formatting does not change what mermaid.js draws (AGENTS.md, item 4). A way of
 writing that draws the same is printed in one form; a way of writing that draws
-something else is kept as written. Keeping a form as written is a decision too:
-its reason is a run in which another form was drawn differently, a version that
-counts that rejects another form or draws it differently, or a decision of the
-user (AGENTS.md, item 4). This document says which form is printed, and why.
+something else is kept as written. Keeping a form as written is a decision too,
+and its reason is one of three, each shown by running the other form: in a
+version that counts, the other form changes the Db (in a way that no kind of
+exception below allows) or the drawing; a version that counts rejects the other
+form; or the user decided it (AGENTS.md, item 4). This document says which form
+is printed, and why.
 
 The rules of a diagram type are in its own document (`flowchart.md`, `gantt.md`,
 and so on). The reason of each of those rules is one of the rules below.
@@ -234,9 +236,10 @@ that name.
 Where none of these rules gives a form, it is not decided yet which form reads
 best. The output of the released version is then not changed on the judgment of
 whoever is working on it: the form is decided as AGENTS.md (item 4) says, added
-to these rules, and printed after that. Until then the text is printed as
-written, and the document of its diagram type names the form as not decided yet,
-with the form that seems to read better, not as a form kept on purpose.
+to these rules, and printed after that. Until then the output stays as the
+released version prints it, and the document of its diagram type names the form
+as not decided yet, with the form that seems to read better, not as a form kept
+on purpose.
 
 ## The versions of mermaid.js that count
 

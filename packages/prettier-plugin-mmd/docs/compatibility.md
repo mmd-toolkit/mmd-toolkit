@@ -2204,9 +2204,11 @@ form. For the whitespace between tokens the form is the one that the other
 diagram types print for the same kind of gap (see the sections above). For a
 spelling, the form is the one that the examples in the documentation of the
 pinned mermaid.js use at least twice as often as any other form. Where no form
-is used that often, or the examples use none, the spelling is kept as written. A
-line that the printer prints as written has these spellings in one form too:
-`NOTE OVER A:%%{init: {}}%%  ;ACTOR B` is printed
+is used that often, or the examples use none, this rule gives no form, and the
+spelling is decided as
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)
+says. A line that the printer prints as written has these spellings in one form
+too: `NOTE OVER A:%%{init: {}}%%  ;ACTOR B` is printed
 `Note over A:%%{init: {}}%%  ;actor B`, the whitespace, the `;`, and the
 directive staying as they are, except that the quotes of a text stay as written
 on a line that mermaid.js reads with the next one, because a comment after the
@@ -2315,7 +2317,8 @@ kind is compared again.
 ### Keywords in one case
 
 The lexers of these diagram types read a keyword in any case. The printer writes
-the keywords below in the case shown, and every other keyword as written.
+the keywords below in the case shown, and every other keyword as the paragraph
+after the list says.
 
 - Gantt chart: `axisFormat`, `dateFormat`, `excludes`, `friday`, `monday`,
   `section`, `tickInterval`, `title`, `weekday`, `weekend`.
@@ -2370,22 +2373,23 @@ usecase/arrows/arrows-semantic-case-one-form] [fixture:
 venn/keyword-case-and-order/keyword-case-one-form] [fixture:
 xychart/keyword-case/statement-keywords-one-form]
 
-A keyword that the table does not list stays as written: one that the examples
-do not use (the `todayMarker` of a Gantt chart, the `HIDE EMPTY DESCRIPTION` of
-a state diagram), one that the examples use in no case twice as often as in
-another, and one whose other case changes the Db or the drawing. A block diagram
-reads `COLUMNS` and `SPACE` as ids, a state diagram keeps the `LEFT`, `RIGHT`,
-and `OF` of a note in its Db as written, and a note with `LEFT` or `OF` was
-drawn differently, an ER diagram keeps the key `PK` or `FK` of an attribute in
-its Db as written, a Gantt chart keeps the tags `done` and `crit` and the
-`after` of a task, an xychart keeps `horizontal`, and a treeView reads `ICON(…)`
-as part of a name. An ER diagram keeps `direction`, its value, `subgraph`, and
-`end` as written too: some versions that count have no direction line and read
-`direction tb` as two entities, and some have no subgraph and read `subgraph S`
-and `end` as entities, whose names keep their case. `direction tb` and
-`direction TB` were drawn differently by the first and the same by the others. A
-text with `SUBGRAPH S` or `END` and the same text with `subgraph S` or `end`
-were drawn differently by some and the same by the others (see
+A keyword that the examples do not use (the `todayMarker` of a Gantt chart, the
+`HIDE EMPTY DESCRIPTION` of a state diagram), or use in no case twice as often
+as in another, is one that the rules give no form; it is decided as
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)
+says. A keyword whose other case changes the Db or the drawing stays as written.
+A block diagram reads `COLUMNS` and `SPACE` as ids, a state diagram keeps the
+`LEFT`, `RIGHT`, and `OF` of a note in its Db as written, and a note with `LEFT`
+or `OF` was drawn differently, an ER diagram keeps the key `PK` or `FK` of an
+attribute in its Db as written, a Gantt chart keeps the tags `done` and `crit`
+and the `after` of a task, an xychart keeps `horizontal`, and a treeView reads
+`ICON(…)` as part of a name. An ER diagram keeps `direction`, its value,
+`subgraph`, and `end` as written too: some versions that count have no direction
+line and read `direction tb` as two entities, and some have no subgraph and read
+`subgraph S` and `end` as entities, whose names keep their case. `direction tb`
+and `direction TB` were drawn differently by the first and the same by the
+others. A text with `SUBGRAPH S` or `END` and the same text with `subgraph S` or
+`end` were drawn differently by some and the same by the others (see
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
 The `style` of an ER diagram, a requirement diagram, and a Venn diagram, and the
 `classDef` of an ER diagram, a state diagram, a requirement diagram, and a

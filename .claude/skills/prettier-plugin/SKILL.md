@@ -107,10 +107,10 @@ and both outputs, and what is decided is added to those rules.
    and draws it the same. A form that one of them rejects or draws differently
    is not printed. An item whose choice keeps a form as written is a choice too:
    run the forms that the rules would print instead, and keep the written form
-   only where one of them changes the Db or the drawing in one of those
-   versions, or where the user decided it. Each case that the choice
-   distinguishes has a fixture (section 6). Attach the results, marked as
-   checked by running.
+   only where, in one of those versions, one of them changes the Db in a way
+   that no kind of exception allows or changes the drawing, or is rejected, or
+   where the user decided it. Each case that the choice distinguishes has a
+   fixture (section 6). Attach the results, marked as checked by running.
 4. Implement the forms that the rules decide. A form that would change what a
    released version printed, and a form that seems better where no rule gives
    one, is shown to the user first, with a text as written, the old and the new
@@ -121,13 +121,14 @@ and both outputs, and what is decided is added to those rules.
    that decided the form, with the facts that rule needs. A reason that says
    only "reads better" tells a reader nothing: name the rule that says why it
    reads better. The reason of a form kept as written is the run in which
-   another form changed the Db or the drawing, or the decision of the user; "as
-   written", or the author's form, is no reason. Where a rule gives a form that
-   reads worse than another form that draws the same, say so and propose the
-   other form to the user as under step 4 of this section, since the rule is
-   then what is wrong. Write what is kept as written because it affects the Db,
-   and the differences from mermaid.js, into `docs/compatibility.md` too. Keep
-   decisions in these two documents only.
+   another form changed the Db (beyond the kinds of exceptions) or the drawing,
+   or was rejected, or the decision of the user; "as written", or the author's
+   form, is no reason. Where a rule gives a form that reads worse than another
+   form that draws the same, say so and propose the other form to the user as
+   under step 4 of this section, since the rule is then what is wrong. Write
+   what is kept as written because it affects the Db, and the differences from
+   mermaid.js, into `docs/compatibility.md` too. Keep decisions in these two
+   documents only.
 
 ## 4. Writing the printer
 
@@ -185,9 +186,11 @@ How it is built (under `src/printers/`):
   diagram type adds its list to that test.
 - Gaps (`gap.ts`): comments, directives, and the `;` that the line rule ignores
   between atoms are items, printed as written, and each side of an item keeps
-  whether the source has whitespace there. The rules that add or remove
-  whitespace apply only to gaps without items. How a gap is read is decided in
-  one place, `readGapElement`, which the other scans use too.
+  whether the source has whitespace there. Keeping that whitespace is a form
+  kept as written, so it needs the reason that `docs/printed-form.md` asks for;
+  where it has none, the gap is printed by the rules of that document. The rules
+  that add or remove whitespace apply only to gaps without items. How a gap is
+  read is decided in one place, `readGapElement`, which the other scans use too.
 - What all diagram types share (the frontmatter, comments and directives before
   the body, the line break at the end of the file, Markdown code blocks) is in
   `root.ts`, `frontmatter-yaml.ts`, `parser.ts`, and `printer.ts`. The printer

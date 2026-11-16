@@ -2336,7 +2336,10 @@ mermaid.js は、トークンの異なる綴りの一部を同じトークンと
 綴りは、固定している mermaid.js の文書の例が、
 ほかのどの形よりも 2 倍以上多く使う形にします。
 そのような形がないとき、または例がその綴りを使わないときは、
-書かれたまま残します。
+この決まりは形を与えません。
+その綴りは、
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+のとおりに決めます。
 書かれたまま印字する行も、これらの綴りは 1 つの形にします。
 `NOTE OVER A:%%{init: {}}%%  ;ACTOR B` は `Note over A:%%{init: {}}%%  ;actor B`
 と印字し、空白と `;` とディレクティブはそのままです。
@@ -2450,7 +2453,7 @@ C4 図の 2 対は、テキスト中の空白やタブの連なりで Db が異�
 
 次の図種の字句解析器は、キーワードをどの大文字小文字でも読みます。
 印字は、以下のキーワードを示した大文字小文字にし、
-それ以外のキーワードは書かれたままにします。
+それ以外のキーワードは、一覧の後の段落のとおりにします。
 
 - Gantt 図: `axisFormat`、`dateFormat`、`excludes`、`friday`、`monday`、
   `section`、`tickInterval`、`title`、`weekday`、`weekend`。
@@ -2506,11 +2509,13 @@ C4 図の 2 対は、テキスト中の空白やタブの連なりで Db が異�
 [fixture: venn/keyword-case-and-order/keyword-case-one-form]
 [fixture: xychart/keyword-case/statement-keywords-one-form]
 
-一覧にないキーワードは書かれたまま残します。
-例が使わないもの（Gantt 図の `todayMarker`、
-状態遷移図の `HIDE EMPTY DESCRIPTION`）、
-ほかの大文字小文字の 2 倍以上使う形がないもの、
-別の大文字小文字で Db か描画が変わるものです。
+例が使わないキーワード（Gantt 図の `todayMarker`、
+状態遷移図の `HIDE EMPTY DESCRIPTION`）と、
+ほかの大文字小文字の 2 倍以上使う形がないキーワードは、
+決まりが形を与えません。
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+のとおりに決めます。
+別の大文字小文字で Db か描画が変わるキーワードは、書かれたまま残します。
 ブロック図は `COLUMNS` と `SPACE` を id として読み、
 状態遷移図はノートの `LEFT`、`RIGHT`、`OF` を Db に書かれたまま保ち、
 `LEFT` か `OF` のノートは異なって描かれ、
