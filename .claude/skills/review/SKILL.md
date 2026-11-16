@@ -194,10 +194,6 @@ Every review has a section on proper form, also when the behavior is right:
   allows or changes the drawing, or is rejected, as a run of the other form
   shows; or the user decided it. A form kept as written without one of them is a
   finding, also where a rules document states it.
-- A form that a printer changes text into names its reason too: the rule of
-  `docs/printed-form.md` that gives it, with the facts that rule needs, or the
-  user's decision. A form printed without one of them is a finding, also where a
-  rules document states it.
 - Does it take the form the repository already uses for the same kind of thing?
 - Is its only reason an earlier decision of its author's own? Then that decision
   is reconsidered first.

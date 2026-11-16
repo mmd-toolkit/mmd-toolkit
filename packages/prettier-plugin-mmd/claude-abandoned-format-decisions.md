@@ -2,12 +2,11 @@
 
 The formatter's rules were decided by Claude, the AI agent that wrote the
 formatter. For the forms below, Claude gave the decision up: it printed them in
-a form that no rule of [How the printed form is decided](./docs/printed-form.md)
-gives and the user did not decide. Most of them are printed as written, and no
-reason for keeping them is recorded: no run has shown that the other form
-changes the Db or the drawing, or is rejected, in a version of mermaid.js that
-counts, and the user has not decided them. They are format decisions still to be
-made, not rules.
+a form for which no reason is recorded and that the user did not decide. Most of
+them are printed as written, and no reason for keeping them is recorded: no run
+has shown that the other form changes the Db or the drawing, or is rejected, in
+a version of mermaid.js that counts, and the user has not decided them. They are
+format decisions still to be made, not rules.
 
 A form is added here only after the reason for it has been searched for, in the
 rules documents and in the records of the conversations in which it was decided,
