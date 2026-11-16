@@ -611,9 +611,13 @@ arrows/edge-id-after-data-block-directive] [fixture:
 arrows/edge-id-after-data-block-semicolon]
 
 An edge id that starts as an arrow does touches the shape or the data block
-before it, as in `A["x"]--a@-->B`. In agentflow that is an edge id that starts
-with `--`, `-.-`, or `-..-`; one such as `x--a`, `==a`, `-.a`, or `.-a` is read
-the same after whitespace, and has one space before it.
+before it, as in `A["x"]--a@-->B`. `A["x"]--a@-->B` stays attached, since
+mermaid.js reads `A["x"] --a@-->B` with edge text `a@` and edge id `L_A_B_0`
+instead of empty text and edge id `--a` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+In agentflow that is an edge id that starts with `--`, `-.-`, or `-..-`; one
+such as `x--a`, `==a`, `-.a`, or `.-a` is read the same after whitespace, and
+has one space before it.
 
 [fixture: arrows/edge-id-arrow-like-kept-attached] [fixture:
 arrows/edge-id-not-arrow-like-gets-one-space]
@@ -688,11 +692,15 @@ discards ordinary bare exterior padding, whereas internal and quoted/markdown
 label text stays, and a label of spaces and tabs only is printed as one space.
 Keep one leading/trailing space for slash, backslash, dash, quote characters,
 and when `@` in the first word would make it read as an edge id; put no space
-before slanted ?]/=] closers. Agentflow label comments are different: their
-preceding spaces/tabs are label content, so preserve that padding, the comment
-and its LF/continuation columns, including a closing bracket that belongs to the
-comment rather than closing the shape. Tildes remain content. Shape spellings,
-entities and HTML remain authored.
+before slanted ?]/=] closers. For a slash label, `A[ /x/ ]` keeps its spaces,
+since mermaid.js reads `A[/x/]` as a slanted vertex labelled `x` instead of a
+square vertex labelled `/x/` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Agentflow label comments are different: their preceding spaces/tabs are label
+content, so preserve that padding, the comment and its LF/continuation columns,
+including a closing bracket that belongs to the comment rather than closing the
+shape. Tildes remain content. Shape spellings, entities and HTML remain
+authored.
 
 [fixture: labels/labels-closers] [fixture: labels/labels-leading-sensitive]
 [fixture: labels/labels-leading-at-sign] [fixture: labels/labels-padding]
@@ -720,13 +728,14 @@ agentflow-beta TB
 
 Reuse [Whitespace between tokens](./flowchart.md#whitespace-between-tokens) and
 [Kept as written](./flowchart.md#kept-as-written): touching is lexical, and
-whitespace on both sides of & distinguishes a group from one id. Keep tight
-id/shape/:::/data suffixes, property Identifiers, actual comma-list holes
-(including empty ends), comma-bearing single ids, occurrences and order. Do not
-split ids, sort lists or manufacture a trailing comma: a style target, a class
-suffix, a second class id or a vertex id that contains commas is one Identifier,
-and only the grammar's own id lists split at commas; property operands are
-Identifiers, not numbers to rewrite.
+whitespace on both sides of & distinguishes a group from one id (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Keep tight id/shape/:::/data suffixes, property Identifiers, actual comma-list
+holes (including empty ends), comma-bearing single ids, occurrences and order.
+Do not split ids, sort lists or manufacture a trailing comma: a style target, a
+class suffix, a second class id or a vertex id that contains commas is one
+Identifier, and only the grammar's own id lists split at commas; property
+operands are Identifiers, not numbers to rewrite.
 
 [fixture: vertices-and-lists/class-list-holes] [fixture:
 vertices-and-lists/groups-suffixes]
@@ -758,7 +767,11 @@ metadata-blocks/metadata-alias-rewrite-unsafe] [fixture:
 metadata-blocks/metadata-multiline]
 
 A block on one line is printed with one space inside each end, and stays as
-written in the cases listed under [Data blocks](./flowchart.md#data-blocks).
+written in the cases listed under [Data blocks](./flowchart.md#data-blocks). In
+a block with a directive, `A@{%%{init: {}}%%x:1}` stays, since mermaid.js reads
+`A@{%%{init: {}}%%x: 1}` with metadata key `x` and value `1` instead of key
+`x:1` and value `null` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Where its line is too long it prints on lines, one entry on each, under the
 conditions listed there.
 
@@ -779,7 +792,10 @@ For a block whose opener is immediately followed by a newline, move all body
 lines by the same number of ASCII spaces so the shallowest text is one level
 inside the statement, including in a `flow` body. Nested YAML keeps its relative
 indentation; a separate `}` aligns with the statement, and a closer after text
-moves with that line.
+moves with that line. For nested YAML, `y: 1` stays indented beneath `x:`, since
+mermaid.js reads the same lines at equal indentation with separate metadata keys
+`x` and `y` instead of `y` inside `x` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: metadata-blocks/zero-and-shallow] [fixture:
 metadata-blocks/deep-nested-yaml] [fixture: metadata-blocks/closing-after-text]
@@ -931,9 +947,13 @@ agentflow-beta TB
 Reuse [Blank lines](./flowchart.md#blank-lines): one blank groups statements;
 more add nothing. Collapse ordinary and whitespace-only runs to one and drop
 document/body-edge blanks, including inside flows/globals. Preserve blanks
-inside values, metadata and directives. Agentflow comments leave LF and do not
-consume following blanks; no blank-line-pairing divergence applies. Default size
-branches override ordinary blank layout.
+inside values, metadata and directives. In a quoted vertex label, the blank line
+between `x` and `y` stays, since mermaid.js draws different geometry when those
+two lines are adjacent (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Agentflow comments leave LF and do not consume following blanks; no
+blank-line-pairing divergence applies. Default size branches override ordinary
+blank layout.
 
 [fixture: blank-lines/blank-comment-content] [fixture: blank-lines/blank-runs]
 [fixture: blank-lines/blank-value]
@@ -1054,10 +1074,12 @@ remains strictly below 50000; otherwise retain the complete diagram and ending.
 [fixture: default-size-branches/size-below-planned-crossing]
 
 This prevents comment removal from changing the Db, including a restored host
-BOM, growth from indentation/final LF, and shrinkage from trimming. Never remove
-authored comments to meet the limit. Frontmatter remains eligible for guarded
-YAML formatting; configured CR/LF conversion remains shared. An escaped test
-string covers the restored BOM; the corpus covers CRLF at the size boundary.
+BOM, growth from indentation/final LF, and shrinkage from trimming (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Never remove authored comments to meet the limit. Frontmatter remains eligible
+for guarded YAML formatting; configured CR/LF conversion remains shared. An
+escaped test string covers the restored BOM; the corpus covers CRLF at the size
+boundary.
 
 [test: agentflow: size-bom-grow-unsafe] [corpus fixture:
 agentflow/comment-default-size-above-crlf]
@@ -1357,9 +1379,15 @@ additional step; keep string/markdown/split text, Name, metadata, directive and
 multiline click continuation columns. An extra whitespace character in a click
 gap after the ids and the callback can reject (see
 [Click statements](#click-statements)). Agentflow folds only line whitespace
-immediately before the next LF after a closing brace; later blank LFs remain.
+immediately before the next LF after a closing brace; later blank LFs remain. In
+a quoted label, the blank line after `a}` and before the indented `b` stays,
+since mermaid.js draws different geometry when that blank line is removed (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Keep those raw value lines, including LS/PS/VT/FF/NBSP, and never align an
-opaque data closer as an accessibility closer.
+opaque data closer as an accessibility closer. In a quoted vertex label, U+2028
+between `x` and `y` stays, since mermaid.js draws different text and geometry if
+LF replaces it (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: multiline-statements-and-values/brace-blank-kept] [fixture:
 multiline-statements-and-values/multiline-chain] [fixture:
@@ -1755,8 +1783,9 @@ fence/list/quote indentation. Test top-level, nested-list and block-quote hosts,
 options, values, directives, names and large retained payloads separately from
 their dedented Db. Prettier trims final code-block line whitespace, which can
 reject a final all-whitespace style; this host limitation also applies to
-declined failures and does not authorize trimming standalone value text. Judge
-the size branch on the dedented payload.
+declined failures and does not authorize trimming standalone value text (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Judge the size branch on the dedented payload.
 
 [fixture: markdown-fences/markdown-list-payload]
 
@@ -1781,15 +1810,18 @@ call parentheses belongs to its name, and argument/string text is authored.
 Normalize the harmless first click-keyword gap; keep the id/list/value suffix
 and multiline columns, including href/call presence, targets,
 punctuation/numeric/prototype ids, holes, URL/tooltip whitespace and a second
-call supplying arguments. Agentflow retains each erased click/empty
-description/string/markdown/call in textBeforeUrl/textBeforeTooltip with its
-exact source gaps, including either side of href. It has no prefix field before
-a callback name or target. The single whitespace characters required before
-tooltips and targets stay written; terminal empty descriptions are following
-statements. The erased prefixes are kept because the specification accepts them
-and the tree holds them in textBeforeUrl/textBeforeTooltip, so dropping one
-would lose written text; flowchart's rule for the reserved word `click`, which
-rejects such input, does not apply to Agentflow.
+call supplying arguments. In `click A cb "x  y"`, the two spaces in the tooltip
+stay, since mermaid.js gives `click A cb "x y"` different tooltip text (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Agentflow retains each erased click/empty description/string/markdown/call in
+textBeforeUrl/textBeforeTooltip with its exact source gaps, including either
+side of href. It has no prefix field before a callback name or target. The
+single whitespace characters required before tooltips and targets stay written;
+terminal empty descriptions are following statements. The erased prefixes are
+kept because the specification accepts them and the tree holds them in
+textBeforeUrl/textBeforeTooltip, so dropping one would lose written text;
+flowchart's rule for the reserved word `click`, which rejects such input, does
+not apply to Agentflow.
 
 [fixture: click-statements/callback-padding-unsafe] [fixture:
 click-statements/tooltip-required-tab] [fixture: click-statements/url-form-kept]
@@ -1828,8 +1860,12 @@ between the parentheses of a blank callback]
 A statement whose line breaks are all inside a string or between the parentheses
 of a call with arguments has its first click-keyword gap normalized like one on
 a single line, and the rest stays written: `click   A "/u" "x` and `  y"` on the
-next line is printed `click A "/u" "x` and `  y"`. A line break in a gap, or
-between the blank parentheses of `f(` and `)`, keeps the statement as written.
+next line is printed `click A "/u" "x` and `  y"`. For the tooltip beginning
+with `x` in `click   A "/u"`, the next line keeps two spaces before `y`, since
+mermaid.js gives the form with four spaces different tooltip text (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A line break in a gap, or between the blank parentheses of `f(` and `)`, keeps
+the statement as written.
 
 [fixture: click-statements/string-over-lines-keyword-gap] [fixture:
 click-statements/callback-parentheses-over-lines]
