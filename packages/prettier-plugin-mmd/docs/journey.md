@@ -484,7 +484,10 @@ or at its end, which the Db keeps and which is drawn without (see
 `title   My trip  ` is printed `title My trip`. The name of a `section` is
 printed as written, the whitespace at its start and at its end included: two
 sections whose names differ by it are drawn apart, and would not be once it is
-left out. A title of spaces and tabs only stays as written.
+left out. A title of spaces and tabs only stays as written. For `title` followed
+by two spaces, a tab, and a space, mermaid.js rejects the form with only one
+space after `title` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: titles-and-sections/title-padding-dropped] [fixture:
 titles-and-sections/title-blank-kept] [fixture:
@@ -750,10 +753,15 @@ multi-line-statements/value-on-next-line-joined]
 In `accTitle` and `accDescr:` statements, keep trivia line breaks and align
 later structural parts and standalone trivia one continuation level inside the
 statement, also under a section. Preserve each first gap-line tail and complete
-directive interiors. Joining comment regions keep their original layout. A `;`
-does not keep a statement over several lines from being joined: no `;` separates
-statements in a journey, and the first line of such a statement holds only its
-keyword, so joining its lines cannot change which `;` the line rule ignores.
+directive interiors. Joining comment regions keep their original layout. For an
+`accDescr` under a section with `%% colon`, `:`, `%% text`, and `D` on separate
+following lines, the break before `%% colon` stays, since mermaid.js rejects
+`accDescr %% colon` on one line with the rest unchanged (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A `;` does not keep a statement over several lines from being joined: no `;`
+separates statements in a journey, and the first line of such a statement holds
+only its keyword, so joining its lines cannot change which `;` the line rule
+ignores.
 
 [fixture: multi-line-statements/semicolon-value-joined] [fixture:
 multi-line-statements/accessibility-trivia-continuations]
