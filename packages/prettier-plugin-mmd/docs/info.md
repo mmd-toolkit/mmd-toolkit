@@ -188,8 +188,10 @@ For blocks that keep their braces, use the
 and opening brace with one space so the block boundary is clear. Collapse
 exterior runs to one space, including plain opener whitespace across physical or
 Unicode line boundaries. Real opener trivia keeps its break and uses the shared
-continuation indentation. For example, with `%% c` and `{D}` on successive lines
-after `accDescr`, mermaid.js rejects moving the comment onto the keyword's line.
+continuation indentation. For example, `accDescr`, `%% c` and `{D}` on
+successive lines stay separate, since mermaid.js rejects `accDescr %% c`
+followed by `{D}` on the next line (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Empty whitespace-only blocks print `{}` because no text needs surrounding
 spaces. Comment-only blocks keep their comments one level inside; a standalone
 closer aligns with the statement. Ordinary description body and standalone
@@ -209,6 +211,8 @@ and backslashes do not protect the first closing brace.
 [fixture: info/description-blocks/block-comment-only]
 
 [fixture: info/description-blocks/block-opener-trivia]
+
+[fixture: info/description-blocks/block-opener-comment]
 
 [fixture: info/description-blocks/block-first-close]
 
@@ -332,9 +336,10 @@ arbitrary/multiline body, global cuts, consumed/spare LF and closing padding.
 All four common statements retain hidden textAfter forms, including space/tab,
 spare-LF and EOF boundaries. For example, mermaid.js rejects removing the
 trailing space after `title T%%{! ignored }%%` when `accTitle: A` follows on the
-next line. Forms after visible EOL belong to the body. Keep fallback comments
-classified as comments: adding a boundary to a glued closer could revive a
-swallowed flag.
+next line (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Forms after visible EOL belong to the body. Keep fallback comments classified as
+comments: adding a boundary to a glued closer could revive a swallowed flag.
 
 [fixture: info/hidden-directives/hidden-body]
 
@@ -399,11 +404,10 @@ Use [shared comment placement](./pie.md#comments) to keep attachment and source:
 preheader comments start at column one, ordinary standalone body comments one
 step in, and inline comments on their line. Touching stays touching; a separated
 gap becomes one space. Preserve marks, contents and trailing spaces. Native
-comments end at physical LF, keeping LS/PS. For example, after the header, some
-version of mermaid.js that counts rejects replacing the LS between `%% c` and
-`title T` with LF. A bare percent line inside an earlier block may be value
-text. Common removed regions retain swallowed source and continuation columns.
-Retained prefixes and protected segments override alignment.
+comments end at physical LF, keeping LS/PS. A bare percent line inside an
+earlier block may be value text. Common removed regions retain swallowed source
+and continuation columns. Retained prefixes and protected segments override
+alignment.
 
 [fixture: info/comments/comments-align]
 
@@ -688,10 +692,9 @@ Follow [shared line endings](./compatibility.md#line-endings): Prettier
 normalizes CR/CRLF and emits configured LF/CRLF/CR, including in values, hidden
 text and frontmatter. Preserve internal LS/PS/NBSP/BOM according to their
 lexical role; common line edges trim and plain block-opener whitespace joins.
-For example, mermaid.js rejects replacing the LS between `x` and `y` in a
-`title` value with LF. Invalid native Unicode gaps remain rejected. Prettier
-removes and restores a leading BOM; an opening-fence BOM can therefore let the
-host read hidden YAML as real frontmatter. Byte identity is not guaranteed.
+Invalid native Unicode gaps remain rejected. Prettier removes and restores a
+leading BOM; an opening-fence BOM can therefore let the host read hidden YAML as
+real frontmatter. Byte identity is not guaranteed.
 
 [test: info/line-terminators-and-unicode/eol-cr-body]
 
