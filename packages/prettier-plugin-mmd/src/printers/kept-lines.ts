@@ -1,4 +1,4 @@
-import type { Node, Range } from "@mmd-toolkit/ast"
+import type { ErStatement, Node, Range } from "@mmd-toolkit/ast"
 import { appendItems, findNodes, minOf, maxOf } from "./collections.ts"
 import type { Source } from "./source.ts"
 import {
@@ -11,6 +11,7 @@ import {
   findTriviaBetween,
   isAtLineEnd,
   isCssWhitespace,
+  isLineSeparator,
   isSpaceOrTab,
   isWhitespace,
   isWordCharacter,
@@ -70,6 +71,12 @@ interface SemicolonRules {
    * components never join (docs/railroad.md and docs/wardley.md, Semicolons).
    */
   readonly verbatimStyleLines: false | "word" | "semicolon"
+  /**
+   * The `;` in comments that the printer moves to a line of their own: they
+   * are no `;` of the line they are written on (see
+   * `findMovedCommentSemicolons`).
+   */
+  readonly movedCommentSemicolons: ReadonlySet<number>
 }
 
 const semicolonRulesBySource = new WeakMap<Source, SemicolonRules>()
@@ -95,6 +102,7 @@ function semicolonRulesOf(source: Source): SemicolonRules {
       )
       rules = {
         kind: "required",
+        movedCommentSemicolons: new Set(),
         verbatimStyleLines: "word",
         grammatical: new Set([
           ...terminators,
@@ -124,7 +132,12 @@ function semicolonRulesOf(source: Source): SemicolonRules {
         )
         if (mark !== undefined) grammatical.add(mark.range[0])
       }
-      rules = { kind: "text", grammatical, verbatimStyleLines: "semicolon" }
+      rules = {
+        kind: "text",
+        grammatical,
+        movedCommentSemicolons: new Set(),
+        verbatimStyleLines: "semicolon",
+      }
       break
     }
     case "FlowchartDiagram":
@@ -135,6 +148,15 @@ function semicolonRulesOf(source: Source): SemicolonRules {
       rules = {
         kind: "separators",
         grammatical: new Set(),
+        movedCommentSemicolons: new Set(),
+        verbatimStyleLines: false,
+      }
+      break
+    case "ErDiagram":
+      rules = {
+        kind: "text",
+        grammatical: new Set(),
+        movedCommentSemicolons: findMovedCommentSemicolons(source, body.body),
         verbatimStyleLines: false,
       }
       break
@@ -142,6 +164,7 @@ function semicolonRulesOf(source: Source): SemicolonRules {
       rules = {
         kind: "text",
         grammatical: new Set(),
+        movedCommentSemicolons: new Set(),
         verbatimStyleLines: false,
       }
   }
@@ -247,6 +270,7 @@ function visitOwnSemicolons(
       if (
         text[offset] === ";" &&
         !rules.grammatical.has(offset) &&
+        !rules.movedCommentSemicolons.has(offset) &&
         !isDroppedSemicolon(source, offset)
       )
         visit(offset)
@@ -937,8 +961,194 @@ export function findSeparatorDroppedWithTerminator(
 ): number {
   return source.root.body.type === "ErDiagram" &&
     isDroppedSemicolon(source, offset)
-    ? (findSeparatorBeforeCommentTerminator(source, offset)?.separator ?? -1)
+    ? (findSeparatorBeforeCommentTerminator(source, offset)?.separator ??
+        findSeparatorBeforeTerminator(source, offset))
     : -1
+}
+
+/**
+ * The first U+2028 or U+2029 of the whitespace right before the `;` at
+ * `offset` of an ER `classDef` or `style` statement, or -1: where nothing but
+ * U+2028, U+2029, spaces, tabs, vertical tabs, and form feeds stands between it
+ * and the `;`, and no line feed lies in the whitespace. The `;` is dropped, no
+ * comment line that mermaid.js removes follows it (see
+ * `findSeparatorBeforeCommentTerminator`), and the character is no text of the
+ * style that the figure needs: it is dropped with the `;` (docs/er.md,
+ * Semicolons at the end of a style statement).
+ */
+function findSeparatorBeforeTerminator(source: Source, offset: number): number {
+  let separator = -1
+  for (let at = offset - 1; at >= 0; at--) {
+    const character = source.text[at]
+    if (character === "\u2028" || character === "\u2029") separator = at
+    else if (!isTrimmedAfterSeparator(character, "ErDiagram")) break
+  }
+  return separator
+}
+
+/**
+ * The first U+2028 or U+2029 of the whitespace that ends the line of the last
+ * style, which runs from `start` to `end`, of an ER `classDef` or `style`
+ * statement that no `;` ends, or -1: nothing but U+2028, U+2029, spaces, tabs,
+ * vertical tabs, and form feeds stands between it and the line feed. mermaid.js
+ * keeps the character in the text of the style and draws the same figure
+ * without it, so it is dropped where it ends the style. The line stays as
+ * written where dropping the character could change what mermaid.js reads:
+ * the style takes text after the line feed (a comment line with a statement
+ * after it, or whitespace between the character and the line feed, joins the
+ * next line to the style); a comment follows the character on its line with no
+ * second U+2028 or U+2029 before it, which mermaid.js removes as a comment line
+ * only because the character stands before it; or whitespace and a directive
+ * follow the character, where the directive leaves the whitespace behind. A
+ * second character before a comment makes it a comment line, which is printed
+ * on a line of its own, and a directive that touches the character is read the
+ * same without it. Other whitespace, such as a no-break space, is text of the
+ * style, and so is a `;` that the style holds: the line rule may read it
+ * (docs/er.md, Semicolons at the end of a style statement).
+ */
+export function findSeparatorEndingStyle(
+  source: Source,
+  start: number,
+  end: number,
+): number {
+  if (source.text.slice(start, end).includes(";")) return -1
+  let lineEnd = start
+  while (lineEnd < source.text.length && !isAtLineEnd(source, lineEnd))
+    lineEnd++
+  if (lineEnd > end && !leavesNoTextOfTheStyleAfter(source, end, lineEnd))
+    return -1
+  if (lineEnd < end && textRead(source, lineEnd, end).trim() !== "") return -1
+  return findSeparatorRunStart(source, start, Math.min(end, lineEnd))
+}
+
+/**
+ * Whether what stands from `end` to the end of the line at `lineEnd` leaves no
+ * text of the style: whitespace; comment lines that mermaid.js removes after a
+ * U+2028 or U+2029 that starts them, with a directive before the comment or
+ * not; or directives of which the first touches a U+2028 or U+2029, which
+ * mermaid.js removes before it reads the style. A directive after whitespace
+ * stays on the line of the style: the whitespace is text of the style.
+ */
+function leavesNoTextOfTheStyleAfter(
+  source: Source,
+  end: number,
+  lineEnd: number,
+): boolean {
+  const rest = source.text.slice(end, lineEnd)
+  if (rest.trim() === "") return true
+  if (textRead(source, end, lineEnd).trim() !== "") return false
+  if (
+    findTriviaBetween(source, end, lineEnd).some(
+      (item) => item.type === "Comment",
+    )
+  )
+    return [...rest].some(isLineSeparator)
+  return findDirectiveTouchingSeparator(source, end, lineEnd) >= 0
+}
+
+/**
+ * The offset of the first directive of what stands from `end` to the end of
+ * the line at `lineEnd`, where that is nothing but directives and the first
+ * touches a U+2028 or U+2029 that ends the last style of an ER `classDef` or
+ * `style` statement: nothing but U+2028 and U+2029 stands between `end` and
+ * the directive, and one of them stands right before it. -1 where it is not.
+ * The printer drops the characters and prints the directive right after the
+ * style, as mermaid.js removes the directive before it reads the style
+ * (docs/er.md, Semicolons at the end of a style statement).
+ */
+export function findDirectiveTouchingSeparator(
+  source: Source,
+  end: number,
+  lineEnd: number,
+): number {
+  if (textRead(source, end, lineEnd).trim() !== "") return -1
+  const items = findTriviaBetween(source, end, lineEnd)
+  const first = items[0]
+  if (
+    first === undefined ||
+    !items.every((item) => item.type === "Directive") ||
+    ![...source.text.slice(end, first.range[0])].every(isLineSeparator) ||
+    !isLineSeparator(source.text[first.range[0] - 1])
+  )
+    return -1
+  return first.range[0]
+}
+
+/**
+ * The `;` that ends the ER `classDef` or `style` statement that ends at
+ * `statementEnd`: a `;` of the statement, or one that the line rule ignores
+ * right after it; -1 where no `;` ends it.
+ */
+export function findStyleTerminator(
+  source: Source,
+  statementEnd: number,
+): number {
+  const unit = findTokenEndingBefore(source, statementEnd)
+  if (unit?.value === ";") return unit.range[0]
+  return source.ignoredSemicolons.has(statementEnd) ? statementEnd : -1
+}
+
+/**
+ * The offsets of the `;` in the comments that the printer moves to a line of
+ * its own with the U+2028 or U+2029 that it drops from the end of an ER
+ * `style` or `classDef` statement that no `;` ends (see
+ * `findSeparatorEndingStyle`). mermaid.js removes such a comment as a comment
+ * line, with its `;`, and it is read the same on a line of its own, so its `;`
+ * is no `;` of the line on which it is written (docs/er.md, Semicolons at the
+ * end of a style statement).
+ */
+function findMovedCommentSemicolons(
+  source: Source,
+  statements: readonly ErStatement[],
+): ReadonlySet<number> {
+  const offsets = new Set<number>()
+  for (const statement of statements) {
+    if (statement.type === "ErSubgraphStatement") {
+      for (const offset of findMovedCommentSemicolons(source, statement.body))
+        offsets.add(offset)
+    }
+    if (
+      statement.type !== "ErStyleStatement" &&
+      statement.type !== "ErClassDefStatement"
+    )
+      continue
+    const last = statement.styles.at(-1)
+    if (
+      last === undefined ||
+      findStyleTerminator(source, statement.range[1]) >= 0 ||
+      findSeparatorEndingStyle(source, last.range[0], last.range[1]) < 0
+    )
+      continue
+    const lineEnd = lineEndOf(source, statement.range[1])
+    for (const comment of source.root.comments) {
+      if (comment.range[0] < statement.range[1] || comment.range[0] >= lineEnd)
+        continue
+      for (let offset = comment.range[0]; offset < comment.range[1]; offset++)
+        if (source.text[offset] === ";") offsets.add(offset)
+    }
+  }
+  return offsets
+}
+
+/**
+ * The first U+2028 or U+2029 of the run of U+2028, U+2029, spaces, tabs,
+ * vertical tabs, and form feeds that ends at `end`, or -1. The last style of
+ * an ER `classDef` or `style` statement whose `;` the printer drops ends in
+ * such a run where no other whitespace follows the character in its range, and
+ * the printer drops the character with it (see `findSeparatorEndingStyle`).
+ */
+export function findSeparatorRunStart(
+  source: Source,
+  start: number,
+  end: number,
+): number {
+  let separator = -1
+  for (let at = end - 1; at >= start; at--) {
+    const character = source.text[at]
+    if (character === "\u2028" || character === "\u2029") separator = at
+    else if (!isTrimmedAfterSeparator(character, "ErDiagram")) break
+  }
+  return separator
 }
 
 /**

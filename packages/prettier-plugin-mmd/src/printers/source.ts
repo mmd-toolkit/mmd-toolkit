@@ -147,6 +147,11 @@ export function isCssWhitespace(character: string): boolean {
   return isSpaceOrTab(character) || character === "\u000c"
 }
 
+/** Whether a character is U+2028 or U+2029. */
+export function isLineSeparator(character: string | undefined): boolean {
+  return character === "\u2028" || character === "\u2029"
+}
+
 /**
  * Whether a character is an ASCII letter, an ASCII digit, or `_`: the
  * characters that the lexers read as a word (common.md, Notation).
@@ -666,6 +671,13 @@ function findCommentRegions(
       end,
       hasTextAfter: end < contentEnd,
     })
+  }
+  // Regions that touch are removed together: text follows all of them, and the
+  // last one decides, not the next comment line, which is removed too.
+  for (let index = joining.length - 2; index >= 0; index--) {
+    const [region, next] = [joining[index], joining[index + 1]]
+    if (next.start === region.end)
+      joining[index] = { ...region, hasTextAfter: next.hasTextAfter }
   }
   return { all, joining }
 }

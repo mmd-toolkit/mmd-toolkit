@@ -2,10 +2,12 @@ import type { AstPath, Doc, ParserOptions } from "prettier"
 import { builders } from "prettier/doc"
 import type {
   ErAttribute,
+  ErClassDefStatement,
   ErDiagram,
   ErEntityStatement,
   ErIgnoredText,
   ErStatement,
+  ErStyleStatement,
   ErSubgraphStatement,
   Range,
   Token,
@@ -31,6 +33,7 @@ import {
 import {
   classifyErStatement,
   findAttributeBraces,
+  findDroppedSeparator,
   findEmptyBlockClosingGap,
   findSubgraphHeaderEnd,
   hasAttributeBlock,
@@ -44,7 +47,11 @@ import {
   layoutSubgraphOpening,
 } from "./er-layout.ts"
 import { expectToken, layoutKeywordHeader, toAsciiLowerCase } from "./layout.ts"
-import { isFirstOnItsLine, lineEndOf } from "./kept-lines.ts"
+import {
+  findDirectiveTouchingSeparator,
+  isFirstOnItsLine,
+  lineEndOf,
+} from "./kept-lines.ts"
 import { indentationOf, printAsWritten } from "./lines.ts"
 import { narrowPath } from "./paths.ts"
 import type { Source } from "./source.ts"
@@ -255,6 +262,11 @@ function printSubgraph(
  */
 function printedErEnd(source: Source, statement: ErStatement): number {
   const from = statement.range[1]
+  if (
+    statement.type === "ErStyleStatement" ||
+    statement.type === "ErClassDefStatement"
+  )
+    return endOfSeparatorsBeforeDirective(source, statement)
   if (statement.type !== "ErSubgraphStatement") return from
   const lineEnd = lineEndOf(source, from)
   let end = from
@@ -270,6 +282,30 @@ function printedErEnd(source: Source, statement: ErStatement): number {
     if (isNameWhitespace(character)) end = position + 1
   }
   return end
+}
+
+/**
+ * Where the printed text of a `classDef` or `style` statement ends: after the
+ * U+2028 and U+2029 that the printer drops between the last style and a
+ * directive that touches them, which the tree leaves out of the statement
+ * where comment lines follow the line. The block consumes them, so that the
+ * directive is printed right after the style (docs/er.md, Semicolons at the
+ * end of a style statement).
+ */
+function endOfSeparatorsBeforeDirective(
+  source: Source,
+  statement: ErStyleStatement | ErClassDefStatement,
+): number {
+  const from = statement.range[1]
+  const last = statement.styles.at(-1)
+  if (last === undefined || findDroppedSeparator(source, last, from) < 0)
+    return from
+  const directive = findDirectiveTouchingSeparator(
+    source,
+    from,
+    lineEndOf(source, from),
+  )
+  return directive < 0 ? from : directive
 }
 
 /**

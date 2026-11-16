@@ -651,7 +651,7 @@ mermaid.js stores, separately from the permitted eventmodeling body margins in
 their trailing spaces and tabs, with a run of spaces, tabs, and form feeds
 before a `%%` comment as one space where the formatter prints it so (see below),
 and those of an ER diagram also without the U+2028 and U+2029 that the formatter
-drops with a `;` (see
+drops at the end of a style (see
 [Semicolons at the end of a style statement](./er.md#semicolons-at-the-end-of-a-style-statement)).
 
 Whitespace of another kind at the end (a no-break space, U+3000, a vertical tab,

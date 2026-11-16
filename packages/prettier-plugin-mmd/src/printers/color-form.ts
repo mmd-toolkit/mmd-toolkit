@@ -11,6 +11,7 @@ import {
   withJoinedLines,
   withUnusualStyleEnds,
 } from "./kept-lines.ts"
+import { findDroppedSeparator } from "./er-layout.ts"
 import { findTreemapStyleEnd } from "./treemap-layout.ts"
 import { findStateStyleEnd } from "./state-layout.ts"
 import type { Source } from "./source.ts"
@@ -199,6 +200,16 @@ function styleColorEnd(
     return findStateStyleEnd(source, style)
   if (statement.type === "TreemapClassDefStatement")
     return Math.min(end, findTreemapStyleEnd(source, statement) ?? end)
+  // An ER diagram drops the U+2028 or U+2029 that ends the last style, so the
+  // color before it ends the printed text.
+  if (
+    isLast &&
+    (statement.type === "ErClassDefStatement" ||
+      statement.type === "ErStyleStatement")
+  ) {
+    const separator = findDroppedSeparator(source, style, statement.range[1])
+    if (separator >= 0) return separator
+  }
   const { body } = source.root
   const plan =
     body.type === "FlowchartDiagram"
