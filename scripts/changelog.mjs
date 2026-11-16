@@ -9,7 +9,7 @@ import github from "@changesets/changelog-github"
 
 const changelogFunctions = {
   getReleaseLine: github.getReleaseLine,
-  getDependencyReleaseLine: async (changesets, dependenciesUpdated, options) => {
+  getDependencyReleaseLine: (_changesets, dependenciesUpdated, options) => {
     if (dependenciesUpdated.length === 0) return ""
     return [
       "- Updated dependencies:",
