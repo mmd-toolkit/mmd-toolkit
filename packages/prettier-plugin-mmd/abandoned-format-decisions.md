@@ -1,10 +1,12 @@
-# Work left on the printed forms
+# Format decisions abandoned without a reason, to be fixed
 
-The formatter prints the forms below as written, although no rule of
+Whoever decided the format of the forms below gave the decision up and printed
+them as written, although no rule of
 [How the printed form is decided](./docs/printed-form.md) gives that form and no
 reason for keeping it is recorded: no run has shown that the other form changes
 the Db or the drawing, or is rejected, in a version of mermaid.js that counts,
-and the user has not decided them. They are work still to do, not rules.
+and the user has not decided them. They are format decisions still to be made,
+not rules.
 
 Each form is decided in this way. The other form is run in the versions that
 count. Where it changes the Db in a way that no kind of exception allows,
@@ -34,12 +36,3 @@ searched for forms kept as written without a reason.
 | railroad                                     | A comma of EBNF, kept or left out as written                                            |
 | sequence                                     | No space between `participant` and a quoted name, as in `participant"A"`                |
 | journey                                      | A score with a leading zero, such as `05`                                               |
-
-## Rows still missing from the table of kept forms
-
-[How the printed form is decided](./docs/printed-form.md#the-versions-of-mermaidjs-that-count)
-gives a row of
-[Forms kept for versions of mermaid.js that count](./docs/compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)
-to a form that the pinned version itself rejects, reads, or draws differently.
-The forms kept for that reason before this rule have no row yet; each is added
-as the rules of its diagram type are searched.

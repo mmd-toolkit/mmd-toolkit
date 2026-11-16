@@ -115,12 +115,13 @@ decided as section 4 of that document says.
    that decided the form, with the facts that rule needs. A reason that says
    only "reads better" tells a reader nothing: name the rule that says why it
    reads better. A form found printed as written without such a reason, and not
-   decided yet, is added to `undecided-forms.md` of this package until it is
-   decided. Where a rule gives a form that reads worse than another form that
-   draws the same, say so and propose the other form to the user as under step 4
-   of this section, since the rule is then what is wrong. Write what is kept as
-   written because it affects the Db, and the differences from mermaid.js, into
-   `docs/compatibility.md` too. Keep decisions in these two documents only.
+   decided yet, is added to `abandoned-format-decisions.md` of this package
+   until it is decided. Where a rule gives a form that reads worse than another
+   form that draws the same, say so and propose the other form to the user as
+   under step 4 of this section, since the rule is then what is wrong. Write
+   what is kept as written because it affects the Db, and the differences from
+   mermaid.js, into `docs/compatibility.md` too. Keep decisions in these two
+   documents only.
 
 ## 4. Writing the printer
 
