@@ -45,7 +45,10 @@ those denote characters, not backslashes in a diagram. See
 
 The exact `venn-beta` header stands at column one so the diagram is easy to
 find; ordinary header-line statements move to body lines, while attached
-fragments, directives and kept parts retain their relations.
+fragments, directives and kept parts retain their relations. The header
+`venn-beta;%% c` stays as written, since mermaid.js rejects `venn-beta; %% c`
+(see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [corpus fixture: venn/header-before-comment] [corpus fixture:
 venn/header-before-directive] [corpus fixture:
@@ -269,12 +272,10 @@ Standalone comments align with the next statement, or the last statement at EOF,
 to show their association. Trailing comments retain touching versus spaced
 attachment, reducing an ordinary spaced gap to one space; a swallowed
 `VennIgnoredText` fragment remains touching its comment because detaching it can
-reject the input (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-The lexer swallows a preceding fragment by position, so adding or removing the
-gap before a comment can change which fragment is swallowed. A required
-one-character name that a comment already swallows is rejected, and no space is
-added to rescue it. Comment contents, including trailing spaces and
+reject the input. The lexer swallows a preceding fragment by position, so adding
+or removing the gap before a comment can change which fragment is swallowed. A
+required one-character name that a comment already swallows is rejected, and no
+space is added to rescue it. Comment contents, including trailing spaces and
 U+2028/U+2029 through LF or EOF, stay whole; percent pairs inside values remain
 value text. Protected gaps retain comment and mode boundaries.
 

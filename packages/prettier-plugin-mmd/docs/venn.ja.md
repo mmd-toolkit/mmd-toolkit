@@ -51,6 +51,11 @@ mermaid.js の読み方を保ち、Db が同じ複数の形から選ぶ場合は
 正確な `venn-beta` ヘッダーを1列目に置き、図の始まりを見つけやすくします。
 通常のヘッダー行の文は本文の行へ移し、接する断片、ディレクティブ、
 保持部分の関係は保ちます。
+ヘッダーの `venn-beta;%% c` は、`venn-beta; %% c` を mermaid.js が拒否するため、
+そのまま残します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [corpus fixture: venn/header-before-comment]
 [corpus fixture: venn/header-before-directive]
@@ -285,9 +290,6 @@ venn-beta
 後続コメントの接触と空白の有無は保ち、通常の空白の隙間は1つにします。
 飲み込まれる `VennIgnoredText` の断片はコメントに接したまま保ちます。
 離すと入力が拒否されることがあるためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 字句解析は直前の断片を位置で飲み込むので、
 コメントの前の隙間を足したり除いたりすると、
 飲み込まれる断片が変わることがあります。
