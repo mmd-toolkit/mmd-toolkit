@@ -773,8 +773,8 @@ uses one space: `accDescr{  }` becomes `accDescr {}`.
 [fixture: empty-description-blocks/empty-whitespace-interiors] [test: quadrant
 Unicode and tab interiors]
 
-A block with a directive or a comment line keeps its contents and line breaks,
-with body indentation under
+A block with a comment line keeps its contents and line breaks, with body
+indentation under
 [Titles and accessibility statements](#titles-and-accessibility-statements). An
 `accDescr` block containing only a line `%% c` stays over several lines, since
 mermaid.js reads `accDescr { %% c }` as the description `%% c` instead of an
@@ -859,11 +859,11 @@ A `;` alone does not prevent joining.
 [fixture: multi-line-statements/semicolon-on-the-last-line-joined]
 
 The name of a class of `classDef` that goes on across a joining comment region
-keeps the statement as written too: `classDef a`, U+2028, `%% c`, and a line
-`b color: #f00` are the class `a`, U+2028, `b`. Only the first line is indented,
-and a statement after it is printed on a line of its own. In this form, the line
-`b color: #f00` stays unindented, since mermaid.js rejects the same line with
-two leading spaces (see
+keeps the statement as written too: `classDef A`, U+2028, `%% c`, and a line
+`Bar color: #ff0000` are the class `A`, U+2028, `Bar`. Only the first line is
+indented, and a statement after it is printed on a line of its own. In this
+form, the line `Bar color: #ff0000` stays unindented, since mermaid.js rejects
+the same line with two leading spaces (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [test: a comment line after U+2028 inside the name of a class] [test: a comment
@@ -1178,8 +1178,8 @@ U+00A0, U+3000, and U+FEFF are characters of a word and stay in a text, a name,
 and the name of a class; but around the `:`, the brackets, and the comma of a
 point, and around the colon and the brace of an accessibility statement,
 mermaid.js reads them as whitespace, and a space is printed in their place. The
-U+00A0 between `A` and `B` in a `quadrant-1` text stays, since mermaid.js draws
-different text for `quadrant-1 A B` (see
+U+00A0 between `a` and `b` in a `quadrant-1` text stays, since mermaid.js draws
+different text for `quadrant-1 a b` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 After the `]` of a point they are not accepted (see
 [Line separators](#line-separators)).

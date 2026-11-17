@@ -797,7 +797,7 @@ quadrantChart
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: quadrant Unicode and tab interiors]
 
-指令かコメント行の内容と改行は保ち、
+コメント行を含むブロックの内容と改行は保ち、
 本文の字下げは
 [title とアクセシビリティの文](#title-とアクセシビリティの文)に従います。
 `%% c` の行だけを含む `accDescr` ブロックを複数行のまま残すのは、
@@ -886,10 +886,10 @@ mermaid.js が `style : [0.2, 0.7]; title x:#y;` では、
 
 `classDef` のクラスの名前が、コメントで結合される領域をまたいで続くときも、
 文は書かれたままにします。
-たとえば、`classDef a`、U+2028、`%% c`、行 `b color: #f00` では、
-クラスの名前は `a`、U+2028、`b` です。
+たとえば、`classDef A`、U+2028、`%% c`、行 `Bar color: #ff0000` では、
+クラスの名前は `A`、U+2028、`Bar` です。
 字下げするのは最初の行だけで、その後の文は別の行に印字します。
-この形で行 `b color: #f00` を字下げせずに残すのは、
+この形で行 `Bar color: #ff0000` を字下げせずに残すのは、
 同じ行の前に空白を 2 つ置くと、
 mermaid.js が拒否するためです（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
@@ -1212,8 +1212,8 @@ U+00A0、U+3000、U+FEFF は、テキスト、名前、クラスの名前の中�
 そのまま残ります。
 点の `:`、角括弧、コンマの周りと、アクセシビリティの文のコロンと括弧の周りでは、
 mermaid.js が空白として読むので、その場所に空白を印字します。
-`quadrant-1` のテキストの `A` と `B` の間の U+00A0 を残すのは、
-mermaid.js が `quadrant-1 A B` では、
+`quadrant-1` のテキストの `a` と `b` の間の U+00A0 を残すのは、
+mermaid.js が `quadrant-1 a b` では、
 異なるテキストを描くためです（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照）。
