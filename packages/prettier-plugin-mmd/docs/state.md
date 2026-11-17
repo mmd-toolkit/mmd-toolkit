@@ -325,7 +325,9 @@ are printed in the case shown there, among them `<<CHOICE>>`, `<<FORK>>`, and
 `<<JOIN>>`, which are printed `<<choice>>`, `<<fork>>`, and `<<join>>`,
 `ACCTITLE:` and `ACCDESCR:`, which are printed `accTitle:` and `accDescr:`,
 `AS`, `END`, and `DIRECTION TB`. The position of a note, `LEFT OF` and
-`RIGHT OF`, stays as written.
+`RIGHT OF`, stays as written. `LEFT OF` in `note LEFT OF y: left` stays, since
+mermaid.js draws different geometry for `note left of y: left` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: keyword-case/pseudo-states-one-form] [fixture:
 keyword-case/accessibility-alias-direction-one-form]
@@ -1444,7 +1446,10 @@ directives/after-statement] [fixture: directives/whitespace-on-each-side]
 
 When formatting splits units that were on the same line, a directive in their
 gap moves with the following unit. Keep its right-side contact or separation;
-break its left contact.
+break its left contact. The space after `%%{wrap}%%` in
+`stateDiagram-v2%%{wrap}%% A-->B` stays, since mermaid.js rejects
+`stateDiagram-v2%%{wrap}%%A-->B` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: state/directives/split-directive-gap]
 
@@ -1934,7 +1939,10 @@ keeps its written indentation.
 
 A line that holds U+2028 or U+2029 is kept as written, the second description of
 an alias included, whitespace after the character too: `state "d" as A : x`, two
-spaces, U+2028, and two spaces stays as written.
+spaces, U+2028, and two spaces stays as written. After `state "d" as A : x`, two
+spaces, U+2028, and two spaces stay, since mermaid.js draws different geometry
+with one space after `x` instead (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [test: a second description of an alias with spaces after a U+2028]
 
@@ -1985,8 +1993,10 @@ a closing brace that follows a directive on its line] [test: a `;` after U+2029
 on the closing line of a composite statement] [test: a comment line after U+2028
 on the closing line of a composite statement]
 
-In `state a`, U+2028, and `b <<fork>>`, the fork has id and label `b` in the Db;
-with a space in place of U+2028, both are `a b` (see
+In a state diagram, these characters bound the text in which mermaid.js looks
+for a pseudostate mark, a direction line, and a second name before a `{`:
+`state a`, U+2028, and `b <<fork>>` is the name `a` and the fork `b`, while with
+a space in place of the U+2028, it is the fork `a b` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [corpus fixture: state/lex-pseudostate-mark-after-line-separator]

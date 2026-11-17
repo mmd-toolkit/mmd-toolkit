@@ -330,6 +330,11 @@ stateDiagram
 `<<FORK>>`、`<<JOIN>>`、`accTitle:`、`accDescr:` と印字する `ACCTITLE:`、
 `ACCDESCR:` と、`AS`、`END`、`DIRECTION TB` があります。
 ノートの位置、`LEFT OF` と `RIGHT OF` は書かれたまま残します。
+`note LEFT OF y: left` の `LEFT OF` は残します。
+`note left of y: left` では、mermaid.js が形状の違う図を描くからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: keyword-case/pseudo-states-one-form]
 [fixture: keyword-case/accessibility-alias-direction-one-form]
@@ -1520,6 +1525,11 @@ flowchart と同じです。
 元は同じ行にあった単位を別の行へ分けるときは、
 間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
+`stateDiagram-v2%%{wrap}%% A-->B` では、`%%{wrap}%%` の後の空白を残します。
+mermaid.js が `stateDiagram-v2%%{wrap}%%A-->B` を拒否するからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: state/directives/split-directive-gap]
 
@@ -2026,6 +2036,11 @@ stateDiagram-v2
 U+2028 か U+2029 を含む行は、書かれたまま残します。
 別名の 2 つ目の説明も、その文字の後の空白も含めて残します。
 `state "d" as A : x`、空白 2 つ、U+2028、空白 2 つは、書かれたまま残します。
+`state "d" as A : x` の後の空白 2 つ、U+2028、空白 2 つは残します。
+`x` の後を空白 1 つにすると、mermaid.js が形状の違う図を描くからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [test: a second description of an alias with spaces after a U+2028]
 
@@ -2078,8 +2093,10 @@ mermaid.js が `state a b {` を拒否するからです。
 [test: a `;` after U+2029 on the closing line of a composite statement]
 [test: a comment line after U+2028 on the closing line of a composite statement]
 
-`state a`、U+2028、`b <<fork>>` では、Db のフォークの id とラベルは `b` です。
-U+2028 の代わりに空白を置くと、どちらも `a b` になります。
+state 図では、mermaid.js が擬似状態の印、方向の行、
+`{` の前の 2 つ目の名前を探す範囲を、これらの文字が区切るからです。
+`state a`、U+2028、`b <<fork>>` は名前 `a` とフォーク `b` ですが、
+U+2028 の代わりに空白を置くと、フォーク `a b` になります。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
