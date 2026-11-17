@@ -19,8 +19,8 @@ none (see
 colon stays where a hidden form or a global directive lies between it and the
 word, and where a `;` or the `---` of a hidden YAML block touches it. After
 `%%{%%{wrap}%%init: {"label":"style:#keep"}}%%`,
-`cynefin-beta:;complex 'Kept colon'` keeps its colon, since mermaid.js rejects
-`cynefin-beta;complex 'Kept colon'` (see
+`cynefin-beta:;complex 'Kept colon'` keeps its colon, since some of the versions
+of mermaid.js that count reject `cynefin-beta;complex 'Kept colon'` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: cynefin/header/colon-removed] [fixture:
@@ -1054,8 +1054,8 @@ A `;` that the line rule ignores between two statements stands against the token
 before it with one space after it, whatever whitespace was written around it, as
 the gap has one space; the gap right after the keyword keeps its whitespace as
 written. After `%%{%%{wrap}%%init: {"label":"style:#x"}}%%`,
-`cynefin-beta ;complex "A"` keeps its space, since mermaid.js rejects
-`cynefin-beta;complex "A"` (see
+`cynefin-beta ;complex "A"` keeps its space, since some of the versions of
+mermaid.js that count reject `cynefin-beta;complex "A"` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: semicolons/ignored-semicolon-space-before-attached] [fixture:
@@ -1070,9 +1070,8 @@ cynefin/semicolon-chaotic-parts]
 Do not wrap at printWidth. Apart from domain/item splitting, retain physical
 string and transition-label contents, continuation columns and interior blanks.
 Description bodies use the shared indentation above. Reflow or reindentation can
-change the Db, and wrapping transition components can reject (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-A separate description closer uses the shared alignment rule.
+change the Db, and wrapping transition components can reject. A separate
+description closer uses the shared alignment rule.
 
 [fixture: cynefin/multiline-values/long-line-unwrapped]
 

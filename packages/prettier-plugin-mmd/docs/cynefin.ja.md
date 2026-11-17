@@ -20,7 +20,8 @@ mermaid.js は `cynefin-beta:` と `cynefin-beta` を同じ見出しとして読
 `;` か隠れた YAML ブロックの `---` が接するときは、コロンを保ちます。
 `%%{%%{wrap}%%init: {"label":"style:#keep"}}%%` の後では、
 `cynefin-beta:;complex 'Kept colon'` のコロンを保ちます。
-mermaid.js が `cynefin-beta;complex 'Kept colon'` を拒否するためです（詳しくは
+数える版の mermaid.js のうちいくつかが、
+`cynefin-beta;complex 'Kept colon'` を拒否するためです（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照）。
 
@@ -1077,7 +1078,8 @@ cynefin-beta
 キーワードの直後の隙間は、書かれたままの空白を保ちます。
 `%%{%%{wrap}%%init: {"label":"style:#x"}}%%` の後では、
 `cynefin-beta ;complex "A"` の空白を保ちます。
-mermaid.js が `cynefin-beta;complex "A"` を拒否するためです（詳しくは
+数える版の mermaid.js のうちいくつかが、
+`cynefin-beta;complex "A"` を拒否するためです（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照）。
 
@@ -1095,9 +1097,7 @@ mermaid.js が `cynefin-beta;complex "A"` を拒否するためです（詳し�
 内部空行を保ちます。
 説明本文は前述の共有の字下げを使います。
 折り返し直しや字下げの変更で Db が変わることがあり、
-遷移部品の折り返しは拒否を招くことがあります（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照）。
+遷移部品の折り返しは拒否を招くことがあります。
 独立した説明の閉じ記号は共有規則でそろえます。
 
 [fixture: cynefin/multiline-values/long-line-unwrapped]
