@@ -699,15 +699,12 @@ Description blocks on one line follow
 For blocks that keep their braces, separate the keyword and opening brace with
 one space so the block boundary is clear. Whitespace-only interiors become `{}`
 because no text needs surrounding space. Plain opener whitespace can join; real
-trivia keeps its break. The line break between `accDescr` and `%% opener` stays,
-since mermaid.js rejects the form with `accDescr %% opener` on one line (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Keep comment/directive-only interiors. Ordinary description body and standalone
-comment lines align one level inside the statement, since the Db removes
-indentation after LF. Keep line breaks, internal blank lines and trailing
-whitespace. Directives and shared removed comment regions keep their complete
-source. A separate closer aligns with the statement; the first closing brace
-still ends the value.
+trivia keeps its break.Keep comment/directive-only interiors. Ordinary
+description body and standalone comment lines align one level inside the
+statement, since the Db removes indentation after LF. Keep line breaks, internal
+blank lines and trailing whitespace. Directives and shared removed comment
+regions keep their complete source. A separate closer aligns with the statement;
+the first closing brace still ends the value.
 
 [fixture: architecture/description-blocks/asymmetric]
 
@@ -968,10 +965,7 @@ closing padding needs one spare LF before its successor; EOF also ends a
 statement. Only the header's own hidden forms need no spare LF. A statement
 retained on the header line still has a statement boundary after its suffix.
 Keep multiple suffix owners and forms after visible EOL distinct; exterior
-excess blanks use the shared one-blank-line rule. The blank line between
-`architecture-beta%%{}%% group a%%{}%%` and `service b` stays, since mermaid.js
-rejects the same lines with no blank line between them (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+excess blanks use the shared one-blank-line rule.
 
 [fixture: architecture/hidden-boundaries/header-and-statement]
 
@@ -1421,8 +1415,8 @@ Apply the same rules to the dedented payload through the shared Markdown route.
 The host supplies fence/list/quote indentation and EOL. It trims final
 payload-line padding, including final hidden padding, while interior hidden
 boundaries remain necessary. Before `service following`, the space after
-`service space_suffix%%{}%%` stays, since mermaid.js rejects the same lines
-without that space (see
+`service space_suffix%%{}%%` stays, since every version of mermaid.js that
+counts rejects the same lines without that space (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Check host output and idempotence separately from payload Db and source
 preservation.

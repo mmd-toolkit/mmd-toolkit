@@ -724,10 +724,6 @@ architecture-beta
 キーワードと開始波括弧の間に空白を 1 つ置きます。
 空白だけの内側は囲む文字がないため `{}` にします。
 開始前の単なる空白は結合し、実際の注釈類は改行を保ちます。
-`accDescr` と `%% opener` の間の改行は、
-1 行の `accDescr %% opener` を mermaid.js が拒否するため保ちます（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照）。
 コメント・ディレクティブだけの内側を保ちます。
 通常の説明本文と独立したコメント行は文より1段内側に揃えます。
 Db で LF 後の字下げが取り除かれるためです。
@@ -1001,10 +997,6 @@ EOF も文を終えます。
 見出し行に残った文も、その後置部分の後ろは文と文の境界です。
 複数の後置部分の所有ノードと可視 EOL 後の形を区別し、
 外側の余分な空行は共有の最大1空行の規則に従います。
-`architecture-beta%%{}%% group a%%{}%%` と `service b` の間の空行は、
-mermaid.js が同じ 2 行を空行なしで続けた形を拒否するため保ちます（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照）。
 
 [fixture: architecture/hidden-boundaries/header-and-statement]
 
@@ -1459,7 +1451,8 @@ Markdown は埋め込みを辞退します。
 最後の隠れた形の余白を含め、図の本文の最終行の余白は埋め込み先が除きますが、
 内部の隠れた形の境界は必要です。
 `service following` の前の `service space_suffix%%{}%%` に続く空白は、
-mermaid.js が同じ 2 行からその空白を除いた形を拒否するため保ちます（詳しくは
+対象にする版の mermaid.js はすべて、
+同じ 2 行からその空白を除いた形を拒否するため保ちます（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照）。
 埋め込み先の出力と冪等性は図の本文の Db・原文保持と別に確認します。
