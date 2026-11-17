@@ -3,6 +3,18 @@ import { decodeState, encodeState } from "../../src/share.ts"
 import { defaultSource, exampleGroups } from "../../src/examples.ts"
 import { edit, savedSource, shortcut } from "./helpers.ts"
 
+test.beforeAll(async ({ browser, browserName }) => {
+  if (browserName !== "webkit") return
+  // WebKit's first blank page took 24 s on CI, before any app request. Warm it
+  // once per worker here so startup does not consume a test's 30 s budget.
+  const context = await browser.newContext()
+  try {
+    await context.newPage()
+  } finally {
+    await context.close()
+  }
+})
+
 test.beforeEach(async ({ page }) => {
   await page.goto("./", { waitUntil: "domcontentloaded" })
   await expect(page.locator(".source-pane .monaco-editor")).toBeVisible()
