@@ -1083,6 +1083,7 @@ Unicode and tab interiors]
 
 A block with a directive or comment line keeps its contents and line breaks,
 with standalone trivia one level inside and its closer at statement level.
+
 [fixture: empty-description-blocks/trivia-continuations]
 
 It stands on a line of its own, also after the header and between two nodes,
