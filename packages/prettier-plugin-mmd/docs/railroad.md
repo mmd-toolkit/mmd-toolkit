@@ -196,11 +196,8 @@ without an ordinary preceding space. This exposes rule boundaries without
 changing their syntax. All four dialects require the last terminator too. ABNF
 terminators must be followed immediately by LF or EOF: `; note` is a comment and
 cannot replace a terminator. Keep such a comment and the real terminator on
-their original sides of the line break. In ABNF, the line break between
-`r="comment"; note` and `;` stays, since mermaid.js rejects
-`r="comment"; note ;` (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Shared semicolon protection takes precedence.
+their original sides of the line break. Shared semicolon protection takes
+precedence.
 
 [fixture: railroad/statements-one-per-line/abnf-terminator]
 
@@ -1024,8 +1021,10 @@ nonempty value and print `title value`; null or whitespace-only values print
 bare `title`. Keep quote-looking content and escape spelling, and print a run of
 spaces and tabs inside the value as one space. Do not read a value from the next
 physical line. In IR, a bare `title` stays separate from the next-line rule
-`r=terminal("x");`, since mermaid.js omits the rule from the Db and draws a
-different figure structure for `title r=terminal("x");` (see
+`r=terminal("x");` and from the rule in `titlex=terminal("title prefix");`,
+since mermaid.js omits the rule from the Db and draws a different figure
+structure for `title r=terminal("x");` and `title x=terminal("title prefix");`,
+respectively (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A bare title prefix followed by a rule becomes two statements, keeping the rule
 out of the title. The comparison Db omits body titles, which gives no permission
@@ -1331,11 +1330,14 @@ Standalone comments use one body step, or column one before the header. Outside
 ordinary IR calls, inline comments keep their side and touching/separated
 boundaries; ordinary separated gaps become one space. Preserve marks, text,
 tails, block continuation columns and source order. A line comment leaves its
-following operand or terminator on the next line. Every dialect has `%%`; IR
-also has `/* */`, EBNF `/* */` and `(* *)`, ABNF `;` line comments, and PEG `#`
-line comments. Bare ABNF `;` is punctuation; `//` is not a native comment. Text
-owned by a value stays in that value. These choices preserve ownership and
-prevent a line comment from taking code.
+following operand or terminator on the next line. In ABNF, the line break
+between `r="comment"; note` and `;` stays, since mermaid.js rejects
+`r="comment"; note ;` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Every dialect has `%%`; IR also has `/* */`, EBNF `/* */` and `(* *)`, ABNF `;`
+line comments, and PEG `#` line comments. Bare ABNF `;` is punctuation; `//` is
+not a native comment. Text owned by a value stays in that value. These choices
+preserve ownership and prevent a line comment from taking code.
 
 Inside an ordinary IR call, a block comment before an argument moves with that
 argument onto its line. Comments before a comma or the closing parenthesis
@@ -1885,8 +1887,14 @@ meaning on the first line.
 Keep an authored railroad line as written when it contains the literal string
 `style` or `classDef` after global directives have been omitted. This includes
 all statements, comments and native hidden forms on the line, with their inner
-spacing. Do not join the line to either neighbor. When removing a directive
-forms one of these strings across physical lines, keep every contributing line.
+spacing. Do not join the line to either neighbor. ABNF keeps the line break
+between `style=(":"` and `)%%{!#}%% ;`, and PEG keeps the line break between
+`r<-("sty%%{wrap}%%le:"` and `)%%{!#}%% ;`, since mermaid.js rejects the joined
+forms `style=(":")%%{!#}%% ;` and `r<-("sty%%{wrap}%%le:")%%{!#}%% ;`,
+respectively (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+When removing a directive forms one of these strings across physical lines, keep
+every contributing line.
 
 [fixture: railroad/semicolons/native-terminal-value] [fixture:
 railroad/semicolons/ir-word-unclosed-directive-lines] [fixture:
@@ -1932,12 +1940,7 @@ mermaid.js can ignore the last semicolon of a line containing these strings. In
 railroad that semicolon can be a required rule terminator or an ABNF comment
 mark. Changing the line can therefore reject a rule or read comment text as
 code. Keeping the source line protects both kinds of punctuation without
-predicting how moving its contents would affect the common line rule. ABNF keeps
-the line break between `style=(":"` and `)%%{!#}%% ;`, and PEG keeps the line
-break between `r<-("sty%%{wrap}%%le:"` and `)%%{!#}%% ;`, since mermaid.js
-rejects the joined forms `style=(":")%%{!#}%% ;` and
-`r<-("sty%%{wrap}%%le:")%%{!#}%% ;`, respectively (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+predicting how moving its contents would affect the common line rule.
 
 The cost is that a rule name, string or comment containing `style` or `classDef`
 leaves that line unformatted, even when no colon or hash follows. Other lines
