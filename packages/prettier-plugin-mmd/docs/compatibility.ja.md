@@ -5158,6 +5158,13 @@ mermaid.js が行をどう読むかを決めないかぎり、通常どおり整
   `end` の行の終わりにある U+2028 や U+2029 （`end` U+2028 `B`）です。
   末尾の区切りは、コメントやディレクティブの前や、空行を挟んだ次の文の前にも、
   1 回だけ残します。
+  `subgraph S` の後で `end` と U+2028 の行に、`%% c`、
+  `B` の各行が続く場合も U+2028 を残します。
+  その U+2028 を空白 1 つに置き換えると、
+  対象にする版の一部で図が変わるためです。
+  詳しくは
+  [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+  を参照してください。
 
   [test: er/statements-one-per-line/R63-er-ascii-after-LS-e]
   [test: er/statements-one-per-line/R44-er-after-separator-LS-e]
@@ -6624,8 +6631,8 @@ Mermaid は内部の両端を除き、`<<` の前の空白は構造上の空白�
 内部のテキストは書かれたままです。
 保護した共通コメント領域は、値の全体を保ちます。
 stereotype の `<<  service  user  >>` は語の間の空白 2 つを残します。
-class の annotation と同じく連なりを空白 1 つに縮めると、
-`<<  service user  >>` となり、
+class の [annotation の行](./class.ja.md#メンバーの行) と同じく連なりを空白 1
+つに縮めると、`<<  service user  >>` となり、
 mermaid.js は `service  user` でなく `service user` と読み、
 アクセシビリティのテキストも変わります。
 詳しくは
@@ -6646,7 +6653,8 @@ class の[トークンの間の空白](./class.ja.md#トークンの間の空白
 `'` で囲むラベルは、
 [同じに描かれる綴り](#同じに描かれる綴り)に従って `"` で囲んで印字します。
 引用符のない use case のラベルでは、`A(unquoted  words)` の連なりを残します。
-block のラベルと同じく連なりを空白 1 つに縮めると、`A(unquoted words)` となり、
+block の[ラベル](./block.ja.md#形)と同じく連なりを空白 1 つに縮めると、
+`A(unquoted words)` となり、
 mermaid.js は `unquoted  words` でなく `unquoted words` と読み、
 アクセシビリティのテキストも変わります。
 詳しくは

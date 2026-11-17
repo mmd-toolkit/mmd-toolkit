@@ -4905,6 +4905,10 @@ comment line]
   `endé`, `end日本`) or a U+2028 or U+2029 between them or at the end of the
   line of an `end` (`end` U+2028 `B`). A trailing separator stays exactly once
   before comments or directives, and before a blank line and the next statement.
+  After `subgraph S`, U+2028 at the end of the `end` line stays when `%% c` and
+  `B` follow on separate lines: some version that counts draws a different
+  figure if that U+2028 is replaced by a space (see
+  [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
   [test: er/statements-one-per-line/R63-er-ascii-after-LS-e] [test:
   er/statements-one-per-line/R44-er-after-separator-LS-e] [test:
@@ -6313,9 +6317,9 @@ becomes one space; absent whitespace stays absent. Mermaid trims the interior
 ends; whitespace before `<<` is structural. Interior text remains written;
 protected common comment regions retain their complete values. For a stereotype,
 the two spaces between the words in `<<  service  user  >>` stay. Collapsing the
-run to one space, as in a class annotation, gives `<<  service user  >>`, which
-mermaid.js reads as `service user` instead of `service  user`, with different
-accessibility text (see
+run to one space, as in a [class annotation line](./class.md#member-lines),
+gives `<<  service user  >>`, which mermaid.js reads as `service user` instead
+of `service  user`, with different accessibility text (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 This reuses the
 [class statement-annotation rule](./class.md#whitespace-between-tokens).
@@ -6333,9 +6337,9 @@ even where trimming would have equal Db; a label between `'` is printed between
 `"` as under
 [Spellings that are drawn the same](#spellings-that-are-drawn-the-same). For an
 unquoted use case label, the run in `A(unquoted  words)` stays. Collapsing the
-run to one space, as in a block label, gives `A(unquoted words)`, which
-mermaid.js reads as the label `unquoted words` instead of `unquoted  words`,
-with different accessibility text (see
+run to one space, as in a [block label](./block.md#shapes), gives
+`A(unquoted words)`, which mermaid.js reads as the label `unquoted words`
+instead of `unquoted  words`, with different accessibility text (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Common comment-region joins and native comments through LS/PS stay intact;
 semicolons never separate statements and the stretch that the line rule reads is
