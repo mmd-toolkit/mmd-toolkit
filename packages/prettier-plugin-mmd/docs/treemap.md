@@ -17,9 +17,7 @@ making the heading easy to find. The keyword is printed `treemap`, also where it
 was written `treemap-beta`: every version of mermaid.js that counts and has the
 diagram reads both names and draws them the same (see
 [The names of a header](./compatibility.md#the-names-of-a-header)). Add no
-colon; an empty body stays empty. The empty `treemap-beta` body has no colon,
-since mermaid.js rejects `treemap-beta:` with the same empty body (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+colon; an empty body stays empty.
 
 [fixture: treemap/header/stable]
 
@@ -173,13 +171,8 @@ separate lines in source order, exposing statement boundaries. Keep an empty
 unterminated class name touching its next quoted row, including intervening
 directives: whitespace would consume that row as style. A completed class
 definition has no such contact requirement; semicolon protection still takes
-precedence. For the body starting `treemap"style:#red;":2  "Following":3`,
-`"Other"` stays at column one: mermaid.js reads the next line `  "Child":4` as
-its child, and adding two spaces before `"Other"` makes them siblings (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Text already owned by a title or class style is one value, not a new statement.
-
-[fixture: treemap/semicolons/body-kept]
+precedence. Text already owned by a title or class style is one value, not a new
+statement.
 
 [fixture: treemap/statements-one-per-line/adjacent]
 
@@ -550,11 +543,10 @@ it.
 [fixture: semicolons/class-terminator-space-before-dropped]
 
 A U+00A0, U+2028, U+2029, U+3000, U+000B (a vertical tab), or U+FEFF before the
-`;` stays, and so does one after a `;` that the line rule ignores: CSS does not
-read it as whitespace, so it ends the last style, and mermaid.js draws another
-figure without it (see
-[Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style))
-(see
+`;` stays, and so does one after a `;` that the line rule ignores (see
+[Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style)).
+In `classDef zz fill:red`, U+00A0, `;`, the U+00A0 stays, since mermaid.js draws
+different text for `classDef zz fill:red;` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Only the `;` is dropped, with the spaces, tabs, and form feeds after the last
 such character, so `classDef zz fill:red`, U+00A0, `;` is printed

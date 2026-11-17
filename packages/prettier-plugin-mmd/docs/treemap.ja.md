@@ -20,11 +20,6 @@
 詳しくは [ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)
 を参照してください。
 コロンは足さず、空本文も保ちます。
-空の `treemap-beta` 本文にはコロンを足しません。
-mermaid.js が同じ空本文の `treemap-beta:` を拒否するからです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 
 [fixture: treemap/header/stable]
 
@@ -181,17 +176,8 @@ treemap
 終端のない空のクラス名と次の引用行の接触は、間のディレクティブも含めて保ちます。
 空白を足すと行がスタイルに取り込まれるためです。
 完了したクラス定義にこの接触の制約はありませんが、セミコロンの保護が優先します。
-`treemap"style:#red;":2  "Following":3` で始まる本文では、
-`"Other"` を行頭に保ちます。
-mermaid.js は次行の `  "Child":4` をその子として読み、
-`"Other"` の前に空白 2 つを足すと兄弟として読むからです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 タイトルやクラスのスタイルが既に所有する文字は、1 つの値であり、
 別文にはしません。
-
-[fixture: treemap/semicolons/body-kept]
 
 [fixture: treemap/statements-one-per-line/adjacent]
 
@@ -574,11 +560,11 @@ mermaid.js は `;` がなくても同じ文として読むからです。
 `;` の前にある U+00A0、U+2028、U+2029、U+3000、U+000B（垂直タブ）、
 U+FEFF は残します。
 行の規則が無視する `;` の後ろにあるものも残します。
-CSS はこれらを空白として読まないので、最後のスタイルの末尾に残り、
-なくすと mermaid.js が違う図を描くからです。
 詳しくは、
 [スタイルの末尾の空白](./compatibility.ja.md#スタイルの末尾の空白)
 を参照してください。
+`classDef zz fill:red`、U+00A0、`;` で U+00A0 を保つのは、
+mermaid.js が `classDef zz fill:red;` では異なる文字を描くためです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
