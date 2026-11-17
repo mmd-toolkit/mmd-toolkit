@@ -447,11 +447,10 @@ The word `title` or `section` alone on a line is a period, because no text
 follows it. When a line of only a directive follows it, with comment lines
 between them or without, that line is empty once mermaid.js removes the
 directive; whitespace before the directive would be the text of a title or a
-section, and change the Db (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-After an empty line the whitespace is not read. The printer does not tell the
-two apart: every line of only a directive in the gap before the next statement
-stands at the first column, which is one rule instead of two.
+section, and change the Db. After an empty line the whitespace is not read. The
+printer does not tell the two apart: every line of only a directive in the gap
+before the next statement stands at the first column, which is one rule instead
+of two.
 
 [fixture: periods-and-events/title-word-then-directive-line] [fixture:
 periods-and-events/section-word-then-directive-line] [fixture:
@@ -669,8 +668,8 @@ The name of a `section` is printed as written, the whitespace at its start and
 at its end included: two sections whose names differ by it are drawn apart, and
 would not be once it is left out. A title of spaces and tabs only stays as
 written. For `title` followed by two spaces, a tab and a space, that whitespace
-stays, since mermaid.js reads `title` followed by one space as a period instead
-of a title of whitespace (see
+stays, since every version of mermaid.js that counts draws `title` with nothing
+after it differently (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: titles-and-sections/title-padding-dropped] [fixture:
@@ -1148,13 +1147,9 @@ colon at the start of a later line, and keep their line breaks (see
 
 In `accTitle` and `accDescr:` statements, keep trivia line breaks and align
 later structural parts and standalone trivia one continuation level inside the
-statement, also under a section. Under `section S`, the line break between
-`accTitle:` and `%% title` stays: joining them as `accTitle: %% title` makes
-mermaid.js read `%% title` as the accessibility title instead of `T` (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Preserve each first gap-line tail and complete directive interiors. Joining
-comment regions keep their original layout; semicolon protection follows the
-joining decision below.
+statement, also under a section. Preserve each first gap-line tail and complete
+directive interiors. Joining comment regions keep their original layout;
+semicolon protection follows the joining decision below.
 
 [fixture: multi-line-statements/accessibility-trivia-continuations]
 
