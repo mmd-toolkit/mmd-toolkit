@@ -72,18 +72,19 @@ against the fixtures, and a case the sentence does not state is a finding
 against the sentence. The list is written in the first round, in full, before
 the implementation is read, and the report carries it next to the author's table
 of cases (the conventions skill asks the author for one): the two lists are
-compared, and the cases in neither are the review's own contribution. The places
-and the strings that a sentence names, with the other rules that meet it at
-those places, are cases of the sentence, and the reviewer lists them (the skill
-conventions, Running tests). Each case is one input: a place that the sentence
-names or that the changed code reaches (each caller of a shared function,
-below), with one string that the sentence names or one other rule that meets it
-there. The reviewer builds no product: cases are not crossed with one another,
-and a case is not repeated over statement forms, diagram types, or positions
-that neither the sentence nor the changed code reaches. A product repeats one
-rule as many times as it has contexts and names no question. Nor is the input
-set of an earlier review run again as a whole: an earlier review leaves to the
-later ones its cases (section 5) and the input of each of its findings.
+compared, and the cases in neither are the review's own contribution. A case of
+a sentence is a pair: a place that the sentence names or that the changed code
+reaches (each caller of a shared function, below), with one string that the
+sentence names there or one other rule that meets it there. Each case is one
+input, and the reviewer lists them. Where a sentence names each of a list of
+places and each of a list of strings, every such pair is a case (the grids of
+the skill conventions, Running tests). The reviewer builds no product beyond the
+pairs a sentence names: a case is not crossed with another case, and it is not
+repeated over statement forms, diagram types, or positions that neither the
+sentence nor the changed code reaches. A product repeats one rule as many times
+as it has contexts and names no question. Nor is the input set of an earlier
+review run again as a whole: an earlier review leaves to the later ones its
+cases (section 5) and the input of each of its findings.
 
 The shapes below name the other rules to think of at each sentence. Each shape
 is a case of its own at the place the sentence names, not a dimension to cross
@@ -233,8 +234,9 @@ Every review has a section on proper form, also when the behavior is right:
   that case is added to the cases of every later review. A finding on a case
   next to one the earlier round found (the same sentence, another value of the
   same distinction: the other line terminator, the closed directive where the
-  unclosed one was found, the next diagram type) is a missed finding, never new
-  scope: the first round was to list every case of that sentence.
+  unclosed one was found, the next diagram type that the sentence or the changed
+  code reaches) is a missed finding, never new scope: the first round was to
+  list every case of that sentence.
 - When the same item reaches a third round with new findings, the review stops
   and reports the origins before anything else is fixed.
 - A finding against the parser or the specification whose input the conformance
