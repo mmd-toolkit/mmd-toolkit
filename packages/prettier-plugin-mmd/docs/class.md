@@ -499,8 +499,8 @@ whitespace-between-tokens/class-def-backslash-at-end-kept]
 
 A statement stays as written where it holds a comment or a directive, where a
 style is all whitespace, or where a style holds a line break or its line holds a
-kept `;`. `style A fill:#f00 %%{x}%% ,color:white` stays as written, since a
-version that counts draws different styles for
+kept `;`. `style A fill:#f00 %%{x}%% ,color:white` stays as written, since some
+of the versions of mermaid.js that count draw different styles for
 `style A fill: #f00 %%{x}%%, color: white` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
@@ -875,13 +875,15 @@ mermaid.js: `+attr string *` is printed `+attr string*`.
 
 Attribute and annotation lines, in a body or after the `:` of a class name, keep
 their contents as written, apart from the runs of spaces and tabs inside. An
-annotation line in a body, `<< y  z >>`, keeps its whitespace, since mermaid.js
-draws different text and geometry for `<<y z>>` (see
+annotation line in a body, `<< y  z >>`, keeps its whitespace, since every
+version of mermaid.js that counts draws different text and geometry for
+`<<y z>>` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Methods preserve their name, parameter and return-type contents, including
 generic spelling and classifier-related tails, apart from the runs. The space
-before the comma in the parameters `a ,  b` stays, since mermaid.js draws
-different parameter text and geometry for `a, b` (see
+before the comma in the parameters `a ,  b` stays, since every version of
+mermaid.js that counts draws different parameter text and geometry for `a, b`
+(see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: member-lines/runs-collapsed] [fixture:
@@ -1042,7 +1044,7 @@ is so also after the comment of the line that holds the header and a statement,
 as in `classDiagram accDescr {} %% c`
 (`comments/whitespace-line-after-header-comment-kept`). Replacing the line of
 two spaces between `classDiagram accDescr {} %% c` and `class A` with an empty
-line makes mermaid.js reject the input (see
+line makes every version of mermaid.js that counts reject the input (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: comments/whitespace-line-kept] [fixture:
