@@ -1299,9 +1299,14 @@ boundaries normalize exterior whitespace by their sibling rules.
 [fixture: stereotypes/side-padding]
 
 Quoted/markdown values, JSON, native property strings, comments and directive
-contents keep their trailing characters.
+contents keep their trailing characters. For a markdown use case label, the two
+spaces after `first` at the end of its line stay, since mermaid.js draws
+different label text and geometry when that line ends directly after `first`
+(see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [test: usecase: terminal-comment-tab] [test: usecase: terminal-a11y-tab]
+[fixture: trailing-whitespace/trailing-values]
 
 Unicode characters are not automatically exterior HWS; no dangling null CSS
 style is synthesized.

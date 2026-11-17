@@ -1388,8 +1388,15 @@ CSS 宣言のコロンの前後の余白は、
 
 引用と markdown の値、JSON、固有プロパティの文字列、コメント、
 ディレクティブ内の末尾の全文字は保ちます。
+markdown の use case ラベルでは、行末の `first` の後の空白 2 つを保ちます。
+mermaid.js が、その行を `first` の直後で終える形では、
+ラベルの文字と形状を異なって描くためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [test: usecase: terminal-comment-tab] [test: usecase: terminal-a11y-tab]
+[fixture: trailing-whitespace/trailing-values]
 
 Unicode 文字を自動的に外側の水平空白とせず、空の CSS style も作りません。
 
