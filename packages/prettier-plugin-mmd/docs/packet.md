@@ -396,11 +396,7 @@ Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
 For blocks that keep their braces, separate the keyword and opening brace with
 one space so the block boundary is clear. Plain opener whitespace can join
-across physical or Unicode lines; real opener trivia keeps its break. `accDescr`
-followed by `%% removed opener` and `{ Gap }` on separate lines keeps the break
-before the comment, since mermaid.js rejects `accDescr %% removed opener`
-followed by `{ Gap }` on the next line (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+across physical or Unicode lines; real opener trivia keeps its break.
 Whitespace-only interiors become `{}` because no text needs surrounding
 whitespace. Comment/directive-only interiors keep their trivia. Ordinary
 description body and standalone comment lines align one level inside the
