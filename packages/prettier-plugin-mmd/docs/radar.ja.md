@@ -263,10 +263,8 @@ radar-beta
 隠れた形の境界、値の行、セミコロンの保護区間は継続列を含め保ちます。
 保護区間内に継続の字下げを足しません。
 その後の普通の間隙には通常の空白規則を適用します。
-共有の結合検査は、`curve c["style:#a"]{`、`1`、
-`} title tail;` を別々の行に保ちます。
-mermaid.js が `curve c["style:#a"]{ 1 } title tail;` では、
-題を `tail;` でなく `tail` と読み、異なる題の文字を描くためです。
+終端行に別の文のセミコロンがある場合も共有の結合検査で保ちます。
+前の style に似たラベルと結合すると、その文の Db が変わりうるためです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
@@ -340,12 +338,8 @@ radar-beta
 `A: 1` はコロンの前を詰め、後を空白 1 つにします。
 `A 1` は間を空白 1 つにし、列揃えはしません。
 句読法を保ちながら、同じ意味の空白をそろえるためです。
-軸が `accTitle` と `accDescr` のとき、
-`curve c{accTitle 1, accDescr 2}` の `accTitle 1` にコロンを追加しません。
-mermaid.js が `curve c{accTitle: 1, accDescr 2}` を拒否するためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
+軸名 `accTitle` と `accDescr` へのコロン追加は安全ではありません。
+共通の複合トークンが優先してしまうためです。
 
 [fixture: radar/named-entries/named-colon-gap]
 
