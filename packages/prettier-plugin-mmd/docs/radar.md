@@ -250,10 +250,8 @@ commented list as a block as written. Hidden boundaries, value lines and
 protected semicolon segments remain written, including their continuation
 columns. No continuation indentation is added inside a protected segment;
 ordinary spacing still applies after it. Shared joining checks also keep a
-terminal line containing another statement's semicolon. The entry newlines in
-`curve c["style:#a"]` before `} title tail;` stay, since mermaid.js reads the
-title as `tail;` there but as `tail` in `curve c["style:#a"]{ 1 } title tail;`,
-drawing different title text (see
+terminal line containing another statement's semicolon: joining a preceding
+style-like label could change that statement's Db (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: radar/multi-line-statements/leading-trailing-entry-lines]
@@ -325,7 +323,9 @@ radar-beta
 
 Keep authored optional colons. Print `A: 1` with no ordinary space before the
 colon and one after, or `A 1` with one space and no alignment. This retains
-punctuation while giving equivalent padding a consistent form.
+punctuation while giving equivalent padding a consistent form. Adding a colon is
+unsafe for axis names `accTitle` and `accDescr`: common composite tokens would
+take priority.
 
 [fixture: radar/named-entries/named-colon-gap]
 
