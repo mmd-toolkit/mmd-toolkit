@@ -976,6 +976,11 @@ AST の `children` から親子を読みます。
 固定された原文の行の境界や、値のタブ、末尾、
 新しく露出する先頭の Unicode 空白が安全な行分けを妨げる図は、
 枝の前置部分に従って本文を保ちます。
+`├── "a" "b";` の行は分けません。
+空白と `"b";` を次の前置部分のない行へ置くと、mermaid.js が拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: treeview/statements-one-per-line/review159-box-quoted-line-rule-semicolon]
 
@@ -1115,6 +1120,12 @@ mermaid.js が拒否するためです。
 
 選ばれる、または選ばれないセミコロンと、
 安全に分けられない LS・PS で始まる値には、既存の本文保持の条件を適用します。
+`├── "style:#x" %%{x}%%; "b"` の行は分けません。
+`"b"` を前置部分のない独立した行へ置くと、
+mermaid.js は `root` の子ではなく根として読み、図の構造と形状が変わるためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 値が持つコメント領域はその値に保ち、
 その前でノードの間から移すディレクティブは独立した行に置きます。
 字下げモードでは、前置のディレクティブをノードとともに置く既存の配置を保ちます。
@@ -1203,6 +1214,12 @@ mermaid.js は、その空白か、その空白と後ろの `%%` を名前にす
 正の前置の隙間が注釈と名前の文字を区別します。
 名前の中の空白は保ち、付随要素の両側は、普通の隙間の規則を適用せず、
 接しているか離れているかを保ちます。
+`R   text   :::hot` の名前の中の空白は保ちます。
+mermaid.js は `R text   :::hot` の名前を、
+Db で `R   text` ではなく `R text` として読み、異なる図を描くためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: treeview/annotation-gaps/annotation-outer]
 
@@ -2230,6 +2247,12 @@ mermaid.js は `A %%{init: {}}%%B` の名前を `AB` ではなく `A B` とし�
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
 単位を行に分けるときは次の単位に付け、右の境界を保ちます。
+`"A"%%{init: {}}%%"B"` はディレクティブの後の接触を保ちます。
+mermaid.js は `"A"%%{init: {}}%% "B"` の `B` を `A` の子として読み、
+図の構造と形状が変わるためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 独立したディレクティブは第 1 列です。
 行頭の字下げ単位では、後ろの隙間を収まるだけ残し、超過を最後の隙間から短くし、
 残りの字下げを最初のディレクティブの前に置きます。
@@ -2446,6 +2469,14 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 値、ディレクティブとコメント領域の内部は保ち、
 Unicode だけの名前を空行扱いしません。
 本文を保つ図は原文の境界を保ちます。
+`"p" "style:#z;"` の行は分けません。
+`"style:#z;"` を独立した行へ置くと、
+mermaid.js は `"p"` の子ではなく根として読み、図の構造と形状が変わるためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+
+[fixture: treeview/semicolons/protected-row-body]
 
 [fixture: treeview/blank-lines/blank-collapse]
 
