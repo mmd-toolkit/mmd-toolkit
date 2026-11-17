@@ -45,9 +45,11 @@ those denote characters, not backslashes in a diagram. See
 
 The exact `venn-beta` header stands at column one so the diagram is easy to
 find; ordinary header-line statements move to body lines, while attached
-fragments, directives and kept parts retain their relations. [corpus fixture:
-venn/header-before-comment] [corpus fixture: venn/header-before-directive]
-[corpus fixture: venn/header-before-frontmatter-comment] [corpus fixture:
+fragments, directives and kept parts retain their relations.
+
+[corpus fixture: venn/header-before-comment] [corpus fixture:
+venn/header-before-directive] [corpus fixture:
+venn/header-before-frontmatter-comment] [corpus fixture:
 venn/header-statement-tab] [fixture: venn/header/header-comment-fragment]
 [corpus fixture: venn/db-form-set] [fixture: venn/header/header-inline]
 [fixture: venn/header/header] [fixture:
