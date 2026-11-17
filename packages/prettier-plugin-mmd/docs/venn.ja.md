@@ -473,6 +473,10 @@ Venn 図の `style` 文のプロパティの色が対象です。
 小文字の `rgb(`（数 3 個）か `rgba(`（数 4 個）のとき、
 コンマごとの後ろに空白を 1 つ置いて印字します。
 `style A fill:rgb(1,2,3)` は `style A fill: rgb(1, 2, 3)` と印字します。
+mermaid.js の文書の例には、Venn 図の色関数がありません。
+空白を置く形は、sequence 図の例と、ほかの図の種類のスタイルの形です。
+詳しくは、
+[同じに描かれる色](./compatibility.ja.md#同じに描かれる色) を参照してください。
 コンマの前、開き括弧 `(` の直後、閉じ括弧 `)` の直前の空白は、書かれたままです。
 大文字の関数（`RGB(1,2,3)`）と、複数行にわたる関数も、書かれたままです。
 `color` プロパティの `rgba( 1 ,2 ,3 ,.5 )` は、
@@ -482,10 +486,6 @@ Venn 図の `style` 文のプロパティの色が対象です。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
-mermaid.js の文書の例には、Venn 図の色関数がありません。
-空白を置く形は、sequence 図の例と、ほかの図の種類のスタイルの形です。
-詳しくは、
-[同じに描かれる色](./compatibility.ja.md#同じに描かれる色) を参照してください。
 
 [fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
 [fixture: colors/functions-as-written]
