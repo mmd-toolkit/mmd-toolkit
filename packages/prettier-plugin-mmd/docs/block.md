@@ -452,7 +452,9 @@ printed with the space.
 [fixture: shapes/block-arrow-comma-on-kept-line]
 
 A comment line or a directive there keeps its line, and a U+2028 or U+2029 stays
-where it is. [fixture: shapes/block-arrow-comma-space] [fixture:
+where it is.
+
+[fixture: shapes/block-arrow-comma-space] [fixture:
 shapes/block-arrow-comma-comment-line] [test: U+2028 after the comma between the
 directions of a block arrow] [test: U+2029 after the comma between the
 directions of a block arrow] [test: U+2028 before the comma between the
@@ -884,8 +886,10 @@ whitespace after a `,`.
 
 [fixture: multi-line-statements/structural-trivia-continuations]
 
-Joining comment regions retain their original layout. [test: block:
-ls-comment-in-composite-head] [test: block: ps-comment-in-composite-head]
+Joining comment regions retain their original layout.
+
+[test: block: ls-comment-in-composite-head] [test: block:
+ps-comment-in-composite-head]
 
 A line break stays where joining it, with one space or with nothing, could
 change which `;` the line rule ignores, and where a `;` ends the last line; any
