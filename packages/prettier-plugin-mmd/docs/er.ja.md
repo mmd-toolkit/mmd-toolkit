@@ -440,12 +440,6 @@ Db が保つからです。
 [corpus fixture: er/gram-name-then-key-next-line]
 
 部分の間にコメント行かディレクティブがある属性は、改行を保ちます。
-型の `int`、`%% a comment line`、名前の `a` は別々の行に残します。
-mermaid.js は、
-`int %% a comment line` の次の行に `a` がある形を拒否するためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 後続の構造部分と独立した注釈類行は、subgraph の中でも、
 属性の内側に 1 段字下げします。
 型、名前、引用符付きコメントの内部は書かれたまま残します。
@@ -1611,12 +1605,6 @@ erDiagram
 
 ディレクティブやコメント行がある方向の行は改行を残し、
 構造の続きの行を 1 段深く置きます。
-`direction`、`%% a comment line`、`RL` は別々の行に残します。
-mermaid.js は、
-`direction %% a comment line` の次の行に `RL` がある形を拒否するためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 
 [fixture: direction/directive-and-comment-line-kept]
 
@@ -1826,13 +1814,6 @@ erDiagram
 
 後の行に書かれたテキストは、`:` の後に 1 行で印字します。
 その前にコメント行がある文は、書かれたまま残します。
-`accTitle:`、`%% a comment line`、`T` は別々の行に残します。
-mermaid.js は、`accTitle: %% a comment line` の後の行に `T` がある形を、
-タイトル `T` ではなく、
-タイトル `%% a comment line` と実体 `T` として読むためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 
 [fixture: accessibility-statements/text-on-next-line-joined]
 [fixture: accessibility-statements/text-with-comment-line-kept]
@@ -1868,12 +1849,11 @@ agentflow、usecase に合わせます。
 
 [test: accessibility revisions: er empty-description-nbsp]
 
-コメントやディレクティブがあるブロックは、改行と完全な内容を保ち、
-普通の独立した注釈類はブロックの内側にそろえます。
-ほかに内容がない `accDescr` ブロックの `%% a comment line` は、
-`{` の次の行に残します。
-mermaid.js はその形では空の説明を読みますが、
-開始行に置くと `%% a comment line` を説明として読むためです。
+ほかに内容がない `accDescr` ブロックにコメント行がある場合は、
+改行と完全な内容を保ち、普通の独立した注釈類はブロックの内側にそろえます。
+`accDescr {`、`%% a comment line`、`}` が別々の行にある形では、
+mermaid.js は空の説明を読みますが、
+`accDescr { %% a comment line }` では `%% a comment line` を説明として読みます。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
