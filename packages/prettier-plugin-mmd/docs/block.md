@@ -452,12 +452,7 @@ printed with the space.
 [fixture: shapes/block-arrow-comma-on-kept-line]
 
 A comment line or a directive there keeps its line, and a U+2028 or U+2029 stays
-where it is. For a comment before the comma between block-arrow directions, the
-line break between `right` and `%% c` stays, since mermaid.js rejects the form
-with `right %% c` on one line (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-
-[fixture: shapes/block-arrow-comma-space] [fixture:
+where it is. [fixture: shapes/block-arrow-comma-space] [fixture:
 shapes/block-arrow-comma-comment-line] [test: U+2028 after the comma between the
 directions of a block arrow] [test: U+2029 after the comma between the
 directions of a block arrow] [test: U+2028 before the comma between the
@@ -881,26 +876,16 @@ an edge, a width, a shape, and the head of a composite. The line break is
 replaced by one space; this is how the other diagrams join the lines of a
 statement (see [Multi-line statements](./xychart.md#multi-line-statements)).
 Keep trivia line breaks in structural gaps, including node/shape/width and edge
-parts, `columns`, class/style heads and composite heads. Between `columns` and
-its count `2`, the line break before `%% count` stays, since with
-`columns %% count` mermaid.js draws different text and geometry and the
-composite's column count is absent from the Db (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Place later parts and standalone trivia one continuation level inside the
-statement, also within rows and composites. Preserve first gap-line tails,
-complete directive interiors and whole value ranges; block-arrow directions
-remain as written, except for the whitespace after a `,`.
+parts, `columns`, class/style heads and composite heads. Place later parts and
+standalone trivia one continuation level inside the statement, also within rows
+and composites. Preserve first gap-line tails, complete directive interiors and
+whole value ranges; block-arrow directions remain as written, except for the
+whitespace after a `,`.
 
 [fixture: multi-line-statements/structural-trivia-continuations]
 
-Joining comment regions retain their original layout. After `block: G`, U+2028
-before `%% c` stays, since replacing it with a space in `block: G %% c` makes
-mermaid.js draw different text and geometry and read `%%` and `c` as child ids
-in the Db (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-
-[test: block: ls-comment-in-composite-head] [test: block:
-ps-comment-in-composite-head]
+Joining comment regions retain their original layout. [test: block:
+ls-comment-in-composite-head] [test: block: ps-comment-in-composite-head]
 
 A line break stays where joining it, with one space or with nothing, could
 change which `;` the line rule ignores, and where a `;` ends the last line; any
@@ -1093,11 +1078,7 @@ keyword from its body: `accDescr{  }` becomes `accDescr {}`.
 Unicode and tab interiors]
 
 A block with a directive or comment line keeps its contents and line breaks,
-with standalone trivia one level inside and its closer at statement level. The
-line break between `accDescr {` and the comment `%% c` stays, since mermaid.js
-rejects the form with `accDescr {%% c` on one line (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-
+with standalone trivia one level inside and its closer at statement level.
 [fixture: empty-description-blocks/trivia-continuations]
 
 It stands on a line of its own, also after the header and between two nodes,
