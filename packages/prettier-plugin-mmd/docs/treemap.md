@@ -17,9 +17,7 @@ making the heading easy to find. The keyword is printed `treemap`, also where it
 was written `treemap-beta`: every version of mermaid.js that counts and has the
 diagram reads both names and draws them the same (see
 [The names of a header](./compatibility.md#the-names-of-a-header)). Add no
-colon; an empty body stays empty. The empty `treemap-beta` body has no colon,
-since mermaid.js rejects `treemap-beta:` with the same empty body (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+colon; an empty body stays empty.
 
 [fixture: treemap/header/stable]
 
@@ -100,11 +98,8 @@ Use the AST hierarchy, which already accounts for assigned indentation, before
 removing exterior padding. A run after a header, section, leaf, class terminator
 or description closer, or on a whitespace-only line, can indent the next row
 across LF. Move its information once to that row’s planned column. Do not
-measure only physical leading whitespace or add a second indentation run. For a
-section followed by two trailing spaces and a leaf at column one, mermaid.js
-rejects the same input with two leading spaces added before the leaf (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Common removals have already decided which runs count.
+measure only physical leading whitespace or add a second indentation run.Common
+removals have already decided which runs count.
 
 Use the resulting row column for standalone comment lines too, including when
 common comment removal discarded an earlier whitespace-only run.
@@ -319,12 +314,8 @@ tabs only becomes one space. A name between `'` is printed between `"`, unless
 it holds a `'`, a `"`, a backslash, a line break, a backquote, `&`, `#`, or `<`
 (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
-and `singleQuote` is not read. The name `'  Other "quote"  '` keeps its single
-quotes, since mermaid.js rejects the double-quoted form `"  Other \"quote\"  "`
-(see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Backslashes do not escape quotes or decode `\n`; these authored choices can
-affect the name or acceptance.
+and `singleQuote` is not read.Backslashes do not escape quotes or decode `\n`;
+these authored choices can affect the name or acceptance.
 
 [fixture: treemap/names/quotes]
 
@@ -750,12 +741,9 @@ prints a run of spaces and tabs inside the text as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 without rewriting quote-looking text. Never take a value from the next physical
 line, across comments or directives. Trivia-bearing values retain their written
-boundaries. `title A%%{wrap}%%B` keeps the contact before the directive, since
-mermaid.js reads `title A %%{wrap}%%B` as `A B` instead of `AB` (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-The directives that end a title are printed with one space before each that has
-whitespace before it, and the whitespace after the last one is left out,
-whatever the whitespace at the end of the line (see
+boundaries.The directives that end a title are printed with one space before
+each that has whitespace before it, and the whitespace after the last one is
+left out, whatever the whitespace at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
@@ -1108,10 +1096,7 @@ count spaces/tabs on both sides. Use shared leading-gap placement: retain
 following gaps while they fit, shorten excess from the last gap, then supply the
 remaining configured indentation before the first directive. Earlier-line
 carried units move once instead. Keep necessary class keyword/name whitespace
-and never use a directive as its substitute. `classDef %%{wrap}%% zz color:red`
-keeps separating whitespace, since mermaid.js rejects
-`classDef%%{wrap}%%zz color:red` (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+and never use a directive as its substitute.
 
 A directive that is not closed takes the whitespace after its argument, line
 breaks included, so the next row goes on its line (see
@@ -1268,8 +1253,8 @@ file-leading BOM with the shared frontmatter limitation.
 Format only safe real leading frontmatter through shared guarded YAML
 formatting. Keep indented fences, closing padding, malformed YAML, HTML quote
 hazards and bodies that formatting could turn into fences as written. The
-frontmatter line `title: "<a b=\"c\">"` stays, since mermaid.js rejects
-`title: '<a b="c">'` (see
+frontmatter line `title: "<a b=\"c\">"` stays, since every version of mermaid.js
+that counts rejects `title: '<a b="c">'` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 YAML nested values and block scalars use at least one space at tabWidth zero.
 These guards preserve preprocessing and values while ordinary safe YAML gets
