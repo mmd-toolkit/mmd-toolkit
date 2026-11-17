@@ -408,7 +408,7 @@ importers:
         specifier: workspace:^
         version: link:../parser
       marked:
-        specifier: 18.2.1
+        specifier: ^18.2.1
         version: 18.2.1
     devDependencies:
       '@mmd-toolkit/ast':
