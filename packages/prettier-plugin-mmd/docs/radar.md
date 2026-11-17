@@ -19,8 +19,8 @@ the header without the colon 3 times against none (see
 [The colon after a header](./compatibility.md#the-colon-after-a-header)). The
 colon stays where a hidden form or a global directive lies between it and the
 word, and where a `;` or the `---` of a hidden YAML block touches it. For
-`radar-beta%%{wrap}%%:axis North`, the colon stays, since mermaid.js rejects
-`radar-beta%%{wrap}%%axis North` (see
+`radar-beta%%{wrap}%%:axis North`, the colon stays, since every version of
+mermaid.js that counts rejects `radar-beta%%{wrap}%%axis North` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Hidden forms, global trivia and protected semicolon segments keep their source
 boundaries instead. Empty bodies remain empty.
@@ -251,7 +251,8 @@ protected semicolon segments remain written, including their continuation
 columns. No continuation indentation is added inside a protected segment;
 ordinary spacing still applies after it. Shared joining checks also keep a
 terminal line containing another statement's semicolon: joining a preceding
-style-like label could change that statement's Db (see
+style-like label could change that statement's Db in every version of mermaid.js
+that counts (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: radar/multi-line-statements/leading-trailing-entry-lines]
@@ -469,9 +470,6 @@ which is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 Never take a value from the next physical line, including across comments or
 directives. Trivia-bearing values and protected segments keep their source gaps.
-For `title style:#red;;`, the colon stays without a following space, since
-mermaid.js draws different title text for `title style: #red;;` (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The directives that end a title are printed with one space before each that has
 whitespace before it, and the whitespace after the last one is left out,
 whatever the whitespace at the end of the line (see
@@ -510,12 +508,9 @@ an `accDescr` is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 and that of an `accTitle` stays as written, since the browser shows it as a
 tooltip. Braces after a colon remain line text. Trivia/hidden and semicolon
-protection take precedence. For `accTitle: style:#red;;`, the colon after
-`style` stays without a following space, since mermaid.js draws different
-accessibility title text for `accTitle: style: #red;;` (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-The directives that end the value are printed with one space before each that
-has whitespace before it, and the whitespace after the last one is left out (see
+protection take precedence. The directives that end the value are printed with
+one space before each that has whitespace before it, and the whitespace after
+the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
@@ -547,8 +542,8 @@ Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
 For blocks that keep their braces, separate the keyword and opening brace with
 one space so the block boundary is clear. For `accDescr {a%%literal}`, the
-braces stay, since mermaid.js reads the description as `a%%literal` there but as
-`a` in `accDescr : a%%literal`, drawing different text (see
+braces stay, since every version of mermaid.js that counts draws different text
+for `accDescr: a%%literal` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Whitespace-only interiors become `{}` because no text needs surrounding space.
 Plain opener whitespace joins; real trivia keeps its break. Preserve
@@ -749,7 +744,8 @@ empty bodies, three fences forming one match, separate matches, later qualifying
 closers and internal global/comment cuts. Ordinary body openers may indent;
 interiors and closers keep their columns. For the body YAML with `not: [yaml` as
 its only interior line, that line and the closing `---` stay at column one,
-since mermaid.js rejects the form with both indented two spaces (see
+since every version of mermaid.js that counts rejects the form with both
+indented two spaces (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Never invent a newline before a hidden form. Strings/common values retain their
 hidden-looking content, and failed native forms remain comments.
