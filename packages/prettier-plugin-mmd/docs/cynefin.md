@@ -772,7 +772,7 @@ When textBeforeHeader is nonempty, use the shared keepsPrefix rule to retain the
 complete prefix through the header keyword. Preserve leading LF, passed trivia,
 second-scan directives and real/retained YAML order. Cleaning that prefix can
 promote ignored YAML to effective frontmatter, changing the title, configuration
-or acceptance (see
+or acceptance in every version of mermaid.js that counts (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: cynefin/retained-prefix/prefix-retained-yaml]
