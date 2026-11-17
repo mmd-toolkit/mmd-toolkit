@@ -276,12 +276,9 @@ wardley-beta
 
 Print NumericLiteral source spans without converting their double values back to
 text. Preserve decimal leading/trailing zeros, precision, rounded boundaries,
-subnormal values, underflow and overflow where accepted.
-`component Digits [000.30,01.00]` keeps `01.00`, since mermaid.js rejects
-`component Digits [000.30,1]` (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Percent conversion also loses the chosen unit. Rejected leading-zero integers
-are not repaired.
+subnormal values, underflow and overflow where accepted. Converting 01.00 to 1
+can reject a decimal-only position; percent conversion also loses the chosen
+unit. Rejected leading-zero integers are not repaired.
 
 [fixture: wardley/numbers/decimal-leading-zero]
 
@@ -435,8 +432,8 @@ wardley-beta
 Keep the interior of each +'label'>, +'label'< or +'label'<> flow as written:
 empty labels, padding, backslashes and physical continuation columns included.
 Root directives between its complete components retain their source boundaries.
-The forward flow `Alpha+' F  G\n\q '>Beta` keeps the quotes next to `+` and `>`,
-since mermaid.js rejects `Alpha+ ' F  G\n\q ' >Beta` (see
+Ordinary inserted spaces reject the composite unit, and trimming content changes
+the Db (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Keep both ports and the semicolon label even when flow precedence hides them.
 
@@ -961,8 +958,8 @@ wardley-beta
 Remove harmless exterior ASCII padding after the header, completed structures
 and description closers. Decide by owner: preserve link-label tails, string/flow
 contents, comments, directives, hidden interiors, required closer padding and
-protected stretches. The three spaces after `Alpha -> Beta;` at EOF stay, since
-mermaid.js rejects `Alpha -> Beta;` at EOF without them (see
+protected stretches. Trimming every physical line can change the Db or reject a
+whitespace-only link label (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: wardley/trailing-whitespace/trailing-exterior]
@@ -1077,9 +1074,8 @@ wardley-beta
 
 Do not wrap at printWidth. Keep physical string and flow contents, continuation
 columns and interior blank lines. Description bodies use the shared indentation
-above. In the long component statement, `0.123456789012345,0.987654321098765`
-stays on one line, since mermaid.js rejects that statement with LF after
-`0.123456789012345,` (see
+above. Visible LF between ordinary statement components can reject the input,
+and reindenting value continuations changes the Db (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Long component/evolution statements stay unwrapped; description openers and
 closers use Accessibility.
