@@ -1048,13 +1048,9 @@ interiors] [fixture: empty-description-blocks/inner-whitespace-collapsed]
 empty-description-blocks/touching-kept] [fixture:
 empty-description-blocks/in-body-over-lines-joined]
 
-A block containing a comment line keeps its contents and line breaks; standalone
-trivia is one level inside the block and a separate `}` aligns with `accDescr`,
-including an empty block within a requirement or element body. `accDescr {`,
-`%% c`, and `}` stay on separate lines, since mermaid.js reads
-`accDescr { %% c }` as the description `%% c` instead of an empty description
-and draws different text (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A block containing comments or directives keeps their contents and line breaks;
+standalone trivia is one level inside the block and a separate `}` aligns with
+`accDescr`, including an empty block within a requirement or element body.
 
 [fixture: empty-description-blocks/in-body-with-directive-line] [fixture:
 empty-description-blocks/with-directive-or-comment-line-kept] [fixture:

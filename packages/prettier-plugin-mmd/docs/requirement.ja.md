@@ -1056,15 +1056,10 @@ ER 図が mermaid.js の読まないテキストをブロックの中の自分�
 [fixture: empty-description-blocks/touching-kept]
 [fixture: empty-description-blocks/in-body-over-lines-joined]
 
-コメント行を含むブロックは、その内容と改行を保ちます。
+ディレクティブかコメント行を含むブロックは、その内容と改行を保ちます。
 独立した注釈をブロックの 1 段内側に置き、
 独立した `}` は `accDescr` にそろえます。
 requirement と element の本文にある空のブロックも同じです。
-`accDescr {`、`%% c`、`}` を別々の行に残すのは、
-mermaid.js が `accDescr { %% c }` を空の説明ではなく `%% c` と読み、
-異なるテキストを描くためです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照）。
 
 [fixture: empty-description-blocks/in-body-with-directive-line]
 [fixture: empty-description-blocks/with-directive-or-comment-line-kept]
