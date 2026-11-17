@@ -149,7 +149,7 @@ packet
 消費される LF は通常の空白ではないためです。
 `0%%{!left}%% -%%{!right}%% 2:"Hidden dash"` は、
 対象にする版の mermaid.js のうちいくつかは
-`0%%{!left}%%-%%{!right}%% 2:"Hidden dash"` を拒否するので、
+`0%%{!left}%%-%%{!right}%%2:"Hidden dash"` を拒否するので、
 `-` の前の空白を残します。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)

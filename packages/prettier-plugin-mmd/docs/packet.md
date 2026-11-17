@@ -145,7 +145,7 @@ as one visual unit. Preserve global trivia and hidden boundaries instead of
 tightening them: a consumed LF is not an ordinary space. For
 `0%%{!left}%% -%%{!right}%% 2:"Hidden dash"`, the space before `-` stays, since
 some of the versions of mermaid.js that count reject
-`0%%{!left}%%-%%{!right}%% 2:"Hidden dash"` (see
+`0%%{!left}%%-%%{!right}%%2:"Hidden dash"` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: packet/range-dash/dash-tight]
