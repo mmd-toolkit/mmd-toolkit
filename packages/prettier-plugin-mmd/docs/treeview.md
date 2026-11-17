@@ -973,9 +973,7 @@ visible parentage match the reading rather than preserving a misleading shared
 row. Quote-looking text inside a bare name stays name text. Retain the body when
 shared source row boundaries or changed value tabs, tails or newly exposed
 leading Unicode whitespace prevent safe splitting, as described in Branch
-prefixes. The row `├── "a" "b";` stays together, since mermaid.js rejects
-placing the space and `"b";` on the next unprefixed line (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+prefixes.
 
 [fixture:
 treeview/statements-one-per-line/review159-box-quoted-line-rule-semicolon]
@@ -1125,14 +1123,10 @@ treeview/statements-one-per-line/review159-split-directive-empty-block]
 treeview/statements-one-per-line/review159-split-directives-empty-block]
 
 Keep the existing body-retention conditions for selected or unselected
-semicolons and unsafe LS/PS-leading values. The row
-`├── "style:#x" %%{x}%%; "b"` stays together, since mermaid.js reads `"b"` on a
-separate unprefixed line as a root instead of a child of `root`, changing the
-figure's structure and geometry (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Comment regions held inside a value stay in that value while an intervening
-directive before it takes the separate line. In indentation mode keep the
-existing placement of a leading directive with its node.
+semicolons and unsafe LS/PS-leading values. Comment regions held inside a value
+stay in that value while an intervening directive before it takes the separate
+line. In indentation mode keep the existing placement of a leading directive
+with its node.
 
 [fixture:
 treeview/statements-one-per-line/review159-split-directive-selected-semicolon]
@@ -2237,14 +2231,10 @@ line as described in [Statements one per line](#statements-one-per-line).
 (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 When units split, attach the directive to the following unit and retain its
-right boundary. `"A"%%{init: {}}%%"B"` keeps contact after the directive, since
-mermaid.js reads `B` as a child of `A` in `"A"%%{init: {}}%% "B"`, changing the
-figure's structure and geometry (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Standalone directives use column one. For a leading indentation unit, keep
-following gaps while they fit, shorten excess from the last gap, then supply the
-remaining indentation before the first directive. This preserves the assigned
-indent without duplicating earlier carried runs. Multiline interiors,
+right boundary. Standalone directives use column one. For a leading indentation
+unit, keep following gaps while they fit, shorten excess from the last gap, then
+supply the remaining indentation before the first directive. This preserves the
+assigned indent without duplicating earlier carried runs. Multiline interiors,
 value-owned forms and unfinished EOF directives remain written.
 
 With useTabs, the retained gaps and the supplied indentation of a leading
@@ -2455,13 +2445,7 @@ Keep at most one ordinary ASCII blank line between items and remove edge blanks,
 after relocating meaningful indentation runs and replacing outer decoration.
 This gives bounded separation while preserving parentage. Keep value, directive
 and comment-region interiors unchanged; Unicode-only names are not ordinary
-blank lines. Body-retained diagrams keep their source boundaries. The line
-`"p" "style:#z;"` stays together, since mermaid.js reads `"style:#z;"` on a
-separate line as a root instead of a child of `"p"`, changing the figure's
-structure and geometry (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-
-[fixture: treeview/semicolons/protected-row-body]
+blank lines. Body-retained diagrams keep their source boundaries.
 
 [fixture: treeview/blank-lines/blank-collapse]
 
