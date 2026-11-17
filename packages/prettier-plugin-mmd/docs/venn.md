@@ -888,8 +888,8 @@ prints as `title T`.
 [fixture: venn/title/text-padding-dropped]
 
 A title of spaces and tabs only stays as written. The title with two spaces, a
-tab and a space after `title` stays, since some of the versions of mermaid.js
-that count reject `title` alone on its line (see
+tab and a space after `title` stays, since every version of mermaid.js that
+counts rejects `title` alone on its line (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: venn/title/title-blank-kept]
