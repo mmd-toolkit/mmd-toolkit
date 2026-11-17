@@ -1021,8 +1021,10 @@ nonempty value and print `title value`; null or whitespace-only values print
 bare `title`. Keep quote-looking content and escape spelling, and print a run of
 spaces and tabs inside the value as one space. Do not read a value from the next
 physical line. In IR, a bare `title` stays separate from the next-line rule
-`r=terminal("x");`, since mermaid.js omits the rule from the Db and draws a
-different figure structure for `title r=terminal("x");` (see
+`r=terminal("x");` and the rule in `titlex=terminal("title prefix");`, since
+mermaid.js omits the rule from the Db and draws a different figure structure for
+`title r=terminal("x");` and `title x=terminal("title prefix");`, respectively
+(see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A bare title prefix followed by a rule becomes two statements, keeping the rule
 out of the title. The comparison Db omits body titles, which gives no permission
@@ -1933,6 +1935,12 @@ railroad/semicolons/peg-classdef-comment-both-ps]
 
 Shared kept-line layout keeps a whole statement or indivisible value/trivia that
 crosses the line too; later lines retain their written columns.
+
+mermaid.js can ignore the last semicolon of a line containing these strings. In
+railroad that semicolon can be a required rule terminator or an ABNF comment
+mark. Changing the line can therefore reject a rule or read comment text as
+code. Keeping the source line protects both kinds of punctuation without
+predicting how moving its contents would affect the common line rule.
 
 The cost is that a rule name, string or comment containing `style` or `classDef`
 leaves that line unformatted, even when no colon or hash follows. Other lines
