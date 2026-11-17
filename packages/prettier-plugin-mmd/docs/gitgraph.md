@@ -693,7 +693,7 @@ Use the same source/boundary preservation as Hidden yaml for directive-kind
 GitgraphIgnoredText, including all nine statement suffix kinds. When `commit`
 follows on the next line, `commit%%{}%% ` keeps its final space, since
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives `commit%%{}%%`,
-which mermaid.js rejects (see
+which some of the versions of mermaid.js that count reject (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 This native form is distinct from a global directive. Keep
 empty/punctuation/multiline contents and earlier string/block ownership. A
