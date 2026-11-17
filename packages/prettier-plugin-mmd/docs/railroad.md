@@ -16,10 +16,7 @@ records preserved text and differences from mermaid.js.
 
 Print the authored header at column one and put an ordinary first statement on
 the next line, making the dialect easy to find. IR keeps `railroad-beta`, EBNF
-`railroad-ebnf-beta`, ABNF `railroad-abnf-beta`, and PEG `railroad-peg-beta`. In
-IR, `railroad-beta` stays, since mermaid.js rejects `railroad` with the same
-rule body (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+`railroad-ebnf-beta`, ABNF `railroad-abnf-beta`, and PEG `railroad-peg-beta`.
 Add no colon or flags. Hidden forms, global trivia and protected semicolon
 segments retain their shared boundaries; an empty body stays empty.
 
@@ -1020,17 +1017,12 @@ Use the shared common-line layout: trim ordinary exterior whitespace around a
 nonempty value and print `title value`; null or whitespace-only values print
 bare `title`. Keep quote-looking content and escape spelling, and print a run of
 spaces and tabs inside the value as one space. Do not read a value from the next
-physical line. In IR, a bare `title` stays separate from the next-line rule
-`r=terminal("x");` and the rule in `titlex=terminal("title prefix");`, since
-mermaid.js omits the rule from the Db and draws a different figure structure for
-`title r=terminal("x");` and `title x=terminal("title prefix");`, respectively
-(see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-A bare title prefix followed by a rule becomes two statements, keeping the rule
-out of the title. The comparison Db omits body titles, which gives no permission
-to rewrite their contents. The directives that end a title are printed with one
-space before each that has whitespace before it, and the whitespace after the
-last one is left out, whatever the whitespace at the end of the line (see
+physical line. A bare title prefix followed by a rule becomes two statements,
+keeping the rule out of the title. The comparison Db omits body titles, which
+gives no permission to rewrite their contents. The directives that end a title
+are printed with one space before each that has whitespace before it, and the
+whitespace after the last one is left out, whatever the whitespace at the end of
+the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: railroad/title/ir-rule-on-next-line]
@@ -1138,14 +1130,10 @@ retaining internal text and brace-looking line values, except that a run of
 spaces and tabs inside the value of an `accDescr` is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 and that of an `accTitle` stays as written, since the browser shows it as a
-tooltip. Keep next-line values separate. In IR, `accTitle:` stays separate from
-the next-line rule `r=terminal("x");`, since mermaid.js uses the rule text as
-the accessibility title and omits the rule from the Db in
-`accTitle: r=terminal("x");`, changing the figure's text and structure (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-This gives the same form as the other diagrams. The directives that end the
-value are printed with one space before each that has whitespace before it, and
-the whitespace after the last one is left out (see
+tooltip. Keep next-line values separate. This gives the same form as the other
+diagrams. The directives that end the value are printed with one space before
+each that has whitespace before it, and the whitespace after the last one is
+left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: railroad/accessibility-lines/ir-acc-title-before-rule]
@@ -1330,14 +1318,11 @@ Standalone comments use one body step, or column one before the header. Outside
 ordinary IR calls, inline comments keep their side and touching/separated
 boundaries; ordinary separated gaps become one space. Preserve marks, text,
 tails, block continuation columns and source order. A line comment leaves its
-following operand or terminator on the next line. In ABNF, the line break
-between `r="comment"; note` and `;` stays, since mermaid.js rejects
-`r="comment"; note ;` (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Every dialect has `%%`; IR also has `/* */`, EBNF `/* */` and `(* *)`, ABNF `;`
-line comments, and PEG `#` line comments. Bare ABNF `;` is punctuation; `//` is
-not a native comment. Text owned by a value stays in that value. These choices
-preserve ownership and prevent a line comment from taking code.
+following operand or terminator on the next line. Every dialect has `%%`; IR
+also has `/* */`, EBNF `/* */` and `(* *)`, ABNF `;` line comments, and PEG `#`
+line comments. Bare ABNF `;` is punctuation; `//` is not a native comment. Text
+owned by a value stays in that value. These choices preserve ownership and
+prevent a line comment from taking code.
 
 Inside an ordinary IR call, a block comment before an argument moves with that
 argument onto its line. Comments before a comma or the closing parenthesis
@@ -1889,9 +1874,9 @@ Keep an authored railroad line as written when it contains the literal string
 all statements, comments and native hidden forms on the line, with their inner
 spacing. Do not join the line to either neighbor. ABNF keeps the line break
 between `style=(":"` and `)%%{!#}%% ;`, and PEG keeps the line break between
-`r<-("sty%%{wrap}%%le:"` and `)%%{!#}%% ;`, since mermaid.js rejects the joined
-forms `style=(":")%%{!#}%% ;` and `r<-("sty%%{wrap}%%le:")%%{!#}%% ;`,
-respectively (see
+`r<-("sty%%{wrap}%%le:"` and `)%%{!#}%% ;`, since every version of mermaid.js
+that counts rejects the joined forms `style=(":")%%{!#}%% ;` and
+`r<-("sty%%{wrap}%%le:")%%{!#}%% ;`, respectively (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 When removing a directive forms one of these strings across physical lines, keep
 every contributing line.
