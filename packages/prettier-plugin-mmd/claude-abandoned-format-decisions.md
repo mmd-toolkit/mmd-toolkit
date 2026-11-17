@@ -6,7 +6,9 @@ a form for which no reason is recorded and that the user did not decide. Most of
 them are printed as written, and no reason for keeping them is recorded: no run
 has shown that the other form changes the Db or the drawing, or is rejected, in
 a version of mermaid.js that counts, and the user has not decided them. They are
-format decisions still to be made, not rules.
+format decisions still to be made, not rules. A version that rejects both forms,
+or only the written form, counts as showing no difference: it gives no reason to
+keep the written form.
 
 The section [To fix by the rule](#to-fix-by-the-rule) lists forms that a rule of
 [How the printed form is decided](./docs/printed-form.md) already gives but the
@@ -113,23 +115,20 @@ packet, pie, quadrant, sankey, usecase, venn, xychart.
 
 ### D05. Whether equivalent numeric spellings are normalized
 
-13 forms in c4, journey, pie, radar, railroad, sankey, treemap, wardley.
+10 forms in c4, journey, pie, radar, railroad, sankey, treemap, wardley.
 
-| Diagram  | Rules document                                                                                  | Written form                                                                                                                                                            |
-| -------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| c4       | [c4.md:1360](./docs/c4.md#number-like-text)                                                     | `C4Dynamic\nPerson(a,\A\")\nPerson(b,\"B\")\nRelIndex(007,a,b,\"Uses\")\nUpdateRelStyle(a,b,\"red\",\"blue\",\"01x\",\"-0\")\nUpdateLayoutConfig(\"03rows\",\"02\")\n"` |
-| journey  | [journey.md:333](./docs/journey.md#task-data)                                                   | `journey\nA: 05\nB: 3.50\nC: -2\nD: 0x10\nE: 1e2\nF: abc\n`                                                                                                             |
-| pie      | [pie.md:161](./docs/pie.md#numbers)                                                             | `pie showData\n\negative zero\":-0\n\"fraction\":0007.2300\n\"precision\":0.12345678901234567890123456789"`                                                             |
-| radar    | [compatibility.md:6612](./docs/compatibility.md#radar-authored-groups-and-hidden-boundaries)    | `radar-beta\ncurve trial{0004.5000,9007199254740993,0.12345678901234567890,0}\n`                                                                                        |
-| radar    | [radar.md:348](./docs/radar.md#numbers)                                                         | `radar-beta\ncurve trial{007.0, 1.50}`                                                                                                                                  |
-| railroad | [railroad.md:525](./docs/railroad.md#repeats)                                                   | `railroad-abnf-beta\nr=002*004 (\range\") 03 \"exact\" * \"any\" 2* ref *1 \"upper\";"`                                                                                 |
-| sankey   | [sankey.md:277](./docs/sankey.md#values)                                                        | `sankey\na,b,1e0\n`                                                                                                                                                     |
-| treemap  | [treemap.md:267](./docs/treemap.md#numbers)                                                     | `treemap-beta\n\leading\": 007\n\"short\": 1.50"`                                                                                                                       |
-| wardley  | [compatibility.md:2503](./docs/compatibility.md#numbers-in-the-shortest-form)                   | `wardley-beta\ncomponent A [0.50, 0.50]\n`                                                                                                                              |
-| wardley  | [compatibility.md:7287](./docs/compatibility.md#wardley-authored-text-and-required-line-breaks) | `wardley-beta\ncomponent Alpha [0.10,0.20]\n`                                                                                                                           |
-| wardley  | [wardley.md:253](./docs/wardley.md#coordinates)                                                 | `wardley-beta\nannotations [ 3 , 4 ]\nannotation 2,[ 0 , 1 ]\Integer\""`                                                                                                |
-| wardley  | [wardley.md:349](./docs/wardley.md#label-offsets)                                               | `wardley-beta\ncomponent ZeroSign[0.3,0.6]label[- 0,0]`                                                                                                                 |
-| wardley  | [wardley.md:498](./docs/wardley.md#evolves)                                                     | `wardley-beta\ncomponent Motion[0.3,0.6]\nevolveMotion\t0.80`                                                                                                           |
+| Diagram  | Rules document                                                                               | Written form                                                                                                                                                            |
+| -------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| c4       | [c4.md:1360](./docs/c4.md#number-like-text)                                                  | `C4Dynamic\nPerson(a,\A\")\nPerson(b,\"B\")\nRelIndex(007,a,b,\"Uses\")\nUpdateRelStyle(a,b,\"red\",\"blue\",\"01x\",\"-0\")\nUpdateLayoutConfig(\"03rows\",\"02\")\n"` |
+| journey  | [journey.md:333](./docs/journey.md#task-data)                                                | `journey\nA: 05\nB: 3.50\nC: -2\nD: 0x10\nE: 1e2\nF: abc\n`                                                                                                             |
+| pie      | [pie.md:161](./docs/pie.md#numbers)                                                          | `pie showData\n\negative zero\":-0\n\"fraction\":0007.2300\n\"precision\":0.12345678901234567890123456789"`                                                             |
+| radar    | [compatibility.md:6612](./docs/compatibility.md#radar-authored-groups-and-hidden-boundaries) | `radar-beta\ncurve trial{0004.5000,9007199254740993,0.12345678901234567890,0}\n`                                                                                        |
+| radar    | [radar.md:348](./docs/radar.md#numbers)                                                      | `radar-beta\ncurve trial{007.0, 1.50}`                                                                                                                                  |
+| railroad | [railroad.md:525](./docs/railroad.md#repeats)                                                | `railroad-abnf-beta\nr=002*004 (\range\") 03 \"exact\" * \"any\" 2* ref *1 \"upper\";"`                                                                                 |
+| sankey   | [sankey.md:277](./docs/sankey.md#values)                                                     | `sankey\na,b,1e0\n`                                                                                                                                                     |
+| treemap  | [treemap.md:267](./docs/treemap.md#numbers)                                                  | `treemap-beta\n\leading\": 007\n\"short\": 1.50"`                                                                                                                       |
+| wardley  | [wardley.md:349](./docs/wardley.md#label-offsets)                                            | `wardley-beta\ncomponent ZeroSign[0.3,0.6]label[- 0,0]`                                                                                                                 |
+| wardley  | [wardley.md:498](./docs/wardley.md#evolves)                                                  | `wardley-beta\ncomponent Motion[0.3,0.6]\nevolveMotion\t0.80`                                                                                                           |
 
 ### D06. Whether colors and color-like text are lowercased
 
@@ -157,14 +156,6 @@ usecase, venn.
 | --------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | agentflow | [agentflow.md:177](./docs/agentflow.md#names-and-headings) | `agentflow-beta TB\nflow F click [T]\nA\nend\nflow F \\" G [T]\nB\nend\nconnector H click [T]\nconnector I \"\" J [T]\n"` |
 | state     | [state.md:536](./docs/state.md#whitespace-between-tokens)  | `stateDiagram-v2\nnote   \x\"   as   N\nnote \"\"y\"   as   M\n"`                                                         |
-
-### D08. Whether a mode selector in a description gap is retained
-
-1 form in treeview.
-
-| Diagram  | Rules document                                                                      | Written form                                                     |
-| -------- | ----------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| treeview | [compatibility.md:6896](./docs/compatibility.md#treeview-modes-and-authored-values) | `treeView-beta\naccDescr\n─\n{z}\n   title   T\nroot\n\n\n\nx\n` |
 
 ### D09. Whether ignored source regions are retained
 
@@ -238,23 +229,23 @@ usecase, venn.
 
 ### D16. Whether indentation notation is replaced by branch notation
 
-3 forms in treeview.
+2 forms in treeview.
 
-| Diagram  | Rules document                                                                      | Written form                       |
-| -------- | ----------------------------------------------------------------------------------- | ---------------------------------- |
-| treeview | [compatibility.md:6806](./docs/compatibility.md#treeview-modes-and-authored-values) | `treeView-beta\nroot\n  child\n`   |
-| treeview | [treeview.md:60](./docs/treeview.md#modes)                                          | `treeView-beta\nroot\n    child\n` |
-| treeview | [treeview.md:63](./docs/treeview.md#modes)                                          | `treeView-beta\nroot\n    child\n` |
+| Diagram  | Rules document                             | Written form                       |
+| -------- | ------------------------------------------ | ---------------------------------- |
+| treeview | [treeview.md:60](./docs/treeview.md#modes) | `treeView-beta\nroot\n    child\n` |
+| treeview | [treeview.md:63](./docs/treeview.md#modes) | `treeView-beta\nroot\n    child\n` |
 
 ### D17. Whether written semicolons are retained or removed
 
-26 forms in agentflow, block, class, er, eventmodeling, flowchart, quadrant,
+27 forms in agentflow, block, class, er, eventmodeling, flowchart, quadrant,
 requirement, state, treeview, usecase, venn.
 
 | Diagram       | Rules document                                                                          | Written form                                                                                                           |
 | ------------- | --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | agentflow     | [agentflow.md:221](./docs/agentflow.md#names-and-headings)                              | `agentflow-beta TB\nconnector style:#x ; [T]`                                                                          |
 | agentflow     | [agentflow.md:908](./docs/agentflow.md#kept-lines)                                      | `agentflow-beta TB\nA\n%%{open;B`                                                                                      |
+| agentflow     | [agentflow.md:972](./docs/agentflow.md#comments)                                        | `agentflow-beta TB\nA;%% c\nB`                                                                                         |
 | block         | [block.md:830](./docs/block.md#semicolons-at-the-end-of-a-style-statement)              | `block\nA\nclassDef c fill:#f00; %%{init: {}}%%\nstyle A fill:#f00; %% keep\n`                                         |
 | class         | [class.md:1495](./docs/class.md#semicolons-at-the-end-of-a-style-statement)             | `classDiagram\nclass A\nclassDef c fill:#f00; %%{init: {}}%%\nstyle A fill:#f00; %% keep\n`                            |
 | class         | [class.md:1514](./docs/class.md#semicolons-at-the-end-of-a-style-statement)             | `classDiagram\nstyle A fill:#f00;\u2028\n`                                                                             |
@@ -268,10 +259,10 @@ requirement, state, treeview, usecase, venn.
 | flowchart     | [flowchart.md:173](./docs/flowchart.md#indentation)                                     | `flowchart LR\naccDescr {style:#x} direction LR;; C-->D\n`                                                             |
 | flowchart     | [flowchart.md:188](./docs/flowchart.md#statements-one-per-line)                         | `flowchart LR\nA[style:#x]-->direction;\n;B\n`                                                                         |
 | flowchart     | [flowchart.md:543](./docs/flowchart.md#semicolons)                                      | `flowchart LR\nA[style:#x];;\nB\n`                                                                                     |
+| flowchart     | [flowchart.md:2758](./docs/flowchart.md#directives)                                     | `flowchart LR\n  A --> B %%{init: {}}%%\n  C; %%{init: {}}%% D\n`                                                      |
 | quadrant      | [quadrant.md:867](./docs/quadrant.md#multi-line-statements)                             | `quadrantChart\nclassDef a\u2028%% c\nstyle color:#f00;\n`                                                             |
 | requirement   | [requirement.md:1299](./docs/requirement.md#semicolons-at-the-end-of-a-style-statement) | `requirementDiagram\nclassDef c fill:#f00; %%{init: {}}%%\n`                                                           |
 | state         | [state.md:1705](./docs/state.md#semicolons-at-the-end-of-a-style-statement)             | `stateDiagram-v2\nA --> B\nclassDef c fill:#f00; %%{init: {}}%%\nstyle A fill:#f00; %% keep\n`                         |
-| treeview      | [treeview.md:761](./docs/treeview.md#carried-indentation)                               | `treeView-beta\n\style:#x\";  %% note\nchild\n"`                                                                       |
 | treeview      | [treeview.md:1887](./docs/treeview.md#description-blocks)                               | `treeView-beta\naccDescr {style:#x}accDescr { ; }\n`                                                                   |
 | usecase       | [usecase.md:114](./docs/usecase.md#statements-and-semicolons)                           | `usecase-beta\nactor Reader(style:#abc)@{type:normal,;icon:''}\n`                                                      |
 | usecase       | [usecase.md:888](./docs/usecase.md#semicolons-at-the-end-of-a-style-statement)          | `usecase-beta\nA\nclassDef c fill:#f00; %%{init: {}}%%\nstyle A fill:#f00; %% keep\n`                                  |
@@ -282,20 +273,18 @@ requirement, state, treeview, usecase, venn.
 
 ### D18. Whether ordinary structural units use one separating ASCII space
 
-9 forms in agentflow, architecture, block, c4, radar, railroad, usecase,
-wardley.
+8 forms in agentflow, architecture, block, c4, radar, usecase, wardley.
 
-| Diagram      | Rules document                                                                                  | Written form                                                                  |
-| ------------ | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| agentflow    | [agentflow.md:1787](./docs/agentflow.md#click-statements)                                       | `agentflow-beta TB\nA\nclick A cb\t\tip\""`                                   |
-| architecture | [architecture.md:108](./docs/architecture.md#declaration-spacing)                               | `architecture-beta\ngroup\t g\n`                                              |
-| block        | [block.md:714](./docs/block.md#styles)                                                          | `block-beta\nA\n    style    A\n`                                             |
-| c4           | [c4.md:1701](./docs/c4.md#description-blocks)                                                   | `C4Context accDescr{\n%% purpose\n}\nPerson(customer, \Customer\")\n"`        |
-| radar        | [radar.md:386](./docs/radar.md#options)                                                         | `radar-beta\nshowLegend\t false,ticks\t7,max  8,min\t2,graticule\tpolygon\n`  |
-| railroad     | [railroad.md:260](./docs/railroad.md#assignment)                                                | `railroad-beta\nlongName\t=\tterminal(\assignment\");s=terminal(\"short\");"` |
-| usecase      | [usecase.md:1018](./docs/usecase.md#direction-and-accessibility)                                | `usecase-beta\ndirection  TD\nA\ndirection\tBT\ndirection RL`                 |
-| wardley      | [compatibility.md:7290](./docs/compatibility.md#wardley-authored-text-and-required-line-breaks) | `wardley-beta\ncomponent \title\"[0.3,0.6]"`                                  |
-| wardley      | [wardley.md:308](./docs/wardley.md#decorations)                                                 | `wardley-beta\ncomponent Decor[0.3,0.6]label[1,-2]( build )( inertia )`       |
+| Diagram      | Rules document                                                                                  | Written form                                                                 |
+| ------------ | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| agentflow    | [agentflow.md:1787](./docs/agentflow.md#click-statements)                                       | `agentflow-beta TB\nA\nclick A cb\t\tip\""`                                  |
+| architecture | [architecture.md:108](./docs/architecture.md#declaration-spacing)                               | `architecture-beta\ngroup\t g\n`                                             |
+| block        | [block.md:714](./docs/block.md#styles)                                                          | `block-beta\nA\n    style    A\n`                                            |
+| c4           | [c4.md:1701](./docs/c4.md#description-blocks)                                                   | `C4Context accDescr{\n%% purpose\n}\nPerson(customer, \Customer\")\n"`       |
+| radar        | [radar.md:386](./docs/radar.md#options)                                                         | `radar-beta\nshowLegend\t false,ticks\t7,max  8,min\t2,graticule\tpolygon\n` |
+| usecase      | [usecase.md:1018](./docs/usecase.md#direction-and-accessibility)                                | `usecase-beta\ndirection  TD\nA\ndirection\tBT\ndirection RL`                |
+| wardley      | [compatibility.md:7290](./docs/compatibility.md#wardley-authored-text-and-required-line-breaks) | `wardley-beta\ncomponent \title\"[0.3,0.6]"`                                 |
+| wardley      | [wardley.md:308](./docs/wardley.md#decorations)                                                 | `wardley-beta\ncomponent Decor[0.3,0.6]label[1,-2]( build )( inertia )`      |
 
 ### D19. Whether structural modifiers touch the unit they modify
 
@@ -318,14 +307,13 @@ wardley.
 | railroad | [railroad.md:1923](./docs/railroad.md#semicolons) | `%%{init: {}}%%\nrailroad-beta\na =  terminal( \x\" );\n b  =  terminal( \"style\" );\n"` |
 | wardley  | [wardley.md:980](./docs/wardley.md#semicolons)    | `wardley-beta\nAlpha  -> Beta; style:#tone;`                                              |
 
-### D21. How whitespace beside a retained ignored semicolon is printed
+### D21. Whether an ignored semicolon inside a statement has no preceding space and one following space
 
-2 forms in agentflow, sequence.
+1 form in sequence.
 
-| Diagram   | Rules document                                                  | Written form                                                                        |
-| --------- | --------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| agentflow | [agentflow.md:220](./docs/agentflow.md#names-and-headings)      | `agentflow-beta\nconnector style:#x ; [T]\n`                                        |
-| sequence  | [sequence.md:568](./docs/sequence.md#whitespace-between-tokens) | `sequenceDiagram\n  participant A@{ \alias\": \"style:#x\" };Note left ;of A: t\n"` |
+| Diagram  | Rules document                                                  | Written form                                                                        |
+| -------- | --------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| sequence | [sequence.md:568](./docs/sequence.md#whitespace-between-tokens) | `sequenceDiagram\n  participant A@{ \alias\": \"style:#x\" };Note left ;of A: t\n"` |
 
 ### D22. Whether non-ASCII whitespace in structural gaps is normalized
 
@@ -381,22 +369,21 @@ quadrant, requirement, sequence, state.
 | treemap     | [treemap.md:381](./docs/treemap.md#style-gaps)                                                           | `treemap\nclassDef zz\n%% gap\n\Apparent\":2"`                                                                                |
 | treemap     | [treemap.md:464](./docs/treemap.md#styles)                                                               | `treemap\nclassDef zz fill : #f00 %%{init: {}}%%\n\Leaf\":1:::zz\n"`                                                          |
 
-### D24. Whether nonempty braced bodies use one space at their inner edges
+### D24. Whether nonempty description blocks use one space at their inner edges
 
-9 forms in agentflow, architecture, c4, er, flowchart, gitgraph, pie,
-requirement, wardley.
+8 forms in agentflow, architecture, c4, flowchart, gitgraph, pie, requirement,
+wardley.
 
-| Diagram      | Rules document                                                                                   | Written form                                                                                                                       |
-| ------------ | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
-| agentflow    | [agentflow.md:1243](./docs/agentflow.md#accessibility)                                           | `agentflow-beta TB\naccDescr {%%{init: {}}%%}`                                                                                     |
-| architecture | [architecture.md:824](./docs/architecture.md#comments)                                           | `architecture-beta\nservice percent \A%%B\" [C%%D]\naccDescr {E%%F}\ntitle Topic%% inline\n"`                                      |
-| c4           | [c4.md:414](./docs/c4.md#statements-one-per-line)                                                | `C4Context\naccDescr {D}accDescr {}Person(a,\A\")\n"`                                                                              |
-| er           | [er.md:258](./docs/er.md#attribute-blocks)                                                       | `erDiagram\nT {int a} subgraph S accDescr {}\nend\nU { int a   } subgraph V accDescr {}\nend\nW {int a} accTitle:\ndirection LR\n` |
-| flowchart    | [compatibility.md:4593](./docs/compatibility.md#description-block-indentation)                   | `flowchart TD\naccDescr {%% c\nText\n}\n`                                                                                          |
-| gitgraph     | [compatibility.md:6386](./docs/compatibility.md#gitgraph-hidden-boundaries-and-authored-history) | `gitGraph\naccDescr {%% c\nText\n}\n`                                                                                              |
-| pie          | [pie.md:277](./docs/pie.md#description-blocks)                                                   | `pie\naccDescr {%% c\nD}`                                                                                                          |
-| requirement  | [requirement.md:1178](./docs/requirement.md#accessibility-statements)                            | `requirementDiagram\n%%{init: {}}%% accDescr {x}    accTitle:\ndirection LR\n`                                                     |
-| wardley      | [wardley.md:655](./docs/wardley.md#accessibility)                                                | `wardley-beta\naccDescr {%%{wrap}%%}`                                                                                              |
+| Diagram      | Rules document                                                                                   | Written form                                                                                  |
+| ------------ | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+| agentflow    | [agentflow.md:1243](./docs/agentflow.md#accessibility)                                           | `agentflow-beta TB\naccDescr {%%{init: {}}%%}`                                                |
+| architecture | [architecture.md:824](./docs/architecture.md#comments)                                           | `architecture-beta\nservice percent \A%%B\" [C%%D]\naccDescr {E%%F}\ntitle Topic%% inline\n"` |
+| c4           | [c4.md:414](./docs/c4.md#statements-one-per-line)                                                | `C4Context\naccDescr {D}accDescr {}Person(a,\A\")\n"`                                         |
+| flowchart    | [compatibility.md:4593](./docs/compatibility.md#description-block-indentation)                   | `flowchart TD\naccDescr {%% c\nText\n}\n`                                                     |
+| gitgraph     | [compatibility.md:6386](./docs/compatibility.md#gitgraph-hidden-boundaries-and-authored-history) | `gitGraph\naccDescr {%% c\nText\n}\n`                                                         |
+| pie          | [pie.md:277](./docs/pie.md#description-blocks)                                                   | `pie\naccDescr {%% c\nD}`                                                                     |
+| requirement  | [requirement.md:1178](./docs/requirement.md#accessibility-statements)                            | `requirementDiagram\n%%{init: {}}%% accDescr {x}    accTitle:\ndirection LR\n`                |
+| wardley      | [wardley.md:655](./docs/wardley.md#accessibility)                                                | `wardley-beta\naccDescr {%%{wrap}%%}`                                                         |
 
 ### D25. Whether whitespace-only description blocks become empty braces
 
@@ -421,18 +408,21 @@ sequence, timeline, treeview, usecase, xychart.
 
 ### D26. Whether descriptions use blocks or colon lines
 
-11 forms in architecture, cynefin, flowchart, packet, pie, radar, railroad,
-treemap, treeview, wardley.
+14 forms in architecture, cynefin, flowchart, journey, packet, pie, radar,
+railroad, timeline, treemap, treeview, wardley.
 
 | Diagram      | Rules document                                                                   | Written form                                                                                           |
 | ------------ | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | architecture | [architecture.md:699](./docs/architecture.md#description-blocks)                 | `architecture-beta\naccDescr {\n%% comment\n}\n`                                                       |
 | cynefin      | [cynefin.md:519](./docs/cynefin.md#description-blocks)                           | `cynefin-beta\naccDescr {%%{wrap}%%}`                                                                  |
 | flowchart    | [compatibility.md:3002](./docs/compatibility.md#a-description-block-on-one-line) | `flowchart TD\naccDescr {}\n`                                                                          |
+| journey      | [journey.md:136](./docs/journey.md#statements-one-per-line)                      | `journey\naccDescr { d } %%{init: {}}%% A: 5\n`                                                        |
 | packet       | [packet.md:388](./docs/packet.md#description-blocks)                             | `packet\naccDescr {\n A\n B\n}\n`                                                                      |
 | pie          | [compatibility.md:2958](./docs/compatibility.md#a-description-block-on-one-line) | `pie\naccDescr %%{init: {}}%% {a\nb}\n\A\": 1\n"`                                                      |
 | radar        | [radar.md:536](./docs/radar.md#description-blocks)                               | `radar-beta\naccDescr\n\n{ Words }\n`                                                                  |
 | railroad     | [railroad.md:1212](./docs/railroad.md#description-blocks)                        | `railroad-beta\naccDescr {%%{wrap}%%}\naccDescr {\n%% removed block\n}\nr=terminal(\trivia block\");"` |
+| timeline     | [timeline.md:148](./docs/timeline.md#statements-one-per-line)                    | `timeline\naccDescr { d } %%{init: {}}%% a : e\n`                                                      |
+| timeline     | [timeline.md:1446](./docs/timeline.md#directives)                                | `timeline\naccDescr { d }   %%{init: {}}%%   \naccDescr { e }   %%{init: {}}%%  a : e\n`               |
 | treemap      | [treemap.md:880](./docs/treemap.md#description-blocks)                           | `treemap\naccDescr {\n%% block comment\n}\n\AfterCommentBlock\":3"`                                    |
 | treeview     | [treeview.md:1872](./docs/treeview.md#description-blocks)                        | `treeView-beta\naccDescr {\nx─\n}\n`                                                                   |
 | treeview     | [treeview.md:1893](./docs/treeview.md#description-blocks)                        | `treeView-beta\naccDescr%%{init: {}}%%{│}\nroot─\n`                                                    |
@@ -464,7 +454,7 @@ treemap, treeview, wardley.
 
 ### D29. Whether structural line breaks within a statement are joined
 
-19 forms in agentflow, eventmodeling, flowchart, gitgraph, railroad, treeview.
+16 forms in agentflow, eventmodeling, flowchart, gitgraph, railroad.
 
 | Diagram       | Rules document                                                                         | Written form                                                                                                             |
 | ------------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
@@ -480,13 +470,10 @@ treemap, treeview, wardley.
 | gitgraph      | [gitgraph.md:833](./docs/gitgraph.md#line-terminators-and-unicode)                     | `gitGraph\naccDescr\n{A\nB}\n`                                                                                           |
 | railroad      | [compatibility.md:7147](./docs/compatibility.md#railroad-dialects-and-authored-values) | `railroad-beta\nr=terminal(\x\");\n"`                                                                                    |
 | railroad      | [railroad.md:755](./docs/railroad.md#long-lines)                                       | `railroad-beta\nr\n=\nsequence\n(terminal\n(\n\joined\"\n)\n,\nterminal(\"tail\")\n)\n;"`                                |
-| railroad      | [railroad.md:756](./docs/railroad.md#long-lines)                                       | `railroad-beta\nconstructor=terminal/* call */(\x\");\ncloser=terminal(\"x\"/* close */);\n"`                            |
 | railroad      | [railroad.md:788](./docs/railroad.md#long-lines)                                       | `railroad-ebnf-beta\nexpression =\n (term, { (\+\" \| \"-\"), term })\n \| (\"(\", expression, \")\")\n \|\n number;\n"` |
 | railroad      | [railroad.md:790](./docs/railroad.md#long-lines)                                       | `railroad-ebnf-beta\nexpression =\n (term, { (\+\" \| \"-\"), term })\n \| (\"(\", expression, \")\")\n \|\n number;\n"` |
 | railroad      | [railroad.md:790](./docs/railroad.md#long-lines)                                       | `railroad-ebnf-beta\nexpression =\n (term, { (\+\" \| \"-\"), term })\n \| (\"(\", expression, \")\")\n \|\n number;\n"` |
 | railroad      | [railroad.md:1212](./docs/railroad.md#description-blocks)                              | `railroad-beta\naccDescr\n{\n   first\n\n  continuation\n}\nr=terminal(\description\");"`                                |
-| treeview      | [treeview.md:1283](./docs/treeview.md#annotation-lines)                                | `treeView-beta\nR\n   :::hot\nC\n`                                                                                       |
-| treeview      | [treeview.md:1284](./docs/treeview.md#annotation-lines)                                | `treeView-beta\n├─ node\n%% between\n└─ ::: X\n`                                                                         |
 
 ### D30. Whether an empty value takes text from the following line
 
@@ -499,7 +486,7 @@ treemap, treeview, wardley.
 
 ### D31. Whether statements and headers sharing a line are separated
 
-32 forms in block, cynefin, er, eventmodeling, flowchart, gitgraph, info, pie,
+33 forms in block, cynefin, er, eventmodeling, flowchart, gitgraph, info, pie,
 quadrant, radar, railroad, sequence, venn, wardley, xychart.
 
 | Diagram       | Rules document                                                                                     | Written form                                                                                                                          |
@@ -529,6 +516,7 @@ quadrant, radar, railroad, sequence, venn, wardley, xychart.
 | railroad      | [compatibility.md:7155](./docs/compatibility.md#railroad-dialects-and-authored-values)             | `railroad-beta\nr=terminal(\style\");\ns=terminal(\"x\");\n"`                                                                         |
 | railroad      | [compatibility.md:7198](./docs/compatibility.md#railroad-dialects-and-authored-values)             | `railroad-beta\nr=terminal(\style\");s=terminal(\"x\");\n"`                                                                           |
 | railroad      | [railroad.md:20](./docs/railroad.md#header)                                                        | `railroad-abnf-beta%%{!heading}%%\nr=\x\";"`                                                                                          |
+| railroad      | [railroad.md:260](./docs/railroad.md#assignment)                                                   | `railroad-beta\nlongName\t=\tterminal(\assignment\");s=terminal(\"short\");"`                                                         |
 | sequence      | [sequence.md:1205](./docs/sequence.md#comments)                                                    | `sequenceDiagram\naccDescr {} A->>B: x #a; \n`                                                                                        |
 | sequence      | [sequence.md:1322](./docs/sequence.md#comments)                                                    | `sequenceDiagram\nloop style:#x;; loop x; A->>B: body; end #;  \nend\n`                                                               |
 | venn          | [venn.md:956](./docs/venn.md#directives)                                                           | `venn-beta%%{init: {}}%% set A[style:#x;y]`                                                                                           |
@@ -567,9 +555,9 @@ quadrant, radar, railroad, sequence, venn, wardley, xychart.
 
 ### D34. Whether structure, comments and directives follow their owning depth
 
-59 forms in architecture, block, c4, class, cynefin, er, eventmodeling,
+60 forms in architecture, block, c4, class, cynefin, er, eventmodeling,
 flowchart, gantt, gitgraph, journey, mindmap, quadrant, radar, railroad,
-requirement, sequence, state, timeline, treemap, wardley, xychart.
+requirement, sequence, state, timeline, treemap, treeview, wardley, xychart.
 
 | Diagram                                                                                     | Rules document                                                                                                      | Written form                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -628,6 +616,7 @@ requirement, sequence, state, timeline, treemap, wardley, xychart.
 | timeline                                                                                    | [timeline.md:1354](./docs/timeline.md#comments)                                                                     | `timeline\ntitle T\n      # last`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | treemap                                                                                     | [treemap.md:382](./docs/treemap.md#style-gaps)                                                                      | `treemap\nclassDef hot\n%% appearance\ncolor:#f00;;\n\Leaf\":1:::hot"`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | treemap                                                                                     | [treemap.md:789](./docs/treemap.md#title)                                                                           | `treemap\n    title   Budget\n  \A\": 1\n"`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| treeview                                                                                    | [treeview.md:2706](./docs/treeview.md#frontmatter-yaml)                                                             | `---\ntitle: \|\n  First\n  Second\n---\ntreeView-beta\nR\n`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | wardley                                                                                     | [wardley.md:893](./docs/wardley.md#comments)                                                                        | `  %% prefix\nwardley-beta\n%% ordinary \t\ncomponent Comments[0.3,0.6]`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | xychart                                                                                     | [compatibility.md:5512](./docs/compatibility.md#xy-chart-lines-that-the-units-the-quotes-or-the-lexer-decide)       | `xychart\ntitle A \n%% c\nB\nline [1]\n`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | xychart                                                                                     | [xychart.md:774](./docs/xychart.md#empty-description-blocks)                                                        | `xychart\naccDescr {\n%% c\n}\naccDescr {%%{init: {}}%%}\n`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
@@ -648,14 +637,6 @@ requirement, sequence, state, timeline, treemap, wardley, xychart.
 | sequence      | [sequence.md:1749](./docs/sequence.md#multi-line-values)                                                 | `sequenceDiagram\nparticipant A@{\n\type\": \"queue\"\n}\n"`                                                 |
 | sequence      | [sequence.md:1760](./docs/sequence.md#multi-line-values)                                                 | `sequenceDiagram\n  box Aqua G\n    participant B\n  end; participant A@{\n    \type\": \"actor\"\n  }\n"`   |
 | state         | [state.md:1099](./docs/state.md#notes)                                                                   | `stateDiagram-v2\nA\nnote right of A  %%{init: {}}%%\n  first\n second\nend note\n`                          |
-
-### D36. Where a tree guide stands relative to its node
-
-1 form in treeview.
-
-| Diagram  | Rules document                                    | Written form                                              |
-| -------- | ------------------------------------------------- | --------------------------------------------------------- |
-| treeview | [treeview.md:550](./docs/treeview.md#decorations) | `treeView-beta\n\r─\"\n│\n└─ :::X\n%% after\n\"next\"\n"` |
 
 ### D37. How many blank lines between structural items are retained
 
@@ -700,9 +681,9 @@ timeline, treemap, treeview, usecase, venn, wardley, xychart.
 
 ### D38. Whether whitespace read as value characters is normalized
 
-38 forms in agentflow, c4, class, er, eventmodeling, flowchart, gantt, gitgraph,
-ishikawa, journey, kanban, mindmap, pie, quadrant, radar, sankey, state,
-timeline, treemap, usecase, venn.
+40 forms in agentflow, c4, class, er, eventmodeling, flowchart, gantt, gitgraph,
+ishikawa, journey, kanban, mindmap, pie, quadrant, radar, sankey, sequence,
+state, timeline, treemap, usecase, venn.
 
 | Diagram       | Rules document                                                                                           | Written form                                                                                                                   |
 | ------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
@@ -723,6 +704,7 @@ timeline, treemap, usecase, venn.
 | flowchart     | [flowchart.md:2096](./docs/flowchart.md#data-blocks)                                                     | `flowchart TD\nA@{shape: circle %%{init: {}}%%}\nB@{shape: rect}%%{init: {}}%%\nC@{shape: circle}\n`                           |
 | flowchart     | [flowchart.md:2116](./docs/flowchart.md#data-blocks)                                                     | `flowchart LR\nA@{---x}\n`                                                                                                     |
 | flowchart     | [flowchart.md:3529](./docs/flowchart.md#style-trailing-whitespace)                                       | `flowchart LR\nA\nstyle A fill:red\u00a0 %% c\n`                                                                               |
+| gantt         | [compatibility.md:1241](./docs/compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)           | `gantt\ntitle Plan   %% comment\nsection S\nA: 1d\n`                                                                           |
 | gantt         | [gantt.md:1339](./docs/gantt.md#multi-line-statements)                                                   | `gantt\nclick id1 call f(1,\n 2)\n`                                                                                            |
 | gitgraph      | [gitgraph.md:832](./docs/gitgraph.md#line-terminators-and-unicode)                                       | `gitGraph\ntitle T\u00a0\n`                                                                                                    |
 | ishikawa      | [ishikawa.md:670](./docs/ishikawa.md#physical-lines)                                                     | `ishikawa\nR%%{init: {\n}}%%  X\n A`                                                                                           |
@@ -735,6 +717,7 @@ timeline, treemap, usecase, venn.
 | radar         | [radar.md:952](./docs/radar.md#blank-lines)                                                              | `radar-beta\naxis North[\one\n\n\nlast\"]\n"`                                                                                  |
 | sankey        | [sankey.md:490](./docs/sankey.md#directives)                                                             | `sankey\na,b,1 %%{init: {}}%%\nc,d,2%%{init: {}}%%\ne,f,3    %%{init: {}}%%\n`                                                 |
 | sankey        | [sankey.md:492](./docs/sankey.md#directives)                                                             | `sankey\n%%{init: {}}%%a,b,1\n`                                                                                                |
+| sequence      | [compatibility.md:1241](./docs/compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)           | `sequenceDiagram\ntitle T   %% comment\nA->>B: x\n`                                                                            |
 | state         | [state.md:608](./docs/state.md#whitespace-between-tokens)                                                | `stateDiagram-v2\nclassDef c fill:red\u2028,stroke:blue\n`                                                                     |
 | state         | [state.md:939](./docs/state.md#notes)                                                                    | `stateDiagram-v2\nA\nnote left of A :  \nnote right of A : x %% c\nnote left of A : x %%{init: {}}%% y\nnote right of A:  é\n` |
 | state         | [state.md:1287](./docs/state.md#aliases)                                                                 | `stateDiagram-v2\nstate \d\" as A : x  %%{init: {}}%%  \n"`                                                                    |
@@ -747,80 +730,77 @@ timeline, treemap, usecase, venn.
 
 ### D39. Whether whitespace outside values at line ends is removed
 
-39 forms in architecture, cynefin, er, error, eventmodeling, flowchart, gantt,
+37 forms in architecture, cynefin, er, error, eventmodeling, flowchart, gantt,
 info, ishikawa, journey, kanban, mindmap, quadrant, radar, railroad,
-requirement, sankey, sequence, state, timeline, usecase, venn, wardley.
+requirement, sankey, sequence, state, timeline, usecase.
 
-| Diagram       | Rules document                                                                                  | Written form                                                                                                   |
-| ------------- | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| architecture  | [architecture.md:1072](./docs/architecture.md#trailing-whitespace)                              | `architecture-beta \t\nservice a(cloud)[A] \t\njunction j\t\na:R -- L:j\t\nalign row a j \t\naccDescr {D}\t\n` |
-| architecture  | [architecture.md:1099](./docs/architecture.md#frontmatter-yaml)                                 | `--- \t\ntitle: Net\n--- \t\narchitecture-beta\nservice a\n`                                                   |
-| cynefin       | [cynefin.md:182](./docs/cynefin.md#component-spacing)                                           | `cynefin-beta\ncomplex-->clear%%{!eof-pad}%% \t`                                                               |
-| cynefin       | [cynefin.md:644](./docs/cynefin.md#hidden-boundaries)                                           | `cynefin-beta\ncomplex-->clear%%{!eof-pad}%% \t`                                                               |
-| cynefin       | [cynefin.md:1254](./docs/cynefin.md#markdown-fences)                                            | `cynefin-beta\nclear-->chaotic%%{!x}%% \t`                                                                     |
-| er            | [er.md:2264](./docs/er.md#frontmatter-yaml)                                                     | `---  \ntitle:   x\n---\t \nerDiagram\nA\n`                                                                    |
-| er            | [er.md:2689](./docs/er.md#multi-line-statements)                                                | `erDiagram\ndirection  \n%%{init: {}}%%\nLR\n`                                                                 |
-| error         | [compatibility.md:5904](./docs/compatibility.md#the-error-pseudo-diagram)                       | `error  \n`                                                                                                    |
-| error         | [compatibility.md:5908](./docs/compatibility.md#the-error-pseudo-diagram)                       | `error  \n`                                                                                                    |
-| eventmodeling | [eventmodeling.md:845](./docs/eventmodeling.md#hidden-forms)                                    | `eventmodeling\n%%{{native}}%% \t\ntf 01 evt Alpha`                                                            |
-| eventmodeling | [eventmodeling.md:1185](./docs/eventmodeling.md#trailing-whitespace)                            | `eventmodeling \t\ntf 01 evt Alpha \t\nentity Shop.Buy \t`                                                     |
-| eventmodeling | [eventmodeling.md:1277](./docs/eventmodeling.md#frontmatter-yaml)                               | `--- \ntitle: Real\n--- \neventmodeling tf 01 evt Alpha`                                                       |
-| flowchart     | [compatibility.md:5822](./docs/compatibility.md#frontmatter)                                    | `--- \ntitle: X\n--- \nflowchart TD\nA\n`                                                                      |
-| flowchart     | [flowchart.md:3582](./docs/flowchart.md#frontmatter-yaml)                                       | `---  \ntitle:   x\n---\t \nflowchart LR\nA\n`                                                                 |
-| gantt         | [gantt.md:1058](./docs/gantt.md#click-statements)                                               | `gantt\na : id1, 1d\nclick id1 href \u\"   \nclick id1 call f()  \t\n"`                                        |
-| gantt         | [gantt.md:1501](./docs/gantt.md#whitespace-between-tokens)                                      | `gantt   \ntitle T\n`                                                                                          |
-| gantt         | [gantt.md:1769](./docs/gantt.md#frontmatter-yaml)                                               | `---\ntitle: T\n---  \ngantt\ntitle T\n`                                                                       |
-| info          | [info.md:822](./docs/info.md#markdown-fences)                                                   | `info\n%%{! ignored }%% \ntitle T`                                                                             |
-| ishikawa      | [ishikawa.md:882](./docs/ishikawa.md#frontmatter-yaml)                                          | `---\ntitle:   T\n--- \t\n%% pre\n%%{wrap}%%\nishikawa\nR`                                                     |
-| journey       | [journey.md:859](./docs/journey.md#whitespace-between-tokens)                                   | `journey   \ntitle T\n`                                                                                        |
-| journey       | [journey.md:1042](./docs/journey.md#frontmatter-yaml)                                           | `---\ntitle: T\n---  \njourney\ntitle T\n`                                                                     |
-| kanban        | [kanban.md:1189](./docs/kanban.md#frontmatter-yaml)                                             | `---\ntitle: T\n---  \nkanban\n S\n`                                                                           |
-| mindmap       | [mindmap.md:836](./docs/mindmap.md#frontmatter-yaml)                                            | `---\ntitle: T\n---  \nmindmap\n  root\n`                                                                      |
-| quadrant      | [quadrant.md:828](./docs/quadrant.md#multi-line-statements)                                     | `quadrantChart\n\first\n raw\": [0.3, \n%% y\n0.6]\n"`                                                         |
-| radar         | [compatibility.md:6637](./docs/compatibility.md#radar-authored-groups-and-hidden-boundaries)    | `radar-beta\naxis A---\nx\n--- \n`                                                                             |
-| radar         | [radar.md:808](./docs/radar.md#hidden-boundaries)                                               | `radar-beta\naccDescr {Detail}---\nopaque EOF\n--- \t`                                                         |
-| railroad      | [railroad.md:2674](./docs/railroad.md#frontmatter-yaml)                                         | `--- \ntitle: Guard\n--- \nrailroad-abnf-beta\nr=\padding guard\";"`                                           |
-| requirement   | [requirement.md:1439](./docs/requirement.md#whitespace-between-tokens)                          | `requirementDiagram\nstyle r fill:red   \nclass r c   \nclassDef c fill:red \n`                                |
-| requirement   | [requirement.md:1827](./docs/requirement.md#frontmatter-yaml)                                   | `---\ntitle: T\n---  \nrequirementDiagram\nrequirement r {\nid: 1\n}\n`                                        |
-| sankey        | [sankey.md:533](./docs/sankey.md#frontmatter-yaml)                                              | `---\ntitle: T\n---  \nsankey\na,b,1\n`                                                                        |
-| sequence      | [sequence.md:1437](./docs/sequence.md#line-separators)                                          | `sequenceDiagram\nbox red\u2028  \nparticipant A\nend\n`                                                       |
-| state         | [state.md:1141](./docs/state.md#notes)                                                          | `stateDiagram-v2\nA\nnote right of A  \n\n\n  first\n second\n     \n\nend note\n`                             |
-| state         | [state.md:1141](./docs/state.md#notes)                                                          | `stateDiagram-v2\nA\nnote right of A %%{init: {}}%%  \n  first\nend note\n`                                    |
-| timeline      | [timeline.md:943](./docs/timeline.md#header-and-direction)                                      | `timeline TD   \ntitle T\n`                                                                                    |
-| timeline      | [timeline.md:1314](./docs/timeline.md#whitespace-between-tokens)                                | `timeline   \ntitle T\n`                                                                                       |
-| timeline      | [timeline.md:1513](./docs/timeline.md#frontmatter-yaml)                                         | `---\ntitle: T\n---  \ntimeline\ntitle T\n`                                                                    |
-| usecase       | [usecase.md:1339](./docs/usecase.md#frontmatter-yaml)                                           | `---\nconfig: {usecase: {useMaxWidth: false}}\n---  \n%% comment\n%%{wrap}%%\nusecase-beta\nDocument`          |
-| venn          | [venn.md:725](./docs/venn.md#semicolons-at-the-end-of-a-style-statement)                        | `venn-beta\nset A\nstyle A fill:#f00 ;\n`                                                                      |
-| wardley       | [compatibility.md:7365](./docs/compatibility.md#wardley-authored-text-and-required-line-breaks) | `wardley-beta\ncomponent Alpha [0.1,0.2]%%{!}%% \n`                                                            |
+| Diagram       | Rules document                                                                               | Written form                                                                                                   |
+| ------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| architecture  | [architecture.md:1072](./docs/architecture.md#trailing-whitespace)                           | `architecture-beta \t\nservice a(cloud)[A] \t\njunction j\t\na:R -- L:j\t\nalign row a j \t\naccDescr {D}\t\n` |
+| architecture  | [architecture.md:1099](./docs/architecture.md#frontmatter-yaml)                              | `--- \t\ntitle: Net\n--- \t\narchitecture-beta\nservice a\n`                                                   |
+| cynefin       | [cynefin.md:182](./docs/cynefin.md#component-spacing)                                        | `cynefin-beta\ncomplex-->clear%%{!eof-pad}%% \t`                                                               |
+| cynefin       | [cynefin.md:644](./docs/cynefin.md#hidden-boundaries)                                        | `cynefin-beta\ncomplex-->clear%%{!eof-pad}%% \t`                                                               |
+| cynefin       | [cynefin.md:1254](./docs/cynefin.md#markdown-fences)                                         | `cynefin-beta\nclear-->chaotic%%{!x}%% \t`                                                                     |
+| er            | [er.md:2264](./docs/er.md#frontmatter-yaml)                                                  | `---  \ntitle:   x\n---\t \nerDiagram\nA\n`                                                                    |
+| er            | [er.md:2689](./docs/er.md#multi-line-statements)                                             | `erDiagram\ndirection  \n%%{init: {}}%%\nLR\n`                                                                 |
+| error         | [compatibility.md:5904](./docs/compatibility.md#the-error-pseudo-diagram)                    | `error  \n`                                                                                                    |
+| error         | [compatibility.md:5908](./docs/compatibility.md#the-error-pseudo-diagram)                    | `error  \n`                                                                                                    |
+| eventmodeling | [eventmodeling.md:845](./docs/eventmodeling.md#hidden-forms)                                 | `eventmodeling\n%%{{native}}%% \t\ntf 01 evt Alpha`                                                            |
+| eventmodeling | [eventmodeling.md:1185](./docs/eventmodeling.md#trailing-whitespace)                         | `eventmodeling \t\ntf 01 evt Alpha \t\nentity Shop.Buy \t`                                                     |
+| eventmodeling | [eventmodeling.md:1277](./docs/eventmodeling.md#frontmatter-yaml)                            | `--- \ntitle: Real\n--- \neventmodeling tf 01 evt Alpha`                                                       |
+| flowchart     | [compatibility.md:5822](./docs/compatibility.md#frontmatter)                                 | `--- \ntitle: X\n--- \nflowchart TD\nA\n`                                                                      |
+| flowchart     | [flowchart.md:3582](./docs/flowchart.md#frontmatter-yaml)                                    | `---  \ntitle:   x\n---\t \nflowchart LR\nA\n`                                                                 |
+| gantt         | [gantt.md:1058](./docs/gantt.md#click-statements)                                            | `gantt\na : id1, 1d\nclick id1 href \u\"   \nclick id1 call f()  \t\n"`                                        |
+| gantt         | [gantt.md:1501](./docs/gantt.md#whitespace-between-tokens)                                   | `gantt   \ntitle T\n`                                                                                          |
+| gantt         | [gantt.md:1769](./docs/gantt.md#frontmatter-yaml)                                            | `---\ntitle: T\n---  \ngantt\ntitle T\n`                                                                       |
+| info          | [info.md:822](./docs/info.md#markdown-fences)                                                | `info\n%%{! ignored }%% \ntitle T`                                                                             |
+| ishikawa      | [ishikawa.md:882](./docs/ishikawa.md#frontmatter-yaml)                                       | `---\ntitle:   T\n--- \t\n%% pre\n%%{wrap}%%\nishikawa\nR`                                                     |
+| journey       | [journey.md:859](./docs/journey.md#whitespace-between-tokens)                                | `journey   \ntitle T\n`                                                                                        |
+| journey       | [journey.md:1042](./docs/journey.md#frontmatter-yaml)                                        | `---\ntitle: T\n---  \njourney\ntitle T\n`                                                                     |
+| kanban        | [kanban.md:1189](./docs/kanban.md#frontmatter-yaml)                                          | `---\ntitle: T\n---  \nkanban\n S\n`                                                                           |
+| mindmap       | [mindmap.md:836](./docs/mindmap.md#frontmatter-yaml)                                         | `---\ntitle: T\n---  \nmindmap\n  root\n`                                                                      |
+| quadrant      | [quadrant.md:828](./docs/quadrant.md#multi-line-statements)                                  | `quadrantChart\n\first\n raw\": [0.3, \n%% y\n0.6]\n"`                                                         |
+| radar         | [compatibility.md:6637](./docs/compatibility.md#radar-authored-groups-and-hidden-boundaries) | `radar-beta\naxis A---\nx\n--- \n`                                                                             |
+| radar         | [radar.md:808](./docs/radar.md#hidden-boundaries)                                            | `radar-beta\naccDescr {Detail}---\nopaque EOF\n--- \t`                                                         |
+| railroad      | [railroad.md:2674](./docs/railroad.md#frontmatter-yaml)                                      | `--- \ntitle: Guard\n--- \nrailroad-abnf-beta\nr=\padding guard\";"`                                           |
+| requirement   | [requirement.md:1439](./docs/requirement.md#whitespace-between-tokens)                       | `requirementDiagram\nstyle r fill:red   \nclass r c   \nclassDef c fill:red \n`                                |
+| requirement   | [requirement.md:1827](./docs/requirement.md#frontmatter-yaml)                                | `---\ntitle: T\n---  \nrequirementDiagram\nrequirement r {\nid: 1\n}\n`                                        |
+| sankey        | [sankey.md:533](./docs/sankey.md#frontmatter-yaml)                                           | `---\ntitle: T\n---  \nsankey\na,b,1\n`                                                                        |
+| sequence      | [sequence.md:1437](./docs/sequence.md#line-separators)                                       | `sequenceDiagram\nbox red\u2028  \nparticipant A\nend\n`                                                       |
+| state         | [state.md:1141](./docs/state.md#notes)                                                       | `stateDiagram-v2\nA\nnote right of A  \n\n\n  first\n second\n     \n\nend note\n`                             |
+| state         | [state.md:1141](./docs/state.md#notes)                                                       | `stateDiagram-v2\nA\nnote right of A %%{init: {}}%%  \n  first\nend note\n`                                    |
+| timeline      | [timeline.md:943](./docs/timeline.md#header-and-direction)                                   | `timeline TD   \ntitle T\n`                                                                                    |
+| timeline      | [timeline.md:1314](./docs/timeline.md#whitespace-between-tokens)                             | `timeline   \ntitle T\n`                                                                                       |
+| timeline      | [timeline.md:1513](./docs/timeline.md#frontmatter-yaml)                                      | `---\ntitle: T\n---  \ntimeline\ntitle T\n`                                                                    |
+| usecase       | [usecase.md:1339](./docs/usecase.md#frontmatter-yaml)                                        | `---\nconfig: {usecase: {useMaxWidth: false}}\n---  \n%% comment\n%%{wrap}%%\nusecase-beta\nDocument`          |
 
-For `venn.md:725`, this concerns the exterior line-end padding after semicolon
-removal; decide removal itself under [D17][semicolons].
+### D40. Whether directive bodies are printed as written
 
-### D40. Whether a final newline is appended inside an unfinished directive
+19 forms in agentflow, architecture, c4, cynefin, eventmodeling, gitgraph, info,
+ishikawa, journey, packet, pie, radar, railroad, timeline, treemap, usecase,
+venn.
 
-18 forms in agentflow, architecture, c4, cynefin, eventmodeling, gitgraph, info,
-ishikawa, packet, pie, radar, railroad, treemap, treeview, usecase, venn.
-
-| Diagram       | Rules document                                                     | Written form                                   |
-| ------------- | ------------------------------------------------------------------ | ---------------------------------------------- |
-| agentflow     | [agentflow.md:1731](./docs/agentflow.md#final-newline)             | `agentflow-beta TB\nA\n%%{open`                |
-| architecture  | [architecture.md:1297](./docs/architecture.md#final-newline)       | `architecture-beta\nservice a\n%%{init: {}`    |
-| c4            | [c4.md:2428](./docs/c4.md#final-newline)                           | `C4Context\nPerson(a,\A\")\n%%{init: {oops"`   |
-| cynefin       | [cynefin.md:1198](./docs/cynefin.md#final-newline)                 | `cynefin-beta\n%%{init: true`                  |
-| eventmodeling | [eventmodeling.md:1029](./docs/eventmodeling.md#global-directives) | `eventmodeling tf 01 evt Alpha %%{init: {oops` |
-| gitgraph      | [gitgraph.md:897](./docs/gitgraph.md#final-newline)                | `gitGraph\n%%{init: {\ncommit id:\lost\""`     |
-| info          | [info.md:728](./docs/info.md#final-newline)                        | `info %%{wrap: !tail`                          |
-| ishikawa      | [ishikawa.md:955](./docs/ishikawa.md#final-newline)                | `ishikawa\nR\n%%{init: {}`                     |
-| packet        | [packet.md:904](./docs/packet.md#final-newline)                    | `packet\n0:\A\"\n%%{init:"`                    |
-| pie           | [pie.md:800](./docs/pie.md#final-newline)                          | `pie\n\End\":2%%{init: {}"`                    |
-| radar         | [radar.md:684](./docs/radar.md#global-directives)                  | `radar-beta\naxis North%%{init: {`             |
-| railroad      | [railroad.md:2910](./docs/railroad.md#final-newline)               | `railroad-beta\n%%{unfinished`                 |
-| treemap       | [treemap.md:1330](./docs/treemap.md#final-newline)                 | `treemap\n\OpenDirective\":2%%{wrap"`          |
-| treeview      | [treeview.md:2983](./docs/treeview.md#final-newline)               | `treeView-beta\n\R\"%%{unfinished"`            |
-| usecase       | [usecase.md:1199](./docs/usecase.md#directives)                    | `usecase-beta\nA\n%%{init: {}`                 |
-| usecase       | [usecase.md:1379](./docs/usecase.md#final-newline)                 | `usecase-beta\nA%%{init: {}`                   |
-| venn          | [venn.md:938](./docs/venn.md#directives)                           | `venn-beta\nset A\n%%{init: {}`                |
-| venn          | [venn.md:1235](./docs/venn.md#final-newline)                       | `venn-beta\nset A\n%%{init: true`              |
+| Diagram       | Rules document                                                     | Written form                                                                                    |
+| ------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------- |
+| agentflow     | [agentflow.md:1731](./docs/agentflow.md#final-newline)             | `agentflow-beta TB\nA\n%%{open`                                                                 |
+| architecture  | [architecture.md:1297](./docs/architecture.md#final-newline)       | `architecture-beta\nservice a\n%%{init: {}`                                                     |
+| c4            | [c4.md:2428](./docs/c4.md#final-newline)                           | `C4Context\nPerson(a,\A\")\n%%{init: {oops"`                                                    |
+| cynefin       | [cynefin.md:1198](./docs/cynefin.md#final-newline)                 | `cynefin-beta\n%%{init: true`                                                                   |
+| eventmodeling | [eventmodeling.md:1029](./docs/eventmodeling.md#global-directives) | `eventmodeling tf 01 evt Alpha %%{init: {oops`                                                  |
+| gitgraph      | [gitgraph.md:897](./docs/gitgraph.md#final-newline)                | `gitGraph\n%%{init: {\ncommit id:\lost\""`                                                      |
+| info          | [info.md:728](./docs/info.md#final-newline)                        | `info %%{wrap: !tail`                                                                           |
+| ishikawa      | [ishikawa.md:955](./docs/ishikawa.md#final-newline)                | `ishikawa\nR\n%%{init: {}`                                                                      |
+| journey       | [journey.md:752](./docs/journey.md#multi-line-statements)          | `journey\nsection S\naccTitle:\n%%{init: {}}%% T\naccDescr\n%% colon\n:\n%% text\nD\nA:5:Me\n`  |
+| packet        | [packet.md:904](./docs/packet.md#final-newline)                    | `packet\n0:\A\"\n%%{init:"`                                                                     |
+| pie           | [pie.md:800](./docs/pie.md#final-newline)                          | `pie\n\End\":2%%{init: {}"`                                                                     |
+| radar         | [radar.md:684](./docs/radar.md#global-directives)                  | `radar-beta\naxis North%%{init: {`                                                              |
+| railroad      | [railroad.md:2910](./docs/railroad.md#final-newline)               | `railroad-beta\n%%{unfinished`                                                                  |
+| timeline      | [timeline.md:1147](./docs/timeline.md#multi-line-statements)       | `timeline\nsection S\naccTitle:\n%% title\nT\naccDescr\n%% colon\n:\n%%{init: {}}%% D\na : b\n` |
+| treemap       | [treemap.md:1330](./docs/treemap.md#final-newline)                 | `treemap\n\OpenDirective\":2%%{wrap"`                                                           |
+| usecase       | [usecase.md:1199](./docs/usecase.md#directives)                    | `usecase-beta\nA\n%%{init: {}`                                                                  |
+| usecase       | [usecase.md:1379](./docs/usecase.md#final-newline)                 | `usecase-beta\nA%%{init: {}`                                                                    |
+| venn          | [venn.md:938](./docs/venn.md#directives)                           | `venn-beta\nset A\n%%{init: {}`                                                                 |
+| venn          | [venn.md:1235](./docs/venn.md#final-newline)                       | `venn-beta\nset A\n%%{init: true`                                                               |
 
 ### D41. How the final newline and terminal blank gap are printed
 
@@ -856,39 +836,37 @@ ishikawa, packet, pie, radar, railroad, treemap, treeview, usecase, venn.
 
 ### D44. Whether inline comments keep contact or one separating space
 
-27 forms in agentflow, architecture, cynefin, eventmodeling, gantt, gitgraph,
-info, ishikawa, kanban, mindmap, packet, pie, radar, railroad, requirement,
-sequence, state, wardley.
+25 forms in agentflow, architecture, cynefin, eventmodeling, gitgraph, info,
+ishikawa, kanban, mindmap, packet, pie, radar, railroad, requirement, state,
+wardley.
 
-| Diagram       | Rules document                                                                                 | Written form                                                                                                                                      |
-| ------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| agentflow     | [agentflow.md:972](./docs/agentflow.md#comments)                                               | `agentflow-beta TB\nA;%% c\nB`                                                                                                                    |
-| architecture  | [architecture.md:793](./docs/architecture.md#comments)                                         | `%% lead\narchitecture-beta\n%% alone\nservice a%%touch\nservice b   %% separated  \n`                                                            |
-| architecture  | [architecture.md:793](./docs/architecture.md#comments)                                         | `%% lead\narchitecture-beta\n%% alone\nservice a%%touch\nservice b   %% separated  \n`                                                            |
-| cynefin       | [cynefin.md:843](./docs/cynefin.md#comments)                                                   | `cynefin-beta\ncomplex \Separated\"   %% note  \n\"NextSeparated\""`                                                                              |
-| cynefin       | [cynefin.md:843](./docs/cynefin.md#comments)                                                   | `cynefin-beta\ncomplex \Attached\"%% item note\n\"NextAttached\""`                                                                                |
-| eventmodeling | [eventmodeling.md:220](./docs/eventmodeling.md#source-references)                              | `eventmodeling tf 01 evt Alpha/*a*/->>/*b*/02`                                                                                                    |
-| eventmodeling | [eventmodeling.md:270](./docs/eventmodeling.md#type-tags)                                      | ``eventmodeling tf 01 evt Alpha `/*a*/json/*b*/`/*c*/{x}``                                                                                        |
-| eventmodeling | [eventmodeling.md:915](./docs/eventmodeling.md#comments)                                       | `eventmodeling tf/*a*/01 evt /*b*/Alpha // tail \t\nrf 02 cmd Beta`                                                                               |
-| gantt         | [compatibility.md:1241](./docs/compatibility.md#texts-after-a-keyword-that-are-drawn-the-same) | `gantt\ntitle Plan   %% comment\nsection S\nA: 1d\n`                                                                                              |
-| gitgraph      | [gitgraph.md:563](./docs/gitgraph.md#comments)                                                 | `%% before\ngitGraph %% header\ncommit%% glued\ncommit  %% apart\n    %% last\n`                                                                  |
-| info          | [info.md:107](./docs/info.md#title)                                                            | `info\ntitle T%% c`                                                                                                                               |
-| info          | [info.md:396](./docs/info.md#comments)                                                         | `info%% heading\nshowInfo   %% flag \t\ntitle Topic%% text\naccDescr {D}  %%% triple\n`                                                           |
-| ishikawa      | [ishikawa.md:307](./docs/ishikawa.md#comments)                                                 | `ishikawa   %% note\nR`                                                                                                                           |
-| ishikawa      | [ishikawa.md:307](./docs/ishikawa.md#comments)                                                 | `ishikawa%% note\nR`                                                                                                                              |
-| kanban        | [kanban.md:790](./docs/kanban.md#comments)                                                     | `kanban\n S[x]   %% c\n   A[y]%% d\n`                                                                                                             |
-| kanban        | [kanban.md:792](./docs/kanban.md#comments)                                                     | `kanban\n S[x]   %% c\n   A[y]%% d\n`                                                                                                             |
-| kanban        | [kanban.md:795](./docs/kanban.md#comments)                                                     | `kanban\n S[x]   %% c\n   A[y]%% d\n`                                                                                                             |
-| mindmap       | [mindmap.md:666](./docs/mindmap.md#comments)                                                   | `mindmap\n  root\n    a[x] %% c\n    b[y]%% d\n    c((z))   %%  e\n`                                                                              |
-| packet        | [packet.md:465](./docs/packet.md#comments)                                                     | `    %% before\npacket%% header\n0:\Touch\"%%inline\n1:\"Apart\"   %% separated  \n    %%%\n"`                                                    |
-| pie           | [pie.md:452](./docs/pie.md#comments)                                                           | `pie\n\A\":1%% c"`                                                                                                                                |
-| radar         | [radar.md:642](./docs/radar.md#comments)                                                       | `radar-beta\naxis North%%touch\ncurve trial{4}   %% separated  \n`                                                                                |
-| railroad      | [railroad.md:1313](./docs/railroad.md#comments)                                                | `%% leading note\nrailroad-ebnf-beta\n(* before rule *)\nr=\a\" (* middle *) , /* other */ \"last\";%%tail"`                                      |
-| requirement   | [requirement.md:1550](./docs/requirement.md#comments)                                          | `requirementDiagram   %c\nrequirement r {\n}\n`                                                                                                   |
-| sequence      | [compatibility.md:1241](./docs/compatibility.md#texts-after-a-keyword-that-are-drawn-the-same) | `sequenceDiagram\ntitle T   %% comment\nA->>B: x\n`                                                                                               |
-| state         | [state.md:1371](./docs/state.md#comments)                                                      | `stateDiagram-v2\n%% a comment line\nA --> B %% after a transition\nA --> C%%touching\n# a hash comment\nstate D {\n        %% in a body\nE\n}\n` |
-| wardley       | [wardley.md:894](./docs/wardley.md#comments)                                                   | `wardley-beta\ncomponent InlineSpace[0.3,0.6] \t%% tail`                                                                                          |
-| wardley       | [wardley.md:894](./docs/wardley.md#comments)                                                   | `wardley-beta%% heading\ncomponent Inline[0.3,0.6]%% tail \t`                                                                                     |
+| Diagram       | Rules document                                                    | Written form                                                                                                                                      |
+| ------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| agentflow     | [agentflow.md:972](./docs/agentflow.md#comments)                  | `agentflow-beta TB\nA;%% c\nB`                                                                                                                    |
+| architecture  | [architecture.md:793](./docs/architecture.md#comments)            | `%% lead\narchitecture-beta\n%% alone\nservice a%%touch\nservice b   %% separated  \n`                                                            |
+| architecture  | [architecture.md:793](./docs/architecture.md#comments)            | `%% lead\narchitecture-beta\n%% alone\nservice a%%touch\nservice b   %% separated  \n`                                                            |
+| cynefin       | [cynefin.md:843](./docs/cynefin.md#comments)                      | `cynefin-beta\ncomplex \Separated\"   %% note  \n\"NextSeparated\""`                                                                              |
+| cynefin       | [cynefin.md:843](./docs/cynefin.md#comments)                      | `cynefin-beta\ncomplex \Attached\"%% item note\n\"NextAttached\""`                                                                                |
+| eventmodeling | [eventmodeling.md:220](./docs/eventmodeling.md#source-references) | `eventmodeling tf 01 evt Alpha/*a*/->>/*b*/02`                                                                                                    |
+| eventmodeling | [eventmodeling.md:270](./docs/eventmodeling.md#type-tags)         | ``eventmodeling tf 01 evt Alpha `/*a*/json/*b*/`/*c*/{x}``                                                                                        |
+| eventmodeling | [eventmodeling.md:915](./docs/eventmodeling.md#comments)          | `eventmodeling tf/*a*/01 evt /*b*/Alpha // tail \t\nrf 02 cmd Beta`                                                                               |
+| gitgraph      | [gitgraph.md:563](./docs/gitgraph.md#comments)                    | `%% before\ngitGraph %% header\ncommit%% glued\ncommit  %% apart\n    %% last\n`                                                                  |
+| info          | [info.md:107](./docs/info.md#title)                               | `info\ntitle T%% c`                                                                                                                               |
+| info          | [info.md:396](./docs/info.md#comments)                            | `info%% heading\nshowInfo   %% flag \t\ntitle Topic%% text\naccDescr {D}  %%% triple\n`                                                           |
+| ishikawa      | [ishikawa.md:307](./docs/ishikawa.md#comments)                    | `ishikawa   %% note\nR`                                                                                                                           |
+| ishikawa      | [ishikawa.md:307](./docs/ishikawa.md#comments)                    | `ishikawa%% note\nR`                                                                                                                              |
+| kanban        | [kanban.md:790](./docs/kanban.md#comments)                        | `kanban\n S[x]   %% c\n   A[y]%% d\n`                                                                                                             |
+| kanban        | [kanban.md:792](./docs/kanban.md#comments)                        | `kanban\n S[x]   %% c\n   A[y]%% d\n`                                                                                                             |
+| kanban        | [kanban.md:795](./docs/kanban.md#comments)                        | `kanban\n S[x]   %% c\n   A[y]%% d\n`                                                                                                             |
+| mindmap       | [mindmap.md:666](./docs/mindmap.md#comments)                      | `mindmap\n  root\n    a[x] %% c\n    b[y]%% d\n    c((z))   %%  e\n`                                                                              |
+| packet        | [packet.md:465](./docs/packet.md#comments)                        | `    %% before\npacket%% header\n0:\Touch\"%%inline\n1:\"Apart\"   %% separated  \n    %%%\n"`                                                    |
+| pie           | [pie.md:452](./docs/pie.md#comments)                              | `pie\n\A\":1%% c"`                                                                                                                                |
+| radar         | [radar.md:642](./docs/radar.md#comments)                          | `radar-beta\naxis North%%touch\ncurve trial{4}   %% separated  \n`                                                                                |
+| railroad      | [railroad.md:1313](./docs/railroad.md#comments)                   | `%% leading note\nrailroad-ebnf-beta\n(* before rule *)\nr=\a\" (* middle *) , /* other */ \"last\";%%tail"`                                      |
+| requirement   | [requirement.md:1550](./docs/requirement.md#comments)             | `requirementDiagram   %c\nrequirement r {\n}\n`                                                                                                   |
+| state         | [state.md:1371](./docs/state.md#comments)                         | `stateDiagram-v2\n%% a comment line\nA --> B %% after a transition\nA --> C%%touching\n# a hash comment\nstate D {\n        %% in a body\nE\n}\n` |
+| wardley       | [wardley.md:894](./docs/wardley.md#comments)                      | `wardley-beta\ncomponent InlineSpace[0.3,0.6] \t%% tail`                                                                                          |
+| wardley       | [wardley.md:894](./docs/wardley.md#comments)                      | `wardley-beta%% heading\ncomponent Inline[0.3,0.6]%% tail \t`                                                                                     |
 
 ### D45. Whether comments remain inline or on a separate line as written
 
@@ -1000,8 +978,8 @@ sequence, state, timeline, wardley.
 
 ### D53. Whether comments and hidden forms keep their source gaps and order
 
-19 forms in block, eventmodeling, flowchart, gitgraph, journey, mindmap, pie,
-quadrant, railroad, timeline, treeview, xychart.
+18 forms in block, eventmodeling, flowchart, gitgraph, journey, mindmap, pie,
+quadrant, railroad, timeline, xychart.
 
 | Diagram       | Rules document                                                                   | Written form                                                                                                                                                                                      |
 | ------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -1022,14 +1000,13 @@ quadrant, railroad, timeline, treeview, xychart.
 | railroad      | [railroad.md:1334](./docs/railroad.md#comments)                                  | `railroad-beta\nr=terminal\n/* constructor */(\a\"\n/* closer */);\n"`                                                                                                                            |
 | railroad      | [railroad.md:1480](./docs/railroad.md#global-directives)                         | `railroad-beta\nr=sequence%%{init: {}}%%(\nterminal%%{init: {}}%%(%%{init: {}}%%\a\"%%{init: {}}%%)%%{init: {}}%%,\n%%{init: {}}%%nonterminal(\"b\")\n);\n"`                                      |
 | timeline      | [timeline.md:1451](./docs/timeline.md#directives)                                | `timeline\na %%{init: {}}%%: e\nb:%%{init: {}}%% e\nc : e%%{init: {}}%%: f\n`                                                                                                                     |
-| treeview      | [treeview.md:1102](./docs/treeview.md#statements-one-per-line)                   | `treeView-beta\nroot\n├── \a\"%%{x}%%\"b\"\n%% between\n└── c\n"`                                                                                                                                 |
 | xychart       | [xychart.md:1061](./docs/xychart.md#directives)                                  | `xychart\nline %%{init: {}}%% [1]\nx-axis%%{init: {}}%%[a]\n`                                                                                                                                     |
 
 ### D54. Whether hidden forms keep their physical lines within the same gap
 
-33 forms in agentflow, class, er, eventmodeling, flowchart, gitgraph, info,
+32 forms in agentflow, class, er, eventmodeling, flowchart, gitgraph, info,
 ishikawa, journey, packet, quadrant, radar, railroad, requirement, state,
-treeview, usecase.
+usecase.
 
 | Diagram       | Rules document                                                        | Written form                                                                                                                                                                                          |
 | ------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -1064,17 +1041,7 @@ treeview, usecase.
 | requirement   | [requirement.md:1348](./docs/requirement.md#multi-line-statements)    | `requirementDiagram\nrequirement \n%%{init: {}}%%\ncheckout {\nid: 1\n}\n`                                                                                                                            |
 | state         | [state.md:77](./docs/state.md#composite-states)                       | `stateDiagram-v2\nstate D %%{init: {}}%%\n{\nE\n}\n`                                                                                                                                                  |
 | state         | [state.md:192](./docs/state.md#composite-states)                      | `stateDiagram-v2\nstate X { %%{init: {}}%% }\nstate Y {\n%% c\n}\n`                                                                                                                                   |
-| treeview      | [treeview.md:1128](./docs/treeview.md#statements-one-per-line)        | `treeView-beta\n\a\"%%{x}%%\"b\"\n"`                                                                                                                                                                  |
 | usecase       | [usecase.md:1191](./docs/usecase.md#directives)                       | `usecase-beta  %%{init: {}}%%\nA`                                                                                                                                                                     |
-
-### D55. Whether whitespace inside directive bodies is normalized
-
-2 forms in journey, timeline.
-
-| Diagram  | Rules document                                               | Written form                                                                                    |
-| -------- | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------- |
-| journey  | [journey.md:752](./docs/journey.md#multi-line-statements)    | `journey\nsection S\naccTitle:\n%%{init: {}}%% T\naccDescr\n%% colon\n:\n%% text\nD\nA:5:Me\n`  |
-| timeline | [timeline.md:1147](./docs/timeline.md#multi-line-statements) | `timeline\nsection S\naccTitle:\n%% title\nT\naccDescr\n%% colon\n:\n%%{init: {}}%% D\na : b\n` |
 
 ### D56. Whether YAML uses a positive minimum indentation at tabWidth zero
 
@@ -1096,7 +1063,7 @@ treeview, usecase.
 | cynefin   | [cynefin.md:1090](./docs/cynefin.md#frontmatter-yaml)     | `  ---\n  title: 'IndentedYaml'\n  ---\ncynefin-beta\nclear \IndentedBody\""` |
 | flowchart | [flowchart.md:3587](./docs/flowchart.md#frontmatter-yaml) | `  ---\n  title: \|\n      ---\n  ---\nflowchart LR\nA\n`                     |
 
-### D58. Whether colons touch their keyword and have one following space
+### D58. Whether an accessibility colon touches its keyword
 
 2 forms in radar, wardley.
 
@@ -1107,31 +1074,117 @@ treeview, usecase.
 
 ### D59. Whether commas have no leading space and one following space
 
-2 forms in railroad.
+5 forms in radar, railroad, wardley.
 
-| Diagram  | Rules document                                       | Written form                                                                                                                                                                                                     |
-| -------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| railroad | [railroad.md:368](./docs/railroad.md#ebnf-sequences) | `railroad-ebnf-beta\nr=first ,\tsecond;`                                                                                                                                                                         |
-| railroad | [railroad.md:572](./docs/railroad.md#calls)          | `railroad-beta\nr=sequence ( terminal ( \first\" ) , choice ( special ( \"note\" ),nonterminal ( \"r\" ) ) , optional ( terminal ( \"\" ) ) , oneOrMore (terminal(\"many\")),zeroOrMore (terminal(\"any\")) );"` |
+| Diagram  | Rules document                                                                                  | Written form                                                                                                                                                                                                     |
+| -------- | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| radar    | [radar.md:386](./docs/radar.md#options)                                                         | `radar-beta\nshowLegend\t false,ticks\t7,max  8,min\t2,graticule\tpolygon\n`                                                                                                                                     |
+| railroad | [railroad.md:368](./docs/railroad.md#ebnf-sequences)                                            | `railroad-ebnf-beta\nr=first ,\tsecond;`                                                                                                                                                                         |
+| railroad | [railroad.md:572](./docs/railroad.md#calls)                                                     | `railroad-beta\nr=sequence ( terminal ( \first\" ) , choice ( special ( \"note\" ),nonterminal ( \"r\" ) ) , optional ( terminal ( \"\" ) ) , oneOrMore (terminal(\"many\")),zeroOrMore (terminal(\"any\")) );"` |
+| wardley  | [compatibility.md:7290](./docs/compatibility.md#wardley-authored-text-and-required-line-breaks) | `wardley-beta\ncomponent \title\"[0.3,0.6]"`                                                                                                                                                                     |
+| wardley  | [wardley.md:308](./docs/wardley.md#decorations)                                                 | `wardley-beta\ncomponent Decor[0.3,0.6]label[1,-2]( build )( inertia )`                                                                                                                                          |
 
-The whole-output comparison at `railroad.md:572` also changes call-parenthesis
-gaps; decide those under [D60][call-gaps].
+### D60. Whether call names touch their opening parentheses
 
-### D60. Whether call names touch parentheses and inner padding is empty
+1 form in railroad.
+
+| Diagram  | Rules document                              | Written form                                                                                                                                                                                                     |
+| -------- | ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| railroad | [railroad.md:571](./docs/railroad.md#calls) | `railroad-beta\nr=sequence ( terminal ( \first\" ) , choice ( special ( \"note\" ),nonterminal ( \"r\" ) ) , optional ( terminal ( \"\" ) ) , oneOrMore (terminal(\"many\")),zeroOrMore (terminal(\"any\")) );"` |
+
+### D61. Whether assignments have one space on each side of the operator
+
+4 forms in railroad.
+
+| Diagram  | Rules document                                          | Written form                                                                                                                                                                                                     |
+| -------- | ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| railroad | [railroad.md:260](./docs/railroad.md#assignment)        | `railroad-beta\nlongName\t=\tterminal(\assignment\");s=terminal(\"short\");"`                                                                                                                                    |
+| railroad | [railroad.md:368](./docs/railroad.md#ebnf-sequences)    | `railroad-ebnf-beta\nr=first ,\tsecond;`                                                                                                                                                                         |
+| railroad | [railroad.md:571](./docs/railroad.md#calls)             | `railroad-beta\nr=sequence ( terminal ( \first\" ) , choice ( special ( \"note\" ),nonterminal ( \"r\" ) ) , optional ( terminal ( \"\" ) ) , oneOrMore (terminal(\"many\")),zeroOrMore (terminal(\"any\")) );"` |
+| railroad | [railroad.md:2675](./docs/railroad.md#frontmatter-yaml) | `---\nconfig:\n  railroad:\n    fontSize: 19\n---\nrailroad-beta\nr=terminal(\zero yaml\");"`                                                                                                                    |
+
+### D62. Whether parenthesized interiors have no padding
+
+3 forms in railroad, wardley.
+
+| Diagram  | Rules document                                   | Written form                                                                                                                                                                                                     |
+| -------- | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| railroad | [railroad.md:571](./docs/railroad.md#calls)      | `railroad-beta\nr=sequence ( terminal ( \first\" ) , choice ( special ( \"note\" ),nonterminal ( \"r\" ) ) , optional ( terminal ( \"\" ) ) , oneOrMore (terminal(\"many\")),zeroOrMore (terminal(\"any\")) );"` |
+| railroad | [railroad.md:787](./docs/railroad.md#long-lines) | `railroad-beta\n r=terminal( \classDef\" );"`                                                                                                                                                                    |
+| wardley  | [wardley.md:308](./docs/wardley.md#decorations)  | `wardley-beta\ncomponent Decor[0.3,0.6]label[1,-2]( build )( inertia )`                                                                                                                                          |
+
+### D63. Whether title padding is trimmed through an ignored semicolon
+
+1 form in agentflow.
+
+| Diagram   | Rules document                                             | Written form                                 |
+| --------- | ---------------------------------------------------------- | -------------------------------------------- |
+| agentflow | [agentflow.md:220](./docs/agentflow.md#names-and-headings) | `agentflow-beta\nconnector style:#x ; [T]\n` |
+
+### D64. Whether a one-line attribute block has one space before its closing brace
+
+1 form in er.
+
+| Diagram | Rules document                             | Written form                                                                                                                       |
+| ------- | ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| er      | [er.md:258](./docs/er.md#attribute-blocks) | `erDiagram\nT {int a} subgraph S accDescr {}\nend\nU { int a   } subgraph V accDescr {}\nend\nW {int a} accTitle:\ndirection LR\n` |
+
+### D65. Whether annotations share their owner's line
+
+2 forms in treeview.
+
+| Diagram  | Rules document                                          | Written form                                     |
+| -------- | ------------------------------------------------------- | ------------------------------------------------ |
+| treeview | [treeview.md:1283](./docs/treeview.md#annotation-lines) | `treeView-beta\nR\n   :::hot\nC\n`               |
+| treeview | [treeview.md:1284](./docs/treeview.md#annotation-lines) | `treeView-beta\n├─ node\n%% between\n└─ ::: X\n` |
+
+### D66. Whether trivia forces a leaf IR call onto multiple lines
+
+1 form in railroad.
+
+| Diagram  | Rules document                                   | Written form                                                                                  |
+| -------- | ------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+| railroad | [railroad.md:756](./docs/railroad.md#long-lines) | `railroad-beta\nconstructor=terminal/* call */(\x\");\ncloser=terminal(\"x\"/* close */);\n"` |
+
+### D67. Whether compound IR calls put their arguments on separate lines
 
 2 forms in railroad.
 
 | Diagram  | Rules document                                   | Written form                                                                                                                                                                                                     |
 | -------- | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | railroad | [railroad.md:571](./docs/railroad.md#calls)      | `railroad-beta\nr=sequence ( terminal ( \first\" ) , choice ( special ( \"note\" ),nonterminal ( \"r\" ) ) , optional ( terminal ( \"\" ) ) , oneOrMore (terminal(\"many\")),zeroOrMore (terminal(\"any\")) );"` |
-| railroad | [railroad.md:787](./docs/railroad.md#long-lines) | `railroad-beta\n r=terminal( \classDef\" );"`                                                                                                                                                                    |
+| railroad | [railroad.md:755](./docs/railroad.md#long-lines) | `railroad-beta\nr\n=\nsequence\n(terminal\n(\n\joined\"\n)\n,\nterminal(\"tail\")\n)\n;"`                                                                                                                        |
 
-The whole-output comparison at `railroad.md:571` also changes comma spacing;
-decide that under [D59][commas].
+### D68. Whether whitespace before a style semicolon is removed
+
+1 form in venn.
+
+| Diagram | Rules document                                                           | Written form                              |
+| ------- | ------------------------------------------------------------------------ | ----------------------------------------- |
+| venn    | [venn.md:725](./docs/venn.md#semicolons-at-the-end-of-a-style-statement) | `venn-beta\nset A\nstyle A fill:#f00 ;\n` |
+
+### D69. Whether padding at the edges of accessibility values is trimmed
+
+2 forms in radar, wardley.
+
+| Diagram | Rules document                                      | Written form                                                                 |
+| ------- | --------------------------------------------------- | ---------------------------------------------------------------------------- |
+| radar   | [radar.md:496](./docs/radar.md#accessibility-lines) | `radar-beta\naccTitle \t:   Access  words\t\naccDescr\t:   Detail  words \n` |
+| wardley | [wardley.md:630](./docs/wardley.md#accessibility)   | `wardley-beta\naccTitle \t:  A  B \t\naccDescr\t:  C  D \t`                  |
+
+### D70. Whether whitespace runs inside accessibility descriptions are collapsed
+
+2 forms in radar, wardley.
+
+| Diagram | Rules document                                      | Written form                                                                 |
+| ------- | --------------------------------------------------- | ---------------------------------------------------------------------------- |
+| radar   | [radar.md:496](./docs/radar.md#accessibility-lines) | `radar-beta\naccTitle \t:   Access  words\t\naccDescr\t:   Detail  words \n` |
+| wardley | [wardley.md:630](./docs/wardley.md#accessibility)   | `wardley-beta\naccTitle \t:  A  B \t\naccDescr\t:  C  D \t`                  |
 
 ## To fix by the rule
 
-The supplied table has no forms assigned to rule 1, 2, or 3.
+A form is added here after its reason has been searched for and none is found,
+when rule 1, 2, or 3 already gives the form to print.
 
 ## Reasons still to be written
 
@@ -1141,11 +1194,8 @@ changes the Db in a way that no kind of exception allows, changes the drawing,
 or is rejected; and a form that the formatter prints changed, which Claude chose
 in a conversation for a reason (also where the reason is only that it reads
 better). Each reason is written into the rules of the diagram type, with its
-fixture, and the form leaves this list. No form is listed here now.
+fixture, and the form leaves this list. A form is added here after a search
+finds its unwritten reason.
 
 [versions]:
   ./docs/compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count
-[semicolons]: #d17-whether-written-semicolons-are-retained-or-removed
-[commas]: #d59-whether-commas-have-no-leading-space-and-one-following-space
-[call-gaps]:
-  #d60-whether-call-names-touch-parentheses-and-inner-padding-is-empty

@@ -10,6 +10,8 @@
 走らせて示されていない。
 利用者も決めていない。
 これらは決まりではなく、これから決める印字の形である。
+両方の形を拒否する版も、書かれた形だけを拒否する版も、違いなしと数える。
+どちらも、書かれた形を残す理由にはならない。
 
 「決まりで直す形」の節には、
 [印字する形の決め方][printed-form]の決まりがすでに形を与えているのに、
@@ -116,7 +118,7 @@ mindmap、packet、pie、quadrant、sankey、usecase、venn、xychartである�
 
 ### D05. 同じ値の数の綴りをそろえるか
 
-13件の形があり、図種はc4、journey、pie、radar、railroad、sankey、treemap、
+10件の形があり、図種はc4、journey、pie、radar、railroad、sankey、treemap、
 wardleyである。
 
 | 図種     | 規則の文書                                                                                                              | 書かれた形                                                                                                                                                              |
@@ -129,9 +131,6 @@ wardleyである。
 | railroad | [repeat の表記（railroad.ja.md:538）](./docs/railroad.ja.md#repeat-の表記)                                              | `railroad-abnf-beta\nr=002*004 (\range\") 03 \"exact\" * \"any\" 2* ref *1 \"upper\";"`                                                                                 |
 | sankey   | [値（sankey.ja.md:277）](./docs/sankey.ja.md#値)                                                                        | `sankey\na,b,1e0\n`                                                                                                                                                     |
 | treemap  | [Numbers（treemap.ja.md:267）](./docs/treemap.ja.md#numbers)                                                            | `treemap-beta\n\leading\": 007\n\"short\": 1.50"`                                                                                                                       |
-| wardley  | [最短の形の数（compatibility.ja.md:2620）](./docs/compatibility.ja.md#最短の形の数)                                     | `wardley-beta\ncomponent A [0.50, 0.50]\n`                                                                                                                              |
-| wardley  | [Wardley の原文と必須の改行（compatibility.ja.md:7642）](./docs/compatibility.ja.md#wardley-の原文と必須の改行)         | `wardley-beta\ncomponent Alpha [0.10,0.20]\n`                                                                                                                           |
-| wardley  | [座標（wardley.ja.md:255）](./docs/wardley.ja.md#座標)                                                                  | `wardley-beta\nannotations [ 3 , 4 ]\nannotation 2,[ 0 , 1 ]\Integer\""`                                                                                                |
 | wardley  | [label offset（wardley.ja.md:354）](./docs/wardley.ja.md#label-offset)                                                  | `wardley-beta\ncomponent ZeroSign[0.3,0.6]label[- 0,0]`                                                                                                                 |
 | wardley  | [evolve（wardley.ja.md:509）](./docs/wardley.ja.md#evolve)                                                              | `wardley-beta\ncomponent Motion[0.3,0.6]\nevolveMotion\t0.80`                                                                                                           |
 
@@ -161,14 +160,6 @@ state、treemap、usecase、vennである。
 | --------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | agentflow | [Names and headings（agentflow.ja.md:155）](./docs/agentflow.ja.md#names-and-headings) | `agentflow-beta TB\nflow F click [T]\nA\nend\nflow F \\" G [T]\nB\nend\nconnector H click [T]\nconnector I \"\" J [T]\n"` |
 | state     | [トークンの間の空白（state.ja.md:509）](./docs/state.ja.md#トークンの間の空白)         | `stateDiagram-v2\nnote   \x\"   as   N\nnote \"\"y\"   as   M\n"`                                                         |
-
-### D08. 説明の開始部の隙間にあるモード指定を残すか
-
-1件の形があり、図種はtreeviewである。
-
-| 図種     | 規則の文書                                                                                                                      | 書かれた形                                                       |
-| -------- | ------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| treeview | [Treeview modes and authored values（compatibility.ja.md:7151）](./docs/compatibility.ja.md#treeview-modes-and-authored-values) | `treeView-beta\naccDescr\n─\n{z}\n   title   T\nroot\n\n\n\nx\n` |
 
 ### D09. 無視されるソースの範囲を残すか
 
@@ -242,23 +233,23 @@ state、treemap、usecase、vennである。
 
 ### D16. 字下げによる表記を罫線による表記に置き換えるか
 
-3件の形があり、図種はtreeviewである。
+2件の形があり、図種はtreeviewである。
 
-| 図種     | 規則の文書                                                                                                                      | 書かれた形                         |
-| -------- | ------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
-| treeview | [Treeview modes and authored values（compatibility.ja.md:7151）](./docs/compatibility.ja.md#treeview-modes-and-authored-values) | `treeView-beta\nroot\n  child\n`   |
-| treeview | [Modes（treeview.ja.md:58）](./docs/treeview.ja.md#modes)                                                                       | `treeView-beta\nroot\n    child\n` |
-| treeview | [Modes（treeview.ja.md:58）](./docs/treeview.ja.md#modes)                                                                       | `treeView-beta\nroot\n    child\n` |
+| 図種     | 規則の文書                                                | 書かれた形                         |
+| -------- | --------------------------------------------------------- | ---------------------------------- |
+| treeview | [Modes（treeview.ja.md:58）](./docs/treeview.ja.md#modes) | `treeView-beta\nroot\n    child\n` |
+| treeview | [Modes（treeview.ja.md:58）](./docs/treeview.ja.md#modes) | `treeView-beta\nroot\n    child\n` |
 
 ### D17. 書かれたセミコロンを残すか、取り除くか
 
-26件の形があり、図種はagentflow、block、class、er、eventmodeling、flowchart、
+27件の形があり、図種はagentflow、block、class、er、eventmodeling、flowchart、
 quadrant、requirement、state、treeview、usecase、vennである。
 
 | 図種          | 規則の文書                                                                                                                         | 書かれた形                                                                                                             |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | agentflow     | [Names and headings（agentflow.ja.md:155）](./docs/agentflow.ja.md#names-and-headings)                                             | `agentflow-beta TB\nconnector style:#x ; [T]`                                                                          |
 | agentflow     | [Kept lines（agentflow.ja.md:911）](./docs/agentflow.ja.md#kept-lines)                                                             | `agentflow-beta TB\nA\n%%{open;B`                                                                                      |
+| agentflow     | [Comments（agentflow.ja.md:985）](./docs/agentflow.ja.md#comments)                                                                 | `agentflow-beta TB\nA;%% c\nB`                                                                                         |
 | block         | [スタイル文の末尾のセミコロン（block.ja.md:843）](./docs/block.ja.md#スタイル文の末尾のセミコロン)                                 | `block\nA\nclassDef c fill:#f00; %%{init: {}}%%\nstyle A fill:#f00; %% keep\n`                                         |
 | class         | [スタイル文の末尾のセミコロン（class.ja.md:1513）](./docs/class.ja.md#スタイル文の末尾のセミコロン)                                | `classDiagram\nclass A\nclassDef c fill:#f00; %%{init: {}}%%\nstyle A fill:#f00; %% keep\n`                            |
 | class         | [スタイル文の末尾のセミコロン（class.ja.md:1513）](./docs/class.ja.md#スタイル文の末尾のセミコロン)                                | `classDiagram\nstyle A fill:#f00;\u2028\n`                                                                             |
@@ -272,10 +263,10 @@ quadrant、requirement、state、treeview、usecase、vennである。
 | flowchart     | [字下げ（flowchart.ja.md:18）](./docs/flowchart.ja.md#字下げ)                                                                      | `flowchart LR\naccDescr {style:#x} direction LR;; C-->D\n`                                                             |
 | flowchart     | [1 行に 1 文（flowchart.ja.md:188）](./docs/flowchart.ja.md#1-行に-1-文)                                                           | `flowchart LR\nA[style:#x]-->direction;\n;B\n`                                                                         |
 | flowchart     | [セミコロン（flowchart.ja.md:509）](./docs/flowchart.ja.md#セミコロン)                                                             | `flowchart LR\nA[style:#x];;\nB\n`                                                                                     |
+| flowchart     | [ディレクティブ（flowchart.ja.md:2753）](./docs/flowchart.ja.md#ディレクティブ)                                                    | `flowchart LR\n  A --> B %%{init: {}}%%\n  C; %%{init: {}}%% D\n`                                                      |
 | quadrant      | [複数行の文（quadrant.ja.md:833）](./docs/quadrant.ja.md#複数行の文)                                                               | `quadrantChart\nclassDef a\u2028%% c\nstyle color:#f00;\n`                                                             |
 | requirement   | [スタイル文の末尾のセミコロン（requirement.ja.md:1272）](./docs/requirement.ja.md#スタイル文の末尾のセミコロン)                    | `requirementDiagram\nclassDef c fill:#f00; %%{init: {}}%%\n`                                                           |
 | state         | [スタイル文の末尾のセミコロン（state.ja.md:1710）](./docs/state.ja.md#スタイル文の末尾のセミコロン)                                | `stateDiagram-v2\nA --> B\nclassDef c fill:#f00; %%{init: {}}%%\nstyle A fill:#f00; %% keep\n`                         |
-| treeview      | [Carried indentation（treeview.ja.md:749）](./docs/treeview.ja.md#carried-indentation)                                             | `treeView-beta\n\style:#x\";  %% note\nchild\n"`                                                                       |
 | treeview      | [Description blocks（treeview.ja.md:1856）](./docs/treeview.ja.md#description-blocks)                                              | `treeView-beta\naccDescr {style:#x}accDescr { ; }\n`                                                                   |
 | usecase       | [Statements and semicolons（usecase.ja.md:119）](./docs/usecase.ja.md#statements-and-semicolons)                                   | `usecase-beta\nactor Reader(style:#abc)@{type:normal,;icon:''}\n`                                                      |
 | usecase       | [Semicolons at the end of a style statement（usecase.ja.md:918）](./docs/usecase.ja.md#semicolons-at-the-end-of-a-style-statement) | `usecase-beta\nA\nclassDef c fill:#f00; %%{init: {}}%%\nstyle A fill:#f00; %% keep\n`                                  |
@@ -286,20 +277,19 @@ quadrant、requirement、state、treeview、usecase、vennである。
 
 ### D18. 通常の構造単位の間を ASCII の空白1つで区切るか
 
-9件の形があり、図種はagentflow、architecture、block、c4、radar、railroad、
-usecase、wardleyである。
+8件の形があり、図種はagentflow、architecture、block、c4、radar、usecase、
+wardleyである。
 
-| 図種         | 規則の文書                                                                                                      | 書かれた形                                                                    |
-| ------------ | --------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| agentflow    | [Click statements（agentflow.ja.md:1820）](./docs/agentflow.ja.md#click-statements)                             | `agentflow-beta TB\nA\nclick A cb\t\tip\""`                                   |
-| architecture | [Declaration spacing（architecture.ja.md:107）](./docs/architecture.ja.md#declaration-spacing)                  | `architecture-beta\ngroup\t g\n`                                              |
-| block        | [スタイル（block.ja.md:650）](./docs/block.ja.md#スタイル)                                                      | `block-beta\nA\n    style    A\n`                                             |
-| c4           | [説明ブロック（c4.ja.md:1733）](./docs/c4.ja.md#説明ブロック)                                                   | `C4Context accDescr{\n%% purpose\n}\nPerson(customer, \Customer\")\n"`        |
-| radar        | [Options（radar.ja.md:395）](./docs/radar.ja.md#options)                                                        | `radar-beta\nshowLegend\t false,ticks\t7,max  8,min\t2,graticule\tpolygon\n`  |
-| railroad     | [代入（railroad.ja.md:262）](./docs/railroad.ja.md#代入)                                                        | `railroad-beta\nlongName\t=\tterminal(\assignment\");s=terminal(\"short\");"` |
-| usecase      | [Direction and accessibility（usecase.ja.md:1077）](./docs/usecase.ja.md#direction-and-accessibility)           | `usecase-beta\ndirection  TD\nA\ndirection\tBT\ndirection RL`                 |
-| wardley      | [Wardley の原文と必須の改行（compatibility.ja.md:7642）](./docs/compatibility.ja.md#wardley-の原文と必須の改行) | `wardley-beta\ncomponent \title\"[0.3,0.6]"`                                  |
-| wardley      | [装飾（wardley.ja.md:312）](./docs/wardley.ja.md#装飾)                                                          | `wardley-beta\ncomponent Decor[0.3,0.6]label[1,-2]( build )( inertia )`       |
+| 図種         | 規則の文書                                                                                                      | 書かれた形                                                                   |
+| ------------ | --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| agentflow    | [Click statements（agentflow.ja.md:1820）](./docs/agentflow.ja.md#click-statements)                             | `agentflow-beta TB\nA\nclick A cb\t\tip\""`                                  |
+| architecture | [Declaration spacing（architecture.ja.md:107）](./docs/architecture.ja.md#declaration-spacing)                  | `architecture-beta\ngroup\t g\n`                                             |
+| block        | [スタイル（block.ja.md:650）](./docs/block.ja.md#スタイル)                                                      | `block-beta\nA\n    style    A\n`                                            |
+| c4           | [説明ブロック（c4.ja.md:1733）](./docs/c4.ja.md#説明ブロック)                                                   | `C4Context accDescr{\n%% purpose\n}\nPerson(customer, \Customer\")\n"`       |
+| radar        | [Options（radar.ja.md:395）](./docs/radar.ja.md#options)                                                        | `radar-beta\nshowLegend\t false,ticks\t7,max  8,min\t2,graticule\tpolygon\n` |
+| usecase      | [Direction and accessibility（usecase.ja.md:1077）](./docs/usecase.ja.md#direction-and-accessibility)           | `usecase-beta\ndirection  TD\nA\ndirection\tBT\ndirection RL`                |
+| wardley      | [Wardley の原文と必須の改行（compatibility.ja.md:7642）](./docs/compatibility.ja.md#wardley-の原文と必須の改行) | `wardley-beta\ncomponent \title\"[0.3,0.6]"`                                 |
+| wardley      | [装飾（wardley.ja.md:312）](./docs/wardley.ja.md#装飾)                                                          | `wardley-beta\ncomponent Decor[0.3,0.6]label[1,-2]( build )( inertia )`      |
 
 ### D19. 構造上の修飾を対象に接して印字するか
 
@@ -322,14 +312,13 @@ usecase、wardleyである。
 | railroad | [セミコロン（railroad.ja.md:1893）](./docs/railroad.ja.md#セミコロン) | `%%{init: {}}%%\nrailroad-beta\na =  terminal( \x\" );\n b  =  terminal( \"style\" );\n"` |
 | wardley  | [セミコロン（wardley.ja.md:991）](./docs/wardley.ja.md#セミコロン)    | `wardley-beta\nAlpha  -> Beta; style:#tone;`                                              |
 
-### D21. 残すが無視されるセミコロンの横の空白をどう印字するか
+### D21. 文の中で無視されるセミコロンの前を空けず後ろを1空白にするか
 
-2件の形があり、図種はagentflow、sequenceである。
+1件の形があり、図種はsequenceである。
 
-| 図種      | 規則の文書                                                                             | 書かれた形                                                                          |
-| --------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| agentflow | [Names and headings（agentflow.ja.md:155）](./docs/agentflow.ja.md#names-and-headings) | `agentflow-beta\nconnector style:#x ; [T]\n`                                        |
-| sequence  | [トークンの間の空白（sequence.ja.md:305）](./docs/sequence.ja.md#トークンの間の空白)   | `sequenceDiagram\n  participant A@{ \alias\": \"style:#x\" };Note left ;of A: t\n"` |
+| 図種     | 規則の文書                                                                           | 書かれた形                                                                          |
+| -------- | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
+| sequence | [トークンの間の空白（sequence.ja.md:305）](./docs/sequence.ja.md#トークンの間の空白) | `sequenceDiagram\n  participant A@{ \alias\": \"style:#x\" };Note left ;of A: t\n"` |
 
 ### D22. 構造の隙間の非 ASCII 空白を正規化するか
 
@@ -385,22 +374,21 @@ ishikawa、quadrant、requirement、sequence、stateである。
 | treemap     | [Style gaps（treemap.ja.md:384）](./docs/treemap.ja.md#style-gaps)                                                                                  | `treemap\nclassDef zz\n%% gap\n\Apparent\":2"`                                                                                |
 | treemap     | [Styles（treemap.ja.md:425）](./docs/treemap.ja.md#styles)                                                                                          | `treemap\nclassDef zz fill : #f00 %%{init: {}}%%\n\Leaf\":1:::zz\n"`                                                          |
 
-### D24. 空でない波括弧の本文の内側の端を空白1つにするか
+### D24. 空でない説明ブロックの波括弧の内側を1空白にするか
 
-9件の形があり、図種はagentflow、architecture、c4、er、flowchart、gitgraph、pie、
+8件の形があり、図種はagentflow、architecture、c4、flowchart、gitgraph、pie、
 requirement、wardleyである。
 
-| 図種         | 規則の文書                                                                                                                            | 書かれた形                                                                                                                         |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| agentflow    | [Accessibility（agentflow.ja.md:1173）](./docs/agentflow.ja.md#accessibility)                                                         | `agentflow-beta TB\naccDescr {%%{init: {}}%%}`                                                                                     |
-| architecture | [Comments（architecture.ja.md:816）](./docs/architecture.ja.md#comments)                                                              | `architecture-beta\nservice percent \A%%B\" [C%%D]\naccDescr {E%%F}\ntitle Topic%% inline\n"`                                      |
-| c4           | [文ごとに改行（c4.ja.md:352）](./docs/c4.ja.md#文ごとに改行)                                                                          | `C4Context\naccDescr {D}accDescr {}Person(a,\A\")\n"`                                                                              |
-| er           | [属性ブロック（er.ja.md:82）](./docs/er.ja.md#属性ブロック)                                                                           | `erDiagram\nT {int a} subgraph S accDescr {}\nend\nU { int a   } subgraph V accDescr {}\nend\nW {int a} accTitle:\ndirection LR\n` |
-| flowchart    | [説明ブロックの字下げ（compatibility.ja.md:4814）](./docs/compatibility.ja.md#説明ブロックの字下げ)                                   | `flowchart TD\naccDescr {%% c\nText\n}\n`                                                                                          |
-| gitgraph     | [Gitgraph の hidden 境界と書かれた履歴（compatibility.ja.md:6633）](./docs/compatibility.ja.md#gitgraph-の-hidden-境界と書かれた履歴) | `gitGraph\naccDescr {%% c\nText\n}\n`                                                                                              |
-| pie          | [Description blocks（pie.ja.md:295）](./docs/pie.ja.md#description-blocks)                                                            | `pie\naccDescr {%% c\nD}`                                                                                                          |
-| requirement  | [アクセシビリティの文（requirement.ja.md:1120）](./docs/requirement.ja.md#アクセシビリティの文)                                       | `requirementDiagram\n%%{init: {}}%% accDescr {x}    accTitle:\ndirection LR\n`                                                     |
-| wardley      | [アクセシビリティ（wardley.ja.md:638）](./docs/wardley.ja.md#アクセシビリティ)                                                        | `wardley-beta\naccDescr {%%{wrap}%%}`                                                                                              |
+| 図種         | 規則の文書                                                                                                                            | 書かれた形                                                                                    |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| agentflow    | [Accessibility（agentflow.ja.md:1173）](./docs/agentflow.ja.md#accessibility)                                                         | `agentflow-beta TB\naccDescr {%%{init: {}}%%}`                                                |
+| architecture | [Comments（architecture.ja.md:816）](./docs/architecture.ja.md#comments)                                                              | `architecture-beta\nservice percent \A%%B\" [C%%D]\naccDescr {E%%F}\ntitle Topic%% inline\n"` |
+| c4           | [文ごとに改行（c4.ja.md:352）](./docs/c4.ja.md#文ごとに改行)                                                                          | `C4Context\naccDescr {D}accDescr {}Person(a,\A\")\n"`                                         |
+| flowchart    | [説明ブロックの字下げ（compatibility.ja.md:4814）](./docs/compatibility.ja.md#説明ブロックの字下げ)                                   | `flowchart TD\naccDescr {%% c\nText\n}\n`                                                     |
+| gitgraph     | [Gitgraph の hidden 境界と書かれた履歴（compatibility.ja.md:6633）](./docs/compatibility.ja.md#gitgraph-の-hidden-境界と書かれた履歴) | `gitGraph\naccDescr {%% c\nText\n}\n`                                                         |
+| pie          | [Description blocks（pie.ja.md:295）](./docs/pie.ja.md#description-blocks)                                                            | `pie\naccDescr {%% c\nD}`                                                                     |
+| requirement  | [アクセシビリティの文（requirement.ja.md:1120）](./docs/requirement.ja.md#アクセシビリティの文)                                       | `requirementDiagram\n%%{init: {}}%% accDescr {x}    accTitle:\ndirection LR\n`                |
+| wardley      | [アクセシビリティ（wardley.ja.md:638）](./docs/wardley.ja.md#アクセシビリティ)                                                        | `wardley-beta\naccDescr {%%{wrap}%%}`                                                         |
 
 ### D25. 空白だけの説明ブロックを空の波括弧にするか
 
@@ -425,18 +413,21 @@ requirement、sequence、timeline、treeview、usecase、xychartである。
 
 ### D26. 説明をブロックで書くか、コロンの行で書くか
 
-11件の形があり、図種はarchitecture、cynefin、flowchart、packet、pie、radar、
-railroad、treemap、treeview、wardleyである。
+14件の形があり、図種はarchitecture、cynefin、flowchart、journey、packet、pie、
+radar、railroad、timeline、treemap、treeview、wardleyである。
 
 | 図種         | 規則の文書                                                                                      | 書かれた形                                                                                             |
 | ------------ | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | architecture | [Description blocks（architecture.ja.md:719）](./docs/architecture.ja.md#description-blocks)    | `architecture-beta\naccDescr {\n%% comment\n}\n`                                                       |
 | cynefin      | [Description blocks（cynefin.ja.md:520）](./docs/cynefin.ja.md#description-blocks)              | `cynefin-beta\naccDescr {%%{wrap}%%}`                                                                  |
 | flowchart    | [1 行の説明ブロック（compatibility.ja.md:2871）](./docs/compatibility.ja.md#1-行の説明ブロック) | `flowchart TD\naccDescr {}\n`                                                                          |
+| journey      | [1 行に 1 文（journey.ja.md:103）](./docs/journey.ja.md#1-行に-1-文)                            | `journey\naccDescr { d } %%{init: {}}%% A: 5\n`                                                        |
 | packet       | [Description blocks（packet.ja.md:392）](./docs/packet.ja.md#description-blocks)                | `packet\naccDescr {\n A\n B\n}\n`                                                                      |
 | pie          | [1 行の説明ブロック（compatibility.ja.md:2871）](./docs/compatibility.ja.md#1-行の説明ブロック) | `pie\naccDescr %%{init: {}}%% {a\nb}\n\A\": 1\n"`                                                      |
 | radar        | [Description blocks（radar.ja.md:542）](./docs/radar.ja.md#description-blocks)                  | `radar-beta\naccDescr\n\n{ Words }\n`                                                                  |
 | railroad     | [説明ブロック（railroad.ja.md:1234）](./docs/railroad.ja.md#説明ブロック)                       | `railroad-beta\naccDescr {%%{wrap}%%}\naccDescr {\n%% removed block\n}\nr=terminal(\trivia block\");"` |
+| timeline     | [1 行 1 文（timeline.ja.md:113）](./docs/timeline.ja.md#1-行-1-文)                              | `timeline\naccDescr { d } %%{init: {}}%% a : e\n`                                                      |
+| timeline     | [指令（timeline.ja.md:1430）](./docs/timeline.ja.md#指令)                                       | `timeline\naccDescr { d }   %%{init: {}}%%   \naccDescr { e }   %%{init: {}}%%  a : e\n`               |
 | treemap      | [Description blocks（treemap.ja.md:918）](./docs/treemap.ja.md#description-blocks)              | `treemap\naccDescr {\n%% block comment\n}\n\AfterCommentBlock\":3"`                                    |
 | treeview     | [Description blocks（treeview.ja.md:1856）](./docs/treeview.ja.md#description-blocks)           | `treeView-beta\naccDescr {\nx─\n}\n`                                                                   |
 | treeview     | [Description blocks（treeview.ja.md:1856）](./docs/treeview.ja.md#description-blocks)           | `treeView-beta\naccDescr%%{init: {}}%%{│}\nroot─\n`                                                    |
@@ -469,8 +460,8 @@ usecaseである。
 
 ### D29. 文の構造部分の間にある改行をつなぐか
 
-19件の形があり、図種はagentflow、eventmodeling、flowchart、gitgraph、railroad、
-treeviewである。
+16件の形があり、図種はagentflow、eventmodeling、flowchart、gitgraph、
+railroadである。
 
 | 図種          | 規則の文書                                                                                                                  | 書かれた形                                                                                                               |
 | ------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
@@ -486,13 +477,10 @@ treeviewである。
 | gitgraph      | [Line terminators and unicode（gitgraph.ja.md:875）](./docs/gitgraph.ja.md#line-terminators-and-unicode)                    | `gitGraph\naccDescr\n{A\nB}\n`                                                                                           |
 | railroad      | [railroad の方言と書かれた値（compatibility.ja.md:7412）](./docs/compatibility.ja.md#railroad-の方言と書かれた値)           | `railroad-beta\nr=terminal(\x\");\n"`                                                                                    |
 | railroad      | [長い行（railroad.ja.md:767）](./docs/railroad.ja.md#長い行)                                                                | `railroad-beta\nr\n=\nsequence\n(terminal\n(\n\joined\"\n)\n,\nterminal(\"tail\")\n)\n;"`                                |
-| railroad      | [長い行（railroad.ja.md:767）](./docs/railroad.ja.md#長い行)                                                                | `railroad-beta\nconstructor=terminal/* call */(\x\");\ncloser=terminal(\"x\"/* close */);\n"`                            |
 | railroad      | [長い行（railroad.ja.md:767）](./docs/railroad.ja.md#長い行)                                                                | `railroad-ebnf-beta\nexpression =\n (term, { (\+\" \| \"-\"), term })\n \| (\"(\", expression, \")\")\n \|\n number;\n"` |
 | railroad      | [長い行（railroad.ja.md:767）](./docs/railroad.ja.md#長い行)                                                                | `railroad-ebnf-beta\nexpression =\n (term, { (\+\" \| \"-\"), term })\n \| (\"(\", expression, \")\")\n \|\n number;\n"` |
 | railroad      | [長い行（railroad.ja.md:767）](./docs/railroad.ja.md#長い行)                                                                | `railroad-ebnf-beta\nexpression =\n (term, { (\+\" \| \"-\"), term })\n \| (\"(\", expression, \")\")\n \|\n number;\n"` |
 | railroad      | [説明ブロック（railroad.ja.md:1234）](./docs/railroad.ja.md#説明ブロック)                                                   | `railroad-beta\naccDescr\n{\n   first\n\n  continuation\n}\nr=terminal(\description\");"`                                |
-| treeview      | [Annotation lines（treeview.ja.md:1263）](./docs/treeview.ja.md#annotation-lines)                                           | `treeView-beta\nR\n   :::hot\nC\n`                                                                                       |
-| treeview      | [Annotation lines（treeview.ja.md:1263）](./docs/treeview.ja.md#annotation-lines)                                           | `treeView-beta\n├─ node\n%% between\n└─ ::: X\n`                                                                         |
 
 ### D30. 空の値に次の行のテキストを取り込むか
 
@@ -505,7 +493,7 @@ treeviewである。
 
 ### D31. 同じ行にある文やヘッダーを別の行に分けるか
 
-32件の形があり、図種はblock、cynefin、er、eventmodeling、flowchart、gitgraph、
+33件の形があり、図種はblock、cynefin、er、eventmodeling、flowchart、gitgraph、
 info、pie、quadrant、radar、railroad、sequence、venn、wardley、xychartである。
 
 | 図種          | 規則の文書                                                                                                                                  | 書かれた形                                                                                                                            |
@@ -535,6 +523,7 @@ info、pie、quadrant、radar、railroad、sequence、venn、wardley、xychart�
 | railroad      | [railroad の方言と書かれた値（compatibility.ja.md:7412）](./docs/compatibility.ja.md#railroad-の方言と書かれた値)                           | `railroad-beta\nr=terminal(\style\");\ns=terminal(\"x\");\n"`                                                                         |
 | railroad      | [railroad の方言と書かれた値（compatibility.ja.md:7412）](./docs/compatibility.ja.md#railroad-の方言と書かれた値)                           | `railroad-beta\nr=terminal(\style\");s=terminal(\"x\");\n"`                                                                           |
 | railroad      | [見出し（railroad.ja.md:16）](./docs/railroad.ja.md#見出し)                                                                                 | `railroad-abnf-beta%%{!heading}%%\nr=\x\";"`                                                                                          |
+| railroad      | [代入（railroad.ja.md:262）](./docs/railroad.ja.md#代入)                                                                                    | `railroad-beta\nlongName\t=\tterminal(\assignment\");s=terminal(\"short\");"`                                                         |
 | sequence      | [コメント（sequence.ja.md:1166）](./docs/sequence.ja.md#コメント)                                                                           | `sequenceDiagram\naccDescr {} A->>B: x #a; \n`                                                                                        |
 | sequence      | [コメント（sequence.ja.md:1166）](./docs/sequence.ja.md#コメント)                                                                           | `sequenceDiagram\nloop style:#x;; loop x; A->>B: body; end #;  \nend\n`                                                               |
 | venn          | [Directives（venn.ja.md:977）](./docs/venn.ja.md#directives)                                                                                | `venn-beta%%{init: {}}%% set A[style:#x;y]`                                                                                           |
@@ -573,9 +562,9 @@ info、pie、quadrant、radar、railroad、sequence、venn、wardley、xychart�
 
 ### D34. 構造の行や単独の補足情報の行を持ち主の深さに字下げするか
 
-59件の形があり、図種はarchitecture、block、c4、class、cynefin、er、
+60件の形があり、図種はarchitecture、block、c4、class、cynefin、er、
 eventmodeling、flowchart、gantt、gitgraph、journey、mindmap、quadrant、radar、
-railroad、requirement、sequence、state、timeline、treemap、wardley、
+railroad、requirement、sequence、state、timeline、treemap、treeview、wardley、
 xychartである。
 
 | 図種                                                                                        | 規則の文書                                                                                                                                                      | 書かれた形                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
@@ -635,6 +624,7 @@ xychartである。
 | timeline                                                                                    | [コメント（timeline.ja.md:1339）](./docs/timeline.ja.md#コメント)                                                                                               | `timeline\ntitle T\n      # last`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | treemap                                                                                     | [Style gaps（treemap.ja.md:384）](./docs/treemap.ja.md#style-gaps)                                                                                              | `treemap\nclassDef hot\n%% appearance\ncolor:#f00;;\n\Leaf\":1:::hot"`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | treemap                                                                                     | [Title（treemap.ja.md:767）](./docs/treemap.ja.md#title)                                                                                                        | `treemap\n    title   Budget\n  \A\": 1\n"`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| treeview                                                                                    | [Frontmatter yaml（treeview.ja.md:2703）](./docs/treeview.ja.md#frontmatter-yaml)                                                                               | `---\ntitle: \|\n  First\n  Second\n---\ntreeView-beta\nR\n`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | wardley                                                                                     | [コメント（wardley.ja.md:908）](./docs/wardley.ja.md#コメント)                                                                                                  | `  %% prefix\nwardley-beta\n%% ordinary \t\ncomponent Comments[0.3,0.6]`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | xychart                                                                                     | [単位、引用符、字句解析器で決まる XY チャートの行（compatibility.ja.md:5704）](./docs/compatibility.ja.md#単位引用符字句解析器で決まる-xy-チャートの行)         | `xychart\ntitle A \n%% c\nB\nline [1]\n`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | xychart                                                                                     | [空の説明ブロック（xychart.ja.md:797）](./docs/xychart.ja.md#空の説明ブロック)                                                                                  | `xychart\naccDescr {\n%% c\n}\naccDescr {%%{init: {}}%%}\n`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
@@ -656,14 +646,6 @@ stateである。
 | sequence      | [複数行の値（sequence.ja.md:1729）](./docs/sequence.ja.md#複数行の値)                                                                               | `sequenceDiagram\nparticipant A@{\n\type\": \"queue\"\n}\n"`                                                 |
 | sequence      | [複数行の値（sequence.ja.md:1729）](./docs/sequence.ja.md#複数行の値)                                                                               | `sequenceDiagram\n  box Aqua G\n    participant B\n  end; participant A@{\n    \type\": \"actor\"\n  }\n"`   |
 | state         | [ノート（state.ja.md:945）](./docs/state.ja.md#ノート)                                                                                              | `stateDiagram-v2\nA\nnote right of A  %%{init: {}}%%\n  first\n second\nend note\n`                          |
-
-### D36. 木の罫線をノードに対してどこへ置くか
-
-1件の形があり、図種はtreeviewである。
-
-| 図種     | 規則の文書                                                             | 書かれた形                                                |
-| -------- | ---------------------------------------------------------------------- | --------------------------------------------------------- |
-| treeview | [Decorations（treeview.ja.md:541）](./docs/treeview.ja.md#decorations) | `treeView-beta\n\r─\"\n│\n└─ :::X\n%% after\n\"next\"\n"` |
 
 ### D37. 構造上の項目の間の空行を何行残すか
 
@@ -709,9 +691,9 @@ xychartである。
 
 ### D38. 値の文字として読まれる空白をそろえるか
 
-38件の形があり、図種はagentflow、c4、class、er、eventmodeling、flowchart、
+40件の形があり、図種はagentflow、c4、class、er、eventmodeling、flowchart、
 gantt、gitgraph、ishikawa、journey、kanban、mindmap、pie、quadrant、radar、
-sankey、state、timeline、treemap、usecase、vennである。
+sankey、sequence、state、timeline、treemap、usecase、vennである。
 
 | 図種          | 規則の文書                                                                                                                                | 書かれた形                                                                                                                     |
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
@@ -732,6 +714,7 @@ sankey、state、timeline、treemap、usecase、vennである。
 | flowchart     | [データブロック（flowchart.ja.md:2098）](./docs/flowchart.ja.md#データブロック)                                                           | `flowchart TD\nA@{shape: circle %%{init: {}}%%}\nB@{shape: rect}%%{init: {}}%%\nC@{shape: circle}\n`                           |
 | flowchart     | [データブロック（flowchart.ja.md:2098）](./docs/flowchart.ja.md#データブロック)                                                           | `flowchart LR\nA@{---x}\n`                                                                                                     |
 | flowchart     | [スタイルの行末の空白（flowchart.ja.md:3608）](./docs/flowchart.ja.md#スタイルの行末の空白)                                               | `flowchart LR\nA\nstyle A fill:red\u00a0 %% c\n`                                                                               |
+| gantt         | [同じに描かれるキーワードの後のテキスト（compatibility.ja.md:1286）](./docs/compatibility.ja.md#同じに描かれるキーワードの後のテキスト)   | `gantt\ntitle Plan   %% comment\nsection S\nA: 1d\n`                                                                           |
 | gantt         | [複数行の文（gantt.ja.md:1356）](./docs/gantt.ja.md#複数行の文)                                                                           | `gantt\nclick id1 call f(1,\n 2)\n`                                                                                            |
 | gitgraph      | [Line terminators and unicode（gitgraph.ja.md:875）](./docs/gitgraph.ja.md#line-terminators-and-unicode)                                  | `gitGraph\ntitle T\u00a0\n`                                                                                                    |
 | ishikawa      | [Physical lines（ishikawa.ja.md:663）](./docs/ishikawa.ja.md#physical-lines)                                                              | `ishikawa\nR%%{init: {\n}}%%  X\n A`                                                                                           |
@@ -744,6 +727,7 @@ sankey、state、timeline、treemap、usecase、vennである。
 | radar         | [Blank lines（radar.ja.md:971）](./docs/radar.ja.md#blank-lines)                                                                          | `radar-beta\naxis North[\one\n\n\nlast\"]\n"`                                                                                  |
 | sankey        | [指令（sankey.ja.md:493）](./docs/sankey.ja.md#指令)                                                                                      | `sankey\na,b,1 %%{init: {}}%%\nc,d,2%%{init: {}}%%\ne,f,3    %%{init: {}}%%\n`                                                 |
 | sankey        | [指令（sankey.ja.md:493）](./docs/sankey.ja.md#指令)                                                                                      | `sankey\n%%{init: {}}%%a,b,1\n`                                                                                                |
+| sequence      | [同じに描かれるキーワードの後のテキスト（compatibility.ja.md:1286）](./docs/compatibility.ja.md#同じに描かれるキーワードの後のテキスト)   | `sequenceDiagram\ntitle T   %% comment\nA->>B: x\n`                                                                            |
 | state         | [トークンの間の空白（state.ja.md:509）](./docs/state.ja.md#トークンの間の空白)                                                            | `stateDiagram-v2\nclassDef c fill:red\u2028,stroke:blue\n`                                                                     |
 | state         | [ノート（state.ja.md:945）](./docs/state.ja.md#ノート)                                                                                    | `stateDiagram-v2\nA\nnote left of A :  \nnote right of A : x %% c\nnote left of A : x %%{init: {}}%% y\nnote right of A:  é\n` |
 | state         | [別名（state.ja.md:1321）](./docs/state.ja.md#別名)                                                                                       | `stateDiagram-v2\nstate \d\" as A : x  %%{init: {}}%%  \n"`                                                                    |
@@ -756,82 +740,77 @@ sankey、state、timeline、treemap、usecase、vennである。
 
 ### D39. 値の外側にある行末の空白を取り除くか
 
-39件の形があり、図種はarchitecture、cynefin、er、error、eventmodeling、
+37件の形があり、図種はarchitecture、cynefin、er、error、eventmodeling、
 flowchart、gantt、info、ishikawa、journey、kanban、mindmap、quadrant、radar、
-railroad、requirement、sankey、sequence、state、timeline、usecase、venn、
-wardleyである。
+railroad、requirement、sankey、sequence、state、timeline、usecaseである。
 
-| 図種          | 規則の文書                                                                                                                   | 書かれた形                                                                                                     |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| architecture  | [Trailing whitespace（architecture.ja.md:1100）](./docs/architecture.ja.md#trailing-whitespace)                              | `architecture-beta \t\nservice a(cloud)[A] \t\njunction j\t\na:R -- L:j\t\nalign row a j \t\naccDescr {D}\t\n` |
-| architecture  | [Frontmatter yaml（architecture.ja.md:1128）](./docs/architecture.ja.md#frontmatter-yaml)                                    | `--- \t\ntitle: Net\n--- \t\narchitecture-beta\nservice a\n`                                                   |
-| cynefin       | [Component spacing（cynefin.ja.md:179）](./docs/cynefin.ja.md#component-spacing)                                             | `cynefin-beta\ncomplex-->clear%%{!eof-pad}%% \t`                                                               |
-| cynefin       | [Hidden boundaries（cynefin.ja.md:651）](./docs/cynefin.ja.md#hidden-boundaries)                                             | `cynefin-beta\ncomplex-->clear%%{!eof-pad}%% \t`                                                               |
-| cynefin       | [Markdown fences（cynefin.ja.md:1276）](./docs/cynefin.ja.md#markdown-fences)                                                | `cynefin-beta\nclear-->chaotic%%{!x}%% \t`                                                                     |
-| er            | [フロントマター YAML（er.ja.md:2235）](./docs/er.ja.md#フロントマター-yaml)                                                  | `---  \ntitle:   x\n---\t \nerDiagram\nA\n`                                                                    |
-| er            | [複数行の文（er.ja.md:2615）](./docs/er.ja.md#複数行の文)                                                                    | `erDiagram\ndirection  \n%%{init: {}}%%\nLR\n`                                                                 |
-| error         | [error 擬似図（compatibility.ja.md:6163）](./docs/compatibility.ja.md#error-擬似図)                                          | `error  \n`                                                                                                    |
-| error         | [error 擬似図（compatibility.ja.md:6163）](./docs/compatibility.ja.md#error-擬似図)                                          | `error  \n`                                                                                                    |
-| eventmodeling | [Hidden forms（eventmodeling.ja.md:840）](./docs/eventmodeling.ja.md#hidden-forms)                                           | `eventmodeling\n%%{{native}}%% \t\ntf 01 evt Alpha`                                                            |
-| eventmodeling | [Trailing whitespace（eventmodeling.ja.md:1180）](./docs/eventmodeling.ja.md#trailing-whitespace)                            | `eventmodeling \t\ntf 01 evt Alpha \t\nentity Shop.Buy \t`                                                     |
-| eventmodeling | [Frontmatter yaml（eventmodeling.ja.md:1272）](./docs/eventmodeling.ja.md#frontmatter-yaml)                                  | `--- \ntitle: Real\n--- \neventmodeling tf 01 evt Alpha`                                                       |
-| flowchart     | [フロントマター（compatibility.ja.md:6071）](./docs/compatibility.ja.md#フロントマター)                                      | `--- \ntitle: X\n--- \nflowchart TD\nA\n`                                                                      |
-| flowchart     | [フロントマターの YAML（flowchart.ja.md:3683）](./docs/flowchart.ja.md#フロントマターの-yaml)                                | `---  \ntitle:   x\n---\t \nflowchart LR\nA\n`                                                                 |
-| gantt         | [click 文（gantt.ja.md:1070）](./docs/gantt.ja.md#click-文)                                                                  | `gantt\na : id1, 1d\nclick id1 href \u\"   \nclick id1 call f()  \t\n"`                                        |
-| gantt         | [トークンの間の空白（gantt.ja.md:1509）](./docs/gantt.ja.md#トークンの間の空白)                                              | `gantt   \ntitle T\n`                                                                                          |
-| gantt         | [フロントマターの YAML（gantt.ja.md:1795）](./docs/gantt.ja.md#フロントマターの-yaml)                                        | `---\ntitle: T\n---  \ngantt\ntitle T\n`                                                                       |
-| info          | [Markdown fences（info.ja.md:837）](./docs/info.ja.md#markdown-fences)                                                       | `info\n%%{! ignored }%% \ntitle T`                                                                             |
-| ishikawa      | [Frontmatter YAML（ishikawa.ja.md:899）](./docs/ishikawa.ja.md#frontmatter-yaml)                                             | `---\ntitle:   T\n--- \t\n%% pre\n%%{wrap}%%\nishikawa\nR`                                                     |
-| journey       | [トークンの間の空白（journey.ja.md:866）](./docs/journey.ja.md#トークンの間の空白)                                           | `journey   \ntitle T\n`                                                                                        |
-| journey       | [フロントマターの YAML（journey.ja.md:1056）](./docs/journey.ja.md#フロントマターの-yaml)                                    | `---\ntitle: T\n---  \njourney\ntitle T\n`                                                                     |
-| kanban        | [フロントマターの YAML（kanban.ja.md:1262）](./docs/kanban.ja.md#フロントマターの-yaml)                                      | `---\ntitle: T\n---  \nkanban\n S\n`                                                                           |
-| mindmap       | [フロントマターの YAML（mindmap.ja.md:843）](./docs/mindmap.ja.md#フロントマターの-yaml)                                     | `---\ntitle: T\n---  \nmindmap\n  root\n`                                                                      |
-| quadrant      | [複数行の文（quadrant.ja.md:833）](./docs/quadrant.ja.md#複数行の文)                                                         | `quadrantChart\n\first\n raw\": [0.3, \n%% y\n0.6]\n"`                                                         |
-| radar         | [radar の原文の群と hidden 境界（compatibility.ja.md:6928）](./docs/compatibility.ja.md#radar-の原文の群と-hidden-境界)      | `radar-beta\naxis A---\nx\n--- \n`                                                                             |
-| radar         | [Hidden boundaries（radar.ja.md:819）](./docs/radar.ja.md#hidden-boundaries)                                                 | `radar-beta\naccDescr {Detail}---\nopaque EOF\n--- \t`                                                         |
-| railroad      | [frontmatter の YAML（railroad.ja.md:2722）](./docs/railroad.ja.md#frontmatter-の-yaml)                                      | `--- \ntitle: Guard\n--- \nrailroad-abnf-beta\nr=\padding guard\";"`                                           |
-| requirement   | [トークンの間の空白（requirement.ja.md:1438）](./docs/requirement.ja.md#トークンの間の空白)                                  | `requirementDiagram\nstyle r fill:red   \nclass r c   \nclassDef c fill:red \n`                                |
-| requirement   | [フロントマターの YAML（requirement.ja.md:1832）](./docs/requirement.ja.md#フロントマターの-yaml)                            | `---\ntitle: T\n---  \nrequirementDiagram\nrequirement r {\nid: 1\n}\n`                                        |
-| sankey        | [フロントマターの YAML（sankey.ja.md:543）](./docs/sankey.ja.md#フロントマターの-yaml)                                       | `---\ntitle: T\n---  \nsankey\na,b,1\n`                                                                        |
-| sequence      | [行区切り（sequence.ja.md:1431）](./docs/sequence.ja.md#行区切り)                                                            | `sequenceDiagram\nbox red\u2028  \nparticipant A\nend\n`                                                       |
-| state         | [ノート（state.ja.md:945）](./docs/state.ja.md#ノート)                                                                       | `stateDiagram-v2\nA\nnote right of A  \n\n\n  first\n second\n     \n\nend note\n`                             |
-| state         | [ノート（state.ja.md:945）](./docs/state.ja.md#ノート)                                                                       | `stateDiagram-v2\nA\nnote right of A %%{init: {}}%%  \n  first\nend note\n`                                    |
-| timeline      | [ヘッダーと方向（timeline.ja.md:798）](./docs/timeline.ja.md#ヘッダーと方向)                                                 | `timeline TD   \ntitle T\n`                                                                                    |
-| timeline      | [トークンの間の空白（timeline.ja.md:1301）](./docs/timeline.ja.md#トークンの間の空白)                                        | `timeline   \ntitle T\n`                                                                                       |
-| timeline      | [フロントマターの YAML（timeline.ja.md:1508）](./docs/timeline.ja.md#フロントマターの-yaml)                                  | `---\ntitle: T\n---  \ntimeline\ntitle T\n`                                                                    |
-| usecase       | [Frontmatter YAML（usecase.ja.md:1410）](./docs/usecase.ja.md#frontmatter-yaml)                                              | `---\nconfig: {usecase: {useMaxWidth: false}}\n---  \n%% comment\n%%{wrap}%%\nusecase-beta\nDocument`          |
-| venn          | [Semicolons at the end of a style statement（venn.ja.md:758）](./docs/venn.ja.md#semicolons-at-the-end-of-a-style-statement) | `venn-beta\nset A\nstyle A fill:#f00 ;\n`                                                                      |
-| wardley       | [Wardley の原文と必須の改行（compatibility.ja.md:7642）](./docs/compatibility.ja.md#wardley-の原文と必須の改行)              | `wardley-beta\ncomponent Alpha [0.1,0.2]%%{!}%% \n`                                                            |
+| 図種          | 規則の文書                                                                                                              | 書かれた形                                                                                                     |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| architecture  | [Trailing whitespace（architecture.ja.md:1100）](./docs/architecture.ja.md#trailing-whitespace)                         | `architecture-beta \t\nservice a(cloud)[A] \t\njunction j\t\na:R -- L:j\t\nalign row a j \t\naccDescr {D}\t\n` |
+| architecture  | [Frontmatter yaml（architecture.ja.md:1128）](./docs/architecture.ja.md#frontmatter-yaml)                               | `--- \t\ntitle: Net\n--- \t\narchitecture-beta\nservice a\n`                                                   |
+| cynefin       | [Component spacing（cynefin.ja.md:179）](./docs/cynefin.ja.md#component-spacing)                                        | `cynefin-beta\ncomplex-->clear%%{!eof-pad}%% \t`                                                               |
+| cynefin       | [Hidden boundaries（cynefin.ja.md:651）](./docs/cynefin.ja.md#hidden-boundaries)                                        | `cynefin-beta\ncomplex-->clear%%{!eof-pad}%% \t`                                                               |
+| cynefin       | [Markdown fences（cynefin.ja.md:1276）](./docs/cynefin.ja.md#markdown-fences)                                           | `cynefin-beta\nclear-->chaotic%%{!x}%% \t`                                                                     |
+| er            | [フロントマター YAML（er.ja.md:2235）](./docs/er.ja.md#フロントマター-yaml)                                             | `---  \ntitle:   x\n---\t \nerDiagram\nA\n`                                                                    |
+| er            | [複数行の文（er.ja.md:2615）](./docs/er.ja.md#複数行の文)                                                               | `erDiagram\ndirection  \n%%{init: {}}%%\nLR\n`                                                                 |
+| error         | [error 擬似図（compatibility.ja.md:6163）](./docs/compatibility.ja.md#error-擬似図)                                     | `error  \n`                                                                                                    |
+| error         | [error 擬似図（compatibility.ja.md:6163）](./docs/compatibility.ja.md#error-擬似図)                                     | `error  \n`                                                                                                    |
+| eventmodeling | [Hidden forms（eventmodeling.ja.md:840）](./docs/eventmodeling.ja.md#hidden-forms)                                      | `eventmodeling\n%%{{native}}%% \t\ntf 01 evt Alpha`                                                            |
+| eventmodeling | [Trailing whitespace（eventmodeling.ja.md:1180）](./docs/eventmodeling.ja.md#trailing-whitespace)                       | `eventmodeling \t\ntf 01 evt Alpha \t\nentity Shop.Buy \t`                                                     |
+| eventmodeling | [Frontmatter yaml（eventmodeling.ja.md:1272）](./docs/eventmodeling.ja.md#frontmatter-yaml)                             | `--- \ntitle: Real\n--- \neventmodeling tf 01 evt Alpha`                                                       |
+| flowchart     | [フロントマター（compatibility.ja.md:6071）](./docs/compatibility.ja.md#フロントマター)                                 | `--- \ntitle: X\n--- \nflowchart TD\nA\n`                                                                      |
+| flowchart     | [フロントマターの YAML（flowchart.ja.md:3683）](./docs/flowchart.ja.md#フロントマターの-yaml)                           | `---  \ntitle:   x\n---\t \nflowchart LR\nA\n`                                                                 |
+| gantt         | [click 文（gantt.ja.md:1070）](./docs/gantt.ja.md#click-文)                                                             | `gantt\na : id1, 1d\nclick id1 href \u\"   \nclick id1 call f()  \t\n"`                                        |
+| gantt         | [トークンの間の空白（gantt.ja.md:1509）](./docs/gantt.ja.md#トークンの間の空白)                                         | `gantt   \ntitle T\n`                                                                                          |
+| gantt         | [フロントマターの YAML（gantt.ja.md:1795）](./docs/gantt.ja.md#フロントマターの-yaml)                                   | `---\ntitle: T\n---  \ngantt\ntitle T\n`                                                                       |
+| info          | [Markdown fences（info.ja.md:837）](./docs/info.ja.md#markdown-fences)                                                  | `info\n%%{! ignored }%% \ntitle T`                                                                             |
+| ishikawa      | [Frontmatter YAML（ishikawa.ja.md:899）](./docs/ishikawa.ja.md#frontmatter-yaml)                                        | `---\ntitle:   T\n--- \t\n%% pre\n%%{wrap}%%\nishikawa\nR`                                                     |
+| journey       | [トークンの間の空白（journey.ja.md:866）](./docs/journey.ja.md#トークンの間の空白)                                      | `journey   \ntitle T\n`                                                                                        |
+| journey       | [フロントマターの YAML（journey.ja.md:1056）](./docs/journey.ja.md#フロントマターの-yaml)                               | `---\ntitle: T\n---  \njourney\ntitle T\n`                                                                     |
+| kanban        | [フロントマターの YAML（kanban.ja.md:1262）](./docs/kanban.ja.md#フロントマターの-yaml)                                 | `---\ntitle: T\n---  \nkanban\n S\n`                                                                           |
+| mindmap       | [フロントマターの YAML（mindmap.ja.md:843）](./docs/mindmap.ja.md#フロントマターの-yaml)                                | `---\ntitle: T\n---  \nmindmap\n  root\n`                                                                      |
+| quadrant      | [複数行の文（quadrant.ja.md:833）](./docs/quadrant.ja.md#複数行の文)                                                    | `quadrantChart\n\first\n raw\": [0.3, \n%% y\n0.6]\n"`                                                         |
+| radar         | [radar の原文の群と hidden 境界（compatibility.ja.md:6928）](./docs/compatibility.ja.md#radar-の原文の群と-hidden-境界) | `radar-beta\naxis A---\nx\n--- \n`                                                                             |
+| radar         | [Hidden boundaries（radar.ja.md:819）](./docs/radar.ja.md#hidden-boundaries)                                            | `radar-beta\naccDescr {Detail}---\nopaque EOF\n--- \t`                                                         |
+| railroad      | [frontmatter の YAML（railroad.ja.md:2722）](./docs/railroad.ja.md#frontmatter-の-yaml)                                 | `--- \ntitle: Guard\n--- \nrailroad-abnf-beta\nr=\padding guard\";"`                                           |
+| requirement   | [トークンの間の空白（requirement.ja.md:1438）](./docs/requirement.ja.md#トークンの間の空白)                             | `requirementDiagram\nstyle r fill:red   \nclass r c   \nclassDef c fill:red \n`                                |
+| requirement   | [フロントマターの YAML（requirement.ja.md:1832）](./docs/requirement.ja.md#フロントマターの-yaml)                       | `---\ntitle: T\n---  \nrequirementDiagram\nrequirement r {\nid: 1\n}\n`                                        |
+| sankey        | [フロントマターの YAML（sankey.ja.md:543）](./docs/sankey.ja.md#フロントマターの-yaml)                                  | `---\ntitle: T\n---  \nsankey\na,b,1\n`                                                                        |
+| sequence      | [行区切り（sequence.ja.md:1431）](./docs/sequence.ja.md#行区切り)                                                       | `sequenceDiagram\nbox red\u2028  \nparticipant A\nend\n`                                                       |
+| state         | [ノート（state.ja.md:945）](./docs/state.ja.md#ノート)                                                                  | `stateDiagram-v2\nA\nnote right of A  \n\n\n  first\n second\n     \n\nend note\n`                             |
+| state         | [ノート（state.ja.md:945）](./docs/state.ja.md#ノート)                                                                  | `stateDiagram-v2\nA\nnote right of A %%{init: {}}%%  \n  first\nend note\n`                                    |
+| timeline      | [ヘッダーと方向（timeline.ja.md:798）](./docs/timeline.ja.md#ヘッダーと方向)                                            | `timeline TD   \ntitle T\n`                                                                                    |
+| timeline      | [トークンの間の空白（timeline.ja.md:1301）](./docs/timeline.ja.md#トークンの間の空白)                                   | `timeline   \ntitle T\n`                                                                                       |
+| timeline      | [フロントマターの YAML（timeline.ja.md:1508）](./docs/timeline.ja.md#フロントマターの-yaml)                             | `---\ntitle: T\n---  \ntimeline\ntitle T\n`                                                                    |
+| usecase       | [Frontmatter YAML（usecase.ja.md:1410）](./docs/usecase.ja.md#frontmatter-yaml)                                         | `---\nconfig: {usecase: {useMaxWidth: false}}\n---  \n%% comment\n%%{wrap}%%\nusecase-beta\nDocument`          |
 
-venn.md:725では、セミコロンを除いた後の値の外側の行末空白を扱い、
-除くかどうかは[D17][semicolons]で決める。
+### D40. directive の本文を書かれたまま印字するか
 
-### D40. 閉じていないディレクティブの内部に末尾の改行を足すか
+19件の形があり、図種はagentflow、architecture、c4、cynefin、eventmodeling、
+gitgraph、info、ishikawa、journey、packet、pie、radar、railroad、timeline、
+treemap、usecase、vennである。
 
-18件の形があり、図種はagentflow、architecture、c4、cynefin、eventmodeling、
-gitgraph、info、ishikawa、packet、pie、radar、railroad、treemap、treeview、
-usecase、vennである。
-
-| 図種          | 規則の文書                                                                                    | 書かれた形                                     |
-| ------------- | --------------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| agentflow     | [Final newline（agentflow.ja.md:1767）](./docs/agentflow.ja.md#final-newline)                 | `agentflow-beta TB\nA\n%%{open`                |
-| architecture  | [Final newline（architecture.ja.md:1327）](./docs/architecture.ja.md#final-newline)           | `architecture-beta\nservice a\n%%{init: {}`    |
-| c4            | [末尾の改行（c4.ja.md:2476）](./docs/c4.ja.md#末尾の改行)                                     | `C4Context\nPerson(a,\A\")\n%%{init: {oops"`   |
-| cynefin       | [Final newline（cynefin.ja.md:1217）](./docs/cynefin.ja.md#final-newline)                     | `cynefin-beta\n%%{init: true`                  |
-| eventmodeling | [Global directives（eventmodeling.ja.md:1025）](./docs/eventmodeling.ja.md#global-directives) | `eventmodeling tf 01 evt Alpha %%{init: {oops` |
-| gitgraph      | [Final newline（gitgraph.ja.md:941）](./docs/gitgraph.ja.md#final-newline)                    | `gitGraph\n%%{init: {\ncommit id:\lost\""`     |
-| info          | [Final newline（info.ja.md:739）](./docs/info.ja.md#final-newline)                            | `info %%{wrap: !tail`                          |
-| ishikawa      | [Final newline（ishikawa.ja.md:965）](./docs/ishikawa.ja.md#final-newline)                    | `ishikawa\nR\n%%{init: {}`                     |
-| packet        | [Final newline（packet.ja.md:920）](./docs/packet.ja.md#final-newline)                        | `packet\n0:\A\"\n%%{init:"`                    |
-| pie           | [Final newline（pie.ja.md:837）](./docs/pie.ja.md#final-newline)                              | `pie\n\End\":2%%{init: {}"`                    |
-| radar         | [Global directives（radar.ja.md:692）](./docs/radar.ja.md#global-directives)                  | `radar-beta\naxis North%%{init: {`             |
-| railroad      | [末尾改行（railroad.ja.md:2963）](./docs/railroad.ja.md#末尾改行)                             | `railroad-beta\n%%{unfinished`                 |
-| treemap       | [Final newline（treemap.ja.md:1384）](./docs/treemap.ja.md#final-newline)                     | `treemap\n\OpenDirective\":2%%{wrap"`          |
-| treeview      | [Final newline（treeview.ja.md:2981）](./docs/treeview.ja.md#final-newline)                   | `treeView-beta\n\R\"%%{unfinished"`            |
-| usecase       | [Directives（usecase.ja.md:1246）](./docs/usecase.ja.md#directives)                           | `usecase-beta\nA\n%%{init: {}`                 |
-| usecase       | [Final newline（usecase.ja.md:1451）](./docs/usecase.ja.md#final-newline)                     | `usecase-beta\nA%%{init: {}`                   |
-| venn          | [Directives（venn.ja.md:977）](./docs/venn.ja.md#directives)                                  | `venn-beta\nset A\n%%{init: {}`                |
-| venn          | [Final newline（venn.ja.md:1293）](./docs/venn.ja.md#final-newline)                           | `venn-beta\nset A\n%%{init: true`              |
+| 図種          | 規則の文書                                                                                    | 書かれた形                                                                                      |
+| ------------- | --------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| agentflow     | [Final newline（agentflow.ja.md:1767）](./docs/agentflow.ja.md#final-newline)                 | `agentflow-beta TB\nA\n%%{open`                                                                 |
+| architecture  | [Final newline（architecture.ja.md:1327）](./docs/architecture.ja.md#final-newline)           | `architecture-beta\nservice a\n%%{init: {}`                                                     |
+| c4            | [末尾の改行（c4.ja.md:2476）](./docs/c4.ja.md#末尾の改行)                                     | `C4Context\nPerson(a,\A\")\n%%{init: {oops"`                                                    |
+| cynefin       | [Final newline（cynefin.ja.md:1217）](./docs/cynefin.ja.md#final-newline)                     | `cynefin-beta\n%%{init: true`                                                                   |
+| eventmodeling | [Global directives（eventmodeling.ja.md:1025）](./docs/eventmodeling.ja.md#global-directives) | `eventmodeling tf 01 evt Alpha %%{init: {oops`                                                  |
+| gitgraph      | [Final newline（gitgraph.ja.md:941）](./docs/gitgraph.ja.md#final-newline)                    | `gitGraph\n%%{init: {\ncommit id:\lost\""`                                                      |
+| info          | [Final newline（info.ja.md:739）](./docs/info.ja.md#final-newline)                            | `info %%{wrap: !tail`                                                                           |
+| ishikawa      | [Final newline（ishikawa.ja.md:965）](./docs/ishikawa.ja.md#final-newline)                    | `ishikawa\nR\n%%{init: {}`                                                                      |
+| journey       | [複数行の文（journey.ja.md:755）](./docs/journey.ja.md#複数行の文)                            | `journey\nsection S\naccTitle:\n%%{init: {}}%% T\naccDescr\n%% colon\n:\n%% text\nD\nA:5:Me\n`  |
+| packet        | [Final newline（packet.ja.md:920）](./docs/packet.ja.md#final-newline)                        | `packet\n0:\A\"\n%%{init:"`                                                                     |
+| pie           | [Final newline（pie.ja.md:837）](./docs/pie.ja.md#final-newline)                              | `pie\n\End\":2%%{init: {}"`                                                                     |
+| radar         | [Global directives（radar.ja.md:692）](./docs/radar.ja.md#global-directives)                  | `radar-beta\naxis North%%{init: {`                                                              |
+| railroad      | [末尾改行（railroad.ja.md:2963）](./docs/railroad.ja.md#末尾改行)                             | `railroad-beta\n%%{unfinished`                                                                  |
+| timeline      | [複数行の文（timeline.ja.md:1126）](./docs/timeline.ja.md#複数行の文)                         | `timeline\nsection S\naccTitle:\n%% title\nT\naccDescr\n%% colon\n:\n%%{init: {}}%% D\na : b\n` |
+| treemap       | [Final newline（treemap.ja.md:1384）](./docs/treemap.ja.md#final-newline)                     | `treemap\n\OpenDirective\":2%%{wrap"`                                                           |
+| usecase       | [Directives（usecase.ja.md:1246）](./docs/usecase.ja.md#directives)                           | `usecase-beta\nA\n%%{init: {}`                                                                  |
+| usecase       | [Final newline（usecase.ja.md:1451）](./docs/usecase.ja.md#final-newline)                     | `usecase-beta\nA%%{init: {}`                                                                    |
+| venn          | [Directives（venn.ja.md:977）](./docs/venn.ja.md#directives)                                  | `venn-beta\nset A\n%%{init: {}`                                                                 |
+| venn          | [Final newline（venn.ja.md:1293）](./docs/venn.ja.md#final-newline)                           | `venn-beta\nset A\n%%{init: true`                                                               |
 
 ### D41. 末尾の改行と空白の隙間をどう印字するか
 
@@ -868,39 +847,37 @@ wardleyである。
 
 ### D44. 行内コメントとの接触か区切りの空白1つを残すか
 
-27件の形があり、図種はagentflow、architecture、cynefin、eventmodeling、gantt、
+25件の形があり、図種はagentflow、architecture、cynefin、eventmodeling、
 gitgraph、info、ishikawa、kanban、mindmap、packet、pie、radar、railroad、
-requirement、sequence、state、wardleyである。
+requirement、state、wardleyである。
 
-| 図種          | 規則の文書                                                                                                                              | 書かれた形                                                                                                                                        |
-| ------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| agentflow     | [Comments（agentflow.ja.md:985）](./docs/agentflow.ja.md#comments)                                                                      | `agentflow-beta TB\nA;%% c\nB`                                                                                                                    |
-| architecture  | [Comments（architecture.ja.md:816）](./docs/architecture.ja.md#comments)                                                                | `%% lead\narchitecture-beta\n%% alone\nservice a%%touch\nservice b   %% separated  \n`                                                            |
-| architecture  | [Comments（architecture.ja.md:816）](./docs/architecture.ja.md#comments)                                                                | `%% lead\narchitecture-beta\n%% alone\nservice a%%touch\nservice b   %% separated  \n`                                                            |
-| cynefin       | [Comments（cynefin.ja.md:854）](./docs/cynefin.ja.md#comments)                                                                          | `cynefin-beta\ncomplex \Separated\"   %% note  \n\"NextSeparated\""`                                                                              |
-| cynefin       | [Comments（cynefin.ja.md:854）](./docs/cynefin.ja.md#comments)                                                                          | `cynefin-beta\ncomplex \Attached\"%% item note\n\"NextAttached\""`                                                                                |
-| eventmodeling | [Source references（eventmodeling.ja.md:216）](./docs/eventmodeling.ja.md#source-references)                                            | `eventmodeling tf 01 evt Alpha/*a*/->>/*b*/02`                                                                                                    |
-| eventmodeling | [Type tags（eventmodeling.ja.md:267）](./docs/eventmodeling.ja.md#type-tags)                                                            | ``eventmodeling tf 01 evt Alpha `/*a*/json/*b*/`/*c*/{x}``                                                                                        |
-| eventmodeling | [Comments（eventmodeling.ja.md:912）](./docs/eventmodeling.ja.md#comments)                                                              | `eventmodeling tf/*a*/01 evt /*b*/Alpha // tail \t\nrf 02 cmd Beta`                                                                               |
-| gantt         | [同じに描かれるキーワードの後のテキスト（compatibility.ja.md:1286）](./docs/compatibility.ja.md#同じに描かれるキーワードの後のテキスト) | `gantt\ntitle Plan   %% comment\nsection S\nA: 1d\n`                                                                                              |
-| gitgraph      | [Comments（gitgraph.ja.md:596）](./docs/gitgraph.ja.md#comments)                                                                        | `%% before\ngitGraph %% header\ncommit%% glued\ncommit  %% apart\n    %% last\n`                                                                  |
-| info          | [Title（info.ja.md:99）](./docs/info.ja.md#title)                                                                                       | `info\ntitle T%% c`                                                                                                                               |
-| info          | [Comments（info.ja.md:395）](./docs/info.ja.md#comments)                                                                                | `info%% heading\nshowInfo   %% flag \t\ntitle Topic%% text\naccDescr {D}  %%% triple\n`                                                           |
-| ishikawa      | [Comments（ishikawa.ja.md:305）](./docs/ishikawa.ja.md#comments)                                                                        | `ishikawa   %% note\nR`                                                                                                                           |
-| ishikawa      | [Comments（ishikawa.ja.md:305）](./docs/ishikawa.ja.md#comments)                                                                        | `ishikawa%% note\nR`                                                                                                                              |
-| kanban        | [コメント（kanban.ja.md:819）](./docs/kanban.ja.md#コメント)                                                                            | `kanban\n S[x]   %% c\n   A[y]%% d\n`                                                                                                             |
-| kanban        | [コメント（kanban.ja.md:819）](./docs/kanban.ja.md#コメント)                                                                            | `kanban\n S[x]   %% c\n   A[y]%% d\n`                                                                                                             |
-| kanban        | [コメント（kanban.ja.md:819）](./docs/kanban.ja.md#コメント)                                                                            | `kanban\n S[x]   %% c\n   A[y]%% d\n`                                                                                                             |
-| mindmap       | [コメント（mindmap.ja.md:657）](./docs/mindmap.ja.md#コメント)                                                                          | `mindmap\n  root\n    a[x] %% c\n    b[y]%% d\n    c((z))   %%  e\n`                                                                              |
-| packet        | [Comments（packet.ja.md:471）](./docs/packet.ja.md#comments)                                                                            | `    %% before\npacket%% header\n0:\Touch\"%%inline\n1:\"Apart\"   %% separated  \n    %%%\n"`                                                    |
-| pie           | [Comments（pie.ja.md:483）](./docs/pie.ja.md#comments)                                                                                  | `pie\n\A\":1%% c"`                                                                                                                                |
-| radar         | [Comments（radar.ja.md:654）](./docs/radar.ja.md#comments)                                                                              | `radar-beta\naxis North%%touch\ncurve trial{4}   %% separated  \n`                                                                                |
-| railroad      | [コメント（railroad.ja.md:1339）](./docs/railroad.ja.md#コメント)                                                                       | `%% leading note\nrailroad-ebnf-beta\n(* before rule *)\nr=\a\" (* middle *) , /* other */ \"last\";%%tail"`                                      |
-| requirement   | [コメント（requirement.ja.md:1544）](./docs/requirement.ja.md#コメント)                                                                 | `requirementDiagram   %c\nrequirement r {\n}\n`                                                                                                   |
-| sequence      | [同じに描かれるキーワードの後のテキスト（compatibility.ja.md:1286）](./docs/compatibility.ja.md#同じに描かれるキーワードの後のテキスト) | `sequenceDiagram\ntitle T   %% comment\nA->>B: x\n`                                                                                               |
-| state         | [コメント（state.ja.md:1419）](./docs/state.ja.md#コメント)                                                                             | `stateDiagram-v2\n%% a comment line\nA --> B %% after a transition\nA --> C%%touching\n# a hash comment\nstate D {\n        %% in a body\nE\n}\n` |
-| wardley       | [コメント（wardley.ja.md:908）](./docs/wardley.ja.md#コメント)                                                                          | `wardley-beta\ncomponent InlineSpace[0.3,0.6] \t%% tail`                                                                                          |
-| wardley       | [コメント（wardley.ja.md:908）](./docs/wardley.ja.md#コメント)                                                                          | `wardley-beta%% heading\ncomponent Inline[0.3,0.6]%% tail \t`                                                                                     |
+| 図種          | 規則の文書                                                                                   | 書かれた形                                                                                                                                        |
+| ------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| agentflow     | [Comments（agentflow.ja.md:985）](./docs/agentflow.ja.md#comments)                           | `agentflow-beta TB\nA;%% c\nB`                                                                                                                    |
+| architecture  | [Comments（architecture.ja.md:816）](./docs/architecture.ja.md#comments)                     | `%% lead\narchitecture-beta\n%% alone\nservice a%%touch\nservice b   %% separated  \n`                                                            |
+| architecture  | [Comments（architecture.ja.md:816）](./docs/architecture.ja.md#comments)                     | `%% lead\narchitecture-beta\n%% alone\nservice a%%touch\nservice b   %% separated  \n`                                                            |
+| cynefin       | [Comments（cynefin.ja.md:854）](./docs/cynefin.ja.md#comments)                               | `cynefin-beta\ncomplex \Separated\"   %% note  \n\"NextSeparated\""`                                                                              |
+| cynefin       | [Comments（cynefin.ja.md:854）](./docs/cynefin.ja.md#comments)                               | `cynefin-beta\ncomplex \Attached\"%% item note\n\"NextAttached\""`                                                                                |
+| eventmodeling | [Source references（eventmodeling.ja.md:216）](./docs/eventmodeling.ja.md#source-references) | `eventmodeling tf 01 evt Alpha/*a*/->>/*b*/02`                                                                                                    |
+| eventmodeling | [Type tags（eventmodeling.ja.md:267）](./docs/eventmodeling.ja.md#type-tags)                 | ``eventmodeling tf 01 evt Alpha `/*a*/json/*b*/`/*c*/{x}``                                                                                        |
+| eventmodeling | [Comments（eventmodeling.ja.md:912）](./docs/eventmodeling.ja.md#comments)                   | `eventmodeling tf/*a*/01 evt /*b*/Alpha // tail \t\nrf 02 cmd Beta`                                                                               |
+| gitgraph      | [Comments（gitgraph.ja.md:596）](./docs/gitgraph.ja.md#comments)                             | `%% before\ngitGraph %% header\ncommit%% glued\ncommit  %% apart\n    %% last\n`                                                                  |
+| info          | [Title（info.ja.md:99）](./docs/info.ja.md#title)                                            | `info\ntitle T%% c`                                                                                                                               |
+| info          | [Comments（info.ja.md:395）](./docs/info.ja.md#comments)                                     | `info%% heading\nshowInfo   %% flag \t\ntitle Topic%% text\naccDescr {D}  %%% triple\n`                                                           |
+| ishikawa      | [Comments（ishikawa.ja.md:305）](./docs/ishikawa.ja.md#comments)                             | `ishikawa   %% note\nR`                                                                                                                           |
+| ishikawa      | [Comments（ishikawa.ja.md:305）](./docs/ishikawa.ja.md#comments)                             | `ishikawa%% note\nR`                                                                                                                              |
+| kanban        | [コメント（kanban.ja.md:819）](./docs/kanban.ja.md#コメント)                                 | `kanban\n S[x]   %% c\n   A[y]%% d\n`                                                                                                             |
+| kanban        | [コメント（kanban.ja.md:819）](./docs/kanban.ja.md#コメント)                                 | `kanban\n S[x]   %% c\n   A[y]%% d\n`                                                                                                             |
+| kanban        | [コメント（kanban.ja.md:819）](./docs/kanban.ja.md#コメント)                                 | `kanban\n S[x]   %% c\n   A[y]%% d\n`                                                                                                             |
+| mindmap       | [コメント（mindmap.ja.md:657）](./docs/mindmap.ja.md#コメント)                               | `mindmap\n  root\n    a[x] %% c\n    b[y]%% d\n    c((z))   %%  e\n`                                                                              |
+| packet        | [Comments（packet.ja.md:471）](./docs/packet.ja.md#comments)                                 | `    %% before\npacket%% header\n0:\Touch\"%%inline\n1:\"Apart\"   %% separated  \n    %%%\n"`                                                    |
+| pie           | [Comments（pie.ja.md:483）](./docs/pie.ja.md#comments)                                       | `pie\n\A\":1%% c"`                                                                                                                                |
+| radar         | [Comments（radar.ja.md:654）](./docs/radar.ja.md#comments)                                   | `radar-beta\naxis North%%touch\ncurve trial{4}   %% separated  \n`                                                                                |
+| railroad      | [コメント（railroad.ja.md:1339）](./docs/railroad.ja.md#コメント)                            | `%% leading note\nrailroad-ebnf-beta\n(* before rule *)\nr=\a\" (* middle *) , /* other */ \"last\";%%tail"`                                      |
+| requirement   | [コメント（requirement.ja.md:1544）](./docs/requirement.ja.md#コメント)                      | `requirementDiagram   %c\nrequirement r {\n}\n`                                                                                                   |
+| state         | [コメント（state.ja.md:1419）](./docs/state.ja.md#コメント)                                  | `stateDiagram-v2\n%% a comment line\nA --> B %% after a transition\nA --> C%%touching\n# a hash comment\nstate D {\n        %% in a body\nE\n}\n` |
+| wardley       | [コメント（wardley.ja.md:908）](./docs/wardley.ja.md#コメント)                               | `wardley-beta\ncomponent InlineSpace[0.3,0.6] \t%% tail`                                                                                          |
+| wardley       | [コメント（wardley.ja.md:908）](./docs/wardley.ja.md#コメント)                               | `wardley-beta%% heading\ncomponent Inline[0.3,0.6]%% tail \t`                                                                                     |
 
 ### D45. コメントを同じ行か別の行か、書かれた行に残すか
 
@@ -1012,8 +989,8 @@ requirement、sequence、state、timeline、wardleyである。
 
 ### D53. コメントや隠れた形を元の隙間と順序に残すか
 
-19件の形があり、図種はblock、eventmodeling、flowchart、gitgraph、journey、
-mindmap、pie、quadrant、railroad、timeline、treeview、xychartである。
+18件の形があり、図種はblock、eventmodeling、flowchart、gitgraph、journey、
+mindmap、pie、quadrant、railroad、timeline、xychartである。
 
 | 図種          | 規則の文書                                                                                      | 書かれた形                                                                                                                                                                                        |
 | ------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -1034,14 +1011,13 @@ mindmap、pie、quadrant、railroad、timeline、treeview、xychartである。
 | railroad      | [コメント（railroad.ja.md:1339）](./docs/railroad.ja.md#コメント)                               | `railroad-beta\nr=terminal\n/* constructor */(\a\"\n/* closer */);\n"`                                                                                                                            |
 | railroad      | [共有 directive（railroad.ja.md:1499）](./docs/railroad.ja.md#共有-directive)                   | `railroad-beta\nr=sequence%%{init: {}}%%(\nterminal%%{init: {}}%%(%%{init: {}}%%\a\"%%{init: {}}%%)%%{init: {}}%%,\n%%{init: {}}%%nonterminal(\"b\")\n);\n"`                                      |
 | timeline      | [指令（timeline.ja.md:1430）](./docs/timeline.ja.md#指令)                                       | `timeline\na %%{init: {}}%%: e\nb:%%{init: {}}%% e\nc : e%%{init: {}}%%: f\n`                                                                                                                     |
-| treeview      | [Statements one per line（treeview.ja.md:969）](./docs/treeview.ja.md#statements-one-per-line)  | `treeView-beta\nroot\n├── \a\"%%{x}%%\"b\"\n%% between\n└── c\n"`                                                                                                                                 |
 | xychart       | [指令（xychart.ja.md:1100）](./docs/xychart.ja.md#指令)                                         | `xychart\nline %%{init: {}}%% [1]\nx-axis%%{init: {}}%%[a]\n`                                                                                                                                     |
 
 ### D54. 隠れた形を同じ隙間の中で元の行に残すか
 
-33件の形があり、図種はagentflow、class、er、eventmodeling、flowchart、gitgraph、
+32件の形があり、図種はagentflow、class、er、eventmodeling、flowchart、gitgraph、
 info、ishikawa、journey、packet、quadrant、radar、railroad、requirement、state、
-treeview、usecaseである。
+usecaseである。
 
 | 図種          | 規則の文書                                                                                      | 書かれた形                                                                                                                                                                                            |
 | ------------- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -1076,17 +1052,7 @@ treeview、usecaseである。
 | requirement   | [複数行の文（requirement.ja.md:1333）](./docs/requirement.ja.md#複数行の文)                     | `requirementDiagram\nrequirement \n%%{init: {}}%%\ncheckout {\nid: 1\n}\n`                                                                                                                            |
 | state         | [複合状態（state.ja.md:67）](./docs/state.ja.md#複合状態)                                       | `stateDiagram-v2\nstate D %%{init: {}}%%\n{\nE\n}\n`                                                                                                                                                  |
 | state         | [複合状態（state.ja.md:67）](./docs/state.ja.md#複合状態)                                       | `stateDiagram-v2\nstate X { %%{init: {}}%% }\nstate Y {\n%% c\n}\n`                                                                                                                                   |
-| treeview      | [Statements one per line（treeview.ja.md:969）](./docs/treeview.ja.md#statements-one-per-line)  | `treeView-beta\n\a\"%%{x}%%\"b\"\n"`                                                                                                                                                                  |
 | usecase       | [Directives（usecase.ja.md:1246）](./docs/usecase.ja.md#directives)                             | `usecase-beta  %%{init: {}}%%\nA`                                                                                                                                                                     |
-
-### D55. ディレクティブ本文内の空白をそろえるか
-
-2件の形があり、図種はjourney、timelineである。
-
-| 図種     | 規則の文書                                                            | 書かれた形                                                                                      |
-| -------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| journey  | [複数行の文（journey.ja.md:755）](./docs/journey.ja.md#複数行の文)    | `journey\nsection S\naccTitle:\n%%{init: {}}%% T\naccDescr\n%% colon\n:\n%% text\nD\nA:5:Me\n`  |
-| timeline | [複数行の文（timeline.ja.md:1126）](./docs/timeline.ja.md#複数行の文) | `timeline\nsection S\naccTitle:\n%% title\nT\naccDescr\n%% colon\n:\n%%{init: {}}%% D\na : b\n` |
 
 ### D56. tabWidth がゼロでも YAML に正の最小字下げ幅を使うか
 
@@ -1108,7 +1074,7 @@ treeview、usecaseである。
 | cynefin   | [Frontmatter yaml（cynefin.ja.md:1108）](./docs/cynefin.ja.md#frontmatter-yaml)               | `  ---\n  title: 'IndentedYaml'\n  ---\ncynefin-beta\nclear \IndentedBody\""` |
 | flowchart | [フロントマターの YAML（flowchart.ja.md:3683）](./docs/flowchart.ja.md#フロントマターの-yaml) | `  ---\n  title: \|\n      ---\n  ---\nflowchart LR\nA\n`                     |
 
-### D58. コロンをキーワードに接触させ、後を一つの空白にするか
+### D58. アクセシビリティのコロンをキーワードに密着させるか
 
 2件の形があり、図種はradar、wardleyである。
 
@@ -1119,31 +1085,117 @@ treeview、usecaseである。
 
 ### D59. コンマの前を詰め、後を一つの空白にするか
 
-2件の形があり、図種はrailroadである。
+5件の形があり、図種はradar、railroad、wardleyである。
 
-| 図種     | 規則の文書                                                             | 書かれた形                                                                                                                                                                                                       |
-| -------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| railroad | [EBNF の並び（railroad.ja.md:375）](./docs/railroad.ja.md#ebnf-の並び) | `railroad-ebnf-beta\nr=first ,\tsecond;`                                                                                                                                                                         |
-| railroad | [呼出し（railroad.ja.md:586）](./docs/railroad.ja.md#呼出し)           | `railroad-beta\nr=sequence ( terminal ( \first\" ) , choice ( special ( \"note\" ),nonterminal ( \"r\" ) ) , optional ( terminal ( \"\" ) ) , oneOrMore (terminal(\"many\")),zeroOrMore (terminal(\"any\")) );"` |
+| 図種     | 規則の文書                                                                                                      | 書かれた形                                                                                                                                                                                                       |
+| -------- | --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| radar    | [Options（radar.ja.md:395）](./docs/radar.ja.md#options)                                                        | `radar-beta\nshowLegend\t false,ticks\t7,max  8,min\t2,graticule\tpolygon\n`                                                                                                                                     |
+| railroad | [EBNF の並び（railroad.ja.md:375）](./docs/railroad.ja.md#ebnf-の並び)                                          | `railroad-ebnf-beta\nr=first ,\tsecond;`                                                                                                                                                                         |
+| railroad | [呼出し（railroad.ja.md:586）](./docs/railroad.ja.md#呼出し)                                                    | `railroad-beta\nr=sequence ( terminal ( \first\" ) , choice ( special ( \"note\" ),nonterminal ( \"r\" ) ) , optional ( terminal ( \"\" ) ) , oneOrMore (terminal(\"many\")),zeroOrMore (terminal(\"any\")) );"` |
+| wardley  | [Wardley の原文と必須の改行（compatibility.ja.md:7642）](./docs/compatibility.ja.md#wardley-の原文と必須の改行) | `wardley-beta\ncomponent \title\"[0.3,0.6]"`                                                                                                                                                                     |
+| wardley  | [装飾（wardley.ja.md:312）](./docs/wardley.ja.md#装飾)                                                          | `wardley-beta\ncomponent Decor[0.3,0.6]label[1,-2]( build )( inertia )`                                                                                                                                          |
 
-railroad.md:572の出力全体の比較では、呼出し括弧の隙間も変わるので、
-そちらは[D60][call-gaps]で決める。
+### D60. 呼出し名を開き括弧に密着させるか
 
-### D60. 呼出し名を括弧に接し、括弧の内側の余白をなくすか
+1件の形があり、図種はrailroadである。
+
+| 図種     | 規則の文書                                                   | 書かれた形                                                                                                                                                                                                       |
+| -------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| railroad | [呼出し（railroad.ja.md:586）](./docs/railroad.ja.md#呼出し) | `railroad-beta\nr=sequence ( terminal ( \first\" ) , choice ( special ( \"note\" ),nonterminal ( \"r\" ) ) , optional ( terminal ( \"\" ) ) , oneOrMore (terminal(\"many\")),zeroOrMore (terminal(\"any\")) );"` |
+
+### D61. 代入演算子の両側を1空白にするか
+
+4件の形があり、図種はrailroadである。
+
+| 図種     | 規則の文書                                                                              | 書かれた形                                                                                                                                                                                                       |
+| -------- | --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| railroad | [代入（railroad.ja.md:262）](./docs/railroad.ja.md#代入)                                | `railroad-beta\nlongName\t=\tterminal(\assignment\");s=terminal(\"short\");"`                                                                                                                                    |
+| railroad | [EBNF の並び（railroad.ja.md:375）](./docs/railroad.ja.md#ebnf-の並び)                  | `railroad-ebnf-beta\nr=first ,\tsecond;`                                                                                                                                                                         |
+| railroad | [呼出し（railroad.ja.md:586）](./docs/railroad.ja.md#呼出し)                            | `railroad-beta\nr=sequence ( terminal ( \first\" ) , choice ( special ( \"note\" ),nonterminal ( \"r\" ) ) , optional ( terminal ( \"\" ) ) , oneOrMore (terminal(\"many\")),zeroOrMore (terminal(\"any\")) );"` |
+| railroad | [frontmatter の YAML（railroad.ja.md:2722）](./docs/railroad.ja.md#frontmatter-の-yaml) | `---\nconfig:\n  railroad:\n    fontSize: 19\n---\nrailroad-beta\nr=terminal(\zero yaml\");"`                                                                                                                    |
+
+### D62. 括弧の内側の余白をなくすか
+
+3件の形があり、図種はrailroad、wardleyである。
+
+| 図種     | 規則の文書                                                   | 書かれた形                                                                                                                                                                                                       |
+| -------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| railroad | [呼出し（railroad.ja.md:586）](./docs/railroad.ja.md#呼出し) | `railroad-beta\nr=sequence ( terminal ( \first\" ) , choice ( special ( \"note\" ),nonterminal ( \"r\" ) ) , optional ( terminal ( \"\" ) ) , oneOrMore (terminal(\"many\")),zeroOrMore (terminal(\"any\")) );"` |
+| railroad | [長い行（railroad.ja.md:767）](./docs/railroad.ja.md#長い行) | `railroad-beta\n r=terminal( \classDef\" );"`                                                                                                                                                                    |
+| wardley  | [装飾（wardley.ja.md:312）](./docs/wardley.ja.md#装飾)       | `wardley-beta\ncomponent Decor[0.3,0.6]label[1,-2]( build )( inertia )`                                                                                                                                          |
+
+### D63. 無視されるセミコロンをまたいで見出し前の余白を取り除くか
+
+1件の形があり、図種はagentflowである。
+
+| 図種      | 規則の文書                                                                             | 書かれた形                                   |
+| --------- | -------------------------------------------------------------------------------------- | -------------------------------------------- |
+| agentflow | [Names and headings（agentflow.ja.md:155）](./docs/agentflow.ja.md#names-and-headings) | `agentflow-beta\nconnector style:#x ; [T]\n` |
+
+### D64. 1行の属性ブロックの閉じ波括弧の前を1空白にするか
+
+1件の形があり、図種はerである。
+
+| 図種 | 規則の文書                                                  | 書かれた形                                                                                                                         |
+| ---- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| er   | [属性ブロック（er.ja.md:82）](./docs/er.ja.md#属性ブロック) | `erDiagram\nT {int a} subgraph S accDescr {}\nend\nU { int a   } subgraph V accDescr {}\nend\nW {int a} accTitle:\ndirection LR\n` |
+
+### D65. 注釈を所属先と同じ行に置くか
+
+2件の形があり、図種はtreeviewである。
+
+| 図種     | 規則の文書                                                                        | 書かれた形                                       |
+| -------- | --------------------------------------------------------------------------------- | ------------------------------------------------ |
+| treeview | [Annotation lines（treeview.ja.md:1263）](./docs/treeview.ja.md#annotation-lines) | `treeView-beta\nR\n   :::hot\nC\n`               |
+| treeview | [Annotation lines（treeview.ja.md:1263）](./docs/treeview.ja.md#annotation-lines) | `treeView-beta\n├─ node\n%% between\n└─ ::: X\n` |
+
+### D66. trivia を含む末端の IR 呼出しを複数行にするか
+
+1件の形があり、図種はrailroadである。
+
+| 図種     | 規則の文書                                                   | 書かれた形                                                                                    |
+| -------- | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+| railroad | [長い行（railroad.ja.md:767）](./docs/railroad.ja.md#長い行) | `railroad-beta\nconstructor=terminal/* call */(\x\");\ncloser=terminal(\"x\"/* close */);\n"` |
+
+### D67. 複合 IR 呼出しの引数を別々の行に置くか
 
 2件の形があり、図種はrailroadである。
 
 | 図種     | 規則の文書                                                   | 書かれた形                                                                                                                                                                                                       |
 | -------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | railroad | [呼出し（railroad.ja.md:586）](./docs/railroad.ja.md#呼出し) | `railroad-beta\nr=sequence ( terminal ( \first\" ) , choice ( special ( \"note\" ),nonterminal ( \"r\" ) ) , optional ( terminal ( \"\" ) ) , oneOrMore (terminal(\"many\")),zeroOrMore (terminal(\"any\")) );"` |
-| railroad | [長い行（railroad.ja.md:767）](./docs/railroad.ja.md#長い行) | `railroad-beta\n r=terminal( \classDef\" );"`                                                                                                                                                                    |
+| railroad | [長い行（railroad.ja.md:767）](./docs/railroad.ja.md#長い行) | `railroad-beta\nr\n=\nsequence\n(terminal\n(\n\joined\"\n)\n,\nterminal(\"tail\")\n)\n;"`                                                                                                                        |
 
-railroad.md:571の出力全体の比較では、カンマの空白も変わるので、
-そちらは[D59][commas]で決める。
+### D68. スタイルのセミコロンの直前の空白を取り除くか
+
+1件の形があり、図種はvennである。
+
+| 図種 | 規則の文書                                                                                                                   | 書かれた形                                |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| venn | [Semicolons at the end of a style statement（venn.ja.md:758）](./docs/venn.ja.md#semicolons-at-the-end-of-a-style-statement) | `venn-beta\nset A\nstyle A fill:#f00 ;\n` |
+
+### D69. アクセシビリティの値の端の余白を取り除くか
+
+2件の形があり、図種はradar、wardleyである。
+
+| 図種    | 規則の文書                                                                       | 書かれた形                                                                   |
+| ------- | -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| radar   | [Accessibility lines（radar.ja.md:505）](./docs/radar.ja.md#accessibility-lines) | `radar-beta\naccTitle \t:   Access  words\t\naccDescr\t:   Detail  words \n` |
+| wardley | [アクセシビリティ（wardley.ja.md:638）](./docs/wardley.ja.md#アクセシビリティ)   | `wardley-beta\naccTitle \t:  A  B \t\naccDescr\t:  C  D \t`                  |
+
+### D70. アクセシビリティの説明の内部で続く空白をまとめるか
+
+2件の形があり、図種はradar、wardleyである。
+
+| 図種    | 規則の文書                                                                       | 書かれた形                                                                   |
+| ------- | -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| radar   | [Accessibility lines（radar.ja.md:505）](./docs/radar.ja.md#accessibility-lines) | `radar-beta\naccTitle \t:   Access  words\t\naccDescr\t:   Detail  words \n` |
+| wardley | [アクセシビリティ（wardley.ja.md:638）](./docs/wardley.ja.md#アクセシビリティ)   | `wardley-beta\naccTitle \t:  A  B \t\naccDescr\t:  C  D \t`                  |
 
 ## 決まりで直す形
 
-指定された表には、決まり1・2・3で直す形はない。
+理由を探しても見つからず、決まり1・2・3が印字する形をすでに与えているとき、
+その形をこの節に足す。
 
 ## まだ書いていない理由
 
@@ -1153,10 +1205,7 @@ railroad.md:571の出力全体の比較では、カンマの空白も変わる�
 もう 1 つは、整形ツールが直して印字する形で、Claude が会話の中で、
 理由を挙げて選んだものである（理由が「読みやすい」だけでもよい）。
 それぞれの理由は、fixture とともに図種の規則に書き、その形はこの一覧から外す。
-いまこの節に載っている形はない。
+理由を探し、まだ書かれていない理由が見つかった形をこの節に足す。
 
 [printed-form]: ./docs/printed-form.ja.md
 [versions]: ./docs/compatibility.ja.md#対象にする版の-mermaidjs-のために残す形
-[semicolons]: #d17-書かれたセミコロンを残すか取り除くか
-[commas]: #d59-コンマの前を詰め後を一つの空白にするか
-[call-gaps]: #d60-呼出し名を括弧に接し括弧の内側の余白をなくすか
