@@ -1,28 +1,31 @@
 # Format decisions Claude abandoned, to be fixed
 
 The formatter's rules were decided by Claude, the AI agent that wrote the
-formatter. For the forms below, Claude gave the decision up: it printed them in
-a form for which no reason is recorded and that the user did not decide. Most of
-them are printed as written, and no reason for keeping them is recorded: no run
-has shown that the other form changes the Db or the drawing, or is rejected, in
-a version of mermaid.js that counts, and the user has not decided them. They are
-format decisions still to be made, not rules. A version that rejects both forms,
-or only the written form, counts as showing no difference: it gives no reason to
-keep the written form.
+formatter. For the forms of the section
+[Decisions still to be made](#decisions-still-to-be-made), Claude gave the
+decision up: it printed them in a form for which no reason is recorded and that
+the user did not decide. Most of them are printed as written, and no reason for
+keeping them is recorded: no run has shown that the other form changes the Db or
+the drawing, or is rejected, in a version of mermaid.js that counts, and the
+user has not decided them. They are format decisions still to be made, not
+rules. A version that rejects both forms, or only the written form, counts as
+showing no difference: it gives no reason to keep the written form.
 
 The section [To fix by the rule](#to-fix-by-the-rule) lists forms that a rule of
 [How the printed form is decided](./docs/printed-form.md) already gives but the
 formatter does not print yet.
 
-A form is added here only after the reason for it has been searched for, in the
-rules documents and in the records of the conversations in which it was decided,
-and none was found. A form whose reason has not been searched for yet is not
-added: search first.
+A form is added to the sections
+[Decisions still to be made](#decisions-still-to-be-made) and
+[To fix by the rule](#to-fix-by-the-rule) only after the reason for it has been
+searched for, in the rules documents and in the records of the conversations in
+which it was decided, and none was found.
 
 The section [Forms whose reason is still being searched for, or that have not
-been run][pending] holds forms for which the condition for the sections of
-decisions has not been checked yet. Once it has been checked, a form moves to
-the sections of decisions or leaves the list.
+been run][pending] holds the forms found so far for which that search, or the
+run of the other form, has not been done yet, so that none of them is lost. They
+are not yet known to be forms that Claude gave up. Once that is done, a form
+moves to the section where it belongs, or leaves the list.
 
 Each form is decided in this way. The other form is run in the versions that
 count. Where it changes the Db in a way that no kind of exception allows,
