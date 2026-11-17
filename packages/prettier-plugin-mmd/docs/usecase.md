@@ -79,7 +79,7 @@ opener, as in class diagrams.
 A step follows `tabWidth` and `useTabs`, two spaces by default or one tab per
 level. Indentation does not determine usecase syntax, so `tabWidth: 0` stays
 zero; accessibility remains accessibility at column zero and after ASCII
-whitespace. YAML retains the shared minimum of one.Value and directive
+whitespace. YAML retains the shared minimum of one. Value and directive
 continuation columns stay authored; eligible JSON margins follow
 [JSON tables](#json-tables).
 
@@ -1133,7 +1133,7 @@ runs to one and drop diagram/boundary-edge blanks, because one blank separates
 groups and more add nothing. ASCII space/tab-only lines are ordinary blanks,
 including after native bare comments and around standalone directives. Values,
 native metadata, JSON, directives and protected common-region joins keep their
-own blank lines.No C4 recovery-gap or Ishikawa blank-pairing rule is imported.
+own blank lines. No C4 recovery-gap or Ishikawa blank-pairing rule is imported.
 
 [fixture: blank-lines/blank-runs] [fixture: blank-lines/blank-boundary]
 [fixture: blank-lines/blank-comments] [fixture: blank-lines/blank-in-value]
