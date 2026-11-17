@@ -17,7 +17,9 @@ making the heading easy to find. The keyword is printed `treemap`, also where it
 was written `treemap-beta`: every version of mermaid.js that counts and has the
 diagram reads both names and draws them the same (see
 [The names of a header](./compatibility.md#the-names-of-a-header)). Add no
-colon; an empty body stays empty.
+colon; an empty body stays empty. The empty `treemap-beta` body has no colon,
+since mermaid.js rejects `treemap-beta:` with the same empty body (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: treemap/header/stable]
 
@@ -543,10 +545,11 @@ it.
 [fixture: semicolons/class-terminator-space-before-dropped]
 
 A U+00A0, U+2028, U+2029, U+3000, U+000B (a vertical tab), or U+FEFF before the
-`;` stays, and so does one after a `;` that the line rule ignores (see
-[Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style)).
-In `classDef zz fill:red`, U+00A0, `;`, the U+00A0 stays, since mermaid.js draws
-different text for `classDef zz fill:red;` (see
+`;` stays, and so does one after a `;` that the line rule ignores: CSS does not
+read it as whitespace, so it ends the last style, and mermaid.js draws another
+figure without it (see
+[Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style))
+(see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Only the `;` is dropped, with the spaces, tabs, and form feeds after the last
 such character, so `classDef zz fill:red`, U+00A0, `;` is printed
@@ -1264,9 +1267,12 @@ file-leading BOM with the shared frontmatter limitation.
 
 Format only safe real leading frontmatter through shared guarded YAML
 formatting. Keep indented fences, closing padding, malformed YAML, HTML quote
-hazards and bodies that formatting could turn into fences as written. YAML
-nested values and block scalars use at least one space at tabWidth zero. These
-guards preserve preprocessing and values while ordinary safe YAML gets
+hazards and bodies that formatting could turn into fences as written. The
+frontmatter line `title: "<a b=\"c\">"` stays, since mermaid.js rejects
+`title: '<a b="c">'` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+YAML nested values and block scalars use at least one space at tabWidth zero.
+These guards preserve preprocessing and values while ordinary safe YAML gets
 consistent spacing.
 
 [fixture: treemap/frontmatter-yaml/safe]
