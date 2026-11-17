@@ -45,14 +45,9 @@ those denote characters, not backslashes in a diagram. See
 
 The exact `venn-beta` header stands at column one so the diagram is easy to
 find; ordinary header-line statements move to body lines, while attached
-fragments, directives and kept parts retain their relations. The header
-`venn-beta;%% c` stays as written, since mermaid.js rejects `venn-beta; %% c`
-(see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-
-[corpus fixture: venn/header-before-comment] [corpus fixture:
-venn/header-before-directive] [corpus fixture:
-venn/header-before-frontmatter-comment] [corpus fixture:
+fragments, directives and kept parts retain their relations. [corpus fixture:
+venn/header-before-comment] [corpus fixture: venn/header-before-directive]
+[corpus fixture: venn/header-before-frontmatter-comment] [corpus fixture:
 venn/header-statement-tab] [fixture: venn/header/header-comment-fragment]
 [corpus fixture: venn/db-form-set] [fixture: venn/header/header-inline]
 [fixture: venn/header/header] [fixture:
@@ -448,8 +443,8 @@ The whitespace before a comma, immediately after the opening `(`, and
 immediately before the closing `)` stays as written, and so does a function in
 capitals (`RGB(1,2,3)`) or one that runs over lines. `rgba( 1 ,2 ,3 ,.5 )` keeps
 the padding before its commas and inside its parentheses in the `color`
-property, since mermaid.js builds a different `color` value in the Db for
-`rgba(1,2,3,.5)` (see
+property, since some of the versions of mermaid.js that count build a different
+`color` value in the Db for `rgba(1, 2, 3, .5)` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The examples in the documentation of mermaid.js have no color function in a Venn
 diagram; the space is the form of the examples of the sequence diagram and of
@@ -891,8 +886,8 @@ prints as `title T`.
 [fixture: venn/title/text-padding-dropped]
 
 A title of spaces and tabs only stays as written. The title with two spaces, a
-tab and a space after `title` stays, since mermaid.js rejects `title` alone on
-its line (see
+tab and a space after `title` stays, since some of the versions of mermaid.js
+that count reject `title` alone on its line (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: venn/title/title-blank-kept]

@@ -51,11 +51,6 @@ mermaid.js の読み方を保ち、Db が同じ複数の形から選ぶ場合は
 正確な `venn-beta` ヘッダーを1列目に置き、図の始まりを見つけやすくします。
 通常のヘッダー行の文は本文の行へ移し、接する断片、ディレクティブ、
 保持部分の関係は保ちます。
-ヘッダーの `venn-beta;%% c` は、`venn-beta; %% c` を mermaid.js が拒否するため、
-そのまま残します。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 
 [corpus fixture: venn/header-before-comment]
 [corpus fixture: venn/header-before-directive]
@@ -481,7 +476,8 @@ Venn 図の `style` 文のプロパティの色が対象です。
 コンマの前、開き括弧 `(` の直後、閉じ括弧 `)` の直前の空白は、書かれたままです。
 大文字の関数（`RGB(1,2,3)`）と、複数行にわたる関数も、書かれたままです。
 `color` プロパティの `rgba( 1 ,2 ,3 ,.5 )` は、
-`rgba(1,2,3,.5)` では mermaid.js の Db の `color` の値が異なるため、
+数える版の mermaid.js のうちいくつかが、
+`rgba(1, 2, 3, .5)` では Db の `color` の値を異なるものにするため、
 コンマの前と括弧の内側の空白を保ちます。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
@@ -939,7 +935,8 @@ mermaid.js はそれらを Db に残しますが、それらがなくても同�
 
 半角空白とタブだけのタイトルは、書かれたままにします。
 `title` の後に空白 2 個、タブ、空白 1 個が続くタイトルは、
-`title` だけの行では mermaid.js が拒否するため、そのまま残します。
+数える版の mermaid.js のうちいくつかが、`title` だけの行を拒否するため、
+そのまま残します。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
