@@ -457,7 +457,7 @@ Mermaid は内部の両端を除き、`<<` の前の空白は構造上の空白�
 語の間の隙間、入れ子の開始記号、引用、バックスラッシュ、句読点、
 ディレクティブを保ちます。
 actor のステレオタイプでは、`<<service  user>>` を保ちます。
-数える版の mermaid.js はすべて、
+対象にする版の mermaid.js はすべて、
 `<<service user>>` では図に異なるアクセシビリティ属性を与えるためです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
@@ -1092,7 +1092,7 @@ class の[ラベル](./class.ja.md#ラベル)と C4
 Db が同じになる外側の空白を、兄弟の図種と同じ形に揃えるためです。
 内部の文字と空白、コメント、ディレクティブ、パーセントとセミコロンを保ちます。
 アクセシビリティのタイトルでは、`accTitle: first  last` を保ちます。
-数える版の mermaid.js はすべて、
+対象にする版の mermaid.js はすべて、
 `accTitle: first last` では異なるタイトルのテキストを描くためです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
