@@ -87,11 +87,6 @@ class の[字下げ](./class.ja.md#字下げ)を再利用します。
 usecase では字下げが読みを決めないので、`tabWidth: 0` は 0 のままです。
 アクセシビリティは先頭列でも ASCII 空白の後でもアクセシビリティのままです。
 YAML は共有の最小幅 1 を保ちます。
-YAML の title のブロックスカラーでは、`x` の行の字下げを保ちます。
-mermaid.js が、同じ行を先頭列に置いた形を拒否するためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 値とディレクティブの継続行は書かれた列を保ち、
 対象となる JSON の余白は [JSON の表](#json-tables) に従います。
 
@@ -462,9 +457,8 @@ Mermaid は内部の両端を除き、`<<` の前の空白は構造上の空白�
 語の間の隙間、入れ子の開始記号、引用、バックスラッシュ、句読点、
 ディレクティブを保ちます。
 actor のステレオタイプでは、`<<service  user>>` を保ちます。
-mermaid.js が `<<service user>>` を、
-Db で異なるステレオタイプのテキストとして読み、
-図に異なるアクセシビリティ属性を与えるためです。
+数える版の mermaid.js はすべて、
+`<<service user>>` では図に異なるアクセシビリティ属性を与えるためです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
@@ -479,14 +473,6 @@ LS、PS、NBSP は内部の内容になれます。
 [test: usecase: stereotype-unicode-gap-sides]
 
 保護した共通コメント領域は、交差する値を余白も含めて全体のまま保ちます。
-U+2028 の後のコメント領域をまたぐ actor のステレオタイプでは、
-`y >>` の前の 2 つの空白による字下げを保ちます。
-mermaid.js が、同じ行から字下げを除いた形を、
-Db で異なるステレオタイプのテキストとして読み、
-異なるテキストと形状を描くためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 
 [test: usecase: stereotype-comment-region-padding-kept]
 
@@ -553,12 +539,6 @@ usecase の id には `:` を書けず、
 `systemBoundary mystyle%%{init:{}}%%[ #x; ]` は
 `systemBoundary mystyle%%{init:{}}%%[#x;]` になります。
 U+2028 や U+2029 を含む空白は、書かれたまま残します。
-`systemBoundary S` の角括弧内のタイトルでは、`x` の前の U+2028 を保ちます。
-mermaid.js が、同じタイトルから U+2028 を除いた形を、
-Db で異なる境界ラベルとして読み、異なる形状を描くためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 
 [fixture: system-boundaries/boundary-title-directive-or-semicolon]
 [fixture: system-boundaries/boundary-title-padding-after-directive-colon]
@@ -1112,8 +1092,8 @@ class の[ラベル](./class.ja.md#ラベル)と C4
 Db が同じになる外側の空白を、兄弟の図種と同じ形に揃えるためです。
 内部の文字と空白、コメント、ディレクティブ、パーセントとセミコロンを保ちます。
 アクセシビリティのタイトルでは、`accTitle: first  last` を保ちます。
-mermaid.js が `accTitle: first last` を、Db で異なるタイトルとして読み、
-異なるタイトルのテキストを描くためです。
+数える版の mermaid.js はすべて、
+`accTitle: first last` では異なるタイトルのテキストを描くためです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
@@ -1219,13 +1199,6 @@ ASCII 空白とタブだけの行も通常の空行です。
 裸の固有コメントの後や、独立したディレクティブの前後も同じです。
 値、固有のメタデータ、JSON、ディレクティブ、保護された共通領域の結合は、
 それぞれの空行を保ちます。
-markdown の use case ラベルでは、
-`first` と字下げした `last` の行との間の空行を保ちます。
-mermaid.js が、同じラベルからその空行を除いた形では、
-図の構造を異なって描くためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 C4 の復帰用の隙間や Ishikawa の空行の対の規則は取り込みません。
 
 [fixture: blank-lines/blank-runs] [fixture: blank-lines/blank-boundary]
@@ -1388,12 +1361,6 @@ CSS 宣言のコロンの前後の余白は、
 
 引用と markdown の値、JSON、固有プロパティの文字列、コメント、
 ディレクティブ内の末尾の全文字は保ちます。
-markdown の use case ラベルでは、`first` の行末の 2 つの空白を保ちます。
-mermaid.js が、同じ行を `first` の直後で終える形では、
-ラベルのテキストと形状を異なって描くためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 
 [fixture: trailing-whitespace/trailing-values]
 [test: usecase: terminal-comment-tab] [test: usecase: terminal-a11y-tab]

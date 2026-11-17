@@ -79,12 +79,9 @@ opener, as in class diagrams.
 A step follows `tabWidth` and `useTabs`, two spaces by default or one tab per
 level. Indentation does not determine usecase syntax, so `tabWidth: 0` stays
 zero; accessibility remains accessibility at column zero and after ASCII
-whitespace. YAML retains the shared minimum of one. For a YAML block scalar
-title, the `x` line remains indented, since mermaid.js rejects the same line at
-column one (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Value and directive continuation columns stay authored; eligible JSON margins
-follow [JSON tables](#json-tables).
+whitespace. YAML retains the shared minimum of one.Value and directive
+continuation columns stay authored; eligible JSON margins follow
+[JSON tables](#json-tables).
 
 [fixture: native-metadata/metadata-key-multiline-directive] [fixture:
 native-metadata/metadata-scalar-multiline-directive] [fixture:
@@ -433,9 +430,8 @@ stereotypes/stereotype-padding] [fixture: stereotypes/declaration-suffixes]
 
 Keep the interior text as written: word gaps, nested openers, quotes,
 backslashes, punctuation and directives remain. For an actor stereotype,
-`<<service  user>>` stays, since mermaid.js reads `<<service user>>` as
-different stereotype text in the Db and gives the figure different accessibility
-attributes (see
+`<<service  user>>` stays, since every version of mermaid.js that counts gives
+the figure different accessibility attributes for `<<service user>>` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 LS/PS and NBSP can be interior content; exterior common whitespace follows the
 padding rule.
@@ -447,11 +443,7 @@ stereotype-unicode-exterior-padding] [test: usecase:
 stereotype-unicode-gap-sides]
 
 Protected common comment regions still retain complete crossing values,
-including their padding. For an actor stereotype crossing a comment region after
-U+2028, the two-space indentation before `y >>` stays, since mermaid.js reads
-the same line without indentation as different stereotype text in the Db and
-draws different text and geometry (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+including their padding.
 
 [test: usecase: stereotype-comment-region-padding-kept]
 
@@ -508,10 +500,7 @@ rule may read, as in architecture and venn. A usecase id cannot hold a `:`, and
 a `:` inside a directive is not read by the line rule, so no `:` stands before
 the title for the rule: `systemBoundary mystyle%%{init:{}}%%[ #x; ]` is printed
 `systemBoundary mystyle%%{init:{}}%%[#x;]`. A padding with a U+2028 or U+2029 in
-it stays. For the bracketed title of `systemBoundary S`, U+2028 before `x`
-stays, since mermaid.js reads the same title without U+2028 as a different
-boundary label in the Db and draws different geometry (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+it stays.
 
 [fixture: system-boundaries/boundary-title-directive-or-semicolon] [fixture:
 system-boundaries/boundary-title-padding-after-directive-colon] [test: usecase:
@@ -1039,9 +1028,9 @@ rather than rebuilding the final direction. Reuse
 keyword and one space precedes the trimmed value. Equivalent exterior whitespace
 gets the same compact form as the sibling diagrams. Internal characters and
 whitespace, comments, directives, percent and semicolon text stay. For an
-accessibility title, `accTitle: first  last` stays, since mermaid.js reads
-`accTitle: first last` as a different title in the Db and draws different title
-text (see
+accessibility title, `accTitle: first  last` stays, since every version of
+mermaid.js that counts draws different title text for `accTitle: first last`
+(see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Empty and whitespace-only lines print the colon form without a value. The next
 physical line remains a separate statement; the siblings' next-line joining does
@@ -1144,11 +1133,7 @@ runs to one and drop diagram/boundary-edge blanks, because one blank separates
 groups and more add nothing. ASCII space/tab-only lines are ordinary blanks,
 including after native bare comments and around standalone directives. Values,
 native metadata, JSON, directives and protected common-region joins keep their
-own blank lines. For a markdown use case label, the blank line between `first`
-and the indented `last` line stays, since mermaid.js draws a different figure
-structure for the same label without that blank line (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-No C4 recovery-gap or Ishikawa blank-pairing rule is imported.
+own blank lines.No C4 recovery-gap or Ishikawa blank-pairing rule is imported.
 
 [fixture: blank-lines/blank-runs] [fixture: blank-lines/blank-boundary]
 [fixture: blank-lines/blank-comments] [fixture: blank-lines/blank-in-value]
@@ -1299,11 +1284,7 @@ boundaries normalize exterior whitespace by their sibling rules.
 [fixture: stereotypes/side-padding]
 
 Quoted/markdown values, JSON, native property strings, comments and directive
-contents keep their trailing characters. For a markdown use case label, the two
-spaces after `first` at the end of its line stay, since mermaid.js draws
-different label text and geometry when that line ends directly after `first`
-(see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+contents keep their trailing characters.
 
 [fixture: trailing-whitespace/trailing-values] [test: usecase:
 terminal-comment-tab] [test: usecase: terminal-a11y-tab]
