@@ -749,12 +749,6 @@ agentflow-beta TB
 [書かれたまま残すもの](./flowchart.ja.md#書かれたまま残すもの)
 と同じ規則と理由です。
 接触は字句の区別で、&の両側の空白がグループと1つのIDを分けます。
-`A&B` は保ちます。
-mermaid.js は `A & B` を、1 つの頂点 `A&B` ではなく、
-2 つの頂点 `A` と `B` として読むためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 ID、形、:::、データの接触、プロパティのIdentifier、
 実際のコンマ区切りリストの穴と空の両端、コンマを含む単一ID、
 出現と順序を保ちます。
@@ -766,7 +760,6 @@ IDの分割、並べ替え、末尾コンマの補完はしません。
 
 [fixture: vertices-and-lists/class-list-holes]
 [fixture: vertices-and-lists/groups-suffixes]
-[fixture: vertices-and-lists/ampersand-id]
 
 入力（エスケープ表記）: `"agentflow-beta TB\nA&B"`。
 
@@ -994,17 +987,12 @@ agentflow-beta TB
 それ以上の連続する空行を1つにします。
 空白だけの行も同じで、文書とflow/globalの本文の両端の空行を落とします。
 値、データ、ディレクティブの内部の空行を保ちます。
-引用符付きの頂点ラベルでは、`x` と `y` の間の空行を保ちます。
-2 つの行を隣り合わせると、mermaid.js が違う形状を描くためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 agentflowのコメントはLFを残し、後続の空行を取りません。
 空行の対応付けの既知の差異は適用しません。
 既定のサイズによる分岐が通常の空行規則に優先します。
 
 [fixture: blank-lines/blank-comment-content] [fixture: blank-lines/blank-runs]
-[fixture: blank-lines/blank-value] [fixture: blank-lines/blank-label-kept]
+[fixture: blank-lines/blank-value]
 
 入力（エスケープ表記）: `"agentflow-beta TB\nA\n%% c\n\n\nB"`。
 
@@ -1431,11 +1419,6 @@ idと呼び出しの後のclickの隙間に、余分な空白単位を足すと�
 詳しくは[clickの文](#click-statements)を参照してください。
 agentflowが閉じ波括弧の後で畳むのは直後のLF前の行空白だけです。
 それ以降の空のLFと、LS/PS/VT/FF/NBSPを含む元の値の行を保ちます。
-引用符付きのラベルでは、`a}` の後と字下げした `b` の前の空行を保ちます。
-その空行を除くと、mermaid.js が違う形状を描くためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 不透明なデータの閉じ括弧をアクセシビリティの閉じ括弧として揃えません。
 
 [fixture: multiline-statements-and-values/brace-blank-kept]
@@ -1884,11 +1867,6 @@ callの括弧前の空白は名前で、引数と文字列は著者の文字だ�
 ID・リスト・値以降と後続行の桁位置を保ちます。
 href/callの有無、target、記号・数値・プロトタイプ名のID、穴、
 URLとtooltipの空白、引数を渡す2つ目のcallも含みます。
-`click A cb "x  y"` の tooltip の空白 2 つを保ちます。
-mermaid.js は `click A cb "x y"` を違う tooltip の文字にするためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 agentflowのtextBeforeUrl/textBeforeTooltipには、消されるclick、
 空の説明・文字列・markdown・callを各節点と元の隙間で保ちます。
 hrefの両側も同じです。
@@ -1902,7 +1880,6 @@ tooltip/target前に必須の空白1文字を保ち、末尾の空の説明は�
 [fixture: click-statements/callback-padding-unsafe]
 [fixture: click-statements/tooltip-required-tab]
 [fixture: click-statements/url-form-kept]
-[fixture: click-statements/tooltip-internal-spaces-kept]
 
 固定のリンクtarget前のタブも保ちます。
 保持するclickの前置き内のディレクティブも接触する隙間を保ちます。
