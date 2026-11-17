@@ -165,8 +165,10 @@ This agrees with the other printers' header/body convention while keeping the
 Db. A root that contains semicolons moves whole as well: the Ishikawa header
 adds no `style` or `classDef` trigger to the shared line rule. Header comments
 and directive attachment follow their narrower rules; apparent statements inside
-the root are never split. [fixture: ishikawa/root-on-header-line/header-root]
-[fixture: ishikawa/root-on-header-line/header-root-kept] [fixture:
+the root are never split.
+
+[fixture: ishikawa/root-on-header-line/header-root] [fixture:
+ishikawa/root-on-header-line/header-root-kept] [fixture:
 ishikawa/root-on-header-line/header-root-percent] [fixture:
 ishikawa/root-on-header-line/header-root-tab] [fixture:
 ishikawa/root-on-header-line/header-root-touch]
@@ -561,7 +563,9 @@ ishikawa/node-text/values-html-entities]
 
 No foreign token-spacing or value conversion applies. This preserves authored
 forms and configuration-sensitive reading rather than reconstructing labels from
-the Db. [fixture: ishikawa/node-text/values-spacing-unsafe] [fixture:
+the Db.
+
+[fixture: ishikawa/node-text/values-spacing-unsafe] [fixture:
 ishikawa/node-text/value-single-space-and-colon]
 
 C4-looking text remains literal under the specification's reading, even when
