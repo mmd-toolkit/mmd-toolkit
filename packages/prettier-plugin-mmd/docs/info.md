@@ -188,13 +188,17 @@ For blocks that keep their braces, use the
 and opening brace with one space so the block boundary is clear. Collapse
 exterior runs to one space, including plain opener whitespace across physical or
 Unicode line boundaries. Real opener trivia keeps its break and uses the shared
-continuation indentation. Empty whitespace-only blocks print `{}` because no
-text needs surrounding spaces. Comment-only blocks keep their comments one level
-inside; a standalone closer aligns with the statement. Ordinary description body
-and standalone comment lines align one level inside the statement; LF
-indentation is absent from the Db. Keep line breaks, interior blank lines and
-trailing whitespace. Directives and shared removed comment regions keep their
-complete source. Quotes and backslashes do not protect the first closing brace.
+continuation indentation. For example, `accDescr`, `%% c` and `{D}` on
+successive lines stay separate, since mermaid.js rejects `accDescr %% c`
+followed by `{D}` on the next line (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Empty whitespace-only blocks print `{}` because no text needs surrounding
+spaces. Comment-only blocks keep their comments one level inside; a standalone
+closer aligns with the statement. Ordinary description body and standalone
+comment lines align one level inside the statement; LF indentation is absent
+from the Db. Keep line breaks, interior blank lines and trailing whitespace.
+Directives and shared removed comment regions keep their complete source. Quotes
+and backslashes do not protect the first closing brace.
 
 [fixture: info/description-blocks/block-gap-presence]
 
@@ -207,6 +211,8 @@ complete source. Quotes and backslashes do not protect the first closing brace.
 [fixture: info/description-blocks/block-comment-only]
 
 [fixture: info/description-blocks/block-opener-trivia]
+
+[fixture: info/description-blocks/block-opener-comment]
 
 [fixture: info/description-blocks/block-first-close]
 
@@ -328,9 +334,12 @@ Apply the same source and boundary preservation to directive-kind
 InfoIgnoredText, separately from Root directives. Preserve its owner,
 arbitrary/multiline body, global cuts, consumed/spare LF and closing padding.
 All four common statements retain hidden textAfter forms, including space/tab,
-spare-LF and EOF boundaries. Forms after visible EOL belong to the body. Keep
-fallback comments classified as comments: adding a boundary to a glued closer
-could revive a swallowed flag.
+spare-LF and EOF boundaries. For example, mermaid.js rejects removing the
+trailing space after `title Topic%%{}%%` when `accTitle: Access` follows on the
+next line (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Forms after visible EOL belong to the body. Keep fallback comments classified as
+comments: adding a boundary to a glued closer could revive a swallowed flag.
 
 [fixture: info/hidden-directives/hidden-body]
 
