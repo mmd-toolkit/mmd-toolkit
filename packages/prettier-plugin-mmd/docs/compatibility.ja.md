@@ -240,7 +240,7 @@ ELK の配置のパッケージのどのリリースも、
 | [timeline](./timeline.ja.md#ヘッダーと方向)                 | `timeline TD accDescr {alpha} Phase : done` と `accDescr {%%{init: {}}%%alpha}`、ヘッダーの行で始まる説明ブロック                             | `accDescr: alpha`、`Phase : done` は単独の行    | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 と 11.7.0 が、その行を period のテキストとして読む                                                           | [fixture: timeline/header-and-direction/description-block-then-period-on-the-header-line-kept]                                                              |
 | [timeline](./timeline.ja.md#ヘッダーと方向)                 | ヘッダーの行にある、空白とタブでない空白文字（U+00A0、U+2003 など）                                                                           | 空白 1 つ                                       | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 と 11.7.0 が、その文字のまま描く                                                                             | [test: U+00A0 between the direction and a text on the header line]                                                                                          |
 | [timeline](./timeline.ja.md#title-と-section)               | `title`、空白 2 つか、改行と字下げ、`# c`                                                                                                     | `title # c`                                     | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、空白だけの title とコメントとして読む                                                                    | [fixture: timeline/titles-and-sections/title-hash-on-next-line-kept]                                                                                        |
-| [timeline](./timeline.ja.md#accessibility-の文)             | `accDescr {a} %% c`                                                                                                                           | `accDescr: a %% c`                              | [3](./printed-form.ja.md#3-綴り)                      | 12.3.0 が Db の `accDescr` を `a` でなく `a %% c` と読む                                                            | [fixture: timeline/accessibility-statements/block-then-comment-kept]                                                                                        |
+| [timeline](./timeline.ja.md#accessibility-の文)             | `accDescr {a} %% c`                                                                                                                           | `accDescr: a %% c`                              | [3](./printed-form.ja.md#3-綴り)                      | 12.3.0 が Db の `accDescr` を `a` でなく `a %% c` と読む                                                            | [fixture: timeline/multi-line-values/block-then-comment-kept]                                                                                               |
 | [ER](./er.ja.md#トークンの間の空白)                         | `class-A a`                                                                                                                                   | `class -A a`                                    | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、空白を入れた形を拒否する                                                                                 | [fixture: er/whitespace-between-tokens/keyword-then-dash-touching-kept]                                                                                     |
 | [ER](./er.ja.md#トークンの間の空白)                         | `subgraph-x`、`end-x`                                                                                                                         | `subgraph -x`、`end` と単独の行の `-x`          | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が空白を入れた形を拒否し、11.7.0 が違って描く                                                                | [fixture: er/whitespace-between-tokens/subgraph-then-dash-touching-kept]                                                                                    |
 | [ER](./er.ja.md#方向)                                       | `DIRECTION lr`                                                                                                                                | `direction LR`                                  | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が、その行をエンティティとして読む                                                                           | [fixture: er/direction/case-kept]                                                                                                                           |
@@ -253,14 +253,13 @@ ELK の配置のパッケージのどのリリースも、
 | [ER](./er.ja.md#1-行に-1-文)                                | 同じ行の別の属性の後にある、`~` が 2 つの属性（`int a List~int~ b`）                                                                          | 属性を 1 行ずつに                               | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 は、最初の属性の型を 2 つ目の `~` までとして読む                                                             | [fixture: er/attribute-spacing/attributes-with-tilde-on-one-line-kept]                                                                                      |
 | [ER](./er.ja.md#属性ブロック)                               | 書かれたまま残る行で、属性ブロックの中の `~` の後ろにある複数行の空のブロック（`T { int a List~int~ b } A {`、改行、`}`、さらに続くテキスト） | `{` の後ろの `{ }`、閉じる行の残りを付ける      | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 は、属性の `~` の後ろに長いテキストがある行を描かない                                                        | [fixture: er/attribute-blocks/written-line-tilde-line-closing-remainder]                                                                                    |
 | [ER](./er.ja.md#1-行に-1-文)                                | `"Alpha"`、空白とタブ以外の空白文字（U+2028、U+2029、U+00A0 など）、その後の `{ int x }`、別名、CSS のクラス、関係                            | `Alpha` と、その文字で始まる文を別の行に        | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 と 11.7.0 が、その文字を空白として読み、その文字で始まって残りが続く行を拒否する                             | [test: U+2028 and an attribute block after a name in quotes] [test: U+00A0 in place of the separator: U+2028 and an attribute block after a name in quotes] |
+| [ER](./er.ja.md#1-行に-1-文)                                | `subgraph S`、`end` と U+2028、`%% c`、`B` の各行                                                                                             | U+2028 を空白 1 つに                            | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0 で文字、構造、形状、スタイルが異なる                                                                         | —                                                                                                                                                           |
 | [treemap](./treemap.ja.md#title)                            | 行頭の `title T`                                                                                                                              | 1 段深い `  title T`                            | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.8.1 が、字下げされた title、`accTitle`、`accDescr` を拒否する                                                    | [fixture: treemap/title/line-start-kept]                                                                                                                    |
 | [ishikawa](./ishikawa.ja.md#indentation)                    | `ishikawa`、`R`、`  A`、` B`、`  C` を書かれたまま                                                                                            | すべてのノードを深さの位置に置く形              | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.13.0 が、深さで印字したテキストを書かれたテキストと違って描く                                                    | [fixture: ishikawa/indentation/indent-relative-zero]                                                                                                        |
 | [kanban](./kanban.ja.md#データブロック)                     | `A[x]@{ticket: X,}@{assigned: Ada}`                                                                                                           | `A[x]@{ticket: X,} @{assigned: Ada}`            | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.7.0、11.17.2、12.0.0、12.3.0 が空白のある形を拒否する                                                            | [fixture: kanban/data-blocks/adjacent]                                                                                                                      |
 | [Wardley](./wardley.ja.md#link)                             | `Alpha-->Beta` を `Alpha--> Beta` と印字                                                                                                      | `Alpha- -> Beta`                                | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.14.0 が、名前の `-` を拒否する                                                                                   | [fixture: wardley/links/link-long-glued]                                                                                                                    |
 | [Wardley](./wardley.ja.md#名前と引用)                       | 引用符つきの `"real-time"`                                                                                                                    | `real-time`                                     | [3](./printed-form.ja.md#3-綴り)                      | 11.14.0 が、引用符なしの `-` を含む名前を拒否する                                                                   | [fixture: wardley/names-and-quotes/names-that-need-quotes]                                                                                                  |
 | [treeView](./treeview.ja.md#names)                          | 引用符つきの `"name"`                                                                                                                         | `name`                                          | [3](./printed-form.ja.md#3-綴り)                      | 11.14.0 が、引用符で囲んだ名前だけを読む                                                                            | [fixture: treeview/names/quoted-name-kept]                                                                                                                  |
-| [use case](./usecase.ja.md#stereotypes)                     | `actor User <<  service  user  >>`                                                                                                            | `actor User <<  service user  >>`               | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 12.0.0 と 12.3.0 が aria を変え、12.3.0 は Db の `actors[0].stereotype` も変える                                    | [fixture: usecase/stereotypes/stereotype-inner-kept]                                                                                                        |
-| [use case](./usecase.ja.md#labels)                          | `A(unquoted  words)`                                                                                                                          | `A(unquoted words)`                             | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 12.0.0 と 12.3.0 が aria を変え、12.3.0 は Db の `useCases[0].label` も変える                                       | [fixture: usecase/labels/label-quote-kinds]                                                                                                                 |
 
 ## mermaid.js と違って読む入力
 
@@ -1703,15 +1702,9 @@ railroad 図の文字列と特殊シーケンスです。
   ヘッドレスブラウザーで確かめられなかったので、テキストは書かれたまま残します。
   アクセシブルな名前は両方のテキストで同じでしたが、それで判断はしません。
   `accDescr` は `desc` 要素で、ツールチップとして表示されません。
-  pie 図の `accTitle: A   B` は残します。
-  対象にする版の一部が `accTitle: A B` を異なるテキストで描くためです。
-  詳しくは
-  [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-  を参照してください。
 
   [fixture: pie/accessibility-lines/accessibility-inner-tab]
   [fixture: quadrant/titles-and-accessibility-statements/text-inner-whitespace-kept]
-  [fixture: pie/accessibility-lines/acc-title-inner-spaces-kept]
 
 - C4 の文の引数のうち、label、technology、type、description でないもの（sprite、
   tags、リンク）と、本来の位置にない名前付き属性。
@@ -1731,6 +1724,14 @@ railroad 図の文字列と特殊シーケンスです。
   [fixture: pie/labels/label-quotes]
   [fixture: requirement/names/inner-whitespace-kept]
   [fixture: state/aliases/id-kept]
+
+pie 図の `accTitle: A   B` は残します。
+対象にする版の一部が `accTitle: A B` を異なるテキストで描くためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+
+[fixture: pie/accessibility-lines/acc-title-inner-spaces-kept]
 
 mermaid.js は連なりを Db に残します。
 レンダラーは、これらのテキストを SVG の `text` 要素に入れ、
@@ -3183,12 +3184,6 @@ agentflow 図の `accDescr {style:#x} ; %% #a;`）。
   [fixture: flowchart/accessibility-lines/empty-block-directive-kept]
 
 - ブロックが閉じていない場合です。
-  flowchart の `accDescr {a` は残します。
-  mermaid.js がその形からは空の説明を、
-  `accDescr: a` からは説明 `a` を読むためです。
-  詳しくは
-  [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-  を参照してください。
 
   [fixture: flowchart/accessibility-lines/block-unclosed]
 
@@ -3276,6 +3271,13 @@ agentflow 図の `accDescr {style:#x} ; %% #a;`）。
 
   [fixture: treeview/modes/block-interior-active]
 
+flowchart の `accDescr {a` は残します。
+mermaid.js がその形からは空の説明を、
+`accDescr: a` からは説明 `a` を読むためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+
 mermaid.js 12.3.0 は、コロンの後に説明を書く 3 つの例を、
 ブロックでも書いた両方の綴りを受理し、Db と SVG は同じでした。
 さらに、22 図種でそれぞれ 2 つの例、
@@ -3338,7 +3340,7 @@ pie 図と gitGraph ではテキストの両端に空白を足したブロック
 
 [fixture: pie/description-blocks/block-then-comment]
 [fixture: gitgraph/title-and-common-values/block-then-comment-kept]
-[fixture: timeline/accessibility-statements/block-then-comment-kept]
+[fixture: timeline/multi-line-values/block-then-comment-kept]
 
 ### テキストの引用符
 
@@ -5158,13 +5160,6 @@ mermaid.js が行をどう読むかを決めないかぎり、通常どおり整
   `end` の行の終わりにある U+2028 や U+2029 （`end` U+2028 `B`）です。
   末尾の区切りは、コメントやディレクティブの前や、空行を挟んだ次の文の前にも、
   1 回だけ残します。
-  `subgraph S` の後で `end` と U+2028 の行に、`%% c`、
-  `B` の各行が続く場合も U+2028 を残します。
-  その U+2028 を空白 1 つに置き換えると、
-  対象にする版の一部で図が変わるためです。
-  詳しくは
-  [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-  を参照してください。
 
   [test: er/statements-one-per-line/R63-er-ascii-after-LS-e]
   [test: er/statements-one-per-line/R44-er-after-separator-LS-e]
@@ -5287,6 +5282,13 @@ mermaid.js が行をどう読むかを決めないかぎり、通常どおり整
   [fixture: er/attribute-spacing/attributes-with-tilde-in-quotes-on-one-line-split]
   [fixture: er/attribute-spacing/attributes-with-tilde-in-directive-on-one-line-split]
   [corpus fixture: er/lex-tilde-after-quoted]
+
+`subgraph S` の後で `end` と U+2028 の行に、`%% c`、
+`B` の各行が続く場合も U+2028 を残します。
+その U+2028 を空白 1 つに置き換えると、対象にする版の一部で図が変わるためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 ## 古い版がコメントとして読む state の行
 
@@ -5905,15 +5907,9 @@ Db や字句解析器が読むものは変えません。
 
 - コメント行や指令を含む点とアクセシビリティの文は必要な改行を残し、
   [構造の継続行](#コメントやディレクティブの前後の構造の継続行)をそろえます。
-  点では `A:` と `%% c` の間の改行を残します。
-  mermaid.js は、座標を次の行に置いた `A: %% c` を拒否するためです。
-  詳しくは
-  [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-  を参照してください。
 
   [fixture: multi-line-statements/comment-line-inside-kept]
   [fixture: multi-line-statements/directive-inside-kept]
-  [fixture: quadrant/multi-line-statements/comment-after-point-colon-kept]
 
 - コメントが前の単位に接しているかどうか。
   mermaid.js は、1 文字の単位に接した `%%` を、
@@ -5929,6 +5925,14 @@ Db や字句解析器が読むものは変えません。
 
   [test: U+2028 between the words of a text]
   [test: U+2028 around the arrow of an axis]
+
+点では `A:` と `%% c` の間の改行を残します。
+mermaid.js は、座標を次の行に置いた `A: %% c` を拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+
+[fixture: quadrant/multi-line-statements/comment-after-point-colon-kept]
 
 通常の点とクラスのスタイルは `name: value` と印字します。
 正規化するのは最初のコロンに接する ASCII 空白とタブだけで、値の綴りは保ちます。
@@ -5994,21 +5998,23 @@ Db や字句解析器が読むものは変えません。
 
 - コメント行や指令を含む文は必要な改行を残し、
   [構造の継続行](#コメントやディレクティブの前後の構造の継続行)をそろえます。
-  `classDef` と `%% c` の間の改行を残します。
-  mermaid.js は、
-  `c fill:red` を次の行に置いた `classDef %% c` を拒否するためです。
-  詳しくは
-  [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-  を参照してください。
 
   [fixture: multi-line-statements/comment-line-inside-kept]
   [fixture: multi-line-statements/directive-inside-kept]
-  [fixture: block/multi-line-statements/comment-after-classdef-keyword-kept]
 
 - U+0085 は mermaid.js が空白として読まず、id の文字です。
   文の隙間にある U+2028 と U+2029 は、書かれたまま印字します。
 
   [test: U+0085 inside an id] [test: U+2028 between two statements of a row]
+
+`classDef` と `%% c` の間の改行を残します。
+mermaid.js は、
+`c fill:red` を次の行に置いた `classDef %% c` を拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+
+[fixture: block/multi-line-statements/comment-after-classdef-keyword-kept]
 
 ## U+2028 か U+2029 の後のコメント行
 
@@ -6630,14 +6636,6 @@ stereotype の宣言接尾辞は、systemBoundary 内も含め、`<<` の前と�
 Mermaid は内部の両端を除き、`<<` の前の空白は構造上の空白です。
 内部のテキストは書かれたままです。
 保護した共通コメント領域は、値の全体を保ちます。
-stereotype の `<<  service  user  >>` は語の間の空白 2 つを残します。
-class の [annotation の行](./class.ja.md#メンバーの行) と同じく連なりを空白 1
-つに縮めると、`<<  service user  >>` となり、
-mermaid.js は `service  user` でなく `service user` と読み、
-アクセシビリティのテキストも変わります。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 class の[トークンの間の空白](./class.ja.md#トークンの間の空白) を再利用します。
 
 [fixture: usecase/stereotypes/stereotype-padding]
@@ -6652,14 +6650,6 @@ class の[トークンの間の空白](./class.ja.md#トークンの間の空白
 ラベル、境界タイトルの余白、継続列は、除去で Db が等しい場合も書かれたままです。
 `'` で囲むラベルは、
 [同じに描かれる綴り](#同じに描かれる綴り)に従って `"` で囲んで印字します。
-引用符のない use case のラベルでは、`A(unquoted  words)` の連なりを残します。
-block の[ラベル](./block.ja.md#形)と同じく連なりを空白 1 つに縮めると、
-`A(unquoted words)` となり、
-mermaid.js は `unquoted  words` でなく `unquoted words` と読み、
-アクセシビリティのテキストも変わります。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 共通コメント領域の結合と LS、PS を越える図固有のコメントを保ちます。
 セミコロンは文を区切らず、行の規則が読む範囲を保護します。
 六つの既存の乖離は指定の受理と読みに従い、拒否する木は共有の失敗経路に従います。
