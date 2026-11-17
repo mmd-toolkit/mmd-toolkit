@@ -773,17 +773,13 @@ uses one space: `accDescr{  }` becomes `accDescr {}`.
 [fixture: empty-description-blocks/empty-whitespace-interiors] [test: quadrant
 Unicode and tab interiors]
 
-A block with a comment line keeps its contents and line breaks, with body
-indentation under
-[Titles and accessibility statements](#titles-and-accessibility-statements). An
-`accDescr` block containing only a line `%% c` stays over several lines, since
-mermaid.js reads `accDescr { %% c }` as the description `%% c` instead of an
-empty description (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-It stands on a line of its own, also after the header and after another
-statement, where the grammar takes it: mermaid.js reads it as nothing wherever
-it stands, and the grammar takes it where a statement starts and after the last
-unit of a statement.
+A block with a directive or a comment line keeps its contents and line breaks,
+with body indentation under
+[Titles and accessibility statements](#titles-and-accessibility-statements). It
+stands on a line of its own, also after the header and after another statement,
+where the grammar takes it: mermaid.js reads it as nothing wherever it stands,
+and the grammar takes it where a statement starts and after the last unit of a
+statement.
 
 [fixture: empty-description-blocks/inner-whitespace-collapsed] [fixture:
 empty-description-blocks/touching-kept] [fixture:
@@ -842,10 +838,10 @@ could change which `;` the line rule ignores, and where a `;` ends the last
 line; any other line break is joined as usual, also in a statement that holds a
 `;`. Any other statement over several lines is kept as written when a line break
 of it stays. The same decision applies to a `;` in another statement on its
-final line (see [Statements one per line](#statements-one-per-line)). The line
-break between `style` followed by a space and `: [0.2, 0.7]; title x:#y;` stays,
-since mermaid.js draws a different title text for
-`style : [0.2, 0.7]; title x:#y;` (see
+final line (see [Statements one per line](#statements-one-per-line)). The form
+`style \n: [0.2, 0.7]; title x:#y;` (with `\n` for a line break) stays instead
+of `  style: [0.2, 0.7]; title x:#y;`, since mermaid.js draws different title
+text for the latter (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: multi-line-statements/breaks-decided-one-by-one] [fixture:
@@ -861,9 +857,11 @@ A `;` alone does not prevent joining.
 The name of a class of `classDef` that goes on across a joining comment region
 keeps the statement as written too: `classDef A`, U+2028, `%% c`, and a line
 `Bar color: #ff0000` are the class `A`, U+2028, `Bar`. Only the first line is
-indented, and a statement after it is printed on a line of its own. In this
-form, the line `Bar color: #ff0000` stays unindented, since mermaid.js rejects
-the same line with two leading spaces (see
+indented, and a statement after it is printed on a line of its own. The form
+`classDef A\u2028%% c\nBar color: #ff0000` (with `\u2028` for U+2028 and `\n`
+for a line break) stays instead of
+`  classDef A\u2028%% c\n  Bar color: #ff0000`, since mermaid.js rejects the
+latter (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [test: a comment line after U+2028 inside the name of a class] [test: a comment
@@ -1178,8 +1176,8 @@ U+00A0, U+3000, and U+FEFF are characters of a word and stay in a text, a name,
 and the name of a class; but around the `:`, the brackets, and the comma of a
 point, and around the colon and the brace of an accessibility statement,
 mermaid.js reads them as whitespace, and a space is printed in their place. The
-U+00A0 between `a` and `b` in a `quadrant-1` text stays, since mermaid.js draws
-different text for `quadrant-1 a b` (see
+form `quadrant-1 a\u00a0b` (with `\u00a0` for U+00A0) stays instead of
+`  quadrant-1 a b`, since mermaid.js draws different text for the latter (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 After the `]` of a point they are not accepted (see
 [Line separators](#line-separators)).
