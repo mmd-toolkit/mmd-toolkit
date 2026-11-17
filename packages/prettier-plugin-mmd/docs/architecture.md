@@ -80,10 +80,7 @@ architecture-beta
 ### Statements one per line
 
 Print ordinary statements one per line, as the other diagram types do. A common
-line value owns apparent keywords through physical EOL, so do not split it. Keep
-`architecture-beta title t service a; junction j` on one line: mermaid.js
-rejects the same text with a line break before `service a; junction j` (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+line value owns apparent keywords through physical EOL, so do not split it.
 Semicolons are not statement separators; invalid adjacent statements and empty
 descriptions used as component gaps remain failures.
 
@@ -614,22 +611,16 @@ architecture-beta
 
 Use shared common-line layout: `title value` trims only common-whitespace edges,
 and null or whitespace-only values print `title`. This compacts equivalent outer
-padding. Never read the next physical line as a value, even across trivia. With
-`title` and `service a` on successive lines, the line break stays, since
-mermaid.js builds no service `a` from `title service a` and draws a different
-figure (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Keep occurrences and content even though the architecture summary does not
-publish title. Trivia-bearing values and protected hidden boundaries keep their
-source gaps. The directives that end a title are printed with one space before
-each that has whitespace before it, and the whitespace after the last one is
-left out, whatever the whitespace at the end of the line (see
+padding. Never read the next physical line as a value, even across trivia. Keep
+occurrences and content even though the architecture summary does not publish
+title. Trivia-bearing values and protected hidden boundaries keep their source
+gaps. The directives that end a title are printed with one space before each
+that has whitespace before it, and the whitespace after the last one is left
+out, whatever the whitespace at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [corpus fixture:
 architecture/directive-fields]
-
-[fixture: architecture/title/empty-title-before-service]
 
 [fixture: architecture/title/empty-next-statement]
 
@@ -666,11 +657,6 @@ architecture-beta
 Reuse shared `accTitle: value` and `accDescr: value`: the colon touches its
 keyword, with one space before a trimmed nonempty value; empty values end at the
 colon. This keeps consistent outer spacing. Never join a next-line statement.
-With `accTitle:` and `service a` on successive lines, the line break stays,
-since mermaid.js reads `accTitle: service a` with `service a` as the
-accessibility title and no service `a` in the Db, and draws a different figure
-(see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Braces after a colon remain line text, and protected trivia/hidden gaps take
 precedence. The directives that end the value are printed with one space before
 each that has whitespace before it, and the whitespace after the last one is
@@ -1250,12 +1236,9 @@ architecture-beta
 
 Use the shared host policy: normalize physical CR/CRLF to LF, then emit
 configured endOfLine, including in values and hidden forms. Keep LS/PS/NBSP/BOM
-in content; common line-value edges alone trim common whitespace. In the label
-of `service a`, U+2028 between `A` and `B` stays, since mermaid.js rejects the
-same label with LF in its place (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Non-ASCII structural separators remain rejected. A leading BOM follows Prettier
-host handling rather than byte identity.
+in content; common line-value edges alone trim common whitespace. Non-ASCII
+structural separators remain rejected. A leading BOM follows Prettier host
+handling rather than byte identity.
 
 [corpus fixture: architecture/hidden-yaml-crlf]
 
