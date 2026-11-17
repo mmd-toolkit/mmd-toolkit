@@ -745,8 +745,11 @@ The `+` or `-` after the arrow touches the target: `A ->> + B` is printed
 The whitespace beside a `()` stays as written, touching, one space, or a run,
 and a directive there stays between its whitespace: `A () ->> () B` is printed
 as it is, `A   () ->> () B` keeps its three spaces, and `A()->>()B` is printed
-`A() ->> ()B` (see
-[Sequence messages with a central connection](./compatibility.md#sequence-messages-with-a-central-connection)).
+`A() ->> ()B`, since some versions that count read the `()` as part of the name
+next to it, with the whitespace (see
+[Sequence messages with a central connection](./compatibility.md#sequence-messages-with-a-central-connection)
+and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: arrow-spacing/parentheses-touching] [fixture:
 arrow-spacing/parentheses-gap-run-kept] [fixture:
@@ -1130,7 +1133,8 @@ sequence/lex-single-percent-comment-line] [fixture: comments/percent-line-kept]
 
 A comment after a statement stays on its line, and whether whitespace is written
 before its mark is kept: mermaid.js reads `autonumber 5%% touching` without the
-number 5, while `autonumber 5 %% touching` gives it the number (see
+number 5, while adding the space that Prettier prints before a line comment
+gives `autonumber 5 %% touching`, with the number (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A run of whitespace before the mark is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
@@ -1275,7 +1279,8 @@ also where whitespace follows the `;`, and also where a directive splits the
 name (`end #a%%{init: {}}%%;`). An `accDescr {…}` block before the `end` is
 printed as `accDescr: …` where the `end` goes to a line of its own, also in a
 block that stands before the `else` or `and` of the block around it, and it
-stays as written where the `end` stays on its line.
+stays as written where the `end` stays on its line (see
+[A description block on one line](./compatibility.md#a-description-block-on-one-line)).
 `accDescr {style:#x} end #a;` with two trailing spaces at the end of the text
 stays on one line, since mermaid.js rejects the same text with `end #a;` on its
 own line (see
@@ -1387,9 +1392,10 @@ statements-one-per-line/end-comment-ignored-semicolon-trailing-whitespace-before
 An `end` or a divider (`else`, `and`, `option`) that touches the `}` of a
 description block or the `;` before it is decided in the same way as one that
 whitespace parts from them: `accDescr {style:#x}end #a;` stays on one line, with
-the block as written, and `accDescr {style: x}end #;`, whose comment is read the
-same on a line of its own, is printed `accDescr: style: x` and `end #;`. So is a
-divider: `accDescr {style:#x}else x#a;` stays on one line. In
+the block as written, since the form with the colon would take the `end` into
+the text, and `accDescr {style: x}end #;`, whose comment is read the same on a
+line of its own, is printed `accDescr: style: x` and `end #;`. So is a divider:
+`accDescr {style:#x}else x#a;` stays on one line. In
 `accDescr {style:#x}else x#a;`, the divider stays on that line, since moving
 `else x#a;` to its own line changes the divider text in the Db and the figure
 (see

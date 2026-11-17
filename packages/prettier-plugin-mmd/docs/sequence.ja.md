@@ -767,8 +767,11 @@ sequenceDiagram
 間のディレクティブも、空白の間に残します。
 `A () ->> () B` はそのまま、`A   () ->> () B` は空白 3 つのまま、
 `A()->>()B` は `A() ->> ()B` と印字します。
+対象にする版の一部は、`()` を空白ごと隣の名前の一部として読むためです。
 詳しくは
 [中央接続のある sequence のメッセージ](./compatibility.ja.md#central-接続のある-sequence-のメッセージ)
+と
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
 
 [fixture: arrow-spacing/parentheses-touching]
@@ -1185,7 +1188,8 @@ sequenceDiagram
 
 文の後のコメントはその行に残し、印の前に空白が書かれているかどうかを保ちます。
 mermaid.js は `autonumber 5%% touching` を数 5 なしで読み、
-`autonumber 5 %% touching` では数を読みます（詳しくは
+Prettier が行コメントの前に置く空白を足した `autonumber 5 %% touching`
+では数を読みます（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照）。
 印の前の空白の連なりは、空白 1 つで印字します。
@@ -1313,7 +1317,9 @@ mermaid.js は `#a;` をそのテキストの文字参照として読みます�
 `end` の前の `accDescr {…}` は、`end` を別の行にするとき、
 `accDescr: …` の形に印字します。
 外側のブロックの `else` や `and` の前にあるブロックでも同じです。
-`end` が行に残るときは、書いたままにします。
+`end` が行に残るときは、
+書いたままにします（詳しくは
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) を参照）。
 `accDescr {style:#x} end #a;` に空白 2 つが続いてテキストが終わる形を、
 1 行に残すのは、
 mermaid.js が `end #a;` を単独の行に置く同じテキストを拒否するためです（詳しくは
@@ -1413,6 +1419,7 @@ mermaid.js が `else` の前で `end #a;`
 説明ブロックの `}` や、その前の `;` に接する `end` や分かれ目（`else`、`and`、
 `option`）も、空白が離すときと同じに決めます。
 `accDescr {style:#x}end #a;` は、ブロックを書いたままにして 1 行に残します。
+コロンの形にすると `end` がテキストに入るからです。
 コメントが別の行にしても同じに読まれる `accDescr {style: x}end #;` は、
 `accDescr: style: x` と `end #;` の 2 行に印字します。
 分かれ目も同じで、`accDescr {style:#x}else x#a;` は 1 行に残します。
