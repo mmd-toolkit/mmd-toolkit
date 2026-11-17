@@ -111,17 +111,16 @@ flowchart LR
 `direction` の後に空白と `TB`、`BT`、`RL`、`LR`、
 `TD` のどれかが続くテキストを含み、方向の文ではない行は、
 字下げも含めて書かれたまま残します。
-
-[fixture: indentation/direction-text-values-kept]
-[fixture: indentation/direction-text-with-directive-kept]
-[fixture: indentation/acc-descr-block-direction-text-kept]
-
 `accTitle: t;direction TB` の行は字下げせずに保ちます。
 mermaid.js はアクセシビリティのタイトルを `t;direction TB` と読みますが、
 同じ行を空白 2 つで字下げすると空と読み、異なる図を描くためです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+
+[fixture: indentation/direction-text-values-kept]
+[fixture: indentation/direction-text-with-directive-kept]
+[fixture: indentation/acc-descr-block-direction-text-kept]
 
 入力
 ([indentation/direction-text-kept-input.mmd](../tests/fixtures/flowchart/indentation/direction-text-kept-input.mmd)):
@@ -887,8 +886,6 @@ mermaid.js はリンクのスタイルから `stroke:` を探し、
 書かれたまま残します。
 文の最初のスタイルでは、その名前と `:` の間の空白の有無も残します。
 空白の連続は空白 1 つにします。
-対象にする版に、
-そう始まるスタイルをノードのラベルのスタイルに入れるものがあるためです。
 `style A color   :red,fill:#f00` は `style A color : red, fill: #f00`
 と印字します。
 前に空白があるスタイルは、名前と `:` の間に空白があってもなくても、
@@ -925,10 +922,6 @@ mermaid.js はリンクのスタイルから `stroke:` を探し、
 名前と `:` の間に空白があるかないかを、書かれたまま残し、
 空白の連続は 1 つの空白にします。
 `linkStyle 0 fill  :#f00` は `linkStyle 0 fill : #f00` と印字します。
-対象にする版に、辺のラベルのスタイルを辺のスタイルから作り、
-その中の最初の `fill:` を `color:` に置き換えるものがあります。
-swimlane 図では、最初のスタイルの中だけを置き換えます。
-`fill :` は `fill:` ではないからです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 と [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
@@ -3219,14 +3212,15 @@ markdown 文字列や swimlane 図でも同じで、
 ブロックの前、ブロックの間、最後のブロックと `;` の間の空白がそうで、
 `subgraph "S"accDescr {} accDescr {}` と、
 `subgraph "U"accDescr {} ;` がその例です。
-
-[fixture: subgraph-header/whitespace-before-first-block-kept]
-
-ブロックは何のトークンも読まれず、その空白が名前の後に続くとみなされ、
-subgraph の id は `subGraph0` になり、空白がなければ `S` になります。
+`subgraph "S" accDescr {}` の空白を保ちます。
+mermaid.js は subgraph の id を `subGraph0` にしますが、
+`subgraph "S"accDescr {}` では `S` にするためです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+
+[fixture: subgraph-header/whitespace-before-first-block-kept]
+
 空白があることは残しますが、幅は、最初のブロックの前だけ、
 名前に続くものとして書かれたまま残し、ブロックの間や `;` の前の空白の連続は、
 空白 1 つにします。
@@ -3714,8 +3708,7 @@ flowchart と swimlane では、最後のスタイルと同じ行の `%%` コメ
 
 [fixture: style-trailing-whitespace/link-style-backslash-at-end-kept]
 
-mermaid.js がその空白を、
-並びの末尾の `,` の後の 1 つのスタイルとして読むときは、空白を保ちます。
+並びの末尾の `,` の後の空白を保ちます。
 取り除くと文が拒否されるからです。
 `style A fill:#f00, ` と `classDef c fill:x\, ` がそうです。
 

@@ -107,16 +107,14 @@ flowchart LR
 
 A line that holds `direction` followed by whitespace and `TB`, `BT`, `RL`, `LR`,
 or `TD`, but is not a direction statement, is kept as written, with its
-indentation.
+indentation. The line `accTitle: t;direction TB` stays unindented: mermaid.js
+reads its accessibility title as `t;direction TB`, but as empty when the same
+line is indented by two spaces, and draws a different figure (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: indentation/direction-text-values-kept] [fixture:
 indentation/direction-text-with-directive-kept] [fixture:
 indentation/acc-descr-block-direction-text-kept]
-
-The line `accTitle: t;direction TB` stays unindented: mermaid.js reads its
-accessibility title as `t;direction TB`, but as empty when the same line is
-indented by two spaces, and draws a different figure (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 Input
 ([indentation/direction-text-kept-input.mmd](../tests/fixtures/flowchart/indentation/direction-text-kept-input.mmd)):
@@ -872,8 +870,7 @@ A `style` styles a node, and uses the one form.
 
 A `style` keeps whether whitespace stands before a style that starts with
 `color:` or `text-align:`, and, for the first style of the statement, between
-such a name and the `:`, a run of whitespace becoming one space, since a version
-that counts puts a style that starts so in the style of the label of the node:
+such a name and the `:`, a run of whitespace becoming one space:
 `style A color   :red,fill:#f00` is printed `style A color : red, fill: #f00`. A
 style with whitespace before it does not start so, with the gap or without it:
 `style A fill:#f00, color :red` is printed `style A fill: #f00, color: red`. A
@@ -903,10 +900,7 @@ link.
 
 A `linkStyle` keeps whether whitespace stands between a name that ends with
 `fill` and the `:`, a run of whitespace becoming one space:
-`linkStyle 0 fill  :#f00` is printed `linkStyle 0 fill : #f00`. A version that
-counts makes the style of the label of a link from the styles of the link and
-puts `color:` in the place of the first `fill:` in them, or, in a swimlane
-diagram, in the first style only, and `fill :` is no `fill:` (see
+`linkStyle 0 fill  :#f00` is printed `linkStyle 0 fill : #f00` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)
 and
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
@@ -3104,13 +3098,13 @@ subgraph-header/name-whitespace-after-directive-kept]
 So does the whitespace around the empty description blocks written on the line
 of the header: before a block, between two blocks, and between the last block
 and a `;`, as in `subgraph "S"accDescr {} accDescr {}` and
-`subgraph "U"accDescr {} ;`.
+`subgraph "U"accDescr {} ;`. The space in `subgraph "S" accDescr {}` stays,
+since mermaid.js gives the subgraph the id `subGraph0`, but the id `S` in
+`subgraph "S"accDescr {}` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: subgraph-header/whitespace-before-first-block-kept]
 
-The blocks read no token, so that whitespace follows the name: the subgraph has
-the id `subGraph0`, and the id `S` without it (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 That the whitespace is there is kept; how wide it is, only before the first
 block, where it follows the name as written, and a run between two blocks or
 before a `;` becomes one space.
@@ -3579,9 +3573,9 @@ different styles when that final space after the backslash is removed (see
 
 [fixture: style-trailing-whitespace/link-style-backslash-at-end-kept]
 
-The whitespace is kept when mermaid.js reads it as a style of its own, after a
-`,` at the end of the list, because the statement would be rejected without it:
-in `style A fill:#f00, ` and in `classDef c fill:x\, `.
+The whitespace after a `,` at the end of the list is kept because the statement
+would be rejected without it: in `style A fill:#f00, ` and in
+`classDef c fill:x\, `.
 
 [fixture: style-trailing-whitespace/whitespace-only-value-kept] [fixture:
 style-trailing-whitespace/whitespace-only-value-in-link-style-kept] [fixture:
