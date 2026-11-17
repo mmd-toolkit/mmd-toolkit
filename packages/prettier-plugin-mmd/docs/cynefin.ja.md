@@ -20,7 +20,7 @@ mermaid.js は `cynefin-beta:` と `cynefin-beta` を同じ見出しとして読
 `;` か隠れた YAML ブロックの `---` が接するときは、コロンを保ちます。
 `%%{%%{wrap}%%init: {"label":"style:#keep"}}%%` の後では、
 `cynefin-beta:;complex 'Kept colon'` のコロンを保ちます。
-数える版の mermaid.js のうちいくつかが、
+対象にする版の mermaid.js のうちいくつかが、
 `cynefin-beta;complex 'Kept colon'` を拒否するためです（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照）。
@@ -1078,7 +1078,7 @@ cynefin-beta
 キーワードの直後の隙間は、書かれたままの空白を保ちます。
 `%%{%%{wrap}%%init: {"label":"style:#x"}}%%` の後では、
 `cynefin-beta ;complex "A"` の空白を保ちます。
-数える版の mermaid.js のうちいくつかが、
+対象にする版の mermaid.js のうちいくつかが、
 `cynefin-beta;complex "A"` を拒否するためです（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照）。
