@@ -767,6 +767,7 @@ sequenceDiagram
 間のディレクティブも、空白の間に残します。
 `A () ->> () B` はそのまま、`A   () ->> () B` は空白 3 つのまま、
 `A()->>()B` は `A() ->> ()B` と印字します。
+対象にする版の一部は、`()` を空白ごと隣の名前の一部として読むためです。
 詳しくは
 [中央接続のある sequence のメッセージ](./compatibility.ja.md#central-接続のある-sequence-のメッセージ)
 と
@@ -957,11 +958,15 @@ mermaid.js はテキストを両端の空白を除いて読みます。
 テキストが空のときは、`:` の後に何も置きません。
 ただし、`:` の後に、行末か整形ツールが落とす `;` まで、
 空白とタブだけがあるときは、空白を 1 文字（書かれた最初の文字）残します。
-`A->>B:` の後に空白 3 つが続く形は空のテキストとして受理されますが、
-対象にする版の一部は、
-コロンの後に空白のない `A->>B:` を拒否します（詳しくは
+`A->>B: ` はテキストが空のメッセージですが、
+対象にする版の一部は `A->>B:` を拒否するからです（その版のテキストの規則は 1
+文字以上を要り、後の版の規則は要りません。
+詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照）。
+ノートと `links`・`link`・`properties`・`details` の文も同じです。
+Chromium で解析すると、その文字のない形を、対象にする版の一部は拒否し、
+ほかの版は読みました。
 
 [fixture: colons/spaced] [fixture: colons/empty-text]
 [fixture: colons/whitespace-only-text]
@@ -1184,11 +1189,8 @@ sequenceDiagram
 [fixture: comments/line-ending-ignored-semicolon-trailing-whitespace-kept]
 
 文の後のコメントはその行に残し、印の前に空白が書かれているかどうかを保ちます。
-`autonumber 5%% touching` を `autonumber 5 %% touching` にすると、
-Db の開始番号と増分、
-図のテキストが変わるためです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照）。
+mermaid.js は `autonumber 5%% c` を数 5 なしで読み、
+`%%` の前に空白を入れると数を読むからです。
 印の前の空白の連なりは、空白 1 つで印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 
@@ -1320,11 +1322,6 @@ mermaid.js は `#a;` をそのテキストの文字参照として読みます�
 mermaid.js が `end #a;` を単独の行に置く同じテキストを拒否するためです（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照）。
-その末尾の空白 2 つがある `accDescr {style:#x} end #a;` のブロックを残すのは、
-mermaid.js が同じ末尾の空白を持つ `accDescr: style:#x end #a;`
-を拒否するためです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照）。
 
 [fixture: statements-one-per-line/end-comment-ignored-semicolon-no-gaps-in-style-rule-stretch-without-whitespace]
 [fixture: statements-one-per-line/end-comment-ignored-semicolon-no-gaps-in-style-rule-stretch]
@@ -1414,6 +1411,7 @@ mermaid.js が `else` の前で `end #a;`
 説明ブロックの `}` や、その前の `;` に接する `end` や分かれ目（`else`、`and`、
 `option`）も、空白が離すときと同じに決めます。
 `accDescr {style:#x}end #a;` は、ブロックを書いたままにして 1 行に残します。
+コロンの形にすると `end` がテキストに入るからです。
 コメントが別の行にしても同じに読まれる `accDescr {style: x}end #;` は、
 `accDescr: style: x` と `end #;` の 2 行に印字します。
 分かれ目も同じで、`accDescr {style:#x}else x#a;` は 1 行に残します。
@@ -1481,8 +1479,8 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
 を参照）。
 
 - `box` のテキストの末尾で、その前に空白があっても、そこまで。
-  `box red` の後に U+2028 があるとき、mermaid.js は塗りを `transparent` にし、
-  U+2028 がなければ `box red` の塗りは `red` です（詳しくは
+  テキストにこの文字がある box は、塗りが `transparent` で名前がなくなります。
+  なければ `box aqua` の塗りは `aqua` です（詳しくは
   [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
   を参照）。
   最後の文字より後の空白は落とします。
