@@ -249,9 +249,10 @@ Preserve other authored entry newlines in such a statement too, keeping the
 commented list as a block as written. Hidden boundaries, value lines and
 protected semicolon segments remain written, including their continuation
 columns. No continuation indentation is added inside a protected segment;
-ordinary spacing still applies after it. Shared joining checks also keep a
-terminal line containing another statement's semicolon: joining a preceding
-style-like label could change that statement's Db (see
+ordinary spacing still applies after it. Shared joining checks keep the three
+lines `curve c["style:#a"]{`, `1` and `} title tail;` separate, since mermaid.js
+reads the title as `tail` instead of `tail;` and draws different title text for
+`curve c["style:#a"]{ 1 } title tail;` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: radar/multi-line-statements/leading-trailing-entry-lines]
@@ -323,9 +324,11 @@ radar-beta
 
 Keep authored optional colons. Print `A: 1` with no ordinary space before the
 colon and one after, or `A 1` with one space and no alignment. This retains
-punctuation while giving equivalent padding a consistent form. Adding a colon is
-unsafe for axis names `accTitle` and `accDescr`: common composite tokens would
-take priority.
+punctuation while giving equivalent padding a consistent form. With axes
+`accTitle` and `accDescr`, `accTitle 1` in `curve c{accTitle 1, accDescr 2}`
+stays without a colon, since mermaid.js rejects
+`curve c{accTitle: 1, accDescr 2}` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: radar/named-entries/named-colon-gap]
 
