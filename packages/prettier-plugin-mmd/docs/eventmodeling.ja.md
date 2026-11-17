@@ -863,7 +863,8 @@ tf 01 evt Alpha accTitle:
 通常の `{}` への圧縮と閉じの整列は `EM_ACC_DESCR` の値を変えるためです。
 `accDescr {`、空白 1 個、タブ 1 個、LF、`  }` と続く形では、
 その空白類を保ちます。
-`accDescr {}` では、mermaid.js が描くアクセシビリティのテキストと、
+flowchart と class が空白類だけの説明に使う圧縮形 `accDescr {}` では、
+mermaid.js が描くアクセシビリティのテキストと、
 Db の `accDescr` の値が変わるためです（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください）。
@@ -1066,23 +1067,11 @@ CRLF は 1 単位、サロゲートペアは 2 単位と数えます。
 [fixture: default-size-branches/size-utf16-surrogate]
 
 50000 以上のときは、図のテキスト全体とその終わりを保ちます。
-長さ 50000 の図の `data D` で、第 1 列にある `first` はその列を保ちます。
-その行を空白 2 個で字下げすると、後続のコメントが Db のデータ値から除かれ、
-描画するテキスト、構造、
-形状が変わるためです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください）。
 
 [fixture: default-size-branches/size-preserving-to-fallback-unsafe]
 
 それ未満のときは、印字する計画の長さも 50000 未満に収まる場合だけ、
 通常の整形を行い、そうでなければ図のテキスト全体とその終わりを保ちます。
-長さ 49999 の図の `data D` で、第 1 列にある `x` はその列を保ちます。
-その行を空白 2 個で字下げすると、後続のコメントが Db のデータ値から除かれ、
-描画するテキスト、構造、
-形状が変わるためです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください）。
 
 [fixture: default-size-branches/size-below-planned-crossing]
 

@@ -844,7 +844,8 @@ selection point that bypasses shared `layoutDescriptionBlock`: its ordinary `{}`
 compaction and closer alignment would rewrite an EM_ACC_DESCR value. For
 `accDescr {` followed by a space, a tab, LF and `  }`, that whitespace stays:
 mermaid.js draws different accessibility text and changes the Db's `accDescr`
-value for `accDescr {}` (see
+value for `accDescr {}`, the compact form used for whitespace-only descriptions
+in flowchart and class diagrams (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 No diagram-local empty-block normalization replaces it.
 
@@ -1043,20 +1044,13 @@ default-size-branches/size-frontmatter-trivia-not-counted] [fixture:
 default-size-branches/size-directive-not-counted] [fixture:
 default-size-branches/size-utf16-surrogate]
 
-At or above 50000 retain the complete diagram text and its ending. For `first`
-at column one in `data D` in a diagram of length 50000, that column stays:
-indenting the line two spaces removes the following comment from the Db's data
-value and changes the rendered text, structure and geometry (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+At or above 50000 retain the complete diagram text and its ending.
 
 [fixture: default-size-branches/size-preserving-to-fallback-unsafe]
 
 Below it apply ordinary layout only when the planned printed measurement also
 stays strictly below 50000; otherwise retain the complete diagram and its
-ending. For `x` at column one in `data D` in a diagram of length 49999, that
-column stays: indenting the line two spaces removes the following comment from
-the Db's data value and changes the rendered text, structure and geometry (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+ending.
 
 [fixture: default-size-branches/size-below-planned-crossing]
 
