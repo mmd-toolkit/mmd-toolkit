@@ -5983,7 +5983,8 @@ Empty description blocks remain adjacent, with both `beforeBody` gaps retained,
 because they supply neither a significant statement nor a newline. Multiline
 argument values retain their lines and columns. Named-key exterior gaps retain
 their line breaks with ordinary continuation indentation; joining direction text
-can make an accepted input rejected even at column one (see
+can make every version of mermaid.js that counts reject an accepted input even
+at column one (see
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: c4/empty-description-blocks/empty-header-gap] [fixture:
