@@ -79,9 +79,12 @@ opener, as in class diagrams.
 A step follows `tabWidth` and `useTabs`, two spaces by default or one tab per
 level. Indentation does not determine usecase syntax, so `tabWidth: 0` stays
 zero; accessibility remains accessibility at column zero and after ASCII
-whitespace. YAML retains the shared minimum of one. Value and directive
-continuation columns stay authored; eligible JSON margins follow
-[JSON tables](#json-tables).
+whitespace. YAML retains the shared minimum of one. For a YAML block scalar
+title, the `x` line remains indented, since mermaid.js rejects the same line at
+column one (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Value and directive continuation columns stay authored; eligible JSON margins
+follow [JSON tables](#json-tables).
 
 [fixture: native-metadata/metadata-key-multiline-directive] [fixture:
 native-metadata/metadata-scalar-multiline-directive] [fixture:
@@ -1296,9 +1299,14 @@ boundaries normalize exterior whitespace by their sibling rules.
 [fixture: stereotypes/side-padding]
 
 Quoted/markdown values, JSON, native property strings, comments and directive
-contents keep their trailing characters.
+contents keep their trailing characters. For a markdown use case label, the two
+spaces after `first` at the end of its line stay, since mermaid.js draws
+different label text and geometry when that line ends directly after `first`
+(see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
-[test: usecase: terminal-comment-tab] [test: usecase: terminal-a11y-tab]
+[fixture: trailing-whitespace/trailing-values] [test: usecase:
+terminal-comment-tab] [test: usecase: terminal-a11y-tab]
 
 Unicode characters are not automatically exterior HWS; no dangling null CSS
 style is synthesized.

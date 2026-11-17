@@ -253,6 +253,7 @@ ELK の配置のパッケージのどのリリースも、
 | [use case](./usecase.ja.md#system-boundaries)               | `systemBoundary S` の角括弧内のタイトルが U+2028 と `x`                                                                                       | 同じ角括弧内のタイトルから U+2028 を除く        | [1](./printed-form.ja.md#1-記号の横の空白)            | 12.0.0 と 12.3.0 で形状・ARIA、12.3.0 で Db の `systemBoundaries[0].label` が異なる                                 | [test: usecase: U+2028 inside the brackets of a boundary title]                                                                                             |
 | [use case](./usecase.ja.md#direction-and-accessibility)     | `accTitle: first  last`                                                                                                                       | `accTitle: first last`                          | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 12.0.0 と 12.3.0 でタイトルの文字、12.3.0 で Db の `accTitle` が異なる                                              | [fixture: usecase/direction-and-accessibility/acctitle-inner-gap-kept]                                                                                      |
 | [use case](./usecase.ja.md#blank-lines)                     | markdown ラベルの `first` と字下げした `last` の間の空行                                                                                      | 同じラベルからその空行を除いた形                | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 12.0.0 と 12.3.0 で構造、12.3.0 で Db の `useCases[0].label` が異なる                                               | [fixture: usecase/blank-lines/blank-in-value]                                                                                                               |
+| [use case](./usecase.ja.md#trailing-whitespace)             | markdown ラベルの `first` の行末に空白 2 つ                                                                                                   | 同じ行を `first` の直後で終える                 | [1](./printed-form.ja.md#1-記号の横の空白)            | 12.0.0 と 12.3.0 で文字・形状・構造、12.3.0 で Db の `useCases[0].label` が異なる                                   | [fixture: usecase/trailing-whitespace/trailing-values]                                                                                                      |
 
 ## mermaid.js と違って読む入力
 
@@ -6081,16 +6082,12 @@ YAML の字下げは、`tabWidth: 0` でも 1 段に最低 1 つの空白を使�
 字下げはブロックスカラーと入れ子の値を表します。
 幅 0 では、Mermaid がブロックスカラーを拒否するか、
 title や設定の値が変わるためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 全図種に共通の下限で、読みを保ちます。
 
 [fixture: ishikawa/frontmatter-yaml/zero-width-block-scalar-title]
 [fixture: ishikawa/frontmatter-yaml/zero-width-nested-title]
 [fixture: ishikawa/frontmatter-yaml/zero-width-nested-config]
 [fixture: flowchart/frontmatter-yaml/zero-width-nested-title]
-[fixture: usecase/indentation/yaml-block-scalar-minimum]
 
 `---` の行が字下げされているときと、
 整形した YAML の行が `---` の行の形（仕様の

@@ -233,6 +233,7 @@ whatever the other versions are, so it has no row.
 | [use case](./usecase.md#system-boundaries)                     | the bracketed title of `systemBoundary S` starting with U+2028 then `x`                                                                                                      | the same bracketed title without U+2028                               | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 12.0.0 and 12.3.0 change SVG geometry and ARIA; 12.3.0 changes `systemBoundaries[0].label` in the Db        | [test: usecase: U+2028 inside the brackets of a boundary title]                                                                                             |
 | [use case](./usecase.md#direction-and-accessibility)           | `accTitle: first  last`                                                                                                                                                      | `accTitle: first last`                                                | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 12.0.0 and 12.3.0 draw different title text; 12.3.0 changes `accTitle` in the Db                            | [fixture: usecase/direction-and-accessibility/acctitle-inner-gap-kept]                                                                                      |
 | [use case](./usecase.md#blank-lines)                           | a blank line between `first` and the indented `last` in a markdown label                                                                                                     | the same label without that blank line                                | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 12.0.0 and 12.3.0 draw different structure; 12.3.0 changes `useCases[0].label` in the Db                    | [fixture: usecase/blank-lines/blank-in-value]                                                                                                               |
+| [use case](./usecase.md#trailing-whitespace)                   | two spaces after `first` at the end of its line in a markdown label                                                                                                          | the same line ending directly after `first`                           | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 12.0.0 and 12.3.0 change SVG text, geometry and structure; 12.3.0 changes Db `useCases[0].label`            | [fixture: usecase/trailing-whitespace/trailing-values]                                                                                                      |
 
 ## Inputs read differently from mermaid.js
 
@@ -5828,15 +5829,12 @@ The `---` lines are kept as written.
 YAML uses at least one space per indentation level, including with
 `tabWidth: 0`. Its indentation carries block scalars and nested values: zero
 width would make Mermaid reject a block scalar or change a title or
-configuration (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-This shared minimum preserves the reading for every diagram type.
+configuration. This shared minimum preserves the reading for every diagram type.
 
 [fixture: ishikawa/frontmatter-yaml/zero-width-block-scalar-title] [fixture:
 ishikawa/frontmatter-yaml/zero-width-nested-title] [fixture:
 ishikawa/frontmatter-yaml/zero-width-nested-config] [fixture:
-flowchart/frontmatter-yaml/zero-width-nested-title] [fixture:
-usecase/indentation/yaml-block-scalar-minimum]
+flowchart/frontmatter-yaml/zero-width-nested-title]
 
 The YAML is kept as written when the `---` lines are indented, and when a line
 of the formatted YAML has the form of a `---` line (the specification's
