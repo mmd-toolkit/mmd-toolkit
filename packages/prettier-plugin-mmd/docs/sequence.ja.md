@@ -582,11 +582,6 @@ sequenceDiagram
 
 文の 2 つのトークンの間で行の規則が無視する `;` は、直前のトークンに付けます。
 隙間に空白が書かれていれば後ろに空白 1 つを置き、なければ接したままにします。
-同じ行の前の部分に参加者の別名 `style:#x` があるとき、
-`Note left; of A: t` を残すのは、
-そこを `Note left;of A: t` にすると mermaid.js が拒否するためです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照）。
 
 [fixture: whitespace-between-tokens/ignored-semicolon-before-of-attached]
 [fixture: whitespace-between-tokens/ignored-semicolon-before-of-spaced-after-kept]
@@ -650,8 +645,8 @@ mermaid.js の正規表現が最後の `)` まで読むので、書かれたま�
 関数のほかにテキストがある `rect` も、書かれたままです。
 コンマの前、開き括弧 `(` の直後、閉じ括弧 `)` の直前の空白は、書かれたままです。
 `rect` の `rgb(191 ,223 ,255)` のコンマの前の空白を残すのは、
-mermaid.js が `rgb(191,223,255)` を Db
-の別のメッセージ値として読むためです（詳しくは
+対象にする版の mermaid.js のうちいくつかが、
+`rgb(191, 223, 255)` を Db の別のメッセージ値として読むためです（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照）。
 
@@ -826,10 +821,6 @@ mermaid.js の行の規則が `;` を無視する行は、
 [1 行に 1 文](#1-行に-1-文)に従います。
 `A ->> + B: style:#x;` は `A ->> +B: style:#x;` になり、
 `A () ->> () B: style:#x;;` は書かれたままです。
-対象にする版の一部では、`A() ->> ()B: style:#x;;` にすると、
-図のテキストと `name` 属性が変わるためです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照）。
 
 [fixture: arrow-spacing/touching-with-ignored-semicolon]
 
@@ -958,11 +949,13 @@ mermaid.js はテキストを両端の空白を除いて読みます。
 テキストが空のときは、`:` の後に何も置きません。
 ただし、`:` の後に、行末か整形ツールが落とす `;` まで、
 空白とタブだけがあるときは、空白を 1 文字（書かれた最初の文字）残します。
-mermaid.js は `A->>B:` の後に空白 3 つが続く形を受け入れますが、
-対象にする版の一部は、
-末尾の空白がない `A->>B:` を拒否します（詳しくは
+`A->>B: ` はテキストが空のメッセージですが、
+対象にする版の一部は `A->>B:` を拒否するからです（その版のテキストの規則は 1
+文字以上を要り、後の版の規則は要りません。
+詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照）。
+ノートと `links`・`link`・`properties`・`details` の文も同じです。
 Chromium で解析すると、その文字のない形を、対象にする版の一部は拒否し、
 ほかの版は読みました。
 
@@ -1061,7 +1054,8 @@ sequenceDiagram
 
 半角空白とタブだけのタイトルは、書かれたままにします。
 テキストの終わりで `title` の後に空白 2 つ、タブ、空白 1 つが続く形を残すのは、
-`title` だけの行を mermaid.js が拒否するためです（詳しくは
+対象にする版の mermaid.js はすべて、
+`title` だけの行を拒否するためです（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照）。
 
@@ -1187,11 +1181,8 @@ sequenceDiagram
 [fixture: comments/line-ending-ignored-semicolon-trailing-whitespace-kept]
 
 文の後のコメントはその行に残し、印の前に空白が書かれているかどうかを保ちます。
-mermaid.js は `autonumber 5%% touching` を数 5 なしで読み、
-Prettier が行コメントの前に置く空白を足した `autonumber 5 %% touching`
-では数を読みます（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照）。
+mermaid.js は `autonumber 5%% c` を数 5 なしで読み、
+`%%` の前に空白を入れると数を読むからです。
 印の前の空白の連なりは、空白 1 つで印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 
@@ -1317,17 +1308,11 @@ mermaid.js は `#a;` をそのテキストの文字参照として読みます�
 `end` の前の `accDescr {…}` は、`end` を別の行にするとき、
 `accDescr: …` の形に印字します。
 外側のブロックの `else` や `and` の前にあるブロックでも同じです。
-`end` が行に残るときは、
-書いたままにします（詳しくは
-[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) を参照）。
+`end` が行に残るときは、書いたままにします。
 `accDescr {style:#x} end #a;` に空白 2 つが続いてテキストが終わる形を、
-1 行に残すのは、
-mermaid.js が `end #a;` を単独の行に置く同じテキストを拒否するためです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照）。
-`accDescr {style:#x} end #a;` に同じ空白 2 つが続いてテキストが終わるとき、
-ブロックの形も残すのは、
-mermaid.js が代わりの `accDescr: style:#x end #a;` を拒否するためです（詳しくは
+1 行に残すのは、対象にする版の mermaid.js はすべて、
+`accDescr: style:#x` の後に `end #a;`
+を単独の行に置く形を拒否するためです（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照）。
 
@@ -1349,8 +1334,8 @@ mermaid.js が代わりの `accDescr: style:#x end #a;` を拒否するためで
 `and` 区切りの前で U+2028 が続く場合も同じです。
 エンティティがない `end #; %%{init: {}}%%` は、通常どおり別の行に移します。
 テキストの終わりで `accDescr {style:#x} end #12; %%{init: {}}%%` を 1
-行に残すのは、
-mermaid.js が `end #12; %%{init: {}}%%`
+行に残すのは、対象にする版の mermaid.js はすべて、
+`accDescr: style:#x` の後に `end #12; %%{init: {}}%%`
 を単独の行に置く形を拒否するためです（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照）。
@@ -1408,9 +1393,9 @@ mermaid.js の行の規則が読むかもしれない範囲に空白を含むと
 空白と `else` が次の行に続く `end #a;` は、テキストの終わりにあるときと同じく、
 引き金の行に残します。
 `accDescr {style:#x}` の後の `end #a;` に空白、タブ、次の `else` 行が続くとき、
-`end #a;` を説明ブロックと同じ行に残すのは、
-mermaid.js が `else` の前で `end #a;`
-を単独の行に置く形を拒否するためです（詳しくは
+`end #a;` を説明ブロックと同じ行に残すのは、対象にする版の mermaid.js はすべて、
+`accDescr: style:#x` の後に `end #a;` を `else`
+の前の単独の行に置く形を拒否するためです（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照）。
 
@@ -1424,8 +1409,9 @@ mermaid.js が `else` の前で `end #a;`
 `accDescr: style: x` と `end #;` の 2 行に印字します。
 分かれ目も同じで、`accDescr {style:#x}else x#a;` は 1 行に残します。
 `accDescr {style:#x}else x#a;` の分かれ目を同じ行に残すのは、
-`else x#a;` を単独の行にすると、
-Db と図の分かれ目のテキストが変わるためです（詳しくは
+対象にする版の mermaid.js はすべて、
+`accDescr: style:#x` の後に `else x#a;` を単独の行に置くと、
+分かれ目のテキストを違って描くためです（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照）。
 
@@ -1487,10 +1473,8 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
 を参照）。
 
 - `box` のテキストの末尾で、その前に空白があっても、そこまで。
-  `box red` の後に U+2028 が続くと塗りは `transparent` になり、
-  U+2028 がなければ `red` になります（詳しくは
-  [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-  を参照）。
+  テキストにこの文字がある box は、塗りが `transparent` で名前がなくなります。
+  なければ `box aqua` の塗りは `aqua` です。
   最後の文字より後の空白は落とします。
   `box` 以外のブロックの見出しは、mermaid.js がテキストの両端を取り除くので、
   文字は、テキストの末尾の空白と一緒に落とします（`loop x`、U+2028、
@@ -1865,11 +1849,6 @@ Mermaid はデータブロック全体の両端の空白を除くので、最初
 空の説明ブロックはそれぞれの規則に従います。
 CRLF と CR は `endOfLine` に従い、
 値内の Unicode の区切り文字は文字として保ちます。
-参加者のデータブロックの `"type":` と `"queue"` の間の U+2028 を残すのは、
-空白に替えると、Db の参加者の型と、図の構造、形状、
-スタイルが変わるためです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照）。
 
 [fixture: multi-line-values/data-surrounding-trivia]
 [test: data blocks: sequence U+2028] [test: data blocks: sequence CR]
