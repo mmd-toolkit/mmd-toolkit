@@ -87,11 +87,6 @@ class の[字下げ](./class.ja.md#字下げ)を再利用します。
 usecase では字下げが読みを決めないので、`tabWidth: 0` は 0 のままです。
 アクセシビリティは先頭列でも ASCII 空白の後でもアクセシビリティのままです。
 YAML は共有の最小幅 1 を保ちます。
-YAML のブロックスカラーのタイトルでは、`x` の行に字下げを残します。
-mermaid.js が同じ行を先頭列に置いた形を拒否するためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 値とディレクティブの継続行は書かれた列を保ち、
 対象となる JSON の余白は [JSON の表](#json-tables) に従います。
 
@@ -1388,15 +1383,8 @@ CSS 宣言のコロンの前後の余白は、
 
 引用と markdown の値、JSON、固有プロパティの文字列、コメント、
 ディレクティブ内の末尾の全文字は保ちます。
-markdown の use case ラベルでは、行末の `first` の後の空白 2 つを保ちます。
-mermaid.js が、その行を `first` の直後で終える形では、
-ラベルの文字と形状を異なって描くためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 
 [test: usecase: terminal-comment-tab] [test: usecase: terminal-a11y-tab]
-[fixture: trailing-whitespace/trailing-values]
 
 Unicode 文字を自動的に外側の水平空白とせず、空の CSS style も作りません。
 
