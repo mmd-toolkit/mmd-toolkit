@@ -209,11 +209,6 @@ requirementDiagram
 の手順 2 を参照してください。
 コメントかディレクティブがあれば改行を残し、
 構造の続きの行と間の注釈をフィールドより 1 段深く置きます。
-`text:` と `%% field comment` の間の改行は、
-`text: %% field comment` の次の行に `Checkout succeeds` を置くと mermaid.js
-が拒否するので残します（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照）。
 
 [fixture: fields/comment-and-directive-continuations]
 [fixture: fields/colon-touches-keyword]
@@ -657,11 +652,6 @@ style の文脈では、単位の中のディレクティブを拒否するか�
 [fixture: styles-and-classes/class-name-with-directive-kept]
 
 コメント行の隣の改行は残し、コメントと構造の続きの行を 1 段深く置きます。
-`class r` と `%% c` の間の改行は、
-`class r %% c` の次の行に `d` を置くと mermaid.js
-が拒否するので残します（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照）。
 
 [fixture: styles-and-classes/class-over-lines-with-comment-line-kept]
 
@@ -790,11 +780,6 @@ requirementDiagram
 
 ディレクティブやコメント行を含む方向の行は改行を残し、
 構造の続きの行を 1 段深く置きます。
-`direction` と `%% c` の間の改行は、
-`direction %% c` の次の行に `TB` を置くと mermaid.js
-が拒否するので残します（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照）。
 
 [fixture: direction/directive-and-comment-line-kept]
 
@@ -1071,13 +1056,13 @@ ER 図が mermaid.js の読まないテキストをブロックの中の自分�
 [fixture: empty-description-blocks/touching-kept]
 [fixture: empty-description-blocks/in-body-over-lines-joined]
 
-ディレクティブかコメント行を含むブロックは、その内容と改行を保ちます。
+コメント行を含むブロックは、その内容と改行を保ちます。
 独立した注釈をブロックの 1 段内側に置き、
 独立した `}` は `accDescr` にそろえます。
 requirement と element の本文にある空のブロックも同じです。
-`accDescr {` と `%% c` の間の改行は、`accDescr { %% c` の次の行に `}` を置くと、
-mermaid.js が説明を空ではなく `%% c` と読み、
-異なるテキストを描くので残します（詳しくは
+`accDescr {`、`%% c`、`}` を別々の行に残すのは、
+mermaid.js が `accDescr { %% c }` を空の説明ではなく `%% c` と読み、
+異なるテキストを描くためです（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照）。
 
@@ -1156,11 +1141,6 @@ requirementDiagram
 
 後の行に書かれたテキストは、`:` の後ろに寄せて 1 行にします。
 その前にコメント行があるときは、文を書かれたまま残します。
-`accTitle:` と `%% c` の間の改行は、
-`accTitle: %% c` の次の行に `T` を置くと mermaid.js
-が拒否するので残します（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照）。
 
 [fixture: accessibility-statements/text-on-next-line-joined]
 [fixture: accessibility-statements/text-with-comment-line-kept]

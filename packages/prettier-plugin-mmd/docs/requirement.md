@@ -213,10 +213,7 @@ after one space. The colon is the colon of a key: the line gives the field its
 one value (step 2 of
 [Which kind a colon is](./printed-form.md#which-kind-a-colon-is)). Comments or
 directives keep their line breaks; structural continuations and intervening
-trivia stand one level inside the field. The line break between `text:` and
-`%% field comment` stays, since mermaid.js rejects `text: %% field comment`
-followed by `Checkout succeeds` on the next line (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+trivia stand one level inside the field.
 
 [fixture: fields/comment-and-directive-continuations] [fixture:
 fields/colon-touches-keyword] [fixture: fields/spaces-around-colon-and-value]
@@ -649,10 +646,7 @@ rejects a directive inside a unit.
 [fixture: styles-and-classes/class-name-with-directive-kept]
 
 A line break next to a comment line stays, while the comment and structural
-continuations stand one level deeper. The line break between `class r` and
-`%% c` stays, since mermaid.js rejects `class r %% c` followed by `d` on the
-next line (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+continuations stand one level deeper.
 
 [fixture: styles-and-classes/class-over-lines-with-comment-line-kept]
 
@@ -779,10 +773,7 @@ A value written on a later line is printed after `direction` on one line.
 [fixture: direction/value-on-next-line-joined]
 
 A direction line with a directive or comment keeps its line breaks and indents
-structural continuations one level deeper. The line break between `direction`
-and `%% c` stays, since mermaid.js rejects `direction %% c` followed by `TB` on
-the next line (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+structural continuations one level deeper.
 
 [fixture: direction/directive-and-comment-line-kept]
 
@@ -1057,12 +1048,12 @@ interiors] [fixture: empty-description-blocks/inner-whitespace-collapsed]
 empty-description-blocks/touching-kept] [fixture:
 empty-description-blocks/in-body-over-lines-joined]
 
-A block containing comments or directives keeps their contents and line breaks;
-standalone trivia is one level inside the block and a separate `}` aligns with
-`accDescr`, including an empty block within a requirement or element body. The
-line break between `accDescr {` and `%% c` stays, since mermaid.js reads
-`accDescr { %% c` followed by `}` on the next line as the description `%% c`
-instead of an empty description and draws different text (see
+A block containing a comment line keeps its contents and line breaks; standalone
+trivia is one level inside the block and a separate `}` aligns with `accDescr`,
+including an empty block within a requirement or element body. `accDescr {`,
+`%% c`, and `}` stay on separate lines, since mermaid.js reads
+`accDescr { %% c }` as the description `%% c` instead of an empty description
+and draws different text (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: empty-description-blocks/in-body-with-directive-line] [fixture:
@@ -1139,10 +1130,7 @@ The text holds `;`, `#`, and `%%` as characters.
 [fixture: accessibility-statements/special-characters-in-text]
 
 A text written on a later line is printed after the `:` on one line, and a
-comment line before it makes the statement kept as written. The line break
-between `accTitle:` and `%% c` stays, since mermaid.js rejects `accTitle: %% c`
-followed by `T` on the next line (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+comment line before it makes the statement kept as written.
 
 [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept]
