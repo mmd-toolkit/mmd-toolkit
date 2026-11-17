@@ -90,9 +90,6 @@ retain their authored columns, apart from the block-body margin adjustment in
 indented two spaces (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
-[fixture:
-eventmodeling/qualified-names/hidden-before-title-segment-keep-no-prefix-space]
-
 [fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]
 
 [fixture: eventmodeling/indentation/mixed-top-level-blocks]
@@ -887,9 +884,6 @@ mermaid.js rejects `accDescr: D` without it (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A fallback percent comment stays a comment.
 
-[fixture:
-eventmodeling/hidden-forms/hidden-next-common-keep-consumed-lf-padding]
-
 Forms at authored body boundaries keep their line through GWT clause and item
 openings too. The header and nested bodies share that decision so moving an item
 cannot remove an enclosing opening's protection on the next formatting.
@@ -1054,9 +1048,12 @@ ending.
 
 [fixture: default-size-branches/size-below-planned-crossing]
 
-This keeps indentation or the final line break from moving the text across the
-limit, where the comment lines in a value would be removed and the Db would
-change. The boundary itself is covered by the corpus, also with CRLF, an inline
+For `data D` with a first body line `first` in a diagram measuring 50000 units,
+or `x` in one measuring 49999 units, that line stays at column one: mermaid.js
+removes the comment line from the Db's data value and draws different text,
+structure and geometry when that line is indented two spaces (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The boundary itself is covered by the corpus, also with CRLF, an inline
 directive and frontmatter.
 
 [corpus fixture: eventmodeling/comment-default-size-equal] [corpus fixture:
@@ -1162,10 +1159,6 @@ spaces (see
 For ` accDescr: style:#x;` after a `data D` block and LF, the leading space
 stays, since mermaid.js rejects `accDescr: style:#x;` without it (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-
-[fixture: eventmodeling/semicolons/protected-gwt-title-hidden-gap-remains-zero]
-[fixture:
-eventmodeling/semicolons/protected-metadata-prefix-is-value-whitespace]
 
 A line that holds a `;` keeps its statements together, also where the `;` stands
 in the last line of a description block over several lines and a statement

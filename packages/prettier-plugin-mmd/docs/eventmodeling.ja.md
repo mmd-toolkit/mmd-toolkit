@@ -99,8 +99,6 @@ mermaid.js が拒否するためです（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください）。
 
-[fixture: eventmodeling/qualified-names/hidden-before-title-segment-keep-no-prefix-space]
-
 [fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]
 
 [fixture: eventmodeling/indentation/mixed-top-level-blocks]
@@ -908,8 +906,6 @@ GWT 節・項目の隙間を保ちます。
 を参照してください）。
 代替の扱いのパーセントコメントはコメントのままです。
 
-[fixture: eventmodeling/hidden-forms/hidden-next-common-keep-consumed-lf-padding]
-
 本文境界の形が保つ行は、GWT 節と項目の開きでも保ちます。
 見出しと入れ子の本文で同じ判断を使い、
 項目の移動によって次の整形で外側の開きの保護が失われないようにします。
@@ -1075,8 +1071,13 @@ CRLF は 1 単位、サロゲートペアは 2 単位と数えます。
 
 [fixture: default-size-branches/size-below-planned-crossing]
 
-字下げや末尾の改行で上限を越えると、
-値の中のコメント行が除かれて Db が変わるので、それを防ぎます。
+`data D` の本文の第 1 行が `first` で図の長さが 50000 単位の場合と、
+第 1 行が `x` で長さが 49999 単位の場合、その行は第 1 列に保ちます。
+空白を 2 個足した形では、mermaid.js が Db のデータ値からコメント行を除き、
+異なるテキスト、構造、
+形状を描くためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 境界そのものはコーパスが、CRLF、行の中のディレクティブ、
 フロントマターの場合も含めて確かめます。
 
@@ -1187,9 +1188,6 @@ mermaid.js が拒否するためです（詳しくは
 mermaid.js が拒否するためです（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください）。
-
-[fixture: eventmodeling/semicolons/protected-gwt-title-hidden-gap-remains-zero]
-[fixture: eventmodeling/semicolons/protected-metadata-prefix-is-value-whitespace]
 
 `;` を含む行は、その行の文をまとめて残します。
 複数行の description block の最後の行に `;` があり、
