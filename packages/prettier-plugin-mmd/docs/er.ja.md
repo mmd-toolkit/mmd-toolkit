@@ -1849,14 +1849,8 @@ agentflow、usecase に合わせます。
 
 [test: accessibility revisions: er empty-description-nbsp]
 
-ほかに内容がない `accDescr` ブロックにコメント行がある場合は、
-改行と完全な内容を保ち、普通の独立した注釈類はブロックの内側にそろえます。
-`accDescr {`、`%% a comment line`、`}` が別々の行にある形では、
-mermaid.js は空の説明を読みますが、
-`accDescr { %% a comment line }` では `%% a comment line` を説明として読みます。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
+コメントやディレクティブがあるブロックは、改行と完全な内容を保ち、
+普通の独立した注釈類はブロックの内側にそろえます。
 
 [fixture: accessibility-statements/empty-blocks]
 [fixture: accessibility-statements/empty-block-with-directive-or-comment-line]

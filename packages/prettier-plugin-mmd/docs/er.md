@@ -1869,12 +1869,8 @@ and usecase.
 
 [test: accessibility revisions: er empty-description-nbsp]
 
-An otherwise empty `accDescr` block with a comment line keeps its line breaks
-and complete contents, while ordinary standalone trivia aligns inside the block.
-With `accDescr {`, `%% a comment line`, and `}` on separate lines, mermaid.js
-reads an empty description; in `accDescr { %% a comment line }`, it reads
-`%% a comment line` as the description instead (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Blocks with comments or directives keep their line breaks and complete contents,
+while ordinary standalone trivia aligns inside the block.
 
 [fixture: accessibility-statements/empty-blocks] [fixture:
 accessibility-statements/empty-block-with-directive-or-comment-line] [corpus
