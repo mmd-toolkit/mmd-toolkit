@@ -728,13 +728,16 @@ agentflow-beta TB
 
 Reuse [Whitespace between tokens](./flowchart.md#whitespace-between-tokens) and
 [Kept as written](./flowchart.md#kept-as-written): touching is lexical, and
-whitespace on both sides of & distinguishes a group from one id. Keep tight
-id/shape/:::/data suffixes, property Identifiers, actual comma-list holes
-(including empty ends), comma-bearing single ids, occurrences and order. Do not
-split ids, sort lists or manufacture a trailing comma: a style target, a class
-suffix, a second class id or a vertex id that contains commas is one Identifier,
-and only the grammar's own id lists split at commas; property operands are
-Identifiers, not numbers to rewrite.
+whitespace on both sides of & distinguishes a group from one id. `A&B` stays
+without spaces, since mermaid.js reads `A & B` as two vertices `A` and `B`
+instead of one vertex `A&B` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Keep tight id/shape/:::/data suffixes, property Identifiers, actual comma-list
+holes (including empty ends), comma-bearing single ids, occurrences and order.
+Do not split ids, sort lists or manufacture a trailing comma: a style target, a
+class suffix, a second class id or a vertex id that contains commas is one
+Identifier, and only the grammar's own id lists split at commas; property
+operands are Identifiers, not numbers to rewrite.
 
 [fixture: vertices-and-lists/class-list-holes] [fixture:
 vertices-and-lists/groups-suffixes]
@@ -791,15 +794,11 @@ For a block whose opener is immediately followed by a newline, move all body
 lines by the same number of ASCII spaces so the shallowest text is one level
 inside the statement, including in a `flow` body. Nested YAML keeps its relative
 indentation; a separate `}` aligns with the statement, and a closer after text
-moves with that line. For nested YAML, `y: 1` stays indented beneath `x:`, since
-mermaid.js reads the same lines at equal indentation with separate metadata keys
-`x` and `y` instead of `y` inside `x` (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+moves with that line.
 
 [fixture: metadata-blocks/zero-and-shallow] [fixture:
 metadata-blocks/deep-nested-yaml] [fixture: metadata-blocks/closing-after-text]
-[fixture: metadata-blocks/connector-multiline] [fixture:
-metadata-blocks/nested-yaml-kept]
+[fixture: metadata-blocks/connector-multiline]
 
 The other shared movement conditions and their reasons are in
 [Data blocks](./flowchart.md#data-blocks): keep inline-opening blocks, embedded

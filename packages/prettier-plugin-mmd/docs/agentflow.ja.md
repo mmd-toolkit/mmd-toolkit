@@ -749,6 +749,12 @@ agentflow-beta TB
 [書かれたまま残すもの](./flowchart.ja.md#書かれたまま残すもの)
 と同じ規則と理由です。
 接触は字句の区別で、&の両側の空白がグループと1つのIDを分けます。
+`A&B` は空白のないまま保ちます。
+mermaid.js は `A & B` を、1 つの頂点 `A&B` ではなく、
+2 つの頂点 `A` と `B` として読むためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 ID、形、:::、データの接触、プロパティのIdentifier、
 実際のコンマ区切りリストの穴と空の両端、コンマを含む単一ID、
 出現と順序を保ちます。
@@ -821,18 +827,11 @@ mermaid.js は `A@{%%{init: {}}%%x: 1}` を、
 `flow` の本文でも同じです。
 入れ子の YAML の字下げの差を保ち、単独行の `}` は文の段に揃え、
 本文の後の閉じ括弧はその行と一緒に動かします。
-入れ子の YAML では、`y: 1` を `x:` の下に字下げしたまま保ちます。
-mermaid.js は同じ行を同じ深さに揃えた形を、`x` の中の `y` ではなく、
-別々のメタデータのキー `x` と `y` として読むためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 
 [fixture: metadata-blocks/zero-and-shallow]
 [fixture: metadata-blocks/deep-nested-yaml]
 [fixture: metadata-blocks/closing-after-text]
 [fixture: metadata-blocks/connector-multiline]
-[fixture: metadata-blocks/nested-yaml-kept]
 
 ほかの移動条件と理由は、
 [データブロック](./flowchart.ja.md#データブロック)に従います。
