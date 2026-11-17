@@ -840,8 +840,8 @@ line; any other line break is joined as usual, also in a statement that holds a
 of it stays. The same decision applies to a `;` in another statement on its
 final line (see [Statements one per line](#statements-one-per-line)). The form
 `style \n: [0.2, 0.7]; title x:#y;` (with `\n` for a line break) stays instead
-of `  style: [0.2, 0.7]; title x:#y;`, since mermaid.js draws different title
-text for the latter (see
+of `  style: [0.2, 0.7]; title x:#y;`, since every version of mermaid.js that
+counts draws different title text for the latter (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: multi-line-statements/breaks-decided-one-by-one] [fixture:
@@ -860,8 +860,8 @@ keeps the statement as written too: `classDef A`, U+2028, `%% c`, and a line
 indented, and a statement after it is printed on a line of its own. The form
 `classDef A\u2028%% c\nBar color: #ff0000` (with `\u2028` for U+2028 and `\n`
 for a line break) stays instead of
-`  classDef A\u2028%% c\n  Bar color: #ff0000`, since mermaid.js rejects the
-latter (see
+`  classDef A\u2028%% c\n  Bar color: #ff0000`, since some of the versions of
+mermaid.js that count reject the latter (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [test: a comment line after U+2028 inside the name of a class] [test: a comment
@@ -1177,7 +1177,8 @@ and the name of a class; but around the `:`, the brackets, and the comma of a
 point, and around the colon and the brace of an accessibility statement,
 mermaid.js reads them as whitespace, and a space is printed in their place. The
 form `quadrant-1 a\u00a0b` (with `\u00a0` for U+00A0) stays instead of
-`  quadrant-1 a b`, since mermaid.js draws different text for the latter (see
+`  quadrant-1 a b`, since every version of mermaid.js that counts draws
+different text for the latter (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 After the `]` of a point they are not accepted (see
 [Line separators](#line-separators)).
