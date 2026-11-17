@@ -432,8 +432,8 @@ wardley-beta
 Keep the interior of each +'label'>, +'label'< or +'label'<> flow as written:
 empty labels, padding, backslashes and physical continuation columns included.
 Root directives between its complete components retain their source boundaries.
-Ordinary inserted spaces reject the composite unit, and trimming content changes
-the Db (see
+In `Alpha+' F  G\n\q '>Beta`, the quotes stay next to `+` and `>`, since
+mermaid.js rejects `Alpha+ ' F  G\n\q ' >Beta` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Keep both ports and the semicolon label even when flow precedence hides them.
 
@@ -958,8 +958,8 @@ wardley-beta
 Remove harmless exterior ASCII padding after the header, completed structures
 and description closers. Decide by owner: preserve link-label tails, string/flow
 contents, comments, directives, hidden interiors, required closer padding and
-protected stretches. Trimming every physical line can change the Db or reject a
-whitespace-only link label (see
+protected stretches. The three spaces after `Alpha -> Beta;` at EOF stay, since
+mermaid.js rejects `Alpha -> Beta;` at EOF without them (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: wardley/trailing-whitespace/trailing-exterior]
@@ -1074,8 +1074,9 @@ wardley-beta
 
 Do not wrap at printWidth. Keep physical string and flow contents, continuation
 columns and interior blank lines. Description bodies use the shared indentation
-above. Visible LF between ordinary statement components can reject the input,
-and reindenting value continuations changes the Db (see
+above. In the long component statement below, the coordinate pair
+`[0.123456789012345,0.987654321098765]` stays on one line, since mermaid.js
+rejects the same statement with LF after `0.123456789012345,` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Long component/evolution statements stay unwrapped; description openers and
 closers use Accessibility.
