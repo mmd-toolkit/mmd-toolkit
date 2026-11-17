@@ -148,7 +148,8 @@ packet
 大域的な注釈類と隠れた形の境界は詰めずに保ちます。
 消費される LF は通常の空白ではないためです。
 `0%%{!left}%% -%%{!right}%% 2:"Hidden dash"` は、
-mermaid.js が `0%%{!left}%%-%%{!right}%% 2:"Hidden dash"` を拒否するので、
+数える版の mermaid.js のうちいくつかは
+`0%%{!left}%%-%%{!right}%% 2:"Hidden dash"` を拒否するので、
 `-` の前の空白を残します。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
@@ -178,8 +179,8 @@ packet
 `count` の数字は原綴を保ちます。
 大域的な注釈類と隠れた形の接触状態と消費 LF は保ちます。
 `+%%{!count}%% 3:"Hidden plus"` は、
-mermaid.js が `+%%{!count}%%3:"Hidden plus"` を拒否するので、
-隠れた形の後の空白を残します。
+数える版の mermaid.js のうちいくつかは `+%%{!count}%%3:"Hidden plus"`
+を拒否するので、隠れた形の後の空白を残します。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
@@ -216,8 +217,8 @@ packet
 を参照してください。
 注釈類がある隙間は境界を保ちます。
 `0%%{!before}%% :%%{!after}%% "Gap"` は、
-mermaid.js が `0%%{!before}%%:%%{!after}%% "Gap"` を拒否するので、
-`:` の前の空白を残します。
+数える版の mermaid.js のうちいくつかは `0%%{!before}%%:%%{!after}%% "Gap"`
+を拒否するので、`:` の前の空白を残します。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
