@@ -375,7 +375,8 @@ block-beta
 間に書かれた空白（タブ、改行）はどれも同じです。
 mermaid.js はそこのどの空白も同じに読むので、形は 1 行になります。
 `space:2` は `:` を接して印字します。
-mermaid.js は `space :2` と `space: 2` を拒否するからです。
+対象にする版の mermaid.js はすべて、
+`space :2` と `space: 2` を拒否するからです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
@@ -665,7 +666,7 @@ block-beta
 既存の `B` が見つからず、図に載らない新しいブロックに class を付け、
 `class A c   d` のクラス名は `c   d` で、
 `class A , B   c1` のクラス名は `, B   c1` です。
-`A` の後の空白が id を終わらせるからです。
+対象にする版の mermaid.js はすべて、`A` の後の空白が id を終わらせるからです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。

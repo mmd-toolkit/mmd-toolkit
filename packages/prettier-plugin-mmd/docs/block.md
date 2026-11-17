@@ -356,7 +356,8 @@ block-beta
 `columns` is followed by its number or `auto` after one space, whatever
 whitespace was written between them (a tab, a line break): mermaid.js reads any
 whitespace there, and the form is one line. `space:2` is printed with the `:`
-touching, as mermaid.js rejects `space :2` and `space: 2` (see
+touching, as every version of mermaid.js that counts rejects `space :2` and
+`space: 2` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A `space` and a `columns` are never moved to another place: the last `columns`
 of a block is its columns, wherever it stands, and the order of the blocks is
@@ -624,7 +625,8 @@ In a `style` and a `class` the whitespace is in the Db.
 ` stroke:#333`; `class A, B c1` looks up the id ` B` with its whitespace, finds
 no block `B`, and gives the class to a new block that the diagram does not show;
 and the class name of `class A c   d` is `c   d`, and that of `class A , B   c1`
-is `, B   c1`, since the whitespace after `A` ends the ids (see
+is `, B   c1`, since in every version of mermaid.js that counts the whitespace
+after `A` ends the ids (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 In a `classDef` or a `style` statement, each style has no whitespace before its
 first `:` and one space after it where the value is not empty. The `,` between
