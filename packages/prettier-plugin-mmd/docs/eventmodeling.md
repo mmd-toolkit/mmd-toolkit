@@ -70,13 +70,14 @@ eventmodeling tf 01 evt A %%{{x}}%%
 Start ordinary top-level statements at column one: frames, model entities,
 `data`, `note` and `gwt`.
 
-For `data D {`, LF, `x`, LF and `}`, the closer stays at column one, since
-mermaid.js rejects the same block with two spaces before `}` (see
+The pinned Mermaid requires `data` and `note` block closers at column one; the
+formatter aligns their headers there and keeps peer statements at the same level
+to avoid suggesting a hierarchy. For `data D {`, LF, `x`, LF and `}`, the closer
+stays at column one, since mermaid.js rejects the same block with two spaces
+before `}` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-The formatter aligns block headers there and keeps peer statements at the same
-level to avoid suggesting a hierarchy. Reconsider this choice if the pinned
-Mermaid later accepts whitespace before block closers, checking that raw body
-values and rendering remain unchanged.
+Reconsider this choice if the pinned Mermaid later accepts whitespace before
+block closers, checking that raw body values and rendering remain unchanged.
 
 GWT clauses use one configured step and items two. Ordinary structural
 continuation lines, including a line completing a `data` or `note` header, stand
@@ -496,8 +497,9 @@ tf 01 evt End
 Print each inline body from its complete source span, retaining braces or
 quotes, backslashes, padding, empty forms and native-looking text. `singleQuote`
 does not rewrite these terminals. The lexer takes the last matching same-line
-closer: apparent later frames inside that span are data, not statements. For
-`tf 01 evt Alpha {x} tf 02 evt Beta {y}`, the inline value
+closer: apparent later frames inside that span are data, not statements.
+Trimming, requoting or splitting that text changes the raw terminal in the Db.
+For `tf 01 evt Alpha {x} tf 02 evt Beta {y}`, the inline value
 `{x} tf 02 evt Beta {y}` stays on one line: LF before `tf 02 evt Beta {y}`
 changes the Db's first data value to `{x}`, adds a frame and changes the
 figure's structure and geometry (see
@@ -635,12 +637,12 @@ which splits it at every space and drops the empty pieces
 A run of spaces at the start of a line after the first therefore draws as one
 space, whatever its length, and no space at all draws as none. The spaces at the
 start of the first line draw as none. Both texts of each case were drawn with
-mermaid.js in Chromium, and the SVG, without the generated ids, and the pixels
-were the same for a margin of another length on every line and for a margin
-added to the first line; a margin added to a later line that had none changed
-the figure, which is why such a body stays as written. The tests compare the Db
-of the printed text with the margins of the bodies restored from the Db of the
-written text (`eventmodelingDbForFormattingComparison` in
+mermaid.js 12.3.0 in Chromium, and the SVG, without the generated ids, and the
+pixels were the same for a margin of another length on every line and for a
+margin added to the first line; a margin added to a later line that had none
+changed the figure, which is why such a body stays as written. The tests compare
+the Db of the printed text with the margins of the bodies restored from the Db
+of the written text (`eventmodelingDbForFormattingComparison` in
 `tests/eventmodeling-data-margins.ts`). When the pinned mermaid.js is updated,
 draw both texts of each case again before the exception stays.
 
@@ -804,10 +806,7 @@ value when the gap is removed (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 EM_ACC_TITLE and EM_ACC_DESCR include these parts in their values. An empty
 payload is still a nonempty terminal; the colon form is not converted into a
-description block. LS/PS inside line values remain content. For `accDescr: A`
-followed by U+2028 and `B`, U+2028 stays, since mermaid.js rejects the same
-value with LF in its place (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+description block. LS/PS inside line values remain content.
 
 [fixture: eventmodeling/accessibility-lines/accessibility-lines-exact]
 
@@ -1048,10 +1047,12 @@ ending.
 
 [fixture: default-size-branches/size-below-planned-crossing]
 
-For `data D` with a first body line `first` in a diagram measuring 50000 units,
-or `x` in one measuring 49999 units, that line stays at column one: mermaid.js
-removes the comment line from the Db's data value and draws different text,
-structure and geometry when that line is indented two spaces (see
+This keeps indentation or the final line break from moving the text across the
+limit, where the comment lines in a value would be removed and the Db would
+change. For `data D` with a first body line `first` in a diagram measuring 50000
+units, or `x` in one measuring 49999 units, that line stays at column one:
+mermaid.js removes the comment line from the Db's data value and draws different
+text, structure and geometry when that line is indented two spaces (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The boundary itself is covered by the corpus, also with CRLF, an inline
 directive and frontmatter.
