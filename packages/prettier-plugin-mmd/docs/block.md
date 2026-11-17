@@ -618,6 +618,9 @@ block-beta
 class or the id, and one space; the whitespace after the keyword and before the
 first style is not in the Db, so it becomes one space. The styles of `classDef`
 and `style` use the spacing below; the value of a `class` is printed as written.
+`class A,B c1` stays, since every version of mermaid.js that counts draws
+`class A, B c1` differently (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Terminators follow
 [Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement).
 In a `style` and a `class` the whitespace is in the Db.
@@ -625,13 +628,11 @@ In a `style` and a `class` the whitespace is in the Db.
 ` stroke:#333`; `class A, B c1` looks up the id ` B` with its whitespace, finds
 no block `B`, and gives the class to a new block that the diagram does not show;
 and the class name of `class A c   d` is `c   d`, and that of `class A , B   c1`
-is `, B   c1`, since in every version of mermaid.js that counts the whitespace
-after `A` ends the ids (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-In a `classDef` or a `style` statement, each style has no whitespace before its
-first `:` and one space after it where the value is not empty. The `,` between
-styles has no whitespace before it and one space after it, as in ER and
-requirement (see [Styles and classes](./er.md#styles-and-classes)):
+is `, B   c1`, since the whitespace after `A` ends the ids. In a `classDef` or a
+`style` statement, each style has no whitespace before its first `:` and one
+space after it where the value is not empty. The `,` between styles has no
+whitespace before it and one space after it, as in ER and requirement (see
+[Styles and classes](./er.md#styles-and-classes)):
 `classDef c fill:#f00 , color:white` is printed
 `classDef c fill: #f00, color: white`, and the styles of a `style` statement use
 the same form. A run of spaces and tabs between the words of a style is printed

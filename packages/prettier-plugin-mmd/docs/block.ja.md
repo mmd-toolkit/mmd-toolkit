@@ -659,6 +659,11 @@ block-beta
 空白 1 つにします。
 `classDef` と `style` のスタイルは下の空白の規則に従い、
 `class` の値は書かれたまま印字します。
+`class A,B c1` を残すのは、対象にする版の mermaid.js のすべてが、
+`class A, B c1` を違って描くためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 終端は[スタイル文の末尾のセミコロン](#スタイル文の末尾のセミコロン)に従います。
 `style` と `class` の空白は Db に入ります。
 `style A fill:#f00 , stroke:#333` のスタイルは、
@@ -666,10 +671,7 @@ block-beta
 既存の `B` が見つからず、図に載らない新しいブロックに class を付け、
 `class A c   d` のクラス名は `c   d` で、
 `class A , B   c1` のクラス名は `, B   c1` です。
-対象にする版の mermaid.js はすべて、`A` の後の空白が id を終わらせるからです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
+`A` の後の空白が id を終わらせるからです。
 `classDef` 文と `style` 文では、各スタイルの最初の `:` の前に空白を置かず、
 値が空でなければ、後ろに空白を 1 つ置きます。
 スタイルを区切る `,` は、ER と requirement と同じく、
