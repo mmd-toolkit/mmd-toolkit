@@ -261,16 +261,16 @@ or is drawn differently by one of them. Three such cases are:
 
 Every such case has a row in
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count),
-and the row names the versions that the form is kept for. A form that the pinned
-version itself rejects, reads, or draws differently has a row too, which names
-the pinned version and the other form that was run, so that the form is checked
-again when the pinned version is raised or the versions that count change. The
-versions that a form is kept for are named in that table only: the document of a
-diagram type gives the reason and points to the row. A record of a check may say
-with how many versions, and with which, a text was drawn, since nothing changes
-there when a version stops counting. When the pinned version is raised and none
-of the versions of a row counts any longer, the rule is taken out, and the form
-is the one that the rules above give.
+and the row names the versions that the form is kept for, the pinned version
+among them where it needs the form too. A form that the pinned version itself
+rejects, reads, or draws differently stays whatever the other versions are, and
+its row is run again when the pinned version is raised or the versions that
+count change. The versions that a form is kept for are named in that table only:
+the document of a diagram type gives the reason and points to the row. A record
+of a check may say with how many versions, and with which, a text was drawn,
+since nothing changes there when a version stops counting. When the pinned
+version is raised and none of the versions of a row counts any longer, the rule
+is taken out, and the form is the one that the rules above give.
 
 The CHANGELOG.md of mermaid.js, or the history of its grammar, shows which
 version added or changed a form.
