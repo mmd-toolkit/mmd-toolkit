@@ -2472,6 +2472,13 @@ erDiagram
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-outside-line-rule-kept]
 
 同じ行でセミコロンの後にディレクティブが続く場合は、`;` を保ちます。
+ディレクティブの後の改行は、最後の style の末尾に空白があるときと同じく、
+style の続きになります（[スタイルとクラス](#スタイルとクラス)を参照）。
+次の行は書かれた桁に残り、その行の中身は最後の style に属します。
+そのため `classDef c fill:#f00; %%{init: {}}%%` の次の `B` は、
+実体ではなく色 `#f00B` の最後の桁で、
+色のほかの桁と同じく `b` と印字します
+（[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
 
 [fixture: semicolons-at-the-end-of-a-style-statement/trailing-items-kept]
 
