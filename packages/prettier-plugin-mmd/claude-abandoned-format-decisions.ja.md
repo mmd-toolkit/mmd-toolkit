@@ -1047,7 +1047,7 @@ wardleyである。
 
 ### D45. コメントや隠れた形を同じ隙間の中で元の行に残すか
 
-51件の形があり、図種はagentflow、architecture、block、c4、class、er、
+52件の形があり、図種はagentflow、architecture、block、c4、class、er、
 eventmodeling、flowchart、gitgraph、info、ishikawa、journey、packet、quadrant、
 radar、railroad、requirement、state、timeline、treemap、usecase、wardley、
 xychartである。
@@ -1058,6 +1058,7 @@ xychartである。
 | block         | [形（block.ja.md）](./docs/block.ja.md#形)                                                                                                                           | `block-beta\na<[\"a\"]>(right\n%% c\n,down)\nb<[\"b\"]>(right,\n%% c\ndown)\nc<[\"c\"]>(right,\n\n%%{x}%%\n  down)\n`                                                                                                     |
 | block         | [複数行の文（block.ja.md）](./docs/block.ja.md#複数行の文)                                                                                                           | `block-beta\nblock:\n%% head\nG[\"group\"]\ncolumns\n%% count\n2\nA\n%% shape\n[\"first\n raw\"] -->\n%% target\nB\nclass\n%% ids\nA hot\nstyle\n%% styled id\nA fill:red\nclassDef\n%% class name\nhot fill:blue\nend\n` |
 | block         | [空の説明ブロック（block.ja.md）](./docs/block.ja.md#空の説明ブロック)                                                                                               | `block-beta\nblock:G\naccDescr {\n%% c\n}\naccDescr {\n%%{init: {}}%%\n}\nA\nend\n`                                                                                                                                       |
+| journey       | [複数行の文（journey.ja.md）](./docs/journey.ja.md#複数行の文)                                                                                                       | `journey\nsection S\naccTitle:\n%%{init: {}}%% T\naccDescr\n%% colon\n:\n%% text\nD\nA:5:Me\n`                                                                                                                            |
 | quadrant      | [テキスト、引用符、字句解析器で決まる象限チャートの行（compatibility.ja.md）](./docs/compatibility.ja.md#テキスト引用符字句解析器で決まる象限チャートの行)           | `quadrantChart\nA:\n%% c\n[0.3,0.6]\n`                                                                                                                                                                                    |
 | block         | [空白や字句解析器で決まるブロック図の行（compatibility.ja.md）](./docs/compatibility.ja.md#空白や字句解析器で決まるブロック図の行)                                   | `block-beta\nclassDef\n%% c\nc fill:red\n`                                                                                                                                                                                |
 | c4            | [C4 の引数の単位と物理行（compatibility.ja.md）](./docs/compatibility.ja.md#c4-の引数の単位と物理行)                                                                 | `C4Context\naccTitle:\n%% c\nText\n`                                                                                                                                                                                      |
@@ -1555,13 +1556,12 @@ vennである。
 
 ### 記録からの理由の検索がまだである
 
-11件の形は、この確認が不足している。
+9件の形は、この確認が不足している。
 
 | 図種        | 規則の文書                                                                                         | 書かれた形                                                                                             |
 | ----------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | flowchart   | [同じに描かれるスタイル（compatibility.ja.md）](./docs/compatibility.ja.md#同じに描かれるスタイル) | `flowchart TD\nA\nstyle A fill:red %%{init: {}}%%\n`                                                   |
 | flowchart   | [アクセシビリティの行（flowchart.ja.md）](./docs/flowchart.ja.md#アクセシビリティの行)             | `flowchart LR\naccTitle:\n%%{init: {}}%%\nTitle after directive\nA[Continuation]`                      |
-| flowchart   | [複数行の値（flowchart.ja.md）](./docs/flowchart.ja.md#複数行の値)                                 | `flowchart LR\nsubgraph S\naccDescr {\n  a\n%% n\n   b\n}\nend\n`                                      |
 | gantt       | [タイトルとセクション（gantt.ja.md）](./docs/gantt.ja.md#タイトルとセクション)                     | `gantt\ntitle\nT\nsection\nS\n`                                                                        |
 | gantt       | [空の説明ブロック（gantt.ja.md）](./docs/gantt.ja.md#空の説明ブロック)                             | `gantt\naccDescr { %%{init: {}}%% }\naccDescr {\n%% c\n}\n`                                            |
 | gantt       | [コメント（gantt.ja.md）](./docs/gantt.ja.md#コメント)                                             | `gantt\n      %% one\ntitle T\n\t%% two\nsection S\n%% three\n   a : 1d\n`                             |
@@ -1569,18 +1569,16 @@ vennである。
 | requirement | [アクセシビリティの文（requirement.ja.md）](./docs/requirement.ja.md#アクセシビリティの文)         | `requirementDiagram\naccTitle:\nT\naccDescr:\n\n D\naccTitle\n: U\n`                                   |
 | requirement | [コメント（requirement.ja.md）](./docs/requirement.ja.md#コメント)                                 | `requirementDiagram\n%% c1\nrequirement r {\n      %% c2\nid: 1\n%% c3\n}\n   %% c4\nelement e {\n}\n` |
 | timeline    | [title と section（timeline.ja.md）](./docs/timeline.ja.md#title-と-section)                       | `timeline\ntitle\nT\nsection\nS\n`                                                                     |
-| journey     | [複数行の文（journey.ja.md）](./docs/journey.ja.md#複数行の文)                                     | `journey\nsection S\naccTitle:\n%%{init: {}}%% T\naccDescr\n%% colon\n:\n%% text\nD\nA:5:Me\n`         |
 
 ### 記録からの理由の検索と比較結果が不足している
 
-4件の形は、この確認が不足している。
+3件の形は、この確認が不足している。
 
-| 図種      | 規則の文書                                                                             | 書かれた形                                             |
-| --------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| treemap   | [Header（treemap.ja.md）](./docs/treemap.ja.md#header)                                 | `treemap-beta\n\n`                                     |
-| treemap   | [Names（treemap.ja.md）](./docs/treemap.ja.md#names)                                   | `treemap\n'  Other \"quote\"  ':1`                     |
-| flowchart | [トークンの間の空白（flowchart.ja.md）](./docs/flowchart.ja.md#トークンの間の空白)     | `flowchart LR\nA%%{init: {}}%%B-->C\n`                 |
-| sequence  | [同じに描かれる色（compatibility.ja.md）](./docs/compatibility.ja.md#同じに描かれる色) | `sequenceDiagram\nrect rgb( 1 ,2,3 )\nA->>B: x\nend\n` |
+| 図種     | 規則の文書                                                                             | 書かれた形                                             |
+| -------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| treemap  | [Header（treemap.ja.md）](./docs/treemap.ja.md#header)                                 | `treemap-beta\n\n`                                     |
+| treemap  | [Names（treemap.ja.md）](./docs/treemap.ja.md#names)                                   | `treemap\n'  Other \"quote\"  ':1`                     |
+| sequence | [同じに描かれる色（compatibility.ja.md）](./docs/compatibility.ja.md#同じに描かれる色) | `sequenceDiagram\nrect rgb( 1 ,2,3 )\nA->>B: x\nend\n` |
 
 ### 記録からの理由の検索と実行と比較入力が不足している
 

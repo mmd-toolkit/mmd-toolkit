@@ -1041,7 +1041,7 @@ mindmap, packet, pie, radar, requirement, state, treeview, wardley.
 
 ### D45. Whether comments and hidden forms keep line boundaries in their gaps
 
-51 forms in agentflow, architecture, block, c4, class, er, eventmodeling,
+52 forms in agentflow, architecture, block, c4, class, er, eventmodeling,
 flowchart, gitgraph, info, ishikawa, journey, packet, quadrant, radar, railroad,
 requirement, state, timeline, treemap, usecase, wardley, xychart.
 
@@ -1051,6 +1051,7 @@ requirement, state, timeline, treemap, usecase, wardley, xychart.
 | block         | [Shapes (block.md)](./docs/block.md#shapes)                                                                                                                                           | `block-beta\na<[\"a\"]>(right\n%% c\n,down)\nb<[\"b\"]>(right,\n%% c\ndown)\nc<[\"c\"]>(right,\n\n%%{x}%%\n  down)\n`                                                                                                     |
 | block         | [Multi-line statements (block.md)](./docs/block.md#multi-line-statements)                                                                                                             | `block-beta\nblock:\n%% head\nG[\"group\"]\ncolumns\n%% count\n2\nA\n%% shape\n[\"first\n raw\"] -->\n%% target\nB\nclass\n%% ids\nA hot\nstyle\n%% styled id\nA fill:red\nclassDef\n%% class name\nhot fill:blue\nend\n` |
 | block         | [Empty description blocks (block.md)](./docs/block.md#empty-description-blocks)                                                                                                       | `block-beta\nblock:G\naccDescr {\n%% c\n}\naccDescr {\n%%{init: {}}%%\n}\nA\nend\n`                                                                                                                                       |
+| journey       | [Multi-line statements (journey.md)](./docs/journey.md#multi-line-statements)                                                                                                         | `journey\nsection S\naccTitle:\n%%{init: {}}%% T\naccDescr\n%% colon\n:\n%% text\nD\nA:5:Me\n`                                                                                                                            |
 | quadrant      | [Quadrant chart lines that the texts, the quotes, or the lexer decide (compatibility.md)](./docs/compatibility.md#quadrant-chart-lines-that-the-texts-the-quotes-or-the-lexer-decide) | `quadrantChart\nA:\n%% c\n[0.3,0.6]\n`                                                                                                                                                                                    |
 | block         | [Block diagram lines that the whitespace or the lexer decide (compatibility.md)](./docs/compatibility.md#block-diagram-lines-that-the-whitespace-or-the-lexer-decide)                 | `block-beta\nclassDef\n%% c\nc fill:red\n`                                                                                                                                                                                |
 | c4            | [C4 argument units and physical lines (compatibility.md)](./docs/compatibility.md#c4-argument-units-and-physical-lines)                                                               | `C4Context\naccTitle:\n%% c\nText\n`                                                                                                                                                                                      |
@@ -1548,13 +1549,12 @@ finds its unwritten reason.
 
 ### Record search is missing
 
-11 forms are missing this check.
+9 forms are missing this check.
 
 | Diagram     | Rules document                                                                                              | Written form                                                                                           |
 | ----------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | flowchart   | [Styles that are drawn the same (compatibility.md)](./docs/compatibility.md#styles-that-are-drawn-the-same) | `flowchart TD\nA\nstyle A fill:red %%{init: {}}%%\n`                                                   |
 | flowchart   | [Accessibility lines (flowchart.md)](./docs/flowchart.md#accessibility-lines)                               | `flowchart LR\naccTitle:\n%%{init: {}}%%\nTitle after directive\nA[Continuation]`                      |
-| flowchart   | [Multi-line values (flowchart.md)](./docs/flowchart.md#multi-line-values)                                   | `flowchart LR\nsubgraph S\naccDescr {\n  a\n%% n\n   b\n}\nend\n`                                      |
 | gantt       | [Titles and sections (gantt.md)](./docs/gantt.md#titles-and-sections)                                       | `gantt\ntitle\nT\nsection\nS\n`                                                                        |
 | gantt       | [Empty description blocks (gantt.md)](./docs/gantt.md#empty-description-blocks)                             | `gantt\naccDescr { %%{init: {}}%% }\naccDescr {\n%% c\n}\n`                                            |
 | gantt       | [Comments (gantt.md)](./docs/gantt.md#comments)                                                             | `gantt\n      %% one\ntitle T\n\t%% two\nsection S\n%% three\n   a : 1d\n`                             |
@@ -1562,18 +1562,16 @@ finds its unwritten reason.
 | requirement | [Accessibility statements (requirement.md)](./docs/requirement.md#accessibility-statements)                 | `requirementDiagram\naccTitle:\nT\naccDescr:\n\n D\naccTitle\n: U\n`                                   |
 | requirement | [Comments (requirement.md)](./docs/requirement.md#comments)                                                 | `requirementDiagram\n%% c1\nrequirement r {\n      %% c2\nid: 1\n%% c3\n}\n   %% c4\nelement e {\n}\n` |
 | timeline    | [Titles and sections (timeline.md)](./docs/timeline.md#titles-and-sections)                                 | `timeline\ntitle\nT\nsection\nS\n`                                                                     |
-| journey     | [Multi-line statements (journey.md)](./docs/journey.md#multi-line-statements)                               | `journey\nsection S\naccTitle:\n%%{init: {}}%% T\naccDescr\n%% colon\n:\n%% text\nD\nA:5:Me\n`         |
 
 ### Record search and a conclusive run are missing
 
-4 forms are missing this check.
+3 forms are missing this check.
 
-| Diagram   | Rules document                                                                                              | Written form                                           |
-| --------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| treemap   | [Header (treemap.md)](./docs/treemap.md#header)                                                             | `treemap-beta\n\n`                                     |
-| treemap   | [Names (treemap.md)](./docs/treemap.md#names)                                                               | `treemap\n'  Other \"quote\"  ':1`                     |
-| flowchart | [Whitespace between tokens (flowchart.md)](./docs/flowchart.md#whitespace-between-tokens)                   | `flowchart LR\nA%%{init: {}}%%B-->C\n`                 |
-| sequence  | [Colors that are drawn the same (compatibility.md)](./docs/compatibility.md#colors-that-are-drawn-the-same) | `sequenceDiagram\nrect rgb( 1 ,2,3 )\nA->>B: x\nend\n` |
+| Diagram  | Rules document                                                                                              | Written form                                           |
+| -------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| treemap  | [Header (treemap.md)](./docs/treemap.md#header)                                                             | `treemap-beta\n\n`                                     |
+| treemap  | [Names (treemap.md)](./docs/treemap.md#names)                                                               | `treemap\n'  Other \"quote\"  ':1`                     |
+| sequence | [Colors that are drawn the same (compatibility.md)](./docs/compatibility.md#colors-that-are-drawn-the-same) | `sequenceDiagram\nrect rgb( 1 ,2,3 )\nA->>B: x\nend\n` |
 
 ### Record search, a run and comparison input are missing
 
