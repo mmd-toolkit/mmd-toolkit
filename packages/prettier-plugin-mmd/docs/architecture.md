@@ -112,9 +112,10 @@ Use one space between the keyword and ID. Rule 1 of
 [How the printed form is decided](./printed-form.md#1-the-whitespace-beside-a-mark)
 names no mark between a keyword and its id, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [block](./block.md#styles) and
-[eventmodeling](./eventmodeling.md#declarations-and-notes) print one space
-there. Print `group g(cloud)[G]`, `service a(server)[A]` and `service a[A]`:
+decides: [wardley](./wardley.md#component-spacing) puts one ordinary space
+between each command keyword and its first complete name, and
+[radar](./radar.md#groups-and-commas) between a group keyword and its first
+member. Print `group g(cloud)[G]`, `service a(server)[A]` and `service a[A]`:
 touching parentheses and brackets make the attached parts read as one node. A
 quoted text icon is an independent value, so print `service a "I" [A]`. Missing
 optional parts stay absent. Trivia-bearing gaps keep their contact.

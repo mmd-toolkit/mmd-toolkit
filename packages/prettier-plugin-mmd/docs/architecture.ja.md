@@ -115,9 +115,10 @@ architecture-beta title t service a; junction j
 キーワードと ID の間は空白1個です。
 規則 1 は、キーワードと ID の間の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[block](./block.ja.md#スタイル) と
-[eventmodeling](./eventmodeling.ja.md#declarations-and-notes) も、
-ここを空白 1 個で印字します。
+[wardley](./wardley.ja.md#部品間の空白)
+はコマンドのキーワードと最初の名前の間に、
+[radar](./radar.ja.md#groups-and-commas)
+はグループのキーワードと最初の項目の間に、普通の空白 1 個を置きます。
 `group g(cloud)[G]`、`service a(server)[A]`、`service a[A]` と印字し、
 括弧・角括弧の付属部品を1つの node として印字します。
 文字アイコンは独立した値なので `service a "I" [A]` とします。
