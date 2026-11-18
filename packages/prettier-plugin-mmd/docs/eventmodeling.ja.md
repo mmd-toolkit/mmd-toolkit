@@ -982,7 +982,18 @@ tf 02 evt Beta
 ### Comments
 
 普通の独立コメントは所属本文の段に揃え、GWT 項目間では項目の段にします。
-同じ印字行では接触を保ち、害のない分離を空白 1 個にします。
+同じ印字行では、接するコメントは接したまま残し、
+前の空白とタブの連なりは空白 1 つにします。
+規則 1 は、コメントの前の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#コメント)、[journey](./journey.ja.md#コメント)、
+[timeline](./timeline.ja.md#コメント)も、
+文の後ろのコメントを同じように印字します。
+ほかの規則が空白を書かれたまま残す所は別です。
+どの図の文書も、その所を、
+自分の節か [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
+で挙げています（Db が持つ空白、たとえば `section` と期間の後の空白と、
+mermaid.js の読みを変える空白です）。
 単位を行に分けるとき、
 間の行内のコメントはディレクティブと同じく次の単位へ付けます。
 同じコメントを図種の間で同じように扱うため、共有の置き方を使います。
@@ -994,6 +1005,7 @@ data ブロック、note、`accDescr` ブロック、スラッシュのブロッ
 メタデータや必須の `title` の境界を優先します。
 検出が拒否するため、スラッシュのコメントを見出し前へ移しません。
 
+[fixture: eventmodeling/comments/inline-gap-run-and-touching]
 [fixture: eventmodeling/comments/standalone-native-comments]
 
 [fixture: eventmodeling/comments/inline-comments-keep-contact]
@@ -1099,6 +1111,11 @@ CRLF は 1 単位、サロゲートペアは 2 単位と数えます。
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 文・節・項目を行に分ける場合、間のディレクティブは次の単位へ付け、
 右の接し方を保ちます。
+規則 1 は、2 つの単位の間のディレクティブの印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#ディレクティブ)、
+[flowchart](./flowchart.ja.md#ディレクティブ)、
+[journey](./journey.ja.md#ディレクティブ)も、この隙間を同じに印字します。
 内容、順序、複数行の内部、値の中の位置、未完 EOF の終端を保ちます。
 独立した開始は所属本文の段に揃えます。
 共通文の境界は普通の空白規則でなく原文隙間全体を保ちます。

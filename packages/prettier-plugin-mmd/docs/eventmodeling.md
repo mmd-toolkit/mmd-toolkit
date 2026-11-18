@@ -958,10 +958,19 @@ tf 02 evt Beta
 ### Comments
 
 Align ordinary standalone comments with their owning body; between GWT items
-this is item depth. Within a printed line, preserve inline contact and normalize
-harmless separation to one space. When units split into separate lines, attach
-intervening inline comments to the following unit, in the same direction as
-directives. Use this shared placement so the same comments are treated alike
+this is item depth. Within a printed line, a comment that touches stays
+touching, and a run of spaces and tabs before it becomes one space. Rule 1 names
+no mark before a comment, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#comments),
+[journey](./journey.md#comments), and [timeline](./timeline.md#comments) print a
+comment after a statement in the same way, where no other rule keeps the
+whitespace as written; each of them names those cases in its own sections or in
+[A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
+(whitespace that the Db holds, as after a `section` or a period, and whitespace
+that changes what mermaid.js reads). When units split into separate lines,
+attach intervening inline comments to the following unit, in the same direction
+as directives. Use this shared placement so the same comments are treated alike
 across diagram types. Keep marks, contents, trailing padding and block-comment
 continuation columns. Native `//` and `%%` run through LS/PS to physical LF. A
 `%%` comment line inside a data block, a note, an `accDescr` block, a slash
@@ -970,7 +979,8 @@ except for the block-body margin adjustment in [Data blocks](#data-blocks).
 Boundaries needed for metadata or a required `title` take precedence. Slash
 comments are not moved before the header, where detection would reject them.
 
-[fixture: eventmodeling/comments/standalone-native-comments]
+[fixture: eventmodeling/comments/inline-gap-run-and-touching] [fixture:
+eventmodeling/comments/standalone-native-comments]
 
 [fixture: eventmodeling/comments/inline-comments-keep-contact]
 
@@ -1072,9 +1082,14 @@ eventmodeling/frontmatter-extra-whitespace-line-boundary]
 Use the shared directive placement: on the same printed line place a directive
 as under [Directives](./flowchart.md#directives). When statements, clauses or
 items split into lines, attach an intervening directive to the following unit,
-retaining right contact. Keep content, order, multiline interiors, positions
-inside values and unfinished EOF endings. Standalone starts align with the
-owning body. Common boundaries retain the full original gap instead of this
+retaining its right-side contact or separation. Rule 1 names no mark for a
+directive between two units, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [sequence](./sequence.md#directives),
+[flowchart](./flowchart.md#directives), and [journey](./journey.md#directives)
+print such a gap in the same way. Keep content, order, multiline interiors,
+positions inside values and unfinished EOF endings. Standalone starts align with
+the owning body. Common boundaries retain the full original gap instead of this
 ordinary spacing; a removed directive cannot replace required whitespace.
 
 A directive that is not closed takes the whitespace after its argument, line
