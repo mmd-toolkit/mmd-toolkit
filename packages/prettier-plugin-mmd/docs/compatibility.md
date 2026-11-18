@@ -2119,7 +2119,10 @@ sequence/colors/box-comma-padding-kept] [fixture:
 sequence/colors/functions-as-written] [fixture:
 sequence/colors/functions-beside-comments-and-directives] [fixture:
 venn/colors/functions-spaced] [fixture: venn/colors/function-padding-kept]
-[fixture: venn/colors/functions-as-written]
+[fixture: venn/colors/function-open-paren-padding-kept] [fixture:
+venn/colors/function-close-paren-padding-kept] [fixture:
+venn/colors/function-comma-padding-kept] [fixture:
+venn/colors/functions-as-written]
 
 mermaid.js keeps the colors in the case in which they are written, in its Db and
 in the figure, and draws the same figure. It puts the style of a node into the

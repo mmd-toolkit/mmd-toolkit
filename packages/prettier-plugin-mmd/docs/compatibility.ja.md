@@ -2242,6 +2242,9 @@ Venn 図には色関数がありません。
 [fixture: sequence/colors/functions-beside-comments-and-directives]
 [fixture: venn/colors/functions-spaced]
 [fixture: venn/colors/function-padding-kept]
+[fixture: venn/colors/function-open-paren-padding-kept]
+[fixture: venn/colors/function-close-paren-padding-kept]
+[fixture: venn/colors/function-comma-padding-kept]
 [fixture: venn/colors/functions-as-written]
 
 mermaid.js は、色を書かれたままの大文字小文字で Db と図に残し、
