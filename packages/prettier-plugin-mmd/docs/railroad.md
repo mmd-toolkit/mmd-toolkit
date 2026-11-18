@@ -21,7 +21,12 @@ Add no colon or flags. mermaid.js reads each of the four names in this spelling
 only: the name without `-beta`, with `-beta` in another case, or in capitals is
 rejected by 11.16.1, 11.17.2, 12.0.0, and 12.3.0, so no other spelling is
 printed. Hidden forms, global trivia and protected semicolon segments retain
-their shared boundaries; an empty body stays empty.
+their shared boundaries; an empty body stays empty. Rule 1 names no mark for the
+line that follows the header, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [info](./info.md#header), [wardley](./wardley.md#header), and
+[architecture](./architecture.md#header) keep the boundaries of hidden forms and
+protected segments at their headers.
 
 [fixture: railroad/header/abnf-hidden]
 
@@ -108,6 +113,10 @@ value columns, hidden interiors and retained prefixes keep their own columns.
 Semicolon-protected segments start at one body step, like other flat diagrams;
 their later lines keep their written columns because these belong to the
 protected text.
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this layout, as [wardley](./wardley.md#indentation) aligns the first line of a
+protected segment with the body and keeps its later lines in their written
+columns, and so does [cynefin](./cynefin.md#semicolons).
 
 [fixture: railroad/indentation/abnf-default]
 
@@ -808,17 +817,18 @@ Comments, global directives and native hidden forms stay at their argument
 boundaries while the surrounding calls use the structural layout. Their gaps
 follow [Comments](#comments), where rule 2 gives them. Semicolons inside values
 do not prevent it. Keep trivia contents as described in [Comments](#comments),
-[Global directives](#global-directives) and [Hidden forms](#hidden-forms). Lines
-containing `style` or `classDef`, and ignored semicolons, retain their protected
-layout. EBNF, ABNF and PEG keep an authored line break after the assignment of
-an outermost choice and before its `|` or `/` separators. The continuation uses
-one extra level. The separator stays with the following alternative: a plain
-line break after it still joins. Other expression padding remains compact, and
-single-line rules gain no new breaks. Rule 1 gives the compact padding: Prettier
-prints no whitespace inside parentheses, brackets, and braces that hold values
-alone (`f( a )` is printed `f(a);`, `x = [ 1, 2 ]` is printed `x = [1, 2];`),
-and a comma with none before it and one space after it. `printWidth` controls no
-diagram line breaks.
+[Global directives](#global-directives) and [Hidden forms](#hidden-forms): a
+comment and a directive are texts that the tree holds whole, so they are printed
+as written inside. Lines containing `style` or `classDef`, and ignored
+semicolons, retain their protected layout. EBNF, ABNF and PEG keep an authored
+line break after the assignment of an outermost choice and before its `|` or `/`
+separators. The continuation uses one extra level. The separator stays with the
+following alternative: a plain line break after it still joins. Other expression
+padding remains compact, and single-line rules gain no new breaks. Rule 1 gives
+the compact padding: Prettier prints no whitespace inside parentheses, brackets,
+and braces that hold values alone (`f( a )` is printed `f(a);`, `x = [ 1, 2 ]`
+is printed `x = [1, 2];`), and a comma with none before it and one space after
+it. `printWidth` controls no diagram line breaks.
 
 [fixture: railroad/long-lines/ebnf-written-alternatives] [fixture:
 railroad/long-lines/abnf-written-alternatives] [fixture:
@@ -1252,7 +1262,12 @@ Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
 In a block that keeps its braces, put one space between `accDescr` and `{` and
 join a plain keyword-to-opener gap. Whitespace-only interiors become `{}`
-because no content needs surrounding padding.
+because no content needs surrounding padding, as rule 1 prints braces that hold
+nothing (`x = { }` is printed `x = {};`). The one space between the keyword and
+the brace and the joined plain gap are the form that
+[pie](./pie.md#description-blocks), [info](./info.md#description-blocks), and
+[radar](./radar.md#description-blocks) print, which
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives.
 
 [fixture: railroad/description-blocks/abnf-edges] [fixture:
 railroad/description-blocks/ebnf-edges] [fixture:
@@ -1286,7 +1301,9 @@ railroad/description-blocks/ir-percent-comment-after-block] [fixture:
 railroad/description-blocks/peg-percent-comment-after-block]
 
 Directives keep their complete source. A block with only a comment or a
-directive keeps its contents.
+directive keeps its contents: a comment and a directive are texts that the tree
+holds whole, so they are printed as written inside (see
+[A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)).
 
 [fixture: railroad/description-blocks/abnf-trivia] [fixture:
 railroad/description-blocks/ebnf-trivia] [fixture:
@@ -1973,11 +1990,12 @@ railroad/semicolons/peg-classdef-comment-both-ps]
 Shared kept-line layout keeps a whole statement or indivisible value/trivia that
 crosses the line too; later lines retain their written columns.
 
-mermaid.js can ignore the last semicolon of a line containing these strings. In
-railroad that semicolon can be a required rule terminator or an ABNF comment
-mark. Changing the line can therefore reject a rule or read comment text as
-code. Keeping the source line protects both kinds of punctuation without
-predicting how moving its contents would affect the common line rule.
+mermaid.js can ignore the last semicolon of a line containing these strings (see
+[Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)). In railroad
+that semicolon can be a required rule terminator or an ABNF comment mark.
+Changing the line can therefore reject a rule or read comment text as code.
+Keeping the source line protects both kinds of punctuation without predicting
+how moving its contents would affect the common line rule.
 
 The cost is that a rule name, string or comment containing `style` or `classDef`
 leaves that line unformatted, even when no colon or hash follows. Other lines

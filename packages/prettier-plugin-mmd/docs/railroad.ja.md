@@ -26,6 +26,11 @@ mermaid.js はこの 4 つの名前を、この綴りだけで読みます。
 ほかの綴りは印字しません。
 隠れた形、共有注釈類、保護されたセミコロン区間は共有の境界規則に従い、
 空の本文は空のままにします。
+規則 1 は見出しの次の行に記号を挙げないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[info](./info.ja.md#header)、[wardley](./wardley.ja.md#見出し)、
+[architecture](./architecture.ja.md#header) も、
+見出しで隠れた形と保護区間の境界を保ちます。
 
 [fixture: railroad/header/abnf-hidden]
 
@@ -112,6 +117,9 @@ railroad-peg-beta%%{!heading}%%
 その他の値の継続列、隠れた形の内部と保持前置部分は元の列を保ちます。
 セミコロンの保護区間の最初の行は、他の平坦な図種と同じく本文の1段に揃えます。
 2行目以降は保護された本文に属するため、書かれた列を保ちます。
+この配置は[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
+[wardley](./wardley.ja.md#字下げ) は、保護区間の最初の行を本文に揃え、
+後の行を書かれた列に保ち、[cynefin](./cynefin.ja.md#semicolons) も同じです。
 
 [fixture: railroad/indentation/abnf-default]
 
@@ -843,6 +851,8 @@ railroad-peg-beta
 値の中のセミコロンは、この配置を妨げません。
 注釈類の内容は[コメント](#コメント)、[共有ディレクティブ](#共有-directive)、
 [隠れた形の保持](#hidden-form-の保持)の規則で保ちます。
+コメントとディレクティブは木が丸ごと持つテキストなので、
+中は書かれたまま印字します。
 `style` や `classDef` を含む行と無視されるセミコロンは、保護した配置を使います。
 EBNF、ABNF、PEG では、最外周の選択の代入直後と、
 `|` や `/` の前に作者が書いた改行を保ち、続きは 1 段深く置きます。
@@ -1294,6 +1304,12 @@ railroad-peg-beta
 波括弧を保つブロックでは、`accDescr` と `{` の間に空白 1 つを置きます。
 キーワードと開始括弧の間が空白だけなら、同じ行にまとめます。
 空白だけの内部は、囲む内容がないため `{}` にします。
+規則 1 も、
+何も入れない波括弧を `{}` と印字します（`x = { }` は `x = {};` です）。
+キーワードと波括弧の間の空白 1 つと、空白だけの隙間をまとめる形は、
+[pie](./pie.ja.md#description-blocks)、[info](./info.ja.md#description-blocks)、
+[radar](./radar.ja.md#description-blocks) が印字する形で、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
 
 [fixture: railroad/description-blocks/abnf-edges]
 [fixture: railroad/description-blocks/ebnf-edges]
@@ -1330,6 +1346,10 @@ railroad 図では `/* c */`）。
 
 ディレクティブは原文全体を保ちます。
 コメントかディレクティブだけのブロックも内容を残します。
+コメントとディレクティブは木が丸ごと持つテキストなので、
+中は書かれたまま印字します。
+詳しくは [木が丸ごと持つテキスト](./printed-form.ja.md#木が丸ごと持つテキスト)
+を参照してください。
 
 [fixture: railroad/description-blocks/abnf-trivia]
 [fixture: railroad/description-blocks/ebnf-trivia]
@@ -2033,6 +2053,7 @@ U+2028 や U+2029 の後のコメント行が、語を含む行の前、後、
 2行目以降の列は書かれたままです。
 
 mermaid.js は、これらの文字列を含む行の最後のセミコロンを無視し得ます。
+詳しくは [`;` を含む行](./compatibility.ja.md#-を含む行) を参照してください。
 railroad では、規則の必須終端や ABNF のコメントの印がその対象になり得ます。
 行を変えると規則が拒否されたり、コメントの中身がコードとして読まれたりするため、
 原文の行を保つことで両方の句読点を守ります。

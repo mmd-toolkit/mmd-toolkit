@@ -7314,17 +7314,21 @@ railroad/multiline-values/peg-columns] [fixture: railroad/predicates/peg-nested]
 
 Comment forms and contents remain written: all four dialects have `%%`, IR has C
 comments, EBNF has C and ISO comments, ABNF has semicolon line comments and PEG
-has hash line comments. LS/PS remain native line-comment content. A bare ABNF
-`;` is punctuation; its terminator must meet LF or EOF immediately. Every rule's
-required visible `;` stays attached where safe. Ordinary IR rules retain
-semicolons inside values without freezing their layout; every other authored
-semicolon stays under shared segment protection, including crossing values. Each
-protected segment's first line uses one body step, matching other flat diagrams;
-its later lines keep their written columns. Railroad lines containing the
-literal string `style` or `classDef` after global directive removal stay as
-written, including every statement, comment, native hidden form and inner gap.
-They do not join their neighbors. A removed directive forming a word across
-lines keeps all those lines.
+has hash line comments. LS/PS remain native line-comment content. None of the 14
+railroad examples in the documentation of mermaid.js holds a comment, so
+[rule 3](./printed-form.md#3-a-spelling) gives no form for the marks and keeps
+them as written, and the text of a comment is a text that the tree holds whole
+(see [Comments](./railroad.md#comments)). A bare ABNF `;` is punctuation; its
+terminator must meet LF or EOF immediately. Every rule's required visible `;`
+stays attached where safe. Ordinary IR rules retain semicolons inside values
+without freezing their layout; every other authored semicolon stays under shared
+segment protection, including crossing values. Each protected segment's first
+line uses one body step, matching other flat diagrams; its later lines keep
+their written columns. Railroad lines containing the literal string `style` or
+`classDef` after global directive removal stay as written, including every
+statement, comment, native hidden form and inner gap. They do not join their
+neighbors. A removed directive forming a word across lines keeps all those
+lines.
 
 [fixture: railroad/semicolons/ir-word-unclosed-directive-lines] [fixture:
 railroad/semicolons/ebnf-word-unclosed-directive-lines] [fixture:
