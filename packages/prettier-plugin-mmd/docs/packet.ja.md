@@ -420,12 +420,19 @@ packet
 コメント・ディレクティブだけの内側は注釈類を残します。
 通常の説明本文と独立したコメント行は、文より1段内側に揃えます。
 Db で LF 後の字下げが取り除かれるためです。
-改行、空行、行末空白は保ち、独立した閉じは文の位置へ揃えます。
+改行と内部の空行は保ちます。
+行末の空白は、テキストの最後の行のものを除いて保ちます。
+空白だけの行は空行にします。
+最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
+同じ行で閉じ括弧が続くときは空白 1 つで印字します。
+独立した閉じは文の位置へ揃えます。
 ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
 引用符、バックスラッシュ、
 隠れた形に見える文字列も最初の閉じ波括弧を保護しません。
 
 [fixture: packet/description-blocks/description-gaps]
+[fixture: description-blocks/block-trailing-whitespace]
+[fixture: description-blocks/block-trailing-whitespace-closer-on-the-text-line]
 
 [fixture: packet/description-blocks/description-columns]
 

@@ -408,8 +408,15 @@ event colons under it. This puts the colons of one period in one column,
 including inside a section. Keep tabs as tab stops in the alignment padding and
 use Prettier's display width for the remaining text, including wide characters.
 Count the period's written text, including a directive inside it, since that is
-what the printer displays. The configured indentation still applies at
-`tabWidth: 0`.
+what the printer displays. A `;` that the line rule ignores between the period
+and the first colon is part of that text and counts in its width, with the
+whitespace around it as written. The rule needs a `style` and then a `:#` before
+the `;` on the line, so another statement stands before the period there, a
+description block that holds `style:#x` for one. The colons of the later lines
+stand at the column that the first colon would have if the period began the
+line, with the indentation of the statement before it, and the line stays whole
+(see [Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)). The
+configured indentation still applies at `tabWidth: 0`.
 
 [fixture: periods-and-events/events-on-later-lines] [corpus fixture:
 timeline/docs-syntax-timeline-1b6ef8c6] [fixture:
@@ -417,7 +424,11 @@ periods-and-events/later-lines-in-a-section] [fixture:
 periods-and-events/colon-alignment-tabs] [fixture:
 periods-and-events/colon-alignment-wide-period] [fixture:
 periods-and-events/colon-alignment-zero-width] [fixture:
-periods-and-events/colon-alignment-written-period]
+periods-and-events/colon-alignment-written-period] [fixture:
+periods-and-events/colon-alignment-ignored-semicolon] [fixture:
+periods-and-events/colon-alignment-ignored-semicolon-touching-colon] [fixture:
+periods-and-events/colon-alignment-ignored-semicolon-touching-period] [fixture:
+periods-and-events/colon-alignment-ignored-semicolon-wide]
 
 When the first colon is on a later line, or a directive separates it from the
 period, retain the ordinary continuation indentation of one level. Periods whose
@@ -1287,10 +1298,16 @@ The configured indentation applies to these lines too.
 multi-line-values/description-tabs] [fixture:
 multi-line-values/description-zero-width]
 
-Keep the text, its line breaks and its trailing spaces and tabs. Text on the
-opening line stays there, and empty lines inside the text stay empty.
+Keep line breaks and interior blank lines, and the whitespace at the end of each
+line of text except the last one; a line of whitespace only becomes an empty
+line. The whitespace at the end of the last line of text is dropped where the
+closer stands on a line of its own, and is printed as one space where the closer
+follows it on that line. Text on the opening line stays there, and empty lines
+inside the text stay empty.
 
-[fixture: multi-line-values/description-line-ending-whitespace]
+[fixture: multi-line-values/description-line-ending-whitespace] [fixture:
+multi-line-values/block-trailing-whitespace] [fixture:
+multi-line-values/block-trailing-whitespace-closer-on-the-text-line]
 
 A hash comment inside the block is text and receives the same indentation; a
 `%%` comment line also aligns with the text.

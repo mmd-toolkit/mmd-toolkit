@@ -1878,11 +1878,23 @@ multi-line-statements/acc-colon-and-brace-joined]
 
 Later text lines of an ordinary `accDescr { ... }` block stand one level inside
 its statement, replacing only ASCII spaces and tabs immediately after LF. The
-description setter drops that indentation; line breaks, trailing whitespace and
-directive interiors stay written. Inside a subgraph, keep the original body
-columns because the raw description also participates in its membership reading.
+description setter drops that indentation; line breaks and directive interiors
+stay written. Keep line breaks and interior blank lines, and the whitespace at
+the end of each line of text except the last one; a line of whitespace only
+becomes an empty line. The whitespace at the end of the last line of text is
+dropped where the closer stands on a line of its own, and is printed as one
+space where the closer follows it on that line. Inside a subgraph, keep the
+original body columns because the raw description also participates in its
+membership reading; there a line of whitespace only stays as written, and the
+whitespace at the end of the last line of text is dropped, or printed as one
+space before a closer on that line, as above.
 
-[corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines]
+[corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines] [fixture:
+accessibility-statements/block-trailing-whitespace] [fixture:
+accessibility-statements/block-trailing-whitespace-closer-on-the-text-line]
+[fixture: accessibility-statements/block-trailing-whitespace-in-a-subgraph]
+[fixture:
+accessibility-statements/block-trailing-whitespace-closer-on-the-text-line-in-a-subgraph]
 
 Its `}` stands at the level of its statement.
 

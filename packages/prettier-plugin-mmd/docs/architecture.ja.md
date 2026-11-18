@@ -739,11 +739,17 @@ architecture-beta
 コメント・ディレクティブだけの内側を保ちます。
 通常の説明本文と独立したコメント行は文より1段内側に揃えます。
 Db で LF 後の字下げが取り除かれるためです。
-改行、内部の空行、行末空白を保ちます。
+改行と内部の空行は保ちます。
+行末の空白は、テキストの最後の行のものを除いて保ちます。
+空白だけの行は空行にします。
+最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
+同じ行で閉じ括弧が続くときは空白 1 つで印字します。
 ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
 独立する閉じは文の位置に揃え、最初の閉じ波括弧が値を終える規則も保ちます。
 
 [fixture: architecture/description-blocks/asymmetric]
+[fixture: description-blocks/block-trailing-whitespace]
+[fixture: description-blocks/block-trailing-whitespace-closer-on-the-text-line]
 
 [fixture: architecture/description-blocks/block-empty-fixed]
 

@@ -99,6 +99,11 @@ GWT 節は設定の 1 段、項目は 2 段にします。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+ほかの図種は、ヘッダーの後の文を 1 段深く置きます。
+[flowchart](./flowchart.ja.md#字下げ)、[class](./class.ja.md#字下げ)、
+[er](./er.ja.md#字下げ)、[state](./state.ja.md#字下げ) がそうです。
+改行の後の `title` とブロックの `}` は、対象にする版の mermaid.js のすべてが、
+字下げした形を拒否するので、この図種ではそこに置けません（表を参照）。
 
 [fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]
 [fixture: eventmodeling/qualified-names/hidden-before-title-segment-keep-no-prefix-space]
@@ -602,12 +607,24 @@ tf 01 evt Alpha { 	 x  }
 元にない行頭の空白を加えられるのは、本文の第 1 物理行だけです。
 それ以降の空でない物理行は、変更前後とも行頭に ASCII 空白が 1 個以上必要です。
 満たさない場合は本文全体を書かれたまま残します。
-後の行に初めて空白を加えると、描画するラベルが変わる場合があるためです。
+後の行に初めて空白を加えると、描画するラベルが変わる場合があり、
+11.15.0 から 12.3.0 が別のテキストと形状を描きます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+規則 1 は本文の行の余白に記号を挙げないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)は、
+説明ブロックの行が、[pie](./pie.ja.md#description-blocks)、
+[radar](./radar.ja.md#description-blocks)、
+[cynefin](./cynefin.ja.md#description-blocks) で文より 1
+段内側に立つ余白を与えます。
 先頭が空行でも、その次の行が第 1 物理行になるわけではありません。
 
 [fixture: eventmodeling/data-blocks/body-first-line-zero-margin]
 
 [fixture: eventmodeling/data-blocks/body-later-zero-margin-kept]
+
+[fixture: eventmodeling/data-blocks/body-later-zero-margin-plain-kept]
 
 [fixture: eventmodeling/data-blocks/body-after-empty-first-row-kept]
 
@@ -619,6 +636,7 @@ tf 01 evt Alpha { 	 x  }
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+ほかの図種なら `}` を字下げします（[字下げ](#indentation)を参照）。
 見かけの文、波括弧を含むテキスト、直後の閉じ風の行も、
 本文を持つ形の規則が後の閉じまで読む場合は保ちます。
 
@@ -1080,14 +1098,23 @@ CRLF は 1 単位、サロゲートペアは 2 単位と数えます。
 50000 以上のときは、図のテキスト全体とその終わりを保ちます。
 
 [fixture: default-size-branches/size-preserving-to-fallback-unsafe]
+[fixture: default-size-branches/size-at-limit-indented-comment]
 
 それ未満のときは、印字する計画の長さも 50000 未満に収まる場合だけ、
 通常の整形を行い、そうでなければ図のテキスト全体とその終わりを保ちます。
 
 [fixture: default-size-branches/size-below-planned-crossing]
+[fixture: default-size-branches/size-below-planned-crossing-indented-comment]
+[fixture: default-size-branches/size-below-planned-fits-indented-comment]
 
 字下げや末尾の改行で上限を越えると、
 値の中のコメント行が除かれて Db が変わるので、それを防ぎます。
+50000 単位でも 49999 単位でも、
+後ろの行（コメント行を含む）が 1 つ以上の空白の内側にある data
+本文の最初の行を字下げすると、12.3.0 は別のテキスト、構造、形状を描きます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 境界そのものはコーパスが、CRLF、行の中のディレクティブ、
 フロントマターの場合も含めて確かめます。
 
@@ -1190,6 +1217,7 @@ tf %%{wrap}%%01 evt Alpha %%{wrap}%%->> %%{wrap}%%02
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+ほかの図種なら字下げします（[字下げ](#indentation)を参照）。
 必須の識別子と共通値の空白は構造上の字下げより優先します。
 `eventmodeling data D {`、`x`、
 `}` の後の ` accDescr: style:#x;` の先頭の空白は、残します。
