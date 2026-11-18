@@ -602,7 +602,11 @@ tf 01 evt Alpha { 	 x  }
 元にない行頭の空白を加えられるのは、本文の第 1 物理行だけです。
 それ以降の空でない物理行は、変更前後とも行頭に ASCII 空白が 1 個以上必要です。
 満たさない場合は本文全体を書かれたまま残します。
-後の行に初めて空白を加えると、描画するラベルが変わる場合があるためです。
+後の行に初めて空白を加えると、描画するラベルが変わる場合があり、
+11.15.0 から 12.3.0 が別のテキストと形状を描きます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 先頭が空行でも、その次の行が第 1 物理行になるわけではありません。
 
 [fixture: eventmodeling/data-blocks/body-first-line-zero-margin]
@@ -1066,6 +1070,11 @@ CRLF は 1 単位、サロゲートペアは 2 単位と数えます。
 [fixture: default-size-branches/size-utf16-surrogate]
 
 50000 以上のときは、図のテキスト全体とその終わりを保ちます。
+data 本文の最初の行を字下げして 50000 を越えると、
+12.3.0 は本文のコメント行を Db から除き、別のテキスト、構造、形状を描きます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: default-size-branches/size-preserving-to-fallback-unsafe]
 

@@ -583,8 +583,10 @@ eventmodeling/declarations-and-notes/header-inline-multiline-directive]
 Only the first physical body line may gain a space prefix where it had none.
 Every later nonblank physical line must have at least one leading ASCII space
 both before and after the change. Otherwise keep the complete body as written:
-adding the first space on a later line can change the rendered label. A leading
-empty line does not make the next line the first physical line.
+adding the first space on a later line can change the rendered label: 11.15.0 to
+12.3.0 draw different text and geometry for it (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A leading empty line does not make the next line the first physical line.
 
 [fixture: eventmodeling/data-blocks/body-first-line-zero-margin]
 
@@ -1039,7 +1041,11 @@ default-size-branches/size-frontmatter-trivia-not-counted] [fixture:
 default-size-branches/size-directive-not-counted] [fixture:
 default-size-branches/size-utf16-surrogate]
 
-At or above 50000 retain the complete diagram text and its ending.
+At or above 50000 retain the complete diagram text and its ending: where
+indenting the first line of a data body makes the text longer than 50000 units,
+12.3.0 removes the comment lines of the body from the Db and draws different
+text, structure and geometry (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: default-size-branches/size-preserving-to-fallback-unsafe]
 
