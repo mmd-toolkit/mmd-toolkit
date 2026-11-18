@@ -321,8 +321,9 @@ are printed in the case shown there, among them `<<CHOICE>>`, `<<FORK>>`, and
 `<<JOIN>>`, which are printed `<<choice>>`, `<<fork>>`, and `<<join>>`,
 `ACCTITLE:` and `ACCDESCR:`, which are printed `accTitle:` and `accDescr:`,
 `AS`, `END`, and `DIRECTION TB`. The position of a note, `LEFT OF` and
-`RIGHT OF`, stays as written. `LEFT OF` stays, since every version of mermaid.js
-that counts draws different geometry for `left of` (see
+`RIGHT OF`, stays as written. `LEFT OF` stays: after `state "x" AS y`, every
+version of mermaid.js that counts draws different geometry for
+`note left of y: left` than for `note LEFT OF y: left` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: keyword-case/pseudo-states-one-form] [fixture:

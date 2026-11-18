@@ -325,8 +325,8 @@ stateDiagram
 `ACCDESCR:` と、`AS`、`END`、`DIRECTION TB` があります。
 ノートの位置、`LEFT OF` と `RIGHT OF` は書かれたまま残します。
 `LEFT OF` は残します。
-対象にする版の mermaid.js のすべてが、
-`left of` では図の形状を違って描くからです。
+`state "x" AS y` の後では、対象にする版の mermaid.js のすべてが、
+`note LEFT OF y: left` と `note left of y: left` の形状を違って描くからです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
