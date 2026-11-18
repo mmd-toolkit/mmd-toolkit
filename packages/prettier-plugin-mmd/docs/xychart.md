@@ -307,7 +307,9 @@ is made of units: a run of letters, a run of digits, or one of `-`, `_`, `.`,
 of whitespace becomes one space. Units that touch keep touching, because whether
 they touch is in the reading: a keyword is a keyword only where no character of
 a word follows it, so `x-axis Title1 --> 5` has the title `Title` and the range,
-while `x-axis Title 1 --> 5` is rejected, since `Title` is then a keyword;
+while every version of mermaid.js that counts rejects `x-axis Title 1 --> 5`,
+since `Title` is then a keyword (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count));
 `x-axis a-1 --> 2` has the title `a` and a range from the number `-1`, and a
 space between the `-` and the `1` would make the word `-` and the number `1`,
 which is another chart. Units apart cannot be joined, either: `title ba r` is
