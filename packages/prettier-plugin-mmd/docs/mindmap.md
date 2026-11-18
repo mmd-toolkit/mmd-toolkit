@@ -754,10 +754,15 @@ The whitespace after a directive that starts a line counts as indentation of the
 node, since the Db reads the indentation in the text without its directives.
 Such a line is printed as written from the directive, and the printer decides
 the whitespace before the directive, so that the node has as many characters of
-indentation as the level of its step requires.
+indentation as the level of its step requires. The whitespace after the
+directive stays as written, not one space, since with one space the nodes get
+other levels: 12.3.0 changes `level` in the Db, and 11.17.2, 12.0.0, and 12.3.0
+draw another class attribute for a node below the root (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: directives/before-a-node-on-its-line] [fixture:
 directives/before-a-node-after-spaces] [fixture: directives/before-the-root]
+[fixture: directives/wide-whitespace-before-the-root]
 
 Input
 ([directives/between-nodes-input.mmd](../tests/fixtures/mindmap/directives/between-nodes-input.mmd)):

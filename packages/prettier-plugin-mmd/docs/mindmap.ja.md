@@ -764,9 +764,16 @@ Db は字下げを、ディレクティブを除いたテキストで読むか�
 そのような行は、ディレクティブから書かれたまま印字し、
 ディレクティブの前の空白は、
 その段の幅に必要な字下げの文字数になるよう印字が決めます。
+ディレクティブの後ろの空白は、空白 1 つにせず、書かれたまま残します。
+空白 1 つにすると、ノードの段が変わるからです。
+12.3.0 では Db の `level` が変わり、11.17.2、12.0.0、12.3.0 では、
+ルートの下のノードの class 属性が違って描かれます（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 
 [fixture: directives/before-a-node-on-its-line]
 [fixture: directives/before-a-node-after-spaces]
+[fixture: directives/wide-whitespace-before-the-root]
 [fixture: directives/before-the-root]
 
 入力
