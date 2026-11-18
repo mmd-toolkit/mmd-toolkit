@@ -667,7 +667,10 @@ inside it is printed as one space (see
 The name of a `section` is printed as written, the whitespace at its start and
 at its end included: two sections whose names differ by it are drawn apart, and
 would not be once it is left out. A title of spaces and tabs only stays as
-written.
+written. For `title` followed by two spaces, a tab and a space, that whitespace
+stays, since every version of mermaid.js that counts draws `title` with nothing
+after it differently (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: titles-and-sections/title-padding-dropped] [fixture:
 titles-and-sections/title-blank-kept] [fixture:
