@@ -51,11 +51,8 @@ all those headings: they have the same written form and the same form to compare
 it with, so one run gives the same result for each. When the row is decided,
 each of those sentences is corrected.
 
-The list is not complete: the rules of every diagram type are still being
-searched for forms kept as written without a reason. When every form whose rules
-document states no reason is listed here, this sentence and the step of the
-prettier-plugin skill that adds forms to this list (section 3, step 5), with the
-exception for that step in the review skill, are deleted.
+The forms were found by reading every sentence of the rules documents and every
+function of the printers.
 
 ## Decisions still to be made
 

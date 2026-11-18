@@ -171,9 +171,9 @@ tools, a CLI), the inputs are different and the list is this:
 - A kept document names no working arrangement: not who works on what, not where
   they talk to each other, not a scratch file. The one exception is the list of
   the format decisions that Claude abandoned
-  (`packages/prettier-plugin-mmd/claude-abandoned-format-decisions.md`) and the
-  step that adds to it, which name Claude and its conversation records so that
-  whoever adds a form searches those records first.
+  (`packages/prettier-plugin-mmd/claude-abandoned-format-decisions.md`), which
+  names Claude and its conversation records so that whoever decides a form
+  searches those records first.
 - A claim in a document is checked against mermaid.js when it states a behavior,
   and against the code when it states what the code does.
 - Every changeset that the change adds or edits is read as the changelog will
