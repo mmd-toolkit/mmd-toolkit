@@ -178,6 +178,8 @@ ELK の配置のパッケージのどのリリースも、
 書かれたまま残す形、決まりが印字する形、その形を与える決まり、
 その図種について対象になり、残す形が要る版、テストケースの順です。
 図種の列は、その図種の規則の節へのリンクで、その節は残す形の理由を書いています。
+すべての図種で残す形は、図種の列に「すべての図種」と書き、
+共通の規則の節へのリンクにします。
 
 行は、挙げた版が 1 つも対象に残らなくなったときに外す規則です。
 その決まりは、
@@ -266,6 +268,7 @@ ELK の配置のパッケージのどのリリースも、
 | [ER](./er.ja.md#属性ブロック)                               | 書かれたまま残る行で、属性ブロックの中の `~` の後ろにある複数行の空のブロック（`T { int a List~int~ b } A {`、改行、`}`、さらに続くテキスト） | `{` の後ろの `{ }`、閉じる行の残りを付ける      | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 は、属性の `~` の後ろに長いテキストがある行を描かない                                                        | [fixture: er/attribute-blocks/written-line-tilde-line-closing-remainder]                                                                                    |
 | [ER](./er.ja.md#1-行に-1-文)                                | `"Alpha"`、空白とタブ以外の空白文字（U+2028、U+2029、U+00A0 など）、その後の `{ int x }`、別名、CSS のクラス、関係                            | `Alpha` と、その文字で始まる文を別の行に        | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 と 11.7.0 が、その文字を空白として読み、その文字で始まって残りが続く行を拒否する                             | [test: U+2028 and an attribute block after a name in quotes] [test: U+00A0 in place of the separator: U+2028 and an attribute block after a name in quotes] |
 | [treemap](./treemap.ja.md#title)                            | 行頭の `title T`                                                                                                                              | 1 段深い `  title T`                            | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.8.1 が、字下げされた title、`accTitle`、`accDescr` を拒否する                                                    | [fixture: treemap/title/line-start-kept]                                                                                                                    |
+| [すべての図種](./compatibility.ja.md#フロントマター)        | フロントマターの `%YAML 1.2` の後の `--- !!map`                                                                                               | `---` と `!!map` を別の行に                     | [YAML](#フロントマター)                               | 10.9.8 から 12.3.0 が分割した形を拒否する                                                                           | [fixture: flowchart/frontmatter-yaml/delimiter-line-kept]                                                                                                   |
 | [ishikawa](./ishikawa.ja.md#indentation)                    | `ishikawa`、`R`、`  A`、` B`、`  C` を書かれたまま                                                                                            | すべてのノードを深さの位置に置く形              | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.13.0 が、深さで印字したテキストを書かれたテキストと違って描く                                                    | [fixture: ishikawa/indentation/indent-relative-zero]                                                                                                        |
 | [user journey](./journey.ja.md#タイトルとセクション)        | `title`、半角空白 2 つ、タブ、半角空白 1 つ                                                                                                   | `title` だけ（後ろに何もない形）                | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 が、`title` だけの形を拒否する                                              | [fixture: journey/titles-and-sections/title-blank-kept]                                                                                                     |
 | [Wardley](./wardley.ja.md#link)                             | `Alpha-->Beta` を `Alpha--> Beta` と印字                                                                                                      | `Alpha- -> Beta`                                | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.14.0 が、名前の `-` を拒否する                                                                                   | [fixture: wardley/links/link-long-glued]                                                                                                                    |
@@ -1713,7 +1716,6 @@ railroad 図の文字列と特殊シーケンスです。
   `accDescr` は `desc` 要素で、ツールチップとして表示されません。
 
   [fixture: pie/accessibility-lines/accessibility-inner-tab]
-  [fixture: pie/accessibility-lines/acc-title-inner-spaces-kept]
   [fixture: quadrant/titles-and-accessibility-statements/text-inner-whitespace-kept]
 
 - C4 の文の引数のうち、label、technology、type、description でないもの（sprite、
@@ -3320,7 +3322,6 @@ pie 図と gitGraph ではテキストの両端に空白を足したブロック
 
 [fixture: pie/description-blocks/block-then-comment]
 [fixture: gitgraph/title-and-common-values/block-then-comment-kept]
-[fixture: timeline/multi-line-values/block-then-comment-kept]
 
 ### テキストの引用符
 
@@ -6121,6 +6122,12 @@ title や設定の値が変わるためです。
 フロントマターを途中で終わらせるときは、YAML を書かれたまま残します。
 Prettier はそうした行を印字します。
 `%YAML` の指示子の後の `--- !!map` を `---` と `!!map` の 2 行に印字します。
+したがって、`%YAML 1.2` の指示子の後の `--- !!map` は書かれたまま残します。
+どの図種でも、対象にする版の mermaid.js のすべてが、書かれた形を受け付け、
+2 行に分けた形を拒否するからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: flowchart/frontmatter-yaml/indented-delimiters-kept]
 [fixture: flowchart/frontmatter-yaml/delimiter-line-kept]

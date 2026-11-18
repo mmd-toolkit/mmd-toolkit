@@ -158,7 +158,8 @@ differently. This table lists each such form: the form that stays as written,
 the form that the rules would print, the rule that would give it, the versions
 that count for its diagram type and need the kept form, and a fixture. The
 diagram column links to the rules of the diagram type, which give the reason of
-the kept form.
+the kept form; for a form that every diagram type keeps, it says every diagram
+type and links to the shared rule.
 
 A row is a rule that
 [How the printed form is decided](./printed-form.md#the-versions-of-mermaidjs-that-count)
@@ -246,6 +247,7 @@ The table also names the pinned version where it needs the kept form.
 | [ER](./er.md#statements-one-per-line)                          | an attribute with a pair of `~` after another attribute on its line (`int a List~int~ b`)                                                                                    | one attribute on each line                                            | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 reads the line up to the second `~` as the type of its first attribute                               | [fixture: er/attribute-spacing/attributes-with-tilde-on-one-line-kept]                                                                                      |
 | [ER](./er.md#attribute-blocks)                                 | an empty block over several lines on a line that stays as written, after a `~` in an attribute block (`T { int a List~int~ b } A {`, a line break, `}`, and more text)       | `{ }` after the `{`, with the rest of the closing line                | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 does not draw a line that holds a `~` of an attribute and a long text after it                       | [fixture: er/attribute-blocks/written-line-tilde-line-closing-remainder]                                                                                    |
 | [treemap](./treemap.md#title)                                  | `title T` at the start of its line                                                                                                                                           | `  title T` one step in                                               | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.8.1 rejects a title, `accTitle`, and `accDescr` that is indented                                         | [fixture: treemap/title/line-start-kept]                                                                                                                    |
+| [every diagram type](./compatibility.md#frontmatter)           | `--- !!map` after `%YAML 1.2` in frontmatter                                                                                                                                 | `---` and `!!map` on separate lines                                   | [YAML](#frontmatter)                                                 | 10.9.8 to 12.3.0 reject the split form                                                                      | [fixture: flowchart/frontmatter-yaml/delimiter-line-kept]                                                                                                   |
 | [ishikawa](./ishikawa.md#indentation)                          | `ishikawa`, `R`, `  A`, ` B`, `  C` as written                                                                                                                               | every node at its depth                                               | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.13.0 draws the text printed by depth differently from the written text                                   | [fixture: ishikawa/indentation/indent-relative-zero]                                                                                                        |
 | [user journey](./journey.md#titles-and-sections)               | `title` followed by two spaces, a tab, and a space                                                                                                                           | `title` with nothing after it                                         | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0 reject `title` with nothing after it                            | [fixture: journey/titles-and-sections/title-blank-kept]                                                                                                     |
 | [Wardley](./wardley.md#links)                                  | `Alpha-->Beta` printed `Alpha--> Beta`                                                                                                                                       | `Alpha- -> Beta`                                                      | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.14.0 rejects a name with a `-`                                                                           | [fixture: wardley/links/link-long-glued]                                                                                                                    |
@@ -1631,7 +1633,6 @@ These stay as written:
   `desc` element, which no tooltip shows.
 
   [fixture: pie/accessibility-lines/accessibility-inner-tab] [fixture:
-  pie/accessibility-lines/acc-title-inner-spaces-kept] [fixture:
   quadrant/titles-and-accessibility-statements/text-inner-whitespace-kept]
 
 - The arguments of a C4 statement that are not a label, a technology, a type, or
@@ -3175,8 +3176,7 @@ a gitGraph, with its text padded, and in the diagram types that take the `%%` as
 part of the text, and is printed in the form with the colon in the others.
 
 [fixture: pie/description-blocks/block-then-comment] [fixture:
-gitgraph/title-and-common-values/block-then-comment-kept] [fixture:
-timeline/multi-line-values/block-then-comment-kept]
+gitgraph/title-and-common-values/block-then-comment-kept]
 
 ### The quotes of a text
 
@@ -5866,7 +5866,10 @@ The YAML is kept as written when the `---` lines are indented, and when a line
 of the formatted YAML has the form of a `---` line (the specification's
 [Frontmatter](../../spec/docs/common.md#frontmatter)), which would end the
 frontmatter early. Prettier prints such lines: it prints `--- !!map` after a
-`%YAML` directive as `---` and `!!map` on two lines.
+`%YAML` directive as `---` and `!!map` on two lines. A `--- !!map` line after a
+`%YAML 1.2` directive therefore stays written, since in every diagram type every
+version of mermaid.js that counts accepts it and rejects the two lines (see
+[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: flowchart/frontmatter-yaml/indented-delimiters-kept] [fixture:
 flowchart/frontmatter-yaml/delimiter-line-kept]
