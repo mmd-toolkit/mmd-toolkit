@@ -1627,11 +1627,13 @@ erDiagram
 ### Direction
 
 A direction line is `direction` and its value, with the text that mermaid.js
-does not read before and after them. The text is kept as written. One space
-stands between it and `direction`, where they were written apart, and between
-`direction` and the value; the value keeps the case in which it is written (`lr`
-stays `lr`), since a version that counts reads the line as entities and draws
-`direction tb` and `direction TB` differently (see
+does not read before and after them. The text is kept as written, since the tree
+holds it whole (see
+[A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)).
+One space stands between it and `direction`, where they were written apart, and
+between `direction` and the value; the value keeps the case in which it is
+written (`lr` stays `lr`), since a version that counts reads the line as
+entities and draws `direction tb` and `direction TB` differently (see
 [Keywords in one case](./compatibility.md#keywords-in-one-case) and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
