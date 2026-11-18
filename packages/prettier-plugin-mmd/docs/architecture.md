@@ -810,11 +810,11 @@ names no mark before a comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#comments),
 [journey](./journey.md#comments), and [timeline](./timeline.md#comments) keep a
-comment that touches what comes before it, and print one space where whitespace
-was written. Preserve marks, content and trailing padding for attachment. Native
-comments end at LF/CR and keep LS/PS as content. Earlier values own enclosed
-percent text; common lines stop at it. Removed common regions keep complete
-source and continuation columns.
+comment after a statement touching the statement where it touches, and print one
+space where whitespace was written. Preserve marks, content and trailing padding
+for attachment. Native comments end at LF/CR and keep LS/PS as content. Earlier
+values own enclosed percent text; common lines stop at it. Removed common
+regions keep complete source and continuation columns.
 
 [fixture: architecture/comments/comment-attachments]
 
