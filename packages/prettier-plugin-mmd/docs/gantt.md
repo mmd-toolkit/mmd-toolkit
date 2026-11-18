@@ -783,7 +783,13 @@ A directive between the keyword and the value stays where it is (see
 
 A value written on a later line is printed after the keyword on one line; a
 comment line between them makes the statement printed as written (see
-[Multi-line statements](#multi-line-statements)).
+[Multi-line statements](#multi-line-statements)). Rule 1 names no mark for a
+line break, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [sequence](./sequence.md#title) prints a `title`, a line break, and the
+text that follows on one line, and [xychart](./xychart.md#multi-line-statements)
+prints a statement that mermaid.js reads over several lines on one line, with
+one space in place of the line break.
 
 [fixture: titles-and-sections/comment-line-inside-kept]
 
@@ -859,9 +865,13 @@ The whitespace at the end of a list is dropped.
 
 A list of whitespace only has no item, and mermaid.js needs a character of the
 list text after the whitespace that follows the keyword, so two whitespace
-characters stay after the keyword, as written.
+characters stay after the keyword, as written. The same holds where a directive
+follows the whitespace: `includes`, two spaces, and `%%{init: {}}%%` stay, since
+mermaid.js takes the directive out before it reads the list, and every version
+of mermaid.js that counts rejects the form with one space (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
-[fixture: lists/whitespace-only]
+[fixture: lists/whitespace-only] [fixture: lists/whitespace-only-then-directive]
 
 mermaid.js lowers the case of the whole list text before it splits it. A capital
 sigma becomes the final `ς` when the characters before it that the conversion
@@ -1280,7 +1290,14 @@ empty-description-blocks/blank-lines-inside]
 
 A block with a directive or a comment line keeps its contents and line breaks,
 with body indentation under
-[Accessibility statements](#accessibility-statements).
+[Accessibility statements](#accessibility-statements). Rule 1 gives no form
+here, since its table names the whitespace beside a mark and not the start of a
+line ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it, as [pie](./pie.md#description-blocks) keeps comment-only blocks with
+comments one level inside and a separate closer at statement level, and
+[class](./class.md#empty-description-blocks) keeps the contents and line breaks
+of a block with comments or directives.
 
 [fixture: empty-description-blocks/with-directive-or-comment-line-kept]
 
@@ -1548,7 +1565,13 @@ comments/single-percent-kept] [fixture: comments/bare-percent-lines]
 A comment line stands at the level of the statement after it, so a comment
 before a `section` stands at its level, and one before a task stands at the
 level of the task; at the end of the text it stands at the level of the last
-statement.
+statement. Rule 1 gives no form here, since its table names the whitespace
+beside a mark and not the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it, as [quadrant](./quadrant.md#comments), [xychart](./xychart.md#comments), and
+[ishikawa](./ishikawa.md#comments) put a comment line on a line of its own at
+the level of the statement or the node after it.
 
 [fixture: comments/levels-around-sections] [fixture:
 directives/levels-around-sections]

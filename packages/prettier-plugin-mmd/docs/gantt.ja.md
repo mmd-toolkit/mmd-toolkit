@@ -814,6 +814,12 @@ Db はその空白を持ちますが、図では描かれません。
 後の行に書かれた値は、キーワードの後に寄せて 1 行にします。
 間にコメント行があれば、
 文は書かれたまま印字します（[複数行の文](#複数行の文)を参照）。
+規則 1 は、改行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#タイトル) は、
+`title` と改行とその次のテキストを 1 行で印字し、
+[xychart](./xychart.ja.md#複数行の文) は、mermaid.js が複数行で読む文を、
+改行を空白 1 つにして 1 行で印字します。
 
 [fixture: titles-and-sections/comment-line-inside-kept]
 
@@ -890,8 +896,15 @@ Db はどの区切りでも同じなので、区切りの種類は作者のも�
 空白だけのリストは項目を持たず、mermaid.js はキーワードの後の空白の後ろに、
 リストのテキストの 1 文字を要求するので、キーワードの後に空白 2 文字を、
 書かれたまま残します。
+ディレクティブが空白の後に続く場合も同じです。
+`includes`、空白 2 個、`%%{init: {}}%%` を残すのは、
+mermaid.js がリストを読む前にディレクティブを取り除き、
+対象にする版の mermaid.js のすべてが、空白 1 個の形を拒否するからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
-[fixture: lists/whitespace-only]
+[fixture: lists/whitespace-only] [fixture: lists/whitespace-only-then-directive]
 
 mermaid.js はリストのテキスト全体の大文字小文字を、分ける前に小文字にします。
 大文字のシグマは、その前の、変換が無視しない文字が文字で終わり、
@@ -1313,6 +1326,13 @@ Prettier が `x = { }` を `x = {}`
 
 ディレクティブやコメント行の内容と改行は保ち、
 本文の字下げは [アクセシビリティの文](#アクセシビリティの文)に従います。
+規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
+規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
+[pie](./pie.ja.md#description-blocks) は、コメントだけのブロックを、
+コメントを 1 段内側に、独立した閉じ括弧を文の段に置き、
+[class](./class.ja.md#空の説明ブロック) は、
+コメントやディレクティブのあるブロックの内容と改行を保ちます。
 
 [fixture: empty-description-blocks/with-directive-or-comment-line-kept]
 
@@ -1583,6 +1603,12 @@ gantt
 コメント行は、その次の文と同じ段に置きます。
 `section` の前のコメントは `section` の段、タスクの前のコメントはタスクの段、
 テキストの末尾のコメントは最後の文の段です。
+規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
+規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
+[quadrant](./quadrant.ja.md#コメント)、[xychart](./xychart.ja.md#コメント)、
+[ishikawa](./ishikawa.ja.md#comments) も、単独の行のコメントを、
+後ろの文か節の段に置きます。
 
 [fixture: comments/levels-around-sections]
 [fixture: directives/levels-around-sections]
