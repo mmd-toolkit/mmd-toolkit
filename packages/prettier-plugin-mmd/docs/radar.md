@@ -18,9 +18,10 @@ and `radar-beta` as the same header, and the examples in its documentation write
 the header without the colon 3 times against none (see
 [The colon after a header](./compatibility.md#the-colon-after-a-header)). The
 colon stays where a hidden form or a global directive lies between it and the
-word, and where a `;` or the `---` of a hidden YAML block touches it. For
-`radar-beta%%{wrap}%%:axis North`, the colon stays, since every version of
-mermaid.js that counts rejects `radar-beta%%{wrap}%%axis North` (see
+word, and where a `;`, the `---` of a hidden YAML block, or a directive that is
+not closed touches it. For `radar-beta%%{wrap}%%:axis North`, the colon stays,
+since every version of mermaid.js that counts rejects
+`radar-beta%%{wrap}%%axis North` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The colon stays before an unclosed directive too: `radar-beta:%%{x y`, a line
 break, and `axis North` stay as written, since mermaid.js takes the directive

@@ -2890,11 +2890,14 @@ cynefin 図と radar 図は、`cynefin-beta:` と `radar-beta:` を、
 例は、どちらの図もコロンのないヘッダーを 3 回書き、コロンつきは書かないので、
 コロンを除き、その行で後に続くものは、コロンのないヘッダーの後と同じく、
 次の行に移します。
-`;` や隠れた YAML ブロックの `---` が接するコロンは残します。
+`;`、隠れた YAML ブロックの `---`、
+閉じていないディレクティブが接するコロンは残します。
 
 [fixture: cynefin/header/colon-removed]
 [fixture: cynefin/header/colon-semicolon-kept]
 [fixture: radar/header/colon-removed] [fixture: radar/header/colon-yaml-kept]
+[fixture: cynefin/header/colon-unclosed-directive-kept]
+[fixture: radar/header/colon-unclosed-directive-kept]
 
 向きのない gitGraph は、`gitGraph:` と `gitGraph` を、
 対象にするすべての版が同じに読み、コミットもブランチも図も同じです。

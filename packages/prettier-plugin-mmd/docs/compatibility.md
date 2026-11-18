@@ -2728,11 +2728,14 @@ A cynefin or a radar diagram reads `cynefin-beta:` and `radar-beta:` as the
 header without the colon. The examples write the header without the colon 3
 times in each, and with it never, so the colon is removed, and what follows it
 on the line goes to the next line as it does after a header without the colon.
-The colon stays where a `;` or the `---` of a hidden YAML block touches it.
+The colon stays where a `;`, the `---` of a hidden YAML block, or a directive
+that is not closed touches it.
 
 [fixture: cynefin/header/colon-removed] [fixture:
 cynefin/header/colon-semicolon-kept] [fixture: radar/header/colon-removed]
-[fixture: radar/header/colon-yaml-kept]
+[fixture: radar/header/colon-yaml-kept] [fixture:
+cynefin/header/colon-unclosed-directive-kept] [fixture:
+radar/header/colon-unclosed-directive-kept]
 
 A gitGraph without a direction reads `gitGraph:` and `gitGraph` the same in
 every version that counts, with the same commits and branches and the same
