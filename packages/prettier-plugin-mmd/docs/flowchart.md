@@ -752,7 +752,10 @@ part of it and are kept.
 
 [fixture: blank-lines/inside-values-kept]
 
-The text ends with exactly one line break.
+The text ends with exactly one line break. Rule 1 names no mark here, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [c4](./c4.md#final-newline) and [packet](./packet.md#final-newline) end
+the text with one line break.
 
 [fixture: blank-lines/header-only-without-line-break]
 
@@ -1247,7 +1250,13 @@ Text written between two arrows has one space on each side.
 arrow-spacing/directive-in-text-between-arrows]
 
 A label between `|` touches the arrow and its `|`, and an edge id touches its
-`@` and the arrow.
+`@` and the arrow. Rule 1 gives no spacing for this `@`, since it is a part of
+the id of the edge and not a mark between two things
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the form, as [agentflow](./agentflow.md#arrows) and
+[usecase](./usecase.md#relationship-labels-and-ids) print an edge id touching
+its `@` and the arrow.
 
 [fixture: arrow-spacing/pipe-label-other-link-kinds] [fixture:
 arrow-spacing/edge-id-with-labels] [fixture:
@@ -1949,7 +1958,14 @@ whitespace.
 multi-line-statements/label-over-lines] [fixture:
 multi-line-statements/directive-inside]
 
-Comment lines inside it stay inside it, at the level of its later lines.
+Comment lines inside it stay inside it, at the level of its later lines. Rule 1
+gives no form here, since its table names the whitespace beside a mark and not
+the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it, as [requirement](./requirement.md#fields) and
+[sequence](./sequence.md#multi-line-statements) put the comment lines of a
+statement at the level of its later lines.
 
 [fixture: multi-line-statements/several-comments-inside]
 
