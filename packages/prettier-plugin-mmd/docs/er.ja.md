@@ -1846,6 +1846,7 @@ erDiagram
 [fixture: accessibility-statements/text-on-next-line-joined]
 [fixture: accessibility-statements/text-with-comment-line-kept]
 [corpus fixture: er/lex-acc-title-line-feed-after-colon]
+[fixture: multi-line-statements/acc-colon-and-brace-joined]
 
 通常の `accDescr { ... }` ブロックの後続の本文行は、文の内側に 1 段字下げし、
 LF 直後の ASCII 空白とタブだけを置き換えます。
