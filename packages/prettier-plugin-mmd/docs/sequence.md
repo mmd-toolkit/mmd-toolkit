@@ -1135,8 +1135,10 @@ sequence/lex-single-percent-comment-line] [fixture: comments/percent-line-kept]
 
 A comment after a statement stays on its line, and whether whitespace is written
 before its mark is kept: mermaid.js reads `autonumber 5%% c` without the number
-5, and a space before `%%` would give it the number. A run of whitespace before
-the mark is printed as one space (see
+5, and a space before `%%` would give it the number, in every version that
+counts (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A run of whitespace before the mark is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 
 [fixture: comments/mark-run-one-space] [fixture: comments/kept] [corpus fixture:
@@ -1456,10 +1458,12 @@ characters as escapes too (see
 [tests/line-separators.test.ts](../tests/line-separators.test.ts)).
 
 - At the end of the text of a `box`, after the whitespace that may stand before
-  them. mermaid.js gives a box whose text holds such a character the fill
-  `transparent` and no name, and without it `box aqua` has the fill `aqua`. The
-  whitespace after the last of them is dropped. A block header other than a box,
-  `loop x`, U+2028, and ` ;` for one, is trimmed by mermaid.js, and the
+  them. A box whose text holds such a character has the fill `transparent` and
+  no name, and without it `box aqua` has the fill `aqua`; every version of
+  mermaid.js that counts draws another fill (see
+  [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+  The whitespace after the last of them is dropped. A block header other than a
+  box, `loop x`, U+2028, and ` ;` for one, is trimmed by mermaid.js, and the
   character is dropped with the whitespace at the end of its text.
 
   [test: U+2028 at the end of the text of a box] [test: whitespace around U+2028
