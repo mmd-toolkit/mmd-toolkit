@@ -731,6 +731,31 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
     "sequenceDiagram\n  autonumber 5 # c\n",
   ],
   [
+    "a `#` comment after U+2029 after autonumber 5 and a space",
+    "sequenceDiagram\nautonumber 5 \u2029# c\n",
+    "sequenceDiagram\n  autonumber 5 # c\n",
+  ],
+  [
+    "a `#` comment after U+2029 after the id of an actor",
+    "sequenceDiagram\nactor A\u2029# c\n",
+    "sequenceDiagram\n  actor A\u2029# c\n",
+  ],
+  [
+    "a `#` comment after U+2029 after autonumber",
+    "sequenceDiagram\nautonumber\u2029# c\n",
+    "sequenceDiagram\n  autonumber # c\n",
+  ],
+  [
+    "a `#` comment after U+2029 after a box without a text",
+    "sequenceDiagram\nbox\u2029# c\nparticipant A\nend\n",
+    "sequenceDiagram\n  box # c\n    participant A\n  end\n",
+  ],
+  [
+    "a `#` comment after U+2028 and U+2029 after a data block that is read as a name",
+    "sequenceDiagram\nparticipant A@{ x }\u2028# c\nactor B@{ y }\u2029# c\n",
+    "sequenceDiagram\n  participant A@{ x } # c\n  actor B@{ y } # c\n",
+  ],
+  [
     "a `%%` comment line after U+2028, which joins the next line",
     "sequenceDiagram\nA->>B:   x\u2028%% c\nC->>D: y\n",
     "sequenceDiagram\n  A->>B:   x\u2028%% c\nC->>D: y\n",
@@ -4776,6 +4801,27 @@ describe("a sequence diagram with a line separator", () => {
   it.each(sequenceExamples)("keeps %s", async (_name, input, output) => {
     await expectKept(input, output)
   })
+})
+
+/** Texts that every version of mermaid.js that counts rejects (docs/sequence.md, Line separators). */
+const rejectedSequenceExamples: readonly (readonly [string, string])[] = [
+  [
+    "autonumber 5, U+2028, and a `#` comment",
+    "sequenceDiagram\nautonumber 5\u2028# c\n",
+  ],
+  [
+    "autonumber 5, U+2029, and a `#` comment",
+    "sequenceDiagram\nautonumber 5\u2029# c\n",
+  ],
+]
+
+describe("a sequence diagram with a line separator that is rejected", () => {
+  it.each(rejectedSequenceExamples)(
+    "reports a syntax error for %s",
+    async (_name, input) => {
+      await expect(format(input)).rejects.toBeInstanceOf(SyntaxError)
+    },
+  )
 })
 
 describe("a flowchart with a line separator", () => {

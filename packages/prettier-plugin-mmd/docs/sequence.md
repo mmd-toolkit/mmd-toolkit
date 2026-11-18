@@ -1485,8 +1485,8 @@ characters as escapes too (see
   statement (see [Comments](#comments)), except after the units below, where
   mermaid.js reads the character, or the character and the `#` with what
   follows, as part of the unit, and the character stays as written
-  (`autonumber 5`, U+2028, and a `#` comment is rejected by every version of
-  mermaid.js that counts and is not formatted):
+  (`autonumber 5`, U+2028 or U+2029, and a `#` comment is rejected by every
+  version of mermaid.js that counts and is not formatted):
 
   - The id of a `participant` or an `actor` that has no alias and no data block,
     and of a `create`, a `destroy`, an `activate`, and a `deactivate`: `A`,
@@ -1528,7 +1528,13 @@ characters as escapes too (see
   autonumber off] [test: a `#` comment after U+2029 after a link, an alias, and
   the header] [test: a `#` comment after U+2028 after the id of an actor] [test:
   a `#` comment after U+2029 after the id of a create and a destroy] [test: a
-  `#` comment after U+2028 after autonumber 5 and a space]
+  `#` comment after U+2028 after autonumber 5 and a space] [test: a `#` comment
+  after U+2029 after autonumber 5 and a space] [test: a `#` comment after U+2029
+  after the id of an actor] [test: a `#` comment after U+2029 after autonumber]
+  [test: a `#` comment after U+2029 after a box without a text] [test: a `#`
+  comment after U+2028 and U+2029 after a data block that is read as a name]
+  [test: autonumber 5, U+2028, and a `#` comment] [test: autonumber 5, U+2029,
+  and a `#` comment]
 
 - Right after a directive that is not closed. The text of such a directive stops
   before the character, which is no whitespace to it: with the character printed
