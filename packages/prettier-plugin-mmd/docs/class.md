@@ -875,9 +875,9 @@ mermaid.js: `+attr string *` is printed `+attr string*`.
 
 Attribute and annotation lines, in a body or after the `:` of a class name, keep
 their contents as written, apart from the runs of spaces and tabs inside. An
-annotation line in a body, `<< y  z >>`, keeps its whitespace, since every
-version of mermaid.js that counts draws different text and geometry for
-`<<y z>>` (see
+annotation line in a body keeps its runs of spaces and tabs, unlike an attribute
+line: `<< y  z >>` stays, since every version of mermaid.js that counts draws
+different text and geometry for `<<y z>>` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Methods preserve their name, parameter and return-type contents, including
 generic spelling and classifier-related tails, apart from the runs. The space
