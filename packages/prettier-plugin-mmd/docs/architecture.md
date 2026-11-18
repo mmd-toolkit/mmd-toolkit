@@ -808,13 +808,15 @@ align a comment on a line of its own with the body in the same way. Inline
 comments keep their line and touching side, or one separating space. Rule 1
 names no mark before a comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#comments),
-[journey](./journey.md#comments), and [timeline](./timeline.md#comments) keep a
-comment after a statement touching the statement where it touches, and print one
-space where whitespace was written. Preserve marks, content and trailing padding
-for attachment. Native comments end at LF/CR and keep LS/PS as content. Earlier
-values own enclosed percent text; common lines stop at it. Removed common
-regions keep complete source and continuation columns.
+decides, as [sequence](./sequence.md#comments) (after a statement),
+[journey](./journey.md#comments) (after a task, an `accDescr`, or the header),
+and [timeline](./timeline.md#comments) (after the header, a direction, or the
+`}` of an accessibility block) keep a comment touching what it follows where it
+touches, and print one space where whitespace was written. Preserve marks,
+content and trailing padding for attachment. Native comments end at LF/CR and
+keep LS/PS as content. Earlier values own enclosed percent text; common lines
+stop at it. Removed common regions keep complete source and continuation
+columns.
 
 [fixture: architecture/comments/comment-attachments]
 
