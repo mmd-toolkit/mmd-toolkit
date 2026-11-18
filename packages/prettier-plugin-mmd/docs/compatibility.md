@@ -5231,7 +5231,8 @@ See [Task data](./gantt.md#task-data), [Settings](./gantt.md#settings),
   `includes`, one space, and `%%{init: {}}%%` is rejected too.
 
   [fixture: gantt/task-data/whitespace-only-data] [fixture:
-  gantt/lists/whitespace-only]
+  gantt/lists/whitespace-only] [fixture:
+  gantt/lists/whitespace-only-then-directive]
 
 - A U+FEFF between the items of a list of `includes` or `excludes`. mermaid.js
   lowers the case of the whole list text before it splits it, and the conversion

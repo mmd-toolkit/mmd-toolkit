@@ -5478,6 +5478,7 @@ mermaid.js は、Gantt 図の一部の値の空白を持ち、一部の行を、
 
   [fixture: gantt/task-data/whitespace-only-data]
   [fixture: gantt/lists/whitespace-only]
+  [fixture: gantt/lists/whitespace-only-then-directive]
 
 - `includes` と `excludes` のリストの項目の間の U+FEFF。
   mermaid.js はリストのテキスト全体を、分ける前に小文字にし、
