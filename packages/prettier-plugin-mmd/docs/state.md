@@ -1123,8 +1123,8 @@ links enclosed in angle brackets, backslashes and whitespace other than ASCII
 spaces within content lines. Marked recognizes block syntax, including lists and
 headings. These margins can appear in rendered text when Mermaid displays a
 block's source literally. For example, increasing two spaces after a blank line
-to four changes three displayed paragraphs into a different layout in every
-version of mermaid.js that counts (see
+to four changes three displayed paragraphs into a different layout: 10.9.8 draws
+another text, and 11.7.0 and later versions another structure (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 This does not reformat general Markdown.
 
@@ -1990,9 +1990,8 @@ on the closing line of a composite statement]
 In a state diagram, these characters bound the text in which mermaid.js looks
 for a pseudostate mark, a direction line, and a second name before a `{`:
 `state a`, U+2028, and `b <<fork>>` is the name `a` and the fork `b`, while with
-a space in place of the U+2028, it is the fork `a b`, in every version of
-mermaid.js that counts (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+a space in place of the U+2028, it is the fork `a b`, which has another id and
+label in the Db.
 
 [corpus fixture: state/lex-pseudostate-mark-after-line-separator]
 
