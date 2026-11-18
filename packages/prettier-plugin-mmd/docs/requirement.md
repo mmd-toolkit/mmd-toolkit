@@ -1143,7 +1143,8 @@ of a diagram in
 [Which kind a colon is](./printed-form.md#which-kind-a-colon-is)), so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the form
 `accTitle: text`: no whitespace before the colon and one space after it, also
-where the colon or the text was written on a later line.
+where the colon or the text was written on a later line; where a comment line
+stands before the text, the statement stays as written, as said above.
 
 [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept]
