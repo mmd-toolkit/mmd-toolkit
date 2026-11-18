@@ -620,8 +620,10 @@ first style is not in the Db, so it becomes one space. The styles of `classDef`
 and `style` use the spacing below; the value of a `class` is printed as written,
 except that a run of spaces and tabs inside a class name is printed as one
 space: the Db changes, but every version of mermaid.js that counts draws the
-same figure. `class A,B c1` stays, since every version of mermaid.js that counts
-draws `class A, B c1` differently (see
+same figure (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+`class A,B c1` stays, since every version of mermaid.js that counts draws
+`class A, B c1` differently (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Terminators follow
 [Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement).
@@ -957,10 +959,10 @@ before the header stands at the first column. Rule 1 gives no form here, since
 its table names the whitespace beside a mark and not the start of a line
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [state](./state.md#comments) and [er](./er.md#comments) put a comment
-line at the level of the statements around it. A `%%` that does not start a line
-is the text of an id, and stays where it is, with the statement that it starts
-(see [Rows](#rows)).
+it, as [state](./state.md#comments) and [flowchart](./flowchart.md#comments) put
+a comment line at the level of the statements around it. A `%%` that does not
+start a line is the text of an id, and stays where it is, with the statement
+that it starts (see [Rows](#rows)).
 
 [fixture: comments/comment-line-at-the-level-of-the-next-statement] [fixture:
 comments/comment-before-the-header] [fixture:
