@@ -3969,8 +3969,10 @@ standalone trivia use one indentation level inside the statement. Rule 1 gives
 no form here, since its table names the whitespace beside a mark and not the
 start of a line ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [requirement](./requirement.md#fields) and
-[sequence](./sequence.md#multi-line-statements) put the continuations and the
+it, as [requirement](./requirement.md#fields),
+[sequence](./sequence.md#multi-line-statements),
+[flowchart](./flowchart.md#multi-line-statements), and
+[xychart](./xychart.md#multi-line-statements) put the continuations and the
 intervening comment lines of a statement one level deeper than the statement.
 Keep each first gap-line tail, including whitespace needed before LF, and keep
 value and directive interiors whole. Joining comment regions, semicolon
@@ -4035,10 +4037,11 @@ leaving its body one level deeper. Rule 1 gives no form here, since its table
 names the whitespace beside a mark and not the start of a line
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [c4](./c4.md#boundary-bodies) and [requirement](./requirement.md#bodies)
-put the line that holds the opening brace at the level of the keyword. Crossing
-literal values keep their own columns. This applies to state, requirement and C4
-boundary headers.
+it: [state](./state.md#composite-states),
+[requirement](./requirement.md#bodies), and [c4](./c4.md#boundary-bodies) each
+put the line that holds the opening brace at the level of the keyword, so each
+of the three prints this gap as the other two do. Crossing literal values keep
+their own columns. This applies to state, requirement and C4 boundary headers.
 
 [fixture: state/composite-states/header-completion-after-comment] [fixture:
 requirement/bodies/header-completion-after-comment] [fixture:
@@ -6800,9 +6803,11 @@ statement. Rule 1 gives no form here, since its table names the whitespace
 beside a mark and not the start of a line
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [requirement](./requirement.md#empty-description-blocks) and
-[c4](./c4.md#description-blocks) put a separate closing brace at the level of
-its statement. Comment-free lists still compact their ordinary entry newlines.
+it, as [usecase](./usecase.md#native-metadata) puts the comment lines and the
+properties of a braced list one level inside and its separate closing brace at
+the level of the statement, and [er](./er.md#attribute-blocks) puts the `}` of
+an attribute block at the level of the entity. Comment-free lists still compact
+their ordinary entry newlines.
 
 [fixture: radar/multi-line-statements/entry-comment-after-comma] [fixture:
 radar/multi-line-statements/entry-global-lines]

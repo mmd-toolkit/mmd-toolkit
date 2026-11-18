@@ -4192,8 +4192,10 @@ mermaid.js の行の規則が隙間の空白を読む可能性のある所と、
 規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
-[requirement](./requirement.ja.md#フィールド) と
-[sequence](./sequence.ja.md#複数行の文)も、続きの行と間の独立した注釈を、
+[requirement](./requirement.ja.md#フィールド)、
+[sequence](./sequence.ja.md#複数行の文)、
+[flowchart](./flowchart.ja.md#複数行の文)、
+[xychart](./xychart.ja.md#複数行の文)も、続きの行と間の独立した注釈を、
 文より 1 段深く置きます。
 LF の前に必要な空白を含め、各隙間の最初の行末を保ち、
 値とディレクティブの内部は分割しません。
@@ -4258,8 +4260,10 @@ C4 の呼び出しも、インラインディレクティブの内容・接触�
 規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
-[c4](./c4.ja.md#境界の本体) と [requirement](./requirement.ja.md#本体)も、
-開き波括弧のある行を、キーワードと同じ段に置きます。
+[state](./state.ja.md#複合状態)、[requirement](./requirement.ja.md#本体)、
+[c4](./c4.ja.md#境界の本体)は、いずれも開き波括弧のある行を、
+キーワードと同じ段に置きます。
+この 3 つの図種は、この隙間を互いに同じ形で印字します。
 その行をまたぐリテラル値は、固有の列を保ちます。
 state、requirement、C4 の boundary の見出しが対象です。
 
@@ -7135,8 +7139,11 @@ style に似たラベルと結合すると、別の文の値が変わりうる�
 規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
-[requirement](./requirement.ja.md#空の説明ブロック) と
-[c4](./c4.ja.md#説明ブロック)も、独立した閉じ波括弧を文の段に置きます。
+[usecase](./usecase.ja.md#native-metadata) は、
+波括弧のリストのコメント行とプロパティを 1 段内側に、
+独立した閉じ波括弧を文の段に置きます。
+[er](./er.ja.md#属性ブロック)は、
+属性ブロックの `}` をエンティティの段に置きます。
 コメントのないリストでは、普通の項目の改行は従来どおり結合します。
 
 [fixture: radar/multi-line-statements/entry-comment-after-comma]
