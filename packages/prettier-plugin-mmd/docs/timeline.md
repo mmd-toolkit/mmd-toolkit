@@ -1370,6 +1370,13 @@ whitespace before the `#` is part of the period, and stays as it is (see
 [fixture: comments/after-description-block] [fixture:
 comments/after-statement-under-a-section]
 
+A description block that a `%%` comment follows on its line stays a block, since
+some of the versions of mermaid.js that count read the description `a` from
+`accDescr {a} %% c` but `a %% c` from `accDescr: a %% c` in the Db (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+
+[fixture: comments/block-then-percent-comment-kept]
+
 Inside a title, a section, an event, and an accessibility text, `#` and `%%` are
 characters of the text, not a comment, and are kept with it.
 
