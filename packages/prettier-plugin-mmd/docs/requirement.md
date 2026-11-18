@@ -1149,7 +1149,8 @@ colon of a key (the title and the description of a diagram in
 [Which kind a colon is](./printed-form.md#which-kind-a-colon-is)), so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the form
 `accTitle: text`: no whitespace before the colon and one space after it, also
-where the colon or the text was written on a later line.
+where the colon or the text was written on a later line, except that a comment
+line before the colon keeps the colon on a line of its own, one level deeper.
 
 [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept] [fixture:
