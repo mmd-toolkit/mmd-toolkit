@@ -2504,6 +2504,8 @@ color (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
 
 [fixture: semicolons-at-the-end-of-a-style-statement/trailing-items-kept]
+[corpus fixture: er/lex-classdef-ignored-semicolon-then-text] [corpus fixture:
+er/tokens-closed-directive-end-of-classdef-line]
 
 An ignored `;` beside another `;` is kept to preserve the line rule's selection.
 

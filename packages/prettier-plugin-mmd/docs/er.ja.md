@@ -2482,6 +2482,8 @@ style の続きになります。
 を参照してください。
 
 [fixture: semicolons-at-the-end-of-a-style-statement/trailing-items-kept]
+[corpus fixture: er/lex-classdef-ignored-semicolon-then-text]
+[corpus fixture: er/tokens-closed-directive-end-of-classdef-line]
 
 無視される `;` が別の `;` の隣にある場合は、行の規則の選択を保つために残します。
 
