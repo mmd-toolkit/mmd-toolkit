@@ -655,12 +655,12 @@ one space. Rule 1 names no mark before a comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#comments),
 [journey](./journey.md#comments), and [timeline](./timeline.md#comments) keep a
-comment that touches what comes before it, and print one space where whitespace
-was written. Preserve marks, content and trailing padding. Native comments end
-at physical EOL and keep LS/PS as content. Earlier strings/descriptions own
-enclosed percent text; removed common regions keep their complete source and
-continuation columns. These shared attachment rules prevent text from changing
-owner.
+comment after a statement touching the statement where it touches, and print one
+space where whitespace was written. Preserve marks, content and trailing
+padding. Native comments end at physical EOL and keep LS/PS as content. Earlier
+strings/descriptions own enclosed percent text; removed common regions keep
+their complete source and continuation columns. These shared attachment rules
+prevent text from changing owner.
 
 [fixture: radar/comments/standalone-comments]
 
