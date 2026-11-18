@@ -590,7 +590,8 @@ A leading empty line does not make the next line the first physical line.
 
 [fixture: eventmodeling/data-blocks/body-first-line-zero-margin]
 
-[fixture: eventmodeling/data-blocks/body-later-zero-margin-kept]
+[fixture: eventmodeling/data-blocks/body-later-zero-margin-kept] [fixture:
+eventmodeling/data-blocks/body-later-zero-margin-plain-kept]
 
 [fixture: eventmodeling/data-blocks/body-after-empty-first-row-kept]
 
@@ -1041,11 +1042,7 @@ default-size-branches/size-frontmatter-trivia-not-counted] [fixture:
 default-size-branches/size-directive-not-counted] [fixture:
 default-size-branches/size-utf16-surrogate]
 
-At or above 50000 retain the complete diagram text and its ending: where
-indenting the first line of a data body makes the text longer than 50000 units,
-12.3.0 removes the comment lines of the body from the Db and draws different
-text, structure and geometry (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+At or above 50000 retain the complete diagram text and its ending.
 
 [fixture: default-size-branches/size-preserving-to-fallback-unsafe]
 
@@ -1057,7 +1054,10 @@ ending.
 
 This keeps indentation or the final line break from moving the text across the
 limit, where the comment lines in a value would be removed and the Db would
-change. The boundary itself is covered by the corpus, also with CRLF, an inline
+change. At 50000 units, and at 49999, indenting the first line of a data body
+makes 12.3.0 draw different text, structure and geometry (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The boundary itself is covered by the corpus, also with CRLF, an inline
 directive and frontmatter.
 
 [corpus fixture: eventmodeling/comment-default-size-equal] [corpus fixture:

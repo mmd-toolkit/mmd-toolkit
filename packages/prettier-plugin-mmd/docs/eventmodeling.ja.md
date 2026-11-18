@@ -613,6 +613,8 @@ tf 01 evt Alpha { 	 x  }
 
 [fixture: eventmodeling/data-blocks/body-later-zero-margin-kept]
 
+[fixture: eventmodeling/data-blocks/body-later-zero-margin-plain-kept]
+
 [fixture: eventmodeling/data-blocks/body-after-empty-first-row-kept]
 
 空行、空白だけの行、改行、行末の空白とタブ、行頭の余白より後の文字は保ちます。
@@ -1070,11 +1072,6 @@ CRLF は 1 単位、サロゲートペアは 2 単位と数えます。
 [fixture: default-size-branches/size-utf16-surrogate]
 
 50000 以上のときは、図のテキスト全体とその終わりを保ちます。
-data 本文の最初の行を字下げして 50000 を越えると、
-12.3.0 は本文のコメント行を Db から除き、別のテキスト、構造、形状を描きます。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 
 [fixture: default-size-branches/size-preserving-to-fallback-unsafe]
 
@@ -1085,6 +1082,11 @@ data 本文の最初の行を字下げして 50000 を越えると、
 
 字下げや末尾の改行で上限を越えると、
 値の中のコメント行が除かれて Db が変わるので、それを防ぎます。
+50000 単位でも 49999 単位でも、data 本文の最初の行を字下げすると、
+12.3.0 は別のテキスト、構造、形状を描きます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 境界そのものはコーパスが、CRLF、行の中のディレクティブ、
 フロントマターの場合も含めて確かめます。
 
