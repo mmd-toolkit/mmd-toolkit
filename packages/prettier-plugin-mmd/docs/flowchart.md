@@ -1257,9 +1257,9 @@ form either: [agentflow](./agentflow.md#arrows) and
 [usecase](./usecase.md#relationship-labels-and-ids) print an edge id as this
 page does, and no other diagram type has one.
 [Rule 3](./printed-form.md#3-a-spelling) gives it: the examples in the
-documentation of mermaid.js write an edge id touching its `@` and the arrow 11
-times, 7 on
-[the flowchart page](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L867-L893)
+documentation of mermaid.js write an edge id touching its `@` and the arrow 17
+times, 13 on
+[the flowchart page](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L810-L1321)
 and 4 on
 [the use case page](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/usecase.md#L297-L561),
 and never with whitespace there.
