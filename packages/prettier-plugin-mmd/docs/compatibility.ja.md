@@ -1819,8 +1819,11 @@ sequence 図の色の引数（`fill="rgb(1,   2, 3)"`）だけは、
 SVG の 1 つの属性のテキストが異なります。
 ブラウザーは `class` 属性を語として読み、CSS の色の引数の空白を無視します。
 これは、AGENTS.md が比べない CSS の宣言の周りの空白と同じです。
-ブロック図のクラス名は、対象にするほかの版でも描き、
-`class` 属性の空白を除けば SVG は同じでした。
+`class A c   d` と `class A c d`、
+`class   A , B   c1` と `class A , B c1` の 2 つのテキストは、
+ブロック図で数える 12.3.0 のほか、10.9.8、11.7.0、11.17.2、
+12.0.0 でも描きました。
+5 つの版のどれでも、SVG は `class` 属性の空白を除いて同じでした。
 
 [fixture: block/styles/class-name-runs-collapsed]
 [fixture: requirement/class-lists/classes-with-spaces]

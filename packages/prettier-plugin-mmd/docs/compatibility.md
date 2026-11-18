@@ -1733,9 +1733,11 @@ requirement diagram (`class="node c   d"`) and for the arguments of a color of a
 sequence diagram (`fill="rgb(1,   2, 3)"`): the browser reads the `class`
 attribute as words and ignores whitespace in the arguments of a CSS color, like
 the whitespace around a CSS declaration, which AGENTS.md does not compare. The
-class names of a block diagram were drawn with the other versions that count for
-it too, and the SVG was the same once the whitespace of the `class` attribute
-was left out.
+two texts of `class A c   d` and `class A c d`, and of `class   A , B   c1` and
+`class A , B c1`, were also drawn with 10.9.8, 11.7.0, 11.17.2, and 12.0.0,
+which count for a block diagram together with 12.3.0: in each of the five
+versions the SVG was the same except for the whitespace of the `class`
+attribute.
 
 [fixture: block/styles/class-name-runs-collapsed] [fixture:
 requirement/class-lists/classes-with-spaces] [fixture:
