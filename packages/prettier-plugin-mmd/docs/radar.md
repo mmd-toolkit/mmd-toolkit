@@ -552,7 +552,7 @@ blanks and trailing whitespace; align a separate opener or closer with the
 statement. Directives and shared removed comment regions keep their complete
 source. The first closing brace still ends the value.
 
-[fixture: radar/description-blocks/block-touching-with-text-kept] [fixture:
+[fixture: radar/description-blocks/block-touching-with-text-fixed] [fixture:
 radar/description-blocks/block-empty-fixed]
 
 [fixture: radar/description-blocks/block-touching-fixed]
