@@ -858,14 +858,13 @@ splits units that were on the same line, a directive in their gap moves with the
 following unit: its right boundary stays touching or separated, while its left
 contact is broken. Rule 1 names no mark for a directive between two units, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#directives),
+decides: [sequence](./sequence.md#directives),
 [flowchart](./flowchart.md#directives), and [journey](./journey.md#directives)
-move a directive in such a gap with the following unit, keep its right-side
-contact or separation, and break its left contact. Ordinary standalone
-directives align with their body; multiline interiors and EOF-reaching
-unfinished endings remain written. Do not format their JSON or reorder them:
-common removal joins surrounding text and can change acceptance or values.
-Native hidden directives remain separate nodes.
+print such a gap in the same way. Ordinary standalone directives align with
+their body; multiline interiors and EOF-reaching unfinished endings remain
+written. Do not format their JSON or reorder them: common removal joins
+surrounding text and can change acceptance or values. Native hidden directives
+remain separate nodes.
 
 [fixture: wardley/global-directives/header-to-body]
 
@@ -905,13 +904,14 @@ Align ordinary standalone comments with the containing body and prefix comments
 at column one. Inline comments keep their line and touching side, with one space
 for a separated gap. Rule 1 names no mark before a comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#comments),
-[journey](./journey.md#comments), and [timeline](./timeline.md#comments) keep a
-comment after a statement touching the statement where it touches, and print one
-space where whitespace was written. Preserve marks, text and trailing padding;
-pipeline comments use child depth. Enclosing strings, flows and link labels
-retain percent text. Common comment-region joins keep their source columns,
-preventing text from changing owner.
+decides, as [sequence](./sequence.md#comments) (after a statement),
+[journey](./journey.md#comments) (after a task, an `accDescr`, or the header),
+and [timeline](./timeline.md#comments) (after the header, a direction, or the
+`}` of an accessibility block) keep a comment touching what it follows where it
+touches, and print one space where whitespace was written. Preserve marks, text
+and trailing padding; pipeline comments use child depth. Enclosing strings,
+flows and link labels retain percent text. Common comment-region joins keep
+their source columns, preventing text from changing owner.
 
 [test: wardley/comments/native-separators] [fixture:
 wardley/comments/comment-standalone]

@@ -881,9 +881,7 @@ wardley-beta
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#ディレクティブ)、
 [flowchart](./flowchart.ja.md#ディレクティブ)、
-[journey](./journey.ja.md#ディレクティブ)も、
-この隙間のディレクティブを後ろの単位と一緒に動かし、右側の接触か間隔を残し、
-左側の接触は切ります。
+[journey](./journey.ja.md#ディレクティブ)も、この隙間を同じに印字します。
 普通の独立行は本文の段に揃え、複数行の内部と EOF に達する未完の終端は保ちます。
 JSON 整形や順の入れ替えはしません。
 共通除去が両側の文字を結び、受理や値を変えることがあるためです。
@@ -927,9 +925,11 @@ wardley-beta
 行内のコメントは同じ行と接触側を保ち、離れた隙間は空白 1 つにします。
 規則 1 は、コメントの前の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[sequence](./sequence.ja.md#コメント)、[journey](./journey.ja.md#コメント)、
-[timeline](./timeline.ja.md#コメント)も、文の後ろのコメントは、
-接していれば接したまま残し、空白が書かれていれば空白 1 つを置きます。
+[sequence](./sequence.ja.md#コメント)（文の後ろ）、
+[journey](./journey.ja.md#コメント)（タスク、`accDescr`、見出しの後ろ）、
+[timeline](./timeline.ja.md#コメント)（見出し、向き、
+アクセシビリティのブロックの `}` の後ろ）も、接するコメントは接したまま残し、
+空白が書かれていれば空白 1 つを置きます。
 印、本文、末尾余白を保ち、pipeline 内では子文の段にします。
 文字列、flow、link ラベルの `%` テキストはその値に残します。
 共通のコメント領域の結合は原文の列を保ち、所属先の変化を防ぎます。
