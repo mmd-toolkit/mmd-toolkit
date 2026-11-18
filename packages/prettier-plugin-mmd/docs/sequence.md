@@ -1134,13 +1134,13 @@ sequence/lex-single-percent-comment-line] [fixture: comments/percent-line-kept]
 [fixture: comments/line-ending-ignored-semicolon-trailing-whitespace-kept]
 
 A comment after a statement stays on its line, and whether whitespace is written
-before its mark is kept: Rule 1 names no mark before a comment, so
+before its mark is kept: rule 1 names no mark before a comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [requirement](./requirement.md#comments), [c4](./c4.md#comments),
 and [journey](./journey.md#comments) keep a comment that touches, where no other
 rule keeps the whitespace as written; each of them names those cases in its own
-sections. The whitespace matters in this diagram, as `autonumber 5%% c` shows
-(see
+sections. The whitespace matters in this diagram in every version of mermaid.js
+that counts, as `autonumber 5%% c` shows (see
 [A comment right after a character](./compatibility.md#a-comment-right-after-a-character)).
 A run of whitespace before the mark is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
