@@ -1263,15 +1263,14 @@ gantt
 
 An empty block, which changes nothing, is a statement of its own. The
 whitespace-only interior of a description block, including tabs, line breaks and
-Unicode whitespace, prints `{}`: there is no text for interior whitespace to
-surround. An already empty interior stays empty. The ordinary keyword/opener gap
-uses one space: `accDescr{  }` becomes `accDescr {}`. Rule 1 names no mark
-between a keyword and its opening brace, so
+Unicode whitespace, prints `{}`, as Prettier prints `x = { }` as `x = {}`
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)): there is no text
+for interior whitespace to surround. An already empty interior stays empty. The
+ordinary keyword/opener gap uses one space: `accDescr{  }` becomes
+`accDescr {}`. Rule 1 names no mark between a keyword and its opening brace, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides: [class](./class.md#empty-description-blocks) and
-[journey](./journey.md#empty-description-blocks) print one space there. An empty
-pair of braces is printed `{}`, as Prettier prints `x = { }` as `x = {}`
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)).
+[journey](./journey.md#empty-description-blocks) print one space there.
 
 [fixture: gantt/empty-description-blocks/touching-comment-body] [fixture:
 empty-description-blocks/empty-whitespace-interiors] [test: gantt Unicode and

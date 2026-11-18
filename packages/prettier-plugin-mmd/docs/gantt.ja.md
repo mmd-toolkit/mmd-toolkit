@@ -1293,6 +1293,8 @@ gantt
 
 何も変えない空のブロックは、文の 1 つです。
 内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
+Prettier が `x = { }` を `x = {}`
+と印字するのと同じです（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 囲む空白を要する本文がないためです。
 すでに空の内側は空のままです。
 通常のキーワードと開き括弧の間には空白 1 つを置き、
@@ -1301,9 +1303,6 @@ gantt
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [class](./class.ja.md#空の説明ブロック) と
 [journey](./journey.ja.md#空の説明ブロック) も、ここを空白 1 個で印字します。
-空の波括弧は `{}` と印字します。
-Prettier が `x = { }` を `x = {}`
-と印字するのと同じです（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 
 [fixture: gantt/empty-description-blocks/touching-comment-body]
 [fixture: empty-description-blocks/empty-whitespace-interiors]
