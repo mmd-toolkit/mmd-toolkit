@@ -192,13 +192,17 @@ keeps its kind, since markdown changes the label type, and every label keeps its
 interior characters, including empty quoted values. A plain label is printed in
 the form that the examples use (see [Quotes](#quotes)). Only exterior ASCII HWS
 outside a bare label's contributing units is trimmed. Internal gaps, Unicode
-padding, backslashes, entities and HTML stay; a string between `'` is printed
-between `"`, unless its text holds a `'`, a `"`, a backslash, a line break,
-U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
+padding, backslashes, entities and HTML stay. The run in `A(unquoted  words)`
+stays, since every version of mermaid.js that counts draws different
+accessibility text for `A(unquoted words)` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A string between `'` is printed between `"`, unless its text holds a `'`, a `"`,
+a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
 and `singleQuote` is not read.
 
-[fixture: labels/single-quote-sensitive-kept]
+[fixture: labels/single-quote-sensitive-kept] [fixture:
+labels/label-quote-kinds]
 
 A plain label whose text ends with a U+2028 or U+2029, and that a comment
 follows with only whitespace, line breaks, and directives between, is not put in
