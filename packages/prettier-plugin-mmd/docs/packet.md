@@ -142,7 +142,11 @@ packet
 
 Print ordinary range gaps with no spaces, as `0-15`, so the numeric range reads
 as one visual unit. Preserve global trivia and hidden boundaries instead of
-tightening them: a consumed LF is not an ordinary space.
+tightening them: a consumed LF is not an ordinary space. For
+`0%%{!left}%% -%%{!right}%% 2:"Hidden dash"`, the space before `-` stays, since
+some of the versions of mermaid.js that count reject
+`0%%{!left}%%-%%{!right}%%2:"Hidden dash"` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: packet/range-dash/dash-tight]
 
@@ -166,7 +170,11 @@ packet
 
 Print ordinary plus/count gaps without a space, as `+3`, so the prefix and
 relative length read together. Keep the count digits as written. Global trivia
-and hidden forms retain their contact and consumed LF.
+and hidden forms retain their contact and consumed LF. For
+`+%%{!count}%% 3:"Hidden plus"`, the space after the hidden form stays, since
+some of the versions of mermaid.js that count reject
+`+%%{!count}%%3:"Hidden plus"` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: packet/relative-plus/plus-tight]
 
@@ -195,7 +203,11 @@ of mermaid.js decide the whitespace before it (step 3 of
 examples that write a space after the colon, 29 write no space before it and
 none writes one (counted as under
 [the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)).
-Trivia-bearing gaps retain their boundaries.
+Trivia-bearing gaps retain their boundaries. For
+`0%%{!before}%% :%%{!after}%% "Gap"`, the space before `:` stays, since some of
+the versions of mermaid.js that count reject `0%%{!before}%%:%%{!after}%% "Gap"`
+(see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: packet/block-colons/colon-compact]
 
