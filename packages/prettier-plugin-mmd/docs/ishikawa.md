@@ -895,7 +895,11 @@ ishikawa/frontmatter-yaml/zero-width-nested-title] [fixture:
 ishikawa/frontmatter-yaml/zero-width-nested-config]
 
 Malformed, indented, HTML-sensitive and delimiter-hazard YAML stays written,
-including tags starting across the frontmatter boundary.
+including tags starting across the frontmatter boundary. A `--- !!map` line
+after a `%YAML 1.2` directive stays written, since Prettier prints it as `---`
+and `!!map` on two lines, which every version of mermaid.js that counts rejects
+(see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: ishikawa/frontmatter-yaml/frontmatter-indented] [fixture:
 ishikawa/frontmatter-yaml/frontmatter-malformed] [corpus fixture:

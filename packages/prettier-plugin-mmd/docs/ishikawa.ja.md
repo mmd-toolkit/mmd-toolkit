@@ -917,6 +917,12 @@ YAML の字下げは `tabWidth: 0` でも最低 1 つの空白を使います。
 不正な YAML、字下げされた YAML、HTML 処理の影響を受ける YAML、
 区切りの危険がある YAML は、フロントマターの境界をまたいで始まるタグも含めて、
 書かれたまま保ちます。
+`%YAML 1.2` の後の `--- !!map` の行は、書かれたまま残します。
+Prettier は `---` と `!!map` の 2 行に印字し、
+対象にする版の mermaid.js のすべてがその形を拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: ishikawa/frontmatter-yaml/frontmatter-indented]
 [fixture: ishikawa/frontmatter-yaml/frontmatter-malformed]
