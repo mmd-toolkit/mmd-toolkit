@@ -863,6 +863,11 @@ mermaid.js が複数行にわたって読む文は、
 それ以外の複数行の文は、改行が残る場合、書かれたままにします。
 最終行の別の文にある `;` も、同じ判定をします。
 [1 行 1 文](#1-行-1-文)を参照してください。
+`\n` を改行として表すと、`style \n: [0.2, 0.7]; title x:#y;` を残すのは、
+対象にする版の mermaid.js はすべて `  style: [0.2, 0.7]; title x:#y;` では、
+異なる title のテキストを描くためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 
 [fixture: multi-line-statements/breaks-decided-one-by-one]
 [fixture: multi-line-statements/line-rule-first-hash-after-colon-kept]
@@ -876,9 +881,15 @@ mermaid.js が複数行にわたって読む文は、
 
 `classDef` のクラスの名前が、コメントで結合される領域をまたいで続くときも、
 文は書かれたままにします。
-たとえば、`classDef a`、U+2028、`%% c`、行 `b color: #f00` では、
-クラスの名前は `a`、U+2028、`b` です。
+たとえば、`classDef A`、U+2028、`%% c`、行 `Bar color: #ff0000` では、
+クラスの名前は `A`、U+2028、`Bar` です。
 字下げするのは最初の行だけで、その後の文は別の行に印字します。
+`\u2028` を U+2028、`\n` を改行として表すと、
+`classDef A\u2028%% c\nBar color: #ff0000` を残すのは、
+対象にする版の mermaid.js のうちいくつかは
+`  classDef A\u2028%% c\n  Bar color: #ff0000` を拒否するためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 
 [test: a comment line after U+2028 inside the name of a class]
 [test: a comment line after U+2029 inside the name of a class]
@@ -1195,8 +1206,14 @@ title、アクセシビリティのテキスト、説明ブロックのテキス
 テキスト、文字列、アクセシビリティのテキストの中では文字で、そのまま残ります。
 U+00A0、U+3000、U+FEFF は、テキスト、名前、クラスの名前の中では単語の文字で、
 そのまま残ります。
-点の `:`、角括弧、コンマの周りと、アクセシビリティの文のコロンと括弧の周りでは、
-mermaid.js が空白として読むので、その場所に空白を印字します。
+`\u00a0` を U+00A0 として表すと、`quadrant-1 a\u00a0b` を残すのは、
+対象にする版の mermaid.js はすべて `  quadrant-1 a b` では、
+異なるテキストを描くためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
+ただし、点の `:`、角括弧、コンマの周りと、
+アクセシビリティの文のコロンと括弧の周りでは、mermaid.js が空白として読むので、
+その場所に空白を印字します。
 点の `]` の後では受理されません（[行区切り文字](#行区切り文字)を参照）。
 
 [test: U+00A0 between the words of a text]

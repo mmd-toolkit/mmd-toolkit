@@ -838,7 +838,11 @@ could change which `;` the line rule ignores, and where a `;` ends the last
 line; any other line break is joined as usual, also in a statement that holds a
 `;`. Any other statement over several lines is kept as written when a line break
 of it stays. The same decision applies to a `;` in another statement on its
-final line (see [Statements one per line](#statements-one-per-line)).
+final line (see [Statements one per line](#statements-one-per-line)). The form
+`style \n: [0.2, 0.7]; title x:#y;` (with `\n` for a line break) stays instead
+of `  style: [0.2, 0.7]; title x:#y;`, since every version of mermaid.js that
+counts draws different title text for the latter (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: multi-line-statements/breaks-decided-one-by-one] [fixture:
 multi-line-statements/line-rule-first-hash-after-colon-kept] [fixture:
@@ -851,9 +855,14 @@ A `;` alone does not prevent joining.
 [fixture: multi-line-statements/semicolon-on-the-last-line-joined]
 
 The name of a class of `classDef` that goes on across a joining comment region
-keeps the statement as written too: `classDef a`, U+2028, `%% c`, and a line
-`b color: #f00` are the class `a`, U+2028, `b`. Only the first line is indented,
-and a statement after it is printed on a line of its own.
+keeps the statement as written too: `classDef A`, U+2028, `%% c`, and a line
+`Bar color: #ff0000` are the class `A`, U+2028, `Bar`. Only the first line is
+indented, and a statement after it is printed on a line of its own. The form
+`classDef A\u2028%% c\nBar color: #ff0000` (with `\u2028` for U+2028 and `\n`
+for a line break) stays instead of
+`  classDef A\u2028%% c\n  Bar color: #ff0000`, since some of the versions of
+mermaid.js that count reject the latter (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [test: a comment line after U+2028 inside the name of a class] [test: a comment
 line after U+2029 inside the name of a class] [test: a comment line after a
@@ -1164,11 +1173,14 @@ Where the printer chooses the whitespace, a run of them becomes one space, as a
 run of spaces does, and at the start or the end of a line they are dropped.
 Inside a text, a string, and an accessibility text they are characters and stay.
 U+00A0, U+3000, and U+FEFF are characters of a word and stay in a text, a name,
-and the name of a class; but around the `:`, the brackets, and the comma of a
-point, and around the colon and the brace of an accessibility statement,
-mermaid.js reads them as whitespace, and a space is printed in their place.
-After the `]` of a point they are not accepted (see
-[Line separators](#line-separators)).
+and the name of a class. The form `quadrant-1 a\u00a0b` (with `\u00a0` for
+U+00A0) stays instead of `  quadrant-1 a b`, since every version of mermaid.js
+that counts draws different text for the latter (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Around the `:`, the brackets, and the comma of a point, however, and around the
+colon and the brace of an accessibility statement, mermaid.js reads them as
+whitespace, and a space is printed in their place. After the `]` of a point they
+are not accepted (see [Line separators](#line-separators)).
 
 [test: U+00A0 between the words of a text] [test: U+3000 between the words of a
 text] [test: U+FEFF between the words of a text] [test: a form feed between the

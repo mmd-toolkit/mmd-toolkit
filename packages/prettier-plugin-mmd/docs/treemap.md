@@ -537,9 +537,11 @@ it.
 
 A U+00A0, U+2028, U+2029, U+3000, U+000B (a vertical tab), or U+FEFF before the
 `;` stays, and so does one after a `;` that the line rule ignores: CSS does not
-read it as whitespace, so it ends the last style, and mermaid.js draws another
-figure without it (see
-[Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style)).
+read it as whitespace, so it ends the last style, and every version of
+mermaid.js that counts draws another figure without it (see
+[Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style)
+and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Only the `;` is dropped, with the spaces, tabs, and form feeds after the last
 such character, so `classDef zz fill:red`, U+00A0, `;` is printed
 `classDef zz fill: red`, U+00A0, and `classDef zz fill:red`, U+2028, a space,
@@ -744,7 +746,8 @@ each that has whitespace before it, and the whitespace after the last one is
 left out, whatever the whitespace at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
-[fixture: title/title-directives-end-blanks-dropped]
+[fixture: title/title-directives-end-blanks-dropped] [fixture:
+title/inline-directive-contact-kept]
 
 A `title` with no text, written with whitespace before a directive or a comment
 on its line, is printed with one space before the first of them, whether the
@@ -1100,14 +1103,18 @@ breaks included, so the next row goes on its line (see
 [A line that a directive that is not closed joins](./compatibility.md#a-line-that-a-directive-that-is-not-closed-joins)),
 and the rows on that line are read from the indentation before the first of
 them. `"A" %%{x: w`, a line break, and `  "B": 1` make `B` a child of `A`, and
-with `A` indented by two spaces `B` is its sibling. A body with such a line is
-printed as written, as it is for a kept line that constrains a row boundary (see
-[Semicolons](#semicolons)). The same holds for two rows on one line with a
-directive that is not closed between them, since the directive takes the
-whitespace after its argument, which is the indentation of the second row.
+with `A` indented by two spaces `B` is its sibling in every version of
+mermaid.js that counts (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A body with such a line is printed as written, as it is for a kept line that
+constrains a row boundary (see [Semicolons](#semicolons)). The same holds for
+two rows on one line with a directive that is not closed between them, since the
+directive takes the whitespace after its argument, which is the indentation of
+the second row.
 
 [fixture: treemap/directives/unclosed-directive-joins-rows-kept] [fixture:
-treemap/directives/unclosed-directive-between-rows-kept]
+treemap/directives/unclosed-directive-between-rows-kept] [fixture:
+treemap/directives/unclosed-directive-child-kept]
 
 With useTabs, the retained gaps and the supplied indentation are all printed as
 tabs: the whitespace on both sides of the directive is one indentation unit, in
@@ -1246,9 +1253,12 @@ file-leading BOM with the shared frontmatter limitation.
 
 Format only safe real leading frontmatter through shared guarded YAML
 formatting. Keep indented fences, closing padding, malformed YAML, HTML quote
-hazards and bodies that formatting could turn into fences as written. YAML
-nested values and block scalars use at least one space at tabWidth zero. These
-guards preserve preprocessing and values while ordinary safe YAML gets
+hazards and bodies that formatting could turn into fences as written. The
+frontmatter line `title: "<a b=\"c\">"` stays, since every version of mermaid.js
+that counts rejects `title: '<a b="c">'` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+YAML nested values and block scalars use at least one space at tabWidth zero.
+These guards preserve preprocessing and values while ordinary safe YAML gets
 consistent spacing.
 
 [fixture: treemap/frontmatter-yaml/safe]

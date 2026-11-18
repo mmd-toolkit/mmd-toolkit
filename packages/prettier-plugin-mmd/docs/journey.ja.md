@@ -499,6 +499,11 @@ Db はその空白を持ちますが、図では描かれません。
 その空白で名前が異なる 2 つのセクションは別々に描かれ、
 除くとそうならないからです。
 半角空白とタブだけのタイトルは、書かれたままにします。
+`title` の後ろに半角空白 2 つ、タブ、半角空白 1 つがある形では、
+対象にする版の mermaid.js はすべて、
+それらを取り除いた `title` だけの形を拒否します（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 
 [fixture: titles-and-sections/title-padding-dropped]
 [fixture: titles-and-sections/title-blank-kept]
