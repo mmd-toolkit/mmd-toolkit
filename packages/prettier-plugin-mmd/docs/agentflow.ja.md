@@ -1242,13 +1242,13 @@ flowchartと異なり、コロンの後のコメントらしい行も値の文�
 文中にディレクティブがあれば通常の結合をせず、従来の複数行の文の配置を保ちます。
 継続行とディレクティブ行をキーワードより1段深く置き、
 文字と著者の改行を保ちます。
+flowchartの継続行の規則を同じ理由で再利用するためです。
 規則 1 は、改行の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
 [journey](./journey.ja.md#複数行の文)も、Db が空白ごと持つテキストのない文では、
 コメントやディレクティブの隣の改行を残し、
 間のコメントやディレクティブの行を 1 段深く置きます。
-flowchartの継続行の規則を同じ理由で再利用するためです。
 
 [fixture: accessibility/inline-directive-kept]
 [fixture: accessibility/next-line-directive-kept]
