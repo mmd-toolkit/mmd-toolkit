@@ -498,10 +498,10 @@ railroad-peg-beta
 
 Attach AST postfix `?`, `*` and `+` to their operand in EBNF and PEG. Keep the
 EBNF chain order and the single PEG suffix. Swapping the two postfixes of
-`"chain" * +` gives another Db in the pinned version and another figure in every
-version that counts. EBNF special-sequence priority is already represented by
-the AST: question marks inside its raw leaf are not reinterpreted as postfixes.
-Attached operators stay, without replacing them with calls or groups.
+`"chain" * +` gives another Db in the pinned version. EBNF special-sequence
+priority is already represented by the AST: question marks inside its raw leaf
+are not reinterpreted as postfixes. Attached operators stay, without replacing
+them with calls or groups.
 
 [fixture: railroad/postfixes/ebnf-chain]
 
