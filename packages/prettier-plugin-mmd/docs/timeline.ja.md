@@ -415,6 +415,10 @@ section の中でも、同じ period の `:` は 1 つの桁に置きます。
 全角文字を含む残りのテキストには Prettier の表示幅を使います。
 中にある指令も含め、period に書かれたテキストの幅を数えます。
 そのテキストが印字で表示されるためです。
+最初の `:` の前にある、行の規則が無視する `;` も、そのテキストの一部で、
+幅に数えます。
+後ろの行の `:` は印字された最初の `:` の下にそろい、行は全体を保ちます。
+詳しくは [`;` を含む行](./compatibility.ja.md#-を含む行) を参照してください。
 `tabWidth: 0` でも設定した字下げを使います。
 
 [fixture: periods-and-events/events-on-later-lines]
@@ -424,6 +428,7 @@ section の中でも、同じ period の `:` は 1 つの桁に置きます。
 [fixture: periods-and-events/colon-alignment-wide-period]
 [fixture: periods-and-events/colon-alignment-zero-width]
 [fixture: periods-and-events/colon-alignment-written-period]
+[fixture: periods-and-events/colon-alignment-ignored-semicolon]
 
 最初の `:` が後ろの行にあるか、period との間に指令があるときは、
 通常の継続行の字下げである 1 段深い位置を使います。
