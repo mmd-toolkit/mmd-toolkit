@@ -1371,6 +1371,15 @@ period の後ろでは、`#` の前の空白は period の一部なので、
 [fixture: comments/after-description-block]
 [fixture: comments/after-statement-under-a-section]
 
+同じ行で `%%` のコメントが続く説明ブロックは、ブロックのまま残します。
+mermaid.js は `accDescr {a} %% c` から説明 `a` を読みますが、
+`accDescr: a %% c` からは Db に `a %% c` を読むからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+
+[fixture: comments/block-then-percent-comment-kept]
+
 title、section、event、アクセシビリティのテキストの中の `#` と `%%` は、
 コメントではなくテキストの文字で、一緒に残します。
 
