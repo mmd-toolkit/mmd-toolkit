@@ -468,13 +468,18 @@ pie
 Reuse [shared comment placement](./flowchart.md#comments) to keep author
 attachment and text: inline comments retain touching sides or one separating
 space; standalone comments align with body statements, or column one before the
-header. Keep bare/triple-percent marks and trailing comment spaces. Pie native
-comments end at LF, retaining LS/PS inside them, because pie does not treat them
-as separators: ending a comment at one would expose the rest of the line as a
-statement and change the Db; strings and block interiors keep percent content,
-while line common values stop at it. Common removed regions keep their complete
-swallowed source and joined continuation columns, because re-indenting a
-continuation adds spaces to the joined label. A protected preheader prefix
+header. Rule 1 names no mark before a comment, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#comments),
+[journey](./journey.md#comments), and [timeline](./timeline.md#comments) keep a
+comment that touches what comes before it, and print one space where whitespace
+was written. Keep bare/triple-percent marks and trailing comment spaces. Pie
+native comments end at LF, retaining LS/PS inside them, because pie does not
+treat them as separators: ending a comment at one would expose the rest of the
+line as a statement and change the Db; strings and block interiors keep percent
+content, while line common values stop at it. Common removed regions keep their
+complete swallowed source and joined continuation columns, because re-indenting
+a continuation adds spaces to the joined label. A protected preheader prefix
 overrides ordinary alignment.
 
 [fixture: pie/comments/comments-align] [fixture: pie/comments/comment-bare]
@@ -507,11 +512,17 @@ directives in their authored gaps, including multiline contents and EOF-reaching
 endings. Within a printed line, place a directive as under
 [Directives](./flowchart.md#directives). When formatting splits units that were
 on the same line, a directive in their gap moves with the following unit: its
-right boundary stays touching or separated, while its left contact is broken. A
-segment that holds a kept `;` is formatted as anywhere else, except where
-formatting could change which `;` the line rule ignores. The rule reads a
-segment from the first `:` after `style` or `classDef` to the last `#` before
-its last kept `;`, with no whitespace between the `:` and the `#` (see
+right boundary stays touching or separated, while its left contact is broken.
+Rule 1 names no mark for a directive between two units, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#directives),
+[flowchart](./flowchart.md#directives), and [journey](./journey.md#directives)
+move a directive in such a gap with the following unit, keep its right-side
+contact or separation, and break its left contact. A segment that holds a kept
+`;` is formatted as anywhere else, except where formatting could change which
+`;` the line rule ignores. The rule reads a segment from the first `:` after
+`style` or `classDef` to the last `#` before its last kept `;`, with no
+whitespace between the `:` and the `#` (see
 [Semicolons](./flowchart.md#semicolons)), so the gaps and the padding inside
 that stretch keep whether they hold whitespace, a run becoming one space, and
 the rest of the segment follows the ordinary rules of this diagram. Text that no
