@@ -2895,8 +2895,8 @@ cynefin 図と radar 図は、`cynefin-beta:` と `radar-beta:` を、
 [fixture: radar/header/colon-removed] [fixture: radar/header/colon-yaml-kept]
 
 treemap の見出しにはコロンを付けません。
-11.8.1、11.17.2、12.0.0、12.3.0 は `treemap:` と `treemap-beta:` を拒否し、
-どれも、コロンのない見出しの同じ文を描きます。
+11.8.1、11.17.2、12.0.0、12.3.0 のどれも、
+`treemap:` と `treemap-beta:` を拒否し、コロンのない見出しは読んで描きます。
 例は、見出しをコロンなしで 8 回、コロン付きで 0 回書くので、
 [規則 3](./printed-form.ja.md#3-綴り)がコロンのない見出しを与えます。
 

@@ -2732,11 +2732,10 @@ The colon stays where a `;` or the `---` of a hidden YAML block touches it.
 cynefin/header/colon-semicolon-kept] [fixture: radar/header/colon-removed]
 [fixture: radar/header/colon-yaml-kept]
 
-A treemap header takes no colon. `treemap:` and `treemap-beta:` are rejected by
-11.8.1, 11.17.2, 12.0.0 and 12.3.0, and each of them draws the text with the
-header without it. The examples write the header without the colon 8 times and
-with it never, so [rule 3](./printed-form.md#3-a-spelling) gives the header
-without it.
+A treemap header takes no colon. Each of 11.8.1, 11.17.2, 12.0.0 and 12.3.0
+rejects `treemap:` and `treemap-beta:`, and reads and draws the header without
+the colon. The examples write the header without the colon 8 times and with it
+never, so [rule 3](./printed-form.md#3-a-spelling) gives the header without it.
 
 [corpus fixture: treemap/header-colon]
 
