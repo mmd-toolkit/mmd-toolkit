@@ -562,6 +562,13 @@ radar-beta
 
 1 行の説明ブロックは、
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+`%%` を含むテキストのブロックは波括弧を残します。
+対象にする版の mermaid.js のすべてが、
+`accDescr {a%%literal}` を `a%%literal` と読み、
+`accDescr: a%%literal` を `a` と読むからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 波括弧を残すブロックは、境界がわかるよう、
 キーワードと開始波括弧の間に空白を 1 つ置きます。
 空白だけの内部は、空白で囲む文字がないため `{}` にします。
@@ -587,6 +594,7 @@ Db で LF 後の字下げが取り除かれるためです。
 [fixture: radar/description-blocks/block-global-only-fixed]
 
 [fixture: radar/description-blocks/block-global-opener-fixed]
+[fixture: radar/comments/value-percent-owned]
 
 [fixture: radar/description-blocks/block-comment-opener-fixed]
 
