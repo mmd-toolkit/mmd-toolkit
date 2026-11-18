@@ -1929,6 +1929,11 @@ usecaseのDbが同じ形に従います。
 
 保持行の例外を優先し、
 コメントやディレクティブがあるブロックは従来の配置を保ちます。
+規則 1 は、ブロックの中の行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[xychart](./xychart.ja.md#空の説明ブロック) と
+[quadrant](./quadrant.ja.md#空の説明ブロック) も、
+ディレクティブかコメント行があるブロックの内容と改行を、そのまま残します。
 
 [fixture: accessibility-lines/empty-block-semicolon-kept]
 [fixture: accessibility-lines/empty-block-directive-kept]
