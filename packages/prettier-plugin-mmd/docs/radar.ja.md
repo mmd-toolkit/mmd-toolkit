@@ -341,7 +341,12 @@ radar-beta
 `A 1` は間を空白 1 つにし、列揃えはしません。
 句読法を保ちながら、同じ意味の空白をそろえるためです。
 軸名 `accTitle` と `accDescr` へのコロン追加は安全ではありません。
-共通の複合トークンが優先してしまうためです。
+共通の複合トークンが優先してしまううえ、
+対象にする版の mermaid.js のすべてが `curve c{accTitle: 1, accDescr 2}`
+を拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: radar/named-entries/named-colon-gap]
 
