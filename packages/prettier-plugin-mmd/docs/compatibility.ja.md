@@ -4145,8 +4145,13 @@ mermaid.js は指令をヘッダーを読む前に取り除きます。
 根のないヘッダー `ishikawa-beta` として読まれます。
 そのため、根は自分の行に移します。
 根がヘッダーの行に残る場合は、ヘッダーも書かれたまま残します。
-ほかの図種で別の大文字小文字のヘッダー（`sankey-BETA`、`XYCHART-BETA`）は、
+sankey 図で `-beta` が別の大文字小文字のヘッダー（`sankey-BETA`）は、
 書かれたまま残します。
+10.9.8 と 11.7.0 はこれを拒否し、11.17.2、12.0.0、
+12.3.0 は `sankey-beta` として読みます。
+ドキュメントの例はヘッダーを `sankey` と書き、
+どの大文字小文字の `sankey-beta` も使わないので、
+[規則 3](./printed-form.ja.md#3-綴り)は別の形を与えず、書かれたまま残します。
 
 [fixture: treemap/header/beta] [fixture: ishikawa/header/header-beta]
 [fixture: ishikawa/header/header-column]
