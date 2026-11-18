@@ -1070,8 +1070,10 @@ cynefin/semicolon-chaotic-parts]
 Do not wrap at printWidth. Apart from domain/item splitting, retain physical
 string and transition-label contents, continuation columns and interior blanks.
 Description bodies use the shared indentation above. Reflow or reindentation can
-change the Db, and wrapping transition components can reject. A separate
-description closer uses the shared alignment rule.
+change the Db, and a line break before the `-->` of a transition is rejected by
+every version of mermaid.js that counts (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A separate description closer uses the shared alignment rule.
 
 [fixture: cynefin/multiline-values/long-line-unwrapped]
 
