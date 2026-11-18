@@ -90,6 +90,11 @@ retain their authored columns, apart from the block-body margin adjustment in
 one, since every version of mermaid.js that counts rejects it indented by two
 spaces (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The other diagram types stand the statements after the header one level deeper,
+as [flowchart](./flowchart.md#indentation), [class](./class.md#indentation),
+[er](./er.md#indentation), and [state](./state.md#indentation) do; a `title`
+after a line break and the `}` of a block could not stand there in this one,
+since every version that counts rejects them indented (see the table).
 
 [fixture: eventmodeling/data-blocks/block-closer-indent-unsafe] [fixture:
 eventmodeling/qualified-names/hidden-before-title-segment-keep-no-prefix-space]
@@ -583,12 +588,20 @@ eventmodeling/declarations-and-notes/header-inline-multiline-directive]
 Only the first physical body line may gain a space prefix where it had none.
 Every later nonblank physical line must have at least one leading ASCII space
 both before and after the change. Otherwise keep the complete body as written:
-adding the first space on a later line can change the rendered label. A leading
-empty line does not make the next line the first physical line.
+adding the first space on a later line can change the rendered label: 11.15.0 to
+12.3.0 draw different text and geometry for it (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Rule 1 names no mark for the margin of a body line, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) would
+give the margin that the lines of a description block have in
+[pie](./pie.md#description-blocks), [radar](./radar.md#description-blocks), and
+[cynefin](./cynefin.md#description-blocks), one level inside their statement. A
+leading empty line does not make the next line the first physical line.
 
 [fixture: eventmodeling/data-blocks/body-first-line-zero-margin]
 
-[fixture: eventmodeling/data-blocks/body-later-zero-margin-kept]
+[fixture: eventmodeling/data-blocks/body-later-zero-margin-kept] [fixture:
+eventmodeling/data-blocks/body-later-zero-margin-plain-kept]
 
 [fixture: eventmodeling/data-blocks/body-after-empty-first-row-kept]
 
@@ -598,6 +611,7 @@ column one. `eventmodeling tf 01 evt Alpha [[D]] data D {`, `x` and `}` stay,
 since every version of mermaid.js that counts rejects `}` indented by two spaces
 (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The other diagram types would indent the `}` (see [Indentation](#indentation)).
 Preserve apparent statements, text containing braces and an adjacent
 closing-looking line when the block's body-present rule reads through it to a
 later closer.
@@ -1051,17 +1065,24 @@ default-size-branches/size-utf16-surrogate]
 
 At or above 50000 retain the complete diagram text and its ending.
 
-[fixture: default-size-branches/size-preserving-to-fallback-unsafe]
+[fixture: default-size-branches/size-preserving-to-fallback-unsafe] [fixture:
+default-size-branches/size-at-limit-indented-comment]
 
 Below it apply ordinary layout only when the planned printed measurement also
 stays strictly below 50000; otherwise retain the complete diagram and its
 ending.
 
-[fixture: default-size-branches/size-below-planned-crossing]
+[fixture: default-size-branches/size-below-planned-crossing] [fixture:
+default-size-branches/size-below-planned-crossing-indented-comment] [fixture:
+default-size-branches/size-below-planned-fits-indented-comment]
 
 This keeps indentation or the final line break from moving the text across the
 limit, where the comment lines in a value would be removed and the Db would
-change. The boundary itself is covered by the corpus, also with CRLF, an inline
+change. At 50000 units, and at 49999, indenting the first line of a data body
+whose later lines, a comment line included, stand at least one space in makes
+12.3.0 draw different text, structure and geometry (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The boundary itself is covered by the corpus, also with CRLF, an inline
 directive and frontmatter.
 
 [corpus fixture: eventmodeling/comment-default-size-equal] [corpus fixture:
@@ -1161,6 +1182,7 @@ remain authored. A `title` that follows
 one, since every version of mermaid.js that counts rejects it indented by two
 spaces (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The other diagram types would indent it (see [Indentation](#indentation)).
 Required identifier and common-value padding takes precedence over structural
 indentation. The leading space of ` accDescr: style:#x;` after
 `eventmodeling data D {`, `x` and `}` stays, since every version of mermaid.js
