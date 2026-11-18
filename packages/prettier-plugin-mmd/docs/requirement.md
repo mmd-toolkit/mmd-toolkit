@@ -953,8 +953,9 @@ requirementDiagram
 Runs of empty lines become one empty line, and empty lines at the start and the
 end of the diagram and of a body are dropped, as in the other diagram types. A
 line of whitespace only is an empty line after the header, in a body, between
-statements, around a comment line, and at the end of the text: rule 1 names no
-mark for a line, so
+statements, around a comment line, and at the end of the text, whatever the
+whitespace character is, a form feed, a vertical tab, U+00A0, U+3000, U+2028,
+and U+2029 included: rule 1 names no mark for a line, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [kanban](./kanban.md#blank-lines) and
 [packet](./packet.md#blank-lines) print whitespace-only lines as empty lines,
@@ -964,7 +965,12 @@ a block of text, and the like).
 [fixture: blank-lines/collapsed] [fixture: blank-lines/between-fields-collapsed]
 [fixture: blank-lines/header-and-end-of-text-dropped] [fixture:
 blank-lines/body-edges-dropped] [fixture: blank-lines/whitespace-only-lines]
-[fixture: blank-lines/whitespace-only-lines-in-places]
+[fixture: blank-lines/whitespace-only-lines-in-places] [test: requirement
+whitespace-only line of a space and a tab] [test: requirement whitespace-only
+line of a form feed] [test: requirement whitespace-only line of a vertical tab]
+[test: requirement whitespace-only line of U+00A0] [test: requirement
+whitespace-only line of U+3000] [test: requirement whitespace-only line of
+U+2028] [test: requirement whitespace-only line of U+2029]
 
 The empty lines around comment lines and directive lines are handled in the same
 way.
@@ -1150,7 +1156,8 @@ colon of a key (the title and the description of a diagram in
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the form
 `accTitle: text`: no whitespace before the colon and one space after it, also
 where the colon or the text was written on a later line, except that a comment
-line before the colon keeps the colon on a line of its own, one level deeper.
+line before the colon or before the text keeps what follows it on a line of its
+own, one level deeper.
 
 [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept] [fixture:

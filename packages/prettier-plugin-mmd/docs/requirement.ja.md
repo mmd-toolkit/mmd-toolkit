@@ -959,6 +959,8 @@ requirementDiagram
 他の図種と同じ規則です。
 空白だけの行は、見出しの後、本体の中、文と文の間、コメント行の周り、
 テキストの末尾で、空行です。
+空白文字の種類は問わず、改ページ、垂直タブ、U+00A0、U+3000、U+2028、
+U+2029 も同じです。
 規則 1 は、行の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [kanban](./kanban.ja.md#空行) と [packet](./packet.ja.md#blank-lines) も、
@@ -971,6 +973,13 @@ requirementDiagram
 [fixture: blank-lines/body-edges-dropped]
 [fixture: blank-lines/whitespace-only-lines]
 [fixture: blank-lines/whitespace-only-lines-in-places]
+[test: requirement whitespace-only line of a space and a tab]
+[test: requirement whitespace-only line of a form feed]
+[test: requirement whitespace-only line of a vertical tab]
+[test: requirement whitespace-only line of U+00A0]
+[test: requirement whitespace-only line of U+3000]
+[test: requirement whitespace-only line of U+2028]
+[test: requirement whitespace-only line of U+2029]
 
 コメント行とディレクティブの行の前後の空行も、同じに扱います。
 
@@ -1157,8 +1166,8 @@ requirementDiagram
 の形を与えます。
 コロンの前に空白を置かず、後ろに空白を 1 つ置き、
 コロンやテキストが後の行に書かれていても同じです。
-ただし、コロンの前にコメント行があるときは、
-コロンは自分の行に 1 段深く残ります。
+ただし、コロンの前かテキストの前にコメント行があるときは、
+その後ろは自分の行に 1 段深く残ります。
 詳しくは
 [コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
 の、図のタイトルと説明の行を参照してください。
