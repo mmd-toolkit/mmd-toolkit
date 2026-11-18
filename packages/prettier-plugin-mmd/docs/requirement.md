@@ -951,11 +951,15 @@ requirementDiagram
 ### Blank lines
 
 Runs of empty lines become one empty line, and empty lines at the start and the
-end of the diagram and of a body are dropped, as in the other diagram types.
+end of the diagram and of a body are dropped, as in the other diagram types. A
+line of whitespace only is an empty line: rule 1 names no mark for a line, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [kanban](./kanban.md#blank-lines) and
+[packet](./packet.md#blank-lines) print whitespace-only lines as empty lines.
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/between-fields-collapsed]
 [fixture: blank-lines/header-and-end-of-text-dropped] [fixture:
-blank-lines/body-edges-dropped]
+blank-lines/body-edges-dropped] [fixture: blank-lines/whitespace-only-lines]
 
 The empty lines around comment lines and directive lines are handled in the same
 way.
@@ -1133,7 +1137,13 @@ The text holds `;`, `#`, and `%%` as characters.
 [fixture: accessibility-statements/special-characters-in-text]
 
 A text written on a later line is printed after the `:` on one line, and a
-comment line before it makes the statement kept as written.
+comment line before it makes the statement kept as written. The colon of
+`accTitle` and `accDescr` is the colon of a key (the title and the description
+of a diagram in
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)), so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the form
+`accTitle: text`: no whitespace before the colon and one space after it, also
+where the colon or the text was written on a later line.
 
 [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept]
@@ -1544,7 +1554,13 @@ requirementdiagram
 A comment starts with `%%`, `#`, or `%`, where a unit starts, and runs to the
 end of the line. A comment on a line of its own stands at the level of the
 statement after it, in a body at the level of the fields, and its text and its
-mark are kept as written.
+mark are kept as written. Rule 1 gives no form here, since its table names the
+whitespace beside a mark and not the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it, as [c4](./c4.md#comments) and [quadrant](./quadrant.md#comments) align a
+standalone comment with the following statement, or with the last statement at
+the end of the text, and put one before the header at column one.
 
 [fixture: comments/lines-at-statement-level] [fixture:
 comments/single-mark-lines-kept]
