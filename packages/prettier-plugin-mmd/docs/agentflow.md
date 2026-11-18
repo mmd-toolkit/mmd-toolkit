@@ -1203,7 +1203,17 @@ join it as such and leave the next statement separate.
 A directive inside the statement declines ordinary joining and keeps the
 previous multiline statement layout: continuation and directive lines stand one
 level deeper than the keyword, with their text and authored line breaks
-retained. This reuses flowchart's continuation rule for the same reason.
+retained. This reuses flowchart's continuation rule for the same reason. Rule 1
+names no mark for a line break, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#multi-line-statements),
+[gantt](./gantt.md#multi-line-statements), and
+[journey](./journey.md#multi-line-statements) keep a line break next to a
+comment or a directive and the whitespace before it, and put the later parts of
+a statement and the comment and directive lines between them one level deeper,
+where no other rule keeps the layout as written (where the Db holds the text
+with its whitespace, where moving a line makes mermaid.js reject the text, and
+the like).
 
 [fixture: accessibility/inline-directive-kept] [fixture:
 accessibility/next-line-directive-kept] [fixture:
