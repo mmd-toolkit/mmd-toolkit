@@ -4184,8 +4184,8 @@ railroad 図の 4 つのヘッダー `railroad-beta`、`railroad-ebnf-beta`、
 `railroad-abnf`、`railroad-peg`）、
 `-beta` の大文字小文字が違う名前（各名前の `-Beta` と `-BETA`）、
 すべて大文字の名前（`RAILROAD-BETA` と同じ形の 3 つ）を拒否します。
-名前の 2 つの形が同じに読まれないので、
-[規則 3](./printed-form.ja.md#3-綴り)は `-beta` のない名前を印字せず、
+この図種がある版は、どれも `-beta` のない名前を読まないので、
+[規則 3](./printed-form.ja.md#3-綴り)はその名前を印字せず、
 ドキュメントの例もほかの綴りを書いていません。
 
 [corpus fixture: railroad/ir-header-upper]

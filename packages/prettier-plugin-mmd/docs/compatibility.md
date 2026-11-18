@@ -3955,9 +3955,9 @@ headers of a railroad diagram, `railroad-beta`, `railroad-ebnf-beta`,
 name in this spelling only: they reject it without `-beta` (`railroad`,
 `railroad-ebnf`, `railroad-abnf`, `railroad-peg`), with `-beta` in another case
 (`-Beta` and `-BETA` after each name), and in capitals (`RAILROAD-BETA` and the
-three names like it). The two forms of a name are not read alike, so
-[rule 3](./printed-form.md#3-a-spelling) does not print the name without
-`-beta`, and the examples of the documentation write no other spelling.
+three names like it). No version that has the diagram type reads the name
+without `-beta`, so [rule 3](./printed-form.md#3-a-spelling) does not print it,
+and the examples of the documentation write no other spelling.
 
 [corpus fixture: railroad/ir-header-upper] [corpus fixture:
 railroad/ebnf-header-upper] [corpus fixture: railroad/abnf-header-upper] [corpus
