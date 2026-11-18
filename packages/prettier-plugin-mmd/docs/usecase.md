@@ -193,8 +193,9 @@ interior characters, including empty quoted values. A plain label is printed in
 the form that the examples use (see [Quotes](#quotes)). Only exterior ASCII HWS
 outside a bare label's contributing units is trimmed. Internal gaps, Unicode
 padding, backslashes, entities and HTML stay. The run in `A(unquoted  words)`
-stays, since every version of mermaid.js that counts draws different
-accessibility text for `A(unquoted words)` (see
+stays in the printed form `A("unquoted  words")`, since every version of
+mermaid.js that counts draws different accessibility text for
+`A("unquoted words")` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A string between `'` is printed between `"`, unless its text holds a `'`, a `"`,
 a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see

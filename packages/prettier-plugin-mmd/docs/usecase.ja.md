@@ -203,9 +203,10 @@ markdown はラベルの種類を変えるため、markdown ラベルは種類�
 通常のラベルは、例で使われている形で印字します（[引用符](#quotes) を参照）。
 裸のラベルを構成する単位の外側にある ASCII の水平空白だけを除きます。
 内部の空白、Unicode の余白、バックスラッシュ、文字参照、HTML は保ちます。
-`A(unquoted  words)` の連なりは残します。
+`A(unquoted  words)` の連なりは、
+印字する形 `A("unquoted  words")` でも残します。
 対象にする版の mermaid.js のすべてが、
-`A(unquoted words)` ではアクセシビリティのテキストを違って描くからです。
+`A("unquoted words")` ではアクセシビリティのテキストを違って描くからです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
