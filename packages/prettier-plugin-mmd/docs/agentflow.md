@@ -611,9 +611,8 @@ arrows/edge-id-after-data-block-directive] [fixture:
 arrows/edge-id-after-data-block-semicolon]
 
 An edge id that starts as an arrow does touches the shape or the data block
-before it, as in `A["x"]--a@-->B`. `A["x"]--a@-->B` stays attached, since
-mermaid.js reads `A["x"] --a@-->B` with edge text `a@` and edge id `L_A_B_0`
-instead of empty text and edge id `--a` (see
+before it, as in `A["x"]--a@-->B`. `A["x"]--a@-->B` stays attached, since every
+version of mermaid.js that counts draws `A["x"] --a@-->B` differently (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 In agentflow that is an edge id that starts with `--`, `-.-`, or `-..-`; one
 such as `x--a`, `==a`, `-.a`, or `.-a` is read the same after whitespace, and
@@ -693,8 +692,8 @@ label text stays, and a label of spaces and tabs only is printed as one space.
 Keep one leading/trailing space for slash, backslash, dash, quote characters,
 and when `@` in the first word would make it read as an edge id; put no space
 before slanted ?]/=] closers. For a slash label, `A[ /x/ ]` keeps its spaces,
-since mermaid.js reads `A[/x/]` as a slanted vertex labelled `x` instead of a
-square vertex labelled `/x/` (see
+since every version of mermaid.js that counts reads `A[/x/]` as a slanted vertex
+labelled `x` instead of a square vertex labelled `/x/` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Agentflow label comments are different: their preceding spaces/tabs are label
 content, so preserve that padding, the comment and its LF/continuation columns,
@@ -729,8 +728,8 @@ agentflow-beta TB
 Reuse [Whitespace between tokens](./flowchart.md#whitespace-between-tokens) and
 [Kept as written](./flowchart.md#kept-as-written): touching is lexical, and
 whitespace on both sides of & distinguishes a group from one id. `A&B` stays
-without spaces, since mermaid.js reads `A & B` as two vertices `A` and `B`
-instead of one vertex `A&B` (see
+without spaces, since every version of mermaid.js that counts reads `A & B` as
+two vertices `A` and `B` instead of one vertex `A&B` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Keep tight id/shape/:::/data suffixes, property Identifiers, actual comma-list
 holes (including empty ends), comma-bearing single ids, occurrences and order.
@@ -770,9 +769,9 @@ metadata-blocks/metadata-multiline]
 
 A block on one line is printed with one space inside each end, and stays as
 written in the cases listed under [Data blocks](./flowchart.md#data-blocks). In
-a block with a directive, `A@{%%{init: {}}%%x:1}` stays, since mermaid.js reads
-`A@{%%{init: {}}%%x: 1}` with metadata key `x` and value `1` instead of key
-`x:1` and value `null` (see
+a block with a directive, `A@{%%{init: {}}%%x:1}` stays, since some of the
+versions of mermaid.js that count read `A@{%%{init: {}}%%x: 1}` with metadata
+key `x` and value `1` instead of key `x:1` and value `null` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Where its line is too long it prints on lines, one entry on each, under the
 conditions listed there.
@@ -1434,9 +1433,9 @@ value text and stays. Name endings follow Names and headings. Label-comment
 padding, strings, data, comments, directives and later value columns stay.
 Forbidden class/callback/title padding remains rejected; the size guard
 overrides trimming. For the quoted vertex label with `before`, a comment-looking
-line, and `after` at the 50000-unit boundary, `A` stays at column zero:
-mermaid.js drops the comment-looking line from the label when two spaces precede
-`A` (see
+line, and `after` at the 50000-unit boundary, `A` stays at column zero: every
+version of mermaid.js that counts drops the comment-looking line from the label
+when two spaces precede `A` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: trailing-whitespace/trailing-comment] [fixture:
@@ -1749,8 +1748,8 @@ header-only input, end with one configured newline. Preserve EOF-reaching
 directive/value endings and size-retained endings, since adding a value
 character or crossing the size branch changes the reading. Whitespace required
 for an empty style and comment text stay before the newline. At EOF, `style A`
-with two trailing spaces stays, since mermaid.js rejects `style A` without them
-(see
+with two trailing spaces stays, since every version of mermaid.js that counts
+rejects `style A` without them (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 An open directive with trailing exterior whitespace uses the shared
 final-whitespace handling; an open directive ending at EOF gains no value
@@ -1853,12 +1852,8 @@ between the parentheses of a blank callback]
 A statement whose line breaks are all inside a string or between the parentheses
 of a call with arguments has its first click-keyword gap normalized like one on
 a single line, and the rest stays written: `click   A "/u" "x` and `  y"` on the
-next line is printed `click A "/u" "x` and `  y"`. For the tooltip beginning
-with `x` in `click   A "/u"`, the next line keeps two spaces before `y`, since
-mermaid.js gives the form with four spaces different tooltip text (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-A line break in a gap, or between the blank parentheses of `f(` and `)`, keeps
-the statement as written.
+next line is printed `click A "/u" "x` and `  y"`. A line break in a gap, or
+between the blank parentheses of `f(` and `)`, keeps the statement as written.
 
 [fixture: click-statements/string-over-lines-keyword-gap] [fixture:
 click-statements/callback-parentheses-over-lines]
