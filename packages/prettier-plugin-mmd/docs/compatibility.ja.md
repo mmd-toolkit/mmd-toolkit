@@ -1350,13 +1350,20 @@ state、block の図で描きました。
 
 次の場合は、文を書かれたまま残します。
 スタイルが改行か U+2028・U+2029 を含む場合、
-文がコメントかディレクティブを含む場合、スタイルが全部空白の場合、
+文の中の最後のスタイルの終わりより前に、コメントかディレクティブがある場合、
+スタイルが全部空白の場合、
 行に自分の `;` がある場合です（[`;` を含む行](#-を含む行)を参照してください）。
+最後のスタイルの後ろのコメントかディレクティブは、文の一部ではなく、
+文は普通に整形します。
+`style A fill:red %%{init: {}}%%` は `style A fill: red %%{init: {}}%%`
+と印字します。
 
 [fixture: flowchart/whitespace-between-tokens/style-blank-style-kept]
 [fixture: flowchart/whitespace-between-tokens/style-colon-escaped-space-kept]
 [fixture: flowchart/whitespace-between-tokens/style-comma-beside-directive-kept]
 [fixture: flowchart/whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
+[fixture: flowchart/style-trailing-whitespace/removed-after-directive]
+[fixture: flowchart/colors/colors-next-to-comments-and-directives]
 
 テストは、印字したテキストの Db を、
 書かれたテキストの Db

@@ -1286,14 +1286,19 @@ class/whitespace-between-tokens/style-words-directive-kept] [fixture:
 flowchart/whitespace-between-tokens/style-words-directive-kept]
 
 A statement stays as written where a style holds a line break or a U+2028 or
-U+2029, where the statement holds a comment or a directive, where a style is all
-whitespace, and where its line holds a `;` of its own (see
-[Lines that hold a `;`](#lines-that-hold-a-)).
+U+2029, where a comment or a directive stands inside the statement, before the
+end of its last style, where a style is all whitespace, and where its line holds
+a `;` of its own (see [Lines that hold a `;`](#lines-that-hold-a-)). A comment
+or a directive after the last style is no part of the statement, and the
+statement is formatted as usual: `style A fill:red %%{init: {}}%%` is printed
+`style A fill: red %%{init: {}}%%`.
 
 [fixture: flowchart/whitespace-between-tokens/style-blank-style-kept] [fixture:
 flowchart/whitespace-between-tokens/style-colon-escaped-space-kept] [fixture:
 flowchart/whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
 flowchart/whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
+[fixture: flowchart/style-trailing-whitespace/removed-after-directive] [fixture:
+flowchart/colors/colors-next-to-comments-and-directives]
 
 The tests compare the Db of the printed text with the margins of its styles
 restored from the Db of the written text (`styleDbForFormattingComparison` in
