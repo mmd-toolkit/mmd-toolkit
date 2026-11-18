@@ -764,14 +764,14 @@ directive interiors. Rule 1 names no mark for a line break, so
 decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
 [timeline](./timeline.md#multi-line-statements) keep a line break next to a
-comment or a directive and put the later parts of a statement and the comment
-and directive lines between them one level deeper, except in a title, a section,
-a setting, or a task, which keep their written layout since the Db holds their
-text with its whitespace. Joining comment regions keep their original layout. A
-`;` does not keep a statement over several lines from being joined: no `;`
-separates statements in a journey, and the first line of such a statement holds
-only its keyword, so joining its lines cannot change which `;` the line rule
-ignores.
+comment or a directive and the whitespace before it, and put the later parts of
+a statement and the comment and directive lines between them one level deeper,
+where no other rule keeps the layout as written (where the Db holds the text
+with its whitespace, where moving a line makes mermaid.js reject the text, and
+the like). Joining comment regions keep their original layout. A `;` does not
+keep a statement over several lines from being joined: no `;` separates
+statements in a journey, and the first line of such a statement holds only its
+keyword, so joining its lines cannot change which `;` the line rule ignores.
 
 [fixture: multi-line-statements/semicolon-value-joined] [fixture:
 multi-line-statements/accessibility-trivia-continuations]
@@ -932,17 +932,20 @@ of the text stays on a line of its own, with the line break added.
 
 A comment after a statement, or after the header, stays on the line, as written:
 one space stands before it where whitespace was written, and none where it
-touches. Moving it to a line of its own would change the Db after a `title` or a
-`section`, where the whitespace before the comment is part of the value, so one
-rule keeps it on its line, as in a Gantt chart.
+touches. Moving it to a line of its own would change the Db after a `section`,
+where the whitespace before the comment is part of the value; after a `title`
+that whitespace is left out like the other whitespace at the end of a title (see
+[Titles and sections](#titles-and-sections)). One rule keeps the comment on its
+line in both, as in a Gantt chart.
 
 [fixture: comments/after-header] [fixture: comments/after-header-glued]
 [fixture: comments/after-header-percent] [fixture: comments/after-statement]
 [fixture: comments/after-statement-glued] [fixture:
 comments/after-statement-under-a-section]
 
-After a `title` or a `section`, the whitespace before the `#` is part of the
-value, and stays (see [Titles and sections](#titles-and-sections)).
+After a `section`, the whitespace before the `#` is part of the value, and
+stays; after a `title` it is one space (see
+[Titles and sections](#titles-and-sections)).
 
 Inside a title, a section, task data, and an accessibility text, `%%` is a
 character of the text, not a comment, and is kept with it.
