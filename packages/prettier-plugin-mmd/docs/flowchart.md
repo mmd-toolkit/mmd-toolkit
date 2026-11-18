@@ -107,15 +107,15 @@ flowchart LR
 
 A line that holds `direction` followed by whitespace and `TB`, `BT`, `RL`, `LR`,
 or `TD`, but is not a direction statement, is kept as written, with its
-indentation.
+indentation. Every version of mermaid.js that counts reads an indented line that
+holds such a text as a direction statement: `accTitle: t;direction TB` is an
+accessibility title, and the same line indented is the direction `TB` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: indentation/direction-text-values-kept] [fixture:
 indentation/direction-text-with-directive-kept] [fixture:
-indentation/acc-descr-block-direction-text-kept]
-
-mermaid.js reads an indented line that holds such a text as a direction
-statement: `accTitle: t;direction TB` is an accessibility title, and the same
-line indented is the direction `TB`.
+indentation/acc-descr-block-direction-text-kept] [fixture:
+indentation/direction-text-kept]
 
 Input
 ([indentation/direction-text-kept-input.mmd](../tests/fixtures/flowchart/indentation/direction-text-kept-input.mmd)):
@@ -1661,7 +1661,10 @@ examples in the documentation of mermaid.js use that form 12 times and the other
 none. This holds for a label of plain text (letters, digits, spaces, `_`, `,`,
 `?`, and `!`) and for the eight arrows `-->`, `---`, `--o`, `--x`, `-.->`,
 `-.-`, `==>`, and `===`: `A -- text --> B` is printed `A -->|text| B`. A label
-that holds a `|` or a `%%`, a string, and a Markdown label stay as written.
+that holds a `|` or a `%%`, a string, and a Markdown label stay as written. In a
+swimlane diagram, `I -- left|right --> J` stays, since every version of
+mermaid.js that counts rejects `I -->|left|right| J` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: link-label-form/swimlane-arrows-to-pipes]
 
@@ -1814,6 +1817,9 @@ accessibility-lines/next-line-direction-kept]
 
 Configured indentation, including its minimum at `tabWidth: 0` and `useTabs`,
 applies to ordinary lines; those options also retain these exceptions.
+`accTitle : direction LR` stays unindented, since every version of mermaid.js
+that counts reads it indented as the direction `LR` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: accessibility-lines/zero-width] [fixture: accessibility-lines/tabs]
 
@@ -3550,7 +3556,9 @@ space.
 
 A `linkStyle` that ends with a backslash keeps the whitespace after it too, as
 one character: `linkStyle default stroke-width:4px\ ` followed by
-`linkStyle 0 stroke:#0f0` keeps the space.
+`linkStyle 0 stroke:#0f0` keeps the space. Some of the versions of mermaid.js
+that count draw a different line when the space is removed (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: style-trailing-whitespace/link-style-backslash-at-end-kept]
 
