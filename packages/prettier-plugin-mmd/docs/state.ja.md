@@ -1530,9 +1530,7 @@ flowchart と同じです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#ディレクティブ)、
 [flowchart](./flowchart.ja.md#ディレクティブ)、
-[journey](./journey.ja.md#ディレクティブ)も、
-この隙間のディレクティブを後ろの単位と一緒に動かし、右側の接触か間隔を残し、
-左側の接触は切ります。
+[journey](./journey.ja.md#ディレクティブ)も、この隙間を同じに印字します。
 
 [fixture: state/directives/split-directive-gap]
 
