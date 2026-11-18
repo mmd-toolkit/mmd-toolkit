@@ -80,10 +80,9 @@ stateDiagram-v2
 規則 1 は、改行の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
-[journey](./journey.ja.md#複数行の文)も、
-コメントやディレクティブの隣の改行を残し、文の後ろの部分と、
+[journey](./journey.ja.md#複数行の文)も、Db が空白ごと持つテキストのない文では、
+コメントやディレクティブの隣の改行を残し、
 間のコメントやディレクティブの行を 1 段深く置きます。
-`{` はその部分ではなく、文と同じ段に置きます。
 `{` の前の空白 1 つは class 図と同じです。
 
 [fixture: composite-states/split]
