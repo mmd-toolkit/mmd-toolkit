@@ -769,7 +769,9 @@ values keep the case in which they are written, since the examples use only `LR`
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
 
 [fixture: direction/spacing] [fixture: direction/spaces-around] [fixture:
-direction/text-kept] [fixture: direction/case-one-form]
+direction/text-kept] [fixture: direction/text-inner-whitespace-kept] [fixture:
+direction/text-both-sides-inner-whitespace-kept] [fixture:
+direction/case-one-form]
 
 A value written on a later line is printed after `direction` on one line.
 

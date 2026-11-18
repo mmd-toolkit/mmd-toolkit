@@ -775,7 +775,9 @@ requirementDiagram
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 
 [fixture: direction/spacing] [fixture: direction/spaces-around]
-[fixture: direction/text-kept] [fixture: direction/case-one-form]
+[fixture: direction/text-kept] [fixture: direction/text-inner-whitespace-kept]
+[fixture: direction/text-both-sides-inner-whitespace-kept]
+[fixture: direction/case-one-form]
 
 次の行に書かれた値は、`direction` の後ろに寄せて 1 行にします。
 
