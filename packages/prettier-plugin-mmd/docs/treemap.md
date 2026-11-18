@@ -537,10 +537,10 @@ it.
 
 A U+00A0, U+2028, U+2029, U+3000, U+000B (a vertical tab), or U+FEFF before the
 `;` stays, and so does one after a `;` that the line rule ignores: CSS does not
-read it as whitespace, so it ends the last style, and mermaid.js draws another
-figure without it (see
-[Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style))
-(see
+read it as whitespace, so it ends the last style, and every version of
+mermaid.js that counts draws another figure without it (see
+[Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style)
+and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Only the `;` is dropped, with the spaces, tabs, and form feeds after the last
 such character, so `classDef zz fill:red`, U+00A0, `;` is printed
@@ -1103,7 +1103,8 @@ breaks included, so the next row goes on its line (see
 [A line that a directive that is not closed joins](./compatibility.md#a-line-that-a-directive-that-is-not-closed-joins)),
 and the rows on that line are read from the indentation before the first of
 them. `"A" %%{x: w`, a line break, and `  "B": 1` make `B` a child of `A`, and
-with `A` indented by two spaces `B` is its sibling (see
+with `A` indented by two spaces `B` is its sibling in every version of
+mermaid.js that counts (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A body with such a line is printed as written, as it is for a kept line that
 constrains a row boundary (see [Semicolons](#semicolons)). The same holds for
