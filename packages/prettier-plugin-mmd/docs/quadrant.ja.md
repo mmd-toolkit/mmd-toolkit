@@ -800,6 +800,11 @@ quadrantChart
 指令かコメント行の内容と改行は保ち、
 本文の字下げは
 [title とアクセシビリティの文](#title-とアクセシビリティの文)に従います。
+規則 1 は、ブロックの中の行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[xychart](./xychart.ja.md#空の説明ブロック) と
+[block](./block.ja.md#空の説明ブロック) も、
+ディレクティブかコメント行があるブロックの内容と改行を、そのまま残します。
 ヘッダーの後でも、ほかの文の後でも、自分の行に置きます。
 文法がブロックを受け入れるのは、文の始まりと、文の最後の単位の後です。
 mermaid.js は、どこにあってもトークンのないものとして読みます。
@@ -850,6 +855,11 @@ mermaid.js が複数行にわたって読む文は、
 後続の構造部分と独立した注釈類行を文より 1 段深くそろえます。
 各隙間の最初の行の末尾と、指令の内部全体を保ちます。
 複数行の名前などの値の範囲は、ひとまとまりのままです。
+規則 1 は、改行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
+[journey](./journey.ja.md#複数行の文)も、コメントやディレクティブの隣の改行と、
+その前の空白を残し、続きの行を 1 段深く置きます。
 
 [fixture: multi-line-statements/point-trivia-with-multiline-label]
 [fixture: multi-line-statements/accessibility-trivia-continuations]
@@ -1189,6 +1199,11 @@ Db がそこで落とします。
 title、アクセシビリティのテキスト、説明ブロックのテキストは、
 値がそれらを両端から除くので、印字もそこで落とします。
 それらを含む隙間と、それらを含むテキストは、書かれたまま印字します。
+規則 1 の表に、これを含む間隔の印はないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[journey](./journey.ja.md#行区切り文字) と
+[timeline](./timeline.ja.md#行区切り文字) も、
+これを含む間隔を書かれたまま印字します。
 
 [test: U+2028 between the words of a text]
 [test: U+2029 between the words of a text] [test: U+2028 at the end of a text]
