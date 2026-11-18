@@ -775,11 +775,15 @@ Unicode and tab interiors]
 
 A block with a directive or a comment line keeps its contents and line breaks,
 with body indentation under
-[Titles and accessibility statements](#titles-and-accessibility-statements). It
-stands on a line of its own, also after the header and after another statement,
-where the grammar takes it: mermaid.js reads it as nothing wherever it stands,
-and the grammar takes it where a statement starts and after the last unit of a
-statement.
+[Titles and accessibility statements](#titles-and-accessibility-statements).
+Rule 1 names no mark for a line inside a block, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [xychart](./xychart.md#empty-description-blocks) and
+[block](./block.md#empty-description-blocks) keep the contents and line breaks
+of a block with a directive or comment line. It stands on a line of its own,
+also after the header and after another statement, where the grammar takes it:
+mermaid.js reads it as nothing wherever it stands, and the grammar takes it
+where a statement starts and after the last unit of a statement.
 
 [fixture: empty-description-blocks/inner-whitespace-collapsed] [fixture:
 empty-description-blocks/touching-kept] [fixture:
@@ -826,7 +830,14 @@ multi-line-statements/point-with-styles-over-lines-joined]
 In points and accessibility line statements, keep trivia line breaks and align
 later structural parts and standalone trivia one continuation level inside the
 statement. Preserve each first gap-line tail and complete directive interiors;
-multiline names and other value ranges stay whole.
+multiline names and other value ranges stay whole. Rule 1 names no mark for a
+line break, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#multi-line-statements),
+[gantt](./gantt.md#multi-line-statements), and
+[journey](./journey.md#multi-line-statements) keep a line break next to a
+comment or a directive and the whitespace before it, and put the continuations
+one level deeper.
 
 [fixture: multi-line-statements/point-trivia-with-multiline-label] [fixture:
 multi-line-statements/accessibility-trivia-continuations]
@@ -1157,7 +1168,11 @@ the name of a class. A text and a name keep them at their ends too, where the Db
 trims them, since they are part of the written text; a title, an accessibility
 text, and the text of a description block leave them out at their ends, as their
 values do, and the printer drops them there. A gap that holds one is printed as
-written, and so is the text that holds one.
+written, and so is the text that holds one. Rule 1 names no mark for a gap that
+holds one, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [journey](./journey.md#line-separators) and
+[timeline](./timeline.md#line-separators) print such a gap as written.
 
 [test: U+2028 between the words of a text] [test: U+2029 between the words of a
 text] [test: U+2028 at the end of a text] [test: U+2028 between a statement and
