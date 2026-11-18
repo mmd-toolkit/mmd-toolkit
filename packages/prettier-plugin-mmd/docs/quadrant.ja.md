@@ -859,7 +859,10 @@ mermaid.js が複数行にわたって読む文は、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
 [journey](./journey.ja.md#複数行の文)も、コメントやディレクティブの隣の改行と、
-その前の空白を残し、続きの行を 1 段深く置きます。
+その前の空白を残し、文の後ろの部分と、
+その間のコメントやディレクティブの行を 1 段深く置きます。
+ほかの規則が配置を書かれたまま残す所は別です（Db が空白ごとテキストを持つ所や、
+動かすと mermaid.js がテキストを拒否する所などです）。
 
 [fixture: multi-line-statements/point-trivia-with-multiline-label]
 [fixture: multi-line-statements/accessibility-trivia-continuations]

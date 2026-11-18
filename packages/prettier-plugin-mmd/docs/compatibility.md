@@ -3983,9 +3983,11 @@ it, as [requirement](./requirement.md#fields),
 [sequence](./sequence.md#multi-line-statements),
 [flowchart](./flowchart.md#multi-line-statements), and
 [xychart](./xychart.md#multi-line-statements) put the continuations and the
-intervening comment lines of a statement one level deeper than the statement.
-Keep each first gap-line tail, including whitespace needed before LF, and keep
-value and directive interiors whole. Joining comment regions, semicolon
+intervening comment lines of a statement one level deeper than the statement,
+where no other rule keeps the layout as written (where the Db holds the text
+with its whitespace, where moving a line makes mermaid.js reject the text, and
+the like). Keep each first gap-line tail, including whitespace needed before LF,
+and keep value and directive interiors whole. Joining comment regions, semicolon
 protections and diagram-specific value boundaries still take precedence.
 
 This applies to class and state statements, ER statements, requirement headers,

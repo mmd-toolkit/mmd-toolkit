@@ -1806,8 +1806,11 @@ the start of a line
 it, as [requirement](./requirement.md#fields) and
 [sequence](./sequence.md#multi-line-statements) put the continuation lines and
 the intervening comment lines of a statement one level deeper than its first
-line. Flowchart skips a comment after the colon to read the later value. This
-preserves the existing continuation rule when ordinary joining does not apply.
+line, where no other rule keeps the layout as written (where the Db holds the
+text with its whitespace, where moving a line makes mermaid.js reject the text,
+and the like). Flowchart skips a comment after the colon to read the later
+value. This preserves the existing continuation rule when ordinary joining does
+not apply.
 
 [fixture: accessibility-lines/next-line-comment-kept] [fixture:
 accessibility-lines/description-comment-continuation] [fixture:
@@ -1978,7 +1981,9 @@ the start of a line
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [requirement](./requirement.md#fields) and
 [sequence](./sequence.md#multi-line-statements) put the comment lines of a
-statement at the level of its later lines.
+statement at the level of its later lines, where no other rule keeps the layout
+as written (where the Db holds the text with its whitespace, where moving a line
+makes mermaid.js reject the text, and the like).
 
 [fixture: multi-line-statements/several-comments-inside]
 

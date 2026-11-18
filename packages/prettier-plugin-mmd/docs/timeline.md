@@ -438,8 +438,10 @@ whitespace beside a mark and not the start of a line
 it, as [requirement](./requirement.md#fields) and
 [sequence](./sequence.md#multi-line-statements) put the intervening comment and
 directive lines of a statement at the level of its continuation lines, which
-here stand at the column of the colon. A run of empty lines inside the statement
-becomes one.
+here stand at the column of the colon, where no other rule keeps the layout as
+written (where the Db holds the text with its whitespace, where moving a line
+makes mermaid.js reject the text, and the like). A run of empty lines inside the
+statement becomes one.
 
 [fixture: periods-and-events/comment-lines-inside] [fixture:
 periods-and-events/empty-lines-inside] [fixture:
@@ -1172,8 +1174,11 @@ directive interiors. Rule 1 names no mark for a line break, so
 decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
 [journey](./journey.md#multi-line-statements) keep a line break next to a
-comment or a directive and the whitespace before it, and put the continuations
-one level deeper. Joining comment regions keep their original layout; semicolon
+comment or a directive and the whitespace before it, and put the later parts of
+a statement and the comment and directive lines between them one level deeper,
+where no other rule keeps the layout as written (where the Db holds the text
+with its whitespace, where moving a line makes mermaid.js reject the text, and
+the like). Joining comment regions keep their original layout; semicolon
 protection follows the joining decision below.
 
 [fixture: multi-line-statements/accessibility-trivia-continuations]
