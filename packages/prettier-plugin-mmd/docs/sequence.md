@@ -1480,11 +1480,11 @@ characters as escapes too (see
   indentation and without formatting the whitespace between them: the tree lists
   the comments, and the printer reads them as one line (see
   [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
-  A `#` comment is no comment line: it joins no line. U+2028 before it is
-  printed as one space, as the whitespace before any comment after a statement
-  (see [Comments](#comments)), except after the units below, where mermaid.js
-  reads the character, or the character and the `#` with what follows, as part
-  of the unit, and the character stays as written:
+  A `#` comment is no comment line: it joins no line. U+2028 or U+2029 before it
+  is printed as one space, like the spaces and tabs before a comment after a
+  statement (see [Comments](#comments)), except after the units below, where
+  mermaid.js reads the character, or the character and the `#` with what
+  follows, as part of the unit, and the character stays as written:
 
   - The id of a `participant` or an `actor` that has no alias and no data block,
     and of a `create`, a `destroy`, an `activate`, and a `deactivate`: `A`,
@@ -1510,10 +1510,15 @@ characters as escapes too (see
   a text] [test: a `#` comment after U+2028 after the id of a participant]
   [test: a `#` comment after U+2028 after the id of a create] [test: a `#`
   comment after U+2028 after the id of a destroy] [test: a `#` comment after
-  U+2028 after the id of an activate and a deactivate] [test: a `#` comment
-  after U+2028 after accTitle] [test: a `#` comment after U+2028 after an
-  accDescr line] [test: a `#` comment after U+2028 after a title] [test: a `#`
-  comment after U+2028 after a box with a text]
+  U+2028 after activate and deactivate] [test: a `#` comment after U+2028 after
+  accTitle] [test: a `#` comment after U+2028 after an accDescr line] [test: a
+  `#` comment after U+2028 after a title] [test: a `#` comment after U+2028
+  after a box with a text] [test: a `#` comment after U+2028 after an actor and
+  a data block] [test: a `#` comment after U+2028 after links, properties, and
+  details] [test: a `#` comment after U+2028 after block headers and end] [test:
+  a `#` comment after U+2028 after an accDescr block] [test: a `#` comment after
+  U+2028 after autonumber off] [test: a `#` comment after U+2029 after a message
+  and a note] [test: a `#` comment after U+2029 where the character stays]
 
 - Right after a directive that is not closed. The text of such a directive stops
   before the character, which is no whitespace to it: with the character printed

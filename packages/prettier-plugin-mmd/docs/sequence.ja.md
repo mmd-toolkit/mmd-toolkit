@@ -1506,7 +1506,7 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   [U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
   を参照してください。
   `#` のコメントはコメント行ではなく、行をつなぎません。
-  その前の U+2028 は、文の後のコメントの前の空白と同じく、
+  その前の U+2028 と U+2029 は、文の後のコメントの前の空白とタブと同じく、
   空白 1 つで印字します（[コメント](#コメント)を参照）。
   ただし、次の単位の後では、mermaid.js がこの文字を、
   またはこの文字と `#` 以降を、その単位の一部として読むので、
@@ -1540,11 +1540,18 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   [test: a `#` comment after U+2028 after the id of a participant]
   [test: a `#` comment after U+2028 after the id of a create]
   [test: a `#` comment after U+2028 after the id of a destroy]
-  [test: a `#` comment after U+2028 after the id of an activate and a deactivate]
+  [test: a `#` comment after U+2028 after activate and deactivate]
   [test: a `#` comment after U+2028 after accTitle]
   [test: a `#` comment after U+2028 after an accDescr line]
   [test: a `#` comment after U+2028 after a title]
   [test: a `#` comment after U+2028 after a box with a text]
+  [test: a `#` comment after U+2028 after an actor and a data block]
+  [test: a `#` comment after U+2028 after links, properties, and details]
+  [test: a `#` comment after U+2028 after block headers and end]
+  [test: a `#` comment after U+2028 after an accDescr block]
+  [test: a `#` comment after U+2028 after autonumber off]
+  [test: a `#` comment after U+2029 after a message and a note]
+  [test: a `#` comment after U+2029 where the character stays]
 
 - 閉じていないディレクティブの直後。
   そのようなディレクティブのテキストはこの文字の手前で止まり、
