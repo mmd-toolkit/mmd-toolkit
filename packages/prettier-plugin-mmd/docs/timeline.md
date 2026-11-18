@@ -409,8 +409,10 @@ including inside a section. Keep tabs as tab stops in the alignment padding and
 use Prettier's display width for the remaining text, including wide characters.
 Count the period's written text, including a directive inside it, since that is
 what the printer displays. A `;` that the line rule ignores between the period
-and the first colon is part of that text and counts too: the colons of the later
-lines stand under the first one as it is printed, and the line stays whole (see
+and the first colon is part of that text and counts in its width, with the
+whitespace around it as written: the colons of the later lines stand at the
+column that the first colon has when it is counted from the start of the period,
+and the line stays whole (see
 [Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)). The configured
 indentation still applies at `tabWidth: 0`.
 
@@ -421,7 +423,10 @@ periods-and-events/colon-alignment-tabs] [fixture:
 periods-and-events/colon-alignment-wide-period] [fixture:
 periods-and-events/colon-alignment-zero-width] [fixture:
 periods-and-events/colon-alignment-written-period] [fixture:
-periods-and-events/colon-alignment-ignored-semicolon]
+periods-and-events/colon-alignment-ignored-semicolon] [fixture:
+periods-and-events/colon-alignment-ignored-semicolon-touching-colon] [fixture:
+periods-and-events/colon-alignment-ignored-semicolon-touching-period] [fixture:
+periods-and-events/colon-alignment-ignored-semicolon-wide]
 
 When the first colon is on a later line, or a directive separates it from the
 period, retain the ordinary continuation indentation of one level. Periods whose
