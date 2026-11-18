@@ -21,6 +21,12 @@ mermaid.js は `radar-beta:` と `radar-beta` を同じ見出しとして読み�
 （[ヘッダーの後のコロン](./compatibility.ja.md#ヘッダーの後のコロン)を参照）。
 コロンと語の間に隠れた形か大域的なディレクティブがあるときと、
 `;` か隠れた YAML ブロックの `---` がコロンに接するときは、コロンを残します。
+`radar-beta%%{wrap}%%:axis North` のコロンは残します。
+対象にする版の mermaid.js のすべてが、
+`radar-beta%%{wrap}%%axis North` を拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 隠れた形、大域的な注釈類、セミコロンの保護区間では境界を保ちます。
 空の本文は空のままです。
 
@@ -259,7 +265,11 @@ radar-beta
 保護区間内に継続の字下げを足しません。
 その後の普通の間隙には通常の空白規則を適用します。
 終端行に別の文のセミコロンがある場合も共有の結合検査で保ちます。
-前の style に似たラベルと結合すると、その文の Db が変わりうるためです。
+前の style に似たラベルと結合すると、その文の Db が変わりうるうえ、
+対象にする版の mermaid.js のすべてがタイトルのテキストを違って描くためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: radar/multi-line-statements/leading-trailing-entry-lines]
 
@@ -331,7 +341,12 @@ radar-beta
 `A 1` は間を空白 1 つにし、列揃えはしません。
 句読法を保ちながら、同じ意味の空白をそろえるためです。
 軸名 `accTitle` と `accDescr` へのコロン追加は安全ではありません。
-共通の複合トークンが優先してしまうためです。
+共通の複合トークンが優先してしまううえ、
+対象にする版の mermaid.js のすべてが `curve c{accTitle: 1, accDescr 2}`
+を拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: radar/named-entries/named-colon-gap]
 
@@ -492,6 +507,8 @@ radar-beta
 
 [fixture: radar/title/title-quote-raw]
 
+[fixture: radar/semicolons/semicolon-selected-kept]
+
 入力（エスケープ表記）: `"radar-beta\ntitle\t  Topic  words\t \n"`
 
 出力
@@ -526,6 +543,8 @@ radar-beta
 [fixture: radar/accessibility-lines/a11y-line-braces-fixed]
 
 [fixture: radar/accessibility-lines/a11y-no-next-comment]
+
+[fixture: radar/accessibility-lines/acc-title-semicolon-colon-gap]
 
 入力（エスケープ表記）:
 `"radar-beta\naccTitle \t:   Access  words\t\naccDescr\t:   Detail  words \n"`
@@ -746,6 +765,13 @@ radar-beta
 空の内部、囲み記号 3 つによる 1 つの一致範囲、別々の一致範囲、
 後で有効になる閉じ記号、内部の大域的な処理やコメントによる分断を保ちます。
 普通の本文の開始記号は字下げできますが、内部と閉じ記号の列は保ちます。
+本文の YAML の内部が `not: [yaml` の 1 行である形では、
+その行と閉じの `---` を第 1 列に保ちます。
+対象にする版の mermaid.js のすべてが、
+両方を空白 2 つ字下げした形を拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 隠れた形の前に改行を新設しません。
 文字列と共通値が持つ隠れた形に見える文字も所有を保ちます。
 図固有の形の照合に失敗したコメントはコメントのままです。

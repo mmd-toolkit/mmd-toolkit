@@ -18,8 +18,11 @@ and `radar-beta` as the same header, and the examples in its documentation write
 the header without the colon 3 times against none (see
 [The colon after a header](./compatibility.md#the-colon-after-a-header)). The
 colon stays where a hidden form or a global directive lies between it and the
-word, and where a `;` or the `---` of a hidden YAML block touches it. Hidden
-forms, global trivia and protected semicolon segments keep their source
+word, and where a `;` or the `---` of a hidden YAML block touches it. For
+`radar-beta%%{wrap}%%:axis North`, the colon stays, since every version of
+mermaid.js that counts rejects `radar-beta%%{wrap}%%axis North` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Hidden forms, global trivia and protected semicolon segments keep their source
 boundaries instead. Empty bodies remain empty.
 
 [fixture: radar/header/colon-removed] [fixture: radar/header/colon-yaml-kept]
@@ -248,7 +251,9 @@ protected semicolon segments remain written, including their continuation
 columns. No continuation indentation is added inside a protected segment;
 ordinary spacing still applies after it. Shared joining checks also keep a
 terminal line containing another statement's semicolon: joining a preceding
-style-like label could change that statement's Db.
+style-like label could change that statement's Db, and every version of
+mermaid.js that counts draws different title text (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: radar/multi-line-statements/leading-trailing-entry-lines]
 
@@ -321,7 +326,9 @@ Keep authored optional colons. Print `A: 1` with no ordinary space before the
 colon and one after, or `A 1` with one space and no alignment. This retains
 punctuation while giving equivalent padding a consistent form. Adding a colon is
 unsafe for axis names `accTitle` and `accDescr`: common composite tokens would
-take priority.
+take priority, and every version of mermaid.js that counts rejects
+`curve c{accTitle: 1, accDescr 2}` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: radar/named-entries/named-colon-gap]
 
@@ -481,6 +488,8 @@ radar/title/title-edge-trim]
 
 [fixture: radar/title/title-quote-raw]
 
+[fixture: radar/semicolons/semicolon-selected-kept]
+
 Input (escaped): `"radar-beta\ntitle\t  Topic  words\t \n"`.
 
 Output
@@ -514,6 +523,8 @@ radar/accessibility-lines/a11y-lines-fixed]
 [fixture: radar/accessibility-lines/a11y-line-braces-fixed]
 
 [fixture: radar/accessibility-lines/a11y-no-next-comment]
+
+[fixture: radar/accessibility-lines/acc-title-semicolon-colon-gap]
 
 Input (escaped):
 `"radar-beta\naccTitle \t:   Access  words\t\naccDescr\t:   Detail  words \n"`.
@@ -727,9 +738,13 @@ The node value omits shared trivia, so print its range, not its value. Do not
 promote member gaps to body statements or format hidden YAML/JSON. Preserve
 empty bodies, three fences forming one match, separate matches, later qualifying
 closers and internal global/comment cuts. Ordinary body openers may indent;
-interiors and closers keep their columns. Never invent a newline before a hidden
-form. Strings/common values retain their hidden-looking content, and failed
-native forms remain comments.
+interiors and closers keep their columns. For the body YAML with `not: [yaml` as
+its only interior line, that line and the closing `---` stay at column one,
+since every version of mermaid.js that counts rejects the form with both
+indented two spaces (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Never invent a newline before a hidden form. Strings/common values retain their
+hidden-looking content, and failed native forms remain comments.
 
 [fixture: radar/hidden-forms/axis-hidden-members]
 

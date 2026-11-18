@@ -776,9 +776,13 @@ tf 01 evt Alpha
 
 Keep accessibility line forms as written: leading padding, the keyword/colon
 gap, colon-side and trailing padding, empty payloads, quotes and brace-looking
-text. EM_ACC_TITLE and EM_ACC_DESCR include these parts in their values. An
-empty payload is still a nonempty terminal; the colon form is not converted into
-a description block. LS/PS inside line values remain content.
+text. EM_ACC_TITLE and EM_ACC_DESCR include these parts in their values. For the
+`accTitle` line with a space and a tab before `:`, that gap stays, since every
+version of mermaid.js that counts draws different accessibility text when the
+gap is removed (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+An empty payload is still a nonempty terminal; the colon form is not converted
+into a description block. LS/PS inside line values remain content.
 
 [fixture: eventmodeling/accessibility-lines/accessibility-lines-exact]
 
@@ -810,7 +814,12 @@ newlines, whitespace-only interiors and closing columns. Empty, whitespace-only
 and removal-only interiors remain distinct authored forms. This is the single
 selection point that bypasses shared `layoutDescriptionBlock`: its ordinary `{}`
 compaction and closer alignment would rewrite an EM_ACC_DESCR value. No
-diagram-local empty-block normalization replaces it.
+diagram-local empty-block normalization replaces it. For `accDescr {` followed
+by a space, a tab, LF and `  }`, that whitespace stays, since every version of
+mermaid.js that counts draws different accessibility text for `accDescr {}`, the
+compact form used for whitespace-only descriptions in flowchart and class
+diagrams (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture:
 eventmodeling/description-blocks/description-whitespace-literal-retained]

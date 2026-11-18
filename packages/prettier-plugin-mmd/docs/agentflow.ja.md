@@ -624,6 +624,12 @@ vertex 文は、矢印が読む空白を除き、データブロックの後に�
 agentflowでは、`--`、`-.-`、`-..-`で始まる辺IDがそれに当たります。
 `x--a`、`==a`、`-.a`、`.-a`のような辺IDは、空白の後でも同じに読まれるので、
 前に空白を1つ置きます。
+`A["x"]--a@-->B` は接触を保ちます。
+対象にする版の mermaid.js のすべてが、
+空白のある `A["x"] --a@-->B` を違って描くためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: arrows/edge-id-arrow-like-kept-attached]
 [fixture: arrows/edge-id-not-arrow-like-gets-one-space]
@@ -702,6 +708,12 @@ Mermaidが捨てる通常の裸のラベルの外側空白を取り除きます�
 先頭のスラッシュ、逆スラッシュ、ダッシュ、引用符、
 最初の語にある@によって別の構文になるときは、両端に空白1つを残します。
 斜辺の閉じ`?]`と`=]`の前には空白を足しません。
+スラッシュのラベル `A[ /x/ ]` は空白を保ちます。
+対象にする版の mermaid.js のすべてが、`A[/x/]` を、
+文字 `/x/` の四角い頂点ではなく、文字 `x` の斜めの頂点として読むためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 agentflowのラベルコメントの直前の空白とタブは値の文字なので保ちます。
 コメント、LF、後続行の桁位置も保ちます。
 コメント内の閉じ括弧は形を閉じないので、コメントの文字のままです。
@@ -711,6 +723,7 @@ agentflowのラベルコメントの直前の空白とタブは値の文字な�
 [fixture: labels/labels-closers] [fixture: labels/labels-leading-sensitive]
 [fixture: labels/labels-leading-at-sign] [fixture: labels/labels-padding]
 [fixture: labels/labels-tilde] [fixture: labels/labels-trim-sensitive-unsafe]
+[fixture: labels/slash-label-padding-kept]
 
 flow/connectorの見出しのタイトルは、
 [subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)に従います。
@@ -736,6 +749,12 @@ agentflow-beta TB
 [書かれたまま残すもの](./flowchart.ja.md#書かれたまま残すもの)
 と同じ規則と理由です。
 接触は字句の区別で、&の両側の空白がグループと1つのIDを分けます。
+`A&B` は空白のないまま保ちます。
+対象にする版の mermaid.js のすべてが、`A & B` を、1 つの頂点 `A&B` ではなく、
+2 つの頂点 `A` と `B` として読むためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 ID、形、:::、データの接触、プロパティのIdentifier、
 実際のコンマ区切りリストの穴と空の両端、コンマを含む単一ID、
 出現と順序を保ちます。
@@ -779,12 +798,20 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 1 行のブロックは、両端の内側に空白を 1 つずつ置いて印字します。
 書かれたままにする場合は、
 [データブロック](./flowchart.ja.md#データブロック)に挙げたとおりです。
+ディレクティブを含むブロック `A@{%%{init: {}}%%x:1}` は保ちます。
+対象にする版の mermaid.js のうちいくつかが、`A@{%%{init: {}}%%x: 1}` を、
+メタデータのキー `x:1` と値 `null` ではなく、
+キー `x` と値 `1` として読むためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 行が長すぎるときは、そこに挙げた条件のもとで、
 1 行に 1 項目ずつ複数行に分けて印字します。
 
 [fixture: metadata-blocks/long-split] [fixture: metadata-blocks/one-line-padded]
 [fixture: metadata-blocks/one-line-space-only-padded]
 [fixture: metadata-blocks/one-line-directive-kept]
+[fixture: metadata-blocks/block-directive-colon-kept]
 [fixture: metadata-blocks/one-line-kept-line-kept]
 [fixture: metadata-blocks/one-line-touching-blocks-kept]
 [fixture: metadata-blocks/one-line-separate-blocks-padded]
@@ -1454,10 +1481,18 @@ agentflow-beta TB
 値の後続行の空白も保ちます。
 禁止されるclass/コールバック/titleの空白は拒否のままで、
 サイズ保護が削除に優先します。
+引用符付きの頂点ラベルに `before`、コメントに見える行、`after` がある、
+50000 単位の境界の図では、`A` を 0 桁目に保ちます。
+`A` の前に空白を 2 つ足すと、対象にする版の mermaid.js のすべてが、
+コメントに見える行をラベルから落とすためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: trailing-whitespace/trailing-comment]
 [fixture: trailing-whitespace/trailing-name-dropped]
 [fixture: trailing-whitespace/trailing-null-style]
+[fixture: default-size-branches/size-preserving-to-fallback-unsafe]
 
 [flowchart](./flowchart.ja.md#スタイルの行末の空白)と同じく、
 バックスラッシュで終わる `linkStyle` は、その後の空白も 1 文字として保ちます。
@@ -1772,11 +1807,18 @@ agentflow-beta TB
 EOFまで続くディレクティブと値、およびサイズ保護された末尾は保ちます。
 値の文字を足したりサイズ境界を越えたりすると読みが変わるためです。
 nullのstyleに必要な空白とコメントの文字は改行の前に保ちます。
+EOF では、`style A` の後の空白 2 つを保ちます。
+空白を除いた `style A` は、
+対象にする版の mermaid.js のすべてが拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 未閉鎖ディレクティブの後にある外側の空白には共通の末尾空白規則を使い、
 EOFで終わるディレクティブには値の文字を足しません。
 
 [fixture: final-newline/final-comment]
 [fixture: final-newline/final-open-description]
+[fixture: final-newline/final-empty-style-spaces]
 
 入力（エスケープ表記）: `"agentflow-beta TB\nA\n\n\n"`。
 

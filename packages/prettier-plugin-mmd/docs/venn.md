@@ -441,13 +441,17 @@ colors/words-that-are-not-colors-as-written]
 A color function that stands alone as the value of a property, `rgb(` with three
 numbers or `rgba(` with four, in lower case, is printed with one space after
 each comma: `style A fill:rgb(1,2,3)` is printed `style A fill: rgb(1, 2, 3)`.
+The examples in the documentation of mermaid.js have no color function in a Venn
+diagram; the space is the form of the examples of the sequence diagram and of
+the styles of the other diagram types (see
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
 The whitespace before a comma, immediately after the opening `(`, and
 immediately before the closing `)` stays as written, and so does a function in
-capitals (`RGB(1,2,3)`) or one that runs over lines. The examples in the
-documentation of mermaid.js have no color function in a Venn diagram; the space
-is the form of the examples of the sequence diagram and of the styles of the
-other diagram types (see
-[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+capitals (`RGB(1,2,3)`) or one that runs over lines. `rgba( 1 ,2 ,3 ,.5 )` keeps
+the padding before its commas and inside its parentheses in the `color`
+property, since some of the versions of mermaid.js that count build a different
+`color` value in the Db for `rgba(1, 2, 3, .5)` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
 [fixture: colors/functions-as-written]
@@ -883,7 +887,10 @@ prints as `title T`.
 
 [fixture: venn/title/text-padding-dropped]
 
-A title of spaces and tabs only stays as written.
+A title of spaces and tabs only stays as written. The title with two spaces, a
+tab and a space after `title` stays, since every version of mermaid.js that
+counts rejects `title` alone on its line (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: venn/title/title-blank-kept]
 
