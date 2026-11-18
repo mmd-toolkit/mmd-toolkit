@@ -407,17 +407,18 @@ info showInfo
 
 付着と原文を保つため、[共有のコメント配置](./pie.ja.md#comments)を使います。
 見出し前は第1列、通常の本文の独立コメントは1段下げ、行内は同じ行です。
-接触は保ち、離れた隙間は空白1個にします。
+接するコメントは接したまま残し、前の空白とタブの連なりは空白 1 つにします。
 規則 1 は、コメントの前の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#コメント)、[journey](./journey.ja.md#コメント)、
 [timeline](./timeline.ja.md#コメント)も、
-文の終わりとコメントの間の空白とタブの連なりを空白 1 つで印字し、
-接するコメントは接したまま残します。
+文の後ろのコメントを同じように印字します。
 ほかの規則が空白を書かれたまま残す所は別です。
-どの図の文書も、その所を自分の節で挙げています。
-（Db が持つ空白と、mermaid.js の読みを変える空白です。）印、本文、
-末尾空白を保ちます。
+どの図の文書も、その所を、
+自分の節か [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
+で挙げています。
+（Db が持つ空白、たとえば `section` と期間の後の空白と、
+mermaid.js の読みを変える空白です。）印、本文、末尾空白を保ちます。
 図固有のコメントは物理 LF で終わり、LS/PS は保ちます。
 先に始まったブロック内の裸のパーセント行は値の場合があります。
 共通の除去領域は取り込んだ原文と継続列を保ちます。
@@ -426,6 +427,7 @@ info showInfo
 [fixture: info/comments/comments-align]
 
 [fixture: info/comments/comments-inline]
+[fixture: info/comments/inline-gap-run-before-comment]
 
 [test: info/comments/comments-bare-triple]
 
