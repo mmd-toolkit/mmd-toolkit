@@ -1206,10 +1206,11 @@ names no mark for a line break, so
 decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
 [journey](./journey.md#multi-line-statements) keep a line break next to a
-comment or a directive and put the later parts of a statement and the comment
-and directive lines between them one level deeper, except in a title, a section,
-a setting, or a task, which keep their written layout since the Db holds their
-text with its whitespace.
+comment or a directive and the whitespace before it, and put the later parts of
+a statement and the comment and directive lines between them one level deeper,
+where no other rule keeps the layout as written (where the Db holds the text
+with its whitespace, where moving a line makes mermaid.js reject the text, and
+the like).
 
 [fixture: accessibility/inline-directive-kept] [fixture:
 accessibility/next-line-directive-kept] [fixture:

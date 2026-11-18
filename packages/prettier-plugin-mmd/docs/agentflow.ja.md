@@ -1246,11 +1246,11 @@ flowchartの継続行の規則を同じ理由で再利用するためです。
 規則 1 は、改行の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
-[journey](./journey.ja.md#複数行の文)も、
-コメントやディレクティブの隣の改行を残し、文の後ろの部分と、
+[journey](./journey.ja.md#複数行の文)も、コメントやディレクティブの隣の改行と、
+その前の空白を残し、文の後ろの部分と、
 その間のコメントやディレクティブの行を 1 段深く置きます。
-title、section、設定、タスクは、Db が空白ごとテキストを持つので、
-書かれたままの配置を残します。
+ほかの規則が配置を書かれたまま残す所は別です（Db が空白ごとテキストを持つ所や、
+動かすと mermaid.js がテキストを拒否する所などです）。
 
 [fixture: accessibility/inline-directive-kept]
 [fixture: accessibility/next-line-directive-kept]
