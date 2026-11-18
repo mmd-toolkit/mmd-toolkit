@@ -997,6 +997,11 @@ EOF も文を終えます。
 見出し行に残った文も、その後置部分の後ろは文と文の境界です。
 複数の後置部分の所有ノードと可視 EOL 後の形を区別し、
 外側の余分な空行は共有の最大1空行の規則に従います。
+`service following` の前の `service space_suffix%%{}%%` に続く空白は、
+対象にする版の mermaid.js はすべて、
+同じ 2 行からその空白を除いた形を拒否するため保ちます（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 
 [fixture: architecture/hidden-boundaries/header-and-statement]
 
@@ -1450,11 +1455,6 @@ Markdown は埋め込みを辞退します。
 囲み・リスト・引用の字下げと EOL は埋め込み先が用意します。
 最後の隠れた形の余白を含め、図の本文の最終行の余白は埋め込み先が除きますが、
 内部の隠れた形の境界は必要です。
-`service following` の前の `service space_suffix%%{}%%` に続く空白は、
-対象にする版の mermaid.js はすべて、
-同じ 2 行からその空白を除いた形を拒否するため保ちます（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照）。
 埋め込み先の出力と冪等性は図の本文の Db・原文保持と別に確認します。
 
 [test: architecture Markdown: top-level]
