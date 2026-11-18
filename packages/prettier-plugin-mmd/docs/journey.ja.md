@@ -881,8 +881,9 @@ journey
 規則 1 は、行末の空白を決めません。
 規則 1 の表が挙げるのは印の横の空白だからです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[requirement](./requirement.ja.md#トークンの間の空白) と
-[radar](./radar.ja.md#trailing-whitespace)も、行末の空白を落とします。
+[radar](./radar.ja.md#trailing-whitespace) と
+[architecture](./architecture.ja.md#trailing-whitespace)も、
+ヘッダーの後ろの空白を落とします。
 
 [fixture: whitespace-between-tokens/trailing-whitespace-after-header]
 
@@ -919,7 +920,8 @@ journey
 規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
-[timeline](./timeline.ja.md#コメント) と [block](./block.ja.md#コメント)も、
+[gantt](./gantt.ja.md#コメント)、[block](./block.ja.md#コメント)、
+[quadrant](./quadrant.ja.md#コメント)も、
 コメント行を後ろの文と同じ段に置きます。
 
 [fixture: comments/lines-at-statement-level] [fixture: comments/text-kept]

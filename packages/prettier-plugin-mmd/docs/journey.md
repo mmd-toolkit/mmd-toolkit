@@ -862,9 +862,9 @@ block on one line follows
 The whitespace at the end of the header's line is dropped. Rule 1 names no mark
 at the end of a line, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [requirement](./requirement.md#whitespace-between-tokens) and
-[radar](./radar.md#trailing-whitespace) drop the whitespace at the end of a
-line.
+decides: [radar](./radar.md#trailing-whitespace) and
+[architecture](./architecture.md#trailing-whitespace) drop the whitespace after
+the header.
 
 [fixture: whitespace-between-tokens/trailing-whitespace-after-header]
 
@@ -902,8 +902,9 @@ Rule 1 gives no form here, since its table names the whitespace beside a mark
 and not the start of a line
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [timeline](./timeline.md#comments) and [block](./block.md#comments) put a
-comment line at the level of the statement after it.
+it, as [gantt](./gantt.md#comments), [block](./block.md#comments), and
+[quadrant](./quadrant.md#comments) put a comment line at the level of the
+statement after it.
 
 [fixture: comments/lines-at-statement-level] [fixture: comments/text-kept]
 [fixture: comments/single-percent-kept] [fixture: comments/bare-percent-lines]
