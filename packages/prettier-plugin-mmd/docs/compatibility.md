@@ -6156,11 +6156,14 @@ The Db of a kanban board has no indentation: it tells a section from an item by
 comparing the indentation of a node with that of the first node. So the printer
 chooses the indentation, one step for a section and two for an item, and keeps
 what decides the roles. A run of whitespace inside a label, an icon, or a class
-text remains value text, and the whitespace at the ends of a label, an icon, and
-a class text is dropped. Decorations align with their node; an inline-directive
-line keeps its directives and the gaps beside them, and the printer chooses the
-whitespace before the first one. A data block with invalid YAML is accepted by
-the parser as opaque text, although mermaid.js rejects it (known divergence
+text remains value text, and the spaces and tabs at the ends of a bare label, an
+icon, and a class text are dropped, and so are those after the bare id of a
+card, while those after the bare id of a column stay (see
+[Trailing whitespace](./kanban.md#trailing-whitespace)). Decorations align with
+their node; an inline-directive line keeps its directives and the gaps beside
+them, and the printer chooses the whitespace before the first one. A data block
+with invalid YAML is accepted by the parser as opaque text, although mermaid.js
+rejects it (known divergence
 [`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.md)),
 and the printer retains its opaque content with only eligible margin movement.
 See the [kanban rules](./kanban.md).
@@ -6329,10 +6332,10 @@ inline percent text remain literals. Internal directive gaps and joined
 physical-line continuation columns stay written, including every trailing
 whitespace character other than a space or a tab, such as a no-break space, on
 ordinary and kept lines; the spaces and tabs at the end of a literal are dropped
-(see [Trailing whitespace](./ishikawa.md#trailing-whitespace)). The value is
-what was written; Db equality does not require erasing it, the same choice as
-mindmap. Every semicolon stays, with whole crossing literals and trivia
-protected by the shared kept-stretch path.
+(see [Trailing whitespace](./ishikawa.md#trailing-whitespace)). The rest of the
+value is what was written; Db equality does not require erasing it, the same
+choice as mindmap. Every semicolon stays, with whole crossing literals and
+trivia protected by the shared kept-stretch path.
 
 [fixture: ishikawa/node-text/values-opaque] [fixture:
 ishikawa/inline-directives/directive-in-value] [fixture:
@@ -6502,11 +6505,13 @@ usecase/direction-and-accessibility/a11y-padding] [fixture:
 usecase/direction-and-accessibility/a11y-closer-aligned]
 
 A stereotype declaration suffix has one space before the `<<` and none inside
-the delimiters, also inside system boundaries: `Reader<<human>>` is printed
-`Reader <<human>>`, and `<<  staff  member  >>` is printed `<<staff  member>>`,
-with the run inside the text kept. Mermaid trims the text, so the Db is the
-same. Protected common comment regions retain their complete values. This reuses
-the [class statement-annotation rule](./class.md#whitespace-between-tokens).
+the delimiters, also inside system boundaries, except beside a directive or a
+comment, where the whitespace keeps its written side: `Reader<<human>>` is
+printed `Reader <<human>>`, and `<<  staff  member  >>` is printed
+`<<staff  member>>`, with the run inside the text kept. Mermaid trims the text,
+so the Db is the same. Protected common comment regions retain their complete
+values. This reuses the
+[class statement-annotation rule](./class.md#whitespace-between-tokens).
 
 [fixture: usecase/stereotypes/stereotype-padding] [fixture:
 usecase/stereotypes/opener-gap-sides] [test: usecase: stereotype-opener-tab]
@@ -7663,13 +7668,14 @@ line; the suffix retains its owner.
 [fixture: cynefin/hidden-boundaries/semicolon-hidden-body-yaml]
 
 The [Cynefin rules](./cynefin.md) keep the header `cynefin-beta` and remove a
-colon after it (see [The colon after a header](#the-colon-after-a-header)), and
-keep every domain redeclaration and empty domain, item order and duplicates,
-self transitions, empty labels and common resets. Domain/item lines express the
-authored tree; columns do not select parents. Rebuilding from the effective Db
-would lose occurrences and can change replacement or reset behavior. Strings
-retain escapes and interior columns, including empty values and native-looking
-text; a string between `'` is printed between `"` as under
+colon right after the header word (see
+[The colon after a header](#the-colon-after-a-header)), and keep every domain
+redeclaration and empty domain, item order and duplicates, self transitions,
+empty labels and common resets. Domain/item lines express the authored tree;
+columns do not select parents. Rebuilding from the effective Db would lose
+occurrences and can change replacement or reset behavior. Strings retain escapes
+and interior columns, including empty values and native-looking text; a string
+between `'` is printed between `"` as under
 [Spellings that are drawn the same](#spellings-that-are-drawn-the-same).
 
 [fixture: cynefin/empty-domains/empty-domain-last-reset] [fixture:
