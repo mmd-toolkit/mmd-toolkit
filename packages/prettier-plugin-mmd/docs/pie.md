@@ -224,18 +224,21 @@ value. Empty values end at the colon. A run of spaces and tabs inside the value
 of an `accDescr` is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 and that of an `accTitle` stays as written, since the browser shows it as a
-tooltip; quotes and line-form braces remain text; repeated assignments and
-percent comment attachment remain. The pinned grammar never joins next-line
-values, including after blank/comment/directive gaps, because its composite line
-forms stop at physical EOL, but the oldest version that counts does: its lexer
-takes the whitespace after the `:` of an empty `accTitle:` or `accDescr:` for
-the line breaks too, and reads the next statement, after the blank lines and the
-comments and directives that mermaid.js removes first, as the value. That
-statement stays as written (`"A":1` is not printed `"A": 1`), as does the
-whitespace before a `%%` that follows an `accTitle` value, which that version
-reads as part of the title (`accTitle: Value   %% note`); a comment after the
-`}` of a description block keeps the block, since the text of the form with the
-colon would take the comment (see
+tooltip, and some of the versions of mermaid.js that count draw different text
+for `accTitle: A B` than for `accTitle: A   B` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Quotes and line-form braces remain text; repeated assignments and percent
+comment attachment remain. The pinned grammar never joins next-line values,
+including after blank/comment/directive gaps, because its composite line forms
+stop at physical EOL, but the oldest version that counts does: its lexer takes
+the whitespace after the `:` of an empty `accTitle:` or `accDescr:` for the line
+breaks too, and reads the next statement, after the blank lines and the comments
+and directives that mermaid.js removes first, as the value. That statement stays
+as written (`"A":1` is not printed `"A": 1`), as does the whitespace before a
+`%%` that follows an `accTitle` value, which that version reads as part of the
+title (`accTitle: Value   %% note`); a comment after the `}` of a description
+block keeps the block, since the text of the form with the colon would take the
+comment (see
 [Accessibility lines that the oldest version reads to the end](./compatibility.md#accessibility-lines-that-the-oldest-version-reads-to-the-end)).
 Hidden forms and protected textual groups retain their gaps. The directives that
 end the value are printed with one space before each that has whitespace before
@@ -255,6 +258,7 @@ pie/accessibility-lines/a11y-percent] [fixture:
 pie/accessibility-lines/accessibility-next-trivia] [fixture:
 pie/accessibility-lines/accessibility-directive-edges] [fixture:
 pie/accessibility-lines/accessibility-inner-tab] [fixture:
+pie/accessibility-lines/acc-title-inner-spaces-kept] [fixture:
 pie/accessibility-lines/accessibility-only-global-trivia]
 
 Input (escaped):
