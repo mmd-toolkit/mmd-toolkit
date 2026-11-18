@@ -1360,11 +1360,15 @@ for a line break, so
 decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
 [journey](./journey.md#multi-line-statements) keep a line break next to a
-comment or a directive and put the later parts of a statement and the comment
-and directive lines between them one level deeper, except in a title, a section,
-a setting, or a task, which keep their written layout since the Db holds their
-text with its whitespace. The line that holds the name and the `{` of a block is
-not one of those later parts: it stands at the level of its statement.
+comment or a directive and the whitespace before it, and put the later parts of
+a statement and the comment and directive lines between them one level deeper,
+where no other rule keeps the layout as written (where the Db holds the text
+with its whitespace, where moving a line makes mermaid.js reject the text, and
+the like). The line that holds the name and the `{` of a block is not one of
+those later parts: it stands at the level of its statement, and neither these
+precedents nor the other rules of
+[How the printed form is decided](./printed-form.md) give that level (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Whitespace inside values and before the first line break of each gap stays.
 Joining regions keep their complete source. A line break stays where joining it,
 with one space or with nothing, could change which `;` the line rule ignores,
