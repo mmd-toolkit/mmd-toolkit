@@ -1,6 +1,6 @@
 {
   "name": "prettier-plugin-mmd",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Prettier plugin for the Mermaid diagram syntax (.mmd files and mermaid code blocks in Markdown)",
   "license": "MIT",
   "repository": {
@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "@mmd-toolkit/parser": "workspace:^",
-    "marked": "18.2.0"
+    "marked": "^18.2.1"
   },
   "devDependencies": {
     "@mmd-toolkit/ast": "workspace:*",
