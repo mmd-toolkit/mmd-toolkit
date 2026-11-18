@@ -754,8 +754,8 @@ part of it and are kept.
 
 The text ends with exactly one line break. Rule 1 names no mark here, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [c4](./c4.md#final-newline) and [packet](./packet.md#final-newline) end
-the text with one line break.
+decides: [kanban](./kanban.md#final-newline) and
+[packet](./packet.md#final-newline) end the text with one line break.
 
 [fixture: blank-lines/header-only-without-line-break]
 
