@@ -405,14 +405,15 @@ preheader comments start at column one, ordinary standalone body comments one
 step in, and inline comments on their line. Touching stays touching; a separated
 gap becomes one space. Rule 1 names no mark before a comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#comments),
-[journey](./journey.md#comments), and [timeline](./timeline.md#comments) keep a
-comment after a statement touching the statement where it touches, and print one
-space where whitespace was written. Preserve marks, contents and trailing
-spaces. Native comments end at physical LF, keeping LS/PS. A bare percent line
-inside an earlier block may be value text. Common removed regions retain
-swallowed source and continuation columns. Retained prefixes and protected
-segments override alignment.
+decides, as [sequence](./sequence.md#comments) (after a statement),
+[journey](./journey.md#comments) (after a task, an `accDescr`, or the header),
+and [timeline](./timeline.md#comments) (after the header, a direction, or the
+`}` of an accessibility block) keep a comment touching what it follows where it
+touches, and print one space where whitespace was written. Preserve marks,
+contents and trailing spaces. Native comments end at physical LF, keeping LS/PS.
+A bare percent line inside an earlier block may be value text. Common removed
+regions retain swallowed source and continuation columns. Retained prefixes and
+protected segments override alignment.
 
 [fixture: info/comments/comments-align]
 
@@ -447,14 +448,13 @@ on the same line, a directive in their gap moves with the following unit: its
 right boundary stays touching or separated, while its left contact is broken.
 Rule 1 names no mark for a directive between two units, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#directives),
+decides: [sequence](./sequence.md#directives),
 [flowchart](./flowchart.md#directives), and [journey](./journey.md#directives)
-move a directive in such a gap with the following unit, keep its right-side
-contact or separation, and break its left contact. Align only an ordinary
-standalone start one body step in. Keep complete component boundaries and
-value-internal directives, multiline contents, malformed init arguments and
-EOF-reaching endings. Do not gather, reformat or delete them: an init directive
-can change configuration even though info’s Db remains empty.
+print such a gap in the same way. Align only an ordinary standalone start one
+body step in. Keep complete component boundaries and value-internal directives,
+multiline contents, malformed init arguments and EOF-reaching endings. Do not
+gather, reformat or delete them: an init directive can change configuration even
+though info’s Db remains empty.
 
 [fixture: info/global-directives/header-to-body]
 
