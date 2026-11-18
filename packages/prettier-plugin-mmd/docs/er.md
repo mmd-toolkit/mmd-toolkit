@@ -2728,12 +2728,13 @@ no mark for a line break, so
 decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
 [journey](./journey.md#multi-line-statements) keep a line break next to a
-comment or a directive and the whitespace before it, and put the continuations
-one level deeper. A joining region keeps the line that it joins as written (see
-below). A line break stays where joining it, with one space or with nothing,
-could change which `;` the line rule ignores, and where a `;` ends the last
-line; any other line break is joined as usual, also in a statement that holds a
-`;`. A statement that keeps a line break keeps its styles as written.
+comment or a directive and put the comment and directive lines one level deeper,
+in a statement whose text the Db does not hold with its whitespace. A joining
+region keeps the line that it joins as written (see below). A line break stays
+where joining it, with one space or with nothing, could change which `;` the
+line rule ignores, and where a `;` ends the last line; any other line break is
+joined as usual, also in a statement that holds a `;`. A statement that keeps a
+line break keeps its styles as written.
 
 [fixture: multi-line-statements/semicolon-joining-changes-kept] [fixture:
 multi-line-statements/style-comment-continuation] [fixture:
