@@ -279,14 +279,15 @@ pie
 Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
 For blocks that keep their braces, reuse
-[flowchart multiline values](./flowchart.md#multi-line-values): indentation
-after LF is absent from the description Db. The keyword and opener use one
-ordinary space, even when written touching. Protected trivia and semicolon
-layouts keep their gaps. Plain whitespace before the opener can join, including
-across physical or Unicode line boundaries; a real comment/directive keeps its
-break. The form with `accDescr`, `%% c`, and `{D}` on separate lines stays,
-since mermaid.js rejects the form with `accDescr %% c` and `{D}` on separate
-lines (see
+[flowchart multiline values](./flowchart.md#multi-line-values) and
+[sequence multi-line values](./sequence.md#multi-line-values), which put the
+lines of such a block one step inside its statement: indentation after LF is
+absent from the description Db. The keyword and opener use one ordinary space,
+even when written touching. Protected trivia and semicolon layouts keep their
+gaps. Plain whitespace before the opener can join, including across physical or
+Unicode line boundaries; a real comment/directive keeps its break. The form with
+`accDescr`, `%% c`, and `{D}` on separate lines stays, since mermaid.js rejects
+the form with `accDescr %% c` and `{D}` on separate lines (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Empty whitespace-only interiors print `{}` because no text needs surrounding
 whitespace. Keep comment-only blocks with comments one level inside and a
