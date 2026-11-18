@@ -111,14 +111,18 @@ flowchart LR
 `direction` の後に空白と `TB`、`BT`、`RL`、`LR`、
 `TD` のどれかが続くテキストを含み、方向の文ではない行は、
 字下げも含めて書かれたまま残します。
+対象にする版の mermaid.js のすべてが、そうしたテキストを含む行を字下げすると、
+方向の文として読みます。
+`accTitle: t;direction TB` はアクセシビリティのタイトルですが、
+同じ行を字下げすると方向 `TB` になります。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: indentation/direction-text-values-kept]
 [fixture: indentation/direction-text-with-directive-kept]
 [fixture: indentation/acc-descr-block-direction-text-kept]
-
-mermaid.js は、そうしたテキストを含む行を字下げすると、方向の文として読みます。
-`accTitle: t;direction TB` はアクセシビリティのタイトルですが、
-同じ行を字下げすると方向 `TB` になります。
+[fixture: indentation/direction-text-kept]
 
 入力
 ([indentation/direction-text-kept-input.mmd](../tests/fixtures/flowchart/indentation/direction-text-kept-input.mmd)):
@@ -1711,6 +1715,11 @@ mermaid.js の文書の例はこの形を 12 回使い、もう一方の形は�
 8 つの矢印 `-->`、`---`、`--o`、`--x`、`-.->`、`-.-`、`==>`、`===` が対象です。
 `A -- text --> B` は `A -->|text| B` と印字します。
 `|` や `%%` を含むラベル、文字列、Markdown ラベルは書かれたまま残します。
+swimlane 図の `I -- left|right --> J` は、そのまま残します。
+対象にする版の mermaid.js のすべてが、`I -->|left|right| J` を拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: link-label-form/swimlane-arrows-to-pipes]
 
@@ -1858,6 +1867,11 @@ flowchartはコロンの後のコメントを読み飛ばして後の値を読�
 
 通常の行には`tabWidth: 0`での最小幅と`useTabs`を含む設定の字下げを使い、
 これらの設定でも保持の例外を保ちます。
+`accTitle : direction LR` は字下げしません。
+対象にする版の mermaid.js のすべてが、字下げすると方向 `LR` として読むためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: accessibility-lines/zero-width] [fixture: accessibility-lines/tabs]
 
@@ -3666,6 +3680,10 @@ flowchart と swimlane では、最後のスタイルと同じ行の `%%` コメ
 バックスラッシュで終わる `linkStyle` は、その後の空白も 1 文字として保ちます。
 `linkStyle default stroke-width:4px\ ` の後に、
 `linkStyle 0 stroke:#0f0` がある場合も、その空白を保ちます。
+対象にする版の mermaid.js のうちいくつかは、その空白を除くと違う線を描きます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: style-trailing-whitespace/link-style-backslash-at-end-kept]
 
