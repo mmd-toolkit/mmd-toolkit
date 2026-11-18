@@ -1367,7 +1367,8 @@ with its whitespace, where moving a line makes mermaid.js reject the text, and
 the like). The line that holds the name and the `{` of a block is not one of
 those later parts: it stands at the level of its statement, and neither these
 precedents nor the other rules of
-[How the printed form is decided](./printed-form.md) give that level (see
+[How the printed form is decided](./printed-form.md) give that level, so the
+form that the released version prints stays until the level is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Whitespace inside values and before the first line break of each gap stays.
 Joining regions keep their complete source. A line break stays where joining it,
