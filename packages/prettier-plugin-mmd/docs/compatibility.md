@@ -5996,8 +5996,7 @@ inside the containing header or call, and the closer aligns with that owner.
 Existing adjacency and brace-joining rules still apply.
 
 [fixture: c4/header/empty-header-comment-columns] [fixture:
-c4/boundary-bodies/empty-beforebody-comment-columns] [fixture:
-c4/empty-description-blocks/empty-header-gap]
+c4/boundary-bodies/empty-beforebody-comment-columns]
 
 Colon accessibility forms keep trivia line breaks while ordinary exterior tokens
 and standalone trivia use continuation indentation. Own-line directives in

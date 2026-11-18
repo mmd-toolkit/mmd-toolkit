@@ -6265,7 +6265,6 @@ direction の文字の結合は、先頭列でも受理される入力を拒否�
 
 [fixture: c4/header/empty-header-comment-columns]
 [fixture: c4/boundary-bodies/empty-beforebody-comment-columns]
-[fixture: c4/empty-description-blocks/empty-header-gap]
 
 コロン形式のアクセシビリティは注釈の改行を残し、
 値の外側の構造と独立した注釈を継続行として字下げします。
