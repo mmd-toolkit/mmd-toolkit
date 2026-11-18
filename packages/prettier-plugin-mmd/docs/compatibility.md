@@ -3853,12 +3853,12 @@ between them, which mermaid.js removes before it reads the header:
 `ishikawa-beta-beta` has the header `ishikawa-beta` and the root `-beta`, and
 the header printed `ishikawa` with `-beta` on its line would be read as the
 header `ishikawa-beta` alone. So the root goes to a line of its own; where it
-stays on the line of the header, the header stays as written. A header of the
-other diagrams in another case (`sankey-BETA`, `XYCHART-BETA`) stays as written:
-`sankey` and `xychart` are rejected by 10.9.8 and 11.7.0 (see
-[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)),
-and the examples of the documentation use no other case of the name with
-`-beta`, which [rule 3](./printed-form.md#3-a-spelling) keeps as written.
+stays on the line of the header, the header stays as written. The header of a
+sankey diagram with `-beta` in another case (`sankey-BETA`) stays as written.
+10.9.8 and 11.7.0 reject it, and 11.17.2, 12.0.0, and 12.3.0 read it as
+`sankey-beta`. The examples of the documentation write the header `sankey` and
+use no `sankey-beta` in any case, so [rule 3](./printed-form.md#3-a-spelling)
+gives no other form, and keeps it as written.
 
 [fixture: treemap/header/beta] [fixture: ishikawa/header/header-beta] [fixture:
 ishikawa/header/header-column] [fixture:
