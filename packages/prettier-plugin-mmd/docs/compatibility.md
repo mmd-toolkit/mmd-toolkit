@@ -2431,7 +2431,7 @@ the keywords below in the case shown, and every other keyword as written.
   `participant`, `rect`, `right`.
 - State diagram: `<<choice>>`, `<<fork>>`, `<<join>>`, `accDescr`, `accTitle`,
   `as`, `class`, `direction`, `end`, `LR`, `note`, `state`, `TB`.
-- Timeline: `section`, `TD`, `title`.
+- Timeline: `section`, `title`.
 - Usecase diagram: `extend`, `include`.
 - Venn diagram: `set`, `text`, `title`, `union`.
 - XY chart: `bar`, `line`, `title`, `x-axis`, `y-axis`.
@@ -3967,15 +3967,29 @@ the start or at the end of the printed line. See
 
 Ordinary comments and directives between structural parts retain their required
 line breaks without freezing the parts' columns. Continuations and intervening
-standalone trivia use one indentation level inside the statement. Keep each
-first gap-line tail, including whitespace needed before LF, and keep value and
-directive interiors whole. Joining comment regions, semicolon protections and
-diagram-specific value boundaries still take precedence.
+standalone trivia use one indentation level inside the statement. Rule 1 gives
+no form here, since its table names the whitespace beside a mark and not the
+start of a line ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it, as [requirement](./requirement.md#fields),
+[sequence](./sequence.md#multi-line-statements),
+[flowchart](./flowchart.md#multi-line-statements), and
+[xychart](./xychart.md#multi-line-statements) put the continuations and the
+intervening comment lines of a statement one level deeper than the statement.
+Keep each first gap-line tail, including whitespace needed before LF, and keep
+value and directive interiors whole. Joining comment regions, semicolon
+protections and diagram-specific value boundaries still take precedence.
 
 This applies to class and state statements, ER statements, requirement headers,
 fields and statements, and sequence statements other than trivia-separated
 titles. Empty description blocks inside requirement and element bodies also
-align their standalone trivia and separate closer.
+align their standalone trivia and separate closer. Rule 1 gives no form here,
+since its table names the whitespace beside a mark and not the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it, as [block](./block.md#empty-description-blocks) and
+[c4](./c4.md#description-blocks) put standalone trivia one level inside a
+description block and a separate closing brace at the level of its statement.
 
 [fixture: requirement/empty-description-blocks/in-body-with-comment-line-kept]
 [fixture: requirement/empty-description-blocks/in-body-with-directive-line]
@@ -4616,8 +4630,15 @@ comes before the line break, and such a statement is printed on one line.
 [fixture: sequence/multi-line-statements/joined]
 
 One with a comment or a directive keeps its line breaks and aligns structural
-continuations. The whitespace before the first line break of each gap is
-retained because it can join the lines for the lexer.
+continuations. Rule 1 gives no form here, since its table names the whitespace
+beside a mark and not the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it, as [requirement](./requirement.md#fields) and
+[flowchart](./flowchart.md#multi-line-statements) put the comment and directive
+lines of a statement one level deeper than the statement. The whitespace before
+the first line break of each gap is retained because it can join the lines for
+the lexer.
 
 [fixture: sequence/multi-line-statements/comment-inside-kept]
 
@@ -6768,7 +6789,15 @@ radar/multi-line-statements/semicolon-terminal-line]
 
 A list containing comments or directives keeps its other authored entry newlines
 too, so it remains a block as written. A separate closing brace aligns with the
-statement. Comment-free lists still compact their ordinary entry newlines.
+statement. Rule 1 gives no form here, since its table names the whitespace
+beside a mark and not the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it, as [usecase](./usecase.md#native-metadata) puts the comment lines and the
+properties of a braced list one level inside and its separate closing brace at
+the level of the statement, and [er](./er.md#attribute-blocks) puts the `}` of
+an attribute block at the level of the entity. Comment-free lists still compact
+their ordinary entry newlines.
 
 [fixture: radar/multi-line-statements/entry-comment-after-comma] [fixture:
 radar/multi-line-statements/entry-global-lines]
