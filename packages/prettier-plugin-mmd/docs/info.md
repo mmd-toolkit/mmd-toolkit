@@ -403,11 +403,15 @@ info showInfo
 Use [shared comment placement](./pie.md#comments) to keep attachment and source:
 preheader comments start at column one, ordinary standalone body comments one
 step in, and inline comments on their line. Touching stays touching; a separated
-gap becomes one space. Preserve marks, contents and trailing spaces. Native
-comments end at physical LF, keeping LS/PS. A bare percent line inside an
-earlier block may be value text. Common removed regions retain swallowed source
-and continuation columns. Retained prefixes and protected segments override
-alignment.
+gap becomes one space. Rule 1 names no mark before a comment, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#comments),
+[journey](./journey.md#comments), and [timeline](./timeline.md#comments) keep a
+comment that touches what comes before it, and print one space where whitespace
+was written. Preserve marks, contents and trailing spaces. Native comments end
+at physical LF, keeping LS/PS. A bare percent line inside an earlier block may
+be value text. Common removed regions retain swallowed source and continuation
+columns. Retained prefixes and protected segments override alignment.
 
 [fixture: info/comments/comments-align]
 
@@ -440,11 +444,16 @@ surrounding text. Within a printed line, place a directive as under
 [Directives](./flowchart.md#directives). When formatting splits units that were
 on the same line, a directive in their gap moves with the following unit: its
 right boundary stays touching or separated, while its left contact is broken.
-Align only an ordinary standalone start one body step in. Keep complete
-component boundaries and value-internal directives, multiline contents,
-malformed init arguments and EOF-reaching endings. Do not gather, reformat or
-delete them: an init directive can change configuration even though info’s Db
-remains empty.
+Rule 1 names no mark for a directive between two units, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#directives),
+[flowchart](./flowchart.md#directives), and [journey](./journey.md#directives)
+move a directive in such a gap with the following unit, keep its right-side
+contact or separation, and break its left contact. Align only an ordinary
+standalone start one body step in. Keep complete component boundaries and
+value-internal directives, multiline contents, malformed init arguments and
+EOF-reaching endings. Do not gather, reformat or delete them: an init directive
+can change configuration even though info’s Db remains empty.
 
 [fixture: info/global-directives/header-to-body]
 
