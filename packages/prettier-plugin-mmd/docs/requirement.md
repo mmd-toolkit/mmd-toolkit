@@ -1354,12 +1354,19 @@ multi-line-statements/string-continued-joined]
 
 Comments and directives keep line breaks without freezing structural columns:
 continuations and intervening trivia stand one level deeper. This applies to
-block headers, fields, relationships and other statements. Whitespace inside
-values and before the first line break of each gap stays. Joining regions keep
-their complete source. A line break stays where joining it, with one space or
-with nothing, could change which `;` the line rule ignores, and where a `;` ends
-the last line; any other line break is joined as usual, also in a statement that
-holds a `;`. A statement that keeps a line break keeps its styles as written.
+block headers, fields, relationships and other statements. Rule 1 names no mark
+for a line break, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#multi-line-statements),
+[gantt](./gantt.md#multi-line-statements), and
+[journey](./journey.md#multi-line-statements) keep a line break next to a
+comment or a directive and put the continuations one level deeper. Whitespace
+inside values and before the first line break of each gap stays. Joining regions
+keep their complete source. A line break stays where joining it, with one space
+or with nothing, could change which `;` the line rule ignores, and where a `;`
+ends the last line; any other line break is joined as usual, also in a statement
+that holds a `;`. A statement that keeps a line break keeps its styles as
+written.
 
 [test: requirement/multi-line-statements/header-and-field-comment-regions-ls]
 [test: requirement/multi-line-statements/header-and-field-comment-regions-ps]
@@ -1882,8 +1889,12 @@ U+2028 and U+2029 are whitespace between the units of a requirement diagram and
 characters of a name, a value, and a string. Between statements they are a line
 break like any whitespace: the statements go to lines of their own. A gap inside
 a statement that holds one is printed as written, and so is a text: a name, a
-class, a value, and an accessibility text keep them. The examples are written as
-strings, in which `\u2028` is U+2028 and `\n` is a line break.
+class, a value, and an accessibility text keep them. Rule 1 names no mark for a
+gap that holds one, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#line-separators) and
+[state](./state.md#line-separators) print such a gap as written. The examples
+are written as strings, in which `\u2028` is U+2028 and `\n` is a line break.
 
 [test: U+2028 after the closing brace of a body] [test: U+2028 inside a name]
 [test: U+2028 inside a class] [test: U+2028 after the keyword of a requirement]
