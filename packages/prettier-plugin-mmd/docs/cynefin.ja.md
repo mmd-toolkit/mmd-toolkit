@@ -24,9 +24,16 @@ mermaid.js は `cynefin-beta:` と `cynefin-beta` を同じ見出しとして読
 `cynefin-beta;complex 'Kept colon'` を拒否するためです（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照）。
+閉じていないディレクティブの前でも、コロンを保ちます。
+`cynefin-beta:%%{x y`、改行、`complex "A"` を書かれたまま残すのは、
+mermaid.js がディレクティブを後ろの改行ごと取り除き、
+見出しと `complex` を 1 つの語として読むことになり、
+対象にする版の mermaid.js のすべてが、
+そのテキストを拒否するためです（同じ表を参照）。
 
 [fixture: cynefin/header/colon-removed]
 [fixture: cynefin/header/colon-semicolon-kept]
+[fixture: cynefin/header/colon-unclosed-directive-kept]
 [fixture: cynefin/header/colon-directive-before-hidden-yaml-kept]
 
 普通の最初の文は次の行へ移し、見出しを見つけやすくします。

@@ -27,10 +27,17 @@ mermaid.js は `radar-beta:` と `radar-beta` を同じ見出しとして読み�
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+閉じていないディレクティブの前でも、コロンを残します。
+`radar-beta:%%{x y`、改行、`axis North` を書かれたまま残すのは、
+mermaid.js がディレクティブを後ろの改行ごと取り除き、
+見出しと `axis` を 1 つの語として読むことになり、
+対象にする版の mermaid.js のすべてが、そのテキストを拒否するためです。
 隠れた形、大域的な注釈類、セミコロンの保護区間では境界を保ちます。
 空の本文は空のままです。
 
-[fixture: radar/header/colon-removed] [fixture: radar/header/colon-yaml-kept]
+[fixture: radar/header/colon-removed]
+[fixture: radar/header/colon-unclosed-directive-kept]
+[fixture: radar/header/colon-yaml-kept]
 [fixture: radar/header/colon-directive-before-hidden-yaml-kept]
 [fixture: radar/header/joined-empty]
 

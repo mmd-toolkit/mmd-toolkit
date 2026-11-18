@@ -22,11 +22,18 @@ word, and where a `;` or the `---` of a hidden YAML block touches it. For
 `radar-beta%%{wrap}%%:axis North`, the colon stays, since every version of
 mermaid.js that counts rejects `radar-beta%%{wrap}%%axis North` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The colon stays before an unclosed directive too: `radar-beta:%%{x y`, a line
+break, and `axis North` stay as written, since mermaid.js takes the directive
+out with the line break after it and would read the header and `axis` as one
+word, and every version of mermaid.js that counts rejects that text (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Hidden forms, global trivia and protected semicolon segments keep their source
 boundaries instead. Empty bodies remain empty.
 
-[fixture: radar/header/colon-removed] [fixture: radar/header/colon-yaml-kept]
-[fixture: radar/header/colon-directive-before-hidden-yaml-kept] [fixture:
+[fixture: radar/header/colon-removed] [fixture:
+radar/header/colon-unclosed-directive-kept] [fixture:
+radar/header/colon-yaml-kept] [fixture:
+radar/header/colon-directive-before-hidden-yaml-kept] [fixture:
 radar/header/joined-empty]
 
 [fixture: radar/header/join-separated-empty-alternative]
