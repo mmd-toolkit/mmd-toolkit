@@ -1167,8 +1167,14 @@ colon at the start of a later line, and keep their line breaks (see
 In `accTitle` and `accDescr:` statements, keep trivia line breaks and align
 later structural parts and standalone trivia one continuation level inside the
 statement, also under a section. Preserve each first gap-line tail and complete
-directive interiors. Joining comment regions keep their original layout;
-semicolon protection follows the joining decision below.
+directive interiors. Rule 1 names no mark for a line break, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#multi-line-statements),
+[gantt](./gantt.md#multi-line-statements), and
+[journey](./journey.md#multi-line-statements) keep a line break next to a
+comment or a directive and the whitespace before it, and put the continuations
+one level deeper. Joining comment regions keep their original layout; semicolon
+protection follows the joining decision below.
 
 [fixture: multi-line-statements/accessibility-trivia-continuations]
 
