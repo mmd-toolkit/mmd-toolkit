@@ -1320,6 +1320,9 @@ flowchart/style-trailing-whitespace/link-style-comment-and-directive-after-last-
 agentflow/single-space-gaps/link-style-comment-and-directive-after-last-style-formatted]
 [fixture: treemap/styles/class-def-comment-after-last-style-formatted] [fixture:
 er/styles-and-classes/directive-before-next-line] [fixture:
+flowchart/whitespace-between-tokens/class-def-comment-and-directive-after-last-style-formatted]
+[fixture: requirement/directives/class-def-after-statement-at-end-of-line]
+[fixture: treemap/styles/directive-line-kept] [fixture:
 flowchart/colors/colors-next-to-comments-and-directives]
 
 The tests compare the Db of the printed text with the margins of its styles

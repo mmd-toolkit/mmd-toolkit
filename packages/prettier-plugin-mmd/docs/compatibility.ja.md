@@ -1356,8 +1356,9 @@ state、block の図で描きました。
 最後のスタイルの後ろのコメントかディレクティブは、文の一部ではありません。
 flowchart、agentflow、class、state、block、usecase の図では、
 文は普通に整形します。
-`style A fill:red %{init: {}}%` は `style A fill: red %{init: {}}%` と印字し、
-`classDef` も、flowchart と agentflow の図では `linkStyle` も同じです。
+`style A fill:red %%{init: {}}%%` は `style A fill: red %%{init: {}}%%`
+と印字し、`classDef` も、
+flowchart と agentflow の図では `linkStyle` も同じです。
 requirement の図でも、ディレクティブの後ろでは同じで、
 11.7.0 以降はそこのコメントを拒否します。
 ER の図では、11.7.0 以降が、最後のスタイルの後ろのコメントと、
@@ -1382,6 +1383,9 @@ treemap の図は、コメントの後ろでは文を整形し、
 [fixture: agentflow/single-space-gaps/link-style-comment-and-directive-after-last-style-formatted]
 [fixture: treemap/styles/class-def-comment-after-last-style-formatted]
 [fixture: er/styles-and-classes/directive-before-next-line]
+[fixture: flowchart/whitespace-between-tokens/class-def-comment-and-directive-after-last-style-formatted]
+[fixture: requirement/directives/class-def-after-statement-at-end-of-line]
+[fixture: treemap/styles/directive-line-kept]
 [fixture: flowchart/colors/colors-next-to-comments-and-directives]
 
 テストは、印字したテキストの Db を、
