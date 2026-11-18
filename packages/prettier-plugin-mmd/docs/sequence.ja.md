@@ -1201,8 +1201,10 @@ sequenceDiagram
 [同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)
 を参照してください。
 ただし、ほかの規則が空白を書かれたまま残す所は別です。
-たとえば、ID の後、書かれたまま残すデータブロックの後、`accTitle` の値の後では、
-空白が ID、ブロック、値に属するので、書かれたまま残します。
+たとえば、ID の後、ある版が名前の一部として読む参加者のデータブロックの後、
+`accTitle` の値の後では、空白が ID、ブロック、値に属するので、
+書かれたまま残します。
+詳しくは [トークンの間の空白](#トークンの間の空白) を参照してください。
 
 [fixture: comments/mark-run-one-space]
 [fixture: comments/mark-touching-kept-after-each-statement]

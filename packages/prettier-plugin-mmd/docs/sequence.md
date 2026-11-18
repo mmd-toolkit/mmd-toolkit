@@ -1145,8 +1145,10 @@ that counts, as `autonumber 5%% c` shows (see
 A run of whitespace before the mark is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 except where another rule keeps the whitespace as written, as after an id, after
-a data block that stays as written, and after the value of an `accTitle`, where
-the whitespace belongs to the id, to the block, or to the value.
+the data block of a participant that a version reads as a part of its name (see
+[Whitespace between tokens](#whitespace-between-tokens)), and after the value of
+an `accTitle`, where the whitespace belongs to the id, to the block, or to the
+value.
 
 [fixture: comments/mark-run-one-space] [fixture:
 comments/mark-touching-kept-after-each-statement] [fixture:
