@@ -617,9 +617,11 @@ block-beta
 `classDef`, `style`, and `class` are followed by one space, the name of the
 class or the id, and one space; the whitespace after the keyword and before the
 first style is not in the Db, so it becomes one space. The styles of `classDef`
-and `style` use the spacing below; the value of a `class` is printed as written.
-`class A,B c1` stays, since every version of mermaid.js that counts draws
-`class A, B c1` differently (see
+and `style` use the spacing below; the value of a `class` is printed as written,
+except that a run of spaces and tabs inside a class name is printed as one
+space: the Db changes, but every version of mermaid.js that counts draws the
+same figure. `class A,B c1` stays, since every version of mermaid.js that counts
+draws `class A, B c1` differently (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Terminators follow
 [Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement).
