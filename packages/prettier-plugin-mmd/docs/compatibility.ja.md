@@ -8002,7 +8002,7 @@ GWT の節と項目は設定の字下げで入れ子にします。
 必須の識別子の `title` も、水平空白を足すとメタデータになりうるため、
 成立している LF や隠れた形の境界を保ちます。
 
-[fixture: eventmodeling/header/accdescr-moved-to-line-start]
+[fixture: eventmodeling/header/accdescr-on-header-line-kept]
 [fixture: eventmodeling/common-boundaries/common-retained-exact-leading-directive-gaps]
 [fixture: eventmodeling/semicolons/metadata-across-selected-semicolon-gap-exact]
 [fixture: eventmodeling/description-blocks/description-whitespace-literal-retained]
