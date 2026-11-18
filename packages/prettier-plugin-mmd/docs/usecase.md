@@ -965,8 +965,8 @@ or the parentheses of `url(`, and the escape after a backslash, stay as written.
 [fixture: classes-and-styles/css-name-multiline-directive]
 
 Only exterior HWS after the last component can disappear; prefixes with kept
-semicolons, a comment or a directive in the statement, and a declaration over
-lines override ordinary list layout.
+semicolons, a comment or a directive inside the statement, before the end of its
+last style, and a declaration over lines override ordinary list layout.
 
 [fixture: classes-and-styles/class-lists] [fixture:
 classes-and-styles/css-colon-padding] [fixture:

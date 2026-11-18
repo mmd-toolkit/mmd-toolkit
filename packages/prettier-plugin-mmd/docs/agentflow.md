@@ -537,12 +537,16 @@ single-space-gaps/style-backslash-before-comma] [fixture:
 single-space-gaps/style-colon-escaped-space-kept] [fixture:
 single-space-gaps/style-colon-escaped-space-run-dropped]
 
-A statement stays as written where it holds a directive or a comment, where a
-style is all whitespace, or where a style holds a line break, U+2028, or U+2029,
-or its line holds a kept `;`.
+A statement stays as written where a directive or a comment stands inside it,
+before the end of its last style, where a style is all whitespace, or where a
+style holds a line break, U+2028, or U+2029, or its line holds a kept `;`. A
+directive or a comment after the last style is no part of the statement, which
+is formatted as usual (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 
 [fixture: single-space-gaps/classdef-first-tab] [fixture:
-single-space-gaps/linkstyle-first-spaces] [fixture:
+single-space-gaps/style-comment-and-directive-after-last-style-formatted]
+[fixture: single-space-gaps/linkstyle-first-spaces] [fixture:
 single-space-gaps/style-directive-gap] [fixture:
 single-space-gaps/style-first-spaces] [fixture:
 single-space-gaps/styles-inner-gaps] [fixture:

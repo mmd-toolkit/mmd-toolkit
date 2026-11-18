@@ -1734,9 +1734,14 @@ Mermaid は、区切る空白にかかわらずスタイルの単位をつなげ
 2 行を 1 行にする（`classDef a fill:red A`）と、
 Db は同じで mermaid.js の読みも見えますが、作者が書いた空白が消えます。
 印字は文を解釈しません。
+最後のスタイルの後ろのディレクティブも、横の空白を同じように扱います。
+ディレクティブの前か後ろに空白があれば、文は書かれたまま残し、
+ディレクティブが最後のスタイルに接し、その行の後ろに空白がなければ、
+文を普通に整形します（`classDef a fill:red%%{init: {}}%%`）。
 
 [fixture: styles-and-classes/trailing-whitespace-takes-next-line]
 [fixture: styles-and-classes/directive-before-next-line]
+[fixture: styles-and-classes/directive-touching-last-style]
 [fixture: styles-and-classes/comment-line-inside-kept]
 [corpus fixture: er/lex-classdef-space-before-line-feed]
 [corpus fixture: er/lex-style-tab-before-line-feed]

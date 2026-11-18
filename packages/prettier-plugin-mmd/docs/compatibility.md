@@ -1299,14 +1299,47 @@ class/whitespace-between-tokens/style-words-directive-kept] [fixture:
 flowchart/whitespace-between-tokens/style-words-directive-kept]
 
 A statement stays as written where a style holds a line break or a U+2028 or
-U+2029, where the statement holds a comment or a directive, where a style is all
-whitespace, and where its line holds a `;` of its own (see
-[Lines that hold a `;`](#lines-that-hold-a-)).
+U+2029, where a comment or a directive stands inside the statement, before the
+end of its last style, where a style is all whitespace, and where its line holds
+a `;` of its own (see [Lines that hold a `;`](#lines-that-hold-a-)). A comment
+or a directive after the last style is no part of the statement, and in a
+flowchart, an agentflow, a class, a state, a block, and a usecase diagram the
+statement is formatted as usual: `style A fill:red %%{init: {}}%%` is printed
+`style A fill: red %%{init: {}}%%`, and so are `classDef` and, in a flowchart
+and an agentflow diagram, `linkStyle`. The same holds in a requirement diagram
+after a directive, and 11.7.0 and later reject a comment there. In an ER
+diagram, 11.7.0 and later reject a comment after the last style and a directive
+at the end of the text, and a directive before another line keeps the statement
+as written where whitespace stands before or after the directive, and formats it
+as usual where the directive touches the last style and no whitespace follows it
+on its line. A treemap formats the statement after a comment and keeps it as
+written after a directive, except for the whitespace at the end of the line (see
+[Whitespace at the end of a style](#whitespace-at-the-end-of-a-style)).
 
 [fixture: flowchart/whitespace-between-tokens/style-blank-style-kept] [fixture:
 flowchart/whitespace-between-tokens/style-colon-escaped-space-kept] [fixture:
 flowchart/whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
 flowchart/whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
+[fixture: flowchart/style-trailing-whitespace/removed-after-directive] [fixture:
+agentflow/single-space-gaps/style-comment-and-directive-after-last-style-formatted]
+[fixture:
+class/whitespace-between-tokens/style-comment-and-directive-after-last-style-formatted]
+[fixture:
+state/whitespace-between-tokens/style-comment-and-directive-after-last-style-formatted]
+[fixture:
+usecase/classes-and-styles/style-comment-and-directive-after-last-style-formatted]
+[fixture: requirement/directives/after-statement-at-end-of-line] [fixture:
+block/styles/style-comment-and-directive-after-last-style-formatted] [fixture:
+flowchart/style-trailing-whitespace/link-style-comment-and-directive-after-last-style-formatted]
+[fixture:
+agentflow/single-space-gaps/link-style-comment-and-directive-after-last-style-formatted]
+[fixture: treemap/styles/class-def-comment-after-last-style-formatted] [fixture:
+er/styles-and-classes/directive-before-next-line] [fixture:
+er/styles-and-classes/directive-touching-last-style] [fixture:
+flowchart/whitespace-between-tokens/class-def-comment-and-directive-after-last-style-formatted]
+[fixture: requirement/directives/class-def-after-statement-at-end-of-line]
+[fixture: treemap/styles/directive-line-kept] [fixture:
+flowchart/colors/colors-next-to-comments-and-directives]
 
 The tests compare the Db of the printed text with the margins of its styles
 restored from the Db of the written text (`styleDbForFormattingComparison` in

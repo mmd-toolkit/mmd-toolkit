@@ -996,10 +996,14 @@ style whatever stands before it.
 A space after a backslash before the `:` stays as well, since taking it away
 would escape the `:`, and the whitespace after that space goes, as before any
 `:`: `style A fill\   :#f00` is printed `style A fill\ : #f00`. A statement
-stays as written where it holds a comment or a directive, where a style is all
-whitespace, or where a style holds a line break or its line holds a kept `;`.
+stays as written where a comment or a directive stands inside it, before the end
+of its last style, where a style is all whitespace, or where a style holds a
+line break or its line holds a kept `;`. A comment or a directive after the last
+style is no part of the statement, which is formatted as usual (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 
 [fixture: whitespace-between-tokens/style-blank-style-kept] [fixture:
+style-trailing-whitespace/removed-after-directive] [fixture:
 whitespace-between-tokens/style-colon-escaped-space-kept] [fixture:
 whitespace-between-tokens/style-colon-escaped-space-run-dropped] [fixture:
 whitespace-between-tokens/style-escaped-space-before-comma] [fixture:

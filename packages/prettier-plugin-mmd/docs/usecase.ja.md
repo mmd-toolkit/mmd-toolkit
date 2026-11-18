@@ -1034,7 +1034,8 @@ mermaid.js は `stroke:` だけでその矢印の先端を着色するため、
 [fixture: classes-and-styles/css-name-multiline-directive]
 
 最後の成分の後ろの外側の水平空白だけが消えることがあります。
-保持するセミコロンを含む接頭部、文中のコメントやディレクティブ、
+保持するセミコロンを含む接頭部、
+最後のスタイルの終わりより前の文中のコメントやディレクティブ、
 複数行にわたる宣言は、通常の一覧の配置より優先します。
 
 [fixture: classes-and-styles/class-lists]

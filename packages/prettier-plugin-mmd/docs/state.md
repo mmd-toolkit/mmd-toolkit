@@ -619,12 +619,16 @@ A space after a backslash that ends a style is read as nothing here:
 whitespace-between-tokens/style-colon-escaped-space-kept] [fixture:
 whitespace-between-tokens/style-colon-escaped-space-run-dropped]
 
-A statement stays as written where it holds a comment or a directive, where a
-style is all whitespace, or where a style holds a line break or its line holds a
-kept `;`.
+A statement stays as written where a comment or a directive stands inside it,
+before the end of its last style, where a style is all whitespace, or where a
+style holds a line break or its line holds a kept `;`. A comment or a directive
+after the last style is no part of the statement, which is formatted as usual
+(see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 
 [fixture: whitespace-between-tokens/comma-kept] [fixture:
-whitespace-between-tokens/style-comma-spaced] [fixture:
+whitespace-between-tokens/style-comment-and-directive-after-last-style-formatted]
+[fixture: whitespace-between-tokens/style-comma-spaced] [fixture:
 whitespace-between-tokens/style-comma-beside-directive] [fixture:
 whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
 
