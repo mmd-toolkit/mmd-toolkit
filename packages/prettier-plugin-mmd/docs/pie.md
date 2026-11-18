@@ -466,28 +466,31 @@ pie
 ### Comments
 
 Reuse [shared comment placement](./flowchart.md#comments) to keep author
-attachment and text: inline comments retain touching sides or one separating
-space; standalone comments align with body statements, or column one before the
-header. Rule 1 names no mark before a comment, so
+attachment and text: an inline comment that touches stays touching, and a run of
+spaces and tabs before it becomes one space; standalone comments align with body
+statements, or column one before the header. Rule 1 names no mark before a
+comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#comments),
 [journey](./journey.md#comments), and [timeline](./timeline.md#comments) print a
-run of spaces and tabs between the end of a statement and its comment as one
-space and keep a comment that touches, where no other rule keeps the whitespace
-as written; each of them names those cases in its own sections (whitespace that
-the Db holds, as after a `section` or a period, and whitespace that changes what
-mermaid.js reads). The whitespace before a `%%` that follows an `accTitle` value
-is the exception: the oldest version that counts reads it as part of the title
-(see [Accessibility lines](#accessibility-lines)). Keep bare/triple-percent
-marks and trailing comment spaces. Pie native comments end at LF, retaining
-LS/PS inside them, because pie does not treat them as separators: ending a
-comment at one would expose the rest of the line as a statement and change the
-Db; strings and block interiors keep percent content, while line common values
-stop at it. Common removed regions keep their complete swallowed source and
-joined continuation columns, because re-indenting a continuation adds spaces to
-the joined label. A protected preheader prefix overrides ordinary alignment.
+comment after a statement in the same way, where no other rule keeps the
+whitespace as written; each of them names those cases in its own sections or in
+[A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
+(whitespace that the Db holds, as after a `section` or a period, and whitespace
+that changes what mermaid.js reads). The whitespace before a `%%` that follows
+an `accTitle` value is the exception: the oldest version that counts reads it as
+part of the title (see [Accessibility lines](#accessibility-lines)). Keep
+bare/triple-percent marks and trailing comment spaces. Pie native comments end
+at LF, retaining LS/PS inside them, because pie does not treat them as
+separators: ending a comment at one would expose the rest of the line as a
+statement and change the Db; strings and block interiors keep percent content,
+while line common values stop at it. Common removed regions keep their complete
+swallowed source and joined continuation columns, because re-indenting a
+continuation adds spaces to the joined label. A protected preheader prefix
+overrides ordinary alignment.
 
-[fixture: pie/comments/comments-align] [fixture: pie/comments/comment-bare]
+[fixture: pie/comments/comments-align] [fixture:
+pie/comments/inline-gap-run-before-comment] [fixture: pie/comments/comment-bare]
 [fixture: pie/comments/comment-value-text] [test:
 pie/comments/comment-region-join] [fixture:
 pie/comments/comment-section-move-attachment] [fixture:

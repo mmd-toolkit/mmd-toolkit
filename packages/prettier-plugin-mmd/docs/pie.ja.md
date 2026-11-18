@@ -505,17 +505,19 @@ pie
 
 著者の接続と文字を保つため、
 共有の[コメント](./flowchart.ja.md#コメント)を再利用します。
-同一行の接したコメントは接したまま、離れていれば空白1つにします。
+同一行のコメントは、接していれば接したまま、
+空白とタブの連なりがあれば空白 1 つにします。
 独立したコメントは本文の文に揃え、見出し前は先頭列に置きます。
 規則 1 は、コメントの前の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#コメント)、[journey](./journey.ja.md#コメント)、
 [timeline](./timeline.ja.md#コメント)も、
-文の終わりとコメントの間の空白とタブの連なりを空白 1 つで印字し、
-接するコメントは接したまま残します。
+文の後ろのコメントを同じように印字します。
 ほかの規則が空白を書かれたまま残す所は別です。
-どの図の文書も、その所を自分の節で挙げています。
-（Db が持つ空白と、
+どの図の文書も、その所を、
+自分の節か [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
+で挙げています。
+（Db が持つ空白、たとえば `section` と期間の後の空白と、
 mermaid.js の読みを変える空白です。）コメントの前の空白が例外になるのは、
 `accTitle` の値の後ろの `%%` です。
 数える版のうち最も古い版が、その空白をタイトルの一部として読むためです。
@@ -530,6 +532,7 @@ LS・PS は区切りではなく、
 保持する前置きは通常の整列より優先します。
 
 [fixture: pie/comments/comments-align] [fixture: pie/comments/comment-bare]
+[fixture: pie/comments/inline-gap-run-before-comment]
 [fixture: pie/comments/comment-value-text]
 [test: pie/comments/comment-region-join]
 [fixture: pie/comments/comment-section-move-attachment]
