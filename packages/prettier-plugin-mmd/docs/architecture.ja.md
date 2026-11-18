@@ -82,6 +82,12 @@ architecture-beta
 
 通常の文は、ほかの図種と同じく1行ずつ印字します。
 共通の行値は物理行末までのキーワードに見える文字も所有するため、分割しません。
+対象にする版の mermaid.js のすべてが、
+`architecture-beta title t` の後で改行して `service a; junction j`
+を次の行にした形を拒否します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 セミコロンは文の区切りではありません。
 隣接する不正な文や部品の隙間に使われた空の説明は、失敗のままです。
 
@@ -107,6 +113,12 @@ architecture-beta title t service a; junction j
 ### Declaration spacing
 
 キーワードと ID の間は空白1個です。
+規則 1 は、キーワードと ID の間の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[wardley](./wardley.ja.md#部品間の空白)
+はコマンドのキーワードと最初の名前の間に、
+[radar](./radar.ja.md#groups-and-commas)
+はグループのキーワードと最初の項目の間に、普通の空白 1 個を置きます。
 `group g(cloud)[G]`、`service a(server)[A]`、`service a[A]` と印字し、
 括弧・角括弧の付属部品を1つの node として印字します。
 文字アイコンは独立した値なので `service a "I" [A]` とします。
@@ -816,13 +828,29 @@ C" ["D
 ### Comments
 
 通常の独立コメントは本文の1段、見出し前は第1列に揃えます。
-同じ行のコメントは同じ行で接触を保ち、離れていれば空白1個にします。
+規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
+規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
+[flowchart](./flowchart.ja.md#コメント) と [wardley](./wardley.ja.md#コメント)
+も、独立した行のコメントを本文と同じ段に揃えます。
+同じ行のコメントは同じ行に残し、接していれば接したまま、
+空白とタブの連なりがあれば空白 1 つにします。
+規則 2 は、行内のコメントの前の隙間も決めます。
+[sequence](./sequence.ja.md#コメント)、[journey](./journey.ja.md#コメント)、
+[timeline](./timeline.ja.md#コメント)も、
+文の後ろのコメントを同じように印字します。
+ほかの規則が空白を書かれたまま残す所は別です。
+どの図の文書も、その所を、
+自分の節か [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
+で挙げています（Db が持つ空白、たとえば `section` と期間の後の空白と、
+mermaid.js の読みを変える空白です）。
 付属先を保つため印・内容・末尾空白を保持します。
 図固有のコメントは LF・CR で終わり、LS・PS は内容です。
 先に始まった値は内側のパーセント文字を所有し、共通行はそこで終わります。
 共通処理が除く領域は原文全体と継続列を保ちます。
 
 [fixture: architecture/comments/comment-attachments]
+[fixture: architecture/comments/inline-gap-run-before-comment]
 
 [fixture: architecture/comments/value-ownership]
 

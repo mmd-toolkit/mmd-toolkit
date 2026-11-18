@@ -431,7 +431,17 @@ before a later event] [test: U+2029 inside a period before a later event]
 
 Comment lines and directive lines between event lines align with the next event
 colon. When the colons use ordinary continuation indentation, these lines use
-that indentation too. A run of empty lines inside the statement becomes one.
+that indentation too. Rule 1 gives no form here, since its table names the
+whitespace beside a mark and not the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it, as [requirement](./requirement.md#fields) and
+[sequence](./sequence.md#multi-line-statements) put the intervening comment and
+directive lines of a statement at the level of its continuation lines, which
+here stand at the column of the colon, where no other rule keeps the layout as
+written (where the Db holds the text with its whitespace, where moving a line
+makes mermaid.js reject the text, and the like). A run of empty lines inside the
+statement becomes one.
 
 [fixture: periods-and-events/comment-lines-inside] [fixture:
 periods-and-events/empty-lines-inside] [fixture:
@@ -680,7 +690,13 @@ titles-and-sections/one-space-after-keyword]
 
 A value written on a later line is printed after the keyword on one line; a
 comment line between them makes the statement printed as written (see
-[Multi-line statements](#multi-line-statements)).
+[Multi-line statements](#multi-line-statements)). Rule 1 names no mark for a
+line break, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [sequence](./sequence.md#title) prints a `title`, a line break, and the
+text that follows on one line, and [xychart](./xychart.md#multi-line-statements)
+prints a statement that mermaid.js reads over several lines on one line, with
+one space in place of the line break.
 
 [fixture: titles-and-sections/value-on-next-line] [fixture:
 titles-and-sections/comment-line-inside-kept]
@@ -944,6 +960,11 @@ header-and-direction/description-block-after-the-header-without-direction-moves]
 A comment after the direction stays on the line (see [Comments](#comments)), and
 a directive before it or after it is placed as everywhere else (see
 [Directives](#directives)). The whitespace at the end of the line is dropped.
+Rule 1 names no mark at the end of a line, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [radar](./radar.md#trailing-whitespace) and
+[architecture](./architecture.md#trailing-whitespace) drop the whitespace after
+the header.
 
 [fixture: header-and-direction/comment-after-the-direction] [fixture:
 header-and-direction/directive-before-the-direction] [fixture:
@@ -1148,8 +1169,17 @@ colon at the start of a later line, and keep their line breaks (see
 In `accTitle` and `accDescr:` statements, keep trivia line breaks and align
 later structural parts and standalone trivia one continuation level inside the
 statement, also under a section. Preserve each first gap-line tail and complete
-directive interiors. Joining comment regions keep their original layout;
-semicolon protection follows the joining decision below.
+directive interiors. Rule 1 names no mark for a line break, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#multi-line-statements),
+[gantt](./gantt.md#multi-line-statements), and
+[journey](./journey.md#multi-line-statements) keep a line break next to a
+comment or a directive and the whitespace before it, and put the later parts of
+a statement and the comment and directive lines between them one level deeper,
+where no other rule keeps the layout as written (where the Db holds the text
+with its whitespace, where moving a line makes mermaid.js reject the text, and
+the like). Joining comment regions keep their original layout; semicolon
+protection follows the joining decision below.
 
 [fixture: multi-line-statements/accessibility-trivia-continuations]
 
@@ -1314,7 +1344,12 @@ block on one line follows
 
 [fixture: whitespace-between-tokens/description-block-braces]
 
-The whitespace at the end of the header's line is dropped.
+The whitespace at the end of the header's line is dropped. Rule 1 names no mark
+at the end of a line, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [radar](./radar.md#trailing-whitespace) and
+[architecture](./architecture.md#trailing-whitespace) drop the whitespace after
+the header.
 
 [fixture: whitespace-between-tokens/trailing-whitespace-after-header]
 
@@ -1348,7 +1383,13 @@ end of the line. A comment on a line of its own stands at the level of the
 statement after it, as in a user journey, and its text and its mark are kept as
 written: a comment before a `section` stands at its level, and one before a
 period at the level of the period; at the end of the text it stands at the level
-of the last statement.
+of the last statement. Rule 1 gives no form here, since its table names the
+whitespace beside a mark and not the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it, as [gantt](./gantt.md#comments), [block](./block.md#comments), and
+[quadrant](./quadrant.md#comments) put a comment line at the level of the
+statement after it.
 
 [fixture: comments/lines-at-statement-level] [fixture: comments/text-kept]
 [fixture: comments/single-percent-kept] [fixture: comments/bare-percent-lines]

@@ -115,15 +115,20 @@ same members.
 
 An empty body, with nothing but whitespace between its braces, is printed as
 `{ }` on the line of the class, however it is written: `{}`, `{   }`, and braces
-on two lines all declare the class without members.
+on two lines all declare the class without members. Rule 1 would print `{}`, as
+Prettier prints `x = { }` as `x = {}`
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)), but some of the
+versions of mermaid.js that count reject `class A {}`, and every one of them
+accepts `class A { }`, so the printed form is `{ }` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: member-bodies/empty-unified] [fixture:
 member-bodies/empty-other-forms-unified] [fixture:
 member-bodies/in-namespace-indented]
 
 After a CSS class, the body needs a member line, and a line of only whitespace
-is one, so `class C:::c {}` is rejected and `class C:::c { }` is accepted: `{ }`
-is the form that holds everywhere.
+is one, so every version of mermaid.js that counts rejects `class C:::c {}` and
+accepts `class C:::c { }`: `{ }` is the form that holds everywhere.
 
 [fixture: member-bodies/empty-unified] [corpus fixture:
 class/gram-class-css-class-empty-body] [corpus fixture:
@@ -308,7 +313,11 @@ the form; the four examples of its documentation write
 [fixture: whitespace-between-tokens/css-class-touches-separator]
 
 A directive in the gap is placed as under [Directives](#directives), and a
-U+2028 or U+2029 stays where it is.
+U+2028 or U+2029 stays where it is. Rule 1 names no mark for a gap that holds
+one, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [journey](./journey.md#line-separators) and
+[timeline](./timeline.md#line-separators) print such a gap as written.
 
 [test: U+2028 before the `:::` of a class] [test: U+2029 after the `:::` of a
 class]

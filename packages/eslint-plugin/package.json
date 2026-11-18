@@ -59,7 +59,7 @@
     "@ota-meshi/ast-token-store": "^0.3.0"
   },
   "devDependencies": {
-    "@eslint/markdown": "^8.0.3",
+    "@eslint/markdown": "^9.0.0",
     "@mmd-toolkit/ast": "workspace:*",
     "@mmd-toolkit/tests": "workspace:*",
     "@types/semver": "^7.8.0",

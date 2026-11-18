@@ -752,7 +752,10 @@ part of it and are kept.
 
 [fixture: blank-lines/inside-values-kept]
 
-The text ends with exactly one line break.
+The text ends with exactly one line break. Rule 1 names no mark here, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [kanban](./kanban.md#final-newline) and
+[packet](./packet.md#final-newline) end the text with one line break.
 
 [fixture: blank-lines/header-only-without-line-break]
 
@@ -1247,7 +1250,19 @@ Text written between two arrows has one space on each side.
 arrow-spacing/directive-in-text-between-arrows]
 
 A label between `|` touches the arrow and its `|`, and an edge id touches its
-`@` and the arrow.
+`@` and the arrow. Rule 1 gives no spacing for this `@`, since it is a part of
+the id of the edge and not a mark between two things
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Rule 2 gives no
+form either: [agentflow](./agentflow.md#arrows) and
+[usecase](./usecase.md#relationship-labels-and-ids) print an edge id as this
+page does, and no other diagram type has one.
+[Rule 3](./printed-form.md#3-a-spelling) gives it: the examples in the
+documentation of mermaid.js write an edge id touching its `@` and the arrow 17
+times, 13 on
+[the flowchart page](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L810-L1321)
+and 4 on
+[the use case page](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/usecase.md#L297-L561),
+and never with whitespace there.
 
 [fixture: arrow-spacing/pipe-label-other-link-kinds] [fixture:
 arrow-spacing/edge-id-with-labels] [fixture:
@@ -1783,9 +1798,19 @@ that text onto the keyword's line.
 A real comment or directive prevents compact joining. Keep the previous
 [Multi-line statements](#multi-line-statements) layout: continuation lines,
 including comment and directive lines, stand one level deeper than the keyword;
-the comment/directive text and the authored statement breaks remain. Flowchart
-skips a comment after the colon to read the later value. This preserves the
-existing continuation rule when ordinary joining does not apply.
+the comment/directive text and the authored statement breaks remain. Rule 1
+gives no form here, since its table names the whitespace beside a mark and not
+the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it, as [requirement](./requirement.md#fields) and
+[sequence](./sequence.md#multi-line-statements) put the continuation lines and
+the intervening comment lines of a statement one level deeper than its first
+line, where no other rule keeps the layout as written (where the Db holds the
+text with its whitespace, where moving a line makes mermaid.js reject the text,
+and the like). Flowchart skips a comment after the colon to read the later
+value. This preserves the existing continuation rule when ordinary joining does
+not apply.
 
 [fixture: accessibility-lines/next-line-comment-kept] [fixture:
 accessibility-lines/description-comment-continuation] [fixture:
@@ -1949,7 +1974,16 @@ whitespace.
 multi-line-statements/label-over-lines] [fixture:
 multi-line-statements/directive-inside]
 
-Comment lines inside it stay inside it, at the level of its later lines.
+Comment lines inside it stay inside it, at the level of its later lines. Rule 1
+gives no form here, since its table names the whitespace beside a mark and not
+the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it, as [requirement](./requirement.md#fields) and
+[sequence](./sequence.md#multi-line-statements) put the comment lines of a
+statement at the level of its later lines, where no other rule keeps the layout
+as written (where the Db holds the text with its whitespace, where moving a line
+makes mermaid.js reject the text, and the like).
 
 [fixture: multi-line-statements/several-comments-inside]
 
@@ -1982,7 +2016,10 @@ a statement on one line.
 [fixture: multi-line-statements/click-string-over-lines-comment-and-empty-line]
 
 A U+2028 or U+2029 between its parts stays where it is, also after a string that
-runs over lines.
+runs over lines. Rule 1 names no mark for a gap that holds one, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [journey](./journey.md#line-separators) and
+[timeline](./timeline.md#line-separators) print such a gap as written.
 
 [test: U+2028 between the parts of a flowchart click statement with a string
 over lines] [test: U+2029 between the parts of a flowchart click statement with
@@ -2955,7 +2992,11 @@ The direction of the header stands after one space, also where a symbol touched
 the keyword: `graph>` is printed `graph >`, and `flowchart^` is printed
 `flowchart ^`. The whitespace is not in the Db, and a letter direction such as
 `TD` already needs the space. A directive between them is placed as under
-[Directives](#directives), and a U+2028 or U+2029 stays where it is.
+[Directives](#directives), and a U+2028 or U+2029 stays where it is. Rule 1
+names no mark for a gap that holds one, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [journey](./journey.md#line-separators) and
+[timeline](./timeline.md#line-separators) print such a gap as written.
 
 [fixture: direction/header-symbol-touching-spaced] [fixture:
 direction/header-symbol-beside-directive-kept] [test: U+2029 between the graph
@@ -3043,7 +3084,11 @@ A directive in the gap is placed as under [Directives](#directives).
 [fixture: subgraph-header/title-beside-directive] [fixture:
 subgraph-header/title-beside-directive-runs]
 
-A U+2028 or U+2029 in the gap stays where it is.
+A U+2028 or U+2029 in the gap stays where it is. Rule 1 names no mark for a gap
+that holds one, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [journey](./journey.md#line-separators) and
+[timeline](./timeline.md#line-separators) print such a gap as written.
 
 [test: U+2028 between a subgraph name and its title] [test: U+2029 and spaces
 between a subgraph name and its title]

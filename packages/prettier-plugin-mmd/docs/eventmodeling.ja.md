@@ -23,6 +23,12 @@ GWT は閉じ記号を作らず、範囲で終わる子の本文を 2 つ使い�
 同じ項目を図種の間で同じように扱うためです。
 最初の共通文は接続と前置の空白を保ちます。
 行頭へ移すと識別子が優先され、拒否される場合があるためです。
+対象にする版の mermaid.js のすべてが、`eventmodeling title Heading`、
+`eventmodeling accTitle: Heading`、
+`eventmodeling accDescr: Description` の文を次の行に移した形を拒否します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: eventmodeling/header/ordinary-frame]
 
@@ -36,11 +42,11 @@ GWT は閉じ記号を作らず、範囲で終わる子の本文を 2 つ使い�
 
 [fixture: eventmodeling/header/first-title-preserved]
 
-[fixture: eventmodeling/header/title-moved-to-line-start]
+[fixture: eventmodeling/header/title-on-header-line-kept]
 
-[fixture: eventmodeling/header/acctitle-moved-to-line-start]
+[fixture: eventmodeling/header/acctitle-on-header-line-kept]
 
-[fixture: eventmodeling/header/accdescr-moved-to-line-start]
+[fixture: eventmodeling/header/accdescr-on-header-line-kept]
 
 [fixture: eventmodeling/header/header-percent]
 
@@ -86,8 +92,16 @@ GWT 節は設定の 1 段、項目は 2 段にします。
 `useTabs` では幅が 0 でも 1 段にタブを 1 個使います。
 値の継続列、メタデータの空白、隠れた形が消費する LF の境界は、
 [データブロック](#data-blocks) の本文の余白の変更を除いて保ちます。
+`eventmodeling tf 01 evt Alpha.%%{{native}}%%` と改行の後の `title` は、
+第 1 列に残します。
+対象にする版の mermaid.js のすべてが、
+2 つの空白で字下げした形を拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]
+[fixture: eventmodeling/qualified-names/hidden-before-title-segment-keep-no-prefix-space]
 
 [fixture: eventmodeling/indentation/mixed-top-level-blocks]
 
@@ -150,10 +164,25 @@ note 01 {
 普通の最上位 AST 文は原順の各行へ分け、セミコロンは足しません。
 完全な単位の間に可視の EOL を要しない文法なので、Db は変わりません。
 次が共通文なら先行単位との接続を保ちます。
+`eventmodeling accDescr {}  title Next` は 1 行のまま残します。
+対象にする版の mermaid.js のすべてが、
+`title Next` を自分の行にした形を拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 後続の文字を取り込む行内データの中の見かけの文は、その値の一部のままです。
 閉じた説明ブロックの後の普通の文は、新しい行へ分けます。
+`eventmodeling tf 01 evt Alpha {x} tf 02 evt Beta {y}` の `tf 02 evt Beta {y}`
+は、値の中に残します。
+対象にする版の mermaid.js のすべてが、
+それを自分の行にすると違う図を描くためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: eventmodeling/statements-one-per-line/adjacent-frame-reset-entity]
+[fixture: eventmodeling/statements-one-per-line/description-followed-by-common]
+[fixture: eventmodeling/statements-one-per-line/do-not-manufacture-statement-from-greedy-data]
 
 [fixture: eventmodeling/statements-one-per-line/frame-metadata-adjacency]
 
@@ -399,8 +428,15 @@ note
 ブロック開始記号は見出し行の空白 1 個後に置きます。
 値と閉じの境界は data の規則に従います。
 必須の名前の `title` はフレームと同じく安全な前方境界を保ちます。
+`eventmodeling data`、改行、`title {` は、そのまま残します。
+対象にする版の mermaid.js のすべてが、
+`eventmodeling data title {` を 1 行にした形を拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: eventmodeling/declarations-and-notes/entity-ordinary]
+[fixture: eventmodeling/declarations-and-notes/data-name-title-keep-lf]
 
 [fixture: eventmodeling/declarations-and-notes/entity-title-lf-protected]
 
@@ -441,8 +477,16 @@ GWT の見出しがコメントやディレクティブの後に続く場合、�
 必須の given・then、任意の when、項目の順序・反復・型語を保ちます。
 普通の項目部品は空白 1 個で分け、必須の `title` の境界、隠れた形、注釈類、
 保護された開始境界を優先します。
+`eventmodeling gwt 01 given evt`、改行、
+`title then cmd accTitle tf 02 evt Alpha` は、そのまま残します。
+対象にする版の mermaid.js のすべてが、
+改行を空白 1 つにした形を拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: eventmodeling/gwt-clauses-and-items/given-when-then-nested]
+[fixture: eventmodeling/gwt-clauses-and-items/gwt-title-identifier-keep-lf]
 
 [fixture: eventmodeling/gwt-clauses-and-items/without-when-repeated-items]
 
@@ -569,10 +613,17 @@ tf 01 evt Alpha { 	 x  }
 
 空行、空白だけの行、改行、行末の空白とタブ、行頭の余白より後の文字は保ちます。
 閉じ波括弧は第 1 列に残します。
+`eventmodeling tf 01 evt Alpha [[D]] data D {`、`x`、`}` は、そのまま残します。
+対象にする版の mermaid.js のすべてが、
+`}` を 2 つの空白で字下げした形を拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 見かけの文、波括弧を含むテキスト、直後の閉じ風の行も、
 本文を持つ形の規則が後の閉じまで読む場合は保ちます。
 
 [fixture: eventmodeling/data-blocks/body-whitespace-kept]
+[fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]
 
 [fixture: eventmodeling/data-blocks/block-empty-kept]
 
@@ -859,6 +910,12 @@ GWT 節・項目の隙間を保ちます。
 隠れた形を扱う共有経路が内部の列、消費 LF、閉じの先読み空白を保ち、
 普通の本文開始記号は本文の段に揃えます。
 必須の開始部分の隙間と共通文の前方境界は原文どおりです。
+`eventmodeling`、`%%{{x}}%%`、` accDescr: D` を各行に置いた形は、
+`accDescr` の前の空白 1 つも残します。
+対象にする版の mermaid.js のすべてが、その空白のない形を拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 代替の扱いのパーセントコメントはコメントのままです。
 
 本文境界の形が保つ行は、GWT 節と項目の開きでも保ちます。
@@ -1109,7 +1166,20 @@ tf %%{wrap}%%01 evt Alpha %%{wrap}%%->> %%{wrap}%%02
 [fixture: semicolons/protected-gwt-title-hidden-gap-remains-zero]
 
 最初の保護された本文行は所属の段に揃え、内容と後続列は書かれたままです。
+`eventmodeling gwt 01 given evt %%{{native}}%%` と改行の後の `title` は、
+第 1 列に残します。
+対象にする版の mermaid.js のすべてが、
+2 つの空白で字下げした形を拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 必須の識別子と共通値の空白は構造上の字下げより優先します。
+`eventmodeling data D {`、`x`、
+`}` の後の ` accDescr: style:#x;` の先頭の空白は、残します。
+対象にする版の mermaid.js のすべてが、その空白のない形を拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 子の本文の開始境界も保護行に残し、次の整形で分かれ方が変わるのを防ぎます。
 文法上のセミコロンがないため `verbatimStyleLines` は `false` です。
 `style` や `classDef` だけでは行全体を固定しません。
@@ -1193,6 +1263,11 @@ rf 02 cmd Beta
 ### Trailing whitespace
 
 見出しや構造部品の後の、害のない外側の ASCII 空白だけを削ります。
+規則 1 は、行末の空白を決めません。
+規則 1 の表が挙げるのは印の横の空白だからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[requirement](./requirement.ja.md#トークンの間の空白) と
+[radar](./radar.ja.md#trailing-whitespace)も、行末の空白を落とします。
 物理行ごとの両端の空白の除去ではなく所有ノードで判断します。
 メタデータの値と前置部分、許容した余白変更以外の data 内部、
 コメント・ディレクティブの末尾、隠れた形・data の閉じの境界、保護区間は、

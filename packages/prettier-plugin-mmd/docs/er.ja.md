@@ -428,6 +428,16 @@ Db が保つからです。
 空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 コメントのテキストは保ちます。
+規則 1 は、チルダの語とバッククォートの語の内側を決めません。
+木が、それぞれを空白を内側に含む 1 つのトークンとして持つからです。
+詳しくは [木が丸ごと持つテキスト](./printed-form.ja.md#木が丸ごと持つテキスト)
+を参照してください。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が空白 1
+つを与えます。
+[class](./class.ja.md#メンバーの行) は欄の中の、
+[architecture](./architecture.ja.md#label-content) はラベルのテキストの中の、
+空白とタブの連なりを、mermaid.js がその連なりを描かずにテキストを描く場合に、
+空白 1 つで印字します。
 
 [fixture: attribute-spacing/tilde-word-runs-collapsed]
 [fixture: attribute-spacing/backquoted-word-runs-collapsed]
@@ -1489,6 +1499,12 @@ mermaid.js は、それを書かれたまま subgraph のノードに並べま�
 [fixture: subgraphs/end-case-kept] [fixture: subgraphs/entity-after-end]
 
 文のない subgraph は、`end` を次の行に置いて印字します。
+見出しと `end` の間の空行は落とします。
+規則 1 は、ここの印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[flowchart](./flowchart.ja.md#空行) は、subgraph の最初と最後の空行を落とし、
+[requirement](./requirement.ja.md#本体) は、
+フィールドのない本体の `{` と `}` の間の空行を落とします。
 
 [fixture: subgraphs/empty]
 
@@ -1499,6 +1515,10 @@ mermaid.js は、それを書かれたまま subgraph のノードに並べま�
 [fixture: subgraphs/title-beside-directive-runs]
 
 そこにある U+2028 と U+2029 は、そのまま残します。
+規則 1 は、subgraph の名前とタイトルの間の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#行区切り) と [state](./state.ja.md#行区切り文字)
+も、これを含む間隔を書かれたまま印字します。
 
 [test: U+2028 between an ER subgraph name and its title]
 [test: U+2029 between an ER subgraph name and its title]
@@ -1813,11 +1833,23 @@ erDiagram
 [fixture: accessibility-statements/title-and-description]
 
 後の行に書かれたテキストは、`:` の後に 1 行で印字します。
-その前にコメント行がある文は、書かれたまま残します。
+その前にコメント行があるときは、改行を残し、
+コメントとテキストを 1 段深く置きます。
+`accTitle` と `accDescr` のコロンはキーのコロンなので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が `accTitle: text`
+の形を与えます。
+コロンの前に空白を置かず、後ろに空白を 1 つ置き、
+コロンやテキストが後の行に書かれていても同じです。
+テキストの前にコメント行があるときは、上のとおり、改行を残し、
+コメントとテキストを 1 段深く置きます。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
+の、図のタイトルと説明の行を参照してください。
 
 [fixture: accessibility-statements/text-on-next-line-joined]
 [fixture: accessibility-statements/text-with-comment-line-kept]
 [corpus fixture: er/lex-acc-title-line-feed-after-colon]
+[fixture: multi-line-statements/acc-colon-and-brace-joined]
 
 通常の `accDescr { ... }` ブロックの後続の本文行は、文の内側に 1 段字下げし、
 LF 直後の ASCII 空白とタブだけを置き換えます。
@@ -1851,6 +1883,11 @@ agentflow、usecase に合わせます。
 
 コメントやディレクティブがあるブロックは、改行と完全な内容を保ち、
 普通の独立した注釈類はブロックの内側にそろえます。
+規則 1 は、ブロックの中の行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[xychart](./xychart.ja.md#空の説明ブロック) と
+[quadrant](./quadrant.ja.md#空の説明ブロック) も、
+ディレクティブかコメント行があるブロックの内容と改行を、そのまま残します。
 
 [fixture: accessibility-statements/empty-blocks]
 [fixture: accessibility-statements/empty-block-with-directive-or-comment-line]
@@ -2013,6 +2050,11 @@ accTitle: direction BT
 コメント行、つまり行頭の `%%` は、周りの文と同じ段に置き、
 テキストは書かれたまま残します。
 この図にほかのコメントはありません（diagrams/er.md、コメント）。
+規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
+規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
+[state](./state.ja.md#コメント) と [flowchart](./flowchart.ja.md#コメント) も、
+コメント行を周りの文と同じ段に置きます。
 
 [fixture: comments/kept] [fixture: comments/in-blocks]
 [fixture: comments/last-in-body] [fixture: comments/text-kept]
@@ -2635,6 +2677,14 @@ mermaid.js が複数行にわたって読む文は、改行が、
 コメント行やディレクティブがある文は改行を残し、
 構造の続きの行と間の注釈を 1 段深く置きます。
 値の中の空白と、各隙間の最初の改行の前の空白は保ちます。
+規則 1 は、改行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
+[journey](./journey.ja.md#複数行の文)も、コメントやディレクティブの隣の改行と、
+その前の空白を残し、文の後ろの部分と、
+その間のコメントやディレクティブの行を 1 段深く置きます。
+ほかの規則が配置を書かれたまま残す所は別です（Db が空白ごとテキストを持つ所や、
+動かすと mermaid.js がテキストを拒否する所などです）。
 コメントで結合される領域は、それがつなぐ行を原文のまま残します（下を参照）。
 改行を空白 1 つか何も挟まずにつなぐと、
 行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、

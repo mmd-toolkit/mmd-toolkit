@@ -66,8 +66,10 @@ texts of Prettier are JavaScript where no language is named.
 | Parentheses and square brackets          | `f( a )` is printed `f(a);`                            | none inside                  | `A( text )` in a flowchart                  | `A(text)`                     |
 | Braces that hold names with their values | `x = {a:1}` is printed `x = { a: 1 };`                 | one space inside             | `curve c{m: 60, s: 70}` in a radar chart    | `curve c{ m: 60, s: 70 }`     |
 | Braces that hold values alone            | `x = [ 1, 2 ]` is printed `x = [1, 2];`                | none inside                  | `curve d{ 85, 90 }` in a radar chart        | `curve d{85, 90}`             |
+| Braces that hold nothing                 | `x = { }` is printed `x = {};`                         | none inside                  | `accDescr { }` in a Gantt chart             | `accDescr {}`                 |
 
-The two kinds of braces are the object and the array of Prettier.
+The first two kinds of braces are the object and the array of Prettier, and the
+third is either of them with nothing in it.
 
 Prettier prints the `=` of an attribute of HTML without spaces (`<a href="x">`).
 An argument of a C4 diagram stands in the list of the arguments of a call, where

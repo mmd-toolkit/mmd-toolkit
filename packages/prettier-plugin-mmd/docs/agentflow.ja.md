@@ -230,6 +230,13 @@ mermaid.js が名前の後の空白を trim するので Db は同じであり�
 
 タイトルの前の空白は、行の規則が無視する `;` を挟んでいても除きます。
 `connector style:#x ; [T]` は `connector style:#x;[T]` と印字します。
+規則 1 は、タイトルの `[` の印を挙げていないので、
+[規則 3](./printed-form.ja.md#3-綴り)が決めます。
+タイトルのある見出しは、
+[agentflow のドキュメント](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L26-L363)
+に 19 個あり、すべてが `flow F[T]` のように `[` を名前に接して書いています。
+[flowchart](./flowchart.ja.md#subgraph-のヘッダー) と [er](./er.ja.md#subgraph)
+も、タイトルの `[` を名前に接して印字します。
 セミコロンは、名前との位置関係を保ちます。
 
 [fixture: names-and-headings/title-after-ignored-semicolon]
@@ -719,11 +726,16 @@ agentflowのラベルコメントの直前の空白とタブは値の文字な�
 コメント内の閉じ括弧は形を閉じないので、コメントの文字のままです。
 チルダは文字です。
 形、実体参照とHTMLの綴りも保ちます。
+ラベルのテキストは木が丸ごと持つテキストで、Db もそのまま持ちます。
+そのため、実体参照は書かれたまま残し、`&amp;` を `&` とは印字しません。
+この文書は、テキストのそのような変更を定めていません。
+詳しくは [木が丸ごと持つテキスト](./printed-form.ja.md#木が丸ごと持つテキスト)
+を参照してください。
 
 [fixture: labels/labels-closers] [fixture: labels/labels-leading-sensitive]
 [fixture: labels/labels-leading-at-sign] [fixture: labels/labels-padding]
 [fixture: labels/labels-tilde] [fixture: labels/labels-trim-sensitive-unsafe]
-[fixture: labels/slash-label-padding-kept]
+[fixture: labels/slash-label-padding-kept] [fixture: labels/entity-kept]
 
 flow/connectorの見出しのタイトルは、
 [subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)に従います。
@@ -1236,6 +1248,14 @@ flowchartと異なり、コロンの後のコメントらしい行も値の文�
 継続行とディレクティブ行をキーワードより1段深く置き、
 文字と著者の改行を保ちます。
 flowchartの継続行の規則を同じ理由で再利用するためです。
+規則 1 は、改行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
+[journey](./journey.ja.md#複数行の文)も、コメントやディレクティブの隣の改行と、
+その前の空白を残し、文の後ろの部分と、
+その間のコメントやディレクティブの行を 1 段深く置きます。
+ほかの規則が配置を書かれたまま残す所は別です（Db が空白ごとテキストを持つ所や、
+動かすと mermaid.js がテキストを拒否する所などです）。
 
 [fixture: accessibility/inline-directive-kept]
 [fixture: accessibility/next-line-directive-kept]

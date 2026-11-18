@@ -80,7 +80,10 @@ architecture-beta
 ### Statements one per line
 
 Print ordinary statements one per line, as the other diagram types do. A common
-line value owns apparent keywords through physical EOL, so do not split it.
+line value owns apparent keywords through physical EOL, so do not split it:
+every version of mermaid.js that counts rejects `architecture-beta title t`
+followed by a line break and `service a; junction j` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Semicolons are not statement separators; invalid adjacent statements and empty
 descriptions used as component gaps remain failures.
 
@@ -105,11 +108,17 @@ architecture-beta title t service a; junction j
 
 ### Declaration spacing
 
-Use one space between the keyword and ID. Print `group g(cloud)[G]`,
-`service a(server)[A]` and `service a[A]`: touching parentheses and brackets
-make the attached parts read as one node. A quoted text icon is an independent
-value, so print `service a "I" [A]`. Missing optional parts stay absent.
-Trivia-bearing gaps keep their contact.
+Use one space between the keyword and ID. Rule 1 of
+[How the printed form is decided](./printed-form.md#1-the-whitespace-beside-a-mark)
+names no mark between a keyword and its id, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [wardley](./wardley.md#component-spacing) puts one ordinary space
+between each command keyword and its first complete name, and
+[radar](./radar.md#groups-and-commas) between a group keyword and its first
+member. Print `group g(cloud)[G]`, `service a(server)[A]` and `service a[A]`:
+touching parentheses and brackets make the attached parts read as one node. A
+quoted text icon is an independent value, so print `service a "I" [A]`. Missing
+optional parts stay absent. Trivia-bearing gaps keep their contact.
 
 [fixture: architecture/declaration-spacing/double-text-icon]
 
@@ -790,13 +799,27 @@ C" ["D
 ### Comments
 
 Align ordinary standalone comments one body step in, or column one before the
-header. Inline comments keep their line and touching side, or one separating
-space. Preserve marks, content and trailing padding for attachment. Native
-comments end at LF/CR and keep LS/PS as content. Earlier values own enclosed
-percent text; common lines stop at it. Removed common regions keep complete
-source and continuation columns.
+header. Rule 1 gives no form here, since its table names the whitespace beside a
+mark and not the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it, as [flowchart](./flowchart.md#comments) and [wardley](./wardley.md#comments)
+align a comment on a line of its own with the body in the same way. Inline
+comments keep their line, touching where they touch, and a run of spaces and
+tabs before one becomes one space. Rule 2 decides the gap before an inline
+comment too, as [sequence](./sequence.md#comments),
+[journey](./journey.md#comments), and [timeline](./timeline.md#comments) print a
+comment after a statement in the same way, where no other rule keeps the
+whitespace as written; each of them names those cases in its own sections or in
+[A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
+(whitespace that the Db holds, as after a `section` or a period, and whitespace
+that changes what mermaid.js reads). Preserve marks, content and trailing
+padding for attachment. Native comments end at LF/CR and keep LS/PS as content.
+Earlier values own enclosed percent text; common lines stop at it. Removed
+common regions keep complete source and continuation columns.
 
-[fixture: architecture/comments/comment-attachments]
+[fixture: architecture/comments/comment-attachments] [fixture:
+architecture/comments/inline-gap-run-before-comment]
 
 [fixture: architecture/comments/value-ownership]
 

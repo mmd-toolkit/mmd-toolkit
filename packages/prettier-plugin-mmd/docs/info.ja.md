@@ -407,7 +407,17 @@ info showInfo
 
 付着と原文を保つため、[共有のコメント配置](./pie.ja.md#comments)を使います。
 見出し前は第1列、通常の本文の独立コメントは1段下げ、行内は同じ行です。
-接触は保ち、離れた隙間は空白1個にします。
+接するコメントは接したまま残し、前の空白とタブの連なりは空白 1 つにします。
+規則 1 は、コメントの前の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#コメント)、[journey](./journey.ja.md#コメント)、
+[timeline](./timeline.ja.md#コメント)も、
+文の後ろのコメントを同じように印字します。
+ほかの規則が空白を書かれたまま残す所は別です。
+どの図の文書も、その所を、
+自分の節か [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
+で挙げています（Db が持つ空白、たとえば `section` と期間の後の空白と、
+mermaid.js の読みを変える空白です）。
 印、本文、末尾空白を保ちます。
 図固有のコメントは物理 LF で終わり、LS/PS は保ちます。
 先に始まったブロック内の裸のパーセント行は値の場合があります。
@@ -417,6 +427,7 @@ info showInfo
 [fixture: info/comments/comments-align]
 
 [fixture: info/comments/comments-inline]
+[fixture: info/comments/inline-gap-run-before-comment]
 
 [test: info/comments/comments-bare-triple]
 
@@ -448,6 +459,11 @@ info
 元は同じ行にあった単位を別の行へ分けるときは、
 間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
+規則 1 は、2 つの単位の間のディレクティブの印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#ディレクティブ)、
+[flowchart](./flowchart.ja.md#ディレクティブ)、
+[journey](./journey.ja.md#ディレクティブ)も、この隙間を同じに印字します。
 通常の独立ディレクティブの開始列だけを本文の1段へ合わせます。
 完全な構成要素境界、値内部、複数行、不正な `init`、EOF に達する終端も保ちます。
 収集、再整形、削除はしません。

@@ -332,6 +332,11 @@ mermaid.js の文書では、
 
 隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
 U+2028 と U+2029 はそのまま残します。
+規則 1 の表に、これを含む間隔の印はないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[journey](./journey.ja.md#行区切り文字) と
+[timeline](./timeline.ja.md#行区切り文字) も、
+これを含む間隔を書かれたまま印字します。
 
 [fixture: whitespace-between-tokens/block-text-beside-directive]
 [test: U+2028 between a block keyword and its text]
@@ -649,11 +654,23 @@ mermaid.js の正規表現が最後の `)` まで読むので、書かれたま�
 `rgb(191, 223, 255)` を Db の別のメッセージ値として読むためです（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照）。
+`rect` の `(` の直後と `)` の直前の空白も残します。
+対象にする版の mermaid.js のすべてが、
+`rect rgb( 1,2,3)` と `rect rgb(1,2,3 )` に別の `fill`
+属性を描くためです（同じ表を参照）。
+`box` でも、同じ理由で残します。
+コンマの前の空白は、12.3.0 が Db の `boxes[0].fill` を変え、
+描画は変わらないためです。
 色の中の空白のうち、同じに描かれる例外の種類になっているのは、
 コンマの後の空白だけです。
 
 [fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
-[fixture: colors/functions-as-written]
+[fixture: colors/rect-leading-and-comma-padding-kept]
+[fixture: colors/rect-open-paren-padding-kept]
+[fixture: colors/rect-close-paren-padding-kept]
+[fixture: colors/box-open-paren-padding-kept]
+[fixture: colors/box-close-paren-padding-kept]
+[fixture: colors/box-comma-padding-kept] [fixture: colors/functions-as-written]
 [fixture: colors/functions-beside-comments-and-directives]
 
 成分の中のディレクティブは、関数を認識する前に取り除かれます。

@@ -1060,6 +1060,11 @@ ER 図が mermaid.js の読まないテキストをブロックの中の自分�
 独立した注釈をブロックの 1 段内側に置き、
 独立した `}` は `accDescr` にそろえます。
 requirement と element の本文にある空のブロックも同じです。
+規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
+規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
+[block](./block.ja.md#空の説明ブロック) と [c4](./c4.ja.md#説明ブロック)も、
+独立した注釈類をブロックの 1 段内側に、独立した `}` を文の段に置きます。
 
 [fixture: empty-description-blocks/in-body-with-directive-line]
 [fixture: empty-description-blocks/with-directive-or-comment-line-kept]

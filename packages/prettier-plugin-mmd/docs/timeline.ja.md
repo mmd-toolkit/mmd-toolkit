@@ -439,6 +439,15 @@ section の中でも、同じ period の `:` は 1 つの桁に置きます。
 
 event 行の間のコメント行と指令の行は、次の event の `:` と同じ列にそろえます。
 `:` が通常の継続行の字下げを使うときは、これらの行も同じ字下げを使います。
+規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
+規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
+[requirement](./requirement.ja.md#フィールド) と
+[sequence](./sequence.ja.md#複数行の文)も、
+文の途中のコメント行とディレクティブ行を、その文の続きの行と同じ段に置きます。
+ここでは、続きの行は `:` の列に立ちます。
+ほかの規則が配置を書かれたまま残す所は別です（Db が空白ごとテキストを持つ所や、
+動かすと mermaid.js がテキストを拒否する所などです）。
 文の中の連続する空行は 1 つにします。
 
 [fixture: periods-and-events/comment-lines-inside]
@@ -693,6 +702,12 @@ Db はその空白を持ちますが、図では描かれません。
 後ろの行に書かれた値は、キーワードの後ろに寄せて 1 行にします。
 間にコメント行があるときは、
 その文を書かれたまま印字します（[複数行の文](#複数行の文)を参照）。
+規則 1 は、改行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#タイトル) は、
+`title` と改行とその次のテキストを 1 行で印字し、
+[xychart](./xychart.ja.md#複数行の文) は、mermaid.js が複数行で読む文を、
+改行を空白 1 つにして 1 行で印字します。
 
 [fixture: titles-and-sections/value-on-next-line]
 [fixture: titles-and-sections/comment-line-inside-kept]
@@ -944,6 +959,12 @@ timeline について対象にする版は、どちらの形も同じに描き�
 方向の後ろのコメントは行に残します（[コメント](#コメント)を参照）。
 方向の前後の指令は、ほかと同じように置きます（[指令](#指令)を参照）。
 行末の空白は落とします。
+規則 1 は、行末の空白を決めません。
+規則 1 の表が挙げるのは印の横の空白だからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[radar](./radar.ja.md#trailing-whitespace) と
+[architecture](./architecture.ja.md#trailing-whitespace)も、
+ヘッダーの後ろの空白を落とします。
 
 [fixture: header-and-direction/comment-after-the-direction]
 [fixture: header-and-direction/directive-before-the-direction]
@@ -1146,6 +1167,14 @@ period と event は、後ろの行の行頭に `:` を書く別の形で複数�
 `accTitle` と `accDescr:` の文では、注釈の改行を保ち、
 section の下でも後続の構造部分と独立した注釈行を文より 1 段深くそろえます。
 各隙間の最初の行の末尾と、指令の内部全体を保ちます。
+規則 1 は、改行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
+[journey](./journey.ja.md#複数行の文)も、コメントやディレクティブの隣の改行と、
+その前の空白を残し、文の後ろの部分と、
+その間のコメントやディレクティブの行を 1 段深く置きます。
+ほかの規則が配置を書かれたまま残す所は別です（Db が空白ごとテキストを持つ所や、
+動かすと mermaid.js がテキストを拒否する所などです）。
 物理行を結ぶコメント領域は、元の配置を保ちます。
 セミコロンの保護は、後述の行をつなぐ判定に従います。
 
@@ -1314,6 +1343,12 @@ timeline
 [fixture: whitespace-between-tokens/description-block-braces]
 
 ヘッダーの行末の空白は落とします。
+規則 1 は、行末の空白を決めません。
+規則 1 の表が挙げるのは印の横の空白だからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[radar](./radar.ja.md#trailing-whitespace) と
+[architecture](./architecture.ja.md#trailing-whitespace)も、
+ヘッダーの後ろの空白を落とします。
 
 [fixture: whitespace-between-tokens/trailing-whitespace-after-header]
 
@@ -1350,6 +1385,12 @@ timeline
 period の前のコメントは period の段に置きます。
 テキストの末尾にあるときは、最後の文の段に置きます。
 これらは journey と同じ規則です。
+規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
+規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
+[gantt](./gantt.ja.md#コメント)、[block](./block.ja.md#コメント)、
+[quadrant](./quadrant.ja.md#コメント)も、
+コメント行を後ろの文と同じ段に置きます。
 
 [fixture: comments/lines-at-statement-level] [fixture: comments/text-kept]
 [fixture: comments/single-percent-kept] [fixture: comments/bare-percent-lines]

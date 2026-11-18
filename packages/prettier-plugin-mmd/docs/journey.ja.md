@@ -514,6 +514,12 @@ Db はその空白を持ちますが、図では描かれません。
 後の行に書かれた値は、キーワードの後に寄せて 1 行にします。
 間にコメント行があれば、
 文は書かれたまま印字します（[複数行の文](#複数行の文)を参照）。
+規則 1 は、改行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#タイトル) は、
+`title` と改行とその次のテキストを 1 行で印字し、
+[xychart](./xychart.ja.md#複数行の文) は、mermaid.js が複数行で読む文を、
+改行を空白 1 つにして 1 行で印字します。
 
 [fixture: titles-and-sections/value-on-next-line]
 [fixture: titles-and-sections/comment-line-inside-kept]
@@ -771,6 +777,14 @@ mermaid.js が複数行にわたって読む文は、
 `accTitle` と `accDescr:` の文では、注釈類の改行を保ち、
 section の下でも後続の構造部分と独立した注釈類行を文より 1 段深くそろえます。
 各隙間の最初の行の末尾と、指令の内部全体を保ちます。
+規則 1 は、改行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
+[timeline](./timeline.ja.md#複数行の文)も、
+コメントやディレクティブの隣の改行と、その前の空白を残し、文の後ろの部分と、
+その間のコメントやディレクティブの行を 1 段深く置きます。
+ほかの規則が配置を書かれたまま残す所は別です（Db が空白ごとテキストを持つ所や、
+動かすと mermaid.js がテキストを拒否する所などです）。
 物理行を結ぶコメント領域は、元の配置を保ちます。
 `;` があるだけでは、複数行に書かれた文をつなぐ妨げにはなりません。
 journey では文の区切りに `;` を使えず、
@@ -878,6 +892,12 @@ journey
 [fixture: whitespace-between-tokens/description-block-braces]
 
 ヘッダーの行末の空白は落とします。
+規則 1 は、行末の空白を決めません。
+規則 1 の表が挙げるのは印の横の空白だからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[radar](./radar.ja.md#trailing-whitespace) と
+[architecture](./architecture.ja.md#trailing-whitespace)も、
+ヘッダーの後ろの空白を落とします。
 
 [fixture: whitespace-between-tokens/trailing-whitespace-after-header]
 
@@ -911,6 +931,12 @@ journey
 テキストと印は書かれたまま残します。
 `section` の前のコメントは `section` の段、タスクの前のコメントはタスクの段、
 テキストの末尾のコメントは最後の文の段です。
+規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
+規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
+[gantt](./gantt.ja.md#コメント)、[block](./block.ja.md#コメント)、
+[quadrant](./quadrant.ja.md#コメント)も、
+コメント行を後ろの文と同じ段に置きます。
 
 [fixture: comments/lines-at-statement-level] [fixture: comments/text-kept]
 [fixture: comments/single-percent-kept] [fixture: comments/bare-percent-lines]
@@ -924,17 +950,19 @@ journey
 文やヘッダーの後ろのコメントは、書かれたとおり行に残します。
 空白が書かれていれば空白 1 つを置き、接していれば接したままにします。
 行を分けると、
-`title` と `section` の後では Db が変わります（`#`
-の前の空白が値の一部だからです）。
-そのため、コメントは文の行に残す 1 つの規則にして、Gantt 図と同じにします。
+`section` の後では Db が変わります（`#` の前の空白が値の一部だからです）。
+`title` の後では、その空白をタイトルのほかの末尾の空白と同じく除きます。
+詳しくは [タイトルとセクション](#タイトルとセクション) を参照してください。
+どちらでも、コメントは文の行に残す 1 つの規則にして、Gantt 図と同じにします。
 
 [fixture: comments/after-header] [fixture: comments/after-header-glued]
 [fixture: comments/after-header-percent] [fixture: comments/after-statement]
 [fixture: comments/after-statement-glued]
 [fixture: comments/after-statement-under-a-section]
 
-`title` と `section` の後では、`#` の前の空白は値の一部で、
-残ります（[タイトルとセクション](#タイトルとセクション)を参照）。
+`section` の後では、`#` の前の空白は値の一部で、残ります。
+`title` の後では、空白 1 つになります。
+詳しくは [タイトルとセクション](#タイトルとセクション) を参照してください。
 
 タイトル、セクション、タスクのデータ、アクセシビリティのテキストの中の `%%` は、
 コメントではなくテキストの文字で、テキストと一緒に残します。

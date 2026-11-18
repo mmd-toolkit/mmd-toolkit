@@ -456,7 +456,14 @@ its keys.
 The text of a type or a name is kept as written, except that a run of spaces and
 tabs inside a tilde word or a backquoted word is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
-and the text of a comment is kept.
+and the text of a comment is kept. Rule 1 does not decide the inside of a tilde
+word or a backquoted word, since the tree holds each as one token with its
+whitespace inside
+([A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+one space, as [class](./class.md#member-lines) prints a run of spaces and tabs
+inside a field and [architecture](./architecture.md#label-content) inside the
+text of a label as one space, where mermaid.js draws the text without the run.
 
 [fixture: attribute-spacing/tilde-word-runs-collapsed] [fixture:
 attribute-spacing/backquoted-word-runs-collapsed]
@@ -1518,7 +1525,13 @@ A statement that follows the `end` on its line stands on the line after it.
 [fixture: subgraphs/end-on-the-line-of-a-statement] [fixture:
 subgraphs/end-case-kept] [fixture: subgraphs/entity-after-end]
 
-A subgraph without statements is printed with its `end` on the next line.
+A subgraph without statements is printed with its `end` on the next line, the
+empty lines between the header and the `end` being dropped. Rule 1 names no mark
+here, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [flowchart](./flowchart.md#blank-lines) drops the empty lines at the
+start and the end of a subgraph, and [requirement](./requirement.md#bodies)
+drops the empty lines between the `{` and the `}` of a body without fields.
 
 [fixture: subgraphs/empty]
 
@@ -1528,7 +1541,11 @@ A directive between the name and the `[` is placed as under
 [fixture: subgraphs/title-beside-directive] [fixture:
 subgraphs/title-beside-directive-runs]
 
-A U+2028 or U+2029 there stays as written.
+A U+2028 or U+2029 there stays as written. Rule 1 names no mark between the name
+of a subgraph and its title, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#line-separators) and
+[state](./state.md#line-separators) print a gap that holds one as written.
 
 [test: U+2028 between an ER subgraph name and its title] [test: U+2029 between
 an ER subgraph name and its title]
@@ -1835,11 +1852,20 @@ it; the text is without the whitespace at its ends.
 [fixture: accessibility-statements/title-and-description]
 
 A text written on a later line is printed after the `:` on one line, and a
-comment line before it makes the statement kept as written.
+comment line before it keeps the line breaks of the statement, and the comment
+and the text stand one level deeper. The colon of `accTitle` and `accDescr` is
+the colon of a key (the title and the description of a diagram in
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)), so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the form
+`accTitle: text`: no whitespace before the colon and one space after it, also
+where the colon or the text was written on a later line; where a comment line
+stands before the text, the line breaks stay and the comment and the text stand
+one level deeper, as said above.
 
 [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept] [corpus fixture:
-er/lex-acc-title-line-feed-after-colon]
+er/lex-acc-title-line-feed-after-colon] [fixture:
+multi-line-statements/acc-colon-and-brace-joined]
 
 Later text lines of an ordinary `accDescr { ... }` block stand one level inside
 its statement, replacing only ASCII spaces and tabs immediately after LF. The
@@ -1870,7 +1896,12 @@ and usecase.
 [test: accessibility revisions: er empty-description-nbsp]
 
 Blocks with comments or directives keep their line breaks and complete contents,
-while ordinary standalone trivia aligns inside the block.
+while ordinary standalone trivia aligns inside the block. Rule 1 names no mark
+for a line inside a block, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [xychart](./xychart.md#empty-description-blocks) and
+[quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
+breaks of a block with a directive or comment line.
 
 [fixture: accessibility-statements/empty-blocks] [fixture:
 accessibility-statements/empty-block-with-directive-or-comment-line] [corpus
@@ -2038,7 +2069,12 @@ accTitle: direction BT
 
 A comment line, `%%` at the start of a line, stands at the level of the
 statements around it, and its text is kept as written; this diagram has no other
-comment (diagrams/er.md, Comments).
+comment (diagrams/er.md, Comments). Rule 1 gives no form here, since its table
+names the whitespace beside a mark and not the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it, as [state](./state.md#comments) and [flowchart](./flowchart.md#comments) put
+a comment line at the level of the statements around it.
 
 [fixture: comments/kept] [fixture: comments/in-blocks] [fixture:
 comments/last-in-body] [fixture: comments/text-kept]
@@ -2687,12 +2723,21 @@ multi-line-statements/style-over-lines-joined]
 
 A statement with a comment or directive keeps its line breaks; structural
 continuations and intervening trivia stand one level deeper. Whitespace inside
-values and before the first line break of each gap stays unchanged. A joining
-region keeps the line that it joins as written (see below). A line break stays
-where joining it, with one space or with nothing, could change which `;` the
-line rule ignores, and where a `;` ends the last line; any other line break is
-joined as usual, also in a statement that holds a `;`. A statement that keeps a
-line break keeps its styles as written.
+values and before the first line break of each gap stays unchanged. Rule 1 names
+no mark for a line break, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#multi-line-statements),
+[gantt](./gantt.md#multi-line-statements), and
+[journey](./journey.md#multi-line-statements) keep a line break next to a
+comment or a directive and the whitespace before it, and put the later parts of
+a statement and the comment and directive lines between them one level deeper,
+where no other rule keeps the layout as written (where the Db holds the text
+with its whitespace, where moving a line makes mermaid.js reject the text, and
+the like). A joining region keeps the line that it joins as written (see below).
+A line break stays where joining it, with one space or with nothing, could
+change which `;` the line rule ignores, and where a `;` ends the last line; any
+other line break is joined as usual, also in a statement that holds a `;`. A
+statement that keeps a line break keeps its styles as written.
 
 [fixture: multi-line-statements/semicolon-joining-changes-kept] [fixture:
 multi-line-statements/style-comment-continuation] [fixture:
