@@ -188,6 +188,11 @@ info
 ブロックの境界がわかるよう、キーワードと開始波括弧の間に空白を 1 つ置きます。
 開始記号前の通常の空白は物理改行や Unicode 境界を越えて結合します。
 開始記号前の実際の注釈類は改行を保ち、共有の継続字下げを使います。
+たとえば、`accDescr`、`%% c`、`{D}` の 3 行を保つのは、
+`accDescr %% c` と次の行の `{D}` の 2 行を mermaid.js
+が拒否するためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 空白だけのブロックは、囲む本文がないため `{}` にします。
 コメントだけのブロックではコメントを1段内側に置きます。
 単独の閉じは文の列へ合わせます。
@@ -208,6 +213,8 @@ Db に LF 後の字下げが残らないためです。
 [fixture: info/description-blocks/block-comment-only]
 
 [fixture: info/description-blocks/block-opener-trivia]
+
+[fixture: info/description-blocks/block-opener-comment]
 
 [fixture: info/description-blocks/block-first-close]
 
@@ -331,6 +338,10 @@ showInfo
 所有位置、任意の複数行本文、大域的な処理による分断、消費・予備の LF、
 閉じの余白を保ちます。
 4種類の共通文の `textAfter` は、空白・タブ、予備の LF、EOF の境界を保ちます。
+たとえば、`title Topic%%{}%%` の次の行が `accTitle: Access` のとき、
+タイトル行の末尾の空白を削除すると mermaid.js が拒否します（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 可視 EOL 後の形の所属は `body` のままです。
 代わりにコメントと判断されたものは、コメントのままにします。
 接した閉じの後に空白を足すと、取り込まれた指定が復活するためです。

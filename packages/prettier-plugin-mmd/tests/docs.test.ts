@@ -693,6 +693,7 @@ const countedVersionGroups = [
       "xychart",
       "quadrant",
       "block",
+      "info",
     ],
     versions: ["10.9.8", "11.7.0", "11.17.2", "12.0.0", "12.3.0"],
   },
