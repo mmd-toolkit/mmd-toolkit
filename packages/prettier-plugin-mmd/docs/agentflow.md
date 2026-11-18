@@ -1205,8 +1205,8 @@ retained. Rule 1 names no mark for a line break, so
 decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
 [journey](./journey.md#multi-line-statements) keep a line break next to a
-comment or a directive and the whitespace before it, and put the continuations
-one level deeper. This reuses flowchart's continuation rule for the same reason.
+comment or a directive and put the continuations one level deeper. This reuses
+flowchart's continuation rule for the same reason.
 
 [fixture: accessibility/inline-directive-kept] [fixture:
 accessibility/next-line-directive-kept] [fixture:
