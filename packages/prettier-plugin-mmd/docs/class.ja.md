@@ -534,6 +534,12 @@ mermaid.js はスタイルをクラスのスタイルへ書かれたまま足し
 
 コメントやディレクティブがある文、空白だけのスタイルがある文、
 スタイルに改行があるか、行に保つ `;` がある文は、書かれたままにします。
+`style A fill:#f00 %%{x}%% ,color:white` は、書かれたまま残します。
+`style A fill: #f00 %%{x}%%, color: white` では、
+対象にする版の mermaid.js のうちいくつかが、スタイルを違って描くからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: whitespace-between-tokens/style-comma-before-dropped]
 [fixture: whitespace-between-tokens/style-comma-beside-directive-kept]
@@ -916,8 +922,21 @@ mermaid.js の文書と同じく、属性の分類記号はそのテキストに
 
 属性と注釈の行は、本体内でもクラス名の `:` の後でも、
 内部の空白とタブの連なりを除き、中身を保ちます。
+本体内の注釈の行は、属性の行と違って、空白とタブの連なりを残します。
+`<< y  z >>` はそのまま残します。
+`<<y z>>` では、対象にする版の mermaid.js はすべて、
+テキストと形状を違って描くからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 メソッドの名前・引数・戻り値の中身も、連なりを除いて保ちます。
 総称型のつづりと分類記号に伴う末尾も保ちます。
+引数 `a ,  b` のコンマの前の空白は残します。
+`a, b` では、対象にする版の mermaid.js はすべて、
+引数のテキストと図形の形状を違って描くからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: member-lines/runs-collapsed]
 [fixture: member-lines/percent-text-runs-collapsed]
@@ -1084,6 +1103,12 @@ mermaid.js は、文の後のコメントの後の改行をコメントの一部
 ヘッダーと文を持つ行のコメントの後も同じです。
 例は `classDiagram accDescr {} %% c` で、
 その fixture は `comments/whitespace-line-after-header-comment-kept` です。
+`classDiagram accDescr {} %% c` と `class A` の間の、
+空白 2 つの行を空行にすると、対象にする版の mermaid.js はすべて、
+その入力を拒否します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: comments/whitespace-line-kept]
 [fixture: comments/whitespace-line-after-header-comment-kept]

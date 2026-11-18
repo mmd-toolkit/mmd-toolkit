@@ -678,6 +678,11 @@ Db はその空白を持ちますが、図では描かれません。
 その空白で名前が異なる 2 つのセクションは別々に描かれ、
 除くとそうならないからです。
 半角空白とタブだけのタイトルは、書かれたままにします。
+`title` の後ろに空白 2 つ、タブ、空白 1 つがある形は残します。
+対象にする版の mermaid.js はすべて、
+`title` の後ろに何もない形を違って描くためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 
 [fixture: titles-and-sections/title-padding-dropped]
 [fixture: titles-and-sections/title-blank-kept]
@@ -1365,6 +1370,16 @@ period の後ろでは、`#` の前の空白は period の一部なので、
 [fixture: comments/after-header-percent] [fixture: comments/after-period]
 [fixture: comments/after-description-block]
 [fixture: comments/after-statement-under-a-section]
+
+同じ行で `%%` のコメントが続く説明ブロックは、ブロックのまま残します。
+対象にする版の mermaid.js のうちいくつかは、
+`accDescr {a} %% c` から説明 `a` を読みますが、
+`accDescr: a %% c` からは Db に `a %% c` を読むからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+
+[fixture: comments/block-then-percent-comment-kept]
 
 title、section、event、アクセシビリティのテキストの中の `#` と `%%` は、
 コメントではなくテキストの文字で、一緒に残します。

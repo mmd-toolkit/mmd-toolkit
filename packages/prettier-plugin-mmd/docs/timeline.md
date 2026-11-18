@@ -667,7 +667,10 @@ inside it is printed as one space (see
 The name of a `section` is printed as written, the whitespace at its start and
 at its end included: two sections whose names differ by it are drawn apart, and
 would not be once it is left out. A title of spaces and tabs only stays as
-written.
+written. For `title` followed by two spaces, a tab and a space, that whitespace
+stays, since every version of mermaid.js that counts draws `title` with nothing
+after it differently (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: titles-and-sections/title-padding-dropped] [fixture:
 titles-and-sections/title-blank-kept] [fixture:
@@ -1366,6 +1369,13 @@ whitespace before the `#` is part of the period, and stays as it is (see
 [fixture: comments/after-header-percent] [fixture: comments/after-period]
 [fixture: comments/after-description-block] [fixture:
 comments/after-statement-under-a-section]
+
+A description block that a `%%` comment follows on its line stays a block, since
+some of the versions of mermaid.js that count read the description `a` from
+`accDescr {a} %% c` but `a %% c` from `accDescr: a %% c` in the Db (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+
+[fixture: comments/block-then-percent-comment-kept]
 
 Inside a title, a section, an event, and an accessibility text, `#` and `%%` are
 characters of the text, not a comment, and are kept with it.

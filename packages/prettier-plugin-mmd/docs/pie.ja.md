@@ -240,8 +240,13 @@ C4 の[アクセシビリティの行](./c4.ja.md#アクセシビリティの行
 空なら `accTitle:` または `accDescr:` で終えます。
 `accDescr` の値の中の空白とタブの連なりは空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
-`accTitle` はブラウザがツールチップとして表示するので、
-その連なりは書かれたまま残します。
+`accTitle` の連なりは、書かれたまま残します。
+ブラウザがツールチップとして表示するうえ、
+対象にする版の mermaid.js のうちいくつかが、
+`accTitle: A B` を `accTitle: A   B` とは違うテキストで描くからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 引用符・行形式の波括弧は文字として残し、
 重複代入とパーセントコメントの接続も保ちます。
 固定した文法の行形式は物理的な EOL で終わるため、
@@ -277,6 +282,7 @@ mermaid.js が先に取り除く空行・コメント・ディレクティブの
 [fixture: pie/accessibility-lines/accessibility-next-trivia]
 [fixture: pie/accessibility-lines/accessibility-directive-edges]
 [fixture: pie/accessibility-lines/accessibility-inner-tab]
+[fixture: pie/accessibility-lines/acc-title-inner-spaces-kept]
 [fixture: pie/accessibility-lines/accessibility-only-global-trivia]
 
 入力（エスケープ表記）:
