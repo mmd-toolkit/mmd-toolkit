@@ -976,12 +976,6 @@ AST の `children` から親子を読みます。
 固定された原文の行の境界や、値のタブ、末尾、
 新しく露出する先頭の Unicode 空白が安全な行分けを妨げる図は、
 枝の前置部分に従って本文を保ちます。
-`├── "a" "b";` の同じ行の形を保ちます。
-`"b";` を先頭に空白 1 個のある枝なしの別行へ分けると、
-mermaid.js が拒否するためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 
 [fixture: treeview/statements-one-per-line/review159-box-quoted-line-rule-semicolon]
 
@@ -1121,12 +1115,6 @@ mermaid.js が拒否するためです。
 
 選ばれる、または選ばれないセミコロンと、
 安全に分けられない LS・PS で始まる値には、既存の本文保持の条件を適用します。
-`"style:#x" %%{x}%%; "b"` の同じ行の形を保ちます。
-`"b"` を単独の行へ移すと、mermaid.js は `b` を子ではなく根と読み、
-Db と図の構造および幾何形状が変わるためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 値が持つコメント領域はその値に保ち、
 その前でノードの間から移すディレクティブは独立した行に置きます。
 字下げモードでは、前置のディレクティブをノードとともに置く既存の配置を保ちます。
@@ -1215,11 +1203,6 @@ mermaid.js は、その空白か、その空白と後ろの `%%` を名前にす
 正の前置の隙間が注釈と名前の文字を区別します。
 名前の中の空白は保ち、付随要素の両側は、普通の隙間の規則を適用せず、
 接しているか離れているかを保ちます。
-`:::hot` の前の名前 `R   text` の空白 3 個は保ちます。
-`R text` にすると、mermaid.js の Db の節点名と図が変わるためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 
 [fixture: treeview/annotation-gaps/annotation-outer]
 
@@ -1248,11 +1231,6 @@ treeView-beta
 class、icon、description は、上書きと空の代入も含めて全出現を原順に保ちます。
 Db の最後の値だけでは原文を再現できません。
 後の注釈を description の中へ移すと、その値も変わりえます。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
-
-[fixture: treeview/annotation-lines/box-redraw-keep-after-description]
 
 [fixture: treeview/repeated-annotations/repeat-class]
 
@@ -1574,11 +1552,6 @@ treeView-beta
 ディレクトリのスラッシュを含みます。
 行末にある裸名の末尾の空白とタブだけを除きます。
 （[行末の空白](#trailing-whitespace)を参照）。
-裸名 `A   B` の空白 3 個は保ちます。
-`A B` にすると、mermaid.js の Db の節点名と図が変わるためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 `'` で囲んだ文字列は `"` で囲んで印字しますが、内容に `'`、`"`、
 バックスラッシュ、改行、U+2028、U+2029、バッククォート、`&`、`#`、
 `<` が含まれる場合は書かれたままにします。
@@ -2245,20 +2218,7 @@ treeView-beta
 ただし、
 [1 行に 1 文](#statements-one-per-line)
 に従って新しく作るディレクティブだけの行へ移すディレクティブの間は例外です。
-裸名の `A%%{init: {}}%%B` の接触は保ちます。
-`A %%{init: {}}%%B` にすると、mermaid.js は節点名を `AB` ではなく `A B` と読み、
-Db と図が変わるためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 単位を行に分けるときは次の単位に付け、右の境界を保ちます。
-`"A"%%{init: {}}%%"B"` の右側の接触は保ちます。
-`"A"%%{init: {}}%% "B"` にすると、
-mermaid.js は `B` を別の根ではなく `A` の子と読み、
-Db と図の構造および幾何形状が変わるためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 独立したディレクティブは第 1 列です。
 行頭の字下げ単位では、後ろの隙間を収まるだけ残し、超過を最後の隙間から短くし、
 残りの字下げを最初のディレクティブの前に置きます。
@@ -2475,14 +2435,6 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 値、ディレクティブとコメント領域の内部は保ち、
 Unicode だけの名前を空行扱いしません。
 本文を保つ図は原文の境界を保ちます。
-`"other"` の前の `"p" "style:#z;"` の同じ行の形を保ちます。
-`"style:#z;"` を単独の行にすると、mermaid.js は `p` の子ではなく根と読み、
-Db と図の構造および幾何形状が変わるためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
-
-[fixture: treeview/semicolons/protected-row-body]
 
 [fixture: treeview/blank-lines/blank-collapse]
 
@@ -2643,12 +2595,6 @@ mermaid.js は値を読む前にディレクティブを取り除き、
 名前や description の末尾の U+2028 と U+2029 は、
 空白やタブではなくテキストの文字なので、その後の空白は除き、
 その前の空白は残します。
-`R`、空白 2 個、U+2028、空白 2 個の順に書かれた裸名では、
-U+2028 の前の空白を保ちます。
-その空白を除くと、mermaid.js の Db の節点名と図が変わるためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 
 [test: treeview/trailing-whitespace/spaces-after-trailing-line-separator]
 [test: treeview/trailing-whitespace/description-spaces-after-trailing-line-separator]

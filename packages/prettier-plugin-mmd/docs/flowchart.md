@@ -115,8 +115,7 @@ indentation/acc-descr-block-direction-text-kept]
 
 mermaid.js reads an indented line that holds such a text as a direction
 statement: `accTitle: t;direction TB` is an accessibility title, and the same
-line indented is the direction `TB` (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+line indented is the direction `TB`.
 
 Input
 ([indentation/direction-text-kept-input.mmd](../tests/fixtures/flowchart/indentation/direction-text-kept-input.mmd)):
@@ -928,8 +927,9 @@ too: a `linkStyle` that a later `linkStyle` replaces for every link it numbers,
 and a `linkStyle default` that a later `linkStyle default` replaces. The styles
 of a `linkStyle` that is replaced for some of its links only stay. With
 `linkStyle 0,1 fill :#f00` followed by `linkStyle 0 stroke:#000`, the space
-before `:` stays, since a version that counts draws different styles for
-`linkStyle 0,1 fill:#f00` followed by the same statement (see
+before `:` stays, since some of the versions of mermaid.js that count draw
+different styles for `linkStyle 0,1 fill:#f00` followed by the same statement
+(see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: whitespace-between-tokens/link-style-fill-colon-gap-replaced-spaced]
@@ -995,10 +995,6 @@ would escape the `:`, and the whitespace after that space goes, as before any
 `:`: `style A fill\   :#f00` is printed `style A fill\ : #f00`. A statement
 stays as written where it holds a comment or a directive, where a style is all
 whitespace, or where a style holds a line break or its line holds a kept `;`.
-For `style A fill:#f00 %%{x}%% ,color:white`, the gap after `,` stays empty,
-since a version that counts draws different styles for
-`style A fill:#f00 %%{x}%% , color:white` (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: whitespace-between-tokens/style-blank-style-kept] [fixture:
 whitespace-between-tokens/style-colon-escaped-space-kept] [fixture:
@@ -1295,10 +1291,10 @@ arrow-spacing/edge-id-arrow-like-after-ignored-semicolon] [fixture:
 arrow-spacing/edge-id-arrow-like-after-ignored-semicolon-runs-collapsed]
 
 An edge id after a data block touches the block: `A@{ shape: circle } e1@--> B`
-is printed `A@{ shape: circle }e1@--> B`. The pinned mermaid.js reads the two
-forms the same, and draws the same figure from them. Some of the versions that
-count have no rule for a space after a data block before an edge id, so they
-reject the form with the space (another has no data block, and rejects both; see
+is printed `A@{ shape: circle }e1@--> B`. mermaid.js 12.3.0 reads the two forms
+the same, and draws the same figure from them. Some of the versions that count
+have no rule for a space after a data block before an edge id, so they reject
+the form with the space (another has no data block, and rejects both; see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The touching form is the one that every version that reads a data block reads. A
 directive or an ignored `;` between the block and the edge id is removed before
@@ -1665,10 +1661,7 @@ examples in the documentation of mermaid.js use that form 12 times and the other
 none. This holds for a label of plain text (letters, digits, spaces, `_`, `,`,
 `?`, and `!`) and for the eight arrows `-->`, `---`, `--o`, `--x`, `-.->`,
 `-.-`, `==>`, and `===`: `A -- text --> B` is printed `A -->|text| B`. A label
-that holds a `|` or a `%%`, a string, and a Markdown label stay as written. In
-`swimlane-beta TB`, `I -- left|right --> J` stays, since mermaid.js rejects
-`I -->|left|right| J` (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+that holds a `|` or a `%%`, a string, and a Markdown label stay as written.
 
 [fixture: link-label-form/swimlane-arrows-to-pipes]
 
@@ -1789,10 +1782,7 @@ A real comment or directive prevents compact joining. Keep the previous
 including comment and directive lines, stand one level deeper than the keyword;
 the comment/directive text and the authored statement breaks remain. Flowchart
 skips a comment after the colon to read the later value. This preserves the
-existing continuation rule when ordinary joining does not apply. The comment
-`%% actual comment` between `accTitle:` and its next-line value keeps its own
-line, since mermaid.js rejects it on the `accTitle:` line (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+existing continuation rule when ordinary joining does not apply.
 
 [fixture: accessibility-lines/next-line-comment-kept] [fixture:
 accessibility-lines/description-comment-continuation] [fixture:
@@ -1823,11 +1813,7 @@ priority.
 accessibility-lines/next-line-direction-kept]
 
 Configured indentation, including its minimum at `tabWidth: 0` and `useTabs`,
-applies to ordinary lines; those options also retain these exceptions. The line
-`accTitle : direction LR` stays unindented after `accTitle :Zero width title`:
-mermaid.js reads the title as `direction LR`, but as `Zero width title` when the
-later line is indented by two spaces, and draws different text (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+applies to ordinary lines; those options also retain these exceptions.
 
 [fixture: accessibility-lines/zero-width] [fixture: accessibility-lines/tabs]
 
@@ -1859,11 +1845,7 @@ Accepted NBSP, U+2028 and U+2029 inside an otherwise empty block also disappear.
 [test: accessibility blocks: flowchart empty-block-unicode]
 
 Kept-line exceptions still take priority, and blocks with comments or directives
-retain their existing layout. In the comment-only block, the line break after
-`accDescr {` stays, since mermaid.js reads an empty description with
-`%% only a comment` on its own line and the description `%% only a comment` with
-it on the opening line (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+retain their existing layout.
 
 [fixture: accessibility-lines/empty-block-semicolon-kept] [fixture:
 accessibility-lines/empty-block-directive-kept] [fixture:
@@ -2650,8 +2632,8 @@ comments/after-frontmatter-before-header] [fixture: comments/before-header]
 
 The text of a comment is kept as written, including whitespace at its end:
 mermaid.js does not read it, and it is the author's text. An otherwise empty
-comment line keeps `%% `, since mermaid.js reads `%%` as a vertex named `%%` and
-draws a different figure (see
+comment line keeps `%% `, since every version of mermaid.js that counts reads
+`%%` as a vertex named `%%` and draws a different figure (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: comments/trailing-whitespace-kept] [fixture:
@@ -3022,10 +3004,7 @@ title of a flowchart subgraph header]
 On a line that the line rule may read, the whitespace after the `[` of a title
 that follows `style:` stays: `subgraph style:[ #x; ]` is printed
 `subgraph style:[ #x;]`, while `subgraph a: [ #x; ]` is printed
-`subgraph a:[#x;]`, since no `style` stands before its `:`. The space after `[`
-in `subgraph style:[ #x; ]` stays, since mermaid.js reads a different subgraph
-title and draws different text and geometry for `subgraph style:[#x; ]` (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+`subgraph a:[#x;]`, since no `style` stands before its `:`.
 
 [fixture: subgraph-header/title-padding-on-line-rule-line]
 
@@ -3109,11 +3088,9 @@ and a `;`, as in `subgraph "S"accDescr {} accDescr {}` and
 [fixture: subgraph-header/whitespace-before-first-block-kept]
 
 The blocks read no token, so that whitespace follows the name: the subgraph has
-the id `subGraph0`, and the id `S` without it (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-That the whitespace is there is kept; how wide it is, only before the first
-block, where it follows the name as written, and a run between two blocks or
-before a `;` becomes one space.
+the id `subGraph0`, and the id `S` without it. That the whitespace is there is
+kept; how wide it is, only before the first block, where it follows the name as
+written, and a run between two blocks or before a `;` becomes one space.
 
 [fixture: subgraph-header/runs-between-blocks-become-one]
 
@@ -3573,9 +3550,7 @@ space.
 
 A `linkStyle` that ends with a backslash keeps the whitespace after it too, as
 one character: `linkStyle default stroke-width:4px\ ` followed by
-`linkStyle 0 stroke:#0f0` keeps the space, since a version that counts draws
-different styles when that final space after the backslash is removed (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+`linkStyle 0 stroke:#0f0` keeps the space.
 
 [fixture: style-trailing-whitespace/link-style-backslash-at-end-kept]
 
@@ -3591,7 +3566,8 @@ style-trailing-whitespace/escaped-comma-kept]
 The same holds for a style that is all whitespace after a directive or after a
 `;` that mermaid.js ignores, as in `style A fill:red,%%{init: {}}%% ` and
 `style A fill:#f00,; `. The final space in `style A fill:red,%%{init: {}}%% `
-stays, since mermaid.js rejects `style A fill:red,%%{init: {}}%%` (see
+stays, since every version of mermaid.js that counts rejects
+`style A fill:red,%%{init: {}}%%` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: style-trailing-whitespace/whitespace-only-value-after-directive-kept]
