@@ -1200,14 +1200,16 @@ sequenceDiagram
 詳しくは
 [同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)
 を参照してください。
-ただし、別名のない `participant` と `actor`、`activate`、`deactivate`、
-`destroy` の ID の後と、`accTitle` の値の後では、空白が ID か値に属するので、
-書かれたまま残します。
+ただし、ほかの規則が空白を書かれたまま残す所は別です。
+たとえば、ID の後、書かれたまま残すデータブロックの後、`accTitle` の値の後では、
+空白が ID、ブロック、値に属するので、書かれたまま残します。
 
 [fixture: comments/mark-run-one-space]
 [fixture: comments/mark-touching-kept-after-each-statement]
 [fixture: comments/mark-run-one-space-after-each-statement]
 [fixture: comments/mark-run-kept-after-an-id-and-acctitle]
+[fixture: whitespace-between-tokens/data-block-name-comment-gap-kept]
+[fixture: whitespace-between-tokens/data-block-name-created-comment-gap-kept]
 [fixture: comments/kept]
 [corpus fixture: sequence/lex-percent-comment-takes-number]
 [fixture: comments/mark-whitespace-kept]

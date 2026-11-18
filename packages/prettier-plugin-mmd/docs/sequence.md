@@ -1144,17 +1144,18 @@ that counts, as `autonumber 5%% c` shows (see
 [A comment right after a character](./compatibility.md#a-comment-right-after-a-character)).
 A run of whitespace before the mark is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
-except after the id of a `participant` or an `actor` without an alias, of an
-`activate`, a `deactivate`, and a `destroy`, and after the value of an
-`accTitle`, where the whitespace belongs to the id or to the value and stays as
-written.
+except where another rule keeps the whitespace as written, as after an id, after
+a data block that stays as written, and after the value of an `accTitle`, where
+the whitespace belongs to the id, to the block, or to the value.
 
 [fixture: comments/mark-run-one-space] [fixture:
 comments/mark-touching-kept-after-each-statement] [fixture:
 comments/mark-run-one-space-after-each-statement] [fixture:
-comments/mark-run-kept-after-an-id-and-acctitle] [fixture: comments/kept]
-[corpus fixture: sequence/lex-percent-comment-takes-number] [fixture:
-comments/mark-whitespace-kept] [fixture:
+comments/mark-run-kept-after-an-id-and-acctitle] [fixture:
+whitespace-between-tokens/data-block-name-comment-gap-kept] [fixture:
+whitespace-between-tokens/data-block-name-created-comment-gap-kept] [fixture:
+comments/kept] [corpus fixture: sequence/lex-percent-comment-takes-number]
+[fixture: comments/mark-whitespace-kept] [fixture:
 comments/after-last-statement-without-line-break] [fixture:
 comments/block-end-comment-without-line-break]
 
