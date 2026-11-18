@@ -1297,6 +1297,13 @@ gantt
 すでに空の内側は空のままです。
 通常のキーワードと開き括弧の間には空白 1 つを置き、
 `accDescr{  }` は `accDescr {}` にします。
+規則 1 は、キーワードと開き括弧の間の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[class](./class.ja.md#空の説明ブロック) と
+[journey](./journey.ja.md#空の説明ブロック) も、ここを空白 1 個で印字します。
+空の波括弧は `{}` と印字します。
+Prettier が `x = { }` を `x = {}`
+と印字するのと同じです（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 
 [fixture: gantt/empty-description-blocks/touching-comment-body]
 [fixture: empty-description-blocks/empty-whitespace-interiors]
@@ -1533,6 +1540,11 @@ mermaid.js はどちらも同じ呼び出しとして読むからです。
 [fixture: click-statements/callback-args-comment-line-kept]
 
 ヘッダーの行末の空白は落とします。
+規則 1 は、行末の空白を決めません。
+規則 1 の表が挙げるのは印の横の空白だからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[requirement](./requirement.ja.md#トークンの間の空白) と
+[radar](./radar.ja.md#trailing-whitespace)も、行末の空白を落とします。
 
 [fixture: whitespace-between-tokens/trailing-whitespace-after-header]
 
