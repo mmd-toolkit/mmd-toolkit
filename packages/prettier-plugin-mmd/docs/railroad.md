@@ -17,8 +17,11 @@ records preserved text and differences from mermaid.js.
 Print the authored header at column one and put an ordinary first statement on
 the next line, making the dialect easy to find. IR keeps `railroad-beta`, EBNF
 `railroad-ebnf-beta`, ABNF `railroad-abnf-beta`, and PEG `railroad-peg-beta`.
-Add no colon or flags. Hidden forms, global trivia and protected semicolon
-segments retain their shared boundaries; an empty body stays empty.
+Add no colon or flags. mermaid.js reads each of the four names in this spelling
+only: the name without `-beta`, with `-beta` in another case, or in capitals is
+rejected by 11.16.1, 11.17.2, 12.0.0, and 12.3.0, so no other spelling is
+printed. Hidden forms, global trivia and protected semicolon segments retain
+their shared boundaries; an empty body stays empty.
 
 [fixture: railroad/header/abnf-hidden]
 
@@ -425,7 +428,10 @@ railroad-peg-beta
 Compact ordinary gaps inside EBNF `(expr)`, `[expr]` and `{expr}`, ABNF `(expr)`
 and `[expr]`, and PEG `(expr)`. Keep every delimiter, including nested and
 singleton groups. This chooses tight inner edges while preserving the source
-structure even where removing a group would keep the Db.
+structure even where removing a group would keep the Db. None of the examples in
+the documentation of mermaid.js writes a group that holds one item or only
+another group, so [rule 3](./printed-form.md#3-a-spelling) gives no form for it
+and keeps the delimiters as written.
 
 [fixture: railroad/groups/abnf-delimiters]
 
@@ -467,10 +473,11 @@ railroad-peg-beta
 ### Postfixes
 
 Attach AST postfix `?`, `*` and `+` to their operand in EBNF and PEG. Keep the
-EBNF chain order and the single PEG suffix. EBNF special-sequence priority is
-already represented by the AST: question marks inside its raw leaf are not
-reinterpreted as postfixes. Attached operators stay, without replacing them with
-calls or groups.
+EBNF chain order and the single PEG suffix. Swapping the two postfixes of
+`"chain" * +` gives another Db in 12.3.0 and another figure in 11.16.1, 11.17.2,
+12.0.0, and 12.3.0. EBNF special-sequence priority is already represented by the
+AST: question marks inside its raw leaf are not reinterpreted as postfixes.
+Attached operators stay, without replacing them with calls or groups.
 
 [fixture: railroad/postfixes/ebnf-chain]
 
@@ -526,7 +533,11 @@ ABNF retains every count and star as written, including leading zeroes, exact
 counts, omitted lower or upper bounds, zero, optional bounds and large integers.
 Compact only the ordinary gap between a complete repeat and its primary. Do not
 fill omitted bounds or replace the repeat with an optional group: Db equality
-does not justify losing the chosen form or reprinting rounded numbers.
+does not justify losing the chosen form or reprinting rounded numbers: a count
+is printed with the digits written, since the tree holds it whole (see
+[A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)),
+and reprinted through a floating-point number `9007199254740993` would become
+the other number `9007199254740992`.
 
 [fixture: railroad/repeats/abnf-large]
 
@@ -1322,7 +1333,17 @@ following operand or terminator on the next line. Every dialect has `%%`; IR
 also has `/* */`, EBNF `/* */` and `(* *)`, ABNF `;` line comments, and PEG `#`
 line comments. Bare ABNF `;` is punctuation; `//` is not a native comment. Text
 owned by a value stays in that value. These choices preserve ownership and
-prevent a line comment from taking code.
+prevent a line comment from taking code. Rule 1 names no mark for a comment, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides. A standalone comment stands one body step in, or at column one before
+the header, and an inline comment keeps its line and keeps touching what it
+touches, with one space for a separated gap, as in [radar](./radar.md#comments),
+[wardley](./wardley.md#comments), and
+[architecture](./architecture.md#comments). The text of a comment is a text that
+the tree holds whole, so it is printed as written inside
+([A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)),
+as [flowchart](./flowchart.md#comments) keeps the text of a comment with the
+whitespace at its end.
 
 Inside an ordinary IR call, a block comment before an argument moves with that
 argument onto its line. Comments before a comma or the closing parenthesis
@@ -1338,7 +1359,12 @@ space before them and none after them; the closing parenthesis stands on its own
 line. Apply the same outside spacing beside existing line breaks without moving
 punctuation across comments. Preserve each comment run's contents, internal
 contacts, continuation columns and trailing whitespace, including with tabs or
-zero-width indentation.
+zero-width indentation. A standalone comment line inside an argument list stands
+at the level of the arguments around it, as a comment line stands at the level
+of the statements around it in [flowchart](./flowchart.md#comments),
+[sequence](./sequence.md#comments), and [state](./state.md#comments), and a run
+of empty lines becomes one, as in [radar](./radar.md#blank-lines) and
+[info](./info.md#blank-lines).
 
 [fixture: railroad/comments/ir-call-inline-spacing]
 
