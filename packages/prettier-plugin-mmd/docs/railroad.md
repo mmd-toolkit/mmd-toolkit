@@ -1025,6 +1025,8 @@ whitespace after the last one is left out, whatever the whitespace at the end of
 the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
+[fixture: railroad/title/ir-rule-on-next-line]
+
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
 railroad/title/abnf-next-line]
 
@@ -1133,6 +1135,8 @@ diagrams. The directives that end the value are printed with one space before
 each that has whitespace before it, and the whitespace after the last one is
 left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+
+[fixture: railroad/accessibility-lines/ir-acc-title-before-rule]
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
 railroad/accessibility-lines/abnf-empty]
@@ -1868,8 +1872,14 @@ meaning on the first line.
 Keep an authored railroad line as written when it contains the literal string
 `style` or `classDef` after global directives have been omitted. This includes
 all statements, comments and native hidden forms on the line, with their inner
-spacing. Do not join the line to either neighbor. When removing a directive
-forms one of these strings across physical lines, keep every contributing line.
+spacing. Do not join the line to either neighbor. ABNF keeps the line break
+between `style=(":"` and `)%%{!#}%% ;`, and PEG keeps the line break between
+`r<-("sty%%{wrap}%%le:"` and `)%%{!#}%% ;`, since every version of mermaid.js
+that counts rejects the joined forms `style=(":")%%{!#}%% ;` and
+`r<-("sty%%{wrap}%%le:")%%{!#}%% ;`, respectively (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+When removing a directive forms one of these strings across physical lines, keep
+every contributing line.
 
 [fixture: railroad/semicolons/native-terminal-value] [fixture:
 railroad/semicolons/ir-word-unclosed-directive-lines] [fixture:

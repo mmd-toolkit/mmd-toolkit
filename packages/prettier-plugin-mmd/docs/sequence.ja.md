@@ -644,6 +644,11 @@ mermaid.js の正規表現が最後の `)` まで読むので、書かれたま�
 `box RGB(33,66,99) Team`、`box rgb (33,66,99) Team`、
 関数のほかにテキストがある `rect` も、書かれたままです。
 コンマの前、開き括弧 `(` の直後、閉じ括弧 `)` の直前の空白は、書かれたままです。
+`rect` の `rgb(191 ,223 ,255)` のコンマの前の空白を残すのは、
+対象にする版の mermaid.js のうちいくつかが、
+`rgb(191, 223, 255)` を Db の別のメッセージ値として読むためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 
 [fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
 [fixture: colors/functions-as-written]
@@ -1048,6 +1053,11 @@ sequenceDiagram
 [fixture: title/text-padding-dropped-colon]
 
 半角空白とタブだけのタイトルは、書かれたままにします。
+テキストの終わりで `title` の後に空白 2 つ、タブ、空白 1 つが続く形を残すのは、
+対象にする版の mermaid.js はすべて、
+`title` だけの行を拒否するためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 
 [fixture: title/title-blank-kept]
 
@@ -1299,6 +1309,12 @@ mermaid.js は `#a;` をそのテキストの文字参照として読みます�
 `accDescr: …` の形に印字します。
 外側のブロックの `else` や `and` の前にあるブロックでも同じです。
 `end` が行に残るときは、書いたままにします。
+`accDescr {style:#x} end #a;` に空白 2 つが続いてテキストが終わる形を、
+1 行に残すのは、対象にする版の mermaid.js はすべて、
+`accDescr: style:#x` の後に `end #a;`
+を単独の行に置く形を拒否するためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 
 [fixture: statements-one-per-line/end-comment-ignored-semicolon-no-gaps-in-style-rule-stretch-without-whitespace]
 [fixture: statements-one-per-line/end-comment-ignored-semicolon-no-gaps-in-style-rule-stretch]
@@ -1317,6 +1333,12 @@ mermaid.js は `#a;` をそのテキストの文字参照として読みます�
 その後に `%%{init: {}}%%` がある場合や、
 `and` 区切りの前で U+2028 が続く場合も同じです。
 エンティティがない `end #; %%{init: {}}%%` は、通常どおり別の行に移します。
+テキストの終わりで `accDescr {style:#x} end #12; %%{init: {}}%%` を 1
+行に残すのは、対象にする版の mermaid.js はすべて、
+`accDescr: style:#x` の後に `end #12; %%{init: {}}%%`
+を単独の行に置く形を拒否するためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 
 [fixture: statements-one-per-line/end-comment-entity-before-directive]
 [fixture: statements-one-per-line/end-comment-no-entity-before-directive]
@@ -1370,6 +1392,12 @@ mermaid.js の行の規則が読むかもしれない範囲に空白を含むと
 前の行の値ではないので、その行を終わらせる `;` は、その行の最後の `;` です。
 空白と `else` が次の行に続く `end #a;` は、テキストの終わりにあるときと同じく、
 引き金の行に残します。
+`accDescr {style:#x}` の後の `end #a;` に空白、タブ、次の `else` 行が続くとき、
+`end #a;` を説明ブロックと同じ行に残すのは、対象にする版の mermaid.js はすべて、
+`accDescr: style:#x` の後に `end #a;` を `else`
+の前の単独の行に置く形を拒否するためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 
 [fixture: statements-one-per-line/end-comment-ignored-semicolon-trailing-whitespace-before-a-divider]
 
@@ -1380,6 +1408,12 @@ mermaid.js の行の規則が読むかもしれない範囲に空白を含むと
 コメントが別の行にしても同じに読まれる `accDescr {style: x}end #;` は、
 `accDescr: style: x` と `end #;` の 2 行に印字します。
 分かれ目も同じで、`accDescr {style:#x}else x#a;` は 1 行に残します。
+`accDescr {style:#x}else x#a;` の分かれ目を同じ行に残すのは、
+対象にする版の mermaid.js はすべて、
+`accDescr: style:#x` の後に `else x#a;` を単独の行に置くと、
+分かれ目のテキストを違って描くためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 
 [fixture: statements-one-per-line/end-touching-description-block-without-trigger]
 [fixture: statements-one-per-line/end-touching-description-block-with-trigger-entity]

@@ -71,6 +71,7 @@ stateDiagram-v2
 その行をまたぐ値や保護された原文の境界は変えません。
 
 [fixture: composite-states/header-completion-after-comment]
+[fixture: composite-states/multiline-alias-label-kept]
 
 複合状態と、本体を持つ別名の定義の `{` は、空白 1 つの後に、名前の行に置きます。
 次の行に書かれた `{` は、その行に移します。
@@ -323,6 +324,12 @@ stateDiagram
 `<<FORK>>`、`<<JOIN>>`、`accTitle:`、`accDescr:` と印字する `ACCTITLE:`、
 `ACCDESCR:` と、`AS`、`END`、`DIRECTION TB` があります。
 ノートの位置、`LEFT OF` と `RIGHT OF` は書かれたまま残します。
+`LEFT OF` は残します。
+`state "x" AS y` の後では、対象にする版の mermaid.js のすべてが、
+`note LEFT OF y: left` と `note left of y: left` の形状を違って描くからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: keyword-case/pseudo-states-one-form]
 [fixture: keyword-case/accessibility-alias-direction-one-form]
@@ -698,6 +705,12 @@ mermaid.js の文書は、この文の例 2 件を `,` の後ろに空白を置�
 `,` の後ろの隙間のディレクティブは、
 [ディレクティブ](#ディレクティブ)のとおりに置きます。
 行の規則が無視する `;` のある行は、書かれたまま残します。
+`style A fill:#f00;;` は残します。
+`style A fill: #f00;;` では、対象にする版の mermaid.js のうちいくつかが、
+構造とスタイルの違う図を描くからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: whitespace-between-tokens/class-ids-beside-directive]
 [fixture: whitespace-between-tokens/class-ids-beside-directive-runs]
@@ -990,6 +1003,8 @@ ASCII 以外の文字を含むノートも書かれたままにします。
 id の前の空白は空白 1 つにします。
 `note left of%%x A` のように位置の直後にある、mermaid.js が読まないテキストは、
 位置に接したまま残します。
+
+[fixture: notes/kept]
 
 固定版の Mermaid は、`stateDiagram-v2` のノートを Markdown として描画します。
 [`dataFetcher.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/state/dataFetcher.ts#L380-L386)
@@ -1344,6 +1359,12 @@ mermaid.js は、それを両端の空白ごと読むので、
 最後のディレクティブの後ろの空白は除きます。
 `state "d" as A : x   %%{x}%%  ` は `state "d" as A : x %%{x}%%` と印字します。
 空白とタブだけの説明と、`;` を含む説明は、書かれたままにします。
+`state "d" as A :` の後の空白 3 つからなる 2 つ目の説明は残します。
+その空白を除くと、対象にする版の mermaid.js のうちいくつかが、
+構造の違う図を描くからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [corpus fixture: state/db-alias-colon-spaces-second]
 [fixture: aliases/second-description-kept]

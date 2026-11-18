@@ -779,6 +779,12 @@ tf 01 evt Alpha
 アクセシビリティの行形式は前置空白、キーワードとコロンの間、
 コロン後と末尾の空白、空本文、引用符、波括弧風のテキストを保ちます。
 `EM_ACC_TITLE` と `EM_ACC_DESCR` はこれらも値に含むためです。
+`accTitle` と `:` の間が空白 1 個とタブ 1 個のときは、その隙間を保ちます。
+対象にする版の mermaid.js のすべてが、
+隙間をなくすとアクセシビリティのテキストを違って描くためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 空本文でも終端トークンは空ではなく、コロン形式をブロックへ変えません。
 行の値の LS・PS は内容のままです。
 
@@ -813,6 +819,13 @@ tf 01 evt Alpha accTitle:
 共有 `layoutDescriptionBlock` を通さない判断はこの 1 か所です。
 通常の `{}` への圧縮と閉じの整列は `EM_ACC_DESCR` の値を変えるためです。
 図種専用の空ブロック正規化も加えません。
+`accDescr {`、空白 1 個、タブ 1 個、LF、`  }` と続く形では、その空白を保ちます。
+対象にする版の mermaid.js のすべてが、
+空白だけの説明に使う圧縮形 `accDescr {}` では、
+アクセシビリティのテキストを違って描くためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: eventmodeling/description-blocks/description-whitespace-literal-retained]
 
