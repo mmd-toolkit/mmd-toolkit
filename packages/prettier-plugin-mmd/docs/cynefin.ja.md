@@ -16,17 +16,25 @@ cynefin-beta は第 1 列に置きます。
 mermaid.js は `cynefin-beta:` と `cynefin-beta` を同じ見出しとして読み、
 その文書の例はコロンなしを 3 回使い、コロンありは使わないためです。
 （[ヘッダーの後のコロン](./compatibility.ja.md#ヘッダーの後のコロン)を参照）。
-語との間に隠れた形か大域的なディレクティブがあるときと、
-`;` か隠れた YAML ブロックの `---` が接するときは、コロンを保ちます。
+語との間に隠れた形か大域的なディレクティブがあるときと、`;`、
+隠れた YAML ブロックの `---`、閉じていないディレクティブが接するときは、
+コロンを保ちます。
 `%%{%%{wrap}%%init: {"label":"style:#keep"}}%%` の後では、
 `cynefin-beta:;complex 'Kept colon'` のコロンを保ちます。
 対象にする版の mermaid.js のうちいくつかが、
 `cynefin-beta;complex 'Kept colon'` を拒否するためです（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照）。
+閉じていないディレクティブの前でも、コロンを保ちます。
+`cynefin-beta:%%{x y`、改行、`complex "A"` を書かれたまま残すのは、
+mermaid.js がディレクティブを後ろの改行ごと取り除き、
+見出しと `complex` を 1 つの語として読むことになり、
+対象にする版の mermaid.js のすべてが、
+そのテキストを拒否するためです（同じ表を参照）。
 
 [fixture: cynefin/header/colon-removed]
 [fixture: cynefin/header/colon-semicolon-kept]
+[fixture: cynefin/header/colon-unclosed-directive-kept]
 [fixture: cynefin/header/colon-directive-before-hidden-yaml-kept]
 
 普通の最初の文は次の行へ移し、見出しを見つけやすくします。

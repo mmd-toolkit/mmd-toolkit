@@ -17,14 +17,20 @@ examples in its documentation write the header without the colon 3 times against
 none (see
 [The colon after a header](./compatibility.md#the-colon-after-a-header)). The
 colon stays where a hidden form or a global directive lies between it and the
-word, and where a `;` or the `---` of a hidden YAML block touches it. After
-`%%{%%{wrap}%%init: {"label":"style:#keep"}}%%`,
+word, and where a `;`, the `---` of a hidden YAML block, or a directive that is
+not closed touches it. After `%%{%%{wrap}%%init: {"label":"style:#keep"}}%%`,
 `cynefin-beta:;complex 'Kept colon'` keeps its colon, since some of the versions
 of mermaid.js that count reject `cynefin-beta;complex 'Kept colon'` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The colon stays before an unclosed directive too: `cynefin-beta:%%{x y`, a line
+break, and `complex "A"` stay as written, since mermaid.js takes the directive
+out with the line break after it and would read the header and `complex` as one
+word, and every version of mermaid.js that counts rejects that text (see the
+same table).
 
 [fixture: cynefin/header/colon-removed] [fixture:
 cynefin/header/colon-semicolon-kept] [fixture:
+cynefin/header/colon-unclosed-directive-kept] [fixture:
 cynefin/header/colon-directive-before-hidden-yaml-kept]
 
 Move an ordinary first statement to the next line so the header is easy to find.
