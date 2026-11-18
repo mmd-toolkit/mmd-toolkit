@@ -613,7 +613,10 @@ arrows/edge-id-after-data-block-semicolon]
 An edge id that starts as an arrow does touches the shape or the data block
 before it, as in `A["x"]--a@-->B`. In agentflow that is an edge id that starts
 with `--`, `-.-`, or `-..-`; one such as `x--a`, `==a`, `-.a`, or `.-a` is read
-the same after whitespace, and has one space before it.
+the same after whitespace, and has one space before it. `A["x"]--a@-->B` stays
+attached, since every version of mermaid.js that counts draws `A["x"] --a@-->B`
+differently (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: arrows/edge-id-arrow-like-kept-attached] [fixture:
 arrows/edge-id-not-arrow-like-gets-one-space]
@@ -688,15 +691,20 @@ discards ordinary bare exterior padding, whereas internal and quoted/markdown
 label text stays, and a label of spaces and tabs only is printed as one space.
 Keep one leading/trailing space for slash, backslash, dash, quote characters,
 and when `@` in the first word would make it read as an edge id; put no space
-before slanted ?]/=] closers. Agentflow label comments are different: their
-preceding spaces/tabs are label content, so preserve that padding, the comment
-and its LF/continuation columns, including a closing bracket that belongs to the
-comment rather than closing the shape. Tildes remain content. Shape spellings,
-entities and HTML remain authored.
+before slanted ?]/=] closers. For a slash label, `A[ /x/ ]` keeps its spaces,
+since every version of mermaid.js that counts reads `A[/x/]` as a slanted vertex
+labelled `x` instead of a square vertex labelled `/x/` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Agentflow label comments are different: their preceding spaces/tabs are label
+content, so preserve that padding, the comment and its LF/continuation columns,
+including a closing bracket that belongs to the comment rather than closing the
+shape. Tildes remain content. Shape spellings, entities and HTML remain
+authored.
 
 [fixture: labels/labels-closers] [fixture: labels/labels-leading-sensitive]
 [fixture: labels/labels-leading-at-sign] [fixture: labels/labels-padding]
 [fixture: labels/labels-tilde] [fixture: labels/labels-trim-sensitive-unsafe]
+[fixture: labels/slash-label-padding-kept]
 
 Flow/connector heading titles follow
 [Subgraph header](./flowchart.md#subgraph-header) instead: drop the whitespace
@@ -720,13 +728,16 @@ agentflow-beta TB
 
 Reuse [Whitespace between tokens](./flowchart.md#whitespace-between-tokens) and
 [Kept as written](./flowchart.md#kept-as-written): touching is lexical, and
-whitespace on both sides of & distinguishes a group from one id. Keep tight
-id/shape/:::/data suffixes, property Identifiers, actual comma-list holes
-(including empty ends), comma-bearing single ids, occurrences and order. Do not
-split ids, sort lists or manufacture a trailing comma: a style target, a class
-suffix, a second class id or a vertex id that contains commas is one Identifier,
-and only the grammar's own id lists split at commas; property operands are
-Identifiers, not numbers to rewrite.
+whitespace on both sides of & distinguishes a group from one id. `A&B` stays
+without spaces, since every version of mermaid.js that counts reads `A & B` as
+two vertices `A` and `B` instead of one vertex `A&B` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Keep tight id/shape/:::/data suffixes, property Identifiers, actual comma-list
+holes (including empty ends), comma-bearing single ids, occurrences and order.
+Do not split ids, sort lists or manufacture a trailing comma: a style target, a
+class suffix, a second class id or a vertex id that contains commas is one
+Identifier, and only the grammar's own id lists split at commas; property
+operands are Identifiers, not numbers to rewrite.
 
 [fixture: vertices-and-lists/class-list-holes] [fixture:
 vertices-and-lists/groups-suffixes]
@@ -758,13 +769,18 @@ metadata-blocks/metadata-alias-rewrite-unsafe] [fixture:
 metadata-blocks/metadata-multiline]
 
 A block on one line is printed with one space inside each end, and stays as
-written in the cases listed under [Data blocks](./flowchart.md#data-blocks).
+written in the cases listed under [Data blocks](./flowchart.md#data-blocks). In
+a block with a directive, `A@{%%{init: {}}%%x:1}` stays, since some of the
+versions of mermaid.js that count read `A@{%%{init: {}}%%x: 1}` with metadata
+key `x` and value `1` instead of key `x:1` and value `null` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Where its line is too long it prints on lines, one entry on each, under the
 conditions listed there.
 
 [fixture: metadata-blocks/long-split] [fixture: metadata-blocks/one-line-padded]
 [fixture: metadata-blocks/one-line-space-only-padded] [fixture:
 metadata-blocks/one-line-directive-kept] [fixture:
+metadata-blocks/block-directive-colon-kept] [fixture:
 metadata-blocks/one-line-kept-line-kept] [fixture:
 metadata-blocks/one-line-touching-blocks-kept] [fixture:
 metadata-blocks/one-line-separate-blocks-padded] [fixture:
@@ -1418,11 +1434,16 @@ and split empty-description groups. Extra first-style whitespace is leading
 value text and stays. Name endings follow Names and headings. Label-comment
 padding, strings, data, comments, directives and later value columns stay.
 Forbidden class/callback/title padding remains rejected; the size guard
-overrides trimming.
+overrides trimming. For the quoted vertex label with `before`, a comment-looking
+line, and `after` at the 50000-unit boundary, `A` stays at column zero: every
+version of mermaid.js that counts drops the comment-looking line from the label
+when two spaces precede `A` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: trailing-whitespace/trailing-comment] [fixture:
 trailing-whitespace/trailing-name-dropped] [fixture:
-trailing-whitespace/trailing-null-style]
+trailing-whitespace/trailing-null-style] [fixture:
+default-size-branches/size-preserving-to-fallback-unsafe]
 
 A `linkStyle` that ends with a backslash keeps the whitespace after it too, as
 one character, as in [flowchart](./flowchart.md#style-trailing-whitespace).
@@ -1728,12 +1749,17 @@ Reuse [Blank lines](./flowchart.md#blank-lines) and
 header-only input, end with one configured newline. Preserve EOF-reaching
 directive/value endings and size-retained endings, since adding a value
 character or crossing the size branch changes the reading. Whitespace required
-for an empty style and comment text stay before the newline. An open directive
-with trailing exterior whitespace uses the shared final-whitespace handling; an
-open directive ending at EOF gains no value character.
+for an empty style and comment text stay before the newline. At EOF, `style A`
+with two trailing spaces stays, since every version of mermaid.js that counts
+rejects `style A` without them (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+An open directive with trailing exterior whitespace uses the shared
+final-whitespace handling; an open directive ending at EOF gains no value
+character.
 
 [fixture: final-newline/final-comment] [fixture:
-final-newline/final-open-description]
+final-newline/final-open-description] [fixture:
+final-newline/final-empty-style-spaces]
 
 Input (escaped): `"agentflow-beta TB\nA\n\n\n"`.
 

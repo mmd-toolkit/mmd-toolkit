@@ -551,9 +551,10 @@ mermaid.js は `;` がなくても同じ文として読むからです。
 U+FEFF は残します。
 行の規則が無視する `;` の後ろにあるものも残します。
 CSS はこれらを空白として読まないので、最後のスタイルの末尾に残り、
-なくすと mermaid.js が違う図を描くからです。
+なくすと対象にする版の mermaid.js のすべてが違う図を描くからです。
 詳しくは、
-[スタイルの末尾の空白](./compatibility.ja.md#スタイルの末尾の空白)
+[スタイルの末尾の空白](./compatibility.ja.md#スタイルの末尾の空白) と
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
 消すのは `;` と、最後のそれらの文字の後ろの空白、タブ、改ページだけです。
 `classDef zz fill:red`、U+00A0、`;` は、`classDef zz fill: red`、
@@ -779,6 +780,7 @@ Db の等しい外側の空白から 1 つを選び、引用符に見える文�
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: title/title-directives-end-blanks-dropped]
+[fixture: title/inline-directive-contact-kept]
 
 テキストのない `title` は、
 同じ行のディレクティブかコメントの前に空白が書かれていれば、
@@ -1153,7 +1155,11 @@ class キーワードと名前の必須空白を保ち、ディレクティブ�
 を参照してください。
 つながった行はすべて、最初の行の前の字下げを基準に読まれます。
 `"A" %%{x: w`、改行、`  "B": 1` は `B` を `A` の子にし、
-`A` を空白 2 つで字下げすると `B` はその兄弟になります。
+`A` を空白 2 つで字下げすると、
+対象にする版の mermaid.js のすべてで `B` はその兄弟になります。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 そのような行を含む本文は、保持する行が行の境界を拘束する場合と同じく、
 書かれたまま印字します（[セミコロン](#semicolons)を参照）。
 二つの行を 1 行に書き、その間に閉じていないディレクティブがある場合も同じです。
@@ -1161,6 +1167,7 @@ class キーワードと名前の必須空白を保ち、ディレクティブ�
 
 [fixture: treemap/directives/unclosed-directive-joins-rows-kept]
 [fixture: treemap/directives/unclosed-directive-between-rows-kept]
+[fixture: treemap/directives/unclosed-directive-child-kept]
 
 `useTabs` のときは、保つ隙間も補う字下げもすべてタブで印字します。
 ディレクティブの前後の空白は一つの字下げ単位で、
@@ -1306,6 +1313,11 @@ Unicode の行の字下げを追加する規則ではありません。
 安全な実際の先頭フロントマターだけを、共有の保護条件付き YAML 整形へ渡します。
 字下げした囲みの区切り、閉じ記号の余白、不正 YAML、HTML 引用符の危険や、
 整形で囲みの区切りになる本文は原文を保ちます。
+フロントマター行 `title: "<a b=\"c\">"` を保つのは、
+対象にする版の mermaid.js はすべて、`title: '<a b="c">'` を拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 YAML の入れ子と複数行のスカラー値は、`tabWidth` 0 でも空白 1 つ以上にします。
 前処理と値を守りながら、安全な YAML の空白をそろえるためです。
 

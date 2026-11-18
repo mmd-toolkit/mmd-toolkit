@@ -356,10 +356,12 @@ block-beta
 `columns` is followed by its number or `auto` after one space, whatever
 whitespace was written between them (a tab, a line break): mermaid.js reads any
 whitespace there, and the form is one line. `space:2` is printed with the `:`
-touching, as mermaid.js rejects `space :2` and `space: 2`. A `space` and a
-`columns` are never moved to another place: the last `columns` of a block is its
-columns, wherever it stands, and the order of the blocks is the order of the
-text.
+touching, as every version of mermaid.js that counts rejects `space :2` and
+`space: 2` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A `space` and a `columns` are never moved to another place: the last `columns`
+of a block is its columns, wherever it stands, and the order of the blocks is
+the order of the text.
 
 [fixture: columns-and-space/one-space-after-columns] [fixture:
 columns-and-space/tab-after-columns] [fixture:
@@ -616,6 +618,9 @@ block-beta
 class or the id, and one space; the whitespace after the keyword and before the
 first style is not in the Db, so it becomes one space. The styles of `classDef`
 and `style` use the spacing below; the value of a `class` is printed as written.
+`class A,B c1` stays, since every version of mermaid.js that counts draws
+`class A, B c1` differently (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Terminators follow
 [Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement).
 In a `style` and a `class` the whitespace is in the Db.

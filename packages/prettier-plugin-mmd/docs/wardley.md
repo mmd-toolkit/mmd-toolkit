@@ -428,9 +428,11 @@ wardley-beta
 Keep the interior of each +'label'>, +'label'< or +'label'<> flow as written:
 empty labels, padding, backslashes and physical continuation columns included.
 Root directives between its complete components retain their source boundaries.
-Ordinary inserted spaces reject the composite unit, and trimming content changes
-the Db. Keep both ports and the semicolon label even when flow precedence hides
-them.
+Ordinary inserted spaces reject the composite unit: every version of mermaid.js
+that counts rejects `Alpha+ ' F  G\n\q ' >Beta` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Trimming content changes the Db. Keep both ports and the semicolon label even
+when flow precedence hides them.
 
 [test: wardley/flows/unicode-flow] [fixture: wardley/flows/flow-forward]
 
@@ -464,10 +466,13 @@ Attach the grammatical label-opening ; to its preceding component and print
 everything after it through the physical line end as its source span. Choose
 attachment among Db-equal forms to show the delimiter belongs to the link. Do
 not add padding or trim it: ; followed by space is accepted with a
-whitespace-only label, whereas bare ; rejects. Further semicolons use shared
-prefix protection; native-looking forms and percent text remain label text. A
-run of spaces and tabs inside the label of a link, after the `;` or between the
-quotes of a flow, is printed as one space (see
+whitespace-only label, whereas bare ; rejects in every version of mermaid.js
+that counts (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Further semicolons use shared prefix protection; native-looking forms and
+percent text remain label text. A run of spaces and tabs inside the label of a
+link, after the `;` or between the quotes of a flow, is printed as one space
+(see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 while the names of the components stay.
 
@@ -952,7 +957,8 @@ Remove harmless exterior ASCII padding after the header, completed structures
 and description closers. Decide by owner: preserve link-label tails, string/flow
 contents, comments, directives, hidden interiors, required closer padding and
 protected stretches. Trimming every physical line can change the Db or reject a
-whitespace-only link label.
+whitespace-only link label in every version of mermaid.js that counts (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: wardley/trailing-whitespace/trailing-exterior]
 

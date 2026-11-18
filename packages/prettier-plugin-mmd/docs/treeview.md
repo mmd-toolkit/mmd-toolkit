@@ -1572,6 +1572,10 @@ Keep complete bare-name and StringLiteral source spans: empty names,
 backslashes, internal whitespace, the whitespace inside quotes, HTML/entity
 spelling and directory slashes; only the spaces and tabs at the end of a bare
 name at the end of a line go (see [Trailing whitespace](#trailing-whitespace)).
+For a bare name, `A   B` stays instead of `A B`, since some of the versions of
+mermaid.js that count give the two forms different names in the Db and draw them
+differently (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A string between `'` is printed between `"`, unless its text holds a `'`, a `"`,
 a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),

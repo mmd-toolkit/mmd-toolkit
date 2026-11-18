@@ -191,13 +191,18 @@ keeps its kind, since markdown changes the label type, and every label keeps its
 interior characters, including empty quoted values. A plain label is printed in
 the form that the examples use (see [Quotes](#quotes)). Only exterior ASCII HWS
 outside a bare label's contributing units is trimmed. Internal gaps, Unicode
-padding, backslashes, entities and HTML stay; a string between `'` is printed
-between `"`, unless its text holds a `'`, a `"`, a backslash, a line break,
-U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
+padding, backslashes, entities and HTML stay. The run in `A(unquoted  words)`
+stays in the printed form `A("unquoted  words")`, since every version of
+mermaid.js that counts draws different accessibility text for
+`A("unquoted words")` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A string between `'` is printed between `"`, unless its text holds a `'`, a `"`,
+a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
 and `singleQuote` is not read.
 
-[fixture: labels/single-quote-sensitive-kept]
+[fixture: labels/single-quote-sensitive-kept] [fixture:
+labels/label-quote-kinds]
 
 A plain label whose text ends with a U+2028 or U+2029, and that a comment
 follows with only whitespace, line breaks, and directives between, is not put in
@@ -428,12 +433,17 @@ stereotypes/stereotype-padding] [fixture: stereotypes/declaration-suffixes]
 [fixture: stereotypes/boundary-suffixes]
 
 Keep the interior text as written: word gaps, nested openers, quotes,
-backslashes, punctuation and directives remain. LS/PS and NBSP can be interior
-content; exterior common whitespace follows the padding rule.
+backslashes, punctuation and directives remain. For an actor stereotype,
+`<<service  user>>` stays, since every version of mermaid.js that counts gives
+the figure different accessibility attributes for `<<service user>>` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+LS/PS and NBSP can be interior content; exterior common whitespace follows the
+padding rule.
 
-[fixture: stereotypes/stereotype-plain-backslash] [fixture:
-stereotypes/directive-padding] [fixture: stereotypes/directive-gap-sides] [test:
-usecase: stereotype-unicode-exterior-padding] [test: usecase:
+[fixture: stereotypes/stereotype-inner-kept] [fixture:
+stereotypes/stereotype-plain-backslash] [fixture: stereotypes/directive-padding]
+[fixture: stereotypes/directive-gap-sides] [test: usecase:
+stereotype-unicode-exterior-padding] [test: usecase:
 stereotype-unicode-gap-sides]
 
 Protected common comment regions still retain complete crossing values,
@@ -1021,15 +1031,20 @@ rather than rebuilding the final direction. Reuse
 [C4 accessibility lines](./c4.md#accessibility-lines): the colon touches its
 keyword and one space precedes the trimmed value. Equivalent exterior whitespace
 gets the same compact form as the sibling diagrams. Internal characters and
-whitespace, comments, directives, percent and semicolon text stay. Empty and
-whitespace-only lines print the colon form without a value. The next physical
-line remains a separate statement; the siblings' next-line joining does not
-apply. In particular, direction text after an empty colon line remains a
+whitespace, comments, directives, percent and semicolon text stay. For an
+accessibility title, `accTitle: first  last` stays, since every version of
+mermaid.js that counts draws different title text for `accTitle: first last`
+(see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Empty and whitespace-only lines print the colon form without a value. The next
+physical line remains a separate statement; the siblings' next-line joining does
+not apply. In particular, direction text after an empty colon line remains a
 separate direction statement, rather than becoming accessibility value text.
 
 [fixture: direction-and-accessibility/title-next-direction-separate] [fixture:
 direction-and-accessibility/description-next-direction-separate] [fixture:
 direction-and-accessibility/a11y-trimmed] [test: usecase: a11y-unicode-exterior]
+[fixture: direction-and-accessibility/acctitle-inner-gap-kept]
 
 Description blocks reuse [class multiline values](./class.md#multi-line-values):
 align body lines one step inside the statement and a separate `}` with the
@@ -1275,7 +1290,8 @@ boundaries normalize exterior whitespace by their sibling rules.
 Quoted/markdown values, JSON, native property strings, comments and directive
 contents keep their trailing characters.
 
-[test: usecase: terminal-comment-tab] [test: usecase: terminal-a11y-tab]
+[fixture: trailing-whitespace/trailing-values] [test: usecase:
+terminal-comment-tab] [test: usecase: terminal-a11y-tab]
 
 Unicode characters are not automatically exterior HWS; no dangling null CSS
 style is synthesized.

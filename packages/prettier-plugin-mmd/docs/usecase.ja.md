@@ -202,12 +202,20 @@ markdown はラベルの種類を変えるため、markdown ラベルは種類�
 通常のラベルは、例で使われている形で印字します（[引用符](#quotes) を参照）。
 裸のラベルを構成する単位の外側にある ASCII の水平空白だけを除きます。
 内部の空白、Unicode の余白、バックスラッシュ、文字参照、HTML は保ちます。
+`A(unquoted  words)` の連なりは、
+印字する形 `A("unquoted  words")` でも残します。
+対象にする版の mermaid.js のすべてが、
+`A("unquoted words")` ではアクセシビリティのテキストを違って描くからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 `'` で囲まれた文字列は、テキストに `'`、`"`、バックスラッシュ、改行、U+2028、
 U+2029、バッククォート、`&`、`#`、`<` を含む場合を除き、`"` で囲んで印字します。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 `singleQuote` は読みません。
 
 [fixture: labels/single-quote-sensitive-kept]
+[fixture: labels/label-quote-kinds]
 
 引用符で囲んでいないラベルのテキストが U+2028 か U+2029 で終わり、その後に、
 空白、改行、ディレクティブだけを挟んでコメントが続くときは、引用符で囲みません。
@@ -455,9 +463,16 @@ Mermaid は内部の両端を除き、`<<` の前の空白は構造上の空白�
 内部のテキストは書かれたままです。
 語の間の隙間、入れ子の開始記号、引用、バックスラッシュ、句読点、
 ディレクティブを保ちます。
+actor のステレオタイプでは、`<<service  user>>` を保ちます。
+対象にする版の mermaid.js はすべて、
+`<<service user>>` では図に異なるアクセシビリティ属性を与えるためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 LS、PS、NBSP は内部の内容になれます。
 外側の共通空白は余白の規則に従います。
 
+[fixture: stereotypes/stereotype-inner-kept]
 [fixture: stereotypes/stereotype-plain-backslash]
 [fixture: stereotypes/directive-padding]
 [fixture: stereotypes/directive-gap-sides]
@@ -1083,6 +1098,12 @@ class の[ラベル](./class.ja.md#ラベル)と C4
 コロンをキーワードに接し、両端の空白を除いた値の前を空白 1 個にします。
 Db が同じになる外側の空白を、兄弟の図種と同じ形に揃えるためです。
 内部の文字と空白、コメント、ディレクティブ、パーセントとセミコロンを保ちます。
+アクセシビリティのタイトルでは、`accTitle: first  last` を保ちます。
+対象にする版の mermaid.js はすべて、
+`accTitle: first last` では異なるタイトルのテキストを描くためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 空と空白だけの行は、値のないコロン形式にします。
 次の物理行は別の文のままで、兄弟の次行の結合は取り込みません。
 空のコロン行の次の方向の文字も、値の文字ではなく独立した方向文のままです。
@@ -1091,6 +1112,7 @@ Db が同じになる外側の空白を、兄弟の図種と同じ形に揃え�
 [fixture: direction-and-accessibility/description-next-direction-separate]
 [fixture: direction-and-accessibility/a11y-trimmed]
 [test: usecase: a11y-unicode-exterior]
+[fixture: direction-and-accessibility/acctitle-inner-gap-kept]
 
 説明ブロックは、class の[複数行の値](./class.ja.md#複数行の値)と同じく、
 本文行を文より 1 段深くし、独立した `}` を文の字下げに揃えます。
@@ -1347,6 +1369,7 @@ CSS 宣言のコロンの前後の余白は、
 引用と markdown の値、JSON、固有プロパティの文字列、コメント、
 ディレクティブ内の末尾の全文字は保ちます。
 
+[fixture: trailing-whitespace/trailing-values]
 [test: usecase: terminal-comment-tab] [test: usecase: terminal-a11y-tab]
 
 Unicode 文字を自動的に外側の水平空白とせず、空の CSS style も作りません。
