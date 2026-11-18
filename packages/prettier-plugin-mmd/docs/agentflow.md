@@ -218,8 +218,12 @@ A name that holds a directive or a comment is kept as written, as above.
 between a connector name and its data block]
 
 Whitespace before the title is trimmed through a `;` that the line rule ignores:
-`connector style:#x ; [T]` is printed `connector style:#x;[T]`. The semicolon
-keeps its written place against the name.
+`connector style:#x ; [T]` is printed `connector style:#x;[T]`. Rule 1 names no
+mark for the `[` of a title, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [flowchart](./flowchart.md#subgraph-header) and [er](./er.md#subgraphs)
+print the `[` of a title touching the name. The semicolon keeps its written
+place against the name.
 
 [fixture: names-and-headings/title-after-ignored-semicolon]
 

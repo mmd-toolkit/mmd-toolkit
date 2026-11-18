@@ -230,6 +230,10 @@ mermaid.js が名前の後の空白を trim するので Db は同じであり�
 
 タイトルの前の空白は、行の規則が無視する `;` を挟んでいても除きます。
 `connector style:#x ; [T]` は `connector style:#x;[T]` と印字します。
+規則 1 は、タイトルの `[` の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[flowchart](./flowchart.ja.md#subgraph-のヘッダー) と [er](./er.ja.md#subgraph)
+も、タイトルの `[` を名前に接して印字します。
 セミコロンは、名前との位置関係を保ちます。
 
 [fixture: names-and-headings/title-after-ignored-semicolon]
