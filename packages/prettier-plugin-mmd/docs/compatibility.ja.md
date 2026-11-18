@@ -4073,6 +4073,10 @@ mermaid.js は指令をヘッダーを読む前に取り除きます。
 根がヘッダーの行に残る場合は、ヘッダーも書かれたまま残します。
 ほかの図種で別の大文字小文字のヘッダー（`sankey-BETA`、`XYCHART-BETA`）は、
 書かれたまま残します。
+10.9.8 と 11.7.0 が `sankey` と `xychart` を拒否し
+（[対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)を参照）、
+例は `-beta` のある名前の別の大文字小文字を使わず、
+[規則 3](./printed-form.ja.md#3-綴り)はその綴りを書かれたまま残すからです。
 
 [fixture: treemap/header/beta] [fixture: ishikawa/header/header-beta]
 [fixture: ishikawa/header/header-column]
