@@ -1746,7 +1746,8 @@ whitespace that the author wrote, and the printer does not interpret the
 statement. A directive after the last style takes the whitespace beside it in
 the same way: the statement is kept as written where whitespace stands before
 the directive or after it, and formatted as usual where the directive touches
-the last style and nothing follows it (`classDef a fill:red%%{init: {}}%%`).
+the last style and no whitespace follows it on its line
+(`classDef a fill:red%%{init: {}}%%`).
 
 [fixture: styles-and-classes/trailing-whitespace-takes-next-line] [fixture:
 styles-and-classes/directive-before-next-line] [fixture:

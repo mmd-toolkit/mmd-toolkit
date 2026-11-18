@@ -1298,9 +1298,9 @@ after a directive, and 11.7.0 and later reject a comment there. In an ER
 diagram, 11.7.0 and later reject a comment after the last style and a directive
 at the end of the text, and a directive before another line keeps the statement
 as written where whitespace stands before or after the directive, and formats it
-as usual where the directive touches the last style and nothing follows it. A
-treemap formats the statement after a comment and keeps it as written after a
-directive, except for the whitespace at the end of the line (see
+as usual where the directive touches the last style and no whitespace follows it
+on its line. A treemap formats the statement after a comment and keeps it as
+written after a directive, except for the whitespace at the end of the line (see
 [Whitespace at the end of a style](#whitespace-at-the-end-of-a-style)).
 
 [fixture: flowchart/whitespace-between-tokens/style-blank-style-kept] [fixture:
