@@ -509,9 +509,11 @@ pie
 独立したコメントは本文の文に揃え、見出し前は先頭列に置きます。
 規則 1 は、コメントの前の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[sequence](./sequence.ja.md#コメント)、[journey](./journey.ja.md#コメント)、
-[timeline](./timeline.ja.md#コメント)も、文の後ろのコメントは、
-接していれば接したまま残し、空白が書かれていれば空白 1 つを置きます。
+[sequence](./sequence.ja.md#コメント)（文の後ろ）、
+[journey](./journey.ja.md#コメント)（タスク、`accDescr`、見出しの後ろ）、
+[timeline](./timeline.ja.md#コメント)（見出し、向き、
+アクセシビリティのブロックの `}` の後ろ）も、接するコメントは接したまま残し、
+空白が書かれていれば空白 1 つを置きます。
 裸・3つのパーセントと末尾の空白を残します。
 pie 固有のコメントは LF で終わり、LS・PS は内部に残ります。
 LS・PS は区切りではなく、
@@ -557,9 +559,7 @@ pie
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#ディレクティブ)、
 [flowchart](./flowchart.ja.md#ディレクティブ)、
-[journey](./journey.ja.md#ディレクティブ)も、
-この隙間のディレクティブを後ろの単位と一緒に動かし、右側の接触か間隔を残し、
-左側の接触は切ります。
+[journey](./journey.ja.md#ディレクティブ)も、この隙間を同じに印字します。
 保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
 ほかの場所と同じように整形します。
 この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
