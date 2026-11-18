@@ -410,11 +410,13 @@ use Prettier's display width for the remaining text, including wide characters.
 Count the period's written text, including a directive inside it, since that is
 what the printer displays. A `;` that the line rule ignores between the period
 and the first colon is part of that text and counts in its width, with the
-whitespace around it as written: the colons of the later lines stand at the
-column that the first colon has when it is counted from the start of the period,
-and the line stays whole (see
-[Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)). The configured
-indentation still applies at `tabWidth: 0`.
+whitespace around it as written. The rule needs a `style` and then a `:#` before
+the `;` on the line, so another statement stands before the period there, a
+description block that holds `style:#x` for one. The colons of the later lines
+stand at the column that the first colon would have if the period began the
+line, with the indentation of the statement before it, and the line stays whole
+(see [Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)). The
+configured indentation still applies at `tabWidth: 0`.
 
 [fixture: periods-and-events/events-on-later-lines] [corpus fixture:
 timeline/docs-syntax-timeline-1b6ef8c6] [fixture:
