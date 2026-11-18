@@ -269,6 +269,7 @@ ELK の配置のパッケージのどのリリースも、
 | [ER](./er.ja.md#属性ブロック)                                                                                                         | 書かれたまま残る行で、属性ブロックの中の `~` の後ろにある複数行の空のブロック（`T { int a List~int~ b } A {`、改行、`}`、さらに続くテキスト） | `{` の後ろの `{ }`、閉じる行の残りを付ける      | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 は、属性の `~` の後ろに長いテキストがある行を描かない                                                        | [fixture: er/attribute-blocks/written-line-tilde-line-closing-remainder]                                                                                    |
 | [ER](./er.ja.md#1-行に-1-文)                                                                                                          | `"Alpha"`、空白とタブ以外の空白文字（U+2028、U+2029、U+00A0 など）、その後の `{ int x }`、別名、CSS のクラス、関係                            | `Alpha` と、その文字で始まる文を別の行に        | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 と 11.7.0 が、その文字を空白として読み、その文字で始まって残りが続く行を拒否する                             | [test: U+2028 and an attribute block after a name in quotes] [test: U+00A0 in place of the separator: U+2028 and an attribute block after a name in quotes] |
 | [treemap](./treemap.ja.md#title)                                                                                                      | 行頭の `title T`                                                                                                                              | 1 段深い `  title T`                            | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.8.1 が、字下げされた title、`accTitle`、`accDescr` を拒否する                                                    | [fixture: treemap/title/line-start-kept]                                                                                                                    |
+| [すべての図種](./compatibility.ja.md#フロントマター)                                                                                  | `tabWidth: 0` で本文が 1 つ分の空白だけ入るブロックスカラー                                                                                   | 本文を幅 0 の字下げにした形                     | [YAML](#フロントマター)                               | 10.9.8 から 12.3.0 が幅 0 の形を拒否する                                                                            | [fixture: ishikawa/frontmatter-yaml/zero-width-block-scalar-title]                                                                                          |
 | [すべての図種](./compatibility.ja.md#フロントマター)                                                                                  | フロントマターの `%YAML 1.2` の後の `--- !!map`                                                                                               | `---` と `!!map` を別の行に                     | [YAML](#フロントマター)                               | 10.9.8 から 12.3.0 が分割した形を拒否する                                                                           | [fixture: flowchart/frontmatter-yaml/delimiter-line-kept]                                                                                                   |
 | [ishikawa](./ishikawa.ja.md#indentation)                                                                                              | `ishikawa`、`R`、`  A`、` B`、`  C` を書かれたまま                                                                                            | すべてのノードを深さの位置に置く形              | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.13.0 が、深さで印字したテキストを書かれたテキストと違って描く                                                    | [fixture: ishikawa/indentation/indent-relative-zero]                                                                                                        |
 | [user journey](./journey.ja.md#タイトルとセクション)                                                                                  | `title`、半角空白 2 つ、タブ、半角空白 1 つ                                                                                                   | `title` だけ（後ろに何もない形）                | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 が、`title` だけの形を拒否する                                              | [fixture: journey/titles-and-sections/title-blank-kept]                                                                                                     |
@@ -6115,8 +6116,13 @@ ER 図では、そのような行にある実体のブロックだけは、
 
 YAML の字下げは、`tabWidth: 0` でも 1 段に最低 1 つの空白を使います。
 字下げはブロックスカラーと入れ子の値を表します。
-幅 0 では、Mermaid がブロックスカラーを拒否するか、
-title や設定の値が変わるためです。
+幅 0 では、どの図種でも、
+対象にする版の mermaid.js のすべてがブロックスカラーを拒否します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+また、入れ子の値は入れ子でなくなるため、
+title や設定の値が別のキーとして読まれます。
 全図種に共通の下限で、読みを保ちます。
 
 [fixture: ishikawa/frontmatter-yaml/zero-width-block-scalar-title]
