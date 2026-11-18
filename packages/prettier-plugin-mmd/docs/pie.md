@@ -298,11 +298,15 @@ in the second case, makes mermaid.js read it as a comment, leaving the
 description empty or just `D`, respectively (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Ordinary later-line text and standalone comment lines align one level inside the
-statement, as the other diagram types do. Keep line breaks, blank lines and
-trailing whitespace; a separate `}` aligns with the statement. Directives and
-shared removed comment regions keep their complete source. Trivia-bearing
-interiors keep their trivia. The first closing brace still closes the block,
-even inside quote/backslash/hidden-looking text.
+statement, as the other diagram types do. Keep line breaks and interior blank
+lines, and the whitespace at the end of each line of text except the last one; a
+line of whitespace only becomes an empty line. The whitespace at the end of the
+last line of text is dropped where the closer stands on a line of its own, and
+is printed as one space where the closer follows it on that line. A separate `}`
+aligns with the statement. Directives and shared removed comment regions keep
+their complete source. Trivia-bearing interiors keep their trivia. The first
+closing brace still closes the block, even inside quote/backslash/hidden-looking
+text.
 
 [fixture: pie/description-blocks/block-runs] [fixture:
 pie/description-blocks/block-empty] [fixture:
@@ -322,7 +326,9 @@ pie/description-blocks/block-opener-directive] [fixture:
 pie/description-blocks/block-quotes-backslashes] [fixture:
 pie/description-blocks/opener-comment-only-kept] [fixture:
 pie/description-blocks/opener-comment-with-text-kept] [fixture:
-pie/description-blocks/opener-comment-break-kept]
+pie/description-blocks/opener-comment-break-kept] [fixture:
+description-blocks/block-trailing-whitespace] [fixture:
+description-blocks/block-trailing-whitespace-closer-on-the-text-line]
 
 Input (escaped):
 `"pie\naccDescr {\n  first\n    second\n        }\n\"Data\":2"`.

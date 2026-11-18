@@ -1176,11 +1176,18 @@ accessibility-statements/description-text-with-comment-line-kept]
 
 Later text lines of an `accDescr { ... }` block stand one level inside its
 statement, replacing only ASCII spaces and tabs immediately after LF. The
-description setter drops that indentation; line breaks, trailing whitespace and
-directive interiors stay written. Its `}` stands at the level of its statement.
+description setter drops that indentation; line breaks and directive interiors
+stay written. Keep line breaks and interior blank lines, and the whitespace at
+the end of each line of text except the last one; a line of whitespace only
+becomes an empty line. The whitespace at the end of the last line of text is
+dropped where the closer stands on a line of its own, and is printed as one
+space where the closer follows it on that line. Its `}` stands at the level of
+its statement.
 
 [fixture: accessibility-statements/block-lines-kept] [fixture:
-accessibility-statements/block-comment-and-empty-lines-kept]
+accessibility-statements/block-comment-and-empty-lines-kept] [fixture:
+accessibility-statements/block-trailing-whitespace] [fixture:
+accessibility-statements/block-trailing-whitespace-closer-on-the-text-line]
 
 Blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
