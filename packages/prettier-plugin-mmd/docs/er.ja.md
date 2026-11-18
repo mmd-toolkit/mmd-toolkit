@@ -1604,6 +1604,9 @@ erDiagram
 
 方向の行は、`direction` とその値と、前後の mermaid.js が読まないテキストです。
 テキストは書かれたまま残します。
+木がそのテキストを丸ごと持つからです。
+詳しくは [木が丸ごと持つテキスト](./printed-form.ja.md#木が丸ごと持つテキスト)
+を参照してください。
 テキストと `direction` の間（離して書かれていれば）と、
 `direction` と値の間には空白 1 つを置き、値は書かれた大文字小文字を保ちます。
 `lr` は `lr` のままです。
@@ -1616,6 +1619,8 @@ erDiagram
 を参照してください。
 
 [fixture: direction/spacing] [fixture: direction/text-kept]
+[fixture: direction/text-inner-whitespace-kept]
+[fixture: direction/text-both-sides-inner-whitespace-kept]
 [fixture: direction/case-kept] [fixture: direction/case-bt-rl-kept]
 
 後の行に書かれた値は、`direction` の後に 1 行で印字します。
