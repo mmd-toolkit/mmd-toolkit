@@ -518,13 +518,19 @@ gitGraph
 別行の閉じは文に揃えます。
 通常の説明本文と独立したコメント行は、文より1段内側に揃えます。
 Db で LF 後の字下げが取り除かれるためです。
-改行、内部の空行、行末空白を保持します。
+改行と内部の空行は保ちます。
+行末の空白は、テキストの最後の行のものを除いて保ちます。
+空白だけの行は空行にします。
+最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
+同じ行で閉じ括弧が続くときは空白 1 つで印字します。
 ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
 空白だけの内側は、囲む空白を要する本文がないため `{}` と印字します。
 タブ、改行、Unicode の空白も同じです。
 
 [fixture: title-and-common-values/empty-whitespace-interiors]
 [test: gitgraph Unicode and tab interiors]
+[fixture: title-and-common-values/block-trailing-whitespace]
+[fixture: title-and-common-values/block-trailing-whitespace-closer-on-the-text-line]
 
 コメントやディレクティブだけのブロックも注釈類を残します。
 フロントマターの代替の扱いを含む反復・空値・出現位置を保持します。

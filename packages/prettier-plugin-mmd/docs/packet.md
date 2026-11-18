@@ -403,13 +403,18 @@ across physical or Unicode lines; real opener trivia keeps its break.
 Whitespace-only interiors become `{}` because no text needs surrounding
 whitespace. Comment/directive-only interiors keep their trivia. Ordinary
 description body and standalone comment lines align one level inside the
-statement, since the Db removes indentation after LF. Keep line breaks, blank
-lines and trailing whitespace; a separate closer aligns with the statement.
-Directives and shared removed comment regions keep their complete source.
-Quotes, backslashes and hidden-looking text do not protect the first closing
-brace.
+statement, since the Db removes indentation after LF. Keep line breaks and
+interior blank lines, and the whitespace at the end of each line of text except
+the last one; a line of whitespace only becomes an empty line. The whitespace at
+the end of the last line of text is dropped where the closer stands on a line of
+its own, and is printed as one space where the closer follows it on that line. A
+separate closer aligns with the statement. Directives and shared removed comment
+regions keep their complete source. Quotes, backslashes and hidden-looking text
+do not protect the first closing brace.
 
-[fixture: packet/description-blocks/description-gaps]
+[fixture: packet/description-blocks/description-gaps] [fixture:
+description-blocks/block-trailing-whitespace] [fixture:
+description-blocks/block-trailing-whitespace-closer-on-the-text-line]
 
 [fixture: packet/description-blocks/description-columns]
 

@@ -524,13 +524,18 @@ Whitespace-only interiors become `{}`. For blocks that keep their braces,
 separate the keyword and opening brace with one space so the block boundary is
 clear. Join plain opener whitespace and align a separate closer with the
 statement. Ordinary description body and standalone comment lines align one
-level inside it, since the Db removes indentation after LF. Keep line breaks,
-internal blanks and trailing whitespace. Directives and shared removed comment
-regions keep their complete source. Comments/directives inside empty blocks
-retain their shared layout. Native-looking text inside a value remains value
-text.
+level inside it, since the Db removes indentation after LF. Keep line breaks and
+interior blank lines, and the whitespace at the end of each line of text except
+the last one; a line of whitespace only becomes an empty line. The whitespace at
+the end of the last line of text is dropped where the closer stands on a line of
+its own, and is printed as one space where the closer follows it on that line.
+Directives and shared removed comment regions keep their complete source.
+Comments/directives inside empty blocks retain their shared layout.
+Native-looking text inside a value remains value text.
 
-[fixture: cynefin/description-blocks/description-empty]
+[fixture: cynefin/description-blocks/description-empty] [fixture:
+description-blocks/block-trailing-whitespace] [fixture:
+description-blocks/block-trailing-whitespace-closer-on-the-text-line]
 
 [fixture: cynefin/description-blocks/description-touching]
 

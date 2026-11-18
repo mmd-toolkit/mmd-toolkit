@@ -196,13 +196,16 @@ Empty whitespace-only blocks print `{}` because no text needs surrounding
 spaces. Comment-only blocks keep their comments one level inside; a standalone
 closer aligns with the statement. Ordinary description body and standalone
 comment lines align one level inside the statement; LF indentation is absent
-from the Db. Keep line breaks and interior blank lines, and the trailing
-whitespace of every line but the last one of the text before a closer that
-stands on its own line, which is dropped; a line of whitespace only becomes an
-empty line. Directives and shared removed comment regions keep their complete
-source. Quotes and backslashes do not protect the first closing brace.
+from the Db. Keep line breaks and interior blank lines, and the whitespace at
+the end of each line of text except the last one; a line of whitespace only
+becomes an empty line. The whitespace at the end of the last line of text is
+dropped where the closer stands on a line of its own, and is printed as one
+space where the closer follows it on that line. Directives and shared removed
+comment regions keep their complete source. Quotes and backslashes do not
+protect the first closing brace.
 
-[fixture: info/description-blocks/block-gap-presence]
+[fixture: info/description-blocks/block-gap-presence] [fixture:
+description-blocks/block-trailing-whitespace-closer-on-the-text-line]
 
 [test: info/description-blocks/block-opener-multiline]
 

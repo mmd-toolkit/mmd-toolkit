@@ -1224,13 +1224,19 @@ railroad/description-blocks/peg-edges]
 
 In a block with a text over several lines, ordinary description body and
 standalone comment lines align one level inside the statement: the Db removes
-indentation after LF. Keep line breaks, internal blank lines and trailing
-whitespace, and align a separate closing brace with the statement.
+indentation after LF. Keep line breaks and interior blank lines, and the
+whitespace at the end of each line of text except the last one; a line of
+whitespace only becomes an empty line. The whitespace at the end of the last
+line of text is dropped where the closer stands on a line of its own, and is
+printed as one space where the closer follows it on that line. Align a separate
+closing brace with the statement.
 
 [fixture: railroad/description-blocks/abnf-lines] [fixture:
 railroad/description-blocks/ebnf-lines] [fixture:
 railroad/description-blocks/ir-lines] [fixture:
-railroad/description-blocks/peg-lines]
+railroad/description-blocks/peg-lines] [fixture:
+description-blocks/block-trailing-whitespace] [fixture:
+description-blocks/block-trailing-whitespace-closer-on-the-text-line]
 
 A block that a comment of the diagram type's own kind follows on its line stays
 a block (`accDescr { d } ; c` in an ABNF diagram, `(* c *)` or `/* c */` in an
