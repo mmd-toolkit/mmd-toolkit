@@ -328,7 +328,11 @@ of mermaid.js writes a space after every block keyword
 whitespace-between-tokens/block-text-touching-spaced]
 
 A directive in the gap is placed as under [Directives](#directives), and a
-U+2028 or U+2029 stays where it is.
+U+2028 or U+2029 stays where it is. Rule 1 names no mark for a gap that holds
+one, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [journey](./journey.md#line-separators) and
+[timeline](./timeline.md#line-separators) print such a gap as written.
 
 [fixture: whitespace-between-tokens/block-text-beside-directive] [test: U+2028
 between a block keyword and its text] [test: U+2029 between a wrap prefix and
