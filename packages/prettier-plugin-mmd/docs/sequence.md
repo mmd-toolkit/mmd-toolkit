@@ -632,9 +632,13 @@ than the function. The whitespace before a comma, immediately after the opening
 versions of mermaid.js that count read `rgb(191, 223, 255)` as a different
 message value in the Db (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The whitespace immediately after the `(` and before the `)` of a `rect` stays
+too, since every version that counts draws another `fill` attribute for it (see
+the same table).
 
 [fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
-[fixture: colors/functions-as-written] [fixture:
+[fixture: colors/rect-leading-and-comma-padding-kept] [fixture:
+colors/functions-as-written] [fixture:
 colors/functions-beside-comments-and-directives]
 
 A directive within a channel is removed before the function is recognized, and

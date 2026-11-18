@@ -2072,9 +2072,9 @@ of the text of a `box` that mermaid.js asks the browser about (the
 a property of a `style` of a Venn diagram. The whitespace before a comma and
 inside the parentheses stays as written. Inside the parentheses it stays since
 every version of mermaid.js that counts draws another `fill` attribute for
-`rect rgb( 1, 2, 3 )` and `box rgb( 33, 66, 99 ) Team` than for the texts
-without that whitespace; before a comma it stays since 12.3.0 changes the Db
-there (see
+`rect rgb( 1 ,2,3 )` than for `rect rgb(1, 2, 3)`, and also for a space after
+the `(` or before the `)` alone; before a comma alone it stays since 12.3.0
+changes the Db there, with the same drawing (see
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
 The text is a color function when it is `rgb(`, `rgba(`, `hsl(`, or `hsla(` in
 lower case, with three arguments for `rgb` and `hsl` and four for `rgba` and
