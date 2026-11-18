@@ -147,6 +147,13 @@ packet
 数値の範囲を見た目の1単位にするため、通常は `0-15` と詰めます。
 大域的な注釈類と隠れた形の境界は詰めずに保ちます。
 消費される LF は通常の空白ではないためです。
+`0%%{!left}%% -%%{!right}%% 2:"Hidden dash"` は、
+対象にする版の mermaid.js のうちいくつかは
+`0%%{!left}%%-%%{!right}%%2:"Hidden dash"` を拒否するので、
+`-` の前の空白を残します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: packet/range-dash/dash-tight]
 
@@ -171,6 +178,12 @@ packet
 接頭記号と相対長をまとめて読めるよう、通常は `+3` と詰めます。
 `count` の数字は原綴を保ちます。
 大域的な注釈類と隠れた形の接触状態と消費 LF は保ちます。
+`+%%{!count}%% 3:"Hidden plus"` は、
+対象にする版の mermaid.js のうちいくつかは `+%%{!count}%%3:"Hidden plus"`
+を拒否するので、隠れた形の後の空白を残します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: packet/relative-plus/plus-tight]
 
@@ -203,6 +216,12 @@ packet
 [コロンの前の空白を決める例](./compatibility.ja.md#コロンの前の空白を決める例)
 を参照してください。
 注釈類がある隙間は境界を保ちます。
+`0%%{!before}%% :%%{!after}%% "Gap"` は、
+対象にする版の mermaid.js のうちいくつかは `0%%{!before}%%:%%{!after}%% "Gap"`
+を拒否するので、`:` の前の空白を残します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: packet/block-colons/colon-compact]
 
