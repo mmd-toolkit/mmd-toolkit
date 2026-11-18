@@ -210,11 +210,15 @@ changing their syntax. Prettier prints each statement of the languages it
 formats on a line of its own (`a(); b()` in JavaScript becomes two lines), as
 [flowchart](./flowchart.md#statements-one-per-line) says, and the 14 railroad
 examples in the documentation of mermaid.js write one statement on each line (a
-rule may span lines). All four dialects require the last terminator too. ABNF
-terminators must be followed immediately by LF or EOF: `; note` is a comment and
-cannot replace a terminator. Keep such a comment and the real terminator on
-their original sides of the line break. Shared semicolon protection takes
-precedence.
+rule may span lines). Rule 1 gives the `;` that ends a rule: its table has the
+row of a `;` that ends a statement, which Prettier prints without whitespace
+before it (`a ;` is printed `a;`). The 14 examples write ` ;` with a space
+before it, which does not change this, since rule 3 decides spellings and rule 1
+decides the whitespace beside a mark. All four dialects require the last
+terminator too. ABNF terminators must be followed immediately by LF or EOF:
+`; note` is a comment and cannot replace a terminator. Keep such a comment and
+the real terminator on their original sides of the line break. Shared semicolon
+protection takes precedence.
 
 [fixture: railroad/statements-one-per-line/abnf-terminator]
 
@@ -598,13 +602,15 @@ railroad-abnf-beta
 IR prints its eight constructors as `name(...)`: sequence, choice, optional,
 oneOrMore, zeroOrMore, terminal, nonterminal and special. Ordinary gaps before
 `(` and at the inner edges are empty; argument commas have no space before and
-one after on a line. Rule 1 gives the gaps inside the parentheses and at the
-commas: Prettier prints no whitespace inside parentheses (`f( a )` is printed
-`f(a);`), and a comma with none before it and one space after it (`f(a,b)` is
-printed `f(a, b);`). Call layout follows [Long lines](#long-lines). Retain empty
-quoted arguments, nested calls and singleton sequence/choice calls. Collapsing a
-singleton can keep the Db but loses an authored call; trailing commas are not
-added.
+one after on a line. Rule 1 gives these gaps: Prettier prints a call without
+whitespace before its `(` (`f (a)` is printed `f(a);`) and inside its
+parentheses (`f( a )` is printed `f(a);`), and a comma with none before it and
+one space after it (`f(a,b)` is printed `f(a, b);`). mermaid.js rejects a space
+before the `(` of a call in a C4 diagram (see
+[Rejected inputs](./c4.md#rejected-inputs)). Call layout follows
+[Long lines](#long-lines). Retain empty quoted arguments, nested calls and
+singleton sequence/choice calls. Collapsing a singleton can keep the Db but
+loses an authored call; trailing commas are not added.
 
 [fixture: railroad/calls/ir-all]
 
