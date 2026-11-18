@@ -213,6 +213,11 @@ markdown はラベルの種類を変えるため、markdown ラベルは種類�
 U+2029、バッククォート、`&`、`#`、`<` を含む場合を除き、`"` で囲んで印字します。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 `singleQuote` は読みません。
+`"` を含む文字列は、`'` で囲んだまま残します。
+対象にする版の mermaid.js のすべてが、`B("a"b")` を拒否するからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: labels/single-quote-sensitive-kept]
 [fixture: labels/label-quote-kinds]
@@ -1148,6 +1153,9 @@ Mermaid が説明から LF 後の字下げを除くためです。
 [test: accessibility revisions: usecase keyword-brace-tab]
 
 空と空白だけの内側は `{}` にします。
+空の波括弧は `{}` と印字します。
+Prettier が `x = { }` を `x = {}`
+と印字するのと同じです（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 
 [fixture: direction-and-accessibility/empty-block-lines]
 
@@ -1232,6 +1240,11 @@ usecase-beta
 [コメント](./class.ja.md#コメント)を再利用します。
 周囲の文、境界の `end` の前では宣言に揃え、ヘッダー前では先頭列に置きます。
 末尾の水平空白を含むコメント全体を保ちます。
+規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
+規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
+[block](./block.ja.md#コメント) と [er](./er.ja.md#コメント)も、
+コメントを宣言や周りの文と同じ段に置きます。
 
 [fixture: system-boundaries/boundary-header-comment-empty]
 [test: usecase: terminal-comment-tab]
