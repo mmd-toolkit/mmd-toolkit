@@ -726,11 +726,18 @@ agentflowのラベルコメントの直前の空白とタブは値の文字な�
 コメント内の閉じ括弧は形を閉じないので、コメントの文字のままです。
 チルダは文字です。
 形、実体参照とHTMLの綴りも保ちます。
+Db はラベルのテキストを保ちます。
+`A[&amp;]` のテキストは `&amp;` で、`A[&]` のテキストは `&` です。
+mermaid.js は 2 つを同じに描きますが、検査は Db を比べ、
+この変化を覆う例外の種類もないので、実体参照は書かれたまま残します。
+詳しくは
+[確かめ方と、Db を変える整形](./printed-form.ja.md#確かめ方とdb-を変える整形)
+を参照してください。
 
 [fixture: labels/labels-closers] [fixture: labels/labels-leading-sensitive]
 [fixture: labels/labels-leading-at-sign] [fixture: labels/labels-padding]
 [fixture: labels/labels-tilde] [fixture: labels/labels-trim-sensitive-unsafe]
-[fixture: labels/slash-label-padding-kept]
+[fixture: labels/slash-label-padding-kept] [fixture: labels/entity-kept]
 
 flow/connectorの見出しのタイトルは、
 [subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)に従います。

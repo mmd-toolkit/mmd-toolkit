@@ -704,12 +704,16 @@ Agentflow label comments are different: their preceding spaces/tabs are label
 content, so preserve that padding, the comment and its LF/continuation columns,
 including a closing bracket that belongs to the comment rather than closing the
 shape. Tildes remain content. Shape spellings, entities and HTML remain
-authored.
+authored. The Db keeps the text of a label: `A[&amp;]` has the text `&amp;`, and
+`A[&]` has the text `&`. mermaid.js draws the two alike, but the check compares
+the Db, and no kind of exception covers this change (see
+[The check, and formatting that changes the Db](./printed-form.md#the-check-and-formatting-that-changes-the-db)),
+so an entity stays as written.
 
 [fixture: labels/labels-closers] [fixture: labels/labels-leading-sensitive]
 [fixture: labels/labels-leading-at-sign] [fixture: labels/labels-padding]
 [fixture: labels/labels-tilde] [fixture: labels/labels-trim-sensitive-unsafe]
-[fixture: labels/slash-label-padding-kept]
+[fixture: labels/slash-label-padding-kept] [fixture: labels/entity-kept]
 
 Flow/connector heading titles follow
 [Subgraph header](./flowchart.md#subgraph-header) instead: drop the whitespace
