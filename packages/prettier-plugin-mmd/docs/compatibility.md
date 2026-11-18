@@ -6313,10 +6313,12 @@ ishikawa/indentation/indent-clamped] [fixture: ishikawa/indentation/indent-zero]
 Quotes, empty-looking forms, apparent accessibility/style/data statements and
 inline percent text remain literals. Internal directive gaps and joined
 physical-line continuation columns stay written, including every trailing
-literal character on ordinary and kept lines. The value is what was written; Db
-equality does not require erasing it, the same choice as mindmap. Every
-semicolon stays, with whole crossing literals and trivia protected by the shared
-kept-stretch path.
+whitespace character other than a space or a tab, such as a no-break space, on
+ordinary and kept lines; the spaces and tabs at the end of a literal are dropped
+(see [Trailing whitespace](./ishikawa.md#trailing-whitespace)). The value is
+what was written; Db equality does not require erasing it, the same choice as
+mindmap. Every semicolon stays, with whole crossing literals and trivia
+protected by the shared kept-stretch path.
 
 [fixture: ishikawa/node-text/values-opaque] [fixture:
 ishikawa/inline-directives/directive-in-value] [fixture:
@@ -6485,12 +6487,12 @@ the [usecase rule](./usecase.md#direction-and-accessibility).
 usecase/direction-and-accessibility/a11y-padding] [fixture:
 usecase/direction-and-accessibility/a11y-closer-aligned]
 
-Stereotype declaration suffixes retain whether whitespace is present before `<<`
-and inside each delimiter, including inside system boundaries. A nonempty run
-becomes one space; absent whitespace stays absent. Mermaid trims the interior
-ends; whitespace before `<<` is structural. Interior text remains written;
-protected common comment regions retain their complete values. This reuses the
-[class statement-annotation rule](./class.md#whitespace-between-tokens).
+A stereotype declaration suffix has one space before the `<<` and none inside
+the delimiters, also inside system boundaries: `Reader<<human>>` is printed
+`Reader <<human>>`, and `<<  staff  member  >>` is printed `<<staff  member>>`,
+with the run inside the text kept. Mermaid trims the text, so the Db is the
+same. Protected common comment regions retain their complete values. This reuses
+the [class statement-annotation rule](./class.md#whitespace-between-tokens).
 
 [fixture: usecase/stereotypes/stereotype-padding] [fixture:
 usecase/stereotypes/opener-gap-sides] [test: usecase: stereotype-opener-tab]
@@ -6702,13 +6704,14 @@ info/div-bare-before-header-ls] [test: info Markdown: rejected]
 
 ## Packet hidden boundaries and authored blocks
 
-The [packet rules](./packet.md) print `packet-beta` as `packet` and keep all
-three block forms: range, single and relative. Never reconstruct blocks from
-published rows or remove occurrences after the publication cap. Repeated labels
-stay separate, and empty common assignments remain: deleting an empty title can
-restore an earlier title. Labels retain padding, escapes, HTML, entities and
-physical continuation columns because rewriting these can change the Db; a label
-between `'` is printed between `"` as under
+The [packet rules](./packet.md) keep the header name as written (see
+[The names of a header](#the-names-of-a-header)) and all three block forms:
+range, single and relative. Never reconstruct blocks from published rows or
+remove occurrences after the publication cap. Repeated labels stay separate, and
+empty common assignments remain: deleting an empty title can restore an earlier
+title. Labels retain padding, escapes, HTML, entities and physical continuation
+columns because rewriting these can change the Db; a label between `'` is
+printed between `"` as under
 [Spellings that are drawn the same](#spellings-that-are-drawn-the-same). Numeric
 digits remain written even when double conversion rounds or overflows them;
 exponent/Infinity output is not packet syntax.
@@ -7645,13 +7648,14 @@ line; the suffix retains its owner.
 
 [fixture: cynefin/hidden-boundaries/semicolon-hidden-body-yaml]
 
-The [Cynefin rules](./cynefin.md) keep both header spellings, every domain
-redeclaration and empty domain, item order and duplicates, self transitions,
-empty labels and common resets. Domain/item lines express the authored tree;
-columns do not select parents. Rebuilding from the effective Db would lose
-occurrences and can change replacement or reset behavior. Strings retain escapes
-and interior columns, including empty values and native-looking text; a string
-between `'` is printed between `"` as under
+The [Cynefin rules](./cynefin.md) keep the header `cynefin-beta` and remove a
+colon after it (see [The colon after a header](#the-colon-after-a-header)), and
+keep every domain redeclaration and empty domain, item order and duplicates,
+self transitions, empty labels and common resets. Domain/item lines express the
+authored tree; columns do not select parents. Rebuilding from the effective Db
+would lose occurrences and can change replacement or reset behavior. Strings
+retain escapes and interior columns, including empty values and native-looking
+text; a string between `'` is printed between `"` as under
 [Spellings that are drawn the same](#spellings-that-are-drawn-the-same).
 
 [fixture: cynefin/empty-domains/empty-domain-last-reset] [fixture:
