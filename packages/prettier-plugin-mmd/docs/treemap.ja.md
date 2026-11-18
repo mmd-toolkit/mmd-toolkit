@@ -482,7 +482,7 @@ CSS が空白として読まない文字があるときは別です。
 スタイルとクラス名を隔てる空白は、
 スタイルの一部ではありません（[スタイルの隙間](#style-gaps)を参照）。
 
-[fixture: styles/class-def-comment-after-last-style-formatted]
+[fixture: treemap/styles/class-def-comment-after-last-style-formatted]
 [fixture: treemap/styles/written] [fixture: treemap/styles/empty-entry-kept]
 [fixture: treemap/styles/directive-line-kept] [fixture:
 treemap/styles/directive-trailing-whitespace]

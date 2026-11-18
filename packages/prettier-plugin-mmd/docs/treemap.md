@@ -467,7 +467,7 @@ directive then stays as written. The spacing inside the style stays as written.
 The whitespace that separates the style from the name of the class is not part
 of the style (see [Style gaps](#style-gaps)).
 
-[fixture: styles/class-def-comment-after-last-style-formatted] [fixture:
+[fixture: treemap/styles/class-def-comment-after-last-style-formatted] [fixture:
 treemap/styles/written] [fixture: treemap/styles/empty-entry-kept] [fixture:
 treemap/styles/directive-line-kept] [fixture:
 treemap/styles/directive-trailing-whitespace] [fixture:
