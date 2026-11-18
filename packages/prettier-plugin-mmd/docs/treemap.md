@@ -98,7 +98,7 @@ Use the AST hierarchy, which already accounts for assigned indentation, before
 removing exterior padding. A run after a header, section, leaf, class terminator
 or description closer, or on a whitespace-only line, can indent the next row
 across LF. Move its information once to that row’s planned column. Do not
-measure only physical leading whitespace or add a second indentation run.Common
+measure only physical leading whitespace or add a second indentation run. Common
 removals have already decided which runs count.
 
 Use the resulting row column for standalone comment lines too, including when
@@ -314,7 +314,7 @@ tabs only becomes one space. A name between `'` is printed between `"`, unless
 it holds a `'`, a `"`, a backslash, a line break, a backquote, `&`, `#`, or `<`
 (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
-and `singleQuote` is not read.Backslashes do not escape quotes or decode `\n`;
+and `singleQuote` is not read. Backslashes do not escape quotes or decode `\n`;
 these authored choices can affect the name or acceptance.
 
 [fixture: treemap/names/quotes]
@@ -741,7 +741,7 @@ prints a run of spaces and tabs inside the text as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 without rewriting quote-looking text. Never take a value from the next physical
 line, across comments or directives. Trivia-bearing values retain their written
-boundaries.The directives that end a title are printed with one space before
+boundaries. The directives that end a title are printed with one space before
 each that has whitespace before it, and the whitespace after the last one is
 left out, whatever the whitespace at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
