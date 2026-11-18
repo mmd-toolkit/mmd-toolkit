@@ -472,15 +472,15 @@ header. Rule 1 names no mark before a comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#comments),
 [journey](./journey.md#comments), and [timeline](./timeline.md#comments) keep a
-comment that touches what comes before it, and print one space where whitespace
-was written. Keep bare/triple-percent marks and trailing comment spaces. Pie
-native comments end at LF, retaining LS/PS inside them, because pie does not
-treat them as separators: ending a comment at one would expose the rest of the
-line as a statement and change the Db; strings and block interiors keep percent
-content, while line common values stop at it. Common removed regions keep their
-complete swallowed source and joined continuation columns, because re-indenting
-a continuation adds spaces to the joined label. A protected preheader prefix
-overrides ordinary alignment.
+comment after a statement touching the statement where it touches, and print one
+space where whitespace was written. Keep bare/triple-percent marks and trailing
+comment spaces. Pie native comments end at LF, retaining LS/PS inside them,
+because pie does not treat them as separators: ending a comment at one would
+expose the rest of the line as a statement and change the Db; strings and block
+interiors keep percent content, while line common values stop at it. Common
+removed regions keep their complete swallowed source and joined continuation
+columns, because re-indenting a continuation adds spaces to the joined label. A
+protected preheader prefix overrides ordinary alignment.
 
 [fixture: pie/comments/comments-align] [fixture: pie/comments/comment-bare]
 [fixture: pie/comments/comment-value-text] [test:

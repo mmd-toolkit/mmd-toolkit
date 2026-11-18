@@ -510,8 +510,8 @@ pie
 規則 1 は、コメントの前の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#コメント)、[journey](./journey.ja.md#コメント)、
-[timeline](./timeline.ja.md#コメント)も、直前に接するコメントは接したまま残し、
-空白が書かれていれば空白 1 つを置きます。
+[timeline](./timeline.ja.md#コメント)も、文の後ろのコメントは、
+接していれば接したまま残し、空白が書かれていれば空白 1 つを置きます。
 裸・3つのパーセントと末尾の空白を残します。
 pie 固有のコメントは LF で終わり、LS・PS は内部に残ります。
 LS・PS は区切りではなく、
