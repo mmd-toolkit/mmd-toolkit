@@ -1462,10 +1462,11 @@ characters as escapes too (see
 [tests/line-separators.test.ts](../tests/line-separators.test.ts)).
 
 - At the end of the text of a `box`, after the whitespace that may stand before
-  them. A box whose text holds such a character has the fill `transparent` and
-  no name, and without it `box aqua` has the fill `aqua`, in every version of
-  mermaid.js that counts. Rule 1 names no mark for the end of a text of a `box`,
-  so [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+  them. A box whose text holds such a character has the fill `transparent` in
+  the Db of 12.3.0, and without it `box red` has the fill `red`; the fill of the
+  drawing differs in 10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0. Rule 1 names
+  no mark for the end of a text of a `box`, so
+  [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
   decides, as [journey](./journey.md#line-separators) at the end of a title, and
   [timeline](./timeline.md#line-separators) at the end of a title and of the
   last event of a line, keep U+2028 and U+2029 as characters of the text and
