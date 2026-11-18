@@ -836,8 +836,11 @@ line break, so
 decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
 [journey](./journey.md#multi-line-statements) keep a line break next to a
-comment or a directive and the whitespace before it, and put the continuations
-one level deeper.
+comment or a directive and the whitespace before it, and put the later parts of
+a statement and the comment and directive lines between them one level deeper,
+where no other rule keeps the layout as written (where the Db holds the text
+with its whitespace, where moving a line makes mermaid.js reject the text, and
+the like).
 
 [fixture: multi-line-statements/point-trivia-with-multiline-label] [fixture:
 multi-line-statements/accessibility-trivia-continuations]

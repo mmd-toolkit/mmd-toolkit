@@ -20,8 +20,8 @@
 
 [fixture: treemap/header-beta] [fixture: treemap/spec-treemap-test-ts-892fa294]
 [fixture: treemap/header-uppercase] [fixture: treemap/header-repeat]
-[fixture: treemap/header-colon] [fixture: treemap/header-letter-suffix]
-[fixture: treemap/header-digit-suffix]
+[fixture: treemap/header-colon] [fixture: treemap/header-colon-beta]
+[fixture: treemap/header-letter-suffix] [fixture: treemap/header-digit-suffix]
 [fixture: treemap/header-underscore-suffix]
 [fixture: treemap/header-dash-suffix] [fixture: treemap/header-unicode-suffix]
 

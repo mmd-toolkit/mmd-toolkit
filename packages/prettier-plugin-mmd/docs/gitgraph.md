@@ -484,9 +484,13 @@ Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
 For blocks that keep their braces, put one ordinary space between `accDescr` and
 `{`, even when written touching; protected trivia and semicolon layouts keep
-their gaps. A separate closer aligns with its statement. Ordinary description
-body and standalone comment lines align one level inside it: the Db removes
-indentation after LF. Keep line breaks and interior blank lines, and the
+their gaps. Rule 1 names no mark between a keyword and its opening brace, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [radar](./radar.md#description-blocks) and
+[treemap](./treemap.md#description-blocks) print one space there, also where the
+block holds text. A separate closer aligns with its statement. Ordinary
+description body and standalone comment lines align one level inside it: the Db
+removes indentation after LF. Keep line breaks and interior blank lines, and the
 whitespace at the end of each line of text except the last one; a line of
 whitespace only becomes an empty line. The whitespace at the end of the last
 line of text is dropped where the closer stands on a line of its own, and is
@@ -495,9 +499,10 @@ shared removed comment regions keep their complete source. Whitespace-only
 interiors print `{}` because there is no text for interior whitespace to
 surround; tabs, line breaks and Unicode whitespace follow the same rule.
 
-[fixture: title-and-common-values/empty-whitespace-interiors] [test: gitgraph
-Unicode and tab interiors] [fixture:
-title-and-common-values/block-trailing-whitespace] [fixture:
+[fixture: title-and-common-values/block-touching-with-text-fixed] [fixture:
+title-and-common-values/empty-whitespace-interiors] [test: gitgraph Unicode and
+tab interiors] [fixture: title-and-common-values/block-trailing-whitespace]
+[fixture:
 title-and-common-values/block-trailing-whitespace-closer-on-the-text-line]
 
 Comment/directive-only blocks keep their trivia. Keep every repeated, empty and

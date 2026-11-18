@@ -511,8 +511,22 @@ pie
 
 著者の接続と文字を保つため、
 共有の[コメント](./flowchart.ja.md#コメント)を再利用します。
-同一行の接したコメントは接したまま、離れていれば空白1つにします。
+同一行のコメントは、接していれば接したまま、
+空白とタブの連なりがあれば空白 1 つにします。
 独立したコメントは本文の文に揃え、見出し前は先頭列に置きます。
+規則 1 は、コメントの前の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#コメント)、[journey](./journey.ja.md#コメント)、
+[timeline](./timeline.ja.md#コメント)も、
+文の後ろのコメントを同じように印字します。
+ほかの規則が空白を書かれたまま残す所は別です。
+どの図の文書も、その所を、
+自分の節か [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
+で挙げています（Db が持つ空白、たとえば `section` と期間の後の空白と、
+mermaid.js の読みを変える空白です）。
+コメントの前の空白が例外になるのは、`accTitle` の値の後ろの `%%` です。
+数える版のうち最も古い版が、その空白をタイトルの一部として読むためです。
+詳しくは [アクセシビリティの行](#accessibility-lines) を参照してください。
 裸・3つのパーセントと末尾の空白を残します。
 pie 固有のコメントは LF で終わり、LS・PS は内部に残ります。
 LS・PS は区切りではなく、
@@ -523,6 +537,7 @@ LS・PS は区切りではなく、
 保持する前置きは通常の整列より優先します。
 
 [fixture: pie/comments/comments-align] [fixture: pie/comments/comment-bare]
+[fixture: pie/comments/inline-gap-run-before-comment]
 [fixture: pie/comments/comment-value-text]
 [test: pie/comments/comment-region-join]
 [fixture: pie/comments/comment-section-move-attachment]
@@ -554,6 +569,11 @@ pie
 元は同じ行にあった単位を別の行へ分けるときは、
 間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
+規則 1 は、2 つの単位の間のディレクティブの印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#ディレクティブ)、
+[flowchart](./flowchart.ja.md#ディレクティブ)、
+[journey](./journey.ja.md#ディレクティブ)も、この隙間を同じに印字します。
 保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
 ほかの場所と同じように整形します。
 この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、

@@ -877,6 +877,11 @@ wardley-beta
 元は同じ行にあった単位を別の行へ分けるときは、
 間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
+規則 1 は、2 つの単位の間のディレクティブの印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#ディレクティブ)、
+[flowchart](./flowchart.ja.md#ディレクティブ)、
+[journey](./journey.ja.md#ディレクティブ)も、この隙間を同じに印字します。
 普通の独立行は本文の段に揃え、複数行の内部と EOF に達する未完の終端は保ちます。
 JSON 整形や順の入れ替えはしません。
 共通除去が両側の文字を結び、受理や値を変えることがあるためです。
@@ -917,7 +922,18 @@ wardley-beta
 ### コメント
 
 普通の独立コメントは所属する本文の段、見出し前は第 1 列に揃えます。
-行内のコメントは同じ行と接触側を保ち、離れた隙間は空白 1 つにします。
+行内のコメントは同じ行に残し、接していれば接したまま、
+空白とタブの連なりがあれば空白 1 つにします。
+規則 1 は、コメントの前の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#コメント)、[journey](./journey.ja.md#コメント)、
+[timeline](./timeline.ja.md#コメント)も、
+文の後ろのコメントを同じように印字します。
+ほかの規則が空白を書かれたまま残す所は別です。
+どの図の文書も、その所を、
+自分の節か [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
+で挙げています（Db が持つ空白、たとえば `section` と期間の後の空白と、
+mermaid.js の読みを変える空白です）。
 印、本文、末尾余白を保ち、pipeline 内では子文の段にします。
 文字列、flow、link ラベルの `%` テキストはその値に残します。
 共通のコメント領域の結合は原文の列を保ち、所属先の変化を防ぎます。
@@ -928,6 +944,7 @@ wardley-beta
 [fixture: wardley/comments/comment-inline-contact]
 
 [fixture: wardley/comments/comment-inline-separated]
+[fixture: wardley/comments/inline-gap-run-before-comment]
 
 [fixture: wardley/comments/comment-pipeline]
 

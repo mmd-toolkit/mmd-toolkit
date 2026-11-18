@@ -472,18 +472,31 @@ pie
 ### Comments
 
 Reuse [shared comment placement](./flowchart.md#comments) to keep author
-attachment and text: inline comments retain touching sides or one separating
-space; standalone comments align with body statements, or column one before the
-header. Keep bare/triple-percent marks and trailing comment spaces. Pie native
-comments end at LF, retaining LS/PS inside them, because pie does not treat them
-as separators: ending a comment at one would expose the rest of the line as a
+attachment and text: an inline comment that touches stays touching, and a run of
+spaces and tabs before it becomes one space; standalone comments align with body
+statements, or column one before the header. Rule 1 names no mark before a
+comment, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#comments),
+[journey](./journey.md#comments), and [timeline](./timeline.md#comments) print a
+comment after a statement in the same way, where no other rule keeps the
+whitespace as written; each of them names those cases in its own sections or in
+[A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
+(whitespace that the Db holds, as after a `section` or a period, and whitespace
+that changes what mermaid.js reads). The whitespace before a `%%` that follows
+an `accTitle` value is the exception: the oldest version that counts reads it as
+part of the title (see [Accessibility lines](#accessibility-lines)). Keep
+bare/triple-percent marks and trailing comment spaces. Pie native comments end
+at LF, retaining LS/PS inside them, because pie does not treat them as
+separators: ending a comment at one would expose the rest of the line as a
 statement and change the Db; strings and block interiors keep percent content,
 while line common values stop at it. Common removed regions keep their complete
 swallowed source and joined continuation columns, because re-indenting a
 continuation adds spaces to the joined label. A protected preheader prefix
 overrides ordinary alignment.
 
-[fixture: pie/comments/comments-align] [fixture: pie/comments/comment-bare]
+[fixture: pie/comments/comments-align] [fixture:
+pie/comments/inline-gap-run-before-comment] [fixture: pie/comments/comment-bare]
 [fixture: pie/comments/comment-value-text] [test:
 pie/comments/comment-region-join] [fixture:
 pie/comments/comment-section-move-attachment] [fixture:
@@ -513,17 +526,21 @@ directives in their authored gaps, including multiline contents and EOF-reaching
 endings. Within a printed line, place a directive as under
 [Directives](./flowchart.md#directives). When formatting splits units that were
 on the same line, a directive in their gap moves with the following unit: its
-right boundary stays touching or separated, while its left contact is broken. A
-segment that holds a kept `;` is formatted as anywhere else, except where
-formatting could change which `;` the line rule ignores. The rule reads a
-segment from the first `:` after `style` or `classDef` to the last `#` before
-its last kept `;`, with no whitespace between the `:` and the `#` (see
-[Semicolons](./flowchart.md#semicolons)), so the gaps and the padding inside
-that stretch keep whether they hold whitespace, a run becoming one space, and
-the rest of the segment follows the ordinary rules of this diagram. Text that no
-part of the layout holds stays as written. For example, changing
-`accDescr {style:#x;y}` to `accDescr {style: #x;y}` changes the description text
-mermaid.js draws (see
+right boundary stays touching or separated, while its left contact is broken.
+Rule 1 names no mark for a directive between two units, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [sequence](./sequence.md#directives),
+[flowchart](./flowchart.md#directives), and [journey](./journey.md#directives)
+print such a gap in the same way. A segment that holds a kept `;` is formatted
+as anywhere else, except where formatting could change which `;` the line rule
+ignores. The rule reads a segment from the first `:` after `style` or `classDef`
+to the last `#` before its last kept `;`, with no whitespace between the `:` and
+the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
+padding inside that stretch keep whether they hold whitespace, a run becoming
+one space, and the rest of the segment follows the ordinary rules of this
+diagram. Text that no part of the layout holds stays as written. For example,
+changing `accDescr {style:#x;y}` to `accDescr {style: #x;y}` changes the
+description text mermaid.js draws (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A statement over several lines whose lines, joined with one space or with
 nothing, could change which `;` the line rule ignores keeps the text of each

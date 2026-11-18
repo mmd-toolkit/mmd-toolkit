@@ -937,6 +937,7 @@ Mermaid が説明から LF 後の字下げを除くためです。
 本文はその 1 段内側に置きます。
 詳しくは [タイトル](#title) を参照してください。
 
+[fixture: treemap/description-blocks/block-touching-with-text-fixed]
 [fixture: treemap/description-blocks/empty]
 
 [fixture: treemap/description-blocks/touching]

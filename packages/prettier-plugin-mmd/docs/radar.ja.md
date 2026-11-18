@@ -578,6 +578,7 @@ Db で LF 後の字下げが取り除かれるためです。
 別行の開始記号と閉じ記号は文にそろえます。
 最初の閉じ波括弧で値を終えます。
 
+[fixture: radar/description-blocks/block-touching-with-text-fixed]
 [fixture: radar/description-blocks/block-empty-fixed]
 [fixture: description-blocks/block-trailing-whitespace]
 [fixture: description-blocks/block-trailing-whitespace-closer-on-the-text-line]

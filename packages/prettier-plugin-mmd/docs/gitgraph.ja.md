@@ -515,6 +515,11 @@ gitGraph
 波括弧を残すブロックは、通常の隙間では、
 接して書かれていても `accDescr` と `{` の間に空白 1 つを置きます。
 保護対象の注釈類やセミコロンの配置では、その隙間を保ちます。
+規則 1 は、キーワードと開き括弧の間の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[radar](./radar.ja.md#description-blocks) と
+[treemap](./treemap.ja.md#description-blocks) も、中身のあるブロックでも、
+ここを空白 1 個で印字します。
 別行の閉じは文に揃えます。
 通常の説明本文と独立したコメント行は、文より1段内側に揃えます。
 Db で LF 後の字下げが取り除かれるためです。
@@ -527,6 +532,7 @@ Db で LF 後の字下げが取り除かれるためです。
 空白だけの内側は、囲む空白を要する本文がないため `{}` と印字します。
 タブ、改行、Unicode の空白も同じです。
 
+[fixture: title-and-common-values/block-touching-with-text-fixed]
 [fixture: title-and-common-values/empty-whitespace-interiors]
 [test: gitgraph Unicode and tab interiors]
 [fixture: title-and-common-values/block-trailing-whitespace]

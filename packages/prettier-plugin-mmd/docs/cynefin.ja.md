@@ -869,7 +869,18 @@ cynefin-beta
 ### Comments
 
 普通の独立コメントは所属本文の段、項目間は項目の段、前置部分は第 1 列にします。
-同じ行のコメントは行と接触を保ち、元から離れていれば空白 1 個にします。
+同じ行のコメントは同じ行に残し、接していれば接したまま、
+空白とタブの連なりがあれば空白 1 つにします。
+規則 1 は、コメントの前の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#コメント)、[journey](./journey.ja.md#コメント)、
+[timeline](./timeline.ja.md#コメント)も、
+文の後ろのコメントを同じように印字します。
+ほかの規則が空白を書かれたまま残す所は別です。
+どの図の文書も、その所を、
+自分の節か [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
+で挙げています（Db が持つ空白、たとえば `section` と期間の後の空白と、
+mermaid.js の読みを変える空白です）。
 印、内容、末尾の余白を残します。
 図固有のコメントは CR・LF で終わり、LS・PS は内容です。
 共有のコメント領域による行結合では内部の列を保ち、
@@ -883,6 +894,7 @@ cynefin-beta
 [fixture: cynefin/comments/comment-touching-item]
 
 [fixture: cynefin/comments/comment-separated-item]
+[fixture: cynefin/comments/inline-gap-run-before-comment]
 
 [fixture: cynefin/comments/comment-standalone-body]
 

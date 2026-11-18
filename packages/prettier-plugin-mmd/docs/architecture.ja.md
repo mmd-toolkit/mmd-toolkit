@@ -839,13 +839,24 @@ C" ["D
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
 [flowchart](./flowchart.ja.md#コメント) と [wardley](./wardley.ja.md#コメント)
 も、独立した行のコメントを本文と同じ段に揃えます。
-同じ行のコメントは同じ行で接触を保ち、離れていれば空白1個にします。
+同じ行のコメントは同じ行に残し、接していれば接したまま、
+空白とタブの連なりがあれば空白 1 つにします。
+規則 2 は、行内のコメントの前の隙間も決めます。
+[sequence](./sequence.ja.md#コメント)、[journey](./journey.ja.md#コメント)、
+[timeline](./timeline.ja.md#コメント)も、
+文の後ろのコメントを同じように印字します。
+ほかの規則が空白を書かれたまま残す所は別です。
+どの図の文書も、その所を、
+自分の節か [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
+で挙げています（Db が持つ空白、たとえば `section` と期間の後の空白と、
+mermaid.js の読みを変える空白です）。
 付属先を保つため印・内容・末尾空白を保持します。
 図固有のコメントは LF・CR で終わり、LS・PS は内容です。
 先に始まった値は内側のパーセント文字を所有し、共通行はそこで終わります。
 共通処理が除く領域は原文全体と継続列を保ちます。
 
 [fixture: architecture/comments/comment-attachments]
+[fixture: architecture/comments/inline-gap-run-before-comment]
 
 [fixture: architecture/comments/value-ownership]
 

@@ -77,6 +77,21 @@ stateDiagram-v2
 次の行に書かれた `{` は、その行に移します。
 名前と `{` の間にコメントかディレクティブがあれば改行を残し、
 `{` は `state` のキーワードにそろえ、間の注釈は 1 段深く置きます。
+規則 1 は、改行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
+[journey](./journey.ja.md#複数行の文)も、コメントやディレクティブの隣の改行と、
+その前の空白を残し、文の後ろの部分と、
+その間のコメントやディレクティブの行を 1 段深く置きます。
+ほかの規則が配置を書かれたまま残す所は別です（Db が空白ごとテキストを持つ所や、
+動かすと mermaid.js がテキストを拒否する所などです）。
+`{` を持つブロックの行は、名前と一緒でも、自分だけの行でも、
+その後ろの部分に入りません。
+文と同じ段に置きます。
+この段を与える先例も規則もなく、決まるまでは公開した版の出力のままです。
+詳しくは
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+を参照してください。
 `{` の前の空白 1 つは class 図と同じです。
 
 [fixture: composite-states/split]
@@ -546,6 +561,11 @@ ER 図の `:::` はすでにこの形で印字しており、mermaid.js の文�
 
 隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
 U+2028 と U+2029 は、そのまま残します。
+規則 1 の表に、これを含む間隔の印はないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[journey](./journey.ja.md#行区切り文字) と
+[timeline](./timeline.ja.md#行区切り文字) も、
+これを含む間隔を書かれたまま印字します。
 
 [test: U+2028 before the `:::` of a state]
 [test: U+2029 after the `:::` of a state]
@@ -1257,6 +1277,11 @@ mermaid.js はこの 3 つの書き方を同じに読み、
 別名の定義の `as` と id も同じ形で印字します（[別名](#別名)を参照）。
 隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
 U+2028 と U+2029 はそのまま残します。
+規則 1 の表に、これを含む間隔の印はないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[journey](./journey.ja.md#行区切り文字) と
+[timeline](./timeline.ja.md#行区切り文字) も、
+これを含む間隔を書かれたまま印字します。
 
 [fixture: notes/floating-note-as-gaps-spaced]
 [fixture: notes/floating-note-as-beside-directive]
@@ -1509,6 +1534,11 @@ flowchart と同じです。
 元は同じ行にあった単位を別の行へ分けるときは、
 間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
+規則 1 は、2 つの単位の間のディレクティブの印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#ディレクティブ)、
+[flowchart](./flowchart.ja.md#ディレクティブ)、
+[journey](./journey.ja.md#ディレクティブ)も、この隙間を同じに印字します。
 
 [fixture: state/directives/split-directive-gap]
 
@@ -1685,6 +1715,11 @@ agentflow、usecase に合わせます。
 
 コメントやディレクティブがあるブロックの内容と改行は保ち、
 閉じられていないブロックは開いたままにします。
+規則 1 は、ブロックの中の行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[xychart](./xychart.ja.md#空の説明ブロック) と
+[quadrant](./quadrant.ja.md#空の説明ブロック) も、
+ディレクティブかコメント行があるブロックの内容と改行を、そのまま残します。
 
 [fixture: multi-line-values/empty-description-trivia-kept]
 [corpus fixture: state/lex-acc-descr-block-unclosed]

@@ -704,12 +704,15 @@ Agentflow label comments are different: their preceding spaces/tabs are label
 content, so preserve that padding, the comment and its LF/continuation columns,
 including a closing bracket that belongs to the comment rather than closing the
 shape. Tildes remain content. Shape spellings, entities and HTML remain
-authored.
+authored. The text of a label is a text that the tree holds whole (see
+[A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)),
+and the Db keeps it, so an entity stays as written: `&amp;` is not printed `&`,
+a change of the text that no rule of this document defines.
 
 [fixture: labels/labels-closers] [fixture: labels/labels-leading-sensitive]
 [fixture: labels/labels-leading-at-sign] [fixture: labels/labels-padding]
 [fixture: labels/labels-tilde] [fixture: labels/labels-trim-sensitive-unsafe]
-[fixture: labels/slash-label-padding-kept]
+[fixture: labels/slash-label-padding-kept] [fixture: labels/entity-kept]
 
 Flow/connector heading titles follow
 [Subgraph header](./flowchart.md#subgraph-header) instead: drop the whitespace
@@ -1200,7 +1203,17 @@ join it as such and leave the next statement separate.
 A directive inside the statement declines ordinary joining and keeps the
 previous multiline statement layout: continuation and directive lines stand one
 level deeper than the keyword, with their text and authored line breaks
-retained. This reuses flowchart's continuation rule for the same reason.
+retained. This reuses flowchart's continuation rule for the same reason. Rule 1
+names no mark for a line break, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#multi-line-statements),
+[gantt](./gantt.md#multi-line-statements), and
+[journey](./journey.md#multi-line-statements) keep a line break next to a
+comment or a directive and the whitespace before it, and put the later parts of
+a statement and the comment and directive lines between them one level deeper,
+where no other rule keeps the layout as written (where the Db holds the text
+with its whitespace, where moving a line makes mermaid.js reject the text, and
+the like).
 
 [fixture: accessibility/inline-directive-kept] [fixture:
 accessibility/next-line-directive-kept] [fixture:
