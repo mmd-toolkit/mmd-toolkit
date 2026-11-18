@@ -517,8 +517,9 @@ gitGraph
 保護対象の注釈類やセミコロンの配置では、その隙間を保ちます。
 規則 1 は、キーワードと開き括弧の間の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[class](./class.ja.md#空の説明ブロック) と
-[journey](./journey.ja.md#空の説明ブロック) も、ここを空白 1 個で印字します。
+[radar](./radar.ja.md#description-blocks) と
+[treemap](./treemap.ja.md#description-blocks) も、中身のあるブロックでも、
+ここを空白 1 個で印字します。
 別行の閉じは文に揃えます。
 通常の説明本文と独立したコメント行は、文より1段内側に揃えます。
 Db で LF 後の字下げが取り除かれるためです。
