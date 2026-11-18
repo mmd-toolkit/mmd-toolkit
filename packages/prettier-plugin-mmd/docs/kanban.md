@@ -793,17 +793,18 @@ where it touches. Rule 1 names no mark before a comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#comments),
 [journey](./journey.md#comments), and [timeline](./timeline.md#comments) keep a
-comment that touches what comes before it, and print one space where whitespace
-was written. The whitespace before such a comment is no part of the Db, so the
-form is a choice: the printer shortens a run to one space, and keeps whether
-there is any, since the author decides whether a comment touches what it follows
-(the choice of a [mindmap](./mindmap.md#comments) too). `S[x]   %% c` prints
-`S[x] %% c`, and `A[y]%% d` is not changed. After a bare id, in a label, and in
-a class, `%%` is a character of the text (`S %% x`, `A[%% y]`, `:::c %% z`), and
-a line that starts with `#` or with a single `%` is node text; the printer does
-not touch these. A comment line is removed with the text up to the line feed,
-and a U+2028 or a U+2029 on it does not end it: the text after the separator is
-part of the removed comment, and the printer keeps it there.
+comment after a statement touching the statement where it touches, and print one
+space where whitespace was written. The whitespace before such a comment is no
+part of the Db, so the form is a choice: the printer shortens a run to one
+space, and keeps whether there is any, since the author decides whether a
+comment touches what it follows (the choice of a
+[mindmap](./mindmap.md#comments) too). `S[x]   %% c` prints `S[x] %% c`, and
+`A[y]%% d` is not changed. After a bare id, in a label, and in a class, `%%` is
+a character of the text (`S %% x`, `A[%% y]`, `:::c %% z`), and a line that
+starts with `#` or with a single `%` is node text; the printer does not touch
+these. A comment line is removed with the text up to the line feed, and a U+2028
+or a U+2029 on it does not end it: the text after the separator is part of the
+removed comment, and the printer keeps it there.
 
 [fixture: comments/inline] [fixture: comments/header-comment-gap] [fixture:
 comments/comment-after-data-gap] [fixture: comments/comment-after-icon-gap]
