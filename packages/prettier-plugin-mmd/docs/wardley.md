@@ -1072,7 +1072,10 @@ wardley-beta
 
 Do not wrap at printWidth. Keep physical string and flow contents, continuation
 columns and interior blank lines. Description bodies use the shared indentation
-above. Visible LF between ordinary statement components can reject the input,
+above. Visible LF between ordinary statement components can reject the input (a
+line break after the comma of the coordinates of a component is rejected by
+every version of mermaid.js that counts, see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)),
 and reindenting value continuations changes the Db. Long component/evolution
 statements stay unwrapped; description openers and closers use Accessibility.
 
