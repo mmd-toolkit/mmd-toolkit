@@ -1488,14 +1488,14 @@ characters as escapes too (see
   (`autonumber 5`, U+2028 or U+2029, and a `#` comment is rejected by every
   version of mermaid.js that counts and is not formatted):
 
-  - The id of a `participant` or an `actor` that has no alias and no data block,
-    and of a `create`, a `destroy`, an `activate`, and a `deactivate`: `A`,
-    U+2028, and `# c` are one id.
+  - The id of a `participant` or an `actor`, also after `create`, that has no
+    alias and no data block, and of a `destroy`, an `activate`, and a
+    `deactivate`: `A`, U+2028, and `# c` are one id.
   - `accTitle` and a line of `accDescr`: the `#` and what follows are part of
     the value.
   - A `title`, and a `box` that has a text: the text holds the character. The
     title of the Db ends with it, and the fill of a box whose text holds it is
-    `transparent`.
+    `transparent` in the Db of 12.3.0.
 
   [test: a `#` comment after U+2028, which joins no lines] [test: a `%%` comment
   line after U+2028, which joins the next line] [test: a `%%` comment line after
@@ -1529,12 +1529,12 @@ characters as escapes too (see
   the header] [test: a `#` comment after U+2028 after the id of an actor] [test:
   a `#` comment after U+2029 after the id of a create and a destroy] [test: a
   `#` comment after U+2028 after autonumber 5 and a space] [test: a `#` comment
-  after U+2029 after autonumber 5 and a space] [test: a `#` comment after U+2029
-  after the id of an actor] [test: a `#` comment after U+2029 after autonumber]
-  [test: a `#` comment after U+2029 after a box without a text] [test: a `#`
-  comment after U+2028 and U+2029 after a data block that is read as a name]
-  [test: autonumber 5, U+2028, and a `#` comment] [test: autonumber 5, U+2029,
-  and a `#` comment]
+  after U+2029 after autonumber 5 and a space] [test: a `#` comment after U+2028
+  after a create with an alias] [test: a `#` comment after U+2029 after the id
+  of an actor] [test: a `#` comment after U+2029 after autonumber] [test: a `#`
+  comment after U+2029 after a box without a text] [test: a `#` comment after
+  U+2028 and U+2029 after a data block that is read as a name] [test: autonumber
+  5, U+2028, and a `#` comment] [test: autonumber 5, U+2029, and a `#` comment]
 
 - Right after a directive that is not closed. The text of such a directive stops
   before the character, which is no whitespace to it: with the character printed

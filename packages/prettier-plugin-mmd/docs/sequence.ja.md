@@ -1513,15 +1513,15 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   この文字を書かれたまま残します（`autonumber 5`、U+2028 か U+2029、
   `#` コメントは、対象にする版の mermaid.js のすべてが拒否し、整形しません）。
 
-  - 別名もデータブロックもない `participant` と `actor`、および `create`、
-    `destroy`、`activate`、`deactivate` の ID。
+  - 別名もデータブロックもない `participant` と `actor`（`create` の後も同じ）、
+    および `destroy`、`activate`、`deactivate` の ID。
     `A`、U+2028、`# c` が 1 つの ID です。
   - `accTitle` と `accDescr` の 1 行。
     `#` とそれ以降は値の一部です。
   - `title` と、テキストのある `box`。
     テキストがこの文字を含みます。
-    Db の title はこの文字で終わり、
-    この文字を含む box の fill は `transparent` です。
+    Db の title はこの文字で終わり、この文字を含む box の fill は、
+    12.3.0 の Db で `transparent` です。
 
   [test: a `#` comment after U+2028, which joins no lines]
   [test: a `%%` comment line after U+2028, which joins the next line]
@@ -1563,11 +1563,12 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   [test: a `#` comment after U+2029 after the id of a create and a destroy]
   [test: a `#` comment after U+2028 after autonumber 5 and a space]
   [test: a `#` comment after U+2029 after autonumber 5 and a space]
+  [test: a `#` comment after U+2028 after a create with an alias]
   [test: a `#` comment after U+2029 after the id of an actor]
   [test: a `#` comment after U+2029 after autonumber]
   [test: a `#` comment after U+2029 after a box without a text]
-  [test: a `#` comment after U+2028 and U+2029 after a data block that is read as a name]
-  [test: autonumber 5, U+2028, and a `#` comment]
+  [test: a `#` comment after U+2028 and U+2029 after a data block
+  that is read as a name] [test: autonumber 5, U+2028, and a `#` comment]
   [test: autonumber 5, U+2029, and a `#` comment]
 
 - 閉じていないディレクティブの直後。

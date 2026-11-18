@@ -736,6 +736,11 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
     "sequenceDiagram\n  autonumber 5 # c\n",
   ],
   [
+    "a `#` comment after U+2028 after a create with an alias",
+    "sequenceDiagram\nparticipant B\ncreate participant A as X\u2028# c\nB->>A: m\n",
+    "sequenceDiagram\n  participant B\n  create participant A as X # c\n  B ->> A: m\n",
+  ],
+  [
     "a `#` comment after U+2029 after the id of an actor",
     "sequenceDiagram\nactor A\u2029# c\n",
     "sequenceDiagram\n  actor A\u2029# c\n",
