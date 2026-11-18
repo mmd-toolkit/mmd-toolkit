@@ -1880,13 +1880,13 @@ treeView-beta
 [fixture: description-blocks/block-hidden-box-glyph]
 
 普通の空白だけの内部は `{}` です。
-空の波括弧は `{}` と印字します。
 Prettier が `x = { }` を `x = {}`
 と印字するのと同じです（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 行の規則が無視する `;` もテキストではありません。
 書かれた `;` があるために縮められないときは、
 `;` を残して空のブロックの配置にします。
 
+[fixture: description-blocks/block-empty]
 [fixture: description-blocks/block-ignored-semicolon-interior]
 
 波括弧を残すブロックは、`accDescr` と `{` の間を、
