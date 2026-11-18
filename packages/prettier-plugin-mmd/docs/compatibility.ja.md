@@ -3246,13 +3246,17 @@ agentflow 図の `accDescr {style:#x} ; %% #a;`）。
   [fixture: railroad/description-blocks/ir-percent-comment-after-block]
   [fixture: railroad/description-blocks/peg-percent-comment-after-block]
 
-- ブロックに本文がないか、ディレクティブだけがある場合です。
+- ブロックに本文がない場合です。
   [アクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)のとおり、
   `accDescr {}` と印字します。
+  ディレクティブだけを持つブロックはブロックのままで、
+  `accDescr {%%{init: {}}%% }` は `accDescr { %%{init: {}}%%}` と印字し、
+  自分の行にあるディレクティブは行を保ちます（同じ節を参照）。
 
   [fixture: flowchart/accessibility-lines/empty-block-tight]
   [fixture: flowchart/accessibility-lines/empty-block-spaced]
   [fixture: flowchart/accessibility-lines/empty-block-directive-kept]
+  [fixture: flowchart/accessibility-lines/empty-block-directive-line-kept]
 
 - ブロックが閉じていない場合です。
 

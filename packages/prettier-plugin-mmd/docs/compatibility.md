@@ -3099,12 +3099,16 @@ block holds, or would not be read as the block is:
   railroad/description-blocks/ir-percent-comment-after-block] [fixture:
   railroad/description-blocks/peg-percent-comment-after-block]
 
-- The block has no text, or only a directive: it is printed `accDescr {}`, as
-  [Accessibility lines](./flowchart.md#accessibility-lines) says.
+- The block has no text: it is printed `accDescr {}`, as
+  [Accessibility lines](./flowchart.md#accessibility-lines) says. A block that
+  holds only a directive stays a block: `accDescr {%%{init: {}}%% }` is printed
+  `accDescr { %%{init: {}}%%}`, and a directive on a line of its own keeps its
+  lines (see the same section).
 
   [fixture: flowchart/accessibility-lines/empty-block-tight] [fixture:
   flowchart/accessibility-lines/empty-block-spaced] [fixture:
-  flowchart/accessibility-lines/empty-block-directive-kept]
+  flowchart/accessibility-lines/empty-block-directive-kept] [fixture:
+  flowchart/accessibility-lines/empty-block-directive-line-kept]
 
 - The block is not closed.
 
