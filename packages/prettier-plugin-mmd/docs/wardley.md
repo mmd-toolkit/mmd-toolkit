@@ -907,11 +907,11 @@ for a separated gap. Rule 1 names no mark before a comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#comments),
 [journey](./journey.md#comments), and [timeline](./timeline.md#comments) keep a
-comment that touches what comes before it, and print one space where whitespace
-was written. Preserve marks, text and trailing padding; pipeline comments use
-child depth. Enclosing strings, flows and link labels retain percent text.
-Common comment-region joins keep their source columns, preventing text from
-changing owner.
+comment after a statement touching the statement where it touches, and print one
+space where whitespace was written. Preserve marks, text and trailing padding;
+pipeline comments use child depth. Enclosing strings, flows and link labels
+retain percent text. Common comment-region joins keep their source columns,
+preventing text from changing owner.
 
 [test: wardley/comments/native-separators] [fixture:
 wardley/comments/comment-standalone]
