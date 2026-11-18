@@ -99,6 +99,12 @@ GWT 節は設定の 1 段、項目は 2 段にします。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+規則 1 は文の字下げに記号を挙げないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)は、
+ヘッダーの後の文を 1 段深く置く形を与えます。
+[flowchart](./flowchart.ja.md#字下げ)、[class](./class.ja.md#字下げ)、
+[er](./er.ja.md#字下げ)、[state](./state.ja.md#字下げ) がその形で印字します。
+表は、改行の後の `title` と、ブロックの `}` について、その形を挙げています。
 
 [fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]
 [fixture: eventmodeling/qualified-names/hidden-before-title-segment-keep-no-prefix-space]
@@ -607,6 +613,12 @@ tf 01 evt Alpha { 	 x  }
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+規則 1 は本文の行の余白に記号を挙げないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)は、
+説明ブロックの行が、[pie](./pie.ja.md#description-blocks)、
+[radar](./radar.ja.md#description-blocks)、
+[cynefin](./cynefin.ja.md#description-blocks) で文より 1
+段内側に立つ余白を与えます。
 先頭が空行でも、その次の行が第 1 物理行になるわけではありません。
 
 [fixture: eventmodeling/data-blocks/body-first-line-zero-margin]
@@ -625,6 +637,7 @@ tf 01 evt Alpha { 	 x  }
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+規則 2 なら `}` を字下げします（[字下げ](#indentation)と同じです）。
 見かけの文、波括弧を含むテキスト、直後の閉じ風の行も、
 本文を持つ形の規則が後の閉じまで読む場合は保ちます。
 
@@ -1188,6 +1201,7 @@ tf %%{wrap}%%01 evt Alpha %%{wrap}%%->> %%{wrap}%%02
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+規則 2 なら字下げします（[字下げ](#indentation)と同じです）。
 必須の識別子と共通値の空白は構造上の字下げより優先します。
 `eventmodeling data D {`、`x`、
 `}` の後の ` accDescr: style:#x;` の先頭の空白は、残します。
