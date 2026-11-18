@@ -776,18 +776,13 @@ Unicode and tab interiors]
 A block with a directive or comment line keeps its contents and line breaks,
 with standalone trivia one level inside and its closer at statement level. It
 stands on a line of its own, also after the header and after another statement.
-A block that holds only a directive on the line of its braces keeps the
-directive touching the `{` where nothing stood between them, and prints one
-space before it where whitespace stood before or after it, and none after it:
-`accDescr {%%{init: {}}%% }` is printed `accDescr { %%{init: {}}%%}`. A block
-that is not closed, at the end of the text, is printed as `accDescr {` with no
-`}`, as in [Accessibility statements](#accessibility-statements).
+A block that is not closed, at the end of the text, is printed as `accDescr {`
+with no `}`, as in [Accessibility statements](#accessibility-statements).
 
 [fixture: empty-description-blocks/inner-whitespace-collapsed] [fixture:
 empty-description-blocks/touching-kept] [fixture:
 empty-description-blocks/blank-lines-inside] [fixture:
 empty-description-blocks/with-directive-or-comment-line-kept] [fixture:
-empty-description-blocks/directive-on-the-line-of-the-braces] [fixture:
 empty-description-blocks/directive-line-kept] [fixture:
 empty-description-blocks/after-the-header] [fixture:
 empty-description-blocks/after-a-statement-on-its-line] [fixture:

@@ -1927,20 +1927,15 @@ usecaseのDbが同じ形に従います。
 
 [test: accessibility blocks: flowchart empty-block-unicode]
 
-保持行の例外を優先し、
-コメントやディレクティブがあるブロックは従来の配置を保ちます。
+保持行の例外を優先し、複数行でコメント行を持つブロックは従来の配置を保ちます。
 規則 1 は、ブロックの中の行の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [xychart](./xychart.ja.md#空の説明ブロック) と
-[quadrant](./quadrant.ja.md#空の説明ブロック) も、
-ディレクティブかコメント行があるブロックの内容と改行を、そのまま残し、
-ディレクティブだけを `{` と同じ行に置くブロックは、
-間に何もなければディレクティブを `{` に接したまま残し、前か後ろに空白があれば、
-前に空白 1 つを置き、後ろには置きません。
+[quadrant](./quadrant.ja.md#空の説明ブロック) も、コメント行か、
+自分の行にあるディレクティブを持つブロックの内容と改行を、そのまま残します。
 
 [fixture: accessibility-lines/empty-block-semicolon-kept]
 [fixture: accessibility-lines/empty-block-directive-kept]
-[fixture: accessibility-lines/empty-block-directive-forms]
 [fixture: accessibility-lines/empty-block-directive-line-kept]
 [fixture: multi-line-values/accdescr-block-comment-only]
 
