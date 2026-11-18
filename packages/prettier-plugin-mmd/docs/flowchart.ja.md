@@ -764,6 +764,10 @@ Prettier がコードでそうするのと同じで、空行は文をまとま�
 [fixture: blank-lines/inside-values-kept]
 
 テキストはちょうど 1 つの改行で終わります。
+規則 1 は、ここの印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[kanban](./kanban.ja.md#末尾の改行) と [packet](./packet.ja.md#final-newline)
+も、テキストを改行 1 つで終えます。
 
 [fixture: blank-lines/header-only-without-line-break]
 
@@ -1287,6 +1291,21 @@ flowchart LR
 [fixture: arrow-spacing/directive-in-text-between-arrows]
 
 `|` で囲んだラベルは矢印とその `|` に接し、辺の id はその `@` と矢印に接します。
+規則 1 は、この `@` の空白を決めません。
+`@` は辺の id の一部で、2 つの間に立つ印ではないからです。
+詳しくは [規則 1](./printed-form.ja.md#1-記号の横の空白) を参照してください。
+規則 2 も形を与えません。
+[agentflow](./agentflow.ja.md#arrows) と
+[usecase](./usecase.ja.md#relationship-labels-and-ids) は辺の id
+をこのページと同じに印字し、ほかの図種に辺の id はないからです。
+[規則 3](./printed-form.ja.md#3-綴り)が形を与えます。
+mermaid.js のドキュメントの例は、辺の id をその `@` と矢印に接して 17 回書き、
+そこに空白を置いた例は 1 つもありません。
+内訳は、
+[flowchart のページ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L810-L1321)
+が 13 回、
+[use case のページ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/usecase.md#L297-L561)
+が 4 回です。
 
 [fixture: arrow-spacing/pipe-label-other-link-kinds]
 [fixture: arrow-spacing/edge-id-with-labels]
@@ -2000,6 +2019,12 @@ sequence、class、state は、そこでは改行が空白の後でだけ数え�
 [fixture: multi-line-statements/directive-inside]
 
 途中のコメント行は文の中に残り、2 行目以降と同じ段に置きます。
+規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
+規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
+[requirement](./requirement.ja.md#フィールド) と
+[sequence](./sequence.ja.md#複数行の文)も、文の途中のコメント行を、
+2 行目以降と同じ段に置きます。
 
 [fixture: multi-line-statements/several-comments-inside]
 

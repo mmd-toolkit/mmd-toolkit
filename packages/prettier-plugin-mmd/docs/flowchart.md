@@ -752,7 +752,10 @@ part of it and are kept.
 
 [fixture: blank-lines/inside-values-kept]
 
-The text ends with exactly one line break.
+The text ends with exactly one line break. Rule 1 names no mark here, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [kanban](./kanban.md#final-newline) and
+[packet](./packet.md#final-newline) end the text with one line break.
 
 [fixture: blank-lines/header-only-without-line-break]
 
@@ -1247,7 +1250,19 @@ Text written between two arrows has one space on each side.
 arrow-spacing/directive-in-text-between-arrows]
 
 A label between `|` touches the arrow and its `|`, and an edge id touches its
-`@` and the arrow.
+`@` and the arrow. Rule 1 gives no spacing for this `@`, since it is a part of
+the id of the edge and not a mark between two things
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Rule 2 gives no
+form either: [agentflow](./agentflow.md#arrows) and
+[usecase](./usecase.md#relationship-labels-and-ids) print an edge id as this
+page does, and no other diagram type has one.
+[Rule 3](./printed-form.md#3-a-spelling) gives it: the examples in the
+documentation of mermaid.js write an edge id touching its `@` and the arrow 17
+times, 13 on
+[the flowchart page](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L810-L1321)
+and 4 on
+[the use case page](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/usecase.md#L297-L561),
+and never with whitespace there.
 
 [fixture: arrow-spacing/pipe-label-other-link-kinds] [fixture:
 arrow-spacing/edge-id-with-labels] [fixture:
@@ -1949,7 +1964,14 @@ whitespace.
 multi-line-statements/label-over-lines] [fixture:
 multi-line-statements/directive-inside]
 
-Comment lines inside it stay inside it, at the level of its later lines.
+Comment lines inside it stay inside it, at the level of its later lines. Rule 1
+gives no form here, since its table names the whitespace beside a mark and not
+the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it, as [requirement](./requirement.md#fields) and
+[sequence](./sequence.md#multi-line-statements) put the comment lines of a
+statement at the level of its later lines.
 
 [fixture: multi-line-statements/several-comments-inside]
 
