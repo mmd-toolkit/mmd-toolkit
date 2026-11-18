@@ -1356,14 +1356,16 @@ state、block の図で描きました。
 最後のスタイルの後ろのコメントかディレクティブは、文の一部ではありません。
 flowchart、agentflow、class、state、block、usecase の図では、
 文は普通に整形します。
-`style A fill:red %%{init: {}}%%` は `style A fill: red %%{init: {}}%%`
-と印字します。
+`style A fill:red %{init: {}}%` は `style A fill: red %{init: {}}%` と印字し、
+`classDef` も、flowchart と agentflow の図では `linkStyle` も同じです。
 requirement の図でも、ディレクティブの後ろでは同じで、
 11.7.0 以降はそこのコメントを拒否します。
-ER の図では、11.7.0 以降がコメントもディレクティブも拒否します。
+ER の図では、11.7.0 以降が、最後のスタイルの後ろのコメントと、
+テキストの終わりのディレクティブを拒否し、別の行が続くときのディレクティブは、
+文を書かれたまま残します。
 treemap の図は、コメントの後ろでは文を整形し、
 ディレクティブの後ろでは書かれたまま残します。
-詳しくは [スタイルの行末の空白](#スタイルの末尾の空白) を参照してください。
+詳しくは [スタイルの末尾の空白](#スタイルの末尾の空白) を参照してください。
 
 [fixture: flowchart/whitespace-between-tokens/style-blank-style-kept]
 [fixture: flowchart/whitespace-between-tokens/style-colon-escaped-space-kept]
@@ -1376,6 +1378,10 @@ treemap の図は、コメントの後ろでは文を整形し、
 [fixture: usecase/classes-and-styles/style-comment-and-directive-after-last-style-formatted]
 [fixture: requirement/directives/after-statement-at-end-of-line]
 [fixture: block/styles/style-comment-and-directive-after-last-style-formatted]
+[fixture: flowchart/style-trailing-whitespace/link-style-comment-and-directive-after-last-style-formatted]
+[fixture: agentflow/single-space-gaps/link-style-comment-and-directive-after-last-style-formatted]
+[fixture: treemap/styles/class-def-comment-after-last-style-formatted]
+[fixture: er/styles-and-classes/directive-before-next-line]
 [fixture: flowchart/colors/colors-next-to-comments-and-directives]
 
 テストは、印字したテキストの Db を、

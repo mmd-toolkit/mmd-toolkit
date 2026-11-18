@@ -454,8 +454,10 @@ comment, and the parentheses of `url(` stay.
 The style stays as written where printing it could change more than the
 whitespace around the names and the values. An empty style between two commas,
 or after the last one, stays, since the number of styles is in the Db. A style
-that holds a `;`, or that has a comment or a directive on its line, stays too: a
-`;` there may be ignored by the line rule of mermaid.js, which reads the
+that holds a `;`, or that has a directive on its line, stays too (a comment
+after the last style does not keep it: it is formatted as usual, see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):
+a `;` there may be ignored by the line rule of mermaid.js, which reads the
 whitespace between a `:` and a later `#`, and a second formatting must find the
 same text. Spaces, tabs, and form feeds after a directive at the end of that
 line are dropped like the whitespace at the end of other lines, unless a
@@ -465,8 +467,9 @@ directive then stays as written. The spacing inside the style stays as written.
 The whitespace that separates the style from the name of the class is not part
 of the style (see [Style gaps](#style-gaps)).
 
-[fixture: treemap/styles/written] [fixture: treemap/styles/empty-entry-kept]
-[fixture: treemap/styles/directive-line-kept] [fixture:
+[fixture: styles/class-def-comment-after-last-style-formatted] [fixture:
+treemap/styles/written] [fixture: treemap/styles/empty-entry-kept] [fixture:
+treemap/styles/directive-line-kept] [fixture:
 treemap/styles/directive-trailing-whitespace] [fixture:
 semicolons/protected-class-column] [test: leaves out the whitespace after a
 directive at the end of the classDef of a treemap] [test: keeps the whitespace

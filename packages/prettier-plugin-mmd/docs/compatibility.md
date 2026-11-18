@@ -1292,10 +1292,13 @@ a `;` of its own (see [Lines that hold a `;`](#lines-that-hold-a-)). A comment
 or a directive after the last style is no part of the statement, and in a
 flowchart, an agentflow, a class, a state, a block, and a usecase diagram the
 statement is formatted as usual: `style A fill:red %%{init: {}}%%` is printed
-`style A fill: red %%{init: {}}%%`. The same holds in a requirement diagram
-after a directive, and 11.7.0 and later reject a comment there. 11.7.0 and later
-reject both in an ER diagram. A treemap formats the statement after a comment
-and keeps it as written after a directive (see
+`style A fill: red %%{init: {}}%%`, and so are `classDef` and, in a flowchart
+and an agentflow diagram, `linkStyle`. The same holds in a requirement diagram
+after a directive, and 11.7.0 and later reject a comment there. In an ER
+diagram, 11.7.0 and later reject a comment after the last style and a directive
+at the end of the text, and a directive before another line keeps the statement
+as written. A treemap formats the statement after a comment and keeps it as
+written after a directive (see
 [Whitespace at the end of a style](#whitespace-at-the-end-of-a-style)).
 
 [fixture: flowchart/whitespace-between-tokens/style-blank-style-kept] [fixture:
@@ -1312,6 +1315,11 @@ state/whitespace-between-tokens/style-comment-and-directive-after-last-style-for
 usecase/classes-and-styles/style-comment-and-directive-after-last-style-formatted]
 [fixture: requirement/directives/after-statement-at-end-of-line] [fixture:
 block/styles/style-comment-and-directive-after-last-style-formatted] [fixture:
+flowchart/style-trailing-whitespace/link-style-comment-and-directive-after-last-style-formatted]
+[fixture:
+agentflow/single-space-gaps/link-style-comment-and-directive-after-last-style-formatted]
+[fixture: treemap/styles/class-def-comment-after-last-style-formatted] [fixture:
+er/styles-and-classes/directive-before-next-line] [fixture:
 flowchart/colors/colors-next-to-comments-and-directives]
 
 The tests compare the Db of the printed text with the margins of its styles
