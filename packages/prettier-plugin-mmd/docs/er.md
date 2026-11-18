@@ -2189,7 +2189,8 @@ break its left contact.
 this placement, as [radar](./radar.md#global-directives),
 [packet](./packet.md#global-directives), and
 [wardley](./wardley.md#global-directives) place a directive in the gap of units
-that formatting splits.
+that formatting splits, where no other rule keeps the layout as written (a
+directive that is not closed after a statement, and the like).
 
 [fixture: er/directives/whitespace-on-both-sides]
 

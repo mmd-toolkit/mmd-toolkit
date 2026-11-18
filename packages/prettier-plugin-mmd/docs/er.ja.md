@@ -2174,6 +2174,8 @@ erDiagram
 [packet](./packet.ja.md#global-directives)、
 [wardley](./wardley.ja.md#global-directive) も、
 整形が分ける単位の隙間のディレクティブを同じように置きます。
+ただし、ほかの規則が配置を書かれたまま残す所
+（文の後の閉じていないディレクティブなど）は別です。
 
 [fixture: er/directives/whitespace-on-both-sides]
 
