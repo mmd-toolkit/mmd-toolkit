@@ -1357,10 +1357,11 @@ treeView, and of a card of a kanban board (not the id of a column, which the
 figure depends on), for the date format and the axis format of a Gantt chart,
 for the `accDescription` of a C4 diagram, for the last event of a line of a
 timeline and the space that a period and an event before a colon gain, for the
-description of a task of a user journey, and for the second description of a
-state alias. The runs of spaces and tabs inside a date format, an axis format,
-or the value of an `accTitle:` line stay as written before the directives as
-they do without them.
+description of a task of a user journey, except that a task whose description
+holds a directive stays as written (see [Task data](./journey.md#task-data)),
+and for the second description of a state alias. The runs of spaces and tabs
+inside a date format, an axis format, or the value of an `accTitle:` line stay
+as written before the directives as they do without them.
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped] [fixture:
 usecase/direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
