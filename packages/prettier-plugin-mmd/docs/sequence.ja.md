@@ -653,12 +653,17 @@ mermaid.js の正規表現が最後の `)` まで読むので、書かれたま�
 対象にする版の mermaid.js のすべてが、
 `rect rgb( 1,2,3)` と `rect rgb(1,2,3 )` に別の `fill`
 属性を描くためです（同じ表を参照）。
+`box` でも、同じ理由で残します。
+コンマの前の空白は、12.3.0 が Db の `boxes[0].fill` を変え、
+描画は変わらないためです。
 
 [fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
 [fixture: colors/rect-leading-and-comma-padding-kept]
 [fixture: colors/rect-open-paren-padding-kept]
 [fixture: colors/rect-close-paren-padding-kept]
-[fixture: colors/functions-as-written]
+[fixture: colors/box-open-paren-padding-kept]
+[fixture: colors/box-close-paren-padding-kept]
+[fixture: colors/box-comma-padding-kept] [fixture: colors/functions-as-written]
 [fixture: colors/functions-beside-comments-and-directives]
 
 成分の中のディレクティブは、関数を認識する前に取り除かれます。

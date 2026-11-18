@@ -263,6 +263,9 @@ ELK の配置のパッケージのどのリリースも、
 | [sequence](./sequence.ja.md#トークンの間の空白)                                                                                       | `:`、`,`、`;`、`>` を含まないデータブロックを持つ `participant A   @{ x }`                                                                    | `participant A@{ x }`                           | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 と 11.7.0 が、ブロックを参加者の名前の一部として、空白ごと読む                                               | [fixture: sequence/whitespace-between-tokens/data-block-name-gap-before-kept]                                                                               |
 | [sequence](./sequence.ja.md#色)                                                                                                       | `rect rgb(191 ,223 ,255)`                                                                                                                     | `rect rgb(191, 223, 255)`                       | [1](./printed-form.ja.md#1-記号の横の空白)            | 12.3.0 が `messages[0].message` を変える                                                                            | [fixture: sequence/colors/function-padding-kept]                                                                                                            |
 | [sequence](./sequence.ja.md#色)                                                                                                       | `rect rgb( 1 ,2,3 )`                                                                                                                          | `rect rgb(1, 2, 3)`                             | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 が別の `fill` 属性を描く                                                                         | [fixture: sequence/colors/rect-leading-and-comma-padding-kept]                                                                                              |
+| [sequence](./sequence.ja.md#色)                                                                                                       | `rect rgb( 1,2,3)` と `rect rgb(1,2,3 )`                                                                                                      | `rect rgb(1, 2, 3)`                             | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 が別の `fill` 属性を描く                                                                         | [fixture: sequence/colors/rect-open-paren-padding-kept] [fixture: sequence/colors/rect-close-paren-padding-kept]                                            |
+| [sequence](./sequence.ja.md#色)                                                                                                       | `box rgb( 1,2,3) Team` と `box rgb(1,2,3 ) Team`                                                                                              | `box rgb(1, 2, 3) Team`                         | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 が別の `fill` 属性を描き、12.3.0 は Db の `boxes[0].fill` も変える                               | [fixture: sequence/colors/box-open-paren-padding-kept] [fixture: sequence/colors/box-close-paren-padding-kept]                                              |
+| [sequence](./sequence.ja.md#色)                                                                                                       | `box rgb(1 ,2,3) Team`                                                                                                                        | `box rgb(1, 2, 3) Team`                         | [1](./printed-form.ja.md#1-記号の横の空白)            | 12.3.0 が Db の `boxes[0].fill` を変え、描画は同じ                                                                  | [fixture: sequence/colors/box-comma-padding-kept]                                                                                                           |
 | [sequence](./sequence.ja.md#タイトル)                                                                                                 | `title` の後に空白2つ、タブ、空白1つ                                                                                                          | 最終行に `title` だけ                           | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 が `title` だけの行を拒否する                                                                    | [fixture: sequence/title/title-blank-kept]                                                                                                                  |
 | [sequence](./sequence.ja.md#コメント)                                                                                                 | `accDescr {style:#x} end #a;` と末尾の空白2つ                                                                                                 | `accDescr: style:#x` の次の行に `end #a;`       | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 が単独行の `end` を拒否する                                                                      | [fixture: sequence/statements-one-per-line/end-comment-ignored-semicolon-trigger-in-other-statement-trailing-whitespace]                                    |
 | [sequence](./sequence.ja.md#コメント)                                                                                                 | 末尾の `accDescr {style:#x} end #12; %%{init: {}}%%`                                                                                          | `accDescr: style:#x` の次の行に `end`           | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 が単独行の `end` を拒否する                                                                      | [fixture: sequence/statements-one-per-line/end-comment-entity-before-directive]                                                                             |
@@ -2191,7 +2194,12 @@ Venn 図の `style A fill:rgb(1,2,3)` は `style A fill: rgb(1, 2, 3)` になり
 `rect rgb(1, 2, 3)` とは別の `fill` 属性を描くためです。
 コンマの前の空白を残すのは、そこで 12.3.0 が Db を変え、描画は変わらず、
 その変化を覆う例外の種類もないためです。
-`box` と Venn 図の `style` については、ここでは何も示していません。
+`box` でも、同じ空白を同じ理由で残します。
+`(` の直後と `)` の直前の空白は、
+対象にする版の mermaid.js のすべてで別の `fill` 属性になります。
+コンマの前の空白は、12.3.0 が Db の `boxes[0].fill` を変え、描画は変わりません。
+Venn 図の `style` では、これらの空白のどれもが 12.3.0 の Db の `color` を変え、
+対象にする版の mermaid.js のすべてで描画は同じです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
@@ -2225,6 +2233,11 @@ Venn 図には色関数がありません。
 [fixture: sequence/colors/functions-spaced]
 [fixture: sequence/colors/function-padding-kept]
 [fixture: sequence/colors/rect-leading-and-comma-padding-kept]
+[fixture: sequence/colors/rect-open-paren-padding-kept]
+[fixture: sequence/colors/rect-close-paren-padding-kept]
+[fixture: sequence/colors/box-open-paren-padding-kept]
+[fixture: sequence/colors/box-close-paren-padding-kept]
+[fixture: sequence/colors/box-comma-padding-kept]
 [fixture: sequence/colors/functions-as-written]
 [fixture: sequence/colors/functions-beside-comments-and-directives]
 [fixture: venn/colors/functions-spaced]
