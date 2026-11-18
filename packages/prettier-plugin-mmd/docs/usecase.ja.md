@@ -100,7 +100,6 @@ YAML は共有の最小幅 1 を保ちます。
 [fixture: indentation/boundary-comments-before-end]
 [fixture: indentation/zero-tabs-boundary]
 [fixture: indentation/value-and-json-columns]
-[fixture: indentation/yaml-block-scalar-minimum]
 
 入力（エスケープ表記）:
 `"usecase-beta\nsystemBoundary Portal\nactor User\nTask(Work)\nend\nUser-->Task"`

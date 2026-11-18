@@ -92,7 +92,6 @@ indentation/indent-tabs] [fixture: indentation/indent-zero] [fixture:
 indentation/indent-zero-a11y] [fixture: indentation/indent-zero-tabs] [fixture:
 indentation/boundary-comments-before-end] [fixture:
 indentation/zero-tabs-boundary] [fixture: indentation/value-and-json-columns]
-[fixture: indentation/yaml-block-scalar-minimum]
 
 Input (escaped):
 `"usecase-beta\nsystemBoundary Portal\nactor User\nTask(Work)\nend\nUser-->Task"`
