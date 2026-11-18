@@ -5011,10 +5011,11 @@ state 図では、`scale`、`classDef`、`class`、`style`、`state`、`note`、
 矢印の前の語ごとにどの版が拒否するかは、
 [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
 の行にあります。
-説明の `:` は、
-どの id の後でも[規則 1](./printed-form.ja.md#1-記号の横の空白)
-（[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)）で接するので、
-行は要りません（[説明とラベル](./state.ja.md#説明とラベル)を参照）。
+説明の `:` は、どの id の後でも、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)で接するので、行は要りません。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方) と
+[説明とラベル](./state.ja.md#説明とラベル) を参照してください。
 [矢印の前後の空白](./state.ja.md#矢印の前後の空白)を参照してください。
 
 [fixture: state/arrow-spacing/touching-before-keyword-kept]
