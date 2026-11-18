@@ -456,7 +456,14 @@ its keys.
 The text of a type or a name is kept as written, except that a run of spaces and
 tabs inside a tilde word or a backquoted word is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
-and the text of a comment is kept.
+and the text of a comment is kept. Rule 1 does not decide the inside of a tilde
+word or a backquoted word, since the tree holds each as one token with its
+whitespace inside
+([A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+one space, as [class](./class.md#member-lines) prints a run of spaces and tabs
+inside a field and [architecture](./architecture.md#label-content) inside the
+text of a label as one space, where mermaid.js draws the text without the run.
 
 [fixture: attribute-spacing/tilde-word-runs-collapsed] [fixture:
 attribute-spacing/backquoted-word-runs-collapsed]
@@ -1518,7 +1525,13 @@ A statement that follows the `end` on its line stands on the line after it.
 [fixture: subgraphs/end-on-the-line-of-a-statement] [fixture:
 subgraphs/end-case-kept] [fixture: subgraphs/entity-after-end]
 
-A subgraph without statements is printed with its `end` on the next line.
+A subgraph without statements is printed with its `end` on the next line, the
+empty lines between the header and the `end` being dropped. Rule 1 names no mark
+here, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [flowchart](./flowchart.md#blank-lines) drops the empty lines at the
+start and the end of a subgraph, and [requirement](./requirement.md#bodies)
+drops the empty lines between the `{` and the `}` of a body without fields.
 
 [fixture: subgraphs/empty]
 
@@ -2038,7 +2051,12 @@ accTitle: direction BT
 
 A comment line, `%%` at the start of a line, stands at the level of the
 statements around it, and its text is kept as written; this diagram has no other
-comment (diagrams/er.md, Comments).
+comment (diagrams/er.md, Comments). Rule 1 gives no form here, since its table
+names the whitespace beside a mark and not the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it, as [state](./state.md#comments) and [flowchart](./flowchart.md#comments) put
+a comment line at the level of the statements around it.
 
 [fixture: comments/kept] [fixture: comments/in-blocks] [fixture:
 comments/last-in-body] [fixture: comments/text-kept]

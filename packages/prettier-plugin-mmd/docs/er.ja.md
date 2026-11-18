@@ -428,6 +428,16 @@ Db が保つからです。
 空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 コメントのテキストは保ちます。
+規則 1 は、チルダの語とバッククォートの語の内側を決めません。
+木が、それぞれを空白を内側に含む 1 つのトークンとして持つからです。
+詳しくは [木が丸ごと持つテキスト](./printed-form.ja.md#木が丸ごと持つテキスト)
+を参照してください。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が空白 1
+つを与えます。
+[class](./class.ja.md#メンバーの行) は欄の中の、
+[architecture](./architecture.ja.md#label-content) はラベルのテキストの中の、
+空白とタブの連なりを、mermaid.js がその連なりを描かずにテキストを描く場合に、
+空白 1 つで印字します。
 
 [fixture: attribute-spacing/tilde-word-runs-collapsed]
 [fixture: attribute-spacing/backquoted-word-runs-collapsed]
@@ -1489,6 +1499,12 @@ mermaid.js は、それを書かれたまま subgraph のノードに並べま�
 [fixture: subgraphs/end-case-kept] [fixture: subgraphs/entity-after-end]
 
 文のない subgraph は、`end` を次の行に置いて印字します。
+見出しと `end` の間の空行は落とします。
+規則 1 は、ここの印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[flowchart](./flowchart.ja.md#空行) は、subgraph の最初と最後の空行を落とし、
+[requirement](./requirement.ja.md#本体) は、
+フィールドのない本体の `{` と `}` の間の空行を落とします。
 
 [fixture: subgraphs/empty]
 
@@ -2013,6 +2029,11 @@ accTitle: direction BT
 コメント行、つまり行頭の `%%` は、周りの文と同じ段に置き、
 テキストは書かれたまま残します。
 この図にほかのコメントはありません（diagrams/er.md、コメント）。
+規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
+規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
+[state](./state.ja.md#コメント) と [flowchart](./flowchart.ja.md#コメント) も、
+コメント行を周りの文と同じ段に置きます。
 
 [fixture: comments/kept] [fixture: comments/in-blocks]
 [fixture: comments/last-in-body] [fixture: comments/text-kept]
