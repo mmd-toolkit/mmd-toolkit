@@ -922,17 +922,20 @@ wardley-beta
 ### コメント
 
 普通の独立コメントは所属する本文の段、見出し前は第 1 列に揃えます。
-行内のコメントは同じ行と接触側を保ち、離れた隙間は空白 1 つにします。
+行内のコメントは同じ行に残し、接していれば接したまま、
+空白とタブの連なりがあれば空白 1 つにします。
 規則 1 は、コメントの前の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#コメント)、[journey](./journey.ja.md#コメント)、
 [timeline](./timeline.ja.md#コメント)も、
-文の終わりとコメントの間の空白とタブの連なりを空白 1 つで印字し、
-接するコメントは接したまま残します。
+文の後ろのコメントを同じように印字します。
 ほかの規則が空白を書かれたまま残す所は別です。
-どの図の文書も、その所を自分の節で挙げています。
-（Db が持つ空白と、mermaid.js の読みを変える空白です。）印、本文、
-末尾余白を保ち、pipeline 内では子文の段にします。
+どの図の文書も、その所を、
+自分の節か [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
+で挙げています。
+（Db が持つ空白、たとえば `section` と期間の後の空白と、
+mermaid.js の読みを変える空白です。）印、本文、末尾余白を保ち、
+pipeline 内では子文の段にします。
 文字列、flow、link ラベルの `%` テキストはその値に残します。
 共通のコメント領域の結合は原文の列を保ち、所属先の変化を防ぎます。
 
@@ -942,6 +945,7 @@ wardley-beta
 [fixture: wardley/comments/comment-inline-contact]
 
 [fixture: wardley/comments/comment-inline-separated]
+[fixture: wardley/comments/inline-gap-run-before-comment]
 
 [fixture: wardley/comments/comment-pipeline]
 

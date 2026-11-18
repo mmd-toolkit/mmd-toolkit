@@ -901,26 +901,28 @@ wardley-beta
 ### Comments
 
 Align ordinary standalone comments with the containing body and prefix comments
-at column one. Inline comments keep their line and touching side, with one space
-for a separated gap. Rule 1 names no mark before a comment, so
+at column one. Inline comments keep their line, touching where they touch, and a
+run of spaces and tabs before one becomes one space. Rule 1 names no mark before
+a comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#comments),
 [journey](./journey.md#comments), and [timeline](./timeline.md#comments) print a
-run of spaces and tabs between the end of a statement and its comment as one
-space and keep a comment that touches, where no other rule keeps the whitespace
-as written; each of them names those cases in its own sections (whitespace that
-the Db holds, as after a `section` or a period, and whitespace that changes what
-mermaid.js reads). Preserve marks, text and trailing padding; pipeline comments
-use child depth. Enclosing strings, flows and link labels retain percent text.
-Common comment-region joins keep their source columns, preventing text from
-changing owner.
+comment after a statement in the same way, where no other rule keeps the
+whitespace as written; each of them names those cases in its own sections or in
+[A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
+(whitespace that the Db holds, as after a `section` or a period, and whitespace
+that changes what mermaid.js reads). Preserve marks, text and trailing padding;
+pipeline comments use child depth. Enclosing strings, flows and link labels
+retain percent text. Common comment-region joins keep their source columns,
+preventing text from changing owner.
 
 [test: wardley/comments/native-separators] [fixture:
 wardley/comments/comment-standalone]
 
 [fixture: wardley/comments/comment-inline-contact]
 
-[fixture: wardley/comments/comment-inline-separated]
+[fixture: wardley/comments/comment-inline-separated] [fixture:
+wardley/comments/inline-gap-run-before-comment]
 
 [fixture: wardley/comments/comment-pipeline]
 
