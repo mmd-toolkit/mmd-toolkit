@@ -332,6 +332,11 @@ mermaid.js の文書では、
 
 隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
 U+2028 と U+2029 はそのまま残します。
+規則 1 の表に、これを含む間隔の印はないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[journey](./journey.ja.md#行区切り文字) と
+[timeline](./timeline.ja.md#行区切り文字) も、
+これを含む間隔を書かれたまま印字します。
 
 [fixture: whitespace-between-tokens/block-text-beside-directive]
 [test: U+2028 between a block keyword and its text]
