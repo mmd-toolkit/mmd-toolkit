@@ -1506,9 +1506,9 @@ Db, so a comment line before the `)` must not indent it.
 The whitespace at the end of the header's line is dropped. Rule 1 names no mark
 at the end of a line, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [requirement](./requirement.md#whitespace-between-tokens) and
-[radar](./radar.md#trailing-whitespace) drop the whitespace at the end of a
-line.
+decides: [radar](./radar.md#trailing-whitespace) and
+[architecture](./architecture.md#trailing-whitespace) drop the whitespace after
+the header.
 
 [fixture: whitespace-between-tokens/trailing-whitespace-after-header]
 

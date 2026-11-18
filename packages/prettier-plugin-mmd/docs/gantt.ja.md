@@ -1542,8 +1542,9 @@ mermaid.js はどちらも同じ呼び出しとして読むからです。
 規則 1 は、行末の空白を決めません。
 規則 1 の表が挙げるのは印の横の空白だからです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[requirement](./requirement.ja.md#トークンの間の空白) と
-[radar](./radar.ja.md#trailing-whitespace)も、行末の空白を落とします。
+[radar](./radar.ja.md#trailing-whitespace) と
+[architecture](./architecture.ja.md#trailing-whitespace)も、
+ヘッダーの後ろの空白を落とします。
 
 [fixture: whitespace-between-tokens/trailing-whitespace-after-header]
 
