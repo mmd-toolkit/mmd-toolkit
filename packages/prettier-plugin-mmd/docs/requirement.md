@@ -1157,11 +1157,21 @@ colon of a key (the title and the description of a diagram in
 `accTitle: text`: no whitespace before the colon and one space after it, also
 where the colon or the text was written on a later line, except that a comment
 line before the colon or before the text keeps what follows it on a line of its
-own, one level deeper.
+own, one level deeper. Rule 1 names no mark for a line break next to a comment
+line, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [sequence](./sequence.md#multi-line-statements),
+[ER](./er.md#multi-line-statements), and
+[flowchart](./flowchart.md#accessibility-lines) keep the line breaks of a
+statement with a comment line and put the comment and the later lines one level
+deeper, and print `accTitle` and `accDescr` with a comment line before the colon
+or before the text in that way.
 
 [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept] [fixture:
-accessibility-statements/comment-line-before-colon-kept]
+accessibility-statements/comment-line-before-colon-kept] [fixture:
+accessibility-statements/description-comment-line-before-colon-kept] [fixture:
+accessibility-statements/description-text-with-comment-line-kept]
 
 Later text lines of an `accDescr { ... }` block stand one level inside its
 statement, replacing only ASCII spaces and tabs immediately after LF. The
