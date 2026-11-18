@@ -948,6 +948,14 @@ swimlane 図で最初ではないスタイルがそうです。
 後の `linkStyle` に置き換えられる場合です。
 `linkStyle default` は、後の `linkStyle default` に置き換えられる場合です。
 一部の辺についてだけ置き換えられる `linkStyle` のスタイルは、そのまま残します。
+`linkStyle 0,1 fill :#f00` の後に `linkStyle 0 stroke:#000` があるとき、
+`:` の前の空白を保ちます。
+対象にする版の mermaid.js のうちいくつかが、
+`linkStyle 0,1 fill:#f00` の後に同じ文がある形では、
+異なるスタイルを描くためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: whitespace-between-tokens/link-style-fill-colon-gap-replaced-spaced]
 [fixture: whitespace-between-tokens/link-style-fill-colon-gap-replaced-for-one-link-kept]
@@ -2694,6 +2702,12 @@ flowchart LR
 
 コメントのテキストは、末尾の空白も含めて書かれたまま残します。
 mermaid.js は読まず、書き手のテキストだからです。
+ほかに文字のないコメント行は、`%% ` を保ちます。
+対象にする版の mermaid.js のすべてが、`%%` を名前が `%%` の頂点として読み、
+別の図を描くためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: comments/trailing-whitespace-kept]
 [fixture: comments/leading-whitespace-kept]
@@ -3668,6 +3682,12 @@ mermaid.js がその空白を、
 ディレクティブの後や、mermaid.js が無視する `;` の後の、
 空白だけのスタイルも同じです。
 `style A fill:red,%%{init: {}}%% ` と `style A fill:#f00,; ` がそうです。
+`style A fill:red,%%{init: {}}%% ` の末尾の空白を保ちます。
+対象にする版の mermaid.js のすべてが、
+`style A fill:red,%%{init: {}}%%` を拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: style-trailing-whitespace/whitespace-only-value-after-directive-kept]
 [fixture: style-trailing-whitespace/whitespace-only-value-after-ignored-semicolon-kept]
