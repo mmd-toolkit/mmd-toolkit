@@ -673,17 +673,19 @@ radar-beta
 ### Comments
 
 普通の独立コメントは本文 1 段、見出し前は第 1 列にそろえます。
-同じ行のコメントは行と接着を保ち、分離した空白は 1 個にします。
+同じ行のコメントは行を保ち、接していれば接したまま、
+空白とタブの連なりがあれば空白 1 つにします。
 規則 1 は、コメントの前の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#コメント)、[journey](./journey.ja.md#コメント)、
 [timeline](./timeline.ja.md#コメント)も、
-文の終わりとコメントの間の空白とタブの連なりを空白 1 つで印字し、
-接するコメントは接したまま残します。
+文の後ろのコメントを同じように印字します。
 ほかの規則が空白を書かれたまま残す所は別です。
-どの図の文書も、その所を自分の節で挙げています。
-（Db が持つ空白と、mermaid.js の読みを変える空白です。）印、本文、
-末尾の空白を保ちます。
+どの図の文書も、その所を、
+自分の節か [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
+で挙げています。
+（Db が持つ空白、たとえば `section` と期間の後の空白と、
+mermaid.js の読みを変える空白です。）印、本文、末尾の空白を保ちます。
 図固有のコメントは物理 EOL で終わり、LS・PS は内容のままです。
 先に始まった文字列と説明がパーセントの文字を所有する場合もあります。
 除去された共通領域は完全な原文と継続列を保ちます。
@@ -692,6 +694,7 @@ radar-beta
 [fixture: radar/comments/standalone-comments]
 
 [fixture: radar/comments/inline-comment-sides]
+[fixture: radar/comments/inline-gap-run-before-comment]
 
 [fixture: radar/comments/common-percent-stop]
 

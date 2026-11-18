@@ -650,24 +650,26 @@ radar-beta
 ### Comments
 
 Align ordinary standalone comments one body step in, or column one before the
-header. Inline comments keep their line and touching side; separated gaps become
-one space. Rule 1 names no mark before a comment, so
+header. Inline comments keep their line, touching where they touch, and a run of
+spaces and tabs before one becomes one space. Rule 1 names no mark before a
+comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#comments),
 [journey](./journey.md#comments), and [timeline](./timeline.md#comments) print a
-run of spaces and tabs between the end of a statement and its comment as one
-space and keep a comment that touches, where no other rule keeps the whitespace
-as written; each of them names those cases in its own sections (whitespace that
-the Db holds, as after a `section` or a period, and whitespace that changes what
-mermaid.js reads). Preserve marks, content and trailing padding. Native comments
-end at physical EOL and keep LS/PS as content. Earlier strings/descriptions own
-enclosed percent text; removed common regions keep their complete source and
-continuation columns. These shared attachment rules prevent text from changing
-owner.
+comment after a statement in the same way, where no other rule keeps the
+whitespace as written; each of them names those cases in its own sections or in
+[A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
+(whitespace that the Db holds, as after a `section` or a period, and whitespace
+that changes what mermaid.js reads). Preserve marks, content and trailing
+padding. Native comments end at physical EOL and keep LS/PS as content. Earlier
+strings/descriptions own enclosed percent text; removed common regions keep
+their complete source and continuation columns. These shared attachment rules
+prevent text from changing owner.
 
 [fixture: radar/comments/standalone-comments]
 
-[fixture: radar/comments/inline-comment-sides]
+[fixture: radar/comments/inline-comment-sides] [fixture:
+radar/comments/inline-gap-run-before-comment]
 
 [fixture: radar/comments/common-percent-stop]
 
