@@ -878,6 +878,12 @@ journey
 [fixture: whitespace-between-tokens/description-block-braces]
 
 ヘッダーの行末の空白は落とします。
+規則 1 は、行末の空白を決めません。
+規則 1 の表が挙げるのは印の横の空白だからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[radar](./radar.ja.md#trailing-whitespace) と
+[architecture](./architecture.ja.md#trailing-whitespace)も、
+ヘッダーの後ろの空白を落とします。
 
 [fixture: whitespace-between-tokens/trailing-whitespace-after-header]
 
@@ -911,6 +917,12 @@ journey
 テキストと印は書かれたまま残します。
 `section` の前のコメントは `section` の段、タスクの前のコメントはタスクの段、
 テキストの末尾のコメントは最後の文の段です。
+規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
+規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
+[gantt](./gantt.ja.md#コメント)、[block](./block.ja.md#コメント)、
+[quadrant](./quadrant.ja.md#コメント)も、
+コメント行を後ろの文と同じ段に置きます。
 
 [fixture: comments/lines-at-statement-level] [fixture: comments/text-kept]
 [fixture: comments/single-percent-kept] [fixture: comments/bare-percent-lines]
