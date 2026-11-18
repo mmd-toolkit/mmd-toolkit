@@ -1888,9 +1888,11 @@ glyph inside a directive does not keep the braces.
 
 [fixture: description-blocks/block-hidden-box-glyph]
 
-Ordinary whitespace-only interiors become `{}`. A `;` that the line rule ignores
-is no text either; when its written source prevents compaction, retain the `;`
-and use the empty block layout.
+Ordinary whitespace-only interiors become `{}`. An empty pair of braces is
+printed `{}`, as Prettier prints `x = { }` as `x = {}`
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). A `;` that the
+line rule ignores is no text either; when its written source prevents
+compaction, retain the `;` and use the empty block layout.
 
 [fixture: description-blocks/block-ignored-semicolon-interior]
 
