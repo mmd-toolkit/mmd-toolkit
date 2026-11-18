@@ -617,7 +617,11 @@ block-beta
 `classDef`, `style`, and `class` are followed by one space, the name of the
 class or the id, and one space; the whitespace after the keyword and before the
 first style is not in the Db, so it becomes one space. The styles of `classDef`
-and `style` use the spacing below; the value of a `class` is printed as written.
+and `style` use the spacing below; the value of a `class` is printed as written,
+except that a run of spaces and tabs inside a class name is printed as one
+space: the Db changes, but every version of mermaid.js that counts draws the
+same figure (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 `class A,B c1` stays, since every version of mermaid.js that counts draws
 `class A, B c1` differently (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
@@ -717,7 +721,14 @@ printed `style A : red x`.
 [fixture: styles/style-colon-first-run-spaced]
 
 A `style` with no styles is printed as `style A`: the id stands after one space
-and nothing follows it.
+and nothing follows it. Rule 1 of
+[How the printed form is decided](./printed-form.md#1-the-whitespace-beside-a-mark)
+names no mark between a keyword and its id, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [wardley](./wardley.md#component-spacing) puts one ordinary space
+between each command keyword and its first complete name, and
+[radar](./radar.md#groups-and-commas) between a group keyword and its first
+member.
 
 [fixture: styles/style-without-styles] [corpus fixture: block/db-style-none]
 
@@ -945,9 +956,14 @@ A comment line starts with `%%` at the start of a line, after whitespace, and is
 removed before the lexer reads the text. A comment line on a line of its own
 stands at the level of the statement after it, and its text and its mark are
 kept as written: a comment line after the last statement stays after it, and one
-before the header stands at the first column. A `%%` that does not start a line
-is the text of an id, and stays where it is, with the statement that it starts
-(see [Rows](#rows)).
+before the header stands at the first column. Rule 1 gives no form here, since
+its table names the whitespace beside a mark and not the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it, as [state](./state.md#comments) and [flowchart](./flowchart.md#comments) put
+a comment line at the level of the statements around it. A `%%` that does not
+start a line is the text of an id, and stays where it is, with the statement
+that it starts (see [Rows](#rows)).
 
 [fixture: comments/comment-line-at-the-level-of-the-next-statement] [fixture:
 comments/comment-before-the-header] [fixture:

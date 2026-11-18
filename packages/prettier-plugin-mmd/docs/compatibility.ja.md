@@ -1644,12 +1644,12 @@ mermaid.js がその連なりを描かずにテキストを描く場合に、空
 対象は、すべての図種の `title` と `accDescr` と、
 次の図種が SVG のテキストとして描くテキストです。
 architecture 図、ブロック図、象限チャート、radar チャートのラベル、
-flowchart の subgraph と agentflow 図の flow の題、class 図のメンバーと注釈、
-ER 図の属性の型、requirement 図のフィールドとクラスの並び、
-sequence 図のテキスト（メッセージ、ノート、ブロック、box、`as` の後の説明）、
-C4 図の引数のうち label、technology、type、description、
-Cynefin 図と ishikawa 図のリテラル、packet 図と Venn 図のラベル、
-Wardley マップのリンク、treemap の名前、
+ブロック図のクラス名、flowchart の subgraph と agentflow 図の flow の題、
+class 図のメンバーと注釈、ER 図の属性の型、
+requirement 図のフィールドとクラスの並び、sequence 図のテキスト（メッセージ、
+ノート、ブロック、box、`as` の後の説明）、C4 図の引数のうち label、technology、
+type、description、Cynefin 図と ishikawa 図のリテラル、
+packet 図と Venn 図のラベル、Wardley マップのリンク、treemap の名前、
 railroad 図の文字列と特殊シーケンスです。
 空白とタブだけの文字列は、ほかの文字列と同じ文字列として扱います。
 `["   "]` は `[" "]` と印字します。
@@ -1822,6 +1822,11 @@ sequence 図の色の引数（`fill="rgb(1,   2, 3)"`）だけは、
 SVG の 1 つの属性のテキストが異なります。
 ブラウザーは `class` 属性を語として読み、CSS の色の引数の空白を無視します。
 これは、AGENTS.md が比べない CSS の宣言の周りの空白と同じです。
+`class A c   d` と `class A c d`、
+`class   A , B   c1` と `class A , B c1` の 2 つのテキストは、
+ブロック図で数える 12.3.0 のほか、10.9.8、11.7.0、11.17.2、
+12.0.0 でも描きました。
+5 つの版のどれでも、SVG は `class` 属性の空白を除いて同じでした。
 
 [fixture: block/styles/class-name-runs-collapsed]
 [fixture: requirement/class-lists/classes-with-spaces]

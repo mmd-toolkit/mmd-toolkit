@@ -1566,16 +1566,17 @@ draws the text without the run: `title Sales   report` is printed
 and `quadrant-1 a    b` is printed `quadrant-1 a b`. The texts are the `title`
 and the `accDescr` of every diagram type, and the texts that these diagram types
 draw as SVG text: the labels of an architecture diagram, a block diagram, a
-quadrant chart, and a radar chart, the titles of the subgraphs of a flowchart
-and the flows of an agentflow diagram, the members and annotations of a class
-diagram, the types of the attributes of an ER diagram, the fields and class
-lists of a requirement diagram, the texts of a sequence diagram (the messages,
-notes, blocks, boxes, and descriptions after `as`), the labels, technologies,
-types, and descriptions among the arguments of a C4 diagram, the literals of a
-Cynefin diagram and an ishikawa diagram, the labels of a packet and a Venn
-diagram, the links of a Wardley map, the names of a treemap, and the strings and
-special sequences of a railroad diagram. A string of spaces and tabs only is a
-string like any other: `["   "]` is printed `[" "]`.
+quadrant chart, and a radar chart, the class names of a block diagram, the
+titles of the subgraphs of a flowchart and the flows of an agentflow diagram,
+the members and annotations of a class diagram, the types of the attributes of
+an ER diagram, the fields and class lists of a requirement diagram, the texts of
+a sequence diagram (the messages, notes, blocks, boxes, and descriptions after
+`as`), the labels, technologies, types, and descriptions among the arguments of
+a C4 diagram, the literals of a Cynefin diagram and an ishikawa diagram, the
+labels of a packet and a Venn diagram, the links of a Wardley map, the names of
+a treemap, and the strings and special sequences of a railroad diagram. A string
+of spaces and tabs only is a string like any other: `["   "]` is printed
+`[" "]`.
 
 [fixture: pie/title/title-inner-text] [fixture:
 railroad/quotes/ir-string-runs-collapsed] [fixture:
@@ -1734,7 +1735,12 @@ the text of one attribute only for the class list of a block diagram and a
 requirement diagram (`class="node c   d"`) and for the arguments of a color of a
 sequence diagram (`fill="rgb(1,   2, 3)"`): the browser reads the `class`
 attribute as words and ignores whitespace in the arguments of a CSS color, like
-the whitespace around a CSS declaration, which AGENTS.md does not compare.
+the whitespace around a CSS declaration, which AGENTS.md does not compare. The
+two texts of `class A c   d` and `class A c d`, and of `class   A , B   c1` and
+`class A , B c1`, were also drawn with 10.9.8, 11.7.0, 11.17.2, and 12.0.0,
+which count for a block diagram together with 12.3.0: in each of the five
+versions the SVG was the same except for the whitespace of the `class`
+attribute.
 
 [fixture: block/styles/class-name-runs-collapsed] [fixture:
 requirement/class-lists/classes-with-spaces] [fixture:
