@@ -621,15 +621,15 @@ vertex 文は、矢印が読む空白を除き、データブロックの後に�
 
 矢印の始まりと同じ形の辺IDは、前の形かデータブロックに接します。
 たとえば`A["x"]--a@-->B`です。
+agentflowでは、`--`、`-.-`、`-..-`で始まる辺IDがそれに当たります。
+`x--a`、`==a`、`-.a`、`.-a`のような辺IDは、空白の後でも同じに読まれるので、
+前に空白を1つ置きます。
 `A["x"]--a@-->B` は接触を保ちます。
 対象にする版の mermaid.js のすべてが、
 空白のある `A["x"] --a@-->B` を違って描くためです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
-agentflowでは、`--`、`-.-`、`-..-`で始まる辺IDがそれに当たります。
-`x--a`、`==a`、`-.a`、`.-a`のような辺IDは、空白の後でも同じに読まれるので、
-前に空白を1つ置きます。
 
 [fixture: arrows/edge-id-arrow-like-kept-attached]
 [fixture: arrows/edge-id-not-arrow-like-gets-one-space]
@@ -723,6 +723,7 @@ agentflowのラベルコメントの直前の空白とタブは値の文字な�
 [fixture: labels/labels-closers] [fixture: labels/labels-leading-sensitive]
 [fixture: labels/labels-leading-at-sign] [fixture: labels/labels-padding]
 [fixture: labels/labels-tilde] [fixture: labels/labels-trim-sensitive-unsafe]
+[fixture: labels/slash-label-padding-kept]
 
 flow/connectorの見出しのタイトルは、
 [subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)に従います。
@@ -810,6 +811,7 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 [fixture: metadata-blocks/long-split] [fixture: metadata-blocks/one-line-padded]
 [fixture: metadata-blocks/one-line-space-only-padded]
 [fixture: metadata-blocks/one-line-directive-kept]
+[fixture: metadata-blocks/block-directive-colon-kept]
 [fixture: metadata-blocks/one-line-kept-line-kept]
 [fixture: metadata-blocks/one-line-touching-blocks-kept]
 [fixture: metadata-blocks/one-line-separate-blocks-padded]

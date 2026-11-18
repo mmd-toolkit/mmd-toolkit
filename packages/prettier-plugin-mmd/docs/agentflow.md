@@ -611,12 +611,12 @@ arrows/edge-id-after-data-block-directive] [fixture:
 arrows/edge-id-after-data-block-semicolon]
 
 An edge id that starts as an arrow does touches the shape or the data block
-before it, as in `A["x"]--a@-->B`. `A["x"]--a@-->B` stays attached, since every
-version of mermaid.js that counts draws `A["x"] --a@-->B` differently (see
+before it, as in `A["x"]--a@-->B`. In agentflow that is an edge id that starts
+with `--`, `-.-`, or `-..-`; one such as `x--a`, `==a`, `-.a`, or `.-a` is read
+the same after whitespace, and has one space before it. `A["x"]--a@-->B` stays
+attached, since every version of mermaid.js that counts draws `A["x"] --a@-->B`
+differently (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-In agentflow that is an edge id that starts with `--`, `-.-`, or `-..-`; one
-such as `x--a`, `==a`, `-.a`, or `.-a` is read the same after whitespace, and
-has one space before it.
 
 [fixture: arrows/edge-id-arrow-like-kept-attached] [fixture:
 arrows/edge-id-not-arrow-like-gets-one-space]
@@ -704,6 +704,7 @@ authored.
 [fixture: labels/labels-closers] [fixture: labels/labels-leading-sensitive]
 [fixture: labels/labels-leading-at-sign] [fixture: labels/labels-padding]
 [fixture: labels/labels-tilde] [fixture: labels/labels-trim-sensitive-unsafe]
+[fixture: labels/slash-label-padding-kept]
 
 Flow/connector heading titles follow
 [Subgraph header](./flowchart.md#subgraph-header) instead: drop the whitespace
@@ -779,6 +780,7 @@ conditions listed there.
 [fixture: metadata-blocks/long-split] [fixture: metadata-blocks/one-line-padded]
 [fixture: metadata-blocks/one-line-space-only-padded] [fixture:
 metadata-blocks/one-line-directive-kept] [fixture:
+metadata-blocks/block-directive-colon-kept] [fixture:
 metadata-blocks/one-line-kept-line-kept] [fixture:
 metadata-blocks/one-line-touching-blocks-kept] [fixture:
 metadata-blocks/one-line-separate-blocks-padded] [fixture:
