@@ -185,6 +185,12 @@ venn-beta
 規則は構文に対して局所的で、正規化後の最終状態を探すものではないためです。
 title は行の残りを値として取るので、title の後の文に見える語は分けられません。
 飲み込まれる断片は書かれた行の隣とともに保ちます。
+同じ行に残る文の間は、空白 1 つです。
+規則 1 は、2 つの文の間の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[flowchart](./flowchart.ja.md#トークンの間の空白) と
+[er](./er.ja.md#トークンの間の空白) も、
+2 つのトークンの間の空白とタブの連なりを空白 1 つで印字します。
 
 [corpus fixture: venn/db-indent-after-same-line-explicit-text]
 [fixture: venn/statements-one-per-line/directive-in-declaration-group]
