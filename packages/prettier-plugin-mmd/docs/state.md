@@ -83,8 +83,9 @@ break, so
 decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
 [journey](./journey.md#multi-line-statements) keep a line break next to a
-comment or a directive and the whitespace before it, and put the continuations
-one level deeper.
+comment or a directive and put the later parts of a statement and the comment or
+directive lines one level deeper. A `{` is not such a part: it stays at the
+level of its statement.
 
 [fixture: composite-states/split] [fixture:
 composite-states/brace-after-one-space] [fixture:
