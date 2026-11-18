@@ -1463,9 +1463,9 @@ characters as escapes too (see
 
 - At the end of the text of a `box`, after the whitespace that may stand before
   them. A box whose text holds such a character has the fill `transparent` and
-  no name, and without it `box aqua` has the fill `aqua`. Rule 1 names no mark
-  for the end of a text of a `box`, so
-  [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+  no name, and without it `box aqua` has the fill `aqua`, in every version of
+  mermaid.js that counts. Rule 1 names no mark for the end of a text of a `box`,
+  so [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
   decides, as [journey](./journey.md#line-separators) at the end of a title, and
   [timeline](./timeline.md#line-separators) at the end of a title and of the
   last event of a line, keep U+2028 and U+2029 as characters of the text and
@@ -1903,6 +1903,5 @@ Some text is kept as written by choice, because the Db is the same either way:
 the case of the keywords that the table under
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
 does not list. Whether there is whitespace before the mark of a comment, listed
-above, decides what mermaid.js reads after some statements, such as
-`autonumber 5`; after the others the Db is the same either way, and whether
-there is any is kept so that one rule holds.
+above, is not a choice: rule 2 gives it (see [Comments](#comments)), and after
+some statements, such as `autonumber 5`, it also decides what mermaid.js reads.
