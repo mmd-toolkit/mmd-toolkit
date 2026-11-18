@@ -1179,8 +1179,13 @@ that counts draws different text for the latter (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Around the `:`, the brackets, and the comma of a point, however, and around the
 colon and the brace of an accessibility statement, mermaid.js reads them as
-whitespace, and a space is printed in their place. After the `]` of a point they
-are not accepted (see [Line separators](#line-separators)).
+whitespace, and a space is printed in their place. Every version of mermaid.js
+that counts draws the same figure from a space as from them, and the form that
+is printed is the one of
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark): the colon of a key
+has no whitespace before it and one space after it, brackets have none inside,
+and a comma has none before it and one space after it. After the `]` of a point
+they are not accepted (see [Line separators](#line-separators)).
 
 [test: U+00A0 between the words of a text] [test: U+3000 between the words of a
 text] [test: U+FEFF between the words of a text] [test: a form feed between the
