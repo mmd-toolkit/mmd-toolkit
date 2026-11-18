@@ -653,14 +653,15 @@ Align ordinary standalone comments one body step in, or column one before the
 header. Inline comments keep their line and touching side; separated gaps become
 one space. Rule 1 names no mark before a comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#comments),
-[journey](./journey.md#comments), and [timeline](./timeline.md#comments) keep a
-comment after a statement touching the statement where it touches, and print one
-space where whitespace was written. Preserve marks, content and trailing
-padding. Native comments end at physical EOL and keep LS/PS as content. Earlier
-strings/descriptions own enclosed percent text; removed common regions keep
-their complete source and continuation columns. These shared attachment rules
-prevent text from changing owner.
+decides, as [sequence](./sequence.md#comments) (after a statement),
+[journey](./journey.md#comments) (after a task, an `accDescr`, or the header),
+and [timeline](./timeline.md#comments) (after the header, a direction, or the
+`}` of an accessibility block) keep a comment touching what it follows where it
+touches, and print one space where whitespace was written. Preserve marks,
+content and trailing padding. Native comments end at physical EOL and keep LS/PS
+as content. Earlier strings/descriptions own enclosed percent text; removed
+common regions keep their complete source and continuation columns. These shared
+attachment rules prevent text from changing owner.
 
 [fixture: radar/comments/standalone-comments]
 
