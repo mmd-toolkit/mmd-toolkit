@@ -1861,6 +1861,8 @@ Mermaidはコロンの次行の通常の文字を値と読むので、語と同�
 [requirement](./requirement.ja.md#フィールド) と
 [sequence](./sequence.ja.md#複数行の文)も、文の続きの行と間のコメント行を、
 最初の行より 1 段深く置きます。
+ただし、sequence の title は、Db が空白ごとテキストを持つので、
+書かれたままの配置を残します。
 flowchartはコロンの後のコメントを読み飛ばして後の値を読みます。
 通常の結合が使えない場合も、従来の継続行の規則を保つためです。
 
@@ -2031,6 +2033,8 @@ sequence、class、state は、そこでは改行が空白の後でだけ数え�
 [requirement](./requirement.ja.md#フィールド) と
 [sequence](./sequence.ja.md#複数行の文)も、文の途中のコメント行を、
 2 行目以降と同じ段に置きます。
+ただし、sequence の title は、Db が空白ごとテキストを持つので、
+書かれたままの配置を残します。
 
 [fixture: multi-line-statements/several-comments-inside]
 

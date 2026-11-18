@@ -836,8 +836,10 @@ line break, so
 decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
 [journey](./journey.md#multi-line-statements) keep a line break next to a
-comment or a directive and put the comment and directive lines one level deeper,
-in a statement whose text the Db does not hold with its whitespace.
+comment or a directive and put the later parts of a statement and the comment
+and directive lines between them one level deeper, except in a title, a section,
+a setting, or a task, which keep their written layout since the Db holds their
+text with its whitespace.
 
 [fixture: multi-line-statements/point-trivia-with-multiline-label] [fixture:
 multi-line-statements/accessibility-trivia-continuations]

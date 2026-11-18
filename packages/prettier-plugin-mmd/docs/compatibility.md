@@ -3983,10 +3983,12 @@ it, as [requirement](./requirement.md#fields),
 [sequence](./sequence.md#multi-line-statements),
 [flowchart](./flowchart.md#multi-line-statements), and
 [xychart](./xychart.md#multi-line-statements) put the continuations and the
-intervening comment lines of a statement one level deeper than the statement.
-Keep each first gap-line tail, including whitespace needed before LF, and keep
-value and directive interiors whole. Joining comment regions, semicolon
-protections and diagram-specific value boundaries still take precedence.
+intervening comment lines of a statement one level deeper than the statement,
+except that a title in a sequence diagram keeps its written layout, since the Db
+holds its text with its whitespace. Keep each first gap-line tail, including
+whitespace needed before LF, and keep value and directive interiors whole.
+Joining comment regions, semicolon protections and diagram-specific value
+boundaries still take precedence.
 
 This applies to class and state statements, ER statements, requirement headers,
 fields and statements, and sequence statements other than trivia-separated
