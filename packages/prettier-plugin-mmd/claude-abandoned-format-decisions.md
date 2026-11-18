@@ -138,7 +138,7 @@ packet, pie, quadrant, sankey, usecase, venn, xychart.
 
 ### D05. Whether equivalent numeric spellings are normalized
 
-14 forms in c4, flowchart, journey, pie, quadrant, radar, railroad, sankey,
+17 forms in c4, flowchart, journey, pie, quadrant, radar, railroad, sankey,
 treemap, wardley.
 
 | Diagram   | Rules document                                                                                                                                                                     | Written form                                                                                                                                                            |
@@ -157,6 +157,9 @@ treemap, wardley.
 | wardley   | [Label offsets (wardley.md)](./docs/wardley.md#label-offsets) "Keep the sign even for -0"                                                                                          | `wardley-beta\ncomponent ZeroSign[0.3,0.6]label[- 0,0]`                                                                                                                 |
 | wardley   | [Evolves (wardley.md)](./docs/wardley.md#evolves) "Print evolve Name 0.80 with one"                                                                                                | `wardley-beta\ncomponent Motion[0.3,0.6]\nevolveMotion\t0.80`                                                                                                           |
 | wardley   | [Numbers (wardley.md)](./docs/wardley.md#numbers) "Print NumericLiteral source spans without converting"                                                                           | `wardley-beta\ncomponent Digits [000.30,01.00]`                                                                                                                         |
+| wardley   | [Numbers in the shortest form (compatibility.md)](./docs/compatibility.md#numbers-in-the-shortest-form) "A number stays as written where"                                          | `wardley-beta\ncomponent A [0.50, 0.50]\n`                                                                                                                              |
+| wardley   | [Wardley authored text and required line breaks (compatibility.md)](./docs/compatibility.md#wardley-authored-text-and-required-line-breaks) "The Wardley rules preserve names and" | `wardley-beta\ncomponent Alpha [0.10,0.20]\n`                                                                                                                           |
+| wardley   | [Coordinates (wardley.md)](./docs/wardley.md#coordinates) "Keep visibility before evolution and keep"                                                                              | `wardley-beta\nannotations [ 3 , 4 ]\nannotation 2,[ 0 , 1 ]\"Integer\"`                                                                                                |
 
 ### D06. Whether colors and color-like text are lowercased
 
@@ -189,11 +192,12 @@ treemap, usecase, venn.
 
 ### D09. Whether ignored source regions are retained
 
-1 form in eventmodeling.
+2 forms in eventmodeling, treeview.
 
-| Diagram       | Rules document                                                                                                 | Written form                                                |
-| ------------- | -------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| eventmodeling | [Hidden forms (eventmodeling.md)](./docs/eventmodeling.md#hidden-forms) "Print each IgnoredText once from its" | `eventmodeling tf 01 evt Alpha ---\nx\n---\ntf 02 evt Beta` |
+| Diagram       | Rules document                                                                                                                                         | Written form                                                     |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
+| eventmodeling | [Hidden forms (eventmodeling.md)](./docs/eventmodeling.md#hidden-forms) "Print each IgnoredText once from its"                                         | `eventmodeling tf 01 evt Alpha ---\nx\n---\ntf 02 evt Beta`      |
+| treeview      | [Treeview modes and authored values (compatibility.md)](./docs/compatibility.md#treeview-modes-and-authored-values) "A sole selector in an `accDescr`" | `treeView-beta\naccDescr\n─\n{z}\n   title   T\nroot\n\n\n\nx\n` |
 
 ### D10. Whether repeated occurrences are all retained
 
@@ -249,16 +253,17 @@ treemap, usecase, venn.
 
 ### D16. Whether indentation notation is replaced by branch notation
 
-2 forms in treeview.
+3 forms in treeview.
 
-| Diagram  | Rules document                                                                                                                     | Written form                                   |
-| -------- | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| treeview | [Modes (treeview.md)](./docs/treeview.md#modes) "Keep the original indentation or box-drawing" "In box mode redraw ordinary outer" | `treeView-beta\nroot\n    child\n`             |
-| treeview | [Branch prefixes (treeview.md)](./docs/treeview.md#branch-prefixes) "Also retain it for fixed source"                              | `treeView-beta\n├─ node ## before\n└─ ::: X\n` |
+| Diagram  | Rules document                                                                                                                                                       | Written form                                   |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| treeview | [Modes (treeview.md)](./docs/treeview.md#modes) "Keep the original indentation or box-drawing" "In box mode redraw ordinary outer"                                   | `treeView-beta\nroot\n    child\n`             |
+| treeview | [Branch prefixes (treeview.md)](./docs/treeview.md#branch-prefixes) "Also retain it for fixed source"                                                                | `treeView-beta\n├─ node ## before\n└─ ::: X\n` |
+| treeview | [Treeview modes and authored values (compatibility.md)](./docs/compatibility.md#treeview-modes-and-authored-values) "The treeview rules keep indentation-mode input" | `treeView-beta\nroot\n  child\n`               |
 
 ### D17. Whether written semicolons are retained or removed
 
-33 forms in agentflow, block, c4, class, er, eventmodeling, flowchart, mindmap,
+34 forms in agentflow, block, c4, class, er, eventmodeling, flowchart, mindmap,
 quadrant, railroad, requirement, sequence, state, treeview, usecase, venn,
 xychart.
 
@@ -288,6 +293,7 @@ xychart.
 | sequence      | [Statements one per line (sequence.md)](./docs/sequence.md#statements-one-per-line) "A statement written over several lines,"                                        | `sequenceDiagram\nparticipant A@{\n  \"type\": \"queue\"\n} %%{wrap}%%;\nA->>B: x\nautonumber \n5 %%{wrap}%%;\nB->>A: y\nloop z\nautonumber \n7 %%{wrap}%%;\nA->>B: w\nend\n` |
 | state         | [Semicolons at the end of a style statement (state.md)](./docs/state.md#semicolons-at-the-end-of-a-style-statement) "A directive after the semicolon on"             | `stateDiagram-v2\nA --> B\nclassDef c fill:#f00; %%{init: {}}%%\nstyle A fill:#f00; %% keep\n`                                                                                |
 | treeview      | [Description blocks (treeview.md)](./docs/treeview.md#description-blocks) "A `;` that the line rule"                                                                 | `treeView-beta\naccDescr {style:#x}accDescr { ; }\n`                                                                                                                          |
+| treeview      | [Carried indentation (treeview.md)](./docs/treeview.md#carried-indentation) "A `;` that the line rule"                                                               | `treeView-beta\n\"style:#x\";  %% note\nchild\n`                                                                                                                              |
 | usecase       | [Statements and semicolons (usecase.md)](./docs/usecase.md#statements-and-semicolons) "Except for [Semicolons at the end"                                            | `usecase-beta\nactor Reader(style:#abc)@{type:normal,;icon:''}\n`                                                                                                             |
 | usecase       | [Semicolons at the end of a style statement (usecase.md)](./docs/usecase.md#semicolons-at-the-end-of-a-style-statement) "A directive after the semicolon on"         | `usecase-beta\nA\nclassDef c fill:#f00; %%{init: {}}%%\nstyle A fill:#f00; %% keep\n`                                                                                         |
 | usecase       | [Classes and styles (usecase.md)](./docs/usecase.md#classes-and-styles) "Only exterior HWS after the last"                                                           | `usecase-beta\nA\nstyle A fill:#abc,-- ;color:red`                                                                                                                            |
@@ -462,8 +468,8 @@ sequence, timeline, xychart.
 
 ### D26. Whether descriptions use blocks or colon lines
 
-20 forms in architecture, cynefin, er, flowchart, info, journey, packet, pie,
-radar, railroad, timeline, treemap, treeview, wardley.
+21 forms in architecture, cynefin, er, flowchart, info, journey, packet, pie,
+radar, railroad, state, timeline, treemap, treeview, wardley.
 
 | Diagram      | Rules document                                                                                                                                  | Written form                                                                                                   |
 | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
@@ -478,6 +484,7 @@ radar, railroad, timeline, treemap, treeview, wardley.
 | pie          | [Accessibility lines (pie.md)](./docs/pie.md#accessibility-lines) "Reuse C4 accessibility lines, with the"                                      | `pie\naccDescr: { literal }\n\"A\":1\n`                                                                        |
 | radar        | [Description blocks (radar.md)](./docs/radar.md#description-blocks) "Plain opener whitespace joins; real trivia"                                | `radar-beta\naccDescr\n\n{ Words }\n`                                                                          |
 | railroad     | [Description blocks (railroad.md)](./docs/railroad.md#description-blocks) "In a block that keeps its"                                           | `railroad-beta\naccDescr {%%{wrap}%%}\naccDescr {\n%% removed block\n}\nr=terminal(\"trivia block\");`         |
+| state        | [Notes (state.md)](./docs/state.md#notes) "A note over lines with no"                                                                           | `stateDiagram-v2\n A\n   note   right of    A   \n       end note\n B\n`                                       |
 | timeline     | [Statements one per line (timeline.md)](./docs/timeline.md#statements-one-per-line) "A directive between two statements on"                     | `timeline\naccDescr { d } %%{init: {}}%% a : e\n`                                                              |
 | timeline     | [Directives (timeline.md)](./docs/timeline.md#directives) "Keep its right-side contact or separation;"                                          | `timeline\naccDescr { d }   %%{init: {}}%%   \naccDescr { e }   %%{init: {}}%%  a : e\n`                       |
 | treemap      | [Description blocks (treemap.md)](./docs/treemap.md#description-blocks) "For blocks that keep their braces,"                                    | `treemap\naccDescr {\n%% block comment\n}\n\"AfterCommentBlock\":3`                                            |
@@ -543,7 +550,7 @@ radar, railroad, timeline, treemap, treeview, wardley.
 
 ### D31. Whether statements and headers sharing a line are separated
 
-36 forms in block, c4, cynefin, er, eventmodeling, flowchart, gitgraph, info,
+37 forms in block, c4, cynefin, er, eventmodeling, flowchart, gitgraph, info,
 ishikawa, pie, quadrant, radar, railroad, sequence, treeview, venn, wardley,
 xychart.
 
@@ -580,6 +587,7 @@ xychart.
 | treeview      | [Statements one per line (treeview.md)](./docs/treeview.md#statements-one-per-line) "Retain the body when shared source"                                                                                                   | `treeView-beta\nroot\n├── \"a\" \"b\";\n└── c\n`                                                                                      |
 | treeview      | [Statements one per line (treeview.md)](./docs/treeview.md#statements-one-per-line) "Keep the existing body-retention conditions for"                                                                                      | `treeView-beta\nroot\n├── \"style:#x\" %%{x}%%; \"b\"\n└── c\n`                                                                       |
 | treeview      | [Blank lines (treeview.md)](./docs/treeview.md#blank-lines) "Body-retained diagrams keep their source boundaries."                                                                                                         | `treeView-beta\n\"p\" \"style:#z;\"\n\"other\"\n`                                                                                     |
+| treeview      | [Statements one per line (treeview.md)](./docs/treeview.md#statements-one-per-line) "In indentation mode keep the existing"                                                                                                | `treeView-beta\n\"a\"%%{x}%%\"b\"\n`                                                                                                  |
 | venn          | [Directives (venn.md)](./docs/venn.md#directives) "A semicolon-kept line also keeps its"                                                                                                                                   | `venn-beta%%{init: {}}%% set A[style:#x;y]`                                                                                           |
 | wardley       | [Header (wardley.md)](./docs/wardley.md#header) "Hidden forms, retained prefixes and protected", [Hidden boundaries (wardley.md)](./docs/wardley.md#hidden-boundaries) "When a hidden form keeps the"                      | `wardley-beta pipeline Parent { %%{!x}%%\n\ncomponent Child[0.5]\n}\ncomponent Parent[0.3,0.6]\n`                                     |
 | wardley       | [Hidden boundaries (wardley.md)](./docs/wardley.md#hidden-boundaries) "Only the header's own forms use"                                                                                                                    | `wardley-beta component HeaderSuffix[0.3,0.6]%%{!suffix}%%\n\ncomponent HeaderAfter[0.4,0.7]`                                         |
@@ -702,8 +710,8 @@ requirement, sequence, state, timeline, treemap, treeview, wardley, xychart.
 
 ### D35. Whether value and data body columns are reindented
 
-22 forms in agentflow, c4, er, eventmodeling, flowchart, packet, radar,
-railroad, requirement, sequence, treemap, treeview.
+23 forms in agentflow, c4, er, eventmodeling, flowchart, packet, radar,
+railroad, requirement, sequence, state, treemap, treeview.
 
 | Diagram       | Rules document                                                                                                                                                                                    | Written form                                                                                                 |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
@@ -727,6 +735,7 @@ railroad, requirement, sequence, treemap, treeview.
 | requirement   | [Accessibility statements (requirement.md)](./docs/requirement.md#accessibility-statements) "The description setter drops that indentation;"                                                      | `requirementDiagram\naccDescr {\n\n%% c\n\n text\n\n}\n`                                                     |
 | flowchart     | [Data blocks (flowchart.md)](./docs/flowchart.md#data-blocks) "An indented comment line inside an"                                                                                                | `flowchart LR\nA@{\n label: Alpha\n %% inside\n}\n`                                                          |
 | packet        | [Description blocks (packet.md)](./docs/packet.md#description-blocks) "Keep line breaks, blank lines and"                                                                                         | `packet\naccDescr {\n first\n   second\n\n last\n        }\n`                                                |
+| state         | [Notes (state.md)](./docs/state.md#notes) "Notes containing comments, directives, semicolons or"                                                                                                  | `stateDiagram-v2\nA\nnote right of A  %%{init: {}}%%\n  first\n second\nend note\n`                          |
 | treemap       | [Carried indentation (treemap.md)](./docs/treemap.md#carried-indentation) "Do not measure only physical leading"                                                                                  | `treemap\n\"A\"  \n\"B\":1\n`                                                                                |
 | treeview      | [Description blocks (treeview.md)](./docs/treeview.md#description-blocks) "Join plain opener whitespace, align ordinary"                                                                          | `treeView-beta\naccDescr {\n  first\n\n    second\n}\nR\n`                                                   |
 
@@ -864,7 +873,7 @@ treeview, usecase, venn, wardley.
 
 ### D39. Whether whitespace outside values at line ends is removed
 
-44 forms in agentflow, architecture, class, cynefin, er, error, eventmodeling,
+45 forms in agentflow, architecture, class, cynefin, er, error, eventmodeling,
 flowchart, gantt, info, ishikawa, journey, kanban, mindmap, packet, pie,
 quadrant, radar, railroad, requirement, sankey, sequence, state, timeline,
 usecase, wardley.
@@ -915,6 +924,7 @@ usecase, wardley.
 | class         | [Comments (class.md)](./docs/class.md#comments) "A comment on a line of"                                                                                                                                                            | `classDiagram\n  %%no space  \n%%    spaced   text   \nclass A\n`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | sequence      | [Comments (sequence.md)](./docs/sequence.md#comments) "A comment on a line of its own,"                                                                                                                                             | `sequenceDiagram\n%%   a   b   \n  # c   d  \nA->>B: x\n`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | state         | [Comments (state.md)](./docs/state.md#comments) "A comment on a line of"                                                                                                                                                            | `stateDiagram-v2\nA\n%%no space\n#no space\n%%   many   spaces   \n  # hash   \nB\n`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| wardley       | [Wardley authored text and required line breaks (compatibility.md)](./docs/compatibility.md#wardley-authored-text-and-required-line-breaks) "Hidden forms remain source spans at"                                                   | `wardley-beta\ncomponent Alpha [0.1,0.2]%%{!}%% \n`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 
 ### D40. Whether directive bodies are printed as written
 
@@ -952,7 +962,8 @@ treeview, usecase, venn.
 
 ### D41. How the final newline and terminal blank gap are printed
 
-8 forms in class, er, eventmodeling, flowchart, ishikawa, kanban, venn, wardley.
+9 forms in class, er, eventmodeling, flowchart, ishikawa, kanban, treeview,
+venn, wardley.
 
 | Diagram       | Rules document                                                                                                                                                             | Written form                                |
 | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
@@ -962,6 +973,7 @@ treeview, usecase, venn.
 | flowchart     | [Directives (flowchart.md)](./docs/flowchart.md#directives) (no sentence)                                                                                                  | `flowchart LR\nA\n%%{init: {}`              |
 | ishikawa      | [Blank lines (ishikawa.md)](./docs/ishikawa.md#blank-lines) "A separating blank after a diagram"                                                                           | `ishikawa\nR\n%%\n \t\n\n`                  |
 | kanban        | [Final newline (kanban.md)](./docs/kanban.md#final-newline) "The exception is a gap that", [Blank lines (kanban.md)](./docs/kanban.md#blank-lines) "A gap of this kind at" | `kanban\n S\n%%\n\n\n`                      |
+| treeview      | [Final newline (treeview.md)](./docs/treeview.md#final-newline) "Unfinished EOF directives and protected/source-kept endings"                                              | `treeView-beta\n\"R\"%%{unfinished`         |
 | venn          | [Final newline (venn.md)](./docs/venn.md#final-newline) "Ordinary accepted input ends with one"                                                                            | `venn-beta\nset A`                          |
 | wardley       | [Wardley authored text and required line breaks (compatibility.md)](./docs/compatibility.md#wardley-authored-text-and-required-line-breaks) "Bare `;` rejects."            | `wardley-beta\n\"style:#x\"  -> \"Tail\"; ` |
 
@@ -1167,7 +1179,7 @@ state, treeview.
 
 ### D53. Whether comments and hidden forms keep their source gaps and order
 
-38 forms in agentflow, block, er, eventmodeling, flowchart, gitgraph, journey,
+39 forms in agentflow, block, er, eventmodeling, flowchart, gitgraph, journey,
 mindmap, packet, pie, quadrant, railroad, requirement, timeline, treeview,
 xychart.
 
@@ -1191,6 +1203,7 @@ xychart.
 | railroad      | [Comments (railroad.md)](./docs/railroad.md#comments) "Apply the same outside spacing beside"                                                                                           | `railroad-beta\nr=terminal\n/* constructor */(\"a\"\n/* closer */);\n`                                                                                                                            |
 | railroad      | [Global directives (railroad.md)](./docs/railroad.md#global-directives) "A directive stays beside its argument"                                                                         | `railroad-beta\nr=sequence%%{init: {}}%%(\nterminal%%{init: {}}%%(%%{init: {}}%%\"a\"%%{init: {}}%%)%%{init: {}}%%,\n%%{init: {}}%%nonterminal(\"b\")\n);\n`                                      |
 | timeline      | [Directives (timeline.md)](./docs/timeline.md#directives) "A directive between two units stays"                                                                                         | `timeline\na %%{init: {}}%%: e\nb:%%{init: {}}%% e\nc : e%%{init: {}}%%: f\n`                                                                                                                     |
+| treeview      | [Statements one per line (treeview.md)](./docs/treeview.md#statements-one-per-line) "Existing directive-only lines, comment lines and"                                                  | `treeView-beta\nroot\n├── \"a\"%%{x}%%\"b\"\n%% between\n└── c\n`                                                                                                                                 |
 | xychart       | [Directives (xychart.md)](./docs/xychart.md#directives) "Keep directives in their authored gaps."                                                                                       | `xychart\nline %%{init: {}}%% [1]\nx-axis%%{init: {}}%%[a]\n`                                                                                                                                     |
 | er            | [Attribute spacing (er.md)](./docs/er.md#attribute-spacing) "An attribute with a comment line"                                                                                          | `erDiagram\nA {\nint\n%% a comment line\na\nint b\n}\n`                                                                                                                                           |
 | er            | [Attribute spacing (er.md)](./docs/er.md#attribute-spacing) "An attribute with a comment line"                                                                                          | `erDiagram\nA {\nint\n%% a comment line\na\nint b\n}\n`                                                                                                                                           |
@@ -1276,13 +1289,14 @@ xychart.
 
 ### D65. Whether annotations share their owner's line
 
-3 forms in treeview.
+4 forms in treeview.
 
-| Diagram  | Rules document                                                                                                                                                         | Written form                                     |
-| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| treeview | [Annotation lines (treeview.md)](./docs/treeview.md#annotation-lines) "In indentation mode keep later-line annotations"                                                | `treeView-beta\nR\n   :::hot\nC\n`               |
-| treeview | [Annotation lines (treeview.md)](./docs/treeview.md#annotation-lines) "In box mode move a branch-prefixed"                                                             | `treeView-beta\n├─ node\n%% between\n└─ ::: X\n` |
-| treeview | [Treeview modes and authored values (compatibility.md)](./docs/compatibility.md#treeview-modes-and-authored-values) "Indentation-mode annotation lines stay separate." | `treeView-beta\nroot\n  :::c\n`                  |
+| Diagram  | Rules document                                                                                                                                                         | Written form                                              |
+| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| treeview | [Annotation lines (treeview.md)](./docs/treeview.md#annotation-lines) "In indentation mode keep later-line annotations"                                                | `treeView-beta\nR\n   :::hot\nC\n`                        |
+| treeview | [Annotation lines (treeview.md)](./docs/treeview.md#annotation-lines) "In box mode move a branch-prefixed"                                                             | `treeView-beta\n├─ node\n%% between\n└─ ::: X\n`          |
+| treeview | [Treeview modes and authored values (compatibility.md)](./docs/compatibility.md#treeview-modes-and-authored-values) "Indentation-mode annotation lines stay separate." | `treeView-beta\nroot\n  :::c\n`                           |
+| treeview | [Decorations (treeview.md)](./docs/treeview.md#decorations) "When a prefixed annotation moves inline,"                                                                 | `treeView-beta\n\"r─\"\n│\n└─ :::X\n%% after\n\"next\"\n` |
 
 ### D66. Whether trivia forces a leaf IR call onto multiple lines
 
@@ -1558,24 +1572,6 @@ finds its unwritten reason.
 | sequence      | [Multi-line statements (sequence.md)](./docs/sequence.md#multi-line-statements) "Joining regions also stay as written."         | `sequenceDiagram\nA->>B: x\u2028%% c\nC->>D: y\n`                                                                                                                        |
 | treemap       | [Description blocks (treemap.md)](./docs/treemap.md#description-blocks) "Join plain opener whitespace, keep comment/directive"  | `treemap\naccDescr  {\n  first\n\n    second\n}\n\\AfterDescription\\\":3\"`                                                                                             |
 
-### A run in every version that counts is missing
-
-11 forms have no run in the counted version 11.14.0.
-
-| Diagram  | Rules document                                                                                                                                                                     | Written form                                                             |
-| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| wardley  | [Numbers in the shortest form (compatibility.md)](./docs/compatibility.md#numbers-in-the-shortest-form) "A number stays as written where"                                          | `wardley-beta\ncomponent A [0.50, 0.50]\n`                               |
-| wardley  | [Wardley authored text and required line breaks (compatibility.md)](./docs/compatibility.md#wardley-authored-text-and-required-line-breaks) "The Wardley rules preserve names and" | `wardley-beta\ncomponent Alpha [0.10,0.20]\n`                            |
-| wardley  | [Coordinates (wardley.md)](./docs/wardley.md#coordinates) "Keep visibility before evolution and keep"                                                                              | `wardley-beta\nannotations [ 3 , 4 ]\nannotation 2,[ 0 , 1 ]\"Integer\"` |
-| treeview | [Treeview modes and authored values (compatibility.md)](./docs/compatibility.md#treeview-modes-and-authored-values) "A sole selector in an `accDescr`"                             | `treeView-beta\naccDescr\n─\n{z}\n   title   T\nroot\n\n\n\nx\n`         |
-| treeview | [Treeview modes and authored values (compatibility.md)](./docs/compatibility.md#treeview-modes-and-authored-values) "The treeview rules keep indentation-mode input"               | `treeView-beta\nroot\n  child\n`                                         |
-| treeview | [Carried indentation (treeview.md)](./docs/treeview.md#carried-indentation) "A `;` that the line rule"                                                                             | `treeView-beta\n\"style:#x\";  %% note\nchild\n`                         |
-| treeview | [Decorations (treeview.md)](./docs/treeview.md#decorations) "When a prefixed annotation moves inline,"                                                                             | `treeView-beta\n\"r─\"\n│\n└─ :::X\n%% after\n\"next\"\n`                |
-| wardley  | [Wardley authored text and required line breaks (compatibility.md)](./docs/compatibility.md#wardley-authored-text-and-required-line-breaks) "Hidden forms remain source spans at"  | `wardley-beta\ncomponent Alpha [0.1,0.2]%%{!}%% \n`                      |
-| treeview | [Final newline (treeview.md)](./docs/treeview.md#final-newline) "Unfinished EOF directives and protected/source-kept endings"                                                      | `treeView-beta\n\"R\"%%{unfinished`                                      |
-| treeview | [Statements one per line (treeview.md)](./docs/treeview.md#statements-one-per-line) "Existing directive-only lines, comment lines and"                                             | `treeView-beta\nroot\n├── \"a\"%%{x}%%\"b\"\n%% between\n└── c\n`        |
-| treeview | [Statements one per line (treeview.md)](./docs/treeview.md#statements-one-per-line) "In indentation mode keep the existing"                                                        | `treeView-beta\n\"a\"%%{x}%%\"b\"\n`                                     |
-
 ### Comparison input was not built
 
 90 forms lack comparison input.
@@ -1687,15 +1683,6 @@ finds its unwritten reason.
 | gitgraph     | [Trailing whitespace (gitgraph.md)](./docs/gitgraph.md#trailing-whitespace) "Keep trailing source inside strings, comments,"                        | `gitGraph\ncommit id:\"A  \nB\"\n`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | pie          | [Trailing whitespace (pie.md)](./docs/pie.md#trailing-whitespace) "Preserve label lines, comments, directive/ignored interiors,"                    | `pie\n\"a\n b\":1`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | wardley      | [Semicolons (wardley.md)](./docs/wardley.md#semicolons) "Keep all authored semicolons."                                                             | `wardley-beta\nAlpha  -> Beta; style:#tone;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-
-### The Db was not compared
-
-2 forms are missing this check.
-
-| Diagram | Rules document                                                                                   | Written form                                                                        |
-| ------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
-| state   | [Notes (state.md)](./docs/state.md#notes) "A note over lines with no"                            | `stateDiagram-v2\n A\n   note   right of    A   \n       end note\n B\n`            |
-| state   | [Notes (state.md)](./docs/state.md#notes) "Notes containing comments, directives, semicolons or" | `stateDiagram-v2\nA\nnote right of A  %%{init: {}}%%\n  first\n second\nend note\n` |
 
 ### A reason is stated without a version or a table row
 

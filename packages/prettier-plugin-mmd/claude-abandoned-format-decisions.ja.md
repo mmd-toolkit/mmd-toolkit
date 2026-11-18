@@ -138,7 +138,7 @@ mindmap、packet、pie、quadrant、sankey、usecase、venn、xychartである�
 
 ### D05. 同じ値の数の綴りをそろえるか
 
-14件の形があり、図種はc4、flowchart、journey、pie、quadrant、radar、railroad、
+17件の形があり、図種はc4、flowchart、journey、pie、quadrant、radar、railroad、
 sankey、treemap、wardleyである。
 
 | 図種      | 規則の文書                                                                                                                                                        | 書かれた形                                                                                                                                                              |
@@ -157,6 +157,9 @@ sankey、treemap、wardleyである。
 | wardley   | [label offset（wardley.ja.md）](./docs/wardley.ja.md#label-offset) 「-0 も符号を残し、数の原綴を保ちます。」                                                      | `wardley-beta\ncomponent ZeroSign[0.3,0.6]label[- 0,0]`                                                                                                                 |
 | wardley   | [evolve（wardley.ja.md）](./docs/wardley.ja.md#evolve) 「evolve Name 0.80 とし、部品間は空白 1 つ」                                                               | `wardley-beta\ncomponent Motion[0.3,0.6]\nevolveMotion\t0.80`                                                                                                           |
 | wardley   | [数（wardley.ja.md）](./docs/wardley.ja.md#数) 「`NumericLiteral` は倍精度浮動小数点数の値を」                                                                    | `wardley-beta\ncomponent Digits [000.30,01.00]`                                                                                                                         |
+| wardley   | [最短の形の数（compatibility.ja.md）](./docs/compatibility.ja.md#最短の形の数) 「mermaid.js がテキストとして読む数（Venn 図の」                                   | `wardley-beta\ncomponent A [0.50, 0.50]\n`                                                                                                                              |
+| wardley   | [Wardley の原文と必須の改行（compatibility.ja.md）](./docs/compatibility.ja.md#wardley-の原文と必須の改行) 「Wardley の規則」                                     | `wardley-beta\ncomponent Alpha [0.10,0.20]\n`                                                                                                                           |
+| wardley   | [座標（wardley.ja.md）](./docs/wardley.ja.md#座標) 「visibility、evolution の順と整数・小数の原綴を保ちます」                                                     | `wardley-beta\nannotations [ 3 , 4 ]\nannotation 2,[ 0 , 1 ]\"Integer\"`                                                                                                |
 
 ### D06. 色や色のように見えるテキストを小文字にするか
 
@@ -189,11 +192,12 @@ sequence、state、treemap、usecase、vennである。
 
 ### D09. 無視されるソースの範囲を残すか
 
-1件の形があり、図種はeventmodelingである。
+2件の形があり、図種はeventmodeling、treeviewである。
 
-| 図種          | 規則の文書                                                                                                                   | 書かれた形                                                  |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| eventmodeling | [Hidden forms（eventmodeling.ja.md）](./docs/eventmodeling.ja.md#hidden-forms) 「`IgnoredText` は AST の所有ノードごとに原」 | `eventmodeling tf 01 evt Alpha ---\nx\n---\ntf 02 evt Beta` |
+| 図種          | 規則の文書                                                                                                                                                                       | 書かれた形                                                       |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| eventmodeling | [Hidden forms（eventmodeling.ja.md）](./docs/eventmodeling.ja.md#hidden-forms) 「`IgnoredText` は AST の所有ノードごとに原」                                                     | `eventmodeling tf 01 evt Alpha ---\nx\n---\ntf 02 evt Beta`      |
+| treeview      | [Treeview modes and authored values（compatibility.ja.md）](./docs/compatibility.ja.md#treeview-modes-and-authored-values) 「`accDescr` の開始記号の隙間にある唯一の選び手は隙」 | `treeView-beta\naccDescr\n─\n{z}\n   title   T\nroot\n\n\n\nx\n` |
 
 ### D10. 繰り返して書かれたものをすべて残すか
 
@@ -249,16 +253,17 @@ sequence、state、treemap、usecase、vennである。
 
 ### D16. 字下げによる表記を罫線による表記に置き換えるか
 
-2件の形があり、図種はtreeviewである。
+3件の形があり、図種はtreeviewである。
 
-| 図種     | 規則の文書                                                                                                                                            | 書かれた形                                     |
-| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| treeview | [Modes（treeview.ja.md）](./docs/treeview.ja.md#modes) 「字下げと罫線のモードを保ちます。」 「罫線モードの普通の外側の構造は AST の森から描き直し、」 | `treeView-beta\nroot\n    child\n`             |
-| treeview | [Branch prefixes（treeview.ja.md）](./docs/treeview.ja.md#branch-prefixes) 「固定された原文の行の境界、安全に寄せられない注釈、モードの喪」           | `treeView-beta\n├─ node ## before\n└─ ::: X\n` |
+| 図種     | 規則の文書                                                                                                                                                       | 書かれた形                                     |
+| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| treeview | [Modes（treeview.ja.md）](./docs/treeview.ja.md#modes) 「字下げと罫線のモードを保ちます。」 「罫線モードの普通の外側の構造は AST の森から描き直し、」            | `treeView-beta\nroot\n    child\n`             |
+| treeview | [Branch prefixes（treeview.ja.md）](./docs/treeview.ja.md#branch-prefixes) 「固定された原文の行の境界、安全に寄せられない注釈、モードの喪」                      | `treeView-beta\n├─ node ## before\n└─ ::: X\n` |
+| treeview | [Treeview modes and authored values（compatibility.ja.md）](./docs/compatibility.ja.md#treeview-modes-and-authored-values) 「[treeview の規則](./treeview.ja.m」 | `treeView-beta\nroot\n  child\n`               |
 
 ### D17. 書かれたセミコロンを残すか、取り除くか
 
-33件の形があり、図種はagentflow、block、c4、class、er、eventmodeling、
+34件の形があり、図種はagentflow、block、c4、class、er、eventmodeling、
 flowchart、mindmap、quadrant、railroad、requirement、sequence、state、treeview、
 usecase、venn、xychartである。
 
@@ -288,6 +293,7 @@ usecase、venn、xychartである。
 | sequence      | [1 行に 1 文（sequence.ja.md）](./docs/sequence.ja.md#1-行に-1-文) 「`autonumber`、改行、`5` のように複数行に書か」                                                                         | `sequenceDiagram\nparticipant A@{\n  \"type\": \"queue\"\n} %%{wrap}%%;\nA->>B: x\nautonumber \n5 %%{wrap}%%;\nB->>A: y\nloop z\nautonumber \n7 %%{wrap}%%;\nA->>B: w\nend\n` |
 | state         | [スタイル文の末尾のセミコロン（state.ja.md）](./docs/state.ja.md#スタイル文の末尾のセミコロン) 「同じ行でセミコロンの後にディレクティブが続く場合は、`;` 」                                 | `stateDiagram-v2\nA --> B\nclassDef c fill:#f00; %%{init: {}}%%\nstyle A fill:#f00; %% keep\n`                                                                                |
 | treeview      | [Description blocks（treeview.ja.md）](./docs/treeview.ja.md#description-blocks) 「行の規則が無視する `;` もテキストではありません。」                                                      | `treeView-beta\naccDescr {style:#x}accDescr { ; }\n`                                                                                                                          |
+| treeview      | [Carried indentation（treeview.ja.md）](./docs/treeview.ja.md#carried-indentation) 「行の規則が無視する `;` が引用名や class の後ろに」                                                     | `treeView-beta\n\"style:#x\";  %% note\nchild\n`                                                                                                                              |
 | usecase       | [Statements and semicolons（usecase.ja.md）](./docs/usecase.ja.md#statements-and-semicolons) 「[スタイル文の末尾のセミコロン](#semicolons-a」                                               | `usecase-beta\nactor Reader(style:#abc)@{type:normal,;icon:''}\n`                                                                                                             |
 | usecase       | [Semicolons at the end of a style statement（usecase.ja.md）](./docs/usecase.ja.md#semicolons-at-the-end-of-a-style-statement) 「同じ行でセミコロンの後にディレクティブが続く場合は、`;` 」 | `usecase-beta\nA\nclassDef c fill:#f00; %%{init: {}}%%\nstyle A fill:#f00; %% keep\n`                                                                                         |
 | usecase       | [Classes and styles（usecase.ja.md）](./docs/usecase.ja.md#classes-and-styles) 「最後の成分の後ろの外側の水平空白だけが消えることがあります。」                                             | `usecase-beta\nA\nstyle A fill:#abc,-- ;color:red`                                                                                                                            |
@@ -300,8 +306,8 @@ usecase、venn、xychartである。
 
 ### D18. 通常の構造単位の間を ASCII の空白1つで区切るか
 
-12件の形があり、図種はagentflow、architecture、block、er、radar、requirement、
-usecase、wardleyである。
+10件の形があり、図種はagentflow、er、radar、requirement、usecase、
+wardleyである。
 
 | 図種        | 規則の文書                                                                                                                                                | 書かれた形                                                                                                              |
 | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
@@ -318,7 +324,7 @@ usecase、wardleyである。
 
 ### D19. 構造上の修飾を対象に接して印字するか
 
-6件の形があり、図種はer、flowchart、kanban、railroad、stateである。
+5件の形があり、図種はer、kanban、railroad、stateである。
 
 | 図種     | 規則の文書                                                                                                                                                                                  | 書かれた形                                                                                                                  |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
@@ -445,8 +451,8 @@ requirement、wardleyである。
 
 ### D25. 空白だけの説明ブロックを空の波括弧にするか
 
-15件の形があり、図種はc4、class、cynefin、er、gantt、gitgraph、journey、
-quadrant、requirement、sequence、timeline、treeview、usecase、xychartである。
+12件の形があり、図種はc4、class、cynefin、er、gitgraph、journey、quadrant、
+requirement、sequence、timeline、xychartである。
 
 | 図種        | 規則の文書                                                                                                                              | 書かれた形                                                                                                 |
 | ----------- | --------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
@@ -465,8 +471,9 @@ quadrant、requirement、sequence、timeline、treeview、usecase、xychartで�
 
 ### D26. 説明をブロックで書くか、コロンの行で書くか
 
-20件の形があり、図種はarchitecture、cynefin、er、flowchart、info、journey、
-packet、pie、radar、railroad、timeline、treemap、treeview、wardleyである。
+21件の形があり、図種はarchitecture、cynefin、er、flowchart、info、journey、
+packet、pie、radar、railroad、state、timeline、treemap、treeview、
+wardleyである。
 
 | 図種         | 規則の文書                                                                                                                                                | 書かれた形                                                                                                     |
 | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
@@ -481,6 +488,7 @@ packet、pie、radar、railroad、timeline、treemap、treeview、wardleyであ�
 | pie          | [Accessibility lines（pie.ja.md）](./docs/pie.ja.md#accessibility-lines) 「C4 の[アクセシビリティの行](./c4.ja.md#アク」                                  | `pie\naccDescr: { literal }\n\"A\":1\n`                                                                        |
 | radar        | [Description blocks（radar.ja.md）](./docs/radar.ja.md#description-blocks) 「開始記号前の普通の空白は結合し、実際の注釈類のある改行は残し」               | `radar-beta\naccDescr\n\n{ Words }\n`                                                                          |
 | railroad     | [説明ブロック（railroad.ja.md）](./docs/railroad.ja.md#説明ブロック) 「波括弧を保つブロックでは、`accDescr` と `{` 」                                     | `railroad-beta\naccDescr {%%{wrap}%%}\naccDescr {\n%% removed block\n}\nr=terminal(\"trivia block\");`         |
+| state        | [ノート（state.ja.md）](./docs/state.ja.md#ノート) 「本文のない複数行のノートは、`note right of A」                                                       | `stateDiagram-v2\n A\n   note   right of    A   \n       end note\n B\n`                                       |
 | timeline     | [1 行 1 文（timeline.ja.md）](./docs/timeline.ja.md#1-行-1-文) 「行の上で 2 つの文の間にある指令は、後ろの文と一緒に移りま」                              | `timeline\naccDescr { d } %%{init: {}}%% a : e\n`                                                              |
 | timeline     | [指令（timeline.ja.md）](./docs/timeline.ja.md#指令) 「右側の接触・分離は保ち、左側の接触は切れます。」                                                   | `timeline\naccDescr { d }   %%{init: {}}%%   \naccDescr { e }   %%{init: {}}%%  a : e\n`                       |
 | treemap      | [Description blocks（treemap.ja.md）](./docs/treemap.ja.md#description-blocks) 「波括弧を残すブロックは、`accDescr` と `{` の」                           | `treemap\naccDescr {\n%% block comment\n}\n\"AfterCommentBlock\":3`                                            |
@@ -548,7 +556,7 @@ stateである。
 
 ### D31. 同じ行にある文やヘッダーを別の行に分けるか
 
-36件の形があり、図種はblock、c4、cynefin、er、eventmodeling、flowchart、
+37件の形があり、図種はblock、c4、cynefin、er、eventmodeling、flowchart、
 gitgraph、info、ishikawa、pie、quadrant、radar、railroad、sequence、treeview、
 venn、wardley、xychartである。
 
@@ -585,6 +593,7 @@ venn、wardley、xychartである。
 | treeview      | [Statements one per line（treeview.ja.md）](./docs/treeview.ja.md#statements-one-per-line) 「固定された原文の行の境界や、値のタブ、末尾、」                                                                                                                | `treeView-beta\nroot\n├── \"a\" \"b\";\n└── c\n`                                                                                      |
 | treeview      | [Statements one per line（treeview.ja.md）](./docs/treeview.ja.md#statements-one-per-line) 「選ばれる、または選ばれないセミコロンと、」                                                                                                                    | `treeView-beta\nroot\n├── \"style:#x\" %%{x}%%; \"b\"\n└── c\n`                                                                       |
 | treeview      | [Blank lines（treeview.ja.md）](./docs/treeview.ja.md#blank-lines) 「本文を保つ図は原文の境界を保ちます。」                                                                                                                                                | `treeView-beta\n\"p\" \"style:#z;\"\n\"other\"\n`                                                                                     |
+| treeview      | [Statements one per line（treeview.ja.md）](./docs/treeview.ja.md#statements-one-per-line) 「字下げモードでは、前置のディレクティブをノードとともに置く既」                                                                                                | `treeView-beta\n\"a\"%%{x}%%\"b\"\n`                                                                                                  |
 | venn          | [Directives（venn.ja.md）](./docs/venn.ja.md#directives) 「セミコロンを保持する行もヘッダーとの関係を保ちます。」                                                                                                                                          | `venn-beta%%{init: {}}%% set A[style:#x;y]`                                                                                           |
 | wardley       | [見出し（wardley.ja.md）](./docs/wardley.ja.md#見出し) 「読み飛ばす構文、保持前置部分、保護行には共有の境界規則を使い」, [hidden の境界（wardley.ja.md）](./docs/wardley.ja.md#hidden-の境界) 「読み飛ばす構文が見出し行を保つときは、pipeline の開」      | `wardley-beta pipeline Parent { %%{!x}%%\n\ncomponent Child[0.5]\n}\ncomponent Parent[0.3,0.6]\n`                                     |
 | wardley       | [hidden の境界（wardley.ja.md）](./docs/wardley.ja.md#hidden-の境界) 「見出しに可視 EOL が不要な例外は、見出し自身の形だけに適」                                                                                                                           | `wardley-beta component HeaderSuffix[0.3,0.6]%%{!suffix}%%\n\ncomponent HeaderAfter[0.4,0.7]`                                         |
@@ -622,10 +631,10 @@ venn、wardley、xychartである。
 
 ### D34. 構造の行や単独の補足情報の行を持ち主の深さに字下げするか
 
-96件の形があり、図種はarchitecture、block、c4、class、cynefin、er、
-eventmodeling、flowchart、gantt、gitgraph、journey、kanban、mindmap、packet、
-quadrant、radar、railroad、requirement、sequence、state、timeline、treemap、
-treeview、usecase、wardley、xychartである。
+76件の形があり、図種はarchitecture、block、c4、class、cynefin、er、
+eventmodeling、gantt、gitgraph、journey、kanban、mindmap、packet、quadrant、
+radar、railroad、requirement、sequence、state、timeline、treemap、treeview、
+wardley、xychartである。
 
 | 図種                                                                                        | 規則の文書                                                                                                                                                                                                                                                                                                                                                                         | 書かれた形                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -708,8 +717,8 @@ treeview、usecase、wardley、xychartである。
 
 ### D35. 値やデータ本体の桁位置を字下げし直すか
 
-22件の形があり、図種はagentflow、c4、er、eventmodeling、flowchart、packet、
-radar、railroad、requirement、sequence、treemap、treeviewである。
+23件の形があり、図種はagentflow、c4、er、eventmodeling、flowchart、packet、
+radar、railroad、requirement、sequence、state、treemap、treeviewである。
 
 | 図種          | 規則の文書                                                                                                                                                                                                 | 書かれた形                                                                                                   |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
@@ -733,12 +742,13 @@ radar、railroad、requirement、sequence、treemap、treeviewである。
 | requirement   | [アクセシビリティの文（requirement.ja.md）](./docs/requirement.ja.md#アクセシビリティの文) 「説明の設定関数がこの字下げを捨てるためです。」                                                                | `requirementDiagram\naccDescr {\n\n%% c\n\n text\n\n}\n`                                                     |
 | flowchart     | [データブロック（flowchart.ja.md）](./docs/flowchart.ja.md#データブロック) 「移動できるブロック内の字下げしたコメント行は、ほかの本文行と」                                                                | `flowchart LR\nA@{\n label: Alpha\n %% inside\n}\n`                                                          |
 | packet        | [Description blocks（packet.ja.md）](./docs/packet.ja.md#description-blocks) 「改行、空行、行末空白は保ち、独立した閉じは文の位置へ揃えます」                                                              | `packet\naccDescr {\n first\n   second\n\n last\n        }\n`                                                |
+| state         | [ノート（state.ja.md）](./docs/state.ja.md#ノート) 「ノートにコメント、ディレクティブ、セミコロン、保護された結合」                                                                                        | `stateDiagram-v2\nA\nnote right of A  %%{init: {}}%%\n  first\n second\nend note\n`                          |
 | treemap       | [Carried indentation（treemap.ja.md）](./docs/treemap.ja.md#carried-indentation) 「物理行の先頭だけを測り直したり、二つ目の連なりを足したりしま」                                                          | `treemap\n\"A\"  \n\"B\":1\n`                                                                                |
 | treeview      | [Description blocks（treeview.ja.md）](./docs/treeview.ja.md#description-blocks) 「普通の開始記号の前の空白は寄せ」                                                                                        | `treeView-beta\naccDescr {\n  first\n\n    second\n}\nR\n`                                                   |
 
 ### D37. 構造上の項目の間の空行を何行残すか
 
-33件の形があり、図種はarchitecture、block、cynefin、er、eventmodeling、gantt、
+32件の形があり、図種はarchitecture、block、cynefin、er、eventmodeling、gantt、
 gitgraph、info、ishikawa、journey、kanban、pie、quadrant、radar、railroad、
 requirement、timeline、treemap、treeview、usecase、venn、wardley、
 xychartである。
@@ -780,7 +790,7 @@ xychartである。
 
 ### D38. 値の文字として読まれる空白をそろえるか
 
-83件の形があり、図種はagentflow、architecture、c4、class、cynefin、er、
+81件の形があり、図種はagentflow、architecture、c4、class、cynefin、er、
 eventmodeling、flowchart、gantt、gitgraph、info、ishikawa、journey、kanban、
 mindmap、packet、pie、quadrant、radar、railroad、sankey、sequence、state、
 timeline、treemap、treeview、usecase、venn、wardleyである。
@@ -871,7 +881,7 @@ timeline、treemap、treeview、usecase、venn、wardleyである。
 
 ### D39. 値の外側にある行末の空白を取り除くか
 
-49件の形があり、図種はagentflow、architecture、class、cynefin、er、error、
+45件の形があり、図種はagentflow、architecture、class、cynefin、er、error、
 eventmodeling、flowchart、gantt、info、ishikawa、journey、kanban、mindmap、
 packet、pie、quadrant、radar、railroad、requirement、sankey、sequence、state、
 timeline、usecase、wardleyである。
@@ -922,6 +932,7 @@ timeline、usecase、wardleyである。
 | class         | [コメント（class.ja.md）](./docs/class.ja.md#コメント) 「行に単独のコメントは、周りの文、本体の中ではメンバーの行と同」                                                                                                                                  | `classDiagram\n  %%no space  \n%%    spaced   text   \nclass A\n`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | sequence      | [コメント（sequence.ja.md）](./docs/sequence.ja.md#コメント) 「行に単独のコメント（`%%`、`#`、`%`）は、周りの文と」                                                                                                                                      | `sequenceDiagram\n%%   a   b   \n  # c   d  \nA->>B: x\n`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | state         | [コメント（state.ja.md）](./docs/state.ja.md#コメント) 「行に単独のコメント（`%%` か `#`）は、周りの文と同じ」                                                                                                                                           | `stateDiagram-v2\nA\n%%no space\n#no space\n%%   many   spaces   \n  # hash   \nB\n`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| wardley       | [Wardley の原文と必須の改行（compatibility.ja.md）](./docs/compatibility.ja.md#wardley-の原文と必須の改行) 「隠れた形は木の所有ノードで原文の範囲を保ち、」                                                                                              | `wardley-beta\ncomponent Alpha [0.1,0.2]%%{!}%% \n`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 
 ### D40. directive の本文を書かれたまま印字するか
 
@@ -960,7 +971,7 @@ timeline、treemap、treeview、usecase、vennである。
 ### D41. 末尾の改行と空白の隙間をどう印字するか
 
 9件の形があり、図種はclass、er、eventmodeling、flowchart、ishikawa、kanban、
-venn、wardleyである。
+treeview、venn、wardleyである。
 
 | 図種          | 規則の文書                                                                                                                                                                                                                         | 書かれた形                                  |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
@@ -970,6 +981,7 @@ venn、wardleyである。
 | flowchart     | [ディレクティブ（flowchart.ja.md）](./docs/flowchart.ja.md#ディレクティブ) （文なし）                                                                                                                                              | `flowchart LR\nA\n%%{init: {}`              |
 | ishikawa      | [Blank lines（ishikawa.ja.md）](./docs/ishikawa.ja.md#blank-lines) 「図のコメントの後の空行は、そのコメントの区切りの隙間であり」                                                                                                  | `ishikawa\nR\n%%\n \t\n\n`                  |
 | kanban        | [末尾の改行（kanban.ja.md）](./docs/kanban.ja.md#末尾の改行) 「例外は、ボードの終わりで空行に従って全体を残す」, [空行（kanban.ja.md）](./docs/kanban.ja.md#空行) 「ボードの終わりにあるこの種の隙間も、後ろに字下げするものがあ」 | `kanban\n S\n%%\n\n\n`                      |
+| treeview      | [Final newline（treeview.ja.md）](./docs/treeview.ja.md#final-newline) 「値の末尾は保ち、」                                                                                                                                        | `treeView-beta\n\"R\"%%{unfinished`         |
 | venn          | [Final newline（venn.ja.md）](./docs/venn.ja.md#final-newline) 「通常の受理する入力は共通のファイルの規則に合わせ、設定の改行」                                                                                                    | `venn-beta\nset A`                          |
 | wardley       | [Wardley の原文と必須の改行（compatibility.ja.md）](./docs/compatibility.ja.md#wardley-の原文と必須の改行) 「空白だけのラベルと末尾余白も含み、裸の `;` は拒否されま」                                                             | `wardley-beta\n\"style:#x\"  -> \"Tail\"; ` |
 
@@ -1177,7 +1189,7 @@ sequence、state、treeviewである。
 
 ### D53. コメントや隠れた形を元の隙間と順序に残すか
 
-38件の形があり、図種はagentflow、block、er、eventmodeling、flowchart、gitgraph、
+39件の形があり、図種はagentflow、block、er、eventmodeling、flowchart、gitgraph、
 journey、mindmap、packet、pie、quadrant、railroad、requirement、timeline、
 treeview、xychartである。
 
@@ -1201,6 +1213,7 @@ treeview、xychartである。
 | railroad      | [コメント（railroad.ja.md）](./docs/railroad.ja.md#コメント) 「既存の改行の隣でも同じ外側空白を使い、コメントを越えて句読点」                                                                                                    | `railroad-beta\nr=terminal\n/* constructor */(\"a\"\n/* closer */);\n`                                                                                                                            |
 | railroad      | [共有 directive（railroad.ja.md）](./docs/railroad.ja.md#共有-directive) 「ディレクティブは引数のそばに保ち、引用値の leaf 呼出し」                                                                                              | `railroad-beta\nr=sequence%%{init: {}}%%(\nterminal%%{init: {}}%%(%%{init: {}}%%\"a\"%%{init: {}}%%)%%{init: {}}%%,\n%%{init: {}}%%nonterminal(\"b\")\n);\n`                                      |
 | timeline      | [指令（timeline.ja.md）](./docs/timeline.ja.md#指令) 「文の単位の間の指令は元の隙間に残し、指令のとお」                                                                                                                          | `timeline\na %%{init: {}}%%: e\nb:%%{init: {}}%% e\nc : e%%{init: {}}%%: f\n`                                                                                                                     |
+| treeview      | [Statements one per line（treeview.ja.md）](./docs/treeview.ja.md#statements-one-per-line) 「既にあるディレクティブだけの行、コメント行と空行は、」                                                                              | `treeView-beta\nroot\n├── \"a\"%%{x}%%\"b\"\n%% between\n└── c\n`                                                                                                                                 |
 | xychart       | [指令（xychart.ja.md）](./docs/xychart.ja.md#指令) 「指令は元の単位の間に残します。」                                                                                                                                            | `xychart\nline %%{init: {}}%% [1]\nx-axis%%{init: {}}%%[a]\n`                                                                                                                                     |
 | er            | [属性の空白（er.ja.md）](./docs/er.ja.md#属性の空白) 「部分の間にコメント行かディレクティブがある属性は、改行を保ち」                                                                                                            | `erDiagram\nA {\nint\n%% a comment line\na\nint b\n}\n`                                                                                                                                           |
 | er            | [属性の空白（er.ja.md）](./docs/er.ja.md#属性の空白) 「部分の間にコメント行かディレクティブがある属性は、改行を保ち」                                                                                                            | `erDiagram\nA {\nint\n%% a comment line\na\nint b\n}\n`                                                                                                                                           |
@@ -1286,13 +1299,14 @@ treeview、xychartである。
 
 ### D65. 注釈を所属先と同じ行に置くか
 
-3件の形があり、図種はtreeviewである。
+4件の形があり、図種はtreeviewである。
 
-| 図種     | 規則の文書                                                                                                                                                              | 書かれた形                                       |
-| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| treeview | [Annotation lines（treeview.ja.md）](./docs/treeview.ja.md#annotation-lines) 「字下げモードの別行の注釈は、その行を保ち、」                                             | `treeView-beta\nR\n   :::hot\nC\n`               |
-| treeview | [Annotation lines（treeview.ja.md）](./docs/treeview.ja.md#annotation-lines) 「罫線モードの枝付き注釈は、所有ノードの行へ」                                             | `treeView-beta\n├─ node\n%% between\n└─ ::: X\n` |
-| treeview | [Treeview modes and authored values（compatibility.ja.md）](./docs/compatibility.ja.md#treeview-modes-and-authored-values) 「字下げモードの注釈の行は分けたままです。」 | `treeView-beta\nroot\n  :::c\n`                  |
+| 図種     | 規則の文書                                                                                                                                                              | 書かれた形                                                |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| treeview | [Annotation lines（treeview.ja.md）](./docs/treeview.ja.md#annotation-lines) 「字下げモードの別行の注釈は、その行を保ち、」                                             | `treeView-beta\nR\n   :::hot\nC\n`                        |
+| treeview | [Annotation lines（treeview.ja.md）](./docs/treeview.ja.md#annotation-lines) 「罫線モードの枝付き注釈は、所有ノードの行へ」                                             | `treeView-beta\n├─ node\n%% between\n└─ ::: X\n`          |
+| treeview | [Treeview modes and authored values（compatibility.ja.md）](./docs/compatibility.ja.md#treeview-modes-and-authored-values) 「字下げモードの注釈の行は分けたままです。」 | `treeView-beta\nroot\n  :::c\n`                           |
+| treeview | [Decorations（treeview.ja.md）](./docs/treeview.ja.md#decorations) 「枝付き注釈を同じ行へ寄せたときは、その装飾をノードの行の後、」                                     | `treeView-beta\n\"r─\"\n│\n└─ :::X\n%% after\n\"next\"\n` |
 
 ### D66. trivia を含む末端の IR 呼出しを複数行にするか
 
@@ -1568,24 +1582,6 @@ vennである。
 | sequence      | [複数行の文（sequence.ja.md）](./docs/sequence.ja.md#複数行の文) 「コメントで結合される領域も、文全体を原文のまま残します。」                       | `sequenceDiagram\nA->>B: x\u2028%% c\nC->>D: y\n`                                                                                                                        |
 | treemap       | [Description blocks（treemap.ja.md）](./docs/treemap.ja.md#description-blocks) 「開始記号前の普通の空白は詰めます」                                 | `treemap\naccDescr  {\n  first\n\n    second\n}\n\\AfterDescription\\\":3\"`                                                                                             |
 
-### 対象にする版すべてでの実行がまだである
-
-11件の形は、対象にする版の 11.14.0 での実行結果がない。
-
-| 図種     | 規則の文書                                                                                                                                                                       | 書かれた形                                                               |
-| -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| wardley  | [最短の形の数（compatibility.ja.md）](./docs/compatibility.ja.md#最短の形の数) 「mermaid.js がテキストとして読む数（Venn 図の」                                                  | `wardley-beta\ncomponent A [0.50, 0.50]\n`                               |
-| wardley  | [Wardley の原文と必須の改行（compatibility.ja.md）](./docs/compatibility.ja.md#wardley-の原文と必須の改行) 「Wardley の規則」                                                    | `wardley-beta\ncomponent Alpha [0.10,0.20]\n`                            |
-| wardley  | [座標（wardley.ja.md）](./docs/wardley.ja.md#座標) 「visibility、evolution の順と整数・小数の原綴を保ちます」                                                                    | `wardley-beta\nannotations [ 3 , 4 ]\nannotation 2,[ 0 , 1 ]\"Integer\"` |
-| treeview | [Treeview modes and authored values（compatibility.ja.md）](./docs/compatibility.ja.md#treeview-modes-and-authored-values) 「`accDescr` の開始記号の隙間にある唯一の選び手は隙」 | `treeView-beta\naccDescr\n─\n{z}\n   title   T\nroot\n\n\n\nx\n`         |
-| treeview | [Treeview modes and authored values（compatibility.ja.md）](./docs/compatibility.ja.md#treeview-modes-and-authored-values) 「[treeview の規則](./treeview.ja.m」                 | `treeView-beta\nroot\n  child\n`                                         |
-| treeview | [Carried indentation（treeview.ja.md）](./docs/treeview.ja.md#carried-indentation) 「行の規則が無視する `;` が引用名や class の後ろに」                                          | `treeView-beta\n\"style:#x\";  %% note\nchild\n`                         |
-| treeview | [Decorations（treeview.ja.md）](./docs/treeview.ja.md#decorations) 「枝付き注釈を同じ行へ寄せたときは、その装飾をノードの行の後、」                                              | `treeView-beta\n\"r─\"\n│\n└─ :::X\n%% after\n\"next\"\n`                |
-| wardley  | [Wardley の原文と必須の改行（compatibility.ja.md）](./docs/compatibility.ja.md#wardley-の原文と必須の改行) 「隠れた形は木の所有ノードで原文の範囲を保ち、」                      | `wardley-beta\ncomponent Alpha [0.1,0.2]%%{!}%% \n`                      |
-| treeview | [Final newline（treeview.ja.md）](./docs/treeview.ja.md#final-newline) 「値の末尾は保ち、」                                                                                      | `treeView-beta\n\"R\"%%{unfinished`                                      |
-| treeview | [Statements one per line（treeview.ja.md）](./docs/treeview.ja.md#statements-one-per-line) 「既にあるディレクティブだけの行、コメント行と空行は、」                              | `treeView-beta\nroot\n├── \"a\"%%{x}%%\"b\"\n%% between\n└── c\n`        |
-| treeview | [Statements one per line（treeview.ja.md）](./docs/treeview.ja.md#statements-one-per-line) 「字下げモードでは、前置のディレクティブをノードとともに置く既」                      | `treeView-beta\n\"a\"%%{x}%%\"b\"\n`                                     |
-
 ### 比較する入力を作っていない
 
 90件の形は、この確認が不足している。
@@ -1698,18 +1694,9 @@ vennである。
 | pie          | [Trailing whitespace（pie.ja.md）](./docs/pie.ja.md#trailing-whitespace) 「ラベル行・コメント・ディレクティブと、」                                       | `pie\n\"a\n b\":1`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | wardley      | [セミコロン（wardley.ja.md）](./docs/wardley.ja.md#セミコロン) 「書かれたセミコロンはすべて保ちます。」                                                   | `wardley-beta\nAlpha  -> Beta; style:#tone;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 
-### Db を比較していない
-
-2件の形があり、図種はstateである。
-
-| 図種  | 規則の文書                                                                                                          | 書かれた形                                                                          |
-| ----- | ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| state | [ノート（state.ja.md）](./docs/state.ja.md#ノート) 「本文のない複数行のノートは、`note right of A」                 | `stateDiagram-v2\n A\n   note   right of    A   \n       end note\n B\n`            |
-| state | [ノート（state.ja.md）](./docs/state.ja.md#ノート) 「ノートにコメント、ディレクティブ、セミコロン、保護された結合」 | `stateDiagram-v2\nA\nnote right of A  %%{init: {}}%%\n  first\n second\nend note\n` |
-
 ### 版か表の行のない理由が書かれている
 
-32件の形は、図種の規則に理由の文があるが、mermaid.js の版を挙げていないか、
+30件の形は、図種の規則に理由の文があるが、mermaid.js の版を挙げていないか、
 [対象にする版の mermaid.js のために残す形][versions]の表に行がない。
 その図種の PR が足りないほう（版か行）を書くと、この節を出る。
 対象にする版で走らせて違いがなければ、「まだ決めていない形」の節へ移る。
