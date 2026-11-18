@@ -81,9 +81,14 @@ further step inside that continued header line. Columns do not define parents,
 so `tabWidth: 0` adds no spaces; `useTabs` adds one tab per step even at width
 zero. Value continuations, metadata padding and hidden consumed-LF boundaries
 retain their authored columns, apart from the block-body margin adjustment in
-[Data blocks](#data-blocks).
+[Data blocks](#data-blocks). A `title` after
+`eventmodeling tf 01 evt Alpha.%%{{native}}%%` and a line break stays at column
+one, since every version of mermaid.js that counts rejects it indented by two
+spaces (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
-[fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]
+[fixture: eventmodeling/data-blocks/block-closer-indent-unsafe] [fixture:
+eventmodeling/qualified-names/hidden-before-title-segment-keep-no-prefix-space]
 
 [fixture: eventmodeling/indentation/mixed-top-level-blocks]
 
@@ -146,11 +151,21 @@ note 01 {
 Put ordinary top-level AST statements on separate lines in source order, without
 adding semicolons. The grammar needs no visible EOL between complete units, so
 this does not change the Db. A common successor keeps its connection to the
-preceding unit. Apparent statements inside greedy inline data remain part of
-that single value; a closed description can instead be followed by an ordinary
-new statement.
+preceding unit. `eventmodeling accDescr {}  title Next` stays on one line, since
+every version of mermaid.js that counts rejects `title Next` on a line of its
+own (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Apparent statements inside greedy inline data remain part of that single value;
+a closed description can instead be followed by an ordinary new statement. In
+`eventmodeling tf 01 evt Alpha {x} tf 02 evt Beta {y}`, `tf 02 evt Beta {y}`
+stays in the value, since every version of mermaid.js that counts draws a
+different diagram when it stands on a line of its own (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: eventmodeling/statements-one-per-line/adjacent-frame-reset-entity]
+[fixture: eventmodeling/statements-one-per-line/description-followed-by-common]
+[fixture:
+eventmodeling/statements-one-per-line/do-not-manufacture-statement-from-greedy-data]
 
 [fixture: eventmodeling/statements-one-per-line/frame-metadata-adjacency]
 
@@ -396,8 +411,12 @@ Separate declaration and note components with one ordinary space:
 `entity Shop.Buy`, `data D` and `note 01`. Put a block opener on its header line
 after one space. Values and closing boundaries follow the data rules. A required
 name `title` keeps its safe preceding boundary, as for frames.
+`eventmodeling data`, a line break and `title {` stay, since every version of
+mermaid.js that counts rejects `eventmodeling data title {` on one line (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
-[fixture: eventmodeling/declarations-and-notes/entity-ordinary]
+[fixture: eventmodeling/declarations-and-notes/entity-ordinary] [fixture:
+eventmodeling/declarations-and-notes/data-name-title-keep-lf]
 
 [fixture: eventmodeling/declarations-and-notes/entity-title-lf-protected]
 
@@ -437,9 +456,14 @@ another step deeper. This shows the authored clause/item relationship without
 inventing closing punctuation. Keep required given/then, optional when, item
 order, repetition and type words. Ordinary item components use one space;
 required `title` boundaries, hidden forms, trivia and protected opening edges
-take precedence.
+take precedence. `eventmodeling gwt 01 given evt`, a line break and
+`title then cmd accTitle tf 02 evt Alpha` stay, since every version of
+mermaid.js that counts rejects the same text with a space in place of the line
+break (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
-[fixture: eventmodeling/gwt-clauses-and-items/given-when-then-nested]
+[fixture: eventmodeling/gwt-clauses-and-items/given-when-then-nested] [fixture:
+eventmodeling/gwt-clauses-and-items/gwt-title-identifier-keep-lf]
 
 [fixture: eventmodeling/gwt-clauses-and-items/without-when-repeated-items]
 
@@ -566,11 +590,16 @@ empty line does not make the next line the first physical line.
 
 Keep blank and whitespace-only lines, line breaks, trailing spaces and tabs, and
 every character after each line's leading margin. The closing brace stays at
-column one. Preserve apparent statements, text containing braces and an adjacent
+column one. `eventmodeling tf 01 evt Alpha [[D]] data D {`, `x` and `}` stay,
+since every version of mermaid.js that counts rejects `}` indented by two spaces
+(see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Preserve apparent statements, text containing braces and an adjacent
 closing-looking line when the block's body-present rule reads through it to a
 later closer.
 
-[fixture: eventmodeling/data-blocks/body-whitespace-kept]
+[fixture: eventmodeling/data-blocks/body-whitespace-kept] [fixture:
+eventmodeling/data-blocks/block-closer-indent-unsafe]
 
 [fixture: eventmodeling/data-blocks/block-empty-kept]
 
@@ -853,8 +882,12 @@ pre-header/body forms, required and optional named gaps, qualified-name tails,
 tags and GWT clause/item gaps. Do not parse retained YAML or native DIRECTIVE as
 configuration. The shared hidden path preserves internal columns, consumed LF
 and closing lookahead padding; ordinary body openers align with their body.
-Required opening gaps and common successors keep their authored boundaries. A
-fallback percent comment stays a comment.
+Required opening gaps and common successors keep their authored boundaries.
+`eventmodeling`, `%%{{x}}%%` and ` accDescr: D` on lines of their own stay, with
+one space before `accDescr`, since every version of mermaid.js that counts
+rejects the line without that space (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A fallback percent comment stays a comment.
 
 Forms at authored body boundaries keep their line through GWT clause and item
 openings too. The header and nested bodies share that decision so moving an item
@@ -1104,11 +1137,20 @@ semicolons/no-stretch-formatted] [fixture:
 semicolons/protected-gwt-title-hidden-gap-remains-zero]
 
 The first protected body line aligns with its body; contents and later columns
-remain authored. Required identifier and common-value padding takes precedence
-over structural indentation. Keep a child body's opening edge on the protected
-line too, so a second formatting cannot split it differently. This grammar has
-no grammatical semicolon, so `verbatimStyleLines` is false: a `style` or
-`classDef` word alone does not freeze the whole line.
+remain authored. A `title` that follows
+`eventmodeling gwt 01 given evt %%{{native}}%%` and a line break stays at column
+one, since every version of mermaid.js that counts rejects it indented by two
+spaces (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Required identifier and common-value padding takes precedence over structural
+indentation. The leading space of ` accDescr: style:#x;` after
+`eventmodeling data D {`, `x` and `}` stays, since every version of mermaid.js
+that counts rejects the line without that space (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Keep a child body's opening edge on the protected line too, so a second
+formatting cannot split it differently. This grammar has no grammatical
+semicolon, so `verbatimStyleLines` is false: a `style` or `classDef` word alone
+does not freeze the whole line.
 
 A line that holds a `;` keeps its statements together, also where the `;` stands
 in the last line of a description block over several lines and a statement
