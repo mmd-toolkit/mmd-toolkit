@@ -789,8 +789,13 @@ comments/bare-brace-comments-aligned] [fixture: comments/header-leading-comment]
 
 A diagram comment after the header, a shape, an icon, or a data block stays on
 its line: it has one space before it where whitespace was written, and none
-where it touches. The whitespace before such a comment is no part of the Db, so
-the form is a choice: the printer shortens a run to one space, and keeps whether
+where it touches. Rule 1 names no mark before a comment, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#comments),
+[journey](./journey.md#comments), and [timeline](./timeline.md#comments) keep a
+comment that touches what comes before it, and print one space where whitespace
+was written. The whitespace before such a comment is no part of the Db, so the
+form is a choice: the printer shortens a run to one space, and keeps whether
 there is any, since the author decides whether a comment touches what it follows
 (the choice of a [mindmap](./mindmap.md#comments) too). `S[x]   %% c` prints
 `S[x] %% c`, and `A[y]%% d` is not changed. After a bare id, in a label, and in
