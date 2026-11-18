@@ -90,13 +90,11 @@ retain their authored columns, apart from the block-body margin adjustment in
 one, since every version of mermaid.js that counts rejects it indented by two
 spaces (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Rule 1 names no mark for the indentation of a statement, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) would
-give the indented form that [flowchart](./flowchart.md#indentation),
-[class](./class.md#indentation), [er](./er.md#indentation), and
-[state](./state.md#indentation) print, the statements after the header one level
-deeper; the table lists that form for a `title` after a line break and for the
-`}` of a block.
+The other diagram types stand the statements after the header one level deeper,
+as [flowchart](./flowchart.md#indentation), [class](./class.md#indentation),
+[er](./er.md#indentation), and [state](./state.md#indentation) do; a `title`
+after a line break and the `}` of a block could not stand there in this one,
+since every version that counts rejects them indented (see the table).
 
 [fixture: eventmodeling/data-blocks/block-closer-indent-unsafe] [fixture:
 eventmodeling/qualified-names/hidden-before-title-segment-keep-no-prefix-space]
@@ -613,9 +611,10 @@ column one. `eventmodeling tf 01 evt Alpha [[D]] data D {`, `x` and `}` stay,
 since every version of mermaid.js that counts rejects `}` indented by two spaces
 (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Rule 2 would indent the `}`, as in [Indentation](#indentation). Preserve
-apparent statements, text containing braces and an adjacent closing-looking line
-when the block's body-present rule reads through it to a later closer.
+The other diagram types would indent the `}` (see [Indentation](#indentation)).
+Preserve apparent statements, text containing braces and an adjacent
+closing-looking line when the block's body-present rule reads through it to a
+later closer.
 
 [fixture: eventmodeling/data-blocks/body-whitespace-kept] [fixture:
 eventmodeling/data-blocks/block-closer-indent-unsafe]
@@ -1168,11 +1167,11 @@ remain authored. A `title` that follows
 one, since every version of mermaid.js that counts rejects it indented by two
 spaces (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Rule 2 would indent it, as in [Indentation](#indentation). Required identifier
-and common-value padding takes precedence over structural indentation. The
-leading space of ` accDescr: style:#x;` after `eventmodeling data D {`, `x` and
-`}` stays, since every version of mermaid.js that counts rejects the line
-without that space (see
+The other diagram types would indent it (see [Indentation](#indentation)).
+Required identifier and common-value padding takes precedence over structural
+indentation. The leading space of ` accDescr: style:#x;` after
+`eventmodeling data D {`, `x` and `}` stays, since every version of mermaid.js
+that counts rejects the line without that space (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Keep a child body's opening edge on the protected line too, so a second
 formatting cannot split it differently. This grammar has no grammatical
