@@ -22,10 +22,7 @@ GWT は閉じ記号を作らず、範囲で終わる子の本文を 2 つ使い�
 見出しの行が保つ行なら最初の文もその行に残します。
 同じ項目を図種の間で同じように扱うためです。
 最初の共通文は接続と前置の空白を保ちます。
-`eventmodeling accTitle: T` の空白は保ちます。
-その空白を LF に替えた形を mermaid.js が拒否するためです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください）。
+行頭へ移すと識別子が優先され、拒否される場合があるためです。
 
 [fixture: eventmodeling/header/ordinary-frame]
 
@@ -76,11 +73,6 @@ eventmodeling tf 01 evt A %%{{x}}%%
 固定している Mermaid は `data` と `note`
 の閉じ波括弧の前の空白を受理しないため、見出しを閉じ波括弧にそろえ、
 同じ階層の文も字下げせず、存在しない親子関係を示さないようにします。
-`data D {`、LF、`x`、LF、`}` と続くブロックの閉じは第 1 列に保ちます。
-同じブロックの `}` の前に空白を 2 個足した形を、
-mermaid.js が拒否するためです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください）。
 固定している Mermaid が閉じ波括弧の前の空白を受理するようになったら、
 本文の変換前の値と描画が変わらないことを確かめた上で、
 トップレベルの字下げを再検討します。
@@ -94,11 +86,6 @@ GWT 節は設定の 1 段、項目は 2 段にします。
 `useTabs` では幅が 0 でも 1 段にタブを 1 個使います。
 値の継続列、メタデータの空白、隠れた形が消費する LF の境界は、
 [データブロック](#data-blocks) の本文の余白の変更を除いて保ちます。
-`Alpha.%%{{native}}%%`、LF、`title` と続く形では、`title` は第 1 列に保ちます。
-同じ行を空白 2 個で字下げした形を、
-mermaid.js が拒否するためです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください）。
 
 [fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]
 
@@ -163,11 +150,6 @@ note 01 {
 普通の最上位 AST 文は原順の各行へ分け、セミコロンは足しません。
 完全な単位の間に可視の EOL を要しない文法なので、Db は変わりません。
 次が共通文なら先行単位との接続を保ちます。
-`accDescr {}  title Next` の空白 2 個は保ちます。
-`accDescr {}`、LF、` title Next` と続く形を、
-mermaid.js が拒否するためです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください）。
 後続の文字を取り込む行内データの中の見かけの文は、その値の一部のままです。
 閉じた説明ブロックの後の普通の文は、新しい行へ分けます。
 
@@ -417,11 +399,6 @@ note
 ブロック開始記号は見出し行の空白 1 個後に置きます。
 値と閉じの境界は data の規則に従います。
 必須の名前の `title` はフレームと同じく安全な前方境界を保ちます。
-`data`、LF、`title {` と続く形では、その LF を保ちます。
-同じブロックのその LF を空白 1 個に替えた形を、
-mermaid.js が拒否するためです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください）。
 
 [fixture: eventmodeling/declarations-and-notes/entity-ordinary]
 
@@ -464,11 +441,6 @@ GWT の見出しがコメントやディレクティブの後に続く場合、�
 必須の given・then、任意の when、項目の順序・反復・型語を保ちます。
 普通の項目部品は空白 1 個で分け、必須の `title` の境界、隠れた形、注釈類、
 保護された開始境界を優先します。
-`given evt`、LF、`title then cmd accTitle tf 02 evt Alpha` と続く形では、
-その LF を保ちます。
-その LF を空白 1 個に替えた形を mermaid.js が拒否するためです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください）。
 
 [fixture: eventmodeling/gwt-clauses-and-items/given-when-then-nested]
 
@@ -514,13 +486,6 @@ tf 01 evt End
 字句解析器は同じ行の最後の対応する閉じまで読むため、
 その範囲の見かけの後続フレームは data であり、文ではありません。
 両端の空白の除去、引用符の変更、分割は Db の原文の終端トークンを変えます。
-`tf 01 evt Alpha {x} tf 02 evt Beta {y}` では、
-行内の値 `{x} tf 02 evt Beta {y}` を 1 行に保ちます。
-`tf 02 evt Beta {y}` の前を LF に替えると、
-Db の最初のデータ値が `{x}` になってフレームが加わり、
-図の構造と形状が変わるためです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください）。
 
 [fixture: eventmodeling/inline-data/inline-braces-unchanged]
 
@@ -593,12 +558,7 @@ tf 01 evt Alpha { 	 x  }
 元にない行頭の空白を加えられるのは、本文の第 1 物理行だけです。
 それ以降の空でない物理行は、変更前後とも行頭に ASCII 空白が 1 個以上必要です。
 満たさない場合は本文全体を書かれたまま残します。
-型タグ `json` を持つ `data D` の本文の 2 行目が、
-第 1 列の `"quantity": 2` である場合、その行を保ちます。
-空白 2 個で字下げすると、描画するテキストと形状、
-Db のデータ値が変わるためです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください）。
+後の行に初めて空白を加えると、描画するラベルが変わる場合があるためです。
 先頭が空行でも、その次の行が第 1 物理行になるわけではありません。
 
 [fixture: eventmodeling/data-blocks/body-first-line-zero-margin]
@@ -819,10 +779,11 @@ tf 01 evt Alpha
 アクセシビリティの行形式は前置空白、キーワードとコロンの間、
 コロン後と末尾の空白、空本文、引用符、波括弧風のテキストを保ちます。
 `accTitle` と `:` の間が空白 1 個とタブ 1 個のときは、その隙間を保ちます。
-隙間をなくすと、mermaid.js が描くアクセシビリティのテキストと、
-Db の `accTitle` の値が変わるためです（詳しくは
+対象にする版の mermaid.js のすべてが、
+隙間をなくすとアクセシビリティのテキストを違って描くためです。
+詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください）。
+を参照してください。
 `EM_ACC_TITLE` と `EM_ACC_DESCR` はこれらも値に含むためです。
 空本文でも終端トークンは空ではなく、コロン形式をブロックへ変えません。
 行の値の LS・PS は内容のままです。
@@ -857,13 +818,13 @@ tf 01 evt Alpha accTitle:
 空、空白だけ、共通除去だけの内部を区別して残します。
 共有 `layoutDescriptionBlock` を通さない判断はこの 1 か所です。
 通常の `{}` への圧縮と閉じの整列は `EM_ACC_DESCR` の値を変えるためです。
-`accDescr {`、空白 1 個、タブ 1 個、LF、`  }` と続く形では、
-その空白類を保ちます。
-flowchart と class が空白類だけの説明に使う圧縮形 `accDescr {}` では、
-mermaid.js が描くアクセシビリティのテキストと、
-Db の `accDescr` の値が変わるためです（詳しくは
+`accDescr {`、空白 1 個、タブ 1 個、LF、`  }` と続く形では、その空白を保ちます。
+対象にする版の mermaid.js のすべてが、
+空白だけの説明に使う圧縮形 `accDescr {}` では、
+アクセシビリティのテキストを違って描くためです。
+詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください）。
+を参照してください。
 図種専用の空ブロック正規化も加えません。
 
 [fixture: eventmodeling/description-blocks/description-whitespace-literal-retained]
@@ -898,10 +859,6 @@ GWT 節・項目の隙間を保ちます。
 隠れた形を扱う共有経路が内部の列、消費 LF、閉じの先読み空白を保ち、
 普通の本文開始記号は本文の段に揃えます。
 必須の開始部分の隙間と共通文の前方境界は原文どおりです。
-`%%{{x}}%%` と LF の後の ` accDescr: D` は、先頭の空白を保ちます。
-その空白を除いた `accDescr: D` を mermaid.js が拒否するためです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください）。
 代替の扱いのパーセントコメントはコメントのままです。
 
 本文境界の形が保つ行は、GWT 節と項目の開きでも保ちます。
@@ -977,16 +934,7 @@ tf 02 evt Beta
 data ブロック、note、`accDescr` ブロック、スラッシュのブロックコメント、
 隠れた形の内部の `%%` のコメント行は、そのテキストの一部です。
 列は [データブロック](#data-blocks) の本文の余白の変更を除いて保ちます。
-`data D` の本文の第 1 行 `x` の後にある第 1 列の `%% c` は、その列を保ちます。
-このコメントを空白 2 個で字下げすると、描画するテキストと形状、
-Db のデータ値が変わるためです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください）。
 メタデータや必須の `title` の境界を優先します。
-`entity/*anchor*/title` はコメントの後ろを接したままにします。
-mermaid.js が `entity/*anchor*/ title` を拒否するためです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください）。
 検出が拒否するため、スラッシュのコメントを見出し前へ移しません。
 
 [fixture: eventmodeling/comments/standalone-native-comments]
@@ -1071,13 +1019,6 @@ CRLF は 1 単位、サロゲートペアは 2 単位と数えます。
 
 字下げや末尾の改行で上限を越えると、
 値の中のコメント行が除かれて Db が変わるので、それを防ぎます。
-`data D` の本文の第 1 行が `first` で図の長さが 50000 単位の場合と、
-第 1 行が `x` で長さが 49999 単位の場合、その行は第 1 列に保ちます。
-空白を 2 個足した形では、mermaid.js が Db のデータ値からコメント行を除き、
-異なるテキスト、構造、
-形状を描くためです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください）。
 境界そのものはコーパスが、CRLF、行の中のディレクティブ、
 フロントマターの場合も含めて確かめます。
 
@@ -1101,11 +1042,6 @@ CRLF は 1 単位、サロゲートペアは 2 単位と数えます。
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 文・節・項目を行に分ける場合、間のディレクティブは次の単位へ付け、
 右の接し方を保ちます。
-`tf 01 evt Alpha` の後にある `%%{wrap}%%` と `rf 02 cmd Beta`
-の間の空白を保ちます。
-この空白をなくした形を mermaid.js が拒否するためです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください）。
 内容、順序、複数行の内部、値の中の位置、未完 EOF の終端を保ちます。
 独立した開始は所属本文の段に揃えます。
 共通文の境界は普通の空白規則でなく原文隙間全体を保ちます。
@@ -1177,17 +1113,6 @@ tf %%{wrap}%%01 evt Alpha %%{wrap}%%->> %%{wrap}%%02
 子の本文の開始境界も保護行に残し、次の整形で分かれ方が変わるのを防ぎます。
 文法上のセミコロンがないため `verbatimStyleLines` は `false` です。
 `style` や `classDef` だけでは行全体を固定しません。
-`given evt %%{{native}}%%`、LF、`title/*style:#x;*/then cmd Beta` と続く形では、
-`title` は第 1 列に保ちます。
-同じ行を空白 2 個で字下げした形を、
-mermaid.js が拒否するためです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください）。
-`data D` ブロックと LF の後の ` accDescr: style:#x;` は、先頭の空白を保ちます。
-その空白を除いた `accDescr: style:#x;` を、
-mermaid.js が拒否するためです（詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください）。
 
 `;` を含む行は、その行の文をまとめて残します。
 複数行の description block の最後の行に `;` があり、
