@@ -407,11 +407,12 @@ gap becomes one space. Rule 1 names no mark before a comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#comments),
 [journey](./journey.md#comments), and [timeline](./timeline.md#comments) keep a
-comment that touches what comes before it, and print one space where whitespace
-was written. Preserve marks, contents and trailing spaces. Native comments end
-at physical LF, keeping LS/PS. A bare percent line inside an earlier block may
-be value text. Common removed regions retain swallowed source and continuation
-columns. Retained prefixes and protected segments override alignment.
+comment after a statement touching the statement where it touches, and print one
+space where whitespace was written. Preserve marks, contents and trailing
+spaces. Native comments end at physical LF, keeping LS/PS. A bare percent line
+inside an earlier block may be value text. Common removed regions retain
+swallowed source and continuation columns. Retained prefixes and protected
+segments override alignment.
 
 [fixture: info/comments/comments-align]
 
