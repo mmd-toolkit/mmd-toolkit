@@ -649,12 +649,15 @@ mermaid.js の正規表現が最後の `)` まで読むので、書かれたま�
 `rgb(191, 223, 255)` を Db の別のメッセージ値として読むためです（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照）。
-`rect` の `(` の直後の空白も残します。
+`rect` の `(` の直後と `)` の直前の空白も残します。
 対象にする版の mermaid.js のすべてが、
-`rect rgb( 1 ,2,3 )` に別の `fill` 属性を描くためです（同じ表を参照）。
+`rect rgb( 1,2,3)` と `rect rgb(1,2,3 )` に別の `fill`
+属性を描くためです（同じ表を参照）。
 
 [fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
 [fixture: colors/rect-leading-and-comma-padding-kept]
+[fixture: colors/rect-open-paren-padding-kept]
+[fixture: colors/rect-close-paren-padding-kept]
 [fixture: colors/functions-as-written]
 [fixture: colors/functions-beside-comments-and-directives]
 

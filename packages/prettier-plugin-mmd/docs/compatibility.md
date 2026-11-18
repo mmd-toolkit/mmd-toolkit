@@ -2070,12 +2070,12 @@ each comma: `rect rgb(191,223,255)` is printed `rect rgb(191, 223, 255)`,
 of the text of a `box` that mermaid.js asks the browser about (the
 `color-candidate` of the specification), in a sequence diagram, and the value of
 a property of a `style` of a Venn diagram. The whitespace before a comma and
-inside the parentheses stays as written. In a `rect`, the space after the `(`
-stays since every version of mermaid.js that counts draws another `fill`
-attribute for `rect rgb( 1 ,2,3 )` than for `rect rgb(1, 2, 3)`, and the space
-before a comma stays since 12.3.0 changes the Db there, with the same drawing.
-Nothing is shown here for a `box`, for a Venn `style`, or for a space before the
-`)` (see
+inside the parentheses stays as written. In a `rect`, a space after the `(` and
+a space before the `)` stay since every version of mermaid.js that counts draws
+another `fill` attribute for `rect rgb( 1,2,3)` and for `rect rgb(1,2,3 )` than
+for `rect rgb(1, 2, 3)`, and a space before a comma stays since 12.3.0 changes
+the Db there, with the same drawing, which no kind of exception covers. Nothing
+is shown here for a `box` or for a Venn `style` (see
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
 The text is a color function when it is `rgb(`, `rgba(`, `hsl(`, or `hsla(` in
 lower case, with three arguments for `rgb` and `hsl` and four for `rgba` and
