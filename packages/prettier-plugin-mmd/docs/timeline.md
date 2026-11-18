@@ -688,7 +688,13 @@ titles-and-sections/one-space-after-keyword]
 
 A value written on a later line is printed after the keyword on one line; a
 comment line between them makes the statement printed as written (see
-[Multi-line statements](#multi-line-statements)).
+[Multi-line statements](#multi-line-statements)). Rule 1 names no mark for a
+line break, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [sequence](./sequence.md#title) prints a `title`, a line break, and the
+text that follows on one line, and [xychart](./xychart.md#multi-line-statements)
+prints a statement that mermaid.js reads over several lines on one line, with
+one space in place of the line break.
 
 [fixture: titles-and-sections/value-on-next-line] [fixture:
 titles-and-sections/comment-line-inside-kept]
