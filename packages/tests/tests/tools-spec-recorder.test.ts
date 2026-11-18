@@ -12,9 +12,16 @@ import path from "node:path"
 import { fileURLToPath } from "node:url"
 import { promisify } from "node:util"
 import mermaid from "mermaid"
-import { afterAll, describe, expect, it } from "vitest"
+import { afterAll, describe, expect, it, vi } from "vitest"
 import type { SpecFileRecording } from "../../../tools/src/spec-recorder.ts"
 import { REQUIREMENT_DB_TABLES } from "../../../tools/src/spec-recorder.ts"
+
+// Each test starts a Node.js process for the driver. A test of this file takes
+// about a fifth of a second on a developer machine and 0.3 to 0.8 seconds on
+// average in CI, but two tests in the Windows jobs took 5,014 and 5,021 ms,
+// just over the default 5 seconds. The limit is twice the slowest test seen: it
+// still stops a test whose driver hangs, and no longer fails on a slow start.
+vi.setConfig({ testTimeout: 10_000 })
 
 /**
  * The recorder runs in a process of its own (see the driver), since it finds
