@@ -2004,7 +2004,10 @@ a statement on one line.
 [fixture: multi-line-statements/click-string-over-lines-comment-and-empty-line]
 
 A U+2028 or U+2029 between its parts stays where it is, also after a string that
-runs over lines.
+runs over lines. Rule 1 names no mark for a gap that holds one, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [journey](./journey.md#line-separators) and
+[timeline](./timeline.md#line-separators) print such a gap as written.
 
 [test: U+2028 between the parts of a flowchart click statement with a string
 over lines] [test: U+2029 between the parts of a flowchart click statement with
@@ -2977,7 +2980,11 @@ The direction of the header stands after one space, also where a symbol touched
 the keyword: `graph>` is printed `graph >`, and `flowchart^` is printed
 `flowchart ^`. The whitespace is not in the Db, and a letter direction such as
 `TD` already needs the space. A directive between them is placed as under
-[Directives](#directives), and a U+2028 or U+2029 stays where it is.
+[Directives](#directives), and a U+2028 or U+2029 stays where it is. Rule 1
+names no mark for a gap that holds one, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [journey](./journey.md#line-separators) and
+[timeline](./timeline.md#line-separators) print such a gap as written.
 
 [fixture: direction/header-symbol-touching-spaced] [fixture:
 direction/header-symbol-beside-directive-kept] [test: U+2029 between the graph
@@ -3065,7 +3072,11 @@ A directive in the gap is placed as under [Directives](#directives).
 [fixture: subgraph-header/title-beside-directive] [fixture:
 subgraph-header/title-beside-directive-runs]
 
-A U+2028 or U+2029 in the gap stays where it is.
+A U+2028 or U+2029 in the gap stays where it is. Rule 1 names no mark for a gap
+that holds one, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [journey](./journey.md#line-separators) and
+[timeline](./timeline.md#line-separators) print such a gap as written.
 
 [test: U+2028 between a subgraph name and its title] [test: U+2029 and spaces
 between a subgraph name and its title]
