@@ -193,11 +193,16 @@ railroad-peg-beta
 
 Print each ordinary rule on its own line and attach its required final `;`
 without an ordinary preceding space. This exposes rule boundaries without
-changing their syntax. All four dialects require the last terminator too. ABNF
-terminators must be followed immediately by LF or EOF: `; note` is a comment and
-cannot replace a terminator. Keep such a comment and the real terminator on
-their original sides of the line break. Shared semicolon protection takes
-precedence.
+changing their syntax. Prettier prints each statement of the languages it
+formats on a line of its own (`a(); b()` in JavaScript becomes two lines), as
+[flowchart](./flowchart.md#statements-one-per-line) says, and the 14 railroad
+examples in the documentation of mermaid.js write one statement on each line (a
+rule may span lines). Prettier prints the `;` that ends a statement without
+whitespace before it (`a ;` is printed `a;`). All four dialects require the last
+terminator too. ABNF terminators must be followed immediately by LF or EOF:
+`; note` is a comment and cannot replace a terminator. Keep such a comment and
+the real terminator on their original sides of the line break. Shared semicolon
+protection takes precedence.
 
 [fixture: railroad/statements-one-per-line/abnf-terminator]
 
@@ -261,9 +266,12 @@ railroad-peg-beta
 ### Assignment
 
 Put one ordinary space on either side of the assignment, without aligning names.
-IR and ABNF keep `=`, EBNF prints `::=` as `=`, and PEG keeps `<-`. Both EBNF
-forms have the same Db, and the examples in the documentation of mermaid.js
-write `=` 35 times and `::=` never (see
+Rule 1 gives the spaces: Prettier prints the `=` that gives a name its value
+with one space on each side (`function f(a=1) {}` is printed
+`function f(a = 1) {}`), and another mark between two things, as the `<-` of
+PEG, in the same way. IR and ABNF keep `=`, EBNF prints `::=` as `=`, and PEG
+keeps `<-`. Both EBNF forms have the same Db, and the examples in the
+documentation of mermaid.js write `=` 35 times and `::=` never (see
 [Other spellings of a keyword or of a punctuation mark](./compatibility.md#other-spellings-of-a-keyword-or-of-a-punctuation-mark)).
 Compound delimiters remain whole tokens.
 
@@ -582,7 +590,10 @@ railroad-abnf-beta
 IR prints its eight constructors as `name(...)`: sequence, choice, optional,
 oneOrMore, zeroOrMore, terminal, nonterminal and special. Ordinary gaps before
 `(` and at the inner edges are empty; argument commas have no space before and
-one after on a line. Call layout follows [Long lines](#long-lines). Retain empty
+one after on a line. Rule 1 gives these gaps: Prettier prints a call without
+whitespace before its `(` and inside its parentheses (`f( a )` is printed
+`f(a);`), and a comma with none before it and one space after it (`f(a,b)` is
+printed `f(a, b);`). Call layout follows [Long lines](#long-lines). Retain empty
 quoted arguments, nested calls and singleton sequence/choice calls. Collapsing a
 singleton can keep the Db but loses an authored call; trailing commas are not
 added.
@@ -764,10 +775,12 @@ padding line breaks. This consistently shows the grammar hierarchy. Add no
 trailing commas.
 
 Keep `terminal`, `nonterminal` and `special` together with their quoted value as
-a compact unit. A comment, global directive or native hidden form at any
-boundary between the constructor, opening parenthesis, value and closing
-parenthesis makes that leaf call multiline too. String contents retain their
-physical newlines and written continuation columns.
+a compact unit. The unit has no whitespace inside its parentheses, as rule 1
+prints the parentheses of a call (`f( a )` is printed `f(a);`). A comment,
+global directive or native hidden form at any boundary between the constructor,
+opening parenthesis, value and closing parenthesis makes that leaf call
+multiline too. String contents retain their physical newlines and written
+continuation columns.
 
 [fixture: railroad/calls/ir-singletons]
 
@@ -792,16 +805,20 @@ physical newlines and written continuation columns.
 [fixture: railroad/multiline-values/ir-columns]
 
 Comments, global directives and native hidden forms stay at their argument
-boundaries while the surrounding calls use the structural layout. Semicolons
-inside values do not prevent it. Keep trivia contents as described in
-[Comments](#comments), [Global directives](#global-directives) and
-[Hidden forms](#hidden-forms). Lines containing `style` or `classDef`, and
-ignored semicolons, retain their protected layout. EBNF, ABNF and PEG keep an
-authored line break after the assignment of an outermost choice and before its
-`|` or `/` separators. The continuation uses one extra level. The separator
-stays with the following alternative: a plain line break after it still joins.
-Other expression padding remains compact, and single-line rules gain no new
-breaks. `printWidth` controls no diagram line breaks.
+boundaries while the surrounding calls use the structural layout. Their gaps
+follow [Comments](#comments), where rule 2 gives them. Semicolons inside values
+do not prevent it. Keep trivia contents as described in [Comments](#comments),
+[Global directives](#global-directives) and [Hidden forms](#hidden-forms). Lines
+containing `style` or `classDef`, and ignored semicolons, retain their protected
+layout. EBNF, ABNF and PEG keep an authored line break after the assignment of
+an outermost choice and before its `|` or `/` separators. The continuation uses
+one extra level. The separator stays with the following alternative: a plain
+line break after it still joins. Other expression padding remains compact, and
+single-line rules gain no new breaks. Rule 1 gives the compact padding: Prettier
+prints no whitespace inside parentheses, brackets, and braces that hold values
+alone (`f( a )` is printed `f(a);`, `x = [ 1, 2 ]` is printed `x = [1, 2];`),
+and a comma with none before it and one space after it. `printWidth` controls no
+diagram line breaks.
 
 [fixture: railroad/long-lines/ebnf-written-alternatives] [fixture:
 railroad/long-lines/abnf-written-alternatives] [fixture:
@@ -1028,12 +1045,19 @@ Use the shared common-line layout: trim ordinary exterior whitespace around a
 nonempty value and print `title value`; null or whitespace-only values print
 bare `title`. Keep quote-looking content and escape spelling, and print a run of
 spaces and tabs inside the value as one space. Do not read a value from the next
-physical line. A bare title prefix followed by a rule becomes two statements,
-keeping the rule out of the title. The comparison Db omits body titles, which
-gives no permission to rewrite their contents. The directives that end a title
-are printed with one space before each that has whitespace before it, and the
-whitespace after the last one is left out, whatever the whitespace at the end of
-the line (see
+physical line: `title`, a line break, and `r=terminal("x");` joined as
+`title r=terminal("x");` make the rule `r` the text of the title, and the Db of
+12.3.0 and the figure of 11.16.1, 11.17.2, 12.0.0, and 12.3.0 change. A bare
+title prefix followed by a rule becomes two statements, keeping the rule out of
+the title. The two stand on lines of their own as every statement does (see
+[Statements one per line](#statements-one-per-line)), and
+`title x=terminal("title prefix");` on one line would make
+`x=terminal("title prefix");` the text of the title: the Db of 12.3.0 and the
+figure of 11.16.1, 11.17.2, 12.0.0, and 12.3.0 change. The comparison Db omits
+body titles, which gives no permission to rewrite their contents. The directives
+that end a title are printed with one space before each that has whitespace
+before it, and the whitespace after the last one is left out, whatever the
+whitespace at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: railroad/title/ir-rule-on-next-line]
@@ -1141,10 +1165,12 @@ retaining internal text and brace-looking line values, except that a run of
 spaces and tabs inside the value of an `accDescr` is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 and that of an `accTitle` stays as written, since the browser shows it as a
-tooltip. Keep next-line values separate. This gives the same form as the other
-diagrams. The directives that end the value are printed with one space before
-each that has whitespace before it, and the whitespace after the last one is
-left out (see
+tooltip. Keep next-line values separate: `accTitle:`, a line break, and
+`r=terminal("x");` joined as `accTitle: r=terminal("x");` make the rule `r` the
+text of the title, and so it is for `accDescr`, and the Db of 12.3.0 and the
+figure of 11.16.1, 11.17.2, 12.0.0, and 12.3.0 change. The directives that end
+the value are printed with one space before each that has whitespace before it,
+and the whitespace after the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: railroad/accessibility-lines/ir-acc-title-before-rule]
