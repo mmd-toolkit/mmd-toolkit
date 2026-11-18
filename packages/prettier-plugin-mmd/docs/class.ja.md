@@ -296,7 +296,8 @@ classDiagram
 行の中で、下の規則が隙間に別の形を与えない限り、
 2 つのトークンの間の空白とタブの連続は空白 1 つにし、
 接しているトークンは flowchart と同じく接したまま残します。
-下の規則が別の形を与える例は、文字列、矢印、コロンなどです。
+下の規則が別の形を与える例は、文字列、矢印、コロン、
+コールバックの `(` の前の名前、`:::` などです。
 
 [fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/tabs-collapsed]

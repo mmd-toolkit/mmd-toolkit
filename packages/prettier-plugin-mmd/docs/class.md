@@ -283,9 +283,10 @@ classDiagram
 
 ### Whitespace between tokens
 
-Within a line, where no rule below gives the gap another form, a run of spaces
-and tabs between two tokens becomes one space, and tokens that touch keep
-touching, as in a flowchart (a string, an arrow, a colon, and the like).
+Within a line, where no rule below gives the gap another form (a string, an
+arrow, a colon, the name before the `(` of a callback, `:::`, and the like), a
+run of spaces and tabs between two tokens becomes one space, and tokens that
+touch keep touching, as in a flowchart.
 
 [fixture: whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/tabs-collapsed] [fixture:
