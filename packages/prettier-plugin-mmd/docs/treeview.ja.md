@@ -1203,12 +1203,6 @@ mermaid.js は、その空白か、その空白と後ろの `%%` を名前にす
 正の前置の隙間が注釈と名前の文字を区別します。
 名前の中の空白は保ち、付随要素の両側は、普通の隙間の規則を適用せず、
 接しているか離れているかを保ちます。
-`R   text   :::hot` の名前の中の空白は保ちます。
-mermaid.js は `R text   :::hot` の名前を、
-Db で `R   text` ではなく `R text` として読み、異なる図を描くためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 
 [fixture: treeview/annotation-gaps/annotation-outer]
 
@@ -1559,7 +1553,8 @@ treeView-beta
 行末にある裸名の末尾の空白とタブだけを除きます。
 （[行末の空白](#trailing-whitespace)を参照）。
 裸名では、`A B` ではなく `A   B` を保ちます。
-mermaid.js は両方に Db で異なる名前を与え、異なる図を描くためです。
+対象にする版の mermaid.js のうちいくつかは、両方に Db で異なる名前を与え、
+異なる図を描くためです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
@@ -2229,12 +2224,6 @@ treeView-beta
 ただし、
 [1 行に 1 文](#statements-one-per-line)
 に従って新しく作るディレクティブだけの行へ移すディレクティブの間は例外です。
-`A%%{init: {}}%%B` はディレクティブの前の接触を保ちます。
-mermaid.js は `A %%{init: {}}%%B` の名前を `AB` ではなく `A B` として読み、
-異なるテキストを描くためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 単位を行に分けるときは次の単位に付け、右の境界を保ちます。
 独立したディレクティブは第 1 列です。
 行頭の字下げ単位では、後ろの隙間を収まるだけ残し、超過を最後の隙間から短くし、
@@ -2612,12 +2601,6 @@ mermaid.js は値を読む前にディレクティブを取り除き、
 名前や description の末尾の U+2028 と U+2029 は、
 空白やタブではなくテキストの文字なので、その後の空白は除き、
 その前の空白は残します。
-裸名では、`R` に U+2028 が直接続く形ではなく、
-`R` に空白 2 つと U+2028 が続く形を保ちます。
-mermaid.js が Db の名前を変え、異なる図を描くためです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
 
 [test: treeview/trailing-whitespace/spaces-after-trailing-line-separator]
 [test: treeview/trailing-whitespace/description-spaces-after-trailing-line-separator]

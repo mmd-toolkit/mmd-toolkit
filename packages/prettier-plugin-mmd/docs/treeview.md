@@ -1219,10 +1219,7 @@ treeview/statements-one-per-line/whitespace-node-at-line-end-before-directive-li
 Use one ASCII space before an ordinary same-line annotation. Its required
 positive leading gap distinguishes an annotation from name text. Keep authored
 internal name whitespace, and preserve contact or separation on each side of
-trivia instead of applying the plain-gap rule there. `R   text   :::hot` keeps
-its internal name spaces, since mermaid.js reads `R text   :::hot` with the name
-`R text` instead of `R   text` in the Db and draws a different figure (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+trivia instead of applying the plain-gap rule there.
 
 [fixture: treeview/annotation-gaps/annotation-outer]
 
@@ -1575,8 +1572,9 @@ Keep complete bare-name and StringLiteral source spans: empty names,
 backslashes, internal whitespace, the whitespace inside quotes, HTML/entity
 spelling and directory slashes; only the spaces and tabs at the end of a bare
 name at the end of a line go (see [Trailing whitespace](#trailing-whitespace)).
-For a bare name, `A   B` stays instead of `A B`, since mermaid.js gives the two
-forms different names in the Db and draws them differently (see
+For a bare name, `A   B` stays instead of `A B`, since some of the versions of
+mermaid.js that count give the two forms different names in the Db and draw them
+differently (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A string between `'` is printed between `"`, unless its text holds a `'`, a `"`,
 a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
@@ -2225,14 +2223,10 @@ Keep directive text and order. Within one printed line a directive in the gap of
 a title, an accessibility statement, or the class after `:::` is placed as under
 [Directives](./flowchart.md#directives); in the other gaps it retains contact or
 separation on each side, except between directives moved to a new directive-only
-line as described in [Statements one per line](#statements-one-per-line).
-`A%%{init: {}}%%B` keeps contact before the directive, since mermaid.js reads
-`A %%{init: {}}%%B` as the name `A B` instead of `AB` and draws different text
-(see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-When units split, attach the directive to the following unit and retain its
-right boundary. Standalone directives use column one. For a leading indentation
-unit, keep following gaps while they fit, shorten excess from the last gap, then
+line as described in [Statements one per line](#statements-one-per-line). When
+units split, attach the directive to the following unit and retain its right
+boundary. Standalone directives use column one. For a leading indentation unit,
+keep following gaps while they fit, shorten excess from the last gap, then
 supply the remaining indentation before the first directive. This preserves the
 assigned indent without duplicating earlier carried runs. Multiline interiors,
 value-owned forms and unfinished EOF directives remain written.
@@ -2605,10 +2599,7 @@ the end of a title (see
 
 At the end of a name or a description, U+2028 and U+2029 are characters of the
 text and no spaces or tabs: the spaces after one are left out, and the spaces
-before it stay. For a bare name, `R` followed by two spaces and U+2028 stays
-instead of `R` followed directly by U+2028, since mermaid.js changes the name in
-the Db and draws a different figure (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+before it stay.
 
 [test: treeview/trailing-whitespace/spaces-after-trailing-line-separator] [test:
 treeview/trailing-whitespace/description-spaces-after-trailing-line-separator]
