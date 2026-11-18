@@ -662,15 +662,20 @@ A comment line before the header stands at the first column.
 [fixture: comments/before-the-header]
 
 A comment after the header, a shape, or an icon stays on the line, as written:
-one space stands before it where whitespace was written, and none where it
-touches. The whitespace before such a comment is no part of the Db, so the form
-is a choice: the printer shortens a run to one space and keeps whether there is
-any, since the author decides whether a comment touches what it follows, as in
-the other diagram types.
+it touches where it touches, and a run of spaces and tabs before it becomes one
+space. Rule 1 names no mark before a comment, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#comments),
+[journey](./journey.md#comments), and [timeline](./timeline.md#comments) print a
+comment after a statement in the same way, where no other rule keeps the
+whitespace as written; each of them names those cases in its own sections or in
+[A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
+(whitespace that the Db holds, as after a `section` or a period, and whitespace
+that changes what mermaid.js reads).
 
 [fixture: comments/after-the-header] [fixture:
 comments/after-the-header-touching] [fixture: comments/after-a-shape] [fixture:
-comments/after-an-icon]
+comments/after-an-icon] [fixture: comments/inline-gap-run-before-comment]
 
 After a node text and inside a class, `%%` is a character of the text.
 

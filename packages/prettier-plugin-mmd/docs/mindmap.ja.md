@@ -672,14 +672,22 @@ mindmap
 [fixture: comments/before-the-header]
 
 ヘッダー、形、アイコンの後ろのコメントは、その行に書かれたまま残します。
-空白が書かれていれば空白 1 つを置き、接していれば接したままにします。
-そのコメントの前の空白は Db に入らないので、この形は選択です。
-空白の連なりは 1 つにし、空白があるかどうかは保ちます。
-コメントが前のものに接するかどうかは書き手が決めるからで、ほかの図種も同じです。
+接していれば接したまま、空白とタブの連なりがあれば空白 1 つにします。
+規則 1 は、コメントの前の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#コメント)、[journey](./journey.ja.md#コメント)、
+[timeline](./timeline.ja.md#コメント)も、
+文の後ろのコメントを同じように印字します。
+ほかの規則が空白を書かれたまま残す所は別です。
+どの図の文書も、その所を、
+自分の節か [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
+で挙げています（Db が持つ空白、たとえば `section` と期間の後の空白と、
+mermaid.js の読みを変える空白です）。
 
 [fixture: comments/after-the-header]
 [fixture: comments/after-the-header-touching] [fixture: comments/after-a-shape]
 [fixture: comments/after-an-icon]
+[fixture: comments/inline-gap-run-before-comment]
 
 ノードのテキストの後ろと class の中の `%%` は、テキストの文字です。
 
