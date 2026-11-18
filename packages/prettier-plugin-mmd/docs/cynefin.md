@@ -17,14 +17,20 @@ examples in its documentation write the header without the colon 3 times against
 none (see
 [The colon after a header](./compatibility.md#the-colon-after-a-header)). The
 colon stays where a hidden form or a global directive lies between it and the
-word, and where a `;` or the `---` of a hidden YAML block touches it. After
-`%%{%%{wrap}%%init: {"label":"style:#keep"}}%%`,
+word, and where a `;`, the `---` of a hidden YAML block, or a directive that is
+not closed touches it. After `%%{%%{wrap}%%init: {"label":"style:#keep"}}%%`,
 `cynefin-beta:;complex 'Kept colon'` keeps its colon, since some of the versions
 of mermaid.js that count reject `cynefin-beta;complex 'Kept colon'` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The colon stays before an unclosed directive too: `cynefin-beta:%%{x y`, a line
+break, and `complex "A"` stay as written, since mermaid.js takes the directive
+out with the line break after it and would read the header and `complex` as one
+word, and every version of mermaid.js that counts rejects that text (see the
+same table).
 
 [fixture: cynefin/header/colon-removed] [fixture:
 cynefin/header/colon-semicolon-kept] [fixture:
+cynefin/header/colon-unclosed-directive-kept] [fixture:
 cynefin/header/colon-directive-before-hidden-yaml-kept]
 
 Move an ordinary first statement to the next line so the header is easy to find.
@@ -524,13 +530,18 @@ Whitespace-only interiors become `{}`. For blocks that keep their braces,
 separate the keyword and opening brace with one space so the block boundary is
 clear. Join plain opener whitespace and align a separate closer with the
 statement. Ordinary description body and standalone comment lines align one
-level inside it, since the Db removes indentation after LF. Keep line breaks,
-internal blanks and trailing whitespace. Directives and shared removed comment
-regions keep their complete source. Comments/directives inside empty blocks
-retain their shared layout. Native-looking text inside a value remains value
-text.
+level inside it, since the Db removes indentation after LF. Keep line breaks and
+interior blank lines, and the whitespace at the end of each line of text except
+the last one; a line of whitespace only becomes an empty line. The whitespace at
+the end of the last line of text is dropped where the closer stands on a line of
+its own, and is printed as one space where the closer follows it on that line.
+Directives and shared removed comment regions keep their complete source.
+Comments/directives inside empty blocks retain their shared layout.
+Native-looking text inside a value remains value text.
 
-[fixture: cynefin/description-blocks/description-empty]
+[fixture: cynefin/description-blocks/description-empty] [fixture:
+description-blocks/block-trailing-whitespace] [fixture:
+description-blocks/block-trailing-whitespace-closer-on-the-text-line]
 
 [fixture: cynefin/description-blocks/description-touching]
 

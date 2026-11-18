@@ -996,10 +996,14 @@ style whatever stands before it.
 A space after a backslash before the `:` stays as well, since taking it away
 would escape the `:`, and the whitespace after that space goes, as before any
 `:`: `style A fill\   :#f00` is printed `style A fill\ : #f00`. A statement
-stays as written where it holds a comment or a directive, where a style is all
-whitespace, or where a style holds a line break or its line holds a kept `;`.
+stays as written where a comment or a directive stands inside it, before the end
+of its last style, where a style is all whitespace, or where a style holds a
+line break or its line holds a kept `;`. A comment or a directive after the last
+style is no part of the statement, which is formatted as usual (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 
 [fixture: whitespace-between-tokens/style-blank-style-kept] [fixture:
+style-trailing-whitespace/removed-after-directive] [fixture:
 whitespace-between-tokens/style-colon-escaped-space-kept] [fixture:
 whitespace-between-tokens/style-colon-escaped-space-run-dropped] [fixture:
 whitespace-between-tokens/style-escaped-space-before-comma] [fixture:
@@ -1875,11 +1879,17 @@ Accepted NBSP, U+2028 and U+2029 inside an otherwise empty block also disappear.
 
 [test: accessibility blocks: flowchart empty-block-unicode]
 
-Kept-line exceptions still take priority, and blocks with comments or directives
-retain their existing layout.
+Kept-line exceptions still take priority, and a block of several lines that
+holds comment lines, or a directive on a line of its own, retains its layout.
+Rule 1 names no mark for a line inside a block, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [xychart](./xychart.md#empty-description-blocks) and
+[quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
+breaks of a block that holds comment lines, or a directive on a line of its own.
 
 [fixture: accessibility-lines/empty-block-semicolon-kept] [fixture:
-accessibility-lines/empty-block-directive-kept] [fixture:
+accessibility-lines/empty-block-directive-line-kept] [fixture:
+accessibility-lines/empty-block-directive-line-in-subgraph] [fixture:
 multi-line-values/accdescr-block-comment-only]
 
 Blocks on one line follow
@@ -3139,9 +3149,11 @@ and a `;`, as in `subgraph "S"accDescr {} accDescr {}` and
 [fixture: subgraph-header/whitespace-before-first-block-kept]
 
 The blocks read no token, so that whitespace follows the name: the subgraph has
-the id `subGraph0`, and the id `S` without it. That the whitespace is there is
-kept; how wide it is, only before the first block, where it follows the name as
-written, and a run between two blocks or before a `;` becomes one space.
+the id `subGraph0`, and the id `S` without it, which the Db holds
+(`subgraphs[0].id` in 12.3.0), while every version that counts draws the same
+figure up to the ids. That the whitespace is there is kept; how wide it is, only
+before the first block, where it follows the name as written, and a run between
+two blocks or before a `;` becomes one space.
 
 [fixture: subgraph-header/runs-between-blocks-become-one]
 

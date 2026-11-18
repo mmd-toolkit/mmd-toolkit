@@ -1319,12 +1319,19 @@ railroad-peg-beta
 本文が複数行のブロックでは、
 通常の説明本文と独立したコメント行を文より 1 段深くします。
 Db で LF 後の字下げが取り除かれるためです。
-改行、内部の空行、行末空白を保ち、独立した閉じ括弧を文と同じ段にそろえます。
+改行と内部の空行は保ちます。
+行末の空白は、テキストの最後の行のものを除いて保ちます。
+空白だけの行は空行にします。
+最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
+同じ行で閉じ括弧が続くときは空白 1 つで印字します。
+独立した閉じ括弧を文と同じ段にそろえます。
 
 [fixture: railroad/description-blocks/abnf-lines]
 [fixture: railroad/description-blocks/ebnf-lines]
 [fixture: railroad/description-blocks/ir-lines]
 [fixture: railroad/description-blocks/peg-lines]
+[fixture: description-blocks/block-trailing-whitespace]
+[fixture: description-blocks/block-trailing-whitespace-closer-on-the-text-line]
 
 同じ行の後ろにその図種固有のコメントが続くブロックは、
 ブロックのまま残します（ABNF 図では `accDescr { d } ; c`、
@@ -1419,6 +1426,11 @@ railroad-peg-beta
 通常の分離隙間は空白1つにします。
 印、内容、末尾空白、ブロックの継続列、順序を保ちます。
 行コメントの後の適用先と終端は次行に残します。
+ABNF の規則の終端では、`r="comment"; note ;` は、コメントが終端を取り込むので、
+対象にする版の mermaid.js のすべてが拒否します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 全方言に `%%`、IR に `/* */`、EBNF に `/* */` と `(* *)`、
 ABNF に `;` の行コメント、PEG に `#` の行コメントがあります。
 裸の ABNF `;` は句読点であり、`//` は図固有のコメントではありません。

@@ -1604,6 +1604,9 @@ erDiagram
 
 方向の行は、`direction` とその値と、前後の mermaid.js が読まないテキストです。
 テキストは書かれたまま残します。
+木がそのテキストを丸ごと持つからです。
+詳しくは [木が丸ごと持つテキスト](./printed-form.ja.md#木が丸ごと持つテキスト)
+を参照してください。
 テキストと `direction` の間（離して書かれていれば）と、
 `direction` と値の間には空白 1 つを置き、値は書かれた大文字小文字を保ちます。
 `lr` は `lr` のままです。
@@ -1616,6 +1619,8 @@ erDiagram
 を参照してください。
 
 [fixture: direction/spacing] [fixture: direction/text-kept]
+[fixture: direction/text-inner-whitespace-kept]
+[fixture: direction/text-both-sides-inner-whitespace-kept]
 [fixture: direction/case-kept] [fixture: direction/case-bt-rl-kept]
 
 後の行に書かれた値は、`direction` の後に 1 行で印字します。
@@ -1729,9 +1734,14 @@ Mermaid は、区切る空白にかかわらずスタイルの単位をつなげ
 2 行を 1 行にする（`classDef a fill:red A`）と、
 Db は同じで mermaid.js の読みも見えますが、作者が書いた空白が消えます。
 印字は文を解釈しません。
+最後のスタイルの後ろのディレクティブも、横の空白を同じように扱います。
+ディレクティブの前か後ろに空白があれば、文は書かれたまま残し、
+ディレクティブが最後のスタイルに接し、その行の後ろに空白がなければ、
+文を普通に整形します（`classDef a fill:red%%{init: {}}%%`）。
 
 [fixture: styles-and-classes/trailing-whitespace-takes-next-line]
 [fixture: styles-and-classes/directive-before-next-line]
+[fixture: styles-and-classes/directive-touching-last-style]
 [fixture: styles-and-classes/comment-line-inside-kept]
 [corpus fixture: er/lex-classdef-space-before-line-feed]
 [corpus fixture: er/lex-style-tab-before-line-feed]
@@ -1854,11 +1864,22 @@ erDiagram
 通常の `accDescr { ... }` ブロックの後続の本文行は、文の内側に 1 段字下げし、
 LF 直後の ASCII 空白とタブだけを置き換えます。
 説明の設定関数がこの字下げを捨てるためです。
-改行、行末空白、ディレクティブの内部は保ちます。
+改行とディレクティブの内部は保ちます。
+改行と内部の空行は保ちます。
+行末の空白は、テキストの最後の行のものを除いて保ちます。
+空白だけの行は空行にします。
+最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
+同じ行で閉じ括弧が続くときは空白 1 つで印字します。
 subgraph 内では、生の説明がその所属の読みにも使われるため、
 本文の元の列を保ちます。
+そこでは空白だけの行は書かれたまま残し、最後のテキスト行の行末の空白は、
+上と同じく落とすか、同じ行に閉じ括弧が続くときは空白 1 つで印字します。
 
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines]
+[fixture: accessibility-statements/block-trailing-whitespace]
+[fixture: accessibility-statements/block-trailing-whitespace-closer-on-the-text-line]
+[fixture: accessibility-statements/block-trailing-whitespace-in-a-subgraph]
+[fixture: accessibility-statements/block-trailing-whitespace-closer-on-the-text-line-in-a-subgraph]
 
 `}` は文と同じ段に置きます。
 

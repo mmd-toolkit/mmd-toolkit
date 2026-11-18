@@ -1276,13 +1276,19 @@ railroad/description-blocks/peg-edges]
 
 In a block with a text over several lines, ordinary description body and
 standalone comment lines align one level inside the statement: the Db removes
-indentation after LF. Keep line breaks, internal blank lines and trailing
-whitespace, and align a separate closing brace with the statement.
+indentation after LF. Keep line breaks and interior blank lines, and the
+whitespace at the end of each line of text except the last one; a line of
+whitespace only becomes an empty line. The whitespace at the end of the last
+line of text is dropped where the closer stands on a line of its own, and is
+printed as one space where the closer follows it on that line. Align a separate
+closing brace with the statement.
 
 [fixture: railroad/description-blocks/abnf-lines] [fixture:
 railroad/description-blocks/ebnf-lines] [fixture:
 railroad/description-blocks/ir-lines] [fixture:
-railroad/description-blocks/peg-lines]
+railroad/description-blocks/peg-lines] [fixture:
+description-blocks/block-trailing-whitespace] [fixture:
+description-blocks/block-trailing-whitespace-closer-on-the-text-line]
 
 A block that a comment of the diagram type's own kind follows on its line stays
 a block (`accDescr { d } ; c` in an ABNF diagram, `(* c *)` or `/* c */` in an
@@ -1372,11 +1378,15 @@ Standalone comments use one body step, or column one before the header. Outside
 ordinary IR calls, inline comments keep their side and touching/separated
 boundaries; ordinary separated gaps become one space. Preserve marks, text,
 tails, block continuation columns and source order. A line comment leaves its
-following operand or terminator on the next line. Every dialect has `%%`; IR
-also has `/* */`, EBNF `/* */` and `(* *)`, ABNF `;` line comments, and PEG `#`
-line comments. Bare ABNF `;` is punctuation; `//` is not a native comment. Text
-owned by a value stays in that value. These choices preserve ownership and
-prevent a line comment from taking code. Rule 1 names no mark for a comment, so
+following operand or terminator on the next line. For the terminator of an ABNF
+rule, every version of mermaid.js that counts rejects `r="comment"; note ;`,
+since the comment takes the terminator (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Every dialect has `%%`; IR also has `/* */`, EBNF `/* */` and `(* *)`, ABNF `;`
+line comments, and PEG `#` line comments. Bare ABNF `;` is punctuation; `//` is
+not a native comment. Text owned by a value stays in that value. These choices
+preserve ownership and prevent a line comment from taking code. Rule 1 names no
+mark for a comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides. A standalone comment stands one body step in, or at column one before
 the header, and an inline comment keeps its line and keeps touching what it

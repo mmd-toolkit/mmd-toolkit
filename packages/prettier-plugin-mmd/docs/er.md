@@ -1631,16 +1631,20 @@ erDiagram
 ### Direction
 
 A direction line is `direction` and its value, with the text that mermaid.js
-does not read before and after them. The text is kept as written. One space
-stands between it and `direction`, where they were written apart, and between
-`direction` and the value; the value keeps the case in which it is written (`lr`
-stays `lr`), since a version that counts reads the line as entities and draws
-`direction tb` and `direction TB` differently (see
+does not read before and after them. The text is kept as written, since the tree
+holds it whole (see
+[A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)).
+One space stands between it and `direction`, where they were written apart, and
+between `direction` and the value; the value keeps the case in which it is
+written (`lr` stays `lr`), since a version that counts reads the line as
+entities and draws `direction tb` and `direction TB` differently (see
 [Keywords in one case](./compatibility.md#keywords-in-one-case) and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: direction/spacing] [fixture: direction/text-kept] [fixture:
-direction/case-kept] [fixture: direction/case-bt-rl-kept]
+direction/text-inner-whitespace-kept] [fixture:
+direction/text-both-sides-inner-whitespace-kept] [fixture: direction/case-kept]
+[fixture: direction/case-bt-rl-kept]
 
 A value written on a later line is printed after `direction` on one line.
 
@@ -1747,10 +1751,15 @@ written, with the whitespace and the line that it takes, and the line stays at
 the column written. Joining the two lines (`classDef a fill:red A`) would give
 the same Db and would show how mermaid.js reads them, but it removes the
 whitespace that the author wrote, and the printer does not interpret the
-statement.
+statement. A directive after the last style takes the whitespace beside it in
+the same way: the statement is kept as written where whitespace stands before
+the directive or after it, and formatted as usual where the directive touches
+the last style and no whitespace follows it on its line
+(`classDef a fill:red%%{init: {}}%%`).
 
 [fixture: styles-and-classes/trailing-whitespace-takes-next-line] [fixture:
 styles-and-classes/directive-before-next-line] [fixture:
+styles-and-classes/directive-touching-last-style] [fixture:
 styles-and-classes/comment-line-inside-kept] [corpus fixture:
 er/lex-classdef-space-before-line-feed] [corpus fixture:
 er/lex-style-tab-before-line-feed]
@@ -1869,11 +1878,23 @@ multi-line-statements/acc-colon-and-brace-joined]
 
 Later text lines of an ordinary `accDescr { ... }` block stand one level inside
 its statement, replacing only ASCII spaces and tabs immediately after LF. The
-description setter drops that indentation; line breaks, trailing whitespace and
-directive interiors stay written. Inside a subgraph, keep the original body
-columns because the raw description also participates in its membership reading.
+description setter drops that indentation; line breaks and directive interiors
+stay written. Keep line breaks and interior blank lines, and the whitespace at
+the end of each line of text except the last one; a line of whitespace only
+becomes an empty line. The whitespace at the end of the last line of text is
+dropped where the closer stands on a line of its own, and is printed as one
+space where the closer follows it on that line. Inside a subgraph, keep the
+original body columns because the raw description also participates in its
+membership reading; there a line of whitespace only stays as written, and the
+whitespace at the end of the last line of text is dropped, or printed as one
+space before a closer on that line, as above.
 
-[corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines]
+[corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines] [fixture:
+accessibility-statements/block-trailing-whitespace] [fixture:
+accessibility-statements/block-trailing-whitespace-closer-on-the-text-line]
+[fixture: accessibility-statements/block-trailing-whitespace-in-a-subgraph]
+[fixture:
+accessibility-statements/block-trailing-whitespace-closer-on-the-text-line-in-a-subgraph]
 
 Its `}` stands at the level of its statement.
 

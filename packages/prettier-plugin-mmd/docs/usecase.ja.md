@@ -87,6 +87,11 @@ class の[字下げ](./class.ja.md#字下げ)を再利用します。
 usecase では字下げが読みを決めないので、`tabWidth: 0` は 0 のままです。
 アクセシビリティは先頭列でも ASCII 空白の後でもアクセシビリティのままです。
 YAML は共有の最小幅 1 を保ちます。
+対象にする版の mermaid.js のすべてが、幅 0 のブロックスカラーを拒否し、
+幅 0 の入れ子の `config` の値を違って描くからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 値とディレクティブの継続行は書かれた列を保ち、
 対象となる JSON の余白は [JSON の表](#json-tables) に従います。
 
@@ -100,6 +105,8 @@ YAML は共有の最小幅 1 を保ちます。
 [fixture: indentation/boundary-comments-before-end]
 [fixture: indentation/zero-tabs-boundary]
 [fixture: indentation/value-and-json-columns]
+[fixture: frontmatter-yaml/frontmatter-zero-scalar]
+[fixture: frontmatter-yaml/frontmatter-zero]
 
 入力（エスケープ表記）:
 `"usecase-beta\nsystemBoundary Portal\nactor User\nTask(Work)\nend\nUser-->Task"`
@@ -1027,7 +1034,8 @@ mermaid.js は `stroke:` だけでその矢印の先端を着色するため、
 [fixture: classes-and-styles/css-name-multiline-directive]
 
 最後の成分の後ろの外側の水平空白だけが消えることがあります。
-保持するセミコロンを含む接頭部、文中のコメントやディレクティブ、
+保持するセミコロンを含む接頭部、
+最後のスタイルの終わりより前の文中のコメントやディレクティブ、
 複数行にわたる宣言は、通常の一覧の配置より優先します。
 
 [fixture: classes-and-styles/class-lists]

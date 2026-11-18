@@ -1028,9 +1028,15 @@ mermaid.js はリンクのスタイルを書かれたまま `;` でつなぐの�
 除くと `:` がエスケープされるので残し、その空白の後ろの空白は、
 ほかの `:` の前と同じく除きます。
 `style A fill\   :#f00` は `style A fill\ : #f00` と印字します。
-コメントやディレクティブがある文、空白だけのスタイルがある文、
-スタイルに改行があるか、行に保つ `;` がある文は、書かれたまま残します。
+最後のスタイルの終わりより前にコメントやディレクティブがある文、
+空白だけのスタイルがある文、スタイルに改行があるか、行に保つ `;` がある文は、
+書かれたまま残します。
+最後のスタイルの後ろのコメントやディレクティブは文の一部ではなく、
+文は普通に整形します。
+詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください。
 
+[fixture: style-trailing-whitespace/removed-after-directive]
 [fixture: whitespace-between-tokens/style-blank-style-kept]
 [fixture: whitespace-between-tokens/style-colon-escaped-space-kept]
 [fixture: whitespace-between-tokens/style-colon-escaped-space-run-dropped]
@@ -1929,11 +1935,17 @@ usecaseのDbが同じ形に従います。
 
 [test: accessibility blocks: flowchart empty-block-unicode]
 
-保持行の例外を優先し、
-コメントやディレクティブがあるブロックは従来の配置を保ちます。
+保持行の例外を優先し、複数行でコメント行か、
+自分の行にあるディレクティブを持つブロックは従来の配置を保ちます。
+規則 1 は、ブロックの中の行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[xychart](./xychart.ja.md#空の説明ブロック) と
+[quadrant](./quadrant.ja.md#空の説明ブロック) も、コメント行か、
+自分の行にあるディレクティブを持つブロックの内容と改行を、そのまま残します。
 
 [fixture: accessibility-lines/empty-block-semicolon-kept]
-[fixture: accessibility-lines/empty-block-directive-kept]
+[fixture: accessibility-lines/empty-block-directive-line-kept]
+[fixture: accessibility-lines/empty-block-directive-line-in-subgraph]
 [fixture: multi-line-values/accdescr-block-comment-only]
 
 1 行のブロックは、
@@ -3251,6 +3263,8 @@ markdown 文字列や swimlane 図でも同じで、
 
 ブロックは何のトークンも読まれず、その空白が名前の後に続くとみなされ、
 subgraph の id は `subGraph0` になり、空白がなければ `S` になります。
+12.3.0 の Db は id を持ち（`subgraphs[0].id`）、
+描画は対象にする版のすべてで id を除いて同じです。
 空白があることは残しますが、幅は、最初のブロックの前だけ、
 名前に続くものとして書かれたまま残し、ブロックの間や `;` の前の空白の連続は、
 空白 1 つにします。

@@ -788,6 +788,7 @@ closed, at the end of the text, is printed as `accDescr {` with no `}`, as in
 empty-description-blocks/touching-kept] [fixture:
 empty-description-blocks/blank-lines-inside] [fixture:
 empty-description-blocks/with-directive-or-comment-line-kept] [fixture:
+empty-description-blocks/directive-line-kept] [fixture:
 empty-description-blocks/after-the-header] [fixture:
 empty-description-blocks/after-a-statement-on-its-line] [fixture:
 empty-description-blocks/not-closed-at-the-end-of-the-text]

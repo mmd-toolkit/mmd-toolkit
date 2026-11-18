@@ -619,12 +619,16 @@ A space after a backslash that ends a style is read as nothing here:
 whitespace-between-tokens/style-colon-escaped-space-kept] [fixture:
 whitespace-between-tokens/style-colon-escaped-space-run-dropped]
 
-A statement stays as written where it holds a comment or a directive, where a
-style is all whitespace, or where a style holds a line break or its line holds a
-kept `;`.
+A statement stays as written where a comment or a directive stands inside it,
+before the end of its last style, where a style is all whitespace, or where a
+style holds a line break or its line holds a kept `;`. A comment or a directive
+after the last style is no part of the statement, which is formatted as usual
+(see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 
 [fixture: whitespace-between-tokens/comma-kept] [fixture:
-whitespace-between-tokens/style-comma-spaced] [fixture:
+whitespace-between-tokens/style-comment-and-directive-after-last-style-formatted]
+[fixture: whitespace-between-tokens/style-comma-spaced] [fixture:
 whitespace-between-tokens/style-comma-beside-directive] [fixture:
 whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
 
@@ -800,7 +804,11 @@ The words `scale`, `classDef`, `class`, `style`, `state`, `note`, and
 `stateDiagram`, in any case, are keywords only when whitespace follows them, and
 ids otherwise. A transition from an id spelled so, or from a state whose class
 after `:::` is spelled so, keeps its arrow touching on both sides, as
-`scale-->B`: `scale -->B` would start a scale statement.
+`scale-->B`: `scale -->B` would start a scale statement, which every version of
+mermaid.js that counts rejects, as it does the same form for `classDef`,
+`class`, `note`, and `stateDiagram`; `style --> B` is rejected since 11.7.0, and
+`state --> B` is drawn as another statement (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: arrow-spacing/touching-before-keyword-kept] [fixture:
 arrow-spacing/other-keyword-ids-touching-kept] [fixture:
@@ -1138,8 +1146,10 @@ links enclosed in angle brackets, backslashes and whitespace other than ASCII
 spaces within content lines. Marked recognizes block syntax, including lists and
 headings. These margins can appear in rendered text when Mermaid displays a
 block's source literally. For example, increasing two spaces after a blank line
-to four can change three displayed paragraphs into a different layout. This does
-not reformat general Markdown.
+to four changes three displayed paragraphs into a different layout: 10.9.8 draws
+another text, and 11.7.0 and later versions another structure (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+This does not reformat general Markdown.
 
 [fixture: notes/over-lines-empty-lines-kept] [fixture:
 notes/list-body-margin-kept] [fixture: notes/heading-at-paragraph-boundary-kept]
@@ -2015,7 +2025,9 @@ on the closing line of a composite statement]
 In a state diagram, these characters bound the text in which mermaid.js looks
 for a pseudostate mark, a direction line, and a second name before a `{`:
 `state a`, U+2028, and `b <<fork>>` is the name `a` and the fork `b`, while with
-a space in place of the U+2028, it is the fork `a b`.
+a space in place of the U+2028, it is the fork `a b`, which has another id and
+label in the Db of 12.3.0, while every version that counts draws the same
+figure.
 
 [corpus fixture: state/lex-pseudostate-mark-after-line-separator]
 

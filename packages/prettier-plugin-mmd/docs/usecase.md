@@ -79,9 +79,12 @@ opener, as in class diagrams.
 A step follows `tabWidth` and `useTabs`, two spaces by default or one tab per
 level. Indentation does not determine usecase syntax, so `tabWidth: 0` stays
 zero; accessibility remains accessibility at column zero and after ASCII
-whitespace. YAML retains the shared minimum of one. Value and directive
-continuation columns stay authored; eligible JSON margins follow
-[JSON tables](#json-tables).
+whitespace. YAML retains the shared minimum of one, since every version of
+mermaid.js that counts rejects a block scalar whose text stands at column zero,
+and draws a nested `config` value at column zero differently (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Value and directive continuation columns stay authored; eligible JSON margins
+follow [JSON tables](#json-tables).
 
 [fixture: native-metadata/metadata-key-multiline-directive] [fixture:
 native-metadata/metadata-scalar-multiline-directive] [fixture:
@@ -92,6 +95,8 @@ indentation/indent-tabs] [fixture: indentation/indent-zero] [fixture:
 indentation/indent-zero-a11y] [fixture: indentation/indent-zero-tabs] [fixture:
 indentation/boundary-comments-before-end] [fixture:
 indentation/zero-tabs-boundary] [fixture: indentation/value-and-json-columns]
+[fixture: frontmatter-yaml/frontmatter-zero-scalar] [fixture:
+frontmatter-yaml/frontmatter-zero]
 
 Input (escaped):
 `"usecase-beta\nsystemBoundary Portal\nactor User\nTask(Work)\nend\nUser-->Task"`
@@ -960,8 +965,8 @@ or the parentheses of `url(`, and the escape after a backslash, stay as written.
 [fixture: classes-and-styles/css-name-multiline-directive]
 
 Only exterior HWS after the last component can disappear; prefixes with kept
-semicolons, a comment or a directive in the statement, and a declaration over
-lines override ordinary list layout.
+semicolons, a comment or a directive inside the statement, before the end of its
+last style, and a declaration over lines override ordinary list layout.
 
 [fixture: classes-and-styles/class-lists] [fixture:
 classes-and-styles/css-colon-padding] [fixture:

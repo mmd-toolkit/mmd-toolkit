@@ -545,8 +545,13 @@ mermaid.js はスタイルをクラスのスタイルへ書かれたまま足し
 [fixture: whitespace-between-tokens/class-def-backslash-space-kept]
 [fixture: whitespace-between-tokens/class-def-backslash-at-end-kept]
 
-コメントやディレクティブがある文、空白だけのスタイルがある文、
-スタイルに改行があるか、行に保つ `;` がある文は、書かれたままにします。
+最後のスタイルの終わりより前にコメントやディレクティブがある文、
+空白だけのスタイルがある文、スタイルに改行があるか、行に保つ `;` がある文は、
+書かれたままにします。
+最後のスタイルの後ろのコメントやディレクティブは文の一部ではなく、
+文は普通に整形します。
+詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください。
 `style A fill:#f00 %%{x}%% ,color:white` は、書かれたまま残します。
 `style A fill: #f00 %%{x}%%, color: white` では、
 対象にする版の mermaid.js のうちいくつかが、スタイルを違って描くからです。
@@ -554,6 +559,7 @@ mermaid.js はスタイルをクラスのスタイルへ書かれたまま足し
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
 
+[fixture: whitespace-between-tokens/style-comment-and-directive-after-last-style-formatted]
 [fixture: whitespace-between-tokens/style-comma-before-dropped]
 [fixture: whitespace-between-tokens/style-comma-beside-directive-kept]
 [fixture: whitespace-between-tokens/style-colon-and-comma-spaced]

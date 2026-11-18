@@ -466,7 +466,10 @@ CSS が空白として読まない文字があるときは別です。
 名前と値の前後の空白以外も変わりうる場合は、スタイルを書かれたままにします。
 2 つのコンマの間や最後のコンマの後の空のスタイルは、
 スタイルの数が Db に入るため保ちます。
-`;` を含むスタイルや、同じ行にコメントかディレクティブがあるスタイルも保ちます。
+`;` を含むスタイルや、同じ行にディレクティブがあるスタイルも保ちます。
+最後のスタイルの後ろのコメントは別で、普通に整形します。
+詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください。
 その `;` は mermaid.js の行の規則で無視されることがあり、
 その規則は `:` と後の `#` の間の空白を読むため、
 2 回目の整形でも同じテキストである必要があります。
@@ -479,6 +482,7 @@ CSS が空白として読まない文字があるときは別です。
 スタイルとクラス名を隔てる空白は、
 スタイルの一部ではありません（[スタイルの隙間](#style-gaps)を参照）。
 
+[fixture: treemap/styles/class-def-comment-after-last-style-formatted]
 [fixture: treemap/styles/written] [fixture: treemap/styles/empty-entry-kept]
 [fixture: treemap/styles/directive-line-kept] [fixture:
 treemap/styles/directive-trailing-whitespace]

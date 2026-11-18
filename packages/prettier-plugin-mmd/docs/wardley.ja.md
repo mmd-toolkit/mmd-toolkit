@@ -675,7 +675,11 @@ accTitle: Value と accDescr: Value は共有の行配置を使います。
 保護された注釈とセミコロンの配置では、隙間を保ちます。
 通常の説明本文と独立したコメント行は文より 1 段深くそろえます。
 Db で LF 後の字下げが取り除かれるためです。
-改行、内部の空行、行末空白を保ちます。
+改行と内部の空行は保ちます。
+行末の空白は、テキストの最後の行のものを除いて保ちます。
+空白だけの行は空行にします。
+最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
+同じ行で閉じ括弧が続くときは空白 1 つで印字します。
 ディレクティブと共有処理で取り除かれるコメント領域は、
 ディレクティブだけを含むブロックでも原文全体を保ちます。
 注釈は共有の継続行の配置を保ちます。
@@ -683,6 +687,8 @@ Db で LF 後の字下げが取り除かれるためです。
 [fixture: wardley/accessibility/description-closer]
 [fixture: wardley/accessibility/description-comment-only]
 [fixture: wardley/accessibility/description-directive-only]
+[fixture: wardley/accessibility/block-trailing-whitespace]
+[fixture: wardley/accessibility/block-trailing-whitespace-closer-on-the-text-line]
 
 入力（エスケープ表記）:
 `"wardley-beta\naccTitle \t:  A  B \t\naccDescr\t:  C  D \t"`
