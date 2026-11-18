@@ -17,11 +17,11 @@ import type { SpecFileRecording } from "../../../tools/src/spec-recorder.ts"
 import { REQUIREMENT_DB_TABLES } from "../../../tools/src/spec-recorder.ts"
 
 // Each test starts a Node.js process for the driver. A test of this file takes
-// about a fifth of a second on a developer machine, and 0.5 to 0.9 seconds on
-// average in the Windows jobs of CI, where two tests took more than the
-// default 5 seconds. A time limit that only the slowest start-up of the runner
-// reaches tests the runner, not the recorder.
-vi.setConfig({ testTimeout: 30_000 })
+// about a fifth of a second on a developer machine and 0.3 to 0.8 seconds on
+// average in CI, but two tests in the Windows jobs took 5,014 and 5,021 ms,
+// just over the default 5 seconds. The limit is twice the slowest test seen: it
+// still stops a test whose driver hangs, and no longer fails on a slow start.
+vi.setConfig({ testTimeout: 10_000 })
 
 /**
  * The recorder runs in a process of its own (see the driver), since it finds
