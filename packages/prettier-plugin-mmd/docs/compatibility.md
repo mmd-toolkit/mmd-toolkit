@@ -2732,6 +2732,14 @@ The colon stays where a `;` or the `---` of a hidden YAML block touches it.
 cynefin/header/colon-semicolon-kept] [fixture: radar/header/colon-removed]
 [fixture: radar/header/colon-yaml-kept]
 
+A treemap header takes no colon. `treemap:` and `treemap-beta:` are rejected by
+11.8.1, 11.17.2, 12.0.0 and 12.3.0, and each of them draws the text with the
+header without it. The examples write the header without the colon 8 times and
+with it never, so [rule 3](./printed-form.md#3-a-spelling) gives the header
+without it.
+
+[corpus fixture: treemap/header-colon]
+
 A gitGraph without a direction reads `gitGraph:` and `gitGraph` the same in
 every version that counts, with the same commits and branches and the same
 figure. The examples write the header without the colon 30 times and with it

@@ -2894,6 +2894,14 @@ cynefin 図と radar 図は、`cynefin-beta:` と `radar-beta:` を、
 [fixture: cynefin/header/colon-semicolon-kept]
 [fixture: radar/header/colon-removed] [fixture: radar/header/colon-yaml-kept]
 
+treemap の見出しにはコロンを付けません。
+11.8.1、11.17.2、12.0.0、12.3.0 は `treemap:` と `treemap-beta:` を拒否し、
+どれも、コロンのない見出しの同じ文を描きます。
+例は、見出しをコロンなしで 8 回、コロン付きで 0 回書くので、
+[規則 3](./printed-form.ja.md#3-綴り)がコロンのない見出しを与えます。
+
+[corpus fixture: treemap/header-colon]
+
 向きのない gitGraph は、`gitGraph:` と `gitGraph` を、
 対象にするすべての版が同じに読み、コミットもブランチも図も同じです。
 例は、コロンのないヘッダーを 30 回、コロンつきを 2 回書くので、

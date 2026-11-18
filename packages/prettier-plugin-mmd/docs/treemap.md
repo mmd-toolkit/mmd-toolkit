@@ -17,8 +17,12 @@ making the heading easy to find. The keyword is printed `treemap`, also where it
 was written `treemap-beta`: every version of mermaid.js that counts and has the
 diagram reads both names and draws them the same (see
 [The names of a header](./compatibility.md#the-names-of-a-header)). Add no
-colon: every version of mermaid.js that counts rejects `treemap:` and
-`treemap-beta:`, and reads the header without one. An empty body stays empty.
+colon: [rule 3](./printed-form.md#3-a-spelling) gives the header without one, as
+the examples in the documentation of mermaid.js write all 8 headers of the
+diagram without it, and every version of mermaid.js that counts rejects
+`treemap:` and `treemap-beta:` (see
+[The colon after a header](./compatibility.md#the-colon-after-a-header)). An
+empty body stays empty.
 
 [fixture: treemap/header/stable]
 
@@ -318,8 +322,9 @@ it holds a `'`, a `"`, a backslash, a line break, a backquote, `&`, `#`, or `<`
 and `singleQuote` is not read. [Rule 3](./printed-form.md#3-a-spelling) gives
 the `"`: the examples in the documentation of mermaid.js write 408 of the 409
 strings of the diagram types that read a string between `'` as well as between
-`"`, as counted in the section linked above. Backslashes do not escape quotes or
-decode `\n`; these authored choices can affect the name or acceptance.
+`"`, as counted in [Strings between `"`](./compatibility.md#strings-between-).
+Backslashes do not escape quotes or decode `\n`; these authored choices can
+affect the name or acceptance.
 
 [fixture: treemap/names/quotes]
 
