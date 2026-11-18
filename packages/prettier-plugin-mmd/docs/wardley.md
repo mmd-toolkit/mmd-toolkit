@@ -428,9 +428,11 @@ wardley-beta
 Keep the interior of each +'label'>, +'label'< or +'label'<> flow as written:
 empty labels, padding, backslashes and physical continuation columns included.
 Root directives between its complete components retain their source boundaries.
-Ordinary inserted spaces reject the composite unit, and trimming content changes
-the Db. Keep both ports and the semicolon label even when flow precedence hides
-them.
+Ordinary inserted spaces reject the composite unit: every version of mermaid.js
+that counts rejects `Alpha+ ' F  G\n\q ' >Beta` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Trimming content changes the Db. Keep both ports and the semicolon label even
+when flow precedence hides them.
 
 [test: wardley/flows/unicode-flow] [fixture: wardley/flows/flow-forward]
 

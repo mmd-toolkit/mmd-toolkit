@@ -441,7 +441,12 @@ wardley-beta
 +'label'>、+'label'<、+'label'<> の内側は書かれたまま保ちます。
 空ラベル、余白、バックスラッシュ、継続行の列も含みます。
 完全な部品間の大域的なディレクティブの境界も保ちます。
-普通の空白を挿入すると複合単位が拒否され、両端の空白の除去は Db を変えます。
+普通の空白を挿入すると複合単位が拒否されます。
+対象にする版の mermaid.js のすべてが、`Alpha+ ' F  G\n\q ' >Beta` を拒否します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+両端の空白の除去は Db を変えます。
 flow の優先順位で見えなくても、両 port とセミコロンラベルを残します。
 
 [test: wardley/flows/unicode-flow] [fixture: wardley/flows/flow-forward]
