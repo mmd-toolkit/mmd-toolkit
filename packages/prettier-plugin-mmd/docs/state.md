@@ -1991,7 +1991,8 @@ In a state diagram, these characters bound the text in which mermaid.js looks
 for a pseudostate mark, a direction line, and a second name before a `{`:
 `state a`, U+2028, and `b <<fork>>` is the name `a` and the fork `b`, while with
 a space in place of the U+2028, it is the fork `a b`, which has another id and
-label in the Db.
+label in the Db of 12.3.0, while every version that counts draws the same
+figure.
 
 [corpus fixture: state/lex-pseudostate-mark-after-line-separator]
 

@@ -2076,7 +2076,7 @@ state 図では、mermaid.js が擬似状態の印、方向の行、
 `{` の前の 2 つ目の名前を探す範囲を、これらの文字が区切るからです。
 `state a`、U+2028、`b <<fork>>` は名前 `a` とフォーク `b` ですが、
 U+2028 の代わりに空白を置くと、フォーク `a b` になり、
-Db の id とラベルも違います。
+12.3.0 の Db では id とラベルも違い、対象にする版のすべてで描画は同じです。
 
 [corpus fixture: state/lex-pseudostate-mark-after-line-separator]
 

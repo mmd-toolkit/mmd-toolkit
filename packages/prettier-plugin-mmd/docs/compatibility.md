@@ -4788,9 +4788,10 @@ transition from an id spelled so keeps its arrow touching on both sides, as in
 `style :x` by 11.7.0 and later versions. The rows of
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)
 name the versions for each word before an arrow; a description needs no row,
-since its `:` touches the id by [rule 3](./printed-form.md#3-a-spelling)
-whatever the id is (see
-[Descriptions and labels](./state.md#descriptions-and-labels)). See
+since its `:` touches the id by
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) (see
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)) whatever the
+id is (see [Descriptions and labels](./state.md#descriptions-and-labels)). See
 [Arrow spacing](./state.md#arrow-spacing).
 
 [fixture: state/arrow-spacing/touching-before-keyword-kept] [fixture:
