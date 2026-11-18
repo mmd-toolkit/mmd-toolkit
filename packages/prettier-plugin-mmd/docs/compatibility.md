@@ -3094,16 +3094,16 @@ block holds, or would not be read as the block is:
   which ends the text of the form with the colon before a `%%` and reads the
   rest of the line as a comment, but takes a `%%` in a block as part of the
   text: `accDescr: a %% b` has the description `a`, and `accDescr {a %% b}` has
-  `a %% b`. So the block stays in all of these diagram types but an info
-  diagram, which draws the same text with both forms, since some of the versions
-  of mermaid.js that count draw different text for the form with the colon (see
+  `a %% b`. So the block stays in all of these diagram types. In every one of
+  them but an info diagram, some of the versions of mermaid.js that count draw
+  different text for the form with the colon (see
   [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
-  A block there also drops the whitespace around a line separator:
-  `accDescr { A<U+2028> B }` has the description `A<U+2028>B` in a pie chart and
-  a gitGraph, and `accDescr: A<U+2028> B` has `A<U+2028> B`. The other diagram
-  types take the `%%` and the line separator as part of the text in both forms,
-  and the block is printed in the form with the colon also when the text holds
-  one.
+  In an info diagram, both forms are drawn the same. A block there also drops
+  the whitespace around a line separator: `accDescr { A<U+2028> B }` has the
+  description `A<U+2028>B` in a pie chart and a gitGraph, and
+  `accDescr: A<U+2028> B` has `A<U+2028> B`. The other diagram types take the
+  `%%` and the line separator as part of the text in both forms, and the block
+  is printed in the form with the colon also when the text holds one.
 
   [fixture: pie/description-blocks/block-text-with-percent-kept] [fixture:
   flowchart/accessibility-lines/block-text-with-percent] [test:
