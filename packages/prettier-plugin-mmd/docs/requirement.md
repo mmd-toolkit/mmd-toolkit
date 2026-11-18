@@ -1360,14 +1360,14 @@ for a line break, so
 decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
 [journey](./journey.md#multi-line-statements) keep a line break next to a
-comment or a directive and put the later parts of a statement and the comment or
-directive lines one level deeper. A `{` is not such a part: it stays at the
-level of its statement. Whitespace inside values and before the first line break
-of each gap stays. Joining regions keep their complete source. A line break
-stays where joining it, with one space or with nothing, could change which `;`
-the line rule ignores, and where a `;` ends the last line; any other line break
-is joined as usual, also in a statement that holds a `;`. A statement that keeps
-a line break keeps its styles as written.
+comment or a directive and put the comment and directive lines one level deeper,
+in a statement whose text the Db does not hold with its whitespace. Whitespace
+inside values and before the first line break of each gap stays. Joining regions
+keep their complete source. A line break stays where joining it, with one space
+or with nothing, could change which `;` the line rule ignores, and where a `;`
+ends the last line; any other line break is joined as usual, also in a statement
+that holds a `;`. A statement that keeps a line break keeps its styles as
+written.
 
 [test: requirement/multi-line-statements/header-and-field-comment-regions-ls]
 [test: requirement/multi-line-statements/header-and-field-comment-regions-ps]
