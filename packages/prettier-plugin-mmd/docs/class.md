@@ -115,15 +115,20 @@ same members.
 
 An empty body, with nothing but whitespace between its braces, is printed as
 `{ }` on the line of the class, however it is written: `{}`, `{   }`, and braces
-on two lines all declare the class without members.
+on two lines all declare the class without members. Rule 1 would print `{}`, as
+Prettier prints `x = { }` as `x = {}`
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)), but some of the
+versions of mermaid.js that count reject `class A {}`, and every one of them
+accepts `class A { }`, so the printed form is `{ }` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: member-bodies/empty-unified] [fixture:
 member-bodies/empty-other-forms-unified] [fixture:
 member-bodies/in-namespace-indented]
 
 After a CSS class, the body needs a member line, and a line of only whitespace
-is one, so `class C:::c {}` is rejected and `class C:::c { }` is accepted: `{ }`
-is the form that holds everywhere.
+is one, so every version of mermaid.js that counts rejects `class C:::c {}` and
+accepts `class C:::c { }`: `{ }` is the form that holds everywhere.
 
 [fixture: member-bodies/empty-unified] [corpus fixture:
 class/gram-class-css-class-empty-body] [corpus fixture:

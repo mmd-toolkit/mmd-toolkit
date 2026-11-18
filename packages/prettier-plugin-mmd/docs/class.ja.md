@@ -122,13 +122,21 @@ mermaid.js は、メンバーの行を改行、`{`、`}` で終えるので、
 括弧の間に空白しかない空の本体は、どう書かれていても、
 クラスの行に `{ }` と印字します。
 `{}`、`{   }`、2 行に分けた括弧は、どれもメンバーのないクラスを宣言します。
+規則 1 なら `{}` と印字します（[規則 1](./printed-form.ja.md#1-記号の横の空白)。
+Prettier は `x = { }` を `x = {}` と印字します）。
+しかし、対象にする版の mermaid.js の一部は `class A {}` を拒否し、
+すべてが `class A { }` を受理するので、印字する形は `{ }` です。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: member-bodies/empty-unified]
 [fixture: member-bodies/empty-other-forms-unified]
 [fixture: member-bodies/in-namespace-indented]
 
 CSS クラスの後では、本体にメンバーの行が要り、空白だけの行もそれに数えるので、
-`class C:::c {}` は拒否され、`class C:::c { }` は受理されます。
+対象にする版の mermaid.js はすべて、`class C:::c {}` を拒否し、
+`class C:::c { }` を受理します。
 `{ }` は、どこでも成り立つ形です。
 
 [fixture: member-bodies/empty-unified]
