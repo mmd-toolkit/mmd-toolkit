@@ -952,14 +952,19 @@ requirementDiagram
 
 Runs of empty lines become one empty line, and empty lines at the start and the
 end of the diagram and of a body are dropped, as in the other diagram types. A
-line of whitespace only is an empty line: rule 1 names no mark for a line, so
+line of whitespace only is an empty line after the header, in a body, between
+statements, around a comment line, and at the end of the text: rule 1 names no
+mark for a line, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [kanban](./kanban.md#blank-lines) and
-[packet](./packet.md#blank-lines) print whitespace-only lines as empty lines.
+[packet](./packet.md#blank-lines) print whitespace-only lines as empty lines,
+where no other rule keeps the whitespace as written (the lines of a value or of
+a block of text, and the like).
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/between-fields-collapsed]
 [fixture: blank-lines/header-and-end-of-text-dropped] [fixture:
 blank-lines/body-edges-dropped] [fixture: blank-lines/whitespace-only-lines]
+[fixture: blank-lines/whitespace-only-lines-in-places]
 
 The empty lines around comment lines and directive lines are handled in the same
 way.
@@ -1136,19 +1141,19 @@ The text holds `;`, `#`, and `%%` as characters.
 
 [fixture: accessibility-statements/special-characters-in-text]
 
-A text written on a later line is printed after the `:` on one line, and a
-comment line before it keeps the line breaks of the statement, and the comment
-and the text stand one level deeper. The colon of `accTitle` and `accDescr` is
-the colon of a key (the title and the description of a diagram in
+A text written on a later line is printed after the `:` on one line. A comment
+line before the text, between the keyword and the colon or between the colon and
+the text, keeps the line breaks of the statement, and the comment and the later
+lines stand one level deeper. The colon of `accTitle` and `accDescr` is the
+colon of a key (the title and the description of a diagram in
 [Which kind a colon is](./printed-form.md#which-kind-a-colon-is)), so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the form
 `accTitle: text`: no whitespace before the colon and one space after it, also
-where the colon or the text was written on a later line; where a comment line
-stands before the text, the line breaks stay and the comment and the text stand
-one level deeper, as said above.
+where the colon or the text was written on a later line.
 
 [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
-accessibility-statements/text-with-comment-line-kept]
+accessibility-statements/text-with-comment-line-kept] [fixture:
+accessibility-statements/comment-line-before-colon-kept]
 
 Later text lines of an `accDescr { ... }` block stand one level inside its
 statement, replacing only ASCII spaces and tabs immediately after LF. The
@@ -1562,7 +1567,8 @@ whitespace beside a mark and not the start of a line
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [c4](./c4.md#comments) and [quadrant](./quadrant.md#comments) align a
 standalone comment with the following statement, or with the last statement at
-the end of the text, and put one before the header at column one.
+the end of the text, and put one before the header at column one, and
+[c4](./c4.md#indentation) aligns one in a body with the statements around it.
 
 [fixture: comments/lines-at-statement-level] [fixture:
 comments/single-mark-lines-kept]

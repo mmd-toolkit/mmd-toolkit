@@ -957,16 +957,20 @@ requirementDiagram
 
 連続する空行は 1 つにし、図の先頭と末尾、本体の先頭と末尾の空行は落とします。
 他の図種と同じ規則です。
-空白だけの行は空行です。
+空白だけの行は、見出しの後、本体の中、文と文の間、コメント行の周り、
+テキストの末尾で、空行です。
 規則 1 は、行の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [kanban](./kanban.ja.md#空行) と [packet](./packet.ja.md#blank-lines) も、
 空白だけの行を空行として印字します。
+ほかの規則が空白を書かれたまま残す所は別で、
+値やテキストのブロックの行などがそうです。
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/between-fields-collapsed]
 [fixture: blank-lines/header-and-end-of-text-dropped]
 [fixture: blank-lines/body-edges-dropped]
 [fixture: blank-lines/whitespace-only-lines]
+[fixture: blank-lines/whitespace-only-lines-in-places]
 
 コメント行とディレクティブの行の前後の空行も、同じに扱います。
 
@@ -1146,21 +1150,20 @@ requirementDiagram
 [fixture: accessibility-statements/special-characters-in-text]
 
 後の行に書かれたテキストは、`:` の後ろに寄せて 1 行にします。
-その前にコメント行があるときは、改行を残し、
-コメントとテキストを 1 段深く置きます。
+テキストの前にコメント行があるときは、キーワードとコロンの間でも、
+コロンとテキストの間でも、改行を残し、コメントと後ろの行を 1 段深く置きます。
 `accTitle` と `accDescr` のコロンはキーのコロンなので、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が `accTitle: text`
 の形を与えます。
 コロンの前に空白を置かず、後ろに空白を 1 つ置き、
 コロンやテキストが後の行に書かれていても同じです。
-テキストの前にコメント行があるときは、上のとおり、改行を残し、
-コメントとテキストを 1 段深く置きます。
 詳しくは
 [コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
 の、図のタイトルと説明の行を参照してください。
 
 [fixture: accessibility-statements/text-on-next-line-joined]
 [fixture: accessibility-statements/text-with-comment-line-kept]
+[fixture: accessibility-statements/comment-line-before-colon-kept]
 
 `accDescr { ... }` ブロックの後続の本文行は、文の内側に 1 段字下げし、
 LF 直後の ASCII 空白とタブだけを置き換えます。
@@ -1575,6 +1578,8 @@ requirementdiagram
 [c4](./c4.ja.md#コメント) と [quadrant](./quadrant.ja.md#コメント) も、
 単独のコメントを、後ろの文か、テキストの末尾では最後の文の段に置き、
 ヘッダーの前では 1 桁目に置きます。
+本体の中では、[c4](./c4.ja.md#字下げ) も、
+単独のコメントを周りの文と同じ段に置きます。
 
 [fixture: comments/lines-at-statement-level]
 [fixture: comments/single-mark-lines-kept]
