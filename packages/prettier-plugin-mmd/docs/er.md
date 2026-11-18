@@ -1638,7 +1638,9 @@ entities and draws `direction tb` and `direction TB` differently (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: direction/spacing] [fixture: direction/text-kept] [fixture:
-direction/case-kept] [fixture: direction/case-bt-rl-kept]
+direction/text-inner-whitespace-kept] [fixture:
+direction/text-both-sides-inner-whitespace-kept] [fixture: direction/case-kept]
+[fixture: direction/case-bt-rl-kept]
 
 A value written on a later line is printed after `direction` on one line.
 

@@ -1615,6 +1615,8 @@ erDiagram
 を参照してください。
 
 [fixture: direction/spacing] [fixture: direction/text-kept]
+[fixture: direction/text-inner-whitespace-kept]
+[fixture: direction/text-both-sides-inner-whitespace-kept]
 [fixture: direction/case-kept] [fixture: direction/case-bt-rl-kept]
 
 後の行に書かれた値は、`direction` の後に 1 行で印字します。
