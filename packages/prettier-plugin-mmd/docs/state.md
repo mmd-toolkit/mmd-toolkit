@@ -77,7 +77,22 @@ The `{` of a composite state, and of an alias definition with a body, stands on
 the line of its name, after one space, as in a class diagram; a `{` written on
 the next line is moved there. Comments or directives between the name and the
 brace keep the line breaks; the brace aligns with the state keyword, and the
-intervening trivia stands one level deeper.
+intervening trivia stands one level deeper. Rule 1 names no mark for a line
+break, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#multi-line-statements),
+[gantt](./gantt.md#multi-line-statements), and
+[journey](./journey.md#multi-line-statements) keep a line break next to a
+comment or a directive and the whitespace before it, and put the later parts of
+a statement and the comment and directive lines between them one level deeper,
+where no other rule keeps the layout as written (where the Db holds the text
+with its whitespace, where moving a line makes mermaid.js reject the text, and
+the like). The line that holds the `{` of a block, with its name or on a line of
+its own, is not one of those later parts: it stands at the level of its
+statement, and neither these precedents nor the other rules of
+[How the printed form is decided](./printed-form.md) give that level, so the
+form that the released version prints stays until the level is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 [fixture: composite-states/split] [fixture:
 composite-states/brace-after-one-space] [fixture:
@@ -532,7 +547,11 @@ where whitespace was written, and `state "y" as D:::c` is printed
 [fixture: whitespace-between-tokens/css-class-in-definition-kept]
 
 A directive in the gap is placed as under [Directives](#directives), and a
-U+2028 or U+2029 stays where it is.
+U+2028 or U+2029 stays where it is. Rule 1 names no mark for a gap that holds
+one, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [journey](./journey.md#line-separators) and
+[timeline](./timeline.md#line-separators) print such a gap as written.
 
 [test: U+2028 before the `:::` of a state] [test: U+2029 after the `:::` of a
 state]
@@ -1196,7 +1215,11 @@ also where they touched: `note "t"as N` and `note "t" asN` are printed
 `note "t" as N`. mermaid.js reads the three spellings the same, and the `as` and
 the id of an alias definition are printed in the same way (see
 [Aliases](#aliases)). A directive in the gap is placed as under
-[Directives](#directives), and a U+2028 or U+2029 stays where it is.
+[Directives](#directives), and a U+2028 or U+2029 stays where it is. Rule 1
+names no mark for a gap that holds one, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [journey](./journey.md#line-separators) and
+[timeline](./timeline.md#line-separators) print such a gap as written.
 
 [fixture: notes/floating-note-as-gaps-spaced] [fixture:
 notes/floating-note-as-beside-directive] [test: U+2028 before the `as` of a
@@ -1443,7 +1466,11 @@ directives/after-statement] [fixture: directives/whitespace-on-each-side]
 
 When formatting splits units that were on the same line, a directive in their
 gap moves with the following unit. Keep its right-side contact or separation;
-break its left contact.
+break its left contact. Rule 1 names no mark for a directive between two units,
+so [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [sequence](./sequence.md#directives),
+[flowchart](./flowchart.md#directives), and [journey](./journey.md#directives)
+print such a gap in the same way.
 
 [fixture: state/directives/split-directive-gap]
 
@@ -1613,7 +1640,11 @@ and usecase. A prior description stays in the Db.
 revisions: state empty-description-nbsp]
 
 Blocks with comments or directives keep their contents and line breaks, and
-unclosed blocks stay open.
+unclosed blocks stay open. Rule 1 names no mark for a line inside a block, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [xychart](./xychart.md#empty-description-blocks) and
+[quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
+breaks of a block with a directive or comment line.
 
 [fixture: multi-line-values/empty-description-trivia-kept] [corpus fixture:
 state/lex-acc-descr-block-unclosed]
