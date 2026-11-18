@@ -1480,6 +1480,9 @@ characters as escapes too (see
   indentation and without formatting the whitespace between them: the tree lists
   the comments, and the printer reads them as one line (see
   [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+  A `#` comment is no comment line: it joins no line, and U+2028 before it is
+  printed as one space, as the whitespace before any comment after a statement
+  (see [Comments](#comments)).
 
   [test: a `#` comment after U+2028, which joins no lines] [test: a `%%` comment
   line after U+2028, which joins the next line] [test: a `%%` comment line after

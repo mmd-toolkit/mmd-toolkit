@@ -1505,6 +1505,9 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   木はコメントを並べますが、印字処理は 1 つの行として読みます。
   [U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
   を参照してください。
+  `#` のコメントはコメント行ではなく、行をつなぎません。
+  その前の U+2028 は、文の後のコメントの前の空白と同じく、
+  空白 1 つで印字します（[コメント](#コメント)を参照）。
 
   [test: a `#` comment after U+2028, which joins no lines]
   [test: a `%%` comment line after U+2028, which joins the next line]
