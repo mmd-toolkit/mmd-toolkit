@@ -438,8 +438,10 @@ whitespace beside a mark and not the start of a line
 it, as [requirement](./requirement.md#fields) and
 [sequence](./sequence.md#multi-line-statements) put the intervening comment and
 directive lines of a statement at the level of its continuation lines, which
-here stand at the column of the colon. A run of empty lines inside the statement
-becomes one.
+here stand at the column of the colon, where no other rule keeps the layout as
+written (where the Db holds the text with its whitespace, where moving a line
+makes mermaid.js reject the text, and the like). A run of empty lines inside the
+statement becomes one.
 
 [fixture: periods-and-events/comment-lines-inside] [fixture:
 periods-and-events/empty-lines-inside] [fixture:
@@ -688,7 +690,13 @@ titles-and-sections/one-space-after-keyword]
 
 A value written on a later line is printed after the keyword on one line; a
 comment line between them makes the statement printed as written (see
-[Multi-line statements](#multi-line-statements)).
+[Multi-line statements](#multi-line-statements)). Rule 1 names no mark for a
+line break, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [sequence](./sequence.md#title) prints a `title`, a line break, and the
+text that follows on one line, and [xychart](./xychart.md#multi-line-statements)
+prints a statement that mermaid.js reads over several lines on one line, with
+one space in place of the line break.
 
 [fixture: titles-and-sections/value-on-next-line] [fixture:
 titles-and-sections/comment-line-inside-kept]
@@ -1161,8 +1169,17 @@ colon at the start of a later line, and keep their line breaks (see
 In `accTitle` and `accDescr:` statements, keep trivia line breaks and align
 later structural parts and standalone trivia one continuation level inside the
 statement, also under a section. Preserve each first gap-line tail and complete
-directive interiors. Joining comment regions keep their original layout;
-semicolon protection follows the joining decision below.
+directive interiors. Rule 1 names no mark for a line break, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#multi-line-statements),
+[gantt](./gantt.md#multi-line-statements), and
+[journey](./journey.md#multi-line-statements) keep a line break next to a
+comment or a directive and the whitespace before it, and put the later parts of
+a statement and the comment and directive lines between them one level deeper,
+where no other rule keeps the layout as written (where the Db holds the text
+with its whitespace, where moving a line makes mermaid.js reject the text, and
+the like). Joining comment regions keep their original layout; semicolon
+protection follows the joining decision below.
 
 [fixture: multi-line-statements/accessibility-trivia-continuations]
 

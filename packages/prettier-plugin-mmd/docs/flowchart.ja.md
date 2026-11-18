@@ -1855,6 +1855,14 @@ Mermaidはコロンの次行の通常の文字を値と読むので、語と同�
 従来の[複数行の文](#複数行の文)の配置を保ち、
 コメントやディレクティブを含む継続行はキーワードより1段深く置きます。
 コメントやディレクティブの文字と、著者が文を区切った改行を保ちます。
+規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
+規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
+[requirement](./requirement.ja.md#フィールド) と
+[sequence](./sequence.ja.md#複数行の文)も、文の続きの行と間のコメント行を、
+最初の行より 1 段深く置きます。
+ほかの規則が配置を書かれたまま残す所は別です（Db が空白ごとテキストを持つ所や、
+動かすと mermaid.js がテキストを拒否する所などです）。
 flowchartはコロンの後のコメントを読み飛ばして後の値を読みます。
 通常の結合が使えない場合も、従来の継続行の規則を保つためです。
 
@@ -2025,6 +2033,8 @@ sequence、class、state は、そこでは改行が空白の後でだけ数え�
 [requirement](./requirement.ja.md#フィールド) と
 [sequence](./sequence.ja.md#複数行の文)も、文の途中のコメント行を、
 2 行目以降と同じ段に置きます。
+ほかの規則が配置を書かれたまま残す所は別です（Db が空白ごとテキストを持つ所や、
+動かすと mermaid.js がテキストを拒否する所などです）。
 
 [fixture: multi-line-statements/several-comments-inside]
 
@@ -2058,6 +2068,11 @@ mermaid.js は、2 行目以降が字下げされていると、その一部を�
 [fixture: multi-line-statements/click-string-over-lines-comment-and-empty-line]
 
 部品の間の U+2028 と U+2029 は、複数行の文字列の後でも、そのまま残します。
+規則 1 の表に、これを含む間隔の印はないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[journey](./journey.ja.md#行区切り文字) と
+[timeline](./timeline.ja.md#行区切り文字) も、
+これを含む間隔を書かれたまま印字します。
 
 [test: U+2028 between the parts of a flowchart click statement with a string over lines]
 [test: U+2029 between the parts of a flowchart click statement with a string over lines]
@@ -3075,6 +3090,11 @@ swimlane 図のヘッダーでは、agentflow 図のヘッダーと同じく、
 この空白は Db に入らず、`TD` のような文字の方向には、もともと空白が必要です。
 その間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
 U+2028 と U+2029 はそのまま残します。
+規則 1 の表に、これを含む間隔の印はないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[journey](./journey.ja.md#行区切り文字) と
+[timeline](./timeline.ja.md#行区切り文字) も、
+これを含む間隔を書かれたまま印字します。
 
 [fixture: direction/header-symbol-touching-spaced]
 [fixture: direction/header-symbol-beside-directive-kept]
@@ -3174,6 +3194,11 @@ flowchart の文書にあるタイトル付きの subgraph は 2 件で、
 [fixture: subgraph-header/title-beside-directive-runs]
 
 隙間の U+2028 と U+2029 は、そのまま残します。
+規則 1 の表に、これを含む間隔の印はないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[journey](./journey.ja.md#行区切り文字) と
+[timeline](./timeline.ja.md#行区切り文字) も、
+これを含む間隔を書かれたまま印字します。
 
 [test: U+2028 between a subgraph name and its title]
 [test: U+2029 and spaces between a subgraph name and its title]

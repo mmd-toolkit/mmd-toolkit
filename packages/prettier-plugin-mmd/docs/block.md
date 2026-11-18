@@ -961,9 +961,12 @@ its table names the whitespace beside a mark and not the start of a line
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [state](./state.md#comments) and [flowchart](./flowchart.md#comments) put
-a comment line at the level of the statements around it. A `%%` that does not
-start a line is the text of an id, and stays where it is, with the statement
-that it starts (see [Rows](#rows)).
+a comment line at the level of the statements around it. A comment line before
+the `end` of a composite block stands at the level of the statements inside it,
+as [class](./class.md#comments) puts a comment line at the level of the member
+lines in a body, and [state](./state.md#comments) at the level of the statements
+of a composite state. A `%%` that does not start a line is the text of an id,
+and stays where it is, with the statement that it starts (see [Rows](#rows)).
 
 [fixture: comments/comment-line-at-the-level-of-the-next-statement] [fixture:
 comments/comment-before-the-header] [fixture:
@@ -1250,10 +1253,13 @@ block-beta
 
 U+2028 and U+2029 are whitespace between the units of a block diagram, as a
 space is, and a gap that holds one on a line is printed as written, as in the
-other diagrams (see [Line separators](./journey.md#line-separators)). Where the
-printer puts a line break instead of the gap, or the gap ends a line, they are
-dropped with it. A comment line after one of them joins the lines of the source
-that mermaid.js reads as one (see
+other diagrams (see [Line separators](./journey.md#line-separators)). Rule 1
+names no mark for a gap that holds one, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: the other diagrams print it so. Where the printer puts a line break
+instead of the gap, or the gap ends a line, they are dropped with it. A comment
+line after one of them joins the lines of the source that mermaid.js reads as
+one (see
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)),
 and the statements on those lines are printed as written. In a label they are
 characters and stay.

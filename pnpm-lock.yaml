@@ -188,8 +188,8 @@ importers:
         specifier: ^4.3.0
         version: 4.8.1(eslint@10.11.0)
       '@eslint/markdown':
-        specifier: ^8.0.3
-        version: 8.0.3
+        specifier: ^9.0.0
+        version: 9.0.0
       '@ota-meshi/eslint-plugin':
         specifier: ^0.21.0
         version: 0.21.0(@eslint-community/eslint-plugin-eslint-comments@4.8.1(eslint@10.11.0))(eslint-plugin-regexp@3.3.1(eslint@10.11.0))(eslint@10.11.0)
@@ -213,7 +213,7 @@ importers:
         version: 3.4.2(eslint@10.11.0)
       eslint-plugin-markdown-links:
         specifier: ^0.9.1
-        version: 0.9.1(@eslint/markdown@8.0.3)(eslint@10.11.0)
+        version: 0.9.1(@eslint/markdown@9.0.0)(eslint@10.11.0)
       eslint-plugin-n:
         specifier: ^18.0.0
         version: 18.4.0(eslint@10.11.0)(typescript@6.0.3)
@@ -259,8 +259,8 @@ importers:
   packages/docs:
     devDependencies:
       '@eslint/markdown':
-        specifier: ^8.0.3
-        version: 8.0.3
+        specifier: ^9.0.0
+        version: 9.0.0
       '@mmd-toolkit/eslint-plugin':
         specifier: workspace:*
         version: link:../eslint-plugin
@@ -299,8 +299,8 @@ importers:
         version: 0.3.0
     devDependencies:
       '@eslint/markdown':
-        specifier: ^8.0.3
-        version: 8.0.3
+        specifier: ^9.0.0
+        version: 9.0.0
       '@mmd-toolkit/ast':
         specifier: workspace:*
         version: link:../ast
@@ -670,8 +670,8 @@ packages:
     resolution: {integrity: sha512-QywQuszQh77pIXCsq998c8hbhSTI/azTty1Z6N53dmAudKHhy573j3yvRLsX2BSp8YpLtoCEG8E9DJe+8zUh4A==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@eslint/markdown@8.0.3':
-    resolution: {integrity: sha512-rBTSSShrq7e4O+PWfeE4azH4/CWPNrC+VGxBXiW00o3vYVJnznsZiDayj3KC9JztIMVRZxZHn2nrDIUau/4j7A==}
+  '@eslint/markdown@9.0.0':
+    resolution: {integrity: sha512-287jt3NwhChN7TLsWq44IB5vUAKwwNXafzLlR1CMcQK5/4mAwbwwAzqr/S7gCYRRJOSHCgGXzIV9uPCh1P810A==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
   '@eslint/object-schema@3.0.5':
@@ -3755,7 +3755,7 @@ snapshots:
 
   '@eslint/js@9.39.5': {}
 
-  '@eslint/markdown@8.0.3':
+  '@eslint/markdown@9.0.0':
     dependencies:
       '@eslint/core': 1.2.1
       '@eslint/plugin-kit': 0.7.3
@@ -5126,9 +5126,9 @@ snapshots:
     transitivePeerDependencies:
       - '@eslint/json'
 
-  eslint-plugin-markdown-links@0.9.1(@eslint/markdown@8.0.3)(eslint@10.11.0):
+  eslint-plugin-markdown-links@0.9.1(@eslint/markdown@9.0.0)(eslint@10.11.0):
     dependencies:
-      '@eslint/markdown': 8.0.3
+      '@eslint/markdown': 9.0.0
       '@mdit-vue/shared': 3.0.2
       entities: 8.1.0
       eslint: 10.11.0

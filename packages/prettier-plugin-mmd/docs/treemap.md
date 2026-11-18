@@ -901,7 +901,8 @@ statement. The first `}` still closes the block. A block that was not written
 indented is printed at the start of its line, with its body one step inside it
 (see [Title](#title)).
 
-[fixture: treemap/description-blocks/empty]
+[fixture: treemap/description-blocks/block-touching-with-text-fixed] [fixture:
+treemap/description-blocks/empty]
 
 [fixture: treemap/description-blocks/touching]
 

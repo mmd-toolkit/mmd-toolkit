@@ -262,6 +262,10 @@ ELK の配置のパッケージのどのリリースも、
 | [sequence](./sequence.ja.md#矢印の前後の空白)                                                                                         | `A<<->>B` を `A<<->> B` と印字                                                                                                                | `A <<->> B`                                     | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、前の `<<` を名前の一部として読む                                                                         | [fixture: sequence/arrow-spacing/bidirectional-arrow-gap-before-kept]                                                                                       |
 | [sequence](./sequence.ja.md#トークンの間の空白)                                                                                       | `:`、`,`、`;`、`>` を含まないデータブロックを持つ `participant A   @{ x }`                                                                    | `participant A@{ x }`                           | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 と 11.7.0 が、ブロックを参加者の名前の一部として、空白ごと読む                                               | [fixture: sequence/whitespace-between-tokens/data-block-name-gap-before-kept]                                                                               |
 | [sequence](./sequence.ja.md#色)                                                                                                       | `rect rgb(191 ,223 ,255)`                                                                                                                     | `rect rgb(191, 223, 255)`                       | [1](./printed-form.ja.md#1-記号の横の空白)            | 12.3.0 が `messages[0].message` を変える                                                                            | [fixture: sequence/colors/function-padding-kept]                                                                                                            |
+| [sequence](./sequence.ja.md#色)                                                                                                       | `rect rgb( 1 ,2,3 )`                                                                                                                          | `rect rgb(1, 2, 3)`                             | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 が別の `fill` 属性を描く                                                                         | [fixture: sequence/colors/rect-leading-and-comma-padding-kept]                                                                                              |
+| [sequence](./sequence.ja.md#色)                                                                                                       | `rect rgb( 1,2,3)` と `rect rgb(1,2,3 )`                                                                                                      | `rect rgb(1, 2, 3)`                             | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 が別の `fill` 属性を描く                                                                         | [fixture: sequence/colors/rect-open-paren-padding-kept] [fixture: sequence/colors/rect-close-paren-padding-kept]                                            |
+| [sequence](./sequence.ja.md#色)                                                                                                       | `box rgb( 1,2,3) Team` と `box rgb(1,2,3 ) Team`                                                                                              | `box rgb(1, 2, 3) Team`                         | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 が別の `fill` 属性を描き、12.3.0 は Db の `boxes[0].fill` も変える                               | [fixture: sequence/colors/box-open-paren-padding-kept] [fixture: sequence/colors/box-close-paren-padding-kept]                                              |
+| [sequence](./sequence.ja.md#色)                                                                                                       | `box rgb(1 ,2,3) Team`                                                                                                                        | `box rgb(1, 2, 3) Team`                         | [1](./printed-form.ja.md#1-記号の横の空白)            | 12.3.0 が Db の `boxes[0].fill` を変え、描画は同じ                                                                  | [fixture: sequence/colors/box-comma-padding-kept]                                                                                                           |
 | [sequence](./sequence.ja.md#タイトル)                                                                                                 | `title` の後に空白2つ、タブ、空白1つ                                                                                                          | 最終行に `title` だけ                           | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 が `title` だけの行を拒否する                                                                    | [fixture: sequence/title/title-blank-kept]                                                                                                                  |
 | [sequence](./sequence.ja.md#コメント)                                                                                                 | `accDescr {style:#x} end #a;` と末尾の空白2つ                                                                                                 | `accDescr: style:#x` の次の行に `end #a;`       | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 が単独行の `end` を拒否する                                                                      | [fixture: sequence/statements-one-per-line/end-comment-ignored-semicolon-trigger-in-other-statement-trailing-whitespace]                                    |
 | [sequence](./sequence.ja.md#コメント)                                                                                                 | 末尾の `accDescr {style:#x} end #12; %%{init: {}}%%`                                                                                          | `accDescr: style:#x` の次の行に `end`           | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 が単独行の `end` を拒否する                                                                      | [fixture: sequence/statements-one-per-line/end-comment-entity-before-directive]                                                                             |
@@ -2184,6 +2188,21 @@ Venn 図の `style A fill:rgb(1,2,3)` は `style A fill: rgb(1, 2, 3)` になり
 `box` のテキストのうち mermaid.js がブラウザーに尋ねる部分（仕様の
 `color-candidate`）と、Venn 図の `style` のプロパティの値です。
 コンマの前の空白と、括弧の内側の空白は、書かれたままです。
+`rect` の `(` の直後と `)` の直前の空白を残すのは、
+対象にする版の mermaid.js のすべてが、
+`rect rgb( 1,2,3)` と `rect rgb(1,2,3 )` に、
+`rect rgb(1, 2, 3)` とは別の `fill` 属性を描くためです。
+コンマの前の空白を残すのは、そこで 12.3.0 が Db を変え、描画は変わらず、
+その変化を覆う例外の種類もないためです。
+`box` でも、同じ空白を同じ理由で残します。
+`(` の直後と `)` の直前の空白は、
+対象にする版の mermaid.js のすべてで別の `fill` 属性になります。
+コンマの前の空白は、12.3.0 が Db の `boxes[0].fill` を変え、描画は変わりません。
+Venn 図の `style` では、これらの空白のどれもが 12.3.0 の Db の `color` を変え、
+対象にする版の mermaid.js のすべてで描画は同じです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 色関数とするのは、小文字の `rgb(`、`rgba(`、`hsl(`、`hsla(` で、
 引数は `rgb` と `hsl` が 3 個、`rgba` と `hsla` が 4 個、
 どれも数字と多くても 1 つの点から成り、百分率には後ろに `%` を付け、
@@ -2214,10 +2233,18 @@ Venn 図には色関数がありません。
 [fixture: sequence/colors/functions-spaced]
 [fixture: sequence/colors/function-padding-kept]
 [fixture: sequence/colors/rect-leading-and-comma-padding-kept]
+[fixture: sequence/colors/rect-open-paren-padding-kept]
+[fixture: sequence/colors/rect-close-paren-padding-kept]
+[fixture: sequence/colors/box-open-paren-padding-kept]
+[fixture: sequence/colors/box-close-paren-padding-kept]
+[fixture: sequence/colors/box-comma-padding-kept]
 [fixture: sequence/colors/functions-as-written]
 [fixture: sequence/colors/functions-beside-comments-and-directives]
 [fixture: venn/colors/functions-spaced]
 [fixture: venn/colors/function-padding-kept]
+[fixture: venn/colors/function-open-paren-padding-kept]
+[fixture: venn/colors/function-close-paren-padding-kept]
+[fixture: venn/colors/function-comma-padding-kept]
 [fixture: venn/colors/functions-as-written]
 
 mermaid.js は、色を書かれたままの大文字小文字で Db と図に残し、
@@ -4206,6 +4233,8 @@ mermaid.js の行の規則が隙間の空白を読む可能性のある所と、
 構造の部分の間にある普通のコメントとディレクティブは必要な改行を残し、
 構造の列はそろえます。
 続きの行と間の独立した注釈は文より 1 段深く置きます。
+ほかの規則が配置を書かれたまま残す所は別です（Db が空白ごとテキストを持つ所や、
+動かすと mermaid.js がテキストを拒否する所などです）。
 規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。

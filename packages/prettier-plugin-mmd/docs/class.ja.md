@@ -329,6 +329,11 @@ mermaid.js の文書の例 4 件は、本体なしと本体ありで `class Anim
 
 隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
 U+2028 と U+2029 は、そのまま残します。
+規則 1 の表に、これを含む間隔の印はないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[journey](./journey.ja.md#行区切り文字) と
+[timeline](./timeline.ja.md#行区切り文字) も、
+これを含む間隔を書かれたまま印字します。
 
 [test: U+2028 before the `:::` of a class]
 [test: U+2029 after the `:::` of a class]

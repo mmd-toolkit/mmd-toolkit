@@ -805,13 +805,21 @@ mark and not the start of a line
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [flowchart](./flowchart.md#comments) and [wardley](./wardley.md#comments)
 align a comment on a line of its own with the body in the same way. Inline
-comments keep their line and touching side, or one separating space. Preserve
-marks, content and trailing padding for attachment. Native comments end at LF/CR
-and keep LS/PS as content. Earlier values own enclosed percent text; common
-lines stop at it. Removed common regions keep complete source and continuation
-columns.
+comments keep their line, touching where they touch, and a run of spaces and
+tabs before one becomes one space. Rule 2 decides the gap before an inline
+comment too, as [sequence](./sequence.md#comments),
+[journey](./journey.md#comments), and [timeline](./timeline.md#comments) print a
+comment after a statement in the same way, where no other rule keeps the
+whitespace as written; each of them names those cases in its own sections or in
+[A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
+(whitespace that the Db holds, as after a `section` or a period, and whitespace
+that changes what mermaid.js reads). Preserve marks, content and trailing
+padding for attachment. Native comments end at LF/CR and keep LS/PS as content.
+Earlier values own enclosed percent text; common lines stop at it. Removed
+common regions keep complete source and continuation columns.
 
-[fixture: architecture/comments/comment-attachments]
+[fixture: architecture/comments/comment-attachments] [fixture:
+architecture/comments/inline-gap-run-before-comment]
 
 [fixture: architecture/comments/value-ownership]
 

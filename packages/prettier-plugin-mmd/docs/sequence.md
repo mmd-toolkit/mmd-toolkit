@@ -328,7 +328,11 @@ of mermaid.js writes a space after every block keyword
 whitespace-between-tokens/block-text-touching-spaced]
 
 A directive in the gap is placed as under [Directives](#directives), and a
-U+2028 or U+2029 stays where it is.
+U+2028 or U+2029 stays where it is. Rule 1 names no mark for a gap that holds
+one, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [journey](./journey.md#line-separators) and
+[timeline](./timeline.md#line-separators) print such a gap as written.
 
 [fixture: whitespace-between-tokens/block-text-beside-directive] [test: U+2028
 between a block keyword and its text] [test: U+2029 between a wrap prefix and
@@ -632,8 +636,18 @@ than the function. The whitespace before a comma, immediately after the opening
 versions of mermaid.js that count read `rgb(191, 223, 255)` as a different
 message value in the Db (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The whitespace immediately after the `(` and before the `)` of a `rect` stays
+too, since every version that counts draws another `fill` attribute for
+`rect rgb( 1,2,3)` and `rect rgb(1,2,3 )` (see the same table). In a `box` they
+stay for the same reasons, and so does the whitespace before a comma, which
+changes `boxes[0].fill` in the Db of 12.3.0 with the same drawing.
 
 [fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
+[fixture: colors/rect-leading-and-comma-padding-kept] [fixture:
+colors/rect-open-paren-padding-kept] [fixture:
+colors/rect-close-paren-padding-kept] [fixture:
+colors/box-open-paren-padding-kept] [fixture:
+colors/box-close-paren-padding-kept] [fixture: colors/box-comma-padding-kept]
 [fixture: colors/functions-as-written] [fixture:
 colors/functions-beside-comments-and-directives]
 

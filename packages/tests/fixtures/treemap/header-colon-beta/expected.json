@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a colon after the treemap-beta header have a production? The same input without the colon is accepted."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 13: Expecting token of type 'EOF' but found `:`."
+  }
+}
