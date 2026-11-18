@@ -287,8 +287,9 @@ Within a line, a run of spaces and tabs between two tokens becomes one space,
 and tokens that touch keep touching, as in a flowchart, except for the cases
 named below: a string, a backquoted name, or the `call` keyword after what comes
 before it, the `[` of a label, the `~` of a generic type, and the `{` of a
-description block, which has one space before it (see
-[Empty description blocks](#empty-description-blocks)).
+description block and of a member body, which has one space before it (see
+[Empty description blocks](#empty-description-blocks) and
+[Member bodies](#member-bodies)).
 
 [fixture: whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/tabs-collapsed] [fixture:
