@@ -172,7 +172,12 @@ declaration on the same line resets the mode and splitting would be harmless:
 the rule is local to the syntax, not a search for the final normalized state. A
 title takes the rest of its line as its value, so statement-looking words after
 `title` cannot be split out, and swallowed fragments stay with their written
-line neighbours.
+line neighbours. Where whitespace stands between statements that stay together
+on a line, it is one space: rule 1 names no mark between two statements, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [flowchart](./flowchart.md#whitespace-between-tokens) and
+[er](./er.md#whitespace-between-tokens) print a run of spaces and tabs between
+two tokens as one space and keep tokens that touch touching.
 
 [corpus fixture: venn/db-indent-after-same-line-explicit-text] [fixture:
 venn/statements-one-per-line/directive-in-declaration-group] [corpus fixture:
