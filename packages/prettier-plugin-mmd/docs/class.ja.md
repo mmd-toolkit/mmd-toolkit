@@ -293,10 +293,10 @@ classDiagram
 
 ### トークンの間の空白
 
-行の中で、2 つのトークンの間の空白とタブの連続は空白 1 つにします。
-接しているトークンは、下の規則が間に空白を置かない限り、
-flowchart と同じく接したまま残します。
-下の規則が空白を置く例は、文字列、矢印、コロンなどです。
+行の中で、下の規則が隙間に別の形を与えない限り、
+2 つのトークンの間の空白とタブの連続は空白 1 つにし、
+接しているトークンは flowchart と同じく接したまま残します。
+下の規則が別の形を与える例は、文字列、矢印、コロンなどです。
 
 [fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/tabs-collapsed]
