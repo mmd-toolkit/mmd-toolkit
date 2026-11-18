@@ -624,9 +624,15 @@ mermaid.js 10.9.8 は、state 図に `style` 文を持たず、そのような�
 [fixture: whitespace-between-tokens/style-colon-escaped-space-kept]
 [fixture: whitespace-between-tokens/style-colon-escaped-space-run-dropped]
 
-コメントやディレクティブがある文、空白だけのスタイルがある文、
-スタイルに改行があるか、行に保つ `;` がある文は、書かれたままにします。
+最後のスタイルの終わりより前にコメントやディレクティブがある文、
+空白だけのスタイルがある文、スタイルに改行があるか、行に保つ `;` がある文は、
+書かれたままにします。
+最後のスタイルの後ろのコメントやディレクティブは文の一部ではなく、
+文は普通に整形します。
+詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください。
 
+[fixture: whitespace-between-tokens/style-comment-and-directive-after-last-style-formatted]
 [fixture: whitespace-between-tokens/comma-kept]
 [fixture: whitespace-between-tokens/style-comma-spaced]
 [fixture: whitespace-between-tokens/style-comma-beside-directive]

@@ -693,16 +693,20 @@ arrow takes it as it is (see
 
 [fixture: styles/style-label-styles-kept]
 
-A statement stays as written where it holds a comment or a directive, where a
-style is all whitespace, or where a style holds a line break or its line holds a
-kept `;`. The whitespace at the end of the statement is dropped, as in a
-flowchart (see
+A statement stays as written where a comment or a directive stands inside it,
+before the end of its last style, where a style is all whitespace, or where a
+style holds a line break or its line holds a kept `;`. A comment or a directive
+after the last style is no part of the statement, which is formatted as usual
+(see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+The whitespace at the end of the statement is dropped, as in a flowchart (see
 [Style trailing whitespace](./flowchart.md#style-trailing-whitespace)).
 
-[fixture: styles/class-definition-spaces] [fixture: styles/style-spaces]
-[fixture: styles/class-spaces] [fixture: styles/style-commas-spaced] [fixture:
-styles/class-definition-commas-spaced] [fixture:
-styles/class-definition-comma-spaced] [fixture:
+[fixture: styles/class-definition-spaces] [fixture:
+styles/style-comment-and-directive-after-last-style-formatted] [fixture:
+styles/style-spaces] [fixture: styles/class-spaces] [fixture:
+styles/style-commas-spaced] [fixture: styles/class-definition-commas-spaced]
+[fixture: styles/class-definition-comma-spaced] [fixture:
 styles/class-definition-comma-beside-directive-kept] [fixture:
 styles/style-statement-commas-spaced] [test: U+2029 before the comma of a block
 classDef statement] [fixture: styles/class-ids-as-written]

@@ -502,15 +502,20 @@ of the statements decides and the printer keeps it as written either way:
 [fixture: whitespace-between-tokens/class-def-backslash-space-kept] [fixture:
 whitespace-between-tokens/class-def-backslash-at-end-kept]
 
-A statement stays as written where it holds a comment or a directive, where a
-style is all whitespace, or where a style holds a line break or its line holds a
-kept `;`. `style A fill:#f00 %%{x}%% ,color:white` stays as written, since some
-of the versions of mermaid.js that count draw different styles for
+A statement stays as written where a comment or a directive stands inside it,
+before the end of its last style, where a style is all whitespace, or where a
+style holds a line break or its line holds a kept `;`. A comment or a directive
+after the last style is no part of the statement, which is formatted as usual
+(see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+`style A fill:#f00 %%{x}%% ,color:white` stays as written, since some of the
+versions of mermaid.js that count draw different styles for
 `style A fill: #f00 %%{x}%%, color: white` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: whitespace-between-tokens/style-comma-before-dropped] [fixture:
-whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
+whitespace-between-tokens/style-comment-and-directive-after-last-style-formatted]
+[fixture: whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
 whitespace-between-tokens/style-colon-and-comma-spaced]
 
 A U+2028 or U+2029 among the styles keeps the statement as written.

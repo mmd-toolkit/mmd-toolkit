@@ -1028,9 +1028,15 @@ mermaid.js はリンクのスタイルを書かれたまま `;` でつなぐの�
 除くと `:` がエスケープされるので残し、その空白の後ろの空白は、
 ほかの `:` の前と同じく除きます。
 `style A fill\   :#f00` は `style A fill\ : #f00` と印字します。
-コメントやディレクティブがある文、空白だけのスタイルがある文、
-スタイルに改行があるか、行に保つ `;` がある文は、書かれたまま残します。
+最後のスタイルの終わりより前にコメントやディレクティブがある文、
+空白だけのスタイルがある文、スタイルに改行があるか、行に保つ `;` がある文は、
+書かれたまま残します。
+最後のスタイルの後ろのコメントやディレクティブは文の一部ではなく、
+文は普通に整形します。
+詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください。
 
+[fixture: style-trailing-whitespace/removed-after-directive]
 [fixture: whitespace-between-tokens/style-blank-style-kept]
 [fixture: whitespace-between-tokens/style-colon-escaped-space-kept]
 [fixture: whitespace-between-tokens/style-colon-escaped-space-run-dropped]
