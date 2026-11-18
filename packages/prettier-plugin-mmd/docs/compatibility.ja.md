@@ -1363,7 +1363,8 @@ requirement の図でも、ディレクティブの後ろでは同じで、
 11.7.0 以降はそこのコメントを拒否します。
 ER の図では、11.7.0 以降が、最後のスタイルの後ろのコメントと、
 テキストの終わりのディレクティブを拒否し、別の行が続くときのディレクティブは、
-文を書かれたまま残します。
+前か後ろに空白があれば、文を書かれたまま残し、
+最後のスタイルに接して後ろに何もなければ、文を普通に整形します。
 treemap の図は、コメントの後ろでは文を整形し、ディレクティブの後ろでは、
 行末の空白を除いて書かれたまま残します。
 詳しくは [スタイルの末尾の空白](#スタイルの末尾の空白) を参照してください。
@@ -1383,6 +1384,7 @@ treemap の図は、コメントの後ろでは文を整形し、ディレクテ
 [fixture: agentflow/single-space-gaps/link-style-comment-and-directive-after-last-style-formatted]
 [fixture: treemap/styles/class-def-comment-after-last-style-formatted]
 [fixture: er/styles-and-classes/directive-before-next-line]
+[fixture: er/styles-and-classes/directive-touching-last-style]
 [fixture: flowchart/whitespace-between-tokens/class-def-comment-and-directive-after-last-style-formatted]
 [fixture: requirement/directives/class-def-after-statement-at-end-of-line]
 [fixture: treemap/styles/directive-line-kept]

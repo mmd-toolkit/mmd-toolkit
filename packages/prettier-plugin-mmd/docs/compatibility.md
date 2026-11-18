@@ -1297,8 +1297,10 @@ and an agentflow diagram, `linkStyle`. The same holds in a requirement diagram
 after a directive, and 11.7.0 and later reject a comment there. In an ER
 diagram, 11.7.0 and later reject a comment after the last style and a directive
 at the end of the text, and a directive before another line keeps the statement
-as written. A treemap formats the statement after a comment and keeps it as
-written after a directive, except for the whitespace at the end of the line (see
+as written where whitespace stands before or after the directive, and formats it
+as usual where the directive touches the last style and nothing follows it. A
+treemap formats the statement after a comment and keeps it as written after a
+directive, except for the whitespace at the end of the line (see
 [Whitespace at the end of a style](#whitespace-at-the-end-of-a-style)).
 
 [fixture: flowchart/whitespace-between-tokens/style-blank-style-kept] [fixture:
@@ -1320,6 +1322,7 @@ flowchart/style-trailing-whitespace/link-style-comment-and-directive-after-last-
 agentflow/single-space-gaps/link-style-comment-and-directive-after-last-style-formatted]
 [fixture: treemap/styles/class-def-comment-after-last-style-formatted] [fixture:
 er/styles-and-classes/directive-before-next-line] [fixture:
+er/styles-and-classes/directive-touching-last-style] [fixture:
 flowchart/whitespace-between-tokens/class-def-comment-and-directive-after-last-style-formatted]
 [fixture: requirement/directives/class-def-after-statement-at-end-of-line]
 [fixture: treemap/styles/directive-line-kept] [fixture:
