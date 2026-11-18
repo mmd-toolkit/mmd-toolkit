@@ -1263,6 +1263,11 @@ rf 02 cmd Beta
 ### Trailing whitespace
 
 見出しや構造部品の後の、害のない外側の ASCII 空白だけを削ります。
+規則 1 は、行末の空白を決めません。
+規則 1 の表が挙げるのは印の横の空白だからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[requirement](./requirement.ja.md#トークンの間の空白) と
+[radar](./radar.ja.md#trailing-whitespace)も、行末の空白を落とします。
 物理行ごとの両端の空白の除去ではなく所有ノードで判断します。
 メタデータの値と前置部分、許容した余白変更以外の data 内部、
 コメント・ディレクティブの末尾、隠れた形・data の閉じの境界、保護区間は、

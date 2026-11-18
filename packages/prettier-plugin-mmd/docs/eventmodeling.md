@@ -1238,7 +1238,11 @@ rf 02 cmd Beta
 ### Trailing whitespace
 
 Remove only harmless exterior ASCII padding after the header or structural
-components. Decide by ownership rather than trimming every physical line. Keep
+components. Rule 1 names no mark at the end of a line, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [requirement](./requirement.md#whitespace-between-tokens) and
+[radar](./radar.md#trailing-whitespace) drop the whitespace at the end of a
+line. Decide by ownership rather than trimming every physical line. Keep
 metadata values and prefixes, data interiors apart from the permitted margin
 adjustment, comment/directive tails, hidden/data closing boundaries and
 protected stretches; their whitespace can be content or determine acceptance.
