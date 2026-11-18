@@ -1134,10 +1134,15 @@ sequence/lex-single-percent-comment-line] [fixture: comments/percent-line-kept]
 [fixture: comments/line-ending-ignored-semicolon-trailing-whitespace-kept]
 
 A comment after a statement stays on its line, and whether whitespace is written
-before its mark is kept: mermaid.js reads `autonumber 5%% c` without the number
-5, and a space before `%%` would give it the number, in every version that
-counts (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+before its mark is kept: Rule 1 names no mark before a comment, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [requirement](./requirement.md#comments), [c4](./c4.md#comments),
+and [journey](./journey.md#comments) keep a comment that touches, where no other
+rule keeps the whitespace as written; each of them names those cases in its own
+sections. Here the whitespace changes what mermaid.js reads: it reads
+`autonumber 5%% c` without the number 5, and a space before `%%` would give it
+the number (see
+[A comment right after a character](./compatibility.md#a-comment-right-after-a-character)).
 A run of whitespace before the mark is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 
@@ -1459,12 +1464,15 @@ characters as escapes too (see
 
 - At the end of the text of a `box`, after the whitespace that may stand before
   them. A box whose text holds such a character has the fill `transparent` and
-  no name, and without it `box aqua` has the fill `aqua`; every version of
-  mermaid.js that counts draws another fill (see
-  [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-  The whitespace after the last of them is dropped. A block header other than a
-  box, `loop x`, U+2028, and ` ;` for one, is trimmed by mermaid.js, and the
-  character is dropped with the whitespace at the end of its text.
+  no name, and without it `box aqua` has the fill `aqua`. Rule 1 names no mark
+  for the end of a text, so
+  [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+  decides, as [journey](./journey.md#line-separators) and
+  [timeline](./timeline.md#line-separators) keep U+2028 and U+2029 at the end of
+  a text as characters of it and leave out the spaces after one. The whitespace
+  after the last of them is dropped. A block header other than a box, `loop x`,
+  U+2028, and ` ;` for one, is trimmed by mermaid.js, and the character is
+  dropped with the whitespace at the end of its text.
 
   [test: U+2028 at the end of the text of a box] [test: whitespace around U+2028
   at the end of the text of a box] [test: U+2029 at the end of the text of a

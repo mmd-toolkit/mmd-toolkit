@@ -1186,11 +1186,16 @@ sequenceDiagram
 [fixture: comments/line-ending-ignored-semicolon-trailing-whitespace-kept]
 
 文の後のコメントはその行に残し、印の前に空白が書かれているかどうかを保ちます。
+規則 1 は、コメントの前の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[requirement](./requirement.ja.md#コメント)、[c4](./c4.ja.md#コメント)、
+[journey](./journey.ja.md#コメント)も、接するコメントは接したまま残します。
+ほかの規則が空白を書かれたまま残す所は別で、どの図の文書も、
+その所を自分の節で挙げています。
+この図では、空白が mermaid.js の読みを変えます。
 mermaid.js は `autonumber 5%% c` を数 5 なしで読み、
-`%%` の前に空白を入れると数を読むからです。
-対象にする版の mermaid.js のすべてで、そうなります。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+`%%` の前に空白を入れると数を読みます。
+詳しくは [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
 を参照してください。
 印の前の空白の連なりは、空白 1 つで印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
@@ -1484,10 +1489,12 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
 - `box` のテキストの末尾で、その前に空白があっても、そこまで。
   テキストにこの文字がある box は、塗りが `transparent` で名前がなくなります。
   なければ `box aqua` の塗りは `aqua` です。
-  対象にする版の mermaid.js のすべてが、別の塗りを描きます。
-  詳しくは
-  [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-  を参照してください。
+  規則 1 は、テキストの末尾の印を挙げていないので、
+  [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+  [journey](./journey.ja.md#行区切り文字)、
+  [timeline](./timeline.ja.md#行区切り文字)も、
+  テキストの末尾の U+2028 と U+2029 をテキストの文字として残し、
+  その後の空白は除きます。
   最後の文字より後の空白は落とします。
   `box` 以外のブロックの見出しは、mermaid.js がテキストの両端を取り除くので、
   文字は、テキストの末尾の空白と一緒に落とします（`loop x`、U+2028、
