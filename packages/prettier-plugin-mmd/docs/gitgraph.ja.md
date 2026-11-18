@@ -528,6 +528,7 @@ Db で LF 後の字下げが取り除かれるためです。
 空白だけの内側は、囲む空白を要する本文がないため `{}` と印字します。
 タブ、改行、Unicode の空白も同じです。
 
+[fixture: title-and-common-values/block-touching-with-text-kept]
 [fixture: title-and-common-values/empty-whitespace-interiors]
 [test: gitgraph Unicode and tab interiors]
 

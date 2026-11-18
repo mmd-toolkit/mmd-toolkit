@@ -496,8 +496,9 @@ source. Whitespace-only interiors print `{}` because there is no text for
 interior whitespace to surround; tabs, line breaks and Unicode whitespace follow
 the same rule.
 
-[fixture: title-and-common-values/empty-whitespace-interiors] [test: gitgraph
-Unicode and tab interiors]
+[fixture: title-and-common-values/block-touching-with-text-kept] [fixture:
+title-and-common-values/empty-whitespace-interiors] [test: gitgraph Unicode and
+tab interiors]
 
 Comment/directive-only blocks keep their trivia. Keep every repeated, empty and
 interleaved assignment, including frontmatter fallback. The pinned grammar reads
