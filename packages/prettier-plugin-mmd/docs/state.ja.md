@@ -1444,7 +1444,8 @@ stateDiagram-v2
 規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
-[er](./er.ja.md#コメント) と [block](./block.ja.md#コメント)も、
+[flowchart](./flowchart.ja.md#コメント)、[class](./class.ja.md#コメント)、
+[sequence](./sequence.ja.md#コメント)も、
 コメント行を周りの文と同じ段に置きます。
 
 [fixture: comments/kept] [fixture: comments/text-kept]
