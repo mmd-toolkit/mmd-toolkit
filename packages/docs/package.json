@@ -13,7 +13,7 @@
     "clean": "rimraf lib"
   },
   "devDependencies": {
-    "@eslint/markdown": "^8.0.3",
+    "@eslint/markdown": "^9.0.0",
     "@mmd-toolkit/eslint-plugin": "workspace:*",
     "@mmd-toolkit/textmate-grammar": "workspace:*",
     "@shikijs/vitepress-twoslash": "^4.5.0",
