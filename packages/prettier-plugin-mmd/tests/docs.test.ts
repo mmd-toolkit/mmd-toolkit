@@ -735,6 +735,22 @@ function diagramNamesIn(text: string): string[] {
     .map((name) => name.trim())
 }
 
+/** The diagram types that count in some version. */
+function everyCountedDiagram(): string[] {
+  return countedVersionGroups.flatMap((group) => group.diagrams)
+}
+
+/**
+ * The diagram types of the first column of a row of forms kept: the names in
+ * the link text, or every diagram type that counts for a form that every one of
+ * them keeps.
+ */
+function keptDiagramsIn(text: string): string[] {
+  return text === "every diagram type" || text === "すべての図種"
+    ? everyCountedDiagram()
+    : diagramNamesIn(text)
+}
+
 /** Expands the inclusive descriptions in the table's Diagram types column. */
 function countedDiagramsIn(text: string): string[] {
   switch (text) {
@@ -751,7 +767,7 @@ function countedDiagramsIn(text: string): string[] {
         .flatMap((group) => group.diagrams)
     case "every diagram type":
     case "すべての図種":
-      return countedVersionGroups.flatMap((group) => group.diagrams)
+      return everyCountedDiagram()
     default:
       return diagramNamesIn(text)
   }
@@ -879,7 +895,7 @@ describe("the table of forms kept for versions of mermaid.js that count", () => 
         expect
           .soft(end, `${document}: ${row} has no diagram link`)
           .toBeGreaterThan(1)
-        const diagrams = diagramNamesIn(link.slice(1, end))
+        const diagrams = keptDiagramsIn(link.slice(1, end))
         for (const diagram of diagrams) {
           expect
             .soft(

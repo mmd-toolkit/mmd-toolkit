@@ -80,7 +80,10 @@ architecture-beta
 ### Statements one per line
 
 Print ordinary statements one per line, as the other diagram types do. A common
-line value owns apparent keywords through physical EOL, so do not split it.
+line value owns apparent keywords through physical EOL, so do not split it:
+every version of mermaid.js that counts rejects `architecture-beta title t`
+followed by a line break and `service a; junction j` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Semicolons are not statement separators; invalid adjacent statements and empty
 descriptions used as component gaps remain failures.
 
