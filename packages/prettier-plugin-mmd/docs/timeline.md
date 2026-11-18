@@ -1371,8 +1371,8 @@ whitespace before the `#` is part of the period, and stays as it is (see
 comments/after-statement-under-a-section]
 
 A description block that a `%%` comment follows on its line stays a block, since
-mermaid.js reads the description `a` from `accDescr {a} %% c` but `a %% c` from
-`accDescr: a %% c` in the Db (see
+some of the versions of mermaid.js that count read the description `a` from
+`accDescr {a} %% c` but `a %% c` from `accDescr: a %% c` in the Db (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: comments/block-then-percent-comment-kept]
