@@ -978,7 +978,8 @@ block-body margin adjustment in [Data blocks](#data-blocks). Boundaries needed
 for metadata or a required `title` take precedence. Slash comments are not moved
 before the header, where detection would reject them.
 
-[fixture: eventmodeling/comments/standalone-native-comments]
+[fixture: comments/inline-gap-run-and-touching] [fixture:
+eventmodeling/comments/standalone-native-comments]
 
 [fixture: eventmodeling/comments/inline-comments-keep-contact]
 

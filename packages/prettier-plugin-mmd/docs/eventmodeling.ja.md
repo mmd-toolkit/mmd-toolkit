@@ -1002,6 +1002,7 @@ data ブロック、note、`accDescr` ブロック、スラッシュのブロッ
 メタデータや必須の `title` の境界を優先します。
 検出が拒否するため、スラッシュのコメントを見出し前へ移しません。
 
+[fixture: comments/inline-gap-run-and-touching]
 [fixture: eventmodeling/comments/standalone-native-comments]
 
 [fixture: eventmodeling/comments/inline-comments-keep-contact]
