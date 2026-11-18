@@ -2760,7 +2760,8 @@ rejects `treemap:` and `treemap-beta:`, and reads and draws the header without
 the colon. The examples write the header without the colon 8 times and with it
 never, so [rule 3](./printed-form.md#3-a-spelling) gives the header without it.
 
-[corpus fixture: treemap/header-colon]
+[corpus fixture: treemap/header-colon] [corpus fixture:
+treemap/header-colon-beta]
 
 A gitGraph without a direction reads `gitGraph:` and `gitGraph` the same in
 every version that counts, with the same commits and branches and the same

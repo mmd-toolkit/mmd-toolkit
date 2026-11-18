@@ -2928,6 +2928,7 @@ treemap の見出しにはコロンを付けません。
 [規則 3](./printed-form.ja.md#3-綴り)がコロンのない見出しを与えます。
 
 [corpus fixture: treemap/header-colon]
+[corpus fixture: treemap/header-colon-beta]
 
 向きのない gitGraph は、`gitGraph:` と `gitGraph` を、
 対象にするすべての版が同じに読み、コミットもブランチも図も同じです。
