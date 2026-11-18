@@ -3086,9 +3086,7 @@ block holds, or would not be read as the block is:
   which ends the text of the form with the colon before a `%%` and reads the
   rest of the line as a comment, but takes a `%%` in a block as part of the
   text: `accDescr: a %% b` has the description `a`, and `accDescr {a %% b}` has
-  `a %% b` (see
-  [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
-  A block there also drops the whitespace around a line separator:
+  `a %% b`. A block there also drops the whitespace around a line separator:
   `accDescr { A<U+2028> B }` has the description `A<U+2028>B` in a pie chart and
   a gitGraph, and `accDescr: A<U+2028> B` has `A<U+2028> B`. The other diagram
   types take the `%%` and the line separator as part of the text in both forms,

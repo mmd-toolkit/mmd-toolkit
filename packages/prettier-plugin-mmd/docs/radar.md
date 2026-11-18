@@ -251,8 +251,8 @@ protected semicolon segments remain written, including their continuation
 columns. No continuation indentation is added inside a protected segment;
 ordinary spacing still applies after it. Shared joining checks also keep a
 terminal line containing another statement's semicolon: joining a preceding
-style-like label could change that statement's Db in every version of mermaid.js
-that counts (see
+style-like label could change that statement's Db, and every version of
+mermaid.js that counts draws different title text (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: radar/multi-line-statements/leading-trailing-entry-lines]
@@ -540,19 +540,18 @@ radar-beta
 
 Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
-For blocks that keep their braces, separate the keyword and opening brace with
-one space so the block boundary is clear. For `accDescr {a%%literal}`, the
-braces stay, since every version of mermaid.js that counts draws different text
-for `accDescr: a%%literal` (see
+For `accDescr {a%%literal}`, the braces stay, since every version of mermaid.js
+that counts draws different text for `accDescr: a%%literal` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Whitespace-only interiors become `{}` because no text needs surrounding space.
-Plain opener whitespace joins; real trivia keeps its break. Preserve
-comment/directive-only interiors. Ordinary description body and standalone
-comment lines align one level inside the statement: the Db removes indentation
-after LF. Keep line breaks, internal blanks and trailing whitespace; align a
-separate opener or closer with the statement. Directives and shared removed
-comment regions keep their complete source. The first closing brace still ends
-the value.
+For blocks that keep their braces, separate the keyword and opening brace with
+one space so the block boundary is clear. Whitespace-only interiors become `{}`
+because no text needs surrounding space. Plain opener whitespace joins; real
+trivia keeps its break. Preserve comment/directive-only interiors. Ordinary
+description body and standalone comment lines align one level inside the
+statement: the Db removes indentation after LF. Keep line breaks, internal
+blanks and trailing whitespace; align a separate opener or closer with the
+statement. Directives and shared removed comment regions keep their complete
+source. The first closing brace still ends the value.
 
 [fixture: radar/description-blocks/block-empty-fixed]
 
