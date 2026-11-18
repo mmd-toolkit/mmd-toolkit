@@ -1253,10 +1253,13 @@ block-beta
 
 U+2028 and U+2029 are whitespace between the units of a block diagram, as a
 space is, and a gap that holds one on a line is printed as written, as in the
-other diagrams (see [Line separators](./journey.md#line-separators)). Where the
-printer puts a line break instead of the gap, or the gap ends a line, they are
-dropped with it. A comment line after one of them joins the lines of the source
-that mermaid.js reads as one (see
+other diagrams (see [Line separators](./journey.md#line-separators)). Rule 1
+names no mark for a gap that holds one, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: the other diagrams print it so. Where the printer puts a line break
+instead of the gap, or the gap ends a line, they are dropped with it. A comment
+line after one of them joins the lines of the source that mermaid.js reads as
+one (see
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)),
 and the statements on those lines are printed as written. In a label they are
 characters and stay.
