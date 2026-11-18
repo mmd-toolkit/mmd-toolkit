@@ -439,6 +439,13 @@ section の中でも、同じ period の `:` は 1 つの桁に置きます。
 
 event 行の間のコメント行と指令の行は、次の event の `:` と同じ列にそろえます。
 `:` が通常の継続行の字下げを使うときは、これらの行も同じ字下げを使います。
+規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
+規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
+[requirement](./requirement.ja.md#フィールド) と
+[sequence](./sequence.ja.md#複数行の文)も、
+文の途中のコメント行とディレクティブ行を、その文の続きの行と同じ段に置きます。
+ここでは、続きの行は `:` の列に立ちます。
 文の中の連続する空行は 1 つにします。
 
 [fixture: periods-and-events/comment-lines-inside]
@@ -944,6 +951,12 @@ timeline について対象にする版は、どちらの形も同じに描き�
 方向の後ろのコメントは行に残します（[コメント](#コメント)を参照）。
 方向の前後の指令は、ほかと同じように置きます（[指令](#指令)を参照）。
 行末の空白は落とします。
+規則 1 は、行末の空白を決めません。
+規則 1 の表が挙げるのは印の横の空白だからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[radar](./radar.ja.md#trailing-whitespace) と
+[architecture](./architecture.ja.md#trailing-whitespace)も、
+ヘッダーの後ろの空白を落とします。
 
 [fixture: header-and-direction/comment-after-the-direction]
 [fixture: header-and-direction/directive-before-the-direction]
@@ -1314,6 +1327,12 @@ timeline
 [fixture: whitespace-between-tokens/description-block-braces]
 
 ヘッダーの行末の空白は落とします。
+規則 1 は、行末の空白を決めません。
+規則 1 の表が挙げるのは印の横の空白だからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[radar](./radar.ja.md#trailing-whitespace) と
+[architecture](./architecture.ja.md#trailing-whitespace)も、
+ヘッダーの後ろの空白を落とします。
 
 [fixture: whitespace-between-tokens/trailing-whitespace-after-header]
 
@@ -1350,6 +1369,12 @@ timeline
 period の前のコメントは period の段に置きます。
 テキストの末尾にあるときは、最後の文の段に置きます。
 これらは journey と同じ規則です。
+規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
+規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
+[gantt](./gantt.ja.md#コメント)、[block](./block.ja.md#コメント)、
+[quadrant](./quadrant.ja.md#コメント)も、
+コメント行を後ろの文と同じ段に置きます。
 
 [fixture: comments/lines-at-statement-level] [fixture: comments/text-kept]
 [fixture: comments/single-percent-kept] [fixture: comments/bare-percent-lines]
