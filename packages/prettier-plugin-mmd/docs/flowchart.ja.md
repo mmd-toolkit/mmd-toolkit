@@ -1927,7 +1927,8 @@ usecaseのDbが同じ形に従います。
 
 [test: accessibility blocks: flowchart empty-block-unicode]
 
-保持行の例外を優先し、複数行でコメント行を持つブロックは従来の配置を保ちます。
+保持行の例外を優先し、複数行でコメント行か、
+自分の行にあるディレクティブを持つブロックは従来の配置を保ちます。
 規則 1 は、ブロックの中の行の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [xychart](./xychart.ja.md#空の説明ブロック) と

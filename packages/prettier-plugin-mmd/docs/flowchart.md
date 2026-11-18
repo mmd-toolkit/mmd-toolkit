@@ -1873,8 +1873,8 @@ Accepted NBSP, U+2028 and U+2029 inside an otherwise empty block also disappear.
 [test: accessibility blocks: flowchart empty-block-unicode]
 
 Kept-line exceptions still take priority, and a block of several lines that
-holds comment lines retains its layout. Rule 1 names no mark for a line inside a
-block, so
+holds comment lines, or a directive on a line of its own, retains its layout.
+Rule 1 names no mark for a line inside a block, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [xychart](./xychart.md#empty-description-blocks) and
 [quadrant](./quadrant.md#empty-description-blocks) keep the contents and line

@@ -3250,8 +3250,9 @@ agentflow 図の `accDescr {style:#x} ; %% #a;`）。
   [アクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)のとおり、
   `accDescr {}` と印字します。
   ディレクティブだけを持つブロックはブロックのままで、
-  `accDescr {%%{init: {}}%% }` は `accDescr { %%{init: {}}%%}` と印字し、
-  自分の行にあるディレクティブは行を保ちます（同じ節を参照）。
+  整形ツールは `accDescr {%%{init: {}}%% }` を `accDescr { %%{init: {}}%%}`
+  と印字します。
+  自分の行にあるディレクティブは行を保ちます。
 
   [fixture: flowchart/accessibility-lines/empty-block-tight]
   [fixture: flowchart/accessibility-lines/empty-block-spaced]

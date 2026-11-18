@@ -3101,9 +3101,9 @@ block holds, or would not be read as the block is:
 
 - The block has no text: it is printed `accDescr {}`, as
   [Accessibility lines](./flowchart.md#accessibility-lines) says. A block that
-  holds only a directive stays a block: `accDescr {%%{init: {}}%% }` is printed
-  `accDescr { %%{init: {}}%%}`, and a directive on a line of its own keeps its
-  lines (see the same section).
+  holds only a directive stays a block, and the formatter prints
+  `accDescr {%%{init: {}}%% }` as `accDescr { %%{init: {}}%%}`; a directive on a
+  line of its own keeps its lines.
 
   [fixture: flowchart/accessibility-lines/empty-block-tight] [fixture:
   flowchart/accessibility-lines/empty-block-spaced] [fixture:
