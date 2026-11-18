@@ -1,0 +1,31 @@
+sequenceDiagram   %% c
+participant A
+participant B as Bob   %% c
+actor C as Cy   %% c
+participant D@{ "type": "queue" }   %% c
+title T   %% c
+accDescr: d   %% c
+accDescr { x }   %% c
+autonumber off   %% c
+A->>B: m   %% c
+Note over A: n   %% c
+link A: Doc @ http://x   %% c
+links A: {"x": "http://y"}   %% c
+properties A: {"x": "y"}   %% c
+details A: {"x": "y"}   %% c
+box aqua   %% c
+participant E
+end   %% c
+loop x   %% c
+opt y   %% c
+break z   %% c
+rect aqua   %% c
+alt a   %% c
+A->>C: w
+else b   %% c
+A->>C: v
+end   %% c
+end
+end
+end
+end

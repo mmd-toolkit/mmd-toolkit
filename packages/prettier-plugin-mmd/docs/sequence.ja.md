@@ -1196,10 +1196,17 @@ sequenceDiagram
 対象にする版の mermaid.js のすべてで意味を持ちます。
 詳しくは [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
 を参照してください。
-印の前の空白の連なりは、空白 1 つで印字します。
-（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+印の前の空白の連なりは、空白 1 つで印字します
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)を参照）。
+ただし、別名のない `participant` と `actor`、`activate`、`deactivate`、
+`destroy` の ID の後と、`accTitle` の値の後では、空白が ID か値に属するので、
+書かれたまま残します。
 
-[fixture: comments/mark-run-one-space] [fixture: comments/kept]
+[fixture: comments/mark-run-one-space]
+[fixture: comments/mark-touching-kept-after-each-statement]
+[fixture: comments/mark-run-one-space-after-each-statement]
+[fixture: comments/mark-run-kept-after-an-id-and-acctitle]
+[fixture: comments/kept]
 [corpus fixture: sequence/lex-percent-comment-takes-number]
 [fixture: comments/mark-whitespace-kept]
 [fixture: comments/after-last-statement-without-line-break]

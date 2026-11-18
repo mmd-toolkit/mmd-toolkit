@@ -1143,10 +1143,17 @@ sections. The whitespace matters in this diagram in every version of mermaid.js
 that counts, as `autonumber 5%% c` shows (see
 [A comment right after a character](./compatibility.md#a-comment-right-after-a-character)).
 A run of whitespace before the mark is printed as one space (see
-[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+except after the id of a `participant` or an `actor` without an alias, of an
+`activate`, a `deactivate`, and a `destroy`, and after the value of an
+`accTitle`, where the whitespace belongs to the id or to the value and stays as
+written.
 
-[fixture: comments/mark-run-one-space] [fixture: comments/kept] [corpus fixture:
-sequence/lex-percent-comment-takes-number] [fixture:
+[fixture: comments/mark-run-one-space] [fixture:
+comments/mark-touching-kept-after-each-statement] [fixture:
+comments/mark-run-one-space-after-each-statement] [fixture:
+comments/mark-run-kept-after-an-id-and-acctitle] [fixture: comments/kept]
+[corpus fixture: sequence/lex-percent-comment-takes-number] [fixture:
 comments/mark-whitespace-kept] [fixture:
 comments/after-last-statement-without-line-break] [fixture:
 comments/block-end-comment-without-line-break]
