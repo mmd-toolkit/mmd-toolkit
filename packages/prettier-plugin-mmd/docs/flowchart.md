@@ -925,7 +925,12 @@ whitespace-between-tokens/link-style-fill-colon-gap-swimlane-not-first-spaced]
 The styles of a statement that a later one replaces are printed in the one form
 too: a `linkStyle` that a later `linkStyle` replaces for every link it numbers,
 and a `linkStyle default` that a later `linkStyle default` replaces. The styles
-of a `linkStyle` that is replaced for some of its links only stay.
+of a `linkStyle` that is replaced for some of its links only stay. With
+`linkStyle 0,1 fill :#f00` followed by `linkStyle 0 stroke:#000`, the space
+before `:` stays, since some of the versions of mermaid.js that count draw
+different styles for `linkStyle 0,1 fill:#f00` followed by the same statement
+(see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: whitespace-between-tokens/link-style-fill-colon-gap-replaced-spaced]
 [fixture:
@@ -2626,7 +2631,10 @@ comments/after-frontmatter-before-header] [fixture: comments/before-header]
 [fixture: comments/before-end] [fixture: comments/at-end-of-text]
 
 The text of a comment is kept as written, including whitespace at its end:
-mermaid.js does not read it, and it is the author's text.
+mermaid.js does not read it, and it is the author's text. An otherwise empty
+comment line keeps `%% `, since every version of mermaid.js that counts reads
+`%%` as a vertex named `%%` and draws a different figure (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: comments/trailing-whitespace-kept] [fixture:
 comments/leading-whitespace-kept] [fixture: comments/statement-text-kept]
@@ -3557,7 +3565,10 @@ style-trailing-whitespace/escaped-comma-kept]
 
 The same holds for a style that is all whitespace after a directive or after a
 `;` that mermaid.js ignores, as in `style A fill:red,%%{init: {}}%% ` and
-`style A fill:#f00,; `.
+`style A fill:#f00,; `. The final space in `style A fill:red,%%{init: {}}%% `
+stays, since every version of mermaid.js that counts rejects
+`style A fill:red,%%{init: {}}%%` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: style-trailing-whitespace/whitespace-only-value-after-directive-kept]
 [fixture:

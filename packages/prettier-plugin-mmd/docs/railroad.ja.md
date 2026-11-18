@@ -1049,6 +1049,8 @@ last";
 行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
+[fixture: railroad/title/ir-rule-on-next-line]
+
 [fixture: title/title-directives-end-blanks-dropped]
 [fixture: railroad/title/abnf-next-line]
 
@@ -1159,6 +1161,8 @@ railroad-peg-beta
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+
+[fixture: railroad/accessibility-lines/ir-acc-title-before-rule]
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 [fixture: railroad/accessibility-lines/abnf-empty]
@@ -1908,6 +1912,13 @@ railroad では、大域的なディレクティブを除いた後の原文の�
 文字列 style または classDef があれば、その行を書かれたまま保ちます。
 行の中のすべての文、コメント、図固有の隠れた形と、その間の空白を含みます。
 前後の行とは結合しません。
+ABNF では、`style=(":"` と `)%%{!#}%% ;` の間の改行を保ちます。
+PEG では、`r<-("sty%%{wrap}%%le:"` と `)%%{!#}%% ;` の間の改行を保ちます。
+それぞれを結合した `style=(":")%%{!#}%% ;` と
+`r<-("sty%%{wrap}%%le:")%%{!#}%% ;` を、
+対象にする版の mermaid.js のすべてが拒否するためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 ディレクティブの除去で、これらの文字列が複数の物理行をまたいでできる場合は、
 またがる行をすべて保ちます。
 

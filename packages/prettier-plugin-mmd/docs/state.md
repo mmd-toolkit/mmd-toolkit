@@ -70,7 +70,8 @@ When a header continues across trivia, align the physical line containing its
 opening brace with the initial keyword, so the body remains one level deeper. Do
 not change a value spanning that line or protected source boundaries.
 
-[fixture: composite-states/header-completion-after-comment]
+[fixture: composite-states/header-completion-after-comment] [fixture:
+composite-states/multiline-alias-label-kept]
 
 The `{` of a composite state, and of an alias definition with a body, stands on
 the line of its name, after one space, as in a class diagram; a `{` written on
@@ -320,7 +321,10 @@ are printed in the case shown there, among them `<<CHOICE>>`, `<<FORK>>`, and
 `<<JOIN>>`, which are printed `<<choice>>`, `<<fork>>`, and `<<join>>`,
 `ACCTITLE:` and `ACCDESCR:`, which are printed `accTitle:` and `accDescr:`,
 `AS`, `END`, and `DIRECTION TB`. The position of a note, `LEFT OF` and
-`RIGHT OF`, stays as written.
+`RIGHT OF`, stays as written. `LEFT OF` stays: after `state "x" AS y`, every
+version of mermaid.js that counts draws different geometry for
+`note left of y: left` than for `note LEFT OF y: left` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: keyword-case/pseudo-states-one-form] [fixture:
 keyword-case/accessibility-alias-direction-one-form]
@@ -672,7 +676,10 @@ the id after the `,` stands after one space.
 
 A directive in the gap after the `,` is placed as under
 [Directives](#directives), and a `;` that the line rule ignores keeps its line
-as written.
+as written. `style A fill:#f00;;` stays, since some of the versions of
+mermaid.js that count draw different structure and style for
+`style A fill: #f00;;` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: whitespace-between-tokens/class-ids-beside-directive] [fixture:
 whitespace-between-tokens/class-ids-beside-directive-runs] [fixture:
@@ -950,6 +957,8 @@ state/lex-note-colon-then-one-character]
 The whitespace before the id becomes one space. A text that mermaid.js does not
 read right after the position, as in `note left of%%x A`, keeps touching the
 position.
+
+[fixture: notes/kept]
 
 The pinned Mermaid renders `stateDiagram-v2` notes as Markdown labels, setting
 `labelType` to `markdown` in
@@ -1288,6 +1297,10 @@ The directives that end it are printed with one space before each that has
 whitespace before it, and the whitespace after the last one is left out:
 `state "d" as A : x   %%{x}%%  ` is printed `state "d" as A : x %%{x}%%`. A
 description of spaces and tabs only, and one that holds a `;`, stay as written.
+A second description of three spaces after `state "d" as A :` stays, since some
+of the versions of mermaid.js that count draw a different figure structure when
+those spaces are removed (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [corpus fixture: state/db-alias-colon-spaces-second] [fixture:
 aliases/second-description-kept] [fixture:

@@ -484,7 +484,10 @@ or at its end, which the Db keeps and which is drawn without (see
 `title   My trip  ` is printed `title My trip`. The name of a `section` is
 printed as written, the whitespace at its start and at its end included: two
 sections whose names differ by it are drawn apart, and would not be once it is
-left out. A title of spaces and tabs only stays as written.
+left out. A title of spaces and tabs only stays as written. For `title` followed
+by two spaces, a tab, and a space, every version of mermaid.js that counts
+rejects `title` with nothing after it (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: titles-and-sections/title-padding-dropped] [fixture:
 titles-and-sections/title-blank-kept] [fixture:
