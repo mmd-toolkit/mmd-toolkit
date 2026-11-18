@@ -23,6 +23,12 @@ GWT は閉じ記号を作らず、範囲で終わる子の本文を 2 つ使い�
 同じ項目を図種の間で同じように扱うためです。
 最初の共通文は接続と前置の空白を保ちます。
 行頭へ移すと識別子が優先され、拒否される場合があるためです。
+対象にする版の mermaid.js のすべてが、`eventmodeling title Heading`、
+`eventmodeling accTitle: Heading`、
+`eventmodeling accDescr: Description` の文を次の行に移した形を拒否します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: eventmodeling/header/ordinary-frame]
 

@@ -20,7 +20,11 @@ next line, making the header easy to find. Hidden forms, retained prefixes and
 protected lines use their shared rules: when the header line is kept, its first
 statement stays on that line. This gives diagram types the same treatment. A
 first common statement retains its original connection and padding: moving it to
-line start can make identifier win and reject the input.
+line start can make identifier win and reject the input. Every version of
+mermaid.js that counts rejects `eventmodeling title Heading`,
+`eventmodeling accTitle: Heading`, and `eventmodeling accDescr: Description`
+with the statement on the next line (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: eventmodeling/header/ordinary-frame]
 
