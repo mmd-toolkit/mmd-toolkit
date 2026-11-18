@@ -851,10 +851,11 @@ comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#comments),
 [journey](./journey.md#comments), and [timeline](./timeline.md#comments) keep a
-comment that touches what comes before it, and print one space where whitespace
-was written. Keep marks, contents and trailing padding. Native comments end at
-CR/LF, with LS/PS as content. Shared comment-region joins retain interior
-columns, aligning only the first printed line; moving them can change ownership.
+comment after a statement touching the statement where it touches, and print one
+space where whitespace was written. Keep marks, contents and trailing padding.
+Native comments end at CR/LF, with LS/PS as content. Shared comment-region joins
+retain interior columns, aligning only the first printed line; moving them can
+change ownership.
 
 [fixture: cynefin/comments/comment-prefix]
 
