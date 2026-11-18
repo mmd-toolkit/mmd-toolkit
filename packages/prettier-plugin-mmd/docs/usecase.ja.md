@@ -1153,7 +1153,6 @@ Mermaid が説明から LF 後の字下げを除くためです。
 [test: accessibility revisions: usecase keyword-brace-tab]
 
 空と空白だけの内側は `{}` にします。
-空の波括弧は `{}` と印字します。
 Prettier が `x = { }` を `x = {}`
 と印字するのと同じです（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 

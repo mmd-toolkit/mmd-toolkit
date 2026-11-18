@@ -1081,9 +1081,8 @@ direction-and-accessibility/keyword-brace-space] [fixture:
 direction-and-accessibility/keyword-brace-run] [test: accessibility revisions:
 usecase keyword-brace-tab]
 
-Empty and whitespace-only interiors print `{}`. An empty pair of braces is
-printed `{}`, as Prettier prints `x = { }` as `x = {}`
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)).
+Empty and whitespace-only interiors print `{}`, as Prettier prints `x = { }` as
+`x = {}` ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)).
 
 [fixture: direction-and-accessibility/empty-block-lines]
 
