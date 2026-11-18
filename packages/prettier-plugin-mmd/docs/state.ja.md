@@ -1441,6 +1441,11 @@ stateDiagram-v2
 
 行に単独のコメント（`%%` か `#`）は、周りの文と同じ段に置き、
 本文は書かれたまま残します。
+規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
+規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
+[er](./er.ja.md#コメント) と [block](./block.ja.md#コメント)も、
+コメント行を周りの文と同じ段に置きます。
 
 [fixture: comments/kept] [fixture: comments/text-kept]
 [fixture: comments/before-closing-brace]
