@@ -87,8 +87,8 @@ class の[字下げ](./class.ja.md#字下げ)を再利用します。
 usecase では字下げが読みを決めないので、`tabWidth: 0` は 0 のままです。
 アクセシビリティは先頭列でも ASCII 空白の後でもアクセシビリティのままです。
 YAML は共有の最小幅 1 を保ちます。
-対象にする版の mermaid.js のすべてが、
-幅 0 のブロックスカラーを拒否するからです。
+対象にする版の mermaid.js のすべてが、幅 0 のブロックスカラーを拒否し、
+幅 0 の入れ子の `config` の値を違って描くからです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
@@ -105,6 +105,8 @@ YAML は共有の最小幅 1 を保ちます。
 [fixture: indentation/boundary-comments-before-end]
 [fixture: indentation/zero-tabs-boundary]
 [fixture: indentation/value-and-json-columns]
+[fixture: frontmatter-yaml/frontmatter-zero-scalar]
+[fixture: frontmatter-yaml/frontmatter-zero]
 
 入力（エスケープ表記）:
 `"usecase-beta\nsystemBoundary Portal\nactor User\nTask(Work)\nend\nUser-->Task"`
