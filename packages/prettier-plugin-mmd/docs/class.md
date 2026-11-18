@@ -284,12 +284,18 @@ classDiagram
 ### Whitespace between tokens
 
 Within a line, a run of spaces and tabs between two tokens becomes one space,
-and tokens that touch keep touching, as in a flowchart, except for the cases
-named below: a string, a backquoted name, or the `call` keyword after what comes
-before it, the `[` of a label, the `~` of a generic type, and the `{` of a
-description block and of a member body, which has one space before it (see
-[Empty description blocks](#empty-description-blocks) and
-[Member bodies](#member-bodies)).
+and tokens that touch keep touching, as in a flowchart, except where a rule
+named below puts a space between them: a string, a backquoted name, or the
+`call` keyword after what comes before it; the `[` of a label; the `~` of a
+generic type; the `{` of a description block, of a member body, and of a
+namespace, which has one space before it (see
+[Empty description blocks](#empty-description-blocks),
+[Member bodies](#member-bodies), and [Indentation](#indentation)); the `<<` of
+an annotation, which has one space before it (see below); the arrow of a
+relation and its cardinalities, which have one space on each side (see
+[Arrow spacing](#arrow-spacing)); and a colon, which follows [Labels](#labels)
+for a relation label and a member line, and the colon of a key for a style (see
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)).
 
 [fixture: whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/tabs-collapsed] [fixture:
