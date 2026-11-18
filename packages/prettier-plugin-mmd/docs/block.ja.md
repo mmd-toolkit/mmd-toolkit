@@ -778,9 +778,10 @@ flowchart の [スタイルの行末の空白](./flowchart.ja.md#スタイルの
 その後ろには何も置きません。
 規則 1 は、キーワードと ID の間の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[architecture](./architecture.ja.md#declaration-spacing) と
-[eventmodeling](./eventmodeling.ja.md#declarations-and-notes) も、
-ここを空白 1 個で印字します。
+[wardley](./wardley.ja.md#部品間の空白)
+はコマンドのキーワードと最初の名前の間に、
+[radar](./radar.ja.md#groups-and-commas)
+はグループのキーワードと最初の項目の間に、普通の空白 1 個を置きます。
 
 [fixture: styles/style-without-styles] [corpus fixture: block/db-style-none]
 

@@ -725,9 +725,10 @@ and nothing follows it. Rule 1 of
 [How the printed form is decided](./printed-form.md#1-the-whitespace-beside-a-mark)
 names no mark between a keyword and its id, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [architecture](./architecture.md#declaration-spacing) and
-[eventmodeling](./eventmodeling.md#declarations-and-notes) print one space
-there.
+decides: [wardley](./wardley.md#component-spacing) puts one ordinary space
+between each command keyword and its first complete name, and
+[radar](./radar.md#groups-and-commas) between a group keyword and its first
+member.
 
 [fixture: styles/style-without-styles] [corpus fixture: block/db-style-none]
 
