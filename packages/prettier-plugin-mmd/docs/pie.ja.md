@@ -303,8 +303,20 @@ flowchart の[複数行の値](./flowchart.ja.md#複数行の値)を再利用し
 保護対象の注釈類やセミコロンの配置では、その隙間を保ちます。
 開き括弧の前が空白だけなら改行や Unicode の境界も結合できます。
 コメント・ディレクティブの改行は残します。
+`accDescr`、`%% c`、`{D}` を別行に置く形を残すのは、
+`accDescr %% c` と `{D}` を別行に置くと、
+mermaid.js が拒否するためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 空白だけの内部は囲む値がないため `{}` にします。
 コメントだけなら1段内側に置き、別行の閉じを文の列に揃えます。
+`accDescr {%% c` の次行が `}` または `D}` のブロックで、
+`{` の後の `%% c` を説明のテキストとしてその位置に残すのは、
+`%% c` をブロックの 1 段内側の独立した行へ移し、
+後者では `D` と `}` も別行に置くと、mermaid.js が `%% c` をコメントとして読み、
+説明がそれぞれ空または `D` だけになるためです（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 ほかの図種と同じく、通常の後続本文と独立したコメント行は、
 文より1段内側に揃えます。
 改行、空行、行末空白は保ちます。
@@ -329,6 +341,9 @@ flowchart の[複数行の値](./flowchart.ja.md#複数行の値)を再利用し
 [fixture: pie/description-blocks/block-trailing-comment]
 [fixture: pie/description-blocks/block-opener-directive]
 [fixture: pie/description-blocks/block-quotes-backslashes]
+[fixture: pie/description-blocks/opener-comment-only-kept]
+[fixture: pie/description-blocks/opener-comment-with-text-kept]
+[fixture: pie/description-blocks/opener-comment-break-kept]
 
 入力（エスケープ表記）:
 `"pie\naccDescr {\n  first\n    second\n        }\n\"Data\":2"`
@@ -535,6 +550,10 @@ pie
 その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
 範囲の外は、この図種の通常の規則に従います。
 どの部分の配置も持たないテキストは、書かれたまま残します。
+たとえば `accDescr {style:#x;y}` を `accDescr {style: #x;y}` にすると、
+mermaid.js が描く説明のテキストが変わります（詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください）。
 複数行にわたる文の行を空白 1 つか何も挟まずにつなぐと、
 行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
 書かれたまま残します。
@@ -542,6 +561,7 @@ pie
 
 [fixture: directives-and-semicolons/stretch-kept-rest-formatted]
 [fixture: directives-and-semicolons/no-stretch-formatted]
+[fixture: pie/directives-and-semicolons/block-style-colon-gap-kept]
 
 保護したヘッダーと本文を分割しません。
 全セミコロン、style/classDef の両段階、

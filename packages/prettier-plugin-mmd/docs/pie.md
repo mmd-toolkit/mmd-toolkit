@@ -280,15 +280,24 @@ after LF is absent from the description Db. The keyword and opener use one
 ordinary space, even when written touching. Protected trivia and semicolon
 layouts keep their gaps. Plain whitespace before the opener can join, including
 across physical or Unicode line boundaries; a real comment/directive keeps its
-break. Empty whitespace-only interiors print `{}` because no text needs
-surrounding whitespace. Keep comment-only blocks with comments one level inside
-and a separate closer at statement level. Ordinary later-line text and
-standalone comment lines align one level inside the statement, as the other
-diagram types do. Keep line breaks, blank lines and trailing whitespace; a
-separate `}` aligns with the statement. Directives and shared removed comment
-regions keep their complete source. Trivia-bearing interiors keep their trivia.
-The first closing brace still closes the block, even inside
-quote/backslash/hidden-looking text.
+break. The form with `accDescr`, `%% c`, and `{D}` on separate lines stays,
+since mermaid.js rejects the form with `accDescr %% c` and `{D}` on separate
+lines (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Empty whitespace-only interiors print `{}` because no text needs surrounding
+whitespace. Keep comment-only blocks with comments one level inside and a
+separate closer at statement level. In `accDescr {%% c` followed by `}` or `D}`
+on the next line, `%% c` stays after `{` as description text, since moving it to
+its own line one level inside the block, with `D` and `}` also on separate lines
+in the second case, makes mermaid.js read it as a comment, leaving the
+description empty or just `D`, respectively (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Ordinary later-line text and standalone comment lines align one level inside the
+statement, as the other diagram types do. Keep line breaks, blank lines and
+trailing whitespace; a separate `}` aligns with the statement. Directives and
+shared removed comment regions keep their complete source. Trivia-bearing
+interiors keep their trivia. The first closing brace still closes the block,
+even inside quote/backslash/hidden-looking text.
 
 [fixture: pie/description-blocks/block-runs] [fixture:
 pie/description-blocks/block-empty] [fixture:
@@ -305,7 +314,10 @@ pie/description-blocks/block-keyword-tab] [fixture:
 pie/description-blocks/block-mixed-trivia] [fixture:
 pie/description-blocks/block-trailing-comment] [fixture:
 pie/description-blocks/block-opener-directive] [fixture:
-pie/description-blocks/block-quotes-backslashes]
+pie/description-blocks/block-quotes-backslashes] [fixture:
+pie/description-blocks/opener-comment-only-kept] [fixture:
+pie/description-blocks/opener-comment-with-text-kept] [fixture:
+pie/description-blocks/opener-comment-break-kept]
 
 Input (escaped):
 `"pie\naccDescr {\n  first\n    second\n        }\n\"Data\":2"`.
@@ -499,14 +511,18 @@ its last kept `;`, with no whitespace between the `:` and the `#` (see
 [Semicolons](./flowchart.md#semicolons)), so the gaps and the padding inside
 that stretch keep whether they hold whitespace, a run becoming one space, and
 the rest of the segment follows the ordinary rules of this diagram. Text that no
-part of the layout holds stays as written. A statement over several lines whose
-lines, joined with one space or with nothing, could change which `;` the line
-rule ignores keeps the text of each segment, up to its last kept `;`, as
-written; any other statement over several lines is formatted like one on a
-single line.
+part of the layout holds stays as written. For example, changing
+`accDescr {style:#x;y}` to `accDescr {style: #x;y}` changes the description text
+mermaid.js draws (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A statement over several lines whose lines, joined with one space or with
+nothing, could change which `;` the line rule ignores keeps the text of each
+segment, up to its last kept `;`, as written; any other statement over several
+lines is formatted like one on a single line.
 
 [fixture: directives-and-semicolons/stretch-kept-rest-formatted] [fixture:
-directives-and-semicolons/no-stretch-formatted]
+directives-and-semicolons/no-stretch-formatted] [fixture:
+pie/directives-and-semicolons/block-style-colon-gap-kept]
 
 Do not split a protected header/body group. Keep every semicolon and both
 style/classDef passes, case/colon-hash whitespace distinctions, Unicode segment
