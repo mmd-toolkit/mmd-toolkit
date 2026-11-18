@@ -965,10 +965,14 @@ body}%%
 Reuse the shared consumed-LF and closing-padding rules: these boundaries decide
 whether the following statement has visible EOL. A statement suffix without
 closing padding needs one spare LF before its successor; EOF also ends a
-statement. Only the header's own hidden forms need no spare LF. A statement
-retained on the header line still has a statement boundary after its suffix.
-Keep multiple suffix owners and forms after visible EOL distinct; exterior
-excess blanks use the shared one-blank-line rule.
+statement. Before `service following`, the space after
+`service space_suffix%%{}%%` stays, since every version of mermaid.js that
+counts rejects the same lines without that space (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Only the header's own hidden forms need no spare LF. A statement retained on the
+header line still has a statement boundary after its suffix. Keep multiple
+suffix owners and forms after visible EOL distinct; exterior excess blanks use
+the shared one-blank-line rule.
 
 [fixture: architecture/hidden-boundaries/header-and-statement]
 

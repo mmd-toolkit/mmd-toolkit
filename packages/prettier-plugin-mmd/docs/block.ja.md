@@ -375,7 +375,11 @@ block-beta
 間に書かれた空白（タブ、改行）はどれも同じです。
 mermaid.js はそこのどの空白も同じに読むので、形は 1 行になります。
 `space:2` は `:` を接して印字します。
-mermaid.js は `space :2` と `space: 2` を拒否するからです。
+対象にする版の mermaid.js はすべて、
+`space :2` と `space: 2` を拒否するからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 `space` と `columns` は、ほかの場所へ動かしません。
 ブロックの最後の `columns` が、どこにあってもそのブロックの列数で、
 ブロックの順はテキストの順だからです。
@@ -655,6 +659,11 @@ block-beta
 空白 1 つにします。
 `classDef` と `style` のスタイルは下の空白の規則に従い、
 `class` の値は書かれたまま印字します。
+`class A,B c1` を残すのは、対象にする版の mermaid.js のすべてが、
+`class A, B c1` を違って描くためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 終端は[スタイル文の末尾のセミコロン](#スタイル文の末尾のセミコロン)に従います。
 `style` と `class` の空白は Db に入ります。
 `style A fill:#f00 , stroke:#333` のスタイルは、

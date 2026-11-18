@@ -17,7 +17,11 @@ examples in its documentation write the header without the colon 3 times against
 none (see
 [The colon after a header](./compatibility.md#the-colon-after-a-header)). The
 colon stays where a hidden form or a global directive lies between it and the
-word, and where a `;` or the `---` of a hidden YAML block touches it.
+word, and where a `;` or the `---` of a hidden YAML block touches it. After
+`%%{%%{wrap}%%init: {"label":"style:#keep"}}%%`,
+`cynefin-beta:;complex 'Kept colon'` keeps its colon, since some of the versions
+of mermaid.js that count reject `cynefin-beta;complex 'Kept colon'` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: cynefin/header/colon-removed] [fixture:
 cynefin/header/colon-semicolon-kept] [fixture:
@@ -768,7 +772,8 @@ When textBeforeHeader is nonempty, use the shared keepsPrefix rule to retain the
 complete prefix through the header keyword. Preserve leading LF, passed trivia,
 second-scan directives and real/retained YAML order. Cleaning that prefix can
 promote ignored YAML to effective frontmatter, changing the title, configuration
-or acceptance.
+or acceptance in every version of mermaid.js that counts (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: cynefin/retained-prefix/prefix-retained-yaml]
 
@@ -1048,7 +1053,10 @@ cynefin-beta
 A `;` that the line rule ignores between two statements stands against the token
 before it with one space after it, whatever whitespace was written around it, as
 the gap has one space; the gap right after the keyword keeps its whitespace as
-written.
+written. After `%%{%%{wrap}%%init: {"label":"style:#x"}}%%`,
+`cynefin-beta ;complex "A"` keeps its space, since some of the versions of
+mermaid.js that count reject `cynefin-beta;complex "A"` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: semicolons/ignored-semicolon-space-before-attached] [fixture:
 semicolons/ignored-semicolon-space-both-attached] [fixture:
