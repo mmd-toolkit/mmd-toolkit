@@ -3134,12 +3134,11 @@ and a `;`, as in `subgraph "S"accDescr {} accDescr {}` and
 [fixture: subgraph-header/whitespace-before-first-block-kept]
 
 The blocks read no token, so that whitespace follows the name: the subgraph has
-the id `subGraph0`, and the id `S` without it, in every version of mermaid.js
-that counts (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-That the whitespace is there is kept; how wide it is, only before the first
-block, where it follows the name as written, and a run between two blocks or
-before a `;` becomes one space.
+the id `subGraph0`, and the id `S` without it, which the Db holds
+(`subgraphs[0].id` in 12.3.0), while every version that counts draws the same
+figure up to the ids. That the whitespace is there is kept; how wide it is, only
+before the first block, where it follows the name as written, and a run between
+two blocks or before a `;` becomes one space.
 
 [fixture: subgraph-header/runs-between-blocks-become-one]
 
