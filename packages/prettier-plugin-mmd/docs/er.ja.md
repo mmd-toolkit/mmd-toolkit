@@ -1854,11 +1854,18 @@ erDiagram
 通常の `accDescr { ... }` ブロックの後続の本文行は、文の内側に 1 段字下げし、
 LF 直後の ASCII 空白とタブだけを置き換えます。
 説明の設定関数がこの字下げを捨てるためです。
-改行、行末空白、ディレクティブの内部は保ちます。
+改行とディレクティブの内部は保ちます。
+改行と内部の空行は保ちます。
+行末の空白は、テキストの最後の行のものを除いて保ちます。
+空白だけの行は空行にします。
+最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
+同じ行で閉じ括弧が続くときは空白 1 つで印字します。
 subgraph 内では、生の説明がその所属の読みにも使われるため、
 本文の元の列を保ちます。
 
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines]
+[fixture: accessibility-statements/block-trailing-whitespace]
+[fixture: accessibility-statements/block-trailing-whitespace-closer-on-the-text-line]
 
 `}` は文と同じ段に置きます。
 

@@ -1287,10 +1287,16 @@ The configured indentation applies to these lines too.
 multi-line-values/description-tabs] [fixture:
 multi-line-values/description-zero-width]
 
-Keep the text, its line breaks and its trailing spaces and tabs. Text on the
-opening line stays there, and empty lines inside the text stay empty.
+Keep line breaks and interior blank lines, and the whitespace at the end of each
+line of text except the last one; a line of whitespace only becomes an empty
+line. The whitespace at the end of the last line of text is dropped where the
+closer stands on a line of its own, and is printed as one space where the closer
+follows it on that line. Text on the opening line stays there, and empty lines
+inside the text stay empty.
 
-[fixture: multi-line-values/description-line-ending-whitespace]
+[fixture: multi-line-values/description-line-ending-whitespace] [fixture:
+multi-line-values/block-trailing-whitespace] [fixture:
+multi-line-values/block-trailing-whitespace-closer-on-the-text-line]
 
 A hash comment inside the block is text and receives the same indentation; a
 `%%` comment line also aligns with the text.
