@@ -105,11 +105,16 @@ architecture-beta title t service a; junction j
 
 ### Declaration spacing
 
-Use one space between the keyword and ID. Print `group g(cloud)[G]`,
-`service a(server)[A]` and `service a[A]`: touching parentheses and brackets
-make the attached parts read as one node. A quoted text icon is an independent
-value, so print `service a "I" [A]`. Missing optional parts stay absent.
-Trivia-bearing gaps keep their contact.
+Use one space between the keyword and ID. Rule 1 of
+[How the printed form is decided](./printed-form.md#1-the-whitespace-beside-a-mark)
+names no mark between a keyword and its id, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [block](./block.md#styles) and
+[eventmodeling](./eventmodeling.md#declarations-and-notes) print one space
+there. Print `group g(cloud)[G]`, `service a(server)[A]` and `service a[A]`:
+touching parentheses and brackets make the attached parts read as one node. A
+quoted text icon is an independent value, so print `service a "I" [A]`. Missing
+optional parts stay absent. Trivia-bearing gaps keep their contact.
 
 [fixture: architecture/declaration-spacing/double-text-icon]
 
@@ -790,11 +795,17 @@ C" ["D
 ### Comments
 
 Align ordinary standalone comments one body step in, or column one before the
-header. Inline comments keep their line and touching side, or one separating
-space. Preserve marks, content and trailing padding for attachment. Native
-comments end at LF/CR and keep LS/PS as content. Earlier values own enclosed
-percent text; common lines stop at it. Removed common regions keep complete
-source and continuation columns.
+header. Rule 1 gives no form here, since its table names the whitespace beside a
+mark and not the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it, as [flowchart](./flowchart.md#comments) and [wardley](./wardley.md#comments)
+align a comment on a line of its own with the body in the same way. Inline
+comments keep their line and touching side, or one separating space. Preserve
+marks, content and trailing padding for attachment. Native comments end at LF/CR
+and keep LS/PS as content. Earlier values own enclosed percent text; common
+lines stop at it. Removed common regions keep complete source and continuation
+columns.
 
 [fixture: architecture/comments/comment-attachments]
 
