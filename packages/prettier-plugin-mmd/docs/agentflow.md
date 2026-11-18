@@ -218,8 +218,13 @@ A name that holds a directive or a comment is kept as written, as above.
 between a connector name and its data block]
 
 Whitespace before the title is trimmed through a `;` that the line rule ignores:
-`connector style:#x ; [T]` is printed `connector style:#x;[T]`. The semicolon
-keeps its written place against the name.
+`connector style:#x ; [T]` is printed `connector style:#x;[T]`. Rule 1 names no
+mark for the `[` of a title, so [rule 3](./printed-form.md#3-a-spelling)
+decides: all 19 headings with a title in
+[the documentation of agentflow](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/agentflow.md#L26-L363)
+write the `[` touching the name, as `flow F[T]` does, and
+[flowchart](./flowchart.md#subgraph-header) and [er](./er.md#subgraphs) print it
+so too. The semicolon keeps its written place against the name.
 
 [fixture: names-and-headings/title-after-ignored-semicolon]
 
