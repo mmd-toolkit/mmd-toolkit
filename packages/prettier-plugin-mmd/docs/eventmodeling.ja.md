@@ -1074,16 +1074,20 @@ CRLF は 1 単位、サロゲートペアは 2 単位と数えます。
 50000 以上のときは、図のテキスト全体とその終わりを保ちます。
 
 [fixture: default-size-branches/size-preserving-to-fallback-unsafe]
+[fixture: default-size-branches/size-at-limit-indented-comment]
 
 それ未満のときは、印字する計画の長さも 50000 未満に収まる場合だけ、
 通常の整形を行い、そうでなければ図のテキスト全体とその終わりを保ちます。
 
 [fixture: default-size-branches/size-below-planned-crossing]
+[fixture: default-size-branches/size-below-planned-crossing-indented-comment]
+[fixture: default-size-branches/size-below-planned-fits-indented-comment]
 
 字下げや末尾の改行で上限を越えると、
 値の中のコメント行が除かれて Db が変わるので、それを防ぎます。
-50000 単位でも 49999 単位でも、data 本文の最初の行を字下げすると、
-12.3.0 は別のテキスト、構造、形状を描きます。
+50000 単位でも 49999 単位でも、
+後ろの行（コメント行を含む）が 1 つ以上の空白の内側にある data
+本文の最初の行を字下げすると、12.3.0 は別のテキスト、構造、形状を描きます。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。

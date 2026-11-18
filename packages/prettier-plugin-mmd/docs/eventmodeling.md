@@ -1044,18 +1044,22 @@ default-size-branches/size-utf16-surrogate]
 
 At or above 50000 retain the complete diagram text and its ending.
 
-[fixture: default-size-branches/size-preserving-to-fallback-unsafe]
+[fixture: default-size-branches/size-preserving-to-fallback-unsafe] [fixture:
+default-size-branches/size-at-limit-indented-comment]
 
 Below it apply ordinary layout only when the planned printed measurement also
 stays strictly below 50000; otherwise retain the complete diagram and its
 ending.
 
-[fixture: default-size-branches/size-below-planned-crossing]
+[fixture: default-size-branches/size-below-planned-crossing] [fixture:
+default-size-branches/size-below-planned-crossing-indented-comment] [fixture:
+default-size-branches/size-below-planned-fits-indented-comment]
 
 This keeps indentation or the final line break from moving the text across the
 limit, where the comment lines in a value would be removed and the Db would
 change. At 50000 units, and at 49999, indenting the first line of a data body
-makes 12.3.0 draw different text, structure and geometry (see
+whose later lines, a comment line included, stand at least one space in makes
+12.3.0 draw different text, structure and geometry (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The boundary itself is covered by the corpus, also with CRLF, an inline
 directive and frontmatter.
