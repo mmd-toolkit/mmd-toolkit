@@ -778,15 +778,13 @@ wardleyである。
 
 ### D44. 行内コメントの前の水平の隙間を1空白にするか
 
-5件の形があり、図種はeventmodeling、radar、state、treeviewである。
+3件の形があり、図種はeventmodeling、state、treeviewである。
 
-| 図種          | 規則の文書                                                                                                                           | 書かれた形                                                                                                                                        |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| eventmodeling | [Type tags（eventmodeling.ja.md）](./docs/eventmodeling.ja.md#type-tags) 「タグは本文を JSON などとして解釈する指示ではありません」  | ``eventmodeling tf 01 evt Alpha `/*a*/json/*b*/`/*c*/{x}``                                                                                        |
-| eventmodeling | [Comments（eventmodeling.ja.md）](./docs/eventmodeling.ja.md#comments) 「同じ印字行では接触を保ち、害のない分離を空白 1 個にします」 | `eventmodeling tf/*a*/01 evt /*b*/Alpha // tail \t\nrf 02 cmd Beta`                                                                               |
-| radar         | [Comments（radar.ja.md）](./docs/radar.ja.md#comments) 「同じ行のコメントは行と接着を保ち、分離した空白は 1 個にし」                 | `radar-beta\naxis North%%touch\ncurve trial{4}   %% separated  \n`                                                                                |
-| state         | [コメント（state.ja.md）](./docs/state.ja.md#コメント) 「文の後のコメントはその行に残し、印の前に空白が書かれているか」              | `stateDiagram-v2\n%% a comment line\nA --> B %% after a transition\nA --> C%%touching\n# a hash comment\nstate D {\n        %% in a body\nE\n}\n` |
-| treeview      | [Trailing whitespace（treeview.ja.md）](./docs/treeview.ja.md#trailing-whitespace) （文なし）                                        | `treeView-beta\nR   %% c\nS\n`                                                                                                                    |
+| 図種          | 規則の文書                                                                                                                          | 書かれた形                                                                                                                                        |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| eventmodeling | [Type tags（eventmodeling.ja.md）](./docs/eventmodeling.ja.md#type-tags) 「タグは本文を JSON などとして解釈する指示ではありません」 | ``eventmodeling tf 01 evt Alpha `/*a*/json/*b*/`/*c*/{x}``                                                                                        |
+| state         | [コメント（state.ja.md）](./docs/state.ja.md#コメント) 「文の後のコメントはその行に残し、印の前に空白が書かれているか」             | `stateDiagram-v2\n%% a comment line\nA --> B %% after a transition\nA --> C%%touching\n# a hash comment\nstate D {\n        %% in a body\nE\n}\n` |
+| treeview      | [Trailing whitespace（treeview.ja.md）](./docs/treeview.ja.md#trailing-whitespace) （文なし）                                       | `treeView-beta\nR   %% c\nS\n`                                                                                                                    |
 
 ### D45. コメントや隠れた形を同じ隙間の中で元の行に残すか
 
@@ -889,16 +887,14 @@ quadrant、state、treemap、treeview、venn、wardleyである。
 
 ### D52. 構造単位を分けるとき間のディレクティブを後の文に付けるか
 
-5件の形があり、図種はarchitecture、block、eventmodeling、journey、
-requirementである。
+4件の形があり、図種はarchitecture、block、journey、requirementである。
 
-| 図種          | 規則の文書                                                                                                                                                | 書かれた形                                                               |
-| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| block         | [指令（block.ja.md）](./docs/block.ja.md#指令) 「右側の接触・分離は保ち、左側の接触は切れます。」                                                         | `block-beta\ncolumns 3 %%{init: {}}%% a\n`                               |
-| eventmodeling | [Global directives（eventmodeling.ja.md）](./docs/eventmodeling.ja.md#global-directives) 「文・節・項目を行に分ける場合、間のディレクティブは次の単位へ」 | `eventmodeling tf 01 evt Alpha%%{wrap}%% rf 02 cmd Beta`                 |
-| requirement   | [1 行に 1 文（requirement.ja.md）](./docs/requirement.ja.md#1-行に-1-文) 「2 つの文の間のディレクティブは、後ろの文と一緒に動きます。」                   | `requirementDiagram\nrequirement r {\n} %%{init: {}}%% element e {\n}\n` |
-| architecture  | [Global directives（architecture.ja.md）](./docs/architecture.ja.md#global-directives) 「元は同じ行にあった単位を別の行へ分けるときは、」                 | `architecture-beta%%{wrap}%% service boundary(cloud)`                    |
-| journey       | [ディレクティブ（journey.ja.md）](./docs/journey.ja.md#ディレクティブ) 「右側の接触・分離は保ち、左側の接触は切れます。」                                 | `journey%%{wrap}%% title Boundary`                                       |
+| 図種         | 規則の文書                                                                                                                                | 書かれた形                                                               |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| block        | [指令（block.ja.md）](./docs/block.ja.md#指令) 「右側の接触・分離は保ち、左側の接触は切れます。」                                         | `block-beta\ncolumns 3 %%{init: {}}%% a\n`                               |
+| requirement  | [1 行に 1 文（requirement.ja.md）](./docs/requirement.ja.md#1-行に-1-文) 「2 つの文の間のディレクティブは、後ろの文と一緒に動きます。」   | `requirementDiagram\nrequirement r {\n} %%{init: {}}%% element e {\n}\n` |
+| architecture | [Global directives（architecture.ja.md）](./docs/architecture.ja.md#global-directives) 「元は同じ行にあった単位を別の行へ分けるときは、」 | `architecture-beta%%{wrap}%% service boundary(cloud)`                    |
+| journey      | [ディレクティブ（journey.ja.md）](./docs/journey.ja.md#ディレクティブ) 「右側の接触・分離は保ち、左側の接触は切れます。」                 | `journey%%{wrap}%% title Boundary`                                       |
 
 ### D53. コメントや隠れた形を元の隙間と順序に残すか
 
@@ -1533,19 +1529,6 @@ wardley、xychartである。
 | usecase       | [Labels（usecase.ja.md）](./docs/usecase.ja.md#labels) 「C4 の引数の形を再利」                                                                                                                                                                                                                                                                                                     | `["usecase-beta\nA(\"a\\\\b\")\n", "usecase-beta\nA(\"a &amp; b\")\n", "usecase-beta\nA(\"<b>x</b>\")\n"]`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 ## まだ理由を探しているか、走らせていない形
-
-### 記録からの理由の検索がまだである
-
-6件の形は、この確認が不足している。
-
-| 図種        | 規則の文書                                                                                                                                           | 書かれた形                                                                                             |
-| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| flowchart   | [同じに描かれるスタイル（compatibility.ja.md）](./docs/compatibility.ja.md#同じに描かれるスタイル) 「次の場合は、文を書かれたまま残します。」        | `flowchart TD\nA\nstyle A fill:red %%{init: {}}%%\n`                                                   |
-| gantt       | [タイトルとセクション（gantt.ja.md）](./docs/gantt.ja.md#タイトルとセクション) 「後の行に書かれた値は、キーワードの後に寄せて 1 行にします」         | `gantt\ntitle\nT\nsection\nS\n`                                                                        |
-| gantt       | [空の説明ブロック（gantt.ja.md）](./docs/gantt.ja.md#空の説明ブロック) 「ディレクティブやコメント行の内容と改行は保ち、」                            | `gantt\naccDescr { %%{init: {}}%% }\naccDescr {\n%% c\n}\n`                                            |
-| gantt       | [コメント（gantt.ja.md）](./docs/gantt.ja.md#コメント) 「単独の行のコメントは周りの文と同じ段に置き、テキストと印は書」                              | `gantt\n      %% one\ntitle T\n\t%% two\nsection S\n%% three\n   a : 1d\n`                             |
-| requirement | [アクセシビリティの文（requirement.ja.md）](./docs/requirement.ja.md#アクセシビリティの文) 「後の行に書かれたテキストは、`:` の後ろに寄せて 1 行に」 | `requirementDiagram\naccTitle:\nT\naccDescr:\n\n D\naccTitle\n: U\n`                                   |
-| requirement | [コメント（requirement.ja.md）](./docs/requirement.ja.md#コメント) 「単独の行のコメントは、後ろの文と同じ段に置き、」                                | `requirementDiagram\n%% c1\nrequirement r {\n      %% c2\nid: 1\n%% c3\n}\n   %% c4\nelement e {\n}\n` |
 
 ### 記録からの理由の検索と比較結果が不足している
 

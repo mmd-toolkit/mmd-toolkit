@@ -771,15 +771,13 @@ ishikawa, radar, railroad, timeline, treeview, usecase, venn.
 
 ### D44. Whether horizontal gaps before inline comments use one space
 
-5 forms in eventmodeling, radar, state, treeview.
+3 forms in eventmodeling, state, treeview.
 
-| Diagram       | Rules document                                                                                           | Written form                                                                                                                                      |
-| ------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| eventmodeling | [Type tags (eventmodeling.md)](./docs/eventmodeling.md#type-tags) "A tag does not ask the"               | ``eventmodeling tf 01 evt Alpha `/*a*/json/*b*/`/*c*/{x}``                                                                                        |
-| eventmodeling | [Comments (eventmodeling.md)](./docs/eventmodeling.md#comments) "Within a printed line, preserve inline" | `eventmodeling tf/*a*/01 evt /*b*/Alpha // tail \t\nrf 02 cmd Beta`                                                                               |
-| radar         | [Comments (radar.md)](./docs/radar.md#comments) "Inline comments keep their line and"                    | `radar-beta\naxis North%%touch\ncurve trial{4}   %% separated  \n`                                                                                |
-| state         | [Comments (state.md)](./docs/state.md#comments) "A comment after a statement stays"                      | `stateDiagram-v2\n%% a comment line\nA --> B %% after a transition\nA --> C%%touching\n# a hash comment\nstate D {\n        %% in a body\nE\n}\n` |
-| treeview      | [Trailing whitespace (treeview.md)](./docs/treeview.md#trailing-whitespace) (no sentence)                | `treeView-beta\nR   %% c\nS\n`                                                                                                                    |
+| Diagram       | Rules document                                                                             | Written form                                                                                                                                      |
+| ------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| eventmodeling | [Type tags (eventmodeling.md)](./docs/eventmodeling.md#type-tags) "A tag does not ask the" | ``eventmodeling tf 01 evt Alpha `/*a*/json/*b*/`/*c*/{x}``                                                                                        |
+| state         | [Comments (state.md)](./docs/state.md#comments) "A comment after a statement stays"        | `stateDiagram-v2\n%% a comment line\nA --> B %% after a transition\nA --> C%%touching\n# a hash comment\nstate D {\n        %% in a body\nE\n}\n` |
+| treeview      | [Trailing whitespace (treeview.md)](./docs/treeview.md#trailing-whitespace) (no sentence)  | `treeView-beta\nR   %% c\nS\n`                                                                                                                    |
 
 ### D45. Whether comments and hidden forms keep line boundaries in their gaps
 
@@ -882,15 +880,14 @@ state, treemap, treeview, venn, wardley.
 
 ### D52. Whether directives follow the next separated structural unit
 
-5 forms in architecture, block, eventmodeling, journey, requirement.
+4 forms in architecture, block, journey, requirement.
 
-| Diagram       | Rules document                                                                                                                        | Written form                                                             |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| block         | [Directives (block.md)](./docs/block.md#directives) "Keep its right-side contact or separation;"                                      | `block-beta\ncolumns 3 %%{init: {}}%% a\n`                               |
-| eventmodeling | [Global directives (eventmodeling.md)](./docs/eventmodeling.md#global-directives) "When statements, clauses or items split"           | `eventmodeling tf 01 evt Alpha%%{wrap}%% rf 02 cmd Beta`                 |
-| requirement   | [Statements one per line (requirement.md)](./docs/requirement.md#statements-one-per-line) "A directive between two statements stands" | `requirementDiagram\nrequirement r {\n} %%{init: {}}%% element e {\n}\n` |
-| architecture  | [Global directives (architecture.md)](./docs/architecture.md#global-directives) "When formatting splits units that were"              | `architecture-beta%%{wrap}%% service boundary(cloud)`                    |
-| journey       | [Directives (journey.md)](./docs/journey.md#directives) "Keep its right-side contact or separation;"                                  | `journey%%{wrap}%% title Boundary`                                       |
+| Diagram      | Rules document                                                                                                                        | Written form                                                             |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| block        | [Directives (block.md)](./docs/block.md#directives) "Keep its right-side contact or separation;"                                      | `block-beta\ncolumns 3 %%{init: {}}%% a\n`                               |
+| requirement  | [Statements one per line (requirement.md)](./docs/requirement.md#statements-one-per-line) "A directive between two statements stands" | `requirementDiagram\nrequirement r {\n} %%{init: {}}%% element e {\n}\n` |
+| architecture | [Global directives (architecture.md)](./docs/architecture.md#global-directives) "When formatting splits units that were"              | `architecture-beta%%{wrap}%% service boundary(cloud)`                    |
+| journey      | [Directives (journey.md)](./docs/journey.md#directives) "Keep its right-side contact or separation;"                                  | `journey%%{wrap}%% title Boundary`                                       |
 
 ### D53. Whether comments and hidden forms keep their source gaps and order
 
@@ -1525,19 +1522,6 @@ finds its unwritten reason.
 | usecase       | [Labels (usecase.md)](./docs/usecase.md#labels) "Reuse C4's authored value forms: a"                                                                                                                                                                                                                                                           | `["usecase-beta\nA(\"a\\\\b\")\n", "usecase-beta\nA(\"a &amp; b\")\n", "usecase-beta\nA(\"<b>x</b>\")\n"]`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 ## Forms whose reason is still being searched for, or that have not been run
-
-### Record search is missing
-
-6 forms are missing this check.
-
-| Diagram     | Rules document                                                                                                                                   | Written form                                                                                           |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
-| flowchart   | [Styles that are drawn the same (compatibility.md)](./docs/compatibility.md#styles-that-are-drawn-the-same) "A statement stays as written where" | `flowchart TD\nA\nstyle A fill:red %%{init: {}}%%\n`                                                   |
-| gantt       | [Titles and sections (gantt.md)](./docs/gantt.md#titles-and-sections) "A value written on a later"                                               | `gantt\ntitle\nT\nsection\nS\n`                                                                        |
-| gantt       | [Empty description blocks (gantt.md)](./docs/gantt.md#empty-description-blocks) "A block with a directive or"                                    | `gantt\naccDescr { %%{init: {}}%% }\naccDescr {\n%% c\n}\n`                                            |
-| gantt       | [Comments (gantt.md)](./docs/gantt.md#comments) "A comment on a line of"                                                                         | `gantt\n      %% one\ntitle T\n\t%% two\nsection S\n%% three\n   a : 1d\n`                             |
-| requirement | [Accessibility statements (requirement.md)](./docs/requirement.md#accessibility-statements) "A text written on a later line is printed"          | `requirementDiagram\naccTitle:\nT\naccDescr:\n\n D\naccTitle\n: U\n`                                   |
-| requirement | [Comments (requirement.md)](./docs/requirement.md#comments) "A comment on a line of"                                                             | `requirementDiagram\n%% c1\nrequirement r {\n      %% c2\nid: 1\n%% c3\n}\n   %% c4\nelement e {\n}\n` |
 
 ### Record search and a conclusive run are missing
 
