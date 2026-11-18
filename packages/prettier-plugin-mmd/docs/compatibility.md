@@ -242,6 +242,10 @@ The table also names the pinned version where it needs the kept form.
 | [sequence](./sequence.md#arrow-spacing)                                                                                                         | `A<<->>B` printed `A<<->> B`                                                                                                                                                 | `A <<->> B`                                                           | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 reads the `<<` as part of the name before it                                                         | [fixture: sequence/arrow-spacing/bidirectional-arrow-gap-before-kept]                                                                                       |
 | [sequence](./sequence.md#whitespace-between-tokens)                                                                                             | `participant A   @{ x }`, a data block without `:`, `,`, `;`, or `>`                                                                                                         | `participant A@{ x }`                                                 | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 and 11.7.0 read the block as a part of the name of the participant, with the whitespace              | [fixture: sequence/whitespace-between-tokens/data-block-name-gap-before-kept]                                                                               |
 | [sequence](./sequence.md#colors)                                                                                                                | `rect rgb(191 ,223 ,255)`                                                                                                                                                    | `rect rgb(191, 223, 255)`                                             | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 12.3.0 changes `messages[0].message`                                                                        | [fixture: sequence/colors/function-padding-kept]                                                                                                            |
+| [sequence](./sequence.md#colors)                                                                                                                | `rect rgb( 1 ,2,3 )`                                                                                                                                                         | `rect rgb(1, 2, 3)`                                                   | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 draw another `fill` attribute                                                              | [fixture: sequence/colors/rect-leading-and-comma-padding-kept]                                                                                              |
+| [sequence](./sequence.md#colors)                                                                                                                | `rect rgb( 1,2,3)` and `rect rgb(1,2,3 )`                                                                                                                                    | `rect rgb(1, 2, 3)`                                                   | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 draw another `fill` attribute                                                              | [fixture: sequence/colors/rect-open-paren-padding-kept] [fixture: sequence/colors/rect-close-paren-padding-kept]                                            |
+| [sequence](./sequence.md#colors)                                                                                                                | `box rgb( 1,2,3) Team` and `box rgb(1,2,3 ) Team`                                                                                                                            | `box rgb(1, 2, 3) Team`                                               | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 draw another `fill` attribute; 12.3.0 changes `boxes[0].fill` in the Db                    | [fixture: sequence/colors/box-open-paren-padding-kept] [fixture: sequence/colors/box-close-paren-padding-kept]                                              |
+| [sequence](./sequence.md#colors)                                                                                                                | `box rgb(1 ,2,3) Team`                                                                                                                                                       | `box rgb(1, 2, 3) Team`                                               | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 12.3.0 changes `boxes[0].fill` in the Db, with the same drawing                                             | [fixture: sequence/colors/box-comma-padding-kept]                                                                                                           |
 | [sequence](./sequence.md#title)                                                                                                                 | `title` followed by two spaces, a tab, and a space                                                                                                                           | `title` alone on the last line                                        | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 reject a line of `title` alone                                                             | [fixture: sequence/title/title-blank-kept]                                                                                                                  |
 | [sequence](./sequence.md#comments)                                                                                                              | `accDescr {style:#x} end #a;` and two trailing spaces at end of text                                                                                                         | `accDescr: style:#x`, then `end #a;` on its own line                  | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 to 12.3.0 reject the form with `end` on its own line                                                 | [fixture: sequence/statements-one-per-line/end-comment-ignored-semicolon-trigger-in-other-statement-trailing-whitespace]                                    |
 | [sequence](./sequence.md#comments)                                                                                                              | `accDescr {style:#x} end #12; %%{init: {}}%%` at end of text                                                                                                                 | `accDescr: style:#x`, then `end #12; %%{init: {}}%%` on its own line  | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 to 12.3.0 reject the form with `end` on its own line                                                 | [fixture: sequence/statements-one-per-line/end-comment-entity-before-directive]                                                                             |
@@ -2069,14 +2073,25 @@ each comma: `rect rgb(191,223,255)` is printed `rect rgb(191, 223, 255)`,
 of the text of a `box` that mermaid.js asks the browser about (the
 `color-candidate` of the specification), in a sequence diagram, and the value of
 a property of a `style` of a Venn diagram. The whitespace before a comma and
-inside the parentheses stays as written. The text is a color function when it is
-`rgb(`, `rgba(`, `hsl(`, or `hsla(` in lower case, with three arguments for
-`rgb` and `hsl` and four for `rgba` and `hsla`, each of digits and at most one
-dot, with a `%` after it for a percentage, and a `)`; the first three arguments
-of an `rgb` are all numbers or all percentages, and the second and the third of
-an `hsl` are percentages. That is a color in every browser. For anything else
-the printer cannot know that it is one: mermaid.js asks the browser, and takes
-the whole text of a `box` for its title when it is not
+inside the parentheses stays as written. In a `rect`, a space after the `(` and
+a space before the `)` stay since every version of mermaid.js that counts draws
+another `fill` attribute for `rect rgb( 1,2,3)` and for `rect rgb(1,2,3 )` than
+for `rect rgb(1, 2, 3)`, and a space before a comma stays since 12.3.0 changes
+the Db there, with the same drawing, which no kind of exception covers. In a
+`box` the same spaces stay for the same reasons: a space after the `(` or before
+the `)` draws another `fill` attribute in every version that counts, and a space
+before a comma changes `boxes[0].fill` in the Db of 12.3.0, with the same
+drawing. In a Venn `style`, each of these spaces changes the Db `color` value of
+12.3.0, and every version that counts draws the same figure (see
+[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
+The text is a color function when it is `rgb(`, `rgba(`, `hsl(`, or `hsla(` in
+lower case, with three arguments for `rgb` and `hsl` and four for `rgba` and
+`hsla`, each of digits and at most one dot, with a `%` after it for a
+percentage, and a `)`; the first three arguments of an `rgb` are all numbers or
+all percentages, and the second and the third of an `hsl` are percentages. That
+is a color in every browser. For anything else the printer cannot know that it
+is one: mermaid.js asks the browser, and takes the whole text of a `box` for its
+title when it is not
 ([`parseBoxData`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L394-L419)),
 so the spaces would change the title. So `box rgb(33,66,99) Team (x,y)` (the
 pattern of mermaid.js reads up to the last `)`), `box RGB(33,66,99) Team`,
@@ -2096,10 +2111,18 @@ by `rgb(1,2,3) extra`, stay as written.
 [fixture: sequence/colors/functions-spaced] [fixture:
 sequence/colors/function-padding-kept] [fixture:
 sequence/colors/rect-leading-and-comma-padding-kept] [fixture:
+sequence/colors/rect-open-paren-padding-kept] [fixture:
+sequence/colors/rect-close-paren-padding-kept] [fixture:
+sequence/colors/box-open-paren-padding-kept] [fixture:
+sequence/colors/box-close-paren-padding-kept] [fixture:
+sequence/colors/box-comma-padding-kept] [fixture:
 sequence/colors/functions-as-written] [fixture:
 sequence/colors/functions-beside-comments-and-directives] [fixture:
 venn/colors/functions-spaced] [fixture: venn/colors/function-padding-kept]
-[fixture: venn/colors/functions-as-written]
+[fixture: venn/colors/function-open-paren-padding-kept] [fixture:
+venn/colors/function-close-paren-padding-kept] [fixture:
+venn/colors/function-comma-padding-kept] [fixture:
+venn/colors/functions-as-written]
 
 mermaid.js keeps the colors in the case in which they are written, in its Db and
 in the figure, and draws the same figure. It puts the style of a node into the

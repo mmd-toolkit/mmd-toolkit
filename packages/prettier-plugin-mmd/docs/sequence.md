@@ -636,8 +636,18 @@ than the function. The whitespace before a comma, immediately after the opening
 versions of mermaid.js that count read `rgb(191, 223, 255)` as a different
 message value in the Db (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The whitespace immediately after the `(` and before the `)` of a `rect` stays
+too, since every version that counts draws another `fill` attribute for
+`rect rgb( 1,2,3)` and `rect rgb(1,2,3 )` (see the same table). In a `box` they
+stay for the same reasons, and so does the whitespace before a comma, which
+changes `boxes[0].fill` in the Db of 12.3.0 with the same drawing.
 
 [fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
+[fixture: colors/rect-leading-and-comma-padding-kept] [fixture:
+colors/rect-open-paren-padding-kept] [fixture:
+colors/rect-close-paren-padding-kept] [fixture:
+colors/box-open-paren-padding-kept] [fixture:
+colors/box-close-paren-padding-kept] [fixture: colors/box-comma-padding-kept]
 [fixture: colors/functions-as-written] [fixture:
 colors/functions-beside-comments-and-directives]
 
