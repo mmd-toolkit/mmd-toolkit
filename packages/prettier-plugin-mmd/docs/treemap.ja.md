@@ -23,8 +23,8 @@
 [規則 3](./printed-form.ja.md#3-綴り)が、コロンのない見出しを与えます。
 mermaid.js のドキュメントの例は、この図の見出し 8 個のすべてを、
 コロンなしで書いています。
-対象にする版の mermaid.js はすべて、
-`treemap:` と `treemap-beta:` を拒否するからです。
+また、対象にする版の mermaid.js はすべて、
+`treemap:` と `treemap-beta:` を拒否します。
 詳しくは [ヘッダーの後のコロン](./compatibility.ja.md#ヘッダーの後のコロン)
 を参照してください。
 空本文も保ちます。
