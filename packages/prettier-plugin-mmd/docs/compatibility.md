@@ -3948,8 +3948,9 @@ packet/header/header-beta] [fixture: packet/hidden-yaml/yaml-beta-header]
 [fixture: treemap/header/common] [fixture:
 xychart/header-and-orientation/beta-header-kept] [fixture:
 xychart/keyword-case/header-spelling-kept] [fixture:
-xychart/header-and-orientation/second-header-spelling-and-case-kept] The four
-headers of a railroad diagram, `railroad-beta`, `railroad-ebnf-beta`,
+xychart/header-and-orientation/second-header-spelling-and-case-kept]
+
+The four headers of a railroad diagram, `railroad-beta`, `railroad-ebnf-beta`,
 `railroad-abnf-beta`, and `railroad-peg-beta`, stay as written. 11.16.1,
 11.17.2, 12.0.0, and 12.3.0, the versions that have the diagram type, read each
 name in this spelling only: they reject it without `-beta` (`railroad`,
