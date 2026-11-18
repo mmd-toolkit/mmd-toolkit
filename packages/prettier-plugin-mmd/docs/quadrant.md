@@ -1180,12 +1180,15 @@ that counts draws different text for the latter (see
 Around the `:`, the brackets, and the comma of a point, however, and around the
 colon and the brace of an accessibility statement, mermaid.js reads them as
 whitespace, and a space is printed in their place. Every version of mermaid.js
-that counts draws the same figure from a space as from them, and the form that
-is printed is the one of
-[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark): the colon of a key
-has no whitespace before it and one space after it, brackets have none inside,
-and a comma has none before it and one space after it. After the `]` of a point
-they are not accepted (see [Line separators](#line-separators)).
+that counts draws the same figure from the whitespace that is printed there as
+from them (both texts of each case of the tests below were drawn in each of
+them: the SVG was the same, or both were rejected). The whitespace that is
+printed is the one that [Points](#points) gives for the `:`, the brackets, and
+the comma of a point, and that
+[Titles and accessibility statements](#titles-and-accessibility-statements) and
+[Empty description blocks](#empty-description-blocks) give for the colon and the
+brace of an accessibility statement. After the `]` of a point they are not
+accepted (see [Line separators](#line-separators)).
 
 [test: U+00A0 between the words of a text] [test: U+3000 between the words of a
 text] [test: U+FEFF between the words of a text] [test: a form feed between the
