@@ -627,7 +627,11 @@ all in lower case. `box rgb(33,66,99) Team (x)` stays as written, since the
 pattern of mermaid.js reads up to the last `)`, and so do
 `box RGB(33,66,99) Team`, `box rgb (33,66,99) Team`, and a `rect` with more text
 than the function. The whitespace before a comma, immediately after the opening
-`(`, and immediately before the closing `)` stays as written.
+`(`, and immediately before the closing `)` stays as written. In a `rect`,
+`rgb(191 ,223 ,255)` keeps the spaces before the commas, since some of the
+versions of mermaid.js that count read `rgb(191, 223, 255)` as a different
+message value in the Db (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
 [fixture: colors/functions-as-written] [fixture:
@@ -1003,7 +1007,10 @@ the `accTitle` stays as written, since the browser shows it as a tooltip (see
 [fixture: title/accessibility-runs-collapsed] [fixture:
 title/text-padding-dropped] [fixture: title/text-padding-dropped-colon]
 
-A title of spaces and tabs only stays as written.
+A title of spaces and tabs only stays as written. At the end of the text,
+`title` followed by two spaces, a tab, and a space stays, since every version of
+mermaid.js that counts rejects a line of `title` alone (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: title/title-blank-kept]
 
@@ -1269,6 +1276,10 @@ name (`end #a%%{init: {}}%%;`). An `accDescr {…}` block before the `end` is
 printed as `accDescr: …` where the `end` goes to a line of its own, also in a
 block that stands before the `else` or `and` of the block around it, and it
 stays as written where the `end` stays on its line.
+`accDescr {style:#x} end #a;` with two trailing spaces at the end of the text
+stays on one line, since every version of mermaid.js that counts rejects
+`accDescr: style:#x` followed by `end #a;` on its own line (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture:
 statements-one-per-line/end-comment-ignored-semicolon-no-gaps-in-style-rule-stretch-without-whitespace]
@@ -1297,7 +1308,11 @@ statements-one-per-line/end-comment-own-trigger-trailing-whitespace-before-a-div
 
 This also holds when `%%{init: {}}%%` follows an entity-shaped end of a `#`
 comment, such as `end #12;`, or U+2028 follows it before an `and` divider;
-without an entity, `end #; %%{init: {}}%%` moves to its own line as usual.
+without an entity, `end #; %%{init: {}}%%` moves to its own line as usual. At
+the end of the text, `accDescr {style:#x} end #12; %%{init: {}}%%` stays on one
+line, since every version of mermaid.js that counts rejects `accDescr: style:#x`
+followed by `end #12; %%{init: {}}%%` on its own line (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: statements-one-per-line/end-comment-entity-before-directive] [fixture:
 statements-one-per-line/end-comment-no-entity-before-directive] [test: an
@@ -1357,7 +1372,11 @@ A divider on the next line (`else`, `and`, `option`) is a statement of its own,
 as any statement is: it holds no value of the line before it, so the `;` that
 ends that line is the last of it. `end #a;` followed by whitespace and `else` on
 the next line stays on the line of its trigger, as it does at the end of the
-text.
+text. After `accDescr {style:#x}`, `end #a;` followed by a space, a tab, and an
+`else` line stays on the same line as the block, since every version of
+mermaid.js that counts rejects `accDescr: style:#x` followed by `end #a;` on its
+own line before `else` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture:
 statements-one-per-line/end-comment-ignored-semicolon-trailing-whitespace-before-a-divider]
@@ -1368,7 +1387,11 @@ whitespace parts from them: `accDescr {style:#x}end #a;` stays on one line, with
 the block as written, since the form with the colon would take the `end` into
 the text, and `accDescr {style: x}end #;`, whose comment is read the same on a
 line of its own, is printed `accDescr: style: x` and `end #;`. So is a divider:
-`accDescr {style:#x}else x#a;` stays on one line.
+`accDescr {style:#x}else x#a;` stays on one line. In
+`accDescr {style:#x}else x#a;`, the divider stays on that line, since every
+version of mermaid.js that counts draws the divider text differently when
+`accDescr: style:#x` is followed by `else x#a;` on its own line (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture:
 statements-one-per-line/end-touching-description-block-without-trigger]
