@@ -704,12 +704,15 @@ Agentflow label comments are different: their preceding spaces/tabs are label
 content, so preserve that padding, the comment and its LF/continuation columns,
 including a closing bracket that belongs to the comment rather than closing the
 shape. Tildes remain content. Shape spellings, entities and HTML remain
-authored.
+authored. The text of a label is a text that the tree holds whole (see
+[A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)),
+and the Db keeps it, so an entity stays as written: `&amp;` is not printed `&`,
+a change of the text that no rule of this document defines.
 
 [fixture: labels/labels-closers] [fixture: labels/labels-leading-sensitive]
 [fixture: labels/labels-leading-at-sign] [fixture: labels/labels-padding]
 [fixture: labels/labels-tilde] [fixture: labels/labels-trim-sensitive-unsafe]
-[fixture: labels/slash-label-padding-kept]
+[fixture: labels/slash-label-padding-kept] [fixture: labels/entity-kept]
 
 Flow/connector heading titles follow
 [Subgraph header](./flowchart.md#subgraph-header) instead: drop the whitespace

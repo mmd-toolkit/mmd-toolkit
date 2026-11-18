@@ -726,11 +726,16 @@ agentflowのラベルコメントの直前の空白とタブは値の文字な�
 コメント内の閉じ括弧は形を閉じないので、コメントの文字のままです。
 チルダは文字です。
 形、実体参照とHTMLの綴りも保ちます。
+ラベルのテキストは木が丸ごと持つテキストで、Db もそのまま持ちます。
+そのため、実体参照は書かれたまま残し、`&amp;` を `&` とは印字しません。
+この文書は、テキストのそのような変更を定めていません。
+詳しくは [木が丸ごと持つテキスト](./printed-form.ja.md#木が丸ごと持つテキスト)
+を参照してください。
 
 [fixture: labels/labels-closers] [fixture: labels/labels-leading-sensitive]
 [fixture: labels/labels-leading-at-sign] [fixture: labels/labels-padding]
 [fixture: labels/labels-tilde] [fixture: labels/labels-trim-sensitive-unsafe]
-[fixture: labels/slash-label-padding-kept]
+[fixture: labels/slash-label-padding-kept] [fixture: labels/entity-kept]
 
 flow/connectorの見出しのタイトルは、
 [subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)に従います。
