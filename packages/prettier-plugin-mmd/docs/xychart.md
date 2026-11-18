@@ -774,10 +774,15 @@ uses one space: `accDescr{  }` becomes `accDescr {}`.
 Unicode and tab interiors]
 
 A block with a directive or comment line keeps its contents and line breaks,
-with standalone trivia one level inside and its closer at statement level. It
-stands on a line of its own, also after the header and after another statement.
-A block that is not closed, at the end of the text, is printed as `accDescr {`
-with no `}`, as in [Accessibility statements](#accessibility-statements).
+with standalone trivia one level inside and its closer at statement level. Rule
+1 names no mark for a line inside a block, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [block](./block.md#empty-description-blocks) and
+[quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
+breaks of a block with a directive or comment line. It stands on a line of its
+own, also after the header and after another statement. A block that is not
+closed, at the end of the text, is printed as `accDescr {` with no `}`, as in
+[Accessibility statements](#accessibility-statements).
 
 [fixture: empty-description-blocks/inner-whitespace-collapsed] [fixture:
 empty-description-blocks/touching-kept] [fixture:
