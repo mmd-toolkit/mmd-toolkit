@@ -540,9 +540,6 @@ radar-beta
 
 Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
-For `accDescr {a%%literal}`, the braces stay, since every version of mermaid.js
-that counts draws different text for `accDescr: a%%literal` (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 For blocks that keep their braces, separate the keyword and opening brace with
 one space so the block boundary is clear. Whitespace-only interiors become `{}`
 because no text needs surrounding space. Plain opener whitespace joins; real
@@ -570,8 +567,6 @@ source. The first closing brace still ends the value.
 [fixture: radar/description-blocks/block-comment-opener-fixed]
 
 [fixture: radar/description-blocks/block-multiline-global]
-
-[fixture: radar/comments/value-percent-owned]
 
 [test: radar/description-blocks/unicode-empty]
 
