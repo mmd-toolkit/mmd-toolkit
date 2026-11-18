@@ -1,5 +1,12 @@
 # prettier-plugin-mmd
 
+## 0.9.1
+
+### Patch Changes
+
+- [#125](https://github.com/mmd-toolkit/mmd-toolkit/pull/125) [`bacab7e`](https://github.com/mmd-toolkit/mmd-toolkit/commit/bacab7e409c1894295c831a139732d9e938d261f) Thanks [@renovate](https://github.com/apps/renovate)! - Accept any `marked` 18 release from 18.2.1 on instead of only 18.2.0, so that a
+  project that also uses `marked` 18 can share one copy with the plugin.
+
 ## 0.9.0
 
 ### Minor Changes
