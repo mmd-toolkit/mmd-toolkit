@@ -771,6 +771,11 @@ flowchart の [スタイルの行末の空白](./flowchart.ja.md#スタイルの
 
 スタイルのない `style` は `style A` と出力し、id は 1 つの空白の後に置き、
 その後ろには何も置きません。
+規則 1 は、キーワードと ID の間の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[architecture](./architecture.ja.md#declaration-spacing) と
+[eventmodeling](./eventmodeling.ja.md#declarations-and-notes) も、
+ここを空白 1 個で印字します。
 
 [fixture: styles/style-without-styles] [corpus fixture: block/db-style-none]
 
@@ -1001,6 +1006,11 @@ mermaid.js の行の規則は、`style` か `classDef`、その後の `:`、そ�
 テキストと印は書かれたまま残します。
 最後の文の後のコメント行は、その後ろに残ります。
 ヘッダーより前のコメント行は 1 列目に置きます。
+規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
+規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
+[state](./state.ja.md#コメント) と [er](./er.ja.md#コメント) も、
+コメント行を周りの文と同じ段に置きます。
 行頭でない `%%` は id の文字で、書かれた場所に、
 始まる文と一緒に残します（[行](#行)を参照）。
 
