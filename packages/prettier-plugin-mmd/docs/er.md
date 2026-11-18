@@ -1852,14 +1852,15 @@ it; the text is without the whitespace at its ends.
 [fixture: accessibility-statements/title-and-description]
 
 A text written on a later line is printed after the `:` on one line, and a
-comment line before it makes the statement kept as written. The colon of
-`accTitle` and `accDescr` is the colon of a key (the title and the description
-of a diagram in
+comment line before it keeps the line breaks of the statement, and the comment
+and the text stand one level deeper. The colon of `accTitle` and `accDescr` is
+the colon of a key (the title and the description of a diagram in
 [Which kind a colon is](./printed-form.md#which-kind-a-colon-is)), so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the form
 `accTitle: text`: no whitespace before the colon and one space after it, also
 where the colon or the text was written on a later line; where a comment line
-stands before the text, the statement stays as written, as said above.
+stands before the text, the line breaks stay and the comment and the text stand
+one level deeper, as said above.
 
 [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept] [corpus fixture:
