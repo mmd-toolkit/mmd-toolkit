@@ -1181,10 +1181,10 @@ Around the `:`, the brackets, and the comma of a point, however, and around the
 colon and the brace of an accessibility statement, mermaid.js reads them as
 whitespace, and a space is printed in their place. Every version of mermaid.js
 that counts draws the same figure from the whitespace that is printed there as
-from them (both texts of each case of the tests below were drawn in each of
-them: the SVG was the same, or both were rejected). The whitespace that is
-printed is the one that [Points](#points) gives for the `:`, the brackets, and
-the comma of a point, and that
+from them (both texts of the tests below on the colon, the brackets, the comma,
+and the brace were drawn in each of them: the SVG was the same, or both were
+rejected). The whitespace that is printed is the one that [Points](#points)
+gives for the `:`, the brackets, and the comma of a point, and that
 [Titles and accessibility statements](#titles-and-accessibility-statements) and
 [Empty description blocks](#empty-description-blocks) give for the colon and the
 brace of an accessibility statement. After the `]` of a point they are not
