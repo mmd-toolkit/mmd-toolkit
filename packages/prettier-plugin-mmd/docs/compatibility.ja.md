@@ -2546,7 +2546,7 @@ C4 図の 2 対は、テキスト中の空白やタブの連なりで Db が異�
   `participant`、`rect`、`right`。
 - 状態遷移図: `<<choice>>`、`<<fork>>`、`<<join>>`、`accDescr`、`accTitle`、
   `as`、`class`、`direction`、`end`、`LR`、`note`、`state`、`TB`。
-- タイムライン: `section`、`TD`、`title`。
+- タイムライン: `section`、`title`。
 - ユースケース図: `extend`、`include`。
 - Venn 図: `set`、`text`、`title`、`union`。
 - XY チャート: `bar`、`line`、`title`、`x-axis`、`y-axis`。

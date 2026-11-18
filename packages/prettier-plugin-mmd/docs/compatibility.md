@@ -2411,7 +2411,7 @@ the keywords below in the case shown, and every other keyword as written.
   `participant`, `rect`, `right`.
 - State diagram: `<<choice>>`, `<<fork>>`, `<<join>>`, `accDescr`, `accTitle`,
   `as`, `class`, `direction`, `end`, `LR`, `note`, `state`, `TB`.
-- Timeline: `section`, `TD`, `title`.
+- Timeline: `section`, `title`.
 - Usecase diagram: `extend`, `include`.
 - Venn diagram: `set`, `text`, `title`, `union`.
 - XY chart: `bar`, `line`, `title`, `x-axis`, `y-axis`.
