@@ -284,18 +284,8 @@ classDiagram
 ### Whitespace between tokens
 
 Within a line, a run of spaces and tabs between two tokens becomes one space,
-and tokens that touch keep touching, as in a flowchart, except where a rule
-named below puts a space between them: a string, a backquoted name, or the
-`call` keyword after what comes before it; the `[` of a label; the `~` of a
-generic type; the `{` of a description block, of a member body, and of a
-namespace, which has one space before it (see
-[Empty description blocks](#empty-description-blocks),
-[Member bodies](#member-bodies), and [Indentation](#indentation)); the `<<` of
-an annotation, which has one space before it (see below); the arrow of a
-relation and its cardinalities, which have one space on each side (see
-[Arrow spacing](#arrow-spacing)); and a colon, which follows [Labels](#labels)
-for a relation label and a member line, and the colon of a key for a style (see
-[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)).
+and tokens that touch keep touching, as in a flowchart, where no rule below puts
+a space between them (a string, an arrow, a colon, and the like).
 
 [fixture: whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/tabs-collapsed] [fixture:
@@ -369,16 +359,16 @@ level of the statements around it.
 whitespace-between-tokens/tabs-collapsed]
 
 A string, a backquoted name, or the `call` keyword that touches what comes
-before it is separated from it by one space in a `class`, `namespace`, `note`,
-`link`, `click`, or `cssClass` statement: `note"n"` is printed `note "n"`,
-`note for A"n"` is printed `note for A "n"`, `` class`C D` `` and
-``namespace`N M` {`` are printed with a space after the keyword, `link A"u""t"`
-is printed `link A "u" "t"`, `click B href"u""t"_self` is printed
-`click B href "u" "t" _self`, `cssClass"A,B"c` is printed `cssClass "A,B" c`,
-`click C call f()"t"` is printed `click C call f() "t"`, and
-`click C~T~call f()` is printed `click C~T~ call f()`. mermaid.js reads every
-spelling as the same statement, so nothing forces the form; its documentation
-writes a space before each string
+before it, and a word that touches the string before it, is separated from it by
+one space in a `class`, `namespace`, `note`, `link`, `click`, or `cssClass`
+statement: `note"n"` is printed `note "n"`, `note for A"n"` is printed
+`note for A "n"`, `` class`C D` `` and ``namespace`N M` {`` are printed with a
+space after the keyword, `link A"u""t"` is printed `link A "u" "t"`,
+`click B href"u""t"_self` is printed `click B href "u" "t" _self`,
+`cssClass"A,B"c` is printed `cssClass "A,B" c`, `click C call f()"t"` is printed
+`click C call f() "t"`, and `click C~T~call f()` is printed
+`click C~T~ call f()`. mermaid.js reads every spelling as the same statement, so
+nothing forces the form; its documentation writes a space before each string
 ([`note "…"` and `note for MyClass "…"`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L639-L640),
 [`link Shape "…" "…"` and `click Shape2 href "…" "…"`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L650-L652),
 [`cssClass "nodeId1,nodeId2" className`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L773)).
