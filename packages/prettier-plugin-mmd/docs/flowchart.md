@@ -1798,9 +1798,16 @@ that text onto the keyword's line.
 A real comment or directive prevents compact joining. Keep the previous
 [Multi-line statements](#multi-line-statements) layout: continuation lines,
 including comment and directive lines, stand one level deeper than the keyword;
-the comment/directive text and the authored statement breaks remain. Flowchart
-skips a comment after the colon to read the later value. This preserves the
-existing continuation rule when ordinary joining does not apply.
+the comment/directive text and the authored statement breaks remain. Rule 1
+gives no form here, since its table names the whitespace beside a mark and not
+the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it, as [requirement](./requirement.md#fields) and
+[sequence](./sequence.md#multi-line-statements) put the continuation lines and
+the intervening comment lines of a statement one level deeper than its first
+line. Flowchart skips a comment after the colon to read the later value. This
+preserves the existing continuation rule when ordinary joining does not apply.
 
 [fixture: accessibility-lines/next-line-comment-kept] [fixture:
 accessibility-lines/description-comment-continuation] [fixture:
