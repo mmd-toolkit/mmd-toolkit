@@ -5473,6 +5473,8 @@ mermaid.js は、Gantt 図の一部の値の空白を持ち、一部の行を、
   mermaid.js は、コロンの後にデータの 1 文字を、
   キーワードに続く空白の後にリストのテキストの 1 文字を要求するので、
   `a :` と `includes ` は拒否され、空白 1 文字か 2 文字を残します。
+  ディレクティブが続くリストでも、キーワードの後の 2 文字を残します。
+  `includes`、空白 1 個、`%%{init: {}}%%` も拒否されるからです。
 
   [fixture: gantt/task-data/whitespace-only-data]
   [fixture: gantt/lists/whitespace-only]

@@ -5226,7 +5226,9 @@ See [Task data](./gantt.md#task-data), [Settings](./gantt.md#settings),
   after the keyword of an `includes` or `excludes` statement whose list is
   whitespace only. mermaid.js needs a character of the data after the colon and
   of the list text after the whitespace that follows the keyword, so `a :` and
-  `includes ` are rejected, and one whitespace character, or two, stay.
+  `includes ` are rejected, and one whitespace character, or two, stay; so do
+  the two after the keyword of a list when a directive follows them, since
+  `includes`, one space, and `%%{init: {}}%%` is rejected too.
 
   [fixture: gantt/task-data/whitespace-only-data] [fixture:
   gantt/lists/whitespace-only]

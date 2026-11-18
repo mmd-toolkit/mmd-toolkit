@@ -870,6 +870,10 @@ follows the whitespace: `includes`, two spaces, and `%%{init: {}}%%` stay, since
 mermaid.js takes the directive out before it reads the list, and every version
 of mermaid.js that counts rejects the form with one space (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Rule 1 names no mark between a keyword and its text, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+that gap one space, as `title    Plan` is printed `title Plan`; the rejected
+one-space form is why these two spaces stay.
 
 [fixture: lists/whitespace-only] [fixture: lists/whitespace-only-then-directive]
 

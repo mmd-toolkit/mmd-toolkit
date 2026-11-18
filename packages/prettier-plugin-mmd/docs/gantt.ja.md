@@ -903,6 +903,11 @@ mermaid.js がリストを読む前にディレクティブを取り除き、
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+規則 1 は、キーワードとそのテキストの間の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)がその隙間を空白 1
+個とします。
+`title    Plan` を `title Plan` と印字するのと同じです。
+空白 1 個の形が拒否されるので、この 2 個の空白は残ります。
 
 [fixture: lists/whitespace-only] [fixture: lists/whitespace-only-then-directive]
 
