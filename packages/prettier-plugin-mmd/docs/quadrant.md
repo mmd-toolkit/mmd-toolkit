@@ -783,12 +783,18 @@ decides, as [xychart](./xychart.md#empty-description-blocks) and
 of a block with a directive or comment line. It stands on a line of its own,
 also after the header and after another statement, where the grammar takes it:
 mermaid.js reads it as nothing wherever it stands, and the grammar takes it
-where a statement starts and after the last unit of a statement.
+where a statement starts and after the last unit of a statement. A block that
+holds only a directive on the line of its braces keeps the directive touching
+the `{` where nothing stood between them, and prints one space before it where
+whitespace stood before or after it, and none after it:
+`accDescr {%%{init: {}}%% }` is printed `accDescr { %%{init: {}}%%}`.
 
 [fixture: empty-description-blocks/inner-whitespace-collapsed] [fixture:
 empty-description-blocks/touching-kept] [fixture:
 empty-description-blocks/blank-lines-inside] [fixture:
 empty-description-blocks/with-directive-or-comment-line-kept] [fixture:
+empty-description-blocks/directive-on-the-line-of-the-braces] [fixture:
+empty-description-blocks/directive-line-kept] [fixture:
 empty-description-blocks/between-two-statements]
 
 Input

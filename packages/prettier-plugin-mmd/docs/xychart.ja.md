@@ -813,6 +813,10 @@ xychart
 指令かコメント行を持つブロックは、内容と改行を保ち、独立した注釈を 1 段内側、
 閉じ括弧を文の段に置きます。
 ヘッダーの後でも、ほかの文の後でも、自分の行に置きます。
+ディレクティブだけを `{` と同じ行に置くブロックは、
+間に何もなければディレクティブを `{` に接したまま残し、前か後ろに空白があれば、
+前に空白 1 つを置き、後ろには置きません。
+`accDescr {%%{init: {}}%% }` は `accDescr { %%{init: {}}%%}` になります。
 テキストの最後で閉じていないブロックは、
 `}` を足さずに `accDescr {` と印字します（詳しくは、
 [アクセシビリティの文](#アクセシビリティの文)を参照）。
@@ -821,6 +825,8 @@ xychart
 [fixture: empty-description-blocks/touching-kept]
 [fixture: empty-description-blocks/blank-lines-inside]
 [fixture: empty-description-blocks/with-directive-or-comment-line-kept]
+[fixture: empty-description-blocks/directive-on-the-line-of-the-braces]
+[fixture: empty-description-blocks/directive-line-kept]
 [fixture: empty-description-blocks/after-the-header]
 [fixture: empty-description-blocks/after-a-statement-on-its-line]
 [fixture: empty-description-blocks/not-closed-at-the-end-of-the-text]

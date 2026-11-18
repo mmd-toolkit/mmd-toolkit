@@ -1877,10 +1877,15 @@ retain their existing layout. Rule 1 names no mark for a line inside a block, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [xychart](./xychart.md#empty-description-blocks) and
 [quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
-breaks of a block with a directive or comment line.
+breaks of a block with a directive or comment line, and print a block that holds
+only a directive on the line of its braces with the directive touching the `{`
+where nothing stood between them, and one space before it where whitespace stood
+before or after it, and none after it.
 
 [fixture: accessibility-lines/empty-block-semicolon-kept] [fixture:
 accessibility-lines/empty-block-directive-kept] [fixture:
+accessibility-lines/empty-block-directive-forms] [fixture:
+accessibility-lines/empty-block-directive-line-kept] [fixture:
 multi-line-values/accdescr-block-comment-only]
 
 Blocks on one line follow

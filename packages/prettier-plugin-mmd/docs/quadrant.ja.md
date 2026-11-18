@@ -808,11 +808,17 @@ quadrantChart
 ヘッダーの後でも、ほかの文の後でも、自分の行に置きます。
 文法がブロックを受け入れるのは、文の始まりと、文の最後の単位の後です。
 mermaid.js は、どこにあってもトークンのないものとして読みます。
+ディレクティブだけを `{` と同じ行に置くブロックは、
+間に何もなければディレクティブを `{` に接したまま残し、前か後ろに空白があれば、
+前に空白 1 つを置き、後ろには置きません。
+`accDescr {%%{init: {}}%% }` は `accDescr { %%{init: {}}%%}` になります。
 
 [fixture: empty-description-blocks/inner-whitespace-collapsed]
 [fixture: empty-description-blocks/touching-kept]
 [fixture: empty-description-blocks/blank-lines-inside]
 [fixture: empty-description-blocks/with-directive-or-comment-line-kept]
+[fixture: empty-description-blocks/directive-on-the-line-of-the-braces]
+[fixture: empty-description-blocks/directive-line-kept]
 [fixture: empty-description-blocks/between-two-statements]
 
 入力
