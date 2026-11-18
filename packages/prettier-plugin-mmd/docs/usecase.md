@@ -199,7 +199,9 @@ mermaid.js that counts draws different accessibility text for
 A string between `'` is printed between `"`, unless its text holds a `'`, a `"`,
 a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
-and `singleQuote` is not read.
+and `singleQuote` is not read. A string that holds a `"` stays between `'`,
+since every version of mermaid.js that counts rejects `B("a"b")` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: labels/single-quote-sensitive-kept] [fixture:
 labels/label-quote-kinds]
@@ -1079,7 +1081,8 @@ direction-and-accessibility/keyword-brace-space] [fixture:
 direction-and-accessibility/keyword-brace-run] [test: accessibility revisions:
 usecase keyword-brace-tab]
 
-Empty and whitespace-only interiors print `{}`.
+Empty and whitespace-only interiors print `{}`, as Prettier prints `x = { }` as
+`x = {}` ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)).
 
 [fixture: direction-and-accessibility/empty-block-lines]
 
@@ -1161,7 +1164,12 @@ usecase-beta
 
 Reuse [standalone comment alignment](./class.md#comments): comments align with
 nearby statements, with declarations before boundary `end`, and at column one
-before the header, retaining all comment text and terminal HWS.
+before the header, retaining all comment text and terminal HWS. Rule 1 gives no
+form here, since its table names the whitespace beside a mark and not the start
+of a line ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it, as [block](./block.md#comments) and [er](./er.md#comments) put a comment
+line at the level of the statements around it.
 
 [fixture: system-boundaries/boundary-header-comment-empty] [test: usecase:
 terminal-comment-tab]
