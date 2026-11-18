@@ -4216,11 +4216,6 @@ requirement と element の本文内の空の説明ブロックも、
 [fixture: requirement/empty-description-blocks/in-body-with-directive-line]
 
 state の独立した開き波括弧はキーワードにそろえます。
-規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
-[c4](./c4.ja.md#境界の本体) と [requirement](./requirement.ja.md#本体)も、
-開き波括弧のある行を、キーワードと同じ段に置きます。
 class の関数名から `(` までの空白は値の一部として保ちます。
 
 [fixture: class/multi-line-statements/comment-inside-kept]
@@ -4257,13 +4252,6 @@ C4 の呼び出しも、インラインディレクティブの内容・接触�
 [fixture: c4/argument-spacing/directive-semicolon-prefix]
 
 通常のブロック見出しを完成する物理行は文と同じ段にそろえ、本文を1段深くします。
-規則 1 は、ここを決めません（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
-規則 1 の表が挙げるのは印の横の空白で、行頭の空白ではないからです。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
-[state](./state.ja.md#複合状態)、[requirement](./requirement.ja.md#本体)、
-[c4](./c4.ja.md#境界の本体)は、いずれも開き波括弧のある行を、
-キーワードと同じ段に置きます。
-この 3 つの図種は、この隙間を互いに同じ形で印字します。
 その行をまたぐリテラル値は、固有の列を保ちます。
 state、requirement、C4 の boundary の見出しが対象です。
 

@@ -3992,13 +3992,8 @@ description block and a separate closing brace at the level of its statement.
 [fixture: requirement/empty-description-blocks/in-body-with-comment-line-kept]
 [fixture: requirement/empty-description-blocks/in-body-with-directive-line]
 
-A state's separate opening brace aligns with its keyword. Rule 1 gives no form
-here, since its table names the whitespace beside a mark and not the start of a
-line ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it, as [c4](./c4.md#boundary-bodies) and [requirement](./requirement.md#bodies)
-put the line that holds the opening brace at the level of the keyword.
-Callback-name whitespace through `(` in class remains value text.
+A state's separate opening brace aligns with its keyword. Callback-name
+whitespace through `(` in class remains value text.
 
 [fixture: class/multi-line-statements/comment-inside-kept] [fixture:
 class/whitespace-between-tokens/callback-name-comment-line-kept] [fixture:
@@ -4033,15 +4028,8 @@ c4/named-attributes/named-exterior-directive-lines] [fixture:
 c4/argument-spacing/directive-semicolon-prefix]
 
 The physical line completing an ordinary block header aligns with its statement,
-leaving its body one level deeper. Rule 1 gives no form here, since its table
-names the whitespace beside a mark and not the start of a line
-([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-it: [state](./state.md#composite-states),
-[requirement](./requirement.md#bodies), and [c4](./c4.md#boundary-bodies) each
-put the line that holds the opening brace at the level of the keyword, so each
-of the three prints this gap as the other two do. Crossing literal values keep
-their own columns. This applies to state, requirement and C4 boundary headers.
+leaving its body one level deeper. Crossing literal values keep their own
+columns. This applies to state, requirement and C4 boundary headers.
 
 [fixture: state/composite-states/header-completion-after-comment] [fixture:
 requirement/bodies/header-completion-after-comment] [fixture:
