@@ -1510,7 +1510,8 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   空白 1 つで印字します（[コメント](#コメント)を参照）。
   ただし、次の単位の後では、mermaid.js がこの文字を、
   またはこの文字と `#` 以降を、その単位の一部として読むので、
-  この文字を書かれたまま残します。
+  この文字を書かれたまま残します（`autonumber 5`、U+2028、`#` コメントは、
+  対象にする版の mermaid.js のすべてが拒否し、整形しません）。
 
   - 別名もデータブロックもない `participant` と `actor`、および `create`、
     `destroy`、`activate`、`deactivate` の ID。
@@ -1552,6 +1553,15 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   [test: a `#` comment after U+2028 after autonumber off]
   [test: a `#` comment after U+2029 after a message and a note]
   [test: a `#` comment after U+2029 where the character stays]
+  [test: a `#` comment after U+2029 after an actor and a data block]
+  [test: a `#` comment after U+2029 after links, properties, and details]
+  [test: a `#` comment after U+2029 after block headers and end]
+  [test: a `#` comment after U+2029 after an accDescr block]
+  [test: a `#` comment after U+2029 after autonumber off]
+  [test: a `#` comment after U+2029 after a link, an alias, and the header]
+  [test: a `#` comment after U+2028 after the id of an actor]
+  [test: a `#` comment after U+2029 after the id of a create and a destroy]
+  [test: a `#` comment after U+2028 after autonumber 5 and a space]
 
 - 閉じていないディレクティブの直後。
   そのようなディレクティブのテキストはこの文字の手前で止まり、
