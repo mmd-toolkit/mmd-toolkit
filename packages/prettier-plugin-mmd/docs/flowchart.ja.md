@@ -1935,8 +1935,8 @@ usecaseのDbが同じ形に従います。
 自分の行にあるディレクティブを持つブロックの内容と改行を、そのまま残します。
 
 [fixture: accessibility-lines/empty-block-semicolon-kept]
-[fixture: accessibility-lines/empty-block-directive-kept]
 [fixture: accessibility-lines/empty-block-directive-line-kept]
+[fixture: accessibility-lines/empty-block-directive-line-in-subgraph]
 [fixture: multi-line-values/accdescr-block-comment-only]
 
 1 行のブロックは、

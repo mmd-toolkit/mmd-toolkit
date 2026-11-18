@@ -1881,8 +1881,8 @@ decides, as [xychart](./xychart.md#empty-description-blocks) and
 breaks of a block that holds comment lines, or a directive on a line of its own.
 
 [fixture: accessibility-lines/empty-block-semicolon-kept] [fixture:
-accessibility-lines/empty-block-directive-kept] [fixture:
 accessibility-lines/empty-block-directive-line-kept] [fixture:
+accessibility-lines/empty-block-directive-line-in-subgraph] [fixture:
 multi-line-values/accdescr-block-comment-only]
 
 Blocks on one line follow
