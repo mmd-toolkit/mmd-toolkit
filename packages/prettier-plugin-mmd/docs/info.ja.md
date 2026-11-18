@@ -198,7 +198,9 @@ info
 単独の閉じは文の列へ合わせます。
 通常の説明本文と独立したコメント行は文より1段内側に揃えます。
 Db に LF 後の字下げが残らないためです。
-改行、内部の空行、行末空白は保ちます。
+改行と内部の空行は保ち、行末の空白は、閉じ括弧が自分の行にあるとき、
+テキストの最後の行のものを除いて保ちます（最後の行のものは落とします）。
+空白だけの行は空行にします。
 ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
 引用符とバックスラッシュは最初の閉じ波括弧を保護しません。
 
@@ -209,6 +211,7 @@ Db に LF 後の字下げが残らないためです。
 [test: info/description-blocks/block-empty]
 
 [fixture: info/description-blocks/block-columns]
+[fixture: info/description-blocks/block-trailing-whitespace]
 
 [fixture: info/description-blocks/block-comment-only]
 
