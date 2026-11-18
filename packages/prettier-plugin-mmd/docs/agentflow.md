@@ -704,11 +704,10 @@ Agentflow label comments are different: their preceding spaces/tabs are label
 content, so preserve that padding, the comment and its LF/continuation columns,
 including a closing bracket that belongs to the comment rather than closing the
 shape. Tildes remain content. Shape spellings, entities and HTML remain
-authored. The Db keeps the text of a label: `A[&amp;]` has the text `&amp;`, and
-`A[&]` has the text `&`. mermaid.js draws the two alike, but the check compares
-the Db, and no kind of exception covers this change (see
-[The check, and formatting that changes the Db](./printed-form.md#the-check-and-formatting-that-changes-the-db)),
-so an entity stays as written.
+authored. The text of a label is a text that the tree holds whole (see
+[A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)),
+and the Db keeps it, so an entity stays as written: `&amp;` is not printed `&`,
+a change of the text that no rule of this document defines.
 
 [fixture: labels/labels-closers] [fixture: labels/labels-leading-sensitive]
 [fixture: labels/labels-leading-at-sign] [fixture: labels/labels-padding]
