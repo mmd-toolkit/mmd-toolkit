@@ -1545,19 +1545,16 @@ finds its unwritten reason.
 
 ### Record search is missing
 
-9 forms are missing this check.
+6 forms are missing this check.
 
 | Diagram     | Rules document                                                                                                                                   | Written form                                                                                           |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
 | flowchart   | [Styles that are drawn the same (compatibility.md)](./docs/compatibility.md#styles-that-are-drawn-the-same) "A statement stays as written where" | `flowchart TD\nA\nstyle A fill:red %%{init: {}}%%\n`                                                   |
-| flowchart   | [Accessibility lines (flowchart.md)](./docs/flowchart.md#accessibility-lines) "Keep the previous Multi-line statements layout:"                  | `flowchart LR\naccTitle:\n%%{init: {}}%%\nTitle after directive\nA[Continuation]`                      |
 | gantt       | [Titles and sections (gantt.md)](./docs/gantt.md#titles-and-sections) "A value written on a later"                                               | `gantt\ntitle\nT\nsection\nS\n`                                                                        |
 | gantt       | [Empty description blocks (gantt.md)](./docs/gantt.md#empty-description-blocks) "A block with a directive or"                                    | `gantt\naccDescr { %%{init: {}}%% }\naccDescr {\n%% c\n}\n`                                            |
 | gantt       | [Comments (gantt.md)](./docs/gantt.md#comments) "A comment on a line of"                                                                         | `gantt\n      %% one\ntitle T\n\t%% two\nsection S\n%% three\n   a : 1d\n`                             |
-| journey     | [Titles and sections (journey.md)](./docs/journey.md#titles-and-sections) "A value written on a later"                                           | `journey\ntitle\nT\nsection\nS\n`                                                                      |
 | requirement | [Accessibility statements (requirement.md)](./docs/requirement.md#accessibility-statements) "A text written on a later line is printed"          | `requirementDiagram\naccTitle:\nT\naccDescr:\n\n D\naccTitle\n: U\n`                                   |
 | requirement | [Comments (requirement.md)](./docs/requirement.md#comments) "A comment on a line of"                                                             | `requirementDiagram\n%% c1\nrequirement r {\n      %% c2\nid: 1\n%% c3\n}\n   %% c4\nelement e {\n}\n` |
-| timeline    | [Titles and sections (timeline.md)](./docs/timeline.md#titles-and-sections) "A value written on a later"                                         | `timeline\ntitle\nT\nsection\nS\n`                                                                     |
 
 ### Record search and a conclusive run are missing
 

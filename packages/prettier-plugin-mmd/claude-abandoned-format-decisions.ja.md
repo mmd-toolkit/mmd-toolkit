@@ -1554,19 +1554,16 @@ requirement、state、treemap、wardleyである。
 
 ### 記録からの理由の検索がまだである
 
-9件の形は、この確認が不足している。
+6件の形は、この確認が不足している。
 
 | 図種        | 規則の文書                                                                                                                                           | 書かれた形                                                                                             |
 | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | flowchart   | [同じに描かれるスタイル（compatibility.ja.md）](./docs/compatibility.ja.md#同じに描かれるスタイル) 「次の場合は、文を書かれたまま残します。」        | `flowchart TD\nA\nstyle A fill:red %%{init: {}}%%\n`                                                   |
-| flowchart   | [アクセシビリティの行（flowchart.ja.md）](./docs/flowchart.ja.md#アクセシビリティの行) 「従来の複数行の文の配置を保ち、」                            | `flowchart LR\naccTitle:\n%%{init: {}}%%\nTitle after directive\nA[Continuation]`                      |
 | gantt       | [タイトルとセクション（gantt.ja.md）](./docs/gantt.ja.md#タイトルとセクション) 「後の行に書かれた値は、キーワードの後に寄せて 1 行にします」         | `gantt\ntitle\nT\nsection\nS\n`                                                                        |
 | gantt       | [空の説明ブロック（gantt.ja.md）](./docs/gantt.ja.md#空の説明ブロック) 「ディレクティブやコメント行の内容と改行は保ち、」                            | `gantt\naccDescr { %%{init: {}}%% }\naccDescr {\n%% c\n}\n`                                            |
 | gantt       | [コメント（gantt.ja.md）](./docs/gantt.ja.md#コメント) 「単独の行のコメントは周りの文と同じ段に置き、テキストと印は書」                              | `gantt\n      %% one\ntitle T\n\t%% two\nsection S\n%% three\n   a : 1d\n`                             |
-| journey     | [タイトルとセクション（journey.ja.md）](./docs/journey.ja.md#タイトルとセクション) 「後の行に書かれた値は、キーワードの後に寄せて 1 行にします」     | `journey\ntitle\nT\nsection\nS\n`                                                                      |
 | requirement | [アクセシビリティの文（requirement.ja.md）](./docs/requirement.ja.md#アクセシビリティの文) 「後の行に書かれたテキストは、`:` の後ろに寄せて 1 行に」 | `requirementDiagram\naccTitle:\nT\naccDescr:\n\n D\naccTitle\n: U\n`                                   |
 | requirement | [コメント（requirement.ja.md）](./docs/requirement.ja.md#コメント) 「単独の行のコメントは、後ろの文と同じ段に置き、」                                | `requirementDiagram\n%% c1\nrequirement r {\n      %% c2\nid: 1\n%% c3\n}\n   %% c4\nelement e {\n}\n` |
-| timeline    | [title と section（timeline.ja.md）](./docs/timeline.ja.md#title-と-section) 「後ろの行に書かれた値は、キーワードの後ろに寄せて 1 行にし」           | `timeline\ntitle\nT\nsection\nS\n`                                                                     |
 
 ### 記録からの理由の検索と比較結果が不足している
 
