@@ -1168,6 +1168,9 @@ requirementDiagram
 コロンやテキストが後の行に書かれていても同じです。
 ただし、コロンの前かテキストの前にコメント行があるときは、
 その後ろは自分の行に 1 段深く残ります。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
+の、図のタイトルと説明の行を参照してください。
 規則 1 は、コメント行の隣の改行に記号を定めないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 コメント行のある文の改行を残し、コメントと後ろの行を 1 段深く置くのは、
@@ -1176,9 +1179,6 @@ requirementDiagram
 この 3 つの図は、
 コロンの前かテキストの前にコメント行がある `accTitle` と `accDescr` も、
 同じ形で印字します。
-詳しくは
-[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
-の、図のタイトルと説明の行を参照してください。
 
 [fixture: accessibility-statements/text-on-next-line-joined]
 [fixture: accessibility-statements/text-with-comment-line-kept]
