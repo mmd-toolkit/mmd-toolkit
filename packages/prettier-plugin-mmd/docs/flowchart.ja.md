@@ -1294,10 +1294,18 @@ flowchart LR
 規則 1 は、この `@` の空白を決めません。
 `@` は辺の id の一部で、2 つの間に立つ印ではないからです。
 詳しくは [規則 1](./printed-form.ja.md#1-記号の横の空白) を参照してください。
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が形を与えます。
+規則 2 も形を与えません。
 [agentflow](./agentflow.ja.md#arrows) と
-[usecase](./usecase.ja.md#relationship-labels-and-ids) も、
-辺の id をその `@` と矢印に接して印字します。
+[usecase](./usecase.ja.md#relationship-labels-and-ids) は辺の id
+をこのページと同じに印字し、ほかの図種に辺の id はないからです。
+[規則 3](./printed-form.ja.md#3-綴り)が形を与えます。
+mermaid.js のドキュメントの例は、辺の id をその `@` と矢印に接して 11 回書き、
+そこに空白を置いた例は 1 つもありません。
+内訳は、
+[flowchart のページ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L867-L893)
+が 7 回、
+[use case のページ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/usecase.md#L297-L561)
+が 4 回です。
 
 [fixture: arrow-spacing/pipe-label-other-link-kinds]
 [fixture: arrow-spacing/edge-id-with-labels]
