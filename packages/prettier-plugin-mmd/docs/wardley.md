@@ -90,13 +90,9 @@ wardley-beta
 
 ### Statements one per line
 
-Put ordinary statements on separate lines and keep their required EOL. The line
-break between `anchor Sep [0.8,0.2]` and `component Step [0.2,0.4]` stays, since
-mermaid.js rejects `anchor Sep [0.8,0.2] component Step [0.2,0.4]` on one line
-(see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Add no semicolon: Wardley does not use semicolons as statement separators.
-Apparent statements inside values remain value text; the source tree already
+Put ordinary statements on separate lines and keep their required EOL. Add no
+semicolon: Wardley does not use semicolons as statement separators. Apparent
+statements inside values remain value text; the source tree already
 distinguishes them.
 
 [fixture: wardley/statements-one-per-line/statement-eol]
@@ -433,9 +429,8 @@ Keep the interior of each +'label'>, +'label'< or +'label'<> flow as written:
 empty labels, padding, backslashes and physical continuation columns included.
 Root directives between its complete components retain their source boundaries.
 Ordinary inserted spaces reject the composite unit, and trimming content changes
-the Db (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Keep both ports and the semicolon label even when flow precedence hides them.
+the Db. Keep both ports and the semicolon label even when flow precedence hides
+them.
 
 [test: wardley/flows/unicode-flow] [fixture: wardley/flows/flow-forward]
 
@@ -469,7 +464,8 @@ Attach the grammatical label-opening ; to its preceding component and print
 everything after it through the physical line end as its source span. Choose
 attachment among Db-equal forms to show the delimiter belongs to the link. Do
 not add padding or trim it: ; followed by space is accepted with a
-whitespace-only label, whereas bare ; rejects (see
+whitespace-only label, whereas bare ; rejects in every version of mermaid.js
+that counts (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Further semicolons use shared prefix protection; native-looking forms and
 percent text remain label text. A run of spaces and tabs inside the label of a
@@ -959,7 +955,7 @@ Remove harmless exterior ASCII padding after the header, completed structures
 and description closers. Decide by owner: preserve link-label tails, string/flow
 contents, comments, directives, hidden interiors, required closer padding and
 protected stretches. Trimming every physical line can change the Db or reject a
-whitespace-only link label (see
+whitespace-only link label in every version of mermaid.js that counts (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: wardley/trailing-whitespace/trailing-exterior]
@@ -1075,10 +1071,8 @@ wardley-beta
 Do not wrap at printWidth. Keep physical string and flow contents, continuation
 columns and interior blank lines. Description bodies use the shared indentation
 above. Visible LF between ordinary statement components can reject the input,
-and reindenting value continuations changes the Db (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Long component/evolution statements stay unwrapped; description openers and
-closers use Accessibility.
+and reindenting value continuations changes the Db. Long component/evolution
+statements stay unwrapped; description openers and closers use Accessibility.
 
 [fixture: wardley/multiline-values/long-component]
 
