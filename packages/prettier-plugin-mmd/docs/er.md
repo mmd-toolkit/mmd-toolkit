@@ -482,7 +482,9 @@ written. Rule 1 names no mark for a line break next to a comment line, so
 decides, as [block](./block.md#multi-line-statements),
 [sequence](./sequence.md#multi-line-statements), and
 [flowchart](./flowchart.md#accessibility-lines) put the later parts of a
-statement and the standalone trivia one continuation level inside the statement.
+statement and the standalone trivia one continuation level inside the statement,
+where no other rule keeps the layout as written (a comment region that joins
+physical lines, a line that holds a `;`, and the like).
 
 [fixture: attribute-spacing/comment-line-inside-kept] [fixture:
 attribute-spacing/directive-inside-kept] [fixture:
@@ -497,14 +499,15 @@ Comment regions that join physical lines retain their original layout.
 
 [test: er/attribute-spacing/comment-region-continuation-kept]
 
-A directive between the parts of an attribute retains its contacts within a
-printed line, as under [Directives](./flowchart.md#directives) (mermaid.js
-removes a directive before it reads the text, so the gap is printed as without
-the directive and the directive stands after its space and touches the unit that
-follows it), and a directive on a line of its own between two attributes stays
-between them. A directive between two attributes written on the same line moves
-with the attribute after it to the line after, since each attribute stands on a
-line of its own.
+A directive between the parts of an attribute is placed as under
+[Directives](./flowchart.md#directives): mermaid.js removes a directive before
+it reads the text, so the gap is printed as without the directive and the
+directive stands after the space of that rule, touching the unit that follows it
+(`int a %%{init: {}}%% PK` is printed `int a %%{init: {}}%%PK`, and
+`int%%{init: {}}%% b` is printed `int %%{init: {}}%%b`). A directive on a line
+of its own between two attributes stays between them. A directive between two
+attributes written on the same line moves with the attribute after it to the
+line after, since each attribute stands on a line of its own.
 
 [fixture: attribute-spacing/directive-between-attributes-on-a-line] [fixture:
 attribute-spacing/directive-inside-kept] [fixture:
@@ -2097,8 +2100,8 @@ A comment line before the header stands at the first column.
 [fixture: comments/before-header]
 
 A comment line at the end of the text stays on a line of its own, with the line
-break added, as Prettier ends the text of the languages it formats with a line
-break.
+break added, as in [gantt](./gantt.md#comments) and
+[journey](./journey.md#comments).
 
 [fixture: comments/after-last-statement-without-line-break] [fixture:
 comments/after-header-without-line-break]

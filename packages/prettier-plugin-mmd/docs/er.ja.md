@@ -458,6 +458,8 @@ Db が保つからです。
 [block](./block.ja.md#複数行の文)、[sequence](./sequence.ja.md#複数行の文)、
 [flowchart](./flowchart.ja.md#アクセシビリティの行) も、
 文の後続部分と独立した注釈類を、文の内側に継続の 1 段字下げで置きます。
+ただし、ほかの規則が配置を書かれたまま残す所は別です（物理行を結ぶコメント領域、
+`;` を含む行などです）。
 
 [fixture: attribute-spacing/comment-line-inside-kept]
 [fixture: attribute-spacing/directive-inside-kept]
@@ -472,14 +474,17 @@ Db が保つからです。
 
 [test: er/attribute-spacing/comment-region-continuation-kept]
 
-属性の部分の間にあるディレクティブは、同じ印字行での接触を保ち、
+属性の部分の間にあるディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)と同じに置きます。
+mermaid.js はテキストを読む前にディレクティブを取り除くので、
+隙間はディレクティブがないときと同じ規則で印字し、
+ディレクティブはその規則の空白の後に、
+次の単位に接して置きます（`int a %%{init: {}}%% PK` は
+`int a %%{init: {}}%%PK`、
+`int%%{init: {}}%% b` は `int %%{init: {}}%%b` と印字します）。
 2 つの属性の間で行に単独で置かれたディレクティブは、その間に残します。
 同じ行に書かれた 2 つの属性の間のディレクティブは、各属性が単独の行に立つので、
 後ろの属性と一緒に次の行へ移ります。
-この配置は[ディレクティブ](./flowchart.ja.md#ディレクティブ)と同じです。
-mermaid.js はテキストを読む前にディレクティブを取り除くので、
-隙間はディレクティブがないときと同じに印字し、ディレクティブは空白の後に、
-次の単位に接して置きます。
 
 [fixture: attribute-spacing/directive-between-attributes-on-a-line]
 [fixture: attribute-spacing/directive-inside-kept]
@@ -2079,7 +2084,8 @@ accTitle: direction BT
 [fixture: comments/before-header]
 
 テキストの末尾のコメント行は、行に単独で置き、改行を足します。
-Prettier も、整形する言語のテキストを改行で終えます。
+[gantt](./gantt.ja.md#コメント) と [journey](./journey.ja.md#コメント)
+も同じです。
 
 [fixture: comments/after-last-statement-without-line-break]
 [fixture: comments/after-header-without-line-break]
