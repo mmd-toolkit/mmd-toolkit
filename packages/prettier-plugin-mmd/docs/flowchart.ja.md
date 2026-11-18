@@ -2064,6 +2064,11 @@ mermaid.js は、2 行目以降が字下げされていると、その一部を�
 [fixture: multi-line-statements/click-string-over-lines-comment-and-empty-line]
 
 部品の間の U+2028 と U+2029 は、複数行の文字列の後でも、そのまま残します。
+規則 1 の表に、これを含む間隔の印はないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[journey](./journey.ja.md#行区切り文字) と
+[timeline](./timeline.ja.md#行区切り文字) も、
+これを含む間隔を書かれたまま印字します。
 
 [test: U+2028 between the parts of a flowchart click statement with a string over lines]
 [test: U+2029 between the parts of a flowchart click statement with a string over lines]
@@ -3081,6 +3086,11 @@ swimlane 図のヘッダーでは、agentflow 図のヘッダーと同じく、
 この空白は Db に入らず、`TD` のような文字の方向には、もともと空白が必要です。
 その間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
 U+2028 と U+2029 はそのまま残します。
+規則 1 の表に、これを含む間隔の印はないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[journey](./journey.ja.md#行区切り文字) と
+[timeline](./timeline.ja.md#行区切り文字) も、
+これを含む間隔を書かれたまま印字します。
 
 [fixture: direction/header-symbol-touching-spaced]
 [fixture: direction/header-symbol-beside-directive-kept]
@@ -3180,6 +3190,11 @@ flowchart の文書にあるタイトル付きの subgraph は 2 件で、
 [fixture: subgraph-header/title-beside-directive-runs]
 
 隙間の U+2028 と U+2029 は、そのまま残します。
+規則 1 の表に、これを含む間隔の印はないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[journey](./journey.ja.md#行区切り文字) と
+[timeline](./timeline.ja.md#行区切り文字) も、
+これを含む間隔を書かれたまま印字します。
 
 [test: U+2028 between a subgraph name and its title]
 [test: U+2029 and spaces between a subgraph name and its title]
