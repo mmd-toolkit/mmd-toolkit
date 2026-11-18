@@ -1515,6 +1515,10 @@ mermaid.js は、それを書かれたまま subgraph のノードに並べま�
 [fixture: subgraphs/title-beside-directive-runs]
 
 そこにある U+2028 と U+2029 は、そのまま残します。
+規則 1 は、subgraph の名前とタイトルの間の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#行区切り) と [state](./state.ja.md#行区切り文字)
+も、これを含む間隔を書かれたまま印字します。
 
 [test: U+2028 between an ER subgraph name and its title]
 [test: U+2029 between an ER subgraph name and its title]
@@ -1830,6 +1834,14 @@ erDiagram
 
 後の行に書かれたテキストは、`:` の後に 1 行で印字します。
 その前にコメント行がある文は、書かれたまま残します。
+`accTitle` と `accDescr` のコロンはキーのコロンなので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が `accTitle: text`
+の形を与えます。
+コロンの前に空白を置かず、後ろに空白を 1 つ置き、
+コロンやテキストが後の行に書かれていても同じです。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
+の、図のタイトルと説明の行を参照してください。
 
 [fixture: accessibility-statements/text-on-next-line-joined]
 [fixture: accessibility-statements/text-with-comment-line-kept]
@@ -1867,6 +1879,11 @@ agentflow、usecase に合わせます。
 
 コメントやディレクティブがあるブロックは、改行と完全な内容を保ち、
 普通の独立した注釈類はブロックの内側にそろえます。
+規則 1 は、ブロックの中の行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[xychart](./xychart.ja.md#空の説明ブロック) と
+[quadrant](./quadrant.ja.md#空の説明ブロック) も、
+ディレクティブかコメント行があるブロックの内容と改行を、そのまま残します。
 
 [fixture: accessibility-statements/empty-blocks]
 [fixture: accessibility-statements/empty-block-with-directive-or-comment-line]
@@ -2656,6 +2673,11 @@ mermaid.js が複数行にわたって読む文は、改行が、
 コメント行やディレクティブがある文は改行を残し、
 構造の続きの行と間の注釈を 1 段深く置きます。
 値の中の空白と、各隙間の最初の改行の前の空白は保ちます。
+規則 1 は、改行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
+[journey](./journey.ja.md#複数行の文)も、コメントやディレクティブの隣の改行と、
+その前の空白を残し、続きの行を 1 段深く置きます。
 コメントで結合される領域は、それがつなぐ行を原文のまま残します（下を参照）。
 改行を空白 1 つか何も挟まずにつなぐと、
 行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
