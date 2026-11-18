@@ -1544,10 +1544,14 @@ Outside ordinary IR call gaps, place a directive within a printed line as under
 [Directives](./flowchart.md#directives). When formatting splits units that were
 on the same line, a directive in their gap moves with the following unit: its
 right boundary stays touching or separated, while its left contact is broken.
-Use one body step for ordinary standalone directives. Do not format their
-contents as JSON or collect them before the header. Uniform added spaces can
-change strings, repeat components, numeric values and predicate operands after
-common removal.
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this placement, as [radar](./radar.md#global-directives),
+[packet](./packet.md#global-directives), and
+[wardley](./wardley.md#global-directives) place a directive in the gap of units
+that formatting splits. Use one body step for ordinary standalone directives. Do
+not format their contents as JSON or collect them before the header. Uniform
+added spaces can change strings, repeat components, numeric values and predicate
+operands after common removal.
 
 Ordinary IR call gaps use the same outside spacing and structural placement as
 comments. A directive stays beside its argument and makes a quoted leaf call
@@ -2752,9 +2756,19 @@ railroad-peg-beta
 Only safe real leading frontmatter uses the shared guarded YAML formatter. It
 chooses the YAML that Prettier prints while preserving embedded effects.
 Malformed YAML, indented fences, closer padding, HTML-quote hazards, fences that
-formatting would create in the body and retained-prefix YAML stay written. YAML
-nesting and block scalars use the shared positive minimum at tabWidth zero.
-Native hidden YAML is opaque and never enters this path.
+formatting would create in the body and retained-prefix YAML stay written. An
+indented fence, a fence line that formatting would create, and an HTML-quote
+hazard stay written for the reasons under
+[Frontmatter](./compatibility.md#frontmatter). Rule 1 names no mark for the
+whitespace after a `---` line, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [radar](./radar.md#frontmatter-yaml),
+[info](./info.md#frontmatter-yaml), [packet](./packet.md#frontmatter-yaml), and
+[wardley](./wardley.md#frontmatter-yaml) keep the padding of a delimiter. The
+YAML that is formatted is printed as Prettier prints YAML, with `key: value` for
+the colon of a key (rule 1). YAML nesting and block scalars use the shared
+positive minimum at tabWidth zero. Native hidden YAML is opaque and never enters
+this path.
 
 [fixture: railroad/frontmatter-yaml/abnf-padding]
 

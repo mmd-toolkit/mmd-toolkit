@@ -1598,6 +1598,11 @@ railroad-peg-beta
 元は同じ行にあった単位を別の行へ分けるときは、
 間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
+この配置は[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
+[radar](./radar.ja.md#global-directives)、
+[packet](./packet.ja.md#global-directives)、
+[wardley](./wardley.ja.md#global-directive) も、
+整形が分ける単位の隙間のディレクティブを同じように置きます。
 通常の独立したディレクティブを本文で1段字下げします。
 内容の JSON 整形や見出し前への収集はしません。
 一律の空白追加が、共有処理後の文字列、repeat の部品、数値、
@@ -2828,6 +2833,17 @@ railroad-peg-beta
 埋込みの効果を保ちながら Prettier が印字する YAML にするためです。
 不正な YAML、字下げした囲み記号、閉じ記号余白、HTML 引用の危険がある形、
 本文の整形で囲み記号が現れる形、保持前置部分の YAML は書かれたままにします。
+字下げした囲み記号、整形で作ってしまう囲み記号の行、
+HTML 引用の危険がある形が書かれたままなのは、
+[フロントマター](./compatibility.ja.md#フロントマター)の理由によります。
+規則 1 は `---` の行の後ろの空白に記号を挙げないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[radar](./radar.ja.md#frontmatter-yaml)、[info](./info.ja.md#frontmatter-yaml)、
+[packet](./packet.ja.md#frontmatter-yaml)、
+[wardley](./wardley.ja.md#フロントマターの-yaml) も、
+区切りの余白を書かれたまま残します。
+整形する YAML は Prettier が YAML を印字するとおりで、
+キーのコロンは `key: value` になります（規則 1）。
 YAML の入れ子とブロックスカラーは、`tabWidth` 0 でも共有の正の最小幅を使います。
 図固有の隠れた YAML は不透明なので、この経路へ渡しません。
 
