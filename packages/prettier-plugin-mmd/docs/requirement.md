@@ -1160,12 +1160,13 @@ line before the colon or before the text keeps what follows it on a line of its
 own, one level deeper. Rule 1 names no mark for a line break next to a comment
 line, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [sequence](./sequence.md#multi-line-statements),
-[ER](./er.md#multi-line-statements), and
-[flowchart](./flowchart.md#accessibility-lines) keep the line breaks of a
-statement with a comment line and put the comment and the later lines one level
-deeper, and print `accTitle` and `accDescr` with a comment line before the colon
-or before the text in that way.
+decides, one case at a time. With a comment line before the colon,
+[journey](./journey.md#multi-line-statements),
+[quadrant](./quadrant.md#multi-line-statements), and
+[timeline](./timeline.md#multi-line-statements) keep the line breaks of an
+`accDescr` and put the comment, the colon, and the text one level deeper. With a
+comment line before the text, the same three do so for an `accTitle`, and so
+does [flowchart](./flowchart.md#accessibility-lines).
 
 [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept] [fixture:
