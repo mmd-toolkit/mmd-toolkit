@@ -849,13 +849,14 @@ and prefix comments at column one. Inline comments retain their line and
 contact, or one space for an existing separation. Rule 1 names no mark before a
 comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#comments),
-[journey](./journey.md#comments), and [timeline](./timeline.md#comments) keep a
-comment after a statement touching the statement where it touches, and print one
-space where whitespace was written. Keep marks, contents and trailing padding.
-Native comments end at CR/LF, with LS/PS as content. Shared comment-region joins
-retain interior columns, aligning only the first printed line; moving them can
-change ownership.
+decides, as [sequence](./sequence.md#comments) (after a statement),
+[journey](./journey.md#comments) (after a task, an `accDescr`, or the header),
+and [timeline](./timeline.md#comments) (after the header, a direction, or the
+`}` of an accessibility block) keep a comment touching what it follows where it
+touches, and print one space where whitespace was written. Keep marks, contents
+and trailing padding. Native comments end at CR/LF, with LS/PS as content.
+Shared comment-region joins retain interior columns, aligning only the first
+printed line; moving them can change ownership.
 
 [fixture: cynefin/comments/comment-prefix]
 
