@@ -1050,7 +1050,14 @@ empty-description-blocks/in-body-over-lines-joined]
 
 A block containing comments or directives keeps their contents and line breaks;
 standalone trivia is one level inside the block and a separate `}` aligns with
-`accDescr`, including an empty block within a requirement or element body.
+`accDescr`, including an empty block within a requirement or element body. Rule
+1 gives no form here, since its table names the whitespace beside a mark and not
+the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it, as [block](./block.md#empty-description-blocks) and
+[c4](./c4.md#description-blocks) put standalone trivia one level inside a
+description block and a separate `}` at the level of its statement.
 
 [fixture: empty-description-blocks/in-body-with-directive-line] [fixture:
 empty-description-blocks/with-directive-or-comment-line-kept] [fixture:
