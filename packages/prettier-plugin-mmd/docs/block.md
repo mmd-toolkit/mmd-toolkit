@@ -961,9 +961,12 @@ its table names the whitespace beside a mark and not the start of a line
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [state](./state.md#comments) and [flowchart](./flowchart.md#comments) put
-a comment line at the level of the statements around it. A `%%` that does not
-start a line is the text of an id, and stays where it is, with the statement
-that it starts (see [Rows](#rows)).
+a comment line at the level of the statements around it. A comment line before
+the `end` of a composite block stands at the level of the statements inside it,
+as [class](./class.md#comments) puts a comment line at the level of the member
+lines in a body, and [state](./state.md#comments) at the level of the statements
+of a composite state. A `%%` that does not start a line is the text of an id,
+and stays where it is, with the statement that it starts (see [Rows](#rows)).
 
 [fixture: comments/comment-line-at-the-level-of-the-next-statement] [fixture:
 comments/comment-before-the-header] [fixture:
