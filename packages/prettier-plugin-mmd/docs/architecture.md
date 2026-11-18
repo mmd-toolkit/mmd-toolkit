@@ -805,14 +805,14 @@ mark and not the start of a line
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 it, as [flowchart](./flowchart.md#comments) and [wardley](./wardley.md#comments)
 align a comment on a line of its own with the body in the same way. Inline
-comments keep their line and touching side, or one separating space. Rule 1
-names no mark before a comment, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#comments) (after a statement),
-[journey](./journey.md#comments) (after a task, an `accDescr`, or the header),
-and [timeline](./timeline.md#comments) (after the header, a direction, or the
-`}` of an accessibility block) keep a comment touching what it follows where it
-touches, and print one space where whitespace was written. Preserve marks,
+comments keep their line and touching side, or one separating space. Rule 2
+decides the gap before an inline comment too, as
+[sequence](./sequence.md#comments), [journey](./journey.md#comments), and
+[timeline](./timeline.md#comments) print a run of spaces and tabs between the
+end of a statement and its comment as one space and keep a comment that touches,
+where no other rule keeps the whitespace as written; each of them names those
+cases in its own sections (whitespace that the Db holds, as after a `section` or
+a period, and whitespace that changes what mermaid.js reads). Preserve marks,
 content and trailing padding for attachment. Native comments end at LF/CR and
 keep LS/PS as content. Earlier values own enclosed percent text; common lines
 stop at it. Removed common regions keep complete source and continuation
