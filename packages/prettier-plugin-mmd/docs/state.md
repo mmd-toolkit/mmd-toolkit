@@ -68,11 +68,7 @@ stateDiagram-v2
 
 When a header continues across trivia, align the physical line containing its
 opening brace with the initial keyword, so the body remains one level deeper. Do
-not change a value spanning that line or protected source boundaries. The quoted
-state label with `long` and ` name` on separate lines stays on two lines, since
-mermaid.js builds a different label and draws different text for `"long name"`
-(see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+not change a value spanning that line or protected source boundaries.
 
 [fixture: composite-states/header-completion-after-comment] [fixture:
 composite-states/multiline-alias-label-kept]
@@ -325,9 +321,8 @@ are printed in the case shown there, among them `<<CHOICE>>`, `<<FORK>>`, and
 `<<JOIN>>`, which are printed `<<choice>>`, `<<fork>>`, and `<<join>>`,
 `ACCTITLE:` and `ACCDESCR:`, which are printed `accTitle:` and `accDescr:`,
 `AS`, `END`, and `DIRECTION TB`. The position of a note, `LEFT OF` and
-`RIGHT OF`, stays as written. `LEFT OF` stays, since mermaid.js builds a
-different note position in its Db and draws different geometry for `left of`
-(see
+`RIGHT OF`, stays as written. `LEFT OF` stays, since every version of mermaid.js
+that counts draws different geometry for `left of` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: keyword-case/pseudo-states-one-form] [fixture:
@@ -401,9 +396,7 @@ statements, and on a line of its own `b` would add the state b, which
 [corpus fixture: state/lex-state-without-body]
 
 The same holds for the `""` that mermaid.js does not read in `state x "" y` and
-`state z ""`. `state x "" y` stays on one line, since mermaid.js rejects `"" y`
-on the line after `state x` (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+`state z ""`.
 
 [fixture: statements-one-per-line/state-names-kept]
 
@@ -682,8 +675,9 @@ the id after the `,` stands after one space.
 
 A directive in the gap after the `,` is placed as under
 [Directives](#directives), and a `;` that the line rule ignores keeps its line
-as written. `style A fill:#f00;;` stays, since a version of mermaid.js that
-counts draws different structure and style for `style A fill: #f00;;` (see
+as written. `style A fill:#f00;;` stays, since some of the versions of
+mermaid.js that count draw different structure and style for
+`style A fill: #f00;;` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: whitespace-between-tokens/class-ids-beside-directive] [fixture:
@@ -792,9 +786,7 @@ after `:::` is spelled so, keeps its arrow touching on both sides, as
 arrow-spacing/other-keyword-ids-touching-kept] [fixture:
 arrow-spacing/label-after-keyword-id-spaced]
 
-A description after such an id keeps its `:` touching the id: mermaid.js rejects
-`A-->style :waiting` in place of `A-->style:waiting` (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A description after such an id keeps its `:` touching the id.
 
 Input
 ([arrow-spacing/touching-before-keyword-kept-input.mmd](../tests/fixtures/state/arrow-spacing/touching-before-keyword-kept-input.mmd)):
@@ -963,9 +955,7 @@ state/lex-note-colon-then-one-character]
 
 The whitespace before the id becomes one space. A text that mermaid.js does not
 read right after the position, as in `note left of%%x A`, keeps touching the
-position. `note left of%%x   A : t` keeps `%%x` touching `of`, since mermaid.js
-rejects `note left of %%x   A : t` (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+position.
 
 [fixture: notes/kept]
 
@@ -1127,10 +1117,9 @@ syntax, fenced or multiline code, strikethrough, general HTML, bracketed links,
 links enclosed in angle brackets, backslashes and whitespace other than ASCII
 spaces within content lines. Marked recognizes block syntax, including lists and
 headings. These margins can appear in rendered text when Mermaid displays a
-block's source literally. For example, increasing the two spaces before `two`
-after a blank line to four changes the structure mermaid.js draws (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-This does not reformat general Markdown.
+block's source literally. For example, increasing two spaces after a blank line
+to four can change three displayed paragraphs into a different layout. This does
+not reformat general Markdown.
 
 [fixture: notes/over-lines-empty-lines-kept] [fixture:
 notes/list-body-margin-kept] [fixture: notes/heading-at-paragraph-boundary-kept]
@@ -1307,8 +1296,9 @@ The directives that end it are printed with one space before each that has
 whitespace before it, and the whitespace after the last one is left out:
 `state "d" as A : x   %%{x}%%  ` is printed `state "d" as A : x %%{x}%%`. A
 description of spaces and tabs only, and one that holds a `;`, stay as written.
-A second description of three spaces after `state "d" as A :` stays, since
-mermaid.js draws a different figure structure when those spaces are removed (see
+A second description of three spaces after `state "d" as A :` stays, since some
+of the versions of mermaid.js that count draw a different figure structure when
+those spaces are removed (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [corpus fixture: state/db-alias-colon-spaces-second] [fixture:
@@ -1936,10 +1926,7 @@ keeps its written indentation.
 
 A line that holds U+2028 or U+2029 is kept as written, the second description of
 an alias included, whitespace after the character too: `state "d" as A : x`, two
-spaces, U+2028, and two spaces stays as written. After `state "d" as A : x`, two
-spaces, U+2028, and two spaces stay, since mermaid.js draws different geometry
-with one space after `x` instead (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+spaces, U+2028, and two spaces stays as written.
 
 [test: a second description of an alias with spaces after a U+2028]
 
@@ -1956,9 +1943,6 @@ printed as any other body: `state a b`, U+2028, and `{` keeps the character and
 indents the statements of the body. So does one on the closing line, as in
 `state A {`, a body line `B`, and `}` followed by U+2028: the whitespace after
 the `}` stays as written, with the character, and the body is indented.
-`state a b`, U+2028, and `{` keep the separator, since mermaid.js rejects
-`state a b {` (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [test: U+2028 before the brace of a composite statement] [test: U+2028 on the
 closing line of a composite statement] [test: U+2029 and whitespace before it on
@@ -1991,11 +1975,9 @@ on the closing line of a composite statement] [test: a comment line after U+2028
 on the closing line of a composite statement]
 
 In a state diagram, these characters bound the text in which mermaid.js looks
-for a pseudostate mark, a direction line, and a second name before a `{`.
-`state a`, U+2028, and `b <<fork>>` keep the separator, since replacing it with
-a space in `state a b <<fork>>` changes the state id and label from `b` to `a b`
-in mermaid.js's Db (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+for a pseudostate mark, a direction line, and a second name before a `{`:
+`state a`, U+2028, and `b <<fork>>` is the name `a` and the fork `b`, while with
+a space in place of the U+2028, it is the fork `a b`.
 
 [corpus fixture: state/lex-pseudostate-mark-after-line-separator]
 
