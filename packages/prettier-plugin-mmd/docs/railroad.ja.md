@@ -21,9 +21,10 @@ IR は `railroad-beta`、EBNF は `railroad-ebnf-beta`、
 ABNF は `railroad-abnf-beta`、PEG は `railroad-peg-beta` を保ちます。
 コロンや指定は加えません。
 mermaid.js はこの 4 つの名前を、この綴りだけで読みます。
-`-beta` のない名前、`-beta` の大文字小文字が違う名前、すべて大文字の名前は拒否するので、
-ほかの綴りは印字しません
-（[ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)を参照）。
+`-beta` のない名前、`-beta` の大文字小文字が違う名前、
+すべて大文字の名前は拒否するので、ほかの綴りは印字しません。
+詳しくは [ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)
+を参照してください。
 隠れた形、共有注釈類、保護されたセミコロン区間は共有の境界規則に従い、
 空の本文は空のままにします。
 規則 1 は見出しの次の行に記号を挙げないので、
@@ -1093,8 +1094,10 @@ last";
 次の物理行から値を取りません。
 `title`、改行、`r=terminal("x");` を `title r=terminal("x");` とつなぐと、
 規則 `r` が題のテキストになり、固定した版の Db と、
-対象にする版のすべての図が変わるからです
-（[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)を参照）。
+対象にする版のすべての図が変わるからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 裸の title 前置部分と後続の規則は別の文にし、規則を値に取り込みません。
 この 2 つは、
 どの文とも同じく自分の行に置きます（[規則ごとの行](#規則ごとの行)を参照）。
@@ -1218,8 +1221,10 @@ railroad-peg-beta
 `accTitle:`、改行、
 `r=terminal("x");` を `accTitle: r=terminal("x");` とつなぐと、
 規則 `r` が題のテキストになり、`accDescr` でも同じで、固定した版の Db と、
-対象にする版のすべての図が変わるからです
-（[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)を参照）。
+対象にする版のすべての図が変わるからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
@@ -1352,10 +1357,13 @@ railroad 図では `/* c */`）。
 [fixture: railroad/description-blocks/peg-percent-comment-after-block]
 
 ディレクティブは原文全体を保ちます。
-mermaid.js が中身を解析しないからです
-（[埋め込みデータは検査しない](./compatibility.ja.md#埋め込みデータは検査しない)を参照）。
+mermaid.js が中身を解析しないからです。
+詳しくは
+[埋め込みデータは検査しない](./compatibility.ja.md#埋め込みデータは検査しない)
+を参照してください。
 コメントかディレクティブだけのブロックも、
-[コメント](#コメント)と[共有ディレクティブ](#共有-directive)の理由で内容を残します。
+[コメント](#コメント) と [共有ディレクティブ](#共有-directive)
+の理由で内容を残します。
 
 [fixture: railroad/description-blocks/abnf-trivia]
 [fixture: railroad/description-blocks/ebnf-trivia]
