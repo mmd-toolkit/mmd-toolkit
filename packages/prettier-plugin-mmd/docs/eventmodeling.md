@@ -38,11 +38,11 @@ with the statement on the next line (see
 
 [fixture: eventmodeling/header/first-title-preserved]
 
-[fixture: eventmodeling/header/title-moved-to-line-start]
+[fixture: eventmodeling/header/title-on-header-line-kept]
 
-[fixture: eventmodeling/header/acctitle-moved-to-line-start]
+[fixture: eventmodeling/header/acctitle-on-header-line-kept]
 
-[fixture: eventmodeling/header/accdescr-moved-to-line-start]
+[fixture: eventmodeling/header/accdescr-on-header-line-kept]
 
 [fixture: eventmodeling/header/header-percent]
 
