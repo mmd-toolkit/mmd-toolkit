@@ -326,7 +326,9 @@ Keep authored optional colons. Print `A: 1` with no ordinary space before the
 colon and one after, or `A 1` with one space and no alignment. This retains
 punctuation while giving equivalent padding a consistent form. Adding a colon is
 unsafe for axis names `accTitle` and `accDescr`: common composite tokens would
-take priority.
+take priority, and every version of mermaid.js that counts rejects
+`curve c{accTitle: 1, accDescr 2}` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: radar/named-entries/named-colon-gap]
 
