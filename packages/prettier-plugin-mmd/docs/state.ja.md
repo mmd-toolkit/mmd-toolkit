@@ -835,7 +835,13 @@ stateDiagram-v2
 これらのキーワードと同じ名前の id からの遷移と、
 `:::` の後のクラスがその名前の状態からの遷移は、`scale-->B` のように、
 矢印の両側を接したまま残します。
-`scale -->B` は scale 文の始まりになるからです。
+`scale -->B` は scale 文の始まりになり、
+対象にする版の mermaid.js のすべてが拒否するからです。
+`classDef`、`class`、`note`、`stateDiagram` でも、同じ形を拒否します。
+`style --> B` は 11.7.0 以降が拒否し、`state --> B` は別の文として描かれます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 
 [fixture: arrow-spacing/touching-before-keyword-kept]
 [fixture: arrow-spacing/other-keyword-ids-touching-kept]
@@ -1195,7 +1201,11 @@ stateDiagram-v2
 Mermaid がブロックの原文を文字どおりに表示する場合は、
 その余白も表示されるためです。
 たとえば空行後の空白を 2 個から 4 個に増やすと、
-表示されていた 3 つの段落が別の配置に変わる場合があります。
+表示されていた 3 つの段落が別の配置に変わります。
+10.9.8 は別のテキストを、11.7.0 以降は別の構造を描きます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 一般の Markdown を再整形するものではありません。
 
 [fixture: notes/over-lines-empty-lines-kept]
@@ -2100,7 +2110,8 @@ U+2028 か U+2029 を含む行は、書かれたまま残します。
 state 図では、mermaid.js が擬似状態の印、方向の行、
 `{` の前の 2 つ目の名前を探す範囲を、これらの文字が区切るからです。
 `state a`、U+2028、`b <<fork>>` は名前 `a` とフォーク `b` ですが、
-U+2028 の代わりに空白を置くと、フォーク `a b` になります。
+U+2028 の代わりに空白を置くと、フォーク `a b` になり、
+12.3.0 の Db では id とラベルも違い、対象にする版のすべてで描画は同じです。
 
 [corpus fixture: state/lex-pseudostate-mark-after-line-separator]
 
