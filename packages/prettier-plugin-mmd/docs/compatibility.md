@@ -525,12 +525,14 @@ where a statement starts or before the separator that ends a statement: as on a
 line of its own, or after another statement on its line (`A accDescr {}` is the
 vertex A and an empty description block), it is a description block statement.
 An ordinary closed block without text or trivia prints an empty interior `{}`,
-including when it contained a line break. A touching keyword stays touching, as
-`accDescr{}`. Every diagram with description-block syntax uses this form for
-whitespace-only interiors, including tabs and Unicode whitespace: there is no
-text for interior whitespace to surround. Blocks containing comments or
-directives retain their contents and required line breaks; ordinary indentation
-follows [Description block indentation](#description-block-indentation) and each
+including when it contained a line break. The keyword and the `{` have one space
+between them, also where they touched: `accDescr{ }` is printed `accDescr {}`
+(see [Description block indentation](#description-block-indentation)). Every
+diagram with description-block syntax uses this form for whitespace-only
+interiors, including tabs and Unicode whitespace: there is no text for interior
+whitespace to surround. Blocks containing comments or directives retain their
+contents and required line breaks; ordinary indentation follows
+[Description block indentation](#description-block-indentation) and each
 diagram's structural rules. Protections for the surrounding line still apply.
 
 [test: sequence Unicode and tab interiors] [test: class Unicode and tab
@@ -6138,11 +6140,13 @@ error/as-written/directive-kept] [corpus fixture: common/error-pseudo-diagram]
 The Db of a kanban board has no indentation: it tells a section from an item by
 comparing the indentation of a node with that of the first node. So the printer
 chooses the indentation, one step for a section and two for an item, and keeps
-what decides the roles. Bare-id, label, icon, and class whitespace remains value
-text. Decorations align with their node; an inline-directive line keeps its
-directives and the gaps beside them, and the printer chooses the whitespace
-before the first one. A data block with invalid YAML is accepted by the parser
-as opaque text, although mermaid.js rejects it (known divergence
+what decides the roles. A run of whitespace inside a label, an icon, or a class
+text remains value text, and the whitespace at the ends of a bare id, a label,
+an icon, and a class text is dropped. Decorations align with their node; an
+inline-directive line keeps its directives and the gaps beside them, and the
+printer chooses the whitespace before the first one. A data block with invalid
+YAML is accepted by the parser as opaque text, although mermaid.js rejects it
+(known divergence
 [`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.md)),
 and the printer retains its opaque content with only eligible margin movement.
 See the [kanban rules](./kanban.md).
@@ -6831,12 +6835,13 @@ architecture Markdown: rejected]
 The [radar rules](./radar.md) retain every axis/curve/options group, entry form,
 optional named-entry colon, repetition and source order. Extra or duplicate
 named entries stay even when publication does not use them; positional and named
-curves remain distinct. The header's optional colon is retained, with ordinary
-preceding whitespace compacted as in gitgraph. NumericLiteral source spans that
-are plain decimals are printed in the shortest form, and the others preserve a
-zero at the start of the integer part, rounded precision, subnormals, underflow
-and overflow rather than printing converted double values. Option values remain
-authored: no tick cap, min/max reorder or replacement from drawing
+curves remain distinct. A colon right after the header word is removed, with the
+whitespace before it (see
+[The colon after a header](#the-colon-after-a-header)). NumericLiteral source
+spans that are plain decimals are printed in the shortest form, and the others
+preserve a zero at the start of the integer part, rounded precision, subnormals,
+underflow and overflow rather than printing converted double values. Option
+values remain authored: no tick cap, min/max reorder or replacement from drawing
 configuration. Label StringLiteral spans keep empty/whitespace-only text,
 escapes, HTML, entities, with a run of spaces and tabs inside a label printed as
 one space; a label between `'` is printed between `"` as under
@@ -7303,11 +7308,13 @@ final-bare-padding] [test: treeview Markdown: rejected]
 ## Railroad dialects and authored values
 
 The [railroad rules](./railroad.md) preserve the selected IR, EBNF, ABNF or PEG
-header, authored assignment delimiters, EBNF optional commas and expression
-structure. Singleton calls and groups remain even where their normalized Dbs are
-equal. Keep every rule, alternative, repeated metadata assignment and empty
-reset in source order. The comparison Db excludes body titles; that does not
-permit dropping their contents.
+header, EBNF optional commas and expression structure, and print the EBNF `::=`
+as `=` (see
+[Other spellings of a keyword or of a punctuation mark](#other-spellings-of-a-keyword-or-of-a-punctuation-mark)).
+Singleton calls and groups remain even where their normalized Dbs are equal.
+Keep every rule, alternative, repeated metadata assignment and empty reset in
+source order. The comparison Db excludes body titles; that does not permit
+dropping their contents.
 
 [fixture: railroad/assignment/ebnf-spellings] [fixture:
 railroad/ebnf-sequences/mixed] [fixture: railroad/calls/ir-singletons] [fixture:
