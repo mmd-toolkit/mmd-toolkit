@@ -1353,10 +1353,17 @@ state、block の図で描きました。
 文の中の最後のスタイルの終わりより前に、コメントかディレクティブがある場合、
 スタイルが全部空白の場合、
 行に自分の `;` がある場合です（[`;` を含む行](#-を含む行)を参照してください）。
-最後のスタイルの後ろのコメントかディレクティブは、文の一部ではなく、flowchart、
-agentflow、class、state、block の図では、文は普通に整形します。
+最後のスタイルの後ろのコメントかディレクティブは、文の一部ではありません。
+flowchart、agentflow、class、state、block、usecase の図では、
+文は普通に整形します。
 `style A fill:red %%{init: {}}%%` は `style A fill: red %%{init: {}}%%`
 と印字します。
+requirement の図でも、ディレクティブの後ろでは同じで、
+11.7.0 以降はそこのコメントを拒否します。
+ER の図では、11.7.0 以降がコメントもディレクティブも拒否します。
+treemap の図は、コメントの後ろでは文を整形し、
+ディレクティブの後ろでは書かれたまま残します。
+詳しくは [スタイルの行末の空白](#スタイルの末尾の空白) を参照してください。
 
 [fixture: flowchart/whitespace-between-tokens/style-blank-style-kept]
 [fixture: flowchart/whitespace-between-tokens/style-colon-escaped-space-kept]
@@ -1366,6 +1373,8 @@ agentflow、class、state、block の図では、文は普通に整形します�
 [fixture: agentflow/single-space-gaps/style-comment-and-directive-after-last-style-formatted]
 [fixture: class/whitespace-between-tokens/style-comment-and-directive-after-last-style-formatted]
 [fixture: state/whitespace-between-tokens/style-comment-and-directive-after-last-style-formatted]
+[fixture: usecase/classes-and-styles/style-comment-and-directive-after-last-style-formatted]
+[fixture: requirement/directives/after-statement-at-end-of-line]
 [fixture: block/styles/style-comment-and-directive-after-last-style-formatted]
 [fixture: flowchart/colors/colors-next-to-comments-and-directives]
 
