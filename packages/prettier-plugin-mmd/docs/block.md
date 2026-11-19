@@ -741,7 +741,11 @@ arrow takes it as it is (see
 `style K fill:#ff0,color:red` is printed `style K fill: #ff0,color: red`, and
 `style K color :red` is printed `style K color : red`.
 
-[fixture: styles/style-label-styles-kept] [test: a color before a semicolon that
+[fixture: styles/style-label-styles-kept] [test: block:
+a-color-before-a-semicolon-that-the-line-rule-ignores-stays-in-a-style-that-holds-two-semicolons]
+[test: a color before a semicolon, a space, and a semicolon in a style statement
+of one line stays as written] [test: a color before two semicolons in a class
+definition of one line stays as written] [test: a color before a semicolon that
 the line rule ignores, a directive after it, in a style statement of one line]
 [test: a color before a semicolon that the line rule ignores, a directive after
 it, in a class definition of one line] [test: a color before a semicolon that
@@ -761,9 +765,11 @@ end of its last style, where a style is all whitespace, or where a style holds a
 line break or its line holds a kept `;`, except that, in a statement that holds
 a line break, a color that a `;` that the line rule ignores touches stays as
 written (see [Multi-line statements](#multi-line-statements)); a statement of
-one line prints it in lower case (`style a fill:#F00,  stroke:#ABC;  %%{x}%%` is
-printed `fill:#f00,  stroke:#abc; %%{x}%%`). A comment or a directive after the
-last style is no part of the statement, which is formatted as usual (see
+one line prints it in lower case, unless a second `;` follows it
+(`style a fill:#F00,  stroke:#ABC;  %%{x}%%` is printed
+`fill:#f00,  stroke:#abc; %%{x}%%`, while `#ABC;;` and `#ABC; ;` stay). A
+comment or a directive after the last style is no part of the statement, which
+is formatted as usual (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 The whitespace at the end of the statement is dropped, as in a flowchart (see
 [Style trailing whitespace](./flowchart.md#style-trailing-whitespace)).
@@ -1014,11 +1020,12 @@ other line break is joined as usual, also in a statement that holds a `;`. A
 statement that keeps a line break keeps the whitespace of its styles as written,
 runs and tabs included. Its colors are in lower case where a comma follows them,
 and where characters follow them after spaces or tabs (`fill:#F00 x;` prints
-`fill:#f00 x;`, while `fill:#F00`, a no-break space, and `x;` keeps `#F00`,
-since a no-break space is no whitespace there); a color that a `;` that the line
-rule ignores touches stays as written (`#ABC;`), which the [Colors](#colors)
+`fill:#f00 x;`, while `fill:#F00`, a no-break space or U+3000, and `x;` keeps
+`#F00`, since they are no whitespace there); a color that a `;` that the line
+rule ignores touches stays as written (`#ABC;`), and so does a color that a
+no-break space or U+3000 separates from the `;`, which the [Colors](#colors)
 rule prints in lower case, so it is printed against the rule and waits to be
-fixed by it, while a color that whitespace separates from the `;` is in lower
+fixed by it, while a color that spaces or tabs separate from the `;` is in lower
 case (`#abc ;`). See [Rows](#rows) and
 [A line that a `;` ends](./compatibility.md#a-line-that-a--ends). The line rule
 of mermaid.js removes the last `;` of a line that holds `style` or `classDef`, a
@@ -1409,6 +1416,9 @@ prints:
 | A directive line and a comment line, to the end of the text        | dropped; every line on a line of its own, as on a plain line                      | `#f00`    |
 | A directive line, a comment line, and a statement                  | kept; the statement stays on the line after the comment line, as written          | `#F00`    |
 | A directive line, a comment line, and a directive line, to the end | kept                                                                              | `#f00`    |
+| Two comment lines, and a directive line, to the end of the text    | kept                                                                              | `#f00`    |
+| An empty line, and a directive line, to the end of the text        | kept; the directive line stands apart, at the level of the statements             | `#f00`    |
+| A directive line and an empty line, to the end of the text         | kept; the empty line at the end is dropped                                        | `#f00`    |
 
 Flowchart, class, state, and ER keep the line as written where nothing follows
 the comment line, and rule 2 gives their form, so block prints the first row
@@ -1416,15 +1426,23 @@ against rule 2 and waits to be fixed by the rule. On such a line, a color before
 a comma on its line, also after whitespace, and the last color of the last line,
 where no `;` that the line rule ignores follows it, are in lower case; a color
 before a comma at the start of the line after the comment line stays as written
-(`#F00`, and `#abc` after it); and a color that a `;` that the line rule ignores
-touches stays as written (`#F00`, and `#ABC;` after it), which the
+(`#F00`, and `#abc` after it); a color that spaces or tabs and characters follow
+on its line is in lower case (`#F00 x`, U+2028, `%% c`, and ` y` print
+`#f00 x`); and a color that a `;` that the line rule ignores touches stays as
+written (`#F00`, and `#ABC;` after it), also where a no-break space or U+3000
+separates it from the `;`, which the
 [Colors](./compatibility.md#colors-that-are-drawn-the-same) rule prints in lower
-case, so that form is printed against the rule and waits to be fixed by it. In a
-block diagram, mermaid.js reads the U+2028 as the end of the line and `%% c` as
-a comment. For `style a fill:#F00`, a U+2028, and `%% c` at the end of the text,
-the Db of 12.3.0 holds neither of them in the style, and differs from that of
-the plain line only in the whitespace after the first `:` and in the case of the
-color, which
+case, so that form is printed against the rule and waits to be fixed by it.
+Where the `;` touches the color right before the U+2028, the U+2028 and the
+comment line stay as written, whatever follows the comment line, and the color
+stays only where a statement follows the comment lines: where nothing, comment
+lines, an empty line, or a directive line follow them, it is in lower case
+(`style a fill:#F00;`, U+2028, and `%% c` are printed `style a fill:#f00;`,
+U+2028, and `%% c`). In a block diagram, mermaid.js reads the U+2028 as the end
+of the line and `%% c` as a comment. For `style a fill:#F00`, a U+2028, and
+`%% c` at the end of the text, the Db of 12.3.0 holds neither of them in the
+style, and differs from that of the plain line only in the whitespace after the
+first `:` and in the case of the color, which
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)
 and
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)
@@ -1489,7 +1507,40 @@ last-color-before-a-semicolon-that-the-line-rule-ignores-on-the-line-after-a-ls-
 last-color-before-a-semicolon-that-the-line-rule-ignores-on-the-line-after-a-ls-comment-line-in-a-classdef-stays]
 [test: block:
 a-color-before-a-space-and-a-comment-line-in-a-style-that-a-ls-comment-line-joins-is-lower-case]
-[test: block:
+[test: a color that a semicolon touches before a U+2028 and a comment line in a
+style statement, nothing after the comment line] [test: a color that a semicolon
+touches before a U+2028 and a comment line in a style statement, a second
+comment line after the comment line] [test: a color that a semicolon touches
+before a U+2028 and a comment line in a style statement, an empty line after the
+comment line] [test: a color that a semicolon touches before a U+2028 and a
+comment line in a style statement, a whitespace-only line after the comment
+line] [test: a color that a semicolon touches before a U+2028 and a comment line
+in a style statement, a directive line after the comment line] [test: a color
+that a semicolon touches before a U+2028 and a comment line in a style
+statement, a statement after the comment line] [test: a color that a semicolon
+touches before a U+2028 and a comment line in a style statement, a second
+comment line and a statement after the comment line] [test: a color that a
+semicolon touches before a U+2028 and a comment line in a style statement, a
+second comment line and a directive line after the comment line] [test: a color
+that a semicolon touches before a U+2028 and a comment line in a class
+definition, nothing after the comment line] [test: a color that a semicolon
+touches before a U+2028 and a comment line in a class definition, a statement
+after the comment line] [test: a color that a semicolon touches before a U+2029
+and a comment line in a style statement, nothing after the comment line] [test:
+a color that a semicolon touches before a U+2028 and a comment line in a style
+statement, and a second style statement after the comment line] [test: a
+directive line after two comment lines, to the end of the text, after a style
+statement and a U+2028] [test: a directive line after an empty line, to the end
+of the text, after a style statement and a U+2028] [test: a directive line and
+an empty line, to the end of the text, after a style statement and a U+2028]
+[test: a no-break space between a color and the semicolon in a class definition
+that a line break joins stays as written] [test: U+3000 between a color and the
+semicolon in a class definition that a line break joins stays as written] [test:
+U+3000 and a character after a color in a class definition that a line break
+joins stays as written] [test: a space between a color and the semicolon in a
+class definition that a line break joins is lower case] [test: a color that a
+no-break space and a character follow in a class definition that a line break
+joins stays as written] [test: block:
 whitespace-between-the-statements-of-a-row-on-a-line-that-a-ls-comment-line-joins]
 [test: U+2028 between a composite head and its body]
 
