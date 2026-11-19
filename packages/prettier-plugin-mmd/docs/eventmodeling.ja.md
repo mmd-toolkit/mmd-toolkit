@@ -311,9 +311,10 @@ tf 01 evt Alpha [[D]]
 タグは本文を JSON などとして解釈する指示ではありません。
 隠れた形と大域的な注釈類の境界は保ちます。
 タグの中のコメントと、タグの直後のコメントは、接していれば接したまま残し、
-その両側の空白とタブの連なりは空白 1 つにします。
-タグの部分の間の隙間は詰めたままです。
+その前の空白とタブの連なりは空白 1 つにします。
 詳しくは [コメント](#comments) を参照してください。
+タグの中のコメントの後の空白とタブの連なりも空白 1 つにします。
+タグの部分の間の隙間は詰めたままです。
 
 [fixture: eventmodeling/type-tags/inline-tag-parts]
 
@@ -324,6 +325,8 @@ tf 01 evt Alpha [[D]]
 [fixture: eventmodeling/type-tags/tag-comments-retained]
 [fixture: eventmodeling/type-tags/tag-comments-spaced]
 [fixture: eventmodeling/type-tags/tag-comments-spaced-after]
+[fixture: eventmodeling/type-tags/tag-comments-tab-before]
+[fixture: eventmodeling/type-tags/tag-comments-tab-after]
 
 [fixture: eventmodeling/type-tags/tag-absent-kept-absent]
 

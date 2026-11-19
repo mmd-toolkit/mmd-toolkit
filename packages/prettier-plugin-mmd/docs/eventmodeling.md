@@ -299,9 +299,10 @@ before its body. Tight tags distinguish the annotation from its value. Retain
 the presence or absence of a tag and all eight authored type words. A tag does
 not ask the formatter to parse its payload as JSON or another language; hidden
 forms and global trivia retain their boundaries. A comment inside a tag or right
-after it stays touching where it touches, and a run of spaces and tabs on either
-side of it becomes one space, as under [Comments](#comments), while the gaps
-between the parts of the tag itself stay tight.
+after it stays touching where it touches, and a run of spaces and tabs before it
+becomes one space, as under [Comments](#comments). A run of spaces and tabs
+after a comment inside the tag becomes one space too, while the gaps between the
+parts of the tag itself stay tight.
 
 [fixture: eventmodeling/type-tags/inline-tag-parts]
 
@@ -311,7 +312,9 @@ between the parts of the tag itself stay tight.
 
 [fixture: eventmodeling/type-tags/tag-comments-retained] [fixture:
 eventmodeling/type-tags/tag-comments-spaced] [fixture:
-eventmodeling/type-tags/tag-comments-spaced-after]
+eventmodeling/type-tags/tag-comments-spaced-after] [fixture:
+eventmodeling/type-tags/tag-comments-tab-before] [fixture:
+eventmodeling/type-tags/tag-comments-tab-after]
 
 [fixture: eventmodeling/type-tags/tag-absent-kept-absent]
 
