@@ -92,9 +92,9 @@ wardley-beta
 ### 文を 1 行ずつにする
 
 普通の文は 1 行ずつにして、必須の EOL を保ちます。
-mermaid.js は文の後に改行かテキストの終わりを期待するので、
-文と同じ行にある 2 つ目の文（空白の後も、U+2028 や U+2029 の後も同じで、
-U+2028 と U+2029 は改行ではありません）と、
+mermaid.js は文の後に改行かテキストの終わりを期待するので、文と同じ行にある、
+空白の後の 2 つ目の文と、
+U+2028 や U+2029（改行ではありません）の後の 2 つ目の文と、
 パイプラインを開く `{` と同じ行にある文と、リンク、タイトル、`accTitle` の行、
 `accDescr` の行以外の文の後の `;` を拒否します。
 そのため、各文はその行で終わります。
@@ -358,6 +358,8 @@ wardley もラベルの位置のずれの `[` の前に空白 1 つを置きま�
 メソッドの `)` と戻り値の型の間に空白 1 つを置き、
 wardley も括弧の中の戦略の `)` と、
 その後ろの括弧なしの `inertia` の間に空白 1 つを置きます。
+ただし、ほかの規則が書かれたまま残す所は別です。
+class は、コメントやディレクティブのあるメソッドを書かれたまま残します。
 `]` や `)` の後にある `(` の前の隙間（括弧の中の戦略と `(inertia)`）には、
 それがありません。
 ほかの図の印字器の文書は、そのような隙間を挙げておらず、
@@ -723,6 +725,9 @@ U+2029 のどれかがあるときは、その前に空白やタブがあって�
 [test: U+2029 before the directive that ends a title of a Wardley map]
 [test: a no-break space before a directive that a space and another directive follow in a title of a Wardley map]
 [test: U+3000 before a directive that a space and a comment follow in a title of a Wardley map]
+[test: a tab and a no-break space after the last directive of a title of a Wardley map]
+[test: U+3000 before a directive that a comment touches in a title of a Wardley map]
+[test: U+3000 before two directives that touch and end a title of a Wardley map]
 
 [fixture: wardley/title/title-empty]
 
@@ -783,6 +788,17 @@ U+2029 のどれかがあるときは、その前に空白やタブがあって�
 [test: U+2028 before the directive that ends an accTitle line of a Wardley map]
 [test: a no-break space before a directive that a space and a comment follow in an accDescr line of a Wardley map]
 [test: the gap before the colon of an accTitle line with a no-break space after its last directive of a Wardley map]
+[test: U+3000 after the last directive of an accTitle line of a Wardley map]
+[test: U+2028 after the last directive of an accTitle line of a Wardley map]
+[test: U+2029 after the last directive of an accTitle line of a Wardley map]
+[test: U+3000 before the directive that ends an accTitle line of a Wardley map]
+[test: U+2029 before the directive that ends an accTitle line of a Wardley map]
+[test: U+3000 after the last directive of an accDescr line of a Wardley map]
+[test: U+2028 after the last directive of an accDescr line of a Wardley map]
+[test: U+2029 after the last directive of an accDescr line of a Wardley map]
+[test: U+3000 before the directive that ends an accDescr line of a Wardley map]
+[test: U+2028 before the directive that ends an accDescr line of a Wardley map]
+[test: U+2029 before the directive that ends an accDescr line of a Wardley map]
 [fixture: wardley/accessibility/access-lines]
 [fixture: wardley/accessibility/access-empty]
 [fixture: wardley/accessibility/access-colon-touching]
@@ -805,6 +821,9 @@ U+2029 のどれかがあるときは、その前に空白やタブがあって�
 保護された注釈とセミコロンの配置では、隙間を保ちます。
 通常の説明本文と独立したコメント行は文より 1 段深くそろえます。
 Db で LF 後の字下げが取り除かれるためです。
+テキストのあるブロックの行の間のディレクティブの行も、文より 1 段深く置きます。
+[quadrant](./quadrant.ja.md#title-とアクセシビリティの文)も、
+そのようなブロックの本文を同じに字下げします。
 改行と内部の空行は保ちます。
 行末の空白は、テキストの最後の行のものを除いて保ちます。
 空白だけの行は空行にします。

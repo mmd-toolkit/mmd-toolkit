@@ -92,14 +92,14 @@ wardley-beta
 
 Put ordinary statements on separate lines and keep their required EOL.
 mermaid.js expects a line break or the end of the text after a statement, so it
-rejects a second statement on the line of a statement (after a space, and also
-after a U+2028 or U+2029, which is no line break), a statement on the line of
-the `{` that opens a pipeline, and a `;` after any statement but a link, a
-title, an `accTitle` line, and an `accDescr` line: each statement ends its line.
-A `;` after a link opens its label (see [Semicolon labels](#semicolon-labels)),
-and after one of the other three it is part of the text. Add no semicolon:
-Wardley does not use semicolons as statement separators. Apparent statements
-inside values remain value text; the source tree already distinguishes them.
+rejects a second statement after a space on the line of a statement, and after a
+U+2028 or U+2029, which is no line break, a statement on the line of the `{`
+that opens a pipeline, and a `;` after any statement but a link, a title, an
+`accTitle` line, and an `accDescr` line: each statement ends its line. A `;`
+after a link opens its label (see [Semicolon labels](#semicolon-labels)), and
+after one of the other three it is part of the text. Add no semicolon: Wardley
+does not use semicolons as statement separators. Apparent statements inside
+values remain value text; the source tree already distinguishes them.
 
 [fixture: wardley/statements-one-per-line/statement-eol] [corpus fixture:
 wardley/line-ls-gap] [corpus fixture: wardley/line-ps-gap] [corpus fixture:
@@ -337,15 +337,17 @@ before the `[` of a label offset; [quadrant](./quadrant.md#styles) prints one
 space between the `]` of a point and its first style, written touching or not
 (`]radius:9`), as wardley prints one between a `]` and the word `label` or the
 bare `inertia` that follows it; and [class](./class.md#member-lines) prints one
-space between the `)` of a method and its return type, as wardley prints one
-between the `)` of a strategy in parentheses and the bare `inertia` that follows
-it. The gap before a `(` that follows a `]` or a `)`, which holds a strategy or
-`(inertia)` in parentheses, has none: the documents of the other printers name
-no such gap, no printed fixture of another diagram type holds a `] (` or a
-`) (`, and the one space that [ER](./er.md#attribute-spacing) prints between the
-keys of an attribute and its comment stands before a quoted string, not before a
-`(`. So the form that the released version prints, one space, stays for the gap
-before a `(` until it is decided (see
+space between the `)` of a method and its return type, where no other rule keeps
+the method as written (class keeps a method with a comment or a directive as
+written), as wardley prints one between the `)` of a strategy in parentheses and
+the bare `inertia` that follows it. The gap before a `(` that follows a `]` or a
+`)`, which holds a strategy or `(inertia)` in parentheses, has none: the
+documents of the other printers name no such gap, no printed fixture of another
+diagram type holds a `] (` or a `) (`, and the one space that
+[ER](./er.md#attribute-spacing) prints between the keys of an attribute and its
+comment stands before a quoted string, not before a `(`. So the form that the
+released version prints, one space, stays for the gap before a `(` until it is
+decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Keep bare inertia and (inertia) distinct, along with build, buy, outsource and
 market. The inertia forms can share a Db, but converting them loses an authored
@@ -689,7 +691,10 @@ directive that ends a title of a Wardley map] [test: U+2029 before the directive
 that ends a title of a Wardley map] [test: a no-break space before a directive
 that a space and another directive follow in a title of a Wardley map] [test:
 U+3000 before a directive that a space and a comment follow in a title of a
-Wardley map]
+Wardley map] [test: a tab and a no-break space after the last directive of a
+title of a Wardley map] [test: U+3000 before a directive that a comment touches
+in a title of a Wardley map] [test: U+3000 before two directives that touch and
+end a title of a Wardley map]
 
 [fixture: wardley/title/title-empty]
 
@@ -746,7 +751,18 @@ accDescr line of a Wardley map] [test: U+2028 before the directive that ends an
 accTitle line of a Wardley map] [test: a no-break space before a directive that
 a space and a comment follow in an accDescr line of a Wardley map] [test: the
 gap before the colon of an accTitle line with a no-break space after its last
-directive of a Wardley map] [fixture: wardley/accessibility/access-lines]
+directive of a Wardley map] [test: U+3000 after the last directive of an
+accTitle line of a Wardley map] [test: U+2028 after the last directive of an
+accTitle line of a Wardley map] [test: U+2029 after the last directive of an
+accTitle line of a Wardley map] [test: U+3000 before the directive that ends an
+accTitle line of a Wardley map] [test: U+2029 before the directive that ends an
+accTitle line of a Wardley map] [test: U+3000 after the last directive of an
+accDescr line of a Wardley map] [test: U+2028 after the last directive of an
+accDescr line of a Wardley map] [test: U+2029 after the last directive of an
+accDescr line of a Wardley map] [test: U+3000 before the directive that ends an
+accDescr line of a Wardley map] [test: U+2028 before the directive that ends an
+accDescr line of a Wardley map] [test: U+2029 before the directive that ends an
+accDescr line of a Wardley map] [fixture: wardley/accessibility/access-lines]
 [fixture: wardley/accessibility/access-empty] [fixture:
 wardley/accessibility/access-colon-touching]
 
@@ -766,14 +782,17 @@ whitespace and align a separate closer.
 
 Protected trivia and semicolon layouts keep their gaps. Ordinary description
 body and standalone comment lines align one level inside the statement: the Db
-removes indentation after LF. Keep line breaks and interior blank lines, and the
-whitespace at the end of each line of text except the last one; a line of
-whitespace only becomes an empty line. The whitespace at the end of the last
-line of text is dropped where the closer stands on a line of its own, and is
-printed as one space where the closer follows it on that line. Directives and
-shared removed comment regions keep their complete source, including in a block
-that contains only a directive, and trivia keeps its shared continuation layout.
-Rule 1 names no mark for a line inside a block, so
+removes indentation after LF. A directive line among the lines of a block with
+text stands there too, one level inside the statement, as
+[quadrant](./quadrant.md#titles-and-accessibility-statements) indents the body
+of such a block. Keep line breaks and interior blank lines, and the whitespace
+at the end of each line of text except the last one; a line of whitespace only
+becomes an empty line. The whitespace at the end of the last line of text is
+dropped where the closer stands on a line of its own, and is printed as one
+space where the closer follows it on that line. Directives and shared removed
+comment regions keep their complete source, including in a block that contains
+only a directive, and trivia keeps its shared continuation layout. Rule 1 names
+no mark for a line inside a block, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [xychart](./xychart.md#empty-description-blocks) and
 [quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
