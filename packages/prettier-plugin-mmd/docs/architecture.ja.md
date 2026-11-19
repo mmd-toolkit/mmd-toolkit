@@ -653,7 +653,6 @@ architecture-beta
 mermaid.js は次の行を独立した文として読むので、つなぐと、その文が title に入り、
 その文が宣言するもの（ノード、グループ、ジャンクション、エッジ）がなくなります。
 architecture の要約が title を公開しなくても、文と内容を保ちます。
-注釈類のある値と保護された隠れた形の境界は原文の隙間を保ちます。
 題にテキストがあり、そのテキストの前にも中にもディレクティブがなく、
 テキストの中に U+2028 も U+2029 もないとき、題の終わりのディレクティブは、
 その前と後に何があるかで、次のように印字します。
@@ -1507,6 +1506,19 @@ mermaid.js はテキストを読む前にディレクティブを除き、
 [test: a U+2028 inside the directive that starts the text of a title, two spaces and a text after it, spaces at the end, of an architecture diagram]
 [test: a line break inside the directive that starts the text of a title, two spaces and a text after it, spaces at the end, of an architecture diagram]
 [test: a `;` inside the directive that starts the text of a title, two spaces and a text after it, spaces at the end, of an architecture diagram]
+[test: a `;` at the end of a title, spaces after the keyword, of an architecture diagram]
+[test: a `;` at the end of a title, a run of spaces inside the text, of an architecture diagram]
+[test: a `;` at the end of a title, spaces after it, of an architecture diagram]
+[test: a `;` after spaces at the end of a title, spaces after it, of an architecture diagram]
+[test: a text after the `;` of a title, spaces at the end, of an architecture diagram]
+[test: a `;` inside the comment after the text of a title, spaces at the end, of an architecture diagram]
+[test: a `;` at the end of a title, U+3000 after it, of an architecture diagram]
+[test: a U+2028 in the text of a title that ends with a `;`, of an architecture diagram]
+[test: a comment after the text of a title, spaces before it, of an architecture diagram]
+[test: a run of spaces inside the text of a title, of an architecture diagram]
+[test: a run of tabs inside the text of a title, spaces at the end, of an architecture diagram]
+[test: a run of spaces inside a quoted string in a title, of an architecture diagram]
+[test: a run of spaces beside a directive inside the text of a title, of an architecture diagram]
 [test: U+2028 before a directive that a comment touches, a line follows, in a title of an architecture diagram]
 [test: U+2028 before a directive that a comment touches, the text ends, in a title of an architecture diagram]
 [test: U+2028 before a directive that a comment touches, an empty line follows, in a title of an architecture diagram]
@@ -1838,11 +1850,14 @@ architecture-beta
 コロンをキーワードに付け、両端の空白を除いた非空値の前は空白1個、
 空ならコロンで終えます。
 これにより外側の空白を統一します。
+`accDescr` の値の中の空白とタブの連なりは空白 1 つにして印字し、
+`accTitle` の連なりはブラウザがツールチップとして表示するので、
+書かれたまま残します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 次行の文を取り込まず、コロン後の波括弧は行値のまま保ちます。
 mermaid.js は次の行を独立した文として読むので、つなぐと、
 その文が title や description に入り、その文が宣言するもの（ノード、グループ、
 ジャンクション、エッジ）がなくなります。
-保護された注釈類と隠れた形の隙間を優先します。
 値にテキストがあり、そのテキストの前にも中にもディレクティブがなく、
 テキストの中に U+2028 も U+2029 もないとき、値の終わりのディレクティブは、
 その前と後に何があるかで、次のように印字します。
@@ -2379,6 +2394,16 @@ U+205F、U+3000、U+FEFF のどれかです。
 [test: a directive that touches the colon of an accTitle line, a space and a text after it, of an architecture diagram]
 [test: a directive that starts the text of an accTitle line, two spaces and a text after it, spaces at the end, of an architecture diagram]
 [test: a directive that starts the text of an accDescr line, two spaces and a text after it, spaces at the end, of an architecture diagram]
+[test: a `;` at the end of a title, a tab after the keyword, spaces after the `;`, of an architecture diagram]
+[test: a `;` at the end of an accTitle line, a gap before the colon, of an architecture diagram]
+[test: a `;` at the end of an accDescr line, a run of spaces inside the text, of an architecture diagram]
+[test: a `;` at the end of an accTitle line, a tab after the colon, spaces after the `;`, of an architecture diagram]
+[test: a `;` at the end of an accDescr line, a gap before the colon, of an architecture diagram]
+[test: a comment after the text of an accTitle line, spaces before it, of an architecture diagram]
+[test: a comment after the text of an accDescr line, spaces before it, of an architecture diagram]
+[test: a run of spaces inside the text of an accDescr line, of an architecture diagram]
+[test: a run of spaces inside the text of an accTitle line, of an architecture diagram]
+[test: a run of spaces inside a quoted string in an accDescr line, of an architecture diagram]
 [test: U+2028 before a directive that a comment touches, a line follows, in an accTitle line of an architecture diagram]
 [test: U+2028 before a directive that a comment touches, the text ends, in an accTitle line of an architecture diagram]
 [test: U+2028 before a directive that a comment follows after spaces, a line follows, in an accTitle line of an architecture diagram]

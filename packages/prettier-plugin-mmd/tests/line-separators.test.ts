@@ -11318,6 +11318,121 @@ const architectureDirectiveEndExamples: readonly (readonly [
     "title %%{x;y}%%  T  ",
     "title %%{x;y}%%T",
   ],
+  [
+    "a `;` at the end of a title, spaces after the keyword, of an architecture diagram",
+    "title   T;",
+    "title T;",
+  ],
+  [
+    "a `;` at the end of a title, a run of spaces inside the text, of an architecture diagram",
+    "title A   B;",
+    "title A B;",
+  ],
+  [
+    "a `;` at the end of a title, spaces after it, of an architecture diagram",
+    "title T;  ",
+    "title T;",
+  ],
+  [
+    "a `;` after spaces at the end of a title, spaces after it, of an architecture diagram",
+    "title T  ;  ",
+    "title T ;",
+  ],
+  [
+    "a `;` at the end of a title, a tab after the keyword, spaces after the `;`, of an architecture diagram",
+    "title\tT;  ",
+    "title T;",
+  ],
+  [
+    "a `;` at the end of an accTitle line, a gap before the colon, of an architecture diagram",
+    "accTitle : T;",
+    "accTitle: T;",
+  ],
+  [
+    "a `;` at the end of an accDescr line, a run of spaces inside the text, of an architecture diagram",
+    "accDescr:   A   B;",
+    "accDescr: A B;",
+  ],
+  [
+    "a `;` at the end of an accTitle line, a tab after the colon, spaces after the `;`, of an architecture diagram",
+    "accTitle:\tA   B;  ",
+    "accTitle: A   B;",
+  ],
+  [
+    "a `;` at the end of an accDescr line, a gap before the colon, of an architecture diagram",
+    "accDescr : T  U;",
+    "accDescr: T U;",
+  ],
+  [
+    "a text after the `;` of a title, spaces at the end, of an architecture diagram",
+    "title A;  B  ",
+    "title A; B",
+  ],
+  [
+    "a `;` inside the comment after the text of a title, spaces at the end, of an architecture diagram",
+    "title T  %% c;  ",
+    "title T %% c;  ",
+  ],
+  [
+    "a `;` at the end of a title, U+3000 after it, of an architecture diagram",
+    "title T;\u3000",
+    "title T;",
+  ],
+  [
+    "a U+2028 in the text of a title that ends with a `;`, of an architecture diagram",
+    "title T\u2028U;",
+    "title T\u2028U;",
+  ],
+  [
+    "a comment after the text of a title, spaces before it, of an architecture diagram",
+    "title T   %% c",
+    "title T %% c",
+  ],
+  [
+    "a comment after the text of an accTitle line, spaces before it, of an architecture diagram",
+    "accTitle: T   %% c",
+    "accTitle: T %% c",
+  ],
+  [
+    "a comment after the text of an accDescr line, spaces before it, of an architecture diagram",
+    "accDescr: T   %% c",
+    "accDescr: T %% c",
+  ],
+  [
+    "a run of spaces inside the text of a title, of an architecture diagram",
+    "title A   B",
+    "title A B",
+  ],
+  [
+    "a run of tabs inside the text of a title, spaces at the end, of an architecture diagram",
+    "title A\t\tB  ",
+    "title A B",
+  ],
+  [
+    "a run of spaces inside a quoted string in a title, of an architecture diagram",
+    "title \u0022A   B\u0022",
+    "title \u0022A B\u0022",
+  ],
+  [
+    "a run of spaces beside a directive inside the text of a title, of an architecture diagram",
+    "title A  %%{x}%%  B",
+    "title A  %%{x}%%  B",
+  ],
+  [
+    "a run of spaces inside the text of an accDescr line, of an architecture diagram",
+    "accDescr: A   B",
+    "accDescr: A B",
+  ],
+  [
+    "a run of spaces inside the text of an accTitle line, of an architecture diagram",
+    "accTitle: A   B",
+    "accTitle: A   B",
+  ],
+  [
+    "a run of spaces inside a quoted string in an accDescr line, of an architecture diagram",
+    "accDescr: \u0022A   B\u0022",
+    "accDescr: \u0022A B\u0022",
+  ],
 ]
 
 describe("the directives that end the title or the value of an accessibility line of an architecture diagram", () => {
