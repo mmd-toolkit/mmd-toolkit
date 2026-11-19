@@ -6748,6 +6748,76 @@ state 図の `style A fill:#F00,x` は、色を書かれたまま残します。
 [test: a comment line after U+2028 inside the name of a class]
 [test: a comment line after U+2029 inside the name of a class]
 
+ブロック図には、上の規則の例外が 2 つあります。
+composite ブロックの開始行は、コロンの行に名前があるときは、
+コロンの後の隙間を普通の開始行と同じに印字し、
+コメント領域がコロンにすぐ続くときは、書かれたまま残します。
+[複数行の文](./block.ja.md#複数行の文)を参照してください。
+どの文でも、文が続かず、空白でない最後の行がコメントを含むとき、
+コメント行の前の U+2028 や U+2029 は落とし（前の行に `;` があるときと、`style`、
+`classDef`、`class` ではない文の後に空白を挟んでコメントが続くときは別です。
+その節が文ごとに述べます）、コメント行は自分の行に置きます。
+[行区切り文字](./block.ja.md#行区切り文字)を参照してください。
+ブロック図では、そのような行の文について、
+スタイルの色のように普通の行と別に印字するものも、そこに書いてあります。
+
+[test: a directive line and then a comment line, to the end of the text, after a style statement and a U+2028]
+[test: a comment line, a directive line, and a comment line, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped]
+[test: an empty line, a directive line, and a comment line, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped]
+[test: a directive line, an empty line, and a comment line, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped]
+[test: two directive lines and a comment line, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped]
+[test: a node and no semicolon, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node with a label and no semicolon, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: an edge and no semicolon, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a width and no semicolon, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node and a semicolon, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node with a semicolon in its label, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an edge and a semicolon, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a width and a semicolon, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and a semicolon, to the end of the text, after a U+2029: the U+2029 stays]
+[test: the end of a composite block and a semicolon, to the end of the text, after a U+2028: the whole composite stays as written]
+[test: the end of a composite block and a semicolon, to the end of the text, after a U+2029: the whole composite stays as written]
+[test: the end of a composite block, a statement follows the comment line, after a U+2028: the whole composite stays as written]
+[test: the end of a composite block and no semicolon, to the end of the text, after a U+2028: the U+2028 is dropped and the composite is formatted]
+[test: a node and no semicolon, to the end of the text, after a U+2029: the U+2029 is dropped]
+[test: a node and no semicolon, a statement follows the comment line, after a U+2028: the U+2028 stays]
+[test: a node and a semicolon, a statement follows the comment line, after a U+2029: the U+2029 stays]
+[test: a node and a semicolon in a comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and a comment that a space separates from it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an edge and a comment that a space separates from it, a statement follows the comment line, after a U+2029: the U+2029 stays]
+[test: a node and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: the end of a composite block and a comment that touches it, to the end of the text, after a U+2028: the whole composite stays as written]
+[test: the end of a composite block and a comment after a space, to the end of the text, after a U+2028: the whole composite stays as written]
+[test: the end of a composite block and a directive and a comment after a space, to the end of the text, after a U+2028: the whole composite stays as written]
+[test: the end of a composite block and a directive that touches it, to the end of the text, after a U+2028: the U+2028 is dropped and the composite is formatted]
+[test: the end of a composite block and a directive after a space, to the end of the text, after a U+2028: the U+2028 is dropped and the composite is formatted]
+[test: a width and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a width and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a width and a directive, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: an empty block and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an empty block and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a block arrow and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a block arrow and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node with a label and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an edge and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node and a directive after a space, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: an edge and a directive after a space, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node, a directive, and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node, a directive after a space and a comment that touches the directive, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an edge, a directive after a space and a comment that touches the directive, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an edge and a directive that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node with a width and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node with a width and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node with a width and a directive that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: an edge with a width and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node and a tab before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and a run of spaces before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and a no-break space before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and U+3000 before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and a vertical tab before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and a form feed before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and U+FEFF before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+
 行に載るものと行の終わりは、mermaid.js が取り除くものから決まります。
 図種ごとの文書には、その図種のことを書きます。
 [ER](./er.ja.md#複数行の文)、[quadrant](./quadrant.ja.md#複数行の文)、
