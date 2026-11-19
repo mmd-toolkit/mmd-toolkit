@@ -499,21 +499,33 @@ Semicolons alone do not prevent alignment of a continuation.
 Comment regions that join physical lines retain their original layout. A comment
 region after U+2028 or U+2029 makes mermaid.js read the lines around it as one,
 and the formatter keeps the whitespace and the line breaks of such a line as
-written from its first line to its end, apart from the cases that the section
-names (the comment line of a mindmap node, and the block of an ER entity, among
-them; see
+written, from the start of its first statement to its end, apart from the cases
+that the section names (the comment line of a mindmap node, and the block of an
+ER entity, among them; see
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
-The colors of a style or a class definition on such a line are printed as under
+A directive on such a line stays where it is written, with its whitespace. The
+quotes of a name, a role, an alias, and a label stay as written, where a plain
+line prints them without when the text is one plain word. The cardinalities and
+the line of a relationship are printed as symbols, as on a plain line, with the
+whitespace between them as written: `A only one to zero or more B` is printed
+`A || -- o{ B`. The colors of a style or a class definition are printed as under
 [Colors](#colors): a color before a comma is in lower case, and one that
 characters follow after whitespace stays as written.
 
-[test: er/attribute-spacing/comment-region-continuation-kept] [test: a color
-before a comma in a style on a line that a comment line after U+2028 joins with
-the next line] [test: a color before a comma in a class definition on a line
-that a comment line after U+2029 joins with the next line] [test: the last color
-of a style that the line after a comment line after U+2028 goes on with] [test:
-whitespace between the statements of a line that a comment line after U+2028
-joins with the next line]
+[test: er/attribute-spacing/comment-region-continuation-kept] [test: ER the
+quotes of the names of a relationship on a line that a comment line after U+2028
+joins] [test: ER the quotes of the label of a relationship on a line that a
+comment line after U+2028 joins] [test: ER the quotes of the alias of an entity
+on a line that a comment line after U+2028 joins] [test: ER the quotes of an
+entity name on a line that a comment line after U+2029 joins] [test: ER the
+words of a relationship on a line that a comment line after U+2028 joins are
+printed as symbols] [test: ER a directive on a line that a comment line after
+U+2028 joins stays where it is written] [test: a color before a comma in a style
+on a line that a comment line after U+2028 joins with the next line] [test: a
+color before a comma in a class definition on a line that a comment line after
+U+2029 joins with the next line] [test: the last color of a style that the line
+after a comment line after U+2028 goes on with] [test: whitespace between the
+statements of a line that a comment line after U+2028 joins with the next line]
 
 A directive between the parts of an attribute is placed as under
 [Directives](./flowchart.md#directives): mermaid.js removes a directive before
@@ -2807,7 +2819,8 @@ the like). A joining region keeps the line that it joins as written (see below).
 A line break stays where joining it, with one space or with nothing, could
 change which `;` the line rule ignores, and where a `;` ends the last line; any
 other line break is joined as usual, also in a statement that holds a `;`. A
-statement that keeps a line break keeps its styles as written.
+statement that keeps a line break keeps the whitespace of its styles as written,
+and prints their colors as under [Colors](#colors).
 
 [fixture: multi-line-statements/semicolon-joining-changes-kept] [fixture:
 multi-line-statements/style-comment-continuation] [fixture:
@@ -3092,9 +3105,10 @@ value] [test: U+2028 in the text after a direction] [test: U+2028 inside an
 attribute name]
 
 An entity header, a subgraph header, or a class definition with a comment line
-after U+2028 or U+2029 keeps that span as written: mermaid.js removes the
-comment line and its preceding whitespace, joining the continuation to the text
-before the separator.
+after U+2028 or U+2029 keeps the whitespace and the line breaks of that span as
+written: mermaid.js removes the comment line and its preceding whitespace,
+joining the continuation to the text before the separator. The colors of a class
+definition on it are printed as under [Colors](#colors).
 
 [test: a comment line after U+2028 in an ER entity header] [test: a comment line
 after U+2029 in an ER entity header] [test: a comment line after U+2028 in an ER

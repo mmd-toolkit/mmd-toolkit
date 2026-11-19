@@ -474,13 +474,19 @@ Db が保つからです。
 物理行を結ぶコメント領域は、元の配置を保ちます。
 U+2028 か U+2029 の後のコメント領域があると、
 mermaid.js は前後の行を 1 行として読みます。
-整形は、その行の空白と改行を最初の行から最後まで書かれたまま印字します。
+整形は、その行の空白と改行を最初の文の始まりから最後まで書かれたまま印字します。
 ただし、節が挙げるもの（mindmap のノードのコメント行と、
 ER の実体のブロックなど）は別です。
 詳しくは
 [U+2028 または U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
 を参照してください。
-そのような行にある style や classDef の色は、[色](#色)と同じに印字します。
+その行にあるディレクティブは、空白ごと書かれた位置に残ります。
+名前、役割、別名、ラベルの引用符は、
+普通の行なら 1 語のテキストの引用符を外す所でも、書かれたまま残ります。
+関係のカーディナリティと線は、普通の行と同じく記号で印字し、
+その間の空白は書かれたままにします。
+`A only one to zero or more B` は `A || -- o{ B` と印字します。
+style や classDef の色は、[色](#色)と同じに印字します。
 コンマの前の色は小文字にし、空白の後に文字が続く色は書かれたままにします。
 
 [test: er/attribute-spacing/comment-region-continuation-kept]
@@ -488,6 +494,12 @@ ER の実体のブロックなど）は別です。
 [test: a color before a comma in a class definition on a line that a comment line after U+2029 joins with the next line]
 [test: the last color of a style that the line after a comment line after U+2028 goes on with]
 [test: whitespace between the statements of a line that a comment line after U+2028 joins with the next line]
+[test: ER the quotes of the names of a relationship on a line that a comment line after U+2028 joins]
+[test: ER the quotes of the label of a relationship on a line that a comment line after U+2028 joins]
+[test: ER the quotes of the alias of an entity on a line that a comment line after U+2028 joins]
+[test: ER the quotes of an entity name on a line that a comment line after U+2029 joins]
+[test: ER the words of a relationship on a line that a comment line after U+2028 joins are printed as symbols]
+[test: ER a directive on a line that a comment line after U+2028 joins stays where it is written]
 
 属性の部分の間にあるディレクティブは、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)と同じに置きます。
@@ -2766,7 +2778,8 @@ mermaid.js が複数行にわたって読む文は、改行が、
 行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
 その改行を残します。
 それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
-改行が残る文は、スタイルも書かれたままにします。
+改行が残る文は、スタイルの空白も書かれたままにし、
+色は[色](#色)と同じに印字します。
 
 [fixture: multi-line-statements/semicolon-joining-changes-kept]
 [fixture: multi-line-statements/style-comment-continuation]
@@ -2991,7 +3004,9 @@ ER 図では、空白そのものを読む規則を除き、これらは名前�
 [test: U+2028 inside an attribute name]
 
 実体のヘッダー、subgraph のヘッダー、クラス定義で、
-U+2028 や U+2029 の後にコメント行がある範囲は書かれたまま残します。
+U+2028 や U+2029 の後にコメント行がある範囲は、
+空白と改行を書かれたまま残します。
+クラス定義の色は[色](#色)と同じに印字します。
 mermaid.js がコメント行とその前の空白を除き、
 後続の行を区切り文字の前のテキストにつなぐためです。
 

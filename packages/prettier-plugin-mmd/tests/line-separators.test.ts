@@ -2172,6 +2172,36 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "erDiagram\n  A   ||--o{   B : x\u2028%% c\n Bar   {   int   id   }\n",
   ],
   [
+    "ER the quotes of the names of a relationship on a line that a comment line after U+2028 joins",
+    'erDiagram\n"CUSTOMER" ||--o{ "ORDER" : places\u2028%% c\n x\n',
+    'erDiagram\n  "CUSTOMER" ||--o{ "ORDER" : places\u2028%% c\n x\n',
+  ],
+  [
+    "ER the quotes of the label of a relationship on a line that a comment line after U+2028 joins",
+    'erDiagram\nA ||--o{ B : "has"\u2028%% c\n x\n',
+    'erDiagram\n  A ||--o{ B : "has"\u2028%% c\n x\n',
+  ],
+  [
+    "ER the quotes of the alias of an entity on a line that a comment line after U+2028 joins",
+    'erDiagram\n"A"["B"]\u2028%% c\n x\n',
+    'erDiagram\n  "A"["B"]\u2028%% c\n x\n',
+  ],
+  [
+    "ER the quotes of an entity name on a line that a comment line after U+2029 joins",
+    'erDiagram\n"A"\u2029%% c\n x\n',
+    'erDiagram\n  "A"\u2029%% c\n x\n',
+  ],
+  [
+    "ER the words of a relationship on a line that a comment line after U+2028 joins are printed as symbols",
+    "erDiagram\nA only one to zero or more B : x\u2028%% c\n x\n",
+    "erDiagram\n  A || -- o{ B : x\u2028%% c\n x\n",
+  ],
+  [
+    "ER a directive on a line that a comment line after U+2028 joins stays where it is written",
+    "erDiagram\nA   %%{init: {}}%%   ||--o{ B : x\u2028%% c\n y\n",
+    "erDiagram\n  A   %%{init: {}}%%   ||--o{ B : x\u2028%% c\n y\n",
+  ],
+  [
     "an empty line after a comment line after U+2028 inside the name of an ER entity",
     "erDiagram\nA\u2028%% c\n\nBar\n",
     "erDiagram\n  A\u2028%% c\n\n  Bar\n",
