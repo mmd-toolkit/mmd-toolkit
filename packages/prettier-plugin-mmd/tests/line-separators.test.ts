@@ -4953,6 +4953,76 @@ const blockLineSeparatorExamples: readonly (readonly [
     "block-beta\nA\nclassDef c fill:#f00\u2029 ,color:white\n",
     "block-beta\n  A\n  classDef c fill:#f00\u2029 ,color:white\n",
   ],
+  [
+    "U+2028 and a directive after the comma between the directions of a block arrow, a space after the U+2028 and after the directive",
+    'block-beta\na<["a"]>(right,\u2028 %%{x}%% down)\n',
+    'block-beta\n  a<["a"]>(right,\u2028 %%{x}%% down)\n',
+  ],
+  [
+    "U+2028 and a directive after the comma between the directions of a block arrow, nothing around the directive",
+    'block-beta\na<["a"]>(right,\u2028%%{x}%%down)\n',
+    'block-beta\n  a<["a"]>(right,\u2028%%{x}%%down)\n',
+  ],
+  [
+    "U+2029 and a directive after the comma between the directions of a block arrow, a space after the U+2029 and after the directive",
+    'block-beta\na<["a"]>(right,\u2029 %%{x}%% down)\n',
+    'block-beta\n  a<["a"]>(right,\u2029 %%{x}%% down)\n',
+  ],
+  [
+    "U+2029 and a directive after the comma between the directions of a block arrow, nothing around the directive",
+    'block-beta\na<["a"]>(right,\u2029%%{x}%%down)\n',
+    'block-beta\n  a<["a"]>(right,\u2029%%{x}%%down)\n',
+  ],
+  [
+    "a space, U+2028, and a directive after the comma between the directions of a block arrow",
+    'block-beta\na<["a"]>(right, \u2028%%{x}%% down)\n',
+    'block-beta\n  a<["a"]>(right, \u2028%%{x}%% down)\n',
+  ],
+  [
+    "a directive, spaces, and U+2028 after the comma between the directions of a block arrow",
+    'block-beta\na<["a"]>(right,  %%{x}%%\u2028down)\n',
+    'block-beta\n  a<["a"]>(right,  %%{x}%%\u2028down)\n',
+  ],
+  [
+    "a color before a semicolon that the line rule ignores, a directive after it, in a style statement of one line",
+    "block-beta\na\nstyle a fill:#F00,  stroke:#ABC;  %%{x}%%\n",
+    "block-beta\n  a\n  style a fill:#f00,  stroke:#abc; %%{x}%%\n",
+  ],
+  [
+    "a color before a semicolon that the line rule ignores, a directive after it, in a class definition of one line",
+    "block-beta\na\nclassDef c fill:#F00,stroke:#ABC;  %%{x}%%\n",
+    "block-beta\n  a\n  classDef c fill:#f00,stroke:#abc; %%{x}%%\n",
+  ],
+  [
+    "a color before a semicolon that the line rule ignores, a comment after it, in a style statement of one line",
+    "block-beta\na\nstyle a fill:#F00,  stroke:#ABC;  %% c\n",
+    "block-beta\n  a\n  style a fill:#f00,  stroke:#abc;  %% c\n",
+  ],
+  [
+    "a color before a semicolon that the line rule ignores, a directive after it, in a class definition that a line break joins",
+    "block-beta\na\nclassDef c \nfill:#F00,stroke:#ABC;  %%{x}%%\n",
+    "block-beta\n  a\n  classDef c \n    fill:#f00,stroke:#ABC; %%{x}%%\n",
+  ],
+  [
+    "a color before a semicolon that the line rule ignores, in a style statement that a comment line after U+2028 cuts",
+    "block-beta\na\nstyle a fill:#F00,stroke:#ABC;\u2028%% c\n x\n",
+    "block-beta\n  a\n  style a fill:#f00,stroke:#ABC;\u2028%% c\n x\n",
+  ],
+  [
+    "a color before a semicolon after whitespace in a class definition that a line break joins",
+    "block-beta\na\nclassDef c \nfill:#F00,stroke:#ABC ;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#f00,stroke:#abc ;\n",
+  ],
+  [
+    "a color that a space and a character follow in a class definition that a line break joins",
+    "block-beta\na\nclassDef c \nfill:#F00 x;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#f00 x;\n",
+  ],
+  [
+    "a color that a no-break space and a character follow in a class definition that a line break joins stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u00a0x;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u00a0x;\n",
+  ],
 ]
 
 /**

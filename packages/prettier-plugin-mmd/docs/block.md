@@ -473,9 +473,11 @@ touching or separated as written after the `(`, before a `,`, and before the
 `(right%%{x}%%, down)` stay). After a `,` the gap is printed as without the
 directive, and the directive stands after its space and touches the unit that
 follows it, as under [Directives](#directives): `(right,  %%{x}%%  down)` and
-`(right,%%{x}%%down)` are printed `(right, %%{x}%%down)`. Where a line break
-follows a directive after a `,`, the whitespace before it stays as written and
-the next line stands one level deeper: `(right,  %%{x}%%` and a line break stay.
+`(right,%%{x}%%down)` are printed `(right, %%{x}%%down)`. Where the gap holds a
+U+2028 or U+2029, it stays as written, a directive in it included: `(right,`,
+U+2028, and ` %%{x}%% down)` stay. Where a line break follows a directive after
+a `,`, the whitespace before it stays as written and the next line stands one
+level deeper: `(right,  %%{x}%%` and a line break stay.
 
 [fixture: shapes/block-arrow-comma-space] [fixture:
 shapes/block-arrow-comma-comment-line] [fixture:
@@ -496,10 +498,19 @@ shapes/block-arrow-directive-after-open-parenthesis] [fixture:
 shapes/block-arrow-directive-before-closing-parenthesis] [fixture:
 shapes/block-arrow-directive-after-comma] [fixture:
 shapes/block-arrow-directive-after-comma-at-the-end-of-the-line] [test: U+2028
-after the comma between the directions of a block arrow] [test: U+2029 after the
-comma between the directions of a block arrow] [test: U+2028 before the comma
-between the directions of a block arrow] [test: U+2029 before the comma between
-the directions of a block arrow] [fixture: shapes/block-arrow-touches-the-id]
+and a directive after the comma between the directions of a block arrow, a space
+after the U+2028 and after the directive] [test: U+2028 and a directive after
+the comma between the directions of a block arrow, nothing around the directive]
+[test: U+2029 and a directive after the comma between the directions of a block
+arrow, a space after the U+2029 and after the directive] [test: U+2029 and a
+directive after the comma between the directions of a block arrow, nothing
+around the directive] [test: a space, U+2028, and a directive after the comma
+between the directions of a block arrow] [test: a directive, spaces, and U+2028
+after the comma between the directions of a block arrow] [test: U+2028 after the
+comma between the directions of a block arrow] [test: U+2029 after the comma
+between the directions of a block arrow] [test: U+2028 before the comma between
+the directions of a block arrow] [test: U+2029 before the comma between the
+directions of a block arrow] [fixture: shapes/block-arrow-touches-the-id]
 [fixture: shapes/block-arrow-parenthesis-touches-the-closing] [fixture:
 shapes/block-arrow-directions-as-written] [fixture:
 shapes/block-arrow-directions-whitespace-kept] [fixture:
@@ -730,16 +741,29 @@ arrow takes it as it is (see
 `style K fill:#ff0,color:red` is printed `style K fill: #ff0,color: red`, and
 `style K color :red` is printed `style K color : red`.
 
-[fixture: styles/style-label-styles-kept]
+[fixture: styles/style-label-styles-kept] [test: a color before a semicolon that
+the line rule ignores, a directive after it, in a style statement of one line]
+[test: a color before a semicolon that the line rule ignores, a directive after
+it, in a class definition of one line] [test: a color before a semicolon that
+the line rule ignores, a comment after it, in a style statement of one line]
+[test: a color before a semicolon that the line rule ignores, a directive after
+it, in a class definition that a line break joins] [test: a color before a
+semicolon that the line rule ignores, in a style statement that a comment line
+after U+2028 cuts] [test: a color before a semicolon after whitespace in a class
+definition that a line break joins] [test: a color that a space and a character
+follow in a class definition that a line break joins] [test: a color that a
+no-break space and a character follow in a class definition that a line break
+joins stays as written]
 
 A statement keeps its whitespace as written, and its colors are printed as under
 [Colors](#colors), where a comment or a directive stands inside it, before the
 end of its last style, where a style is all whitespace, or where a style holds a
-line break or its line holds a kept `;`, except that a color before a `;` that
-the line rule ignores stays as written, which the Colors rule prints in lower
-case: that form is printed against the rule and waits to be fixed by it. A
-comment or a directive after the last style is no part of the statement, which
-is formatted as usual (see
+line break or its line holds a kept `;`, except that, in a statement that holds
+a line break, a color that a `;` that the line rule ignores touches stays as
+written (see [Multi-line statements](#multi-line-statements)); a statement of
+one line prints it in lower case (`style a fill:#F00,  stroke:#ABC;  %%{x}%%` is
+printed `fill:#f00,  stroke:#abc; %%{x}%%`). A comment or a directive after the
+last style is no part of the statement, which is formatted as usual (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 The whitespace at the end of the statement is dropped, as in a flowchart (see
 [Style trailing whitespace](./flowchart.md#style-trailing-whitespace)).
@@ -989,10 +1013,13 @@ change which `;` the line rule ignores, and where a `;` ends the last line; any
 other line break is joined as usual, also in a statement that holds a `;`. A
 statement that keeps a line break keeps the whitespace of its styles as written,
 runs and tabs included. Its colors are in lower case where a comma follows them,
-and where characters follow them after whitespace (`fill:#F00 x;` prints
-`fill:#f00 x;`); a color before a `;` that the line rule ignores stays as
-written, which the [Colors](#colors) rule prints in lower case, so it is printed
-against the rule and waits to be fixed by it. See [Rows](#rows) and
+and where characters follow them after spaces or tabs (`fill:#F00 x;` prints
+`fill:#f00 x;`, while `fill:#F00`, a no-break space, and `x;` keeps `#F00`,
+since a no-break space is no whitespace there); a color that a `;` that the line
+rule ignores touches stays as written (`#ABC;`), which the [Colors](#colors)
+rule prints in lower case, so it is printed against the rule and waits to be
+fixed by it, while a color that whitespace separates from the `;` is in lower
+case (`#abc ;`). See [Rows](#rows) and
 [A line that a `;` ends](./compatibility.md#a-line-that-a--ends). The line rule
 of mermaid.js removes the last `;` of a line that holds `style` or `classDef`, a
 later `:`, a `#` after that with no whitespace between them, and a later `;`
@@ -1389,8 +1416,8 @@ against rule 2 and waits to be fixed by the rule. On such a line, a color before
 a comma on its line, also after whitespace, and the last color of the last line,
 where no `;` that the line rule ignores follows it, are in lower case; a color
 before a comma at the start of the line after the comment line stays as written
-(`#F00`, and `#abc` after it); and a color before a `;` that the line rule
-ignores stays as written (`#F00`, and `#ABC;` after it), which the
+(`#F00`, and `#abc` after it); and a color that a `;` that the line rule ignores
+touches stays as written (`#F00`, and `#ABC;` after it), which the
 [Colors](./compatibility.md#colors-that-are-drawn-the-same) rule prints in lower
 case, so that form is printed against the rule and waits to be fixed by it. In a
 block diagram, mermaid.js reads the U+2028 as the end of the line and `%% c` as

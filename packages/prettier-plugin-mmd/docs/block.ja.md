@@ -506,6 +506,8 @@ U+2028 と U+2029 はそのまま残します。
 [指令](#指令)と同じです。
 `(right,  %%{x}%%  down)` と `(right,%%{x}%%down)` は `(right, %%{x}%%down)`
 になります。
+隙間に U+2028 か U+2029 があるときは、ディレクティブがあっても書かれたままです。
+`(right,`、U+2028、` %%{x}%% down)` はそのままです。
 `,` の後のディレクティブの後に改行があるときは、その前の空白は書かれたままで、
 次の行は 1 段深く置きます。
 `(right,  %%{x}%%` と改行はそのままです。
@@ -529,6 +531,12 @@ U+2028 と U+2029 はそのまま残します。
 [fixture: shapes/block-arrow-directive-before-closing-parenthesis]
 [fixture: shapes/block-arrow-directive-after-comma]
 [fixture: shapes/block-arrow-directive-after-comma-at-the-end-of-the-line]
+[test: U+2028 and a directive after the comma between the directions of a block arrow, a space after the U+2028 and after the directive]
+[test: U+2028 and a directive after the comma between the directions of a block arrow, nothing around the directive]
+[test: U+2029 and a directive after the comma between the directions of a block arrow, a space after the U+2029 and after the directive]
+[test: U+2029 and a directive after the comma between the directions of a block arrow, nothing around the directive]
+[test: a space, U+2028, and a directive after the comma between the directions of a block arrow]
+[test: a directive, spaces, and U+2028 after the comma between the directions of a block arrow]
 [test: U+2028 after the comma between the directions of a block arrow]
 [test: U+2029 after the comma between the directions of a block arrow]
 [test: U+2028 before the comma between the directions of a block arrow]
@@ -784,13 +792,24 @@ block arrow がそれを書かれたまま使うからです。
 `style K color :red` は `style K color : red` と印字します。
 
 [fixture: styles/style-label-styles-kept]
+[test: a color before a semicolon that the line rule ignores, a directive after it, in a style statement of one line]
+[test: a color before a semicolon that the line rule ignores, a directive after it, in a class definition of one line]
+[test: a color before a semicolon that the line rule ignores, a comment after it, in a style statement of one line]
+[test: a color before a semicolon that the line rule ignores, a directive after it, in a class definition that a line break joins]
+[test: a color before a semicolon that the line rule ignores, in a style statement that a comment line after U+2028 cuts]
+[test: a color before a semicolon after whitespace in a class definition that a line break joins]
+[test: a color that a space and a character follow in a class definition that a line break joins]
+[test: a color that a no-break space and a character follow in a class definition that a line break joins stays as written]
 
 最後のスタイルの終わりより前にコメントやディレクティブがある文、
 空白だけのスタイルがある文、スタイルに改行があるか、行に保つ `;` がある文は、
 空白を書かれたままにし、色は[色](#色)と同じに印字します。
-ただし、行の規則が無視する `;` の前の色は書かれたまま残します。
-[色](#色)の規則はこれを小文字に印字するので、規則に反して印字しており、
-規則による修正を待っています。
+ただし、改行のある文では、
+行の規則が無視する `;`
+が接する色を書かれたまま残します（[複数行の文](#複数行の文)を参照）。
+1 行の文は、これを小文字に印字します。
+（`style a fill:#F00,  stroke:#ABC;  %%{x}%%` は
+`fill:#f00,  stroke:#abc; %%{x}%%` になります）。
 最後のスタイルの後ろのコメントやディレクティブは文の一部ではなく、
 文は普通に整形します。
 詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
@@ -1044,11 +1063,14 @@ U+2028 の前にコロンの後の空白が 3 つの `block:` がその例です
 それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
 改行が残る文は、スタイルの空白（連なりとタブも）を書かれたまま残します。
 色は、コンマが続くとき、
-空白の後に文字が続くとき（`fill:#F00 x;` は `fill:#f00 x;`
+空白かタブの後に文字が続くとき（`fill:#F00 x;` は `fill:#f00 x;`
 になります）に小文字にします。
-行の規則が無視する `;` の前の色は書かれたまま残しますが、
+ノーブレークスペースは、ここでは空白ではないので、`fill:#F00`、
+ノーブレークスペース、`x;` は `#F00` のままです。
+行の規則が無視する `;` が接する色は書かれたまま残しますが（`#ABC;`）、
 [色](#色)の規則はこれを小文字に印字するので、規則に反して印字しており、
 規則による修正を待っています。
+`;` から空白で離れている色は小文字にします（`#abc ;`）。
 [行](#行)と
 [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照してください。
 mermaid.js の行の規則は、`style` か `classDef`、その後の `:`、その後の、
@@ -1458,7 +1480,7 @@ flowchart、class、state、ER は、コメント行の後に何もないとき�
 行の規則が無視する `;` が続かない、最後の行の最後の色は、小文字にします。
 コメント行の後の行がコンマで始まるときの色は、書かれたまま残します（`#F00`、
 その後の `#abc` です）。
-行の規則が無視する `;` の前の色も書かれたまま残します（`#F00`、
+行の規則が無視する `;` が接する色も書かれたまま残します（`#F00`、
 その後の `#ABC;` です）。
 [色](./compatibility.ja.md#同じに描かれる色)の規則はこれを小文字に印字するので、
 その形は規則に反して印字しており、規則による修正を待っています。
