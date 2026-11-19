@@ -1555,6 +1555,14 @@ railroad-peg-beta
   r <- "bare comment";#
 ```
 
+A comment line that starts with `;` ends at a U+2028 or U+2029, and the text
+after the character is a line of its own. A directive and a comment on that line
+are printed as on a line after a line feed, with one space between them where
+the source has whitespace there.
+
+[test: railroad: a comment line of a semicolon, U+2028, a directive, two spaces,
+and a comment]
+
 ### Global directives
 
 Print every Root directive from its source span once at its owner position.

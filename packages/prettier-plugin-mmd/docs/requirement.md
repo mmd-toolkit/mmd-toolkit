@@ -2009,6 +2009,20 @@ statement after the comment] [test: U+2028 and a comment after a value in
 quotes, with a statement after the comment] [test: U+2028 and a comment after
 the class in quotes of a class statement, with a statement after the comment]
 
+A comment line that starts with `#` or `%` ends at a U+2028 or U+2029, and the
+text after the character is a line of its own. A directive and a comment on that
+line are printed as on a line after a line feed: with one space between them
+where the source has whitespace there, and none where it has none.
+
+[test: requirement: a hash comment line, U+2028, a directive, two spaces, and a
+comment] [test: requirement: a hash comment line, U+2028, a directive, one
+space, and a comment] [test: requirement: a hash comment line, U+2028, a
+directive, a tab, and a comment] [test: requirement: a hash comment line,
+U+2028, a directive touching a comment] [test: requirement: a hash comment line,
+U+2029, a directive, two spaces, and a comment] [test: requirement: a percent
+comment line, U+2028, a directive, two spaces, and a comment] [test:
+requirement: a hash comment line, U+2028, two directives, and a comment]
+
 ### Whitespace characters
 
 U+00A0 and U+FEFF are whitespace to the lexer between units, and characters of a

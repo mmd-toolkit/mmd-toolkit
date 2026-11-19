@@ -1285,6 +1285,14 @@ usecase-beta
   A
 ```
 
+`accTitle:` の行の文字列の後ろにある U+2028 か U+2029 の後ろの文字列は、
+独立した行になります。
+その行のディレクティブとコメントは、改行の後の行と同じに印字し、
+ディレクティブとコメントの間は、書かれた形に空白があれば空白 1 つにします。
+
+[test: usecase: an accTitle line, U+2028, a directive, two spaces, and a comment]
+[test: usecase: an accTitle line, U+2028 right after the text, a directive, two spaces, and a comment]
+
 ### Directives
 
 共有の[ディレクティブ](./class.ja.md#ディレクティブ)を再利用します。

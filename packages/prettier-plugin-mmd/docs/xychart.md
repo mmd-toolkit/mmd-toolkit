@@ -1189,6 +1189,14 @@ text] [test: U+2028 after the colon of accTitle] [test: U+2028 after a
 description block] [test: U+2028 at the end of a statement] [test: U+2028 at the
 end of the text]
 
+A line of only a `;` ends at a U+2028 or U+2029, and the text after the
+character is a line of its own. A directive and a comment on that line are
+printed as on a line after a line feed, with one space between them where the
+source has whitespace there. The `;` is dropped, as on a line of its own.
+
+[test: xychart: a line of a semicolon, U+2028, a directive, two spaces, and a
+comment]
+
 ### Whitespace characters
 
 A tab, a form feed, U+00A0, U+3000, and U+FEFF are whitespace to the lexer

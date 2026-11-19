@@ -1649,6 +1649,16 @@ fixture: sequence/ignored-semicolon-then-separator-line-15c6520f] [fixture:
 statements-one-per-line/unclosed-directive-semicolon-kept] [fixture:
 statements-one-per-line/ignored-semicolon-next-to-semicolon-kept]
 
+A comment line that starts with `%`, and a line of only a `;`, end at a U+2028
+or U+2029, and the text after the character is a line of its own. A directive
+and a comment on that line are printed as on a line after a line feed, with one
+space between them where the source has whitespace there. The `;` is dropped, as
+on a line of its own.
+
+[test: sequence: a percent comment line, U+2028, a directive, two spaces, and a
+comment] [test: sequence: a line of a semicolon, U+2028, a directive, two
+spaces, and a comment]
+
 ### Directives
 
 As in a flowchart: a directive on a line of its own stands at the level of the

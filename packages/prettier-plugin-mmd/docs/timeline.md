@@ -1679,6 +1679,15 @@ starts on the line of the header, and before a period (see
 description block that starts on the line of the timeline header, before a
 period]
 
+A comment line that starts with `#` or `%` ends at a U+2028 or U+2029, and the
+text after the character is a line of its own. A directive and a comment on that
+line are printed as on a line after a line feed: with one space between them
+where the source has whitespace there, and none where it has none.
+
+[test: timeline: a hash comment line, U+2028, a directive, two spaces, and a
+comment] [test: timeline: a percent comment line, U+2028, a directive, two
+spaces, and a comment]
+
 ### Whitespace characters
 
 U+00A0, U+3000, and U+FEFF are whitespace to the lexer. Where a rule reads one

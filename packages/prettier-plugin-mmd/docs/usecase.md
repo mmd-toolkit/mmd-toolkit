@@ -1205,6 +1205,15 @@ usecase-beta
   A
 ```
 
+The text after a U+2028 or U+2029 that follows the text of an `accTitle:` line
+is a line of its own. A directive and a comment on that line are printed as on a
+line after a line feed, with one space between them where the source has
+whitespace there.
+
+[test: usecase: an accTitle line, U+2028, a directive, two spaces, and a
+comment] [test: usecase: an accTitle line, U+2028 right after the text, a
+directive, two spaces, and a comment]
+
 ### Directives
 
 Reuse [shared directive attachment](./class.md#directives): removal supplies no

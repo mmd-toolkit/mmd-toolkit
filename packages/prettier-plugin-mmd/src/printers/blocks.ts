@@ -631,9 +631,14 @@ export function printBlock<Statement extends Positioned>(
       pushLine({
         // A verbatim trivia line keeps spacing between its comments and
         // directives too; the block still supplies its ordinary indentation.
-        doc: kept.verbatim.has(lineStartOf(source, line.run.range[0]))
-          ? printAsWritten(source, line.run.range[0], line.run.range[1])
-          : line.run.doc,
+        // Text after a U+2028 or U+2029 of the line is a line of its own, not
+        // part of the verbatim line (docs/compatibility.md, Line separators in
+        // a verbatim line).
+        doc:
+          kept.verbatim.has(lineStartOf(source, line.run.range[0])) &&
+          findContentStart(source, line.run.range[0]) === line.run.range[0]
+            ? printAsWritten(source, line.run.range[0], line.run.range[1])
+            : line.run.doc,
         ...(triviaBreakBefore(line.run.range[0]) === undefined
           ? {}
           : { writtenBreakBefore: triviaBreakBefore(line.run.range[0]) }),

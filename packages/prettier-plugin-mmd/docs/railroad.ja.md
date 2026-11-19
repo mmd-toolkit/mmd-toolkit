@@ -1617,6 +1617,13 @@ railroad-peg-beta
   r <- "bare comment";#
 ```
 
+`;` で始まるコメント行は U+2028 か U+2029 で終わり、
+その文字の後ろの文字列は独立した行になります。
+その行のディレクティブとコメントは、改行の後の行と同じに印字し、
+ディレクティブとコメントの間は、書かれた形に空白があれば空白 1 つにします。
+
+[test: railroad: a comment line of a semicolon, U+2028, a directive, two spaces, and a comment]
+
 ### 共有 directive
 
 `Root` ディレクティブを原文範囲から元の所有位置に1回印字します。
