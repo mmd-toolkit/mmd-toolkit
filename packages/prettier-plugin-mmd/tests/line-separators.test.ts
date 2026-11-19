@@ -9334,6 +9334,1596 @@ const radarDirectiveEndExamples: readonly (readonly [
     "title TA\u2028B  %%{x}%%%%{y}%%",
     "title TA\u2028B %%{x}%%%%{y}%%",
   ],
+  [
+    "U+000B before a directive that a comment touches in an accTitle line of a radar chart",
+    "accTitle: T\u000b%%{x}%%%% c",
+    "accTitle: T %%{x}%%%% c",
+  ],
+  [
+    "U+000C before a directive that a comment touches in an accTitle line of a radar chart",
+    "accTitle: T\f%%{x}%%%% c",
+    "accTitle: T %%{x}%%%% c",
+  ],
+  [
+    "a no-break space before a directive that a comment touches in an accTitle line of a radar chart",
+    "accTitle: T\u00a0%%{x}%%%% c",
+    "accTitle: T %%{x}%%%% c",
+  ],
+  [
+    "U+1680 before a directive that a comment touches in an accTitle line of a radar chart",
+    "accTitle: T\u1680%%{x}%%%% c",
+    "accTitle: T %%{x}%%%% c",
+  ],
+  [
+    "U+2000 before a directive that a comment touches in an accTitle line of a radar chart",
+    "accTitle: T\u2000%%{x}%%%% c",
+    "accTitle: T %%{x}%%%% c",
+  ],
+  [
+    "U+2001 before a directive that a comment touches in an accTitle line of a radar chart",
+    "accTitle: T\u2001%%{x}%%%% c",
+    "accTitle: T %%{x}%%%% c",
+  ],
+  [
+    "U+2002 before a directive that a comment touches in an accTitle line of a radar chart",
+    "accTitle: T\u2002%%{x}%%%% c",
+    "accTitle: T %%{x}%%%% c",
+  ],
+  [
+    "U+2003 before a directive that a comment touches in an accTitle line of a radar chart",
+    "accTitle: T\u2003%%{x}%%%% c",
+    "accTitle: T %%{x}%%%% c",
+  ],
+  [
+    "U+2004 before a directive that a comment touches in an accTitle line of a radar chart",
+    "accTitle: T\u2004%%{x}%%%% c",
+    "accTitle: T %%{x}%%%% c",
+  ],
+  [
+    "U+2005 before a directive that a comment touches in an accTitle line of a radar chart",
+    "accTitle: T\u2005%%{x}%%%% c",
+    "accTitle: T %%{x}%%%% c",
+  ],
+  [
+    "U+2006 before a directive that a comment touches in an accTitle line of a radar chart",
+    "accTitle: T\u2006%%{x}%%%% c",
+    "accTitle: T %%{x}%%%% c",
+  ],
+  [
+    "U+2007 before a directive that a comment touches in an accTitle line of a radar chart",
+    "accTitle: T\u2007%%{x}%%%% c",
+    "accTitle: T %%{x}%%%% c",
+  ],
+  [
+    "U+2008 before a directive that a comment touches in an accTitle line of a radar chart",
+    "accTitle: T\u2008%%{x}%%%% c",
+    "accTitle: T %%{x}%%%% c",
+  ],
+  [
+    "U+2009 before a directive that a comment touches in an accTitle line of a radar chart",
+    "accTitle: T\u2009%%{x}%%%% c",
+    "accTitle: T %%{x}%%%% c",
+  ],
+  [
+    "U+200A before a directive that a comment touches in an accTitle line of a radar chart",
+    "accTitle: T\u200a%%{x}%%%% c",
+    "accTitle: T %%{x}%%%% c",
+  ],
+  [
+    "U+202F before a directive that a comment touches in an accTitle line of a radar chart",
+    "accTitle: T\u202f%%{x}%%%% c",
+    "accTitle: T %%{x}%%%% c",
+  ],
+  [
+    "U+205F before a directive that a comment touches in an accTitle line of a radar chart",
+    "accTitle: T\u205f%%{x}%%%% c",
+    "accTitle: T %%{x}%%%% c",
+  ],
+  [
+    "U+3000 before a directive that a comment touches in an accTitle line of a radar chart",
+    "accTitle: T\u3000%%{x}%%%% c",
+    "accTitle: T %%{x}%%%% c",
+  ],
+  [
+    "U+FEFF before a directive that a comment touches in an accTitle line of a radar chart",
+    "accTitle: T\ufeff%%{x}%%%% c",
+    "accTitle: T %%{x}%%%% c",
+  ],
+  [
+    "a no-break space and spaces before a directive that a comment touches in an accTitle line of a radar chart",
+    "accTitle: T\u00a0  %%{x}%%%% c",
+    "accTitle: T %%{x}%%%% c",
+  ],
+  [
+    "a no-break space and a tab before the directive that ends an accTitle line of a radar chart",
+    "accTitle: T\u00a0\t%%{x}%%",
+    "accTitle: T %%{x}%%",
+  ],
+  [
+    "U+000B and spaces before the first of two directives that spaces separate, in a title of a radar chart",
+    "title T\u000b  %%{x}%%  %%{y}%%",
+    "title T\u000b %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+000B and spaces before the first of two directives that spaces separate, in an accTitle line of a radar chart",
+    "accTitle: T\u000b  %%{x}%%  %%{y}%%",
+    "accTitle: T\u000b %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+000C and spaces before the first of two directives that spaces separate, in a title of a radar chart",
+    "title T\f  %%{x}%%  %%{y}%%",
+    "title T\f %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+000C and spaces before the first of two directives that spaces separate, in an accTitle line of a radar chart",
+    "accTitle: T\f  %%{x}%%  %%{y}%%",
+    "accTitle: T\f %%{x}%% %%{y}%%",
+  ],
+  [
+    "a no-break space and spaces before the first of two directives that spaces separate, in a title of a radar chart",
+    "title T\u00a0  %%{x}%%  %%{y}%%",
+    "title T\u00a0 %%{x}%% %%{y}%%",
+  ],
+  [
+    "a no-break space and spaces before the first of two directives that spaces separate, in an accTitle line of a radar chart",
+    "accTitle: T\u00a0  %%{x}%%  %%{y}%%",
+    "accTitle: T\u00a0 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+1680 and spaces before the first of two directives that spaces separate, in a title of a radar chart",
+    "title T\u1680  %%{x}%%  %%{y}%%",
+    "title T\u1680 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+1680 and spaces before the first of two directives that spaces separate, in an accTitle line of a radar chart",
+    "accTitle: T\u1680  %%{x}%%  %%{y}%%",
+    "accTitle: T\u1680 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2000 and spaces before the first of two directives that spaces separate, in a title of a radar chart",
+    "title T\u2000  %%{x}%%  %%{y}%%",
+    "title T\u2000 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2000 and spaces before the first of two directives that spaces separate, in an accTitle line of a radar chart",
+    "accTitle: T\u2000  %%{x}%%  %%{y}%%",
+    "accTitle: T\u2000 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2001 and spaces before the first of two directives that spaces separate, in a title of a radar chart",
+    "title T\u2001  %%{x}%%  %%{y}%%",
+    "title T\u2001 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2001 and spaces before the first of two directives that spaces separate, in an accTitle line of a radar chart",
+    "accTitle: T\u2001  %%{x}%%  %%{y}%%",
+    "accTitle: T\u2001 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2002 and spaces before the first of two directives that spaces separate, in a title of a radar chart",
+    "title T\u2002  %%{x}%%  %%{y}%%",
+    "title T\u2002 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2002 and spaces before the first of two directives that spaces separate, in an accTitle line of a radar chart",
+    "accTitle: T\u2002  %%{x}%%  %%{y}%%",
+    "accTitle: T\u2002 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2003 and spaces before the first of two directives that spaces separate, in a title of a radar chart",
+    "title T\u2003  %%{x}%%  %%{y}%%",
+    "title T\u2003 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2003 and spaces before the first of two directives that spaces separate, in an accTitle line of a radar chart",
+    "accTitle: T\u2003  %%{x}%%  %%{y}%%",
+    "accTitle: T\u2003 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2004 and spaces before the first of two directives that spaces separate, in a title of a radar chart",
+    "title T\u2004  %%{x}%%  %%{y}%%",
+    "title T\u2004 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2004 and spaces before the first of two directives that spaces separate, in an accTitle line of a radar chart",
+    "accTitle: T\u2004  %%{x}%%  %%{y}%%",
+    "accTitle: T\u2004 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2005 and spaces before the first of two directives that spaces separate, in a title of a radar chart",
+    "title T\u2005  %%{x}%%  %%{y}%%",
+    "title T\u2005 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2005 and spaces before the first of two directives that spaces separate, in an accTitle line of a radar chart",
+    "accTitle: T\u2005  %%{x}%%  %%{y}%%",
+    "accTitle: T\u2005 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2006 and spaces before the first of two directives that spaces separate, in a title of a radar chart",
+    "title T\u2006  %%{x}%%  %%{y}%%",
+    "title T\u2006 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2006 and spaces before the first of two directives that spaces separate, in an accTitle line of a radar chart",
+    "accTitle: T\u2006  %%{x}%%  %%{y}%%",
+    "accTitle: T\u2006 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2007 and spaces before the first of two directives that spaces separate, in a title of a radar chart",
+    "title T\u2007  %%{x}%%  %%{y}%%",
+    "title T\u2007 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2007 and spaces before the first of two directives that spaces separate, in an accTitle line of a radar chart",
+    "accTitle: T\u2007  %%{x}%%  %%{y}%%",
+    "accTitle: T\u2007 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2008 and spaces before the first of two directives that spaces separate, in a title of a radar chart",
+    "title T\u2008  %%{x}%%  %%{y}%%",
+    "title T\u2008 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2008 and spaces before the first of two directives that spaces separate, in an accTitle line of a radar chart",
+    "accTitle: T\u2008  %%{x}%%  %%{y}%%",
+    "accTitle: T\u2008 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2009 and spaces before the first of two directives that spaces separate, in a title of a radar chart",
+    "title T\u2009  %%{x}%%  %%{y}%%",
+    "title T\u2009 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2009 and spaces before the first of two directives that spaces separate, in an accTitle line of a radar chart",
+    "accTitle: T\u2009  %%{x}%%  %%{y}%%",
+    "accTitle: T\u2009 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+200A and spaces before the first of two directives that spaces separate, in a title of a radar chart",
+    "title T\u200a  %%{x}%%  %%{y}%%",
+    "title T\u200a %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+200A and spaces before the first of two directives that spaces separate, in an accTitle line of a radar chart",
+    "accTitle: T\u200a  %%{x}%%  %%{y}%%",
+    "accTitle: T\u200a %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+202F and spaces before the first of two directives that spaces separate, in a title of a radar chart",
+    "title T\u202f  %%{x}%%  %%{y}%%",
+    "title T\u202f %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+202F and spaces before the first of two directives that spaces separate, in an accTitle line of a radar chart",
+    "accTitle: T\u202f  %%{x}%%  %%{y}%%",
+    "accTitle: T\u202f %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+205F and spaces before the first of two directives that spaces separate, in a title of a radar chart",
+    "title T\u205f  %%{x}%%  %%{y}%%",
+    "title T\u205f %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+205F and spaces before the first of two directives that spaces separate, in an accTitle line of a radar chart",
+    "accTitle: T\u205f  %%{x}%%  %%{y}%%",
+    "accTitle: T\u205f %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+3000 and spaces before the first of two directives that spaces separate, in a title of a radar chart",
+    "title T\u3000  %%{x}%%  %%{y}%%",
+    "title T\u3000 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+3000 and spaces before the first of two directives that spaces separate, in an accTitle line of a radar chart",
+    "accTitle: T\u3000  %%{x}%%  %%{y}%%",
+    "accTitle: T\u3000 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+FEFF and spaces before the first of two directives that spaces separate, in a title of a radar chart",
+    "title T\ufeff  %%{x}%%  %%{y}%%",
+    "title T\ufeff %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+FEFF and spaces before the first of two directives that spaces separate, in an accTitle line of a radar chart",
+    "accTitle: T\ufeff  %%{x}%%  %%{y}%%",
+    "accTitle: T\ufeff %%{x}%% %%{y}%%",
+  ],
+  [
+    "a no-break space and a tab before the first of two directives that a space separates, in a title of a radar chart",
+    "title T\u00a0\t%%{x}%% %%{y}%%",
+    "title T\u00a0 %%{x}%% %%{y}%%",
+  ],
+  [
+    "a no-break space and a tab before the first of two directives that a space separates, in an accTitle line of a radar chart",
+    "accTitle: T\u00a0\t%%{x}%% %%{y}%%",
+    "accTitle: T\u00a0 %%{x}%% %%{y}%%",
+  ],
+  [
+    "a no-break space before the first of two directives that a tab separates, in a title of a radar chart",
+    "title T\u00a0%%{x}%%\t%%{y}%%",
+    "title T\u00a0%%{x}%% %%{y}%%",
+  ],
+  [
+    "a no-break space before the first of two directives that a tab separates, in an accTitle line of a radar chart",
+    "accTitle: T\u00a0%%{x}%%\t%%{y}%%",
+    "accTitle: T\u00a0%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2003 and a tab before the first of two directives that a space separates, in a title of a radar chart",
+    "title T\u2003\t%%{x}%% %%{y}%%",
+    "title T\u2003 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2003 and a tab before the first of two directives that a space separates, in an accTitle line of a radar chart",
+    "accTitle: T\u2003\t%%{x}%% %%{y}%%",
+    "accTitle: T\u2003 %%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2003 before the first of two directives that a tab separates, in a title of a radar chart",
+    "title T\u2003%%{x}%%\t%%{y}%%",
+    "title T\u2003%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2003 before the first of two directives that a tab separates, in an accTitle line of a radar chart",
+    "accTitle: T\u2003%%{x}%%\t%%{y}%%",
+    "accTitle: T\u2003%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2028 before the first of two directives that a tab separates, in a title of a radar chart",
+    "title T\u2028%%{x}%%\t%%{y}%%",
+    "title T\u2028%%{x}%%\t%%{y}%%",
+  ],
+  [
+    "U+2028 before the first of two directives that a tab separates, in an accTitle line of a radar chart",
+    "accTitle: T\u2028%%{x}%%\t%%{y}%%",
+    "accTitle: T\u2028%%{x}%%\t%%{y}%%",
+  ],
+  [
+    "U+2029 before the first of two directives that a tab separates, in a title of a radar chart",
+    "title T\u2029%%{x}%%\t%%{y}%%",
+    "title T\u2029%%{x}%%\t%%{y}%%",
+  ],
+  [
+    "U+2029 before the first of two directives that a tab separates, in an accTitle line of a radar chart",
+    "accTitle: T\u2029%%{x}%%\t%%{y}%%",
+    "accTitle: T\u2029%%{x}%%\t%%{y}%%",
+  ],
+  [
+    "a U+2028 inside the directive that ends a title, spaces before it, of a radar chart",
+    "title T  %%{x\u2028y}%%",
+    "title T %%{x\u2028y}%%",
+  ],
+  [
+    "a U+2028 inside the directive that ends a title, spaces after it, of a radar chart",
+    "title T  %%{x\u2028y}%%  ",
+    "title T  %%{x\u2028y}%%  ",
+  ],
+  [
+    "a U+2029 inside the directive that ends a title, spaces before it, of a radar chart",
+    "title T  %%{x\u2029y}%%",
+    "title T %%{x\u2029y}%%",
+  ],
+  [
+    "a U+2029 inside the directive that ends a title, spaces after it, of a radar chart",
+    "title T  %%{x\u2029y}%%  ",
+    "title T  %%{x\u2029y}%%  ",
+  ],
+  [
+    "a line break inside the directive that ends a title, spaces before it, of a radar chart",
+    "title T  %%{x\ny}%%",
+    "title T %%{x\ny}%%",
+  ],
+  [
+    "a line break inside the directive that ends a title, spaces after it, of a radar chart",
+    "title T  %%{x\ny}%%  ",
+    "title T  %%{x\ny}%%  ",
+  ],
+  [
+    "a U+2028 inside the directive that ends an accTitle line, spaces before it, of a radar chart",
+    "accTitle: T  %%{x\u2028y}%%",
+    "accTitle: T %%{x\u2028y}%%",
+  ],
+  [
+    "a U+2028 inside the directive that ends an accTitle line, spaces after it, of a radar chart",
+    "accTitle: T  %%{x\u2028y}%%  ",
+    "accTitle: T  %%{x\u2028y}%%  ",
+  ],
+  [
+    "a U+2029 inside the directive that ends an accTitle line, spaces before it, of a radar chart",
+    "accTitle: T  %%{x\u2029y}%%",
+    "accTitle: T %%{x\u2029y}%%",
+  ],
+  [
+    "a U+2029 inside the directive that ends an accTitle line, spaces after it, of a radar chart",
+    "accTitle: T  %%{x\u2029y}%%  ",
+    "accTitle: T  %%{x\u2029y}%%  ",
+  ],
+  [
+    "a line break inside the directive that ends an accTitle line, spaces before it, of a radar chart",
+    "accTitle: T  %%{x\ny}%%",
+    "accTitle: T %%{x\ny}%%",
+  ],
+  [
+    "a line break inside the directive that ends an accTitle line, spaces after it, of a radar chart",
+    "accTitle: T  %%{x\ny}%%  ",
+    "accTitle: T  %%{x\ny}%%  ",
+  ],
+  [
+    "a U+2028 inside the directive that ends an accDescr line, spaces before it, of a radar chart",
+    "accDescr: T  %%{x\u2028y}%%",
+    "accDescr: T %%{x\u2028y}%%",
+  ],
+  [
+    "a U+2028 inside the directive that ends an accDescr line, spaces after it, of a radar chart",
+    "accDescr: T  %%{x\u2028y}%%  ",
+    "accDescr: T  %%{x\u2028y}%%  ",
+  ],
+  [
+    "a U+2029 inside the directive that ends an accDescr line, spaces before it, of a radar chart",
+    "accDescr: T  %%{x\u2029y}%%",
+    "accDescr: T %%{x\u2029y}%%",
+  ],
+  [
+    "a U+2029 inside the directive that ends an accDescr line, spaces after it, of a radar chart",
+    "accDescr: T  %%{x\u2029y}%%  ",
+    "accDescr: T  %%{x\u2029y}%%  ",
+  ],
+  [
+    "a line break inside the directive that ends an accDescr line, spaces before it, of a radar chart",
+    "accDescr: T  %%{x\ny}%%",
+    "accDescr: T %%{x\ny}%%",
+  ],
+  [
+    "a line break inside the directive that ends an accDescr line, spaces after it, of a radar chart",
+    "accDescr: T  %%{x\ny}%%  ",
+    "accDescr: T  %%{x\ny}%%  ",
+  ],
+  [
+    "a U+2028 inside the first of two directives that spaces separate, in a title of a radar chart",
+    "title T  %%{x\u2028y}%%  %%{y}%%",
+    "title T  %%{x\u2028y}%%  %%{y}%%",
+  ],
+  [
+    "a U+2028 inside the last of two directives, spaces before both, in a title of a radar chart",
+    "title T  %%{x}%%  %%{y\u2028z}%%",
+    "title T %%{x}%% %%{y\u2028z}%%",
+  ],
+  [
+    "a U+2028 inside the first of two directives that touch, spaces before them, in a title of a radar chart",
+    "title T  %%{x\u2028y}%%%%{y}%%",
+    "title T %%{x\u2028y}%%%%{y}%%",
+  ],
+  [
+    "a U+2028 inside the directive that ends a title, a no-break space before it, of a radar chart",
+    "title T\u00a0%%{x\u2028y}%%",
+    "title T %%{x\u2028y}%%",
+  ],
+  [
+    "a U+2028 inside a directive that a comment touches in a title, spaces before it, of a radar chart",
+    "title T  %%{x\u2028y}%%%% c",
+    "title T %%{x\u2028y}%%%% c",
+  ],
+  [
+    "a U+2028 inside a directive that spaces and a comment follow in a title, of a radar chart",
+    "title T  %%{x\u2028y}%%  %% c",
+    "title T  %%{x\u2028y}%%  %% c",
+  ],
+  [
+    "a line break inside the first of two directives that spaces separate, in a title of a radar chart",
+    "title T  %%{x\ny}%%  %%{y}%%",
+    "title T  %%{x\ny}%%  %%{y}%%",
+  ],
+  [
+    "a line break inside the last of two directives, spaces before both, in a title of a radar chart",
+    "title T  %%{x}%%  %%{y\nz}%%",
+    "title T %%{x}%% %%{y\nz}%%",
+  ],
+  [
+    "a line break inside the first of two directives that touch, spaces before them, in a title of a radar chart",
+    "title T  %%{x\ny}%%%%{y}%%",
+    "title T %%{x\ny}%%%%{y}%%",
+  ],
+  [
+    "a line break inside the directive that ends a title, a no-break space before it, of a radar chart",
+    "title T\u00a0%%{x\ny}%%",
+    "title T %%{x\ny}%%",
+  ],
+  [
+    "a line break inside a directive that a comment touches in a title, spaces before it, of a radar chart",
+    "title T  %%{x\ny}%%%% c",
+    "title T %%{x\ny}%%%% c",
+  ],
+  [
+    "a line break inside a directive that spaces and a comment follow in a title, of a radar chart",
+    "title T  %%{x\ny}%%  %% c",
+    "title T  %%{x\ny}%%  %% c",
+  ],
+  [
+    "U+000B between the colon and the directive of an accTitle line of directives only of a radar chart",
+    "accTitle:\u000b%%{x}%%",
+    "accTitle: %%{x}%%",
+  ],
+  [
+    "U+000C between the colon and the directive of an accTitle line of directives only of a radar chart",
+    "accTitle:\f%%{x}%%",
+    "accTitle: %%{x}%%",
+  ],
+  [
+    "a no-break space between the colon and the directive of an accTitle line of directives only of a radar chart",
+    "accTitle:\u00a0%%{x}%%",
+    "accTitle: %%{x}%%",
+  ],
+  [
+    "U+1680 between the colon and the directive of an accTitle line of directives only of a radar chart",
+    "accTitle:\u1680%%{x}%%",
+    "accTitle: %%{x}%%",
+  ],
+  [
+    "U+2000 between the colon and the directive of an accTitle line of directives only of a radar chart",
+    "accTitle:\u2000%%{x}%%",
+    "accTitle: %%{x}%%",
+  ],
+  [
+    "U+2001 between the colon and the directive of an accTitle line of directives only of a radar chart",
+    "accTitle:\u2001%%{x}%%",
+    "accTitle: %%{x}%%",
+  ],
+  [
+    "U+2002 between the colon and the directive of an accTitle line of directives only of a radar chart",
+    "accTitle:\u2002%%{x}%%",
+    "accTitle: %%{x}%%",
+  ],
+  [
+    "U+2003 between the colon and the directive of an accTitle line of directives only of a radar chart",
+    "accTitle:\u2003%%{x}%%",
+    "accTitle: %%{x}%%",
+  ],
+  [
+    "U+2004 between the colon and the directive of an accTitle line of directives only of a radar chart",
+    "accTitle:\u2004%%{x}%%",
+    "accTitle: %%{x}%%",
+  ],
+  [
+    "U+2005 between the colon and the directive of an accTitle line of directives only of a radar chart",
+    "accTitle:\u2005%%{x}%%",
+    "accTitle: %%{x}%%",
+  ],
+  [
+    "U+2006 between the colon and the directive of an accTitle line of directives only of a radar chart",
+    "accTitle:\u2006%%{x}%%",
+    "accTitle: %%{x}%%",
+  ],
+  [
+    "U+2007 between the colon and the directive of an accTitle line of directives only of a radar chart",
+    "accTitle:\u2007%%{x}%%",
+    "accTitle: %%{x}%%",
+  ],
+  [
+    "U+2008 between the colon and the directive of an accTitle line of directives only of a radar chart",
+    "accTitle:\u2008%%{x}%%",
+    "accTitle: %%{x}%%",
+  ],
+  [
+    "U+2009 between the colon and the directive of an accTitle line of directives only of a radar chart",
+    "accTitle:\u2009%%{x}%%",
+    "accTitle: %%{x}%%",
+  ],
+  [
+    "U+200A between the colon and the directive of an accTitle line of directives only of a radar chart",
+    "accTitle:\u200a%%{x}%%",
+    "accTitle: %%{x}%%",
+  ],
+  [
+    "U+202F between the colon and the directive of an accTitle line of directives only of a radar chart",
+    "accTitle:\u202f%%{x}%%",
+    "accTitle: %%{x}%%",
+  ],
+  [
+    "U+205F between the colon and the directive of an accTitle line of directives only of a radar chart",
+    "accTitle:\u205f%%{x}%%",
+    "accTitle: %%{x}%%",
+  ],
+  [
+    "U+3000 between the colon and the directive of an accTitle line of directives only of a radar chart",
+    "accTitle:\u3000%%{x}%%",
+    "accTitle: %%{x}%%",
+  ],
+  [
+    "U+FEFF between the colon and the directive of an accTitle line of directives only of a radar chart",
+    "accTitle:\ufeff%%{x}%%",
+    "accTitle: %%{x}%%",
+  ],
+  [
+    "a tab between the keyword and the directive of a title of directives only of a radar chart",
+    "title \t%%{x}%%",
+    "title %%{x}%%",
+  ],
+  [
+    "spaces between the keyword and the directive of a title of directives only of a radar chart",
+    "title   %%{x}%%",
+    "title %%{x}%%",
+  ],
+  [
+    "spaces after the directive of a title of directives only of a radar chart",
+    "title %%{x}%%  ",
+    "title %%{x}%%  ",
+  ],
+  [
+    "spaces on both sides of the directive of a title of directives only of a radar chart",
+    "title  %%{x}%%  ",
+    "title  %%{x}%%  ",
+  ],
+  [
+    "two directives that spaces separate, a title of directives only of a radar chart",
+    "title  %%{x}%%  %%{y}%%",
+    "title  %%{x}%%  %%{y}%%",
+  ],
+  [
+    "two directives that touch, spaces before them, a title of directives only of a radar chart",
+    "title  %%{x}%%%%{y}%%",
+    "title %%{x}%%%%{y}%%",
+  ],
+  [
+    "a comment that touches the directive of a title of directives only of a radar chart",
+    "title %%{x}%%%% c",
+    "title %%{x}%%%% c",
+  ],
+  [
+    "a space and a comment after the directive of a title of directives only of a radar chart",
+    "title %%{x}%% %% c",
+    "title %%{x}%% %% c",
+  ],
+  [
+    "a directive that touches the keyword of a title of directives only of a radar chart",
+    "title%%{x}%%",
+    "title%%{x}%%",
+  ],
+  [
+    "the gap before the colon of an accDescr line of directives only of a radar chart",
+    "accDescr :%%{x}%%",
+    "accDescr:%%{x}%%",
+  ],
+  [
+    "spaces after the directive of an accDescr line of directives only of a radar chart",
+    "accDescr: %%{x}%%  ",
+    "accDescr: %%{x}%%  ",
+  ],
+  [
+    "U+000B between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accDescr line of a radar chart",
+    "accDescr: style:#red;\u000b;  %%{x}%%",
+    "accDescr: style:#red;\u000b;  %%{x}%%",
+  ],
+  [
+    "U+000C between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accDescr line of a radar chart",
+    "accDescr: style:#red;\f;  %%{x}%%",
+    "accDescr: style:#red;\f;  %%{x}%%",
+  ],
+  [
+    "a no-break space between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accDescr line of a radar chart",
+    "accDescr: style:#red;\u00a0;  %%{x}%%",
+    "accDescr: style:#red;\u00a0;  %%{x}%%",
+  ],
+  [
+    "U+1680 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accDescr line of a radar chart",
+    "accDescr: style:#red;\u1680;  %%{x}%%",
+    "accDescr: style:#red;\u1680;  %%{x}%%",
+  ],
+  [
+    "U+2000 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accDescr line of a radar chart",
+    "accDescr: style:#red;\u2000;  %%{x}%%",
+    "accDescr: style:#red;\u2000;  %%{x}%%",
+  ],
+  [
+    "U+2001 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accDescr line of a radar chart",
+    "accDescr: style:#red;\u2001;  %%{x}%%",
+    "accDescr: style:#red;\u2001;  %%{x}%%",
+  ],
+  [
+    "U+2002 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accDescr line of a radar chart",
+    "accDescr: style:#red;\u2002;  %%{x}%%",
+    "accDescr: style:#red;\u2002;  %%{x}%%",
+  ],
+  [
+    "U+2003 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accDescr line of a radar chart",
+    "accDescr: style:#red;\u2003;  %%{x}%%",
+    "accDescr: style:#red;\u2003;  %%{x}%%",
+  ],
+  [
+    "U+2004 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accDescr line of a radar chart",
+    "accDescr: style:#red;\u2004;  %%{x}%%",
+    "accDescr: style:#red;\u2004;  %%{x}%%",
+  ],
+  [
+    "U+2005 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accDescr line of a radar chart",
+    "accDescr: style:#red;\u2005;  %%{x}%%",
+    "accDescr: style:#red;\u2005;  %%{x}%%",
+  ],
+  [
+    "U+2006 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accDescr line of a radar chart",
+    "accDescr: style:#red;\u2006;  %%{x}%%",
+    "accDescr: style:#red;\u2006;  %%{x}%%",
+  ],
+  [
+    "U+2007 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accDescr line of a radar chart",
+    "accDescr: style:#red;\u2007;  %%{x}%%",
+    "accDescr: style:#red;\u2007;  %%{x}%%",
+  ],
+  [
+    "U+2008 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accDescr line of a radar chart",
+    "accDescr: style:#red;\u2008;  %%{x}%%",
+    "accDescr: style:#red;\u2008;  %%{x}%%",
+  ],
+  [
+    "U+2009 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accDescr line of a radar chart",
+    "accDescr: style:#red;\u2009;  %%{x}%%",
+    "accDescr: style:#red;\u2009;  %%{x}%%",
+  ],
+  [
+    "U+200A between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accDescr line of a radar chart",
+    "accDescr: style:#red;\u200a;  %%{x}%%",
+    "accDescr: style:#red;\u200a;  %%{x}%%",
+  ],
+  [
+    "U+202F between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accDescr line of a radar chart",
+    "accDescr: style:#red;\u202f;  %%{x}%%",
+    "accDescr: style:#red;\u202f;  %%{x}%%",
+  ],
+  [
+    "U+205F between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accDescr line of a radar chart",
+    "accDescr: style:#red;\u205f;  %%{x}%%",
+    "accDescr: style:#red;\u205f;  %%{x}%%",
+  ],
+  [
+    "U+3000 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accDescr line of a radar chart",
+    "accDescr: style:#red;\u3000;  %%{x}%%",
+    "accDescr: style:#red;\u3000;  %%{x}%%",
+  ],
+  [
+    "U+FEFF between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accDescr line of a radar chart",
+    "accDescr: style:#red;\ufeff;  %%{x}%%",
+    "accDescr: style:#red;\ufeff;  %%{x}%%",
+  ],
+  [
+    "spaces between two directives after a U+2028 inside the text of an accTitle line of a radar chart",
+    "accTitle: A\u2028B  %%{x}%%  %%{y}%%",
+    "accTitle: A\u2028B  %%{x}%%  %%{y}%%",
+  ],
+  [
+    "spaces after the directive after a U+2029 inside the text of an accTitle line of a radar chart",
+    "accTitle: A\u2029B  %%{x}%%  ",
+    "accTitle: A\u2029B  %%{x}%%  ",
+  ],
+  [
+    "a run before the directive after a U+2029 inside the text of an accTitle line of a radar chart",
+    "accTitle: A\u2029B  %%{x}%%",
+    "accTitle: A\u2029B %%{x}%%",
+  ],
+  [
+    "a run before two directives that touch after a U+2028 inside the text of an accTitle line of a radar chart",
+    "accTitle: A\u2028B  %%{x}%%%%{y}%%",
+    "accTitle: A\u2028B %%{x}%%%%{y}%%",
+  ],
+  [
+    "spaces between two directives after a U+2028 inside the text of an accDescr line of a radar chart",
+    "accDescr: A\u2028B  %%{x}%%  %%{y}%%",
+    "accDescr: A\u2028B  %%{x}%%  %%{y}%%",
+  ],
+  [
+    "spaces after the directive after a U+2029 inside the text of an accDescr line of a radar chart",
+    "accDescr: A\u2029B  %%{x}%%  ",
+    "accDescr: A\u2029B  %%{x}%%  ",
+  ],
+  [
+    "a run before the directive after a U+2029 inside the text of an accDescr line of a radar chart",
+    "accDescr: A\u2029B  %%{x}%%",
+    "accDescr: A\u2029B %%{x}%%",
+  ],
+  [
+    "a run before two directives that touch after a U+2028 inside the text of an accDescr line of a radar chart",
+    "accDescr: A\u2028B  %%{x}%%%%{y}%%",
+    "accDescr: A\u2028B %%{x}%%%%{y}%%",
+  ],
+  [
+    "a wide space before two directives that spaces separate, in an accDescr line of a radar chart",
+    "accDescr: T\u00a0%%{x}%%  %%{y}%%",
+    "accDescr: T\u00a0%%{x}%% %%{y}%%",
+  ],
+  [
+    "a wide space before two directives that spaces separate, one space before the first directive, in a title of a radar chart",
+    "title T %%{x}%%  %%{y}%%",
+    "title T %%{x}%% %%{y}%%",
+  ],
+  [
+    "a wide space before two directives that spaces separate, a run of spaces before the first directive, in a title of a radar chart",
+    "title T  %%{x}%%  %%{y}%%",
+    "title T %%{x}%% %%{y}%%",
+  ],
+  [
+    "a wide space before two directives that spaces separate, a tab before the first directive, in a title of a radar chart",
+    "title T\t%%{x}%%  %%{y}%%",
+    "title T %%{x}%% %%{y}%%",
+  ],
+  [
+    "a wide space before two directives that spaces separate, U+2028 before the first directive, in a title of a radar chart",
+    "title T\u2028%%{x}%%  %%{y}%%",
+    "title T\u2028%%{x}%%  %%{y}%%",
+  ],
+  [
+    "a wide space before two directives that spaces separate, U+2029 before the first directive, in a title of a radar chart",
+    "title T\u2029%%{x}%%  %%{y}%%",
+    "title T\u2029%%{x}%%  %%{y}%%",
+  ],
+  [
+    "a wide space before two directives that spaces separate, a no-break space between the two directives, in a title of a radar chart",
+    "title T\u00a0%%{x}%%\u00a0%%{y}%%",
+    "title T\u00a0%%{x}%%\u00a0%%{y}%%",
+  ],
+  [
+    "a wide space before two directives that spaces separate, U+2028 between the two directives, in a title of a radar chart",
+    "title T\u00a0%%{x}%%\u2028%%{y}%%",
+    "title T\u00a0%%{x}%%\u2028%%{y}%%",
+  ],
+  [
+    "a wide space before two directives that spaces separate, U+2029 between the two directives, in a title of a radar chart",
+    "title T\u00a0%%{x}%%\u2029%%{y}%%",
+    "title T\u00a0%%{x}%%\u2029%%{y}%%",
+  ],
+  [
+    "a wide space before two directives that spaces separate, the first directive holds a line break inside, in a title of a radar chart",
+    "title T\u00a0%%{x\ny}%%  %%{y}%%",
+    "title T\u00a0%%{x\ny}%%  %%{y}%%",
+  ],
+  [
+    "a wide space before two directives that spaces separate, the last directive holds a line break inside, in a title of a radar chart",
+    "title T\u00a0%%{x}%%  %%{x\ny}%%",
+    "title T\u00a0%%{x}%% %%{x\ny}%%",
+  ],
+  [
+    "a wide space before two directives that spaces separate, the first directive holds a `;` inside, in a title of a radar chart",
+    "title T\u00a0%%{x;y}%%  %%{y}%%",
+    "title T\u00a0%%{x;y}%%  %%{y}%%",
+  ],
+  [
+    "a wide space before two directives that spaces separate, the last directive holds a `;` inside, in a title of a radar chart",
+    "title T\u00a0%%{x}%%  %%{x;y}%%",
+    "title T\u00a0%%{x}%% %%{x;y}%%",
+  ],
+  [
+    "a wide space before two directives that spaces separate, the first directive holds a U+2028 inside, in a title of a radar chart",
+    "title T\u00a0%%{x\u2028y}%%  %%{y}%%",
+    "title T\u00a0%%{x\u2028y}%%  %%{y}%%",
+  ],
+  [
+    "a wide space before two directives that spaces separate, the last directive holds a U+2028 inside, in a title of a radar chart",
+    "title T\u00a0%%{x}%%  %%{x\u2028y}%%",
+    "title T\u00a0%%{x}%% %%{x\u2028y}%%",
+  ],
+  [
+    "a wide space before two directives that spaces separate, a comment touching the last directive, in a title of a radar chart",
+    "title T\u00a0%%{x}%%  %%{y}%%%% c",
+    "title T\u00a0%%{x}%% %%{y}%%%% c",
+  ],
+  [
+    "a wide space before two directives that spaces separate, a value of directives only, in a title of a radar chart",
+    "title %%{x}%%  %%{y}%%",
+    "title %%{x}%%  %%{y}%%",
+  ],
+  [
+    "a wide space before a directive that spaces and a comment follow, one space before the first directive, in a title of a radar chart",
+    "title T %%{x}%%  %% c",
+    "title T %%{x}%% %% c",
+  ],
+  [
+    "a wide space before a directive that spaces and a comment follow, a run of spaces before the first directive, in a title of a radar chart",
+    "title T  %%{x}%%  %% c",
+    "title T %%{x}%% %% c",
+  ],
+  [
+    "a wide space before a directive that spaces and a comment follow, a tab before the first directive, in a title of a radar chart",
+    "title T\t%%{x}%%  %% c",
+    "title T %%{x}%% %% c",
+  ],
+  [
+    "a wide space before a directive that spaces and a comment follow, one space after the last directive, in a title of a radar chart",
+    "title T\u00a0%%{x}%% %% c",
+    "title T\u00a0%%{x}%% %% c",
+  ],
+  [
+    "a wide space before a directive that spaces and a comment follow, a tab after the last directive, in a title of a radar chart",
+    "title T\u00a0%%{x}%%\t%% c",
+    "title T\u00a0%%{x}%% %% c",
+  ],
+  [
+    "a wide space before a directive that spaces and a comment follow, a no-break space after the last directive, in a title of a radar chart",
+    "title T\u00a0%%{x}%%\u00a0%% c",
+    "title T\u00a0%%{x}%%\u00a0%% c",
+  ],
+  [
+    "a wide space before a directive that spaces and a comment follow, the first directive holds a line break inside, in a title of a radar chart",
+    "title T\u00a0%%{x\ny}%%  %% c",
+    "title T\u00a0%%{x\ny}%%  %% c",
+  ],
+  [
+    "a wide space before a directive that spaces and a comment follow, the first directive holds a `;` inside, in a title of a radar chart",
+    "title T\u00a0%%{x;y}%%  %% c",
+    "title T\u00a0%%{x;y}%%  %% c",
+  ],
+  [
+    "a wide space before a directive that spaces and a comment follow, the first directive holds a U+2028 inside, in a title of a radar chart",
+    "title T\u00a0%%{x\u2028y}%%  %% c",
+    "title T\u00a0%%{x\u2028y}%%  %% c",
+  ],
+  [
+    "a wide space before a directive that spaces and a comment follow, a second directive touching the first, in a title of a radar chart",
+    "title T\u00a0%%{x}%%%%{y}%%  %% c",
+    "title T\u00a0%%{x}%%%%{y}%% %% c",
+  ],
+  [
+    "a wide space before a directive that spaces and a comment follow, a second directive after a space, in a title of a radar chart",
+    "title T\u00a0%%{x}%% %%{y}%%  %% c",
+    "title T\u00a0%%{x}%% %%{y}%% %% c",
+  ],
+  [
+    "a wide space before a directive that spaces and a comment follow, a value of directives only, in a title of a radar chart",
+    "title %%{x}%%  %% c",
+    "title %%{x}%%  %% c",
+  ],
+  [
+    "a wide space before two directives that touch and a comment that touches the last, in a title of a radar chart",
+    "title T\u00a0%%{x}%%%%{y}%%%% c",
+    "title T %%{x}%%%%{y}%%%% c",
+  ],
+  [
+    "a wide space before two directives that touch and a comment that touches the last, in an accTitle line of a radar chart",
+    "accTitle: T\u00a0%%{x}%%%%{y}%%%% c",
+    "accTitle: T %%{x}%%%%{y}%%%% c",
+  ],
+  [
+    "a wide space before two directives that touch and a comment that touches the last, in an accDescr line of a radar chart",
+    "accDescr: T\u00a0%%{x}%%%%{y}%%%% c",
+    "accDescr: T %%{x}%%%%{y}%%%% c",
+  ],
+  [
+    "a wide space before two directives that touch and a comment that touches the last, one space before the first directive, in a title of a radar chart",
+    "title T %%{x}%%%%{y}%%%% c",
+    "title T %%{x}%%%%{y}%%%% c",
+  ],
+  [
+    "a wide space before two directives that touch and a comment that touches the last, a run of spaces before the first directive, in a title of a radar chart",
+    "title T  %%{x}%%%%{y}%%%% c",
+    "title T %%{x}%%%%{y}%%%% c",
+  ],
+  [
+    "a wide space before two directives that touch and a comment that touches the last, a tab before the first directive, in a title of a radar chart",
+    "title T\t%%{x}%%%%{y}%%%% c",
+    "title T %%{x}%%%%{y}%%%% c",
+  ],
+  [
+    "a wide space before two directives that touch and a comment that touches the last, one space after the last directive, in a title of a radar chart",
+    "title T\u00a0%%{x}%%%%{y}%% %% c",
+    "title T\u00a0%%{x}%%%%{y}%% %% c",
+  ],
+  [
+    "a wide space before two directives that touch and a comment that touches the last, a tab after the last directive, in a title of a radar chart",
+    "title T\u00a0%%{x}%%%%{y}%%\t%% c",
+    "title T\u00a0%%{x}%%%%{y}%% %% c",
+  ],
+  [
+    "a wide space before two directives that touch and a comment that touches the last, a no-break space after the last directive, in a title of a radar chart",
+    "title T\u00a0%%{x}%%%%{y}%%\u00a0%% c",
+    "title T\u00a0%%{x}%%%%{y}%%\u00a0%% c",
+  ],
+  [
+    "a wide space before two directives that touch and a comment that touches the last, the first directive holds a line break inside, in a title of a radar chart",
+    "title T\u00a0%%{x\ny}%%%%{y}%%%% c",
+    "title T %%{x\ny}%%%%{y}%%%% c",
+  ],
+  [
+    "a wide space before two directives that touch and a comment that touches the last, the last directive holds a line break inside, in a title of a radar chart",
+    "title T\u00a0%%{x}%%%%{x\ny}%%%% c",
+    "title T %%{x}%%%%{x\ny}%%%% c",
+  ],
+  [
+    "a wide space before two directives that touch and a comment that touches the last, the first directive holds a `;` inside, in a title of a radar chart",
+    "title T\u00a0%%{x;y}%%%%{y}%%%% c",
+    "title T %%{x;y}%%%%{y}%%%% c",
+  ],
+  [
+    "a wide space before two directives that touch and a comment that touches the last, the last directive holds a `;` inside, in a title of a radar chart",
+    "title T\u00a0%%{x}%%%%{x;y}%%%% c",
+    "title T %%{x}%%%%{x;y}%%%% c",
+  ],
+  [
+    "a wide space before two directives that touch and a comment that touches the last, the first directive holds a U+2028 inside, in a title of a radar chart",
+    "title T\u00a0%%{x\u2028y}%%%%{y}%%%% c",
+    "title T %%{x\u2028y}%%%%{y}%%%% c",
+  ],
+  [
+    "a wide space before two directives that touch and a comment that touches the last, the last directive holds a U+2028 inside, in a title of a radar chart",
+    "title T\u00a0%%{x}%%%%{x\u2028y}%%%% c",
+    "title T %%{x}%%%%{x\u2028y}%%%% c",
+  ],
+  [
+    "a wide space before two directives that touch and a comment that touches the last, a value of directives only, in a title of a radar chart",
+    "title %%{x}%%%%{y}%%%% c",
+    "title %%{x}%%%%{y}%%%% c",
+  ],
+  [
+    "a U+2028 before two directives that touch, in an accDescr line of a radar chart",
+    "accDescr: T\u2028%%{x}%%%%{y}%%",
+    "accDescr: T %%{x}%%%%{y}%%",
+  ],
+  [
+    "a U+2028 before two directives that touch, one space before the first directive, in a title of a radar chart",
+    "title T %%{x}%%%%{y}%%",
+    "title T %%{x}%%%%{y}%%",
+  ],
+  [
+    "a U+2028 before two directives that touch, a run of spaces before the first directive, in a title of a radar chart",
+    "title T  %%{x}%%%%{y}%%",
+    "title T %%{x}%%%%{y}%%",
+  ],
+  [
+    "a U+2028 before two directives that touch, a tab before the first directive, in a title of a radar chart",
+    "title T\t%%{x}%%%%{y}%%",
+    "title T %%{x}%%%%{y}%%",
+  ],
+  [
+    "a U+2028 before two directives that touch, one space after the last directive, in a title of a radar chart",
+    "title T\u2028%%{x}%%%%{y}%% ",
+    "title T\u2028%%{x}%%%%{y}%% ",
+  ],
+  [
+    "a U+2028 before two directives that touch, a run of spaces after the last directive, in a title of a radar chart",
+    "title T\u2028%%{x}%%%%{y}%%  ",
+    "title T\u2028%%{x}%%%%{y}%%  ",
+  ],
+  [
+    "a U+2028 before two directives that touch, a tab after the last directive, in a title of a radar chart",
+    "title T\u2028%%{x}%%%%{y}%%\t",
+    "title T\u2028%%{x}%%%%{y}%%\t",
+  ],
+  [
+    "a U+2028 before two directives that touch, a no-break space after the last directive, in a title of a radar chart",
+    "title T\u2028%%{x}%%%%{y}%%\u00a0",
+    "title T\u2028%%{x}%%%%{y}%%\u00a0",
+  ],
+  [
+    "a U+2028 before two directives that touch, U+2028 after the last directive, in a title of a radar chart",
+    "title T\u2028%%{x}%%%%{y}%%\u2028",
+    "title T\u2028%%{x}%%%%{y}%%\u2028",
+  ],
+  [
+    "a U+2028 before two directives that touch, U+2029 after the last directive, in a title of a radar chart",
+    "title T\u2028%%{x}%%%%{y}%%\u2029",
+    "title T\u2028%%{x}%%%%{y}%%\u2029",
+  ],
+  [
+    "a U+2028 before two directives that touch, the first directive holds a line break inside, in a title of a radar chart",
+    "title T\u2028%%{x\ny}%%%%{y}%%",
+    "title T %%{x\ny}%%%%{y}%%",
+  ],
+  [
+    "a U+2028 before two directives that touch, the last directive holds a line break inside, in a title of a radar chart",
+    "title T\u2028%%{x}%%%%{x\ny}%%",
+    "title T %%{x}%%%%{x\ny}%%",
+  ],
+  [
+    "a U+2028 before two directives that touch, the first directive holds a `;` inside, in a title of a radar chart",
+    "title T\u2028%%{x;y}%%%%{y}%%",
+    "title T %%{x;y}%%%%{y}%%",
+  ],
+  [
+    "a U+2028 before two directives that touch, the last directive holds a `;` inside, in a title of a radar chart",
+    "title T\u2028%%{x}%%%%{x;y}%%",
+    "title T %%{x}%%%%{x;y}%%",
+  ],
+  [
+    "a U+2028 before two directives that touch, the first directive holds a U+2028 inside, in a title of a radar chart",
+    "title T\u2028%%{x\u2028y}%%%%{y}%%",
+    "title T %%{x\u2028y}%%%%{y}%%",
+  ],
+  [
+    "a U+2028 before two directives that touch, the last directive holds a U+2028 inside, in a title of a radar chart",
+    "title T\u2028%%{x}%%%%{x\u2028y}%%",
+    "title T %%{x}%%%%{x\u2028y}%%",
+  ],
+  [
+    "a U+2028 before two directives that touch, a value of directives only, in a title of a radar chart",
+    "title %%{x}%%%%{y}%%",
+    "title %%{x}%%%%{y}%%",
+  ],
+  [
+    "a U+2028 before a directive that spaces follow, in a title of a radar chart",
+    "title T\u2028%%{x}%%  ",
+    "title T\u2028%%{x}%%  ",
+  ],
+  [
+    "a U+2028 before a directive that spaces follow, in an accTitle line of a radar chart",
+    "accTitle: T\u2028%%{x}%%  ",
+    "accTitle: T\u2028%%{x}%%  ",
+  ],
+  [
+    "a U+2028 before a directive that spaces follow, in an accDescr line of a radar chart",
+    "accDescr: T\u2028%%{x}%%  ",
+    "accDescr: T\u2028%%{x}%%  ",
+  ],
+  [
+    "a U+2028 before a directive that spaces follow, one space before the first directive, in a title of a radar chart",
+    "title T %%{x}%%  ",
+    "title T %%{x}%%",
+  ],
+  [
+    "a U+2028 before a directive that spaces follow, a run of spaces before the first directive, in a title of a radar chart",
+    "title T  %%{x}%%  ",
+    "title T %%{x}%%",
+  ],
+  [
+    "a U+2028 before a directive that spaces follow, a tab before the first directive, in a title of a radar chart",
+    "title T\t%%{x}%%  ",
+    "title T %%{x}%%",
+  ],
+  [
+    "a U+2028 before a directive that spaces follow, U+2029 before the first directive, in a title of a radar chart",
+    "title T\u2029%%{x}%%  ",
+    "title T\u2029%%{x}%%  ",
+  ],
+  [
+    "a U+2028 before a directive that spaces follow, one space after the last directive, in a title of a radar chart",
+    "title T\u2028%%{x}%% ",
+    "title T\u2028%%{x}%% ",
+  ],
+  [
+    "a U+2028 before a directive that spaces follow, a tab after the last directive, in a title of a radar chart",
+    "title T\u2028%%{x}%%\t",
+    "title T\u2028%%{x}%%\t",
+  ],
+  [
+    "a U+2028 before a directive that spaces follow, a no-break space after the last directive, in a title of a radar chart",
+    "title T\u2028%%{x}%%\u00a0",
+    "title T\u2028%%{x}%%\u00a0",
+  ],
+  [
+    "a U+2028 before a directive that spaces follow, U+2028 after the last directive, in a title of a radar chart",
+    "title T\u2028%%{x}%%\u2028",
+    "title T\u2028%%{x}%%\u2028",
+  ],
+  [
+    "a U+2028 before a directive that spaces follow, U+2029 after the last directive, in a title of a radar chart",
+    "title T\u2028%%{x}%%\u2029",
+    "title T\u2028%%{x}%%\u2029",
+  ],
+  [
+    "a U+2028 before a directive that spaces follow, the first directive holds a line break inside, in a title of a radar chart",
+    "title T\u2028%%{x\ny}%%  ",
+    "title T\u2028%%{x\ny}%%  ",
+  ],
+  [
+    "a U+2028 before a directive that spaces follow, the first directive holds a `;` inside, in a title of a radar chart",
+    "title T\u2028%%{x;y}%%  ",
+    "title T\u2028%%{x;y}%%  ",
+  ],
+  [
+    "a U+2028 before a directive that spaces follow, the first directive holds a U+2028 inside, in a title of a radar chart",
+    "title T\u2028%%{x\u2028y}%%  ",
+    "title T\u2028%%{x\u2028y}%%  ",
+  ],
+  [
+    "a U+2028 before a directive that spaces follow, a second directive after a space, in a title of a radar chart",
+    "title T\u2028%%{x}%% %%{y}%%  ",
+    "title T\u2028%%{x}%% %%{y}%%  ",
+  ],
+  [
+    "a U+2028 before two directives that spaces separate, in an accDescr line of a radar chart",
+    "accDescr: T\u2028%%{x}%%  %%{y}%%",
+    "accDescr: T\u2028%%{x}%%  %%{y}%%",
+  ],
+  [
+    "a U+2028 before two directives that spaces separate, a no-break space between the two directives, in a title of a radar chart",
+    "title T\u2028%%{x}%%\u00a0%%{y}%%",
+    "title T\u2028%%{x}%%\u00a0%%{y}%%",
+  ],
+  [
+    "a U+2028 before two directives that spaces separate, U+2028 between the two directives, in a title of a radar chart",
+    "title T\u2028%%{x}%%\u2028%%{y}%%",
+    "title T\u2028%%{x}%%\u2028%%{y}%%",
+  ],
+  [
+    "a U+2028 before two directives that spaces separate, U+2029 between the two directives, in a title of a radar chart",
+    "title T\u2028%%{x}%%\u2029%%{y}%%",
+    "title T\u2028%%{x}%%\u2029%%{y}%%",
+  ],
+  [
+    "a U+2028 before two directives that spaces separate, the first directive holds a line break inside, in a title of a radar chart",
+    "title T\u2028%%{x\ny}%%  %%{y}%%",
+    "title T\u2028%%{x\ny}%%  %%{y}%%",
+  ],
+  [
+    "a U+2028 before two directives that spaces separate, the last directive holds a line break inside, in a title of a radar chart",
+    "title T\u2028%%{x}%%  %%{x\ny}%%",
+    "title T\u2028%%{x}%%  %%{x\ny}%%",
+  ],
+  [
+    "a U+2028 before two directives that spaces separate, the first directive holds a `;` inside, in a title of a radar chart",
+    "title T\u2028%%{x;y}%%  %%{y}%%",
+    "title T\u2028%%{x;y}%%  %%{y}%%",
+  ],
+  [
+    "a U+2028 before two directives that spaces separate, the last directive holds a `;` inside, in a title of a radar chart",
+    "title T\u2028%%{x}%%  %%{x;y}%%",
+    "title T\u2028%%{x}%%  %%{x;y}%%",
+  ],
+  [
+    "a U+2028 before two directives that spaces separate, the first directive holds a U+2028 inside, in a title of a radar chart",
+    "title T\u2028%%{x\u2028y}%%  %%{y}%%",
+    "title T\u2028%%{x\u2028y}%%  %%{y}%%",
+  ],
+  [
+    "a U+2028 before two directives that spaces separate, the last directive holds a U+2028 inside, in a title of a radar chart",
+    "title T\u2028%%{x}%%  %%{x\u2028y}%%",
+    "title T\u2028%%{x}%%  %%{x\u2028y}%%",
+  ],
+  [
+    "a directive that holds a line break, spaces before it, one space before the first directive, in a title of a radar chart",
+    "title T %%{x\ny}%%",
+    "title T %%{x\ny}%%",
+  ],
+  [
+    "a directive that holds a line break, spaces before it, a tab before the first directive, in a title of a radar chart",
+    "title T\t%%{x\ny}%%",
+    "title T %%{x\ny}%%",
+  ],
+  [
+    "a directive that holds a line break, spaces before it, U+2028 before the first directive, in a title of a radar chart",
+    "title T\u2028%%{x\ny}%%",
+    "title T %%{x\ny}%%",
+  ],
+  [
+    "a directive that holds a line break, spaces before it, U+2029 before the first directive, in a title of a radar chart",
+    "title T\u2029%%{x\ny}%%",
+    "title T %%{x\ny}%%",
+  ],
+  [
+    "a directive that holds a line break, spaces before it, one space after the last directive, in a title of a radar chart",
+    "title T  %%{x\ny}%% ",
+    "title T  %%{x\ny}%% ",
+  ],
+  [
+    "a directive that holds a line break, spaces before it, a tab after the last directive, in a title of a radar chart",
+    "title T  %%{x\ny}%%\t",
+    "title T  %%{x\ny}%%\t",
+  ],
+  [
+    "a directive that holds a line break, spaces before it, a no-break space after the last directive, in a title of a radar chart",
+    "title T  %%{x\ny}%%\u00a0",
+    "title T  %%{x\ny}%%\u00a0",
+  ],
+  [
+    "a directive that holds a line break, spaces before it, U+2028 after the last directive, in a title of a radar chart",
+    "title T  %%{x\ny}%%\u2028",
+    "title T  %%{x\ny}%%\u2028",
+  ],
+  [
+    "a directive that holds a line break, spaces before it, U+2029 after the last directive, in a title of a radar chart",
+    "title T  %%{x\ny}%%\u2029",
+    "title T  %%{x\ny}%%\u2029",
+  ],
+  [
+    "a directive that holds a line break, spaces before it, a second directive after a space, in a title of a radar chart",
+    "title T  %%{x\ny}%% %%{y}%%",
+    "title T  %%{x\ny}%% %%{y}%%",
+  ],
+  [
+    "a directive that holds a line break, spaces before it, a value of directives only, in a title of a radar chart",
+    "title %%{x\ny}%%",
+    "title %%{x\ny}%%",
+  ],
+  [
+    "a directive that holds a U+2028, spaces before it, one space before the first directive, in a title of a radar chart",
+    "title T %%{x\u2028y}%%",
+    "title T %%{x\u2028y}%%",
+  ],
+  [
+    "a directive that holds a U+2028, spaces before it, a tab before the first directive, in a title of a radar chart",
+    "title T\t%%{x\u2028y}%%",
+    "title T %%{x\u2028y}%%",
+  ],
+  [
+    "a directive that holds a U+2028, spaces before it, U+2028 before the first directive, in a title of a radar chart",
+    "title T\u2028%%{x\u2028y}%%",
+    "title T %%{x\u2028y}%%",
+  ],
+  [
+    "a directive that holds a U+2028, spaces before it, U+2029 before the first directive, in a title of a radar chart",
+    "title T\u2029%%{x\u2028y}%%",
+    "title T %%{x\u2028y}%%",
+  ],
+  [
+    "a directive that holds a U+2028, spaces before it, one space after the last directive, in a title of a radar chart",
+    "title T  %%{x\u2028y}%% ",
+    "title T  %%{x\u2028y}%% ",
+  ],
+  [
+    "a directive that holds a U+2028, spaces before it, a tab after the last directive, in a title of a radar chart",
+    "title T  %%{x\u2028y}%%\t",
+    "title T  %%{x\u2028y}%%\t",
+  ],
+  [
+    "a directive that holds a U+2028, spaces before it, a no-break space after the last directive, in a title of a radar chart",
+    "title T  %%{x\u2028y}%%\u00a0",
+    "title T  %%{x\u2028y}%%\u00a0",
+  ],
+  [
+    "a directive that holds a U+2028, spaces before it, U+2028 after the last directive, in a title of a radar chart",
+    "title T  %%{x\u2028y}%%\u2028",
+    "title T  %%{x\u2028y}%%\u2028",
+  ],
+  [
+    "a directive that holds a U+2028, spaces before it, U+2029 after the last directive, in a title of a radar chart",
+    "title T  %%{x\u2028y}%%\u2029",
+    "title T  %%{x\u2028y}%%\u2029",
+  ],
+  [
+    "a directive that holds a U+2028, spaces before it, a second directive after a space, in a title of a radar chart",
+    "title T  %%{x\u2028y}%% %%{y}%%",
+    "title T  %%{x\u2028y}%% %%{y}%%",
+  ],
+  [
+    "a directive that holds a U+2028, spaces before it, a value of directives only, in a title of a radar chart",
+    "title %%{x\u2028y}%%",
+    "title %%{x\u2028y}%%",
+  ],
+  [
+    "a U+2028 inside the text, spaces before the directive, in an accDescr line of a radar chart",
+    "accDescr: A\u2028B  %%{x}%%",
+    "accDescr: A\u2028B %%{x}%%",
+  ],
+  [
+    "a U+2028 inside the text, spaces before the directive, one space before the first directive, in a title of a radar chart",
+    "title A\u2028B %%{x}%%",
+    "title A\u2028B %%{x}%%",
+  ],
+  [
+    "a U+2028 inside the text, spaces before the directive, a tab before the first directive, in a title of a radar chart",
+    "title A\u2028B\t%%{x}%%",
+    "title A\u2028B %%{x}%%",
+  ],
+  [
+    "a U+2028 inside the text, spaces before the directive, a no-break space before the first directive, in a title of a radar chart",
+    "title A\u2028B\u00a0%%{x}%%",
+    "title A\u2028B %%{x}%%",
+  ],
+  [
+    "a U+2028 inside the text, spaces before the directive, U+2028 before the first directive, in a title of a radar chart",
+    "title A\u2028B\u2028%%{x}%%",
+    "title A\u2028B %%{x}%%",
+  ],
+  [
+    "a U+2028 inside the text, spaces before the directive, U+2029 before the first directive, in a title of a radar chart",
+    "title A\u2028B\u2029%%{x}%%",
+    "title A\u2028B %%{x}%%",
+  ],
+  [
+    "a U+2028 inside the text, spaces before the directive, one space after the last directive, in a title of a radar chart",
+    "title A\u2028B  %%{x}%% ",
+    "title A\u2028B  %%{x}%% ",
+  ],
+  [
+    "a U+2028 inside the text, spaces before the directive, a tab after the last directive, in a title of a radar chart",
+    "title A\u2028B  %%{x}%%\t",
+    "title A\u2028B  %%{x}%%\t",
+  ],
+  [
+    "a U+2028 inside the text, spaces before the directive, a no-break space after the last directive, in a title of a radar chart",
+    "title A\u2028B  %%{x}%%\u00a0",
+    "title A\u2028B  %%{x}%%\u00a0",
+  ],
+  [
+    "a U+2028 inside the text, spaces before the directive, U+2028 after the last directive, in a title of a radar chart",
+    "title A\u2028B  %%{x}%%\u2028",
+    "title A\u2028B  %%{x}%%\u2028",
+  ],
+  [
+    "a U+2028 inside the text, spaces before the directive, U+2029 after the last directive, in a title of a radar chart",
+    "title A\u2028B  %%{x}%%\u2029",
+    "title A\u2028B  %%{x}%%\u2029",
+  ],
+  [
+    "a U+2028 inside the text, spaces before the directive, the first directive holds a line break inside, in a title of a radar chart",
+    "title A\u2028B  %%{x\ny}%%",
+    "title A\u2028B %%{x\ny}%%",
+  ],
+  [
+    "a U+2028 inside the text, spaces before the directive, the first directive holds a `;` inside, in a title of a radar chart",
+    "title A\u2028B  %%{x;y}%%",
+    "title A\u2028B %%{x;y}%%",
+  ],
+  [
+    "a U+2028 inside the text, spaces before the directive, the first directive holds a U+2028 inside, in a title of a radar chart",
+    "title A\u2028B  %%{x\u2028y}%%",
+    "title A\u2028B %%{x\u2028y}%%",
+  ],
+  [
+    "a U+2028 inside the text, spaces before the directive, a second directive touching the first, in a title of a radar chart",
+    "title A\u2028B  %%{x}%%%%{y}%%",
+    "title A\u2028B %%{x}%%%%{y}%%",
+  ],
+  [
+    "a U+2028 inside the text, spaces before the directive, a second directive after a space, in a title of a radar chart",
+    "title A\u2028B  %%{x}%% %%{y}%%",
+    "title A\u2028B  %%{x}%% %%{y}%%",
+  ],
+  [
+    "a U+2028 inside the text, spaces before the directive, a comment touching the last directive, in a title of a radar chart",
+    "title A\u2028B  %%{x}%%%% c",
+    "title A\u2028B %%{x}%%%% c",
+  ],
+  [
+    "a U+2028 inside the text, spaces before the directive, a value of directives only, in a title of a radar chart",
+    "title %%{x}%%",
+    "title %%{x}%%",
+  ],
+  [
+    "a value of directives only, spaces after the directive, in an accTitle line of a radar chart",
+    "accTitle: %%{x}%%  ",
+    "accTitle: %%{x}%%  ",
+  ],
+  [
+    "a value of directives only, spaces after the directive, a tab before the first directive, in a title of a radar chart",
+    "title\t%%{x}%%  ",
+    "title\t%%{x}%%  ",
+  ],
+  [
+    "a value of directives only, spaces after the directive, one space after the last directive, in a title of a radar chart",
+    "title %%{x}%% ",
+    "title %%{x}%% ",
+  ],
+  [
+    "a value of directives only, spaces after the directive, a tab after the last directive, in a title of a radar chart",
+    "title %%{x}%%\t",
+    "title %%{x}%%\t",
+  ],
+  [
+    "a value of directives only, spaces after the directive, a no-break space after the last directive, in a title of a radar chart",
+    "title %%{x}%%\u00a0",
+    "title %%{x}%%\u00a0",
+  ],
+  [
+    "a value of directives only, spaces after the directive, U+2028 after the last directive, in a title of a radar chart",
+    "title %%{x}%%\u2028",
+    "title %%{x}%%\u2028",
+  ],
+  [
+    "a value of directives only, spaces after the directive, U+2029 after the last directive, in a title of a radar chart",
+    "title %%{x}%%\u2029",
+    "title %%{x}%%\u2029",
+  ],
+  [
+    "a value of directives only, spaces after the directive, the first directive holds a line break inside, in a title of a radar chart",
+    "title %%{x\ny}%%  ",
+    "title %%{x\ny}%%  ",
+  ],
+  [
+    "a value of directives only, spaces after the directive, the first directive holds a `;` inside, in a title of a radar chart",
+    "title %%{x;y}%%  ",
+    "title %%{x;y}%%  ",
+  ],
+  [
+    "a value of directives only, spaces after the directive, the first directive holds a U+2028 inside, in a title of a radar chart",
+    "title %%{x\u2028y}%%  ",
+    "title %%{x\u2028y}%%  ",
+  ],
+  [
+    "a value of directives only, spaces after the directive, a second directive touching the first, in a title of a radar chart",
+    "title %%{x}%%%%{y}%%  ",
+    "title %%{x}%%%%{y}%%  ",
+  ],
+  [
+    "a value of directives only, spaces after the directive, a second directive after a space, in a title of a radar chart",
+    "title %%{x}%% %%{y}%%  ",
+    "title %%{x}%% %%{y}%%  ",
+  ],
+  [
+    "a directive inside the text, spaces before and after the last directive, in a title of a radar chart",
+    "title T %%{x}%% U  %%{y}%%  ",
+    "title T %%{x}%% U  %%{y}%%  ",
+  ],
+  [
+    "a directive inside the text, spaces before and after the last directive, in an accTitle line of a radar chart",
+    "accTitle: T %%{x}%% U  %%{y}%%  ",
+    "accTitle: T %%{x}%% U  %%{y}%%  ",
+  ],
+  [
+    "a directive inside the text, spaces before and after the last directive, in an accDescr line of a radar chart",
+    "accDescr: T %%{x}%% U  %%{y}%%  ",
+    "accDescr: T %%{x}%% U  %%{y}%%  ",
+  ],
+  [
+    "a directive inside the text, spaces before and after the last directive, one space before the first directive, in a title of a radar chart",
+    "title T %%{x}%% U %%{y}%%  ",
+    "title T %%{x}%% U %%{y}%%  ",
+  ],
+  [
+    "a directive inside the text, spaces before and after the last directive, a tab before the first directive, in a title of a radar chart",
+    "title T %%{x}%% U\t%%{y}%%  ",
+    "title T %%{x}%% U\t%%{y}%%  ",
+  ],
+  [
+    "a directive inside the text, spaces before and after the last directive, a no-break space before the first directive, in a title of a radar chart",
+    "title T %%{x}%% U\u00a0%%{y}%%  ",
+    "title T %%{x}%% U\u00a0%%{y}%%  ",
+  ],
+  [
+    "a directive inside the text, spaces before and after the last directive, U+2028 before the first directive, in a title of a radar chart",
+    "title T %%{x}%% U\u2028%%{y}%%  ",
+    "title T %%{x}%% U\u2028%%{y}%%  ",
+  ],
+  [
+    "a directive inside the text, spaces before and after the last directive, U+2029 before the first directive, in a title of a radar chart",
+    "title T %%{x}%% U\u2029%%{y}%%  ",
+    "title T %%{x}%% U\u2029%%{y}%%  ",
+  ],
+  [
+    "a directive inside the text, spaces before and after the last directive, one space after the last directive, in a title of a radar chart",
+    "title T %%{x}%% U  %%{y}%% ",
+    "title T %%{x}%% U  %%{y}%% ",
+  ],
+  [
+    "a directive inside the text, spaces before and after the last directive, a tab after the last directive, in a title of a radar chart",
+    "title T %%{x}%% U  %%{y}%%\t",
+    "title T %%{x}%% U  %%{y}%%\t",
+  ],
+  [
+    "a directive inside the text, spaces before and after the last directive, a no-break space after the last directive, in a title of a radar chart",
+    "title T %%{x}%% U  %%{y}%%\u00a0",
+    "title T %%{x}%% U  %%{y}%%\u00a0",
+  ],
+  [
+    "a directive inside the text, spaces before and after the last directive, U+2028 after the last directive, in a title of a radar chart",
+    "title T %%{x}%% U  %%{y}%%\u2028",
+    "title T %%{x}%% U  %%{y}%%\u2028",
+  ],
+  [
+    "a directive inside the text, spaces before and after the last directive, U+2029 after the last directive, in a title of a radar chart",
+    "title T %%{x}%% U  %%{y}%%\u2029",
+    "title T %%{x}%% U  %%{y}%%\u2029",
+  ],
+  [
+    "a directive inside the text, spaces before and after the last directive, the first directive holds a line break inside, in a title of a radar chart",
+    "title T %%{x}%% U  %%{x\ny}%%  ",
+    "title T %%{x}%% U  %%{x\ny}%%  ",
+  ],
+  [
+    "a directive inside the text, spaces before and after the last directive, the first directive holds a `;` inside, in a title of a radar chart",
+    "title T %%{x}%% U  %%{x;y}%%  ",
+    "title T %%{x}%% U  %%{x;y}%%  ",
+  ],
+  [
+    "a directive inside the text, spaces before and after the last directive, the first directive holds a U+2028 inside, in a title of a radar chart",
+    "title T %%{x}%% U  %%{x\u2028y}%%  ",
+    "title T %%{x}%% U  %%{x\u2028y}%%  ",
+  ],
+  [
+    "a directive inside the text, spaces before and after the last directive, a second directive touching the first, in a title of a radar chart",
+    "title T %%{x}%% U  %%{y}%%%%{y}%%  ",
+    "title T %%{x}%% U  %%{y}%%%%{y}%%  ",
+  ],
+  [
+    "a directive inside the text, spaces before and after the last directive, a second directive after a space, in a title of a radar chart",
+    "title T %%{x}%% U  %%{y}%% %%{y}%%  ",
+    "title T %%{x}%% U  %%{y}%% %%{y}%%  ",
+  ],
+  [
+    "a directive inside the text, spaces before and after the last directive, a comment touching the last directive, in a title of a radar chart",
+    "title T %%{x}%% U  %%{y}%%  %% c",
+    "title T %%{x}%% U  %%{y}%%  %% c",
+  ],
+  [
+    "a directive inside the text, spaces before and after the last directive, a value of directives only, in a title of a radar chart",
+    "title %%{y}%%  ",
+    "title %%{y}%%  ",
+  ],
 ]
 
 describe("the directives that end the title or the value of an accessibility line of a radar chart", () => {
@@ -9702,6 +11292,191 @@ const radarDirectiveCommentExamples: readonly (readonly [
     "a U+2028 inside the text, a directive that a comment touches, in a title of a radar chart",
     "radar-beta\ntitle TA\u2028B  %%{x}%%%% c\naxis a, b\ncurve c{1, 2}\n",
     "radar-beta\n  title TA\u2028B %%{x}%%%% c\n  axis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "a U+2028 inside the text, a directive, and a comment after spaces, in an accTitle line of a radar chart",
+    "radar-beta\naccTitle: A\u2028B  %%{x}%%  %% c\naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  accTitle: A\u2028B  %%{x}%%  %% c\n  axis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "a U+2028 inside the text, a directive that a comment touches, in an accTitle line of a radar chart",
+    "radar-beta\naccTitle: A\u2028B  %%{x}%%%% c\naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  accTitle: A\u2028B %%{x}%%%% c\n  axis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "a U+2029 inside the text, a directive, and a comment after spaces, in an accDescr line of a radar chart",
+    "radar-beta\naccDescr: A\u2029B  %%{x}%%  %% c\naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  accDescr: A\u2029B  %%{x}%%  %% c\n  axis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "a U+2028 inside the text, two directives that touch, and a comment after spaces, in an accDescr line of a radar chart",
+    "radar-beta\naccDescr: A\u2028B  %%{x}%%%%{y}%%  %% c\naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  accDescr: A\u2028B  %%{x}%%%%{y}%%  %% c\n  axis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "a wide space before two directives that spaces separate, the text ends, in a title of a radar chart",
+    "radar-beta\ntitle T\u00a0%%{x}%%  %%{y}%%\n",
+    "radar-beta\n  title T\u00a0%%{x}%% %%{y}%%\n",
+  ],
+  [
+    "a wide space before two directives that spaces separate, the text ends, in an accTitle line of a radar chart",
+    "radar-beta\naccTitle: T\u00a0%%{x}%%  %%{y}%%\n",
+    "radar-beta\n  accTitle: T\u00a0%%{x}%% %%{y}%%\n",
+  ],
+  [
+    "a wide space before two directives that spaces separate, the text ends, in an accDescr line of a radar chart",
+    "radar-beta\naccDescr: T\u00a0%%{x}%%  %%{y}%%\n",
+    "radar-beta\n  accDescr: T\u00a0%%{x}%% %%{y}%%\n",
+  ],
+  [
+    "a wide space before a directive that spaces and a comment follow, the text ends, in a title of a radar chart",
+    "radar-beta\ntitle T\u00a0%%{x}%%  %% c\n",
+    "radar-beta\n  title T\u00a0%%{x}%% %% c\n",
+  ],
+  [
+    "a wide space before a directive that spaces and a comment follow, the text ends, in an accTitle line of a radar chart",
+    "radar-beta\naccTitle: T\u00a0%%{x}%%  %% c\n",
+    "radar-beta\n  accTitle: T\u00a0%%{x}%% %% c\n",
+  ],
+  [
+    "a wide space before a directive that spaces and a comment follow, the text ends, in an accDescr line of a radar chart",
+    "radar-beta\naccDescr: T\u00a0%%{x}%%  %% c\n",
+    "radar-beta\n  accDescr: T\u00a0%%{x}%% %% c\n",
+  ],
+  [
+    "a wide space before two directives that touch and a comment that touches the last, the text ends, in a title of a radar chart",
+    "radar-beta\ntitle T\u00a0%%{x}%%%%{y}%%%% c\n",
+    "radar-beta\n  title T %%{x}%%%%{y}%%%% c\n",
+  ],
+  [
+    "a wide space before two directives that touch and a comment that touches the last, the text ends, in an accTitle line of a radar chart",
+    "radar-beta\naccTitle: T\u00a0%%{x}%%%%{y}%%%% c\n",
+    "radar-beta\n  accTitle: T %%{x}%%%%{y}%%%% c\n",
+  ],
+  [
+    "a wide space before two directives that touch and a comment that touches the last, the text ends, in an accDescr line of a radar chart",
+    "radar-beta\naccDescr: T\u00a0%%{x}%%%%{y}%%%% c\n",
+    "radar-beta\n  accDescr: T %%{x}%%%%{y}%%%% c\n",
+  ],
+  [
+    "a U+2028 before two directives that touch, the text ends, in a title of a radar chart",
+    "radar-beta\ntitle T\u2028%%{x}%%%%{y}%%\n",
+    "radar-beta\n  title T %%{x}%%%%{y}%%\n",
+  ],
+  [
+    "a U+2028 before two directives that touch, the text ends, in an accTitle line of a radar chart",
+    "radar-beta\naccTitle: T\u2028%%{x}%%%%{y}%%\n",
+    "radar-beta\n  accTitle: T %%{x}%%%%{y}%%\n",
+  ],
+  [
+    "a U+2028 before two directives that touch, the text ends, in an accDescr line of a radar chart",
+    "radar-beta\naccDescr: T\u2028%%{x}%%%%{y}%%\n",
+    "radar-beta\n  accDescr: T %%{x}%%%%{y}%%\n",
+  ],
+  [
+    "a U+2028 before a directive that spaces follow, the text ends, in a title of a radar chart",
+    "radar-beta\ntitle T\u2028%%{x}%%  \n",
+    "radar-beta\n  title T\u2028%%{x}%%  \n",
+  ],
+  [
+    "a U+2028 before a directive that spaces follow, the text ends, in an accTitle line of a radar chart",
+    "radar-beta\naccTitle: T\u2028%%{x}%%  \n",
+    "radar-beta\n  accTitle: T\u2028%%{x}%%  \n",
+  ],
+  [
+    "a U+2028 before a directive that spaces follow, the text ends, in an accDescr line of a radar chart",
+    "radar-beta\naccDescr: T\u2028%%{x}%%  \n",
+    "radar-beta\n  accDescr: T\u2028%%{x}%%  \n",
+  ],
+  [
+    "a U+2028 before two directives that spaces separate, the text ends, in a title of a radar chart",
+    "radar-beta\ntitle T\u2028%%{x}%%  %%{y}%%\n",
+    "radar-beta\n  title T\u2028%%{x}%%  %%{y}%%\n",
+  ],
+  [
+    "a U+2028 before two directives that spaces separate, the text ends, in an accTitle line of a radar chart",
+    "radar-beta\naccTitle: T\u2028%%{x}%%  %%{y}%%\n",
+    "radar-beta\n  accTitle: T\u2028%%{x}%%  %%{y}%%\n",
+  ],
+  [
+    "a U+2028 before two directives that spaces separate, the text ends, in an accDescr line of a radar chart",
+    "radar-beta\naccDescr: T\u2028%%{x}%%  %%{y}%%\n",
+    "radar-beta\n  accDescr: T\u2028%%{x}%%  %%{y}%%\n",
+  ],
+  [
+    "a directive that holds a line break, spaces before it, the text ends, in a title of a radar chart",
+    "radar-beta\ntitle T  %%{x\ny}%%\n",
+    "radar-beta\n  title T %%{x\ny}%%\n",
+  ],
+  [
+    "a directive that holds a line break, spaces before it, the text ends, in an accTitle line of a radar chart",
+    "radar-beta\naccTitle: T  %%{x\ny}%%\n",
+    "radar-beta\n  accTitle: T %%{x\ny}%%\n",
+  ],
+  [
+    "a directive that holds a line break, spaces before it, the text ends, in an accDescr line of a radar chart",
+    "radar-beta\naccDescr: T  %%{x\ny}%%\n",
+    "radar-beta\n  accDescr: T %%{x\ny}%%\n",
+  ],
+  [
+    "a directive that holds a U+2028, spaces before it, the text ends, in a title of a radar chart",
+    "radar-beta\ntitle T  %%{x\u2028y}%%\n",
+    "radar-beta\n  title T %%{x\u2028y}%%\n",
+  ],
+  [
+    "a directive that holds a U+2028, spaces before it, the text ends, in an accTitle line of a radar chart",
+    "radar-beta\naccTitle: T  %%{x\u2028y}%%\n",
+    "radar-beta\n  accTitle: T %%{x\u2028y}%%\n",
+  ],
+  [
+    "a directive that holds a U+2028, spaces before it, the text ends, in an accDescr line of a radar chart",
+    "radar-beta\naccDescr: T  %%{x\u2028y}%%\n",
+    "radar-beta\n  accDescr: T %%{x\u2028y}%%\n",
+  ],
+  [
+    "a U+2028 inside the text, spaces before the directive, the text ends, in a title of a radar chart",
+    "radar-beta\ntitle A\u2028B  %%{x}%%\n",
+    "radar-beta\n  title A\u2028B %%{x}%%\n",
+  ],
+  [
+    "a U+2028 inside the text, spaces before the directive, the text ends, in an accTitle line of a radar chart",
+    "radar-beta\naccTitle: A\u2028B  %%{x}%%\n",
+    "radar-beta\n  accTitle: A\u2028B %%{x}%%\n",
+  ],
+  [
+    "a U+2028 inside the text, spaces before the directive, the text ends, in an accDescr line of a radar chart",
+    "radar-beta\naccDescr: A\u2028B  %%{x}%%\n",
+    "radar-beta\n  accDescr: A\u2028B %%{x}%%\n",
+  ],
+  [
+    "a value of directives only, spaces after the directive, the text ends, in a title of a radar chart",
+    "radar-beta\ntitle %%{x}%%  \n",
+    "radar-beta\n  title %%{x}%%  \n",
+  ],
+  [
+    "a value of directives only, spaces after the directive, the text ends, in an accTitle line of a radar chart",
+    "radar-beta\naccTitle: %%{x}%%  \n",
+    "radar-beta\n  accTitle: %%{x}%%  \n",
+  ],
+  [
+    "a value of directives only, spaces after the directive, the text ends, in an accDescr line of a radar chart",
+    "radar-beta\naccDescr: %%{x}%%  \n",
+    "radar-beta\n  accDescr: %%{x}%%  \n",
+  ],
+  [
+    "a directive inside the text, spaces before and after the last directive, the text ends, in a title of a radar chart",
+    "radar-beta\ntitle T %%{x}%% U  %%{y}%%  \n",
+    "radar-beta\n  title T %%{x}%% U  %%{y}%%  \n",
+  ],
+  [
+    "a directive inside the text, spaces before and after the last directive, the text ends, in an accTitle line of a radar chart",
+    "radar-beta\naccTitle: T %%{x}%% U  %%{y}%%  \n",
+    "radar-beta\n  accTitle: T %%{x}%% U  %%{y}%%  \n",
+  ],
+  [
+    "a directive inside the text, spaces before and after the last directive, the text ends, in an accDescr line of a radar chart",
+    "radar-beta\naccDescr: T %%{x}%% U  %%{y}%%  \n",
+    "radar-beta\n  accDescr: T %%{x}%% U  %%{y}%%  \n",
   ],
 ]
 
