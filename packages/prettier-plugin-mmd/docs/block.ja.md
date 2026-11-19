@@ -174,7 +174,7 @@ block-beta
 ほとんどの図は、どの文も自分の行に置きます。
 ブロック図は、そうしません。
 行は、書き手がブロックを並べる単位だからです。
-1 行に並んだノードと `space` の連なりは、`columns` が決める格子の 1 行で、
+1 行に並んだノードと `space` の連なりは、`columns` の文が決める格子の 1 行で、
 mermaid.js の文書もそう書いています（`a b c`、`a["A label"] b:2 c:2 d`、
 `Start(("Start")) space:2`）。
 ノードを 1 行ずつに分けると、その行が見えなくなり、
@@ -186,7 +186,7 @@ mermaid.js の文書もそう書いています（`a b c`、`a["A label"] b:2 c:
 その行に残し、文の間は空白 1 つにします。
 連なりの中の 2 つの文の間の改行は、書かれた場所に残し、空行は 1 つにします。
 それ以外の文は自分の行に置きます。
-`columns`、composite の見出し、`end`、`classDef`、`class`、`style`、
+`columns` の文、composite の見出し、`end`、`classDef`、`class`、`style`、
 空の説明ブロックです。
 `columns 3` と同じ行にある文は次の行へ移します（`columns 3 a b c` は、
 `columns 3` と、行 `a b c` になります）。
@@ -380,8 +380,8 @@ mermaid.js はそこのどの空白も同じに読むので、形は 1 行にな
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
-`space` と `columns` は、ほかの場所へ動かしません。
-ブロックの最後の `columns` が、どこにあってもそのブロックの列数で、
+`space` の文と `columns` の文は、ほかの場所へ動かしません。
+ブロックの最後の `columns` の文が、どこにあってもそのブロックの列数で、
 ブロックの順はテキストの順だからです。
 
 [fixture: columns-and-space/one-space-after-columns]
@@ -1036,12 +1036,12 @@ block
 ### 複数行の文
 
 mermaid.js が複数行にわたって読む文は、1 行に印字します。
-改行は字句解析器にとって空白で、`columns`、辺、幅、形、
+改行は字句解析器にとって空白で、`columns` の文、辺、幅、形、
 composite の見出しの中の改行もそうです。
 改行は空白 1 つに置き換えます。
 ほかの図も同じ規則で文の行をつなぎます（[複数行の文](./xychart.ja.md#複数行の文)
 を参照）。
-node/shape/width と辺の部分、`columns`、class/style の先頭、
+node/shape/width と辺の部分、`columns` の文、class/style の先頭、
 composite の見出しなどの構造隙間では、注釈類の改行を保ちます。
 後続の部分と独立した注釈類行は、ノードの行や composite の内側でも、
 その文より 1 段深くそろえます。
@@ -1618,10 +1618,10 @@ U+2028 を残して `#f00` と印字します）。
 `b %%{x}%%%% x`）。
 コメントが文に接するときは、文の最後の単位が決めます。
 後ろに何も続かないノードの id が最後なら落とし（`b%% x`、`b-->c%% x`、
-`b:2-->c%% x`、`b["x"]-->c%% x`、`b -- "x" --> c%% x`、`b e%% x`）、ラベルか形、
-幅、`columns`、`space`、ブロックの矢印、`end` が最後なら残します（`b["x"]%% x`、
-`b("x")%% x`、`b:2%% x`、`b-->c["x"]%% x`、`b:2-->c["x"]%% x`、`columns 2%% x`、
-`space%% x`）。
+`b:2-->c%% x`、`b["x"]-->c%% x`、`b -- "x" --> c%% x`、`b e%% x`、
+`columns%% x`）、ラベルか形、幅、`columns` の文、`space` の文、ブロックの矢印、
+`end` が最後なら残します（`b["x"]%% x`、`b("x")%% x`、`b:2%% x`、
+`b-->c["x"]%% x`、`b:2-->c["x"]%% x`、`columns 2%% x`、`space%% x`）。
 複合ブロックの `end` も、ほかの文と同じ文です。
 `end;`、`end%% x`、`end %% x` のように U+2028 が残るとき、
 または文がコメント行の後に続くときは、複合ブロック全体を書かれたままにし、
@@ -1957,6 +1957,7 @@ U+2028 と `%% c` を残して `style a fill:#f00;` になります）。
 [test: a node and two U+2029 before a comment line, to the end of the text: both are dropped]
 [test: a node and a comment after a space, two U+2029 before a comment line, to the end of the text: both stay]
 [test: a node and a comment that touches it, two U+2028 before a comment line, to the end of the text: both are dropped]
+[test: a node whose id is columns and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
 
 ### 空白文字
 

@@ -165,23 +165,23 @@ block-beta
 
 Most diagrams stand each statement on a line of its own. A block diagram does
 not, because the line is what the author lays the blocks out by: a run of nodes
-and `space` blocks on one line is a row of the grid that `columns` sets, and the
-documentation of mermaid.js writes them so (`a b c`, `a["A label"] b:2 c:2 d`,
-`Start(("Start")) space:2`). Putting each node on a line of its own would hide
-the rows, and the number of columns would have to be counted again from the
-`columns` statement.
+and `space` blocks on one line is a row of the grid that a `columns` statement
+sets, and the documentation of mermaid.js writes them so (`a b c`,
+`a["A label"] b:2 c:2 d`, `Start(("Start")) space:2`). Putting each node on a
+line of its own would hide the rows, and the number of columns would have to be
+counted again from the `columns` statement.
 
 [fixture: rows/documentation-row-with-widths] [fixture: rows/space-in-a-row]
 
 So a run of node statements, with their widths, shapes, and links, and `space`
 statements on a line stays on that line, with one space between two statements,
 and the line break between two of them in the source stays where it is; empty
-lines become one. Every other statement stands on a line of its own: `columns`,
-the head of a composite, `end`, `classDef`, `class`, `style`, and an empty
-description block, so that a statement after `columns 3` on its line goes to the
-next line (`columns 3 a b c` is printed as `columns 3` and a row `a b c`). The
-printer adds no line break between two statements of a row and removes none, so
-formatting again finds the same rows.
+lines become one. Every other statement stands on a line of its own: a `columns`
+statement, the head of a composite, `end`, `classDef`, `class`, `style`, and an
+empty description block, so that a statement after `columns 3` on its line goes
+to the next line (`columns 3 a b c` is printed as `columns 3` and a row
+`a b c`). The printer adds no line break between two statements of a row and
+removes none, so formatting again finds the same rows.
 
 [fixture: rows/rows-kept] [fixture: rows/line-break-between-statements-kept]
 [fixture: rows/edges-in-a-row] [fixture: rows/touching-statements-apart]
@@ -359,9 +359,9 @@ whitespace there, and the form is one line. `space:2` is printed with the `:`
 touching, as every version of mermaid.js that counts rejects `space :2` and
 `space: 2` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-A `space` and a `columns` are never moved to another place: the last `columns`
-of a block is its columns, wherever it stands, and the order of the blocks is
-the order of the text.
+A `space` statement and a `columns` statement are never moved to another place:
+the last `columns` statement of a block is its columns, wherever it stands, and
+the order of the blocks is the order of the text.
 
 [fixture: columns-and-space/one-space-after-columns] [fixture:
 columns-and-space/tab-after-columns] [fixture:
@@ -995,16 +995,16 @@ block
 ### Multi-line statements
 
 A statement that mermaid.js reads over several lines is printed on one line: the
-line break is whitespace to the lexer, and so are the line breaks in `columns`,
-an edge, a width, a shape, and the head of a composite. The line break is
-replaced by one space; this is how the other diagrams join the lines of a
-statement (see [Multi-line statements](./xychart.md#multi-line-statements)).
+line break is whitespace to the lexer, and so are the line breaks in a `columns`
+statement, an edge, a width, a shape, and the head of a composite. The line
+break is replaced by one space; this is how the other diagrams join the lines of
+a statement (see [Multi-line statements](./xychart.md#multi-line-statements)).
 Keep trivia line breaks in structural gaps, including node/shape/width and edge
-parts, `columns`, class/style heads and composite heads. Place later parts and
-standalone trivia one continuation level inside the statement, also within rows
-and composites. Preserve first gap-line tails, complete directive interiors and
-whole value ranges; block-arrow directions remain as written, except for the
-whitespace after a `,`.
+parts, `columns` statements, class/style heads and composite heads. Place later
+parts and standalone trivia one continuation level inside the statement, also
+within rows and composites. Preserve first gap-line tails, complete directive
+interiors and whole value ranges; block-arrow directions remain as written,
+except for the whitespace after a `,`.
 
 [fixture: multi-line-statements/structural-trivia-continuations] [test: block:
 a-run-of-spaces-after-a-comma-in-a-classdef-that-whitespace-and-a-line-break-join-stays]
@@ -1609,45 +1609,45 @@ whitespace, a space, a run of spaces, or one of the
 comment may touch (`b %%{x}%% %% x`, `b %%{x}%%%% x`). Where the comment touches
 the statement, the last unit of the statement decides: a node id that nothing
 follows loses it (`b%% x`, `b-->c%% x`, `b:2-->c%% x`, `b["x"]-->c%% x`,
-`b -- "x" --> c%% x`, `b e%% x`), and a label or a shape, a width, `columns`,
-`space`, a block arrow, and `end` keep it (`b["x"]%% x`, `b("x")%% x`,
-`b:2%% x`, `b-->c["x"]%% x`, `b:2-->c["x"]%% x`, `columns 2%% x`, `space%% x`).
-The end of a composite block is a statement like the others: where it keeps the
-U+2028 (`end;`, `end%% x`, `end %% x`, or a statement after the comment line),
-the whole composite stays as written, its head and its body unindented
-(`block:G`, `  b`, `end;`, U+2028, and `%% c`), and where it loses it (`end`,
-`end %%{x}%%`) the composite is formatted as usual. The head of a composite
-block always has a statement after it (`end` at least), so it keeps the U+2028
-or U+2029 also with a comment before it, whether the comment touches the head or
-follows it after whitespace, and is formatted as usual (`block:G%% x`, U+2028,
-and `%% c` print `block: G%% x`, U+2028, and `%% c`, and `block:G %% x` prints
-`block: G %% x`). A second U+2028 or U+2029 on the comment line (`b`, U+2028,
-`%% c`, U+2028, and `%% d`) is part of the comment, which runs to the next line
-feed, so it stays as written, whatever follows it on the line: nothing, a
-comment, or the text of a statement. The first one is dropped or stays as the
-rules above say, and where it is dropped the comment line stands on a line of
-its own (`b`, a line break, `%% c`, U+2028, and `%% d`; `b %% c`, U+2028,
-`%% d`, U+2028, and `%% d` are not changed). Two of them in a row before the
-comment (`b`, U+2028, U+2028, and `%% c`) follow the rules above, as one does,
-and so do two U+2029: they are both dropped where the first would be dropped,
-and one line break remains, and both stay where it stays (`b %% x`, `b;`, and
-`b` with a statement after the comment line). Where a statement follows, the
-color stays as written if the statement is on the line right after a comment
-line, and is in lower case if an empty line, a line of whitespace, or a
-directive line stands right before it. Flowchart, class, state, and ER keep the
-line as written in every row where block drops it (ER rejects the row of a
-whitespace-only line), and rule 2 gives their form, so block prints each of
-those rows against rule 2 and waits to be fixed by the rule. On such a line, a
-color before a comma on its line, also after a space, a tab, or a form feed, and
-the last color of the last line, where no `;` that the line rule ignores follows
-it, are in lower case; a color before a comma at the start of the line after the
-comment line stays as written (`#F00`, and `#abc` after it); a color that
-spaces, tabs, or form feeds and characters follow on its line is in lower case
-(`#F00 x`, U+2028, `%% c`, and ` y` print `#f00 x`); and a color that a `;` that
-the line rule ignores touches on a line after the comment line stays as written
-(`#F00`, and `#ABC;` after it; the `;` before the U+2028 is stated below), also
-where any character but a space, a tab, or a form feed separates it from the
-`;`; for a vertical tab or a wide space, the
+`b -- "x" --> c%% x`, `b e%% x`, `columns%% x`), and a label or a shape, a
+width, a `columns` statement, a `space` statement, a block arrow, and `end` keep
+it (`b["x"]%% x`, `b("x")%% x`, `b:2%% x`, `b-->c["x"]%% x`, `b:2-->c["x"]%% x`,
+`columns 2%% x`, `space%% x`). The end of a composite block is a statement like
+the others: where it keeps the U+2028 (`end;`, `end%% x`, `end %% x`, or a
+statement after the comment line), the whole composite stays as written, its
+head and its body unindented (`block:G`, `  b`, `end;`, U+2028, and `%% c`), and
+where it loses it (`end`, `end %%{x}%%`) the composite is formatted as usual.
+The head of a composite block always has a statement after it (`end` at least),
+so it keeps the U+2028 or U+2029 also with a comment before it, whether the
+comment touches the head or follows it after whitespace, and is formatted as
+usual (`block:G%% x`, U+2028, and `%% c` print `block: G%% x`, U+2028, and
+`%% c`, and `block:G %% x` prints `block: G %% x`). A second U+2028 or U+2029 on
+the comment line (`b`, U+2028, `%% c`, U+2028, and `%% d`) is part of the
+comment, which runs to the next line feed, so it stays as written, whatever
+follows it on the line: nothing, a comment, or the text of a statement. The
+first one is dropped or stays as the rules above say, and where it is dropped
+the comment line stands on a line of its own (`b`, a line break, `%% c`, U+2028,
+and `%% d`; `b %% c`, U+2028, `%% d`, U+2028, and `%% d` are not changed). Two
+of them in a row before the comment (`b`, U+2028, U+2028, and `%% c`) follow the
+rules above, as one does, and so do two U+2029: they are both dropped where the
+first would be dropped, and one line break remains, and both stay where it stays
+(`b %% x`, `b;`, and `b` with a statement after the comment line). Where a
+statement follows, the color stays as written if the statement is on the line
+right after a comment line, and is in lower case if an empty line, a line of
+whitespace, or a directive line stands right before it. Flowchart, class, state,
+and ER keep the line as written in every row where block drops it (ER rejects
+the row of a whitespace-only line), and rule 2 gives their form, so block prints
+each of those rows against rule 2 and waits to be fixed by the rule. On such a
+line, a color before a comma on its line, also after a space, a tab, or a form
+feed, and the last color of the last line, where no `;` that the line rule
+ignores follows it, are in lower case; a color before a comma at the start of
+the line after the comment line stays as written (`#F00`, and `#abc` after it);
+a color that spaces, tabs, or form feeds and characters follow on its line is in
+lower case (`#F00 x`, U+2028, `%% c`, and ` y` print `#f00 x`); and a color that
+a `;` that the line rule ignores touches on a line after the comment line stays
+as written (`#F00`, and `#ABC;` after it; the `;` before the U+2028 is stated
+below), also where any character but a space, a tab, or a form feed separates it
+from the `;`; for a vertical tab or a wide space, the
 [Colors](./compatibility.md#colors-that-are-drawn-the-same) rule prints it in
 lower case, so that form is printed against the rule and waits to be fixed by
 it. Where the line before the U+2028 holds a `;`, the line is kept: the U+2028
@@ -2103,7 +2103,8 @@ semicolon, two U+2028 before a comment line, to the end of the text: both stay]
 are dropped] [test: a node and a comment after a space, two U+2029 before a
 comment line, to the end of the text: both stay] [test: a node and a comment
 that touches it, two U+2028 before a comment line, to the end of the text: both
-are dropped]
+are dropped] [test: a node whose id is columns and a comment that touches it, to
+the end of the text, after a U+2028: the U+2028 is dropped]
 
 ### Whitespace characters
 

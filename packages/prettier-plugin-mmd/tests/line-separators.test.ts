@@ -6523,6 +6523,11 @@ const blockLineSeparatorExamples: readonly (readonly [
     "block-beta\na\nb%% x\u2028\u2028%% c\n",
     "block-beta\n  a\n  b%% x\n  %% c\n",
   ],
+  [
+    "a node whose id is columns and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\ncolumns%% x\u2028%% c\n",
+    "block-beta\n  a\n  columns%% x\n  %% c\n",
+  ],
 ]
 
 /**
