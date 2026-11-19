@@ -364,10 +364,8 @@ mermaid.js のドキュメントの例にある名前付きの項目の曲線 1 
 コロンのない書き方の例はありません。
 `North 4` と `North: 4` は、対象にする版で同じ Db と図になり、
 整形はコロンを足しも除きもしません。
-書かれたままの形は、決めるまで残します。
-詳しくは
-[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
-を参照してください。
+規則 3 がコロンのある形を与えるので、
+コロンのない名前は規則 3 に反して印字しており、規則による修正を待っています。
 軸名 `accTitle` と `accDescr` へのコロン追加は安全ではありません。
 共通の複合トークンが優先してしまううえ、
 対象にする版の mermaid.js のすべてが `curve c{accTitle: 1, accDescr 2}`
@@ -521,14 +519,16 @@ radar-beta
 コメントやディレクティブを挟んでも、次の物理行から値を取りません。
 注釈類のある値と保護区間は原文の間隙を保ちます。
 題やアクセシビリティの行のテキストの後の `;` は残します。
-テキストがそれを持ち、あるときとないときで、12.3.0 の Db も、
-対象にするどの版の描かれるテキストも違うからです。
-mermaid.js の行の規則がその行に働くとき、`;` が 2 つ続くと、
-規則が最後の `;` を無視し、1 つ除くと別の `;` を無視するようになります。
-規則が働く行は [`;` を含む行](./compatibility.ja.md#-を含む行)に、
+mermaid.js の行の規則がその行に働かないとき、
+たとえば `title T;` や `title T;;` だけの行では、テキストがその `;` を持ち、
+あるときとないときで、12.3.0 の Db も、
+対象にするどの版の描かれるテキストも違います。
+規則が働く行は [`;` を含む行](./compatibility.ja.md#-を含む行)にあります。
+規則がその行に働くとき、`;` が 1 つなら、規則がそれを無視し、
+テキストは持ちませんが、それでも残します（`title style:#red;`）。
+`;` が 2 つ続くと、規則が最後の `;` を無視し、
+1 つ除くと別の `;` を無視するようになります。
 詳しくは [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)にあります。
-規則が働かないとき、たとえば `title T;;` だけの行では、
-テキストが両方の `;` を持ちます。
 題にテキストがあり、そのテキストの前にも中にもディレクティブがなく、
 最後のディレクティブの後が空白とタブだけのときは、題の終わりのディレクティブを、
 それぞれの前に空白かタブがあれば空白 1 つを置き、
@@ -560,6 +560,7 @@ U+2029 のどれかがあるときは、その前に空白やタブがあって�
 [fixture: radar/title/title-directive-semicolon-kept]
 [fixture: radar/title/title-two-semicolons-kept]
 [fixture: radar/semicolons/semicolon-selected-kept]
+[fixture: radar/semicolons/title-single-ignored-semicolon-kept]
 [test: a no-break space after the last directive of a title of a radar chart]
 [test: U+3000 after the last directive of a title of a radar chart]
 [test: U+2028 after the last directive of a title of a radar chart]
@@ -575,6 +576,9 @@ U+2029 のどれかがあるときは、その前に空白やタブがあって�
 [test: U+2029 before the directive that ends a title of a radar chart]
 [test: a no-break space before a directive that a space and another directive follow in a title of a radar chart]
 [test: U+3000 before a directive that a space and a comment follow in a title of a radar chart]
+[test: a tab and a no-break space after the last directive of a title of a radar chart]
+[test: U+3000 before a directive that a comment touches in a title of a radar chart]
+[test: U+3000 before two directives that touch and end a title of a radar chart]
 
 [fixture: radar/title/title-empty]
 
@@ -609,14 +613,16 @@ radar-beta
 コロン後の波括弧は行値のままです。
 注釈類・隠れた形・セミコロンの保護を優先します。
 題やアクセシビリティの行のテキストの後の `;` は残します。
-テキストがそれを持ち、あるときとないときで、12.3.0 の Db も、
-対象にするどの版の描かれるテキストも違うからです。
-mermaid.js の行の規則がその行に働くとき、`;` が 2 つ続くと、
-規則が最後の `;` を無視し、1 つ除くと別の `;` を無視するようになります。
-規則が働く行は [`;` を含む行](./compatibility.ja.md#-を含む行)に、
+mermaid.js の行の規則がその行に働かないとき、
+たとえば `title T;` や `title T;;` だけの行では、テキストがその `;` を持ち、
+あるときとないときで、12.3.0 の Db も、
+対象にするどの版の描かれるテキストも違います。
+規則が働く行は [`;` を含む行](./compatibility.ja.md#-を含む行)にあります。
+規則がその行に働くとき、`;` が 1 つなら、規則がそれを無視し、
+テキストは持ちませんが、それでも残します（`title style:#red;`）。
+`;` が 2 つ続くと、規則が最後の `;` を無視し、
+1 つ除くと別の `;` を無視するようになります。
 詳しくは [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)にあります。
-規則が働かないとき、たとえば `title T;;` だけの行では、
-テキストが両方の `;` を持ちます。
 値にテキストがあり、そのテキストの前にも中にもディレクティブがなく、
 最後のディレクティブの後が空白とタブだけのときは、値の終わりのディレクティブを、
 それぞれの前に空白かタブがあれば空白 1 つを置き、
@@ -651,7 +657,10 @@ U+2029 のどれかがあるときは、その前に空白やタブがあって�
 [fixture: radar/accessibility-lines/accdescr-lone-semicolon-kept]
 [fixture: radar/accessibility-lines/accdescr-directive-semicolon-kept]
 [fixture: radar/accessibility-lines/accdescr-two-semicolons-kept]
-[fixture: radar/semicolons/semicolon-selected-kept]
+[fixture: radar/accessibility-lines/acctitle-selected-semicolon-kept]
+[fixture: radar/accessibility-lines/acctitle-selected-two-semicolons-kept]
+[fixture: radar/accessibility-lines/accdescr-selected-semicolon-kept]
+[fixture: radar/accessibility-lines/accdescr-selected-two-semicolons-kept]
 [test: a no-break space after the last directive of an accTitle line of a radar chart]
 [test: a no-break space before the directive that ends an accTitle line of a radar chart]
 [test: a no-break space after the last directive of an accDescr line of a radar chart]
@@ -659,6 +668,17 @@ U+2029 のどれかがあるときは、その前に空白やタブがあって�
 [test: U+2028 before the directive that ends an accTitle line of a radar chart]
 [test: a no-break space before a directive that a space and a comment follow in an accDescr line of a radar chart]
 [test: the gap before the colon of an accTitle line with a no-break space after its last directive of a radar chart]
+[test: U+3000 after the last directive of an accTitle line of a radar chart]
+[test: U+2028 after the last directive of an accTitle line of a radar chart]
+[test: U+2029 after the last directive of an accTitle line of a radar chart]
+[test: U+3000 before the directive that ends an accTitle line of a radar chart]
+[test: U+2029 before the directive that ends an accTitle line of a radar chart]
+[test: U+3000 after the last directive of an accDescr line of a radar chart]
+[test: U+2028 after the last directive of an accDescr line of a radar chart]
+[test: U+2029 after the last directive of an accDescr line of a radar chart]
+[test: U+3000 before the directive that ends an accDescr line of a radar chart]
+[test: U+2028 before the directive that ends an accDescr line of a radar chart]
+[test: U+2029 before the directive that ends an accDescr line of a radar chart]
 
 [fixture: radar/accessibility-lines/a11y-empty-next]
 
