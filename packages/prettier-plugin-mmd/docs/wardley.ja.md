@@ -744,21 +744,19 @@ U+205F、U+3000、U+FEFF のどれかです。
   その並び方によらずコメント行とともに取り除かれます。
   空行、空白だけの行、ディレクティブの行、字下げのあるディレクティブ、
   後ろに空白が続くディレクティブ、空白が間にあるディレクティブ（`%%{y}%%`、
-  空白 2 つ、`%%{z}%%`）は取り除かれ、`;`、文字、U+0085、
-  U+180E を含む行は文です。
+  空白 2 つ、`%%{z}%%`）は取り除かれ、文字、U+0085、U+180E、
+  コメントとディレクティブの外の `;` を含む行は文です。
+  コメントの中やディレクティブの中の `;` は、行を文にしません（`%% e;`、
+  `%%{y}%% %% e;`、`%%{y;z}%%` は取り除かれます）。
 - 幅のある空白がディレクティブの間にあるときは、
   最後のディレクティブの後に何が続いても、行を書かれたままにします。
-  U+2028 か U+2029 がディレクティブの間にあり、その後に何も続かない、
-  空白かタブが続く、
-  または最後のディレクティブに接するコメントが続くときも同じです。
-  最後のディレクティブ、空白、タブ、幅のある空白、
-  コメントが U+2028 か U+2029 の後に続くときは、
+  U+2028 か U+2029 がディレクティブの間にあり、
+  最後のディレクティブの後に何も続かない、または空白かタブが続くときも同じです。
+  最後のディレクティブの後にコメントが、接して、または空白、タブ、
+  幅のある空白を挟んで続き、U+2028 か U+2029 がディレクティブの間にあるときは、
   項目 6 と同じようにコメント領域が次の行を結びます。
-  項目 6 が行を書かれたままにする場合は書かれたままにし、
-  項目 6 が行を分ける場合は、U+2028 か U+2029 を残し、
-  コメントの前の連なりを空白 1 つで印字します。
-  ただし、行のもっと前に別の U+2028 か U+2029 があるときは、
-  一覧の後の段落が決めます。
+  項目 6 が行を書かれたままにする場合は、連なりも含めて書かれたままにし、
+  項目 6 が行を分ける場合は、一覧の後の段落が印字を決めます。
 - `;` がディレクティブの前のテキスト（mermaid.js
   の行の規則が無視するものも含みます）にあるか、ディレクティブの中にあるときは、
   最後の `;` までの行は、それを含むディレクティブも含めて、
@@ -782,30 +780,29 @@ U+205F、U+3000、U+FEFF のどれかです。
   後に続くコメントの中の `;` も同じです。
 - 最後のディレクティブの後に幅のある空白があるときは、
   その前に空白やタブがあっても、その後に何が続いても、行を書かれたままにします。
-  U+2028 か U+2029 がそこにあり、その後に何も続かない、
-  または接するコメントが続くときも同じです。
-  U+2028 か U+2029 の後に空白、タブ、幅のある空白とコメントが続くときは、
+  U+2028 か U+2029 がそこにあり、その後に何も続かないときも同じです。
+  U+2028 か U+2029 の後にコメントが、接して、または空白、タブ、
+  幅のある空白を挟んで続くときは、
   項目 6 と同じようにコメント領域が次の行を結びます。
-  項目 6 が行を書かれたままにする場合は書かれたままにし、
-  項目 6 が行を分ける場合は、U+2028 か U+2029 を残し、
-  コメントの前の連なりを空白 1 つで印字します。
-  ただし、行のもっと前に別の U+2028 か U+2029 があるときは、
-  一覧の後の段落が決めます。
+  項目 6 が行を書かれたままにする場合は、連なりも含めて書かれたままにし、
+  項目 6 が行を分ける場合は、一覧の後の段落が印字を決めます。
   テキストの中にディレクティブのある題も、書かれたままです。
 
-U+2028 か U+2029 が 2 つのディレクティブの間にあり、
-最後のディレクティブの後にも別のものがあって、コメントが続き、
-項目 6 が行を分けるときは、最初のものは、前後の隙間も書かれたまま残り、
-後のものはどれも改行になります。
-改行の後のディレクティブは行を独立させ、コメントも、
-その前の空白を除いて行を独立させます（`title T %%{x}%%`、U+2028、`%%{y}%%`、
-U+2028、`%% c` は、`title T %%{x}%%`、U+2028、`%%{y}%%`、改行、
-`%% c` になります。ディレクティブが 3 つあるとき、`title T %%{x}%%`、U+2028、
-`%%{x}%%`、U+2028、`%%{y}%%`、U+2028、`%% c` は、`title T %%{x}%%`、U+2028、
-`%%{x}%%`、改行、`%%{y}%%`、改行、`%% c` になります）。
+ディレクティブの前に U+2028 も U+2029 もなく、
+最後のディレクティブの後にコメントが続き、U+2028 か U+2029 が 1 つ以上、
+2 つのディレクティブの間か最後のディレクティブの後にあるとき、
+項目 6 が行を分けるなら、最初のものは残り、その前の隙間は書かれたままで、
+その後の隙間とコメントの前の隙間は、空白があれば空白 1 つで印字します。
+後のものはどれも改行になり、改行の後のディレクティブは行を独立させ、コメントも、
+その前の空白を除いて行を独立させます（`title T %%{x}%%`、U+2028、空白 2 つ、
+`%%{y}%%`、U+2028、`%% c` は、`title T %%{x}%%`、U+2028、空白 1 つ、`%%{y}%%`、
+改行、`%% c` になります。`title T %%{x}%%`、U+2028、`%%{y}%%`、U+2028、
+`%%{z}%%`、空白、`%% c` は、`title T %%{x}%%`、U+2028、`%%{y}%%`、改行、
+`%%{z}%% %% c` になります）。
 ディレクティブの前にもあるときは、項目 6 が当たり、どれも改行になります。
-項目 6 が行を書かれたままにするときは、書かれたままにします。
-項目 7 と項目 10 は、そのような行には当たりません。
+項目 6 が行を書かれたままにするときは、連なりも含めて書かれたままにします。
+項目 7 と項目 10 は U+2028 か U+2029 が 1 つの行を述べ、
+2 つ以上ある行はこの段落が印字します。
 
 最後のディレクティブの後にコメントが続き、
 テキストとコメントの間に U+2028 も U+2029 もなく、
@@ -842,7 +839,9 @@ U+2028 や U+2029 でも、空白 1 つで印字します（`title`、空白、`
 最後のディレクティブの後に空白文字が続くとき、
 またはその後に空白を挟んでコメントが続くときは、行を書かれたままにします。
 そのような題の最後のディレクティブの後の `;` は、
-その `;` までの行を書かれたままにし、その後の空白は除き、
+その `;` までの行を書かれたままにし、その後の空白、タブ、幅のある空白は除き、
+コメントが続かないときにその後に U+2028 か U+2029 があれば、
+その前の空白とともに残し、最後のものの後の空白とタブは除き、
 コメントの前の隙間は空白 1 つにします（`title`、空白、`%%{x}%%`、空白 2 つ、
 `;`、空白 2 つ、`%% c` は `title %%{x}%%  ; %% c` になります）。
 最後のディレクティブの後のコメントの中の `;` は最後の `;` で、
@@ -1853,8 +1852,8 @@ U+2028 や U+2029 でも、空白 1 つで印字します（`title`、空白、`
 [test: U+2028 between two directives and after the last, a comment follows after spaces, a comment line and a statement follow, in a title of a Wardley map]
 [test: U+2028 between two directives and after the last, a comment follows after spaces, a comment line follows and the text ends, in a title of a Wardley map]
 [test: U+2028 between two directives and after the last, a comment follows after spaces, a directive line follows and the text ends, in a title of a Wardley map]
-[test: U+2028 between the first and the second of three directives and between the second and the third, a comment touches the last, the text ends, in a title of a Wardley map]
-[test: U+2028 between two directives, after the last, and before the directives, a comment touches the last, the text ends, in a title of a Wardley map]
+[test: U+2028 between the first and the second of three directives, between the second and the third, and after the third, a comment touches it, the text ends, in a title of a Wardley map]
+[test: U+2028 before the directives, between two directives, and after the last, a comment touches it, the text ends, in a title of a Wardley map]
 [test: U+2028 between two directives of a title of directives only and after the last, a comment follows after spaces, the text ends, in a title of a Wardley map]
 [test: U+2028 after the last directive, a no-break space and a comment after it, the text ends, in a title of a Wardley map]
 [test: U+2028 between two directives, a no-break space and a comment after the last, the text ends, in a title of a Wardley map]
@@ -1863,6 +1862,55 @@ U+2028 や U+2029 でも、空白 1 つで印字します（`title`、空白、`
 [test: U+2028 after the last directive, a space and a no-break space and a comment after it, the text ends, in a title of a Wardley map]
 [test: U+2028 between two directives, a space and a no-break space and a comment after the last, the text ends, in a title of a Wardley map]
 [test: U+2028 after the last directive, a no-break space and a comment after it, a statement follows, in a title of a Wardley map]
+[test: U+2028 between two directives and after the last, two spaces after the first, a comment touches the last U+2028, the text ends, in a title of a Wardley map]
+[test: U+2028 between two directives and after the last, a tab after the first, a comment touches the last U+2028, the text ends, in a title of a Wardley map]
+[test: U+2028 between two directives and after the last, a no-break space after the first, a comment touches the last U+2028, the text ends, in a title of a Wardley map]
+[test: U+2028 between two directives and after the last, U+3000 after the first, a comment touches the last U+2028, the text ends, in a title of a Wardley map]
+[test: U+2028 between two directives and after the last, two spaces before the first, a comment touches the last U+2028, the text ends, in a title of a Wardley map]
+[test: U+2028 between two directives and after the last, a tab before the first, a comment touches the last U+2028, the text ends, in a title of a Wardley map]
+[test: U+2028 between two directives and after the last, a no-break space before the first, a comment touches the last U+2028, the text ends, in a title of a Wardley map]
+[test: U+2029 between two directives, two spaces after it, and U+2028 after the last, a comment touches the last U+2028, the text ends, in a title of a Wardley map]
+[test: U+2028 between two directives of a title of directives only, two spaces after it, and U+2028 after the last, a comment touches the last U+2028, the text ends, in a title of a Wardley map]
+[test: U+2028 between two directives, two spaces after it, and U+2028 after the last, a comment touches the last U+2028, a statement follows, in a title of a Wardley map]
+[test: U+2028 between two directives, two spaces after it, a comment touches the last directive, the text ends, in a title of a Wardley map]
+[test: U+2028 between two directives, two spaces after it, a comment follows the last directive after spaces, the text ends, in a title of a Wardley map]
+[test: U+2028 between two directives, a no-break space before the comment, the text ends, in a title of a Wardley map]
+[test: U+2028 between two directives, two spaces after it, a comment touches the last directive, a statement follows, in a title of a Wardley map]
+[test: U+2028 between the first and the second of three directives and between the second and the third, a comment follows the third after a space, the text ends, in a title of a Wardley map]
+[test: U+2028 between the first and the second of three directives and between the second and the third, a comment touches the third, the text ends, in a title of a Wardley map]
+[test: U+2029 between the first and the second of three directives and between the second and the third, a comment follows the third after two spaces, the text ends, in a title of a Wardley map]
+[test: U+2028 between the first and the second of three directives and between the second and the third, a comment follows the third after a space, a statement follows, in a title of a Wardley map]
+[test: U+2028 between the first and the second of three directives and between the second and the third of a title of directives only, a comment follows the third after a space, the text ends, in a title of a Wardley map]
+[test: U+2028 between two directives and after the last, a comment line stands between the last U+2028 and a statement, in a title of a Wardley map]
+[test: a `;` after the last directive, touching the directive, U+2028 after it, the text ends, in a title of a Wardley map]
+[test: a `;` after the last directive, two spaces after the directive, U+2028 after it, the text ends, in a title of a Wardley map]
+[test: a `;` after the last directive, touching the directive, U+2029 after it, the text ends, in a title of a Wardley map]
+[test: a `;` after the last directive, two spaces after the directive, U+2029 after it, the text ends, in a title of a Wardley map]
+[test: a `;` after the last directive, touching the directive, a space and U+2028 after it, the text ends, in a title of a Wardley map]
+[test: a `;` after the last directive, two spaces after the directive, a space and U+2028 after it, the text ends, in a title of a Wardley map]
+[test: a `;` after the last directive, touching the directive, U+2028 and a space after it, the text ends, in a title of a Wardley map]
+[test: a `;` after the last directive, two spaces after the directive, U+2028 and a space after it, the text ends, in a title of a Wardley map]
+[test: a `;` after the last directive, touching the directive, a no-break space and U+2028 after it, the text ends, in a title of a Wardley map]
+[test: a `;` after the last directive, two spaces after the directive, a no-break space and U+2028 after it, the text ends, in a title of a Wardley map]
+[test: a `;` after the last directive, touching the directive, U+2028 and a no-break space after it, the text ends, in a title of a Wardley map]
+[test: a `;` after the last directive, two spaces after the directive, U+2028 and a no-break space after it, the text ends, in a title of a Wardley map]
+[test: a `;` after the last directive, touching the directive, U+2028, a space, and U+2028 after it, the text ends, in a title of a Wardley map]
+[test: a `;` after the last directive, two spaces after the directive, U+2028, a space, and U+2028 after it, the text ends, in a title of a Wardley map]
+[test: a `;` after the last directive, touching the directive, two spaces and U+2028 after it, the text ends, in a title of a Wardley map]
+[test: a `;` after the last directive, two spaces after the directive, two spaces and U+2028 after it, the text ends, in a title of a Wardley map]
+[test: a `;` after the last directive, touching the directive, a no-break space after it, the text ends, in a title of a Wardley map]
+[test: a `;` after the last directive, two spaces after the directive, a no-break space after it, the text ends, in a title of a Wardley map]
+[test: a `;` after the last directive, touching the directive, U+3000 after it, the text ends, in a title of a Wardley map]
+[test: a `;` after the last directive, two spaces after the directive, U+3000 after it, the text ends, in a title of a Wardley map]
+[test: a `;` after the last directive, U+2028 after it, a statement follows, in a title of a Wardley map]
+[test: a `;` after the last directive, two spaces and U+2028 after it, a statement follows, in a title of a Wardley map]
+[test: a `;` after the last directive, a no-break space after it, a statement follows, in a title of a Wardley map]
+[test: a `;`, two spaces, a `;`, and U+2028 after the last directive, the text ends, in a title of a Wardley map]
+[test: a line of a directive and a `;` before a comment line after a U+2028 before a directive, the text ends, in a title of a Wardley map]
+[test: a line of a `;` and a comment before a comment line after a U+2028 before a directive, the text ends, in a title of a Wardley map]
+[test: a line of a comment that holds a `;` before a comment line after a U+2028 before a directive, the text ends, in a title of a Wardley map]
+[test: a line of a directive and a comment that holds a `;` before a comment line after a U+2028 before a directive, the text ends, in a title of a Wardley map]
+[test: a line of a directive that holds a `;` before a comment line after a U+2028 before a directive, the text ends, in a title of a Wardley map]
 
 [fixture: wardley/title/title-empty]
 
@@ -1905,8 +1953,9 @@ U+205F、U+3000、U+FEFF のどれかです。
 ここでは述べません。
 コロンはキーワードに接するので、コロンの前の隙間は、
 行を書かれたままにするときも、隙間なしで印字します。
-ただし `;` のある行では、
-コロンとテキストの間に U+2028 か U+2029 がある場合を除き、
+ただし、
+行のどの U+2028 や U+2029 よりも前に `;`
+があるときは（ディレクティブやコメントの中の `;` も）、
 その隙間も書かれたままです。
 
 - ディレクティブの前が空白とタブだけ、または何もなく、その前のテキストにも、
@@ -1952,32 +2001,27 @@ U+205F、U+3000、U+FEFF のどれかです。
   後に続くコメントの中の `;` も同じです。
 - 幅のある空白がディレクティブの間にあるときは、
   最後のディレクティブの後に何が続いても、行を書かれたままにします。
-  U+2028 か U+2029 がディレクティブの間にあり、その後に何も続かない、
-  空白かタブが続く、
-  または最後のディレクティブに接するコメントが続くときも同じです。
-  最後のディレクティブ、空白、タブ、幅のある空白、
-  コメントが U+2028 か U+2029 の後に続くときは、
+  U+2028 か U+2029 がディレクティブの間にあり、
+  最後のディレクティブの後に何も続かない、または空白かタブが続くときも同じです。
+  最後のディレクティブの後にコメントが、接して、または空白、タブ、
+  幅のある空白を挟んで続き、U+2028 か U+2029 がディレクティブの間にあるときは、
   題の一覧の項目 6 と同じようにコメント領域が次の行を結びます。
-  題の一覧の項目 6 が行を書かれたままにする場合は書かれたままにし、
-  題の一覧の項目 6 が行を分ける場合は、U+2028 か U+2029 を残し、
-  コメントの前の連なりを空白 1 つで印字します。
-  ただし、行のもっと前に別の U+2028 か U+2029 があるときは、
-  題の一覧の後の段落が決めます。
+  題の一覧の項目 6 が行を書かれたままにする場合は、
+  連なりも含めて書かれたままにし、題の一覧の項目 6 が行を分ける場合は、
+  題の一覧の後の段落が印字を決めます。
 - 最後のディレクティブの後に幅のある空白があるときは、
   その前に空白やタブがあっても、その後に何が続いても、行を書かれたままにします。
-  U+2028 か U+2029 がそこにあり、その後に何も続かない、
-  または接するコメントが続くときも同じです。
-  U+2028 か U+2029 の後に空白、タブ、幅のある空白とコメントが続くときは、
+  U+2028 か U+2029 がそこにあり、その後に何も続かないときも同じです。
+  U+2028 か U+2029 の後にコメントが、接して、または空白、タブ、
+  幅のある空白を挟んで続くときは、
   題の一覧の項目 6 と同じようにコメント領域が次の行を結びます。
-  題の一覧の項目 6 が行を書かれたままにする場合は書かれたままにし、
-  題の一覧の項目 6 が行を分ける場合は、U+2028 か U+2029 を残し、
-  コメントの前の連なりを空白 1 つで印字します。
-  ただし、行のもっと前に別の U+2028 か U+2029 があるときは、
-  題の一覧の後の段落が決めます。
+  題の一覧の項目 6 が行を書かれたままにする場合は、
+  連なりも含めて書かれたままにし、題の一覧の項目 6 が行を分ける場合は、
+  題の一覧の後の段落が印字を決めます。
   テキストの中にディレクティブのある値も、書かれたままです。
 
-U+2028 か U+2029 が 2 つのディレクティブの間にあり、
-最後のディレクティブの後にも別のものがあって、コメントが続くときは、
+U+2028 か U+2029 が 1 つ以上、
+2 つのディレクティブの間か最後のディレクティブの後にあり、コメントが続くときは、
 [題の一覧](#title)の後の段落と同じに印字します。
 
 最後のディレクティブの後にコメントが続き、
@@ -2009,7 +2053,12 @@ U+2028 か U+2029 が 2 つのディレクティブの間にあり、
 
 `;` があってディレクティブのない `accTitle:` や `accDescr:` の行は、
 最後の `;` までを書かれたままにします（[セミコロン](#セミコロン)を参照）。
-コロンの前の隙間も同じです（`accTitle : T;` は変わりません）。
+行のどの U+2028 や U+2029 よりも前に `;` があるときは、
+コロンの前の隙間も同じです（`accTitle : T;` と、`accTitle : T;`、U+2028、
+`U` は変わりません）。
+最初の `;` の前に U+2028 か U+2029 があるときは、コロンの前の隙間は除き、
+残りは最後の `;` まで書かれたままにします（`accTitle : T`、U+2028、
+`U;` は `accTitle: T`、U+2028、`U;` になります）。
 コロンとテキストの間の U+2028 と U+2029 は、テキストが接するときは、
 コロンの前の隙間とともに除き（`accTitle : `、U+2028、
 `T;` は `accTitle: T;` になります）、空白などが間にあるときは残し、
@@ -2031,7 +2080,6 @@ U+2028、空白、`T;` になります）。
 [fixture: wardley/accessibility/access-lines]
 [fixture: wardley/accessibility/access-empty]
 [fixture: wardley/accessibility/access-colon-touching]
-[test: wardley/accessibility/unicode-empty-description]
 [test: a no-break space after the last directive of an accTitle line of a Wardley map]
 [test: a no-break space before the directive that ends an accTitle line of a Wardley map]
 [test: a no-break space after the last directive of an accDescr line of a Wardley map]
@@ -2658,6 +2706,17 @@ U+2028、空白、`T;` になります）。
 [test: a directive that two spaces follow, before a comment line after a U+2028 before a directive, the text ends, in an accDescr line of a Wardley map]
 [test: U+2028 between two directives and after the last, a comment follows after spaces, the text ends, in an accTitle line of a Wardley map]
 [test: U+2028 between two directives and after the last, a comment follows after spaces, the text ends, in an accDescr line of a Wardley map]
+[test: U+2028 between two directives and after the last, two spaces after the first, a comment touches the last U+2028, the text ends, in an accTitle line of a Wardley map]
+[test: U+2028 between two directives and after the last, two spaces after the first, a comment touches the last U+2028, the text ends, in an accDescr line of a Wardley map]
+[test: U+2028 between the first and the second of three directives and between the second and the third, a comment follows the third after a space, the text ends, in an accTitle line of a Wardley map]
+[test: U+2028 between the first and the second of three directives and between the second and the third, a comment follows the third after a space, the text ends, in an accDescr line of a Wardley map]
+[test: accTitle with a gap before the colon, a `;` before a U+2028, the text ends, in an accTitle line of a Wardley map]
+[test: accTitle with a gap before the colon, a `;` after the U+2028, the text ends, in an accTitle line of a Wardley map]
+[test: accDescr with a gap before the colon, a `;` before a U+2028, the text ends, in an accDescr line of a Wardley map]
+[test: accDescr with a gap before the colon, a `;` after the U+2028, the text ends, in an accDescr line of a Wardley map]
+[test: accTitle with a gap before the colon, a `;` inside a directive that touches the text, the text ends, in an accTitle line of a Wardley map]
+[test: accTitle with a gap before the colon, a `;` inside a comment after the text, the text ends, in an accTitle line of a Wardley map]
+[test: accTitle with a gap before the colon, a `;` right after the colon and a U+2028 after it, the text ends, in an accTitle line of a Wardley map]
 
 1 行の説明ブロックは、
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。

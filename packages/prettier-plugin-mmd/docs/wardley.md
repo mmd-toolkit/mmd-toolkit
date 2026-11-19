@@ -707,17 +707,18 @@ stated here:
   comments, whatever their arrangement: an empty line, a line of whitespace, a
   directive line, an indented directive, a directive that whitespace follows,
   and directives that whitespace separate (`%%{y}%%`, two spaces, and `%%{z}%%`)
-  are removed, and a line that holds a `;`, text, U+0085, or U+180E is a
-  statement.
+  are removed, and a line that holds text, U+0085, U+180E, or a `;` outside a
+  comment and a directive is a statement; a `;` inside a comment or a directive
+  does not make a line one (`%% e;`, `%%{y}%% %% e;`, and `%%{y;z}%%` are
+  removed).
 - Where a wide space stands between two directives, the line stays as written,
   whatever follows the last one. So it does where a U+2028 or U+2029 stands
-  between two directives and nothing, spaces or tabs, or a comment that touches
-  the last one follows. Where the last directive, spaces, tabs, or wide spaces,
-  and a comment follow the U+2028 or U+2029, the comment region joins the next
-  line of the source, as in item 6: where item 6 keeps the lines, they stay as
-  written, and where item 6 would split the line, the U+2028 or U+2029 stays and
-  the run before the comment is printed as one space, unless another U+2028 or
-  U+2029 stands earlier in the line, as the paragraph after the list says.
+  between two directives and nothing, spaces, or tabs follow the last one. Where
+  a comment follows the last directive, touching it or after spaces, tabs, or
+  wide spaces, and a U+2028 or U+2029 stands between two directives, the comment
+  region joins the next line of the source, as in item 6: where item 6 keeps the
+  lines, they stay as written, runs included, and where item 6 would split the
+  line, the paragraph after the list says how it is printed.
 - Where a `;` stands in the text before the directives, whether the line rule of
   mermaid.js ignores it or not, or inside a directive, the line through the last
   `;`, with the directive that holds it, stays as written (see
@@ -738,27 +739,28 @@ stated here:
   that follows the last directive.
 - Where a wide space stands after the last directive, also after spaces or tabs,
   the line stays as written, whatever follows the character. So it does where a
-  U+2028 or U+2029 stands there and nothing follows it, or a comment touches it.
-  Where spaces, tabs, or wide spaces and a comment follow the U+2028 or U+2029,
-  the comment region joins the next line of the source, as in item 6: where item
-  6 keeps the lines, they stay as written, and where item 6 would split the
-  line, the U+2028 or U+2029 stays and the run before the comment is printed as
-  one space, unless another U+2028 or U+2029 stands earlier in the line, as the
-  paragraph after the list says. A title with a directive inside its text stays
-  as written too.
+  U+2028 or U+2029 stands there and nothing follows it. Where a comment follows
+  the U+2028 or U+2029, touching it or after spaces, tabs, or wide spaces, the
+  comment region joins the next line of the source, as in item 6: where item 6
+  keeps the lines, they stay as written, runs included, and where item 6 would
+  split the line, the paragraph after the list says how it is printed. A title
+  with a directive inside its text stays as written too.
 
-Where a U+2028 or U+2029 stands between two directives, another stands after the
-last directive, and a comment follows, and item 6 would split the line, the
-first of them stays, with the gaps around it as written, and each later one is a
+Where no U+2028 or U+2029 stands before the directives, a comment follows the
+last directive, one or more U+2028 or U+2029 stand between two directives or
+after the last one, and item 6 would split the line, the first of them stays,
+with the gap before it as written, and the gap after it and the gap before the
+comment are printed as one space where they hold whitespace; each later one is a
 line break: the directives after a line break stand on a line of their own, and
 so does the comment, with the whitespace before it left out (`title T %%{x}%%`,
-U+2028, `%%{y}%%`, U+2028, and `%% c` are printed `title T %%{x}%%`, U+2028,
-`%%{y}%%`, a line break, and `%% c`; with a third directive, `title T %%{x}%%`,
-U+2028, `%%{x}%%`, U+2028, `%%{y}%%`, U+2028, and `%% c` are printed
-`title T %%{x}%%`, U+2028, `%%{x}%%`, a line break, `%%{y}%%`, a line break, and
-`%% c`). Where one stands before the directives too, item 6 applies, and all of
-them are line breaks. Where item 6 keeps the lines, they stay as written. Items
-7 and 10 do not apply to such a line.
+U+2028, two spaces, `%%{y}%%`, U+2028, and `%% c` are printed `title T %%{x}%%`,
+U+2028, a space, `%%{y}%%`, a line break, and `%% c`; `title T %%{x}%%`, U+2028,
+`%%{y}%%`, U+2028, `%%{z}%%`, a space, and `%% c` are printed `title T %%{x}%%`,
+U+2028, `%%{y}%%`, a line break, and `%%{z}%% %% c`). Where one stands before
+the directives, item 6 applies, and all of them are line breaks. Where item 6
+keeps the lines, they stay as written, runs included. Items 7 and 10 state the
+line with one U+2028 or U+2029; a line with two or more is printed by this
+paragraph.
 
 Where a comment follows the last directive, no U+2028 or U+2029 stands between
 the text and the comment, and none of items 7 to 10 applies, a run of spaces and
@@ -789,8 +791,10 @@ nothing follows the last directive or a comment touches it (`title`, a space,
 `%%{x}%%`, two spaces, `;`, two spaces, and `%%{y}%%` are printed
 `title %%{x}%%  ; %%{y}%%`). Where whitespace follows the last directive, or a
 comment follows it after whitespace, the line stays as written. A `;` after the
-last directive of such a title keeps the line through it as written, the
-whitespace after it is left out, and a gap before a comment is printed as one
+last directive of such a title keeps the line through it as written, the spaces,
+tabs, and wide spaces after it are left out, a U+2028 or U+2029 after it stays
+with the whitespace before it where no comment follows, the spaces and tabs
+after the last one are left out, and a gap before a comment is printed as one
 space (`title`, a space, `%%{x}%%`, two spaces, `;`, two spaces, and `%% c` are
 printed `title %%{x}%%  ; %% c`). A `;` in a comment that follows the last
 directive is the last `;`: the whole line stays as written (`title`, a space,
@@ -2223,11 +2227,11 @@ spaces, a comment line and a statement follow, in a title of a Wardley map]
 spaces, a comment line follows and the text ends, in a title of a Wardley map]
 [test: U+2028 between two directives and after the last, a comment follows after
 spaces, a directive line follows and the text ends, in a title of a Wardley map]
-[test: U+2028 between the first and the second of three directives and between
-the second and the third, a comment touches the last, the text ends, in a title
-of a Wardley map] [test: U+2028 between two directives, after the last, and
-before the directives, a comment touches the last, the text ends, in a title of
-a Wardley map] [test: U+2028 between two directives of a title of directives
+[test: U+2028 between the first and the second of three directives, between the
+second and the third, and after the third, a comment touches it, the text ends,
+in a title of a Wardley map] [test: U+2028 before the directives, between two
+directives, and after the last, a comment touches it, the text ends, in a title
+of a Wardley map] [test: U+2028 between two directives of a title of directives
 only and after the last, a comment follows after spaces, the text ends, in a
 title of a Wardley map] [test: U+2028 after the last directive, a no-break space
 and a comment after it, the text ends, in a title of a Wardley map] [test:
@@ -2240,7 +2244,101 @@ directive, a space and a no-break space and a comment after it, the text ends,
 in a title of a Wardley map] [test: U+2028 between two directives, a space and a
 no-break space and a comment after the last, the text ends, in a title of a
 Wardley map] [test: U+2028 after the last directive, a no-break space and a
-comment after it, a statement follows, in a title of a Wardley map]
+comment after it, a statement follows, in a title of a Wardley map] [test:
+U+2028 between two directives and after the last, two spaces after the first, a
+comment touches the last U+2028, the text ends, in a title of a Wardley map]
+[test: U+2028 between two directives and after the last, a tab after the first,
+a comment touches the last U+2028, the text ends, in a title of a Wardley map]
+[test: U+2028 between two directives and after the last, a no-break space after
+the first, a comment touches the last U+2028, the text ends, in a title of a
+Wardley map] [test: U+2028 between two directives and after the last, U+3000
+after the first, a comment touches the last U+2028, the text ends, in a title of
+a Wardley map] [test: U+2028 between two directives and after the last, two
+spaces before the first, a comment touches the last U+2028, the text ends, in a
+title of a Wardley map] [test: U+2028 between two directives and after the last,
+a tab before the first, a comment touches the last U+2028, the text ends, in a
+title of a Wardley map] [test: U+2028 between two directives and after the last,
+a no-break space before the first, a comment touches the last U+2028, the text
+ends, in a title of a Wardley map] [test: U+2029 between two directives, two
+spaces after it, and U+2028 after the last, a comment touches the last U+2028,
+the text ends, in a title of a Wardley map] [test: U+2028 between two directives
+of a title of directives only, two spaces after it, and U+2028 after the last, a
+comment touches the last U+2028, the text ends, in a title of a Wardley map]
+[test: U+2028 between two directives, two spaces after it, and U+2028 after the
+last, a comment touches the last U+2028, a statement follows, in a title of a
+Wardley map] [test: U+2028 between two directives, two spaces after it, a
+comment touches the last directive, the text ends, in a title of a Wardley map]
+[test: U+2028 between two directives, two spaces after it, a comment follows the
+last directive after spaces, the text ends, in a title of a Wardley map] [test:
+U+2028 between two directives, a no-break space before the comment, the text
+ends, in a title of a Wardley map] [test: U+2028 between two directives, two
+spaces after it, a comment touches the last directive, a statement follows, in a
+title of a Wardley map] [test: U+2028 between the first and the second of three
+directives and between the second and the third, a comment follows the third
+after a space, the text ends, in a title of a Wardley map] [test: U+2028 between
+the first and the second of three directives and between the second and the
+third, a comment touches the third, the text ends, in a title of a Wardley map]
+[test: U+2029 between the first and the second of three directives and between
+the second and the third, a comment follows the third after two spaces, the text
+ends, in a title of a Wardley map] [test: U+2028 between the first and the
+second of three directives and between the second and the third, a comment
+follows the third after a space, a statement follows, in a title of a Wardley
+map] [test: U+2028 between the first and the second of three directives and
+between the second and the third of a title of directives only, a comment
+follows the third after a space, the text ends, in a title of a Wardley map]
+[test: U+2028 between two directives and after the last, a comment line stands
+between the last U+2028 and a statement, in a title of a Wardley map] [test: a
+`;` after the last directive, touching the directive, U+2028 after it, the text
+ends, in a title of a Wardley map] [test: a `;` after the last directive, two
+spaces after the directive, U+2028 after it, the text ends, in a title of a
+Wardley map] [test: a `;` after the last directive, touching the directive,
+U+2029 after it, the text ends, in a title of a Wardley map] [test: a `;` after
+the last directive, two spaces after the directive, U+2029 after it, the text
+ends, in a title of a Wardley map] [test: a `;` after the last directive,
+touching the directive, a space and U+2028 after it, the text ends, in a title
+of a Wardley map] [test: a `;` after the last directive, two spaces after the
+directive, a space and U+2028 after it, the text ends, in a title of a Wardley
+map] [test: a `;` after the last directive, touching the directive, U+2028 and a
+space after it, the text ends, in a title of a Wardley map] [test: a `;` after
+the last directive, two spaces after the directive, U+2028 and a space after it,
+the text ends, in a title of a Wardley map] [test: a `;` after the last
+directive, touching the directive, a no-break space and U+2028 after it, the
+text ends, in a title of a Wardley map] [test: a `;` after the last directive,
+two spaces after the directive, a no-break space and U+2028 after it, the text
+ends, in a title of a Wardley map] [test: a `;` after the last directive,
+touching the directive, U+2028 and a no-break space after it, the text ends, in
+a title of a Wardley map] [test: a `;` after the last directive, two spaces
+after the directive, U+2028 and a no-break space after it, the text ends, in a
+title of a Wardley map] [test: a `;` after the last directive, touching the
+directive, U+2028, a space, and U+2028 after it, the text ends, in a title of a
+Wardley map] [test: a `;` after the last directive, two spaces after the
+directive, U+2028, a space, and U+2028 after it, the text ends, in a title of a
+Wardley map] [test: a `;` after the last directive, touching the directive, two
+spaces and U+2028 after it, the text ends, in a title of a Wardley map] [test: a
+`;` after the last directive, two spaces after the directive, two spaces and
+U+2028 after it, the text ends, in a title of a Wardley map] [test: a `;` after
+the last directive, touching the directive, a no-break space after it, the text
+ends, in a title of a Wardley map] [test: a `;` after the last directive, two
+spaces after the directive, a no-break space after it, the text ends, in a title
+of a Wardley map] [test: a `;` after the last directive, touching the directive,
+U+3000 after it, the text ends, in a title of a Wardley map] [test: a `;` after
+the last directive, two spaces after the directive, U+3000 after it, the text
+ends, in a title of a Wardley map] [test: a `;` after the last directive, U+2028
+after it, a statement follows, in a title of a Wardley map] [test: a `;` after
+the last directive, two spaces and U+2028 after it, a statement follows, in a
+title of a Wardley map] [test: a `;` after the last directive, a no-break space
+after it, a statement follows, in a title of a Wardley map] [test: a `;`, two
+spaces, a `;`, and U+2028 after the last directive, the text ends, in a title of
+a Wardley map] [test: a line of a directive and a `;` before a comment line
+after a U+2028 before a directive, the text ends, in a title of a Wardley map]
+[test: a line of a `;` and a comment before a comment line after a U+2028 before
+a directive, the text ends, in a title of a Wardley map] [test: a line of a
+comment that holds a `;` before a comment line after a U+2028 before a
+directive, the text ends, in a title of a Wardley map] [test: a line of a
+directive and a comment that holds a `;` before a comment line after a U+2028
+before a directive, the text ends, in a title of a Wardley map] [test: a line of
+a directive that holds a `;` before a comment line after a U+2028 before a
+directive, the text ends, in a title of a Wardley map]
 
 [fixture: wardley/title/title-empty]
 
@@ -2278,8 +2376,9 @@ it, and where item 6 of the title list splits the line, none of the items below
 applies to it. A line that holds a `;` in the text or in a directive and that
 item 6 of the title list would split is not stated here. The colon touches the
 keyword, so a gap before it is printed as no gap even where the line stays as
-written, except on a line that holds a `;`, where the gap stays as written too,
-unless a U+2028 or U+2029 stands between the colon and the text:
+written, except on a line where a `;` stands before any U+2028 or U+2029 of the
+line, also a `;` inside a directive or a comment, where the gap stays as written
+too:
 
 - Where only spaces and tabs, or nothing, stand before the directives, no `;`
   stands in the text before them or inside one of them, no directive holds a
@@ -2318,29 +2417,26 @@ unless a U+2028 or U+2029 stands between the colon and the text:
   that follows the last directive.
 - Where a wide space stands between two directives, the line stays as written,
   whatever follows the last one. So it does where a U+2028 or U+2029 stands
-  between two directives and nothing, spaces or tabs, or a comment that touches
-  the last one follows. Where the last directive, spaces, tabs, or wide spaces,
-  and a comment follow the U+2028 or U+2029, the comment region joins the next
-  line of the source, as in item 6 of the [title list](#title): where item 6 of
-  the title list keeps the lines, they stay as written, and where item 6 of the
-  title list would split the line, the U+2028 or U+2029 stays and the run before
-  the comment is printed as one space, unless another U+2028 or U+2029 stands
-  earlier in the line, as the paragraph after the title list says.
+  between two directives and nothing, spaces, or tabs follow the last one. Where
+  a comment follows the last directive, touching it or after spaces, tabs, or
+  wide spaces, and a U+2028 or U+2029 stands between two directives, the comment
+  region joins the next line of the source, as in item 6 of the
+  [title list](#title): where item 6 of the title list keeps the lines, they
+  stay as written, runs included, and where item 6 of the title list would split
+  the line, the paragraph after the title list says how it is printed.
 - Where a wide space stands after the last directive, also after spaces or tabs,
   the line stays as written, whatever follows the character. So it does where a
-  U+2028 or U+2029 stands there and nothing follows it, or a comment touches it.
-  Where spaces, tabs, or wide spaces and a comment follow the U+2028 or U+2029,
-  the comment region joins the next line of the source, as in item 6 of the
+  U+2028 or U+2029 stands there and nothing follows it. Where a comment follows
+  the U+2028 or U+2029, touching it or after spaces, tabs, or wide spaces, the
+  comment region joins the next line of the source, as in item 6 of the
   [title list](#title): where item 6 of the title list keeps the lines, they
-  stay as written, and where item 6 of the title list would split the line, the
-  U+2028 or U+2029 stays and the run before the comment is printed as one space,
-  unless another U+2028 or U+2029 stands earlier in the line, as the paragraph
-  after the title list says. A value with a directive inside its text stays as
-  written too.
+  stay as written, runs included, and where item 6 of the title list would split
+  the line, the paragraph after the title list says how it is printed. A value
+  with a directive inside its text stays as written too.
 
-Where a U+2028 or U+2029 stands between two directives, another stands after the
-last directive, and a comment follows, the line is printed as in the paragraph
-after the [title list](#title).
+Where one or more U+2028 or U+2029 stand between two directives or after the
+last one, and a comment follows, the line is printed as in the paragraph after
+the [title list](#title).
 
 Where a comment follows the last directive, no U+2028 or U+2029 stands between
 the text and the comment, and none of items 5 to 8 applies, a run of spaces and
@@ -2368,17 +2464,21 @@ space.
 
 A line of `accTitle:` or `accDescr:` that holds a `;` and no directive stays as
 written through its last `;` (see [Semicolons](#semicolons)), the gap before its
-colon included (`accTitle : T;` is not changed). A U+2028 or U+2029 between the
-colon and the text is left out where the text touches it, with the gap before
-the colon (`accTitle : `, U+2028, and `T;` are printed `accTitle: T;`), and
-stays where whitespace stands between it and the text, the gap before the colon
-still left out (`accTitle : `, U+2028, a space, and `T;` are printed
-`accTitle: `, U+2028, a space, and `T;`). What follows the last `;` is printed
-as under the title: spaces, tabs, and every wide space after it are left out, a
-run before a comment is one space, and a U+2028 or U+2029 after it is treated as
-there. Where the line rule ignores the `;` (`accTitle: style:#red;` and two
-spaces), the line stays as written, and so it does where a `;` stands inside a
-comment after the text.
+colon included, where a `;` stands before any U+2028 or U+2029 of the line
+(`accTitle : T;`, and `accTitle : T;`, U+2028, and `U` are not changed); where a
+U+2028 or U+2029 stands before the first `;`, the gap before the colon is left
+out, and the rest stays as written through the last `;` (`accTitle : T`, U+2028,
+and `U;` are printed `accTitle: T`, U+2028, and `U;`). A U+2028 or U+2029
+between the colon and the text is left out where the text touches it, with the
+gap before the colon (`accTitle : `, U+2028, and `T;` are printed
+`accTitle: T;`), and stays where whitespace stands between it and the text, the
+gap before the colon still left out (`accTitle : `, U+2028, a space, and `T;`
+are printed `accTitle: `, U+2028, a space, and `T;`). What follows the last `;`
+is printed as under the title: spaces, tabs, and every wide space after it are
+left out, a run before a comment is one space, and a U+2028 or U+2029 after it
+is treated as there. Where the line rule ignores the `;`
+(`accTitle: style:#red;` and two spaces), the line stays as written, and so it
+does where a `;` stands inside a comment after the text.
 
 [fixture: accessibility/acc-directives-end-blanks-dropped] [fixture:
 accessibility/acc-directives-end-tabs-dropped] [fixture:
@@ -2389,9 +2489,8 @@ accessibility/accdescr-directives-end-at-the-end-of-the-text] [fixture:
 accessibility/acc-directives-end-before-comment-line-and-empty-line] [fixture:
 wardley/accessibility/access-lines] [fixture:
 wardley/accessibility/access-empty] [fixture:
-wardley/accessibility/access-colon-touching] [test:
-wardley/accessibility/unicode-empty-description] [test: a no-break space after
-the last directive of an accTitle line of a Wardley map] [test: a no-break space
+wardley/accessibility/access-colon-touching] [test: a no-break space after the
+last directive of an accTitle line of a Wardley map] [test: a no-break space
 before the directive that ends an accTitle line of a Wardley map] [test: a
 no-break space after the last directive of an accDescr line of a Wardley map]
 [test: a no-break space before the directive that ends an accDescr line of a
@@ -3292,7 +3391,29 @@ after a U+2028 before a directive, the text ends, in an accDescr line of a
 Wardley map] [test: U+2028 between two directives and after the last, a comment
 follows after spaces, the text ends, in an accTitle line of a Wardley map]
 [test: U+2028 between two directives and after the last, a comment follows after
-spaces, the text ends, in an accDescr line of a Wardley map]
+spaces, the text ends, in an accDescr line of a Wardley map] [test: U+2028
+between two directives and after the last, two spaces after the first, a comment
+touches the last U+2028, the text ends, in an accTitle line of a Wardley map]
+[test: U+2028 between two directives and after the last, two spaces after the
+first, a comment touches the last U+2028, the text ends, in an accDescr line of
+a Wardley map] [test: U+2028 between the first and the second of three
+directives and between the second and the third, a comment follows the third
+after a space, the text ends, in an accTitle line of a Wardley map] [test:
+U+2028 between the first and the second of three directives and between the
+second and the third, a comment follows the third after a space, the text ends,
+in an accDescr line of a Wardley map] [test: accTitle with a gap before the
+colon, a `;` before a U+2028, the text ends, in an accTitle line of a Wardley
+map] [test: accTitle with a gap before the colon, a `;` after the U+2028, the
+text ends, in an accTitle line of a Wardley map] [test: accDescr with a gap
+before the colon, a `;` before a U+2028, the text ends, in an accDescr line of a
+Wardley map] [test: accDescr with a gap before the colon, a `;` after the
+U+2028, the text ends, in an accDescr line of a Wardley map] [test: accTitle
+with a gap before the colon, a `;` inside a directive that touches the text, the
+text ends, in an accTitle line of a Wardley map] [test: accTitle with a gap
+before the colon, a `;` inside a comment after the text, the text ends, in an
+accTitle line of a Wardley map] [test: accTitle with a gap before the colon, a
+`;` right after the colon and a U+2028 after it, the text ends, in an accTitle
+line of a Wardley map]
 
 A description block on one line follows
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
