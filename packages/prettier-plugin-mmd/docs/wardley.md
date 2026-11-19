@@ -654,14 +654,17 @@ wardley-beta
 
 ### Title
 
-Use the shared common-line layout: one space before a nonempty value, trim
-ordinary outer common whitespace and retain internal text, including unmatched
-quotes. Empty titles stay empty and never take a value from the next line. This
-chooses a compact Db-equal edge without treating the common value as a quoted
-string. Where a title has text and no directive stands before its text or inside
-it, and no U+2028 or U+2029 stands inside the text, the directives that end it
-are printed as follows, by what stands before them and after them, except for
-the undecided lines. A line with directives is undecided when, besides its
+Use the shared common-line layout, except as the paragraphs below state: one
+space before a nonempty value, trim ordinary outer common whitespace and retain
+internal text, including unmatched quotes, apart from a run of spaces and tabs
+inside the value, which is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+Empty titles stay empty and never take a value from the next line. This chooses
+a compact Db-equal edge without treating the common value as a quoted string.
+Where a title has text and no directive stands before its text or inside it, and
+no U+2028 or U+2029 stands inside the text, the directives that end it are
+printed as follows, by what stands before them and after them, except for the
+undecided lines. A line with directives is undecided when, besides its
 directives, it holds a `;` anywhere, also inside a directive or a comment, when
 a U+2028 or U+2029 stands inside or after its first directive, when a directive
 holds a line break, or when a line between it and the next statement holds a `;`
@@ -751,11 +754,11 @@ as written. The lines that make the formatter throw there are not stated.
 
 Where the text of a title starts with a directive, or with directives that touch
 one another, after the one space or tab that follows the keyword, and the rest
-of the line holds no directive, comment, `;`, wide space, U+2028, or U+2029, the
-spaces and tabs between the directives and the rest of the text are left out,
-with the spaces and tabs at the end of the line: `title %%{x}%%  T  ` is printed
-`title %%{x}%%T`, and `title %%{x}%%%%{y}%%  T  ` is printed
-`title %%{x}%%%%{y}%%T`.
+of the line holds no directive, comment, `;`, wide space, U+2028, or U+2029, and
+the line is not undecided, the spaces and tabs between the directives and the
+rest of the text are left out, with the spaces and tabs at the end of the line:
+`title %%{x}%%  T  ` is printed `title %%{x}%%T`, and
+`title %%{x}%%%%{y}%%  T  ` is printed `title %%{x}%%%%{y}%%T`.
 [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as the Title of [a sequence diagram](./sequence.md#title) does, which
 prints `title %%{init: {}}%% T` as `title %%{init: {}}%%T`: mermaid.js removes
@@ -1845,114 +1848,131 @@ starts the text of a title, a text with a tab inside it, a tab at the end, of a
 Wardley map] [test: two spaces before the directive that starts the text of a
 title, of a Wardley map] [test: two directives with spaces between them that
 start the text of a title, of a Wardley map] [test: a directive that starts the
-text of a title and a directive that ends it, of a Wardley map] [test: U+2028
-before a directive that a comment touches, a line follows, in a title of a
-Wardley map] [test: U+2028 before a directive that a comment touches, the text
-ends, in a title of a Wardley map] [test: U+2028 before a directive that a
-comment touches, an empty line follows, in a title of a Wardley map] [test:
-U+2028 before a directive that a comment follows after spaces, a line follows,
-in a title of a Wardley map] [test: U+2028 before a directive that a comment
-follows after spaces, the text ends, in a title of a Wardley map] [test: U+2028
-before a directive that a comment follows after spaces, an empty line follows,
-in a title of a Wardley map] [test: U+2029 before a directive that a comment
-touches, a line follows, in a title of a Wardley map] [test: U+2029 before a
-directive that a comment touches, the text ends, in a title of a Wardley map]
-[test: U+2029 before a directive that a comment touches, an empty line follows,
-in a title of a Wardley map] [test: U+2029 before a directive that a comment
-follows after spaces, a line follows, in a title of a Wardley map] [test: U+2029
-before a directive that a comment follows after spaces, the text ends, in a
-title of a Wardley map] [test: U+2029 before a directive that a comment follows
-after spaces, an empty line follows, in a title of a Wardley map] [test: U+2028
-before a directive that a comment touches, a comment line follows, in a title of
-a Wardley map] [test: U+2028 before a directive that a comment touches, a line
-of whitespace follows, in a title of a Wardley map] [test: U+2028 before a
-directive that a comment touches, a directive line follows, in a title of a
+text of a title and a directive that ends it, of a Wardley map] [test: a U+2028
+inside the directive that starts the text of a title, two spaces and a text
+after it, spaces at the end, of a Wardley map] [test: a line break inside the
+directive that starts the text of a title, two spaces and a text after it,
+spaces at the end, of a Wardley map] [test: a `;` inside the directive that
+starts the text of a title, two spaces and a text after it, spaces at the end,
+of a Wardley map] [test: U+2028 before a directive that a comment touches, a
+line follows, in a title of a Wardley map] [test: U+2028 before a directive that
+a comment touches, the text ends, in a title of a Wardley map] [test: U+2028
+before a directive that a comment touches, an empty line follows, in a title of
+a Wardley map] [test: U+2028 before a directive that a comment follows after
+spaces, a line follows, in a title of a Wardley map] [test: U+2028 before a
+directive that a comment follows after spaces, the text ends, in a title of a
+Wardley map] [test: U+2028 before a directive that a comment follows after
+spaces, an empty line follows, in a title of a Wardley map] [test: U+2029 before
+a directive that a comment touches, a line follows, in a title of a Wardley map]
+[test: U+2029 before a directive that a comment touches, the text ends, in a
+title of a Wardley map] [test: U+2029 before a directive that a comment touches,
+an empty line follows, in a title of a Wardley map] [test: U+2029 before a
+directive that a comment follows after spaces, a line follows, in a title of a
+Wardley map] [test: U+2029 before a directive that a comment follows after
+spaces, the text ends, in a title of a Wardley map] [test: U+2029 before a
+directive that a comment follows after spaces, an empty line follows, in a title
+of a Wardley map] [test: U+2028 before a directive that a comment touches, a
+comment line follows, in a title of a Wardley map] [test: U+2028 before a
+directive that a comment touches, a line of whitespace follows, in a title of a
 Wardley map] [test: U+2028 before a directive that a comment touches, a
-directive line and a comment line follow, in a title of a Wardley map] [test:
-U+2028 before a directive that a comment touches, an empty line and a comment
+directive line follows, in a title of a Wardley map] [test: U+2028 before a
+directive that a comment touches, a directive line and a comment line follow, in
+a title of a Wardley map] [test: U+2028 before a directive that a comment
+touches, an empty line and a comment line follow, in a title of a Wardley map]
+[test: U+2028 before a directive that a comment touches, a directive line, an
+empty line, and a comment line follow, in a title of a Wardley map] [test:
+U+2028 before a directive that a comment touches, an empty line and a directive
 line follow, in a title of a Wardley map] [test: U+2028 before a directive that
-a comment touches, a directive line, an empty line, and a comment line follow,
-in a title of a Wardley map] [test: U+2028 before a directive that a comment
-touches, an empty line and a directive line follow, in a title of a Wardley map]
-[test: U+2028 before a directive that a comment touches, a directive line
-follows and the text ends, in a title of a Wardley map] [test: U+2028 before two
-directives with spaces between them that a comment touches, the text ends, in a
-title of a Wardley map] [test: U+2028 before two directives with a tab between
-them that a comment follows after spaces, the text ends, in a title of a Wardley
-map] [test: U+2029 before a directive that a comment touches, a directive line
-and a comment line follow, in a title of a Wardley map] [test: U+2028 after the
-last directive, spaces and a comment after it, a comment line follows, in a
-title of a Wardley map] [test: U+2028 after the last directive, spaces and a
-comment after it, a line of whitespace follows, in a title of a Wardley map]
-[test: U+2028 after the last directive, spaces and a comment after it, a
-directive line follows, in a title of a Wardley map] [test: U+2028 after the
-last directive, spaces and a comment after it, a directive line and a comment
-line follow, in a title of a Wardley map] [test: U+2028 after the last
-directive, spaces and a comment after it, an empty line and a comment line
-follow, in a title of a Wardley map] [test: U+2028 after the last directive,
-spaces and a comment after it, a directive line, an empty line, and a comment
-line follow, in a title of a Wardley map] [test: U+2028 after the last
-directive, spaces and a comment after it, an empty line and a directive line
-follow, in a title of a Wardley map] [test: U+2028 after the last directive,
-spaces and a comment after it, a directive line follows and the text ends, in a
-title of a Wardley map] [test: U+2028 after the last directive, spaces and a
-comment after it, the text ends, in a title of a Wardley map] [test: U+2028
-after the last directive, spaces and a comment after it, an empty line follows,
-in a title of a Wardley map] [test: U+2028 after the last directive, spaces and
-a comment after it, a line follows, in a title of a Wardley map] [test: U+2029
-after the last directive, spaces and a comment after it, the text ends, in a
-title of a Wardley map] [test: U+2028 after the last directive, a comment
-touching it, the text ends, in a title of a Wardley map] [test: U+2028 after the
-last directive, a comment touching it, a directive line follows, in a title of a
-Wardley map] [test: U+2028 between two directives, spaces and a comment after
-it, a comment line follows, in a title of a Wardley map] [test: U+2028 between
-two directives, spaces and a comment after it, a line of whitespace follows, in
-a title of a Wardley map] [test: U+2028 between two directives, spaces and a
-comment after it, a directive line follows, in a title of a Wardley map] [test:
-U+2028 between two directives, spaces and a comment after it, a directive line
-and a comment line follow, in a title of a Wardley map] [test: U+2028 between
-two directives, spaces and a comment after it, an empty line and a comment line
-follow, in a title of a Wardley map] [test: U+2028 between two directives,
-spaces and a comment after it, a directive line, an empty line, and a comment
-line follow, in a title of a Wardley map] [test: U+2028 between two directives,
-spaces and a comment after it, an empty line and a directive line follow, in a
-title of a Wardley map] [test: U+2028 between two directives, spaces and a
-comment after it, a directive line follows and the text ends, in a title of a
-Wardley map] [test: U+2028 between two directives, spaces and a comment after
-it, the text ends, in a title of a Wardley map] [test: U+2028 between two
-directives, spaces and a comment after it, an empty line follows, in a title of
-a Wardley map] [test: U+2028 between two directives, spaces and a comment after
-it, a line follows, in a title of a Wardley map] [test: U+2029 between two
-directives, spaces and a comment after it, the text ends, in a title of a
-Wardley map] [test: U+2028 between two directives, a comment touching it, the
-text ends, in a title of a Wardley map] [test: U+2028 between two directives, a
-comment touching it, a directive line follows, in a title of a Wardley map]
-[test: U+2028 after the last directive and spaces, spaces and a comment after
-it, the text ends, in a title of a Wardley map] [test: a U+2028 inside the text,
-a directive, and a comment after spaces, in a title of a Wardley map] [test: a
-U+2028 inside the text, a directive that a comment touches, in a title of a
-Wardley map] [test: a wide space before two directives that spaces separate, the
-text ends, in a title of a Wardley map] [test: a wide space before a directive
-that spaces and a comment follow, the text ends, in a title of a Wardley map]
-[test: a wide space before two directives that touch and a comment that touches
-the last, the text ends, in a title of a Wardley map] [test: a U+2028 before two
-directives that touch, the text ends, in a title of a Wardley map] [test: a
-U+2028 before a directive that spaces follow, the text ends, in a title of a
-Wardley map] [test: a U+2028 before two directives that spaces separate, the
-text ends, in a title of a Wardley map] [test: a directive that holds a line
-break, spaces before it, the text ends, in a title of a Wardley map] [test: a
-directive that holds a U+2028, spaces before it, the text ends, in a title of a
-Wardley map] [test: a U+2028 inside the text, spaces before the directive, the
-text ends, in a title of a Wardley map] [test: a value of directives only,
-spaces after the directive, the text ends, in a title of a Wardley map] [test: a
-directive inside the text, spaces before and after the last directive, the text
-ends, in a title of a Wardley map] [test: a `;` and no directive, the text ends,
-in a title of a Wardley map] [test: a `;` and no directive, the text ends, in a
-title of a Wardley map] [test: a `;` in the text, spaces before the directive,
-the text ends, in a title of a Wardley map] [test: a `;` in the text, spaces
-between two directives, the text ends, in a title of a Wardley map] [test: a `;`
-between two directives, spaces around it, the text ends, in a title of a Wardley
-map] [test: a `;` after the last directive, the text ends, in a title of a
+a comment touches, a directive line follows and the text ends, in a title of a
+Wardley map] [test: U+2028 before two directives with spaces between them that a
+comment touches, the text ends, in a title of a Wardley map] [test: U+2028
+before two directives with a tab between them that a comment follows after
+spaces, the text ends, in a title of a Wardley map] [test: U+2029 before a
+directive that a comment touches, a directive line and a comment line follow, in
+a title of a Wardley map] [test: U+2028 after the last directive, spaces and a
+comment after it, a comment line follows, in a title of a Wardley map] [test:
+U+2028 after the last directive, spaces and a comment after it, a line of
+whitespace follows, in a title of a Wardley map] [test: U+2028 after the last
+directive, spaces and a comment after it, a directive line follows, in a title
+of a Wardley map] [test: U+2028 after the last directive, spaces and a comment
+after it, a directive line and a comment line follow, in a title of a Wardley
+map] [test: U+2028 after the last directive, spaces and a comment after it, an
+empty line and a comment line follow, in a title of a Wardley map] [test: U+2028
+after the last directive, spaces and a comment after it, a directive line, an
+empty line, and a comment line follow, in a title of a Wardley map] [test:
+U+2028 after the last directive, spaces and a comment after it, an empty line
+and a directive line follow, in a title of a Wardley map] [test: U+2028 after
+the last directive, spaces and a comment after it, a directive line follows and
+the text ends, in a title of a Wardley map] [test: U+2028 after the last
+directive, spaces and a comment after it, the text ends, in a title of a Wardley
+map] [test: U+2028 after the last directive, spaces and a comment after it, an
+empty line follows, in a title of a Wardley map] [test: U+2028 after the last
+directive, spaces and a comment after it, a line follows, in a title of a
+Wardley map] [test: U+2029 after the last directive, spaces and a comment after
+it, the text ends, in a title of a Wardley map] [test: U+2028 after the last
+directive, a comment touching it, the text ends, in a title of a Wardley map]
+[test: U+2028 after the last directive, a comment touching it, a directive line
+follows, in a title of a Wardley map] [test: U+2028 between two directives,
+spaces and a comment after it, a comment line follows, in a title of a Wardley
+map] [test: U+2028 between two directives, spaces and a comment after it, a line
+of whitespace follows, in a title of a Wardley map] [test: U+2028 between two
+directives, spaces and a comment after it, a directive line follows, in a title
+of a Wardley map] [test: U+2028 between two directives, spaces and a comment
+after it, a directive line and a comment line follow, in a title of a Wardley
+map] [test: U+2028 between two directives, spaces and a comment after it, an
+empty line and a comment line follow, in a title of a Wardley map] [test: U+2028
+between two directives, spaces and a comment after it, a directive line, an
+empty line, and a comment line follow, in a title of a Wardley map] [test:
+U+2028 between two directives, spaces and a comment after it, an empty line and
+a directive line follow, in a title of a Wardley map] [test: U+2028 between two
+directives, spaces and a comment after it, a directive line follows and the text
+ends, in a title of a Wardley map] [test: U+2028 between two directives, spaces
+and a comment after it, the text ends, in a title of a Wardley map] [test:
+U+2028 between two directives, spaces and a comment after it, an empty line
+follows, in a title of a Wardley map] [test: U+2028 between two directives,
+spaces and a comment after it, a line follows, in a title of a Wardley map]
+[test: U+2029 between two directives, spaces and a comment after it, the text
+ends, in a title of a Wardley map] [test: U+2028 between two directives, a
+comment touching it, the text ends, in a title of a Wardley map] [test: U+2028
+between two directives, a comment touching it, a directive line follows, in a
+title of a Wardley map] [test: U+2028 after the last directive and spaces,
+spaces and a comment after it, the text ends, in a title of a Wardley map]
+[test: a U+2028 inside the text, a directive, and a comment after spaces, in a
+title of a Wardley map] [test: a U+2028 inside the text, a directive that a
+comment touches, in a title of a Wardley map] [test: a wide space before two
+directives that spaces separate, the text ends, in a title of a Wardley map]
+[test: a wide space before a directive that spaces and a comment follow, the
+text ends, in a title of a Wardley map] [test: a wide space before two
+directives that touch and a comment that touches the last, the text ends, in a
+title of a Wardley map] [test: a U+2028 before two directives that touch, the
+text ends, in a title of a Wardley map] [test: a U+2028 before a directive that
+spaces follow, the text ends, in a title of a Wardley map] [test: a U+2028
+before two directives that spaces separate, the text ends, in a title of a
+Wardley map] [test: a directive that holds a line break, spaces before it, the
+text ends, in a title of a Wardley map] [test: a directive that holds a U+2028,
+spaces before it, the text ends, in a title of a Wardley map] [test: a U+2028
+inside the text, spaces before the directive, the text ends, in a title of a
+Wardley map] [test: a value of directives only, spaces after the directive, the
+text ends, in a title of a Wardley map] [test: a directive inside the text,
+spaces before and after the last directive, the text ends, in a title of a
+Wardley map] [test: a `;` and no directive, the text ends, in a title of a
+Wardley map] [test: a `;` and no directive, the text ends, in a title of a
+Wardley map] [test: a `;` in the text, spaces before the directive, the text
+ends, in a title of a Wardley map] [test: a `;` in the text, spaces between two
+directives, the text ends, in a title of a Wardley map] [test: a `;` between two
+directives, spaces around it, the text ends, in a title of a Wardley map] [test:
+a `;` after the last directive, the text ends, in a title of a Wardley map]
+[test: a U+2028 before a directive that spaces and a comment follow, a comment
+line follows, in a title of a Wardley map] [test: a U+2028 before a directive
+that spaces and a comment follow, an empty line follows, in a title of a Wardley
+map] [test: a U+2028 before a directive that spaces and a comment follow, a line
+of whitespace follows, in a title of a Wardley map] [test: a U+2028 before a
+directive that spaces and a comment follow, a directive line follows, in a title
+of a Wardley map] [test: a U+2028 before a directive that spaces and a comment
+follow, a comment line and a statement follow, in a title of a Wardley map]
+[test: a U+2028 before a directive that spaces and a comment follow, an empty
+line and a statement follow, in a title of a Wardley map] [test: a U+2028 before
+a directive that spaces and a comment follow, the text ends, in a title of a
 Wardley map] [test: a U+2028 before a directive that spaces and a comment
 follow, a comment line follows, in a title of a Wardley map] [test: a U+2028
 before a directive that spaces and a comment follow, an empty line follows, in a
@@ -1963,90 +1983,78 @@ line follows, in a title of a Wardley map] [test: a U+2028 before a directive
 that spaces and a comment follow, a comment line and a statement follow, in a
 title of a Wardley map] [test: a U+2028 before a directive that spaces and a
 comment follow, an empty line and a statement follow, in a title of a Wardley
-map] [test: a U+2028 before a directive that spaces and a comment follow, the
-text ends, in a title of a Wardley map] [test: a U+2028 before a directive that
-spaces and a comment follow, a comment line follows, in a title of a Wardley
-map] [test: a U+2028 before a directive that spaces and a comment follow, an
-empty line follows, in a title of a Wardley map] [test: a U+2028 before a
-directive that spaces and a comment follow, a line of whitespace follows, in a
-title of a Wardley map] [test: a U+2028 before a directive that spaces and a
-comment follow, a directive line follows, in a title of a Wardley map] [test: a
-U+2028 before a directive that spaces and a comment follow, a comment line and a
-statement follow, in a title of a Wardley map] [test: a U+2028 before a
-directive that spaces and a comment follow, an empty line and a statement
-follow, in a title of a Wardley map] [test: a U+2028 before two directives that
-a wide space separates, a comment after them, a comment line follows, in a title
-of a Wardley map] [test: a U+2028 before two directives that a wide space
-separates, a comment after them, an empty line follows, in a title of a Wardley
 map] [test: a U+2028 before two directives that a wide space separates, a
-comment after them, a line of whitespace follows, in a title of a Wardley map]
-[test: a U+2028 before two directives that a wide space separates, a comment
-after them, a directive line follows, in a title of a Wardley map] [test: a
-U+2028 before two directives that a wide space separates, a comment after them,
-a comment line and a statement follow, in a title of a Wardley map] [test: a
-U+2028 before two directives that a wide space separates, a comment after them,
-an empty line and a statement follow, in a title of a Wardley map] [test: a
-U+2028 before two directives that a wide space separates, a comment after them,
-the text ends, in a title of a Wardley map] [test: a U+2028 before two
-directives that a wide space separates, a comment after them, a comment line
+comment after them, a comment line follows, in a title of a Wardley map] [test:
+a U+2028 before two directives that a wide space separates, a comment after
+them, an empty line follows, in a title of a Wardley map] [test: a U+2028 before
+two directives that a wide space separates, a comment after them, a line of
+whitespace follows, in a title of a Wardley map] [test: a U+2028 before two
+directives that a wide space separates, a comment after them, a directive line
 follows, in a title of a Wardley map] [test: a U+2028 before two directives that
-a wide space separates, a comment after them, an empty line follows, in a title
-of a Wardley map] [test: a U+2028 before two directives that a wide space
-separates, a comment after them, a line of whitespace follows, in a title of a
+a wide space separates, a comment after them, a comment line and a statement
+follow, in a title of a Wardley map] [test: a U+2028 before two directives that
+a wide space separates, a comment after them, an empty line and a statement
+follow, in a title of a Wardley map] [test: a U+2028 before two directives that
+a wide space separates, a comment after them, the text ends, in a title of a
 Wardley map] [test: a U+2028 before two directives that a wide space separates,
-a comment after them, a directive line follows, in a title of a Wardley map]
+a comment after them, a comment line follows, in a title of a Wardley map]
 [test: a U+2028 before two directives that a wide space separates, a comment
-after them, a comment line and a statement follow, in a title of a Wardley map]
-[test: a U+2028 before two directives that a wide space separates, a comment
-after them, an empty line and a statement follow, in a title of a Wardley map]
-[test: a U+2028 before a directive that a wide space and a comment follow, a
-comment line follows, in a title of a Wardley map] [test: a U+2028 before a
-directive that a wide space and a comment follow, an empty line follows, in a
-title of a Wardley map] [test: a U+2028 before a directive that a wide space and
-a comment follow, a line of whitespace follows, in a title of a Wardley map]
-[test: a U+2028 before a directive that a wide space and a comment follow, a
-directive line follows, in a title of a Wardley map] [test: a U+2028 before a
-directive that a wide space and a comment follow, a comment line and a statement
+after them, an empty line follows, in a title of a Wardley map] [test: a U+2028
+before two directives that a wide space separates, a comment after them, a line
+of whitespace follows, in a title of a Wardley map] [test: a U+2028 before two
+directives that a wide space separates, a comment after them, a directive line
+follows, in a title of a Wardley map] [test: a U+2028 before two directives that
+a wide space separates, a comment after them, a comment line and a statement
+follow, in a title of a Wardley map] [test: a U+2028 before two directives that
+a wide space separates, a comment after them, an empty line and a statement
 follow, in a title of a Wardley map] [test: a U+2028 before a directive that a
-wide space and a comment follow, an empty line and a statement follow, in a
-title of a Wardley map] [test: a U+2028 before a directive that a wide space and
-a comment follow, the text ends, in a title of a Wardley map] [test: a U+2028
-before a directive that a wide space and a comment follow, a comment line
-follows, in a title of a Wardley map] [test: a U+2028 before a directive that a
-wide space and a comment follow, an empty line follows, in a title of a Wardley
+wide space and a comment follow, a comment line follows, in a title of a Wardley
 map] [test: a U+2028 before a directive that a wide space and a comment follow,
-a line of whitespace follows, in a title of a Wardley map] [test: a U+2028
-before a directive that a wide space and a comment follow, a directive line
+an empty line follows, in a title of a Wardley map] [test: a U+2028 before a
+directive that a wide space and a comment follow, a line of whitespace follows,
+in a title of a Wardley map] [test: a U+2028 before a directive that a wide
+space and a comment follow, a directive line follows, in a title of a Wardley
+map] [test: a U+2028 before a directive that a wide space and a comment follow,
+a comment line and a statement follow, in a title of a Wardley map] [test: a
+U+2028 before a directive that a wide space and a comment follow, an empty line
+and a statement follow, in a title of a Wardley map] [test: a U+2028 before a
+directive that a wide space and a comment follow, the text ends, in a title of a
+Wardley map] [test: a U+2028 before a directive that a wide space and a comment
+follow, a comment line follows, in a title of a Wardley map] [test: a U+2028
+before a directive that a wide space and a comment follow, an empty line
 follows, in a title of a Wardley map] [test: a U+2028 before a directive that a
-wide space and a comment follow, a comment line and a statement follow, in a
-title of a Wardley map] [test: a U+2028 before a directive that a wide space and
-a comment follow, an empty line and a statement follow, in a title of a Wardley
-map] [test: a U+2028 before a directive that spaces and a comment follow, an
-indented directive line follows, in a title of a Wardley map] [test: a U+2028
-before a directive that spaces and a comment follow, a directive and spaces
+wide space and a comment follow, a line of whitespace follows, in a title of a
+Wardley map] [test: a U+2028 before a directive that a wide space and a comment
+follow, a directive line follows, in a title of a Wardley map] [test: a U+2028
+before a directive that a wide space and a comment follow, a comment line and a
+statement follow, in a title of a Wardley map] [test: a U+2028 before a
+directive that a wide space and a comment follow, an empty line and a statement
 follow, in a title of a Wardley map] [test: a U+2028 before a directive that
-spaces and a comment follow, two directives that touch follow, in a title of a
+spaces and a comment follow, an indented directive line follows, in a title of a
 Wardley map] [test: a U+2028 before a directive that spaces and a comment
+follow, a directive and spaces follow, in a title of a Wardley map] [test: a
+U+2028 before a directive that spaces and a comment follow, two directives that
+touch follow, in a title of a Wardley map] [test: a U+2028 before a directive
+that spaces and a comment follow, a directive and a comment on a line follow, in
+a title of a Wardley map] [test: a U+2028 before a directive that spaces and a
+comment follow, a line of a no-break space follows, in a title of a Wardley map]
+[test: a U+2028 before a directive that spaces and a comment follow, a line of a
+tab follows, in a title of a Wardley map] [test: a U+2028 before a directive
+that spaces and a comment follow, an indented comment line follows, in a title
+of a Wardley map] [test: a U+2028 before a directive that spaces and a comment
+follow, an indented directive line follows, in a title of a Wardley map] [test:
+a U+2028 before a directive that spaces and a comment follow, a directive and
+spaces follow, in a title of a Wardley map] [test: a U+2028 before a directive
+that spaces and a comment follow, two directives that touch follow, in a title
+of a Wardley map] [test: a U+2028 before a directive that spaces and a comment
 follow, a directive and a comment on a line follow, in a title of a Wardley map]
 [test: a U+2028 before a directive that spaces and a comment follow, a line of a
 no-break space follows, in a title of a Wardley map] [test: a U+2028 before a
 directive that spaces and a comment follow, a line of a tab follows, in a title
 of a Wardley map] [test: a U+2028 before a directive that spaces and a comment
 follow, an indented comment line follows, in a title of a Wardley map] [test: a
-U+2028 before a directive that spaces and a comment follow, an indented
-directive line follows, in a title of a Wardley map] [test: a U+2028 before a
-directive that spaces and a comment follow, a directive and spaces follow, in a
-title of a Wardley map] [test: a U+2028 before a directive that spaces and a
-comment follow, two directives that touch follow, in a title of a Wardley map]
-[test: a U+2028 before a directive that spaces and a comment follow, a directive
-and a comment on a line follow, in a title of a Wardley map] [test: a U+2028
-before a directive that spaces and a comment follow, a line of a no-break space
-follows, in a title of a Wardley map] [test: a U+2028 before a directive that
-spaces and a comment follow, a line of a tab follows, in a title of a Wardley
-map] [test: a U+2028 before a directive that spaces and a comment follow, an
-indented comment line follows, in a title of a Wardley map] [test: a U+2028
-before two directives that a wide space separates, a comment after them, an
-indented directive line follows, in a title of a Wardley map] [test: a U+2028
+U+2028 before two directives that a wide space separates, a comment after them,
+an indented directive line follows, in a title of a Wardley map] [test: a U+2028
 before two directives that a wide space separates, a comment after them, a
 directive and spaces follow, in a title of a Wardley map] [test: a U+2028 before
 two directives that a wide space separates, a comment after them, two directives
@@ -2363,7 +2371,9 @@ the text, two spaces and a text after it, spaces at the end, the text ends, in a
 title of a Wardley map] [test: two directives that touch and start the text, a
 text after them, spaces at the end, the text ends, in a title of a Wardley map]
 [test: a directive that starts the text, two spaces and a text after it, spaces
-at the end, a statement follows, in a title of a Wardley map]
+at the end, a statement follows, in a title of a Wardley map] [test: a directive
+that starts the text, two spaces and a text after it, a statement whose label
+holds a `;` follows, in a title of a Wardley map]
 
 [fixture: wardley/title/title-empty]
 
@@ -2384,8 +2394,9 @@ wardley-beta
 ### Accessibility
 
 Use the shared accessibility line layout for accTitle: Value and accDescr:
-Value, retaining empty assignments. The colon of `accTitle` and `accDescr` is
-the colon of a key, so
+Value, retaining empty assignments, except as the paragraphs below state and as
+the [paragraph on a directive before the text](#title) states. The colon of
+`accTitle` and `accDescr` is the colon of a key, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the form
 `accTitle: text`: no whitespace before the colon and one space after it. Where a
 value has text and no directive stands before its text or inside it, and no

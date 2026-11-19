@@ -685,8 +685,11 @@ wardley-beta
 
 ### title
 
-共通の行の配置を使い、空でない値の前は空白 1 つにします。
+共通の行の配置を、下の段落が述べるところを除いて使い、
+空でない値の前は空白 1 つにします。
 外端の通常の共通空白は除き、閉じない引用符も内部の文字として保ちます。
+ただし、値の中の空白とタブの連なりは空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 空の title は空のままで、次の行を値にしません。
 値を引用文字列として扱わず、Db が同じ端の形を簡潔にします。
 題にテキストがあり、そのテキストの前にも中にもディレクティブがなく、
@@ -793,7 +796,7 @@ Wardley はそのような行を書かれたままにするからです。
 
 題のテキストが、キーワードの後の空白 1 つかタブ 1 つの後で、ディレクティブか、
 互いに接するディレクティブで始まり、行のそれ以外の部分にディレクティブ、
-コメント、`;`、幅のある空白、U+2028、U+2029 がないときは、
+コメント、`;`、幅のある空白、U+2028、U+2029 がなく、行が未決でないときは、
 ディレクティブとそれ以外のテキストの間の空白とタブを除き、
 行末の空白とタブも除きます（`title %%{x}%%  T  ` は `title %%{x}%%T` に、
 `title %%{x}%%%%{y}%%  T  ` は `title %%{x}%%%%{y}%%T` になります）。
@@ -1597,6 +1600,9 @@ mermaid.js はテキストを読む前にディレクティブを除き、
 [test: two spaces before the directive that starts the text of a title, of a Wardley map]
 [test: two directives with spaces between them that start the text of a title, of a Wardley map]
 [test: a directive that starts the text of a title and a directive that ends it, of a Wardley map]
+[test: a U+2028 inside the directive that starts the text of a title, two spaces and a text after it, spaces at the end, of a Wardley map]
+[test: a line break inside the directive that starts the text of a title, two spaces and a text after it, spaces at the end, of a Wardley map]
+[test: a `;` inside the directive that starts the text of a title, two spaces and a text after it, spaces at the end, of a Wardley map]
 [test: U+2028 before a directive that a comment touches, a line follows, in a title of a Wardley map]
 [test: U+2028 before a directive that a comment touches, the text ends, in a title of a Wardley map]
 [test: U+2028 before a directive that a comment touches, an empty line follows, in a title of a Wardley map]
@@ -1895,6 +1901,7 @@ mermaid.js はテキストを読む前にディレクティブを除き、
 [test: a directive that starts the text, two spaces and a text after it, spaces at the end, the text ends, in a title of a Wardley map]
 [test: two directives that touch and start the text, a text after them, spaces at the end, the text ends, in a title of a Wardley map]
 [test: a directive that starts the text, two spaces and a text after it, spaces at the end, a statement follows, in a title of a Wardley map]
+[test: a directive that starts the text, two spaces and a text after it, a statement whose label holds a `;` follows, in a title of a Wardley map]
 
 [fixture: wardley/title/title-empty]
 
@@ -1914,7 +1921,9 @@ wardley-beta
 
 ### アクセシビリティ
 
-accTitle: Value と accDescr: Value は共有の行配置を使います。
+accTitle: Value と accDescr: Value は、下の段落と、
+[ディレクティブが前にある題](#title)が述べるところを除いて、
+共有の行配置を使います。
 空の代入も残します。
 `accTitle` と `accDescr` のコロンはキーのコロンなので、
 [規則 1](./printed-form.ja.md#1-記号の横の空白)が `accTitle: text`
