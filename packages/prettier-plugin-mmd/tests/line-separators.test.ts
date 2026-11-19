@@ -652,13 +652,13 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
   ],
   [
     "a `#` comment after U+2028 after an actor and a data block",
-    "sequenceDiagram\nactor C as Carol\u2028# c\nparticipant D@{ \"type\": \"queue\" }\u2028# c\n",
-    "sequenceDiagram\n  actor C as Carol # c\n  participant D@{ \"type\": \"queue\" } # c\n",
+    'sequenceDiagram\nactor C as Carol\u2028# c\nparticipant D@{ "type": "queue" }\u2028# c\n',
+    'sequenceDiagram\n  actor C as Carol # c\n  participant D@{ "type": "queue" } # c\n',
   ],
   [
     "a `#` comment after U+2028 after links, properties, and details",
-    "sequenceDiagram\nparticipant A\nparticipant B\nlinks A: {\"x\": \"http://y\"}\u2028# c\nproperties A: {\"x\": \"y\"}\u2028# c\ndetails A: {\"x\": \"y\"}\u2028# c\n",
-    "sequenceDiagram\n  participant A\n  participant B\n  links A: {\"x\": \"http://y\"} # c\n  properties A: {\"x\": \"y\"} # c\n  details A: {\"x\": \"y\"} # c\n",
+    'sequenceDiagram\nparticipant A\nparticipant B\nlinks A: {"x": "http://y"}\u2028# c\nproperties A: {"x": "y"}\u2028# c\ndetails A: {"x": "y"}\u2028# c\n',
+    'sequenceDiagram\n  participant A\n  participant B\n  links A: {"x": "http://y"} # c\n  properties A: {"x": "y"} # c\n  details A: {"x": "y"} # c\n',
   ],
   [
     "a `#` comment after U+2028 after block headers and end",
@@ -687,13 +687,13 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
   ],
   [
     "a `#` comment after U+2029 after an actor and a data block",
-    "sequenceDiagram\nactor C as Carol\u2029# c\nparticipant D@{ \"type\": \"queue\" }\u2029# c\n",
-    "sequenceDiagram\n  actor C as Carol # c\n  participant D@{ \"type\": \"queue\" } # c\n",
+    'sequenceDiagram\nactor C as Carol\u2029# c\nparticipant D@{ "type": "queue" }\u2029# c\n',
+    'sequenceDiagram\n  actor C as Carol # c\n  participant D@{ "type": "queue" } # c\n',
   ],
   [
     "a `#` comment after U+2029 after links, properties, and details",
-    "sequenceDiagram\nparticipant A\nparticipant B\nlinks A: {\"x\": \"http://y\"}\u2029# c\nproperties A: {\"x\": \"y\"}\u2029# c\ndetails A: {\"x\": \"y\"}\u2029# c\n",
-    "sequenceDiagram\n  participant A\n  participant B\n  links A: {\"x\": \"http://y\"} # c\n  properties A: {\"x\": \"y\"} # c\n  details A: {\"x\": \"y\"} # c\n",
+    'sequenceDiagram\nparticipant A\nparticipant B\nlinks A: {"x": "http://y"}\u2029# c\nproperties A: {"x": "y"}\u2029# c\ndetails A: {"x": "y"}\u2029# c\n',
+    'sequenceDiagram\n  participant A\n  participant B\n  links A: {"x": "http://y"} # c\n  properties A: {"x": "y"} # c\n  details A: {"x": "y"} # c\n',
   ],
   [
     "a `#` comment after U+2029 after block headers and end",
