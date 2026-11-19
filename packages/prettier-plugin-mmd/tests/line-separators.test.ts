@@ -8505,6 +8505,97 @@ describe("a whitespace character that is no space or tab before the first direct
 })
 
 /**
+ * The places of a line of a directive and a comment in an ishikawa diagram:
+ * the text before the formatting and after it, with `{line}` for the line
+ * (docs/ishikawa.md, Standalone directives).
+ */
+const ishikawaDirectiveLinePlaces = [
+  ["the header line", "ishikawa {line}\n  R\n", "ishikawa {line}\n  R\n"],
+  [
+    "the line before the root",
+    "ishikawa\n  {line}\n  R\n",
+    "ishikawa\n  {line}\n  R\n",
+  ],
+  [
+    "an indented line after the root",
+    "ishikawa\n  R\n    {line}\n",
+    "ishikawa\n  R\n  {line}\n",
+  ],
+  [
+    "a line between two nodes",
+    "ishikawa\n  R\n    A\n    {line}\n    B\n",
+    "ishikawa\n  R\n    A\n    {line}\n    B\n",
+  ],
+  [
+    "a line at the indentation of the root",
+    "ishikawa\n  R\n  {line}\n",
+    "ishikawa\n  R\n  {line}\n",
+  ],
+] as const
+
+/** A tab and the whitespace of the specification that is no space, tab, or line terminator but U+2028 and U+2029. */
+const ishikawaGapCharacters: readonly string[] = [
+  "\t",
+  ...whitespaceBesideADirective,
+]
+
+describe("the whitespace between a directive and the comment on a line of a directive of an ishikawa diagram", () => {
+  it("a whitespace character between a directive and the comment on a line of a directive of an ishikawa diagram", async () => {
+    for (const [place, before, after] of ishikawaDirectiveLinePlaces) {
+      for (const character of ishikawaGapCharacters) {
+        // A gap that holds a U+2028 or a U+2029 stays as written on the
+        // header line.
+        const staysOnTheHeader =
+          place === "the header line" &&
+          (character === "\u2028" || character === "\u2029")
+        for (const written of [
+          character,
+          ` ${character}`,
+          `${character} `,
+          `${character}${character}`,
+        ]) {
+          const kept = staysOnTheHeader ? written : " "
+          await expectKept(
+            before.replace("{line}", `%%{x}%%${written}%% c  d`),
+            after.replace("{line}", `%%{x}%%${kept}%% c  d`),
+          )
+        }
+      }
+    }
+  })
+
+  it("spaces and tabs between a directive and the comment on a line of a directive of an ishikawa diagram, and a comment that touches the directive", async () => {
+    for (const [, before, after] of ishikawaDirectiveLinePlaces) {
+      for (const gap of ["  ", " ", "\t", "\t\t"]) {
+        await expectKept(
+          before.replace("{line}", `%%{x}%%${gap}%% c  d`),
+          after.replace("{line}", "%%{x}%% %% c  d"),
+        )
+      }
+      await expectKept(
+        before.replace("{line}", "%%{x}%%%% c  d"),
+        after.replace("{line}", "%%{x}%%%% c  d"),
+      )
+    }
+  })
+
+  it("a whitespace character between two directives on a line of an ishikawa diagram with no text", async () => {
+    for (const character of ishikawaGapCharacters) {
+      for (const written of [character, `${character}${character}`, "  "]) {
+        await expectKept(
+          `ishikawa\n  R\n    %%{x}%%${written}%%{y}%%\n`,
+          "ishikawa\n  R\n  %%{x}%% %%{y}%%\n",
+        )
+      }
+    }
+    await expectKept(
+      "ishikawa\n  R\n    %%{x}%%%%{y}%%\n",
+      "ishikawa\n  R\n  %%{x}%%%%{y}%%\n",
+    )
+  })
+})
+
+/**
  * The places that the clauses of the last line that holds a U+2028 or a U+2029
  * name (docs/kanban.md and docs/c4.md, Final newline): after the comment of
  * these the last line stays, with a line break added where none follows, and

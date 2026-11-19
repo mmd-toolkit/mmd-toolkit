@@ -418,14 +418,23 @@ kanban が見出し行のディレクティブを節点と一緒に移すのと�
 ディレクティブの後に、テキストを挟まずに続くコメント（`%%{x}%% %% c  d`）は、
 リテラルではなく、ディレクティブの行のコメントです。
 コメントの中の連なりは書かれたまま残り、
-ディレクティブとコメントの間の空白かタブは空白 1
-つにして印字します（`%%{x}%%  %% c  d` は `%%{x}%% %% c  d` と印字します）。
+ディレクティブとコメントの間の空白文字は、
+何であっても空白 1 つにして印字します（空白、タブ、改行しない空白、U+3000、
+U+2028、U+2029、そのほかの仕様の空白文字。
+`%%{x}%%  %% c  d` は `%%{x}%% %% c  d` と印字し、`%%{x}%%`、U+3000、
+`%% c  d` も同じです）。
 ディレクティブに接するコメントは、接したままです。
+ヘッダーの行も同じですが、U+2028 か U+2029 を含む隙間は書かれたまま残ります。
+テキストのない行の 2 つのディレクティブの間も同じです（`%%{x}%%  %%{y}%%` は
+`%%{x}%% %%{y}%%` と印字し、接する 2 つは接したままです）。
 
 [test: ishikawa: comment-line-after-a-directive-kept]
 [test: ishikawa: comment-line-after-a-directive-gap-collapsed]
 [test: ishikawa: comment-line-after-a-directive-tab-gap-collapsed]
 [test: ishikawa: comment-line-touching-a-directive-kept]
+[test: a whitespace character between a directive and the comment on a line of a directive of an ishikawa diagram]
+[test: spaces and tabs between a directive and the comment on a line of a directive of an ishikawa diagram, and a comment that touches the directive]
+[test: a whitespace character between two directives on a line of an ishikawa diagram with no text]
 
 入力（エスケープ表記）:
 

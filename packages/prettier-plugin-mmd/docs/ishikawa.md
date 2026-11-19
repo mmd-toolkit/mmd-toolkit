@@ -411,15 +411,25 @@ boundaries.
 
 A comment that follows a directive on its line with no text between them
 (`%%{x}%% %% c  d`) is a comment on a line of a directive, not a literal: the
-run inside the comment stays as written, the spaces or tabs between the
-directive and the comment are printed as one space (`%%{x}%%  %% c  d` is
-printed `%%{x}%% %% c  d`), and a comment that touches the directive stays
-touching.
+run inside the comment stays as written, whatever whitespace stands between the
+directive and the comment (spaces, tabs, a no-break space, U+3000, U+2028,
+U+2029, and the other whitespace of the specification) is printed as one space
+(`%%{x}%%  %% c  d` is printed `%%{x}%% %% c  d`, and so are `%%{x}%%`, a
+U+3000, and `%% c  d`), and a comment that touches the directive stays touching.
+The same holds on the header line, but for a gap that holds a U+2028 or a
+U+2029, which stays as written, and between two directives on a line with no
+text (`%%{x}%%  %%{y}%%` is printed `%%{x}%% %%{y}%%`, and two directives that
+touch stay touching).
 
 [test: ishikawa: comment-line-after-a-directive-kept] [test: ishikawa:
 comment-line-after-a-directive-gap-collapsed] [test: ishikawa:
 comment-line-after-a-directive-tab-gap-collapsed] [test: ishikawa:
-comment-line-touching-a-directive-kept]
+comment-line-touching-a-directive-kept] [test: a whitespace character between a
+directive and the comment on a line of a directive of an ishikawa diagram]
+[test: spaces and tabs between a directive and the comment on a line of a
+directive of an ishikawa diagram, and a comment that touches the directive]
+[test: a whitespace character between two directives on a line of an ishikawa
+diagram with no text]
 
 Input (escaped):
 
