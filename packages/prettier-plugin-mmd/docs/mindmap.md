@@ -737,7 +737,8 @@ of it: where it is, one space stands there, and where it touches, it keeps
 touching. The directives that end the text of a node or of a class are printed
 with one space before each that has spaces or tabs before it, and the spaces and
 tabs after the last one are left out, whatever the spaces and tabs at the end of
-the line (see
+the line, unless the last directive holds a line break or a `;`, where a bare
+node keeps the line as written (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 After a shape or an icon, a whitespace character that is no space or tab
 (U+000B, U+000C, a no-break space, U+1680, U+2000 to U+200A, U+2028, U+2029,
