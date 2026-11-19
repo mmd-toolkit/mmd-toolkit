@@ -622,12 +622,12 @@ Use shared common-line layout: `title value` trims only common-whitespace edges,
 and null or whitespace-only values print `title`. This compacts equivalent outer
 padding. Never read the next physical line as a value, even across trivia.
 mermaid.js reads the next line as a statement of its own, so joining it would
-change the title. Keep occurrences and content even though the architecture
-summary does not publish title. Trivia-bearing values and protected hidden
-boundaries keep their source gaps. The directives that end a title are printed
-with one space before each that has whitespace before it, and the whitespace
-after the last one is left out, whatever the whitespace at the end of the line
-(see
+put that statement into the title, and the node that it declares would
+disappear. Keep occurrences and content even though the architecture summary
+does not publish title. Trivia-bearing values and protected hidden boundaries
+keep their source gaps. The directives that end a title are printed with one
+space before each that has whitespace before it, and the whitespace after the
+last one is left out, whatever the whitespace at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [corpus fixture:
@@ -669,9 +669,10 @@ Reuse shared `accTitle: value` and `accDescr: value`: the colon touches its
 keyword, with one space before a trimmed nonempty value; empty values end at the
 colon. This keeps consistent outer spacing. Never join a next-line statement.
 mermaid.js reads the next line as a statement of its own, so joining it would
-change the title or the description. Braces after a colon remain line text, and
-protected trivia/hidden gaps take precedence. The directives that end the value
-are printed with one space before each that has whitespace before it, and the
+put that statement into the title or the description, and the node that it
+declares would disappear. Braces after a colon remain line text, and protected
+trivia/hidden gaps take precedence. The directives that end the value are
+printed with one space before each that has whitespace before it, and the
 whitespace after the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
@@ -711,16 +712,15 @@ Description blocks on one line follow
 For blocks that keep their braces, separate the keyword and opening brace with
 one space so the block boundary is clear. Whitespace-only interiors become `{}`
 because no text needs surrounding space. Plain opener whitespace can join; real
-trivia keeps its break. Rule 1 names no mark for a line break, so
+trivia keeps its break. Rule 1 names no mark for a line break next to a comment
+or a directive, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
-[journey](./journey.md#multi-line-statements) keep a line break next to a
-comment or a directive and the whitespace before it, and put the later parts of
-a statement and the trivia lines one level deeper, where no other rule keeps the
-layout as written (a comment region that joins physical lines, a line that holds
-a `;`, and the like). Keep comment/directive-only interiors. Rule 1 names no
-mark for a line inside a block, so
+[journey](./journey.md#multi-line-statements) keep such a line break, where no
+other rule keeps the layout as written (a comment region that joins physical
+lines, a line that holds a `;`, and the like). Keep comment/directive-only
+interiors. Rule 1 names no mark for a line inside a block, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [xychart](./xychart.md#empty-description-blocks) and
 [quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
@@ -888,7 +888,9 @@ surrounding text, so deleting component-boundary whitespace can reject a
 declaration. Preserve component/value-internal directives rather than treating
 their opaque text as JSON.
 
-[fixture: architecture/global-directives/header-to-body]
+[fixture: architecture/global-directives/header-to-body] [fixture:
+architecture/global-directives/header-split-both-separated] [fixture:
+architecture/global-directives/header-split-left-separated-right-touching]
 
 [fixture: architecture/global-directives/composite-boundaries]
 

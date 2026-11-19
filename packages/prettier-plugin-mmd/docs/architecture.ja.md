@@ -648,7 +648,8 @@ architecture-beta
 共通規則が読む空白だけを除きます。
 `null` と空白だけの値は `title` とし、同じ意味の外側の空白を詰めます。
 注釈類を挟んでも次の物理行を値にしません。
-mermaid.js は次の行を独立した文として読むので、つなぐと title が変わります。
+mermaid.js は次の行を独立した文として読むので、つなぐと、その文が title に入り、
+その文が宣言するノードがなくなります。
 architecture の要約が title を公開しなくても、文と内容を保ちます。
 注釈類のある値と保護された隠れた形の境界は原文の隙間を保ちます。
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
@@ -695,8 +696,8 @@ architecture-beta
 空ならコロンで終えます。
 これにより外側の空白を統一します。
 次行の文を取り込まず、コロン後の波括弧は行値のまま保ちます。
-mermaid.js は次の行を独立した文として読むので、
-つなぐと title や description が変わります。
+mermaid.js は次の行を独立した文として読むので、つなぐと、
+その文が title や description に入り、その文が宣言するノードがなくなります。
 保護された注釈類と隠れた形の隙間を優先します。
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
@@ -739,12 +740,10 @@ architecture-beta
 キーワードと開始波括弧の間に空白を 1 つ置きます。
 空白だけの内側は囲む文字がないため `{}` にします。
 開始前の単なる空白は結合し、実際の注釈類は改行を保ちます。
-規則 1 は、改行の印を挙げていないので、
+規則 1 は、コメントやディレクティブの隣の改行の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
-[journey](./journey.ja.md#複数行の文)も、コメントやディレクティブの隣の改行と、
-その前の空白を残し、
-文の後続部分と間のコメントやディレクティブの行を 1 段深く置きます。
+[journey](./journey.ja.md#複数行の文)も、そのような改行を残します。
 ただし、ほかの規則が配置を書かれたまま残す所は別です。
 たとえば、物理行を結ぶコメント領域や、`;` を含む行です。
 コメント・ディレクティブだけの内側を保ちます。
@@ -924,6 +923,8 @@ architecture-beta
 部品間・値内部のディレクティブを保ち、不透明な内容を JSON として扱いません。
 
 [fixture: architecture/global-directives/header-to-body]
+[fixture: architecture/global-directives/header-split-both-separated]
+[fixture: architecture/global-directives/header-split-left-separated-right-touching]
 
 [fixture: architecture/global-directives/composite-boundaries]
 
