@@ -14539,6 +14539,16 @@ const wardleyDirectiveCommentExamples: readonly (readonly [
     "wardley-beta\naccTitle : T%%{w\u2028v}%% %%{y;z}%%\n",
     "wardley-beta\n  accTitle : T%%{w\u2028v}%% %%{y;z}%%\n",
   ],
+  [
+    "accTitle with a gap before the colon, a U+2028 inside a comment and a `;` after it in the comment, the text ends, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle : T %% a\u2028b;\n",
+    "wardley-beta\n  accTitle : T %% a\u2028b;\n",
+  ],
+  [
+    "accTitle with a gap before the colon, a U+2028 inside a comment and no `;`, the text ends, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle : T %% a\u2028b\n",
+    "wardley-beta\n  accTitle: T %% a\u2028b\n",
+  ],
 ]
 
 describe("a comment after the directives that end the title or the value of an accessibility line of a Wardley map, after a U+2028 or U+2029", () => {

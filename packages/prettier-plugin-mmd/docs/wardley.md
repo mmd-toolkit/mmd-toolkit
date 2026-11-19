@@ -662,10 +662,8 @@ string. Where a title has text and no directive stands before its text or inside
 it, and no U+2028 or U+2029 stands inside the text, the directives that end it
 are printed as follows, by what stands before them and after them. A wide space
 is one of U+000B, U+000C, U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F,
-U+3000, and U+FEFF. Item 9 decides before item 6, and item 6 before the other
-items: where item 6 splits a line, none of the others applies to it. A line that
-holds a `;` in the text or in a directive and that item 6 would split is not
-stated here:
+U+3000, and U+FEFF. Where item 6 splits a line, none of the other items applies
+to it. The lines of the region below are not stated here:
 
 - Where only spaces and tabs, or nothing, stand before the directives, no `;`
   stands in the text before them or inside one of them, no directive holds a
@@ -712,68 +710,15 @@ stated here:
   does not make a line one (`%% e;`, `%%{y}%% %% e;`, and `%%{y;z}%%` are
   removed).
 - Where a wide space stands between two directives, the line stays as written,
-  whatever follows the last one. So it does where a U+2028 or U+2029 stands
-  between two directives and nothing, spaces, or tabs follow the last one. Where
-  a comment follows the last directive, touching it or after spaces, tabs, or
-  wide spaces, and a U+2028 or U+2029 stands between two directives, the comment
-  region joins the next line of the source, as in item 6: where item 6 keeps the
-  lines, they stay as written, runs included, and where item 6 would split the
-  line, the paragraph after the list says how it is printed.
-- Where a `;` stands in the text before the directives, whether the line rule of
-  mermaid.js ignores it or not, or inside a directive, the line through the last
-  `;`, with the directive that holds it, stays as written (see
-  [Semicolons](#semicolons)), and items 2 and 3 do not apply to a wide space
-  that it holds; a U+2028 or U+2029 before the first directive is printed as
-  items 4 and 5 print it. The rest of that line, and a line in which a line
-  break, a U+2028, or a U+2029 stands inside a directive, stay as written if
-  spaces or tabs follow the last directive, whether the end of the line or a
-  comment comes after them, or if spaces or tabs stand between two directives
-  after it. If neither holds, the other items print them as they print a line
-  without that `;`, line break, U+2028, or U+2029, so each run of spaces and
-  tabs after the `;` before a directive is one space. Where the line rule
-  ignores the `;` (`title style:#red;`), the line stays as written whatever
-  follows the last directive, a wide space, U+2028, or U+2029 before the first
-  directive included.
-- A `;` between two directives or after the last directive, with or without
-  spaces and tabs around it, keeps the line as written, also inside a comment
-  that follows the last directive. Where a U+2028 or U+2029 stands after the
-  last such `;` and a comment follows, what follows the `;` is printed as for
-  one U+2028 or U+2029 in the paragraph after the list: the run after it and the
-  run before the comment are one space (`title T %%{x}%%;`, U+2028, `%%{y}%%`,
-  two spaces, and `%% c` are printed `title T %%{x}%%;`, U+2028, `%%{y}%%`, a
-  space, and `%% c`), and two U+2028 or U+2029 after the `;` are not stated.
+  whatever follows the last one.
 - Where a wide space stands after the last directive, also after spaces or tabs,
-  the line stays as written, whatever follows the character. So it does where a
-  U+2028 or U+2029 stands there and nothing follows it. Where a comment follows
-  the U+2028 or U+2029, touching it or after spaces, tabs, or wide spaces, the
-  comment region joins the next line of the source, as in item 6: where item 6
-  keeps the lines, they stay as written, runs included, and where item 6 would
-  split the line, the paragraph after the list says how it is printed. A title
-  with a directive inside its text stays as written too.
-
-Where no U+2028 or U+2029 stands before the directives, the line holds no `;`, a
-comment follows the last directive, one or more U+2028 or U+2029 stand between
-two directives or after the last one, and item 6 would split the line, the first
-of them stays, with the gap before it as written, and the gap after it is
-printed as one space where a directive or the comment follows it, and left out
-where another U+2028 or U+2029 follows it; the gap before the comment is printed
-as one space where it holds whitespace. Each later one is a line break: the
-directives after a line break stand on a line of their own, and so does the
-comment, with the whitespace before it left out (`title T %%{x}%%`, U+2028, two
-spaces, `%%{y}%%`, U+2028, and `%% c` are printed `title T %%{x}%%`, U+2028, a
-space, `%%{y}%%`, a line break, and `%% c`; `title T %%{x}%%`, U+2028,
-`%%{y}%%`, U+2028, `%%{z}%%`, a space, and `%% c` are printed `title T %%{x}%%`,
-U+2028, `%%{y}%%`, a line break, and `%%{z}%% %% c`; `title T %%{x}%%`, U+2028,
-two spaces, U+2028, two spaces, `%%{y}%%`, two spaces, and `%% c` are printed
-`title T %%{x}%%`, U+2028, a line break, and `%%{y}%% %% c`). Where one stands
-before the directives, item 6 applies, and all of them are line breaks. Where
-item 6 keeps the lines, they stay as written, runs included. Items 7 and 10
-state the line with one U+2028 or U+2029; a line with two or more is printed by
-this paragraph.
+  the line stays as written, whatever follows the character. A title with a
+  directive inside its text stays as written too.
 
 Where a comment follows the last directive, no U+2028 or U+2029 stands between
-the text and the comment, and none of items 7 to 10 applies, a run of spaces and
-tabs before each directive and before the comment is printed as one space (see
+the text and the comment, the line holds no `;` outside the comment, and neither
+of items 7 and 8 applies, a run of spaces and tabs before each directive and
+before the comment is printed as one space (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 Rule 1 names no mark for a gap beside a directive, so
@@ -793,35 +738,22 @@ whether the end of the line or a comment comes after them, or if spaces or tabs
 stand between two directives, and item 3 does not apply to it; otherwise the
 other items print it as they print a line of any other text, so each run of
 spaces and tabs before a directive, the one after the keyword included, is one
-space. In a title of directives only that holds one `;`, between two directives,
-the line through the `;` stays as written, and the gap after the `;` is printed
-as one space, whatever whitespace it holds, a U+2028 or U+2029 included, where
-nothing follows the last directive or a comment touches it (`title`, a space,
-`%%{x}%%`, two spaces, `;`, two spaces, and `%%{y}%%` are printed
-`title %%{x}%%  ; %%{y}%%`). Where whitespace follows the last directive, or a
-comment follows it after whitespace, the line stays as written. A `;` after the
-last directive of such a title keeps the line through it as written, the spaces,
-tabs, and wide spaces after it are left out, a U+2028 or U+2029 after it stays
-with the whitespace before it where no comment follows, the spaces and tabs
-after the last one are left out, and a gap before a comment is printed as one
-space (`title`, a space, `%%{x}%%`, two spaces, `;`, two spaces, and `%% c` are
-printed `title %%{x}%%  ; %% c`). A `;` in a comment that follows the last
-directive is the last `;`: the whole line stays as written (`title`, a space,
-`%%{x}%%`, two spaces, `;`, two spaces, `%%{y}%%`, and `%% c;` are not changed).
-Where only `;` separate the directives, the line through the last `;` stays as
-written, whatever its gaps hold, and the gap after the last `;` is one space
-(`title`, a space, `%%{x}%%`, `;`, a no-break space, `;`, two spaces, and
-`%%{y}%%` are printed `title %%{x}%%;`, a no-break space, `;`, a space, and
-`%%{y}%%`). A U+0085 or U+180E is no whitespace: a title that holds one is no
-title of directives only, and this paragraph does not state it. Where more `;`
-or directives stand in such a title, and only spaces and tabs stand in its gaps,
-the line stays as written where spaces or tabs stand between two directives that
-no `;` separates, where a directive stands between two `;`, or where spaces or
-tabs follow the last directive that stands after the last `;`; otherwise the
-line through the last `;` stays as written, the run of spaces and tabs after the
-last `;` is printed as one space, and the spaces and tabs at the end of the line
-are left out (`title`, a space, `%%{x}%%`, two spaces, `;`, two spaces, `;`, two
-spaces, and `%%{y}%%` are printed `title %%{x}%%  ;  ; %%{y}%%`).
+space.
+
+Where a line holds, besides the directives, a `;` outside a comment, or a U+2028
+or U+2029 between two directives, after the last directive, or inside a
+directive, or a directive holds a line break, it is in a region that no rule
+gives: the output there depends on each character on each side of the `;` and of
+the U+2028 or U+2029, rule 1 names no mark for these gaps, and the diagram types
+do not print them alike (Wardley keeps the line through the last `;` as written,
+and radar and architecture print the gaps). The forms that the released version
+prints there stay until they are decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+A `;` inside a comment makes no difference to the line. A U+0085 or U+180E is
+text, so a line that holds one, or a directive before its text, is in the region
+too where a `;` or a U+2028 or U+2029 stands among its parts. A line that the
+formatter rejects there, a `;` before a U+2028 or U+2029 and a comment, with a
+gap and a statement after the comment line, is not stated.
 
 A title that holds a `;` and no directive stays as written through its last `;`
 (see [Semicolons](#semicolons)): `title`, a tab, and `T;` are not changed, and
@@ -2410,24 +2342,23 @@ the colon of a key, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the form
 `accTitle: text`: no whitespace before the colon and one space after it. A line
 whose first `;`, also one inside a directive or a comment, stands before every
-U+2028 and U+2029 outside a directive is the exception: the gap before its colon
-stays as written (`accTitle : a;`), which rule 1 does not give, so that form
-waits to be fixed by the rule; where a U+2028 or U+2029 stands before the first
-`;`, the gap is left out (`accTitle : T`, U+2028, and `U;` are printed
-`accTitle: T`, U+2028, and `U;`). Where a value has text and no directive stands
-before its text or inside it, and no U+2028 or U+2029 stands inside the text,
-the directives that end it are printed as follows, by what stands before them
-and after them. A wide space is one of U+000B, U+000C, U+00A0, U+1680, U+2000 to
-U+200A, U+202F, U+205F, U+3000, and U+FEFF. Where a U+2028 or U+2029 stands
-before the directives and a comment follows the last one, the line is printed as
-under item 6 of the [title list](#title), except that item 6 of this list
-decides before it, and where item 6 of the title list splits the line, none of
-the items below applies to it. A line that holds a `;` in the text or in a
-directive and that item 6 of the title list would split is not stated here. The
-colon touches the keyword, so a gap before it is printed as no gap even where
-the line stays as written, except on a line whose first `;`, also one inside a
-directive or a comment, stands before every U+2028 and U+2029 outside a
-directive, where the gap stays as written too:
+U+2028 and U+2029 outside a directive and a comment is the exception: the gap
+before its colon stays as written (`accTitle : a;`), which rule 1 does not give,
+so that form waits to be fixed by the rule; where a U+2028 or U+2029 stands
+before the first `;`, the gap is left out (`accTitle : T`, U+2028, and `U;` are
+printed `accTitle: T`, U+2028, and `U;`). Where a value has text and no
+directive stands before its text or inside it, and no U+2028 or U+2029 stands
+inside the text, the directives that end it are printed as follows, by what
+stands before them and after them. A wide space is one of U+000B, U+000C,
+U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, and U+FEFF. Where a
+U+2028 or U+2029 stands before the directives and a comment follows the last
+one, the line is printed as under item 6 of the [title list](#title), and where
+item 6 of the title list splits the line, none of the items below applies to it.
+The lines of the region below are not stated here. The colon touches the
+keyword, so a gap before it is printed as no gap even where the line stays as
+written, except on a line whose first `;`, also one inside a directive or a
+comment, stands before every U+2028 and U+2029 outside a directive and a
+comment, where the gap stays as written too:
 
 - Where only spaces and tabs, or nothing, stand before the directives, no `;`
   stands in the text before them or inside one of them, no directive holds a
@@ -2446,56 +2377,16 @@ directive, where the gap stays as written too:
 - Where a U+2028 or U+2029 stands before the directives, no comment follows the
   last one, and spaces or tabs follow the last one, or spaces or tabs and
   another directive follow the first one, the line stays as written.
-- Where a `;` stands in the text before the directives, whether the line rule of
-  mermaid.js ignores it or not, or inside a directive, the line through the last
-  `;`, with the directive that holds it, stays as written (see
-  [Semicolons](#semicolons)), and items 2 and 3 do not apply to a wide space
-  that it holds; a U+2028 or U+2029 before the first directive is printed as
-  items 2 and 4 print it. The rest of that line, and a line in which a line
-  break, a U+2028, or a U+2029 stands inside a directive, stay as written if
-  spaces or tabs follow the last directive, whether the end of the line or a
-  comment comes after them, or if spaces or tabs stand between two directives
-  after it. If neither holds, the other items print them as they print a line
-  without that `;`, line break, U+2028, or U+2029, so each run of spaces and
-  tabs after the `;` before a directive is one space. Where the line rule
-  ignores the `;` (`accTitle: style:#red;`), the line stays as written whatever
-  follows the last directive, a wide space, U+2028, or U+2029 before the first
-  directive included.
-- A `;` between two directives or after the last directive, with or without
-  spaces and tabs around it, keeps the line as written, also inside a comment
-  that follows the last directive. Where a U+2028 or U+2029 stands after the
-  last such `;` and a comment follows, what follows the `;` is printed as for
-  one U+2028 or U+2029 in the paragraph after the [title list](#title): the run
-  after it and the run before the comment are one space (`title T %%{x}%%;`,
-  U+2028, `%%{y}%%`, two spaces, and `%% c` are printed `title T %%{x}%%;`,
-  U+2028, `%%{y}%%`, a space, and `%% c`), and two U+2028 or U+2029 after the
-  `;` are not stated.
 - Where a wide space stands between two directives, the line stays as written,
-  whatever follows the last one. So it does where a U+2028 or U+2029 stands
-  between two directives and nothing, spaces, or tabs follow the last one. Where
-  a comment follows the last directive, touching it or after spaces, tabs, or
-  wide spaces, and a U+2028 or U+2029 stands between two directives, the comment
-  region joins the next line of the source, as in item 6 of the
-  [title list](#title): where item 6 of the title list keeps the lines, they
-  stay as written, runs included, and where item 6 of the title list would split
-  the line, the paragraph after the title list says how it is printed.
+  whatever follows the last one.
 - Where a wide space stands after the last directive, also after spaces or tabs,
-  the line stays as written, whatever follows the character. So it does where a
-  U+2028 or U+2029 stands there and nothing follows it. Where a comment follows
-  the U+2028 or U+2029, touching it or after spaces, tabs, or wide spaces, the
-  comment region joins the next line of the source, as in item 6 of the
-  [title list](#title): where item 6 of the title list keeps the lines, they
-  stay as written, runs included, and where item 6 of the title list would split
-  the line, the paragraph after the title list says how it is printed. A value
-  with a directive inside its text stays as written too.
-
-Where one or more U+2028 or U+2029 stand between two directives or after the
-last one, and a comment follows, the line is printed as in the paragraph after
-the [title list](#title).
+  the line stays as written, whatever follows the character. A value with a
+  directive inside its text stays as written too.
 
 Where a comment follows the last directive, no U+2028 or U+2029 stands between
-the text and the comment, and none of items 5 to 8 applies, a run of spaces and
-tabs before each directive and before the comment is printed as one space (see
+the text and the comment, the line holds no `;` outside the comment, and neither
+of items 5 and 6 applies, a run of spaces and tabs before each directive and
+before the comment is printed as one space (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 Rule 1 names no mark for a gap beside a directive, so
@@ -2517,21 +2408,36 @@ other items print it as they print a line of any other text, so each run of
 spaces and tabs before a directive, the one after the keyword included, is one
 space.
 
+Where a line holds, besides the directives, a `;` outside a comment, or a U+2028
+or U+2029 between two directives, after the last directive, or inside a
+directive, or a directive holds a line break, it is in a region that no rule
+gives: the output there depends on each character on each side of the `;` and of
+the U+2028 or U+2029, rule 1 names no mark for these gaps, and the diagram types
+do not print them alike (Wardley keeps the line through the last `;` as written,
+and radar and architecture print the gaps). The forms that the released version
+prints there stay until they are decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+A `;` inside a comment makes no difference to the line. A U+0085 or U+180E is
+text, so a line that holds one, or a directive before its text, is in the region
+too where a `;` or a U+2028 or U+2029 stands among its parts. A line that the
+formatter rejects there, a `;` before a U+2028 or U+2029 and a comment, with a
+gap and a statement after the comment line, is not stated.
+
 A line of `accTitle:` or `accDescr:` that holds a `;` and no directive stays as
 written through its last `;` (see [Semicolons](#semicolons)), the gap before its
 colon included, where the first `;` stands before every U+2028 and U+2029
-outside a directive (`accTitle : T;`, and `accTitle : T;`, U+2028, and `U` are
-not changed); where a U+2028 or U+2029 stands before the first `;`, the gap
-before the colon is left out, and the rest stays as written through the last `;`
-(`accTitle : T`, U+2028, and `U;` are printed `accTitle: T`, U+2028, and `U;`).
-A U+2028 or U+2029 between the colon and the text is left out where the text
-touches it, with the gap before the colon (`accTitle : `, U+2028, and `T;` are
-printed `accTitle: T;`), and stays where whitespace stands between it and the
-text, the gap before the colon still left out (`accTitle : `, U+2028, a space,
-and `T;` are printed `accTitle: `, U+2028, a space, and `T;`). What follows the
-last `;` is printed as under the title: spaces, tabs, and every wide space after
-it are left out, a run before a comment is one space, and a U+2028 or U+2029
-after it is treated as there. Where the line rule ignores the `;`
+outside a directive and a comment (`accTitle : T;`, and `accTitle : T;`, U+2028,
+and `U` are not changed); where a U+2028 or U+2029 stands before the first `;`,
+the gap before the colon is left out, and the rest stays as written through the
+last `;` (`accTitle : T`, U+2028, and `U;` are printed `accTitle: T`, U+2028,
+and `U;`). A U+2028 or U+2029 between the colon and the text is left out where
+the text touches it, with the gap before the colon (`accTitle : `, U+2028, and
+`T;` are printed `accTitle: T;`), and stays where whitespace stands between it
+and the text, the gap before the colon still left out (`accTitle : `, U+2028, a
+space, and `T;` are printed `accTitle: `, U+2028, a space, and `T;`). What
+follows the last `;` is printed as under the title: spaces, tabs, and every wide
+space after it are left out, a run before a comment is one space, and a U+2028
+or U+2029 after it is treated as there. Where the line rule ignores the `;`
 (`accTitle: style:#red;` and two spaces), the line stays as written, and so it
 does where a `;` stands inside a comment after the text.
 
@@ -3488,7 +3394,10 @@ Wardley map] [test: accTitle with a gap before the colon, a U+2028 inside a
 directive and no `;`, the text ends, in an accTitle line of a Wardley map]
 [test: accTitle with a gap before the colon, a U+2028 inside a directive and a
 `;` inside a directive after it, the text ends, in an accTitle line of a Wardley
-map]
+map] [test: accTitle with a gap before the colon, a U+2028 inside a comment and
+a `;` after it in the comment, the text ends, in an accTitle line of a Wardley
+map] [test: accTitle with a gap before the colon, a U+2028 inside a comment and
+no `;`, the text ends, in an accTitle line of a Wardley map]
 
 A description block on one line follows
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
