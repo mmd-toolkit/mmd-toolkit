@@ -529,21 +529,45 @@ mermaid.js の行の規則がその行に働かないとき、
 `;` が 2 つ続くと、規則が最後の `;` を無視し、
 1 つ除くと別の `;` を無視するようになります。
 詳しくは [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)にあります。
-題にテキストがあり、そのテキストの前にも中にもディレクティブがなく、
-最後のディレクティブの後が空白とタブだけのときは、題の終わりのディレクティブを、
-それぞれの前に空白かタブがあれば空白 1 つを置き、
-行末の空白とタブの有無にかかわらず、
-最後のディレクティブの後の空白とタブを除いて印字します。
-互いに接して行末かコメントに接するディレクティブがあるとき、
-その前のテキストとの間にあるノーブレークスペースや U+3000 は、
-同じ連なりの残りとともに空白 1 つで印字します。
-ディレクティブが行末に接するときは、U+2028 や U+2029 も同じです。
-ディレクティブの後に空白と別のディレクティブかコメントが続くときは、
-その前のノーブレークスペースや U+3000 は残ります。
-最後のディレクティブの後に、ノーブレークスペース、U+3000、U+2028、
-U+2029 のどれかがあるときは、その前に空白やタブがあっても、
-行を書かれたままにします。
-中にディレクティブのある題と、ディレクティブだけの題も、書かれたままです。
+題にテキストがあり、そのテキストの前にも中にもディレクティブがないとき、
+題の終わりのディレクティブは、その前と後に何があるかで、次のように印字します。
+
+- ディレクティブの前が空白とタブだけ、または何もなく、
+  その前のテキストに `;` がなく、
+  最後のディレクティブの後が空白とタブだけのときは、
+  それぞれのディレクティブの前に空白かタブがあれば空白 1 つを置き、
+  行末の空白とタブの有無にかかわらず、
+  最後のディレクティブの後の空白とタブを除いて印字します。
+- ディレクティブの前にノーブレークスペースか U+3000 があり、
+  ディレクティブが互いに接して、
+  最後のディレクティブに行末かコメントが接するときは、その文字を、
+  同じ連なりの残りとともに空白 1 つで印字します。
+- ディレクティブの前にノーブレークスペースか U+3000 があり、
+  最初のディレクティブの後に空白と別のディレクティブかコメントが続くときは、
+  その文字は残ります。
+- ディレクティブの前に U+2028 か U+2029 があり、ディレクティブが互いに接して、
+  最後のディレクティブに行末が接するときは、空白 1 つで印字します。
+- ディレクティブの前に U+2028 か U+2029 があり、
+  最後のディレクティブの後に空白かタブが続くとき、
+  または最初のディレクティブの後に空白と別のディレクティブが続くときは、
+  行を書かれたままにします。
+- U+000B、U+000C、U+1680、U+2000 から U+200A、U+202F、U+205F、
+  U+FEFF のどれかがディレクティブの前にあり、その後に何も続かないときは、
+  空白 1 つで印字します。
+- 2 つのディレクティブの間にノーブレークスペース、U+3000、U+2028、
+  U+2029 のどれかがあるときは、最後のディレクティブの後の空白も含めて、
+  行を書かれたままにします。
+- テキストの中のディレクティブの前に `;` があるとき、
+  最後のディレクティブの後に空白かタブが続けば、行を書かれたままにします。
+  何も続かなければ、
+  `;` とディレクティブの間の空白やノーブレークスペースを空白 1 つで印字します。
+- 最後のディレクティブの後に、またはそれに接して `;` があるときは、
+  行を書かれたままにします。
+- 最後のディレクティブの後にノーブレークスペース、U+3000、U+2028、
+  U+2029 のどれかがあるときは、その前に空白やタブがあっても、
+  行を書かれたままにします。
+  中にディレクティブのある題と、ディレクティブだけの題も、書かれたままです。
+
 最後のディレクティブの後にコメントが続くときは、
 それぞれのディレクティブの前とコメントの前の空白とタブの連なりを、
 空白 1 つで印字します。
@@ -579,6 +603,50 @@ U+2029 のどれかがあるときは、その前に空白やタブがあって�
 [test: a tab and a no-break space after the last directive of a title of a radar chart]
 [test: U+3000 before a directive that a comment touches in a title of a radar chart]
 [test: U+3000 before two directives that touch and end a title of a radar chart]
+[test: U+3000 before a directive that a space and another directive follow in a title of a radar chart]
+[test: a no-break space before a directive that a space and a comment follow in a title of a radar chart]
+[test: a no-break space between two directives that end a title of a radar chart]
+[test: U+3000 between two directives that end a title of a radar chart]
+[test: a no-break space between two directives, spaces after the last, in a title of a radar chart]
+[test: U+3000 between two directives, spaces after the last, in a title of a radar chart]
+[test: U+2028 before two directives that touch and end a title of a radar chart]
+[test: U+2029 before two directives that touch and end a title of a radar chart]
+[test: U+2028 before the last directive, a space and a tab after it, in a title of a radar chart]
+[test: U+2029 before the last directive, a space and a tab after it, in a title of a radar chart]
+[test: U+2028 before a directive that a space and another directive follow in a title of a radar chart]
+[test: U+2029 before a directive that a space and another directive follow in a title of a radar chart]
+[test: U+2028 between two directives that end a title of a radar chart]
+[test: U+2029 between two directives that end a title of a radar chart]
+[test: U+2028 between two directives, spaces after the last, in a title of a radar chart]
+[test: U+2029 between two directives, spaces after the last, in a title of a radar chart]
+[test: a space, a tab, and a no-break space after the last directive of a title of a radar chart]
+[test: a space, a tab, and U+3000 after the last directive of a title of a radar chart]
+[test: a space, a tab, and U+2028 after the last directive of a title of a radar chart]
+[test: a space, a tab, and U+2029 after the last directive of a title of a radar chart]
+[test: a semicolon before the directive of a title of a radar chart, spaces after it]
+[test: a semicolon and spaces before the directive that ends a title of a radar chart]
+[test: a semicolon after the last directive of a title of a radar chart, spaces around it]
+[test: a semicolon before the directive of a title of a radar chart, a tab after it]
+[test: a semicolon and a no-break space before the directive of a title of a radar chart, spaces after it]
+[test: a semicolon and a no-break space before the directive that ends a title of a radar chart]
+[test: a semicolon touching the last directive of a title of a radar chart]
+[test: U+000B before the directive that ends a title of a radar chart]
+[test: U+000C before the directive that ends a title of a radar chart]
+[test: U+1680 before the directive that ends a title of a radar chart]
+[test: U+2000 before the directive that ends a title of a radar chart]
+[test: U+2001 before the directive that ends a title of a radar chart]
+[test: U+2002 before the directive that ends a title of a radar chart]
+[test: U+2003 before the directive that ends a title of a radar chart]
+[test: U+2004 before the directive that ends a title of a radar chart]
+[test: U+2005 before the directive that ends a title of a radar chart]
+[test: U+2006 before the directive that ends a title of a radar chart]
+[test: U+2007 before the directive that ends a title of a radar chart]
+[test: U+2008 before the directive that ends a title of a radar chart]
+[test: U+2009 before the directive that ends a title of a radar chart]
+[test: U+200A before the directive that ends a title of a radar chart]
+[test: U+202F before the directive that ends a title of a radar chart]
+[test: U+205F before the directive that ends a title of a radar chart]
+[test: U+FEFF before the directive that ends a title of a radar chart]
 
 [fixture: radar/title/title-empty]
 
@@ -614,30 +682,41 @@ radar-beta
 注釈類・隠れた形・セミコロンの保護を優先します。
 題やアクセシビリティの行のテキストの後の `;` は残します。
 mermaid.js の行の規則がその行に働かないとき、
-たとえば `title T;` や `title T;;` だけの行では、テキストがその `;` を持ち、
-あるときとないときで、12.3.0 の Db も、
+たとえば `accTitle: a;` や `accTitle: a;;` だけの行では、
+テキストがその `;` を持ち、あるときとないときで、12.3.0 の Db も、
 対象にするどの版の描かれるテキストも違います。
 規則が働く行は [`;` を含む行](./compatibility.ja.md#-を含む行)にあります。
 規則がその行に働くとき、`;` が 1 つなら、規則がそれを無視し、
-テキストは持ちませんが、それでも残します（`title style:#red;`）。
+テキストは持ちませんが、それでも残します（`accTitle: style:#red;`）。
 `;` が 2 つ続くと、規則が最後の `;` を無視し、
 1 つ除くと別の `;` を無視するようになります。
 詳しくは [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)にあります。
-値にテキストがあり、そのテキストの前にも中にもディレクティブがなく、
-最後のディレクティブの後が空白とタブだけのときは、値の終わりのディレクティブを、
-それぞれの前に空白かタブがあれば空白 1 つを置き、
-行末の空白とタブの有無にかかわらず、
-最後のディレクティブの後の空白とタブを除いて印字します。
-互いに接して行末かコメントに接するディレクティブがあるとき、
-その前のテキストとの間にあるノーブレークスペースや U+3000 は、
-同じ連なりの残りとともに空白 1 つで印字します。
-ディレクティブが行末に接するときは、U+2028 や U+2029 も同じです。
-ディレクティブの後に空白と別のディレクティブかコメントが続くときは、
-その前のノーブレークスペースや U+3000 は残ります。
-最後のディレクティブの後に、ノーブレークスペース、U+3000、U+2028、
-U+2029 のどれかがあるときは、その前に空白やタブがあっても、
-コロンの前の隙間を除いて、行を書かれたままにします。
-中にディレクティブのある値と、ディレクティブだけの値も、書かれたままです。
+値にテキストがあり、そのテキストの前にも中にもディレクティブがないとき、
+値の終わりのディレクティブは、その前と後に何があるかで、次のように印字します。
+
+- ディレクティブの前が空白とタブだけ、または何もなく、
+  その前のテキストに `;` がなく、
+  最後のディレクティブの後が空白とタブだけのときは、
+  それぞれのディレクティブの前に空白かタブがあれば空白 1 つを置き、
+  行末の空白とタブの有無にかかわらず、
+  最後のディレクティブの後の空白とタブを除いて印字します。
+- 最後のディレクティブの前にノーブレークスペース、U+3000、U+2028、
+  U+2029 のどれかがあり、その後に何も続かないときは、
+  その文字を空白 1 つで印字します。
+- 空白とコメントが続くディレクティブの前にノーブレークスペースがあるときは、
+  その文字は残ります。
+- 最後のディレクティブの前に U+2028 か U+2029 があり、
+  その後に空白かタブが続くときは、行を書かれたままにします。
+- テキストの中のディレクティブの前に `;` があるとき、
+  その後に空白かタブが続けば、行を書かれたままにします。
+  何も続かなければ、`;` とディレクティブの間の空白を空白 1 つで印字します。
+- 最後のディレクティブの後に `;` があるときは、行を書かれたままにします。
+- 最後のディレクティブの後にノーブレークスペース、U+3000、U+2028、
+  U+2029 のどれかがあるときは、その前に空白やタブがあっても、
+  行を書かれたままにします。
+  中にディレクティブのある値と、ディレクティブだけの値も、書かれたままです。
+  行を書かれたままにするとき、コロンの前の隙間は、隙間なしで印字します。
+
 最後のディレクティブの後にコメントが続くときは、
 それぞれのディレクティブの前とコメントの前の空白とタブの連なりを、
 空白 1 つで印字します。
@@ -679,6 +758,32 @@ U+2029 のどれかがあるときは、その前に空白やタブがあって�
 [test: U+3000 before the directive that ends an accDescr line of a radar chart]
 [test: U+2028 before the directive that ends an accDescr line of a radar chart]
 [test: U+2029 before the directive that ends an accDescr line of a radar chart]
+[test: a no-break space before a directive that a space and a comment follow in an accTitle line of a radar chart]
+[test: U+2028 before the last directive, a space and a tab after it, in an accTitle line of a radar chart]
+[test: U+2029 before the last directive, a space and a tab after it, in an accTitle line of a radar chart]
+[test: a space, a tab, and a no-break space after the last directive of an accTitle line of a radar chart]
+[test: a space, a tab, and U+3000 after the last directive of an accTitle line of a radar chart]
+[test: the gap before the colon of an accTitle line with U+3000 after its last directive of a radar chart]
+[test: a space, a tab, and U+2028 after the last directive of an accTitle line of a radar chart]
+[test: the gap before the colon of an accTitle line with U+2028 after its last directive of a radar chart]
+[test: a space, a tab, and U+2029 after the last directive of an accTitle line of a radar chart]
+[test: the gap before the colon of an accTitle line with U+2029 after its last directive of a radar chart]
+[test: a semicolon before the directive of an accTitle line of a radar chart, spaces after it]
+[test: a semicolon and spaces before the directive that ends an accTitle line of a radar chart]
+[test: a semicolon after the last directive of an accTitle line of a radar chart, spaces around it]
+[test: U+2028 before the last directive, a space and a tab after it, in an accDescr line of a radar chart]
+[test: U+2029 before the last directive, a space and a tab after it, in an accDescr line of a radar chart]
+[test: a space, a tab, and a no-break space after the last directive of an accDescr line of a radar chart]
+[test: the gap before the colon of an accDescr line with a no-break space after its last directive of a radar chart]
+[test: a space, a tab, and U+3000 after the last directive of an accDescr line of a radar chart]
+[test: the gap before the colon of an accDescr line with U+3000 after its last directive of a radar chart]
+[test: a space, a tab, and U+2028 after the last directive of an accDescr line of a radar chart]
+[test: the gap before the colon of an accDescr line with U+2028 after its last directive of a radar chart]
+[test: a space, a tab, and U+2029 after the last directive of an accDescr line of a radar chart]
+[test: the gap before the colon of an accDescr line with U+2029 after its last directive of a radar chart]
+[test: a semicolon before the directive of an accDescr line of a radar chart, spaces after it]
+[test: a semicolon and spaces before the directive that ends an accDescr line of a radar chart]
+[test: a semicolon after the last directive of an accDescr line of a radar chart, spaces around it]
 
 [fixture: radar/accessibility-lines/a11y-empty-next]
 
