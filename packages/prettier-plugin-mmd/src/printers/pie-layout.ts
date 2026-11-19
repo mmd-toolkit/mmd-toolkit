@@ -15,7 +15,7 @@ import {
   protectSemicolonPrefixes,
 } from "./layout.ts"
 import {
-  findTitleCommentReadByOlderVersions,
+  findPercentLineReadByOlderVersions,
   isReadAsAccValueByOlderVersions,
 } from "./acc-value-join.ts"
 import { layoutCommonLine, layoutCommonDescription } from "./common-layout.ts"
@@ -86,7 +86,7 @@ export function layoutPieStatement(
   if (isReadAsAccValueByOlderVersions(source, statement)) {
     return keptAsWritten(start, end)
   }
-  const commentEnd = findTitleCommentReadByOlderVersions(source, statement)
+  const commentEnd = findPercentLineReadByOlderVersions(source, statement)
   if (commentEnd !== undefined) return keptAsWritten(start, commentEnd)
   const values = collectValueNodes(statement, pieValueNodeTypes)
   const rules = new Map<number, GapRule>()

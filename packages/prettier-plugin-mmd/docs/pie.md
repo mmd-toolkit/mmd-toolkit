@@ -191,9 +191,10 @@ value; a null/empty/whitespace-only value prints bare `title`. Print a run of
 spaces and tabs inside the value as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 and preserve quotes and backslashes, and all repeated assignments, including
-frontmatter fallback. Pie never joins the next physical line into a title: even
-across blank/comment/directive gaps, a following section is a separate
-statement. Protected trivia and semicolon groups take precedence. The directives
+frontmatter fallback. The pinned grammar never joins the next physical line into
+a title: even across blank/comment/directive gaps, a following section is a
+separate statement, and only one case below differs in the oldest version that
+counts. Protected trivia and semicolon groups take precedence. The directives
 that end a title are printed with one space before each that has whitespace
 before it, and the whitespace after the last one is left out, whatever the
 whitespace at the end of the line (see
@@ -215,15 +216,18 @@ pie
   "Sales": 8
 ```
 
-A title that ends at a U+2028 or U+2029, which a comment region follows, and
-that a line of `%%` and nothing else follows, is printed as written, up to that
-`%%`. mermaid.js removes the comment region with the line feed that ends it, so
-the line after it goes on the line of the title; a line that holds only `%%` is
-no comment line, so it stays, and the oldest version that counts reads it as the
-end of the title, while the title on a line of its own and the `%%` line after
-it draw a different structure there. The title is printed as it is where a blank
-line, a directive line, or a comment line with text follows the region, and
-where no U+2028 or U+2029 ends the title.
+In the oldest version that counts, a title that ends at a U+2028 or U+2029,
+which a comment region follows, takes a line of `%%` and nothing else after the
+region as part of its text. mermaid.js removes the comment region with the line
+feed that ends it, so the line after it goes on the line of the title; a line
+that holds only `%%` is no comment line, so it stays, while the pinned grammar
+reads it as a comment. A title that such a line follows is printed as written,
+up to that `%%`, since the title on a line of its own, the comment region, and
+the `%%` line after it draw a different title there. A blank line or a directive
+line after the region moves the title and the region onto lines of their own, as
+for any title; a comment line with text after it keeps the title and what
+follows as written; and a title that no U+2028 or U+2029 ends is printed as
+usual, each as before.
 
 [test: pie/title/title-ls-comment-then-percent-line-kept] [test:
 pie/title/title-text-ls-comment-then-percent-line-kept] [test:
@@ -234,7 +238,11 @@ pie/title/title-ls-comment-then-percent-line-at-end-kept] [test:
 pie/title/title-ls-comment-then-blank-line-moved] [test:
 pie/title/title-ls-comment-then-directive-line-moved] [test:
 pie/title/title-ls-comment-then-comment-line-kept] [test:
-pie/title/title-comment-then-percent-line-without-separator]
+pie/title/title-comment-then-percent-line-without-separator] [test:
+pie/title/title-text-ls-comment-then-comment-lines-then-percent-line-kept]
+[test: pie/title/title-text-ls-comment-then-two-percent-lines-kept] [test:
+pie/title/title-text-ls-comment-then-percent-line-crlf-kept] [test:
+pie/title/title-text-ls-comment-then-unclosed-directive-line-moved]
 
 ### Accessibility lines
 
@@ -281,6 +289,34 @@ pie/accessibility-lines/accessibility-directive-edges] [fixture:
 pie/accessibility-lines/accessibility-inner-tab] [fixture:
 pie/accessibility-lines/acc-title-inner-spaces-kept] [fixture:
 pie/accessibility-lines/accessibility-only-global-trivia]
+
+The same holds for an `accTitle:` or an `accDescr:` line: a value that ends at a
+U+2028 or U+2029, a comment region after it, and a line of `%%` and nothing else
+after the region are printed as written, up to that `%%`, since the oldest
+version that counts takes the `%%` line into the value that the drawing shows. A
+blank line or a directive line after the region moves the line and the region
+onto lines of their own as before.
+
+[test: pie/accessibility-lines/acctitle-ls-comment-then-percent-line-kept]
+[test: pie/accessibility-lines/acctitle-ps-comment-then-percent-line-kept]
+[test:
+pie/accessibility-lines/acctitle-ls-comment-then-percent-line-at-end-kept]
+[test:
+pie/accessibility-lines/acctitle-ls-comment-then-comment-lines-then-percent-line-kept]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-two-percent-lines-kept]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-percent-line-crlf-kept]
+[test: pie/accessibility-lines/acctitle-ls-comment-then-blank-line-moved] [test:
+pie/accessibility-lines/acctitle-ls-comment-then-unclosed-directive-line-moved]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-percent-line-kept]
+[test: pie/accessibility-lines/accdescr-ps-comment-then-percent-line-kept]
+[test:
+pie/accessibility-lines/accdescr-ls-comment-then-percent-line-at-end-kept]
+[test:
+pie/accessibility-lines/accdescr-ls-comment-then-comment-lines-then-percent-line-kept]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-two-percent-lines-kept]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-percent-line-crlf-kept]
+[test: pie/accessibility-lines/accdescr-ls-comment-then-blank-line-moved] [test:
+pie/accessibility-lines/accdescr-ls-comment-then-unclosed-directive-line-moved]
 
 Input (escaped):
 `"pie\naccTitle \t:   Title  words \t\naccDescr\t:  Description  text  \n\"Line\":1"`.
