@@ -420,11 +420,12 @@ space, U+3000, U+2028, U+2029, and the other whitespace of the specification):
 `%%{x}%%  %% c  d` is printed `%%{x}%% %% c  d`, and so are `%%{x}%%`, a U+3000,
 and `%% c  d`, and `%%{x}%%  %%{y}%%` is printed `%%{x}%% %%{y}%%`. A gap of
 nothing stays nothing, so two directives, or a directive and a comment, that
-touch stay touching. The one exception is the header line, where a gap that
-holds a U+2028 or a U+2029 stays as written if a comment ends the line
-(`ishikawa %%{x}%%`, a U+2029, `%%{y}%%`, a space, and `%% c` is not changed),
-and is printed as one space if a directive ends it (`ishikawa %%{x}%%`, a
-U+2029, and `%%{y}%%` is printed `ishikawa %%{x}%% %%{y}%%`).
+touch stay touching. The one exception is the header line: where a gap holds a
+U+2028 or a U+2029 and a comment ends the line, the whole line stays as written,
+the other gaps too (`ishikawa %%{x}%%`, three spaces, `%%{y}%%`, a U+2029, and
+`%% c` is not changed); where a directive ends the line, a gap that holds a
+U+2028 or a U+2029 is printed as one space like the others (`ishikawa %%{x}%%`,
+a U+2029, and `%%{y}%%` is printed `ishikawa %%{x}%% %%{y}%%`).
 
 mermaid.js rejects a header line and a line before the root that hold two or
 more directives and no comment, written and printed alike: this is the known
@@ -442,9 +443,10 @@ directive of an ishikawa diagram, and a comment that touches the directive]
 [test: a whitespace character between two directives on a line of an ishikawa
 diagram with no text] [test: a whitespace character between two or three
 directives and the comment on a line of directives of an ishikawa diagram, in
-each place] [test: a whitespace character between two directives on the header
-line and on the line before the root of an ishikawa diagram] [corpus fixture:
-ishikawa/div-header-space-directive-node]
+each place] [test: mixed gaps between the directives and the comment on the
+header line of an ishikawa diagram] [test: a whitespace character between two
+directives on the header line and on the line before the root of an ishikawa
+diagram] [corpus fixture: ishikawa/div-header-space-directive-node]
 
 Input (escaped):
 

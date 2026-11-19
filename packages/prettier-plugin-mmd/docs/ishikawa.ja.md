@@ -427,10 +427,12 @@ U+2028、U+2029、そのほかの仕様の空白文字）。
 `%% c  d` も同じで、`%%{x}%%  %%{y}%%` は `%%{x}%% %%{y}%%` と印字します。
 何もない隙間は何もないままで、接する 2 つのディレクティブや、
 ディレクティブとコメントは接したままです。
-例外はヘッダーの行だけで、U+2028 か U+2029 を含む隙間は、
-行がコメントで終わるときは書かれたまま残ります（`ishikawa %%{x}%%`、U+2029、
-`%%{y}%%`、空白、`%% c` は変えません）。
-行がディレクティブで終わるときは空白 1 つにします（`ishikawa %%{x}%%`、U+2029、
+例外はヘッダーの行だけです。
+隙間に U+2028 か U+2029 があり、行がコメントで終わるときは、ほかの隙間も含めて、
+行全体が書かれたまま残ります（`ishikawa %%{x}%%`、空白 3 つ、`%%{y}%%`、U+2029、
+`%% c` は変えません）。
+行がディレクティブで終わるときは、U+2028 か U+2029 を含む隙間も、
+ほかと同じに空白 1 つにします（`ishikawa %%{x}%%`、U+2029、
 `%%{y}%%` は `ishikawa %%{x}%% %%{y}%%` と印字します）。
 
 ディレクティブが 2 つ以上でコメントのないヘッダーの行と根の前の行は、
@@ -447,6 +449,7 @@ U+2028、U+2029、そのほかの仕様の空白文字）。
 [test: spaces and tabs between a directive and the comment on a line of a directive of an ishikawa diagram, and a comment that touches the directive]
 [test: a whitespace character between two directives on a line of an ishikawa diagram with no text]
 [test: a whitespace character between two or three directives and the comment on a line of directives of an ishikawa diagram, in each place]
+[test: mixed gaps between the directives and the comment on the header line of an ishikawa diagram]
 [test: a whitespace character between two directives on the header line and on the line before the root of an ishikawa diagram]
 [corpus fixture: ishikawa/div-header-space-directive-node]
 

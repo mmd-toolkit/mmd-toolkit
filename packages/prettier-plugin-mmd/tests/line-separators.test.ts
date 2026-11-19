@@ -8539,6 +8539,35 @@ const ishikawaGapCharacters: readonly string[] = [
   ...whitespaceBesideADirective,
 ]
 
+/** Directives with the given gaps after them, then a comment (docs/ishikawa.md, Standalone directives). */
+function directivesWithGapsAndAComment(gaps: readonly string[]): string {
+  const directives = ["%%{x}%%", "%%{y}%%", "%%{z}%%"]
+  let text = ""
+  gaps.forEach((gap, index) => {
+    text += `${directives[index] ?? ""}${gap}`
+  })
+  return `${text}%% c  d`
+}
+
+/**
+ * The header line of an ishikawa diagram with directives, the given gaps, and a
+ * comment stays as written where a gap holds a U+2028 or a U+2029, the other
+ * gaps included, and prints each gap that is not empty as one space otherwise
+ * (docs/ishikawa.md, Standalone directives).
+ */
+async function expectMixedGapsOnTheHeaderLine(
+  gaps: readonly string[],
+): Promise<void> {
+  const written = directivesWithGapsAndAComment(gaps)
+  const printed = gaps.some((gap) => gap === "\u2028" || gap === "\u2029")
+    ? written
+    : directivesWithGapsAndAComment(gaps.map((gap) => (gap === "" ? "" : " ")))
+  await expectKept(
+    `ishikawa ${written}\n  R\n    A\n`,
+    `ishikawa ${printed}\n  R\n    A\n`,
+  )
+}
+
 describe("the whitespace between a directive and the comment on a line of a directive of an ishikawa diagram", () => {
   it("a whitespace character between a directive and the comment on a line of a directive of an ishikawa diagram", async () => {
     for (const [place, before, after] of ishikawaDirectiveLinePlaces) {
@@ -8627,6 +8656,18 @@ describe("the whitespace between a directive and the comment on a line of a dire
                 .join(staysOnTheHeader ? character : " "),
             ),
           )
+        }
+      }
+    }
+  })
+
+  it("mixed gaps between the directives and the comment on the header line of an ishikawa diagram", async () => {
+    const gaps = ["", " ", "   ", "\t", "\u2028", "\u2029"]
+    for (const first of gaps) {
+      for (const last of gaps) {
+        await expectMixedGapsOnTheHeaderLine([first, last])
+        for (const middle of gaps) {
+          await expectMixedGapsOnTheHeaderLine([first, middle, last])
         }
       }
     }
