@@ -12276,12 +12276,12 @@ const wardleyDirectiveEndExamples: readonly (readonly [
     "accDescr : T  U;",
   ],
   [
-    "a text after the `;` of a title, spaces at the end, of a Wardley map",
+    "released output that the document does not state: a text after the `;` of a title, spaces at the end, of a Wardley map",
     "title A;  B  ",
     "title A;  B",
   ],
   [
-    "a U+2028 in the text of a title that ends with a `;`, of a Wardley map",
+    "released output that the document does not state: a U+2028 in the text of a title that ends with a `;`, of a Wardley map",
     "title T\u2028U;",
     "title T\u2028U;",
   ],
@@ -12336,37 +12336,37 @@ const wardleyDirectiveEndExamples: readonly (readonly [
     "accDescr: \u0022A B\u0022",
   ],
   [
-    "text after the `;` that the line rule ignores in a title, runs before and after it, of a Wardley map",
+    "released output that the document does not state: text after the `;` that the line rule ignores in a title, runs before and after it, of a Wardley map",
     "title a   b   style:#x;   c",
     "title a   b   style:#x;   c",
   ],
   [
-    "text touching the `;` that the line rule ignores in a title, a run before it, of a Wardley map",
+    "released output that the document does not state: text touching the `;` that the line rule ignores in a title, a run before it, of a Wardley map",
     "title a   b   style:#x;c",
     "title a   b   style:#x;c",
   ],
   [
-    "text and a run after the `;` that the line rule ignores in a title, spaces at the end, of a Wardley map",
+    "released output that the document does not state: text and a run after the `;` that the line rule ignores in a title, spaces at the end, of a Wardley map",
     "title a   b   style:#x;   c   d  ",
     "title a   b   style:#x;   c   d  ",
   ],
   [
-    "two touching `;` that the line rule reads in a title, a run before them, of a Wardley map",
+    "released output that the document does not state: two touching `;` that the line rule reads in a title, a run before them, of a Wardley map",
     "title a   b   style:#x;;",
     "title a   b   style:#x;;",
   ],
   [
-    "two `;` with spaces between them that the line rule reads in a title, a run before them, of a Wardley map",
+    "released output that the document does not state: two `;` with spaces between them that the line rule reads in a title, a run before them, of a Wardley map",
     "title a   b   style:#x;   ;",
     "title a   b   style:#x;   ;",
   ],
   [
-    "text after the last of two `;` that the line rule reads in a title, runs around them, of a Wardley map",
+    "released output that the document does not state: text after the last of two `;` that the line rule reads in a title, runs around them, of a Wardley map",
     "title a   style:#x;  b;  c",
     "title a   style:#x;  b;  c",
   ],
   [
-    "text after the `;` that the line rule ignores after classDef in a title, of a Wardley map",
+    "released output that the document does not state: text after the `;` that the line rule ignores after classDef in a title, of a Wardley map",
     "title a   b   classDef x:#y;   c",
     "title a   b   classDef x:#y;   c",
   ],
@@ -12381,17 +12381,17 @@ const wardleyDirectiveEndExamples: readonly (readonly [
     "title a   b   style:#x   y;  ",
   ],
   [
-    "nothing after the last of two `;` that the line rule reads in a title, of a Wardley map",
+    "released output that the document does not state: nothing after the last of two `;` that the line rule reads in a title, of a Wardley map",
     "title a   style:#x;  b;",
     "title a   style:#x;  b;",
   ],
   [
-    "a comment after the `;` that the line rule ignores in a title, of a Wardley map",
+    "released output that the document does not state: a comment after the `;` that the line rule ignores in a title, of a Wardley map",
     "title a   b   style:#x;  %% c",
     "title a   b   style:#x;  %% c",
   ],
   [
-    "text after the `;` that the line rule ignores in an accDescr line, runs before and after it, of a Wardley map",
+    "released output that the document does not state: text after the `;` that the line rule ignores in an accDescr line, runs before and after it, of a Wardley map",
     "accDescr: a   b   style:#x;   c",
     "accDescr: a   b   style:#x;   c",
   ],
@@ -12401,22 +12401,22 @@ const wardleyDirectiveEndExamples: readonly (readonly [
     "accDescr: a   b   style:#x;",
   ],
   [
-    "two touching `;` that the line rule reads in an accDescr line, a run before them, of a Wardley map",
+    "released output that the document does not state: two touching `;` that the line rule reads in an accDescr line, a run before them, of a Wardley map",
     "accDescr: a   b   style:#x;;",
     "accDescr: a   b   style:#x;;",
   ],
   [
-    "text after the `;` that the line rule ignores in an accTitle line, of a Wardley map",
+    "released output that the document does not state: text after the `;` that the line rule ignores in an accTitle line, of a Wardley map",
     "accTitle: a   b   style:#x;   c",
     "accTitle: a   b   style:#x;   c",
   ],
   [
-    "a `;` inside the comment at the end of a title, a run and spaces at the end, of a Wardley map",
+    "released output that the document does not state: a `;` inside the comment at the end of a title, a run and spaces at the end, of a Wardley map",
     "title   T  %% c;  ",
     "title   T  %% c;  ",
   ],
   [
-    "a `;` inside the comment at the end of an accTitle line, a gap before the colon, spaces at the end, of a Wardley map",
+    "released output that the document does not state: a `;` inside the comment at the end of an accTitle line, a gap before the colon, spaces at the end, of a Wardley map",
     "accTitle : T  %% c;  ",
     "accTitle : T  %% c;  ",
   ],
@@ -12424,6 +12424,26 @@ const wardleyDirectiveEndExamples: readonly (readonly [
     "nothing after the `;` that the line rule ignores in a title, spaces at the end, of a Wardley map",
     "title a   b   style:#x;  ",
     "title a   b   style:#x;  ",
+  ],
+  [
+    "a run after the keyword of a title, nothing after the `;` that the line rule ignores, of a Wardley map",
+    "title    a   b   style:#x;",
+    "title    a   b   style:#x;",
+  ],
+  [
+    "a gap before and after the colon of an accTitle line, nothing after the `;` that the line rule ignores, of a Wardley map",
+    "accTitle   :   a   b   style:#x;",
+    "accTitle   :   a   b   style:#x;",
+  ],
+  [
+    "the literal style without the trigger and a `;` at the end of a title, spaces at the end, of a Wardley map",
+    "title a   style;  ",
+    "title a   style;  ",
+  ],
+  [
+    "the word Style with a capital and a `;` at the end of a title, spaces at the end, of a Wardley map",
+    "title a   Style;  ",
+    "title a   Style;",
   ],
 ]
 

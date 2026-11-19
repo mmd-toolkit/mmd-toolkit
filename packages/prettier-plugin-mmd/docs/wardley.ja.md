@@ -796,7 +796,7 @@ Wardley はそのような行を書かれたままにするからです。
 整形が投げる行は、そこでは述べません。
 
 `;` があってディレクティブのない題は、
-最後の `;` までを書かれたままにします（mermaid.js の行の規則が行に働かず、
+最後の `;` までを書かれたままにします（行に `style` も `classDef` もなく、
 最後の `;` がコメントの外にあって、その後が空白とタブだけで、
 行に U+2028 も U+2029 もないとき）。
 最後の `;` の後の空白とタブは除きます（`title   T;` と `title A   B;`
@@ -1618,26 +1618,29 @@ mermaid.js はテキストを読む前にディレクティブを除き、
 [test: a `;` at the end of a title, spaces after the keyword, of a Wardley map]
 [test: a `;` at the end of a title, a run of spaces inside the text, of a Wardley map]
 [test: a `;` after spaces at the end of a title, spaces after it, of a Wardley map]
-[test: a text after the `;` of a title, spaces at the end, of a Wardley map]
-[test: a U+2028 in the text of a title that ends with a `;`, of a Wardley map]
+[test: released output that the document does not state: a text after the `;` of a title, spaces at the end, of a Wardley map]
+[test: released output that the document does not state: a U+2028 in the text of a title that ends with a `;`, of a Wardley map]
 [test: a comment after the text of a title, spaces before it, of a Wardley map]
 [test: a run of spaces inside the text of a title, of a Wardley map]
 [test: a run of tabs inside the text of a title, spaces at the end, of a Wardley map]
 [test: a run of spaces inside a quoted string in a title, of a Wardley map]
 [test: a run of spaces beside a directive inside the text of a title, of a Wardley map]
-[test: text after the `;` that the line rule ignores in a title, runs before and after it, of a Wardley map]
-[test: text touching the `;` that the line rule ignores in a title, a run before it, of a Wardley map]
-[test: text and a run after the `;` that the line rule ignores in a title, spaces at the end, of a Wardley map]
-[test: two touching `;` that the line rule reads in a title, a run before them, of a Wardley map]
-[test: two `;` with spaces between them that the line rule reads in a title, a run before them, of a Wardley map]
-[test: text after the last of two `;` that the line rule reads in a title, runs around them, of a Wardley map]
-[test: text after the `;` that the line rule ignores after classDef in a title, of a Wardley map]
+[test: released output that the document does not state: text after the `;` that the line rule ignores in a title, runs before and after it, of a Wardley map]
+[test: released output that the document does not state: text touching the `;` that the line rule ignores in a title, a run before it, of a Wardley map]
+[test: released output that the document does not state: text and a run after the `;` that the line rule ignores in a title, spaces at the end, of a Wardley map]
+[test: released output that the document does not state: two touching `;` that the line rule reads in a title, a run before them, of a Wardley map]
+[test: released output that the document does not state: two `;` with spaces between them that the line rule reads in a title, a run before them, of a Wardley map]
+[test: released output that the document does not state: text after the last of two `;` that the line rule reads in a title, runs around them, of a Wardley map]
+[test: released output that the document does not state: text after the `;` that the line rule ignores after classDef in a title, of a Wardley map]
 [test: nothing after the `;` that the line rule ignores in a title, runs before it, of a Wardley map]
 [test: a run inside the stretch of the line rule, nothing after the `;` in a title, spaces at the end, of a Wardley map]
-[test: nothing after the last of two `;` that the line rule reads in a title, of a Wardley map]
-[test: a comment after the `;` that the line rule ignores in a title, of a Wardley map]
-[test: a `;` inside the comment at the end of a title, a run and spaces at the end, of a Wardley map]
+[test: released output that the document does not state: nothing after the last of two `;` that the line rule reads in a title, of a Wardley map]
+[test: released output that the document does not state: a comment after the `;` that the line rule ignores in a title, of a Wardley map]
+[test: released output that the document does not state: a `;` inside the comment at the end of a title, a run and spaces at the end, of a Wardley map]
 [test: nothing after the `;` that the line rule ignores in a title, spaces at the end, of a Wardley map]
+[test: a run after the keyword of a title, nothing after the `;` that the line rule ignores, of a Wardley map]
+[test: the literal style without the trigger and a `;` at the end of a title, spaces at the end, of a Wardley map]
+[test: the word Style with a capital and a `;` at the end of a title, spaces at the end, of a Wardley map]
 [test: U+2028 before a directive that a comment touches, a line follows, in a title of a Wardley map]
 [test: U+2028 before a directive that a comment touches, the text ends, in a title of a Wardley map]
 [test: U+2028 before a directive that a comment touches, an empty line follows, in a title of a Wardley map]
@@ -2047,7 +2050,7 @@ Wardley はそのような行を書かれたままにするからです。
 
 `;` があってディレクティブのない `accTitle:` や `accDescr:` の行は、
 最後の `;` までを書かれたままにします（コロンの前の隙間も同じです。
-mermaid.js の行の規則が行に働かず、最後の `;` がコメントの外にあって、
+行に `style` も `classDef` もなく、最後の `;` がコメントの外にあって、
 その後が空白とタブだけで、行に U+2028 も U+2029 もないとき）。
 最後の `;` の後の空白とタブは除きます（`accTitle : T;` と `accDescr:   A   B;`
 は変わりません）。
@@ -2528,11 +2531,12 @@ mermaid.js の行の規則が行に働かず、最後の `;` がコメントの�
 [test: a run of spaces inside the text of an accDescr line, of a Wardley map]
 [test: a run of spaces inside the text of an accTitle line, of a Wardley map]
 [test: a run of spaces inside a quoted string in an accDescr line, of a Wardley map]
-[test: text after the `;` that the line rule ignores in an accDescr line, runs before and after it, of a Wardley map]
+[test: released output that the document does not state: text after the `;` that the line rule ignores in an accDescr line, runs before and after it, of a Wardley map]
 [test: nothing after the `;` that the line rule ignores in an accDescr line, runs before it, of a Wardley map]
-[test: two touching `;` that the line rule reads in an accDescr line, a run before them, of a Wardley map]
-[test: text after the `;` that the line rule ignores in an accTitle line, of a Wardley map]
-[test: a `;` inside the comment at the end of an accTitle line, a gap before the colon, spaces at the end, of a Wardley map]
+[test: released output that the document does not state: two touching `;` that the line rule reads in an accDescr line, a run before them, of a Wardley map]
+[test: released output that the document does not state: text after the `;` that the line rule ignores in an accTitle line, of a Wardley map]
+[test: released output that the document does not state: a `;` inside the comment at the end of an accTitle line, a gap before the colon, spaces at the end, of a Wardley map]
+[test: a gap before and after the colon of an accTitle line, nothing after the `;` that the line rule ignores, of a Wardley map]
 [test: U+2028 before a directive that a comment touches, a line follows, in an accTitle line of a Wardley map]
 [test: U+2028 before a directive that a comment touches, the text ends, in an accTitle line of a Wardley map]
 [test: U+2028 before a directive that a comment follows after spaces, a line follows, in an accTitle line of a Wardley map]
