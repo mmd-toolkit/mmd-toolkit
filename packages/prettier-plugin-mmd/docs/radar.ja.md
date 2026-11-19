@@ -1391,28 +1391,31 @@ mermaid.js はテキストを読む前にディレクティブを除き、
 [test: a `;` at the end of a title, a run of spaces inside the text, of a radar chart]
 [test: a `;` at the end of a title, spaces after it, of a radar chart]
 [test: a `;` after spaces at the end of a title, spaces after it, of a radar chart]
-[test: a text after the `;` of a title, spaces at the end, of a radar chart]
-[test: a `;` inside the comment after the text of a title, spaces at the end, of a radar chart]
-[test: a `;` at the end of a title, U+3000 after it, of a radar chart]
-[test: a U+2028 in the text of a title that ends with a `;`, of a radar chart]
+[test: released output that the document does not state: a text after the `;` of a title, spaces at the end, of a radar chart]
+[test: released output that the document does not state: a `;` inside the comment after the text of a title, spaces at the end, of a radar chart]
+[test: released output that the document does not state: a `;` at the end of a title, U+3000 after it, of a radar chart]
+[test: released output that the document does not state: a U+2028 in the text of a title that ends with a `;`, of a radar chart]
 [test: a comment after the text of a title, spaces before it, of a radar chart]
 [test: a run of spaces inside the text of a title, of a radar chart]
 [test: a run of tabs inside the text of a title, spaces at the end, of a radar chart]
 [test: a run of spaces inside a quoted string in a title, of a radar chart]
 [test: a run of spaces beside a directive inside the text of a title, of a radar chart]
-[test: text after the `;` that the line rule ignores in a title, runs before and after it, of a radar chart]
-[test: text touching the `;` that the line rule ignores in a title, a run before it, of a radar chart]
-[test: text and a run after the `;` that the line rule ignores in a title, spaces at the end, of a radar chart]
-[test: two touching `;` that the line rule reads in a title, a run before them, of a radar chart]
-[test: two `;` with spaces between them that the line rule reads in a title, a run before them, of a radar chart]
-[test: text after the last of two `;` that the line rule reads in a title, runs around them, of a radar chart]
-[test: text after the `;` that the line rule ignores after classDef in a title, of a radar chart]
+[test: released output that the document does not state: text after the `;` that the line rule ignores in a title, runs before and after it, of a radar chart]
+[test: released output that the document does not state: text touching the `;` that the line rule ignores in a title, a run before it, of a radar chart]
+[test: released output that the document does not state: text and a run after the `;` that the line rule ignores in a title, spaces at the end, of a radar chart]
+[test: released output that the document does not state: two touching `;` that the line rule reads in a title, a run before them, of a radar chart]
+[test: released output that the document does not state: two `;` with spaces between them that the line rule reads in a title, a run before them, of a radar chart]
+[test: released output that the document does not state: text after the last of two `;` that the line rule reads in a title, runs around them, of a radar chart]
+[test: released output that the document does not state: text after the `;` that the line rule ignores after classDef in a title, of a radar chart]
 [test: nothing after the `;` that the line rule ignores in a title, runs before it, of a radar chart]
 [test: a run inside the stretch of the line rule, nothing after the `;` in a title, spaces at the end, of a radar chart]
-[test: nothing after the last of two `;` that the line rule reads in a title, of a radar chart]
-[test: a comment after the `;` that the line rule ignores in a title, of a radar chart]
-[test: a `;` inside the comment at the end of a title, a run and spaces at the end, of a radar chart]
+[test: released output that the document does not state: nothing after the last of two `;` that the line rule reads in a title, of a radar chart]
+[test: released output that the document does not state: a comment after the `;` that the line rule ignores in a title, of a radar chart]
+[test: released output that the document does not state: a `;` inside the comment at the end of a title, a run and spaces at the end, of a radar chart]
 [test: nothing after the `;` that the line rule ignores in a title, spaces at the end, of a radar chart]
+[test: a run after the keyword of a title, nothing after the `;` that the line rule ignores, of a radar chart]
+[test: the literal style without the trigger and a `;` at the end of a title, spaces at the end, of a radar chart]
+[test: the word Style with a capital and a `;` at the end of a title, spaces at the end, of a radar chart]
 [test: U+2028 before a directive that a comment touches, a line follows, in a title of a radar chart]
 [test: U+2028 before a directive that a comment touches, the text ends, in a title of a radar chart]
 [test: U+2028 before a directive that a comment touches, an empty line follows, in a title of a radar chart]
@@ -2307,11 +2310,12 @@ U+205F、U+3000、U+FEFF のどれかです。
 [test: a run of spaces inside the text of an accDescr line, of a radar chart]
 [test: a run of spaces inside the text of an accTitle line, of a radar chart]
 [test: a run of spaces inside a quoted string in an accDescr line, of a radar chart]
-[test: text after the `;` that the line rule ignores in an accDescr line, runs before and after it, of a radar chart]
+[test: released output that the document does not state: text after the `;` that the line rule ignores in an accDescr line, runs before and after it, of a radar chart]
 [test: nothing after the `;` that the line rule ignores in an accDescr line, runs before it, of a radar chart]
-[test: two touching `;` that the line rule reads in an accDescr line, a run before them, of a radar chart]
-[test: text after the `;` that the line rule ignores in an accTitle line, of a radar chart]
-[test: a `;` inside the comment at the end of an accTitle line, a gap before the colon, spaces at the end, of a radar chart]
+[test: released output that the document does not state: two touching `;` that the line rule reads in an accDescr line, a run before them, of a radar chart]
+[test: released output that the document does not state: text after the `;` that the line rule ignores in an accTitle line, of a radar chart]
+[test: released output that the document does not state: a `;` inside the comment at the end of an accTitle line, a gap before the colon, spaces at the end, of a radar chart]
+[test: a gap before and after the colon of an accTitle line, nothing after the `;` that the line rule ignores, of a radar chart]
 [test: U+2028 before a directive that a comment touches, a line follows, in an accTitle line of a radar chart]
 [test: U+2028 before a directive that a comment touches, the text ends, in an accTitle line of a radar chart]
 [test: U+2028 before a directive that a comment follows after spaces, a line follows, in an accTitle line of a radar chart]
@@ -2964,36 +2968,25 @@ radar-beta
 [fixture: semicolons/no-stretch-formatted]
 [fixture: multi-line-statements/protected-semicolon-written-indentation]
 
-行の規則が働く題かアクセシビリティの行は、最後の `;` の後にテキストがあり、
-行にコメントがないとき、行を書かれたままにし、
-行末の空白は除きます（`title a   b   style:#x;   c` と
-`title a   b   style:#x;c` は変わりません）。
-また、行が空白だけを挟む 2 つ以上の `;` で終わるときも、
-書かれたままにします（`title a   b   style:#x;;` と
-`title a   b   style:#x;   ;` は変わりません）。
-最後の `;` の後に何もないときは、
-通常の規則に従います（`title a   b   style:#x;` は `title a b style:#x;`
-になります）。
-行の規則が働く行のうち、行にコメントがあるものは述べません。
+行の規則が働く題かアクセシビリティの行は述べません。
+形は、規則が無視する `;` の後のテキスト、2 つめの `;`、ディレクティブ、
+コメント、U+2028 か U+2029、キーワードの後の隙間で変わり、
+[印字形の決め方](./printed-form.ja.md)の規則はこれらの形を与えないからです。
 そこでリリース済みの版が印字する形は、
 [どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
 のとおり、決めるまでそのままです。
+通常の規則が形を与えるのは、
+`;` を 1 つだけ持ってその `;` で終わり（後ろに空白とタブがあってもよい）、
+ディレクティブ、コメント、U+2028、
+U+2029 のない行です（`title a   b   style:#x;` は `title a b style:#x;`
+になります）。
 
-[test: text after the `;` that the line rule ignores in a title, runs before and after it, of a radar chart]
-[test: text touching the `;` that the line rule ignores in a title, a run before it, of a radar chart]
-[test: text and a run after the `;` that the line rule ignores in a title, spaces at the end, of a radar chart]
-[test: two touching `;` that the line rule reads in a title, a run before them, of a radar chart]
-[test: two `;` with spaces between them that the line rule reads in a title, a run before them, of a radar chart]
-[test: text after the last of two `;` that the line rule reads in a title, runs around them, of a radar chart]
-[test: text after the `;` that the line rule ignores after classDef in a title, of a radar chart]
 [test: nothing after the `;` that the line rule ignores in a title, runs before it, of a radar chart]
 [test: a run inside the stretch of the line rule, nothing after the `;` in a title, spaces at the end, of a radar chart]
-[test: nothing after the last of two `;` that the line rule reads in a title, of a radar chart]
-[test: a comment after the `;` that the line rule ignores in a title, of a radar chart]
-[test: text after the `;` that the line rule ignores in an accDescr line, runs before and after it, of a radar chart]
 [test: nothing after the `;` that the line rule ignores in an accDescr line, runs before it, of a radar chart]
-[test: two touching `;` that the line rule reads in an accDescr line, a run before them, of a radar chart]
-[test: text after the `;` that the line rule ignores in an accTitle line, of a radar chart]
+[test: nothing after the `;` that the line rule ignores in a title, spaces at the end, of a radar chart]
+[test: a run after the keyword of a title, nothing after the `;` that the line rule ignores, of a radar chart]
+[test: a gap before and after the colon of an accTitle line, nothing after the `;` that the line rule ignores, of a radar chart]
 
 保護された見出しと最初の文の群はまとめて残します。
 style・classDef の選択、2 回の除去、大小文字・コロン・ハッシュ記号の非該当形、
