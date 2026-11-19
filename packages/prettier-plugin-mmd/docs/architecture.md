@@ -620,12 +620,14 @@ architecture-beta
 
 Use shared common-line layout: `title value` trims only common-whitespace edges,
 and null or whitespace-only values print `title`. This compacts equivalent outer
-padding. Never read the next physical line as a value, even across trivia. Keep
-occurrences and content even though the architecture summary does not publish
-title. Trivia-bearing values and protected hidden boundaries keep their source
-gaps. The directives that end a title are printed with one space before each
-that has whitespace before it, and the whitespace after the last one is left
-out, whatever the whitespace at the end of the line (see
+padding. Never read the next physical line as a value, even across trivia.
+mermaid.js reads the next line as a statement of its own, so joining it would
+change the title. Keep occurrences and content even though the architecture
+summary does not publish title. Trivia-bearing values and protected hidden
+boundaries keep their source gaps. The directives that end a title are printed
+with one space before each that has whitespace before it, and the whitespace
+after the last one is left out, whatever the whitespace at the end of the line
+(see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [corpus fixture:
@@ -666,10 +668,11 @@ architecture-beta
 Reuse shared `accTitle: value` and `accDescr: value`: the colon touches its
 keyword, with one space before a trimmed nonempty value; empty values end at the
 colon. This keeps consistent outer spacing. Never join a next-line statement.
-Braces after a colon remain line text, and protected trivia/hidden gaps take
-precedence. The directives that end the value are printed with one space before
-each that has whitespace before it, and the whitespace after the last one is
-left out (see
+mermaid.js reads the next line as a statement of its own, so joining it would
+change the title or the description. Braces after a colon remain line text, and
+protected trivia/hidden gaps take precedence. The directives that end the value
+are printed with one space before each that has whitespace before it, and the
+whitespace after the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
@@ -708,16 +711,28 @@ Description blocks on one line follow
 For blocks that keep their braces, separate the keyword and opening brace with
 one space so the block boundary is clear. Whitespace-only interiors become `{}`
 because no text needs surrounding space. Plain opener whitespace can join; real
-trivia keeps its break. Keep comment/directive-only interiors. Ordinary
-description body and standalone comment lines align one level inside the
-statement, since the Db removes indentation after LF. Keep line breaks and
-interior blank lines, and the whitespace at the end of each line of text except
-the last one; a line of whitespace only becomes an empty line. The whitespace at
-the end of the last line of text is dropped where the closer stands on a line of
-its own, and is printed as one space where the closer follows it on that line.
-Directives and shared removed comment regions keep their complete source. A
-separate closer aligns with the statement; the first closing brace still ends
-the value.
+trivia keeps its break. Rule 1 names no mark for a line break, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#multi-line-statements),
+[gantt](./gantt.md#multi-line-statements), and
+[journey](./journey.md#multi-line-statements) keep a line break next to a
+comment or a directive and the whitespace before it, and put the later parts of
+a statement and the trivia lines one level deeper, where no other rule keeps the
+layout as written (a comment region that joins physical lines, a line that holds
+a `;`, and the like). Keep comment/directive-only interiors. Rule 1 names no
+mark for a line inside a block, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [xychart](./xychart.md#empty-description-blocks) and
+[quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
+breaks of a block with a directive or comment line. Ordinary description body
+and standalone comment lines align one level inside the statement, since the Db
+removes indentation after LF. Keep line breaks and interior blank lines, and the
+whitespace at the end of each line of text except the last one; a line of
+whitespace only becomes an empty line. The whitespace at the end of the last
+line of text is dropped where the closer stands on a line of its own, and is
+printed as one space where the closer follows it on that line. Directives and
+shared removed comment regions keep their complete source. A separate closer
+aligns with the statement; the first closing brace still ends the value.
 
 [fixture: architecture/description-blocks/asymmetric] [fixture:
 description-blocks/block-trailing-whitespace] [fixture:
@@ -860,8 +875,15 @@ Keep Root directive content, order and ownership. Within a printed line, place a
 directive as under [Directives](./flowchart.md#directives). When formatting
 splits units that were on the same line, a directive in their gap moves with the
 following unit: its right boundary stays touching or separated, while its left
-contact is broken. Ordinary standalone starts align one body step in; multiline
-interiors and EOF-reaching endings stay written. Common removal joins
+contact is broken. Rule 1 names no mark for a directive between two units, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [flowchart](./flowchart.md#directives),
+[gantt](./gantt.md#directives), and [journey](./journey.md#directives) move a
+directive in the gap of units that formatting splits with the following unit,
+keep its right-side contact or separation, and break its left contact, where no
+other rule keeps the layout as written (a directive that is not closed after a
+statement, and the like). Ordinary standalone starts align one body step in;
+multiline interiors and EOF-reaching endings stay written. Common removal joins
 surrounding text, so deleting component-boundary whitespace can reject a
 declaration. Preserve component/value-internal directives rather than treating
 their opaque text as JSON.
@@ -998,7 +1020,12 @@ counts rejects the same lines without that space (see
 Only the header's own hidden forms need no spare LF. A statement retained on the
 header line still has a statement boundary after its suffix. Keep multiple
 suffix owners and forms after visible EOL distinct; exterior excess blanks use
-the shared one-blank-line rule.
+the shared one-blank-line rule. Rule 1 names no mark for an empty line, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [gantt](./gantt.md#blank-lines),
+[journey](./journey.md#blank-lines), and [sankey](./sankey.md#blank-lines) print
+a run of empty lines as one and drop the empty lines at the start and at the end
+of a body.
 
 [fixture: architecture/hidden-boundaries/header-and-statement]
 
@@ -1132,10 +1159,13 @@ architecture-beta
 Format only safe real frontmatter with the shared guarded YAML formatter. Keep
 malformed YAML, indented fences, delimiter padding, HTML hazards and bodies
 whose formatting would produce a fence. YAML uses the shared positive minimum
-indentation at tabWidth zero. If textBeforeHeader is present, retain the
-complete prefix, including leading LF, comments, passed bare trivia, second-scan
-forms and real/hidden order: cleanup could promote ignored YAML into effective
-data.
+indentation at tabWidth zero. At `tabWidth: 0` every version of mermaid.js that
+counts rejects a block scalar without indentation, and draws the diagram
+differently when a nested `config` value is no longer nested (see
+[Frontmatter](./compatibility.md#frontmatter)). If textBeforeHeader is present,
+retain the complete prefix, including leading LF, comments, passed bare trivia,
+second-scan forms and real/hidden order: cleanup could promote ignored YAML into
+effective data.
 
 [fixture: architecture/frontmatter-yaml/frontmatter-delimiter-padding-kept]
 
