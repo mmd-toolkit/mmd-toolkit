@@ -463,11 +463,46 @@ ishikawa
 
 テキスト中のディレクティブの両側の空白は、書かれたとおり保ちます。
 ディレクティブの除去は両側をつなぐだけで、空白を補わないためです。
+ディレクティブの前にテキストがあり、そのディレクティブの後に、
+テキストの終わりまで、空白とタブとディレクティブ以外のもの（テキスト、コメント、
+`;`、改行しない空白や U+2028 のような文字）が続くテキストでは、
+ほかの空白とタブの連なりも書かれたままです。
+mermaid.js は、それを空白 1 つと同じに描きます。
+`A %%{init: {}}%% b  c`、`D  e %%{init: {}}%% f`、
+`A  b %%{init: {}}%%  %% c` はそのままです。
+どちらに当たるかは、前にテキストがあるディレクティブで決まります。
+そのようなディレクティブがないか、
+どれの後にも空白とタブとディレクティブだけが続くときは、
+連なりを空白 1 つにして印字し、先頭のディレクティブは連なりを残しません。
+（`D A  b E  %% c`（`D` と `E` はディレクティブ）は、`E` の前にテキストがあり、
+後にコメントがあるので残します。） `%%{init: {}}%% A  b  c` は
+`%%{init: {}}%% A b c` と、
+`%%{init: {}}%% A  b  %% c` は `%%{init: {}}%% A b %% c` と、
+`A  b %%{init: {}}%%` は `A b %%{init: {}}%%` と印字します。
 
 [fixture: ishikawa/inline-directives/directive-gap-trim-unsafe]
 [fixture: ishikawa/inline-directives/directive-single-space-gaps]
 [fixture: ishikawa/inline-directives/directive-in-value]
 [fixture: ishikawa/inline-directives/literal-side-whitespace]
+[fixture: ishikawa/inline-directives/directive-middle-runs-kept]
+[fixture: ishikawa/inline-directives/directive-leading-runs-collapsed]
+[fixture: ishikawa/inline-directives/directive-then-comment-runs-kept]
+[fixture: ishikawa/inline-directives/directive-two-then-text-runs-kept]
+[fixture: ishikawa/inline-directives/directive-then-tab-and-comment-runs-kept]
+[test: ishikawa: directive-last-then-u3000-runs-kept]
+[fixture: ishikawa/inline-directives/directive-then-touching-comment-runs-kept]
+[fixture: ishikawa/inline-directives/directive-then-semicolon-runs-kept]
+[fixture: ishikawa/inline-directives/directive-start-and-end-runs-collapsed]
+[fixture: ishikawa/inline-directives/directive-start-and-end-then-comment-runs-kept]
+[fixture: ishikawa/inline-directives/directive-start-then-comment-runs-collapsed]
+[fixture: ishikawa/inline-directives/directive-two-end-runs-collapsed]
+[fixture: ishikawa/inline-directives/directive-two-end-then-comment-runs-kept]
+[fixture: ishikawa/inline-directives/directive-middle-tab-runs-kept]
+[test: ishikawa: directive-last-then-nbsp-runs-kept]
+[test: ishikawa: directive-last-then-u2028-runs-kept]
+[test: ishikawa: directive-last-then-u2029-runs-kept]
+[test: ishikawa: directive-then-nbsp-and-text-runs-kept]
+[test: ishikawa: directive-start-then-nbsp-runs-collapsed]
 [fixture: ishikawa/inline-directives/joined-line-spaces]
 
 先頭のディレクティブの隙間は、節点の深さによる字下げに数えます。
@@ -517,17 +552,27 @@ Mermaid がテキストの両端の空白を除くので、除いても Db と�
 
 テキストの中の空白とタブの連なりは、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+ただし、ディレクティブの前にテキストがあり、
+その後に空白とタブとディレクティブ以外が続くテキストは別です。
+[Inline directives](#inline-directives)を参照してください。
 結合した継続列は保ちます。
 コメントの空白とディレクティブの内容も同じです。
-テキストを終えるディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
-最後のディレクティブの後の空白は除きます。
-最後のディレクティブの後に空白が続くときも続かないときも、
+最後のディレクティブの後に空白とタブだけが続くテキストを終えるディレクティブは、
+それぞれの前に空白かタブがあれば空白 1 つを置き、
+最後のディレクティブの後の空白とタブは除きます。
+最後のディレクティブの後に空白とタブが続くときも続かないときも、
 テキストの中の連なりは空白 1 つにして印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+連なりを書かれたままにするテキストでは、
+各ディレクティブの前の空白とタブも書かれたままにし、
+最後のディレクティブの後の空白とタブだけを除きます。
+条件は[Inline directives](#inline-directives)にあります。
+`A  b %%{x}%% c  %%{y}%%` と空白 2 つは `A  b %%{x}%% c  %%{y}%%` と印字します。
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped]
 [fixture: ishikawa/trailing-whitespace/trailing-directive-gap-collapsed]
 [fixture: ishikawa/trailing-whitespace/trailing-directive-continuation]
+[fixture: ishikawa/inline-directives/directive-text-between-then-end-runs-kept]
 
 [ヘッダー](#header) と [空行](#blank-lines) の規則で除くのは、
 見出し行の外側の余白だけで、それはテキストの値ではありません。
@@ -561,6 +606,10 @@ Mermaid がテキストの両端の空白を除くので、除いても Db と�
 引用符、バッククォート、空に見える文字列や括弧や呼び出し、閉じ忘れ、数、句読点、
 実体参照、HTML、プロトタイプの名前もテキストです。
 title、アクセシビリティ、style、装飾、データらしい形も同じです。
+ディレクティブの前にテキストがあり、
+その後に空白とタブとディレクティブ以外が続くテキストでは、
+空白とタブの連なりを書かれたままにします。
+[Inline directives](#inline-directives)を参照してください。
 
 [fixture: ishikawa/node-text/values-opaque]
 [fixture: ishikawa/node-text/values-quote-unsafe]
