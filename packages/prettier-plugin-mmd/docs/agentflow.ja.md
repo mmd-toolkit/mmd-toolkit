@@ -706,7 +706,8 @@ Markdown ラベルは矢印の間には印字できず、
 U+2029 のどれかは、空白 1 つにし、接するコメントは接したまま残します。
 閉じパイプは自分の行に、
 矢印より 1 段深く置きます（`A -->|x %% c` と `    | B`）。
-コメントに `;` があるときは、`;` の後の空白とタブも残ります。
+コメントに `;` があるときは、その前の文字も同じに空白 1 つにして印字し、
+`;` の後の空白とタブは残ります。
 `A -->|x  %% c;` と空白 2 つ、改行、`| B` は、`A -->|x %% c;`、その空白 2 つ、
 1 段深い `| B` と印字します。
 コメントの改行の後もラベルが続く場合は、コメントの前の空白とタブが残ります。
@@ -719,6 +720,13 @@ U+2029 のどれかは、空白 1 つにし、接するコメントは接した�
 [test: agentflow: U+2003 before a comment that ends the label of an edge]
 [test: agentflow: U+2028 before a comment that ends the label of an edge]
 [test: agentflow: U+2029 before a comment that ends the label of an edge]
+[test: agentflow: a tab before a comment that ends the label of an edge]
+[test: agentflow: a no-break space before a comment with a semicolon that ends the label of an edge]
+[test: agentflow: U+3000 before a comment with a semicolon that ends the label of an edge]
+[test: agentflow: U+2003 before a comment with a semicolon that ends the label of an edge]
+[test: agentflow: U+2028 before a comment with a semicolon that ends the label of an edge]
+[test: agentflow: U+2029 before a comment with a semicolon that ends the label of an edge]
+[test: agentflow: a tab before a comment with a semicolon that ends the label of an edge]
 
 入力（エスケープ表記）: `"agentflow-beta TB\nA --> |x| B"`。
 
@@ -761,6 +769,7 @@ U+2029 があっても同じです）。
 接するコメントは接したまま残し、裸のラベルは引用符で囲んで印字します。
 閉じ括弧は自分の行に、頂点より 1 段深く置きます。
 コメントに `;` があるときは、ラベルを引用符で囲まず、
+コメントの前の文字も同じに空白 1 つにして印字し、
 `;` の後の空白とタブは残ります。
 `A[x  %% c;` と空白 2 つ、改行、`]` は、`A[x %% c;`、その空白 2 つ、
 1 段深い `]` と印字します。
@@ -789,6 +798,13 @@ U+2029 があっても同じです）。
 [test: agentflow: U+2003 before a comment that ends the label of a vertex]
 [test: agentflow: U+2028 before a comment that ends the label of a vertex]
 [test: agentflow: U+2029 before a comment that ends the label of a vertex]
+[test: agentflow: a tab before a comment that ends the label of a vertex]
+[test: agentflow: a no-break space before a comment with a semicolon that ends the label of a vertex]
+[test: agentflow: U+3000 before a comment with a semicolon that ends the label of a vertex]
+[test: agentflow: U+2003 before a comment with a semicolon that ends the label of a vertex]
+[test: agentflow: U+2028 before a comment with a semicolon that ends the label of a vertex]
+[test: agentflow: U+2029 before a comment with a semicolon that ends the label of a vertex]
+[test: agentflow: a tab before a comment with a semicolon that ends the label of a vertex]
 
 flow/connectorの見出しのタイトルは、
 [subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)に従います。

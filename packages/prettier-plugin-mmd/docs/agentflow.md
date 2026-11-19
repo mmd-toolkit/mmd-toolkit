@@ -687,10 +687,11 @@ pipe follows the line break of the comment (`A -->|x  %% c`, a line break, and
 comment, or one of a no-break space, U+3000, U+2003, U+2028, and U+2029, is
 printed as one space, a comment that touches stays touching, and the closing
 pipe stands on a line of its own, one level deeper than the arrow
-(`A -->|x %% c` and `    | B`). Where the comment holds a `;`, the spaces and
-tabs after the `;` stay as well: `A -->|x  %% c;` and two spaces, a line break,
-and `| B` print `A -->|x %% c;`, the two spaces, and `| B` one level deeper.
-Where the label goes on after the line break of the comment, the spaces and tabs
+(`A -->|x %% c` and `    | B`). Where the comment holds a `;`, the characters
+before it are printed as one space in the same way, and the spaces and tabs
+after the `;` stay as well: `A -->|x  %% c;` and two spaces, a line break, and
+`| B` print `A -->|x %% c;`, the two spaces, and `| B` one level deeper. Where
+the label goes on after the line break of the comment, the spaces and tabs
 before the comment stay.
 
 [fixture: edge-labels/label-comment-ends-label] [fixture:
@@ -700,7 +701,15 @@ before a comment that ends the label of an edge] [test: agentflow: U+3000 before
 a comment that ends the label of an edge] [test: agentflow: U+2003 before a
 comment that ends the label of an edge] [test: agentflow: U+2028 before a
 comment that ends the label of an edge] [test: agentflow: U+2029 before a
-comment that ends the label of an edge]
+comment that ends the label of an edge] [test: agentflow: a tab before a comment
+that ends the label of an edge] [test: agentflow: a no-break space before a
+comment with a semicolon that ends the label of an edge] [test: agentflow:
+U+3000 before a comment with a semicolon that ends the label of an edge] [test:
+agentflow: U+2003 before a comment with a semicolon that ends the label of an
+edge] [test: agentflow: U+2028 before a comment with a semicolon that ends the
+label of an edge] [test: agentflow: U+2029 before a comment with a semicolon
+that ends the label of an edge] [test: agentflow: a tab before a comment with a
+semicolon that ends the label of an edge]
 
 Input (escaped): `"agentflow-beta TB\nA --> |x| B"`.
 
@@ -738,8 +747,9 @@ characters, is printed as one space, a comment that touches stays touching, a
 bare label is printed in quotes (see
 [Labels that are drawn the same](./compatibility.md#labels-that-are-drawn-the-same)),
 and the closing bracket stands on a line of its own, one level deeper than the
-vertex. Where the comment holds a `;`, the label is not quoted and the spaces
-and tabs after the `;` stay: `A[x  %% c;` and two spaces, a line break, and `]`
+vertex. Where the comment holds a `;`, the label is not quoted, the characters
+before the comment are printed as one space in the same way, and the spaces and
+tabs after the `;` stay: `A[x  %% c;` and two spaces, a line break, and `]`
 print `A[x %% c;`, the two spaces, and `]` one level deeper. Where the label
 goes on after the line break of such a comment, both spaces before it stay.
 Tildes remain content. Shape spellings, entities and HTML remain authored. The
@@ -760,7 +770,16 @@ before a comment that ends the label of a vertex] [test: agentflow: U+3000
 before a comment that ends the label of a vertex] [test: agentflow: U+2003
 before a comment that ends the label of a vertex] [test: agentflow: U+2028
 before a comment that ends the label of a vertex] [test: agentflow: U+2029
-before a comment that ends the label of a vertex] [fixture: labels/entity-kept]
+before a comment that ends the label of a vertex] [test: agentflow: a tab before
+a comment that ends the label of a vertex] [test: agentflow: a no-break space
+before a comment with a semicolon that ends the label of a vertex] [test:
+agentflow: U+3000 before a comment with a semicolon that ends the label of a
+vertex] [test: agentflow: U+2003 before a comment with a semicolon that ends the
+label of a vertex] [test: agentflow: U+2028 before a comment with a semicolon
+that ends the label of a vertex] [test: agentflow: U+2029 before a comment with
+a semicolon that ends the label of a vertex] [test: agentflow: a tab before a
+comment with a semicolon that ends the label of a vertex] [fixture:
+labels/entity-kept]
 
 Flow/connector heading titles follow
 [Subgraph header](./flowchart.md#subgraph-header) instead: drop the whitespace

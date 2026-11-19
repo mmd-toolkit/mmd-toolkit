@@ -189,348 +189,436 @@ describe("the title of a diagram that is read with a Langium grammar and has a w
 })
 
 /**
- * The title of each diagram type beside a directive or a comment, by the group
- * of types that print it alike (docs/compatibility.md, Texts after a keyword
- * that are drawn the same): a representative of each group holds every case,
- * and every type holds two cases that tell the groups apart.
+ * The groups of diagram types that print a title with a directive or a comment
+ * alike (docs/compatibility.md, Texts after a keyword that are drawn the same).
  */
-const titleTypes: readonly (readonly [string, number, string, string])[] = [
-  [
-    "a pie chart",
-    0,
-    'pie\ntitle {title}\n"a": 1\n',
-    'pie\n  title {title}\n  "a": 1\n',
-  ],
-  [
-    "a radar chart",
-    0,
-    "radar-beta\ntitle {title}\naxis a, b\ncurve c{1, 2}\n",
-    "radar-beta\n  title {title}\n  axis a, b\n  curve c{1, 2}\n",
-  ],
-  [
-    "a packet diagram",
-    0,
-    'packet-beta\ntitle {title}\n0-7: "x"\n',
-    'packet-beta\n  title {title}\n  0-7: "x"\n',
-  ],
-  [
-    "an architecture diagram",
-    0,
-    "architecture-beta\ntitle {title}\nservice a(server)[A]\n",
-    "architecture-beta\n  title {title}\n  service a(server)[A]\n",
-  ],
-  [
-    "a gitGraph",
-    0,
-    "gitGraph\ntitle {title}\ncommit\n",
-    "gitGraph\n  title {title}\n  commit\n",
-  ],
-  [
-    "a cynefin diagram",
-    0,
-    "cynefin-beta\ntitle {title}\n",
-    "cynefin-beta\n  title {title}\n",
-  ],
-  [
-    "a treemap",
-    0,
-    'treemap-beta\ntitle {title}\n"A": 1\n',
-    'treemap\ntitle {title}\n  "A": 1\n',
-  ],
-  [
-    "a Wardley map",
-    0,
-    "wardley-beta\ntitle {title}\ncomponent A [0.5, 0.5]\n",
-    "wardley-beta\n  title {title}\n  component A [0.5, 0.5]\n",
-  ],
-  [
-    "a treeView",
-    0,
-    "treeView-beta\ntitle {title}\nroot\n",
-    "treeView-beta\n  title {title}\n  root\n",
-  ],
-  ["an info diagram", 0, "info\ntitle {title}\n", "info\n  title {title}\n"],
-  [
-    "a railroad diagram",
-    0,
-    'railroad-abnf-beta\ntitle {title}\nr="a";\n',
-    'railroad-abnf-beta\n  title {title}\n  r = "a";\n',
-  ],
-  [
-    "a quadrant chart",
-    1,
-    "quadrantChart\ntitle {title}\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
-    "quadrantChart\n  title {title}\n  x-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
-  ],
-  ["a Gantt chart", 2, "gantt\ntitle {title}\n", "gantt\n  title {title}\n"],
-  [
-    "a user journey",
-    2,
-    "journey\ntitle {title}\n",
-    "journey\n  title {title}\n",
-  ],
-  ["a timeline", 2, "timeline\ntitle {title}\n", "timeline\n  title {title}\n"],
-  [
-    "a sequence diagram",
-    2,
-    "sequenceDiagram\ntitle {title}\nA->>B: x\n",
-    "sequenceDiagram\n  title {title}\n  A ->> B: x\n",
-  ],
-  [
-    "a Venn diagram",
-    3,
-    "venn-beta\ntitle {title}\nset A\n",
-    "venn-beta\n  title {title}\n  set A\n",
-  ],
-  [
-    "a C4 diagram",
-    3,
-    'C4Context\ntitle {title}\nPerson(a,"A")\n',
-    'C4Context\n  title {title}\n  Person(a, "A")\n',
-  ],
+type TitleGroup = "langium" | "quadrant" | "gantt" | "vennAndC4"
+
+/**
+ * The title of each diagram type beside a directive or a comment, by the group
+ * of types that print it alike: a representative of each group holds every
+ * case, and every type holds three cases that tell the groups apart.
+ */
+interface TitleType {
+  readonly name: string
+  readonly group: TitleGroup
+  /** The text of a diagram of the type, with `{title}` where its title goes. */
+  readonly input: string
+  /** What the printer makes of the text when the title is printed as written. */
+  readonly output: string
+}
+
+const titleTypes: readonly TitleType[] = [
+  {
+    name: "a pie chart",
+    group: "langium",
+    input: 'pie\ntitle {title}\n"a": 1\n',
+    output: 'pie\n  title {title}\n  "a": 1\n',
+  },
+  {
+    name: "a radar chart",
+    group: "langium",
+    input: "radar-beta\ntitle {title}\naxis a, b\ncurve c{1, 2}\n",
+    output: "radar-beta\n  title {title}\n  axis a, b\n  curve c{1, 2}\n",
+  },
+  {
+    name: "a packet diagram",
+    group: "langium",
+    input: 'packet-beta\ntitle {title}\n0-7: "x"\n',
+    output: 'packet-beta\n  title {title}\n  0-7: "x"\n',
+  },
+  {
+    name: "an architecture diagram",
+    group: "langium",
+    input: "architecture-beta\ntitle {title}\nservice a(server)[A]\n",
+    output: "architecture-beta\n  title {title}\n  service a(server)[A]\n",
+  },
+  {
+    name: "a gitGraph",
+    group: "langium",
+    input: "gitGraph\ntitle {title}\ncommit\n",
+    output: "gitGraph\n  title {title}\n  commit\n",
+  },
+  {
+    name: "a cynefin diagram",
+    group: "langium",
+    input: "cynefin-beta\ntitle {title}\n",
+    output: "cynefin-beta\n  title {title}\n",
+  },
+  {
+    name: "a treemap",
+    group: "langium",
+    input: 'treemap-beta\ntitle {title}\n"A": 1\n',
+    output: 'treemap\ntitle {title}\n  "A": 1\n',
+  },
+  {
+    name: "a Wardley map",
+    group: "langium",
+    input: "wardley-beta\ntitle {title}\ncomponent A [0.5, 0.5]\n",
+    output: "wardley-beta\n  title {title}\n  component A [0.5, 0.5]\n",
+  },
+  {
+    name: "a treeView",
+    group: "langium",
+    input: "treeView-beta\ntitle {title}\nroot\n",
+    output: "treeView-beta\n  title {title}\n  root\n",
+  },
+  {
+    name: "an info diagram",
+    group: "langium",
+    input: "info\ntitle {title}\n",
+    output: "info\n  title {title}\n",
+  },
+  {
+    name: "a railroad diagram",
+    group: "langium",
+    input: 'railroad-abnf-beta\ntitle {title}\nr="a";\n',
+    output: 'railroad-abnf-beta\n  title {title}\n  r = "a";\n',
+  },
+  {
+    name: "a quadrant chart",
+    group: "quadrant",
+    input:
+      "quadrantChart\ntitle {title}\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    output:
+      "quadrantChart\n  title {title}\n  x-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  },
+  {
+    name: "a Gantt chart",
+    group: "gantt",
+    input: "gantt\ntitle {title}\n",
+    output: "gantt\n  title {title}\n",
+  },
+  {
+    name: "a user journey",
+    group: "gantt",
+    input: "journey\ntitle {title}\n",
+    output: "journey\n  title {title}\n",
+  },
+  {
+    name: "a timeline",
+    group: "gantt",
+    input: "timeline\ntitle {title}\n",
+    output: "timeline\n  title {title}\n",
+  },
+  {
+    name: "a sequence diagram",
+    group: "gantt",
+    input: "sequenceDiagram\ntitle {title}\nA->>B: x\n",
+    output: "sequenceDiagram\n  title {title}\n  A ->> B: x\n",
+  },
+  {
+    name: "a Venn diagram",
+    group: "vennAndC4",
+    input: "venn-beta\ntitle {title}\nset A\n",
+    output: "venn-beta\n  title {title}\n  set A\n",
+  },
+  {
+    name: "a C4 diagram",
+    group: "vennAndC4",
+    input: 'C4Context\ntitle {title}\nPerson(a,"A")\n',
+    output: 'C4Context\n  title {title}\n  Person(a, "A")\n',
+  },
 ]
 
-const titleDirectiveCases: readonly (readonly [
-  string,
-  string,
-  string | null,
-  string | null,
-  string | null,
-  string | null,
-])[] = [
-  [
-    "runs and spaces around a directive that ends a title",
-    "T  %%{x}%%  ",
-    "T %%{x}%%",
-    "T %%{x}%%",
-    "T %%{x}%%",
-    "T %%{x}%%",
-  ],
-  [
-    "a comment and spaces after a directive that ends a title",
-    "T  %%{x}%%  %% c  ",
-    "T %%{x}%% %% c  ",
-    "T  %%{x}%%  %% c",
-    "T  %%{x}%%  %% c",
-    null,
-  ],
-  [
-    "a no-break space after the last directive of a title",
-    "T %%{x}%%\u00a0",
-    null,
-    "T %%{x}%%",
-    null,
-    null,
-  ],
-  [
-    "U+3000 after the last directive of a title",
-    "T %%{x}%%\u3000",
-    null,
-    "T %%{x}%%",
-    null,
-    null,
-  ],
-  [
-    "U+2003 after the last directive of a title",
-    "T %%{x}%%\u2003",
-    null,
-    "T %%{x}%%",
-    null,
-    null,
-  ],
-  [
-    "a no-break space after a directive that starts a title and before another directive",
-    "%%{x}%%\u00a0T %%{y}%%",
-    "%%{x}%%T %%{y}%%",
-    "%%{x}%%T %%{y}%%",
-    null,
-    null,
-  ],
-  [
-    "a no-break space after a directive that starts a title and after the last directive",
-    "%%{x}%%\u00a0T %%{y}%%\u00a0",
-    null,
-    "%%{x}%%T %%{y}%%",
-    null,
-    null,
-  ],
-  [
-    "a no-break space after a directive that starts a title and text after the last directive",
-    "%%{x}%%\u00a0T %%{y}%% U",
-    null,
-    "%%{x}%%T %%{y}%% U",
-    null,
-    null,
-  ],
-  [
-    "spaces after a directive that starts a title",
-    "%%{x}%%  T  ",
-    "%%{x}%%T",
-    "%%{x}%%T",
-    "%%{x}%%T",
-    null,
-  ],
-  [
-    "text after a directive and spaces at the end of a title",
-    "T %%{x}%% U  ",
-    null,
-    "T %%{x}%% U",
-    "T %%{x}%% U",
-    null,
-  ],
-  [
-    "a no-break space after a directive and spaces at the end of a title",
-    "T %%{x}%%\u00a0U  ",
-    null,
-    "T %%{x}%%\u00a0U",
-    "T %%{x}%%\u00a0U",
-    null,
-  ],
-  [
-    "text between two directives and spaces at the end of a title",
-    "T %%{x}%%  U  %%{y}%%  ",
-    null,
-    "T %%{x}%%  U %%{y}%%",
-    "T %%{x}%%  U %%{y}%%",
-    null,
-  ],
-  [
-    "a no-break space between the text and a directive that ends a title",
-    "T\u00a0%%{x}%%",
-    "T %%{x}%%",
-    "T %%{x}%%",
-    null,
-    null,
-  ],
-  [
-    "U+3000 between the text and a directive that ends a title",
-    "T\u3000%%{x}%%",
-    "T %%{x}%%",
-    "T %%{x}%%",
-    null,
-    null,
-  ],
-  [
-    "U+2003 between the text and a directive that ends a title",
-    "T\u2003%%{x}%%",
-    "T %%{x}%%",
-    "T %%{x}%%",
-    null,
-    null,
-  ],
-  [
-    "a tab before and after the last directive of a title",
-    "T\u0009%%{x}%%\u0009",
-    "T %%{x}%%",
-    "T %%{x}%%",
-    "T %%{x}%%",
-    "T %%{x}%%",
-  ],
-  [
-    "a no-break space before a comment after the text of a title",
-    "T\u00a0%% c",
-    "T %% c",
-    null,
-    null,
-    null,
-  ],
-  [
-    "runs and spaces around a comment after the text of a title",
-    "T  %% c  ",
-    "T %% c  ",
-    "T %% c",
-    "T %% c",
-    "T %% c",
-  ],
-  [
-    "a comment and spaces after a directive that follows the text of a title",
-    "T %%{x}%% %% c  ",
-    null,
-    "T %%{x}%% %% c",
-    "T %%{x}%% %% c",
-    null,
-  ],
-  [
-    "a no-break space before a directive and a comment after the text of a title",
-    "T\u00a0%%{x}%%%% c",
-    "T %%{x}%%%% c",
-    null,
-    null,
-    null,
-  ],
-  [
-    "a directive and spaces only as a title",
-    "%%{x}%%  ",
-    null,
-    "%%{x}%%",
-    null,
-    null,
-  ],
-  [
-    "a directive and a tab only as a title",
-    "%%{x}%%\t",
-    null,
-    "%%{x}%%",
-    null,
-    null,
-  ],
-  [
-    "two directives and spaces only as a title",
-    "%%{x}%%  %%{y}%%  ",
-    null,
-    "%%{x}%% %%{y}%%",
-    null,
-    null,
-  ],
-  [
-    "two directives after the text of a title and spaces",
-    "T  %%{x}%%  %%{y}%%  ",
-    "T %%{x}%% %%{y}%%",
-    "T %%{x}%% %%{y}%%",
-    "T %%{x}%% %%{y}%%",
-    "T %%{x}%% %%{y}%%",
-  ],
-  [
-    "two directives after the text of a title",
-    "T  %%{x}%%  %%{y}%%",
-    "T %%{x}%% %%{y}%%",
-    "T %%{x}%% %%{y}%%",
-    "T %%{x}%% %%{y}%%",
-    "T %%{x}%% %%{y}%%",
-  ],
-  [
-    "two directives touching after the text of a title and spaces",
-    "T%%{x}%%%%{y}%%  ",
-    "T%%{x}%%%%{y}%%",
-    "T%%{x}%%%%{y}%%",
-    "T%%{x}%%%%{y}%%",
-    "T%%{x}%%%%{y}%%",
-  ],
-  [
-    "U+2028 and spaces after the last directive of a title",
-    "T %%{x}%%\u2028  ",
-    null,
-    "T %%{x}%%",
-    "T %%{x}%%\u2028",
-    null,
-  ],
-  [
-    "U+2029 and spaces after the last directive of a title",
-    "T %%{x}%%\u2029  ",
-    null,
-    "T %%{x}%%",
-    "T %%{x}%%\u2029",
-    null,
-  ],
-  [
-    "U+2028 between the text and a directive that ends a title",
-    "T\u2028%%{x}%%",
-    "T %%{x}%%",
-    "T %%{x}%%",
-    null,
-    null,
-  ],
-  ["a comment touching the text of a title", "T%% c", null, null, null, null],
+/** A title written beside a directive or a comment, and what each group prints. */
+interface TitleDirectiveCase {
+  readonly name: string
+  readonly written: string
+  /** What each group prints; a group that is missing prints the written title. */
+  readonly printed: Readonly<Partial<Record<TitleGroup, string>>>
+}
+
+/** What a group prints for a case: the written title where it prints it so. */
+function printedTitle(row: TitleDirectiveCase, group: TitleGroup): string {
+  return row.printed[group] ?? row.written
+}
+
+const titleDirectiveCases: readonly TitleDirectiveCase[] = [
+  {
+    name: "runs and spaces around a directive that ends a title",
+    written: "T  %%{x}%%  ",
+    printed: {
+      langium: "T %%{x}%%",
+      quadrant: "T %%{x}%%",
+      gantt: "T %%{x}%%",
+      vennAndC4: "T %%{x}%%",
+    },
+  },
+  {
+    name: "a comment and spaces after a directive that ends a title",
+    written: "T  %%{x}%%  %% c  ",
+    printed: {
+      langium: "T %%{x}%% %% c  ",
+      quadrant: "T  %%{x}%%  %% c",
+      gantt: "T  %%{x}%%  %% c",
+    },
+  },
+  {
+    name: "a no-break space after the last directive of a title",
+    written: "T %%{x}%%\u00a0",
+    printed: {
+      quadrant: "T %%{x}%%",
+    },
+  },
+  {
+    name: "U+3000 after the last directive of a title",
+    written: "T %%{x}%%\u3000",
+    printed: {
+      quadrant: "T %%{x}%%",
+    },
+  },
+  {
+    name: "U+2003 after the last directive of a title",
+    written: "T %%{x}%%\u2003",
+    printed: {
+      quadrant: "T %%{x}%%",
+    },
+  },
+  {
+    name: "a no-break space after a directive that starts a title and before another directive",
+    written: "%%{x}%%\u00a0T %%{y}%%",
+    printed: {
+      langium: "%%{x}%%T %%{y}%%",
+      quadrant: "%%{x}%%T %%{y}%%",
+    },
+  },
+  {
+    name: "a no-break space after a directive that starts a title and after the last directive",
+    written: "%%{x}%%\u00a0T %%{y}%%\u00a0",
+    printed: {
+      quadrant: "%%{x}%%T %%{y}%%",
+    },
+  },
+  {
+    name: "a no-break space after a directive that starts a title and text after the last directive",
+    written: "%%{x}%%\u00a0T %%{y}%% U",
+    printed: {
+      quadrant: "%%{x}%%T %%{y}%% U",
+    },
+  },
+  {
+    name: "spaces after a directive that starts a title",
+    written: "%%{x}%%  T  ",
+    printed: {
+      langium: "%%{x}%%T",
+      quadrant: "%%{x}%%T",
+      gantt: "%%{x}%%T",
+    },
+  },
+  {
+    name: "text after a directive and spaces at the end of a title",
+    written: "T %%{x}%% U  ",
+    printed: {
+      quadrant: "T %%{x}%% U",
+      gantt: "T %%{x}%% U",
+    },
+  },
+  {
+    name: "a no-break space after a directive and spaces at the end of a title",
+    written: "T %%{x}%%\u00a0U  ",
+    printed: {
+      quadrant: "T %%{x}%%\u00a0U",
+      gantt: "T %%{x}%%\u00a0U",
+    },
+  },
+  {
+    name: "text between two directives and spaces at the end of a title",
+    written: "T %%{x}%%  U  %%{y}%%  ",
+    printed: {
+      quadrant: "T %%{x}%%  U %%{y}%%",
+      gantt: "T %%{x}%%  U %%{y}%%",
+    },
+  },
+  {
+    name: "a no-break space between the text and a directive that ends a title",
+    written: "T\u00a0%%{x}%%",
+    printed: {
+      langium: "T %%{x}%%",
+      quadrant: "T %%{x}%%",
+    },
+  },
+  {
+    name: "U+3000 between the text and a directive that ends a title",
+    written: "T\u3000%%{x}%%",
+    printed: {
+      langium: "T %%{x}%%",
+      quadrant: "T %%{x}%%",
+    },
+  },
+  {
+    name: "U+2003 between the text and a directive that ends a title",
+    written: "T\u2003%%{x}%%",
+    printed: {
+      langium: "T %%{x}%%",
+      quadrant: "T %%{x}%%",
+    },
+  },
+  {
+    name: "a tab before and after the last directive of a title",
+    written: "T\t%%{x}%%\t",
+    printed: {
+      langium: "T %%{x}%%",
+      quadrant: "T %%{x}%%",
+      gantt: "T %%{x}%%",
+      vennAndC4: "T %%{x}%%",
+    },
+  },
+  {
+    name: "a no-break space before a comment after the text of a title",
+    written: "T\u00a0%% c",
+    printed: {
+      langium: "T %% c",
+    },
+  },
+  {
+    name: "runs and spaces around a comment after the text of a title",
+    written: "T  %% c  ",
+    printed: {
+      langium: "T %% c  ",
+      quadrant: "T %% c",
+      gantt: "T %% c",
+      vennAndC4: "T %% c",
+    },
+  },
+  {
+    name: "a comment and spaces after a directive that follows the text of a title",
+    written: "T %%{x}%% %% c  ",
+    printed: {
+      quadrant: "T %%{x}%% %% c",
+      gantt: "T %%{x}%% %% c",
+    },
+  },
+  {
+    name: "a no-break space before a directive and a comment after the text of a title",
+    written: "T\u00a0%%{x}%%%% c",
+    printed: {
+      langium: "T %%{x}%%%% c",
+    },
+  },
+  {
+    name: "a directive and spaces only as a title",
+    written: "%%{x}%%  ",
+    printed: {
+      quadrant: "%%{x}%%",
+    },
+  },
+  {
+    name: "a directive and a tab only as a title",
+    written: "%%{x}%%\t",
+    printed: {
+      quadrant: "%%{x}%%",
+    },
+  },
+  {
+    name: "two directives and spaces only as a title",
+    written: "%%{x}%%  %%{y}%%  ",
+    printed: {
+      quadrant: "%%{x}%% %%{y}%%",
+    },
+  },
+  {
+    name: "two directives after the text of a title and spaces",
+    written: "T  %%{x}%%  %%{y}%%  ",
+    printed: {
+      langium: "T %%{x}%% %%{y}%%",
+      quadrant: "T %%{x}%% %%{y}%%",
+      gantt: "T %%{x}%% %%{y}%%",
+      vennAndC4: "T %%{x}%% %%{y}%%",
+    },
+  },
+  {
+    name: "two directives after the text of a title",
+    written: "T  %%{x}%%  %%{y}%%",
+    printed: {
+      langium: "T %%{x}%% %%{y}%%",
+      quadrant: "T %%{x}%% %%{y}%%",
+      gantt: "T %%{x}%% %%{y}%%",
+      vennAndC4: "T %%{x}%% %%{y}%%",
+    },
+  },
+  {
+    name: "two directives touching after the text of a title and spaces",
+    written: "T%%{x}%%%%{y}%%  ",
+    printed: {
+      langium: "T%%{x}%%%%{y}%%",
+      quadrant: "T%%{x}%%%%{y}%%",
+      gantt: "T%%{x}%%%%{y}%%",
+      vennAndC4: "T%%{x}%%%%{y}%%",
+    },
+  },
+  {
+    name: "U+2028 and spaces after the last directive of a title",
+    written: "T %%{x}%%\u2028  ",
+    printed: {
+      quadrant: "T %%{x}%%",
+      gantt: "T %%{x}%%\u2028",
+    },
+  },
+  {
+    name: "U+2029 and spaces after the last directive of a title",
+    written: "T %%{x}%%\u2029  ",
+    printed: {
+      quadrant: "T %%{x}%%",
+      gantt: "T %%{x}%%\u2029",
+    },
+  },
+  {
+    name: "U+2028 between the text and a directive that ends a title",
+    written: "T\u2028%%{x}%%",
+    printed: {
+      langium: "T %%{x}%%",
+      quadrant: "T %%{x}%%",
+    },
+  },
+  {
+    name: "a comment touching the text of a title",
+    written: "T%% c",
+    printed: {},
+  },
+  {
+    name: "a directive and a comment only as a title",
+    written: "%%{x}%%  %% c  ",
+    printed: {
+      quadrant: "%%{x}%%%% c",
+      gantt: "%%{x}%%%% c",
+    },
+  },
+  {
+    name: "two directives and a comment only as a title",
+    written: "%%{x}%%  %%{y}%%  %% c  ",
+    printed: {
+      quadrant: "%%{x}%%%%{y}%%%% c",
+      gantt: "%%{x}%%%%{y}%%%% c",
+    },
+  },
+  {
+    name: "a comment and then a directive after the text of a title",
+    written: "T %% c %%{x}%%",
+    printed: {},
+  },
+  {
+    name: "a no-break space between a directive and a comment after the text of a title",
+    written: "T %%{x}%%\u00a0%% c",
+    printed: {},
+  },
+  {
+    name: "two directives and a comment after the text of a title",
+    written: "T  %%{x}%%  %%{y}%%  %% c",
+    printed: {
+      langium: "T %%{x}%% %%{y}%% %% c",
+    },
+  },
+  {
+    name: "a tab before a comment after the text of a title",
+    written: "T\t%% c",
+    printed: {
+      langium: "T %% c",
+      quadrant: "T %% c",
+      gantt: "T %% c",
+      vennAndC4: "T %% c",
+    },
+  },
 ]
 
 const titleOpenDirectiveExamples: readonly (readonly [
@@ -1800,7 +1888,7 @@ const titleOpenDirectiveExamples: readonly (readonly [
   ],
 ]
 
-const titleGroupRepresentatives = titleTypes.filter(([name]) =>
+const titleGroupRepresentatives = titleTypes.filter(({ name }) =>
   [
     "a radar chart",
     "a quadrant chart",
@@ -1811,352 +1899,367 @@ const titleGroupRepresentatives = titleTypes.filter(([name]) =>
 )
 
 describe.each(titleGroupRepresentatives)(
-  "the title of %s with a directive or a comment",
-  (_diagram, group, input, output) => {
-    it.each(titleDirectiveCases)(
-      "prints %s",
-      async (_case, written, ...printed) => {
-        await expectKept(
-          input.replace("{title}", written),
-          output.replace("{title}", printed[group] ?? written),
-        )
-      },
-    )
+  "the title of $name with a directive or a comment",
+  ({ group, input, output }) => {
+    it.each(titleDirectiveCases)("prints $name", async (row) => {
+      await expectKept(
+        input.replace("{title}", row.written),
+        output.replace("{title}", printedTitle(row, group)),
+      )
+    })
   },
 )
 
 const titleMembershipCases = titleDirectiveCases.filter(
-  ([name]) =>
+  ({ name }) =>
     name === "a comment and spaces after a directive that ends a title" ||
     name === "a no-break space after the last directive of a title" ||
     name === "a directive and spaces only as a title",
 )
 
-describe.each(titleTypes)(
-  "the title of %s",
-  (_diagram, group, input, output) => {
-    it.each(titleMembershipCases)(
-      "prints %s as its group does",
-      async (_case, written, ...printed) => {
-        await expectKept(
-          input.replace("{title}", written),
-          output.replace("{title}", printed[group] ?? written),
-        )
-      },
-    )
-  },
-)
+describe.each(titleTypes)("the title of $name", ({ group, input, output }) => {
+  it.each(titleMembershipCases)(
+    "prints $name as its group does",
+    async (row) => {
+      await expectKept(
+        input.replace("{title}", row.written),
+        output.replace("{title}", printedTitle(row, group)),
+      )
+    },
+  )
+})
 
 /**
  * An `accTitle:` or `accDescr:` line of each diagram type that has one, beside a
  * directive or a comment: what the Langium types print, and what a quadrant
  * chart, a Gantt chart, a user journey, a timeline, a sequence diagram, and a
  * C4 diagram print for an `accTitle:` line and for an `accDescr:` line
- * (docs/compatibility.md, Texts after a keyword that are drawn the same). A
- * `null` is the written value.
+ * (docs/compatibility.md, Texts after a keyword that are drawn the same).
  */
-const accessibilityDirectiveCases: readonly (readonly [
-  string,
-  string,
-  string | null,
-  string | null,
-  string | null,
-])[] = [
-  [
-    "runs and spaces around a directive that ends an accessibility line",
-    "T  %%{x}%%  ",
-    "T %%{x}%%",
-    "T %%{x}%%",
-    "T %%{x}%%",
-  ],
-  [
-    "a comment and spaces after a directive that ends an accessibility line",
-    "T  %%{x}%%  %% c  ",
-    "T %%{x}%% %% c  ",
-    "T  %%{x}%%  %% c",
-    "T  %%{x}%%  %% c",
-  ],
-  [
-    "a no-break space after the last directive of an accessibility line",
-    "T %%{x}%%\u00a0",
-    null,
-    "T %%{x}%%",
-    "T %%{x}%%",
-  ],
-  [
-    "U+3000 after the last directive of an accessibility line",
-    "T %%{x}%%\u3000",
-    null,
-    "T %%{x}%%",
-    "T %%{x}%%",
-  ],
-  [
-    "U+2003 after the last directive of an accessibility line",
-    "T %%{x}%%\u2003",
-    null,
-    "T %%{x}%%",
-    "T %%{x}%%",
-  ],
-  [
-    "a no-break space after a directive that starts an accessibility line and before another directive",
-    "%%{x}%%\u00a0T %%{y}%%",
-    null,
-    "%%{x}%%T %%{y}%%",
-    "%%{x}%%T %%{y}%%",
-  ],
-  [
-    "a no-break space after a directive that starts an accessibility line and after the last directive",
-    "%%{x}%%\u00a0T %%{y}%%\u00a0",
-    null,
-    "%%{x}%%T %%{y}%%",
-    "%%{x}%%T %%{y}%%",
-  ],
-  [
-    "a no-break space after a directive that starts an accessibility line and text after the last directive",
-    "%%{x}%%\u00a0T %%{y}%% U",
-    null,
-    "%%{x}%%T %%{y}%% U",
-    "%%{x}%%T %%{y}%% U",
-  ],
-  [
-    "spaces after a directive that starts an accessibility line",
-    "%%{x}%%  T  ",
-    null,
-    "%%{x}%%T",
-    "%%{x}%%T",
-  ],
-  [
-    "text after a directive and spaces at the end of an accessibility line",
-    "T %%{x}%% U  ",
-    null,
-    "T %%{x}%% U",
-    "T %%{x}%% U",
-  ],
-  [
-    "a no-break space after a directive and spaces at the end of an accessibility line",
-    "T %%{x}%%\u00a0U  ",
-    null,
-    "T %%{x}%%\u00a0U",
-    "T %%{x}%%\u00a0U",
-  ],
-  [
-    "text between two directives and spaces at the end of an accessibility line",
-    "T %%{x}%%  U  %%{y}%%  ",
-    null,
-    "T %%{x}%%  U %%{y}%%",
-    "T %%{x}%%  U %%{y}%%",
-  ],
-  [
-    "a no-break space between the text and a directive that ends an accessibility line",
-    "T\u00a0%%{x}%%",
-    "T %%{x}%%",
-    "T %%{x}%%",
-    "T %%{x}%%",
-  ],
-  [
-    "U+3000 between the text and a directive that ends an accessibility line",
-    "T\u3000%%{x}%%",
-    "T %%{x}%%",
-    "T %%{x}%%",
-    "T %%{x}%%",
-  ],
-  [
-    "U+2003 between the text and a directive that ends an accessibility line",
-    "T\u2003%%{x}%%",
-    "T %%{x}%%",
-    "T %%{x}%%",
-    "T %%{x}%%",
-  ],
-  [
-    "a tab before and after the last directive of an accessibility line",
-    "T\t%%{x}%%\t",
-    "T %%{x}%%",
-    "T %%{x}%%",
-    "T %%{x}%%",
-  ],
-  [
-    "a no-break space before a comment after the text of an accessibility line",
-    "T\u00a0%% c",
-    "T %% c",
-    null,
-    null,
-  ],
-  [
-    "runs and spaces around a comment after the text of an accessibility line",
-    "T  %% c  ",
-    "T %% c  ",
-    "T  %% c",
-    "T %% c",
-  ],
-  [
-    "a comment and spaces after a directive that follows the text of an accessibility line",
-    "T %%{x}%% %% c  ",
-    null,
-    "T %%{x}%% %% c",
-    "T %%{x}%% %% c",
-  ],
-  [
-    "a no-break space before a directive and a comment after the text of an accessibility line",
-    "T\u00a0%%{x}%%%% c",
-    "T %%{x}%%%% c",
-    null,
-    null,
-  ],
-  [
-    "U+2028 and spaces after the last directive of an accessibility line",
-    "T %%{x}%%\u2028  ",
-    null,
-    "T %%{x}%%",
-    "T %%{x}%%",
-  ],
-  [
-    "U+2029 and spaces after the last directive of an accessibility line",
-    "T %%{x}%%\u2029  ",
-    null,
-    "T %%{x}%%",
-    "T %%{x}%%",
-  ],
-  [
-    "U+2028 between the text and a directive that ends an accessibility line",
-    "T\u2028%%{x}%%",
-    "T %%{x}%%",
-    "T %%{x}%%",
-    "T %%{x}%%",
-  ],
-  [
-    "two directives after the text of an accessibility line and spaces",
-    "T  %%{x}%%  %%{y}%%  ",
-    "T %%{x}%% %%{y}%%",
-    "T %%{x}%% %%{y}%%",
-    "T %%{x}%% %%{y}%%",
-  ],
-  [
-    "two directives after the text of an accessibility line",
-    "T  %%{x}%%  %%{y}%%",
-    "T %%{x}%% %%{y}%%",
-    "T %%{x}%% %%{y}%%",
-    "T %%{x}%% %%{y}%%",
-  ],
-  [
-    "two directives touching after the text of an accessibility line and spaces",
-    "T%%{x}%%%%{y}%%  ",
-    "T%%{x}%%%%{y}%%",
-    "T%%{x}%%%%{y}%%",
-    "T%%{x}%%%%{y}%%",
-  ],
-  [
-    "a comment touching the text of an accessibility line",
-    "T%% c",
-    null,
-    null,
-    null,
-  ],
+interface AccessibilityDirectiveCase {
+  readonly name: string
+  readonly written: string
+  /** What the Langium types print; the written value when it is missing. */
+  readonly langium?: string
+  /** What the other types print for an `accTitle:` line; the written value when it is missing. */
+  readonly otherAccTitle?: string
+  /** What the other types print for an `accDescr:` line; the written value when it is missing. */
+  readonly otherAccDescr?: string
+}
+
+const accessibilityDirectiveCases: readonly AccessibilityDirectiveCase[] = [
+  {
+    name: "runs and spaces around a directive that ends an accessibility line",
+    written: "T  %%{x}%%  ",
+    langium: "T %%{x}%%",
+    otherAccTitle: "T %%{x}%%",
+    otherAccDescr: "T %%{x}%%",
+  },
+  {
+    name: "a comment and spaces after a directive that ends an accessibility line",
+    written: "T  %%{x}%%  %% c  ",
+    langium: "T %%{x}%% %% c  ",
+    otherAccTitle: "T  %%{x}%%  %% c",
+    otherAccDescr: "T  %%{x}%%  %% c",
+  },
+  {
+    name: "a no-break space after the last directive of an accessibility line",
+    written: "T %%{x}%%\u00a0",
+    otherAccTitle: "T %%{x}%%",
+    otherAccDescr: "T %%{x}%%",
+  },
+  {
+    name: "U+3000 after the last directive of an accessibility line",
+    written: "T %%{x}%%\u3000",
+    otherAccTitle: "T %%{x}%%",
+    otherAccDescr: "T %%{x}%%",
+  },
+  {
+    name: "U+2003 after the last directive of an accessibility line",
+    written: "T %%{x}%%\u2003",
+    otherAccTitle: "T %%{x}%%",
+    otherAccDescr: "T %%{x}%%",
+  },
+  {
+    name: "a no-break space after a directive that starts an accessibility line and before another directive",
+    written: "%%{x}%%\u00a0T %%{y}%%",
+    otherAccTitle: "%%{x}%%T %%{y}%%",
+    otherAccDescr: "%%{x}%%T %%{y}%%",
+  },
+  {
+    name: "a no-break space after a directive that starts an accessibility line and after the last directive",
+    written: "%%{x}%%\u00a0T %%{y}%%\u00a0",
+    otherAccTitle: "%%{x}%%T %%{y}%%",
+    otherAccDescr: "%%{x}%%T %%{y}%%",
+  },
+  {
+    name: "a no-break space after a directive that starts an accessibility line and text after the last directive",
+    written: "%%{x}%%\u00a0T %%{y}%% U",
+    otherAccTitle: "%%{x}%%T %%{y}%% U",
+    otherAccDescr: "%%{x}%%T %%{y}%% U",
+  },
+  {
+    name: "spaces after a directive that starts an accessibility line",
+    written: "%%{x}%%  T  ",
+    otherAccTitle: "%%{x}%%T",
+    otherAccDescr: "%%{x}%%T",
+  },
+  {
+    name: "text after a directive and spaces at the end of an accessibility line",
+    written: "T %%{x}%% U  ",
+    otherAccTitle: "T %%{x}%% U",
+    otherAccDescr: "T %%{x}%% U",
+  },
+  {
+    name: "a no-break space after a directive and spaces at the end of an accessibility line",
+    written: "T %%{x}%%\u00a0U  ",
+    otherAccTitle: "T %%{x}%%\u00a0U",
+    otherAccDescr: "T %%{x}%%\u00a0U",
+  },
+  {
+    name: "text between two directives and spaces at the end of an accessibility line",
+    written: "T %%{x}%%  U  %%{y}%%  ",
+    otherAccTitle: "T %%{x}%%  U %%{y}%%",
+    otherAccDescr: "T %%{x}%%  U %%{y}%%",
+  },
+  {
+    name: "a no-break space between the text and a directive that ends an accessibility line",
+    written: "T\u00a0%%{x}%%",
+    langium: "T %%{x}%%",
+    otherAccTitle: "T %%{x}%%",
+    otherAccDescr: "T %%{x}%%",
+  },
+  {
+    name: "U+3000 between the text and a directive that ends an accessibility line",
+    written: "T\u3000%%{x}%%",
+    langium: "T %%{x}%%",
+    otherAccTitle: "T %%{x}%%",
+    otherAccDescr: "T %%{x}%%",
+  },
+  {
+    name: "U+2003 between the text and a directive that ends an accessibility line",
+    written: "T\u2003%%{x}%%",
+    langium: "T %%{x}%%",
+    otherAccTitle: "T %%{x}%%",
+    otherAccDescr: "T %%{x}%%",
+  },
+  {
+    name: "a tab before and after the last directive of an accessibility line",
+    written: "T\t%%{x}%%\t",
+    langium: "T %%{x}%%",
+    otherAccTitle: "T %%{x}%%",
+    otherAccDescr: "T %%{x}%%",
+  },
+  {
+    name: "a no-break space before a comment after the text of an accessibility line",
+    written: "T\u00a0%% c",
+    langium: "T %% c",
+  },
+  {
+    name: "runs and spaces around a comment after the text of an accessibility line",
+    written: "T  %% c  ",
+    langium: "T %% c  ",
+    otherAccTitle: "T  %% c",
+    otherAccDescr: "T %% c",
+  },
+  {
+    name: "a comment and spaces after a directive that follows the text of an accessibility line",
+    written: "T %%{x}%% %% c  ",
+    otherAccTitle: "T %%{x}%% %% c",
+    otherAccDescr: "T %%{x}%% %% c",
+  },
+  {
+    name: "a no-break space before a directive and a comment after the text of an accessibility line",
+    written: "T\u00a0%%{x}%%%% c",
+    langium: "T %%{x}%%%% c",
+  },
+  {
+    name: "U+2028 and spaces after the last directive of an accessibility line",
+    written: "T %%{x}%%\u2028  ",
+    otherAccTitle: "T %%{x}%%",
+    otherAccDescr: "T %%{x}%%",
+  },
+  {
+    name: "U+2029 and spaces after the last directive of an accessibility line",
+    written: "T %%{x}%%\u2029  ",
+    otherAccTitle: "T %%{x}%%",
+    otherAccDescr: "T %%{x}%%",
+  },
+  {
+    name: "U+2028 between the text and a directive that ends an accessibility line",
+    written: "T\u2028%%{x}%%",
+    langium: "T %%{x}%%",
+    otherAccTitle: "T %%{x}%%",
+    otherAccDescr: "T %%{x}%%",
+  },
+  {
+    name: "two directives after the text of an accessibility line and spaces",
+    written: "T  %%{x}%%  %%{y}%%  ",
+    langium: "T %%{x}%% %%{y}%%",
+    otherAccTitle: "T %%{x}%% %%{y}%%",
+    otherAccDescr: "T %%{x}%% %%{y}%%",
+  },
+  {
+    name: "two directives after the text of an accessibility line",
+    written: "T  %%{x}%%  %%{y}%%",
+    langium: "T %%{x}%% %%{y}%%",
+    otherAccTitle: "T %%{x}%% %%{y}%%",
+    otherAccDescr: "T %%{x}%% %%{y}%%",
+  },
+  {
+    name: "two directives touching after the text of an accessibility line and spaces",
+    written: "T%%{x}%%%%{y}%%  ",
+    langium: "T%%{x}%%%%{y}%%",
+    otherAccTitle: "T%%{x}%%%%{y}%%",
+    otherAccDescr: "T%%{x}%%%%{y}%%",
+  },
+  {
+    name: "a comment touching the text of an accessibility line",
+    written: "T%% c",
+  },
+  {
+    name: "a comment and then a directive after the text of an accessibility line",
+    written: "T %% c %%{x}%%",
+  },
+  {
+    name: "a no-break space between a directive and a comment after the text of an accessibility line",
+    written: "T %%{x}%%\u00a0%% c",
+  },
+  {
+    name: "two directives and a comment after the text of an accessibility line",
+    written: "T  %%{x}%%  %%{y}%%  %% c",
+    langium: "T %%{x}%% %%{y}%% %% c",
+  },
+  {
+    name: "a tab before a comment after the text of an accessibility line",
+    written: "T\t%% c",
+    langium: "T %% c",
+    otherAccDescr: "T %% c",
+  },
 ]
 
-/** The lines of every type that has them: a Venn diagram has none. */
+/** The types that have the lines: a Venn diagram has none. */
 const accessibilityLineTypes = titleTypes
-  .filter(([name]) => name !== "a Venn diagram")
-  .map(
-    ([name, group, input, output]) =>
-      [
-        name,
-        group === 0 ? 0 : 1,
-        input.replace("title {title}", "{line} {title}"),
-        output.replace("title {title}", "{line} {title}"),
-      ] as const,
-  )
+  .filter(({ name }) => name !== "a Venn diagram")
+  .map(({ name, group, input, output }) => ({
+    name,
+    isLangium: group === "langium",
+    input: input.replace("title {title}", "{line} {title}"),
+    output: output.replace("title {title}", "{line} {title}"),
+  }))
 
 const accessibilityLines = ["accTitle:", "accDescr:"] as const
 
+/** What a type prints for a line: the Langium types as one group, the others as the second. */
+function printedLine(
+  row: AccessibilityDirectiveCase,
+  isLangium: boolean,
+  line: (typeof accessibilityLines)[number],
+): string {
+  if (isLangium) return row.langium ?? row.written
+  const printed = line === "accTitle:" ? row.otherAccTitle : row.otherAccDescr
+  return printed ?? row.written
+}
+
 describe.each(accessibilityLines)("the %s line", (line) => {
   describe.each(
-    accessibilityLineTypes.filter(([name]) =>
+    accessibilityLineTypes.filter(({ name }) =>
       ["a radar chart", "a Gantt chart", "a C4 diagram"].includes(name),
     ),
-  )("of %s with a directive or a comment", (_diagram, group, input, output) => {
-    it.each(accessibilityDirectiveCases)(
-      "prints %s",
-      async (_case, written, langium, other, otherDescr) => {
-        const printed =
-          group === 0 ? langium : line === "accTitle:" ? other : otherDescr
+  )(
+    "of $name with a directive or a comment",
+    ({ isLangium, input, output }) => {
+      it.each(accessibilityDirectiveCases)("prints $name", async (row) => {
         await expectKept(
-          input.replace("{line}", line).replace("{title}", written),
-          output.replace("{line}", line).replace("{title}", printed ?? written),
+          input.replace("{line}", line).replace("{title}", row.written),
+          output
+            .replace("{line}", line)
+            .replace("{title}", printedLine(row, isLangium, line)),
         )
-      },
-    )
-  })
+      })
+    },
+  )
 
   describe.each(accessibilityLineTypes)(
-    "of %s",
-    (_diagram, group, input, output) => {
+    "of $name",
+    ({ isLangium, input, output }) => {
       it.each(
         accessibilityDirectiveCases.filter(
-          ([name]) =>
+          ({ name }) =>
             name ===
               "a no-break space after the last directive of an accessibility line" ||
             name ===
               "a no-break space after a directive that starts an accessibility line and before another directive",
         ),
-      )(
-        "prints %s as its group does",
-        async (_case, written, langium, other, otherDescr) => {
-          const printed =
-            group === 0 ? langium : line === "accTitle:" ? other : otherDescr
-          await expectKept(
-            input.replace("{line}", line).replace("{title}", written),
-            output
-              .replace("{line}", line)
-              .replace("{title}", printed ?? written),
-          )
-        },
-      )
+      )("prints $name as its group does", async (row) => {
+        await expectKept(
+          input.replace("{line}", line).replace("{title}", row.written),
+          output
+            .replace("{line}", line)
+            .replace("{title}", printedLine(row, isLangium, line)),
+        )
+      })
     },
   )
 })
 
-/** The accTitle line of a pie chart and of a gitGraph keeps the whitespace before a comment (docs/pie.md, Accessibility lines). */
+/**
+ * The accTitle line of a pie chart and of a gitGraph keeps the whitespace
+ * before a comment, in the rows of the first table with a comment after the
+ * text or after a directive (docs/pie.md, Accessibility lines).
+ */
 const accessibilityCommentRows = [
   "a comment and spaces after a directive that ends a title",
   "a no-break space before a comment after the text of a title",
   "runs and spaces around a comment after the text of a title",
   "a no-break space before a directive and a comment after the text of a title",
+  "two directives and a comment after the text of a title",
+  "a tab before a comment after the text of a title",
 ]
 
 describe.each(
   titleTypes
-    .filter(([name]) => ["a pie chart", "a gitGraph"].includes(name))
-    .map(
-      ([name, , input, output]) =>
-        [
-          name,
-          input.replace("title {title}", "accTitle: {title}"),
-          output.replace("title {title}", "accTitle: {title}"),
-        ] as const,
-    ),
-)("the accTitle line of %s with a comment", (_diagram, input, output) => {
+    .filter(({ name }) => ["a pie chart", "a gitGraph"].includes(name))
+    .map(({ name, input, output }) => ({
+      name,
+      input: input.replace("title {title}", "accTitle: {title}"),
+      output: output.replace("title {title}", "accTitle: {title}"),
+    })),
+)("the accTitle line of $name with a comment", ({ input, output }) => {
   it.each(
-    titleDirectiveCases.filter(([name]) =>
+    titleDirectiveCases.filter(({ name }) =>
       accessibilityCommentRows.includes(name),
     ),
-  )("keeps %s", async (_case, written) => {
+  )("keeps $name", async (row) => {
     await expectKept(
-      input.replace("{title}", written),
-      output.replace("{title}", written),
+      input.replace("{title}", row.written),
+      output.replace("{title}", row.written),
     )
   })
 })
 
 describe("the accDescription of a C4 diagram with a directive or a comment", () => {
-  it.each(titleDirectiveCases)(
-    "prints %s",
-    async (_case, written, _langium, _quadrant, _gantt, venn) => {
-      await expectKept(
-        `C4Context\naccDescription ${written}\nPerson(a,"A")\n`,
-        `C4Context\n  accDescription ${venn ?? written}\n  Person(a, "A")\n`,
-      )
-    },
-  )
+  it.each(titleDirectiveCases)("prints $name", async (row) => {
+    await expectKept(
+      `C4Context\naccDescription ${row.written}\nPerson(a,"A")\n`,
+      `C4Context\n  accDescription ${printedTitle(row, "vennAndC4")}\n  Person(a, "A")\n`,
+    )
+  })
+})
+
+describe("an accessibility line of directives only", () => {
+  it("an accessibility line of directives only stays as written in each type of the Langium grammar", async () => {
+    for (const type of accessibilityLineTypes.filter(
+      ({ isLangium }) => isLangium,
+    )) {
+      for (const line of accessibilityLines) {
+        await expectKept(
+          type.input.replace("{line}", line).replace("{title}", "%%{x}%%  "),
+          type.output.replace("{line}", line).replace("{title}", "%%{x}%%  "),
+        )
+      }
+    }
+  })
 })
 
 describe("the title of a diagram with a directive that is not closed", () => {
