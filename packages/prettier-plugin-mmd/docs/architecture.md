@@ -626,9 +626,9 @@ put that statement into the title, and what it declares (a node, a group, a
 junction, or an edge) would disappear. Keep occurrences and content even though
 the architecture summary does not publish title. Trivia-bearing values and
 protected hidden boundaries keep their source gaps. The directives that end a
-title are printed with one space before each that has whitespace before it, and
-the whitespace after the last one is left out, whatever the whitespace at the
-end of the line (see
+title are printed with one space before each that has spaces or tabs before it,
+and the spaces and tabs after the last one are left out, whatever the spaces and
+tabs at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [corpus fixture:
@@ -674,7 +674,8 @@ put that statement into the title or the description, and what it declares (a
 node, a group, a junction, or an edge) would disappear. Braces after a colon
 remain line text, and protected trivia/hidden gaps take precedence. The
 directives that end the value are printed with one space before each that has
-whitespace before it, and the whitespace after the last one is left out (see
+spaces or tabs before it, and the spaces and tabs after the last one are left
+out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
