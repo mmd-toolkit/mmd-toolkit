@@ -171,7 +171,9 @@ This includes a line that stays as written because an ignored `;` stands next to
 another `;`: `accDescr {style:#x} direction LR;;` stays at the first column,
 also in a subgraph and in a swimlane diagram, since mermaid.js reads an empty
 description where it is indented. The text after the direction value on that
-line is not a statement, and stays as written.
+line is not a statement, and stays as written. Dropping the last `;` of the line
+would make the one before it the ignored one (see
+[A line that a `;` ends](./compatibility.md#a-line-that-a--ends)).
 
 [fixture: indentation/verbatim-direction-description] [fixture:
 indentation/verbatim-direction-description-in-subgraph] [fixture:
@@ -2315,10 +2317,23 @@ For an eligible multiline block, move every body line by the same number of
 ASCII spaces until the shallowest line with text stands one level inside its
 statement. This preserves relative indentation, including nested YAML, and can
 move lines inward or outward. A `}` alone on its line aligns with the statement;
-a `}` after body text stays there and moves with that line.
+a `}` after body text stays there and moves with that line. A `}` after the text
+of a literal or folded scalar (`|`, `|-`, `|+`, `>`, `>-`, and `>+`) stays on
+its line: on a line of its own it changes the end of the text of the scalar in
+the Db, and formatting does not change the Db. The drawing is the same, but no
+kind of exception that
+[How the printed form is decided](./printed-form.md#the-check-and-formatting-that-changes-the-db)
+defines covers that gap. The formatter does not look at the kind of scalar, so a
+`}` after the text of a plain scalar stays too.
 
 [fixture: data-blocks/zero-and-shallow] [fixture: data-blocks/deep-nested-yaml]
-[fixture: data-blocks/closing-after-text]
+[fixture: data-blocks/closing-after-text] [fixture:
+data-blocks/closing-after-literal-text] [fixture:
+data-blocks/closing-after-folded-text] [fixture:
+data-blocks/closing-after-folded-strip-text] [fixture:
+data-blocks/closing-after-folded-keep-text] [fixture:
+data-blocks/closing-after-strip-text] [fixture:
+data-blocks/closing-after-keep-text]
 
 Move a block only when all these conditions hold; otherwise keep its columns as
 written:
@@ -3061,7 +3076,9 @@ title of a flowchart subgraph header]
 On a line that the line rule may read, the whitespace after the `[` of a title
 that follows `style:` stays: `subgraph style:[ #x; ]` is printed
 `subgraph style:[ #x;]`, while `subgraph a: [ #x; ]` is printed
-`subgraph a:[#x;]`, since no `style` stands before its `:`.
+`subgraph a:[#x;]`, since no `style` stands before its `:`. Whether whitespace
+stands between the `:` and a later `#` decides whether the line rule ignores the
+`;` (see [Semicolons](#semicolons)).
 
 [fixture: subgraph-header/title-padding-on-line-rule-line]
 

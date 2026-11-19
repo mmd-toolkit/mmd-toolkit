@@ -270,32 +270,33 @@ attribute-blocks/written-line-closing-brace] [fixture:
 attribute-blocks/semicolon-line] [test: an empty attribute block over several
 lines after a comment line after U+2028 inside the name of an ER entity] [test:
 an empty attribute block on one line after a comment line after U+2028 inside
-the name of an ER entity] [test: an empty attribute block over several lines
-after a name in quotes and U+2028] [test: an empty attribute block over several
-lines after a name in quotes and U+2029] [test: an empty attribute block over
-several lines after a name in quotes and U+2028 in a subgraph] [test: an empty
-attribute block with an empty line before its closing brace after a name in
-quotes and U+2028] [test: an empty attribute block with U+2028 after its opening
-brace after a name in quotes and U+2028] [test: an empty attribute block on one
-line after a name in quotes and U+2028] [test: an empty attribute block over
-several lines after U+2028 and class] [test: an empty attribute block over
-several lines after a semicolon that the line rule ignores and U+2028] [test: an
-empty attribute block with U+2028 after its opening brace after a semicolon that
-the line rule ignores] [test: an empty attribute block with U+2028 after its
-opening brace after the ER entity 1 that touches a letter] [test: an attribute
-block over several lines after a name in quotes and U+2028] [test: U+2028 and an
-attribute block after a name in quotes] [test: an attribute block over several
-lines after U+2028 and class] [test: an attribute block over several lines after
-a semicolon that the line rule ignores and U+2028] [test: an attribute block
-over several lines after the ER entity 1 that touches a letter and U+2028 after
-its opening brace] [test: an attribute block of an entity after the end of an ER
-subgraph and U+2028, and a comment line after U+2028 after its closing brace]
-[test: an empty attribute block of an entity after the end of an ER subgraph and
-U+2028, and a comment line after U+2028 after its closing brace] [test: an
-attribute block of an entity after the end of an ER subgraph and U+2028, and a
-comment line after U+2028 at the end of the text] [test: an attribute block of
-an entity after the end of an ER subgraph and U+2029, and a comment line after
-U+2029 after its closing brace] [fixture:
+the name of an ER entity] [test: an empty attribute block on one line after a
+comment line after U+2029 inside the name of an ER entity] [test: an empty
+attribute block over several lines after a name in quotes and U+2028] [test: an
+empty attribute block over several lines after a name in quotes and U+2029]
+[test: an empty attribute block over several lines after a name in quotes and
+U+2028 in a subgraph] [test: an empty attribute block with an empty line before
+its closing brace after a name in quotes and U+2028] [test: an empty attribute
+block with U+2028 after its opening brace after a name in quotes and U+2028]
+[test: an empty attribute block on one line after a name in quotes and U+2028]
+[test: an empty attribute block over several lines after U+2028 and class]
+[test: an empty attribute block over several lines after a semicolon that the
+line rule ignores and U+2028] [test: an empty attribute block with U+2028 after
+its opening brace after a semicolon that the line rule ignores] [test: an empty
+attribute block with U+2028 after its opening brace after the ER entity 1 that
+touches a letter] [test: an attribute block over several lines after a name in
+quotes and U+2028] [test: U+2028 and an attribute block after a name in quotes]
+[test: an attribute block over several lines after U+2028 and class] [test: an
+attribute block over several lines after a semicolon that the line rule ignores
+and U+2028] [test: an attribute block over several lines after the ER entity 1
+that touches a letter and U+2028 after its opening brace] [test: an attribute
+block of an entity after the end of an ER subgraph and U+2028, and a comment
+line after U+2028 after its closing brace] [test: an empty attribute block of an
+entity after the end of an ER subgraph and U+2028, and a comment line after
+U+2028 after its closing brace] [test: an attribute block of an entity after the
+end of an ER subgraph and U+2028, and a comment line after U+2028 at the end of
+the text] [test: an attribute block of an entity after the end of an ER subgraph
+and U+2029, and a comment line after U+2029 after its closing brace] [fixture:
 attribute-blocks/written-line-closing-line-kinds] [fixture:
 attribute-blocks/written-line-unclosed-directive-semicolon] [test: an empty
 attribute block over several lines before a name that is a no-break space and a
@@ -484,7 +485,7 @@ decides, as [block](./block.md#multi-line-statements),
 [flowchart](./flowchart.md#accessibility-lines) put the later parts of a
 statement and the standalone trivia one continuation level inside the statement,
 where no other rule keeps the layout as written (a comment region that joins
-physical lines, a line that holds a `;`, and the like).
+physical lines, a line that holds a `;`).
 
 [fixture: attribute-spacing/comment-line-inside-kept] [fixture:
 attribute-spacing/directive-inside-kept] [fixture:
@@ -495,9 +496,129 @@ Semicolons alone do not prevent alignment of a continuation.
 
 [fixture: attribute-spacing/semicolon-continuation-aligned]
 
-Comment regions that join physical lines retain their original layout.
+Comment regions that join physical lines retain their original layout. A comment
+region after U+2028 or U+2029 makes mermaid.js read the lines around it as one,
+and the formatter keeps the whitespace and the line breaks of such a line as
+written, from the start of its first statement to its end, apart from the block
+of an entity (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+A directive on such a line stays where it is written, with its whitespace. The
+quotes of a name and of a label stay as written, where a plain line prints them
+without when the text is one plain word, and the quotes of an alias stay, as
+they do on a plain line. The cardinalities and the line of a relationship are
+printed as symbols, as on a plain line, with the whitespace between them as
+written: `A only one to zero or more B` is printed `A || -- o{ B`. The colors of
+a style or a class definition on such a line are printed as under
+[Colors](#colors) where a comma follows the color on its line, also after
+whitespace, and for the last color of the last line of the statement, where no
+`;` that the line rule ignores follows it: there a color is in lower case. A
+color stays as written where characters follow it after whitespace, also after a
+comment line, and where a comment region follows it on its line, also where a
+comma starts the line after the comment line and where the text ends after it:
+the U+2028 or U+2029 that the text of the style keeps after the color makes it a
+word that the character touches (see
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+A color that a `;` that the line rule ignores touches, or that a wide space
+other than the vertical tab and the form feed, a U+2028, or a U+2029 separates
+from it, stays as written, which the Colors rule prints in lower case: that form
+is printed against the rule and waits to be fixed by it; a color that a space, a
+tab, a vertical tab, or a form feed separates from the `;` is printed as under
+Colors where no comment region follows it on its line. The whitespace inside the
+styles stays as written (`style A fill:#F00,   stroke:#ABC`, U+2028, and `%% c`
+keep the run after the comma).
 
-[test: er/attribute-spacing/comment-region-continuation-kept]
+[test: er/attribute-spacing/comment-region-continuation-kept] [test: ER the
+quotes of the names of a relationship on a line that a comment line after U+2028
+joins] [test: ER the quotes of the label of a relationship on a line that a
+comment line after U+2028 joins] [test: ER the quotes of the alias of an entity
+on a line that a comment line after U+2028 joins] [test: ER the quotes of an
+entity name on a line that a comment line after U+2029 joins] [test: ER the
+words of a relationship on a line that a comment line after U+2028 joins are
+printed as symbols] [test: ER a directive on a line that a comment line after
+U+2028 joins stays where it is written] [test: a color before a comma in a style
+on a line that a comment line after U+2028 joins with the next line] [test: a
+color before a comma in a class definition on a line that a comment line after
+U+2029 joins with the next line] [test: the last color of a style that the line
+after a comment line after U+2028 goes on with] [test: a color before a comma
+that follows it after whitespace in a style on a line that a comment line after
+U+2028 joins with the next line] [test: a color before a comment line after
+U+2028 and a comma at the start of the next line in a style] [test: a color
+before a comment line after U+2028 and a comma on the next line, and the last
+color of that line at the end of the text, in a style] [test: the last color of
+a style before a comment line after U+2028 at the end of the text] [test: a
+color before the semicolon that the line rule ignores in a class definition that
+whitespace and a line break join] [test: a color before the semicolon that the
+line rule ignores on the line after a comment line after U+2028 in a class
+definition] [test: whitespace between the statements of a line that a comment
+line after U+2028 joins with the next line] [test: a color before a semicolon
+that the line rule ignores on the line after a comment line after U+2028 in a
+style, where a comma starts the line] [test: a color that characters follow
+after whitespace after a comment line after U+2028 in a style] [test: a color
+that characters follow after whitespace in a style on a line that a comment line
+after U+2028 joins with the next line] [test: the last color of the last line of
+a style that a comment line after U+2028 cuts, where a statement follows it]
+[test: a run of spaces after a comma in a style on a line that a comment line
+after U+2028 joins stays as written] [test: a color before a semicolon after
+whitespace in a style statement that a comment line after U+2028 cuts] [test: a
+color before a semicolon followed by a second semicolon in a style statement
+that a comment line after U+2028 cuts] [test: a color before a semicolon
+followed by a space and a second semicolon in a style statement that a comment
+line after U+2028 cuts] [test: a color before a semicolon that touches it in a
+style statement that a comment line after U+2028 cuts] [test: no whitespace
+between the last color and the semicolon that the line rule ignores, before a
+comment line after U+2028, in a style: the color stays as written] [test: no
+whitespace between the last color and the semicolon that the line rule ignores,
+before a comment line after U+2028, in a class definition: the color stays as
+written] [test: a space between the last color and the semicolon that the line
+rule ignores, before a comment line after U+2028, in a style: the color stays as
+written] [test: a space between the last color and the semicolon that the line
+rule ignores, before a comment line after U+2028, in a class definition: the
+color stays as written] [test: two spaces between the last color and the
+semicolon that the line rule ignores, before a comment line after U+2028, in a
+style: the color stays as written] [test: two spaces between the last color and
+the semicolon that the line rule ignores, before a comment line after U+2028, in
+a class definition: the color stays as written] [test: a tab between the last
+color and the semicolon that the line rule ignores, before a comment line after
+U+2028, in a style: the color stays as written] [test: a tab between the last
+color and the semicolon that the line rule ignores, before a comment line after
+U+2028, in a class definition: the color stays as written] [test: a vertical tab
+between the last color and the semicolon that the line rule ignores, before a
+comment line after U+2028, in a style: the color stays as written] [test: a
+vertical tab between the last color and the semicolon that the line rule
+ignores, before a comment line after U+2028, in a class definition: the color
+stays as written] [test: a form feed between the last color and the semicolon
+that the line rule ignores, before a comment line after U+2028, in a style: the
+color stays as written] [test: a form feed between the last color and the
+semicolon that the line rule ignores, before a comment line after U+2028, in a
+class definition: the color stays as written] [test: a no-break space between
+the last color and the semicolon that the line rule ignores, before a comment
+line after U+2028, in a style: the color stays as written] [test: a no-break
+space between the last color and the semicolon that the line rule ignores,
+before a comment line after U+2028, in a class definition: the color stays as
+written] [test: U+2003 between the last color and the semicolon that the line
+rule ignores, before a comment line after U+2028, in a style: the color stays as
+written] [test: U+2003 between the last color and the semicolon that the line
+rule ignores, before a comment line after U+2028, in a class definition: the
+color stays as written] [test: U+3000 between the last color and the semicolon
+that the line rule ignores, before a comment line after U+2028, in a style: the
+color stays as written] [test: U+3000 between the last color and the semicolon
+that the line rule ignores, before a comment line after U+2028, in a class
+definition: the color stays as written] [test: a color before a comma in a class
+definition that a comment line after U+2028 joins is printed in lower case]
+[test: a color before a comma after a space in a class definition that a comment
+line after U+2028 joins is printed in lower case] [test: a color before a comma
+after a tab in a class definition that a comment line after U+2028 joins is
+printed in lower case] [test: the last color of a class definition before a
+comment line after U+2028 stays as written] [test: a semicolon that touches the
+last color of a class definition before a comment line after U+2028: the color
+stays as written] [test: two semicolons that touch the last color of a class
+definition before a comment line after U+2028: the color stays as written]
+[test: a color before a comma and a semicolon that touches the last color in a
+class definition before a comment line after U+2028] [test: the last color of
+the last line of a class definition that a comment line after U+2028 cuts, where
+a statement follows it, is printed in lower case] [test: a color before a comma
+on the first line of a class definition that a comment line after U+2028 cuts is
+printed in lower case]
 
 A directive between the parts of an attribute is placed as under
 [Directives](./flowchart.md#directives): mermaid.js removes a directive before
@@ -625,12 +746,15 @@ A directive between two statements stands with the statement after it.
 
 An ignored `;` keeps the line that makes the line rule ignore it: in
 `"style:#x" end;`, the `end` stays with the entity before it, also in upper
-case. An ignored `;` between `class` or `subgraph` and its first name keeps the
-complete gap as written: `class;-A a`, `subgraph;-x`, and `subgraph;é` keep
-their contacts after the `;` is removed by the line rule. This also applies when
-U+2028 or U+2029 precedes the subgraph name.
+case. On a line of its own, `end;` is rejected by every version that counts, and
+`end` alone is accepted by all of them. An ignored `;` between `class` or
+`subgraph` and its first name keeps the complete gap as written: `class;-A a`,
+`subgraph;-x`, and `subgraph;é` keep their contacts after the `;` is removed by
+the line rule. This also applies when U+2028 or U+2029 precedes the subgraph
+name.
 
-[fixture: statements-one-per-line/closing-end-ignored-semicolon-kept] [fixture:
+[test: an end; on a line of its own in a subgraph of an ER diagram] [fixture:
+statements-one-per-line/closing-end-ignored-semicolon-kept] [fixture:
 statements-one-per-line/closing-uppercase-end-ignored-semicolon-kept] [fixture:
 statements-one-per-line/class-ignored-semicolon-before-dash-kept] [fixture:
 statements-one-per-line/subgraph-ignored-semicolon-before-dash-kept] [fixture:
@@ -2188,14 +2312,249 @@ erDiagram
 A directive on a line of its own stands at the level of the statements around
 it, and a directive within a printed line is placed as in a flowchart: the gap
 is printed as without the directive, and the directive stands after its space
-and touches the unit that follows it.
+and touches the unit that follows it. Rule 1 names no mark for a directive in a
+gap, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [class](./class.md#directives),
+[sequence](./sequence.md#directives), and [state](./state.md#directives) print
+the gap in the same way, where no other rule keeps the layout as written: a
+directive that is not closed, below, and a line that a comment region joins, see
+[Multi-line statements](#multi-line-statements). A gap that holds U+2028 or
+U+2029 is not a gap that they print so: class, sequence, state, and flowchart
+keep it as written, and no precedent gives a form that ER prints for it except
+where ER keeps the gap as written too, so the forms that the released version
+prints stay until they are decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+In a relationship, where no space or tab comes before the character, it stays
+and the directive stands after one space and touches the unit that follows it,
+whichever other whitespace character comes before it (a no-break space, U+1680,
+U+2000 to U+200A, U+202F, U+205F, U+3000, or U+FEFF; mermaid.js rejects a
+vertical tab and a form feed there, which are `invalid` units of the
+[statement context](../../spec/docs/diagrams/er.md#units-and-contexts)); where a
+space or tab comes before it, the gap stays as written. In an attribute (`int`,
+U+2029, `%%{x}%%`, a space, and `a` are printed `int`, U+2029, a space, and
+`%%{x}%%a`), the gap stays as written where a space, a tab, a vertical tab, a
+form feed, or a no-break space comes before the character, and is printed as in
+a relationship where another whitespace character does. In the label of a
+relationship, a directive that follows a U+2028 or U+2029 that follows the text
+at once, and is followed by text, moves to the next line with that text, and the
+U+2028 or U+2029 ends the line before it (`A ||--o{ B : y`, U+2028, and
+`%%{x}%% z` are printed with `%%{x}%% z` on a line of its own). Where a space or
+a tab comes before the U+2028 or U+2029, it starts a line of its own: `B : y`, a
+space, U+2028, and `z` are printed with the U+2028 and `z` on the second line,
+and `B : y`, a space, U+2028, `%%{x}%%`, and `z` with the U+2028 alone on the
+second line and `%%{x}%% z` on the third. Where nothing but directives and a
+comment follow the U+2028 or U+2029, the line stays as written. At the other
+places of a statement, where no whitespace comes before the U+2028 or U+2029 and
+spaces follow the directive, four forms are printed: no precedent gives the
+first three, and rule 2 gives the fourth. Between an entity and the `{` of its
+attributes, between the name of a `style`, a `classDef`, or a `class` statement
+and what follows it, between the name of a relationship and its colon, and
+between the name of an attribute and its key or its comment, the character stays
+and the directive stands after one space and touches the unit that follows it,
+as in a relationship. Between an entity and its alias, between an entity and its
+CSS class, and between the name of a subgraph and its title, the character
+stays, the spaces after the directive are left out, and the directive touches
+the unit that follows it. Between two entities on a line, after the colons of a
+CSS class, between `title` and its text, and between the colon of a relationship
+and its label, the character ends the line, and the directive and the text after
+it stand on the next line. The fourth form is after `direction`, after the colon
+of `accTitle`, and after the keyword of a `style` or a `classDef` statement,
+where the gap stays as written: rule 2 gives that form, since
+[flowchart](./flowchart.md#directives),
+[class](./class.md#whitespace-between-tokens), and
+[state](./state.md#whitespace-between-tokens) keep a gap that holds U+2028 or
+U+2029 at these places as written, and
+[sequence](./sequence.md#whitespace-between-tokens),
+[journey](./journey.md#line-separators), and
+[timeline](./timeline.md#line-separators) after the colon of `accTitle`. The
+other places are not stated here.
 
 [fixture: directives/kept] [fixture: directives/before-header] [fixture:
 directives/after-header-on-same-line] [fixture:
 directives/after-header-touching-kept] [fixture:
 directives/whitespace-on-both-sides] [fixture: directives/touching-one-side]
 [fixture: directives/after-statement-at-end-of-line] [fixture:
-directives/in-blocks]
+directives/in-blocks] [test: U+2029 and a directive in the gap between the type
+and the name of an ER attribute] [test: U+2029 and a directive in the gap
+between the type and the name of an ER attribute, spaces before the U+2029 and
+after the directive: the gap stays as written] [test: U+2029 and a directive in
+the gap between the type and the name of an ER attribute, one space before the
+U+2029: the gap stays as written] [test: U+2029 and a directive in the gap
+between the type and the name of an ER attribute, a tab before the U+2029: the
+gap stays as written] [test: U+2028 and a directive in the gap between the type
+and the name of an ER attribute, spaces after the directive] [test: U+2028 and a
+directive in the gap between the type and the name of an ER attribute, spaces
+before the U+2028 and after the directive: the gap stays as written] [test:
+U+2028 and a directive in the gap between an entity and the cardinality of an ER
+relationship, spaces after the directive] [test: U+2028 and a directive in the
+gap between an entity and the cardinality of an ER relationship, spaces before
+the U+2028 and after the directive: the gap stays as written] [test: U+2028 and
+a directive in the gap between an entity and the cardinality of an ER
+relationship, one space before the U+2028: the gap stays as written] [test: a
+space before a U+2028 and a directive in the gap between an entity and the
+cardinality of an ER relationship] [test: U+1680 before a U+2028 and a directive
+in the gap between an entity and the cardinality of an ER relationship] [test:
+U+2000 before a U+2028 and a directive in the gap between an entity and the
+cardinality of an ER relationship] [test: U+2001 before a U+2028 and a directive
+in the gap between an entity and the cardinality of an ER relationship] [test:
+U+2002 before a U+2028 and a directive in the gap between an entity and the
+cardinality of an ER relationship] [test: U+2003 before a U+2028 and a directive
+in the gap between an entity and the cardinality of an ER relationship] [test:
+U+2004 before a U+2028 and a directive in the gap between an entity and the
+cardinality of an ER relationship] [test: U+2005 before a U+2028 and a directive
+in the gap between an entity and the cardinality of an ER relationship] [test:
+U+2006 before a U+2028 and a directive in the gap between an entity and the
+cardinality of an ER relationship] [test: U+2007 before a U+2028 and a directive
+in the gap between an entity and the cardinality of an ER relationship] [test:
+U+2008 before a U+2028 and a directive in the gap between an entity and the
+cardinality of an ER relationship] [test: U+2009 before a U+2028 and a directive
+in the gap between an entity and the cardinality of an ER relationship] [test:
+U+200A before a U+2028 and a directive in the gap between an entity and the
+cardinality of an ER relationship] [test: U+202F before a U+2028 and a directive
+in the gap between an entity and the cardinality of an ER relationship] [test:
+U+205F before a U+2028 and a directive in the gap between an entity and the
+cardinality of an ER relationship] [test: U+FEFF before a U+2028 and a directive
+in the gap between an entity and the cardinality of an ER relationship] [test: a
+space before a U+2029 and a directive in the gap between the type and the name
+of an ER attribute] [test: a tab before a U+2029 and a directive in the gap
+between the type and the name of an ER attribute] [test: a vertical tab before a
+U+2029 and a directive in the gap between the type and the name of an ER
+attribute] [test: a form feed before a U+2029 and a directive in the gap between
+the type and the name of an ER attribute] [test: U+1680 before a U+2029 and a
+directive in the gap between the type and the name of an ER attribute] [test:
+U+2000 before a U+2029 and a directive in the gap between the type and the name
+of an ER attribute] [test: U+2001 before a U+2029 and a directive in the gap
+between the type and the name of an ER attribute] [test: U+2002 before a U+2029
+and a directive in the gap between the type and the name of an ER attribute]
+[test: U+2003 before a U+2029 and a directive in the gap between the type and
+the name of an ER attribute] [test: U+2004 before a U+2029 and a directive in
+the gap between the type and the name of an ER attribute] [test: U+2005 before a
+U+2029 and a directive in the gap between the type and the name of an ER
+attribute] [test: U+2006 before a U+2029 and a directive in the gap between the
+type and the name of an ER attribute] [test: U+2007 before a U+2029 and a
+directive in the gap between the type and the name of an ER attribute] [test:
+U+2008 before a U+2029 and a directive in the gap between the type and the name
+of an ER attribute] [test: U+2009 before a U+2029 and a directive in the gap
+between the type and the name of an ER attribute] [test: U+200A before a U+2029
+and a directive in the gap between the type and the name of an ER attribute]
+[test: U+202F before a U+2029 and a directive in the gap between the type and
+the name of an ER attribute] [test: U+205F before a U+2029 and a directive in
+the gap between the type and the name of an ER attribute] [test: U+FEFF before a
+U+2029 and a directive in the gap between the type and the name of an ER
+attribute] [test: a space before a U+2028 and a directive in the label of an ER
+relationship, text after the directive] [test: a tab before a U+2028 and a
+directive in the label of an ER relationship, text after the directive] [test: a
+space before a U+2028 and text in the label of an ER relationship] [test: U+2028
+and a directive and a comment in the label of an ER relationship: the line stays
+as written] [test: a vertical tab before a U+2028 and a directive in the gap
+between an entity and the cardinality of an ER relationship] [test: a form feed
+before a U+2028 and a directive in the gap between an entity and the cardinality
+of an ER relationship] [test: U+2028 and a directive in the gap between an
+entity and the cardinality of an ER relationship, a no-break space before the
+U+2028] [test: U+2028 and a directive in the gap between an entity and the
+cardinality of an ER relationship, U+3000 before the U+2028] [test: U+2028 and a
+directive in the gap between an entity and the cardinality of an ER
+relationship, a tab before the U+2028: the gap stays as written] [test: U+2029
+and a directive in the gap between the type and the name of an ER attribute, a
+no-break space before the U+2029: the gap stays as written] [test: U+2029 and a
+directive in the gap between the type and the name of an ER attribute, U+3000
+before the U+2029] [test: a flowchart keeps U+2028 and a directive in the gap
+between a node and an arrow as written] [test: a class diagram keeps U+2028 and
+a directive in the gap between a class and an arrow as written] [test: a state
+diagram keeps U+2028 and a directive in the gap between a state and an arrow as
+written] [test: a sequence diagram keeps U+2028 and a directive in the gap
+between a participant and an arrow as written] [test: U+2028 and a directive in
+the label of an ER relationship, after the text] [test: U+2029 and a directive
+in the label of an ER relationship, after the text] [test: U+2028 and a
+directive in the label of an ER relationship, before the text] [test: U+2028 and
+a directive in the label of an ER relationship, with nothing after the
+directive: the line stays as written] [corpus fixture: er/lex-vertical-tab]
+[corpus fixture: er/lex-form-feed] [test: U+2028 and a directive in the gap
+between an entity and the opening brace of its attributes of an ER diagram: the
+directive stands after one space and touches the unit that follows it] [test:
+U+2029 and a directive in the gap between an entity and the opening brace of its
+attributes of an ER diagram: the directive stands after one space and touches
+the unit that follows it] [test: U+2028 and a directive in the gap between the
+name of a style statement and its styles of an ER diagram: the directive stands
+after one space and touches the unit that follows it] [test: U+2029 and a
+directive in the gap between the name of a style statement and its styles of an
+ER diagram: the directive stands after one space and touches the unit that
+follows it] [test: U+2028 and a directive in the gap between the name of a class
+definition and its styles of an ER diagram: the directive stands after one space
+and touches the unit that follows it] [test: U+2029 and a directive in the gap
+between the name of a class definition and its styles of an ER diagram: the
+directive stands after one space and touches the unit that follows it] [test:
+U+2028 and a directive in the gap between the name of a class statement and its
+class of an ER diagram: the directive stands after one space and touches the
+unit that follows it] [test: U+2029 and a directive in the gap between the name
+of a class statement and its class of an ER diagram: the directive stands after
+one space and touches the unit that follows it] [test: U+2028 and a directive in
+the gap between the name of a relationship and its colon of an ER diagram: the
+directive stands after one space and touches the unit that follows it] [test:
+U+2029 and a directive in the gap between the name of a relationship and its
+colon of an ER diagram: the directive stands after one space and touches the
+unit that follows it] [test: U+2028 and a directive in the gap between the name
+and the key of an attribute of an ER diagram: the directive stands after one
+space and touches the unit that follows it] [test: U+2029 and a directive in the
+gap between the name and the key of an attribute of an ER diagram: the directive
+stands after one space and touches the unit that follows it] [test: U+2028 and a
+directive in the gap between the name and the comment of an attribute of an ER
+diagram: the directive stands after one space and touches the unit that follows
+it] [test: U+2029 and a directive in the gap between the name and the comment of
+an attribute of an ER diagram: the directive stands after one space and touches
+the unit that follows it] [test: U+2028 and a directive in the gap between an
+entity and its alias of an ER diagram: the spaces after the directive are left
+out, and the directive touches the unit that follows it] [test: U+2029 and a
+directive in the gap between an entity and its alias of an ER diagram: the
+spaces after the directive are left out, and the directive touches the unit that
+follows it] [test: U+2028 and a directive in the gap between an entity and its
+CSS class of an ER diagram: the spaces after the directive are left out, and the
+directive touches the unit that follows it] [test: U+2029 and a directive in the
+gap between an entity and its CSS class of an ER diagram: the spaces after the
+directive are left out, and the directive touches the unit that follows it]
+[test: U+2028 and a directive in the gap between the name of a subgraph and its
+title of an ER diagram: the spaces after the directive are left out, and the
+directive touches the unit that follows it] [test: U+2029 and a directive in the
+gap between the name of a subgraph and its title of an ER diagram: the spaces
+after the directive are left out, and the directive touches the unit that
+follows it] [test: U+2028 and a directive in the gap between an entity and
+another entity on its line of an ER diagram: the character ends the line, and
+the directive and the text that follows stand on the next line] [test: U+2029
+and a directive in the gap between an entity and another entity on its line of
+an ER diagram: the character ends the line, and the directive and the text that
+follows stand on the next line] [test: U+2028 and a directive in the gap between
+the colons of a CSS class and its name of an ER diagram: the character ends the
+line, and the directive and the text that follows stand on the next line] [test:
+U+2029 and a directive in the gap between the colons of a CSS class and its name
+of an ER diagram: the character ends the line, and the directive and the text
+that follows stand on the next line] [test: U+2028 and a directive in the gap
+between the keyword of a title and its text of an ER diagram: the character ends
+the line, and the directive and the text that follows stand on the next line]
+[test: U+2029 and a directive in the gap between the keyword of a title and its
+text of an ER diagram: the character ends the line, and the directive and the
+text that follows stand on the next line] [test: U+2028 and a directive in the
+gap between the colon of a relationship and its label of an ER diagram: the
+character ends the line, and the directive and the text that follows stand on
+the next line] [test: U+2029 and a directive in the gap between the colon of a
+relationship and its label of an ER diagram: the character ends the line, and
+the directive and the text that follows stand on the next line] [test: U+2028
+and a directive in the gap between the keyword of a direction and its value of
+an ER diagram: the gap stays as written] [test: U+2029 and a directive in the
+gap between the keyword of a direction and its value of an ER diagram: the gap
+stays as written] [test: U+2028 and a directive in the gap between the colon of
+an accTitle and its text of an ER diagram: the gap stays as written] [test:
+U+2029 and a directive in the gap between the colon of an accTitle and its text
+of an ER diagram: the gap stays as written] [test: U+2028 and a directive in the
+gap between the keyword of a style statement and its name of an ER diagram: the
+gap stays as written] [test: U+2029 and a directive in the gap between the
+keyword of a style statement and its name of an ER diagram: the gap stays as
+written] [test: U+2028 and a directive in the gap between the keyword of a class
+definition and its name of an ER diagram: the gap stays as written] [test:
+U+2029 and a directive in the gap between the keyword of a class definition and
+its name of an ER diagram: the gap stays as written] [test: U+2029 and a
+directive with a space after it in the gap between the type and the name of an
+ER attribute]
 
 A directive that is not closed takes the rest of the text, and is kept as
 written.
@@ -2211,7 +2570,7 @@ this placement, as [radar](./radar.md#global-directives),
 [packet](./packet.md#global-directives), and
 [wardley](./wardley.md#global-directives) place a directive in the gap of units
 that formatting splits, where no other rule keeps the layout as written (a
-directive that is not closed after a statement, and the like).
+directive that is not closed after a statement).
 
 [fixture: er/directives/whitespace-on-both-sides]
 
@@ -2636,7 +2995,10 @@ stands between it and what follows on its line, that whitespace is printed as
 one space. Where a comment or a directive follows the characters on their line,
 the characters and what follows them stay as written, whatever follows the line,
 and so does the whitespace inside each style. A run of spaces and tabs between
-the keyword, the name, and the styles is printed as one space.
+the keyword, the name, and the styles is printed as one space, except in S where
+a comment follows the characters on their line, or a comment line stands before
+the statement or the directive line: then the line stays as written, runs
+included, as [Multi-line statements](#multi-line-statements) says.
 
 | After the character on its line              | E: the text ends, or comment lines end it                    | S: a statement follows, or a directive line ends the text                                                                                                          |
 | -------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -2651,7 +3013,11 @@ the keyword, the name, and the styles is printed as one space.
 | a directive and a comment, two characters    | as written                                                   | as written                                                                                                                                                         |
 
 A line that stays as written keeps the characters and the whitespace where they
-are, and a line whose style holds a `;` stays as written. The line stays where
+are, and a line whose style holds a `;` stays as written. That is the line that
+a U+2028 or U+2029 ends: the colors and the runs of a statement that a line
+break or a comment region joins are printed as
+[Attribute spacing](#attribute-spacing) and
+[Multi-line statements](#multi-line-statements) say. The line stays where
 dropping the character could change what mermaid.js reads, and where a comment
 or a directive follows the character on its line. mermaid.js keeps the character
 in the text of the style, and the SVG that it draws holds it in the style
@@ -2770,7 +3136,13 @@ that no semicolon ends keeps the two characters of a style that holds a
 semicolon before a comment with a semicolon] [test: ER a classDef that no
 semicolon ends keeps two U+2028 or U+2029 that a comment with a semicolon
 follows on its line] [test: ER a style that no semicolon ends is printed with
-its color in lower case once the U+2028 is dropped]
+its color in lower case once the U+2028 is dropped] [test: ER a style that no
+semicolon ends keeps the runs between its parts as written where a comment
+follows the U+2028 on its line and a statement follows] [test: ER a style that
+no semicolon ends keeps the runs between its parts as written where a comment
+line stands between the directive after the U+2028 and a statement] [test: ER a
+style that no semicolon ends prints the runs between its parts as one space
+where a directive follows the U+2028 on its line and a statement follows]
 
 mermaid.js keeps a U+2028 or U+2029 that directly follows the last style in the
 text of that style. The printer drops it only where nothing but whitespace
@@ -2814,17 +3186,173 @@ decides, as [sequence](./sequence.md#multi-line-statements),
 comment or a directive and the whitespace before it, and put the later parts of
 a statement and the comment and directive lines between them one level deeper,
 where no other rule keeps the layout as written (where the Db holds the text
-with its whitespace, where moving a line makes mermaid.js reject the text, and
-the like). A joining region keeps the line that it joins as written (see below).
-A line break stays where joining it, with one space or with nothing, could
-change which `;` the line rule ignores, and where a `;` ends the last line; any
-other line break is joined as usual, also in a statement that holds a `;`. A
-statement that keeps a line break keeps its styles as written.
+with its whitespace, where moving a line makes mermaid.js reject the text). A
+joining region keeps the line that it joins as written (see below). A line break
+stays where joining it, with one space or with nothing, could change which `;`
+the line rule ignores, and where a `;` ends the last line; any other line break
+is joined as usual, also in a statement that holds a `;`. A statement that keeps
+a line break prints a run of spaces, tabs, no-break spaces, and U+3000 after a
+comma between two styles, and a run of spaces and tabs before it, as one space,
+on the first line and on the lines after it. A vertical tab, a form feed, and
+every other wide space (U+1680, U+2000 to U+200A, U+202F, U+205F, and U+FEFF)
+after a comma are printed as one space too, and so are a vertical tab and a form
+feed before it. The statement keeps a run at the end of a line, a run around the
+colon of a style, a run inside the text of a style, and a wide space (a no-break
+space, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, or U+FEFF) or a U+2028
+before a comma as written, with its color. Its colors are printed as under
+[Colors](#colors) where a comma follows the color, also after whitespace and a
+line break, and for the last color of the statement where no `;` follows it on
+its line. A color that characters follow after whitespace stays as written, as
+under Colors, and so does a color that a `;` touches (`#ABC;`, `#ABC;;`, and
+`#ABC; ;`) and a color that a wide space other than the vertical tab and the
+form feed, a U+2028, or a U+2029 separates from the `;`, which the Colors rule
+prints in lower case: that form is printed against the rule and waits to be
+fixed by it. A color that a space, a tab, a vertical tab, or a form feed
+separates from the `;` is printed as under Colors where no comment region
+follows it on its line: where one does, the color stays as written.
 
 [fixture: multi-line-statements/semicolon-joining-changes-kept] [fixture:
 multi-line-statements/style-comment-continuation] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
-multi-line-statements/directive-inside-kept]
+multi-line-statements/directive-inside-kept] [test: a color before the semicolon
+that the line rule ignores in a class definition that whitespace and a line
+break join] [test: a run of spaces after a comma in a class definition that
+whitespace and a line break join is printed as one space] [test: a tab after a
+comma in a class definition that whitespace and a line break join is printed as
+one space] [test: a run of spaces after a comma on the first line of a class
+definition that whitespace and a line break join is printed as one space] [test:
+a run of spaces before a comma in a class definition that whitespace and a line
+break join is printed as one space] [test: a run of spaces around the colon of a
+style in a class definition that whitespace and a line break join stays as
+written] [test: a run of spaces inside the text of a style in a class definition
+that whitespace and a line break join stays as written] [test: the last color of
+a style that a comment line cuts from its keyword, where the text ends after it]
+[test: a color that characters follow after whitespace in a class definition
+that whitespace and a line break join] [test: a run of spaces after a comma at
+the end of a line of a class definition that whitespace and a line break join
+stays as written] [test: a run of spaces at the end of a line before a comma on
+the next line of a class definition that whitespace and a line break join stays
+as written] [test: a tab between a color and the semicolon that the line rule
+ignores in a class definition that whitespace and a line break join] [test: a
+vertical tab between a color and the semicolon that the line rule ignores in a
+class definition that whitespace and a line break join] [test: a form feed
+between a color and the semicolon that the line rule ignores in a class
+definition that whitespace and a line break join] [test: a no-break space
+between a color and the semicolon that the line rule ignores in a class
+definition that whitespace and a line break join] [test: U+1680 between a color
+and the semicolon that the line rule ignores in a class definition that
+whitespace and a line break join] [test: U+2000 between a color and the
+semicolon that the line rule ignores in a class definition that whitespace and a
+line break join] [test: U+2001 between a color and the semicolon that the line
+rule ignores in a class definition that whitespace and a line break join] [test:
+U+2002 between a color and the semicolon that the line rule ignores in a class
+definition that whitespace and a line break join] [test: U+2003 between a color
+and the semicolon that the line rule ignores in a class definition that
+whitespace and a line break join] [test: U+2004 between a color and the
+semicolon that the line rule ignores in a class definition that whitespace and a
+line break join] [test: U+2005 between a color and the semicolon that the line
+rule ignores in a class definition that whitespace and a line break join] [test:
+U+2006 between a color and the semicolon that the line rule ignores in a class
+definition that whitespace and a line break join] [test: U+2007 between a color
+and the semicolon that the line rule ignores in a class definition that
+whitespace and a line break join] [test: U+2008 between a color and the
+semicolon that the line rule ignores in a class definition that whitespace and a
+line break join] [test: U+2009 between a color and the semicolon that the line
+rule ignores in a class definition that whitespace and a line break join] [test:
+U+200A between a color and the semicolon that the line rule ignores in a class
+definition that whitespace and a line break join] [test: U+202F between a color
+and the semicolon that the line rule ignores in a class definition that
+whitespace and a line break join] [test: U+205F between a color and the
+semicolon that the line rule ignores in a class definition that whitespace and a
+line break join] [test: U+3000 between a color and the semicolon that the line
+rule ignores in a class definition that whitespace and a line break join] [test:
+U+FEFF between a color and the semicolon that the line rule ignores in a class
+definition that whitespace and a line break join] [test: U+2028 between a color
+and the semicolon that the line rule ignores in a class definition that
+whitespace and a line break join] [test: U+2029 between a color and the
+semicolon that the line rule ignores in a class definition that whitespace and a
+line break join] [test: a no-break space between a color and the semicolon that
+the line rule ignores in a style statement that a comment line after U+2028
+cuts] [test: a tab between a color and the semicolon that the line rule ignores
+in a style statement that a comment line after U+2028 cuts] [test: a tab before
+a comma in a class definition that whitespace and a line break join is printed
+as one space] [test: U+2028 before a comma in a class definition that whitespace
+and a line break join stays as written, with the color] [test: a color before a
+semicolon after whitespace in a style statement that a comment line after U+2028
+cuts] [test: a color before a semicolon followed by a second semicolon in a
+style statement that a comment line after U+2028 cuts] [test: a color before a
+semicolon followed by a space and a second semicolon in a style statement that a
+comment line after U+2028 cuts] [test: a color before a semicolon that touches
+it in a style statement that a comment line after U+2028 cuts] [test: a color
+before a semicolon after whitespace in a class definition that whitespace and a
+line break join] [test: a color before a semicolon followed by a second
+semicolon in a class definition that whitespace and a line break join] [test: a
+color before a semicolon followed by a space and a second semicolon in a class
+definition that whitespace and a line break join] [test: a color before a
+semicolon that touches it in a class definition that whitespace and a line break
+join] [test: two no-break spaces after a comma in a class definition that
+whitespace and a line break join is printed as one space] [test: U+3000 after a
+comma in a class definition that whitespace and a line break join is printed as
+one space] [test: two tabs after a comma in a class definition that whitespace
+and a line break join is printed as one space] [test: a no-break space before a
+comma in a class definition that whitespace and a line break join stays as
+written, with the color] [test: U+3000 before a comma in a class definition that
+whitespace and a line break join stays as written, with the color] [test: a
+color that a line break separates from a semicolon on a line of its own is
+printed in lower case in a style] [test: a vertical tab before a comma in a
+class definition that whitespace and a line break join is printed as one space]
+[test: a form feed before a comma in a class definition that whitespace and a
+line break join is printed as one space] [test: U+1680 before a comma in a class
+definition that whitespace and a line break join stays as written, with the
+color] [test: U+2000 before a comma in a class definition that whitespace and a
+line break join stays as written, with the color] [test: U+2001 before a comma
+in a class definition that whitespace and a line break join stays as written,
+with the color] [test: U+2002 before a comma in a class definition that
+whitespace and a line break join stays as written, with the color] [test: U+2003
+before a comma in a class definition that whitespace and a line break join stays
+as written, with the color] [test: U+2004 before a comma in a class definition
+that whitespace and a line break join stays as written, with the color] [test:
+U+2005 before a comma in a class definition that whitespace and a line break
+join stays as written, with the color] [test: U+2006 before a comma in a class
+definition that whitespace and a line break join stays as written, with the
+color] [test: U+2007 before a comma in a class definition that whitespace and a
+line break join stays as written, with the color] [test: U+2008 before a comma
+in a class definition that whitespace and a line break join stays as written,
+with the color] [test: U+2009 before a comma in a class definition that
+whitespace and a line break join stays as written, with the color] [test: U+200A
+before a comma in a class definition that whitespace and a line break join stays
+as written, with the color] [test: U+202F before a comma in a class definition
+that whitespace and a line break join stays as written, with the color] [test:
+U+205F before a comma in a class definition that whitespace and a line break
+join stays as written, with the color] [test: U+FEFF before a comma in a class
+definition that whitespace and a line break join stays as written, with the
+color] [test: a vertical tab after a comma in a class definition that whitespace
+and a line break join is printed as one space] [test: a form feed after a comma
+in a class definition that whitespace and a line break join is printed as one
+space] [test: a no-break space after a comma in a class definition that
+whitespace and a line break join is printed as one space] [test: U+1680 after a
+comma in a class definition that whitespace and a line break join is printed as
+one space] [test: U+2000 after a comma in a class definition that whitespace and
+a line break join is printed as one space] [test: U+2001 after a comma in a
+class definition that whitespace and a line break join is printed as one space]
+[test: U+2002 after a comma in a class definition that whitespace and a line
+break join is printed as one space] [test: U+2003 after a comma in a class
+definition that whitespace and a line break join is printed as one space] [test:
+U+2004 after a comma in a class definition that whitespace and a line break join
+is printed as one space] [test: U+2005 after a comma in a class definition that
+whitespace and a line break join is printed as one space] [test: U+2006 after a
+comma in a class definition that whitespace and a line break join is printed as
+one space] [test: U+2007 after a comma in a class definition that whitespace and
+a line break join is printed as one space] [test: U+2008 after a comma in a
+class definition that whitespace and a line break join is printed as one space]
+[test: U+2009 after a comma in a class definition that whitespace and a line
+break join is printed as one space] [test: U+200A after a comma in a class
+definition that whitespace and a line break join is printed as one space] [test:
+U+202F after a comma in a class definition that whitespace and a line break join
+is printed as one space] [test: U+205F after a comma in a class definition that
+whitespace and a line break join is printed as one space] [test: U+FEFF after a
+comma in a class definition that whitespace and a line break join is printed as
+one space]
 
 A name that goes on across a joining region is part of such a statement: `A`,
 U+2028, `%% c`, and a line `Bar` are the one name `A`, U+2028, `Bar`. It makes
@@ -2841,17 +3369,18 @@ after U+2028 inside the name of an ER entity that follows a name in quotes]
 ER entity] [test: a comment line after U+2028 inside the name of an ER entity
 with an alias] [test: a comment line after U+2028 inside the name of an ER
 entity with an attribute block on one line] [test: a comment line after U+2028
-inside the name of an ER entity with a CSS class] [test: a comment line after
-U+2028 inside the first entity of an ER relationship] [test: a comment line
-after U+2028 inside the second entity of an ER relationship] [test: a comment
-line after U+2028 inside both entities of an ER relationship] [test: a comment
-line after U+2028 inside the name of an ER attribute] [test: a comment line
-after U+2028 inside the type of an ER attribute] [test: a comment line after
-U+2028 inside the name of an ER subgraph] [test: a comment line after U+2028
-inside the title of an ER subgraph] [test: a comment line after U+2028 inside
-the name of an ER class statement] [test: a comment line after U+2028 inside the
-name of an ER class definition] [test: a comment line after U+2028 inside the
-name of an ER style statement]
+inside the name of an ER entity with an empty block on one line] [test: a
+comment line after U+2028 inside the name of an ER entity with a CSS class]
+[test: a comment line after U+2028 inside the first entity of an ER
+relationship] [test: a comment line after U+2028 inside the second entity of an
+ER relationship] [test: a comment line after U+2028 inside both entities of an
+ER relationship] [test: a comment line after U+2028 inside the name of an ER
+attribute] [test: a comment line after U+2028 inside the type of an ER
+attribute] [test: a comment line after U+2028 inside the name of an ER subgraph]
+[test: a comment line after U+2028 inside the title of an ER subgraph] [test: a
+comment line after U+2028 inside the name of an ER class statement] [test: a
+comment line after U+2028 inside the name of an ER class definition] [test: a
+comment line after U+2028 inside the name of an ER style statement]
 
 What the line holds and where it ends follow
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029).
@@ -2950,7 +3479,10 @@ it does where the `}` stands on any line that stays as written (see
 [Attribute blocks](#attribute-blocks)). Where its lines can join, an empty block
 over several lines is printed `{ }` at the end of that line, whatever stands
 after the `{` (spaces, a tab, a U+2028), as any other empty block is; an empty
-block on one line stays as written with its line.
+block on one line stays as written with its line. An empty block written on one
+line, on a line that a comment region after U+2028 or U+2029 joins with the
+lines around it, stays as written with that line (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
 
 [test: a comment line after U+2028 inside the name of an ER entity with an
 attribute block over several lines] [test: an attribute on the line of the
@@ -2963,28 +3495,30 @@ brace after a comment line after U+2028 inside the name of an ER entity] [test:
 an empty attribute block with an empty line before its closing brace after a
 comment line after U+2028 inside the name of an ER entity] [test: an empty
 attribute block on one line after a comment line after U+2028 inside the name of
-an ER entity] [test: an empty attribute block over several lines after a comment
-line after U+2028 and a space] [test: an empty attribute block with spaces after
-its opening brace after a comment line after U+2028 inside the name of an ER
-entity] [test: an empty attribute block with a tab after its opening brace after
-a comment line after U+2028 inside the name of an ER entity] [test: an empty
-attribute block with U+2028 after its opening brace after a comment line after
-U+2028 inside the name of an ER entity] [test: an attribute block of an entity
-that starts the line, and a comment line after U+2028 after its closing brace]
-[test: an empty attribute block of an entity that starts the line, and a comment
-line after U+2028 after its closing brace] [test: an attribute that starts on
-the line of the opening brace and goes on over the next line, after a comment
-line after U+2028 inside the name of an ER entity] [test: an attribute that
-starts on the line of the opening brace and goes on over an empty line, after a
-comment line after U+2028 inside the name of an ER entity] [test: an attribute
-that starts on the line of the opening brace and goes on over a directive line,
-after a comment line after U+2028 inside the name of an ER entity] [test: an
-attribute that starts on the line of the opening brace and goes on over a
-comment line after U+2028, after a comment line after U+2028 inside the name of
+an ER entity] [test: an empty attribute block on one line after a comment line
+after U+2029 inside the name of an ER entity] [test: an empty attribute block
+over several lines after a comment line after U+2028 and a space] [test: an
+empty attribute block with spaces after its opening brace after a comment line
+after U+2028 inside the name of an ER entity] [test: an empty attribute block
+with a tab after its opening brace after a comment line after U+2028 inside the
+name of an ER entity] [test: an empty attribute block with U+2028 after its
+opening brace after a comment line after U+2028 inside the name of an ER entity]
+[test: an attribute block of an entity that starts the line, and a comment line
+after U+2028 after its closing brace] [test: an empty attribute block of an
+entity that starts the line, and a comment line after U+2028 after its closing
+brace] [test: an attribute that starts on the line of the opening brace and goes
+on over the next line, after a comment line after U+2028 inside the name of an
+ER entity] [test: an attribute that starts on the line of the opening brace and
+goes on over an empty line, after a comment line after U+2028 inside the name of
 an ER entity] [test: an attribute that starts on the line of the opening brace
-and goes on over two lines, after a comment line after U+2028 inside the name of
-an ER entity] [test: an attribute that goes on over a line, and an attribute
-after it, after a comment line after U+2028 inside the name of an ER entity]
+and goes on over a directive line, after a comment line after U+2028 inside the
+name of an ER entity] [test: an attribute that starts on the line of the opening
+brace and goes on over a comment line after U+2028, after a comment line after
+U+2028 inside the name of an ER entity] [test: an attribute that starts on the
+line of the opening brace and goes on over two lines, after a comment line after
+U+2028 inside the name of an ER entity] [test: an attribute that goes on over a
+line, and an attribute after it, after a comment line after U+2028 inside the
+name of an ER entity]
 
 An entity that stands after another statement on that line, or after a name that
 the line goes on with, is printed so too: the line up to its `{` is printed as
@@ -3098,9 +3632,10 @@ value] [test: U+2028 in the text after a direction] [test: U+2028 inside an
 attribute name]
 
 An entity header, a subgraph header, or a class definition with a comment line
-after U+2028 or U+2029 keeps that span as written: mermaid.js removes the
-comment line and its preceding whitespace, joining the continuation to the text
-before the separator.
+after U+2028 or U+2029 keeps the whitespace and the line breaks of that span as
+written: mermaid.js removes the comment line and its preceding whitespace,
+joining the continuation to the text before the separator. The colors of a class
+definition on it are printed as under [Colors](#colors).
 
 [test: a comment line after U+2028 in an ER entity header] [test: a comment line
 after U+2029 in an ER entity header] [test: a comment line after U+2028 in an ER

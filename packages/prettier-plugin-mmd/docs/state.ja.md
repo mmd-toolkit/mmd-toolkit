@@ -2015,7 +2015,6 @@ stateDiagram-v2
 行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
 その改行を残します。
 それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
-改行が残る文は、スタイルも書かれたままにします。
 
 [corpus fixture: state/db-style-semicolons]
 [corpus fixture: state/db-classdef-semicolons]
