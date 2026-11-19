@@ -1493,11 +1493,19 @@ kanban board] [test: a last line of a U+2028 after a final comment on a line of
 its own in a kanban board] [test: a last line of a U+2029 after a final comment
 on a line of its own in a kanban board] [test: a last line of a space and a
 U+2028 after a final comment on a line of its own in a kanban board] [test: a
-last line of one space after an empty line and a line break after a final
-comment on a line of its own in a kanban board] [test: an open directive on the
-header line of a kanban board] [test: an open directive on the header line of a
-kanban board and empty lines] [fixture: blank-lines/comment-blank-trailing]
-[test: kanban: selected-terminal-separator]
+last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final
+comment after a statement in a kanban board] [test: a last line that holds a
+U+2028 or a U+2029, alone or beside whitespace, a final comment after a card in
+a kanban board] [test: a last line that holds a U+2028 or a U+2029, alone or
+beside whitespace, a final comment on the header line of a kanban board] [test:
+a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final
+line of %% alone in a kanban board] [test: a last line that holds a U+2028 or a
+U+2029, alone or beside whitespace, a final comment on a line of its own in a
+kanban board] [test: a last line of one space after an empty line and a line
+break after a final comment on a line of its own in a kanban board] [test: an
+open directive on the header line of a kanban board] [test: an open directive on
+the header line of a kanban board and empty lines] [fixture:
+blank-lines/comment-blank-trailing] [test: kanban: selected-terminal-separator]
 
 Input
 ([final-newline/empty-board-input.mmd](../tests/fixtures/kanban/final-newline/empty-board-input.mmd)):

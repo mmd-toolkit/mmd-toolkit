@@ -8505,6 +8505,127 @@ describe("a whitespace character that is no space or tab before the first direct
 })
 
 /**
+ * The places that the clauses of the last line that holds a U+2028 or a U+2029
+ * name (docs/kanban.md and docs/c4.md, Final newline): after the comment of
+ * these the last line stays, with a line break added where none follows, and
+ * after the others it is left out.
+ */
+const lastLineWithASeparatorPlaces = [
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after a statement in a kanban board",
+    base: "kanban\n  S[x] %% c\n",
+    printed: "kanban\n  S[x] %% c\n",
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after a card in a kanban board",
+    base: "kanban\n  S\n    A[y] %% c\n",
+    printed: "kanban\n  S\n    A[y] %% c\n",
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment on the header line of a kanban board",
+    base: "kanban %% c\n",
+    printed: "kanban %% c\n",
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final line of %% alone in a kanban board",
+    base: "kanban\n  S\n%%\n",
+    printed: "kanban\n  S\n%%\n",
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after an element call in a C4 diagram",
+    base: 'C4Context\nPerson(a, "A") %% c\n',
+    printed: 'C4Context\n  Person(a, "A") %% c\n',
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after a relation call in a C4 diagram",
+    base: 'C4Context\nPerson(a, "A")\nPerson(b, "B")\nRel(a, b, "x") %% c\n',
+    printed:
+      'C4Context\n  Person(a, "A")\n  Person(b, "B")\n  Rel(a, b, "x") %% c\n',
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after the brace that closes a boundary in a C4 diagram",
+    base: 'C4Context\nBoundary(b, "B") {\nPerson(a, "A")\n} %% c\n',
+    printed: 'C4Context\n  Boundary(b, "B") {\n    Person(a, "A")\n  } %% c\n',
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after the brace of an accDescr block in a C4 diagram",
+    base: "C4Context\naccDescr {\nT\n} %% c\n",
+    printed: "C4Context\n  accDescr {\n    T\n  } %% c\n",
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment on a line of its own in a kanban board",
+    base: "kanban\n  S[x]\n%% c\n",
+    printed: "kanban\n  S[x]\n  %% c\n",
+    kept: false,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment on a line of its own in a C4 diagram",
+    base: 'C4Context\nPerson(a, "A")\n%% c\n',
+    printed: 'C4Context\n  Person(a, "A")\n  %% c\n',
+    kept: false,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after a title in a C4 diagram",
+    base: 'C4Context\nPerson(a, "A")\ntitle T %% c\n',
+    printed: 'C4Context\n  Person(a, "A")\n  title T %% c\n',
+    kept: false,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after an accTitle line in a C4 diagram",
+    base: 'C4Context\nPerson(a, "A")\naccTitle: T %% c\n',
+    printed: 'C4Context\n  Person(a, "A")\n  accTitle: T %% c\n',
+    kept: false,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after an accDescr line in a C4 diagram",
+    base: 'C4Context\nPerson(a, "A")\naccDescr: T %% c\n',
+    printed: 'C4Context\n  Person(a, "A")\n  accDescr: T %% c\n',
+    kept: false,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after an accDescription line in a C4 diagram",
+    base: 'C4Context\nPerson(a, "A")\naccDescription T %% c\n',
+    printed: 'C4Context\n  Person(a, "A")\n  accDescription T %% c\n',
+    kept: false,
+  },
+] as const
+
+describe("the last line that holds a U+2028 or a U+2029 beside whitespace after a final comment, by place", () => {
+  it.each(
+    lastLineWithASeparatorPlaces.map((place) => [place.name, place] as const),
+  )("%s", async (_name, place) => {
+    for (const separator of ["\u2028", "\u2029"]) {
+      for (const last of [
+        separator,
+        ` ${separator}`,
+        `${separator} `,
+        `\t${separator}`,
+        `\u00a0${separator}`,
+      ]) {
+        for (const [before, after] of [
+          ["", ""],
+          ["", "\n"],
+          ["\n", ""],
+        ] as const) {
+          await expectKept(
+            `${place.base}${before}${last}${after}`,
+            place.kept ? `${place.printed}${before}${last}\n` : place.printed,
+          )
+        }
+      }
+    }
+  })
+})
+
+/**
  * A directive that holds a U+2028 or a U+2029 is rejected everywhere in a
  * mindmap but on a class line, where the line stays as written (docs/mindmap.md,
  * Directives).
