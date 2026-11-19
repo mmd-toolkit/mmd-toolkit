@@ -11303,6 +11303,21 @@ const architectureDirectiveEndExamples: readonly (readonly [
     "accDescr: %%{x}%%  T  ",
     "accDescr: %%{x}%%  T  ",
   ],
+  [
+    "a U+2028 inside the directive that starts the text of a title, two spaces and a text after it, spaces at the end, of an architecture diagram",
+    "title %%{x\u2028y}%%  T  ",
+    "title %%{x\u2028y}%%  T",
+  ],
+  [
+    "a line break inside the directive that starts the text of a title, two spaces and a text after it, spaces at the end, of an architecture diagram",
+    "title %%{x\ny}%%  T  ",
+    "title %%{x\ny}%%T",
+  ],
+  [
+    "a `;` inside the directive that starts the text of a title, two spaces and a text after it, spaces at the end, of an architecture diagram",
+    "title %%{x;y}%%  T  ",
+    "title %%{x;y}%%T",
+  ],
 ]
 
 describe("the directives that end the title or the value of an accessibility line of an architecture diagram", () => {
@@ -13766,6 +13781,11 @@ const architectureDirectiveCommentExamples: readonly (readonly [
     "a directive that starts the text, two spaces and a text after it, spaces at the end, a statement follows, in a title of an architecture diagram",
     "architecture-beta\ntitle %%{x}%%  T  \nservice a(server)[A]\n",
     "architecture-beta\n  title %%{x}%%T\n  service a(server)[A]\n",
+  ],
+  [
+    "a directive that starts the text, two spaces and a text after it, a statement whose label holds a `;` follows, in a title of an architecture diagram",
+    "architecture-beta\ntitle %%{x}%%  T  \nservice a(server)[\u0022x;y\u0022]\n",
+    "architecture-beta\n  title %%{x}%%T\n  service a(server)[\u0022x;y\u0022]\n",
   ],
 ]
 

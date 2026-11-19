@@ -644,16 +644,16 @@ architecture-beta
 
 ### Title
 
-共有の共通行処理を使い、`title value` の両端から、
-共通規則が読む空白だけを除きます。
+共有の共通行処理を、下の段落が述べるところを除いて使い、
+`title value` の両端から、共通規則が読む空白だけを除きます。
 `null` と空白だけの値は `title` とし、同じ意味の外側の空白を詰めます。
+値の中の空白とタブの連なりは空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 注釈類を挟んでも次の物理行を値にしません。
 mermaid.js は次の行を独立した文として読むので、つなぐと、その文が title に入り、
 その文が宣言するもの（ノード、グループ、ジャンクション、エッジ）がなくなります。
 architecture の要約が title を公開しなくても、文と内容を保ちます。
 注釈類のある値と保護された隠れた形の境界は原文の隙間を保ちます。
-ただし、テキストがディレクティブで始まる題とアクセシビリティの行は、
-この節の終わりの段落が述べるとおりです。
 題にテキストがあり、そのテキストの前にも中にもディレクティブがなく、
 テキストの中に U+2028 も U+2029 もないとき、題の終わりのディレクティブは、
 その前と後に何があるかで、次のように印字します。
@@ -756,12 +756,13 @@ U+205F、U+3000、U+FEFF のどれかです。
 のとおり、決めるまでそのままです。
 行に U+2028 も U+2029 もないとき、
 行そのもののコメントの中の `;` は行を変えないので、`;` がそこだけにある行は、
-後の行に `;` がある場合（条件の最後の場合）を除き、未決ではありません。
+題と次の文の間の行のコメントかディレクティブの中に `;` がある場合を除き、
+未決ではありません。
 整形が投げる行は、そこでは述べません。
 
 題のテキストが、キーワードの後の空白 1 つかタブ 1 つの後で、ディレクティブか、
 互いに接するディレクティブで始まり、行のそれ以外の部分にディレクティブ、
-コメント、`;`、幅のある空白、U+2028、U+2029 がないときは、
+コメント、`;`、幅のある空白、U+2028、U+2029 がなく、行が未決でないときは、
 ディレクティブとそれ以外のテキストの間の空白とタブを除き、
 行末の空白とタブも除きます（`title %%{x}%%  T  ` は `title %%{x}%%T` に、
 `title %%{x}%%%%{y}%%  T  ` は `title %%{x}%%%%{y}%%T` になります）。
@@ -1503,6 +1504,9 @@ mermaid.js はテキストを読む前にディレクティブを除き、
 [test: two spaces before the directive that starts the text of a title, of an architecture diagram]
 [test: two directives with spaces between them that start the text of a title, of an architecture diagram]
 [test: a directive that starts the text of a title and a directive that ends it, of an architecture diagram]
+[test: a U+2028 inside the directive that starts the text of a title, two spaces and a text after it, spaces at the end, of an architecture diagram]
+[test: a line break inside the directive that starts the text of a title, two spaces and a text after it, spaces at the end, of an architecture diagram]
+[test: a `;` inside the directive that starts the text of a title, two spaces and a text after it, spaces at the end, of an architecture diagram]
 [test: U+2028 before a directive that a comment touches, a line follows, in a title of an architecture diagram]
 [test: U+2028 before a directive that a comment touches, the text ends, in a title of an architecture diagram]
 [test: U+2028 before a directive that a comment touches, an empty line follows, in a title of an architecture diagram]
@@ -1795,6 +1799,7 @@ mermaid.js はテキストを読む前にディレクティブを除き、
 [test: a directive that starts the text, two spaces and a text after it, spaces at the end, the text ends, in a title of an architecture diagram]
 [test: two directives that touch and start the text, a text after them, spaces at the end, the text ends, in a title of an architecture diagram]
 [test: a directive that starts the text, two spaces and a text after it, spaces at the end, a statement follows, in a title of an architecture diagram]
+[test: a directive that starts the text, two spaces and a text after it, a statement whose label holds a `;` follows, in a title of an architecture diagram]
 
 [fixture: architecture/title/empty-next-statement]
 
@@ -1828,7 +1833,8 @@ architecture-beta
 
 ### Accessibility lines
 
-共有の `accTitle: value` と `accDescr: value` を使います。
+共有の `accTitle: value` と `accDescr: value` を、下の段落と、
+[ディレクティブが前にある題](#title)が述べるところを除いて使います。
 コロンをキーワードに付け、両端の空白を除いた非空値の前は空白1個、
 空ならコロンで終えます。
 これにより外側の空白を統一します。
@@ -1912,7 +1918,8 @@ U+205F、U+3000、U+FEFF のどれかです。
 のとおり、決めるまでそのままです。
 行に U+2028 も U+2029 もないとき、
 行そのもののコメントの中の `;` は行を変えないので、`;` がそこだけにある行は、
-後の行に `;` がある場合（条件の最後の場合）を除き、未決ではありません。
+題と次の文の間の行のコメントかディレクティブの中に `;` がある場合を除き、
+未決ではありません。
 整形が投げる行は、そこでは述べません。
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]

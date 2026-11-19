@@ -618,27 +618,28 @@ architecture-beta
 
 ### Title
 
-Use shared common-line layout: `title value` trims only common-whitespace edges,
-and null or whitespace-only values print `title`. This compacts equivalent outer
-padding. Never read the next physical line as a value, even across trivia.
-mermaid.js reads the next line as a statement of its own, so joining it would
-put that statement into the title, and what it declares (a node, a group, a
-junction, or an edge) would disappear. Keep occurrences and content even though
-the architecture summary does not publish title. Trivia-bearing values and
-protected hidden boundaries keep their source gaps, except for a title or an
-accessibility line whose text starts with a directive (see the paragraph on a
-directive before the text, at the end of this section). Where a title has text
-and no directive stands before its text or inside it, and no U+2028 or U+2029
-stands inside the text, the directives that end it are printed as follows, by
-what stands before them and after them, except for the undecided lines. A line
-with directives is undecided when, besides its directives, it holds a `;`
-outside a comment (also inside a directive), when it holds a `;` inside a
-comment and a U+2028 or U+2029, when a U+2028 or U+2029 stands inside or after
-its first directive, when a directive holds a line break, or when a line between
-it and the next statement holds a `;` inside a comment or a directive. A wide
-space is one of U+000B, U+000C, U+00A0, U+1680, U+2000 to U+200A, U+202F,
-U+205F, U+3000, and U+FEFF. Where item 6 splits a line, none of the other items
-applies to it:
+Use shared common-line layout, except as the paragraphs below state:
+`title value` trims only common-whitespace edges, and null or whitespace-only
+values print `title`. A run of spaces and tabs inside the value is printed as
+one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+This compacts equivalent outer padding. Never read the next physical line as a
+value, even across trivia. mermaid.js reads the next line as a statement of its
+own, so joining it would put that statement into the title, and what it declares
+(a node, a group, a junction, or an edge) would disappear. Keep occurrences and
+content even though the architecture summary does not publish title.
+Trivia-bearing values and protected hidden boundaries keep their source gaps.
+Where a title has text and no directive stands before its text or inside it, and
+no U+2028 or U+2029 stands inside the text, the directives that end it are
+printed as follows, by what stands before them and after them, except for the
+undecided lines. A line with directives is undecided when, besides its
+directives, it holds a `;` outside a comment (also inside a directive), when it
+holds a `;` inside a comment and a U+2028 or U+2029, when a U+2028 or U+2029
+stands inside or after its first directive, when a directive holds a line break,
+or when a line between it and the next statement holds a `;` inside a comment or
+a directive. A wide space is one of U+000B, U+000C, U+00A0, U+1680, U+2000 to
+U+200A, U+202F, U+205F, U+3000, and U+FEFF. Where item 6 splits a line, none of
+the other items applies to it:
 
 - Where only spaces and tabs, or nothing, stand before the directives, no `;`
   stands in the text before them or inside one of them, no directive holds a
@@ -719,16 +720,16 @@ released version prints there stay until they are decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Where no U+2028 or U+2029 stands in the line, a `;` inside its comment makes no
 difference to it, so a line that holds one only there is not undecided, unless a
-line after it holds a `;` (the last case of the condition). The lines that make
-the formatter throw there are not stated.
+line between it and the next statement holds a `;` inside a comment or a
+directive. The lines that make the formatter throw there are not stated.
 
 Where the text of a title starts with a directive, or with directives that touch
 one another, after the one space or tab that follows the keyword, and the rest
-of the line holds no directive, comment, `;`, wide space, U+2028, or U+2029, the
-spaces and tabs between the directives and the rest of the text are left out,
-with the spaces and tabs at the end of the line: `title %%{x}%%  T  ` is printed
-`title %%{x}%%T`, and `title %%{x}%%%%{y}%%  T  ` is printed
-`title %%{x}%%%%{y}%%T`.
+of the line holds no directive, comment, `;`, wide space, U+2028, or U+2029, and
+the line is not undecided, the spaces and tabs between the directives and the
+rest of the text are left out, with the spaces and tabs at the end of the line:
+`title %%{x}%%  T  ` is printed `title %%{x}%%T`, and
+`title %%{x}%%%%{y}%%  T  ` is printed `title %%{x}%%%%{y}%%T`.
 [Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as the Title of [a sequence diagram](./sequence.md#title) does, which
 prints `title %%{init: {}}%% T` as `title %%{init: {}}%%T`: mermaid.js removes
@@ -1852,38 +1853,44 @@ with a tab inside it, a tab at the end, of an architecture diagram] [test: two
 spaces before the directive that starts the text of a title, of an architecture
 diagram] [test: two directives with spaces between them that start the text of a
 title, of an architecture diagram] [test: a directive that starts the text of a
-title and a directive that ends it, of an architecture diagram] [test: U+2028
-before a directive that a comment touches, a line follows, in a title of an
-architecture diagram] [test: U+2028 before a directive that a comment touches,
-the text ends, in a title of an architecture diagram] [test: U+2028 before a
-directive that a comment touches, an empty line follows, in a title of an
-architecture diagram] [test: U+2028 before a directive that a comment follows
-after spaces, a line follows, in a title of an architecture diagram] [test:
-U+2028 before a directive that a comment follows after spaces, the text ends, in
-a title of an architecture diagram] [test: U+2028 before a directive that a
-comment follows after spaces, an empty line follows, in a title of an
-architecture diagram] [test: U+2029 before a directive that a comment touches, a
-line follows, in a title of an architecture diagram] [test: U+2029 before a
-directive that a comment touches, the text ends, in a title of an architecture
-diagram] [test: U+2029 before a directive that a comment touches, an empty line
-follows, in a title of an architecture diagram] [test: U+2029 before a directive
-that a comment follows after spaces, a line follows, in a title of an
-architecture diagram] [test: U+2029 before a directive that a comment follows
-after spaces, the text ends, in a title of an architecture diagram] [test:
-U+2029 before a directive that a comment follows after spaces, an empty line
+title and a directive that ends it, of an architecture diagram] [test: a U+2028
+inside the directive that starts the text of a title, two spaces and a text
+after it, spaces at the end, of an architecture diagram] [test: a line break
+inside the directive that starts the text of a title, two spaces and a text
+after it, spaces at the end, of an architecture diagram] [test: a `;` inside the
+directive that starts the text of a title, two spaces and a text after it,
+spaces at the end, of an architecture diagram] [test: U+2028 before a directive
+that a comment touches, a line follows, in a title of an architecture diagram]
+[test: U+2028 before a directive that a comment touches, the text ends, in a
+title of an architecture diagram] [test: U+2028 before a directive that a
+comment touches, an empty line follows, in a title of an architecture diagram]
+[test: U+2028 before a directive that a comment follows after spaces, a line
 follows, in a title of an architecture diagram] [test: U+2028 before a directive
-that a comment touches, a comment line follows, in a title of an architecture
-diagram] [test: U+2028 before a directive that a comment touches, a line of
-whitespace follows, in a title of an architecture diagram] [test: U+2028 before
-a directive that a comment touches, a directive line follows, in a title of an
-architecture diagram] [test: U+2028 before a directive that a comment touches, a
-directive line and a comment line follow, in a title of an architecture diagram]
-[test: U+2028 before a directive that a comment touches, an empty line and a
-comment line follow, in a title of an architecture diagram] [test: U+2028 before
-a directive that a comment touches, a directive line, an empty line, and a
-comment line follow, in a title of an architecture diagram] [test: U+2028 before
-a directive that a comment touches, an empty line and a directive line follow,
+that a comment follows after spaces, the text ends, in a title of an
+architecture diagram] [test: U+2028 before a directive that a comment follows
+after spaces, an empty line follows, in a title of an architecture diagram]
+[test: U+2029 before a directive that a comment touches, a line follows, in a
+title of an architecture diagram] [test: U+2029 before a directive that a
+comment touches, the text ends, in a title of an architecture diagram] [test:
+U+2029 before a directive that a comment touches, an empty line follows, in a
+title of an architecture diagram] [test: U+2029 before a directive that a
+comment follows after spaces, a line follows, in a title of an architecture
+diagram] [test: U+2029 before a directive that a comment follows after spaces,
+the text ends, in a title of an architecture diagram] [test: U+2029 before a
+directive that a comment follows after spaces, an empty line follows, in a title
+of an architecture diagram] [test: U+2028 before a directive that a comment
+touches, a comment line follows, in a title of an architecture diagram] [test:
+U+2028 before a directive that a comment touches, a line of whitespace follows,
 in a title of an architecture diagram] [test: U+2028 before a directive that a
+comment touches, a directive line follows, in a title of an architecture
+diagram] [test: U+2028 before a directive that a comment touches, a directive
+line and a comment line follow, in a title of an architecture diagram] [test:
+U+2028 before a directive that a comment touches, an empty line and a comment
+line follow, in a title of an architecture diagram] [test: U+2028 before a
+directive that a comment touches, a directive line, an empty line, and a comment
+line follow, in a title of an architecture diagram] [test: U+2028 before a
+directive that a comment touches, an empty line and a directive line follow, in
+a title of an architecture diagram] [test: U+2028 before a directive that a
 comment touches, a directive line follows and the text ends, in a title of an
 architecture diagram] [test: U+2028 before two directives with spaces between
 them that a comment touches, the text ends, in a title of an architecture
@@ -2402,7 +2409,9 @@ text after it, spaces at the end, the text ends, in a title of an architecture
 diagram] [test: two directives that touch and start the text, a text after them,
 spaces at the end, the text ends, in a title of an architecture diagram] [test:
 a directive that starts the text, two spaces and a text after it, spaces at the
-end, a statement follows, in a title of an architecture diagram]
+end, a statement follows, in a title of an architecture diagram] [test: a
+directive that starts the text, two spaces and a text after it, a statement
+whose label holds a `;` follows, in a title of an architecture diagram]
 
 [fixture: architecture/title/empty-next-statement]
 
@@ -2436,23 +2445,24 @@ architecture-beta
 
 ### Accessibility lines
 
-Reuse shared `accTitle: value` and `accDescr: value`: the colon touches its
-keyword, with one space before a trimmed nonempty value; empty values end at the
-colon. This keeps consistent outer spacing. Never join a next-line statement.
-mermaid.js reads the next line as a statement of its own, so joining it would
-put that statement into the title or the description, and what it declares (a
-node, a group, a junction, or an edge) would disappear. Braces after a colon
-remain line text, and protected trivia/hidden gaps take precedence. Where a
-value has text and no directive stands before its text or inside it, and no
-U+2028 or U+2029 stands inside the text, the directives that end it are printed
-as follows, by what stands before them and after them, except for the undecided
-lines that the [title list](#title) states. A wide space is one of U+000B,
-U+000C, U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, and U+FEFF.
-Where a U+2028 or U+2029 stands before the directives and a comment follows the
-last one, a line that is not undecided is printed as under item 6 of the title
-list, and where item 6 of the title list splits it, none of the items below
-applies to it. The colon touches the keyword, so a gap before it is printed as
-no gap even where the line stays as written:
+Reuse shared `accTitle: value` and `accDescr: value`, except as the paragraphs
+below state and as the [paragraph on a directive before the text](#title)
+states: the colon touches its keyword, with one space before a trimmed nonempty
+value; empty values end at the colon. This keeps consistent outer spacing. Never
+join a next-line statement. mermaid.js reads the next line as a statement of its
+own, so joining it would put that statement into the title or the description,
+and what it declares (a node, a group, a junction, or an edge) would disappear.
+Braces after a colon remain line text, and protected trivia/hidden gaps take
+precedence. Where a value has text and no directive stands before its text or
+inside it, and no U+2028 or U+2029 stands inside the text, the directives that
+end it are printed as follows, by what stands before them and after them, except
+for the undecided lines that the [title list](#title) states. A wide space is
+one of U+000B, U+000C, U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000,
+and U+FEFF. Where a U+2028 or U+2029 stands before the directives and a comment
+follows the last one, a line that is not undecided is printed as under item 6 of
+the title list, and where item 6 of the title list splits it, none of the items
+below applies to it. The colon touches the keyword, so a gap before it is
+printed as no gap even where the line stays as written:
 
 - Where only spaces and tabs, or nothing, stand before the directives, no `;`
   stands in the text before them or inside one of them, no directive holds a
@@ -2509,8 +2519,8 @@ released version prints there stay until they are decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 Where no U+2028 or U+2029 stands in the line, a `;` inside its comment makes no
 difference to it, so a line that holds one only there is not undecided, unless a
-line after it holds a `;` (the last case of the condition). The lines that make
-the formatter throw there are not stated.
+line between it and the next statement holds a `;` inside a comment or a
+directive. The lines that make the formatter throw there are not stated.
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
 accessibility-lines/acc-directives-end-tabs-dropped] [fixture:
