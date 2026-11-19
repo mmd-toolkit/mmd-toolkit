@@ -9088,6 +9088,146 @@ const directiveAfterSeparatorExamples: readonly (readonly [
     "usecase-beta\naccTitle: T\u2028%%{x}%%  %% c\n\nactor B\n",
     "usecase-beta\n  accTitle: T\n  %%{x}%% %% c\n\n  actor B\n",
   ],
+  [
+    "sequence: a hash comment line, U+2028, a directive, two spaces, and a comment",
+    "sequenceDiagram\n# c \u2028 %%{x}%%  %% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  # c\n  %%{x}%% %% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "sequence: a percent comment line, U+2028, a directive touching a comment",
+    "sequenceDiagram\n% c \u2028 %%{x}%%%% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  % c\n  %%{x}%%%% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "sequence: a percent comment line, U+2028, a directive, a tab, and a comment",
+    "sequenceDiagram\n% c \u2028 %%{x}%%\t%% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  % c\n  %%{x}%% %% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "sequence: a percent comment line, U+2029, a directive, two spaces, and a comment",
+    "sequenceDiagram\n% c \u2029 %%{x}%%  %% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  % c\n  %%{x}%% %% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "sequence: a line of a semicolon, U+2029, a directive, two spaces, and a comment",
+    "sequenceDiagram\n; \u2029 %%{x}%%  %% c\n\nA->>B: y\n",
+    "sequenceDiagram\n  %%{x}%% %% c\n\n  A ->> B: y\n",
+  ],
+  [
+    "state: a hash comment line, U+2028, a directive, two spaces, and a comment",
+    "stateDiagram-v2\n# c \u2028 %%{x}%%  %% c\n\n[*] --> A\n",
+    "stateDiagram-v2\n  # c\n  %%{x}%% %% c\n\n  [*] --> A\n",
+  ],
+  [
+    "state: a hash comment line, U+2028, a directive touching a comment",
+    "stateDiagram-v2\n# c \u2028 %%{x}%%%% c\n\n[*] --> A\n",
+    "stateDiagram-v2\n  # c\n  %%{x}%%%% c\n\n  [*] --> A\n",
+  ],
+  [
+    "state: a hash comment line, U+2028, a directive, a tab, and a comment",
+    "stateDiagram-v2\n# c \u2028 %%{x}%%\t%% c\n\n[*] --> A\n",
+    "stateDiagram-v2\n  # c\n  %%{x}%% %% c\n\n  [*] --> A\n",
+  ],
+  [
+    "state: a hash comment line, U+2029, a directive, two spaces, and a comment",
+    "stateDiagram-v2\n# c \u2029 %%{x}%%  %% c\n\n[*] --> A\n",
+    "stateDiagram-v2\n  # c\n  %%{x}%% %% c\n\n  [*] --> A\n",
+  ],
+  [
+    "timeline: a hash comment line, U+2028, a directive touching a comment",
+    "timeline\n# c \u2028 %%{x}%%%% c\n\ntitle T\n",
+    "timeline\n  # c\n  %%{x}%%%% c\n\n  title T\n",
+  ],
+  [
+    "timeline: a percent comment line, U+2028, a directive, a tab, and a comment",
+    "timeline\n% c \u2028 %%{x}%%\t%% c\n\ntitle T\n",
+    "timeline\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "timeline: a hash comment line, U+2029, a directive, two spaces, and a comment",
+    "timeline\n# c \u2029 %%{x}%%  %% c\n\ntitle T\n",
+    "timeline\n  # c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "journey: a hash comment line, U+2028, a directive touching a comment",
+    "journey\n# c \u2028 %%{x}%%%% c\n\ntitle T\n",
+    "journey\n  # c\n  %%{x}%%%% c\n\n  title T\n",
+  ],
+  [
+    "journey: a percent comment line, U+2028, a directive, a tab, and a comment",
+    "journey\n% c \u2028 %%{x}%%\t%% c\n\ntitle T\n",
+    "journey\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "journey: a hash comment line, U+2029, a directive, two spaces, and a comment",
+    "journey\n# c \u2029 %%{x}%%  %% c\n\ntitle T\n",
+    "journey\n  # c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "gantt: a percent comment line, U+2028, a directive touching a comment",
+    "gantt\n% c \u2028 %%{x}%%%% c\n\ntitle T\n",
+    "gantt\n  % c\n  %%{x}%%%% c\n\n  title T\n",
+  ],
+  [
+    "gantt: a percent comment line, U+2028, a directive, a tab, and a comment",
+    "gantt\n% c \u2028 %%{x}%%\t%% c\n\ntitle T\n",
+    "gantt\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "gantt: a percent comment line, U+2029, a directive, two spaces, and a comment",
+    "gantt\n% c \u2029 %%{x}%%  %% c\n\ntitle T\n",
+    "gantt\n  % c\n  %%{x}%% %% c\n\n  title T\n",
+  ],
+  [
+    "railroad: a comment line of a semicolon, U+2028, a directive touching a comment",
+    'railroad-abnf-beta\n;style  kept \u2028 %%{x}%%%% c\n\nr=( "x" );',
+    'railroad-abnf-beta\n  ;style  kept\n  %%{x}%%%% c\n\n  r = ("x");\n',
+  ],
+  [
+    "railroad: a comment line of a semicolon, U+2028, a directive, a tab, and a comment",
+    'railroad-abnf-beta\n;style  kept \u2028 %%{x}%%\t%% c\n\nr=( "x" );',
+    'railroad-abnf-beta\n  ;style  kept\n  %%{x}%% %% c\n\n  r = ("x");\n',
+  ],
+  [
+    "railroad: a comment line of a semicolon, U+2029, a directive, two spaces, and a comment",
+    'railroad-abnf-beta\n;style  kept \u2029 %%{x}%%  %% c\n\nr=( "x" );',
+    'railroad-abnf-beta\n  ;style  kept\n  %%{x}%% %% c\n\n  r = ("x");\n',
+  ],
+  [
+    "xychart: a line of a semicolon, U+2028, a directive touching a comment",
+    "xychart\n; \u2028 %%{x}%%%% c\n\nline [1]\n",
+    "xychart\n  %%{x}%%%% c\n\n  line [1]\n",
+  ],
+  [
+    "xychart: a line of a semicolon, U+2028, a directive, a tab, and a comment",
+    "xychart\n; \u2028 %%{x}%%\t%% c\n\nline [1]\n",
+    "xychart\n  %%{x}%% %% c\n\n  line [1]\n",
+  ],
+  [
+    "xychart: a line of a semicolon, U+2029, a directive, two spaces, and a comment",
+    "xychart\n; \u2029 %%{x}%%  %% c\n\nline [1]\n",
+    "xychart\n  %%{x}%% %% c\n\n  line [1]\n",
+  ],
+  [
+    "usecase: an accDescr line, U+2028, a directive, two spaces, and a comment",
+    "usecase-beta\naccDescr: D \u2028 %%{x}%%  %% c\n\nactor B\n",
+    "usecase-beta\n  accDescr: D\n  %%{x}%% %% c\n\n  actor B\n",
+  ],
+  [
+    "usecase: an accTitle line, U+2028, a directive touching a comment",
+    "usecase-beta\naccTitle: T \u2028 %%{x}%%%% c\n\nactor B\n",
+    "usecase-beta\n  accTitle: T\n  %%{x}%%%% c\n\n  actor B\n",
+  ],
+  [
+    "usecase: an accTitle line, U+2028, a directive, a tab, and a comment",
+    "usecase-beta\naccTitle: T \u2028 %%{x}%%\t%% c\n\nactor B\n",
+    "usecase-beta\n  accTitle: T\n  %%{x}%% %% c\n\n  actor B\n",
+  ],
+  [
+    "usecase: an accTitle line, U+2029, a directive, two spaces, and a comment",
+    "usecase-beta\naccTitle: T \u2029 %%{x}%%  %% c\n\nactor B\n",
+    "usecase-beta\n  accTitle: T\n  %%{x}%% %% c\n\n  actor B\n",
+  ],
 ]
 
 describe("a line kept as written that ends at a line separator, with a directive and a comment after it", () => {

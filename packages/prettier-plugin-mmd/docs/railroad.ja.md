@@ -1623,6 +1623,9 @@ railroad-peg-beta
 ディレクティブとコメントの間は、書かれた形に空白があれば空白 1 つにします。
 
 [test: railroad: a comment line of a semicolon, U+2028, a directive, two spaces, and a comment]
+[test: railroad: a comment line of a semicolon, U+2028, a directive touching a comment]
+[test: railroad: a comment line of a semicolon, U+2028, a directive, a tab, and a comment]
+[test: railroad: a comment line of a semicolon, U+2029, a directive, two spaces, and a comment]
 
 ### 共有 directive
 

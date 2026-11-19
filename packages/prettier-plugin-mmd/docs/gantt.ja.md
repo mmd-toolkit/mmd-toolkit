@@ -1936,6 +1936,9 @@ U+2028 と U+2029 は空白やタブではなくテキストの文字なので�
 なければ空白を置きません。
 
 [test: gantt: a percent comment line, U+2028, a directive, two spaces, and a comment]
+[test: gantt: a percent comment line, U+2028, a directive touching a comment]
+[test: gantt: a percent comment line, U+2028, a directive, a tab, and a comment]
+[test: gantt: a percent comment line, U+2029, a directive, two spaces, and a comment]
 
 ### 空白の文字
 

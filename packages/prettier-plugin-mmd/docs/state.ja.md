@@ -2062,6 +2062,19 @@ stateDiagram-v2
 
 [test: a state line starting with a directive before U+2028]
 
+`#` で始まるコメント行は U+2028 か U+2029 で終わり、
+その文字の後ろの文字列は独立した行になります。
+その行のディレクティブとコメントは、改行の後の行と同じに印字します。
+ディレクティブとコメントの間は、書かれた形に空白があれば空白 1 つにし、
+なければ空白を置きません。
+`# c`、U+2028、`%%{x}%%`、空白 2 つ、`%% c` は、
+`# c` と `%%{x}%% %% c` の 2 行に印字します。
+
+[test: state: a hash comment line, U+2028, a directive, two spaces, and a comment]
+[test: state: a hash comment line, U+2028, a directive touching a comment]
+[test: state: a hash comment line, U+2028, a directive, a tab, and a comment]
+[test: state: a hash comment line, U+2029, a directive, two spaces, and a comment]
+
 U+2028 か U+2029 を含む行は、書かれたまま残します。
 別名の 2 つ目の説明も、その文字の後の空白も含めて残します。
 `state "d" as A : x`、空白 2 つ、U+2028、空白 2 つは、書かれたまま残します。

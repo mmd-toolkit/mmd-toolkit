@@ -1691,6 +1691,9 @@ period の前でも同じです（詳しくは、
 
 [test: timeline: a hash comment line, U+2028, a directive, two spaces, and a comment]
 [test: timeline: a percent comment line, U+2028, a directive, two spaces, and a comment]
+[test: timeline: a hash comment line, U+2028, a directive touching a comment]
+[test: timeline: a percent comment line, U+2028, a directive, a tab, and a comment]
+[test: timeline: a hash comment line, U+2029, a directive, two spaces, and a comment]
 
 ### 空白文字
 

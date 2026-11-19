@@ -1561,7 +1561,10 @@ are printed as on a line after a line feed, with one space between them where
 the source has whitespace there.
 
 [test: railroad: a comment line of a semicolon, U+2028, a directive, two spaces,
-and a comment]
+and a comment] [test: railroad: a comment line of a semicolon, U+2028, a
+directive touching a comment] [test: railroad: a comment line of a semicolon,
+U+2028, a directive, a tab, and a comment] [test: railroad: a comment line of a
+semicolon, U+2029, a directive, two spaces, and a comment]
 
 ### Global directives
 

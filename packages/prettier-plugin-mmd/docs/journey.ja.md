@@ -1184,6 +1184,9 @@ U+2028 と U+2029 は、journey の単位の間の空白であり、
 
 [test: journey: a hash comment line, U+2028, a directive, two spaces, and a comment]
 [test: journey: a percent comment line, U+2028, a directive, two spaces, and a comment]
+[test: journey: a hash comment line, U+2028, a directive touching a comment]
+[test: journey: a percent comment line, U+2028, a directive, a tab, and a comment]
+[test: journey: a hash comment line, U+2029, a directive, two spaces, and a comment]
 
 ### 空白の文字
 

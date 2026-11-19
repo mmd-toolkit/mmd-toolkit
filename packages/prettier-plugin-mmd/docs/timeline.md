@@ -1686,7 +1686,10 @@ where the source has whitespace there, and none where it has none.
 
 [test: timeline: a hash comment line, U+2028, a directive, two spaces, and a
 comment] [test: timeline: a percent comment line, U+2028, a directive, two
-spaces, and a comment]
+spaces, and a comment] [test: timeline: a hash comment line, U+2028, a directive
+touching a comment] [test: timeline: a percent comment line, U+2028, a
+directive, a tab, and a comment] [test: timeline: a hash comment line, U+2029, a
+directive, two spaces, and a comment]
 
 ### Whitespace characters
 

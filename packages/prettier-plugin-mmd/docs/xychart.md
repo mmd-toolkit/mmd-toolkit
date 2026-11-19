@@ -1195,7 +1195,10 @@ printed as on a line after a line feed, with one space between them where the
 source has whitespace there. The `;` is dropped, as on a line of its own.
 
 [test: xychart: a line of a semicolon, U+2028, a directive, two spaces, and a
-comment]
+comment] [test: xychart: a line of a semicolon, U+2028, a directive touching a
+comment] [test: xychart: a line of a semicolon, U+2028, a directive, a tab, and
+a comment] [test: xychart: a line of a semicolon, U+2029, a directive, two
+spaces, and a comment]
 
 ### Whitespace characters
 
