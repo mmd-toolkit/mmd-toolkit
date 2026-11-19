@@ -902,11 +902,18 @@ without a branch, disappears when the next node is given a branch, and the
 comment or the directive touches what stands before it: the branch is a second
 run, which mermaid.js rejects after the first. `"a" %% c`, `─`, and `"b"` print
 `"a"%% c`, `│`, and `└── "b"`, and `├── "a" %% c`, `│`, and `"b"` print
-`├── "a"%% c`, `│`, and `└── "b"`. The same holds after a class, with a tab
-before the comment, with a directive and a comment together, and where a blank
-line, a comment line, or a directive line lies between. The space before a
-directive on a line with a branch stays: `├── "a" %%{x}%%`, `─`, and `"b"` print
-`├── "a" %%{x}%%`, `│`, and `└── "b"`.
+`├── "a"%% c`, `│`, and `└── "b"`. The same holds after a class or an icon, with
+a tab or two spaces before the comment, with a directive and a comment together,
+and where a blank line, a comment line, an indented comment line, or a directive
+line lies between. A comment after the `─` line moves it: `"a" %% c`, `─ %% n`,
+and `"b"` print `"a"%% c`, `└── ─ %% n`, and `"b"`. The space before a directive
+on a line with a branch stays where no comment follows it on the line:
+`├── "a" %%{x}%%`, `─`, and `"b"` print `├── "a" %%{x}%%`, `│`, and `└── "b"`.
+Where a comment follows, the spaces before the directives and between them go
+too, since mermaid.js removes the directives and those spaces join the run after
+the quote, and the form that keeps them is rejected: `├── "a" %%{x}%% %% c`,
+`─`, and `"b"` print `├── "a"%%{x}%%%% c`, `│`, and `└── "b"`, and two
+directives print `├── "a"%%{x}%%%%{y}%%%% c`.
 
 [fixture:
 treeview/carried-indentation/box-redraw-run-before-comment-and-decoration]
@@ -930,6 +937,16 @@ treeview/carried-indentation/box-redraw-run-before-comment-directive-line]
 treeview/carried-indentation/box-redraw-run-before-comment-nested-branches]
 [fixture:
 treeview/carried-indentation/box-redraw-run-before-directive-on-branch-line-kept]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-icon]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-two-spaces]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-indented-comment-line]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-decoration-comment-line]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-directive-comment-comment-line]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-directives-comment-on-branch-line]
 
 ### Tabs
 

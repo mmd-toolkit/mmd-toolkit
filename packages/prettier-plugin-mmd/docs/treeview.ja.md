@@ -906,11 +906,21 @@ box モードでは、コメントの前、
 枝は 2 つ目の連なりになり、最初の連なりの後では mermaid.js が拒否するためです。
 `"a" %% c`、`─`、`"b"` は `"a"%% c`、`│`、`└── "b"` と印字し、`├── "a" %% c`、
 `│`、`"b"` は `├── "a"%% c`、`│`、`└── "b"` と印字します。
-クラスの後、コメントの前のタブ、ディレクティブとコメントが並ぶ形、間に空行、
-コメント行、ディレクティブの行がある形も同じです。
-枝のある行のディレクティブの前の空白は残ります。
+クラスやアイコンの後、コメントの前のタブや空白 2 つ、
+ディレクティブとコメントが並ぶ形、間に空行、コメント行、字下げしたコメント行、
+ディレクティブの行がある形も同じです。
+`─` の行にコメントが続くと、その行が動きます。
+`"a" %% c`、`─ %% n`、`"b"` は `"a"%% c`、`└── ─ %% n`、`"b"` と印字します。
+枝のある行のディレクティブの前の空白は、
+その行にコメントが続かないときは残ります。
 `├── "a" %%{x}%%`、`─`、`"b"` は `├── "a" %%{x}%%`、`│`、
 `└── "b"` と印字します。
+コメントが続くときは、ディレクティブの前と間の空白も消えます。
+mermaid.js はディレクティブを除くので、その空白は引用符の後の連なりに合わさり、
+空白を残す形は拒否されるためです。
+`├── "a" %%{x}%% %% c`、`─`、`"b"` は `├── "a"%%{x}%%%% c`、`│`、
+`└── "b"` と印字し、
+ディレクティブが 2 つあるときは `├── "a"%%{x}%%%%{y}%%%% c` と印字します。
 
 [fixture: treeview/carried-indentation/box-redraw-run-before-comment-and-decoration]
 [fixture: treeview/carried-indentation/box-redraw-run-before-comment-on-branch-line]
@@ -924,6 +934,12 @@ box モードでは、コメントの前、
 [fixture: treeview/carried-indentation/box-redraw-run-before-comment-directive-line]
 [fixture: treeview/carried-indentation/box-redraw-run-before-comment-nested-branches]
 [fixture: treeview/carried-indentation/box-redraw-run-before-directive-on-branch-line-kept]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-icon]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-two-spaces]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-indented-comment-line]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-decoration-comment-line]
+[fixture: treeview/carried-indentation/box-redraw-run-before-directive-comment-comment-line]
+[fixture: treeview/carried-indentation/box-redraw-run-before-directives-comment-on-branch-line]
 
 ### Tabs
 
