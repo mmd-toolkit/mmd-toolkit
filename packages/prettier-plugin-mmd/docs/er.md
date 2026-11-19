@@ -477,7 +477,14 @@ er/gram-attribute-split-lines] [corpus fixture: er/gram-name-then-key-next-line]
 An attribute with a comment line or a directive between its parts keeps its line
 breaks. Later structural parts and standalone trivia stand one level inside the
 attribute, also in a subgraph; type, name and quoted-comment interiors stay as
-written.
+written. Rule 1 names no mark for a line break next to a comment line, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [block](./block.md#multi-line-statements),
+[sequence](./sequence.md#multi-line-statements), and
+[flowchart](./flowchart.md#accessibility-lines) put the later parts of a
+statement and the standalone trivia one continuation level inside the statement,
+where no other rule keeps the layout as written (a comment region that joins
+physical lines, a line that holds a `;`, and the like).
 
 [fixture: attribute-spacing/comment-line-inside-kept] [fixture:
 attribute-spacing/directive-inside-kept] [fixture:
@@ -492,11 +499,15 @@ Comment regions that join physical lines retain their original layout.
 
 [test: er/attribute-spacing/comment-region-continuation-kept]
 
-A directive between the parts of an attribute retains its contacts within a
-printed line, and a directive on a line of its own between two attributes stays
-between them. A directive between two attributes written on the same line moves
-with the attribute after it to the line after, since each attribute stands on a
-line of its own.
+A directive between the parts of an attribute is placed as under
+[Directives](./flowchart.md#directives): mermaid.js removes a directive before
+it reads the text, so the gap is printed as without the directive and the
+directive stands after the space of that rule, touching the unit that follows it
+(`int a %%{init: {}}%% PK` is printed `int a %%{init: {}}%%PK`, and
+`int%%{init: {}}%% b` is printed `int %%{init: {}}%%b`). A directive on a line
+of its own between two attributes stays between them. A directive between two
+attributes written on the same line moves with the attribute after it to the
+line after, since each attribute stands on a line of its own.
 
 [fixture: attribute-spacing/directive-between-attributes-on-a-line] [fixture:
 attribute-spacing/directive-inside-kept] [fixture:
@@ -1851,7 +1862,12 @@ erDiagram
 ### Accessibility statements
 
 A `;` that the line rule ignores after a description block does not prevent the
-one-line colon form; its written source remains after the description.
+one-line colon form; its written source remains after the description: a line
+that holds a `;` other than one that separates statements keeps it where it is
+(see [Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)), and the
+block is printed in the one-line form with the colon that the examples write
+(see
+[A description block on one line](./compatibility.md#a-description-block-on-one-line)).
 
 [fixture: accessibility-statements/block-trailing-ignored-semicolon]
 
@@ -2105,7 +2121,8 @@ A comment line before the header stands at the first column.
 [fixture: comments/before-header]
 
 A comment line at the end of the text stays on a line of its own, with the line
-break added.
+break added, as in [gantt](./gantt.md#comments) and
+[journey](./journey.md#comments).
 
 [fixture: comments/after-last-statement-without-line-break] [fixture:
 comments/after-header-without-line-break]
@@ -2189,6 +2206,12 @@ directives/unclosed-after-statement-kept]
 When formatting splits units that were on the same line, a directive in their
 gap moves with the following unit. Keep its right-side contact or separation;
 break its left contact.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this placement, as [radar](./radar.md#global-directives),
+[packet](./packet.md#global-directives), and
+[wardley](./wardley.md#global-directives) place a directive in the gap of units
+that formatting splits, where no other rule keeps the layout as written (a
+directive that is not closed after a statement, and the like).
 
 [fixture: er/directives/whitespace-on-both-sides]
 
@@ -2469,7 +2492,8 @@ spacing.
 
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
 
-Blank lines and comment lines keep their usual layout around the statement.
+Blank lines and comment lines keep their usual layout around the statement (see
+[Blank lines](#blank-lines) and [Comments](#comments)).
 
 [fixture: semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines]
 
@@ -2494,9 +2518,18 @@ is an entity, so removing its terminator changes the Db.
 [fixture:
 semicolons-at-the-end-of-a-style-statement/hash-outside-line-rule-kept]
 
-A directive after the semicolon on the same line keeps the `;`.
+A directive after the semicolon on the same line keeps the `;`. The line break
+after the directive goes on in the style, as it does after whitespace at the end
+of the last style (see [Styles and classes](#styles-and-classes)): the next line
+stays at its written column, and what it holds belongs to the last style. So the
+`B` that follows `classDef c fill:#f00; %%{init: {}}%%` is the last digit of the
+color `#f00B`, not an entity, and it is printed `b` like the other digits of a
+color (see
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
 
 [fixture: semicolons-at-the-end-of-a-style-statement/trailing-items-kept]
+[corpus fixture: er/lex-classdef-ignored-semicolon-then-text] [corpus fixture:
+er/tokens-closed-directive-end-of-classdef-line]
 
 An ignored `;` beside another `;` is kept to preserve the line rule's selection.
 

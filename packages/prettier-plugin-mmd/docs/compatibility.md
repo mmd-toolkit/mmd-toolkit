@@ -277,6 +277,8 @@ The table also names the pinned version where it needs the kept form.
 | [railroad](./railroad.md#semicolons)                                                                                                            | ABNF `style=(":"`, then a line break and `)%%{!#}%% ;`                                                                                                                       | `style=(":")%%{!#}%% ;`                                               | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.16.1 to 12.3.0 reject the other form                                                                     | [fixture: railroad/semicolons/abnf-style-group-newline]                                                                                                     |
 | [railroad](./railroad.md#semicolons)                                                                                                            | PEG `r<-("sty%%{wrap}%%le:"`, then a line break and `)%%{!#}%% ;`                                                                                                            | `r<-("sty%%{wrap}%%le:")%%{!#}%% ;`                                   | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.16.1 to 12.3.0 reject the other form                                                                     | [fixture: railroad/semicolons/peg-directive-split-style]                                                                                                    |
 | [railroad](./railroad.md#comments)                                                                                                              | ABNF `r="comment"; note`, then `;` on the next line                                                                                                                          | `r="comment"; note ;`                                                 | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.16.1 to 12.3.0 reject the other form                                                                     | [fixture: railroad/comments/abnf-before-terminator]                                                                                                         |
+| [railroad](./railroad.md#title)                                                                                                                 | `title`, a line break, and `r=terminal("x");`                                                                                                                                | `title r=terminal("x");`                                              | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.16.1 to 12.3.0 draw another figure; 12.3.0 changes the Db                                                | [fixture: railroad/title/ir-rule-on-next-line]                                                                                                              |
+| [railroad](./railroad.md#accessibility-lines)                                                                                                   | `accTitle:`, a line break, and `r=terminal("x");` (likewise `accDescr:`)                                                                                                     | `accTitle: r=terminal("x");`                                          | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.16.1 to 12.3.0 draw another figure; 12.3.0 changes the Db                                                | [fixture: railroad/accessibility-lines/ir-acc-title-before-rule]                                                                                            |
 | [radar](./radar.md#header)                                                                                                                      | `radar-beta%%{wrap}%%:axis North`                                                                                                                                            | `radar-beta%%{wrap}%%axis North`                                      | [3](./printed-form.md#3-a-spelling)                                  | 11.7.0, 11.17.2, 12.0.0, 12.3.0 reject the form without `:`                                                 | [fixture: radar/header/header-global-colon]                                                                                                                 |
 | [radar](./radar.md#header)                                                                                                                      | `radar-beta:%%{x y`, a line break, and `axis North`                                                                                                                          | `radar-beta%%{x y`, a line break, and `axis North`                    | [3](./printed-form.md#3-a-spelling)                                  | 11.7.0, 11.17.2, 12.0.0, 12.3.0 reject the form without `:`                                                 | [fixture: radar/header/colon-unclosed-directive-kept]                                                                                                       |
 | [radar](./radar.md#multi-line-statements)                                                                                                       | the entry lines of `curve c["style:#a"]` before `} title tail;`                                                                                                              | the entry lines joined as `curve c["style:#a"]{ 1 } title tail;`      | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.7.0, 11.17.2, 12.0.0, 12.3.0 draw different title text; 12.3.0 changes Db `.title`                       | [fixture: radar/multi-line-statements/semicolon-terminal-line]                                                                                              |
@@ -3985,6 +3987,20 @@ xychart/header-and-orientation/beta-header-kept] [fixture:
 xychart/keyword-case/header-spelling-kept] [fixture:
 xychart/header-and-orientation/second-header-spelling-and-case-kept]
 
+The four headers of a railroad diagram, `railroad-beta`, `railroad-ebnf-beta`,
+`railroad-abnf-beta`, and `railroad-peg-beta`, stay as written. 11.16.1,
+11.17.2, 12.0.0, and 12.3.0, the versions that have the diagram type, read each
+name in this spelling only: they reject it without `-beta` (`railroad`,
+`railroad-ebnf`, `railroad-abnf`, `railroad-peg`), with `-beta` in another case
+(`-Beta` and `-BETA` after each name), and in capitals (`RAILROAD-BETA` and the
+three names like it). No version that has the diagram type reads the name
+without `-beta`, so [rule 3](./printed-form.md#3-a-spelling) does not print it,
+and the examples of the documentation write no other spelling.
+
+[corpus fixture: railroad/ir-header-upper] [corpus fixture:
+railroad/ebnf-header-upper] [corpus fixture: railroad/abnf-header-upper] [corpus
+fixture: railroad/peg-header-upper]
+
 `stateDiagram` and `stateDiagram-v2` stay as written for the same reason. The
 detector of the pinned mermaid.js draws both with the unified state diagram
 ([the comment](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/state/stateDetector-V2.ts#L9)).
@@ -7415,8 +7431,12 @@ railroad/multiline-values/peg-columns] [fixture: railroad/predicates/peg-nested]
 
 Comment forms and contents remain written: all four dialects have `%%`, IR has C
 comments, EBNF has C and ISO comments, ABNF has semicolon line comments and PEG
-has hash line comments. LS/PS remain native line-comment content. A bare ABNF
-`;` is punctuation; its terminator must meet LF or EOF immediately. Every rule's
+has hash line comments. LS/PS remain native line-comment content. None of the 14
+railroad examples in the documentation of mermaid.js holds a comment, so
+[rule 3](./printed-form.md#3-a-spelling) gives no form for the marks and keeps
+them as written, and the text of a comment stays as written, since mermaid.js
+does not read it (see [Comments](./railroad.md#comments)). A bare ABNF `;` is
+punctuation; its terminator must meet LF or EOF immediately. Every rule's
 required visible `;` stays attached where safe. Ordinary IR rules retain
 semicolons inside values without freezing their layout; every other authored
 semicolon stays under shared segment protection, including crossing values. Each

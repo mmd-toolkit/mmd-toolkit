@@ -297,6 +297,8 @@ ELK の配置のパッケージのどのリリースも、
 | [railroad](./railroad.ja.md#セミコロン)                                                                                               | ABNF の `style=(":"` と `)%%{!#}%% ;` の間の改行                                                                                              | `style=(":")%%{!#}%% ;`                         | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.16.1 から 12.3.0 が右の形を拒否する                                                                              | [fixture: railroad/semicolons/abnf-style-group-newline]                                                                                                     |
 | [railroad](./railroad.ja.md#セミコロン)                                                                                               | PEG の `r<-("sty%%{wrap}%%le:"` と `)%%{!#}%% ;` の間の改行                                                                                   | `r<-("sty%%{wrap}%%le:")%%{!#}%% ;`             | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.16.1 から 12.3.0 が右の形を拒否する                                                                              | [fixture: railroad/semicolons/peg-directive-split-style]                                                                                                    |
 | [railroad](./railroad.ja.md#コメント)                                                                                                 | ABNF の `r="comment"; note` と、次の行の `;`                                                                                                  | `r="comment"; note ;`                           | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.16.1 から 12.3.0 がもう一方の形を拒否する                                                                        | [fixture: railroad/comments/abnf-before-terminator]                                                                                                         |
+| [railroad](./railroad.ja.md#タイトル)                                                                                                 | `title`、改行、`r=terminal("x");`                                                                                                             | `title r=terminal("x");`                        | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.16.1 から 12.3.0 が別の図を描き、12.3.0 は Db も変える                                                           | [fixture: railroad/title/ir-rule-on-next-line]                                                                                                              |
+| [railroad](./railroad.ja.md#accessibility-の行)                                                                                       | `accTitle:`、改行、`r=terminal("x");`（`accDescr:` も同じ）                                                                                   | `accTitle: r=terminal("x");`                    | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.16.1 から 12.3.0 が別の図を描き、12.3.0 は Db も変える                                                           | [fixture: railroad/accessibility-lines/ir-acc-title-before-rule]                                                                                            |
 | [radar](./radar.ja.md#header)                                                                                                         | `radar-beta%%{wrap}%%:axis North`                                                                                                             | `radar-beta%%{wrap}%%axis North`                | [3](./printed-form.ja.md#3-綴り)                      | 11.7.0、11.17.2、12.0.0、12.3.0 は `:` のない形を拒否します                                                         | [fixture: radar/header/header-global-colon]                                                                                                                 |
 | [radar](./radar.ja.md#header)                                                                                                         | `radar-beta:%%{x y`、改行、`axis North`                                                                                                       | `radar-beta%%{x y`、改行、`axis North`          | [3](./printed-form.ja.md#3-綴り)                      | 11.7.0、11.17.2、12.0.0、12.3.0 が `:` のない形を拒否する                                                           | [fixture: radar/header/colon-unclosed-directive-kept]                                                                                                       |
 | [radar](./radar.ja.md#multi-line-statements)                                                                                          | `curve c["style:#a"]` の項目の改行と `} title tail;`                                                                                          | `curve c["style:#a"]{ 1 } title tail;`          | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0、11.17.2、12.0.0、12.3.0 は題を違って描き、12.3.0 は Db の `.title` も変えます                               | [fixture: radar/multi-line-statements/semicolon-terminal-line]                                                                                              |
@@ -4219,6 +4221,22 @@ sankey 図で `-beta` が別の大文字小文字のヘッダー（`sankey-BETA`
 [fixture: xychart/keyword-case/header-spelling-kept]
 [fixture: xychart/header-and-orientation/second-header-spelling-and-case-kept]
 
+railroad 図の 4 つのヘッダー `railroad-beta`、`railroad-ebnf-beta`、
+`railroad-abnf-beta`、`railroad-peg-beta` は書かれたまま残します。
+この図種がある 11.16.1、11.17.2、12.0.0、12.3.0 は、
+どの名前もこの綴りだけで読み、`-beta` のない名前（`railroad`、`railroad-ebnf`、
+`railroad-abnf`、`railroad-peg`）、
+`-beta` の大文字小文字が違う名前（各名前の `-Beta` と `-BETA`）、
+すべて大文字の名前（`RAILROAD-BETA` と同じ形の 3 つ）を拒否します。
+この図種がある版は、どれも `-beta` のない名前を読まないので、
+[規則 3](./printed-form.ja.md#3-綴り)はその名前を印字せず、
+ドキュメントの例もほかの綴りを書いていません。
+
+[corpus fixture: railroad/ir-header-upper]
+[corpus fixture: railroad/ebnf-header-upper]
+[corpus fixture: railroad/abnf-header-upper]
+[corpus fixture: railroad/peg-header-upper]
+
 `stateDiagram` と `stateDiagram-v2` も、同じ理由で書かれたまま残します。
 固定した mermaid.js の検出器は、どちらも統合された状態遷移図で描きます。
 （[そのコメント](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/state/stateDetector-V2.ts#L9)）。
@@ -7787,6 +7805,10 @@ PEG の先読み記号は公開 label から再構築せず、書かれた適用
 全方言の `%%`、IR の C コメント、EBNF の C と ISO コメント、
 ABNF のセミコロン行コメント、PEG の `#` の行コメントが対象です。
 LS と PS は図固有の行コメントの内容として保ちます。
+mermaid.js のドキュメントの railroad の例 14 件には、コメントが 1 つもないので、
+[規則 3](./printed-form.ja.md#3-綴り)は印に形を与えず、書かれたまま残します。
+コメントのテキストは、mermaid.js が読まないので書かれたまま残します。
+詳しくは[コメント](./railroad.ja.md#コメント)を参照してください。
 裸の ABNF `;` は句読点であり、終端の直後は LF または EOF にします。
 規則の必須の可視 `;` は安全な場所で定義に付けます。
 通常の IR 規則は、値の中のセミコロンによって配置を固定しません。

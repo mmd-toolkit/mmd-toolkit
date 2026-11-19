@@ -1517,6 +1517,23 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   木はコメントを並べますが、印字処理は 1 つの行として読みます。
   [U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
   を参照してください。
+  `#` のコメントはコメント行ではなく、行をつなぎません。
+  その前の U+2028 と U+2029 は、文の後のコメントの前の空白とタブと同じく、
+  空白 1 つで印字します（[コメント](#コメント)を参照）。
+  ただし、次の単位の後では、mermaid.js がこの文字を、
+  またはこの文字と `#` 以降を、その単位の一部として読むので、
+  この文字を書かれたまま残します（`autonumber 5`、U+2028 か U+2029、
+  `#` コメントは、対象にする版の mermaid.js のすべてが拒否し、整形しません）。
+
+  - 別名もデータブロックもない `participant` と `actor`（`create` の後も同じ）、
+    および `destroy`、`activate`、`deactivate` の ID。
+    `A`、U+2028、`# c` が 1 つの ID です。
+  - `accTitle` と `accDescr` の 1 行。
+    `#` とそれ以降は値の一部です。
+  - `title` と、テキストのある `box`。
+    テキストがこの文字を含みます。
+    12.3.0 の Db の title はこの文字で終わり、
+    この文字を含む box の fill もその Db で `transparent` です。
 
   [test: a `#` comment after U+2028, which joins no lines]
   [test: a `%%` comment line after U+2028, which joins the next line]
@@ -1526,6 +1543,45 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   [test: U+2028 after a `%%` comment that a comment line follows]
   [test: U+2029 after a `%` comment that a comment line follows]
   [test: a `#` comment and a comment line after U+2028 inside a message text]
+  [test: a `#` comment after U+2028 after a note]
+  [test: a `#` comment after U+2028 after a block header]
+  [test: a `#` comment after U+2028 after a link]
+  [test: a `#` comment after U+2028 after a participant with an alias]
+  [test: a `#` comment after U+2028 after the header of the diagram]
+  [test: a `#` comment after U+2028 after autonumber]
+  [test: a `#` comment after U+2028 after a box without a text]
+  [test: a `#` comment after U+2028 after the id of a participant]
+  [test: a `#` comment after U+2028 after the id of a create]
+  [test: a `#` comment after U+2028 after the id of a destroy]
+  [test: a `#` comment after U+2028 after activate and deactivate]
+  [test: a `#` comment after U+2028 after accTitle]
+  [test: a `#` comment after U+2028 after an accDescr line]
+  [test: a `#` comment after U+2028 after a title]
+  [test: a `#` comment after U+2028 after a box with a text]
+  [test: a `#` comment after U+2028 after an actor and a data block]
+  [test: a `#` comment after U+2028 after links, properties, and details]
+  [test: a `#` comment after U+2028 after block headers and end]
+  [test: a `#` comment after U+2028 after an accDescr block]
+  [test: a `#` comment after U+2028 after autonumber off]
+  [test: a `#` comment after U+2029 after a message and a note]
+  [test: a `#` comment after U+2029 where the character stays]
+  [test: a `#` comment after U+2029 after an actor and a data block]
+  [test: a `#` comment after U+2029 after links, properties, and details]
+  [test: a `#` comment after U+2029 after block headers and end]
+  [test: a `#` comment after U+2029 after an accDescr block]
+  [test: a `#` comment after U+2029 after autonumber off]
+  [test: a `#` comment after U+2029 after a link, an alias, and the header]
+  [test: a `#` comment after U+2028 after the id of an actor]
+  [test: a `#` comment after U+2029 after the id of a create and a destroy]
+  [test: a `#` comment after U+2028 after autonumber 5 and a space]
+  [test: a `#` comment after U+2029 after autonumber 5 and a space]
+  [test: a `#` comment after U+2028 after a create with an alias]
+  [test: a `#` comment after U+2029 after the id of an actor]
+  [test: a `#` comment after U+2029 after autonumber]
+  [test: a `#` comment after U+2029 after a box without a text]
+  [test: a `#` comment after U+2028 and U+2029 after a data block
+  that is read as a name] [test: autonumber 5, U+2028, and a `#` comment]
+  [test: autonumber 5, U+2029, and a `#` comment]
 
 - 閉じていないディレクティブの直後。
   そのようなディレクティブのテキストはこの文字の手前で止まり、

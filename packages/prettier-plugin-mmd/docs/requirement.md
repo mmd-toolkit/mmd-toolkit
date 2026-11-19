@@ -759,14 +759,19 @@ requirementDiagram
 ### Direction
 
 A direction line is `direction` and its value, with the text that mermaid.js
-does not read before and after them. The text is kept as written. One space
-stands between it and `direction`, where they were written apart, and between
-`direction` and the value; the value `lr` is printed `LR`; the other values keep
-the case in which they are written, since the examples use only `LR` (see
+does not read before and after them. The text is kept as written, since the tree
+holds it whole (see
+[A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)).
+One space stands between it and `direction`, where they were written apart, and
+between `direction` and the value; the value `lr` is printed `LR`; the other
+values keep the case in which they are written, since the examples use only `LR`
+(see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
 
 [fixture: direction/spacing] [fixture: direction/spaces-around] [fixture:
-direction/text-kept] [fixture: direction/case-one-form]
+direction/text-kept] [fixture: direction/text-inner-whitespace-kept] [fixture:
+direction/text-both-sides-inner-whitespace-kept] [fixture:
+direction/case-one-form]
 
 A value written on a later line is printed after `direction` on one line.
 
@@ -1052,9 +1057,15 @@ empty-description-blocks/in-body-before-closing-brace] [fixture:
 empty-description-blocks/in-body-alone]
 
 The whitespace-only interior of a description block, including tabs, line breaks
-and Unicode whitespace, prints `{}`: there is no text for interior whitespace to
-surround. An already empty interior stays empty. The keyword and opening brace
-have one space between them: `accDescr{  }` becomes `accDescr {}`.
+and Unicode whitespace, prints `{}`, as Prettier prints `x = { }` as `x = {}`
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)): there is no text
+for interior whitespace to surround. An already empty interior stays empty. The
+keyword and opening brace have one space between them: `accDescr{  }` becomes
+`accDescr {}`. Rule 1 names no mark between a keyword and its opening brace, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [gantt](./gantt.md#empty-description-blocks),
+[class](./class.md#empty-description-blocks), and
+[journey](./journey.md#empty-description-blocks) print one space there.
 
 [fixture: empty-description-blocks/empty-whitespace-interiors] [test:
 requirement Unicode and tab interiors] [test: requirement body Unicode and tab
