@@ -2257,6 +2257,66 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "erDiagram\n  T {\n    int\u2029 %%{x}%%a\n  }\n",
   ],
   [
+    "U+2029 and a directive in the gap between the type and the name of an ER attribute, spaces before the U+2029 and after the directive: the gap stays as written",
+    "erDiagram\nT {\nint  \u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int  \u2029  %%{x}%%  a\n  }\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the type and the name of an ER attribute, one space before the U+2029: the gap stays as written",
+    "erDiagram\nT {\nint \u2029%%{x}%% a\n}\n",
+    "erDiagram\n  T {\n    int \u2029%%{x}%% a\n  }\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the type and the name of an ER attribute, a tab before the U+2029: the gap stays as written",
+    "erDiagram\nT {\nint\t\u2029%%{x}%% a\n}\n",
+    "erDiagram\n  T {\n    int\t\u2029%%{x}%% a\n  }\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the type and the name of an ER attribute, spaces after the directive",
+    "erDiagram\nT {\nint\u2028  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u2028 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the type and the name of an ER attribute, spaces before the U+2028 and after the directive: the gap stays as written",
+    "erDiagram\nT {\nint  \u2028  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int  \u2028  %%{x}%%  a\n  }\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship, spaces after the directive",
+    "erDiagram\nA\u2028  %%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship, spaces before the U+2028 and after the directive: the gap stays as written",
+    "erDiagram\nA  \u2028  %%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A  \u2028  %%{x}%%  ||--o{ B : y\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship, one space before the U+2028: the gap stays as written",
+    "erDiagram\nA \u2028%%{x}%% ||--o{ B : y\n",
+    "erDiagram\n  A \u2028%%{x}%% ||--o{ B : y\n",
+  ],
+  [
+    "a color before a semicolon that the line rule ignores on the line after a comment line after U+2028 in a style, where a comma starts the line",
+    "erDiagram\nA\nstyle A fill:#F00\u2028%% c\n,stroke:#ABC;\n",
+    "erDiagram\n  A\n  style A fill:#F00\u2028%% c\n,stroke:#ABC;\n",
+  ],
+  [
+    "a run of spaces after a comma at the end of a line of a class definition that whitespace and a line break join stays as written",
+    "erDiagram\nA\nclassDef c fill:#F00,   \nstroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c fill:#f00,   \n    stroke:#ABC;\n",
+  ],
+  [
+    "a run of spaces at the end of a line before a comma on the next line of a class definition that whitespace and a line break join stays as written",
+    "erDiagram\nA\nclassDef c fill:#F00   \n,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c fill:#f00   \n    ,stroke:#ABC;\n",
+  ],
+  [
+    "a color that characters follow after whitespace after a comment line after U+2028 in a style",
+    "erDiagram\nA\nstyle A\u2028%% c\n fill:#F00 x\n",
+    "erDiagram\n  A\n  style A\u2028%% c\n fill:#F00 x\n",
+  ],
+  [
     "whitespace between the statements of a line that a comment line after U+2028 joins with the next line",
     "erDiagram\nA   ||--o{   B : x\u2028%% c\n Bar   {   int   id   }\n",
     "erDiagram\n  A   ||--o{   B : x\u2028%% c\n Bar   {   int   id   }\n",

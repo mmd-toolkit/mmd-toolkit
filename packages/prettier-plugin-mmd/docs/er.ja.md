@@ -460,7 +460,7 @@ Db が保つからです。
 [flowchart](./flowchart.ja.md#アクセシビリティの行) も、
 文の後続部分と独立した注釈類を、文の内側に継続の 1 段字下げで置きます。
 ただし、ほかの規則が配置を書かれたまま残す所は別です（物理行を結ぶコメント領域、
-`;` を含む行などです）。
+`;` を含む行です）。
 
 [fixture: attribute-spacing/comment-line-inside-kept]
 [fixture: attribute-spacing/directive-inside-kept]
@@ -489,7 +489,8 @@ ER の実体のブロックなど）は別です。
 `A only one to zero or more B` は `A || -- o{ B` と印字します。
 そのような行の style や classDef の色は、
 その行でコンマが色に続くとき（空白を挟んでもです）と、
-文の最後の行の最後の色について、[色](#色)と同じに印字します。
+行の規則が無視する `;` が続かない、文の最後の行の最後の色について、
+[色](#色)と同じに印字します。
 そこでは色は小文字になります。
 色に空白の後で文字が続くときは、コメント行の後でも、色を書かれたまま残します。
 色の後ろにその行でコメント領域が続くときも、色を書かれたまま残します。
@@ -498,6 +499,9 @@ ER の実体のブロックなど）は別です。
 色をその文字と接する語にするからです。
 詳しくは [同じに描かれる色](./compatibility.ja.md#同じに描かれる色)
 を参照してください。
+行の規則が無視する `;` の前の色も書かれたまま残しますが、
+[色](#色)の規則はこれを小文字に印字するので、規則に反して印字しており、
+規則による修正を待っています。
 スタイルの中の空白は書かれたままです（`style A fill:#F00,   stroke:#ABC`、
 U+2028、`%% c` は、コンマの後の連なりを残します）。
 
@@ -512,6 +516,8 @@ U+2028、`%% c` は、コンマの後の連なりを残します）。
 [test: a color before the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
 [test: a color before the semicolon that the line rule ignores on the line after a comment line after U+2028 in a class definition]
 [test: whitespace between the statements of a line that a comment line after U+2028 joins with the next line]
+[test: a color before a semicolon that the line rule ignores on the line after a comment line after U+2028 in a style, where a comma starts the line]
+[test: a color that characters follow after whitespace after a comment line after U+2028 in a style]
 [test: a color that characters follow after whitespace in a style on a line that a comment line after U+2028 joins with the next line]
 [test: the last color of the last line of a style that a comment line after U+2028 cuts, where a statement follows it]
 [test: a run of spaces after a comma in a style on a line that a comment line after U+2028 joins stays as written]
@@ -2232,9 +2238,12 @@ erDiagram
 閉じていないディレクティブ（次の段落で挙げます）と、
 コメント領域が結ぶ行（[複数行の文](#複数行の文)を参照）と、
 U+2028 や U+2029 を含む隙間です。
-隙間では、その文字は残り、ディレクティブはその後の空白 1 つの後ろに置きます。
+隙間では、その文字の前に空白がないとき、その文字は残り、
+ディレクティブは空白 1 つの後ろに置きます。
 属性の `int`、U+2029、`%%{x}%%`、`a` は、`int`、U+2029、空白、
 `%%{x}%%a` に印字します。
+関係の隙間でも同じです。
+その文字の前に空白かタブがあるときは、隙間を書かれたまま残します。
 
 [fixture: directives/kept] [fixture: directives/before-header]
 [fixture: directives/after-header-on-same-line]
@@ -2244,6 +2253,14 @@ U+2028 や U+2029 を含む隙間です。
 [fixture: directives/after-statement-at-end-of-line]
 [fixture: directives/in-blocks]
 [test: U+2029 and a directive in the gap between the type and the name of an ER attribute]
+[test: U+2029 and a directive in the gap between the type and the name of an ER attribute, spaces before the U+2029 and after the directive: the gap stays as written]
+[test: U+2029 and a directive in the gap between the type and the name of an ER attribute, one space before the U+2029: the gap stays as written]
+[test: U+2029 and a directive in the gap between the type and the name of an ER attribute, a tab before the U+2029: the gap stays as written]
+[test: U+2028 and a directive in the gap between the type and the name of an ER attribute, spaces after the directive]
+[test: U+2028 and a directive in the gap between the type and the name of an ER attribute, spaces before the U+2028 and after the directive: the gap stays as written]
+[test: U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship, spaces after the directive]
+[test: U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship, spaces before the U+2028 and after the directive: the gap stays as written]
+[test: U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship, one space before the U+2028: the gap stays as written]
 
 閉じていないディレクティブはテキストの残りを取り込むので、書かれたまま残します。
 
@@ -2797,8 +2814,8 @@ mermaid.js が複数行にわたって読む文は、改行が、
 [journey](./journey.ja.md#複数行の文)も、コメントやディレクティブの隣の改行と、
 その前の空白を残し、文の後ろの部分と、
 その間のコメントやディレクティブの行を 1 段深く置きます。
-ほかの規則が配置を書かれたまま残す所は別です（Db が空白ごとテキストを持つ所や、
-動かすと mermaid.js がテキストを拒否する所などです）。
+ほかの規則が配置を書かれたまま残す所は別です（Db が空白ごとテキストを持つ所と、
+動かすと mermaid.js がテキストを拒否する所です）。
 コメントで結合される領域は、それがつなぐ行を原文のまま残します（下を参照）。
 改行を空白 1 つか何も挟まずにつなぐと、
 行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
@@ -2806,7 +2823,7 @@ mermaid.js が複数行にわたって読む文は、改行が、
 それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
 改行が残る文は、2 つのスタイルの間のコンマの横にある空白とタブの連なりを、
 最初の行でも、その後の行でも、空白 1 つに印字します。
-スタイルのコロンの周りと、スタイルのテキストの中の連なりは、
+行末の連なりと、スタイルのコロンの周りと、スタイルのテキストの中の連なりは、
 書かれたまま残します。
 色は、コンマが色に続くとき（空白と改行を挟んでもです）と、
 `;` が続かない文の最後の色について、[色](#色)と同じに印字します。
@@ -2828,6 +2845,8 @@ mermaid.js が複数行にわたって読む文は、改行が、
 [test: a run of spaces inside the text of a style in a class definition that whitespace and a line break join stays as written]
 [test: the last color of a style that a comment line cuts from its keyword, where the text ends after it]
 [test: a color that characters follow after whitespace in a class definition that whitespace and a line break join]
+[test: a run of spaces after a comma at the end of a line of a class definition that whitespace and a line break join stays as written]
+[test: a run of spaces at the end of a line before a comma on the next line of a class definition that whitespace and a line break join stays as written]
 
 コメントで結合される領域をまたいで続く名前も、そのような文の一部です。
 `A`、U+2028、`%% c`、行 `Bar` は、1 つの名前 `A`、U+2028、`Bar` です。

@@ -485,7 +485,7 @@ decides, as [block](./block.md#multi-line-statements),
 [flowchart](./flowchart.md#accessibility-lines) put the later parts of a
 statement and the standalone trivia one continuation level inside the statement,
 where no other rule keeps the layout as written (a comment region that joins
-physical lines, a line that holds a `;`, and the like).
+physical lines, a line that holds a `;`).
 
 [fixture: attribute-spacing/comment-line-inside-kept] [fixture:
 attribute-spacing/directive-inside-kept] [fixture:
@@ -511,14 +511,17 @@ printed as symbols, as on a plain line, with the whitespace between them as
 written: `A only one to zero or more B` is printed `A || -- o{ B`. The colors of
 a style or a class definition on such a line are printed as under
 [Colors](#colors) where a comma follows the color on its line, also after
-whitespace, and for the last color of the last line of the statement: there a
-color is in lower case. A color stays as written where characters follow it
-after whitespace, also after a comment line, and where a comment region follows
-it on its line, also where a comma starts the line after the comment line and
-where the text ends after it: the U+2028 or U+2029 that the text of the style
-keeps after the color makes it a word that the character touches (see
+whitespace, and for the last color of the last line of the statement, where no
+`;` that the line rule ignores follows it: there a color is in lower case. A
+color stays as written where characters follow it after whitespace, also after a
+comment line, and where a comment region follows it on its line, also where a
+comma starts the line after the comment line and where the text ends after it:
+the U+2028 or U+2029 that the text of the style keeps after the color makes it a
+word that the character touches (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
-The whitespace inside the styles stays as written
+A color before a `;` that the line rule ignores stays as written, which the
+Colors rule prints in lower case: that form is printed against the rule and
+waits to be fixed by it. The whitespace inside the styles stays as written
 (`style A fill:#F00,   stroke:#ABC`, U+2028, and `%% c` keep the run after the
 comma).
 
@@ -545,12 +548,15 @@ color before the semicolon that the line rule ignores in a class definition that
 whitespace and a line break join] [test: a color before the semicolon that the
 line rule ignores on the line after a comment line after U+2028 in a class
 definition] [test: whitespace between the statements of a line that a comment
-line after U+2028 joins with the next line] [test: a color that characters
-follow after whitespace in a style on a line that a comment line after U+2028
-joins with the next line] [test: the last color of the last line of a style that
-a comment line after U+2028 cuts, where a statement follows it] [test: a run of
-spaces after a comma in a style on a line that a comment line after U+2028 joins
-stays as written]
+line after U+2028 joins with the next line] [test: a color before a semicolon
+that the line rule ignores on the line after a comment line after U+2028 in a
+style, where a comma starts the line] [test: a color that characters follow
+after whitespace after a comment line after U+2028 in a style] [test: a color
+that characters follow after whitespace in a style on a line that a comment line
+after U+2028 joins with the next line] [test: the last color of the last line of
+a style that a comment line after U+2028 cuts, where a statement follows it]
+[test: a run of spaces after a comma in a style on a line that a comment line
+after U+2028 joins stays as written]
 
 A directive between the parts of an attribute is placed as under
 [Directives](./flowchart.md#directives): mermaid.js removes a directive before
@@ -2251,9 +2257,10 @@ decides, as [class](./class.md#directives),
 the gap in the same way, where no other rule keeps the layout as written: a
 directive that is not closed, below; a line that a comment region joins, see
 [Multi-line statements](#multi-line-statements); and a gap that holds U+2028 or
-U+2029, where the character stays and the directive stands after one space
-(`int`, U+2029, `%%{x}%%`, and `a` in an attribute are printed `int`, U+2029, a
-space, and `%%{x}%%a`).
+U+2029: where no whitespace comes before the character, it stays and the
+directive stands after one space, in an attribute (`int`, U+2029, `%%{x}%%`, and
+`a` are printed `int`, U+2029, a space, and `%%{x}%%a`) and in a relationship;
+where spaces or tabs come before the character, the gap stays as written.
 
 [fixture: directives/kept] [fixture: directives/before-header] [fixture:
 directives/after-header-on-same-line] [fixture:
@@ -2261,7 +2268,22 @@ directives/after-header-touching-kept] [fixture:
 directives/whitespace-on-both-sides] [fixture: directives/touching-one-side]
 [fixture: directives/after-statement-at-end-of-line] [fixture:
 directives/in-blocks] [test: U+2029 and a directive in the gap between the type
-and the name of an ER attribute]
+and the name of an ER attribute] [test: U+2029 and a directive in the gap
+between the type and the name of an ER attribute, spaces before the U+2029 and
+after the directive: the gap stays as written] [test: U+2029 and a directive in
+the gap between the type and the name of an ER attribute, one space before the
+U+2029: the gap stays as written] [test: U+2029 and a directive in the gap
+between the type and the name of an ER attribute, a tab before the U+2029: the
+gap stays as written] [test: U+2028 and a directive in the gap between the type
+and the name of an ER attribute, spaces after the directive] [test: U+2028 and a
+directive in the gap between the type and the name of an ER attribute, spaces
+before the U+2028 and after the directive: the gap stays as written] [test:
+U+2028 and a directive in the gap between an entity and the cardinality of an ER
+relationship, spaces after the directive] [test: U+2028 and a directive in the
+gap between an entity and the cardinality of an ER relationship, spaces before
+the U+2028 and after the directive: the gap stays as written] [test: U+2028 and
+a directive in the gap between an entity and the cardinality of an ER
+relationship, one space before the U+2028: the gap stays as written]
 
 A directive that is not closed takes the rest of the text, and is kept as
 written.
@@ -2843,20 +2865,20 @@ decides, as [sequence](./sequence.md#multi-line-statements),
 comment or a directive and the whitespace before it, and put the later parts of
 a statement and the comment and directive lines between them one level deeper,
 where no other rule keeps the layout as written (where the Db holds the text
-with its whitespace, where moving a line makes mermaid.js reject the text, and
-the like). A joining region keeps the line that it joins as written (see below).
-A line break stays where joining it, with one space or with nothing, could
-change which `;` the line rule ignores, and where a `;` ends the last line; any
-other line break is joined as usual, also in a statement that holds a `;`. A
-statement that keeps a line break prints a run of spaces and tabs beside a comma
-between two styles as one space, on the first line and on the lines after it,
-and keeps a run around the colon of a style and inside the text of a style as
-written. Its colors are printed as under [Colors](#colors) where a comma follows
-the color, also after whitespace and a line break, and for the last color of the
-statement where no `;` follows it. A color that characters follow after
-whitespace stays as written, as under Colors, and so does a color before a `;`
-that the line rule ignores, which the Colors rule prints in lower case: that
-form is printed against the rule and waits to be fixed by it.
+with its whitespace, where moving a line makes mermaid.js reject the text). A
+joining region keeps the line that it joins as written (see below). A line break
+stays where joining it, with one space or with nothing, could change which `;`
+the line rule ignores, and where a `;` ends the last line; any other line break
+is joined as usual, also in a statement that holds a `;`. A statement that keeps
+a line break prints a run of spaces and tabs beside a comma between two styles
+as one space, on the first line and on the lines after it, and keeps a run at
+the end of a line, a run around the colon of a style, and a run inside the text
+of a style as written. Its colors are printed as under [Colors](#colors) where a
+comma follows the color, also after whitespace and a line break, and for the
+last color of the statement where no `;` follows it. A color that characters
+follow after whitespace stays as written, as under Colors, and so does a color
+before a `;` that the line rule ignores, which the Colors rule prints in lower
+case: that form is printed against the rule and waits to be fixed by it.
 
 [fixture: multi-line-statements/semicolon-joining-changes-kept] [fixture:
 multi-line-statements/style-comment-continuation] [fixture:
@@ -2875,7 +2897,11 @@ written] [test: a run of spaces inside the text of a style in a class definition
 that whitespace and a line break join stays as written] [test: the last color of
 a style that a comment line cuts from its keyword, where the text ends after it]
 [test: a color that characters follow after whitespace in a class definition
-that whitespace and a line break join]
+that whitespace and a line break join] [test: a run of spaces after a comma at
+the end of a line of a class definition that whitespace and a line break join
+stays as written] [test: a run of spaces at the end of a line before a comma on
+the next line of a class definition that whitespace and a line break join stays
+as written]
 
 A name that goes on across a joining region is part of such a statement: `A`,
 U+2028, `%% c`, and a line `Bar` are the one name `A`, U+2028, `Bar`. It makes
