@@ -8100,6 +8100,36 @@ const lastLineAfterCommentExamples: readonly (readonly [
     'C4Context\n  Boundary(b, "B") {\n    Person(a, "A")\n  } %% c\n\n \n',
   ],
   [
+    "a final comment after a statement and a last line of a U+2028 without a line break in a kanban board",
+    "kanban\n  S[x] %% c\n\u2028",
+    "kanban\n  S[x] %% c\n\u2028\n",
+  ],
+  [
+    "a final comment after a statement and a last line of a U+2029 without a line break in a kanban board",
+    "kanban\n  S[x] %% c\n\u2029",
+    "kanban\n  S[x] %% c\n\u2029\n",
+  ],
+  [
+    "a final comment after a statement, an empty line, and a last line of a U+2028 in a kanban board",
+    "kanban\n  S[x] %% c\n\n\u2028",
+    "kanban\n  S[x] %% c\n\n\u2028\n",
+  ],
+  [
+    "a final comment after a statement and a last line of a U+2028 without a line break in a C4 diagram",
+    'C4Context\nPerson(a, "A") %% c\n\u2028',
+    'C4Context\n  Person(a, "A") %% c\n\u2028\n',
+  ],
+  [
+    "a final comment after a statement and a last line of a U+2029 without a line break in a C4 diagram",
+    'C4Context\nPerson(a, "A") %% c\n\u2029',
+    'C4Context\n  Person(a, "A") %% c\n\u2029\n',
+  ],
+  [
+    "a final comment after the brace that closes a boundary and a last line of a U+2028 in a C4 diagram",
+    'C4Context\nBoundary(b, "B") {\nPerson(a, "A")\n} %% c\n\u2028',
+    'C4Context\n  Boundary(b, "B") {\n    Person(a, "A")\n  } %% c\n\u2028\n',
+  ],
+  [
     "a final comment after the brace that closes a boundary and a last line of one space in a C4 diagram",
     'C4Context\nBoundary(b, "B") {\nPerson(a, "A")\n} %% c\n ',
     'C4Context\n  Boundary(b, "B") {\n    Person(a, "A")\n  } %% c\n',
