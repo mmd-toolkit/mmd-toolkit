@@ -1556,6 +1556,40 @@ user journey
 [fixture: c4/title-and-accdescription/title-white-only]
 [fixture: state/aliases/second-description-trailing-whitespace-dropped]
 
+テキストが書かれたままになるとき、
+つまり HTML タグが空白を保つかもしれない `<` を含むときと、
+図が `white-space` を含むときは、最後のディレクティブの後の空白の有無で、
+行の印字が同じになりません。
+（[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)）。
+最後のディレクティブの後に空白が続かないときは、その前の隙間を書かれたままにし、
+空白が続くときは、その前の隙間を空白 1 つにします。
+`title A  <b  %%{z}%%` はそのまま印字し、
+`title A  <b  %%{z}%%  ` は `title A  <b %%{z}%%` と印字します。
+Gantt 図、ユーザージャーニー、タイムライン、シーケンス図、Venn 図、
+C4 図のタイトル、C4 図の `accDescription`、
+ishikawa 図のノードのテキストで同じです。
+
+[fixture: gantt/titles-and-sections/title-angle-text-gap-kept]
+[fixture: gantt/titles-and-sections/title-angle-text-blanks-gap-one-space]
+[fixture: journey/titles-and-sections/title-angle-text-gap-kept]
+[fixture: journey/titles-and-sections/title-angle-text-blanks-gap-one-space]
+[fixture: timeline/titles-and-sections/title-angle-text-gap-kept]
+[fixture: timeline/titles-and-sections/title-angle-text-blanks-gap-one-space]
+[fixture: sequence/title/title-angle-text-gap-kept]
+[fixture: sequence/title/title-angle-text-blanks-gap-one-space]
+[fixture: venn/title/title-angle-text-gap-kept]
+[fixture: venn/title/title-angle-text-blanks-gap-one-space]
+[fixture: c4/title-and-accdescription/title-angle-text-gap-kept]
+[fixture: c4/title-and-accdescription/title-angle-text-blanks-gap-one-space]
+[fixture: c4/title-and-accdescription/description-angle-text-gap-kept]
+[fixture: c4/title-and-accdescription/description-angle-text-blanks-gap-one-space]
+[fixture: ishikawa/trailing-whitespace/directive-after-angle-text-gap-kept]
+[fixture: ishikawa/trailing-whitespace/directive-after-angle-text-blanks-gap-one-space]
+[fixture: ishikawa/trailing-whitespace/directive-after-white-space-text-gap-kept]
+[fixture: ishikawa/trailing-whitespace/directive-after-white-space-text-blanks-gap-one-space]
+[fixture: gantt/titles-and-sections/title-white-space-text-gap-kept]
+[fixture: gantt/titles-and-sections/title-white-space-text-blanks-gap-one-space]
+
 mermaid.js はキーワードの後の空白 1 文字を読み、残りを Db に残すので、
 印字したテキストの Db は、書かれたテキストの Db と違いますが、
 描かれる図は同じです。
@@ -1679,7 +1713,13 @@ Gantt 図、ユーザージャーニー、タイムラインのタイトルで�
 互いにもテキストにも接して印字します。
 mermaid.js はタイトルを読む前にディレクティブを除くためです。
 `title %%{x}%% %%{y}%% A  b` は `title %%{x}%%%%{y}%%A b` と印字します。
-改行を含むディレクティブがあるタイトルは、書かれたままにします。
+テキストの前のディレクティブの中に、改行を含むディレクティブがあるタイトルは、
+書かれたままにします。
+タイトルを終える、改行を含むディレクティブは、前にディレクティブがないとき、
+そうしません。
+`title A  b  %%{init: {`、改行、`}}%%` は、`title A b %%{init: {`、改行、
+`}}%%` と印字します。
+ただし、その後に空白が続くときは、タイトル全体を書かれたままにします。
 タイトルの中の空白とタブの連なりは、ディレクティブが接していても、
 空白で隔てられていても、空白 1 つにして印字します。
 テキストの後にコメントが続くとき、テキストが終わるとき、
@@ -1689,7 +1729,7 @@ Gantt 図とタイムラインではタイトルが `;` を含むときも同じ
 `title  %%{x}%%A  b` も同じです。
 単語の間にディレクティブがあるタイトルは連なりを書かれたままにします。
 空白とディレクティブだけのタイトルと、
-最後のディレクティブの後にコメントがあるタイトルも同じです。
+ディレクティブとコメントで終わるタイトルも同じです。
 `title %%{x}%% %%{y}%% A  b  %%{z}%%  %% c` は
 `title %%{x}%%%%{y}%%A  b  %%{z}%%  %% c` と印字します。
 2 つのディレクティブの間のノーブレークスペースは空白ではなくタイトルの文字です。
@@ -1727,6 +1767,12 @@ Gantt 図とタイムラインではタイトルが `;` を含むときも同じ
 [fixture: journey/titles-and-sections/title-directives-gap-comment-after-directive-runs-kept]
 [fixture: timeline/titles-and-sections/title-directives-gap-line-break-kept]
 [fixture: timeline/titles-and-sections/title-directives-gap-comment-after-directive-runs-kept]
+[fixture: gantt/titles-and-sections/title-directive-lines-end-runs-collapsed]
+[fixture: gantt/titles-and-sections/title-directive-lines-end-blanks-kept]
+[fixture: journey/titles-and-sections/title-directive-lines-end-runs-collapsed]
+[fixture: journey/titles-and-sections/title-directive-lines-end-blanks-kept]
+[fixture: timeline/titles-and-sections/title-directive-lines-end-runs-collapsed]
+[fixture: timeline/titles-and-sections/title-directive-lines-end-blanks-kept]
 [test: gantt title: a no-break space between two directives]
 [test: gantt title: U+2028 in the text after directives that whitespace separates]
 [test: gantt title: U+2029 in the text after directives that whitespace separates]
@@ -1738,8 +1784,8 @@ Gantt 図とタイムラインではタイトルが `;` を含むときも同じ
 Gantt 図、ユーザージャーニー、タイムライン、シーケンス図、Venn 図、C4 図で、
 C4 図の `accDescription` でも同じです。
 テキストの前にディレクティブがあるときは、
-最後のディレクティブとテキストの間の空白とタブを、Gantt 図、ユーザージャーニー、
-タイムライン、シーケンス図で同じように除きます。
+最後のディレクティブとテキストの間の空白とタブを、すべて、Gantt 図、
+ユーザージャーニー、タイムライン、シーケンス図で除きます。
 `title %%{x}%%   A b  %%{z}%%  ` は `title %%{x}%%A b %%{z}%%` と印字します。
 Venn 図と C4 図は、ディレクティブが前にあるタイトルを書かれたままにし、
 C4 図の `accDescription` も同じです。

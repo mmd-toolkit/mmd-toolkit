@@ -583,24 +583,29 @@ export function endsWithDirectives(source: Source, [from, to]: Range): boolean {
  * What the edits of a text print of the runs of spaces and tabs inside it,
  * where directives may precede it and end it. The rule of the texts
  * (`collapsedRunsAtom`) prints each run as one space, but it does not reach a
- * text that holds a directive. So a layout whose text holds directives decides
- * which of its runs the edits print as one space, and each layout keeps the
- * form it has released:
+ * text that holds a directive or stays as written (see `staysAsWritten`). So a
+ * layout whose text holds directives decides which of its runs the edits print
+ * as one space, and each layout keeps the form it has released. A text that
+ * holds a directive between its words keeps the runs around it, whatever the
+ * value:
  *
  * - `"kept"`: none. The runs stay as written (a date format).
- * - `"collapsed"`: all of them, wherever the directives stand. The parser
+ * - `"collapsed"`: all of them, those after the directives that precede the
+ *   text and those before the directives that end it included. The parser
  *   starts the value of the title of a Gantt chart, a user journey, or a
  *   timeline after the first directive that follows the keyword and its
  *   whitespace, so the second printing, with the directives touching the text,
  *   has its runs printed as one space by the rule of the texts, and the first
- *   printing has to print them so too.
- * - `"collapsedBeforeEndingDirectives"`: those before the directives that end
- *   the text, and the rule of the texts reaches the others. The title of a
- *   sequence diagram is read from the keyword on, so the directives that
- *   precede it are in its text whichever form is printed, and the runs after
- *   them stay. A text that no directive precedes, such as the title of a Venn
- *   diagram or a C4 diagram, or an accessibility line, has the same runs
- *   printed as with `"collapsed"`.
+ *   printing has to print them so too. A line that no directive can precede,
+ *   such as the title of a Venn diagram or a C4 diagram, or an accessibility
+ *   line, has only the rule of the texts and the runs before the directives
+ *   that end it to print, which is the same here.
+ * - `"collapsedBeforeEndingDirectives"`: all of them where no directive
+ *   precedes the text; where one does, only those before the directives that
+ *   end it, and the runs after the directive that precedes it stay. The title
+ *   of a sequence diagram is read from the keyword on, so the directives that
+ *   precede it are in its text whichever form is printed, and the rule of the
+ *   texts does not reach it.
  * - `"collapsedWithoutLeadingDirectives"`: all of them where no directive
  *   precedes the text, and none where one does, those before the directives
  *   that end it included (the `accDescr:` line of a usecase diagram, the
@@ -639,7 +644,7 @@ function collapsesBeforeEnd(runs: TextRuns, skipsDirective: boolean): boolean {
  */
 export interface LineEndRules {
   readonly isBlank?: (character: string) => boolean
-  readonly runs: TextRuns
+  readonly runs: Extract<TextRuns, "kept" | "collapsedWithoutLeadingDirectives">
   readonly gapBeforePlace?: "oneSpace" | "likeRuns"
 }
 
@@ -650,13 +655,20 @@ export interface LineEndRules {
  * as part of its text only where whitespace follows it, so the line with and
  * without the blanks after its last directive is the same text, and is printed
  * the same: the blanks after the directive are left out, and the gaps before
- * the directives are printed as the same line without them has them. The
- * directives and the blanks that precede the text are no part of it, and `runs`
- * says which of its runs are printed as one space (see `TextRuns`). The gaps
- * between the directives at its end stay, but the one before the last place
- * (see `endsWithPlaceAfterText`). The edits reach `editsEnd`, which is `to`
- * unless the layout reads the line further. This is the one place that decides
- * it for the lines of an ishikawa literal, a usecase accessibility line, and a
+ * the directives are printed as the same line without them has them. The one
+ * exception is a text that stays as written (see `staysAsWritten`) and holds
+ * no `;`, line break, or directive of its own, in an ishikawa literal. The
+ * text without the blanks ends before its last directive, and the layout
+ * prints that gap as it prints the runs of the text, as written; the text with
+ * the blanks holds the directive, and these edits print its gap as one space.
+ * Both forms are the ones of the released versions, and both stay
+ * (docs/ishikawa.md, Trailing whitespace). The directives and the blanks that
+ * precede the text are no part of it, and `runs` says which of its runs are
+ * printed as one space (see `TextRuns`). The gaps between the directives at
+ * its end stay, but the one before the last place (see
+ * `endsWithPlaceAfterText`). The edits reach `editsEnd`, which is `to` unless
+ * the layout reads the line further. This is the one place that decides it for
+ * the lines of an ishikawa literal, a usecase accessibility line, and a
  * treeView node.
  */
 export function collectLineEndEdits(
@@ -692,9 +704,7 @@ function holdsOnlyBlanksToLineEnd(
   isBlank: (character: string) => boolean,
 ): boolean {
   const lineEnd = lineEndOf(source, to, true)
-  for (let offset = to; offset < lineEnd; offset++)
-    if (!isBlank(source.text[offset])) return false
-  return true
+  return skipBlanks(source, to, lineEnd, isBlank) === lineEnd
 }
 
 /**
@@ -842,8 +852,14 @@ export function keptWithDirectiveEnd(
  * whitespace after the last one is left out, whether the last one is read as
  * part of the statement or not: the figure is the same whatever the whitespace
  * at the end of the line, and a directive at the end of a line is printed so
- * elsewhere (docs/flowchart.md, Directives). `runs` tells which of the runs of
- * spaces and tabs inside the text are printed as one space (see `TextRuns`).
+ * elsewhere (docs/flowchart.md, Directives). The exception is a text that
+ * stays as written (see `staysAsWritten`): where no whitespace follows its last
+ * directive, the text ends before it and the gap stays as written, and where
+ * whitespace follows, the directive is in the text and its gap is one space;
+ * both are the forms of the released versions, and both stay
+ * (docs/compatibility.md, Texts after a keyword that are drawn the same).
+ * `runs` tells which of the runs of spaces and tabs inside the text are printed
+ * as one space (see `TextRuns`).
  */
 export function trimTextAfterKeyword(
   source: Source,

@@ -269,9 +269,7 @@ export function layoutCommonLine(
       source,
       atoms,
       [valueStart, valueEnd],
-      statement.type.includes("AccTitle")
-        ? "kept"
-        : "collapsedBeforeEndingDirectives",
+      statement.type.includes("AccTitle") ? "kept" : "collapsed",
     )
   }
   // An ignored `;` at the trimmed end stays against the text, as when its

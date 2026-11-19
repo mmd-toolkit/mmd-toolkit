@@ -198,17 +198,17 @@ export function skipBlanksAndRemoved(
 
 /**
  * The offset of the first character from `start` on that is no blank, or `end`
- * where the range holds nothing else. `isBlankCharacter` tells which characters
- * are blanks: spaces and tabs by default.
+ * where the range holds nothing else. `isBlank` tells which characters are
+ * blanks: spaces and tabs by default.
  */
 export function skipBlanks(
   source: Source,
   start: number,
   end: number,
-  isBlankCharacter: (character: string) => boolean = isSpaceOrTab,
+  isBlank: (character: string) => boolean = isSpaceOrTab,
 ): number {
   let offset = start
-  while (offset < end && isBlankCharacter(source.text[offset])) offset++
+  while (offset < end && isBlank(source.text[offset])) offset++
   return offset
 }
 
@@ -426,7 +426,14 @@ function joinCommentFragments(
     // comment before the first U+2028 or U+2029 that no comment line
     // follows after another one.
     let first = Math.max(index - 1, 0)
-    while (first > 0 && isBlank(text, directiveRanges, ...gapBefore(first))) {
+    while (
+      first > 0 &&
+      holdsOnlyWhitespaceAndDirectives(
+        text,
+        directiveRanges,
+        ...gapBefore(first),
+      )
+    ) {
       const separated = hasSeparatorBefore(first)
       first--
       if (separated && !(first > 0 && hasSeparatorBefore(first))) break
@@ -452,7 +459,7 @@ function joinCommentFragments(
  * Whether the text from `start` to `end` holds nothing but whitespace and
  * directives, which are `directiveRanges`.
  */
-function isBlank(
+function holdsOnlyWhitespaceAndDirectives(
   text: string,
   directiveRanges: readonly Range[],
   start: number,

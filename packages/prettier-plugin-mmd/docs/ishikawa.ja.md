@@ -523,6 +523,7 @@ Mermaid がテキストの両端の空白を除くので、除いても Db と�
 最後のディレクティブの後の空白は除きます。
 最後のディレクティブの後に空白が続くときも続かないときも、
 テキストの中の連なりは空白 1 つにして印字します。
+ただし `;` を含まず書かれたままになるリテラルは、次の段落のとおり例外です。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped]
@@ -581,6 +582,23 @@ mermaid.js が行を読む前にディレクティブを除くためです。
 [fixture: ishikawa/trailing-whitespace/directive-after-semicolon-white-space-text-gap-kept]
 [test: ishikawa: U+2028 in the literal before the last directive]
 [test: ishikawa: U+2029 in the literal before the last directive]
+
+`;` を含まず書かれたままになるリテラル、つまり `<` を含むか、
+図が `white-space` を含むリテラルは、
+最後のディレクティブの後に空白が続かないとき、その前の隙間を書かれたままにし、
+空白が続くとき、その前の隙間を空白 1 つにします。
+`A  <b  %%{z}%%` はそのままで、
+`A  <b  %%{z}%%  ` は `A  <b %%{z}%%` と印字します。
+リテラルの前にディレクティブがあるときも同じです。
+`%%{x}%% A  <b  %%{z}%%` はそのままで、
+`%%{x}%% A  <b  %%{z}%%  ` は `%%{x}%% A  <b %%{z}%%` と印字します。
+
+[fixture: ishikawa/trailing-whitespace/directive-after-angle-text-gap-kept]
+[fixture: ishikawa/trailing-whitespace/directive-after-angle-text-blanks-gap-one-space]
+[fixture: ishikawa/trailing-whitespace/directive-after-white-space-text-gap-kept]
+[fixture: ishikawa/trailing-whitespace/directive-after-white-space-text-blanks-gap-one-space]
+[fixture: ishikawa/trailing-whitespace/directive-before-angle-text-gap-kept]
+[fixture: ishikawa/trailing-whitespace/directive-before-angle-text-blanks-gap-one-space]
 
 [ヘッダー](#header) と [空行](#blank-lines) の規則で除くのは、
 見出し行の外側の余白だけで、それはテキストの値ではありません。

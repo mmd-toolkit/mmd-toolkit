@@ -516,7 +516,8 @@ while joined continuation columns stay, as do comment spaces and directive
 contents. The directives that end a literal are printed with one space before
 each that has whitespace before it, and the whitespace after the last one is
 left out, with a run in the literal printed as one space, whether whitespace
-follows the last directive or not (see
+follows the last directive or not, except in a literal that stays as written
+without a `;`, as below (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped] [fixture:
@@ -577,6 +578,25 @@ ishikawa/trailing-whitespace/directive-after-semicolon-angle-text-gap-kept]
 ishikawa/trailing-whitespace/directive-after-semicolon-white-space-text-gap-kept]
 [test: ishikawa: U+2028 in the literal before the last directive] [test:
 ishikawa: U+2029 in the literal before the last directive]
+
+Without a `;`, a literal that stays as written, because it holds a `<` or the
+diagram holds `white-space`, prints the gap before its last directive as written
+where no whitespace follows that directive, and as one space where whitespace
+follows it: `A  <b  %%{z}%%` stays as it is, and `A  <b  %%{z}%%  ` is printed
+`A  <b %%{z}%%`. The same holds after a directive that precedes the literal:
+`%%{x}%% A  <b  %%{z}%%` stays, and `%%{x}%% A  <b  %%{z}%%  ` is printed
+`%%{x}%% A  <b %%{z}%%`.
+
+[fixture: ishikawa/trailing-whitespace/directive-after-angle-text-gap-kept]
+[fixture:
+ishikawa/trailing-whitespace/directive-after-angle-text-blanks-gap-one-space]
+[fixture:
+ishikawa/trailing-whitespace/directive-after-white-space-text-gap-kept]
+[fixture:
+ishikawa/trailing-whitespace/directive-after-white-space-text-blanks-gap-one-space]
+[fixture: ishikawa/trailing-whitespace/directive-before-angle-text-gap-kept]
+[fixture:
+ishikawa/trailing-whitespace/directive-before-angle-text-blanks-gap-one-space]
 
 Only exterior header-line padding is dropped under [Header](#header) and
 [Blank lines](#blank-lines); it is not a literal value.
