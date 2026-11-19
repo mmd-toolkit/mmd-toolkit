@@ -11145,6 +11145,381 @@ const wardleyDirectiveEndExamples: readonly (readonly [
     "title style:#red;\u00a0",
     "title style:#red;\u00a0",
   ],
+  [
+    "a `;` in the text, spaces before the directive, one space before the first directive, in a title of a Wardley map",
+    "title T; %%{x}%%",
+    "title T; %%{x}%%",
+  ],
+  [
+    "a `;` in the text, spaces before the directive, one space after the last directive, in a title of a Wardley map",
+    "title T;  %%{x}%% ",
+    "title T;  %%{x}%% ",
+  ],
+  [
+    "a `;` in the text, spaces before the directive, U+2028 after the last directive, in a title of a Wardley map",
+    "title T;  %%{x}%%\u2028",
+    "title T;  %%{x}%%\u2028",
+  ],
+  [
+    "a `;` in the text, spaces before the directive, U+2029 after the last directive, in a title of a Wardley map",
+    "title T;  %%{x}%%\u2029",
+    "title T;  %%{x}%%\u2029",
+  ],
+  [
+    "a `;` in the text, spaces before the directive, the first directive holds a line break inside, in a title of a Wardley map",
+    "title T;  %%{x\ny}%%",
+    "title T; %%{x\ny}%%",
+  ],
+  [
+    "a `;` in the text, spaces before the directive, the first directive holds a `;` inside, in a title of a Wardley map",
+    "title T;  %%{x;y}%%",
+    "title T;  %%{x;y}%%",
+  ],
+  [
+    "a `;` in the text, spaces before the directive, the first directive holds a U+2028 inside, in a title of a Wardley map",
+    "title T;  %%{x\u2028y}%%",
+    "title T; %%{x\u2028y}%%",
+  ],
+  [
+    "a `;` in the text, spaces between two directives, in an accDescr line of a Wardley map",
+    "accDescr: T;  %%{x}%%  %%{y}%%",
+    "accDescr: T;  %%{x}%%  %%{y}%%",
+  ],
+  [
+    "a `;` in the text, spaces between two directives, a tab before the first directive, in a title of a Wardley map",
+    "title T;\t%%{x}%%  %%{y}%%",
+    "title T;\t%%{x}%%  %%{y}%%",
+  ],
+  [
+    "a `;` in the text, spaces between two directives, a no-break space before the first directive, in a title of a Wardley map",
+    "title T;\u00a0%%{x}%%  %%{y}%%",
+    "title T;\u00a0%%{x}%%  %%{y}%%",
+  ],
+  [
+    "a `;` in the text, spaces between two directives, U+2028 before the first directive, in a title of a Wardley map",
+    "title T;\u2028%%{x}%%  %%{y}%%",
+    "title T;\u2028%%{x}%%  %%{y}%%",
+  ],
+  [
+    "a `;` in the text, spaces between two directives, U+2029 before the first directive, in a title of a Wardley map",
+    "title T;\u2029%%{x}%%  %%{y}%%",
+    "title T;\u2029%%{x}%%  %%{y}%%",
+  ],
+  [
+    "a `;` in the text, spaces between two directives, a tab between the two directives, in a title of a Wardley map",
+    "title T;  %%{x}%%\t%%{y}%%",
+    "title T;  %%{x}%%\t%%{y}%%",
+  ],
+  [
+    "a `;` in the text, spaces between two directives, U+2028 between the two directives, in a title of a Wardley map",
+    "title T;  %%{x}%%\u2028%%{y}%%",
+    "title T;  %%{x}%%\u2028%%{y}%%",
+  ],
+  [
+    "a `;` in the text, spaces between two directives, U+2029 between the two directives, in a title of a Wardley map",
+    "title T;  %%{x}%%\u2029%%{y}%%",
+    "title T;  %%{x}%%\u2029%%{y}%%",
+  ],
+  [
+    "a `;` in the text, spaces between two directives, the first directive holds a line break inside, in a title of a Wardley map",
+    "title T;  %%{x\ny}%%  %%{y}%%",
+    "title T;  %%{x\ny}%%  %%{y}%%",
+  ],
+  [
+    "a `;` in the text, spaces between two directives, the last directive holds a line break inside, in a title of a Wardley map",
+    "title T;  %%{x}%%  %%{x\ny}%%",
+    "title T;  %%{x}%%  %%{x\ny}%%",
+  ],
+  [
+    "a `;` in the text, spaces between two directives, the first directive holds a `;` inside, in a title of a Wardley map",
+    "title T;  %%{x;y}%%  %%{y}%%",
+    "title T;  %%{x;y}%%  %%{y}%%",
+  ],
+  [
+    "a `;` in the text, spaces between two directives, the last directive holds a `;` inside, in a title of a Wardley map",
+    "title T;  %%{x}%%  %%{x;y}%%",
+    "title T;  %%{x}%%  %%{x;y}%%",
+  ],
+  [
+    "a `;` in the text, spaces between two directives, the first directive holds a U+2028 inside, in a title of a Wardley map",
+    "title T;  %%{x\u2028y}%%  %%{y}%%",
+    "title T;  %%{x\u2028y}%%  %%{y}%%",
+  ],
+  [
+    "a `;` in the text, spaces between two directives, the last directive holds a U+2028 inside, in a title of a Wardley map",
+    "title T;  %%{x}%%  %%{x\u2028y}%%",
+    "title T;  %%{x}%%  %%{x\u2028y}%%",
+  ],
+  [
+    "a `;` in the text, spaces between two directives, a comment touching the last directive, in a title of a Wardley map",
+    "title T;  %%{x}%%  %%{y}%%%% c",
+    "title T;  %%{x}%%  %%{y}%%%% c",
+  ],
+  [
+    "a `;` between two directives, spaces around it, in an accTitle line of a Wardley map",
+    "accTitle: T  %%{x}%%  ;  %%{y}%%",
+    "accTitle: T  %%{x}%%  ;  %%{y}%%",
+  ],
+  [
+    "a `;` between two directives, spaces around it, in an accDescr line of a Wardley map",
+    "accDescr: T  %%{x}%%  ;  %%{y}%%",
+    "accDescr: T  %%{x}%%  ;  %%{y}%%",
+  ],
+  [
+    "a `;` between two directives, spaces around it, one space before the first directive, in a title of a Wardley map",
+    "title T %%{x}%%  ;  %%{y}%%",
+    "title T %%{x}%%  ;  %%{y}%%",
+  ],
+  [
+    "a `;` between two directives, spaces around it, a tab before the first directive, in a title of a Wardley map",
+    "title T\t%%{x}%%  ;  %%{y}%%",
+    "title T\t%%{x}%%  ;  %%{y}%%",
+  ],
+  [
+    "a `;` between two directives, spaces around it, a no-break space before the first directive, in a title of a Wardley map",
+    "title T\u00a0%%{x}%%  ;  %%{y}%%",
+    "title T\u00a0%%{x}%%  ;  %%{y}%%",
+  ],
+  [
+    "a `;` between two directives, spaces around it, U+2028 before the first directive, in a title of a Wardley map",
+    "title T\u2028%%{x}%%  ;  %%{y}%%",
+    "title T\u2028%%{x}%%  ;  %%{y}%%",
+  ],
+  [
+    "a `;` between two directives, spaces around it, U+2029 before the first directive, in a title of a Wardley map",
+    "title T\u2029%%{x}%%  ;  %%{y}%%",
+    "title T\u2029%%{x}%%  ;  %%{y}%%",
+  ],
+  [
+    "a `;` between two directives, spaces around it, one space after the last directive, in a title of a Wardley map",
+    "title T  %%{x}%%  ;  %%{y}%% ",
+    "title T  %%{x}%%  ;  %%{y}%% ",
+  ],
+  [
+    "a `;` between two directives, spaces around it, a run of spaces after the last directive, in a title of a Wardley map",
+    "title T  %%{x}%%  ;  %%{y}%%  ",
+    "title T  %%{x}%%  ;  %%{y}%%  ",
+  ],
+  [
+    "a `;` between two directives, spaces around it, a tab after the last directive, in a title of a Wardley map",
+    "title T  %%{x}%%  ;  %%{y}%%\t",
+    "title T  %%{x}%%  ;  %%{y}%%\t",
+  ],
+  [
+    "a `;` between two directives, spaces around it, a no-break space after the last directive, in a title of a Wardley map",
+    "title T  %%{x}%%  ;  %%{y}%%\u00a0",
+    "title T  %%{x}%%  ;  %%{y}%%\u00a0",
+  ],
+  [
+    "a `;` between two directives, spaces around it, U+2028 after the last directive, in a title of a Wardley map",
+    "title T  %%{x}%%  ;  %%{y}%%\u2028",
+    "title T  %%{x}%%  ;  %%{y}%%\u2028",
+  ],
+  [
+    "a `;` between two directives, spaces around it, U+2029 after the last directive, in a title of a Wardley map",
+    "title T  %%{x}%%  ;  %%{y}%%\u2029",
+    "title T  %%{x}%%  ;  %%{y}%%\u2029",
+  ],
+  [
+    "a `;` between two directives, spaces around it, the first directive holds a line break inside, in a title of a Wardley map",
+    "title T  %%{x\ny}%%  ;  %%{y}%%",
+    "title T  %%{x\ny}%%  ;  %%{y}%%",
+  ],
+  [
+    "a `;` between two directives, spaces around it, the last directive holds a line break inside, in a title of a Wardley map",
+    "title T  %%{x}%%  ;  %%{x\ny}%%",
+    "title T  %%{x}%%  ;  %%{x\ny}%%",
+  ],
+  [
+    "a `;` between two directives, spaces around it, the first directive holds a `;` inside, in a title of a Wardley map",
+    "title T  %%{x;y}%%  ;  %%{y}%%",
+    "title T  %%{x;y}%%  ;  %%{y}%%",
+  ],
+  [
+    "a `;` between two directives, spaces around it, the last directive holds a `;` inside, in a title of a Wardley map",
+    "title T  %%{x}%%  ;  %%{x;y}%%",
+    "title T  %%{x}%%  ;  %%{x;y}%%",
+  ],
+  [
+    "a `;` between two directives, spaces around it, the first directive holds a U+2028 inside, in a title of a Wardley map",
+    "title T  %%{x\u2028y}%%  ;  %%{y}%%",
+    "title T  %%{x\u2028y}%%  ;  %%{y}%%",
+  ],
+  [
+    "a `;` between two directives, spaces around it, the last directive holds a U+2028 inside, in a title of a Wardley map",
+    "title T  %%{x}%%  ;  %%{x\u2028y}%%",
+    "title T  %%{x}%%  ;  %%{x\u2028y}%%",
+  ],
+  [
+    "a `;` between two directives, spaces around it, one directive only, in a title of a Wardley map",
+    "title T  %%{x}%%",
+    "title T %%{x}%%",
+  ],
+  [
+    "a `;` between two directives, spaces around it, a comment touching the last directive, in a title of a Wardley map",
+    "title T  %%{x}%%  ;  %%{y}%%%% c",
+    "title T  %%{x}%%  ;  %%{y}%%%% c",
+  ],
+  [
+    "a `;` between two directives, spaces around it, a value of directives only, in a title of a Wardley map",
+    "title %%{x}%%  ;  %%{y}%%",
+    "title %%{x}%%  ; %%{y}%%",
+  ],
+  [
+    "a `;` after the last directive, in an accTitle line of a Wardley map",
+    "accTitle: T  %%{x}%%;",
+    "accTitle: T  %%{x}%%;",
+  ],
+  [
+    "a `;` after the last directive, in an accDescr line of a Wardley map",
+    "accDescr: T  %%{x}%%;",
+    "accDescr: T  %%{x}%%;",
+  ],
+  [
+    "a `;` after the last directive, one space before the first directive, in a title of a Wardley map",
+    "title T %%{x}%%;",
+    "title T %%{x}%%;",
+  ],
+  [
+    "a `;` after the last directive, a tab before the first directive, in a title of a Wardley map",
+    "title T\t%%{x}%%;",
+    "title T\t%%{x}%%;",
+  ],
+  [
+    "a `;` after the last directive, a no-break space before the first directive, in a title of a Wardley map",
+    "title T\u00a0%%{x}%%;",
+    "title T\u00a0%%{x}%%;",
+  ],
+  [
+    "a `;` after the last directive, U+2028 before the first directive, in a title of a Wardley map",
+    "title T\u2028%%{x}%%;",
+    "title T\u2028%%{x}%%;",
+  ],
+  [
+    "a `;` after the last directive, U+2029 before the first directive, in a title of a Wardley map",
+    "title T\u2029%%{x}%%;",
+    "title T\u2029%%{x}%%;",
+  ],
+  [
+    "a `;` after the last directive, the first directive holds a line break inside, in a title of a Wardley map",
+    "title T  %%{x\ny}%%;",
+    "title T  %%{x\ny}%%;",
+  ],
+  [
+    "a `;` after the last directive, the first directive holds a `;` inside, in a title of a Wardley map",
+    "title T  %%{x;y}%%;",
+    "title T  %%{x;y}%%;",
+  ],
+  [
+    "a `;` after the last directive, the first directive holds a U+2028 inside, in a title of a Wardley map",
+    "title T  %%{x\u2028y}%%;",
+    "title T  %%{x\u2028y}%%;",
+  ],
+  [
+    "a `;` after the last directive, a second directive touching the first, in a title of a Wardley map",
+    "title T  %%{x}%%%%{y}%%;",
+    "title T  %%{x}%%%%{y}%%;",
+  ],
+  [
+    "a `;` after the last directive, a second directive after a space, in a title of a Wardley map",
+    "title T  %%{x}%% %%{y}%%;",
+    "title T  %%{x}%% %%{y}%%;",
+  ],
+  [
+    "a `;` after the last directive, a comment touching the last directive, in a title of a Wardley map",
+    "title T  %%{x}%%;%% c",
+    "title T  %%{x}%%;%% c",
+  ],
+  [
+    "a `;` after the last directive, a value of directives only, in a title of a Wardley map",
+    "title %%{x}%%;",
+    "title %%{x}%%;",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, one space before the first directive, in a title of a Wardley map",
+    "title T %%{x}%%\u00a0%%{y}%%%% c",
+    "title T %%{x}%%\u00a0%%{y}%%%% c",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, a tab before the first directive, in a title of a Wardley map",
+    "title T\t%%{x}%%\u00a0%%{y}%%%% c",
+    "title T\t%%{x}%%\u00a0%%{y}%%%% c",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, a no-break space before the first directive, in a title of a Wardley map",
+    "title T\u00a0%%{x}%%\u00a0%%{y}%%%% c",
+    "title T\u00a0%%{x}%%\u00a0%%{y}%%%% c",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, a value of directives only, in a title of a Wardley map",
+    "title %%{x}%%\u00a0%%{y}%%%% c",
+    "title %%{x}%%\u00a0%%{y}%%%% c",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, one space before the first directive, in a title of a Wardley map",
+    "title T %%{x}%%\u00a0%% c",
+    "title T %%{x}%%\u00a0%% c",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, a tab before the first directive, in a title of a Wardley map",
+    "title T\t%%{x}%%\u00a0%% c",
+    "title T\t%%{x}%%\u00a0%% c",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, a value of directives only, in a title of a Wardley map",
+    "title %%{x}%%\u00a0%% c",
+    "title %%{x}%%\u00a0%% c",
+  ],
+  [
+    "a `;` and no directive, spaces and a U+2028 after the last `;`, in a title of a Wardley map",
+    "title T;  \u2028",
+    "title T;  \u2028",
+  ],
+  [
+    "a `;` and no directive, a U+2028 and spaces after the last `;`, in a title of a Wardley map",
+    "title T;\u2028  ",
+    "title T;\u2028",
+  ],
+  [
+    "a `;` and no directive, spaces, a U+2028, and spaces after the last `;`, in a title of a Wardley map",
+    "title T;  \u2028  ",
+    "title T;  \u2028",
+  ],
+  [
+    "a `;` and no directive, a no-break space, a U+2028, and a no-break space after the last `;`, in a title of a Wardley map",
+    "title T;\u00a0\u2028\u00a0",
+    "title T;\u00a0\u2028\u00a0",
+  ],
+  [
+    "a `;` and no directive, a U+2028 and a tab after the last `;`, in a title of a Wardley map",
+    "title T;\u2028\t",
+    "title T;\u2028",
+  ],
+  [
+    "a `;` and no directive, a U+2029 and a no-break space after the last `;`, in a title of a Wardley map",
+    "title T;\u2029\u00a0",
+    "title T;\u2029\u00a0",
+  ],
+  [
+    "a `;` and no directive, the gap before the colon of accTitle is a space, a U+2028 stands before the text, in an accTitle line of a Wardley map",
+    "accTitle : \u2028T;",
+    "accTitle: T;",
+  ],
+  [
+    "a `;` and no directive, a U+2028 stands before the text of accTitle, in an accTitle line of a Wardley map",
+    "accTitle: \u2028T;",
+    "accTitle: T;",
+  ],
+  [
+    "a `;` and no directive, the gap before the colon of accDescr is a space, a U+2028 stands before the text, in an accDescr line of a Wardley map",
+    "accDescr : \u2028T;",
+    "accDescr: T;",
+  ],
+  [
+    "a `;` and no directive, a U+2028 stands before the text of accDescr, in an accDescr line of a Wardley map",
+    "accDescr: \u2028T;",
+    "accDescr: T;",
+  ],
 ]
 
 describe("the directives that end the title or the value of an accessibility line of a Wardley map", () => {
@@ -11738,6 +12113,491 @@ const wardleyDirectiveCommentExamples: readonly (readonly [
     "a `;` and no directive, the gap before the colon of accDescr is a tab, the text ends, in an accDescr line of a Wardley map",
     "wardley-beta\naccDescr\t: T;\n",
     "wardley-beta\n  accDescr\t: T;\n",
+  ],
+  [
+    "a `;` in the text, spaces before the directive, the text ends, in a title of a Wardley map",
+    "wardley-beta\ntitle T;  %%{x}%%\n",
+    "wardley-beta\n  title T; %%{x}%%\n",
+  ],
+  [
+    "a `;` in the text, spaces before the directive, the text ends, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T;  %%{x}%%\n",
+    "wardley-beta\n  accTitle: T; %%{x}%%\n",
+  ],
+  [
+    "a `;` in the text, spaces before the directive, the text ends, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T;  %%{x}%%\n",
+    "wardley-beta\n  accDescr: T; %%{x}%%\n",
+  ],
+  [
+    "a `;` in the text, spaces between two directives, the text ends, in a title of a Wardley map",
+    "wardley-beta\ntitle T;  %%{x}%%  %%{y}%%\n",
+    "wardley-beta\n  title T;  %%{x}%%  %%{y}%%\n",
+  ],
+  [
+    "a `;` in the text, spaces between two directives, the text ends, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T;  %%{x}%%  %%{y}%%\n",
+    "wardley-beta\n  accTitle: T;  %%{x}%%  %%{y}%%\n",
+  ],
+  [
+    "a `;` in the text, spaces between two directives, the text ends, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T;  %%{x}%%  %%{y}%%\n",
+    "wardley-beta\n  accDescr: T;  %%{x}%%  %%{y}%%\n",
+  ],
+  [
+    "a `;` between two directives, spaces around it, the text ends, in a title of a Wardley map",
+    "wardley-beta\ntitle T  %%{x}%%  ;  %%{y}%%\n",
+    "wardley-beta\n  title T  %%{x}%%  ;  %%{y}%%\n",
+  ],
+  [
+    "a `;` between two directives, spaces around it, the text ends, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T  %%{x}%%  ;  %%{y}%%\n",
+    "wardley-beta\n  accTitle: T  %%{x}%%  ;  %%{y}%%\n",
+  ],
+  [
+    "a `;` between two directives, spaces around it, the text ends, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T  %%{x}%%  ;  %%{y}%%\n",
+    "wardley-beta\n  accDescr: T  %%{x}%%  ;  %%{y}%%\n",
+  ],
+  [
+    "a `;` after the last directive, the text ends, in a title of a Wardley map",
+    "wardley-beta\ntitle T  %%{x}%%;\n",
+    "wardley-beta\n  title T  %%{x}%%;\n",
+  ],
+  [
+    "a `;` after the last directive, the text ends, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T  %%{x}%%;\n",
+    "wardley-beta\n  accTitle: T  %%{x}%%;\n",
+  ],
+  [
+    "a `;` after the last directive, the text ends, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T  %%{x}%%;\n",
+    "wardley-beta\n  accDescr: T  %%{x}%%;\n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, a comment line follows, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%  %% c\n%% d\n",
+    "wardley-beta\n  title T\n  %%{x}%% %% c\n  %% d\n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, an empty line follows, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%  %% c\n\n",
+    "wardley-beta\n  title T\n  %%{x}%% %% c\n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, a line of whitespace follows, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%  %% c\n  \n",
+    "wardley-beta\n  title T\u2028%%{x}%%  %% c\n  \n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, a directive line follows, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%  %% c\n%%{y}%%\n",
+    "wardley-beta\n  title T\n  %%{x}%% %% c\n  %%{y}%%\n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, a comment line and a statement follow, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%  %% c\n%% d\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T\u2028%%{x}%%  %% c\n%% d\ncomponent A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, an empty line and a statement follow, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%  %% c\n\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T\n  %%{x}%% %% c\n\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, the text ends, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%  %% c\n",
+    "wardley-beta\n  title T\n  %%{x}%% %% c\n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, a comment line follows, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%  %% c\n%% d\n",
+    "wardley-beta\n  title T\n  %%{x}%% %% c\n  %% d\n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, an empty line follows, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%  %% c\n\n",
+    "wardley-beta\n  title T\n  %%{x}%% %% c\n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, a line of whitespace follows, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%  %% c\n  \n",
+    "wardley-beta\n  title T\u2028%%{x}%%  %% c\n  \n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, a directive line follows, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%  %% c\n%%{y}%%\n",
+    "wardley-beta\n  title T\n  %%{x}%% %% c\n  %%{y}%%\n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, a comment line and a statement follow, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%  %% c\n%% d\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T\u2028%%{x}%%  %% c\n%% d\ncomponent A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, an empty line and a statement follow, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%  %% c\n\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T\n  %%{x}%% %% c\n\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, the text ends, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T\u2028%%{x}%%  %% c\n",
+    "wardley-beta\n  accTitle: T\n  %%{x}%% %% c\n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, a comment line follows, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T\u2028%%{x}%%  %% c\n%% d\n",
+    "wardley-beta\n  accTitle: T\n  %%{x}%% %% c\n  %% d\n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, an empty line follows, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T\u2028%%{x}%%  %% c\n\n",
+    "wardley-beta\n  accTitle: T\n  %%{x}%% %% c\n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, a line of whitespace follows, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T\u2028%%{x}%%  %% c\n  \n",
+    "wardley-beta\n  accTitle: T\u2028%%{x}%%  %% c\n  \n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, a directive line follows, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T\u2028%%{x}%%  %% c\n%%{y}%%\n",
+    "wardley-beta\n  accTitle: T\n  %%{x}%% %% c\n  %%{y}%%\n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, a comment line and a statement follow, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T\u2028%%{x}%%  %% c\n%% d\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  accTitle: T\u2028%%{x}%%  %% c\n%% d\ncomponent A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, an empty line and a statement follow, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T\u2028%%{x}%%  %% c\n\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  accTitle: T\n  %%{x}%% %% c\n\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, the text ends, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T\u2028%%{x}%%  %% c\n",
+    "wardley-beta\n  accDescr: T\n  %%{x}%% %% c\n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, a comment line follows, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T\u2028%%{x}%%  %% c\n%% d\n",
+    "wardley-beta\n  accDescr: T\n  %%{x}%% %% c\n  %% d\n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, an empty line follows, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T\u2028%%{x}%%  %% c\n\n",
+    "wardley-beta\n  accDescr: T\n  %%{x}%% %% c\n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, a line of whitespace follows, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T\u2028%%{x}%%  %% c\n  \n",
+    "wardley-beta\n  accDescr: T\u2028%%{x}%%  %% c\n  \n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, a directive line follows, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T\u2028%%{x}%%  %% c\n%%{y}%%\n",
+    "wardley-beta\n  accDescr: T\n  %%{x}%% %% c\n  %%{y}%%\n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, a comment line and a statement follow, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T\u2028%%{x}%%  %% c\n%% d\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  accDescr: T\u2028%%{x}%%  %% c\n%% d\ncomponent A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 before a directive that spaces and a comment follow, an empty line and a statement follow, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T\u2028%%{x}%%  %% c\n\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  accDescr: T\n  %%{x}%% %% c\n\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, a comment line follows, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%%{y}%%%% c\n%% d\n",
+    "wardley-beta\n  title T\n  %%{x}%% %%{y}%%%% c\n  %% d\n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, an empty line follows, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%%{y}%%%% c\n\n",
+    "wardley-beta\n  title T\n  %%{x}%% %%{y}%%%% c\n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, a line of whitespace follows, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%%{y}%%%% c\n  \n",
+    "wardley-beta\n  title T\u2028%%{x}%%\u00a0%%{y}%%%% c\n  \n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, a directive line follows, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%%{y}%%%% c\n%%{y}%%\n",
+    "wardley-beta\n  title T\n  %%{x}%% %%{y}%%%% c\n  %%{y}%%\n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, a comment line and a statement follow, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%%{y}%%%% c\n%% d\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T\u2028%%{x}%%\u00a0%%{y}%%%% c\n%% d\ncomponent A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, an empty line and a statement follow, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%%{y}%%%% c\n\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T\n  %%{x}%% %%{y}%%%% c\n\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, the text ends, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%%{y}%%%% c\n",
+    "wardley-beta\n  title T\n  %%{x}%% %%{y}%%%% c\n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, a comment line follows, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%%{y}%%%% c\n%% d\n",
+    "wardley-beta\n  title T\n  %%{x}%% %%{y}%%%% c\n  %% d\n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, an empty line follows, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%%{y}%%%% c\n\n",
+    "wardley-beta\n  title T\n  %%{x}%% %%{y}%%%% c\n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, a line of whitespace follows, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%%{y}%%%% c\n  \n",
+    "wardley-beta\n  title T\u2028%%{x}%%\u00a0%%{y}%%%% c\n  \n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, a directive line follows, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%%{y}%%%% c\n%%{y}%%\n",
+    "wardley-beta\n  title T\n  %%{x}%% %%{y}%%%% c\n  %%{y}%%\n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, a comment line and a statement follow, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%%{y}%%%% c\n%% d\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T\u2028%%{x}%%\u00a0%%{y}%%%% c\n%% d\ncomponent A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, an empty line and a statement follow, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%%{y}%%%% c\n\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T\n  %%{x}%% %%{y}%%%% c\n\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, the text ends, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T\u2028%%{x}%%\u00a0%%{y}%%%% c\n",
+    "wardley-beta\n  accTitle: T\n  %%{x}%% %%{y}%%%% c\n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, a comment line follows, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T\u2028%%{x}%%\u00a0%%{y}%%%% c\n%% d\n",
+    "wardley-beta\n  accTitle: T\n  %%{x}%% %%{y}%%%% c\n  %% d\n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, an empty line follows, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T\u2028%%{x}%%\u00a0%%{y}%%%% c\n\n",
+    "wardley-beta\n  accTitle: T\n  %%{x}%% %%{y}%%%% c\n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, a line of whitespace follows, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T\u2028%%{x}%%\u00a0%%{y}%%%% c\n  \n",
+    "wardley-beta\n  accTitle: T\u2028%%{x}%%\u00a0%%{y}%%%% c\n  \n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, a directive line follows, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T\u2028%%{x}%%\u00a0%%{y}%%%% c\n%%{y}%%\n",
+    "wardley-beta\n  accTitle: T\n  %%{x}%% %%{y}%%%% c\n  %%{y}%%\n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, a comment line and a statement follow, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T\u2028%%{x}%%\u00a0%%{y}%%%% c\n%% d\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  accTitle: T\u2028%%{x}%%\u00a0%%{y}%%%% c\n%% d\ncomponent A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, an empty line and a statement follow, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T\u2028%%{x}%%\u00a0%%{y}%%%% c\n\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  accTitle: T\n  %%{x}%% %%{y}%%%% c\n\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, the text ends, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T\u2028%%{x}%%\u00a0%%{y}%%%% c\n",
+    "wardley-beta\n  accDescr: T\n  %%{x}%% %%{y}%%%% c\n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, a comment line follows, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T\u2028%%{x}%%\u00a0%%{y}%%%% c\n%% d\n",
+    "wardley-beta\n  accDescr: T\n  %%{x}%% %%{y}%%%% c\n  %% d\n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, an empty line follows, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T\u2028%%{x}%%\u00a0%%{y}%%%% c\n\n",
+    "wardley-beta\n  accDescr: T\n  %%{x}%% %%{y}%%%% c\n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, a line of whitespace follows, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T\u2028%%{x}%%\u00a0%%{y}%%%% c\n  \n",
+    "wardley-beta\n  accDescr: T\u2028%%{x}%%\u00a0%%{y}%%%% c\n  \n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, a directive line follows, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T\u2028%%{x}%%\u00a0%%{y}%%%% c\n%%{y}%%\n",
+    "wardley-beta\n  accDescr: T\n  %%{x}%% %%{y}%%%% c\n  %%{y}%%\n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, a comment line and a statement follow, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T\u2028%%{x}%%\u00a0%%{y}%%%% c\n%% d\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  accDescr: T\u2028%%{x}%%\u00a0%%{y}%%%% c\n%% d\ncomponent A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 before two directives that a wide space separates, a comment after them, an empty line and a statement follow, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T\u2028%%{x}%%\u00a0%%{y}%%%% c\n\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  accDescr: T\n  %%{x}%% %%{y}%%%% c\n\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, a comment line follows, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%% c\n%% d\n",
+    "wardley-beta\n  title T\n  %%{x}%% %% c\n  %% d\n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, an empty line follows, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%% c\n\n",
+    "wardley-beta\n  title T\n  %%{x}%% %% c\n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, a line of whitespace follows, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%% c\n  \n",
+    "wardley-beta\n  title T\u2028%%{x}%%\u00a0%% c\n  \n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, a directive line follows, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%% c\n%%{y}%%\n",
+    "wardley-beta\n  title T\n  %%{x}%% %% c\n  %%{y}%%\n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, a comment line and a statement follow, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%% c\n%% d\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T\u2028%%{x}%%\u00a0%% c\n%% d\ncomponent A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, an empty line and a statement follow, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%% c\n\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T\n  %%{x}%% %% c\n\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, the text ends, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%% c\n",
+    "wardley-beta\n  title T\n  %%{x}%% %% c\n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, a comment line follows, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%% c\n%% d\n",
+    "wardley-beta\n  title T\n  %%{x}%% %% c\n  %% d\n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, an empty line follows, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%% c\n\n",
+    "wardley-beta\n  title T\n  %%{x}%% %% c\n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, a line of whitespace follows, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%% c\n  \n",
+    "wardley-beta\n  title T\u2028%%{x}%%\u00a0%% c\n  \n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, a directive line follows, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%% c\n%%{y}%%\n",
+    "wardley-beta\n  title T\n  %%{x}%% %% c\n  %%{y}%%\n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, a comment line and a statement follow, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%% c\n%% d\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T\u2028%%{x}%%\u00a0%% c\n%% d\ncomponent A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, an empty line and a statement follow, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u00a0%% c\n\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T\n  %%{x}%% %% c\n\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, the text ends, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T\u2028%%{x}%%\u00a0%% c\n",
+    "wardley-beta\n  accTitle: T\n  %%{x}%% %% c\n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, a comment line follows, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T\u2028%%{x}%%\u00a0%% c\n%% d\n",
+    "wardley-beta\n  accTitle: T\n  %%{x}%% %% c\n  %% d\n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, an empty line follows, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T\u2028%%{x}%%\u00a0%% c\n\n",
+    "wardley-beta\n  accTitle: T\n  %%{x}%% %% c\n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, a line of whitespace follows, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T\u2028%%{x}%%\u00a0%% c\n  \n",
+    "wardley-beta\n  accTitle: T\u2028%%{x}%%\u00a0%% c\n  \n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, a directive line follows, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T\u2028%%{x}%%\u00a0%% c\n%%{y}%%\n",
+    "wardley-beta\n  accTitle: T\n  %%{x}%% %% c\n  %%{y}%%\n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, a comment line and a statement follow, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T\u2028%%{x}%%\u00a0%% c\n%% d\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  accTitle: T\u2028%%{x}%%\u00a0%% c\n%% d\ncomponent A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, an empty line and a statement follow, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: T\u2028%%{x}%%\u00a0%% c\n\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  accTitle: T\n  %%{x}%% %% c\n\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, the text ends, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T\u2028%%{x}%%\u00a0%% c\n",
+    "wardley-beta\n  accDescr: T\n  %%{x}%% %% c\n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, a comment line follows, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T\u2028%%{x}%%\u00a0%% c\n%% d\n",
+    "wardley-beta\n  accDescr: T\n  %%{x}%% %% c\n  %% d\n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, an empty line follows, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T\u2028%%{x}%%\u00a0%% c\n\n",
+    "wardley-beta\n  accDescr: T\n  %%{x}%% %% c\n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, a line of whitespace follows, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T\u2028%%{x}%%\u00a0%% c\n  \n",
+    "wardley-beta\n  accDescr: T\u2028%%{x}%%\u00a0%% c\n  \n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, a directive line follows, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T\u2028%%{x}%%\u00a0%% c\n%%{y}%%\n",
+    "wardley-beta\n  accDescr: T\n  %%{x}%% %% c\n  %%{y}%%\n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, a comment line and a statement follow, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T\u2028%%{x}%%\u00a0%% c\n%% d\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  accDescr: T\u2028%%{x}%%\u00a0%% c\n%% d\ncomponent A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 before a directive that a wide space and a comment follow, an empty line and a statement follow, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: T\u2028%%{x}%%\u00a0%% c\n\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  accDescr: T\n  %%{x}%% %% c\n\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a `;` and no directive, the gap before the colon of accTitle is a space, a U+2028 stands before the text, the text ends, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle : \u2028T;\n",
+    "wardley-beta\n  accTitle: T;\n",
+  ],
+  [
+    "a `;` and no directive, a U+2028 stands before the text of accTitle, the text ends, in an accTitle line of a Wardley map",
+    "wardley-beta\naccTitle: \u2028T;\n",
+    "wardley-beta\n  accTitle: T;\n",
+  ],
+  [
+    "a `;` and no directive, the gap before the colon of accDescr is a space, a U+2028 stands before the text, the text ends, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr : \u2028T;\n",
+    "wardley-beta\n  accDescr: T;\n",
+  ],
+  [
+    "a `;` and no directive, a U+2028 stands before the text of accDescr, the text ends, in an accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: \u2028T;\n",
+    "wardley-beta\n  accDescr: T;\n",
   ],
 ]
 
