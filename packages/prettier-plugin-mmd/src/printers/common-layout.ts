@@ -57,11 +57,9 @@ import {
 import { collapsedRunsAtom } from "./text-runs.ts"
 import type { Source } from "./source.ts"
 import {
-  findDirectiveEndingAt,
   findStructuralToken,
   findTokensBetween,
   findTriviaBetween,
-  isLineSeparator,
   isSpaceOrTab,
   isStructural,
   isWhitespace,
@@ -132,27 +130,11 @@ function isAccTitle(statement: CommonStatement): boolean {
 }
 
 /**
- * Whether a U+2028 or U+2029 stands in the whitespace that ends `[start, end)`,
- * after text or a keyword and no directive, and the range holds no directive or
- * comment: a value that holds one stays as written, the separator in it a
- * character of the value.
+ * Whether the value of a common line holds a directive or a comment, which
+ * `layoutCommonLine` prints as written unless the value ends with directives.
  */
-function endsWithLineSeparatorAfterText(
-  source: Source,
-  start: number,
-  end: number,
-): boolean {
-  let position = end
-  let separator = false
-  while (position > start && isWhitespace(source.text[position - 1])) {
-    if (isLineSeparator(source.text[position - 1])) separator = true
-    position--
-  }
-  return (
-    separator &&
-    findDirectiveEndingAt(source, position) === undefined &&
-    findTriviaBetween(source, start, position).length === 0
-  )
+export function valueHoldsTrivia(source: Source, value: Node): boolean {
+  return findTriviaBetween(source, ...value.range).length > 0
 }
 
 /**
@@ -163,30 +145,14 @@ function endsWithLineSeparatorAfterText(
  * directive or a comment follows it on the line, is a gap of the line, which a
  * gap rule prints as one space, and no indentation of the next line, so the
  * run starts after the last of those items (docs/treemap.md and
- * docs/treeview.md, Title). `endsLineAtSeparator` tells that the printer ends
- * the line of the title at a U+2028 or U+2029 that follows its text with only
- * whitespace between, as a treemap does for a line that is not kept as written.
- * What follows the character is then printed on a line of its own, where the
- * whitespace between the items is part of the run that the next line supplies,
- * as on any line after the title: the run starts at the end of the title.
+ * docs/treeview.md, Title).
  */
 export function relocatedWhitespaceStart(
   source: Source,
   statement: Node,
   end: number,
-  endsLineAtSeparator = false,
 ): number {
   if (!statement.type.endsWith("TitleStatement")) return end
-  const value = "value" in statement ? (statement.value as Node | null) : null
-  if (
-    endsLineAtSeparator &&
-    endsWithLineSeparatorAfterText(
-      source,
-      value?.range[0] ?? statement.range[0],
-      end,
-    )
-  )
-    return end
   let position = end
   let after = end
   for (;;) {
@@ -219,8 +185,7 @@ export function layoutCommonLine(
         "the accessibility colon",
       )
   const value = statement.value
-  const hasTrivia =
-    value !== null && findTriviaBetween(source, ...value.range).length > 0
+  const hasTrivia = value !== null && valueHoldsTrivia(source, value)
   // A `%%` right after the value of an `accTitle`, also after the directives
   // that mermaid.js removes first, is a part of the title to the oldest version
   // that counts, with the whitespace before it, so the line stays as written

@@ -828,19 +828,19 @@ Db の等しい外側の空白から 1 つを選び、引用符に見える文�
 [test: treemap/title/bare-title-directive-spaces-and-line-separator]
 [test: treemap/title/bare-title-comment-after-line-separator-kept]
 
-`title` 行か `accTitle:` 行のテキストの後、
-テキストがないときはキーワードの後の、間に空白だけがある U+2028 か U+2029 は、
-印字側では行を終えます。
-その後のディレクティブとコメントは、後ろに空行かディレクティブの行があるとき、
-間に何も置かずに、独立した行に印字します。
-行が後に続く行では、
-インラインコメントがそうだからです（[Comments](#comments) を参照）。
+`title` 行か `accTitle:` 行のテキストの後に、
+空白だけを挟んで U+2028 か U+2029 があり、
+その後にディレクティブとコメントが続くとします（テキストがないときは、
+キーワードの後が同じです）。
+コメントの後に、空行か、コメントのないディレクティブの行が続き、
+その後に section か leaf が続くとき、印字側はその文字で行を終えます。
+ただし、その文字の前、または `accTitle:` 行のテキストの前に、
+ディレクティブがあるときは終えません（下を参照）。
+ディレクティブとコメントは、間に何も置かず、独立した行に印字します。
+section か leaf が後に続くインラインコメントは、
+どの行でもそうだからです（[Comments](#comments) を参照）。
 `title`、空白、その文字、空白、`%%{x}%%`、空白 2 つ、`%% c`、空行、`"A":1` は、
 `title`、`%%{x}%%%% c`、空行、`  "A": 1` と印字し、2 回目も同じです。
-その後に行か、コメント行が続くとき、その文字の後にディレクティブだけがあるとき、
-ディレクティブがその文字の前にあるとき、
-`accTitle:` 行のテキストの前にあるときは、行を書かれたままにします。
-テキストの終わりでは、隙間は空白 1 つです。
 
 [test: treemap/title/bare-title-line-separator-directive-comment-touch]
 [test: treemap/title/bare-title-paragraph-separator-tabs-directive-comment-touch]
@@ -849,12 +849,41 @@ Db の等しい外側の空白から 1 つを選び、引用符に見える文�
 [test: treemap/title/title-directive-text-line-separator-directive-comment-touch]
 [test: treemap/title/acctitle-text-line-separator-directive-comment-touch]
 [test: treemap/title/acctitle-bare-line-separator-directive-comment-touch]
+
+コメントの後に、section か leaf、コメント行と section か leaf、
+空行とコメント行と section か leaf、空白だけの行と section か leaf、
+コメントを含むディレクティブの行と section か leaf のどれかが続くときは、
+行を書かれたまま残します。
+
 [test: treemap/title/bare-title-line-separator-directive-comment-before-row-kept]
-[test: treemap/title/bare-title-line-separator-directive-comment-at-end-one-space]
 [test: treemap/title/bare-title-line-separator-directive-comment-before-comment-line-kept]
-[test: treemap/title/bare-title-line-separator-directive-only-kept]
+[test: treemap/title/bare-title-line-separator-directive-comment-before-empty-line-and-comment-line-kept]
+[test: treemap/title/bare-title-line-separator-directive-comment-before-whitespace-line-kept]
+[test: treemap/title/bare-title-line-separator-directive-comment-before-directive-comment-line-kept]
+
+コメントの後に、テキストの終わり、コメント行とテキストの終わり、
+コメントのないディレクティブの行とテキストの終わりのどれかが続くときは、
+その文字で行を終え、ディレクティブとコメントの間は空白 1 つです。
+
+[test: treemap/title/bare-title-line-separator-directive-comment-at-end-one-space]
+[test: treemap/title/bare-title-line-separator-directive-comment-before-comment-line-at-end-one-space]
+[test: treemap/title/bare-title-line-separator-directive-comment-before-directive-line-at-end-one-space]
+
+その文字の前、または `accTitle:` 行のテキストの前に、
+ディレクティブがあるときは、行を終えません。
+コメントの後に空行と section か leaf が続くときは、
+コメントの前の空白を 1 つにして印字します（[Comments](#comments) を参照）。
+section か leaf が直後に続くときは、行を書かれたまま残します。
+
 [test: treemap/title/bare-title-directive-before-line-separator-comment-kept]
 [test: treemap/title/acctitle-directive-text-line-separator-directive-comment-kept]
+[test: treemap/title/bare-title-directive-before-line-separator-directive-comment-before-empty-line-one-space]
+[test: treemap/title/acctitle-directive-text-line-separator-directive-comment-before-empty-line-one-space]
+[test: treemap/title/bare-title-directive-before-line-separator-directive-comment-before-row-kept]
+[test: treemap/title/acctitle-directive-text-line-separator-directive-comment-before-row-kept]
+
+コメントの後がそれ以外の形のとき、たとえば空行とテキストの終わりのときは、
+ここでは述べません。
 
 空の title の次のコメント行は次の文にそろえ、title の値にはしません。
 

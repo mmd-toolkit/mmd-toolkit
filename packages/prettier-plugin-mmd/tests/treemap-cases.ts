@@ -112,6 +112,60 @@ export const treemapCases: readonly TreemapCase[] = [
     options: {},
   },
   {
+    name: "treemap/title/bare-title-line-separator-directive-comment-before-empty-line-and-comment-line-kept",
+    input: 'treemap\ntitle \u2028 %%{x}%%  %% c\n\n%% d\n"A":1\n',
+    output: 'treemap\ntitle \u2028 %%{x}%%  %% c\n\n%% d\n"A":1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-line-separator-directive-comment-before-whitespace-line-kept",
+    input: 'treemap\ntitle \u2028 %%{x}%%  %% c\n  \n"A":1\n',
+    output: 'treemap\ntitle \u2028 %%{x}%%  %% c\n  \n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-line-separator-directive-comment-before-directive-comment-line-kept",
+    input: 'treemap\ntitle \u2028 %%{x}%%  %% c\n%%{y}%% %% d\n"A":1\n',
+    output: 'treemap\ntitle \u2028 %%{x}%%  %% c\n%%{y}%% %% d\n"A":1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-line-separator-directive-comment-before-comment-line-at-end-one-space",
+    input: "treemap\ntitle \u2028 %%{x}%%  %% c\n%% d\n",
+    output: "treemap\ntitle\n%%{x}%% %% c\n%% d\n",
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-line-separator-directive-comment-before-directive-line-at-end-one-space",
+    input: "treemap\ntitle \u2028 %%{x}%%  %% c\n%%{y}%%\n",
+    output: "treemap\ntitle\n%%{x}%% %% c\n%%{y}%%\n",
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-directive-before-line-separator-directive-comment-before-empty-line-one-space",
+    input: 'treemap\ntitle %%{w}%% \u2028 %%{x}%%  %% c\n\n"A":1\n',
+    output: 'treemap\ntitle %%{w}%% \u2028 %%{x}%% %% c\n\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/acctitle-directive-text-line-separator-directive-comment-before-empty-line-one-space",
+    input: 'treemap\naccTitle: %%{w}%% T \u2028 %%{x}%%  %% c\n\n"A":1\n',
+    output: 'treemap\naccTitle: %%{w}%% T \u2028 %%{x}%% %% c\n\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-directive-before-line-separator-directive-comment-before-row-kept",
+    input: 'treemap\ntitle %%{w}%% \u2028 %%{x}%%  %% c\n"A":1\n',
+    output: 'treemap\ntitle %%{w}%% \u2028 %%{x}%%  %% c\n"A":1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/acctitle-directive-text-line-separator-directive-comment-before-row-kept",
+    input: 'treemap\naccTitle: %%{w}%% T \u2028 %%{x}%%  %% c\n"A":1\n',
+    output: 'treemap\naccTitle: %%{w}%% T \u2028 %%{x}%%  %% c\n"A":1\n',
+    options: {},
+  },
+  {
     name: "treemap/comments/standalone-ls",
     input:
       'treemap\n"SeparatorRoot"\n%% note\u2028still comment\n "SeparatorChild":2\n',

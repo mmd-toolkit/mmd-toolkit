@@ -9,7 +9,12 @@ import type {
   TreemapSection,
 } from "@mmd-toolkit/ast"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
-import { layoutCommonDescription, layoutCommonLine } from "./common-layout.ts"
+import {
+  layoutCommonDescription,
+  layoutCommonLine,
+  relocatedWhitespaceStart,
+  valueHoldsTrivia,
+} from "./common-layout.ts"
 import { readGapElement } from "./gap.ts"
 import type { LeadingDirectives } from "./indentation-lines.ts"
 import { findLeadingDirectives } from "./indentation-lines.ts"
@@ -29,8 +34,10 @@ import {
 import { printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
 import {
+  findDirectiveEndingAt,
   findTokenStartingAt,
   findTriviaBetween,
+  isLineSeparator,
   isWhitespace,
   textRead,
 } from "./source.ts"
@@ -98,6 +105,44 @@ export function treemapStatementRange(item: TreemapBodyItem): Range {
     return item.range
   const parts = treemapRowParts(item)
   return [parts[0].range[0], parts.at(-1)!.range[1]]
+}
+
+/**
+ * Where the whitespace that the planned indentation of the next line supplies
+ * starts, after a line that ends with `statement` (see
+ * `relocatedWhitespaceStart`). A title whose text is followed, with only
+ * whitespace between, by a U+2028 or U+2029 ends its line at the character: a
+ * directive and a comment after it are printed on a line of their own, where
+ * the whitespace between them is part of the run that the next line supplies,
+ * as on any line after the title, so the run starts at the end of the title
+ * (docs/treemap.md, Title). Not so where a directive stands right before the
+ * whitespace, which `layoutCommonLine` leaves out, or where the value holds a
+ * directive or a comment, which it prints as written.
+ */
+export function treemapRelocatedWhitespaceStart(
+  source: Source,
+  statement: TreemapBodyItem,
+  end: number,
+): number {
+  if (
+    (statement.type === "TreemapTitleStatement" ||
+      statement.type === "TreemapAccTitleStatement") &&
+    statement.value !== null &&
+    !valueHoldsTrivia(source, statement.value)
+  ) {
+    let position = end
+    let separator = false
+    while (
+      position > statement.value.range[0] &&
+      isWhitespace(source.text[position - 1])
+    ) {
+      if (isLineSeparator(source.text[position - 1])) separator = true
+      position--
+    }
+    if (separator && findDirectiveEndingAt(source, position) === undefined)
+      return end
+  }
+  return relocatedWhitespaceStart(source, statement, end)
 }
 
 /**
