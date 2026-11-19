@@ -5128,6 +5128,386 @@ const blockLineSeparatorExamples: readonly (readonly [
     "block-beta\na\nclassDef c \nfill:#F00 ;\n",
     "block-beta\n  a\n  classDef c \n    fill:#f00 ;\n",
   ],
+  [
+    "a space before a comma in a class definition that a line break joins, the color is printed in lower case",
+    "block-beta\na\nclassDef c \nfill:#F00 ,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#f00 ,stroke:#ABC;\n",
+  ],
+  [
+    "a space and a character after a color in a class definition that a line break joins, the color is printed in lower case",
+    "block-beta\na\nclassDef c \nfill:#F00 x;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#f00 x;\n",
+  ],
+  [
+    "a space between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color is printed in lower case",
+    "block-beta\na\nclassDef c \nfill:#F00 ;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#f00 ;\n",
+  ],
+  [
+    "a tab before a comma in a class definition that a line break joins, the color is printed in lower case",
+    "block-beta\na\nclassDef c \nfill:#F00\t,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#f00\t,stroke:#ABC;\n",
+  ],
+  [
+    "a tab and a character after a color in a class definition that a line break joins, the color is printed in lower case",
+    "block-beta\na\nclassDef c \nfill:#F00\tx;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#f00\tx;\n",
+  ],
+  [
+    "a tab between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color is printed in lower case",
+    "block-beta\na\nclassDef c \nfill:#F00\t;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#f00\t;\n",
+  ],
+  [
+    "a vertical tab before a comma in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u000b,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u000b,stroke:#ABC;\n",
+  ],
+  [
+    "a vertical tab and a character after a color in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u000bx;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u000bx;\n",
+  ],
+  [
+    "a vertical tab between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u000b;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u000b;\n",
+  ],
+  [
+    "a form feed before a comma in a class definition that a line break joins, the color is printed in lower case",
+    "block-beta\na\nclassDef c \nfill:#F00\f,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#f00\f,stroke:#ABC;\n",
+  ],
+  [
+    "a form feed and a character after a color in a class definition that a line break joins, the color is printed in lower case",
+    "block-beta\na\nclassDef c \nfill:#F00\fx;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#f00\fx;\n",
+  ],
+  [
+    "a form feed between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color is printed in lower case",
+    "block-beta\na\nclassDef c \nfill:#F00\f;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#f00\f;\n",
+  ],
+  [
+    "a no-break space before a comma in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u00a0,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u00a0,stroke:#ABC;\n",
+  ],
+  [
+    "a no-break space and a character after a color in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u00a0x;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u00a0x;\n",
+  ],
+  [
+    "a no-break space between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u00a0;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u00a0;\n",
+  ],
+  [
+    "U+1680 before a comma in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u1680,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u1680,stroke:#ABC;\n",
+  ],
+  [
+    "U+1680 and a character after a color in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u1680x;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u1680x;\n",
+  ],
+  [
+    "U+1680 between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u1680;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u1680;\n",
+  ],
+  [
+    "U+2000 before a comma in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2000,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2000,stroke:#ABC;\n",
+  ],
+  [
+    "U+2000 and a character after a color in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2000x;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2000x;\n",
+  ],
+  [
+    "U+2000 between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2000;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2000;\n",
+  ],
+  [
+    "U+2001 before a comma in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2001,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2001,stroke:#ABC;\n",
+  ],
+  [
+    "U+2001 and a character after a color in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2001x;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2001x;\n",
+  ],
+  [
+    "U+2001 between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2001;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2001;\n",
+  ],
+  [
+    "U+2002 before a comma in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2002,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2002,stroke:#ABC;\n",
+  ],
+  [
+    "U+2002 and a character after a color in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2002x;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2002x;\n",
+  ],
+  [
+    "U+2002 between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2002;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2002;\n",
+  ],
+  [
+    "U+2003 before a comma in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2003,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2003,stroke:#ABC;\n",
+  ],
+  [
+    "U+2003 and a character after a color in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2003x;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2003x;\n",
+  ],
+  [
+    "U+2003 between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2003;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2003;\n",
+  ],
+  [
+    "U+2004 before a comma in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2004,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2004,stroke:#ABC;\n",
+  ],
+  [
+    "U+2004 and a character after a color in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2004x;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2004x;\n",
+  ],
+  [
+    "U+2004 between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2004;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2004;\n",
+  ],
+  [
+    "U+2005 before a comma in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2005,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2005,stroke:#ABC;\n",
+  ],
+  [
+    "U+2005 and a character after a color in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2005x;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2005x;\n",
+  ],
+  [
+    "U+2005 between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2005;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2005;\n",
+  ],
+  [
+    "U+2006 before a comma in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2006,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2006,stroke:#ABC;\n",
+  ],
+  [
+    "U+2006 and a character after a color in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2006x;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2006x;\n",
+  ],
+  [
+    "U+2006 between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2006;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2006;\n",
+  ],
+  [
+    "U+2007 before a comma in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2007,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2007,stroke:#ABC;\n",
+  ],
+  [
+    "U+2007 and a character after a color in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2007x;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2007x;\n",
+  ],
+  [
+    "U+2007 between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2007;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2007;\n",
+  ],
+  [
+    "U+2008 before a comma in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2008,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2008,stroke:#ABC;\n",
+  ],
+  [
+    "U+2008 and a character after a color in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2008x;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2008x;\n",
+  ],
+  [
+    "U+2008 between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2008;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2008;\n",
+  ],
+  [
+    "U+2009 before a comma in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2009,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2009,stroke:#ABC;\n",
+  ],
+  [
+    "U+2009 and a character after a color in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2009x;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2009x;\n",
+  ],
+  [
+    "U+2009 between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2009;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u2009;\n",
+  ],
+  [
+    "U+200A before a comma in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u200a,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u200a,stroke:#ABC;\n",
+  ],
+  [
+    "U+200A and a character after a color in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u200ax;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u200ax;\n",
+  ],
+  [
+    "U+200A between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u200a;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u200a;\n",
+  ],
+  [
+    "U+202F before a comma in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u202f,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u202f,stroke:#ABC;\n",
+  ],
+  [
+    "U+202F and a character after a color in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u202fx;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u202fx;\n",
+  ],
+  [
+    "U+202F between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u202f;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u202f;\n",
+  ],
+  [
+    "U+205F before a comma in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u205f,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u205f,stroke:#ABC;\n",
+  ],
+  [
+    "U+205F and a character after a color in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u205fx;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u205fx;\n",
+  ],
+  [
+    "U+205F between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u205f;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u205f;\n",
+  ],
+  [
+    "U+3000 before a comma in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u3000,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u3000,stroke:#ABC;\n",
+  ],
+  [
+    "U+3000 and a character after a color in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u3000x;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u3000x;\n",
+  ],
+  [
+    "U+3000 between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u3000;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u3000;\n",
+  ],
+  [
+    "U+FEFF before a comma in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\ufeff,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\ufeff,stroke:#ABC;\n",
+  ],
+  [
+    "U+FEFF and a character after a color in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\ufeffx;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\ufeffx;\n",
+  ],
+  [
+    "U+FEFF between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\ufeff;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\ufeff;\n",
+  ],
+  [
+    "U+2028 before a comma in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2028,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c fill:#F00\u2028,stroke:#ABC;\n",
+  ],
+  [
+    "U+2029 before a comma in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u2029,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c fill:#F00\u2029,stroke:#ABC;\n",
+  ],
+  [
+    "a color that a semicolon that the line rule keeps touches in a class definition of one line stays as written",
+    "block-beta\na\nclassDef c fill: #F00;\n",
+    "block-beta\n  a\n  classDef c fill: #F00;\n",
+  ],
+  [
+    "a color that a semicolon that the line rule keeps touches in a style statement of one line stays as written, and the color before a comma is printed in lower case",
+    "block-beta\na\nstyle a fill: #F00,stroke: #ABC;\n",
+    "block-beta\n  a\n  style a fill: #f00,stroke: #ABC;\n",
+  ],
+  [
+    "a color that a semicolon that the line rule keeps touches in a style statement of one line stays as written, with a directive after it",
+    "block-beta\na\nstyle a fill: #F00,stroke: #ABC;  %%{x}%%\n",
+    "block-beta\n  a\n  style a fill: #f00,stroke: #ABC; %%{x}%%\n",
+  ],
+  [
+    "a color that a semicolon that the line rule keeps touches in a class definition that a line break joins stays as written",
+    "block-beta\na\nclassDef c \nfill  :  #F00;\n",
+    "block-beta\n  a\n  classDef c fill: #F00;\n",
+  ],
+  [
+    "a space between a color and the semicolon that the line rule keeps in a class definition of one line, the color is printed in lower case",
+    "block-beta\na\nclassDef c fill: #F00 ;\n",
+    "block-beta\n  a\n  classDef c fill: #f00 ;\n",
+  ],
+  [
+    "a tab between a color and the semicolon that the line rule keeps in a class definition of one line, the color is printed in lower case",
+    "block-beta\na\nclassDef c fill: #F00\t;\n",
+    "block-beta\n  a\n  classDef c fill: #f00\t;\n",
+  ],
+  [
+    "a form feed between a color and the semicolon that the line rule keeps in a class definition of one line, the color is printed in lower case",
+    "block-beta\na\nclassDef c fill: #F00\f;\n",
+    "block-beta\n  a\n  classDef c fill: #f00\f;\n",
+  ],
+  [
+    "a vertical tab between a color and the semicolon that the line rule keeps in a class definition of one line, the color stays as written",
+    "block-beta\na\nclassDef c fill: #F00\u000b;\n",
+    "block-beta\n  a\n  classDef c fill: #F00\u000b;\n",
+  ],
+  [
+    "a no-break space between a color and the semicolon that the line rule keeps in a class definition of one line, the color stays as written",
+    "block-beta\na\nclassDef c fill: #F00\u00a0;\n",
+    "block-beta\n  a\n  classDef c fill: #F00\u00a0;\n",
+  ],
+  [
+    "U+2003 between a color and the semicolon that the line rule keeps in a class definition of one line, the color stays as written",
+    "block-beta\na\nclassDef c fill: #F00\u2003;\n",
+    "block-beta\n  a\n  classDef c fill: #F00\u2003;\n",
+  ],
+  [
+    "a directive line and then a comment line, to the end of the text, after a style statement and a U+2028",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n%%{x}%%\n%% d\n",
+    "block-beta\n  a\n  style a fill: #f00\n  %% c\n  %%{x}%%\n  %% d\n",
+  ],
 ]
 
 /**

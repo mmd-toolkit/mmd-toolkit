@@ -767,9 +767,15 @@ a line break, a color that a `;` that the line rule ignores touches stays as
 written (see [Multi-line statements](#multi-line-statements)); a statement of
 one line prints it in lower case, unless a second `;` follows it
 (`style a fill:#F00,  stroke:#ABC;  %%{x}%%` is printed
-`fill:#f00,  stroke:#abc; %%{x}%%`, while `#ABC;;` and `#ABC; ;` stay). A
-comment or a directive after the last style is no part of the statement, which
-is formatted as usual (see
+`fill:#f00,  stroke:#abc; %%{x}%%`, while `#ABC;;` and `#ABC; ;` stay). Where
+the line rule keeps the `;`, because whitespace stands between the `:` and the
+`#`, the `;` is part of the text, and a color that touches it stays as written,
+in a statement of one line as well (`classDef c fill: #F00;`, and
+`style a fill: #F00,stroke: #ABC;` is printed
+`style a fill: #f00, stroke: #ABC;`); a color that a space, a tab, or a form
+feed separates from it is in lower case (`#f00 ;`), and one that a vertical tab
+or a wide space separates from it stays. A comment or a directive after the last
+style is no part of the statement, which is formatted as usual (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 The whitespace at the end of the statement is dropped, as in a flowchart (see
 [Style trailing whitespace](./flowchart.md#style-trailing-whitespace)).
@@ -788,7 +794,25 @@ a-color-that-a-directive-and-a-character-follow-stays] [test: block:
 a-style-that-is-all-whitespace-keeps-the-whitespace-and-lowers-the-colors]
 [test: block:
 a-color-before-a-semicolon-that-the-line-rule-ignores-stays-in-a-style-that-holds-two-semicolons]
-[fixture: styles/class-ids-as-written]
+[fixture: styles/class-ids-as-written] [test: a color that a semicolon that the
+line rule keeps touches in a class definition of one line stays as written]
+[test: a color that a semicolon that the line rule keeps touches in a style
+statement of one line stays as written, and the color before a comma is printed
+in lower case] [test: a color that a semicolon that the line rule keeps touches
+in a style statement of one line stays as written, with a directive after it]
+[test: a color that a semicolon that the line rule keeps touches in a class
+definition that a line break joins stays as written] [test: a space between a
+color and the semicolon that the line rule keeps in a class definition of one
+line, the color is printed in lower case] [test: a tab between a color and the
+semicolon that the line rule keeps in a class definition of one line, the color
+is printed in lower case] [test: a form feed between a color and the semicolon
+that the line rule keeps in a class definition of one line, the color is printed
+in lower case] [test: a vertical tab between a color and the semicolon that the
+line rule keeps in a class definition of one line, the color stays as written]
+[test: a no-break space between a color and the semicolon that the line rule
+keeps in a class definition of one line, the color stays as written] [test:
+U+2003 between a color and the semicolon that the line rule keeps in a class
+definition of one line, the color stays as written]
 
 The class name of a `class` statement is read as words: a run of spaces and tabs
 inside it is printed as one space, so `class A c   d` is printed `class A c d`.
@@ -1019,14 +1043,17 @@ change which `;` the line rule ignores, and where a `;` ends the last line; any
 other line break is joined as usual, also in a statement that holds a `;`. A
 statement that keeps a line break keeps the whitespace of its styles as written,
 runs and tabs included. Its colors are in lower case where a comma follows them,
-and where characters follow them after spaces or tabs (`fill:#F00 x;` prints
-`fill:#f00 x;`, while `fill:#F00`, a no-break space or U+3000, and `x;` keeps
-`#F00`, since they are no whitespace there); a color that a `;` that the line
-rule ignores touches stays as written (`#ABC;`), and so does a color that a
-no-break space or U+3000 separates from the `;`, which the [Colors](#colors)
-rule prints in lower case, so it is printed against the rule and waits to be
-fixed by it, while a color that spaces or tabs separate from the `;` is in lower
-case (`#abc ;`). See [Rows](#rows) and
+and where characters follow them after a space, a tab, or a form feed
+(`fill:#F00 x;` prints `fill:#f00 x;`, while `fill:#F00`, a no-break space, and
+`x;` keeps `#F00`): a vertical tab, the wide spaces (a no-break space, U+1680,
+U+2000 to U+200A, U+202F, U+205F, U+3000, and U+FEFF), U+2028, and U+2029 are no
+whitespace there, and a color that one of them follows stays as written, before
+a comma as well. A color that a `;` that the line rule ignores touches stays as
+written (`#ABC;`), and so does a color that a vertical tab or a wide space
+separates from the `;`, which the [Colors](#colors) rule prints in lower case,
+so it is printed against the rule and waits to be fixed by it, while a color
+that spaces, tabs, or form feeds separate from the `;` is in lower case
+(`#abc ;`). See [Rows](#rows) and
 [A line that a `;` ends](./compatibility.md#a-line-that-a--ends). The line rule
 of mermaid.js removes the last `;` of a line that holds `style` or `classDef`, a
 later `:`, a `#` after that with no whitespace between them, and a later `;`
@@ -1048,7 +1075,111 @@ multi-line-statements/shape-over-lines-joined] [fixture:
 multi-line-statements/class-definition-line-break-in-the-head] [fixture:
 multi-line-statements/continuation-line-joined-in-a-row] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
-multi-line-statements/directive-inside-kept]
+multi-line-statements/directive-inside-kept] [test: a space before a comma in a
+class definition that a line break joins, the color is printed in lower case]
+[test: a space and a character after a color in a class definition that a line
+break joins, the color is printed in lower case] [test: a space between a color
+and the semicolon that the line rule ignores in a class definition that a line
+break joins, the color is printed in lower case] [test: a tab before a comma in
+a class definition that a line break joins, the color is printed in lower case]
+[test: a tab and a character after a color in a class definition that a line
+break joins, the color is printed in lower case] [test: a tab between a color
+and the semicolon that the line rule ignores in a class definition that a line
+break joins, the color is printed in lower case] [test: a vertical tab before a
+comma in a class definition that a line break joins, the color stays as written]
+[test: a vertical tab and a character after a color in a class definition that a
+line break joins, the color stays as written] [test: a vertical tab between a
+color and the semicolon that the line rule ignores in a class definition that a
+line break joins, the color stays as written] [test: a form feed before a comma
+in a class definition that a line break joins, the color is printed in lower
+case] [test: a form feed and a character after a color in a class definition
+that a line break joins, the color is printed in lower case] [test: a form feed
+between a color and the semicolon that the line rule ignores in a class
+definition that a line break joins, the color is printed in lower case] [test: a
+no-break space before a comma in a class definition that a line break joins, the
+color stays as written] [test: a no-break space and a character after a color in
+a class definition that a line break joins, the color stays as written] [test: a
+no-break space between a color and the semicolon that the line rule ignores in a
+class definition that a line break joins, the color stays as written] [test:
+U+1680 before a comma in a class definition that a line break joins, the color
+stays as written] [test: U+1680 and a character after a color in a class
+definition that a line break joins, the color stays as written] [test: U+1680
+between a color and the semicolon that the line rule ignores in a class
+definition that a line break joins, the color stays as written] [test: U+2000
+before a comma in a class definition that a line break joins, the color stays as
+written] [test: U+2000 and a character after a color in a class definition that
+a line break joins, the color stays as written] [test: U+2000 between a color
+and the semicolon that the line rule ignores in a class definition that a line
+break joins, the color stays as written] [test: U+2001 before a comma in a class
+definition that a line break joins, the color stays as written] [test: U+2001
+and a character after a color in a class definition that a line break joins, the
+color stays as written] [test: U+2001 between a color and the semicolon that the
+line rule ignores in a class definition that a line break joins, the color stays
+as written] [test: U+2002 before a comma in a class definition that a line break
+joins, the color stays as written] [test: U+2002 and a character after a color
+in a class definition that a line break joins, the color stays as written]
+[test: U+2002 between a color and the semicolon that the line rule ignores in a
+class definition that a line break joins, the color stays as written] [test:
+U+2003 before a comma in a class definition that a line break joins, the color
+stays as written] [test: U+2003 and a character after a color in a class
+definition that a line break joins, the color stays as written] [test: U+2003
+between a color and the semicolon that the line rule ignores in a class
+definition that a line break joins, the color stays as written] [test: U+2004
+before a comma in a class definition that a line break joins, the color stays as
+written] [test: U+2004 and a character after a color in a class definition that
+a line break joins, the color stays as written] [test: U+2004 between a color
+and the semicolon that the line rule ignores in a class definition that a line
+break joins, the color stays as written] [test: U+2005 before a comma in a class
+definition that a line break joins, the color stays as written] [test: U+2005
+and a character after a color in a class definition that a line break joins, the
+color stays as written] [test: U+2005 between a color and the semicolon that the
+line rule ignores in a class definition that a line break joins, the color stays
+as written] [test: U+2006 before a comma in a class definition that a line break
+joins, the color stays as written] [test: U+2006 and a character after a color
+in a class definition that a line break joins, the color stays as written]
+[test: U+2006 between a color and the semicolon that the line rule ignores in a
+class definition that a line break joins, the color stays as written] [test:
+U+2007 before a comma in a class definition that a line break joins, the color
+stays as written] [test: U+2007 and a character after a color in a class
+definition that a line break joins, the color stays as written] [test: U+2007
+between a color and the semicolon that the line rule ignores in a class
+definition that a line break joins, the color stays as written] [test: U+2008
+before a comma in a class definition that a line break joins, the color stays as
+written] [test: U+2008 and a character after a color in a class definition that
+a line break joins, the color stays as written] [test: U+2008 between a color
+and the semicolon that the line rule ignores in a class definition that a line
+break joins, the color stays as written] [test: U+2009 before a comma in a class
+definition that a line break joins, the color stays as written] [test: U+2009
+and a character after a color in a class definition that a line break joins, the
+color stays as written] [test: U+2009 between a color and the semicolon that the
+line rule ignores in a class definition that a line break joins, the color stays
+as written] [test: U+200A before a comma in a class definition that a line break
+joins, the color stays as written] [test: U+200A and a character after a color
+in a class definition that a line break joins, the color stays as written]
+[test: U+200A between a color and the semicolon that the line rule ignores in a
+class definition that a line break joins, the color stays as written] [test:
+U+202F before a comma in a class definition that a line break joins, the color
+stays as written] [test: U+202F and a character after a color in a class
+definition that a line break joins, the color stays as written] [test: U+202F
+between a color and the semicolon that the line rule ignores in a class
+definition that a line break joins, the color stays as written] [test: U+205F
+before a comma in a class definition that a line break joins, the color stays as
+written] [test: U+205F and a character after a color in a class definition that
+a line break joins, the color stays as written] [test: U+205F between a color
+and the semicolon that the line rule ignores in a class definition that a line
+break joins, the color stays as written] [test: U+3000 before a comma in a class
+definition that a line break joins, the color stays as written] [test: U+3000
+and a character after a color in a class definition that a line break joins, the
+color stays as written] [test: U+3000 between a color and the semicolon that the
+line rule ignores in a class definition that a line break joins, the color stays
+as written] [test: U+FEFF before a comma in a class definition that a line break
+joins, the color stays as written] [test: U+FEFF and a character after a color
+in a class definition that a line break joins, the color stays as written]
+[test: U+FEFF between a color and the semicolon that the line rule ignores in a
+class definition that a line break joins, the color stays as written] [test:
+U+2028 before a comma in a class definition that a line break joins, the color
+stays as written] [test: U+2029 before a comma in a class definition that a line
+break joins, the color stays as written]
 
 A `;` alone does not prevent joining.
 
@@ -1423,14 +1554,14 @@ prints:
 Flowchart, class, state, and ER keep the line as written where nothing follows
 the comment line, and rule 2 gives their form, so block prints the first row
 against rule 2 and waits to be fixed by the rule. On such a line, a color before
-a comma on its line, also after whitespace, and the last color of the last line,
-where no `;` that the line rule ignores follows it, are in lower case; a color
-before a comma at the start of the line after the comment line stays as written
-(`#F00`, and `#abc` after it); a color that spaces or tabs and characters follow
-on its line is in lower case (`#F00 x`, U+2028, `%% c`, and ` y` print
-`#f00 x`); and a color that a `;` that the line rule ignores touches stays as
-written (`#F00`, and `#ABC;` after it), also where a no-break space or U+3000
-separates it from the `;`, which the
+a comma on its line, also after a space, a tab, or a form feed, and the last
+color of the last line, where no `;` that the line rule ignores follows it, are
+in lower case; a color before a comma at the start of the line after the comment
+line stays as written (`#F00`, and `#abc` after it); a color that spaces, tabs,
+or form feeds and characters follow on its line is in lower case (`#F00 x`,
+U+2028, `%% c`, and ` y` print `#f00 x`); and a color that a `;` that the line
+rule ignores touches stays as written (`#F00`, and `#ABC;` after it), also where
+a vertical tab or a wide space separates it from the `;`, which the
 [Colors](./compatibility.md#colors-that-are-drawn-the-same) rule prints in lower
 case, so that form is printed against the rule and waits to be fixed by it.
 Where the `;` touches the color right before the U+2028, the U+2028 and the

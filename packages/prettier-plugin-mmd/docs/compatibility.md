@@ -5998,11 +5998,15 @@ on the line of the colon, and stays as written where the comment region follows
 the colon at once (see
 [Multi-line statements](./block.md#multi-line-statements)). In a `style` or a
 `classDef` statement, a U+2028 or U+2029 before a comment line after which
-nothing, or only comment lines, empty lines, or whitespace-only lines follow is
-dropped, where no `;` touches the color before it, and the comment line stands
-on a line of its own (see [Line separators](./block.md#line-separators)). What
-else the formatter prints on a statement of such a line in a block diagram, as
-the colors of a style, is stated there too.
+nothing, or only comment lines, empty lines, or whitespace-only lines follow, or
+a directive line and then a comment line, is dropped, where no `;` touches the
+color before it, and the comment line stands on a line of its own (see
+[Line separators](./block.md#line-separators)). What else the formatter prints
+on a statement of such a line in a block diagram, as the colors of a style, is
+stated there too.
+
+[test: a directive line and then a comment line, to the end of the text, after a
+style statement and a U+2028]
 
 What the line holds, and where it ends, follow from what mermaid.js removes. The
 documents of the diagram types say what is theirs:
