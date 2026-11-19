@@ -2759,10 +2759,20 @@ flowchart LR
   end
 ```
 
-A comment line after a U+2028 or U+2029 joins the next line to its line only
-where something stands on the next line besides `;`: the `;` that end the text
-stand for no statement and are not printed, so what stands before the comment
-line is printed as it is without them, and a second formatting finds the same.
+In a flowchart, an agentflow diagram, a sequence diagram, a quadrant chart, and
+an XY chart, a `;` separates statements, so the `;` that end the text stand for
+no statement and are not printed. A comment line after a U+2028 or U+2029 joins
+the next line to its line where the lexer reads something after the comment line
+besides those `;`: a statement or a directive, or a `;` on the line right after
+the comment line, which stays with the line that the comment line joins, as
+written: `B --> C`, U+2028, `%% c`, a line feed, and `;` are printed as they
+are. Where only `;`, whitespace, and comment lines follow, and no `;` stands on
+the line right after the comment line, the `;` and the comment lines after it
+are no text: what stands before the comment line is printed as it is without
+them, and a second formatting finds the same. In every other diagram type a `;`
+is text or a statement of its own, and it counts as text after the comment line
+wherever it stands: a statement, U+2028, `%% c`, an empty line, and a line of
+`;` are printed as they are in a state diagram, a block diagram, and a treeView.
 
 [test: flowchart: a statement with two semicolons, U+2028, a directive, a
 comment, an empty line, and a line of a semicolon] [test: flowchart: a statement
@@ -2776,7 +2786,28 @@ flowchart: a statement with two semicolons, U+2028, a directive, a comment, an
 empty line, and a semicolon at the first column] [test: flowchart: a statement
 with two semicolons, U+2028, a directive, a comment, an empty line, and a
 statement] [test: flowchart: a statement with two semicolons, U+2028, a
-directive, a comment, and an empty line at the end of the text]
+directive, a comment, and an empty line at the end of the text] [test:
+flowchart: a statement, U+2028, a comment, and a line of a semicolon right after
+it] [test: flowchart: a statement, U+2028, a comment, an empty line, a line of a
+semicolon, and a comment line] [test: flowchart: a statement with two
+semicolons, U+2028, a directive, a comment, an empty line, a line of a
+semicolon, and a comment line] [test: flowchart: a statement, U+2028, a comment,
+an empty line, a line of a semicolon, an empty line, and a comment line] [test:
+flowchart: a statement, U+2028, a comment, an empty line, and two lines of
+semicolons] [test: flowchart: a statement, U+2029, a comment, an empty line, and
+a line of a semicolon] [test: flowchart: a statement, U+2028, a comment, an
+empty line, a line of a semicolon, and a statement] [test: agentflow: a
+statement, U+2028, a comment, an empty line, and a line of a semicolon] [test:
+sequence: a statement, U+2028, a comment, and a line of a semicolon right after
+it] [test: sequence: a statement, U+2028, a comment, an empty line, and a line
+of a semicolon] [test: sequence: a statement with two semicolons, U+2028, a
+directive, a comment, an empty line, and a line of a semicolon] [test: quadrant:
+a statement, U+2028, a comment, an empty line, and a line of a semicolon] [test:
+xychart: a statement, U+2028, a comment, an empty line, and a line of a
+semicolon] [test: state: a statement, U+2028, a comment, an empty line, and a
+line of a semicolon] [test: block: a statement, U+2028, a comment, an empty
+line, and a line of a semicolon] [test: treeview: a title, U+2028, a comment, an
+empty line, and a line of a semicolon]
 
 ### Directives
 

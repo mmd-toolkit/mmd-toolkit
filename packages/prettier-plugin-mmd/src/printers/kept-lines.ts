@@ -7,6 +7,7 @@ import {
   findTriviaAt,
   findTokenEndingBefore,
   findTokenStartingAt,
+  diagramBodiesWithSeparatingSemicolons,
   findTokensBetween,
   findTriviaBetween,
   isAtLineEnd,
@@ -140,18 +141,6 @@ function semicolonRulesOf(source: Source): SemicolonRules {
       }
       break
     }
-    case "FlowchartDiagram":
-    case "AgentflowDiagram":
-    case "SequenceDiagram":
-    case "QuadrantDiagram":
-    case "XychartDiagram":
-      rules = {
-        kind: "separators",
-        grammatical: new Set(),
-        movedCommentSemicolons: new Set(),
-        verbatimStyleLines: false,
-      }
-      break
     case "ErDiagram":
       rules = {
         kind: "text",
@@ -162,7 +151,9 @@ function semicolonRulesOf(source: Source): SemicolonRules {
       break
     default:
       rules = {
-        kind: "text",
+        kind: diagramBodiesWithSeparatingSemicolons.has(body.type)
+          ? "separators"
+          : "text",
         grammatical: new Set(),
         movedCommentSemicolons: new Set(),
         verbatimStyleLines: false,

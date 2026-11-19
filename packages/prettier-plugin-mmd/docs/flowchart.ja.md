@@ -2848,11 +2848,22 @@ flowchart LR
   end
 ```
 
+flowchart、agentflow 図、sequence 図、quadrant 図、XY 図では、
+`;` が文を区切るので、テキストの末尾の `;` はどの文も表さず、印字しません。
 U+2028 か U+2029 の後のコメント行が次の行をその行につなぐのは、
-次の行に `;` 以外のものがあるときだけです。
-テキストの末尾の `;` はどの文も表さず、印字しません。
+字句解析器がコメント行の後にそれらの `;` 以外のものを読むときです。
+文かディレクティブがあるとき、
+またはコメント行のすぐ後の行に `;` があるときです。
+後者の `;` は、コメント行がつなぐ行に残り、書かれたまま印字します。
+`B --> C`、U+2028、`%% c`、改行、`;` は、そのまま印字します。
+`;` と空白とコメント行だけが続き、コメント行のすぐ後の行に `;` がないときは、
+その `;` とその後のコメント行はテキストではありません。
 コメント行の前にあるものは、それらがないものとして印字し、
 2 回目の整形も同じ結果になります。
+そのほかの図の種類では、`;` はテキストか、それだけで 1 つの文で、
+コメント行の後のどこにあってもテキストとして数えます。
+文、U+2028、`%% c`、空行、`;` の行は、state 図、block 図、treeView で、
+そのまま印字します。
 
 [test: flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a line of a semicolon]
 [test: flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a line of a semicolon, in a header without a semicolon]
@@ -2862,6 +2873,22 @@ U+2028 か U+2029 の後のコメント行が次の行をその行につなぐ�
 [test: flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a semicolon at the first column]
 [test: flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a statement]
 [test: flowchart: a statement with two semicolons, U+2028, a directive, a comment, and an empty line at the end of the text]
+[test: flowchart: a statement, U+2028, a comment, and a line of a semicolon right after it]
+[test: flowchart: a statement, U+2028, a comment, an empty line, a line of a semicolon, and a comment line]
+[test: flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, a line of a semicolon, and a comment line]
+[test: flowchart: a statement, U+2028, a comment, an empty line, a line of a semicolon, an empty line, and a comment line]
+[test: flowchart: a statement, U+2028, a comment, an empty line, and two lines of semicolons]
+[test: flowchart: a statement, U+2029, a comment, an empty line, and a line of a semicolon]
+[test: flowchart: a statement, U+2028, a comment, an empty line, a line of a semicolon, and a statement]
+[test: agentflow: a statement, U+2028, a comment, an empty line, and a line of a semicolon]
+[test: sequence: a statement, U+2028, a comment, and a line of a semicolon right after it]
+[test: sequence: a statement, U+2028, a comment, an empty line, and a line of a semicolon]
+[test: sequence: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a line of a semicolon]
+[test: quadrant: a statement, U+2028, a comment, an empty line, and a line of a semicolon]
+[test: xychart: a statement, U+2028, a comment, an empty line, and a line of a semicolon]
+[test: state: a statement, U+2028, a comment, an empty line, and a line of a semicolon]
+[test: block: a statement, U+2028, a comment, an empty line, and a line of a semicolon]
+[test: treeview: a title, U+2028, a comment, an empty line, and a line of a semicolon]
 
 ### ディレクティブ
 
