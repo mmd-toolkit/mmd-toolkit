@@ -2321,8 +2321,9 @@ the gap in the same way, where no other rule keeps the layout as written: a
 directive that is not closed, below, and a line that a comment region joins, see
 [Multi-line statements](#multi-line-statements). A gap that holds U+2028 or
 U+2029 is not a gap that they print so: class, sequence, state, and flowchart
-keep it as written, and no precedent gives the form that ER prints for it, so
-the form that the released version prints stays until it is decided (see
+keep it as written, and no precedent gives a form that ER prints for it except
+where ER keeps the gap as written too, so the forms that the released version
+prints stay until they are decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 In a relationship, where no space or tab comes before the character, it stays
 and the directive stands after one space and touches the unit that follows it,
@@ -2345,21 +2346,22 @@ and `B : y`, a space, U+2028, `%%{x}%%`, and `z` with the U+2028 alone on the
 second line and `%%{x}%% z` on the third. Where nothing but directives and a
 comment follow the U+2028 or U+2029, the line stays as written. At the other
 places of a statement, where no whitespace comes before the U+2028 or U+2029 and
-spaces follow the directive, four forms are printed, and no precedent gives them
-either. Between an entity and the `{` of its attributes, between the name of a
-`style`, a `classDef`, or a `class` statement and what follows it, between the
-name of a relationship and its colon, and between the name of an attribute and
-its key or its comment, the character stays and the directive stands after one
-space and touches the unit that follows it, as in a relationship. Between an
-entity and its alias, between an entity and its CSS class, and between the name
-of a subgraph and its title, the character stays, the spaces after the directive
-are left out, and the directive touches the unit that follows it. Between two
-entities on a line, after the colons of a CSS class, between `title` and its
-text, and between the colon of a relationship and its label, the character ends
-the line, and the directive and the text after it stand on the next line. After
-`direction`, after the colon of `accTitle`, and after the keyword of a `style`
-or a `classDef` statement, the gap stays as written: rule 2 gives that form,
-since [flowchart](./flowchart.md#directives),
+spaces follow the directive, four forms are printed: no precedent gives the
+first three, and rule 2 gives the fourth. Between an entity and the `{` of its
+attributes, between the name of a `style`, a `classDef`, or a `class` statement
+and what follows it, between the name of a relationship and its colon, and
+between the name of an attribute and its key or its comment, the character stays
+and the directive stands after one space and touches the unit that follows it,
+as in a relationship. Between an entity and its alias, between an entity and its
+CSS class, and between the name of a subgraph and its title, the character
+stays, the spaces after the directive are left out, and the directive touches
+the unit that follows it. Between two entities on a line, after the colons of a
+CSS class, between `title` and its text, and between the colon of a relationship
+and its label, the character ends the line, and the directive and the text after
+it stand on the next line. The fourth form is after `direction`, after the colon
+of `accTitle`, and after the keyword of a `style` or a `classDef` statement,
+where the gap stays as written: rule 2 gives that form, since
+[flowchart](./flowchart.md#directives),
 [class](./class.md#whitespace-between-tokens), and
 [state](./state.md#whitespace-between-tokens) keep a gap that holds U+2028 or
 U+2029 at these places as written, and
