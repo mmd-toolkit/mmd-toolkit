@@ -6875,3 +6875,55 @@ describe("requirement color words with rejected tabs", () => {
     await expect(format(input)).rejects.toThrow("Unexpected character")
   })
 })
+
+/**
+ * A directive that holds a U+2028 or a U+2029 is rejected everywhere in a
+ * mindmap but on a class line, where the line stays as written (docs/mindmap.md,
+ * Directives).
+ */
+const mindmapClassLineForms = [
+  ":::c  {d}  ",
+  ":::c  {d}",
+  ":::c{d}",
+  ":::c{d}  ",
+  ":::c\t{d}\t",
+  ":::c  {d}\u00a0",
+  ":::c  {d}  %% c  ",
+  ":::c  {d}%% c",
+  ":::c  {d}  %%{y}%%  ",
+  ":::c  %%{y}%%  {d}  ",
+  ":::c  {d} d",
+] as const
+
+const mindmapClassLineContexts = [
+  "mindmap\n  root\n    a\n    {line}\n",
+  "mindmap\n  root\n    a\n    {line}\n    b\n",
+  "mindmap\n  root\n    a[t]\n    {line}\n",
+  "mindmap\n  root\n    a\n    ::icon(fa)\n    {line}\n",
+] as const
+
+describe("a directive that holds a line separator on a class line of a mindmap node", () => {
+  it("a directive that holds a U+2028 on a class line of a mindmap node", async () => {
+    for (const context of mindmapClassLineContexts) {
+      for (const form of mindmapClassLineForms) {
+        const text = context.replace(
+          "{line}",
+          form.replace("{d}", "%%{init: {\u2028}}%%"),
+        )
+        await expectKept(text, text)
+      }
+    }
+  })
+
+  it("a directive that holds a U+2029 on a class line of a mindmap node", async () => {
+    for (const context of mindmapClassLineContexts) {
+      for (const form of mindmapClassLineForms) {
+        const text = context.replace(
+          "{line}",
+          form.replace("{d}", "%%{init: {\u2029}}%%"),
+        )
+        await expectKept(text, text)
+      }
+    }
+  })
+})

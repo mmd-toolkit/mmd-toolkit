@@ -741,11 +741,18 @@ the line, unless a directive of the line holds a line break or a `;` (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+mermaid.js rejects a directive that holds a U+2028 or a U+2029 everywhere in a
+mindmap but on a class line, where the line stays as written, whatever stands
+before and after the directive (spaces, a tab, a no-break space, a comment,
+another directive, or text): `:::c`, two spaces, `%%{init: {`, a U+2028, `}}%%`,
+and two spaces are not changed.
 
 [fixture: node-text/directives-end-blanks-dropped] [fixture: directives/kept]
 [fixture: directives/between-nodes] [fixture: directives/before-the-header]
 [fixture: directives/after-the-header-on-the-same-line] [fixture:
-directives/after-the-header-touching] [fixture: directives/after-a-shape]
+directives/after-the-header-touching] [fixture: directives/after-a-shape] [test:
+a directive that holds a U+2028 on a class line of a mindmap node] [test: a
+directive that holds a U+2029 on a class line of a mindmap node]
 
 A directive between two units stays where it is, and a directive inside a text
 is part of the text.
