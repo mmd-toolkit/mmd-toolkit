@@ -5593,6 +5593,76 @@ const architectureDirectiveEndExamples: readonly (readonly [
     "accTitle :   T  %%{x}%%\u00a0",
     "accTitle:   T  %%{x}%%\u00a0",
   ],
+  [
+    "U+3000 after the last directive of an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u3000",
+    "accTitle: T  %%{x}%%\u3000",
+  ],
+  [
+    "U+2028 after the last directive of an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u2028",
+    "accTitle: T  %%{x}%%\u2028",
+  ],
+  [
+    "U+2029 after the last directive of an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u2029",
+    "accTitle: T  %%{x}%%\u2029",
+  ],
+  [
+    "U+3000 before the directive that ends an accTitle line of an architecture diagram",
+    "accTitle: T\u3000%%{x}%%",
+    "accTitle: T %%{x}%%",
+  ],
+  [
+    "U+2029 before the directive that ends an accTitle line of an architecture diagram",
+    "accTitle: T\u2029%%{x}%%",
+    "accTitle: T %%{x}%%",
+  ],
+  [
+    "U+3000 after the last directive of an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\u3000",
+    "accDescr: T  %%{x}%%\u3000",
+  ],
+  [
+    "U+2028 after the last directive of an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\u2028",
+    "accDescr: T  %%{x}%%\u2028",
+  ],
+  [
+    "U+2029 after the last directive of an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\u2029",
+    "accDescr: T  %%{x}%%\u2029",
+  ],
+  [
+    "U+3000 before the directive that ends an accDescr line of an architecture diagram",
+    "accDescr: T\u3000%%{x}%%",
+    "accDescr: T %%{x}%%",
+  ],
+  [
+    "U+2028 before the directive that ends an accDescr line of an architecture diagram",
+    "accDescr: T\u2028%%{x}%%",
+    "accDescr: T %%{x}%%",
+  ],
+  [
+    "U+2029 before the directive that ends an accDescr line of an architecture diagram",
+    "accDescr: T\u2029%%{x}%%",
+    "accDescr: T %%{x}%%",
+  ],
+  [
+    "a tab and a no-break space after the last directive of a title of an architecture diagram",
+    "title T  %%{x}%%\t\u00a0",
+    "title T  %%{x}%%\t\u00a0",
+  ],
+  [
+    "U+3000 before a directive that a comment touches in a title of an architecture diagram",
+    "title T\u3000%%{x}%%%% c",
+    "title T %%{x}%%%% c",
+  ],
+  [
+    "U+3000 before two directives that touch and end a title of an architecture diagram",
+    "title T\u3000%%{x}%%%%{y}%%",
+    "title T %%{x}%%%%{y}%%",
+  ],
 ]
 
 describe("the directives that end the title or the value of an accessibility line of an architecture diagram", () => {

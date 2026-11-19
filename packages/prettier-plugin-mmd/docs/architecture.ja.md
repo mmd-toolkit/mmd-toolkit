@@ -694,6 +694,9 @@ U+2029 のどれかがあるときは、その前に空白やタブがあって�
 [test: U+2029 before the directive that ends a title of an architecture diagram]
 [test: a no-break space before a directive that a space and another directive follow in a title of an architecture diagram]
 [test: U+3000 before a directive that a space and a comment follow in a title of an architecture diagram]
+[test: a tab and a no-break space after the last directive of a title of an architecture diagram]
+[test: U+3000 before a directive that a comment touches in a title of an architecture diagram]
+[test: U+3000 before two directives that touch and end a title of an architecture diagram]
 
 [fixture: architecture/title/empty-next-statement]
 
@@ -771,6 +774,17 @@ U+2029 のどれかがあるときは、その前に空白やタブがあって�
 [test: U+2028 before the directive that ends an accTitle line of an architecture diagram]
 [test: a no-break space before a directive that a space and a comment follow in an accDescr line of an architecture diagram]
 [test: the gap before the colon of an accTitle line with a no-break space after its last directive of an architecture diagram]
+[test: U+3000 after the last directive of an accTitle line of an architecture diagram]
+[test: U+2028 after the last directive of an accTitle line of an architecture diagram]
+[test: U+2029 after the last directive of an accTitle line of an architecture diagram]
+[test: U+3000 before the directive that ends an accTitle line of an architecture diagram]
+[test: U+2029 before the directive that ends an accTitle line of an architecture diagram]
+[test: U+3000 after the last directive of an accDescr line of an architecture diagram]
+[test: U+2028 after the last directive of an accDescr line of an architecture diagram]
+[test: U+2029 after the last directive of an accDescr line of an architecture diagram]
+[test: U+3000 before the directive that ends an accDescr line of an architecture diagram]
+[test: U+2028 before the directive that ends an accDescr line of an architecture diagram]
+[test: U+2029 before the directive that ends an accDescr line of an architecture diagram]
 
 [fixture: architecture/accessibility-lines/accdescr-spacing]
 
@@ -806,18 +820,19 @@ architecture-beta
 キーワードと開始波括弧の間に空白を 1 つ置きます。
 空白だけの内側は囲む文字がないため `{}` にします。
 開始前の単なる空白は結合し、実際の注釈類は改行を保ちます。
+
 規則 1 は、コメントやディレクティブの隣の改行の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
 [journey](./journey.ja.md#複数行の文)も、そのような改行を残します。
 ただし、ほかの規則が配置を書かれたまま残す所は別です。
-たとえば、物理行を結ぶコメント領域や、`;` を含む行です。
+物理行を結ぶコメント領域と、`;` を含む行がそれです。
 コメントやディレクティブの後の `{` を持つ行は、文と同じ段に置きます。
-その 3 つは 1 段深く置くので、この段を与える規則はなく、
-公開した版が印字する形を、決まるまで残します。
-詳しくは
-[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
-を参照してください。
+その 3 つは 1 段深く置き、この段は規則 2 が与えるので、
+その形は規則 2 に反して印字しており、規則による修正を待っています。
+
+[fixture: architecture/description-blocks/opener-trivia]
+
 コメント・ディレクティブだけの内側を保ちます。
 規則 1 は、ブロックの中の行の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
@@ -850,8 +865,6 @@ Db で LF 後の字下げが取り除かれるためです。
 [fixture: architecture/description-blocks/empty-block-global-only-fixed]
 
 [fixture: architecture/description-blocks/interior-trivia]
-
-[fixture: architecture/description-blocks/opener-trivia]
 
 [corpus fixture: architecture/common-block-newline-gap]
 

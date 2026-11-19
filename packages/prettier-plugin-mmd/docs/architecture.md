@@ -666,7 +666,10 @@ architecture diagram] [test: U+2029 before the directive that ends a title of an
 architecture diagram] [test: a no-break space before a directive that a space
 and another directive follow in a title of an architecture diagram] [test:
 U+3000 before a directive that a space and a comment follow in a title of an
-architecture diagram]
+architecture diagram] [test: a tab and a no-break space after the last directive
+of a title of an architecture diagram] [test: U+3000 before a directive that a
+comment touches in a title of an architecture diagram] [test: U+3000 before two
+directives that touch and end a title of an architecture diagram]
 
 [fixture: architecture/title/empty-next-statement]
 
@@ -740,7 +743,19 @@ before the directive that ends an accTitle line of an architecture diagram]
 [test: a no-break space before a directive that a space and a comment follow in
 an accDescr line of an architecture diagram] [test: the gap before the colon of
 an accTitle line with a no-break space after its last directive of an
-architecture diagram]
+architecture diagram] [test: U+3000 after the last directive of an accTitle line
+of an architecture diagram] [test: U+2028 after the last directive of an
+accTitle line of an architecture diagram] [test: U+2029 after the last directive
+of an accTitle line of an architecture diagram] [test: U+3000 before the
+directive that ends an accTitle line of an architecture diagram] [test: U+2029
+before the directive that ends an accTitle line of an architecture diagram]
+[test: U+3000 after the last directive of an accDescr line of an architecture
+diagram] [test: U+2028 after the last directive of an accDescr line of an
+architecture diagram] [test: U+2029 after the last directive of an accDescr line
+of an architecture diagram] [test: U+3000 before the directive that ends an
+accDescr line of an architecture diagram] [test: U+2028 before the directive
+that ends an accDescr line of an architecture diagram] [test: U+2029 before the
+directive that ends an accDescr line of an architecture diagram]
 
 [fixture: architecture/accessibility-lines/accdescr-spacing]
 
@@ -775,18 +790,21 @@ Description blocks on one line follow
 For blocks that keep their braces, separate the keyword and opening brace with
 one space so the block boundary is clear. Whitespace-only interiors become `{}`
 because no text needs surrounding space. Plain opener whitespace can join; real
-trivia keeps its break. Rule 1 names no mark for a line break next to a comment
-or a directive, so
+trivia keeps its break.
+
+Rule 1 names no mark for a line break next to a comment or a directive, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
 [journey](./journey.md#multi-line-statements) keep such a line break, where no
 other rule keeps the layout as written (a comment region that joins physical
-lines, a line that holds a `;`, and the like). The line that holds the `{` after
-a comment or a directive stands at the level of its statement, where those three
-print it one level deeper; no rule gives that level, so the form that the
-released version prints stays until it is decided (see
-[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+lines, a line that holds a `;`). The line that holds the `{` after a comment or
+a directive stands at the level of its statement, where those three print it one
+level deeper, which rule 2 gives: the form is printed against rule 2 and waits
+to be fixed by the rule.
+
+[fixture: architecture/description-blocks/opener-trivia]
+
 Keep comment/directive-only interiors. Rule 1 names no mark for a line inside a
 block, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
@@ -818,8 +836,6 @@ description-blocks/block-trailing-whitespace-closer-on-the-text-line]
 [fixture: architecture/description-blocks/empty-block-global-only-fixed]
 
 [fixture: architecture/description-blocks/interior-trivia]
-
-[fixture: architecture/description-blocks/opener-trivia]
 
 [corpus fixture: architecture/common-block-newline-gap]
 
