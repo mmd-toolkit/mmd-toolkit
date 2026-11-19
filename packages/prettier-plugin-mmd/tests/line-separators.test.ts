@@ -8595,6 +8595,86 @@ const kanbanExamples: readonly (readonly [string, string, string, Options?])[] =
     ],
   ]
 
+/**
+ * The whitespace characters that are no space or tab, which the directive that
+ * ends the text of a card or of a mindmap node is followed by (docs/kanban.md,
+ * Trailing whitespace; docs/mindmap.md, Directives).
+ */
+const whitespaceThatIsNoSpaceOrTab: readonly string[] = [
+  "\u000b",
+  "\u000c",
+  "\u00a0",
+  "\u1680",
+  "\u2000",
+  "\u2001",
+  "\u2002",
+  "\u2003",
+  "\u2004",
+  "\u2005",
+  "\u2006",
+  "\u2007",
+  "\u2008",
+  "\u2009",
+  "\u200a",
+  "\u2028",
+  "\u2029",
+  "\u202f",
+  "\u205f",
+  "\u3000",
+  "\ufeff",
+]
+
+describe("each whitespace character that is no space or tab after a directive that ends a text", () => {
+  it("a whitespace character that is no space or tab after the directive that ends the text of a card", async () => {
+    for (const character of whitespaceThatIsNoSpaceOrTab) {
+      const text = `kanban\n  S\n    A[x] %%{y}%%${character}  \n`
+      await expectKept(text, text)
+    }
+  })
+
+  it("a whitespace character that is no space or tab after the directive that follows a shape of a mindmap node", async () => {
+    for (const character of whitespaceThatIsNoSpaceOrTab) {
+      await expectKept(
+        `mindmap\n  root\n    a[t] %%{y}%%${character}  \n`,
+        "mindmap\n  root\n    a[t] %%{y}%%\n",
+      )
+    }
+  })
+
+  it("a whitespace character that is no space or tab after the directive that follows an icon of a mindmap node", async () => {
+    for (const character of whitespaceThatIsNoSpaceOrTab) {
+      await expectKept(
+        `mindmap\n  root\n    a\n    ::icon(book) %%{y}%%${character}  \n`,
+        "mindmap\n  root\n    a\n    ::icon(book) %%{y}%%\n",
+      )
+    }
+  })
+
+  it("a whitespace character that is no space or tab after the directive of a bare mindmap node, a class, and the root text", async () => {
+    for (const character of whitespaceThatIsNoSpaceOrTab) {
+      for (const text of [
+        `mindmap\n  root\n    a %%{y}%%${character}  \n`,
+        `mindmap\n  root\n    a:::c %%{y}%%${character}  \n`,
+        `mindmap\n  root %%{y}%%${character}  \n    a\n`,
+      ]) {
+        await expectKept(text, text)
+      }
+    }
+  })
+
+  it("a comment that touches the directive that follows a shape of a mindmap node", async () => {
+    const text = "mindmap\n  root\n    a[t] %%{x}%%%% c\n"
+    await expectKept(text, text)
+  })
+
+  it("an open directive on the line of a card followed by U+3000 and two spaces", async () => {
+    await expectKept(
+      "kanban\n  S\n    A[x] %%{unfinished\u3000  ",
+      "kanban\n  S\n    A[x] %%{unfinished\u3000  \n",
+    )
+  })
+})
+
 describe("kanban whitespace and line boundaries", () => {
   it.each(
     kanbanExamples.map(([title, input, expected, options]) => ({
@@ -36932,6 +37012,1985 @@ describe("requirement color words with rejected tabs", () => {
 })
 
 /**
+ * What follows a directive that is not closed at the end of the text, as
+ * written and as printed: the whitespace after it is dropped and one line break
+ * ends the text, except where the text ends right after its last character
+ * that is not whitespace, which includes U+2028 and U+2029
+ * (docs/kanban.md, Final newline).
+ */
+const openDirectiveTails: readonly (readonly [string, string, string])[] = [
+  ["an open directive with nothing after it", "", ""],
+  ["an open directive followed by two spaces", "  ", "\n"],
+  ["an open directive followed by a tab", "\t", "\n"],
+  ["an open directive followed by a no-break space", "\u00a0", "\n"],
+  ["an open directive followed by U+3000", "\u3000", "\n"],
+  ["an open directive followed by U+FEFF", "\ufeff", "\n"],
+  ["an open directive followed by a vertical tab", "\u000b", "\n"],
+  ["an open directive followed by a form feed", "\u000c", "\n"],
+  ["an open directive followed by a line break", "\n", "\n"],
+  ["an open directive followed by CR and LF", "\u000d\n", "\n"],
+  ["an open directive followed by spaces and a line break", "  \n", "\n"],
+  ["an open directive followed by empty lines", "\n\n", "\n"],
+  ["an open directive followed by a line break and spaces", "\n  ", "\n"],
+  ["an open directive followed by U+2028", "\u2028", "\u2028\n"],
+  ["an open directive followed by U+2029", "\u2029", "\u2029\n"],
+  ["an open directive followed by a space and U+2028", " \u2028", " \u2028\n"],
+  ["an open directive followed by U+2028 and a space", "\u2028 ", "\u2028\n"],
+  ["an open directive followed by U+0085", "\u0085", "\u0085"],
+  ["an open directive followed by U+200B", "\u200b", "\u200b"],
+  ["an open directive followed by U+180E", "\u180e", "\u180e"],
+  ["an open directive followed by U+2003", "\u2003", "\n"],
+  ["an open directive followed by U+1680", "\u1680", "\n"],
+  ["an open directive followed by U+2000", "\u2000", "\n"],
+  ["an open directive followed by U+200A", "\u200a", "\n"],
+  ["an open directive followed by U+202F", "\u202f", "\n"],
+  ["an open directive followed by U+205F", "\u205f", "\n"],
+]
+
+/** The same on the line of a statement of a kanban board, which keeps the whitespace up to the first line break. */
+const kanbanStatementOpenDirectiveTails: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "an open directive on the line of a column and with nothing after it",
+    "",
+    "",
+  ],
+  [
+    "an open directive on the line of a column and followed by two spaces",
+    "  ",
+    "  \n",
+  ],
+  [
+    "an open directive on the line of a column and followed by a tab",
+    "\t",
+    "\t\n",
+  ],
+  [
+    "an open directive on the line of a column and followed by a no-break space",
+    "\u00a0",
+    "\u00a0\n",
+  ],
+  [
+    "an open directive on the line of a column and followed by spaces and a line break",
+    "  \n",
+    "  \n",
+  ],
+  [
+    "an open directive on the line of a column and followed by empty lines",
+    "\n\n",
+    "\n",
+  ],
+  [
+    "an open directive on the line of a column and followed by a line break and spaces",
+    "\n  ",
+    "\n",
+  ],
+  [
+    "an open directive on the line of a column and followed by U+2028",
+    "\u2028",
+    "\u2028\n",
+  ],
+  [
+    "an open directive on the line of a column and followed by U+2028 and a space",
+    "\u2028 ",
+    "\u2028 \n",
+  ],
+  [
+    "an open directive on the line of a column and followed by U+2029",
+    "\u2029",
+    "\u2029\n",
+  ],
+  [
+    "an open directive on the line of a column and followed by U+3000",
+    "\u3000",
+    "\u3000\n",
+  ],
+  [
+    "an open directive on the line of a column and followed by U+FEFF",
+    "\ufeff",
+    "\ufeff\n",
+  ],
+  [
+    "an open directive on the line of a column and followed by U+2003",
+    "\u2003",
+    "\u2003\n",
+  ],
+  [
+    "an open directive on the line of a column and followed by a vertical tab",
+    "\u000b",
+    "\u000b\n",
+  ],
+  [
+    "an open directive on the line of a column and followed by a form feed",
+    "\u000c",
+    "\u000c\n",
+  ],
+  [
+    "an open directive on the line of a column and followed by CR and LF",
+    "\u000d\n",
+    "\n",
+  ],
+  [
+    "an open directive on the line of a column and followed by U+0085",
+    "\u0085",
+    "\u0085",
+  ],
+  [
+    "an open directive on the line of a column and followed by U+180E",
+    "\u180e",
+    "\u180e",
+  ],
+  [
+    "an open directive on the line of a column and followed by U+200B",
+    "\u200b",
+    "\u200b",
+  ],
+]
+
+const openDirectiveDiagrams: readonly (readonly [
+  string,
+  string,
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a kanban board",
+    "kanban\n  S[x]\n%%{unfinished{tail}",
+    "kanban\n  S[x]\n  %%{unfinished{tail}",
+    "kanban\n  S[x] %%{unfinished{tail}",
+    "kanban\n  S[x] %%{unfinished{tail}",
+  ],
+  [
+    "a C4 diagram",
+    'C4Context\nPerson(a, "A")\n%%{unfinished{tail}',
+    'C4Context\n  Person(a, "A")\n  %%{unfinished{tail}',
+    'C4Context\nPerson(a, "A") %%{unfinished{tail}',
+    'C4Context\n  Person(a, "A") %%{unfinished{tail}',
+  ],
+  [
+    "an ishikawa diagram",
+    "ishikawa\nR\n  A\n%%{unfinished{tail}",
+    "ishikawa\n  R\n    A\n    %%{unfinished{tail}",
+    "ishikawa\nR\n  A %%{unfinished{tail}",
+    "ishikawa\n  R\n    A %%{unfinished{tail}",
+  ],
+]
+
+describe.each(openDirectiveDiagrams)(
+  "%s that ends with an open directive",
+  (_diagram, ownInput, ownOutput) => {
+    it.each(openDirectiveTails)(
+      "prints %s on a line of its own",
+      async (_case, written, printed) => {
+        await expectKept(
+          ownInput.replace("{tail}", written),
+          ownOutput.replace("{tail}", printed),
+        )
+      },
+    )
+  },
+)
+
+describe.each(openDirectiveDiagrams.slice(1))(
+  "%s that ends with an open directive after a statement",
+  (_diagram, _ownInput, _ownOutput, statementInput, statementOutput) => {
+    it.each(openDirectiveTails)(
+      "prints %s",
+      async (_case, written, printed) => {
+        await expectKept(
+          statementInput.replace("{tail}", written),
+          statementOutput.replace("{tail}", printed),
+        )
+      },
+    )
+  },
+)
+
+describe("a kanban board that ends with an open directive after a statement", () => {
+  const [, , , statementInput, statementOutput] = openDirectiveDiagrams[0]
+  it.each(kanbanStatementOpenDirectiveTails)(
+    "keeps %s up to the first line break",
+    async (_case, written, printed) => {
+      await expectKept(
+        statementInput.replace("{tail}", written),
+        statementOutput.replace("{tail}", printed),
+      )
+    },
+  )
+})
+
+/** The text that a directive ends in a C4 title or accDescription (docs/c4.md, Title and accDescription). */
+const c4DirectiveTextExamples: readonly (readonly [string, string, string])[] =
+  [
+    [
+      "U+3000 between two directives and spaces at the end of a C4 title",
+      'C4Context\ntitle t %%{x}%%\u3000%%{y}%%  \nPerson(a, "A")\n',
+      'C4Context\n  title t %%{x}%%\u3000%%{y}%%  \n  Person(a, "A")\n',
+    ],
+    [
+      "U+3000 and spaces after the directive of a C4 title",
+      'C4Context\ntitle t %%{x}%%\u3000  \nPerson(a, "A")\n',
+      'C4Context\n  title t %%{x}%%\u3000  \n  Person(a, "A")\n',
+    ],
+    [
+      "U+3000 between two directives and spaces at the end of a C4 accDescription",
+      'C4Context\naccDescription t %%{x}%%\u3000%%{y}%%  \nPerson(a, "A")\n',
+      'C4Context\n  accDescription t %%{x}%%\u3000%%{y}%%  \n  Person(a, "A")\n',
+    ],
+  ]
+
+describe("the text of a C4 title that a directive follows", () => {
+  it.each(c4DirectiveTextExamples)("keeps %s", async (_name, input, output) => {
+    await expectKept(input, output)
+  })
+})
+
+/**
+ * A U+2028 or U+2029 at the end of the text of a C4 title and of its
+ * accessibility lines (docs/c4.md, Title and accDescription): a title keeps it
+ * and the spaces before it, and an `accTitle:` or `accDescr:` line leaves it out
+ * with the spaces beside it.
+ */
+const c4LineSeparatorEndExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "U+2028 and spaces after the last directive of a title",
+    "C4Context\ntitle T %%{x}%%\u2028  \n",
+    "C4Context\n  title T %%{x}%%\u2028  \n",
+  ],
+  [
+    "spaces and U+2028 at the end of a title",
+    "C4Context\ntitle T  \u2028\n",
+    "C4Context\n  title T  \u2028\n",
+  ],
+  [
+    "U+2029 at the end of a title",
+    "C4Context\ntitle T\u2029\n",
+    "C4Context\n  title T\u2029\n",
+  ],
+]
+
+describe("a U+2028 or U+2029 at the end of the text of a C4 title", () => {
+  it.each(c4LineSeparatorEndExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+describe("a U+2028 or U+2029 at the end of an accessibility line of a C4 diagram", () => {
+  it("U+2028 and spaces after the last directive of an accessibility line", async () => {
+    for (const line of ["accTitle:", "accDescr:"])
+      await expectKept(
+        `C4Context\n${line} T %%{x}%%\u2028  \n`,
+        `C4Context\n  ${line} T %%{x}%%\n`,
+      )
+  })
+
+  it("U+2028 at the end of an accessibility line", async () => {
+    for (const line of ["accTitle:", "accDescr:"])
+      await expectKept(
+        `C4Context\n${line} T\u2028\n`,
+        `C4Context\n  ${line} T\n`,
+      )
+  })
+
+  it("spaces and U+2028 at the end of an accessibility line", async () => {
+    for (const line of ["accTitle:", "accDescr:"])
+      await expectKept(
+        `C4Context\n${line} T  \u2028\n`,
+        `C4Context\n  ${line} T\n`,
+      )
+  })
+
+  it("U+2029 at the end of an accessibility line", async () => {
+    for (const line of ["accTitle:", "accDescr:"])
+      await expectKept(
+        `C4Context\n${line} T\u2029\n`,
+        `C4Context\n  ${line} T\n`,
+      )
+  })
+})
+
+/** The whitespace that is not spaces or tabs beside the directives that end an ishikawa literal (docs/ishikawa.md, Trailing whitespace). */
+const ishikawaDirectiveWhitespaceExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "U+3000 after the last directive of an ishikawa literal",
+    "ishikawa\n  R\n    t %%{x}%%\u3000  \n",
+    "ishikawa\n  R\n    t %%{x}%%\u3000\n",
+  ],
+  [
+    "U+3000 between two directives of an ishikawa literal",
+    "ishikawa\n  R\n    t %%{x}%%\u3000%%{y}%%  \n",
+    "ishikawa\n  R\n    t %%{x}%%\u3000%%{y}%%\n",
+  ],
+  [
+    "U+3000 before the first directive of an ishikawa literal",
+    "ishikawa\n  R\n    t\u3000%%{x}%%  \n",
+    "ishikawa\n  R\n    t\u3000%%{x}%%\n",
+  ],
+  [
+    "a no-break space after the last directive of an ishikawa literal",
+    "ishikawa\n  R\n    t %%{x}%%\u00a0  \n",
+    "ishikawa\n  R\n    t %%{x}%%\u00a0\n",
+  ],
+  [
+    "a no-break space before the first directive of an ishikawa literal",
+    "ishikawa\n  R\n    t\u00a0%%{x}%%  \n",
+    "ishikawa\n  R\n    t\u00a0%%{x}%%\n",
+  ],
+]
+
+describe("the literal of an ishikawa diagram that a directive ends", () => {
+  it.each(ishikawaDirectiveWhitespaceExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/** The directives that end the text of a mindmap node (docs/mindmap.md, Directives). */
+const mindmapDirectiveEndExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "U+3000 after the directive that follows a shape of a mindmap node",
+    "mindmap\n  root\n    a[t] %%{x}%%\u3000  \n",
+    "mindmap\n  root\n    a[t] %%{x}%%\n",
+  ],
+  [
+    "U+3000 between two directives of a bare mindmap node",
+    "mindmap\n  root\n    a %%{x}%%\u3000%%{y}%%  \n",
+    "mindmap\n  root\n    a %%{x}%%\u3000%%{y}%%  \n",
+  ],
+  [
+    "text between two directives of a bare mindmap node, with spaces at the end",
+    "mindmap\n  root\n    a %%{x}%% u %%{y}%%  \n",
+    "mindmap\n  root\n    a %%{x}%% u %%{y}%%  \n",
+  ],
+  [
+    "U+3000 and spaces after the directive of a mindmap node with a class",
+    "mindmap\n  root\n    a:::c %%{x}%%\u3000  \n",
+    "mindmap\n  root\n    a:::c %%{x}%%\u3000  \n",
+  ],
+  [
+    "U+3000 between two directives of a mindmap node with a class",
+    "mindmap\n  root\n    a:::c %%{x}%%\u3000%%{y}%%  \n",
+    "mindmap\n  root\n    a:::c %%{x}%%\u3000%%{y}%%  \n",
+  ],
+]
+
+describe("the text of a mindmap node that a directive ends", () => {
+  it.each(mindmapDirectiveEndExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/** The gap after a final comment: one line break ends the text, which the printer adds where the text ends without one (docs/kanban.md, Final newline). */
+const terminalCommentExamples: readonly (readonly [string, string, string])[] =
+  [
+    [
+      "a final line of %% alone, two empty lines, and a space in a kanban board",
+      "kanban\n S\n%%\n\n ",
+      "kanban\n  S\n%%\n\n \n",
+    ],
+    [
+      "a final line of %% alone and U+2029 in a kanban board",
+      "kanban\n S\n%%\u2029",
+      "kanban\n  S\n  %%\u2029\n",
+    ],
+    [
+      "a final comment with text and U+2029 in a kanban board",
+      "kanban\n  S[x]\n%% c\u2029",
+      "kanban\n  S[x]\n  %% c\u2029\n",
+    ],
+    [
+      "a final comment after a statement and U+2029 in a C4 diagram",
+      'C4Context\nPerson(a, "A") %% c\u2029',
+      'C4Context\n  Person(a, "A") %% c\u2029\n',
+    ],
+    [
+      "a final comment after a statement and a tab in a C4 diagram",
+      'C4Context\nPerson(a, "A") %% c\t',
+      'C4Context\n  Person(a, "A") %% c\t\n',
+    ],
+    [
+      "a final comment after a statement and empty lines in a C4 diagram",
+      'C4Context\nPerson(a, "A") %% c\n\n\n',
+      'C4Context\n  Person(a, "A") %% c\n\n\n',
+    ],
+    [
+      "a final comment on a line of its own and empty lines in a C4 diagram",
+      'C4Context\nPerson(a, "A")\n%% c\n\n\n',
+      'C4Context\n  Person(a, "A")\n  %% c\n',
+    ],
+    [
+      "a final line of %% alone, two empty lines, and a space in an ishikawa diagram",
+      "ishikawa\nR\n  A\n%%\n\n ",
+      "ishikawa\n  R\n    A\n    %%\n\n \n",
+    ],
+    [
+      "a final line of %% alone and U+2028 in an ishikawa diagram",
+      "ishikawa\nR\n  A\n%%\u2028",
+      "ishikawa\n  R\n    A\n    %%\u2028\n",
+    ],
+    [
+      "a final comment with text and a tab on a line of its own in an ishikawa diagram",
+      "ishikawa\nR\n  A\n%% c\t",
+      "ishikawa\n  R\n    A\n    %% c\t\n",
+    ],
+    [
+      "a final comment with text and empty lines in an ishikawa diagram",
+      "ishikawa\nR\n  A\n%% c\n\n\n",
+      "ishikawa\n  R\n    A\n    %% c\n",
+    ],
+    [
+      "a final comment after a statement and a last line of one space without a line break in a C4 diagram",
+      'C4Context\nPerson(a, "A") %% c\n ',
+      'C4Context\n  Person(a, "A") %% c\n',
+    ],
+    [
+      "a final comment after a statement and a last line of one space after a line break in a C4 diagram",
+      'C4Context\nPerson(a, "A") %% c\n \n',
+      'C4Context\n  Person(a, "A") %% c\n \n',
+    ],
+    [
+      "a final comment after a statement and a last line of two spaces without a line break in a kanban board",
+      "kanban\n  S[x] %% c\n  ",
+      "kanban\n  S[x] %% c\n",
+    ],
+    [
+      "a final comment after a statement and a last line of one space after a line break in a kanban board",
+      "kanban\n  S[x] %% c\n \n",
+      "kanban\n  S[x] %% c\n \n",
+    ],
+    [
+      "a final comment with text and empty lines in a kanban board",
+      "kanban\n  S[x]\n%% c\n\n\n",
+      "kanban\n  S[x]\n  %% c\n",
+    ],
+    [
+      "a final comment with text and a no-break space on a line of its own in an ishikawa diagram",
+      "ishikawa\nR\n  A\n%% c\u00a0",
+      "ishikawa\n  R\n    A\n    %% c\u00a0\n",
+    ],
+    [
+      "a final comment with text and U+3000 on a line of its own in an ishikawa diagram",
+      "ishikawa\nR\n  A\n%% c\u3000",
+      "ishikawa\n  R\n    A\n    %% c\u3000\n",
+    ],
+    [
+      "a final comment with text and U+2028 on a line of its own in an ishikawa diagram",
+      "ishikawa\nR\n  A\n%% c\u2028",
+      "ishikawa\n  R\n    A\n    %% c\u2028\n",
+    ],
+    [
+      "a final comment with text and U+2029 on a line of its own in an ishikawa diagram",
+      "ishikawa\nR\n  A\n%% c\u2029",
+      "ishikawa\n  R\n    A\n    %% c\u2029\n",
+    ],
+    [
+      "a final comment with text and two spaces after a node in an ishikawa diagram",
+      "ishikawa\nR\n  A %% c  ",
+      "ishikawa\n  R\n    A %% c\n",
+    ],
+    [
+      "a final comment with text and a no-break space after a node in an ishikawa diagram",
+      "ishikawa\nR\n  A %% c\u00a0",
+      "ishikawa\n  R\n    A %% c\u00a0\n",
+    ],
+  ]
+
+describe("the gap after a final comment", () => {
+  it.each(terminalCommentExamples)("keeps %s", async (_name, input, output) => {
+    await expectKept(input, output)
+  })
+})
+
+/**
+ * What can follow the text of a final comment: the whitespace of the
+ * specification that is no space, tab, or line terminator (21 characters), and
+ * U+0085, U+180E, and U+200B, which are no whitespace there (docs/ishikawa.md and
+ * docs/c4.md, Final newline).
+ */
+const afterFinalCommentCharacters: readonly string[] = [
+  "\u000b",
+  "\u000c",
+  "\u00a0",
+  "\u1680",
+  "\u2000",
+  "\u2001",
+  "\u2002",
+  "\u2003",
+  "\u2004",
+  "\u2005",
+  "\u2006",
+  "\u2007",
+  "\u2008",
+  "\u2009",
+  "\u200a",
+  "\u2028",
+  "\u2029",
+  "\u202f",
+  "\u205f",
+  "\u3000",
+  "\ufeff",
+  "\u0085",
+  "\u180e",
+  "\u200b",
+]
+
+/**
+ * The empty lines after a diagram comment that ends a line of a kanban board:
+ * they stay where the comment ends the header or a line that ends in a shape, an
+ * icon, or a data block, and are one empty line, or none at the end of the board,
+ * after a bare id or a class, where `%%` is text (docs/compatibility.md, Kanban).
+ */
+const kanbanGapAfterCommentExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a comment after a shape and empty lines in a kanban board",
+    "kanban\n  S\n    A[x] %% c\n\n\n    B\n",
+    "kanban\n  S\n    A[x] %% c\n\n\n    B\n",
+  ],
+  [
+    "a comment after a shape and empty lines at the end of a kanban board",
+    "kanban\n  S\n    A[x] %% c\n\n\n",
+    "kanban\n  S\n    A[x] %% c\n\n\n",
+  ],
+  [
+    "a comment after a data block that holds an icon and empty lines in a kanban board",
+    "kanban\n  S\n    A[x]@{ icon: i } %% c\n\n\n    B\n",
+    "kanban\n  S\n    A[x]@{ icon: i } %% c\n\n\n    B\n",
+  ],
+  [
+    "a comment after a data block and empty lines in a kanban board",
+    "kanban\n  S\n    A[x]@{ ticket: T-1 } %% c\n\n\n    B\n",
+    "kanban\n  S\n    A[x]@{ ticket: T-1 } %% c\n\n\n    B\n",
+  ],
+  [
+    "a comment after the header and empty lines in a kanban board",
+    "kanban %% c\n\n\n  S\n",
+    "kanban %% c\n\n\n  S\n",
+  ],
+  [
+    "a comment after a shape of a column and empty lines in a kanban board",
+    "kanban\n  S[x] %% c\n\n\n    A\n",
+    "kanban\n  S[x] %% c\n\n\n    A\n",
+  ],
+  [
+    "a comment after a bare id of a card and empty lines in a kanban board",
+    "kanban\n  S\n    A %% c\n\n\n    B\n",
+    "kanban\n  S\n    A %% c\n\n    B\n",
+  ],
+  [
+    "a comment after a bare id of a card and empty lines at the end of a kanban board",
+    "kanban\n  S\n    A %% c\n\n\n",
+    "kanban\n  S\n    A %% c\n",
+  ],
+  [
+    "a comment after a bare id of a column and a line of spaces in a kanban board",
+    "kanban\n  S %% c\n   \n    A\n",
+    "kanban\n  S %% c\n\n    A\n",
+  ],
+  [
+    "a comment after a bare id of a column and a line of spaces at the end of a kanban board",
+    "kanban\n  S %% c\n   ",
+    "kanban\n  S %% c\n",
+  ],
+  [
+    "a comment after a class of a card and empty lines in a kanban board",
+    "kanban\n  S\n    A:::k %% c\n\n\n    B\n",
+    "kanban\n  S\n    A:::k %% c\n\n    B\n",
+  ],
+  [
+    "a comment on a line of its own and empty lines at the end of a kanban board",
+    "kanban\n  S\n%% c\n\n\n",
+    "kanban\n  S\n  %% c\n",
+  ],
+]
+
+describe("the empty lines after a diagram comment that ends a line of a kanban board", () => {
+  it.each(kanbanGapAfterCommentExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/** The empty lines after a comment that ends a line of a C4 diagram (docs/c4.md, Blank lines). */
+const c4GapAfterCommentExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a comment after the brace of an accDescr block and empty lines in a C4 diagram",
+    'C4Context\naccDescr {\nD\n} %% c\n\n\nPerson(a, "A")\n',
+    'C4Context\n  accDescr {\n    D\n  } %% c\n\n\n  Person(a, "A")\n',
+  ],
+  [
+    "a comment after the brace of an accDescr block and empty lines at the end of a C4 diagram",
+    "C4Context\naccDescr {\nD\n} %% c\n\n\n",
+    "C4Context\n  accDescr {\n    D\n  } %% c\n\n\n",
+  ],
+  [
+    "a comment after the header and empty lines in a C4 diagram",
+    'C4Context %% c\n\n\nPerson(a, "A")\n',
+    'C4Context %% c\n\n\n  Person(a, "A")\n',
+  ],
+  [
+    "a comment after the opening line of a boundary and empty lines in a C4 diagram",
+    'C4Context\nBoundary(b, "B") { %% c\n\n\nPerson(a, "A")\n}\n',
+    'C4Context\n  Boundary(b, "B") { %% c\n\n\n    Person(a, "A")\n  }\n',
+  ],
+  [
+    "a comment after an accDescr line and empty lines in a C4 diagram",
+    'C4Context\naccDescr: D %% c\n\n\nPerson(a, "A")\n',
+    'C4Context\n  accDescr: D %% c\n\n  Person(a, "A")\n',
+  ],
+]
+
+describe("the empty lines after a comment that ends a line of a C4 diagram", () => {
+  it.each(c4GapAfterCommentExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+describe("each character that follows the text of a final comment", () => {
+  it("a final comment with text and each whitespace character on a line of its own in an ishikawa diagram", async () => {
+    for (const character of ["  ", "\t", ...afterFinalCommentCharacters])
+      await expectKept(
+        `ishikawa\nR\n  A\n%% c${character}`,
+        `ishikawa\n  R\n    A\n    %% c${character}\n`,
+      )
+  })
+
+  it("a final comment with text and each whitespace character after a node in an ishikawa diagram", async () => {
+    for (const character of ["  ", "\t"])
+      await expectKept(
+        `ishikawa\nR\n  A %% c${character}`,
+        "ishikawa\n  R\n    A %% c\n",
+      )
+    for (const character of afterFinalCommentCharacters)
+      await expectKept(
+        `ishikawa\nR\n  A %% c${character}`,
+        `ishikawa\n  R\n    A %% c${character}\n`,
+      )
+  })
+
+  it("a final comment after a title or an accDescription line and each whitespace character in a C4 diagram", async () => {
+    for (const line of ["title", "accDescription"]) {
+      for (const character of ["  ", "\t"])
+        await expectKept(
+          `C4Context\n${line} T %% c${character}`,
+          `C4Context\n  ${line} T %% c\n`,
+        )
+      for (const character of afterFinalCommentCharacters)
+        await expectKept(
+          `C4Context\n${line} T %% c${character}`,
+          `C4Context\n  ${line} T %% c${character}\n`,
+        )
+    }
+  })
+
+  it("a final comment after an accTitle or an accDescr line and each whitespace character in a C4 diagram", async () => {
+    for (const line of ["accTitle:", "accDescr:"]) {
+      for (const character of [
+        "  ",
+        "\t",
+        ...afterFinalCommentCharacters.slice(0, 21),
+      ])
+        await expectKept(
+          `C4Context\n${line} T %% c${character}`,
+          `C4Context\n  ${line} T %% c\n`,
+        )
+      for (const character of afterFinalCommentCharacters.slice(21))
+        await expectKept(
+          `C4Context\n${line} T %% c${character}`,
+          `C4Context\n  ${line} T %% c${character}\n`,
+        )
+    }
+  })
+})
+
+/** What the printer does with the directives at the end of the text of a card (docs/kanban.md, Trailing whitespace). */
+const kanbanCardDirectiveExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a tab after the directive that ends the text of a card",
+    "kanban\n  S\n    A[x]%%{x}%%\t\n",
+    "kanban\n  S\n    A[x]%%{x}%%\n",
+  ],
+  [
+    "a tab before the directive that ends the text of a card",
+    "kanban\n  S\n    A[x]\t%%{x}%%\n",
+    "kanban\n  S\n    A[x] %%{x}%%\n",
+  ],
+  [
+    "spaces before and after the directive that ends the text of a card",
+    "kanban\n  S\n    A[x]  %%{x}%%  \n",
+    "kanban\n  S\n    A[x] %%{x}%%\n",
+  ],
+  [
+    "a no-break space before the directive that ends the text of a card",
+    "kanban\n  S\n    A[x]\u00a0%%{x}%%\n",
+    "kanban\n  S\n    A[x]\u00a0%%{x}%%\n",
+  ],
+  [
+    "U+3000 before the directive that ends the text of a card",
+    "kanban\n  S\n    A[x]\u3000%%{x}%%\n",
+    "kanban\n  S\n    A[x]\u3000%%{x}%%\n",
+  ],
+  [
+    "a no-break space after the directive that ends the text of a card",
+    "kanban\n  S\n    A[x]%%{x}%%\u00a0\n",
+    "kanban\n  S\n    A[x]%%{x}%%\u00a0\n",
+  ],
+  [
+    "U+3000 after the directive that ends the text of a card",
+    "kanban\n  S\n    A[x]%%{x}%%\u3000\n",
+    "kanban\n  S\n    A[x]%%{x}%%\u3000\n",
+  ],
+  [
+    "tabs around the directive that ends the bare id of a card",
+    "kanban\n  S\n    A\t%%{x}%%\t\n",
+    "kanban\n  S\n    A %%{x}%%\n",
+  ],
+  [
+    "U+3000 before the first directive that ends the text of a card, with spaces after the last",
+    "kanban\n  S\n    A[x]\u3000%%{x}%%  \n",
+    "kanban\n  S\n    A[x]\u3000%%{x}%%\n",
+  ],
+  [
+    "a no-break space between two directives that end the text of a card",
+    "kanban\n  S\n    A[x]%%{y}%%\u00a0%%{z}%%  \n",
+    "kanban\n  S\n    A[x]%%{y}%%\u00a0%%{z}%%  \n",
+  ],
+  [
+    "U+3000 between two directives that end the text of a card",
+    "kanban\n  S\n    A[x] %%{y}%%\u3000%%{z}%%  \n",
+    "kanban\n  S\n    A[x] %%{y}%%\u3000%%{z}%%  \n",
+  ],
+  [
+    "U+3000 after the last of two directives that end the text of a card",
+    "kanban\n  S\n    A[x] %%{y}%% %%{z}%%\u3000  \n",
+    "kanban\n  S\n    A[x] %%{y}%% %%{z}%%\u3000  \n",
+  ],
+  [
+    "U+3000 and spaces after the directive of a card",
+    "kanban\n  S\n    A[x] %%{y}%%\u3000  \n",
+    "kanban\n  S\n    A[x] %%{y}%%\u3000  \n",
+  ],
+  [
+    "text after the directive of a bare card, with spaces at the end",
+    "kanban\n  S\n    t %%{x}%% u  \n",
+    "kanban\n  S\n    t %%{x}%% u  \n",
+  ],
+  [
+    "text between two directives of a bare card, with spaces at the end",
+    "kanban\n  S\n    t %%{x}%% u %%{y}%%  \n",
+    "kanban\n  S\n    t %%{x}%% u %%{y}%%  \n",
+  ],
+  [
+    "two spaces before the first directive of a bare card whose text follows it",
+    "kanban\n  S\n    t  %%{x}%% u %%{y}%%\n",
+    "kanban\n  S\n    t  %%{x}%% u %%{y}%%\n",
+  ],
+  [
+    "spaces after the directive on the line of a column with a shape",
+    "kanban\n  A[x] %%{y}%%  \n",
+    "kanban\n  A[x] %%{y}%%  \n",
+  ],
+  [
+    "spaces after the directive on the line of a column with a bare id",
+    "kanban\n  A %%{y}%%  \n",
+    "kanban\n  A %%{y}%%  \n",
+  ],
+]
+
+describe("the text of a kanban card that a directive ends", () => {
+  it.each(kanbanCardDirectiveExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/** What the printer does with an open directive and a closed directive on the line of a card or a column of a kanban board, with a directive in a mindmap node, and with a comment or a directive on the lines of a C4 diagram (docs/kanban.md, Trailing whitespace and Final newline; docs/mindmap.md, Directives; docs/c4.md, Blank lines, Final newline, and Title and accDescription). */
+const directiveAndCommentLineExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "an open directive on the line of a card with nothing after it",
+    "kanban\n  S\n    A[x] %%{unfinished",
+    "kanban\n  S\n    A[x] %%{unfinished",
+  ],
+  [
+    "an open directive on the line of a card followed by two spaces",
+    "kanban\n  S\n    A[x] %%{unfinished  ",
+    "kanban\n  S\n    A[x] %%{unfinished\n",
+  ],
+  [
+    "an open directive on the line of a card followed by a tab",
+    "kanban\n  S\n    A[x] %%{unfinished\u0009",
+    "kanban\n  S\n    A[x] %%{unfinished\n",
+  ],
+  [
+    "an open directive on the line of a card followed by a no-break space",
+    "kanban\n  S\n    A[x] %%{unfinished\u00a0",
+    "kanban\n  S\n    A[x] %%{unfinished\u00a0\n",
+  ],
+  [
+    "an open directive on the line of a card followed by U+3000",
+    "kanban\n  S\n    A[x] %%{unfinished\u3000",
+    "kanban\n  S\n    A[x] %%{unfinished\u3000\n",
+  ],
+  [
+    "an open directive on the line of a card followed by U+2003",
+    "kanban\n  S\n    A[x] %%{unfinished\u2003",
+    "kanban\n  S\n    A[x] %%{unfinished\u2003\n",
+  ],
+  [
+    "an open directive on the line of a card followed by spaces and a line break",
+    "kanban\n  S\n    A[x] %%{unfinished  \n",
+    "kanban\n  S\n    A[x] %%{unfinished\n",
+  ],
+  [
+    "an open directive on the line of a card followed by a line break and spaces",
+    "kanban\n  S\n    A[x] %%{unfinished\n  ",
+    "kanban\n  S\n    A[x] %%{unfinished\n",
+  ],
+  [
+    "an open directive on the line of a card followed by U+2028",
+    "kanban\n  S\n    A[x] %%{unfinished\u2028",
+    "kanban\n  S\n    A[x] %%{unfinished\u2028\n",
+  ],
+  [
+    "an open directive on the line of a card followed by U+0085",
+    "kanban\n  S\n    A[x] %%{unfinished\u0085",
+    "kanban\n  S\n    A[x] %%{unfinished\u0085",
+  ],
+  [
+    "an open directive on the line of a card with a bare id and followed by two spaces",
+    "kanban\n  S\n    A %%{unfinished  ",
+    "kanban\n  S\n    A %%{unfinished\n",
+  ],
+  [
+    "an open directive on the line of a column with a bare id and followed by two spaces",
+    "kanban\n  S %%{unfinished  ",
+    "kanban\n  S %%{unfinished  \n",
+  ],
+  [
+    "U+2003 after the directive that ends the text of a card",
+    "kanban\n  S\n    A[x] %%{x}%%\u2003\n",
+    "kanban\n  S\n    A[x] %%{x}%%\u2003\n",
+  ],
+  [
+    "U+2002 after the directive that ends the text of a card",
+    "kanban\n  S\n    A[x] %%{x}%%\u2002\n",
+    "kanban\n  S\n    A[x] %%{x}%%\u2002\n",
+  ],
+  [
+    "U+2028 after the directive that ends the text of a card",
+    "kanban\n  S\n    A[x] %%{x}%%\u2028\n",
+    "kanban\n  S\n    A[x] %%{x}%%\u2028\n",
+  ],
+  [
+    "a comment and spaces after the directive of a card",
+    "kanban\n  S\n    A[x] %%{x}%%  %% c  \n",
+    "kanban\n  S\n    A[x] %%{x}%%  %% c  \n",
+  ],
+  [
+    "a tab after the directive on the line of a column",
+    "kanban\n  A[x] %%{y}%%\u0009\n",
+    "kanban\n  A[x] %%{y}%%\u0009\n",
+  ],
+  [
+    "U+2003 after the directive that follows a shape of a mindmap node",
+    "mindmap\n  root\n    a[t] %%{x}%%\u2003  \n",
+    "mindmap\n  root\n    a[t] %%{x}%%\n",
+  ],
+  [
+    "a no-break space after the directive that follows an icon of a mindmap node",
+    "mindmap\n  root\n    a ::icon(z) %%{x}%%\u00a0  \n",
+    "mindmap\n  root\n    a ::icon(z) %%{x}%%\n",
+  ],
+  [
+    "U+2003 after the directive of a bare mindmap node",
+    "mindmap\n  root\n    a %%{x}%%\u2003  \n",
+    "mindmap\n  root\n    a %%{x}%%\u2003  \n",
+  ],
+  [
+    "U+2002 after the directive of a bare mindmap node",
+    "mindmap\n  root\n    a %%{x}%%\u2002  \n",
+    "mindmap\n  root\n    a %%{x}%%\u2002  \n",
+  ],
+  [
+    "U+2028 after the directive of a bare mindmap node",
+    "mindmap\n  root\n    a %%{x}%%\u2028  \n",
+    "mindmap\n  root\n    a %%{x}%%\u2028  \n",
+  ],
+  [
+    "a no-break space after the directive of the root text of a mindmap",
+    "mindmap\n  root %%{x}%%\u00a0  \n",
+    "mindmap\n  root %%{x}%%\u00a0  \n",
+  ],
+  [
+    "a comment and spaces after the directive of a bare mindmap node",
+    "mindmap\n  root\n    a  %%{x}%%  %% c  \n",
+    "mindmap\n  root\n    a  %%{x}%%  %% c  \n",
+  ],
+  [
+    "a comment and spaces after the directive that follows a shape of a mindmap node",
+    "mindmap\n  root\n    a[t]  %%{x}%%  %% c  \n",
+    "mindmap\n  root\n    a[t] %%{x}%% %% c  \n",
+  ],
+  [
+    "a final comment after a Rel and empty lines in a C4 diagram",
+    'C4Context\nPerson(a, "A")\nPerson(b, "B")\nRel(a, b, "x") %% c\n\n\n',
+    'C4Context\n  Person(a, "A")\n  Person(b, "B")\n  Rel(a, b, "x") %% c\n\n\n',
+  ],
+  [
+    "a final comment after a System and empty lines in a C4 diagram",
+    'C4Context\nSystem(s, "S") %% c\n\n\n',
+    'C4Context\n  System(s, "S") %% c\n\n\n',
+  ],
+  [
+    "a final comment after an UpdateElementStyle and empty lines in a C4 diagram",
+    'C4Context\nPerson(a, "A")\nUpdateElementStyle(a, "green") %% c\n\n\n',
+    'C4Context\n  Person(a, "A")\n  UpdateElementStyle(a, "green") %% c\n\n\n',
+  ],
+  [
+    "a final comment after an UpdateLayoutConfig and empty lines in a C4 diagram",
+    'C4Context\nPerson(a, "A")\nUpdateLayoutConfig($c4ShapeInRow="2") %% c\n\n\n',
+    'C4Context\n  Person(a, "A")\n  UpdateLayoutConfig($c4ShapeInRow = "2") %% c\n\n\n',
+  ],
+  [
+    "a final comment after the brace that closes a boundary and empty lines in a C4 diagram",
+    'C4Context\nBoundary(b, "B") {\nPerson(a, "A")\n} %% c\n\n\n',
+    'C4Context\n  Boundary(b, "B") {\n    Person(a, "A")\n  } %% c\n\n\n',
+  ],
+  [
+    "a comment after a title followed by empty lines and a statement in a C4 diagram",
+    'C4Context\ntitle T %% c\n\n\nPerson(a, "A")\n',
+    'C4Context\n  title T %% c\n\n  Person(a, "A")\n',
+  ],
+  [
+    "a final comment after a title and empty lines in a C4 diagram",
+    'C4Context\nPerson(a, "A")\ntitle T %% c\n\n\n',
+    'C4Context\n  Person(a, "A")\n  title T %% c\n',
+  ],
+  [
+    "a final comment after a title and two spaces in a C4 diagram",
+    'C4Context\nPerson(a, "A")\ntitle T %% c  ',
+    'C4Context\n  Person(a, "A")\n  title T %% c\n',
+  ],
+  [
+    "a final comment after a title and a no-break space in a C4 diagram",
+    'C4Context\nPerson(a, "A")\ntitle T %% c\u00a0',
+    'C4Context\n  Person(a, "A")\n  title T %% c\u00a0\n',
+  ],
+  [
+    "a final comment after an accTitle line and a no-break space in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccTitle: T %% c\u00a0',
+    'C4Context\n  Person(a, "A")\n  accTitle: T %% c\n',
+  ],
+  [
+    "a final comment after an accTitle line and U+0085 in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccTitle: T %% c\u0085',
+    'C4Context\n  Person(a, "A")\n  accTitle: T %% c\u0085\n',
+  ],
+  [
+    "a final comment after an accDescription line and two spaces in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccDescription T %% c  ',
+    'C4Context\n  Person(a, "A")\n  accDescription T %% c\n',
+  ],
+  [
+    "a final comment after an accDescr line and empty lines in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccDescr: T %% c\n\n\n',
+    'C4Context\n  Person(a, "A")\n  accDescr: T %% c\n',
+  ],
+  [
+    "two spaces after the last directive of a C4 title",
+    'C4Context\ntitle T  %%{x}%%  \nPerson(a, "A")\n',
+    'C4Context\n  title T %%{x}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "a comment after the last directive of a C4 title",
+    'C4Context\ntitle T  %%{x}%% %% c\nPerson(a, "A")\n',
+    'C4Context\n  title T  %%{x}%% %% c\n  Person(a, "A")\n',
+  ],
+  [
+    "spaces around a comment after the last directive of a C4 title",
+    'C4Context\ntitle T  %%{x}%%  %% c  \nPerson(a, "A")\n',
+    'C4Context\n  title T  %%{x}%%  %% c  \n  Person(a, "A")\n',
+  ],
+  [
+    "a no-break space after the last directive of a C4 title",
+    'C4Context\ntitle T  %%{x}%%\u00a0\nPerson(a, "A")\n',
+    'C4Context\n  title T  %%{x}%%\u00a0\n  Person(a, "A")\n',
+  ],
+  [
+    "U+0085 after the last directive of a C4 title",
+    'C4Context\ntitle T  %%{x}%%\u0085\nPerson(a, "A")\n',
+    'C4Context\n  title T  %%{x}%%\u0085\n  Person(a, "A")\n',
+  ],
+  [
+    "text after the last directive of a C4 title",
+    'C4Context\ntitle T  %%{x}%% B\nPerson(a, "A")\n',
+    'C4Context\n  title T  %%{x}%% B\n  Person(a, "A")\n',
+  ],
+  [
+    "two spaces after the last directive of a C4 accDescription",
+    'C4Context\naccDescription T  %%{x}%%  \nPerson(a, "A")\n',
+    'C4Context\n  accDescription T %%{x}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "a comment after the last directive of a C4 accDescription",
+    'C4Context\naccDescription T  %%{x}%% %% c\nPerson(a, "A")\n',
+    'C4Context\n  accDescription T  %%{x}%% %% c\n  Person(a, "A")\n',
+  ],
+  [
+    "a no-break space after the last directive of a C4 accDescription",
+    'C4Context\naccDescription T  %%{x}%%\u00a0\nPerson(a, "A")\n',
+    'C4Context\n  accDescription T  %%{x}%%\u00a0\n  Person(a, "A")\n',
+  ],
+  [
+    "two spaces after the last directive of a C4 accTitle line",
+    'C4Context\naccTitle: T  %%{x}%%  \nPerson(a, "A")\n',
+    'C4Context\n  accTitle: T %%{x}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "a comment after the last directive of a C4 accTitle line",
+    'C4Context\naccTitle: T  %%{x}%% %% c\nPerson(a, "A")\n',
+    'C4Context\n  accTitle: T  %%{x}%% %% c\n  Person(a, "A")\n',
+  ],
+  [
+    "a no-break space after the last directive of a C4 accTitle line",
+    'C4Context\naccTitle: T  %%{x}%%\u00a0\nPerson(a, "A")\n',
+    'C4Context\n  accTitle: T %%{x}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "two spaces after the last directive of a C4 accDescr line",
+    'C4Context\naccDescr: T  %%{x}%%  \nPerson(a, "A")\n',
+    'C4Context\n  accDescr: T %%{x}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "a comment after the last directive of a C4 accDescr line",
+    'C4Context\naccDescr: T  %%{x}%% %% c\nPerson(a, "A")\n',
+    'C4Context\n  accDescr: T  %%{x}%% %% c\n  Person(a, "A")\n',
+  ],
+  [
+    "a no-break space after the last directive of a C4 accDescr line",
+    'C4Context\naccDescr: T  %%{x}%%\u00a0\nPerson(a, "A")\n',
+    'C4Context\n  accDescr: T %%{x}%%\n  Person(a, "A")\n',
+  ],
+]
+
+describe("the directives and comments on the lines of a kanban board, a mindmap, and a C4 diagram", () => {
+  it.each(directiveAndCommentLineExamples)(
+    "prints %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/** The last line of whitespace only after a final comment (docs/kanban.md and docs/c4.md, Final newline). */
+const lastLineAfterCommentExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a final comment after a statement, an empty line, and a last line of one space in a kanban board",
+    "kanban\n  S[x] %% c\n\n ",
+    "kanban\n  S[x] %% c\n\n \n",
+  ],
+  [
+    "a final comment after a statement, two empty lines, and a last line of two spaces in a kanban board",
+    "kanban\n  S[x] %% c\n\n\n  ",
+    "kanban\n  S[x] %% c\n\n\n  \n",
+  ],
+  [
+    "a final comment after a statement, an empty line, and a last line of one space in a C4 diagram",
+    'C4Context\nPerson(a, "A") %% c\n\n ',
+    'C4Context\n  Person(a, "A") %% c\n\n \n',
+  ],
+  [
+    "a final comment after the brace that closes a boundary, an empty line, and a last line of one space in a C4 diagram",
+    'C4Context\nBoundary(b, "B") {\nPerson(a, "A")\n} %% c\n\n ',
+    'C4Context\n  Boundary(b, "B") {\n    Person(a, "A")\n  } %% c\n\n \n',
+  ],
+  [
+    "a final comment after a statement and a last line of a U+2028 without a line break in a kanban board",
+    "kanban\n  S[x] %% c\n\u2028",
+    "kanban\n  S[x] %% c\n\u2028\n",
+  ],
+  [
+    "a final comment after a statement and a last line of a U+2029 without a line break in a kanban board",
+    "kanban\n  S[x] %% c\n\u2029",
+    "kanban\n  S[x] %% c\n\u2029\n",
+  ],
+  [
+    "a final comment after a statement, an empty line, and a last line of a U+2028 in a kanban board",
+    "kanban\n  S[x] %% c\n\n\u2028",
+    "kanban\n  S[x] %% c\n\n\u2028\n",
+  ],
+  [
+    "a final comment after a statement and a last line of a U+2028 without a line break in a C4 diagram",
+    'C4Context\nPerson(a, "A") %% c\n\u2028',
+    'C4Context\n  Person(a, "A") %% c\n\u2028\n',
+  ],
+  [
+    "a final comment after a statement and a last line of a U+2029 without a line break in a C4 diagram",
+    'C4Context\nPerson(a, "A") %% c\n\u2029',
+    'C4Context\n  Person(a, "A") %% c\n\u2029\n',
+  ],
+  [
+    "a final comment after the brace that closes a boundary and a last line of a U+2028 in a C4 diagram",
+    'C4Context\nBoundary(b, "B") {\nPerson(a, "A")\n} %% c\n\u2028',
+    'C4Context\n  Boundary(b, "B") {\n    Person(a, "A")\n  } %% c\n\u2028\n',
+  ],
+  [
+    "a final comment after the brace that closes a boundary and a last line of one space in a C4 diagram",
+    'C4Context\nBoundary(b, "B") {\nPerson(a, "A")\n} %% c\n ',
+    'C4Context\n  Boundary(b, "B") {\n    Person(a, "A")\n  } %% c\n',
+  ],
+  [
+    "a final comment after a statement and a last line of a tab without a line break in a C4 diagram",
+    'C4Context\nPerson(a, "A") %% c\n\t',
+    'C4Context\n  Person(a, "A") %% c\n',
+  ],
+  [
+    "a final comment after a statement and a last line of a no-break space without a line break in a C4 diagram",
+    'C4Context\nPerson(a, "A") %% c\n\u00a0',
+    'C4Context\n  Person(a, "A") %% c\n',
+  ],
+  [
+    "a final comment after a statement and a last line of a tab without a line break in a kanban board",
+    "kanban\n  S[x] %% c\n\t",
+    "kanban\n  S[x] %% c\n",
+  ],
+  [
+    "a final comment after a statement and a last line of a no-break space without a line break in a kanban board",
+    "kanban\n  S[x] %% c\n\u00a0",
+    "kanban\n  S[x] %% c\n",
+  ],
+  [
+    "a final comment after a card and a last line of a U+2028 without a line break in a kanban board",
+    "kanban\n  S\n    A[y] %% c\n\u2028",
+    "kanban\n  S\n    A[y] %% c\n\u2028\n",
+  ],
+  [
+    "a last line of one space without a line break after a line of %% alone in a kanban board",
+    "kanban\n  S\n%%\n ",
+    "kanban\n  S\n  %%\n",
+  ],
+  [
+    "a last line of one space after a line break, after a line of %% alone in a kanban board",
+    "kanban\n  S\n%%\n \n",
+    "kanban\n  S\n%%\n \n",
+  ],
+  [
+    "a last line of a U+2029 after a line of %% alone in a kanban board",
+    "kanban\n  S\n%%\n\u2029",
+    "kanban\n  S\n%%\n\u2029\n",
+  ],
+  [
+    "a last line of a space and a U+2028 after a line of %% alone in a kanban board",
+    "kanban\n  S\n%%\n \u2028",
+    "kanban\n  S\n%%\n \u2028\n",
+  ],
+  [
+    "a last line of a U+2029 and a space after a line of %% alone in a kanban board",
+    "kanban\n  S\n%%\n\u2029 ",
+    "kanban\n  S\n%%\n\u2029 \n",
+  ],
+  [
+    "a final comment after a statement and a last line of a space and a U+2028 without a line break in a kanban board",
+    "kanban\n  S[x] %% c\n \u2028",
+    "kanban\n  S[x] %% c\n \u2028\n",
+  ],
+  [
+    "a final comment after a statement and a last line of a space and a U+2028 without a line break in a C4 diagram",
+    'C4Context\nPerson(a, "A") %% c\n \u2028',
+    'C4Context\n  Person(a, "A") %% c\n \u2028\n',
+  ],
+  [
+    "a last line of a U+2028 after a line of %% alone in a kanban board",
+    "kanban\n  S\n%%\n\u2028",
+    "kanban\n  S\n%%\n\u2028\n",
+  ],
+  [
+    "a final comment after the brace of an accDescr block and a last line of one space without a line break in a C4 diagram",
+    "C4Context\naccDescr {\nT\n} %% c\n ",
+    "C4Context\n  accDescr {\n    T\n  } %% c\n",
+  ],
+  [
+    "a final comment after the brace of an accDescr block and a last line of one space after a line break in a C4 diagram",
+    "C4Context\naccDescr {\nT\n} %% c\n \n",
+    "C4Context\n  accDescr {\n    T\n  } %% c\n \n",
+  ],
+  [
+    "a final comment after the brace of an accDescr block, an empty line, and a last line of one space in a C4 diagram",
+    "C4Context\naccDescr {\nT\n} %% c\n\n ",
+    "C4Context\n  accDescr {\n    T\n  } %% c\n\n \n",
+  ],
+  [
+    "a final comment after the brace of an accDescr block and a last line of a U+2028 without a line break in a C4 diagram",
+    "C4Context\naccDescr {\nT\n} %% c\n\u2028",
+    "C4Context\n  accDescr {\n    T\n  } %% c\n\u2028\n",
+  ],
+  [
+    "a final comment after the brace of an accDescr block and a last line of a U+2029 without a line break in a C4 diagram",
+    "C4Context\naccDescr {\nT\n} %% c\n\u2029",
+    "C4Context\n  accDescr {\n    T\n  } %% c\n\u2029\n",
+  ],
+  [
+    "a final comment on the header line and a last line of one space without a line break in a kanban board",
+    "kanban %% c\n ",
+    "kanban %% c\n",
+  ],
+  [
+    "a final comment on the header line and a last line of one space after a line break in a kanban board",
+    "kanban %% c\n \n",
+    "kanban %% c\n \n",
+  ],
+  [
+    "a final comment on the header line, an empty line, and a last line of one space in a kanban board",
+    "kanban %% c\n\n ",
+    "kanban %% c\n\n \n",
+  ],
+  [
+    "a final comment on the header line and a last line of a U+2028 without a line break in a kanban board",
+    "kanban %% c\n\u2028",
+    "kanban %% c\n\u2028\n",
+  ],
+  [
+    "a final comment on the header line and a last line of a U+2029 without a line break in a kanban board",
+    "kanban %% c\n\u2029",
+    "kanban %% c\n\u2029\n",
+  ],
+]
+
+describe("the last line of whitespace only after a final comment", () => {
+  it.each(lastLineAfterCommentExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/** A last line of only a U+2028 or a U+2029 that is left out after a final comment (docs/kanban.md and docs/c4.md, Final newline). */
+const lastLineLeftOutAfterCommentExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a last line of a U+2028 after a final comment on a line of its own in a C4 diagram",
+    'C4Context\nPerson(a, "A")\n%% c\n\u2028',
+    'C4Context\n  Person(a, "A")\n  %% c\n',
+  ],
+  [
+    "a last line of a U+2029 after a final comment on a line of its own in a C4 diagram",
+    'C4Context\nPerson(a, "A")\n%% c\n\u2029',
+    'C4Context\n  Person(a, "A")\n  %% c\n',
+  ],
+  [
+    "a last line of a U+2028 after a final comment after a title in a C4 diagram",
+    'C4Context\nPerson(a, "A")\ntitle T %% c\n\u2028',
+    'C4Context\n  Person(a, "A")\n  title T %% c\n',
+  ],
+  [
+    "a last line of a U+2029 after a final comment after a title in a C4 diagram",
+    'C4Context\nPerson(a, "A")\ntitle T %% c\n\u2029',
+    'C4Context\n  Person(a, "A")\n  title T %% c\n',
+  ],
+  [
+    "a last line of a U+2028 after a final comment after an accTitle line in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccTitle: T %% c\n\u2028',
+    'C4Context\n  Person(a, "A")\n  accTitle: T %% c\n',
+  ],
+  [
+    "a last line of a U+2029 after a final comment after an accTitle line in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccTitle: T %% c\n\u2029',
+    'C4Context\n  Person(a, "A")\n  accTitle: T %% c\n',
+  ],
+  [
+    "a last line of a U+2028 after a final comment after an accDescr line in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccDescr: T %% c\n\u2028',
+    'C4Context\n  Person(a, "A")\n  accDescr: T %% c\n',
+  ],
+  [
+    "a last line of a U+2029 after a final comment after an accDescr line in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccDescr: T %% c\n\u2029',
+    'C4Context\n  Person(a, "A")\n  accDescr: T %% c\n',
+  ],
+  [
+    "a last line of a U+2028 after a final comment after an accDescription line in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccDescription T %% c\n\u2028',
+    'C4Context\n  Person(a, "A")\n  accDescription T %% c\n',
+  ],
+  [
+    "a last line of a U+2029 after a final comment after an accDescription line in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccDescription T %% c\n\u2029',
+    'C4Context\n  Person(a, "A")\n  accDescription T %% c\n',
+  ],
+  [
+    "a last line of a U+2028 after a final comment on a line of its own in a kanban board",
+    "kanban\n  S[x]\n%% c\n\u2028",
+    "kanban\n  S[x]\n  %% c\n",
+  ],
+  [
+    "a last line of a U+2029 after a final comment on a line of its own in a kanban board",
+    "kanban\n  S[x]\n%% c\n\u2029",
+    "kanban\n  S[x]\n  %% c\n",
+  ],
+  [
+    "a last line of a space and a U+2028 after a final comment on a line of its own in a kanban board",
+    "kanban\n  S[x]\n%% c\n \u2028",
+    "kanban\n  S[x]\n  %% c\n",
+  ],
+  [
+    "a last line of a space and a U+2028 after a final comment on a line of its own in a C4 diagram",
+    'C4Context\nPerson(a, "A")\n%% c\n \u2028',
+    'C4Context\n  Person(a, "A")\n  %% c\n',
+  ],
+  [
+    "a last line of a space and a U+2028 after a final comment after a title in a C4 diagram",
+    'C4Context\nPerson(a, "A")\ntitle T %% c\n \u2028',
+    'C4Context\n  Person(a, "A")\n  title T %% c\n',
+  ],
+  [
+    "a last line of one space after an empty line and a line break after a final comment on a line of its own in a C4 diagram",
+    'C4Context\nPerson(a, "A")\n%% c\n\n \n',
+    'C4Context\n  Person(a, "A")\n  %% c\n',
+  ],
+  [
+    "a last line of one space after an empty line and a line break after a final comment after a title in a C4 diagram",
+    'C4Context\nPerson(a, "A")\ntitle T %% c\n\n \n',
+    'C4Context\n  Person(a, "A")\n  title T %% c\n',
+  ],
+  [
+    "a last line of one space after an empty line and a line break after a final comment after an accTitle line in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccTitle: T %% c\n\n \n',
+    'C4Context\n  Person(a, "A")\n  accTitle: T %% c\n',
+  ],
+  [
+    "a last line of one space after an empty line and a line break after a final comment after an accDescr line in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccDescr: T %% c\n\n \n',
+    'C4Context\n  Person(a, "A")\n  accDescr: T %% c\n',
+  ],
+  [
+    "a last line of one space after an empty line and a line break after a final comment after an accDescription line in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccDescription T %% c\n\n \n',
+    'C4Context\n  Person(a, "A")\n  accDescription T %% c\n',
+  ],
+  [
+    "a last line of one space after an empty line and a line break after a final comment on a line of its own in a kanban board",
+    "kanban\n  S[x]\n%% c\n\n \n",
+    "kanban\n  S[x]\n  %% c\n",
+  ],
+]
+
+describe("the last line of only a U+2028 or a U+2029 after a final comment that leaves it out", () => {
+  it.each(lastLineLeftOutAfterCommentExamples)(
+    "leaves out %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/** What follows a final comment on a line of C4 that has a directive before the comment (docs/c4.md, Final newline). */
+describe("each whitespace character that follows a final comment after a directive of a C4 diagram", () => {
+  it("a final comment after a directive on the line of a call, a relation, or the brace that closes a boundary and each whitespace character in a C4 diagram", async () => {
+    const forms = [
+      [
+        (c: string) => `C4Context\nPerson(a, "A") %%{x}%% %% c${c}`,
+        (c: string) => `C4Context\n  Person(a, "A") %%{x}%% %% c${c}\n`,
+      ],
+      [
+        (c: string) =>
+          `C4Context\nPerson(a, "A")\nPerson(b, "B")\nRel(a, b, "x") %%{x}%% %% c${c}`,
+        (c: string) =>
+          `C4Context\n  Person(a, "A")\n  Person(b, "B")\n  Rel(a, b, "x") %%{x}%% %% c${c}\n`,
+      ],
+      [
+        (c: string) =>
+          `C4Context\nBoundary(b, "B") {\nPerson(a, "A")\n} %%{x}%% %% c${c}`,
+        (c: string) =>
+          `C4Context\n  Boundary(b, "B") {\n    Person(a, "A")\n  } %%{x}%% %% c${c}\n`,
+      ],
+    ] as const
+    for (const [input, output] of forms) {
+      for (const character of ["  ", "\t"])
+        await expectKept(input(character), output(""))
+      for (const character of afterFinalCommentCharacters)
+        await expectKept(input(character), output(character))
+    }
+  })
+})
+
+/** The empty lines after a comment on the icon line and on the class line of a card (docs/compatibility.md, Kanban). */
+const kanbanGapAfterDecorationExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a comment after the icon line of a card and empty lines in a kanban board",
+    "kanban\n  S\n    A\n    ::icon(fa) %% c\n\n\n    B\n",
+    "kanban\n  S\n    A\n    ::icon(fa) %% c\n\n\n    B\n",
+  ],
+  [
+    "a comment after the icon line of a card and empty lines at the end of a kanban board",
+    "kanban\n  S\n    A\n    ::icon(fa) %% c\n\n\n",
+    "kanban\n  S\n    A\n    ::icon(fa) %% c\n\n\n",
+  ],
+  [
+    "a comment after the class line of a card and empty lines in a kanban board",
+    "kanban\n  S\n    A\n    :::cls %% c\n\n\n    B\n",
+    "kanban\n  S\n    A\n    :::cls %% c\n\n    B\n",
+  ],
+  [
+    "a comment after the class line of a card and empty lines at the end of a kanban board",
+    "kanban\n  S\n    A\n    :::cls %% c\n\n\n",
+    "kanban\n  S\n    A\n    :::cls %% c\n",
+  ],
+  [
+    "an open directive on the header line of a kanban board",
+    "kanban %%{unfinished  ",
+    "kanban %%{unfinished\n",
+  ],
+  [
+    "an open directive on the header line of a kanban board and empty lines",
+    "kanban %%{unfinished\n\n  ",
+    "kanban %%{unfinished\n",
+  ],
+]
+
+describe("the lines of a card and the header line of a kanban board that a comment or an open directive ends", () => {
+  it.each(kanbanGapAfterDecorationExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/** The whitespace of the specification that is no space, tab, or line terminator (docs/mindmap.md, Directives, and docs/ishikawa.md, Trailing whitespace). */
+const whitespaceBesideADirective: readonly string[] =
+  afterFinalCommentCharacters.slice(0, 21)
+
+describe("a whitespace character that is no space or tab before the first directive of a mindmap node and beside the directives of an ishikawa literal", () => {
+  it("a whitespace character that is no space or tab before the directive that follows a shape or an icon of a mindmap node", async () => {
+    for (const character of whitespaceBesideADirective) {
+      await expectKept(
+        `mindmap\n  root\n    a[t]${character}%%{x}%%\n`,
+        "mindmap\n  root\n    a[t] %%{x}%%\n",
+      )
+      await expectKept(
+        `mindmap\n  root\n    a[t]\n    ::icon(fa)${character}%%{x}%%\n`,
+        "mindmap\n  root\n    a[t]\n    ::icon(fa) %%{x}%%\n",
+      )
+    }
+  })
+
+  it("a whitespace character that is no space or tab before the directive of a bare mindmap node and of the root text", async () => {
+    for (const character of whitespaceBesideADirective) {
+      const bare = `mindmap\n  root\n    a${character}%%{x}%%\n`
+      await expectKept(bare, bare)
+      const root = `mindmap\n  root${character}%%{x}%%\n`
+      await expectKept(root, root)
+    }
+  })
+
+  it("a whitespace character that is no space or tab beside the directives of an ishikawa literal", async () => {
+    for (const character of whitespaceBesideADirective) {
+      await expectKept(
+        `ishikawa\n  R\n    A${character}%%{x}%%  \n`,
+        `ishikawa\n  R\n    A${character}%%{x}%%\n`,
+      )
+      await expectKept(
+        `ishikawa\n  R\n    A %%{x}%%${character}  \n`,
+        `ishikawa\n  R\n    A %%{x}%%${character}\n`,
+      )
+      await expectKept(
+        `ishikawa\n  R\n    A %%{x}%%${character}%%{y}%%  \n`,
+        `ishikawa\n  R\n    A %%{x}%%${character}%%{y}%%\n`,
+      )
+    }
+  })
+})
+
+/**
+ * The places of a line of a directive and a comment in an ishikawa diagram:
+ * the text before the formatting and after it, with `{line}` for the line
+ * (docs/ishikawa.md, Standalone directives).
+ */
+const ishikawaDirectiveLinePlaces = [
+  ["the header line", "ishikawa {line}\n  R\n", "ishikawa {line}\n  R\n"],
+  [
+    "the line before the root",
+    "ishikawa\n  {line}\n  R\n",
+    "ishikawa\n  {line}\n  R\n",
+  ],
+  [
+    "an indented line after the root",
+    "ishikawa\n  R\n    {line}\n",
+    "ishikawa\n  R\n  {line}\n",
+  ],
+  [
+    "a line between two nodes",
+    "ishikawa\n  R\n    A\n    {line}\n    B\n",
+    "ishikawa\n  R\n    A\n    {line}\n    B\n",
+  ],
+  [
+    "a line at the indentation of the root",
+    "ishikawa\n  R\n  {line}\n",
+    "ishikawa\n  R\n  {line}\n",
+  ],
+] as const
+
+/** A tab and the whitespace of the specification that is no space, tab, or line terminator but U+2028 and U+2029. */
+const ishikawaGapCharacters: readonly string[] = [
+  "\t",
+  ...whitespaceBesideADirective,
+]
+
+/** Directives with the given gaps after them, then a comment (docs/ishikawa.md, Standalone directives). */
+function directivesWithGapsAndAComment(gaps: readonly string[]): string {
+  const directives = ["%%{x}%%", "%%{y}%%", "%%{z}%%"]
+  let text = ""
+  gaps.forEach((gap, index) => {
+    text += `${directives[index] ?? ""}${gap}`
+  })
+  return `${text}%% c  d`
+}
+
+/**
+ * The header line of an ishikawa diagram with directives, the given gaps, and a
+ * comment stays as written where a gap holds a U+2028 or a U+2029, the other
+ * gaps included, and prints each gap that is not empty as one space otherwise
+ * (docs/ishikawa.md, Standalone directives).
+ */
+async function expectMixedGapsOnTheHeaderLine(
+  gaps: readonly string[],
+): Promise<void> {
+  const written = directivesWithGapsAndAComment(gaps)
+  const printed = gaps.some((gap) => gap === "\u2028" || gap === "\u2029")
+    ? written
+    : directivesWithGapsAndAComment(gaps.map((gap) => (gap === "" ? "" : " ")))
+  await expectKept(
+    `ishikawa ${written}\n  R\n    A\n`,
+    `ishikawa ${printed}\n  R\n    A\n`,
+  )
+}
+
+describe("the whitespace between a directive and the comment on a line of a directive of an ishikawa diagram", () => {
+  it("a whitespace character between a directive and the comment on a line of a directive of an ishikawa diagram", async () => {
+    for (const [place, before, after] of ishikawaDirectiveLinePlaces) {
+      for (const character of ishikawaGapCharacters) {
+        // A gap that holds a U+2028 or a U+2029 stays as written on the
+        // header line.
+        const staysOnTheHeader =
+          place === "the header line" &&
+          (character === "\u2028" || character === "\u2029")
+        for (const written of [
+          character,
+          ` ${character}`,
+          `${character} `,
+          `${character}${character}`,
+        ]) {
+          const kept = staysOnTheHeader ? written : " "
+          await expectKept(
+            before.replace("{line}", `%%{x}%%${written}%% c  d`),
+            after.replace("{line}", `%%{x}%%${kept}%% c  d`),
+          )
+        }
+      }
+    }
+  })
+
+  it("spaces and tabs between a directive and the comment on a line of a directive of an ishikawa diagram, and a comment that touches the directive", async () => {
+    for (const [, before, after] of ishikawaDirectiveLinePlaces) {
+      for (const gap of ["  ", " ", "\t", "\t\t"]) {
+        await expectKept(
+          before.replace("{line}", `%%{x}%%${gap}%% c  d`),
+          after.replace("{line}", "%%{x}%% %% c  d"),
+        )
+      }
+      await expectKept(
+        before.replace("{line}", "%%{x}%%%% c  d"),
+        after.replace("{line}", "%%{x}%%%% c  d"),
+      )
+    }
+  })
+
+  it("a whitespace character between two directives on the header line and on the line before the root of an ishikawa diagram", async () => {
+    for (const character of ishikawaGapCharacters) {
+      for (const written of [character, `${character}${character}`, "  "]) {
+        await expectKept(
+          `ishikawa %%{x}%%${written}%%{y}%%\n  R\n    A\n`,
+          "ishikawa %%{x}%% %%{y}%%\n  R\n    A\n",
+        )
+        await expectKept(
+          `ishikawa\n  %%{x}%%${written}%%{y}%%\n  R\n    A\n`,
+          "ishikawa\n  %%{x}%% %%{y}%%\n  R\n    A\n",
+        )
+        await expectKept(
+          `ishikawa %%{x}%%${written}%%{y}%%${written}%%{z}%%\n  R\n    A\n`,
+          "ishikawa %%{x}%% %%{y}%% %%{z}%%\n  R\n    A\n",
+        )
+      }
+    }
+    await expectKept(
+      "ishikawa %%{x}%%%%{y}%%\n  R\n    A\n",
+      "ishikawa %%{x}%%%%{y}%%\n  R\n    A\n",
+    )
+    await expectKept(
+      "ishikawa\n  %%{x}%%%%{y}%%\n  R\n    A\n",
+      "ishikawa\n  %%{x}%%%%{y}%%\n  R\n    A\n",
+    )
+  })
+
+  it("a whitespace character between two or three directives and the comment on a line of directives of an ishikawa diagram, in each place", async () => {
+    for (const [place, before, after] of ishikawaDirectiveLinePlaces) {
+      for (const character of ishikawaGapCharacters) {
+        // On the header line, a gap that holds a U+2028 or a U+2029 stays as
+        // written where a comment ends the line.
+        const staysOnTheHeader =
+          place === "the header line" &&
+          (character === "\u2028" || character === "\u2029")
+        for (const directives of [
+          "%%{x}%%{gap}%%{y}%%{gap}%% c  d",
+          "%%{x}%%{gap}%%{y}%%{gap}%%{z}%%{gap}%% c  d",
+        ]) {
+          await expectKept(
+            before.replace("{line}", directives.split("{gap}").join(character)),
+            after.replace(
+              "{line}",
+              directives
+                .split("{gap}")
+                .join(staysOnTheHeader ? character : " "),
+            ),
+          )
+        }
+      }
+    }
+  })
+
+  it("mixed gaps between the directives and the comment on the header line of an ishikawa diagram", async () => {
+    const gaps = ["", " ", "   ", "\t", "\u2028", "\u2029"]
+    for (const first of gaps) {
+      for (const last of gaps) {
+        await expectMixedGapsOnTheHeaderLine([first, last])
+        for (const middle of gaps) {
+          await expectMixedGapsOnTheHeaderLine([first, middle, last])
+        }
+      }
+    }
+  })
+
+  it("a whitespace character between two directives on a line of an ishikawa diagram with no text", async () => {
+    for (const character of ishikawaGapCharacters) {
+      for (const written of [character, `${character}${character}`, "  "]) {
+        await expectKept(
+          `ishikawa\n  R\n    %%{x}%%${written}%%{y}%%\n`,
+          "ishikawa\n  R\n  %%{x}%% %%{y}%%\n",
+        )
+      }
+    }
+    await expectKept(
+      "ishikawa\n  R\n    %%{x}%%%%{y}%%\n",
+      "ishikawa\n  R\n  %%{x}%%%%{y}%%\n",
+    )
+  })
+})
+
+/**
+ * The places that the clauses of the last line that holds a U+2028 or a U+2029
+ * name (docs/kanban.md and docs/c4.md, Final newline): after the comment of
+ * these the last line stays, with a line break added where none follows, and
+ * after the others it is left out.
+ */
+const lastLineWithASeparatorPlaces = [
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after a statement in a kanban board",
+    base: "kanban\n  S[x] %% c\n",
+    printed: "kanban\n  S[x] %% c\n",
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after a card in a kanban board",
+    base: "kanban\n  S\n    A[y] %% c\n",
+    printed: "kanban\n  S\n    A[y] %% c\n",
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after a card with a data block in a kanban board",
+    base: "kanban\n  S\n    A[y]@{ assigned: 'x' } %% c\n",
+    printed: "kanban\n  S\n    A[y]@{ assigned: 'x' } %% c\n",
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after an icon line in a kanban board",
+    base: "kanban\n  S\n    A\n    ::icon(fa) %% c\n",
+    printed: "kanban\n  S\n    A\n    ::icon(fa) %% c\n",
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment on the header line of a kanban board",
+    base: "kanban %% c\n",
+    printed: "kanban %% c\n",
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final line of %% alone in a kanban board",
+    base: "kanban\n  S\n%%\n",
+    printed: "kanban\n  S\n%%\n",
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after an element call in a C4 diagram",
+    base: 'C4Context\nPerson(a, "A") %% c\n',
+    printed: 'C4Context\n  Person(a, "A") %% c\n',
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after a relation call in a C4 diagram",
+    base: 'C4Context\nPerson(a, "A")\nPerson(b, "B")\nRel(a, b, "x") %% c\n',
+    printed:
+      'C4Context\n  Person(a, "A")\n  Person(b, "B")\n  Rel(a, b, "x") %% c\n',
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after an UpdateElementStyle call in a C4 diagram",
+    base: 'C4Context\nPerson(a, "A")\nUpdateElementStyle(a, $fontColor="red") %% c\n',
+    printed:
+      'C4Context\n  Person(a, "A")\n  UpdateElementStyle(a, $fontColor = "red") %% c\n',
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after an UpdateRelStyle call in a C4 diagram",
+    base: 'C4Context\nPerson(a, "A")\nPerson(b, "B")\nRel(a, b, "x")\nUpdateRelStyle(a, b, $textColor="red") %% c\n',
+    printed:
+      'C4Context\n  Person(a, "A")\n  Person(b, "B")\n  Rel(a, b, "x")\n  UpdateRelStyle(a, b, $textColor = "red") %% c\n',
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after an UpdateLayoutConfig call in a C4 diagram",
+    base: 'C4Context\nPerson(a, "A")\nUpdateLayoutConfig($c4ShapeInRow="3") %% c\n',
+    printed:
+      'C4Context\n  Person(a, "A")\n  UpdateLayoutConfig($c4ShapeInRow = "3") %% c\n',
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after the brace that closes a boundary in a C4 diagram",
+    base: 'C4Context\nBoundary(b, "B") {\nPerson(a, "A")\n} %% c\n',
+    printed: 'C4Context\n  Boundary(b, "B") {\n    Person(a, "A")\n  } %% c\n',
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after the brace of an accDescr block in a C4 diagram",
+    base: "C4Context\naccDescr {\nT\n} %% c\n",
+    printed: "C4Context\n  accDescr {\n    T\n  } %% c\n",
+    kept: true,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment on a line of its own in a kanban board",
+    base: "kanban\n  S[x]\n%% c\n",
+    printed: "kanban\n  S[x]\n  %% c\n",
+    kept: false,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment on a line of its own in a C4 diagram",
+    base: 'C4Context\nPerson(a, "A")\n%% c\n',
+    printed: 'C4Context\n  Person(a, "A")\n  %% c\n',
+    kept: false,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after a title in a C4 diagram",
+    base: 'C4Context\nPerson(a, "A")\ntitle T %% c\n',
+    printed: 'C4Context\n  Person(a, "A")\n  title T %% c\n',
+    kept: false,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after an accTitle line in a C4 diagram",
+    base: 'C4Context\nPerson(a, "A")\naccTitle: T %% c\n',
+    printed: 'C4Context\n  Person(a, "A")\n  accTitle: T %% c\n',
+    kept: false,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after an accDescr line in a C4 diagram",
+    base: 'C4Context\nPerson(a, "A")\naccDescr: T %% c\n',
+    printed: 'C4Context\n  Person(a, "A")\n  accDescr: T %% c\n',
+    kept: false,
+  },
+  {
+    name: "a last line that holds a U+2028 or a U+2029, alone or beside whitespace, a final comment after an accDescription line in a C4 diagram",
+    base: 'C4Context\nPerson(a, "A")\naccDescription T %% c\n',
+    printed: 'C4Context\n  Person(a, "A")\n  accDescription T %% c\n',
+    kept: false,
+  },
+] as const
+
+describe("the last line that holds a U+2028 or a U+2029 beside whitespace after a final comment, by place", () => {
+  it.each(
+    lastLineWithASeparatorPlaces.map((place) => [place.name, place] as const),
+  )("%s", async (_name, place) => {
+    for (const separator of ["\u2028", "\u2029"]) {
+      for (const last of [
+        separator,
+        ` ${separator}`,
+        `${separator} `,
+        `\t${separator}`,
+        `\u00a0${separator}`,
+      ]) {
+        for (const [before, after] of [
+          ["", ""],
+          ["", "\n"],
+          ["\n", ""],
+        ] as const) {
+          await expectKept(
+            `${place.base}${before}${last}${after}`,
+            place.kept ? `${place.printed}${before}${last}\n` : place.printed,
+          )
+        }
+      }
+    }
+  })
+})
+
+/**
+ * A directive that holds a U+2028 or a U+2029 is rejected everywhere in a
+ * mindmap but on a class line, where the line stays as written (docs/mindmap.md,
+ * Directives).
+ */
+const mindmapClassLineForms = [
+  ":::c  {d}  ",
+  ":::c  {d}",
+  ":::c{d}",
+  ":::c{d}  ",
+  ":::c\t{d}\t",
+  ":::c  {d}\u00a0",
+  ":::c  {d}  %% c  ",
+  ":::c  {d}%% c",
+  ":::c  {d}  %%{y}%%  ",
+  ":::c  %%{y}%%  {d}  ",
+  ":::c  {d} d",
+] as const
+
+const mindmapClassLineContexts = [
+  "mindmap\n  root\n    a\n    {line}\n",
+  "mindmap\n  root\n    a\n    {line}\n    b\n",
+  "mindmap\n  root\n    a[t]\n    {line}\n",
+  "mindmap\n  root\n    a\n    ::icon(fa)\n    {line}\n",
+] as const
+
+describe("a directive that holds a line separator on a class line of a mindmap node", () => {
+  it("a directive that holds a U+2028 on a class line of a mindmap node", async () => {
+    for (const context of mindmapClassLineContexts) {
+      for (const form of mindmapClassLineForms) {
+        const text = context.replace(
+          "{line}",
+          form.replace("{d}", "%%{init: {\u2028}}%%"),
+        )
+        await expectKept(text, text)
+      }
+    }
+  })
+
+  it("a directive that holds a U+2029 on a class line of a mindmap node", async () => {
+    for (const context of mindmapClassLineContexts) {
+      for (const form of mindmapClassLineForms) {
+        const text = context.replace(
+          "{line}",
+          form.replace("{d}", "%%{init: {\u2029}}%%"),
+        )
+        await expectKept(text, text)
+      }
+    }
+  })
+})
+
+/**
+ * A directive that holds a U+2028 or a U+2029 is accepted inside the text of a
+ * shape of a mindmap node, after a character of the text, and the text stays as
+ * written (docs/mindmap.md, Directives).
+ */
+const mindmapShapes = [
+  ["[", "]"],
+  ["(", ")"],
+  ["((", "))"],
+  ["))", "(("],
+  [")", "("],
+  ["{{", "}}"],
+] as const
+
+describe("a directive that holds a line separator in the text of a shape of a mindmap node", () => {
+  it("a directive that holds a U+2028 in the text of a shape of a mindmap node", async () => {
+    for (const [open, close] of mindmapShapes) {
+      for (const inside of [
+        "t %%{init: {\u2028}}%% u",
+        "t %%{init: {\u2028}}%%  ",
+      ]) {
+        const text = `mindmap\n  root\n    a${open}${inside}${close}\n`
+        await expectKept(text, text)
+      }
+    }
+  })
+
+  it("a directive that holds a U+2029 in the text of a shape of a mindmap node", async () => {
+    for (const [open, close] of mindmapShapes) {
+      for (const inside of [
+        "t %%{init: {\u2029}}%% u",
+        "t %%{init: {\u2029}}%%  ",
+      ]) {
+        const text = `mindmap\n  root\n    a${open}${inside}${close}\n`
+        await expectKept(text, text)
+      }
+    }
+  })
+})
+
+/**
  * The runs of spaces and tabs before a comment that ends the text of a title
  * and of a node (docs/compatibility.md, Runs of whitespace in a text that are
  * drawn the same).
@@ -38702,97 +40761,5 @@ describe("a cynefin header with whitespace before a directive or the colon", () 
     ["a space before the colon of a cynefin diagram", "cynefin-beta :\n"],
   ])("rejects %s", async (_name, input) => {
     await expect(format(input)).rejects.toBeInstanceOf(SyntaxError)
-  })
-})
-
-/**
- * A directive that holds a U+2028 or a U+2029 is rejected everywhere in a
- * mindmap but on a class line, where the line stays as written (docs/mindmap.md,
- * Directives).
- */
-const mindmapClassLineForms = [
-  ":::c  {d}  ",
-  ":::c  {d}",
-  ":::c{d}",
-  ":::c{d}  ",
-  ":::c\t{d}\t",
-  ":::c  {d}\u00a0",
-  ":::c  {d}  %% c  ",
-  ":::c  {d}%% c",
-  ":::c  {d}  %%{y}%%  ",
-  ":::c  %%{y}%%  {d}  ",
-  ":::c  {d} d",
-] as const
-
-const mindmapClassLineContexts = [
-  "mindmap\n  root\n    a\n    {line}\n",
-  "mindmap\n  root\n    a\n    {line}\n    b\n",
-  "mindmap\n  root\n    a[t]\n    {line}\n",
-  "mindmap\n  root\n    a\n    ::icon(fa)\n    {line}\n",
-] as const
-
-describe("a directive that holds a line separator on a class line of a mindmap node", () => {
-  it("a directive that holds a U+2028 on a class line of a mindmap node", async () => {
-    for (const context of mindmapClassLineContexts) {
-      for (const form of mindmapClassLineForms) {
-        const text = context.replace(
-          "{line}",
-          form.replace("{d}", "%%{init: {\u2028}}%%"),
-        )
-        await expectKept(text, text)
-      }
-    }
-  })
-
-  it("a directive that holds a U+2029 on a class line of a mindmap node", async () => {
-    for (const context of mindmapClassLineContexts) {
-      for (const form of mindmapClassLineForms) {
-        const text = context.replace(
-          "{line}",
-          form.replace("{d}", "%%{init: {\u2029}}%%"),
-        )
-        await expectKept(text, text)
-      }
-    }
-  })
-})
-
-/**
- * A directive that holds a U+2028 or a U+2029 is accepted inside the text of a
- * shape of a mindmap node, after a character of the text, and the text stays as
- * written (docs/mindmap.md, Directives).
- */
-const mindmapShapes = [
-  ["[", "]"],
-  ["(", ")"],
-  ["((", "))"],
-  ["))", "(("],
-  [")", "("],
-  ["{{", "}}"],
-] as const
-
-describe("a directive that holds a line separator in the text of a shape of a mindmap node", () => {
-  it("a directive that holds a U+2028 in the text of a shape of a mindmap node", async () => {
-    for (const [open, close] of mindmapShapes) {
-      for (const inside of [
-        "t %%{init: {\u2028}}%% u",
-        "t %%{init: {\u2028}}%%  ",
-      ]) {
-        const text = `mindmap\n  root\n    a${open}${inside}${close}\n`
-        await expectKept(text, text)
-      }
-    }
-  })
-
-  it("a directive that holds a U+2029 in the text of a shape of a mindmap node", async () => {
-    for (const [open, close] of mindmapShapes) {
-      for (const inside of [
-        "t %%{init: {\u2029}}%% u",
-        "t %%{init: {\u2029}}%%  ",
-      ]) {
-        const text = `mindmap\n  root\n    a${open}${inside}${close}\n`
-        await expectKept(text, text)
-      }
-    }
   })
 })

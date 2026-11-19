@@ -7780,8 +7780,13 @@ mermaid.js は拒否します（既知の差異
 [データブロック](./kanban.ja.md#データブロック)に従います。
 データブロックの付着位置と内容、隣接するブロック、間のディレクティブも保ちます。
 YAML 整形は、保護条件付きのフロントマターだけです。
-図のコメント後の空行・コメントの隙間は、末尾も含め、
+`%%` だけの行の後と、見出しの行、形かデータブロックで終わる行、
+カードのアイコンの行（`::icon(fa) %% c`）を終えるコメントの後の、
+空行とコメントの隙間は、末尾も含め、
 `blank-line-after-header-or-comments` のもとで全体を保ちます。
+テキストのあるコメントだけの行の後と、裸の id の行と、
+カードのクラスの行（`:::cls %% c`）のコメントの後（そこでは `%%`
+はテキストです）では、空行の連なりは 1 行になり、ボードの末尾には残りません。
 素の mermaid.js が拒否する入力に素の Db はなく、
 コーパスは仕様の読み方を確かめます。
 
@@ -7789,6 +7794,23 @@ YAML 整形は、保護条件付きのフロントマターだけです。
 [fixture: kanban/data-blocks/data-adjacent-directive]
 [fixture: kanban/blank-lines/div-between-comment-blank]
 [fixture: kanban/blank-lines/comment-blank-trailing]
+[test: a final comment with text and empty lines in a kanban board]
+[test: a comment after a shape and empty lines in a kanban board]
+[test: a comment after a shape and empty lines at the end of a kanban board]
+[test: a comment after a data block that holds an icon and empty lines in a kanban board]
+[test: a comment after a data block and empty lines in a kanban board]
+[test: a comment after the header and empty lines in a kanban board]
+[test: a comment after a shape of a column and empty lines in a kanban board]
+[test: a comment after a bare id of a card and empty lines in a kanban board]
+[test: a comment after a bare id of a card and empty lines at the end of a kanban board]
+[test: a comment after a bare id of a column and a line of spaces in a kanban board]
+[test: a comment after a bare id of a column and a line of spaces at the end of a kanban board]
+[test: a comment after a class of a card and empty lines in a kanban board]
+[test: a comment after the icon line of a card and empty lines in a kanban board]
+[test: a comment after the icon line of a card and empty lines at the end of a kanban board]
+[test: a comment after the class line of a card and empty lines in a kanban board]
+[test: a comment after the class line of a card and empty lines at the end of a kanban board]
+[test: a comment on a line of its own and empty lines at the end of a kanban board]
 
 共通の `style`・`classDef` の行規則で保持する行は、区間全体、空白、コメント、
 ディレクティブを保ちます。
@@ -7858,7 +7880,11 @@ direction の文字を結合すると、先頭列でも受理される入力を�
 [fixture: c4/description-blocks/block-directive-lines]
 [fixture: c4/accessibility-lines/acc-colon-comment]
 
-図のコメントの後は、復帰用の空白行と末尾の隙間も含めて全体を保ちます。
+呼び出しの行、見出しの行、境界を開く行、境界を閉じる `}` の行、
+`accDescr {` ブロックの `}` の行を終えるコメントの後は、
+復帰用の空白行と末尾の隙間も含めて全体を保ちます。
+単独のコメントの後と、`title`、`accTitle:`、`accDescr:`、
+`accDescription` の行を終えるコメントの後の隙間は、通常の空行と同じに扱います。
 コメントを移して `comment-takes-line-break` の差異を修復しません。
 すべてのセミコロンと Unicode の区間境界を保ちます。
 保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
@@ -7871,6 +7897,7 @@ direction の文字を結合すると、先頭列でも受理される入力を�
 字下げと値の外の末尾空白は印字処理が整えます。
 
 [fixture: c4/comments/comment-header] [fixture: c4/blank-lines/comment-recovery]
+[fixture: c4/blank-lines/comment-blank-after]
 [fixture: c4/final-newline/comment-eof-gap]
 [fixture: c4/line-rule-and-semicolons/semicolon-inline-comment]
 [fixture: c4/line-rule-and-semicolons/semicolon-suffix-spacing]
@@ -7971,7 +7998,7 @@ Ishikawa は、入力の字下げ幅や Db の一時的なレベルを使わず�
 図コメントの Unicode 終端は、次の節点の深さの字下げに数える文字です。
 共通コメント領域は、飲み込む接尾部と結合を保ちます。
 図コメントの後の区切りも含め、普通の空行の連続は 1 つにします。
-末尾の図コメントの隙間は全体を保ちます。
+最後の `%%` だけの行の後の末尾の隙間は全体を保ちます。
 受理した差異は仕様の木を使い、失敗は修復しません。
 生の拒否には生の Db はありません。
 ガード付きフロントマター、設定の CR と LF への変換、EOF のディレクティブ、
