@@ -1038,15 +1038,17 @@ and tabs after the last directive are left out, and the run of spaces and tabs
 before each directive is printed as one space (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)):
 `A[x]  %%{y}%%  ` is printed `A[x] %%{y}%%`, and `A[x] %%{y}%%  %%{z}%%  ` is
-printed `A[x] %%{y}%% %%{z}%%`. A no-break space, U+3000, U+2002, U+2003, or
-U+2028 after a directive, text after a directive of a card with a bare id, and a
-comment after the last directive keep the line as written, the spaces after the
-directive included: `A[x] %%{y}%%`, U+3000, and two spaces, `t %%{x}%% u` and
-two spaces, and `A[x] %%{y}%%`, two spaces, `%% c`, and two spaces are not
-changed. A no-break space or U+3000 before the first directive stays as it is,
-with the spaces after the last directive left out. On the line of a column, the
-line stays as written where it holds a directive: `A[x] %%{y}%%` and two spaces,
-`A %%{y}%%` and two spaces, and the same with a tab are not changed.
+printed `A[x] %%{y}%% %%{z}%%`. A whitespace character that is no space or tab
+(U+000B, U+000C, a no-break space, U+1680, U+2000 to U+200A, U+2028, U+2029,
+U+202F, U+205F, U+3000, or U+FEFF) after a directive, text after a directive of
+a card with a bare id, and a comment after the last directive keep the line as
+written, the spaces after the directive included: `A[x] %%{y}%%`, U+3000, and
+two spaces, `t %%{x}%% u` and two spaces, and `A[x] %%{y}%%`, two spaces,
+`%% c`, and two spaces are not changed. A no-break space or U+3000 before the
+first directive stays as it is, with the spaces after the last directive left
+out. On the line of a column, the line stays as written where it holds a
+directive: `A[x] %%{y}%%` and two spaces, `A %%{y}%%` and two spaces, and the
+same with a tab are not changed.
 
 [fixture: trailing-whitespace/directives-end-blanks-dropped] [test: a tab after
 the directive that ends the text of a card] [test: a tab before the directive
@@ -1069,9 +1071,10 @@ spaces at the end] [test: text between two directives of a bare card, with
 spaces at the end] [test: two spaces before the first directive of a bare card
 whose text follows it] [test: spaces after the directive on the line of a column
 with a shape] [test: spaces after the directive on the line of a column with a
-bare id] [test: kanban: bare-trailing-trim] [test: kanban: closed-trailing-trim]
-[test: kanban: closed-whitespace-trim] [fixture:
-trailing-whitespace/class-trailing-trim] [fixture:
+bare id] [test: a whitespace character that is no space or tab after the
+directive that ends the text of a card] [test: kanban: bare-trailing-trim]
+[test: kanban: closed-trailing-trim] [test: kanban: closed-whitespace-trim]
+[fixture: trailing-whitespace/class-trailing-trim] [fixture:
 trailing-whitespace/lex-after-quoted-spaces] [fixture:
 trailing-whitespace/kept-line-kept]
 
@@ -1373,12 +1376,14 @@ after it is not changed. On the line of a card, the spaces and tabs after the
 directive are dropped and any other whitespace character stays, and one line
 break ends the text: `A[x] %%{unfinished` and two spaces print
 `A[x] %%{unfinished` and a line break, and `A[x] %%{unfinished`, a no-break
-space, and nothing else print the no-break space after it and a line break.
-After the comment of a statement, a last line of whitespace only that has no
-line break after it is left out (`S[x] %% c`, a line break, and a line of two
-spaces print `S[x] %% c` and a line break), while one that a line break follows
-stays. In Markdown, the indentation of the code fence or of its list item is the
-indentation of the host, and is not part of the indentation of the board.
+space, and nothing else print the no-break space after it and a line break, and
+`A[x] %%{unfinished`, U+3000, and two spaces print them as written, with a line
+break after them. After the comment of a statement, a last line of whitespace
+only that has no line break after it is left out (`S[x] %% c`, a line break, and
+a line of two spaces print `S[x] %% c` and a line break), while one that a line
+break follows stays. In Markdown, the indentation of the code fence or of its
+list item is the indentation of the host, and is not part of the indentation of
+the board.
 
 [fixture: final-newline/accepted] [fixture: final-newline/no-final-lf] [fixture:
 final-newline/empty-board] [fixture: final-newline/open-directive-at-eof]
@@ -1415,7 +1420,8 @@ with nothing after it] [test: an open directive on the line of a card followed
 by two spaces] [test: an open directive on the line of a card followed by a tab]
 [test: an open directive on the line of a card followed by a no-break space]
 [test: an open directive on the line of a card followed by U+3000] [test: an
-open directive on the line of a card followed by U+2003] [test: an open
+open directive on the line of a card followed by U+3000 and two spaces] [test:
+an open directive on the line of a card followed by U+2003] [test: an open
 directive on the line of a card followed by spaces and a line break] [test: an
 open directive on the line of a card followed by a line break and spaces] [test:
 an open directive on the line of a card followed by U+2028] [test: an open

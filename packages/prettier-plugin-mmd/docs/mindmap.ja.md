@@ -747,18 +747,24 @@ mindmap
 ノードの行にあるディレクティブは、両側に空白が書かれているかを残します。
 あれば空白 1 つを置き、接していれば接したままにします。
 ノードかクラスのテキストを終えるディレクティブは、
-それぞれの前に空白があれば空白 1 つを置きます。
+それぞれの前に空白かタブがあれば空白 1 つを置き、
+最後のディレクティブの後の空白とタブは除きます。
+行末の空白とタブの有無で印字は変わりません。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-形かアイコンの後では、最後のディレクティブの後の空白を、どの文字でも除きます。
+形かアイコンの後では、最後のディレクティブの後の、
+空白でもタブでもない空白文字（U+000B、U+000C、改行しない空白、U+1680、
+U+2000 から U+200A、U+2028、U+2029、U+202F、U+205F、U+3000、U+FEFF）も除きます。
 裸のノード、クラス、ルートのテキストの後では、
-最後のディレクティブの後の空白とタブを除き、U+00A0、U+3000、U+2002、U+2003、
-U+2028、U+0085、テキストがあるときは、ディレクティブの後の空白を含め、
+最後のディレクティブの後にそのような文字があるときと、
+ディレクティブの後にテキストがあるときは、ディレクティブの後の空白を含め、
 行は書かれたまま残ります。
 `a`、`%%{x}%%`、U+3000、空白 2 つは、変えません。
+`a`、空白 2 つ、`%%{x}%%`、空白 2 つ、`%% c`、空白 2 つも、変えません。
 形の後のコメントは、空白 1 つの後に置き、
-ディレクティブの前の連なりも空白 1 つにします。
-`a[t]  %%{x}%%  %% c` は `a[t] %%{x}%% %% c` と印字します。
-裸のノードの後のコメントは、行を書かれたまま残します。
+ディレクティブの前の連なりも空白 1 つにしますが、
+コメントが接していれば接したままです。
+`a[t]  %%{x}%%  %% c` は `a[t] %%{x}%% %% c` と印字し、
+`a[t] %%{x}%%%% c` は変えません。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: node-text/directives-end-blanks-dropped] [fixture: directives/kept]
@@ -779,6 +785,10 @@ U+2028、U+0085、テキストがあるときは、ディレクティブの後�
 [test: text between two directives of a bare mindmap node, with spaces at the end]
 [test: U+3000 and spaces after the directive of a mindmap node with a class]
 [test: U+3000 between two directives of a mindmap node with a class]
+[test: a whitespace character that is no space or tab after the directive that follows a shape of a mindmap node]
+[test: a whitespace character that is no space or tab after the directive that follows an icon of a mindmap node]
+[test: a whitespace character that is no space or tab after the directive of a bare mindmap node, a class, and the root text]
+[test: a comment that touches the directive that follows a shape of a mindmap node]
 
 2 つの単位の間のディレクティブは、その場に残します。
 テキストの中のディレクティブは、テキストの一部です。

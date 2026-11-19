@@ -519,22 +519,41 @@ Mermaid がテキストの両端の空白を除くので、除いても Db と�
 
 テキストの中の空白とタブの連なりは、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+ただし、ディレクティブの前にテキストがあり、
+その後に空白とタブとディレクティブ以外が続くテキストは別です。
+[Inline directives](#inline-directives)を参照してください。
 結合した継続列は保ちます。
 コメントの空白とディレクティブの内容も同じです。
-テキストを終えるディレクティブは、
+最後のディレクティブの後に空白とタブだけが続くテキストを終えるディレクティブは、
 それぞれの前に空白かタブがあれば空白 1 つを置き、
 最後のディレクティブの後の空白とタブは除きます。
-最後のディレクティブの後に空白かタブが続くときも続かないときも、
+最後のディレクティブの後に空白とタブが続くときも続かないときも、
 テキストの中の連なりは空白 1 つにして印字します。
-ディレクティブの隣の U+00A0 と U+3000 は残します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+連なりを書かれたままにするテキストでは、
+各ディレクティブの前の空白とタブも書かれたままにし、
+最後のディレクティブの後の空白とタブだけを除きます。
+条件は[Inline directives](#inline-directives)にあります。
+`A  b %%{x}%% c  %%{y}%%` と空白 2 つは `A  b %%{x}%% c  %%{y}%%` と印字します。
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped]
 [fixture: ishikawa/trailing-whitespace/trailing-directive-gap-collapsed]
 [fixture: ishikawa/trailing-whitespace/trailing-directive-continuation]
+[fixture: ishikawa/inline-directives/directive-text-between-then-end-runs-kept]
+
+ディレクティブの隣の改行しない空白と U+3000 は残ります。
+最後のディレクティブの後にあるときは、上の規則は当てはまらず、
+行は書かれたまま残ります。
+リテラルを終えるコメントの中の空白とタブの連なりも、
+空白 1 つにして印字します（`A %% c  d` は `A %% c d` と印字します）。
+改行しない空白の前でも同じです（`A %% c`、空白 2 つ、改行しない空白、`d` は、
+`A %% c`、空白 1 つ、改行しない空白、`d` と印字します）。
+
 [test: U+3000 after the last directive of an ishikawa literal]
 [test: U+3000 between two directives of an ishikawa literal]
 [test: U+3000 before the first directive of an ishikawa literal]
+[test: ishikawa: comment-run-collapsed]
+[test: ishikawa: comment-run-before-nbsp-collapsed]
 
 [ヘッダー](#header) と [空行](#blank-lines) の規則で除くのは、
 見出し行の外側の余白だけで、それはテキストの値ではありません。

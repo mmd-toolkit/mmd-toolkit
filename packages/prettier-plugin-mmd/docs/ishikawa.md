@@ -513,18 +513,37 @@ trailing-unicode-kept-line]
 
 A run of spaces and tabs inside a literal is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
-while joined continuation columns stay, as do comment spaces and directive
-contents. The directives that end a literal are printed with one space before
-each that has spaces or tabs before it, and the spaces and tabs after the last
-one are left out, with a run in the literal printed as one space, whether spaces
-or tabs follow the last directive or not; a no-break space or a U+3000 beside a
-directive stays (see
+except in a literal in which text stands before a directive and anything but
+spaces, tabs, and directives follows it (see
+[Inline directives](#inline-directives)), while joined continuation columns
+stay, as do comment spaces and directive contents. The directives that end a
+literal, with nothing but spaces and tabs after the last one, are printed with
+one space before each that has spaces or tabs before it, and the spaces and tabs
+after the last one are left out, with a run in the literal printed as one space,
+whether spaces or tabs follow the last directive or not (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+Where the runs of the literal stay under
+[Inline directives](#inline-directives), the spaces and tabs before each
+directive stay as written too, and only the spaces and tabs after the last one
+are left out: `A  b %%{x}%% c  %%{y}%%` and two spaces is printed
+`A  b %%{x}%% c  %%{y}%%`.
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped] [fixture:
 ishikawa/trailing-whitespace/trailing-directive-gap-collapsed] [fixture:
-ishikawa/trailing-whitespace/trailing-directive-continuation] [test: U+3000
-after the last directive of an ishikawa literal] [test: U+3000 between two
+ishikawa/trailing-whitespace/trailing-directive-continuation] [fixture:
+ishikawa/inline-directives/directive-text-between-then-end-runs-kept]
+
+A no-break space or a U+3000 beside a directive stays: where one follows the
+last directive, the rule above does not apply, and the line stays as written. A
+run of spaces and tabs inside the comment that ends a literal is printed as one
+space too (`A %% c  d` is printed `A %% c d`), also before a no-break space
+(`A %% c`, two spaces, a no-break space, and `d` print `A %% c`, a space, the
+no-break space, and `d`).
+
+[test: U+3000 after the last directive of an ishikawa literal] [test: U+3000
+between two directives of an ishikawa literal] [test: U+3000 before the first
+directive of an ishikawa literal] [test: ishikawa: comment-run-collapsed] [test:
+ishikawa: comment-run-before-nbsp-collapsed] [test: U+3000 between two
 directives of an ishikawa literal] [test: U+3000 before the first directive of
 an ishikawa literal]
 

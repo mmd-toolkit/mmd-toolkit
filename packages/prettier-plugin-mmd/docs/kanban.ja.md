@@ -1108,8 +1108,9 @@ Db が保ち、図がその空白に依存する所では残します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 `A[x]  %%{y}%%  ` は `A[x] %%{y}%%` と、
 `A[x] %%{y}%%  %%{z}%%  ` は `A[x] %%{y}%% %%{z}%%` と印字します。
-ディレクティブの後の U+00A0、U+3000、U+2002、U+2003、U+2028、
-裸の id のカードのディレクティブの後のテキスト、
+ディレクティブの後の、空白でもタブでもない空白文字（U+000B、U+000C、
+改行しない空白、U+1680、U+2000 から U+200A、U+2028、U+2029、U+202F、U+205F、
+U+3000、U+FEFF）、裸の id のカードのディレクティブの後のテキスト、
 最後のディレクティブの後のコメントがあるときは、ディレクティブの後の空白を含め、
 行は書かれたまま残ります。
 `A[x] %%{y}%%`、U+3000、空白 2 つ、`t %%{x}%% u` と空白 2 つ、`A[x] %%{y}%%`、
@@ -1144,9 +1145,9 @@ Db が保ち、図がその空白に依存する所では残します。
 [test: two spaces before the first directive of a bare card whose text follows it]
 [test: spaces after the directive on the line of a column with a shape]
 [test: spaces after the directive on the line of a column with a bare id]
+[test: a whitespace character that is no space or tab after the directive that ends the text of a card]
 [test: kanban: bare-trailing-trim] [test: kanban: closed-trailing-trim]
-[test: kanban: closed-whitespace-trim] [test: kanban: bare-trailing-trim]
-[test: kanban: closed-trailing-trim] [test: kanban: closed-whitespace-trim]
+[test: kanban: closed-whitespace-trim]
 [fixture: trailing-whitespace/class-trailing-trim]
 [fixture: trailing-whitespace/lex-after-quoted-spaces]
 [fixture: trailing-whitespace/kept-line-kept]
@@ -1470,7 +1471,9 @@ U+00A0、U+1680、U+2000 から U+200A、U+202F、U+205F、U+3000、U+FEFF と�
 カードの行にあるときは、ディレクティブの後の空白とタブを落とし、
 ほかの空白文字は残し、改行 1 つでテキストを終えます。
 `A[x] %%{unfinished` と空白 2 つは `A[x] %%{unfinished` と改行を印字し、
-`A[x] %%{unfinished` と U+00A0 は、U+00A0 とその後の改行を印字します。
+`A[x] %%{unfinished` と U+00A0 は、U+00A0 とその後の改行を印字し、
+`A[x] %%{unfinished`、U+3000、空白 2 つは、そのまま印字して、
+その後に改行を足します。
 文の行のコメントの後で、改行が後ろにない最後の空白だけの行は落とします。
 `S[x] %% c`、改行、空白 2 つの行は、`S[x] %% c` と改行を印字し、
 後ろに改行がある空白だけの行は残します。
@@ -1523,6 +1526,7 @@ Markdown では、コードフェンスやリスト項目の字下げはホス�
 [test: an open directive on the line of a card followed by a tab]
 [test: an open directive on the line of a card followed by a no-break space]
 [test: an open directive on the line of a card followed by U+3000]
+[test: an open directive on the line of a card followed by U+3000 and two spaces]
 [test: an open directive on the line of a card followed by U+2003]
 [test: an open directive on the line of a card followed by spaces and a line break]
 [test: an open directive on the line of a card followed by a line break and spaces]

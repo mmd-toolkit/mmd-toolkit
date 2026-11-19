@@ -5450,6 +5450,86 @@ const kanbanExamples: readonly (readonly [string, string, string, Options?])[] =
     ],
   ]
 
+/**
+ * The whitespace characters that are no space or tab, which the directive that
+ * ends the text of a card or of a mindmap node is followed by (docs/kanban.md,
+ * Trailing whitespace; docs/mindmap.md, Directives).
+ */
+const whitespaceThatIsNoSpaceOrTab: readonly string[] = [
+  "\u000b",
+  "\u000c",
+  "\u00a0",
+  "\u1680",
+  "\u2000",
+  "\u2001",
+  "\u2002",
+  "\u2003",
+  "\u2004",
+  "\u2005",
+  "\u2006",
+  "\u2007",
+  "\u2008",
+  "\u2009",
+  "\u200a",
+  "\u2028",
+  "\u2029",
+  "\u202f",
+  "\u205f",
+  "\u3000",
+  "\ufeff",
+]
+
+describe("each whitespace character that is no space or tab after a directive that ends a text", () => {
+  it("a whitespace character that is no space or tab after the directive that ends the text of a card", async () => {
+    for (const character of whitespaceThatIsNoSpaceOrTab) {
+      const text = `kanban\n  S\n    A[x] %%{y}%%${character}  \n`
+      await expectKept(text, text)
+    }
+  })
+
+  it("a whitespace character that is no space or tab after the directive that follows a shape of a mindmap node", async () => {
+    for (const character of whitespaceThatIsNoSpaceOrTab) {
+      await expectKept(
+        `mindmap\n  root\n    a[t] %%{y}%%${character}  \n`,
+        "mindmap\n  root\n    a[t] %%{y}%%\n",
+      )
+    }
+  })
+
+  it("a whitespace character that is no space or tab after the directive that follows an icon of a mindmap node", async () => {
+    for (const character of whitespaceThatIsNoSpaceOrTab) {
+      await expectKept(
+        `mindmap\n  root\n    a\n    ::icon(book) %%{y}%%${character}  \n`,
+        "mindmap\n  root\n    a\n    ::icon(book) %%{y}%%\n",
+      )
+    }
+  })
+
+  it("a whitespace character that is no space or tab after the directive of a bare mindmap node, a class, and the root text", async () => {
+    for (const character of whitespaceThatIsNoSpaceOrTab) {
+      for (const text of [
+        `mindmap\n  root\n    a %%{y}%%${character}  \n`,
+        `mindmap\n  root\n    a:::c %%{y}%%${character}  \n`,
+        `mindmap\n  root %%{y}%%${character}  \n    a\n`,
+      ]) {
+        await expectKept(text, text)
+      }
+    }
+  })
+
+  it("a comment that touches the directive that follows a shape of a mindmap node", async () => {
+    const text = "mindmap\n  root\n    a[t] %%{x}%%%% c\n"
+    await expectKept(text, text)
+  })
+
+  it("an open directive on the line of a card followed by U+3000 and two spaces", async () => {
+    await expectKept(
+      "kanban\n  S\n    A[x] %%{unfinished\u3000  ",
+      "kanban\n  S\n    A[x] %%{unfinished\u3000  \n",
+    )
+  })
+})
+
 describe("kanban whitespace and line boundaries", () => {
   it.each(
     kanbanExamples.map(([title, input, expected, options]) => ({

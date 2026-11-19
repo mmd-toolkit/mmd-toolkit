@@ -1455,11 +1455,13 @@ period が `title` か `section` の語のときは足しません。
 user journey のタスクの説明は、最初のコロンの前の空白を除きます。
 `Make tea : 5: Me` は `Make tea: 5: Me` と印字します。
 説明をそろえてコロンの桁をそろえた節は、書かれたままにします。
-同じ行のテキストの後にコメントがある場合は、空白 1 つでテキストと隔てます。
-ディレクティブがある場合は、それぞれの前に空白があるかないかを保ち、
-空白の連続は空白 1 つにします。
-最後のディレクティブの後の空白は、ほかの行末の空白と同じように除くので、
-その空白の有無で印字は変わりません。
+タイトルのテキストと、同じ行のその後のコメントの間に空白かタブがあれば、
+空白 1 つにし、コメントがテキストに接していれば接したままにします。
+テキストの後にディレクティブだけが続く場合は、
+それぞれの前に空白かタブがあるかないかを保ち、
+空白とタブの連続は空白 1 つにします。
+最後のディレクティブの後の空白とタブは、
+ほかの行末の空白とタブと同じように除くので、その有無で印字は変わりません。
 ほかの図種の行末のディレクティブも同じです。
 （[ディレクティブ](./flowchart.md#directives)を参照してください）。
 `title T  %%{x}%%  %%{y}%%` も `title T  %%{x}%%  %%{y}%%  ` も
@@ -1467,12 +1469,13 @@ user journey のタスクの説明は、最初のコロンの前の空白を除�
 `title T%%{x}%%%%{y}%%  ` は `title T%%{x}%%%%{y}%%` と印字し、
 `state "d" as A : x  %%{x}%%  ` は `state "d" as A : x %%{x}%%` と印字します。
 mermaid.js はテキストを読む前にディレクティブを除くので、
-その周りの空白はテキストの末尾の空白になり、どのような空白でも同じに描きます。
-これは、Gantt、user journey、timeline、sequence、Venn、C4、pie、radar、packet、
-architecture、gitGraph、cynefin、treemap、Wardley、treeView、info、
-railroad の図のタイトル、
-それらの図種と usecase 図の `accTitle:` と `accDescr:` の行、ishikawa 図、
-mindmap、treeView のノードのテキスト、
+その周りの空白とタブはテキストの末尾の空白とタブになり、
+どのような空白とタブでも同じに描きます。
+これは、Gantt、user journey、timeline、sequence、Venn、C4、quadrant、pie、
+radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、treeView、
+info、railroad の図のタイトル、
+それらの図種（この行がない Venn 図を除く）と usecase 図の `accTitle:` と
+`accDescr:` の行、ishikawa 図、mindmap、treeView のノードのテキスト、
 kanban ボードのカードのテキスト（図が依存する列の id は除く）、
 Gantt 図の日付書式と軸の書式、C4 図の `accDescription`、
 timeline の行の最後の event と、period およびコロンの前の event が足す空白、

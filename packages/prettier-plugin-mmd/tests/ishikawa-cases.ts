@@ -399,4 +399,20 @@ export const ishikawaCases: readonly IshikawaCase[] = [
     options: {},
     rejected: false,
   },
+  {
+    rule: "trailing-whitespace",
+    name: "ishikawa: comment-run-collapsed",
+    input: "ishikawa\n  R\n    A %% c  d\n",
+    output: "ishikawa\n  R\n    A %% c d\n",
+    options: {},
+    rejected: false,
+  },
+  {
+    rule: "trailing-whitespace",
+    name: "ishikawa: comment-run-before-nbsp-collapsed",
+    input: "ishikawa\n  R\n    A %% c  \u00a0d\n",
+    output: "ishikawa\n  R\n    A %% c \u00a0d\n",
+    options: {},
+    rejected: false,
+  },
 ]
