@@ -338,7 +338,7 @@ space between the `]` of a point and its first style, written touching or not
 (`]radius:9`), as wardley prints one between a `]` and the word `label` or the
 bare `inertia` that follows it; and [class](./class.md#member-lines) prints one
 space between the `)` of a method and its return type, where no other rule keeps
-the method as written (class keeps a method with a comment or a directive as
+the method as written (class keeps a method with a directive inside it as
 written), as wardley prints one between the `)` of a strategy in parentheses and
 the bare `inertia` that follows it. The gap before a `(` that follows a `]` or a
 `)`, which holds a strategy or `(inertia)` in parentheses, has none: the
