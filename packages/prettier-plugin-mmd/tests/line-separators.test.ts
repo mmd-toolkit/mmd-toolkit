@@ -6453,6 +6453,76 @@ const blockLineSeparatorExamples: readonly (readonly [
     "block-beta\na\nstyle a fill:#F00\u2028\u2028%% c\n",
     "block-beta\n  a\n  style a fill: #f00\n  %% c\n",
   ],
+  [
+    "an edge to a node with a label and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays",
+    'block-beta\na\nb-->c["x"]%% x\u2028%% c\n',
+    'block-beta\n  a\n  b-->c["x"]%% x\u2028%% c\n',
+  ],
+  [
+    "an edge with a width to a node with a label and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays",
+    'block-beta\na\nb:2-->c["x"]%% x\u2028%% c\n',
+    'block-beta\n  a\n  b:2-->c["x"]%% x\u2028%% c\n',
+  ],
+  [
+    "a node with a round label and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays",
+    'block-beta\na\nb("x")%% x\u2028%% c\n',
+    'block-beta\n  a\n  b("x")%% x\u2028%% c\n',
+  ],
+  [
+    "an edge with a label to a node with a label and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays",
+    'block-beta\na\nb -- "x" --> c["y"]%% x\u2028%% c\n',
+    'block-beta\n  a\n  b -- "x" --> c["y"]%% x\u2028%% c\n',
+  ],
+  [
+    "a chain of edges to a node with a label and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays",
+    'block-beta\na\nb-->c-->e["x"]%% x\u2028%% c\n',
+    'block-beta\n  a\n  b-->c-->e["x"]%% x\u2028%% c\n',
+  ],
+  [
+    "an edge from a node with a label to a node and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped",
+    'block-beta\na\nb["x"]-->c%% x\u2028%% c\n',
+    'block-beta\n  a\n  b["x"] --> c%% x\n  %% c\n',
+  ],
+  [
+    "an edge with a label to a node and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped",
+    'block-beta\na\nb -- "x" --> c%% x\u2028%% c\n',
+    'block-beta\n  a\n  b -- "x" --> c%% x\n  %% c\n',
+  ],
+  [
+    "two nodes in a row and a comment that touches the last, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\nb e%% x\u2028%% c\n",
+    "block-beta\n  a\n  b e%% x\n  %% c\n",
+  ],
+  [
+    "a node and a comment after a space, two U+2028 before a comment line, to the end of the text: both stay",
+    "block-beta\na\nb %% x\u2028\u2028%% c\n",
+    "block-beta\n  a\n  b %% x\u2028\u2028%% c\n",
+  ],
+  [
+    "a node and a semicolon, two U+2028 before a comment line, to the end of the text: both stay",
+    "block-beta\na\nb;\u2028\u2028%% c\n",
+    "block-beta\n  a\n  b;\u2028\u2028%% c\n",
+  ],
+  [
+    "a node, two U+2028 before a comment line, a statement follows: both stay",
+    "block-beta\na\nb\u2028\u2028%% c\nz\n",
+    "block-beta\n  a\n  b\u2028\u2028%% c\nz\n",
+  ],
+  [
+    "a node and two U+2029 before a comment line, to the end of the text: both are dropped",
+    "block-beta\na\nb\u2029\u2029%% c\n",
+    "block-beta\n  a\n  b\n  %% c\n",
+  ],
+  [
+    "a node and a comment after a space, two U+2029 before a comment line, to the end of the text: both stay",
+    "block-beta\na\nb %% x\u2029\u2029%% c\n",
+    "block-beta\n  a\n  b %% x\u2029\u2029%% c\n",
+  ],
+  [
+    "a node and a comment that touches it, two U+2028 before a comment line, to the end of the text: both are dropped",
+    "block-beta\na\nb%% x\u2028\u2028%% c\n",
+    "block-beta\n  a\n  b%% x\n  %% c\n",
+  ],
 ]
 
 /**

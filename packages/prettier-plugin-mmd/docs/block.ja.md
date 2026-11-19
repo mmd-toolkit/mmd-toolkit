@@ -1611,14 +1611,16 @@ U+2028 を残して `#f00` と印字します）。
 行に `;` がなければ U+2028 や U+2029 を落とします。
 それ以外の文は、間に何もないか、ディレクティブだけがあるとき（`b`、
 `b-->c %%{x}%%`、`b-->c%%{x}%%`）は落とし、空白、空白の連なり、
-[空白文字](#空白文字)のどれかを挟んでコメントが続くとき（`b %% x`、`b`、タブ、
-`%% x`）は残します。
+[空白文字](#空白文字)のどれかを挟んでコメントが続くとき（`b %% x`、
+`columns 2 %% x`、`b:2 %% x`、`b`、タブ、`%% x`）は残します。
 ディレクティブの後でも、
 そのディレクティブにコメントが接するときも同じです（`b %%{x}%% %% x`、
-`b %%{x}%%%% x`、`columns 2 %% x`、`b:2 %% x`）。
-コメントが文に接するときは、`b` とエッジ（`b-->c`、
-`b:2-->c`）が落とし（`b%% x`）、ラベルか幅のあるノード、`columns`、`space`、
-ブロックの矢印、`end` が残します（`b["x"]%% x`、`b:2%% x`、`columns 2%% x`、
+`b %%{x}%%%% x`）。
+コメントが文に接するときは、文の最後の単位が決めます。
+後ろに何も続かないノードの id が最後なら落とし（`b%% x`、`b-->c%% x`、
+`b:2-->c%% x`、`b["x"]-->c%% x`、`b -- "x" --> c%% x`、`b e%% x`）、ラベルか形、
+幅、`columns`、`space`、ブロックの矢印、`end` が最後なら残します（`b["x"]%% x`、
+`b("x")%% x`、`b:2%% x`、`b-->c["x"]%% x`、`b:2-->c["x"]%% x`、`columns 2%% x`、
 `space%% x`）。
 複合ブロックの `end` も、ほかの文と同じ文です。
 `end;`、`end%% x`、`end %% x` のように U+2028 が残るとき、
@@ -1636,8 +1638,11 @@ U+2028 や U+2029 を残し、通常どおり整形します（`block:G%% x`、U
 1 つ目は、上の規則のとおり落とすか残し、
 落とすときはコメント行を行として独立させます（`b`、改行、`%% c`、U+2028、
 `%% d` になります。`b %% c`、U+2028、`%% d`、U+2028、`%% d` は変わりません）。
-コメントの前に 2 つ続く U+2028（`b`、U+2028、U+2028、`%% c`）は両方を落とし、
-改行が 1 つ残ります。
+コメントの前に 2 つ続く U+2028（`b`、U+2028、U+2028、`%% c`）は、
+1 つのときと同じく上の規則に従い、U+2029 が 2 つのときも同じです。
+1 つ目を落とすときは両方を落とし、改行が 1 つ残り、
+1 つ目が残るときは（`b %% x`、`b;`、
+コメント行の後に文がある `b`）両方が残ります。
 文が続くときの色は、文がコメント行のすぐ後の行にあれば書かれたまま残り、空行、
 空白だけの行、ディレクティブの行が文のすぐ前にあれば小文字になります。
 flowchart、class、state、ER は、ブロック図が落とすどの行でも、
@@ -1938,6 +1943,20 @@ U+2028 と `%% c` を残して `style a fill:#f00;` になります）。
 [test: a node and a semicolon, a comment line, and a second U+2028 and a comment, to the end of the text: the first U+2028 stays]
 [test: a node and two U+2028 before a comment line, to the end of the text: both are dropped]
 [test: a style statement and two U+2028 before a comment line, to the end of the text: both are dropped]
+[test: an edge to a node with a label and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an edge with a width to a node with a label and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node with a round label and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an edge with a label to a node with a label and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a chain of edges to a node with a label and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an edge from a node with a label to a node and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: an edge with a label to a node and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: two nodes in a row and a comment that touches the last, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node and a comment after a space, two U+2028 before a comment line, to the end of the text: both stay]
+[test: a node and a semicolon, two U+2028 before a comment line, to the end of the text: both stay]
+[test: a node, two U+2028 before a comment line, a statement follows: both stay]
+[test: a node and two U+2029 before a comment line, to the end of the text: both are dropped]
+[test: a node and a comment after a space, two U+2029 before a comment line, to the end of the text: both stay]
+[test: a node and a comment that touches it, two U+2028 before a comment line, to the end of the text: both are dropped]
 
 ### 空白文字
 
