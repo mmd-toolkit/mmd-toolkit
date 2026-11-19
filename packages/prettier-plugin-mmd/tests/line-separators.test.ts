@@ -5355,6 +5355,81 @@ const eventmodelingCommentGapExamples: readonly (readonly [
     "eventmodeling\ntf 01 evt Alpha `\u00a0json\u00a0`{x}\n",
     "eventmodeling\ntf 01 evt Alpha `json` {x}\n",
   ],
+  [
+    "U+3000 after a comment inside a type tag, before its next part, of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `/*a*/\u3000json`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `/*a*/ json` {x}\n",
+  ],
+  [
+    "U+2028 after a comment inside a type tag, before its next part, of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `/*a*/\u2028json`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `/*a*/ json` {x}\n",
+  ],
+  [
+    "U+2029 after a comment inside a type tag, before its next part, of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `/*a*/\u2029json`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `/*a*/ json` {x}\n",
+  ],
+  [
+    "U+3000 after a comment inside a type tag, before its closing backtick, of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json/*a*/\u3000`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json/*a*/ ` {x}\n",
+  ],
+  [
+    "U+2028 after a comment inside a type tag, before its closing backtick, of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json/*a*/\u2028`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json/*a*/ ` {x}\n",
+  ],
+  [
+    "U+2029 after a comment inside a type tag, before its closing backtick, of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json/*a*/\u2029`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json/*a*/ ` {x}\n",
+  ],
+  [
+    "U+3000 before a comment after a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json`\u3000/*c*/ {x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json` /*c*/ {x}\n",
+  ],
+  [
+    "U+2028 before a comment after a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json`\u2028/*c*/ {x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json` /*c*/ {x}\n",
+  ],
+  [
+    "U+2029 before a comment after a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json`\u2029/*c*/ {x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json` /*c*/ {x}\n",
+  ],
+  [
+    "U+3000 after a comment after a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json`/*c*/\u3000{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json`/*c*/ {x}\n",
+  ],
+  [
+    "U+2028 after a comment after a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json`/*c*/\u2028{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json`/*c*/ {x}\n",
+  ],
+  [
+    "U+2029 after a comment after a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json`/*c*/\u2029{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json`/*c*/ {x}\n",
+  ],
+  [
+    "U+3000 between the parts of a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `\u3000json\u3000`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json` {x}\n",
+  ],
+  [
+    "U+2028 between the parts of a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `\u2028json\u2028`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json` {x}\n",
+  ],
+  [
+    "U+2029 between the parts of a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `\u2029json\u2029`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json` {x}\n",
+  ],
 ]
 
 describe("the whitespace beside a comment of an eventmodeling diagram", () => {

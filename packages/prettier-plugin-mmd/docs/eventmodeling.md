@@ -315,17 +315,36 @@ tabs, a no-break space, U+3000, U+2028, U+2029, and the others).
 eventmodeling/type-tags/tag-comments-spaced] [fixture:
 eventmodeling/type-tags/tag-comments-spaced-after] [fixture:
 eventmodeling/type-tags/tag-comments-tab-before] [fixture:
-eventmodeling/type-tags/tag-comments-tab-after] [test: a no-break space before a
-comment inside a type tag of an eventmodeling diagram] [test: U+3000 before a
-comment inside a type tag of an eventmodeling diagram] [test: U+2028 before a
-comment inside a type tag of an eventmodeling diagram] [test: U+2029 before a
-comment inside a type tag of an eventmodeling diagram] [test: a no-break space
+eventmodeling/type-tags/tag-comments-tab-after] [fixture:
+eventmodeling/type-tags/tag-comments-before-closing-backtick-and-body] [test: a
+no-break space before a comment inside a type tag of an eventmodeling diagram]
+[test: U+3000 before a comment inside a type tag of an eventmodeling diagram]
+[test: U+2028 before a comment inside a type tag of an eventmodeling diagram]
+[test: U+2029 before a comment inside a type tag of an eventmodeling diagram]
+[test: a no-break space after a comment inside a type tag, before its next part,
+of an eventmodeling diagram] [test: a no-break space after a comment inside a
+type tag, before its closing backtick, of an eventmodeling diagram] [test: a
+no-break space before a comment after a type tag of an eventmodeling diagram]
+[test: a no-break space after a comment after a type tag of an eventmodeling
+diagram] [test: a no-break space between the parts of a type tag of an
+eventmodeling diagram] [test: U+3000 after a comment inside a type tag, before
+its next part, of an eventmodeling diagram] [test: U+2028 after a comment inside
+a type tag, before its next part, of an eventmodeling diagram] [test: U+2029
 after a comment inside a type tag, before its next part, of an eventmodeling
-diagram] [test: a no-break space after a comment inside a type tag, before its
-closing backtick, of an eventmodeling diagram] [test: a no-break space before a
-comment after a type tag of an eventmodeling diagram] [test: a no-break space
-after a comment after a type tag of an eventmodeling diagram] [test: a no-break
-space between the parts of a type tag of an eventmodeling diagram]
+diagram] [test: U+3000 after a comment inside a type tag, before its closing
+backtick, of an eventmodeling diagram] [test: U+2028 after a comment inside a
+type tag, before its closing backtick, of an eventmodeling diagram] [test:
+U+2029 after a comment inside a type tag, before its closing backtick, of an
+eventmodeling diagram] [test: U+3000 before a comment after a type tag of an
+eventmodeling diagram] [test: U+2028 before a comment after a type tag of an
+eventmodeling diagram] [test: U+2029 before a comment after a type tag of an
+eventmodeling diagram] [test: U+3000 after a comment after a type tag of an
+eventmodeling diagram] [test: U+2028 after a comment after a type tag of an
+eventmodeling diagram] [test: U+2029 after a comment after a type tag of an
+eventmodeling diagram] [test: U+3000 between the parts of a type tag of an
+eventmodeling diagram] [test: U+2028 between the parts of a type tag of an
+eventmodeling diagram] [test: U+2029 between the parts of a type tag of an
+eventmodeling diagram]
 
 [fixture: eventmodeling/type-tags/tag-absent-kept-absent]
 
@@ -449,15 +468,20 @@ decides, as [gantt](./gantt.md#multi-line-statements),
 [quadrant](./quadrant.md#multi-line-statements) print a statement that
 mermaid.js reads over several lines on one line, with one space between the
 components of the statement, and none beside the dot of a qualified name (see
-[Qualified names](#qualified-names)). Put a block opener on its header line
-after one space. Values and closing boundaries follow the data rules. A required
-name `title` keeps its safe preceding boundary, as for frames.
-`eventmodeling data`, a line break and `title {` stay, since every version of
-mermaid.js that counts rejects `eventmodeling data title {` on one line (see
+[Qualified names](#qualified-names)), where no other rule keeps the layout as
+written (a comment between the components, which the paragraph above covers, a
+slash comment that spans the line break, and a line that holds an ignored `;`).
+Put a block opener on its header line after one space. Values and closing
+boundaries follow the data rules. A required name `title` keeps its safe
+preceding boundary, as for frames. `eventmodeling data`, a line break and
+`title {` stay, since every version of mermaid.js that counts rejects
+`eventmodeling data title {` on one line (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: eventmodeling/declarations-and-notes/entity-ordinary] [fixture:
 eventmodeling/declarations-and-notes/entity-break-after-whitespace-and-empty-line]
+[fixture: eventmodeling/declarations-and-notes/entity-slash-comment-over-lines]
+[fixture: eventmodeling/semicolons/ignored-semicolon-touches-next-atom]
 [fixture: eventmodeling/declarations-and-notes/data-name-title-keep-lf]
 
 [fixture: eventmodeling/declarations-and-notes/entity-title-lf-protected]

@@ -329,6 +329,7 @@ U+2029 など、どの空白文字でも同じです。
 [fixture: eventmodeling/type-tags/tag-comments-spaced-after]
 [fixture: eventmodeling/type-tags/tag-comments-tab-before]
 [fixture: eventmodeling/type-tags/tag-comments-tab-after]
+[fixture: eventmodeling/type-tags/tag-comments-before-closing-backtick-and-body]
 [test: a no-break space before a comment inside a type tag of an eventmodeling diagram]
 [test: U+3000 before a comment inside a type tag of an eventmodeling diagram]
 [test: U+2028 before a comment inside a type tag of an eventmodeling diagram]
@@ -338,6 +339,21 @@ U+2029 など、どの空白文字でも同じです。
 [test: a no-break space before a comment after a type tag of an eventmodeling diagram]
 [test: a no-break space after a comment after a type tag of an eventmodeling diagram]
 [test: a no-break space between the parts of a type tag of an eventmodeling diagram]
+[test: U+3000 after a comment inside a type tag, before its next part, of an eventmodeling diagram]
+[test: U+2028 after a comment inside a type tag, before its next part, of an eventmodeling diagram]
+[test: U+2029 after a comment inside a type tag, before its next part, of an eventmodeling diagram]
+[test: U+3000 after a comment inside a type tag, before its closing backtick, of an eventmodeling diagram]
+[test: U+2028 after a comment inside a type tag, before its closing backtick, of an eventmodeling diagram]
+[test: U+2029 after a comment inside a type tag, before its closing backtick, of an eventmodeling diagram]
+[test: U+3000 before a comment after a type tag of an eventmodeling diagram]
+[test: U+2028 before a comment after a type tag of an eventmodeling diagram]
+[test: U+2029 before a comment after a type tag of an eventmodeling diagram]
+[test: U+3000 after a comment after a type tag of an eventmodeling diagram]
+[test: U+2028 after a comment after a type tag of an eventmodeling diagram]
+[test: U+2029 after a comment after a type tag of an eventmodeling diagram]
+[test: U+3000 between the parts of a type tag of an eventmodeling diagram]
+[test: U+2028 between the parts of a type tag of an eventmodeling diagram]
+[test: U+2029 between the parts of a type tag of an eventmodeling diagram]
 
 [fixture: eventmodeling/type-tags/tag-absent-kept-absent]
 
@@ -463,6 +479,9 @@ mermaid.js が複数行にわたって読む文を、部品の間に空白 1 個
 1 行に印字します。
 修飾名のドットの両側には空白を置きません。
 詳しくは [Qualified names](#qualified-names) を参照してください。
+ほかの規則がレイアウトを書かれたまま残す所は別です。
+部品の間のコメント（上の段落が扱います）、改行をまたぐスラッシュのコメント、
+無視される `;` を含む行です。
 ブロック開始記号は見出し行の空白 1 個後に置きます。
 値と閉じの境界は data の規則に従います。
 必須の名前の `title` はフレームと同じく安全な前方境界を保ちます。
@@ -475,6 +494,8 @@ mermaid.js が複数行にわたって読む文を、部品の間に空白 1 個
 
 [fixture: eventmodeling/declarations-and-notes/entity-ordinary]
 [fixture: eventmodeling/declarations-and-notes/entity-break-after-whitespace-and-empty-line]
+[fixture: eventmodeling/declarations-and-notes/entity-slash-comment-over-lines]
+[fixture: eventmodeling/semicolons/ignored-semicolon-touches-next-atom]
 [fixture: eventmodeling/declarations-and-notes/data-name-title-keep-lf]
 
 [fixture: eventmodeling/declarations-and-notes/entity-title-lf-protected]
