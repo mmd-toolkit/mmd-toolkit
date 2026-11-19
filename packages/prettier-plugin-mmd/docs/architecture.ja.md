@@ -652,13 +652,40 @@ mermaid.js は次の行を独立した文として読むので、つなぐと、
 その文が宣言するもの（ノード、グループ、ジャンクション、エッジ）がなくなります。
 architecture の要約が title を公開しなくても、文と内容を保ちます。
 注釈類のある値と保護された隠れた形の境界は原文の隙間を保ちます。
-題の終わりのディレクティブは、それぞれの前に空白かタブがあれば空白 1 つを置き、
+題にテキストがあり、そのテキストの前にも中にもディレクティブがなく、
+最後のディレクティブの後が空白とタブだけのときは、題の終わりのディレクティブを、
+それぞれの前に空白かタブがあれば空白 1 つを置き、
 行末の空白とタブの有無にかかわらず、
 最後のディレクティブの後の空白とタブを除いて印字します。
+互いに接して行末かコメントに接するディレクティブがあるとき、
+その前のテキストとの間にあるノーブレークスペースや U+3000 は、
+同じ連なりの残りとともに空白 1 つで印字します。
+最後のディレクティブの後に、ノーブレークスペース、U+3000、U+2028、
+U+2029 のどれかがあるときは、その前に空白やタブがあっても、
+行を書かれたままにします。
+中にディレクティブのある題と、ディレクティブだけの題も、書かれたままです。
+最後のディレクティブの後にコメントが続くときは、
+それぞれのディレクティブの前とコメントの前の空白とタブの連なりを、
+空白 1 つで印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: title/title-directives-end-blanks-dropped]
+[fixture: title/title-directives-end-tabs-dropped]
+[fixture: title/title-directives-in-the-text-kept]
+[fixture: title/title-directives-end-before-comment-line-and-empty-line]
+[fixture: title/title-directives-then-comment]
 [corpus fixture: architecture/directive-fields]
+[test: a no-break space after the last directive of a title of an architecture diagram]
+[test: U+3000 after the last directive of a title of an architecture diagram]
+[test: U+2028 after the last directive of a title of an architecture diagram]
+[test: U+2029 after the last directive of a title of an architecture diagram]
+[test: a space and a no-break space after the last directive of a title of an architecture diagram]
+[test: a no-break space after the last of two directives of a title of an architecture diagram]
+[test: a no-break space before the directive that ends a title of an architecture diagram]
+[test: U+3000 before the directive that ends a title of an architecture diagram]
+[test: a space, a no-break space, and a space before the directive that ends a title of an architecture diagram]
+[test: a no-break space before two directives that touch and end a title of an architecture diagram]
+[test: a no-break space before a directive that a comment touches in a title of an architecture diagram]
 
 [fixture: architecture/title/empty-next-statement]
 
@@ -701,12 +728,32 @@ mermaid.js は次の行を独立した文として読むので、つなぐと、
 その文が title や description に入り、その文が宣言するもの（ノード、グループ、
 ジャンクション、エッジ）がなくなります。
 保護された注釈類と隠れた形の隙間を優先します。
-値の終わりのディレクティブは、それぞれの前に空白かタブがあれば空白 1 つを置き、
+値にテキストがあり、そのテキストの前にも中にもディレクティブがなく、
+最後のディレクティブの後が空白とタブだけのときは、値の終わりのディレクティブを、
+それぞれの前に空白かタブがあれば空白 1 つを置き、
+行末の空白とタブの有無にかかわらず、
 最後のディレクティブの後の空白とタブを除いて印字します。
+互いに接して行末かコメントに接するディレクティブがあるとき、
+その前のテキストとの間にあるノーブレークスペースや U+3000 は、
+同じ連なりの残りとともに空白 1 つで印字します。
+最後のディレクティブの後に、ノーブレークスペース、U+3000、U+2028、
+U+2029 のどれかがあるときは、その前に空白やタブがあっても、
+行を書かれたままにします。
+中にディレクティブのある値と、ディレクティブだけの値も、書かれたままです。
+最後のディレクティブの後にコメントが続くときは、
+それぞれのディレクティブの前とコメントの前の空白とタブの連なりを、
+空白 1 つで印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
+[fixture: accessibility-lines/acc-directives-end-tabs-dropped]
+[fixture: accessibility-lines/acc-directives-in-the-text-kept]
+[fixture: accessibility-lines/acc-directives-then-comment]
 [fixture: architecture/accessibility-lines/a11y-empty-comment-gap]
+[test: a no-break space after the last directive of an accTitle line of an architecture diagram]
+[test: a no-break space before the directive that ends an accTitle line of an architecture diagram]
+[test: a no-break space after the last directive of an accDescr line of an architecture diagram]
+[test: a no-break space before the directive that ends an accDescr line of an architecture diagram]
 
 [fixture: architecture/accessibility-lines/accdescr-spacing]
 

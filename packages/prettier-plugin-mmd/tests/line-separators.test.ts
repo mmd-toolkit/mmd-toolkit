@@ -5473,6 +5473,105 @@ describe("uniform data-block margins with escaped whitespace", () => {
   })
 })
 
+/**
+ * A no-break space, U+3000, U+2028, and U+2029 beside the directives that end
+ * the title or the value of an accessibility line of an architecture diagram (docs/architecture.md,
+ * Title and Accessibility lines).
+ */
+const architectureDirectiveEndExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a no-break space after the last directive of a title of an architecture diagram",
+    "title T  %%{x}%%\u00a0",
+    "title T  %%{x}%%\u00a0",
+  ],
+  [
+    "U+3000 after the last directive of a title of an architecture diagram",
+    "title T  %%{x}%%\u3000",
+    "title T  %%{x}%%\u3000",
+  ],
+  [
+    "U+2028 after the last directive of a title of an architecture diagram",
+    "title T  %%{x}%%\u2028",
+    "title T  %%{x}%%\u2028",
+  ],
+  [
+    "U+2029 after the last directive of a title of an architecture diagram",
+    "title T  %%{x}%%\u2029",
+    "title T  %%{x}%%\u2029",
+  ],
+  [
+    "a space and a no-break space after the last directive of a title of an architecture diagram",
+    "title T  %%{x}%% \u00a0",
+    "title T  %%{x}%% \u00a0",
+  ],
+  [
+    "a no-break space after the last of two directives of a title of an architecture diagram",
+    "title T  %%{x}%%   %%{y}%%\u00a0",
+    "title T  %%{x}%%   %%{y}%%\u00a0",
+  ],
+  [
+    "a no-break space before the directive that ends a title of an architecture diagram",
+    "title T\u00a0%%{x}%%",
+    "title T %%{x}%%",
+  ],
+  [
+    "U+3000 before the directive that ends a title of an architecture diagram",
+    "title T\u3000%%{x}%%",
+    "title T %%{x}%%",
+  ],
+  [
+    "a space, a no-break space, and a space before the directive that ends a title of an architecture diagram",
+    "title T \u00a0 %%{x}%%",
+    "title T %%{x}%%",
+  ],
+  [
+    "a no-break space before two directives that touch and end a title of an architecture diagram",
+    "title T\u00a0%%{x}%%%%{y}%%",
+    "title T %%{x}%%%%{y}%%",
+  ],
+  [
+    "a no-break space before a directive that a comment touches in a title of an architecture diagram",
+    "title T\u00a0%%{x}%%%% c",
+    "title T %%{x}%%%% c",
+  ],
+  [
+    "a no-break space after the last directive of an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u00a0",
+    "accTitle: T  %%{x}%%\u00a0",
+  ],
+  [
+    "a no-break space before the directive that ends an accTitle line of an architecture diagram",
+    "accTitle: T\u00a0%%{x}%%",
+    "accTitle: T %%{x}%%",
+  ],
+  [
+    "a no-break space after the last directive of an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\u00a0",
+    "accDescr: T  %%{x}%%\u00a0",
+  ],
+  [
+    "a no-break space before the directive that ends an accDescr line of an architecture diagram",
+    "accDescr: T\u00a0%%{x}%%",
+    "accDescr: T %%{x}%%",
+  ],
+]
+
+describe("the directives that end the title or the value of an accessibility line of an architecture diagram", () => {
+  it.each(architectureDirectiveEndExamples)(
+    "keeps %s as printed",
+    async (_name, line, expected) => {
+      await expectKept(
+        `architecture-beta\n${line}\nservice a(server)[A]\n`,
+        `architecture-beta\n  ${expected}\n  service a(server)[A]\n`,
+      )
+    },
+  )
+})
+
 /** C4 lexical whitespace can be a bare prefix or a value character. */
 const c4Examples: readonly (readonly [string, string, string])[] = [
   [
