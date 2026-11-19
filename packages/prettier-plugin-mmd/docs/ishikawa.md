@@ -463,9 +463,12 @@ directive up to the end of the literal (text, a comment, a `;`, or a character
 such as a no-break space or U+2028), the other runs of spaces and tabs of the
 literal stay as written too, though mermaid.js draws them as one space:
 `A %%{init: {}}%% b  c`, `D  e %%{init: {}}%% f`, and
-`A  b %%{init: {}}%%  %% c` stay. Where no text stands before a directive, or
-only spaces, tabs, and directives follow it, the runs are printed as one space:
-`%%{init: {}}%% A  b  c` is printed `%%{init: {}}%% A b c`,
+`A  b %%{init: {}}%%  %% c` stay. Which of the two applies is decided by the
+directives that have text before them: where there is none, or where only
+spaces, tabs, and directives follow each of them, the runs are printed as one
+space, and a directive at the start does not keep them (`D A  b E  %% c`, with
+`D` and `E` for directives, keeps them, since `E` has text before it and a
+comment after it): `%%{init: {}}%% A  b  c` is printed `%%{init: {}}%% A b c`,
 `%%{init: {}}%% A  b  %% c` is printed `%%{init: {}}%% A b %% c`, and
 `A  b %%{init: {}}%%` is printed `A b %%{init: {}}%%`.
 

@@ -1749,6 +1749,11 @@ railroad 図の文字列と特殊シーケンスです。
 - 複数行のテキストと、コメント、ディレクティブ、
   U+2028 か U+2029 を含むテキスト。
   mermaid.js は、それらの行や印を置かれた場所によって読むからです。
+  テキストの先頭か末尾だけにあるディレクティブはそのような印ではなく、
+  テキストはそれを除いたときと同じに印字します。
+  詳しくは
+  [同じに描かれるキーワードの後のテキスト](#同じに描かれるキーワードの後のテキスト)
+  を参照してください。
 
   [fixture: pie/directives-and-semicolons/global-value]
 
@@ -2970,6 +2975,11 @@ cynefin 図と radar 図は、`cynefin-beta:` と `radar-beta:` を、
 閉じていないディレクティブが接するコロンは残します。
 閉じたディレクティブがキーワードとコロンの間にあるときも残し、
 `cynefin-beta%%{x}%%:` は変えません。
+radar のヘッダーでそのディレクティブの前と、コロンの前に空白かタブがあるときは、
+ディレクティブをキーワードに接して印字し、
+コロンはその後に残します（`radar-beta %%{x}%% :` は `radar-beta%%{x}%%:`
+と印字します）。
+cynefin のヘッダーは、ディレクティブの前かコロンの前に空白があると拒否されます。
 radar のヘッダーはコロンの前に空白かタブがあってもよく、
 それはコロンと一緒に除きます（`radar-beta :` は `radar-beta` と印字します）。
 cynefin のヘッダーはコロンの前に空白があると拒否されます。
@@ -2982,6 +2992,7 @@ cynefin のヘッダーはコロンの前に空白があると拒否されます
 [fixture: radar/header/colon-spaces-before-removed]
 [fixture: radar/header/colon-after-directive-kept]
 [fixture: cynefin/header/colon-after-directive-kept]
+[fixture: radar/header/colon-after-spaced-directive-kept]
 
 treemap の見出しにはコロンを付けません。
 11.8.1、11.17.2、12.0.0、12.3.0 のどれも、

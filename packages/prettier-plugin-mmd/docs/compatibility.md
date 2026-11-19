@@ -1668,7 +1668,10 @@ These stay as written:
   [fixture: gantt/titles-and-sections/title-blank-kept]
 
 - A text over several lines, and a text with a comment, a directive, or a U+2028
-  or U+2029 in it, whose lines and marks mermaid.js reads by their place.
+  or U+2029 in it, whose lines and marks mermaid.js reads by their place; a
+  directive that stands only at the start or at the end of the text is no such
+  mark, and the text is printed as it is without it (see
+  [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same)).
 
   [fixture: pie/directives-and-semicolons/global-value]
 
@@ -2802,7 +2805,11 @@ on the line goes to the next line as it does after a header without the colon.
 The colon stays where a `;`, the `---` of a hidden YAML block, or a directive
 that is not closed touches it, and where a directive that is closed stands
 between the keyword and the colon: `cynefin-beta%%{x}%%:` is not changed. A
-radar header may have spaces or tabs before the colon, which are removed with it
+radar header in which spaces or tabs stand before that directive, and before the
+colon, is printed with the directive touching the keyword and the colon after it
+(`radar-beta %%{x}%% :` is printed `radar-beta%%{x}%%:`); a cynefin header with
+whitespace before the directive or before the colon is rejected. A radar header
+may have spaces or tabs before the colon, which are removed with it
 (`radar-beta :` is printed `radar-beta`); a cynefin header with whitespace
 before the colon is rejected.
 
@@ -2813,7 +2820,8 @@ cynefin/header/colon-unclosed-directive-kept] [fixture:
 radar/header/colon-unclosed-directive-kept] [fixture:
 radar/header/colon-spaces-before-removed] [fixture:
 radar/header/colon-after-directive-kept] [fixture:
-cynefin/header/colon-after-directive-kept]
+cynefin/header/colon-after-directive-kept] [fixture:
+radar/header/colon-after-spaced-directive-kept]
 
 A treemap header takes no colon. Each of 11.8.1, 11.17.2, 12.0.0 and 12.3.0
 rejects `treemap:` and `treemap-beta:`, and reads and draws the header without
