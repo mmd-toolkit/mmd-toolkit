@@ -82,7 +82,11 @@ export function findC4KeptLines(source: Source): KeptLines {
 /**
  * Keeps the complete gap after a diagram comment, including recovery lines
  * and terminal gaps. Common standalone comment lines use ordinary alignment
- * (diagrams/c4.md, Comments; docs/c4.md, Blank lines and Comments).
+ * (diagrams/c4.md, Comments; docs/c4.md, Blank lines and Comments). Before a
+ * statement the gap stops where the indentation of the statement's line
+ * starts, which the block prints, so a U+2028 or U+2029 in that indentation is
+ * no part of the gap and does not make it a kept one: the printed text has
+ * none, and a second formatting would read a gap that is not kept.
  */
 export function c4KeptGapEnd(
   source: Source,
@@ -90,6 +94,16 @@ export function c4KeptGapEnd(
   end: number,
   beforeStatement: boolean,
 ): number | undefined {
+  let keptEnd = end
+  if (beforeStatement) {
+    while (
+      keptEnd > start &&
+      source.text[keptEnd - 1] !== "\n" &&
+      isWhitespace(source.text[keptEnd - 1])
+    ) {
+      keptEnd--
+    }
+  }
   const takesBreak = source.root.comments.some((comment) => {
     if (comment.range[1] > end) return false
     if (
@@ -98,7 +112,10 @@ export function c4KeptGapEnd(
         source.text.slice(comment.range[1], start).includes("\n"))
     )
       return false
-    const following = source.text.slice(comment.range[1], end)
+    const following = source.text.slice(
+      comment.range[1],
+      Math.max(comment.range[1], keptEnd),
+    )
     const firstBreak = following.indexOf("\n")
     if (firstBreak === -1) return false
     if (
@@ -114,15 +131,5 @@ export function c4KeptGapEnd(
     )
     return !standalone || !isCommentLine(source.text, source.root, comment)
   })
-  if (!takesBreak) return undefined
-  if (!beforeStatement) return end
-  let stop = end
-  while (
-    stop > start &&
-    source.text[stop - 1] !== "\n" &&
-    isWhitespace(source.text[stop - 1])
-  ) {
-    stop--
-  }
-  return stop
+  return takesBreak ? keptEnd : undefined
 }

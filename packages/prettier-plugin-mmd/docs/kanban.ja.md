@@ -840,6 +840,19 @@ kanban
 [fixture: comments/header-leading-comment]
 [fixture: comments/comment-line-in-value]
 
+改行で終わる図のコメントの後の行の字下げにある U+2028 と U+2029 は、
+その字下げの 1 文字で（[空白文字](#空白文字)を参照）、
+隙間を保つ理由になりません。
+`S[x]  %% c`、改行、U+2028、空白 3 つと `A` は、`S[x] %% c` と、
+その場所の字下げの `A` を印字します。
+コメントを終える区切りがあるときと、コメントの後に空行があるときは、
+隙間を書かれたまま残します。
+
+[test: kanban: ls-indentation-after-comment]
+[test: kanban: ps-indentation-after-comment-tab]
+[test: kanban: ls-ends-comment-kept]
+[test: kanban: ls-indentation-after-comment-and-blank-line-kept]
+
 ヘッダー、形、アイコン、データブロックの後の図のコメントは、その行に残します。
 接していれば接したまま、空白とタブの連なりがあれば前に空白 1 つを置きます。
 規則 1 は、コメントの前の印を挙げていないので、

@@ -262,7 +262,10 @@ function printKanbanText(source: Source, line: KanbanLine): string | undefined {
  * indentation of the statement that follows, which the printer decides, after
  * the U+2028 or U+2029 that ends a diagram comment when that is the last
  * thing before it; or the end of the gap at the end of the board. Undefined
- * for a gap that is formatted as usual.
+ * for a gap that is formatted as usual. A U+2028 or U+2029 in the indentation
+ * of the statement that follows is no part of what is kept, since the printer
+ * decides that indentation, and does not make the gap a kept one: the printed
+ * text has none, and a second formatting would read a gap that is not kept.
  */
 export function findKeptGapEnd(
   source: Source,
@@ -270,19 +273,27 @@ export function findKeptGapEnd(
   end: number,
   beforeStatement: boolean,
 ): number | undefined {
-  if (!holdsKeptGap(source, start, end)) return undefined
-  if (!beforeStatement) return end
-  let offset = end
-  while (offset > start && isWhitespace(source.text[offset - 1])) {
-    const character = source.text[offset - 1]
-    if (character === "\n" || isCommentEnd(source, offset - 1)) break
-    offset--
+  let keptEnd = end
+  if (beforeStatement) {
+    while (keptEnd > start && isWhitespace(source.text[keptEnd - 1])) {
+      const character = source.text[keptEnd - 1]
+      if (character === "\n" || isCommentEnd(source, keptEnd - 1)) break
+      keptEnd--
+    }
   }
-  return offset
+  return holdsKeptGap(source, start, end, keptEnd) ? keptEnd : undefined
 }
 
-/** Whether the gap holds a diagram comment that makes it a kept gap. */
-function holdsKeptGap(source: Source, start: number, end: number): boolean {
+/**
+ * Whether the gap holds a diagram comment that makes it a kept gap, by what
+ * follows the comment up to `keptEnd`, where the text that is kept stops.
+ */
+function holdsKeptGap(
+  source: Source,
+  start: number,
+  end: number,
+  keptEnd: number,
+): boolean {
   // A kept stretch may already have printed the comment's final selected
   // semicolon. Its separator still belongs to this gap (docs/kanban.md,
   // Blank lines and Whitespace characters).
@@ -295,7 +306,11 @@ function holdsKeptGap(source: Source, start: number, end: number): boolean {
     )
     .filter((comment) => textRead(source, ...comment.range) !== "")
   for (const comment of comments) {
-    const after = textRead(source, comment.range[1], end)
+    const after = textRead(
+      source,
+      comment.range[1],
+      Math.max(comment.range[1], keptEnd),
+    )
     if (after.includes("\u2028") || after.includes("\u2029")) return true
     if (comments.some((next) => next.range[0] >= comment.range[1])) return true
     const lines = after.split("\n")

@@ -6783,6 +6783,26 @@ const kanbanExamples: readonly (readonly [string, string, string, Options?])[] =
       "kanban\n S[x]%% c\u2028%% d\n%%{x}%%C\n",
       { tabWidth: 0 },
     ],
+    [
+      "kanban: ls-indentation-after-comment",
+      "kanban\n  S[x]  %% c\n\u2028   A\n",
+      "kanban\n  S[x] %% c\n    A\n",
+    ],
+    [
+      "kanban: ps-indentation-after-comment-tab",
+      "kanban\n  S[x]\t%% c\n\u2029  A\n",
+      "kanban\n  S[x] %% c\n    A\n",
+    ],
+    [
+      "kanban: ls-ends-comment-kept",
+      "kanban\n  S[x]  %% c\u2028   A\n",
+      "kanban\n  S[x]  %% c\u2028   A\n",
+    ],
+    [
+      "kanban: ls-indentation-after-comment-and-blank-line-kept",
+      "kanban\n  S[x]  %% c\n\n\u2028   A\n",
+      "kanban\n  S[x]  %% c\n\n    A\n",
+    ],
   ]
 
 describe("kanban whitespace and line boundaries", () => {
@@ -8160,6 +8180,51 @@ const c4Examples: readonly (readonly [string, string, string])[] = [
     "c4: accdescription-line-separator-spaces",
     'C4Context\naccDescription D  \u2029  \nPerson(a, "A")\n',
     'C4Context\n  accDescription D  \u2029\n  Person(a, "A")\n',
+  ],
+  [
+    "c4: ls-indentation-after-comment",
+    'C4Context\nPerson(a,"A")  %% c\n\u2028Person(b,"B")\n',
+    'C4Context\n  Person(a, "A") %% c\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ps-indentation-after-comment-tab",
+    'C4Context\nPerson(a,"A")\t%% c\n \u2029 Person(b,"B")\n',
+    'C4Context\n  Person(a, "A") %% c\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ls-indentation-after-comment-opener",
+    'C4Context\nBoundary(b1,"B") {  %% c\n\u2028Person(b,"B")\n}\n',
+    'C4Context\n  Boundary(b1, "B") { %% c\n    Person(b, "B")\n  }\n',
+  ],
+  [
+    "c4: ps-indentation-after-comment-closer",
+    'C4Context\nBoundary(b1,"B") {\nPerson(b,"B")\n}  %% c\n\u2029Person(c,"C")\n',
+    'C4Context\n  Boundary(b1, "B") {\n    Person(b, "B")\n  } %% c\n  Person(c, "C")\n',
+  ],
+  [
+    "c4: ls-indentation-after-comment-header",
+    'C4Context  %% c\n\u2028Person(a,"A")\n',
+    'C4Context %% c\n  Person(a, "A")\n',
+  ],
+  [
+    "c4: ls-whitespace-line-after-comment-kept",
+    'C4Context\nPerson(a,"A")  %% c\n\u2028\nPerson(b,"B")\n',
+    'C4Context\n  Person(a, "A")  %% c\n\u2028\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ls-indentation-after-comment-and-blank-line-kept",
+    'C4Context\nPerson(a,"A")  %% c\n\n\u2028Person(b,"B")\n',
+    'C4Context\n  Person(a, "A")  %% c\n\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ls-indentation-after-comment-and-comment-line-kept",
+    'C4Context\nPerson(a,"A")  %% c\n%% d\n\u2028Person(b,"B")\n',
+    'C4Context\n  Person(a, "A")  %% c\n%% d\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ls-after-comment-at-end-kept",
+    'C4Context\nPerson(a,"A")  %% c\n\u2028',
+    'C4Context\n  Person(a, "A")  %% c\n\u2028\n',
   ],
 ]
 

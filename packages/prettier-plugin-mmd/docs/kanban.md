@@ -787,6 +787,17 @@ U+2028 or U+2029 stays as written with the gap after it (see
 comments/bare-brace-comments-aligned] [fixture: comments/header-leading-comment]
 [fixture: comments/comment-line-in-value]
 
+A U+2028 or U+2029 in the indentation of the line after a diagram comment that a
+line feed ends is one character of that indentation (see
+[Whitespace characters](#whitespace-characters)), so it does not keep the gap:
+`S[x]  %% c`, a line feed, a U+2028, and three spaces and `A` print `S[x] %% c`
+and `A` with the indentation of its place. A separator that ends the comment
+keeps the gap as written, and so does an empty line after the comment.
+
+[test: kanban: ls-indentation-after-comment] [test: kanban:
+ps-indentation-after-comment-tab] [test: kanban: ls-ends-comment-kept] [test:
+kanban: ls-indentation-after-comment-and-blank-line-kept]
+
 A diagram comment after the header, a shape, an icon, or a data block stays on
 its line: it touches where it touches, and a run of spaces and tabs before it
 becomes one space. Rule 1 names no mark before a comment, so
