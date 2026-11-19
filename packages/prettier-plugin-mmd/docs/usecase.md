@@ -1098,7 +1098,18 @@ The directives that end the value of an `accTitle` or an `accDescr` are printed
 as those that end a title (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)):
 `accTitle: Column zero  %%{x}%%  ` and `accTitle: Column zero  %%{x}%%` are both
-printed `accTitle: Column zero %%{x}%%`.
+printed `accTitle: Column zero %%{x}%%`. A directive that holds a line break or
+a `;` ends the value like any other, where it is the last or touches the
+directives after it: `accDescr: A  b  %%{init: {`, a line break, and `}}%%` with
+a space and a tab after it is printed `accDescr: A b %%{init: {`, a line break,
+and `}}%%`.
+
+[fixture:
+direction-and-accessibility/acctitle-directive-lines-end-blanks-dropped]
+[fixture:
+direction-and-accessibility/accdescr-directive-lines-end-blanks-dropped]
+[fixture:
+direction-and-accessibility/acctitle-directive-semicolon-end-blanks-dropped]
 
 [fixture:
 direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]

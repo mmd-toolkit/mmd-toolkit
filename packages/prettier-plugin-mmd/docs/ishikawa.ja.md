@@ -529,6 +529,30 @@ Mermaid がテキストの両端の空白を除くので、除いても Db と�
 [fixture: ishikawa/trailing-whitespace/trailing-directive-gap-collapsed]
 [fixture: ishikawa/trailing-whitespace/trailing-directive-continuation]
 
+行をまたぐディレクティブと `;` を含むディレクティブも、
+ほかのディレクティブと同じに、テキストを終えます。
+最後に置いても、後ろのディレクティブと接していても、
+最後のディレクティブの後に空白とタブが続いても同じです。
+`A  b %%{init: {`、改行、`}}%%`、空白とタブは、`A b %%{init: {`、改行、
+`}}%%` と印字します。
+空白とタブが続かない同じテキストと同じ形です。
+mermaid.js が行を読む前にディレクティブを除くためです。
+空白かタブでそのディレクティブから隔てた後ろのディレクティブがあるときは、
+そのディレクティブはテキストの一部になり、
+テキストの連なりを書かれたままにします。
+`A  b %%{init: {`、改行、`}}%%`、空白、`%%{x}%%` は、
+最後のディレクティブの後の空白とタブを除くだけで、そのまま印字します。
+
+[fixture: ishikawa/trailing-whitespace/directive-lines-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-lines-root-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-lines-touching-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-lines-gap-run-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-then-directive-lines-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directives-lines-touching-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-semicolon-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-lines-semicolon-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-lines-before-directive-runs-kept]
+
 [ヘッダー](#header) と [空行](#blank-lines) の規則で除くのは、
 見出し行の外側の余白だけで、それはテキストの値ではありません。
 

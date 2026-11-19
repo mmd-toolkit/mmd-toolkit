@@ -44,6 +44,7 @@ import {
   classStatementRules,
   collectTextEndEdits,
   endsWithDirectives,
+  endsWithDirectivesOfAnyContent,
   trimmedTextEnd,
   styleUnitsCanCompact,
 } from "./statement-rules.ts"
@@ -484,7 +485,10 @@ function layoutUsecaseAccessibility(
     // The directives that end the value are printed as those that end a title
     // (docs/compatibility.md, Texts after a keyword that are drawn the same).
     // The runs inside an `accTitle` stay.
-    if (endsWithDirectives(source, valueRange)) {
+    if (
+      endsWithDirectives(source, valueRange) ||
+      endsWithDirectivesOfAnyContent(source, valueRange)
+    ) {
       replaceInAtoms(
         source,
         atoms,

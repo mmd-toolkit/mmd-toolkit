@@ -1173,6 +1173,14 @@ Prettier が `x = { }` を `x = {}`
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 `accTitle: Column zero  %%{x}%%  ` も `accTitle: Column zero  %%{x}%%` も、
 `accTitle: Column zero %%{x}%%` と印字します。
+行をまたぐディレクティブと `;` を含むディレクティブも、最後に置いても、
+後ろのディレクティブと接していても、ほかのディレクティブと同じに値を終えます。
+`accDescr: A  b  %%{init: {`、改行、`}}%%`、空白とタブは、
+`accDescr: A b %%{init: {`、改行、`}}%%` と印字します。
+
+[fixture: direction-and-accessibility/acctitle-directive-lines-end-blanks-dropped]
+[fixture: direction-and-accessibility/accdescr-directive-lines-end-blanks-dropped]
+[fixture: direction-and-accessibility/acctitle-directive-semicolon-end-blanks-dropped]
 
 [fixture: direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
 [fixture: direction-and-accessibility/direction-values]

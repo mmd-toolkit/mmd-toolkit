@@ -523,6 +523,32 @@ follows the last directive or not (see
 ishikawa/trailing-whitespace/trailing-directive-gap-collapsed] [fixture:
 ishikawa/trailing-whitespace/trailing-directive-continuation]
 
+A directive that holds a line break or a `;` ends a literal like any other: it
+may stand last, or touch the directives after it, with spaces and tabs after the
+last of them. `A  b %%{init: {`, a line break, and `}}%%` with a space and a tab
+after it is printed `A b %%{init: {`, a line break, and `}}%%`, as it is without
+them, since mermaid.js removes a directive before it reads the lines. A space or
+a tab that separates such a directive from a directive after it makes it part of
+the literal, which keeps its runs as written: `A  b %%{init: {`, a line break,
+`}}%%`, a space, and `%%{x}%%` is printed as it is, without the spaces and tabs
+after the last directive.
+
+[fixture: ishikawa/trailing-whitespace/directive-lines-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-lines-root-end-blanks-dropped]
+[fixture:
+ishikawa/trailing-whitespace/directive-lines-touching-end-blanks-dropped]
+[fixture:
+ishikawa/trailing-whitespace/directive-lines-gap-run-end-blanks-dropped]
+[fixture:
+ishikawa/trailing-whitespace/directive-then-directive-lines-end-blanks-dropped]
+[fixture:
+ishikawa/trailing-whitespace/directives-lines-touching-end-blanks-dropped]
+[fixture: ishikawa/trailing-whitespace/directive-semicolon-end-blanks-dropped]
+[fixture:
+ishikawa/trailing-whitespace/directive-lines-semicolon-end-blanks-dropped]
+[fixture:
+ishikawa/trailing-whitespace/directive-lines-before-directive-runs-kept]
+
 Only exterior header-line padding is dropped under [Header](#header) and
 [Blank lines](#blank-lines); it is not a literal value.
 
