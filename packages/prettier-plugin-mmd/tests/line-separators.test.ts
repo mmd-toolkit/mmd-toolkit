@@ -4714,6 +4714,61 @@ const blockLineSeparatorExamples: readonly (readonly [
     "block-beta\n  a\n  style a fill:#F00\u2028%% c\n x\n",
   ],
   [
+    "block: color-before-comma-after-whitespace-in-style-on-a-line-that-a-ls-comment-line-joins",
+    "block-beta\na\nstyle a fill:#F00 ,stroke:#ABC\u2028%% c\n x\n",
+    "block-beta\n  a\n  style a fill:#f00 ,stroke:#ABC\u2028%% c\n x\n",
+  ],
+  [
+    "block: color-before-a-comma-on-the-next-line-of-a-style-that-a-ls-comment-line-joins",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n,stroke:#ABC\n",
+    "block-beta\n  a\n  style a fill:#F00\u2028%% c\n,stroke:#abc\n",
+  ],
+  [
+    "block: color-before-a-ls-comment-line-that-a-statement-follows",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\nb\n",
+    "block-beta\n  a\n  style a fill:#F00\u2028%% c\nb\n",
+  ],
+  [
+    "block: color-before-a-semicolon-that-the-line-rule-ignores-in-a-classdef-that-whitespace-and-a-line-break-join",
+    "block-beta\nclassDef c \nfill:#ABC,stroke:#DEF;\n",
+    "block-beta\n  classDef c \n    fill:#abc,stroke:#DEF;\n",
+  ],
+  [
+    "block: color-before-a-semicolon-on-the-line-after-a-ls-comment-line-in-a-classdef",
+    "block-beta\nclassDef c fill:#ABC\u2028%% c\n,stroke:#DEF;\n",
+    "block-beta\n  classDef c fill:#ABC\u2028%% c\n,stroke:#DEF;\n",
+  ],
+  [
+    "block: style-ls-before-a-comment-and-a-directive-line-keeps-the-ls-and-lowers-the-color",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n%%{x}%%\n",
+    "block-beta\n  a\n  style a fill:#f00\u2028%% c\n%%{x}%%\n",
+  ],
+  [
+    "block: style-ps-before-a-comment-and-a-directive-line-keeps-the-ps-and-lowers-the-color",
+    "block-beta\na\nstyle a fill:#F00\u2029%% c\n%%{x}%%\n",
+    "block-beta\n  a\n  style a fill:#f00\u2029%% c\n%%{x}%%\n",
+  ],
+  [
+    "block: classdef-ls-before-a-comment-and-a-directive-line-keeps-the-ls-and-lowers-the-color",
+    "block-beta\nclassDef c fill:#ABC\u2028%% c\n%%{x}%%\n",
+    "block-beta\n  classDef c fill:#abc\u2028%% c\n%%{x}%%\n",
+  ],
+  [
+    "block: style-ls-before-two-comment-lines-at-the-end-of-the-text-is-dropped",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n%% d\n",
+    "block-beta\n  a\n  style a fill: #f00\n  %% c\n  %% d\n",
+  ],
+  [
+    "block: composite-head-name-after-the-comment-line-stays-as-written",
+    "block-beta\nblock:\u2028%% keep\ngroup:2\nA\nend\n",
+    "block-beta\n  block:\u2028%% keep\ngroup:2\n    A\n  end\n",
+  ],
+  [
+    "block: composite-head-spaces-before-the-name-before-a-ls-comment-line-are-one-space",
+    "block-beta\nblock:   G\u2028%% c\nA\nend\n",
+    "block-beta\n  block: G\u2028%% c\nA\n  end\n",
+  ],
+  [
     "block: whitespace-between-the-statements-of-a-row-on-a-line-that-a-ls-comment-line-joins",
     "block-beta\ncolumns 3\na   b\u2028%% c\n  c\n",
     "block-beta\n  columns 3\n  a   b\u2028%% c\n  c\n",

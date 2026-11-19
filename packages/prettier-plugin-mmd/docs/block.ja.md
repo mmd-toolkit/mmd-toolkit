@@ -503,7 +503,7 @@ U+2028 と U+2029 はそのまま残します。
 [指令](#指令)と同じです。
 `(right,  %%{x}%%  down)` と `(right,%%{x}%%down)` は `(right, %%{x}%%down)`
 になります。
-ディレクティブの後に改行があるときは、その前の空白は書かれたままで、
+`,` の後のディレクティブの後に改行があるときは、その前の空白は書かれたままで、
 次の行は 1 段深く置きます。
 `(right,  %%{x}%%` と改行はそのままです。
 
@@ -1004,13 +1004,18 @@ mermaid.js は前後の行を 1 行として読みます。
 [U+2028 または U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
 にあります。
 複合ヘッドはもう 1 つの場合です。
-`block:G`、U+2028、`%% c` は、`block: G`、U+2028、`%% c` と印字し、
-コメント領域がないときのヘッドと同じに、コロンの後に空白を置きます。
+コロンの行に名前があるときは、その間の隙間を普通のヘッドと同じに印字します。
+`block:G`、U+2028、`%% c` は `block: G`、U+2028、`%% c` に、
+`block:   G` は `block: G` に印字します。
+コメント領域がコロンにすぐ続くときは、ヘッドを書かれたまま残します。
+`block:`、U+2028、`%% keep`、改行、`group:2` がその例です。
 
 [test: block: ls-comment-in-composite-head]
 [test: block: ps-comment-in-composite-head]
 [test: block: ls-comment-after-composite-head-name]
 [test: block: ps-comment-after-composite-head-name]
+[test: block: composite-head-name-after-the-comment-line-stays-as-written]
+[test: block: composite-head-spaces-before-the-name-before-a-ls-comment-line-are-one-space]
 
 改行を空白 1 つか何も挟まずにつなぐと、
 行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
@@ -1397,16 +1402,26 @@ U+2028 と U+2029 は、ブロック図の単位の間の空白で、空白と�
 [U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
 を参照）、コメント行の後にテキストが続くときは、
 その行の文の空白と改行は書かれたまま印字します。
-その行にある style の色は、[色](#色)と同じに印字します。
-コンマの前の色は小文字にし、空白の後に文字が続く色は書かれたままにします。
-コメント行の後にテキストが続かないときは、何もつながりません。
+その行にある style の色は、
+その行でコンマが色に続くとき（空白を挟んでもです）と、
+文の最後の行の最後の色について、[色](#色)と同じに印字します。
+そこでは色は小文字になります。
+色の後ろにその行でコメント領域が続き、コメント行の後にテキストが続くときは、
+色を書かれたまま残します。
+次の行がコンマで始まるときも同じです。
+行の規則が無視する `;` が色に続くときと、空白の後に文字が続くときも同じです。
+コメント行の後にディレクティブの行が続くときは、
+U+2028 や U+2029 と行は書かれたまま残し、色は小文字にします。
+style の行の後にテキストの末尾までコメント行しか続かないときは、
+何もつながりません。
 `style` や `classDef` の末尾の U+2028 や U+2029 は、
 コメントやディレクティブの前の空白とともに落とし、
 文は普通の行と同じに印字します。
 `style a fill:#F00`、U+2028、テキストの末尾の `%% c` は、
 `style a fill: #f00` と `%% c` に印字します。
-ブロック図の Db は、その文字をスタイルに持たないので、Db が違うのは、
-最初の `:` の後の空白と色の大文字小文字だけです。
+ブロック図では、mermaid.js は U+2028 を行の終わりとして、
+`%% c` をコメントとして読むので、Db はその文字をスタイルに持たず、
+Db が違うのは、最初の `:` の後の空白と色の大文字小文字だけです。
 どちらも[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)と
 [同じに描かれる色](./compatibility.ja.md#同じに描かれる色)が定めています。
 ラベルの中では文字で、そのまま残ります。
@@ -1426,6 +1441,15 @@ U+2028 と U+2029 は、ブロック図の単位の間の空白で、空白と�
 [test: block: color-before-comma-in-style-on-a-line-that-a-ls-comment-line-joins]
 [test: block: color-before-comma-in-classdef-on-a-line-that-a-ps-comment-line-joins]
 [test: block: last-color-in-style-that-the-line-after-a-ls-comment-line-goes-on-with]
+[test: block: color-before-comma-after-whitespace-in-style-on-a-line-that-a-ls-comment-line-joins]
+[test: block: color-before-a-comma-on-the-next-line-of-a-style-that-a-ls-comment-line-joins]
+[test: block: color-before-a-ls-comment-line-that-a-statement-follows]
+[test: block: color-before-a-semicolon-that-the-line-rule-ignores-in-a-classdef-that-whitespace-and-a-line-break-join]
+[test: block: color-before-a-semicolon-on-the-line-after-a-ls-comment-line-in-a-classdef]
+[test: block: style-ls-before-a-comment-and-a-directive-line-keeps-the-ls-and-lowers-the-color]
+[test: block: style-ps-before-a-comment-and-a-directive-line-keeps-the-ps-and-lowers-the-color]
+[test: block: classdef-ls-before-a-comment-and-a-directive-line-keeps-the-ls-and-lowers-the-color]
+[test: block: style-ls-before-two-comment-lines-at-the-end-of-the-text-is-dropped]
 [test: block: whitespace-between-the-statements-of-a-row-on-a-line-that-a-ls-comment-line-joins]
 [test: U+2028 between a composite head and its body]
 

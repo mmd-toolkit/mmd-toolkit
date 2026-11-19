@@ -471,8 +471,8 @@ on the line of the direction stays touching or separated as written after the
 is printed as without the directive, and the directive stands after its space
 and touches the unit that follows it, as under [Directives](#directives):
 `(right,  %%{x}%%  down)` and `(right,%%{x}%%down)` are printed
-`(right, %%{x}%%down)`. Where a line break follows the directive, the whitespace
-before it stays as written and the next line stands one level deeper:
+`(right, %%{x}%%down)`. Where a line break follows a directive after a `,`, the
+whitespace before it stays as written and the next line stands one level deeper:
 `(right,  %%{x}%%` and a line break stay.
 
 [fixture: shapes/block-arrow-comma-space] [fixture:
@@ -945,14 +945,18 @@ Joining comment regions retain their original layout. A comment region after
 U+2028 or U+2029 makes mermaid.js read the lines around it as one. How the
 formatter prints such a line, and the cases that it prints otherwise, are in
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029).
-A composite head is one more case: `block:G`, U+2028, and `%% c` print
-`block: G`, U+2028, and `%% c`, with the space after the colon that the head has
-without the comment region.
+A composite head is one more case: where a name stands on the line of the colon,
+the gap between them is printed as on a plain head, `block:G`, U+2028, and
+`%% c` as `block: G`, U+2028, and `%% c`, and `block:   G` as `block: G`; where
+the comment region follows the colon at once, the head stays as written,
+`block:`, U+2028, `%% keep`, a line break, and `group:2`.
 
 [test: block: ls-comment-in-composite-head] [test: block:
 ps-comment-in-composite-head] [test: block:
 ls-comment-after-composite-head-name] [test: block:
-ps-comment-after-composite-head-name]
+ps-comment-after-composite-head-name] [test: block:
+composite-head-name-after-the-comment-line-stays-as-written] [test: block:
+composite-head-spaces-before-the-name-before-a-ls-comment-line-are-one-space]
 
 A line break stays where joining it, with one space or with nothing, could
 change which `;` the line rule ignores, and where a `;` ends the last line; any
@@ -1327,15 +1331,23 @@ line after one of them joins the lines of the source that mermaid.js reads as
 one (see
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)),
 where text follows it, and the whitespace and the line breaks of the statements
-on those lines are kept as written, while the colors of a style on them are
-printed as under [Colors](#colors): a color before a comma is in lower case, and
-one that characters follow stays. Where no text follows the comment line,
-nothing is joined: a U+2028 or U+2029 at the end of a `style` or a `classDef` is
-dropped, with the whitespace before the comment or the directive, and the
-statement is printed as on a plain line, `style a fill:#F00`, a U+2028, and
-`%% c` at the end of the text as `style a fill: #f00` and `%% c`. The Db of a
-block diagram does not hold the character in the style, so the Db differs only
-in the whitespace after the first `:` and in the case of the color, which
+on those lines are kept as written. The colors of a style on them are printed as
+under [Colors](#colors) where a comma follows the color on its line, also after
+whitespace, and for the last color of the last line of the statement: there a
+color is in lower case. A color stays as written where a comment region follows
+it on its line and text follows the comment line, also where a comma starts the
+line after it, where a `;` that the line rule ignores follows it, and where
+characters follow it after whitespace. Where a directive line follows the
+comment line, the U+2028 or U+2029 and the lines stay as written, and the color
+is in lower case. Where nothing but comment lines follow the line of the style
+to the end of the text, nothing is joined: a U+2028 or U+2029 at the end of a
+`style` or a `classDef` is dropped, with the whitespace before the comment or
+the directive, and the statement is printed as on a plain line,
+`style a fill:#F00`, a U+2028, and `%% c` at the end of the text as
+`style a fill: #f00` and `%% c`. In a block diagram, mermaid.js reads the U+2028
+as the end of the line and `%% c` as a comment, so the Db does not hold the
+character in the style, and the Db differs only in the whitespace after the
+first `:` and in the case of the color, which
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)
 and
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)
@@ -1355,6 +1367,23 @@ color-before-comma-in-style-on-a-line-that-a-ls-comment-line-joins] [test:
 block: color-before-comma-in-classdef-on-a-line-that-a-ps-comment-line-joins]
 [test: block:
 last-color-in-style-that-the-line-after-a-ls-comment-line-goes-on-with] [test:
+block:
+color-before-comma-after-whitespace-in-style-on-a-line-that-a-ls-comment-line-joins]
+[test: block:
+color-before-a-comma-on-the-next-line-of-a-style-that-a-ls-comment-line-joins]
+[test: block: color-before-a-ls-comment-line-that-a-statement-follows] [test:
+block:
+color-before-a-semicolon-that-the-line-rule-ignores-in-a-classdef-that-whitespace-and-a-line-break-join]
+[test: block:
+color-before-a-semicolon-on-the-line-after-a-ls-comment-line-in-a-classdef]
+[test: block:
+style-ls-before-a-comment-and-a-directive-line-keeps-the-ls-and-lowers-the-color]
+[test: block:
+style-ps-before-a-comment-and-a-directive-line-keeps-the-ps-and-lowers-the-color]
+[test: block:
+classdef-ls-before-a-comment-and-a-directive-line-keeps-the-ls-and-lowers-the-color]
+[test: block:
+style-ls-before-two-comment-lines-at-the-end-of-the-text-is-dropped] [test:
 block:
 whitespace-between-the-statements-of-a-row-on-a-line-that-a-ls-comment-line-joins]
 [test: U+2028 between a composite head and its body]
