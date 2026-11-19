@@ -975,15 +975,15 @@ async function expectRunsBetweenTheLastDirectiveAndAComment(
 }
 
 /**
- * Formats the input, as the output starts, again to the same, with the Db kept
+ * Formats the input, as the output states, again to the same, with the Db kept
  * up to the runs of whitespace that mermaid.js draws as one space.
  */
-async function expectTitleLineWithSeparators(
+async function expectFormattedTitle(
   input: string,
-  start: string,
+  expected: string,
 ): Promise<void> {
   const output = await formatMermaid(input)
-  expect(output.slice(0, start.length)).toBe(start)
+  expect(output).toBe(expected)
   expect(await formatMermaid(output)).toBe(output)
   const before = dbOfText(input, defaultEmbedded())
   expect(
@@ -997,6 +997,26 @@ async function expectTitleLineWithSeparators(
 }
 
 /**
+ * What follows the title line prints where the title stays as written: a
+ * statement right after the line, or after a comment line, stays at its written
+ * column, a line of spaces or of a directive too, and a statement after an
+ * empty line, a line of spaces, or a line of a directive is indented as usual
+ * (docs/treeview.md, Title).
+ */
+const tailsOfATitleThatStaysAsWritten: Readonly<Record<string, string>> = {
+  "R\n": "R\n",
+  "\nR\n": "\n  R\n",
+  "%% z\nR\n": "%% z\nR\n",
+  "%% z\n\nR\n": "%% z\n\n  R\n",
+  "   \n": "   \n",
+  "   \nR\n": "   \n  R\n",
+  "%%{y}%%\n": "%%{y}%%\n",
+  "%%{y}%%\nR\n": "%%{y}%%\n  R\n",
+  " %%{y}%%\n": " %%{y}%%\n",
+  " %%{y}%%\nR\n": " %%{y}%%\n  R\n",
+}
+
+/**
  * The whitespace before the first U+2028 or U+2029 and after it, before the last
  * directive and between it and a comment, with what the line prints where the
  * text ends: the directive and the comment move to lines of their own, unless a
@@ -1004,17 +1024,50 @@ async function expectTitleLineWithSeparators(
  * (docs/treeview.md, Title).
  */
 const separatorsAroundTheLastDirective = [
-  ["\u2028", "\u2029", "T\n%%{x}%%\n  %% c\n"],
-  [" \u2028 ", "\u2028\u00a0", "T\n%%{x}%%\n  %% c\n"],
-  ["\t\u2029\u00a0", " \u2028\t", "T\n%%{x}%%\n  %% c\n"],
-  ["\u0085\u2028", "", "T\u0085\n%%{x}%%%% c\n"],
-  ["\u0085\u2029 ", " ", "T\u0085\n%%{x}%% %% c\n"],
-  ["\u0085\u2028", "\u2029", "T\u0085\n%%{x}%%\n  %% c\n"],
-  ["\u2028\u0085", "", "T\u2028\u0085%%{x}%%%% c\n"],
-  ["\u2029 \u0085", "", "T\u2029 \u0085%%{x}%%%% c\n"],
-  ["\u2028", "\u0085", "T\u2028%%{x}%%\u0085%% c\n"],
-  ["\u2028", "\u2029\u0085", "T\u2028%%{x}%%\u2029\u0085%% c\n"],
-  ["\u2029", "\u0085\u2028  ", "T\u2029%%{x}%%\u0085\u2028 %% c\n"],
+  ["\u2028", "\u2029", "T\n%%{x}%%\n  %% c\n", true],
+  [" \u2028 ", "\u2028\u00a0", "T\n%%{x}%%\n  %% c\n", true],
+  ["\t\u2029\u00a0", " \u2028\t", "T\n%%{x}%%\n  %% c\n", true],
+  ["\u0085\u2028", "", "T\u0085\n%%{x}%%%% c\n", true],
+  ["\u0085\u2029 ", " ", "T\u0085\n%%{x}%% %% c\n", true],
+  ["\u0085\u2028", "\u2029", "T\u0085\n%%{x}%%\n  %% c\n", true],
+  ["\u2028\u0085", "", "T\u2028\u0085%%{x}%%%% c\n", false],
+  ["\u2029 \u0085", "", "T\u2029 \u0085%%{x}%%%% c\n", false],
+  ["\u2028", "\u0085", "T\u2028%%{x}%%\u0085%% c\n", false],
+  ["\u2028", "\u2029\u0085", "T\u2028%%{x}%%\u2029\u0085%% c\n", false],
+  ["\u2029", "\u0085\u2028  ", "T\u2029%%{x}%%\u0085\u2028 %% c\n", false],
+] as const
+
+/**
+ * The whitespace before the last directive and between it and a comment that a
+ * title, an accTitle: line, and an accDescr: line print where a statement
+ * follows an empty line, a comment line and an empty line, or a line of a
+ * directive: a U+2028 or U+2029 between the directive and the comment is left
+ * out with the whitespace beside it, where one stands before the directive, and
+ * an accDescr: line leaves out the whitespace after a separator (docs/treeview.md,
+ * Title).
+ */
+const separatorsWhereAStatementFollowsAGap = [
+  ["\u2028", "\u2028", "T\u2028%%{x}%%%% c", "T\u2028%%{x}%%%% c"],
+  ["\u2028", "  \u2028", "T\u2028%%{x}%%%% c", "T\u2028%%{x}%%%% c"],
+  ["\u2028", "\u2029\t", "T\u2028%%{x}%%%% c", "T\u2028%%{x}%%%% c"],
+  ["\u2028", " ", "T\u2028%%{x}%% %% c", "T\u2028%%{x}%%%% c"],
+  ["", "\u2028", "T%%{x}%%\u2028%% c", "T%%{x}%%\u2028%% c"],
+  ["", "  \u2028", "T%%{x}%%  \u2028%% c", "T%%{x}%%  \u2028%% c"],
+  ["", "\u2028  ", "T%%{x}%%\u2028  %% c", "T%%{x}%%\u2028%% c"],
+  ["", "\u2029\t", "T%%{x}%%\u2029\t%% c", "T%%{x}%%\u2029%% c"],
+  [
+    "\u2028",
+    "\u0085\u2028  ",
+    "T\u2028%%{x}%%\u0085\u2028  %% c",
+    "T\u2028%%{x}%%\u0085\u2028%% c",
+  ],
+  ["\u2029 ", "\u2029", "T\u2029 %%{x}%%%% c", "T\u2029%%{x}%%%% c"],
+  [
+    "\u2029 ",
+    "\u0085\u2028  ",
+    "T\u2029 %%{x}%%\u0085\u2028  %% c",
+    "T\u2029 %%{x}%%\u0085\u2028%% c",
+  ],
 ] as const
 
 /**
@@ -1030,7 +1083,7 @@ const whatFollowsATitleWithASeparatorBeforeTheDirective = [
   },
   {
     name: "treeview: a U+2028 or U+2029 before the last directive of a title, with a comment line after it",
-    follows: ["%% z\n"],
+    follows: ["%% z\n", "\n%% z\n", "%% z\n%% w\n"],
     moved: true,
   },
   {
@@ -1149,22 +1202,17 @@ describe("the whitespace before the last directive of a title and of an accessib
       for (const character of ["\u2028", "\u2029"]) {
         // With a separator on both sides of the directive, the forms that move
         // are given (docs/treeview.md, Title).
-        for (const [text, moved] of [
-          [`T${character}%%{x}%%%% c`, "T\n%%{x}%%%% c\n"],
-          ...(row.moved
-            ? [
-                [
-                  `T${character}%%{x}%%${character}%% c`,
-                  "T\n%%{x}%%\n  %% c\n",
-                ] as const,
-              ]
-            : []),
-        ] as const) {
+        for (const text of [
+          `T${character}%%{x}%%%% c`,
+          ...(row.moved ? [`T${character}%%{x}%%${character}%% c`] : []),
+        ]) {
           for (const follow of row.follows) {
-            await expectTitleLineWithSeparators(
-              `treeView-beta\n${keyword} ${text}\n${follow}`,
-              `treeView-beta\n  ${keyword} ${row.moved ? moved : `${text}\n`}`,
-            )
+            const input = `treeView-beta\n${keyword} ${text}\n${follow}`
+            // The moved form prints the text as if the separator were a line break.
+            const expected = row.moved
+              ? await formatMermaid(input.split(character).join("\n"))
+              : `treeView-beta\n  ${keyword} ${text}\n${tailsOfATitleThatStaysAsWritten[follow]}`
+            await expectFormattedTitle(input, expected)
           }
         }
       }
@@ -1173,11 +1221,47 @@ describe("the whitespace before the last directive of a title and of an accessib
 
   it("treeview: a U+2028 or U+2029 and a U+0085 around the last directive of a title, with the text ending", async () => {
     for (const keyword of keywordsOfTheTitleLines) {
-      for (const [before, between, start] of separatorsAroundTheLastDirective) {
-        for (const follow of ["", "\n", "%% z\n"]) {
-          await expectTitleLineWithSeparators(
+      for (const [
+        before,
+        between,
+        start,
+        moved,
+      ] of separatorsAroundTheLastDirective) {
+        for (const [follow, tail] of [
+          ["", ""],
+          ["\n", ""],
+          ["%% z\n", "  %% z\n"],
+        ] as const) {
+          const input = `treeView-beta\n${keyword} T${before}%%{x}%%${between}%% c\n${follow}`
+          // The moved forms print the text as if each separator were a line break.
+          const expected = moved
+            ? await formatMermaid(
+                input.split("\u2028").join("\n").split("\u2029").join("\n"),
+              )
+            : `treeView-beta\n  ${keyword} ${start}${tail}`
+          await expectFormattedTitle(input, expected)
+        }
+      }
+    }
+  })
+
+  it("treeview: the whitespace before the last directive and between it and a comment, where a statement follows an empty line, a comment line and an empty line, or a line of a directive", async () => {
+    for (const keyword of keywordsOfTheTitleLines) {
+      for (const [
+        before,
+        between,
+        title,
+        accDescr,
+      ] of separatorsWhereAStatementFollowsAGap) {
+        for (const [follow, tail] of [
+          ["\nR\n", "\n  R\n"],
+          ["\n\nR\n", "\n\n  R\n"],
+          ["%% z\n\nR\n", "%% z\n\n  R\n"],
+          ["%%{y}%%\nR\n", "%%{y}%%\n  R\n"],
+        ] as const) {
+          await expectFormattedTitle(
             `treeView-beta\n${keyword} T${before}%%{x}%%${between}%% c\n${follow}`,
-            `treeView-beta\n  ${keyword} ${start}`,
+            `treeView-beta\n  ${keyword} ${keyword === "accDescr:" ? accDescr : title}\n${tail}`,
           )
         }
       }

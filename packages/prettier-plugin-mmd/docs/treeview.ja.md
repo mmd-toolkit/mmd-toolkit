@@ -1893,11 +1893,24 @@ title の後に何もないか、空行かコメント行だけがあってテ�
 U+2029、`%% c` は、`title T`、`%%{x}%%`、`%% c` の 3 行に印字します）。
 ディレクティブの前に区切りがなく、
 ディレクティブとコメントの間にだけある U+2028 か U+2029 は、
-それらと一緒に書かれたまま残ります。
-最初の U+2028 か U+2029 の後ろ、コメントまでのどこかに U+0085 があれば、
-行は書かれたまま残ります。
+それらと一緒に書かれたまま残り、
+その後ろの空白は連なりの段落のとおりに印字します。
+最初の U+2028 か U+2029 の後ろ、
+ディレクティブの外でコメントまでの間に U+0085 があれば、行は書かれたまま残り、
+ディレクティブとコメントの間の連なりは連なりの段落のとおりに印字します。
 title の後に文があるとき（直後でも、空行かコメント行の後でも）と、
 空白だけの行かディレクティブの行があるときは、title は書かれたまま残ります。
+文が、空行、コメント行と空行、ディレクティブの行の後にあり、
+最後のディレクティブの前に U+2028 か U+2029 があるときは、
+ディレクティブとコメントの間の U+2028 か U+2029 を、
+その両側の空白と一緒に除きます（`title T`、U+2028、`%%{x}%%`、U+2028、`%% c`、
+空行、`R` は、`title T`、U+2028、`%%{x}%%%% c`、空行、`R` と印字します）。
+ただし、その間に U+0085 があるときは除かず、間の空白 1 つは残ります。
+`accDescr:` の行は、
+ディレクティブとコメントの間の U+2028 か U+2029 の後ろの空白も除き、
+ディレクティブの前に U+2028 か U+2029 があって、
+最初のものの後に U+0085 がなければ、その後ろの空白と、
+ディレクティブとコメントの間の連なり全体も除きます。
 
 最後のディレクティブが改行か `;` を含むとき（`%%{init: {`、改行、`}}%%`、
 または `%%{init: {a;b}}%%`）、表のとおりに印字するのは、
@@ -1970,6 +1983,7 @@ U+2028 の後を空白 1 つにして印字します）。
 [test: treeview: a U+2028 or U+2029 before the last directive of a title, with a statement after it, directly or after an empty line or a comment line]
 [test: treeview: a U+2028 or U+2029 before the last directive of a title, with a line of spaces or a line of a directive after it]
 [test: treeview: a U+2028 or U+2029 and a U+0085 around the last directive of a title, with the text ending]
+[test: treeview: the whitespace before the last directive and between it and a comment, where a statement follows an empty line, a comment line and an empty line, or a line of a directive]
 [test: treeview: the whitespace before the last directive where the line is the last statement of the text]
 [test: treeview: a run of whitespace before the last directive follows the column of its characters]
 [test: treeview: a run of whitespace before the last directive follows the column of its characters where the line is the last statement of the text]

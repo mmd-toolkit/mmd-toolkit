@@ -1888,11 +1888,23 @@ line); a second U+2028 or U+2029 between the directive and the comment puts the
 comment on a line of its own after the directive (`title T`, a U+2028,
 `%%{x}%%`, a U+2029, and `%% c` are printed `title T`, `%%{x}%%`, and `%% c` on
 three lines), while a U+2028 or a U+2029 between the directive and the comment
-alone, with none before the directive, stays with them as written. A U+0085
-after the first U+2028 or U+2029, anywhere up to the comment, keeps the line as
-written. With a statement after the title, directly or after an empty line or a
-comment line, or with a line of spaces or a line of a directive after it, the
-title stays as written.
+alone, with none before the directive, stays with them as written, and the
+whitespace after it is printed as the paragraph on that run says. A U+0085 after
+the first U+2028 or U+2029, outside the directives and up to the comment, keeps
+the line as written, with the run between the directive and the comment printed
+as that paragraph says. With a statement after the title, directly or after an
+empty line or a comment line, or with a line of spaces or a line of a directive
+after it, the title stays as written. Where the statement follows an empty line,
+a comment line and an empty line, or a line of a directive, and a U+2028 or a
+U+2029 stands before the last directive, a U+2028 or a U+2029 between the
+directive and the comment is left out with the whitespace beside it (`title T`,
+a U+2028, `%%{x}%%`, a U+2028, and `%% c`, then an empty line and `R`, are
+printed `title T`, a U+2028, `%%{x}%%%% c`, an empty line, and `R`), unless a
+U+0085 stands between them, and a single space between them stays; an
+`accDescr:` line also leaves out the whitespace after a U+2028 or a U+2029
+between the directive and the comment, and, with a U+2028 or a U+2029 before the
+directive and no U+0085 after the first one, the whitespace after that one and
+the whole run between the directive and the comment.
 
 Where the last directive holds a line break or a `;` (`%%{init: {`, a line
 break, and `}}%%`, or `%%{init: {a;b}}%%`), the table gives the forms with
@@ -1962,18 +1974,20 @@ with a statement after it, directly or after an empty line or a comment line]
 [test: treeview: a U+2028 or U+2029 before the last directive of a title, with a
 line of spaces or a line of a directive after it] [test: treeview: a U+2028 or
 U+2029 and a U+0085 around the last directive of a title, with the text ending]
-[test: treeview: the whitespace before the last directive where the line is the
-last statement of the text] [test: treeview: a run of whitespace before the last
-directive follows the column of its characters] [test: treeview: a run of
-whitespace before the last directive follows the column of its characters where
-the line is the last statement of the text] [test: treeview: a run that holds a
-tab and other whitespace before the last directive] [test: treeview: a run that
-holds a tab and other whitespace before the last directive where the line is the
-last statement of the text] [test: treeview: the whitespace around a last
-directive that holds a line break or a semicolon, with nothing or a mark that
-touches it after it] [test: treeview: the whitespace around a last directive
-that holds a line break or a semicolon, with spaces or a tab after it, or a mark
-after a space]
+[test: treeview: the whitespace before the last directive and between it and a
+comment, where a statement follows an empty line, a comment line and an empty
+line, or a line of a directive] [test: treeview: the whitespace before the last
+directive where the line is the last statement of the text] [test: treeview: a
+run of whitespace before the last directive follows the column of its
+characters] [test: treeview: a run of whitespace before the last directive
+follows the column of its characters where the line is the last statement of the
+text] [test: treeview: a run that holds a tab and other whitespace before the
+last directive] [test: treeview: a run that holds a tab and other whitespace
+before the last directive where the line is the last statement of the text]
+[test: treeview: the whitespace around a last directive that holds a line break
+or a semicolon, with nothing or a mark that touches it after it] [test:
+treeview: the whitespace around a last directive that holds a line break or a
+semicolon, with spaces or a tab after it, or a mark after a space]
 
 This chooses consistent Db-equivalent outer spacing without taking a next-line
 value. Follow AST boundaries for `titlex` and `title"node"`; title still stays
