@@ -474,7 +474,8 @@ Db が保つからです。
 U+2028 か U+2029 の後のコメント領域があると、
 mermaid.js は前後の行を 1 行として読みます。
 整形は、その行を最初の行から最後まで書かれたまま印字します。
-どの図種のどの文でも同じです。
+ただし、節が挙げる 2 つは別です。
+mindmap のノードのコメント行と、ER の実体のブロックです。
 詳しくは
 [U+2028 または U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
 を参照してください。
@@ -609,9 +610,9 @@ flowchart、sequence、class、state も 1 行に 1 つの文を印字します�
 
 無視される `;` は、行規則がそれを無視する根拠となる行に残します。
 `"style:#x" end;` の `end` は、前の実体と同じ行に、大文字でも残します。
-`end` を独立した行に置くと、`;` は行規則が無視するものではなくなります。
-詳しくは [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)
-を参照してください。
+`end;` を独立した行に置くと、`;` は行規則が無視するものではなくなるので、
+対象にするどの版も拒否します。
+詳しくは [`;` を含む行](./compatibility.ja.md#-を含む行) を参照してください。
 `class` や `subgraph` と最初の名前の間に無視される `;` があるときは、
 隙間全体を書かれたまま残します。
 `class;-A a`、`subgraph;-x`、`subgraph;é` は、
@@ -2777,6 +2778,7 @@ mermaid.js が複数行にわたって読む文は、改行が、
 [test: an indented line after a comment line after U+2028 inside the name of an ER entity]
 [test: a comment line after U+2028 inside the name of an ER entity with an alias]
 [test: a comment line after U+2028 inside the name of an ER entity with an attribute block on one line]
+[test: a comment line after U+2028 inside the name of an ER entity with an empty block on one line]
 [test: a comment line after U+2028 inside the name of an ER entity with a CSS class]
 [test: a comment line after U+2028 inside the first entity of an ER relationship]
 [test: a comment line after U+2028 inside the second entity of an ER relationship]
@@ -2857,8 +2859,8 @@ mermaid.js が複数行にわたって読む文は、改行が、
 行をつなげられるとき、複数行の空のブロックは、行の終わりが `{ }` になります。
 `{` の後ろに空白、タブ、U+2028 があっても同じで、ほかの空のブロックと同じです。
 1 行の空のブロックは、その行と一緒に書かれたままにします。
-U+2028 か U+2029 の後のコメント領域が前後の行と結ぶ行は、書かれたまま残り、
-その行の空のブロックも同じです。
+U+2028 か U+2029 の後のコメント領域が前後の行と結ぶ行にある、
+1 行に書かれた空のブロックは、その行と一緒に書かれたまま残ります。
 詳しくは
 [U+2028 または U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
 を参照してください。

@@ -498,7 +498,8 @@ Semicolons alone do not prevent alignment of a continuation.
 Comment regions that join physical lines retain their original layout. A comment
 region after U+2028 or U+2029 makes mermaid.js read the lines around it as one,
 and the formatter prints such a line as written from its first line to its end,
-as it does for every statement of every diagram type (see
+apart from the two cases that the section names: the comment line of a mindmap
+node, and the block of an ER entity (see
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
 
 [test: er/attribute-spacing/comment-region-continuation-kept]
@@ -629,10 +630,10 @@ A directive between two statements stands with the statement after it.
 
 An ignored `;` keeps the line that makes the line rule ignore it: in
 `"style:#x" end;`, the `end` stays with the entity before it, also in upper
-case. On a line of its own, the `end` would leave the `;` as one that the line
-rule no longer ignores (see
-[A line that a `;` ends](./compatibility.md#a-line-that-a--ends)). An ignored
-`;` between `class` or `subgraph` and its first name keeps the complete gap as
+case. On a line of its own, `end;` is rejected by every version that counts,
+since the `;` is then no more the one that the line rule ignores (see
+[Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)). An ignored `;`
+between `class` or `subgraph` and its first name keeps the complete gap as
 written: `class;-A a`, `subgraph;-x`, and `subgraph;é` keep their contacts after
 the `;` is removed by the line rule. This also applies when U+2028 or U+2029
 precedes the subgraph name.
@@ -2816,17 +2817,18 @@ after U+2028 inside the name of an ER entity that follows a name in quotes]
 ER entity] [test: a comment line after U+2028 inside the name of an ER entity
 with an alias] [test: a comment line after U+2028 inside the name of an ER
 entity with an attribute block on one line] [test: a comment line after U+2028
-inside the name of an ER entity with a CSS class] [test: a comment line after
-U+2028 inside the first entity of an ER relationship] [test: a comment line
-after U+2028 inside the second entity of an ER relationship] [test: a comment
-line after U+2028 inside both entities of an ER relationship] [test: a comment
-line after U+2028 inside the name of an ER attribute] [test: a comment line
-after U+2028 inside the type of an ER attribute] [test: a comment line after
-U+2028 inside the name of an ER subgraph] [test: a comment line after U+2028
-inside the title of an ER subgraph] [test: a comment line after U+2028 inside
-the name of an ER class statement] [test: a comment line after U+2028 inside the
-name of an ER class definition] [test: a comment line after U+2028 inside the
-name of an ER style statement]
+inside the name of an ER entity with an empty block on one line] [test: a
+comment line after U+2028 inside the name of an ER entity with a CSS class]
+[test: a comment line after U+2028 inside the first entity of an ER
+relationship] [test: a comment line after U+2028 inside the second entity of an
+ER relationship] [test: a comment line after U+2028 inside both entities of an
+ER relationship] [test: a comment line after U+2028 inside the name of an ER
+attribute] [test: a comment line after U+2028 inside the type of an ER
+attribute] [test: a comment line after U+2028 inside the name of an ER subgraph]
+[test: a comment line after U+2028 inside the title of an ER subgraph] [test: a
+comment line after U+2028 inside the name of an ER class statement] [test: a
+comment line after U+2028 inside the name of an ER class definition] [test: a
+comment line after U+2028 inside the name of an ER style statement]
 
 What the line holds and where it ends follow
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029).
@@ -2925,9 +2927,9 @@ it does where the `}` stands on any line that stays as written (see
 [Attribute blocks](#attribute-blocks)). Where its lines can join, an empty block
 over several lines is printed `{ }` at the end of that line, whatever stands
 after the `{` (spaces, a tab, a U+2028), as any other empty block is; an empty
-block on one line stays as written with its line. A line that a comment region
-after U+2028 or U+2029 joins with the lines around it stays as written, and so
-does an empty block on it (see
+block on one line stays as written with its line. An empty block written on one
+line, on a line that a comment region after U+2028 or U+2029 joins with the
+lines around it, stays as written with that line (see
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
 
 [test: a comment line after U+2028 inside the name of an ER entity with an
