@@ -6012,7 +6012,35 @@ to the end of the text, after a style statement and a U+2028: the U+2028 is
 dropped] [test: a directive line, an empty line, and a comment line, to the end
 of the text, after a style statement and a U+2028: the U+2028 is dropped] [test:
 two directive lines and a comment line, to the end of the text, after a style
-statement and a U+2028: the U+2028 is dropped]
+statement and a U+2028: the U+2028 is dropped] [test: a node and no semicolon,
+to the end of the text, after a U+2028: the U+2028 is dropped] [test: a node
+with a label and no semicolon, to the end of the text, after a U+2028: the
+U+2028 is dropped] [test: an edge and no semicolon, to the end of the text,
+after a U+2028: the U+2028 is dropped] [test: a width and no semicolon, to the
+end of the text, after a U+2028: the U+2028 is dropped] [test: a node and a
+semicolon, to the end of the text, after a U+2028: the U+2028 stays] [test: a
+node with a semicolon in its label, to the end of the text, after a U+2028: the
+U+2028 stays] [test: an edge and a semicolon, to the end of the text, after a
+U+2028: the U+2028 stays] [test: a width and a semicolon, to the end of the
+text, after a U+2028: the U+2028 stays] [test: a node and a semicolon, to the
+end of the text, after a U+2029: the U+2029 stays] [test: the end of a composite
+block and a semicolon, to the end of the text, after a U+2028: the whole
+composite stays as written] [test: the end of a composite block and a semicolon,
+to the end of the text, after a U+2029: the whole composite stays as written]
+[test: the end of a composite block, a statement follows the comment line, after
+a U+2028: the whole composite stays as written] [test: the end of a composite
+block and no semicolon, to the end of the text, after a U+2028: the U+2028 is
+dropped and the composite is formatted] [test: a node and no semicolon, to the
+end of the text, after a U+2029: the U+2029 is dropped] [test: a node and no
+semicolon, a statement follows the comment line, after a U+2028: the U+2028
+stays] [test: a node and a semicolon, a statement follows the comment line,
+after a U+2029: the U+2029 stays] [test: a node and a semicolon in a comment, to
+the end of the text, after a U+2028: the U+2028 stays] [test: a node and a
+comment that a space separates from it, to the end of the text, after a U+2028:
+the U+2028 stays] [test: an edge and a comment that a space separates from it, a
+statement follows the comment line, after a U+2029: the U+2029 stays] [test: a
+node and a comment that touches it, to the end of the text, after a U+2028: the
+U+2028 is dropped]
 
 What the line holds, and where it ends, follow from what mermaid.js removes. The
 documents of the diagram types say what is theirs:

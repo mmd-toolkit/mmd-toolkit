@@ -1605,6 +1605,14 @@ U+2028 や U+2029 は、文が続かず、
 コメントの中でも同じです（`style a fill:#F00 %%{x;y}%%` と
 `style a fill:#F00 %% x;`、U+2028、`%% c` は、
 U+2028 を残して `#f00` と印字します）。
+`style` ではない文は、
+コメントが空白を挟んで続くときも U+2028 や U+2029 を残し（`b %% x`、
+`b-->c %% x`、`columns 2 %% x`）、コメントが接するとき（`b%% x`）は落とします。
+複合ブロックの `end` も文です。
+`end;` のように U+2028 が残るとき、または文がコメント行の後に続くときは、
+複合ブロック全体を書かれたままにし、頭も本体も字下げしません（`block:G`、`  b`、
+`end;`、U+2028、`%% c`）。
+テキストの末尾の `end` は U+2028 を落とし、通常どおり整形します。
 文が続くときの色は、文がコメント行のすぐ後の行にあれば書かれたまま残り、空行、
 空白だけの行、ディレクティブの行が文のすぐ前にあれば小文字になります。
 flowchart、class、state、ER は、ブロック図が落とすどの行でも、
@@ -1629,25 +1637,29 @@ U+2028 の前の行に `;` があるときは、その行を書かれたまま�
 U+2028 とコメント行は、コメント行の後に何が続いても残り、
 スタイルの空白も書かれたままです（`style a fill:red;`、U+2028、
 `%% c` は変わりません。色でない値の後の `stroke-width:2px;` も、
-空白や文字が `;` から離す色の後の `fill:#F00 ;`、`fill:#F00 x;` も同じです。
-`style a fill:red`、U+2028、`%% c` は `fill: red` になります）。
+空白や文字が `;` から離す色の後の `fill:#F00 ;`、`fill:#F00 x;` も、
+U+2028 とコメント行は残り、色は小文字になります。`style a fill:red`、U+2028、
+`%% c` は `fill: red` になります）。
 その行の色は、コンマが続くときと、空白、タブ、
 フォームフィードと文字が続くときに、小文字にします。
-`;` が接する色は、コメント行のすぐ後に文が続くときだけ、
-`;` がないときと同じに書かれたまま残り、文が続かないとき、
-または空行かディレクティブの行が文のすぐ前にあるときは、
-小文字になります（`style a fill:#F00;`、U+2028、`%% c` は、
-U+2028 と `%% c` を残して `style a fill:#f00;` になります）。
-その `;` と U+2028 の間に空白、タブ、フォームフィードがあるときは、
-色は何が続いても小文字になります。
-ほかの空白文字（垂直タブ、ノーブレークスペース）があるときの色は、
-`;` が接するときと同じです。
-この 2 つは、色の後ろの `;` が 1 つのときです。
 1 つ目の `;` の後ろに、
 間に何があっても 2 つ目の `;` が続くとき（`style a fill:#F00;;`、
 `style a fill:#F00; ;`、`style a fill:#F00;x;`）は、何が続いても、
 また 2 つ目の `;` と U+2028 の間に何があっても（空白、タブ、垂直タブ、文字）、
 色は書かれたまま残ります。
+色の後ろの `;` が 1 つのときは、その `;` の後ろに行で続くもので決まります。
+ディレクティブは数えません。
+空白、タブ、フォームフィードが続くときは、
+色はコメント行の後に何が続いても小文字になります。
+コメントを含む文字が続くときは、行の規則がその `;` を残し、
+色は何が続いても書かれたまま残ります（`style a fill:#F00;x`、
+`style a fill:#F00;%% x`、`style a fill:#F00;%%{y}%%%% x`、U+2028、`%% c`）。
+何も続かないとき、または垂直タブ、
+ノーブレークスペースなどのほかの空白文字だけが続くときは、色は、
+コメント行のすぐ後に文が続くときだけ、`;` がないときと同じに書かれたまま残り、
+文が続かないとき、または空行かディレクティブの行が文のすぐ前にあるときは、
+小文字になります（`style a fill:#F00;`、U+2028、`%% c` は、
+U+2028 と `%% c` を残して `style a fill:#f00;` になります）。
 ブロック図では、mermaid.js は U+2028 を行の終わりとして、
 `%% c` をコメントとして読みます。
 `style a fill:#F00`、U+2028、テキストの末尾の `%% c` は、
@@ -1812,6 +1824,30 @@ U+2028 と `%% c` を残して `style a fill:#f00;` になります）。
 [test: two semicolons, then a character before the U+2028, to the end of the text, the color stays as written]
 [test: two semicolons that a space separates, then a character before the U+2028, to the end of the text, the color stays as written]
 [test: two semicolons, then a space before the U+2028, a statement follows, the color stays as written]
+[test: a semicolon that a character touches the line rule keeps, to the end of the text, after a style statement and a U+2028: the color stays as written]
+[test: a semicolon that a comment touches the line rule keeps, to the end of the text, after a style statement and a U+2028: the color stays as written]
+[test: a semicolon that a directive and a comment touches the line rule keeps, to the end of the text, after a style statement and a U+2028: the color stays as written]
+[test: a semicolon that a vertical tab and a character touches the line rule keeps, to the end of the text, after a style statement and a U+2028: the color stays as written]
+[test: a semicolon that a no-break space and a character touches the line rule keeps, to the end of the text, after a style statement and a U+2028: the color stays as written]
+[test: a semicolon that a character touches, a statement follows with an empty line before it, the color stays as written]
+[test: a semicolon that a character touches, in a class definition, after a U+2029, the color stays as written]
+[test: a semicolon that only a directive touches, to the end of the text, the color is in lower case]
+[test: a semicolon that only a directive touches, a statement follows right after the comment line, the color stays as written]
+[test: a form feed and a character after a semicolon, a statement follows, the color is in lower case]
+[test: spaces and a directive after a semicolon, a statement follows, the color is in lower case]
+[test: a directive and spaces after a semicolon, a statement follows, the color is in lower case]
+[test: a semicolon after a color and a comment after spaces, to the end of the text, the color is in lower case]
+[test: the end of a composite block and a semicolon, to the end of the text, after a U+2028: the whole composite stays as written]
+[test: the end of a composite block and a semicolon, to the end of the text, after a U+2029: the whole composite stays as written]
+[test: the end of a composite block, a statement follows the comment line, after a U+2028: the whole composite stays as written]
+[test: the end of a composite block and no semicolon, to the end of the text, after a U+2028: the U+2028 is dropped and the composite is formatted]
+[test: a node and no semicolon, to the end of the text, after a U+2029: the U+2029 is dropped]
+[test: a node and no semicolon, a statement follows the comment line, after a U+2028: the U+2028 stays]
+[test: a node and a semicolon, a statement follows the comment line, after a U+2029: the U+2029 stays]
+[test: a node and a semicolon in a comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and a comment that a space separates from it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an edge and a comment that a space separates from it, a statement follows the comment line, after a U+2029: the U+2029 stays]
+[test: a node and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
 
 ### 空白文字
 

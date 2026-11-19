@@ -6033,6 +6033,126 @@ const blockLineSeparatorExamples: readonly (readonly [
     "block-beta\na\nstyle a fill:#F00;; \u2028%% c\nb\n",
     "block-beta\n  a\n  style a fill:#F00;; \u2028%% c\nb\n",
   ],
+  [
+    "a semicolon that a character touches the line rule keeps, to the end of the text, after a style statement and a U+2028: the color stays as written",
+    "block-beta\na\nstyle a fill:#F00;x\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#F00;x\u2028%% c\n",
+  ],
+  [
+    "a semicolon that a comment touches the line rule keeps, to the end of the text, after a style statement and a U+2028: the color stays as written",
+    "block-beta\na\nstyle a fill:#F00;%% x\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#F00;%% x\u2028%% c\n",
+  ],
+  [
+    "a semicolon that a directive and a comment touches the line rule keeps, to the end of the text, after a style statement and a U+2028: the color stays as written",
+    "block-beta\na\nstyle a fill:#F00;%%{y}%%%% x\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#F00;%%{y}%%%% x\u2028%% c\n",
+  ],
+  [
+    "a semicolon that a vertical tab and a character touches the line rule keeps, to the end of the text, after a style statement and a U+2028: the color stays as written",
+    "block-beta\na\nstyle a fill:#F00;\u000bx\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#F00;\u000bx\u2028%% c\n",
+  ],
+  [
+    "a semicolon that a no-break space and a character touches the line rule keeps, to the end of the text, after a style statement and a U+2028: the color stays as written",
+    "block-beta\na\nstyle a fill:#F00;\u00a0x\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#F00;\u00a0x\u2028%% c\n",
+  ],
+  [
+    "a semicolon that a character touches, a statement follows with an empty line before it, the color stays as written",
+    "block-beta\na\nstyle a fill:#F00;x\u2028%% c\n\nb\n",
+    "block-beta\n  a\n  style a fill:#F00;x\u2028%% c\n\n  b\n",
+  ],
+  [
+    "a semicolon that a character touches, in a class definition, after a U+2029, the color stays as written",
+    "block-beta\na\nclassDef k fill:#F00;x\u2029%% c\n",
+    "block-beta\n  a\n  classDef k fill:#F00;x\u2029%% c\n",
+  ],
+  [
+    "a semicolon that only a directive touches, to the end of the text, the color is in lower case",
+    "block-beta\na\nstyle a fill:#F00;%%{y}%%\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#f00;%%{y}%%\u2028%% c\n",
+  ],
+  [
+    "a semicolon that only a directive touches, a statement follows right after the comment line, the color stays as written",
+    "block-beta\na\nstyle a fill:#F00;%%{y}%%\u2028%% c\nb\n",
+    "block-beta\n  a\n  style a fill:#F00;%%{y}%%\u2028%% c\nb\n",
+  ],
+  [
+    "a form feed and a character after a semicolon, a statement follows, the color is in lower case",
+    "block-beta\na\nstyle a fill:#F00;\fx\u2028%% c\nb\n",
+    "block-beta\n  a\n  style a fill:#f00;\fx\u2028%% c\nb\n",
+  ],
+  [
+    "spaces and a directive after a semicolon, a statement follows, the color is in lower case",
+    "block-beta\na\nstyle a fill:#F00;  %%{y}%%\u2028%% c\nb\n",
+    "block-beta\n  a\n  style a fill:#f00;  %%{y}%%\u2028%% c\nb\n",
+  ],
+  [
+    "a directive and spaces after a semicolon, a statement follows, the color is in lower case",
+    "block-beta\na\nstyle a fill:#F00;%%{y}%%  \u2028%% c\nb\n",
+    "block-beta\n  a\n  style a fill:#f00;%%{y}%%  \u2028%% c\nb\n",
+  ],
+  [
+    "a semicolon after a color and a comment after spaces, to the end of the text, the color is in lower case",
+    "block-beta\na\nstyle a fill:#F00;  %% x\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#f00;  %% x\u2028%% c\n",
+  ],
+  [
+    "the end of a composite block and a semicolon, to the end of the text, after a U+2028: the whole composite stays as written",
+    "block-beta\nblock:G\n  b\nend;\u2028%% c\n",
+    "block-beta\n  block:G\n  b\nend;\u2028%% c\n",
+  ],
+  [
+    "the end of a composite block and a semicolon, to the end of the text, after a U+2029: the whole composite stays as written",
+    "block-beta\nblock:G\n  b\nend;\u2029%% c\n",
+    "block-beta\n  block:G\n  b\nend;\u2029%% c\n",
+  ],
+  [
+    "the end of a composite block, a statement follows the comment line, after a U+2028: the whole composite stays as written",
+    "block-beta\nblock:G\n  b\nend\u2028%% c\nz\n",
+    "block-beta\n  block:G\n  b\nend\u2028%% c\nz\n",
+  ],
+  [
+    "the end of a composite block and no semicolon, to the end of the text, after a U+2028: the U+2028 is dropped and the composite is formatted",
+    "block-beta\nblock:G\n  b\nend\u2028%% c\n",
+    "block-beta\n  block: G\n    b\n  end\n  %% c\n",
+  ],
+  [
+    "a node and no semicolon, to the end of the text, after a U+2029: the U+2029 is dropped",
+    "block-beta\na\nb\u2029%% c\n",
+    "block-beta\n  a\n  b\n  %% c\n",
+  ],
+  [
+    "a node and no semicolon, a statement follows the comment line, after a U+2028: the U+2028 stays",
+    "block-beta\na\nb\u2028%% c\nz\n",
+    "block-beta\n  a\n  b\u2028%% c\nz\n",
+  ],
+  [
+    "a node and a semicolon, a statement follows the comment line, after a U+2029: the U+2029 stays",
+    "block-beta\na\nb;\u2029%% c\nz\n",
+    "block-beta\n  a\n  b;\u2029%% c\nz\n",
+  ],
+  [
+    "a node and a semicolon in a comment, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\nb %% x;\u2028%% c\n",
+    "block-beta\n  a\n  b %% x;\u2028%% c\n",
+  ],
+  [
+    "a node and a comment that a space separates from it, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\nb %% x\u2028%% c\n",
+    "block-beta\n  a\n  b %% x\u2028%% c\n",
+  ],
+  [
+    "an edge and a comment that a space separates from it, a statement follows the comment line, after a U+2029: the U+2029 stays",
+    "block-beta\na\nb-->c %% x\u2029%% c\nz\n",
+    "block-beta\n  a\n  b-->c %% x\u2029%% c\nz\n",
+  ],
+  [
+    "a node and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\nb%% x\u2028%% c\n",
+    "block-beta\n  a\n  b%% x\n  %% c\n",
+  ],
 ]
 
 /**

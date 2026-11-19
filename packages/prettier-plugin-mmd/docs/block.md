@@ -1597,49 +1597,60 @@ before a comment line at the end of the text, and `b;`, `b["x;y"]`, `b-->c;`,
 and `columns 2;` keep it. A `;` counts wherever it stands in the line, also
 inside a label, a directive, or a comment (`style a fill:#F00 %%{x;y}%%`, and
 `style a fill:#F00 %% x;`, U+2028, and `%% c` keep the U+2028 and print `#f00`).
-Where a statement follows, the color stays as written if the statement is on the
-line right after a comment line, and is in lower case if an empty line, a line
-of whitespace, or a directive line stands right before it. Flowchart, class,
-state, and ER keep the line as written in every row where block drops it (ER
-rejects the row of a whitespace-only line), and rule 2 gives their form, so
-block prints each of those rows against rule 2 and waits to be fixed by the
-rule. On such a line, a color before a comma on its line, also after a space, a
-tab, or a form feed, and the last color of the last line, where no `;` that the
-line rule ignores follows it, are in lower case; a color before a comma at the
-start of the line after the comment line stays as written (`#F00`, and `#abc`
-after it); a color that spaces, tabs, or form feeds and characters follow on its
-line is in lower case (`#F00 x`, U+2028, `%% c`, and ` y` print `#f00 x`); and a
-color that a `;` that the line rule ignores touches on a line after the comment
-line stays as written (`#F00`, and `#ABC;` after it; the `;` before the U+2028
-is stated below), also where any character but a space, a tab, or a form feed
-separates it from the `;`; for a vertical tab or a wide space, the
+A statement that is no style keeps the U+2028 or U+2029 also where a comment
+follows it after whitespace (`b %% x`, `b-->c %% x`, `columns 2 %% x`), and
+loses it where the comment touches the statement (`b%% x`). The end of a
+composite block is a statement too: where it keeps the U+2028 (`end;`, or a
+statement after the comment line), the whole composite stays as written, its
+head and its body unindented (`block:G`, `  b`, `end;`, U+2028, and `%% c`), and
+`end` at the end of the text loses it and is formatted as usual. Where a
+statement follows, the color stays as written if the statement is on the line
+right after a comment line, and is in lower case if an empty line, a line of
+whitespace, or a directive line stands right before it. Flowchart, class, state,
+and ER keep the line as written in every row where block drops it (ER rejects
+the row of a whitespace-only line), and rule 2 gives their form, so block prints
+each of those rows against rule 2 and waits to be fixed by the rule. On such a
+line, a color before a comma on its line, also after a space, a tab, or a form
+feed, and the last color of the last line, where no `;` that the line rule
+ignores follows it, are in lower case; a color before a comma at the start of
+the line after the comment line stays as written (`#F00`, and `#abc` after it);
+a color that spaces, tabs, or form feeds and characters follow on its line is in
+lower case (`#F00 x`, U+2028, `%% c`, and ` y` print `#f00 x`); and a color that
+a `;` that the line rule ignores touches on a line after the comment line stays
+as written (`#F00`, and `#ABC;` after it; the `;` before the U+2028 is stated
+below), also where any character but a space, a tab, or a form feed separates it
+from the `;`; for a vertical tab or a wide space, the
 [Colors](./compatibility.md#colors-that-are-drawn-the-same) rule prints it in
 lower case, so that form is printed against the rule and waits to be fixed by
 it. Where the line before the U+2028 holds a `;`, the line is kept: the U+2028
 and the comment line stay as written, whatever follows the comment line, and so
 does the whitespace of the styles (`style a fill:red;`, U+2028, and `%% c` are
-not changed, also after a value that is no color, as in `stroke-width:2px;`, and
-after a color that a space or a character separates from the `;`, as in
-`fill:#F00 ;` and `fill:#F00 x;`, while `style a fill:red`, U+2028, and `%% c`
+not changed, and the U+2028 and the comment line stay also after a value that is
+no color, as in `stroke-width:2px;`, and after a color that a space or a
+character separates from the `;`, as in `fill:#F00 ;` and `fill:#F00 x;`, which
+print the color in lower case, while `style a fill:red`, U+2028, and `%% c`
 print `style a fill: red`). The colors of such a line are in lower case before a
-comma and where a space, a tab, or a form feed and characters follow them. The
-color that the `;` touches stays only where a statement follows right after a
-comment line, as without the `;`: where no statement follows, or an empty line
-or a directive line stands right before the statement, it is in lower case
-(`style a fill:#F00;`, U+2028, and `%% c` are printed `style a fill:#f00;`,
-U+2028, and `%% c`). Where a space, a tab, or a form feed stands between that
-`;` and the U+2028, the color is in lower case, whatever follows; where another
-whitespace character does (a vertical tab, a no-break space), the color is as
-where the `;` touches it. Both hold where one `;` follows the color. Where a
-second `;` follows the first, whatever stands between them
+comma and where a space, a tab, or a form feed and characters follow them. Where
+a second `;` follows the first, whatever stands between them
 (`style a fill:#F00;;`, `style a fill:#F00; ;`, `style a fill:#F00;x;`), the
 color stays as written, whatever follows and whatever stands between the second
-`;` and the U+2028 (a space, a tab, a vertical tab, or a character). In a block
-diagram, mermaid.js reads the U+2028 as the end of the line and `%% c` as a
-comment. For `style a fill:#F00`, a U+2028, and `%% c` at the end of the text,
-the Db of 12.3.0 holds neither of them in the style, and differs from that of
-the plain line only in the whitespace after the first `:` and in the case of the
-color, which
+`;` and the U+2028 (a space, a tab, a vertical tab, or a character). Where one
+`;` follows the color, what follows the `;` on the line decides, a directive
+left out. Where a space, a tab, or a form feed follows it, the color is in lower
+case, whatever follows the comment line. Where a character follows it, a comment
+included, the line rule keeps the `;`, and the color stays as written, whatever
+follows (`style a fill:#F00;x`, `style a fill:#F00;%% x`, and
+`style a fill:#F00;%%{y}%%%% x`, U+2028, and `%% c`). Where nothing follows it,
+or only a vertical tab, a no-break space, or another whitespace character, the
+color stays as written only where a statement follows right after a comment
+line, as without the `;`: where no statement follows, or an empty line or a
+directive line stands right before the statement, it is in lower case
+(`style a fill:#F00;`, U+2028, and `%% c` are printed `style a fill:#f00;`,
+U+2028, and `%% c`). In a block diagram, mermaid.js reads the U+2028 as the end
+of the line and `%% c` as a comment. For `style a fill:#F00`, a U+2028, and
+`%% c` at the end of the text, the Db of 12.3.0 holds neither of them in the
+style, and differs from that of the plain line only in the whitespace after the
+first `:` and in the case of the color, which
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)
 and
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)
@@ -1902,7 +1913,45 @@ semicolons, then a character before the U+2028, to the end of the text, the
 color stays as written] [test: two semicolons that a space separates, then a
 character before the U+2028, to the end of the text, the color stays as written]
 [test: two semicolons, then a space before the U+2028, a statement follows, the
-color stays as written]
+color stays as written] [test: a semicolon that a character touches the line
+rule keeps, to the end of the text, after a style statement and a U+2028: the
+color stays as written] [test: a semicolon that a comment touches the line rule
+keeps, to the end of the text, after a style statement and a U+2028: the color
+stays as written] [test: a semicolon that a directive and a comment touches the
+line rule keeps, to the end of the text, after a style statement and a U+2028:
+the color stays as written] [test: a semicolon that a vertical tab and a
+character touches the line rule keeps, to the end of the text, after a style
+statement and a U+2028: the color stays as written] [test: a semicolon that a
+no-break space and a character touches the line rule keeps, to the end of the
+text, after a style statement and a U+2028: the color stays as written] [test: a
+semicolon that a character touches, a statement follows with an empty line
+before it, the color stays as written] [test: a semicolon that a character
+touches, in a class definition, after a U+2029, the color stays as written]
+[test: a semicolon that only a directive touches, to the end of the text, the
+color is in lower case] [test: a semicolon that only a directive touches, a
+statement follows right after the comment line, the color stays as written]
+[test: a form feed and a character after a semicolon, a statement follows, the
+color is in lower case] [test: spaces and a directive after a semicolon, a
+statement follows, the color is in lower case] [test: a directive and spaces
+after a semicolon, a statement follows, the color is in lower case] [test: a
+semicolon after a color and a comment after spaces, to the end of the text, the
+color is in lower case] [test: the end of a composite block and a semicolon, to
+the end of the text, after a U+2028: the whole composite stays as written]
+[test: the end of a composite block and a semicolon, to the end of the text,
+after a U+2029: the whole composite stays as written] [test: the end of a
+composite block, a statement follows the comment line, after a U+2028: the whole
+composite stays as written] [test: the end of a composite block and no
+semicolon, to the end of the text, after a U+2028: the U+2028 is dropped and the
+composite is formatted] [test: a node and no semicolon, to the end of the text,
+after a U+2029: the U+2029 is dropped] [test: a node and no semicolon, a
+statement follows the comment line, after a U+2028: the U+2028 stays] [test: a
+node and a semicolon, a statement follows the comment line, after a U+2029: the
+U+2029 stays] [test: a node and a semicolon in a comment, to the end of the
+text, after a U+2028: the U+2028 stays] [test: a node and a comment that a space
+separates from it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an edge and a comment that a space separates from it, a statement follows
+the comment line, after a U+2029: the U+2029 stays] [test: a node and a comment
+that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
 
 ### Whitespace characters
 
