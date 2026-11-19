@@ -1335,8 +1335,10 @@ export const treeviewCases: readonly TreeviewCase[] = [
   },
   {
     name: "treeview/final-newline/open-directive-after-box-node-two-spaces",
-    input: "treeView-beta\n\u251c\u2500\u2500 R\n\u2514\u2500\u2500 A %%{unfinished  ",
-    output: "treeView-beta\n\u251c\u2500\u2500 R\n\u2514\u2500\u2500 A %%{unfinished\n",
+    input:
+      "treeView-beta\n\u251c\u2500\u2500 R\n\u2514\u2500\u2500 A %%{unfinished  ",
+    output:
+      "treeView-beta\n\u251c\u2500\u2500 R\n\u2514\u2500\u2500 A %%{unfinished\n",
     options: {},
   },
 ]
