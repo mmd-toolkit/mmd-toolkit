@@ -551,15 +551,20 @@ kanban one line with U+2028 inside] [test: data blocks: kanban one line with
 U+2029 inside] [test: data blocks: kanban one line with no-break spaces at the
 ends]
 
-A card that ends with directives is printed by both rules in one formatting: the
-block on one line gets one space inside each end, and the spaces and tabs after
-the last directive are left out (see
+A card whose block is on one line and that ends with directives is printed by
+both rules in one formatting: the block gets one space inside each end, and the
+spaces and tabs after the last directive are left out (see
 [Trailing whitespace](#trailing-whitespace)), so formatting the output again
 changes nothing. The block does not stay as written because of those spaces and
 tabs. This holds for a directive that is closed and for one that is not closed,
 which runs to the end of the text, for a card with a shape and for one without,
-for directives that touch the block, that follow each other, or that also start
-the card, and for a block whose line is too long to fit.
+and for directives that touch the block, that follow each other, or that also
+start the card. A block whose line is too long is not split where a directive
+follows its `}`, as in [Data blocks](./flowchart.md#data-blocks): it is printed
+on its line with one space inside each end. A block over several lines is not
+padded, and the whitespace after the last directive of its card stays as
+written, as on any continuation line of a multi-line value (see
+[Trailing whitespace](#trailing-whitespace)).
 
 [fixture: data-blocks/one-line-padded-closed-directive-blanks] [fixture:
 data-blocks/one-line-padded-closed-directive-tab] [fixture:
@@ -571,7 +576,8 @@ data-blocks/one-line-padded-touching-directive-blanks] [fixture:
 data-blocks/one-line-padded-two-directives-blanks] [fixture:
 data-blocks/one-line-padded-leading-directive-blanks] [fixture:
 data-blocks/one-line-padded-tab-inside-directive-blanks] [fixture:
-data-blocks/one-line-padded-long-directive-blanks]
+data-blocks/one-line-padded-long-directive-blanks] [fixture:
+data-blocks/multiline-directive-blanks-kept]
 
 Apply the movement and safety conditions of
 [Data blocks](./flowchart.md#data-blocks): when a newline immediately follows
