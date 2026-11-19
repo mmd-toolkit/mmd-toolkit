@@ -494,8 +494,8 @@ the drawn text of every version that counts. Where two `;` follow, the line rule
 of mermaid.js ignores the last, and removing one makes it ignore another (see
 [A line that a `;` ends](./compatibility.md#a-line-that-a--ends)). The
 directives that end a title are printed with one space before each that has
-whitespace before it, and the whitespace after the last one is left out,
-whatever the whitespace at the end of the line (see
+spaces or tabs before it, and the spaces and tabs after the last one are left
+out, whatever the spaces and tabs at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
@@ -539,7 +539,8 @@ Where two `;` follow, the line rule of mermaid.js ignores the last, and removing
 one makes it ignore another (see
 [A line that a `;` ends](./compatibility.md#a-line-that-a--ends)). The
 directives that end the value are printed with one space before each that has
-whitespace before it, and the whitespace after the last one is left out (see
+spaces or tabs before it, and the spaces and tabs after the last one are left
+out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
