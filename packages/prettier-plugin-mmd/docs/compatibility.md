@@ -1476,11 +1476,12 @@ its column.
 | `T %%{x}%% %% c  `             | as written         | `T %%{x}%% %% c`       | `T %%{x}%% %% c`                   | as written  |
 | `T\u00a0%%{x}%%%% c`           | `T %%{x}%%%% c`    | as written             | as written                         | as written  |
 
-A pie chart keeps a no-break space, U+3000, or U+2003 before a comment where the
-other Langium types print one space (see [Title](./pie.md#title)). An
-`accTitle:` or `accDescr:` line of the Langium types prints as their column,
-except that a directive that starts the value stays with what follows it:
-`accTitle: %%{x}%%\u00a0T %%{y}%%` and `accTitle: %%{x}%%  T  ` are not changed.
+An `accTitle:` or `accDescr:` line of the Langium types prints as their column,
+except that a directive that starts the value stays with what follows it
+(`accTitle: %%{x}%%\u00a0T %%{y}%%` and `accTitle: %%{x}%%  T  ` are not
+changed), and that the `accTitle:` line of a pie chart and of a gitGraph stays
+as written in the four rows with a comment after the text or after a directive
+(see [Accessibility lines](./pie.md#accessibility-lines)).
 
 A directive that is not closed in a title takes the rest of the text.
 `title T %%{x` and `title T%%{x` are not changed in any type. The second table

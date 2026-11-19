@@ -1549,11 +1549,14 @@ Wardley、treeView、info、railroad です。
 | `T %%{x}%% %% c  `             | 書かれたまま       | `T %%{x}%% %% c`       | `T %%{x}%% %% c`                   | 書かれたまま |
 | `T\u00a0%%{x}%%%% c`           | `T %%{x}%%%% c`    | 書かれたまま           | 書かれたまま                       | 書かれたまま |
 
-pie 図は、コメントの前の改行しない空白、U+3000、U+2003 を残します。
-ほかの Langium の型は空白 1 つにします（[Title](./pie.ja.md#title)を参照）。
 Langium の型の `accTitle:` と `accDescr:` の行は、その列の形に印字します。
-ただし、値の先頭のディレクティブは、その後ろの文字と一緒に残ります。
-`accTitle: %%{x}%%\u00a0T %%{y}%%` と `accTitle: %%{x}%%  T  ` は変えません。
+ただし、値の先頭のディレクティブは、
+その後ろの文字と一緒に残ります（`accTitle: %%{x}%%\u00a0T %%{y}%%` と
+`accTitle: %%{x}%%  T  ` は変えません）。
+pie 図と gitGraph の `accTitle:` の行は、
+テキストかディレクティブの後にコメントがある表の 4 つの行では、
+書かれたまま残ります。
+（[Accessibility lines](./pie.ja.md#accessibility-lines)）。
 
 閉じていないディレクティブはタイトルの残りを取ります。
 `title T %%{x` と `title T%%{x` は、どの型でも変えません。

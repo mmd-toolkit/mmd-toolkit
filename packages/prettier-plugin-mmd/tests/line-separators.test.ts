@@ -6667,6 +6667,38 @@ describe.each(accessibilityTitleTypes)(
   },
 )
 
+/** The accTitle line of a pie chart and of a gitGraph keeps the whitespace before a comment (docs/pie.md, Accessibility lines). */
+const accessibilityCommentRows = [
+  "a comment and spaces after a directive that ends a title",
+  "a no-break space before a comment after the text of a title",
+  "runs and spaces around a comment after the text of a title",
+  "a no-break space before a directive and a comment after the text of a title",
+]
+
+describe.each(
+  titleTypes
+    .filter(([name]) => ["a pie chart", "a gitGraph"].includes(name))
+    .map(
+      ([name, , input, output]) =>
+        [
+          name,
+          input.replace("title {title}", "accTitle: {title}"),
+          output.replace("title {title}", "accTitle: {title}"),
+        ] as const,
+    ),
+)("the accTitle line of %s with a comment", (_diagram, input, output) => {
+  it.each(
+    titleDirectiveCases.filter(([name]) =>
+      accessibilityCommentRows.includes(name),
+    ),
+  )("keeps %s", async (_case, written) => {
+    await expectKept(
+      input.replace("{title}", written),
+      output.replace("{title}", written),
+    )
+  })
+})
+
 describe("the title of a diagram with a directive that is not closed", () => {
   it.each(titleOpenDirectiveExamples)(
     "prints %s",
