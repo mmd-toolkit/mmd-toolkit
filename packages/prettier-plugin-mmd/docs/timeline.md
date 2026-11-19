@@ -356,8 +356,9 @@ from the next colon ends its line too: in `2020 : e1  ` followed by a line
 `: e2`, the whitespace after `e1` is left out. The directives that end such an
 event are printed with one space before each that has spaces or tabs before it,
 and the spaces and tabs after the last one are left out: `2020 : e1   %%{x}%%  `
-is printed `2020 : e1 %%{x}%%`, unless a directive of the line holds a U+2028
-(see
+is printed `2020 : e1 %%{x}%%`, unless a directive of the line holds a U+2028 or
+a U+2029, which keeps the run of spaces before the directive while the spaces
+after the last directive are still left out (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).

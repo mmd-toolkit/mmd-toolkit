@@ -912,7 +912,8 @@ A title with a directive or a comment is printed as the Venn and C4 column of
 the first table of
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)
 gives. Where only directives follow the text, the spaces and tabs after the last
-directive are left out, unless a directive of the line holds a U+2028 (see
+directive are left out, unless a directive of the line holds a U+2028 or a
+U+2029 (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)).
 After the text, spaces and tabs before a comment are printed as one space, and
 the spaces and tabs after the comment are left out: `title T  %% c  ` is printed

@@ -609,7 +609,7 @@ chooses a compact Db-equal edge without treating the common value as a quoted
 string. Where only directives follow the text of a title, they are printed with
 one space before each that has spaces or tabs before it, and the spaces and tabs
 after the last one are left out, unless a directive of the line holds a line
-break, a `;`, or a U+2028 (see
+break, a `;`, a U+2028, or a U+2029 (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
@@ -639,7 +639,7 @@ Use the shared accessibility line layout for accTitle: Value and accDescr:
 Value, retaining empty assignments. Where only directives follow the text of the
 value, they are printed with one space before each that has spaces or tabs
 before it, and the spaces and tabs after the last one are left out, unless a
-directive of the line holds a line break, a `;`, or a U+2028 (see
+directive of the line holds a line break, a `;`, a U+2028, or a U+2029 (see
 [Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
 and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
