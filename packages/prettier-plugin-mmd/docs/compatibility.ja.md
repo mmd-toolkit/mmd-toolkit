@@ -1457,6 +1457,10 @@ C4 図の説明 `accDescription` も同じです。
 title、軸の書式、`accDescription`、
 別名を持つ state の 2 つ目の説明の両端にあると、
 対象にするどの版も別のテキストか形状を描きます。
+ただし、Gantt、user journey、timeline、sequence、C4 の title と、
+Gantt の軸の書式と、
+C4 の `accDescription` の先頭か末尾にあるフォームフィードは、
+あってもなくても同じに描かれ、それでも書かれたままです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
@@ -1467,8 +1471,11 @@ pie、radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、
 treeView、info、railroad、quadrant の図の title は、末尾の空白文字を除き、
 先頭の空白文字も、quadrant 図を除いて除きます。
 quadrant 図は、U+2028 か U+2029 を含む間を書かれたままにするので、
-先頭の U+2028 と U+2029 を残します（下の最初の表の `\u2028T` と `\u2029T`。
+後ろにテキストが続く先頭の U+2028 と U+2029 を残します（下の最初の表の
+`\u2028T`、`\u2029T`、`\u2028%%{x}%% T`。
 [行区切り文字](./quadrant.ja.md#行区切り文字)を参照）。
+ディレクティブだけのタイトルは、
+ほかの型と同じに先頭のそれらを除きます（`\u2028%%{x}%%`）。
 ここでいう空白文字は、U+0009〜U+000D、U+0020、U+00A0、U+1680、U+2000〜U+200A、
 U+2028、U+2029、U+202F、U+205F、U+3000、U+FEFF で、
 `String.prototype.trim`
@@ -1497,11 +1504,13 @@ user journey のタスクの説明は、最初のコロンの前の空白とタ�
 空白 1 つにし、コメントがテキストに接していれば接したままにします。
 空白でもタブでもなく、U+2028 でも U+2029 でもない空白文字（改行しない空白、
 U+3000、U+2003 など）は、
-Langium の型では空白 1 つにして印字し（`T\u3000%% c` は `T %% c`）、quadrant、
-Gantt、user journey、timeline、sequence、Venn、C4 の図では書かれたままにします。
-空白 1 つの形は、quadrant、Gantt、Venn、C4 の図で、
+pie 図を除く Langium の型では空白 1 つにして印字し（radar 図で `T\u3000%% c` は
+`T %% c`）、quadrant、Gantt、user journey、timeline、sequence、Venn、
+C4 の図では書かれたままにします。
+空白 1 つの形は、この 7 つの型のどれでも、
 対象にするどの版でも別のテキストか別の形状を描きます。
-ただしフォームフィードは、quadrant、Gantt、C4 の図では同じに描きます。
+ただしフォームフィードは、quadrant、Gantt、user journey、timeline、sequence、
+C4 の図では同じに描きます。
 テキストの後にディレクティブだけが続く場合は、
 それぞれの前に空白かタブがあるかないかを保ち、
 空白とタブの連続は空白 1 つにします。
@@ -1605,6 +1614,15 @@ Wardley、treeView、info、railroad です。
 | `\u2028T`                      | `T`                      | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
 | `\u2029T`                      | `T`                      | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
 | `T\u2028  `                    | `T`                      | `T`                    | `T\u2028`                          | `T\u2028`           |
+| `\u2028%%{x}%%`                | `%%{x}%%`                | `%%{x}%%`              | 書かれたまま                       | 書かれたまま        |
+| `\u2029%%{x}%%`                | `%%{x}%%`                | `%%{x}%%`              | 書かれたまま                       | 書かれたまま        |
+| `\u000b%%{x}%%`                | `%%{x}%%`                | `%%{x}%%`              | 書かれたまま                       | 書かれたまま        |
+| `\u000c%%{x}%%`                | `%%{x}%%`                | `%%{x}%%`              | 書かれたまま                       | 書かれたまま        |
+| `\ufeff%%{x}%%`                | `%%{x}%%`                | `%%{x}%%`              | 書かれたまま                       | 書かれたまま        |
+| `\u2028%%{x}%% T`              | 書かれたまま             | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
+| `\u2029%%{x}%% T`              | 書かれたまま             | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
+| `\u000cT`                      | `T`                      | `T`                    | 書かれたまま                       | 書かれたまま        |
+| `T\u000c`                      | `T`                      | `T`                    | 書かれたまま                       | 書かれたまま        |
 
 ディレクティブだけのタイトル（`%%{x}%%  `、ディレクティブとタブ、
 ディレクティブ 2 つと空白）は、quadrant 以外のどの型でも書かれたままです。
@@ -1612,8 +1630,15 @@ quadrant は、最後のディレクティブの後の空白とタブを除き�
 Gantt、user journey、sequence、Venn、C4 では、対象にするどの版も、
 ディレクティブの後の空白を除いたタイトルを拒否し、
 timeline では別の図を描きます。
-そのタイトルの最初のディレクティブの前の改行しない空白、U+3000、U+2003 は、
-Langium の型と quadrant では除き、ほかの型では残します（`\u00a0%%{x}%%`）。
+そのタイトルの最初のディレクティブの前の、
+空白でもタブでもない空白文字（U+2028 と U+2029 を含みます）は、
+Langium の型と quadrant では除き、ほかの型では残します（`\u00a0%%{x}%%`、
+`\u2028%%{x}%%`）。
+そのディレクティブの後にテキストが続くときは、
+quadrant 以外のどの型も書かれたままにし、quadrant は、
+U+2028 と U+2029 を残して、
+そのほかの文字とディレクティブの後の空白を除きます（`\u00a0%%{x}%% T` は
+`%%{x}%%T` と印字し、`\u2028%%{x}%% T` は変えません）。
 ディレクティブの後にも空白があるとき（`\u00a0%%{x}%%  `）は、
 quadrant は文字も空白も除き、Gantt、user journey、timeline、sequence、Venn、
 C4 は空白を除いて文字を残し、Langium の型は両方を残します。
@@ -1634,8 +1659,8 @@ Venn と C4 以外のどの型でも除きます。
 sequence では除き、ほかの型では残し、描画は同じです。
 その間の改行しない空白、U+3000、U+2003 は、quadrant では除き、
 ほかの型では残します。
-Langium の型はそれがあってもなくても同じに描き、Gantt、timeline、Venn、
-C4 の図は、それがないと別のテキストを描きます。
+Langium の型はそれがあってもなくても同じに描き、Gantt、user journey、timeline、
+sequence、Venn、C4 の図は、それがないと別のテキストを描きます。
 
 テキストの後のディレクティブ 2 つとコメント（`T  %%{x}%%  %%{y}%%  %% c`）は、
 Langium の型ではそれぞれの前に空白 1 つを置いて印字し、
@@ -1646,7 +1671,7 @@ Langium の型ではそれぞれの前に空白 1 つを置いて印字し、
 どの型でも書かれたままです。
 テキストに接するコメント（`T%% c`）も同じです。
 
-タイトルの末尾の U+2028 か U+2029 は、その前の空白と一緒に、
+ディレクティブのないタイトルの末尾の U+2028 か U+2029 は、その前の空白と一緒に、
 Langium の型と quadrant では除き、ほかの型では残します。
 
 テキストのある `accTitle:` と `accDescr:` の行は、次の表のとおりに印字します。
@@ -1670,13 +1695,16 @@ quadrant、Gantt、user journey、timeline、sequence、C4 の図では、
 U+2029 があってもなくても、
 ディレクティブを除いた後の 12.3.0 の Db も描画も同じです。
 Gantt、user journey、timeline、sequence、C4 の `title` の末尾では、
-同じ文字の有無で Db も描画も変わるので、同じ図種の title が残す場合も、
-最後の列はそれらを除きます。
+同じ文字の有無で Db も描画も変わります（フォームフィードは変わりません）。
+そのため、同じ図種の title が残す場合も、最後の列は末尾のそれらを除きます。
+先頭では、quadrant、Gantt、user journey、timeline、sequence、C4 の図は、
+U+2028 と U+2029 を除くそのような文字を除き、
+U+2028 と U+2029 は残します（表の `\u2028T` と `\u2029T`）。
 pie 図と gitGraph の `accTitle:` の行は、テキスト、ディレクティブ、
 ディレクティブ 2 つ、タブの後にコメントがある行では、
 書かれたまま残ります（`T  %%{x}%%  %% c  `、`T`、改行しない空白、`%% c`、
 `T  %% c  `、`T`、改行しない空白、`%%{x}%%%% c`、`T  %%{x}%%  %%{y}%%  %% c`、
-`T`、タブ、`%% c`）。
+`T`、タブ、U+3000、U+2003、垂直タブ、フォームフィード、U+FEFF、`%% c`）。
 10.9.8 が `%%` とその後ろを title の一部として読み、
 その列の形では異なるテキストを描くためです。
 詳しくは
@@ -1727,6 +1755,8 @@ pie 図と gitGraph の `accTitle:` の行は、テキスト、ディレクテ�
 | `%%{x}%%\u2003%% c`                             | 書かれたまま             | `%%{x}%%%% c`                                     |
 | `%%{x}%%\t%% c`                                 | 書かれたまま             | `%%{x}%%%% c`                                     |
 | `T\u2028  `                                     | `T`                      | `T`                                               |
+| `\u2028T`                                       | `T`                      | 書かれたまま                                      |
+| `\u2029T`                                       | `T`                      | 書かれたまま                                      |
 
 閉じていないディレクティブはタイトルの残りを取ります。
 `title T %%{x` と `title T%%{x` は、どの型でも変えません。
@@ -1801,6 +1831,15 @@ pie 図と gitGraph の `accTitle:` の行は、テキスト、ディレクテ�
 [test: a tab between a directive and a comment only as a title]
 [test: U+2028 at the start of a title] [test: U+2029 at the start of a title]
 [test: U+2028 and then spaces at the end of a title]
+[test: U+2028 before the directive of a title of directives only]
+[test: U+2029 before the directive of a title of directives only]
+[test: a vertical tab before the directive of a title of directives only]
+[test: a form feed before the directive of a title of directives only]
+[test: U+FEFF before the directive of a title of directives only]
+[test: U+2028 before a directive that starts a title and text after it]
+[test: U+2029 before a directive that starts a title and text after it]
+[test: a form feed at the start of a title]
+[test: a form feed at the end of a title]
 [test: runs and spaces around a directive that ends an accessibility line]
 [test: a comment and spaces after a directive that ends an accessibility line]
 [test: a no-break space after the last directive of an accessibility line]
@@ -1842,6 +1881,19 @@ pie 図と gitGraph の `accTitle:` の行は、テキスト、ディレクテ�
 [test: U+2003 between a directive and a comment only as an accessibility line]
 [test: a tab between a directive and a comment only as an accessibility line]
 [test: U+2028 and then spaces at the end of an accessibility line]
+[test: U+2028 at the start of an accessibility line]
+[test: U+2029 at the start of an accessibility line]
+[test: a no-break space before the first colon of a task of a user journey]
+[test: a tab, a no-break space, and a space before the first colon of a task of a user journey]
+[test: the accTitle line of directives only of a C4 diagram]
+[test: the accDescr line of directives only of a C4 diagram]
+[test: a whitespace character that is no space or tab before the first directive of a title of directives only, in each group]
+[test: a whitespace character that is no space or tab at the start of a title, in each group]
+[test: a whitespace character that is no space or tab at the end of a title, in each group]
+[test: a whitespace character that is no space or tab before a directive that starts a title and text after it, in each group]
+[test: a whitespace character that is no space or tab at the start and at the end of an accessibility line, in each group]
+[test: a whitespace character that is no space or tab at both ends of a title, in the Langium types and a quadrant chart]
+[test: a whitespace character that is no space or tab before a comment after the text of a title, in each group]
 [test: an accessibility line of directives only stays as written in each type of the Langium grammar]
 [fixture: pie/accessibility-lines/acc-title-percent-gap-kept]
 [fixture: gitgraph/title-and-common-values/acc-title-percent-gap-kept]

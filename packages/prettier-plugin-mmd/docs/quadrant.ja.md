@@ -1202,6 +1202,11 @@ quadrantChart
 Db がそこで落とします。
 title、アクセシビリティのテキスト、説明ブロックのテキストは、
 値がそれらを両端から除くので、印字もそこで落とします。
+ただし、title とアクセシビリティのテキストの先頭にあり、
+後ろにテキストが続く U+2028 と U+2029 は、
+それを含む隙間と一緒に残します（`title`、空白、U+2028、`T` は変えません）。
+ディレクティブだけのタイトルは、それを除きます（`title`、空白、U+2028、
+`%%{x}%%` は `title %%{x}%%` と印字します）。
 それらを含む隙間と、それらを含むテキストは、書かれたまま印字します。
 規則 1 の表に、これを含む間隔の印はないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
@@ -1216,6 +1221,10 @@ title、アクセシビリティのテキスト、説明ブロックのテキス
 [test: U+2028 at the end of a title] [test: U+2028 in the name of a point]
 [test: U+2028 in an accessibility text] [test: U+2028 in a string]
 [test: U+2028 around the arrow of an axis] [test: U+2028 in the name of a class]
+[test: U+2028 at the start of a title] [test: U+2029 at the start of a title]
+[test: U+2028 before the directive of a title of directives only]
+[test: a whitespace character that is no space or tab at the start of a title, in each group]
+[test: a whitespace character that is no space or tab at the start and at the end of an accessibility line, in each group]
 
 ### 空白文字
 

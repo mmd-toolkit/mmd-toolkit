@@ -809,6 +809,72 @@ const titleDirectiveCases: readonly TitleDirectiveCase[] = [
       vennAndC4: "T\u2028",
     },
   },
+  {
+    name: "U+2028 before the directive of a title of directives only",
+    written: "\u2028%%{x}%%",
+    printed: {
+      langium: "%%{x}%%",
+      quadrant: "%%{x}%%",
+    },
+  },
+  {
+    name: "U+2029 before the directive of a title of directives only",
+    written: "\u2029%%{x}%%",
+    printed: {
+      langium: "%%{x}%%",
+      quadrant: "%%{x}%%",
+    },
+  },
+  {
+    name: "a vertical tab before the directive of a title of directives only",
+    written: "\u000b%%{x}%%",
+    printed: {
+      langium: "%%{x}%%",
+      quadrant: "%%{x}%%",
+    },
+  },
+  {
+    name: "a form feed before the directive of a title of directives only",
+    written: "\u000c%%{x}%%",
+    printed: {
+      langium: "%%{x}%%",
+      quadrant: "%%{x}%%",
+    },
+  },
+  {
+    name: "U+FEFF before the directive of a title of directives only",
+    written: "\ufeff%%{x}%%",
+    printed: {
+      langium: "%%{x}%%",
+      quadrant: "%%{x}%%",
+    },
+  },
+  {
+    name: "U+2028 before a directive that starts a title and text after it",
+    written: "\u2028%%{x}%% T",
+    printed: {},
+  },
+  {
+    name: "U+2029 before a directive that starts a title and text after it",
+    written: "\u2029%%{x}%% T",
+    printed: {},
+  },
+  {
+    name: "a form feed at the start of a title",
+    written: "\u000cT",
+    printed: {
+      langium: "T",
+      quadrant: "T",
+    },
+  },
+  {
+    name: "a form feed at the end of a title",
+    written: "T\u000c",
+    printed: {
+      langium: "T",
+      quadrant: "T",
+    },
+  },
 ]
 
 const titleOpenDirectiveExamples: readonly (readonly [
@@ -2389,6 +2455,16 @@ const accessibilityDirectiveCases: readonly AccessibilityDirectiveCase[] = [
     otherAccTitle: "T",
     otherAccDescr: "T",
   },
+  {
+    name: "U+2028 at the start of an accessibility line",
+    written: "\u2028T",
+    langium: "T",
+  },
+  {
+    name: "U+2029 at the start of an accessibility line",
+    written: "\u2029T",
+    langium: "T",
+  },
 ]
 
 /** The types that have the lines: a Venn diagram has none. */
@@ -2469,6 +2545,10 @@ const accessibilityCommentRows = [
   "two directives and a comment after the text of a title",
   "a tab before a comment after the text of a title",
   "U+3000 before a comment after the text of a title",
+  "U+2003 before a comment after the text of a title",
+  "a vertical tab before a comment after the text of a title",
+  "a form feed before a comment after the text of a title",
+  "U+FEFF before a comment after the text of a title",
 ]
 
 describe.each(
@@ -2717,4 +2797,116 @@ describe("an accessibility line of directives only of a C4 diagram", () => {
       await expectKept(input, output)
     },
   )
+})
+
+/**
+ * The whitespace characters of the specification that are no space, tab, or
+ * line terminator: the 19 of the list above and the two line separators
+ * (docs/compatibility.md, Texts after a keyword that are drawn the same).
+ */
+const whitespaceThatIsNoSpaceOrTabWithLineSeparators: readonly string[] = [
+  ...whitespaceThatIsNoSpaceOrTab,
+  "\u2028",
+  "\u2029",
+]
+
+/** The type of a group that the tests below run, by name. */
+function titleTypesNamed(names: readonly string[]): readonly TitleType[] {
+  return names.map(titleTypeNamed)
+}
+
+const titleTypesOfEachGroup = titleTypesNamed([
+  "a radar chart",
+  "a quadrant chart",
+  "a Gantt chart",
+  "a Venn diagram",
+  "a C4 diagram",
+])
+
+describe("a whitespace character that is no space or tab at the start, at the end, and before a directive of a title", () => {
+  it("a whitespace character that is no space or tab before the first directive of a title of directives only, in each group", async () => {
+    for (const { group, input, output } of titleTypesOfEachGroup) {
+      const droppedHere = group === "langium" || group === "quadrant"
+      for (const character of whitespaceThatIsNoSpaceOrTabWithLineSeparators) {
+        const written = `${character}%%{x}%%`
+        await expectKept(
+          input.replace("{title}", written),
+          output.replace("{title}", droppedHere ? "%%{x}%%" : written),
+        )
+      }
+    }
+  })
+
+  it("a whitespace character that is no space or tab at the start of a title, in each group", async () => {
+    for (const { group, input, output } of titleTypesOfEachGroup) {
+      for (const character of whitespaceThatIsNoSpaceOrTabWithLineSeparators) {
+        const written = `${character}T`
+        const keptHere =
+          group === "gantt" ||
+          group === "vennAndC4" ||
+          (group === "quadrant" && ["\u2028", "\u2029"].includes(character))
+        await expectKept(
+          input.replace("{title}", written),
+          output.replace("{title}", keptHere ? written : "T"),
+        )
+      }
+    }
+  })
+
+  it("a whitespace character that is no space or tab at the end of a title, in each group", async () => {
+    for (const { group, input, output } of titleTypesOfEachGroup) {
+      for (const character of whitespaceThatIsNoSpaceOrTabWithLineSeparators) {
+        const written = `T${character}`
+        const keptHere = group === "gantt" || group === "vennAndC4"
+        await expectKept(
+          input.replace("{title}", written),
+          output.replace("{title}", keptHere ? written : "T"),
+        )
+      }
+    }
+  })
+
+  it("a whitespace character that is no space or tab before a directive that starts a title and text after it, in each group", async () => {
+    for (const { group, input, output } of titleTypesOfEachGroup) {
+      for (const character of whitespaceThatIsNoSpaceOrTabWithLineSeparators) {
+        const written = `${character}%%{x}%% T`
+        const droppedHere =
+          group === "quadrant" && !["\u2028", "\u2029"].includes(character)
+        await expectKept(
+          input.replace("{title}", written),
+          output.replace("{title}", droppedHere ? "%%{x}%%T" : written),
+        )
+      }
+    }
+  })
+
+  it("a whitespace character that is no space or tab at the start and at the end of an accessibility line, in each group", async () => {
+    for (const line of accessibilityLines) {
+      for (const name of [
+        "a radar chart",
+        "a quadrant chart",
+        "a Gantt chart",
+        "a C4 diagram",
+      ]) {
+        const { isLangium, input, output } = accessibilityLineTypes.find(
+          (type) => type.name === name,
+        )!
+        for (const character of whitespaceThatIsNoSpaceOrTabWithLineSeparators) {
+          const atStart = `${character}T`
+          const startKept =
+            !isLangium && ["\u2028", "\u2029"].includes(character)
+          await expectKept(
+            input.replace("{line}", line).replace("{title}", atStart),
+            output
+              .replace("{line}", line)
+              .replace("{title}", startKept ? atStart : "T"),
+          )
+          await expectKept(
+            input.replace("{line}", line).replace("{title}", `T${character}`),
+            output.replace("{line}", line).replace("{title}", "T"),
+          )
+        }
+      }
+    }
+  })
 })
