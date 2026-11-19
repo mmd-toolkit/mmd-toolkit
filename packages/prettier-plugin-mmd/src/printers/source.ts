@@ -645,9 +645,16 @@ function findCommentRegions(
     return undefined
   }
 
-  // Where the text ends once the whitespace at its end is left out: a region
-  // has text after it when it ends before that.
-  const contentEnd = text.trimEnd().length
+  // Where the text ends once the whitespace and the `;` at its end are left
+  // out: a region has text after it when it ends before that. The `;` that
+  // end the text stand for no statement, and the printer does not print them
+  // (docs/flowchart.md, Semicolons).
+  let contentEnd = text.length
+  while (
+    contentEnd > 0 &&
+    (isWhitespace(text[contentEnd - 1]) || text[contentEnd - 1] === ";")
+  )
+    contentEnd--
 
   const all: Range[] = []
   const joining: JoiningRegion[] = []

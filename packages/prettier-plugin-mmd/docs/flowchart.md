@@ -2759,6 +2759,25 @@ flowchart LR
   end
 ```
 
+A comment line after a U+2028 or U+2029 joins the next line to its line only
+where something stands on the next line besides `;`: the `;` that end the text
+stand for no statement and are not printed, so what stands before the comment
+line is printed as it is without them, and a second formatting finds the same.
+
+[test: flowchart: a statement with two semicolons, U+2028, a directive, a
+comment, an empty line, and a line of a semicolon] [test: flowchart: a statement
+with two semicolons, U+2028, a directive, a comment, an empty line, and a line
+of a semicolon, in a header without a semicolon] [test: flowchart: a statement
+with one semicolon, U+2028, a directive, a comment, an empty line, and a line of
+a semicolon] [test: flowchart: a statement, U+2028, a directive, a comment, an
+empty line, and a line of a semicolon] [test: flowchart: a statement with two
+semicolons, U+2028, a comment, an empty line, and a line of a semicolon] [test:
+flowchart: a statement with two semicolons, U+2028, a directive, a comment, an
+empty line, and a semicolon at the first column] [test: flowchart: a statement
+with two semicolons, U+2028, a directive, a comment, an empty line, and a
+statement] [test: flowchart: a statement with two semicolons, U+2028, a
+directive, a comment, and an empty line at the end of the text]
+
 ### Directives
 
 A directive (`%%{ ... }%%`) on a line of its own stands at the level of the

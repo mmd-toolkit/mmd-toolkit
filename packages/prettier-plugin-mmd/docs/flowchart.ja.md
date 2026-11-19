@@ -2848,6 +2848,21 @@ flowchart LR
   end
 ```
 
+U+2028 か U+2029 の後のコメント行が次の行をその行につなぐのは、
+次の行に `;` 以外のものがあるときだけです。
+テキストの末尾の `;` はどの文も表さず、印字しません。
+コメント行の前にあるものは、それらがないものとして印字し、
+2 回目の整形も同じ結果になります。
+
+[test: flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a line of a semicolon]
+[test: flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a line of a semicolon, in a header without a semicolon]
+[test: flowchart: a statement with one semicolon, U+2028, a directive, a comment, an empty line, and a line of a semicolon]
+[test: flowchart: a statement, U+2028, a directive, a comment, an empty line, and a line of a semicolon]
+[test: flowchart: a statement with two semicolons, U+2028, a comment, an empty line, and a line of a semicolon]
+[test: flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a semicolon at the first column]
+[test: flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a statement]
+[test: flowchart: a statement with two semicolons, U+2028, a directive, a comment, and an empty line at the end of the text]
+
 ### ディレクティブ
 
 1 行に置かれたディレクティブ（`%%{ ... }%%`）は、周りの文と同じ段に置きます。

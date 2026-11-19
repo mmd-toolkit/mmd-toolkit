@@ -1296,6 +1296,46 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
     "flowchart TD\nA   -->   B\u2028%% c\n\n   -->   C\n",
     "flowchart TD\n  A   -->   B\u2028%% c\n\n   -->   C\n",
   ],
+  [
+    "flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a line of a semicolon",
+    "flowchart LR;\n  A --> B;\n  B --> C;; \u2028 %%{x}%%  %% c  \n\n  ;\n",
+    "flowchart LR\n  A --> B\n  B --> C\n  %%{x}%% %% c  \n",
+  ],
+  [
+    "flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a line of a semicolon, in a header without a semicolon",
+    "flowchart LR\n  A --> B\n  B --> C;; \u2028 %%{x}%%  %% c  \n\n  ;\n",
+    "flowchart LR\n  A --> B\n  B --> C\n  %%{x}%% %% c  \n",
+  ],
+  [
+    "flowchart: a statement with one semicolon, U+2028, a directive, a comment, an empty line, and a line of a semicolon",
+    "flowchart LR\n  A --> B\n  B --> C; \u2028 %%{x}%%  %% c  \n\n  ;\n",
+    "flowchart LR\n  A --> B\n  B --> C\n  %%{x}%% %% c  \n",
+  ],
+  [
+    "flowchart: a statement, U+2028, a directive, a comment, an empty line, and a line of a semicolon",
+    "flowchart LR\n  A --> B\n  B --> C \u2028 %%{x}%%  %% c  \n\n  ;\n",
+    "flowchart LR\n  A --> B\n  B --> C\n  %%{x}%% %% c  \n",
+  ],
+  [
+    "flowchart: a statement with two semicolons, U+2028, a comment, an empty line, and a line of a semicolon",
+    "flowchart LR\n  A --> B\n  B --> C;; \u2028 %% c  \n\n  ;\n",
+    "flowchart LR\n  A --> B\n  B --> C\n  %% c  \n",
+  ],
+  [
+    "flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a semicolon at the first column",
+    "flowchart LR\n  A --> B\n  B --> C;; \u2028 %%{x}%%  %% c  \n\n;\n",
+    "flowchart LR\n  A --> B\n  B --> C\n  %%{x}%% %% c  \n",
+  ],
+  [
+    "flowchart: a statement with two semicolons, U+2028, a directive, a comment, an empty line, and a statement",
+    "flowchart LR\n  A --> B\n  B --> C;; \u2028 %%{x}%%  %% c  \n\n  D\n",
+    "flowchart LR\n  A --> B\n  B --> C;; \u2028 %%{x}%%  %% c  \n\n  D\n",
+  ],
+  [
+    "flowchart: a statement with two semicolons, U+2028, a directive, a comment, and an empty line at the end of the text",
+    "flowchart LR\n  A --> B\n  B --> C;; \u2028 %%{x}%%  %% c  \n\n",
+    "flowchart LR\n  A --> B\n  B --> C\n  %%{x}%% %% c  \n",
+  ],
 ]
 
 /**
