@@ -355,10 +355,11 @@ radar-beta
 `A: 1` はコロンの前を詰め、後を空白 1 つにします。
 `A 1` は間を空白 1 つにし、列揃えはしません。
 句読法を保ちながら、同じ意味の空白をそろえるためです。
-mermaid.js のドキュメントの radar の例 3 件は、
-curve の名前付きの項目を 1 つも書いていません。
-そのため、[規則 3](./printed-form.ja.md#3-綴り)が、
-コロンの書き方を書かれたまま残します。
+mermaid.js のドキュメントの例にある名前付きの項目の曲線 1 つは、
+3 つの名前のどれにもコロンを付けて書いています。
+コロンのない書き方の例はありません。
+`North 4` と `North: 4` は、対象にする版で同じ Db と図になり、
+整形はコロンを足しも除きもしません。
 軸名 `accTitle` と `accDescr` へのコロン追加は安全ではありません。
 共通の複合トークンが優先してしまううえ、
 対象にする版の mermaid.js のすべてが `curve c{accTitle: 1, accDescr 2}`
@@ -511,9 +512,11 @@ radar-beta
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 コメントやディレクティブを挟んでも、次の物理行から値を取りません。
 注釈類のある値と保護区間は原文の間隙を保ちます。
-`;` は今ある所に残します。
-`;` を除くと、mermaid.js の行の規則が別の `;` を無視するようになり、
-mermaid.js の読み方が変わることがあるからです。
+題やアクセシビリティの行のテキストの後の `;` は残します。
+テキストがそれを持ち、あるときとないときで、12.3.0 の Db も、
+対象にするどの版の描かれるテキストも違うからです。
+`;` が 2 つ続くときは、mermaid.js の行の規則が最後の `;` を無視し、
+1 つ除くと別の `;` を無視するようになります。
 詳しくは [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)
 を参照してください。
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
@@ -522,6 +525,8 @@ mermaid.js の読み方が変わることがあるからです。
 
 [fixture: title/title-directives-end-blanks-dropped]
 [fixture: radar/title/title-edge-trim]
+[fixture: radar/title/title-lone-semicolon-kept]
+[fixture: radar/title/title-directive-semicolon-kept]
 
 [fixture: radar/title/title-empty]
 
@@ -555,9 +560,11 @@ radar-beta
 その連なりは書かれたまま残します。
 コロン後の波括弧は行値のままです。
 注釈類・隠れた形・セミコロンの保護を優先します。
-`;` は今ある所に残します。
-`;` を除くと、mermaid.js の行の規則が別の `;` を無視するようになり、
-mermaid.js の読み方が変わることがあるからです。
+題やアクセシビリティの行のテキストの後の `;` は残します。
+テキストがそれを持ち、あるときとないときで、12.3.0 の Db も、
+対象にするどの版の描かれるテキストも違うからです。
+`;` が 2 つ続くときは、mermaid.js の行の規則が最後の `;` を無視し、
+1 つ除くと別の `;` を無視するようになります。
 詳しくは [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)
 を参照してください。
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
@@ -568,6 +575,8 @@ mermaid.js の読み方が変わることがあるからです。
 [fixture: radar/accessibility-lines/a11y-lines-fixed]
 
 [fixture: radar/accessibility-lines/a11y-empty-next]
+[fixture: radar/accessibility-lines/acctitle-lone-semicolon-kept]
+[fixture: radar/accessibility-lines/accdescr-directive-semicolon-kept]
 
 [fixture: radar/accessibility-lines/a11y-line-braces-fixed]
 
@@ -603,24 +612,24 @@ radar-beta
 空白だけの内部は、空白で囲む文字がないため `{}` にします。
 開始記号前の普通の空白は結合し、実際の注釈類のある改行は残します。
 コメント・ディレクティブだけの内部を保ちます。
+規則 1 は、ブロックの中の行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[xychart](./xychart.ja.md#空の説明ブロック) と
+[quadrant](./quadrant.ja.md#空の説明ブロック) も、テキストのないブロックで、
+ディレクティブかコメント行を持つものの内容と改行を、そのまま残します。
 通常の説明本文と独立したコメント行は文より1段内側に揃えます。
 Db で LF 後の字下げが取り除かれるためです。
 規則 1 は、ブロックの中の行の字下げの印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[flowchart](./flowchart.ja.md#複数行の値)、[class](./class.ja.md#複数行の値)、
-[state](./state.ja.md#複数行の値)が、`accDescr { ... }` の本文の行を、
-文より 1 段深くそろえます。
+最上位では、[flowchart](./flowchart.ja.md#複数行の値)、
+[class](./class.ja.md#複数行の値)、[state](./state.ja.md#複数行の値)が、
+`accDescr { ... }` の本文の行を、文より 1 段深くそろえます。
 改行と内部の空行は保ちます。
 行末の空白は、テキストの最後の行のものを除いて保ちます。
 空白だけの行は空行にします。
 最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
 同じ行で閉じ括弧が続くときは空白 1 つで印字します。
 ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
-規則 1 は、ブロックの中の行の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[xychart](./xychart.ja.md#空の説明ブロック) と
-[quadrant](./quadrant.ja.md#空の説明ブロック) も、
-ディレクティブかコメント行があるブロックの内容と改行を、そのまま残します。
 別行の開始記号と閉じ記号は文にそろえます。
 最初の閉じ波括弧で値を終えます。
 

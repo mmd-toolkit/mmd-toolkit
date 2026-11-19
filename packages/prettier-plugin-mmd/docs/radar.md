@@ -337,12 +337,13 @@ radar-beta
 
 Keep authored optional colons. Print `A: 1` with no ordinary space before the
 colon and one after, or `A 1` with one space and no alignment. This retains
-punctuation while giving equivalent padding a consistent form. The three radar
-examples in the documentation of mermaid.js write no named entry of a curve, so
-[rule 3](./printed-form.md#3-a-spelling) keeps the authored spelling of the
-colon. Adding a colon is unsafe for axis names `accTitle` and `accDescr`: common
-composite tokens would take priority, and every version of mermaid.js that
-counts rejects `curve c{accTitle: 1, accDescr 2}` (see
+punctuation while giving equivalent padding a consistent form. The one curve of
+named entries in the examples of the documentation of mermaid.js writes a colon
+after each of its 3 names, and none writes one without. `North 4` and `North: 4`
+give the same Db and figure in the versions that count, and the formatter adds
+and removes no colon. Adding a colon is unsafe for axis names `accTitle` and
+`accDescr`: common composite tokens would take priority, and every version of
+mermaid.js that counts rejects `curve c{accTitle: 1, accDescr 2}` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: radar/named-entries/named-colon-gap]
@@ -487,8 +488,10 @@ which is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 Never take a value from the next physical line, including across comments or
 directives. Trivia-bearing values and protected segments keep their source gaps.
-A `;` stays where it is: removing one can make the line rule of mermaid.js
-ignore another `;` and change what mermaid.js reads (see
+A `;` after the text of a title or of an accessibility line stays: the text
+holds it, and the text with and without it differs in the Db of 12.3.0 and in
+the drawn text of every version that counts. Where two `;` follow, the line rule
+of mermaid.js ignores the last, and removing one makes it ignore another (see
 [A line that a `;` ends](./compatibility.md#a-line-that-a--ends)). The
 directives that end a title are printed with one space before each that has
 whitespace before it, and the whitespace after the last one is left out,
@@ -496,7 +499,8 @@ whatever the whitespace at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
-radar/title/title-edge-trim]
+radar/title/title-edge-trim] [fixture: radar/title/title-lone-semicolon-kept]
+[fixture: radar/title/title-directive-semicolon-kept]
 
 [fixture: radar/title/title-empty]
 
@@ -528,8 +532,11 @@ an `accDescr` is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 and that of an `accTitle` stays as written, since the browser shows it as a
 tooltip. Braces after a colon remain line text. Trivia/hidden and semicolon
-protection take precedence. A `;` stays where it is: removing one can make the
-line rule of mermaid.js ignore another `;` and change what mermaid.js reads (see
+protection take precedence. A `;` after the text of a title or of an
+accessibility line stays: the text holds it, and the text with and without it
+differs in the Db of 12.3.0 and in the drawn text of every version that counts.
+Where two `;` follow, the line rule of mermaid.js ignores the last, and removing
+one makes it ignore another (see
 [A line that a `;` ends](./compatibility.md#a-line-that-a--ends)). The
 directives that end the value are printed with one space before each that has
 whitespace before it, and the whitespace after the last one is left out (see
@@ -538,7 +545,9 @@ whitespace before it, and the whitespace after the last one is left out (see
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
 radar/accessibility-lines/a11y-lines-fixed]
 
-[fixture: radar/accessibility-lines/a11y-empty-next]
+[fixture: radar/accessibility-lines/a11y-empty-next] [fixture:
+radar/accessibility-lines/acctitle-lone-semicolon-kept] [fixture:
+radar/accessibility-lines/accdescr-directive-semicolon-kept]
 
 [fixture: radar/accessibility-lines/a11y-line-braces-fixed]
 
@@ -569,12 +578,17 @@ as `a` (see
 For blocks that keep their braces, separate the keyword and opening brace with
 one space so the block boundary is clear. Whitespace-only interiors become `{}`
 because no text needs surrounding space. Plain opener whitespace joins; real
-trivia keeps its break. Preserve comment/directive-only interiors. Ordinary
-description body and standalone comment lines align one level inside the
-statement: the Db removes indentation after LF. Rule 1 names no mark for the
+trivia keeps its break. Preserve comment/directive-only interiors. Rule 1 names
+no mark for a line inside a block, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [xychart](./xychart.md#empty-description-blocks) and
+[quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
+breaks of a block without text that holds a comment line or a directive.
+Ordinary description body and standalone comment lines align one level inside
+the statement: the Db removes indentation after LF. Rule 1 names no mark for the
 indentation of a line inside a block, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [flowchart](./flowchart.md#multi-line-values),
+decides: at the top level, [flowchart](./flowchart.md#multi-line-values),
 [class](./class.md#multi-line-values), and [state](./state.md#multi-line-values)
 align the lines of an `accDescr { ... }` body one step inside its statement.
 Keep line breaks and interior blank lines, and the whitespace at the end of each
@@ -582,13 +596,8 @@ line of text except the last one; a line of whitespace only becomes an empty
 line. The whitespace at the end of the last line of text is dropped where the
 closer stands on a line of its own, and is printed as one space where the closer
 follows it on that line. Align a separate opener or closer with the statement.
-Directives and shared removed comment regions keep their complete source. Rule 1
-names no mark for a line inside a block, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [xychart](./xychart.md#empty-description-blocks) and
-[quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
-breaks of a block with a directive or comment line. The first closing brace
-still ends the value.
+Directives and shared removed comment regions keep their complete source. The
+first closing brace still ends the value.
 
 [fixture: radar/description-blocks/block-touching-with-text-fixed] [fixture:
 radar/description-blocks/block-empty-fixed] [fixture:
