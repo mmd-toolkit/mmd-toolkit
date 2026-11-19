@@ -13527,6 +13527,21 @@ const architectureDirectiveCommentExamples: readonly (readonly [
     "architecture-beta\naccTitle : T %% a\u2028b\n",
     "architecture-beta\n  accTitle: T %% a\u2028b\n",
   ],
+  [
+    "a `;` inside the comment after the last directive, two spaces before the comment, the text ends, in a title of an architecture diagram",
+    "architecture-beta\ntitle T  %%{x}%%  %% c;\n",
+    "architecture-beta\n  title T %%{x}%% %% c;\n",
+  ],
+  [
+    "a U+2028 between the text and a directive, a U+2028 between the directive and the comment, an empty line and a statement follow, in a title of an architecture diagram",
+    "architecture-beta\ntitle T\u2028%%{x}%%\u2028%% c\n\nservice a(server)[A]\n",
+    "architecture-beta\n  title T\n  %%{x}%%\n  %% c\n\n  service a(server)[A]\n",
+  ],
+  [
+    "a U+2028 after the last directive of a title of directives only, two spaces before and after it, a comment follows, the text ends, in a title of an architecture diagram",
+    "architecture-beta\ntitle  %%{x}%%  \u2028  %% c\n",
+    "architecture-beta\n  title  %%{x}%%  \u2028 %% c\n",
+  ],
 ]
 
 describe("a comment after the directives that end the title or the value of an accessibility line of an architecture diagram, after a U+2028 or U+2029", () => {
