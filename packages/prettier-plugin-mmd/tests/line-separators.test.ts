@@ -5508,6 +5508,126 @@ const blockLineSeparatorExamples: readonly (readonly [
     "block-beta\na\nstyle a fill:#F00\u2028%% c\n%%{x}%%\n%% d\n",
     "block-beta\n  a\n  style a fill: #f00\n  %% c\n  %%{x}%%\n  %% d\n",
   ],
+  [
+    "a comment line, a directive line, and a comment line, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n%% e\n%%{y}%%\n%% d\n",
+    "block-beta\n  a\n  style a fill: #f00\n  %% c\n  %% e\n  %%{y}%%\n  %% d\n",
+  ],
+  [
+    "a comment line, a directive line, and a comment line, to the end of the text, after a class definition and a U+2029: the U+2029 is dropped",
+    "block-beta\na\nclassDef k fill:#F00\u2029%% c\n%% e\n%%{y}%%\n%% d\n",
+    "block-beta\n  a\n  classDef k fill: #f00\n  %% c\n  %% e\n  %%{y}%%\n  %% d\n",
+  ],
+  [
+    "a comment line, a directive line, and a comment line, to the end of the text, after a style statement whose color a semicolon touches and a U+2028: the U+2028 stays and the color is in lower case",
+    "block-beta\na\nstyle a fill:#F00;\u2028%% c\n%% e\n%%{y}%%\n%% d\n",
+    "block-beta\n  a\n  style a fill:#f00;\u2028%% c\n  %% e\n  %%{y}%%\n  %% d\n",
+  ],
+  [
+    "an empty line, a directive line, and a comment line, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n\n%%{y}%%\n%% d\n",
+    "block-beta\n  a\n  style a fill: #f00\n  %% c\n\n  %%{y}%%\n  %% d\n",
+  ],
+  [
+    "an empty line, a directive line, and a comment line, to the end of the text, after a class definition and a U+2029: the U+2029 is dropped",
+    "block-beta\na\nclassDef k fill:#F00\u2029%% c\n\n%%{y}%%\n%% d\n",
+    "block-beta\n  a\n  classDef k fill: #f00\n  %% c\n\n  %%{y}%%\n  %% d\n",
+  ],
+  [
+    "an empty line, a directive line, and a comment line, to the end of the text, after a style statement whose color a semicolon touches and a U+2028: the U+2028 stays and the color is in lower case",
+    "block-beta\na\nstyle a fill:#F00;\u2028%% c\n\n%%{y}%%\n%% d\n",
+    "block-beta\n  a\n  style a fill:#f00;\u2028%% c\n\n  %%{y}%%\n  %% d\n",
+  ],
+  [
+    "a directive line, an empty line, and a comment line, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n%%{y}%%\n\n%% d\n",
+    "block-beta\n  a\n  style a fill: #f00\n  %% c\n  %%{y}%%\n\n  %% d\n",
+  ],
+  [
+    "a directive line, an empty line, and a comment line, to the end of the text, after a class definition and a U+2029: the U+2029 is dropped",
+    "block-beta\na\nclassDef k fill:#F00\u2029%% c\n%%{y}%%\n\n%% d\n",
+    "block-beta\n  a\n  classDef k fill: #f00\n  %% c\n  %%{y}%%\n\n  %% d\n",
+  ],
+  [
+    "a directive line, an empty line, and a comment line, to the end of the text, after a style statement whose color a semicolon touches and a U+2028: the U+2028 stays and the color is in lower case",
+    "block-beta\na\nstyle a fill:#F00;\u2028%% c\n%%{y}%%\n\n%% d\n",
+    "block-beta\n  a\n  style a fill:#f00;\u2028%% c\n  %%{y}%%\n\n  %% d\n",
+  ],
+  [
+    "two directive lines and a comment line, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n%%{y}%%\n%%{z}%%\n%% d\n",
+    "block-beta\n  a\n  style a fill: #f00\n  %% c\n  %%{y}%%\n  %%{z}%%\n  %% d\n",
+  ],
+  [
+    "two directive lines and a comment line, to the end of the text, after a class definition and a U+2029: the U+2029 is dropped",
+    "block-beta\na\nclassDef k fill:#F00\u2029%% c\n%%{y}%%\n%%{z}%%\n%% d\n",
+    "block-beta\n  a\n  classDef k fill: #f00\n  %% c\n  %%{y}%%\n  %%{z}%%\n  %% d\n",
+  ],
+  [
+    "two directive lines and a comment line, to the end of the text, after a style statement whose color a semicolon touches and a U+2028: the U+2028 stays and the color is in lower case",
+    "block-beta\na\nstyle a fill:#F00;\u2028%% c\n%%{y}%%\n%%{z}%%\n%% d\n",
+    "block-beta\n  a\n  style a fill:#f00;\u2028%% c\n  %%{y}%%\n  %%{z}%%\n  %% d\n",
+  ],
+  [
+    "U+0085 before a comma in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u0085,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u0085,stroke:#ABC;\n",
+  ],
+  [
+    "U+0085 and a character after a color in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u0085x;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u0085x;\n",
+  ],
+  [
+    "U+0085 between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u0085;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u0085;\n",
+  ],
+  [
+    "U+180E before a comma in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u180e,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u180e,stroke:#ABC;\n",
+  ],
+  [
+    "U+180E and a character after a color in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u180ex;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u180ex;\n",
+  ],
+  [
+    "U+180E between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u180e;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u180e;\n",
+  ],
+  [
+    "U+200B before a comma in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u200b,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u200b,stroke:#ABC;\n",
+  ],
+  [
+    "U+200B and a character after a color in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u200bx;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u200bx;\n",
+  ],
+  [
+    "U+200B between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u200b;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u200b;\n",
+  ],
+  [
+    "U+0001 before a comma in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u0001,stroke:#ABC;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u0001,stroke:#ABC;\n",
+  ],
+  [
+    "U+0001 and a character after a color in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u0001x;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u0001x;\n",
+  ],
+  [
+    "U+0001 between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written",
+    "block-beta\na\nclassDef c \nfill:#F00\u0001;\n",
+    "block-beta\n  a\n  classDef c \n    fill:#F00\u0001;\n",
+  ],
 ]
 
 /**

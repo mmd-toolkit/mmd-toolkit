@@ -6269,9 +6269,8 @@ composite ブロックの開始行は、コロンの行に名前があるとき�
 コロンの後の隙間を普通の開始行と同じに印字し、
 コメント領域がコロンにすぐ続くときは、書かれたまま残します。
 [複数行の文](./block.ja.md#複数行の文)を参照してください。
-`style` と `classDef` の文では、コメント行の後に何も続かないか、コメント行、
-空行、空白だけの行しか続かないとき、
-またはディレクティブの行とコメント行が続くとき、
+`style` と `classDef` の文では、文が続かず、
+空白でない最後の行がコメント行のとき、
 コメント行の前の U+2028 や U+2029 は落とし（`;` が前の色に接するときは別です）、
 コメント行は自分の行に置きます。
 [行区切り文字](./block.ja.md#行区切り文字)を参照してください。
@@ -6279,6 +6278,10 @@ composite ブロックの開始行は、コロンの行に名前があるとき�
 スタイルの色のように普通の行と別に印字するものも、そこに書いてあります。
 
 [test: a directive line and then a comment line, to the end of the text, after a style statement and a U+2028]
+[test: a comment line, a directive line, and a comment line, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped]
+[test: an empty line, a directive line, and a comment line, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped]
+[test: a directive line, an empty line, and a comment line, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped]
+[test: two directive lines and a comment line, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped]
 
 行に載るものと行の終わりは、mermaid.js が取り除くものから決まります。
 図種ごとの文書には、その図種のことを書きます。

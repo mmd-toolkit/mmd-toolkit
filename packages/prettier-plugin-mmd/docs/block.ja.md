@@ -818,10 +818,10 @@ block arrow がそれを書かれたまま使うからです。
 行の規則が `;` を残すとき（`:` と `#` の間に空白があるとき）、
 `;` はテキストの一部であり、それに接する色は、
 1 行の文でも書かれたまま残します（`classDef c fill: #F00;` です。
-`style a fill: #F00,stroke: #ABC;` は `style a fill: #f00, stroke: #ABC;`
+`style a fill: #F00,stroke: #ABC;` は `style a fill: #f00,stroke: #ABC;`
 になります）。
 空白、タブ、フォームフィードがその `;` から離す色は小文字になり（`#f00 ;`）、
-垂直タブや幅のある空白が離す色は書かれたままです。
+ほかの文字が離す色は書かれたままです。
 最後のスタイルの後ろのコメントやディレクティブは文の一部ではなく、
 文は普通に整形します。
 詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
@@ -1087,14 +1087,15 @@ U+2028 の前にコロンの後の空白が 3 つの `block:` がその例です
 色は、コンマが続くとき、空白、タブ、
 フォームフィードの後に文字が続くとき（`fill:#F00 x;` は `fill:#f00 x;`
 になります）に小文字にします。
+ほかの文字が続く色は、コンマの前でも書かれたまま残ります（`fill:#F00`、
+ノーブレークスペース、`x;` は `#F00` のままです）。
 垂直タブ、幅のある空白（ノーブレークスペース、U+1680、U+2000 から U+200A、
-U+202F、U+205F、U+3000、U+FEFF）、U+2028、U+2029 は、ここでは空白ではないので、
-`fill:#F00`、ノーブレークスペース、`x;` は `#F00` のままです。
-それらが続く色は、コンマの前でも書かれたまま残ります。
-行の規則が無視する `;` が接する色（`#ABC;`）と、
-垂直タブや幅のある空白がその `;` から離す色は書かれたまま残しますが、
-[色](#色)の規則はこれを小文字に印字するので、規則に反して印字しており、
-規則による修正を待っています。
+U+202F、U+205F、U+3000、U+FEFF）、U+2028、U+2029、U+0085、U+180E、U+200B、
+制御文字は、ここでは空白ではありません。
+行の規則が無視する `;` が接する色（`#ABC;`）と、空白、タブ、
+フォームフィード以外の文字がその `;` から離す色も書かれたまま残し、
+垂直タブと幅のある空白では、[色](#色)の規則がこれを小文字に印字するので、
+規則に反して印字しており、規則による修正を待っています。
 空白、タブ、フォームフィードが `;` から離す色は小文字にします（`#abc ;`）。
 [行](#行)と
 [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照してください。
@@ -1184,6 +1185,18 @@ mermaid.js の行の規則は、`style` か `classDef`、その後の `:`、そ�
 [test: U+FEFF between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written]
 [test: U+2028 before a comma in a class definition that a line break joins, the color stays as written]
 [test: U+2029 before a comma in a class definition that a line break joins, the color stays as written]
+[test: U+0085 before a comma in a class definition that a line break joins, the color stays as written]
+[test: U+0085 and a character after a color in a class definition that a line break joins, the color stays as written]
+[test: U+0085 between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written]
+[test: U+180E before a comma in a class definition that a line break joins, the color stays as written]
+[test: U+180E and a character after a color in a class definition that a line break joins, the color stays as written]
+[test: U+180E between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written]
+[test: U+200B before a comma in a class definition that a line break joins, the color stays as written]
+[test: U+200B and a character after a color in a class definition that a line break joins, the color stays as written]
+[test: U+200B between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written]
+[test: U+0001 before a comma in a class definition that a line break joins, the color stays as written]
+[test: U+0001 and a character after a color in a class definition that a line break joins, the color stays as written]
+[test: U+0001 between a color and the semicolon that the line rule ignores in a class definition that a line break joins, the color stays as written]
 
 `;` があるだけでは、行をつなぐ妨げにはなりません。
 
@@ -1559,12 +1572,18 @@ U+2028 と U+2029 は、ブロック図の単位の間の空白で、空白と�
 | ディレクティブの行で、テキストの末尾                                 | 残す                                                         | `#f00` |
 | ディレクティブの行と文                                               | 残す。文は離れて、文の段に置く                               | `#f00` |
 | ディレクティブの行とコメント行で、テキストの末尾                     | 落とす。どの行も、普通の行と同じに自分の行に置く             | `#f00` |
+| コメント行、ディレクティブの行、コメント行で、テキストの末尾         | 落とす。どの行も、普通の行と同じに自分の行に置く             | `#f00` |
+| 空行、ディレクティブの行、コメント行で、テキストの末尾               | 落とす。どの行も、普通の行と同じに自分の行に置き、空行を残す | `#f00` |
+| ディレクティブの行、空行、コメント行で、テキストの末尾               | 落とす。どの行も、普通の行と同じに自分の行に置き、空行を残す | `#f00` |
+| ディレクティブの行 2 つとコメント行で、テキストの末尾                | 落とす。どの行も、普通の行と同じに自分の行に置く             | `#f00` |
 | ディレクティブの行、コメント行、文                                   | 残す。文はコメント行の次の行に、書かれたままで残る           | `#F00` |
 | ディレクティブの行、コメント行、ディレクティブの行で、テキストの末尾 | 残す                                                         | `#f00` |
 | コメント行 2 つとディレクティブの行で、テキストの末尾                | 残す                                                         | `#f00` |
 | 空行とディレクティブの行で、テキストの末尾                           | 残す。ディレクティブの行は離れて、文の段に置く               | `#f00` |
 | ディレクティブの行と空行で、テキストの末尾                           | 残す。末尾の空行は落とす                                     | `#f00` |
 
+U+2028 や U+2029 は、文が続かず、空白でない最後の行がコメント行のときに落とし、
+文が続くとき、または空白でない最後の行がディレクティブの行のときは残します。
 flowchart、class、state、ER は、コメント行の後に何もないときに、
 その行を書かれたまま残し、その形は規則 2 が与えます。
 そのためブロック図は、最初の行を規則 2 に反して印字しており、
@@ -1578,13 +1597,14 @@ flowchart、class、state、ER は、コメント行の後に何もないとき�
 U+2028、`%% c`、` y` は `#f00 x` になります）。
 行の規則が無視する `;` が接する色も書かれたまま残します（`#F00`、
 その後の `#ABC;` です）。
-垂直タブか幅のある空白がその `;` から離すときも同じです。
+空白、タブ、フォームフィード以外の文字がその `;` から離すときも同じです。
 [色](./compatibility.ja.md#同じに描かれる色)の規則はこれを小文字に印字するので、
 その形は規則に反して印字しており、規則による修正を待っています。
 `;` が U+2028 の直前の色に接するときは、U+2028 とコメント行は書かれたままで、
 コメント行の後に何が続いても同じです。
-色は、コメント行の後に文が続くときだけ書かれたまま残り、何も続かないか、
-コメント行、空行、ディレクティブの行が続くときは、小文字になります。
+色は、コメント行の後に文が続くときだけ書かれたまま残り、
+文が続かないとき（コメント行、空行、ディレクティブの行が、
+どの順で何行続いても）は、小文字になります。
 `style a fill:#F00;`、U+2028、`%% c` は、
 U+2028 と `%% c` を残して `style a fill:#f00;` になります。
 ブロック図では、mermaid.js は U+2028 を行の終わりとして、
@@ -1658,6 +1678,18 @@ U+2028 と `%% c` を残して `style a fill:#f00;` になります。
 [test: a color that a no-break space and a character follow in a class definition that a line break joins stays as written]
 [test: block: whitespace-between-the-statements-of-a-row-on-a-line-that-a-ls-comment-line-joins]
 [test: U+2028 between a composite head and its body]
+[test: a comment line, a directive line, and a comment line, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped]
+[test: a comment line, a directive line, and a comment line, to the end of the text, after a class definition and a U+2029: the U+2029 is dropped]
+[test: a comment line, a directive line, and a comment line, to the end of the text, after a style statement whose color a semicolon touches and a U+2028: the U+2028 stays and the color is in lower case]
+[test: an empty line, a directive line, and a comment line, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped]
+[test: an empty line, a directive line, and a comment line, to the end of the text, after a class definition and a U+2029: the U+2029 is dropped]
+[test: an empty line, a directive line, and a comment line, to the end of the text, after a style statement whose color a semicolon touches and a U+2028: the U+2028 stays and the color is in lower case]
+[test: a directive line, an empty line, and a comment line, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped]
+[test: a directive line, an empty line, and a comment line, to the end of the text, after a class definition and a U+2029: the U+2029 is dropped]
+[test: a directive line, an empty line, and a comment line, to the end of the text, after a style statement whose color a semicolon touches and a U+2028: the U+2028 stays and the color is in lower case]
+[test: two directive lines and a comment line, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped]
+[test: two directive lines and a comment line, to the end of the text, after a class definition and a U+2029: the U+2029 is dropped]
+[test: two directive lines and a comment line, to the end of the text, after a style statement whose color a semicolon touches and a U+2028: the U+2028 stays and the color is in lower case]
 
 ### 空白文字
 
