@@ -606,9 +606,9 @@ Use the shared common-line layout: one space before a nonempty value, trim
 ordinary outer common whitespace and retain internal text, including unmatched
 quotes. Empty titles stay empty and never take a value from the next line. This
 chooses a compact Db-equal edge without treating the common value as a quoted
-string. The directives that end a title are printed with one space before each
-that has spaces or tabs before it, and the spaces and tabs after the last one is
-left out, whatever the spaces and tabs at the end of the line (see
+string. Where only directives follow the text of a title, they are printed with
+one space before each that has spaces or tabs before it, and the spaces and tabs
+after the last one are left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
@@ -633,9 +633,9 @@ wardley-beta
 ### Accessibility
 
 Use the shared accessibility line layout for accTitle: Value and accDescr:
-Value, retaining empty assignments. The directives that end the value are
-printed with one space before each that has spaces or tabs before it, and the
-spaces and tabs after the last one are left out (see
+Value, retaining empty assignments. Where only directives follow the text of the
+value, they are printed with one space before each that has spaces or tabs
+before it, and the spaces and tabs after the last one are left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [test: wardley/accessibility/unicode-empty-description] [fixture:

@@ -1453,22 +1453,23 @@ C4 図の説明 `accDescription` も同じです。
 空白とタブだけのテキストも書かれたままにします。
 テキストの先頭と末尾にある、改行しない空白や U+3000 など、
 空白とタブ以外の空白文字も書かれたままです。
-mermaid.js がそれを Db に持ち、描くからです。
+12.3.0 の Db がそれを持つからです。
 title、軸の書式、`accDescription`、
-別名を持つ state の 2 つ目の説明の両端にあると、12.3.0 の Db は端が違い、
+別名を持つ state の 2 つ目の説明の両端にあると、
 対象にするどの版も別のテキストか形状を描きます。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
-gantt の日付の書式と、timeline の行の最後の event は、12.3.0 の Db だけが違い、
-整形は Db を変えません。
+gantt の日付の書式の末尾と、timeline の行の最後の event の末尾にあると、
+12.3.0 の Db だけが違い、描画は対象にするどの版でも同じです。
+そこでも書かれたままです。
 pie、radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、
 treeView、info、railroad、quadrant の図の title は、
 先頭と末尾の改行しない空白と U+3000 を、空白とタブと同じように除きます。
 mermaid.js がこれらの title の両端のそれらを除いて読み、
 それがあってもなくても 12.3.0 の Db も描かれるテキストも同じだからです。
 これは、ディレクティブもコメントもないタイトルに当てはまります。
-それらがあるタイトルでは、下の段落のとおりに印字します。
+それらがあるタイトルでは、下の表のとおりに印字します。
 timeline の行の最後の event と、別名を持つ state の 2 つ目の説明も、
 同じように末尾の空白とタブを除きますが、先頭の空白は除きません。
 その空白は timeline のコロンをそろえます。
@@ -1484,8 +1485,7 @@ user journey のタスクの説明は、最初のコロンの前の空白を除�
 説明をそろえてコロンの桁をそろえた節は、書かれたままにします。
 タイトルのテキストと、同じ行のその後のコメントの間に空白かタブがあれば、
 空白 1 つにし、コメントがテキストに接していれば接したままにします。
-テキストの後にディレクティブが続き、
-最後のディレクティブの後が空白とタブだけの場合は、
+テキストの後にディレクティブだけが続く場合は、
 それぞれの前に空白かタブがあるかないかを保ち、
 空白とタブの連続は空白 1 つにします。
 最後のディレクティブの後の空白とタブは、
@@ -1499,11 +1499,11 @@ user journey のタスクの説明は、最初のコロンの前の空白を除�
 mermaid.js はテキストを読む前にディレクティブを除くので、
 その周りの空白とタブはテキストの末尾の空白とタブになり、
 どのような空白とタブでも同じに描きます。
-これは、Gantt、user journey、timeline、sequence、Venn、C4、pie、radar、packet、
-architecture、gitGraph、cynefin、treemap、Wardley、treeView、info、
-railroad の図のタイトル、
-それらの図種と usecase 図の `accTitle:` と `accDescr:` の行、ishikawa 図、
-mindmap、treeView のノードのテキスト、
+これは、Gantt、user journey、timeline、sequence、Venn、C4、quadrant、pie、
+radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、treeView、
+info、railroad の図のタイトル、
+それらの図種（この行がない Venn 図を除く）と usecase 図の `accTitle:` と
+`accDescr:` の行、ishikawa 図、mindmap、treeView のノードのテキスト、
 kanban ボードのカードのテキスト（図が依存する列の id は除く）、
 Gantt 図の日付書式と軸の書式、C4 図の `accDescription`、
 timeline の行の最後の event と、period およびコロンの前の event が足す空白、
@@ -1515,44 +1515,67 @@ user journey
 ディレクティブの前でも、
 ディレクティブがない場合と同じように書かれたままにします。
 
-改行しない空白、U+3000、U+2003 は空白でもタブでもなく、
+改行しない空白、U+3000、U+2003、U+2028、U+2029 は空白でもタブでもなく、
 ディレクティブやコメントを含むタイトルは、
 図の種類によって同じには印字されません。
 表は、書かれたタイトルごとに、
 図の種類の群が `title ` の後に印字する形を示します（`\u00a0` は改行しない空白、
-`\u3000` は U+3000、`\u2003` は U+2003、`\t` はタブ、
-「書かれたまま」は書かれたタイトルをそのまま印字することです）。
+`\u3000` は U+3000、`\u2003` は U+2003、`\u2028` は U+2028、`\u2029` は U+2029、
+`\t` はタブ、「書かれたまま」は書かれたタイトルをそのまま印字することです）。
 Langium の型は、pie、radar、packet、architecture、gitGraph、cynefin、treemap、
 Wardley、treeView、info、railroad です。
 群のどの型も、その列の形を印字します。
 
-| 書かれた形（`title ` の後）    | Langium の型       | quadrant               | Gantt、journey、timeline、sequence | Venn、C4     |
-| ------------------------------ | ------------------ | ---------------------- | ---------------------------------- | ------------ |
-| `T  %%{x}%%  `                 | `T %%{x}%%`        | `T %%{x}%%`            | `T %%{x}%%`                        | `T %%{x}%%`  |
-| `T  %%{x}%%  %% c  `           | `T %%{x}%% %% c  ` | `T  %%{x}%%  %% c`     | `T  %%{x}%%  %% c`                 | 書かれたまま |
-| `T %%{x}%%\u00a0`              | 書かれたまま       | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま |
-| `T %%{x}%%\u3000`              | 書かれたまま       | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま |
-| `T %%{x}%%\u2003`              | 書かれたまま       | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま |
-| `%%{x}%%\u00a0T %%{y}%%`       | `%%{x}%%T %%{y}%%` | `%%{x}%%T %%{y}%%`     | 書かれたまま                       | 書かれたまま |
-| `%%{x}%%\u00a0T %%{y}%%\u00a0` | 書かれたまま       | `%%{x}%%T %%{y}%%`     | 書かれたまま                       | 書かれたまま |
-| `%%{x}%%\u00a0T %%{y}%% U`     | 書かれたまま       | `%%{x}%%T %%{y}%% U`   | 書かれたまま                       | 書かれたまま |
-| `%%{x}%%  T  `                 | `%%{x}%%T`         | `%%{x}%%T`             | `%%{x}%%T`                         | 書かれたまま |
-| `T %%{x}%% U  `                | 書かれたまま       | `T %%{x}%% U`          | `T %%{x}%% U`                      | 書かれたまま |
-| `T %%{x}%%\u00a0U  `           | 書かれたまま       | `T %%{x}%%\u00a0U`     | `T %%{x}%%\u00a0U`                 | 書かれたまま |
-| `T %%{x}%%  U  %%{y}%%  `      | 書かれたまま       | `T %%{x}%%  U %%{y}%%` | `T %%{x}%%  U %%{y}%%`             | 書かれたまま |
-| `T\u00a0%%{x}%%`               | `T %%{x}%%`        | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま |
-| `T\u3000%%{x}%%`               | `T %%{x}%%`        | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま |
-| `T\u2003%%{x}%%`               | `T %%{x}%%`        | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま |
-| `T\t%%{x}%%\t`                 | `T %%{x}%%`        | `T %%{x}%%`            | `T %%{x}%%`                        | `T %%{x}%%`  |
-| `T\u00a0%% c`                  | `T %% c`           | 書かれたまま           | 書かれたまま                       | 書かれたまま |
-| `T  %% c  `                    | `T %% c  `         | `T %% c`               | `T %% c`                           | `T %% c`     |
-| `T %%{x}%% %% c  `             | 書かれたまま       | `T %%{x}%% %% c`       | `T %%{x}%% %% c`                   | 書かれたまま |
-| `T\u00a0%%{x}%%%% c`           | `T %%{x}%%%% c`    | 書かれたまま           | 書かれたまま                       | 書かれたまま |
+| 書かれた形（`title ` の後）    | Langium の型        | quadrant               | Gantt、journey、timeline、sequence | Venn、C4            |
+| ------------------------------ | ------------------- | ---------------------- | ---------------------------------- | ------------------- |
+| `T  %%{x}%%  `                 | `T %%{x}%%`         | `T %%{x}%%`            | `T %%{x}%%`                        | `T %%{x}%%`         |
+| `T  %%{x}%%  %% c  `           | `T %%{x}%% %% c  `  | `T  %%{x}%%  %% c`     | `T  %%{x}%%  %% c`                 | 書かれたまま        |
+| `T %%{x}%%\u00a0`              | 書かれたまま        | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま        |
+| `T %%{x}%%\u3000`              | 書かれたまま        | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま        |
+| `T %%{x}%%\u2003`              | 書かれたまま        | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま        |
+| `%%{x}%%\u00a0T %%{y}%%`       | `%%{x}%%T %%{y}%%`  | `%%{x}%%T %%{y}%%`     | 書かれたまま                       | 書かれたまま        |
+| `%%{x}%%\u00a0T %%{y}%%\u00a0` | 書かれたまま        | `%%{x}%%T %%{y}%%`     | 書かれたまま                       | 書かれたまま        |
+| `%%{x}%%\u00a0T %%{y}%% U`     | 書かれたまま        | `%%{x}%%T %%{y}%% U`   | 書かれたまま                       | 書かれたまま        |
+| `%%{x}%%  T  `                 | `%%{x}%%T`          | `%%{x}%%T`             | `%%{x}%%T`                         | 書かれたまま        |
+| `T %%{x}%% U  `                | 書かれたまま        | `T %%{x}%% U`          | `T %%{x}%% U`                      | 書かれたまま        |
+| `T %%{x}%%\u00a0U  `           | 書かれたまま        | `T %%{x}%%\u00a0U`     | `T %%{x}%%\u00a0U`                 | 書かれたまま        |
+| `T %%{x}%%  U  %%{y}%%  `      | 書かれたまま        | `T %%{x}%%  U %%{y}%%` | `T %%{x}%%  U %%{y}%%`             | 書かれたまま        |
+| `T\u00a0%%{x}%%`               | `T %%{x}%%`         | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま        |
+| `T\u3000%%{x}%%`               | `T %%{x}%%`         | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま        |
+| `T\u2003%%{x}%%`               | `T %%{x}%%`         | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま        |
+| `T\t%%{x}%%\t`                 | `T %%{x}%%`         | `T %%{x}%%`            | `T %%{x}%%`                        | `T %%{x}%%`         |
+| `T\u00a0%% c`                  | `T %% c`            | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
+| `T  %% c  `                    | `T %% c  `          | `T %% c`               | `T %% c`                           | `T %% c`            |
+| `T %%{x}%% %% c  `             | 書かれたまま        | `T %%{x}%% %% c`       | `T %%{x}%% %% c`                   | 書かれたまま        |
+| `T\u00a0%%{x}%%%% c`           | `T %%{x}%%%% c`     | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
+| `%%{x}%%  `                    | 書かれたまま        | `%%{x}%%`              | 書かれたまま                       | 書かれたまま        |
+| `%%{x}%%\t`                    | 書かれたまま        | `%%{x}%%`              | 書かれたまま                       | 書かれたまま        |
+| `%%{x}%%  %%{y}%%  `           | 書かれたまま        | `%%{x}%% %%{y}%%`      | 書かれたまま                       | 書かれたまま        |
+| `T  %%{x}%%  %%{y}%%  `        | `T %%{x}%% %%{y}%%` | `T %%{x}%% %%{y}%%`    | `T %%{x}%% %%{y}%%`                | `T %%{x}%% %%{y}%%` |
+| `T  %%{x}%%  %%{y}%%`          | `T %%{x}%% %%{y}%%` | `T %%{x}%% %%{y}%%`    | `T %%{x}%% %%{y}%%`                | `T %%{x}%% %%{y}%%` |
+| `T%%{x}%%%%{y}%%  `            | `T%%{x}%%%%{y}%%`   | `T%%{x}%%%%{y}%%`      | `T%%{x}%%%%{y}%%`                  | `T%%{x}%%%%{y}%%`   |
+| `T %%{x}%%\u2028  `            | 書かれたまま        | `T %%{x}%%`            | `T %%{x}%%\u2028`                  | 書かれたまま        |
+| `T %%{x}%%\u2029  `            | 書かれたまま        | `T %%{x}%%`            | `T %%{x}%%\u2029`                  | 書かれたまま        |
+| `T\u2028%%{x}%%`               | `T %%{x}%%`         | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま        |
+| `T%% c`                        | 書かれたまま        | 書かれたまま           | 書かれたまま                       | 書かれたまま        |
 
-Langium の型の `accTitle:` と `accDescr:` の行は、その列の形に印字します。
-ただし、値の先頭のディレクティブは、
-その後ろの文字と一緒に残ります（`accTitle: %%{x}%%\u00a0T %%{y}%%` と
-`accTitle: %%{x}%%  T  ` は変えません）。
+ディレクティブだけのタイトルは、quadrant 以外のどの型でも書かれたままです。
+Gantt、user journey、sequence、Venn、C4 では、対象にするどの版も、
+ディレクティブの後の空白を除いたタイトルを拒否し、
+timeline では別の図を描きます。
+
+テキストのある `accTitle:` と `accDescr:` の行は、次の表のとおりに印字します。
+Langium の型は最初の表と同じ形ですが、値の先頭のディレクティブは、
+その後ろの文字と一緒に残ります。
+ほかの型は表の最後の列のとおりです（Venn 図にはこの行がなく、
+ディレクティブだけの行は表の対象外です）。
+quadrant、Gantt、user journey、timeline、sequence、C4 の図では、
+これらの行の値の先頭か末尾に、改行しない空白、U+3000、U+2003、U+2028、
+U+2029 があってもなくても、
+ディレクティブを除いた後の 12.3.0 の Db も描画も同じです。
+Gantt、user journey、timeline、sequence、C4 の `title` の末尾では、
+同じ文字の有無で Db も描画も変わるので、同じ図種の title が残す場合も、
+最後の列はそれらを除きます。
 pie 図と gitGraph の `accTitle:` の行は、
 テキストかディレクティブの後にコメントがある表の 4 つの行では、
 書かれたまま残ります。
@@ -1562,6 +1585,36 @@ pie 図と gitGraph の `accTitle:` の行は、
 [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
 の pie と gitGraph の行を参照してください。
 [Accessibility lines](./pie.ja.md#accessibility-lines)も参照してください。
+
+| 書かれた形（`accTitle: ` か `accDescr: ` の後） | Langium の型        | quadrant、Gantt、journey、timeline、sequence、C4  |
+| ----------------------------------------------- | ------------------- | ------------------------------------------------- |
+| `T  %%{x}%%  `                                  | `T %%{x}%%`         | `T %%{x}%%`                                       |
+| `T  %%{x}%%  %% c  `                            | `T %%{x}%% %% c  `  | `T  %%{x}%%  %% c`                                |
+| `T %%{x}%%\u00a0`                               | 書かれたまま        | `T %%{x}%%`                                       |
+| `T %%{x}%%\u3000`                               | 書かれたまま        | `T %%{x}%%`                                       |
+| `T %%{x}%%\u2003`                               | 書かれたまま        | `T %%{x}%%`                                       |
+| `%%{x}%%\u00a0T %%{y}%%`                        | 書かれたまま        | `%%{x}%%T %%{y}%%`                                |
+| `%%{x}%%\u00a0T %%{y}%%\u00a0`                  | 書かれたまま        | `%%{x}%%T %%{y}%%`                                |
+| `%%{x}%%\u00a0T %%{y}%% U`                      | 書かれたまま        | `%%{x}%%T %%{y}%% U`                              |
+| `%%{x}%%  T  `                                  | 書かれたまま        | `%%{x}%%T`                                        |
+| `T %%{x}%% U  `                                 | 書かれたまま        | `T %%{x}%% U`                                     |
+| `T %%{x}%%\u00a0U  `                            | 書かれたまま        | `T %%{x}%%\u00a0U`                                |
+| `T %%{x}%%  U  %%{y}%%  `                       | 書かれたまま        | `T %%{x}%%  U %%{y}%%`                            |
+| `T\u00a0%%{x}%%`                                | `T %%{x}%%`         | `T %%{x}%%`                                       |
+| `T\u3000%%{x}%%`                                | `T %%{x}%%`         | `T %%{x}%%`                                       |
+| `T\u2003%%{x}%%`                                | `T %%{x}%%`         | `T %%{x}%%`                                       |
+| `T\t%%{x}%%\t`                                  | `T %%{x}%%`         | `T %%{x}%%`                                       |
+| `T\u00a0%% c`                                   | `T %% c`            | 書かれたまま                                      |
+| `T  %% c  `                                     | `T %% c  `          | `T  %% c`（`accTitle:`）、`T %% c`（`accDescr:`） |
+| `T %%{x}%% %% c  `                              | 書かれたまま        | `T %%{x}%% %% c`                                  |
+| `T\u00a0%%{x}%%%% c`                            | `T %%{x}%%%% c`     | 書かれたまま                                      |
+| `T %%{x}%%\u2028  `                             | 書かれたまま        | `T %%{x}%%`                                       |
+| `T %%{x}%%\u2029  `                             | 書かれたまま        | `T %%{x}%%`                                       |
+| `T\u2028%%{x}%%`                                | `T %%{x}%%`         | `T %%{x}%%`                                       |
+| `T  %%{x}%%  %%{y}%%  `                         | `T %%{x}%% %%{y}%%` | `T %%{x}%% %%{y}%%`                               |
+| `T  %%{x}%%  %%{y}%%`                           | `T %%{x}%% %%{y}%%` | `T %%{x}%% %%{y}%%`                               |
+| `T%%{x}%%%%{y}%%  `                             | `T%%{x}%%%%{y}%%`   | `T%%{x}%%%%{y}%%`                                 |
+| `T%% c`                                         | 書かれたまま        | 書かれたまま                                      |
 
 閉じていないディレクティブはタイトルの残りを取ります。
 `title T %%{x` と `title T%%{x` は、どの型でも変えません。
@@ -1597,6 +1650,43 @@ pie 図と gitGraph の `accTitle:` の行は、
 [test: runs and spaces around a comment after the text of a title]
 [test: a comment and spaces after a directive that follows the text of a title]
 [test: a no-break space before a directive and a comment after the text of a title]
+[test: a directive and spaces only as a title]
+[test: a directive and a tab only as a title]
+[test: two directives and spaces only as a title]
+[test: two directives after the text of a title and spaces]
+[test: two directives after the text of a title]
+[test: two directives touching after the text of a title and spaces]
+[test: U+2028 and spaces after the last directive of a title]
+[test: U+2029 and spaces after the last directive of a title]
+[test: U+2028 between the text and a directive that ends a title]
+[test: a comment touching the text of a title]
+[test: runs and spaces around a directive that ends an accessibility line]
+[test: a comment and spaces after a directive that ends an accessibility line]
+[test: a no-break space after the last directive of an accessibility line]
+[test: U+3000 after the last directive of an accessibility line]
+[test: U+2003 after the last directive of an accessibility line]
+[test: a no-break space after a directive that starts an accessibility line and before another directive]
+[test: a no-break space after a directive that starts an accessibility line and after the last directive]
+[test: a no-break space after a directive that starts an accessibility line and text after the last directive]
+[test: spaces after a directive that starts an accessibility line]
+[test: text after a directive and spaces at the end of an accessibility line]
+[test: a no-break space after a directive and spaces at the end of an accessibility line]
+[test: text between two directives and spaces at the end of an accessibility line]
+[test: a no-break space between the text and a directive that ends an accessibility line]
+[test: U+3000 between the text and a directive that ends an accessibility line]
+[test: U+2003 between the text and a directive that ends an accessibility line]
+[test: a tab before and after the last directive of an accessibility line]
+[test: a no-break space before a comment after the text of an accessibility line]
+[test: runs and spaces around a comment after the text of an accessibility line]
+[test: a comment and spaces after a directive that follows the text of an accessibility line]
+[test: a no-break space before a directive and a comment after the text of an accessibility line]
+[test: U+2028 and spaces after the last directive of an accessibility line]
+[test: U+2029 and spaces after the last directive of an accessibility line]
+[test: U+2028 between the text and a directive that ends an accessibility line]
+[test: two directives after the text of an accessibility line and spaces]
+[test: two directives after the text of an accessibility line]
+[test: two directives touching after the text of an accessibility line and spaces]
+[test: a comment touching the text of an accessibility line]
 [fixture: pie/accessibility-lines/acc-title-percent-gap-kept]
 [fixture: gitgraph/title-and-common-values/acc-title-percent-gap-kept]
 [test: U+2003 before a directive that is not closed in a title, at the end of the text]

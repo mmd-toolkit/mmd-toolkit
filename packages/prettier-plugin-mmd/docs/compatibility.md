@@ -1387,39 +1387,38 @@ and C4 diagrams (the description `accDescription` of a C4 diagram too):
 printed `dateFormat YYYY-MM-DD`. The whitespace inside the text stays as
 written, and so does a text of spaces and tabs only. A no-break space, U+3000,
 or another whitespace character that is no space or tab at the start or at the
-end of the text stays too, since mermaid.js holds it in the Db and draws it:
-with one at the ends of a title, an axis format, an `accDescription`, or the
-second description of a state alias, the Db of 12.3.0 differs at the ends and
-every version that counts draws other text or geometry (see
+end of the text stays too, since the Db of 12.3.0 holds it: with one at the ends
+of a title, an axis format, an `accDescription`, or the second description of a
+state alias, every version that counts draws other text or geometry (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-The date format of a gantt chart and the last event of a line of a timeline
-differ in the Db of 12.3.0 only, and formatting does not change the Db there.
-The title of a pie chart, a radar chart, a packet diagram, an architecture
-diagram, a gitGraph, a cynefin diagram, a treemap, a Wardley map, a treeView, an
-info diagram, a railroad diagram, and a quadrant chart loses a no-break space
-and U+3000 at its start and at its end, as it loses spaces and tabs, since
-mermaid.js trims them there: the Db of 12.3.0 and the drawn text are the same
-with and without them. This holds for a title in which no directive and no
-comment stands; beside one, a no-break space and U+3000 are printed as the
-paragraph on them below says. The last event of a line of a timeline and the
-second description of a state with an alias lose the spaces and tabs at their
-end in the same way, not the whitespace at their start, which aligns the colons
-of a timeline: `2020 : e   ` is printed `2020 : e`, and `state "d" as A : x   `
-is printed `state "d" as A : x`. A period of a timeline, and an event that
-another colon follows, gain one space at their end where they end without
-whitespace, which stands before that colon: `2004: a: b` is printed
-`2004 : a : b`, except after the word `title` or `section` as the period, where
-a space would make the line a title or a section. The description of a task of a
-user journey loses the whitespace before its first colon (`Make tea : 5: Me` is
-printed `Make tea: 5: Me`), except in a section whose descriptions are padded to
-line the colons up. Where spaces or tabs stand between the text of a title and a
-comment that follows it on its line, they are printed as one space, and a
-comment that touches the text stays touching. Where directives follow the text
-and only spaces and tabs follow the last one, each keeps whether spaces or tabs
-precede it, a run becoming one space, and the spaces and tabs after the last one
-are dropped like any spaces and tabs at the end of the line, so the line is
-printed alike whether or not spaces and tabs follow its last directive, as a
-directive at the end of a line is in the other diagrams (see
+With one at the end of the date format of a Gantt chart or of the last event of
+a line of a timeline, the drawing is the same in every version that counts and
+only the Db of 12.3.0 differs, and it stays as written there too. The title of a
+pie chart, a radar chart, a packet diagram, an architecture diagram, a gitGraph,
+a cynefin diagram, a treemap, a Wardley map, a treeView, an info diagram, a
+railroad diagram, and a quadrant chart loses a no-break space and U+3000 at its
+start and at its end, as it loses spaces and tabs, since mermaid.js trims them
+there: the Db of 12.3.0 and the drawn text are the same with and without them.
+This holds for a title in which no directive and no comment stands; beside one,
+a no-break space and U+3000 are printed as the tables below say. The last event
+of a line of a timeline and the second description of a state with an alias lose
+the spaces and tabs at their end in the same way, not the whitespace at their
+start, which aligns the colons of a timeline: `2020 : e   ` is printed
+`2020 : e`, and `state "d" as A : x   ` is printed `state "d" as A : x`. A
+period of a timeline, and an event that another colon follows, gain one space at
+their end where they end without whitespace, which stands before that colon:
+`2004: a: b` is printed `2004 : a : b`, except after the word `title` or
+`section` as the period, where a space would make the line a title or a section.
+The description of a task of a user journey loses the whitespace before its
+first colon (`Make tea : 5: Me` is printed `Make tea: 5: Me`), except in a
+section whose descriptions are padded to line the colons up. Where spaces or
+tabs stand between the text of a title and a comment that follows it on its
+line, they are printed as one space, and a comment that touches the text stays
+touching. Where only directives follow the text, each keeps whether spaces or
+tabs precede it, a run becoming one space, and the spaces and tabs after the
+last one are dropped like any spaces and tabs at the end of the line, so the
+line is printed alike whether or not spaces and tabs follow its last directive,
+as a directive at the end of a line is in the other diagrams (see
 [Directives](./flowchart.md#directives)): `title T  %%{x}%%  %%{y}%%` and
 `title T  %%{x}%%  %%{y}%%  ` are both printed `title T %%{x}%% %%{y}%%`,
 `title T%%{x}%%%%{y}%%  ` is printed `title T%%{x}%%%%{y}%%`, and
@@ -1427,64 +1426,118 @@ directive at the end of a line is in the other diagrams (see
 mermaid.js removes the directives before it reads the text, so the spaces and
 tabs around them are spaces and tabs at the end of the text, which it draws the
 same whatever they are. This holds for the title of a Gantt chart, a user
-journey, a timeline, a sequence diagram, a Venn diagram, a C4 diagram, a pie
+journey, a timeline, a sequence diagram, a Venn diagram, a C4 diagram, a
+quadrant chart, a pie chart, a radar chart, a packet diagram, an architecture
+diagram, a gitGraph, a cynefin diagram, a treemap, a Wardley map, a treeView, an
+info diagram, and a railroad diagram, for the `accTitle:` and `accDescr:` lines
+of those diagram types, except a Venn diagram, which has none, and of a usecase
+diagram, for the text of a node of an ishikawa diagram, a mindmap, and a
+treeView, and of a card of a kanban board (not the id of a column, which the
+figure depends on), for the date format and the axis format of a Gantt chart,
+for the `accDescription` of a C4 diagram, for the last event of a line of a
+timeline and the space that a period and an event before a colon gain, for the
+description of a task of a user journey, except that a task whose description
+holds a directive stays as written (see [Task data](./journey.md#task-data)),
+and for the second description of a state alias. The runs of spaces and tabs
+inside a date format, an axis format, or the value of an `accTitle:` line stay
+as written before the directives as they do without them.
+
+A no-break space, U+3000, U+2003, U+2028, and U+2029 are no spaces or tabs, and
+a title that holds a directive or a comment is not printed alike by every
+diagram type. The table gives what each group of diagram types prints after
+`title ` for each written title (`\u00a0` is a no-break space, `\u3000` is
+U+3000, `\u2003` is U+2003, `\u2028` is U+2028, `\u2029` is U+2029, `\t` is a
+tab, and `as written` stands for the written title). The Langium types are a pie
 chart, a radar chart, a packet diagram, an architecture diagram, a gitGraph, a
 cynefin diagram, a treemap, a Wardley map, a treeView, an info diagram, and a
-railroad diagram, for the `accTitle:` and `accDescr:` lines of those diagram
-types and of a usecase diagram, for the text of a node of an ishikawa diagram, a
-mindmap, and a treeView, and of a card of a kanban board (not the id of a
-column, which the figure depends on), for the date format and the axis format of
-a Gantt chart, for the `accDescription` of a C4 diagram, for the last event of a
-line of a timeline and the space that a period and an event before a colon gain,
-for the description of a task of a user journey, except that a task whose
-description holds a directive stays as written (see
-[Task data](./journey.md#task-data)), and for the second description of a state
-alias. The runs of spaces and tabs inside a date format, an axis format, or the
-value of an `accTitle:` line stay as written before the directives as they do
-without them.
+railroad diagram; every type of a group prints the form of its column.
 
-A no-break space, U+3000, and U+2003 are no spaces or tabs, and a title that
-holds a directive or a comment is not printed alike by every diagram type. The
-table gives what each group of diagram types prints after `title ` for each
-written title (`\u00a0` is a no-break space, `\u3000` is U+3000, `\u2003` is
-U+2003, `\t` is a tab, and `as written` stands for the written title). The
-Langium types are a pie chart, a radar chart, a packet diagram, an architecture
-diagram, a gitGraph, a cynefin diagram, a treemap, a Wardley map, a treeView, an
-info diagram, and a railroad diagram; every type of a group prints the form of
-its column.
+| Written after `title `         | Langium types       | quadrant               | Gantt, journey, timeline, sequence | Venn, C4            |
+| ------------------------------ | ------------------- | ---------------------- | ---------------------------------- | ------------------- |
+| `T  %%{x}%%  `                 | `T %%{x}%%`         | `T %%{x}%%`            | `T %%{x}%%`                        | `T %%{x}%%`         |
+| `T  %%{x}%%  %% c  `           | `T %%{x}%% %% c  `  | `T  %%{x}%%  %% c`     | `T  %%{x}%%  %% c`                 | as written          |
+| `T %%{x}%%\u00a0`              | as written          | `T %%{x}%%`            | as written                         | as written          |
+| `T %%{x}%%\u3000`              | as written          | `T %%{x}%%`            | as written                         | as written          |
+| `T %%{x}%%\u2003`              | as written          | `T %%{x}%%`            | as written                         | as written          |
+| `%%{x}%%\u00a0T %%{y}%%`       | `%%{x}%%T %%{y}%%`  | `%%{x}%%T %%{y}%%`     | as written                         | as written          |
+| `%%{x}%%\u00a0T %%{y}%%\u00a0` | as written          | `%%{x}%%T %%{y}%%`     | as written                         | as written          |
+| `%%{x}%%\u00a0T %%{y}%% U`     | as written          | `%%{x}%%T %%{y}%% U`   | as written                         | as written          |
+| `%%{x}%%  T  `                 | `%%{x}%%T`          | `%%{x}%%T`             | `%%{x}%%T`                         | as written          |
+| `T %%{x}%% U  `                | as written          | `T %%{x}%% U`          | `T %%{x}%% U`                      | as written          |
+| `T %%{x}%%\u00a0U  `           | as written          | `T %%{x}%%\u00a0U`     | `T %%{x}%%\u00a0U`                 | as written          |
+| `T %%{x}%%  U  %%{y}%%  `      | as written          | `T %%{x}%%  U %%{y}%%` | `T %%{x}%%  U %%{y}%%`             | as written          |
+| `T\u00a0%%{x}%%`               | `T %%{x}%%`         | `T %%{x}%%`            | as written                         | as written          |
+| `T\u3000%%{x}%%`               | `T %%{x}%%`         | `T %%{x}%%`            | as written                         | as written          |
+| `T\u2003%%{x}%%`               | `T %%{x}%%`         | `T %%{x}%%`            | as written                         | as written          |
+| `T\t%%{x}%%\t`                 | `T %%{x}%%`         | `T %%{x}%%`            | `T %%{x}%%`                        | `T %%{x}%%`         |
+| `T\u00a0%% c`                  | `T %% c`            | as written             | as written                         | as written          |
+| `T  %% c  `                    | `T %% c  `          | `T %% c`               | `T %% c`                           | `T %% c`            |
+| `T %%{x}%% %% c  `             | as written          | `T %%{x}%% %% c`       | `T %%{x}%% %% c`                   | as written          |
+| `T\u00a0%%{x}%%%% c`           | `T %%{x}%%%% c`     | as written             | as written                         | as written          |
+| `%%{x}%%  `                    | as written          | `%%{x}%%`              | as written                         | as written          |
+| `%%{x}%%\t`                    | as written          | `%%{x}%%`              | as written                         | as written          |
+| `%%{x}%%  %%{y}%%  `           | as written          | `%%{x}%% %%{y}%%`      | as written                         | as written          |
+| `T  %%{x}%%  %%{y}%%  `        | `T %%{x}%% %%{y}%%` | `T %%{x}%% %%{y}%%`    | `T %%{x}%% %%{y}%%`                | `T %%{x}%% %%{y}%%` |
+| `T  %%{x}%%  %%{y}%%`          | `T %%{x}%% %%{y}%%` | `T %%{x}%% %%{y}%%`    | `T %%{x}%% %%{y}%%`                | `T %%{x}%% %%{y}%%` |
+| `T%%{x}%%%%{y}%%  `            | `T%%{x}%%%%{y}%%`   | `T%%{x}%%%%{y}%%`      | `T%%{x}%%%%{y}%%`                  | `T%%{x}%%%%{y}%%`   |
+| `T %%{x}%%\u2028  `            | as written          | `T %%{x}%%`            | `T %%{x}%%\u2028`                  | as written          |
+| `T %%{x}%%\u2029  `            | as written          | `T %%{x}%%`            | `T %%{x}%%\u2029`                  | as written          |
+| `T\u2028%%{x}%%`               | `T %%{x}%%`         | `T %%{x}%%`            | as written                         | as written          |
+| `T%% c`                        | as written          | as written             | as written                         | as written          |
 
-| Written after `title `         | Langium types      | quadrant               | Gantt, journey, timeline, sequence | Venn, C4    |
-| ------------------------------ | ------------------ | ---------------------- | ---------------------------------- | ----------- |
-| `T  %%{x}%%  `                 | `T %%{x}%%`        | `T %%{x}%%`            | `T %%{x}%%`                        | `T %%{x}%%` |
-| `T  %%{x}%%  %% c  `           | `T %%{x}%% %% c  ` | `T  %%{x}%%  %% c`     | `T  %%{x}%%  %% c`                 | as written  |
-| `T %%{x}%%\u00a0`              | as written         | `T %%{x}%%`            | as written                         | as written  |
-| `T %%{x}%%\u3000`              | as written         | `T %%{x}%%`            | as written                         | as written  |
-| `T %%{x}%%\u2003`              | as written         | `T %%{x}%%`            | as written                         | as written  |
-| `%%{x}%%\u00a0T %%{y}%%`       | `%%{x}%%T %%{y}%%` | `%%{x}%%T %%{y}%%`     | as written                         | as written  |
-| `%%{x}%%\u00a0T %%{y}%%\u00a0` | as written         | `%%{x}%%T %%{y}%%`     | as written                         | as written  |
-| `%%{x}%%\u00a0T %%{y}%% U`     | as written         | `%%{x}%%T %%{y}%% U`   | as written                         | as written  |
-| `%%{x}%%  T  `                 | `%%{x}%%T`         | `%%{x}%%T`             | `%%{x}%%T`                         | as written  |
-| `T %%{x}%% U  `                | as written         | `T %%{x}%% U`          | `T %%{x}%% U`                      | as written  |
-| `T %%{x}%%\u00a0U  `           | as written         | `T %%{x}%%\u00a0U`     | `T %%{x}%%\u00a0U`                 | as written  |
-| `T %%{x}%%  U  %%{y}%%  `      | as written         | `T %%{x}%%  U %%{y}%%` | `T %%{x}%%  U %%{y}%%`             | as written  |
-| `T\u00a0%%{x}%%`               | `T %%{x}%%`        | `T %%{x}%%`            | as written                         | as written  |
-| `T\u3000%%{x}%%`               | `T %%{x}%%`        | `T %%{x}%%`            | as written                         | as written  |
-| `T\u2003%%{x}%%`               | `T %%{x}%%`        | `T %%{x}%%`            | as written                         | as written  |
-| `T\t%%{x}%%\t`                 | `T %%{x}%%`        | `T %%{x}%%`            | `T %%{x}%%`                        | `T %%{x}%%` |
-| `T\u00a0%% c`                  | `T %% c`           | as written             | as written                         | as written  |
-| `T  %% c  `                    | `T %% c  `         | `T %% c`               | `T %% c`                           | `T %% c`    |
-| `T %%{x}%% %% c  `             | as written         | `T %%{x}%% %% c`       | `T %%{x}%% %% c`                   | as written  |
-| `T\u00a0%%{x}%%%% c`           | `T %%{x}%%%% c`    | as written             | as written                         | as written  |
+A title of directives only stays as written in every type but a quadrant chart.
+In a Gantt chart, a user journey, a sequence diagram, a Venn diagram, and a C4
+diagram, every version that counts rejects the title without the whitespace
+after the directive, and in a timeline it draws another figure.
 
-An `accTitle:` or `accDescr:` line of the Langium types prints as their column,
-except that a directive that starts the value stays with what follows it
-(`accTitle: %%{x}%%\u00a0T %%{y}%%` and `accTitle: %%{x}%%  T  ` are not
-changed), and that the `accTitle:` line of a pie chart and of a gitGraph stays
-as written in the four rows with a comment after the text or after a directive,
-since 10.9.8 reads the `%%` and what follows as part of the title and draws
-other text for the form of the column (see the pie and gitGraph row of
+An `accTitle:` or `accDescr:` line that holds text is printed as the next table
+gives: the Langium types as in the first table, except that a directive that
+starts the value stays with what follows it, and the other types as its last
+column (a Venn diagram has no such line, and the table does not cover a line of
+directives only). In a quadrant chart, a Gantt chart, a user journey, a
+timeline, a sequence diagram, and a C4 diagram, the Db of 12.3.0 and the drawing
+are the same with and without a no-break space, U+3000, U+2003, U+2028, or
+U+2029 at the start or at the end of the value of these lines, once the
+directives are removed, whereas the same characters at the ends of the `title`
+of a Gantt chart, a user journey, a timeline, a sequence diagram, and a C4
+diagram change the Db and the drawing, so the last column leaves them out where
+the title of the same type keeps them. The `accTitle:` line of a pie chart and
+of a gitGraph stays as written in the four rows with a comment after the text or
+after a directive, since 10.9.8 reads the `%%` and what follows as part of the
+title and draws other text for the form of the column (see the pie and gitGraph
+row of
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)
 and [Accessibility lines](./pie.md#accessibility-lines)).
+
+| Written after `accTitle: ` or `accDescr: ` | Langium types       | quadrant, Gantt, journey, timeline, sequence, C4    |
+| ------------------------------------------ | ------------------- | --------------------------------------------------- |
+| `T  %%{x}%%  `                             | `T %%{x}%%`         | `T %%{x}%%`                                         |
+| `T  %%{x}%%  %% c  `                       | `T %%{x}%% %% c  `  | `T  %%{x}%%  %% c`                                  |
+| `T %%{x}%%\u00a0`                          | as written          | `T %%{x}%%`                                         |
+| `T %%{x}%%\u3000`                          | as written          | `T %%{x}%%`                                         |
+| `T %%{x}%%\u2003`                          | as written          | `T %%{x}%%`                                         |
+| `%%{x}%%\u00a0T %%{y}%%`                   | as written          | `%%{x}%%T %%{y}%%`                                  |
+| `%%{x}%%\u00a0T %%{y}%%\u00a0`             | as written          | `%%{x}%%T %%{y}%%`                                  |
+| `%%{x}%%\u00a0T %%{y}%% U`                 | as written          | `%%{x}%%T %%{y}%% U`                                |
+| `%%{x}%%  T  `                             | as written          | `%%{x}%%T`                                          |
+| `T %%{x}%% U  `                            | as written          | `T %%{x}%% U`                                       |
+| `T %%{x}%%\u00a0U  `                       | as written          | `T %%{x}%%\u00a0U`                                  |
+| `T %%{x}%%  U  %%{y}%%  `                  | as written          | `T %%{x}%%  U %%{y}%%`                              |
+| `T\u00a0%%{x}%%`                           | `T %%{x}%%`         | `T %%{x}%%`                                         |
+| `T\u3000%%{x}%%`                           | `T %%{x}%%`         | `T %%{x}%%`                                         |
+| `T\u2003%%{x}%%`                           | `T %%{x}%%`         | `T %%{x}%%`                                         |
+| `T\t%%{x}%%\t`                             | `T %%{x}%%`         | `T %%{x}%%`                                         |
+| `T\u00a0%% c`                              | `T %% c`            | as written                                          |
+| `T  %% c  `                                | `T %% c  `          | `T  %% c` for `accTitle:`, `T %% c` for `accDescr:` |
+| `T %%{x}%% %% c  `                         | as written          | `T %%{x}%% %% c`                                    |
+| `T\u00a0%%{x}%%%% c`                       | `T %%{x}%%%% c`     | as written                                          |
+| `T %%{x}%%\u2028  `                        | as written          | `T %%{x}%%`                                         |
+| `T %%{x}%%\u2029  `                        | as written          | `T %%{x}%%`                                         |
+| `T\u2028%%{x}%%`                           | `T %%{x}%%`         | `T %%{x}%%`                                         |
+| `T  %%{x}%%  %%{y}%%  `                    | `T %%{x}%% %%{y}%%` | `T %%{x}%% %%{y}%%`                                 |
+| `T  %%{x}%%  %%{y}%%`                      | `T %%{x}%% %%{y}%%` | `T %%{x}%% %%{y}%%`                                 |
+| `T%%{x}%%%%{y}%%  `                        | `T%%{x}%%%%{y}%%`   | `T%%{x}%%%%{y}%%`                                   |
+| `T%% c`                                    | as written          | as written                                          |
 
 A directive that is not closed in a title takes the rest of the text.
 `title T %%{x` and `title T%%{x` are not changed in any type. The second table
@@ -1518,7 +1571,42 @@ a title] [test: a no-break space before a comment after the text of a title]
 [test: runs and spaces around a comment after the text of a title] [test: a
 comment and spaces after a directive that follows the text of a title] [test: a
 no-break space before a directive and a comment after the text of a title]
-[fixture: pie/accessibility-lines/acc-title-percent-gap-kept] [fixture:
+[test: a directive and spaces only as a title] [test: a directive and a tab only
+as a title] [test: two directives and spaces only as a title] [test: two
+directives after the text of a title and spaces] [test: two directives after the
+text of a title] [test: two directives touching after the text of a title and
+spaces] [test: U+2028 and spaces after the last directive of a title] [test:
+U+2029 and spaces after the last directive of a title] [test: U+2028 between the
+text and a directive that ends a title] [test: a comment touching the text of a
+title] [test: runs and spaces around a directive that ends an accessibility
+line] [test: a comment and spaces after a directive that ends an accessibility
+line] [test: a no-break space after the last directive of an accessibility line]
+[test: U+3000 after the last directive of an accessibility line] [test: U+2003
+after the last directive of an accessibility line] [test: a no-break space after
+a directive that starts an accessibility line and before another directive]
+[test: a no-break space after a directive that starts an accessibility line and
+after the last directive] [test: a no-break space after a directive that starts
+an accessibility line and text after the last directive] [test: spaces after a
+directive that starts an accessibility line] [test: text after a directive and
+spaces at the end of an accessibility line] [test: a no-break space after a
+directive and spaces at the end of an accessibility line] [test: text between
+two directives and spaces at the end of an accessibility line] [test: a no-break
+space between the text and a directive that ends an accessibility line] [test:
+U+3000 between the text and a directive that ends an accessibility line] [test:
+U+2003 between the text and a directive that ends an accessibility line] [test:
+a tab before and after the last directive of an accessibility line] [test: a
+no-break space before a comment after the text of an accessibility line] [test:
+runs and spaces around a comment after the text of an accessibility line] [test:
+a comment and spaces after a directive that follows the text of an accessibility
+line] [test: a no-break space before a directive and a comment after the text of
+an accessibility line] [test: U+2028 and spaces after the last directive of an
+accessibility line] [test: U+2029 and spaces after the last directive of an
+accessibility line] [test: U+2028 between the text and a directive that ends an
+accessibility line] [test: two directives after the text of an accessibility
+line and spaces] [test: two directives after the text of an accessibility line]
+[test: two directives touching after the text of an accessibility line and
+spaces] [test: a comment touching the text of an accessibility line] [fixture:
+pie/accessibility-lines/acc-title-percent-gap-kept] [fixture:
 gitgraph/title-and-common-values/acc-title-percent-gap-kept] [test: U+2003
 before a directive that is not closed in a title, at the end of the text] [test:
 U+2003 before a directive that is not closed in a title, before a statement]

@@ -753,9 +753,9 @@ prints a run of spaces and tabs inside the text as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 without rewriting quote-looking text. Never take a value from the next physical
 line, across comments or directives. Trivia-bearing values retain their written
-boundaries. The directives that end a title are printed with one space before
-each that has spaces or tabs before it, and the spaces and tabs after the last
-one are left out, whatever the spaces and tabs at the end of the line (see
+boundaries. Where only directives follow the text of a title, they are printed
+with one space before each that has spaces or tabs before it, and the spaces and
+tabs after the last one are left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
@@ -843,9 +843,9 @@ Use the shared `accTitle: value` and `accDescr: value` layout: colon touching
 the keyword, one space before a trimmed nonempty value, and no space after an
 empty colon. Keep internal text; braces after a colon remain line text. These
 equivalent outer gaps follow the other diagrams. Trivia retains boundaries and
-no next-line value is joined. The directives that end the value are printed with
-one space before each that has spaces or tabs before it, and the spaces and tabs
-after the last one are left out (see
+no next-line value is joined. Where only directives follow the text of the
+value, they are printed with one space before each that has spaces or tabs
+before it, and the spaces and tabs after the last one are left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]

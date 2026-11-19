@@ -465,17 +465,16 @@ gitGraph
 Print `title` plus one space and a nonempty value trimmed only at its outer
 ends, with a run of spaces and tabs inside it printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same));
-empty/whitespace-only titles print bare `title`. The directives that end a title
-are printed with one space before each that has spaces or tabs before it, and
-the spaces and tabs after the last one are left out, whatever the spaces and
-tabs at the end of the line (see
+empty/whitespace-only titles print bare `title`. Where only directives follow
+the text of a title, they are printed with one space before each that has spaces
+or tabs before it, and the spaces and tabs after the last one are left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title-and-common-values/title-directives-end-blanks-dropped]
 
 Shared accessibility layout prints `accTitle: value` / `accDescr: value` and
-empty blocks as `{}`. The directives that end the value of such a line are
-printed as those that end a title (see
+empty blocks as `{}`. Where only directives follow the text of the value of such
+a line, they are printed as they are after the text of a title (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title-and-common-values/acc-directives-end-blanks-dropped]

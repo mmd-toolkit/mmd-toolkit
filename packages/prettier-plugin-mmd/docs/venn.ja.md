@@ -958,18 +958,22 @@ mermaid.js はそれらを Db に残しますが、それらがなくても同�
 [fixture: venn/title/title-trailing-directive-blanks-dropped]
 [fixture: venn/title/title-two-directives-trailing-blanks-dropped]
 
-Venn 図のディレクティブのあるタイトルは、表のとおりに印字します。
-（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-最後のディレクティブの後の空白とタブは除きます。
-最後のディレクティブの後のコメント、U+00A0、U+3000、U+2003、テキスト、
-または先頭のディレクティブの後の空白があるときは、
-タイトルは書かれたまま残ります。
+Venn 図のディレクティブかコメントのあるタイトルは、
+[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)
+の最初の表の Venn、C4 の列のとおりに印字します。
+テキストの後にディレクティブだけが続くときは、
+最後のディレクティブの後の空白とタブを除きます。
+最後のディレクティブの後のコメント、U+00A0、U+3000、U+2003、U+2028、U+2029、
+テキスト、先頭のディレクティブの後の空白、
+ディレクティブだけのタイトルがあるときは、タイトルは書かれたまま残ります。
 `title T %%{x}%% U` と空白 2 つは変えません。
 
 [test: text after a directive and spaces at the end of a title]
 [test: a no-break space after a directive and spaces at the end of a title]
 [test: a comment and spaces after a directive that ends a title]
 [test: spaces after a directive that starts a title]
+[test: a directive and spaces only as a title]
+[test: U+2028 and spaces after the last directive of a title]
 
 行の規則が無視する `;` の後の行にテキストがあるタイトルは、
 `;` とその行の字下げを含めて、書かれたまま残します。

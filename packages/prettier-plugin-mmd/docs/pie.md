@@ -193,10 +193,10 @@ spaces and tabs inside the value as one space (see
 and preserve quotes and backslashes, and all repeated assignments, including
 frontmatter fallback. Pie never joins the next physical line into a title: even
 across blank/comment/directive gaps, a following section is a separate
-statement. Protected trivia and semicolon groups take precedence. The directives
-that end a title are printed with one space before each that has spaces or tabs
-before it, and the spaces and tabs after the last one are left out, whatever the
-spaces and tabs at the end of the line (see
+statement. Protected trivia and semicolon groups take precedence. Where only
+directives follow the text of a title, they are printed with one space before
+each that has spaces or tabs before it, and the spaces and tabs after the last
+one are left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
@@ -240,9 +240,10 @@ title (`accTitle: Value   %% note`); a comment after the `}` of a description
 block keeps the block, since the text of the form with the colon would take the
 comment (see
 [Accessibility lines that the oldest version reads to the end](./compatibility.md#accessibility-lines-that-the-oldest-version-reads-to-the-end)).
-Hidden forms and protected textual groups retain their gaps. The directives that
-end the value are printed with one space before each that has spaces or tabs
-before it, and the spaces and tabs after the last one are left out (see
+Hidden forms and protected textual groups retain their gaps. Where only
+directives follow the text of the value, they are printed with one space before
+each that has spaces or tabs before it, and the spaces and tabs after the last
+one are left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
