@@ -471,6 +471,13 @@ Db が保つからです。
 [fixture: attribute-spacing/semicolon-continuation-aligned]
 
 物理行を結ぶコメント領域は、元の配置を保ちます。
+U+2028 か U+2029 の後のコメント領域があると、
+mermaid.js は前後の行を 1 行として読みます。
+整形は、その行を最初の行から最後まで書かれたまま印字します。
+どの図種のどの文でも同じです。
+詳しくは
+[U+2028 または U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
 
 [test: er/attribute-spacing/comment-region-continuation-kept]
 
@@ -602,6 +609,9 @@ flowchart、sequence、class、state も 1 行に 1 つの文を印字します�
 
 無視される `;` は、行規則がそれを無視する根拠となる行に残します。
 `"style:#x" end;` の `end` は、前の実体と同じ行に、大文字でも残します。
+`end` を独立した行に置くと、`;` は行規則が無視するものではなくなります。
+詳しくは [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)
+を参照してください。
 `class` や `subgraph` と最初の名前の間に無視される `;` があるときは、
 隙間全体を書かれたまま残します。
 `class;-A a`、`subgraph;-x`、`subgraph;é` は、
@@ -2173,6 +2183,11 @@ erDiagram
 同じ印字行の中では、flowchart と同じく、
 隙間をディレクティブがないものとして印字し、
 ディレクティブをその空白の後ろに置いて、後ろの単位に接します。
+規則 1 は、隙間のディレクティブの印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[class](./class.ja.md#ディレクティブ)、
+[sequence](./sequence.ja.md#ディレクティブ)、
+[state](./state.ja.md#ディレクティブ)も、隙間を同じように印字します。
 
 [fixture: directives/kept] [fixture: directives/before-header]
 [fixture: directives/after-header-on-same-line]
@@ -2842,6 +2857,11 @@ mermaid.js が複数行にわたって読む文は、改行が、
 行をつなげられるとき、複数行の空のブロックは、行の終わりが `{ }` になります。
 `{` の後ろに空白、タブ、U+2028 があっても同じで、ほかの空のブロックと同じです。
 1 行の空のブロックは、その行と一緒に書かれたままにします。
+U+2028 か U+2029 の後のコメント領域が前後の行と結ぶ行は、書かれたまま残り、
+その行の空のブロックも同じです。
+詳しくは
+[U+2028 または U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
 
 [test: a comment line after U+2028 inside the name of an ER entity with an attribute block over several lines]
 [test: an attribute on the line of the opening brace after a comment line after U+2028 inside the name of an ER entity]

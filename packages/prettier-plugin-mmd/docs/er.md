@@ -495,7 +495,11 @@ Semicolons alone do not prevent alignment of a continuation.
 
 [fixture: attribute-spacing/semicolon-continuation-aligned]
 
-Comment regions that join physical lines retain their original layout.
+Comment regions that join physical lines retain their original layout. A comment
+region after U+2028 or U+2029 makes mermaid.js read the lines around it as one,
+and the formatter prints such a line as written from its first line to its end,
+as it does for every statement of every diagram type (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
 
 [test: er/attribute-spacing/comment-region-continuation-kept]
 
@@ -625,10 +629,13 @@ A directive between two statements stands with the statement after it.
 
 An ignored `;` keeps the line that makes the line rule ignore it: in
 `"style:#x" end;`, the `end` stays with the entity before it, also in upper
-case. An ignored `;` between `class` or `subgraph` and its first name keeps the
-complete gap as written: `class;-A a`, `subgraph;-x`, and `subgraph;é` keep
-their contacts after the `;` is removed by the line rule. This also applies when
-U+2028 or U+2029 precedes the subgraph name.
+case. On a line of its own, the `end` would leave the `;` as one that the line
+rule no longer ignores (see
+[A line that a `;` ends](./compatibility.md#a-line-that-a--ends)). An ignored
+`;` between `class` or `subgraph` and its first name keeps the complete gap as
+written: `class;-A a`, `subgraph;-x`, and `subgraph;é` keep their contacts after
+the `;` is removed by the line rule. This also applies when U+2028 or U+2029
+precedes the subgraph name.
 
 [fixture: statements-one-per-line/closing-end-ignored-semicolon-kept] [fixture:
 statements-one-per-line/closing-uppercase-end-ignored-semicolon-kept] [fixture:
@@ -2188,7 +2195,12 @@ erDiagram
 A directive on a line of its own stands at the level of the statements around
 it, and a directive within a printed line is placed as in a flowchart: the gap
 is printed as without the directive, and the directive stands after its space
-and touches the unit that follows it.
+and touches the unit that follows it. Rule 1 names no mark for a directive in a
+gap, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [class](./class.md#directives),
+[sequence](./sequence.md#directives), and [state](./state.md#directives) print
+the gap in the same way.
 
 [fixture: directives/kept] [fixture: directives/before-header] [fixture:
 directives/after-header-on-same-line] [fixture:
@@ -2913,7 +2925,10 @@ it does where the `}` stands on any line that stays as written (see
 [Attribute blocks](#attribute-blocks)). Where its lines can join, an empty block
 over several lines is printed `{ }` at the end of that line, whatever stands
 after the `{` (spaces, a tab, a U+2028), as any other empty block is; an empty
-block on one line stays as written with its line.
+block on one line stays as written with its line. A line that a comment region
+after U+2028 or U+2029 joins with the lines around it stays as written, and so
+does an empty block on it (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
 
 [test: a comment line after U+2028 inside the name of an ER entity with an
 attribute block over several lines] [test: an attribute on the line of the
