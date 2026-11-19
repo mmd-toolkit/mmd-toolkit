@@ -63,10 +63,12 @@ mermaid.js のドキュメントの木の図 13 件のうち、10 件は字下�
 [規則 3](./printed-form.ja.md#3-綴り)が字下げの形を与え、
 字下げで書かれた入力は字下げモードのままです。
 これらの入力には、罫線の形がないものがあります。
-罫線のモードで書くと、複数行の引用名や別の行の注釈のように、
-枝の前置部分を持たずに続く行は拒否されます。
-注釈の前に `│` を付けると `│` という名前のノードが増え、
-引用名の 2 行目の前に付けた `│` は名前の文字になります。
+罫線のモードで書くと、複数行の引用名の 2 行目や別の行の注釈のように、
+枝の前置部分を持たずに続く字下げされた行は拒否されます。
+第 1 列にある注釈も拒否されます。
+第 1 列にある引用名の 2 行目は名前の一部で、
+`│` で始まる 2 行目も名前の一部です。
+注釈の前に `│` を付けると `│` という名前のノードが増えます。
 モードは見出し後の論理 LF 行で判定し、値の内部も調べます。
 空白だけ、コメント形、メタデータ形、縦線だけの行を除きます。
 前置部分の有無だけでは判定しません。
@@ -79,6 +81,11 @@ mermaid.js のドキュメントの木の図 13 件のうち、10 件は字下�
 字下げモードのコメントは次の文にそろえます。
 
 [fixture: treeview/modes/comment-excluded]
+[fixture: treeview/modes/box-quoted-name-column-one-continuation]
+[fixture: treeview/modes/box-quoted-name-bar-continuation]
+[fixture: treeview/annotation-lines/box-redraw-vertical-is-a-node]
+[test: treeview/modes/box-annotation-column-one-rejected]
+[test: treeview/modes/box-annotation-indented-rejected]
 [corpus fixture: treeview/box-written-tree]
 [corpus fixture: treeview/box-entity-mixed-indent]
 [corpus fixture: treeview/box-quoted-indent-error]
@@ -3062,10 +3069,16 @@ EOF の未完ディレクティブと保護・原文保持の終端は共有の�
 [c4](./c4.ja.md#末尾の改行)、[ishikawa](./ishikawa.ja.md#final-newline)、
 [kanban](./kanban.ja.md#末尾の改行)は、
 単独の行にある閉じていないディレクティブを、空白でない最後の文字まで読みます。
-treeView も同じで、ノードの行にあるときもそうです。
+treeView も同じで、ノードの行、title の行、アクセシビリティの行、
+`:::` の後ろのクラスの行にあるときもそうです。
+引用名の後ろとクラスの後ろでは、ディレクティブをそれに接して書き、
+空白を挟んで書くと拒否されます。
 ここでは U+2028、U+2029、U+0085、U+180E、U+200B を空白でない文字に数えます。
-その文字の後ろの空白（空白、タブ、U+00A0、U+3000、U+FEFF、U+2003、改ページ、
-垂直タブ、改行、空行）は落とし、改行 1 つでテキストを終えます。
+その文字の後ろの空白は落とします。
+落とすのは U+0009 から U+000D（タブ、改行、垂直タブ、改ページ）、U+0020、
+U+00A0、U+1680、U+2000 から U+200A、U+202F、U+205F、U+3000、U+FEFF で、
+これらと一緒に空行も落ちます。
+改行 1 つでテキストを終えます。
 何も足さないのは、テキストがその文字の直後で終わり、
 その文字が U+2028 でも U+2029 でもないときだけです。
 `%%{unfinished` と空白 2 つは `%%{unfinished` と改行を、
@@ -3095,6 +3108,25 @@ treeView も同じで、ノードの行にあるときもそうです。
 [test: treeview/final-newline/open-directive-u2028-space]
 [test: treeview/final-newline/open-directive-nel]
 [test: treeview/final-newline/open-directive-zero-width-space]
+[test: treeview/final-newline/open-directive-u1680]
+[test: treeview/final-newline/open-directive-u2000]
+[test: treeview/final-newline/open-directive-u200a]
+[test: treeview/final-newline/open-directive-u202f]
+[test: treeview/final-newline/open-directive-u205f]
+[test: treeview/final-newline/open-directive-after-node-u2029]
+[test: treeview/final-newline/open-directive-after-node-u0085]
+[test: treeview/final-newline/open-directive-after-node-u180e]
+[test: treeview/final-newline/open-directive-after-node-u2003]
+[test: treeview/final-newline/open-directive-after-title-two-spaces]
+[test: treeview/final-newline/open-directive-after-title-u2029]
+[test: treeview/final-newline/open-directive-after-acctitle-two-spaces]
+[test: treeview/final-newline/open-directive-after-acctitle-u2029]
+[test: treeview/final-newline/open-directive-after-accdescr-two-spaces]
+[test: treeview/final-newline/open-directive-after-accdescr-u2029]
+[test: treeview/final-newline/open-directive-after-class-two-spaces]
+[test: treeview/final-newline/open-directive-after-class-u2029]
+[test: treeview/final-newline/open-directive-after-quoted-name-space-rejected]
+[test: treeview/final-newline/open-directive-after-class-space-rejected]
 [test: treeview/final-newline/open-directive-u180e]
 [test: treeview/final-newline/open-directive-u2003]
 [test: treeview/final-newline/open-directive-after-node-nothing-after]

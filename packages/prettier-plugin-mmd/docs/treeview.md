@@ -61,12 +61,13 @@ Keep the original indentation or box-drawing mode. Of the 13 tree diagrams in
 the documentation of mermaid.js, 10 are written with indentation and 3 with box
 characters, so [rule 3](./printed-form.md#3-a-spelling) gives the indentation
 form, and an input written with indentation stays in indentation mode. Some of
-these inputs have no box form: written in box mode, a line that goes on without
-a branch prefix, such as a quoted name over several lines or an annotation on a
-line of its own, is rejected; a `│` put before an annotation adds a node named
-`│`, while a `│` put before the second line of a quoted name is a character of
-the name. The mode test still examines logical LF lines after the header,
-including value interiors, excluding whitespace-only, comment-shaped,
+these inputs have no box form: written in box mode, an indented line that goes
+on without a branch prefix, such as the second line of a quoted name or an
+annotation on a line of its own, is rejected, and so is an annotation at column
+one. The second line of a quoted name at column one is a part of the name, and
+so is a second line that starts with a `│`; a `│` put before an annotation adds
+a node named `│`. The mode test still examines logical LF lines after the
+header, including value interiors, excluding whitespace-only, comment-shaped,
 metadata-shaped and vertical-only lines. Prefix presence alone is insufficient.
 In box mode redraw ordinary outer structure from the AST forest; do not convert
 indentation-mode input into a box diagram. Preserve the mode and the reading of
@@ -77,7 +78,12 @@ one, so they do not appear as children.
 Box characters inside a comment line do not select box mode; in indentation mode
 that comment aligns with the following statement.
 
-[fixture: treeview/modes/comment-excluded] [corpus fixture:
+[fixture: treeview/modes/comment-excluded] [fixture:
+treeview/modes/box-quoted-name-column-one-continuation] [fixture:
+treeview/modes/box-quoted-name-bar-continuation] [fixture:
+treeview/annotation-lines/box-redraw-vertical-is-a-node] [test:
+treeview/modes/box-annotation-column-one-rejected] [test:
+treeview/modes/box-annotation-indented-rejected] [corpus fixture:
 treeview/box-written-tree] [corpus fixture: treeview/box-entity-mixed-indent]
 [corpus fixture: treeview/box-quoted-indent-error] [corpus fixture:
 treeview/box-multiline-quoted] [corpus fixture:
@@ -3042,11 +3048,14 @@ directive, so
 decides: [c4](./c4.md#final-newline), [ishikawa](./ishikawa.md#final-newline),
 and [kanban](./kanban.md#final-newline) read an open directive on a line of its
 own up to its last character that is no whitespace, and treeView does too, also
-after a node on its line. U+2028, U+2029, U+0085, U+180E, and U+200B are no
-whitespace here. The whitespace after that character is dropped (spaces, tabs, a
-U+00A0, a U+3000, a U+FEFF, a U+2003, a form feed, a vertical tab, line breaks,
-empty lines), and one line break ends the text; nothing is added only where the
-text ends right after the character and it is no U+2028 or U+2029.
+on the line of a node, a title, an accessibility line, or a class after `:::`.
+After a quoted name or after a class the directive has to touch it: written
+after a space it is rejected. U+2028, U+2029, U+0085, U+180E, and U+200B are no
+whitespace here. The whitespace after that character is dropped: U+0009 to
+U+000D (the tab, the line breaks, the vertical tab, and the form feed), U+0020,
+U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, and U+FEFF, and with
+them the empty lines. One line break ends the text; nothing is added only where
+the text ends right after the character and it is no U+2028 or U+2029.
 `%%{unfinished` and two spaces print `%%{unfinished` and a line break,
 `%%{unfinished` and U+2028 print `%%{unfinished`, U+2028, and a line break, and
 `"R"%%{unfinished` and two spaces print `"R"%%{unfinished` and a line break.
@@ -3074,6 +3083,25 @@ treeview/final-newline/open-directive-space-u2028] [test:
 treeview/final-newline/open-directive-u2028-space] [test:
 treeview/final-newline/open-directive-nel] [test:
 treeview/final-newline/open-directive-zero-width-space] [test:
+treeview/final-newline/open-directive-u1680] [test:
+treeview/final-newline/open-directive-u2000] [test:
+treeview/final-newline/open-directive-u200a] [test:
+treeview/final-newline/open-directive-u202f] [test:
+treeview/final-newline/open-directive-u205f] [test:
+treeview/final-newline/open-directive-after-node-u2029] [test:
+treeview/final-newline/open-directive-after-node-u0085] [test:
+treeview/final-newline/open-directive-after-node-u180e] [test:
+treeview/final-newline/open-directive-after-node-u2003] [test:
+treeview/final-newline/open-directive-after-title-two-spaces] [test:
+treeview/final-newline/open-directive-after-title-u2029] [test:
+treeview/final-newline/open-directive-after-acctitle-two-spaces] [test:
+treeview/final-newline/open-directive-after-acctitle-u2029] [test:
+treeview/final-newline/open-directive-after-accdescr-two-spaces] [test:
+treeview/final-newline/open-directive-after-accdescr-u2029] [test:
+treeview/final-newline/open-directive-after-class-two-spaces] [test:
+treeview/final-newline/open-directive-after-class-u2029] [test:
+treeview/final-newline/open-directive-after-quoted-name-space-rejected] [test:
+treeview/final-newline/open-directive-after-class-space-rejected] [test:
 treeview/final-newline/open-directive-u180e] [test:
 treeview/final-newline/open-directive-u2003] [test:
 treeview/final-newline/open-directive-after-node-nothing-after] [test:

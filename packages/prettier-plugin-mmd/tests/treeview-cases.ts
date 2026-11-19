@@ -10,6 +10,108 @@ interface TreeviewCase {
 
 export const treeviewCases: readonly TreeviewCase[] = [
   {
+    name: "treeview/final-newline/open-directive-u1680",
+    input: 'treeView-beta\n"R"\n%%{unfinished\u1680',
+    output: 'treeView-beta\n  "R"\n%%{unfinished\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-u2000",
+    input: 'treeView-beta\n"R"\n%%{unfinished\u2000',
+    output: 'treeView-beta\n  "R"\n%%{unfinished\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-u200a",
+    input: 'treeView-beta\n"R"\n%%{unfinished\u200a',
+    output: 'treeView-beta\n  "R"\n%%{unfinished\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-u202f",
+    input: 'treeView-beta\n"R"\n%%{unfinished\u202f',
+    output: 'treeView-beta\n  "R"\n%%{unfinished\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-u205f",
+    input: 'treeView-beta\n"R"\n%%{unfinished\u205f',
+    output: 'treeView-beta\n  "R"\n%%{unfinished\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-after-node-u2029",
+    input: 'treeView-beta\n"R"%%{unfinished\u2029',
+    output: 'treeView-beta\n  "R"%%{unfinished\u2029\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-after-node-u0085",
+    input: 'treeView-beta\n"R"%%{unfinished\u0085',
+    output: 'treeView-beta\n  "R"%%{unfinished\u0085',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-after-node-u180e",
+    input: 'treeView-beta\n"R"%%{unfinished\u180e',
+    output: 'treeView-beta\n  "R"%%{unfinished\u180e',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-after-node-u2003",
+    input: 'treeView-beta\n"R"%%{unfinished\u2003',
+    output: 'treeView-beta\n  "R"%%{unfinished\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-after-title-two-spaces",
+    input: "treeView-beta\ntitle T%%{unfinished  ",
+    output: "treeView-beta\n  title T%%{unfinished\n",
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-after-title-u2029",
+    input: "treeView-beta\ntitle T%%{unfinished\u2029",
+    output: "treeView-beta\n  title T%%{unfinished\u2029\n",
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-after-acctitle-two-spaces",
+    input: "treeView-beta\naccTitle: T%%{unfinished  ",
+    output: "treeView-beta\n  accTitle: T%%{unfinished\n",
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-after-acctitle-u2029",
+    input: "treeView-beta\naccTitle: T%%{unfinished\u2029",
+    output: "treeView-beta\n  accTitle: T%%{unfinished\u2029\n",
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-after-accdescr-two-spaces",
+    input: "treeView-beta\naccDescr: T%%{unfinished  ",
+    output: "treeView-beta\n  accDescr: T%%{unfinished\n",
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-after-accdescr-u2029",
+    input: "treeView-beta\naccDescr: T%%{unfinished\u2029",
+    output: "treeView-beta\n  accDescr: T%%{unfinished\u2029\n",
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-after-class-two-spaces",
+    input: "treeView-beta\nR :::x%%{unfinished  ",
+    output: "treeView-beta\n  R :::x%%{unfinished\n",
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-after-class-u2029",
+    input: "treeView-beta\nR :::x%%{unfinished\u2029",
+    output: "treeView-beta\n  R :::x%%{unfinished\u2029\n",
+    options: {},
+  },
+  {
     name: "treeview/final-newline/open-directive-u180e",
     input: 'treeView-beta\n"R"\n%%{unfinished\u180e',
     output: 'treeView-beta\n  "R"\n%%{unfinished\u180e',

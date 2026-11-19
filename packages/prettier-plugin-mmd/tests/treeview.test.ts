@@ -86,6 +86,30 @@ describe("treeview escaped cases", () => {
   )
 })
 
+/** Texts that mermaid.js rejects (docs/treeview.md, Modes and Final newline). */
+describe("treeview texts that are rejected", () => {
+  it.each([
+    [
+      "treeview/modes/box-annotation-column-one-rejected",
+      'treeView-beta\n"R"\n\u251c\u2500\u2500 "a"\n:::x\n',
+    ],
+    [
+      "treeview/final-newline/open-directive-after-quoted-name-space-rejected",
+      'treeView-beta\n"R" %%{unfinished',
+    ],
+    [
+      "treeview/final-newline/open-directive-after-class-space-rejected",
+      "treeView-beta\nR :::x %%{unfinished",
+    ],
+    [
+      "treeview/modes/box-annotation-indented-rejected",
+      'treeView-beta\n"R"\n\u251c\u2500\u2500 "a"\n    :::x\n',
+    ],
+  ])("%s", async (_name, input) => {
+    await expect(formatMermaid(input)).rejects.toBeInstanceOf(SyntaxError)
+  })
+})
+
 it("treeview split directives remain redrawable", async () => {
   const fixtures = new Map(
     (await loadFormatFixtures("treeview")).map((fixture) => [
