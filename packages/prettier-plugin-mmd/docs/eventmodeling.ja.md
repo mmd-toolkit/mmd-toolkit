@@ -317,8 +317,10 @@ tf 01 evt Alpha [[D]]
 タグの部分の間の隙間は、空白、タブ、ノーブレークスペース、U+3000、U+2028、
 U+2029 のどれを含んでいても詰めたままです。
 タグの中のコメントの前、開始のバッククォートの直後、タグの中のコメントの後、
-タグの後のコメントの前と後のノーブレークスペース、U+3000、U+2028、
-U+2029 も空白 1 つにします。
+タグの後のコメントの前と後の、幅のある空白、U+2028、
+U+2029 （[Comments](#comments) を参照）も空白 1 つにします。
+それらの場所のそれぞれに、ノーブレークスペース、U+3000、U+2028、
+U+2029 の行があります。
 それらの場所での、[Comments](#comments) の集合のほかの文字については、
 何も述べません。
 その形を与える規則はありません。
@@ -901,8 +903,16 @@ title の前置空白、1 個の区切り、本文、末尾テキストを原文
 ヘッダー行とフレーム文の行の `title`、`accTitle:`、
 `accDescr:` のテキストの後の `%%`、`//`、`/*` は、
 コメントではなく値のテキストです。
-`title T  %% c`、`title T  // c`、`title T  /* c */` は、
-空白 2 つも含めて書かれたまま残します。
+また、その前にある空白かタブの連なりは、テキストの中の連なりです。
+`accTitle:` では、その連なりを書かれたまま残します。
+つなぐと、Db と mermaid.js が描くテキストが変わるからです。
+`title` と `accDescr:` では、つないでも描くものは同じで、
+Db が変わるとしても連なりだけなので、規則 2 が空白 1 つを与えます。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+リリース済みの版は、上の title の前置空白と同じく、`title T  %% c`、
+`title T  // c`、`title T  /* c */`、`accDescr: T  // c` を、
+空白 2 つも含めて書かれたまま残すので、その形は規則 2 に反して印字しており、
+規則による修正を待っています。
 
 [fixture: eventmodeling/title/header-line-title-comment-mark-is-text]
 [fixture: eventmodeling/title/header-line-acctitle-comment-mark-is-text]
@@ -1101,18 +1111,17 @@ tf 02 evt Beta
 自分の節か [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
 で挙げています（Db が持つ空白、たとえば `section` と期間の後の空白と、
 mermaid.js の読みを変える空白です）。
-フレーム文の後ろでテキストが終わるとき、コメントの前にある垂直タブ、
-フォームフィード、ノーブレークスペース、U+1680、U+2000 から U+200A、U+2028、
-U+2029、U+202F、U+205F、U+3000、U+FEFF も、空白 1 つにします。
-mermaid.js は、そこでは U+0085、U+180E、
+コメントの前にある幅のある空白、U+2028、U+2029 は、空白 1 つにします。
+幅のある空白は、U+000B、U+000C、U+00A0、U+1680、U+2000 から U+200A、U+202F、
+U+205F、U+3000、U+FEFF のどれかです。
+そのすべてが、フレーム文の後ろでテキストが終わるときの行を持ち、ほかの場所には、
+ノーブレークスペース、U+3000、U+2028、U+2029 の行があります。
+ほかの場所は、コメントに文が続くとき、ヘッダー行、GWT のヘッダー、GWT の項目、
+節のキーワード、data の宣言、note の宣言、entity の宣言、data の参照、
+行内の本体、ソースの参照、ブロックの閉じ括弧の後ろです。
+mermaid.js は、コメントの前の U+0085、U+180E、
 U+200B を字句解析のエラーで拒否するので、パーサーも拒否します。
-コメントの前にあるノーブレークスペース、U+3000、U+2028、U+2029 は、
-コメントに文が続くときも、空白 1 つにします。
-ヘッダー行、GWT のヘッダー、GWT の項目、節のキーワード、data の宣言、
-note の宣言、entity の宣言、data の参照、行内の本体、ソースの参照、
-ブロックの閉じ括弧の後ろでも、空白 1 つにします。
-それらの場所での、その集合のほかの文字については、何も述べません。
-前に挙げた図は、この 4 つの文字をそう印字しません。
+前に挙げた図は、これらの文字をそう印字しません。
 sequence は、
 メッセージの後ろのノーブレークスペースと U+3000 を書かれたまま残します。
 journey と timeline は、見出しの後ろのこの 2 つを空白 1 つで印字します。
@@ -1141,6 +1150,7 @@ data ブロック、note、`accDescr` ブロック、スラッシュのブロッ
 [c4](./c4.ja.md#コメント)も、見出しの前のコメント行をそう印字します。
 
 [fixture: eventmodeling/comments/inline-gap-run-and-touching]
+[test: an em space before a `//` comment after a statement of an eventmodeling diagram]
 [fixture: eventmodeling/comments/standalone-native-comments]
 [test: a no-break space before a `%%` comment after a statement of an eventmodeling diagram]
 [test: U+3000 before a `//` comment after a statement of an eventmodeling diagram]

@@ -303,11 +303,11 @@ after it stays touching where it touches, and a run of spaces and tabs before it
 becomes one space, also right after the opening backtick. A run of spaces and
 tabs after a comment inside the tag becomes one space too, while the gaps
 between the parts of the tag itself stay tight, whichever whitespace they hold
-(spaces, tabs, a no-break space, U+3000, U+2028, or U+2029). A no-break space,
-U+3000, U+2028, or U+2029 before a comment inside the tag, right after the
-opening backtick, after a comment inside the tag, and before and after a comment
-that follows the tag also becomes one space; nothing is stated for the other
-characters of the set of [Comments](#comments) at these places. No rule gives
+(spaces, tabs, a no-break space, U+3000, U+2028, or U+2029). A wide space, a
+U+2028, or a U+2029 (see [Comments](#comments)) before a comment inside the tag,
+right after the opening backtick, after a comment inside the tag, and before and
+after a comment that follows the tag also becomes one space; each of these
+places has a row for a no-break space, U+3000, U+2028, and U+2029. No rule gives
 that form: no other diagram type has a type tag, and the printers that
 [Comments](#comments) cites print these characters before a comment differently.
 The released form stays until it is decided (see
@@ -876,8 +876,15 @@ equal comparison Db would not justify rewriting the public EM_TITLE terminal.
 
 A `%%`, a `//`, or a `/*` that follows the text of a `title`, an `accTitle:`, or
 an `accDescr:` on the header line or on the line of a frame statement is text of
-the value, not a comment: `title T  %% c`, `title T  // c`, and
-`title T  /* c */` stay as written, with their two spaces.
+the value, not a comment, and a run of spaces or tabs before it is a run inside
+the text. In an `accTitle:` the run stays as written: collapsing it changes the
+Db and the text that mermaid.js draws. In a `title` and in an `accDescr:`,
+collapsing it draws the same and changes the Db at most in the run, so
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)
+gives one space for them. The released version keeps `title T  %% c`,
+`title T  // c`, `title T  /* c */`, and `accDescr: T  // c` as written, with
+their two spaces, as it keeps the padding of a title above, so that form is
+printed against rule 2 and waits to be fixed by it.
 
 [fixture: eventmodeling/title/header-line-title-comment-mark-is-text] [fixture:
 eventmodeling/title/header-line-acctitle-comment-mark-is-text] [fixture:
@@ -1068,17 +1075,17 @@ their header print a comment in the same way, where no other rule keeps the
 whitespace as written; each of them names those cases in its own sections or in
 [A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
 (whitespace that the Db holds, as after a `section` or a period, and whitespace
-that changes what mermaid.js reads). Before a comment after a frame statement at
-the end of the text, a vertical tab, a form feed, a no-break space, U+1680,
-U+2000 to U+200A, U+2028, U+2029, U+202F, U+205F, U+3000, and U+FEFF also become
-one space; mermaid.js rejects U+0085, U+180E, and U+200B there with a lexer
-error, so the parser rejects them too. A no-break space, U+3000, U+2028, or
-U+2029 before a comment becomes one space also where a statement follows the
-comment, and after the header line, a GWT header, a GWT item, a clause keyword,
-a data declaration, a note declaration, an entity declaration, a data reference,
-an inline body, a source reference, and the closing brace of a block. Nothing is
-stated for the other characters of that set at these places. The printers above
-print these four characters otherwise: sequence keeps a no-break space or U+3000
+that changes what mermaid.js reads). A wide space, a U+2028, or a U+2029 before
+a comment becomes one space. A wide space is one of U+000B, U+000C, U+00A0,
+U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, and U+FEFF; each of them has a
+row after a frame statement at the end of the text, and a no-break space,
+U+3000, U+2028, and U+2029 have a row at each of the other places: where a
+statement follows the comment, and after the header line, a GWT header, a GWT
+item, a clause keyword, a data declaration, a note declaration, an entity
+declaration, a data reference, an inline body, a source reference, and the
+closing brace of a block. mermaid.js rejects U+0085, U+180E, and U+200B before a
+comment with a lexer error, so the parser rejects them too. The printers above
+print these characters otherwise: sequence keeps a no-break space or U+3000
 after a message as written, and journey and timeline print them after their
 header as one space; before U+2028 or U+2029, sequence, journey, and timeline
 keep the line as written where a statement follows the comment and put the
@@ -1102,7 +1109,8 @@ the header, so
 decides, as [journey](./journey.md#comments),
 [timeline](./timeline.md#comments), and [c4](./c4.md#comments) print it so.
 
-[fixture: eventmodeling/comments/inline-gap-run-and-touching] [fixture:
+[test: an em space before a `//` comment after a statement of an eventmodeling
+diagram] [fixture: eventmodeling/comments/inline-gap-run-and-touching] [fixture:
 eventmodeling/comments/standalone-native-comments] [test: a no-break space
 before a `%%` comment after a statement of an eventmodeling diagram] [test:
 U+3000 before a `//` comment after a statement of an eventmodeling diagram]
