@@ -13,6 +13,7 @@ import { findFlowchartKeptLines } from "./flowchart-kept-lines.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import {
   findCommentAfter,
+  holdsJoiningRegion,
   isFollowedByComment,
   joinsNextLine,
   lineEndOf,
@@ -29,6 +30,7 @@ import {
   findDirectiveEndingAt,
   findTokensBetween,
   findTriviaAt,
+  findTriviaBetween,
   isBracketPadding,
   isStructural,
   isSpaceOrTab,
@@ -1580,6 +1582,32 @@ function startsItsLine(source: Source, offset: number): boolean {
 }
 
 /**
+ * Whether the text at `offset` follows a comment region that joins lines, with
+ * only whitespace, line feeds, and directives between: mermaid.js reads it as
+ * part of the line that ends at the U+2028 or U+2029 before the region, so a
+ * name without quotes would go on over the character. Where the region is in
+ * the statement of the text, the statement is printed as written, and the text
+ * keeps its quotes (docs/requirement.md, Line separators).
+ */
+function followsJoiningRegion(source: Source, offset: number): boolean {
+  return source.joiningRegions.some((region) => {
+    if (region.end > offset) return false
+    let position = region.end
+    while (position < offset) {
+      const trivia = findTriviaBetween(source, position, position + 1).at(0)
+      if (trivia?.type === "Directive") {
+        position = trivia.range[1]
+      } else if (isWhitespace(source.text[position])) {
+        position++
+      } else {
+        return false
+      }
+    }
+    return true
+  })
+}
+
+/**
  * Records the respelling of one field of a node, when its rule applies to the
  * node and the field is written in the other form (see
  * `findQuoteFormRespellings`).
@@ -1711,7 +1739,12 @@ function respell(
       source,
       start,
     ) !== true &&
-    !isKept(source, start)
+    !isKept(source, start) &&
+    !(
+      rule.form === "bare" &&
+      holdsJoiningRegion(source, node.range[0], start) &&
+      followsJoiningRegion(source, start)
+    )
   ) {
     found.set(item.range[0], {
       end: stringEnd,

@@ -2021,6 +2021,22 @@ U+2028 と U+2029 は、requirement の図の単位の間の空白であり、�
 [test: U+2028 and a comment after a value in quotes, with a statement after the comment]
 [test: U+2028 and a comment after the class in quotes of a class statement, with a statement after the comment]
 
+U+2028 か U+2029 の後のコメント行が途中で切る文と、`style`、`classDef`、
+`class` の文の後で最後の行にそのコメント行がある文は、
+終わりまで書かれたまま印字します。
+スタイルに続く文字列と改行はその場に残り、コメント行の後も文が続く、
+引用符つきの名前は、引用符を残します。
+引用符のない名前は、その文字を越えて続いてしまうからです。
+コメント行の後にあり、その行に含まれない文は、ほかの文と同じに印字します。
+
+[test: requirement: U+2028, a directive, a comment, and an empty line inside the line of an element, with its name in quotes on a later line]
+[test: requirement: U+2028, a directive, a comment, and a directive line inside the line of an element, with its name in quotes on a later line]
+[test: requirement: U+2028, a directive, a comment, and an empty line after the string and the class of a style statement]
+[test: requirement: U+2028, a directive, a comment, and a directive line after the string and the class of a style statement]
+[test: requirement: U+2028, a directive, a comment, and an empty line after the string and the class of a classDef statement]
+[test: requirement: U+2028, a directive, a comment, and an empty line after a relationship that goes on a later line]
+[test: requirement: U+2028, a directive, a comment, and an empty line after a block, with a name in quotes after them]
+
 ### 空白の文字
 
 U+00A0 と U+FEFF は、字句解析器にとって単位の間の空白であり、

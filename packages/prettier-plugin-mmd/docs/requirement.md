@@ -2009,6 +2009,27 @@ statement after the comment] [test: U+2028 and a comment after a value in
 quotes, with a statement after the comment] [test: U+2028 and a comment after
 the class in quotes of a class statement, with a statement after the comment]
 
+A statement that a comment line after U+2028 or U+2029 cuts, and a statement
+whose last line holds such a comment line after a `style`, `classDef`, or
+`class` statement, are printed as written, to their end: the string and the line
+break that follow the style stay where they are, and a name in quotes that the
+statement goes on with after the comment line keeps its quotes, since a name
+without quotes would go on over the character. A statement that follows the
+comment line, and is no part of that line, is printed as any statement is.
+
+[test: requirement: U+2028, a directive, a comment, and an empty line inside the
+line of an element, with its name in quotes on a later line] [test: requirement:
+U+2028, a directive, a comment, and a directive line inside the line of an
+element, with its name in quotes on a later line] [test: requirement: U+2028, a
+directive, a comment, and an empty line after the string and the class of a
+style statement] [test: requirement: U+2028, a directive, a comment, and a
+directive line after the string and the class of a style statement] [test:
+requirement: U+2028, a directive, a comment, and an empty line after the string
+and the class of a classDef statement] [test: requirement: U+2028, a directive,
+a comment, and an empty line after a relationship that goes on a later line]
+[test: requirement: U+2028, a directive, a comment, and an empty line after a
+block, with a name in quotes after them]
+
 ### Whitespace characters
 
 U+00A0 and U+FEFF are whitespace to the lexer between units, and characters of a
