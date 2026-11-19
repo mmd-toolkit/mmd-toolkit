@@ -299,7 +299,8 @@ before its body. Tight tags distinguish the annotation from its value. Retain
 the presence or absence of a tag and all eight authored type words. A tag does
 not ask the formatter to parse its payload as JSON or another language; hidden
 forms and global trivia retain their boundaries. A comment inside a tag or right
-after it stays touching, as under [Comments](#comments).
+after it stays touching where it touches, and a run of spaces and tabs before it
+becomes one space, as under [Comments](#comments).
 
 [fixture: eventmodeling/type-tags/inline-tag-parts]
 
@@ -307,7 +308,8 @@ after it stays touching, as under [Comments](#comments).
 
 [fixture: eventmodeling/type-tags/all-inline-tags-retained]
 
-[fixture: eventmodeling/type-tags/tag-comments-retained]
+[fixture: eventmodeling/type-tags/tag-comments-retained] [fixture:
+eventmodeling/type-tags/tag-comments-spaced]
 
 [fixture: eventmodeling/type-tags/tag-absent-kept-absent]
 
@@ -429,16 +431,18 @@ between the components of a statement, so
 decides, as [gantt](./gantt.md#multi-line-statements),
 [journey](./journey.md#multi-line-statements), and
 [quadrant](./quadrant.md#multi-line-statements) print a statement that
-mermaid.js reads over several lines on one line, with one space where the line
-break was. Put a block opener on its header line after one space. Values and
-closing boundaries follow the data rules. A required name `title` keeps its safe
-preceding boundary, as for frames. `eventmodeling data`, a line break and
-`title {` stay, since every version of mermaid.js that counts rejects
-`eventmodeling data title {` on one line (see
+mermaid.js reads over several lines on one line, with one space between the
+components of the statement, and none beside the dot of a qualified name (see
+[Qualified names](#qualified-names)). Put a block opener on its header line
+after one space. Values and closing boundaries follow the data rules. A required
+name `title` keeps its safe preceding boundary, as for frames.
+`eventmodeling data`, a line break and `title {` stay, since every version of
+mermaid.js that counts rejects `eventmodeling data title {` on one line (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: eventmodeling/declarations-and-notes/entity-ordinary] [fixture:
-eventmodeling/declarations-and-notes/data-name-title-keep-lf]
+eventmodeling/declarations-and-notes/entity-break-after-whitespace-and-empty-line]
+[fixture: eventmodeling/declarations-and-notes/data-name-title-keep-lf]
 
 [fixture: eventmodeling/declarations-and-notes/entity-title-lf-protected]
 
@@ -1023,6 +1027,7 @@ eventmodeling/comments/standalone-native-comments]
 [fixture: eventmodeling/comments/slash-comment-before-title-identifier]
 
 [fixture: eventmodeling/comments/do-not-move-slash-comment-before-header]
+
 [fixture: eventmodeling/comments/comment-line-before-header-indented]
 
 [test: eventmodeling/comments/comment-after-ls-gap-ends-at-lf]
@@ -1326,21 +1331,30 @@ entity Shop.Buy
 
 Do not wrap by `printWidth`. Ordinary whitespace-only component newlines follow
 their spacing rules, while trivia continuations retain structural depth. Rule 1
-names no mark for a line break, so
+names no mark for a line break next to a comment or a directive, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
-[journey](./journey.md#multi-line-statements) keep a line break next to a
-comment or a directive and the whitespace before it, and put the later parts of
-a statement and the trivia lines one level deeper, where no other rule keeps the
-layout as written (a comment region that joins physical lines, a line that holds
-a `;`, and the like). Only GWT's decided clause/item layout adds structural
-splits. Values, hidden forms, metadata and protected boundaries retain their
-contents, apart from the limited block-body margin in
-[Data blocks](#data-blocks). Avoiding width-dependent choices keeps those
-lexical boundaries explicit and never inserts a forbidden LF into inline data.
+[journey](./journey.md#multi-line-statements) keep such a line break, where no
+other rule keeps the layout as written (a comment region that joins physical
+lines, a line that holds a `;`, and the like). Rule 1 names no mark for the
+indentation of a later line, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [flowchart](./flowchart.md#multi-line-statements),
+[sequence](./sequence.md#multi-line-statements), and
+[xychart](./xychart.md#multi-line-statements) stand the later lines of a
+statement and the comment or directive lines between them one level deeper than
+the statement, where no other rule keeps the layout as written (a comment region
+that joins physical lines, a line that holds a `;`, and the like). Only GWT's
+decided clause/item layout adds structural splits. Values, hidden forms,
+metadata and protected boundaries retain their contents, apart from the limited
+block-body margin in [Data blocks](#data-blocks). Avoiding width-dependent
+choices keeps those lexical boundaries explicit and never inserts a forbidden LF
+into inline data.
 
-[fixture: eventmodeling/long-lines/long-structural-line-no-wrap]
+[fixture: eventmodeling/long-lines/long-structural-line-no-wrap] [fixture:
+eventmodeling/long-lines/break-next-to-comment] [fixture:
+eventmodeling/long-lines/break-next-to-directive]
 
 [fixture: eventmodeling/long-lines/safe-structural-wrapping-alternate]
 

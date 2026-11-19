@@ -310,8 +310,9 @@ tf 01 evt Alpha [[D]]
 タグの有無と全 8 種の型語は原文どおり残します。
 タグは本文を JSON などとして解釈する指示ではありません。
 隠れた形と大域的な注釈類の境界は保ちます。
-タグの中のコメントと、タグの直後のコメントは、[コメント](#comments)のとおり、
-接したまま残します。
+タグの中のコメントと、タグの直後のコメントは、接していれば接したまま残し、
+空白とタブの連なりがあれば空白 1 つにします。
+詳しくは [コメント](#comments) を参照してください。
 
 [fixture: eventmodeling/type-tags/inline-tag-parts]
 
@@ -320,6 +321,7 @@ tf 01 evt Alpha [[D]]
 [fixture: eventmodeling/type-tags/all-inline-tags-retained]
 
 [fixture: eventmodeling/type-tags/tag-comments-retained]
+[fixture: eventmodeling/type-tags/tag-comments-spaced]
 
 [fixture: eventmodeling/type-tags/tag-absent-kept-absent]
 
@@ -441,8 +443,10 @@ note
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [gantt](./gantt.ja.md#複数行の文)、[journey](./journey.ja.md#複数行の文)、
 [quadrant](./quadrant.ja.md#複数行の文)も、
-mermaid.js が複数行にわたって読む文を、改行があった所に空白 1 個を置いて、
+mermaid.js が複数行にわたって読む文を、部品の間に空白 1 個を置いて、
 1 行に印字します。
+修飾名のドットの両側には空白を置きません。
+詳しくは [Qualified names](#qualified-names) を参照してください。
 ブロック開始記号は見出し行の空白 1 個後に置きます。
 値と閉じの境界は data の規則に従います。
 必須の名前の `title` はフレームと同じく安全な前方境界を保ちます。
@@ -454,6 +458,7 @@ mermaid.js が複数行にわたって読む文を、改行があった所に空
 を参照してください。
 
 [fixture: eventmodeling/declarations-and-notes/entity-ordinary]
+[fixture: eventmodeling/declarations-and-notes/entity-break-after-whitespace-and-empty-line]
 [fixture: eventmodeling/declarations-and-notes/data-name-title-keep-lf]
 
 [fixture: eventmodeling/declarations-and-notes/entity-title-lf-protected]
@@ -1361,12 +1366,18 @@ entity Shop.Buy
 `printWidth` では折り返しません。
 普通の空白だけの部品間改行は空白規則に従い、
 注釈類の継続行は構造上の段を保ちます。
-規則 1 は、改行の印を挙げていないので、
+規則 1 は、コメントやディレクティブの隣の改行の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
-[journey](./journey.ja.md#複数行の文)も、コメントやディレクティブの隣の改行と、
-その前の空白を残し、
-文の後続部分と間のコメントやディレクティブの行を 1 段深く置きます。
+[journey](./journey.ja.md#複数行の文)も、そのような改行を残します。
+ただし、ほかの規則が配置を書かれたまま残す所は別です。
+たとえば、物理行を結ぶコメント領域や、`;` を含む行です。
+規則 1 は、後続の行の字下げの印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[flowchart](./flowchart.ja.md#複数行の文)、
+[sequence](./sequence.ja.md#複数行の文)、
+[xychart](./xychart.ja.md#複数行の文)も、文の後続の行と、
+その間のコメントやディレクティブの行を、文より 1 段深く置きます。
 ただし、ほかの規則が配置を書かれたまま残す所は別です。
 たとえば、物理行を結ぶコメント領域や、`;` を含む行です。
 構造上の分割を加えるのは決定済みの GWT 節・項目配置です。
@@ -1375,6 +1386,8 @@ entity Shop.Buy
 幅に依存する選択を避けて字句境界を明示し、行内の data に禁止 LF を足しません。
 
 [fixture: eventmodeling/long-lines/long-structural-line-no-wrap]
+[fixture: eventmodeling/long-lines/break-next-to-comment]
+[fixture: eventmodeling/long-lines/break-next-to-directive]
 
 [fixture: eventmodeling/long-lines/safe-structural-wrapping-alternate]
 
