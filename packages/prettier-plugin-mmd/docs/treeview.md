@@ -59,23 +59,27 @@ treeView-beta
 
 Keep the original indentation or box-drawing mode. Of the 13 tree diagrams in
 the documentation of mermaid.js, 10 are written with indentation and 3 with box
-characters, and the two spellings draw the same figure in every version that
-counts, so [rule 3](./printed-form.md#3-a-spelling) gives the indentation form:
-an input written with indentation stays in indentation mode. The mode test still
-examines logical LF lines after the header, including value interiors, excluding
-whitespace-only, comment-shaped, metadata-shaped and vertical-only lines. Prefix
-presence alone is insufficient. In box mode redraw ordinary outer structure from
-the AST forest; do not convert indentation-mode input into a box diagram.
-Preserve the mode and the reading of enclosed box forms, using the
-body-retention conditions in Branch prefixes. Common statement prefixes are
-removed and ordinary common statements use column one, so they do not appear as
-children.
+characters, so [rule 3](./printed-form.md#3-a-spelling) gives the indentation
+form, and an input written with indentation stays in indentation mode. Some of
+these inputs have no box form: written in box mode, a line that goes on without
+a branch prefix, such as a quoted name over several lines or an annotation on a
+line of its own, is rejected, and a `│` put before it adds a node named `│`. The
+mode test still examines logical LF lines after the header, including value
+interiors, excluding whitespace-only, comment-shaped, metadata-shaped and
+vertical-only lines. Prefix presence alone is insufficient. In box mode redraw
+ordinary outer structure from the AST forest; do not convert indentation-mode
+input into a box diagram. Preserve the mode and the reading of enclosed box
+forms, using the body-retention conditions in Branch prefixes. Common statement
+prefixes are removed and ordinary common statements use column one, so they do
+not appear as children.
 
 Box characters inside a comment line do not select box mode; in indentation mode
 that comment aligns with the following statement.
 
 [fixture: treeview/modes/comment-excluded] [corpus fixture:
-treeview/box-written-tree]
+treeview/box-written-tree] [corpus fixture: treeview/box-entity-mixed-indent]
+[corpus fixture: treeview/box-decoration-annotation-gap] [corpus fixture:
+treeview/box-decoration-only]
 
 [corpus fixture: treeview/box-heavy]
 
@@ -1130,13 +1134,15 @@ Keep the existing body-retention conditions for selected or unselected
 semicolons and unsafe LS/PS-leading values. Comment regions held inside a value
 stay in that value while an intervening directive before it takes the separate
 line. In indentation mode keep the existing placement of a leading directive
-with its node. Rule 1 names no mark for a directive between two units, so
+with its node. In indentation mode, rule 1 names no mark for a directive between
+two units, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [flowchart](./flowchart.md#directives), [er](./er.md#directives),
 and [gantt](./gantt.md#directives) move a directive in the gap of units that
 formatting splits with the following unit, keep its right-side contact or
 separation, and break its left contact, where no other rule keeps the layout as
-written (a directive that is not closed after a statement, and the like).
+written (a directive that is not closed after a statement, and the like). In box
+mode a directive that leaves a split gap stands alone on a line at column one.
 
 [fixture:
 treeview/statements-one-per-line/review159-split-directive-selected-semicolon]
@@ -1168,6 +1174,8 @@ treeview/statements-one-per-line/review159-split-directives-unselected-semicolon
 
 [fixture:
 treeview/statements-one-per-line/review159-split-directive-indent-control]
+[fixture: treeview/statements-one-per-line/directive-split-indent-right-space]
+[fixture: treeview/statements-one-per-line/directive-split-indent-left-space]
 
 Input (escaped): `"treeView-beta\n\"A\"\"B\"'C'\n"`.
 
@@ -1230,7 +1238,8 @@ Use one ASCII space before an ordinary same-line annotation. Its required
 positive leading gap distinguishes an annotation from name text. Keep authored
 internal name whitespace, and preserve contact or separation on each side of
 trivia instead of applying the plain-gap rule there. The whitespace inside a
-bare name stays because versions that count draw another figure without it (see
+name that is not quoted stays because versions that count draw another figure
+without it (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: treeview/annotation-gaps/annotation-outer]
@@ -2239,8 +2248,9 @@ treeView-beta
 ### Directives
 
 Keep directive text and order. mermaid.js removes a directive and reads the text
-on its two sides joined, so a directive that touches a name stays touching (see
-[Directives between tokens](./compatibility.md#directives-between-tokens)).
+on its two sides joined, so a directive that touches a name stays touching
+(`A%%{init: {}}%%B` is the name `AB`, and `A%%{init: {}}%% B` is the name `A B`)
+(see [Directives between tokens](./compatibility.md#directives-between-tokens)).
 Within one printed line a directive in the gap of a title, an accessibility
 statement, or the class after `:::` is placed as under
 [Directives](./flowchart.md#directives); in the other gaps it retains contact or
@@ -2729,7 +2739,9 @@ treeView-beta
 
 Format only safe real leading frontmatter with the shared guarded YAML
 formatter. The YAML between the `---` lines is printed as Prettier prints YAML
-anywhere ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)), as under
+anywhere, with `key: value` for the colon of a key
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark); see
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)), as under
 [flowchart](./flowchart.md#frontmatter-yaml). Retain indented fences, closer
 padding, malformed YAML, HTML quote hazards and fence-producing bodies. Nested
 values and scalars use at least one space at tabWidth zero. Ordinary pre-header
@@ -3018,7 +3030,8 @@ and [kanban](./kanban.md#final-newline) keep an open directive that reaches the
 end of the text as written and add no line break after it. Rejected unused
 indentation runs are not trimmed into accepted input.
 
-[fixture: treeview/final-newline/eof-node]
+[fixture: treeview/final-newline/eof-node] [fixture:
+treeview/final-newline/eof-open-directive]
 
 [fixture: treeview/final-newline/eof-comment]
 

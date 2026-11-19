@@ -60,9 +60,12 @@ treeView-beta
 字下げと罫線のモードを保ちます。
 mermaid.js のドキュメントの木の図 13 件のうち、10 件は字下げで、
 3 件は罫線で書かれています。
-2 つの書き方は、対象にするどの版でも同じ図を描くので、
 [規則 3](./printed-form.ja.md#3-綴り)が字下げの形を与え、
 字下げで書かれた入力は字下げモードのままです。
+これらの入力には、罫線の形がないものがあります。
+罫線のモードで書くと、複数行の引用名や別の行の注釈のように、
+枝の前置部分を持たずに続く行は拒否され、
+その前に `│` を付けると `│` という名前のノードが増えます。
 モードは見出し後の論理 LF 行で判定し、値の内部も調べます。
 空白だけ、コメント形、メタデータ形、縦線だけの行を除きます。
 前置部分の有無だけでは判定しません。
@@ -76,6 +79,9 @@ mermaid.js のドキュメントの木の図 13 件のうち、10 件は字下�
 
 [fixture: treeview/modes/comment-excluded]
 [corpus fixture: treeview/box-written-tree]
+[corpus fixture: treeview/box-entity-mixed-indent]
+[corpus fixture: treeview/box-decoration-annotation-gap]
+[corpus fixture: treeview/box-decoration-only]
 
 [corpus fixture: treeview/box-heavy]
 
@@ -1123,7 +1129,8 @@ mermaid.js が拒否するためです。
 値が持つコメント領域はその値に保ち、
 その前でノードの間から移すディレクティブは独立した行に置きます。
 字下げモードでは、前置のディレクティブをノードとともに置く既存の配置を保ちます。
-規則 1 は、2 つの単位の間のディレクティブの印を挙げていないので、
+字下げモードでは、規則 1 は、
+2 つの単位の間のディレクティブの印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [flowchart](./flowchart.ja.md#ディレクティブ)、[er](./er.ja.md#ディレクティブ)、
 [gantt](./gantt.ja.md#ディレクティブ)も、
@@ -1131,6 +1138,8 @@ mermaid.js が拒否するためです。
 右側の接触か間隔を残し、左側の接触は切ります。
 ただし、ほかの規則が配置を書かれたまま残す所は別です。
 たとえば、文の後の閉じていないディレクティブです。
+罫線モードでは、分けた隙間から出るディレクティブは、
+第 1 列の単独の行に置きます。
 
 [fixture: treeview/statements-one-per-line/review159-split-directive-selected-semicolon]
 
@@ -1157,6 +1166,8 @@ mermaid.js が拒否するためです。
 [test: treeview/statements-one-per-line/review159-split-directives-region-ps]
 
 [fixture: treeview/statements-one-per-line/review159-split-directive-indent-control]
+[fixture: treeview/statements-one-per-line/directive-split-indent-right-space]
+[fixture: treeview/statements-one-per-line/directive-split-indent-left-space]
 
 入力（エスケープ表記）: `"treeView-beta\n\"A\"\"B\"'C'\n"`
 
@@ -1216,7 +1227,8 @@ mermaid.js は、その空白か、その空白と後ろの `%%` を名前にす
 正の前置の隙間が注釈と名前の文字を区別します。
 名前の中の空白は保ち、付随要素の両側は、普通の隙間の規則を適用せず、
 接しているか離れているかを保ちます。
-名前の中の空白が残るのは、対象にする版が、これを除くと別の図を描くからです。
+引用符のない名前の中の空白が残るのは、対象にする版が、
+これを除くと別の図を描くからです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
@@ -2244,6 +2256,7 @@ treeView-beta
 ディレクティブの原文と順序を保ちます。
 mermaid.js はディレクティブを除き、両側のテキストをつなげて読むので、
 名前に接するディレクティブは接したまま残します。
+`A%%{init: {}}%%B` は名前 `AB`、`A%%{init: {}}%% B` は名前 `A B` です。
 詳しくは
 [トークンの間のディレクティブ](./compatibility.ja.md#トークンの間のディレクティブ)
 を参照してください。
@@ -2741,7 +2754,11 @@ treeView-beta
 安全な実効フロントマターだけを共有の保護条件付き YAML の整形処理で整えます。
 `---` の行の間の YAML は、
 Prettier が YAML をどこでも印字するのと同じに印字します。
+キーのコロンは `key: value` です。
 [規則 1](./printed-form.ja.md#1-記号の横の空白)のとおりです。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
+を参照してください。
 [flowchart](./flowchart.ja.md#フロントマターの-yaml)と同じです。
 字下げされた囲みの区切り、閉じ記号の余白、不正な YAML、
 HTML の引用符の危険と囲みの区切りを作る本文は保ちます。
@@ -3034,6 +3051,7 @@ EOF の未完ディレクティブと保護・原文保持の終端は共有の�
 拒否される未使用の字下げの連なりは、両端の空白を除いて受理させません。
 
 [fixture: treeview/final-newline/eof-node]
+[fixture: treeview/final-newline/eof-open-directive]
 
 [fixture: treeview/final-newline/eof-comment]
 
