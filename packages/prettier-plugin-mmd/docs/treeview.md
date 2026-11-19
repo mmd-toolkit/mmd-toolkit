@@ -1098,10 +1098,11 @@ placement applies with or without spaces on either side of the run; breaks
 inside a directive stay inside that directive. On a directive-only line created
 by such a split, remove spaces and tabs between directives: keeping them would
 leave a whitespace-only line after directive removal, which mermaid.js rejects.
-Where the directive touches the unit on each side, mermaid.js reads the two as
-one name (`"a"%%{x}%%"b"` is the name `ab`), so the unit after the directive
-stands with no prefix, as a continuation of that name: a prefix before it would
-add a node and change the Db and the drawing.
+Where the directive touches the unit on each side, mermaid.js puts the unit
+after it at the top level (in `root`, `├── "a"%%{x}%%"b"`, and `└── c`, the node
+`b` is a node of the top level with the child `c`), so the unit after the
+directive stands with no prefix: a prefix before it would put `b` under `root`
+and change the Db and the drawing.
 
 [fixture: treeview/statements-one-per-line/review159-split-directives-touching]
 
@@ -1154,13 +1155,12 @@ decides, as [flowchart](./flowchart.md#directives), [er](./er.md#directives),
 and [gantt](./gantt.md#directives) move a directive in the gap of units that
 formatting splits with the following unit, keep its right-side contact or
 separation, and break its left contact, where no other rule keeps the layout as
-written (a directive that is not closed after a statement, and the like). In box
-mode a directive that leaves a split gap stands alone on a line at column one,
-and does not touch the prefix of the next unit as rule 2 would put it: a prefix
-that crosses a directive makes the whole body retained as written under
-[Branch prefixes](#branch-prefixes), and later passes would no longer redraw the
-tree. With a space between the directive and the prefix, mermaid.js draws
-another figure.
+written. In box mode a directive that leaves a split gap stands alone on a line
+at column one, and does not touch the prefix of the next unit as rule 2 would
+put it: a prefix that crosses a directive makes the whole body retained as
+written under [Branch prefixes](#branch-prefixes), and later passes would no
+longer redraw the tree. With a space between the directive and the prefix,
+mermaid.js draws another figure.
 
 [fixture:
 treeview/statements-one-per-line/review159-split-directive-selected-semicolon]
@@ -1742,18 +1742,23 @@ Keep common statements in their preamble and source order. Use shared
 null/whitespace-only values, printing a run of spaces and tabs inside the text
 as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
-A title with text before its first directive is printed with one space before
-each directive that has spaces or tabs before it, and the spaces and tabs after
-the last one are left out (see
+Where only directives follow the text of a title, they are printed with one
+space before each that has spaces or tabs before it, and the spaces and tabs
+after the last one are left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)):
 `title T  %%{x}%%  ` is printed `title T %%{x}%%`, and
 `title T  %%{x}%%  %%{y}%%  ` is printed `title T %%{x}%% %%{y}%%`. A comment
-after the last directive stands after one space: `title T  %%{x}%%  %% c` is
-printed `title T %%{x}%% %% c`. A no-break space, U+3000, U+2003, U+0085,
-U+2028, U+2029, a `;`, or text after the last directive keeps the line as
-written, the gap after `title` and the spaces before the directive included. A
-title with no text before its first directive stays as written, with the spaces
-or the tab after the directive: `title   %%{x}%%  ` is not changed.
+after the last directive stands after one space where whitespace separates them
+(`title T  %%{x}%%  %% c` is printed `title T %%{x}%% %% c`), and stays touching
+where it touches (`title T  %%{x}%%%% c` is printed `title T %%{x}%%%% c`). A
+title that starts with a directive and holds text after it loses the spaces
+after the directive and at its end: `title %%{x}%%  T  ` and `title %%{x}%% T`
+are printed `title %%{x}%%T`. The line stays as written where text stands after
+a directive that follows the text (`title T %%{x}%%  U  %%{y}%%  ` is not
+changed), where a no-break space, U+3000, U+2003, U+0085, U+2028, U+2029, a `;`,
+or text follows the last directive (the gap after `title` and the spaces before
+the directive stay), and where nothing but directives and spaces or a tab
+follows `title` (`title   %%{x}%%  ` is not changed).
 
 [fixture: title/title-directives-end-blanks-dropped] [test:
 treeview/title/directive-end-two-spaces] [test:
@@ -1770,7 +1775,11 @@ treeview/title/directive-only-two-spaces-kept] [test:
 treeview/title/directive-only-tab-kept] [test:
 treeview/title/directives-u3000-between-kept] [test:
 treeview/title/directive-u3000-trailing-spaces-kept] [test:
-treeview/title/directive-then-text-gap-kept]
+treeview/title/directive-then-text-gap-kept] [test:
+treeview/title/directive-end-comment-touching] [test:
+treeview/title/directive-leading-then-text-spaces] [test:
+treeview/title/directive-leading-then-text-space] [test:
+treeview/title/directive-text-between-directives-kept]
 
 This chooses consistent Db-equivalent outer spacing without taking a next-line
 value. Follow AST boundaries for `titlex` and `title"node"`; title still stays
@@ -1865,17 +1874,21 @@ Print a run of spaces and tabs inside the value of an `accDescr` as one space
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 but not that of an `accTitle`, which the browser shows as a tooltip, and retain
 brace-looking line values and trivia boundaries. The common converter permits
-these equivalent outer gaps. Never borrow text from the next line. An
-`accTitle:` or `accDescr:` line with text before its first directive is printed
-as a title is (see
+these equivalent outer gaps. Never borrow text from the next line. Where only
+directives follow the text of an `accTitle:` or `accDescr:` line, they are
+printed as after the text of a title (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)):
 `accTitle: T  %%{x}%%  ` is printed `accTitle: T %%{x}%%`,
 `accDescr: T  %%{x}%%  %% c` is printed `accDescr: T %%{x}%% %% c`, and a
-no-break space, U+3000, U+2003, U+0085, U+2028, U+2029, a `;`, or text after the
-last directive keeps the line as written, the gap after the colon and the spaces
-before the directive included. A line with no text before its first directive
-stays as written, with the spaces after the directive: `accTitle: %%{x}%%  ` is
-not changed.
+comment that touches the directive stays touching (`accDescr: T  %%{x}%%%% c` is
+printed `accDescr: T %%{x}%%%% c`). The line stays as written where a no-break
+space, U+3000, U+2003, U+0085, U+2028, U+2029, a `;`, or text follows the last
+directive, where text stands between two directives
+(`accTitle: T %%{x}%%  U  %%{y}%%  ` is not changed), where a directive starts
+the value and text follows it (`accTitle: %%{x}%%  T  ` is not changed), and
+where nothing but directives and spaces stands in the value
+(`accTitle: %%{x}%%  ` is not changed); the gap after the colon and the spaces
+before the directive stay.
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [test:
 treeview/accessibility-lines/acctitle-directive-end-two-spaces] [test:
@@ -1889,8 +1902,32 @@ treeview/accessibility-lines/accdescr-directive-end-u00a0] [test:
 treeview/accessibility-lines/accdescr-directive-end-text-after-space] [test:
 treeview/accessibility-lines/accdescr-directive-only-two-spaces-kept] [test:
 treeview/accessibility-lines/acctitle-directive-u3000-kept] [test:
-treeview/accessibility-lines/accdescr-directive-then-text-kept] [fixture:
-treeview/accessibility-lines/acctitle-padding]
+treeview/accessibility-lines/accdescr-directive-then-text-kept] [test:
+treeview/accessibility-lines/acctitle-directive-end-tab] [test:
+treeview/accessibility-lines/acctitle-directive-end-two-directives] [test:
+treeview/accessibility-lines/acctitle-directive-end-u3000] [test:
+treeview/accessibility-lines/acctitle-directive-end-u2003] [test:
+treeview/accessibility-lines/acctitle-directive-end-u0085] [test:
+treeview/accessibility-lines/acctitle-directive-end-u2028] [test:
+treeview/accessibility-lines/acctitle-directive-end-u2029] [test:
+treeview/accessibility-lines/acctitle-directive-end-semicolon] [test:
+treeview/accessibility-lines/acctitle-directive-end-text-touching] [test:
+treeview/accessibility-lines/acctitle-directive-end-comment-touching] [test:
+treeview/accessibility-lines/acctitle-directive-leading-then-text-kept] [test:
+treeview/accessibility-lines/acctitle-directive-text-between-directives-kept]
+[test: treeview/accessibility-lines/accdescr-directive-end-tab] [test:
+treeview/accessibility-lines/accdescr-directive-end-two-directives] [test:
+treeview/accessibility-lines/accdescr-directive-end-u3000] [test:
+treeview/accessibility-lines/accdescr-directive-end-u2003] [test:
+treeview/accessibility-lines/accdescr-directive-end-u0085] [test:
+treeview/accessibility-lines/accdescr-directive-end-u2028] [test:
+treeview/accessibility-lines/accdescr-directive-end-u2029] [test:
+treeview/accessibility-lines/accdescr-directive-end-semicolon] [test:
+treeview/accessibility-lines/accdescr-directive-end-text-touching] [test:
+treeview/accessibility-lines/accdescr-directive-end-comment-touching] [test:
+treeview/accessibility-lines/accdescr-directive-leading-then-text-kept] [test:
+treeview/accessibility-lines/accdescr-directive-text-between-directives-kept]
+[fixture: treeview/accessibility-lines/acctitle-padding]
 
 [fixture: treeview/accessibility-lines/accdescr-padding]
 
@@ -3089,21 +3126,25 @@ Unfinished EOF directives and protected/source-kept endings follow shared
 exceptions. Rule 1 names no mark for the end of a text that has an open
 directive, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides: [c4](./c4.md#final-newline), [ishikawa](./ishikawa.md#final-newline),
-and [kanban](./kanban.md#final-newline) read an open directive on a line of its
-own up to its last character that is no whitespace, and treeView does too, also
-on the line of a node (a quoted name or a bare name), a title, an `accTitle:` or
-`accDescr:` line, or a class after `:::`. After a quoted name or after a class
-the directive has to touch it: written after a space it is rejected. U+2028,
-U+2029, U+0085, U+180E, and U+200B are no whitespace here. The whitespace after
-that character is dropped: U+0009 to U+000D (the tab, LF, the vertical tab, the
-form feed, and CR), U+0020, U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F,
-U+3000, and U+FEFF, and with them the empty lines. One line break ends the text;
-nothing is added only where the text ends right after the character and it is no
-U+2028 or U+2029. `%%{unfinished` and two spaces print `%%{unfinished` and a
-line break, `%%{unfinished` and U+2028 print `%%{unfinished`, U+2028, and a line
-break, and `"R"%%{unfinished` and two spaces print `"R"%%{unfinished` and a line
-break. Rejected unused indentation runs are not trimmed into accepted input.
+decides: [c4](./c4.md#final-newline) and [ishikawa](./ishikawa.md#final-newline)
+print an open directive on a line of its own without the spaces after its last
+character, and [kanban](./kanban.md#final-newline) does so on the line of a
+card, so treeView reads an open directive up to its last character that is no
+whitespace on a line of its own, on the line after a brace description block,
+and on the line of a node (a quoted name or a bare name), of a description
+(`## d`), of an icon, of a title, of an `accTitle:` or `accDescr:` line, of a
+class after `:::`, and of a node in box mode. After a quoted name or after a
+class the directive has to touch it: written after a space it is rejected.
+U+2028, U+2029, U+0085, U+180E, and U+200B are no whitespace here. The
+whitespace after that character is dropped: U+0009 to U+000D (the tab, LF, the
+vertical tab, the form feed, and CR), U+0020, U+00A0, U+1680, U+2000 to U+200A,
+U+202F, U+205F, U+3000, and U+FEFF, and with them the empty lines. One line
+break ends the text; nothing is added only where the text ends right after the
+character and it is no U+2028 or U+2029. `%%{unfinished` and two spaces print
+`%%{unfinished` and a line break, `%%{unfinished` and U+2028 print
+`%%{unfinished`, U+2028, and a line break, and `"R"%%{unfinished` and two spaces
+print `"R"%%{unfinished` and a line break. Rejected unused indentation runs are
+not trimmed into accepted input.
 
 [fixture: treeview/final-newline/eof-node] [fixture:
 treeview/final-newline/eof-open-directive] [fixture:
@@ -3143,6 +3184,10 @@ treeview/final-newline/open-directive-after-acctitle-u2029] [test:
 treeview/final-newline/open-directive-after-accdescr-two-spaces] [test:
 treeview/final-newline/open-directive-after-accdescr-u2029] [test:
 treeview/final-newline/open-directive-after-class-two-spaces] [test:
+treeview/final-newline/open-directive-after-description-two-spaces] [test:
+treeview/final-newline/open-directive-after-icon-two-spaces] [test:
+treeview/final-newline/open-directive-after-description-block-two-spaces] [test:
+treeview/final-newline/open-directive-after-box-node-two-spaces] [test:
 treeview/final-newline/open-directive-after-class-u2029] [test:
 treeview/final-newline/open-directive-after-quoted-name-space-rejected] [test:
 treeview/final-newline/open-directive-after-class-space-rejected] [test:

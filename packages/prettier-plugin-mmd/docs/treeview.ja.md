@@ -1098,12 +1098,11 @@ root
 ディレクティブ間の空白とタブを消します。
 残すとディレクティブを除いた後に空白だけの行が残り、
 mermaid.js が拒否するためです。
-ディレクティブが両側の単位に接しているときは、
-mermaid.js が両側を 1 つの名前として読みます（`"a"%%{x}%%"b"` は名前 `ab`
-です）。
-そのため、ディレクティブの後の単位は前置部分なしで、
-その名前の続きとして置きます。
-前置部分を付けるとノードが増え、Db も図も変わります。
+ディレクティブが両側の単位に接しているときは、mermaid.js は、
+ディレクティブの後の単位を最上位に置きます（`root`、`├── "a"%%{x}%%"b"`、
+`└── c` では、ノード `b` は最上位のノードで、子 `c` を持ちます）。
+そのため、ディレクティブの後の単位は前置部分なしで置きます。
+前置部分を付けると `b` が `root` の下に入り、Db も図も変わります。
 
 [fixture: treeview/statements-one-per-line/review159-split-directives-touching]
 
@@ -1153,7 +1152,6 @@ mermaid.js が両側を 1 つの名前として読みます（`"a"%%{x}%%"b"` �
 整形が分ける単位の隙間のディレクティブを後ろの単位と一緒に動かし、
 右側の接触か間隔を残し、左側の接触は切ります。
 ただし、ほかの規則が配置を書かれたまま残す所は別です。
-たとえば、文の後の閉じていないディレクティブです。
 罫線モードでは、分けた隙間から出るディレクティブは、第 1 列の単独の行に置き、
 規則 2 のように次の単位の前置部分に接しては置きません。
 前置部分がディレクティブをまたぐと、
@@ -1737,19 +1735,28 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 `null` と空白だけの値は引用符なしの `title` とします。
 テキストの中の空白とタブの連なりは、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
-最初のディレクティブの前にテキストがある title は、
+テキストの後にディレクティブだけが続くときは、
 空白かタブが前にあるディレクティブごとに空白 1 つを置き、
 最後のディレクティブの後の空白とタブを除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 `title T  %%{x}%%  ` は `title T %%{x}%%` と、
 `title T  %%{x}%%  %%{y}%%  ` は `title T %%{x}%% %%{y}%%` と印字します。
-最後のディレクティブの後のコメントは、空白 1 つの後に置きます。
-`title T  %%{x}%%  %% c` は `title T %%{x}%% %% c` と印字します。
+最後のディレクティブの後のコメントは、間に空白があれば空白 1 つの後に置き、
+接していれば接したままにします。
+`title T  %%{x}%%  %% c` は `title T %%{x}%% %% c` と、
+`title T  %%{x}%%%% c` は `title T %%{x}%%%% c` と印字します。
+ディレクティブで始まり、その後にテキストが続く title は、
+ディレクティブの後と末尾の空白を除きます。
+`title %%{x}%%  T  ` と `title %%{x}%% T` は `title %%{x}%%T` と印字します。
+次の title は、書かれたまま残ります。
+テキストの後のディレクティブの後に、
+さらにテキストが続く title です（`title T %%{x}%%  U  %%{y}%%  `
+は変えません）。
 最後のディレクティブの後に U+00A0、U+3000、U+2003、U+0085、U+2028、U+2029、`;`、
-テキストのどれかがあるときは、行は書かれたまま残ります。
+テキストのどれかがある title も、書かれたまま残ります。
 `title` の後の隙間と、ディレクティブの前の空白も残ります。
-最初のディレクティブの前にテキストがない title は、書かれたまま残ります。
-ディレクティブの後の空白かタブも残り、`title   %%{x}%%  ` は変えません。
+`title` の後がディレクティブと空白かタブだけの title も、
+書かれたまま残ります（`title   %%{x}%%  ` は変えません）。
 
 [fixture: title/title-directives-end-blanks-dropped]
 [test: treeview/title/directive-end-two-spaces]
@@ -1770,6 +1777,10 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 [test: treeview/title/directives-u3000-between-kept]
 [test: treeview/title/directive-u3000-trailing-spaces-kept]
 [test: treeview/title/directive-then-text-gap-kept]
+[test: treeview/title/directive-end-comment-touching]
+[test: treeview/title/directive-leading-then-text-spaces]
+[test: treeview/title/directive-leading-then-text-space]
+[test: treeview/title/directive-text-between-directives-kept]
 
 次の行から値を取らず、Db の等しい一定の外側の配置を選ぶためです。
 `titlex` と `title"node"` は AST の境界に従い、要約に出ない title も残します。
@@ -1872,16 +1883,22 @@ treeView-beta
 波括弧らしい行値と付随要素の境界を保ちます。
 共通の変換処理が許す同等の外側の隙間を選びます。
 次の行の文字を値に取りません。
-最初のディレクティブの前にテキストがある `accTitle:` と `accDescr:` の行は、
-title と同じに印字します。
+テキストの後にディレクティブだけが続く `accTitle:` と `accDescr:` の行は、
+title の場合と同じに印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 `accTitle: T  %%{x}%%  ` は `accTitle: T %%{x}%%` と、
-`accDescr: T  %%{x}%%  %% c` は `accDescr: T %%{x}%% %% c` と印字します。
+`accDescr: T  %%{x}%%  %% c` は `accDescr: T %%{x}%% %% c` と印字し、
+ディレクティブに接するコメントは接したままにします（`accDescr: T  %%{x}%%%% c`
+は `accDescr: T %%{x}%%%% c` と印字します）。
+次のときは、行は書かれたまま残ります。
 最後のディレクティブの後に U+00A0、U+3000、U+2003、U+0085、U+2028、U+2029、`;`、
-テキストのどれかがあるときは、行は書かれたまま残ります。
+テキストのどれかがあるとき、
+2
+つのディレクティブの間にテキストがあるとき（`accTitle: T %%{x}%%  U  %%{y}%%  `
+は変えません）、ディレクティブで値が始まり、
+その後にテキストが続くとき（`accTitle: %%{x}%%  T  ` は変えません）、
+値がディレクティブと空白だけのとき（`accTitle: %%{x}%%  ` は変えません）です。
 コロンの後の隙間と、ディレクティブの前の空白も残ります。
-最初のディレクティブの前にテキストがない行は、書かれたまま残ります。
-ディレクティブの後の空白も残り、`accTitle: %%{x}%%  ` は変えません。
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 [test: treeview/accessibility-lines/acctitle-directive-end-two-spaces]
@@ -1896,6 +1913,30 @@ title と同じに印字します。
 [test: treeview/accessibility-lines/accdescr-directive-only-two-spaces-kept]
 [test: treeview/accessibility-lines/acctitle-directive-u3000-kept]
 [test: treeview/accessibility-lines/accdescr-directive-then-text-kept]
+[test: treeview/accessibility-lines/acctitle-directive-end-tab]
+[test: treeview/accessibility-lines/acctitle-directive-end-two-directives]
+[test: treeview/accessibility-lines/acctitle-directive-end-u3000]
+[test: treeview/accessibility-lines/acctitle-directive-end-u2003]
+[test: treeview/accessibility-lines/acctitle-directive-end-u0085]
+[test: treeview/accessibility-lines/acctitle-directive-end-u2028]
+[test: treeview/accessibility-lines/acctitle-directive-end-u2029]
+[test: treeview/accessibility-lines/acctitle-directive-end-semicolon]
+[test: treeview/accessibility-lines/acctitle-directive-end-text-touching]
+[test: treeview/accessibility-lines/acctitle-directive-end-comment-touching]
+[test: treeview/accessibility-lines/acctitle-directive-leading-then-text-kept]
+[test: treeview/accessibility-lines/acctitle-directive-text-between-directives-kept]
+[test: treeview/accessibility-lines/accdescr-directive-end-tab]
+[test: treeview/accessibility-lines/accdescr-directive-end-two-directives]
+[test: treeview/accessibility-lines/accdescr-directive-end-u3000]
+[test: treeview/accessibility-lines/accdescr-directive-end-u2003]
+[test: treeview/accessibility-lines/accdescr-directive-end-u0085]
+[test: treeview/accessibility-lines/accdescr-directive-end-u2028]
+[test: treeview/accessibility-lines/accdescr-directive-end-u2029]
+[test: treeview/accessibility-lines/accdescr-directive-end-semicolon]
+[test: treeview/accessibility-lines/accdescr-directive-end-text-touching]
+[test: treeview/accessibility-lines/accdescr-directive-end-comment-touching]
+[test: treeview/accessibility-lines/accdescr-directive-leading-then-text-kept]
+[test: treeview/accessibility-lines/accdescr-directive-text-between-directives-kept]
 [fixture: treeview/accessibility-lines/acctitle-padding]
 
 [fixture: treeview/accessibility-lines/accdescr-padding]
@@ -3115,11 +3156,14 @@ EOF の未完ディレクティブと保護・原文保持の終端は共有の�
 規則 1 は、
 閉じていないディレクティブのあるテキストの終わりの印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[c4](./c4.ja.md#末尾の改行)、[ishikawa](./ishikawa.ja.md#final-newline)、
-[kanban](./kanban.ja.md#末尾の改行)は、
-単独の行にある閉じていないディレクティブを、空白でない最後の文字まで読みます。
-treeView も同じで、ノード（引用名と裸の名前）の行、title の行、
-`accTitle:` と `accDescr:` の行、`:::` の後ろのクラスの行にあるときもそうです。
+[c4](./c4.ja.md#末尾の改行) と [ishikawa](./ishikawa.ja.md#final-newline) は、
+単独の行にある閉じていないディレクティブを、最後の文字の後の空白なしで印字し、
+[kanban](./kanban.ja.md#末尾の改行)はカードの行でそうします。
+treeView は、閉じていないディレクティブを、空白でない最後の文字まで読みます。
+単独の行にあるときと、ブロックの後の行にあるときのほか、
+ノード（引用名と裸の名前）、説明（`## d`）、アイコン、title、
+`accTitle:` と `accDescr:` の行、`:::` の後ろのクラス、
+罫線モードのノードの行にあるときもそうです。
 引用名の後ろとクラスの後ろでは、ディレクティブをそれに接して書き、
 空白を挟んで書くと拒否されます。
 ここでは U+2028、U+2029、U+0085、U+180E、U+200B を空白でない文字に数えます。
@@ -3173,6 +3217,10 @@ U+00A0、U+1680、U+2000 から U+200A、U+202F、U+205F、U+3000、U+FEFF で�
 [test: treeview/final-newline/open-directive-after-accdescr-two-spaces]
 [test: treeview/final-newline/open-directive-after-accdescr-u2029]
 [test: treeview/final-newline/open-directive-after-class-two-spaces]
+[test: treeview/final-newline/open-directive-after-description-two-spaces]
+[test: treeview/final-newline/open-directive-after-icon-two-spaces]
+[test: treeview/final-newline/open-directive-after-description-block-two-spaces]
+[test: treeview/final-newline/open-directive-after-box-node-two-spaces]
 [test: treeview/final-newline/open-directive-after-class-u2029]
 [test: treeview/final-newline/open-directive-after-quoted-name-space-rejected]
 [test: treeview/final-newline/open-directive-after-class-space-rejected]
