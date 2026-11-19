@@ -453,15 +453,17 @@ printed with the space.
 [fixture: shapes/block-arrow-comma-on-kept-line]
 
 A comment line or a directive there keeps its line, and a U+2028 or U+2029 stays
-where it is. Rule 1 names no mark for a line break, so
+where it is. Rule 1 names no mark for a line break next to a comment or a
+directive, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
-[journey](./journey.md#multi-line-statements) keep a line break next to a
-comment or a directive and the whitespace before it, and put the later parts of
-a statement and the trivia lines one level deeper, where no other rule keeps the
-layout as written (a comment region that joins physical lines, a line that holds
-a `;`, and the like).
+[journey](./journey.md#multi-line-statements) keep such a line break, where no
+other rule keeps the layout as written (a comment region that joins physical
+lines, a line that holds a `;`, and the like). Before the first direction,
+before a `,`, and before the `)`, the comment line stands at column one and the
+next line is not indented, since the whitespace there is in the Db (see above);
+after a `,` the comment line and the next line stand one level deeper.
 
 [fixture: shapes/block-arrow-comma-space] [fixture:
 shapes/block-arrow-comma-comment-line] [test: U+2028 after the comma between the
@@ -913,10 +915,9 @@ whitespace after a `,`.
 [fixture: multi-line-statements/structural-trivia-continuations]
 
 Joining comment regions retain their original layout. A comment region after
-U+2028 or U+2029 makes mermaid.js read the lines around it as one, and the
-formatter prints such a line as written from its first line to its end, as it
-does for every statement of every diagram type (see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+U+2028 or U+2029 makes mermaid.js read the lines around it as one. How the
+formatter prints such a line, and the cases that it prints otherwise, are in
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029).
 
 [test: block: ls-comment-in-composite-head] [test: block:
 ps-comment-in-composite-head]
@@ -1074,7 +1075,9 @@ keep its right-side contact or separation, and break its left contact, where no
 other rule keeps the layout as written (a directive that is not closed after a
 statement, and the like).
 
-[fixture: block/directives/directive-after-columns]
+[fixture: block/directives/directive-after-columns] [fixture:
+block/directives/directive-after-columns-right-touching] [fixture:
+block/directives/directive-after-columns-left-touching]
 
 Input
 ([directives/directive-between-statements-of-a-row-input.mmd](../tests/fixtures/block/directives/directive-between-statements-of-a-row-input.mmd)):
@@ -1133,7 +1136,8 @@ with standalone trivia one level inside and its closer at statement level. Rule
 decides, as [pie](./pie.md#description-blocks),
 [sequence](./sequence.md#multi-line-values), and
 [info](./info.md#description-blocks) stand a comment or directive line of a
-block one level inside and its closer at the level of its statement.
+block on a line of its own one level inside and its closer at the level of its
+statement.
 
 [fixture: empty-description-blocks/trivia-continuations]
 

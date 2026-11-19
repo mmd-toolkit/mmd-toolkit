@@ -485,14 +485,16 @@ mermaid.js は向きの後の空白と、
 
 そこにあるコメント行やディレクティブは行ごと残り、
 U+2028 と U+2029 はそのまま残します。
-規則 1 は、改行の印を挙げていないので、
+規則 1 は、コメントやディレクティブの隣の改行の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
-[journey](./journey.ja.md#複数行の文)も、コメントやディレクティブの隣の改行と、
-その前の空白を残し、
-文の後続部分と間のコメントやディレクティブの行を 1 段深く置きます。
+[journey](./journey.ja.md#複数行の文)も、そのような改行を残します。
 ただし、ほかの規則が配置を書かれたまま残す所は別です。
 たとえば、物理行を結ぶコメント領域や、`;` を含む行です。
+最初の方向の前、`,` の前、`)` の前では、コメント行は第 1 列に立ち、
+次の行も字下げしません。
+そこの空白は Db にあるからです（上を参照）。
+`,` の後では、コメント行と次の行を 1 段深く置きます。
 
 [fixture: shapes/block-arrow-comma-space]
 [fixture: shapes/block-arrow-comma-comment-line]
@@ -970,11 +972,9 @@ block-arrow の方向は、`,` の後の空白を除いて原文のままです�
 物理行を結ぶコメント領域は、元の配置を保ちます。
 U+2028 か U+2029 の後のコメント領域があると、
 mermaid.js は前後の行を 1 行として読みます。
-整形は、その行を最初の行から最後まで書かれたまま印字します。
-どの図種のどの文でも同じです。
-詳しくは
+整形がその行をどう印字するか、別に印字する場合は、
 [U+2028 または U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-を参照してください。
+にあります。
 
 [test: block: ls-comment-in-composite-head]
 [test: block: ps-comment-in-composite-head]
@@ -1144,6 +1144,8 @@ block-beta
 たとえば、文の後の閉じていないディレクティブです。
 
 [fixture: block/directives/directive-after-columns]
+[fixture: block/directives/directive-after-columns-right-touching]
+[fixture: block/directives/directive-after-columns-left-touching]
 
 入力
 ([directives/directive-between-statements-of-a-row-input.mmd](../tests/fixtures/block/directives/directive-between-statements-of-a-row-input.mmd)):
@@ -1201,8 +1203,8 @@ block-beta
 規則 1 は、ブロックの中の行の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [pie](./pie.ja.md#description-blocks)、[sequence](./sequence.ja.md#複数行の値)、
-[info](./info.ja.md#description-blocks)も、
-ブロックのコメント行やディレクティブの行を 1 段内側に置き、
+[info](./info.ja.md#description-blocks)も、ブロックの、
+自分の行にあるコメント行やディレクティブの行を 1 段内側に置き、
 閉じ括弧を文の段に置きます。
 
 [fixture: empty-description-blocks/trivia-continuations]
