@@ -706,9 +706,13 @@ Markdown ラベルは矢印の間には印字できず、
 接するコメントは接したまま残します。
 閉じパイプは自分の行に、
 矢印より 1 段深く置きます（`A -->|x % c` と `    | B`）。
+コメントに `;` があるときは、`;` の後の空白とタブも残ります。
+`A -->|x  %% c;` と空白 2 つ、改行、`| B` は、`A -->|x %% c;`、その空白 2 つ、
+1 段深い `| B` と印字します。
 コメントの改行の後もラベルが続く場合は、コメントの前の空白とタブが残ります。
 
 [fixture: edge-labels/label-comment-ends-label]
+[fixture: edge-labels/label-comment-semicolon-ends-label]
 [fixture: edge-labels/label-comment-label-goes-on]
 [test: a no-break space before a comment that ends the label of an agentflow edge]
 

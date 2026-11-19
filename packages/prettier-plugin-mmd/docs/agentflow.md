@@ -686,11 +686,14 @@ pipe follows the line break of the comment (`A -->|x  % c`, a line break, and
 `| B`), the label ends before the comment: a run of spaces and tabs before the
 comment, or a no-break space, is printed as one space, a comment that touches
 stays touching, and the closing pipe stands on a line of its own, one level
-deeper than the arrow (`A -->|x % c` and `    | B`). Where the label goes on
-after the line break of the comment, the spaces and tabs before the comment
-stay.
+deeper than the arrow (`A -->|x % c` and `    | B`). Where the comment holds a
+`;`, the spaces and tabs after the `;` stay as well: `A -->|x  %% c;` and two
+spaces, a line break, and `| B` print `A -->|x %% c;`, the two spaces, and `| B`
+one level deeper. Where the label goes on after the line break of the comment,
+the spaces and tabs before the comment stay.
 
 [fixture: edge-labels/label-comment-ends-label] [fixture:
+edge-labels/label-comment-semicolon-ends-label] [fixture:
 edge-labels/label-comment-label-goes-on] [test: a no-break space before a
 comment that ends the label of an agentflow edge]
 

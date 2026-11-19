@@ -481,8 +481,8 @@ which is printed as one space (see
 Never take a value from the next physical line, including across comments or
 directives. Trivia-bearing values and protected segments keep their source gaps.
 The directives that end a title are printed with one space before each that has
-whitespace before it, and the whitespace after the last one is left out,
-whatever the whitespace at the end of the line (see
+spaces or tabs before it, and the spaces and tabs after the last one are left
+out, whatever the spaces and tabs at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
@@ -519,8 +519,8 @@ an `accDescr` is printed as one space (see
 and that of an `accTitle` stays as written, since the browser shows it as a
 tooltip. Braces after a colon remain line text. Trivia/hidden and semicolon
 protection take precedence. The directives that end the value are printed with
-one space before each that has whitespace before it, and the whitespace after
-the last one is left out (see
+one space before each that has spaces or tabs before it, and the spaces and tabs
+after the last one are left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:

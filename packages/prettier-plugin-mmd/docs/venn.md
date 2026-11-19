@@ -908,15 +908,17 @@ same title with the directives last: `title T  %%{x}%%  ` is printed
 [fixture: venn/title/title-trailing-directive-blanks-dropped] [fixture:
 venn/title/title-two-directives-trailing-blanks-dropped]
 
-A title in which a directive is followed by anything besides spaces, tabs, and
-directives, more text, a no-break space, or U+3000, stays as written, the spaces
-and tabs at its end included: `title T %%{x}%% U` and two spaces is not changed
-(see
-[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+A title with a directive is printed as the table of
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)
+gives for a Venn diagram: the spaces and tabs after the last directive are left
+out, and a comment, a no-break space, U+3000, U+2003, or text after the last
+directive, or spaces after a directive that starts the title, keep the title as
+written (`title T %%{x}%% U` and two spaces is not changed).
 
-[test: text after a directive and spaces at the end of the title of a Venn or a
-C4 diagram] [test: a no-break space after a directive and spaces at the end of
-the title of a Venn or a C4 diagram]
+[test: text after a directive and spaces at the end of a title] [test: a
+no-break space after a directive and spaces at the end of a title] [test: a
+comment and spaces after a directive that ends a title] [test: spaces after a
+directive that starts a title]
 
 A title whose text stands on a later line after a `;` that the line rule ignores
 stays as written, with the `;` and the indentation of that line: the lexer

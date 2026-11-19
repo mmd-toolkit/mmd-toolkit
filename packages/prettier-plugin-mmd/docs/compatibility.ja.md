@@ -1515,59 +1515,94 @@ user journey
 ディレクティブの前でも、
 ディレクティブがない場合と同じように書かれたままにします。
 
-改行しない空白、U+3000、U+2003 は空白でもタブでもないので、上に書いた、
-ディレクティブの隣の空白とタブについての文は、
-タイトルでのそれらには当てはまりません。
-Gantt、user journey、timeline、sequence、Venn、C4 の図では、
-それらはどこにあってもテキストの文字で、そのまま残ります。
-空白でもタブでもないほかの空白文字も同じです。
-`title T`、改行しない空白、`%%{x}%%` は変えません。
-ディレクティブの後にテキストが続くタイトル（`title T %%{x}%% U` と空白 2
-つ）の末尾の空白とタブは、Gantt、user journey、timeline、sequence、
-quadrant の図では除き、Venn と C4 の図では残します。
-quadrant 図では、改行しない空白と U+3000 を空白と同じに読み、
-コメントの前にあるものだけ残します。
-一覧のほかの種類の図では、整形ツールは、改行しない空白、U+3000、U+2003 を、
-ディレクティブとコメントの位置で読み分けます。
+改行しない空白、U+3000、U+2003 は空白でもタブでもなく、
+ディレクティブやコメントを含むタイトルは、
+図の種類によって同じには印字されません。
+表は、書かれたタイトルごとに、
+図の種類の群が `title ` の後に印字する形を示します（`\u00a0` は改行しない空白、
+`\u3000` は U+3000、`\u2003` は U+2003、`\t` はタブ、
+「書かれたまま」は書かれたタイトルをそのまま印字することです）。
+Langium の型は、pie、radar、packet、architecture、gitGraph、cynefin、treemap、
+Wardley、treeView、info、railroad です。
+群のどの型も、その列の形を印字します。
 
-- テキストとコメントの間にあるそれらは、
-  ディレクティブがなければ空白 1 つにします。
-  `title T`、改行しない空白、`%% c` は `title T %% c` と印字します。
-- 後ろに空白、タブ、ほかのディレクティブ以外の何か（続くテキスト、
-  改行しない空白、U+3000、U+2003）が続くディレクティブはテキストに属し、
-  その前のディレクティブも、タイトルの先頭のものを含めてそうです。
-  そのテキストでは空白とタブだけが空白なので、
-  そのようなディレクティブの隣のそれらは残り、タイトルは先頭の文字から、
-  末尾の空白とタブも含めて書かれたまま残ります。
-  `title %%{x}%%`、改行しない空白、`T %%{y}%%`、改行しない空白は変えません。
-  `title %%{x}%%`、改行しない空白、`T %%{y}%% U` も変えません。
-- テキストに属するディレクティブがないときは、
-  タイトルの先頭のディレクティブはテキストの外にあるので、
-  その後の改行しない空白、U+3000、U+2003 は落とします。
-  `title %%{x}%%`、改行しない空白、`T` は `title %%{x}%%T` と印字します。
-  `title %%{x}%%`、改行しない空白、`T %%{y}%%`、
-  空白 2 つは `title %%{x}%%T %%{y}%%` と印字します。
-  その後の U+2028 と U+2029 と、その前の改行しない空白と U+3000 は残ります。
-- 行末にあって、互いに接し、行末かコメントにも接するディレクティブも、
-  テキストの外にあります。
-  テキストとその最初のディレクティブの間にある改行しない空白、U+3000、
-  U+2003 はテキストの末尾の空白で、
-  その連なりの残りと一緒に空白 1 つで印字します。
-  `title T`、U+00A0、`%%{x}%%` は `title T %%{x}%%` と印字します。
-- 一覧の `accTitle:` と `accDescr:` の行では、
-  値の先頭のディレクティブはテキストの外にないので、その後の改行しない空白、
-  U+3000、U+2003 は残ります。
-  `accTitle: %%{x}%%`、改行しない空白、`T %%{y}%%` は変えません。
+| 書かれた形（`title ` の後）    | Langium の型       | quadrant               | Gantt、journey、timeline、sequence | Venn、C4     |
+| ------------------------------ | ------------------ | ---------------------- | ---------------------------------- | ------------ |
+| `T  %%{x}%%  `                 | `T %%{x}%%`        | `T %%{x}%%`            | `T %%{x}%%`                        | `T %%{x}%%`  |
+| `T  %%{x}%%  %% c  `           | `T %%{x}%% %% c  ` | `T  %%{x}%%  %% c`     | `T  %%{x}%%  %% c`                 | 書かれたまま |
+| `T %%{x}%%\u00a0`              | 書かれたまま       | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま |
+| `T %%{x}%%\u3000`              | 書かれたまま       | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま |
+| `T %%{x}%%\u2003`              | 書かれたまま       | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま |
+| `%%{x}%%\u00a0T %%{y}%%`       | `%%{x}%%T %%{y}%%` | `%%{x}%%T %%{y}%%`     | 書かれたまま                       | 書かれたまま |
+| `%%{x}%%\u00a0T %%{y}%%\u00a0` | 書かれたまま       | `%%{x}%%T %%{y}%%`     | 書かれたまま                       | 書かれたまま |
+| `%%{x}%%\u00a0T %%{y}%% U`     | 書かれたまま       | `%%{x}%%T %%{y}%% U`   | 書かれたまま                       | 書かれたまま |
+| `%%{x}%%  T  `                 | `%%{x}%%T`         | `%%{x}%%T`             | `%%{x}%%T`                         | 書かれたまま |
+| `T %%{x}%% U  `                | 書かれたまま       | `T %%{x}%% U`          | `T %%{x}%% U`                      | 書かれたまま |
+| `T %%{x}%%\u00a0U  `           | 書かれたまま       | `T %%{x}%%\u00a0U`     | `T %%{x}%%\u00a0U`                 | 書かれたまま |
+| `T %%{x}%%  U  %%{y}%%  `      | 書かれたまま       | `T %%{x}%%  U %%{y}%%` | `T %%{x}%%  U %%{y}%%`             | 書かれたまま |
+| `T\u00a0%%{x}%%`               | `T %%{x}%%`        | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま |
+| `T\u3000%%{x}%%`               | `T %%{x}%%`        | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま |
+| `T\u2003%%{x}%%`               | `T %%{x}%%`        | `T %%{x}%%`            | 書かれたまま                       | 書かれたまま |
+| `T\t%%{x}%%\t`                 | `T %%{x}%%`        | `T %%{x}%%`            | `T %%{x}%%`                        | `T %%{x}%%`  |
+| `T\u00a0%% c`                  | `T %% c`           | 書かれたまま           | 書かれたまま                       | 書かれたまま |
+| `T  %% c  `                    | `T %% c  `         | `T %% c`               | `T %% c`                           | `T %% c`     |
+| `T %%{x}%% %% c  `             | 書かれたまま       | `T %%{x}%% %% c`       | `T %%{x}%% %% c`                   | 書かれたまま |
+| `T\u00a0%%{x}%%%% c`           | `T %%{x}%%%% c`    | 書かれたまま           | 書かれたまま                       | 書かれたまま |
+
+pie 図は、コメントの前の改行しない空白、U+3000、U+2003 を残します。
+ほかの Langium の型は空白 1 つにします（[Title](./pie.ja.md#title)を参照）。
+Langium の型の `accTitle:` と `accDescr:` の行は、その列の形に印字します。
+ただし、値の先頭のディレクティブは、その後ろの文字と一緒に残ります。
+`accTitle: %%{x}%%\u00a0T %%{y}%%` と `accTitle: %%{x}%%  T  ` は変えません。
 
 閉じていないディレクティブはタイトルの残りを取ります。
-`title T %%{x` と `title T%%{x` は変えません。
-その前の空白とタブの連なりは、pie、gitGraph、cynefin、treemap、treeView、info、
-Gantt、user journey、timeline の図では空白 1 つにし、
-一覧のほかの種類の図では書かれたまま残します。
-その前の改行しない空白、U+3000、U+2003 は、
-これらの最初の 6 つの図では空白 1 つにし、ほかの図では残します。
-`title T  %%{x` は pie 図では `title T %%{x` と印字し、radar 図では変えません。
-`title T`、改行しない空白、`%%{x` は Gantt 図では変えません。
+`title T %%{x` と `title T%%{x` は、どの型でも変えません。
+次の表は、その前の空白が印字される形を、
+タイトルの後に文が続くかどうかで示します。
+
+| 書かれた形    | 文が続くとき                                                                                                                                                                     | テキストの末尾                                                                                                                                                                   |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `T  %%{x`     | 空白 1 つ：pie、gitGraph、cynefin、treemap、treeView、info、Gantt、journey、timeline；書かれたまま：radar、packet、architecture、Wardley、railroad、quadrant、sequence、Venn、C4 | 空白 1 つ：pie、radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、treeView、info、railroad、quadrant、Gantt、journey、timeline、sequence、Venn、C4               |
+| `T\t%%{x`     | 空白 1 つ：pie、gitGraph、cynefin、treemap、treeView、info、Gantt、journey、timeline；書かれたまま：radar、packet、architecture、Wardley、railroad、quadrant、sequence、Venn、C4 | 空白 1 つ：pie、radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、treeView、info、railroad、quadrant、Gantt、journey、timeline、sequence、Venn、C4               |
+| `T\u00a0%%{x` | 空白 1 つ：pie、gitGraph、cynefin、treemap、treeView、info；書かれたまま：radar、packet、architecture、Wardley、railroad、quadrant、Gantt、journey、timeline、sequence、Venn、C4 | 空白 1 つ：pie、radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、treeView、info、railroad、quadrant；書かれたまま：Gantt、journey、timeline、sequence、Venn、C4 |
+| `T\u3000%%{x` | 空白 1 つ：pie、gitGraph、cynefin、treemap、treeView、info；書かれたまま：radar、packet、architecture、Wardley、railroad、quadrant、Gantt、journey、timeline、sequence、Venn、C4 | 空白 1 つ：pie、radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、treeView、info、railroad、quadrant；書かれたまま：Gantt、journey、timeline、sequence、Venn、C4 |
+| `T\u2003%%{x` | 空白 1 つ：pie、gitGraph、cynefin、treemap、treeView、info；書かれたまま：radar、packet、architecture、Wardley、railroad、quadrant、Gantt、journey、timeline、sequence、Venn、C4 | 空白 1 つ：pie、radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、treeView、info、railroad、quadrant；書かれたまま：Gantt、journey、timeline、sequence、Venn、C4 |
+| `T  %%{x  y`  | 空白 1 つ：cynefin、info、Gantt、journey、timeline；書かれたまま：pie、radar、packet、architecture、gitGraph、treemap、Wardley、treeView、railroad、quadrant、sequence、Venn、C4 | 空白 1 つ：pie、radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、treeView、info、railroad、quadrant、Gantt、journey、timeline、sequence、Venn、C4               |
+
+[test: runs and spaces around a directive that ends a title]
+[test: a comment and spaces after a directive that ends a title]
+[test: a no-break space after the last directive of a title]
+[test: U+3000 after the last directive of a title]
+[test: U+2003 after the last directive of a title]
+[test: a no-break space after a directive that starts a title and before another directive]
+[test: a no-break space after a directive that starts a title and after the last directive]
+[test: a no-break space after a directive that starts a title and text after the last directive]
+[test: spaces after a directive that starts a title]
+[test: text after a directive and spaces at the end of a title]
+[test: a no-break space after a directive and spaces at the end of a title]
+[test: text between two directives and spaces at the end of a title]
+[test: a no-break space between the text and a directive that ends a title]
+[test: U+3000 between the text and a directive that ends a title]
+[test: U+2003 between the text and a directive that ends a title]
+[test: a tab before and after the last directive of a title]
+[test: a no-break space before a comment after the text of a title]
+[test: runs and spaces around a comment after the text of a title]
+[test: a comment and spaces after a directive that follows the text of a title]
+[test: a no-break space before a directive and a comment after the text of a title]
+[test: U+2003 before a directive that is not closed in a title, at the end of the text]
+[test: U+2003 before a directive that is not closed in a title, before a statement]
+[test: U+3000 before a directive that is not closed in a title, at the end of the text]
+[test: U+3000 before a directive that is not closed in a title, before a statement]
+[test: a directive that is not closed after a space in a title]
+[test: a directive that is not closed touching the text of a title]
+[test: a no-break space before a directive that is not closed in a title, at the end of the text]
+[test: a no-break space before a directive that is not closed in a title, before a statement]
+[test: a tab before a directive that is not closed in a title, at the end of the text]
+[test: a tab before a directive that is not closed in a title, before a statement]
+[test: two spaces before a directive that is not closed and text after it in a title, at the end of the text]
+[test: two spaces before a directive that is not closed and text after it in a title, before a statement]
+[test: two spaces before a directive that is not closed in a title, at the end of the text]
+[test: two spaces before a directive that is not closed in a title, before a statement]
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped]
 [test: a no-break space and U+3000 at both ends of the title of
@@ -1595,122 +1630,15 @@ a treeView] [test: a no-break space and U+3000 at both ends of the title of
 an info diagram] [test: a no-break space and U+3000 at both ends of the title of
 a railroad diagram] [test: a no-break space after the last directive of a title]
 [test: a no-break space between the text and a directive that ends a title]
-[test: a no-break space between the text and two directives that touch and end
-a title] [test: a no-break space between the text and a directive that a comment
-touches]
-[test: a no-break space between the text and a directive that is followed by a
-space and a directive]
-[test: a no-break space on both sides of a directive between two texts]
-[test: a no-break space before and after the last directive of a title]
 [test: U+3000 after the last directive of a title]
 [test: U+3000 between the text and a directive that ends a title]
-[test: a no-break space after the last directive of the title of a quadrant
-chart]
-[test: a no-break space between the text and a directive in the title of a
-quadrant chart]
-[test: a no-break space on both sides of the last directive in the title of a
-quadrant chart]
-[test: a no-break space before a comment in the title of a quadrant chart]
-[test: U+3000 after the last directive in the title of a quadrant chart]
-[test: a no-break space after a directive that starts a title and before a
-directive that ends it]
-[test: a no-break space after a directive that starts a title, with a
-directive that ends it followed by a no-break space]
-[test: a no-break space after a directive that starts a title, with text after
-a directive that ends it]
-[test: U+3000 after a directive that starts a title, with a directive that
-ends it followed by U+3000]
-[test: a no-break space after a directive that starts a title and spaces at
-the end of the title]
 [test: U+2003 between the text and a directive that ends a title]
 [test: U+2003 after the last directive of a title]
-[test: U+2003 after a directive that starts a title]
-[test: U+2003 on both sides of a directive between two texts]
-[test: a no-break space after the directive that starts the value of an
-accTitle line]
-[test: a no-break space after the directive that starts the value of an
-accTitle line, with spaces at the end]
-[test: U+3000 after the directive that starts the value of an accTitle line]
-[test: a no-break space between the value of an accTitle line and a directive
-that ends it]
-[test: text after a directive and spaces at the end of the value of an
-accTitle line]
-[test: a no-break space after the directive that starts the value of an
-accDescr line]
-[test: a no-break space after the directive that starts the value of an
-accDescr line, with spaces at the end]
-[test: a no-break space after a directive that starts the title of a quadrant
-chart, with a directive that ends it followed by a no-break space]
-[test: a no-break space after a directive that starts the title of a quadrant
-chart, with text after a directive that ends it]
-[test: U+2003 between the text and a directive that ends the title of a
-quadrant chart]
-[test: U+2003 after the last directive in the title of a quadrant chart]
-[test: a no-break space after a directive that starts a title that a Jison
-grammar reads, with a directive that ends it]
-[test: a no-break space after a directive that starts a title that a Jison
-grammar reads, with a directive that ends it followed by a no-break space]
-[test: U+2003 after a directive that starts a title that a Jison grammar
-reads]
-[test: a no-break space after a directive and spaces at the end of a title
-that a Jison grammar reads]
-[test: a no-break space after a directive that starts a title and spaces at
-the end of a title that a Jison grammar reads]
-[test: a no-break space after a directive and spaces at the end of the title
-of a Venn or a C4 diagram]
-[test: a no-break space after a directive that starts a title and spaces at
-the end of the title of a Venn or a C4 diagram]
-[test: two spaces before a directive that is not closed in a title]
-[test: a tab before a directive that is not closed in a title]
-[test: a no-break space before a directive that is not closed in a title]
-[test: U+3000 before a directive that is not closed in a title]
-[test: U+2003 before a directive that is not closed in a title]
-[test: two spaces between a directive and a directive that is not closed in a
-title] [test: a tab before and after the last directive of a title]
-[test: a no-break space after a directive that starts a title]
-[test: U+3000 after a directive that starts a title]
-[test: U+2028 after a directive that starts a title]
-[test: a no-break space between two directives that start a title]
-[test: a no-break space before a directive that starts a title]
+[test: a tab before and after the last directive of a title]
 [test: a no-break space before a comment after the text of a title]
-[test: U+3000 before a comment after the text of a title]
 [test: text after a directive and spaces at the end of a title]
-[test: U+2003 at both ends of a title]
-[test: a no-break space after a directive that starts the title of a quadrant
-chart]
-[test: a no-break space before a directive that starts the title of a quadrant
-chart]
-[test: text after a directive and spaces at the end of the title of a quadrant
-chart] [test: a no-break space before a comment after the text of a title that a
-Jison grammar reads]
-[test: U+2003 at both ends of a title that a Jison grammar reads]
-[test: a tab before and after the last directive of a title that a Jison
-grammar reads]
-[test: text after a directive and spaces at the end of a title that a Jison
-grammar reads]
-[test: text after a directive and spaces at the end of the title of a Venn or
-a C4 diagram] [test: a directive that is not closed after a space in a title]
+[test: a directive that is not closed after a space in a title]
 [test: a directive that is not closed touching the text of a title]
-[test: two spaces before a comment after an accDescription of a C4 diagram]
-[test: spaces after the comment of an accDescription of a C4 diagram]
-[test: text after a directive and spaces at the end of an accDescription of a
-C4 diagram]
-[test: a no-break space after the last directive of a title that a Jison
-grammar reads]
-[test: a no-break space between the text and the last directive of a title
-that a Jison grammar reads]
-[test: a no-break space between the text and a directive that a space follows
-in a title that a Jison grammar reads]
-[test: a no-break space before a directive that starts a title that a Jison
-grammar reads]
-[test: a no-break space after a directive that starts a title that a Jison
-grammar reads]
-[test: a no-break space before and after the last directive of a title that a
-Jison grammar reads]
-[test: U+3000 after the last directive of a title that a Jison grammar reads]
-[test: two spaces before a comment after the text of a title]
-[test: a tab before a comment after the text of a title]
-[test: a comment that touches the text of a title]
 [test: a no-break space and U+3000 at both ends of the title of
 a quadrant chart] [test: a no-break space at the end of
 the date format of a gantt diagram] [test: a no-break space at the end of
