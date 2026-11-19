@@ -1203,10 +1203,7 @@ parentheses, as under [Directives](#directives).
 [fixture: whitespace-between-tokens/callback-blank-parentheses-touch]
 
 A statement written over several lines is kept as written, so it keeps the line
-break between the parentheses and a comment line there. mermaid.js keeps the
-text between the parentheses of a call in the Db, and the arguments that are
-drawn the same do not include one with a line break (see
-[Call arguments that are drawn the same](./compatibility.md#call-arguments-that-are-drawn-the-same)).
+break between the parentheses and a comment line there.
 
 [fixture: whitespace-between-tokens/callback-blank-parentheses-lines]
 
@@ -2320,12 +2317,17 @@ For an eligible multiline block, move every body line by the same number of
 ASCII spaces until the shallowest line with text stands one level inside its
 statement. This preserves relative indentation, including nested YAML, and can
 move lines inward or outward. A `}` alone on its line aligns with the statement;
-a `}` after body text stays there and moves with that line. A `}` after body
-text is a character of its line, and moving it to a line of its own would add a
-last line of spaces to the block text, which a literal or folded scalar keeps.
+a `}` after body text stays there and moves with that line. A `}` after the text
+of a literal or folded scalar stays on its line: on a line of its own it adds a
+line break to the end of the text of the scalar, which 11.7.0 to 12.3.0 draw
+differently (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The formatter does not look at the kind of scalar, so a `}` after the text of a
+plain scalar stays too.
 
 [fixture: data-blocks/zero-and-shallow] [fixture: data-blocks/deep-nested-yaml]
-[fixture: data-blocks/closing-after-text]
+[fixture: data-blocks/closing-after-text] [fixture:
+data-blocks/closing-after-literal-text]
 
 Move a block only when all these conditions hold; otherwise keep its columns as
 written:
@@ -2527,12 +2529,7 @@ statement `;` beside the block keep their own rules. CRLF and CR follow
 data blocks: flowchart U+2029]
 
 An indented comment line inside an eligible block moves with the other body
-lines, keeping its authored line and text. Rule 1 names no mark for a comment
-line inside a block, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [xychart](./xychart.md#empty-description-blocks) and
-[block](./block.md#empty-description-blocks) stand a comment line of a block one
-level inside and keep its contents and line breaks.
+lines, keeping its authored line and text.
 
 [fixture: data-blocks/indented-comment-line]
 
