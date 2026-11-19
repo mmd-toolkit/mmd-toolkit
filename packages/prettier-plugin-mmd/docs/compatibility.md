@@ -1604,24 +1604,20 @@ In the title of a Gantt chart, a user journey, and a timeline, the directives
 between the keyword and the text are printed touching each other and the text,
 whatever spaces and tabs separate them, since mermaid.js removes them before it
 reads the title: `title %%{x}%% %%{y}%% A  b` is printed
-`title %%{x}%%%%{y}%%A b`. The runs of spaces and tabs inside the title are
-printed as one space, whether the directives touch or whitespace separates them,
-also where a comment follows the title, where the text ends, and, in a Gantt
-chart and a timeline, where the title holds a `;`: `title %%{x}%%%%{y}%% A  b`
-and `title %%{x}%% A  b` are printed the same way, and so are the forms with
-more than one space, or a tab, between the keyword and the first directive,
+`title %%{x}%%%%{y}%%A b`. A directive that holds a line break keeps the title
+as written. The runs of spaces and tabs inside the title are printed as one
+space, whether the directives touch or whitespace separates them, also where a
+comment follows the text, where the text ends, and, in a Gantt chart and a
+timeline, where the title holds a `;`: `title %%{x}%%%%{y}%% A  b` and
+`title %%{x}%% A  b` are printed the same way, and so are the forms with more
+than one space, or a tab, between the keyword and the first directive,
 `title  %%{x}%%A  b`. A title that holds a directive between its words keeps its
-runs, as does a title of whitespace and directives only. A no-break space
-between two directives is a character of the title, not whitespace. A U+2028 or
-U+2029 in the text keeps the text as written, and the directives before it are
-still printed touching. The spaces and tabs between the keyword, or the last
-directive, and the text beyond the one space that the keyword takes are left out
-where directives end the text and whitespace follows the last of them, as they
-are where none does: `title   A b  %%{z}%%  ` is printed `title A b %%{z}%%`, in
-Gantt, user journey, timeline, sequence, Venn, and C4 diagrams, and in the
-`accDescription` of a C4 diagram. In a usecase diagram, the directives at the
-end of an `accTitle:` line are printed the same where directives precede the
-text: `accTitle: %%{x}%% T  %%{y}%%  ` is printed `accTitle: %%{x}%% T %%{y}%%`.
+runs, as does a title of whitespace and directives only, and a title with a
+comment after its last directive: `title %%{x}%% %%{y}%% A  b  %%{z}%%  %% c` is
+printed `title %%{x}%%%%{y}%%A  b  %%{z}%%  %% c`. A no-break space between two
+directives is a character of the title, not whitespace. A U+2028 or U+2029 in
+the text keeps the text as written, and the directives before it are still
+printed touching.
 
 [fixture: gantt/titles-and-sections/title-directives-gap-runs-collapsed]
 [fixture: gantt/titles-and-sections/title-directives-gap-run-runs-collapsed]
@@ -1662,6 +1658,34 @@ timeline/titles-and-sections/title-directives-gap-end-of-text-runs-collapsed]
 [fixture:
 timeline/titles-and-sections/title-directives-gap-inner-directive-runs-kept]
 [fixture: timeline/titles-and-sections/title-directives-gap-without-text-kept]
+[fixture: gantt/titles-and-sections/title-directives-gap-line-break-kept]
+[fixture:
+gantt/titles-and-sections/title-directives-gap-comment-after-directive-runs-kept]
+[fixture: journey/titles-and-sections/title-directives-gap-line-break-kept]
+[fixture:
+journey/titles-and-sections/title-directives-gap-comment-after-directive-runs-kept]
+[fixture: timeline/titles-and-sections/title-directives-gap-line-break-kept]
+[fixture:
+timeline/titles-and-sections/title-directives-gap-comment-after-directive-runs-kept]
+[test: gantt title: a no-break space between two directives] [test: gantt title:
+U+2028 in the text after directives that whitespace separates] [test: gantt
+title: U+2029 in the text after directives that whitespace separates]
+
+The spaces and tabs between the keyword and the text beyond the one space that
+the keyword takes are left out where directives end the text and whitespace
+follows the last of them, as they are where none does: `title   A b  %%{z}%%  `
+is printed `title A b %%{z}%%`, in Gantt, user journey, timeline, sequence,
+Venn, and C4 diagrams, and in the `accDescription` of a C4 diagram. Where
+directives precede the text, the spaces and tabs between the last of them and
+the text are left out in the same way in Gantt, user journey, timeline, and
+sequence diagrams: `title %%{x}%%   A b  %%{z}%%  ` is printed
+`title %%{x}%%A b %%{z}%%`. A Venn diagram and a C4 diagram keep a title that
+directives precede as written, and the `accDescription` of a C4 diagram too:
+`title %%{x}%%   A b  %%{z}%%  ` is printed as it is. In a usecase diagram, the
+directives at the end of an `accTitle:` line are printed the same where
+directives precede the text: `accTitle: %%{x}%% T  %%{y}%%  ` is printed
+`accTitle: %%{x}%% T %%{y}%%`.
+
 [fixture:
 gantt/titles-and-sections/title-padding-trailing-directive-blanks-dropped]
 [fixture:
@@ -1669,19 +1693,27 @@ gantt/titles-and-sections/title-directive-padding-trailing-directive-blanks-drop
 [fixture:
 journey/titles-and-sections/title-padding-trailing-directive-blanks-dropped]
 [fixture:
+journey/titles-and-sections/title-directive-padding-trailing-directive-blanks-dropped]
+[fixture:
 timeline/titles-and-sections/title-padding-trailing-directive-blanks-dropped]
+[fixture:
+timeline/titles-and-sections/title-directive-padding-trailing-directive-blanks-dropped]
 [fixture: sequence/title/title-padding-trailing-directive-blanks-dropped]
+[fixture:
+sequence/title/title-directive-padding-trailing-directive-blanks-dropped]
 [fixture: venn/title/title-padding-trailing-directive-blanks-dropped] [fixture:
+venn/title/title-directive-padding-trailing-directive-blanks-kept] [fixture:
 c4/title-and-accdescription/title-padding-trailing-directive-blanks-dropped]
 [fixture:
+c4/title-and-accdescription/title-directive-padding-trailing-directive-blanks-kept]
+[fixture:
 c4/title-and-accdescription/description-padding-trailing-directive-blanks-dropped]
+[fixture:
+c4/title-and-accdescription/description-directive-padding-trailing-directive-blanks-kept]
 [fixture:
 usecase/direction-and-accessibility/acctitle-directive-before-text-trailing-directive-blanks-dropped]
 [fixture:
 usecase/direction-and-accessibility/acctitle-directives-before-text-trailing-directive-blanks-dropped]
-[test: gantt title: a no-break space between two directives] [test: gantt title:
-U+2028 in the text after directives that whitespace separates] [test: gantt
-title: U+2029 in the text after directives that whitespace separates]
 
 The tests compare the Db of the printed text with the whitespace at the ends of
 its texts restored from the Db of the written text

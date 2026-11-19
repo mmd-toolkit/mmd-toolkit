@@ -129,7 +129,7 @@ export function layoutIshikawaLine(
   const lineEnd = collectLineEndEdits(
     source,
     [start, end],
-    { collapsesRuns: true, textBefore: "semicolons" },
+    { runs: "collapsedWithoutLeadingDirectives", gapBeforePlace: "likeRuns" },
     line.range[1],
   )
   if (lineEnd !== null) {
@@ -142,7 +142,10 @@ export function layoutIshikawaLine(
     replaceInAtoms(source, atoms, lineEnd)
   } else {
     // The gap before a directive that follows the literal is that of the
-    // directive, so the literal keeps its end there.
+    // directive, so the literal keeps its end there. A literal that stays as
+    // written (see `staysAsWritten`) comes here too where a place ends it:
+    // `collectLineEndEdits` leaves it, with `gapBeforePlace: "likeRuns"`, for
+    // the rule of the texts, which does not reach it.
     const directiveFollows = findTriviaBetween(source, end, end + 1).some(
       (item) => item.type === "Directive" && item.range[0] === end,
     )

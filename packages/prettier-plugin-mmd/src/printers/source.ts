@@ -197,16 +197,18 @@ export function skipBlanksAndRemoved(
 }
 
 /**
- * The offset of the first character from `start` on that is no space and no
- * tab, or `end` where the range holds nothing else.
+ * The offset of the first character from `start` on that is no blank, or `end`
+ * where the range holds nothing else. `isBlankCharacter` tells which characters
+ * are blanks: spaces and tabs by default.
  */
-export function skipSpacesAndTabs(
+export function skipBlanks(
   source: Source,
   start: number,
   end: number,
+  isBlankCharacter: (character: string) => boolean = isSpaceOrTab,
 ): number {
   let offset = start
-  while (offset < end && isSpaceOrTab(source.text[offset])) offset++
+  while (offset < end && isBlankCharacter(source.text[offset])) offset++
   return offset
 }
 

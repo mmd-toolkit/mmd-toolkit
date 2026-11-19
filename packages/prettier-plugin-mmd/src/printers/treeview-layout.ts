@@ -33,7 +33,7 @@ import {
   findTriviaBetween,
   isSpaceOrTab,
   isWhitespace,
-  skipSpacesAndTabs,
+  skipBlanks,
 } from "./source.ts"
 
 /** Values and outer box forms each print once at their authored owner. */
@@ -254,7 +254,7 @@ function trimAtomEnd(source: Source, atom: Atom): Atom {
   const lineEnd = collectLineEndEdits(
     source,
     [atom.start, textEnd.end],
-    { collapsesRuns: false },
+    { runs: "kept" },
     atom.end,
   )
   if (lineEnd !== null) {
@@ -301,7 +301,7 @@ function trimDescriptionPadding(
         annotation.value?.range[0] === written.start,
     )
     if (described) {
-      const start = skipSpacesAndTabs(source, written.start, written.end)
+      const start = skipBlanks(source, written.start, written.end)
       if (start !== written.end) {
         texts.add(start)
         atom = { ...written, start }

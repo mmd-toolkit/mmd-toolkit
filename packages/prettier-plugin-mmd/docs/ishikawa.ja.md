@@ -565,11 +565,20 @@ mermaid.js が行を読む前にディレクティブを除くためです。
 最後のディレクティブが、
 空白かタブで前のディレクティブから隔てられているリテラルも同じです。
 `A;b  %%{x}%%  %%{z}%%  ` は `A;b  %%{x}%%  %%{z}%%` と印字します。
+`;` を含むリテラルが書かれたままになるとき、
+つまり HTML タグが空白を保つかもしれない `<` も含むときと、
+図が `white-space` を含むときは、
+最後のディレクティブの前の空白とタブも書かれたままにします。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+ディレクティブの後に空白とタブがない同じ行と同じ形です。
+`A;  <b  %%{z}%%  ` は `A;  <b  %%{z}%%` と印字します。
 
 [fixture: ishikawa/trailing-whitespace/directive-after-semicolon-text-end-blanks-dropped]
 [fixture: ishikawa/trailing-whitespace/directive-after-semicolon-run-text-end-blanks-dropped]
 [fixture: ishikawa/trailing-whitespace/directive-after-inner-directive-text-end-blanks-dropped]
 [fixture: ishikawa/trailing-whitespace/directives-after-semicolon-text-gap-kept]
+[fixture: ishikawa/trailing-whitespace/directive-after-semicolon-angle-text-gap-kept]
+[fixture: ishikawa/trailing-whitespace/directive-after-semicolon-white-space-text-gap-kept]
 [test: ishikawa: U+2028 in the literal before the last directive]
 [test: ishikawa: U+2029 in the literal before the last directive]
 

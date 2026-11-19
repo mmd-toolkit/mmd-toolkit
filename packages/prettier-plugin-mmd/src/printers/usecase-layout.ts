@@ -487,8 +487,11 @@ function layoutUsecaseAccessibility(
     // its last directive is a blank, as a space or a tab is.
     const lineEnd = collectLineEndEdits(source, valueRange, {
       isBlank: isWhitespace,
-      collapsesRuns: statement.type === "UsecaseAccDescrStatement",
-      textBefore: "anything",
+      runs:
+        statement.type === "UsecaseAccDescrStatement"
+          ? "collapsedWithoutLeadingDirectives"
+          : "kept",
+      gapBeforePlace: "oneSpace",
     })
     if (lineEnd !== null) replaceInAtoms(source, atoms, lineEnd)
   }

@@ -1679,27 +1679,22 @@ Gantt 図、ユーザージャーニー、タイムラインのタイトルで�
 互いにもテキストにも接して印字します。
 mermaid.js はタイトルを読む前にディレクティブを除くためです。
 `title %%{x}%% %%{y}%% A  b` は `title %%{x}%%%%{y}%%A b` と印字します。
+改行を含むディレクティブがあるタイトルは、書かれたままにします。
 タイトルの中の空白とタブの連なりは、ディレクティブが接していても、
 空白で隔てられていても、空白 1 つにして印字します。
-タイトルの後にコメントが続くとき、テキストが終わるとき、
+テキストの後にコメントが続くとき、テキストが終わるとき、
 Gantt 図とタイムラインではタイトルが `;` を含むときも同じです。
 `title %%{x}%%%%{y}%% A  b` と `title %%{x}%% A  b` も同じ形で、
 キーワードと最初のディレクティブの間に空白が 2 つ以上かタブがある
 `title  %%{x}%%A  b` も同じです。
 単語の間にディレクティブがあるタイトルは連なりを書かれたままにします。
-空白とディレクティブだけのタイトルも同じです。
+空白とディレクティブだけのタイトルと、
+最後のディレクティブの後にコメントがあるタイトルも同じです。
+`title %%{x}%% %%{y}%% A  b  %%{z}%%  %% c` は
+`title %%{x}%%%%{y}%%A  b  %%{z}%%  %% c` と印字します。
 2 つのディレクティブの間のノーブレークスペースは空白ではなくタイトルの文字です。
 テキストの中の U+2028 と U+2029 は、そのテキストを書かれたままにし、
 その前のディレクティブは接して印字します。
-キーワードか最後のディレクティブとテキストの間の空白とタブのうち、
-キーワードが取る空白 1 つを超える分は、ディレクティブがテキストを終え、
-最後のディレクティブの後に空白が続くときも、続かないときと同じに除きます。
-`title   A b  %%{z}%%  ` は `title A b %%{z}%%` と印字します。
-Gantt 図、ユーザージャーニー、タイムライン、シーケンス図、Venn 図、C4 図で、
-C4 図の `accDescription` でも同じです。
-usecase 図では、`accTitle:` の行の末尾のディレクティブは、
-テキストの前にディレクティブがあっても同じに印字します。
-`accTitle: %%{x}%% T  %%{y}%%  ` は `accTitle: %%{x}%% T %%{y}%%` と印字します。
 
 [fixture: gantt/titles-and-sections/title-directives-gap-runs-collapsed]
 [fixture: gantt/titles-and-sections/title-directives-gap-run-runs-collapsed]
@@ -1726,19 +1721,49 @@ usecase 図では、`accTitle:` の行の末尾のディレクティブは、
 [fixture: timeline/titles-and-sections/title-directives-gap-end-of-text-runs-collapsed]
 [fixture: timeline/titles-and-sections/title-directives-gap-inner-directive-runs-kept]
 [fixture: timeline/titles-and-sections/title-directives-gap-without-text-kept]
-[fixture: gantt/titles-and-sections/title-padding-trailing-directive-blanks-dropped]
-[fixture: gantt/titles-and-sections/title-directive-padding-trailing-directive-blanks-dropped]
-[fixture: journey/titles-and-sections/title-padding-trailing-directive-blanks-dropped]
-[fixture: timeline/titles-and-sections/title-padding-trailing-directive-blanks-dropped]
-[fixture: sequence/title/title-padding-trailing-directive-blanks-dropped]
-[fixture: venn/title/title-padding-trailing-directive-blanks-dropped]
-[fixture: c4/title-and-accdescription/title-padding-trailing-directive-blanks-dropped]
-[fixture: c4/title-and-accdescription/description-padding-trailing-directive-blanks-dropped]
-[fixture: usecase/direction-and-accessibility/acctitle-directive-before-text-trailing-directive-blanks-dropped]
-[fixture: usecase/direction-and-accessibility/acctitle-directives-before-text-trailing-directive-blanks-dropped]
+[fixture: gantt/titles-and-sections/title-directives-gap-line-break-kept]
+[fixture: gantt/titles-and-sections/title-directives-gap-comment-after-directive-runs-kept]
+[fixture: journey/titles-and-sections/title-directives-gap-line-break-kept]
+[fixture: journey/titles-and-sections/title-directives-gap-comment-after-directive-runs-kept]
+[fixture: timeline/titles-and-sections/title-directives-gap-line-break-kept]
+[fixture: timeline/titles-and-sections/title-directives-gap-comment-after-directive-runs-kept]
 [test: gantt title: a no-break space between two directives]
 [test: gantt title: U+2028 in the text after directives that whitespace separates]
 [test: gantt title: U+2029 in the text after directives that whitespace separates]
+
+キーワードとテキストの間の空白とタブのうち、
+キーワードが取る空白 1 つを超える分は、ディレクティブがテキストを終え、
+最後のディレクティブの後に空白が続くときも、続かないときと同じに除きます。
+`title   A b  %%{z}%%  ` は `title A b %%{z}%%` と印字します。
+Gantt 図、ユーザージャーニー、タイムライン、シーケンス図、Venn 図、C4 図で、
+C4 図の `accDescription` でも同じです。
+テキストの前にディレクティブがあるときは、
+最後のディレクティブとテキストの間の空白とタブを、Gantt 図、ユーザージャーニー、
+タイムライン、シーケンス図で同じように除きます。
+`title %%{x}%%   A b  %%{z}%%  ` は `title %%{x}%%A b %%{z}%%` と印字します。
+Venn 図と C4 図は、ディレクティブが前にあるタイトルを書かれたままにし、
+C4 図の `accDescription` も同じです。
+`title %%{x}%%   A b  %%{z}%%  ` はそのまま印字します。
+usecase 図では、`accTitle:` の行の末尾のディレクティブは、
+テキストの前にディレクティブがあっても同じに印字します。
+`accTitle: %%{x}%% T  %%{y}%%  ` は `accTitle: %%{x}%% T %%{y}%%` と印字します。
+
+[fixture: gantt/titles-and-sections/title-padding-trailing-directive-blanks-dropped]
+[fixture: gantt/titles-and-sections/title-directive-padding-trailing-directive-blanks-dropped]
+[fixture: journey/titles-and-sections/title-padding-trailing-directive-blanks-dropped]
+[fixture: journey/titles-and-sections/title-directive-padding-trailing-directive-blanks-dropped]
+[fixture: timeline/titles-and-sections/title-padding-trailing-directive-blanks-dropped]
+[fixture: timeline/titles-and-sections/title-directive-padding-trailing-directive-blanks-dropped]
+[fixture: sequence/title/title-padding-trailing-directive-blanks-dropped]
+[fixture: sequence/title/title-directive-padding-trailing-directive-blanks-dropped]
+[fixture: venn/title/title-padding-trailing-directive-blanks-dropped]
+[fixture: venn/title/title-directive-padding-trailing-directive-blanks-kept]
+[fixture: c4/title-and-accdescription/title-padding-trailing-directive-blanks-dropped]
+[fixture: c4/title-and-accdescription/title-directive-padding-trailing-directive-blanks-kept]
+[fixture: c4/title-and-accdescription/description-padding-trailing-directive-blanks-dropped]
+[fixture: c4/title-and-accdescription/description-directive-padding-trailing-directive-blanks-kept]
+[fixture: usecase/direction-and-accessibility/acctitle-directive-before-text-trailing-directive-blanks-dropped]
+[fixture: usecase/direction-and-accessibility/acctitle-directives-before-text-trailing-directive-blanks-dropped]
 
 テストは、印字したテキストの Db に、
 書かれたテキストの Db から各テキストの両端の空白を戻して比べます。

@@ -556,7 +556,13 @@ printed as one space, `A;  b  %%{z}%%  ` as `A; b %%{z}%%`. A literal that holds
 a directive between its words, or a U+2028 or U+2029, stays as written, with the
 spaces and tabs after the last directive left out, as does one whose last
 directive a space or a tab separates from the directive before it:
-`A;b  %%{x}%%  %%{z}%%  ` is printed `A;b  %%{x}%%  %%{z}%%`.
+`A;b  %%{x}%%  %%{z}%%  ` is printed `A;b  %%{x}%%  %%{z}%%`. Where a literal
+that holds a `;` stays as written, because it holds a `<` too, which may start
+an HTML tag that keeps whitespace, or the diagram holds `white-space` (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+the gap before the last directive stays as written too, as it does without the
+spaces and tabs after the directive: `A;  <b  %%{z}%%  ` is printed
+`A;  <b  %%{z}%%`.
 
 [fixture:
 ishikawa/trailing-whitespace/directive-after-semicolon-text-end-blanks-dropped]
@@ -565,6 +571,10 @@ ishikawa/trailing-whitespace/directive-after-semicolon-run-text-end-blanks-dropp
 [fixture:
 ishikawa/trailing-whitespace/directive-after-inner-directive-text-end-blanks-dropped]
 [fixture: ishikawa/trailing-whitespace/directives-after-semicolon-text-gap-kept]
+[fixture:
+ishikawa/trailing-whitespace/directive-after-semicolon-angle-text-gap-kept]
+[fixture:
+ishikawa/trailing-whitespace/directive-after-semicolon-white-space-text-gap-kept]
 [test: ishikawa: U+2028 in the literal before the last directive] [test:
 ishikawa: U+2029 in the literal before the last directive]
 

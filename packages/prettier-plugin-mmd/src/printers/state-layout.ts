@@ -674,7 +674,7 @@ function secondDescriptionEndEdits(
   ) {
     return []
   }
-  return collectTextEndEdits(source, colon.range[1], end, false)
+  return collectTextEndEdits(source, colon.range[1], end, "kept")
 }
 
 /**
