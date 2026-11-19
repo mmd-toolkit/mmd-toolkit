@@ -897,6 +897,40 @@ treeview/semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
 
 [fixture: treeview/semicolons/box-redraw-arbitrary-prefix-on-protected-line]
 
+In box mode a run that stands before a comment, or before a directive on a line
+without a branch, disappears when the next node is given a branch, and the
+comment or the directive touches what stands before it: the branch is a second
+run, which mermaid.js rejects after the first. `"a" %% c`, `─`, and `"b"` print
+`"a"%% c`, `│`, and `└── "b"`, and `├── "a" %% c`, `│`, and `"b"` print
+`├── "a"%% c`, `│`, and `└── "b"`. The same holds after a class, with a tab
+before the comment, with a directive and a comment together, and where a blank
+line, a comment line, or a directive line lies between. The space before a
+directive on a line with a branch stays: `├── "a" %%{x}%%`, `─`, and `"b"` print
+`├── "a" %%{x}%%`, `│`, and `└── "b"`.
+
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-and-decoration]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-on-branch-line]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-without-decoration]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-directive-and-decoration]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-directive-and-comment]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-after-class]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-tab]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-blank-line]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-comment-line]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-directive-line]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-comment-nested-branches]
+[fixture:
+treeview/carried-indentation/box-redraw-run-before-directive-on-branch-line-kept]
+
 ### Tabs
 
 Ordinary indentation still counts each space or tab once and uses its configured

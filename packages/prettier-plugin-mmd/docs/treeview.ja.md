@@ -899,6 +899,32 @@ treeview/semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
 
 [fixture: treeview/semicolons/box-redraw-arbitrary-prefix-on-protected-line]
 
+box モードでは、コメントの前、
+または枝のない行のディレクティブの前にある連なりは、
+次のノードに枝が付くとき消え、コメントやディレクティブは、
+前にあるものに接します。
+枝は 2 つ目の連なりになり、最初の連なりの後では mermaid.js が拒否するためです。
+`"a" %% c`、`─`、`"b"` は `"a"%% c`、`│`、`└── "b"` と印字し、`├── "a" %% c`、
+`│`、`"b"` は `├── "a"%% c`、`│`、`└── "b"` と印字します。
+クラスの後、コメントの前のタブ、ディレクティブとコメントが並ぶ形、間に空行、
+コメント行、ディレクティブの行がある形も同じです。
+枝のある行のディレクティブの前の空白は残ります。
+`├── "a" %%{x}%%`、`─`、`"b"` は `├── "a" %%{x}%%`、`│`、
+`└── "b"` と印字します。
+
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-and-decoration]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-on-branch-line]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-without-decoration]
+[fixture: treeview/carried-indentation/box-redraw-run-before-directive-and-decoration]
+[fixture: treeview/carried-indentation/box-redraw-run-before-directive-and-comment]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-after-class]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-tab]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-blank-line]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-comment-line]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-directive-line]
+[fixture: treeview/carried-indentation/box-redraw-run-before-comment-nested-branches]
+[fixture: treeview/carried-indentation/box-redraw-run-before-directive-on-branch-line-kept]
+
 ### Tabs
 
 普通の字下げは空白とタブを各 1 と数え、設定の正の段を使います。
