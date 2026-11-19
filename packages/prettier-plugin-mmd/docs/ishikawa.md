@@ -457,12 +457,45 @@ ishikawa
 ### Inline directives
 
 Literal-side directive gaps remain exactly written because removing directives
-joins both sides without supplying whitespace.
+joins both sides without supplying whitespace. In a literal in which text stands
+before a directive and anything but spaces, tabs, and directives follows that
+directive up to the end of the literal (text, a comment, a `;`, or a character
+such as a no-break space or U+2028), the other runs of spaces and tabs of the
+literal stay as written too, though mermaid.js draws them as one space:
+`A %%{init: {}}%% b  c`, `D  e %%{init: {}}%% f`, and
+`A  b %%{init: {}}%%  %% c` stay. Which of the two applies is decided by the
+directives that have text before them: where there is none, or where only
+spaces, tabs, and directives follow each of them, the runs are printed as one
+space, and a directive at the start does not keep them (`D A  b E  %% c`, with
+`D` and `E` for directives, keeps them, since `E` has text before it and a
+comment after it): `%%{init: {}}%% A  b  c` is printed `%%{init: {}}%% A b c`,
+`%%{init: {}}%% A  b  %% c` is printed `%%{init: {}}%% A b %% c`, and
+`A  b %%{init: {}}%%` is printed `A b %%{init: {}}%%`.
 
 [fixture: ishikawa/inline-directives/directive-gap-trim-unsafe] [fixture:
 ishikawa/inline-directives/directive-single-space-gaps] [fixture:
 ishikawa/inline-directives/directive-in-value] [fixture:
 ishikawa/inline-directives/literal-side-whitespace] [fixture:
+ishikawa/inline-directives/directive-middle-runs-kept] [fixture:
+ishikawa/inline-directives/directive-leading-runs-collapsed] [fixture:
+ishikawa/inline-directives/directive-then-comment-runs-kept] [fixture:
+ishikawa/inline-directives/directive-two-then-text-runs-kept] [fixture:
+ishikawa/inline-directives/directive-then-tab-and-comment-runs-kept] [test:
+ishikawa: directive-last-then-u3000-runs-kept] [fixture:
+ishikawa/inline-directives/directive-then-touching-comment-runs-kept] [fixture:
+ishikawa/inline-directives/directive-then-semicolon-runs-kept] [fixture:
+ishikawa/inline-directives/directive-start-and-end-runs-collapsed] [fixture:
+ishikawa/inline-directives/directive-start-and-end-then-comment-runs-kept]
+[fixture:
+ishikawa/inline-directives/directive-start-then-comment-runs-collapsed]
+[fixture: ishikawa/inline-directives/directive-two-end-runs-collapsed] [fixture:
+ishikawa/inline-directives/directive-two-end-then-comment-runs-kept] [fixture:
+ishikawa/inline-directives/directive-middle-tab-runs-kept] [test: ishikawa:
+directive-last-then-nbsp-runs-kept] [test: ishikawa:
+directive-last-then-u2028-runs-kept] [test: ishikawa:
+directive-last-then-u2029-runs-kept] [test: ishikawa:
+directive-then-nbsp-and-text-runs-kept] [test: ishikawa:
+directive-start-then-nbsp-runs-collapsed] [fixture:
 ishikawa/inline-directives/joined-line-spaces]
 
 Leading directive gaps instead count toward the node's chosen depth indentation,
@@ -512,16 +545,25 @@ trailing-unicode-kept-line]
 
 A run of spaces and tabs inside a literal is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
-while joined continuation columns stay, as do comment spaces and directive
-contents. The directives that end a literal are printed with one space before
-each that has whitespace before it, and the whitespace after the last one is
-left out, with a run in the literal printed as one space, whether whitespace
-follows the last directive or not (see
+except in a literal in which text stands before a directive and anything but
+spaces, tabs, and directives follows it (see
+[Inline directives](#inline-directives)), while joined continuation columns
+stay, as do comment spaces and directive contents. The directives that end a
+literal, with nothing but spaces and tabs after the last one, are printed with
+one space before each that has spaces or tabs before it, and the spaces and tabs
+after the last one are left out, with a run in the literal printed as one space,
+whether spaces or tabs follow the last directive or not (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+Where the runs of the literal stay under
+[Inline directives](#inline-directives), the spaces and tabs before each
+directive stay as written too, and only the spaces and tabs after the last one
+are left out: `A  b %%{x}%% c  %%{y}%%` and two spaces is printed
+`A  b %%{x}%% c  %%{y}%%`.
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped] [fixture:
 ishikawa/trailing-whitespace/trailing-directive-gap-collapsed] [fixture:
-ishikawa/trailing-whitespace/trailing-directive-continuation]
+ishikawa/trailing-whitespace/trailing-directive-continuation] [fixture:
+ishikawa/inline-directives/directive-text-between-then-end-runs-kept]
 
 Only exterior header-line padding is dropped under [Header](#header) and
 [Blank lines](#blank-lines); it is not a literal value.
@@ -554,7 +596,9 @@ Node text keeps its written spelling, apart from the spaces and tabs at its end
 inside it, which is printed as one space: quotes, backticks, empty-looking
 strings/brackets/calls, missing closers, numbers, punctuation, entities, HTML,
 prototype names and apparent title/accessibility/style/decoration/data syntax
-are literals.
+are literals. In a literal in which text stands before a directive and anything
+but spaces, tabs, and directives follows it, the runs of spaces and tabs stay as
+written (see [Inline directives](#inline-directives)).
 
 [fixture: ishikawa/node-text/values-opaque] [fixture:
 ishikawa/node-text/values-quote-unsafe] [fixture:

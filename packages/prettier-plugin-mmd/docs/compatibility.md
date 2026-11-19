@@ -319,7 +319,7 @@ The table also names the pinned version where it needs the kept form.
 | [eventmodeling](./eventmodeling.md#data-blocks)                                                                                                 | `}` at column one                                                                                                                                                            | `}` indented by two spaces                                            | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.15.0 to 12.3.0 reject the other form                                                                     | [fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]                                                                                             |
 | [eventmodeling](./eventmodeling.md#hidden-forms)                                                                                                | ` accDescr: D` with one leading space                                                                                                                                        | `accDescr: D` without it                                              | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.15.0 to 12.3.0 reject the other form                                                                     | [fixture: eventmodeling/hidden-forms/hidden-next-common-keep-consumed-lf-padding]                                                                           |
 | [eventmodeling](./eventmodeling.md#semicolons)                                                                                                  | `title` after a line break, at column one                                                                                                                                    | `title` indented by two spaces                                        | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.15.0 to 12.3.0 reject the other form                                                                     | [fixture: eventmodeling/semicolons/protected-gwt-title-hidden-gap-remains-zero]                                                                             |
-| [eventmodeling](./eventmodeling.md#semicolons)                                                                                                  | ` accDescr: style:#x;` with one leading space                                                                                                                                | `accDescr: style:#x;` without it                                      | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.15.0 to 12.3.0 reject the other form                                                                     | [fixture: eventmodeling/semicolons/protected-metadata-prefix-is-value-whitespace]                                                                           |
+| [eventmodeling](./eventmodeling.md#semicolons)                                                                                                  | ` accDescr: style:#x;` with one leading space                                                                                                                                | `accDescr: style:#x;` without it                                      | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.15.0 to 12.3.0 reject the other form                                                                     | [fixture: eventmodeling/semicolons/protected-metadata-prefix-is-value-whitespace]                                                                           |
 | [eventmodeling](./eventmodeling.md#data-blocks)                                                                                                 | a data body with a later line at column one, as `"quantity": 2` after `"sku": "SHIRT-M",` at column one                                                                      | the later line two spaces in                                          | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.15.0 to 12.3.0 draw different text and geometry; 12.3.0 changes the Db `data` value                      | [fixture: eventmodeling/data-blocks/body-later-zero-margin-kept] [fixture: eventmodeling/data-blocks/body-later-zero-margin-plain-kept]                     |
 | [eventmodeling](./eventmodeling.md#default-size-branches)                                                                                       | a text of 50000 units, a data body with its first line at column one and a comment line two spaces in                                                                        | the first body line two spaces in                                     | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 12.3.0 draws different text, structure and geometry; the Db `data` value differs                            | [fixture: eventmodeling/default-size-branches/size-at-limit-indented-comment]                                                                               |
 | [eventmodeling](./eventmodeling.md#default-size-branches)                                                                                       | the same with a text of 49999 units                                                                                                                                          | the first body line two spaces in                                     | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 12.3.0 draws different text, structure and geometry; the Db `data` value differs                            | [fixture: eventmodeling/default-size-branches/size-below-planned-crossing-indented-comment]                                                                 |
@@ -533,12 +533,14 @@ where a statement starts or before the separator that ends a statement: as on a
 line of its own, or after another statement on its line (`A accDescr {}` is the
 vertex A and an empty description block), it is a description block statement.
 An ordinary closed block without text or trivia prints an empty interior `{}`,
-including when it contained a line break. A touching keyword stays touching, as
-`accDescr{}`. Every diagram with description-block syntax uses this form for
-whitespace-only interiors, including tabs and Unicode whitespace: there is no
-text for interior whitespace to surround. Blocks containing comments or
-directives retain their contents and required line breaks; ordinary indentation
-follows [Description block indentation](#description-block-indentation) and each
+including when it contained a line break. The keyword and the `{` have one space
+between them, also where they touched: `accDescr{ }` is printed `accDescr {}`
+(see [Description block indentation](#description-block-indentation)). Every
+diagram with description-block syntax uses this form for whitespace-only
+interiors, including tabs and Unicode whitespace: there is no text for interior
+whitespace to surround. Blocks containing comments or directives retain their
+contents and required line breaks; ordinary indentation follows
+[Description block indentation](#description-block-indentation) and each
 diagram's structural rules. Protections for the surrounding line still apply.
 
 [test: sequence Unicode and tab interiors] [test: class Unicode and tab
@@ -1406,16 +1408,18 @@ timeline, a sequence diagram, a Venn diagram, a C4 diagram, a pie chart, a radar
 chart, a packet diagram, an architecture diagram, a gitGraph, a cynefin diagram,
 a treemap, a Wardley map, a treeView, an info diagram, and a railroad diagram,
 for the `accTitle:` and `accDescr:` lines of those diagram types and of a
-usecase diagram, for the text of a node of an ishikawa diagram, a mindmap, and a
-treeView, and of a card of a kanban board (not the id of a column, which the
-figure depends on), for the date format and the axis format of a Gantt chart,
-for the `accDescription` of a C4 diagram, for the last event of a line of a
-timeline and the space that a period and an event before a colon gain, for the
-description of a task of a user journey, except that a task whose description
-holds a directive stays as written (see [Task data](./journey.md#task-data)),
-and for the second description of a state alias. The runs of spaces and tabs
-inside a date format, an axis format, or the value of an `accTitle:` line stay
-as written before the directives as they do without them.
+usecase diagram, for the text of a node of a mindmap and a treeView, and of an
+ishikawa diagram where its runs do not stay under
+[Inline directives](./ishikawa.md#inline-directives), and of a card of a kanban
+board (not the id of a column, which the figure depends on), for the date format
+and the axis format of a Gantt chart, for the `accDescription` of a C4 diagram,
+for the last event of a line of a timeline and the space that a period and an
+event before a colon gain, for the description of a task of a user journey,
+except that a task whose description holds a directive stays as written (see
+[Task data](./journey.md#task-data)), and for the second description of a state
+alias. The runs of spaces and tabs inside a date format, an axis format, or the
+value of an `accTitle:` line stay as written before the directives as they do
+without them.
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped] [fixture:
 usecase/direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
@@ -1669,7 +1673,13 @@ These stay as written:
   [fixture: gantt/titles-and-sections/title-blank-kept]
 
 - A text over several lines, and a text with a comment, a directive, or a U+2028
-  or U+2029 in it, whose lines and marks mermaid.js reads by their place.
+  or U+2029 in it, whose lines and marks mermaid.js reads by their place; a
+  directive that stands only at the end of the text is no such mark, and the
+  text is printed as it is without it (see
+  [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same));
+  nor is a comment that ends the text, for which the first table after this list
+  gives what is printed, nor a directive at the start of the text, for which the
+  second table after this list gives what is printed.
 
   [fixture: pie/directives-and-semicolons/global-value]
 
@@ -1776,6 +1786,421 @@ These stay as written:
 
   [fixture: pie/labels/label-quotes] [fixture:
   requirement/names/inner-whitespace-kept] [fixture: state/aliases/id-kept]
+
+A comment that ends the text of one of these texts leaves the runs inside the
+text and before the comment as the table gives (`A  b  %% c` is the text `A  b`
+and the comment `%% c`):
+
+| Text                                                                                                       | Diagram types                                                                                                                                                                                                                                                                                                                                                                         | Written                                                                 | Printed                                                           |
+| ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| a `title`                                                                                                  | pie chart, radar chart, packet diagram, architecture diagram, gitGraph, cynefin diagram, treemap, Wardley map, treeView, info diagram, railroad diagram, quadrant chart, Gantt chart, user journey, timeline, sequence diagram, Venn diagram, C4 diagram                                                                                                                              | `title A  b  %% c`                                                      | `title A b %% c`                                                  |
+| an `accDescr:` line                                                                                        | flowchart, class diagram, state diagram, ER diagram, Gantt chart, user journey, timeline, sequence diagram, requirement diagram, pie chart, gitGraph, radar chart, packet diagram, architecture diagram, cynefin diagram, treemap, Wardley map, treeView, info diagram, railroad diagram, quadrant chart, XY chart, C4 diagram, agentflow diagram, ishikawa diagram, use case diagram | `accDescr: A  b  %% c`                                                  | `accDescr: A b %% c`                                              |
+| a message                                                                                                  | sequence                                                                                                                                                                                                                                                                                                                                                                              | `A->>B: A  b  %% c`                                                     | `A ->> B: A b %% c`                                               |
+| a note                                                                                                     | sequence                                                                                                                                                                                                                                                                                                                                                                              | `Note over A: A  b  %% c`                                               | `Note over A: A b %% c`                                           |
+| the label of a `loop`, `alt`, `else`, `opt`, `par`, `and`, `critical`, `option`, `break`, `rect`, or `box` | sequence                                                                                                                                                                                                                                                                                                                                                                              | `loop A  b  %% c`                                                       | `loop A b %% c`                                                   |
+| the name after `as`                                                                                        | sequence                                                                                                                                                                                                                                                                                                                                                                              | `participant A as A  b  %% c`                                           | `participant A as A b %% c`                                       |
+| the `text` field                                                                                           | requirement                                                                                                                                                                                                                                                                                                                                                                           | `text: A  b  %% c`                                                      | `text: A b %% c`                                                  |
+| the `type:` and `docRef:` fields                                                                           | requirement                                                                                                                                                                                                                                                                                                                                                                           | `type: A  b  %% c`, `docRef: A  b  %% c`                                | `type: A b %% c`, `docRef: A b %% c`                              |
+| a link text                                                                                                | Wardley map                                                                                                                                                                                                                                                                                                                                                                           | `A -> B; A  b  %% c`                                                    | `A -> B; A b %% c`                                                |
+| a `title`                                                                                                  | block diagram                                                                                                                                                                                                                                                                                                                                                                         | `title A  b  %% c`                                                      | `title A b %% c`                                                  |
+| a quadrant label, an axis label                                                                            | quadrant                                                                                                                                                                                                                                                                                                                                                                              | `quadrant-1 A  b  %% c`, `x-axis A  b  %% c`, `x-axis L --> A  b  %% c` | `quadrant-1 A b %% c`, `x-axis A b %% c`, `x-axis L --> A b %% c` |
+| a member                                                                                                   | class                                                                                                                                                                                                                                                                                                                                                                                 | `+x  y  %% c`                                                           | `+x y %% c`                                                       |
+| the title of a subgraph                                                                                    | flowchart                                                                                                                                                                                                                                                                                                                                                                             | `subgraph A  b  %% c`                                                   | `subgraph A b %% c`                                               |
+| a literal                                                                                                  | ishikawa                                                                                                                                                                                                                                                                                                                                                                              | `A  b  %% c`                                                            | `A b %% c`                                                        |
+| a node                                                                                                     | mindmap, treeView                                                                                                                                                                                                                                                                                                                                                                     | `A  b  %% c`                                                            | as written                                                        |
+| a card                                                                                                     | kanban                                                                                                                                                                                                                                                                                                                                                                                | `A  b  %% c`                                                            | as written                                                        |
+| the label of a relation                                                                                    | class                                                                                                                                                                                                                                                                                                                                                                                 | `A --> B : A  b  %% c`                                                  | as written                                                        |
+
+[test: runs before a comment that ends the text of a pie chart] [test: runs
+before a comment that ends the text of a radar chart] [test: runs before a
+comment that ends the text of a packet diagram] [test: runs before a comment
+that ends the text of an architecture diagram] [test: runs before a comment that
+ends the text of a gitGraph] [test: runs before a comment that ends the text of
+a cynefin diagram] [test: runs before a comment that ends the text of a treemap]
+[test: runs before a comment that ends the text of a Wardley map] [test: runs
+before a comment that ends the text of a treeView] [test: runs before a comment
+that ends the text of an info diagram] [test: runs before a comment that ends
+the text of a railroad diagram] [test: runs before a comment that ends the text
+of a quadrant chart] [test: runs before a comment that ends the text of a Gantt
+chart] [test: runs before a comment that ends the text of a user journey] [test:
+runs before a comment that ends the text of a timeline] [test: runs before a
+comment that ends the text of a sequence diagram] [test: runs before a comment
+that ends the text of a Venn diagram] [test: runs before a comment that ends the
+text of a C4 diagram] [test: runs before a comment that ends the text of an
+ishikawa literal] [test: runs before a comment that ends the text of a mindmap
+node] [test: runs before a comment that ends the text of a kanban card] [test:
+runs before a comment that ends the text of a treeView node] [test: runs before
+a comment that ends the accDescr line of a flowchart] [test: runs before a
+comment that ends the accDescr line of a class diagram] [test: runs before a
+comment that ends the accDescr line of a state diagram] [test: runs before a
+comment that ends the accDescr line of an ER diagram] [test: runs before a
+comment that ends the accDescr line of a Gantt chart] [test: runs before a
+comment that ends the accDescr line of a user journey] [test: runs before a
+comment that ends the accDescr line of a timeline] [test: runs before a comment
+that ends the accDescr line of a sequence diagram] [test: runs before a comment
+that ends the accDescr line of a requirement diagram] [test: runs before a
+comment that ends the accDescr line of a pie chart] [test: runs before a comment
+that ends the accDescr line of a gitGraph] [test: runs before a comment that
+ends the accDescr line of a radar chart] [test: runs before a comment that ends
+the accDescr line of a packet diagram] [test: runs before a comment that ends
+the accDescr line of an architecture diagram] [test: runs before a comment that
+ends the accDescr line of a cynefin diagram] [test: runs before a comment that
+ends the accDescr line of a treemap] [test: runs before a comment that ends the
+accDescr line of a Wardley map] [test: runs before a comment that ends the
+accDescr line of a treeView] [test: runs before a comment that ends the accDescr
+line of an info diagram] [test: runs before a comment that ends the accDescr
+line of a railroad diagram] [test: runs before a comment that ends the accDescr
+line of a quadrant chart] [test: runs before a comment that ends the accDescr
+line of an XY chart] [test: runs before a comment that ends the accDescr line of
+a C4 diagram] [test: runs before a comment that ends the accDescr line of an
+agentflow diagram] [test: runs before a comment that ends the accDescr line of
+an ishikawa diagram] [test: runs before a comment that ends the accDescr line of
+a use case diagram] [test: runs before a comment that ends a message of a
+sequence diagram] [test: runs before a comment that ends a note of a sequence
+diagram] [test: runs before a comment that ends the label of a loop of a
+sequence diagram] [test: runs before a comment that ends the label of an alt and
+an else of a sequence diagram] [test: runs before a comment that ends the label
+of an opt of a sequence diagram] [test: runs before a comment that ends the
+label of a par and an and of a sequence diagram] [test: runs before a comment
+that ends the label of a critical of a sequence diagram] [test: runs before a
+comment that ends the label of an option of a sequence diagram] [test: runs
+before a comment that ends the label of a break of a sequence diagram] [test:
+runs before a comment that ends the label of a box of a sequence diagram] [test:
+runs before a comment that ends the name after as of a participant of a sequence
+diagram] [test: runs before a comment that ends the text field of a requirement
+diagram] [test: runs before a comment that ends the type field of a requirement
+diagram] [test: runs before a comment that ends the docRef field of a
+requirement diagram] [test: runs before a comment that ends the link text of a
+Wardley map] [test: runs before a comment that ends the title of a block
+diagram] [test: runs before a comment that ends the label of a quadrant of a
+quadrant chart] [test: runs before a comment that ends the label of an axis of a
+quadrant chart] [test: runs before a comment that ends the right label of an
+axis of a quadrant chart] [test: runs before a comment that ends a member of a
+class diagram] [test: runs before a comment that ends a member line of a class
+diagram] [test: runs before a comment that ends the title of a subgraph of a
+flowchart] [test: runs before a comment that ends the label of a relation of a
+class diagram]
+
+A directive at the start of one of the texts of the table above is followed in
+the written text by whitespace, by nothing, or by another directive, and what is
+printed from the directive on depends on the text. The table below gives it for
+each group of texts that print alike, with one form in each column: a space, two
+spaces, a tab, a no-break space, a U+2028, nothing, two directives with a space
+between them, two directives that touch, and a directive that holds a line break
+or a `;`, each followed by a space. The text is `A  b`, and `+x  y` for a member
+of a class diagram; `\t`, `\u00a0`, `\u2028`, and `\n` stand for a tab, a
+no-break space, a U+2028, and a line break. A vertical tab, a form feed, and the
+other whitespace characters that are no space, tab, or line separator (U+1680,
+U+2000 to U+200A, U+202F, U+205F, U+3000, and U+FEFF) are printed as the
+no-break space is, and a U+2029 as the U+2028 is. mermaid.js rejects a tab, a
+vertical tab, and a form feed after a directive at the start of the label of a
+quadrant, of an axis, or of the right end of an axis of a quadrant chart, and
+formatting reports a syntax error there.
+
+| Texts                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `%%{x}%% A  b` | `%%{x}%%  A  b` | `%%{x}%%\tA  b` | `%%{x}%%\u00a0A  b` | `%%{x}%%\u2028A  b` | `%%{x}%%A  b` | `%%{x}%% %%{y}%% A  b` | `%%{x}%%%%{y}%%A  b` | `%%{init: {\n}}%% A  b` | `%%{init: {a;b}}%% A  b` |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | --------------- | --------------- | ------------------- | ------------------- | ------------- | ---------------------- | -------------------- | ----------------------- | ------------------------ |
+| the `title` of a pie chart, a radar chart, a packet diagram, an architecture diagram, a gitGraph, a cynefin diagram, a treemap, a treeView, and an info diagram                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `%%{x}%%A b`   | `%%{x}%%A b`    | `%%{x}%%A b`    | `%%{x}%%A b`        | `%%{x}%%\u2028A b`  | `%%{x}%%A b`  | as written             | `%%{x}%%%%{y}%%A b`  | `%%{init: {\n}}%%A b`   | `%%{init: {a;b}}%%A b`   |
+| the `title` of a Wardley map and a railroad diagram                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `%%{x}%%A b`   | `%%{x}%%A b`    | `%%{x}%%A b`    | `%%{x}%%A b`        | `%%{x}%%\u2028A b`  | `%%{x}%%A b`  | as written             | `%%{x}%%%%{y}%%A b`  | `%%{init: {\n}}%%A b`   | `%%{init: {a;b}}%% A b`  |
+| the `title` of a quadrant chart                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `%%{x}%%A b`   | `%%{x}%%A b`    | `%%{x}%%A b`    | `%%{x}%%A b`        | `%%{x}%%\u2028A b`  | `%%{x}%%A b`  | `%%{x}%%%%{y}%%A b`    | `%%{x}%%%%{y}%%A b`  | as written              | `%%{init: {a;b}}%%A b`   |
+| the `title` of a Gantt chart, a user journey, and a timeline                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | `%%{x}%%A b`   | `%%{x}%%A b`    | `%%{x}%%A b`    | `%%{x}%%\u00a0A b`  | as written          | `%%{x}%%A b`  | –                      | `%%{x}%%%%{y}%%A b`  | as written              | `%%{init: {a;b}}%%A b`   |
+| the `title` of a sequence diagram                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | `%%{x}%%A  b`  | `%%{x}%%A  b`   | `%%{x}%%A  b`   | as written          | as written          | as written    | `%%{x}%%%%{y}%%A  b`   | as written           | as written              | `%%{init: {a;b}}%%A  b`  |
+| the `title` of a Venn diagram and a C4 diagram; the `accDescr:` line of a pie chart, a gitGraph, a radar chart, a packet diagram, an architecture diagram, a cynefin diagram, a treemap, a Wardley map, a treeView, an info diagram, a railroad diagram, an ishikawa diagram, and a use case diagram; the link text of a Wardley map; the text of a mindmap node                                                                                                                                                                                                                                                | as written     | as written      | as written      | as written          | as written          | as written    | as written             | as written           | as written              | as written               |
+| the text of a literal of an ishikawa diagram                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | `%%{x}%% A b`  | `%%{x}%%  A b`  | `%%{x}%% A b`   | `%%{x}%% A b`       | `%%{x}%% A b`       | `%%{x}%%A b`  | `%%{x}%% %%{y}%% A b`  | `%%{x}%%%%{y}%%A b`  | `%%{init: {\n}}%% A b`  | `%%{init: {a;b}}%% A b`  |
+| the text of a card of a kanban board                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | as written     | as written      | `%%{x}%% A  b`  | `%%{x}%% A  b`      | `%%{x}%% A  b`      | as written    | as written             | as written           | as written              | as written               |
+| the text of a node of a treeView                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | as written     | as written      | `%%{x}%% A  b`  | as written          | as written          | as written    | as written             | as written           | as written              | as written               |
+| the `title` of a block diagram; the `accDescr:` line of a flowchart, a class diagram, an ER diagram, a Gantt chart, a user journey, a timeline, a sequence diagram, a requirement diagram, a quadrant chart, an XY chart, a C4 diagram, and an agentflow diagram; a message, a note, the label of a `loop`, an `alt` and an `else`, an `opt`, a `par` and an `and`, a `critical` and an `option`, a `break`, a `rect`, and a `box`, and the name after `as` of a participant of a sequence diagram; the `text:`, `type:`, and `docRef:` fields of a requirement diagram; the title of a subgraph of a flowchart | `%%{x}%%A b`   | `%%{x}%%A b`    | `%%{x}%%A b`    | `%%{x}%%A b`        | `%%{x}%%\u2028A b`  | `%%{x}%%A b`  | `%%{x}%%%%{y}%%A b`    | `%%{x}%%%%{y}%%A b`  | `%%{init: {\n}}%%A b`   | `%%{init: {a;b}}%%A b`   |
+| the `accDescr:` line of a state diagram                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `%%{x}%%A b`   | `%%{x}%%A b`    | `%%{x}%%A b`    | `%%{x}%%A b`        | as written          | `%%{x}%%A b`  | `%%{x}%%%%{y}%%A b`    | `%%{x}%%%%{y}%%A b`  | `%%{init: {\n}}%%A b`   | `%%{init: {a;b}}%%A b`   |
+| the label of a quadrant, of an axis, and of the right end of an axis of a quadrant chart                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | `%%{x}%%A b`   | `%%{x}%%A b`    | rejected        | `%%{x}%%\u00a0A b`  | as written          | `%%{x}%%A b`  | `%%{x}%%%%{y}%%A b`    | `%%{x}%%%%{y}%%A b`  | as written              | `%%{init: {a;b}}%%A b`   |
+| a member in the body of a class diagram                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `%%{x}%% +x y` | `%%{x}%% +x y`  | `%%{x}%% +x y`  | `%%{x}%% +x y`      | `%%{x}%% +x y`      | `%%{x}%%+x y` | `%%{x}%% %%{y}%% +x y` | `%%{x}%%%%{y}%%+x y` | `%%{init: {\n}}%% +x y` | as written               |
+| a member line of a class diagram                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | `%%{x}%%+x y`  | `%%{x}%%+x y`   | `%%{x}%%+x y`   | `%%{x}%%+x y`       | `%%{x}%%\u2028+x y` | `%%{x}%%+x y` | `%%{x}%%%%{y}%%+x y`   | `%%{x}%%%%{y}%%+x y` | `%%{init: {\n}}%%+x y`  | `%%{init: {a;b}}%%+x  y` |
+| the label of a relation of a class diagram                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | `%%{x}%%A  b`  | `%%{x}%%A  b`   | `%%{x}%%A  b`   | `%%{x}%%A  b`       | as written          | as written    | `%%{x}%%%%{y}%%A  b`   | as written           | `%%{init: {\n}}%%A  b`  | `%%{init: {a;b}}%%A  b`  |
+
+[test: runs after a directive at the start of the text of a pie chart] [test:
+runs after a directive at the start of the text of a radar chart] [test: runs
+after a directive at the start of the text of a packet diagram] [test: runs
+after a directive at the start of the text of an architecture diagram] [test:
+runs after a directive at the start of the text of a gitGraph] [test: runs after
+a directive at the start of the text of a cynefin diagram] [test: runs after a
+directive at the start of the text of a treemap] [test: runs after a directive
+at the start of the text of a Wardley map] [test: runs after a directive at the
+start of the text of a treeView] [test: runs after a directive at the start of
+the text of an info diagram] [test: runs after a directive at the start of the
+text of a railroad diagram] [test: runs after a directive at the start of the
+text of a quadrant chart] [test: runs after a directive at the start of the text
+of a Gantt chart] [test: runs after a directive at the start of the text of a
+user journey] [test: runs after a directive at the start of the text of a
+timeline] [test: runs after a directive at the start of the text of a sequence
+diagram] [test: runs after a directive at the start of the text of a Venn
+diagram] [test: runs after a directive at the start of the text of a C4 diagram]
+[test: runs after a directive at the start of the text of an ishikawa literal]
+[test: runs after a directive at the start of the text of a mindmap node] [test:
+runs after a directive at the start of the text of a kanban card] [test: runs
+after a directive at the start of the text of a treeView node] [test: runs after
+a directive at the start of the accDescr line of a flowchart] [test: runs after
+a directive at the start of the accDescr line of a class diagram] [test: runs
+after a directive at the start of the accDescr line of a state diagram] [test:
+runs after a directive at the start of the accDescr line of an ER diagram]
+[test: runs after a directive at the start of the accDescr line of a Gantt
+chart] [test: runs after a directive at the start of the accDescr line of a user
+journey] [test: runs after a directive at the start of the accDescr line of a
+timeline] [test: runs after a directive at the start of the accDescr line of a
+sequence diagram] [test: runs after a directive at the start of the accDescr
+line of a requirement diagram] [test: runs after a directive at the start of the
+accDescr line of a pie chart] [test: runs after a directive at the start of the
+accDescr line of a gitGraph] [test: runs after a directive at the start of the
+accDescr line of a radar chart] [test: runs after a directive at the start of
+the accDescr line of a packet diagram] [test: runs after a directive at the
+start of the accDescr line of an architecture diagram] [test: runs after a
+directive at the start of the accDescr line of a cynefin diagram] [test: runs
+after a directive at the start of the accDescr line of a treemap] [test: runs
+after a directive at the start of the accDescr line of a Wardley map] [test:
+runs after a directive at the start of the accDescr line of a treeView] [test:
+runs after a directive at the start of the accDescr line of an info diagram]
+[test: runs after a directive at the start of the accDescr line of a railroad
+diagram] [test: runs after a directive at the start of the accDescr line of a
+quadrant chart] [test: runs after a directive at the start of the accDescr line
+of an XY chart] [test: runs after a directive at the start of the accDescr line
+of a C4 diagram] [test: runs after a directive at the start of the accDescr line
+of an agentflow diagram] [test: runs after a directive at the start of the
+accDescr line of an ishikawa diagram] [test: runs after a directive at the start
+of the accDescr line of a use case diagram] [test: runs after a directive at the
+start of a message of a sequence diagram] [test: runs after a directive at the
+start of a note of a sequence diagram] [test: runs after a directive at the
+start of the label of a loop of a sequence diagram] [test: runs after a
+directive at the start of the label of an alt and an else of a sequence diagram]
+[test: runs after a directive at the start of the label of an opt of a sequence
+diagram] [test: runs after a directive at the start of the label of a par and an
+and of a sequence diagram] [test: runs after a directive at the start of the
+label of a critical of a sequence diagram] [test: runs after a directive at the
+start of the label of an option of a sequence diagram] [test: runs after a
+directive at the start of the label of a break of a sequence diagram] [test:
+runs after a directive at the start of the label of a rect of a sequence
+diagram] [test: runs after a directive at the start of the label of a box of a
+sequence diagram] [test: runs after a directive at the start of the name after
+as of a participant of a sequence diagram] [test: runs after a directive at the
+start of the text field of a requirement diagram] [test: runs after a directive
+at the start of the type field of a requirement diagram] [test: runs after a
+directive at the start of the docRef field of a requirement diagram] [test: runs
+after a directive at the start of the link text of a Wardley map] [test: runs
+after a directive at the start of the title of a block diagram] [test: runs
+after a directive at the start of the label of a quadrant of a quadrant chart]
+[test: runs after a directive at the start of the label of an axis of a quadrant
+chart] [test: runs after a directive at the start of the right label of an axis
+of a quadrant chart] [test: runs after a directive at the start of a member of a
+class diagram] [test: runs after a directive at the start of a member line of a
+class diagram] [test: runs after a directive at the start of the title of a
+subgraph of a flowchart] [test: runs after a directive at the start of the label
+of a relation of a class diagram] [test: two spaces after a directive at the
+start of the text of a pie chart] [test: a tab after a directive at the start of
+the text of a pie chart] [test: a no-break space after a directive at the start
+of the text of a pie chart] [test: a U+2028 after a directive at the start of
+the text of a pie chart] [test: a U+2029 after a directive at the start of the
+text of a pie chart] [test: no whitespace after a directive at the start of the
+text of a pie chart] [test: two directives with a space between them at the
+start of the text of a pie chart] [test: two directives that touch at the start
+of the text of a pie chart] [test: a directive that holds a line break at the
+start of the text of a pie chart] [test: a directive that holds a semicolon at
+the start of the text of a pie chart] [test: two spaces after a directive at the
+start of the text of a Wardley map] [test: a tab after a directive at the start
+of the text of a Wardley map] [test: a no-break space after a directive at the
+start of the text of a Wardley map] [test: a U+2028 after a directive at the
+start of the text of a Wardley map] [test: a U+2029 after a directive at the
+start of the text of a Wardley map] [test: no whitespace after a directive at
+the start of the text of a Wardley map] [test: two directives with a space
+between them at the start of the text of a Wardley map] [test: two directives
+that touch at the start of the text of a Wardley map] [test: a directive that
+holds a line break at the start of the text of a Wardley map] [test: a directive
+that holds a semicolon at the start of the text of a Wardley map] [test: two
+spaces after a directive at the start of the text of a quadrant chart] [test: a
+tab after a directive at the start of the text of a quadrant chart] [test: a
+no-break space after a directive at the start of the text of a quadrant chart]
+[test: a U+2028 after a directive at the start of the text of a quadrant chart]
+[test: a U+2029 after a directive at the start of the text of a quadrant chart]
+[test: no whitespace after a directive at the start of the text of a quadrant
+chart] [test: two directives with a space between them at the start of the text
+of a quadrant chart] [test: two directives that touch at the start of the text
+of a quadrant chart] [test: a directive that holds a line break at the start of
+the text of a quadrant chart] [test: a directive that holds a semicolon at the
+start of the text of a quadrant chart] [test: two spaces after a directive at
+the start of the text of a Gantt chart] [test: a tab after a directive at the
+start of the text of a Gantt chart] [test: a no-break space after a directive at
+the start of the text of a Gantt chart] [test: a U+2028 after a directive at the
+start of the text of a Gantt chart] [test: a U+2029 after a directive at the
+start of the text of a Gantt chart] [test: no whitespace after a directive at
+the start of the text of a Gantt chart] [test: two directives that touch at the
+start of the text of a Gantt chart] [test: a directive that holds a line break
+at the start of the text of a Gantt chart] [test: a directive that holds a
+semicolon at the start of the text of a Gantt chart] [test: two spaces after a
+directive at the start of the text of a sequence diagram] [test: a tab after a
+directive at the start of the text of a sequence diagram] [test: a no-break
+space after a directive at the start of the text of a sequence diagram] [test: a
+U+2028 after a directive at the start of the text of a sequence diagram] [test:
+a U+2029 after a directive at the start of the text of a sequence diagram]
+[test: no whitespace after a directive at the start of the text of a sequence
+diagram] [test: two directives with a space between them at the start of the
+text of a sequence diagram] [test: two directives that touch at the start of the
+text of a sequence diagram] [test: a directive that holds a line break at the
+start of the text of a sequence diagram] [test: a directive that holds a
+semicolon at the start of the text of a sequence diagram] [test: two spaces
+after a directive at the start of the text of a Venn diagram] [test: a tab after
+a directive at the start of the text of a Venn diagram] [test: a no-break space
+after a directive at the start of the text of a Venn diagram] [test: a U+2028
+after a directive at the start of the text of a Venn diagram] [test: a U+2029
+after a directive at the start of the text of a Venn diagram] [test: no
+whitespace after a directive at the start of the text of a Venn diagram] [test:
+two directives with a space between them at the start of the text of a Venn
+diagram] [test: two directives that touch at the start of the text of a Venn
+diagram] [test: a directive that holds a line break at the start of the text of
+a Venn diagram] [test: a directive that holds a semicolon at the start of the
+text of a Venn diagram] [test: two spaces after a directive at the start of the
+text of an ishikawa literal] [test: a tab after a directive at the start of the
+text of an ishikawa literal] [test: a no-break space after a directive at the
+start of the text of an ishikawa literal] [test: a U+2028 after a directive at
+the start of the text of an ishikawa literal] [test: a U+2029 after a directive
+at the start of the text of an ishikawa literal] [test: no whitespace after a
+directive at the start of the text of an ishikawa literal] [test: two directives
+with a space between them at the start of the text of an ishikawa literal]
+[test: two directives that touch at the start of the text of an ishikawa
+literal] [test: a directive that holds a line break at the start of the text of
+an ishikawa literal] [test: a directive that holds a semicolon at the start of
+the text of an ishikawa literal] [test: two spaces after a directive at the
+start of the text of a kanban card] [test: a tab after a directive at the start
+of the text of a kanban card] [test: a no-break space after a directive at the
+start of the text of a kanban card] [test: a U+2028 after a directive at the
+start of the text of a kanban card] [test: a U+2029 after a directive at the
+start of the text of a kanban card] [test: no whitespace after a directive at
+the start of the text of a kanban card] [test: two directives with a space
+between them at the start of the text of a kanban card] [test: two directives
+that touch at the start of the text of a kanban card] [test: a directive that
+holds a line break at the start of the text of a kanban card] [test: a directive
+that holds a semicolon at the start of the text of a kanban card] [test: two
+spaces after a directive at the start of the text of a treeView node] [test: a
+tab after a directive at the start of the text of a treeView node] [test: a
+no-break space after a directive at the start of the text of a treeView node]
+[test: a U+2028 after a directive at the start of the text of a treeView node]
+[test: a U+2029 after a directive at the start of the text of a treeView node]
+[test: no whitespace after a directive at the start of the text of a treeView
+node] [test: two directives with a space between them at the start of the text
+of a treeView node] [test: two directives that touch at the start of the text of
+a treeView node] [test: a directive that holds a line break at the start of the
+text of a treeView node] [test: a directive that holds a semicolon at the start
+of the text of a treeView node] [test: two spaces after a directive at the start
+of the accDescr line of a flowchart] [test: a tab after a directive at the start
+of the accDescr line of a flowchart] [test: a no-break space after a directive
+at the start of the accDescr line of a flowchart] [test: a U+2028 after a
+directive at the start of the accDescr line of a flowchart] [test: a U+2029
+after a directive at the start of the accDescr line of a flowchart] [test: no
+whitespace after a directive at the start of the accDescr line of a flowchart]
+[test: two directives with a space between them at the start of the accDescr
+line of a flowchart] [test: two directives that touch at the start of the
+accDescr line of a flowchart] [test: a directive that holds a line break at the
+start of the accDescr line of a flowchart] [test: a directive that holds a
+semicolon at the start of the accDescr line of a flowchart] [test: two spaces
+after a directive at the start of the accDescr line of a state diagram] [test: a
+tab after a directive at the start of the accDescr line of a state diagram]
+[test: a no-break space after a directive at the start of the accDescr line of a
+state diagram] [test: a U+2028 after a directive at the start of the accDescr
+line of a state diagram] [test: a U+2029 after a directive at the start of the
+accDescr line of a state diagram] [test: no whitespace after a directive at the
+start of the accDescr line of a state diagram] [test: two directives with a
+space between them at the start of the accDescr line of a state diagram] [test:
+two directives that touch at the start of the accDescr line of a state diagram]
+[test: a directive that holds a line break at the start of the accDescr line of
+a state diagram] [test: a directive that holds a semicolon at the start of the
+accDescr line of a state diagram] [test: two spaces after a directive at the
+start of the label of a quadrant of a quadrant chart] [test: a no-break space
+after a directive at the start of the label of a quadrant of a quadrant chart]
+[test: a U+2028 after a directive at the start of the label of a quadrant of a
+quadrant chart] [test: a U+2029 after a directive at the start of the label of a
+quadrant of a quadrant chart] [test: no whitespace after a directive at the
+start of the label of a quadrant of a quadrant chart] [test: two directives with
+a space between them at the start of the label of a quadrant of a quadrant
+chart] [test: two directives that touch at the start of the label of a quadrant
+of a quadrant chart] [test: a directive that holds a line break at the start of
+the label of a quadrant of a quadrant chart] [test: a directive that holds a
+semicolon at the start of the label of a quadrant of a quadrant chart] [test:
+two spaces after a directive at the start of a member of a class diagram] [test:
+a tab after a directive at the start of a member of a class diagram] [test: a
+no-break space after a directive at the start of a member of a class diagram]
+[test: a U+2028 after a directive at the start of a member of a class diagram]
+[test: a U+2029 after a directive at the start of a member of a class diagram]
+[test: no whitespace after a directive at the start of a member of a class
+diagram] [test: two directives with a space between them at the start of a
+member of a class diagram] [test: two directives that touch at the start of a
+member of a class diagram] [test: a directive that holds a line break at the
+start of a member of a class diagram] [test: a directive that holds a semicolon
+at the start of a member of a class diagram] [test: two spaces after a directive
+at the start of a member line of a class diagram] [test: a tab after a directive
+at the start of a member line of a class diagram] [test: a no-break space after
+a directive at the start of a member line of a class diagram] [test: a U+2028
+after a directive at the start of a member line of a class diagram] [test: a
+U+2029 after a directive at the start of a member line of a class diagram]
+[test: no whitespace after a directive at the start of a member line of a class
+diagram] [test: two directives with a space between them at the start of a
+member line of a class diagram] [test: two directives that touch at the start of
+a member line of a class diagram] [test: a directive that holds a line break at
+the start of a member line of a class diagram] [test: a directive that holds a
+semicolon at the start of a member line of a class diagram] [test: two spaces
+after a directive at the start of the label of a relation of a class diagram]
+[test: a tab after a directive at the start of the label of a relation of a
+class diagram] [test: a no-break space after a directive at the start of the
+label of a relation of a class diagram] [test: a U+2028 after a directive at the
+start of the label of a relation of a class diagram] [test: a U+2029 after a
+directive at the start of the label of a relation of a class diagram] [test: no
+whitespace after a directive at the start of the label of a relation of a class
+diagram] [test: two directives with a space between them at the start of the
+label of a relation of a class diagram] [test: two directives that touch at the
+start of the label of a relation of a class diagram] [test: a directive that
+holds a line break at the start of the label of a relation of a class diagram]
+[test: a directive that holds a semicolon at the start of the label of a
+relation of a class diagram] [test: the other whitespace characters that are
+like a no-break space after a directive at the start of the text of a pie chart]
+[test: the other whitespace characters that are like a no-break space after a
+directive at the start of the text of a Wardley map] [test: the other whitespace
+characters that are like a no-break space after a directive at the start of the
+text of a quadrant chart] [test: the other whitespace characters that are like a
+no-break space after a directive at the start of the text of a Gantt chart]
+[test: the other whitespace characters that are like a no-break space after a
+directive at the start of the text of a sequence diagram] [test: the other
+whitespace characters that are like a no-break space after a directive at the
+start of the text of a Venn diagram] [test: the other whitespace characters that
+are like a no-break space after a directive at the start of the text of an
+ishikawa literal] [test: the other whitespace characters that are like a
+no-break space after a directive at the start of the text of a kanban card]
+[test: the other whitespace characters that are like a no-break space after a
+directive at the start of the text of a treeView node] [test: the other
+whitespace characters that are like a no-break space after a directive at the
+start of the accDescr line of a flowchart] [test: the other whitespace
+characters that are like a no-break space after a directive at the start of the
+accDescr line of a state diagram] [test: the other whitespace characters that
+are like a no-break space after a directive at the start of the label of a
+quadrant of a quadrant chart] [test: the other whitespace characters that are
+like a no-break space after a directive at the start of a member of a class
+diagram] [test: the other whitespace characters that are like a no-break space
+after a directive at the start of a member line of a class diagram] [test: the
+other whitespace characters that are like a no-break space after a directive at
+the start of the label of a relation of a class diagram] [test: rejects a tab, a
+vertical tab, and a form feed after a directive at the start of the label of a
+quadrant of a quadrant chart, as mermaid.js does] [test: rejects a tab, a
+vertical tab, and a form feed after a directive at the start of the left label
+of the x axis of a quadrant chart, as mermaid.js does] [test: rejects a tab, a
+vertical tab, and a form feed after a directive at the start of the right label
+of the x axis of a quadrant chart, as mermaid.js does] [test: rejects a tab, a
+vertical tab, and a form feed after a directive at the start of the left label
+of the y axis of a quadrant chart, as mermaid.js does] [test: rejects a tab, a
+vertical tab, and a form feed after a directive at the start of the right label
+of the y axis of a quadrant chart, as mermaid.js does]
+
+The `title` of a Gantt chart, a user journey, and a timeline has no form for two
+directives with a space between them, which the table marks with a dash.
+
+The written text and the printed text of each cell that is not as written were
+drawn, for a text of each row and each character named above, with the versions
+that count for its diagram type, and the SVG was the same without the generated
+ids and the whitespace in text nodes. A version that rejects the written text
+rejects the printed text too, but for a run of spaces in the label of a `loop`,
+`alt`, `opt`, `par`, `critical`, `option`, or `break`, which 10.9.8 rejects and
+draws as printed.
 
 mermaid.js keeps the runs in the Db. The renderers put these texts into `text`
 elements of the SVG, whose whitespace the browser collapses
@@ -2801,13 +3226,44 @@ header without the colon. The examples write the header without the colon 3
 times in each, and with it never, so the colon is removed, and what follows it
 on the line goes to the next line as it does after a header without the colon.
 The colon stays where a `;`, the `---` of a hidden YAML block, or a directive
-that is not closed touches it.
+that is not closed touches it, and where a directive that is closed stands
+between the keyword and the colon: `cynefin-beta%%{x}%%:` and
+`radar-beta%%{x}%%:` are not changed. A radar header with spaces or tabs before
+that directive, before the colon, or on both sides is printed without them:
+`radar-beta %%{x}%%:`, `radar-beta%%{x}%% :`, and `radar-beta %%{x}%% :` are
+printed `radar-beta%%{x}%%:`, and so are the same headers with a tab for the
+space; `radar-beta %%{x}%% %%{y}%% :` is printed `radar-beta%%{x}%%%%{y}%%:`,
+and a space or a tab between two directives goes the same way
+(`radar-beta%%{x}%% %%{y}%%:` is printed `radar-beta%%{x}%%%%{y}%%:`). A radar
+header with no colon keeps the spaces: `radar-beta %%{x}%%` and
+`radar-beta%%{x}%% %%{y}%%` are not changed. A radar header may have spaces or
+tabs before the colon with no directive, which are removed with it
+(`radar-beta :` is printed `radar-beta`). A cynefin header with whitespace
+before the directive, before the colon, or on both sides
+(`cynefin-beta %%{x}%%:`, `cynefin-beta%%{x}%% :`, and `cynefin-beta :`) is
+rejected by 11.16.1, 11.17.2, 12.0.0, and 12.3.0, and `cynefin-beta %%{x}%%`
+with no colon is not changed.
 
 [fixture: cynefin/header/colon-removed] [fixture:
 cynefin/header/colon-semicolon-kept] [fixture: radar/header/colon-removed]
 [fixture: radar/header/colon-yaml-kept] [fixture:
 cynefin/header/colon-unclosed-directive-kept] [fixture:
-radar/header/colon-unclosed-directive-kept]
+radar/header/colon-unclosed-directive-kept] [fixture:
+radar/header/colon-spaces-before-removed] [fixture:
+radar/header/colon-after-directive-kept] [fixture:
+cynefin/header/colon-after-directive-kept] [fixture:
+radar/header/colon-after-spaced-directive-kept] [fixture:
+radar/header/colon-spaced-before-directive-dropped] [fixture:
+radar/header/colon-spaced-before-colon-dropped] [fixture:
+radar/header/colon-tabs-around-directive-dropped] [fixture:
+radar/header/colon-two-spaced-directives-dropped] [fixture:
+radar/header/directive-no-colon-space-kept] [fixture:
+radar/header/colon-between-directives-dropped] [fixture:
+radar/header/directives-no-colon-space-between-kept] [fixture:
+cynefin/header/directive-no-colon-space-kept] [test: a space before a directive
+between the header and the colon of a cynefin diagram] [test: a space before the
+colon after a directive of a cynefin diagram] [test: a space before the colon of
+a cynefin diagram]
 
 A treemap header takes no colon. Each of 11.8.1, 11.17.2, 12.0.0 and 12.3.0
 rejects `treemap:` and `treemap-beta:`, and reads and draws the header without
@@ -5977,21 +6433,106 @@ quadrant/lex-classdef-name-line-separator-comment-line] [corpus fixture:
 quadrant/db-classdef-name-starts-with-line-separator-comment-line]
 
 A line that mermaid.js reads this way runs over several lines of the source. The
-formatter prints it as written, from its first line to its end, with the
-statements that stand on it: it does not format the whitespace between them, and
-it does not indent the lines after the comment line. This is one rule for every
-statement, block opening, and header, but for a mindmap, which puts the comment
-line of a node on a line of its own at the level of the node (see
+formatter keeps the whitespace and the line breaks of such a line as written,
+from its first line to its end, with the statements that stand on it: it does
+not format the whitespace between them, and it does not indent the lines after
+the comment line. This is one rule for every statement, block opening, and
+header, but for a mindmap, which puts the comment line of a node on a line of
+its own at the level of the node (see
 [Line separators](./mindmap.md#line-separators)). A diagram comment that such a
 comment line cuts is printed as written as well (see
 [Line separators](./sequence.md#line-separators)). The same holds where the
 region lies inside a name, in an ER diagram and in a quadrant chart. In an ER
-diagram, the block of an entity on such a line is the one part that is not
-printed as written to its end: the line up to the `{` stays as written, as does
-what follows the `{` on its line in a nonempty block, and the attributes after
-it and the `}` stand as those of any entity, unless the `}` stands on a line
-that holds the start of such a comment line (see
+diagram, the block of an entity on such a line is the one part whose whitespace
+is not kept as written to its end: the line up to the `{` stays as written, as
+does what follows the `{` on its line in a nonempty block, and the attributes
+after it and the `}` stand as those of any entity, unless the `}` stands on a
+line that holds the start of such a comment line (see
 [ER](./er.md#multi-line-statements)).
+
+In an ER diagram, what else the formatter prints on a statement of such a line,
+as the colors of a style, the words of a relationship, and the quotes of a name
+that is one plain word, is stated in [ER](./er.md#attribute-spacing). A color
+before a comma on such a line is printed in lower case in a flowchart, a class
+diagram, and a state diagram as well, where the comma follows the color at once
+or after a space or a tab, but for the colors that
+[Colors that are drawn the same](#colors-that-are-drawn-the-same) keeps as
+written: the `classDef` of a class diagram and the `style` of a state diagram
+where no style after the first holds a `:`. `classDef k fill:#FFF,stroke:#ABC`
+in a class diagram and `style A fill:#F00,x` in a state diagram keep the color.
+
+[test: a color before a comma in a style statement that a comment line after
+U+2028 joins in a flowchart is printed in lower case] [test: a color before a
+comma after a space in a style statement that a comment line after U+2028 joins
+in a flowchart is printed in lower case] [test: a color before a comma in a
+style statement that a comment line after U+2028 joins in a class diagram is
+printed in lower case] [test: a color before a comma after a space in a style
+statement that a comment line after U+2028 joins in a class diagram is printed
+in lower case] [test: a color before a comma in a style statement that a comment
+line after U+2028 joins in a state diagram is printed in lower case] [test: a
+color before a comma after a space in a style statement that a comment line
+after U+2028 joins in a state diagram is printed in lower case] [test: a color
+before a comma in a style statement that a comment line after U+2028 joins in an
+ER diagram is printed in lower case] [test: a color before a comma after a space
+in a style statement that a comment line after U+2028 joins in an ER diagram is
+printed in lower case] [test: a color before a comma after a tab in a style
+statement that a comment line after U+2028 joins in a flowchart is printed in
+lower case] [test: a color before a comma after a tab in a style statement that
+a comment line after U+2028 joins in a class diagram is printed in lower case]
+[test: a color before a comma after a tab in a style statement that a comment
+line after U+2028 joins in a state diagram is printed in lower case] [test: a
+color before a comma after a tab in a style statement that a comment line after
+U+2028 joins in an ER diagram is printed in lower case] [test: a color before a
+comma after a tab in a style statement that a comment line after U+2028 joins,
+the comma followed by a property, in a flowchart is printed in lower case]
+[test: a color before a comma that a word without a colon follows in a style
+statement that a comment line after U+2028 joins in a flowchart is printed in
+lower case] [test: a color before a comma at once in a classDef statement that a
+comment line after U+2028 joins, the comma followed by a property, in a
+flowchart is printed in lower case] [test: a color before a comma after a space
+in a classDef statement that a comment line after U+2028 joins, the comma
+followed by a property, in a flowchart is printed in lower case] [test: a color
+before a comma after a tab in a classDef statement that a comment line after
+U+2028 joins, the comma followed by a property, in a flowchart is printed in
+lower case] [test: a color before a comma that a word without a colon follows in
+a classDef statement that a comment line after U+2028 joins in a flowchart is
+printed in lower case] [test: a color before a comma at once in a style
+statement that a comment line after U+2028 joins, the comma followed by a
+property, in a class diagram is printed in lower case] [test: a color before a
+comma after a space in a style statement that a comment line after U+2028 joins,
+the comma followed by a property, in a class diagram is printed in lower case]
+[test: a color before a comma after a tab in a style statement that a comment
+line after U+2028 joins, the comma followed by a property, in a class diagram is
+printed in lower case] [test: a color before a comma that a word without a colon
+follows in a style statement that a comment line after U+2028 joins in a class
+diagram is printed in lower case] [test: a color before a comma at once in a
+classDef statement that a comment line after U+2028 joins, the comma followed by
+a property, in a class diagram stays as written] [test: a color before a comma
+after a space in a classDef statement that a comment line after U+2028 joins,
+the comma followed by a property, in a class diagram stays as written] [test: a
+color before a comma after a tab in a classDef statement that a comment line
+after U+2028 joins, the comma followed by a property, in a class diagram stays
+as written] [test: a color before a comma that a word without a colon follows in
+a classDef statement that a comment line after U+2028 joins in a class diagram
+stays as written] [test: a color before a comma at once in a style statement
+that a comment line after U+2028 joins, the comma followed by a property, in a
+state diagram is printed in lower case] [test: a color before a comma after a
+space in a style statement that a comment line after U+2028 joins, the comma
+followed by a property, in a state diagram is printed in lower case] [test: a
+color before a comma after a tab in a style statement that a comment line after
+U+2028 joins, the comma followed by a property, in a state diagram is printed in
+lower case] [test: a color before a comma that a word without a colon follows in
+a style statement that a comment line after U+2028 joins in a state diagram
+stays as written] [test: a color before a comma at once in a classDef statement
+that a comment line after U+2028 joins, the comma followed by a property, in a
+state diagram is printed in lower case] [test: a color before a comma after a
+space in a classDef statement that a comment line after U+2028 joins, the comma
+followed by a property, in a state diagram is printed in lower case] [test: a
+color before a comma after a tab in a classDef statement that a comment line
+after U+2028 joins, the comma followed by a property, in a state diagram is
+printed in lower case] [test: a color before a comma that a word without a colon
+follows in a classDef statement that a comment line after U+2028 joins in a
+state diagram is printed in lower case]
 
 [test: a comment line after U+2028 inside the name of an ER entity with an
 attribute block over several lines] [test: an attribute block of an entity that
@@ -6183,11 +6724,16 @@ error/as-written/directive-kept] [corpus fixture: common/error-pseudo-diagram]
 The Db of a kanban board has no indentation: it tells a section from an item by
 comparing the indentation of a node with that of the first node. So the printer
 chooses the indentation, one step for a section and two for an item, and keeps
-what decides the roles. Bare-id, label, icon, and class whitespace remains value
-text. Decorations align with their node; an inline-directive line keeps its
-directives and the gaps beside them, and the printer chooses the whitespace
-before the first one. A data block with invalid YAML is accepted by the parser
-as opaque text, although mermaid.js rejects it (known divergence
+what decides the roles. A run of whitespace inside a label, an icon, or a class
+text remains value text, and the spaces and tabs at the ends of a bare label, an
+icon, and a class text are dropped, and so are those after the bare id of a
+card, while those after the bare id of a column stay, and a bare label, an icon,
+or a class text of spaces and tabs only keeps one space (`A[ ]`) (see
+[Trailing whitespace](./kanban.md#trailing-whitespace)). Decorations align with
+their node; an inline-directive line keeps its directives and the gaps beside
+them, and the printer chooses the whitespace before the first one. A data block
+with invalid YAML is accepted by the parser as opaque text, although mermaid.js
+rejects it (known divergence
 [`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.md)),
 and the printer retains its opaque content with only eligible margin movement.
 See the [kanban rules](./kanban.md).
@@ -6354,10 +6900,15 @@ ishikawa/indentation/indent-clamped] [fixture: ishikawa/indentation/indent-zero]
 Quotes, empty-looking forms, apparent accessibility/style/data statements and
 inline percent text remain literals. Internal directive gaps and joined
 physical-line continuation columns stay written, including every trailing
-literal character on ordinary and kept lines. The value is what was written; Db
-equality does not require erasing it, the same choice as mindmap. Every
-semicolon stays, with whole crossing literals and trivia protected by the shared
-kept-stretch path.
+whitespace character other than a space or a tab, such as a no-break space, on
+ordinary and kept lines; the spaces and tabs at the end of a literal are dropped
+(see [Trailing whitespace](./ishikawa.md#trailing-whitespace)). A run of spaces
+and tabs inside a literal is printed as one space, except in a literal in which
+text stands before a directive and anything but spaces, tabs, and directives
+follows it, where every run of the literal stays as written (see
+[Inline directives](./ishikawa.md#inline-directives)); every other character of
+the value is what was written. Every semicolon stays, with whole crossing
+literals and trivia protected by the shared kept-stretch path.
 
 [fixture: ishikawa/node-text/values-opaque] [fixture:
 ishikawa/inline-directives/directive-in-value] [fixture:
@@ -6526,12 +7077,63 @@ the [usecase rule](./usecase.md#direction-and-accessibility).
 usecase/direction-and-accessibility/a11y-padding] [fixture:
 usecase/direction-and-accessibility/a11y-closer-aligned]
 
-Stereotype declaration suffixes retain whether whitespace is present before `<<`
-and inside each delimiter, including inside system boundaries. A nonempty run
-becomes one space; absent whitespace stays absent. Mermaid trims the interior
-ends; whitespace before `<<` is structural. Interior text remains written;
-protected common comment regions retain their complete values. This reuses the
+A stereotype declaration suffix has one space before the `<<` and none inside
+the delimiters, also inside system boundaries: `Reader<<human>>` is printed
+`Reader <<human>>`, and `<<  staff  member  >>` is printed `<<staff  member>>`,
+with the run inside the text kept. Mermaid trims the text, so the Db is the
+same. Beside a directive (`%%{x}%%`), the whitespace is printed as the table
+below gives. A directive before the `<<` has one space before it and none after
+it. After the `<<`, a run before the directive becomes one space, and the
+whitespace after the directive is left out where none stood before the
+directive, and stays where some stood. Before the `>>`, a run after the
+directive becomes one space, and the whitespace before the directive is left out
+where none stood after the directive, and stays where some stood. Inside the
+text, the whitespace beside a directive stays. The versions that count draw the
+written and the printed forms the same. Protected common comment regions retain
+their complete values. This reuses the
 [class statement-annotation rule](./class.md#whitespace-between-tokens).
+
+| Written after `actor ` | Printed               |
+| ---------------------- | --------------------- |
+| `U%%{x}%%<<s>>`        | `U %%{x}%%<<s>>`      |
+| `U%%{x}%% <<s>>`       | `U %%{x}%%<<s>>`      |
+| `U%%{x}%%  <<s>>`      | `U %%{x}%%<<s>>`      |
+| `U %%{x}%%<<s>>`       | `U %%{x}%%<<s>>`      |
+| `U %%{x}%% <<s>>`      | `U %%{x}%%<<s>>`      |
+| `U %%{x}%%  <<s>>`     | `U %%{x}%%<<s>>`      |
+| `U  %%{x}%%<<s>>`      | `U %%{x}%%<<s>>`      |
+| `U  %%{x}%% <<s>>`     | `U %%{x}%%<<s>>`      |
+| `U  %%{x}%%  <<s>>`    | `U %%{x}%%<<s>>`      |
+| `U <<%%{x}%%s>>`       | `U <<%%{x}%%s>>`      |
+| `U <<%%{x}%% s>>`      | `U <<%%{x}%%s>>`      |
+| `U <<%%{x}%%  s>>`     | `U <<%%{x}%%s>>`      |
+| `U << %%{x}%%s>>`      | `U << %%{x}%%s>>`     |
+| `U << %%{x}%% s>>`     | `U << %%{x}%% s>>`    |
+| `U << %%{x}%%  s>>`    | `U << %%{x}%%  s>>`   |
+| `U <<  %%{x}%%s>>`     | `U << %%{x}%%s>>`     |
+| `U <<  %%{x}%% s>>`    | `U << %%{x}%% s>>`    |
+| `U <<  %%{x}%%  s>>`   | `U << %%{x}%%  s>>`   |
+| `U <<s%%{x}%%>>`       | `U <<s%%{x}%%>>`      |
+| `U <<s%%{x}%% >>`      | `U <<s%%{x}%% >>`     |
+| `U <<s%%{x}%%  >>`     | `U <<s%%{x}%% >>`     |
+| `U <<s %%{x}%%>>`      | `U <<s%%{x}%%>>`      |
+| `U <<s %%{x}%% >>`     | `U <<s %%{x}%% >>`    |
+| `U <<s %%{x}%%  >>`    | `U <<s %%{x}%% >>`    |
+| `U <<s  %%{x}%%>>`     | `U <<s%%{x}%%>>`      |
+| `U <<s  %%{x}%% >>`    | `U <<s  %%{x}%% >>`   |
+| `U <<s  %%{x}%%  >>`   | `U <<s  %%{x}%% >>`   |
+| `U <<a%%{x}%%b>>`      | `U <<a%%{x}%%b>>`     |
+| `U <<a%%{x}%% b>>`     | `U <<a%%{x}%% b>>`    |
+| `U <<a%%{x}%%  b>>`    | `U <<a%%{x}%%  b>>`   |
+| `U <<a %%{x}%%b>>`     | `U <<a %%{x}%%b>>`    |
+| `U <<a %%{x}%% b>>`    | `U <<a %%{x}%% b>>`   |
+| `U <<a %%{x}%%  b>>`   | `U <<a %%{x}%%  b>>`  |
+| `U <<a  %%{x}%%b>>`    | `U <<a  %%{x}%%b>>`   |
+| `U <<a  %%{x}%% b>>`   | `U <<a  %%{x}%% b>>`  |
+| `U <<a  %%{x}%%  b>>`  | `U <<a  %%{x}%%  b>>` |
+| `U <<s\t%%{x}%%\t>>`   | `U <<s\t%%{x}%% >>`   |
+| `U <<\t%%{x}%%\ts>>`   | `U << %%{x}%%\ts>>`   |
+| `U\t%%{x}%%\t<<s>>`    | `U %%{x}%%<<s>>`      |
 
 [fixture: usecase/stereotypes/stereotype-padding] [fixture:
 usecase/stereotypes/opener-gap-sides] [test: usecase: stereotype-opener-tab]
@@ -6539,7 +7141,8 @@ usecase/stereotypes/opener-gap-sides] [test: usecase: stereotype-opener-tab]
 usecase/stereotypes/side-padding] [fixture:
 usecase/stereotypes/boundary-suffixes] [fixture:
 usecase/stereotypes/semicolon-padding-dropped] [test: usecase:
-stereotype-comment-region-padding-kept]
+stereotype-comment-region-padding-kept] [test: usecase: a directive beside the
+text of a stereotype]
 
 Written labels, boundary title padding and continuation columns remain authored
 even where trimming would have equal Db; a label between `'` is printed between
@@ -6743,13 +7346,14 @@ info/div-bare-before-header-ls] [test: info Markdown: rejected]
 
 ## Packet hidden boundaries and authored blocks
 
-The [packet rules](./packet.md) print `packet-beta` as `packet` and keep all
-three block forms: range, single and relative. Never reconstruct blocks from
-published rows or remove occurrences after the publication cap. Repeated labels
-stay separate, and empty common assignments remain: deleting an empty title can
-restore an earlier title. Labels retain padding, escapes, HTML, entities and
-physical continuation columns because rewriting these can change the Db; a label
-between `'` is printed between `"` as under
+The [packet rules](./packet.md) keep the header name as written (see
+[The names of a header](#the-names-of-a-header)) and all three block forms:
+range, single and relative. Never reconstruct blocks from published rows or
+remove occurrences after the publication cap. Repeated labels stay separate, and
+empty common assignments remain: deleting an empty title can restore an earlier
+title. Labels retain padding, escapes, HTML, entities and physical continuation
+columns because rewriting these can change the Db; a label between `'` is
+printed between `"` as under
 [Spellings that are drawn the same](#spellings-that-are-drawn-the-same). Numeric
 digits remain written even when double conversion rounds or overflows them;
 exponent/Infinity output is not packet syntax.
@@ -6876,12 +7480,13 @@ architecture Markdown: rejected]
 The [radar rules](./radar.md) retain every axis/curve/options group, entry form,
 optional named-entry colon, repetition and source order. Extra or duplicate
 named entries stay even when publication does not use them; positional and named
-curves remain distinct. The header's optional colon is retained, with ordinary
-preceding whitespace compacted as in gitgraph. NumericLiteral source spans that
-are plain decimals are printed in the shortest form, and the others preserve a
-zero at the start of the integer part, rounded precision, subnormals, underflow
-and overflow rather than printing converted double values. Option values remain
-authored: no tick cap, min/max reorder or replacement from drawing
+curves remain distinct. A colon right after the header word is removed, with the
+whitespace before it (see
+[The colon after a header](#the-colon-after-a-header)). NumericLiteral source
+spans that are plain decimals are printed in the shortest form, and the others
+preserve a zero at the start of the integer part, rounded precision, subnormals,
+underflow and overflow rather than printing converted double values. Option
+values remain authored: no tick cap, min/max reorder or replacement from drawing
 configuration. Label StringLiteral spans keep empty/whitespace-only text,
 escapes, HTML, entities, with a run of spaces and tabs inside a label printed as
 one space; a label between `'` is printed between `"` as under
@@ -7348,11 +7953,13 @@ final-bare-padding] [test: treeview Markdown: rejected]
 ## Railroad dialects and authored values
 
 The [railroad rules](./railroad.md) preserve the selected IR, EBNF, ABNF or PEG
-header, authored assignment delimiters, EBNF optional commas and expression
-structure. Singleton calls and groups remain even where their normalized Dbs are
-equal. Keep every rule, alternative, repeated metadata assignment and empty
-reset in source order. The comparison Db excludes body titles; that does not
-permit dropping their contents.
+header, EBNF optional commas and expression structure, and print the EBNF `::=`
+as `=` (see
+[Other spellings of a keyword or of a punctuation mark](#other-spellings-of-a-keyword-or-of-a-punctuation-mark)).
+Singleton calls and groups remain even where their normalized Dbs are equal.
+Keep every rule, alternative, repeated metadata assignment and empty reset in
+source order. The comparison Db excludes body titles; that does not permit
+dropping their contents.
 
 [fixture: railroad/assignment/ebnf-spellings] [fixture:
 railroad/ebnf-sequences/mixed] [fixture: railroad/calls/ir-singletons] [fixture:
@@ -7687,7 +8294,9 @@ line; the suffix retains its owner.
 
 [fixture: cynefin/hidden-boundaries/semicolon-hidden-body-yaml]
 
-The [Cynefin rules](./cynefin.md) keep both header spellings, every domain
+The [Cynefin rules](./cynefin.md) keep the header `cynefin-beta` and remove a
+colon right after the header word (see
+[The colon after a header](#the-colon-after-a-header)), and keep every domain
 redeclaration and empty domain, item order and duplicates, self transitions,
 empty labels and common resets. Domain/item lines express the authored tree;
 columns do not select parents. Rebuilding from the effective Db would lose
