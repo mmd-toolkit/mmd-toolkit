@@ -614,6 +614,13 @@ U+205F、U+3000、U+FEFF のどれかです。
   行を書かれたままにします。
 - 2 つのディレクティブの間か最後のディレクティブの後にある `;` は、
   前後の空白とタブの有無にかかわらず、行を書かれたままにします。
+  最後のそのような `;` の後に U+2028 か U+2029 があり、コメントが続くときは、
+  `;` の後ろを、
+  U+2028 か U+2029 が 1 つのときの一覧の後の段落と同じに印字します。
+  U+2028 か U+2029 の後の連なりとコメントの前の連なりは、
+  空白 1 つになります（`title T %%{x}%%;`、U+2028、`%%{y}%%`、空白 2 つ、
+  `%% c` は、`title T %%{x}%%;`、U+2028、`%%{y}%%`、空白、`%% c` になります）。
+  `;` の後に U+2028 か U+2029 が 2 つあるときは述べません。
 - 最後のディレクティブの後に幅のある空白があるときは、
   その前に空白やタブがあっても、その後に何が続いても、行を書かれたままにします。
   U+2028 か U+2029 がそこにあり、その後に何も続かないときも同じです。
@@ -624,17 +631,21 @@ U+205F、U+3000、U+FEFF のどれかです。
   項目 6 が行を分ける場合は、一覧の後の段落が印字を決めます。
   テキストの中にディレクティブのある題も、書かれたままです。
 
-ディレクティブの前に U+2028 も U+2029 もなく、
+ディレクティブの前に U+2028 も U+2029 もなく、行に `;` がなく、
 最後のディレクティブの後にコメントが続き、U+2028 か U+2029 が 1 つ以上、
 2 つのディレクティブの間か最後のディレクティブの後にあるとき、
 項目 6 が行を分けるなら、最初のものは残り、その前の隙間は書かれたままで、
-その後の隙間とコメントの前の隙間は、空白があれば空白 1 つで印字します。
+その後の隙間は、ディレクティブかコメントが続くときは空白 1 つで印字し、
+別の U+2028 か U+2029 が続くときは除きます。
+コメントの前の隙間は、空白があれば空白 1 つで印字します。
 後のものはどれも改行になり、改行の後のディレクティブは行を独立させ、コメントも、
 その前の空白を除いて行を独立させます（`title T %%{x}%%`、U+2028、空白 2 つ、
 `%%{y}%%`、U+2028、`%% c` は、`title T %%{x}%%`、U+2028、空白 1 つ、`%%{y}%%`、
 改行、`%% c` になります。`title T %%{x}%%`、U+2028、`%%{y}%%`、U+2028、
 `%%{z}%%`、空白、`%% c` は、`title T %%{x}%%`、U+2028、`%%{y}%%`、改行、
-`%%{z}%% %% c` になります）。
+`%%{z}%% %% c` になります。`title T %%{x}%%`、U+2028、空白 2 つ、U+2028、
+空白 2 つ、`%%{y}%%`、空白 2 つ、`%% c` は、`title T %%{x}%%`、U+2028、改行、
+`%%{y}%% %% c` になります）。
 ディレクティブの前にもあるときは、項目 6 が当たり、どれも改行になります。
 項目 6 が行を書かれたままにするときは、連なりも含めて書かれたままにします。
 項目 7 と項目 10 は U+2028 か U+2029 が 1 つの行を述べ、
@@ -684,6 +695,17 @@ U+2028 か U+2029 を含むときは書かれたままにします。
 その前の空白とともに残し、最後のものの後の空白とタブは除き、
 コメントの前の隙間は空白 1 つにします（`title`、空白、`%%{x}%%`、空白 2 つ、
 `;`、空白 2 つ、`%% c` は `title %%{x}%%; %% c` になります）。
+`;` だけがディレクティブを隔てるときは、最初の `;` の前の隙間は、空白、タブ、
+幅のある空白だけのときは除き、U+2028 か U+2029 を含むときは残します。
+2 つの `;` の間の隙間は、空白とタブだけのときは空白 1 つにし、
+幅のある空白を含むときは、
+その空白を残して空白とタブの連なりをそれぞれ空白 1 つにし、
+U+2028 か U+2029 を含むときは書かれたままにします。
+最後の `;` の後の隙間は空白 1 つにします（`title`、空白、`%%{x}%%`、`;`、
+ノーブレークスペース、`;`、空白 2 つ、`%%{y}%%` は `title %%{x}%%;`、
+ノーブレークスペース、`;`、空白、`%%{y}%%` になります）。
+U+0085 と U+180E は空白ではなく、それを含む題はディレクティブだけの題ではなく、
+この段落は述べません。
 そのような題に `;` かディレクティブがもっとあり、隙間が空白とタブだけのときは、
 `;` に隔てられない 2 つのディレクティブの間に空白かタブがあるとき、
 2 つの `;` の間にディレクティブがあるとき、
@@ -1398,6 +1420,12 @@ U+2028 か U+2029 を含むときは書かれたままにします。
 [test: a `;`, two spaces, a directive, in a title of directives only of a radar chart]
 [test: a directive, a `;`, two spaces, a `;`, two spaces, in a title of directives only of a radar chart]
 [test: a `;` in the comment after the last directive, two spaces around the `;` between two directives, in a title of directives only of a radar chart]
+[test: a directive, a `;`, a no-break space, a `;`, two spaces, a directive, in a title of directives only of a radar chart]
+[test: a directive, a no-break space, a `;`, two spaces, a `;`, two spaces, a directive, in a title of directives only of a radar chart]
+[test: a directive, a `;`, U+2028, a `;`, a directive, in a title of directives only of a radar chart]
+[test: a directive, two spaces, a `;`, two spaces, a no-break space, two spaces, a `;`, two spaces, a directive, in a title of directives only of a radar chart]
+[test: a directive, a `;`, a no-break space, a `;`, two spaces, a `;`, two spaces, a directive, in a title of directives only of a radar chart]
+[test: a directive, U+2028, a `;`, two spaces, a `;`, two spaces, a directive, in a title of directives only of a radar chart]
 [test: U+2028 before a directive that a comment touches, a line follows, in a title of a radar chart]
 [test: U+2028 before a directive that a comment touches, the text ends, in a title of a radar chart]
 [test: U+2028 before a directive that a comment touches, an empty line follows, in a title of a radar chart]
@@ -1664,6 +1692,17 @@ U+2028 か U+2029 を含むときは書かれたままにします。
 [test: a line of a comment that holds a `;` before a comment line after a U+2028 before a directive, the text ends, in a title of a radar chart]
 [test: a line of a directive and a comment that holds a `;` before a comment line after a U+2028 before a directive, the text ends, in a title of a radar chart]
 [test: a line of a directive that holds a `;` before a comment line after a U+2028 before a directive, the text ends, in a title of a radar chart]
+[test: a `;` before the U+2028 between two directives, a comment follows the last directive after two spaces, the text ends, in a title of a radar chart]
+[test: a `;` before the U+2028 between two directives, two spaces after the U+2028, a comment follows the last directive after two spaces, the text ends, in a title of a radar chart]
+[test: a `;` between two directives, a U+2028 after the last directive, two spaces and a comment after it, the text ends, in a title of a radar chart]
+[test: a `;` after the U+2028 between two directives, a comment follows the last directive after two spaces, the text ends, in a title of a radar chart]
+[test: a `;` before the U+2028 between two directives, two spaces after the U+2028, a comment follows the last directive after two spaces, a statement follows, in a title of a radar chart]
+[test: two U+2028 with two spaces on each side between two directives, a comment follows the last directive after two spaces, the text ends, in a title of a radar chart]
+[test: two U+2029 between two directives, a comment follows the last directive after two spaces, the text ends, in a title of a radar chart]
+[test: U+2028 and U+2029 between two directives, a comment follows the last directive after two spaces, the text ends, in a title of a radar chart]
+[test: two U+2028 after the last directive, a comment touches the second, the text ends, in a title of a radar chart]
+[test: U+2028 and U+2029 with two spaces on each side after the last directive, a comment follows the second after two spaces, the text ends, in a title of a radar chart]
+[test: two U+2028 with two spaces on each side after a single directive, a comment follows after two spaces, the text ends, in a title of a radar chart]
 
 [fixture: radar/title/title-empty]
 
@@ -1760,6 +1799,13 @@ U+205F、U+3000、U+FEFF のどれかです。
   行を書かれたままにします。
 - 2 つのディレクティブの間か最後のディレクティブの後にある `;` は、
   前後の空白とタブの有無にかかわらず、行を書かれたままにします。
+  最後のそのような `;` の後に U+2028 か U+2029 があり、コメントが続くときは、
+  `;` の後ろを、
+  U+2028 か U+2029 が 1 つのときの題の一覧の後の段落と同じに印字します。
+  U+2028 か U+2029 の後の連なりとコメントの前の連なりは、
+  空白 1 つになります（`title T %%{x}%%;`、U+2028、`%%{y}%%`、空白 2 つ、
+  `%% c` は、`title T %%{x}%%;`、U+2028、`%%{y}%%`、空白、`%% c` になります）。
+  `;` の後に U+2028 か U+2029 が 2 つあるときは述べません。
 - 幅のある空白がディレクティブの間にあるときは、
   最後のディレクティブの後に何が続いても、行を書かれたままにします。
   U+2028 か U+2029 がディレクティブの間にあり、
@@ -2450,6 +2496,16 @@ U+2028 か U+2029 が 1 つ以上、
 [test: accTitle with a gap before the colon, a `;` inside a directive that touches the text, the text ends, in an accTitle line of a radar chart]
 [test: accTitle with a gap before the colon, a `;` inside a comment after the text, the text ends, in an accTitle line of a radar chart]
 [test: accTitle with a gap before the colon, a `;` right after the colon and a U+2028 after it, the text ends, in an accTitle line of a radar chart]
+[test: a `;` before the U+2028 between two directives, a comment follows the last directive after two spaces, the text ends, in an accTitle line of a radar chart]
+[test: two U+2028 with two spaces on each side between two directives, a comment follows the last directive after two spaces, the text ends, in an accTitle line of a radar chart]
+[test: accTitle with a gap before the colon, a U+2028 before a `;`, and a second U+2028 after the `;`, the text ends, in an accTitle line of a radar chart]
+[test: accDescr with a gap before the colon, a U+2028 before a `;`, and a second U+2028 after the `;`, the text ends, in an accDescr line of a radar chart]
+[test: accTitle with a gap before the colon, a `;` before two U+2028, the text ends, in an accTitle line of a radar chart]
+[test: accTitle with a gap before the colon, a `;` inside a directive that a U+2028 follows, the text ends, in an accTitle line of a radar chart]
+[test: accTitle with a gap before the colon, a `;` inside a comment that a U+2028 follows, the text ends, in an accTitle line of a radar chart]
+[test: accTitle with a gap before the colon, a U+2028 inside a directive and a `;` after it inside the same directive, the text ends, in an accTitle line of a radar chart]
+[test: accTitle with a gap before the colon, a U+2028 inside a directive and no `;`, the text ends, in an accTitle line of a radar chart]
+[test: accTitle with a gap before the colon, a U+2028 inside a directive and a `;` inside a directive after it, the text ends, in an accTitle line of a radar chart]
 
 [fixture: radar/accessibility-lines/a11y-empty-next]
 
