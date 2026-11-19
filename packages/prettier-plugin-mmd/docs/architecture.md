@@ -629,8 +629,10 @@ protected hidden boundaries keep their source gaps. Where a title has text and
 no directive stands before its text or inside it, and no U+2028 or U+2029 stands
 inside the text, the directives that end it are printed as follows, by what
 stands before them and after them. A wide space is one of U+000B, U+000C,
-U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, and U+FEFF. Item 6
-decides first: where it splits a line, none of the other items applies to it:
+U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, and U+FEFF. Item 9
+decides before item 6, and item 6 before the other items: where item 6 splits a
+line, none of the others applies to it. A line that holds a `;` in the text or
+in a directive and that item 6 would split is not stated here:
 
 - Where only spaces and tabs, or nothing, stand before the directives, no `;`
   stands in the text before them or inside one of them, no directive holds a
@@ -660,15 +662,20 @@ decides first: where it splits a line, none of the other items applies to it:
   or no line is left, the U+2028 or U+2029 is dropped, the directives and the
   comment stand on a line of their own, a gap between them is printed as one
   space whatever whitespace it holds, and a U+2028 or U+2029 between them ends
-  the line there.
+  the line there. A directive line holds directives only, with no whitespace
+  before, between, or after them (`%%{y}%%`, `%%{y}%%%%{z}%%`); an indented
+  directive, a directive that whitespace follows, one that another directive
+  follows after whitespace, and one that text follows are statements. A comment
+  line holds a comment (`%% d`, `  %% d`, `%%{y}%% %% e`). A line of whitespace
+  holds whitespace of any kind, a no-break space and a vertical tab included.
 - Where a wide space stands between two directives, the line stays as written,
   whatever follows the last one. So it does where a U+2028 or U+2029 stands
   between two directives and nothing, spaces or tabs, or a comment that touches
-  the last one follows. Where spaces or tabs and a comment follow the U+2028 or
-  U+2029, the comment region joins the next line of the source, as in item 6:
-  where item 6 keeps the lines, they stay as written, and where item 6 would
-  split the line, the U+2028 or U+2029 stays and the run before the comment is
-  printed as one space.
+  the last one follows. Where the last directive, spaces or tabs, and a comment
+  follow the U+2028 or U+2029, the comment region joins the next line of the
+  source, as in item 6: where item 6 keeps the lines, they stay as written, and
+  where item 6 would split the line, the U+2028 or U+2029 stays and the run
+  before the comment is printed as one space.
 - Where a `;` stands in the text before the directives, whether the line rule of
   mermaid.js ignores it or not, or inside a directive, or a line break, a
   U+2028, or a U+2029 stands inside a directive, the line stays as written if
@@ -716,10 +723,14 @@ whether the end of the line or a comment comes after them, or if spaces or tabs
 stand between two directives, and item 3 does not apply to it; otherwise the
 other items print it as they print a line of any other text, so each run of
 spaces and tabs before a directive, the one after the keyword included, is one
-space. In a title of directives only, a `;` between two directives that spaces
-or tabs surround is printed right after the first directive and followed by one
-space (`title`, a space, `%%{x}%%`, two spaces, `;`, two spaces, and `%%{y}%%`
-is printed `title %%{x}%%; %%{y}%%`).
+space. In a title of directives only, where no spaces or tabs follow the last
+directive, a `;` between two directives is printed right after the first
+directive, followed by one space where a gap follows it, whatever whitespace the
+gaps hold (`title`, a space, `%%{x}%%`, two spaces, `;`, two spaces, and
+`%%{y}%%` is printed `title %%{x}%%; %%{y}%%`); where spaces or tabs follow the
+last directive, the line stays as written. A `;` after the last directive of
+such a title stays, the spaces and tabs at the end of the line are left out, and
+a run before a comment is one space.
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
 title/title-directives-end-tabs-dropped] [fixture:
@@ -1627,61 +1638,133 @@ follow, one space before the first directive, in a title of an architecture
 diagram] [test: a U+2028 before a directive that a wide space and a comment
 follow, a tab before the first directive, in a title of an architecture diagram]
 [test: a U+2028 before a directive that a wide space and a comment follow, a
-value of directives only, in a title of an architecture diagram] [test: U+2028
-before a directive that a comment touches, a line follows, in a title of an
-architecture diagram] [test: U+2028 before a directive that a comment touches,
+value of directives only, in a title of an architecture diagram] [test: a `;`
+after the last directive, a U+2028 before the directives, a comment after it, in
+a title of an architecture diagram] [test: a `;` after the last directive, a
+U+2028 before the directives, a comment after it, one space before the first
+directive, in a title of an architecture diagram] [test: a `;` after the last
+directive, a U+2028 before the directives, a comment after it, a run of spaces
+before the first directive, in a title of an architecture diagram] [test: a `;`
+after the last directive, a U+2028 before the directives, a comment after it, a
+tab before the first directive, in a title of an architecture diagram] [test: a
+`;` after the last directive, a U+2028 before the directives, a comment after
+it, a no-break space before the first directive, in a title of an architecture
+diagram] [test: a `;` after the last directive, a U+2028 before the directives,
+a comment after it, U+2029 before the first directive, in a title of an
+architecture diagram] [test: a `;` after the last directive, a U+2028 before the
+directives, a comment after it, the first directive holds a line break inside,
+in a title of an architecture diagram] [test: a `;` after the last directive, a
+U+2028 before the directives, a comment after it, the first directive holds a
+`;` inside, in a title of an architecture diagram] [test: a `;` after the last
+directive, a U+2028 before the directives, a comment after it, the first
+directive holds a U+2028 inside, in a title of an architecture diagram] [test: a
+`;` after the last directive, a U+2028 before the directives, a comment after
+it, a second directive touching the first, in a title of an architecture
+diagram] [test: a `;` after the last directive, a U+2028 before the directives,
+a comment after it, a second directive after a space, in a title of an
+architecture diagram] [test: a `;` after the last directive, a U+2028 before the
+directives, a comment after it, no comment, in a title of an architecture
+diagram] [test: a `;` after the last directive, a U+2028 before the directives,
+a comment after it, a value of directives only, in a title of an architecture
+diagram] [test: a `;` between two directives, a U+2028 before the directives, a
+comment after them, in a title of an architecture diagram] [test: a `;` between
+two directives, a U+2028 before the directives, a comment after them, one space
+before the first directive, in a title of an architecture diagram] [test: a `;`
+between two directives, a U+2028 before the directives, a comment after them, a
+run of spaces before the first directive, in a title of an architecture diagram]
+[test: a `;` between two directives, a U+2028 before the directives, a comment
+after them, a tab before the first directive, in a title of an architecture
+diagram] [test: a `;` between two directives, a U+2028 before the directives, a
+comment after them, a no-break space before the first directive, in a title of
+an architecture diagram] [test: a `;` between two directives, a U+2028 before
+the directives, a comment after them, U+2029 before the first directive, in a
+title of an architecture diagram] [test: a `;` between two directives, a U+2028
+before the directives, a comment after them, the first directive holds a line
+break inside, in a title of an architecture diagram] [test: a `;` between two
+directives, a U+2028 before the directives, a comment after them, the last
+directive holds a line break inside, in a title of an architecture diagram]
+[test: a `;` between two directives, a U+2028 before the directives, a comment
+after them, the first directive holds a `;` inside, in a title of an
+architecture diagram] [test: a `;` between two directives, a U+2028 before the
+directives, a comment after them, the last directive holds a `;` inside, in a
+title of an architecture diagram] [test: a `;` between two directives, a U+2028
+before the directives, a comment after them, the first directive holds a U+2028
+inside, in a title of an architecture diagram] [test: a `;` between two
+directives, a U+2028 before the directives, a comment after them, the last
+directive holds a U+2028 inside, in a title of an architecture diagram] [test: a
+`;` between two directives, a U+2028 before the directives, a comment after
+them, no comment, in a title of an architecture diagram] [test: a `;` between
+two directives, a U+2028 before the directives, a comment after them, a value of
+directives only, in a title of an architecture diagram] [test: a U+2028 after
+the last directive that spaces and a comment follow, one space after the last
+directive, in a title of an architecture diagram] [test: a U+2028 after the last
+directive that spaces and a comment follow, a tab after the last directive, in a
+title of an architecture diagram] [test: a U+2028 after the last directive that
+spaces and a comment follow, no comment, in a title of an architecture diagram]
+[test: a U+2028 between two directives, spaces and a comment after the last one,
+one space between the two directives, in a title of an architecture diagram]
+[test: a U+2028 between two directives, spaces and a comment after the last one,
+a run of spaces between the two directives, in a title of an architecture
+diagram] [test: a U+2028 between two directives, spaces and a comment after the
+last one, a tab between the two directives, in a title of an architecture
+diagram] [test: a U+2028 between two directives, spaces and a comment after the
+last one, a no-break space between the two directives, in a title of an
+architecture diagram] [test: a U+2028 between two directives, spaces and a
+comment after the last one, no comment, in a title of an architecture diagram]
+[test: U+2028 before a directive that a comment touches, a line follows, in a
+title of an architecture diagram] [test: U+2028 before a directive that a
+comment touches, the text ends, in a title of an architecture diagram] [test:
+U+2028 before a directive that a comment touches, an empty line follows, in a
+title of an architecture diagram] [test: U+2028 before a directive that a
+comment follows after spaces, a line follows, in a title of an architecture
+diagram] [test: U+2028 before a directive that a comment follows after spaces,
 the text ends, in a title of an architecture diagram] [test: U+2028 before a
-directive that a comment touches, an empty line follows, in a title of an
-architecture diagram] [test: U+2028 before a directive that a comment follows
-after spaces, a line follows, in a title of an architecture diagram] [test:
-U+2028 before a directive that a comment follows after spaces, the text ends, in
-a title of an architecture diagram] [test: U+2028 before a directive that a
-comment follows after spaces, an empty line follows, in a title of an
-architecture diagram] [test: U+2029 before a directive that a comment touches, a
-line follows, in a title of an architecture diagram] [test: U+2029 before a
-directive that a comment touches, the text ends, in a title of an architecture
-diagram] [test: U+2029 before a directive that a comment touches, an empty line
-follows, in a title of an architecture diagram] [test: U+2029 before a directive
-that a comment follows after spaces, a line follows, in a title of an
-architecture diagram] [test: U+2029 before a directive that a comment follows
-after spaces, the text ends, in a title of an architecture diagram] [test:
-U+2029 before a directive that a comment follows after spaces, an empty line
-follows, in a title of an architecture diagram] [test: U+2028 before a directive
-that a comment touches, a comment line follows, in a title of an architecture
-diagram] [test: U+2028 before a directive that a comment touches, a line of
-whitespace follows, in a title of an architecture diagram] [test: U+2028 before
-a directive that a comment touches, a directive line follows, in a title of an
-architecture diagram] [test: U+2028 before a directive that a comment touches, a
-directive line and a comment line follow, in a title of an architecture diagram]
-[test: U+2028 before a directive that a comment touches, an empty line and a
-comment line follow, in a title of an architecture diagram] [test: U+2028 before
-a directive that a comment touches, a directive line, an empty line, and a
-comment line follow, in a title of an architecture diagram] [test: U+2028 before
-a directive that a comment touches, an empty line and a directive line follow,
-in a title of an architecture diagram] [test: U+2028 before a directive that a
-comment touches, a directive line follows and the text ends, in a title of an
-architecture diagram] [test: U+2028 before two directives with spaces between
-them that a comment touches, the text ends, in a title of an architecture
-diagram] [test: U+2028 before two directives with a tab between them that a
+directive that a comment follows after spaces, an empty line follows, in a title
+of an architecture diagram] [test: U+2029 before a directive that a comment
+touches, a line follows, in a title of an architecture diagram] [test: U+2029
+before a directive that a comment touches, the text ends, in a title of an
+architecture diagram] [test: U+2029 before a directive that a comment touches,
+an empty line follows, in a title of an architecture diagram] [test: U+2029
+before a directive that a comment follows after spaces, a line follows, in a
+title of an architecture diagram] [test: U+2029 before a directive that a
 comment follows after spaces, the text ends, in a title of an architecture
-diagram] [test: U+2029 before a directive that a comment touches, a directive
-line and a comment line follow, in a title of an architecture diagram] [test:
-U+2028 after the last directive, spaces and a comment after it, a comment line
-follows, in a title of an architecture diagram] [test: U+2028 after the last
-directive, spaces and a comment after it, a line of whitespace follows, in a
+diagram] [test: U+2029 before a directive that a comment follows after spaces,
+an empty line follows, in a title of an architecture diagram] [test: U+2028
+before a directive that a comment touches, a comment line follows, in a title of
+an architecture diagram] [test: U+2028 before a directive that a comment
+touches, a line of whitespace follows, in a title of an architecture diagram]
+[test: U+2028 before a directive that a comment touches, a directive line
+follows, in a title of an architecture diagram] [test: U+2028 before a directive
+that a comment touches, a directive line and a comment line follow, in a title
+of an architecture diagram] [test: U+2028 before a directive that a comment
+touches, an empty line and a comment line follow, in a title of an architecture
+diagram] [test: U+2028 before a directive that a comment touches, a directive
+line, an empty line, and a comment line follow, in a title of an architecture
+diagram] [test: U+2028 before a directive that a comment touches, an empty line
+and a directive line follow, in a title of an architecture diagram] [test:
+U+2028 before a directive that a comment touches, a directive line follows and
+the text ends, in a title of an architecture diagram] [test: U+2028 before two
+directives with spaces between them that a comment touches, the text ends, in a
+title of an architecture diagram] [test: U+2028 before two directives with a tab
+between them that a comment follows after spaces, the text ends, in a title of
+an architecture diagram] [test: U+2029 before a directive that a comment
+touches, a directive line and a comment line follow, in a title of an
+architecture diagram] [test: U+2028 after the last directive, spaces and a
+comment after it, a comment line follows, in a title of an architecture diagram]
+[test: U+2028 after the last directive, spaces and a comment after it, a line of
+whitespace follows, in a title of an architecture diagram] [test: U+2028 after
+the last directive, spaces and a comment after it, a directive line follows, in
+a title of an architecture diagram] [test: U+2028 after the last directive,
+spaces and a comment after it, a directive line and a comment line follow, in a
 title of an architecture diagram] [test: U+2028 after the last directive, spaces
-and a comment after it, a directive line follows, in a title of an architecture
-diagram] [test: U+2028 after the last directive, spaces and a comment after it,
-a directive line and a comment line follow, in a title of an architecture
-diagram] [test: U+2028 after the last directive, spaces and a comment after it,
-an empty line and a comment line follow, in a title of an architecture diagram]
-[test: U+2028 after the last directive, spaces and a comment after it, a
-directive line, an empty line, and a comment line follow, in a title of an
-architecture diagram] [test: U+2028 after the last directive, spaces and a
-comment after it, an empty line and a directive line follow, in a title of an
-architecture diagram] [test: U+2028 after the last directive, spaces and a
-comment after it, a directive line follows and the text ends, in a title of an
-architecture diagram] [test: U+2028 after the last directive, spaces and a
+and a comment after it, an empty line and a comment line follow, in a title of
+an architecture diagram] [test: U+2028 after the last directive, spaces and a
+comment after it, a directive line, an empty line, and a comment line follow, in
+a title of an architecture diagram] [test: U+2028 after the last directive,
+spaces and a comment after it, an empty line and a directive line follow, in a
+title of an architecture diagram] [test: U+2028 after the last directive, spaces
+and a comment after it, a directive line follows and the text ends, in a title
+of an architecture diagram] [test: U+2028 after the last directive, spaces and a
 comment after it, the text ends, in a title of an architecture diagram] [test:
 U+2028 after the last directive, spaces and a comment after it, an empty line
 follows, in a title of an architecture diagram] [test: U+2028 after the last
@@ -1815,7 +1898,141 @@ comment follow, a directive line follows, in a title of an architecture diagram]
 [test: a U+2028 before a directive that a wide space and a comment follow, a
 comment line and a statement follow, in a title of an architecture diagram]
 [test: a U+2028 before a directive that a wide space and a comment follow, an
-empty line and a statement follow, in a title of an architecture diagram]
+empty line and a statement follow, in a title of an architecture diagram] [test:
+a U+2028 before a directive that spaces and a comment follow, an indented
+directive line follows, in a title of an architecture diagram] [test: a U+2028
+before a directive that spaces and a comment follow, a directive and spaces
+follow, in a title of an architecture diagram] [test: a U+2028 before a
+directive that spaces and a comment follow, two directives that touch follow, in
+a title of an architecture diagram] [test: a U+2028 before a directive that
+spaces and a comment follow, a directive and a comment on a line follow, in a
+title of an architecture diagram] [test: a U+2028 before a directive that spaces
+and a comment follow, a line of a no-break space follows, in a title of an
+architecture diagram] [test: a U+2028 before a directive that spaces and a
+comment follow, a line of a tab follows, in a title of an architecture diagram]
+[test: a U+2028 before a directive that spaces and a comment follow, an indented
+comment line follows, in a title of an architecture diagram] [test: a U+2028
+before a directive that spaces and a comment follow, an indented directive line
+follows, in a title of an architecture diagram] [test: a U+2028 before a
+directive that spaces and a comment follow, a directive and spaces follow, in a
+title of an architecture diagram] [test: a U+2028 before a directive that spaces
+and a comment follow, two directives that touch follow, in a title of an
+architecture diagram] [test: a U+2028 before a directive that spaces and a
+comment follow, a directive and a comment on a line follow, in a title of an
+architecture diagram] [test: a U+2028 before a directive that spaces and a
+comment follow, a line of a no-break space follows, in a title of an
+architecture diagram] [test: a U+2028 before a directive that spaces and a
+comment follow, a line of a tab follows, in a title of an architecture diagram]
+[test: a U+2028 before a directive that spaces and a comment follow, an indented
+comment line follows, in a title of an architecture diagram] [test: a U+2028
+before two directives that a wide space separates, a comment after them, an
+indented directive line follows, in a title of an architecture diagram] [test: a
+U+2028 before two directives that a wide space separates, a comment after them,
+a directive and spaces follow, in a title of an architecture diagram] [test: a
+U+2028 before two directives that a wide space separates, a comment after them,
+two directives that touch follow, in a title of an architecture diagram] [test:
+a U+2028 before two directives that a wide space separates, a comment after
+them, a directive and a comment on a line follow, in a title of an architecture
+diagram] [test: a U+2028 before two directives that a wide space separates, a
+comment after them, a line of a no-break space follows, in a title of an
+architecture diagram] [test: a U+2028 before two directives that a wide space
+separates, a comment after them, a line of a tab follows, in a title of an
+architecture diagram] [test: a U+2028 before two directives that a wide space
+separates, a comment after them, an indented comment line follows, in a title of
+an architecture diagram] [test: a U+2028 before two directives that a wide space
+separates, a comment after them, an indented directive line follows, in a title
+of an architecture diagram] [test: a U+2028 before two directives that a wide
+space separates, a comment after them, a directive and spaces follow, in a title
+of an architecture diagram] [test: a U+2028 before two directives that a wide
+space separates, a comment after them, two directives that touch follow, in a
+title of an architecture diagram] [test: a U+2028 before two directives that a
+wide space separates, a comment after them, a directive and a comment on a line
+follow, in a title of an architecture diagram] [test: a U+2028 before two
+directives that a wide space separates, a comment after them, a line of a
+no-break space follows, in a title of an architecture diagram] [test: a U+2028
+before two directives that a wide space separates, a comment after them, a line
+of a tab follows, in a title of an architecture diagram] [test: a U+2028 before
+two directives that a wide space separates, a comment after them, an indented
+comment line follows, in a title of an architecture diagram] [test: a U+2028
+before a directive that a wide space and a comment follow, an indented directive
+line follows, in a title of an architecture diagram] [test: a U+2028 before a
+directive that a wide space and a comment follow, a directive and spaces follow,
+in a title of an architecture diagram] [test: a U+2028 before a directive that a
+wide space and a comment follow, two directives that touch follow, in a title of
+an architecture diagram] [test: a U+2028 before a directive that a wide space
+and a comment follow, a directive and a comment on a line follow, in a title of
+an architecture diagram] [test: a U+2028 before a directive that a wide space
+and a comment follow, a line of a no-break space follows, in a title of an
+architecture diagram] [test: a U+2028 before a directive that a wide space and a
+comment follow, a line of a tab follows, in a title of an architecture diagram]
+[test: a U+2028 before a directive that a wide space and a comment follow, an
+indented comment line follows, in a title of an architecture diagram] [test: a
+U+2028 before a directive that a wide space and a comment follow, an indented
+directive line follows, in a title of an architecture diagram] [test: a U+2028
+before a directive that a wide space and a comment follow, a directive and
+spaces follow, in a title of an architecture diagram] [test: a U+2028 before a
+directive that a wide space and a comment follow, two directives that touch
+follow, in a title of an architecture diagram] [test: a U+2028 before a
+directive that a wide space and a comment follow, a directive and a comment on a
+line follow, in a title of an architecture diagram] [test: a U+2028 before a
+directive that a wide space and a comment follow, a line of a no-break space
+follows, in a title of an architecture diagram] [test: a U+2028 before a
+directive that a wide space and a comment follow, a line of a tab follows, in a
+title of an architecture diagram] [test: a U+2028 before a directive that a wide
+space and a comment follow, an indented comment line follows, in a title of an
+architecture diagram] [test: a `;` after the last directive, a U+2028 before the
+directives, a comment after it, the text ends, in a title of an architecture
+diagram] [test: a `;` between two directives, a U+2028 before the directives, a
+comment after them, the text ends, in a title of an architecture diagram] [test:
+a U+2028 after the last directive that spaces and a comment follow, a comment
+line follows, in a title of an architecture diagram] [test: a U+2028 after the
+last directive that spaces and a comment follow, an empty line follows, in a
+title of an architecture diagram] [test: a U+2028 after the last directive that
+spaces and a comment follow, a line of whitespace follows, in a title of an
+architecture diagram] [test: a U+2028 after the last directive that spaces and a
+comment follow, a directive line follows, in a title of an architecture diagram]
+[test: a U+2028 after the last directive that spaces and a comment follow, a
+comment line and a statement follow, in a title of an architecture diagram]
+[test: a U+2028 after the last directive that spaces and a comment follow, an
+empty line and a statement follow, in a title of an architecture diagram] [test:
+a U+2028 after the last directive that spaces and a comment follow, the text
+ends, in a title of an architecture diagram] [test: a U+2028 after the last
+directive that spaces and a comment follow, a comment line follows, in a title
+of an architecture diagram] [test: a U+2028 after the last directive that spaces
+and a comment follow, an empty line follows, in a title of an architecture
+diagram] [test: a U+2028 after the last directive that spaces and a comment
+follow, a line of whitespace follows, in a title of an architecture diagram]
+[test: a U+2028 after the last directive that spaces and a comment follow, a
+directive line follows, in a title of an architecture diagram] [test: a U+2028
+after the last directive that spaces and a comment follow, a comment line and a
+statement follow, in a title of an architecture diagram] [test: a U+2028 after
+the last directive that spaces and a comment follow, an empty line and a
+statement follow, in a title of an architecture diagram] [test: a U+2028 between
+two directives, spaces and a comment after the last one, a comment line follows,
+in a title of an architecture diagram] [test: a U+2028 between two directives,
+spaces and a comment after the last one, an empty line follows, in a title of an
+architecture diagram] [test: a U+2028 between two directives, spaces and a
+comment after the last one, a line of whitespace follows, in a title of an
+architecture diagram] [test: a U+2028 between two directives, spaces and a
+comment after the last one, a directive line follows, in a title of an
+architecture diagram] [test: a U+2028 between two directives, spaces and a
+comment after the last one, a comment line and a statement follow, in a title of
+an architecture diagram] [test: a U+2028 between two directives, spaces and a
+comment after the last one, an empty line and a statement follow, in a title of
+an architecture diagram] [test: a U+2028 between two directives, spaces and a
+comment after the last one, the text ends, in a title of an architecture
+diagram] [test: a U+2028 between two directives, spaces and a comment after the
+last one, a comment line follows, in a title of an architecture diagram] [test:
+a U+2028 between two directives, spaces and a comment after the last one, an
+empty line follows, in a title of an architecture diagram] [test: a U+2028
+between two directives, spaces and a comment after the last one, a line of
+whitespace follows, in a title of an architecture diagram] [test: a U+2028
+between two directives, spaces and a comment after the last one, a directive
+line follows, in a title of an architecture diagram] [test: a U+2028 between two
+directives, spaces and a comment after the last one, a comment line and a
+statement follow, in a title of an architecture diagram] [test: a U+2028 between
+two directives, spaces and a comment after the last one, an empty line and a
+statement follow, in a title of an architecture diagram]
 
 [fixture: architecture/title/empty-next-statement]
 
@@ -1862,9 +2079,10 @@ as follows, by what stands before them and after them. A wide space is one of
 U+000B, U+000C, U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, and
 U+FEFF. Where a U+2028 or U+2029 stands before the directives and a comment
 follows the last one, the line is printed as under item 6 of the
-[title list](#title), and where that splits the line, none of the items below
-applies to it. The colon touches the keyword, so a gap before it is printed as
-no gap even where the line stays as written:
+[title list](#title), except that item 6 of this list decides before it, and
+where item 6 of the title list splits the line, none of the items below applies
+to it. The colon touches the keyword, so a gap before it is printed as no gap
+even where the line stays as written:
 
 - Where only spaces and tabs, or nothing, stand before the directives, no `;`
   stands in the text before them or inside one of them, no directive holds a
@@ -1901,11 +2119,21 @@ no gap even where the line stays as written:
 - Where a wide space stands between two directives, the line stays as written,
   whatever follows the last one. So it does where a U+2028 or U+2029 stands
   between two directives and nothing, spaces or tabs, or a comment that touches
-  the last one follows.
+  the last one follows. Where the last directive, spaces or tabs, and a comment
+  follow the U+2028 or U+2029, the comment region joins the next line of the
+  source, as in item 6 of the [title list](#title): where item 6 of the title
+  list keeps the lines, they stay as written, and where item 6 of the title list
+  would split the line, the U+2028 or U+2029 stays and the run before the
+  comment is printed as one space.
 - Where a wide space stands after the last directive, also after spaces or tabs,
   the line stays as written, whatever follows the character. So it does where a
-  U+2028 or U+2029 stands there and nothing follows it. A value with a directive
-  inside its text stays as written too.
+  U+2028 or U+2029 stands there and nothing follows it, or a comment touches it.
+  Where spaces or tabs and a comment follow the U+2028 or U+2029, the comment
+  region joins the next line of the source, as in item 6 of the
+  [title list](#title): where item 6 of the title list keeps the lines, they
+  stay as written, and where item 6 of the title list would split the line, the
+  U+2028 or U+2029 stays and the run before the comment is printed as one space.
+  A value with a directive inside its text stays as written too.
 
 Where a comment follows the last directive, no U+2028 or U+2029 stands between
 the text and the comment, and none of items 5 to 8 applies, a run of spaces and
@@ -1930,10 +2158,7 @@ whether the end of the line or a comment comes after them, or if spaces or tabs
 stand between two directives, and item 3 does not apply to it; otherwise the
 other items print it as they print a line of any other text, so each run of
 spaces and tabs before a directive, the one after the keyword included, is one
-space. In a title of directives only, a `;` between two directives that spaces
-or tabs surround is printed right after the first directive and followed by one
-space (`title`, a space, `%%{x}%%`, two spaces, `;`, two spaces, and `%%{y}%%`
-is printed `title %%{x}%%; %%{y}%%`).
+space.
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
 accessibility-lines/acc-directives-end-tabs-dropped] [fixture:
@@ -2589,126 +2814,133 @@ between two directives, in an accDescr line of an architecture diagram] [test: a
 architecture diagram] [test: a `;` between two directives, spaces around it, in
 an accDescr line of an architecture diagram] [test: a `;` after the last
 directive, in an accTitle line of an architecture diagram] [test: a `;` after
-the last directive, in an accDescr line of an architecture diagram] [test:
-U+2028 before a directive that a comment touches, a line follows, in an accTitle
-line of an architecture diagram] [test: U+2028 before a directive that a comment
-touches, the text ends, in an accTitle line of an architecture diagram] [test:
-U+2028 before a directive that a comment follows after spaces, a line follows,
-in an accTitle line of an architecture diagram] [test: U+2028 before a directive
-that a comment follows after spaces, the text ends, in an accTitle line of an
-architecture diagram] [test: U+2029 before a directive that a comment touches, a
-line follows, in an accTitle line of an architecture diagram] [test: U+2029
-before a directive that a comment touches, the text ends, in an accTitle line of
-an architecture diagram] [test: U+2029 before a directive that a comment follows
+the last directive, in an accDescr line of an architecture diagram] [test: a `;`
+after the last directive, a U+2028 before the directives, a comment after it, in
+an accTitle line of an architecture diagram] [test: a `;` after the last
+directive, a U+2028 before the directives, a comment after it, in an accDescr
+line of an architecture diagram] [test: a `;` between two directives, a U+2028
+before the directives, a comment after them, in an accTitle line of an
+architecture diagram] [test: a `;` between two directives, a U+2028 before the
+directives, a comment after them, in an accDescr line of an architecture
+diagram] [test: U+2028 before a directive that a comment touches, a line
+follows, in an accTitle line of an architecture diagram] [test: U+2028 before a
+directive that a comment touches, the text ends, in an accTitle line of an
+architecture diagram] [test: U+2028 before a directive that a comment follows
 after spaces, a line follows, in an accTitle line of an architecture diagram]
-[test: U+2029 before a directive that a comment follows after spaces, the text
-ends, in an accTitle line of an architecture diagram] [test: U+2028 before a
-directive that a comment touches, a line follows, in an accDescr line of an
-architecture diagram] [test: U+2028 before a directive that a comment touches,
-the text ends, in an accDescr line of an architecture diagram] [test: U+2028
+[test: U+2028 before a directive that a comment follows after spaces, the text
+ends, in an accTitle line of an architecture diagram] [test: U+2029 before a
+directive that a comment touches, a line follows, in an accTitle line of an
+architecture diagram] [test: U+2029 before a directive that a comment touches,
+the text ends, in an accTitle line of an architecture diagram] [test: U+2029
 before a directive that a comment follows after spaces, a line follows, in an
-accDescr line of an architecture diagram] [test: U+2028 before a directive that
-a comment follows after spaces, the text ends, in an accDescr line of an
-architecture diagram] [test: U+2029 before a directive that a comment touches, a
-line follows, in an accDescr line of an architecture diagram] [test: U+2029
+accTitle line of an architecture diagram] [test: U+2029 before a directive that
+a comment follows after spaces, the text ends, in an accTitle line of an
+architecture diagram] [test: U+2028 before a directive that a comment touches, a
+line follows, in an accDescr line of an architecture diagram] [test: U+2028
 before a directive that a comment touches, the text ends, in an accDescr line of
-an architecture diagram] [test: U+2029 before a directive that a comment follows
+an architecture diagram] [test: U+2028 before a directive that a comment follows
 after spaces, a line follows, in an accDescr line of an architecture diagram]
-[test: U+2029 before a directive that a comment follows after spaces, the text
-ends, in an accDescr line of an architecture diagram] [test: a U+2028 inside the
-text, a directive, and a comment after spaces, in an accTitle line of an
-architecture diagram] [test: a U+2028 inside the text, a directive that a
-comment touches, in an accTitle line of an architecture diagram] [test: a U+2029
-inside the text, a directive, and a comment after spaces, in an accDescr line of
-an architecture diagram] [test: a U+2028 inside the text, two directives that
-touch, and a comment after spaces, in an accDescr line of an architecture
-diagram] [test: a wide space before two directives that spaces separate, the
-text ends, in an accTitle line of an architecture diagram] [test: a wide space
-before two directives that spaces separate, the text ends, in an accDescr line
-of an architecture diagram] [test: a wide space before a directive that spaces
-and a comment follow, the text ends, in an accTitle line of an architecture
-diagram] [test: a wide space before a directive that spaces and a comment
-follow, the text ends, in an accDescr line of an architecture diagram] [test: a
-wide space before two directives that touch and a comment that touches the last,
-the text ends, in an accTitle line of an architecture diagram] [test: a wide
-space before two directives that touch and a comment that touches the last, the
-text ends, in an accDescr line of an architecture diagram] [test: a U+2028
-before two directives that touch, the text ends, in an accTitle line of an
-architecture diagram] [test: a U+2028 before two directives that touch, the text
-ends, in an accDescr line of an architecture diagram] [test: a U+2028 before a
-directive that spaces follow, the text ends, in an accTitle line of an
-architecture diagram] [test: a U+2028 before a directive that spaces follow, the
-text ends, in an accDescr line of an architecture diagram] [test: a U+2028
-before two directives that spaces separate, the text ends, in an accTitle line
-of an architecture diagram] [test: a U+2028 before two directives that spaces
+[test: U+2028 before a directive that a comment follows after spaces, the text
+ends, in an accDescr line of an architecture diagram] [test: U+2029 before a
+directive that a comment touches, a line follows, in an accDescr line of an
+architecture diagram] [test: U+2029 before a directive that a comment touches,
+the text ends, in an accDescr line of an architecture diagram] [test: U+2029
+before a directive that a comment follows after spaces, a line follows, in an
+accDescr line of an architecture diagram] [test: U+2029 before a directive that
+a comment follows after spaces, the text ends, in an accDescr line of an
+architecture diagram] [test: a U+2028 inside the text, a directive, and a
+comment after spaces, in an accTitle line of an architecture diagram] [test: a
+U+2028 inside the text, a directive that a comment touches, in an accTitle line
+of an architecture diagram] [test: a U+2029 inside the text, a directive, and a
+comment after spaces, in an accDescr line of an architecture diagram] [test: a
+U+2028 inside the text, two directives that touch, and a comment after spaces,
+in an accDescr line of an architecture diagram] [test: a wide space before two
+directives that spaces separate, the text ends, in an accTitle line of an
+architecture diagram] [test: a wide space before two directives that spaces
 separate, the text ends, in an accDescr line of an architecture diagram] [test:
-a directive that holds a line break, spaces before it, the text ends, in an
-accTitle line of an architecture diagram] [test: a directive that holds a line
-break, spaces before it, the text ends, in an accDescr line of an architecture
-diagram] [test: a directive that holds a U+2028, spaces before it, the text
-ends, in an accTitle line of an architecture diagram] [test: a directive that
-holds a U+2028, spaces before it, the text ends, in an accDescr line of an
-architecture diagram] [test: a U+2028 inside the text, spaces before the
-directive, the text ends, in an accTitle line of an architecture diagram] [test:
-a U+2028 inside the text, spaces before the directive, the text ends, in an
-accDescr line of an architecture diagram] [test: a value of directives only,
-spaces after the directive, the text ends, in an accTitle line of an
-architecture diagram] [test: a value of directives only, spaces after the
+a wide space before a directive that spaces and a comment follow, the text ends,
+in an accTitle line of an architecture diagram] [test: a wide space before a
+directive that spaces and a comment follow, the text ends, in an accDescr line
+of an architecture diagram] [test: a wide space before two directives that touch
+and a comment that touches the last, the text ends, in an accTitle line of an
+architecture diagram] [test: a wide space before two directives that touch and a
+comment that touches the last, the text ends, in an accDescr line of an
+architecture diagram] [test: a U+2028 before two directives that touch, the text
+ends, in an accTitle line of an architecture diagram] [test: a U+2028 before two
+directives that touch, the text ends, in an accDescr line of an architecture
+diagram] [test: a U+2028 before a directive that spaces follow, the text ends,
+in an accTitle line of an architecture diagram] [test: a U+2028 before a
+directive that spaces follow, the text ends, in an accDescr line of an
+architecture diagram] [test: a U+2028 before two directives that spaces
+separate, the text ends, in an accTitle line of an architecture diagram] [test:
+a U+2028 before two directives that spaces separate, the text ends, in an
+accDescr line of an architecture diagram] [test: a directive that holds a line
+break, spaces before it, the text ends, in an accTitle line of an architecture
+diagram] [test: a directive that holds a line break, spaces before it, the text
+ends, in an accDescr line of an architecture diagram] [test: a directive that
+holds a U+2028, spaces before it, the text ends, in an accTitle line of an
+architecture diagram] [test: a directive that holds a U+2028, spaces before it,
+the text ends, in an accDescr line of an architecture diagram] [test: a U+2028
+inside the text, spaces before the directive, the text ends, in an accTitle line
+of an architecture diagram] [test: a U+2028 inside the text, spaces before the
 directive, the text ends, in an accDescr line of an architecture diagram] [test:
-a directive inside the text, spaces before and after the last directive, the
-text ends, in an accTitle line of an architecture diagram] [test: a directive
-inside the text, spaces before and after the last directive, the text ends, in
-an accDescr line of an architecture diagram] [test: a `;` in the text, spaces
-before the directive, the text ends, in an accTitle line of an architecture
-diagram] [test: a `;` in the text, spaces before the directive, the text ends,
-in an accDescr line of an architecture diagram] [test: a `;` in the text, spaces
-between two directives, the text ends, in an accTitle line of an architecture
-diagram] [test: a `;` in the text, spaces between two directives, the text ends,
-in an accDescr line of an architecture diagram] [test: a `;` between two
-directives, spaces around it, the text ends, in an accTitle line of an
-architecture diagram] [test: a `;` between two directives, spaces around it, the
-text ends, in an accDescr line of an architecture diagram] [test: a `;` after
-the last directive, the text ends, in an accTitle line of an architecture
-diagram] [test: a `;` after the last directive, the text ends, in an accDescr
-line of an architecture diagram] [test: a U+2028 before a directive that spaces
-and a comment follow, the text ends, in an accTitle line of an architecture
-diagram] [test: a U+2028 before a directive that spaces and a comment follow, a
-comment line follows, in an accTitle line of an architecture diagram] [test: a
-U+2028 before a directive that spaces and a comment follow, an empty line
-follows, in an accTitle line of an architecture diagram] [test: a U+2028 before
-a directive that spaces and a comment follow, a line of whitespace follows, in
-an accTitle line of an architecture diagram] [test: a U+2028 before a directive
-that spaces and a comment follow, a directive line follows, in an accTitle line
-of an architecture diagram] [test: a U+2028 before a directive that spaces and a
-comment follow, a comment line and a statement follow, in an accTitle line of an
-architecture diagram] [test: a U+2028 before a directive that spaces and a
-comment follow, an empty line and a statement follow, in an accTitle line of an
-architecture diagram] [test: a U+2028 before a directive that spaces and a
-comment follow, the text ends, in an accDescr line of an architecture diagram]
-[test: a U+2028 before a directive that spaces and a comment follow, a comment
-line follows, in an accDescr line of an architecture diagram] [test: a U+2028
-before a directive that spaces and a comment follow, an empty line follows, in
+a value of directives only, spaces after the directive, the text ends, in an
+accTitle line of an architecture diagram] [test: a value of directives only,
+spaces after the directive, the text ends, in an accDescr line of an
+architecture diagram] [test: a directive inside the text, spaces before and
+after the last directive, the text ends, in an accTitle line of an architecture
+diagram] [test: a directive inside the text, spaces before and after the last
+directive, the text ends, in an accDescr line of an architecture diagram] [test:
+a `;` in the text, spaces before the directive, the text ends, in an accTitle
+line of an architecture diagram] [test: a `;` in the text, spaces before the
+directive, the text ends, in an accDescr line of an architecture diagram] [test:
+a `;` in the text, spaces between two directives, the text ends, in an accTitle
+line of an architecture diagram] [test: a `;` in the text, spaces between two
+directives, the text ends, in an accDescr line of an architecture diagram]
+[test: a `;` between two directives, spaces around it, the text ends, in an
+accTitle line of an architecture diagram] [test: a `;` between two directives,
+spaces around it, the text ends, in an accDescr line of an architecture diagram]
+[test: a `;` after the last directive, the text ends, in an accTitle line of an
+architecture diagram] [test: a `;` after the last directive, the text ends, in
 an accDescr line of an architecture diagram] [test: a U+2028 before a directive
-that spaces and a comment follow, a line of whitespace follows, in an accDescr
-line of an architecture diagram] [test: a U+2028 before a directive that spaces
-and a comment follow, a directive line follows, in an accDescr line of an
+that spaces and a comment follow, the text ends, in an accTitle line of an
 architecture diagram] [test: a U+2028 before a directive that spaces and a
-comment follow, a comment line and a statement follow, in an accDescr line of an
+comment follow, a comment line follows, in an accTitle line of an architecture
+diagram] [test: a U+2028 before a directive that spaces and a comment follow, an
+empty line follows, in an accTitle line of an architecture diagram] [test: a
+U+2028 before a directive that spaces and a comment follow, a line of whitespace
+follows, in an accTitle line of an architecture diagram] [test: a U+2028 before
+a directive that spaces and a comment follow, a directive line follows, in an
+accTitle line of an architecture diagram] [test: a U+2028 before a directive
+that spaces and a comment follow, a comment line and a statement follow, in an
+accTitle line of an architecture diagram] [test: a U+2028 before a directive
+that spaces and a comment follow, an empty line and a statement follow, in an
+accTitle line of an architecture diagram] [test: a U+2028 before a directive
+that spaces and a comment follow, the text ends, in an accDescr line of an
 architecture diagram] [test: a U+2028 before a directive that spaces and a
-comment follow, an empty line and a statement follow, in an accDescr line of an
-architecture diagram] [test: a U+2028 before two directives that a wide space
-separates, a comment after them, the text ends, in an accTitle line of an
-architecture diagram] [test: a U+2028 before two directives that a wide space
-separates, a comment after them, a comment line follows, in an accTitle line of
-an architecture diagram] [test: a U+2028 before two directives that a wide space
-separates, a comment after them, an empty line follows, in an accTitle line of
-an architecture diagram] [test: a U+2028 before two directives that a wide space
-separates, a comment after them, a line of whitespace follows, in an accTitle
+comment follow, a comment line follows, in an accDescr line of an architecture
+diagram] [test: a U+2028 before a directive that spaces and a comment follow, an
+empty line follows, in an accDescr line of an architecture diagram] [test: a
+U+2028 before a directive that spaces and a comment follow, a line of whitespace
+follows, in an accDescr line of an architecture diagram] [test: a U+2028 before
+a directive that spaces and a comment follow, a directive line follows, in an
+accDescr line of an architecture diagram] [test: a U+2028 before a directive
+that spaces and a comment follow, a comment line and a statement follow, in an
+accDescr line of an architecture diagram] [test: a U+2028 before a directive
+that spaces and a comment follow, an empty line and a statement follow, in an
+accDescr line of an architecture diagram] [test: a U+2028 before two directives
+that a wide space separates, a comment after them, the text ends, in an accTitle
 line of an architecture diagram] [test: a U+2028 before two directives that a
-wide space separates, a comment after them, a directive line follows, in an
+wide space separates, a comment after them, a comment line follows, in an
 accTitle line of an architecture diagram] [test: a U+2028 before two directives
-that a wide space separates, a comment after them, a comment line and a
-statement follow, in an accTitle line of an architecture diagram] [test: a
+that a wide space separates, a comment after them, an empty line follows, in an
+accTitle line of an architecture diagram] [test: a U+2028 before two directives
+that a wide space separates, a comment after them, a line of whitespace follows,
+in an accTitle line of an architecture diagram] [test: a U+2028 before two
+directives that a wide space separates, a comment after them, a directive line
+follows, in an accTitle line of an architecture diagram] [test: a U+2028 before
+two directives that a wide space separates, a comment after them, a comment line
+and a statement follow, in an accTitle line of an architecture diagram] [test: a
 U+2028 before two directives that a wide space separates, a comment after them,
 an empty line and a statement follow, in an accTitle line of an architecture
 diagram] [test: a U+2028 before two directives that a wide space separates, a
@@ -2752,7 +2984,157 @@ directive line follows, in an accDescr line of an architecture diagram] [test: a
 U+2028 before a directive that a wide space and a comment follow, a comment line
 and a statement follow, in an accDescr line of an architecture diagram] [test: a
 U+2028 before a directive that a wide space and a comment follow, an empty line
-and a statement follow, in an accDescr line of an architecture diagram]
+and a statement follow, in an accDescr line of an architecture diagram] [test: a
+U+2028 before a directive that spaces and a comment follow, an indented
+directive line follows, in an accTitle line of an architecture diagram] [test: a
+U+2028 before a directive that spaces and a comment follow, a directive and
+spaces follow, in an accTitle line of an architecture diagram] [test: a U+2028
+before a directive that spaces and a comment follow, two directives that touch
+follow, in an accTitle line of an architecture diagram] [test: a U+2028 before a
+directive that spaces and a comment follow, a directive and a comment on a line
+follow, in an accTitle line of an architecture diagram] [test: a U+2028 before a
+directive that spaces and a comment follow, a line of a no-break space follows,
+in an accTitle line of an architecture diagram] [test: a U+2028 before a
+directive that spaces and a comment follow, a line of a tab follows, in an
+accTitle line of an architecture diagram] [test: a U+2028 before a directive
+that spaces and a comment follow, an indented comment line follows, in an
+accTitle line of an architecture diagram] [test: a U+2028 before a directive
+that spaces and a comment follow, an indented directive line follows, in an
+accDescr line of an architecture diagram] [test: a U+2028 before a directive
+that spaces and a comment follow, a directive and spaces follow, in an accDescr
+line of an architecture diagram] [test: a U+2028 before a directive that spaces
+and a comment follow, two directives that touch follow, in an accDescr line of
+an architecture diagram] [test: a U+2028 before a directive that spaces and a
+comment follow, a directive and a comment on a line follow, in an accDescr line
+of an architecture diagram] [test: a U+2028 before a directive that spaces and a
+comment follow, a line of a no-break space follows, in an accDescr line of an
+architecture diagram] [test: a U+2028 before a directive that spaces and a
+comment follow, a line of a tab follows, in an accDescr line of an architecture
+diagram] [test: a U+2028 before a directive that spaces and a comment follow, an
+indented comment line follows, in an accDescr line of an architecture diagram]
+[test: a U+2028 before two directives that a wide space separates, a comment
+after them, an indented directive line follows, in an accTitle line of an
+architecture diagram] [test: a U+2028 before two directives that a wide space
+separates, a comment after them, a directive and spaces follow, in an accTitle
+line of an architecture diagram] [test: a U+2028 before two directives that a
+wide space separates, a comment after them, two directives that touch follow, in
+an accTitle line of an architecture diagram] [test: a U+2028 before two
+directives that a wide space separates, a comment after them, a directive and a
+comment on a line follow, in an accTitle line of an architecture diagram] [test:
+a U+2028 before two directives that a wide space separates, a comment after
+them, a line of a no-break space follows, in an accTitle line of an architecture
+diagram] [test: a U+2028 before two directives that a wide space separates, a
+comment after them, a line of a tab follows, in an accTitle line of an
+architecture diagram] [test: a U+2028 before two directives that a wide space
+separates, a comment after them, an indented comment line follows, in an
+accTitle line of an architecture diagram] [test: a U+2028 before two directives
+that a wide space separates, a comment after them, an indented directive line
+follows, in an accDescr line of an architecture diagram] [test: a U+2028 before
+two directives that a wide space separates, a comment after them, a directive
+and spaces follow, in an accDescr line of an architecture diagram] [test: a
+U+2028 before two directives that a wide space separates, a comment after them,
+two directives that touch follow, in an accDescr line of an architecture
+diagram] [test: a U+2028 before two directives that a wide space separates, a
+comment after them, a directive and a comment on a line follow, in an accDescr
+line of an architecture diagram] [test: a U+2028 before two directives that a
+wide space separates, a comment after them, a line of a no-break space follows,
+in an accDescr line of an architecture diagram] [test: a U+2028 before two
+directives that a wide space separates, a comment after them, a line of a tab
+follows, in an accDescr line of an architecture diagram] [test: a U+2028 before
+two directives that a wide space separates, a comment after them, an indented
+comment line follows, in an accDescr line of an architecture diagram] [test: a
+U+2028 before a directive that a wide space and a comment follow, an indented
+directive line follows, in an accTitle line of an architecture diagram] [test: a
+U+2028 before a directive that a wide space and a comment follow, a directive
+and spaces follow, in an accTitle line of an architecture diagram] [test: a
+U+2028 before a directive that a wide space and a comment follow, two directives
+that touch follow, in an accTitle line of an architecture diagram] [test: a
+U+2028 before a directive that a wide space and a comment follow, a directive
+and a comment on a line follow, in an accTitle line of an architecture diagram]
+[test: a U+2028 before a directive that a wide space and a comment follow, a
+line of a no-break space follows, in an accTitle line of an architecture
+diagram] [test: a U+2028 before a directive that a wide space and a comment
+follow, a line of a tab follows, in an accTitle line of an architecture diagram]
+[test: a U+2028 before a directive that a wide space and a comment follow, an
+indented comment line follows, in an accTitle line of an architecture diagram]
+[test: a U+2028 before a directive that a wide space and a comment follow, an
+indented directive line follows, in an accDescr line of an architecture diagram]
+[test: a U+2028 before a directive that a wide space and a comment follow, a
+directive and spaces follow, in an accDescr line of an architecture diagram]
+[test: a U+2028 before a directive that a wide space and a comment follow, two
+directives that touch follow, in an accDescr line of an architecture diagram]
+[test: a U+2028 before a directive that a wide space and a comment follow, a
+directive and a comment on a line follow, in an accDescr line of an architecture
+diagram] [test: a U+2028 before a directive that a wide space and a comment
+follow, a line of a no-break space follows, in an accDescr line of an
+architecture diagram] [test: a U+2028 before a directive that a wide space and a
+comment follow, a line of a tab follows, in an accDescr line of an architecture
+diagram] [test: a U+2028 before a directive that a wide space and a comment
+follow, an indented comment line follows, in an accDescr line of an architecture
+diagram] [test: a `;` after the last directive, a U+2028 before the directives,
+a comment after it, the text ends, in an accTitle line of an architecture
+diagram] [test: a `;` after the last directive, a U+2028 before the directives,
+a comment after it, the text ends, in an accDescr line of an architecture
+diagram] [test: a `;` between two directives, a U+2028 before the directives, a
+comment after them, the text ends, in an accTitle line of an architecture
+diagram] [test: a `;` between two directives, a U+2028 before the directives, a
+comment after them, the text ends, in an accDescr line of an architecture
+diagram] [test: a U+2028 after the last directive that spaces and a comment
+follow, the text ends, in an accTitle line of an architecture diagram] [test: a
+U+2028 after the last directive that spaces and a comment follow, a comment line
+follows, in an accTitle line of an architecture diagram] [test: a U+2028 after
+the last directive that spaces and a comment follow, an empty line follows, in
+an accTitle line of an architecture diagram] [test: a U+2028 after the last
+directive that spaces and a comment follow, a line of whitespace follows, in an
+accTitle line of an architecture diagram] [test: a U+2028 after the last
+directive that spaces and a comment follow, a directive line follows, in an
+accTitle line of an architecture diagram] [test: a U+2028 after the last
+directive that spaces and a comment follow, a comment line and a statement
+follow, in an accTitle line of an architecture diagram] [test: a U+2028 after
+the last directive that spaces and a comment follow, an empty line and a
+statement follow, in an accTitle line of an architecture diagram] [test: a
+U+2028 after the last directive that spaces and a comment follow, the text ends,
+in an accDescr line of an architecture diagram] [test: a U+2028 after the last
+directive that spaces and a comment follow, a comment line follows, in an
+accDescr line of an architecture diagram] [test: a U+2028 after the last
+directive that spaces and a comment follow, an empty line follows, in an
+accDescr line of an architecture diagram] [test: a U+2028 after the last
+directive that spaces and a comment follow, a line of whitespace follows, in an
+accDescr line of an architecture diagram] [test: a U+2028 after the last
+directive that spaces and a comment follow, a directive line follows, in an
+accDescr line of an architecture diagram] [test: a U+2028 after the last
+directive that spaces and a comment follow, a comment line and a statement
+follow, in an accDescr line of an architecture diagram] [test: a U+2028 after
+the last directive that spaces and a comment follow, an empty line and a
+statement follow, in an accDescr line of an architecture diagram] [test: a
+U+2028 between two directives, spaces and a comment after the last one, the text
+ends, in an accTitle line of an architecture diagram] [test: a U+2028 between
+two directives, spaces and a comment after the last one, a comment line follows,
+in an accTitle line of an architecture diagram] [test: a U+2028 between two
+directives, spaces and a comment after the last one, an empty line follows, in
+an accTitle line of an architecture diagram] [test: a U+2028 between two
+directives, spaces and a comment after the last one, a line of whitespace
+follows, in an accTitle line of an architecture diagram] [test: a U+2028 between
+two directives, spaces and a comment after the last one, a directive line
+follows, in an accTitle line of an architecture diagram] [test: a U+2028 between
+two directives, spaces and a comment after the last one, a comment line and a
+statement follow, in an accTitle line of an architecture diagram] [test: a
+U+2028 between two directives, spaces and a comment after the last one, an empty
+line and a statement follow, in an accTitle line of an architecture diagram]
+[test: a U+2028 between two directives, spaces and a comment after the last one,
+the text ends, in an accDescr line of an architecture diagram] [test: a U+2028
+between two directives, spaces and a comment after the last one, a comment line
+follows, in an accDescr line of an architecture diagram] [test: a U+2028 between
+two directives, spaces and a comment after the last one, an empty line follows,
+in an accDescr line of an architecture diagram] [test: a U+2028 between two
+directives, spaces and a comment after the last one, a line of whitespace
+follows, in an accDescr line of an architecture diagram] [test: a U+2028 between
+two directives, spaces and a comment after the last one, a directive line
+follows, in an accDescr line of an architecture diagram] [test: a U+2028 between
+two directives, spaces and a comment after the last one, a comment line and a
+statement follow, in an accDescr line of an architecture diagram] [test: a
+U+2028 between two directives, spaces and a comment after the last one, an empty
+line and a statement follow, in an accDescr line of an architecture diagram]
 
 [fixture: architecture/accessibility-lines/accdescr-spacing]
 
