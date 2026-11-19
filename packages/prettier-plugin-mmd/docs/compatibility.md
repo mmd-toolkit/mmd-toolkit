@@ -1480,8 +1480,11 @@ An `accTitle:` or `accDescr:` line of the Langium types prints as their column,
 except that a directive that starts the value stays with what follows it
 (`accTitle: %%{x}%%\u00a0T %%{y}%%` and `accTitle: %%{x}%%  T  ` are not
 changed), and that the `accTitle:` line of a pie chart and of a gitGraph stays
-as written in the four rows with a comment after the text or after a directive
-(see [Accessibility lines](./pie.md#accessibility-lines)).
+as written in the four rows with a comment after the text or after a directive,
+since 10.9.8 reads the `%%` and what follows as part of the title and draws
+other text for the form of the column (see the pie and gitGraph row of
+[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)
+and [Accessibility lines](./pie.md#accessibility-lines)).
 
 A directive that is not closed in a title takes the rest of the text.
 `title T %%{x` and `title T%%{x` are not changed in any type. The second table
@@ -1515,22 +1518,24 @@ a title] [test: a no-break space before a comment after the text of a title]
 [test: runs and spaces around a comment after the text of a title] [test: a
 comment and spaces after a directive that follows the text of a title] [test: a
 no-break space before a directive and a comment after the text of a title]
-[test: U+2003 before a directive that is not closed in a title, at the end of
-the text] [test: U+2003 before a directive that is not closed in a title, before
-a statement] [test: U+3000 before a directive that is not closed in a title, at
-the end of the text] [test: U+3000 before a directive that is not closed in a
-title, before a statement] [test: a directive that is not closed after a space
-in a title] [test: a directive that is not closed touching the text of a title]
-[test: a no-break space before a directive that is not closed in a title, at the
-end of the text] [test: a no-break space before a directive that is not closed
-in a title, before a statement] [test: a tab before a directive that is not
-closed in a title, at the end of the text] [test: a tab before a directive that
-is not closed in a title, before a statement] [test: two spaces before a
-directive that is not closed and text after it in a title, at the end of the
-text] [test: two spaces before a directive that is not closed and text after it
-in a title, before a statement] [test: two spaces before a directive that is not
-closed in a title, at the end of the text] [test: two spaces before a directive
-that is not closed in a title, before a statement]
+[fixture: pie/accessibility-lines/acc-title-percent-gap-kept] [fixture:
+gitgraph/title-and-common-values/acc-title-percent-gap-kept] [test: U+2003
+before a directive that is not closed in a title, at the end of the text] [test:
+U+2003 before a directive that is not closed in a title, before a statement]
+[test: U+3000 before a directive that is not closed in a title, at the end of
+the text] [test: U+3000 before a directive that is not closed in a title, before
+a statement] [test: a directive that is not closed after a space in a title]
+[test: a directive that is not closed touching the text of a title] [test: a
+no-break space before a directive that is not closed in a title, at the end of
+the text] [test: a no-break space before a directive that is not closed in a
+title, before a statement] [test: a tab before a directive that is not closed in
+a title, at the end of the text] [test: a tab before a directive that is not
+closed in a title, before a statement] [test: two spaces before a directive that
+is not closed and text after it in a title, at the end of the text] [test: two
+spaces before a directive that is not closed and text after it in a title,
+before a statement] [test: two spaces before a directive that is not closed in a
+title, at the end of the text] [test: two spaces before a directive that is not
+closed in a title, before a statement]
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped] [test: a
 no-break space and U+3000 at both ends of the title of a gantt diagram] [test: a

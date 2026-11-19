@@ -1556,7 +1556,12 @@ Langium の型の `accTitle:` と `accDescr:` の行は、その列の形に印�
 pie 図と gitGraph の `accTitle:` の行は、
 テキストかディレクティブの後にコメントがある表の 4 つの行では、
 書かれたまま残ります。
-（[Accessibility lines](./pie.ja.md#accessibility-lines)）。
+10.9.8 が `%%` とその後ろを title の一部として読み、
+その列の形では異なるテキストを描くためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
+の pie と gitGraph の行を参照してください。
+[Accessibility lines](./pie.ja.md#accessibility-lines)も参照してください。
 
 閉じていないディレクティブはタイトルの残りを取ります。
 `title T %%{x` と `title T%%{x` は、どの型でも変えません。
@@ -1592,6 +1597,8 @@ pie 図と gitGraph の `accTitle:` の行は、
 [test: runs and spaces around a comment after the text of a title]
 [test: a comment and spaces after a directive that follows the text of a title]
 [test: a no-break space before a directive and a comment after the text of a title]
+[fixture: pie/accessibility-lines/acc-title-percent-gap-kept]
+[fixture: gitgraph/title-and-common-values/acc-title-percent-gap-kept]
 [test: U+2003 before a directive that is not closed in a title, at the end of the text]
 [test: U+2003 before a directive that is not closed in a title, before a statement]
 [test: U+3000 before a directive that is not closed in a title, at the end of the text]
