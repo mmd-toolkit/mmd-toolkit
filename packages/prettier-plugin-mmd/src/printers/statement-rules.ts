@@ -596,10 +596,12 @@ export function endsWithDirectives(source: Source, [from, to]: Range): boolean {
  *   timeline after the first directive that follows the keyword and its
  *   whitespace, so the second printing, with the directives touching the text,
  *   has its runs printed as one space by the rule of the texts, and the first
- *   printing has to print them so too. A line that no directive can precede,
- *   such as the title of a Venn diagram or a C4 diagram, or an accessibility
- *   line, has only the rule of the texts and the runs before the directives
- *   that end it to print, which is the same here.
+ *   printing has to print them so too. The
+ *   titles of a Venn diagram and a C4 diagram and the accessibility lines take
+ *   a directive before the text too, but their printers keep that line as
+ *   written, so they never reach the trim with a directive before the text, and
+ *   have only the rule of the texts and the runs before the directives that end
+ *   it to print, which is the same here.
  * - `"collapsedBeforeEndingDirectives"`: all of them where no directive
  *   precedes the text; where one does, only those before the directives that
  *   end it, and the runs after the directive that precedes it stay. The title
@@ -710,12 +712,18 @@ function holdsOnlyBlanksToLineEnd(
 /**
  * The place at the end of `[from, to)`: the directives that touch each other
  * after the spaces and tabs at its end. `afterPlace` is where the place ends,
- * `placeStart` where it starts, the same offset where there is none.
+ * `placeStart` where it starts, the same offset where there is none, and
+ * `headEnd` where the text before it ends, without the spaces and tabs that
+ * stand before the place.
  */
 function findPlace(
   source: Source,
   [from, to]: Range,
-): { readonly placeStart: number; readonly afterPlace: number } {
+): {
+  readonly placeStart: number
+  readonly afterPlace: number
+  readonly headEnd: number
+} {
   let afterPlace = to
   while (afterPlace > from && isSpaceOrTab(source.text[afterPlace - 1]))
     afterPlace--
@@ -725,7 +733,9 @@ function findPlace(
     if (directive === undefined || directive.range[0] <= from) break
     placeStart = directive.range[0]
   }
-  return { placeStart, afterPlace }
+  let headEnd = placeStart
+  while (headEnd > from && isSpaceOrTab(source.text[headEnd - 1])) headEnd--
+  return { placeStart, afterPlace, headEnd }
 }
 
 /**
@@ -780,14 +790,12 @@ function endsWithPlaceAfterText(
   gapBeforePlace: "oneSpace" | "likeRuns",
 ): boolean {
   if (!holdsOnlyBlanksToLineEnd(source, to, isBlank)) return false
-  const { placeStart, afterPlace } = findPlace(source, [from, to])
+  const { placeStart, afterPlace, headEnd } = findPlace(source, [from, to])
   if (
     placeStart === afterPlace ||
     [...source.text.slice(placeStart, afterPlace)].some(isLineSeparator)
   )
     return false
-  let headEnd = placeStart
-  while (headEnd > from && isSpaceOrTab(source.text[headEnd - 1])) headEnd--
   if (headEnd <= from) return false
   return gapBeforePlace === "oneSpace" || !staysAsWritten(source, from, headEnd)
 }
@@ -807,11 +815,9 @@ function collectPlaceEdits(
   collapsesRuns: boolean,
 ): TextEdit[] {
   const [from, to] = range
-  const { placeStart, afterPlace } = findPlace(source, range)
+  const { placeStart, afterPlace, headEnd } = findPlace(source, range)
   const edits: TextEdit[] = []
   if (afterPlace < to) edits.push({ range: [afterPlace, to], replacement: "" })
-  let headEnd = placeStart
-  while (headEnd > from && isSpaceOrTab(source.text[headEnd - 1])) headEnd--
   if (headEnd < placeStart)
     edits.push({ range: [headEnd, placeStart], replacement: " " })
   if (collapsesRuns) appendItems(edits, collapseRunEdits(source, from, headEnd))

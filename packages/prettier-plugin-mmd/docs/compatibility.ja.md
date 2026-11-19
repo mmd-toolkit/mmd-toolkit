@@ -1556,18 +1556,31 @@ user journey
 [fixture: c4/title-and-accdescription/title-white-only]
 [fixture: state/aliases/second-description-trailing-whitespace-dropped]
 
-テキストが書かれたままになるとき、
-つまり HTML タグが空白を保つかもしれない `<` を含むときと、
-図が `white-space` を含むときは、最後のディレクティブの後の空白の有無で、
-行の印字が同じになりません。
+行のテキストは、書かれたままになることがあります。
 （[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)）。
+そのとき、最後のディレクティブの後の空白の有無で、行の印字が同じになりません。
 最後のディレクティブの後に空白が続かないときは、その前の隙間を書かれたままにし、
 空白が続くときは、その前の隙間を空白 1 つにします。
 `title A  <b  %%{z}%%` はそのまま印字し、
 `title A  <b  %%{z}%%  ` は `title A  <b %%{z}%%` と印字します。
-Gantt 図、ユーザージャーニー、タイムライン、シーケンス図、Venn 図、
-C4 図のタイトル、C4 図の `accDescription`、
-ishikawa 図のノードのテキストで同じです。
+テキストが書かれたままになるのは、
+HTML タグが空白を保つかもしれない `<` を含むとき、
+図が `white-space` を含むとき、U+2028 か U+2029 を含むとき、
+単語の間にディレクティブがあるとき、
+シーケンス図では前にディレクティブがあるときです。
+理由ごとに、次の行で示します。
+`<`: Gantt 図、ユーザージャーニー、タイムライン、シーケンス図、Venn 図、
+C4 図のタイトル、C4 図の `accDescription`、ishikawa 図のリテラル。
+`white-space`: Gantt 図のタイトルと ishikawa 図のリテラル。
+U+2028: `<` の行のうち ishikawa 図のリテラルを除く行。
+単語の間のディレクティブ: Gantt 図、ユーザージャーニー、タイムライン、
+シーケンス図のタイトル。
+テキストの前のディレクティブ: シーケンス図のタイトル。
+改行を含み、テキストを終えるディレクティブは、この理由ではありません。
+Gantt 図、ユーザージャーニー、タイムライン、シーケンス図、C4 図のタイトルと、
+C4 図の `accDescription` では、`title A  b  %%{init: {`、改行、
+`}}%%` は `title A b %%{init: {`、改行、`}}%%` と印字します。
+ただし、その後に空白が続くときは、テキスト全体を書かれたままにします。
 
 [fixture: gantt/titles-and-sections/title-angle-text-gap-kept]
 [fixture: gantt/titles-and-sections/title-angle-text-blanks-gap-one-space]
@@ -1589,6 +1602,42 @@ ishikawa 図のノードのテキストで同じです。
 [fixture: ishikawa/trailing-whitespace/directive-after-white-space-text-blanks-gap-one-space]
 [fixture: gantt/titles-and-sections/title-white-space-text-gap-kept]
 [fixture: gantt/titles-and-sections/title-white-space-text-blanks-gap-one-space]
+[fixture: gantt/titles-and-sections/title-between-words-directive-gap-kept]
+[fixture: gantt/titles-and-sections/title-between-words-directive-blanks-gap-one-space]
+[fixture: journey/titles-and-sections/title-between-words-directive-gap-kept]
+[fixture: journey/titles-and-sections/title-between-words-directive-blanks-gap-one-space]
+[fixture: timeline/titles-and-sections/title-between-words-directive-gap-kept]
+[fixture: timeline/titles-and-sections/title-between-words-directive-blanks-gap-one-space]
+[fixture: sequence/title/title-between-words-directive-gap-kept]
+[fixture: sequence/title/title-between-words-directive-blanks-gap-one-space]
+[fixture: sequence/title/title-leading-directive-gap-kept]
+[fixture: sequence/title/title-leading-directive-blanks-gap-one-space]
+[fixture: gantt/titles-and-sections/title-ending-line-break-directive-runs-collapsed]
+[fixture: gantt/titles-and-sections/title-ending-line-break-directive-blanks-kept]
+[fixture: journey/titles-and-sections/title-ending-line-break-directive-runs-collapsed]
+[fixture: journey/titles-and-sections/title-ending-line-break-directive-blanks-kept]
+[fixture: timeline/titles-and-sections/title-ending-line-break-directive-runs-collapsed]
+[fixture: timeline/titles-and-sections/title-ending-line-break-directive-blanks-kept]
+[fixture: sequence/title/title-ending-line-break-directive-runs-collapsed]
+[fixture: sequence/title/title-ending-line-break-directive-blanks-kept]
+[fixture: c4/title-and-accdescription/title-ending-line-break-directive-runs-collapsed]
+[fixture: c4/title-and-accdescription/title-ending-line-break-directive-blanks-kept]
+[fixture: c4/title-and-accdescription/description-ending-line-break-directive-runs-collapsed]
+[fixture: c4/title-and-accdescription/description-ending-line-break-directive-blanks-kept]
+[test: Gantt title with a U+2028 in its text and a directive at its end, no blanks after the directive]
+[test: Gantt title with a U+2028 in its text and a directive at its end, two spaces after the directive]
+[test: journey title with a U+2028 in its text and a directive at its end, no blanks after the directive]
+[test: journey title with a U+2028 in its text and a directive at its end, two spaces after the directive]
+[test: timeline title with a U+2028 in its text and a directive at its end, no blanks after the directive]
+[test: timeline title with a U+2028 in its text and a directive at its end, two spaces after the directive]
+[test: sequence title with a U+2028 in its text and a directive at its end, no blanks after the directive]
+[test: sequence title with a U+2028 in its text and a directive at its end, two spaces after the directive]
+[test: Venn title with a U+2028 in its text and a directive at its end, no blanks after the directive]
+[test: Venn title with a U+2028 in its text and a directive at its end, two spaces after the directive]
+[test: C4 title with a U+2028 in its text and a directive at its end, no blanks after the directive]
+[test: C4 title with a U+2028 in its text and a directive at its end, two spaces after the directive]
+[test: C4 accDescription with a U+2028 in its text and a directive at its end, no blanks after the directive]
+[test: C4 accDescription with a U+2028 in its text and a directive at its end, two spaces after the directive]
 
 mermaid.js はキーワードの後の空白 1 文字を読み、残りを Db に残すので、
 印字したテキストの Db は、書かれたテキストの Db と違いますが、
@@ -1717,9 +1766,7 @@ mermaid.js はタイトルを読む前にディレクティブを除くためで
 書かれたままにします。
 タイトルを終える、改行を含むディレクティブは、前にディレクティブがないとき、
 そうしません。
-`title A  b  %%{init: {`、改行、`}}%%` は、`title A b %%{init: {`、改行、
-`}}%%` と印字します。
-ただし、その後に空白が続くときは、タイトル全体を書かれたままにします。
+ただし、その後に空白が続くときは別です（上の段落を参照）。
 タイトルの中の空白とタブの連なりは、ディレクティブが接していても、
 空白で隔てられていても、空白 1 つにして印字します。
 テキストの後にコメントが続くとき、テキストが終わるとき、
