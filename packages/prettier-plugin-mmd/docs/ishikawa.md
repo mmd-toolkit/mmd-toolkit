@@ -411,19 +411,24 @@ boundaries.
 
 A comment that follows a directive on its line with no text between them
 (`%%{x}%% %% c  d`) is a comment on a line of a directive, not a literal: the
-run inside the comment stays as written, whatever whitespace stands between the
-directive and the comment (spaces, tabs, a no-break space, U+3000, U+2028,
-U+2029, and the other whitespace of the specification) is printed as one space
-(`%%{x}%%  %% c  d` is printed `%%{x}%% %% c  d`, and so are `%%{x}%%`, a
-U+3000, and `%% c  d`), and a comment that touches the directive stays touching.
-The same holds on the header line, but for a gap that holds a U+2028 or a
-U+2029, which stays as written. Between two directives on a line with no text,
-any whitespace is printed as one space, and two directives that touch stay
-touching (`%%{x}%%  %%{y}%%` is printed `%%{x}%% %%{y}%%`). This holds on the
-header line and on the line before the root too, a U+2028 and a U+2029 among the
-whitespace (`ishikawa %%{x}%%`, a U+2029, and `%%{y}%%` is printed
-`ishikawa %%{x}%% %%{y}%%`); there mermaid.js rejects the written text and the
-printed text alike, which is the known divergence
+run inside the comment stays as written.
+
+On a line of directives with no text, and on the header line, a gap of
+whitespace between two directives, or between the last directive and a comment,
+is printed as one space, whatever the whitespace is (spaces, tabs, a no-break
+space, U+3000, U+2028, U+2029, and the other whitespace of the specification):
+`%%{x}%%  %% c  d` is printed `%%{x}%% %% c  d`, and so are `%%{x}%%`, a U+3000,
+and `%% c  d`, and `%%{x}%%  %%{y}%%` is printed `%%{x}%% %%{y}%%`. A gap of
+nothing stays nothing, so two directives, or a directive and a comment, that
+touch stay touching. The one exception is the header line, where a gap that
+holds a U+2028 or a U+2029 stays as written if a comment ends the line
+(`ishikawa %%{x}%%`, a U+2029, `%%{y}%%`, a space, and `%% c` is not changed),
+and is printed as one space if a directive ends it (`ishikawa %%{x}%%`, a
+U+2029, and `%%{y}%%` is printed `ishikawa %%{x}%% %%{y}%%`).
+
+mermaid.js rejects a header line and a line before the root that hold two or
+more directives and no comment, written and printed alike: this is the known
+divergence
 [`blank-line-after-header-or-comments`](../../spec/docs/known-divergences/blank-line-after-header-or-comments.md),
 as the corpus fixture `ishikawa/div-header-space-directive-node` shows.
 
@@ -435,9 +440,11 @@ directive and the comment on a line of a directive of an ishikawa diagram]
 [test: spaces and tabs between a directive and the comment on a line of a
 directive of an ishikawa diagram, and a comment that touches the directive]
 [test: a whitespace character between two directives on a line of an ishikawa
-diagram with no text] [test: a whitespace character between two directives on
-the header line and on the line before the root of an ishikawa diagram] [corpus
-fixture: ishikawa/div-header-space-directive-node]
+diagram with no text] [test: a whitespace character between two or three
+directives and the comment on a line of directives of an ishikawa diagram, in
+each place] [test: a whitespace character between two directives on the header
+line and on the line before the root of an ishikawa diagram] [corpus fixture:
+ishikawa/div-header-space-directive-node]
 
 Input (escaped):
 

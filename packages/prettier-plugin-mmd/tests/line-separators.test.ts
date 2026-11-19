@@ -8590,6 +8590,10 @@ describe("the whitespace between a directive and the comment on a line of a dire
           `ishikawa\n  %%{x}%%${written}%%{y}%%\n  R\n    A\n`,
           "ishikawa\n  %%{x}%% %%{y}%%\n  R\n    A\n",
         )
+        await expectKept(
+          `ishikawa %%{x}%%${written}%%{y}%%${written}%%{z}%%\n  R\n    A\n`,
+          "ishikawa %%{x}%% %%{y}%% %%{z}%%\n  R\n    A\n",
+        )
       }
     }
     await expectKept(
@@ -8600,6 +8604,32 @@ describe("the whitespace between a directive and the comment on a line of a dire
       "ishikawa\n  %%{x}%%%%{y}%%\n  R\n    A\n",
       "ishikawa\n  %%{x}%%%%{y}%%\n  R\n    A\n",
     )
+  })
+
+  it("a whitespace character between two or three directives and the comment on a line of directives of an ishikawa diagram, in each place", async () => {
+    for (const [place, before, after] of ishikawaDirectiveLinePlaces) {
+      for (const character of ishikawaGapCharacters) {
+        // On the header line, a gap that holds a U+2028 or a U+2029 stays as
+        // written where a comment ends the line.
+        const staysOnTheHeader =
+          place === "the header line" &&
+          (character === "\u2028" || character === "\u2029")
+        for (const directives of [
+          "%%{x}%%{gap}%%{y}%%{gap}%% c  d",
+          "%%{x}%%{gap}%%{y}%%{gap}%%{z}%%{gap}%% c  d",
+        ]) {
+          await expectKept(
+            before.replace("{line}", directives.split("{gap}").join(character)),
+            after.replace(
+              "{line}",
+              directives
+                .split("{gap}")
+                .join(staysOnTheHeader ? character : " "),
+            ),
+          )
+        }
+      }
+    }
   })
 
   it("a whitespace character between two directives on a line of an ishikawa diagram with no text", async () => {
