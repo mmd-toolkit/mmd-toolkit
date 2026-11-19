@@ -865,6 +865,9 @@ mermaid.js は同じ行に続く文を読みます。
 たとえば、文の後の閉じていないディレクティブです。
 
 [fixture: statements-one-per-line/directive-after-statement]
+[fixture: statements-one-per-line/directive-after-statement-right-touching]
+[fixture: statements-one-per-line/directive-after-statement-left-touching]
+[fixture: directives/unclosed-after-statement-kept]
 
 `style`・`classDef`・`class` 文の後も字句解析器は style の文脈にあるので、
 その行の文字列が次の文を始め、その後の改行は `newline` ではなく、

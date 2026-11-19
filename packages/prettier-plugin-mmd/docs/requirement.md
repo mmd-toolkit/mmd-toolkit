@@ -859,7 +859,10 @@ keep its right-side contact or separation, and break its left contact, where no
 other rule keeps the layout as written (a directive that is not closed after a
 statement, and the like).
 
-[fixture: statements-one-per-line/directive-after-statement]
+[fixture: statements-one-per-line/directive-after-statement] [fixture:
+statements-one-per-line/directive-after-statement-right-touching] [fixture:
+statements-one-per-line/directive-after-statement-left-touching] [fixture:
+directives/unclosed-after-statement-kept]
 
 After a `style`, `classDef`, or `class` statement, the lexer is still in the
 style context, so a string on its line starts the next statement and the line
