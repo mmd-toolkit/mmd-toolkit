@@ -874,25 +874,86 @@ equal comparison Db would not justify rewriting the public EM_TITLE terminal.
 
 [fixture: eventmodeling/title/title-exact-padding-and-quotes]
 
-A `%%`, a `//`, or a `/*` that follows the text of a `title`, an `accTitle:`, or
-an `accDescr:` on the header line or on the line of a frame statement is text of
-the value, not a comment, and a run of spaces or tabs before it is a run inside
-the text. In an `accTitle:` the run stays as written: collapsing it changes the
-Db and the text that mermaid.js draws. In a `title` and in an `accDescr:`,
-collapsing it draws the same and changes the Db at most in the run, so
-[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)
-gives one space for them. The released version keeps `title T  %% c`,
-`title T  // c`, `title T  /* c */`, and `accDescr: T  // c` as written, with
-their two spaces, as it keeps the padding of a title above, so that form is
-printed against rule 2 and waits to be fixed by it.
+On the header line and on the line of a frame statement, the text of a `title`,
+an `accTitle:`, or an `accDescr:` ends before the first `%%`, which starts a
+comment: `title T  %% c` has the value `T  `. A `//` or a `/* */` after the text
+is part of the text: `title T  // c` has the value `T  // c`. So the run of
+spaces and tabs before the mark belongs to the value, and so does a wide space
+(see [Comments](#comments)), a U+2028, or a U+2029 there, which stays as
+written.
 
-[fixture: eventmodeling/title/header-line-title-comment-mark-is-text] [fixture:
-eventmodeling/title/header-line-acctitle-comment-mark-is-text] [fixture:
-eventmodeling/title/header-line-accdescr-comment-mark-is-text] [fixture:
-eventmodeling/title/frame-line-titles-comment-mark-is-text] [fixture:
-eventmodeling/title/header-line-title-slash-comment-mark-is-text] [fixture:
-eventmodeling/title/header-line-accdescr-block-comment-mark-is-text] [fixture:
-eventmodeling/title/frame-line-titles-slash-comment-marks-are-text]
+The run stays as written in an `accTitle:`, with a `%%`, a `//`, or a `/* */`
+after it: collapsing it changes the Db and the text that mermaid.js draws in
+every version that counts. In a `title` and in an `accDescr:`, collapsing the
+run draws the same: the Db of a title is the same, and the Db of a description
+differs only in the run or at its end, which mermaid.js draws as HTML with the
+whitespace collapsed. Rule 2 gives one space for them: journey, timeline, and
+sequence print `title T  %% c` as `title T %% c`, and
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)
+gives one space for a run inside a title or a description (`title T  // c`). The
+released version keeps `title T  %% c`, `title T  // c`, `title T  /* c */`,
+`accDescr: T  %% c`, `accDescr: T  // c`, and `accDescr: T  /* c */` as written,
+so that form is printed against rule 2 and waits to be fixed by it.
+
+[fixture: eventmodeling/title/header-line-title-run-before-percent-comment-kept]
+[fixture:
+eventmodeling/title/header-line-acctitle-run-before-percent-comment-kept]
+[fixture:
+eventmodeling/title/header-line-accdescr-run-before-percent-comment-kept]
+[fixture: eventmodeling/title/frame-line-titles-run-before-percent-comment-kept]
+[fixture: eventmodeling/title/header-line-title-slash-comment-mark-is-text]
+[fixture: eventmodeling/title/header-line-accdescr-block-comment-mark-is-text]
+[fixture: eventmodeling/title/frame-line-titles-slash-comment-marks-are-text]
+[test: a no-break space before a comment mark after the text of the title of the
+header line of an eventmodeling diagram stays as written] [test: U+3000 before a
+comment mark after the text of the accTitle of the header line of an
+eventmodeling diagram stays as written] [test: U+2028 before a comment mark
+after the text of the accDescr of the header line of an eventmodeling diagram
+stays as written] [test: U+2003 before a comment mark after the text of the
+title of a frame statement of an eventmodeling diagram stays as written] [test:
+a no-break space before a comment mark after the text of the accTitle of a frame
+statement of an eventmodeling diagram stays as written] [test: U+3000 before a
+comment mark after the text of the accDescr of a frame statement of an
+eventmodeling diagram stays as written] [test: a no-break space before a `//`
+comment mark after the text of the title of the header line of an eventmodeling
+diagram stays as written] [test: a no-break space before a `/* */` comment mark
+after the text of the title of the header line of an eventmodeling diagram stays
+as written] [test: U+000B before a `%%` comment after the text of the title of
+the header line of an eventmodeling diagram stays as written] [test: U+000C
+before a `%%` comment after the text of the title of the header line of an
+eventmodeling diagram stays as written] [test: a no-break space before a `%%`
+comment after the text of the title of the header line of an eventmodeling
+diagram stays as written] [test: U+1680 before a `%%` comment after the text of
+the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2000 before a `%%` comment after the text of the title of the header
+line of an eventmodeling diagram stays as written] [test: U+2001 before a `%%`
+comment after the text of the title of the header line of an eventmodeling
+diagram stays as written] [test: U+2002 before a `%%` comment after the text of
+the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2003 before a `%%` comment after the text of the title of the header
+line of an eventmodeling diagram stays as written] [test: U+2004 before a `%%`
+comment after the text of the title of the header line of an eventmodeling
+diagram stays as written] [test: U+2005 before a `%%` comment after the text of
+the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2006 before a `%%` comment after the text of the title of the header
+line of an eventmodeling diagram stays as written] [test: U+2007 before a `%%`
+comment after the text of the title of the header line of an eventmodeling
+diagram stays as written] [test: U+2008 before a `%%` comment after the text of
+the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2009 before a `%%` comment after the text of the title of the header
+line of an eventmodeling diagram stays as written] [test: U+200A before a `%%`
+comment after the text of the title of the header line of an eventmodeling
+diagram stays as written] [test: U+202F before a `%%` comment after the text of
+the title of the header line of an eventmodeling diagram stays as written]
+[test: U+205F before a `%%` comment after the text of the title of the header
+line of an eventmodeling diagram stays as written] [test: U+3000 before a `%%`
+comment after the text of the title of the header line of an eventmodeling
+diagram stays as written] [test: U+FEFF before a `%%` comment after the text of
+the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2028 before a `%%` comment after the text of the title of the header
+line of an eventmodeling diagram stays as written] [test: U+2029 before a `%%`
+comment after the text of the title of the header line of an eventmodeling
+diagram stays as written]
 
 [fixture: eventmodeling/title/title-normalized-invisible-to-comparison-db]
 
@@ -1066,8 +1127,8 @@ Align ordinary standalone comments with their owning body; between GWT items
 this is item depth. Within a printed line, a comment that touches stays
 touching, and a run of spaces and tabs before it becomes one space, except in
 the title, the accTitle, and the accDescr of the header line and of a frame
-statement, where a comment mark after the text is text of the value (see
-[Title](#title)). Rule 1 names no mark before a comment, so
+statement, where the run before a comment mark after the text belongs to the
+value (see [Title](#title)). Rule 1 names no mark before a comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#comments) after a message and
 [journey](./journey.md#comments) and [timeline](./timeline.md#comments) after
@@ -1076,22 +1137,24 @@ whitespace as written; each of them names those cases in its own sections or in
 [A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
 (whitespace that the Db holds, as after a `section` or a period, and whitespace
 that changes what mermaid.js reads). A wide space, a U+2028, or a U+2029 before
-a comment becomes one space. A wide space is one of U+000B, U+000C, U+00A0,
-U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, and U+FEFF; each of them has a
-row after a frame statement at the end of the text, and a no-break space,
-U+3000, U+2028, and U+2029 have a row at each of the other places: where a
-statement follows the comment, and after the header line, a GWT header, a GWT
+a comment becomes one space, except in the title, the accTitle, and the accDescr
+of the header line and of a frame statement, where it belongs to the value and
+stays as written (see [Title](#title)). A wide space is one of U+000B, U+000C,
+U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, and U+FEFF; each of
+them has a row after a frame statement at the end of the text, and a no-break
+space, U+3000, U+2028, and U+2029 have a row at each of the other places: where
+a statement follows the comment, and after the header line, a GWT header, a GWT
 item, a clause keyword, a data declaration, a note declaration, an entity
 declaration, a data reference, an inline body, a source reference, and the
 closing brace of a block. mermaid.js rejects U+0085, U+180E, and U+200B before a
-comment with a lexer error, so the parser rejects them too. The printers above
-print these characters otherwise: sequence keeps a no-break space or U+3000
-after a message as written, and journey and timeline print them after their
-header as one space; before U+2028 or U+2029, sequence, journey, and timeline
-keep the line as written where a statement follows the comment and put the
-comment on a line of its own where the text ends. So no rule gives the form of
-these characters, and the form that the released version prints, one space,
-stays until it is decided (see
+comment after a frame statement at the end of the text with a lexer error, so
+the parser rejects them there too. The printers above print these characters
+otherwise: sequence keeps a no-break space or U+3000 after a message as written,
+and journey and timeline print them after their header as one space; before
+U+2028 or U+2029, sequence, journey, and timeline keep the line as written where
+a statement follows the comment and put the comment on a line of its own where
+the text ends. So no rule gives the form of these characters, and the form that
+the released version prints, one space, stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 When units split into separate lines, attach intervening inline comments to the
 following unit, in the same direction as directives. Use this shared placement
@@ -1110,7 +1173,21 @@ decides, as [journey](./journey.md#comments),
 [timeline](./timeline.md#comments), and [c4](./c4.md#comments) print it so.
 
 [test: an em space before a `//` comment after a statement of an eventmodeling
-diagram] [fixture: eventmodeling/comments/inline-gap-run-and-touching] [fixture:
+diagram] [test: a sequence diagram keeps U+2029 before a comment that a
+statement follows as written] [test: a sequence diagram puts a comment after
+U+2028 at the end of the text on a line of its own] [test: a timeline keeps
+U+2029 before a comment after its header that a statement follows as written]
+[test: a timeline puts a comment after its header and U+2028 at the end of the
+text on a line of its own] [test: a user journey keeps U+2029 before a comment
+after its header that a statement follows as written] [test: a user journey puts
+a comment after its header and U+2028 at the end of the text on a line of its
+own] [test: a user journey prints a no-break space before a comment after its
+header as one space] [test: a timeline prints U+3000 before a comment after its
+header as one space] [test: a user journey prints a run before a comment after
+its title as one space] [test: a timeline prints a run before a comment after
+its title as one space] [test: a sequence diagram prints a run before a comment
+after its title as one space] [fixture:
+eventmodeling/comments/inline-gap-run-and-touching] [fixture:
 eventmodeling/comments/standalone-native-comments] [test: a no-break space
 before a `%%` comment after a statement of an eventmodeling diagram] [test:
 U+3000 before a `//` comment after a statement of an eventmodeling diagram]

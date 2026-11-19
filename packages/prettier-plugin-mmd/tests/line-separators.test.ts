@@ -5775,6 +5775,206 @@ const eventmodelingCommentGapExamples: readonly (readonly [
     "eventmodeling\ndata D {\nx\n}\u2029%% c\n",
     "eventmodeling\ndata D {\n  x\n} %% c\n",
   ],
+  [
+    "a no-break space before a comment mark after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u00a0%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u00a0%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+3000 before a comment mark after the text of the accTitle of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling accTitle: T\u3000// c\ntf 01 evt Alpha\n",
+    "eventmodeling accTitle: T\u3000// c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2028 before a comment mark after the text of the accDescr of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling accDescr: T\u2028/* c */\ntf 01 evt Alpha\n",
+    "eventmodeling accDescr: T\u2028/* c */\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2003 before a comment mark after the text of the title of a frame statement of an eventmodeling diagram stays as written",
+    "eventmodeling\ntf 01 evt Alpha title T\u2003%% c\n",
+    "eventmodeling\ntf 01 evt Alpha title T\u2003%% c\n",
+  ],
+  [
+    "a no-break space before a comment mark after the text of the accTitle of a frame statement of an eventmodeling diagram stays as written",
+    "eventmodeling\ntf 01 evt Alpha accTitle: T\u00a0/* c */\n",
+    "eventmodeling\ntf 01 evt Alpha accTitle: T\u00a0/* c */\n",
+  ],
+  [
+    "U+3000 before a comment mark after the text of the accDescr of a frame statement of an eventmodeling diagram stays as written",
+    "eventmodeling\ntf 01 evt Alpha accDescr: T\u3000// c\n",
+    "eventmodeling\ntf 01 evt Alpha accDescr: T\u3000// c\n",
+  ],
+  [
+    "U+000B before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u000b%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u000b%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+000C before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\f%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\f%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "a no-break space before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u00a0%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u00a0%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+1680 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u1680%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u1680%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2000 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u2000%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u2000%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2001 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u2001%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u2001%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2002 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u2002%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u2002%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2003 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u2003%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u2003%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2004 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u2004%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u2004%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2005 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u2005%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u2005%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2006 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u2006%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u2006%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2007 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u2007%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u2007%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2008 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u2008%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u2008%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2009 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u2009%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u2009%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+200A before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u200a%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u200a%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+202F before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u202f%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u202f%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+205F before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u205f%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u205f%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+3000 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u3000%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u3000%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+FEFF before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\ufeff%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\ufeff%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2028 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u2028%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u2028%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2029 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u2029%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u2029%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "a no-break space before a `//` comment mark after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u00a0// c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u00a0// c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "a no-break space before a `/* */` comment mark after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u00a0/* c */\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u00a0/* c */\ntf 01 evt Alpha\n",
+  ],
+  [
+    "a sequence diagram keeps U+2029 before a comment that a statement follows as written",
+    "sequenceDiagram\nA->>B: x\u2029%% c\nC->>D: y\n",
+    "sequenceDiagram\n  A->>B: x\u2029%% c\nC->>D: y\n",
+  ],
+  [
+    "a sequence diagram puts a comment after U+2028 at the end of the text on a line of its own",
+    "sequenceDiagram\nA->>B: x\u2028%% c\n",
+    "sequenceDiagram\n  A ->> B: x\n  %% c\n",
+  ],
+  [
+    "a timeline keeps U+2029 before a comment after its header that a statement follows as written",
+    "timeline\u2029%% c\n2020 : a\n",
+    "timeline\u2029%% c\n2020 : a\n",
+  ],
+  [
+    "a timeline puts a comment after its header and U+2028 at the end of the text on a line of its own",
+    "timeline\u2028%% c\n",
+    "timeline\n  %% c\n",
+  ],
+  [
+    "a user journey keeps U+2029 before a comment after its header that a statement follows as written",
+    "journey\u2029%% c\nsection S\n",
+    "journey\u2029%% c\nsection S\n",
+  ],
+  [
+    "a user journey puts a comment after its header and U+2028 at the end of the text on a line of its own",
+    "journey\u2028%% c\n",
+    "journey\n  %% c\n",
+  ],
+  [
+    "a user journey prints a no-break space before a comment after its header as one space",
+    "journey\u00a0%% c\nsection S\n",
+    "journey %% c\n  section S\n",
+  ],
+  [
+    "a timeline prints U+3000 before a comment after its header as one space",
+    "timeline\u3000%% c\n2020 : a\n",
+    "timeline %% c\n  2020 : a\n",
+  ],
+  [
+    "a user journey prints a run before a comment after its title as one space",
+    "journey\ntitle T  %% c\nsection S\n",
+    "journey\n  title T %% c\n  section S\n",
+  ],
+  [
+    "a timeline prints a run before a comment after its title as one space",
+    "timeline\ntitle T  %% c\n2020 : a\n",
+    "timeline\n  title T %% c\n  2020 : a\n",
+  ],
+  [
+    "a sequence diagram prints a run before a comment after its title as one space",
+    "sequenceDiagram\ntitle T  %% c\nA->>B: x\n",
+    "sequenceDiagram\n  title T %% c\n  A ->> B: x\n",
+  ],
 ]
 
 describe("the whitespace beside a comment of an eventmodeling diagram", () => {

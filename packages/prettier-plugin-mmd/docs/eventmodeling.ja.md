@@ -900,27 +900,68 @@ title の前置空白、1 個の区切り、本文、末尾テキストを原文
 
 [fixture: eventmodeling/title/title-exact-padding-and-quotes]
 
-ヘッダー行とフレーム文の行の `title`、`accTitle:`、
-`accDescr:` のテキストの後の `%%`、`//`、`/*` は、
-コメントではなく値のテキストです。
-また、その前にある空白かタブの連なりは、テキストの中の連なりです。
-`accTitle:` では、その連なりを書かれたまま残します。
-つなぐと、Db と mermaid.js が描くテキストが変わるからです。
-`title` と `accDescr:` では、つないでも描くものは同じで、
-Db が変わるとしても連なりだけなので、規則 2 が空白 1 つを与えます。
+ヘッダー行とフレーム文の行では、`title`、`accTitle:`、`accDescr:` のテキストは、
+最初の `%%` の前で終わり、
+`%%` はコメントを始めます（`title T  %% c` の値は `T  ` です）。
+テキストの後の `//` と `/* */` はテキストの一部です（`title T  // c` の値は
+`T  // c` です）。
+そのため、印の前にある空白かタブの連なりは値に属し、
+そこにある幅のある空白（[Comments](#comments) を参照）、U+2028、
+U+2029 も値に属するので、書かれたまま残します。
+
+`accTitle:` では、`%%`、`//`、`/* */` のどれが続くときも、
+連なりを書かれたまま残します。
+つなぐと、対象にするどの版でも、
+Db と mermaid.js が描くテキストが変わるからです。
+`title` と `accDescr:` では、連なりをつないでも描くものは同じです。
+title の Db は同じで、説明の Db は連なりか末尾だけが違い、
+mermaid.js は説明を空白をつめた HTML として描きます。
+規則 2 は空白 1 つを与えます。
+journey、timeline、sequence は `title T  %% c` を `title T %% c` と印字し、
+title や説明の中の連なり（`title T  // c`）にも、
+同じに描かれるテキスト中の空白の連なりが空白 1 つを与えます。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
-リリース済みの版は、上の title の前置空白と同じく、`title T  %% c`、
-`title T  // c`、`title T  /* c */`、`accDescr: T  // c` を、
-空白 2 つも含めて書かれたまま残すので、その形は規則 2 に反して印字しており、
+リリース済みの版は、`title T  %% c`、`title T  // c`、`title T  /* c */`、
+`accDescr: T  %% c`、`accDescr: T  // c`、`accDescr: T  /* c */` を、
+書かれたまま残すので、その形は規則 2 に反して印字しており、
 規則による修正を待っています。
 
-[fixture: eventmodeling/title/header-line-title-comment-mark-is-text]
-[fixture: eventmodeling/title/header-line-acctitle-comment-mark-is-text]
-[fixture: eventmodeling/title/header-line-accdescr-comment-mark-is-text]
-[fixture: eventmodeling/title/frame-line-titles-comment-mark-is-text]
+[fixture: eventmodeling/title/header-line-title-run-before-percent-comment-kept]
+[fixture: eventmodeling/title/header-line-acctitle-run-before-percent-comment-kept]
+[fixture: eventmodeling/title/header-line-accdescr-run-before-percent-comment-kept]
+[fixture: eventmodeling/title/frame-line-titles-run-before-percent-comment-kept]
 [fixture: eventmodeling/title/header-line-title-slash-comment-mark-is-text]
 [fixture: eventmodeling/title/header-line-accdescr-block-comment-mark-is-text]
 [fixture: eventmodeling/title/frame-line-titles-slash-comment-marks-are-text]
+[test: a no-break space before a comment mark after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+3000 before a comment mark after the text of the accTitle of the header line of an eventmodeling diagram stays as written]
+[test: U+2028 before a comment mark after the text of the accDescr of the header line of an eventmodeling diagram stays as written]
+[test: U+2003 before a comment mark after the text of the title of a frame statement of an eventmodeling diagram stays as written]
+[test: a no-break space before a comment mark after the text of the accTitle of a frame statement of an eventmodeling diagram stays as written]
+[test: U+3000 before a comment mark after the text of the accDescr of a frame statement of an eventmodeling diagram stays as written]
+[test: a no-break space before a `//` comment mark after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: a no-break space before a `/* */` comment mark after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+000B before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+000C before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: a no-break space before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+1680 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2000 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2001 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2002 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2003 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2004 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2005 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2006 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2007 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2008 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2009 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+200A before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+202F before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+205F before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+3000 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+FEFF before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2028 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
+[test: U+2029 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written]
 
 [fixture: eventmodeling/title/title-normalized-invisible-to-comparison-db]
 
@@ -1098,7 +1139,8 @@ tf 02 evt Beta
 同じ印字行では、接するコメントは接したまま残し、
 前の空白とタブの連なりは空白 1 つにします。
 ただし、ヘッダー行とフレーム文の行の title、accTitle、accDescr では、
-`%% c` が値のテキストなので、そのままです（[Title](#title) を参照）。
+コメントの印の前の連なりが値に属するので、
+そのままです（[Title](#title) を参照）。
 規則 1 は、コメントの前の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#コメント)は、
@@ -1112,6 +1154,8 @@ tf 02 evt Beta
 で挙げています（Db が持つ空白、たとえば `section` と期間の後の空白と、
 mermaid.js の読みを変える空白です）。
 コメントの前にある幅のある空白、U+2028、U+2029 は、空白 1 つにします。
+ただし、ヘッダー行とフレーム文の行の title、accTitle、accDescr では、
+値に属するので、書かれたまま残します（[Title](#title) を参照）。
 幅のある空白は、U+000B、U+000C、U+00A0、U+1680、U+2000 から U+200A、U+202F、
 U+205F、U+3000、U+FEFF のどれかです。
 そのすべてが、フレーム文の後ろでテキストが終わるときの行を持ち、ほかの場所には、
@@ -1119,8 +1163,8 @@ U+205F、U+3000、U+FEFF のどれかです。
 ほかの場所は、コメントに文が続くとき、ヘッダー行、GWT のヘッダー、GWT の項目、
 節のキーワード、data の宣言、note の宣言、entity の宣言、data の参照、
 行内の本体、ソースの参照、ブロックの閉じ括弧の後ろです。
-mermaid.js は、コメントの前の U+0085、U+180E、
-U+200B を字句解析のエラーで拒否するので、パーサーも拒否します。
+mermaid.js は、フレーム文の後ろでテキストが終わるときのコメントの前の U+0085、
+U+180E、U+200B を字句解析のエラーで拒否するので、そこではパーサーも拒否します。
 前に挙げた図は、これらの文字をそう印字しません。
 sequence は、
 メッセージの後ろのノーブレークスペースと U+3000 を書かれたまま残します。
@@ -1151,6 +1195,17 @@ data ブロック、note、`accDescr` ブロック、スラッシュのブロッ
 
 [fixture: eventmodeling/comments/inline-gap-run-and-touching]
 [test: an em space before a `//` comment after a statement of an eventmodeling diagram]
+[test: a sequence diagram keeps U+2029 before a comment that a statement follows as written]
+[test: a sequence diagram puts a comment after U+2028 at the end of the text on a line of its own]
+[test: a timeline keeps U+2029 before a comment after its header that a statement follows as written]
+[test: a timeline puts a comment after its header and U+2028 at the end of the text on a line of its own]
+[test: a user journey keeps U+2029 before a comment after its header that a statement follows as written]
+[test: a user journey puts a comment after its header and U+2028 at the end of the text on a line of its own]
+[test: a user journey prints a no-break space before a comment after its header as one space]
+[test: a timeline prints U+3000 before a comment after its header as one space]
+[test: a user journey prints a run before a comment after its title as one space]
+[test: a timeline prints a run before a comment after its title as one space]
+[test: a sequence diagram prints a run before a comment after its title as one space]
 [fixture: eventmodeling/comments/standalone-native-comments]
 [test: a no-break space before a `%%` comment after a statement of an eventmodeling diagram]
 [test: U+3000 before a `//` comment after a statement of an eventmodeling diagram]
