@@ -5221,99 +5221,70 @@ describe("a U+2028 or U+2029 before the directive of a title of a directive and 
     async (_name, row) => {
       for (const type of titleStatementTypes) {
         for (const character of ["\u2028", "\u2029"]) {
-          for (const touching of [true, false]) {
-            for (const follow of row.follows) {
-              const written = touching ? "%%{x}%%%% c" : "%%{x}%%  %% c  "
-              const input = `${type.header}\ntitle ${character} ${written}\n${follow.text.replace("{statement}", type.statement).replace("{ST}", type.statement)}`
-              if (type.name === "an info diagram" && follow.rejectedByInfo) {
-                await expect(formatMermaid(input)).rejects.toThrow(
-                  "Unexpected token",
+          // The U+2028 or U+2029 has a space after it, or none.
+          for (const gap of [" ", ""]) {
+            for (const touching of [true, false]) {
+              for (const follow of row.follows) {
+                const written = touching ? "%%{x}%%%% c" : "%%{x}%%  %% c  "
+                const input = `${type.header}\ntitle ${character}${gap}${written}\n${follow.text.replace("{statement}", type.statement).replace("{ST}", type.statement)}`
+                if (type.name === "an info diagram" && follow.rejectedByInfo) {
+                  await expect(formatMermaid(input)).rejects.toThrow(
+                    "Unexpected token",
+                  )
+                  continue
+                }
+                // A treemap with spaces before the comment prints these rows
+                // one way the first time and another the second time: no form
+                // is given.
+                if (
+                  type.name === "a treemap" &&
+                  !touching &&
+                  row.unstableInATreemap
                 )
-                continue
+                  continue
+                const isC4 = type.name === "a C4 diagram"
+                let expected: string
+                if (row.moved[type.group]) {
+                  // The moved form prints the text as if the U+2028 were a line break.
+                  expected = await formatMermaid(
+                    input.replace(` ${character}${gap}`, "\n"),
+                  )
+                } else {
+                  const tail =
+                    (isC4 ? follow.c4Tail : null) ??
+                    follow.tail ??
+                    follow.otherTail ??
+                    (() => {
+                      throw new Error("no tail")
+                    })()
+                  // Where the comment stands after spaces, the types of the last
+                  // group but a C4 diagram print one space before it where the
+                  // text ends after the line (docs/compatibility.md).
+                  const oneSpace =
+                    !touching && type.group === "other" && !isC4 && row.oneSpace
+                  expected = `${type.printedHeader}\n${type.indent}title ${character}${gap}${oneSpace ? "%%{x}%% %% c  " : written}\n${tail
+                    .replace("{S0}", statementAfterTheTitleLine(type.statement))
+                    .replace("{S}", type.printedStatement)}`
+                }
+                const output = await formatMermaid(input)
+                expect(output).toBe(expected)
+                expect(await formatMermaid(output)).toBe(output)
+                const dbBefore = dbOfText(input, defaultEmbedded())
+                expect(
+                  dbForFormattingComparison(
+                    dbBefore,
+                    dbOfText(output, defaultEmbedded()),
+                    input,
+                    output,
+                  ),
+                ).toEqual(dbBefore)
               }
-              // A treemap with spaces before the comment prints these rows one
-              // way the first time and another the second time: no form is given.
-              if (
-                type.name === "a treemap" &&
-                !touching &&
-                row.unstableInATreemap
-              )
-                continue
-              const isC4 = type.name === "a C4 diagram"
-              let expected: string
-              if (row.moved[type.group]) {
-                // The moved form prints the text as if the U+2028 were a line break.
-                expected = await formatMermaid(
-                  input.replace(` ${character} `, "\n"),
-                )
-              } else {
-                const tail =
-                  (isC4 ? follow.c4Tail : null) ??
-                  follow.tail ??
-                  follow.otherTail ??
-                  (() => {
-                    throw new Error("no tail")
-                  })()
-                // Where the comment stands after spaces, the types of the last
-                // group but a C4 diagram print one space before it where the
-                // text ends after the line (docs/compatibility.md).
-                const oneSpace =
-                  !touching && type.group === "other" && !isC4 && row.oneSpace
-                expected = `${type.printedHeader}\n${type.indent}title ${character} ${oneSpace ? "%%{x}%% %% c  " : written}\n${tail
-                  .replace("{S0}", statementAfterTheTitleLine(type.statement))
-                  .replace("{S}", type.printedStatement)}`
-              }
-              const output = await formatMermaid(input)
-              expect(output).toBe(expected)
-              expect(await formatMermaid(output)).toBe(output)
-              const dbBefore = dbOfText(input, defaultEmbedded())
-              expect(
-                dbForFormattingComparison(
-                  dbBefore,
-                  dbOfText(output, defaultEmbedded()),
-                  input,
-                  output,
-                ),
-              ).toEqual(dbBefore)
             }
           }
         }
       }
     },
   )
-
-  it("a directive that holds a U+2028 or a U+2029 after a U+2028 or a U+2029 before the directive of a title, with nothing or a statement after the title", async () => {
-    for (const type of titleStatementTypes) {
-      for (const [character, held] of [
-        ["\u2028", "\u2028"],
-        ["\u2029", "\u2029"],
-        ["\u2028", "\u2029"],
-      ] as const) {
-        for (const follow of ["", "{ST}\n"]) {
-          const written = `title ${character} %%{init: {${held}}}%%%% c`
-          const input = `${type.header}\n${written}\n${follow.replace("{ST}", type.statement)}`
-          // An info diagram rejects a statement after a title with a comment
-          // that holds a separator.
-          if (type.name === "an info diagram" && follow !== "") continue
-          const tail = follow === "" ? "" : type.printedStatement
-          const output = await formatMermaid(input)
-          expect(output).toBe(
-            `${type.printedHeader}\n${type.indent}${written}\n${tail}`,
-          )
-          expect(await formatMermaid(output)).toBe(output)
-          const dbBefore = dbOfText(input, defaultEmbedded())
-          expect(
-            dbForFormattingComparison(
-              dbBefore,
-              dbOfText(output, defaultEmbedded()),
-              input,
-              output,
-            ),
-          ).toEqual(dbBefore)
-        }
-      }
-    }
-  })
 })
 
 /** The text without the spaces and tabs at its end. */
@@ -5322,50 +5293,3 @@ function withoutSpacesAndTabsAtTheEnd(text: string): string {
   while (end > 0 && (text[end - 1] === " " || text[end - 1] === "\t")) end--
   return text.slice(0, end)
 }
-
-/** A U+2028 or U+2029 before the directive of a title of a directive and a comment only keeps the title and the line after it as written (docs/compatibility.md). */
-const lineSeparatorBeforeTheDirectiveExamples: readonly (readonly [
-  string,
-  string,
-  string,
-])[] = [
-  [
-    "U+2028 before the directive of a title of a directive and a comment only in a pie chart",
-    'pie\ntitle \u2028%%{x}%%%% c\n"a": 1\n',
-    'pie\n  title \u2028%%{x}%%%% c\n"a": 1\n',
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only in a pie chart",
-    'pie\ntitle \u2029%%{x}%%%% c\n"a": 1\n',
-    'pie\n  title \u2029%%{x}%%%% c\n"a": 1\n',
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only in a quadrant chart",
-    "quadrantChart\ntitle \u2028%%{x}%%%% c\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
-    "quadrantChart\n  title \u2028%%{x}%%%% c\nx-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only in a Gantt chart",
-    "gantt\ntitle \u2028%%{x}%%%% c\n",
-    "gantt\n  title \u2028%%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only in a Venn diagram",
-    "venn-beta\ntitle \u2028%%{x}%%%% c\nset A\n",
-    "venn-beta\n  title \u2028%%{x}%%%% c\nset A\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only in a C4 diagram",
-    'C4Context\ntitle \u2028%%{x}%%%% c\nPerson(a,"A")\n',
-    'C4Context\n  title \u2028%%{x}%%%% c\nPerson(a,"A")\n',
-  ],
-]
-
-describe("a line separator before the directive of a title of a directive and a comment only", () => {
-  it.each(lineSeparatorBeforeTheDirectiveExamples)(
-    "keeps %s",
-    async (_name, input, output) => {
-      await expectKept(input, output)
-    },
-  )
-})

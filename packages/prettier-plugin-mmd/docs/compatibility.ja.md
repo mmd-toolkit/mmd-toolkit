@@ -1694,15 +1694,21 @@ treeView ではディレクティブを 1 桁目に置き、
 そこに空白があったときは、ディレクティブとコメントの間を空白 1 つにし、
 その後の行は通常どおりに印字します。
 文のない行は、その後でテキストが終わるものです。
-表は、ディレクティブの前に U+2028 か U+2029 が 1 つあり、
-ディレクティブが改行も `;` も U+2028 も U+2029
-も含まない場合についてのものです。
-改行か `;` を含むディレクティブは表の外にあり、形を示しません。
-U+2028 か U+2029 を含むディレクティブがあるときは、
-後ろに何もないか文があるとき、タイトルは書かれたまま残ります。
-ディレクティブの前の区切りが 2 つの形、タイトルの後のほかの行の並び、
-表にないほかの形は示しません。
-リリース済みの版が印字する形は、決めるまで変えません
+表は、タイトルの行 1 つと、
+その後の行のうち第 1 列に書いたものについてのものです。
+タイトルの行は、`title`、空白、U+2028 か U+2029 が 1 つ、空白か何もなし、
+改行も `;` も U+2028 も U+2029 も含まないディレクティブ、
+`;` を含まないコメントで、`%%{x}%%%% c` か `%%{x}%%  %% c  ` の形に書かれ、
+ほかには何もないものです。
+それ以外のタイトルの行は表の外にあります。
+U+2028 か U+2029 の前にディレクティブやテキストがある行、区切りが 2 つの行、
+改行か `;` か U+2028 か U+2029 を含むディレクティブの行、
+`;` を含むコメントの行、ディレクティブが 2 つの行、
+コメントのないディレクティブの行、ディレクティブのないコメントの行、
+区切りやコメントの周りに、ほかの空白がある行がそうです。
+第 1 列に書いていないタイトルの後の行と、タイトルの後のほかの行の並びも、
+表の外にあります。
+それらの形は示さず、リリース済みの版が印字する形は、決めるまで変えません。
 （[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)）。
 info は、空行、空白だけの行、
 ディレクティブの行の後の文を拒否する（mermaid.js も拒否する）ので、
@@ -1710,30 +1716,31 @@ info は、空行、空白だけの行、
 treemap は、ディレクティブとコメントの間に空白があるとき、第 2 行、第 5 行、
 第 9 行で、1 回目と 2 回目でコメントの印字が違うので、印字した形がありません。
 
-| タイトルの後                                               | Langium の型（treeView を除く） | treeView     | quadrant     | そのほかの型 |
-| ---------------------------------------------------------- | ------------------------------- | ------------ | ------------ | ------------ |
-| 何もなし、または空行                                       | 移す                            | 移す         | 移す         | 書かれたまま |
-| 空行、次に文                                               | 移す                            | 書かれたまま | 書かれたまま | 書かれたまま |
-| コメント行                                                 | 移す                            | 移す         | 移す         | 書かれたまま |
-| コメント行が 1 つか 2 つ、次に文                           | 書かれたまま                    | 書かれたまま | 書かれたまま | 書かれたまま |
-| コメント行、空行、次に文                                   | 移す                            | 書かれたまま | 書かれたまま | 書かれたまま |
-| 空白だけの行                                               | 書かれたまま                    | 書かれたまま | 移す         | 書かれたまま |
-| 空白だけの行、次に文                                       | 書かれたまま                    | 書かれたまま | 書かれたまま | 書かれたまま |
-| ディレクティブの行                                         | 移す                            | 書かれたまま | 書かれたまま | 書かれたまま |
-| ディレクティブの行、次に文                                 | 移す                            | 書かれたまま | 書かれたまま | 書かれたまま |
-| 空白の後のディレクティブの行（単独か、次に文）             | 書かれたまま                    | 書かれたまま | 書かれたまま | 書かれたまま |
-| ディレクティブとコメントの行（前に空白があってもなくても） | 移す                            | 移す         | 移す         | 書かれたまま |
-| ディレクティブとコメントの行、次に文                       | 書かれたまま                    | 書かれたまま | 書かれたまま | 書かれたまま |
-| 文                                                         | 書かれたまま                    | 書かれたまま | 書かれたまま | 書かれたまま |
+| タイトルの後                                                                   | Langium の型（treeView を除く） | treeView     | quadrant     | そのほかの型 |
+| ------------------------------------------------------------------------------ | ------------------------------- | ------------ | ------------ | ------------ |
+| 何もなし、または空行                                                           | 移す                            | 移す         | 移す         | 書かれたまま |
+| 空行、次に文                                                                   | 移す                            | 書かれたまま | 書かれたまま | 書かれたまま |
+| コメント行 `%% z`                                                              | 移す                            | 移す         | 移す         | 書かれたまま |
+| コメント行 `%% z` が 1 つか 2 つ（`%% z`、`%% w`）、次に文                     | 書かれたまま                    | 書かれたまま | 書かれたまま | 書かれたまま |
+| コメント行 `%% z`、空行、次に文                                                | 移す                            | 書かれたまま | 書かれたまま | 書かれたまま |
+| 空白 3 つだけの行                                                              | 書かれたまま                    | 書かれたまま | 移す         | 書かれたまま |
+| 空白 3 つだけの行、次に文                                                      | 書かれたまま                    | 書かれたまま | 書かれたまま | 書かれたまま |
+| ディレクティブの行 `%%{y}%%`                                                   | 移す                            | 書かれたまま | 書かれたまま | 書かれたまま |
+| ディレクティブの行 `%%{y}%%`、次に文                                           | 移す                            | 書かれたまま | 書かれたまま | 書かれたまま |
+| 空白の後のディレクティブの行（` %%{y}%%`、単独か、次に文）                     | 書かれたまま                    | 書かれたまま | 書かれたまま | 書かれたまま |
+| ディレクティブとコメントの行（`%%{y}%% %% d`、`%%{y}%%%% d`、` %%{y}%% %% d`） | 移す                            | 移す         | 移す         | 書かれたまま |
+| ディレクティブとコメントの行、次に文                                           | 書かれたまま                    | 書かれたまま | 書かれたまま | 書かれたまま |
+| 文                                                                             | 書かれたまま                    | 書かれたまま | 書かれたまま | 書かれたまま |
 
 タイトルが書かれたまま残るとき、その次の行も書かれたまま残ります。
-文、文の前のコメント行、空白だけの行、ディレクティブの行、
+文、文の前のコメント行 `%% z`、空白だけの行、ディレクティブの行、
 ディレクティブとコメントの行は、書かれた桁のままです。
 空白だけの行、ディレクティブの行、
 空行の後の文は通常どおりに印字します（文の 2
 行目からは通常どおりに字下げします）。
 テキストの終わりでは、Gantt、user journey、timeline、sequence、Venn は、
-空行を落とし、コメント行とディレクティブとコメントの行は桁を合わせ、
+空行を落とし、
+文のあるコメント行（`%% z`）とディレクティブとコメントの行は桁を合わせ、
 C4 は書かれたまま残します。
 
 ディレクティブとコメントの間に空白があるときは、何もなし、空行、
@@ -1991,7 +1998,6 @@ pie 図と gitGraph の `accTitle:` の行は、テキスト、ディレクテ�
 [test: a whitespace character that is no space or tab at the start and at the end of an accessibility line, in each group]
 [test: a whitespace character that is no space or tab at both ends of a title, in the Langium types and a quadrant chart]
 [test: a whitespace character that is no space or tab before a comment after the text of a title, in each group]
-[test: U+2028 before the directive of a title of a directive and a comment only in a pie chart]
 [test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: nothing, or an empty line]
 [test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: an empty line, then a statement]
 [test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a comment line]
@@ -2004,13 +2010,7 @@ pie 図と gitGraph の `accTitle:` の行は、テキスト、ディレクテ�
 [test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of a directive after a space, alone or then a statement]
 [test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of a directive and a comment, with or without a space before it]
 [test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of a directive and a comment, then a statement]
-[test: a directive that holds a U+2028 or a U+2029 after a U+2028 or a U+2029 before the directive of a title, with nothing or a statement after the title]
 [test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a statement]
-[test: U+2029 before the directive of a title of a directive and a comment only in a pie chart]
-[test: U+2028 before the directive of a title of a directive and a comment only in a quadrant chart]
-[test: U+2028 before the directive of a title of a directive and a comment only in a Gantt chart]
-[test: U+2028 before the directive of a title of a directive and a comment only in a Venn diagram]
-[test: U+2028 before the directive of a title of a directive and a comment only in a C4 diagram]
 [test: a whitespace character that is no space or tab before the directive of a title of a directive and a comment only, in each group]
 [test: a whitespace character that is no space or tab before the directive of a title of a directive and a comment only, with spaces around the comment, in each group]
 [test: an accessibility line of directives only stays as written in each type of the Langium grammar]
