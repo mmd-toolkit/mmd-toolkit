@@ -11433,6 +11433,96 @@ const architectureDirectiveEndExamples: readonly (readonly [
     "accDescr: \u0022A   B\u0022",
     "accDescr: \u0022A B\u0022",
   ],
+  [
+    "text after the `;` that the line rule ignores in a title, runs before and after it, of an architecture diagram",
+    "title a   b   style:#x;   c",
+    "title a   b   style:#x;   c",
+  ],
+  [
+    "text touching the `;` that the line rule ignores in a title, a run before it, of an architecture diagram",
+    "title a   b   style:#x;c",
+    "title a   b   style:#x;c",
+  ],
+  [
+    "text and a run after the `;` that the line rule ignores in a title, spaces at the end, of an architecture diagram",
+    "title a   b   style:#x;   c   d  ",
+    "title a   b   style:#x;   c   d",
+  ],
+  [
+    "two touching `;` that the line rule reads in a title, a run before them, of an architecture diagram",
+    "title a   b   style:#x;;",
+    "title a   b   style:#x;;",
+  ],
+  [
+    "two `;` with spaces between them that the line rule reads in a title, a run before them, of an architecture diagram",
+    "title a   b   style:#x;   ;",
+    "title a   b   style:#x;   ;",
+  ],
+  [
+    "text after the last of two `;` that the line rule reads in a title, runs around them, of an architecture diagram",
+    "title a   style:#x;  b;  c",
+    "title a   style:#x;  b;  c",
+  ],
+  [
+    "text after the `;` that the line rule ignores after classDef in a title, of an architecture diagram",
+    "title a   b   classDef x:#y;   c",
+    "title a   b   classDef x:#y;   c",
+  ],
+  [
+    "nothing after the `;` that the line rule ignores in a title, runs before it, of an architecture diagram",
+    "title a   b   style:#x;",
+    "title a b style:#x;",
+  ],
+  [
+    "a run inside the stretch of the line rule, nothing after the `;` in a title, spaces at the end, of an architecture diagram",
+    "title a   b   style:#x   y;  ",
+    "title a b style:#x y;",
+  ],
+  [
+    "nothing after the last of two `;` that the line rule reads in a title, of an architecture diagram",
+    "title a   style:#x;  b;",
+    "title a style:#x; b;",
+  ],
+  [
+    "a comment after the `;` that the line rule ignores in a title, of an architecture diagram",
+    "title a   b   style:#x;  %% c",
+    "title a   b   style:#x; %% c",
+  ],
+  [
+    "text after the `;` that the line rule ignores in an accDescr line, runs before and after it, of an architecture diagram",
+    "accDescr: a   b   style:#x;   c",
+    "accDescr: a   b   style:#x;   c",
+  ],
+  [
+    "nothing after the `;` that the line rule ignores in an accDescr line, runs before it, of an architecture diagram",
+    "accDescr: a   b   style:#x;",
+    "accDescr: a b style:#x;",
+  ],
+  [
+    "two touching `;` that the line rule reads in an accDescr line, a run before them, of an architecture diagram",
+    "accDescr: a   b   style:#x;;",
+    "accDescr: a   b   style:#x;;",
+  ],
+  [
+    "text after the `;` that the line rule ignores in an accTitle line, of an architecture diagram",
+    "accTitle: a   b   style:#x;   c",
+    "accTitle: a   b   style:#x;   c",
+  ],
+  [
+    "a `;` inside the comment at the end of a title, a run and spaces at the end, of an architecture diagram",
+    "title   T  %% c;  ",
+    "title T %% c;  ",
+  ],
+  [
+    "a `;` inside the comment at the end of an accTitle line, a gap before the colon, spaces at the end, of an architecture diagram",
+    "accTitle : T  %% c;  ",
+    "accTitle: T %% c;  ",
+  ],
+  [
+    "nothing after the `;` that the line rule ignores in a title, spaces at the end, of an architecture diagram",
+    "title a   b   style:#x;  ",
+    "title a b style:#x;",
+  ],
 ]
 
 describe("the directives that end the title or the value of an accessibility line of an architecture diagram", () => {

@@ -644,7 +644,8 @@ architecture-beta
 
 ### Title
 
-共有の共通行処理を、下の段落が述べるところを除いて使い、
+共有の共通行処理を、
+下の段落と[セミコロン](#semicolons)の節が述べるところを除いて使い、
 `title value` の両端から、共通規則が読む空白だけを除きます。
 `null` と空白だけの値は `title` とし、同じ意味の外側の空白を詰めます。
 値の中の空白とタブの連なりは空白 1 つにして印字します。
@@ -1519,6 +1520,19 @@ mermaid.js はテキストを読む前にディレクティブを除き、
 [test: a run of tabs inside the text of a title, spaces at the end, of an architecture diagram]
 [test: a run of spaces inside a quoted string in a title, of an architecture diagram]
 [test: a run of spaces beside a directive inside the text of a title, of an architecture diagram]
+[test: text after the `;` that the line rule ignores in a title, runs before and after it, of an architecture diagram]
+[test: text touching the `;` that the line rule ignores in a title, a run before it, of an architecture diagram]
+[test: text and a run after the `;` that the line rule ignores in a title, spaces at the end, of an architecture diagram]
+[test: two touching `;` that the line rule reads in a title, a run before them, of an architecture diagram]
+[test: two `;` with spaces between them that the line rule reads in a title, a run before them, of an architecture diagram]
+[test: text after the last of two `;` that the line rule reads in a title, runs around them, of an architecture diagram]
+[test: text after the `;` that the line rule ignores after classDef in a title, of an architecture diagram]
+[test: nothing after the `;` that the line rule ignores in a title, runs before it, of an architecture diagram]
+[test: a run inside the stretch of the line rule, nothing after the `;` in a title, spaces at the end, of an architecture diagram]
+[test: nothing after the last of two `;` that the line rule reads in a title, of an architecture diagram]
+[test: a comment after the `;` that the line rule ignores in a title, of an architecture diagram]
+[test: a `;` inside the comment at the end of a title, a run and spaces at the end, of an architecture diagram]
+[test: nothing after the `;` that the line rule ignores in a title, spaces at the end, of an architecture diagram]
 [test: U+2028 before a directive that a comment touches, a line follows, in a title of an architecture diagram]
 [test: U+2028 before a directive that a comment touches, the text ends, in a title of an architecture diagram]
 [test: U+2028 before a directive that a comment touches, an empty line follows, in a title of an architecture diagram]
@@ -1846,7 +1860,8 @@ architecture-beta
 ### Accessibility lines
 
 共有の `accTitle: value` と `accDescr: value` を、下の段落と、
-[ディレクティブが前にある題](#title)が述べるところを除いて使います。
+[ディレクティブが前にある題](#title)と、
+[セミコロン](#semicolons)の節が述べるところを除いて使います。
 コロンをキーワードに付け、両端の空白を除いた非空値の前は空白1個、
 空ならコロンで終えます。
 これにより外側の空白を統一します。
@@ -2404,6 +2419,11 @@ U+205F、U+3000、U+FEFF のどれかです。
 [test: a run of spaces inside the text of an accDescr line, of an architecture diagram]
 [test: a run of spaces inside the text of an accTitle line, of an architecture diagram]
 [test: a run of spaces inside a quoted string in an accDescr line, of an architecture diagram]
+[test: text after the `;` that the line rule ignores in an accDescr line, runs before and after it, of an architecture diagram]
+[test: nothing after the `;` that the line rule ignores in an accDescr line, runs before it, of an architecture diagram]
+[test: two touching `;` that the line rule reads in an accDescr line, a run before them, of an architecture diagram]
+[test: text after the `;` that the line rule ignores in an accTitle line, of an architecture diagram]
+[test: a `;` inside the comment at the end of an accTitle line, a gap before the colon, spaces at the end, of an architecture diagram]
 [test: U+2028 before a directive that a comment touches, a line follows, in an accTitle line of an architecture diagram]
 [test: U+2028 before a directive that a comment touches, the text ends, in an accTitle line of an architecture diagram]
 [test: U+2028 before a directive that a comment follows after spaces, a line follows, in an accTitle line of an architecture diagram]
@@ -3206,7 +3226,8 @@ architecture-beta
 `style` か `classDef` の後の最初の `:` から、
 最後の保つ `;` の前の最後の `#` までに空白がない並びを読みます。
 その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
-範囲の外は、この図種の通常の規則に従います。
+範囲の外は、この図種の通常の規則に従います（題とアクセシビリティの行は、
+引用の後の段落が述べるとおりです）。
 どの部分の配置も持たないテキストは、書かれたまま残します。
 複数行にわたる文の行を空白 1 つか何も挟まずにつなぐと、
 行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
@@ -3216,6 +3237,37 @@ architecture-beta
 [fixture: semicolons/stretch-kept-rest-formatted]
 [fixture: semicolons/no-stretch-formatted]
 [fixture: semicolons/crossing-comment]
+
+行の規則が働く題かアクセシビリティの行は、最後の `;` の後にテキストがあり、
+行にコメントがないとき、行を書かれたままにし、
+行末の空白は除きます（`title a   b   style:#x;   c` と
+`title a   b   style:#x;c` は変わりません）。
+また、行が空白だけを挟む 2 つ以上の `;` で終わるときも、
+書かれたままにします（`title a   b   style:#x;;` と
+`title a   b   style:#x;   ;` は変わりません）。
+最後の `;` の後に何もないときは、
+通常の規則に従います（`title a   b   style:#x;` は `title a b style:#x;`
+になります）。
+行の規則が働く行のうち、行にコメントがあるものは述べません。
+そこでリリース済みの版が印字する形は、
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+のとおり、決めるまでそのままです。
+
+[test: text after the `;` that the line rule ignores in a title, runs before and after it, of an architecture diagram]
+[test: text touching the `;` that the line rule ignores in a title, a run before it, of an architecture diagram]
+[test: text and a run after the `;` that the line rule ignores in a title, spaces at the end, of an architecture diagram]
+[test: two touching `;` that the line rule reads in a title, a run before them, of an architecture diagram]
+[test: two `;` with spaces between them that the line rule reads in a title, a run before them, of an architecture diagram]
+[test: text after the last of two `;` that the line rule reads in a title, runs around them, of an architecture diagram]
+[test: text after the `;` that the line rule ignores after classDef in a title, of an architecture diagram]
+[test: nothing after the `;` that the line rule ignores in a title, runs before it, of an architecture diagram]
+[test: a run inside the stretch of the line rule, nothing after the `;` in a title, spaces at the end, of an architecture diagram]
+[test: nothing after the last of two `;` that the line rule reads in a title, of an architecture diagram]
+[test: a comment after the `;` that the line rule ignores in a title, of an architecture diagram]
+[test: text after the `;` that the line rule ignores in an accDescr line, runs before and after it, of an architecture diagram]
+[test: nothing after the `;` that the line rule ignores in an accDescr line, runs before it, of an architecture diagram]
+[test: two touching `;` that the line rule reads in an accDescr line, a run before them, of an architecture diagram]
+[test: text after the `;` that the line rule ignores in an accTitle line, of an architecture diagram]
 
 保護された見出し・最初の文は一緒に保ちます。
 選択された1個の削除や style・classDef の条件を満たす語の移動は、
