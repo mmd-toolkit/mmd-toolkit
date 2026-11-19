@@ -6153,6 +6153,136 @@ const blockLineSeparatorExamples: readonly (readonly [
     "block-beta\na\nb%% x\u2028%% c\n",
     "block-beta\n  a\n  b%% x\n  %% c\n",
   ],
+  [
+    "the end of a composite block and a comment that touches it, to the end of the text, after a U+2028: the whole composite stays as written",
+    "block-beta\nblock:G\n  b\nend%% x\u2028%% c\n",
+    "block-beta\n  block:G\n  b\nend%% x\u2028%% c\n",
+  ],
+  [
+    "the end of a composite block and a comment after a space, to the end of the text, after a U+2028: the whole composite stays as written",
+    "block-beta\nblock:G\n  b\nend %% x\u2028%% c\n",
+    "block-beta\n  block:G\n  b\nend %% x\u2028%% c\n",
+  ],
+  [
+    "the end of a composite block and a directive and a comment after a space, to the end of the text, after a U+2028: the whole composite stays as written",
+    "block-beta\nblock:G\n  b\nend %%{x}%% %% x\u2028%% c\n",
+    "block-beta\n  block:G\n  b\nend %%{x}%% %% x\u2028%% c\n",
+  ],
+  [
+    "the end of a composite block and a directive that touches it, to the end of the text, after a U+2028: the U+2028 is dropped and the composite is formatted",
+    "block-beta\nblock:G\n  b\nend%%{x}%%\u2028%% c\n",
+    "block-beta\n  block: G\n    b\n  end%%{x}%%\n  %% c\n",
+  ],
+  [
+    "the end of a composite block and a directive after a space, to the end of the text, after a U+2028: the U+2028 is dropped and the composite is formatted",
+    "block-beta\nblock:G\n  b\nend %%{x}%%\u2028%% c\n",
+    "block-beta\n  block: G\n    b\n  end %%{x}%%\n  %% c\n",
+  ],
+  [
+    "a width and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\ncolumns 2 %% x\u2028%% c\n",
+    "block-beta\n  a\n  columns 2 %% x\u2028%% c\n",
+  ],
+  [
+    "a width and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\ncolumns 2%% x\u2028%% c\n",
+    "block-beta\n  a\n  columns 2%% x\u2028%% c\n",
+  ],
+  [
+    "a width and a directive, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\ncolumns 2 %%{x}%%\u2028%% c\n",
+    "block-beta\n  a\n  columns 2 %%{x}%%\n  %% c\n",
+  ],
+  [
+    "an empty block and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\nspace %% x\u2028%% c\n",
+    "block-beta\n  a\n  space %% x\u2028%% c\n",
+  ],
+  [
+    "an empty block and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\nspace%% x\u2028%% c\n",
+    "block-beta\n  a\n  space%% x\u2028%% c\n",
+  ],
+  [
+    "a block arrow and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays",
+    'block-beta\na\nar<["x"]>(right) %% x\u2028%% c\n',
+    'block-beta\n  a\n  ar<["x"]>(right) %% x\u2028%% c\n',
+  ],
+  [
+    "a block arrow and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays",
+    'block-beta\na\nar<["x"]>(right)%% x\u2028%% c\n',
+    'block-beta\n  a\n  ar<["x"]>(right)%% x\u2028%% c\n',
+  ],
+  [
+    "a node with a label and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays",
+    'block-beta\na\nb["x"]%% x\u2028%% c\n',
+    'block-beta\n  a\n  b["x"]%% x\u2028%% c\n',
+  ],
+  [
+    "an edge and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\nb-->c%% x\u2028%% c\n",
+    "block-beta\n  a\n  b --> c%% x\n  %% c\n",
+  ],
+  [
+    "a node and a directive after a space, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\nb %%{x}%%\u2028%% c\n",
+    "block-beta\n  a\n  b %%{x}%%\n  %% c\n",
+  ],
+  [
+    "an edge and a directive after a space, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\nb-->c %%{x}%%\u2028%% c\n",
+    "block-beta\n  a\n  b --> c %%{x}%%\n  %% c\n",
+  ],
+  [
+    "a node, a directive, and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\nb %%{x}%% %% x\u2028%% c\n",
+    "block-beta\n  a\n  b %%{x}%% %% x\u2028%% c\n",
+  ],
+  [
+    "a style statement and a comment after a space, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\nstyle a fill:#F00 %% x\u2028%% c\n",
+    "block-beta\n  a\n  style a fill: #f00 %% x\n  %% c\n",
+  ],
+  [
+    "a style statement and a comment that touches the color, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\nstyle a fill:#F00%% x\u2028%% c\n",
+    "block-beta\n  a\n  style a fill: #F00%% x\n  %% c\n",
+  ],
+  [
+    "a class definition and a comment after a space, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\nclassDef k fill:#F00 %% x\u2028%% c\n",
+    "block-beta\n  a\n  classDef k fill: #f00 %% x\n  %% c\n",
+  ],
+  [
+    "a class statement and a comment after a space, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\nclass a k %% x\u2028%% c\n",
+    "block-beta\n  a\n  class a k %% x\n  %% c\n",
+  ],
+  [
+    "a style statement, a directive, and a comment, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\nstyle a fill:#F00 %%{x}%% %% y\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#f00 %%{x}%% %% y\n  %% c\n",
+  ],
+  [
+    "a semicolon, a directive, and a semicolon after a color, to the end of the text, after a U+2028: the U+2028 stays and the color stays as written",
+    "block-beta\na\nstyle a fill:#F00;%%{y}%%;\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#F00;%%{y}%%;\u2028%% c\n",
+  ],
+  [
+    "a semicolon, a vertical tab, and a comment after a color, to the end of the text, after a U+2028: the U+2028 stays and the color stays as written",
+    "block-beta\na\nstyle a fill:#F00;\u000b%% x\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#F00;\u000b%% x\u2028%% c\n",
+  ],
+  [
+    "the head of a composite block and a comment that touches it, a statement follows the comment line, after a U+2028: the U+2028 stays and the head is formatted",
+    "block-beta\nblock:G%% x\u2028%% c\n  b\nend\n",
+    "block-beta\n  block: G%% x\u2028%% c\n  b\n  end\n",
+  ],
+  [
+    "the head of a composite block and a comment after a space, a statement follows the comment line, after a U+2028: the U+2028 stays and the head is formatted",
+    "block-beta\nblock:G %% x\u2028%% c\n  b\nend\n",
+    "block-beta\n  block: G %% x\u2028%% c\n  b\n  end\n",
+  ],
 ]
 
 /**

@@ -6269,10 +6269,10 @@ composite ブロックの開始行は、コロンの行に名前があるとき�
 コロンの後の隙間を普通の開始行と同じに印字し、
 コメント領域がコロンにすぐ続くときは、書かれたまま残します。
 [複数行の文](./block.ja.md#複数行の文)を参照してください。
-どの文でも（`style` と `classDef` の文も）、文が続かず、
-空白でない最後の行がコメントを含むとき、
-コメント行の前の U+2028 や U+2029 は落とし（前の行に `;` があるときは別です）、
-コメント行は自分の行に置きます。
+どの文でも、文が続かず、空白でない最後の行がコメントを含むとき、
+コメント行の前の U+2028 や U+2029 は落とし（前の行に `;` があるときと、`style`、
+`classDef`、`class` ではない文の後にコメントが続くときは別です。
+その節が文ごとに述べます）、コメント行は自分の行に置きます。
 [行区切り文字](./block.ja.md#行区切り文字)を参照してください。
 ブロック図では、そのような行の文について、
 スタイルの色のように普通の行と別に印字するものも、そこに書いてあります。
@@ -6302,6 +6302,23 @@ composite ブロックの開始行は、コロンの行に名前があるとき�
 [test: a node and a comment that a space separates from it, to the end of the text, after a U+2028: the U+2028 stays]
 [test: an edge and a comment that a space separates from it, a statement follows the comment line, after a U+2029: the U+2029 stays]
 [test: a node and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: the end of a composite block and a comment that touches it, to the end of the text, after a U+2028: the whole composite stays as written]
+[test: the end of a composite block and a comment after a space, to the end of the text, after a U+2028: the whole composite stays as written]
+[test: the end of a composite block and a directive and a comment after a space, to the end of the text, after a U+2028: the whole composite stays as written]
+[test: the end of a composite block and a directive that touches it, to the end of the text, after a U+2028: the U+2028 is dropped and the composite is formatted]
+[test: the end of a composite block and a directive after a space, to the end of the text, after a U+2028: the U+2028 is dropped and the composite is formatted]
+[test: a width and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a width and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a width and a directive, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: an empty block and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an empty block and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a block arrow and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a block arrow and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node with a label and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an edge and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node and a directive after a space, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: an edge and a directive after a space, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node, a directive, and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays]
 
 行に載るものと行の終わりは、mermaid.js が取り除くものから決まります。
 図種ごとの文書には、その図種のことを書きます。

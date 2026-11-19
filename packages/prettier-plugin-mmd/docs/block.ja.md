@@ -1605,14 +1605,26 @@ U+2028 や U+2029 は、文が続かず、
 コメントの中でも同じです（`style a fill:#F00 %%{x;y}%%` と
 `style a fill:#F00 %% x;`、U+2028、`%% c` は、
 U+2028 を残して `#f00` と印字します）。
-`style` ではない文は、
-コメントが空白を挟んで続くときも U+2028 や U+2029 を残し（`b %% x`、
-`b-->c %% x`、`columns 2 %% x`）、コメントが接するとき（`b%% x`）は落とします。
-複合ブロックの `end` も文です。
-`end;` のように U+2028 が残るとき、または文がコメント行の後に続くときは、
-複合ブロック全体を書かれたままにし、頭も本体も字下げしません（`block:G`、`  b`、
-`end;`、U+2028、`%% c`）。
-テキストの末尾の `end` は U+2028 を落とし、通常どおり整形します。
+`style`、`classDef`、`class` の文は、文と U+2028 の間に何があっても（何もない、
+コメント、ディレクティブ、その両方。`style a fill:#F00 %% x`、
+`class a k %% x`）、行に `;` がなければ U+2028 や U+2029 を落とします。
+それ以外の文は、間に何もないか、ディレクティブだけがあるとき（`b`、
+`b-->c %%{x}%%`）は落とし、空白を挟んでコメントが続くとき、
+ディレクティブの後でも（`b %% x`、`b %%{x}%% %% x`、
+`columns 2 %% x`）は残します。
+コメントが文に接するときは、`b` と `b-->c` が落とし（`b%% x`）、
+ラベルのあるノード、幅、`space`、ブロックの矢印、
+`end` が残します（`b["x"]%% x`、`columns 2%% x`、`space%% x`）。
+複合ブロックの `end` も、ほかの文と同じ文です。
+`end;`、`end%% x`、`end %% x` のように U+2028 が残るとき、
+または文がコメント行の後に続くときは、複合ブロック全体を書かれたままにし、
+頭も本体も字下げしません（`block:G`、`  b`、`end;`、U+2028、`%% c`）。
+落とすとき（`end`、`end %%{x}%%`）は、複合ブロックを通常どおり整形します。
+複合ブロックの頭は、後ろに必ず文（少なくとも `end`）が続くので、
+前にコメントがあるときも、コメントが頭に接するときも空白を挟んで続くときも、
+U+2028 や U+2029 を残し、通常どおり整形します（`block:G%% x`、U+2028、
+`%% c` は `block: G%% x`、U+2028、`%% c` になり、
+`block:G %% x` は `block: G %% x` になります）。
 文が続くときの色は、文がコメント行のすぐ後の行にあれば書かれたまま残り、空行、
 空白だけの行、ディレクティブの行が文のすぐ前にあれば小文字になります。
 flowchart、class、state、ER は、ブロック図が落とすどの行でも、
@@ -1651,9 +1663,12 @@ U+2028 とコメント行は残り、色は小文字になります。`style a f
 ディレクティブは数えません。
 空白、タブ、フォームフィードが続くときは、
 色はコメント行の後に何が続いても小文字になります。
-コメントを含む文字が続くときは、行の規則がその `;` を残し、
+コメントを含む文字かコメントが、直後か、垂直タブ、ノーブレークスペース、空白、
+タブ、フォームフィード以外の空白文字の後に続くときは、
+行の規則がその `;` を残し、
 色は何が続いても書かれたまま残ります（`style a fill:#F00;x`、
-`style a fill:#F00;%% x`、`style a fill:#F00;%%{y}%%%% x`、U+2028、`%% c`）。
+`style a fill:#F00;%% x`、`style a fill:#F00;%%{y}%%%% x`、
+`style a fill:#F00;`、垂直タブ、`%% x` の後の U+2028 と `%% c`）。
 何も続かないとき、または垂直タブ、
 ノーブレークスペースなどのほかの空白文字だけが続くときは、色は、
 コメント行のすぐ後に文が続くときだけ、`;` がないときと同じに書かれたまま残り、
@@ -1668,8 +1683,9 @@ U+2028 と `%% c` を残して `style a fill:#f00;` になります）。
 12.3.0 の描画は同じです。
 どちらも[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)と
 [同じに描かれる色](./compatibility.ja.md#同じに描かれる色)が定めています。
-表で style の文の後の U+2028 を落とすほかの 12 行も、描画は同じで、
-この記録に入っているのは、この 13 行です。
+表で style の文の後の U+2028 を落とすほかの行も、描画は同じです。
+この記録に入っているのは、何も続かない行と、
+ほかの行の 12 の入力です（1 つの行は入力を 2 つ持ちます）。
 ラベルの中では文字で、そのまま残ります。
 
 [test: U+2028 between two statements of a row]
@@ -1849,6 +1865,32 @@ U+2028 と `%% c` を残して `style a fill:#f00;` になります）。
 [test: a node and a comment that a space separates from it, to the end of the text, after a U+2028: the U+2028 stays]
 [test: an edge and a comment that a space separates from it, a statement follows the comment line, after a U+2029: the U+2029 stays]
 [test: a node and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: the end of a composite block and a comment that touches it, to the end of the text, after a U+2028: the whole composite stays as written]
+[test: the end of a composite block and a comment after a space, to the end of the text, after a U+2028: the whole composite stays as written]
+[test: the end of a composite block and a directive and a comment after a space, to the end of the text, after a U+2028: the whole composite stays as written]
+[test: the end of a composite block and a directive that touches it, to the end of the text, after a U+2028: the U+2028 is dropped and the composite is formatted]
+[test: the end of a composite block and a directive after a space, to the end of the text, after a U+2028: the U+2028 is dropped and the composite is formatted]
+[test: a width and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a width and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a width and a directive, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: an empty block and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an empty block and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a block arrow and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a block arrow and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node with a label and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an edge and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node and a directive after a space, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: an edge and a directive after a space, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node, a directive, and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a style statement and a comment after a space, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a style statement and a comment that touches the color, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a class definition and a comment after a space, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a class statement and a comment after a space, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a style statement, a directive, and a comment, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a semicolon, a directive, and a semicolon after a color, to the end of the text, after a U+2028: the U+2028 stays and the color stays as written]
+[test: a semicolon, a vertical tab, and a comment after a color, to the end of the text, after a U+2028: the U+2028 stays and the color stays as written]
+[test: the head of a composite block and a comment that touches it, a statement follows the comment line, after a U+2028: the U+2028 stays and the head is formatted]
+[test: the head of a composite block and a comment after a space, a statement follows the comment line, after a U+2028: the U+2028 stays and the head is formatted]
 
 ### 空白文字
 

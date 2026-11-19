@@ -5996,13 +5996,15 @@ A block diagram has two exceptions to the rule above. The gap after the colon of
 the head of a composite block is printed as on a plain head where a name stands
 on the line of the colon, and stays as written where the comment region follows
 the colon at once (see
-[Multi-line statements](./block.md#multi-line-statements)). In a statement, also
-in a `style` or a `classDef` statement, a U+2028 or U+2029 before a comment line
-is dropped where no statement follows, the last line that is not blank holds a
-comment, and the line before it holds no `;`, and the comment line stands on a
-line of its own (see [Line separators](./block.md#line-separators)). What else
-the formatter prints on a statement of such a line in a block diagram, as the
-colors of a style, is stated there too.
+[Multi-line statements](./block.md#multi-line-statements)). In a statement, a
+U+2028 or U+2029 before a comment line is dropped where no statement follows,
+the last line that is not blank holds a comment, and the line before it holds no
+`;`, and the comment line stands on a line of its own; a statement that is no
+`style`, `classDef`, or `class` keeps it where a comment follows the statement,
+as the same section states for each statement (see
+[Line separators](./block.md#line-separators)). What else the formatter prints
+on a statement of such a line in a block diagram, as the colors of a style, is
+stated there too.
 
 [test: a directive line and then a comment line, to the end of the text, after a
 style statement and a U+2028] [test: a comment line, a directive line, and a
@@ -6040,7 +6042,33 @@ comment that a space separates from it, to the end of the text, after a U+2028:
 the U+2028 stays] [test: an edge and a comment that a space separates from it, a
 statement follows the comment line, after a U+2029: the U+2029 stays] [test: a
 node and a comment that touches it, to the end of the text, after a U+2028: the
-U+2028 is dropped]
+U+2028 is dropped] [test: the end of a composite block and a comment that
+touches it, to the end of the text, after a U+2028: the whole composite stays as
+written] [test: the end of a composite block and a comment after a space, to the
+end of the text, after a U+2028: the whole composite stays as written] [test:
+the end of a composite block and a directive and a comment after a space, to the
+end of the text, after a U+2028: the whole composite stays as written] [test:
+the end of a composite block and a directive that touches it, to the end of the
+text, after a U+2028: the U+2028 is dropped and the composite is formatted]
+[test: the end of a composite block and a directive after a space, to the end of
+the text, after a U+2028: the U+2028 is dropped and the composite is formatted]
+[test: a width and a comment after a space, to the end of the text, after a
+U+2028: the U+2028 stays] [test: a width and a comment that touches it, to the
+end of the text, after a U+2028: the U+2028 stays] [test: a width and a
+directive, to the end of the text, after a U+2028: the U+2028 is dropped] [test:
+an empty block and a comment after a space, to the end of the text, after a
+U+2028: the U+2028 stays] [test: an empty block and a comment that touches it,
+to the end of the text, after a U+2028: the U+2028 stays] [test: a block arrow
+and a comment after a space, to the end of the text, after a U+2028: the U+2028
+stays] [test: a block arrow and a comment that touches it, to the end of the
+text, after a U+2028: the U+2028 stays] [test: a node with a label and a comment
+that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an edge and a comment that touches it, to the end of the text, after a
+U+2028: the U+2028 is dropped] [test: a node and a directive after a space, to
+the end of the text, after a U+2028: the U+2028 is dropped] [test: an edge and a
+directive after a space, to the end of the text, after a U+2028: the U+2028 is
+dropped] [test: a node, a directive, and a comment after a space, to the end of
+the text, after a U+2028: the U+2028 stays]
 
 What the line holds, and where it ends, follow from what mermaid.js removes. The
 documents of the diagram types say what is theirs:
