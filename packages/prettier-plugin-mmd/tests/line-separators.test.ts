@@ -2237,6 +2237,11 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "erDiagram\n  A\u2028%% c\nBar {}\n",
   ],
   [
+    "an empty attribute block on one line after a comment line after U+2029 inside the name of an ER entity",
+    "erDiagram\nA\u2029%% c\nBar {}\n",
+    "erDiagram\n  A\u2029%% c\nBar {}\n",
+  ],
+  [
     "an empty attribute block over several lines after a comment line after U+2028 and a space",
     "erDiagram\nA\u2028%% c\n {\n}\n",
     "erDiagram\n  A\u2028%% c\n { }\n",

@@ -270,32 +270,33 @@ attribute-blocks/written-line-closing-brace] [fixture:
 attribute-blocks/semicolon-line] [test: an empty attribute block over several
 lines after a comment line after U+2028 inside the name of an ER entity] [test:
 an empty attribute block on one line after a comment line after U+2028 inside
-the name of an ER entity] [test: an empty attribute block over several lines
-after a name in quotes and U+2028] [test: an empty attribute block over several
-lines after a name in quotes and U+2029] [test: an empty attribute block over
-several lines after a name in quotes and U+2028 in a subgraph] [test: an empty
-attribute block with an empty line before its closing brace after a name in
-quotes and U+2028] [test: an empty attribute block with U+2028 after its opening
-brace after a name in quotes and U+2028] [test: an empty attribute block on one
-line after a name in quotes and U+2028] [test: an empty attribute block over
-several lines after U+2028 and class] [test: an empty attribute block over
-several lines after a semicolon that the line rule ignores and U+2028] [test: an
-empty attribute block with U+2028 after its opening brace after a semicolon that
-the line rule ignores] [test: an empty attribute block with U+2028 after its
-opening brace after the ER entity 1 that touches a letter] [test: an attribute
-block over several lines after a name in quotes and U+2028] [test: U+2028 and an
-attribute block after a name in quotes] [test: an attribute block over several
-lines after U+2028 and class] [test: an attribute block over several lines after
-a semicolon that the line rule ignores and U+2028] [test: an attribute block
-over several lines after the ER entity 1 that touches a letter and U+2028 after
-its opening brace] [test: an attribute block of an entity after the end of an ER
-subgraph and U+2028, and a comment line after U+2028 after its closing brace]
-[test: an empty attribute block of an entity after the end of an ER subgraph and
-U+2028, and a comment line after U+2028 after its closing brace] [test: an
-attribute block of an entity after the end of an ER subgraph and U+2028, and a
-comment line after U+2028 at the end of the text] [test: an attribute block of
-an entity after the end of an ER subgraph and U+2029, and a comment line after
-U+2029 after its closing brace] [fixture:
+the name of an ER entity] [test: an empty attribute block on one line after a
+comment line after U+2029 inside the name of an ER entity] [test: an empty
+attribute block over several lines after a name in quotes and U+2028] [test: an
+empty attribute block over several lines after a name in quotes and U+2029]
+[test: an empty attribute block over several lines after a name in quotes and
+U+2028 in a subgraph] [test: an empty attribute block with an empty line before
+its closing brace after a name in quotes and U+2028] [test: an empty attribute
+block with U+2028 after its opening brace after a name in quotes and U+2028]
+[test: an empty attribute block on one line after a name in quotes and U+2028]
+[test: an empty attribute block over several lines after U+2028 and class]
+[test: an empty attribute block over several lines after a semicolon that the
+line rule ignores and U+2028] [test: an empty attribute block with U+2028 after
+its opening brace after a semicolon that the line rule ignores] [test: an empty
+attribute block with U+2028 after its opening brace after the ER entity 1 that
+touches a letter] [test: an attribute block over several lines after a name in
+quotes and U+2028] [test: U+2028 and an attribute block after a name in quotes]
+[test: an attribute block over several lines after U+2028 and class] [test: an
+attribute block over several lines after a semicolon that the line rule ignores
+and U+2028] [test: an attribute block over several lines after the ER entity 1
+that touches a letter and U+2028 after its opening brace] [test: an attribute
+block of an entity after the end of an ER subgraph and U+2028, and a comment
+line after U+2028 after its closing brace] [test: an empty attribute block of an
+entity after the end of an ER subgraph and U+2028, and a comment line after
+U+2028 after its closing brace] [test: an attribute block of an entity after the
+end of an ER subgraph and U+2028, and a comment line after U+2028 at the end of
+the text] [test: an attribute block of an entity after the end of an ER subgraph
+and U+2029, and a comment line after U+2029 after its closing brace] [fixture:
 attribute-blocks/written-line-closing-line-kinds] [fixture:
 attribute-blocks/written-line-unclosed-directive-semicolon] [test: an empty
 attribute block over several lines before a name that is a no-break space and a
@@ -2943,28 +2944,30 @@ brace after a comment line after U+2028 inside the name of an ER entity] [test:
 an empty attribute block with an empty line before its closing brace after a
 comment line after U+2028 inside the name of an ER entity] [test: an empty
 attribute block on one line after a comment line after U+2028 inside the name of
-an ER entity] [test: an empty attribute block over several lines after a comment
-line after U+2028 and a space] [test: an empty attribute block with spaces after
-its opening brace after a comment line after U+2028 inside the name of an ER
-entity] [test: an empty attribute block with a tab after its opening brace after
-a comment line after U+2028 inside the name of an ER entity] [test: an empty
-attribute block with U+2028 after its opening brace after a comment line after
-U+2028 inside the name of an ER entity] [test: an attribute block of an entity
-that starts the line, and a comment line after U+2028 after its closing brace]
-[test: an empty attribute block of an entity that starts the line, and a comment
-line after U+2028 after its closing brace] [test: an attribute that starts on
-the line of the opening brace and goes on over the next line, after a comment
-line after U+2028 inside the name of an ER entity] [test: an attribute that
-starts on the line of the opening brace and goes on over an empty line, after a
-comment line after U+2028 inside the name of an ER entity] [test: an attribute
-that starts on the line of the opening brace and goes on over a directive line,
-after a comment line after U+2028 inside the name of an ER entity] [test: an
-attribute that starts on the line of the opening brace and goes on over a
-comment line after U+2028, after a comment line after U+2028 inside the name of
+an ER entity] [test: an empty attribute block on one line after a comment line
+after U+2029 inside the name of an ER entity] [test: an empty attribute block
+over several lines after a comment line after U+2028 and a space] [test: an
+empty attribute block with spaces after its opening brace after a comment line
+after U+2028 inside the name of an ER entity] [test: an empty attribute block
+with a tab after its opening brace after a comment line after U+2028 inside the
+name of an ER entity] [test: an empty attribute block with U+2028 after its
+opening brace after a comment line after U+2028 inside the name of an ER entity]
+[test: an attribute block of an entity that starts the line, and a comment line
+after U+2028 after its closing brace] [test: an empty attribute block of an
+entity that starts the line, and a comment line after U+2028 after its closing
+brace] [test: an attribute that starts on the line of the opening brace and goes
+on over the next line, after a comment line after U+2028 inside the name of an
+ER entity] [test: an attribute that starts on the line of the opening brace and
+goes on over an empty line, after a comment line after U+2028 inside the name of
 an ER entity] [test: an attribute that starts on the line of the opening brace
-and goes on over two lines, after a comment line after U+2028 inside the name of
-an ER entity] [test: an attribute that goes on over a line, and an attribute
-after it, after a comment line after U+2028 inside the name of an ER entity]
+and goes on over a directive line, after a comment line after U+2028 inside the
+name of an ER entity] [test: an attribute that starts on the line of the opening
+brace and goes on over a comment line after U+2028, after a comment line after
+U+2028 inside the name of an ER entity] [test: an attribute that starts on the
+line of the opening brace and goes on over two lines, after a comment line after
+U+2028 inside the name of an ER entity] [test: an attribute that goes on over a
+line, and an attribute after it, after a comment line after U+2028 inside the
+name of an ER entity]
 
 An entity that stands after another statement on that line, or after a name that
 the line goes on with, is printed so too: the line up to its `{` is printed as
