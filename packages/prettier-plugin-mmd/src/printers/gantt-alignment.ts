@@ -4,7 +4,8 @@ import { util } from "prettier"
 import type { MermaidAst } from "../parser.ts"
 import { maxOf } from "./collections.ts"
 import type { KeptLines } from "./kept-lines.ts"
-import { completeKeptLines, lineEndOf, lineStartOf } from "./kept-lines.ts"
+import { keptLinesOfBlock } from "./blocks.ts"
+import { lineEndOf, lineStartOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
   findTokensBetween,
@@ -70,10 +71,15 @@ const alignmentBySource = new WeakMap<Source, Alignment>()
  * name, so its lines only get shorter. A chart that holds `white-space` is left
  * as it is, since its CSS may draw the whitespace.
  *
- * A task is no part of a section's tasks where the printer prints its line as
- * written, where it runs over lines, where it does not start its printed line
- * (see `startsItsPrintedLine`), where its name ends with a directive, or where
- * its name is a keyword once the directives are taken out of it. A section
+ * A task is no part of a section's tasks where the diagram keeps its line as
+ * written (`kept.verbatim`), where it runs over lines, where it does not start
+ * its printed line (see `startsItsPrintedLine`), where its name ends with a
+ * directive, or where its name is a keyword once the directives are taken out
+ * of it. A task whose line a comment region joins to the next line is a task of
+ * its section too, but the printer prints its line as written, so its colon
+ * stays where it is; the colons of a section that holds one in another column
+ * than the others get are lined up apart from the sections of that column (see
+ * `holdsColonApartFrom`). A section
  * where a name holds a tab is left as it is: a tab reaches the next tab stop of
  * the editor, so no width that Prettier counts lines the colons up. The width
  * of a name, and of the rest of the task up to the next statement on its line,
@@ -226,7 +232,7 @@ function findSections(
   statements: readonly GanttStatement[],
   kept: KeptLines,
 ): TaskRow[][] {
-  const stays = completeKeptLines(source, kept)
+  const stays = keptLinesOfBlock(source, { kept })
   const sections: TaskRow[][] = [[]]
   for (const statement of statements) {
     if (statement.type === "GanttSectionStatement") sections.push([])
