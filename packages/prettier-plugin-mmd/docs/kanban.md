@@ -557,16 +557,20 @@ Apply the movement and safety conditions of
 shallowest text one level inside its node. A section's body is two levels below
 the header, an item's three; nested YAML keeps its relative indentation. A
 separate `}` aligns with the node, even if it had no margin; a closer after text
-stays on that line. A `}` after the text of a literal or folded scalar stays on
-its line: on a line of its own it adds a line break to the end of the text of
-the scalar, which 11.7.0 to 12.3.0 draw differently (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)),
-as under [Data blocks](./flowchart.md#data-blocks). The formatter does not look
-at the kind of scalar, so a `}` after the text of a plain scalar stays too.
+stays on that line. A `}` after the text of a literal or folded scalar (`|` and
+`>`, with or without `-` or `+` after them) stays on its line: on a line of its
+own it changes the end of the text of the scalar, which 11.7.0 to 12.3.0 draw
+differently (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The formatter does not look at the kind of scalar, so a `}` after the text of a
+plain scalar stays too.
 
 [fixture: data-blocks/section-and-item-margins] [fixture:
 data-blocks/nested-yaml] [fixture: data-blocks/closing-after-text] [fixture:
-data-blocks/closing-after-literal-text]
+data-blocks/closing-after-literal-text] [fixture:
+data-blocks/closing-after-folded-text] [fixture:
+data-blocks/closing-after-strip-text] [fixture:
+data-blocks/closing-after-keep-text]
 
 Move space-only lines by the same amount, making them empty when no spaces
 remain, and leave empty lines empty. Keep trailing spaces: literal block scalars
@@ -654,9 +658,10 @@ After the header, empty lines, comment lines, and diagram comments change
 nothing in the Db between nodes, before decorations, and at the end of the board
 (diagrams/kanban.md, Blank lines). Runs of empty lines between statements become
 one empty line, whitespace-only lines are empty lines, and empty lines at the
-start and at the end of the board are dropped, as in the other diagram types:
-`kanban`, two empty lines, and ` S` print `kanban` and `  S`. Rule 1 names no
-mark for an empty line, so
+start and at the end of the board are dropped, where no other rule keeps the gap
+as written (see the gap with a diagram comment below), as in the other diagram
+types: `kanban`, two empty lines, and ` S` print `kanban` and `  S`. Rule 1
+names no mark for an empty line, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [gantt](./gantt.md#blank-lines),
 [journey](./journey.md#blank-lines), and [sankey](./sankey.md#blank-lines) print

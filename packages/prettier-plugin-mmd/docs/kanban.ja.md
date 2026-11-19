@@ -602,19 +602,22 @@ section の本文はヘッダーから 2 段、item の本文は 3 段で、
 入れ子の YAML の字下げの差を保ちます。
 単独行の `}` は元の余白がなくてもノードの段に揃え、
 本文の後の閉じ括弧はその行に残します。
-リテラルスカラーや折りたたみスカラーのテキストの後の `}` は、その行に残します。
-独立した行に置くと、スカラーのテキストの末尾に改行が加わり、
+リテラルスカラーや折りたたみスカラー（`|` と `>`、
+後ろに `-` や `+` が付く形も）のテキストの後の `}` は、その行に残します。
+独立した行に置くと、スカラーのテキストの末尾が変わり、
 11.7.0 から 12.3.0 はテキストを別に描くからです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
-[データブロック](./flowchart.ja.md#データブロック)と同じです。
 整形はスカラーの種類を見ないので、
 普通のスカラーのテキストの後の `}` も残ります。
 
 [fixture: data-blocks/section-and-item-margins]
 [fixture: data-blocks/nested-yaml] [fixture: data-blocks/closing-after-text]
 [fixture: data-blocks/closing-after-literal-text]
+[fixture: data-blocks/closing-after-folded-text]
+[fixture: data-blocks/closing-after-strip-text]
+[fixture: data-blocks/closing-after-keep-text]
 
 空白だけの行も同じ量だけ動かし、空白がなくなる場合は空行にします。
 空行は空のままにし、末尾空白も保ちます。
@@ -707,7 +710,9 @@ kanban
 ヘッダーの後の、空行、コメント行、図のコメントは、ノードの間でも、飾りの前でも、
 ボードの終わりでも、Db を変えません（diagrams/kanban.md、空行）。
 文の間の空行の並びは 1 つの空行にし、空白だけの行は空行とみなし、
-ボードの始まりと終わりの空行は、ほかの図種と同じに落とします。
+ボードの始まりと終わりの空行は、
+ほかの規則が隙間を書かれたまま残す所（下の図のコメントのある隙間）を除いて、
+ほかの図種と同じに落とします。
 `kanban`、空行 2 つ、` S` は、`kanban` と `  S` になります。
 規則 1 は、空行の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
