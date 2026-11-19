@@ -1794,6 +1794,9 @@ and the comment `%% c`):
 | the label of a `loop`, `alt`, `else`, `opt`, `par`, `and`, or `box` | sequence                                                                                                                                                                                                                                                                                                                                                                              | `loop A  b  %% c`                                                       | `loop A b %% c`                                                   |
 | the name after `as`                                                 | sequence                                                                                                                                                                                                                                                                                                                                                                              | `participant A as A  b  %% c`                                           | `participant A as A b %% c`                                       |
 | the `text` field                                                    | requirement                                                                                                                                                                                                                                                                                                                                                                           | `text: A  b  %% c`                                                      | `text: A b %% c`                                                  |
+| the `type:` and `docRef:` fields                                    | requirement                                                                                                                                                                                                                                                                                                                                                                           | `type: A  b  %% c`, `docRef: A  b  %% c`                                | `type: A b %% c`, `docRef: A b %% c`                              |
+| a link text                                                         | Wardley map                                                                                                                                                                                                                                                                                                                                                                           | `A -> B; A  b  %% c`                                                    | `A -> B; A b %% c`                                                |
+| a `title`                                                           | block diagram                                                                                                                                                                                                                                                                                                                                                                         | `title A  b  %% c`                                                      | `title A b %% c`                                                  |
 | a quadrant label, an axis label                                     | quadrant                                                                                                                                                                                                                                                                                                                                                                              | `quadrant-1 A  b  %% c`, `x-axis A  b  %% c`, `x-axis L --> A  b  %% c` | `quadrant-1 A b %% c`, `x-axis A b %% c`, `x-axis L --> A b %% c` |
 | a member                                                            | class                                                                                                                                                                                                                                                                                                                                                                                 | `+x  y  %% c`                                                           | `+x y %% c`                                                       |
 | the title of a subgraph                                             | flowchart                                                                                                                                                                                                                                                                                                                                                                             | `subgraph A  b  %% c`                                                   | `subgraph A b %% c`                                               |
@@ -1856,9 +1859,13 @@ label of a par and an and of a sequence diagram] [test: runs before a comment
 that ends the label of a box of a sequence diagram] [test: runs before a comment
 that ends the name after as of a participant of a sequence diagram] [test: runs
 before a comment that ends the text field of a requirement diagram] [test: runs
-before a comment that ends the label of a quadrant of a quadrant chart] [test:
-runs before a comment that ends the label of an axis of a quadrant chart] [test:
-runs before a comment that ends the right label of an axis of a quadrant chart]
+before a comment that ends the type field of a requirement diagram] [test: runs
+before a comment that ends the docRef field of a requirement diagram] [test:
+runs before a comment that ends the link text of a Wardley map] [test: runs
+before a comment that ends the title of a block diagram] [test: runs before a
+comment that ends the label of a quadrant of a quadrant chart] [test: runs
+before a comment that ends the label of an axis of a quadrant chart] [test: runs
+before a comment that ends the right label of an axis of a quadrant chart]
 [test: runs before a comment that ends a member of a class diagram] [test: runs
 before a comment that ends a member line of a class diagram] [test: runs before
 a comment that ends the title of a subgraph of a flowchart] [test: runs before a
@@ -6630,13 +6637,62 @@ usecase/direction-and-accessibility/a11y-padding] [fixture:
 usecase/direction-and-accessibility/a11y-closer-aligned]
 
 A stereotype declaration suffix has one space before the `<<` and none inside
-the delimiters, also inside system boundaries, except beside a directive or a
-comment, where the whitespace keeps its written side: `Reader<<human>>` is
-printed `Reader <<human>>`, and `<<  staff  member  >>` is printed
-`<<staff  member>>`, with the run inside the text kept. Mermaid trims the text,
-so the Db is the same. Protected common comment regions retain their complete
-values. This reuses the
+the delimiters, also inside system boundaries: `Reader<<human>>` is printed
+`Reader <<human>>`, and `<<  staff  member  >>` is printed `<<staff  member>>`,
+with the run inside the text kept. Mermaid trims the text, so the Db is the
+same. Beside a directive (`%%{x}%%`), the whitespace is printed as the table
+below gives. A directive before the `<<` has one space before it and none after
+it. After the `<<`, a run before the directive becomes one space, and the
+whitespace after the directive is left out where none stood before the
+directive, and stays where some stood. Before the `>>`, a run after the
+directive becomes one space, and the whitespace before the directive is left out
+where none stood after the directive, and stays where some stood. Inside the
+text, the whitespace beside a directive stays. The versions that count draw the
+written and the printed forms the same. Protected common comment regions retain
+their complete values. This reuses the
 [class statement-annotation rule](./class.md#whitespace-between-tokens).
+
+| Written after `actor ` | Printed               |
+| ---------------------- | --------------------- |
+| `U%%{x}%%<<s>>`        | `U %%{x}%%<<s>>`      |
+| `U%%{x}%% <<s>>`       | `U %%{x}%%<<s>>`      |
+| `U%%{x}%%  <<s>>`      | `U %%{x}%%<<s>>`      |
+| `U %%{x}%%<<s>>`       | `U %%{x}%%<<s>>`      |
+| `U %%{x}%% <<s>>`      | `U %%{x}%%<<s>>`      |
+| `U %%{x}%%  <<s>>`     | `U %%{x}%%<<s>>`      |
+| `U  %%{x}%%<<s>>`      | `U %%{x}%%<<s>>`      |
+| `U  %%{x}%% <<s>>`     | `U %%{x}%%<<s>>`      |
+| `U  %%{x}%%  <<s>>`    | `U %%{x}%%<<s>>`      |
+| `U <<%%{x}%%s>>`       | `U <<%%{x}%%s>>`      |
+| `U <<%%{x}%% s>>`      | `U <<%%{x}%%s>>`      |
+| `U <<%%{x}%%  s>>`     | `U <<%%{x}%%s>>`      |
+| `U << %%{x}%%s>>`      | `U << %%{x}%%s>>`     |
+| `U << %%{x}%% s>>`     | `U << %%{x}%% s>>`    |
+| `U << %%{x}%%  s>>`    | `U << %%{x}%%  s>>`   |
+| `U <<  %%{x}%%s>>`     | `U << %%{x}%%s>>`     |
+| `U <<  %%{x}%% s>>`    | `U << %%{x}%% s>>`    |
+| `U <<  %%{x}%%  s>>`   | `U << %%{x}%%  s>>`   |
+| `U <<s%%{x}%%>>`       | `U <<s%%{x}%%>>`      |
+| `U <<s%%{x}%% >>`      | `U <<s%%{x}%% >>`     |
+| `U <<s%%{x}%%  >>`     | `U <<s%%{x}%% >>`     |
+| `U <<s %%{x}%%>>`      | `U <<s%%{x}%%>>`      |
+| `U <<s %%{x}%% >>`     | `U <<s %%{x}%% >>`    |
+| `U <<s %%{x}%%  >>`    | `U <<s %%{x}%% >>`    |
+| `U <<s  %%{x}%%>>`     | `U <<s%%{x}%%>>`      |
+| `U <<s  %%{x}%% >>`    | `U <<s  %%{x}%% >>`   |
+| `U <<s  %%{x}%%  >>`   | `U <<s  %%{x}%% >>`   |
+| `U <<a%%{x}%%b>>`      | `U <<a%%{x}%%b>>`     |
+| `U <<a%%{x}%% b>>`     | `U <<a%%{x}%% b>>`    |
+| `U <<a%%{x}%%  b>>`    | `U <<a%%{x}%%  b>>`   |
+| `U <<a %%{x}%%b>>`     | `U <<a %%{x}%%b>>`    |
+| `U <<a %%{x}%% b>>`    | `U <<a %%{x}%% b>>`   |
+| `U <<a %%{x}%%  b>>`   | `U <<a %%{x}%%  b>>`  |
+| `U <<a  %%{x}%%b>>`    | `U <<a  %%{x}%%b>>`   |
+| `U <<a  %%{x}%% b>>`   | `U <<a  %%{x}%% b>>`  |
+| `U <<a  %%{x}%%  b>>`  | `U <<a  %%{x}%%  b>>` |
+| `U <<s\t%%{x}%%\t>>`   | `U <<s\t%%{x}%% >>`   |
+| `U <<\t%%{x}%%\ts>>`   | `U << %%{x}%%\ts>>`   |
+| `U\t%%{x}%%\t<<s>>`    | `U %%{x}%%<<s>>`      |
 
 [fixture: usecase/stereotypes/stereotype-padding] [fixture:
 usecase/stereotypes/opener-gap-sides] [test: usecase: stereotype-opener-tab]
@@ -6644,7 +6700,8 @@ usecase/stereotypes/opener-gap-sides] [test: usecase: stereotype-opener-tab]
 usecase/stereotypes/side-padding] [fixture:
 usecase/stereotypes/boundary-suffixes] [fixture:
 usecase/stereotypes/semicolon-padding-dropped] [test: usecase:
-stereotype-comment-region-padding-kept]
+stereotype-comment-region-padding-kept] [test: usecase: a directive beside the
+text of a stereotype]
 
 Written labels, boundary title padding and continuation columns remain authored
 even where trimming would have equal Db; a label between `'` is printed between

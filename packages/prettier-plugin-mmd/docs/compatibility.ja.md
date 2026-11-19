@@ -1880,6 +1880,9 @@ railroad 図の文字列と特殊シーケンスです。
 | `loop`、`alt`、`else`、`opt`、`par`、`and`、`box` のラベル | sequence                                                                                                                                                                                                                                                                                                                                                                              | `loop A  b  %% c`                                                       | `loop A b %% c`                                                   |
 | `as` の後の名前                                            | sequence                                                                                                                                                                                                                                                                                                                                                                              | `participant A as A  b  %% c`                                           | `participant A as A b %% c`                                       |
 | `text` のフィールド                                        | requirement                                                                                                                                                                                                                                                                                                                                                                           | `text: A  b  %% c`                                                      | `text: A b %% c`                                                  |
+| `type:` と `docRef:` のフィールド                          | requirement                                                                                                                                                                                                                                                                                                                                                                           | `type: A  b  %% c`、`docRef: A  b  %% c`                                | `type: A b %% c`、`docRef: A b %% c`                              |
+| リンクのテキスト                                           | Wardley map                                                                                                                                                                                                                                                                                                                                                                           | `A -> B; A  b  %% c`                                                    | `A -> B; A b %% c`                                                |
+| `title`                                                    | block diagram                                                                                                                                                                                                                                                                                                                                                                         | `title A  b  %% c`                                                      | `title A b %% c`                                                  |
 | 象限のラベル、軸のラベル                                   | quadrant                                                                                                                                                                                                                                                                                                                                                                              | `quadrant-1 A  b  %% c`、`x-axis A  b  %% c`、`x-axis L --> A  b  %% c` | `quadrant-1 A b %% c`、`x-axis A b %% c`、`x-axis L --> A b %% c` |
 | メンバー                                                   | class                                                                                                                                                                                                                                                                                                                                                                                 | `+x  y  %% c`                                                           | `+x y %% c`                                                       |
 | subgraph のタイトル                                        | flowchart                                                                                                                                                                                                                                                                                                                                                                             | `subgraph A  b  %% c`                                                   | `subgraph A b %% c`                                               |
@@ -1945,6 +1948,10 @@ railroad 図の文字列と特殊シーケンスです。
 [test: runs before a comment that ends the label of a box of a sequence diagram]
 [test: runs before a comment that ends the name after as of a participant of a sequence diagram]
 [test: runs before a comment that ends the text field of a requirement diagram]
+[test: runs before a comment that ends the type field of a requirement diagram]
+[test: runs before a comment that ends the docRef field of a requirement diagram]
+[test: runs before a comment that ends the link text of a Wardley map]
+[test: runs before a comment that ends the title of a block diagram]
 [test: runs before a comment that ends the label of a quadrant of a quadrant chart]
 [test: runs before a comment that ends the label of an axis of a quadrant chart]
 [test: runs before a comment that ends the right label of an axis of a quadrant chart]
@@ -6943,13 +6950,64 @@ CSS 宣言の最初のコロンの前後の空白は、
 
 stereotype の宣言接尾辞は、systemBoundary 内も含め、`<<` の前に空白 1 つを置き、
 区切りの内側には空白を置きません。
-ただし、ディレクティブかコメントの隣では、空白は書かれた側を保ちます。
 `Reader<<human>>` は `Reader <<human>>` に、
 `<<  staff  member  >>` は `<<staff  member>>` になり、
 テキストの中の空白の連なりは残します。
 Mermaid がテキストの両端を除くので、Db は同じです。
+ディレクティブ（`%%{x}%%`）の隣の空白は、下の表のとおりに印字します。
+`<<` の前のディレクティブは、前に空白 1 つを置き、後ろには置きません。
+`<<` の後では、ディレクティブの前の空白の連なりは空白 1 つになり、
+ディレクティブの後の空白は、ディレクティブの前に空白がなければ除き、
+あれば残します。
+`>>` の前では、ディレクティブの後の空白の連なりは空白 1 つになり、
+ディレクティブの前の空白は、ディレクティブの後に空白がなければ除き、
+あれば残します。
+テキストの中では、ディレクティブの隣の空白は残します。
+対象にする版は、書かれた形と印字した形を同じに描きます。
 保護した共通コメント領域は、値の全体を保ちます。
 class の[トークンの間の空白](./class.ja.md#トークンの間の空白) を再利用します。
+
+| `actor ` の後に書かれた形 | 印字                  |
+| ------------------------- | --------------------- |
+| `U%%{x}%%<<s>>`           | `U %%{x}%%<<s>>`      |
+| `U%%{x}%% <<s>>`          | `U %%{x}%%<<s>>`      |
+| `U%%{x}%%  <<s>>`         | `U %%{x}%%<<s>>`      |
+| `U %%{x}%%<<s>>`          | `U %%{x}%%<<s>>`      |
+| `U %%{x}%% <<s>>`         | `U %%{x}%%<<s>>`      |
+| `U %%{x}%%  <<s>>`        | `U %%{x}%%<<s>>`      |
+| `U  %%{x}%%<<s>>`         | `U %%{x}%%<<s>>`      |
+| `U  %%{x}%% <<s>>`        | `U %%{x}%%<<s>>`      |
+| `U  %%{x}%%  <<s>>`       | `U %%{x}%%<<s>>`      |
+| `U <<%%{x}%%s>>`          | `U <<%%{x}%%s>>`      |
+| `U <<%%{x}%% s>>`         | `U <<%%{x}%%s>>`      |
+| `U <<%%{x}%%  s>>`        | `U <<%%{x}%%s>>`      |
+| `U << %%{x}%%s>>`         | `U << %%{x}%%s>>`     |
+| `U << %%{x}%% s>>`        | `U << %%{x}%% s>>`    |
+| `U << %%{x}%%  s>>`       | `U << %%{x}%%  s>>`   |
+| `U <<  %%{x}%%s>>`        | `U << %%{x}%%s>>`     |
+| `U <<  %%{x}%% s>>`       | `U << %%{x}%% s>>`    |
+| `U <<  %%{x}%%  s>>`      | `U << %%{x}%%  s>>`   |
+| `U <<s%%{x}%%>>`          | `U <<s%%{x}%%>>`      |
+| `U <<s%%{x}%% >>`         | `U <<s%%{x}%% >>`     |
+| `U <<s%%{x}%%  >>`        | `U <<s%%{x}%% >>`     |
+| `U <<s %%{x}%%>>`         | `U <<s%%{x}%%>>`      |
+| `U <<s %%{x}%% >>`        | `U <<s %%{x}%% >>`    |
+| `U <<s %%{x}%%  >>`       | `U <<s %%{x}%% >>`    |
+| `U <<s  %%{x}%%>>`        | `U <<s%%{x}%%>>`      |
+| `U <<s  %%{x}%% >>`       | `U <<s  %%{x}%% >>`   |
+| `U <<s  %%{x}%%  >>`      | `U <<s  %%{x}%% >>`   |
+| `U <<a%%{x}%%b>>`         | `U <<a%%{x}%%b>>`     |
+| `U <<a%%{x}%% b>>`        | `U <<a%%{x}%% b>>`    |
+| `U <<a%%{x}%%  b>>`       | `U <<a%%{x}%%  b>>`   |
+| `U <<a %%{x}%%b>>`        | `U <<a %%{x}%%b>>`    |
+| `U <<a %%{x}%% b>>`       | `U <<a %%{x}%% b>>`   |
+| `U <<a %%{x}%%  b>>`      | `U <<a %%{x}%%  b>>`  |
+| `U <<a  %%{x}%%b>>`       | `U <<a  %%{x}%%b>>`   |
+| `U <<a  %%{x}%% b>>`      | `U <<a  %%{x}%% b>>`  |
+| `U <<a  %%{x}%%  b>>`     | `U <<a  %%{x}%%  b>>` |
+| `U <<s\t%%{x}%%\t>>`      | `U <<s\t%%{x}%% >>`   |
+| `U <<\t%%{x}%%\ts>>`      | `U << %%{x}%%\ts>>`   |
+| `U\t%%{x}%%\t<<s>>`       | `U %%{x}%%<<s>>`      |
 
 [fixture: usecase/stereotypes/stereotype-padding]
 [fixture: usecase/stereotypes/opener-gap-sides]
@@ -6959,6 +7017,7 @@ class の[トークンの間の空白](./class.ja.md#トークンの間の空白
 [fixture: usecase/stereotypes/boundary-suffixes]
 [fixture: usecase/stereotypes/semicolon-padding-dropped]
 [test: usecase: stereotype-comment-region-padding-kept]
+[test: usecase: a directive beside the text of a stereotype]
 
 ラベル、境界タイトルの余白、継続列は、除去で Db が等しい場合も書かれたままです。
 `'` で囲むラベルは、

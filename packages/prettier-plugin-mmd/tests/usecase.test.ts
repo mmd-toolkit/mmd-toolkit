@@ -37,3 +37,78 @@ describe("usecase escaped cases", () => {
     expect(await describeFrontmatterChange(before, after, options)).toBeNull()
   })
 })
+
+/**
+ * The whitespace beside a directive in the stereotype of an actor, as the
+ * table of docs/compatibility.md, Usecase native syntax and authored values,
+ * gives: the text written after `actor ` and the text printed there.
+ */
+const stereotypeDirectiveGaps: readonly (readonly [string, string])[] = [
+  ["U%%{x}%%<<s>>", "U %%{x}%%<<s>>"],
+  ["U%%{x}%% <<s>>", "U %%{x}%%<<s>>"],
+  ["U%%{x}%%  <<s>>", "U %%{x}%%<<s>>"],
+  ["U %%{x}%%<<s>>", "U %%{x}%%<<s>>"],
+  ["U %%{x}%% <<s>>", "U %%{x}%%<<s>>"],
+  ["U %%{x}%%  <<s>>", "U %%{x}%%<<s>>"],
+  ["U  %%{x}%%<<s>>", "U %%{x}%%<<s>>"],
+  ["U  %%{x}%% <<s>>", "U %%{x}%%<<s>>"],
+  ["U  %%{x}%%  <<s>>", "U %%{x}%%<<s>>"],
+  ["U <<%%{x}%%s>>", "U <<%%{x}%%s>>"],
+  ["U <<%%{x}%% s>>", "U <<%%{x}%%s>>"],
+  ["U <<%%{x}%%  s>>", "U <<%%{x}%%s>>"],
+  ["U << %%{x}%%s>>", "U << %%{x}%%s>>"],
+  ["U << %%{x}%% s>>", "U << %%{x}%% s>>"],
+  ["U << %%{x}%%  s>>", "U << %%{x}%%  s>>"],
+  ["U <<  %%{x}%%s>>", "U << %%{x}%%s>>"],
+  ["U <<  %%{x}%% s>>", "U << %%{x}%% s>>"],
+  ["U <<  %%{x}%%  s>>", "U << %%{x}%%  s>>"],
+  ["U <<s%%{x}%%>>", "U <<s%%{x}%%>>"],
+  ["U <<s%%{x}%% >>", "U <<s%%{x}%% >>"],
+  ["U <<s%%{x}%%  >>", "U <<s%%{x}%% >>"],
+  ["U <<s %%{x}%%>>", "U <<s%%{x}%%>>"],
+  ["U <<s %%{x}%% >>", "U <<s %%{x}%% >>"],
+  ["U <<s %%{x}%%  >>", "U <<s %%{x}%% >>"],
+  ["U <<s  %%{x}%%>>", "U <<s%%{x}%%>>"],
+  ["U <<s  %%{x}%% >>", "U <<s  %%{x}%% >>"],
+  ["U <<s  %%{x}%%  >>", "U <<s  %%{x}%% >>"],
+  ["U <<a%%{x}%%b>>", "U <<a%%{x}%%b>>"],
+  ["U <<a%%{x}%% b>>", "U <<a%%{x}%% b>>"],
+  ["U <<a%%{x}%%  b>>", "U <<a%%{x}%%  b>>"],
+  ["U <<a %%{x}%%b>>", "U <<a %%{x}%%b>>"],
+  ["U <<a %%{x}%% b>>", "U <<a %%{x}%% b>>"],
+  ["U <<a %%{x}%%  b>>", "U <<a %%{x}%%  b>>"],
+  ["U <<a  %%{x}%%b>>", "U <<a  %%{x}%%b>>"],
+  ["U <<a  %%{x}%% b>>", "U <<a  %%{x}%% b>>"],
+  ["U <<a  %%{x}%%  b>>", "U <<a  %%{x}%%  b>>"],
+  ["U <<s\t%%{x}%%\t>>", "U <<s\t%%{x}%% >>"],
+  ["U <<\t%%{x}%%\ts>>", "U << %%{x}%%\ts>>"],
+  ["U\t%%{x}%%\t<<s>>", "U %%{x}%%<<s>>"],
+]
+
+/** Formats the input as the output states, again to the same, with the Db kept. */
+async function expectStereotypeKept(
+  input: string,
+  output: string,
+): Promise<void> {
+  expect(await formatMermaid(input)).toBe(output)
+  expect(await formatMermaid(output)).toBe(output)
+  const dbBefore = dbOfText(input, defaultEmbedded())
+  expect(
+    dbForFormattingComparison(
+      dbBefore,
+      dbOfText(output, defaultEmbedded()),
+      input,
+      output,
+    ),
+  ).toEqual(dbBefore)
+}
+
+describe("the whitespace beside a directive in a stereotype", () => {
+  it("usecase: a directive beside the text of a stereotype", async () => {
+    for (const [written, printed] of stereotypeDirectiveGaps)
+      await expectStereotypeKept(
+        `usecase-beta\nactor ${written}\n`,
+        `usecase-beta\n  actor ${printed}\n`,
+      )
+  })
+})

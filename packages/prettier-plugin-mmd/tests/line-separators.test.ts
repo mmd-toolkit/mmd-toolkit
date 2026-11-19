@@ -6995,6 +6995,29 @@ const commentEndsOtherTextExamples: readonly {
       "requirementDiagram\n  requirement r {\n    id: 1\n    text: A b %% c\n    risk: low\n    verifymethod: test\n  }\n",
   },
   {
+    name: "runs before a comment that ends the type field of a requirement diagram",
+    input: "requirementDiagram\nelement e {\ntype: A  b  %% c\n}\n",
+    output: "requirementDiagram\n  element e {\n    type: A b %% c\n  }\n",
+  },
+  {
+    name: "runs before a comment that ends the docRef field of a requirement diagram",
+    input: "requirementDiagram\nelement e {\ntype: t\ndocRef: A  b  %% c\n}\n",
+    output:
+      "requirementDiagram\n  element e {\n    type: t\n    docRef: A b %% c\n  }\n",
+  },
+  {
+    name: "runs before a comment that ends the link text of a Wardley map",
+    input:
+      "wardley-beta\ncomponent A [0.5, 0.5]\ncomponent B [0.4, 0.4]\nA -> B; A  b  %% c\n",
+    output:
+      "wardley-beta\n  component A [0.5, 0.5]\n  component B [0.4, 0.4]\n  A -> B; A b %% c\n",
+  },
+  {
+    name: "runs before a comment that ends the title of a block diagram",
+    input: "block-beta\ntitle A  b  %% c\ncolumns 1\na\n",
+    output: "block-beta\n  title A b %% c\n  columns 1\n  a\n",
+  },
+  {
     name: "runs before a comment that ends the label of a quadrant of a quadrant chart",
     input:
       "quadrantChart\nx-axis L --> R\ny-axis B --> T\nquadrant-1 A  b  %% c\nA: [0.5, 0.5]\n",
