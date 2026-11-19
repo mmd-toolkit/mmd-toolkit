@@ -60,6 +60,13 @@ export interface KeptLines {
    * - the line of every statement: treemap and treeview.
    */
   readonly ownIndentation: ReadonlySet<number>
+  /**
+   * Lines that a comment region joins to nothing, and that the printer ends at
+   * the U+2028 or U+2029 before the region: they are no joined lines, and are
+   * not printed as written for that reason (see `withJoinedLines`). Absent for
+   * a diagram that has none.
+   */
+  readonly unjoined?: ReadonlySet<number>
 }
 
 /** Grammatical punctuation and whether statement semicolons are optional. */
@@ -1509,6 +1516,7 @@ export function withJoinedLines(
         ),
     )
     .map((lineFeed) => lineStartOf(source, lineFeed))
+    .filter((line) => kept.unjoined?.has(line) !== true)
   return {
     ...kept,
     verbatim: new Set([...kept.verbatim, ...joinedLines]),
