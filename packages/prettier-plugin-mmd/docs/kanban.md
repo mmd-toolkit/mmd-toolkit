@@ -1392,11 +1392,16 @@ print the comment, the line of the U+2028, and a line break). After a comment
 line with text, every last line of whitespace is left out, one of only a U+2028
 or a U+2029 too (`S[x]`, a line break, `%% c`, a line break, and a U+2028 print
 `S[x]` and `%% c`, each followed by a line break), and after a line of `%%`
-only, the gap that holds it stays as written (see [Blank lines](#blank-lines)).
-On the header line, an open directive takes the rest as on a line of its own:
-`kanban %%{unfinished` and two spaces print `kanban %%{unfinished` and a line
-break. In Markdown, the indentation of the code fence or of its list item is the
-indentation of the host, and is not part of the indentation of the board.
+only, a last line of only a U+2028 or a U+2029 stays as written with the gap
+before it, and so does a last line of whitespace that a line break follows or an
+empty line precedes (the gap stays whole, see [Blank lines](#blank-lines)),
+while a last line of whitespace with neither is left out and the `%%` is aligned
+(`S[x]`, a line of `%%`, a line break, and one space print `S[x]`, the `%%`
+aligned, and a line break). On the header line, an open directive takes the rest
+as on a line of its own: `kanban %%{unfinished` and two spaces print
+`kanban %%{unfinished` and a line break. In Markdown, the indentation of the
+code fence or of its list item is the indentation of the host, and is not part
+of the indentation of the board.
 
 [fixture: final-newline/accepted] [fixture: final-newline/no-final-lf] [fixture:
 final-newline/empty-board] [fixture: final-newline/open-directive-at-eof]
@@ -1476,13 +1481,17 @@ break in a kanban board] [test: a final comment on the header line and a last
 line of a U+2029 without a line break in a kanban board] [test: a final comment
 after a card and a last line of a U+2028 without a line break in a kanban board]
 [test: a last line of a U+2028 after a line of %% alone in a kanban board]
-[test: a last line of a U+2028 after a final comment on a line of its own in a
-kanban board] [test: a last line of a U+2029 after a final comment on a line of
-its own in a kanban board] [test: a last line of one space after an empty line
-and a line break after a final comment on a line of its own in a kanban board]
-[test: an open directive on the header line of a kanban board] [test: an open
-directive on the header line of a kanban board and empty lines] [fixture:
-blank-lines/comment-blank-trailing] [test: kanban: selected-terminal-separator]
+[test: a last line of one space without a line break after a line of %% alone in
+a kanban board] [test: a last line of one space after a line break, after a line
+of %% alone in a kanban board] [test: a last line of a U+2029 after a line of %%
+alone in a kanban board] [test: a last line of a U+2028 after a final comment on
+a line of its own in a kanban board] [test: a last line of a U+2029 after a
+final comment on a line of its own in a kanban board] [test: a last line of one
+space after an empty line and a line break after a final comment on a line of
+its own in a kanban board] [test: an open directive on the header line of a
+kanban board] [test: an open directive on the header line of a kanban board and
+empty lines] [fixture: blank-lines/comment-blank-trailing] [test: kanban:
+selected-terminal-separator]
 
 Input
 ([final-newline/empty-board-input.mmd](../tests/fixtures/kanban/final-newline/empty-board-input.mmd)):

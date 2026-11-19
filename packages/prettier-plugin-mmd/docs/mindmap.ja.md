@@ -754,8 +754,10 @@ mindmap
 （[compatibility.ja.md](./compatibility.ja.md)
 の「改行かセミコロンを含むディレクティブ」の節）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-mermaid.js は、U+2028 か U+2029 を含むディレクティブを、
-mindmap ではクラスの行のほかでは拒否します。
+mermaid.js は、U+2028 か U+2029 を含むディレクティブを、mindmap では、
+形のテキストの中で文字の後にあるときと、
+クラスの行のほかでは拒否します（`a[t %%{init: {`、U+2028、
+`}}%% u]` は変えません）。
 クラスの行では、ディレクティブの前後に何があっても（空白、タブ、U+00A0、
 コメント、別のディレクティブ、テキスト）、行を書かれたまま残します（`:::c`、
 空白 2 つ、`%%{init: {`、U+2028、`}}%%`、空白 2 つは変えません）。
@@ -805,6 +807,8 @@ U+2000 から U+200A、U+2028、U+2029、U+202F、U+205F、U+3000、U+FEFF）も
 [test: a whitespace character that is no space or tab before the directive of a bare mindmap node and of the root text]
 [test: a directive that holds a U+2028 on a class line of a mindmap node]
 [test: a directive that holds a U+2029 on a class line of a mindmap node]
+[test: a directive that holds a U+2028 in the text of a shape of a mindmap node]
+[test: a directive that holds a U+2029 in the text of a shape of a mindmap node]
 
 2 つの単位の間のディレクティブは、その場に残します。
 テキストの中のディレクティブは、テキストの一部です。

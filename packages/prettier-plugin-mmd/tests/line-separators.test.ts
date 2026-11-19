@@ -8160,6 +8160,21 @@ const lastLineAfterCommentExamples: readonly (readonly [
     "kanban\n  S\n    A[y] %% c\n\u2028\n",
   ],
   [
+    "a last line of one space without a line break after a line of %% alone in a kanban board",
+    "kanban\n  S\n%%\n ",
+    "kanban\n  S\n  %%\n",
+  ],
+  [
+    "a last line of one space after a line break, after a line of %% alone in a kanban board",
+    "kanban\n  S\n%%\n \n",
+    "kanban\n  S\n%%\n \n",
+  ],
+  [
+    "a last line of a U+2029 after a line of %% alone in a kanban board",
+    "kanban\n  S\n%%\n\u2029",
+    "kanban\n  S\n%%\n\u2029\n",
+  ],
+  [
     "a last line of a U+2028 after a line of %% alone in a kanban board",
     "kanban\n  S\n%%\n\u2028",
     "kanban\n  S\n%%\n\u2028\n",
@@ -8500,6 +8515,46 @@ describe("a directive that holds a line separator on a class line of a mindmap n
           "{line}",
           form.replace("{d}", "%%{init: {\u2029}}%%"),
         )
+        await expectKept(text, text)
+      }
+    }
+  })
+})
+
+/**
+ * A directive that holds a U+2028 or a U+2029 is accepted inside the text of a
+ * shape of a mindmap node, after a character of the text, and the text stays as
+ * written (docs/mindmap.md, Directives).
+ */
+const mindmapShapes = [
+  ["[", "]"],
+  ["(", ")"],
+  ["((", "))"],
+  ["))", "(("],
+  [")", "("],
+  ["{{", "}}"],
+] as const
+
+describe("a directive that holds a line separator in the text of a shape of a mindmap node", () => {
+  it("a directive that holds a U+2028 in the text of a shape of a mindmap node", async () => {
+    for (const [open, close] of mindmapShapes) {
+      for (const inside of [
+        "t %%{init: {\u2028}}%% u",
+        "t %%{init: {\u2028}}%%  ",
+      ]) {
+        const text = `mindmap\n  root\n    a${open}${inside}${close}\n`
+        await expectKept(text, text)
+      }
+    }
+  })
+
+  it("a directive that holds a U+2029 in the text of a shape of a mindmap node", async () => {
+    for (const [open, close] of mindmapShapes) {
+      for (const inside of [
+        "t %%{init: {\u2029}}%% u",
+        "t %%{init: {\u2029}}%%  ",
+      ]) {
+        const text = `mindmap\n  root\n    a${open}${inside}${close}\n`
         await expectKept(text, text)
       }
     }
