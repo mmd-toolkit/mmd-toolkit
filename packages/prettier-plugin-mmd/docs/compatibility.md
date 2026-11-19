@@ -1389,31 +1389,37 @@ user journey loses the whitespace before its first colon (`Make tea : 5: Me` is
 printed `Make tea: 5: Me`), except in a section whose descriptions are padded to
 line the colons up. Where a comment follows the text on its line, one space
 separates it from the text. Where directives do, each keeps whether whitespace
-precedes it, a run becoming one space, and the whitespace after the last one is
-dropped like any whitespace at the end of the line, so the line is printed alike
-whether or not whitespace follows its last directive, as a directive at the end
-of a line is in the other diagrams (see
+precedes it, a run of spaces and tabs becoming one space, and the spaces and
+tabs after the last one are dropped like any whitespace at the end of the line,
+so the line is printed alike whether or not spaces and tabs follow its last
+directive, as a directive at the end of a line is in the other diagrams (see
 [Directives](./flowchart.md#directives)): `title T  %%{x}%%  %%{y}%%` and
 `title T  %%{x}%%  %%{y}%%  ` are both printed `title T %%{x}%% %%{y}%%`,
 `title T%%{x}%%%%{y}%%  ` is printed `title T%%{x}%%%%{y}%%`, and
 `state "d" as A : x  %%{x}%%  ` is printed `state "d" as A : x %%{x}%%`.
-mermaid.js removes the directives before it reads the text, so the whitespace
-around them is whitespace at the end of the text, which it draws the same
-whatever it is. This holds for the title of a Gantt chart, a user journey, a
-timeline, a sequence diagram, a Venn diagram, a C4 diagram, a pie chart, a radar
-chart, a packet diagram, an architecture diagram, a gitGraph, a cynefin diagram,
-a treemap, a Wardley map, a treeView, an info diagram, and a railroad diagram,
-for the `accTitle:` and `accDescr:` lines of those diagram types and of a
-usecase diagram, for the text of a node of an ishikawa diagram, a mindmap, and a
-treeView, and of a card of a kanban board (not the id of a column, which the
-figure depends on), for the date format and the axis format of a Gantt chart,
-for the `accDescription` of a C4 diagram, for the last event of a line of a
-timeline and the space that a period and an event before a colon gain, for the
-description of a task of a user journey, except that a task whose description
-holds a directive stays as written (see [Task data](./journey.md#task-data)),
-and for the second description of a state alias. The runs of spaces and tabs
-inside a date format, an axis format, or the value of an `accTitle:` line stay
-as written before the directives as they do without them.
+mermaid.js removes the directives before it reads the text, so the spaces and
+tabs around them are spaces and tabs at the end of the text, which it draws the
+same whatever they are. This holds for the title of a Gantt chart, a user
+journey, a timeline, a sequence diagram, a Venn diagram, a C4 diagram, a pie
+chart, a radar chart, a packet diagram, an architecture diagram, a gitGraph, a
+cynefin diagram, a treemap, a Wardley map, a treeView, an info diagram, and a
+railroad diagram, for the `accTitle:` and `accDescr:` lines of those diagram
+types and of a usecase diagram, for the text of a node of an ishikawa diagram, a
+mindmap, and a treeView, and of a card of a kanban board (not the id of a
+column, which the figure depends on), for the date format and the axis format of
+a Gantt chart, for the `accDescription` of a C4 diagram, for the last event of a
+line of a timeline and the space that a period and an event before a colon gain,
+for the description of a task of a user journey, except that a task whose
+description holds a directive stays as written (see
+[Task data](./journey.md#task-data)), and for the second description of a state
+alias. The runs of spaces and tabs inside a date format, an axis format, or the
+value of an `accTitle:` line stay as written before the directives as they do
+without them. Whitespace other than spaces and tabs, such as U+00A0 or U+3000,
+is drawn in the title of a Gantt chart, a user journey, a timeline, a sequence
+diagram, a Venn diagram, and a C4 diagram, in the second description of a state
+alias, in the text of a mindmap node, and in the text of a kanban card, so it
+stays as written there, before and after the directives (see the paragraph after
+the next one for the diagram types where it is not drawn).
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped] [fixture:
 usecase/direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
@@ -1497,17 +1503,32 @@ whitespace before the last directive of the line is printed as one space
 whatever whitespace it holds, such as U+00A0, U+3000, or a form feed, with or
 without spaces and tabs after that directive: `title T`, U+00A0, and `%%{x}%%`
 is printed `title T %%{x}%%`, and so is the same line with two spaces after the
-directive. These are the diagram types where mermaid.js draws the text of the
-line the same with whitespace at its end as without it, whatever the whitespace.
-The written text and the printed text of each of these lines were drawn with the
-versions that count for the diagram type (see
-[Versions of mermaid.js that count](#versions-of-mermaidjs-that-count)), with
-the characters above and U+1680, U+2003, U+000B, U+202F, and U+FEFF, and the Db
-and the SVG were the same, in all versions that accept the text; 10.9.8 rejects
-both texts of an info diagram and of the title of a gitGraph. The run before a
-directive that another directive follows keeps whitespace other than spaces and
-tabs as written, and so does U+0085, which is no whitespace to mermaid.js:
+directive. This holds where only spaces and tabs stand between the directives
+and after the last of them, and in a usecase diagram where only whitespace
+stands there, a U+2028 or U+2029 included: `accTitle: T`, U+2028, and `%%{x}%%`
+is printed `accTitle: T %%{x}%%`. In the diagram types named here other than
+usecase, whitespace other than a space or a tab between two directives or after
+the last directive stays as written, with the spaces and tabs after it:
+`title T`, a space, `%%{x}%%`, U+00A0, `%%{y}%%`, and a space is printed as it
+is, and so is `title T`, a space, `%%{x}%%`, U+00A0, and a space. The run before
+a directive that another directive follows keeps whitespace other than spaces
+and tabs as written, and so does U+0085, which is no whitespace to mermaid.js:
 `title T`, U+00A0, `%%{x}%%`, a space, and `%%{y}%%` is printed as it is.
+
+The diagram types named here are those that this paragraph changes. mermaid.js
+draws the text of their lines the same with whitespace at its end as without it,
+whatever the whitespace. The written text and the printed text of each of these
+lines were drawn with the versions that count for the diagram type (see
+[Versions of mermaid.js that count](#versions-of-mermaidjs-that-count)), with
+U+00A0, U+3000, U+2003, a form feed, U+000B, U+FEFF, U+1680, and U+202F before
+the directive in each type, and with U+2000 to U+200A, U+205F, U+0085, a space
+and a U+00A0 in one run, and a tab and a U+00A0 in one run in a pie chart, a
+radar chart, a treemap, and a usecase diagram; with U+2028 and U+2029 in a
+usecase diagram; and with a U+00A0 between two directives in a usecase diagram.
+The Db and the SVG were the same, in all versions that accept the text; 10.9.8
+rejects both texts of an info diagram and of the title of a gitGraph. A U+00A0
+inside a title is drawn: the same texts differ there, in a pie chart and a radar
+chart.
 
 [test: radar title: U+00A0 before the directive] [test: architecture title:
 U+00A0 before the directive] [test: wardley title: U+00A0 before the directive]
@@ -1530,7 +1551,47 @@ usecase accTitle: U+00A0 before the directive] [test: usecase accDescr: U+00A0
 before the directive] [test: usecase accTitle: U+00A0 between two directives]
 [test: usecase accTitle: U+00A0 before, between and after two directives] [test:
 usecase accTitle: U+00A0 before the first of two directives, a space between
-them]
+them] [test: radar accTitle: U+00A0 before the directive] [test: radar accDescr:
+U+00A0 before the directive] [test: architecture accTitle: U+00A0 before the
+directive] [test: architecture accDescr: U+00A0 before the directive] [test:
+wardley accTitle: U+00A0 before the directive] [test: wardley accDescr: U+00A0
+before the directive] [test: info accTitle: U+00A0 before the directive] [test:
+info accDescr: U+00A0 before the directive] [test: packet accTitle: U+00A0
+before the directive] [test: packet accDescr: U+00A0 before the directive]
+[test: gitGraph accTitle: U+00A0 before the directive] [test: gitGraph accDescr:
+U+00A0 before the directive] [test: treemap accTitle: U+00A0 before the
+directive] [test: treemap accDescr: U+00A0 before the directive] [test: treeView
+accTitle: U+00A0 before the directive] [test: treeView accDescr: U+00A0 before
+the directive] [test: cynefin accTitle: U+00A0 before the directive] [test:
+cynefin accDescr: U+00A0 before the directive] [test: railroad accTitle: U+00A0
+before the directive] [test: railroad accDescr: U+00A0 before the directive]
+[test: usecase accTitle: U+2028 before the directive] [test: usecase accTitle:
+U+2029 before the directive] [test: usecase accDescr: U+2028 before the
+directive] [test: usecase accTitle: U+00A0 and U+2028 before the directive]
+[test: usecase accTitle: a space, U+2028, and a space before the directive]
+[test: usecase accTitle: U+2028 between two directives] [test: usecase accTitle:
+U+2028 before, between and after two directives] [test: radar title: U+00A0
+between two directives, and a space after the last] [test: radar title: U+00A0
+and a space after the last directive] [test: architecture title: U+00A0 between
+two directives, and a space after the last] [test: architecture title: U+00A0
+and a space after the last directive] [test: wardley title: U+00A0 between two
+directives, and a space after the last] [test: wardley title: U+00A0 and a space
+after the last directive] [test: pie title: U+00A0 between two directives, and a
+space after the last] [test: pie title: U+00A0 and a space after the last
+directive] [test: info title: U+00A0 between two directives, and a space after
+the last] [test: info title: U+00A0 and a space after the last directive] [test:
+packet title: U+00A0 between two directives, and a space after the last] [test:
+packet title: U+00A0 and a space after the last directive] [test: gitGraph
+title: U+00A0 between two directives, and a space after the last] [test:
+gitGraph title: U+00A0 and a space after the last directive] [test: treemap
+title: U+00A0 between two directives, and a space after the last] [test: treemap
+title: U+00A0 and a space after the last directive] [test: treeView title:
+U+00A0 between two directives, and a space after the last] [test: treeView
+title: U+00A0 and a space after the last directive] [test: cynefin title: U+00A0
+between two directives, and a space after the last] [test: cynefin title: U+00A0
+and a space after the last directive] [test: railroad title: U+00A0 between two
+directives, and a space after the last] [test: railroad title: U+00A0 and a
+space after the last directive]
 
 mermaid.js reads one whitespace character after the keyword and keeps the rest
 in the Db, so the Db of the printed text differs from the Db of the written

@@ -6884,7 +6884,8 @@ describe("requirement color words with rejected tabs", () => {
  * the line is one space, whatever it holds, and `{B}` stands for the spaces
  * and tabs after the directive, which are left out: the line is printed the
  * same with and without them (docs/compatibility.md, Texts after a keyword
- * that are drawn the same).
+ * that are drawn the same). In a usecase diagram a U+2028 or U+2029 is
+ * whitespace here too.
  */
 const textEndDirectiveExamples: readonly (readonly [string, string, string])[] =
   [
@@ -7038,6 +7039,141 @@ const textEndDirectiveExamples: readonly (readonly [string, string, string])[] =
       "usecase-beta\naccTitle: T\u00a0%%{x}%% %%{y}%%{B}\nactor A\n",
       "usecase-beta\n  accTitle: T\u00a0%%{x}%% %%{y}%%\n  actor A\n",
     ],
+    [
+      "radar accTitle: U+00A0 before the directive",
+      "radar-beta\naccTitle: T\u00a0%%{x}%%{B}\naxis a, b\ncurve c{1, 2}\n",
+      "radar-beta\n  accTitle: T %%{x}%%\n  axis a, b\n  curve c{1, 2}\n",
+    ],
+    [
+      "radar accDescr: U+00A0 before the directive",
+      "radar-beta\naccDescr: T\u00a0%%{x}%%{B}\naxis a, b\ncurve c{1, 2}\n",
+      "radar-beta\n  accDescr: T %%{x}%%\n  axis a, b\n  curve c{1, 2}\n",
+    ],
+    [
+      "architecture accTitle: U+00A0 before the directive",
+      "architecture-beta\naccTitle: T\u00a0%%{x}%%{B}\nservice a(server)[A]\n",
+      "architecture-beta\n  accTitle: T %%{x}%%\n  service a(server)[A]\n",
+    ],
+    [
+      "architecture accDescr: U+00A0 before the directive",
+      "architecture-beta\naccDescr: T\u00a0%%{x}%%{B}\nservice a(server)[A]\n",
+      "architecture-beta\n  accDescr: T %%{x}%%\n  service a(server)[A]\n",
+    ],
+    [
+      "wardley accTitle: U+00A0 before the directive",
+      "wardley-beta\naccTitle: T\u00a0%%{x}%%{B}\ncomponent A [0.5, 0.5]\n",
+      "wardley-beta\n  accTitle: T %%{x}%%\n  component A [0.5, 0.5]\n",
+    ],
+    [
+      "wardley accDescr: U+00A0 before the directive",
+      "wardley-beta\naccDescr: T\u00a0%%{x}%%{B}\ncomponent A [0.5, 0.5]\n",
+      "wardley-beta\n  accDescr: T %%{x}%%\n  component A [0.5, 0.5]\n",
+    ],
+    [
+      "info accTitle: U+00A0 before the directive",
+      "info\naccTitle: T\u00a0%%{x}%%{B}\n",
+      "info\n  accTitle: T %%{x}%%\n",
+    ],
+    [
+      "info accDescr: U+00A0 before the directive",
+      "info\naccDescr: T\u00a0%%{x}%%{B}\n",
+      "info\n  accDescr: T %%{x}%%\n",
+    ],
+    [
+      "packet accTitle: U+00A0 before the directive",
+      'packet-beta\naccTitle: T\u00a0%%{x}%%{B}\n0-7: "x"\n',
+      'packet-beta\n  accTitle: T %%{x}%%\n  0-7: "x"\n',
+    ],
+    [
+      "packet accDescr: U+00A0 before the directive",
+      'packet-beta\naccDescr: T\u00a0%%{x}%%{B}\n0-7: "x"\n',
+      'packet-beta\n  accDescr: T %%{x}%%\n  0-7: "x"\n',
+    ],
+    [
+      "gitGraph accTitle: U+00A0 before the directive",
+      "gitGraph\naccTitle: T\u00a0%%{x}%%{B}\ncommit\n",
+      "gitGraph\n  accTitle: T %%{x}%%\n  commit\n",
+    ],
+    [
+      "gitGraph accDescr: U+00A0 before the directive",
+      "gitGraph\naccDescr: T\u00a0%%{x}%%{B}\ncommit\n",
+      "gitGraph\n  accDescr: T %%{x}%%\n  commit\n",
+    ],
+    [
+      "treemap accTitle: U+00A0 before the directive",
+      'treemap\naccTitle: T\u00a0%%{x}%%{B}\n"A": 1\n',
+      'treemap\naccTitle: T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "treemap accDescr: U+00A0 before the directive",
+      'treemap\naccDescr: T\u00a0%%{x}%%{B}\n"A": 1\n',
+      'treemap\naccDescr: T %%{x}%%\n  "A": 1\n',
+    ],
+    [
+      "treeView accTitle: U+00A0 before the directive",
+      'treeView-beta\naccTitle: T\u00a0%%{x}%%{B}\n"R"\n',
+      'treeView-beta\n  accTitle: T %%{x}%%\n  "R"\n',
+    ],
+    [
+      "treeView accDescr: U+00A0 before the directive",
+      'treeView-beta\naccDescr: T\u00a0%%{x}%%{B}\n"R"\n',
+      'treeView-beta\n  accDescr: T %%{x}%%\n  "R"\n',
+    ],
+    [
+      "cynefin accTitle: U+00A0 before the directive",
+      "cynefin-beta\naccTitle: T\u00a0%%{x}%%{B}\n",
+      "cynefin-beta\n  accTitle: T %%{x}%%\n",
+    ],
+    [
+      "cynefin accDescr: U+00A0 before the directive",
+      "cynefin-beta\naccDescr: T\u00a0%%{x}%%{B}\n",
+      "cynefin-beta\n  accDescr: T %%{x}%%\n",
+    ],
+    [
+      "railroad accTitle: U+00A0 before the directive",
+      'railroad-abnf-beta\naccTitle: T\u00a0%%{x}%%{B}\nr = "a";\n',
+      'railroad-abnf-beta\n  accTitle: T %%{x}%%\n  r = "a";\n',
+    ],
+    [
+      "railroad accDescr: U+00A0 before the directive",
+      'railroad-abnf-beta\naccDescr: T\u00a0%%{x}%%{B}\nr = "a";\n',
+      'railroad-abnf-beta\n  accDescr: T %%{x}%%\n  r = "a";\n',
+    ],
+    [
+      "usecase accTitle: U+2028 before the directive",
+      "usecase-beta\naccTitle: T\u2028%%{x}%%{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T %%{x}%%\n  actor A\n",
+    ],
+    [
+      "usecase accTitle: U+2029 before the directive",
+      "usecase-beta\naccTitle: T\u2029%%{x}%%{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T %%{x}%%\n  actor A\n",
+    ],
+    [
+      "usecase accDescr: U+2028 before the directive",
+      "usecase-beta\naccDescr: T\u2028%%{x}%%{B}\nactor A\n",
+      "usecase-beta\n  accDescr: T %%{x}%%\n  actor A\n",
+    ],
+    [
+      "usecase accTitle: U+00A0 and U+2028 before the directive",
+      "usecase-beta\naccTitle: T\u00a0\u2028%%{x}%%{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T %%{x}%%\n  actor A\n",
+    ],
+    [
+      "usecase accTitle: a space, U+2028, and a space before the directive",
+      "usecase-beta\naccTitle: T \u2028 %%{x}%%{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T %%{x}%%\n  actor A\n",
+    ],
+    [
+      "usecase accTitle: U+2028 between two directives",
+      "usecase-beta\naccTitle: T %%{x}%%\u2028%%{y}%%{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T %%{x}%% %%{y}%%\n  actor A\n",
+    ],
+    [
+      "usecase accTitle: U+2028 before, between and after two directives",
+      "usecase-beta\naccTitle: T\u2028%%{x}%%\u2028%%{y}%%\u2028{B}\nactor A\n",
+      "usecase-beta\n  accTitle: T\u2028%%{x}%% %%{y}%%\n  actor A\n",
+    ],
   ]
 
 describe("a text that ends with a directive after whitespace that no fixture file holds", () => {
@@ -7047,6 +7183,138 @@ describe("a text that ends with a directive after whitespace that no fixture fil
       for (const blanks of ["", " ", "\t", " \t"]) {
         await expectKept(template.replace("{B}", blanks), output)
       }
+    },
+  )
+})
+
+/**
+ * Each example is a title in one of the diagram types of the table above, with
+ * whitespace other than a space or a tab between two directives or after the
+ * last one: the line stays as written, with the spaces and tabs after it
+ * (docs/compatibility.md, Texts after a keyword that are drawn the same).
+ */
+const textEndDirectiveKeptExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "radar title: U+00A0 between two directives, and a space after the last",
+    "radar-beta\ntitle T %%{x}%%\u00a0%%{y}%% \naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  title T %%{x}%%\u00a0%%{y}%% \n  axis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "radar title: U+00A0 and a space after the last directive",
+    "radar-beta\ntitle T %%{x}%%\u00a0 \naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  title T %%{x}%%\u00a0 \n  axis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "architecture title: U+00A0 between two directives, and a space after the last",
+    "architecture-beta\ntitle T %%{x}%%\u00a0%%{y}%% \nservice a(server)[A]\n",
+    "architecture-beta\n  title T %%{x}%%\u00a0%%{y}%% \n  service a(server)[A]\n",
+  ],
+  [
+    "architecture title: U+00A0 and a space after the last directive",
+    "architecture-beta\ntitle T %%{x}%%\u00a0 \nservice a(server)[A]\n",
+    "architecture-beta\n  title T %%{x}%%\u00a0 \n  service a(server)[A]\n",
+  ],
+  [
+    "wardley title: U+00A0 between two directives, and a space after the last",
+    "wardley-beta\ntitle T %%{x}%%\u00a0%%{y}%% \ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T %%{x}%%\u00a0%%{y}%% \n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "wardley title: U+00A0 and a space after the last directive",
+    "wardley-beta\ntitle T %%{x}%%\u00a0 \ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T %%{x}%%\u00a0 \n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "pie title: U+00A0 between two directives, and a space after the last",
+    'pie\ntitle T %%{x}%%\u00a0%%{y}%% \n"A": 1\n',
+    'pie\n  title T %%{x}%%\u00a0%%{y}%% \n  "A": 1\n',
+  ],
+  [
+    "pie title: U+00A0 and a space after the last directive",
+    'pie\ntitle T %%{x}%%\u00a0 \n"A": 1\n',
+    'pie\n  title T %%{x}%%\u00a0 \n  "A": 1\n',
+  ],
+  [
+    "info title: U+00A0 between two directives, and a space after the last",
+    "info\ntitle T %%{x}%%\u00a0%%{y}%% \n",
+    "info\n  title T %%{x}%%\u00a0%%{y}%% \n",
+  ],
+  [
+    "info title: U+00A0 and a space after the last directive",
+    "info\ntitle T %%{x}%%\u00a0 \n",
+    "info\n  title T %%{x}%%\u00a0 \n",
+  ],
+  [
+    "packet title: U+00A0 between two directives, and a space after the last",
+    'packet-beta\ntitle T %%{x}%%\u00a0%%{y}%% \n0-7: "x"\n',
+    'packet-beta\n  title T %%{x}%%\u00a0%%{y}%% \n  0-7: "x"\n',
+  ],
+  [
+    "packet title: U+00A0 and a space after the last directive",
+    'packet-beta\ntitle T %%{x}%%\u00a0 \n0-7: "x"\n',
+    'packet-beta\n  title T %%{x}%%\u00a0 \n  0-7: "x"\n',
+  ],
+  [
+    "gitGraph title: U+00A0 between two directives, and a space after the last",
+    "gitGraph\ntitle T %%{x}%%\u00a0%%{y}%% \ncommit\n",
+    "gitGraph\n  title T %%{x}%%\u00a0%%{y}%% \n  commit\n",
+  ],
+  [
+    "gitGraph title: U+00A0 and a space after the last directive",
+    "gitGraph\ntitle T %%{x}%%\u00a0 \ncommit\n",
+    "gitGraph\n  title T %%{x}%%\u00a0 \n  commit\n",
+  ],
+  [
+    "treemap title: U+00A0 between two directives, and a space after the last",
+    'treemap\ntitle T %%{x}%%\u00a0%%{y}%% \n"A": 1\n',
+    'treemap\ntitle T %%{x}%%\u00a0%%{y}%% \n  "A": 1\n',
+  ],
+  [
+    "treemap title: U+00A0 and a space after the last directive",
+    'treemap\ntitle T %%{x}%%\u00a0 \n"A": 1\n',
+    'treemap\ntitle T %%{x}%%\u00a0 \n  "A": 1\n',
+  ],
+  [
+    "treeView title: U+00A0 between two directives, and a space after the last",
+    'treeView-beta\ntitle T %%{x}%%\u00a0%%{y}%% \n"R"\n',
+    'treeView-beta\n  title T %%{x}%%\u00a0%%{y}%% \n  "R"\n',
+  ],
+  [
+    "treeView title: U+00A0 and a space after the last directive",
+    'treeView-beta\ntitle T %%{x}%%\u00a0 \n"R"\n',
+    'treeView-beta\n  title T %%{x}%%\u00a0 \n  "R"\n',
+  ],
+  [
+    "cynefin title: U+00A0 between two directives, and a space after the last",
+    "cynefin-beta\ntitle T %%{x}%%\u00a0%%{y}%% \n",
+    "cynefin-beta\n  title T %%{x}%%\u00a0%%{y}%% \n",
+  ],
+  [
+    "cynefin title: U+00A0 and a space after the last directive",
+    "cynefin-beta\ntitle T %%{x}%%\u00a0 \n",
+    "cynefin-beta\n  title T %%{x}%%\u00a0 \n",
+  ],
+  [
+    "railroad title: U+00A0 between two directives, and a space after the last",
+    'railroad-abnf-beta\ntitle T %%{x}%%\u00a0%%{y}%% \nr = "a";\n',
+    'railroad-abnf-beta\n  title T %%{x}%%\u00a0%%{y}%% \n  r = "a";\n',
+  ],
+  [
+    "railroad title: U+00A0 and a space after the last directive",
+    'railroad-abnf-beta\ntitle T %%{x}%%\u00a0 \nr = "a";\n',
+    'railroad-abnf-beta\n  title T %%{x}%%\u00a0 \n  r = "a";\n',
+  ],
+]
+
+describe("a text that ends with a directive after whitespace other than spaces and tabs that no fixture file holds", () => {
+  it.each(textEndDirectiveKeptExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
     },
   )
 })

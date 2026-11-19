@@ -144,10 +144,13 @@ export function isSpaceOrTab(character: string): boolean {
 
 /**
  * Whether a character is whitespace that does not end its line: `isWhitespace`
- * without LF, CR, U+2028, and U+2029.
+ * without LF, CR, U+2028, and U+2029. A gap that holds one of those is written
+ * as it is where this decides whether a gap is replaced (docs/c4.md, Argument
+ * spacing).
  */
-export function isInlineWhitespace(character: string): boolean {
+export function isInlineWhitespace(character: string | undefined): boolean {
   return (
+    character !== undefined &&
     isWhitespace(character) &&
     character !== "\n" &&
     character !== "\r" &&
@@ -437,7 +440,14 @@ function joinCommentFragments(
     // comment before the first U+2028 or U+2029 that no comment line
     // follows after another one.
     let first = Math.max(index - 1, 0)
-    while (first > 0 && isBlank(text, directiveRanges, ...gapBefore(first))) {
+    while (
+      first > 0 &&
+      holdsOnlyWhitespaceAndDirectives(
+        text,
+        directiveRanges,
+        ...gapBefore(first),
+      )
+    ) {
       const separated = hasSeparatorBefore(first)
       first--
       if (separated && !(first > 0 && hasSeparatorBefore(first))) break
@@ -463,7 +473,7 @@ function joinCommentFragments(
  * Whether the text from `start` to `end` holds nothing but whitespace and
  * directives, which are `directiveRanges`.
  */
-function isBlank(
+function holdsOnlyWhitespaceAndDirectives(
   text: string,
   directiveRanges: readonly Range[],
   start: number,
@@ -964,14 +974,13 @@ export function findTriviaBetween(
  * the directives at its end: directives that follow each other with spaces and
  * tabs only between them, the last of them followed by spaces and tabs only up
  * to `end`. That is the end of a title read to the end of its line, whose last
- * things are directives. `isBlankCharacter` says which characters are the
- * blanks.
+ * things are directives. `isBlank` says which characters are the blanks.
  */
 export function hasTriviaBesidesTrailingDirectives(
   source: Source,
   start: number,
   end: number,
-  isBlankCharacter: (character: string) => boolean = isSpaceOrTab,
+  isBlank: (character: string) => boolean = isSpaceOrTab,
 ): boolean {
   let position = end
   const trivia = findTriviaBetween(source, start, end)
@@ -979,7 +988,7 @@ export function hasTriviaBesidesTrailingDirectives(
     const item = trivia[index]
     if (
       item.type !== "Directive" ||
-      ![...source.text.slice(item.range[1], position)].every(isBlankCharacter)
+      ![...source.text.slice(item.range[1], position)].every(isBlank)
     )
       return true
     position = item.range[0]

@@ -562,26 +562,44 @@ export function trimmedTextEnd(
  * the end of the range, where the directives of a line that end with a
  * directive, with no whitespace after it, stand. A text printed so leaves out
  * the whitespace at its end, and prints the whitespace around the directives
- * as the end of a line (see `trimTextAfterKeyword`). `isBlankCharacter` says
+ * as the end of a line (see `trimTextAfterKeyword`). `isBlank` says
  * which characters are the blanks between the directives and after the last.
  */
 export function endsWithDirectives(
   source: Source,
   [from, to]: Range,
-  isBlankCharacter: (character: string) => boolean = isSpaceOrTab,
+  isBlank: (character: string) => boolean = isSpaceOrTab,
 ): boolean {
   const text = source.text.slice(from, to)
-  if ([";", "\n", "\r", "\u2028", "\u2029"].some((c) => text.includes(c))) {
+  if ([";", "\n", "\r"].some((c) => text.includes(c))) return false
+  if (hasTriviaBesidesTrailingDirectives(source, from, to, isBlank))
     return false
-  }
-  if (hasTriviaBesidesTrailingDirectives(source, from, to, isBlankCharacter))
-    return false
-  const first = findTriviaBetween(source, from, to)[0]
+  const trivia = findTriviaBetween(source, from, to)
+  const first = trivia[0]
   const follows = findTriviaBetween(source, to, to + 1).some(
     (item) => item.type === "Directive" && item.range[0] === to,
   )
   if (first === undefined && !follows) return false
-  return source.text.slice(from, first?.range[0] ?? to).trim() !== ""
+  // A U+2028 or U+2029 ends the text for mermaid.js where it stands in the
+  // text or in a directive; it is no such end in the blanks around the
+  // directives where `isBlank` takes it for a blank.
+  const contentEnd = first?.range[0] ?? to
+  let blanksStart = contentEnd
+  while (blanksStart > from && isBlank(source.text[blanksStart - 1]))
+    blanksStart--
+  if (
+    holdsLineSeparator(source.text.slice(from, blanksStart)) ||
+    trivia.some((item) =>
+      holdsLineSeparator(source.text.slice(item.range[0], item.range[1])),
+    )
+  )
+    return false
+  return source.text.slice(from, contentEnd).trim() !== ""
+}
+
+/** Whether a text holds a U+2028 or a U+2029. */
+function holdsLineSeparator(text: string): boolean {
+  return text.includes("\u2028") || text.includes("\u2029")
 }
 
 /**
@@ -620,7 +638,7 @@ export function keptWithDirectiveEnd(
  * at the end of the line, and a directive at the end of a line is printed so
  * elsewhere (docs/flowchart.md, Directives). `collapsesRuns` tells that the
  * runs of spaces and tabs inside the text are printed as one space (a title),
- * and not kept as written (a date format). `isBlankCharacter` is the one of
+ * and not kept as written (a date format). `isBlank` is the one of
  * `collectTextEndEdits`.
  */
 export function trimTextAfterKeyword(
@@ -628,7 +646,7 @@ export function trimTextAfterKeyword(
   atoms: Atom[],
   text: Range | null,
   collapsesRuns: boolean,
-  isBlankCharacter: (character: string) => boolean = isSpaceOrTab,
+  isBlank: (character: string) => boolean = isSpaceOrTab,
 ): void {
   if (text === null) return
   const [from, to] = text
@@ -647,7 +665,7 @@ export function trimTextAfterKeyword(
   }
   appendItems(
     edits,
-    collectTextEndEdits(source, offset, to, collapsesRuns, isBlankCharacter),
+    collectTextEndEdits(source, offset, to, collapsesRuns, isBlank),
   )
   replaceInAtoms(source, atoms, edits)
 }
@@ -668,21 +686,21 @@ export function trimTextAfterKeyword(
  * it starts at the end of the text, and its gap is that of a directive at the
  * end of a line, the same as in the other case (docs/flowchart.md, Directives).
  *
- * `isBlankCharacter` says which characters are blanks after the last directive
- * and in the run before it, where that directive ends its line: spaces and
- * tabs, or, for a text that mermaid.js draws the same whatever whitespace ends
- * it, `isInlineWhitespace`, so that the run before the last directive is one
- * space whatever it holds, and the line is printed the same whether or not
- * blanks follow it. The runs before the directives that come earlier hold
- * spaces and tabs only (docs/compatibility.md, Texts after a keyword that are
- * drawn the same).
+ * `isBlank` says which characters are blanks after the last directive and in
+ * the run before it, where that directive ends its line: spaces and tabs, or,
+ * for a text that mermaid.js draws the same whatever whitespace ends it,
+ * `isInlineWhitespace`, or `isWhitespace` where a U+2028 or U+2029 is a blank
+ * too, so that the run before the last directive is one space whatever it
+ * holds, and the line is printed the same whether or not blanks follow it. The
+ * runs before the directives that come earlier hold spaces and tabs only
+ * (docs/compatibility.md, Texts after a keyword that are drawn the same).
  */
 export function collectTextEndEdits(
   source: Source,
   offset: number,
   end: number,
   collapsesRuns: boolean,
-  isBlankCharacter: (character: string) => boolean = isSpaceOrTab,
+  isBlank: (character: string) => boolean = isSpaceOrTab,
 ): TextEdit[] {
   const edits: TextEdit[] = []
   const textEnd = trimmedTextEnd(source, offset, end, isSpaceOrTab)
@@ -711,13 +729,13 @@ export function collectTextEndEdits(
   let directives = 0
   const lineEnd = lineEndOf(source, to, true)
   let afterBlanks = to
-  while (afterBlanks < lineEnd && isBlankCharacter(source.text[afterBlanks]))
+  while (afterBlanks < lineEnd && isBlank(source.text[afterBlanks]))
     afterBlanks++
   const endsLine = afterBlanks >= lineEnd
   for (;;) {
     const isRunBlank =
       directives === 0 || (directives === 1 && endsLine)
-        ? isBlankCharacter
+        ? isBlank
         : isSpaceOrTab
     let blanks = position
     while (blanks > offset && isRunBlank(source.text[blanks - 1])) blanks--
