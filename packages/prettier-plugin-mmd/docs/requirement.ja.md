@@ -766,13 +766,18 @@ requirementDiagram
 方向の行は、`direction` とその値、
 その前後にある mermaid.js が読まないテキストからなります。
 テキストは書かれたまま残します。
+木がそのテキストを丸ごと持つからです。
+詳しくは [木が丸ごと持つテキスト](./printed-form.ja.md#木が丸ごと持つテキスト)
+を参照してください。
 テキストと `direction` の間は、離れて書かれていれば空白 1 つ、
 `direction` と値の間も空白 1 つにし、値の `lr` は `LR` と印字します。
 例が `LR` だけを使うので、ほかの値は書かれた大文字小文字のまま残します。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 
 [fixture: direction/spacing] [fixture: direction/spaces-around]
-[fixture: direction/text-kept] [fixture: direction/case-one-form]
+[fixture: direction/text-kept] [fixture: direction/text-inner-whitespace-kept]
+[fixture: direction/text-both-sides-inner-whitespace-kept]
+[fixture: direction/case-one-form]
 
 次の行に書かれた値は、`direction` の後ろに寄せて 1 行にします。
 
@@ -1062,10 +1067,17 @@ ER 図が mermaid.js の読まないテキストをブロックの中の自分�
 [fixture: empty-description-blocks/in-body-alone]
 
 内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
+Prettier が `x = { }` を `x = {}`
+と印字するのと同じです（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 囲む空白を要する本文がないためです。
 すでに空の内側は空のままです。
-キーワードと開始括弧の間には空白を 1 つ置きます。
+キーワードと開始括弧の間には空白を 1 つ置き、
 `accDescr{  }` は `accDescr {}` にします。
+規則 1 は、キーワードと開き括弧の間の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[gantt](./gantt.ja.md#空の説明ブロック)、
+[class](./class.ja.md#空の説明ブロック)、
+[journey](./journey.ja.md#空の説明ブロック)も、ここを空白 1 個で印字します。
 
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: requirement Unicode and tab interiors]
