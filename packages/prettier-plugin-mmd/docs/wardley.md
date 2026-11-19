@@ -2324,28 +2324,20 @@ Use the shared accessibility line layout for accTitle: Value and accDescr:
 Value, retaining empty assignments. The colon of `accTitle` and `accDescr` is
 the colon of a key, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the form
-`accTitle: text`: no whitespace before the colon and one space after it. A line
-whose first `;`, also one inside a directive or a comment, stands before every
-U+2028 and U+2029 outside a directive and a comment is the exception: the gap
-before its colon stays as written (`accTitle : a;`), which rule 1 does not give,
-so that form waits to be fixed by the rule; where a U+2028 or U+2029 stands
-before the first `;`, the gap is left out (`accTitle : T`, U+2028, and `U;` are
-printed `accTitle: T`, U+2028, and `U;`). Where a value has text and no
-directive stands before its text or inside it, and no U+2028 or U+2029 stands
-inside the text, the directives that end it are printed as follows, by what
-stands before them and after them. A wide space is one of U+000B, U+000C,
-U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, and U+FEFF. Where a
-U+2028 or U+2029 stands before the directives and a comment follows the last
-one, the line is printed as under item 6 of the [title list](#title), and where
-item 6 of the title list splits the line, none of the items below applies to it.
-The items below are for a line that is not in the region stated after the title
-list: a line is in it when, besides its directives, it holds a `;` anywhere,
-also inside a directive or a comment, or a U+2028 or U+2029 after its first
-directive, or a directive holds a line break. The colon touches the keyword, so
-a gap before it is printed as no gap even where the line stays as written,
-except on a line whose first `;`, also one inside a directive or a comment,
-stands before every U+2028 and U+2029 outside a directive and a comment, where
-the gap stays as written too:
+`accTitle: text`: no whitespace before the colon and one space after it. Where a
+value has text and no directive stands before its text or inside it, and no
+U+2028 or U+2029 stands inside the text, the directives that end it are printed
+as follows, by what stands before them and after them. A wide space is one of
+U+000B, U+000C, U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, and
+U+FEFF. Where a U+2028 or U+2029 stands before the directives and a comment
+follows the last one, the line is printed as under item 6 of the
+[title list](#title), and where item 6 of the title list splits the line, none
+of the items below applies to it. The items below are for a line that is not in
+the region stated after the title list: a line is in it when, besides its
+directives, it holds a `;` anywhere, also inside a directive or a comment, or a
+U+2028 or U+2029 after its first directive, or a directive holds a line break.
+The colon touches the keyword, so a gap before it is printed as no gap even
+where the line stays as written:
 
 - Where only spaces and tabs, or nothing, stand before the directives, no `;`
   stands in the text before them or inside one of them, no directive holds a
