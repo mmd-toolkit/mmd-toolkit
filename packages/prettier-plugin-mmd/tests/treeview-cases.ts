@@ -705,4 +705,82 @@ export const treeviewCases: readonly TreeviewCase[] = [
     output: "treeView-beta\n├── a\n└── b\n    └── c\n",
     options: {},
   },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-line-separator-directive",
+    input:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb\u2028%%{x}%%\n\n\u2514\u2500\u2500 c\n",
+    output:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb\u2028%%{x}%%\n\n\u2514\u2500\u2500 c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-line-separator-directive-at-end",
+    input: "treeView-beta\n\u251c\u2500\u2500 a\nb\u2028%%{x}%%\n",
+    output: "treeView-beta\n\u251c\u2500\u2500 a\nb\u2028%%{x}%%\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-paragraph-separator-directive",
+    input:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb\u2029%%{x}%%\n\n\u2514\u2500\u2500 c\n",
+    output:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb\u2029%%{x}%%\n\n\u2514\u2500\u2500 c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-line-separator-spaces-directive",
+    input:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb\u2028   %%{x}%%\n\n\u2514\u2500\u2500 c\n",
+    output:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb\u2028   %%{x}%%\n\n\u2514\u2500\u2500 c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-spaces-line-separator-directive",
+    input:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb   \u2028%%{x}%%\n\n\u2514\u2500\u2500 c\n",
+    output:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb   \u2028%%{x}%%\n\n\u2514\u2500\u2500 c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-line-separator-two-directives",
+    input:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb\u2028%%{x}%%%%{y}%%\n\n\u2514\u2500\u2500 c\n",
+    output:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb\u2028%%{x}%%%%{y}%%\n\n\u2514\u2500\u2500 c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-description-line-separator-comment",
+    input:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb ## d\u2028%% c\n\n\u2514\u2500\u2500 c\n",
+    output:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb ## d\u2028%% c\n\n\u2514\u2500\u2500 c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-description-line-separator-directive",
+    input:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb ## d\u2028%%{x}%%\n\n\u2514\u2500\u2500 c\n",
+    output:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb ## d\u2028%%{x}%%\n\n\u2514\u2500\u2500 c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-line-separator-comment-directive-line-follows",
+    input:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb\u2028%% c\n%%{y}%%\n\n\u2514\u2500\u2500 c\n",
+    output:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb\u2028%% c\n%%{y}%%\n\n\u2514\u2500\u2500 c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-line-separator-directive-semicolon",
+    input:
+      "treeView-beta\n\u251c\u2500\u2500 a\nb\u2028%%{x}%%;\n\n\u2514\u2500\u2500 c\n",
+    output:
+      "treeView-beta\n\u251c\u2500\u2500 a\n\u2514\u2500\u2500 b\u2028%%{x}%%;\n\n    \u2514\u2500\u2500 c\n",
+    options: {},
+  },
 ]

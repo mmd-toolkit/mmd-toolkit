@@ -18,6 +18,7 @@ import type { Source } from "./source.ts"
 import {
   findFirstIndex,
   findStructuralToken,
+  findTriviaBetween,
   isLineSeparator,
   isWhitespace,
   skipRemoved,
@@ -76,6 +77,38 @@ export function treeviewContentStart(
   if (item.type === "TreeviewIgnoredText") return item.range[0]
   return findStructuralToken(source, item.prefix?.range[1] ?? item.range[0])!
     .range[0]
+}
+
+/**
+ * Whether the text of a node that ends at `nodeEnd` holds a U+2028 or U+2029 in
+ * the whitespace at its end, and a comment region or a directive follows that
+ * whitespace on its line.
+ */
+function endsAtLineSeparatorBeforeTrivia(
+  source: Source,
+  nodeEnd: number,
+): boolean {
+  let start = nodeEnd
+  while (
+    start > 0 &&
+    source.text[start - 1] !== "\n" &&
+    isWhitespace(source.text[start - 1])
+  )
+    start--
+  let end = nodeEnd
+  while (
+    end < source.text.length &&
+    source.text[end] !== "\n" &&
+    isWhitespace(source.text[end])
+  )
+    end++
+  return (
+    [...source.text.slice(start, end)].some(isLineSeparator) &&
+    (source.joiningRegions.some(
+      (region) => start <= region.start && region.start <= end,
+    ) ||
+      findTriviaBetween(source, end, end + 1).at(0)?.type === "Directive")
+  )
 }
 
 /**
@@ -294,16 +327,11 @@ export function planTreeviewBox(
     if (heads.get(node) === "" || original?.prefix !== null) continue
     // A name or a description of a line without a branch holds the U+2028 or
     // U+2029 at its end, as a character of the text. With a branch it does
-    // not: the character is whitespace before the comment, which the printer
-    // puts on a line of its own (docs/treeview.md, Branch prefixes).
-    const nodeEnd = node.annotations.reduce(
-      (end, annotation) => Math.max(end, annotation.range[1]),
-      node.name.range[1],
-    )
-    if (
-      isLineSeparator(source.text[nodeEnd - 1]) &&
-      source.joiningRegions.some((region) => region.start === nodeEnd)
-    )
+    // not: the character is whitespace before the comment or the directive,
+    // which the printer puts on a line of its own, or trims at the end of the
+    // text (docs/treeview.md, Branch prefixes).
+    const nodeEnd = node.annotations.at(-1)?.range[1] ?? node.name.range[1]
+    if (endsAtLineSeparatorBeforeTrivia(source, nodeEnd))
       reasons.add(
         "adding a branch changes where a line separator ends the line",
       )
