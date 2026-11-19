@@ -132,4 +132,15 @@ export const agentflowCases: readonly AgentflowCase[] = [
     input: "agentflow-beta TB\nconnector F  \u2029  \n",
     output: "agentflow-beta TB\n  connector F  \u2029\n",
   },
+  {
+    name: "agentflow: a tab between an entity-shaped name end and a semicolon that a directive follows",
+    input: "agentflow-beta TB\nflow Fr#ont\t;  %%{x}%%\nA --> B\nend\n",
+    output: "agentflow-beta TB\n  flow Fr#ont\t; %%{x}%%\n    A --> B\n  end\n",
+  },
+  {
+    name: "agentflow: no-break space between an entity-shaped name end and a semicolon that a directive follows",
+    input: "agentflow-beta TB\nflow Fr#ont\u00a0;  %%{x}%%\nA --> B\nend\n",
+    output:
+      "agentflow-beta TB\n  flow Fr#ont\u00a0; %%{x}%%\n    A --> B\n  end\n",
+  },
 ]

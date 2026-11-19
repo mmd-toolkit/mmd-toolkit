@@ -160,12 +160,15 @@ export function layoutContainerHeader(
       // removing the gap would form an entity (common.md, Entities;
       // docs/agentflow.md, Names and headings). The directives after the name
       // are removed before mermaid.js reads the text, so a separator behind
-      // them touches the name as well.
+      // them touches the name as well. A separator is retained on a line that
+      // stays as written, and before a directive on its line.
+      const semicolon = skipDirectivesAt(source, name.range[1])
       if (
-        source.text[skipDirectivesAt(source, name.range[1])] === ";" &&
-        findAgentflowKeptLines(source).verbatim.has(
+        source.text[semicolon] === ";" &&
+        (findAgentflowKeptLines(source).verbatim.has(
           lineStartOf(source, name.range[0]),
-        ) &&
+        ) ||
+          keepsSemicolonBeforeDirective(source, semicolon)) &&
         endsEntityName(source, nameEnd)
       )
         nameEnd = name.range[1]
@@ -257,6 +260,28 @@ export function layoutContainerHeader(
         atom.start < name.range[0] ||
         atom.start >= name.range[1],
     ),
+  }
+}
+
+/**
+ * Whether the printer keeps the `;` at `offset`, which separates statements,
+ * because a directive follows it on its line, after whitespace and other `;`
+ * only: without the `;`, the whitespace before the directive would be read
+ * with the statement before it (see `toRun` in gap.ts, which keeps a `;` before
+ * an item that stands after a statement on its line). A comment after the `;`
+ * does not keep it.
+ */
+function keepsSemicolonBeforeDirective(
+  source: Source,
+  offset: number,
+): boolean {
+  let position = offset + 1
+  for (;;) {
+    const { element, end } = readGapElement(source, position)
+    if (element.kind === "item") return element.item.type === "Directive"
+    if (element.kind !== "whitespace" && element.kind !== "separator")
+      return false
+    position = end
   }
 }
 
