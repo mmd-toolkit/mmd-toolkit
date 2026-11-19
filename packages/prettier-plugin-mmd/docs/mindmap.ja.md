@@ -750,6 +750,13 @@ mindmap
 それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白は除きます。
 行末の空白の有無で印字は変わりません。
+これは、形の後にあるときの話です。
+裸のノードやクラスでは、
+どのディレクティブの後ろにも空白とディレクティブしかないときの話です。
+裸のノードやクラスのディレクティブの後ろに、テキスト、U+00A0、
+U+3000 があるときは、行は書かれたまま残り、
+最後のディレクティブの後の空白も残ります。
+`a`、`%%{x}%%`、U+3000、空白 2 つは、変えません。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: node-text/directives-end-blanks-dropped] [fixture: directives/kept]
@@ -757,6 +764,11 @@ mindmap
 [fixture: directives/after-the-header-on-the-same-line]
 [fixture: directives/after-the-header-touching]
 [fixture: directives/after-a-shape]
+[test: U+3000 after the directive that follows a shape of a mindmap node]
+[test: U+3000 between two directives of a bare mindmap node]
+[test: text between two directives of a bare mindmap node, with spaces at the end]
+[test: U+3000 and spaces after the directive of a mindmap node with a class]
+[test: U+3000 between two directives of a mindmap node with a class]
 
 2 つの単位の間のディレクティブは、その場に残します。
 テキストの中のディレクティブは、テキストの一部です。

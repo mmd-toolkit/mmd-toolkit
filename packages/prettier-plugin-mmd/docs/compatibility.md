@@ -6188,15 +6188,18 @@ Data blocks keep their contents apart from the eligible uniform margin change
 and the spaces at the ends of a block on one line in
 [Data blocks](./kanban.md#data-blocks), and their attachment, including touching
 adjacent blocks and intervening directives; YAML formatting applies only to
-guarded frontmatter. Complete blank/comment gaps after diagram comments,
-terminal gaps included, stay as written under
-`blank-line-after-header-or-comments`. A raw rejection has no raw Db; the corpus
-checks the specified reading.
+guarded frontmatter. Complete blank/comment gaps after a line of `%%` alone and
+after a comment that ends the line of a statement, terminal gaps included, stay
+as written under `blank-line-after-header-or-comments`; after a comment with
+text on a line of its own, a run of empty lines becomes one, and none stays at
+the end of the board. A raw rejection has no raw Db; the corpus checks the
+specified reading.
 
 [fixture: kanban/data-blocks/adjacent] [fixture:
 kanban/data-blocks/data-adjacent-directive] [fixture:
 kanban/blank-lines/div-between-comment-blank] [fixture:
-kanban/blank-lines/comment-blank-trailing]
+kanban/blank-lines/comment-blank-trailing] [test: a final comment with text and
+empty lines in a kanban board]
 
 Lines kept because of the shared `style`/`classDef` line rule retain their
 complete segments, whitespace, comments, and directives. Kanban keeps `;`,
@@ -6262,20 +6265,22 @@ preservation rules.
 c4/description-blocks/block-directive-lines] [fixture:
 c4/accessibility-lines/acc-colon-comment]
 
-Diagram comments retain their complete following gaps, including whitespace-only
-recovery lines and terminal gaps; the `comment-takes-line-break` divergence is
-not repaired by moving comments. C4 keeps every semicolon and Unicode segment
-boundary. A segment that holds a kept `;` is formatted as anywhere else, except
-where formatting could change which `;` the line rule ignores. The rule reads a
-segment from the first `:` after `style` or `classDef` to the last `#` before
-its last kept `;`, with no whitespace between the `:` and the `#` (see
-[Semicolons](./flowchart.md#semicolons)), so the gaps and the padding inside
-that stretch keep whether they hold whitespace, a run becoming one space, and
-the rest of the segment follows the ordinary rules of this diagram. Indentation
-and exterior trailing whitespace remain printer whitespace.
+A comment that ends the line of a statement retains its complete following gap,
+including whitespace-only recovery lines and the terminal gap; after a comment
+on a line of its own the gap is the ordinary one. The `comment-takes-line-break`
+divergence is not repaired by moving comments. C4 keeps every semicolon and
+Unicode segment boundary. A segment that holds a kept `;` is formatted as
+anywhere else, except where formatting could change which `;` the line rule
+ignores. The rule reads a segment from the first `:` after `style` or `classDef`
+to the last `#` before its last kept `;`, with no whitespace between the `:` and
+the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
+padding inside that stretch keep whether they hold whitespace, a run becoming
+one space, and the rest of the segment follows the ordinary rules of this
+diagram. Indentation and exterior trailing whitespace remain printer whitespace.
 
 [fixture: c4/comments/comment-header] [fixture: c4/blank-lines/comment-recovery]
-[fixture: c4/final-newline/comment-eof-gap] [fixture:
+[fixture: c4/blank-lines/comment-blank-after] [fixture:
+c4/final-newline/comment-eof-gap] [fixture:
 c4/line-rule-and-semicolons/semicolon-inline-comment] [fixture:
 c4/line-rule-and-semicolons/semicolon-suffix-spacing] [fixture:
 c4/trailing-whitespace/semicolon-line] [test: c4: ls-line-rule-segments]
@@ -6355,11 +6360,11 @@ ishikawa/line-rule-and-kept-lines/line-rule-kept]
 Diagram-comment Unicode endings remain characters counted toward the following
 node's depth indentation; common comment regions instead keep their swallowed
 suffixes and joins. Ordinary blank runs collapse to one, including the
-separating blank after diagram comments, while complete terminal diagram-comment
-gaps stay written. Accepted divergences use their specified tree, and failures
-are not repaired; raw rejection supplies no raw Db. Guarded frontmatter,
-configured CR/LF conversion, EOF directives and Markdown host handling use
-shared paths.
+separating blank after diagram comments, while the complete terminal gap after a
+final line of `%%` alone stays written. Accepted divergences use their specified
+tree, and failures are not repaired; raw rejection supplies no raw Db. Guarded
+frontmatter, configured CR/LF conversion, EOF directives and Markdown host
+handling use shared paths.
 
 [test: ishikawa: ls-comment-boundary] [test: ishikawa: ps-comment-boundary]
 [fixture: ishikawa/blank-lines/blank-comment-div] [fixture:

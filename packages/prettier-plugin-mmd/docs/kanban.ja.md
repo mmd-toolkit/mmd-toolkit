@@ -604,7 +604,7 @@ section の本文はヘッダーから 2 段、item の本文は 3 段で、
 本文の後の閉じ括弧はその行に残します。
 リテラルスカラーや折りたたみスカラー（`|`、`|-`、`|+`、`>`、`>-`、
 `>+`）のテキストの後の `}` は、その行に残します。
-独立した行に置くと、12.3.0 の Db のスカラーのテキストの末尾が変わり、
+独立した行に置くと、Db のスカラーのテキストの末尾が変わり、
 整形は Db を変えないからです。
 図は同じですが、この隙間を覆う種類の例外は、
 [整形の形の決め方](./printed-form.ja.md#確かめ方とdb-を変える整形)
@@ -1103,14 +1103,32 @@ Db が保ち、図がその空白に依存する所では残します。
 これは [mindmap](./mindmap.ja.md#ノードのテキスト) の区別で、
 データブロックを加え、列の id は残します。
 保つ行でも同じです。
-カードのテキストを終えるディレクティブは、
-それぞれの前に空白かタブがあれば空白 1 つを置き、
+カードのテキストをディレクティブが終えるのは、どのディレクティブの後ろにも、
+行末まで空白、タブ、ほかのディレクティブしかないときです。
+そのとき、ディレクティブはそれぞれの前に空白かタブがあれば空白 1 つを置き、
 最後のディレクティブの後の空白とタブは除きます。
+最初のディレクティブの前の U+00A0 と U+3000 は残します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-列の id を終えるディレクティブは、図がその空白に依存するので、
-書かれたまま残します。
+ディレクティブの後ろにテキスト、U+00A0、U+3000 のどれかがあるときは、
+どのディレクティブもテキストを終えず、行は書かれたまま残ります。
+最後のディレクティブの後の空白と、
+最初のディレクティブの前の空白の連なりも残ります。
+`A[x]`、`%%{y}%%`、U+3000、`%%{z}%%`、空白 2 つは、変えません。
+列の行にディレクティブがあるときも、行は書かれたまま残ります。
+`A[x] %%{y}%%` と空白 2 つは、変えません。
+列の裸の id の空白には、図が依存します。
 
 [fixture: trailing-whitespace/directives-end-blanks-dropped]
+[test: U+3000 before the first directive that ends the text of a card, with spaces after the last]
+[test: a no-break space between two directives that end the text of a card]
+[test: U+3000 between two directives that end the text of a card]
+[test: U+3000 after the last of two directives that end the text of a card]
+[test: U+3000 and spaces after the directive of a card]
+[test: text after the directive of a bare card, with spaces at the end]
+[test: text between two directives of a bare card, with spaces at the end]
+[test: two spaces before the first directive of a bare card whose text follows it]
+[test: spaces after the directive on the line of a column with a shape]
+[test: spaces after the directive on the line of a column with a bare id]
 [test: kanban: bare-trailing-trim] [test: kanban: closed-trailing-trim]
 [test: kanban: closed-whitespace-trim]
 [fixture: trailing-whitespace/class-trailing-trim]
@@ -1420,8 +1438,11 @@ U+2028 や U+2029 で終わっているときも同じです。
 閉じていないディレクティブがテキストの終わりまで届くときは、
 空白でない最後の文字までの残りを取ります。
 ここでは U+2028、U+2029、U+0085、U+180E、U+200B を空白でない文字に数えます。
-単独の行では、その文字の後ろの空白（空白、タブ、U+00A0、U+3000、U+FEFF、U+2003、
-改ページ、垂直タブ、改行、空行）は落とし、改行 1 つでテキストを終えます。
+単独の行では、その文字の後ろの空白は落とします。
+落とすのは U+0009 から U+000D（タブ、改行、垂直タブ、改ページ）、U+0020、
+U+00A0、U+1680、U+2000 から U+200A、U+202F、U+205F、U+3000、U+FEFF と、
+空行です。
+改行 1 つでテキストを終えます。
 何も足さないのは、テキストがその文字の直後で終わり、
 その文字が U+2028 でも U+2029 でもないときだけです。
 `%%{unfinished` と空白 2 つは `%%{unfinished` と改行を、
@@ -1430,6 +1451,9 @@ U+2028 や U+2029 で終わっているときも同じです。
 改行 1 つでテキストを終えます。
 `S[x] %%{unfinished` と空白 2 つは書かれたまま印字し、その後に改行が来ます。
 `S[x] %%{unfinished` の後に何もないときは変えません。
+文の行のコメントの後で、改行が後ろにない最後の空白だけの行は落とします。
+`S[x] %% c`、改行、空白 2 つの行は、`S[x] %% c` と改行を印字し、
+後ろに改行がある空白だけの行は残します。
 Markdown では、コードフェンスやリスト項目の字下げはホストの字下げで、
 ボードの字下げには入りません。
 
@@ -1460,6 +1484,11 @@ Markdown では、コードフェンスやリスト項目の字下げはホス�
 [test: an open directive followed by U+200B]
 [test: an open directive followed by U+180E]
 [test: an open directive followed by U+2003]
+[test: an open directive followed by U+1680]
+[test: an open directive followed by U+2000]
+[test: an open directive followed by U+200A]
+[test: an open directive followed by U+202F]
+[test: an open directive followed by U+205F]
 [test: an open directive after a statement and with nothing after it]
 [test: an open directive after a statement and followed by two spaces]
 [test: an open directive after a statement and followed by a tab]
@@ -1469,9 +1498,22 @@ Markdown では、コードフェンスやリスト項目の字下げはホス�
 [test: an open directive after a statement and followed by a line break and spaces]
 [test: an open directive after a statement and followed by U+2028]
 [test: an open directive after a statement and followed by U+2028 and a space]
+[test: an open directive after a statement and followed by U+2029]
+[test: an open directive after a statement and followed by U+3000]
+[test: an open directive after a statement and followed by U+FEFF]
+[test: an open directive after a statement and followed by U+2003]
+[test: an open directive after a statement and followed by a vertical tab]
+[test: an open directive after a statement and followed by a form feed]
+[test: an open directive after a statement and followed by CR and LF]
+[test: an open directive after a statement and followed by U+0085]
+[test: an open directive after a statement and followed by U+180E]
+[test: an open directive after a statement and followed by U+200B]
 [test: a final line of %% alone, two empty lines, and a space in a kanban board]
 [test: a final line of %% alone and U+2029 in a kanban board]
 [test: a final comment with text and U+2029 in a kanban board]
+[test: a final comment after a statement and a last line of two spaces without a line break in a kanban board]
+[test: a final comment after a statement and a last line of one space after a line break in a kanban board]
+[test: a final comment with text and empty lines in a kanban board]
 [fixture: blank-lines/comment-blank-trailing]
 [test: kanban: selected-terminal-separator]
 

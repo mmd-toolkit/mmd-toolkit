@@ -6905,6 +6905,11 @@ const openDirectiveTails: readonly (readonly [string, string, string])[] = [
   ["an open directive followed by U+200B", "\u200b", "\u200b"],
   ["an open directive followed by U+180E", "\u180e", "\u180e"],
   ["an open directive followed by U+2003", "\u2003", "\n"],
+  ["an open directive followed by U+1680", "\u1680", "\n"],
+  ["an open directive followed by U+2000", "\u2000", "\n"],
+  ["an open directive followed by U+200A", "\u200a", "\n"],
+  ["an open directive followed by U+202F", "\u202f", "\n"],
+  ["an open directive followed by U+205F", "\u205f", "\n"],
 ]
 
 /** The same on the line of a statement of a kanban board, which keeps the whitespace up to the first line break. */
@@ -6949,6 +6954,56 @@ const kanbanStatementOpenDirectiveTails: readonly (readonly [
     "an open directive after a statement and followed by U+2028 and a space",
     "\u2028 ",
     "\u2028 \n",
+  ],
+  [
+    "an open directive after a statement and followed by U+2029",
+    "\u2029",
+    "\u2029\n",
+  ],
+  [
+    "an open directive after a statement and followed by U+3000",
+    "\u3000",
+    "\u3000\n",
+  ],
+  [
+    "an open directive after a statement and followed by U+FEFF",
+    "\ufeff",
+    "\ufeff\n",
+  ],
+  [
+    "an open directive after a statement and followed by U+2003",
+    "\u2003",
+    "\u2003\n",
+  ],
+  [
+    "an open directive after a statement and followed by a vertical tab",
+    "\u000b",
+    "\u000b\n",
+  ],
+  [
+    "an open directive after a statement and followed by a form feed",
+    "\u000c",
+    "\u000c\n",
+  ],
+  [
+    "an open directive after a statement and followed by CR and LF",
+    "\u000d\n",
+    "\n",
+  ],
+  [
+    "an open directive after a statement and followed by U+0085",
+    "\u0085",
+    "\u0085",
+  ],
+  [
+    "an open directive after a statement and followed by U+180E",
+    "\u180e",
+    "\u180e",
+  ],
+  [
+    "an open directive after a statement and followed by U+200B",
+    "\u200b",
+    "\u200b",
   ],
 ]
 
@@ -7025,6 +7080,106 @@ describe("a kanban board that ends with an open directive after a statement", ()
   )
 })
 
+/** The text that a directive ends in a C4 title or accDescription (docs/c4.md, Title and accDescription). */
+const c4DirectiveTextExamples: readonly (readonly [string, string, string])[] =
+  [
+    [
+      "U+3000 between two directives and spaces at the end of a C4 title",
+      'C4Context\ntitle t %%{x}%%\u3000%%{y}%%  \nPerson(a, "A")\n',
+      'C4Context\n  title t %%{x}%%\u3000%%{y}%%  \n  Person(a, "A")\n',
+    ],
+    [
+      "U+3000 and spaces after the directive of a C4 title",
+      'C4Context\ntitle t %%{x}%%\u3000  \nPerson(a, "A")\n',
+      'C4Context\n  title t %%{x}%%\u3000  \n  Person(a, "A")\n',
+    ],
+    [
+      "U+3000 between two directives and spaces at the end of a C4 accDescription",
+      'C4Context\naccDescription t %%{x}%%\u3000%%{y}%%  \nPerson(a, "A")\n',
+      'C4Context\n  accDescription t %%{x}%%\u3000%%{y}%%  \n  Person(a, "A")\n',
+    ],
+  ]
+
+describe("the text of a C4 title that a directive follows", () => {
+  it.each(c4DirectiveTextExamples)("keeps %s", async (_name, input, output) => {
+    await expectKept(input, output)
+  })
+})
+
+/** The whitespace that is not spaces or tabs beside the directives that end an ishikawa literal (docs/ishikawa.md, Trailing whitespace). */
+const ishikawaDirectiveWhitespaceExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "U+3000 after the last directive of an ishikawa literal",
+    "ishikawa\n  R\n    t %%{x}%%\u3000  \n",
+    "ishikawa\n  R\n    t %%{x}%%\u3000\n",
+  ],
+  [
+    "U+3000 between two directives of an ishikawa literal",
+    "ishikawa\n  R\n    t %%{x}%%\u3000%%{y}%%  \n",
+    "ishikawa\n  R\n    t %%{x}%%\u3000%%{y}%%\n",
+  ],
+  [
+    "U+3000 before the first directive of an ishikawa literal",
+    "ishikawa\n  R\n    t\u3000%%{x}%%  \n",
+    "ishikawa\n  R\n    t\u3000%%{x}%%\n",
+  ],
+]
+
+describe("the literal of an ishikawa diagram that a directive ends", () => {
+  it.each(ishikawaDirectiveWhitespaceExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/** The directives that end the text of a mindmap node (docs/mindmap.md, Directives). */
+const mindmapDirectiveEndExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "U+3000 after the directive that follows a shape of a mindmap node",
+    "mindmap\n  root\n    a[t] %%{x}%%\u3000  \n",
+    "mindmap\n  root\n    a[t] %%{x}%%\n",
+  ],
+  [
+    "U+3000 between two directives of a bare mindmap node",
+    "mindmap\n  root\n    a %%{x}%%\u3000%%{y}%%  \n",
+    "mindmap\n  root\n    a %%{x}%%\u3000%%{y}%%  \n",
+  ],
+  [
+    "text between two directives of a bare mindmap node, with spaces at the end",
+    "mindmap\n  root\n    a %%{x}%% u %%{y}%%  \n",
+    "mindmap\n  root\n    a %%{x}%% u %%{y}%%  \n",
+  ],
+  [
+    "U+3000 and spaces after the directive of a mindmap node with a class",
+    "mindmap\n  root\n    a:::c %%{x}%%\u3000  \n",
+    "mindmap\n  root\n    a:::c %%{x}%%\u3000  \n",
+  ],
+  [
+    "U+3000 between two directives of a mindmap node with a class",
+    "mindmap\n  root\n    a:::c %%{x}%%\u3000%%{y}%%  \n",
+    "mindmap\n  root\n    a:::c %%{x}%%\u3000%%{y}%%  \n",
+  ],
+]
+
+describe("the text of a mindmap node that a directive ends", () => {
+  it.each(mindmapDirectiveEndExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
 /** The gap after a final comment: one line break ends the text, which the printer adds where the text ends without one (docs/kanban.md, Final newline). */
 const terminalCommentExamples: readonly (readonly [string, string, string])[] =
   [
@@ -7083,6 +7238,61 @@ const terminalCommentExamples: readonly (readonly [string, string, string])[] =
       "ishikawa\nR\n  A\n%% c\n\n\n",
       "ishikawa\n  R\n    A\n    %% c\n",
     ],
+    [
+      "a final comment after a statement and a last line of one space without a line break in a C4 diagram",
+      'C4Context\nPerson(a, "A") %% c\n ',
+      'C4Context\n  Person(a, "A") %% c\n',
+    ],
+    [
+      "a final comment after a statement and a last line of one space after a line break in a C4 diagram",
+      'C4Context\nPerson(a, "A") %% c\n \n',
+      'C4Context\n  Person(a, "A") %% c\n \n',
+    ],
+    [
+      "a final comment after a statement and a last line of two spaces without a line break in a kanban board",
+      "kanban\n  S[x] %% c\n  ",
+      "kanban\n  S[x] %% c\n",
+    ],
+    [
+      "a final comment after a statement and a last line of one space after a line break in a kanban board",
+      "kanban\n  S[x] %% c\n \n",
+      "kanban\n  S[x] %% c\n \n",
+    ],
+    [
+      "a final comment with text and empty lines in a kanban board",
+      "kanban\n  S[x]\n%% c\n\n\n",
+      "kanban\n  S[x]\n  %% c\n",
+    ],
+    [
+      "a final comment with text and a no-break space on a line of its own in an ishikawa diagram",
+      "ishikawa\nR\n  A\n%% c\u00a0",
+      "ishikawa\n  R\n    A\n    %% c\u00a0\n",
+    ],
+    [
+      "a final comment with text and U+3000 on a line of its own in an ishikawa diagram",
+      "ishikawa\nR\n  A\n%% c\u3000",
+      "ishikawa\n  R\n    A\n    %% c\u3000\n",
+    ],
+    [
+      "a final comment with text and U+2028 on a line of its own in an ishikawa diagram",
+      "ishikawa\nR\n  A\n%% c\u2028",
+      "ishikawa\n  R\n    A\n    %% c\u2028\n",
+    ],
+    [
+      "a final comment with text and U+2029 on a line of its own in an ishikawa diagram",
+      "ishikawa\nR\n  A\n%% c\u2029",
+      "ishikawa\n  R\n    A\n    %% c\u2029\n",
+    ],
+    [
+      "a final comment with text and two spaces after a node in an ishikawa diagram",
+      "ishikawa\nR\n  A %% c  ",
+      "ishikawa\n  R\n    A %% c\n",
+    ],
+    [
+      "a final comment with text and a no-break space after a node in an ishikawa diagram",
+      "ishikawa\nR\n  A %% c\u00a0",
+      "ishikawa\n  R\n    A %% c\u00a0\n",
+    ],
   ]
 
 describe("the gap after a final comment", () => {
@@ -7136,6 +7346,56 @@ const kanbanCardDirectiveExamples: readonly (readonly [
     "tabs around the directive that ends the bare id of a card",
     "kanban\n  S\n    A\t%%{x}%%\t\n",
     "kanban\n  S\n    A %%{x}%%\n",
+  ],
+  [
+    "U+3000 before the first directive that ends the text of a card, with spaces after the last",
+    "kanban\n  S\n    A[x]\u3000%%{x}%%  \n",
+    "kanban\n  S\n    A[x]\u3000%%{x}%%\n",
+  ],
+  [
+    "a no-break space between two directives that end the text of a card",
+    "kanban\n  S\n    A[x]%%{y}%%\u00a0%%{z}%%  \n",
+    "kanban\n  S\n    A[x]%%{y}%%\u00a0%%{z}%%  \n",
+  ],
+  [
+    "U+3000 between two directives that end the text of a card",
+    "kanban\n  S\n    A[x] %%{y}%%\u3000%%{z}%%  \n",
+    "kanban\n  S\n    A[x] %%{y}%%\u3000%%{z}%%  \n",
+  ],
+  [
+    "U+3000 after the last of two directives that end the text of a card",
+    "kanban\n  S\n    A[x] %%{y}%% %%{z}%%\u3000  \n",
+    "kanban\n  S\n    A[x] %%{y}%% %%{z}%%\u3000  \n",
+  ],
+  [
+    "U+3000 and spaces after the directive of a card",
+    "kanban\n  S\n    A[x] %%{y}%%\u3000  \n",
+    "kanban\n  S\n    A[x] %%{y}%%\u3000  \n",
+  ],
+  [
+    "text after the directive of a bare card, with spaces at the end",
+    "kanban\n  S\n    t %%{x}%% u  \n",
+    "kanban\n  S\n    t %%{x}%% u  \n",
+  ],
+  [
+    "text between two directives of a bare card, with spaces at the end",
+    "kanban\n  S\n    t %%{x}%% u %%{y}%%  \n",
+    "kanban\n  S\n    t %%{x}%% u %%{y}%%  \n",
+  ],
+  [
+    "two spaces before the first directive of a bare card whose text follows it",
+    "kanban\n  S\n    t  %%{x}%% u %%{y}%%\n",
+    "kanban\n  S\n    t  %%{x}%% u %%{y}%%\n",
+  ],
+  [
+    "spaces after the directive on the line of a column with a shape",
+    "kanban\n  A[x] %%{y}%%  \n",
+    "kanban\n  A[x] %%{y}%%  \n",
+  ],
+  [
+    "spaces after the directive on the line of a column with a bare id",
+    "kanban\n  A %%{y}%%  \n",
+    "kanban\n  A %%{y}%%  \n",
   ],
 ]
 

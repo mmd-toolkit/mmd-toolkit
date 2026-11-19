@@ -521,15 +521,20 @@ Mermaid がテキストの両端の空白を除くので、除いても Db と�
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 結合した継続列は保ちます。
 コメントの空白とディレクティブの内容も同じです。
-テキストを終えるディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
-最後のディレクティブの後の空白は除きます。
-最後のディレクティブの後に空白が続くときも続かないときも、
+テキストを終えるディレクティブは、
+それぞれの前に空白かタブがあれば空白 1 つを置き、
+最後のディレクティブの後の空白とタブは除きます。
+最後のディレクティブの後に空白かタブが続くときも続かないときも、
 テキストの中の連なりは空白 1 つにして印字します。
+ディレクティブの隣の U+00A0 と U+3000 は残します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped]
 [fixture: ishikawa/trailing-whitespace/trailing-directive-gap-collapsed]
 [fixture: ishikawa/trailing-whitespace/trailing-directive-continuation]
+[test: U+3000 after the last directive of an ishikawa literal]
+[test: U+3000 between two directives of an ishikawa literal]
+[test: U+3000 before the first directive of an ishikawa literal]
 
 [ヘッダー](#header) と [空行](#blank-lines) の規則で除くのは、
 見出し行の外側の余白だけで、それはテキストの値ではありません。
@@ -980,13 +985,18 @@ ishikawa
 最後の `%%` だけの行は、その後ろの隙間を書かれたまま残し、
 改行 1 つでテキストを終えます。
 隙間が改行で終わっていないときは、印字が改行を足します。
-最後のテキストつきのコメントは、
-テキストの後の空白とタブをコメントだけの行では残し、空行を落とし、
-改行 1 つでテキストを終えます。
+最後のテキストつきのコメントは、テキストの後に同じ行で続くものを残します。
+コメントだけの行では、空白、タブ、U+00A0、U+3000、U+2028、U+2029 です。
+節点の行では、空白とタブを除いたものです。
+空行は落とし、改行 1 つでテキストを終えます。
 閉じていないディレクティブはテキストの終わりまで届き、
 空白でない最後の文字までの残りを取ります。
 ここでは U+2028、U+2029、U+0085、U+180E、U+200B を空白でない文字に数えます。
-その文字の後ろの空白は、文の行でも落とし、改行 1 つでテキストを終えます。
+その文字の後ろの空白は、文の行でも落とします。
+落とすのは U+0009 から U+000D（タブ、改行、垂直タブ、改ページ）、U+0020、
+U+00A0、U+1680、U+2000 から U+200A、U+202F、U+205F、U+3000、U+FEFF と、
+空行です。
+改行 1 つでテキストを終えます。
 何も足さないのは、テキストがその文字の直後で終わり、
 その文字が U+2028 でも U+2029 でもないときだけです。
 末尾のテキストの余白は、末尾の空白に従い除きます。
@@ -1016,10 +1026,21 @@ ishikawa
 [test: an open directive followed by U+200B]
 [test: an open directive followed by U+180E]
 [test: an open directive followed by U+2003]
+[test: an open directive followed by U+1680]
+[test: an open directive followed by U+2000]
+[test: an open directive followed by U+200A]
+[test: an open directive followed by U+202F]
+[test: an open directive followed by U+205F]
 [test: a final line of %% alone, two empty lines, and a space in an ishikawa diagram]
 [test: a final line of %% alone and U+2028 in an ishikawa diagram]
 [test: a final comment with text and a tab on a line of its own in an ishikawa diagram]
 [test: a final comment with text and empty lines in an ishikawa diagram]
+[test: a final comment with text and a no-break space on a line of its own in an ishikawa diagram]
+[test: a final comment with text and U+3000 on a line of its own in an ishikawa diagram]
+[test: a final comment with text and U+2028 on a line of its own in an ishikawa diagram]
+[test: a final comment with text and U+2029 on a line of its own in an ishikawa diagram]
+[test: a final comment with text and two spaces after a node in an ishikawa diagram]
+[test: a final comment with text and a no-break space after a node in an ishikawa diagram]
 
 入力（エスケープ表記）:
 
