@@ -475,8 +475,7 @@ Db が保つからです。
 U+2028 か U+2029 の後のコメント領域があると、
 mermaid.js は前後の行を 1 行として読みます。
 整形は、その行の空白と改行を最初の文の始まりから最後まで書かれたまま印字します。
-ただし、節が挙げるもの（mindmap のノードのコメント行と、
-ER の実体のブロックなど）は別です。
+ただし、実体のブロックは別です。
 詳しくは
 [U+2028 または U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
 を参照してください。
@@ -499,9 +498,10 @@ ER の実体のブロックなど）は別です。
 色をその文字と接する語にするからです。
 詳しくは [同じに描かれる色](./compatibility.ja.md#同じに描かれる色)
 を参照してください。
-行の規則が無視する `;` の前の色も書かれたまま残しますが、
+`;` が色に接するとき（`#ABC;`、`#ABC;;`、`#ABC; ;`）も書かれたまま残しますが、
 [色](#色)の規則はこれを小文字に印字するので、規則に反して印字しており、
 規則による修正を待っています。
+`;` が色から空白で離れているときは、[色](#色)と同じに印字します。
 スタイルの中の空白は書かれたままです（`style A fill:#F00,   stroke:#ABC`、
 U+2028、`%% c` は、コンマの後の連なりを残します）。
 
@@ -527,6 +527,10 @@ U+2028、`%% c` は、コンマの後の連なりを残します）。
 [test: ER the quotes of an entity name on a line that a comment line after U+2029 joins]
 [test: ER the words of a relationship on a line that a comment line after U+2028 joins are printed as symbols]
 [test: ER a directive on a line that a comment line after U+2028 joins stays where it is written]
+[test: a color before a semicolon after whitespace in a style statement that a comment line after U+2028 cuts]
+[test: a color before a semicolon followed by a second semicolon in a style statement that a comment line after U+2028 cuts]
+[test: a color before a semicolon followed by a space and a second semicolon in a style statement that a comment line after U+2028 cuts]
+[test: a color before a semicolon that touches it in a style statement that a comment line after U+2028 cuts]
 
 属性の部分の間にあるディレクティブは、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)と同じに置きます。
@@ -2236,14 +2240,25 @@ erDiagram
 [state](./state.ja.md#ディレクティブ)も、隙間を同じように印字します。
 ほかの規則が配置を書かれたまま残す所は別です。
 閉じていないディレクティブ（次の段落で挙げます）と、
-コメント領域が結ぶ行（[複数行の文](#複数行の文)を参照）と、
-U+2028 や U+2029 を含む隙間です。
-隙間では、その文字の前に空白がないとき、その文字は残り、
-ディレクティブは空白 1 つの後ろに置きます。
+コメント領域が結ぶ行（[複数行の文](#複数行の文)を参照）です。
+U+2028 や U+2029 を含む隙間は、この 3 つが印字する隙間ではありません。
+class、sequence、state、flowchart は、その隙間を書かれたまま残します。
+ER が印字する形には先例がないので、規則 2 は何も決めず、
+リリース済みの版が印字する形を、決まるまで残します。
+詳しくは
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+を参照してください。
+属性でも関係でも、その文字の前に空白がないとき、その文字は残り、
+ディレクティブは空白 1 つの後ろに置いて、後ろの単位に接します。
 属性の `int`、U+2029、`%%{x}%%`、`a` は、`int`、U+2029、空白、
 `%%{x}%%a` に印字します。
-関係の隙間でも同じです。
-その文字の前に空白かタブがあるときは、隙間を書かれたまま残します。
+その文字の前に空白かタブがあるときは、隙間を書かれたまま残し、属性では、
+前にノーブレークスペースがあるときも書かれたままです。
+関係のラベルでは、U+2028 や U+2029 の後ろにディレクティブがあり、
+その後ろにテキストが続くとき、ディレクティブはそのテキストとともに次の行へ移り、
+U+2028 や U+2029 が前の行を終えます。
+`A ||--o{ B : y`、U+2028、`%%{x}%% z` は、`%%{x}%% z` が独立した行になります。
+ディレクティブだけが続くときは、行を書かれたままにします。
 
 [fixture: directives/kept] [fixture: directives/before-header]
 [fixture: directives/after-header-on-same-line]
@@ -2261,6 +2276,19 @@ U+2028 や U+2029 を含む隙間です。
 [test: U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship, spaces after the directive]
 [test: U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship, spaces before the U+2028 and after the directive: the gap stays as written]
 [test: U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship, one space before the U+2028: the gap stays as written]
+[test: U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship, a no-break space before the U+2028]
+[test: U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship, U+3000 before the U+2028]
+[test: U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship, a tab before the U+2028: the gap stays as written]
+[test: U+2029 and a directive in the gap between the type and the name of an ER attribute, a no-break space before the U+2029: the gap stays as written]
+[test: U+2029 and a directive in the gap between the type and the name of an ER attribute, U+3000 before the U+2029]
+[test: a flowchart keeps U+2028 and a directive in the gap between a node and an arrow as written]
+[test: a class diagram keeps U+2028 and a directive in the gap between a class and an arrow as written]
+[test: a state diagram keeps U+2028 and a directive in the gap between a state and an arrow as written]
+[test: a sequence diagram keeps U+2028 and a directive in the gap between a participant and an arrow as written]
+[test: U+2028 and a directive in the label of an ER relationship, after the text]
+[test: U+2029 and a directive in the label of an ER relationship, after the text]
+[test: U+2028 and a directive in the label of an ER relationship, before the text]
+[test: U+2028 and a directive in the label of an ER relationship, with nothing after the directive: the line stays as written]
 
 閉じていないディレクティブはテキストの残りを取り込むので、書かれたまま残します。
 
@@ -2821,16 +2849,18 @@ mermaid.js が複数行にわたって読む文は、改行が、
 行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
 その改行を残します。
 それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
-改行が残る文は、2 つのスタイルの間のコンマの横にある空白とタブの連なりを、
+改行が残る文は、2 つのスタイルの間のコンマの後ろにある空白、タブ、
+ノーブレークスペース、U+3000 の連なりと、コンマの前にある空白とタブの連なりを、
 最初の行でも、その後の行でも、空白 1 つに印字します。
-行末の連なりと、スタイルのコロンの周りと、スタイルのテキストの中の連なりは、
-書かれたまま残します。
+行末の連なりと、スタイルのコロンの周りと、スタイルのテキストの中の連なりと、
+コンマの前のノーブレークスペースや U+3000 は、書かれたまま残します。
 色は、コンマが色に続くとき（空白と改行を挟んでもです）と、
 `;` が続かない文の最後の色について、[色](#色)と同じに印字します。
 色に空白の後で文字が続くときは、[色](#色)と同じく書かれたまま残します。
-行の規則が無視する `;` の前の色も書かれたまま残しますが、
+`;` が色に接するとき（`#ABC;`、`#ABC;;`、`#ABC; ;`）も書かれたまま残しますが、
 [色](#色)の規則はこれを小文字に印字するので、規則に反して印字しており、
 規則による修正を待っています。
+`;` が色から空白で離れているときは、[色](#色)と同じに印字します。
 
 [fixture: multi-line-statements/semicolon-joining-changes-kept]
 [fixture: multi-line-statements/style-comment-continuation]
@@ -2847,6 +2877,19 @@ mermaid.js が複数行にわたって読む文は、改行が、
 [test: a color that characters follow after whitespace in a class definition that whitespace and a line break join]
 [test: a run of spaces after a comma at the end of a line of a class definition that whitespace and a line break join stays as written]
 [test: a run of spaces at the end of a line before a comma on the next line of a class definition that whitespace and a line break join stays as written]
+[test: a color before a semicolon after whitespace in a style statement that a comment line after U+2028 cuts]
+[test: a color before a semicolon followed by a second semicolon in a style statement that a comment line after U+2028 cuts]
+[test: a color before a semicolon followed by a space and a second semicolon in a style statement that a comment line after U+2028 cuts]
+[test: a color before a semicolon that touches it in a style statement that a comment line after U+2028 cuts]
+[test: a color before a semicolon after whitespace in a class definition that whitespace and a line break join]
+[test: a color before a semicolon followed by a second semicolon in a class definition that whitespace and a line break join]
+[test: a color before a semicolon followed by a space and a second semicolon in a class definition that whitespace and a line break join]
+[test: a color before a semicolon that touches it in a class definition that whitespace and a line break join]
+[test: two no-break spaces after a comma in a class definition that whitespace and a line break join is printed as one space]
+[test: U+3000 after a comma in a class definition that whitespace and a line break join is printed as one space]
+[test: two tabs after a comma in a class definition that whitespace and a line break join is printed as one space]
+[test: a no-break space before a comma in a class definition that whitespace and a line break join stays as written, with the color]
+[test: U+3000 before a comma in a class definition that whitespace and a line break join stays as written, with the color]
 
 コメントで結合される領域をまたいで続く名前も、そのような文の一部です。
 `A`、U+2028、`%% c`、行 `Bar` は、1 つの名前 `A`、U+2028、`Bar` です。

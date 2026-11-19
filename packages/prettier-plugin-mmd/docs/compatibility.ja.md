@@ -6238,19 +6238,10 @@ mermaid.js がこう読む行は、ソースの何行にもまたがります。
 整形は、その行の空白と改行を、最初の行から終わりまで、その上にある文ごと、
 書かれたまま残します。
 文の間の空白は整形せず、コメント行の後の行も字下げしません。
-ER 図とブロック図で、スタイルの色、関係の語、1 語の名前の引用符のように、
-そのような行の文について普通の行と別に印字するものは、
-その図の文書が述べています。
-詳しくは [ER](./er.ja.md#属性の空白) と [block](./block.ja.md#行区切り文字)
-を参照してください。
 これはすべての文、ブロックの開始行、ヘッダーに共通の 1 つの規則です。
-例外は mindmap と、ブロック図の composite ブロックの開始行です。
+例外は mindmap です。
 mindmap は、ノードのコメント行を、ノードの段の自分の行に置きます。
 [行区切り文字](./mindmap.ja.md#行区切り文字)を参照してください。
-composite ブロックの開始行は、コロンの行に名前があるときは、
-コロンの後の隙間を普通の開始行と同じに印字します。
-コメント領域がコロンにすぐ続くときは、書かれたまま残します。
-[複数行の文](./block.ja.md#複数行の文)を参照してください。
 そのようなコメント行が途中で切る図のコメントも、
 書かれたまま印字します（[行区切り](./sequence.ja.md#行区切り)を参照）。
 領域が名前の中にあるときも同じです。
@@ -6262,6 +6253,20 @@ ER 図では、そのような行にある実体のブロックだけは、
 ほかの実体と同じに置きます。
 ただし `}` が、そのようなコメント行が始まる行にあるときは、
 書かれたまま残ります（[ER](./er.ja.md#複数行の文)を参照）。
+ER 図では、そのような行の文について、スタイルの色、関係の語、
+1 語の名前の引用符のように普通の行と別に印字するものを、
+[ER](./er.ja.md#属性の空白)が述べています。
+flowchart、class、state でも、そのような行で、コンマが色に直後に続くか、
+空白を挟んで続くときは、色を小文字に印字します。
+
+[test: a color before a comma in a style statement that a comment line after U+2028 joins in a flowchart is printed in lower case]
+[test: a color before a comma after a space in a style statement that a comment line after U+2028 joins in a flowchart is printed in lower case]
+[test: a color before a comma in a style statement that a comment line after U+2028 joins in a class diagram is printed in lower case]
+[test: a color before a comma after a space in a style statement that a comment line after U+2028 joins in a class diagram is printed in lower case]
+[test: a color before a comma in a style statement that a comment line after U+2028 joins in a state diagram is printed in lower case]
+[test: a color before a comma after a space in a style statement that a comment line after U+2028 joins in a state diagram is printed in lower case]
+[test: a color before a comma in a style statement that a comment line after U+2028 joins in an ER diagram is printed in lower case]
+[test: a color before a comma after a space in a style statement that a comment line after U+2028 joins in an ER diagram is printed in lower case]
 
 [test: a comment line after U+2028 inside the name of an ER entity with an attribute block over several lines]
 [test: an attribute block of an entity that follows another entity on the line, after a comment line after U+2028]
@@ -6272,6 +6277,14 @@ ER 図では、そのような行にある実体のブロックだけは、
 [test: a comment line after U+2028 inside the name of an ER entity that follows a name in quotes]
 [test: a comment line after U+2028 inside the name of a class]
 [test: a comment line after U+2029 inside the name of a class]
+[test: a color before a comma in a style statement that a comment line after U+2028 joins in a flowchart is printed in lower case]
+[test: a color before a comma after a space in a style statement that a comment line after U+2028 joins in a flowchart is printed in lower case]
+[test: a color before a comma in a style statement that a comment line after U+2028 joins in a class diagram is printed in lower case]
+[test: a color before a comma after a space in a style statement that a comment line after U+2028 joins in a class diagram is printed in lower case]
+[test: a color before a comma in a style statement that a comment line after U+2028 joins in a state diagram is printed in lower case]
+[test: a color before a comma after a space in a style statement that a comment line after U+2028 joins in a state diagram is printed in lower case]
+[test: a color before a comma in a style statement that a comment line after U+2028 joins in an ER diagram is printed in lower case]
+[test: a color before a comma after a space in a style statement that a comment line after U+2028 joins in an ER diagram is printed in lower case]
 
 行に載るものと行の終わりは、mermaid.js が取り除くものから決まります。
 図種ごとの文書には、その図種のことを書きます。

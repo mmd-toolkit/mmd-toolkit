@@ -499,9 +499,8 @@ Semicolons alone do not prevent alignment of a continuation.
 Comment regions that join physical lines retain their original layout. A comment
 region after U+2028 or U+2029 makes mermaid.js read the lines around it as one,
 and the formatter keeps the whitespace and the line breaks of such a line as
-written, from the start of its first statement to its end, apart from the cases
-that the section names (the comment line of a mindmap node, and the block of an
-ER entity, among them; see
+written, from the start of its first statement to its end, apart from the block
+of an entity (see
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
 A directive on such a line stays where it is written, with its whitespace. The
 quotes of a name and of a label stay as written, where a plain line prints them
@@ -519,9 +518,10 @@ comma starts the line after the comment line and where the text ends after it:
 the U+2028 or U+2029 that the text of the style keeps after the color makes it a
 word that the character touches (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
-A color before a `;` that the line rule ignores stays as written, which the
-Colors rule prints in lower case: that form is printed against the rule and
-waits to be fixed by it. The whitespace inside the styles stays as written
+A color that a `;` that the line rule ignores touches stays as written, which
+the Colors rule prints in lower case: that form is printed against the rule and
+waits to be fixed by it; a color that whitespace separates from the `;` is
+printed as under Colors. The whitespace inside the styles stays as written
 (`style A fill:#F00,   stroke:#ABC`, U+2028, and `%% c` keep the run after the
 comma).
 
@@ -556,7 +556,13 @@ that characters follow after whitespace in a style on a line that a comment line
 after U+2028 joins with the next line] [test: the last color of the last line of
 a style that a comment line after U+2028 cuts, where a statement follows it]
 [test: a run of spaces after a comma in a style on a line that a comment line
-after U+2028 joins stays as written]
+after U+2028 joins stays as written] [test: a color before a semicolon after
+whitespace in a style statement that a comment line after U+2028 cuts] [test: a
+color before a semicolon followed by a second semicolon in a style statement
+that a comment line after U+2028 cuts] [test: a color before a semicolon
+followed by a space and a second semicolon in a style statement that a comment
+line after U+2028 cuts] [test: a color before a semicolon that touches it in a
+style statement that a comment line after U+2028 cuts]
 
 A directive between the parts of an attribute is placed as under
 [Directives](./flowchart.md#directives): mermaid.js removes a directive before
@@ -2255,12 +2261,22 @@ gap, so
 decides, as [class](./class.md#directives),
 [sequence](./sequence.md#directives), and [state](./state.md#directives) print
 the gap in the same way, where no other rule keeps the layout as written: a
-directive that is not closed, below; a line that a comment region joins, see
-[Multi-line statements](#multi-line-statements); and a gap that holds U+2028 or
-U+2029: where no whitespace comes before the character, it stays and the
-directive stands after one space, in an attribute (`int`, U+2029, `%%{x}%%`, and
-`a` are printed `int`, U+2029, a space, and `%%{x}%%a`) and in a relationship;
-where spaces or tabs come before the character, the gap stays as written.
+directive that is not closed, below, and a line that a comment region joins, see
+[Multi-line statements](#multi-line-statements). A gap that holds U+2028 or
+U+2029 is not a gap that they print so: class, sequence, state, and flowchart
+keep it as written, and no precedent gives the form that ER prints for it, so
+the form that the released version prints stays until it is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+In an attribute and in a relationship, where no whitespace comes before the
+character, it stays and the directive stands after one space and touches the
+unit that follows it (`int`, U+2029, `%%{x}%%`, and `a` are printed `int`,
+U+2029, a space, and `%%{x}%%a`); where spaces or tabs come before it, the gap
+stays as written, and in an attribute so does a gap with a no-break space before
+it. In the label of a relationship, a directive that follows the U+2028 or
+U+2029 and is followed by text moves to the next line with that text, and the
+U+2028 or U+2029 ends the line before it (`A ||--o{ B : y`, U+2028, and
+`%%{x}%% z` are printed with `%%{x}%% z` on a line of its own); where nothing
+but directives follow it, the line stays as written.
 
 [fixture: directives/kept] [fixture: directives/before-header] [fixture:
 directives/after-header-on-same-line] [fixture:
@@ -2283,7 +2299,26 @@ relationship, spaces after the directive] [test: U+2028 and a directive in the
 gap between an entity and the cardinality of an ER relationship, spaces before
 the U+2028 and after the directive: the gap stays as written] [test: U+2028 and
 a directive in the gap between an entity and the cardinality of an ER
-relationship, one space before the U+2028: the gap stays as written]
+relationship, one space before the U+2028: the gap stays as written] [test:
+U+2028 and a directive in the gap between an entity and the cardinality of an ER
+relationship, a no-break space before the U+2028] [test: U+2028 and a directive
+in the gap between an entity and the cardinality of an ER relationship, U+3000
+before the U+2028] [test: U+2028 and a directive in the gap between an entity
+and the cardinality of an ER relationship, a tab before the U+2028: the gap
+stays as written] [test: U+2029 and a directive in the gap between the type and
+the name of an ER attribute, a no-break space before the U+2029: the gap stays
+as written] [test: U+2029 and a directive in the gap between the type and the
+name of an ER attribute, U+3000 before the U+2029] [test: a flowchart keeps
+U+2028 and a directive in the gap between a node and an arrow as written] [test:
+a class diagram keeps U+2028 and a directive in the gap between a class and an
+arrow as written] [test: a state diagram keeps U+2028 and a directive in the gap
+between a state and an arrow as written] [test: a sequence diagram keeps U+2028
+and a directive in the gap between a participant and an arrow as written] [test:
+U+2028 and a directive in the label of an ER relationship, after the text]
+[test: U+2029 and a directive in the label of an ER relationship, after the
+text] [test: U+2028 and a directive in the label of an ER relationship, before
+the text] [test: U+2028 and a directive in the label of an ER relationship, with
+nothing after the directive: the line stays as written]
 
 A directive that is not closed takes the rest of the text, and is kept as
 written.
@@ -2870,15 +2905,18 @@ joining region keeps the line that it joins as written (see below). A line break
 stays where joining it, with one space or with nothing, could change which `;`
 the line rule ignores, and where a `;` ends the last line; any other line break
 is joined as usual, also in a statement that holds a `;`. A statement that keeps
-a line break prints a run of spaces and tabs beside a comma between two styles
-as one space, on the first line and on the lines after it, and keeps a run at
-the end of a line, a run around the colon of a style, and a run inside the text
-of a style as written. Its colors are printed as under [Colors](#colors) where a
-comma follows the color, also after whitespace and a line break, and for the
-last color of the statement where no `;` follows it. A color that characters
-follow after whitespace stays as written, as under Colors, and so does a color
-before a `;` that the line rule ignores, which the Colors rule prints in lower
-case: that form is printed against the rule and waits to be fixed by it.
+a line break prints a run of spaces, tabs, no-break spaces, and U+3000 after a
+comma between two styles, and a run of spaces and tabs before it, as one space,
+on the first line and on the lines after it, and keeps a run at the end of a
+line, a run around the colon of a style, a run inside the text of a style, and a
+no-break space or U+3000 before a comma as written. Its colors are printed as
+under [Colors](#colors) where a comma follows the color, also after whitespace
+and a line break, and for the last color of the statement where no `;` follows
+it. A color that characters follow after whitespace stays as written, as under
+Colors, and so does a color that a `;` touches (`#ABC;`, `#ABC;;`, and
+`#ABC; ;`), which the Colors rule prints in lower case: that form is printed
+against the rule and waits to be fixed by it. A color before a `;` that
+whitespace separates from it is printed as under Colors.
 
 [fixture: multi-line-statements/semicolon-joining-changes-kept] [fixture:
 multi-line-statements/style-comment-continuation] [fixture:
@@ -2901,7 +2939,27 @@ that whitespace and a line break join] [test: a run of spaces after a comma at
 the end of a line of a class definition that whitespace and a line break join
 stays as written] [test: a run of spaces at the end of a line before a comma on
 the next line of a class definition that whitespace and a line break join stays
-as written]
+as written] [test: a color before a semicolon after whitespace in a style
+statement that a comment line after U+2028 cuts] [test: a color before a
+semicolon followed by a second semicolon in a style statement that a comment
+line after U+2028 cuts] [test: a color before a semicolon followed by a space
+and a second semicolon in a style statement that a comment line after U+2028
+cuts] [test: a color before a semicolon that touches it in a style statement
+that a comment line after U+2028 cuts] [test: a color before a semicolon after
+whitespace in a class definition that whitespace and a line break join] [test: a
+color before a semicolon followed by a second semicolon in a class definition
+that whitespace and a line break join] [test: a color before a semicolon
+followed by a space and a second semicolon in a class definition that whitespace
+and a line break join] [test: a color before a semicolon that touches it in a
+class definition that whitespace and a line break join] [test: two no-break
+spaces after a comma in a class definition that whitespace and a line break join
+is printed as one space] [test: U+3000 after a comma in a class definition that
+whitespace and a line break join is printed as one space] [test: two tabs after
+a comma in a class definition that whitespace and a line break join is printed
+as one space] [test: a no-break space before a comma in a class definition that
+whitespace and a line break join stays as written, with the color] [test: U+3000
+before a comma in a class definition that whitespace and a line break join stays
+as written, with the color]
 
 A name that goes on across a joining region is part of such a statement: `A`,
 U+2028, `%% c`, and a line `Bar` are the one name `A`, U+2028, `Bar`. It makes
