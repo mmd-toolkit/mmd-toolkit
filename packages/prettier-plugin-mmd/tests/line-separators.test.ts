@@ -13517,6 +13517,16 @@ const architectureDirectiveCommentExamples: readonly (readonly [
     "architecture-beta\naccTitle : T%%{w\u2028v}%% %%{y;z}%%\n",
     "architecture-beta\n  accTitle: T%%{w\u2028v}%% %%{y;z}%%\n",
   ],
+  [
+    "accTitle with a gap before the colon, a U+2028 inside a comment and a `;` after it in the comment, the text ends, in an accTitle line of an architecture diagram",
+    "architecture-beta\naccTitle : T %% a\u2028b;\n",
+    "architecture-beta\n  accTitle: T %% a\u2028b;\n",
+  ],
+  [
+    "accTitle with a gap before the colon, a U+2028 inside a comment and no `;`, the text ends, in an accTitle line of an architecture diagram",
+    "architecture-beta\naccTitle : T %% a\u2028b\n",
+    "architecture-beta\n  accTitle: T %% a\u2028b\n",
+  ],
 ]
 
 describe("a comment after the directives that end the title or the value of an accessibility line of an architecture diagram, after a U+2028 or U+2029", () => {
