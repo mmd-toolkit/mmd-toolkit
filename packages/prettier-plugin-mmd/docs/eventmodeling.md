@@ -299,11 +299,11 @@ before its body. Tight tags distinguish the annotation from its value. Retain
 the presence or absence of a tag and all eight authored type words. A tag does
 not ask the formatter to parse its payload as JSON or another language; hidden
 forms and global trivia retain their boundaries. A comment inside a tag or right
-after it stays touching where it touches, and a run of whitespace before it
-becomes one space, as under [Comments](#comments). A run of whitespace after a
-comment inside the tag becomes one space too, while the gaps between the parts
-of the tag itself stay tight, whichever whitespace characters they hold (spaces,
-tabs, a no-break space, U+3000, U+2028, U+2029, and the others).
+after it stays touching where it touches, and a run of spaces, tabs, no-break
+spaces, U+3000, U+2028, or U+2029 before it becomes one space, also right after
+the opening backtick. A run of any of these after a comment inside the tag
+becomes one space too, while the gaps between the parts of the tag itself stay
+tight, whichever of them they hold.
 
 [fixture: eventmodeling/type-tags/inline-tag-parts]
 
@@ -316,35 +316,41 @@ eventmodeling/type-tags/tag-comments-spaced] [fixture:
 eventmodeling/type-tags/tag-comments-spaced-after] [fixture:
 eventmodeling/type-tags/tag-comments-tab-before] [fixture:
 eventmodeling/type-tags/tag-comments-tab-after] [fixture:
-eventmodeling/type-tags/tag-comments-before-closing-backtick-and-body] [test: a
-no-break space before a comment inside a type tag of an eventmodeling diagram]
-[test: U+3000 before a comment inside a type tag of an eventmodeling diagram]
-[test: U+2028 before a comment inside a type tag of an eventmodeling diagram]
-[test: U+2029 before a comment inside a type tag of an eventmodeling diagram]
-[test: a no-break space after a comment inside a type tag, before its next part,
-of an eventmodeling diagram] [test: a no-break space after a comment inside a
-type tag, before its closing backtick, of an eventmodeling diagram] [test: a
-no-break space before a comment after a type tag of an eventmodeling diagram]
-[test: a no-break space after a comment after a type tag of an eventmodeling
-diagram] [test: a no-break space between the parts of a type tag of an
-eventmodeling diagram] [test: U+3000 after a comment inside a type tag, before
-its next part, of an eventmodeling diagram] [test: U+2028 after a comment inside
-a type tag, before its next part, of an eventmodeling diagram] [test: U+2029
-after a comment inside a type tag, before its next part, of an eventmodeling
-diagram] [test: U+3000 after a comment inside a type tag, before its closing
-backtick, of an eventmodeling diagram] [test: U+2028 after a comment inside a
-type tag, before its closing backtick, of an eventmodeling diagram] [test:
-U+2029 after a comment inside a type tag, before its closing backtick, of an
-eventmodeling diagram] [test: U+3000 before a comment after a type tag of an
-eventmodeling diagram] [test: U+2028 before a comment after a type tag of an
-eventmodeling diagram] [test: U+2029 before a comment after a type tag of an
-eventmodeling diagram] [test: U+3000 after a comment after a type tag of an
-eventmodeling diagram] [test: U+2028 after a comment after a type tag of an
-eventmodeling diagram] [test: U+2029 after a comment after a type tag of an
-eventmodeling diagram] [test: U+3000 between the parts of a type tag of an
-eventmodeling diagram] [test: U+2028 between the parts of a type tag of an
-eventmodeling diagram] [test: U+2029 between the parts of a type tag of an
-eventmodeling diagram]
+eventmodeling/type-tags/tag-comments-before-closing-backtick-and-body] [fixture:
+eventmodeling/type-tags/tag-comments-after-opening-backtick] [test: a no-break
+space before a comment inside a type tag of an eventmodeling diagram] [test:
+U+3000 before a comment inside a type tag of an eventmodeling diagram] [test:
+U+2028 before a comment inside a type tag of an eventmodeling diagram] [test:
+U+2029 before a comment inside a type tag of an eventmodeling diagram] [test: a
+no-break space after a comment inside a type tag, before its next part, of an
+eventmodeling diagram] [test: a no-break space after a comment inside a type
+tag, before its closing backtick, of an eventmodeling diagram] [test: a no-break
+space before a comment after a type tag of an eventmodeling diagram] [test: a
+no-break space after a comment after a type tag of an eventmodeling diagram]
+[test: a no-break space between the parts of a type tag of an eventmodeling
+diagram] [test: U+3000 after a comment inside a type tag, before its next part,
+of an eventmodeling diagram] [test: U+2028 after a comment inside a type tag,
+before its next part, of an eventmodeling diagram] [test: U+2029 after a comment
+inside a type tag, before its next part, of an eventmodeling diagram] [test:
+U+3000 after a comment inside a type tag, before its closing backtick, of an
+eventmodeling diagram] [test: U+2028 after a comment inside a type tag, before
+its closing backtick, of an eventmodeling diagram] [test: U+2029 after a comment
+inside a type tag, before its closing backtick, of an eventmodeling diagram]
+[test: U+3000 before a comment after a type tag of an eventmodeling diagram]
+[test: U+2028 before a comment after a type tag of an eventmodeling diagram]
+[test: U+2029 before a comment after a type tag of an eventmodeling diagram]
+[test: U+3000 after a comment after a type tag of an eventmodeling diagram]
+[test: U+2028 after a comment after a type tag of an eventmodeling diagram]
+[test: U+2029 after a comment after a type tag of an eventmodeling diagram]
+[test: U+3000 between the parts of a type tag of an eventmodeling diagram]
+[test: U+2028 between the parts of a type tag of an eventmodeling diagram]
+[test: U+2029 between the parts of a type tag of an eventmodeling diagram]
+[test: a no-break space after the opening backtick of a type tag, before a
+comment, of an eventmodeling diagram] [test: U+3000 after the opening backtick
+of a type tag, before a comment, of an eventmodeling diagram] [test: U+2028
+after the opening backtick of a type tag, before a comment, of an eventmodeling
+diagram] [test: U+2029 after the opening backtick of a type tag, before a
+comment, of an eventmodeling diagram]
 
 [fixture: eventmodeling/type-tags/tag-absent-kept-absent]
 
@@ -1030,28 +1036,38 @@ tf 02 evt Beta
 
 Align ordinary standalone comments with their owning body; between GWT items
 this is item depth. Within a printed line, a comment that touches stays
-touching, and a run of whitespace before it becomes one space, whichever
-whitespace characters it holds (spaces, tabs, a no-break space, U+3000, U+2028,
-U+2029, and the others). Rule 1 names no mark before a comment, so
+touching, and a run of spaces and tabs before it becomes one space. Rule 1 names
+no mark before a comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
-decides, as [sequence](./sequence.md#comments),
-[journey](./journey.md#comments), and [timeline](./timeline.md#comments) print a
-comment after a statement in the same way, where no other rule keeps the
+decides, as [sequence](./sequence.md#comments) after a message and
+[journey](./journey.md#comments) and [timeline](./timeline.md#comments) after
+their header print a comment in the same way, where no other rule keeps the
 whitespace as written; each of them names those cases in its own sections or in
 [A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
 (whitespace that the Db holds, as after a `section` or a period, and whitespace
-that changes what mermaid.js reads). When units split into separate lines,
-attach intervening inline comments to the following unit, in the same direction
-as directives. Use this shared placement so the same comments are treated alike
-across diagram types. Keep marks, contents, trailing padding and block-comment
-continuation columns. Native `//` and `%%` run through LS/PS to physical LF. A
-`%%` comment line inside a data block, a note, an `accDescr` block, a slash
-block comment or a hidden form is part of that text. Its columns stay written
-except for the block-body margin adjustment in [Data blocks](#data-blocks).
-Boundaries needed for metadata or a required `title` take precedence. Slash
-comments are not moved before the header, where detection would reject them. A
-comment line before the header stands at column one. Rule 1 names no mark for
-the indentation of a line before the header, so
+that changes what mermaid.js reads). A no-break space, U+3000, U+2028, or U+2029
+before a comment after a frame statement also becomes one space, where a
+statement follows the comment and where the text ends. The printers above print
+these characters otherwise: sequence keeps a no-break space or U+3000 after a
+message as written, and journey and timeline print them after their header as
+one space; before U+2028 or U+2029, sequence, journey, and timeline keep the
+line as written where a statement follows the comment and put the comment on a
+line of its own where the text ends. So no rule gives the form of these four
+characters, and the form that the released version prints, one space, stays
+until it is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+When units split into separate lines, attach intervening inline comments to the
+following unit, in the same direction as directives. Use this shared placement
+so the same comments are treated alike across diagram types. Keep marks,
+contents, trailing padding and block-comment continuation columns. Native `//`
+and `%%` run through LS/PS to physical LF. A `%%` comment line inside a data
+block, a note, an `accDescr` block, a slash block comment or a hidden form is
+part of that text. Its columns stay written except for the block-body margin
+adjustment in [Data blocks](#data-blocks). Boundaries needed for metadata or a
+required `title` take precedence. Slash comments are not moved before the
+header, where detection would reject them. A comment line before the header
+stands at column one. Rule 1 names no mark for the indentation of a line before
+the header, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [journey](./journey.md#comments),
 [timeline](./timeline.md#comments), and [c4](./c4.md#comments) print it so.
@@ -1062,8 +1078,23 @@ before a `%%` comment after a statement of an eventmodeling diagram] [test:
 U+3000 before a `//` comment after a statement of an eventmodeling diagram]
 [test: U+2028 before a slash comment after a statement of an eventmodeling
 diagram] [test: U+2029 before a `%%` comment after a statement of an
-eventmodeling diagram] [test: an em space before a `//` comment after a
-statement of an eventmodeling diagram]
+eventmodeling diagram] [test: a no-break space before a comment that a statement
+follows, after a statement of an eventmodeling diagram] [test: U+2028 before a
+comment that a statement follows, after a statement of an eventmodeling diagram]
+[test: U+2029 before a comment that a statement follows, after a statement of an
+eventmodeling diagram] [test: U+3000 before a comment that a statement follows,
+after a statement of an eventmodeling diagram] [test: a no-break space before a
+comment after a message of a sequence diagram] [test: U+3000 before a comment
+after a message of a sequence diagram] [test: U+2028 before a comment that a
+statement follows, after a message of a sequence diagram] [test: U+2029 before a
+comment at the end of the text, after a message of a sequence diagram] [test: a
+no-break space before a comment after the header of a timeline] [test: U+2028
+before a comment that a statement follows, after the header of a timeline]
+[test: U+2029 before a comment at the end of the text, after the header of a
+timeline] [test: U+3000 before a comment after the header of a user journey]
+[test: U+2028 before a comment that a statement follows, after the header of a
+user journey] [test: U+2029 before a comment at the end of the text, after the
+header of a user journey]
 
 [fixture: eventmodeling/comments/inline-comments-keep-contact]
 

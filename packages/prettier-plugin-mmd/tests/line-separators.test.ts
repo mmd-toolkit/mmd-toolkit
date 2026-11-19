@@ -5430,6 +5430,46 @@ const eventmodelingCommentGapExamples: readonly (readonly [
     "eventmodeling\ntf 01 evt Alpha `\u2029json\u2029`{x}\n",
     "eventmodeling\ntf 01 evt Alpha `json` {x}\n",
   ],
+  [
+    "a no-break space after the opening backtick of a type tag, before a comment, of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `\u00a0/*a*/json`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha ` /*a*/json` {x}\n",
+  ],
+  [
+    "U+3000 after the opening backtick of a type tag, before a comment, of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `\u3000/*a*/json`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha ` /*a*/json` {x}\n",
+  ],
+  [
+    "U+2028 after the opening backtick of a type tag, before a comment, of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `\u2028/*a*/json`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha ` /*a*/json` {x}\n",
+  ],
+  [
+    "U+2029 after the opening backtick of a type tag, before a comment, of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `\u2029/*a*/json`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha ` /*a*/json` {x}\n",
+  ],
+  [
+    "a no-break space before a comment that a statement follows, after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u00a0%% c\ntf 02 evt Beta\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\ntf 02 evt Beta\n",
+  ],
+  [
+    "U+2028 before a comment that a statement follows, after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2028%% c\ntf 02 evt Beta\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\ntf 02 evt Beta\n",
+  ],
+  [
+    "U+2029 before a comment that a statement follows, after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2029%% c\ntf 02 evt Beta\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\ntf 02 evt Beta\n",
+  ],
+  [
+    "U+3000 before a comment that a statement follows, after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u3000%% c\ntf 02 evt Beta\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\ntf 02 evt Beta\n",
+  ],
 ]
 
 describe("the whitespace beside a comment of an eventmodeling diagram", () => {
@@ -5439,6 +5479,70 @@ describe("the whitespace beside a comment of an eventmodeling diagram", () => {
       await expectKept(input, expected)
     },
   )
+})
+
+/** The printers that docs/eventmodeling.md, Comments, cites: where they print the characters before a comment otherwise. */
+const commentGapPrecedentExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a no-break space before a comment after a message of a sequence diagram",
+    "sequenceDiagram\nA->>B: x\u00a0%% c\n",
+    "sequenceDiagram\n  A ->> B: x\u00a0%% c\n",
+  ],
+  [
+    "U+3000 before a comment after a message of a sequence diagram",
+    "sequenceDiagram\nA->>B: x\u3000%% c\n",
+    "sequenceDiagram\n  A ->> B: x\u3000%% c\n",
+  ],
+  [
+    "U+2028 before a comment that a statement follows, after a message of a sequence diagram",
+    "sequenceDiagram\nA->>B: x\u2028%% c\nC->>D: y\n",
+    "sequenceDiagram\n  A->>B: x\u2028%% c\nC->>D: y\n",
+  ],
+  [
+    "U+2029 before a comment at the end of the text, after a message of a sequence diagram",
+    "sequenceDiagram\nA->>B: x\u2029%% c\n",
+    "sequenceDiagram\n  A ->> B: x\n  %% c\n",
+  ],
+  [
+    "a no-break space before a comment after the header of a timeline",
+    "timeline\u00a0%% c\n2020 : a\n",
+    "timeline %% c\n  2020 : a\n",
+  ],
+  [
+    "U+2028 before a comment that a statement follows, after the header of a timeline",
+    "timeline\u2028%% c\n2020 : a\n",
+    "timeline\u2028%% c\n2020 : a\n",
+  ],
+  [
+    "U+2029 before a comment at the end of the text, after the header of a timeline",
+    "timeline\u2029%% c\n",
+    "timeline\n  %% c\n",
+  ],
+  [
+    "U+3000 before a comment after the header of a user journey",
+    "journey\u3000%% c\nsection S\n",
+    "journey %% c\n  section S\n",
+  ],
+  [
+    "U+2028 before a comment that a statement follows, after the header of a user journey",
+    "journey\u2028%% c\nsection S\n",
+    "journey\u2028%% c\nsection S\n",
+  ],
+  [
+    "U+2029 before a comment at the end of the text, after the header of a user journey",
+    "journey\u2029%% c\n",
+    "journey\n  %% c\n",
+  ],
+]
+
+describe("the whitespace before a comment of a sequence diagram, a timeline, and a user journey", () => {
+  it.each(commentGapPrecedentExamples)("%s", async (_name, input, expected) => {
+    await expectKept(input, expected)
+  })
 })
 
 /** Fixed escaped cases of uniform data-block indentation and line endings. */

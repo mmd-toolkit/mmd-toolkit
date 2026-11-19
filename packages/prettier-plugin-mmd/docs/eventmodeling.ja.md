@@ -311,12 +311,10 @@ tf 01 evt Alpha [[D]]
 タグは本文を JSON などとして解釈する指示ではありません。
 隠れた形と大域的な注釈類の境界は保ちます。
 タグの中のコメントと、タグの直後のコメントは、接していれば接したまま残し、
-その前の空白文字の連なりは空白 1 つにします。
-詳しくは [コメント](#comments) を参照してください。
-タグの中のコメントの後の空白文字の連なりも空白 1 つにします。
-タグの部分の間の隙間は詰めたままです。
-これらの連なりと隙間は、空白、タブ、ノーブレークスペース、U+3000、U+2028、
-U+2029 など、どの空白文字でも同じです。
+その前の空白、タブ、ノーブレークスペース、U+3000、U+2028、U+2029 の連なりは、
+開始のバッククォートの直後でも、空白 1 つにします。
+タグの中のコメントの後のこれらの連なりも空白 1 つにします。
+タグの部分の間の隙間は、これらのどれを含んでいても詰めたままです。
 
 [fixture: eventmodeling/type-tags/inline-tag-parts]
 
@@ -330,6 +328,7 @@ U+2029 など、どの空白文字でも同じです。
 [fixture: eventmodeling/type-tags/tag-comments-tab-before]
 [fixture: eventmodeling/type-tags/tag-comments-tab-after]
 [fixture: eventmodeling/type-tags/tag-comments-before-closing-backtick-and-body]
+[fixture: eventmodeling/type-tags/tag-comments-after-opening-backtick]
 [test: a no-break space before a comment inside a type tag of an eventmodeling diagram]
 [test: U+3000 before a comment inside a type tag of an eventmodeling diagram]
 [test: U+2028 before a comment inside a type tag of an eventmodeling diagram]
@@ -354,6 +353,10 @@ U+2029 など、どの空白文字でも同じです。
 [test: U+3000 between the parts of a type tag of an eventmodeling diagram]
 [test: U+2028 between the parts of a type tag of an eventmodeling diagram]
 [test: U+2029 between the parts of a type tag of an eventmodeling diagram]
+[test: a no-break space after the opening backtick of a type tag, before a comment, of an eventmodeling diagram]
+[test: U+3000 after the opening backtick of a type tag, before a comment, of an eventmodeling diagram]
+[test: U+2028 after the opening backtick of a type tag, before a comment, of an eventmodeling diagram]
+[test: U+2029 after the opening backtick of a type tag, before a comment, of an eventmodeling diagram]
 
 [fixture: eventmodeling/type-tags/tag-absent-kept-absent]
 
@@ -1055,19 +1058,34 @@ tf 02 evt Beta
 ### Comments
 
 普通の独立コメントは所属本文の段に揃え、GWT 項目間では項目の段にします。
-同じ印字行では、接するコメントは接したまま残し、前の空白文字の連なりは、空白、
-タブ、ノーブレークスペース、U+3000、U+2028、U+2029 など、
-どの空白文字でも空白 1 つにします。
+同じ印字行では、接するコメントは接したまま残し、
+前の空白とタブの連なりは空白 1 つにします。
 規則 1 は、コメントの前の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-[sequence](./sequence.ja.md#コメント)、[journey](./journey.ja.md#コメント)、
-[timeline](./timeline.ja.md#コメント)も、
-文の後ろのコメントを同じように印字します。
+[sequence](./sequence.ja.md#コメント)は、
+メッセージの後ろのコメントを同じように印字します。
+[journey](./journey.ja.md#コメント)も、
+見出しの後ろのコメントを同じように印字します。
+[timeline](./timeline.ja.md#コメント)も、見出しの後ろは同じです。
 ほかの規則が空白を書かれたまま残す所は別です。
 どの図の文書も、その所を、
 自分の節か [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
 で挙げています（Db が持つ空白、たとえば `section` と期間の後の空白と、
 mermaid.js の読みを変える空白です）。
+フレーム文の後ろのコメントの前にあるノーブレークスペース、U+3000、U+2028、
+U+2029 も、コメントに文が続くときも、テキストが終わるときも、空白 1 つにします。
+前に挙げた図は、この 4 つの文字をそう印字しません。
+sequence は、
+メッセージの後ろのノーブレークスペースと U+3000 を書かれたまま残します。
+journey と timeline は、見出しの後ろのこの 2 つを空白 1 つで印字します。
+U+2028 と U+2029 の前では、sequence、journey、timeline は、
+コメントに文が続くとき行を書かれたまま残し、
+テキストが終わるときはコメントを自分の行に置きます。
+そのため、この 4 つの文字の形を与える規則はなく、
+公開済みの版が印字する空白 1 つを、決めるまで残します。
+詳しくは
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+を参照してください。
 単位を行に分けるとき、
 間の行内のコメントはディレクティブと同じく次の単位へ付けます。
 同じコメントを図種の間で同じように扱うため、共有の置き方を使います。
@@ -1090,7 +1108,20 @@ data ブロック、note、`accDescr` ブロック、スラッシュのブロッ
 [test: U+3000 before a `//` comment after a statement of an eventmodeling diagram]
 [test: U+2028 before a slash comment after a statement of an eventmodeling diagram]
 [test: U+2029 before a `%%` comment after a statement of an eventmodeling diagram]
-[test: an em space before a `//` comment after a statement of an eventmodeling diagram]
+[test: a no-break space before a comment that a statement follows, after a statement of an eventmodeling diagram]
+[test: U+2028 before a comment that a statement follows, after a statement of an eventmodeling diagram]
+[test: U+2029 before a comment that a statement follows, after a statement of an eventmodeling diagram]
+[test: U+3000 before a comment that a statement follows, after a statement of an eventmodeling diagram]
+[test: a no-break space before a comment after a message of a sequence diagram]
+[test: U+3000 before a comment after a message of a sequence diagram]
+[test: U+2028 before a comment that a statement follows, after a message of a sequence diagram]
+[test: U+2029 before a comment at the end of the text, after a message of a sequence diagram]
+[test: a no-break space before a comment after the header of a timeline]
+[test: U+2028 before a comment that a statement follows, after the header of a timeline]
+[test: U+2029 before a comment at the end of the text, after the header of a timeline]
+[test: U+3000 before a comment after the header of a user journey]
+[test: U+2028 before a comment that a statement follows, after the header of a user journey]
+[test: U+2029 before a comment at the end of the text, after the header of a user journey]
 
 [fixture: eventmodeling/comments/inline-comments-keep-contact]
 
