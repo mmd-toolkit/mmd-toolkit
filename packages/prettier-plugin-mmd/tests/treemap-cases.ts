@@ -220,4 +220,47 @@ export const treemapCases: readonly TreemapCase[] = [
       "treemap\n  classDef zz\n    %%{x}%% %% c  \n\n    classDef yy color:red\n",
     options: {},
   },
+  {
+    name: "treemap/style-gaps/class-definition-paragraph-separator-directive-comment-class-on-next-line",
+    input:
+      "treemap\nclassDef zz \u2029 %%{x}%%  %% c  \n\n classDef yy color:red\n",
+    output:
+      "treemap\n  classDef zz\n    %%{x}%% %% c  \n\n    classDef yy color:red\n",
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-paragraph-separator-directive-comment-row-as-style",
+    input: 'treemap\nclassDef zz \u2029 %%{x}%%  %% c  \n\n"A": 1\n',
+    output: 'treemap\n  classDef zz\n    %%{x}%% %% c  \n\n    "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-paragraph-separator-after-row-directive-comment-row-as-style",
+    input: 'treemap\n"A": 1\nclassDef zz \u2029 %%{x}%%  %% c  \n\n  "B": 2\n',
+    output:
+      'treemap\n  "A": 1\n  classDef zz\n    %%{x}%% %% c  \n\n    "B": 2\n',
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-paragraph-separator-comment-class-on-next-line",
+    input: "treemap\nclassDef zz \u2029 %% c  \n\n classDef yy color:red\n",
+    output: "treemap\n  classDef zz\n    %% c  \n\n    classDef yy color:red\n",
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-paragraph-separator-directive-comment-class-follows-at-once",
+    input:
+      "treemap\nclassDef zz \u2029 %%{x}%%  %% c  \n classDef yy color:red\n",
+    output:
+      "treemap\n  classDef zz\n    %%{x}%% %% c  \n    classDef yy color:red\n",
+    options: {},
+  },
+  {
+    name: "treemap/style-gaps/class-definition-paragraph-separator-directive-comment-class-at-first-column",
+    input:
+      "treemap\nclassDef zz \u2029 %%{x}%%  %% c  \n\nclassDef yy color:red\n",
+    output:
+      "treemap\n  classDef zz\n    %%{x}%% %% c  \n\n    classDef yy color:red\n",
+    options: {},
+  },
 ]

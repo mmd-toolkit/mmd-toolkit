@@ -448,6 +448,12 @@ treemap
 [test: treemap/style-gaps/class-definition-line-separator-directive-comment-class-follows-at-once]
 [test: treemap/style-gaps/class-definition-line-separator-directive-comment-class-at-first-column]
 [test: treemap/style-gaps/class-definition-line-feed-directive-comment-class-on-next-line]
+[test: treemap/style-gaps/class-definition-paragraph-separator-directive-comment-class-on-next-line]
+[test: treemap/style-gaps/class-definition-paragraph-separator-directive-comment-row-as-style]
+[test: treemap/style-gaps/class-definition-paragraph-separator-after-row-directive-comment-row-as-style]
+[test: treemap/style-gaps/class-definition-paragraph-separator-comment-class-on-next-line]
+[test: treemap/style-gaps/class-definition-paragraph-separator-directive-comment-class-follows-at-once]
+[test: treemap/style-gaps/class-definition-paragraph-separator-directive-comment-class-at-first-column]
 
 ### Styles
 
