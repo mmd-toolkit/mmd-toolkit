@@ -60,6 +60,8 @@ texts of Prettier are JavaScript where no language is named.
 | A colon inside a name                    | the selector `a:hover` of CSS stays `a:hover`          | none on either side          | `a : R -- L : b` in an architecture diagram | `a:R -- L:b`                  |
 | Another mark between two things          | `x = a+b` is printed `x = a + b;`                      | one space on each side       | `A-->B` in a flowchart                      | `A --> B`                     |
 | Parentheses and square brackets          | `f( a )` is printed `f(a);`                            | none inside                  | `A( text )` in a flowchart                  | `A(text)`                     |
+| A `;` that ends a statement              | `a ;` is printed `a;`                                  | none before                  | `r="a" ;` in a railroad diagram             | `r = "a";`                    |
+| The `(` of a call                        | `f (a)` is printed `f(a);`                             | none before                  | `terminal ("x")` in a railroad diagram      | `terminal("x")`               |
 | Braces that hold names with their values | `x = {a:1}` is printed `x = { a: 1 };`                 | one space inside             | `curve c{m: 60, s: 70}` in a radar chart    | `curve c{ m: 60, s: 70 }`     |
 | Braces that hold values alone            | `x = [ 1, 2 ]` is printed `x = [1, 2];`                | none inside                  | `curve d{ 85, 90 }` in a radar chart        | `curve d{85, 90}`             |
 | Braces that hold nothing                 | `x = { }` is printed `x = {};`                         | none inside                  | `accDescr { }` in a Gantt chart             | `accDescr {}`                 |

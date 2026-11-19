@@ -1,5 +1,13 @@
 # @mmd-toolkit/spec
 
+## 0.5.1
+
+### Patch Changes
+
+- [#214](https://github.com/mmd-toolkit/mmd-toolkit/pull/214) [`19db290`](https://github.com/mmd-toolkit/mmd-toolkit/commit/19db29066a78881b31bf7c195582ae43c2b2fc1b) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Cite the corpus fixture of a colon after the `treemap-beta` header beside the
+  one after `treemap`, in the Detection section of `diagrams/treemap.md`, where a
+  header colon is rejected.
+
 ## 0.5.0
 
 ### Minor Changes

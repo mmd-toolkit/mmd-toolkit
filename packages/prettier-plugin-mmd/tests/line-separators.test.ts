@@ -576,6 +576,191 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
     "sequenceDiagram\n  A ->> B: x # c\n  C ->> D: y\n",
   ],
   [
+    "a `#` comment after U+2028 after a note",
+    "sequenceDiagram\nparticipant A\nNote over A: t\u2028# c\n",
+    "sequenceDiagram\n  participant A\n  Note over A: t # c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after a block header",
+    "sequenceDiagram\nparticipant A\nloop x\u2028# c\nA->>A: y\nend\n",
+    "sequenceDiagram\n  participant A\n  loop x # c\n    A ->> A: y\n  end\n",
+  ],
+  [
+    "a `#` comment after U+2028 after a link",
+    "sequenceDiagram\nparticipant A\nlink A: Doc @ http://x\u2028# c\n",
+    "sequenceDiagram\n  participant A\n  link A: Doc @ http://x # c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after a participant with an alias",
+    "sequenceDiagram\nparticipant A as Alice\u2028# c\n",
+    "sequenceDiagram\n  participant A as Alice # c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after the header of the diagram",
+    "sequenceDiagram\u2028# c\nA->>B: x\n",
+    "sequenceDiagram # c\n  A ->> B: x\n",
+  ],
+  [
+    "a `#` comment after U+2028 after autonumber",
+    "sequenceDiagram\nautonumber\u2028# c\n",
+    "sequenceDiagram\n  autonumber # c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after a box without a text",
+    "sequenceDiagram\nbox\u2028# c\nparticipant A\nend\n",
+    "sequenceDiagram\n  box # c\n    participant A\n  end\n",
+  ],
+  [
+    "a `#` comment after U+2028 after the id of a participant",
+    "sequenceDiagram\nparticipant A\u2028# c\n",
+    "sequenceDiagram\n  participant A\u2028# c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after the id of a create",
+    "sequenceDiagram\ncreate participant A\u2028# c\nB->>A\u2028# c: x\n",
+    "sequenceDiagram\n  create participant A\u2028# c\n  B ->> A\u2028# c: x\n",
+  ],
+  [
+    "a `#` comment after U+2028 after the id of a destroy",
+    "sequenceDiagram\nparticipant A\ndestroy A\u2028# c\n",
+    "sequenceDiagram\n  participant A\n  destroy A\u2028# c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after activate and deactivate",
+    "sequenceDiagram\nparticipant A\u2028# c\nactivate A\u2028# c\ndeactivate A\u2028# c\n",
+    "sequenceDiagram\n  participant A\u2028# c\n  activate A\u2028# c\n  deactivate A\u2028# c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after accTitle",
+    "sequenceDiagram\naccTitle: t\u2028# c\n",
+    "sequenceDiagram\n  accTitle: t\u2028# c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after an accDescr line",
+    "sequenceDiagram\naccDescr: t\u2028# c\n",
+    "sequenceDiagram\n  accDescr: t\u2028# c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after a title",
+    "sequenceDiagram\ntitle T\u2028# c\n",
+    "sequenceDiagram\n  title T\u2028# c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after a box with a text",
+    "sequenceDiagram\nbox aqua\u2028# c\nparticipant A\nend\n",
+    "sequenceDiagram\n  box aqua\u2028# c\n    participant A\n  end\n",
+  ],
+  [
+    "a `#` comment after U+2028 after an actor and a data block",
+    'sequenceDiagram\nactor C as Carol\u2028# c\nparticipant D@{ "type": "queue" }\u2028# c\n',
+    'sequenceDiagram\n  actor C as Carol # c\n  participant D@{ "type": "queue" } # c\n',
+  ],
+  [
+    "a `#` comment after U+2028 after links, properties, and details",
+    'sequenceDiagram\nparticipant A\nparticipant B\nlinks A: {"x": "http://y"}\u2028# c\nproperties A: {"x": "y"}\u2028# c\ndetails A: {"x": "y"}\u2028# c\n',
+    'sequenceDiagram\n  participant A\n  participant B\n  links A: {"x": "http://y"} # c\n  properties A: {"x": "y"} # c\n  details A: {"x": "y"} # c\n',
+  ],
+  [
+    "a `#` comment after U+2028 after block headers and end",
+    "sequenceDiagram\nparticipant A\nparticipant B\nloop x\u2028# c\nopt y\u2028# c\nrect aqua\u2028# c\npar over A,B\u2028# c\nalt a\u2028# c\nA->>B: z\nelse b\u2028# c\nA->>B: w\nend\u2028# c\nend\nend\nend\nend\n",
+    "sequenceDiagram\n  participant A\n  participant B\n  loop x # c\n    opt y # c\n      rect aqua # c\n        par over A,B # c\n          alt a # c\n            A ->> B: z\n          else b # c\n            A ->> B: w\n          end # c\n        end\n      end\n    end\n  end\n",
+  ],
+  [
+    "a `#` comment after U+2028 after an accDescr block",
+    "sequenceDiagram\nparticipant A\nparticipant B\naccDescr { x }\u2028# c\naccDescr {\ny\n}\u2028# c\naccDescr {}\u2028# c\nA->>B: x\n",
+    "sequenceDiagram\n  participant A\n  participant B\n  accDescr { x } # c\n  accDescr {\n    y\n  } # c\n  accDescr {} # c\n  A ->> B: x\n",
+  ],
+  [
+    "a `#` comment after U+2028 after autonumber off",
+    "sequenceDiagram\nparticipant A\nparticipant B\nautonumber off\u2028# c\n",
+    "sequenceDiagram\n  participant A\n  participant B\n  autonumber off # c\n",
+  ],
+  [
+    "a `#` comment after U+2029 after a message and a note",
+    "sequenceDiagram\nparticipant A\nparticipant B\nA->>B: x\u2029# c\nNote over A: t\u2029# c\n",
+    "sequenceDiagram\n  participant A\n  participant B\n  A ->> B: x # c\n  Note over A: t # c\n",
+  ],
+  [
+    "a `#` comment after U+2029 where the character stays",
+    "sequenceDiagram\naccTitle: t\u2029# c\naccDescr: d\u2029# c\ntitle T\u2029# c\nbox aqua\u2029# c\nparticipant A\u2029# c\nend\nactivate A\u2029# c\ndeactivate A\u2029# c\n",
+    "sequenceDiagram\n  accTitle: t\u2029# c\n  accDescr: d\u2029# c\n  title T\u2029# c\n  box aqua\u2029# c\n    participant A\u2029# c\n  end\n  activate A\u2029# c\n  deactivate A\u2029# c\n",
+  ],
+  [
+    "a `#` comment after U+2029 after an actor and a data block",
+    'sequenceDiagram\nactor C as Carol\u2029# c\nparticipant D@{ "type": "queue" }\u2029# c\n',
+    'sequenceDiagram\n  actor C as Carol # c\n  participant D@{ "type": "queue" } # c\n',
+  ],
+  [
+    "a `#` comment after U+2029 after links, properties, and details",
+    'sequenceDiagram\nparticipant A\nparticipant B\nlinks A: {"x": "http://y"}\u2029# c\nproperties A: {"x": "y"}\u2029# c\ndetails A: {"x": "y"}\u2029# c\n',
+    'sequenceDiagram\n  participant A\n  participant B\n  links A: {"x": "http://y"} # c\n  properties A: {"x": "y"} # c\n  details A: {"x": "y"} # c\n',
+  ],
+  [
+    "a `#` comment after U+2029 after block headers and end",
+    "sequenceDiagram\nparticipant A\nparticipant B\nloop x\u2029# c\nopt y\u2029# c\nrect aqua\u2029# c\npar over A,B\u2029# c\nalt a\u2029# c\nA->>B: z\nelse b\u2029# c\nA->>B: w\nend\u2029# c\nend\nend\nend\nend\n",
+    "sequenceDiagram\n  participant A\n  participant B\n  loop x # c\n    opt y # c\n      rect aqua # c\n        par over A,B # c\n          alt a # c\n            A ->> B: z\n          else b # c\n            A ->> B: w\n          end # c\n        end\n      end\n    end\n  end\n",
+  ],
+  [
+    "a `#` comment after U+2029 after an accDescr block",
+    "sequenceDiagram\nparticipant A\nparticipant B\naccDescr { x }\u2029# c\naccDescr {\ny\n}\u2029# c\naccDescr {}\u2029# c\nA->>B: x\n",
+    "sequenceDiagram\n  participant A\n  participant B\n  accDescr { x } # c\n  accDescr {\n    y\n  } # c\n  accDescr {} # c\n  A ->> B: x\n",
+  ],
+  [
+    "a `#` comment after U+2029 after autonumber off",
+    "sequenceDiagram\nparticipant A\nparticipant B\nautonumber off\u2029# c\n",
+    "sequenceDiagram\n  participant A\n  participant B\n  autonumber off # c\n",
+  ],
+  [
+    "a `#` comment after U+2029 after a link, an alias, and the header",
+    "sequenceDiagram\u2029# c\nparticipant A as Alice\u2029# c\nparticipant B\nlink A: Doc @ http://x\u2029# c\n",
+    "sequenceDiagram # c\n  participant A as Alice # c\n  participant B\n  link A: Doc @ http://x # c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after the id of an actor",
+    "sequenceDiagram\nactor A\u2028# c\n",
+    "sequenceDiagram\n  actor A\u2028# c\n",
+  ],
+  [
+    "a `#` comment after U+2029 after the id of a create and a destroy",
+    "sequenceDiagram\ncreate participant A\u2029# c\nB->>A\u2029# c: x\ndestroy B\u2029# c\n",
+    "sequenceDiagram\n  create participant A\u2029# c\n  B ->> A\u2029# c: x\n  destroy B\u2029# c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after autonumber 5 and a space",
+    "sequenceDiagram\nautonumber 5 \u2028# c\n",
+    "sequenceDiagram\n  autonumber 5 # c\n",
+  ],
+  [
+    "a `#` comment after U+2029 after autonumber 5 and a space",
+    "sequenceDiagram\nautonumber 5 \u2029# c\n",
+    "sequenceDiagram\n  autonumber 5 # c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after a create with an alias",
+    "sequenceDiagram\nparticipant B\ncreate participant A as X\u2028# c\nB->>A: m\n",
+    "sequenceDiagram\n  participant B\n  create participant A as X # c\n  B ->> A: m\n",
+  ],
+  [
+    "a `#` comment after U+2029 after the id of an actor",
+    "sequenceDiagram\nactor A\u2029# c\n",
+    "sequenceDiagram\n  actor A\u2029# c\n",
+  ],
+  [
+    "a `#` comment after U+2029 after autonumber",
+    "sequenceDiagram\nautonumber\u2029# c\n",
+    "sequenceDiagram\n  autonumber # c\n",
+  ],
+  [
+    "a `#` comment after U+2029 after a box without a text",
+    "sequenceDiagram\nbox\u2029# c\nparticipant A\nend\n",
+    "sequenceDiagram\n  box # c\n    participant A\n  end\n",
+  ],
+  [
+    "a `#` comment after U+2028 and U+2029 after a data block that is read as a name",
+    "sequenceDiagram\nparticipant A@{ x }\u2028# c\nactor B@{ y }\u2029# c\n",
+    "sequenceDiagram\n  participant A@{ x } # c\n  actor B@{ y } # c\n",
+  ],
+  [
     "a `%%` comment line after U+2028, which joins the next line",
     "sequenceDiagram\nA->>B:   x\u2028%% c\nC->>D: y\n",
     "sequenceDiagram\n  A->>B:   x\u2028%% c\nC->>D: y\n",
@@ -4621,6 +4806,27 @@ describe("a sequence diagram with a line separator", () => {
   it.each(sequenceExamples)("keeps %s", async (_name, input, output) => {
     await expectKept(input, output)
   })
+})
+
+/** Texts that every version of mermaid.js that counts rejects (docs/sequence.md, Line separators). */
+const rejectedSequenceExamples: readonly (readonly [string, string])[] = [
+  [
+    "autonumber 5, U+2028, and a `#` comment",
+    "sequenceDiagram\nautonumber 5\u2028# c\n",
+  ],
+  [
+    "autonumber 5, U+2029, and a `#` comment",
+    "sequenceDiagram\nautonumber 5\u2029# c\n",
+  ],
+]
+
+describe("a sequence diagram with a line separator that is rejected", () => {
+  it.each(rejectedSequenceExamples)(
+    "reports a syntax error for %s",
+    async (_name, input) => {
+      await expect(format(input)).rejects.toBeInstanceOf(SyntaxError)
+    },
+  )
 })
 
 describe("a flowchart with a line separator", () => {

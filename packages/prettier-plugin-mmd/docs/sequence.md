@@ -487,11 +487,17 @@ it, the whitespace inside it, and the whitespace before a `%%` comment after it,
 whatever whitespace characters it holds but a line break. So the gap before the
 block, the block, and that gap before the comment stay as written, and the block
 is not padded: `participant A   @{ x }` and `actor B@{x}` stay, and so does the
-whitespace before the `%%` in `participant C@{ y }   %% c`. mermaid.js removes
-the directives before it reads the name, so the name runs over a directive in
-that whitespace, one that is not closed included, and the whitespace on both
-sides of it stays: `participant B@{x}   %%{init: {}}%%   %% c`. A directive that
-ends the line, with no comment after it, is an ordinary gap, printed
+whitespace before the `%%` in `participant C@{ y }   %% c`. The reason of the
+versions holds for a `participant`: with one space before the `%%`, 10.9.8 and
+11.7.0 draw another name. The whitespace before the `%%` of an `actor`, and
+before the `%%` of a participant that `create` makes, stays as written too,
+though no version that counts draws another figure for it. After the block, a
+`#` comment is a comment like any other, and one space stands before it.
+mermaid.js removes the directives before it reads the name, so the name runs
+over a directive in that whitespace, one that is not closed included, and the
+whitespace on both sides of it stays:
+`participant B@{x}   %%{init: {}}%%   %% c`. A directive that ends the line,
+with no comment after it, is an ordinary gap, printed
 `participant E@{z} %%{init: {}}%%`. A block with one of these characters or with
 a line break is printed as above (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
@@ -507,10 +513,11 @@ whitespace-between-tokens/data-block-name-directive-at-line-end-spaced]
 whitespace-between-tokens/compat-malformed-data-block-kept] [fixture:
 whitespace-between-tokens/data-block-name-end-characters-padded] [fixture:
 whitespace-between-tokens/data-block-name-created-kept] [fixture:
-whitespace-between-tokens/data-block-name-created-comment-gap-kept] [test: data
-blocks: sequence name block with a no-break space before a comment] [test: data
-blocks: sequence name block with an ideographic space before a comment] [test:
-data blocks: sequence name block with a form feed before a comment]
+whitespace-between-tokens/data-block-name-created-comment-gap-kept] [fixture:
+whitespace-between-tokens/data-block-hash-comment-one-space] [test: data blocks:
+sequence name block with a no-break space before a comment] [test: data blocks:
+sequence name block with an ideographic space before a comment] [test: data
+blocks: sequence name block with a form feed before a comment]
 
 A line that mermaid.js reads as nothing, such as `)` alone, is kept and stands
 at the level of the statements around it.
@@ -1144,14 +1151,31 @@ sequence/lex-single-percent-comment-line] [fixture: comments/percent-line-kept]
 [fixture: comments/line-ending-ignored-semicolon-trailing-whitespace-kept]
 
 A comment after a statement stays on its line, and whether whitespace is written
-before its mark is kept: mermaid.js reads `autonumber 5%% c` without the number
-5, and a space before `%%` would give it the number. A run of whitespace before
-the mark is printed as one space (see
-[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+before its mark is kept: rule 1 names no mark before a comment, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [requirement](./requirement.md#comments), [c4](./c4.md#comments),
+and [journey](./journey.md#comments) keep a comment that touches, where no other
+rule keeps the whitespace as written; each of them names those cases in its own
+sections. The whitespace matters in this diagram in every version of mermaid.js
+that counts, as `autonumber 5%% c` shows (see
+[A comment right after a character](./compatibility.md#a-comment-right-after-a-character)).
+A run of whitespace before the mark is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+except where another rule keeps the whitespace as written, as after an id, after
+the data block of a participant that a version reads as a part of its name,
+before a `%%` comment (see
+[Whitespace between tokens](#whitespace-between-tokens)), and after the value of
+an `accTitle`, where the whitespace belongs to the id, to the block, or to the
+value.
 
-[fixture: comments/mark-run-one-space] [fixture: comments/kept] [corpus fixture:
-sequence/lex-percent-comment-takes-number] [fixture:
-comments/mark-whitespace-kept] [fixture:
+[fixture: comments/mark-run-one-space] [fixture:
+comments/mark-touching-kept-after-each-statement] [fixture:
+comments/mark-run-one-space-after-each-statement] [fixture:
+comments/mark-run-kept-after-an-id-and-acctitle] [fixture:
+whitespace-between-tokens/data-block-name-comment-gap-kept] [fixture:
+whitespace-between-tokens/data-block-name-created-comment-gap-kept] [fixture:
+comments/kept] [corpus fixture: sequence/lex-percent-comment-takes-number]
+[fixture: comments/mark-whitespace-kept] [fixture:
 comments/after-last-statement-without-line-break] [fixture:
 comments/block-end-comment-without-line-break]
 
@@ -1466,11 +1490,18 @@ characters as escapes too (see
 [tests/line-separators.test.ts](../tests/line-separators.test.ts)).
 
 - At the end of the text of a `box`, after the whitespace that may stand before
-  them. mermaid.js gives a box whose text holds such a character the fill
-  `transparent` and no name, and without it `box aqua` has the fill `aqua`. The
-  whitespace after the last of them is dropped. A block header other than a box,
-  `loop x`, U+2028, and ` ;` for one, is trimmed by mermaid.js, and the
-  character is dropped with the whitespace at the end of its text.
+  them. A box whose text holds such a character has the fill `transparent` in
+  the Db of 12.3.0, and without it `box red` has the fill `red`; the fill of the
+  drawing differs in 10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0. Rule 1 names
+  no mark for the end of a text of a `box`, so
+  [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+  decides, as [journey](./journey.md#line-separators) at the end of a title, and
+  [timeline](./timeline.md#line-separators) at the end of a title and of the
+  last event of a line, keep U+2028 and U+2029 as characters of the text and
+  leave out the spaces after one. The whitespace after the last of them is
+  dropped. A block header other than a box, `loop x`, U+2028, and ` ;` for one,
+  is trimmed by mermaid.js, and the character is dropped with the whitespace at
+  the end of its text.
 
   [test: U+2028 at the end of the text of a box] [test: whitespace around U+2028
   at the end of the text of a box] [test: U+2029 at the end of the text of a
@@ -1490,6 +1521,22 @@ characters as escapes too (see
   indentation and without formatting the whitespace between them: the tree lists
   the comments, and the printer reads them as one line (see
   [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+  A `#` comment is no comment line: it joins no line. U+2028 or U+2029 before it
+  is printed as one space, like the spaces and tabs before a comment after a
+  statement (see [Comments](#comments)), except after the units below, where
+  mermaid.js reads the character, or the character and the `#` with what
+  follows, as part of the unit, and the character stays as written
+  (`autonumber 5`, U+2028 or U+2029, and a `#` comment is rejected by every
+  version of mermaid.js that counts and is not formatted):
+
+  - The id of a `participant` or an `actor`, also after `create`, that has no
+    alias and no data block, and of a `destroy`, an `activate`, and a
+    `deactivate`: `A`, U+2028, and `# c` are one id.
+  - `accTitle` and a line of `accDescr`: the `#` and what follows are part of
+    the value.
+  - A `title`, and a `box` that has a text: the text holds the character. The
+    title of the Db of 12.3.0 ends with it, and the fill of a box whose text
+    holds it is `transparent` in that Db.
 
   [test: a `#` comment after U+2028, which joins no lines] [test: a `%%` comment
   line after U+2028, which joins the next line] [test: a `%%` comment line after
@@ -1497,7 +1544,38 @@ characters as escapes too (see
   at the end of a participant] [test: U+2029 after a comment that a comment line
   follows] [test: U+2028 after a `%%` comment that a comment line follows]
   [test: U+2029 after a `%` comment that a comment line follows] [test: a `#`
-  comment and a comment line after U+2028 inside a message text]
+  comment and a comment line after U+2028 inside a message text] [test: a `#`
+  comment after U+2028 after a note] [test: a `#` comment after U+2028 after a
+  block header] [test: a `#` comment after U+2028 after a link] [test: a `#`
+  comment after U+2028 after a participant with an alias] [test: a `#` comment
+  after U+2028 after the header of the diagram] [test: a `#` comment after
+  U+2028 after autonumber] [test: a `#` comment after U+2028 after a box without
+  a text] [test: a `#` comment after U+2028 after the id of a participant]
+  [test: a `#` comment after U+2028 after the id of a create] [test: a `#`
+  comment after U+2028 after the id of a destroy] [test: a `#` comment after
+  U+2028 after activate and deactivate] [test: a `#` comment after U+2028 after
+  accTitle] [test: a `#` comment after U+2028 after an accDescr line] [test: a
+  `#` comment after U+2028 after a title] [test: a `#` comment after U+2028
+  after a box with a text] [test: a `#` comment after U+2028 after an actor and
+  a data block] [test: a `#` comment after U+2028 after links, properties, and
+  details] [test: a `#` comment after U+2028 after block headers and end] [test:
+  a `#` comment after U+2028 after an accDescr block] [test: a `#` comment after
+  U+2028 after autonumber off] [test: a `#` comment after U+2029 after a message
+  and a note] [test: a `#` comment after U+2029 where the character stays]
+  [test: a `#` comment after U+2029 after an actor and a data block] [test: a
+  `#` comment after U+2029 after links, properties, and details] [test: a `#`
+  comment after U+2029 after block headers and end] [test: a `#` comment after
+  U+2029 after an accDescr block] [test: a `#` comment after U+2029 after
+  autonumber off] [test: a `#` comment after U+2029 after a link, an alias, and
+  the header] [test: a `#` comment after U+2028 after the id of an actor] [test:
+  a `#` comment after U+2029 after the id of a create and a destroy] [test: a
+  `#` comment after U+2028 after autonumber 5 and a space] [test: a `#` comment
+  after U+2029 after autonumber 5 and a space] [test: a `#` comment after U+2028
+  after a create with an alias] [test: a `#` comment after U+2029 after the id
+  of an actor] [test: a `#` comment after U+2029 after autonumber] [test: a `#`
+  comment after U+2029 after a box without a text] [test: a `#` comment after
+  U+2028 and U+2029 after a data block that is read as a name] [test: autonumber
+  5, U+2028, and a `#` comment] [test: autonumber 5, U+2029, and a `#` comment]
 
 - Right after a directive that is not closed. The text of such a directive stops
   before the character, which is no whitespace to it: with the character printed
@@ -1901,6 +1979,5 @@ Some text is kept as written by choice, because the Db is the same either way:
 the case of the keywords that the table under
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
 does not list. Whether there is whitespace before the mark of a comment, listed
-above, decides what mermaid.js reads after some statements, such as
-`autonumber 5`; after the others the Db is the same either way, and whether
-there is any is kept so that one rule holds.
+above, is not a choice: rule 2 gives it (see [Comments](#comments)), and after
+some statements, such as `autonumber 5`, it also decides what mermaid.js reads.

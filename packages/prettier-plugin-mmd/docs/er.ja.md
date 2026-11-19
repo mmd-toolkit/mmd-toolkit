@@ -453,6 +453,13 @@ Db が保つからです。
 後続の構造部分と独立した注釈類行は、subgraph の中でも、
 属性の内側に 1 段字下げします。
 型、名前、引用符付きコメントの内部は書かれたまま残します。
+規則 1 はコメント行の隣の改行に記号を挙げないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[block](./block.ja.md#複数行の文)、[sequence](./sequence.ja.md#複数行の文)、
+[flowchart](./flowchart.ja.md#アクセシビリティの行) も、
+文の後続部分と独立した注釈類を、文の内側に継続の 1 段字下げで置きます。
+ただし、ほかの規則が配置を書かれたまま残す所は別です（物理行を結ぶコメント領域、
+`;` を含む行などです）。
 
 [fixture: attribute-spacing/comment-line-inside-kept]
 [fixture: attribute-spacing/directive-inside-kept]
@@ -467,7 +474,14 @@ Db が保つからです。
 
 [test: er/attribute-spacing/comment-region-continuation-kept]
 
-属性の部分の間にあるディレクティブは、同じ印字行での接触を保ち、
+属性の部分の間にあるディレクティブは、
+[ディレクティブ](./flowchart.ja.md#ディレクティブ)と同じに置きます。
+mermaid.js はテキストを読む前にディレクティブを取り除くので、
+隙間はディレクティブがないときと同じ規則で印字し、
+ディレクティブはその規則の空白の後に、
+次の単位に接して置きます（`int a %%{init: {}}%% PK` は
+`int a %%{init: {}}%%PK`、
+`int%%{init: {}}%% b` は `int %%{init: {}}%%b` と印字します）。
 2 つの属性の間で行に単独で置かれたディレクティブは、その間に残します。
 同じ行に書かれた 2 つの属性の間のディレクティブは、各属性が単独の行に立つので、
 後ろの属性と一緒に次の行へ移ります。
@@ -1834,6 +1848,12 @@ erDiagram
 
 説明ブロックの後で行の規則が無視する `;` があっても、
 コロンを使う 1 行の形にでき、書かれた `;` は説明の後に残します。
+文を区切るものでも文を終えるものでもない `;` のある行は、
+その `;` を元の場所に残します。
+詳しくは [`;` を含む行](./compatibility.ja.md#-を含む行) を参照してください。
+ブロックは、例が書くコロンの 1 行の形で印字します。
+詳しくは [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック)
+を参照してください。
 
 [fixture: accessibility-statements/block-trailing-ignored-semicolon]
 
@@ -2085,6 +2105,8 @@ accTitle: direction BT
 [fixture: comments/before-header]
 
 テキストの末尾のコメント行は、行に単独で置き、改行を足します。
+[gantt](./gantt.ja.md#コメント) と [journey](./journey.ja.md#コメント)
+も同じです。
 
 [fixture: comments/after-last-statement-without-line-break]
 [fixture: comments/after-header-without-line-break]
@@ -2168,6 +2190,13 @@ erDiagram
 元は同じ行にあった単位を別の行へ分けるときは、
 間の directive を次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
+この配置は[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が与えます。
+[radar](./radar.ja.md#global-directives)、
+[packet](./packet.ja.md#global-directives)、
+[wardley](./wardley.ja.md#global-directive) も、
+整形が分ける単位の隙間のディレクティブを同じように置きます。
+ただし、ほかの規則が配置を書かれたまま残す所は別です。
+たとえば、文の後の閉じていないディレクティブです。
 
 [fixture: er/directives/whitespace-on-both-sides]
 
@@ -2450,6 +2479,7 @@ erDiagram
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
 
 文の前後の空行とコメント行は、通常の配置に従います。
+詳しくは[空行](#空行)と[コメント](#コメント)を参照してください。
 
 [fixture: semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines]
 
@@ -2472,8 +2502,18 @@ erDiagram
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-outside-line-rule-kept]
 
 同じ行でセミコロンの後にディレクティブが続く場合は、`;` を保ちます。
+ディレクティブの後の改行は、最後の style の末尾に空白があるときと同じく、
+style の続きになります。
+詳しくは [スタイルとクラス](#スタイルとクラス) を参照してください。
+次の行は書かれた桁に残り、その行の中身は最後の style に属します。
+そのため `classDef c fill:#f00; %%{init: {}}%%` の次の `B` は、
+実体ではなく色 `#f00B` の最後の桁で、色のほかの桁と同じく `b` と印字します。
+詳しくは [同じに描かれる色](./compatibility.ja.md#同じに描かれる色)
+を参照してください。
 
 [fixture: semicolons-at-the-end-of-a-style-statement/trailing-items-kept]
+[corpus fixture: er/lex-classdef-ignored-semicolon-then-text]
+[corpus fixture: er/tokens-closed-directive-end-of-classdef-line]
 
 無視される `;` が別の `;` の隣にある場合は、行の規則の選択を保つために残します。
 
