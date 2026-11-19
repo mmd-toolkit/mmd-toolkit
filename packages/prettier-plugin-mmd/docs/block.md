@@ -464,14 +464,16 @@ lines, a line that holds a `;`, and the like). Before the first direction,
 before a `,`, and before the `)`, a comment line or a directive line stays where
 it is written, at column one or indented, and the next line is not indented,
 since the whitespace there is in the Db (see above); after a `,` the comment
-line and the next line stand one level deeper. A directive on the line of the
-direction stays touching or separated as written after the `(`, before a `,`,
-and before the `)`, since the whitespace there is in the Db
+line or the directive line and the next line stand one level deeper. A directive
+on the line of the direction stays touching or separated as written after the
+`(`, before a `,`, and before the `)`, since the whitespace there is in the Db
 (`(right %%{x}%%, down)` and `(right%%{x}%%, down)` stay). After a `,` the gap
 is printed as without the directive, and the directive stands after its space
 and touches the unit that follows it, as under [Directives](#directives):
 `(right,  %%{x}%%  down)` and `(right,%%{x}%%down)` are printed
-`(right, %%{x}%%down)`.
+`(right, %%{x}%%down)`. Where a line break follows the directive, the whitespace
+before it stays as written and the next line stands one level deeper:
+`(right,  %%{x}%%` and a line break stay.
 
 [fixture: shapes/block-arrow-comma-space] [fixture:
 shapes/block-arrow-comma-comment-line] [fixture:
@@ -490,11 +492,12 @@ shapes/block-arrow-closing-directive-line] [fixture:
 shapes/block-arrow-closing-directive-line-indented] [fixture:
 shapes/block-arrow-directive-after-open-parenthesis] [fixture:
 shapes/block-arrow-directive-before-closing-parenthesis] [fixture:
-shapes/block-arrow-directive-after-comma] [test: U+2028 after the comma between
-the directions of a block arrow] [test: U+2029 after the comma between the
-directions of a block arrow] [test: U+2028 before the comma between the
-directions of a block arrow] [test: U+2029 before the comma between the
-directions of a block arrow] [fixture: shapes/block-arrow-touches-the-id]
+shapes/block-arrow-directive-after-comma] [fixture:
+shapes/block-arrow-directive-after-comma-at-the-end-of-the-line] [test: U+2028
+after the comma between the directions of a block arrow] [test: U+2029 after the
+comma between the directions of a block arrow] [test: U+2028 before the comma
+between the directions of a block arrow] [test: U+2029 before the comma between
+the directions of a block arrow] [fixture: shapes/block-arrow-touches-the-id]
 [fixture: shapes/block-arrow-parenthesis-touches-the-closing] [fixture:
 shapes/block-arrow-directions-as-written] [fixture:
 shapes/block-arrow-directions-whitespace-kept] [fixture:
@@ -727,11 +730,11 @@ arrow takes it as it is (see
 
 [fixture: styles/style-label-styles-kept]
 
-A statement stays as written where a comment or a directive stands inside it,
-before the end of its last style, where a style is all whitespace, or where a
-style holds a line break or its line holds a kept `;`. A comment or a directive
-after the last style is no part of the statement, which is formatted as usual
-(see
+A statement keeps its whitespace as written, and its colors are printed as under
+[Colors](#colors), where a comment or a directive stands inside it, before the
+end of its last style, where a style is all whitespace, or where a style holds a
+line break or its line holds a kept `;`. A comment or a directive after the last
+style is no part of the statement, which is formatted as usual (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 The whitespace at the end of the statement is dropped, as in a flowchart (see
 [Style trailing whitespace](./flowchart.md#style-trailing-whitespace)).
@@ -948,21 +951,22 @@ without the comment region.
 
 [test: block: ls-comment-in-composite-head] [test: block:
 ps-comment-in-composite-head] [test: block:
-ls-comment-after-composite-head-name]
+ls-comment-after-composite-head-name] [test: block:
+ps-comment-after-composite-head-name]
 
 A line break stays where joining it, with one space or with nothing, could
 change which `;` the line rule ignores, and where a `;` ends the last line; any
 other line break is joined as usual, also in a statement that holds a `;`. A
-statement that keeps a line break keeps its styles as written. See [Rows](#rows)
-and [A line that a `;` ends](./compatibility.md#a-line-that-a--ends). The line
-rule of mermaid.js removes the last `;` of a line that holds `style` or
-`classDef`, a later `:`, a `#` after that with no whitespace between them, and a
-later `;` (the first such `#` decides, so `B[":#a;#b"]` matches); moving a
-statement away from such a line changes which `;` is the last (in
-`A["style:#a"] B;C D;` the `;` of `D;` is the one removed and the id is `B;C`;
-on a line without `D;`, the `;` of `B;C` would be removed), so the statements of
-such a line stay on it and its kept `;` stays. The exception for a style
-terminator is described in
+statement that keeps a line break keeps the whitespace of its styles as written,
+and prints their colors as under [Colors](#colors). See [Rows](#rows) and
+[A line that a `;` ends](./compatibility.md#a-line-that-a--ends). The line rule
+of mermaid.js removes the last `;` of a line that holds `style` or `classDef`, a
+later `:`, a `#` after that with no whitespace between them, and a later `;`
+(the first such `#` decides, so `B[":#a;#b"]` matches); moving a statement away
+from such a line changes which `;` is the last (in `A["style:#a"] B;C D;` the
+`;` of `D;` is the one removed and the id is `B;C`; on a line without `D;`, the
+`;` of `B;C` would be removed), so the statements of such a line stay on it and
+its kept `;` stays. The exception for a style terminator is described in
 [Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement).
 The whitespace between the `:` and the `#` stays as well, since it decides
 whether the rule applies: `A["style:"]-->B["#z"];` keeps its arrow touching, and
@@ -1322,9 +1326,20 @@ instead of the gap, or the gap ends a line, they are dropped with it. A comment
 line after one of them joins the lines of the source that mermaid.js reads as
 one (see
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)),
-and the whitespace and the line breaks of the statements on those lines are kept
-as written, while the colors of a style on them are printed as under
-[Colors](#colors). In a label they are characters and stay.
+where text follows it, and the whitespace and the line breaks of the statements
+on those lines are kept as written, while the colors of a style on them are
+printed as under [Colors](#colors): a color before a comma is in lower case, and
+one that characters follow stays. Where no text follows the comment line,
+nothing is joined: a U+2028 or U+2029 at the end of a `style` or a `classDef` is
+dropped, with the whitespace before the comment or the directive, and the
+statement is printed as on a plain line, `style a fill:#F00`, a U+2028, and
+`%% c` at the end of the text as `style a fill: #f00` and `%% c`. The Db of a
+block diagram does not hold the character in the style, so the Db differs only
+in the whitespace after the first `:` and in the case of the color, which
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)
+and
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)
+define. In a label they are characters and stay.
 
 [test: U+2028 between two statements of a row] [test: U+2029 between two
 statements of a row] [test: U+2028 around the arrow of an edge] [test: U+2028
@@ -1332,6 +1347,10 @@ between an id and its shape] [test: U+2028 before the colon of a width] [test:
 U+2028 after columns] [test: U+2028 in a label] [test: U+2028 at the end of a
 statement of a row] [test: U+2028 before a comment line that joins lines] [test:
 U+2029 before comment lines that join lines] [test: block:
+style-ls-before-a-comment-at-the-end-of-the-text-is-dropped] [test: block:
+style-ls-and-ps-before-a-comment-at-the-end-of-the-text-are-dropped] [test:
+block: classDef-ls-before-a-comment-at-the-end-of-the-text-is-dropped] [test:
+block: style-ls-touching-a-directive-is-dropped] [test: block:
 color-before-comma-in-style-on-a-line-that-a-ls-comment-line-joins] [test:
 block: color-before-comma-in-classdef-on-a-line-that-a-ps-comment-line-joins]
 [test: block:

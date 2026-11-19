@@ -494,7 +494,7 @@ U+2028 と U+2029 はそのまま残します。
 最初の方向の前、`,` の前、`)` の前では、コメント行とディレクティブの行は、
 第 1 列か字下げされた、書かれた位置のままで、次の行も字下げしません。
 そこの空白は Db にあるからです（上を参照）。
-`,` の後では、コメント行と次の行を 1 段深く置きます。
+`,` の後では、コメント行やディレクティブの行と次の行を 1 段深く置きます。
 方向の行にあるディレクティブは、`(` の後、`,` の前、`)` の前では、
 そこの空白が Db にあるので、接しているか離れているかを書かれたまま残します。
 `(right %%{x}%%, down)` と `(right%%{x}%%, down)` はそのままです。
@@ -503,6 +503,9 @@ U+2028 と U+2029 はそのまま残します。
 [指令](#指令)と同じです。
 `(right,  %%{x}%%  down)` と `(right,%%{x}%%down)` は `(right, %%{x}%%down)`
 になります。
+ディレクティブの後に改行があるときは、その前の空白は書かれたままで、
+次の行は 1 段深く置きます。
+`(right,  %%{x}%%` と改行はそのままです。
 
 [fixture: shapes/block-arrow-comma-space]
 [fixture: shapes/block-arrow-comma-comment-line]
@@ -522,6 +525,7 @@ U+2028 と U+2029 はそのまま残します。
 [fixture: shapes/block-arrow-directive-after-open-parenthesis]
 [fixture: shapes/block-arrow-directive-before-closing-parenthesis]
 [fixture: shapes/block-arrow-directive-after-comma]
+[fixture: shapes/block-arrow-directive-after-comma-at-the-end-of-the-line]
 [test: U+2028 after the comma between the directions of a block arrow]
 [test: U+2029 after the comma between the directions of a block arrow]
 [test: U+2028 before the comma between the directions of a block arrow]
@@ -780,7 +784,7 @@ block arrow がそれを書かれたまま使うからです。
 
 最後のスタイルの終わりより前にコメントやディレクティブがある文、
 空白だけのスタイルがある文、スタイルに改行があるか、行に保つ `;` がある文は、
-書かれたままにします。
+空白を書かれたままにし、色は[色](#色)と同じに印字します。
 最後のスタイルの後ろのコメントやディレクティブは文の一部ではなく、
 文は普通に整形します。
 詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
@@ -1006,12 +1010,14 @@ mermaid.js は前後の行を 1 行として読みます。
 [test: block: ls-comment-in-composite-head]
 [test: block: ps-comment-in-composite-head]
 [test: block: ls-comment-after-composite-head-name]
+[test: block: ps-comment-after-composite-head-name]
 
 改行を空白 1 つか何も挟まずにつなぐと、
 行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
 その改行を残します。
 それ以外の改行は、`;` を含む文でも通常どおりつなぎます。
-改行が残る文は、スタイルも書かれたままにします。
+改行が残る文は、スタイルの空白も書かれたままにし、
+色は[色](#色)と同じに印字します。
 [行](#行)と
 [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照してください。
 mermaid.js の行の規則は、`style` か `classDef`、その後の `:`、その後の、
@@ -1389,8 +1395,20 @@ U+2028 と U+2029 は、ブロック図の単位の間の空白で、空白と�
 隙間の代わりに印字が改行を置く所と、行末の隙間では、一緒に落とします。
 それらの後のコメント行は、mermaid.js が 1 行として読む行をつなぎ（詳しくは、
 [U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-を参照）、その行の文の空白と改行は書かれたまま印字します。
+を参照）、コメント行の後にテキストが続くときは、
+その行の文の空白と改行は書かれたまま印字します。
 その行にある style の色は、[色](#色)と同じに印字します。
+コンマの前の色は小文字にし、空白の後に文字が続く色は書かれたままにします。
+コメント行の後にテキストが続かないときは、何もつながりません。
+`style` や `classDef` の末尾の U+2028 や U+2029 は、
+コメントやディレクティブの前の空白とともに落とし、
+文は普通の行と同じに印字します。
+`style a fill:#F00`、U+2028、テキストの末尾の `%% c` は、
+`style a fill: #f00` と `%% c` に印字します。
+ブロック図の Db は、その文字をスタイルに持たないので、Db が違うのは、
+最初の `:` の後の空白と色の大文字小文字だけです。
+どちらも[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)と
+[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)が定めています。
 ラベルの中では文字で、そのまま残ります。
 
 [test: U+2028 between two statements of a row]
@@ -1401,6 +1419,10 @@ U+2028 と U+2029 は、ブロック図の単位の間の空白で、空白と�
 [test: U+2028 in a label] [test: U+2028 at the end of a statement of a row]
 [test: U+2028 before a comment line that joins lines]
 [test: U+2029 before comment lines that join lines]
+[test: block: style-ls-before-a-comment-at-the-end-of-the-text-is-dropped]
+[test: block: style-ls-and-ps-before-a-comment-at-the-end-of-the-text-are-dropped]
+[test: block: classDef-ls-before-a-comment-at-the-end-of-the-text-is-dropped]
+[test: block: style-ls-touching-a-directive-is-dropped]
 [test: block: color-before-comma-in-style-on-a-line-that-a-ls-comment-line-joins]
 [test: block: color-before-comma-in-classdef-on-a-line-that-a-ps-comment-line-joins]
 [test: block: last-color-in-style-that-the-line-after-a-ls-comment-line-goes-on-with]

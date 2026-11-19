@@ -5963,14 +5963,18 @@ quadrant/lex-classdef-name-line-separator-comment-line] [corpus fixture:
 quadrant/db-classdef-name-starts-with-line-separator-comment-line]
 
 A line that mermaid.js reads this way runs over several lines of the source. The
-formatter prints it as written, from its first line to its end, with the
-statements that stand on it: it does not format the whitespace between them, and
-it does not indent the lines after the comment line. This is one rule for every
-statement, block opening, and header, but for a mindmap, which puts the comment
-line of a node on a line of its own at the level of the node (see
-[Line separators](./mindmap.md#line-separators)), and for the head of a
-composite block of a block diagram, which has the space after its colon that it
-has without the comment region (see
+formatter keeps its whitespace and its line breaks as written, from the start of
+its first statement to its end, with the statements that stand on it: it does
+not format the whitespace between them, and it does not indent the lines after
+the comment line. What the printer spells otherwise on a plain line, such as the
+colors of a style, the words of a relationship, and the quotes of a name that is
+one plain word, is spelled as the document of the diagram type says (see
+[ER](./er.md#multi-line-statements) and [block](./block.md#line-separators)).
+This is one rule for every statement, block opening, and header, but for a
+mindmap, which puts the comment line of a node on a line of its own at the level
+of the node (see [Line separators](./mindmap.md#line-separators)), and for the
+head of a composite block of a block diagram, which has the space after its
+colon that it has without the comment region (see
 [Line separators](./block.md#line-separators)). A diagram comment that such a
 comment line cuts is printed as written as well (see
 [Line separators](./sequence.md#line-separators)). The same holds where the

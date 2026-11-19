@@ -4719,6 +4719,31 @@ const blockLineSeparatorExamples: readonly (readonly [
     "block-beta\n  columns 3\n  a   b\u2028%% c\n  c\n",
   ],
   [
+    "block: style-ls-before-a-comment-at-the-end-of-the-text-is-dropped",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n",
+    "block-beta\n  a\n  style a fill: #f00\n  %% c\n",
+  ],
+  [
+    "block: style-ls-and-ps-before-a-comment-at-the-end-of-the-text-are-dropped",
+    "block-beta\na\nstyle a fill:#F00\u2028\u2029 %% c\n",
+    "block-beta\n  a\n  style a fill: #f00\n  %% c\n",
+  ],
+  [
+    "block: classDef-ls-before-a-comment-at-the-end-of-the-text-is-dropped",
+    "block-beta\na\nclassDef c fill:#F00\u2028%% c\n",
+    "block-beta\n  a\n  classDef c fill: #f00\n  %% c\n",
+  ],
+  [
+    "block: style-ls-touching-a-directive-is-dropped",
+    "block-beta\na\nstyle a fill:#F00\u2028%%{x}%%\nb\n",
+    "block-beta\n  a\n  style a fill: #f00 %%{x}%%\n  b\n",
+  ],
+  [
+    "block: ps-comment-after-composite-head-name",
+    "block-beta\nblock:G\u2029%% c\n  a\nend\n",
+    "block-beta\n  block: G\u2029%% c\n  a\n  end\n",
+  ],
+  [
     "block: ps-comment-in-composite-head",
     "block-beta\nblock:\u2029%% keep\n group:2\nA\nend\n",
     "block-beta\n  block:\u2029%% keep\n group:2\n    A\n  end\n",
