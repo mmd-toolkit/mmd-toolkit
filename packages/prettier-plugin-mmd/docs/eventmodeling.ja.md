@@ -18,6 +18,11 @@ GWT は閉じ記号を作らず、範囲で終わる子の本文を 2 つ使い�
 
 `eventmodeling` は第 1 列に置き、普通の最初の文を次の行へ移して、
 見出しを見つけやすくします。
+規則 1 は、見出しの後の文の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[wardley](./wardley.ja.md#見出し)、[cynefin](./cynefin.ja.md#header)、
+[architecture](./architecture.ja.md#header)、[packet](./packet.ja.md#header)も、
+見出しを第 1 列に置き、普通の最初の文を次の行に置きます。
 隠れた形、保持する前置部分、保護行は共有の規則に従い、
 見出しの行が保つ行なら最初の文もその行に残します。
 同じ項目を図種の間で同じように扱うためです。
@@ -305,6 +310,8 @@ tf 01 evt Alpha [[D]]
 タグの有無と全 8 種の型語は原文どおり残します。
 タグは本文を JSON などとして解釈する指示ではありません。
 隠れた形と大域的な注釈類の境界は保ちます。
+タグの中のコメントと、タグの直後のコメントは、[コメント](#comments)のとおり、
+接したまま残します。
 
 [fixture: eventmodeling/type-tags/inline-tag-parts]
 
@@ -430,6 +437,12 @@ note
 
 宣言と note の部品は `entity Shop.Buy`、`data D`、`note 01` と、
 普通の空白 1 個で分けます。
+規則 1 は、文の部品の間の改行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[gantt](./gantt.ja.md#複数行の文)、[journey](./journey.ja.md#複数行の文)、
+[quadrant](./quadrant.ja.md#複数行の文)も、
+mermaid.js が複数行にわたって読む文を、改行があった所に空白 1 個を置いて、
+1 行に印字します。
 ブロック開始記号は見出し行の空白 1 個後に置きます。
 値と閉じの境界は data の規則に従います。
 必須の名前の `title` はフレームと同じく安全な前方境界を保ちます。
@@ -1022,6 +1035,11 @@ data ブロック、note、`accDescr` ブロック、スラッシュのブロッ
 列は [データブロック](#data-blocks) の本文の余白の変更を除いて保ちます。
 メタデータや必須の `title` の境界を優先します。
 検出が拒否するため、スラッシュのコメントを見出し前へ移しません。
+見出しの前のコメント行は第 1 列に置きます。
+規則 1 は、見出しの前の行の字下げの印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[journey](./journey.ja.md#コメント)、[timeline](./timeline.ja.md#コメント)、
+[c4](./c4.ja.md#コメント)も、見出しの前のコメント行をそう印字します。
 
 [fixture: eventmodeling/comments/inline-gap-run-and-touching]
 [fixture: eventmodeling/comments/standalone-native-comments]
@@ -1035,6 +1053,8 @@ data ブロック、note、`accDescr` ブロック、スラッシュのブロッ
 [fixture: eventmodeling/comments/slash-comment-before-title-identifier]
 
 [fixture: eventmodeling/comments/do-not-move-slash-comment-before-header]
+
+[fixture: eventmodeling/comments/comment-line-before-header-indented]
 
 [test: eventmodeling/comments/comment-after-ls-gap-ends-at-lf]
 
@@ -1341,6 +1361,14 @@ entity Shop.Buy
 `printWidth` では折り返しません。
 普通の空白だけの部品間改行は空白規則に従い、
 注釈類の継続行は構造上の段を保ちます。
+規則 1 は、改行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#複数行の文)、[gantt](./gantt.ja.md#複数行の文)、
+[journey](./journey.ja.md#複数行の文)も、コメントやディレクティブの隣の改行と、
+その前の空白を残し、
+文の後続部分と間のコメントやディレクティブの行を 1 段深く置きます。
+ただし、ほかの規則が配置を書かれたまま残す所は別です。
+たとえば、物理行を結ぶコメント領域や、`;` を含む行です。
 構造上の分割を加えるのは決定済みの GWT 節・項目配置です。
 値、隠れた形、メタデータ、保護境界の内容は、
 [データブロック](#data-blocks) の限定的な本文の余白の変更を除いて保ちます。
@@ -1408,6 +1436,11 @@ data D {
 壊れた YAML、字下げ・空白付き囲み、HTML 引用符の危険、
 囲みを作る本文は既存保護条件により原文を保ちます。
 YAML の入れ子は幅 0 でも正の最小字下げを使います。
+`tabWidth` が 0 のとき、対象にする版の mermaid.js のすべてが、
+字下げのないブロックスカラーを拒否し、
+入れ子の `config` の値が入れ子でなくなると、図を別に描きます。
+詳しくは [フロントマター](./compatibility.ja.md#フロントマター)
+を参照してください。
 `textBeforeHeader` があれば見出しまでの前置部分全体を保ちます。
 図固有の YAML や `DIRECTIVE` を本物のフロントマター・設定へ昇格させると、
 受理が変わる場合があるためです。

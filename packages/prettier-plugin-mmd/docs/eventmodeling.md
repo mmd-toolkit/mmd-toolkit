@@ -16,14 +16,19 @@ data boundaries constrain the line and indentation plan before it is printed.
 ### Header
 
 Keep `eventmodeling` at column one and move an ordinary first statement to the
-next line, making the header easy to find. Hidden forms, retained prefixes and
-protected lines use their shared rules: when the header line is kept, its first
-statement stays on that line. This gives diagram types the same treatment. A
-first common statement retains its original connection and padding: moving it to
-line start can make identifier win and reject the input. Every version of
-mermaid.js that counts rejects `eventmodeling title Heading`,
-`eventmodeling accTitle: Heading`, and `eventmodeling accDescr: Description`
-with the statement on the next line (see
+next line, making the header easy to find. Rule 1 names no mark for a statement
+after the header, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [wardley](./wardley.md#header), [cynefin](./cynefin.md#header),
+[architecture](./architecture.md#header), and [packet](./packet.md#header) print
+the header at column one and an ordinary first statement on the next line.
+Hidden forms, retained prefixes and protected lines use their shared rules: when
+the header line is kept, its first statement stays on that line. This gives
+diagram types the same treatment. A first common statement retains its original
+connection and padding: moving it to line start can make identifier win and
+reject the input. Every version of mermaid.js that counts rejects
+`eventmodeling title Heading`, `eventmodeling accTitle: Heading`, and
+`eventmodeling accDescr: Description` with the statement on the next line (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: eventmodeling/header/ordinary-frame]
@@ -293,7 +298,8 @@ Keep type-tag inner gaps tight, as in `` `json` ``, and use one ordinary space
 before its body. Tight tags distinguish the annotation from its value. Retain
 the presence or absence of a tag and all eight authored type words. A tag does
 not ask the formatter to parse its payload as JSON or another language; hidden
-forms and global trivia retain their boundaries.
+forms and global trivia retain their boundaries. A comment inside a tag or right
+after it stays touching, as under [Comments](#comments).
 
 [fixture: eventmodeling/type-tags/inline-tag-parts]
 
@@ -417,11 +423,18 @@ note
 ```
 
 Separate declaration and note components with one ordinary space:
-`entity Shop.Buy`, `data D` and `note 01`. Put a block opener on its header line
-after one space. Values and closing boundaries follow the data rules. A required
-name `title` keeps its safe preceding boundary, as for frames.
-`eventmodeling data`, a line break and `title {` stay, since every version of
-mermaid.js that counts rejects `eventmodeling data title {` on one line (see
+`entity Shop.Buy`, `data D` and `note 01`. Rule 1 names no mark for a line break
+between the components of a statement, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [gantt](./gantt.md#multi-line-statements),
+[journey](./journey.md#multi-line-statements), and
+[quadrant](./quadrant.md#multi-line-statements) print a statement that
+mermaid.js reads over several lines on one line, with one space where the line
+break was. Put a block opener on its header line after one space. Values and
+closing boundaries follow the data rules. A required name `title` keeps its safe
+preceding boundary, as for frames. `eventmodeling data`, a line break and
+`title {` stay, since every version of mermaid.js that counts rejects
+`eventmodeling data title {` on one line (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: eventmodeling/declarations-and-notes/entity-ordinary] [fixture:
@@ -991,7 +1004,12 @@ continuation columns. Native `//` and `%%` run through LS/PS to physical LF. A
 block comment or a hidden form is part of that text. Its columns stay written
 except for the block-body margin adjustment in [Data blocks](#data-blocks).
 Boundaries needed for metadata or a required `title` take precedence. Slash
-comments are not moved before the header, where detection would reject them.
+comments are not moved before the header, where detection would reject them. A
+comment line before the header stands at column one. Rule 1 names no mark for
+the indentation of a line before the header, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [journey](./journey.md#comments),
+[timeline](./timeline.md#comments), and [c4](./c4.md#comments) print it so.
 
 [fixture: eventmodeling/comments/inline-gap-run-and-touching] [fixture:
 eventmodeling/comments/standalone-native-comments]
@@ -1005,6 +1023,7 @@ eventmodeling/comments/standalone-native-comments]
 [fixture: eventmodeling/comments/slash-comment-before-title-identifier]
 
 [fixture: eventmodeling/comments/do-not-move-slash-comment-before-header]
+[fixture: eventmodeling/comments/comment-line-before-header-indented]
 
 [test: eventmodeling/comments/comment-after-ls-gap-ends-at-lf]
 
@@ -1306,12 +1325,20 @@ entity Shop.Buy
 ### Long lines
 
 Do not wrap by `printWidth`. Ordinary whitespace-only component newlines follow
-their spacing rules, while trivia continuations retain structural depth. Only
-GWT's decided clause/item layout adds structural splits. Values, hidden forms,
-metadata and protected boundaries retain their contents, apart from the limited
-block-body margin in [Data blocks](#data-blocks). Avoiding width-dependent
-choices keeps those lexical boundaries explicit and never inserts a forbidden LF
-into inline data.
+their spacing rules, while trivia continuations retain structural depth. Rule 1
+names no mark for a line break, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#multi-line-statements),
+[gantt](./gantt.md#multi-line-statements), and
+[journey](./journey.md#multi-line-statements) keep a line break next to a
+comment or a directive and the whitespace before it, and put the later parts of
+a statement and the trivia lines one level deeper, where no other rule keeps the
+layout as written (a comment region that joins physical lines, a line that holds
+a `;`, and the like). Only GWT's decided clause/item layout adds structural
+splits. Values, hidden forms, metadata and protected boundaries retain their
+contents, apart from the limited block-body margin in
+[Data blocks](#data-blocks). Avoiding width-dependent choices keeps those
+lexical boundaries explicit and never inserts a forbidden LF into inline data.
 
 [fixture: eventmodeling/long-lines/long-structural-line-no-wrap]
 
@@ -1373,9 +1400,12 @@ data D {
 Use the shared YAML formatter only for safe real leading frontmatter. Malformed
 YAML, indented or padded fences, HTML quote hazards and bodies that would create
 a fence stay written under the existing guards. YAML nesting uses a positive
-minimum indentation even at width zero. If textBeforeHeader is present, retain
-the complete prefix through the header: promoting native YAML or DIRECTIVE into
-real frontmatter/configuration can change acceptance.
+minimum indentation even at width zero. At `tabWidth: 0` every version of
+mermaid.js that counts rejects a block scalar without indentation, and draws the
+diagram differently when a nested `config` value is no longer nested (see
+[Frontmatter](./compatibility.md#frontmatter)). If textBeforeHeader is present,
+retain the complete prefix through the header: promoting native YAML or
+DIRECTIVE into real frontmatter/configuration can change acceptance.
 
 [fixture: eventmodeling/frontmatter-yaml/safe-real-yaml]
 
