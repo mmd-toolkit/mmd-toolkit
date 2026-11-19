@@ -4971,9 +4971,9 @@ describe("the title of a diagram that is read with a Langium grammar and has a w
 
 /**
  * A no-break space and U+3000 beside a directive in a title. The printer
- * reads only spaces and tabs as blanks around a directive that anything
- * follows, and a directive that ends the line outside the text; a title that a
- * Jison grammar reads keeps them wherever they stand
+ * reads only spaces and tabs as blanks around a directive that anything else
+ * follows, and a directive that ends the line outside the text; a title that
+ * a Jison grammar reads keeps them wherever they stand
  * (docs/compatibility.md, Texts after a keyword that are drawn the same).
  */
 const langiumTitleDiagrams: readonly (readonly [string, string, string])[] = [
@@ -5076,6 +5076,52 @@ const langiumTitleCases: readonly (readonly [string, string, string])[] = [
     "T\u3000%%{x}%%",
     "T %%{x}%%",
   ],
+  [
+    "a tab before and after the last directive of a title",
+    "T\t%%{x}%%\t",
+    "T %%{x}%%",
+  ],
+  [
+    "a no-break space after a directive that starts a title",
+    "%%{x}%%\u00a0T",
+    "%%{x}%%T",
+  ],
+  [
+    "U+3000 after a directive that starts a title",
+    "%%{x}%%\u3000T",
+    "%%{x}%%T",
+  ],
+  [
+    "U+2028 after a directive that starts a title",
+    "%%{x}%%\u2028T",
+    "%%{x}%%\u2028T",
+  ],
+  [
+    "a no-break space between two directives that start a title",
+    "%%{x}%%\u00a0%%{y}%%T",
+    "%%{x}%%\u00a0%%{y}%%T",
+  ],
+  [
+    "a no-break space before a directive that starts a title",
+    "\u00a0%%{x}%% T",
+    "\u00a0%%{x}%% T",
+  ],
+  [
+    "a no-break space before a comment after the text of a title",
+    "T\u00a0%% c",
+    "T %% c",
+  ],
+  [
+    "U+3000 before a comment after the text of a title",
+    "T\u3000%% c",
+    "T %% c",
+  ],
+  [
+    "text after a directive and spaces at the end of a title",
+    "T %%{x}%% U  ",
+    "T %%{x}%% U  ",
+  ],
+  ["U+2003 at both ends of a title", "\u2003T\u2003", "T"],
 ]
 
 const quadrantTitleDiagram: readonly (readonly [string, string, string])[] = [
@@ -5111,6 +5157,21 @@ const quadrantTitleCases: readonly (readonly [string, string, string])[] = [
     "U+3000 after the last directive in the title of a quadrant chart",
     "T%%{x}%%\u3000",
     "T%%{x}%%",
+  ],
+  [
+    "a no-break space after a directive that starts the title of a quadrant chart",
+    "%%{x}%%\u00a0T",
+    "%%{x}%%T",
+  ],
+  [
+    "a no-break space before a directive that starts the title of a quadrant chart",
+    "\u00a0%%{x}%% T",
+    "%%{x}%%T",
+  ],
+  [
+    "text after a directive and spaces at the end of the title of a quadrant chart",
+    "T %%{x}%% U  ",
+    "T %%{x}%% U",
   ],
 ]
 
@@ -5171,6 +5232,70 @@ const jisonTitleCases: readonly (readonly [string, string, string])[] = [
     "T%%{x}%%\u3000",
     "T%%{x}%%\u3000",
   ],
+  [
+    "a no-break space before a comment after the text of a title that a Jison grammar reads",
+    "T\u00a0%% c",
+    "T\u00a0%% c",
+  ],
+  [
+    "U+2003 at both ends of a title that a Jison grammar reads",
+    "\u2003T\u2003",
+    "\u2003T\u2003",
+  ],
+  [
+    "a tab before and after the last directive of a title that a Jison grammar reads",
+    "T\t%%{x}%%\t",
+    "T %%{x}%%",
+  ],
+]
+
+const jisonDroppingTitleDiagrams: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  ["a Gantt chart", "gantt\ntitle {title}\n", "gantt\n  title {title}\n"],
+  ["a user journey", "journey\ntitle {title}\n", "journey\n  title {title}\n"],
+  ["a timeline", "timeline\ntitle {title}\n", "timeline\n  title {title}\n"],
+  [
+    "a sequence diagram",
+    "sequenceDiagram\ntitle {title}\nA->>B: x\n",
+    "sequenceDiagram\n  title {title}\n  A ->> B: x\n",
+  ],
+]
+
+const jisonDroppingTitleCases: readonly (readonly [string, string, string])[] =
+  [
+    [
+      "text after a directive and spaces at the end of a title that a Jison grammar reads",
+      "T %%{x}%% U  ",
+      "T %%{x}%% U",
+    ],
+  ]
+
+const jisonKeepingTitleDiagrams: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a Venn diagram",
+    "venn-beta\ntitle {title}\nset A\n",
+    "venn-beta\n  title {title}\n  set A\n",
+  ],
+  [
+    "a C4 diagram",
+    'C4Context\ntitle {title}\nPerson(a,"A")\n',
+    'C4Context\n  title {title}\n  Person(a, "A")\n',
+  ],
+]
+
+const jisonKeepingTitleCases: readonly (readonly [string, string, string])[] = [
+  [
+    "text after a directive and spaces at the end of the title of a Venn or a C4 diagram",
+    "T %%{x}%% U  ",
+    "T %%{x}%% U  ",
+  ],
 ]
 
 const titleCommentCases: readonly (readonly [string, string, string])[] = [
@@ -5181,6 +5306,193 @@ const titleCommentCases: readonly (readonly [string, string, string])[] = [
   ],
   ["a tab before a comment after the text of a title", "T\t%% c", "T %% c"],
   ["a comment that touches the text of a title", "T%% c", "T%% c"],
+]
+
+const titleOpenDirectiveExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a directive that is not closed after a space in a title",
+    'pie\ntitle T %%{x\n"a": 1\n',
+    'pie\n  title T %%{x\n"a": 1\n',
+  ],
+  [
+    "a directive that is not closed touching the text of a title",
+    'pie\ntitle T%%{x\n"a": 1\n',
+    'pie\n  title T%%{x\n"a": 1\n',
+  ],
+  [
+    "a directive that is not closed after a space in a title",
+    "radar-beta\ntitle T %%{x\naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  title T %%{x\naxis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "a directive that is not closed touching the text of a title",
+    "radar-beta\ntitle T%%{x\naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  title T%%{x\naxis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "a directive that is not closed after a space in a title",
+    'packet-beta\ntitle T %%{x\n0-7: "x"\n',
+    'packet-beta\n  title T %%{x\n0-7: "x"\n',
+  ],
+  [
+    "a directive that is not closed touching the text of a title",
+    'packet-beta\ntitle T%%{x\n0-7: "x"\n',
+    'packet-beta\n  title T%%{x\n0-7: "x"\n',
+  ],
+  [
+    "a directive that is not closed after a space in a title",
+    "architecture-beta\ntitle T %%{x\nservice a(server)[A]\n",
+    "architecture-beta\n  title T %%{x\nservice a(server)[A]\n",
+  ],
+  [
+    "a directive that is not closed touching the text of a title",
+    "architecture-beta\ntitle T%%{x\nservice a(server)[A]\n",
+    "architecture-beta\n  title T%%{x\nservice a(server)[A]\n",
+  ],
+  [
+    "a directive that is not closed after a space in a title",
+    "gitGraph\ntitle T %%{x\ncommit\n",
+    "gitGraph\n  title T %%{x\ncommit\n",
+  ],
+  [
+    "a directive that is not closed touching the text of a title",
+    "gitGraph\ntitle T%%{x\ncommit\n",
+    "gitGraph\n  title T%%{x\ncommit\n",
+  ],
+  [
+    "a directive that is not closed after a space in a title",
+    "cynefin-beta\ntitle T %%{x\n",
+    "cynefin-beta\n  title T %%{x\n",
+  ],
+  [
+    "a directive that is not closed touching the text of a title",
+    "cynefin-beta\ntitle T%%{x\n",
+    "cynefin-beta\n  title T%%{x\n",
+  ],
+  [
+    "a directive that is not closed after a space in a title",
+    'treemap-beta\ntitle T %%{x\n"A": 1\n',
+    'treemap\ntitle T %%{x\n"A": 1\n',
+  ],
+  [
+    "a directive that is not closed touching the text of a title",
+    'treemap-beta\ntitle T%%{x\n"A": 1\n',
+    'treemap\ntitle T%%{x\n"A": 1\n',
+  ],
+  [
+    "a directive that is not closed after a space in a title",
+    "wardley-beta\ntitle T %%{x\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T %%{x\ncomponent A [0.5, 0.5]\n",
+  ],
+  [
+    "a directive that is not closed touching the text of a title",
+    "wardley-beta\ntitle T%%{x\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T%%{x\ncomponent A [0.5, 0.5]\n",
+  ],
+  [
+    "a directive that is not closed after a space in a title",
+    "treeView-beta\ntitle T %%{x\nroot\n",
+    "treeView-beta\n  title T %%{x\nroot\n",
+  ],
+  [
+    "a directive that is not closed touching the text of a title",
+    "treeView-beta\ntitle T%%{x\nroot\n",
+    "treeView-beta\n  title T%%{x\nroot\n",
+  ],
+  [
+    "a directive that is not closed after a space in a title",
+    "info\ntitle T %%{x\n",
+    "info\n  title T %%{x\n",
+  ],
+  [
+    "a directive that is not closed touching the text of a title",
+    "info\ntitle T%%{x\n",
+    "info\n  title T%%{x\n",
+  ],
+  [
+    "a directive that is not closed after a space in a title",
+    'railroad-abnf-beta\ntitle T %%{x\nr="a";\n',
+    'railroad-abnf-beta\n  title T %%{x\nr="a";\n',
+  ],
+  [
+    "a directive that is not closed touching the text of a title",
+    'railroad-abnf-beta\ntitle T%%{x\nr="a";\n',
+    'railroad-abnf-beta\n  title T%%{x\nr="a";\n',
+  ],
+  [
+    "a directive that is not closed after a space in a title",
+    "quadrantChart\ntitle T %%{x\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  title T %%{x\nx-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "a directive that is not closed touching the text of a title",
+    "quadrantChart\ntitle T%%{x\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  title T%%{x\nx-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "a directive that is not closed after a space in a title",
+    "gantt\ntitle T %%{x\n",
+    "gantt\n  title T %%{x\n",
+  ],
+  [
+    "a directive that is not closed touching the text of a title",
+    "gantt\ntitle T%%{x\n",
+    "gantt\n  title T%%{x\n",
+  ],
+  [
+    "a directive that is not closed after a space in a title",
+    "journey\ntitle T %%{x\n",
+    "journey\n  title T %%{x\n",
+  ],
+  [
+    "a directive that is not closed touching the text of a title",
+    "journey\ntitle T%%{x\n",
+    "journey\n  title T%%{x\n",
+  ],
+  [
+    "a directive that is not closed after a space in a title",
+    "timeline\ntitle T %%{x\n",
+    "timeline\n  title T %%{x\n",
+  ],
+  [
+    "a directive that is not closed touching the text of a title",
+    "timeline\ntitle T%%{x\n",
+    "timeline\n  title T%%{x\n",
+  ],
+  [
+    "a directive that is not closed after a space in a title",
+    "sequenceDiagram\ntitle T %%{x\nA->>B: x\n",
+    "sequenceDiagram\n  title T %%{x\nA->>B: x\n",
+  ],
+  [
+    "a directive that is not closed touching the text of a title",
+    "sequenceDiagram\ntitle T%%{x\nA->>B: x\n",
+    "sequenceDiagram\n  title T%%{x\nA->>B: x\n",
+  ],
+  [
+    "a directive that is not closed after a space in a title",
+    "venn-beta\ntitle T %%{x\nset A\n",
+    "venn-beta\n  title T %%{x\nset A\n",
+  ],
+  [
+    "a directive that is not closed touching the text of a title",
+    "venn-beta\ntitle T%%{x\nset A\n",
+    "venn-beta\n  title T%%{x\nset A\n",
+  ],
+  [
+    "a directive that is not closed after a space in a title",
+    'C4Context\ntitle T %%{x\nPerson(a,"A")\n',
+    'C4Context\n  title T %%{x\nPerson(a,"A")\n',
+  ],
+  [
+    "a directive that is not closed touching the text of a title",
+    'C4Context\ntitle T%%{x\nPerson(a,"A")\n',
+    'C4Context\n  title T%%{x\nPerson(a,"A")\n',
+  ],
 ]
 
 describe.each(langiumTitleDiagrams)(
@@ -5219,6 +5531,36 @@ describe.each(jisonTitleDiagrams)(
   },
 )
 
+describe.each(jisonDroppingTitleDiagrams)(
+  "the title of %s with a directive followed by text",
+  (_diagram, input, output) => {
+    it.each(jisonDroppingTitleCases)(
+      "prints %s",
+      async (_case, title, printed) => {
+        await expectKept(
+          input.replace("{title}", title),
+          output.replace("{title}", printed),
+        )
+      },
+    )
+  },
+)
+
+describe.each(jisonKeepingTitleDiagrams)(
+  "the title of %s with a directive followed by text",
+  (_diagram, input, output) => {
+    it.each(jisonKeepingTitleCases)(
+      "keeps %s",
+      async (_case, title, printed) => {
+        await expectKept(
+          input.replace("{title}", title),
+          output.replace("{title}", printed),
+        )
+      },
+    )
+  },
+)
+
 describe.each([
   ...langiumTitleDiagrams,
   ...quadrantTitleDiagram,
@@ -5234,6 +5576,43 @@ describe.each([
     })
   },
 )
+
+describe("the title of a diagram with a directive that is not closed", () => {
+  it.each(titleOpenDirectiveExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+const c4AccDescriptionExamples: readonly (readonly [string, string, string])[] =
+  [
+    [
+      "two spaces before a comment after an accDescription of a C4 diagram",
+      'C4Context\naccDescription D  %% c\nPerson(a, "A")\n',
+      'C4Context\n  accDescription D %% c\n  Person(a, "A")\n',
+    ],
+    [
+      "spaces after the comment of an accDescription of a C4 diagram",
+      'C4Context\naccDescription D %% c  \nPerson(a, "A")\n',
+      'C4Context\n  accDescription D %% c\n  Person(a, "A")\n',
+    ],
+    [
+      "text after a directive and spaces at the end of an accDescription of a C4 diagram",
+      'C4Context\naccDescription D %%{x}%% U  \nPerson(a, "A")\n',
+      'C4Context\n  accDescription D %%{x}%% U  \n  Person(a, "A")\n',
+    ],
+  ]
+
+describe("the accDescription of a C4 diagram with a comment or a directive", () => {
+  it.each(c4AccDescriptionExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
 
 /** Texts that every version of mermaid.js that counts rejects (docs/sequence.md, Line separators). */
 const rejectedSequenceExamples: readonly (readonly [string, string])[] = [

@@ -1401,17 +1401,17 @@ mermaid.js trims them there: the Db of 12.3.0 and the drawn text are the same
 with and without them. This holds for a title in which no directive and no
 comment stands; beside one, a no-break space and U+3000 are printed as the
 paragraph on them below says. The last event of a line of a timeline and the
-second description of a state with an alias lose the whitespace at their end in
-the same way, not the whitespace at their start, which aligns the colons of a
-timeline: `2020 : e   ` is printed `2020 : e`, and `state "d" as A : x   ` is
-printed `state "d" as A : x`. A period of a timeline, and an event that another
-colon follows, gain one space at their end where they end without whitespace,
-which stands before that colon: `2004: a: b` is printed `2004 : a : b`, except
-after the word `title` or `section` as the period, where a space would make the
-line a title or a section. The description of a task of a user journey loses the
-whitespace before its first colon (`Make tea : 5: Me` is printed
-`Make tea: 5: Me`), except in a section whose descriptions are padded to line
-the colons up. Where spaces or tabs stand between the text of a title and a
+second description of a state with an alias lose the spaces and tabs at their
+end in the same way, not the whitespace at their start, which aligns the colons
+of a timeline: `2020 : e   ` is printed `2020 : e`, and `state "d" as A : x   `
+is printed `state "d" as A : x`. A period of a timeline, and an event that
+another colon follows, gain one space at their end where they end without
+whitespace, which stands before that colon: `2004: a: b` is printed
+`2004 : a : b`, except after the word `title` or `section` as the period, where
+a space would make the line a title or a section. The description of a task of a
+user journey loses the whitespace before its first colon (`Make tea : 5: Me` is
+printed `Make tea: 5: Me`), except in a section whose descriptions are padded to
+line the colons up. Where spaces or tabs stand between the text of a title and a
 comment that follows it on its line, they are printed as one space, and a
 comment that touches the text stays touching. Where directives follow the text
 and only spaces and tabs follow the last one, each keeps whether spaces or tabs
@@ -1445,19 +1445,39 @@ without them.
 A no-break space and U+3000 are no spaces or tabs, so what is said above of
 spaces and tabs beside a directive does not hold for them in a title. In a Gantt
 chart, a user journey, a timeline, a sequence diagram, a Venn diagram, and a C4
-diagram they are characters of the text wherever they stand, and stay:
-`title T`, a no-break space, and `%%{x}%%` is not changed. A quadrant chart
-reads them as it reads spaces, except before a comment, where they stay. In the
+diagram they are characters of the text wherever they stand, and stay, as does
+any other whitespace character that is no space or tab, such as U+2003:
+`title T`, a no-break space, and `%%{x}%%` is not changed. The spaces and tabs
+at the end of a title that has a directive followed by text, as
+`title T %%{x}%% U` and two spaces, are left out in a Gantt chart, a user
+journey, a timeline, a sequence diagram, and a quadrant chart, and stay in a
+Venn diagram and a C4 diagram. A quadrant chart reads a no-break space and
+U+3000 as it reads spaces, except before a comment, where they stay. In the
 other diagram types of the list, the printer reads them by where the directives
-stand. The directives that end the line, touching one another and the end of the
-line or a comment, are outside the text, so a no-break space or U+3000 between
-the text and the first of them is whitespace at the end of the text, and is
-printed as one space with the rest of its run: `title T`, U+00A0, and `%%{x}%%`
-is printed `title T %%{x}%%`. A directive that something other than spaces and
-tabs follows belongs to the text, and so does every directive before it. In that
-text only spaces and tabs are blanks: a no-break space or U+3000 beside such a
-directive stays, and a title that has one after its last directive stays as
-written, the spaces and tabs in it included.
+and the comment stand:
+
+- Between the text and a comment, with no directive, they are printed as one
+  space: `title T`, a no-break space, and `%% c` print `title T %% c`.
+- A directive that starts the title, with the text after it and no other
+  directive between, is outside the text, so a no-break space or U+3000 after it
+  is dropped (`title %%{x}%%`, a no-break space, and `T` print
+  `title %%{x}%%T`); U+2028 and U+2029 after it stay, and so does a no-break
+  space or U+3000 before it.
+- The directives that end the line, touching one another and the end of the line
+  or a comment, are outside the text too, so a no-break space or U+3000 between
+  the text and the first of them is whitespace at the end of the text, and is
+  printed as one space with the rest of its run: `title T`, U+00A0, and
+  `%%{x}%%` print `title T %%{x}%%`.
+- A directive that anything besides spaces and tabs follows belongs to the text,
+  and so does every directive before it, except the one that starts the title.
+  In that text only spaces and tabs are blanks: a no-break space or U+3000
+  beside such a directive stays, and a title in which text follows a directive,
+  or a no-break space or U+3000 follows the last one, stays as written, the
+  spaces and tabs at its end included.
+
+A directive that is not closed in a title takes the rest of the text, and the
+title stays as written up to it: `title T %%{x` and `title T%%{x` are not
+changed.
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped] [test: a
 no-break space and U+3000 at both ends of the title of a gantt diagram] [test: a
@@ -1492,22 +1512,44 @@ no-break space between the text and a directive in the title of a quadrant
 chart] [test: a no-break space on both sides of the last directive in the title
 of a quadrant chart] [test: a no-break space before a comment in the title of a
 quadrant chart] [test: U+3000 after the last directive in the title of a
-quadrant chart] [test: a no-break space after the last directive of a title that
-a Jison grammar reads] [test: a no-break space between the text and the last
-directive of a title that a Jison grammar reads] [test: a no-break space between
-the text and a directive that a space follows in a title that a Jison grammar
-reads] [test: a no-break space before a directive that starts a title that a
-Jison grammar reads] [test: a no-break space after a directive that starts a
-title that a Jison grammar reads] [test: a no-break space before and after the
-last directive of a title that a Jison grammar reads] [test: U+3000 after the
-last directive of a title that a Jison grammar reads] [test: two spaces before a
-comment after the text of a title] [test: a tab before a comment after the text
-of a title] [test: a comment that touches the text of a title] [test: a no-break
-space at the end of the date format of a gantt diagram] [test: a no-break space
-at the end of the axis format of a gantt diagram] [test: a no-break space at the
-end of the last event of a line of a timeline] [test: a no-break space at the
-end of the accDescription of a C4 diagram] [test: a no-break space at the end of
-the second description of a state with an alias] [fixture:
+quadrant chart] [test: a tab before and after the last directive of a title]
+[test: a no-break space after a directive that starts a title] [test: U+3000
+after a directive that starts a title] [test: U+2028 after a directive that
+starts a title] [test: a no-break space between two directives that start a
+title] [test: a no-break space before a directive that starts a title] [test: a
+no-break space before a comment after the text of a title] [test: U+3000 before
+a comment after the text of a title] [test: text after a directive and spaces at
+the end of a title] [test: U+2003 at both ends of a title] [test: a no-break
+space after a directive that starts the title of a quadrant chart] [test: a
+no-break space before a directive that starts the title of a quadrant chart]
+[test: text after a directive and spaces at the end of the title of a quadrant
+chart] [test: a no-break space before a comment after the text of a title that a
+Jison grammar reads] [test: U+2003 at both ends of a title that a Jison grammar
+reads] [test: a tab before and after the last directive of a title that a Jison
+grammar reads] [test: text after a directive and spaces at the end of a title
+that a Jison grammar reads] [test: text after a directive and spaces at the end
+of the title of a Venn or a C4 diagram] [test: a directive that is not closed
+after a space in a title] [test: a directive that is not closed touching the
+text of a title] [test: two spaces before a comment after an accDescription of a
+C4 diagram] [test: spaces after the comment of an accDescription of a C4
+diagram] [test: text after a directive and spaces at the end of an
+accDescription of a C4 diagram] [test: a no-break space after the last directive
+of a title that a Jison grammar reads] [test: a no-break space between the text
+and the last directive of a title that a Jison grammar reads] [test: a no-break
+space between the text and a directive that a space follows in a title that a
+Jison grammar reads] [test: a no-break space before a directive that starts a
+title that a Jison grammar reads] [test: a no-break space after a directive that
+starts a title that a Jison grammar reads] [test: a no-break space before and
+after the last directive of a title that a Jison grammar reads] [test: U+3000
+after the last directive of a title that a Jison grammar reads] [test: two
+spaces before a comment after the text of a title] [test: a tab before a comment
+after the text of a title] [test: a comment that touches the text of a title]
+[test: a no-break space at the end of the date format of a gantt diagram] [test:
+a no-break space at the end of the axis format of a gantt diagram] [test: a
+no-break space at the end of the last event of a line of a timeline] [test: a
+no-break space at the end of the accDescription of a C4 diagram] [test: a
+no-break space at the end of the second description of a state with an alias]
+[fixture:
 usecase/direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
 [fixture: treeview/trailing-whitespace/directives-end-blanks-dropped] [fixture:
 gantt/settings/format-runs-kept-before-directives] [fixture:
@@ -1584,8 +1626,8 @@ state/aliases/second-description-trailing-whitespace-dropped]
 mermaid.js reads one whitespace character after the keyword and keeps the rest
 in the Db, so the Db of the printed text differs from the Db of the written
 text, but it draws the same figure. Each renderer puts the text into an SVG
-`text` element with `text()`, which draws no whitespace at its start or at its
-end:
+`text` element with `text()`, which draws no spaces or tabs at its start or at
+its end:
 [Gantt](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L194-L199),
 [user journey](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/user-journey/journeyRenderer.ts#L166-L176),
 [timeline](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/timeline/timelineRenderer.ts#L209-L216),

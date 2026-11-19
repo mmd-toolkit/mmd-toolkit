@@ -1469,7 +1469,7 @@ mermaid.js がこれらの title の両端のそれらを除いて読み、
 これは、ディレクティブもコメントもないタイトルに当てはまります。
 それらがあるタイトルでは、下の段落のとおりに印字します。
 timeline の行の最後の event と、別名を持つ state の 2 つ目の説明も、
-同じように末尾の空白を除きますが、先頭の空白は除きません。
+同じように末尾の空白とタブを除きますが、先頭の空白は除きません。
 その空白は timeline のコロンをそろえます。
 `2020 : e   ` は `2020 : e` と印字し、
 `state "d" as A : x   ` は `state "d" as A : x` と印字します。
@@ -1514,26 +1514,45 @@ user journey
 ディレクティブの前でも、
 ディレクティブがない場合と同じように書かれたままにします。
 
-ノーブレークスペースと U+3000 は空白でもタブでもないので、上に書いた、
+改行しない空白と U+3000 は空白でもタブでもないので、上に書いた、
 ディレクティブの隣の空白とタブについての文は、
 タイトルでのそれらには当てはまりません。
 Gantt、user journey、timeline、sequence、Venn、C4 の図では、
 それらはどこにあってもテキストの文字で、そのまま残ります。
-`title T`、ノーブレークスペース、`%%{x}%%` は変えません。
-quadrant 図では、コメントの前にあるものは残し、ほかは空白と同じに読みます。
+U+2003 のように、空白でもタブでもないほかの空白文字も同じです。
+`title T`、改行しない空白、`%%{x}%%` は変えません。
+ディレクティブの後にテキストが続くタイトル（`title T %%{x}%% U` と空白 2
+つ）の末尾の空白とタブは、Gantt、user journey、timeline、sequence、
+quadrant の図では除き、Venn と C4 の図では残します。
+quadrant 図では、改行しない空白と U+3000 を空白と同じに読み、
+コメントの前にあるものだけ残します。
 一覧のほかの種類の図では、整形ツールは、
-ディレクティブの位置でそれらを読み分けます。
-行末にあって、互いに接し、
-行末かコメントにも接するディレクティブはテキストの外にあるので、
-テキストとその最初のディレクティブの間にあるそれらはテキストの末尾の空白で、
-その連なりの残りと一緒に空白 1 つで印字します。
-`title T`、U+00A0、`%%{x}%%` は `title T %%{x}%%` と印字します。
-後ろに空白とタブ以外の何かが続くディレクティブはテキストに属し、
-その前のディレクティブもそうです。
-そのテキストでは空白とタブだけが空白なので、
-そのようなディレクティブの隣のそれらは残り、
-最後のディレクティブの後にそれらがあるタイトルは、
-中の空白とタブも含めて書かれたまま残します。
+ディレクティブとコメントの位置でそれらを読み分けます。
+
+- テキストとコメントの間にあるそれらは、
+  ディレクティブがなければ空白 1 つにします。
+  `title T`、改行しない空白、`%% c` は `title T %% c` と印字します。
+- タイトルの先頭にあるディレクティブは、その後ろにテキストがあり、
+  間にほかのディレクティブがなければ、テキストの外にあるので、
+  その後の改行しない空白と U+3000 は落とします。
+  `title %%{x}%%`、改行しない空白、`T` は `title %%{x}%%T` と印字します。
+  その後の U+2028 と U+2029 と、その前の改行しない空白と U+3000 は残ります。
+- 行末にあって、互いに接し、行末かコメントにも接するディレクティブも、
+  テキストの外にあります。
+  テキストとその最初のディレクティブの間にあるそれらはテキストの末尾の空白で、
+  その連なりの残りと一緒に空白 1 つで印字します。
+  `title T`、U+00A0、`%%{x}%%` は `title T %%{x}%%` と印字します。
+- 後ろに空白とタブ以外の何かが続くディレクティブはテキストに属し、
+  タイトルの先頭のディレクティブを除いて、その前のディレクティブもそうです。
+  そのテキストでは空白とタブだけが空白なので、
+  そのようなディレクティブの隣のそれらは残ります。
+  ディレクティブの後にテキストが続くタイトルと、
+  最後のディレクティブの後にそれらがあるタイトルは、
+  末尾の空白とタブも含めて書かれたまま残します。
+
+閉じていないディレクティブはタイトルの残りを取り、
+タイトルはそこまで書かれたまま残します。
+`title T %%{x` と `title T%%{x` は変えません。
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped]
 [test: a no-break space and U+3000 at both ends of the title of
@@ -1578,6 +1597,35 @@ quadrant chart]
 quadrant chart]
 [test: a no-break space before a comment in the title of a quadrant chart]
 [test: U+3000 after the last directive in the title of a quadrant chart]
+[test: a tab before and after the last directive of a title]
+[test: a no-break space after a directive that starts a title]
+[test: U+3000 after a directive that starts a title]
+[test: U+2028 after a directive that starts a title]
+[test: a no-break space between two directives that start a title]
+[test: a no-break space before a directive that starts a title]
+[test: a no-break space before a comment after the text of a title]
+[test: U+3000 before a comment after the text of a title]
+[test: text after a directive and spaces at the end of a title]
+[test: U+2003 at both ends of a title]
+[test: a no-break space after a directive that starts the title of a quadrant
+chart]
+[test: a no-break space before a directive that starts the title of a quadrant
+chart]
+[test: text after a directive and spaces at the end of the title of a quadrant
+chart] [test: a no-break space before a comment after the text of a title that a
+Jison grammar reads]
+[test: U+2003 at both ends of a title that a Jison grammar reads]
+[test: a tab before and after the last directive of a title that a Jison
+grammar reads]
+[test: text after a directive and spaces at the end of a title that a Jison
+grammar reads]
+[test: text after a directive and spaces at the end of the title of a Venn or
+a C4 diagram] [test: a directive that is not closed after a space in a title]
+[test: a directive that is not closed touching the text of a title]
+[test: two spaces before a comment after an accDescription of a C4 diagram]
+[test: spaces after the comment of an accDescription of a C4 diagram]
+[test: text after a directive and spaces at the end of an accDescription of a
+C4 diagram]
 [test: a no-break space after the last directive of a title that a Jison
 grammar reads]
 [test: a no-break space between the text and the last directive of a title
