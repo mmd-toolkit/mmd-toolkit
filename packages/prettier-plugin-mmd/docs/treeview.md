@@ -78,7 +78,8 @@ that comment aligns with the following statement.
 
 [fixture: treeview/modes/comment-excluded] [corpus fixture:
 treeview/box-written-tree] [corpus fixture: treeview/box-entity-mixed-indent]
-[corpus fixture: treeview/box-decoration-annotation-gap] [corpus fixture:
+[corpus fixture: treeview/box-quoted-indent-error] [corpus fixture:
+treeview/box-decoration-annotation-gap] [corpus fixture:
 treeview/box-decoration-only]
 
 [corpus fixture: treeview/box-heavy]
@@ -1089,6 +1090,10 @@ placement applies with or without spaces on either side of the run; breaks
 inside a directive stay inside that directive. On a directive-only line created
 by such a split, remove spaces and tabs between directives: keeping them would
 leave a whitespace-only line after directive removal, which mermaid.js rejects.
+Where the directive touches the unit on each side, mermaid.js reads the two as
+one name (`"a"%%{x}%%"b"` is the name `ab`), so the unit after the directive
+stands with no prefix, as a continuation of that name: a prefix before it would
+add a node and change the Db and the drawing.
 
 [fixture: treeview/statements-one-per-line/review159-split-directives-touching]
 
@@ -1731,8 +1736,8 @@ null/whitespace-only values, printing a run of spaces and tabs inside the text
 as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 The directives that end a title are printed with one space before each that has
-whitespace before it, and the whitespace after the last one is left out,
-whatever the whitespace at the end of the line (see
+spaces or tabs before it, and the spaces and tabs after the last one are left
+out, whatever the spaces and tabs at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped]
@@ -1832,7 +1837,8 @@ but not that of an `accTitle`, which the browser shows as a tooltip, and retain
 brace-looking line values and trivia boundaries. The common converter permits
 these equivalent outer gaps. Never borrow text from the next line. The
 directives that end the value are printed with one space before each that has
-whitespace before it, and the whitespace after the last one is left out (see
+spaces or tabs before it, and the spaces and tabs after the last one are left
+out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
@@ -3031,15 +3037,39 @@ exceptions. Rule 1 names no mark for the end of a text that has an open
 directive, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides: [c4](./c4.md#final-newline), [ishikawa](./ishikawa.md#final-newline),
-and [kanban](./kanban.md#final-newline) keep an open directive that ends the
-text as written, with no line break added after it. Where whitespace follows the
-directive, the directive ends at its last character that is not whitespace, and
-one line break ends the text. Rejected unused indentation runs are not trimmed
-into accepted input.
+and [kanban](./kanban.md#final-newline) read an open directive that ends the
+text up to its last character that is not whitespace, where U+2028, U+2029,
+U+0085, U+180E, and U+200B count as characters that are not whitespace, and so
+does a treeView. Where the text ends right after that character, nothing is
+added after it. Where whitespace follows it (spaces, tabs, a U+00A0, a U+3000, a
+U+FEFF, a form feed, a vertical tab, line breaks, empty lines), the whitespace
+is dropped and one line break ends the text: `%%{unfinished` and two spaces
+print `%%{unfinished` and a line break, and `%%{unfinished`, U+2028, and a space
+print `%%{unfinished`, U+2028, and a line break. Rejected unused indentation
+runs are not trimmed into accepted input.
 
 [fixture: treeview/final-newline/eof-node] [fixture:
 treeview/final-newline/eof-open-directive] [fixture:
-treeview/final-newline/eof-open-directive-trailing-blanks]
+treeview/final-newline/eof-open-directive-trailing-blanks] [test:
+treeview/final-newline/open-directive-nothing-after] [test:
+treeview/final-newline/open-directive-two-spaces] [test:
+treeview/final-newline/open-directive-tab] [test:
+treeview/final-newline/open-directive-no-break-space] [test:
+treeview/final-newline/open-directive-u3000] [test:
+treeview/final-newline/open-directive-bom] [test:
+treeview/final-newline/open-directive-vertical-tab] [test:
+treeview/final-newline/open-directive-form-feed] [test:
+treeview/final-newline/open-directive-line-break] [test:
+treeview/final-newline/open-directive-crlf] [test:
+treeview/final-newline/open-directive-spaces-line-break] [test:
+treeview/final-newline/open-directive-empty-lines] [test:
+treeview/final-newline/open-directive-line-break-spaces] [test:
+treeview/final-newline/open-directive-u2028] [test:
+treeview/final-newline/open-directive-u2029] [test:
+treeview/final-newline/open-directive-space-u2028] [test:
+treeview/final-newline/open-directive-u2028-space] [test:
+treeview/final-newline/open-directive-nel] [test:
+treeview/final-newline/open-directive-zero-width-space]
 
 [fixture: treeview/final-newline/eof-comment]
 

@@ -80,6 +80,7 @@ mermaid.js のドキュメントの木の図 13 件のうち、10 件は字下�
 [fixture: treeview/modes/comment-excluded]
 [corpus fixture: treeview/box-written-tree]
 [corpus fixture: treeview/box-entity-mixed-indent]
+[corpus fixture: treeview/box-quoted-indent-error]
 [corpus fixture: treeview/box-decoration-annotation-gap]
 [corpus fixture: treeview/box-decoration-only]
 
@@ -1088,6 +1089,12 @@ root
 ディレクティブ間の空白とタブを消します。
 残すとディレクティブを除いた後に空白だけの行が残り、
 mermaid.js が拒否するためです。
+ディレクティブが両側の単位に接しているときは、
+mermaid.js が両側を 1 つの名前として読みます（`"a"%%{x}%%"b"` は名前 `ab`
+です）。
+そのため、ディレクティブの後の単位は前置部分なしで、
+その名前の続きとして置きます。
+前置部分を付けるとノードが増え、Db も図も変わります。
 
 [fixture: treeview/statements-one-per-line/review159-split-directives-touching]
 
@@ -1722,8 +1729,9 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 `null` と空白だけの値は引用符なしの `title` とします。
 テキストの中の空白とタブの連なりは、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
-題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
-行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
+題の終わりのディレクティブは、それぞれの前に空白かタブがあれば空白 1 つを置き、
+行末の空白とタブの有無にかかわらず、
+最後のディレクティブの後の空白とタブを除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: title/title-directives-end-blanks-dropped]
@@ -1829,8 +1837,8 @@ treeView-beta
 波括弧らしい行値と付随要素の境界を保ちます。
 共通の変換処理が許す同等の外側の隙間を選びます。
 次の行の文字を値に取りません。
-値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
-最後のディレクティブの後の空白を除いて印字します。
+値の終わりのディレクティブは、それぞれの前に空白かタブがあれば空白 1 つを置き、
+最後のディレクティブの後の空白とタブを除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
@@ -3050,15 +3058,38 @@ EOF の未完ディレクティブと保護・原文保持の終端は共有の�
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [c4](./c4.ja.md#末尾の改行)、[ishikawa](./ishikawa.ja.md#final-newline)、
 [kanban](./kanban.ja.md#末尾の改行)は、
-テキストを終える閉じていないディレクティブを、書かれたまま残し、
-その後に改行を足しません。
-ディレクティブの後に空白が続くときは、
-ディレクティブは空白でない最後の文字で終わり、改行 1 つでテキストを終えます。
+テキストを終える閉じていないディレクティブを、空白でない最後の文字まで読みます。
+ここでは U+2028、U+2029、U+0085、U+180E、U+200B を空白でない文字に数え、
+treeView も同じです。
+テキストがその文字の直後で終わるときは、その後ろに何も足しません。
+後ろに空白（空白、タブ、U+00A0、U+3000、U+FEFF、改ページ、垂直タブ、改行、
+空行）が続くときは、空白を落とし、改行 1 つでテキストを終えます。
+`%%{unfinished` と空白 2 つは `%%{unfinished` と改行を印字し、`%%{unfinished`、
+U+2028、空白は `%%{unfinished`、U+2028、改行を印字します。
 拒否される未使用の字下げの連なりは、両端の空白を除いて受理させません。
 
 [fixture: treeview/final-newline/eof-node]
 [fixture: treeview/final-newline/eof-open-directive]
 [fixture: treeview/final-newline/eof-open-directive-trailing-blanks]
+[test: treeview/final-newline/open-directive-nothing-after]
+[test: treeview/final-newline/open-directive-two-spaces]
+[test: treeview/final-newline/open-directive-tab]
+[test: treeview/final-newline/open-directive-no-break-space]
+[test: treeview/final-newline/open-directive-u3000]
+[test: treeview/final-newline/open-directive-bom]
+[test: treeview/final-newline/open-directive-vertical-tab]
+[test: treeview/final-newline/open-directive-form-feed]
+[test: treeview/final-newline/open-directive-line-break]
+[test: treeview/final-newline/open-directive-crlf]
+[test: treeview/final-newline/open-directive-spaces-line-break]
+[test: treeview/final-newline/open-directive-empty-lines]
+[test: treeview/final-newline/open-directive-line-break-spaces]
+[test: treeview/final-newline/open-directive-u2028]
+[test: treeview/final-newline/open-directive-u2029]
+[test: treeview/final-newline/open-directive-space-u2028]
+[test: treeview/final-newline/open-directive-u2028-space]
+[test: treeview/final-newline/open-directive-nel]
+[test: treeview/final-newline/open-directive-zero-width-space]
 
 [fixture: treeview/final-newline/eof-comment]
 

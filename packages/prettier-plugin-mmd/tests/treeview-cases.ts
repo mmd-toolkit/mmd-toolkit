@@ -10,6 +10,120 @@ interface TreeviewCase {
 
 export const treeviewCases: readonly TreeviewCase[] = [
   {
+    name: "treeview/final-newline/open-directive-nothing-after",
+    input: 'treeView-beta\n"R"\n%%{unfinished',
+    output: 'treeView-beta\n  "R"\n%%{unfinished',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-two-spaces",
+    input: 'treeView-beta\n"R"\n%%{unfinished  ',
+    output: 'treeView-beta\n  "R"\n%%{unfinished\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-tab",
+    input: 'treeView-beta\n"R"\n%%{unfinished\u0009',
+    output: 'treeView-beta\n  "R"\n%%{unfinished\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-no-break-space",
+    input: 'treeView-beta\n"R"\n%%{unfinished\u00a0',
+    output: 'treeView-beta\n  "R"\n%%{unfinished\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-u3000",
+    input: 'treeView-beta\n"R"\n%%{unfinished\u3000',
+    output: 'treeView-beta\n  "R"\n%%{unfinished\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-bom",
+    input: 'treeView-beta\n"R"\n%%{unfinished\ufeff',
+    output: 'treeView-beta\n  "R"\n%%{unfinished\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-vertical-tab",
+    input: 'treeView-beta\n"R"\n%%{unfinished\u000b',
+    output: 'treeView-beta\n  "R"\n%%{unfinished\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-form-feed",
+    input: 'treeView-beta\n"R"\n%%{unfinished\u000c',
+    output: 'treeView-beta\n  "R"\n%%{unfinished\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-line-break",
+    input: 'treeView-beta\n"R"\n%%{unfinished\n',
+    output: 'treeView-beta\n  "R"\n%%{unfinished\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-crlf",
+    input: 'treeView-beta\n"R"\n%%{unfinished\u000d\n',
+    output: 'treeView-beta\n  "R"\n%%{unfinished\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-spaces-line-break",
+    input: 'treeView-beta\n"R"\n%%{unfinished  \n',
+    output: 'treeView-beta\n  "R"\n%%{unfinished\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-empty-lines",
+    input: 'treeView-beta\n"R"\n%%{unfinished\n\n',
+    output: 'treeView-beta\n  "R"\n%%{unfinished\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-line-break-spaces",
+    input: 'treeView-beta\n"R"\n%%{unfinished\n  ',
+    output: 'treeView-beta\n  "R"\n%%{unfinished\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-u2028",
+    input: 'treeView-beta\n"R"\n%%{unfinished\u2028',
+    output: 'treeView-beta\n  "R"\n%%{unfinished\u2028\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-u2029",
+    input: 'treeView-beta\n"R"\n%%{unfinished\u2029',
+    output: 'treeView-beta\n  "R"\n%%{unfinished\u2029\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-space-u2028",
+    input: 'treeView-beta\n"R"\n%%{unfinished \u2028',
+    output: 'treeView-beta\n  "R"\n%%{unfinished \u2028\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-u2028-space",
+    input: 'treeView-beta\n"R"\n%%{unfinished\u2028 ',
+    output: 'treeView-beta\n  "R"\n%%{unfinished\u2028\n',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-nel",
+    input: 'treeView-beta\n"R"\n%%{unfinished\u0085',
+    output: 'treeView-beta\n  "R"\n%%{unfinished\u0085',
+    options: {},
+  },
+  {
+    name: "treeview/final-newline/open-directive-zero-width-space",
+    input: 'treeView-beta\n"R"\n%%{unfinished\u200b',
+    output: 'treeView-beta\n  "R"\n%%{unfinished\u200b',
+    options: {},
+  },
+  {
     name: "treeview/comments/standalone-ls",
     input:
       "treeView-beta\nSeparatorRoot\n%% note\u2028still comment\n SeparatorChild\n",
