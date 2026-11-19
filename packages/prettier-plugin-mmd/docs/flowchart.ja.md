@@ -2389,8 +2389,9 @@ flowchart LR
 入れ子の YAML を含む行どうしの字下げの差を保ち、内側にも外側にも動かします。
 単独行の `}` は文の段に揃え、
 本文の後の `}` はその行に残して行と一緒に動かします。
-リテラルスカラーや折りたたみスカラーのテキストの後の `}` は、その行に残します。
-独立した行に置くと、スカラーのテキストの末尾に改行が加わり、
+リテラルスカラーや折りたたみスカラー（`|` と `>`、
+後ろに `-` や `+` が付く形も）のテキストの後の `}` は、その行に残します。
+独立した行に置くと、スカラーのテキストの末尾が変わり、
 11.7.0 から 12.3.0 はテキストを別に描くからです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
@@ -2402,6 +2403,8 @@ flowchart LR
 [fixture: data-blocks/closing-after-text]
 [fixture: data-blocks/closing-after-literal-text]
 [fixture: data-blocks/closing-after-folded-text]
+[fixture: data-blocks/closing-after-strip-text]
+[fixture: data-blocks/closing-after-keep-text]
 
 次の条件をすべて満たす場合だけ動かし、満たさなければ書かれた桁を保ちます。
 

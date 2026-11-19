@@ -2318,9 +2318,9 @@ ASCII spaces until the shallowest line with text stands one level inside its
 statement. This preserves relative indentation, including nested YAML, and can
 move lines inward or outward. A `}` alone on its line aligns with the statement;
 a `}` after body text stays there and moves with that line. A `}` after the text
-of a literal or folded scalar stays on its line: on a line of its own it adds a
-line break to the end of the text of the scalar, which 11.7.0 to 12.3.0 draw
-differently (see
+of a literal or folded scalar (`|` and `>`, with or without `-` or `+` after
+them) stays on its line: on a line of its own it changes the end of the text of
+the scalar, which 11.7.0 to 12.3.0 draw differently (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The formatter does not look at the kind of scalar, so a `}` after the text of a
 plain scalar stays too.
@@ -2328,7 +2328,9 @@ plain scalar stays too.
 [fixture: data-blocks/zero-and-shallow] [fixture: data-blocks/deep-nested-yaml]
 [fixture: data-blocks/closing-after-text] [fixture:
 data-blocks/closing-after-literal-text] [fixture:
-data-blocks/closing-after-folded-text]
+data-blocks/closing-after-folded-text] [fixture:
+data-blocks/closing-after-strip-text] [fixture:
+data-blocks/closing-after-keep-text]
 
 Move a block only when all these conditions hold; otherwise keep its columns as
 written:
