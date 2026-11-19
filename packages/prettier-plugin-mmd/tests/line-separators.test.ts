@@ -6977,6 +6977,28 @@ const commentEndsOtherTextExamples: readonly {
       "sequenceDiagram\n  par A b %% c\n    A ->> B: x\n  and C d %% c\n    A ->> B: y\n  end\n",
   },
   {
+    name: "runs before a comment that ends the label of a critical of a sequence diagram",
+    input: "sequenceDiagram\ncritical A  b  %% c\nA->>B: x\nend\n",
+    output: "sequenceDiagram\n  critical A b %% c\n    A ->> B: x\n  end\n",
+  },
+  {
+    name: "runs before a comment that ends the label of an option of a sequence diagram",
+    input:
+      "sequenceDiagram\ncritical C  d\nA->>B: x\noption A  b  %% c\nA->>B: y\nend\n",
+    output:
+      "sequenceDiagram\n  critical C d\n    A ->> B: x\n  option A b %% c\n    A ->> B: y\n  end\n",
+  },
+  {
+    name: "runs before a comment that ends the label of a break of a sequence diagram",
+    input: "sequenceDiagram\nbreak A  b  %% c\nA->>B: x\nend\n",
+    output: "sequenceDiagram\n  break A b %% c\n    A ->> B: x\n  end\n",
+  },
+  {
+    name: "runs before a comment that ends the label of a rect of a sequence diagram",
+    input: "sequenceDiagram\nrect A  b  %% c\nA->>B: x\nend\n",
+    output: "sequenceDiagram\n  rect A b %% c\n    A ->> B: x\n  end\n",
+  },
+  {
     name: "runs before a comment that ends the label of a box of a sequence diagram",
     input: "sequenceDiagram\nbox A  b  %% c\nparticipant A\nend\nA->>A: x\n",
     output:
@@ -7341,9 +7363,44 @@ const directiveAtTheStartExamples: readonly (readonly [
     "sequenceDiagram\n  par %%{x}%%A b\n    A ->> B: x\n  and C d %% c\n    A ->> B: y\n  end\n",
   ],
   [
+    "runs after a directive at the start of the label of a rect of a sequence diagram",
+    "sequenceDiagram\nrect %%{x}%% A  b\nA->>B: x\nend\n",
+    "sequenceDiagram\n  rect %%{x}%%A b\n    A ->> B: x\n  end\n",
+  ],
+  [
     "runs after a directive at the start of the label of a box of a sequence diagram",
     "sequenceDiagram\nbox %%{x}%% A  b\nparticipant A\nend\nA->>A: x\n",
     "sequenceDiagram\n  box %%{x}%%A b\n    participant A\n  end\n  A ->> A: x\n",
+  ],
+  [
+    "runs after a directive at the start of the label of a critical of a sequence diagram",
+    "sequenceDiagram\ncritical %%{x}%% A  b\nA->>B: x\nend\n",
+    "sequenceDiagram\n  critical %%{x}%%A b\n    A ->> B: x\n  end\n",
+  ],
+  [
+    "runs after a directive at the start of the label of an option of a sequence diagram",
+    "sequenceDiagram\ncritical x\nA->>B: x\noption %%{x}%% A  b\nA->>B: y\nend\n",
+    "sequenceDiagram\n  critical x\n    A ->> B: x\n  option %%{x}%%A b\n    A ->> B: y\n  end\n",
+  ],
+  [
+    "runs after a directive at the start of the label of a break of a sequence diagram",
+    "sequenceDiagram\nbreak %%{x}%% A  b\nA->>B: x\nend\n",
+    "sequenceDiagram\n  break %%{x}%%A b\n    A ->> B: x\n  end\n",
+  ],
+  [
+    "runs after a directive at the start of the label of a critical of a sequence diagram",
+    "sequenceDiagram\ncritical %%{x}%% A  b\nA->>B: x\nend\n",
+    "sequenceDiagram\n  critical %%{x}%%A b\n    A ->> B: x\n  end\n",
+  ],
+  [
+    "runs after a directive at the start of the label of an option of a sequence diagram",
+    "sequenceDiagram\ncritical x\nA->>B: x\noption %%{x}%% A  b\nA->>B: y\nend\n",
+    "sequenceDiagram\n  critical x\n    A ->> B: x\n  option %%{x}%%A b\n    A ->> B: y\n  end\n",
+  ],
+  [
+    "runs after a directive at the start of the label of a break of a sequence diagram",
+    "sequenceDiagram\nbreak %%{x}%% A  b\nA->>B: x\nend\n",
+    "sequenceDiagram\n  break %%{x}%%A b\n    A ->> B: x\n  end\n",
   ],
   [
     "runs after a directive at the start of the name after as of a participant of a sequence diagram",
@@ -7419,6 +7476,921 @@ describe("the runs after a directive at the start of a text", () => {
       await expectKept(input, output)
     },
   )
+})
+
+/**
+ * What a text of each group of the table of docs/compatibility.md, Runs of
+ * whitespace in a text that are drawn the same, prints after a directive at
+ * its start, for each form of what follows the directive: two spaces, a tab, a
+ * no-break space, a U+2028, a U+2029, nothing, a second directive, and a
+ * directive that holds a line break or a semicolon.
+ */
+const directiveAtTheStartFormExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "two spaces after a directive at the start of the text of a pie chart",
+    'pie\ntitle %%{x}%%  A  b\n"a": 1\n',
+    'pie\n  title %%{x}%%A b\n  "a": 1\n',
+  ],
+  [
+    "a tab after a directive at the start of the text of a pie chart",
+    'pie\ntitle %%{x}%%\tA  b\n"a": 1\n',
+    'pie\n  title %%{x}%%A b\n  "a": 1\n',
+  ],
+  [
+    "a no-break space after a directive at the start of the text of a pie chart",
+    'pie\ntitle %%{x}%%\u00a0A  b\n"a": 1\n',
+    'pie\n  title %%{x}%%A b\n  "a": 1\n',
+  ],
+  [
+    "a U+2028 after a directive at the start of the text of a pie chart",
+    'pie\ntitle %%{x}%%\u2028A  b\n"a": 1\n',
+    'pie\n  title %%{x}%%\u2028A b\n  "a": 1\n',
+  ],
+  [
+    "a U+2029 after a directive at the start of the text of a pie chart",
+    'pie\ntitle %%{x}%%\u2029A  b\n"a": 1\n',
+    'pie\n  title %%{x}%%\u2029A b\n  "a": 1\n',
+  ],
+  [
+    "no whitespace after a directive at the start of the text of a pie chart",
+    'pie\ntitle %%{x}%%A  b\n"a": 1\n',
+    'pie\n  title %%{x}%%A b\n  "a": 1\n',
+  ],
+  [
+    "two directives with a space between them at the start of the text of a pie chart",
+    'pie\ntitle %%{x}%% %%{y}%% A  b\n"a": 1\n',
+    'pie\n  title %%{x}%% %%{y}%% A  b\n  "a": 1\n',
+  ],
+  [
+    "two directives that touch at the start of the text of a pie chart",
+    'pie\ntitle %%{x}%%%%{y}%%A  b\n"a": 1\n',
+    'pie\n  title %%{x}%%%%{y}%%A b\n  "a": 1\n',
+  ],
+  [
+    "a directive that holds a line break at the start of the text of a pie chart",
+    'pie\ntitle %%{init: {\n}}%% A  b\n"a": 1\n',
+    'pie\n  title %%{init: {\n}}%%A b\n  "a": 1\n',
+  ],
+  [
+    "a directive that holds a semicolon at the start of the text of a pie chart",
+    'pie\ntitle %%{init: {a;b}}%% A  b\n"a": 1\n',
+    'pie\n  title %%{init: {a;b}}%%A b\n  "a": 1\n',
+  ],
+  [
+    "two spaces after a directive at the start of the text of a Wardley map",
+    "wardley-beta\ntitle %%{x}%%  A  b\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title %%{x}%%A b\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a tab after a directive at the start of the text of a Wardley map",
+    "wardley-beta\ntitle %%{x}%%\tA  b\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title %%{x}%%A b\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a no-break space after a directive at the start of the text of a Wardley map",
+    "wardley-beta\ntitle %%{x}%%\u00a0A  b\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title %%{x}%%A b\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 after a directive at the start of the text of a Wardley map",
+    "wardley-beta\ntitle %%{x}%%\u2028A  b\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title %%{x}%%\u2028A b\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2029 after a directive at the start of the text of a Wardley map",
+    "wardley-beta\ntitle %%{x}%%\u2029A  b\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title %%{x}%%\u2029A b\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "no whitespace after a directive at the start of the text of a Wardley map",
+    "wardley-beta\ntitle %%{x}%%A  b\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title %%{x}%%A b\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "two directives with a space between them at the start of the text of a Wardley map",
+    "wardley-beta\ntitle %%{x}%% %%{y}%% A  b\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title %%{x}%% %%{y}%% A  b\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "two directives that touch at the start of the text of a Wardley map",
+    "wardley-beta\ntitle %%{x}%%%%{y}%%A  b\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title %%{x}%%%%{y}%%A b\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a directive that holds a line break at the start of the text of a Wardley map",
+    "wardley-beta\ntitle %%{init: {\n}}%% A  b\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title %%{init: {\n}}%%A b\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a directive that holds a semicolon at the start of the text of a Wardley map",
+    "wardley-beta\ntitle %%{init: {a;b}}%% A  b\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title %%{init: {a;b}}%% A b\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "two spaces after a directive at the start of the text of a quadrant chart",
+    "quadrantChart\ntitle %%{x}%%  A  b\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  title %%{x}%%A b\n  x-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "a tab after a directive at the start of the text of a quadrant chart",
+    "quadrantChart\ntitle %%{x}%%\tA  b\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  title %%{x}%%A b\n  x-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "a no-break space after a directive at the start of the text of a quadrant chart",
+    "quadrantChart\ntitle %%{x}%%\u00a0A  b\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  title %%{x}%%A b\n  x-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 after a directive at the start of the text of a quadrant chart",
+    "quadrantChart\ntitle %%{x}%%\u2028A  b\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  title %%{x}%%\u2028A b\n  x-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2029 after a directive at the start of the text of a quadrant chart",
+    "quadrantChart\ntitle %%{x}%%\u2029A  b\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  title %%{x}%%\u2029A b\n  x-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "no whitespace after a directive at the start of the text of a quadrant chart",
+    "quadrantChart\ntitle %%{x}%%A  b\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  title %%{x}%%A b\n  x-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "two directives with a space between them at the start of the text of a quadrant chart",
+    "quadrantChart\ntitle %%{x}%% %%{y}%% A  b\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  title %%{x}%%%%{y}%%A b\n  x-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "two directives that touch at the start of the text of a quadrant chart",
+    "quadrantChart\ntitle %%{x}%%%%{y}%%A  b\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  title %%{x}%%%%{y}%%A b\n  x-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "a directive that holds a line break at the start of the text of a quadrant chart",
+    "quadrantChart\ntitle %%{init: {\n}}%% A  b\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  title %%{init: {\n}}%% A  b\n  x-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "a directive that holds a semicolon at the start of the text of a quadrant chart",
+    "quadrantChart\ntitle %%{init: {a;b}}%% A  b\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  title %%{init: {a;b}}%%A b\n  x-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "two spaces after a directive at the start of the text of a Gantt chart",
+    "gantt\ntitle %%{x}%%  A  b\n",
+    "gantt\n  title %%{x}%%A b\n",
+  ],
+  [
+    "a tab after a directive at the start of the text of a Gantt chart",
+    "gantt\ntitle %%{x}%%\tA  b\n",
+    "gantt\n  title %%{x}%%A b\n",
+  ],
+  [
+    "a no-break space after a directive at the start of the text of a Gantt chart",
+    "gantt\ntitle %%{x}%%\u00a0A  b\n",
+    "gantt\n  title %%{x}%%\u00a0A b\n",
+  ],
+  [
+    "a U+2028 after a directive at the start of the text of a Gantt chart",
+    "gantt\ntitle %%{x}%%\u2028A  b\n",
+    "gantt\n  title %%{x}%%\u2028A  b\n",
+  ],
+  [
+    "a U+2029 after a directive at the start of the text of a Gantt chart",
+    "gantt\ntitle %%{x}%%\u2029A  b\n",
+    "gantt\n  title %%{x}%%\u2029A  b\n",
+  ],
+  [
+    "no whitespace after a directive at the start of the text of a Gantt chart",
+    "gantt\ntitle %%{x}%%A  b\n",
+    "gantt\n  title %%{x}%%A b\n",
+  ],
+  [
+    "two directives that touch at the start of the text of a Gantt chart",
+    "gantt\ntitle %%{x}%%%%{y}%%A  b\n",
+    "gantt\n  title %%{x}%%%%{y}%%A b\n",
+  ],
+  [
+    "a directive that holds a line break at the start of the text of a Gantt chart",
+    "gantt\ntitle %%{init: {\n}}%% A  b\n",
+    "gantt\n  title %%{init: {\n}}%% A  b\n",
+  ],
+  [
+    "a directive that holds a semicolon at the start of the text of a Gantt chart",
+    "gantt\ntitle %%{init: {a;b}}%% A  b\n",
+    "gantt\n  title %%{init: {a;b}}%%A b\n",
+  ],
+  [
+    "two spaces after a directive at the start of the text of a sequence diagram",
+    "sequenceDiagram\ntitle %%{x}%%  A  b\nA->>B: x\n",
+    "sequenceDiagram\n  title %%{x}%%A  b\n  A ->> B: x\n",
+  ],
+  [
+    "a tab after a directive at the start of the text of a sequence diagram",
+    "sequenceDiagram\ntitle %%{x}%%\tA  b\nA->>B: x\n",
+    "sequenceDiagram\n  title %%{x}%%A  b\n  A ->> B: x\n",
+  ],
+  [
+    "a no-break space after a directive at the start of the text of a sequence diagram",
+    "sequenceDiagram\ntitle %%{x}%%\u00a0A  b\nA->>B: x\n",
+    "sequenceDiagram\n  title %%{x}%%\u00a0A  b\n  A ->> B: x\n",
+  ],
+  [
+    "a U+2028 after a directive at the start of the text of a sequence diagram",
+    "sequenceDiagram\ntitle %%{x}%%\u2028A  b\nA->>B: x\n",
+    "sequenceDiagram\n  title %%{x}%%\u2028A  b\n  A ->> B: x\n",
+  ],
+  [
+    "a U+2029 after a directive at the start of the text of a sequence diagram",
+    "sequenceDiagram\ntitle %%{x}%%\u2029A  b\nA->>B: x\n",
+    "sequenceDiagram\n  title %%{x}%%\u2029A  b\n  A ->> B: x\n",
+  ],
+  [
+    "no whitespace after a directive at the start of the text of a sequence diagram",
+    "sequenceDiagram\ntitle %%{x}%%A  b\nA->>B: x\n",
+    "sequenceDiagram\n  title %%{x}%%A  b\n  A ->> B: x\n",
+  ],
+  [
+    "two directives with a space between them at the start of the text of a sequence diagram",
+    "sequenceDiagram\ntitle %%{x}%% %%{y}%% A  b\nA->>B: x\n",
+    "sequenceDiagram\n  title %%{x}%%%%{y}%%A  b\n  A ->> B: x\n",
+  ],
+  [
+    "two directives that touch at the start of the text of a sequence diagram",
+    "sequenceDiagram\ntitle %%{x}%%%%{y}%%A  b\nA->>B: x\n",
+    "sequenceDiagram\n  title %%{x}%%%%{y}%%A  b\n  A ->> B: x\n",
+  ],
+  [
+    "a directive that holds a line break at the start of the text of a sequence diagram",
+    "sequenceDiagram\ntitle %%{init: {\n}}%% A  b\nA->>B: x\n",
+    "sequenceDiagram\n  title %%{init: {\n}}%% A  b\n  A ->> B: x\n",
+  ],
+  [
+    "a directive that holds a semicolon at the start of the text of a sequence diagram",
+    "sequenceDiagram\ntitle %%{init: {a;b}}%% A  b\nA->>B: x\n",
+    "sequenceDiagram\n  title %%{init: {a;b}}%%A  b\n  A ->> B: x\n",
+  ],
+  [
+    "two spaces after a directive at the start of the text of a Venn diagram",
+    "venn-beta\ntitle %%{x}%%  A  b\nset A\n",
+    "venn-beta\n  title %%{x}%%  A  b\n  set A\n",
+  ],
+  [
+    "a tab after a directive at the start of the text of a Venn diagram",
+    "venn-beta\ntitle %%{x}%%\tA  b\nset A\n",
+    "venn-beta\n  title %%{x}%%\tA  b\n  set A\n",
+  ],
+  [
+    "a no-break space after a directive at the start of the text of a Venn diagram",
+    "venn-beta\ntitle %%{x}%%\u00a0A  b\nset A\n",
+    "venn-beta\n  title %%{x}%%\u00a0A  b\n  set A\n",
+  ],
+  [
+    "a U+2028 after a directive at the start of the text of a Venn diagram",
+    "venn-beta\ntitle %%{x}%%\u2028A  b\nset A\n",
+    "venn-beta\n  title %%{x}%%\u2028A  b\n  set A\n",
+  ],
+  [
+    "a U+2029 after a directive at the start of the text of a Venn diagram",
+    "venn-beta\ntitle %%{x}%%\u2029A  b\nset A\n",
+    "venn-beta\n  title %%{x}%%\u2029A  b\n  set A\n",
+  ],
+  [
+    "no whitespace after a directive at the start of the text of a Venn diagram",
+    "venn-beta\ntitle %%{x}%%A  b\nset A\n",
+    "venn-beta\n  title %%{x}%%A  b\n  set A\n",
+  ],
+  [
+    "two directives with a space between them at the start of the text of a Venn diagram",
+    "venn-beta\ntitle %%{x}%% %%{y}%% A  b\nset A\n",
+    "venn-beta\n  title %%{x}%% %%{y}%% A  b\n  set A\n",
+  ],
+  [
+    "two directives that touch at the start of the text of a Venn diagram",
+    "venn-beta\ntitle %%{x}%%%%{y}%%A  b\nset A\n",
+    "venn-beta\n  title %%{x}%%%%{y}%%A  b\n  set A\n",
+  ],
+  [
+    "a directive that holds a line break at the start of the text of a Venn diagram",
+    "venn-beta\ntitle %%{init: {\n}}%% A  b\nset A\n",
+    "venn-beta\n  title %%{init: {\n}}%% A  b\n  set A\n",
+  ],
+  [
+    "a directive that holds a semicolon at the start of the text of a Venn diagram",
+    "venn-beta\ntitle %%{init: {a;b}}%% A  b\nset A\n",
+    "venn-beta\n  title %%{init: {a;b}}%% A  b\n  set A\n",
+  ],
+  [
+    "two spaces after a directive at the start of the text of an ishikawa literal",
+    "ishikawa\n  R\n    %%{x}%%  A  b\n",
+    "ishikawa\n  R\n  %%{x}%%  A b\n",
+  ],
+  [
+    "a tab after a directive at the start of the text of an ishikawa literal",
+    "ishikawa\n  R\n    %%{x}%%\tA  b\n",
+    "ishikawa\n  R\n   %%{x}%% A b\n",
+  ],
+  [
+    "a no-break space after a directive at the start of the text of an ishikawa literal",
+    "ishikawa\n  R\n    %%{x}%%\u00a0A  b\n",
+    "ishikawa\n  R\n   %%{x}%% A b\n",
+  ],
+  [
+    "a U+2028 after a directive at the start of the text of an ishikawa literal",
+    "ishikawa\n  R\n    %%{x}%%\u2028A  b\n",
+    "ishikawa\n  R\n   %%{x}%% A b\n",
+  ],
+  [
+    "a U+2029 after a directive at the start of the text of an ishikawa literal",
+    "ishikawa\n  R\n    %%{x}%%\u2029A  b\n",
+    "ishikawa\n  R\n   %%{x}%% A b\n",
+  ],
+  [
+    "no whitespace after a directive at the start of the text of an ishikawa literal",
+    "ishikawa\n  R\n    %%{x}%%A  b\n",
+    "ishikawa\n  R\n    %%{x}%%A b\n",
+  ],
+  [
+    "two directives with a space between them at the start of the text of an ishikawa literal",
+    "ishikawa\n  R\n    %%{x}%% %%{y}%% A  b\n",
+    "ishikawa\n  R\n  %%{x}%% %%{y}%% A b\n",
+  ],
+  [
+    "two directives that touch at the start of the text of an ishikawa literal",
+    "ishikawa\n  R\n    %%{x}%%%%{y}%%A  b\n",
+    "ishikawa\n  R\n    %%{x}%%%%{y}%%A b\n",
+  ],
+  [
+    "a directive that holds a line break at the start of the text of an ishikawa literal",
+    "ishikawa\n  R\n    %%{init: {\n}}%% A  b\n",
+    "ishikawa\n  R\n   %%{init: {\n}}%% A b\n",
+  ],
+  [
+    "a directive that holds a semicolon at the start of the text of an ishikawa literal",
+    "ishikawa\n  R\n    %%{init: {a;b}}%% A  b\n",
+    "ishikawa\n  R\n   %%{init: {a;b}}%% A b\n",
+  ],
+  [
+    "two spaces after a directive at the start of the text of a kanban card",
+    "kanban\n  S\n    %%{x}%%  A  b\n",
+    "kanban\n  S\n  %%{x}%%  A  b\n",
+  ],
+  [
+    "a tab after a directive at the start of the text of a kanban card",
+    "kanban\n  S\n    %%{x}%%\tA  b\n",
+    "kanban\n  S\n   %%{x}%% A  b\n",
+  ],
+  [
+    "a no-break space after a directive at the start of the text of a kanban card",
+    "kanban\n  S\n    %%{x}%%\u00a0A  b\n",
+    "kanban\n  S\n   %%{x}%% A  b\n",
+  ],
+  [
+    "a U+2028 after a directive at the start of the text of a kanban card",
+    "kanban\n  S\n    %%{x}%%\u2028A  b\n",
+    "kanban\n  S\n   %%{x}%% A  b\n",
+  ],
+  [
+    "a U+2029 after a directive at the start of the text of a kanban card",
+    "kanban\n  S\n    %%{x}%%\u2029A  b\n",
+    "kanban\n  S\n   %%{x}%% A  b\n",
+  ],
+  [
+    "no whitespace after a directive at the start of the text of a kanban card",
+    "kanban\n  S\n    %%{x}%%A  b\n",
+    "kanban\n  S\n    %%{x}%%A  b\n",
+  ],
+  [
+    "two directives with a space between them at the start of the text of a kanban card",
+    "kanban\n  S\n    %%{x}%% %%{y}%% A  b\n",
+    "kanban\n  S\n  %%{x}%% %%{y}%% A  b\n",
+  ],
+  [
+    "two directives that touch at the start of the text of a kanban card",
+    "kanban\n  S\n    %%{x}%%%%{y}%%A  b\n",
+    "kanban\n  S\n    %%{x}%%%%{y}%%A  b\n",
+  ],
+  [
+    "a directive that holds a line break at the start of the text of a kanban card",
+    "kanban\n  S\n    %%{init: {\n}}%% A  b\n",
+    "kanban\n  S\n   %%{init: {\n}}%% A  b\n",
+  ],
+  [
+    "a directive that holds a semicolon at the start of the text of a kanban card",
+    "kanban\n  S\n    %%{init: {a;b}}%% A  b\n",
+    "kanban\n  S\n   %%{init: {a;b}}%% A  b\n",
+  ],
+  [
+    "two spaces after a directive at the start of the text of a treeView node",
+    "treeView-beta\nR\n  %%{x}%%  A  b\n",
+    "treeView-beta\n  R\n  %%{x}%%  A  b\n",
+  ],
+  [
+    "a tab after a directive at the start of the text of a treeView node",
+    "treeView-beta\nR\n  %%{x}%%\tA  b\n",
+    "treeView-beta\n  R\n   %%{x}%% A  b\n",
+  ],
+  [
+    "a no-break space after a directive at the start of the text of a treeView node",
+    "treeView-beta\nR\n  %%{x}%%\u00a0A  b\n",
+    "treeView-beta\n  R\n    %%{x}%%\u00a0A  b\n",
+  ],
+  [
+    "a U+2028 after a directive at the start of the text of a treeView node",
+    "treeView-beta\nR\n  %%{x}%%\u2028A  b\n",
+    "treeView-beta\n  R\n    %%{x}%%\u2028A  b\n",
+  ],
+  [
+    "a U+2029 after a directive at the start of the text of a treeView node",
+    "treeView-beta\nR\n  %%{x}%%\u2029A  b\n",
+    "treeView-beta\n  R\n    %%{x}%%\u2029A  b\n",
+  ],
+  [
+    "no whitespace after a directive at the start of the text of a treeView node",
+    "treeView-beta\nR\n  %%{x}%%A  b\n",
+    "treeView-beta\n  R\n    %%{x}%%A  b\n",
+  ],
+  [
+    "two directives with a space between them at the start of the text of a treeView node",
+    "treeView-beta\nR\n  %%{x}%% %%{y}%% A  b\n",
+    "treeView-beta\n  R\n  %%{x}%% %%{y}%% A  b\n",
+  ],
+  [
+    "two directives that touch at the start of the text of a treeView node",
+    "treeView-beta\nR\n  %%{x}%%%%{y}%%A  b\n",
+    "treeView-beta\n  R\n    %%{x}%%%%{y}%%A  b\n",
+  ],
+  [
+    "a directive that holds a line break at the start of the text of a treeView node",
+    "treeView-beta\nR\n  %%{init: {\n}}%% A  b\n",
+    "treeView-beta\n  R\n   %%{init: {\n}}%% A  b\n",
+  ],
+  [
+    "a directive that holds a semicolon at the start of the text of a treeView node",
+    "treeView-beta\nR\n  %%{init: {a;b}}%% A  b\n",
+    "treeView-beta\n  R\n   %%{init: {a;b}}%% A  b\n",
+  ],
+  [
+    "two spaces after a directive at the start of the accDescr line of a flowchart",
+    "flowchart LR\naccDescr: %%{x}%%  A  b\nA-->B\n",
+    "flowchart LR\n  accDescr: %%{x}%%A b\n  A --> B\n",
+  ],
+  [
+    "a tab after a directive at the start of the accDescr line of a flowchart",
+    "flowchart LR\naccDescr: %%{x}%%\tA  b\nA-->B\n",
+    "flowchart LR\n  accDescr: %%{x}%%A b\n  A --> B\n",
+  ],
+  [
+    "a no-break space after a directive at the start of the accDescr line of a flowchart",
+    "flowchart LR\naccDescr: %%{x}%%\u00a0A  b\nA-->B\n",
+    "flowchart LR\n  accDescr: %%{x}%%A b\n  A --> B\n",
+  ],
+  [
+    "a U+2028 after a directive at the start of the accDescr line of a flowchart",
+    "flowchart LR\naccDescr: %%{x}%%\u2028A  b\nA-->B\n",
+    "flowchart LR\n  accDescr: %%{x}%%\u2028A b\n  A --> B\n",
+  ],
+  [
+    "a U+2029 after a directive at the start of the accDescr line of a flowchart",
+    "flowchart LR\naccDescr: %%{x}%%\u2029A  b\nA-->B\n",
+    "flowchart LR\n  accDescr: %%{x}%%\u2029A b\n  A --> B\n",
+  ],
+  [
+    "no whitespace after a directive at the start of the accDescr line of a flowchart",
+    "flowchart LR\naccDescr: %%{x}%%A  b\nA-->B\n",
+    "flowchart LR\n  accDescr: %%{x}%%A b\n  A --> B\n",
+  ],
+  [
+    "two directives with a space between them at the start of the accDescr line of a flowchart",
+    "flowchart LR\naccDescr: %%{x}%% %%{y}%% A  b\nA-->B\n",
+    "flowchart LR\n  accDescr: %%{x}%%%%{y}%%A b\n  A --> B\n",
+  ],
+  [
+    "two directives that touch at the start of the accDescr line of a flowchart",
+    "flowchart LR\naccDescr: %%{x}%%%%{y}%%A  b\nA-->B\n",
+    "flowchart LR\n  accDescr: %%{x}%%%%{y}%%A b\n  A --> B\n",
+  ],
+  [
+    "a directive that holds a line break at the start of the accDescr line of a flowchart",
+    "flowchart LR\naccDescr: %%{init: {\n}}%% A  b\nA-->B\n",
+    "flowchart LR\n  accDescr: %%{init: {\n}}%%A b\n  A --> B\n",
+  ],
+  [
+    "a directive that holds a semicolon at the start of the accDescr line of a flowchart",
+    "flowchart LR\naccDescr: %%{init: {a;b}}%% A  b\nA-->B\n",
+    "flowchart LR\n  accDescr: %%{init: {a;b}}%%A b\n  A --> B\n",
+  ],
+  [
+    "two spaces after a directive at the start of the accDescr line of a state diagram",
+    "stateDiagram-v2\naccDescr: %%{x}%%  A  b\nA-->B\n",
+    "stateDiagram-v2\n  accDescr: %%{x}%%A b\n  A --> B\n",
+  ],
+  [
+    "a tab after a directive at the start of the accDescr line of a state diagram",
+    "stateDiagram-v2\naccDescr: %%{x}%%\tA  b\nA-->B\n",
+    "stateDiagram-v2\n  accDescr: %%{x}%%A b\n  A --> B\n",
+  ],
+  [
+    "a no-break space after a directive at the start of the accDescr line of a state diagram",
+    "stateDiagram-v2\naccDescr: %%{x}%%\u00a0A  b\nA-->B\n",
+    "stateDiagram-v2\n  accDescr: %%{x}%%A b\n  A --> B\n",
+  ],
+  [
+    "a U+2028 after a directive at the start of the accDescr line of a state diagram",
+    "stateDiagram-v2\naccDescr: %%{x}%%\u2028A  b\nA-->B\n",
+    "stateDiagram-v2\n  accDescr: %%{x}%%\u2028A  b\n  A --> B\n",
+  ],
+  [
+    "a U+2029 after a directive at the start of the accDescr line of a state diagram",
+    "stateDiagram-v2\naccDescr: %%{x}%%\u2029A  b\nA-->B\n",
+    "stateDiagram-v2\n  accDescr: %%{x}%%\u2029A  b\n  A --> B\n",
+  ],
+  [
+    "no whitespace after a directive at the start of the accDescr line of a state diagram",
+    "stateDiagram-v2\naccDescr: %%{x}%%A  b\nA-->B\n",
+    "stateDiagram-v2\n  accDescr: %%{x}%%A b\n  A --> B\n",
+  ],
+  [
+    "two directives with a space between them at the start of the accDescr line of a state diagram",
+    "stateDiagram-v2\naccDescr: %%{x}%% %%{y}%% A  b\nA-->B\n",
+    "stateDiagram-v2\n  accDescr: %%{x}%%%%{y}%%A b\n  A --> B\n",
+  ],
+  [
+    "two directives that touch at the start of the accDescr line of a state diagram",
+    "stateDiagram-v2\naccDescr: %%{x}%%%%{y}%%A  b\nA-->B\n",
+    "stateDiagram-v2\n  accDescr: %%{x}%%%%{y}%%A b\n  A --> B\n",
+  ],
+  [
+    "a directive that holds a line break at the start of the accDescr line of a state diagram",
+    "stateDiagram-v2\naccDescr: %%{init: {\n}}%% A  b\nA-->B\n",
+    "stateDiagram-v2\n  accDescr: %%{init: {\n}}%%A b\n  A --> B\n",
+  ],
+  [
+    "a directive that holds a semicolon at the start of the accDescr line of a state diagram",
+    "stateDiagram-v2\naccDescr: %%{init: {a;b}}%% A  b\nA-->B\n",
+    "stateDiagram-v2\n  accDescr: %%{init: {a;b}}%%A b\n  A --> B\n",
+  ],
+  [
+    "two spaces after a directive at the start of the label of a quadrant of a quadrant chart",
+    "quadrantChart\nx-axis L --> R\ny-axis B --> T\nquadrant-1 %%{x}%%  A  b\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  x-axis L --> R\n  y-axis B --> T\n  quadrant-1 %%{x}%%A b\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "a no-break space after a directive at the start of the label of a quadrant of a quadrant chart",
+    "quadrantChart\nx-axis L --> R\ny-axis B --> T\nquadrant-1 %%{x}%%\u00a0A  b\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  x-axis L --> R\n  y-axis B --> T\n  quadrant-1 %%{x}%%\u00a0A b\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 after a directive at the start of the label of a quadrant of a quadrant chart",
+    "quadrantChart\nx-axis L --> R\ny-axis B --> T\nquadrant-1 %%{x}%%\u2028A  b\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  x-axis L --> R\n  y-axis B --> T\n  quadrant-1 %%{x}%%\u2028A  b\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2029 after a directive at the start of the label of a quadrant of a quadrant chart",
+    "quadrantChart\nx-axis L --> R\ny-axis B --> T\nquadrant-1 %%{x}%%\u2029A  b\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  x-axis L --> R\n  y-axis B --> T\n  quadrant-1 %%{x}%%\u2029A  b\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "no whitespace after a directive at the start of the label of a quadrant of a quadrant chart",
+    "quadrantChart\nx-axis L --> R\ny-axis B --> T\nquadrant-1 %%{x}%%A  b\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  x-axis L --> R\n  y-axis B --> T\n  quadrant-1 %%{x}%%A b\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "two directives with a space between them at the start of the label of a quadrant of a quadrant chart",
+    "quadrantChart\nx-axis L --> R\ny-axis B --> T\nquadrant-1 %%{x}%% %%{y}%% A  b\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  x-axis L --> R\n  y-axis B --> T\n  quadrant-1 %%{x}%%%%{y}%%A b\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "two directives that touch at the start of the label of a quadrant of a quadrant chart",
+    "quadrantChart\nx-axis L --> R\ny-axis B --> T\nquadrant-1 %%{x}%%%%{y}%%A  b\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  x-axis L --> R\n  y-axis B --> T\n  quadrant-1 %%{x}%%%%{y}%%A b\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "a directive that holds a line break at the start of the label of a quadrant of a quadrant chart",
+    "quadrantChart\nx-axis L --> R\ny-axis B --> T\nquadrant-1 %%{init: {\n}}%% A  b\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  x-axis L --> R\n  y-axis B --> T\n  quadrant-1 %%{init: {\n}}%% A  b\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "a directive that holds a semicolon at the start of the label of a quadrant of a quadrant chart",
+    "quadrantChart\nx-axis L --> R\ny-axis B --> T\nquadrant-1 %%{init: {a;b}}%% A  b\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  x-axis L --> R\n  y-axis B --> T\n  quadrant-1 %%{init: {a;b}}%%A b\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "two spaces after a directive at the start of a member of a class diagram",
+    "classDiagram\nclass A {\n  %%{x}%%  +x  y\n}\n",
+    "classDiagram\n  class A {\n    %%{x}%% +x y\n  }\n",
+  ],
+  [
+    "a tab after a directive at the start of a member of a class diagram",
+    "classDiagram\nclass A {\n  %%{x}%%\t+x  y\n}\n",
+    "classDiagram\n  class A {\n    %%{x}%% +x y\n  }\n",
+  ],
+  [
+    "a no-break space after a directive at the start of a member of a class diagram",
+    "classDiagram\nclass A {\n  %%{x}%%\u00a0+x  y\n}\n",
+    "classDiagram\n  class A {\n    %%{x}%% +x y\n  }\n",
+  ],
+  [
+    "a U+2028 after a directive at the start of a member of a class diagram",
+    "classDiagram\nclass A {\n  %%{x}%%\u2028+x  y\n}\n",
+    "classDiagram\n  class A {\n    %%{x}%% +x y\n  }\n",
+  ],
+  [
+    "a U+2029 after a directive at the start of a member of a class diagram",
+    "classDiagram\nclass A {\n  %%{x}%%\u2029+x  y\n}\n",
+    "classDiagram\n  class A {\n    %%{x}%% +x y\n  }\n",
+  ],
+  [
+    "no whitespace after a directive at the start of a member of a class diagram",
+    "classDiagram\nclass A {\n  %%{x}%%+x  y\n}\n",
+    "classDiagram\n  class A {\n    %%{x}%%+x y\n  }\n",
+  ],
+  [
+    "two directives with a space between them at the start of a member of a class diagram",
+    "classDiagram\nclass A {\n  %%{x}%% %%{y}%% +x  y\n}\n",
+    "classDiagram\n  class A {\n    %%{x}%% %%{y}%% +x y\n  }\n",
+  ],
+  [
+    "two directives that touch at the start of a member of a class diagram",
+    "classDiagram\nclass A {\n  %%{x}%%%%{y}%%+x  y\n}\n",
+    "classDiagram\n  class A {\n    %%{x}%%%%{y}%%+x y\n  }\n",
+  ],
+  [
+    "a directive that holds a line break at the start of a member of a class diagram",
+    "classDiagram\nclass A {\n  %%{init: {\n}}%% +x  y\n}\n",
+    "classDiagram\n  class A {\n    %%{init: {\n}}%% +x y\n  }\n",
+  ],
+  [
+    "a directive that holds a semicolon at the start of a member of a class diagram",
+    "classDiagram\nclass A {\n  %%{init: {a;b}}%% +x  y\n}\n",
+    "classDiagram\n  class A {\n    %%{init: {a;b}}%% +x  y\n  }\n",
+  ],
+  [
+    "two spaces after a directive at the start of a member line of a class diagram",
+    "classDiagram\nA : %%{x}%%  +x  y\n",
+    "classDiagram\n  A : %%{x}%%+x y\n",
+  ],
+  [
+    "a tab after a directive at the start of a member line of a class diagram",
+    "classDiagram\nA : %%{x}%%\t+x  y\n",
+    "classDiagram\n  A : %%{x}%%+x y\n",
+  ],
+  [
+    "a no-break space after a directive at the start of a member line of a class diagram",
+    "classDiagram\nA : %%{x}%%\u00a0+x  y\n",
+    "classDiagram\n  A : %%{x}%%+x y\n",
+  ],
+  [
+    "a U+2028 after a directive at the start of a member line of a class diagram",
+    "classDiagram\nA : %%{x}%%\u2028+x  y\n",
+    "classDiagram\n  A : %%{x}%%\u2028+x y\n",
+  ],
+  [
+    "a U+2029 after a directive at the start of a member line of a class diagram",
+    "classDiagram\nA : %%{x}%%\u2029+x  y\n",
+    "classDiagram\n  A : %%{x}%%\u2029+x y\n",
+  ],
+  [
+    "no whitespace after a directive at the start of a member line of a class diagram",
+    "classDiagram\nA : %%{x}%%+x  y\n",
+    "classDiagram\n  A : %%{x}%%+x y\n",
+  ],
+  [
+    "two directives with a space between them at the start of a member line of a class diagram",
+    "classDiagram\nA : %%{x}%% %%{y}%% +x  y\n",
+    "classDiagram\n  A : %%{x}%%%%{y}%%+x y\n",
+  ],
+  [
+    "two directives that touch at the start of a member line of a class diagram",
+    "classDiagram\nA : %%{x}%%%%{y}%%+x  y\n",
+    "classDiagram\n  A : %%{x}%%%%{y}%%+x y\n",
+  ],
+  [
+    "a directive that holds a line break at the start of a member line of a class diagram",
+    "classDiagram\nA : %%{init: {\n}}%% +x  y\n",
+    "classDiagram\n  A : %%{init: {\n}}%%+x y\n",
+  ],
+  [
+    "a directive that holds a semicolon at the start of a member line of a class diagram",
+    "classDiagram\nA : %%{init: {a;b}}%% +x  y\n",
+    "classDiagram\n  A : %%{init: {a;b}}%%+x  y\n",
+  ],
+  [
+    "two spaces after a directive at the start of the label of a relation of a class diagram",
+    "classDiagram\nA --> B : %%{x}%%  A  b\n",
+    "classDiagram\n  A --> B : %%{x}%%A  b\n",
+  ],
+  [
+    "a tab after a directive at the start of the label of a relation of a class diagram",
+    "classDiagram\nA --> B : %%{x}%%\tA  b\n",
+    "classDiagram\n  A --> B : %%{x}%%A  b\n",
+  ],
+  [
+    "a no-break space after a directive at the start of the label of a relation of a class diagram",
+    "classDiagram\nA --> B : %%{x}%%\u00a0A  b\n",
+    "classDiagram\n  A --> B : %%{x}%%A  b\n",
+  ],
+  [
+    "a U+2028 after a directive at the start of the label of a relation of a class diagram",
+    "classDiagram\nA --> B : %%{x}%%\u2028A  b\n",
+    "classDiagram\n  A --> B : %%{x}%%\u2028A  b\n",
+  ],
+  [
+    "a U+2029 after a directive at the start of the label of a relation of a class diagram",
+    "classDiagram\nA --> B : %%{x}%%\u2029A  b\n",
+    "classDiagram\n  A --> B : %%{x}%%\u2029A  b\n",
+  ],
+  [
+    "no whitespace after a directive at the start of the label of a relation of a class diagram",
+    "classDiagram\nA --> B : %%{x}%%A  b\n",
+    "classDiagram\n  A --> B : %%{x}%%A  b\n",
+  ],
+  [
+    "two directives with a space between them at the start of the label of a relation of a class diagram",
+    "classDiagram\nA --> B : %%{x}%% %%{y}%% A  b\n",
+    "classDiagram\n  A --> B : %%{x}%%%%{y}%%A  b\n",
+  ],
+  [
+    "two directives that touch at the start of the label of a relation of a class diagram",
+    "classDiagram\nA --> B : %%{x}%%%%{y}%%A  b\n",
+    "classDiagram\n  A --> B : %%{x}%%%%{y}%%A  b\n",
+  ],
+  [
+    "a directive that holds a line break at the start of the label of a relation of a class diagram",
+    "classDiagram\nA --> B : %%{init: {\n}}%% A  b\n",
+    "classDiagram\n  A --> B : %%{init: {\n}}%%A  b\n",
+  ],
+  [
+    "a directive that holds a semicolon at the start of the label of a relation of a class diagram",
+    "classDiagram\nA --> B : %%{init: {a;b}}%% A  b\n",
+    "classDiagram\n  A --> B : %%{init: {a;b}}%%A  b\n",
+  ],
+]
+
+/**
+ * The whitespace characters that are no space, tab, or line separator and are
+ * not a no-break space: a text of the table prints each of them as it prints
+ * the no-break space.
+ */
+const whitespaceLikeANoBreakSpace = [
+  "\u000b",
+  "\f",
+  "\u1680",
+  "\u2000",
+  "\u2001",
+  "\u2002",
+  "\u2003",
+  "\u2004",
+  "\u2005",
+  "\u2006",
+  "\u2007",
+  "\u2008",
+  "\u2009",
+  "\u200a",
+  "\u202f",
+  "\u205f",
+  "\u3000",
+  "\ufeff",
+]
+
+/** What mermaid.js rejects after a directive at the start of a label of a quadrant chart. */
+const rejectedAfterAQuadrantLabelDirective = ["\u000b", "\f"]
+
+/**
+ * A text of each group with a no-break space after a directive at its start,
+ * and the characters that are printed as the no-break space is.
+ */
+const directiveAtTheStartLikeANoBreakSpaceExamples: readonly (readonly [
+  string,
+  string,
+  string,
+  readonly string[],
+])[] = [
+  [
+    "the other whitespace characters that are like a no-break space after a directive at the start of the text of a pie chart",
+    'pie\ntitle %%{x}%%\u00a0A  b\n"a": 1\n',
+    'pie\n  title %%{x}%%A b\n  "a": 1\n',
+    whitespaceLikeANoBreakSpace,
+  ],
+  [
+    "the other whitespace characters that are like a no-break space after a directive at the start of the text of a Wardley map",
+    "wardley-beta\ntitle %%{x}%%\u00a0A  b\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title %%{x}%%A b\n  component A [0.5, 0.5]\n",
+    whitespaceLikeANoBreakSpace,
+  ],
+  [
+    "the other whitespace characters that are like a no-break space after a directive at the start of the text of a quadrant chart",
+    "quadrantChart\ntitle %%{x}%%\u00a0A  b\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  title %%{x}%%A b\n  x-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+    whitespaceLikeANoBreakSpace,
+  ],
+  [
+    "the other whitespace characters that are like a no-break space after a directive at the start of the text of a Gantt chart",
+    "gantt\ntitle %%{x}%%\u00a0A  b\n",
+    "gantt\n  title %%{x}%%\u00a0A b\n",
+    whitespaceLikeANoBreakSpace,
+  ],
+  [
+    "the other whitespace characters that are like a no-break space after a directive at the start of the text of a sequence diagram",
+    "sequenceDiagram\ntitle %%{x}%%\u00a0A  b\nA->>B: x\n",
+    "sequenceDiagram\n  title %%{x}%%\u00a0A  b\n  A ->> B: x\n",
+    whitespaceLikeANoBreakSpace,
+  ],
+  [
+    "the other whitespace characters that are like a no-break space after a directive at the start of the text of a Venn diagram",
+    "venn-beta\ntitle %%{x}%%\u00a0A  b\nset A\n",
+    "venn-beta\n  title %%{x}%%\u00a0A  b\n  set A\n",
+    whitespaceLikeANoBreakSpace,
+  ],
+  [
+    "the other whitespace characters that are like a no-break space after a directive at the start of the text of an ishikawa literal",
+    "ishikawa\n  R\n    %%{x}%%\u00a0A  b\n",
+    "ishikawa\n  R\n   %%{x}%% A b\n",
+    whitespaceLikeANoBreakSpace,
+  ],
+  [
+    "the other whitespace characters that are like a no-break space after a directive at the start of the text of a kanban card",
+    "kanban\n  S\n    %%{x}%%\u00a0A  b\n",
+    "kanban\n  S\n   %%{x}%% A  b\n",
+    whitespaceLikeANoBreakSpace,
+  ],
+  [
+    "the other whitespace characters that are like a no-break space after a directive at the start of the text of a treeView node",
+    "treeView-beta\nR\n  %%{x}%%\u00a0A  b\n",
+    "treeView-beta\n  R\n    %%{x}%%\u00a0A  b\n",
+    whitespaceLikeANoBreakSpace,
+  ],
+  [
+    "the other whitespace characters that are like a no-break space after a directive at the start of the accDescr line of a flowchart",
+    "flowchart LR\naccDescr: %%{x}%%\u00a0A  b\nA-->B\n",
+    "flowchart LR\n  accDescr: %%{x}%%A b\n  A --> B\n",
+    whitespaceLikeANoBreakSpace,
+  ],
+  [
+    "the other whitespace characters that are like a no-break space after a directive at the start of the accDescr line of a state diagram",
+    "stateDiagram-v2\naccDescr: %%{x}%%\u00a0A  b\nA-->B\n",
+    "stateDiagram-v2\n  accDescr: %%{x}%%A b\n  A --> B\n",
+    whitespaceLikeANoBreakSpace,
+  ],
+  [
+    "the other whitespace characters that are like a no-break space after a directive at the start of the label of a quadrant of a quadrant chart",
+    "quadrantChart\nx-axis L --> R\ny-axis B --> T\nquadrant-1 %%{x}%%\u00a0A  b\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  x-axis L --> R\n  y-axis B --> T\n  quadrant-1 %%{x}%%\u00a0A b\n  A: [0.5, 0.5]\n",
+    whitespaceLikeANoBreakSpace.filter(
+      (character) => !rejectedAfterAQuadrantLabelDirective.includes(character),
+    ),
+  ],
+  [
+    "the other whitespace characters that are like a no-break space after a directive at the start of a member of a class diagram",
+    "classDiagram\nclass A {\n  %%{x}%%\u00a0+x  y\n}\n",
+    "classDiagram\n  class A {\n    %%{x}%% +x y\n  }\n",
+    whitespaceLikeANoBreakSpace,
+  ],
+  [
+    "the other whitespace characters that are like a no-break space after a directive at the start of a member line of a class diagram",
+    "classDiagram\nA : %%{x}%%\u00a0+x  y\n",
+    "classDiagram\n  A : %%{x}%%+x y\n",
+    whitespaceLikeANoBreakSpace,
+  ],
+  [
+    "the other whitespace characters that are like a no-break space after a directive at the start of the label of a relation of a class diagram",
+    "classDiagram\nA --> B : %%{x}%%\u00a0A  b\n",
+    "classDiagram\n  A --> B : %%{x}%%A  b\n",
+    whitespaceLikeANoBreakSpace,
+  ],
+]
+
+describe("the whitespace after a directive at the start of a text", () => {
+  it.each(directiveAtTheStartFormExamples)(
+    "prints %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+
+  it.each(directiveAtTheStartLikeANoBreakSpaceExamples)(
+    "prints %s",
+    async (_name, input, output, characters) => {
+      for (const character of characters) {
+        await expectKept(
+          input.replace("\u00a0", character),
+          output.replaceAll("\u00a0", character),
+        )
+      }
+    },
+  )
+
+  it("rejects a tab, a vertical tab, and a form feed after a directive at the start of the label of a quadrant of a quadrant chart, as mermaid.js does", async () => {
+    for (const character of ["\t", ...rejectedAfterAQuadrantLabelDirective]) {
+      const input = `quadrantChart\nx-axis L --> R\ny-axis B --> T\nquadrant-1 %%{x}%%${character}A  b\nA: [0.5, 0.5]\n`
+      await expect(format(input)).rejects.toThrow("Unexpected token")
+    }
+  })
 })
 
 describe("the runs before a comment that ends an accDescr line or another text", () => {

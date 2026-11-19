@@ -1749,13 +1749,15 @@ railroad 図の文字列と特殊シーケンスです。
 - 複数行のテキストと、コメント、ディレクティブ、
   U+2028 か U+2029 を含むテキスト。
   mermaid.js は、それらの行や印を置かれた場所によって読むからです。
-  テキストの先頭か末尾だけにあるディレクティブはそのような印ではなく、
+  テキストの末尾だけにあるディレクティブはそのような印ではなく、
   テキストはそれを除いたときと同じに印字します。
   詳しくは
   [同じに描かれるキーワードの後のテキスト](#同じに描かれるキーワードの後のテキスト)
   を参照してください。
   テキストを終えるコメントも、そのような印ではありません。
-  そのときの印字は、このリストの後の表のとおりです。
+  そのときの印字は、このリストの後の最初の表のとおりです。
+  テキストの先頭のディレクティブも、そのような印ではありません。
+  そのときの印字は、このリストの後の 2 番目の表のとおりです。
 
   [fixture: pie/directives-and-semicolons/global-value]
 
@@ -1871,25 +1873,25 @@ railroad 図の文字列と特殊シーケンスです。
 コメントの前の連なりは、表のとおりに印字します（`A  b  %% c` は、
 テキスト `A  b` とコメント `%% c` です）。
 
-| テキスト                                                   | 図種                                                                                                                                                                                                                                                                                                                                                                                  | 書かれた形                                                              | 印字                                                              |
-| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| `title`                                                    | pie chart、radar chart、packet diagram、architecture diagram、gitGraph、cynefin diagram、treemap、Wardley map、treeView、info diagram、railroad diagram、quadrant chart、Gantt chart、user journey、timeline、sequence diagram、Venn diagram、C4 diagram                                                                                                                              | `title A  b  %% c`                                                      | `title A b %% c`                                                  |
-| `accDescr:` の行                                           | flowchart、class diagram、state diagram、ER diagram、Gantt chart、user journey、timeline、sequence diagram、requirement diagram、pie chart、gitGraph、radar chart、packet diagram、architecture diagram、cynefin diagram、treemap、Wardley map、treeView、info diagram、railroad diagram、quadrant chart、XY chart、C4 diagram、agentflow diagram、ishikawa diagram、use case diagram | `accDescr: A  b  %% c`                                                  | `accDescr: A b %% c`                                              |
-| メッセージ                                                 | sequence                                                                                                                                                                                                                                                                                                                                                                              | `A->>B: A  b  %% c`                                                     | `A ->> B: A b %% c`                                               |
-| ノート                                                     | sequence                                                                                                                                                                                                                                                                                                                                                                              | `Note over A: A  b  %% c`                                               | `Note over A: A b %% c`                                           |
-| `loop`、`alt`、`else`、`opt`、`par`、`and`、`box` のラベル | sequence                                                                                                                                                                                                                                                                                                                                                                              | `loop A  b  %% c`                                                       | `loop A b %% c`                                                   |
-| `as` の後の名前                                            | sequence                                                                                                                                                                                                                                                                                                                                                                              | `participant A as A  b  %% c`                                           | `participant A as A b %% c`                                       |
-| `text` のフィールド                                        | requirement                                                                                                                                                                                                                                                                                                                                                                           | `text: A  b  %% c`                                                      | `text: A b %% c`                                                  |
-| `type:` と `docRef:` のフィールド                          | requirement                                                                                                                                                                                                                                                                                                                                                                           | `type: A  b  %% c`、`docRef: A  b  %% c`                                | `type: A b %% c`、`docRef: A b %% c`                              |
-| リンクのテキスト                                           | Wardley map                                                                                                                                                                                                                                                                                                                                                                           | `A -> B; A  b  %% c`                                                    | `A -> B; A b %% c`                                                |
-| `title`                                                    | block diagram                                                                                                                                                                                                                                                                                                                                                                         | `title A  b  %% c`                                                      | `title A b %% c`                                                  |
-| 象限のラベル、軸のラベル                                   | quadrant                                                                                                                                                                                                                                                                                                                                                                              | `quadrant-1 A  b  %% c`、`x-axis A  b  %% c`、`x-axis L --> A  b  %% c` | `quadrant-1 A b %% c`、`x-axis A b %% c`、`x-axis L --> A b %% c` |
-| メンバー                                                   | class                                                                                                                                                                                                                                                                                                                                                                                 | `+x  y  %% c`                                                           | `+x y %% c`                                                       |
-| subgraph のタイトル                                        | flowchart                                                                                                                                                                                                                                                                                                                                                                             | `subgraph A  b  %% c`                                                   | `subgraph A b %% c`                                               |
-| リテラル                                                   | ishikawa                                                                                                                                                                                                                                                                                                                                                                              | `A  b  %% c`                                                            | `A b %% c`                                                        |
-| ノード                                                     | mindmap、treeView                                                                                                                                                                                                                                                                                                                                                                     | `A  b  %% c`                                                            | 書かれたまま                                                      |
-| カード                                                     | kanban                                                                                                                                                                                                                                                                                                                                                                                | `A  b  %% c`                                                            | 書かれたまま                                                      |
-| 関係のラベル                                               | class                                                                                                                                                                                                                                                                                                                                                                                 | `A --> B : A  b  %% c`                                                  | 書かれたまま                                                      |
+| テキスト                                                                                          | 図種                                                                                                                                                                                                                                                                                                                                                                                  | 書かれた形                                                              | 印字                                                              |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| `title`                                                                                           | pie chart、radar chart、packet diagram、architecture diagram、gitGraph、cynefin diagram、treemap、Wardley map、treeView、info diagram、railroad diagram、quadrant chart、Gantt chart、user journey、timeline、sequence diagram、Venn diagram、C4 diagram                                                                                                                              | `title A  b  %% c`                                                      | `title A b %% c`                                                  |
+| `accDescr:` の行                                                                                  | flowchart、class diagram、state diagram、ER diagram、Gantt chart、user journey、timeline、sequence diagram、requirement diagram、pie chart、gitGraph、radar chart、packet diagram、architecture diagram、cynefin diagram、treemap、Wardley map、treeView、info diagram、railroad diagram、quadrant chart、XY chart、C4 diagram、agentflow diagram、ishikawa diagram、use case diagram | `accDescr: A  b  %% c`                                                  | `accDescr: A b %% c`                                              |
+| メッセージ                                                                                        | sequence                                                                                                                                                                                                                                                                                                                                                                              | `A->>B: A  b  %% c`                                                     | `A ->> B: A b %% c`                                               |
+| ノート                                                                                            | sequence                                                                                                                                                                                                                                                                                                                                                                              | `Note over A: A  b  %% c`                                               | `Note over A: A b %% c`                                           |
+| `loop`、`alt`、`else`、`opt`、`par`、`and`、`critical`、`option`、`break`、`rect`、`box` のラベル | sequence                                                                                                                                                                                                                                                                                                                                                                              | `loop A  b  %% c`                                                       | `loop A b %% c`                                                   |
+| `as` の後の名前                                                                                   | sequence                                                                                                                                                                                                                                                                                                                                                                              | `participant A as A  b  %% c`                                           | `participant A as A b %% c`                                       |
+| `text` のフィールド                                                                               | requirement                                                                                                                                                                                                                                                                                                                                                                           | `text: A  b  %% c`                                                      | `text: A b %% c`                                                  |
+| `type:` と `docRef:` のフィールド                                                                 | requirement                                                                                                                                                                                                                                                                                                                                                                           | `type: A  b  %% c`、`docRef: A  b  %% c`                                | `type: A b %% c`、`docRef: A b %% c`                              |
+| リンクのテキスト                                                                                  | Wardley map                                                                                                                                                                                                                                                                                                                                                                           | `A -> B; A  b  %% c`                                                    | `A -> B; A b %% c`                                                |
+| `title`                                                                                           | block diagram                                                                                                                                                                                                                                                                                                                                                                         | `title A  b  %% c`                                                      | `title A b %% c`                                                  |
+| 象限のラベル、軸のラベル                                                                          | quadrant                                                                                                                                                                                                                                                                                                                                                                              | `quadrant-1 A  b  %% c`、`x-axis A  b  %% c`、`x-axis L --> A  b  %% c` | `quadrant-1 A b %% c`、`x-axis A b %% c`、`x-axis L --> A b %% c` |
+| メンバー                                                                                          | class                                                                                                                                                                                                                                                                                                                                                                                 | `+x  y  %% c`                                                           | `+x y %% c`                                                       |
+| subgraph のタイトル                                                                               | flowchart                                                                                                                                                                                                                                                                                                                                                                             | `subgraph A  b  %% c`                                                   | `subgraph A b %% c`                                               |
+| リテラル                                                                                          | ishikawa                                                                                                                                                                                                                                                                                                                                                                              | `A  b  %% c`                                                            | `A b %% c`                                                        |
+| ノード                                                                                            | mindmap、treeView                                                                                                                                                                                                                                                                                                                                                                     | `A  b  %% c`                                                            | 書かれたまま                                                      |
+| カード                                                                                            | kanban                                                                                                                                                                                                                                                                                                                                                                                | `A  b  %% c`                                                            | 書かれたまま                                                      |
+| 関係のラベル                                                                                      | class                                                                                                                                                                                                                                                                                                                                                                                 | `A --> B : A  b  %% c`                                                  | 書かれたまま                                                      |
 
 [test: runs before a comment that ends the text of a pie chart]
 [test: runs before a comment that ends the text of a radar chart]
@@ -1945,6 +1947,10 @@ railroad 図の文字列と特殊シーケンスです。
 [test: runs before a comment that ends the label of an alt and an else of a sequence diagram]
 [test: runs before a comment that ends the label of an opt of a sequence diagram]
 [test: runs before a comment that ends the label of a par and an and of a sequence diagram]
+[test: runs before a comment that ends the label of a critical of a sequence diagram]
+[test: runs before a comment that ends the label of an option of a sequence diagram]
+[test: runs before a comment that ends the label of a break of a sequence diagram]
+[test: runs before a comment that ends the label of a rect of a sequence diagram]
 [test: runs before a comment that ends the label of a box of a sequence diagram]
 [test: runs before a comment that ends the name after as of a participant of a sequence diagram]
 [test: runs before a comment that ends the text field of a requirement diagram]
@@ -1960,26 +1966,41 @@ railroad 図の文字列と特殊シーケンスです。
 [test: runs before a comment that ends the title of a subgraph of a flowchart]
 [test: runs before a comment that ends the label of a relation of a class diagram]
 
-これらのテキストの先頭のディレクティブは、その後ろの空白を除き、
-テキストの中の連なりは、
-ディレクティブがないときと同じに空白 1 つにして印字します（`title %%{x}%% A  b`
-は `title %%{x}%%A b` と印字します）。
-ishikawa のリテラルは、
-ディレクティブの後ろの空白を残します（`%%{x}%% A  b` は `%%{x}%% A b`
-と印字します）。
-次の表のテキストは、テキストの中の連なりを書かれたまま残し、
-ディレクティブの後ろの空白を除くのは sequence diagram の `title` だけです。
-テキストに接するディレクティブ（`title %%{x}%%A  b`）は、
-空白のない同じ場合です。
-mindmap のノード、kanban のカード、treeView のノード、class 図の関係のラベルは、
-ディレクティブがあってもなくても連なりを残します。
+これらのテキストの先頭のディレクティブの後ろには、書かれたテキストでは空白、
+何もなし、別のディレクティブのどれかが続き、
+ディレクティブから後ろの印字はテキストによって異なります。
+次の表は、同じに印字するテキストごとの印字を、列ごとに 1 つの形で示します。
+形は、空白 1 つ、空白 2 つ、タブ、ノーブレークスペース、U+2028、何もなし、
+空白をはさんだ 2 つのディレクティブ、接する 2 つのディレクティブ、
+改行を含むディレクティブ、`;` を含むディレクティブで、
+最後の 2 つの後ろには空白 1 つが続きます。
+テキストは `A  b` で、class diagram のメンバーは `+x  y` です。
+`\t`、`\u00a0`、`\u2028`、`\n` は、タブ、ノーブレークスペース、U+2028、
+改行を表します。
+垂直タブ、フォームフィード、そのほかの空白、タブ、
+行区切りでない空白文字（U+1680、U+2000 から U+200A、U+202F、U+205F、U+3000、
+U+FEFF）はノーブレークスペースと同じに、U+2029 は U+2028 と同じに印字します。
+quadrant chart の象限、軸、
+軸の右端のラベルの先頭のディレクティブの後ろにあるタブ、垂直タブ、
+フォームフィードは mermaid.js が拒否するので、整形は構文エラーを報告します。
 
-| テキスト         | 図種                                                                                                                                                                                        | 書かれた形               | 印字                |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ | ------------------- |
-| `title`          | sequence diagram                                                                                                                                                                            | `title %%{x}%% A  b`     | `title %%{x}%%A  b` |
-| `title`          | Venn diagram、C4 diagram                                                                                                                                                                    | `title %%{x}%% A  b`     | 書かれたまま        |
-| `accDescr:` の行 | pie chart、gitGraph、radar chart、packet diagram、architecture diagram、cynefin diagram、treemap、Wardley map、treeView、info diagram、railroad diagram、ishikawa diagram、use case diagram | `accDescr: %%{x}%% A  b` | 書かれたまま        |
-| リンクのテキスト | Wardley map                                                                                                                                                                                 | `A -> B; %%{x}%% A  b`   | 書かれたまま        |
+| テキスト                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | `%%{x}%% A  b` | `%%{x}%%  A  b` | `%%{x}%%\tA  b` | `%%{x}%%\u00a0A  b` | `%%{x}%%\u2028A  b` | `%%{x}%%A  b` | `%%{x}%% %%{y}%% A  b` | `%%{x}%%%%{y}%%A  b` | `%%{init: {\n}}%% A  b` | `%%{init: {a;b}}%% A  b` |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | --------------- | --------------- | ------------------- | ------------------- | ------------- | ---------------------- | -------------------- | ----------------------- | ------------------------ |
+| pie chart、radar chart、packet diagram、architecture diagram、gitGraph、cynefin diagram、treemap、treeView、info diagram の `title`                                                                                                                                                                                                                                                                                                                                                           | `%%{x}%%A b`   | `%%{x}%%A b`    | `%%{x}%%A b`    | `%%{x}%%A b`        | `%%{x}%%\u2028A b`  | `%%{x}%%A b`  | 書かれたまま           | `%%{x}%%%%{y}%%A b`  | `%%{init: {\n}}%%A b`   | `%%{init: {a;b}}%%A b`   |
+| Wardley map と railroad diagram の `title`                                                                                                                                                                                                                                                                                                                                                                                                                                                    | `%%{x}%%A b`   | `%%{x}%%A b`    | `%%{x}%%A b`    | `%%{x}%%A b`        | `%%{x}%%\u2028A b`  | `%%{x}%%A b`  | 書かれたまま           | `%%{x}%%%%{y}%%A b`  | `%%{init: {\n}}%%A b`   | `%%{init: {a;b}}%% A b`  |
+| quadrant chart の `title`                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `%%{x}%%A b`   | `%%{x}%%A b`    | `%%{x}%%A b`    | `%%{x}%%A b`        | `%%{x}%%\u2028A b`  | `%%{x}%%A b`  | `%%{x}%%%%{y}%%A b`    | `%%{x}%%%%{y}%%A b`  | 書かれたまま            | `%%{init: {a;b}}%%A b`   |
+| Gantt chart、user journey、timeline の `title`                                                                                                                                                                                                                                                                                                                                                                                                                                                | `%%{x}%%A b`   | `%%{x}%%A b`    | `%%{x}%%A b`    | `%%{x}%%\u00a0A b`  | 書かれたまま        | `%%{x}%%A b`  | –                      | `%%{x}%%%%{y}%%A b`  | 書かれたまま            | `%%{init: {a;b}}%%A b`   |
+| sequence diagram の `title`                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `%%{x}%%A  b`  | `%%{x}%%A  b`   | `%%{x}%%A  b`   | 書かれたまま        | 書かれたまま        | 書かれたまま  | `%%{x}%%%%{y}%%A  b`   | 書かれたまま         | 書かれたまま            | `%%{init: {a;b}}%%A  b`  |
+| Venn diagram と C4 diagram の `title`、pie chart、gitGraph、radar chart、packet diagram、architecture diagram、cynefin diagram、treemap、Wardley map、treeView、info diagram、railroad diagram、ishikawa diagram、use case diagram の `accDescr:` の行、Wardley map のリンクのテキスト、mindmap のノードのテキスト                                                                                                                                                                            | 書かれたまま   | 書かれたまま    | 書かれたまま    | 書かれたまま        | 書かれたまま        | 書かれたまま  | 書かれたまま           | 書かれたまま         | 書かれたまま            | 書かれたまま             |
+| ishikawa diagram のリテラルのテキスト                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `%%{x}%% A b`  | `%%{x}%%  A b`  | `%%{x}%% A b`   | `%%{x}%% A b`       | `%%{x}%% A b`       | `%%{x}%%A b`  | `%%{x}%% %%{y}%% A b`  | `%%{x}%%%%{y}%%A b`  | `%%{init: {\n}}%% A b`  | `%%{init: {a;b}}%% A b`  |
+| kanban のカードのテキスト                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | 書かれたまま   | 書かれたまま    | `%%{x}%% A  b`  | `%%{x}%% A  b`      | `%%{x}%% A  b`      | 書かれたまま  | 書かれたまま           | 書かれたまま         | 書かれたまま            | 書かれたまま             |
+| treeView のノードのテキスト                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | 書かれたまま   | 書かれたまま    | `%%{x}%% A  b`  | 書かれたまま        | 書かれたまま        | 書かれたまま  | 書かれたまま           | 書かれたまま         | 書かれたまま            | 書かれたまま             |
+| block diagram の `title`、flowchart、class diagram、ER diagram、Gantt chart、user journey、timeline、sequence diagram、requirement diagram、quadrant chart、XY chart、C4 diagram、agentflow diagram の `accDescr:` の行、sequence diagram のメッセージ、ノート、`loop`、`alt` と `else`、`opt`、`par` と `and`、`critical` と `option`、`break`、`rect`、`box` のラベル、participant の `as` の後の名前、requirement diagram の `text:`、`type:`、`docRef:`、flowchart の subgraph のタイトル | `%%{x}%%A b`   | `%%{x}%%A b`    | `%%{x}%%A b`    | `%%{x}%%A b`        | `%%{x}%%\u2028A b`  | `%%{x}%%A b`  | `%%{x}%%%%{y}%%A b`    | `%%{x}%%%%{y}%%A b`  | `%%{init: {\n}}%%A b`   | `%%{init: {a;b}}%%A b`   |
+| state diagram の `accDescr:` の行                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `%%{x}%%A b`   | `%%{x}%%A b`    | `%%{x}%%A b`    | `%%{x}%%A b`        | 書かれたまま        | `%%{x}%%A b`  | `%%{x}%%%%{y}%%A b`    | `%%{x}%%%%{y}%%A b`  | `%%{init: {\n}}%%A b`   | `%%{init: {a;b}}%%A b`   |
+| quadrant chart の象限のラベル、軸のラベル、軸の右端のラベル                                                                                                                                                                                                                                                                                                                                                                                                                                   | `%%{x}%%A b`   | `%%{x}%%A b`    | 拒否            | `%%{x}%%\u00a0A b`  | 書かれたまま        | `%%{x}%%A b`  | `%%{x}%%%%{y}%%A b`    | `%%{x}%%%%{y}%%A b`  | 書かれたまま            | `%%{init: {a;b}}%%A b`   |
+| class diagram の本体のメンバー                                                                                                                                                                                                                                                                                                                                                                                                                                                                | `%%{x}%% +x y` | `%%{x}%% +x y`  | `%%{x}%% +x y`  | `%%{x}%% +x y`      | `%%{x}%% +x y`      | `%%{x}%%+x y` | `%%{x}%% %%{y}%% +x y` | `%%{x}%%%%{y}%%+x y` | `%%{init: {\n}}%% +x y` | 書かれたまま             |
+| class diagram のメンバーの行                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | `%%{x}%%+x y`  | `%%{x}%%+x y`   | `%%{x}%%+x y`   | `%%{x}%%+x y`       | `%%{x}%%\u2028+x y` | `%%{x}%%+x y` | `%%{x}%%%%{y}%%+x y`   | `%%{x}%%%%{y}%%+x y` | `%%{init: {\n}}%%+x y`  | `%%{init: {a;b}}%%+x  y` |
+| class diagram の関係のラベル                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | `%%{x}%%A  b`  | `%%{x}%%A  b`   | `%%{x}%%A  b`   | `%%{x}%%A  b`       | 書かれたまま        | 書かれたまま  | `%%{x}%%%%{y}%%A  b`   | 書かれたまま         | `%%{init: {\n}}%%A  b`  | `%%{init: {a;b}}%%A  b`  |
 
 [test: runs after a directive at the start of the text of a pie chart]
 [test: runs after a directive at the start of the text of a radar chart]
@@ -2035,6 +2056,10 @@ mindmap のノード、kanban のカード、treeView のノード、class 図�
 [test: runs after a directive at the start of the label of an alt and an else of a sequence diagram]
 [test: runs after a directive at the start of the label of an opt of a sequence diagram]
 [test: runs after a directive at the start of the label of a par and an and of a sequence diagram]
+[test: runs after a directive at the start of the label of a critical of a sequence diagram]
+[test: runs after a directive at the start of the label of an option of a sequence diagram]
+[test: runs after a directive at the start of the label of a break of a sequence diagram]
+[test: runs after a directive at the start of the label of a rect of a sequence diagram]
 [test: runs after a directive at the start of the label of a box of a sequence diagram]
 [test: runs after a directive at the start of the name after as of a participant of a sequence diagram]
 [test: runs after a directive at the start of the text field of a requirement diagram]
@@ -2049,6 +2074,181 @@ mindmap のノード、kanban のカード、treeView のノード、class 図�
 [test: runs after a directive at the start of a member line of a class diagram]
 [test: runs after a directive at the start of the title of a subgraph of a flowchart]
 [test: runs after a directive at the start of the label of a relation of a class diagram]
+[test: two spaces after a directive at the start of the text of a pie chart]
+[test: a tab after a directive at the start of the text of a pie chart]
+[test: a no-break space after a directive at the start of the text of a pie chart]
+[test: a U+2028 after a directive at the start of the text of a pie chart]
+[test: a U+2029 after a directive at the start of the text of a pie chart]
+[test: no whitespace after a directive at the start of the text of a pie chart]
+[test: two directives with a space between them at the start of the text of a pie chart]
+[test: two directives that touch at the start of the text of a pie chart]
+[test: a directive that holds a line break at the start of the text of a pie chart]
+[test: a directive that holds a semicolon at the start of the text of a pie chart]
+[test: two spaces after a directive at the start of the text of a Wardley map]
+[test: a tab after a directive at the start of the text of a Wardley map]
+[test: a no-break space after a directive at the start of the text of a Wardley map]
+[test: a U+2028 after a directive at the start of the text of a Wardley map]
+[test: a U+2029 after a directive at the start of the text of a Wardley map]
+[test: no whitespace after a directive at the start of the text of a Wardley map]
+[test: two directives with a space between them at the start of the text of a Wardley map]
+[test: two directives that touch at the start of the text of a Wardley map]
+[test: a directive that holds a line break at the start of the text of a Wardley map]
+[test: a directive that holds a semicolon at the start of the text of a Wardley map]
+[test: two spaces after a directive at the start of the text of a quadrant chart]
+[test: a tab after a directive at the start of the text of a quadrant chart]
+[test: a no-break space after a directive at the start of the text of a quadrant chart]
+[test: a U+2028 after a directive at the start of the text of a quadrant chart]
+[test: a U+2029 after a directive at the start of the text of a quadrant chart]
+[test: no whitespace after a directive at the start of the text of a quadrant chart]
+[test: two directives with a space between them at the start of the text of a quadrant chart]
+[test: two directives that touch at the start of the text of a quadrant chart]
+[test: a directive that holds a line break at the start of the text of a quadrant chart]
+[test: a directive that holds a semicolon at the start of the text of a quadrant chart]
+[test: two spaces after a directive at the start of the text of a Gantt chart]
+[test: a tab after a directive at the start of the text of a Gantt chart]
+[test: a no-break space after a directive at the start of the text of a Gantt chart]
+[test: a U+2028 after a directive at the start of the text of a Gantt chart]
+[test: a U+2029 after a directive at the start of the text of a Gantt chart]
+[test: no whitespace after a directive at the start of the text of a Gantt chart]
+[test: two directives that touch at the start of the text of a Gantt chart]
+[test: a directive that holds a line break at the start of the text of a Gantt chart]
+[test: a directive that holds a semicolon at the start of the text of a Gantt chart]
+[test: two spaces after a directive at the start of the text of a sequence diagram]
+[test: a tab after a directive at the start of the text of a sequence diagram]
+[test: a no-break space after a directive at the start of the text of a sequence diagram]
+[test: a U+2028 after a directive at the start of the text of a sequence diagram]
+[test: a U+2029 after a directive at the start of the text of a sequence diagram]
+[test: no whitespace after a directive at the start of the text of a sequence diagram]
+[test: two directives with a space between them at the start of the text of a sequence diagram]
+[test: two directives that touch at the start of the text of a sequence diagram]
+[test: a directive that holds a line break at the start of the text of a sequence diagram]
+[test: a directive that holds a semicolon at the start of the text of a sequence diagram]
+[test: two spaces after a directive at the start of the text of a Venn diagram]
+[test: a tab after a directive at the start of the text of a Venn diagram]
+[test: a no-break space after a directive at the start of the text of a Venn diagram]
+[test: a U+2028 after a directive at the start of the text of a Venn diagram]
+[test: a U+2029 after a directive at the start of the text of a Venn diagram]
+[test: no whitespace after a directive at the start of the text of a Venn diagram]
+[test: two directives with a space between them at the start of the text of a Venn diagram]
+[test: two directives that touch at the start of the text of a Venn diagram]
+[test: a directive that holds a line break at the start of the text of a Venn diagram]
+[test: a directive that holds a semicolon at the start of the text of a Venn diagram]
+[test: two spaces after a directive at the start of the text of an ishikawa literal]
+[test: a tab after a directive at the start of the text of an ishikawa literal]
+[test: a no-break space after a directive at the start of the text of an ishikawa literal]
+[test: a U+2028 after a directive at the start of the text of an ishikawa literal]
+[test: a U+2029 after a directive at the start of the text of an ishikawa literal]
+[test: no whitespace after a directive at the start of the text of an ishikawa literal]
+[test: two directives with a space between them at the start of the text of an ishikawa literal]
+[test: two directives that touch at the start of the text of an ishikawa literal]
+[test: a directive that holds a line break at the start of the text of an ishikawa literal]
+[test: a directive that holds a semicolon at the start of the text of an ishikawa literal]
+[test: two spaces after a directive at the start of the text of a kanban card]
+[test: a tab after a directive at the start of the text of a kanban card]
+[test: a no-break space after a directive at the start of the text of a kanban card]
+[test: a U+2028 after a directive at the start of the text of a kanban card]
+[test: a U+2029 after a directive at the start of the text of a kanban card]
+[test: no whitespace after a directive at the start of the text of a kanban card]
+[test: two directives with a space between them at the start of the text of a kanban card]
+[test: two directives that touch at the start of the text of a kanban card]
+[test: a directive that holds a line break at the start of the text of a kanban card]
+[test: a directive that holds a semicolon at the start of the text of a kanban card]
+[test: two spaces after a directive at the start of the text of a treeView node]
+[test: a tab after a directive at the start of the text of a treeView node]
+[test: a no-break space after a directive at the start of the text of a treeView node]
+[test: a U+2028 after a directive at the start of the text of a treeView node]
+[test: a U+2029 after a directive at the start of the text of a treeView node]
+[test: no whitespace after a directive at the start of the text of a treeView node]
+[test: two directives with a space between them at the start of the text of a treeView node]
+[test: two directives that touch at the start of the text of a treeView node]
+[test: a directive that holds a line break at the start of the text of a treeView node]
+[test: a directive that holds a semicolon at the start of the text of a treeView node]
+[test: two spaces after a directive at the start of the accDescr line of a flowchart]
+[test: a tab after a directive at the start of the accDescr line of a flowchart]
+[test: a no-break space after a directive at the start of the accDescr line of a flowchart]
+[test: a U+2028 after a directive at the start of the accDescr line of a flowchart]
+[test: a U+2029 after a directive at the start of the accDescr line of a flowchart]
+[test: no whitespace after a directive at the start of the accDescr line of a flowchart]
+[test: two directives with a space between them at the start of the accDescr line of a flowchart]
+[test: two directives that touch at the start of the accDescr line of a flowchart]
+[test: a directive that holds a line break at the start of the accDescr line of a flowchart]
+[test: a directive that holds a semicolon at the start of the accDescr line of a flowchart]
+[test: two spaces after a directive at the start of the accDescr line of a state diagram]
+[test: a tab after a directive at the start of the accDescr line of a state diagram]
+[test: a no-break space after a directive at the start of the accDescr line of a state diagram]
+[test: a U+2028 after a directive at the start of the accDescr line of a state diagram]
+[test: a U+2029 after a directive at the start of the accDescr line of a state diagram]
+[test: no whitespace after a directive at the start of the accDescr line of a state diagram]
+[test: two directives with a space between them at the start of the accDescr line of a state diagram]
+[test: two directives that touch at the start of the accDescr line of a state diagram]
+[test: a directive that holds a line break at the start of the accDescr line of a state diagram]
+[test: a directive that holds a semicolon at the start of the accDescr line of a state diagram]
+[test: two spaces after a directive at the start of the label of a quadrant of a quadrant chart]
+[test: a no-break space after a directive at the start of the label of a quadrant of a quadrant chart]
+[test: a U+2028 after a directive at the start of the label of a quadrant of a quadrant chart]
+[test: a U+2029 after a directive at the start of the label of a quadrant of a quadrant chart]
+[test: no whitespace after a directive at the start of the label of a quadrant of a quadrant chart]
+[test: two directives with a space between them at the start of the label of a quadrant of a quadrant chart]
+[test: two directives that touch at the start of the label of a quadrant of a quadrant chart]
+[test: a directive that holds a line break at the start of the label of a quadrant of a quadrant chart]
+[test: a directive that holds a semicolon at the start of the label of a quadrant of a quadrant chart]
+[test: two spaces after a directive at the start of a member of a class diagram]
+[test: a tab after a directive at the start of a member of a class diagram]
+[test: a no-break space after a directive at the start of a member of a class diagram]
+[test: a U+2028 after a directive at the start of a member of a class diagram]
+[test: a U+2029 after a directive at the start of a member of a class diagram]
+[test: no whitespace after a directive at the start of a member of a class diagram]
+[test: two directives with a space between them at the start of a member of a class diagram]
+[test: two directives that touch at the start of a member of a class diagram]
+[test: a directive that holds a line break at the start of a member of a class diagram]
+[test: a directive that holds a semicolon at the start of a member of a class diagram]
+[test: two spaces after a directive at the start of a member line of a class diagram]
+[test: a tab after a directive at the start of a member line of a class diagram]
+[test: a no-break space after a directive at the start of a member line of a class diagram]
+[test: a U+2028 after a directive at the start of a member line of a class diagram]
+[test: a U+2029 after a directive at the start of a member line of a class diagram]
+[test: no whitespace after a directive at the start of a member line of a class diagram]
+[test: two directives with a space between them at the start of a member line of a class diagram]
+[test: two directives that touch at the start of a member line of a class diagram]
+[test: a directive that holds a line break at the start of a member line of a class diagram]
+[test: a directive that holds a semicolon at the start of a member line of a class diagram]
+[test: two spaces after a directive at the start of the label of a relation of a class diagram]
+[test: a tab after a directive at the start of the label of a relation of a class diagram]
+[test: a no-break space after a directive at the start of the label of a relation of a class diagram]
+[test: a U+2028 after a directive at the start of the label of a relation of a class diagram]
+[test: a U+2029 after a directive at the start of the label of a relation of a class diagram]
+[test: no whitespace after a directive at the start of the label of a relation of a class diagram]
+[test: two directives with a space between them at the start of the label of a relation of a class diagram]
+[test: two directives that touch at the start of the label of a relation of a class diagram]
+[test: a directive that holds a line break at the start of the label of a relation of a class diagram]
+[test: a directive that holds a semicolon at the start of the label of a relation of a class diagram]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the text of a pie chart]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the text of a Wardley map]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the text of a quadrant chart]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the text of a Gantt chart]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the text of a sequence diagram]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the text of a Venn diagram]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the text of an ishikawa literal]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the text of a kanban card]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the text of a treeView node]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the accDescr line of a flowchart]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the accDescr line of a state diagram]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the label of a quadrant of a quadrant chart]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of a member of a class diagram]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of a member line of a class diagram]
+[test: the other whitespace characters that are like a no-break space after a directive at the start of the label of a relation of a class diagram]
+[test: rejects a tab, a vertical tab, and a form feed after a directive at the start of the label of a quadrant of a quadrant chart, as mermaid.js does]
+
+Gantt chart、user journey、timeline の `title` は、
+空白をはさんだ 2 つのディレクティブの形がなく、表ではダッシュにしています。
+
+書かれたテキストと、書かれたままではないセルの印字したテキストを、
+各行のテキスト 1 つと上に挙げた各文字について、その図種で数える版で描き、
+SVG は、生成された id とテキストノードの空白を除いて同じでした。
+書かれたテキストを拒否する版は、印字したテキストも拒否します。
+ただし、`loop`、`alt`、`opt`、`par`、`critical`、`option`、
+`break` のラベルにある空白の連なりは、10.9.8 が拒否し、
+印字したテキストは描きます。
 
 mermaid.js は連なりを Db に残します。
 レンダラーは、これらのテキストを SVG の `text` 要素に入れ、
