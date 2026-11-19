@@ -489,12 +489,13 @@ block, the block, and that gap before the comment stay as written, and the block
 is not padded: `participant A   @{ x }` and `actor B@{x}` stay, and so does the
 whitespace before the `%%` in `participant C@{ y }   %% c`. The reason of the
 versions holds for a `participant`: with one space before the `%%`, 10.9.8 and
-11.7.0 draw another name. The whitespace before the `%%` of an `actor` and after
-a `create` stays as written too, though no version that counts draws another
-figure for it. After the block, a `#` comment is a comment like any other, and
-one space stands before it. mermaid.js removes the directives before it reads
-the name, so the name runs over a directive in that whitespace, one that is not
-closed included, and the whitespace on both sides of it stays:
+11.7.0 draw another name. The whitespace before the `%%` of an `actor`, and
+before the `%%` of a participant that `create` makes, stays as written too,
+though no version that counts draws another figure for it. After the block, a
+`#` comment is a comment like any other, and one space stands before it.
+mermaid.js removes the directives before it reads the name, so the name runs
+over a directive in that whitespace, one that is not closed included, and the
+whitespace on both sides of it stays:
 `participant B@{x}   %%{init: {}}%%   %% c`. A directive that ends the line,
 with no comment after it, is an ordinary gap, printed
 `participant E@{z} %%{init: {}}%%`. A block with one of these characters or with
@@ -512,10 +513,11 @@ whitespace-between-tokens/data-block-name-directive-at-line-end-spaced]
 whitespace-between-tokens/compat-malformed-data-block-kept] [fixture:
 whitespace-between-tokens/data-block-name-end-characters-padded] [fixture:
 whitespace-between-tokens/data-block-name-created-kept] [fixture:
-whitespace-between-tokens/data-block-name-created-comment-gap-kept] [test: data
-blocks: sequence name block with a no-break space before a comment] [test: data
-blocks: sequence name block with an ideographic space before a comment] [test:
-data blocks: sequence name block with a form feed before a comment]
+whitespace-between-tokens/data-block-name-created-comment-gap-kept] [fixture:
+whitespace-between-tokens/data-block-hash-comment-one-space] [test: data blocks:
+sequence name block with a no-break space before a comment] [test: data blocks:
+sequence name block with an ideographic space before a comment] [test: data
+blocks: sequence name block with a form feed before a comment]
 
 A line that mermaid.js reads as nothing, such as `)` alone, is kept and stands
 at the level of the statements around it.

@@ -505,7 +505,7 @@ mermaid.js がその位置でブロック形式のマッピングの行を拒否
 `participant C@{ y }   %% c` の `%%` の前の空白も残ります。
 この空白に版の理由があるのは `participant` だけです。
 `%%` の前を空白 1 つにすると、10.9.8 と 11.7.0 は別の名前を描きます。
-`actor` の `%%` の前と `create` の後の空白は、
+`actor` の `%%` の前の空白と、`create` が作る参加者の `%%` の前の空白は、
 対象にする版に別の図を描くものがなくても、書かれたまま残します。
 ブロックの後の `#` コメントは通常のコメントなので、前は空白 1 つにします。
 mermaid.js は名前を読む前にディレクティブを除きます。
@@ -529,6 +529,7 @@ mermaid.js は名前を読む前にディレクティブを除きます。
 [fixture: whitespace-between-tokens/data-block-name-end-characters-padded]
 [fixture: whitespace-between-tokens/data-block-name-created-kept]
 [fixture: whitespace-between-tokens/data-block-name-created-comment-gap-kept]
+[fixture: whitespace-between-tokens/data-block-hash-comment-one-space]
 [test: data blocks: sequence name block with a no-break space before a comment]
 [test: data blocks: sequence name block with an ideographic space before a comment]
 [test: data blocks: sequence name block with a form feed before a comment]
