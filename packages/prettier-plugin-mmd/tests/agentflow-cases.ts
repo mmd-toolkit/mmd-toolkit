@@ -132,4 +132,9 @@ export const agentflowCases: readonly AgentflowCase[] = [
     input: "agentflow-beta TB\nconnector F  \u2029  \n",
     output: "agentflow-beta TB\n  connector F  \u2029\n",
   },
+  {
+    name: "agentflow: U+2028 after the keyword at the end of a flow name before a semicolon and a comment",
+    input: "agentflow-beta TB\nflow Front end \u2028 ;  %% c\nA\nend\n",
+    output: "agentflow-beta TB\n  flow Front end \u2028; %% c\n    A\n  end\n",
+  },
 ]

@@ -45,6 +45,7 @@ import {
 } from "./statement-rules.ts"
 import {
   findStructuralToken,
+  findTokenStartingAt,
   findTriviaBetween,
   isSpaceOrTab,
   isWhitespace,
@@ -311,6 +312,8 @@ export function findNamePrintedEnd(
 ): number {
   if (!endsWithClickFragment(source, name)) {
     const last = name.parts.at(-1)
+    if (name.parts.length === 1)
+      return findCommentAfterDroppedSemicolon(source, name) ?? name.range[1]
     if (
       name.parts.length < 2 ||
       last?.type !== "AgentflowLabel" ||
@@ -355,6 +358,68 @@ export function findNamePrintedEnd(
     else return name.range[1]
   }
   return name.range[1]
+}
+
+/** The keywords that are name text and take the whitespace after them. */
+const spaceTakingNameKeywords = ["end", "global"]
+
+/**
+ * Whether a character is one of the ASCII characters of an id run, in which a
+ * keyword is no keyword: `Front-end` is one id run, and `Front end` and
+ * `Front:end` end with the keyword (diagrams/agentflow.md, Flows, globals,
+ * connectors, and names).
+ */
+function isIdRunCharacter(character: string): boolean {
+  return (
+    (character >= "a" && character <= "z") ||
+    (character >= "A" && character <= "Z") ||
+    (character >= "0" && character <= "9") ||
+    "!\"#$%&'*+-./?\\_`".includes(character)
+  )
+}
+
+/**
+ * Where the comment starts that follows a name with only a `;` that the
+ * printer drops between them, when the name ends with the keyword `end` or
+ * `global`: that keyword takes the whitespace after it, also before a comment,
+ * so the whitespace is the name's own and a comment touches the name. Printing
+ * the name up to the comment leaves the dropped `;` and the whitespace around
+ * it out, so that the next formatting reads the same text (docs/agentflow.md,
+ * Names and headings). Undefined for any other name.
+ */
+function findCommentAfterDroppedSemicolon(
+  source: Source,
+  name: AgentflowName,
+): number | undefined {
+  // A name that holds a directive or a comment, or that ends with a character
+  // other than the spaces and tabs that the keyword takes (U+2028 and U+2029
+  // are text there), is printed as written.
+  if (findTriviaBetween(source, name.range[0], name.range[1]).length > 0)
+    return undefined
+  let textEnd = name.range[1]
+  while (textEnd > name.range[0] && isSpaceOrTab(source.text[textEnd - 1]))
+    textEnd--
+  const text = source.text.slice(name.range[0], textEnd)
+  const keyword = spaceTakingNameKeywords.find((word) => text.endsWith(word))
+  if (keyword === undefined) return undefined
+  const before = text.at(-keyword.length - 1)
+  if (before !== undefined && isIdRunCharacter(before)) return undefined
+  let position = name.range[1]
+  while (isSpaceOrTab(source.text[position])) position++
+  const separator = findTokenStartingAt(source, position)
+  const kept = findAgentflowKeptLines(source)
+  const line = lineStartOf(source, position)
+  if (
+    separator?.type !== "Punctuator" ||
+    separator.value !== ";" ||
+    kept.joined.has(line) ||
+    kept.verbatim.has(line)
+  )
+    return undefined
+  position++
+  while (isSpaceOrTab(source.text[position])) position++
+  const comment = findTriviaBetween(source, position, position + 1).at(0)
+  return comment?.type === "Comment" ? comment.range[0] : undefined
 }
 
 /**

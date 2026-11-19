@@ -280,6 +280,38 @@ mermaid.js が名前を trim するので Db は同じであり、
 [fixture: names-and-headings/heading-with-comment-and-directive-directive-before-ignored-semicolon-after-whitespace-dropped]
 [fixture: names-and-headings/heading-with-comment-and-directive-connector-ignored-semicolon-after-whitespace-dropped]
 
+`end` か `global` のキーワードで終わる名前は、その後の空白を、
+コメントの前でも取り込みます。
+`flow Front end %% c` は `flow Front end%% c` と印字します。
+そのような名前の後でプリンタが落とす `;` と、その周りの空白も同じに扱うので、
+`flow Front end ;  %% c` は、`;` のないテキストと同じく、
+すぐに `flow Front end%% c` と印字し、2 回目の整形は何も変えません。
+キーワードは、名前の先頭、空白、`:`、`^`、
+id の連なりの ASCII 文字でない文字の後にあるものです（`flow Front:end` など）。
+id の連なりの中（`Front-end`）にあるものはキーワードではなく、
+別の語で終わる名前はコメントの前に空白 1 つを保ちます。
+`flow Front fin ;  %% c` は `flow Front fin %% c` と印字し、
+`flow Front-end ;  %% c` も `flow Front-end %% c` と印字します。
+`global`、connector、flow の中の flow も同じです。
+ディレクティブやコメントを含む名前と、
+キーワードの後に U+2028 か U+2029 がある名前は、
+これまでどおり書かれたまま残します。
+どちらの形も Db は同じです。
+
+[fixture: names-and-headings/heading-end-keyword-semicolon-comment]
+[fixture: names-and-headings/heading-end-keyword-semicolon-touching-comment]
+[fixture: names-and-headings/heading-end-keyword-semicolon-touching-name]
+[fixture: names-and-headings/heading-global-keyword-semicolon-comment]
+[fixture: names-and-headings/heading-colon-end-keyword-semicolon-comment]
+[fixture: names-and-headings/heading-only-end-keyword-semicolon-comment]
+[fixture: names-and-headings/connector-end-keyword-semicolon-comment]
+[fixture: names-and-headings/heading-nested-end-keyword-semicolon-comment]
+[fixture: names-and-headings/heading-end-keyword-comment-touches]
+[fixture: names-and-headings/heading-word-semicolon-comment-one-space]
+[fixture: names-and-headings/heading-id-run-end-semicolon-comment-one-space]
+[fixture: names-and-headings/heading-end-keyword-directive-semicolon-comment-kept]
+[test: agentflow: U+2028 after the keyword at the end of a flow name before a semicolon and a comment]
+
 書かれたまま残す行の `;` の前では、空白を除くとエンティティになる場合、
 名前の末尾の空白を保ちます。
 `flow F%% style:#x ;;` は `;;` の前の空白を保ち、

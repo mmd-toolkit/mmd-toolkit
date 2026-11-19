@@ -273,6 +273,36 @@ names-and-headings/heading-with-comment-and-directive-directive-before-ignored-s
 [fixture:
 names-and-headings/heading-with-comment-and-directive-connector-ignored-semicolon-after-whitespace-dropped]
 
+A name that ends with the keyword `end` or `global` takes the whitespace after
+it, also before a comment: `flow Front end %% c` is printed
+`flow Front end%% c`. A `;` that the printer drops after such a name, and the
+whitespace around it, go the same way, so `flow Front end ;  %% c` is printed
+`flow Front end%% c` at once, as the text without the `;` is, and a second
+formatting changes nothing. The keyword stands at the start of the name or after
+whitespace, a `:`, a `^`, or a character that is no ASCII character of an id
+run, as in `flow Front:end`. It is none in an id run (`Front-end`), and a name
+that ends with another word keeps one space before the comment:
+`flow Front fin ;  %% c` is printed `flow Front fin %% c`, and so is
+`flow Front-end ;  %% c` as `flow Front-end %% c`. The same holds for `global`,
+for a connector, and for a flow in a flow. A name that holds a directive or a
+comment, and a name that ends with a U+2028 or U+2029 after the keyword, are
+kept as before. The Db is the same for both forms.
+
+[fixture: names-and-headings/heading-end-keyword-semicolon-comment] [fixture:
+names-and-headings/heading-end-keyword-semicolon-touching-comment] [fixture:
+names-and-headings/heading-end-keyword-semicolon-touching-name] [fixture:
+names-and-headings/heading-global-keyword-semicolon-comment] [fixture:
+names-and-headings/heading-colon-end-keyword-semicolon-comment] [fixture:
+names-and-headings/heading-only-end-keyword-semicolon-comment] [fixture:
+names-and-headings/connector-end-keyword-semicolon-comment] [fixture:
+names-and-headings/heading-nested-end-keyword-semicolon-comment] [fixture:
+names-and-headings/heading-end-keyword-comment-touches] [fixture:
+names-and-headings/heading-word-semicolon-comment-one-space] [fixture:
+names-and-headings/heading-id-run-end-semicolon-comment-one-space] [fixture:
+names-and-headings/heading-end-keyword-directive-semicolon-comment-kept] [test:
+agentflow: U+2028 after the keyword at the end of a flow name before a semicolon
+and a comment]
+
 Before a `;` that stays on a line printed as written, the end of a name keeps
 its whitespace where removing it would form an entity: `flow F%% style:#x ;;`
 keeps the space before `;;`, also where spaces follow the semicolons. A
