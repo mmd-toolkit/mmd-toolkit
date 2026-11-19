@@ -7678,6 +7678,1051 @@ const architectureDirectiveEndExamples: readonly (readonly [
     "accDescr: T  %%{x;y}%%\u00a0",
     "accDescr: T  %%{x;y}%%\u00a0",
   ],
+  [
+    "U+000B between a semicolon that the line rule ignores and a second semicolon, a directive after them, in a title of an architecture diagram",
+    "title style:#red;\u000b;  %%{x}%%",
+    "title style:#red;\u000b;  %%{x}%%",
+  ],
+  [
+    "U+000B between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accTitle line of an architecture diagram",
+    "accTitle: style:#red;\u000b;  %%{x}%%",
+    "accTitle: style:#red;\u000b;  %%{x}%%",
+  ],
+  [
+    "U+000C between a semicolon that the line rule ignores and a second semicolon, a directive after them, in a title of an architecture diagram",
+    "title style:#red;\f;  %%{x}%%",
+    "title style:#red;\f;  %%{x}%%",
+  ],
+  [
+    "U+000C between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accTitle line of an architecture diagram",
+    "accTitle: style:#red;\f;  %%{x}%%",
+    "accTitle: style:#red;\f;  %%{x}%%",
+  ],
+  [
+    "a no-break space between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accTitle line of an architecture diagram",
+    "accTitle: style:#red;\u00a0;  %%{x}%%",
+    "accTitle: style:#red;\u00a0;  %%{x}%%",
+  ],
+  [
+    "U+1680 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in a title of an architecture diagram",
+    "title style:#red;\u1680;  %%{x}%%",
+    "title style:#red;\u1680;  %%{x}%%",
+  ],
+  [
+    "U+1680 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accTitle line of an architecture diagram",
+    "accTitle: style:#red;\u1680;  %%{x}%%",
+    "accTitle: style:#red;\u1680;  %%{x}%%",
+  ],
+  [
+    "U+2000 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in a title of an architecture diagram",
+    "title style:#red;\u2000;  %%{x}%%",
+    "title style:#red;\u2000;  %%{x}%%",
+  ],
+  [
+    "U+2000 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accTitle line of an architecture diagram",
+    "accTitle: style:#red;\u2000;  %%{x}%%",
+    "accTitle: style:#red;\u2000;  %%{x}%%",
+  ],
+  [
+    "U+2001 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in a title of an architecture diagram",
+    "title style:#red;\u2001;  %%{x}%%",
+    "title style:#red;\u2001;  %%{x}%%",
+  ],
+  [
+    "U+2001 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accTitle line of an architecture diagram",
+    "accTitle: style:#red;\u2001;  %%{x}%%",
+    "accTitle: style:#red;\u2001;  %%{x}%%",
+  ],
+  [
+    "U+2002 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in a title of an architecture diagram",
+    "title style:#red;\u2002;  %%{x}%%",
+    "title style:#red;\u2002;  %%{x}%%",
+  ],
+  [
+    "U+2002 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accTitle line of an architecture diagram",
+    "accTitle: style:#red;\u2002;  %%{x}%%",
+    "accTitle: style:#red;\u2002;  %%{x}%%",
+  ],
+  [
+    "U+2003 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in a title of an architecture diagram",
+    "title style:#red;\u2003;  %%{x}%%",
+    "title style:#red;\u2003;  %%{x}%%",
+  ],
+  [
+    "U+2003 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accTitle line of an architecture diagram",
+    "accTitle: style:#red;\u2003;  %%{x}%%",
+    "accTitle: style:#red;\u2003;  %%{x}%%",
+  ],
+  [
+    "U+2004 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in a title of an architecture diagram",
+    "title style:#red;\u2004;  %%{x}%%",
+    "title style:#red;\u2004;  %%{x}%%",
+  ],
+  [
+    "U+2004 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accTitle line of an architecture diagram",
+    "accTitle: style:#red;\u2004;  %%{x}%%",
+    "accTitle: style:#red;\u2004;  %%{x}%%",
+  ],
+  [
+    "U+2005 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in a title of an architecture diagram",
+    "title style:#red;\u2005;  %%{x}%%",
+    "title style:#red;\u2005;  %%{x}%%",
+  ],
+  [
+    "U+2005 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accTitle line of an architecture diagram",
+    "accTitle: style:#red;\u2005;  %%{x}%%",
+    "accTitle: style:#red;\u2005;  %%{x}%%",
+  ],
+  [
+    "U+2006 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in a title of an architecture diagram",
+    "title style:#red;\u2006;  %%{x}%%",
+    "title style:#red;\u2006;  %%{x}%%",
+  ],
+  [
+    "U+2006 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accTitle line of an architecture diagram",
+    "accTitle: style:#red;\u2006;  %%{x}%%",
+    "accTitle: style:#red;\u2006;  %%{x}%%",
+  ],
+  [
+    "U+2007 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in a title of an architecture diagram",
+    "title style:#red;\u2007;  %%{x}%%",
+    "title style:#red;\u2007;  %%{x}%%",
+  ],
+  [
+    "U+2007 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accTitle line of an architecture diagram",
+    "accTitle: style:#red;\u2007;  %%{x}%%",
+    "accTitle: style:#red;\u2007;  %%{x}%%",
+  ],
+  [
+    "U+2008 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in a title of an architecture diagram",
+    "title style:#red;\u2008;  %%{x}%%",
+    "title style:#red;\u2008;  %%{x}%%",
+  ],
+  [
+    "U+2008 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accTitle line of an architecture diagram",
+    "accTitle: style:#red;\u2008;  %%{x}%%",
+    "accTitle: style:#red;\u2008;  %%{x}%%",
+  ],
+  [
+    "U+2009 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in a title of an architecture diagram",
+    "title style:#red;\u2009;  %%{x}%%",
+    "title style:#red;\u2009;  %%{x}%%",
+  ],
+  [
+    "U+2009 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accTitle line of an architecture diagram",
+    "accTitle: style:#red;\u2009;  %%{x}%%",
+    "accTitle: style:#red;\u2009;  %%{x}%%",
+  ],
+  [
+    "U+200A between a semicolon that the line rule ignores and a second semicolon, a directive after them, in a title of an architecture diagram",
+    "title style:#red;\u200a;  %%{x}%%",
+    "title style:#red;\u200a;  %%{x}%%",
+  ],
+  [
+    "U+200A between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accTitle line of an architecture diagram",
+    "accTitle: style:#red;\u200a;  %%{x}%%",
+    "accTitle: style:#red;\u200a;  %%{x}%%",
+  ],
+  [
+    "U+202F between a semicolon that the line rule ignores and a second semicolon, a directive after them, in a title of an architecture diagram",
+    "title style:#red;\u202f;  %%{x}%%",
+    "title style:#red;\u202f;  %%{x}%%",
+  ],
+  [
+    "U+202F between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accTitle line of an architecture diagram",
+    "accTitle: style:#red;\u202f;  %%{x}%%",
+    "accTitle: style:#red;\u202f;  %%{x}%%",
+  ],
+  [
+    "U+205F between a semicolon that the line rule ignores and a second semicolon, a directive after them, in a title of an architecture diagram",
+    "title style:#red;\u205f;  %%{x}%%",
+    "title style:#red;\u205f;  %%{x}%%",
+  ],
+  [
+    "U+205F between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accTitle line of an architecture diagram",
+    "accTitle: style:#red;\u205f;  %%{x}%%",
+    "accTitle: style:#red;\u205f;  %%{x}%%",
+  ],
+  [
+    "U+3000 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in a title of an architecture diagram",
+    "title style:#red;\u3000;  %%{x}%%",
+    "title style:#red;\u3000;  %%{x}%%",
+  ],
+  [
+    "U+3000 between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accTitle line of an architecture diagram",
+    "accTitle: style:#red;\u3000;  %%{x}%%",
+    "accTitle: style:#red;\u3000;  %%{x}%%",
+  ],
+  [
+    "U+FEFF between a semicolon that the line rule ignores and a second semicolon, a directive after them, in a title of an architecture diagram",
+    "title style:#red;\ufeff;  %%{x}%%",
+    "title style:#red;\ufeff;  %%{x}%%",
+  ],
+  [
+    "U+FEFF between a semicolon that the line rule ignores and a second semicolon, a directive after them, in an accTitle line of an architecture diagram",
+    "accTitle: style:#red;\ufeff;  %%{x}%%",
+    "accTitle: style:#red;\ufeff;  %%{x}%%",
+  ],
+  [
+    "U+000B before two directives that touch and end an accTitle line of an architecture diagram",
+    "accTitle: T\u000b%%{x}%%%%{y}%%",
+    "accTitle: T %%{x}%%%%{y}%%",
+  ],
+  [
+    "U+000C before two directives that touch and end an accTitle line of an architecture diagram",
+    "accTitle: T\f%%{x}%%%%{y}%%",
+    "accTitle: T %%{x}%%%%{y}%%",
+  ],
+  [
+    "a no-break space before two directives that touch and end an accTitle line of an architecture diagram",
+    "accTitle: T\u00a0%%{x}%%%%{y}%%",
+    "accTitle: T %%{x}%%%%{y}%%",
+  ],
+  [
+    "U+1680 before two directives that touch and end an accTitle line of an architecture diagram",
+    "accTitle: T\u1680%%{x}%%%%{y}%%",
+    "accTitle: T %%{x}%%%%{y}%%",
+  ],
+  [
+    "U+2000 before two directives that touch and end an accTitle line of an architecture diagram",
+    "accTitle: T\u2000%%{x}%%%%{y}%%",
+    "accTitle: T %%{x}%%%%{y}%%",
+  ],
+  [
+    "U+2001 before two directives that touch and end an accTitle line of an architecture diagram",
+    "accTitle: T\u2001%%{x}%%%%{y}%%",
+    "accTitle: T %%{x}%%%%{y}%%",
+  ],
+  [
+    "U+2002 before two directives that touch and end an accTitle line of an architecture diagram",
+    "accTitle: T\u2002%%{x}%%%%{y}%%",
+    "accTitle: T %%{x}%%%%{y}%%",
+  ],
+  [
+    "U+2003 before two directives that touch and end an accTitle line of an architecture diagram",
+    "accTitle: T\u2003%%{x}%%%%{y}%%",
+    "accTitle: T %%{x}%%%%{y}%%",
+  ],
+  [
+    "U+2004 before two directives that touch and end an accTitle line of an architecture diagram",
+    "accTitle: T\u2004%%{x}%%%%{y}%%",
+    "accTitle: T %%{x}%%%%{y}%%",
+  ],
+  [
+    "U+2005 before two directives that touch and end an accTitle line of an architecture diagram",
+    "accTitle: T\u2005%%{x}%%%%{y}%%",
+    "accTitle: T %%{x}%%%%{y}%%",
+  ],
+  [
+    "U+2006 before two directives that touch and end an accTitle line of an architecture diagram",
+    "accTitle: T\u2006%%{x}%%%%{y}%%",
+    "accTitle: T %%{x}%%%%{y}%%",
+  ],
+  [
+    "U+2007 before two directives that touch and end an accTitle line of an architecture diagram",
+    "accTitle: T\u2007%%{x}%%%%{y}%%",
+    "accTitle: T %%{x}%%%%{y}%%",
+  ],
+  [
+    "U+2008 before two directives that touch and end an accTitle line of an architecture diagram",
+    "accTitle: T\u2008%%{x}%%%%{y}%%",
+    "accTitle: T %%{x}%%%%{y}%%",
+  ],
+  [
+    "U+2009 before two directives that touch and end an accTitle line of an architecture diagram",
+    "accTitle: T\u2009%%{x}%%%%{y}%%",
+    "accTitle: T %%{x}%%%%{y}%%",
+  ],
+  [
+    "U+200A before two directives that touch and end an accTitle line of an architecture diagram",
+    "accTitle: T\u200a%%{x}%%%%{y}%%",
+    "accTitle: T %%{x}%%%%{y}%%",
+  ],
+  [
+    "U+202F before two directives that touch and end an accTitle line of an architecture diagram",
+    "accTitle: T\u202f%%{x}%%%%{y}%%",
+    "accTitle: T %%{x}%%%%{y}%%",
+  ],
+  [
+    "U+205F before two directives that touch and end an accTitle line of an architecture diagram",
+    "accTitle: T\u205f%%{x}%%%%{y}%%",
+    "accTitle: T %%{x}%%%%{y}%%",
+  ],
+  [
+    "U+3000 before two directives that touch and end an accTitle line of an architecture diagram",
+    "accTitle: T\u3000%%{x}%%%%{y}%%",
+    "accTitle: T %%{x}%%%%{y}%%",
+  ],
+  [
+    "U+FEFF before two directives that touch and end an accTitle line of an architecture diagram",
+    "accTitle: T\ufeff%%{x}%%%%{y}%%",
+    "accTitle: T %%{x}%%%%{y}%%",
+  ],
+  [
+    "U+2028 before two directives that touch and end an accTitle line of an architecture diagram",
+    "accTitle: T\u2028%%{x}%%%%{y}%%",
+    "accTitle: T %%{x}%%%%{y}%%",
+  ],
+  [
+    "U+2029 before two directives that touch and end an accTitle line of an architecture diagram",
+    "accTitle: T\u2029%%{x}%%%%{y}%%",
+    "accTitle: T %%{x}%%%%{y}%%",
+  ],
+  [
+    "U+000B before the first of two directives that a space separates, in a title of an architecture diagram",
+    "title T\u000b%%{x}%% %%{y}%%",
+    "title T\u000b%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+000B before the first of two directives that spaces separate, in a title of an architecture diagram",
+    "title T\u000b%%{x}%%  %%{y}%%",
+    "title T\u000b%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+000B before a directive that spaces and a comment follow in a title of an architecture diagram",
+    "title T\u000b%%{x}%%  %% c",
+    "title T\u000b%%{x}%% %% c",
+  ],
+  [
+    "U+000B before the first of two directives that a space separates, in an accTitle line of an architecture diagram",
+    "accTitle: T\u000b%%{x}%% %%{y}%%",
+    "accTitle: T\u000b%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+000B before the first of two directives that spaces separate, in an accTitle line of an architecture diagram",
+    "accTitle: T\u000b%%{x}%%  %%{y}%%",
+    "accTitle: T\u000b%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+000C before the first of two directives that a space separates, in a title of an architecture diagram",
+    "title T\f%%{x}%% %%{y}%%",
+    "title T\f%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+000C before the first of two directives that spaces separate, in a title of an architecture diagram",
+    "title T\f%%{x}%%  %%{y}%%",
+    "title T\f%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+000C before a directive that spaces and a comment follow in a title of an architecture diagram",
+    "title T\f%%{x}%%  %% c",
+    "title T\f%%{x}%% %% c",
+  ],
+  [
+    "U+000C before the first of two directives that a space separates, in an accTitle line of an architecture diagram",
+    "accTitle: T\f%%{x}%% %%{y}%%",
+    "accTitle: T\f%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+000C before the first of two directives that spaces separate, in an accTitle line of an architecture diagram",
+    "accTitle: T\f%%{x}%%  %%{y}%%",
+    "accTitle: T\f%%{x}%% %%{y}%%",
+  ],
+  [
+    "a no-break space before the first of two directives that spaces separate, in a title of an architecture diagram",
+    "title T\u00a0%%{x}%%  %%{y}%%",
+    "title T\u00a0%%{x}%% %%{y}%%",
+  ],
+  [
+    "a no-break space before the first of two directives that a space separates, in an accTitle line of an architecture diagram",
+    "accTitle: T\u00a0%%{x}%% %%{y}%%",
+    "accTitle: T\u00a0%%{x}%% %%{y}%%",
+  ],
+  [
+    "a no-break space before the first of two directives that spaces separate, in an accTitle line of an architecture diagram",
+    "accTitle: T\u00a0%%{x}%%  %%{y}%%",
+    "accTitle: T\u00a0%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+1680 before the first of two directives that a space separates, in a title of an architecture diagram",
+    "title T\u1680%%{x}%% %%{y}%%",
+    "title T\u1680%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+1680 before the first of two directives that spaces separate, in a title of an architecture diagram",
+    "title T\u1680%%{x}%%  %%{y}%%",
+    "title T\u1680%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+1680 before a directive that spaces and a comment follow in a title of an architecture diagram",
+    "title T\u1680%%{x}%%  %% c",
+    "title T\u1680%%{x}%% %% c",
+  ],
+  [
+    "U+1680 before the first of two directives that a space separates, in an accTitle line of an architecture diagram",
+    "accTitle: T\u1680%%{x}%% %%{y}%%",
+    "accTitle: T\u1680%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+1680 before the first of two directives that spaces separate, in an accTitle line of an architecture diagram",
+    "accTitle: T\u1680%%{x}%%  %%{y}%%",
+    "accTitle: T\u1680%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2000 before the first of two directives that a space separates, in a title of an architecture diagram",
+    "title T\u2000%%{x}%% %%{y}%%",
+    "title T\u2000%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2000 before the first of two directives that spaces separate, in a title of an architecture diagram",
+    "title T\u2000%%{x}%%  %%{y}%%",
+    "title T\u2000%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2000 before a directive that spaces and a comment follow in a title of an architecture diagram",
+    "title T\u2000%%{x}%%  %% c",
+    "title T\u2000%%{x}%% %% c",
+  ],
+  [
+    "U+2000 before the first of two directives that a space separates, in an accTitle line of an architecture diagram",
+    "accTitle: T\u2000%%{x}%% %%{y}%%",
+    "accTitle: T\u2000%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2000 before the first of two directives that spaces separate, in an accTitle line of an architecture diagram",
+    "accTitle: T\u2000%%{x}%%  %%{y}%%",
+    "accTitle: T\u2000%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2001 before the first of two directives that a space separates, in a title of an architecture diagram",
+    "title T\u2001%%{x}%% %%{y}%%",
+    "title T\u2001%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2001 before the first of two directives that spaces separate, in a title of an architecture diagram",
+    "title T\u2001%%{x}%%  %%{y}%%",
+    "title T\u2001%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2001 before a directive that spaces and a comment follow in a title of an architecture diagram",
+    "title T\u2001%%{x}%%  %% c",
+    "title T\u2001%%{x}%% %% c",
+  ],
+  [
+    "U+2001 before the first of two directives that a space separates, in an accTitle line of an architecture diagram",
+    "accTitle: T\u2001%%{x}%% %%{y}%%",
+    "accTitle: T\u2001%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2001 before the first of two directives that spaces separate, in an accTitle line of an architecture diagram",
+    "accTitle: T\u2001%%{x}%%  %%{y}%%",
+    "accTitle: T\u2001%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2002 before the first of two directives that a space separates, in a title of an architecture diagram",
+    "title T\u2002%%{x}%% %%{y}%%",
+    "title T\u2002%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2002 before the first of two directives that spaces separate, in a title of an architecture diagram",
+    "title T\u2002%%{x}%%  %%{y}%%",
+    "title T\u2002%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2002 before a directive that spaces and a comment follow in a title of an architecture diagram",
+    "title T\u2002%%{x}%%  %% c",
+    "title T\u2002%%{x}%% %% c",
+  ],
+  [
+    "U+2002 before the first of two directives that a space separates, in an accTitle line of an architecture diagram",
+    "accTitle: T\u2002%%{x}%% %%{y}%%",
+    "accTitle: T\u2002%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2002 before the first of two directives that spaces separate, in an accTitle line of an architecture diagram",
+    "accTitle: T\u2002%%{x}%%  %%{y}%%",
+    "accTitle: T\u2002%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2003 before the first of two directives that a space separates, in a title of an architecture diagram",
+    "title T\u2003%%{x}%% %%{y}%%",
+    "title T\u2003%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2003 before the first of two directives that spaces separate, in a title of an architecture diagram",
+    "title T\u2003%%{x}%%  %%{y}%%",
+    "title T\u2003%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2003 before a directive that spaces and a comment follow in a title of an architecture diagram",
+    "title T\u2003%%{x}%%  %% c",
+    "title T\u2003%%{x}%% %% c",
+  ],
+  [
+    "U+2003 before the first of two directives that a space separates, in an accTitle line of an architecture diagram",
+    "accTitle: T\u2003%%{x}%% %%{y}%%",
+    "accTitle: T\u2003%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2003 before the first of two directives that spaces separate, in an accTitle line of an architecture diagram",
+    "accTitle: T\u2003%%{x}%%  %%{y}%%",
+    "accTitle: T\u2003%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2004 before the first of two directives that a space separates, in a title of an architecture diagram",
+    "title T\u2004%%{x}%% %%{y}%%",
+    "title T\u2004%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2004 before the first of two directives that spaces separate, in a title of an architecture diagram",
+    "title T\u2004%%{x}%%  %%{y}%%",
+    "title T\u2004%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2004 before a directive that spaces and a comment follow in a title of an architecture diagram",
+    "title T\u2004%%{x}%%  %% c",
+    "title T\u2004%%{x}%% %% c",
+  ],
+  [
+    "U+2004 before the first of two directives that a space separates, in an accTitle line of an architecture diagram",
+    "accTitle: T\u2004%%{x}%% %%{y}%%",
+    "accTitle: T\u2004%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2004 before the first of two directives that spaces separate, in an accTitle line of an architecture diagram",
+    "accTitle: T\u2004%%{x}%%  %%{y}%%",
+    "accTitle: T\u2004%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2005 before the first of two directives that a space separates, in a title of an architecture diagram",
+    "title T\u2005%%{x}%% %%{y}%%",
+    "title T\u2005%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2005 before the first of two directives that spaces separate, in a title of an architecture diagram",
+    "title T\u2005%%{x}%%  %%{y}%%",
+    "title T\u2005%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2005 before a directive that spaces and a comment follow in a title of an architecture diagram",
+    "title T\u2005%%{x}%%  %% c",
+    "title T\u2005%%{x}%% %% c",
+  ],
+  [
+    "U+2005 before the first of two directives that a space separates, in an accTitle line of an architecture diagram",
+    "accTitle: T\u2005%%{x}%% %%{y}%%",
+    "accTitle: T\u2005%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2005 before the first of two directives that spaces separate, in an accTitle line of an architecture diagram",
+    "accTitle: T\u2005%%{x}%%  %%{y}%%",
+    "accTitle: T\u2005%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2006 before the first of two directives that a space separates, in a title of an architecture diagram",
+    "title T\u2006%%{x}%% %%{y}%%",
+    "title T\u2006%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2006 before the first of two directives that spaces separate, in a title of an architecture diagram",
+    "title T\u2006%%{x}%%  %%{y}%%",
+    "title T\u2006%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2006 before a directive that spaces and a comment follow in a title of an architecture diagram",
+    "title T\u2006%%{x}%%  %% c",
+    "title T\u2006%%{x}%% %% c",
+  ],
+  [
+    "U+2006 before the first of two directives that a space separates, in an accTitle line of an architecture diagram",
+    "accTitle: T\u2006%%{x}%% %%{y}%%",
+    "accTitle: T\u2006%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2006 before the first of two directives that spaces separate, in an accTitle line of an architecture diagram",
+    "accTitle: T\u2006%%{x}%%  %%{y}%%",
+    "accTitle: T\u2006%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2007 before the first of two directives that a space separates, in a title of an architecture diagram",
+    "title T\u2007%%{x}%% %%{y}%%",
+    "title T\u2007%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2007 before the first of two directives that spaces separate, in a title of an architecture diagram",
+    "title T\u2007%%{x}%%  %%{y}%%",
+    "title T\u2007%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2007 before a directive that spaces and a comment follow in a title of an architecture diagram",
+    "title T\u2007%%{x}%%  %% c",
+    "title T\u2007%%{x}%% %% c",
+  ],
+  [
+    "U+2007 before the first of two directives that a space separates, in an accTitle line of an architecture diagram",
+    "accTitle: T\u2007%%{x}%% %%{y}%%",
+    "accTitle: T\u2007%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2007 before the first of two directives that spaces separate, in an accTitle line of an architecture diagram",
+    "accTitle: T\u2007%%{x}%%  %%{y}%%",
+    "accTitle: T\u2007%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2008 before the first of two directives that a space separates, in a title of an architecture diagram",
+    "title T\u2008%%{x}%% %%{y}%%",
+    "title T\u2008%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2008 before the first of two directives that spaces separate, in a title of an architecture diagram",
+    "title T\u2008%%{x}%%  %%{y}%%",
+    "title T\u2008%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2008 before a directive that spaces and a comment follow in a title of an architecture diagram",
+    "title T\u2008%%{x}%%  %% c",
+    "title T\u2008%%{x}%% %% c",
+  ],
+  [
+    "U+2008 before the first of two directives that a space separates, in an accTitle line of an architecture diagram",
+    "accTitle: T\u2008%%{x}%% %%{y}%%",
+    "accTitle: T\u2008%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2008 before the first of two directives that spaces separate, in an accTitle line of an architecture diagram",
+    "accTitle: T\u2008%%{x}%%  %%{y}%%",
+    "accTitle: T\u2008%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2009 before the first of two directives that a space separates, in a title of an architecture diagram",
+    "title T\u2009%%{x}%% %%{y}%%",
+    "title T\u2009%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2009 before the first of two directives that spaces separate, in a title of an architecture diagram",
+    "title T\u2009%%{x}%%  %%{y}%%",
+    "title T\u2009%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2009 before a directive that spaces and a comment follow in a title of an architecture diagram",
+    "title T\u2009%%{x}%%  %% c",
+    "title T\u2009%%{x}%% %% c",
+  ],
+  [
+    "U+2009 before the first of two directives that a space separates, in an accTitle line of an architecture diagram",
+    "accTitle: T\u2009%%{x}%% %%{y}%%",
+    "accTitle: T\u2009%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2009 before the first of two directives that spaces separate, in an accTitle line of an architecture diagram",
+    "accTitle: T\u2009%%{x}%%  %%{y}%%",
+    "accTitle: T\u2009%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+200A before the first of two directives that a space separates, in a title of an architecture diagram",
+    "title T\u200a%%{x}%% %%{y}%%",
+    "title T\u200a%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+200A before the first of two directives that spaces separate, in a title of an architecture diagram",
+    "title T\u200a%%{x}%%  %%{y}%%",
+    "title T\u200a%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+200A before a directive that spaces and a comment follow in a title of an architecture diagram",
+    "title T\u200a%%{x}%%  %% c",
+    "title T\u200a%%{x}%% %% c",
+  ],
+  [
+    "U+200A before the first of two directives that a space separates, in an accTitle line of an architecture diagram",
+    "accTitle: T\u200a%%{x}%% %%{y}%%",
+    "accTitle: T\u200a%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+200A before the first of two directives that spaces separate, in an accTitle line of an architecture diagram",
+    "accTitle: T\u200a%%{x}%%  %%{y}%%",
+    "accTitle: T\u200a%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+202F before the first of two directives that a space separates, in a title of an architecture diagram",
+    "title T\u202f%%{x}%% %%{y}%%",
+    "title T\u202f%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+202F before the first of two directives that spaces separate, in a title of an architecture diagram",
+    "title T\u202f%%{x}%%  %%{y}%%",
+    "title T\u202f%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+202F before a directive that spaces and a comment follow in a title of an architecture diagram",
+    "title T\u202f%%{x}%%  %% c",
+    "title T\u202f%%{x}%% %% c",
+  ],
+  [
+    "U+202F before the first of two directives that a space separates, in an accTitle line of an architecture diagram",
+    "accTitle: T\u202f%%{x}%% %%{y}%%",
+    "accTitle: T\u202f%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+202F before the first of two directives that spaces separate, in an accTitle line of an architecture diagram",
+    "accTitle: T\u202f%%{x}%%  %%{y}%%",
+    "accTitle: T\u202f%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+205F before the first of two directives that a space separates, in a title of an architecture diagram",
+    "title T\u205f%%{x}%% %%{y}%%",
+    "title T\u205f%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+205F before the first of two directives that spaces separate, in a title of an architecture diagram",
+    "title T\u205f%%{x}%%  %%{y}%%",
+    "title T\u205f%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+205F before a directive that spaces and a comment follow in a title of an architecture diagram",
+    "title T\u205f%%{x}%%  %% c",
+    "title T\u205f%%{x}%% %% c",
+  ],
+  [
+    "U+205F before the first of two directives that a space separates, in an accTitle line of an architecture diagram",
+    "accTitle: T\u205f%%{x}%% %%{y}%%",
+    "accTitle: T\u205f%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+205F before the first of two directives that spaces separate, in an accTitle line of an architecture diagram",
+    "accTitle: T\u205f%%{x}%%  %%{y}%%",
+    "accTitle: T\u205f%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+3000 before the first of two directives that spaces separate, in a title of an architecture diagram",
+    "title T\u3000%%{x}%%  %%{y}%%",
+    "title T\u3000%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+3000 before the first of two directives that a space separates, in an accTitle line of an architecture diagram",
+    "accTitle: T\u3000%%{x}%% %%{y}%%",
+    "accTitle: T\u3000%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+3000 before the first of two directives that spaces separate, in an accTitle line of an architecture diagram",
+    "accTitle: T\u3000%%{x}%%  %%{y}%%",
+    "accTitle: T\u3000%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+FEFF before the first of two directives that a space separates, in a title of an architecture diagram",
+    "title T\ufeff%%{x}%% %%{y}%%",
+    "title T\ufeff%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+FEFF before the first of two directives that spaces separate, in a title of an architecture diagram",
+    "title T\ufeff%%{x}%%  %%{y}%%",
+    "title T\ufeff%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+FEFF before a directive that spaces and a comment follow in a title of an architecture diagram",
+    "title T\ufeff%%{x}%%  %% c",
+    "title T\ufeff%%{x}%% %% c",
+  ],
+  [
+    "U+FEFF before the first of two directives that a space separates, in an accTitle line of an architecture diagram",
+    "accTitle: T\ufeff%%{x}%% %%{y}%%",
+    "accTitle: T\ufeff%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+FEFF before the first of two directives that spaces separate, in an accTitle line of an architecture diagram",
+    "accTitle: T\ufeff%%{x}%%  %%{y}%%",
+    "accTitle: T\ufeff%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2028 before the first of two directives that a space separates, in an accTitle line of an architecture diagram",
+    "accTitle: T\u2028%%{x}%% %%{y}%%",
+    "accTitle: T\u2028%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2028 before the first of two directives that spaces separate, in an accTitle line of an architecture diagram",
+    "accTitle: T\u2028%%{x}%%  %%{y}%%",
+    "accTitle: T\u2028%%{x}%%  %%{y}%%",
+  ],
+  [
+    "U+2029 before the first of two directives that a space separates, in an accTitle line of an architecture diagram",
+    "accTitle: T\u2029%%{x}%% %%{y}%%",
+    "accTitle: T\u2029%%{x}%% %%{y}%%",
+  ],
+  [
+    "U+2029 before the first of two directives that spaces separate, in an accTitle line of an architecture diagram",
+    "accTitle: T\u2029%%{x}%%  %%{y}%%",
+    "accTitle: T\u2029%%{x}%%  %%{y}%%",
+  ],
+  [
+    "U+000B between two directives that end an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u000b%%{y}%%",
+    "accTitle: T  %%{x}%%\u000b%%{y}%%",
+  ],
+  [
+    "U+000B between two directives, spaces after the last, in an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\u000b%%{y}%%  ",
+    "accDescr: T  %%{x}%%\u000b%%{y}%%  ",
+  ],
+  [
+    "U+000C between two directives that end an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\f%%{y}%%",
+    "accTitle: T  %%{x}%%\f%%{y}%%",
+  ],
+  [
+    "U+000C between two directives, spaces after the last, in an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\f%%{y}%%  ",
+    "accDescr: T  %%{x}%%\f%%{y}%%  ",
+  ],
+  [
+    "a no-break space between two directives that end an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u00a0%%{y}%%",
+    "accTitle: T  %%{x}%%\u00a0%%{y}%%",
+  ],
+  [
+    "a no-break space between two directives, spaces after the last, in an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\u00a0%%{y}%%  ",
+    "accDescr: T  %%{x}%%\u00a0%%{y}%%  ",
+  ],
+  [
+    "U+1680 between two directives that end an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u1680%%{y}%%",
+    "accTitle: T  %%{x}%%\u1680%%{y}%%",
+  ],
+  [
+    "U+1680 between two directives, spaces after the last, in an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\u1680%%{y}%%  ",
+    "accDescr: T  %%{x}%%\u1680%%{y}%%  ",
+  ],
+  [
+    "U+2000 between two directives that end an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u2000%%{y}%%",
+    "accTitle: T  %%{x}%%\u2000%%{y}%%",
+  ],
+  [
+    "U+2000 between two directives, spaces after the last, in an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\u2000%%{y}%%  ",
+    "accDescr: T  %%{x}%%\u2000%%{y}%%  ",
+  ],
+  [
+    "U+2001 between two directives that end an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u2001%%{y}%%",
+    "accTitle: T  %%{x}%%\u2001%%{y}%%",
+  ],
+  [
+    "U+2001 between two directives, spaces after the last, in an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\u2001%%{y}%%  ",
+    "accDescr: T  %%{x}%%\u2001%%{y}%%  ",
+  ],
+  [
+    "U+2002 between two directives that end an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u2002%%{y}%%",
+    "accTitle: T  %%{x}%%\u2002%%{y}%%",
+  ],
+  [
+    "U+2002 between two directives, spaces after the last, in an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\u2002%%{y}%%  ",
+    "accDescr: T  %%{x}%%\u2002%%{y}%%  ",
+  ],
+  [
+    "U+2003 between two directives that end an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u2003%%{y}%%",
+    "accTitle: T  %%{x}%%\u2003%%{y}%%",
+  ],
+  [
+    "U+2003 between two directives, spaces after the last, in an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\u2003%%{y}%%  ",
+    "accDescr: T  %%{x}%%\u2003%%{y}%%  ",
+  ],
+  [
+    "U+2004 between two directives that end an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u2004%%{y}%%",
+    "accTitle: T  %%{x}%%\u2004%%{y}%%",
+  ],
+  [
+    "U+2004 between two directives, spaces after the last, in an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\u2004%%{y}%%  ",
+    "accDescr: T  %%{x}%%\u2004%%{y}%%  ",
+  ],
+  [
+    "U+2005 between two directives that end an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u2005%%{y}%%",
+    "accTitle: T  %%{x}%%\u2005%%{y}%%",
+  ],
+  [
+    "U+2005 between two directives, spaces after the last, in an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\u2005%%{y}%%  ",
+    "accDescr: T  %%{x}%%\u2005%%{y}%%  ",
+  ],
+  [
+    "U+2006 between two directives that end an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u2006%%{y}%%",
+    "accTitle: T  %%{x}%%\u2006%%{y}%%",
+  ],
+  [
+    "U+2006 between two directives, spaces after the last, in an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\u2006%%{y}%%  ",
+    "accDescr: T  %%{x}%%\u2006%%{y}%%  ",
+  ],
+  [
+    "U+2007 between two directives that end an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u2007%%{y}%%",
+    "accTitle: T  %%{x}%%\u2007%%{y}%%",
+  ],
+  [
+    "U+2007 between two directives, spaces after the last, in an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\u2007%%{y}%%  ",
+    "accDescr: T  %%{x}%%\u2007%%{y}%%  ",
+  ],
+  [
+    "U+2008 between two directives that end an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u2008%%{y}%%",
+    "accTitle: T  %%{x}%%\u2008%%{y}%%",
+  ],
+  [
+    "U+2008 between two directives, spaces after the last, in an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\u2008%%{y}%%  ",
+    "accDescr: T  %%{x}%%\u2008%%{y}%%  ",
+  ],
+  [
+    "U+2009 between two directives that end an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u2009%%{y}%%",
+    "accTitle: T  %%{x}%%\u2009%%{y}%%",
+  ],
+  [
+    "U+2009 between two directives, spaces after the last, in an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\u2009%%{y}%%  ",
+    "accDescr: T  %%{x}%%\u2009%%{y}%%  ",
+  ],
+  [
+    "U+200A between two directives that end an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u200a%%{y}%%",
+    "accTitle: T  %%{x}%%\u200a%%{y}%%",
+  ],
+  [
+    "U+200A between two directives, spaces after the last, in an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\u200a%%{y}%%  ",
+    "accDescr: T  %%{x}%%\u200a%%{y}%%  ",
+  ],
+  [
+    "U+202F between two directives that end an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u202f%%{y}%%",
+    "accTitle: T  %%{x}%%\u202f%%{y}%%",
+  ],
+  [
+    "U+202F between two directives, spaces after the last, in an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\u202f%%{y}%%  ",
+    "accDescr: T  %%{x}%%\u202f%%{y}%%  ",
+  ],
+  [
+    "U+205F between two directives that end an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u205f%%{y}%%",
+    "accTitle: T  %%{x}%%\u205f%%{y}%%",
+  ],
+  [
+    "U+205F between two directives, spaces after the last, in an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\u205f%%{y}%%  ",
+    "accDescr: T  %%{x}%%\u205f%%{y}%%  ",
+  ],
+  [
+    "U+3000 between two directives that end an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u3000%%{y}%%",
+    "accTitle: T  %%{x}%%\u3000%%{y}%%",
+  ],
+  [
+    "U+3000 between two directives, spaces after the last, in an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\u3000%%{y}%%  ",
+    "accDescr: T  %%{x}%%\u3000%%{y}%%  ",
+  ],
+  [
+    "U+FEFF between two directives that end an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\ufeff%%{y}%%",
+    "accTitle: T  %%{x}%%\ufeff%%{y}%%",
+  ],
+  [
+    "U+FEFF between two directives, spaces after the last, in an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\ufeff%%{y}%%  ",
+    "accDescr: T  %%{x}%%\ufeff%%{y}%%  ",
+  ],
+  [
+    "U+2028 between two directives that end an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u2028%%{y}%%",
+    "accTitle: T  %%{x}%%\u2028%%{y}%%",
+  ],
+  [
+    "U+2028 between two directives, spaces after the last, in an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\u2028%%{y}%%  ",
+    "accDescr: T  %%{x}%%\u2028%%{y}%%  ",
+  ],
+  [
+    "U+2029 between two directives that end an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u2029%%{y}%%",
+    "accTitle: T  %%{x}%%\u2029%%{y}%%",
+  ],
+  [
+    "U+2029 between two directives, spaces after the last, in an accDescr line of an architecture diagram",
+    "accDescr: T  %%{x}%%\u2029%%{y}%%  ",
+    "accDescr: T  %%{x}%%\u2029%%{y}%%  ",
+  ],
+  [
+    "a no-break space between two directives, a comment touching the last, in an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u00a0%%{y}%%%% c",
+    "accTitle: T  %%{x}%%\u00a0%%{y}%%%% c",
+  ],
+  [
+    "a no-break space between two directives, a space and a comment after the last, in an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u00a0%%{y}%% %% c",
+    "accTitle: T  %%{x}%%\u00a0%%{y}%% %% c",
+  ],
+  [
+    "a no-break space between two directives, spaces and a comment after the last, in an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u00a0%%{y}%%  %% c",
+    "accTitle: T  %%{x}%%\u00a0%%{y}%%  %% c",
+  ],
+  [
+    "U+2003 between two directives, a comment touching the last, in an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u2003%%{y}%%%% c",
+    "accTitle: T  %%{x}%%\u2003%%{y}%%%% c",
+  ],
+  [
+    "U+2003 between two directives, a space and a comment after the last, in an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u2003%%{y}%% %% c",
+    "accTitle: T  %%{x}%%\u2003%%{y}%% %% c",
+  ],
+  [
+    "U+2003 between two directives, spaces and a comment after the last, in an accTitle line of an architecture diagram",
+    "accTitle: T  %%{x}%%\u2003%%{y}%%  %% c",
+    "accTitle: T  %%{x}%%\u2003%%{y}%%  %% c",
+  ],
+  [
+    "a run before the directive after a U+2028 inside the text of a title of an architecture diagram",
+    "title A\u2028B  %%{x}%%",
+    "title A\u2028B %%{x}%%",
+  ],
+  [
+    "spaces after the directive after a U+2028 inside the text of a title of an architecture diagram",
+    "title A\u2028B  %%{x}%%  ",
+    "title A\u2028B  %%{x}%%  ",
+  ],
+  [
+    "a run before the directive after a U+2028 inside the text of an accTitle line of an architecture diagram",
+    "accTitle: A\u2028B  %%{x}%%",
+    "accTitle: A\u2028B %%{x}%%",
+  ],
+  [
+    "spaces after the directive after a U+2028 inside the text of an accTitle line of an architecture diagram",
+    "accTitle: A\u2028B  %%{x}%%  ",
+    "accTitle: A\u2028B  %%{x}%%  ",
+  ],
+  [
+    "spaces after the directive after a U+2029 inside the text of a title of an architecture diagram",
+    "title TA\u2029B  %%{x}%%  ",
+    "title TA\u2029B  %%{x}%%  ",
+  ],
+  [
+    "spaces between two directives after a U+2028 inside the text of a title of an architecture diagram",
+    "title TA\u2028B  %%{x}%%  %%{y}%%",
+    "title TA\u2028B  %%{x}%%  %%{y}%%",
+  ],
+  [
+    "a tab after the directive after a U+2028 inside the text of a title of an architecture diagram",
+    "title TA\u2028B  %%{x}%%\t",
+    "title TA\u2028B  %%{x}%%\t",
+  ],
+  [
+    "a run before two directives that touch after a U+2028 inside the text of a title of an architecture diagram",
+    "title TA\u2028B  %%{x}%%%%{y}%%",
+    "title TA\u2028B %%{x}%%%%{y}%%",
+  ],
 ]
 
 describe("the directives that end the title or the value of an accessibility line of an architecture diagram", () => {
@@ -8036,6 +9081,16 @@ const architectureDirectiveCommentExamples: readonly (readonly [
     "U+2028 after the last directive and spaces, spaces and a comment after it, the text ends, in a title of an architecture diagram",
     "architecture-beta\ntitle T  %%{x}%%  \u2028  %% c\n",
     "architecture-beta\n  title T  %%{x}%%  \u2028 %% c\n",
+  ],
+  [
+    "a U+2028 inside the text, a directive, and a comment after spaces, in a title of an architecture diagram",
+    "architecture-beta\ntitle TA\u2028B  %%{x}%%  %% c\nservice a(server)[A]\n",
+    "architecture-beta\n  title TA\u2028B  %%{x}%%  %% c\n  service a(server)[A]\n",
+  ],
+  [
+    "a U+2028 inside the text, a directive that a comment touches, in a title of an architecture diagram",
+    "architecture-beta\ntitle TA\u2028B  %%{x}%%%% c\nservice a(server)[A]\n",
+    "architecture-beta\n  title TA\u2028B %%{x}%%%% c\n  service a(server)[A]\n",
   ],
 ]
 
