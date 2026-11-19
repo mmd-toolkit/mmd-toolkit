@@ -17,6 +17,7 @@ import {
   commentHasIgnoredSemicolonThatNeedsItsLine,
   followsGapsOfStyleRuleStretch,
   holdsJoiningRegion,
+  findJoiningRegionEndInLine,
   holdsKeptSemicolon,
   holdsOwnSemicolonIn,
   isDroppedSemicolon,
@@ -141,7 +142,9 @@ export interface BlockRules<Statement extends Positioned> {
    * complete value atom, or in a gap that `keptGapEnd` keeps: skip whole-line
    * joining and verbatim fallback for those regions, so the gaps and the
    * indentation outside them can still format. Kept-line rules otherwise
-   * apply.
+   * apply. A gap that holds a joining region and is not kept by one of those is
+   * kept as written by `printBlock` itself (`findJoiningRegionEndInLine`), so a
+   * layout needs no hook of its own for it.
    */
   readonly joiningRegionsPrintedAsWritten?: boolean
   /** The lines whose statements stay together (see `KeptLines`). */
@@ -187,8 +190,11 @@ export interface BlockRules<Statement extends Positioned> {
     beforeStatement: boolean,
   ) => number | undefined
   /**
-   * The end of text kept verbatim within a joined line. Unlike `keptGapEnd`,
-   * this preserves inline spacing without preserving a line break.
+   * The end of text kept as written within a joined line, with a U+2028 or
+   * U+2029 in it. Unlike `keptGapEnd`, this keeps the spacing of a gap within a
+   * line, and no line break. Where it keeps nothing, `printBlock` keeps the gap
+   * that holds a joining region of a layout that sets
+   * `joiningRegionsPrintedAsWritten`.
    */
   readonly keptInlineGapEnd?: (start: number) => number
   /**
@@ -465,6 +471,23 @@ export function printBlock<Statement extends Positioned>(
     rules.kept,
     rules.joiningRegionsPrintedAsWritten !== true,
   )
+
+  /**
+   * The end of the gap that is kept as written from `start` within a line: the
+   * layout's own (`BlockRules.keptInlineGapEnd`) where it keeps one, and for a
+   * layout that prints its joining regions as written, the end of the joining
+   * region that starts in the gap, so that the gap that holds the U+2028 or
+   * U+2029 before a comment line stays as written (docs/compatibility.md, A
+   * comment line after U+2028 or U+2029).
+   */
+  function keptInlineGapEnd(start: number): number {
+    const own = rules.keptInlineGapEnd?.(start)
+    if (own !== undefined && own > start) return own
+    return rules.joiningRegionsPrintedAsWritten === true
+      ? findJoiningRegionEndInLine(source, start)
+      : (own ?? start)
+  }
+
   const lines: Line[] = []
   let headerTrailing: ItemRun | null = null
   let offset = bounds.start
@@ -922,7 +945,7 @@ export function printBlock<Statement extends Positioned>(
                       rules.keepsOpeningLine === false),
                   atLineEnd: false,
                 },
-                rules.keptInlineGapEnd,
+                keptInlineGapEnd,
                 rules.inlineGapBefore?.(statement),
                 rules.omittedRanges,
               )),
@@ -963,7 +986,7 @@ export function printBlock<Statement extends Positioned>(
               atLineEnd: true,
               printedLineStart: startOfSplitClosing(position, last),
             },
-            rules.keptInlineGapEnd,
+            keptInlineGapEnd,
             undefined,
             rules.omittedRanges,
             rules.relocatedWhitespace,

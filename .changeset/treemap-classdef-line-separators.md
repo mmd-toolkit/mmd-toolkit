@@ -2,8 +2,9 @@
 "prettier-plugin-mmd": patch
 ---
 
-Fix the error `a line break within a kept line` on a `title`, `accTitle`, or
-`accDescr` line, and on a treemap `classDef` or a kanban column or card, that a
-U+2028 or U+2029 and a comment ending in `;` follow, in a treemap, kanban,
-treeview, architecture, cynefin, gitgraph, radar, info, packet, pie, wardley, or
-railroad diagram: the line is now printed as written.
+Print a comment that follows a U+2028 or U+2029 as written on a line that holds
+a `;`, in a kanban, treemap, treeView, pie, info, gitgraph, packet,
+architecture, radar, wardley, railroad, or cynefin diagram: `title T`, U+2028,
+U+2029, and `%% d;` failed with `a line break within a kept line` and is now
+printed as it is written, and `title T`, U+2028, three spaces, and `%% d;` keeps
+its three spaces, where one space was printed.

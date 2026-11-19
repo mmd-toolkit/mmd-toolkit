@@ -11,7 +11,6 @@ import {
   kanbanLines,
   layoutKanbanLine,
 } from "./kanban-layout.ts"
-import { findJoiningRegionEndInLine } from "./kept-lines.ts"
 import { expectToken, layoutKeywordHeader } from "./layout.ts"
 import { significantIndentationOf } from "./lines.ts"
 import {
@@ -170,8 +169,7 @@ function lineBlockRules(
     keptIndentationOf: (line) => placementOf(line).indentation,
     diagramLineEnd: (offset) => findCommentEndInLine(source, offset),
     keptInlineGapEnd: (offset) =>
-      findCommentEndInLine(source, offset) ??
-      findJoiningRegionEndInLine(source, offset),
+      findCommentEndInLine(source, offset) ?? offset,
     keptGapEnd: (start, end, beforeStatement) =>
       findKeptGapEnd(source, start, end, beforeStatement),
   }

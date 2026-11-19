@@ -2786,22 +2786,6 @@ railroad-peg-beta
 );
 ```
 
-`title`、`accTitle`、`accDescr` の行で、コメントを終わらせる `;` は、
-mermaid.js の行の規則が無視することがある `;`
-です（[`;` を含む行](./compatibility.ja.md#-を含む行)を参照）。
-そのコメントの前の U+2028 や U+2029 は、周りの空白とともに残ります。
-mermaid.js はコメント行を、その前の空白ごと取り除くので、
-文の終わりからコメントの終わりまでの隙間は、書かれたまま印字します。
-規則 1 は、そのような文字を持つ隙間の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-flowchart、class 図、sequence 図は、この形の行を書かれたまま印字します。
-
-[test: railroad a title keeps two U+2028 or U+2029 before a comment that ends in a semicolon]
-[test: railroad an accTitle keeps two U+2028 or U+2029 before a comment that ends in a semicolon]
-[test: railroad an accDescr line keeps two U+2028 or U+2029 before a comment that ends in a semicolon]
-[test: railroad a title keeps a U+2028 before a comment that ends in a semicolon]
-[test: railroad a title keeps a U+2029 before a comment that ends in a semicolon]
-
 ### 空行
 
 通常の連続空行を最大1行にし、文書と本文の端の空行を除きます。

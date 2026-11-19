@@ -566,22 +566,6 @@ info
   accDescr: C;;
 ```
 
-`title`、`accTitle`、`accDescr` の行で、コメントを終わらせる `;` は、
-mermaid.js の行の規則が無視することがある `;`
-です（[`;` を含む行](./compatibility.ja.md#-を含む行)を参照）。
-そのコメントの前の U+2028 や U+2029 は、周りの空白とともに残ります。
-mermaid.js はコメント行を、その前の空白ごと取り除くので、
-文の終わりからコメントの終わりまでの隙間は、書かれたまま印字します。
-規則 1 は、そのような文字を持つ隙間の印を挙げていないので、
-[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
-flowchart、class 図、sequence 図は、この形の行を書かれたまま印字します。
-
-[test: info a title keeps two U+2028 or U+2029 before a comment that ends in a semicolon]
-[test: info an accTitle keeps two U+2028 or U+2029 before a comment that ends in a semicolon]
-[test: info an accDescr line keeps two U+2028 or U+2029 before a comment that ends in a semicolon]
-[test: info a title keeps a U+2028 before a comment that ends in a semicolon]
-[test: info a title keeps a U+2029 before a comment that ends in a semicolon]
-
 ### Blank lines
 
 余分な空間を減らし、見た目のまとまりを残すため、

@@ -1500,12 +1500,11 @@ export function holdsJoiningRegion(
  * Where the text that the last region that joins lines takes ends, among the
  * regions whose comment starts at or after `offset` on its line, or `offset`
  * where there is none: the end of the region, and of the removed text (a
- * directive line, say) that follows it. A layout that prints its joining
- * regions as written (`BlockRules.joiningRegionsPrintedAsWritten`) keeps the
- * gap up to there as written (`BlockRules.keptInlineGapEnd`): the region
- * starts after a U+2028 or U+2029, which the gap holds, so the gap cannot be
- * laid out again (docs/compatibility.md, A comment line after U+2028 or
- * U+2029).
+ * directive line, say) that follows it. `printBlock` keeps the gap up to there
+ * as written for a layout that prints its joining regions as written
+ * (`BlockRules.joiningRegionsPrintedAsWritten`): the region starts after a
+ * U+2028 or U+2029, which the gap holds, so the gap cannot be laid out again
+ * (docs/compatibility.md, A comment line after U+2028 or U+2029).
  */
 export function findJoiningRegionEndInLine(
   source: Source,

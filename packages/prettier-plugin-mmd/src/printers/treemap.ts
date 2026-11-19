@@ -5,7 +5,6 @@ import { printAtoms } from "./atoms.ts"
 import { openingLine, printBlock, printDiagramBlock } from "./blocks.ts"
 import { relocatedWhitespaceStart } from "./common-layout.ts"
 import {
-  findJoiningRegionEndInLine,
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
   lineStartOf,
@@ -180,10 +179,7 @@ export function printTreemap(
               head: placements.get(line)!.head,
             }
           : undefined,
-      // A comment region that follows a U+2028 or U+2029 lies in a gap that
-      // `keptInlineGapEnd` keeps as written (docs/treemap.md, Semicolons).
       joiningRegionsPrintedAsWritten: true,
-      keptInlineGapEnd: (start) => findJoiningRegionEndInLine(source, start),
       keepsWhitespaceLineAfterComment: false,
       keepsDirectiveLinesUnindented: false,
       keepsInlineDirectivesWithPrevious: true,

@@ -1259,25 +1259,6 @@ architecture-beta
   }
 ```
 
-A `;` that ends a comment on the line of a `title`, an `accTitle`, or an
-`accDescr` line is a `;` of the line that mermaid.js may ignore (see
-[Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)). A U+2028 or
-U+2029 before that comment stays, with the whitespace around it: mermaid.js
-removes the comment line with the whitespace before it, so the gap from the end
-of the statement to the end of the comment is printed as written. Rule 1 names
-no mark for a gap that holds such a character, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the form: a flowchart, a class diagram, and a sequence diagram print such a line
-as written.
-
-[test: architecture a title keeps two U+2028 or U+2029 before a comment that
-ends in a semicolon] [test: architecture an accTitle keeps two U+2028 or U+2029
-before a comment that ends in a semicolon] [test: architecture an accDescr line
-keeps two U+2028 or U+2029 before a comment that ends in a semicolon] [test:
-architecture a title keeps a U+2028 before a comment that ends in a semicolon]
-[test: architecture a title keeps a U+2029 before a comment that ends in a
-semicolon]
-
 ### Line terminators and unicode
 
 Use the shared host policy: normalize physical CR/CRLF to LF, then emit

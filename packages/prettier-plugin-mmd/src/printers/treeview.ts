@@ -6,7 +6,6 @@ import { printAtoms } from "./atoms.ts"
 import { openingLine, printBlock, printDiagramBlock } from "./blocks.ts"
 import { relocatedWhitespaceStart } from "./common-layout.ts"
 import {
-  findJoiningRegionEndInLine,
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
   becomesCommentLineOnItsOwnLine,
@@ -239,7 +238,6 @@ export function printTreeview(
       indentsOnlyCommentLines: true,
       extraIndentationOf: (line) => placements.get(line)!.indentation,
       joiningRegionsPrintedAsWritten: true,
-      keptInlineGapEnd: (start) => findJoiningRegionEndInLine(source, start),
       printedEnd: (line) =>
         layouts.get(line) === undefined
           ? line.range[1]

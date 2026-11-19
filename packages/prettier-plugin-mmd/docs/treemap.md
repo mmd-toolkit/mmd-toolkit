@@ -618,44 +618,6 @@ printed as written.
 
 [test: treemap/semicolons/class-terminator-after-separator-and-comment-kept]
 
-A `;` that ends a comment on the line of a `title`, an `accTitle`, an `accDescr`
-line, or a `classDef` is a `;` of the line that mermaid.js may ignore (see
-[Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)). A U+2028 or
-U+2029 before that comment stays, with the whitespace around it: mermaid.js
-removes the comment line with the whitespace before it, so the gap from the end
-of the statement to the end of the comment is printed as written. Rule 1 names
-no mark for a gap that holds such a character, so
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
-the form: a flowchart, a class diagram, and a sequence diagram print such a line
-as written.
-
-[test: treemap a U+2029 before a comment stays after the U+2028 that ends a
-style] [test: treemap a U+2028 before a comment stays after the U+2029 that ends
-a style] [test: treemap a U+2028 before a comment stays after the U+2028 that
-ends a style] [test: treemap a U+2029 before a comment stays after the U+2029
-that ends a style] [test: treemap a comment that touches the second U+2028 or
-U+2029 of a style stays] [test: treemap a tab before the comment after two
-U+2028 or U+2029 of a style stays] [test: treemap spaces before the comment
-after two U+2028 or U+2029 of a style stay] [test: treemap spaces after the
-comment after two U+2028 or U+2029 of a style stay] [test: treemap a space
-between the two U+2028 or U+2029 of a style stays] [test: treemap a comment line
-after a comment after two U+2028 or U+2029 of a style] [test: treemap a
-directive line after a comment after two U+2028 or U+2029 of a style] [test:
-treemap a row after a comment after two U+2028 or U+2029 of a style] [test:
-treemap a classDef after a comment after two U+2028 or U+2029 of a style] [test:
-treemap a title keeps two U+2028 or U+2029 before a comment that ends in a
-semicolon] [test: treemap a title keeps one U+2028 before a comment that ends in
-a semicolon] [test: treemap an accTitle keeps two U+2028 or U+2029 before a
-comment that ends in a semicolon] [test: treemap an accDescr line keeps two
-U+2028 or U+2029 before a comment that ends in a semicolon] [test: treemap a
-classDef with two styles stays as written with two U+2028 or U+2029 before a
-comment that ends in a semicolon] [test: treemap a classDef without a style
-keeps two U+2028 or U+2029 before a comment that ends in a semicolon] [test:
-treemap a directive after two U+2028 or U+2029 and before a comment that ends in
-a semicolon] [test: treemap a directive before two U+2028 or U+2029 and a
-comment that ends in a semicolon] [test: treemap a directive between two U+2028
-or U+2029 and a comment that ends in a semicolon]
-
 The `;` stays too, with the character, where a U+2028 or U+2029 stands before
 it, with whitespace between them if any, and a comment line follows its line,
 directive lines between them included: without the `;` the statement goes on

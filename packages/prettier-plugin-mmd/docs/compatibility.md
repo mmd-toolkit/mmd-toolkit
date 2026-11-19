@@ -5992,6 +5992,110 @@ U+2028 inside the name of an ER entity that follows a name in quotes] [test: a
 comment line after U+2028 inside the name of a class] [test: a comment line
 after U+2029 inside the name of a class]
 
+The printers of kanban, treemap, treeView, and of the diagram types pie, info,
+gitgraph, packet, architecture, radar, wardley, railroad, and cynefin lay a line
+out themselves. They print the gap before a comment line that follows U+2028 or
+U+2029 as written, from the end of the statement to the end of the comment,
+where the line holds a `;` that the printer keeps: a `;` in a text, or the `;`
+that ends the comment (see [Lines that hold a `;`](#lines-that-hold-a-)). One or
+two of U+2028 and U+2029, the whitespace around them, and a directive before,
+between, or after them stay as written: `title T`, U+2028, three spaces, and
+`%% d;` is printed with its three spaces. Where the line holds no such `;`, the
+layout of the diagram type decides.
+
+[test: kanban title: two separators before a comment that ends in a semicolon]
+[test: kanban title: a U+2028 before a comment that ends in a semicolon] [test:
+kanban title: a U+2029 before a comment that ends in a semicolon] [test: kanban
+title: a U+2029 and a U+2028 before a comment that ends in a semicolon] [test:
+kanban title: three spaces between a U+2028 and a comment that ends in a
+semicolon] [test: kanban title: a tab between a U+2028 and a comment that ends
+in a semicolon] [test: kanban title: a comment that ends in a semicolon touches
+the U+2028] [test: kanban title: spaces after a comment that ends in a
+semicolon] [test: kanban title: a space between the two separators before a
+comment that ends in a semicolon] [test: kanban title: a comment line after the
+comment] [test: kanban title: a directive line after the comment] [test: kanban
+title: a statement after the comment] [test: kanban title: the end of the text
+with no line break after the comment] [test: kanban title: two semicolons that
+end the comment] [test: kanban title: a directive before the separators] [test:
+kanban title: a directive between the separators] [test: kanban title: a
+directive after the separators and before the comment] [test: kanban title: a
+semicolon in the text and a comment without a semicolon] [test: kanban title: a
+comment without a semicolon after two separators] [test: treemap title: two
+separators before a comment that ends in a semicolon] [test: treemap title: a
+U+2028 before a comment that ends in a semicolon] [test: treemap title: a U+2029
+before a comment that ends in a semicolon] [test: treemap title: a U+2029 and a
+U+2028 before a comment that ends in a semicolon] [test: treemap title: three
+spaces between a U+2028 and a comment that ends in a semicolon] [test: treemap
+title: a tab between a U+2028 and a comment that ends in a semicolon] [test:
+treemap title: a comment that ends in a semicolon touches the U+2028] [test:
+treemap title: spaces after a comment that ends in a semicolon] [test: treemap
+title: a space between the two separators before a comment that ends in a
+semicolon] [test: treemap title: a comment line after the comment] [test:
+treemap title: a directive line after the comment] [test: treemap title: a
+statement after the comment] [test: treemap title: the end of the text with no
+line break after the comment] [test: treemap title: two semicolons that end the
+comment] [test: treemap title: a directive before the separators] [test: treemap
+title: a directive between the separators] [test: treemap title: a directive
+after the separators and before the comment] [test: treemap title: a semicolon
+in the text and a comment without a semicolon] [test: treemap title: a comment
+without a semicolon after two separators] [test: treeview title: two separators
+before a comment that ends in a semicolon] [test: treeview title: a U+2028
+before a comment that ends in a semicolon] [test: treeview title: a U+2029
+before a comment that ends in a semicolon] [test: treeview title: a U+2029 and a
+U+2028 before a comment that ends in a semicolon] [test: treeview title: three
+spaces between a U+2028 and a comment that ends in a semicolon] [test: treeview
+title: a tab between a U+2028 and a comment that ends in a semicolon] [test:
+treeview title: a comment that ends in a semicolon touches the U+2028] [test:
+treeview title: spaces after a comment that ends in a semicolon] [test: treeview
+title: a space between the two separators before a comment that ends in a
+semicolon] [test: treeview title: a comment line after the comment] [test:
+treeview title: a directive line after the comment] [test: treeview title: a
+statement after the comment] [test: treeview title: the end of the text with no
+line break after the comment] [test: treeview title: two semicolons that end the
+comment] [test: treeview title: a directive before the separators] [test:
+treeview title: a directive between the separators] [test: treeview title: a
+directive after the separators and before the comment] [test: treeview title: a
+semicolon in the text and a comment without a semicolon] [test: treeview title:
+a comment without a semicolon after two separators] [test: pie title: two
+separators before a comment that ends in a semicolon] [test: pie title: a U+2028
+before a comment that ends in a semicolon] [test: pie title: a U+2029 before a
+comment that ends in a semicolon] [test: pie title: a U+2029 and a U+2028 before
+a comment that ends in a semicolon] [test: pie title: three spaces between a
+U+2028 and a comment that ends in a semicolon] [test: pie title: a tab between a
+U+2028 and a comment that ends in a semicolon] [test: pie title: a comment that
+ends in a semicolon touches the U+2028] [test: pie title: spaces after a comment
+that ends in a semicolon] [test: pie title: a space between the two separators
+before a comment that ends in a semicolon] [test: pie title: a comment line
+after the comment] [test: pie title: a directive line after the comment] [test:
+pie title: a statement after the comment] [test: pie title: the end of the text
+with no line break after the comment] [test: pie title: two semicolons that end
+the comment] [test: pie title: a directive before the separators] [test: pie
+title: a directive between the separators] [test: pie title: a directive after
+the separators and before the comment] [test: pie title: a semicolon in the text
+and a comment without a semicolon] [test: pie title: a comment without a
+semicolon after two separators] [test: kanban column: two separators before a
+comment that ends in a semicolon] [test: kanban card: a U+2028 before a comment
+that ends in a semicolon] [test: kanban card: three spaces between a U+2028 and
+a comment that ends in a semicolon] [test: treemap classDef: two separators
+before a comment that ends in a semicolon] [test: treemap classDef: three spaces
+between a U+2028 and a comment that ends in a semicolon] [test: treemap
+classDef: a tab between a U+2028 and a comment that ends in a semicolon] [test:
+treemap classDef two styles: two separators before a comment that ends in a
+semicolon] [test: treemap classDef without a style: two separators before a
+comment that ends in a semicolon] [test: treemap classDef: a statement after the
+comment] [test: treemap classDef: a directive before the separators] [test: pie
+accTitle: two separators before a comment that ends in a semicolon] [test: pie
+title: a directive, a U+2028, two spaces, and a comment that ends in a
+semicolon] [test: architecture title: two separators before a comment that ends
+in a semicolon] [test: cynefin title: two separators before a comment that ends
+in a semicolon] [test: gitgraph title: two separators before a comment that ends
+in a semicolon] [test: radar title: two separators before a comment that ends in
+a semicolon] [test: info title: two separators before a comment that ends in a
+semicolon] [test: packet title: two separators before a comment that ends in a
+semicolon] [test: wardley title: two separators before a comment that ends in a
+semicolon] [test: railroad title: two separators before a comment that ends in a
+semicolon]
+
 What the line holds, and where it ends, follow from what mermaid.js removes. The
 documents of the diagram types say what is theirs:
 [ER](./er.md#multi-line-statements),
