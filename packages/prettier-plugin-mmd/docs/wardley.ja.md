@@ -321,7 +321,11 @@ wardley-beta
 Prettier と同じです（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
 規則 1 は、装飾の前の隙間の印を挙げていません。
 規則 2 が従う同じ種類の隙間もありません。
-ほかの図種は、ラベルの位置のずれや戦略の語を名前の後に書かないからです。
+ラベルの位置のずれと戦略は、コンポーネントの座標の組の後に、
+独立した語として立ちます。
+ほかの図種で id の後に続くもの、
+たとえば architecture の service `a(server)[A]` のアイコンとタイトルは、
+id と 1 つのトークンの部分として接しているからです。
 そのため、[規則 3](./printed-form.ja.md#3-綴り)が決めます。
 mermaid.js のドキュメントの wardley の例 19 件（corpus の
 `docs-syntax-wardley-*`）では、ラベルの位置のずれは 2 回すべて、
@@ -987,6 +991,7 @@ pipeline の中の文は子文です。
 
 [fixture: wardley/comments/comment-pipeline]
 [fixture: wardley/comments/comment-pipeline-after-last-child]
+[fixture: wardley/comments/comment-after-pipeline-end]
 [fixture: wardley/comments/comment-at-end-of-text]
 
 [fixture: wardley/comments/comment-triple-bare]

@@ -311,15 +311,17 @@ order. Separate decorations by one space and compact parenthesized interiors.
 Prettier prints no space inside parentheses
 ([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Rule 1 names no
 mark for the gap before a decoration, and rule 2 has no gap of that kind to
-follow, since no other diagram type writes a label offset or a strategy word
-after a name, so [rule 3](./printed-form.md#3-a-spelling) decides. Of the 19
-wardley examples in the documentation of mermaid.js (the corpus fixtures
-`docs-syntax-wardley-*`), a label offset follows a space in each of its 2 uses
-and a strategy in parentheses in each of its 10, and none touches the text
-before it, so rule 3 gives one space before a decoration. Keep bare inertia and
-(inertia) distinct, along with build, buy, outsource and market. The inertia
-forms can share a Db, but converting them loses an authored node form; do not
-supply defaults.
+follow: a label offset and a strategy stand after the coordinate pair of a
+component as words of their own, while what follows an id in another diagram
+type, as the icon and the title of an architecture service `a(server)[A]`,
+touches the id as a part of its token, so
+[rule 3](./printed-form.md#3-a-spelling) decides. Of the 19 wardley examples in
+the documentation of mermaid.js (the corpus fixtures `docs-syntax-wardley-*`), a
+label offset follows a space in each of its 2 uses and a strategy in parentheses
+in each of its 10, and none touches the text before it, so rule 3 gives one
+space before a decoration. Keep bare inertia and (inertia) distinct, along with
+build, buy, outsource and market. The inertia forms can share a Db, but
+converting them loses an authored node form; do not supply defaults.
 
 [fixture: wardley/decorations/decorations-all]
 
@@ -645,7 +647,7 @@ wardley-beta
 
 Use the shared accessibility line layout for accTitle: Value and accDescr:
 Value, retaining empty assignments. The colon of `accTitle` and `accDescr` is
-the colon of a key , so
+the colon of a key, so
 [rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the form
 `accTitle: text`: no whitespace before the colon and one space after it. The
 directives that end the value are printed with one space before each that has
@@ -960,6 +962,7 @@ wardley/comments/inline-gap-run-before-comment]
 
 [fixture: wardley/comments/comment-pipeline] [fixture:
 wardley/comments/comment-pipeline-after-last-child] [fixture:
+wardley/comments/comment-after-pipeline-end] [fixture:
 wardley/comments/comment-at-end-of-text]
 
 [fixture: wardley/comments/comment-triple-bare]
