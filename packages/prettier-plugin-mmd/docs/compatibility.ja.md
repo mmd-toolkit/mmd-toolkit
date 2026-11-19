@@ -6630,7 +6630,7 @@ Ishikawa は、入力の字下げ幅や Db の一時的なレベルを使わず�
 詳しくは [Trailing whitespace](./ishikawa.ja.md#trailing-whitespace)
 を参照してください。
 値の中の空白とタブの連なりは空白 1 つに印字します。
-ただし、ディレクティブの後にテキストが続くテキストでは、
+ただし、ディレクティブの両側にテキストがあるテキストでは、
 すべての連なりを書かれたままにします。
 詳しくは [Inline directives](./ishikawa.ja.md#inline-directives)
 を参照してください。

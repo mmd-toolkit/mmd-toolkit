@@ -457,16 +457,19 @@ ishikawa
 ### Inline directives
 
 Literal-side directive gaps remain exactly written because removing directives
-joins both sides without supplying whitespace. In a literal in which text
-follows a directive, the other runs of spaces and tabs of the literal stay as
-written too, though mermaid.js draws them as one space: `A %%{init: {}}%% b  c`
-and `D  e %%{init: {}}%% f` stay.
+joins both sides without supplying whitespace. In a literal that has text on
+both sides of a directive, the other runs of spaces and tabs of the literal stay
+as written too, though mermaid.js draws them as one space:
+`A %%{init: {}}%% b  c` and `D  e %%{init: {}}%% f` stay. A directive at the
+start of a literal leaves no text before it, and the runs are printed as one
+space: `%%{init: {}}%% A  b  c` is printed `%%{init: {}}%% A b c`.
 
 [fixture: ishikawa/inline-directives/directive-gap-trim-unsafe] [fixture:
 ishikawa/inline-directives/directive-single-space-gaps] [fixture:
 ishikawa/inline-directives/directive-in-value] [fixture:
 ishikawa/inline-directives/literal-side-whitespace] [fixture:
 ishikawa/inline-directives/directive-middle-runs-kept] [fixture:
+ishikawa/inline-directives/directive-leading-runs-collapsed] [fixture:
 ishikawa/inline-directives/joined-line-spaces]
 
 Leading directive gaps instead count toward the node's chosen depth indentation,
@@ -516,7 +519,7 @@ trailing-unicode-kept-line]
 
 A run of spaces and tabs inside a literal is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
-except in a literal in which text follows a directive (see
+except in a literal that has text on both sides of a directive (see
 [Inline directives](#inline-directives)), while joined continuation columns
 stay, as do comment spaces and directive contents. The directives that end a
 literal are printed with one space before each that has whitespace before it,
@@ -559,8 +562,9 @@ Node text keeps its written spelling, apart from the spaces and tabs at its end
 inside it, which is printed as one space: quotes, backticks, empty-looking
 strings/brackets/calls, missing closers, numbers, punctuation, entities, HTML,
 prototype names and apparent title/accessibility/style/decoration/data syntax
-are literals. In a literal in which text follows a directive, the runs of spaces
-and tabs stay as written (see [Inline directives](#inline-directives)).
+are literals. In a literal that has text on both sides of a directive, the runs
+of spaces and tabs stay as written (see
+[Inline directives](#inline-directives)).
 
 [fixture: ishikawa/node-text/values-opaque] [fixture:
 ishikawa/node-text/values-quote-unsafe] [fixture:

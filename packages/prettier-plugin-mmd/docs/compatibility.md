@@ -6334,11 +6334,11 @@ physical-line continuation columns stay written, including every trailing
 whitespace character other than a space or a tab, such as a no-break space, on
 ordinary and kept lines; the spaces and tabs at the end of a literal are dropped
 (see [Trailing whitespace](./ishikawa.md#trailing-whitespace)). A run of spaces
-and tabs inside a literal is printed as one space, except in a literal in which
-text follows a directive, where every run of the literal stays as written (see
-[Inline directives](./ishikawa.md#inline-directives)); every other character of
-the value is what was written. Every semicolon stays, with whole crossing
-literals and trivia protected by the shared kept-stretch path.
+and tabs inside a literal is printed as one space, except in a literal that has
+text on both sides of a directive, where every run of the literal stays as
+written (see [Inline directives](./ishikawa.md#inline-directives)); every other
+character of the value is what was written. Every semicolon stays, with whole
+crossing literals and trivia protected by the shared kept-stretch path.
 
 [fixture: ishikawa/node-text/values-opaque] [fixture:
 ishikawa/inline-directives/directive-in-value] [fixture:
