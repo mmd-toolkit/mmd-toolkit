@@ -2389,13 +2389,13 @@ flowchart LR
 入れ子の YAML を含む行どうしの字下げの差を保ち、内側にも外側にも動かします。
 単独行の `}` は文の段に揃え、
 本文の後の `}` はその行に残して行と一緒に動かします。
-リテラルスカラーや折りたたみスカラー（`|` と `>`、
-後ろに `-` や `+` が付く形も）のテキストの後の `}` は、その行に残します。
-独立した行に置くと、スカラーのテキストの末尾が変わり、
-11.7.0 から 12.3.0 はテキストを別に描くからです。
-詳しくは
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。
+リテラルスカラーや折りたたみスカラー（`|`、`|-`、`|+`、`>`、`>-`、
+`>+`）のテキストの後の `}` は、その行に残します。
+独立した行に置くと、12.3.0 の Db のスカラーのテキストの末尾が変わり、
+整形は Db を変えないからです。
+図は同じですが、この隙間を覆う種類の例外は、
+[整形の形の決め方](./printed-form.ja.md#確かめ方とdb-を変える整形)
+に定められていません。
 整形はスカラーの種類を見ないので、
 普通のスカラーのテキストの後の `}` も残ります。
 
@@ -2403,6 +2403,8 @@ flowchart LR
 [fixture: data-blocks/closing-after-text]
 [fixture: data-blocks/closing-after-literal-text]
 [fixture: data-blocks/closing-after-folded-text]
+[fixture: data-blocks/closing-after-folded-strip-text]
+[fixture: data-blocks/closing-after-folded-keep-text]
 [fixture: data-blocks/closing-after-strip-text]
 [fixture: data-blocks/closing-after-keep-text]
 
