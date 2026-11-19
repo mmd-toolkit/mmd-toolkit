@@ -760,12 +760,50 @@ mermaid.js は、U+2028 か U+2029 を含むディレクティブを、mindmap �
 クラスの行では、ディレクティブの前後に何があっても（空白、タブ、U+00A0、
 コメント、別のディレクティブ、テキスト）、行を書かれたまま残します（`:::c`、
 空白 2 つ、`%%{init: {`、U+2028、`}}%%`、空白 2 つは変えません）。
+形かアイコンの後では、最後のディレクティブの後の、
+空白でもタブでもない空白文字（U+000B、U+000C、改行しない空白、U+1680、
+U+2000 から U+200A、U+2028、U+2029、U+202F、U+205F、U+3000、U+FEFF）も除き、
+最初のディレクティブの前のそれは空白 1 つにして印字します（`a[t]`、
+改行しない空白、`%%{x}%%` は `a[t] %%{x}%%` と印字し、`::icon(fa)`、U+2003、
+`%%{x}%%` も同じです）。
+裸のノードかルートのテキストの後のそれは、
+それがないと mermaid.js が別のテキストを描くので残ります。
+裸のノード、クラス、ルートのテキストの後では、
+最後のディレクティブの後にそのような文字があるときと、
+ディレクティブの後にテキストがあるときは、ディレクティブの後の空白を含め、
+行は書かれたまま残ります。
+`a`、`%%{x}%%`、U+3000、空白 2 つは、変えません。
+`a`、空白 2 つ、`%%{x}%%`、空白 2 つ、`%% c`、空白 2 つも、変えません。
+形の後のコメントは、空白 1 つの後に置き、
+ディレクティブの前の連なりも空白 1 つにしますが、
+コメントが接していれば接したままです。
+`a[t]  %%{x}%%  %% c` は `a[t] %%{x}%% %% c` と印字し、
+`a[t] %%{x}%%%% c` は変えません。
 
 [fixture: node-text/directives-end-blanks-dropped] [fixture: directives/kept]
 [fixture: directives/between-nodes] [fixture: directives/before-the-header]
 [fixture: directives/after-the-header-on-the-same-line]
 [fixture: directives/after-the-header-touching]
 [fixture: directives/after-a-shape]
+[test: U+2003 after the directive that follows a shape of a mindmap node]
+[test: a no-break space after the directive that follows an icon of a mindmap node]
+[test: U+2003 after the directive of a bare mindmap node]
+[test: U+2002 after the directive of a bare mindmap node]
+[test: U+2028 after the directive of a bare mindmap node]
+[test: a no-break space after the directive of the root text of a mindmap]
+[test: a comment and spaces after the directive of a bare mindmap node]
+[test: a comment and spaces after the directive that follows a shape of a mindmap node]
+[test: U+3000 after the directive that follows a shape of a mindmap node]
+[test: U+3000 between two directives of a bare mindmap node]
+[test: text between two directives of a bare mindmap node, with spaces at the end]
+[test: U+3000 and spaces after the directive of a mindmap node with a class]
+[test: U+3000 between two directives of a mindmap node with a class]
+[test: a whitespace character that is no space or tab after the directive that follows a shape of a mindmap node]
+[test: a whitespace character that is no space or tab after the directive that follows an icon of a mindmap node]
+[test: a whitespace character that is no space or tab after the directive of a bare mindmap node, a class, and the root text]
+[test: a comment that touches the directive that follows a shape of a mindmap node]
+[test: a whitespace character that is no space or tab before the directive that follows a shape or an icon of a mindmap node]
+[test: a whitespace character that is no space or tab before the directive of a bare mindmap node and of the root text]
 [test: a directive that holds a U+2028 on a class line of a mindmap node]
 [test: a directive that holds a U+2029 on a class line of a mindmap node]
 [test: a directive that holds a U+2028 in the text of a shape of a mindmap node]
