@@ -415,6 +415,18 @@ kanban が見出し行のディレクティブを節点と一緒に移すのと�
 
 [fixture: ishikawa/standalone-directives/directive-open-eof]
 
+ディレクティブの後に、テキストを挟まずに続くコメント（`%%{x}%% %% c  d`）は、
+リテラルではなく、ディレクティブの行のコメントです。
+コメントの中の連なりは書かれたまま残り、
+ディレクティブとコメントの間の空白かタブは空白 1
+つにして印字します（`%%{x}%%  %% c  d` は `%%{x}%% %% c  d` と印字します）。
+ディレクティブに接するコメントは、接したままです。
+
+[test: ishikawa: comment-line-after-a-directive-kept]
+[test: ishikawa: comment-line-after-a-directive-gap-collapsed]
+[test: ishikawa: comment-line-after-a-directive-tab-gap-collapsed]
+[test: ishikawa: comment-line-touching-a-directive-kept]
+
 入力（エスケープ表記）:
 
 ```json
@@ -576,9 +588,10 @@ Mermaid がテキストの両端の空白を除くので、除いても Db と�
 [fixture: ishikawa/trailing-whitespace/trailing-directive-continuation]
 [fixture: ishikawa/inline-directives/directive-text-between-then-end-runs-kept]
 
-ディレクティブの隣の、空白でもタブでもない空白文字（U+000B、U+000C、
-改行しない空白、U+1680、U+2000 から U+200A、U+2028、U+2029、U+202F、U+205F、
-U+3000、U+FEFF）は、それがないと mermaid.js が別のテキストを描くので残り、
+前にテキストのあるディレクティブの隣の、空白でもタブでもない空白文字（U+000B、
+U+000C、改行しない空白、U+1680、U+2000 から U+200A、U+2028、U+2029、U+202F、
+U+205F、U+3000、U+FEFF）は、
+それがないと mermaid.js が別のテキストを描くので残り、
 最後のディレクティブの後の空白とタブは除きます。
 2 つのディレクティブの間の文字も残ります。
 `A %%{x}%%`、U+3000、空白 2 つは `A %%{x}%%` と U+3000 に、`A`、改行しない空白、
@@ -597,8 +610,6 @@ U+3000、U+FEFF）は、それがないと mermaid.js が別のテキストを�
 `A %%{x}%%  %% c  d`、`A %%{x}%% b %% c  d`、`A  b %%{x}%% %% c  d`、
 `%%{x}%% A %%{y}%% b %% c  d` は変えず、
 改行しない空白の前の連なりとタブの連なりも変えません。
-リテラルの先頭のディレクティブの直後に、テキストを挟まずに続くコメントも、
-書かれたまま残ります（`%%{x}%% %% c  d`）。
 
 [test: U+3000 after the last directive of an ishikawa literal]
 [test: U+3000 between two directives of an ishikawa literal]
@@ -616,7 +627,6 @@ U+3000、U+FEFF）は、それがないと mermaid.js が別のテキストを�
 [test: ishikawa: comment-run-after-leading-directive-collapsed]
 [test: ishikawa: comment-run-after-directive-between-words-kept]
 [test: ishikawa: comment-run-after-leading-and-between-directives-kept]
-[test: ishikawa: comment-run-directly-after-leading-directive-kept]
 
 [ヘッダー](#header) と [空行](#blank-lines) の規則で除くのは、
 見出し行の外側の余白だけで、それはテキストの値ではありません。

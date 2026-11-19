@@ -409,6 +409,18 @@ boundaries.
 
 [fixture: ishikawa/standalone-directives/directive-open-eof]
 
+A comment that follows a directive on its line with no text between them
+(`%%{x}%% %% c  d`) is a comment on a line of a directive, not a literal: the
+run inside the comment stays as written, the spaces or tabs between the
+directive and the comment are printed as one space (`%%{x}%%  %% c  d` is
+printed `%%{x}%% %% c  d`), and a comment that touches the directive stays
+touching.
+
+[test: ishikawa: comment-line-after-a-directive-kept] [test: ishikawa:
+comment-line-after-a-directive-gap-collapsed] [test: ishikawa:
+comment-line-after-a-directive-tab-gap-collapsed] [test: ishikawa:
+comment-line-touching-a-directive-kept]
+
 Input (escaped):
 
 ```json
@@ -568,23 +580,22 @@ ishikawa/inline-directives/directive-text-between-then-end-runs-kept]
 
 A whitespace character that is no space or tab (U+000B, U+000C, a no-break
 space, U+1680, U+2000 to U+200A, U+2028, U+2029, U+202F, U+205F, U+3000, or
-U+FEFF) beside a directive stays, since mermaid.js draws other text without it,
-with the spaces and tabs after the last directive left out: `A %%{x}%%`, a
-U+3000, and two spaces are printed `A %%{x}%%` and the U+3000, and so are `A`, a
-no-break space, `%%{x}%%`, and two spaces (`A`, the no-break space, and
-`%%{x}%%`), and a character between two directives. A run of spaces and tabs
-inside the comment that ends a literal is printed as one space too, except in a
-literal in which a directive has text before it, where every run stays as
-written (see [Inline directives](#inline-directives)): `A %% c  d` is printed
-`A %% c d`, and so is `A %% c`, two tabs, and `d`, also before a no-break space
-(`A %% c`, two spaces, a no-break space, and `d` print `A %% c`, a space, the
-no-break space, and `d`), and so is `%%{x}%% A  b %% c  d`, whose only directive
-stands at its start, which is printed `%%{x}%% A b %% c d`. Where a directive
-has text before it, the comment stays as written: `A %%{x}%%  %% c  d`,
-`A %%{x}%% b %% c  d`, `A  b %%{x}%% %% c  d`, and `%%{x}%% A %%{y}%% b %% c  d`
-are not changed, nor is the run before a no-break space or a run of tabs in it.
-A comment that follows the directives at the start of the literal with no text
-between them stays as written too (`%%{x}%% %% c  d`).
+U+FEFF) beside a directive that has text before it stays, since mermaid.js draws
+other text without it, with the spaces and tabs after the last directive left
+out: `A %%{x}%%`, a U+3000, and two spaces are printed `A %%{x}%%` and the
+U+3000, and so are `A`, a no-break space, `%%{x}%%`, and two spaces (`A`, the
+no-break space, and `%%{x}%%`), and a character between two directives. A run of
+spaces and tabs inside the comment that ends a literal is printed as one space
+too, except in a literal in which a directive has text before it, where every
+run stays as written (see [Inline directives](#inline-directives)): `A %% c  d`
+is printed `A %% c d`, and so is `A %% c`, two tabs, and `d`, also before a
+no-break space (`A %% c`, two spaces, a no-break space, and `d` print `A %% c`,
+a space, the no-break space, and `d`), and so is `%%{x}%% A  b %% c  d`, whose
+only directive stands at its start, which is printed `%%{x}%% A b %% c d`. Where
+a directive has text before it, the comment stays as written:
+`A %%{x}%%  %% c  d`, `A %%{x}%% b %% c  d`, `A  b %%{x}%% %% c  d`, and
+`%%{x}%% A %%{y}%% b %% c  d` are not changed, nor is the run before a no-break
+space or a run of tabs in it.
 
 [test: U+3000 after the last directive of an ishikawa literal] [test: U+3000
 between two directives of an ishikawa literal] [test: U+3000 before the first
@@ -600,8 +611,7 @@ comment-run-before-nbsp-after-directive-kept] [test: ishikawa:
 comment-tab-run-after-directive-kept] [test: ishikawa:
 comment-run-after-leading-directive-collapsed] [test: ishikawa:
 comment-run-after-directive-between-words-kept] [test: ishikawa:
-comment-run-after-leading-and-between-directives-kept] [test: ishikawa:
-comment-run-directly-after-leading-directive-kept]
+comment-run-after-leading-and-between-directives-kept]
 
 Only exterior header-line padding is dropped under [Header](#header) and
 [Blank lines](#blank-lines); it is not a literal value.
