@@ -11128,6 +11128,36 @@ const architectureDirectiveEndExamples: readonly (readonly [
     "title %%{x}%%  ;  %%{y}%%%% c;",
     "title %%{x}%%; %%{y}%%%% c;",
   ],
+  [
+    "a directive, a `;`, a no-break space, a `;`, two spaces, a directive, in a title of directives only of an architecture diagram",
+    "title %%{x}%%;\u00a0;  %%{y}%%",
+    "title %%{x}%%;\u00a0; %%{y}%%",
+  ],
+  [
+    "a directive, a no-break space, a `;`, two spaces, a `;`, two spaces, a directive, in a title of directives only of an architecture diagram",
+    "title %%{x}%%\u00a0;  ;  %%{y}%%",
+    "title %%{x}%%; ; %%{y}%%",
+  ],
+  [
+    "a directive, a `;`, U+2028, a `;`, a directive, in a title of directives only of an architecture diagram",
+    "title %%{x}%%;\u2028;%%{y}%%",
+    "title %%{x}%%;\u2028;%%{y}%%",
+  ],
+  [
+    "a directive, two spaces, a `;`, two spaces, a no-break space, two spaces, a `;`, two spaces, a directive, in a title of directives only of an architecture diagram",
+    "title %%{x}%%  ;  \u00a0  ;  %%{y}%%",
+    "title %%{x}%%; \u00a0 ; %%{y}%%",
+  ],
+  [
+    "a directive, a `;`, a no-break space, a `;`, two spaces, a `;`, two spaces, a directive, in a title of directives only of an architecture diagram",
+    "title %%{x}%%;\u00a0;  ;  %%{y}%%",
+    "title %%{x}%%;\u00a0; ; %%{y}%%",
+  ],
+  [
+    "a directive, U+2028, a `;`, two spaces, a `;`, two spaces, a directive, in a title of directives only of an architecture diagram",
+    "title %%{x}%%\u2028;  ;  %%{y}%%",
+    "title %%{x}%%\u2028; ; %%{y}%%",
+  ],
 ]
 
 describe("the directives that end the title or the value of an accessibility line of an architecture diagram", () => {
@@ -13381,6 +13411,111 @@ const architectureDirectiveCommentExamples: readonly (readonly [
     "a line of a directive that holds a `;` before a comment line after a U+2028 before a directive, the text ends, in a title of an architecture diagram",
     "architecture-beta\ntitle T\u2028%%{x}%%  %% c\n%%{y;z}%%\n%% d\n",
     "architecture-beta\n  title T\n  %%{x}%% %% c\n  %%{y;z}%%\n  %% d\n",
+  ],
+  [
+    "a `;` before the U+2028 between two directives, a comment follows the last directive after two spaces, the text ends, in a title of an architecture diagram",
+    "architecture-beta\ntitle T %%{x}%%;\u2028%%{y}%%  %% c\n",
+    "architecture-beta\n  title T %%{x}%%;\u2028%%{y}%% %% c\n",
+  ],
+  [
+    "a `;` before the U+2028 between two directives, two spaces after the U+2028, a comment follows the last directive after two spaces, the text ends, in a title of an architecture diagram",
+    "architecture-beta\ntitle T %%{x}%%;\u2028  %%{y}%%  %% c\n",
+    "architecture-beta\n  title T %%{x}%%;\u2028 %%{y}%% %% c\n",
+  ],
+  [
+    "a `;` between two directives, a U+2028 after the last directive, two spaces and a comment after it, the text ends, in a title of an architecture diagram",
+    "architecture-beta\ntitle T %%{x}%%;%%{y}%%\u2028  %% c\n",
+    "architecture-beta\n  title T %%{x}%%;%%{y}%%\u2028 %% c\n",
+  ],
+  [
+    "a `;` after the U+2028 between two directives, a comment follows the last directive after two spaces, the text ends, in a title of an architecture diagram",
+    "architecture-beta\ntitle T %%{x}%%\u2028%%{y}%%;  %% c\n",
+    "architecture-beta\n  title T %%{x}%%\u2028%%{y}%%;  %% c\n",
+  ],
+  [
+    "a `;` before the U+2028 between two directives, two spaces after the U+2028, a comment follows the last directive after two spaces, a statement follows, in a title of an architecture diagram",
+    "architecture-beta\ntitle T %%{x}%%;\u2028  %%{y}%%  %% c\nservice a(server)[A]\n",
+    "architecture-beta\n  title T %%{x}%%;\u2028  %%{y}%%  %% c\nservice a(server)[A]\n",
+  ],
+  [
+    "a `;` before the U+2028 between two directives, a comment follows the last directive after two spaces, the text ends, in an accTitle line of an architecture diagram",
+    "architecture-beta\naccTitle: T %%{x}%%;\u2028%%{y}%%  %% c\n",
+    "architecture-beta\n  accTitle: T %%{x}%%;\u2028%%{y}%% %% c\n",
+  ],
+  [
+    "two U+2028 with two spaces on each side between two directives, a comment follows the last directive after two spaces, the text ends, in a title of an architecture diagram",
+    "architecture-beta\ntitle T %%{x}%%\u2028  \u2028  %%{y}%%  %% c\n",
+    "architecture-beta\n  title T %%{x}%%\u2028\n  %%{y}%% %% c\n",
+  ],
+  [
+    "two U+2029 between two directives, a comment follows the last directive after two spaces, the text ends, in a title of an architecture diagram",
+    "architecture-beta\ntitle T %%{x}%%\u2029\u2029%%{y}%%  %% c\n",
+    "architecture-beta\n  title T %%{x}%%\u2029\n  %%{y}%% %% c\n",
+  ],
+  [
+    "U+2028 and U+2029 between two directives, a comment follows the last directive after two spaces, the text ends, in a title of an architecture diagram",
+    "architecture-beta\ntitle T %%{x}%%\u2028\u2029%%{y}%%  %% c\n",
+    "architecture-beta\n  title T %%{x}%%\u2028\n  %%{y}%% %% c\n",
+  ],
+  [
+    "two U+2028 after the last directive, a comment touches the second, the text ends, in a title of an architecture diagram",
+    "architecture-beta\ntitle T %%{x}%%%%{y}%%\u2028\u2028%% c\n",
+    "architecture-beta\n  title T %%{x}%%%%{y}%%\u2028\n  %% c\n",
+  ],
+  [
+    "U+2028 and U+2029 with two spaces on each side after the last directive, a comment follows the second after two spaces, the text ends, in a title of an architecture diagram",
+    "architecture-beta\ntitle T %%{x}%%%%{y}%%\u2028  \u2029  %% c\n",
+    "architecture-beta\n  title T %%{x}%%%%{y}%%\u2028\n  %% c\n",
+  ],
+  [
+    "two U+2028 with two spaces on each side after a single directive, a comment follows after two spaces, the text ends, in a title of an architecture diagram",
+    "architecture-beta\ntitle T %%{x}%%\u2028  \u2028  %% c\n",
+    "architecture-beta\n  title T %%{x}%%\u2028\n  %% c\n",
+  ],
+  [
+    "two U+2028 with two spaces on each side between two directives, a comment follows the last directive after two spaces, the text ends, in an accTitle line of an architecture diagram",
+    "architecture-beta\naccTitle: T %%{x}%%\u2028  \u2028  %%{y}%%  %% c\n",
+    "architecture-beta\n  accTitle: T %%{x}%%\u2028\n  %%{y}%% %% c\n",
+  ],
+  [
+    "accTitle with a gap before the colon, a U+2028 before a `;`, and a second U+2028 after the `;`, the text ends, in an accTitle line of an architecture diagram",
+    "architecture-beta\naccTitle : T\u2028U;\u2028V\n",
+    "architecture-beta\n  accTitle: T\u2028U;\u2028V\n",
+  ],
+  [
+    "accDescr with a gap before the colon, a U+2028 before a `;`, and a second U+2028 after the `;`, the text ends, in an accDescr line of an architecture diagram",
+    "architecture-beta\naccDescr : T\u2028U;\u2028V\n",
+    "architecture-beta\n  accDescr: T\u2028U;\u2028V\n",
+  ],
+  [
+    "accTitle with a gap before the colon, a `;` before two U+2028, the text ends, in an accTitle line of an architecture diagram",
+    "architecture-beta\naccTitle : T;\u2028U\u2028V\n",
+    "architecture-beta\n  accTitle: T;\u2028U\u2028V\n",
+  ],
+  [
+    "accTitle with a gap before the colon, a `;` inside a directive that a U+2028 follows, the text ends, in an accTitle line of an architecture diagram",
+    "architecture-beta\naccTitle : T%%{y;z}%%\u2028U\n",
+    "architecture-beta\n  accTitle: T%%{y;z}%%\u2028U\n",
+  ],
+  [
+    "accTitle with a gap before the colon, a `;` inside a comment that a U+2028 follows, the text ends, in an accTitle line of an architecture diagram",
+    "architecture-beta\naccTitle : T %% e;\u2028U\n",
+    "architecture-beta\n  accTitle: T %% e;\u2028U\n",
+  ],
+  [
+    "accTitle with a gap before the colon, a U+2028 inside a directive and a `;` after it inside the same directive, the text ends, in an accTitle line of an architecture diagram",
+    "architecture-beta\naccTitle : T%%{y\u2028z;}%%\n",
+    "architecture-beta\n  accTitle: T%%{y\u2028z;}%%\n",
+  ],
+  [
+    "accTitle with a gap before the colon, a U+2028 inside a directive and no `;`, the text ends, in an accTitle line of an architecture diagram",
+    "architecture-beta\naccTitle : T%%{y\u2028z}%%\n",
+    "architecture-beta\n  accTitle: T%%{y\u2028z}%%\n",
+  ],
+  [
+    "accTitle with a gap before the colon, a U+2028 inside a directive and a `;` inside a directive after it, the text ends, in an accTitle line of an architecture diagram",
+    "architecture-beta\naccTitle : T%%{w\u2028v}%% %%{y;z}%%\n",
+    "architecture-beta\n  accTitle: T%%{w\u2028v}%% %%{y;z}%%\n",
   ],
 ]
 

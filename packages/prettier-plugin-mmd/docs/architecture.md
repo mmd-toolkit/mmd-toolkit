@@ -700,7 +700,13 @@ in a directive and that item 6 would split is not stated here:
   the last directive, a wide space, U+2028, or U+2029 before the first directive
   included.
 - A `;` between two directives or after the last directive, with or without
-  spaces and tabs around it, keeps the line as written.
+  spaces and tabs around it, keeps the line as written. Where a U+2028 or U+2029
+  stands after the last such `;` and a comment follows, what follows the `;` is
+  printed as for one U+2028 or U+2029 in the paragraph after the list: the run
+  after it and the run before the comment are one space (`title T %%{x}%%;`,
+  U+2028, `%%{y}%%`, two spaces, and `%% c` are printed `title T %%{x}%%;`,
+  U+2028, `%%{y}%%`, a space, and `%% c`), and two U+2028 or U+2029 after the
+  `;` are not stated.
 - Where a wide space stands after the last directive, also after spaces or tabs,
   the line stays as written, whatever follows the character. So it does where a
   U+2028 or U+2029 stands there and nothing follows it. Where a comment follows
@@ -710,21 +716,25 @@ in a directive and that item 6 would split is not stated here:
   split the line, the paragraph after the list says how it is printed. A title
   with a directive inside its text stays as written too.
 
-Where no U+2028 or U+2029 stands before the directives, a comment follows the
-last directive, one or more U+2028 or U+2029 stand between two directives or
-after the last one, and item 6 would split the line, the first of them stays,
-with the gap before it as written, and the gap after it and the gap before the
-comment are printed as one space where they hold whitespace; each later one is a
-line break: the directives after a line break stand on a line of their own, and
-so does the comment, with the whitespace before it left out (`title T %%{x}%%`,
-U+2028, two spaces, `%%{y}%%`, U+2028, and `%% c` are printed `title T %%{x}%%`,
-U+2028, a space, `%%{y}%%`, a line break, and `%% c`; `title T %%{x}%%`, U+2028,
+Where no U+2028 or U+2029 stands before the directives, the line holds no `;`, a
+comment follows the last directive, one or more U+2028 or U+2029 stand between
+two directives or after the last one, and item 6 would split the line, the first
+of them stays, with the gap before it as written, and the gap after it is
+printed as one space where a directive or the comment follows it, and left out
+where another U+2028 or U+2029 follows it; the gap before the comment is printed
+as one space where it holds whitespace. Each later one is a line break: the
+directives after a line break stand on a line of their own, and so does the
+comment, with the whitespace before it left out (`title T %%{x}%%`, U+2028, two
+spaces, `%%{y}%%`, U+2028, and `%% c` are printed `title T %%{x}%%`, U+2028, a
+space, `%%{y}%%`, a line break, and `%% c`; `title T %%{x}%%`, U+2028,
 `%%{y}%%`, U+2028, `%%{z}%%`, a space, and `%% c` are printed `title T %%{x}%%`,
-U+2028, `%%{y}%%`, a line break, and `%%{z}%% %% c`). Where one stands before
-the directives, item 6 applies, and all of them are line breaks. Where item 6
-keeps the lines, they stay as written, runs included. Items 7 and 10 state the
-line with one U+2028 or U+2029; a line with two or more is printed by this
-paragraph.
+U+2028, `%%{y}%%`, a line break, and `%%{z}%% %% c`; `title T %%{x}%%`, U+2028,
+two spaces, U+2028, two spaces, `%%{y}%%`, two spaces, and `%% c` are printed
+`title T %%{x}%%`, U+2028, a line break, and `%%{y}%% %% c`). Where one stands
+before the directives, item 6 applies, and all of them are line breaks. Where
+item 6 keeps the lines, they stay as written, runs included. Items 7 and 10
+state the line with one U+2028 or U+2029; a line with two or more is printed by
+this paragraph.
 
 Where a comment follows the last directive, no U+2028 or U+2029 stands between
 the text and the comment, and none of items 7 to 10 applies, a run of spaces and
@@ -764,15 +774,24 @@ spaces, tabs, and wide spaces after it are left out, a U+2028 or U+2029 after it
 stays with the whitespace before it where no comment follows, the spaces and
 tabs after the last one are left out, and a gap before a comment is printed as
 one space (`title`, a space, `%%{x}%%`, two spaces, `;`, two spaces, and `%% c`
-are printed `title %%{x}%%; %% c`). Where more `;` or directives stand in such a
-title, and only spaces and tabs stand in its gaps, the line stays as written
-where spaces or tabs stand between two directives that no `;` separates, where a
-directive stands between two `;`, or where spaces or tabs follow the last
-directive that stands after the last `;`; otherwise the spaces and tabs before
-the first `;` are left out, each run of spaces and tabs after a `;` is printed
-as one space, and the spaces and tabs at the end of the line are left out
-(`title`, a space, `%%{x}%%`, two spaces, `;`, two spaces, `;`, two spaces, and
-`%%{y}%%` are printed `title %%{x}%%; ; %%{y}%%`).
+are printed `title %%{x}%%; %% c`). Where only `;` separate the directives, a
+gap before the first `;` is left out where it holds spaces, tabs, and wide
+spaces only, and stays where it holds a U+2028 or U+2029; a gap between two `;`
+is one space where it holds spaces and tabs only, keeps a wide space that it
+holds with each run of spaces and tabs in it one space, and stays as written
+where it holds a U+2028 or U+2029; and the gap after the last `;` is one space
+(`title`, a space, `%%{x}%%`, `;`, a no-break space, `;`, two spaces, and
+`%%{y}%%` are printed `title %%{x}%%;`, a no-break space, `;`, a space, and
+`%%{y}%%`). A U+0085 or U+180E is no whitespace: a title that holds one is no
+title of directives only, and this paragraph does not state it. Where more `;`
+or directives stand in such a title, and only spaces and tabs stand in its gaps,
+the line stays as written where spaces or tabs stand between two directives that
+no `;` separates, where a directive stands between two `;`, or where spaces or
+tabs follow the last directive that stands after the last `;`; otherwise the
+spaces and tabs before the first `;` are left out, each run of spaces and tabs
+after a `;` is printed as one space, and the spaces and tabs at the end of the
+line are left out (`title`, a space, `%%{x}%%`, two spaces, `;`, two spaces,
+`;`, two spaces, and `%%{y}%%` are printed `title %%{x}%%; ; %%{y}%%`).
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
 title/title-directives-end-tabs-dropped] [fixture:
@@ -1846,7 +1865,18 @@ diagram] [test: a `;`, two spaces, a directive, in a title of directives only of
 an architecture diagram] [test: a directive, a `;`, two spaces, a `;`, two
 spaces, in a title of directives only of an architecture diagram] [test: a `;`
 in the comment after the last directive, two spaces around the `;` between two
-directives, in a title of directives only of an architecture diagram] [test:
+directives, in a title of directives only of an architecture diagram] [test: a
+directive, a `;`, a no-break space, a `;`, two spaces, a directive, in a title
+of directives only of an architecture diagram] [test: a directive, a no-break
+space, a `;`, two spaces, a `;`, two spaces, a directive, in a title of
+directives only of an architecture diagram] [test: a directive, a `;`, U+2028, a
+`;`, a directive, in a title of directives only of an architecture diagram]
+[test: a directive, two spaces, a `;`, two spaces, a no-break space, two spaces,
+a `;`, two spaces, a directive, in a title of directives only of an architecture
+diagram] [test: a directive, a `;`, a no-break space, a `;`, two spaces, a `;`,
+two spaces, a directive, in a title of directives only of an architecture
+diagram] [test: a directive, U+2028, a `;`, two spaces, a `;`, two spaces, a
+directive, in a title of directives only of an architecture diagram] [test:
 U+2028 before a directive that a comment touches, a line follows, in a title of
 an architecture diagram] [test: U+2028 before a directive that a comment
 touches, the text ends, in a title of an architecture diagram] [test: U+2028
@@ -2344,7 +2374,30 @@ diagram] [test: a line of a directive and a comment that holds a `;` before a
 comment line after a U+2028 before a directive, the text ends, in a title of an
 architecture diagram] [test: a line of a directive that holds a `;` before a
 comment line after a U+2028 before a directive, the text ends, in a title of an
-architecture diagram]
+architecture diagram] [test: a `;` before the U+2028 between two directives, a
+comment follows the last directive after two spaces, the text ends, in a title
+of an architecture diagram] [test: a `;` before the U+2028 between two
+directives, two spaces after the U+2028, a comment follows the last directive
+after two spaces, the text ends, in a title of an architecture diagram] [test: a
+`;` between two directives, a U+2028 after the last directive, two spaces and a
+comment after it, the text ends, in a title of an architecture diagram] [test: a
+`;` after the U+2028 between two directives, a comment follows the last
+directive after two spaces, the text ends, in a title of an architecture
+diagram] [test: a `;` before the U+2028 between two directives, two spaces after
+the U+2028, a comment follows the last directive after two spaces, a statement
+follows, in a title of an architecture diagram] [test: two U+2028 with two
+spaces on each side between two directives, a comment follows the last directive
+after two spaces, the text ends, in a title of an architecture diagram] [test:
+two U+2029 between two directives, a comment follows the last directive after
+two spaces, the text ends, in a title of an architecture diagram] [test: U+2028
+and U+2029 between two directives, a comment follows the last directive after
+two spaces, the text ends, in a title of an architecture diagram] [test: two
+U+2028 after the last directive, a comment touches the second, the text ends, in
+a title of an architecture diagram] [test: U+2028 and U+2029 with two spaces on
+each side after the last directive, a comment follows the second after two
+spaces, the text ends, in a title of an architecture diagram] [test: two U+2028
+with two spaces on each side after a single directive, a comment follows after
+two spaces, the text ends, in a title of an architecture diagram]
 
 [fixture: architecture/title/empty-next-statement]
 
@@ -2428,7 +2481,13 @@ a gap before it is printed as no gap even where the line stays as written:
   stays as written whatever follows the last directive, a wide space, U+2028, or
   U+2029 before the first directive included.
 - A `;` between two directives or after the last directive, with or without
-  spaces and tabs around it, keeps the line as written.
+  spaces and tabs around it, keeps the line as written. Where a U+2028 or U+2029
+  stands after the last such `;` and a comment follows, what follows the `;` is
+  printed as for one U+2028 or U+2029 in the paragraph after the
+  [title list](#title): the run after it and the run before the comment are one
+  space (`title T %%{x}%%;`, U+2028, `%%{y}%%`, two spaces, and `%% c` are
+  printed `title T %%{x}%%;`, U+2028, `%%{y}%%`, a space, and `%% c`), and two
+  U+2028 or U+2029 after the `;` are not stated.
 - Where a wide space stands between two directives, the line stays as written,
   whatever follows the last one. So it does where a U+2028 or U+2029 stands
   between two directives and nothing, spaces, or tabs follow the last one. Where
@@ -3482,7 +3541,28 @@ touches the text, the text ends, in an accTitle line of an architecture diagram]
 [test: accTitle with a gap before the colon, a `;` inside a comment after the
 text, the text ends, in an accTitle line of an architecture diagram] [test:
 accTitle with a gap before the colon, a `;` right after the colon and a U+2028
-after it, the text ends, in an accTitle line of an architecture diagram]
+after it, the text ends, in an accTitle line of an architecture diagram] [test:
+a `;` before the U+2028 between two directives, a comment follows the last
+directive after two spaces, the text ends, in an accTitle line of an
+architecture diagram] [test: two U+2028 with two spaces on each side between two
+directives, a comment follows the last directive after two spaces, the text
+ends, in an accTitle line of an architecture diagram] [test: accTitle with a gap
+before the colon, a U+2028 before a `;`, and a second U+2028 after the `;`, the
+text ends, in an accTitle line of an architecture diagram] [test: accDescr with
+a gap before the colon, a U+2028 before a `;`, and a second U+2028 after the
+`;`, the text ends, in an accDescr line of an architecture diagram] [test:
+accTitle with a gap before the colon, a `;` before two U+2028, the text ends, in
+an accTitle line of an architecture diagram] [test: accTitle with a gap before
+the colon, a `;` inside a directive that a U+2028 follows, the text ends, in an
+accTitle line of an architecture diagram] [test: accTitle with a gap before the
+colon, a `;` inside a comment that a U+2028 follows, the text ends, in an
+accTitle line of an architecture diagram] [test: accTitle with a gap before the
+colon, a U+2028 inside a directive and a `;` after it inside the same directive,
+the text ends, in an accTitle line of an architecture diagram] [test: accTitle
+with a gap before the colon, a U+2028 inside a directive and no `;`, the text
+ends, in an accTitle line of an architecture diagram] [test: accTitle with a gap
+before the colon, a U+2028 inside a directive and a `;` inside a directive after
+it, the text ends, in an accTitle line of an architecture diagram]
 
 [fixture: architecture/accessibility-lines/accdescr-spacing]
 
