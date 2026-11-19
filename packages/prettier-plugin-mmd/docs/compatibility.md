@@ -1607,16 +1607,20 @@ as columns. `moved` prints the text as if the U+2028 were a line break after
 `%%{x}%%%% c` on the next line (a treeView prints the directive at the first
 column, as it prints a line of a directive there), with one space between the
 directive and the comment where spaces stood there, and the lines after it
-printed as usual. A row without a statement is followed by the end of the text,
-and other sequences of lines are not given. The table is for a directive that
-holds no line break, no `;`, no U+2028, and no U+2029; with a directive that
-holds a U+2028 or a U+2029 the title stays as written, with nothing or a
-statement after it. An info diagram rejects a statement after an empty line, a
-line of spaces, or a line of a directive (mermaid.js rejects it too), so the
-rows that put a statement there hold for the other Langium types. A treemap with
-spaces between the directive and the comment has no form in the second, the
-fifth, and the ninth row: the first pass and the second pass print the comment
-differently.
+printed as usual. A row without a statement is followed by the end of the text.
+The table is for one U+2028 or U+2029 before a directive that holds no line
+break, no `;`, no U+2028, and no U+2029. A directive that holds a line break or
+a `;` is outside it, and no form is given for it; with a directive that holds a
+U+2028 or a U+2029, the title stays as written, with nothing or a statement
+after it. Two separators before the directive, other sequences of lines after
+the title, and the other forms that the table does not name are not stated, and
+the forms that the released version prints stay until they are decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+An info diagram rejects a statement after an empty line, a line of spaces, or a
+line of a directive (mermaid.js rejects it too), so the rows that put a
+statement there hold for the other Langium types. A treemap with spaces between
+the directive and the comment has no form in the second, the fifth, and the
+ninth row: the first pass and the second pass print the comment differently.
 
 | Follows the title                                                      | Langium types but a treeView | treeView   | quadrant chart | the other types |
 | ---------------------------------------------------------------------- | ---------------------------- | ---------- | -------------- | --------------- |
