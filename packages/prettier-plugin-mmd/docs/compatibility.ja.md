@@ -1470,8 +1470,10 @@ mermaid.js はテキストを読む前にディレクティブを除くので、
 これは、Gantt、user journey、timeline、sequence、Venn、C4、pie、radar、packet、
 architecture、gitGraph、cynefin、treemap、Wardley、treeView、info、
 railroad の図のタイトル、
-それらの図種と usecase 図の `accTitle:` と `accDescr:` の行、ishikawa 図、
-mindmap、treeView のノードのテキスト、
+それらの図種と usecase 図の `accTitle:` と `accDescr:` の行、mindmap、
+treeView のノードのテキスト、
+ishikawa 図のノードのテキスト（連なりが書かれたままになる場合は除く。
+[Inline directives](./ishikawa.ja.md#inline-directives)を参照）、
 kanban ボードのカードのテキスト（図が依存する列の id は除く）、
 Gantt 図の日付書式と軸の書式、C4 図の `accDescription`、
 timeline の行の最後の event と、period およびコロンの前の event が足す空白、
@@ -2966,12 +2968,20 @@ cynefin 図と radar 図は、`cynefin-beta:` と `radar-beta:` を、
 次の行に移します。
 `;`、隠れた YAML ブロックの `---`、
 閉じていないディレクティブが接するコロンは残します。
+閉じたディレクティブがキーワードとコロンの間にあるときも残し、
+`cynefin-beta%%{x}%%:` は変えません。
+radar のヘッダーはコロンの前に空白かタブがあってもよく、
+それはコロンと一緒に除きます（`radar-beta :` は `radar-beta` と印字します）。
+cynefin のヘッダーはコロンの前に空白があると拒否されます。
 
 [fixture: cynefin/header/colon-removed]
 [fixture: cynefin/header/colon-semicolon-kept]
 [fixture: radar/header/colon-removed] [fixture: radar/header/colon-yaml-kept]
 [fixture: cynefin/header/colon-unclosed-directive-kept]
 [fixture: radar/header/colon-unclosed-directive-kept]
+[fixture: radar/header/colon-spaces-before-removed]
+[fixture: radar/header/colon-after-directive-kept]
+[fixture: cynefin/header/colon-after-directive-kept]
 
 treemap の見出しにはコロンを付けません。
 11.8.1、11.17.2、12.0.0、12.3.0 のどれも、

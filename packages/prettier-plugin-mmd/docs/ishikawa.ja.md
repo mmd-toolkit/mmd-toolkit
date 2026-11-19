@@ -484,6 +484,9 @@ mermaid.js は、それを空白 1 つと同じに描きます。
 [fixture: ishikawa/inline-directives/directive-middle-runs-kept]
 [fixture: ishikawa/inline-directives/directive-leading-runs-collapsed]
 [fixture: ishikawa/inline-directives/directive-then-comment-runs-kept]
+[fixture: ishikawa/inline-directives/directive-two-then-text-runs-kept]
+[fixture: ishikawa/inline-directives/directive-then-tab-and-comment-runs-kept]
+[test: ishikawa: directive-last-then-u3000-runs-kept]
 [fixture: ishikawa/inline-directives/directive-then-touching-comment-runs-kept]
 [fixture: ishikawa/inline-directives/directive-then-semicolon-runs-kept]
 [fixture: ishikawa/inline-directives/directive-start-and-end-runs-collapsed]
@@ -557,10 +560,16 @@ Mermaid がテキストの両端の空白を除くので、除いても Db と�
 最後のディレクティブの後に空白とタブが続くときも続かないときも、
 テキストの中の連なりは空白 1 つにして印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+連なりを書かれたままにするテキストでは、
+各ディレクティブの前の空白とタブも書かれたままにし、
+最後のディレクティブの後の空白とタブだけを除きます。
+条件は[Inline directives](#inline-directives)にあります。
+`A  b %%{x}%% c  %%{y}%%` と空白 2 つは `A  b %%{x}%% c  %%{y}%%` と印字します。
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped]
 [fixture: ishikawa/trailing-whitespace/trailing-directive-gap-collapsed]
 [fixture: ishikawa/trailing-whitespace/trailing-directive-continuation]
+[fixture: ishikawa/inline-directives/directive-text-between-then-end-runs-kept]
 
 [ヘッダー](#header) と [空行](#blank-lines) の規則で除くのは、
 見出し行の外側の余白だけで、それはテキストの値ではありません。

@@ -13,6 +13,14 @@ export interface IshikawaCase {
 export const ishikawaCases: readonly IshikawaCase[] = [
   {
     rule: "inline-directives",
+    name: "ishikawa: directive-last-then-u3000-runs-kept",
+    input: "ishikawa\nR\n  A  b %%{x}%%\u3000\n",
+    output: "ishikawa\n  R\n    A  b %%{x}%%\u3000\n",
+    options: {},
+    rejected: false,
+  },
+  {
+    rule: "inline-directives",
     name: "ishikawa: directive-last-then-nbsp-runs-kept",
     input: "ishikawa\nR\n  A  b %%{init: {}}%%\u00a0\n",
     output: "ishikawa\n  R\n    A  b %%{init: {}}%%\u00a0\n",

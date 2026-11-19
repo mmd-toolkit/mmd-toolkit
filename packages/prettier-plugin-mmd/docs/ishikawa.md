@@ -476,6 +476,9 @@ ishikawa/inline-directives/literal-side-whitespace] [fixture:
 ishikawa/inline-directives/directive-middle-runs-kept] [fixture:
 ishikawa/inline-directives/directive-leading-runs-collapsed] [fixture:
 ishikawa/inline-directives/directive-then-comment-runs-kept] [fixture:
+ishikawa/inline-directives/directive-two-then-text-runs-kept] [fixture:
+ishikawa/inline-directives/directive-then-tab-and-comment-runs-kept] [test:
+ishikawa: directive-last-then-u3000-runs-kept] [fixture:
 ishikawa/inline-directives/directive-then-touching-comment-runs-kept] [fixture:
 ishikawa/inline-directives/directive-then-semicolon-runs-kept] [fixture:
 ishikawa/inline-directives/directive-start-and-end-runs-collapsed] [fixture:
@@ -548,10 +551,16 @@ one space before each that has spaces or tabs before it, and the spaces and tabs
 after the last one are left out, with a run in the literal printed as one space,
 whether spaces or tabs follow the last directive or not (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+Where the runs of the literal stay under
+[Inline directives](#inline-directives), the spaces and tabs before each
+directive stay as written too, and only the spaces and tabs after the last one
+are left out: `A  b %%{x}%% c  %%{y}%%` and two spaces is printed
+`A  b %%{x}%% c  %%{y}%%`.
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped] [fixture:
 ishikawa/trailing-whitespace/trailing-directive-gap-collapsed] [fixture:
-ishikawa/trailing-whitespace/trailing-directive-continuation]
+ishikawa/trailing-whitespace/trailing-directive-continuation] [fixture:
+ishikawa/inline-directives/directive-text-between-then-end-runs-kept]
 
 Only exterior header-line padding is dropped under [Header](#header) and
 [Blank lines](#blank-lines); it is not a literal value.

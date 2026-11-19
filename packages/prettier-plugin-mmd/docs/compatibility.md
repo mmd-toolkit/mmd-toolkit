@@ -1403,16 +1403,18 @@ timeline, a sequence diagram, a Venn diagram, a C4 diagram, a pie chart, a radar
 chart, a packet diagram, an architecture diagram, a gitGraph, a cynefin diagram,
 a treemap, a Wardley map, a treeView, an info diagram, and a railroad diagram,
 for the `accTitle:` and `accDescr:` lines of those diagram types and of a
-usecase diagram, for the text of a node of an ishikawa diagram, a mindmap, and a
-treeView, and of a card of a kanban board (not the id of a column, which the
-figure depends on), for the date format and the axis format of a Gantt chart,
-for the `accDescription` of a C4 diagram, for the last event of a line of a
-timeline and the space that a period and an event before a colon gain, for the
-description of a task of a user journey, except that a task whose description
-holds a directive stays as written (see [Task data](./journey.md#task-data)),
-and for the second description of a state alias. The runs of spaces and tabs
-inside a date format, an axis format, or the value of an `accTitle:` line stay
-as written before the directives as they do without them.
+usecase diagram, for the text of a node of a mindmap and a treeView, and of an
+ishikawa diagram where its runs do not stay under
+[Inline directives](./ishikawa.md#inline-directives), and of a card of a kanban
+board (not the id of a column, which the figure depends on), for the date format
+and the axis format of a Gantt chart, for the `accDescription` of a C4 diagram,
+for the last event of a line of a timeline and the space that a period and an
+event before a colon gain, for the description of a task of a user journey,
+except that a task whose description holds a directive stays as written (see
+[Task data](./journey.md#task-data)), and for the second description of a state
+alias. The runs of spaces and tabs inside a date format, an axis format, or the
+value of an `accTitle:` line stay as written before the directives as they do
+without them.
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped] [fixture:
 usecase/direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
@@ -2798,13 +2800,20 @@ header without the colon. The examples write the header without the colon 3
 times in each, and with it never, so the colon is removed, and what follows it
 on the line goes to the next line as it does after a header without the colon.
 The colon stays where a `;`, the `---` of a hidden YAML block, or a directive
-that is not closed touches it.
+that is not closed touches it, and where a directive that is closed stands
+between the keyword and the colon: `cynefin-beta%%{x}%%:` is not changed. A
+radar header may have spaces or tabs before the colon, which are removed with it
+(`radar-beta :` is printed `radar-beta`); a cynefin header with whitespace
+before the colon is rejected.
 
 [fixture: cynefin/header/colon-removed] [fixture:
 cynefin/header/colon-semicolon-kept] [fixture: radar/header/colon-removed]
 [fixture: radar/header/colon-yaml-kept] [fixture:
 cynefin/header/colon-unclosed-directive-kept] [fixture:
-radar/header/colon-unclosed-directive-kept]
+radar/header/colon-unclosed-directive-kept] [fixture:
+radar/header/colon-spaces-before-removed] [fixture:
+radar/header/colon-after-directive-kept] [fixture:
+cynefin/header/colon-after-directive-kept]
 
 A treemap header takes no colon. Each of 11.8.1, 11.17.2, 12.0.0 and 12.3.0
 rejects `treemap:` and `treemap-beta:`, and reads and draws the header without
