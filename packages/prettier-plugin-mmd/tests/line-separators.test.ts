@@ -14549,6 +14549,21 @@ const wardleyDirectiveCommentExamples: readonly (readonly [
     "wardley-beta\naccTitle : T %% a\u2028b\n",
     "wardley-beta\n  accTitle: T %% a\u2028b\n",
   ],
+  [
+    "a `;` inside the comment after the last directive, two spaces before the comment, the text ends, in a title of a Wardley map",
+    "wardley-beta\ntitle T  %%{x}%%  %% c;\n",
+    "wardley-beta\n  title T  %%{x}%%  %% c;\n",
+  ],
+  [
+    "a U+2028 between the text and a directive, a U+2028 between the directive and the comment, an empty line and a statement follow, in a title of a Wardley map",
+    "wardley-beta\ntitle T\u2028%%{x}%%\u2028%% c\n\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T\n  %%{x}%%\n  %% c\n\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a U+2028 after the last directive of a title of directives only, two spaces before and after it, a comment follows, the text ends, in a title of a Wardley map",
+    "wardley-beta\ntitle  %%{x}%%  \u2028  %% c\n",
+    "wardley-beta\n  title  %%{x}%%  \u2028 %% c\n",
+  ],
 ]
 
 describe("a comment after the directives that end the title or the value of an accessibility line of a Wardley map, after a U+2028 or U+2029", () => {
