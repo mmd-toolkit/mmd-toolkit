@@ -115,7 +115,7 @@ value columns, hidden interiors and retained prefixes keep their own columns.
 Semicolon-protected segments start at one body step, like other flat diagrams;
 their later lines keep their written columns because these belong to the
 protected text.
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 this layout, as [wardley](./wardley.md#indentation) aligns the first line of a
 protected segment with the body and keeps its later lines in their written
 columns, and so does [cynefin](./cynefin.md#semicolons), where no other rule
@@ -1562,7 +1562,7 @@ Outside ordinary IR call gaps, place a directive within a printed line as under
 [Directives](./flowchart.md#directives). When formatting splits units that were
 on the same line, a directive in their gap moves with the following unit: its
 right boundary stays touching or separated, while its left contact is broken.
-[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
 this placement, as [radar](./radar.md#global-directives),
 [packet](./packet.md#global-directives), and
 [wardley](./wardley.md#global-directives) place a directive in the gap of units
