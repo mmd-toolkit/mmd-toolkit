@@ -215,6 +215,27 @@ pie
   "Sales": 8
 ```
 
+A title that ends at a U+2028 or U+2029, which a comment region follows, and
+that a line of `%%` and nothing else follows, is printed as written, up to that
+`%%`. mermaid.js removes the comment region with the line feed that ends it, so
+the line after it goes on the line of the title; a line that holds only `%%` is
+no comment line, so it stays, and the oldest version that counts reads it as the
+end of the title, while the title on a line of its own and the `%%` line after
+it draw a different structure there. The title is printed as it is where a blank
+line, a directive line, or a comment line with text follows the region, and
+where no U+2028 or U+2029 ends the title.
+
+[test: pie/title/title-ls-comment-then-percent-line-kept] [test:
+pie/title/title-text-ls-comment-then-percent-line-kept] [test:
+pie/title/title-ps-comment-then-percent-line-kept] [test:
+pie/title/title-ls-spaced-comment-then-percent-line-kept] [test:
+pie/title/title-ls-comment-only-then-percent-line-kept] [test:
+pie/title/title-ls-comment-then-percent-line-at-end-kept] [test:
+pie/title/title-ls-comment-then-blank-line-moved] [test:
+pie/title/title-ls-comment-then-directive-line-moved] [test:
+pie/title/title-ls-comment-then-comment-line-kept] [test:
+pie/title/title-comment-then-percent-line-without-separator]
+
 ### Accessibility lines
 
 Reuse [C4 accessibility lines](./c4.md#accessibility-lines), with the same

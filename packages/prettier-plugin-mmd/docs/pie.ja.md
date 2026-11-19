@@ -231,6 +231,28 @@ pie
   "Sales": 8
 ```
 
+U+2028 か U+2029 でテキストが終わり、コメントの領域が続き、
+その後に `%%` だけの行がある title は、その `%%` まで書かれたまま印字します。
+mermaid.js はコメントの領域を、それを終える改行と一緒に取り除くので、
+その後の行は title の行に続きます。
+`%%` だけの行はコメント行ではないので残り、数える版のうち最も古い版は、
+それを title の終わりと読みます。
+title を独立した行にして、その後に `%%` の行を置くと、
+その版は違う構造を描きます。
+領域の後に空行、ディレクティブの行、テキストのあるコメント行が続くとき、
+U+2028 か U+2029 で title が終わらないときは、これまでどおりに印字します。
+
+[test: pie/title/title-ls-comment-then-percent-line-kept]
+[test: pie/title/title-text-ls-comment-then-percent-line-kept]
+[test: pie/title/title-ps-comment-then-percent-line-kept]
+[test: pie/title/title-ls-spaced-comment-then-percent-line-kept]
+[test: pie/title/title-ls-comment-only-then-percent-line-kept]
+[test: pie/title/title-ls-comment-then-percent-line-at-end-kept]
+[test: pie/title/title-ls-comment-then-blank-line-moved]
+[test: pie/title/title-ls-comment-then-directive-line-moved]
+[test: pie/title/title-ls-comment-then-comment-line-kept]
+[test: pie/title/title-comment-then-percent-line-without-separator]
+
 ### Accessibility lines
 
 C4 の[アクセシビリティの行](./c4.ja.md#アクセシビリティの行)
