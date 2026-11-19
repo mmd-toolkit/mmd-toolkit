@@ -510,7 +510,8 @@ radar-beta
 
 ### Title
 
-共有の共通行レイアウトを、下の段落が述べるところを除いて使います。
+共有の共通行レイアウトを、
+下の段落と[セミコロン](#semicolons)の節が述べるところを除いて使います。
 共通空白の外端を除き、非空の値の前は空白 1 つにします。
 `null` と空白だけの値は `title` にします。
 同じ意味の外端だけをそろえ、内部の綴り、引用符、見かけのキーワードを保ちます。
@@ -1399,6 +1400,19 @@ mermaid.js はテキストを読む前にディレクティブを除き、
 [test: a run of tabs inside the text of a title, spaces at the end, of a radar chart]
 [test: a run of spaces inside a quoted string in a title, of a radar chart]
 [test: a run of spaces beside a directive inside the text of a title, of a radar chart]
+[test: text after the `;` that the line rule ignores in a title, runs before and after it, of a radar chart]
+[test: text touching the `;` that the line rule ignores in a title, a run before it, of a radar chart]
+[test: text and a run after the `;` that the line rule ignores in a title, spaces at the end, of a radar chart]
+[test: two touching `;` that the line rule reads in a title, a run before them, of a radar chart]
+[test: two `;` with spaces between them that the line rule reads in a title, a run before them, of a radar chart]
+[test: text after the last of two `;` that the line rule reads in a title, runs around them, of a radar chart]
+[test: text after the `;` that the line rule ignores after classDef in a title, of a radar chart]
+[test: nothing after the `;` that the line rule ignores in a title, runs before it, of a radar chart]
+[test: a run inside the stretch of the line rule, nothing after the `;` in a title, spaces at the end, of a radar chart]
+[test: nothing after the last of two `;` that the line rule reads in a title, of a radar chart]
+[test: a comment after the `;` that the line rule ignores in a title, of a radar chart]
+[test: a `;` inside the comment at the end of a title, a run and spaces at the end, of a radar chart]
+[test: nothing after the `;` that the line rule ignores in a title, spaces at the end, of a radar chart]
 [test: U+2028 before a directive that a comment touches, a line follows, in a title of a radar chart]
 [test: U+2028 before a directive that a comment touches, the text ends, in a title of a radar chart]
 [test: U+2028 before a directive that a comment touches, an empty line follows, in a title of a radar chart]
@@ -1716,7 +1730,8 @@ radar-beta
 ### Accessibility lines
 
 共有の `accTitle: value` と `accDescr: value` を、下の段落と、
-[ディレクティブが前にある題](#title)が述べるところを除いて使います。
+[ディレクティブが前にある題](#title)と、
+[セミコロン](#semicolons)の節が述べるところを除いて使います。
 コロンはキーワードに接着し、外端を除いた非空の値の前は空白 1 つです。
 空の値はコロンで終え、次行の値を結合しません。
 外側をそろえても内部の文字は書き換えません。
@@ -2292,6 +2307,11 @@ U+205F、U+3000、U+FEFF のどれかです。
 [test: a run of spaces inside the text of an accDescr line, of a radar chart]
 [test: a run of spaces inside the text of an accTitle line, of a radar chart]
 [test: a run of spaces inside a quoted string in an accDescr line, of a radar chart]
+[test: text after the `;` that the line rule ignores in an accDescr line, runs before and after it, of a radar chart]
+[test: nothing after the `;` that the line rule ignores in an accDescr line, runs before it, of a radar chart]
+[test: two touching `;` that the line rule reads in an accDescr line, a run before them, of a radar chart]
+[test: text after the `;` that the line rule ignores in an accTitle line, of a radar chart]
+[test: a `;` inside the comment at the end of an accTitle line, a gap before the colon, spaces at the end, of a radar chart]
 [test: U+2028 before a directive that a comment touches, a line follows, in an accTitle line of a radar chart]
 [test: U+2028 before a directive that a comment touches, the text ends, in an accTitle line of a radar chart]
 [test: U+2028 before a directive that a comment follows after spaces, a line follows, in an accTitle line of a radar chart]
@@ -2932,7 +2952,8 @@ radar-beta
 `style` か `classDef` の後の最初の `:` から、
 最後の保つ `;` の前の最後の `#` までに空白がない並びを読みます。
 その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
-範囲の外は、この図種の通常の規則に従います。
+範囲の外は、この図種の通常の規則に従います（題とアクセシビリティの行は、
+引用の後の段落が述べるとおりです）。
 どの部分の配置も持たないテキストは、書かれたまま残します。
 複数行にわたる文の行を空白 1 つか何も挟まずにつなぐと、
 行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
@@ -2942,6 +2963,37 @@ radar-beta
 [fixture: semicolons/stretch-kept-rest-formatted]
 [fixture: semicolons/no-stretch-formatted]
 [fixture: multi-line-statements/protected-semicolon-written-indentation]
+
+行の規則が働く題かアクセシビリティの行は、最後の `;` の後にテキストがあり、
+行にコメントがないとき、行を書かれたままにし、
+行末の空白は除きます（`title a   b   style:#x;   c` と
+`title a   b   style:#x;c` は変わりません）。
+また、行が空白だけを挟む 2 つ以上の `;` で終わるときも、
+書かれたままにします（`title a   b   style:#x;;` と
+`title a   b   style:#x;   ;` は変わりません）。
+最後の `;` の後に何もないときは、
+通常の規則に従います（`title a   b   style:#x;` は `title a b style:#x;`
+になります）。
+行の規則が働く行のうち、行にコメントがあるものは述べません。
+そこでリリース済みの版が印字する形は、
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+のとおり、決めるまでそのままです。
+
+[test: text after the `;` that the line rule ignores in a title, runs before and after it, of a radar chart]
+[test: text touching the `;` that the line rule ignores in a title, a run before it, of a radar chart]
+[test: text and a run after the `;` that the line rule ignores in a title, spaces at the end, of a radar chart]
+[test: two touching `;` that the line rule reads in a title, a run before them, of a radar chart]
+[test: two `;` with spaces between them that the line rule reads in a title, a run before them, of a radar chart]
+[test: text after the last of two `;` that the line rule reads in a title, runs around them, of a radar chart]
+[test: text after the `;` that the line rule ignores after classDef in a title, of a radar chart]
+[test: nothing after the `;` that the line rule ignores in a title, runs before it, of a radar chart]
+[test: a run inside the stretch of the line rule, nothing after the `;` in a title, spaces at the end, of a radar chart]
+[test: nothing after the last of two `;` that the line rule reads in a title, of a radar chart]
+[test: a comment after the `;` that the line rule ignores in a title, of a radar chart]
+[test: text after the `;` that the line rule ignores in an accDescr line, runs before and after it, of a radar chart]
+[test: nothing after the `;` that the line rule ignores in an accDescr line, runs before it, of a radar chart]
+[test: two touching `;` that the line rule reads in an accDescr line, a run before them, of a radar chart]
+[test: text after the `;` that the line rule ignores in an accTitle line, of a radar chart]
 
 保護された見出しと最初の文の群はまとめて残します。
 style・classDef の選択、2 回の除去、大小文字・コロン・ハッシュ記号の非該当形、
