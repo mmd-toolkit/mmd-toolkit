@@ -557,13 +557,16 @@ Apply the movement and safety conditions of
 shallowest text one level inside its node. A section's body is two levels below
 the header, an item's three; nested YAML keeps its relative indentation. A
 separate `}` aligns with the node, even if it had no margin; a closer after text
-stays on that line. A `}` after text is a character of its line, and moving it
-to a line of its own would add a last line of spaces to the block text, which a
-literal or folded scalar keeps, as under
-[Data blocks](./flowchart.md#data-blocks).
+stays on that line. A `}` after the text of a literal or folded scalar stays on
+its line: on a line of its own it adds a line break to the end of the text of
+the scalar, which 11.7.0 to 12.3.0 draw differently (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)),
+as under [Data blocks](./flowchart.md#data-blocks). The formatter does not look
+at the kind of scalar, so a `}` after the text of a plain scalar stays too.
 
 [fixture: data-blocks/section-and-item-margins] [fixture:
-data-blocks/nested-yaml] [fixture: data-blocks/closing-after-text]
+data-blocks/nested-yaml] [fixture: data-blocks/closing-after-text] [fixture:
+data-blocks/closing-after-literal-text]
 
 Move space-only lines by the same amount, making them empty when no spaces
 remain, and leave empty lines empty. Keep trailing spaces: literal block scalars
@@ -1322,6 +1325,8 @@ indentation of the board.
 
 [fixture: final-newline/accepted] [fixture: final-newline/no-final-lf] [fixture:
 final-newline/empty-board] [fixture: final-newline/open-directive-at-eof]
+[fixture: blank-lines/comment-blank-trailing] [test: kanban:
+selected-terminal-separator]
 
 Input
 ([final-newline/empty-board-input.mmd](../tests/fixtures/kanban/final-newline/empty-board-input.mmd)):

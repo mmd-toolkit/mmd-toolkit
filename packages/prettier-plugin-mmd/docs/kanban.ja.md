@@ -602,13 +602,19 @@ section の本文はヘッダーから 2 段、item の本文は 3 段で、
 入れ子の YAML の字下げの差を保ちます。
 単独行の `}` は元の余白がなくてもノードの段に揃え、
 本文の後の閉じ括弧はその行に残します。
-本文の後の `}` はその行の文字であり、`}` を独立した行に動かすと、
-ブロックのテキストの最後に空白だけの行が増えます。
-リテラルスカラーや折りたたみスカラーは、その行を保ちます。
+リテラルスカラーや折りたたみスカラーのテキストの後の `}` は、その行に残します。
+独立した行に置くと、スカラーのテキストの末尾に改行が加わり、
+11.7.0 から 12.3.0 はテキストを別に描くからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 [データブロック](./flowchart.ja.md#データブロック)と同じです。
+整形はスカラーの種類を見ないので、
+普通のスカラーのテキストの後の `}` も残ります。
 
 [fixture: data-blocks/section-and-item-margins]
 [fixture: data-blocks/nested-yaml] [fixture: data-blocks/closing-after-text]
+[fixture: data-blocks/closing-after-literal-text]
 
 空白だけの行も同じ量だけ動かし、空白がなくなる場合は空行にします。
 空行は空のままにし、末尾空白も保ちます。
@@ -1408,6 +1414,8 @@ Markdown では、コードフェンスやリスト項目の字下げはホス�
 [fixture: final-newline/accepted] [fixture: final-newline/no-final-lf]
 [fixture: final-newline/empty-board]
 [fixture: final-newline/open-directive-at-eof]
+[fixture: blank-lines/comment-blank-trailing]
+[test: kanban: selected-terminal-separator]
 
 入力
 ([final-newline/empty-board-input.mmd](../tests/fixtures/kanban/final-newline/empty-board-input.mmd)):
