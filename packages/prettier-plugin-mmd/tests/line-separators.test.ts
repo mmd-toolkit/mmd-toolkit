@@ -7061,3 +7061,62 @@ describe("a text that ends with a directive over lines or with a `;` and a white
     },
   )
 })
+
+/**
+ * Each example is a treeView node whose last directive holds a line break or a
+ * `;` and is followed by a character that no fixture file holds. The name and
+ * the description drop the spaces and tabs at their end only, so a no-break
+ * space or a line separator after the directive is text, and a directive that
+ * holds a U+2028 or U+2029 holds no line break (docs/treeview.md, Trailing
+ * whitespace).
+ */
+const treeviewDirectiveEndsLineExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "treeview: spaces and tabs after a directive over lines with a CRLF",
+    "treeView-beta\r\nR  %%{init: {\r\n}}%% \t\r\n",
+    "treeView-beta\n  R %%{init: {\n}}%%\n",
+  ],
+  [
+    "treeview: U+00A0 after a directive over lines stays",
+    "treeView-beta\nR  %%{init: {\n}}%%\u00a0\n",
+    "treeView-beta\n  R  %%{init: {\n}}%%\u00a0\n",
+  ],
+  [
+    "treeview: U+00A0 after a directive with a `;` stays",
+    "treeView-beta\nR  %%{init: {a;b}}%%\u00a0\n",
+    "treeView-beta\n  R  %%{init: {a;b}}%%\u00a0\n",
+  ],
+  [
+    "treeview: U+00A0 after a directive over lines stays after a description",
+    "treeView-beta\nR ## note  %%{init: {\n}}%%\u00a0\n",
+    "treeView-beta\n  R ## note  %%{init: {\n}}%%\u00a0\n",
+  ],
+  [
+    "treeview: U+2028 after a directive over lines stays",
+    "treeView-beta\nR  %%{init: {\n}}%%\u2028\n",
+    "treeView-beta\n  R  %%{init: {\n}}%%\u2028\n",
+  ],
+  [
+    "treeview: a directive that holds U+2028 is no directive over lines",
+    "treeView-beta\nR  %%{init: {\u2028}}%% \t\n",
+    "treeView-beta\n  R  %%{init: {\u2028}}%%\n",
+  ],
+  [
+    "treeview: a directive that holds U+2029 is no directive over lines",
+    "treeView-beta\nR  %%{init: {\u2029}}%% \t\n",
+    "treeView-beta\n  R  %%{init: {\u2029}}%%\n",
+  ],
+]
+
+describe("a treeView node that ends with a directive over lines or with a `;`", () => {
+  it.each(treeviewDirectiveEndsLineExamples)(
+    "prints %s the same twice",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})

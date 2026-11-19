@@ -2601,6 +2601,43 @@ mermaid.js は値を読む前にディレクティブを取り除き、
 
 [fixture: trailing-whitespace/directives-end-blanks-dropped]
 
+改行か `;` を含むディレクティブも、ほかのディレクティブと同じに、
+名前か description を終えます。
+最後に置いても、後ろのディレクティブに接していても同じで、
+最後のディレクティブの後に空白とタブが続いても同じです。
+`R  %%{init: {a;b}}%%` の後に空白とタブが続くときは、
+続かないときと同じ `R %%{init: {a;b}}%%` と印字します。
+mermaid.js が値を読む前にディレクティブを除くためで、
+罫線の形も同じに印字します。
+空白かタブでそのディレクティブから隔てた後ろのディレクティブがあるときは、
+そのディレクティブは名前か description の一部になり、
+その空白とタブを書かれたままにします。
+`R  %%{init: {`、改行、`}}%%`、空白、`%%{x}%%` は、空白 2 つを残し、
+最後のディレクティブの後の空白とタブを除いて印字します。
+そのようなディレクティブの後のノーブレークスペースと行区切りは、
+テキストの文字なので、書かれたままにします。
+U+2028 か U+2029 を含むディレクティブは改行を含まないので、
+行の末尾の空白とタブを除くほかは、書かれたままにします。
+
+[fixture: trailing-whitespace/directive-semicolon-end-blanks-dropped]
+[fixture: trailing-whitespace/directive-lines-end-blanks-dropped]
+[fixture: trailing-whitespace/directive-lines-semicolon-end-blanks-dropped]
+[fixture: trailing-whitespace/directive-lines-nested-end-blanks-dropped]
+[fixture: trailing-whitespace/description-directive-semicolon-end-blanks-dropped]
+[fixture: trailing-whitespace/description-directive-lines-end-blanks-dropped]
+[fixture: trailing-whitespace/directive-lines-touching-end-blanks-dropped]
+[fixture: trailing-whitespace/directives-lines-touching-end-blanks-dropped]
+[fixture: trailing-whitespace/directive-then-directive-semicolon-end-blanks-dropped]
+[fixture: trailing-whitespace/directive-lines-before-directive-runs-kept]
+[fixture: trailing-whitespace/box-directive-lines-end-blanks-dropped]
+[test: treeview: spaces and tabs after a directive over lines with a CRLF]
+[test: treeview: U+00A0 after a directive over lines stays]
+[test: treeview: U+00A0 after a directive with a `;` stays]
+[test: treeview: U+00A0 after a directive over lines stays after a description]
+[test: treeview: U+2028 after a directive over lines stays]
+[test: treeview: a directive that holds U+2028 is no directive over lines]
+[test: treeview: a directive that holds U+2029 is no directive over lines]
+
 名前や description の末尾の U+2028 と U+2029 は、
 空白やタブではなくテキストの文字なので、その後の空白は除き、
 その前の空白は残します。

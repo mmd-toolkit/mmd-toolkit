@@ -19,7 +19,7 @@ import {
 } from "./layout.ts"
 import {
   collectTextEndEdits,
-  endsWithDirectives,
+  endsTheLineWithDirectives,
   trimmedTextEnd,
 } from "./statement-rules.ts"
 import type { TreeviewBoxPlan } from "./treeview-box.ts"
@@ -255,9 +255,10 @@ function treeviewNodeParts(node: TreeviewNode): readonly Node[] {
  */
 function trimAtomEnd(source: Source, atom: Atom): Atom {
   const textEnd = trimmedTextEnd(source, atom.start, atom.end, isSpaceOrTab)
-  if (endsWithDirectives(source, [atom.start, textEnd.end])) {
+  if (endsTheLineWithDirectives(source, [atom.start, textEnd.end])) {
     // The atom ends with directives, printed as at the end of a line (see
-    // `collectTextEndEdits`).
+    // `collectTextEndEdits`). One that holds a line break or a `;` is among
+    // them: the atom ends before it where no whitespace follows it.
     const atoms = [atom]
     replaceInAtoms(
       source,
