@@ -1906,6 +1906,22 @@ title がテキストの最後の文のときは、
 改行しない空白、`%%{x}%%%% c` は `T %%{x}%%%% c` と、`T`、空白、U+2028、
 `%%{x}%%` は `T %%{x}%%` と印字します）。
 
+タブと、
+改行しない空白の列（U+3000 を含む）か U+0085 の列の文字からなる連なりは、
+title と `accDescr:` の行では、連なりの中の空白とタブの連なりを、
+タブ 1 つが空白 1 つになる所では空白 1 つにして印字します（`T`、タブ、
+改行しない空白、`%%{x}%% %% c` は、`T`、空白、改行しない空白、
+`%%{x}%% %% c` と印字します）。
+`accTitle:` の行では、
+ディレクティブの直前の空白とタブの連なりだけを空白 1 つにします（`T`、タブ、
+改行しない空白、`%%{x}%% %% c` は書かれたままで、`T`、改行しない空白、タブ、
+`%%{x}%% %% c` は `T`、改行しない空白、空白、`%%{x}%% %% c` と印字します）。
+3 つの行のどれでも、
+ほかの文字の列が空白 1 つを印字する所では連なり全体を空白 1 つにし、
+`;` の前とテキストの前では書かれたまま残します。
+`accDescr:` の行でタブが U+0085 の前にあるものと、
+`accTitle:` の行でタブと U+0085 があるものは載せていません。
+
 [test: treeview: the whitespace before the last directive, with nothing after it]
 [test: treeview: the whitespace before the last directive, with spaces after it]
 [test: treeview: the whitespace before the last directive, with a tab after it]
@@ -1918,6 +1934,7 @@ title がテキストの最後の文のときは、
 [test: treeview: the whitespace between the last directive and a comment]
 [test: treeview: the whitespace before the last directive where the line is the last statement of the text]
 [test: treeview: a run of whitespace before the last directive follows the column of its characters]
+[test: treeview: a run that holds a tab and other whitespace before the last directive]
 [test: treeview: the whitespace around a last directive that holds a line break or a semicolon, with nothing or a mark that touches it after it]
 [test: treeview: the whitespace around a last directive that holds a line break or a semicolon, with spaces or a tab after it, or a mark after a space]
 

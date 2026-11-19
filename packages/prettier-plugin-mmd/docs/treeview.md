@@ -1899,6 +1899,19 @@ one column (`T`, a space, a no-break space, and `%%{x}%%%% c` are printed
 `T %%{x}%%%% c`, and `T`, a space, a U+2028, and `%%{x}%%` are printed
 `T %%{x}%%`).
 
+A run that holds a tab and characters of the column of the no-break space (among
+them U+3000) or of U+0085 is printed in a title and in an `accDescr:` line with
+each run of spaces and tabs in it as one space where a tab alone becomes one
+space (`T`, a tab, a no-break space, and `%%{x}%% %% c` are printed `T`, a
+space, a no-break space, and `%%{x}%% %% c`), and in an `accTitle:` line with
+only the run of spaces and tabs just before the directive as one space (`T`, a
+tab, a no-break space, and `%%{x}%% %% c` stay as written, and `T`, a no-break
+space, a tab, and `%%{x}%% %% c` are printed `T`, a no-break space, a space, and
+`%%{x}%% %% c`). In all three lines the whole run becomes one space where the
+column of its other characters prints one space, and the run stays as written
+before a `;` and before text. An `accDescr:` line with a tab before a U+0085,
+and an `accTitle:` line with a tab and a U+0085, are not given.
+
 [test: treeview: the whitespace before the last directive, with nothing after
 it] [test: treeview: the whitespace before the last directive, with spaces after
 it] [test: treeview: the whitespace before the last directive, with a tab after
@@ -1913,10 +1926,12 @@ after a space] [test: treeview: the whitespace between the last directive and a
 comment] [test: treeview: the whitespace before the last directive where the
 line is the last statement of the text] [test: treeview: a run of whitespace
 before the last directive follows the column of its characters] [test: treeview:
-the whitespace around a last directive that holds a line break or a semicolon,
-with nothing or a mark that touches it after it] [test: treeview: the whitespace
-around a last directive that holds a line break or a semicolon, with spaces or a
-tab after it, or a mark after a space]
+a run that holds a tab and other whitespace before the last directive] [test:
+treeview: a run that holds a tab and other whitespace before the last directive]
+[test: treeview: the whitespace around a last directive that holds a line break
+or a semicolon, with nothing or a mark that touches it after it] [test:
+treeview: the whitespace around a last directive that holds a line break or a
+semicolon, with spaces or a tab after it, or a mark after a space]
 
 This chooses consistent Db-equivalent outer spacing without taking a next-line
 value. Follow AST boundaries for `titlex` and `title"node"`; title still stays

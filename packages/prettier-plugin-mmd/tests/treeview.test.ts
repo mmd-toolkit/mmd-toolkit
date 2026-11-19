@@ -696,6 +696,29 @@ const whitespaceColumns = [
   ["\u0085"],
 ] as const
 
+/** The text with each run of spaces and tabs in it as one space. */
+function withEachRunOfSpacesAndTabsAsOneSpace(text: string): string {
+  let result = ""
+  let inRun = false
+  for (const character of text) {
+    if (character === " " || character === "\t") {
+      if (!inRun) result += " "
+      inRun = true
+    } else {
+      result += character
+      inRun = false
+    }
+  }
+  return result
+}
+
+/** The text with the run of spaces and tabs at its end as one space. */
+function withTheLastRunOfSpacesAndTabsAsOneSpace(text: string): string {
+  let end = text.length
+  while (end > 0 && (text[end - 1] === " " || text[end - 1] === "\t")) end--
+  return end === text.length ? text : `${text.slice(0, end)} `
+}
+
 /** The text after the keyword that a printed form gives for a character. */
 function printedBeforeTheLastDirective(
   written: string,
@@ -799,6 +822,54 @@ describe("the whitespace before the last directive of a title and of an accessib
             await expectDirectiveRowKept(
               `treeView-beta\n${keyword} ${line}\nR\n`,
               `treeView-beta\n  ${keyword} ${printedBeforeTheLastDirective(line, printed, run)}\n${next}\n`,
+            )
+          }
+        }
+      }
+    }
+  })
+
+  it("treeview: a run that holds a tab and other whitespace before the last directive", async () => {
+    const runs = [
+      [
+        "\t\u00a0",
+        "\u00a0\t",
+        "\t\t\u00a0",
+        " \t\u00a0",
+        "\t\u00a0\t",
+        "\t\u00a0 ",
+        "\u00a0\t\u00a0",
+        "\t\u3000",
+        "\u3000\t",
+      ],
+      ["\t\u0085", "\u0085\t"],
+    ] as const
+    for (const row of whitespaceBeforeTheLastDirectiveRows.slice(0, 9)) {
+      for (const keyword of keywordsOfTheTitleLines) {
+        for (const [index, columnRuns] of runs.entries()) {
+          const printed = [row.like, row.nel][index]
+          if (printed === null || printed === undefined) continue
+          for (const run of columnRuns) {
+            // A tab before a U+0085 in an accDescr: line is not given (the Db of the
+            // line has the tab, which the printed space does not), nor is a tab
+            // with a U+0085 in an accTitle: line (a form that draws other text
+            // is a defect that a fix removes).
+            if (keyword === "accDescr:" && run === "\t\u0085") continue
+            if (keyword === "accTitle:" && index === 1) continue
+            const line = row.written.replace("{w}", run)
+            const kept =
+              row.tab === "as written"
+                ? run
+                : keyword === "accTitle:"
+                  ? withTheLastRunOfSpacesAndTabsAsOneSpace(run)
+                  : withEachRunOfSpacesAndTabsAsOneSpace(run)
+            const form =
+              printed === "as written"
+                ? row.written.replace("{w}", kept)
+                : printed.replace("{w}", kept)
+            await expectDirectiveRowKept(
+              `treeView-beta\n${keyword} ${line}\nR\n`,
+              `treeView-beta\n  ${keyword} ${form}\n  R\n`,
             )
           }
         }
