@@ -876,8 +876,9 @@ venn-beta
 ### Title
 
 The consumed first title separator becomes one ASCII space, and so do the spaces
-and tabs after it, and the spaces and tabs at the end of the title are left out:
-mermaid.js keeps them in the Db, but draws the same title without them (see
+and tabs after it, and the spaces and tabs at the end of the title are left out,
+except in the case below: mermaid.js keeps them in the Db, but draws the same
+title without them (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 Every later value character, including statement-looking words, stays as
 written, because everything after the one separator is the title value in the
@@ -906,6 +907,16 @@ same title with the directives last: `title T  %%{x}%%  ` is printed
 
 [fixture: venn/title/title-trailing-directive-blanks-dropped] [fixture:
 venn/title/title-two-directives-trailing-blanks-dropped]
+
+A title in which a directive is followed by anything besides spaces, tabs, and
+directives, more text, a no-break space, or U+3000, stays as written, the spaces
+and tabs at its end included: `title T %%{x}%% U` and two spaces is not changed
+(see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+
+[test: text after a directive and spaces at the end of the title of a Venn or a
+C4 diagram] [test: a no-break space after a directive and spaces at the end of
+the title of a Venn or a C4 diagram]
 
 A title whose text stands on a later line after a `;` that the line rule ignores
 stays as written, with the `;` and the indentation of that line: the lexer

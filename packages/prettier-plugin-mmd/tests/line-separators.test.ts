@@ -4970,10 +4970,10 @@ describe("the title of a diagram that is read with a Langium grammar and has a w
 })
 
 /**
- * A no-break space and U+3000 beside a directive in a title. The printer
- * reads only spaces and tabs as blanks around a directive that anything else
- * follows, and a directive that ends the line outside the text; a title that
- * a Jison grammar reads keeps them wherever they stand
+ * A no-break space, U+3000, and U+2003 beside a directive in a title. The
+ * printer reads only spaces and tabs as blanks around a directive that
+ * anything else follows, and a directive that ends the line is outside the
+ * text; a title that a Jison grammar reads keeps them wherever they stand
  * (docs/compatibility.md, Texts after a keyword that are drawn the same).
  */
 const langiumTitleDiagrams: readonly (readonly [string, string, string])[] = [
@@ -5122,6 +5122,221 @@ const langiumTitleCases: readonly (readonly [string, string, string])[] = [
     "T %%{x}%% U  ",
   ],
   ["U+2003 at both ends of a title", "\u2003T\u2003", "T"],
+  [
+    "a no-break space after a directive that starts a title and before a directive that ends it",
+    "%%{x}%%\u00a0T %%{y}%%",
+    "%%{x}%%T %%{y}%%",
+  ],
+  [
+    "a no-break space after a directive that starts a title, with a directive that ends it followed by a no-break space",
+    "%%{x}%%\u00a0T %%{y}%%\u00a0",
+    "%%{x}%%\u00a0T %%{y}%%\u00a0",
+  ],
+  [
+    "a no-break space after a directive that starts a title, with text after a directive that ends it",
+    "%%{x}%%\u00a0T %%{y}%% U",
+    "%%{x}%%\u00a0T %%{y}%% U",
+  ],
+  [
+    "U+3000 after a directive that starts a title, with a directive that ends it followed by U+3000",
+    "%%{x}%%\u3000T %%{y}%%\u3000",
+    "%%{x}%%\u3000T %%{y}%%\u3000",
+  ],
+  [
+    "a no-break space after a directive that starts a title and spaces at the end of the title",
+    "%%{x}%%\u00a0T %%{y}%%  ",
+    "%%{x}%%T %%{y}%%",
+  ],
+  [
+    "U+2003 between the text and a directive that ends a title",
+    "T\u2003%%{x}%%",
+    "T %%{x}%%",
+  ],
+  [
+    "U+2003 after the last directive of a title",
+    "T%%{x}%%\u2003",
+    "T%%{x}%%\u2003",
+  ],
+  [
+    "U+2003 after a directive that starts a title",
+    "%%{x}%%\u2003T",
+    "%%{x}%%T",
+  ],
+  [
+    "U+2003 on both sides of a directive between two texts",
+    "T\u2003%%{x}%%\u2003U",
+    "T\u2003%%{x}%%\u2003U",
+  ],
+]
+
+const accessibilityTitleDiagrams: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a pie chart",
+    'pie\naccTitle: {title}\n"a": 1\n',
+    'pie\n  accTitle: {title}\n  "a": 1\n',
+  ],
+  [
+    "a radar chart",
+    "radar-beta\naccTitle: {title}\naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  accTitle: {title}\n  axis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "a packet diagram",
+    'packet-beta\naccTitle: {title}\n0-7: "x"\n',
+    'packet-beta\n  accTitle: {title}\n  0-7: "x"\n',
+  ],
+  [
+    "an architecture diagram",
+    "architecture-beta\naccTitle: {title}\nservice a(server)[A]\n",
+    "architecture-beta\n  accTitle: {title}\n  service a(server)[A]\n",
+  ],
+  [
+    "a gitGraph",
+    "gitGraph\naccTitle: {title}\ncommit\n",
+    "gitGraph\n  accTitle: {title}\n  commit\n",
+  ],
+  [
+    "a cynefin diagram",
+    "cynefin-beta\naccTitle: {title}\n",
+    "cynefin-beta\n  accTitle: {title}\n",
+  ],
+  [
+    "a treemap",
+    'treemap-beta\naccTitle: {title}\n"A": 1\n',
+    'treemap\naccTitle: {title}\n  "A": 1\n',
+  ],
+  [
+    "a Wardley map",
+    "wardley-beta\naccTitle: {title}\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  accTitle: {title}\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a treeView",
+    "treeView-beta\naccTitle: {title}\nroot\n",
+    "treeView-beta\n  accTitle: {title}\n  root\n",
+  ],
+  [
+    "an info diagram",
+    "info\naccTitle: {title}\n",
+    "info\n  accTitle: {title}\n",
+  ],
+  [
+    "a railroad diagram",
+    'railroad-abnf-beta\naccTitle: {title}\nr="a";\n',
+    'railroad-abnf-beta\n  accTitle: {title}\n  r = "a";\n',
+  ],
+]
+
+const accessibilityTitleCases: readonly (readonly [string, string, string])[] =
+  [
+    [
+      "a no-break space after the directive that starts the value of an accTitle line",
+      "%%{x}%%\u00a0T %%{y}%%",
+      "%%{x}%%\u00a0T %%{y}%%",
+    ],
+    [
+      "a no-break space after the directive that starts the value of an accTitle line, with spaces at the end",
+      "%%{x}%%\u00a0T %%{y}%%  ",
+      "%%{x}%%\u00a0T %%{y}%%  ",
+    ],
+    [
+      "U+3000 after the directive that starts the value of an accTitle line",
+      "%%{x}%%\u3000T",
+      "%%{x}%%\u3000T",
+    ],
+    [
+      "a no-break space between the value of an accTitle line and a directive that ends it",
+      "T\u00a0%%{x}%%",
+      "T %%{x}%%",
+    ],
+    [
+      "text after a directive and spaces at the end of the value of an accTitle line",
+      "T %%{x}%% U  ",
+      "T %%{x}%% U  ",
+    ],
+  ]
+
+const accessibilityDescriptionDiagrams: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a pie chart",
+    'pie\naccDescr: {title}\n"a": 1\n',
+    'pie\n  accDescr: {title}\n  "a": 1\n',
+  ],
+  [
+    "a radar chart",
+    "radar-beta\naccDescr: {title}\naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  accDescr: {title}\n  axis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "a packet diagram",
+    'packet-beta\naccDescr: {title}\n0-7: "x"\n',
+    'packet-beta\n  accDescr: {title}\n  0-7: "x"\n',
+  ],
+  [
+    "an architecture diagram",
+    "architecture-beta\naccDescr: {title}\nservice a(server)[A]\n",
+    "architecture-beta\n  accDescr: {title}\n  service a(server)[A]\n",
+  ],
+  [
+    "a gitGraph",
+    "gitGraph\naccDescr: {title}\ncommit\n",
+    "gitGraph\n  accDescr: {title}\n  commit\n",
+  ],
+  [
+    "a cynefin diagram",
+    "cynefin-beta\naccDescr: {title}\n",
+    "cynefin-beta\n  accDescr: {title}\n",
+  ],
+  [
+    "a treemap",
+    'treemap-beta\naccDescr: {title}\n"A": 1\n',
+    'treemap\naccDescr: {title}\n  "A": 1\n',
+  ],
+  [
+    "a Wardley map",
+    "wardley-beta\naccDescr: {title}\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  accDescr: {title}\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a treeView",
+    "treeView-beta\naccDescr: {title}\nroot\n",
+    "treeView-beta\n  accDescr: {title}\n  root\n",
+  ],
+  [
+    "an info diagram",
+    "info\naccDescr: {title}\n",
+    "info\n  accDescr: {title}\n",
+  ],
+  [
+    "a railroad diagram",
+    'railroad-abnf-beta\naccDescr: {title}\nr="a";\n',
+    'railroad-abnf-beta\n  accDescr: {title}\n  r = "a";\n',
+  ],
+]
+
+const accessibilityDescriptionCases: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a no-break space after the directive that starts the value of an accDescr line",
+    "%%{x}%%\u00a0T %%{y}%%",
+    "%%{x}%%\u00a0T %%{y}%%",
+  ],
+  [
+    "a no-break space after the directive that starts the value of an accDescr line, with spaces at the end",
+    "%%{x}%%\u00a0T %%{y}%%  ",
+    "%%{x}%%\u00a0T %%{y}%%  ",
+  ],
 ]
 
 const quadrantTitleDiagram: readonly (readonly [string, string, string])[] = [
@@ -5172,6 +5387,26 @@ const quadrantTitleCases: readonly (readonly [string, string, string])[] = [
     "text after a directive and spaces at the end of the title of a quadrant chart",
     "T %%{x}%% U  ",
     "T %%{x}%% U",
+  ],
+  [
+    "a no-break space after a directive that starts the title of a quadrant chart, with a directive that ends it followed by a no-break space",
+    "%%{x}%%\u00a0T %%{y}%%\u00a0",
+    "%%{x}%%T %%{y}%%",
+  ],
+  [
+    "a no-break space after a directive that starts the title of a quadrant chart, with text after a directive that ends it",
+    "%%{x}%%\u00a0T %%{y}%% U",
+    "%%{x}%%T %%{y}%% U",
+  ],
+  [
+    "U+2003 between the text and a directive that ends the title of a quadrant chart",
+    "T\u2003%%{x}%%",
+    "T %%{x}%%",
+  ],
+  [
+    "U+2003 after the last directive in the title of a quadrant chart",
+    "T%%{x}%%\u2003",
+    "T%%{x}%%",
   ],
 ]
 
@@ -5247,6 +5482,21 @@ const jisonTitleCases: readonly (readonly [string, string, string])[] = [
     "T\t%%{x}%%\t",
     "T %%{x}%%",
   ],
+  [
+    "a no-break space after a directive that starts a title that a Jison grammar reads, with a directive that ends it",
+    "%%{x}%%\u00a0T %%{y}%%",
+    "%%{x}%%\u00a0T %%{y}%%",
+  ],
+  [
+    "a no-break space after a directive that starts a title that a Jison grammar reads, with a directive that ends it followed by a no-break space",
+    "%%{x}%%\u00a0T %%{y}%%\u00a0",
+    "%%{x}%%\u00a0T %%{y}%%\u00a0",
+  ],
+  [
+    "U+2003 after a directive that starts a title that a Jison grammar reads",
+    "%%{x}%%\u2003T",
+    "%%{x}%%\u2003T",
+  ],
 ]
 
 const jisonDroppingTitleDiagrams: readonly (readonly [
@@ -5270,6 +5520,16 @@ const jisonDroppingTitleCases: readonly (readonly [string, string, string])[] =
       "text after a directive and spaces at the end of a title that a Jison grammar reads",
       "T %%{x}%% U  ",
       "T %%{x}%% U",
+    ],
+    [
+      "a no-break space after a directive and spaces at the end of a title that a Jison grammar reads",
+      "T %%{x}%%\u00a0U  ",
+      "T %%{x}%%\u00a0U",
+    ],
+    [
+      "a no-break space after a directive that starts a title and spaces at the end of a title that a Jison grammar reads",
+      "%%{x}%%\u00a0T %%{y}%%  ",
+      "%%{x}%%\u00a0T %%{y}%%",
     ],
   ]
 
@@ -5295,6 +5555,16 @@ const jisonKeepingTitleCases: readonly (readonly [string, string, string])[] = [
     "text after a directive and spaces at the end of the title of a Venn or a C4 diagram",
     "T %%{x}%% U  ",
     "T %%{x}%% U  ",
+  ],
+  [
+    "a no-break space after a directive and spaces at the end of the title of a Venn or a C4 diagram",
+    "T %%{x}%%\u00a0U  ",
+    "T %%{x}%%\u00a0U  ",
+  ],
+  [
+    "a no-break space after a directive that starts a title and spaces at the end of the title of a Venn or a C4 diagram",
+    "%%{x}%%\u00a0T %%{y}%%  ",
+    "%%{x}%%\u00a0T %%{y}%%  ",
   ],
 ]
 
@@ -5324,6 +5594,36 @@ const titleOpenDirectiveExamples: readonly (readonly [
     'pie\n  title T%%{x\n"a": 1\n',
   ],
   [
+    "two spaces before a directive that is not closed in a title",
+    'pie\ntitle T  %%{x\n"a": 1\n',
+    'pie\n  title T %%{x\n"a": 1\n',
+  ],
+  [
+    "a tab before a directive that is not closed in a title",
+    'pie\ntitle T\t%%{x\n"a": 1\n',
+    'pie\n  title T %%{x\n"a": 1\n',
+  ],
+  [
+    "a no-break space before a directive that is not closed in a title",
+    'pie\ntitle T\u00a0%%{x\n"a": 1\n',
+    'pie\n  title T %%{x\n"a": 1\n',
+  ],
+  [
+    "U+3000 before a directive that is not closed in a title",
+    'pie\ntitle T\u3000%%{x\n"a": 1\n',
+    'pie\n  title T %%{x\n"a": 1\n',
+  ],
+  [
+    "U+2003 before a directive that is not closed in a title",
+    'pie\ntitle T\u2003%%{x\n"a": 1\n',
+    'pie\n  title T %%{x\n"a": 1\n',
+  ],
+  [
+    "two spaces between a directive and a directive that is not closed in a title",
+    'pie\ntitle T %%{x}%%  %%{y\n"a": 1\n',
+    'pie\n  title T %%{x}%% %%{y\n"a": 1\n',
+  ],
+  [
     "a directive that is not closed after a space in a title",
     "radar-beta\ntitle T %%{x\naxis a, b\ncurve c{1, 2}\n",
     "radar-beta\n  title T %%{x\naxis a, b\n  curve c{1, 2}\n",
@@ -5332,6 +5632,36 @@ const titleOpenDirectiveExamples: readonly (readonly [
     "a directive that is not closed touching the text of a title",
     "radar-beta\ntitle T%%{x\naxis a, b\ncurve c{1, 2}\n",
     "radar-beta\n  title T%%{x\naxis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "two spaces before a directive that is not closed in a title",
+    "radar-beta\ntitle T  %%{x\naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  title T  %%{x\naxis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "a tab before a directive that is not closed in a title",
+    "radar-beta\ntitle T\t%%{x\naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  title T\t%%{x\naxis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "a no-break space before a directive that is not closed in a title",
+    "radar-beta\ntitle T\u00a0%%{x\naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  title T\u00a0%%{x\naxis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "U+3000 before a directive that is not closed in a title",
+    "radar-beta\ntitle T\u3000%%{x\naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  title T\u3000%%{x\naxis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "U+2003 before a directive that is not closed in a title",
+    "radar-beta\ntitle T\u2003%%{x\naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  title T\u2003%%{x\naxis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "two spaces between a directive and a directive that is not closed in a title",
+    "radar-beta\ntitle T %%{x}%%  %%{y\naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  title T %%{x}%%  %%{y\naxis a, b\n  curve c{1, 2}\n",
   ],
   [
     "a directive that is not closed after a space in a title",
@@ -5344,6 +5674,36 @@ const titleOpenDirectiveExamples: readonly (readonly [
     'packet-beta\n  title T%%{x\n0-7: "x"\n',
   ],
   [
+    "two spaces before a directive that is not closed in a title",
+    'packet-beta\ntitle T  %%{x\n0-7: "x"\n',
+    'packet-beta\n  title T  %%{x\n0-7: "x"\n',
+  ],
+  [
+    "a tab before a directive that is not closed in a title",
+    'packet-beta\ntitle T\t%%{x\n0-7: "x"\n',
+    'packet-beta\n  title T\t%%{x\n0-7: "x"\n',
+  ],
+  [
+    "a no-break space before a directive that is not closed in a title",
+    'packet-beta\ntitle T\u00a0%%{x\n0-7: "x"\n',
+    'packet-beta\n  title T\u00a0%%{x\n0-7: "x"\n',
+  ],
+  [
+    "U+3000 before a directive that is not closed in a title",
+    'packet-beta\ntitle T\u3000%%{x\n0-7: "x"\n',
+    'packet-beta\n  title T\u3000%%{x\n0-7: "x"\n',
+  ],
+  [
+    "U+2003 before a directive that is not closed in a title",
+    'packet-beta\ntitle T\u2003%%{x\n0-7: "x"\n',
+    'packet-beta\n  title T\u2003%%{x\n0-7: "x"\n',
+  ],
+  [
+    "two spaces between a directive and a directive that is not closed in a title",
+    'packet-beta\ntitle T %%{x}%%  %%{y\n0-7: "x"\n',
+    'packet-beta\n  title T %%{x}%%  %%{y\n0-7: "x"\n',
+  ],
+  [
     "a directive that is not closed after a space in a title",
     "architecture-beta\ntitle T %%{x\nservice a(server)[A]\n",
     "architecture-beta\n  title T %%{x\nservice a(server)[A]\n",
@@ -5352,6 +5712,36 @@ const titleOpenDirectiveExamples: readonly (readonly [
     "a directive that is not closed touching the text of a title",
     "architecture-beta\ntitle T%%{x\nservice a(server)[A]\n",
     "architecture-beta\n  title T%%{x\nservice a(server)[A]\n",
+  ],
+  [
+    "two spaces before a directive that is not closed in a title",
+    "architecture-beta\ntitle T  %%{x\nservice a(server)[A]\n",
+    "architecture-beta\n  title T  %%{x\nservice a(server)[A]\n",
+  ],
+  [
+    "a tab before a directive that is not closed in a title",
+    "architecture-beta\ntitle T\t%%{x\nservice a(server)[A]\n",
+    "architecture-beta\n  title T\t%%{x\nservice a(server)[A]\n",
+  ],
+  [
+    "a no-break space before a directive that is not closed in a title",
+    "architecture-beta\ntitle T\u00a0%%{x\nservice a(server)[A]\n",
+    "architecture-beta\n  title T\u00a0%%{x\nservice a(server)[A]\n",
+  ],
+  [
+    "U+3000 before a directive that is not closed in a title",
+    "architecture-beta\ntitle T\u3000%%{x\nservice a(server)[A]\n",
+    "architecture-beta\n  title T\u3000%%{x\nservice a(server)[A]\n",
+  ],
+  [
+    "U+2003 before a directive that is not closed in a title",
+    "architecture-beta\ntitle T\u2003%%{x\nservice a(server)[A]\n",
+    "architecture-beta\n  title T\u2003%%{x\nservice a(server)[A]\n",
+  ],
+  [
+    "two spaces between a directive and a directive that is not closed in a title",
+    "architecture-beta\ntitle T %%{x}%%  %%{y\nservice a(server)[A]\n",
+    "architecture-beta\n  title T %%{x}%%  %%{y\nservice a(server)[A]\n",
   ],
   [
     "a directive that is not closed after a space in a title",
@@ -5364,6 +5754,36 @@ const titleOpenDirectiveExamples: readonly (readonly [
     "gitGraph\n  title T%%{x\ncommit\n",
   ],
   [
+    "two spaces before a directive that is not closed in a title",
+    "gitGraph\ntitle T  %%{x\ncommit\n",
+    "gitGraph\n  title T %%{x\ncommit\n",
+  ],
+  [
+    "a tab before a directive that is not closed in a title",
+    "gitGraph\ntitle T\t%%{x\ncommit\n",
+    "gitGraph\n  title T %%{x\ncommit\n",
+  ],
+  [
+    "a no-break space before a directive that is not closed in a title",
+    "gitGraph\ntitle T\u00a0%%{x\ncommit\n",
+    "gitGraph\n  title T %%{x\ncommit\n",
+  ],
+  [
+    "U+3000 before a directive that is not closed in a title",
+    "gitGraph\ntitle T\u3000%%{x\ncommit\n",
+    "gitGraph\n  title T %%{x\ncommit\n",
+  ],
+  [
+    "U+2003 before a directive that is not closed in a title",
+    "gitGraph\ntitle T\u2003%%{x\ncommit\n",
+    "gitGraph\n  title T %%{x\ncommit\n",
+  ],
+  [
+    "two spaces between a directive and a directive that is not closed in a title",
+    "gitGraph\ntitle T %%{x}%%  %%{y\ncommit\n",
+    "gitGraph\n  title T %%{x}%% %%{y\ncommit\n",
+  ],
+  [
     "a directive that is not closed after a space in a title",
     "cynefin-beta\ntitle T %%{x\n",
     "cynefin-beta\n  title T %%{x\n",
@@ -5372,6 +5792,36 @@ const titleOpenDirectiveExamples: readonly (readonly [
     "a directive that is not closed touching the text of a title",
     "cynefin-beta\ntitle T%%{x\n",
     "cynefin-beta\n  title T%%{x\n",
+  ],
+  [
+    "two spaces before a directive that is not closed in a title",
+    "cynefin-beta\ntitle T  %%{x\n",
+    "cynefin-beta\n  title T %%{x\n",
+  ],
+  [
+    "a tab before a directive that is not closed in a title",
+    "cynefin-beta\ntitle T\t%%{x\n",
+    "cynefin-beta\n  title T %%{x\n",
+  ],
+  [
+    "a no-break space before a directive that is not closed in a title",
+    "cynefin-beta\ntitle T\u00a0%%{x\n",
+    "cynefin-beta\n  title T %%{x\n",
+  ],
+  [
+    "U+3000 before a directive that is not closed in a title",
+    "cynefin-beta\ntitle T\u3000%%{x\n",
+    "cynefin-beta\n  title T %%{x\n",
+  ],
+  [
+    "U+2003 before a directive that is not closed in a title",
+    "cynefin-beta\ntitle T\u2003%%{x\n",
+    "cynefin-beta\n  title T %%{x\n",
+  ],
+  [
+    "two spaces between a directive and a directive that is not closed in a title",
+    "cynefin-beta\ntitle T %%{x}%%  %%{y\n",
+    "cynefin-beta\n  title T %%{x}%% %%{y\n",
   ],
   [
     "a directive that is not closed after a space in a title",
@@ -5384,6 +5834,36 @@ const titleOpenDirectiveExamples: readonly (readonly [
     'treemap\ntitle T%%{x\n"A": 1\n',
   ],
   [
+    "two spaces before a directive that is not closed in a title",
+    'treemap-beta\ntitle T  %%{x\n"A": 1\n',
+    'treemap\ntitle T %%{x\n"A": 1\n',
+  ],
+  [
+    "a tab before a directive that is not closed in a title",
+    'treemap-beta\ntitle T\t%%{x\n"A": 1\n',
+    'treemap\ntitle T %%{x\n"A": 1\n',
+  ],
+  [
+    "a no-break space before a directive that is not closed in a title",
+    'treemap-beta\ntitle T\u00a0%%{x\n"A": 1\n',
+    'treemap\ntitle T %%{x\n"A": 1\n',
+  ],
+  [
+    "U+3000 before a directive that is not closed in a title",
+    'treemap-beta\ntitle T\u3000%%{x\n"A": 1\n',
+    'treemap\ntitle T %%{x\n"A": 1\n',
+  ],
+  [
+    "U+2003 before a directive that is not closed in a title",
+    'treemap-beta\ntitle T\u2003%%{x\n"A": 1\n',
+    'treemap\ntitle T %%{x\n"A": 1\n',
+  ],
+  [
+    "two spaces between a directive and a directive that is not closed in a title",
+    'treemap-beta\ntitle T %%{x}%%  %%{y\n"A": 1\n',
+    'treemap\ntitle T %%{x}%% %%{y\n"A": 1\n',
+  ],
+  [
     "a directive that is not closed after a space in a title",
     "wardley-beta\ntitle T %%{x\ncomponent A [0.5, 0.5]\n",
     "wardley-beta\n  title T %%{x\ncomponent A [0.5, 0.5]\n",
@@ -5392,6 +5872,36 @@ const titleOpenDirectiveExamples: readonly (readonly [
     "a directive that is not closed touching the text of a title",
     "wardley-beta\ntitle T%%{x\ncomponent A [0.5, 0.5]\n",
     "wardley-beta\n  title T%%{x\ncomponent A [0.5, 0.5]\n",
+  ],
+  [
+    "two spaces before a directive that is not closed in a title",
+    "wardley-beta\ntitle T  %%{x\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T  %%{x\ncomponent A [0.5, 0.5]\n",
+  ],
+  [
+    "a tab before a directive that is not closed in a title",
+    "wardley-beta\ntitle T\t%%{x\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T\t%%{x\ncomponent A [0.5, 0.5]\n",
+  ],
+  [
+    "a no-break space before a directive that is not closed in a title",
+    "wardley-beta\ntitle T\u00a0%%{x\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T\u00a0%%{x\ncomponent A [0.5, 0.5]\n",
+  ],
+  [
+    "U+3000 before a directive that is not closed in a title",
+    "wardley-beta\ntitle T\u3000%%{x\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T\u3000%%{x\ncomponent A [0.5, 0.5]\n",
+  ],
+  [
+    "U+2003 before a directive that is not closed in a title",
+    "wardley-beta\ntitle T\u2003%%{x\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T\u2003%%{x\ncomponent A [0.5, 0.5]\n",
+  ],
+  [
+    "two spaces between a directive and a directive that is not closed in a title",
+    "wardley-beta\ntitle T %%{x}%%  %%{y\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T %%{x}%%  %%{y\ncomponent A [0.5, 0.5]\n",
   ],
   [
     "a directive that is not closed after a space in a title",
@@ -5404,6 +5914,36 @@ const titleOpenDirectiveExamples: readonly (readonly [
     "treeView-beta\n  title T%%{x\nroot\n",
   ],
   [
+    "two spaces before a directive that is not closed in a title",
+    "treeView-beta\ntitle T  %%{x\nroot\n",
+    "treeView-beta\n  title T %%{x\nroot\n",
+  ],
+  [
+    "a tab before a directive that is not closed in a title",
+    "treeView-beta\ntitle T\t%%{x\nroot\n",
+    "treeView-beta\n  title T %%{x\nroot\n",
+  ],
+  [
+    "a no-break space before a directive that is not closed in a title",
+    "treeView-beta\ntitle T\u00a0%%{x\nroot\n",
+    "treeView-beta\n  title T %%{x\nroot\n",
+  ],
+  [
+    "U+3000 before a directive that is not closed in a title",
+    "treeView-beta\ntitle T\u3000%%{x\nroot\n",
+    "treeView-beta\n  title T %%{x\nroot\n",
+  ],
+  [
+    "U+2003 before a directive that is not closed in a title",
+    "treeView-beta\ntitle T\u2003%%{x\nroot\n",
+    "treeView-beta\n  title T %%{x\nroot\n",
+  ],
+  [
+    "two spaces between a directive and a directive that is not closed in a title",
+    "treeView-beta\ntitle T %%{x}%%  %%{y\nroot\n",
+    "treeView-beta\n  title T %%{x}%% %%{y\nroot\n",
+  ],
+  [
     "a directive that is not closed after a space in a title",
     "info\ntitle T %%{x\n",
     "info\n  title T %%{x\n",
@@ -5412,6 +5952,36 @@ const titleOpenDirectiveExamples: readonly (readonly [
     "a directive that is not closed touching the text of a title",
     "info\ntitle T%%{x\n",
     "info\n  title T%%{x\n",
+  ],
+  [
+    "two spaces before a directive that is not closed in a title",
+    "info\ntitle T  %%{x\n",
+    "info\n  title T %%{x\n",
+  ],
+  [
+    "a tab before a directive that is not closed in a title",
+    "info\ntitle T\t%%{x\n",
+    "info\n  title T %%{x\n",
+  ],
+  [
+    "a no-break space before a directive that is not closed in a title",
+    "info\ntitle T\u00a0%%{x\n",
+    "info\n  title T %%{x\n",
+  ],
+  [
+    "U+3000 before a directive that is not closed in a title",
+    "info\ntitle T\u3000%%{x\n",
+    "info\n  title T %%{x\n",
+  ],
+  [
+    "U+2003 before a directive that is not closed in a title",
+    "info\ntitle T\u2003%%{x\n",
+    "info\n  title T %%{x\n",
+  ],
+  [
+    "two spaces between a directive and a directive that is not closed in a title",
+    "info\ntitle T %%{x}%%  %%{y\n",
+    "info\n  title T %%{x}%% %%{y\n",
   ],
   [
     "a directive that is not closed after a space in a title",
@@ -5424,6 +5994,36 @@ const titleOpenDirectiveExamples: readonly (readonly [
     'railroad-abnf-beta\n  title T%%{x\nr="a";\n',
   ],
   [
+    "two spaces before a directive that is not closed in a title",
+    'railroad-abnf-beta\ntitle T  %%{x\nr="a";\n',
+    'railroad-abnf-beta\n  title T  %%{x\nr="a";\n',
+  ],
+  [
+    "a tab before a directive that is not closed in a title",
+    'railroad-abnf-beta\ntitle T\t%%{x\nr="a";\n',
+    'railroad-abnf-beta\n  title T\t%%{x\nr="a";\n',
+  ],
+  [
+    "a no-break space before a directive that is not closed in a title",
+    'railroad-abnf-beta\ntitle T\u00a0%%{x\nr="a";\n',
+    'railroad-abnf-beta\n  title T\u00a0%%{x\nr="a";\n',
+  ],
+  [
+    "U+3000 before a directive that is not closed in a title",
+    'railroad-abnf-beta\ntitle T\u3000%%{x\nr="a";\n',
+    'railroad-abnf-beta\n  title T\u3000%%{x\nr="a";\n',
+  ],
+  [
+    "U+2003 before a directive that is not closed in a title",
+    'railroad-abnf-beta\ntitle T\u2003%%{x\nr="a";\n',
+    'railroad-abnf-beta\n  title T\u2003%%{x\nr="a";\n',
+  ],
+  [
+    "two spaces between a directive and a directive that is not closed in a title",
+    'railroad-abnf-beta\ntitle T %%{x}%%  %%{y\nr="a";\n',
+    'railroad-abnf-beta\n  title T %%{x}%%  %%{y\nr="a";\n',
+  ],
+  [
     "a directive that is not closed after a space in a title",
     "quadrantChart\ntitle T %%{x\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
     "quadrantChart\n  title T %%{x\nx-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
@@ -5432,6 +6032,36 @@ const titleOpenDirectiveExamples: readonly (readonly [
     "a directive that is not closed touching the text of a title",
     "quadrantChart\ntitle T%%{x\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
     "quadrantChart\n  title T%%{x\nx-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "two spaces before a directive that is not closed in a title",
+    "quadrantChart\ntitle T  %%{x\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  title T  %%{x\nx-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "a tab before a directive that is not closed in a title",
+    "quadrantChart\ntitle T\t%%{x\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  title T\t%%{x\nx-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "a no-break space before a directive that is not closed in a title",
+    "quadrantChart\ntitle T\u00a0%%{x\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  title T\u00a0%%{x\nx-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "U+3000 before a directive that is not closed in a title",
+    "quadrantChart\ntitle T\u3000%%{x\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  title T\u3000%%{x\nx-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "U+2003 before a directive that is not closed in a title",
+    "quadrantChart\ntitle T\u2003%%{x\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  title T\u2003%%{x\nx-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "two spaces between a directive and a directive that is not closed in a title",
+    "quadrantChart\ntitle T %%{x}%%  %%{y\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  title T %%{x}%%  %%{y\nx-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
   ],
   [
     "a directive that is not closed after a space in a title",
@@ -5444,6 +6074,36 @@ const titleOpenDirectiveExamples: readonly (readonly [
     "gantt\n  title T%%{x\n",
   ],
   [
+    "two spaces before a directive that is not closed in a title",
+    "gantt\ntitle T  %%{x\n",
+    "gantt\n  title T %%{x\n",
+  ],
+  [
+    "a tab before a directive that is not closed in a title",
+    "gantt\ntitle T\t%%{x\n",
+    "gantt\n  title T %%{x\n",
+  ],
+  [
+    "a no-break space before a directive that is not closed in a title",
+    "gantt\ntitle T\u00a0%%{x\n",
+    "gantt\n  title T\u00a0%%{x\n",
+  ],
+  [
+    "U+3000 before a directive that is not closed in a title",
+    "gantt\ntitle T\u3000%%{x\n",
+    "gantt\n  title T\u3000%%{x\n",
+  ],
+  [
+    "U+2003 before a directive that is not closed in a title",
+    "gantt\ntitle T\u2003%%{x\n",
+    "gantt\n  title T\u2003%%{x\n",
+  ],
+  [
+    "two spaces between a directive and a directive that is not closed in a title",
+    "gantt\ntitle T %%{x}%%  %%{y\n",
+    "gantt\n  title T %%{x}%% %%{y\n",
+  ],
+  [
     "a directive that is not closed after a space in a title",
     "journey\ntitle T %%{x\n",
     "journey\n  title T %%{x\n",
@@ -5452,6 +6112,36 @@ const titleOpenDirectiveExamples: readonly (readonly [
     "a directive that is not closed touching the text of a title",
     "journey\ntitle T%%{x\n",
     "journey\n  title T%%{x\n",
+  ],
+  [
+    "two spaces before a directive that is not closed in a title",
+    "journey\ntitle T  %%{x\n",
+    "journey\n  title T %%{x\n",
+  ],
+  [
+    "a tab before a directive that is not closed in a title",
+    "journey\ntitle T\t%%{x\n",
+    "journey\n  title T %%{x\n",
+  ],
+  [
+    "a no-break space before a directive that is not closed in a title",
+    "journey\ntitle T\u00a0%%{x\n",
+    "journey\n  title T\u00a0%%{x\n",
+  ],
+  [
+    "U+3000 before a directive that is not closed in a title",
+    "journey\ntitle T\u3000%%{x\n",
+    "journey\n  title T\u3000%%{x\n",
+  ],
+  [
+    "U+2003 before a directive that is not closed in a title",
+    "journey\ntitle T\u2003%%{x\n",
+    "journey\n  title T\u2003%%{x\n",
+  ],
+  [
+    "two spaces between a directive and a directive that is not closed in a title",
+    "journey\ntitle T %%{x}%%  %%{y\n",
+    "journey\n  title T %%{x}%% %%{y\n",
   ],
   [
     "a directive that is not closed after a space in a title",
@@ -5464,6 +6154,36 @@ const titleOpenDirectiveExamples: readonly (readonly [
     "timeline\n  title T%%{x\n",
   ],
   [
+    "two spaces before a directive that is not closed in a title",
+    "timeline\ntitle T  %%{x\n",
+    "timeline\n  title T %%{x\n",
+  ],
+  [
+    "a tab before a directive that is not closed in a title",
+    "timeline\ntitle T\t%%{x\n",
+    "timeline\n  title T %%{x\n",
+  ],
+  [
+    "a no-break space before a directive that is not closed in a title",
+    "timeline\ntitle T\u00a0%%{x\n",
+    "timeline\n  title T\u00a0%%{x\n",
+  ],
+  [
+    "U+3000 before a directive that is not closed in a title",
+    "timeline\ntitle T\u3000%%{x\n",
+    "timeline\n  title T\u3000%%{x\n",
+  ],
+  [
+    "U+2003 before a directive that is not closed in a title",
+    "timeline\ntitle T\u2003%%{x\n",
+    "timeline\n  title T\u2003%%{x\n",
+  ],
+  [
+    "two spaces between a directive and a directive that is not closed in a title",
+    "timeline\ntitle T %%{x}%%  %%{y\n",
+    "timeline\n  title T %%{x}%% %%{y\n",
+  ],
+  [
     "a directive that is not closed after a space in a title",
     "sequenceDiagram\ntitle T %%{x\nA->>B: x\n",
     "sequenceDiagram\n  title T %%{x\nA->>B: x\n",
@@ -5472,6 +6192,36 @@ const titleOpenDirectiveExamples: readonly (readonly [
     "a directive that is not closed touching the text of a title",
     "sequenceDiagram\ntitle T%%{x\nA->>B: x\n",
     "sequenceDiagram\n  title T%%{x\nA->>B: x\n",
+  ],
+  [
+    "two spaces before a directive that is not closed in a title",
+    "sequenceDiagram\ntitle T  %%{x\nA->>B: x\n",
+    "sequenceDiagram\n  title T  %%{x\nA->>B: x\n",
+  ],
+  [
+    "a tab before a directive that is not closed in a title",
+    "sequenceDiagram\ntitle T\t%%{x\nA->>B: x\n",
+    "sequenceDiagram\n  title T\t%%{x\nA->>B: x\n",
+  ],
+  [
+    "a no-break space before a directive that is not closed in a title",
+    "sequenceDiagram\ntitle T\u00a0%%{x\nA->>B: x\n",
+    "sequenceDiagram\n  title T\u00a0%%{x\nA->>B: x\n",
+  ],
+  [
+    "U+3000 before a directive that is not closed in a title",
+    "sequenceDiagram\ntitle T\u3000%%{x\nA->>B: x\n",
+    "sequenceDiagram\n  title T\u3000%%{x\nA->>B: x\n",
+  ],
+  [
+    "U+2003 before a directive that is not closed in a title",
+    "sequenceDiagram\ntitle T\u2003%%{x\nA->>B: x\n",
+    "sequenceDiagram\n  title T\u2003%%{x\nA->>B: x\n",
+  ],
+  [
+    "two spaces between a directive and a directive that is not closed in a title",
+    "sequenceDiagram\ntitle T %%{x}%%  %%{y\nA->>B: x\n",
+    "sequenceDiagram\n  title T %%{x}%%  %%{y\nA->>B: x\n",
   ],
   [
     "a directive that is not closed after a space in a title",
@@ -5484,6 +6234,36 @@ const titleOpenDirectiveExamples: readonly (readonly [
     "venn-beta\n  title T%%{x\nset A\n",
   ],
   [
+    "two spaces before a directive that is not closed in a title",
+    "venn-beta\ntitle T  %%{x\nset A\n",
+    "venn-beta\n  title T  %%{x\nset A\n",
+  ],
+  [
+    "a tab before a directive that is not closed in a title",
+    "venn-beta\ntitle T\t%%{x\nset A\n",
+    "venn-beta\n  title T\t%%{x\nset A\n",
+  ],
+  [
+    "a no-break space before a directive that is not closed in a title",
+    "venn-beta\ntitle T\u00a0%%{x\nset A\n",
+    "venn-beta\n  title T\u00a0%%{x\nset A\n",
+  ],
+  [
+    "U+3000 before a directive that is not closed in a title",
+    "venn-beta\ntitle T\u3000%%{x\nset A\n",
+    "venn-beta\n  title T\u3000%%{x\nset A\n",
+  ],
+  [
+    "U+2003 before a directive that is not closed in a title",
+    "venn-beta\ntitle T\u2003%%{x\nset A\n",
+    "venn-beta\n  title T\u2003%%{x\nset A\n",
+  ],
+  [
+    "two spaces between a directive and a directive that is not closed in a title",
+    "venn-beta\ntitle T %%{x}%%  %%{y\nset A\n",
+    "venn-beta\n  title T %%{x}%%  %%{y\nset A\n",
+  ],
+  [
     "a directive that is not closed after a space in a title",
     'C4Context\ntitle T %%{x\nPerson(a,"A")\n',
     'C4Context\n  title T %%{x\nPerson(a,"A")\n',
@@ -5492,6 +6272,36 @@ const titleOpenDirectiveExamples: readonly (readonly [
     "a directive that is not closed touching the text of a title",
     'C4Context\ntitle T%%{x\nPerson(a,"A")\n',
     'C4Context\n  title T%%{x\nPerson(a,"A")\n',
+  ],
+  [
+    "two spaces before a directive that is not closed in a title",
+    'C4Context\ntitle T  %%{x\nPerson(a,"A")\n',
+    'C4Context\n  title T  %%{x\nPerson(a,"A")\n',
+  ],
+  [
+    "a tab before a directive that is not closed in a title",
+    'C4Context\ntitle T\t%%{x\nPerson(a,"A")\n',
+    'C4Context\n  title T\t%%{x\nPerson(a,"A")\n',
+  ],
+  [
+    "a no-break space before a directive that is not closed in a title",
+    'C4Context\ntitle T\u00a0%%{x\nPerson(a,"A")\n',
+    'C4Context\n  title T\u00a0%%{x\nPerson(a,"A")\n',
+  ],
+  [
+    "U+3000 before a directive that is not closed in a title",
+    'C4Context\ntitle T\u3000%%{x\nPerson(a,"A")\n',
+    'C4Context\n  title T\u3000%%{x\nPerson(a,"A")\n',
+  ],
+  [
+    "U+2003 before a directive that is not closed in a title",
+    'C4Context\ntitle T\u2003%%{x\nPerson(a,"A")\n',
+    'C4Context\n  title T\u2003%%{x\nPerson(a,"A")\n',
+  ],
+  [
+    "two spaces between a directive and a directive that is not closed in a title",
+    'C4Context\ntitle T %%{x}%%  %%{y\nPerson(a,"A")\n',
+    'C4Context\n  title T %%{x}%%  %%{y\nPerson(a,"A")\n',
   ],
 ]
 
@@ -5504,6 +6314,36 @@ describe.each(langiumTitleDiagrams)(
         output.replace("{title}", printed),
       )
     })
+  },
+)
+
+describe.each(accessibilityTitleDiagrams)(
+  "the accTitle line of %s with a no-break space or U+3000 beside a directive",
+  (_diagram, input, output) => {
+    it.each(accessibilityTitleCases)(
+      "prints %s",
+      async (_case, title, printed) => {
+        await expectKept(
+          input.replace("{title}", title),
+          output.replace("{title}", printed),
+        )
+      },
+    )
+  },
+)
+
+describe.each(accessibilityDescriptionDiagrams)(
+  "the accDescr line of %s with a no-break space or U+3000 beside a directive",
+  (_diagram, input, output) => {
+    it.each(accessibilityDescriptionCases)(
+      "prints %s",
+      async (_case, title, printed) => {
+        await expectKept(
+          input.replace("{title}", title),
+          output.replace("{title}", printed),
+        )
+      },
+    )
   },
 )
 
@@ -5579,7 +6419,34 @@ describe.each([
 
 describe("the title of a diagram with a directive that is not closed", () => {
   it.each(titleOpenDirectiveExamples)(
-    "keeps %s",
+    "prints %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/** What a comment that ends a label does to the whitespace before it (docs/agentflow.md, Labels and Edge labels). */
+const agentflowLabelCommentExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a no-break space before a comment that ends the label of an agentflow vertex",
+    "agentflow-beta TB\nA[x\u00a0%% c\n]\n",
+    'agentflow-beta TB\n  A["x" %% c\n    ]\n',
+  ],
+  [
+    "a no-break space before a comment that ends the label of an agentflow edge",
+    "agentflow-beta TB\nA -->|x\u00a0%% c\n| B\n",
+    "agentflow-beta TB\n  A -->|x %% c\n    | B\n",
+  ],
+]
+
+describe("the label of an agentflow diagram that a comment ends", () => {
+  it.each(agentflowLabelCommentExamples)(
+    "prints %s",
     async (_name, input, output) => {
       await expectKept(input, output)
     },

@@ -681,6 +681,19 @@ So does a closing pipe that was written apart from the closing quote:
 [fixture: edge-labels/pipe-string-closing-touches] [test: agentflow: U+2028
 between the closing quote and the `|` of an edge label]
 
+Where the label of an edge between pipes ends at a comment, and only the closing
+pipe follows the line break of the comment (`A -->|x  % c`, a line break, and
+`| B`), the label ends before the comment: a run of spaces and tabs before the
+comment, or a no-break space, is printed as one space, a comment that touches
+stays touching, and the closing pipe stands on a line of its own, one level
+deeper than the arrow (`A -->|x % c` and `    | B`). Where the label goes on
+after the line break of the comment, the spaces and tabs before the comment
+stay.
+
+[fixture: edge-labels/label-comment-ends-label] [fixture:
+edge-labels/label-comment-label-goes-on] [test: a no-break space before a
+comment that ends the label of an agentflow edge]
+
 Input (escaped): `"agentflow-beta TB\nA --> |x| B"`.
 
 [fixture: edge-labels/pipe-label-gap]
@@ -711,12 +724,17 @@ so preserve that padding, the comment and its LF/continuation columns, including
 a closing bracket that belongs to the comment rather than closing the shape.
 Where only the closing bracket follows the line break of the comment, the label
 ends before the comment (the text of `A[x  %% c`, a line break, and `]` is `x`),
-so a run of spaces and tabs before the comment is printed as one space, a
-comment that touches stays touching, a bare label is printed in quotes (see
+so a run of spaces and tabs before the comment is printed as one space, and a
+no-break space before it too, a comment that touches stays touching, a bare
+label is printed in quotes (see
 [Labels that are drawn the same](./compatibility.md#labels-that-are-drawn-the-same)),
 and the closing bracket stands on a line of its own, one level deeper than the
-vertex. Tildes remain content. Shape spellings, entities and HTML remain
-authored. The text of a label is a text that the tree holds whole (see
+vertex. Where the comment holds a `;`, the label is not quoted and the spaces
+and tabs after the `;` stay: `A[x  %% c;` and two spaces, a line break, and `]`
+print `A[x %% c;`, the two spaces, and `]` one level deeper. Where the label
+goes on after the line break of such a comment, both spaces before it stay.
+Tildes remain content. Shape spellings, entities and HTML remain authored. The
+text of a label is a text that the tree holds whole (see
 [A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)),
 and the Db keeps it, so an entity stays as written: `&amp;` is not printed `&`,
 a change of the text that no rule of this document defines.
@@ -727,6 +745,9 @@ a change of the text that no rule of this document defines.
 [fixture: labels/slash-label-padding-kept] [fixture:
 labels/label-comment-ends-label] [fixture:
 labels/label-comment-ends-label-spaces-and-comment-lines] [fixture:
+labels/label-comment-semicolon-ends-label] [fixture:
+labels/label-comment-semicolon-label-goes-on] [test: a no-break space before a
+comment that ends the label of an agentflow vertex] [fixture:
 labels/entity-kept]
 
 Flow/connector heading titles follow

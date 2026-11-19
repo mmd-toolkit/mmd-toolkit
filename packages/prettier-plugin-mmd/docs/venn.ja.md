@@ -925,7 +925,7 @@ venn-beta
 
 title の最初の区切りを ASCII 空白1つにします。
 その後の空白とタブも含めて、ASCII 空白 1 つにします。
-タイトルの末尾の空白とタブは除きます。
+タイトルの末尾の空白とタブは、次の場合を除いて除きます。
 mermaid.js はそれらを Db に残しますが、それらがなくても同じタイトルを描きます。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 それより後の値の全ての文字は、文に見える単語も含めて保ちます。
@@ -957,6 +957,15 @@ mermaid.js はそれらを Db に残しますが、それらがなくても同�
 
 [fixture: venn/title/title-trailing-directive-blanks-dropped]
 [fixture: venn/title/title-two-directives-trailing-blanks-dropped]
+
+タイトルのディレクティブの後ろに、空白、タブ、
+ディレクティブ以外のもの（続くテキスト、改行しない空白、U+3000）がある場合は、
+末尾の空白とタブも含めて書かれたまま残します。
+`title T %%{x}%% U` と空白 2 つは変えません。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+
+[test: text after a directive and spaces at the end of the title of a Venn or a C4 diagram]
+[test: a no-break space after a directive and spaces at the end of the title of a Venn or a C4 diagram]
 
 行の規則が無視する `;` の後の行にテキストがあるタイトルは、
 `;` とその行の字下げを含めて、書かれたまま残します。

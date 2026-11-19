@@ -1443,42 +1443,55 @@ alias. The runs of spaces and tabs inside a date format, an axis format, or the
 value of an `accTitle:` line stay as written before the directives as they do
 without them.
 
-A no-break space and U+3000 are no spaces or tabs, so what is said above of
-spaces and tabs beside a directive does not hold for them in a title. In a Gantt
-chart, a user journey, a timeline, a sequence diagram, a Venn diagram, and a C4
-diagram they are characters of the text wherever they stand, and stay, as does
-any other whitespace character that is no space or tab, such as U+2003:
+A no-break space, U+3000, and U+2003 are no spaces or tabs, so what is said
+above of spaces and tabs beside a directive does not hold for them in a title.
+In a Gantt chart, a user journey, a timeline, a sequence diagram, a Venn
+diagram, and a C4 diagram they are characters of the text wherever they stand,
+and stay, as does any other whitespace character that is no space or tab:
 `title T`, a no-break space, and `%%{x}%%` is not changed. The spaces and tabs
 at the end of a title that has a directive followed by text, as
 `title T %%{x}%% U` and two spaces, are left out in a Gantt chart, a user
 journey, a timeline, a sequence diagram, and a quadrant chart, and stay in a
 Venn diagram and a C4 diagram. A quadrant chart reads a no-break space and
 U+3000 as it reads spaces, except before a comment, where they stay. In the
-other diagram types of the list, the printer reads them by where the directives
-and the comment stand:
+other diagram types of the list, the printer reads a no-break space, U+3000, and
+U+2003 by where the directives and the comment stand:
 
 - Between the text and a comment, with no directive, they are printed as one
   space: `title T`, a no-break space, and `%% c` print `title T %% c`.
-- A directive that starts the title, with the text after it and no other
-  directive between, is outside the text, so a no-break space or U+3000 after it
-  is dropped (`title %%{x}%%`, a no-break space, and `T` print
-  `title %%{x}%%T`); U+2028 and U+2029 after it stay, and so does a no-break
-  space or U+3000 before it.
+- A directive that anything besides spaces, tabs, and other directives follows
+  (more text, a no-break space, U+3000, U+2003) belongs to the text, and so does
+  every directive before it, the one that starts the title too. In that text
+  only spaces and tabs are blanks: a no-break space, U+3000, or U+2003 beside
+  such a directive stays, and the title stays as written from its first
+  character, the spaces and tabs at its end included. `title %%{x}%%`, a
+  no-break space, `T %%{y}%%`, and a no-break space is not changed, and neither
+  is `title %%{x}%%`, a no-break space, `T %%{y}%% U`.
+- Where no directive belongs to the text, a directive that starts the title is
+  outside it, so a no-break space, U+3000, or U+2003 after it is dropped
+  (`title %%{x}%%`, a no-break space, and `T` print `title %%{x}%%T`, and
+  `title %%{x}%%`, a no-break space, `T %%{y}%%`, and two spaces print
+  `title %%{x}%%T %%{y}%%`); U+2028 and U+2029 after it stay, and so does a
+  no-break space or U+3000 before it.
 - The directives that end the line, touching one another and the end of the line
-  or a comment, are outside the text too, so a no-break space or U+3000 between
-  the text and the first of them is whitespace at the end of the text, and is
-  printed as one space with the rest of its run: `title T`, U+00A0, and
+  or a comment, are outside the text too, so a no-break space, U+3000, or U+2003
+  between the text and the first of them is whitespace at the end of the text,
+  and is printed as one space with the rest of its run: `title T`, U+00A0, and
   `%%{x}%%` print `title T %%{x}%%`.
-- A directive that anything besides spaces and tabs follows belongs to the text,
-  and so does every directive before it, except the one that starts the title.
-  In that text only spaces and tabs are blanks: a no-break space or U+3000
-  beside such a directive stays, and a title in which text follows a directive,
-  or a no-break space or U+3000 follows the last one, stays as written, the
-  spaces and tabs at its end included.
+- In the `accTitle:` and `accDescr:` lines of these types, a directive that
+  starts the value is not outside the text: a no-break space, U+3000, or U+2003
+  after it stays, and `accTitle: %%{x}%%`, a no-break space, `T %%{y}%%` is not
+  changed.
 
-A directive that is not closed in a title takes the rest of the text, and the
-title stays as written up to it: `title T %%{x` and `title T%%{x` are not
-changed.
+A directive that is not closed in a title takes the rest of the text.
+`title T %%{x` and `title T%%{x` are not changed. A run of spaces and tabs
+before it is printed as one space in a pie chart, a gitGraph, a cynefin diagram,
+a treemap, a treeView, an info diagram, a Gantt chart, a user journey, and a
+timeline, and stays as written in the other types of the list; a no-break space,
+U+3000, or U+2003 before it is printed as one space in the first six of these,
+and stays in the others. `title T  %%{x` is printed `title T %%{x` in a pie
+chart and is not changed in a radar chart, and `title T`, a no-break space, and
+`%%{x` is not changed in a Gantt chart.
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped] [test: a
 no-break space and U+3000 at both ends of the title of a gantt diagram] [test: a
@@ -1513,7 +1526,46 @@ no-break space between the text and a directive in the title of a quadrant
 chart] [test: a no-break space on both sides of the last directive in the title
 of a quadrant chart] [test: a no-break space before a comment in the title of a
 quadrant chart] [test: U+3000 after the last directive in the title of a
-quadrant chart] [test: a tab before and after the last directive of a title]
+quadrant chart] [test: a no-break space after a directive that starts a title
+and before a directive that ends it] [test: a no-break space after a directive
+that starts a title, with a directive that ends it followed by a no-break space]
+[test: a no-break space after a directive that starts a title, with text after a
+directive that ends it] [test: U+3000 after a directive that starts a title,
+with a directive that ends it followed by U+3000] [test: a no-break space after
+a directive that starts a title and spaces at the end of the title] [test:
+U+2003 between the text and a directive that ends a title] [test: U+2003 after
+the last directive of a title] [test: U+2003 after a directive that starts a
+title] [test: U+2003 on both sides of a directive between two texts] [test: a
+no-break space after the directive that starts the value of an accTitle line]
+[test: a no-break space after the directive that starts the value of an accTitle
+line, with spaces at the end] [test: U+3000 after the directive that starts the
+value of an accTitle line] [test: a no-break space between the value of an
+accTitle line and a directive that ends it] [test: text after a directive and
+spaces at the end of the value of an accTitle line] [test: a no-break space
+after the directive that starts the value of an accDescr line] [test: a no-break
+space after the directive that starts the value of an accDescr line, with spaces
+at the end] [test: a no-break space after a directive that starts the title of a
+quadrant chart, with a directive that ends it followed by a no-break space]
+[test: a no-break space after a directive that starts the title of a quadrant
+chart, with text after a directive that ends it] [test: U+2003 between the text
+and a directive that ends the title of a quadrant chart] [test: U+2003 after the
+last directive in the title of a quadrant chart] [test: a no-break space after a
+directive that starts a title that a Jison grammar reads, with a directive that
+ends it] [test: a no-break space after a directive that starts a title that a
+Jison grammar reads, with a directive that ends it followed by a no-break space]
+[test: U+2003 after a directive that starts a title that a Jison grammar reads]
+[test: a no-break space after a directive and spaces at the end of a title that
+a Jison grammar reads] [test: a no-break space after a directive that starts a
+title and spaces at the end of a title that a Jison grammar reads] [test: a
+no-break space after a directive and spaces at the end of the title of a Venn or
+a C4 diagram] [test: a no-break space after a directive that starts a title and
+spaces at the end of the title of a Venn or a C4 diagram] [test: two spaces
+before a directive that is not closed in a title] [test: a tab before a
+directive that is not closed in a title] [test: a no-break space before a
+directive that is not closed in a title] [test: U+3000 before a directive that
+is not closed in a title] [test: U+2003 before a directive that is not closed in
+a title] [test: two spaces between a directive and a directive that is not
+closed in a title] [test: a tab before and after the last directive of a title]
 [test: a no-break space after a directive that starts a title] [test: U+3000
 after a directive that starts a title] [test: U+2028 after a directive that
 starts a title] [test: a no-break space between two directives that start a

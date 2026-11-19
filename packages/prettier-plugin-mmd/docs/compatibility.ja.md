@@ -1515,45 +1515,59 @@ user journey
 ディレクティブの前でも、
 ディレクティブがない場合と同じように書かれたままにします。
 
-改行しない空白と U+3000 は空白でもタブでもないので、上に書いた、
+改行しない空白、U+3000、U+2003 は空白でもタブでもないので、上に書いた、
 ディレクティブの隣の空白とタブについての文は、
 タイトルでのそれらには当てはまりません。
 Gantt、user journey、timeline、sequence、Venn、C4 の図では、
 それらはどこにあってもテキストの文字で、そのまま残ります。
-U+2003 のように、空白でもタブでもないほかの空白文字も同じです。
+空白でもタブでもないほかの空白文字も同じです。
 `title T`、改行しない空白、`%%{x}%%` は変えません。
 ディレクティブの後にテキストが続くタイトル（`title T %%{x}%% U` と空白 2
 つ）の末尾の空白とタブは、Gantt、user journey、timeline、sequence、
 quadrant の図では除き、Venn と C4 の図では残します。
 quadrant 図では、改行しない空白と U+3000 を空白と同じに読み、
 コメントの前にあるものだけ残します。
-一覧のほかの種類の図では、整形ツールは、
-ディレクティブとコメントの位置でそれらを読み分けます。
+一覧のほかの種類の図では、整形ツールは、改行しない空白、U+3000、U+2003 を、
+ディレクティブとコメントの位置で読み分けます。
 
 - テキストとコメントの間にあるそれらは、
   ディレクティブがなければ空白 1 つにします。
   `title T`、改行しない空白、`%% c` は `title T %% c` と印字します。
-- タイトルの先頭にあるディレクティブは、その後ろにテキストがあり、
-  間にほかのディレクティブがなければ、テキストの外にあるので、
-  その後の改行しない空白と U+3000 は落とします。
+- 後ろに空白、タブ、ほかのディレクティブ以外の何か（続くテキスト、
+  改行しない空白、U+3000、U+2003）が続くディレクティブはテキストに属し、
+  その前のディレクティブも、タイトルの先頭のものを含めてそうです。
+  そのテキストでは空白とタブだけが空白なので、
+  そのようなディレクティブの隣のそれらは残り、タイトルは先頭の文字から、
+  末尾の空白とタブも含めて書かれたまま残ります。
+  `title %%{x}%%`、改行しない空白、`T %%{y}%%`、改行しない空白は変えません。
+  `title %%{x}%%`、改行しない空白、`T %%{y}%% U` も変えません。
+- テキストに属するディレクティブがないときは、
+  タイトルの先頭のディレクティブはテキストの外にあるので、
+  その後の改行しない空白、U+3000、U+2003 は落とします。
   `title %%{x}%%`、改行しない空白、`T` は `title %%{x}%%T` と印字します。
+  `title %%{x}%%`、改行しない空白、`T %%{y}%%`、
+  空白 2 つは `title %%{x}%%T %%{y}%%` と印字します。
   その後の U+2028 と U+2029 と、その前の改行しない空白と U+3000 は残ります。
 - 行末にあって、互いに接し、行末かコメントにも接するディレクティブも、
   テキストの外にあります。
-  テキストとその最初のディレクティブの間にあるそれらはテキストの末尾の空白で、
+  テキストとその最初のディレクティブの間にある改行しない空白、U+3000、
+  U+2003 はテキストの末尾の空白で、
   その連なりの残りと一緒に空白 1 つで印字します。
   `title T`、U+00A0、`%%{x}%%` は `title T %%{x}%%` と印字します。
-- 後ろに空白とタブ以外の何かが続くディレクティブはテキストに属し、
-  タイトルの先頭のディレクティブを除いて、その前のディレクティブもそうです。
-  そのテキストでは空白とタブだけが空白なので、
-  そのようなディレクティブの隣のそれらは残ります。
-  ディレクティブの後にテキストが続くタイトルと、
-  最後のディレクティブの後にそれらがあるタイトルは、
-  末尾の空白とタブも含めて書かれたまま残します。
+- 一覧の `accTitle:` と `accDescr:` の行では、
+  値の先頭のディレクティブはテキストの外にないので、その後の改行しない空白、
+  U+3000、U+2003 は残ります。
+  `accTitle: %%{x}%%`、改行しない空白、`T %%{y}%%` は変えません。
 
-閉じていないディレクティブはタイトルの残りを取り、
-タイトルはそこまで書かれたまま残します。
+閉じていないディレクティブはタイトルの残りを取ります。
 `title T %%{x` と `title T%%{x` は変えません。
+その前の空白とタブの連なりは、pie、gitGraph、cynefin、treemap、treeView、info、
+Gantt、user journey、timeline の図では空白 1 つにし、
+一覧のほかの種類の図では書かれたまま残します。
+その前の改行しない空白、U+3000、U+2003 は、
+これらの最初の 6 つの図では空白 1 つにし、ほかの図では残します。
+`title T  %%{x` は pie 図では `title T %%{x` と印字し、radar 図では変えません。
+`title T`、改行しない空白、`%%{x` は Gantt 図では変えません。
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped]
 [test: a no-break space and U+3000 at both ends of the title of
@@ -1598,7 +1612,61 @@ quadrant chart]
 quadrant chart]
 [test: a no-break space before a comment in the title of a quadrant chart]
 [test: U+3000 after the last directive in the title of a quadrant chart]
-[test: a tab before and after the last directive of a title]
+[test: a no-break space after a directive that starts a title and before a
+directive that ends it]
+[test: a no-break space after a directive that starts a title, with a
+directive that ends it followed by a no-break space]
+[test: a no-break space after a directive that starts a title, with text after
+a directive that ends it]
+[test: U+3000 after a directive that starts a title, with a directive that
+ends it followed by U+3000]
+[test: a no-break space after a directive that starts a title and spaces at
+the end of the title]
+[test: U+2003 between the text and a directive that ends a title]
+[test: U+2003 after the last directive of a title]
+[test: U+2003 after a directive that starts a title]
+[test: U+2003 on both sides of a directive between two texts]
+[test: a no-break space after the directive that starts the value of an
+accTitle line]
+[test: a no-break space after the directive that starts the value of an
+accTitle line, with spaces at the end]
+[test: U+3000 after the directive that starts the value of an accTitle line]
+[test: a no-break space between the value of an accTitle line and a directive
+that ends it]
+[test: text after a directive and spaces at the end of the value of an
+accTitle line]
+[test: a no-break space after the directive that starts the value of an
+accDescr line]
+[test: a no-break space after the directive that starts the value of an
+accDescr line, with spaces at the end]
+[test: a no-break space after a directive that starts the title of a quadrant
+chart, with a directive that ends it followed by a no-break space]
+[test: a no-break space after a directive that starts the title of a quadrant
+chart, with text after a directive that ends it]
+[test: U+2003 between the text and a directive that ends the title of a
+quadrant chart]
+[test: U+2003 after the last directive in the title of a quadrant chart]
+[test: a no-break space after a directive that starts a title that a Jison
+grammar reads, with a directive that ends it]
+[test: a no-break space after a directive that starts a title that a Jison
+grammar reads, with a directive that ends it followed by a no-break space]
+[test: U+2003 after a directive that starts a title that a Jison grammar
+reads]
+[test: a no-break space after a directive and spaces at the end of a title
+that a Jison grammar reads]
+[test: a no-break space after a directive that starts a title and spaces at
+the end of a title that a Jison grammar reads]
+[test: a no-break space after a directive and spaces at the end of the title
+of a Venn or a C4 diagram]
+[test: a no-break space after a directive that starts a title and spaces at
+the end of the title of a Venn or a C4 diagram]
+[test: two spaces before a directive that is not closed in a title]
+[test: a tab before a directive that is not closed in a title]
+[test: a no-break space before a directive that is not closed in a title]
+[test: U+3000 before a directive that is not closed in a title]
+[test: U+2003 before a directive that is not closed in a title]
+[test: two spaces between a directive and a directive that is not closed in a
+title] [test: a tab before and after the last directive of a title]
 [test: a no-break space after a directive that starts a title]
 [test: U+3000 after a directive that starts a title]
 [test: U+2028 after a directive that starts a title]

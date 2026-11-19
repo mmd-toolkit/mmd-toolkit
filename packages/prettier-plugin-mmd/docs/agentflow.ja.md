@@ -699,6 +699,19 @@ Markdown ラベルは矢印の間には印字できず、
 [fixture: edge-labels/pipe-string-closing-touches]
 [test: agentflow: U+2028 between the closing quote and the `|` of an edge label]
 
+パイプの間の辺のラベルがコメントで終わり、
+コメントの改行の後に閉じパイプだけがある場合（`A -->|x  % c`、改行、`| B`）、
+ラベルはコメントの前で終わります。
+コメントの前の空白とタブの連なりと、改行しない空白は空白 1 つにし、
+接するコメントは接したまま残します。
+閉じパイプは自分の行に、
+矢印より 1 段深く置きます（`A -->|x % c` と `    | B`）。
+コメントの改行の後もラベルが続く場合は、コメントの前の空白とタブが残ります。
+
+[fixture: edge-labels/label-comment-ends-label]
+[fixture: edge-labels/label-comment-label-goes-on]
+[test: a no-break space before a comment that ends the label of an agentflow edge]
+
 入力（エスケープ表記）: `"agentflow-beta TB\nA --> |x| B"`。
 
 [fixture: edge-labels/pipe-label-gap]
@@ -735,8 +748,14 @@ agentflow のラベルコメントは、コメントの改行の後もラベル�
 ラベルはコメントの前で終わります（`A[x  %% c`、改行、
 `]` のテキストは `x` です）。
 そのため、コメントの前の空白とタブの連なりは空白 1 つにし、
+改行しない空白も空白 1 つにします。
 接するコメントは接したまま残し、裸のラベルは引用符で囲んで印字します。
 閉じ括弧は自分の行に、頂点より 1 段深く置きます。
+コメントに `;` があるときは、ラベルを引用符で囲まず、
+`;` の後の空白とタブは残ります。
+`A[x  %% c;` と空白 2 つ、改行、`]` は、`A[x %% c;`、その空白 2 つ、
+1 段深い `]` と印字します。
+そのようなコメントの改行の後もラベルが続くときは、直前の空白 2 つが残ります。
 詳しくは [同じに描かれるラベル](./compatibility.ja.md#同じに描かれるラベル)
 を参照してください。
 コメント内の閉じ括弧は形を閉じないので、コメントの文字のままです。
@@ -754,6 +773,9 @@ agentflow のラベルコメントは、コメントの改行の後もラベル�
 [fixture: labels/slash-label-padding-kept] [fixture: labels/entity-kept]
 [fixture: labels/label-comment-ends-label]
 [fixture: labels/label-comment-ends-label-spaces-and-comment-lines]
+[fixture: labels/label-comment-semicolon-ends-label]
+[fixture: labels/label-comment-semicolon-label-goes-on]
+[test: a no-break space before a comment that ends the label of an agentflow vertex]
 
 flow/connectorの見出しのタイトルは、
 [subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)に従います。
