@@ -17,7 +17,12 @@ making the heading easy to find. The keyword is printed `treemap`, also where it
 was written `treemap-beta`: every version of mermaid.js that counts and has the
 diagram reads both names and draws them the same (see
 [The names of a header](./compatibility.md#the-names-of-a-header)). Add no
-colon; an empty body stays empty.
+colon: [rule 3](./printed-form.md#3-a-spelling) gives the header without one, as
+the examples in the documentation of mermaid.js write all 8 headers of the
+diagram without it, and every version of mermaid.js that counts rejects
+`treemap:` and `treemap-beta:` (see
+[The colon after a header](./compatibility.md#the-colon-after-a-header)). An
+empty body stays empty.
 
 [fixture: treemap/header/stable]
 
@@ -314,8 +319,12 @@ tabs only becomes one space. A name between `'` is printed between `"`, unless
 it holds a `'`, a `"`, a backslash, a line break, a backquote, `&`, `#`, or `<`
 (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
-and `singleQuote` is not read. Backslashes do not escape quotes or decode `\n`;
-these authored choices can affect the name or acceptance.
+and `singleQuote` is not read. [Rule 3](./printed-form.md#3-a-spelling) gives
+the `"`: the examples in the documentation of mermaid.js write 408 of the 409
+strings of the diagram types that read a string between `'` as well as between
+`"`, as counted in [Strings between `"`](./compatibility.md#strings-between-).
+Backslashes do not escape quotes or decode `\n`; these authored choices can
+affect the name or acceptance.
 
 [fixture: treemap/names/quotes]
 
@@ -454,8 +463,10 @@ comment, and the parentheses of `url(` stay.
 The style stays as written where printing it could change more than the
 whitespace around the names and the values. An empty style between two commas,
 or after the last one, stays, since the number of styles is in the Db. A style
-that holds a `;`, or that has a comment or a directive on its line, stays too: a
-`;` there may be ignored by the line rule of mermaid.js, which reads the
+that holds a `;`, or that has a directive on its line, stays too (a comment
+after the last style does not keep it: it is formatted as usual, see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):
+a `;` there may be ignored by the line rule of mermaid.js, which reads the
 whitespace between a `:` and a later `#`, and a second formatting must find the
 same text. Spaces, tabs, and form feeds after a directive at the end of that
 line are dropped like the whitespace at the end of other lines, unless a
@@ -465,8 +476,9 @@ directive then stays as written. The spacing inside the style stays as written.
 The whitespace that separates the style from the name of the class is not part
 of the style (see [Style gaps](#style-gaps)).
 
-[fixture: treemap/styles/written] [fixture: treemap/styles/empty-entry-kept]
-[fixture: treemap/styles/directive-line-kept] [fixture:
+[fixture: treemap/styles/class-def-comment-after-last-style-formatted] [fixture:
+treemap/styles/written] [fixture: treemap/styles/empty-entry-kept] [fixture:
+treemap/styles/directive-line-kept] [fixture:
 treemap/styles/directive-trailing-whitespace] [fixture:
 semicolons/protected-class-column] [test: leaves out the whitespace after a
 directive at the end of the classDef of a treemap] [test: keeps the whitespace

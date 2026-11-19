@@ -217,6 +217,10 @@ ELK の配置のパッケージのどのリリースも、
 | [state](./state.ja.md#スタイル文の末尾のセミコロン)                                                                                   | `style A fill:red;` の、`#` のない `style` を終える `;`                                                                                       | `style A fill: red`（`;` を落とす）             | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が `;` を 1 つの状態として読む                                                                               | [fixture: state/semicolons-at-the-end-of-a-style-statement/style-text-terminators]                                                                          |
 | [state](./state.ja.md#色)                                                                                                             | `style A fill:#ABC` の、2 つ目の `:` がない `style` の色                                                                                      | `style A fill: #abc`                            | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が行をテキストとして描き、`#ABC` が状態の説明になる                                                          | [fixture: state/colors/style-read-as-description-kept]                                                                                                      |
 | [state](./state.ja.md#トークンの間の空白)                                                                                             | `style A fill:rgb(1,2,3)` の、2 つ目の `:` がない `style` のコンマ                                                                            | `style A fill: rgb(1, 2, 3)`                    | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が行をテキストとして描き、`rgb(1,2,3)` が状態の説明になる                                                    | [fixture: state/whitespace-between-tokens/style-color-function-commas-kept]                                                                                 |
+| [state](./state.ja.md#矢印の前後の空白)                                                                                               | `scale-->B`（`classDef`、`class`、`note`、`stateDiagram` も）、`A:::state-->B`（`:::` の後の `scale` などの語も）                             | `scale --> B`、`A:::state --> B`                | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 がもう一方の形を拒否する                                                                         | [fixture: state/arrow-spacing/touching-before-keyword-kept] [fixture: state/arrow-spacing/compat-keyword-ids-transition]                                    |
+| [state](./state.ja.md#矢印の前後の空白)                                                                                               | `style-->B` と `A:::style-->B`                                                                                                                | `style --> B` と `A:::style --> B`              | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.7.0、11.17.2、12.0.0、12.3.0 がもう一方の形を拒否する                                                            | [fixture: state/arrow-spacing/compat-keyword-ids-transition]                                                                                                |
+| [state](./state.ja.md#矢印の前後の空白)                                                                                               | `state-->B`                                                                                                                                   | `state --> B`                                   | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 が違う図を描き、12.3.0 は Db から 2 つの状態と遷移をなくす                                       | [fixture: state/arrow-spacing/other-keyword-ids-touching-kept] [fixture: state/arrow-spacing/compat-keyword-ids-transition]                                 |
+| [state](./state.ja.md#ノート)                                                                                                         | 複数行のノート本文の段落の桁。空行の後の `  two` は書かれたまま                                                                               | 空行の後の段落を空白 4 つ下げた形               | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 が違うテキスト、11.7.0 から 12.3.0 が違う構造を描き、12.3.0 は Db の `notes[0].text` も変える                | [fixture: state/notes/over-lines-empty-lines-kept]                                                                                                          |
 | [state](./state.ja.md#keyword-case)                                                                                                   | `state "x" AS y` の後の `note LEFT OF y: left`                                                                                                | `note left of y: left`                          | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 から 12.3.0 が形状の違う図を描き、12.3.0 は Db のノートの位置も変える                                        | [fixture: state/keyword-case/accessibility-alias-direction-one-form]                                                                                        |
 | [state](./state.ja.md#トークンの間の空白)                                                                                             | `style A fill:#f00;;`                                                                                                                         | `style A fill: #f00;;`                          | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 が構造とスタイルの違う図を描く                                                                               | [fixture: state/whitespace-between-tokens/class-ids-with-ignored-semicolon]                                                                                 |
 | [state](./state.ja.md#別名)                                                                                                           | `state "d" as A :` の後の空白 3 つ                                                                                                            | `state "d" as A :` の後が空                     | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.17.2、12.0.0、12.3.0 が構造の違う図を描く                                                                        | [fixture: state/aliases/second-description-blank-kept]                                                                                                      |
@@ -243,6 +247,7 @@ ELK の配置のパッケージのどのリリースも、
 | [class](./class.ja.md#メンバーの本体)                                                                                                 | `class A { }`                                                                                                                                 | `class A {}`                                    | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 と 11.7.0 がもう一方の形を拒否する                                                                           | [fixture: class/member-bodies/empty-unified]                                                                                                                |
 | [class](./class.ja.md#メンバーの本体)                                                                                                 | `class C:::c { }`                                                                                                                             | `class C:::c {}`                                | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 がもう一方の形を拒否する                                                                         | [fixture: class/member-bodies/empty-unified]                                                                                                                |
 | [cynefin](./cynefin.ja.md#header)                                                                                                     | `%%{%%{wrap}%%init: {"label":"style:#keep"}}%% cynefin-beta:;complex 'Kept colon'`                                                            | 同じ入力の `cynefin-beta;`                      | [3](./printed-form.ja.md#3-綴り)                      | 12.0.0、12.3.0 がコロンのない見出しを拒否する                                                                       | [fixture: cynefin/header/colon-semicolon-kept]                                                                                                              |
+| [cynefin](./cynefin.ja.md#header)                                                                                                     | `cynefin-beta:%%{x y`、改行、`complex "A"`                                                                                                    | `cynefin-beta%%{x y`、改行、`complex "A"`       | [3](./printed-form.ja.md#3-綴り)                      | 11.16.1、11.17.2、12.0.0、12.3.0 がコロンのない見出しを拒否する                                                     | [fixture: cynefin/header/colon-unclosed-directive-kept]                                                                                                     |
 | [cynefin](./cynefin.ja.md#retained-prefix)                                                                                            | `---`、`title: IgnoredByLeadingLf`、`---` の前の空白 1 つと LF                                                                                | 先頭の空白と LF を除いた同じ前置部分            | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.16.1、11.17.2、12.0.0、12.3.0 が、別の形でだけタイトルを描き、12.3.0 では Db の `title` が変わる                 | [fixture: cynefin/retained-prefix/prefix-leading-lf]                                                                                                        |
 | [cynefin](./cynefin.ja.md#semicolons)                                                                                                 | `%%{%%{wrap}%%init: {"label":"style:#x"}}%% cynefin-beta ;complex "A"`                                                                        | 同じ入力の `cynefin-beta;complex "A"`           | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 12.0.0、12.3.0 が空白のない見出しを拒否する                                                                         | [fixture: cynefin/semicolons/ignored-semicolon-after-header-keyword-kept]                                                                                   |
 | [block](./block.ja.md#辺)                                                                                                             | `A ---x B`、`A ---o B`                                                                                                                        | `A --x B`、`A --o B`                            | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 と 11.7.0 が違って描く                                                                                       | [fixture: block/edges/arrow-length-kept-where-drawn-differently]                                                                                            |
@@ -255,6 +260,7 @@ ELK の配置のパッケージのどのリリースも、
 | [C4](./c4.ja.md#引数の空白)                                                                                                           | `Person("a"   ,"A")`                                                                                                                          | `Person("a", "A")`                              | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 が違う図を描く                                                                                   | [fixture: c4/trailing-whitespace/null-space-kept]                                                                                                           |
 | [C4](./c4.ja.md#引数の空白)                                                                                                           | `Person(a,\t"A", "D")`（コンマの後にタブ）                                                                                                    | `Person(a, "A", "D")`                           | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 がラベルを違って描き、12.3.0 が Db の `label.text` を変える                                      | [test: c4: tab-before-quote]                                                                                                                                |
 | [C4](./c4.ja.md#引数の空白)                                                                                                           | `Person(a,\u00a0"A", "D")`（コンマの後に U+00A0）                                                                                             | `Person(a, "A", "D")`                           | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 がラベルを引用符つきの `"A"` で描き、12.3.0 が Db の `label.text` を変える                       | [test: c4: nbsp-before-quote]                                                                                                                               |
+| [C4](./c4.ja.md#説明ブロック)                                                                                                         | `accDescr {`、`direction LR`、`}` を別の行に書いた形                                                                                          | `accDescr: direction LR`                        | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 がもう一方の形を拒否する                                                                         | [fixture: c4/description-blocks/acc-block-direction-keep]                                                                                                   |
 | [block](./block.ja.md#columns-と-space)                                                                                               | `space:2`                                                                                                                                     | `space: 2`                                      | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 は `space: 2` を拒否する                                                                         | [fixture: block/columns-and-space/space-width-touching]                                                                                                     |
 | [block](./block.ja.md#スタイル)                                                                                                       | `class A,B c1`                                                                                                                                | `class A, B c1`                                 | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 は class の描画が違い、12.3.0 の Db は `B` の `classes` が変わる                                 | [fixture: block/styles/class-ids-as-written]                                                                                                                |
 | [sequence](./sequence.ja.md#コロン)                                                                                                   | `A->>B: `（`:` の後に空白 1 文字）                                                                                                            | `A->>B:`                                        | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、後に何もない `:` を拒否する                                                                              | [fixture: sequence/colons/whitespace-only-text]                                                                                                             |
@@ -262,6 +268,7 @@ ELK の配置のパッケージのどのリリースも、
 | [sequence](./sequence.ja.md#矢印の前後の空白)                                                                                         | `A () ->> () B`                                                                                                                               | `A() ->> ()B`                                   | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 と 11.7.0 が `()` を名前の一部として読む                                                                     | [fixture: sequence/arrow-spacing/parentheses-touching]                                                                                                      |
 | [sequence](./sequence.ja.md#矢印の前後の空白)                                                                                         | `A<<->>B` を `A<<->> B` と印字                                                                                                                | `A <<->> B`                                     | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、前の `<<` を名前の一部として読む                                                                         | [fixture: sequence/arrow-spacing/bidirectional-arrow-gap-before-kept]                                                                                       |
 | [sequence](./sequence.ja.md#トークンの間の空白)                                                                                       | `:`、`,`、`;`、`>` を含まないデータブロックを持つ `participant A   @{ x }`                                                                    | `participant A@{ x }`                           | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 と 11.7.0 が、ブロックを参加者の名前の一部として、空白ごと読む                                               | [fixture: sequence/whitespace-between-tokens/data-block-name-gap-before-kept]                                                                               |
+| [sequence](./sequence.ja.md#トークンの間の空白)                                                                                       | `:`、`,`、`;`、`>` を含まないデータブロックを持ち、別名のない `participant A@{ x }   %% c`                                                    | `participant A@{ x } %% c`                      | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 と 11.7.0 が、ブロックと空白を名前の一部として読む                                                           | [fixture: sequence/whitespace-between-tokens/data-block-name-comment-gap-kept]                                                                              |
 | [sequence](./sequence.ja.md#色)                                                                                                       | `rect rgb(191 ,223 ,255)`                                                                                                                     | `rect rgb(191, 223, 255)`                       | [1](./printed-form.ja.md#1-記号の横の空白)            | 12.3.0 が `messages[0].message` を変える                                                                            | [fixture: sequence/colors/function-padding-kept]                                                                                                            |
 | [sequence](./sequence.ja.md#色)                                                                                                       | `rect rgb( 1 ,2,3 )`                                                                                                                          | `rect rgb(1, 2, 3)`                             | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 が別の `fill` 属性を描く                                                                         | [fixture: sequence/colors/rect-leading-and-comma-padding-kept]                                                                                              |
 | [sequence](./sequence.ja.md#色)                                                                                                       | `rect rgb( 1,2,3)` と `rect rgb(1,2,3 )`                                                                                                      | `rect rgb(1, 2, 3)`                             | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 が別の `fill` 属性を描く                                                                         | [fixture: sequence/colors/rect-open-paren-padding-kept] [fixture: sequence/colors/rect-close-paren-padding-kept]                                            |
@@ -291,7 +298,11 @@ ELK の配置のパッケージのどのリリースも、
 | [quadrant](./quadrant.ja.md#空白文字)                                                                                                 | `quadrant-1 a\u00a0b`                                                                                                                         | `  quadrant-1 a b`                              | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8、11.7.0、11.17.2、12.0.0、12.3.0 が異なるテキストを描く                                                      | [test: U+00A0 between the words of a text]                                                                                                                  |
 | [railroad](./railroad.ja.md#セミコロン)                                                                                               | ABNF の `style=(":"` と `)%%{!#}%% ;` の間の改行                                                                                              | `style=(":")%%{!#}%% ;`                         | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.16.1 から 12.3.0 が右の形を拒否する                                                                              | [fixture: railroad/semicolons/abnf-style-group-newline]                                                                                                     |
 | [railroad](./railroad.ja.md#セミコロン)                                                                                               | PEG の `r<-("sty%%{wrap}%%le:"` と `)%%{!#}%% ;` の間の改行                                                                                   | `r<-("sty%%{wrap}%%le:")%%{!#}%% ;`             | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.16.1 から 12.3.0 が右の形を拒否する                                                                              | [fixture: railroad/semicolons/peg-directive-split-style]                                                                                                    |
+| [railroad](./railroad.ja.md#コメント)                                                                                                 | ABNF の `r="comment"; note` と、次の行の `;`                                                                                                  | `r="comment"; note ;`                           | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.16.1 から 12.3.0 がもう一方の形を拒否する                                                                        | [fixture: railroad/comments/abnf-before-terminator]                                                                                                         |
+| [railroad](./railroad.ja.md#タイトル)                                                                                                 | `title`、改行、`r=terminal("x");`                                                                                                             | `title r=terminal("x");`                        | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.16.1 から 12.3.0 が別の図を描き、12.3.0 は Db も変える                                                           | [fixture: railroad/title/ir-rule-on-next-line]                                                                                                              |
+| [railroad](./railroad.ja.md#accessibility-の行)                                                                                       | `accTitle:`、改行、`r=terminal("x");`（`accDescr:` も同じ）                                                                                   | `accTitle: r=terminal("x");`                    | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.16.1 から 12.3.0 が別の図を描き、12.3.0 は Db も変える                                                           | [fixture: railroad/accessibility-lines/ir-acc-title-before-rule]                                                                                            |
 | [radar](./radar.ja.md#header)                                                                                                         | `radar-beta%%{wrap}%%:axis North`                                                                                                             | `radar-beta%%{wrap}%%axis North`                | [3](./printed-form.ja.md#3-綴り)                      | 11.7.0、11.17.2、12.0.0、12.3.0 は `:` のない形を拒否します                                                         | [fixture: radar/header/header-global-colon]                                                                                                                 |
+| [radar](./radar.ja.md#header)                                                                                                         | `radar-beta:%%{x y`、改行、`axis North`                                                                                                       | `radar-beta%%{x y`、改行、`axis North`          | [3](./printed-form.ja.md#3-綴り)                      | 11.7.0、11.17.2、12.0.0、12.3.0 が `:` のない形を拒否する                                                           | [fixture: radar/header/colon-unclosed-directive-kept]                                                                                                       |
 | [radar](./radar.ja.md#multi-line-statements)                                                                                          | `curve c["style:#a"]` の項目の改行と `} title tail;`                                                                                          | `curve c["style:#a"]{ 1 } title tail;`          | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0、11.17.2、12.0.0、12.3.0 は題を違って描き、12.3.0 は Db の `.title` も変えます                               | [fixture: radar/multi-line-statements/semicolon-terminal-line]                                                                                              |
 | [radar](./radar.ja.md#hidden-forms)                                                                                                   | 本文の YAML の `not: [yaml` と閉じの `---` が第 1 列にある形                                                                                  | 内部と閉じの `---` を空白 2 つ字下げ            | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0、11.17.2、12.0.0、12.3.0 は字下げした形を拒否します                                                          | [fixture: radar/hidden-forms/yaml-body-opaque]                                                                                                              |
 | [radar](./radar.ja.md#named-entries)                                                                                                  | `curve c{accTitle 1, accDescr 2}`                                                                                                             | `curve c{accTitle: 1, accDescr 2}`              | [3](./printed-form.ja.md#3-綴り)                      | 11.7.0 から 12.3.0 がもう一方の形を拒否する                                                                         | [fixture: radar/named-entries/accessibility-identifiers]                                                                                                    |
@@ -301,6 +312,7 @@ ELK の配置のパッケージのどのリリースも、
 | [timeline](./timeline.ja.md#title-と-section)                                                                                         | `title`、空白 2 つか、改行と字下げ、`# c`                                                                                                     | `title # c`                                     | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、空白だけの title とコメントとして読む                                                                    | [fixture: timeline/titles-and-sections/title-hash-on-next-line-kept]                                                                                        |
 | [timeline](./timeline.ja.md#title-と-section)                                                                                         | `title` の後に空白 2 つ、タブ、空白 1 つ                                                                                                      | `title` の後に何もない形                        | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 から 12.3.0 が他方の形を違って描く                                                                           | [fixture: timeline/titles-and-sections/title-blank-kept]                                                                                                    |
 | [timeline](./timeline.ja.md#コメント)                                                                                                 | `accDescr {a} %% c`                                                                                                                           | `accDescr: a %% c`                              | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 12.3.0 が Db の `accDescr` を `a` でなく `a %% c` と読む                                                            | [fixture: timeline/comments/block-then-percent-comment-kept]                                                                                                |
+| [gantt](./gantt.ja.md#リスト)                                                                                                         | `includes`、空白 2 個、`%%{init: {}}%%`                                                                                                       | `includes`、空白 1 個、ディレクティブ           | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 から 12.3.0 がもう一方の形を拒否する                                                                         | [fixture: gantt/lists/whitespace-only-then-directive]                                                                                                       |
 | [ER](./er.ja.md#トークンの間の空白)                                                                                                   | `class-A a`                                                                                                                                   | `class -A a`                                    | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、空白を入れた形を拒否する                                                                                 | [fixture: er/whitespace-between-tokens/keyword-then-dash-touching-kept]                                                                                     |
 | [ER](./er.ja.md#トークンの間の空白)                                                                                                   | `subgraph-x`、`end-x`                                                                                                                         | `subgraph -x`、`end` と単独の行の `-x`          | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が空白を入れた形を拒否し、11.7.0 が違って描く                                                                | [fixture: er/whitespace-between-tokens/subgraph-then-dash-touching-kept]                                                                                    |
 | [ER](./er.ja.md#方向)                                                                                                                 | `DIRECTION lr`                                                                                                                                | `direction LR`                                  | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が、その行をエンティティとして読む                                                                           | [fixture: er/direction/case-kept]                                                                                                                           |
@@ -340,15 +352,18 @@ ELK の配置のパッケージのどのリリースも、
 | [eventmodeling](./eventmodeling.ja.md#header)                                                                                         | `eventmodeling title Heading`                                                                                                                 | `title Heading` を次の行に                      | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.15.0 から 12.3.0 がもう一方の形を拒否する                                                                        | [fixture: eventmodeling/header/title-on-header-line-kept]                                                                                                   |
 | [eventmodeling](./eventmodeling.ja.md#header)                                                                                         | `eventmodeling accTitle: Heading`                                                                                                             | `accTitle: Heading` を次の行に                  | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.15.0 から 12.3.0 がもう一方の形を拒否する                                                                        | [fixture: eventmodeling/header/acctitle-on-header-line-kept]                                                                                                |
 | [eventmodeling](./eventmodeling.ja.md#header)                                                                                         | `eventmodeling accDescr: Description`                                                                                                         | `accDescr: Description` を次の行に              | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.15.0 から 12.3.0 がもう一方の形を拒否する                                                                        | [fixture: eventmodeling/header/accdescr-on-header-line-kept]                                                                                                |
-| [eventmodeling](./eventmodeling.ja.md#indentation)                                                                                    | 改行の後で第 1 列にある `title`                                                                                                               | 空白 2 つで字下げした `title`                   | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.15.0 から 12.3.0 がもう一方の形を拒否する                                                                        | [fixture: eventmodeling/qualified-names/hidden-before-title-segment-keep-no-prefix-space]                                                                   |
+| [eventmodeling](./eventmodeling.ja.md#indentation)                                                                                    | 改行の後で第 1 列にある `title`                                                                                                               | 空白 2 つで字下げした `title`                   | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.15.0 から 12.3.0 がもう一方の形を拒否する                                                                        | [fixture: eventmodeling/qualified-names/hidden-before-title-segment-keep-no-prefix-space]                                                                   |
 | [eventmodeling](./eventmodeling.ja.md#statements-one-per-line)                                                                        | 1 行にある `accDescr {}  title Next`                                                                                                          | `title Next` を単独の行に                       | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.15.0 から 12.3.0 がもう一方の形を拒否する                                                                        | [fixture: eventmodeling/statements-one-per-line/description-followed-by-common]                                                                             |
 | [eventmodeling](./eventmodeling.ja.md#statements-one-per-line)                                                                        | `{x} tf 02 evt Beta {y}` を 1 つの値として                                                                                                    | `tf 02 evt Beta {y}` を単独の行に               | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.15.0 から 12.3.0 が違う図を描く                                                                                  | [fixture: eventmodeling/statements-one-per-line/do-not-manufacture-statement-from-greedy-data]                                                              |
 | [eventmodeling](./eventmodeling.ja.md#declarations-and-notes)                                                                         | `data`、改行、`title {`                                                                                                                       | `data title {` を 1 行に                        | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.15.0 から 12.3.0 がもう一方の形を拒否する                                                                        | [fixture: eventmodeling/declarations-and-notes/data-name-title-keep-lf]                                                                                     |
 | [eventmodeling](./eventmodeling.ja.md#gwt-clauses-and-items)                                                                          | `given evt`、改行、`title then cmd …`                                                                                                         | 改行の代わりに空白 1 つ                         | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.15.0 から 12.3.0 がもう一方の形を拒否する                                                                        | [fixture: eventmodeling/gwt-clauses-and-items/gwt-title-identifier-keep-lf]                                                                                 |
-| [eventmodeling](./eventmodeling.ja.md#data-blocks)                                                                                    | 第 1 列の `}`                                                                                                                                 | 空白 2 つで字下げした `}`                       | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.15.0 から 12.3.0 がもう一方の形を拒否する                                                                        | [fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]                                                                                             |
+| [eventmodeling](./eventmodeling.ja.md#data-blocks)                                                                                    | 第 1 列の `}`                                                                                                                                 | 空白 2 つで字下げした `}`                       | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.15.0 から 12.3.0 がもう一方の形を拒否する                                                                        | [fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]                                                                                             |
 | [eventmodeling](./eventmodeling.ja.md#hidden-forms)                                                                                   | 先頭に空白 1 つのある ` accDescr: D`                                                                                                          | 空白のない `accDescr: D`                        | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.15.0 から 12.3.0 がもう一方の形を拒否する                                                                        | [fixture: eventmodeling/hidden-forms/hidden-next-common-keep-consumed-lf-padding]                                                                           |
-| [eventmodeling](./eventmodeling.ja.md#semicolons)                                                                                     | 改行の後で第 1 列にある `title`                                                                                                               | 空白 2 つで字下げした `title`                   | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.15.0 から 12.3.0 がもう一方の形を拒否する                                                                        | [fixture: eventmodeling/semicolons/protected-gwt-title-hidden-gap-remains-zero]                                                                             |
+| [eventmodeling](./eventmodeling.ja.md#semicolons)                                                                                     | 改行の後で第 1 列にある `title`                                                                                                               | 空白 2 つで字下げした `title`                   | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.15.0 から 12.3.0 がもう一方の形を拒否する                                                                        | [fixture: eventmodeling/semicolons/protected-gwt-title-hidden-gap-remains-zero]                                                                             |
 | [eventmodeling](./eventmodeling.ja.md#semicolons)                                                                                     | 先頭に空白 1 つのある ` accDescr: style:#x;`                                                                                                  | 空白のない `accDescr: style:#x;`                | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.15.0 から 12.3.0 がもう一方の形を拒否する                                                                        | [fixture: eventmodeling/semicolons/protected-metadata-prefix-is-value-whitespace]                                                                           |
+| [eventmodeling](./eventmodeling.ja.md#data-blocks)                                                                                    | data 本文の後の行が第 1 列にある形。第 1 列の `"sku": "SHIRT-M",` の後の `"quantity": 2`                                                      | 後の行を空白 2 つ下げた形                       | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.15.0 から 12.3.0 が別のテキストと形状を描き、12.3.0 は Db の `data` の値も変える                                 | [fixture: eventmodeling/data-blocks/body-later-zero-margin-kept] [fixture: eventmodeling/data-blocks/body-later-zero-margin-plain-kept]                     |
+| [eventmodeling](./eventmodeling.ja.md#default-size-branches)                                                                          | 50000 単位のテキストで、第 1 列の最初の本文行の後に、2 つ内側のコメント行がある data 本文                                                     | 最初の本文行を空白 2 つ下げた形                 | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 12.3.0 が別のテキスト、構造、形状を描き、Db の `data` の値も違う                                                    | [fixture: eventmodeling/default-size-branches/size-at-limit-indented-comment]                                                                               |
+| [eventmodeling](./eventmodeling.ja.md#default-size-branches)                                                                          | 同じ形で、テキストが 49999 単位                                                                                                               | 最初の本文行を空白 2 つ下げた形                 | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 12.3.0 が別のテキスト、構造、形状を描き、Db の `data` の値も違う                                                    | [fixture: eventmodeling/default-size-branches/size-below-planned-crossing-indented-comment]                                                                 |
 | [architecture](./architecture.ja.md#statements-one-per-line)                                                                          | `architecture-beta title t service a; junction j`                                                                                             | `title t` の後で改行した同じテキスト            | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0 から 12.3.0 がもう一方の形を拒否する                                                                         | [fixture: architecture/statements-one-per-line/line-value-owns-keywords]                                                                                    |
 
 ## mermaid.js と違って読む入力
@@ -1355,13 +1370,45 @@ state、block の図で描きました。
 
 次の場合は、文を書かれたまま残します。
 スタイルが改行か U+2028・U+2029 を含む場合、
-文がコメントかディレクティブを含む場合、スタイルが全部空白の場合、
+文の中の最後のスタイルの終わりより前に、コメントかディレクティブがある場合、
+スタイルが全部空白の場合、
 行に自分の `;` がある場合です（[`;` を含む行](#-を含む行)を参照してください）。
+最後のスタイルの後ろのコメントかディレクティブは、文の一部ではありません。
+flowchart、agentflow、class、state、block、usecase の図では、
+文は普通に整形します。
+`style A fill:red %%{init: {}}%%` は `style A fill: red %%{init: {}}%%`
+と印字し、`classDef` も、
+flowchart と agentflow の図では `linkStyle` も同じです。
+requirement の図でも、ディレクティブの後ろでは同じで、
+11.7.0 以降はそこのコメントを拒否します。
+ER の図では、11.7.0 以降が、最後のスタイルの後ろのコメントと、
+テキストの終わりのディレクティブを拒否し、別の行が続くときのディレクティブは、
+前か後ろに空白があれば、文を書かれたまま残し、最後のスタイルに接し、
+その行の後ろに空白がなければ、文を普通に整形します。
+treemap の図は、コメントの後ろでは文を整形し、ディレクティブの後ろでは、
+行末の空白を除いて書かれたまま残します。
+詳しくは [スタイルの末尾の空白](#スタイルの末尾の空白) を参照してください。
 
 [fixture: flowchart/whitespace-between-tokens/style-blank-style-kept]
 [fixture: flowchart/whitespace-between-tokens/style-colon-escaped-space-kept]
 [fixture: flowchart/whitespace-between-tokens/style-comma-beside-directive-kept]
 [fixture: flowchart/whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
+[fixture: flowchart/style-trailing-whitespace/removed-after-directive]
+[fixture: agentflow/single-space-gaps/style-comment-and-directive-after-last-style-formatted]
+[fixture: class/whitespace-between-tokens/style-comment-and-directive-after-last-style-formatted]
+[fixture: state/whitespace-between-tokens/style-comment-and-directive-after-last-style-formatted]
+[fixture: usecase/classes-and-styles/style-comment-and-directive-after-last-style-formatted]
+[fixture: requirement/directives/after-statement-at-end-of-line]
+[fixture: block/styles/style-comment-and-directive-after-last-style-formatted]
+[fixture: flowchart/style-trailing-whitespace/link-style-comment-and-directive-after-last-style-formatted]
+[fixture: agentflow/single-space-gaps/link-style-comment-and-directive-after-last-style-formatted]
+[fixture: treemap/styles/class-def-comment-after-last-style-formatted]
+[fixture: er/styles-and-classes/directive-before-next-line]
+[fixture: er/styles-and-classes/directive-touching-last-style]
+[fixture: flowchart/whitespace-between-tokens/class-def-comment-and-directive-after-last-style-formatted]
+[fixture: requirement/directives/class-def-after-statement-at-end-of-line]
+[fixture: treemap/styles/directive-line-kept]
+[fixture: flowchart/colors/colors-next-to-comments-and-directives]
 
 テストは、印字したテキストの Db を、
 書かれたテキストの Db
@@ -1430,7 +1477,10 @@ mindmap、treeView のノードのテキスト、
 kanban ボードのカードのテキスト（図が依存する列の id は除く）、
 Gantt 図の日付書式と軸の書式、C4 図の `accDescription`、
 timeline の行の最後の event と、period およびコロンの前の event が足す空白、
-user journey のタスクの説明、別名を持つ state の 2 つ目の説明に当てはまります。
+user journey
+のタスクの説明（説明にディレクティブがあるタスクは書かれたまま残します。
+[タスクのデータ](./journey.ja.md#タスクのデータ)を参照）、
+別名を持つ state の 2 つ目の説明に当てはまります。
 日付書式、軸の書式、`accTitle:` の行の値の中の空白とタブの連続は、
 ディレクティブの前でも、
 ディレクティブがない場合と同じように書かれたままにします。
@@ -2920,11 +2970,23 @@ cynefin 図と radar 図は、`cynefin-beta:` と `radar-beta:` を、
 例は、どちらの図もコロンのないヘッダーを 3 回書き、コロンつきは書かないので、
 コロンを除き、その行で後に続くものは、コロンのないヘッダーの後と同じく、
 次の行に移します。
-`;` や隠れた YAML ブロックの `---` が接するコロンは残します。
+`;`、隠れた YAML ブロックの `---`、
+閉じていないディレクティブが接するコロンは残します。
 
 [fixture: cynefin/header/colon-removed]
 [fixture: cynefin/header/colon-semicolon-kept]
 [fixture: radar/header/colon-removed] [fixture: radar/header/colon-yaml-kept]
+[fixture: cynefin/header/colon-unclosed-directive-kept]
+[fixture: radar/header/colon-unclosed-directive-kept]
+
+treemap の見出しにはコロンを付けません。
+11.8.1、11.17.2、12.0.0、12.3.0 のどれも、
+`treemap:` と `treemap-beta:` を拒否し、コロンのない見出しは読んで描きます。
+例は、見出しをコロンなしで 8 回、コロン付きで 0 回書くので、
+[規則 3](./printed-form.ja.md#3-綴り)がコロンのない見出しを与えます。
+
+[corpus fixture: treemap/header-colon]
+[corpus fixture: treemap/header-colon-beta]
 
 向きのない gitGraph は、`gitGraph:` と `gitGraph` を、
 対象にするすべての版が同じに読み、コミットもブランチも図も同じです。
@@ -3278,13 +3340,18 @@ agentflow 図の `accDescr {style:#x} ; %% #a;`）。
   [fixture: railroad/description-blocks/ir-percent-comment-after-block]
   [fixture: railroad/description-blocks/peg-percent-comment-after-block]
 
-- ブロックに本文がないか、ディレクティブだけがある場合です。
+- ブロックに本文がない場合です。
   [アクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)のとおり、
   `accDescr {}` と印字します。
+  ディレクティブだけを持つブロックはブロックのままで、
+  整形ツールは `accDescr {%%{init: {}}%% }` を `accDescr { %%{init: {}}%%}`
+  と印字します。
+  自分の行にあるディレクティブは行を保ちます。
 
   [fixture: flowchart/accessibility-lines/empty-block-tight]
   [fixture: flowchart/accessibility-lines/empty-block-spaced]
   [fixture: flowchart/accessibility-lines/empty-block-directive-kept]
+  [fixture: flowchart/accessibility-lines/empty-block-directive-line-kept]
 
 - ブロックが閉じていない場合です。
 
@@ -4103,8 +4170,13 @@ mermaid.js は指令をヘッダーを読む前に取り除きます。
 根のないヘッダー `ishikawa-beta` として読まれます。
 そのため、根は自分の行に移します。
 根がヘッダーの行に残る場合は、ヘッダーも書かれたまま残します。
-ほかの図種で別の大文字小文字のヘッダー（`sankey-BETA`、`XYCHART-BETA`）は、
+sankey 図で `-beta` が別の大文字小文字のヘッダー（`sankey-BETA`）は、
 書かれたまま残します。
+10.9.8 と 11.7.0 はこれを拒否し、11.17.2、12.0.0、
+12.3.0 は `sankey-beta` として読みます。
+ドキュメントの例はヘッダーを `sankey` と書き、
+どの大文字小文字の `sankey-beta` も使わないので、
+[規則 3](./printed-form.ja.md#3-綴り)は別の形を与えず、書かれたまま残します。
 
 [fixture: treemap/header/beta] [fixture: ishikawa/header/header-beta]
 [fixture: ishikawa/header/header-column]
@@ -4122,6 +4194,22 @@ mermaid.js は指令をヘッダーを読む前に取り除きます。
 [fixture: xychart/header-and-orientation/beta-header-kept]
 [fixture: xychart/keyword-case/header-spelling-kept]
 [fixture: xychart/header-and-orientation/second-header-spelling-and-case-kept]
+
+railroad 図の 4 つのヘッダー `railroad-beta`、`railroad-ebnf-beta`、
+`railroad-abnf-beta`、`railroad-peg-beta` は書かれたまま残します。
+この図種がある 11.16.1、11.17.2、12.0.0、12.3.0 は、
+どの名前もこの綴りだけで読み、`-beta` のない名前（`railroad`、`railroad-ebnf`、
+`railroad-abnf`、`railroad-peg`）、
+`-beta` の大文字小文字が違う名前（各名前の `-Beta` と `-BETA`）、
+すべて大文字の名前（`RAILROAD-BETA` と同じ形の 3 つ）を拒否します。
+この図種がある版は、どれも `-beta` のない名前を読まないので、
+[規則 3](./printed-form.ja.md#3-綴り)はその名前を印字せず、
+ドキュメントの例もほかの綴りを書いていません。
+
+[corpus fixture: railroad/ir-header-upper]
+[corpus fixture: railroad/ebnf-header-upper]
+[corpus fixture: railroad/abnf-header-upper]
+[corpus fixture: railroad/peg-header-upper]
 
 `stateDiagram` と `stateDiagram-v2` も、同じ理由で書かれたまま残します。
 固定した mermaid.js の検出器は、どちらも統合された状態遷移図で描きます。
@@ -5036,7 +5124,16 @@ state 図では、`scale`、`classDef`、`class`、`style`、`state`、`note`、
 これらのキーワードと同じ名前の id からの遷移は、
 `scale-->B` のように矢印の両側を接したまま残し、
 その id の後の説明は `:` を接したまま残します。
-`scale -->B` と `style :x` は拒否されるからです。
+`scale -->B` は対象にする版の mermaid.js のすべてが拒否し、
+`style :x` は 11.7.0 以降が拒否するからです。
+矢印の前の語ごとにどの版が拒否するかは、
+[対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
+の行にあります。
+説明の `:` は、どの id の後でも、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)で接するので、行は要りません。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方) と
+[説明とラベル](./state.ja.md#説明とラベル) を参照してください。
 [矢印の前後の空白](./state.ja.md#矢印の前後の空白)を参照してください。
 
 [fixture: state/arrow-spacing/touching-before-keyword-kept]
@@ -5506,9 +5603,12 @@ mermaid.js は、Gantt 図の一部の値の空白を持ち、一部の行を、
   mermaid.js は、コロンの後にデータの 1 文字を、
   キーワードに続く空白の後にリストのテキストの 1 文字を要求するので、
   `a :` と `includes ` は拒否され、空白 1 文字か 2 文字を残します。
+  ディレクティブが続くリストでも、キーワードの後の 2 文字を残します。
+  `includes`、空白 1 個、`%%{init: {}}%%` も拒否されるからです。
 
   [fixture: gantt/task-data/whitespace-only-data]
   [fixture: gantt/lists/whitespace-only]
+  [fixture: gantt/lists/whitespace-only-then-directive]
 
 - `includes` と `excludes` のリストの項目の間の U+FEFF。
   mermaid.js はリストのテキスト全体を、分ける前に小文字にし、
@@ -6141,8 +6241,8 @@ quadrant 図では、`classDef` のクラスの名前が同じように続きま
 [corpus fixture: quadrant/db-classdef-name-starts-with-line-separator-comment-line]
 
 mermaid.js がこう読む行は、ソースの何行にもまたがります。
-整形は、その行を、最初の行から終わりまで、その上にある文ごと、
-書かれたまま印字します。
+整形は、その行の空白と改行を、最初の行から終わりまで、その上にある文ごと、
+書かれたまま残します。
 文の間の空白は整形せず、コメント行の後の行も字下げしません。
 これはすべての文、ブロックの開始行、ヘッダーに共通の 1 つの規則です。
 例外は mindmap です。
@@ -6153,12 +6253,57 @@ mindmap は、ノードのコメント行を、ノードの段の自分の行に
 領域が名前の中にあるときも同じです。
 ER 図と quadrant 図が、これにあたります。
 ER 図では、そのような行にある実体のブロックだけは、
-最後まで書かれたままにはしません。
+空白を最後まで書かれたままにはしません。
 `{` までの行は書かれたまま残り、空でないブロックでは、
 `{` の後ろにあるものも書かれたまま残り、その後の属性と `}` は、
 ほかの実体と同じに置きます。
 ただし `}` が、そのようなコメント行が始まる行にあるときは、
 書かれたまま残ります（[ER](./er.ja.md#複数行の文)を参照）。
+ER 図では、そのような行の文について、スタイルの色、関係の語、
+1 語の名前の引用符のように普通の行と別に印字するものを、
+[ER](./er.ja.md#属性の空白)が述べています。
+flowchart、class、state でも、そのような行で、コンマが色に直後に続くか、
+空白かタブを挟んで続くときは、色を小文字に印字します。
+ただし、[同じに描かれる色](#同じに描かれる色)が書かれたまま残す色は別です。
+class 図の `classDef` と、
+2 つ目以降のスタイルに `:` がない state 図の `style` です。
+class 図の `classDef k fill:#FFF,stroke:#ABC` と、
+state 図の `style A fill:#F00,x` は、色を書かれたまま残します。
+
+[test: a color before a comma in a style statement that a comment line after U+2028 joins in a flowchart is printed in lower case]
+[test: a color before a comma after a space in a style statement that a comment line after U+2028 joins in a flowchart is printed in lower case]
+[test: a color before a comma in a style statement that a comment line after U+2028 joins in a class diagram is printed in lower case]
+[test: a color before a comma after a space in a style statement that a comment line after U+2028 joins in a class diagram is printed in lower case]
+[test: a color before a comma in a style statement that a comment line after U+2028 joins in a state diagram is printed in lower case]
+[test: a color before a comma after a space in a style statement that a comment line after U+2028 joins in a state diagram is printed in lower case]
+[test: a color before a comma in a style statement that a comment line after U+2028 joins in an ER diagram is printed in lower case]
+[test: a color before a comma after a space in a style statement that a comment line after U+2028 joins in an ER diagram is printed in lower case]
+[test: a color before a comma after a tab in a style statement that a comment line after U+2028 joins in a flowchart is printed in lower case]
+[test: a color before a comma after a tab in a style statement that a comment line after U+2028 joins in a class diagram is printed in lower case]
+[test: a color before a comma after a tab in a style statement that a comment line after U+2028 joins in a state diagram is printed in lower case]
+[test: a color before a comma after a tab in a style statement that a comment line after U+2028 joins in an ER diagram is printed in lower case]
+[test: a color before a comma after a tab in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a flowchart is printed in lower case]
+[test: a color before a comma that a word without a colon follows in a style statement that a comment line after U+2028 joins in a flowchart is printed in lower case]
+[test: a color before a comma at once in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a flowchart is printed in lower case]
+[test: a color before a comma after a space in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a flowchart is printed in lower case]
+[test: a color before a comma after a tab in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a flowchart is printed in lower case]
+[test: a color before a comma that a word without a colon follows in a classDef statement that a comment line after U+2028 joins in a flowchart is printed in lower case]
+[test: a color before a comma at once in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a class diagram is printed in lower case]
+[test: a color before a comma after a space in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a class diagram is printed in lower case]
+[test: a color before a comma after a tab in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a class diagram is printed in lower case]
+[test: a color before a comma that a word without a colon follows in a style statement that a comment line after U+2028 joins in a class diagram is printed in lower case]
+[test: a color before a comma at once in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a class diagram stays as written]
+[test: a color before a comma after a space in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a class diagram stays as written]
+[test: a color before a comma after a tab in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a class diagram stays as written]
+[test: a color before a comma that a word without a colon follows in a classDef statement that a comment line after U+2028 joins in a class diagram stays as written]
+[test: a color before a comma at once in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a state diagram is printed in lower case]
+[test: a color before a comma after a space in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a state diagram is printed in lower case]
+[test: a color before a comma after a tab in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a state diagram is printed in lower case]
+[test: a color before a comma that a word without a colon follows in a style statement that a comment line after U+2028 joins in a state diagram stays as written]
+[test: a color before a comma at once in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a state diagram is printed in lower case]
+[test: a color before a comma after a space in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a state diagram is printed in lower case]
+[test: a color before a comma after a tab in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a state diagram is printed in lower case]
+[test: a color before a comma that a word without a colon follows in a classDef statement that a comment line after U+2028 joins in a state diagram is printed in lower case]
 
 [test: a comment line after U+2028 inside the name of an ER entity with an attribute block over several lines]
 [test: an attribute block of an entity that follows another entity on the line, after a comment line after U+2028]
@@ -7679,6 +7824,10 @@ PEG の先読み記号は公開 label から再構築せず、書かれた適用
 全方言の `%%`、IR の C コメント、EBNF の C と ISO コメント、
 ABNF のセミコロン行コメント、PEG の `#` の行コメントが対象です。
 LS と PS は図固有の行コメントの内容として保ちます。
+mermaid.js のドキュメントの railroad の例 14 件には、コメントが 1 つもないので、
+[規則 3](./printed-form.ja.md#3-綴り)は印に形を与えず、書かれたまま残します。
+コメントのテキストは、mermaid.js が読まないので書かれたまま残します。
+詳しくは[コメント](./railroad.ja.md#コメント)を参照してください。
 裸の ABNF `;` は句読点であり、終端の直後は LF または EOF にします。
 規則の必須の可視 `;` は安全な場所で定義に付けます。
 通常の IR 規則は、値の中のセミコロンによって配置を固定しません。

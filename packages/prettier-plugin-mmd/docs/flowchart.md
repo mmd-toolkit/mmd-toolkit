@@ -171,7 +171,9 @@ This includes a line that stays as written because an ignored `;` stands next to
 another `;`: `accDescr {style:#x} direction LR;;` stays at the first column,
 also in a subgraph and in a swimlane diagram, since mermaid.js reads an empty
 description where it is indented. The text after the direction value on that
-line is not a statement, and stays as written.
+line is not a statement, and stays as written. Dropping the last `;` of the line
+would make the one before it the ignored one (see
+[A line that a `;` ends](./compatibility.md#a-line-that-a--ends)).
 
 [fixture: indentation/verbatim-direction-description] [fixture:
 indentation/verbatim-direction-description-in-subgraph] [fixture:
@@ -996,10 +998,14 @@ style whatever stands before it.
 A space after a backslash before the `:` stays as well, since taking it away
 would escape the `:`, and the whitespace after that space goes, as before any
 `:`: `style A fill\   :#f00` is printed `style A fill\ : #f00`. A statement
-stays as written where it holds a comment or a directive, where a style is all
-whitespace, or where a style holds a line break or its line holds a kept `;`.
+stays as written where a comment or a directive stands inside it, before the end
+of its last style, where a style is all whitespace, or where a style holds a
+line break or its line holds a kept `;`. A comment or a directive after the last
+style is no part of the statement, which is formatted as usual (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 
 [fixture: whitespace-between-tokens/style-blank-style-kept] [fixture:
+style-trailing-whitespace/removed-after-directive] [fixture:
 whitespace-between-tokens/style-colon-escaped-space-kept] [fixture:
 whitespace-between-tokens/style-colon-escaped-space-run-dropped] [fixture:
 whitespace-between-tokens/style-escaped-space-before-comma] [fixture:
@@ -1875,11 +1881,17 @@ Accepted NBSP, U+2028 and U+2029 inside an otherwise empty block also disappear.
 
 [test: accessibility blocks: flowchart empty-block-unicode]
 
-Kept-line exceptions still take priority, and blocks with comments or directives
-retain their existing layout.
+Kept-line exceptions still take priority, and a block of several lines that
+holds comment lines, or a directive on a line of its own, retains its layout.
+Rule 1 names no mark for a line inside a block, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [xychart](./xychart.md#empty-description-blocks) and
+[quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
+breaks of a block that holds comment lines, or a directive on a line of its own.
 
 [fixture: accessibility-lines/empty-block-semicolon-kept] [fixture:
-accessibility-lines/empty-block-directive-kept] [fixture:
+accessibility-lines/empty-block-directive-line-kept] [fixture:
+accessibility-lines/empty-block-directive-line-in-subgraph] [fixture:
 multi-line-values/accdescr-block-comment-only]
 
 Blocks on one line follow
@@ -2305,10 +2317,23 @@ For an eligible multiline block, move every body line by the same number of
 ASCII spaces until the shallowest line with text stands one level inside its
 statement. This preserves relative indentation, including nested YAML, and can
 move lines inward or outward. A `}` alone on its line aligns with the statement;
-a `}` after body text stays there and moves with that line.
+a `}` after body text stays there and moves with that line. A `}` after the text
+of a literal or folded scalar (`|`, `|-`, `|+`, `>`, `>-`, and `>+`) stays on
+its line: on a line of its own it changes the end of the text of the scalar in
+the Db, and formatting does not change the Db. The drawing is the same, but no
+kind of exception that
+[How the printed form is decided](./printed-form.md#the-check-and-formatting-that-changes-the-db)
+defines covers that gap. The formatter does not look at the kind of scalar, so a
+`}` after the text of a plain scalar stays too.
 
 [fixture: data-blocks/zero-and-shallow] [fixture: data-blocks/deep-nested-yaml]
-[fixture: data-blocks/closing-after-text]
+[fixture: data-blocks/closing-after-text] [fixture:
+data-blocks/closing-after-literal-text] [fixture:
+data-blocks/closing-after-folded-text] [fixture:
+data-blocks/closing-after-folded-strip-text] [fixture:
+data-blocks/closing-after-folded-keep-text] [fixture:
+data-blocks/closing-after-strip-text] [fixture:
+data-blocks/closing-after-keep-text]
 
 Move a block only when all these conditions hold; otherwise keep its columns as
 written:
@@ -3051,7 +3076,9 @@ title of a flowchart subgraph header]
 On a line that the line rule may read, the whitespace after the `[` of a title
 that follows `style:` stays: `subgraph style:[ #x; ]` is printed
 `subgraph style:[ #x;]`, while `subgraph a: [ #x; ]` is printed
-`subgraph a:[#x;]`, since no `style` stands before its `:`.
+`subgraph a:[#x;]`, since no `style` stands before its `:`. Whether whitespace
+stands between the `:` and a later `#` decides whether the line rule ignores the
+`;` (see [Semicolons](#semicolons)).
 
 [fixture: subgraph-header/title-padding-on-line-rule-line]
 
@@ -3139,9 +3166,11 @@ and a `;`, as in `subgraph "S"accDescr {} accDescr {}` and
 [fixture: subgraph-header/whitespace-before-first-block-kept]
 
 The blocks read no token, so that whitespace follows the name: the subgraph has
-the id `subGraph0`, and the id `S` without it. That the whitespace is there is
-kept; how wide it is, only before the first block, where it follows the name as
-written, and a run between two blocks or before a `;` becomes one space.
+the id `subGraph0`, and the id `S` without it, which the Db holds
+(`subgraphs[0].id` in 12.3.0), while every version that counts draws the same
+figure up to the ids. That the whitespace is there is kept; how wide it is, only
+before the first block, where it follows the name as written, and a run between
+two blocks or before a `;` becomes one space.
 
 [fixture: subgraph-header/runs-between-blocks-become-one]
 

@@ -213,7 +213,10 @@ after one space. The colon is the colon of a key: the line gives the field its
 one value (step 2 of
 [Which kind a colon is](./printed-form.md#which-kind-a-colon-is)). Comments or
 directives keep their line breaks; structural continuations and intervening
-trivia stand one level inside the field.
+trivia stand one level inside the field. The reason is the one under
+[Multi-line statements](#multi-line-statements): rule 2 puts the later parts of
+a statement and the trivia lines between them one level deeper than the
+statement.
 
 [fixture: fields/comment-and-directive-continuations] [fixture:
 fields/colon-touches-keyword] [fixture: fields/spaces-around-colon-and-value]
@@ -646,7 +649,10 @@ rejects a directive inside a unit.
 [fixture: styles-and-classes/class-name-with-directive-kept]
 
 A line break next to a comment line stays, while the comment and structural
-continuations stand one level deeper.
+continuations stand one level deeper. The reason is the one under
+[Multi-line statements](#multi-line-statements): rule 2 puts the later parts of
+a statement and the trivia lines between them one level deeper than the
+statement.
 
 [fixture: styles-and-classes/class-over-lines-with-comment-line-kept]
 
@@ -759,21 +765,31 @@ requirementDiagram
 ### Direction
 
 A direction line is `direction` and its value, with the text that mermaid.js
-does not read before and after them. The text is kept as written. One space
-stands between it and `direction`, where they were written apart, and between
-`direction` and the value; the value `lr` is printed `LR`; the other values keep
-the case in which they are written, since the examples use only `LR` (see
+does not read before and after them. The text is kept as written, since the tree
+holds it whole (see
+[A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)).
+One space stands between it and `direction`, where they were written apart, and
+between `direction` and the value; the value `lr` is printed `LR`; the other
+values keep the case in which they are written, since the examples use only `LR`
+(see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
 
 [fixture: direction/spacing] [fixture: direction/spaces-around] [fixture:
-direction/text-kept] [fixture: direction/case-one-form]
+direction/text-kept] [fixture: direction/text-inner-whitespace-kept] [fixture:
+direction/text-both-sides-inner-whitespace-kept] [fixture:
+direction/case-one-form]
 
 A value written on a later line is printed after `direction` on one line.
 
 [fixture: direction/value-on-next-line-joined]
 
 A direction line with a directive or comment keeps its line breaks and indents
-structural continuations one level deeper.
+structural continuations one level deeper. The reason is the one under
+[Multi-line statements](#multi-line-statements): rule 2 puts the later parts of
+a statement and the trivia lines between them one level deeper than the
+statement. A directive between two units stands after the space of the ordinary
+gap and touches the unit that follows it, as under
+[flowchart](./flowchart.md#directives).
 
 [fixture: direction/directive-and-comment-line-kept]
 
@@ -838,9 +854,20 @@ statements-one-per-line/after-closing-brace] [fixture:
 statements-one-per-line/after-string-name] [fixture:
 statements-one-per-line/empty-description-blocks]
 
-A directive between two statements stands with the statement after it.
+A directive between two statements stands with the statement after it. Rule 1
+names no mark for a directive between two units, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [flowchart](./flowchart.md#directives),
+[gantt](./gantt.md#directives), and [journey](./journey.md#directives) move a
+directive in the gap of units that formatting splits with the following unit,
+keep its right-side contact or separation, and break its left contact, where no
+other rule keeps the layout as written (a directive that is not closed after a
+statement, and the like).
 
-[fixture: statements-one-per-line/directive-after-statement]
+[fixture: statements-one-per-line/directive-after-statement] [fixture:
+statements-one-per-line/directive-after-statement-right-touching] [fixture:
+statements-one-per-line/directive-after-statement-left-touching] [fixture:
+directives/unclosed-after-statement-kept]
 
 After a `style`, `classDef`, or `class` statement, the lexer is still in the
 style context, so a string on its line starts the next statement and the line
@@ -951,11 +978,26 @@ requirementDiagram
 ### Blank lines
 
 Runs of empty lines become one empty line, and empty lines at the start and the
-end of the diagram and of a body are dropped, as in the other diagram types.
+end of the diagram and of a body are dropped, as in the other diagram types. A
+line of whitespace only is an empty line after the header, in a body, between
+statements, around a comment line, and at the end of the text, whatever the
+whitespace character is, a form feed, a vertical tab, U+00A0, U+3000, U+2028,
+and U+2029 included: rule 1 names no mark for a line, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [kanban](./kanban.md#blank-lines) and
+[packet](./packet.md#blank-lines) print whitespace-only lines as empty lines,
+where no other rule keeps the whitespace as written (the lines of a value or of
+a block of text, and the like).
 
 [fixture: blank-lines/collapsed] [fixture: blank-lines/between-fields-collapsed]
 [fixture: blank-lines/header-and-end-of-text-dropped] [fixture:
-blank-lines/body-edges-dropped]
+blank-lines/body-edges-dropped] [fixture: blank-lines/whitespace-only-lines]
+[fixture: blank-lines/whitespace-only-lines-in-places] [test: requirement
+whitespace-only line of a space and a tab] [test: requirement whitespace-only
+line of a form feed] [test: requirement whitespace-only line of a vertical tab]
+[test: requirement whitespace-only line of U+00A0] [test: requirement
+whitespace-only line of U+3000] [test: requirement whitespace-only line of
+U+2028] [test: requirement whitespace-only line of U+2029]
 
 The empty lines around comment lines and directive lines are handled in the same
 way.
@@ -1037,9 +1079,15 @@ empty-description-blocks/in-body-before-closing-brace] [fixture:
 empty-description-blocks/in-body-alone]
 
 The whitespace-only interior of a description block, including tabs, line breaks
-and Unicode whitespace, prints `{}`: there is no text for interior whitespace to
-surround. An already empty interior stays empty. The keyword and opening brace
-have one space between them: `accDescr{  }` becomes `accDescr {}`.
+and Unicode whitespace, prints `{}`, as Prettier prints `x = { }` as `x = {}`
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)): there is no text
+for interior whitespace to surround. An already empty interior stays empty. The
+keyword and opening brace have one space between them: `accDescr{  }` becomes
+`accDescr {}`. Rule 1 names no mark between a keyword and its opening brace, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides: [gantt](./gantt.md#empty-description-blocks),
+[class](./class.md#empty-description-blocks), and
+[journey](./journey.md#empty-description-blocks) print one space there.
 
 [fixture: empty-description-blocks/empty-whitespace-interiors] [test:
 requirement Unicode and tab interiors] [test: requirement body Unicode and tab
@@ -1132,19 +1180,51 @@ The text holds `;`, `#`, and `%%` as characters.
 
 [fixture: accessibility-statements/special-characters-in-text]
 
-A text written on a later line is printed after the `:` on one line, and a
-comment line before it makes the statement kept as written.
+A text written on a later line is printed after the `:` on one line. A comment
+line before the text, between the keyword and the colon or between the colon and
+the text, keeps the line breaks of the statement, and the comment and the later
+lines stand one level deeper. The colon of `accTitle` and `accDescr` is the
+colon of a key (the title and the description of a diagram in
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)), so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the form
+`accTitle: text`: no whitespace before the colon and one space after it, also
+where the colon or the text was written on a later line, except that a comment
+line before the colon or before the text keeps what follows it on a line of its
+own, one level deeper. Rule 1 names no mark for a line break next to a comment
+line, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, one case at a time. With a comment line before the colon,
+[journey](./journey.md#multi-line-statements),
+[quadrant](./quadrant.md#multi-line-statements), and
+[timeline](./timeline.md#multi-line-statements) keep the line breaks of an
+`accDescr` and put the comment, the colon, and the text one level deeper. With a
+comment line before the text, the same three do so for an `accTitle`, and so
+does [flowchart](./flowchart.md#accessibility-lines).
 
 [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
-accessibility-statements/text-with-comment-line-kept]
+accessibility-statements/text-with-comment-line-kept] [fixture:
+accessibility-statements/comment-line-before-colon-kept] [fixture:
+accessibility-statements/description-comment-line-before-colon-kept] [fixture:
+accessibility-statements/description-text-with-comment-line-kept]
 
 Later text lines of an `accDescr { ... }` block stand one level inside its
 statement, replacing only ASCII spaces and tabs immediately after LF. The
-description setter drops that indentation; line breaks, trailing whitespace and
-directive interiors stay written. Its `}` stands at the level of its statement.
+description setter drops that indentation; line breaks and directive interiors
+stay written. Rule 1 names no mark for the indentation of a line inside a block,
+so [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [flowchart](./flowchart.md#multi-line-values),
+[class](./class.md#multi-line-values), and [state](./state.md#multi-line-values)
+align the lines of an `accDescr { ... }` body one step inside its statement.
+Keep line breaks and interior blank lines, and the whitespace at the end of each
+line of text except the last one; a line of whitespace only becomes an empty
+line. The whitespace at the end of the last line of text is dropped where the
+closer stands on a line of its own, and is printed as one space where the closer
+follows it on that line. Its `}` stands at the level of its statement.
 
 [fixture: accessibility-statements/block-lines-kept] [fixture:
-accessibility-statements/block-comment-and-empty-lines-kept]
+accessibility-statements/block-comment-and-empty-lines-kept] [fixture:
+accessibility-statements/block-trailing-whitespace] [fixture:
+accessibility-statements/block-trailing-whitespace-closer-on-the-text-line]
 
 Blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
@@ -1354,12 +1434,27 @@ multi-line-statements/string-continued-joined]
 
 Comments and directives keep line breaks without freezing structural columns:
 continuations and intervening trivia stand one level deeper. This applies to
-block headers, fields, relationships and other statements. Whitespace inside
-values and before the first line break of each gap stays. Joining regions keep
-their complete source. A line break stays where joining it, with one space or
-with nothing, could change which `;` the line rule ignores, and where a `;` ends
-the last line; any other line break is joined as usual, also in a statement that
-holds a `;`. A statement that keeps a line break keeps its styles as written.
+block headers, fields, relationships and other statements. Rule 1 names no mark
+for a line break, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#multi-line-statements),
+[gantt](./gantt.md#multi-line-statements), and
+[journey](./journey.md#multi-line-statements) keep a line break next to a
+comment or a directive and the whitespace before it, and put the later parts of
+a statement and the comment and directive lines between them one level deeper,
+where no other rule keeps the layout as written (where the Db holds the text
+with its whitespace, where moving a line makes mermaid.js reject the text, and
+the like). The line that holds the name and the `{` of a block is not one of
+those later parts: it stands at the level of its statement, and neither these
+precedents nor the other rules of
+[How the printed form is decided](./printed-form.md) give that level, so the
+form that the released version prints stays until the level is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
+Whitespace inside values and before the first line break of each gap stays.
+Joining regions keep their complete source. A line break stays where joining it,
+with one space or with nothing, could change which `;` the line rule ignores,
+and where a `;` ends the last line; any other line break is joined as usual,
+also in a statement that holds a `;`.
 
 [test: requirement/multi-line-statements/header-and-field-comment-regions-ls]
 [test: requirement/multi-line-statements/header-and-field-comment-regions-ps]
@@ -1544,7 +1639,14 @@ requirementdiagram
 A comment starts with `%%`, `#`, or `%`, where a unit starts, and runs to the
 end of the line. A comment on a line of its own stands at the level of the
 statement after it, in a body at the level of the fields, and its text and its
-mark are kept as written.
+mark are kept as written. Rule 1 gives no form here, since its table names the
+whitespace beside a mark and not the start of a line
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark));
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+it, as [c4](./c4.md#comments) and [quadrant](./quadrant.md#comments) align a
+standalone comment with the following statement, or with the last statement at
+the end of the text, and put one before the header at column one, and
+[c4](./c4.md#indentation) aligns one in a body with the statements around it.
 
 [fixture: comments/lines-at-statement-level] [fixture:
 comments/single-mark-lines-kept]
@@ -1882,8 +1984,12 @@ U+2028 and U+2029 are whitespace between the units of a requirement diagram and
 characters of a name, a value, and a string. Between statements they are a line
 break like any whitespace: the statements go to lines of their own. A gap inside
 a statement that holds one is printed as written, and so is a text: a name, a
-class, a value, and an accessibility text keep them. The examples are written as
-strings, in which `\u2028` is U+2028 and `\n` is a line break.
+class, a value, and an accessibility text keep them. Rule 1 names no mark for a
+gap that holds one, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#line-separators) and
+[state](./state.md#line-separators) print such a gap as written. The examples
+are written as strings, in which `\u2028` is U+2028 and `\n` is a line break.
 
 [test: U+2028 after the closing brace of a body] [test: U+2028 inside a name]
 [test: U+2028 inside a class] [test: U+2028 after the keyword of a requirement]

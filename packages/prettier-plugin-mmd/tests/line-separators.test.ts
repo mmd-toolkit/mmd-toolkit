@@ -576,6 +576,191 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
     "sequenceDiagram\n  A ->> B: x # c\n  C ->> D: y\n",
   ],
   [
+    "a `#` comment after U+2028 after a note",
+    "sequenceDiagram\nparticipant A\nNote over A: t\u2028# c\n",
+    "sequenceDiagram\n  participant A\n  Note over A: t # c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after a block header",
+    "sequenceDiagram\nparticipant A\nloop x\u2028# c\nA->>A: y\nend\n",
+    "sequenceDiagram\n  participant A\n  loop x # c\n    A ->> A: y\n  end\n",
+  ],
+  [
+    "a `#` comment after U+2028 after a link",
+    "sequenceDiagram\nparticipant A\nlink A: Doc @ http://x\u2028# c\n",
+    "sequenceDiagram\n  participant A\n  link A: Doc @ http://x # c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after a participant with an alias",
+    "sequenceDiagram\nparticipant A as Alice\u2028# c\n",
+    "sequenceDiagram\n  participant A as Alice # c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after the header of the diagram",
+    "sequenceDiagram\u2028# c\nA->>B: x\n",
+    "sequenceDiagram # c\n  A ->> B: x\n",
+  ],
+  [
+    "a `#` comment after U+2028 after autonumber",
+    "sequenceDiagram\nautonumber\u2028# c\n",
+    "sequenceDiagram\n  autonumber # c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after a box without a text",
+    "sequenceDiagram\nbox\u2028# c\nparticipant A\nend\n",
+    "sequenceDiagram\n  box # c\n    participant A\n  end\n",
+  ],
+  [
+    "a `#` comment after U+2028 after the id of a participant",
+    "sequenceDiagram\nparticipant A\u2028# c\n",
+    "sequenceDiagram\n  participant A\u2028# c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after the id of a create",
+    "sequenceDiagram\ncreate participant A\u2028# c\nB->>A\u2028# c: x\n",
+    "sequenceDiagram\n  create participant A\u2028# c\n  B ->> A\u2028# c: x\n",
+  ],
+  [
+    "a `#` comment after U+2028 after the id of a destroy",
+    "sequenceDiagram\nparticipant A\ndestroy A\u2028# c\n",
+    "sequenceDiagram\n  participant A\n  destroy A\u2028# c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after activate and deactivate",
+    "sequenceDiagram\nparticipant A\u2028# c\nactivate A\u2028# c\ndeactivate A\u2028# c\n",
+    "sequenceDiagram\n  participant A\u2028# c\n  activate A\u2028# c\n  deactivate A\u2028# c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after accTitle",
+    "sequenceDiagram\naccTitle: t\u2028# c\n",
+    "sequenceDiagram\n  accTitle: t\u2028# c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after an accDescr line",
+    "sequenceDiagram\naccDescr: t\u2028# c\n",
+    "sequenceDiagram\n  accDescr: t\u2028# c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after a title",
+    "sequenceDiagram\ntitle T\u2028# c\n",
+    "sequenceDiagram\n  title T\u2028# c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after a box with a text",
+    "sequenceDiagram\nbox aqua\u2028# c\nparticipant A\nend\n",
+    "sequenceDiagram\n  box aqua\u2028# c\n    participant A\n  end\n",
+  ],
+  [
+    "a `#` comment after U+2028 after an actor and a data block",
+    'sequenceDiagram\nactor C as Carol\u2028# c\nparticipant D@{ "type": "queue" }\u2028# c\n',
+    'sequenceDiagram\n  actor C as Carol # c\n  participant D@{ "type": "queue" } # c\n',
+  ],
+  [
+    "a `#` comment after U+2028 after links, properties, and details",
+    'sequenceDiagram\nparticipant A\nparticipant B\nlinks A: {"x": "http://y"}\u2028# c\nproperties A: {"x": "y"}\u2028# c\ndetails A: {"x": "y"}\u2028# c\n',
+    'sequenceDiagram\n  participant A\n  participant B\n  links A: {"x": "http://y"} # c\n  properties A: {"x": "y"} # c\n  details A: {"x": "y"} # c\n',
+  ],
+  [
+    "a `#` comment after U+2028 after block headers and end",
+    "sequenceDiagram\nparticipant A\nparticipant B\nloop x\u2028# c\nopt y\u2028# c\nrect aqua\u2028# c\npar over A,B\u2028# c\nalt a\u2028# c\nA->>B: z\nelse b\u2028# c\nA->>B: w\nend\u2028# c\nend\nend\nend\nend\n",
+    "sequenceDiagram\n  participant A\n  participant B\n  loop x # c\n    opt y # c\n      rect aqua # c\n        par over A,B # c\n          alt a # c\n            A ->> B: z\n          else b # c\n            A ->> B: w\n          end # c\n        end\n      end\n    end\n  end\n",
+  ],
+  [
+    "a `#` comment after U+2028 after an accDescr block",
+    "sequenceDiagram\nparticipant A\nparticipant B\naccDescr { x }\u2028# c\naccDescr {\ny\n}\u2028# c\naccDescr {}\u2028# c\nA->>B: x\n",
+    "sequenceDiagram\n  participant A\n  participant B\n  accDescr { x } # c\n  accDescr {\n    y\n  } # c\n  accDescr {} # c\n  A ->> B: x\n",
+  ],
+  [
+    "a `#` comment after U+2028 after autonumber off",
+    "sequenceDiagram\nparticipant A\nparticipant B\nautonumber off\u2028# c\n",
+    "sequenceDiagram\n  participant A\n  participant B\n  autonumber off # c\n",
+  ],
+  [
+    "a `#` comment after U+2029 after a message and a note",
+    "sequenceDiagram\nparticipant A\nparticipant B\nA->>B: x\u2029# c\nNote over A: t\u2029# c\n",
+    "sequenceDiagram\n  participant A\n  participant B\n  A ->> B: x # c\n  Note over A: t # c\n",
+  ],
+  [
+    "a `#` comment after U+2029 where the character stays",
+    "sequenceDiagram\naccTitle: t\u2029# c\naccDescr: d\u2029# c\ntitle T\u2029# c\nbox aqua\u2029# c\nparticipant A\u2029# c\nend\nactivate A\u2029# c\ndeactivate A\u2029# c\n",
+    "sequenceDiagram\n  accTitle: t\u2029# c\n  accDescr: d\u2029# c\n  title T\u2029# c\n  box aqua\u2029# c\n    participant A\u2029# c\n  end\n  activate A\u2029# c\n  deactivate A\u2029# c\n",
+  ],
+  [
+    "a `#` comment after U+2029 after an actor and a data block",
+    'sequenceDiagram\nactor C as Carol\u2029# c\nparticipant D@{ "type": "queue" }\u2029# c\n',
+    'sequenceDiagram\n  actor C as Carol # c\n  participant D@{ "type": "queue" } # c\n',
+  ],
+  [
+    "a `#` comment after U+2029 after links, properties, and details",
+    'sequenceDiagram\nparticipant A\nparticipant B\nlinks A: {"x": "http://y"}\u2029# c\nproperties A: {"x": "y"}\u2029# c\ndetails A: {"x": "y"}\u2029# c\n',
+    'sequenceDiagram\n  participant A\n  participant B\n  links A: {"x": "http://y"} # c\n  properties A: {"x": "y"} # c\n  details A: {"x": "y"} # c\n',
+  ],
+  [
+    "a `#` comment after U+2029 after block headers and end",
+    "sequenceDiagram\nparticipant A\nparticipant B\nloop x\u2029# c\nopt y\u2029# c\nrect aqua\u2029# c\npar over A,B\u2029# c\nalt a\u2029# c\nA->>B: z\nelse b\u2029# c\nA->>B: w\nend\u2029# c\nend\nend\nend\nend\n",
+    "sequenceDiagram\n  participant A\n  participant B\n  loop x # c\n    opt y # c\n      rect aqua # c\n        par over A,B # c\n          alt a # c\n            A ->> B: z\n          else b # c\n            A ->> B: w\n          end # c\n        end\n      end\n    end\n  end\n",
+  ],
+  [
+    "a `#` comment after U+2029 after an accDescr block",
+    "sequenceDiagram\nparticipant A\nparticipant B\naccDescr { x }\u2029# c\naccDescr {\ny\n}\u2029# c\naccDescr {}\u2029# c\nA->>B: x\n",
+    "sequenceDiagram\n  participant A\n  participant B\n  accDescr { x } # c\n  accDescr {\n    y\n  } # c\n  accDescr {} # c\n  A ->> B: x\n",
+  ],
+  [
+    "a `#` comment after U+2029 after autonumber off",
+    "sequenceDiagram\nparticipant A\nparticipant B\nautonumber off\u2029# c\n",
+    "sequenceDiagram\n  participant A\n  participant B\n  autonumber off # c\n",
+  ],
+  [
+    "a `#` comment after U+2029 after a link, an alias, and the header",
+    "sequenceDiagram\u2029# c\nparticipant A as Alice\u2029# c\nparticipant B\nlink A: Doc @ http://x\u2029# c\n",
+    "sequenceDiagram # c\n  participant A as Alice # c\n  participant B\n  link A: Doc @ http://x # c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after the id of an actor",
+    "sequenceDiagram\nactor A\u2028# c\n",
+    "sequenceDiagram\n  actor A\u2028# c\n",
+  ],
+  [
+    "a `#` comment after U+2029 after the id of a create and a destroy",
+    "sequenceDiagram\ncreate participant A\u2029# c\nB->>A\u2029# c: x\ndestroy B\u2029# c\n",
+    "sequenceDiagram\n  create participant A\u2029# c\n  B ->> A\u2029# c: x\n  destroy B\u2029# c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after autonumber 5 and a space",
+    "sequenceDiagram\nautonumber 5 \u2028# c\n",
+    "sequenceDiagram\n  autonumber 5 # c\n",
+  ],
+  [
+    "a `#` comment after U+2029 after autonumber 5 and a space",
+    "sequenceDiagram\nautonumber 5 \u2029# c\n",
+    "sequenceDiagram\n  autonumber 5 # c\n",
+  ],
+  [
+    "a `#` comment after U+2028 after a create with an alias",
+    "sequenceDiagram\nparticipant B\ncreate participant A as X\u2028# c\nB->>A: m\n",
+    "sequenceDiagram\n  participant B\n  create participant A as X # c\n  B ->> A: m\n",
+  ],
+  [
+    "a `#` comment after U+2029 after the id of an actor",
+    "sequenceDiagram\nactor A\u2029# c\n",
+    "sequenceDiagram\n  actor A\u2029# c\n",
+  ],
+  [
+    "a `#` comment after U+2029 after autonumber",
+    "sequenceDiagram\nautonumber\u2029# c\n",
+    "sequenceDiagram\n  autonumber # c\n",
+  ],
+  [
+    "a `#` comment after U+2029 after a box without a text",
+    "sequenceDiagram\nbox\u2029# c\nparticipant A\nend\n",
+    "sequenceDiagram\n  box # c\n    participant A\n  end\n",
+  ],
+  [
+    "a `#` comment after U+2028 and U+2029 after a data block that is read as a name",
+    "sequenceDiagram\nparticipant A@{ x }\u2028# c\nactor B@{ y }\u2029# c\n",
+    "sequenceDiagram\n  participant A@{ x } # c\n  actor B@{ y } # c\n",
+  ],
+  [
     "a `%%` comment line after U+2028, which joins the next line",
     "sequenceDiagram\nA->>B:   x\u2028%% c\nC->>D: y\n",
     "sequenceDiagram\n  A->>B:   x\u2028%% c\nC->>D: y\n",
@@ -2087,6 +2272,11 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "erDiagram\n  A\u2028%% c\nBar { int id }\n",
   ],
   [
+    "a comment line after U+2028 inside the name of an ER entity with an empty block on one line",
+    "erDiagram\nA\u2028%% c\nBar {   }\n",
+    "erDiagram\n  A\u2028%% c\nBar {   }\n",
+  ],
+  [
     "a comment line after U+2028 inside the name of an ER entity with an attribute block over several lines",
     "erDiagram\nA\u2028%% c\nBar {\n  int id\n}\n",
     "erDiagram\n  A\u2028%% c\nBar {\n    int id\n  }\n",
@@ -2145,6 +2335,206 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "a comment line after U+2028 inside the name of an ER style statement",
     "erDiagram\nstyle A\u2028%% c\nBar fill:#f00\n",
     "erDiagram\n  style A\u2028%% c\nBar fill:#f00\n",
+  ],
+  [
+    "a color before a comma in a style on a line that a comment line after U+2028 joins with the next line",
+    "erDiagram\nA\nstyle A fill:#F00,stroke:#000\u2028%% c\n x\n",
+    "erDiagram\n  A\n  style A fill:#f00,stroke:#000\u2028%% c\n x\n",
+  ],
+  [
+    "a color before a comma in a class definition on a line that a comment line after U+2029 joins with the next line",
+    "erDiagram\nA\nclassDef c fill:#F00,color:#ABC\u2029%% c\n x\n",
+    "erDiagram\n  A\n  classDef c fill:#f00,color:#ABC\u2029%% c\n x\n",
+  ],
+  [
+    "the last color of a style that the line after a comment line after U+2028 goes on with",
+    "erDiagram\nA\nstyle A fill:#F00\u2028%% c\n x\n",
+    "erDiagram\n  A\n  style A fill:#F00\u2028%% c\n x\n",
+  ],
+  [
+    "a color before a comma that follows it after whitespace in a style on a line that a comment line after U+2028 joins with the next line",
+    "erDiagram\nA\nstyle A fill:#F00 ,stroke:#ABC\u2028%% c\n x\n",
+    "erDiagram\n  A\n  style A fill:#f00 ,stroke:#ABC\u2028%% c\n x\n",
+  ],
+  [
+    "a color before a comment line after U+2028 and a comma at the start of the next line in a style",
+    "erDiagram\nA\nstyle A fill:#F00,stroke:#ABC\u2028%% c\n,x:1\n",
+    "erDiagram\n  A\n  style A fill:#f00,stroke:#ABC\u2028%% c\n,x:1\n",
+  ],
+  [
+    "a color before a comment line after U+2028 and a comma on the next line, and the last color of that line at the end of the text, in a style",
+    "erDiagram\nA\nstyle A fill:#F00\u2028%% c\n,stroke:#ABC\n",
+    "erDiagram\n  A\n  style A fill:#F00\u2028%% c\n,stroke:#abc\n",
+  ],
+  [
+    "the last color of a style before a comment line after U+2028 at the end of the text",
+    "erDiagram\nA\nstyle A fill:#F00\u2028%% c\n",
+    "erDiagram\n  A\n  style A fill:#F00\u2028%% c\n",
+  ],
+  [
+    "a color before the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nclassDef c \nfill:#ABC,stroke:#DEF;\n",
+    "erDiagram\n  classDef c \n    fill:#abc,stroke:#DEF;\n",
+  ],
+  [
+    "a color before the semicolon that the line rule ignores on the line after a comment line after U+2028 in a class definition",
+    "erDiagram\nclassDef c fill:#ABC\u2028%% c\n,stroke:#DEF;\n",
+    "erDiagram\n  classDef c fill:#ABC\u2028%% c\n,stroke:#DEF;\n",
+  ],
+  [
+    "a color that characters follow after whitespace in a style on a line that a comment line after U+2028 joins with the next line",
+    "erDiagram\nA\nstyle A fill:#F00 x\u2028%% c\n y\n",
+    "erDiagram\n  A\n  style A fill:#F00 x\u2028%% c\n y\n",
+  ],
+  [
+    "the last color of the last line of a style that a comment line after U+2028 cuts, where a statement follows it",
+    "erDiagram\nA\nstyle A fill:#F00\u2028%% c\n,stroke:#ABC\nx\n",
+    "erDiagram\n  A\n  style A fill:#F00\u2028%% c\n,stroke:#abc\n  x\n",
+  ],
+  [
+    "a run of spaces after a comma in a style on a line that a comment line after U+2028 joins stays as written",
+    "erDiagram\nA\nstyle A fill:#F00,   stroke:#ABC\u2028%% c\n x\n",
+    "erDiagram\n  A\n  style A fill:#f00,   stroke:#ABC\u2028%% c\n x\n",
+  ],
+  [
+    "a run of spaces after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,   stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "a tab after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\tstroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "a run of spaces after a comma on the first line of a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c fill:#F00,   stroke:#ABC \n,x:1;\n",
+    "erDiagram\n  A\n  classDef c fill:#f00, stroke:#abc \n    ,x:1;\n",
+  ],
+  [
+    "a run of spaces before a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00   ,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00 ,stroke:#ABC;\n",
+  ],
+  [
+    "a run of spaces around the colon of a style in a class definition that whitespace and a line break join stays as written",
+    "erDiagram\nA\nclassDef c \nfill  :   #F00,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill  :   #f00,stroke:#ABC;\n",
+  ],
+  [
+    "a run of spaces inside the text of a style in a class definition that whitespace and a line break join stays as written",
+    "erDiagram\nA\nclassDef c \nfont-family:a   b,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    font-family:a   b,stroke:#ABC;\n",
+  ],
+  [
+    "the last color of a style that a comment line cuts from its keyword, where the text ends after it",
+    "erDiagram\nA\nstyle A \n%% c\nfill:#F00,stroke:#ABC\n",
+    "erDiagram\n  A\n  style A \n    %% c\n    fill:#f00,stroke:#abc\n",
+  ],
+  [
+    "a color that characters follow after whitespace in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#F00 x;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00 x;\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u2029%%{x}%% a\n}\n",
+    "erDiagram\n  T {\n    int\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the type and the name of an ER attribute, spaces before the U+2029 and after the directive: the gap stays as written",
+    "erDiagram\nT {\nint  \u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int  \u2029  %%{x}%%  a\n  }\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the type and the name of an ER attribute, one space before the U+2029: the gap stays as written",
+    "erDiagram\nT {\nint \u2029%%{x}%% a\n}\n",
+    "erDiagram\n  T {\n    int \u2029%%{x}%% a\n  }\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the type and the name of an ER attribute, a tab before the U+2029: the gap stays as written",
+    "erDiagram\nT {\nint\t\u2029%%{x}%% a\n}\n",
+    "erDiagram\n  T {\n    int\t\u2029%%{x}%% a\n  }\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the type and the name of an ER attribute, spaces after the directive",
+    "erDiagram\nT {\nint\u2028  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u2028 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the type and the name of an ER attribute, spaces before the U+2028 and after the directive: the gap stays as written",
+    "erDiagram\nT {\nint  \u2028  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int  \u2028  %%{x}%%  a\n  }\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship, spaces after the directive",
+    "erDiagram\nA\u2028  %%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship, spaces before the U+2028 and after the directive: the gap stays as written",
+    "erDiagram\nA  \u2028  %%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A  \u2028  %%{x}%%  ||--o{ B : y\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship, one space before the U+2028: the gap stays as written",
+    "erDiagram\nA \u2028%%{x}%% ||--o{ B : y\n",
+    "erDiagram\n  A \u2028%%{x}%% ||--o{ B : y\n",
+  ],
+  [
+    "a color before a semicolon that the line rule ignores on the line after a comment line after U+2028 in a style, where a comma starts the line",
+    "erDiagram\nA\nstyle A fill:#F00\u2028%% c\n,stroke:#ABC;\n",
+    "erDiagram\n  A\n  style A fill:#F00\u2028%% c\n,stroke:#ABC;\n",
+  ],
+  [
+    "a run of spaces after a comma at the end of a line of a class definition that whitespace and a line break join stays as written",
+    "erDiagram\nA\nclassDef c fill:#F00,   \nstroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c fill:#f00,   \n    stroke:#ABC;\n",
+  ],
+  [
+    "a run of spaces at the end of a line before a comma on the next line of a class definition that whitespace and a line break join stays as written",
+    "erDiagram\nA\nclassDef c fill:#F00   \n,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c fill:#f00   \n    ,stroke:#ABC;\n",
+  ],
+  [
+    "a color that characters follow after whitespace after a comment line after U+2028 in a style",
+    "erDiagram\nA\nstyle A\u2028%% c\n fill:#F00 x\n",
+    "erDiagram\n  A\n  style A\u2028%% c\n fill:#F00 x\n",
+  ],
+  [
+    "whitespace between the statements of a line that a comment line after U+2028 joins with the next line",
+    "erDiagram\nA   ||--o{   B : x\u2028%% c\n Bar   {   int   id   }\n",
+    "erDiagram\n  A   ||--o{   B : x\u2028%% c\n Bar   {   int   id   }\n",
+  ],
+  [
+    "ER the quotes of the names of a relationship on a line that a comment line after U+2028 joins",
+    'erDiagram\n"CUSTOMER" ||--o{ "ORDER" : places\u2028%% c\n x\n',
+    'erDiagram\n  "CUSTOMER" ||--o{ "ORDER" : places\u2028%% c\n x\n',
+  ],
+  [
+    "ER the quotes of the label of a relationship on a line that a comment line after U+2028 joins",
+    'erDiagram\nA ||--o{ B : "has"\u2028%% c\n x\n',
+    'erDiagram\n  A ||--o{ B : "has"\u2028%% c\n x\n',
+  ],
+  [
+    "ER the quotes of the alias of an entity on a line that a comment line after U+2028 joins",
+    'erDiagram\n"A"["B"]\u2028%% c\n x\n',
+    'erDiagram\n  "A"["B"]\u2028%% c\n x\n',
+  ],
+  [
+    "ER the quotes of an entity name on a line that a comment line after U+2029 joins",
+    'erDiagram\n"A"\u2029%% c\n x\n',
+    'erDiagram\n  "A"\u2029%% c\n x\n',
+  ],
+  [
+    "ER the words of a relationship on a line that a comment line after U+2028 joins are printed as symbols",
+    "erDiagram\nA only one to zero or more B : x\u2028%% c\n x\n",
+    "erDiagram\n  A || -- o{ B : x\u2028%% c\n x\n",
+  ],
+  [
+    "ER a directive on a line that a comment line after U+2028 joins stays where it is written",
+    "erDiagram\nA   %%{init: {}}%%   ||--o{ B : x\u2028%% c\n y\n",
+    "erDiagram\n  A   %%{init: {}}%%   ||--o{ B : x\u2028%% c\n y\n",
   ],
   [
     "an empty line after a comment line after U+2028 inside the name of an ER entity",
@@ -2230,6 +2620,11 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "an empty attribute block on one line after a comment line after U+2028 inside the name of an ER entity",
     "erDiagram\nA\u2028%% c\nBar {}\n",
     "erDiagram\n  A\u2028%% c\nBar {}\n",
+  ],
+  [
+    "an empty attribute block on one line after a comment line after U+2029 inside the name of an ER entity",
+    "erDiagram\nA\u2029%% c\nBar {}\n",
+    "erDiagram\n  A\u2029%% c\nBar {}\n",
   ],
   [
     "an empty attribute block over several lines after a comment line after U+2028 and a space",
@@ -2910,6 +3305,1131 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "an ER statement that touches the end of a subgraph with a dash, and a comment line after U+2028 and a statement",
     "erDiagram\nsubgraph S\nend-A \u2028%% c\nB\n",
     "erDiagram\n  subgraph S\nend-A \u2028%% c\nB\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship, a no-break space before the U+2028",
+    "erDiagram\nA\u00a0\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u00a0\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship, U+3000 before the U+2028",
+    "erDiagram\nA\u3000\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u3000\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship, a tab before the U+2028: the gap stays as written",
+    "erDiagram\nA\t\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\t\u2028%%{x}%%  ||--o{ B : y\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the type and the name of an ER attribute, a no-break space before the U+2029: the gap stays as written",
+    "erDiagram\nT {\nint\u00a0\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u00a0\u2029  %%{x}%%  a\n  }\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the type and the name of an ER attribute, U+3000 before the U+2029",
+    "erDiagram\nT {\nint\u3000\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u3000\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "a flowchart keeps U+2028 and a directive in the gap between a node and an arrow as written",
+    "flowchart TD\nA\u2028%%{x}%%  --> B\n",
+    "flowchart TD\n  A\u2028%%{x}%%  --> B\n",
+  ],
+  [
+    "a class diagram keeps U+2028 and a directive in the gap between a class and an arrow as written",
+    "classDiagram\nclass A\nclass B\nA\u2028%%{x}%%  --> B\n",
+    "classDiagram\n  class A\n  class B\n  A\u2028%%{x}%%  --> B\n",
+  ],
+  [
+    "a state diagram keeps U+2028 and a directive in the gap between a state and an arrow as written",
+    "stateDiagram-v2\nA\u2028%%{x}%%  --> B\n",
+    "stateDiagram-v2\n  A\u2028%%{x}%%  --> B\n",
+  ],
+  [
+    "a sequence diagram keeps U+2028 and a directive in the gap between a participant and an arrow as written",
+    "sequenceDiagram\nA\u2028%%{x}%%  ->> B: x\n",
+    "sequenceDiagram\n  A\u2028%%{x}%%  ->> B: x\n",
+  ],
+  [
+    "U+2028 and a directive in the label of an ER relationship, after the text",
+    "erDiagram\nA ||--o{ B : y\u2028%%{x}%% z\n",
+    "erDiagram\n  A ||--o{ B : y\u2028\n  %%{x}%% z\n",
+  ],
+  [
+    "U+2029 and a directive in the label of an ER relationship, after the text",
+    "erDiagram\nA ||--o{ B : y\u2029%%{x}%% z\n",
+    "erDiagram\n  A ||--o{ B : y\u2029\n  %%{x}%% z\n",
+  ],
+  [
+    "U+2028 and a directive in the label of an ER relationship, before the text",
+    "erDiagram\nA ||--o{ B : \u2028%%{x}%% y\n",
+    "erDiagram\n  A ||--o{ B : \u2028\n  %%{x}%% y\n",
+  ],
+  [
+    "U+2028 and a directive in the label of an ER relationship, with nothing after the directive: the line stays as written",
+    "erDiagram\nA ||--o{ B : y\u2028%%{x}%%\n",
+    "erDiagram\n  A ||--o{ B : y\u2028%%{x}%%\n",
+  ],
+  [
+    "a color before a semicolon after whitespace in a style statement that a comment line after U+2028 cuts",
+    "erDiagram\nA\nstyle A fill:#F00\u2028%% c\n,stroke:#ABC ;\n",
+    "erDiagram\n  A\n  style A fill:#F00\u2028%% c\n,stroke:#abc ;\n",
+  ],
+  [
+    "a color before a semicolon followed by a second semicolon in a style statement that a comment line after U+2028 cuts",
+    "erDiagram\nA\nstyle A fill:#F00\u2028%% c\n,stroke:#ABC;;\n",
+    "erDiagram\n  A\n  style A fill:#F00\u2028%% c\n,stroke:#ABC;;\n",
+  ],
+  [
+    "a color before a semicolon followed by a space and a second semicolon in a style statement that a comment line after U+2028 cuts",
+    "erDiagram\nA\nstyle A fill:#F00\u2028%% c\n,stroke:#ABC; ;\n",
+    "erDiagram\n  A\n  style A fill:#F00\u2028%% c\n,stroke:#ABC; ;\n",
+  ],
+  [
+    "a color before a semicolon that touches it in a style statement that a comment line after U+2028 cuts",
+    "erDiagram\nA\nstyle A fill:#F00\u2028%% c\n,stroke:#ABC;\n",
+    "erDiagram\n  A\n  style A fill:#F00\u2028%% c\n,stroke:#ABC;\n",
+  ],
+  [
+    "a color before a semicolon after whitespace in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF ;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#def ;\n",
+  ],
+  [
+    "a color before a semicolon followed by a second semicolon in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF;;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF;;\n",
+  ],
+  [
+    "a color before a semicolon followed by a space and a second semicolon in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF; ;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF; ;\n",
+  ],
+  [
+    "a color before a semicolon that touches it in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF;\n",
+  ],
+  [
+    "two no-break spaces after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u00a0\u00a0stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+3000 after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u3000stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "two tabs after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\t\tstroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "a no-break space before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u00a0,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u00a0,stroke:#ABC;\n",
+  ],
+  [
+    "U+3000 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u3000,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u3000,stroke:#ABC;\n",
+  ],
+  [
+    "a color before a comma in a style statement that a comment line after U+2028 joins in a flowchart is printed in lower case",
+    "flowchart TD\nA\nstyle A fill:#F00,\u2028%% c\n stroke:#ABC\n",
+    "flowchart TD\n  A\n  style A fill:#f00,\u2028%% c\n stroke:#abc\n",
+  ],
+  [
+    "a color before a comma after a space in a style statement that a comment line after U+2028 joins in a flowchart is printed in lower case",
+    "flowchart TD\nA\nstyle A fill:#F00 ,\u2028%% c\n stroke:#ABC\n",
+    "flowchart TD\n  A\n  style A fill:#f00 ,\u2028%% c\n stroke:#abc\n",
+  ],
+  [
+    "a color before a comma in a style statement that a comment line after U+2028 joins in a class diagram is printed in lower case",
+    "classDiagram\nclass A\nstyle A fill:#F00,\u2028%% c\n stroke:#ABC\n",
+    "classDiagram\n  class A\n  style A fill:#f00,\u2028%% c\n stroke:#abc\n",
+  ],
+  [
+    "a color before a comma after a space in a style statement that a comment line after U+2028 joins in a class diagram is printed in lower case",
+    "classDiagram\nclass A\nstyle A fill:#F00 ,\u2028%% c\n stroke:#ABC\n",
+    "classDiagram\n  class A\n  style A fill:#f00 ,\u2028%% c\n stroke:#abc\n",
+  ],
+  [
+    "a color before a comma in a style statement that a comment line after U+2028 joins in a state diagram is printed in lower case",
+    "stateDiagram-v2\nstate A\nstyle A fill:#F00,\u2028%% c\n stroke:#ABC\n",
+    "stateDiagram-v2\n  state A\n  style A fill:#f00,\u2028%% c\n stroke:#abc\n",
+  ],
+  [
+    "a color before a comma after a space in a style statement that a comment line after U+2028 joins in a state diagram is printed in lower case",
+    "stateDiagram-v2\nstate A\nstyle A fill:#F00 ,\u2028%% c\n stroke:#ABC\n",
+    "stateDiagram-v2\n  state A\n  style A fill:#f00 ,\u2028%% c\n stroke:#abc\n",
+  ],
+  [
+    "a color before a comma in a style statement that a comment line after U+2028 joins in an ER diagram is printed in lower case",
+    "erDiagram\nA\nstyle A fill:#F00,\u2028%% c\n stroke:#ABC\n",
+    "erDiagram\n  A\n  style A fill:#f00,\u2028%% c\n stroke:#abc\n",
+  ],
+  [
+    "a color before a comma after a space in a style statement that a comment line after U+2028 joins in an ER diagram is printed in lower case",
+    "erDiagram\nA\nstyle A fill:#F00 ,\u2028%% c\n stroke:#ABC\n",
+    "erDiagram\n  A\n  style A fill:#f00 ,\u2028%% c\n stroke:#abc\n",
+  ],
+  [
+    "a space before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA \u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A \u2028%%{x}%%  ||--o{ B : y\n",
+  ],
+  [
+    "a space before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint \u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int \u2029  %%{x}%%  a\n  }\n",
+  ],
+  [
+    "a tab before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\t\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\t\u2029  %%{x}%%  a\n  }\n",
+  ],
+  [
+    "a vertical tab before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u000b\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u000b\u2029  %%{x}%%  a\n  }\n",
+  ],
+  [
+    "a form feed before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\f\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\f\u2029  %%{x}%%  a\n  }\n",
+  ],
+  [
+    "U+1680 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u1680\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u1680\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+1680 before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u1680\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u1680\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+2000 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u2000\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u2000\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+2000 before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u2000\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u2000\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+2001 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u2001\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u2001\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+2001 before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u2001\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u2001\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+2002 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u2002\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u2002\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+2002 before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u2002\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u2002\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+2003 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u2003\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u2003\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+2003 before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u2003\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u2003\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+2004 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u2004\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u2004\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+2004 before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u2004\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u2004\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+2005 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u2005\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u2005\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+2005 before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u2005\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u2005\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+2006 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u2006\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u2006\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+2006 before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u2006\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u2006\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+2007 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u2007\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u2007\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+2007 before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u2007\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u2007\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+2008 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u2008\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u2008\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+2008 before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u2008\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u2008\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+2009 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u2009\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u2009\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+2009 before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u2009\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u2009\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+200A before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u200a\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u200a\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+200A before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u200a\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u200a\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+202F before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u202f\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u202f\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+202F before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u202f\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u202f\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+205F before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u205f\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u205f\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+205F before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u205f\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u205f\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+FEFF before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\ufeff\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\ufeff\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+FEFF before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\ufeff\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\ufeff\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "a space before a U+2028 and a directive in the label of an ER relationship, text after the directive",
+    "erDiagram\nA ||--o{ B : y \u2028%%{x}%% z\n",
+    "erDiagram\n  A ||--o{ B : y\n  \u2028\n  %%{x}%% z\n",
+  ],
+  [
+    "a tab before a U+2028 and a directive in the label of an ER relationship, text after the directive",
+    "erDiagram\nA ||--o{ B : y\t\u2028%%{x}%% z\n",
+    "erDiagram\n  A ||--o{ B : y\n  \u2028\n  %%{x}%% z\n",
+  ],
+  [
+    "a space before a U+2028 and text in the label of an ER relationship",
+    "erDiagram\nA ||--o{ B : y \u2028z\n",
+    "erDiagram\n  A ||--o{ B : y\n  \u2028z\n",
+  ],
+  [
+    "U+2028 and a directive and a comment in the label of an ER relationship: the line stays as written",
+    "erDiagram\nA ||--o{ B : y\u2028%%{x}%% %% c\n",
+    "erDiagram\n  A ||--o{ B : y\u2028%%{x}%% %% c\n",
+  ],
+  [
+    "a tab between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\t;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#def\t;\n",
+  ],
+  [
+    "a vertical tab between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u000b;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#def\u000b;\n",
+  ],
+  [
+    "a form feed between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\f;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#def\f;\n",
+  ],
+  [
+    "a no-break space between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u00a0;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u00a0;\n",
+  ],
+  [
+    "U+1680 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u1680;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u1680;\n",
+  ],
+  [
+    "U+2000 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u2000;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u2000;\n",
+  ],
+  [
+    "U+2001 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u2001;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u2001;\n",
+  ],
+  [
+    "U+2002 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u2002;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u2002;\n",
+  ],
+  [
+    "U+2003 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u2003;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u2003;\n",
+  ],
+  [
+    "U+2004 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u2004;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u2004;\n",
+  ],
+  [
+    "U+2005 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u2005;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u2005;\n",
+  ],
+  [
+    "U+2006 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u2006;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u2006;\n",
+  ],
+  [
+    "U+2007 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u2007;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u2007;\n",
+  ],
+  [
+    "U+2008 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u2008;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u2008;\n",
+  ],
+  [
+    "U+2009 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u2009;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u2009;\n",
+  ],
+  [
+    "U+200A between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u200a;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u200a;\n",
+  ],
+  [
+    "U+202F between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u202f;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u202f;\n",
+  ],
+  [
+    "U+205F between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u205f;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u205f;\n",
+  ],
+  [
+    "U+3000 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u3000;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u3000;\n",
+  ],
+  [
+    "U+FEFF between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\ufeff;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\ufeff;\n",
+  ],
+  [
+    "U+2028 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u2028;\n",
+    "erDiagram\n  A\n  classDef c fill:#abc,stroke:#DEF\u2028;\n",
+  ],
+  [
+    "U+2029 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u2029;\n",
+    "erDiagram\n  A\n  classDef c fill:#abc,stroke:#DEF\u2029;\n",
+  ],
+  [
+    "a no-break space between a color and the semicolon that the line rule ignores in a style statement that a comment line after U+2028 cuts",
+    "erDiagram\nA\nstyle A fill:#F00\u2028%% c\n,stroke:#ABC\u00a0;\n",
+    "erDiagram\n  A\n  style A fill:#F00\u2028%% c\n,stroke:#ABC\u00a0;\n",
+  ],
+  [
+    "a tab between a color and the semicolon that the line rule ignores in a style statement that a comment line after U+2028 cuts",
+    "erDiagram\nA\nstyle A fill:#F00\u2028%% c\n,stroke:#ABC\t;\n",
+    "erDiagram\n  A\n  style A fill:#F00\u2028%% c\n,stroke:#abc\t;\n",
+  ],
+  [
+    "a tab before a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00\t,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00 ,stroke:#ABC;\n",
+  ],
+  [
+    "U+2028 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u2028,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c fill:#F00\u2028,stroke:#ABC;\n",
+  ],
+  [
+    "a color before a comma after a tab in a style statement that a comment line after U+2028 joins in a flowchart is printed in lower case",
+    "flowchart TD\nA\nstyle A fill:#F00\t,\u2028%% c\n stroke:#ABC\n",
+    "flowchart TD\n  A\n  style A fill:#f00\t,\u2028%% c\n stroke:#abc\n",
+  ],
+  [
+    "a color before a comma after a tab in a style statement that a comment line after U+2028 joins in a class diagram is printed in lower case",
+    "classDiagram\nclass A\nstyle A fill:#F00\t,\u2028%% c\n stroke:#ABC\n",
+    "classDiagram\n  class A\n  style A fill:#f00\t,\u2028%% c\n stroke:#abc\n",
+  ],
+  [
+    "a color before a comma after a tab in a style statement that a comment line after U+2028 joins in a state diagram is printed in lower case",
+    "stateDiagram-v2\nstate A\nstyle A fill:#F00\t,\u2028%% c\n stroke:#ABC\n",
+    "stateDiagram-v2\n  state A\n  style A fill:#f00\t,\u2028%% c\n stroke:#abc\n",
+  ],
+  [
+    "a color before a comma after a tab in a style statement that a comment line after U+2028 joins in an ER diagram is printed in lower case",
+    "erDiagram\nA\nstyle A fill:#F00\t,\u2028%% c\n stroke:#ABC\n",
+    "erDiagram\n  A\n  style A fill:#f00\t,\u2028%% c\n stroke:#abc\n",
+  ],
+  [
+    "a color before a comma after a tab in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a flowchart is printed in lower case",
+    "flowchart TD\nA\nstyle A fill:#F00\t,stroke:#ABC\u2028%% c\nB\n",
+    "flowchart TD\n  A\n  style A fill:#f00\t,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma that a word without a colon follows in a style statement that a comment line after U+2028 joins in a flowchart is printed in lower case",
+    "flowchart TD\nA\nstyle A fill:#F00,x\u2028%% c\nB\n",
+    "flowchart TD\n  A\n  style A fill:#f00,x\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma at once in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a flowchart is printed in lower case",
+    "flowchart TD\nA\nclassDef k fill:#F00,stroke:#ABC\u2028%% c\nB\n",
+    "flowchart TD\n  A\n  classDef k fill:#f00,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma after a space in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a flowchart is printed in lower case",
+    "flowchart TD\nA\nclassDef k fill:#F00 ,stroke:#ABC\u2028%% c\nB\n",
+    "flowchart TD\n  A\n  classDef k fill:#f00 ,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma after a tab in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a flowchart is printed in lower case",
+    "flowchart TD\nA\nclassDef k fill:#F00\t,stroke:#ABC\u2028%% c\nB\n",
+    "flowchart TD\n  A\n  classDef k fill:#f00\t,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma that a word without a colon follows in a classDef statement that a comment line after U+2028 joins in a flowchart is printed in lower case",
+    "flowchart TD\nA\nclassDef k fill:#F00,x\u2028%% c\nB\n",
+    "flowchart TD\n  A\n  classDef k fill:#f00,x\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma at once in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a class diagram is printed in lower case",
+    "classDiagram\nclass k\nstyle k fill:#F00,stroke:#ABC\u2028%% c\nclass j\n",
+    "classDiagram\n  class k\n  style k fill:#f00,stroke:#ABC\u2028%% c\nclass j\n",
+  ],
+  [
+    "a color before a comma after a space in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a class diagram is printed in lower case",
+    "classDiagram\nclass k\nstyle k fill:#F00 ,stroke:#ABC\u2028%% c\nclass j\n",
+    "classDiagram\n  class k\n  style k fill:#f00 ,stroke:#ABC\u2028%% c\nclass j\n",
+  ],
+  [
+    "a color before a comma after a tab in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a class diagram is printed in lower case",
+    "classDiagram\nclass k\nstyle k fill:#F00\t,stroke:#ABC\u2028%% c\nclass j\n",
+    "classDiagram\n  class k\n  style k fill:#f00\t,stroke:#ABC\u2028%% c\nclass j\n",
+  ],
+  [
+    "a color before a comma that a word without a colon follows in a style statement that a comment line after U+2028 joins in a class diagram is printed in lower case",
+    "classDiagram\nclass k\nstyle k fill:#F00,x\u2028%% c\nclass j\n",
+    "classDiagram\n  class k\n  style k fill:#f00,x\u2028%% c\nclass j\n",
+  ],
+  [
+    "a color before a comma at once in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a class diagram stays as written",
+    "classDiagram\nclass k\nclassDef k fill:#F00,stroke:#ABC\u2028%% c\nclass j\n",
+    "classDiagram\n  class k\n  classDef k fill:#F00,stroke:#ABC\u2028%% c\nclass j\n",
+  ],
+  [
+    "a color before a comma after a space in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a class diagram stays as written",
+    "classDiagram\nclass k\nclassDef k fill:#F00 ,stroke:#ABC\u2028%% c\nclass j\n",
+    "classDiagram\n  class k\n  classDef k fill:#F00 ,stroke:#ABC\u2028%% c\nclass j\n",
+  ],
+  [
+    "a color before a comma after a tab in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a class diagram stays as written",
+    "classDiagram\nclass k\nclassDef k fill:#F00\t,stroke:#ABC\u2028%% c\nclass j\n",
+    "classDiagram\n  class k\n  classDef k fill:#F00\t,stroke:#ABC\u2028%% c\nclass j\n",
+  ],
+  [
+    "a color before a comma that a word without a colon follows in a classDef statement that a comment line after U+2028 joins in a class diagram stays as written",
+    "classDiagram\nclass k\nclassDef k fill:#F00,x\u2028%% c\nclass j\n",
+    "classDiagram\n  class k\n  classDef k fill:#F00,x\u2028%% c\nclass j\n",
+  ],
+  [
+    "a color before a comma at once in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a state diagram is printed in lower case",
+    "stateDiagram-v2\nA\nstyle A fill:#F00,stroke:#ABC\u2028%% c\nB\n",
+    "stateDiagram-v2\n  A\n  style A fill:#f00,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma after a space in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a state diagram is printed in lower case",
+    "stateDiagram-v2\nA\nstyle A fill:#F00 ,stroke:#ABC\u2028%% c\nB\n",
+    "stateDiagram-v2\n  A\n  style A fill:#f00 ,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma after a tab in a style statement that a comment line after U+2028 joins, the comma followed by a property, in a state diagram is printed in lower case",
+    "stateDiagram-v2\nA\nstyle A fill:#F00\t,stroke:#ABC\u2028%% c\nB\n",
+    "stateDiagram-v2\n  A\n  style A fill:#f00\t,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma that a word without a colon follows in a style statement that a comment line after U+2028 joins in a state diagram stays as written",
+    "stateDiagram-v2\nA\nstyle A fill:#F00,x\u2028%% c\nB\n",
+    "stateDiagram-v2\n  A\n  style A fill:#F00,x\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma at once in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a state diagram is printed in lower case",
+    "stateDiagram-v2\nA\nclassDef k fill:#F00,stroke:#ABC\u2028%% c\nB\n",
+    "stateDiagram-v2\n  A\n  classDef k fill:#f00,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma after a space in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a state diagram is printed in lower case",
+    "stateDiagram-v2\nA\nclassDef k fill:#F00 ,stroke:#ABC\u2028%% c\nB\n",
+    "stateDiagram-v2\n  A\n  classDef k fill:#f00 ,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma after a tab in a classDef statement that a comment line after U+2028 joins, the comma followed by a property, in a state diagram is printed in lower case",
+    "stateDiagram-v2\nA\nclassDef k fill:#F00\t,stroke:#ABC\u2028%% c\nB\n",
+    "stateDiagram-v2\n  A\n  classDef k fill:#f00\t,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma that a word without a colon follows in a classDef statement that a comment line after U+2028 joins in a state diagram is printed in lower case",
+    "stateDiagram-v2\nA\nclassDef k fill:#F00,x\u2028%% c\nB\n",
+    "stateDiagram-v2\n  A\n  classDef k fill:#f00,x\u2028%% c\nB\n",
+  ],
+  [
+    "no whitespace between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a style: the color stays as written",
+    "erDiagram\nA\nstyle A fill:#F00;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  style A fill:#F00;\u2028%% c\nB\n",
+  ],
+  [
+    "no whitespace between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a class definition: the color stays as written",
+    "erDiagram\nA\nclassDef c fill:#F00;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#F00;\u2028%% c\nB\n",
+  ],
+  [
+    "a space between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a style: the color stays as written",
+    "erDiagram\nA\nstyle A fill:#F00 ;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  style A fill:#F00 ;\u2028%% c\nB\n",
+  ],
+  [
+    "a space between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a class definition: the color stays as written",
+    "erDiagram\nA\nclassDef c fill:#F00 ;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#F00 ;\u2028%% c\nB\n",
+  ],
+  [
+    "two spaces between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a style: the color stays as written",
+    "erDiagram\nA\nstyle A fill:#F00  ;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  style A fill:#F00  ;\u2028%% c\nB\n",
+  ],
+  [
+    "two spaces between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a class definition: the color stays as written",
+    "erDiagram\nA\nclassDef c fill:#F00  ;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#F00  ;\u2028%% c\nB\n",
+  ],
+  [
+    "a tab between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a style: the color stays as written",
+    "erDiagram\nA\nstyle A fill:#F00\t;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  style A fill:#F00\t;\u2028%% c\nB\n",
+  ],
+  [
+    "a tab between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a class definition: the color stays as written",
+    "erDiagram\nA\nclassDef c fill:#F00\t;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#F00\t;\u2028%% c\nB\n",
+  ],
+  [
+    "a vertical tab between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a style: the color stays as written",
+    "erDiagram\nA\nstyle A fill:#F00\u000b;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  style A fill:#F00\u000b;\u2028%% c\nB\n",
+  ],
+  [
+    "a vertical tab between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a class definition: the color stays as written",
+    "erDiagram\nA\nclassDef c fill:#F00\u000b;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#F00\u000b;\u2028%% c\nB\n",
+  ],
+  [
+    "a form feed between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a style: the color stays as written",
+    "erDiagram\nA\nstyle A fill:#F00\f;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  style A fill:#F00\f;\u2028%% c\nB\n",
+  ],
+  [
+    "a form feed between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a class definition: the color stays as written",
+    "erDiagram\nA\nclassDef c fill:#F00\f;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#F00\f;\u2028%% c\nB\n",
+  ],
+  [
+    "a no-break space between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a style: the color stays as written",
+    "erDiagram\nA\nstyle A fill:#F00\u00a0;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  style A fill:#F00\u00a0;\u2028%% c\nB\n",
+  ],
+  [
+    "a no-break space between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a class definition: the color stays as written",
+    "erDiagram\nA\nclassDef c fill:#F00\u00a0;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#F00\u00a0;\u2028%% c\nB\n",
+  ],
+  [
+    "U+2003 between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a style: the color stays as written",
+    "erDiagram\nA\nstyle A fill:#F00\u2003;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  style A fill:#F00\u2003;\u2028%% c\nB\n",
+  ],
+  [
+    "U+2003 between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a class definition: the color stays as written",
+    "erDiagram\nA\nclassDef c fill:#F00\u2003;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#F00\u2003;\u2028%% c\nB\n",
+  ],
+  [
+    "U+3000 between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a style: the color stays as written",
+    "erDiagram\nA\nstyle A fill:#F00\u3000;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  style A fill:#F00\u3000;\u2028%% c\nB\n",
+  ],
+  [
+    "U+3000 between the last color and the semicolon that the line rule ignores, before a comment line after U+2028, in a class definition: the color stays as written",
+    "erDiagram\nA\nclassDef c fill:#F00\u3000;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#F00\u3000;\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma in a class definition that a comment line after U+2028 joins is printed in lower case",
+    "erDiagram\nA\nclassDef c fill:#F00,stroke:#ABC\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#f00,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma after a space in a class definition that a comment line after U+2028 joins is printed in lower case",
+    "erDiagram\nA\nclassDef c fill:#F00 ,stroke:#ABC\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#f00 ,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma after a tab in a class definition that a comment line after U+2028 joins is printed in lower case",
+    "erDiagram\nA\nclassDef c fill:#F00\t,stroke:#ABC\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#f00\t,stroke:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "the last color of a class definition before a comment line after U+2028 stays as written",
+    "erDiagram\nA\nclassDef c fill:#ABC\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#ABC\u2028%% c\nB\n",
+  ],
+  [
+    "a semicolon that touches the last color of a class definition before a comment line after U+2028: the color stays as written",
+    "erDiagram\nA\nclassDef c fill:#ABC;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#ABC;\u2028%% c\nB\n",
+  ],
+  [
+    "two semicolons that touch the last color of a class definition before a comment line after U+2028: the color stays as written",
+    "erDiagram\nA\nclassDef c fill:#ABC;;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#ABC;;\u2028%% c\nB\n",
+  ],
+  [
+    "a color before a comma and a semicolon that touches the last color in a class definition before a comment line after U+2028",
+    "erDiagram\nA\nclassDef c fill:#F00,stroke:#ABC;\u2028%% c\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#f00,stroke:#ABC;\u2028%% c\nB\n",
+  ],
+  [
+    "the last color of the last line of a class definition that a comment line after U+2028 cuts, where a statement follows it, is printed in lower case",
+    "erDiagram\nA\nclassDef c fill:#F00\u2028%% c\n,stroke:#ABC\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#F00\u2028%% c\n,stroke:#abc\n  B\n",
+  ],
+  [
+    "a color before a comma on the first line of a class definition that a comment line after U+2028 cuts is printed in lower case",
+    "erDiagram\nA\nclassDef c fill:#F00,\u2028%% c\n stroke:#ABC\nB\n",
+    "erDiagram\n  A\n  classDef c fill:#f00,\u2028%% c\n stroke:#abc\n  B\n",
+  ],
+  [
+    "a color that a line break separates from a semicolon on a line of its own is printed in lower case in a style",
+    "erDiagram\nA\nstyle A fill:#F00,   stroke:#ABC \n;\n",
+    "erDiagram\n  A\n  style A fill:#f00, stroke:#abc \n;\n",
+  ],
+  [
+    "a vertical tab before a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u000b,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00 ,stroke:#ABC;\n",
+  ],
+  [
+    "a form feed before a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00\f,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00 ,stroke:#ABC;\n",
+  ],
+  [
+    "U+1680 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u1680,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u1680,stroke:#ABC;\n",
+  ],
+  [
+    "U+2000 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u2000,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u2000,stroke:#ABC;\n",
+  ],
+  [
+    "U+2001 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u2001,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u2001,stroke:#ABC;\n",
+  ],
+  [
+    "U+2002 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u2002,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u2002,stroke:#ABC;\n",
+  ],
+  [
+    "U+2003 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u2003,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u2003,stroke:#ABC;\n",
+  ],
+  [
+    "U+2004 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u2004,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u2004,stroke:#ABC;\n",
+  ],
+  [
+    "U+2005 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u2005,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u2005,stroke:#ABC;\n",
+  ],
+  [
+    "U+2006 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u2006,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u2006,stroke:#ABC;\n",
+  ],
+  [
+    "U+2007 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u2007,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u2007,stroke:#ABC;\n",
+  ],
+  [
+    "U+2008 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u2008,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u2008,stroke:#ABC;\n",
+  ],
+  [
+    "U+2009 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u2009,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u2009,stroke:#ABC;\n",
+  ],
+  [
+    "U+200A before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u200a,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u200a,stroke:#ABC;\n",
+  ],
+  [
+    "U+202F before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u202f,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u202f,stroke:#ABC;\n",
+  ],
+  [
+    "U+205F before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u205f,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\u205f,stroke:#ABC;\n",
+  ],
+  [
+    "U+FEFF before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\ufeff,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#F00\ufeff,stroke:#ABC;\n",
+  ],
+  [
+    "a vertical tab after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u000bstroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "a form feed after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\fstroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "a no-break space after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u00a0stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+1680 after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u1680stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+2000 after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u2000stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+2001 after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u2001stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+2002 after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u2002stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+2003 after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u2003stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+2004 after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u2004stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+2005 after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u2005stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+2006 after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u2006stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+2007 after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u2007stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+2008 after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u2008stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+2009 after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u2009stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+200A after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u200astroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+202F after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u202fstroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+205F after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\u205fstroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+FEFF after a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00,\ufeffstroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00, stroke:#ABC;\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between an entity and the opening brace of its attributes of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    "erDiagram\nA\u2028%%{x}%%  {\nint a\n}\n",
+    "erDiagram\n  A\u2028 %%{x}%%{\n    int a\n  }\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between an entity and the opening brace of its attributes of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    "erDiagram\nA\u2029%%{x}%%  {\nint a\n}\n",
+    "erDiagram\n  A\u2029 %%{x}%%{\n    int a\n  }\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the name of a style statement and its styles of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    "erDiagram\nA\nstyle A\u2028%%{x}%%  fill:red\n",
+    "erDiagram\n  A\n  style A\u2028 %%{x}%%fill:red\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the name of a style statement and its styles of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    "erDiagram\nA\nstyle A\u2029%%{x}%%  fill:red\n",
+    "erDiagram\n  A\n  style A\u2029 %%{x}%%fill:red\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the name of a class definition and its styles of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    "erDiagram\nA\nclassDef c\u2028%%{x}%%  fill:red\n",
+    "erDiagram\n  A\n  classDef c\u2028 %%{x}%%fill:red\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the name of a class definition and its styles of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    "erDiagram\nA\nclassDef c\u2029%%{x}%%  fill:red\n",
+    "erDiagram\n  A\n  classDef c\u2029 %%{x}%%fill:red\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the name of a class statement and its class of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    "erDiagram\nA\nclass A\u2028%%{x}%%  c\n",
+    "erDiagram\n  A\n  class A\u2028 %%{x}%%c\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the name of a class statement and its class of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    "erDiagram\nA\nclass A\u2029%%{x}%%  c\n",
+    "erDiagram\n  A\n  class A\u2029 %%{x}%%c\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the name of a relationship and its colon of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    "erDiagram\nA ||--o{ B\u2028%%{x}%%  : y\n",
+    "erDiagram\n  A ||--o{ B\u2028 %%{x}%%: y\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the name of a relationship and its colon of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    "erDiagram\nA ||--o{ B\u2029%%{x}%%  : y\n",
+    "erDiagram\n  A ||--o{ B\u2029 %%{x}%%: y\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the name and the key of an attribute of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    "erDiagram\nT {\nint a\u2028%%{x}%%  PK\n}\n",
+    "erDiagram\n  T {\n    int a\u2028 %%{x}%%PK\n  }\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the name and the key of an attribute of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    "erDiagram\nT {\nint a\u2029%%{x}%%  PK\n}\n",
+    "erDiagram\n  T {\n    int a\u2029 %%{x}%%PK\n  }\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the name and the comment of an attribute of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    'erDiagram\nT {\nint a\u2028%%{x}%%  "c"\n}\n',
+    'erDiagram\n  T {\n    int a\u2028 %%{x}%%"c"\n  }\n',
+  ],
+  [
+    "U+2029 and a directive in the gap between the name and the comment of an attribute of an ER diagram: the directive stands after one space and touches the unit that follows it",
+    'erDiagram\nT {\nint a\u2029%%{x}%%  "c"\n}\n',
+    'erDiagram\n  T {\n    int a\u2029 %%{x}%%"c"\n  }\n',
+  ],
+  [
+    "U+2028 and a directive in the gap between an entity and its alias of an ER diagram: the spaces after the directive are left out, and the directive touches the unit that follows it",
+    'erDiagram\nA\u2028%%{x}%%  ["al"]\n',
+    'erDiagram\n  A\u2028%%{x}%%["al"]\n',
+  ],
+  [
+    "U+2029 and a directive in the gap between an entity and its alias of an ER diagram: the spaces after the directive are left out, and the directive touches the unit that follows it",
+    'erDiagram\nA\u2029%%{x}%%  ["al"]\n',
+    'erDiagram\n  A\u2029%%{x}%%["al"]\n',
+  ],
+  [
+    "U+2028 and a directive in the gap between an entity and its CSS class of an ER diagram: the spaces after the directive are left out, and the directive touches the unit that follows it",
+    "erDiagram\nA\u2028%%{x}%%  :::cls\n",
+    "erDiagram\n  A\u2028%%{x}%%:::cls\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between an entity and its CSS class of an ER diagram: the spaces after the directive are left out, and the directive touches the unit that follows it",
+    "erDiagram\nA\u2029%%{x}%%  :::cls\n",
+    "erDiagram\n  A\u2029%%{x}%%:::cls\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the name of a subgraph and its title of an ER diagram: the spaces after the directive are left out, and the directive touches the unit that follows it",
+    'erDiagram\nsubgraph S\u2028%%{x}%%  ["t"]\nA\nend\n',
+    'erDiagram\n  subgraph S\u2028%%{x}%%["t"]\n    A\n  end\n',
+  ],
+  [
+    "U+2029 and a directive in the gap between the name of a subgraph and its title of an ER diagram: the spaces after the directive are left out, and the directive touches the unit that follows it",
+    'erDiagram\nsubgraph S\u2029%%{x}%%  ["t"]\nA\nend\n',
+    'erDiagram\n  subgraph S\u2029%%{x}%%["t"]\n    A\n  end\n',
+  ],
+  [
+    "U+2028 and a directive in the gap between an entity and another entity on its line of an ER diagram: the character ends the line, and the directive and the text that follows stand on the next line",
+    "erDiagram\nA\u2028%%{x}%%  B\n",
+    "erDiagram\n  A\u2028\n  %%{x}%% B\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between an entity and another entity on its line of an ER diagram: the character ends the line, and the directive and the text that follows stand on the next line",
+    "erDiagram\nA\u2029%%{x}%%  B\n",
+    "erDiagram\n  A\u2029\n  %%{x}%% B\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the colons of a CSS class and its name of an ER diagram: the character ends the line, and the directive and the text that follows stand on the next line",
+    "erDiagram\nA:::\u2028%%{x}%%  cls\n",
+    "erDiagram\n  A:::\u2028\n  %%{x}%% cls\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the colons of a CSS class and its name of an ER diagram: the character ends the line, and the directive and the text that follows stand on the next line",
+    "erDiagram\nA:::\u2029%%{x}%%  cls\n",
+    "erDiagram\n  A:::\u2029\n  %%{x}%% cls\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the keyword of a title and its text of an ER diagram: the character ends the line, and the directive and the text that follows stand on the next line",
+    "erDiagram\ntitle\u2028%%{x}%%  T\nA\n",
+    "erDiagram\n  title\u2028\n  %%{x}%% T\n  A\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the keyword of a title and its text of an ER diagram: the character ends the line, and the directive and the text that follows stand on the next line",
+    "erDiagram\ntitle\u2029%%{x}%%  T\nA\n",
+    "erDiagram\n  title\u2029\n  %%{x}%% T\n  A\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the colon of a relationship and its label of an ER diagram: the character ends the line, and the directive and the text that follows stand on the next line",
+    "erDiagram\nA ||--o{ B :\u2028%%{x}%%  y\n",
+    "erDiagram\n  A ||--o{ B : \u2028\n  %%{x}%% y\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the colon of a relationship and its label of an ER diagram: the character ends the line, and the directive and the text that follows stand on the next line",
+    "erDiagram\nA ||--o{ B :\u2029%%{x}%%  y\n",
+    "erDiagram\n  A ||--o{ B : \u2029\n  %%{x}%% y\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the keyword of a direction and its value of an ER diagram: the gap stays as written",
+    "erDiagram\ndirection\u2028%%{x}%%  LR\n",
+    "erDiagram\n  direction\u2028%%{x}%%  LR\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the keyword of a direction and its value of an ER diagram: the gap stays as written",
+    "erDiagram\ndirection\u2029%%{x}%%  LR\n",
+    "erDiagram\n  direction\u2029%%{x}%%  LR\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the colon of an accTitle and its text of an ER diagram: the gap stays as written",
+    "erDiagram\naccTitle:\u2028%%{x}%%  T\nA\n",
+    "erDiagram\n  accTitle:\u2028%%{x}%%  T\n  A\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the colon of an accTitle and its text of an ER diagram: the gap stays as written",
+    "erDiagram\naccTitle:\u2029%%{x}%%  T\nA\n",
+    "erDiagram\n  accTitle:\u2029%%{x}%%  T\n  A\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the keyword of a style statement and its name of an ER diagram: the gap stays as written",
+    "erDiagram\nA\nstyle\u2028%%{x}%%  A fill:red\n",
+    "erDiagram\n  A\n  style\u2028%%{x}%%  A fill:red\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the keyword of a style statement and its name of an ER diagram: the gap stays as written",
+    "erDiagram\nA\nstyle\u2029%%{x}%%  A fill:red\n",
+    "erDiagram\n  A\n  style\u2029%%{x}%%  A fill:red\n",
+  ],
+  [
+    "U+2028 and a directive in the gap between the keyword of a class definition and its name of an ER diagram: the gap stays as written",
+    "erDiagram\nA\nclassDef\u2028%%{x}%%  c fill:red\n",
+    "erDiagram\n  A\n  classDef\u2028%%{x}%%  c fill:red\n",
+  ],
+  [
+    "U+2029 and a directive in the gap between the keyword of a class definition and its name of an ER diagram: the gap stays as written",
+    "erDiagram\nA\nclassDef\u2029%%{x}%%  c fill:red\n",
+    "erDiagram\n  A\n  classDef\u2029%%{x}%%  c fill:red\n",
+  ],
+  [
+    "U+2029 and a directive with a space after it in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u2029%%{x}%% a\n}\n",
+    "erDiagram\n  T {\n    int\u2029 %%{x}%%a\n  }\n",
   ],
 ]
 
@@ -4623,6 +6143,27 @@ describe("a sequence diagram with a line separator", () => {
   })
 })
 
+/** Texts that every version of mermaid.js that counts rejects (docs/sequence.md, Line separators). */
+const rejectedSequenceExamples: readonly (readonly [string, string])[] = [
+  [
+    "autonumber 5, U+2028, and a `#` comment",
+    "sequenceDiagram\nautonumber 5\u2028# c\n",
+  ],
+  [
+    "autonumber 5, U+2029, and a `#` comment",
+    "sequenceDiagram\nautonumber 5\u2029# c\n",
+  ],
+]
+
+describe("a sequence diagram with a line separator that is rejected", () => {
+  it.each(rejectedSequenceExamples)(
+    "reports a syntax error for %s",
+    async (_name, input) => {
+      await expect(format(input)).rejects.toBeInstanceOf(SyntaxError)
+    },
+  )
+})
+
 describe("a flowchart with a line separator", () => {
   it.each(flowchartExamples)("keeps %s", async (_name, input, output) => {
     await expectKept(input, output)
@@ -5272,6 +6813,781 @@ describe("kanban whitespace and line boundaries", () => {
       ),
     ).toEqual(writtenEmbeddedTexts(input))
     expect(await describeFrontmatterChange(input, output, options)).toBeNull()
+  })
+})
+
+/**
+ * A no-break space, U+3000, U+2028, U+2029, and the other whitespace
+ * characters beside a comment after a statement or inside a type tag of an
+ * eventmodeling diagram (docs/eventmodeling.md, Type tags and Comments).
+ */
+const eventmodelingCommentGapExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a no-break space before a `%%` comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u00a0%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+3000 before a `//` comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u3000// c\n",
+    "eventmodeling\ntf 01 evt Alpha // c\n",
+  ],
+  [
+    "U+2028 before a slash comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2028/*c*/\n",
+    "eventmodeling\ntf 01 evt Alpha /*c*/\n",
+  ],
+  [
+    "U+2029 before a `%%` comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2029%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "an em space before a `//` comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2003// c\n",
+    "eventmodeling\ntf 01 evt Alpha // c\n",
+  ],
+  [
+    "a no-break space before a comment inside a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json\u00a0/*a*/`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json /*a*/` {x}\n",
+  ],
+  [
+    "U+3000 before a comment inside a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json\u3000/*a*/`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json /*a*/` {x}\n",
+  ],
+  [
+    "U+2028 before a comment inside a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json\u2028/*a*/`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json /*a*/` {x}\n",
+  ],
+  [
+    "U+2029 before a comment inside a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json\u2029/*a*/`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json /*a*/` {x}\n",
+  ],
+  [
+    "a no-break space after a comment inside a type tag, before its next part, of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `/*a*/\u00a0json`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `/*a*/ json` {x}\n",
+  ],
+  [
+    "a no-break space after a comment inside a type tag, before its closing backtick, of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json/*a*/\u00a0`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json/*a*/ ` {x}\n",
+  ],
+  [
+    "a no-break space before a comment after a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json`\u00a0/*c*/ {x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json` /*c*/ {x}\n",
+  ],
+  [
+    "a no-break space after a comment after a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json`/*c*/\u00a0{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json`/*c*/ {x}\n",
+  ],
+  [
+    "a no-break space between the parts of a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `\u00a0json\u00a0`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json` {x}\n",
+  ],
+  [
+    "U+3000 after a comment inside a type tag, before its next part, of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `/*a*/\u3000json`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `/*a*/ json` {x}\n",
+  ],
+  [
+    "U+2028 after a comment inside a type tag, before its next part, of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `/*a*/\u2028json`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `/*a*/ json` {x}\n",
+  ],
+  [
+    "U+2029 after a comment inside a type tag, before its next part, of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `/*a*/\u2029json`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `/*a*/ json` {x}\n",
+  ],
+  [
+    "U+3000 after a comment inside a type tag, before its closing backtick, of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json/*a*/\u3000`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json/*a*/ ` {x}\n",
+  ],
+  [
+    "U+2028 after a comment inside a type tag, before its closing backtick, of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json/*a*/\u2028`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json/*a*/ ` {x}\n",
+  ],
+  [
+    "U+2029 after a comment inside a type tag, before its closing backtick, of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json/*a*/\u2029`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json/*a*/ ` {x}\n",
+  ],
+  [
+    "U+3000 before a comment after a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json`\u3000/*c*/ {x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json` /*c*/ {x}\n",
+  ],
+  [
+    "U+2028 before a comment after a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json`\u2028/*c*/ {x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json` /*c*/ {x}\n",
+  ],
+  [
+    "U+2029 before a comment after a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json`\u2029/*c*/ {x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json` /*c*/ {x}\n",
+  ],
+  [
+    "U+3000 after a comment after a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json`/*c*/\u3000{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json`/*c*/ {x}\n",
+  ],
+  [
+    "U+2028 after a comment after a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json`/*c*/\u2028{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json`/*c*/ {x}\n",
+  ],
+  [
+    "U+2029 after a comment after a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `json`/*c*/\u2029{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json`/*c*/ {x}\n",
+  ],
+  [
+    "U+3000 between the parts of a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `\u3000json\u3000`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json` {x}\n",
+  ],
+  [
+    "U+2028 between the parts of a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `\u2028json\u2028`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json` {x}\n",
+  ],
+  [
+    "U+2029 between the parts of a type tag of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `\u2029json\u2029`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha `json` {x}\n",
+  ],
+  [
+    "a no-break space after the opening backtick of a type tag, before a comment, of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `\u00a0/*a*/json`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha ` /*a*/json` {x}\n",
+  ],
+  [
+    "U+3000 after the opening backtick of a type tag, before a comment, of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `\u3000/*a*/json`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha ` /*a*/json` {x}\n",
+  ],
+  [
+    "U+2028 after the opening backtick of a type tag, before a comment, of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `\u2028/*a*/json`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha ` /*a*/json` {x}\n",
+  ],
+  [
+    "U+2029 after the opening backtick of a type tag, before a comment, of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha `\u2029/*a*/json`{x}\n",
+    "eventmodeling\ntf 01 evt Alpha ` /*a*/json` {x}\n",
+  ],
+  [
+    "a no-break space before a comment that a statement follows, after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u00a0%% c\ntf 02 evt Beta\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\ntf 02 evt Beta\n",
+  ],
+  [
+    "U+2028 before a comment that a statement follows, after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2028%% c\ntf 02 evt Beta\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\ntf 02 evt Beta\n",
+  ],
+  [
+    "U+2029 before a comment that a statement follows, after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2029%% c\ntf 02 evt Beta\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\ntf 02 evt Beta\n",
+  ],
+  [
+    "U+3000 before a comment that a statement follows, after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u3000%% c\ntf 02 evt Beta\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\ntf 02 evt Beta\n",
+  ],
+  [
+    "a no-break space before a comment after the header of an eventmodeling diagram",
+    "eventmodeling\u00a0%% c\ntf 01 evt Alpha\n",
+    "eventmodeling %% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+3000 before a comment after the header of an eventmodeling diagram",
+    "eventmodeling\u3000%% c\ntf 01 evt Alpha\n",
+    "eventmodeling %% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2028 before a comment after the header of an eventmodeling diagram",
+    "eventmodeling\u2028%% c\ntf 01 evt Alpha\n",
+    "eventmodeling %% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2029 before a comment after the header of an eventmodeling diagram",
+    "eventmodeling\u2029%% c\ntf 01 evt Alpha\n",
+    "eventmodeling %% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "a no-break space before a comment after a GWT header of an eventmodeling diagram",
+    "eventmodeling\ngwt 01\u00a0%% c\ngiven evt Added\nthen cmd Charge\n",
+    "eventmodeling\ngwt 01 %% c\n  given\n    evt Added\n  then\n    cmd Charge\n",
+  ],
+  [
+    "U+3000 before a comment after a GWT header of an eventmodeling diagram",
+    "eventmodeling\ngwt 01\u3000%% c\ngiven evt Added\nthen cmd Charge\n",
+    "eventmodeling\ngwt 01 %% c\n  given\n    evt Added\n  then\n    cmd Charge\n",
+  ],
+  [
+    "U+2028 before a comment after a GWT header of an eventmodeling diagram",
+    "eventmodeling\ngwt 01\u2028%% c\ngiven evt Added\nthen cmd Charge\n",
+    "eventmodeling\ngwt 01 %% c\n  given\n    evt Added\n  then\n    cmd Charge\n",
+  ],
+  [
+    "U+2029 before a comment after a GWT header of an eventmodeling diagram",
+    "eventmodeling\ngwt 01\u2029%% c\ngiven evt Added\nthen cmd Charge\n",
+    "eventmodeling\ngwt 01 %% c\n  given\n    evt Added\n  then\n    cmd Charge\n",
+  ],
+  [
+    "a no-break space before a comment after a GWT item of an eventmodeling diagram",
+    "eventmodeling\ngwt 01\ngiven evt Added\u00a0%% c\nthen cmd Charge\n",
+    "eventmodeling\ngwt 01\n  given\n    evt Added %% c\n  then\n    cmd Charge\n",
+  ],
+  [
+    "U+3000 before a comment after a GWT item of an eventmodeling diagram",
+    "eventmodeling\ngwt 01\ngiven evt Added\u3000%% c\nthen cmd Charge\n",
+    "eventmodeling\ngwt 01\n  given\n    evt Added %% c\n  then\n    cmd Charge\n",
+  ],
+  [
+    "U+2028 before a comment after a GWT item of an eventmodeling diagram",
+    "eventmodeling\ngwt 01\ngiven evt Added\u2028%% c\nthen cmd Charge\n",
+    "eventmodeling\ngwt 01\n  given\n    evt Added %% c\n  then\n    cmd Charge\n",
+  ],
+  [
+    "U+2029 before a comment after a GWT item of an eventmodeling diagram",
+    "eventmodeling\ngwt 01\ngiven evt Added\u2029%% c\nthen cmd Charge\n",
+    "eventmodeling\ngwt 01\n  given\n    evt Added %% c\n  then\n    cmd Charge\n",
+  ],
+  [
+    "a no-break space before a comment after a data declaration of an eventmodeling diagram",
+    "eventmodeling\ndata D\u00a0%% c\n{\nx\n}\n",
+    "eventmodeling\ndata D %% c\n  {\n    x\n}\n",
+  ],
+  [
+    "U+3000 before a comment after a data declaration of an eventmodeling diagram",
+    "eventmodeling\ndata D\u3000%% c\n{\nx\n}\n",
+    "eventmodeling\ndata D %% c\n  {\n    x\n}\n",
+  ],
+  [
+    "U+2028 before a comment after a data declaration of an eventmodeling diagram",
+    "eventmodeling\ndata D\u2028%% c\n{\nx\n}\n",
+    "eventmodeling\ndata D %% c\n  {\n    x\n}\n",
+  ],
+  [
+    "U+2029 before a comment after a data declaration of an eventmodeling diagram",
+    "eventmodeling\ndata D\u2029%% c\n{\nx\n}\n",
+    "eventmodeling\ndata D %% c\n  {\n    x\n}\n",
+  ],
+  [
+    "a no-break space before a comment after a note declaration of an eventmodeling diagram",
+    "eventmodeling\nnote 01\u00a0%% c\n{\nx\n}\n",
+    "eventmodeling\nnote 01 %% c\n  {\n    x\n}\n",
+  ],
+  [
+    "U+3000 before a comment after a note declaration of an eventmodeling diagram",
+    "eventmodeling\nnote 01\u3000%% c\n{\nx\n}\n",
+    "eventmodeling\nnote 01 %% c\n  {\n    x\n}\n",
+  ],
+  [
+    "U+2028 before a comment after a note declaration of an eventmodeling diagram",
+    "eventmodeling\nnote 01\u2028%% c\n{\nx\n}\n",
+    "eventmodeling\nnote 01 %% c\n  {\n    x\n}\n",
+  ],
+  [
+    "U+2029 before a comment after a note declaration of an eventmodeling diagram",
+    "eventmodeling\nnote 01\u2029%% c\n{\nx\n}\n",
+    "eventmodeling\nnote 01 %% c\n  {\n    x\n}\n",
+  ],
+  [
+    "a no-break space before a comment after a data reference of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha [[D]]\u00a0%% c\n",
+    "eventmodeling\ntf 01 evt Alpha [[D]] %% c\n",
+  ],
+  [
+    "U+3000 before a comment after a data reference of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha [[D]]\u3000%% c\n",
+    "eventmodeling\ntf 01 evt Alpha [[D]] %% c\n",
+  ],
+  [
+    "U+2028 before a comment after a data reference of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha [[D]]\u2028%% c\n",
+    "eventmodeling\ntf 01 evt Alpha [[D]] %% c\n",
+  ],
+  [
+    "U+2029 before a comment after a data reference of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha [[D]]\u2029%% c\n",
+    "eventmodeling\ntf 01 evt Alpha [[D]] %% c\n",
+  ],
+  [
+    "a no-break space before a comment after an inline body of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha {x}\u00a0%% c\n",
+    "eventmodeling\ntf 01 evt Alpha {x} %% c\n",
+  ],
+  [
+    "U+3000 before a comment after an inline body of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha {x}\u3000%% c\n",
+    "eventmodeling\ntf 01 evt Alpha {x} %% c\n",
+  ],
+  [
+    "U+2028 before a comment after an inline body of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha {x}\u2028%% c\n",
+    "eventmodeling\ntf 01 evt Alpha {x} %% c\n",
+  ],
+  [
+    "U+2029 before a comment after an inline body of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha {x}\u2029%% c\n",
+    "eventmodeling\ntf 01 evt Alpha {x} %% c\n",
+  ],
+  [
+    "a no-break space before a comment after a source reference of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha ->> 02\u00a0%% c\ntf 02 evt Beta\n",
+    "eventmodeling\ntf 01 evt Alpha ->> 02 %% c\ntf 02 evt Beta\n",
+  ],
+  [
+    "U+3000 before a comment after a source reference of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha ->> 02\u3000%% c\ntf 02 evt Beta\n",
+    "eventmodeling\ntf 01 evt Alpha ->> 02 %% c\ntf 02 evt Beta\n",
+  ],
+  [
+    "U+2028 before a comment after a source reference of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha ->> 02\u2028%% c\ntf 02 evt Beta\n",
+    "eventmodeling\ntf 01 evt Alpha ->> 02 %% c\ntf 02 evt Beta\n",
+  ],
+  [
+    "U+2029 before a comment after a source reference of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha ->> 02\u2029%% c\ntf 02 evt Beta\n",
+    "eventmodeling\ntf 01 evt Alpha ->> 02 %% c\ntf 02 evt Beta\n",
+  ],
+  [
+    "U+000B before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u000b%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+000C before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\f%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+1680 before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u1680%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+2000 before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2000%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+2001 before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2001%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+2002 before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2002%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+2003 before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2003%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+2004 before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2004%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+2005 before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2005%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+2006 before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2006%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+2007 before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2007%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+2008 before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2008%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+2009 before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2009%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+200A before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u200a%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+202F before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u202f%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+205F before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u205f%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+FEFF before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\ufeff%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "a no-break space before a comment after an entity declaration of an eventmodeling diagram",
+    "eventmodeling\nentity Shop.Buy\u00a0%% c\n",
+    "eventmodeling\nentity Shop.Buy %% c\n",
+  ],
+  [
+    "U+3000 before a comment after an entity declaration of an eventmodeling diagram",
+    "eventmodeling\nentity Shop.Buy\u3000%% c\n",
+    "eventmodeling\nentity Shop.Buy %% c\n",
+  ],
+  [
+    "U+2028 before a comment after an entity declaration of an eventmodeling diagram",
+    "eventmodeling\nentity Shop.Buy\u2028%% c\n",
+    "eventmodeling\nentity Shop.Buy %% c\n",
+  ],
+  [
+    "U+2029 before a comment after an entity declaration of an eventmodeling diagram",
+    "eventmodeling\nentity Shop.Buy\u2029%% c\n",
+    "eventmodeling\nentity Shop.Buy %% c\n",
+  ],
+  [
+    "a no-break space before a comment after a clause keyword of an eventmodeling diagram",
+    "eventmodeling\ngwt 01\ngiven\u00a0%% c\nevt Added\nthen cmd Charge\n",
+    "eventmodeling\ngwt 01\n  given %% c\n    evt Added\n  then\n    cmd Charge\n",
+  ],
+  [
+    "U+3000 before a comment after a clause keyword of an eventmodeling diagram",
+    "eventmodeling\ngwt 01\ngiven\u3000%% c\nevt Added\nthen cmd Charge\n",
+    "eventmodeling\ngwt 01\n  given %% c\n    evt Added\n  then\n    cmd Charge\n",
+  ],
+  [
+    "U+2028 before a comment after a clause keyword of an eventmodeling diagram",
+    "eventmodeling\ngwt 01\ngiven\u2028%% c\nevt Added\nthen cmd Charge\n",
+    "eventmodeling\ngwt 01\n  given %% c\n    evt Added\n  then\n    cmd Charge\n",
+  ],
+  [
+    "U+2029 before a comment after a clause keyword of an eventmodeling diagram",
+    "eventmodeling\ngwt 01\ngiven\u2029%% c\nevt Added\nthen cmd Charge\n",
+    "eventmodeling\ngwt 01\n  given %% c\n    evt Added\n  then\n    cmd Charge\n",
+  ],
+  [
+    "a no-break space before a comment after the closing brace of a block of an eventmodeling diagram",
+    "eventmodeling\ndata D {\nx\n}\u00a0%% c\n",
+    "eventmodeling\ndata D {\n  x\n} %% c\n",
+  ],
+  [
+    "U+3000 before a comment after the closing brace of a block of an eventmodeling diagram",
+    "eventmodeling\ndata D {\nx\n}\u3000%% c\n",
+    "eventmodeling\ndata D {\n  x\n} %% c\n",
+  ],
+  [
+    "U+2028 before a comment after the closing brace of a block of an eventmodeling diagram",
+    "eventmodeling\ndata D {\nx\n}\u2028%% c\n",
+    "eventmodeling\ndata D {\n  x\n} %% c\n",
+  ],
+  [
+    "U+2029 before a comment after the closing brace of a block of an eventmodeling diagram",
+    "eventmodeling\ndata D {\nx\n}\u2029%% c\n",
+    "eventmodeling\ndata D {\n  x\n} %% c\n",
+  ],
+  [
+    "a no-break space before a comment mark after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u00a0%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u00a0%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+3000 before a comment mark after the text of the accTitle of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling accTitle: T\u3000// c\ntf 01 evt Alpha\n",
+    "eventmodeling accTitle: T\u3000// c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2028 before a comment mark after the text of the accDescr of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling accDescr: T\u2028/* c */\ntf 01 evt Alpha\n",
+    "eventmodeling accDescr: T\u2028/* c */\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2003 before a comment mark after the text of the title of a frame statement of an eventmodeling diagram stays as written",
+    "eventmodeling\ntf 01 evt Alpha title T\u2003%% c\n",
+    "eventmodeling\ntf 01 evt Alpha title T\u2003%% c\n",
+  ],
+  [
+    "a no-break space before a comment mark after the text of the accTitle of a frame statement of an eventmodeling diagram stays as written",
+    "eventmodeling\ntf 01 evt Alpha accTitle: T\u00a0/* c */\n",
+    "eventmodeling\ntf 01 evt Alpha accTitle: T\u00a0/* c */\n",
+  ],
+  [
+    "U+3000 before a comment mark after the text of the accDescr of a frame statement of an eventmodeling diagram stays as written",
+    "eventmodeling\ntf 01 evt Alpha accDescr: T\u3000// c\n",
+    "eventmodeling\ntf 01 evt Alpha accDescr: T\u3000// c\n",
+  ],
+  [
+    "U+000B before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u000b%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u000b%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+000C before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\f%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\f%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "a no-break space before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u00a0%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u00a0%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+1680 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u1680%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u1680%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2000 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u2000%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u2000%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2001 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u2001%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u2001%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2002 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u2002%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u2002%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2003 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u2003%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u2003%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2004 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u2004%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u2004%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2005 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u2005%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u2005%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2006 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u2006%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u2006%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2007 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u2007%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u2007%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2008 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u2008%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u2008%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2009 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u2009%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u2009%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+200A before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u200a%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u200a%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+202F before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u202f%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u202f%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+205F before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u205f%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u205f%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+3000 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u3000%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u3000%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+FEFF before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\ufeff%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\ufeff%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2028 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u2028%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u2028%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2029 before a `%%` comment after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u2029%% c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u2029%% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "a no-break space before a `//` comment mark after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u00a0// c\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u00a0// c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "a no-break space before a `/* */` comment mark after the text of the title of the header line of an eventmodeling diagram stays as written",
+    "eventmodeling title T\u00a0/* c */\ntf 01 evt Alpha\n",
+    "eventmodeling title T\u00a0/* c */\ntf 01 evt Alpha\n",
+  ],
+  [
+    "a sequence diagram keeps U+2029 before a comment that a statement follows as written",
+    "sequenceDiagram\nA->>B: x\u2029%% c\nC->>D: y\n",
+    "sequenceDiagram\n  A->>B: x\u2029%% c\nC->>D: y\n",
+  ],
+  [
+    "a sequence diagram puts a comment after U+2028 at the end of the text on a line of its own",
+    "sequenceDiagram\nA->>B: x\u2028%% c\n",
+    "sequenceDiagram\n  A ->> B: x\n  %% c\n",
+  ],
+  [
+    "a timeline keeps U+2029 before a comment after its header that a statement follows as written",
+    "timeline\u2029%% c\n2020 : a\n",
+    "timeline\u2029%% c\n2020 : a\n",
+  ],
+  [
+    "a timeline puts a comment after its header and U+2028 at the end of the text on a line of its own",
+    "timeline\u2028%% c\n",
+    "timeline\n  %% c\n",
+  ],
+  [
+    "a user journey keeps U+2029 before a comment after its header that a statement follows as written",
+    "journey\u2029%% c\nsection S\n",
+    "journey\u2029%% c\nsection S\n",
+  ],
+  [
+    "a user journey puts a comment after its header and U+2028 at the end of the text on a line of its own",
+    "journey\u2028%% c\n",
+    "journey\n  %% c\n",
+  ],
+  [
+    "a user journey prints a no-break space before a comment after its header as one space",
+    "journey\u00a0%% c\nsection S\n",
+    "journey %% c\n  section S\n",
+  ],
+  [
+    "a timeline prints U+3000 before a comment after its header as one space",
+    "timeline\u3000%% c\n2020 : a\n",
+    "timeline %% c\n  2020 : a\n",
+  ],
+  [
+    "a user journey prints a run before a comment after its title as one space",
+    "journey\ntitle T  %% c\nsection S\n",
+    "journey\n  title T %% c\n  section S\n",
+  ],
+  [
+    "a timeline prints a run before a comment after its title as one space",
+    "timeline\ntitle T  %% c\n2020 : a\n",
+    "timeline\n  title T %% c\n  2020 : a\n",
+  ],
+  [
+    "a sequence diagram prints a run before a comment after its title as one space",
+    "sequenceDiagram\ntitle T  %% c\nA->>B: x\n",
+    "sequenceDiagram\n  title T %% c\n  A ->> B: x\n",
+  ],
+]
+
+describe("the whitespace beside a comment of an eventmodeling diagram", () => {
+  it.each(eventmodelingCommentGapExamples)(
+    "%s",
+    async (_name, input, expected) => {
+      await expectKept(input, expected)
+    },
+  )
+})
+
+/** The printers that docs/eventmodeling.md, Comments, cites: where they print the characters before a comment otherwise. */
+const commentGapPrecedentExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a no-break space before a comment after a message of a sequence diagram",
+    "sequenceDiagram\nA->>B: x\u00a0%% c\n",
+    "sequenceDiagram\n  A ->> B: x\u00a0%% c\n",
+  ],
+  [
+    "U+3000 before a comment after a message of a sequence diagram",
+    "sequenceDiagram\nA->>B: x\u3000%% c\n",
+    "sequenceDiagram\n  A ->> B: x\u3000%% c\n",
+  ],
+  [
+    "U+2028 before a comment that a statement follows, after a message of a sequence diagram",
+    "sequenceDiagram\nA->>B: x\u2028%% c\nC->>D: y\n",
+    "sequenceDiagram\n  A->>B: x\u2028%% c\nC->>D: y\n",
+  ],
+  [
+    "U+2029 before a comment at the end of the text, after a message of a sequence diagram",
+    "sequenceDiagram\nA->>B: x\u2029%% c\n",
+    "sequenceDiagram\n  A ->> B: x\n  %% c\n",
+  ],
+  [
+    "a no-break space before a comment after the header of a timeline",
+    "timeline\u00a0%% c\n2020 : a\n",
+    "timeline %% c\n  2020 : a\n",
+  ],
+  [
+    "U+2028 before a comment that a statement follows, after the header of a timeline",
+    "timeline\u2028%% c\n2020 : a\n",
+    "timeline\u2028%% c\n2020 : a\n",
+  ],
+  [
+    "U+2029 before a comment at the end of the text, after the header of a timeline",
+    "timeline\u2029%% c\n",
+    "timeline\n  %% c\n",
+  ],
+  [
+    "U+3000 before a comment after the header of a user journey",
+    "journey\u3000%% c\nsection S\n",
+    "journey %% c\n  section S\n",
+  ],
+  [
+    "U+2028 before a comment that a statement follows, after the header of a user journey",
+    "journey\u2028%% c\nsection S\n",
+    "journey\u2028%% c\nsection S\n",
+  ],
+  [
+    "U+2029 before a comment at the end of the text, after the header of a user journey",
+    "journey\u2029%% c\n",
+    "journey\n  %% c\n",
+  ],
+]
+
+describe("the whitespace before a comment of a sequence diagram, a timeline, and a user journey", () => {
+  it.each(commentGapPrecedentExamples)("%s", async (_name, input, expected) => {
+    await expectKept(input, expected)
   })
 })
 

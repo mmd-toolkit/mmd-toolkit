@@ -17,8 +17,18 @@ records preserved text and differences from mermaid.js.
 Print the authored header at column one and put an ordinary first statement on
 the next line, making the dialect easy to find. IR keeps `railroad-beta`, EBNF
 `railroad-ebnf-beta`, ABNF `railroad-abnf-beta`, and PEG `railroad-peg-beta`.
-Add no colon or flags. Hidden forms, global trivia and protected semicolon
-segments retain their shared boundaries; an empty body stays empty.
+Add no colon or flags. mermaid.js reads each of the four names in this spelling
+only: it rejects the name without `-beta`, with `-beta` in another case, and in
+capitals, so no other spelling is printed (see
+[The names of a header](./compatibility.md#the-names-of-a-header)). Hidden
+forms, global trivia and protected semicolon segments retain their shared
+boundaries; an empty body stays empty. Rule 1 names no mark for the line that
+follows the header, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [info](./info.md#header), [wardley](./wardley.md#header), and
+[architecture](./architecture.md#header) keep the boundaries of hidden forms and
+protected segments at their headers, where no other rule keeps the layout as
+written (a protected `style` or `classDef` line, and the like).
 
 [fixture: railroad/header/abnf-hidden]
 
@@ -105,6 +115,12 @@ value columns, hidden interiors and retained prefixes keep their own columns.
 Semicolon-protected segments start at one body step, like other flat diagrams;
 their later lines keep their written columns because these belong to the
 protected text.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this layout, as [wardley](./wardley.md#indentation) aligns the first line of a
+protected segment with the body and keeps its later lines in their written
+columns, and so does [cynefin](./cynefin.md#semicolons), where no other rule
+keeps the layout as written (a value that mermaid.js reads by its columns, and
+the like).
 
 [fixture: railroad/indentation/abnf-default]
 
@@ -190,11 +206,19 @@ railroad-peg-beta
 
 Print each ordinary rule on its own line and attach its required final `;`
 without an ordinary preceding space. This exposes rule boundaries without
-changing their syntax. All four dialects require the last terminator too. ABNF
-terminators must be followed immediately by LF or EOF: `; note` is a comment and
-cannot replace a terminator. Keep such a comment and the real terminator on
-their original sides of the line break. Shared semicolon protection takes
-precedence.
+changing their syntax. Prettier prints each statement of the languages it
+formats on a line of its own (`a(); b()` in JavaScript becomes two lines), as
+[flowchart](./flowchart.md#statements-one-per-line) says, and the 14 railroad
+examples in the documentation of mermaid.js write one statement on each line (a
+rule may span lines). Rule 1 gives the `;` that ends a rule: its table has the
+row of a `;` that ends a statement, which Prettier prints without whitespace
+before it (`a ;` is printed `a;`). The 14 examples write ` ;` with a space
+before it, which does not change this, since rule 3 decides spellings and rule 1
+decides the whitespace beside a mark. All four dialects require the last
+terminator too. ABNF terminators must be followed immediately by LF or EOF:
+`; note` is a comment and cannot replace a terminator. Keep such a comment and
+the real terminator on their original sides of the line break. Shared semicolon
+protection takes precedence.
 
 [fixture: railroad/statements-one-per-line/abnf-terminator]
 
@@ -258,9 +282,12 @@ railroad-peg-beta
 ### Assignment
 
 Put one ordinary space on either side of the assignment, without aligning names.
-IR and ABNF keep `=`, EBNF prints `::=` as `=`, and PEG keeps `<-`. Both EBNF
-forms have the same Db, and the examples in the documentation of mermaid.js
-write `=` 35 times and `::=` never (see
+Rule 1 gives the spaces: Prettier prints the `=` that gives a name its value
+with one space on each side (`function f(a=1) {}` is printed
+`function f(a = 1) {}`), and another mark between two things, as the `<-` of
+PEG, in the same way. IR and ABNF keep `=`, EBNF prints `::=` as `=`, and PEG
+keeps `<-`. Both EBNF forms have the same Db, and the examples in the
+documentation of mermaid.js write `=` 35 times and `::=` never (see
 [Other spellings of a keyword or of a punctuation mark](./compatibility.md#other-spellings-of-a-keyword-or-of-a-punctuation-mark)).
 Compound delimiters remain whole tokens.
 
@@ -425,7 +452,10 @@ railroad-peg-beta
 Compact ordinary gaps inside EBNF `(expr)`, `[expr]` and `{expr}`, ABNF `(expr)`
 and `[expr]`, and PEG `(expr)`. Keep every delimiter, including nested and
 singleton groups. This chooses tight inner edges while preserving the source
-structure even where removing a group would keep the Db.
+structure even where removing a group would keep the Db. None of the examples in
+the documentation of mermaid.js writes a group that holds a single term that is
+not a choice, or only another group, so [rule 3](./printed-form.md#3-a-spelling)
+gives no form for it and keeps the delimiters as written.
 
 [fixture: railroad/groups/abnf-delimiters]
 
@@ -467,10 +497,11 @@ railroad-peg-beta
 ### Postfixes
 
 Attach AST postfix `?`, `*` and `+` to their operand in EBNF and PEG. Keep the
-EBNF chain order and the single PEG suffix. EBNF special-sequence priority is
-already represented by the AST: question marks inside its raw leaf are not
-reinterpreted as postfixes. Attached operators stay, without replacing them with
-calls or groups.
+EBNF chain order and the single PEG suffix. Swapping the two postfixes of
+`"chain" * +` gives another Db in the pinned version. EBNF special-sequence
+priority is already represented by the AST: question marks inside its raw leaf
+are not reinterpreted as postfixes. Attached operators stay, without replacing
+them with calls or groups.
 
 [fixture: railroad/postfixes/ebnf-chain]
 
@@ -571,10 +602,15 @@ railroad-abnf-beta
 IR prints its eight constructors as `name(...)`: sequence, choice, optional,
 oneOrMore, zeroOrMore, terminal, nonterminal and special. Ordinary gaps before
 `(` and at the inner edges are empty; argument commas have no space before and
-one after on a line. Call layout follows [Long lines](#long-lines). Retain empty
-quoted arguments, nested calls and singleton sequence/choice calls. Collapsing a
-singleton can keep the Db but loses an authored call; trailing commas are not
-added.
+one after on a line. Rule 1 gives these gaps: Prettier prints a call without
+whitespace before its `(` (`f (a)` is printed `f(a);`) and inside its
+parentheses (`f( a )` is printed `f(a);`), and a comma with none before it and
+one space after it (`f(a,b)` is printed `f(a, b);`). mermaid.js rejects a space
+before the `(` of a call in a C4 diagram (see
+[Rejected inputs](./c4.md#rejected-inputs)). Call layout follows
+[Long lines](#long-lines). Retain empty quoted arguments, nested calls and
+singleton sequence/choice calls. Collapsing a singleton can keep the Db but
+loses an authored call; trailing commas are not added.
 
 [fixture: railroad/calls/ir-all]
 
@@ -753,10 +789,12 @@ padding line breaks. This consistently shows the grammar hierarchy. Add no
 trailing commas.
 
 Keep `terminal`, `nonterminal` and `special` together with their quoted value as
-a compact unit. A comment, global directive or native hidden form at any
-boundary between the constructor, opening parenthesis, value and closing
-parenthesis makes that leaf call multiline too. String contents retain their
-physical newlines and written continuation columns.
+a compact unit. The unit has no whitespace inside its parentheses, as rule 1
+prints the parentheses of a call (`f( a )` is printed `f(a);`). A comment,
+global directive or native hidden form at any boundary between the constructor,
+opening parenthesis, value and closing parenthesis makes that leaf call
+multiline too. String contents retain their physical newlines and written
+continuation columns.
 
 [fixture: railroad/calls/ir-singletons]
 
@@ -781,16 +819,21 @@ physical newlines and written continuation columns.
 [fixture: railroad/multiline-values/ir-columns]
 
 Comments, global directives and native hidden forms stay at their argument
-boundaries while the surrounding calls use the structural layout. Semicolons
-inside values do not prevent it. Keep trivia contents as described in
-[Comments](#comments), [Global directives](#global-directives) and
-[Hidden forms](#hidden-forms). Lines containing `style` or `classDef`, and
-ignored semicolons, retain their protected layout. EBNF, ABNF and PEG keep an
-authored line break after the assignment of an outermost choice and before its
-`|` or `/` separators. The continuation uses one extra level. The separator
-stays with the following alternative: a plain line break after it still joins.
-Other expression padding remains compact, and single-line rules gain no new
-breaks. `printWidth` controls no diagram line breaks.
+boundaries while the surrounding calls use the structural layout. Their gaps
+follow [Comments](#comments), where rule 2 gives them. Semicolons inside values
+do not prevent it. Keep trivia contents as described in [Comments](#comments),
+[Global directives](#global-directives) and [Hidden forms](#hidden-forms). Lines
+containing `style` or `classDef`, and ignored semicolons, retain their protected
+layout. EBNF, ABNF and PEG keep an authored line break after the assignment of
+an outermost choice and before its `|` or `/` separators. The continuation uses
+one extra level. The separator stays with the following alternative: a plain
+line break after it still joins. Other expression padding remains compact, and
+single-line rules gain no new breaks. Rule 1 gives the compact padding: Prettier
+prints no whitespace inside parentheses, brackets, and braces that hold values
+alone (`f( a )` is printed `f(a);`, `x = [ 1, 2 ]` is printed `x = [1, 2];`),
+and a comma with none before it and one space after it. The braces of an EBNF
+`{expr}` hold terms alone, with no name given a value, as the array of
+`[ 1, 2 ]` does. `printWidth` controls no diagram line breaks.
 
 [fixture: railroad/long-lines/ebnf-written-alternatives] [fixture:
 railroad/long-lines/abnf-written-alternatives] [fixture:
@@ -1017,12 +1060,20 @@ Use the shared common-line layout: trim ordinary exterior whitespace around a
 nonempty value and print `title value`; null or whitespace-only values print
 bare `title`. Keep quote-looking content and escape spelling, and print a run of
 spaces and tabs inside the value as one space. Do not read a value from the next
-physical line. A bare title prefix followed by a rule becomes two statements,
-keeping the rule out of the title. The comparison Db omits body titles, which
-gives no permission to rewrite their contents. The directives that end a title
-are printed with one space before each that has whitespace before it, and the
-whitespace after the last one is left out, whatever the whitespace at the end of
-the line (see
+physical line: `title`, a line break, and `r=terminal("x");` joined as
+`title r=terminal("x");` make the rule `r` the text of the title: the Db of the
+pinned version and the figure of every version that counts change (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A bare title prefix followed by a rule becomes two statements, keeping the rule
+out of the title. The two stand on lines of their own as every statement does
+(see [Statements one per line](#statements-one-per-line)), and
+`title x=terminal("title prefix");` on one line would make
+`x=terminal("title prefix");` the text of the title, and the Db that mermaid.js
+builds in the pinned version and the figure of every version that counts change.
+The comparison Db of the tests omits body titles, which gives no permission to
+rewrite their contents. The directives that end a title are printed with one
+space before each that has whitespace before it, and the whitespace after the
+last one is left out, whatever the whitespace at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: railroad/title/ir-rule-on-next-line]
@@ -1130,10 +1181,13 @@ retaining internal text and brace-looking line values, except that a run of
 spaces and tabs inside the value of an `accDescr` is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 and that of an `accTitle` stays as written, since the browser shows it as a
-tooltip. Keep next-line values separate. This gives the same form as the other
-diagrams. The directives that end the value are printed with one space before
-each that has whitespace before it, and the whitespace after the last one is
-left out (see
+tooltip. Keep next-line values separate: `accTitle:`, a line break, and
+`r=terminal("x");` joined as `accTitle: r=terminal("x");` make the rule `r` the
+text of the title, and so it is for `accDescr`: the Db of the pinned version and
+the figure of every version that counts change (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The directives that end the value are printed with one space before each that
+has whitespace before it, and the whitespace after the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: railroad/accessibility-lines/ir-acc-title-before-rule]
@@ -1215,7 +1269,12 @@ Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
 In a block that keeps its braces, put one space between `accDescr` and `{` and
 join a plain keyword-to-opener gap. Whitespace-only interiors become `{}`
-because no content needs surrounding padding.
+because no content needs surrounding padding, as rule 1 prints braces that hold
+nothing (`x = { }` is printed `x = {};`). The one space between the keyword and
+the brace and the joined plain gap are the form that
+[pie](./pie.md#description-blocks), [info](./info.md#description-blocks), and
+[radar](./radar.md#description-blocks) print, which
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives.
 
 [fixture: railroad/description-blocks/abnf-edges] [fixture:
 railroad/description-blocks/ebnf-edges] [fixture:
@@ -1224,13 +1283,19 @@ railroad/description-blocks/peg-edges]
 
 In a block with a text over several lines, ordinary description body and
 standalone comment lines align one level inside the statement: the Db removes
-indentation after LF. Keep line breaks, internal blank lines and trailing
-whitespace, and align a separate closing brace with the statement.
+indentation after LF. Keep line breaks and interior blank lines, and the
+whitespace at the end of each line of text except the last one; a line of
+whitespace only becomes an empty line. The whitespace at the end of the last
+line of text is dropped where the closer stands on a line of its own, and is
+printed as one space where the closer follows it on that line. Align a separate
+closing brace with the statement.
 
 [fixture: railroad/description-blocks/abnf-lines] [fixture:
 railroad/description-blocks/ebnf-lines] [fixture:
 railroad/description-blocks/ir-lines] [fixture:
-railroad/description-blocks/peg-lines]
+railroad/description-blocks/peg-lines] [fixture:
+description-blocks/block-trailing-whitespace] [fixture:
+description-blocks/block-trailing-whitespace-closer-on-the-text-line]
 
 A block that a comment of the diagram type's own kind follows on its line stays
 a block (`accDescr { d } ; c` in an ABNF diagram, `(* c *)` or `/* c */` in an
@@ -1248,8 +1313,11 @@ railroad/description-blocks/ebnf-percent-comment-after-block] [fixture:
 railroad/description-blocks/ir-percent-comment-after-block] [fixture:
 railroad/description-blocks/peg-percent-comment-after-block]
 
-Directives keep their complete source. A block with only a comment or a
-directive keeps its contents.
+Directives keep their complete source, since mermaid.js does not parse their
+content (see
+[Embedded data is not checked](./compatibility.md#embedded-data-is-not-checked)).
+A block with only a comment or a directive keeps its contents for the reasons
+under [Comments](#comments) and [Global directives](#global-directives).
 
 [fixture: railroad/description-blocks/abnf-trivia] [fixture:
 railroad/description-blocks/ebnf-trivia] [fixture:
@@ -1318,11 +1386,25 @@ Standalone comments use one body step, or column one before the header. Outside
 ordinary IR calls, inline comments keep their side and touching/separated
 boundaries; ordinary separated gaps become one space. Preserve marks, text,
 tails, block continuation columns and source order. A line comment leaves its
-following operand or terminator on the next line. Every dialect has `%%`; IR
-also has `/* */`, EBNF `/* */` and `(* *)`, ABNF `;` line comments, and PEG `#`
-line comments. Bare ABNF `;` is punctuation; `//` is not a native comment. Text
-owned by a value stays in that value. These choices preserve ownership and
-prevent a line comment from taking code.
+following operand or terminator on the next line. For the terminator of an ABNF
+rule, every version of mermaid.js that counts rejects `r="comment"; note ;`,
+since the comment takes the terminator (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Every dialect has `%%`; IR also has `/* */`, EBNF `/* */` and `(* *)`, ABNF `;`
+line comments, and PEG `#` line comments. Bare ABNF `;` is punctuation; `//` is
+not a native comment. Text owned by a value stays in that value. These choices
+preserve ownership and prevent a line comment from taking code. Rule 1 names no
+mark for a comment, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides. A standalone comment stands one body step in, or at column one before
+the header, and an inline comment keeps its line and keeps touching what it
+touches, with one space for a separated gap, as in [radar](./radar.md#comments),
+[wardley](./wardley.md#comments), and
+[architecture](./architecture.md#comments), where no other rule keeps the
+whitespace as written (a comment right after a character, whitespace that
+mermaid.js reads, and the like). The text of a comment is kept as written, with
+the whitespace at its end: mermaid.js does not read it, as
+[flowchart](./flowchart.md#comments) says of the text of its comments.
 
 Inside an ordinary IR call, a block comment before an argument moves with that
 argument onto its line. Comments before a comma or the closing parenthesis
@@ -1338,7 +1420,12 @@ space before them and none after them; the closing parenthesis stands on its own
 line. Apply the same outside spacing beside existing line breaks without moving
 punctuation across comments. Preserve each comment run's contents, internal
 contacts, continuation columns and trailing whitespace, including with tabs or
-zero-width indentation.
+zero-width indentation. A standalone comment line inside an argument list stands
+at the level of the arguments around it, as a comment line stands at the level
+of the statements around it in [flowchart](./flowchart.md#comments),
+[sequence](./sequence.md#comments), and [state](./state.md#comments), and a run
+of empty lines becomes one, as in [radar](./radar.md#blank-lines) and
+[info](./info.md#blank-lines).
 
 [fixture: railroad/comments/ir-call-inline-spacing]
 
@@ -1475,10 +1562,15 @@ Outside ordinary IR call gaps, place a directive within a printed line as under
 [Directives](./flowchart.md#directives). When formatting splits units that were
 on the same line, a directive in their gap moves with the following unit: its
 right boundary stays touching or separated, while its left contact is broken.
-Use one body step for ordinary standalone directives. Do not format their
-contents as JSON or collect them before the header. Uniform added spaces can
-change strings, repeat components, numeric values and predicate operands after
-common removal.
+[Rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+this placement, as [radar](./radar.md#global-directives),
+[packet](./packet.md#global-directives), and
+[wardley](./wardley.md#global-directives) place a directive in the gap of units
+that formatting splits, where no other rule keeps the layout as written (a
+protected `style` or `classDef` line, and the like). Use one body step for
+ordinary standalone directives. Do not format their contents as JSON or collect
+them before the header. Uniform added spaces can change strings, repeat
+components, numeric values and predicate operands after common removal.
 
 Ordinary IR call gaps use the same outside spacing and structural placement as
 comments. A directive stays beside its argument and makes a quoted leaf call
@@ -1921,11 +2013,12 @@ railroad/semicolons/peg-classdef-comment-both-ps]
 Shared kept-line layout keeps a whole statement or indivisible value/trivia that
 crosses the line too; later lines retain their written columns.
 
-mermaid.js can ignore the last semicolon of a line containing these strings. In
-railroad that semicolon can be a required rule terminator or an ABNF comment
-mark. Changing the line can therefore reject a rule or read comment text as
-code. Keeping the source line protects both kinds of punctuation without
-predicting how moving its contents would affect the common line rule.
+mermaid.js can ignore the last semicolon of a line containing these strings (see
+[Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)). In railroad
+that semicolon can be a required rule terminator or an ABNF comment mark.
+Changing the line can therefore reject a rule or read comment text as code.
+Keeping the source line protects both kinds of punctuation without predicting
+how moving its contents would affect the common line rule.
 
 The cost is that a rule name, string or comment containing `style` or `classDef`
 leaves that line unformatted, even when no colon or hash follows. Other lines
@@ -2682,9 +2775,20 @@ railroad-peg-beta
 Only safe real leading frontmatter uses the shared guarded YAML formatter. It
 chooses the YAML that Prettier prints while preserving embedded effects.
 Malformed YAML, indented fences, closer padding, HTML-quote hazards, fences that
-formatting would create in the body and retained-prefix YAML stay written. YAML
-nesting and block scalars use the shared positive minimum at tabWidth zero.
-Native hidden YAML is opaque and never enters this path.
+formatting would create in the body and retained-prefix YAML stay written. An
+indented fence, a fence line that formatting would create, and an HTML-quote
+hazard stay written for the reasons under
+[Frontmatter](./compatibility.md#frontmatter). Rule 1 names no mark for the
+whitespace after a `---` line, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [radar](./radar.md#frontmatter-yaml),
+[info](./info.md#frontmatter-yaml), [packet](./packet.md#frontmatter-yaml), and
+[wardley](./wardley.md#frontmatter-yaml) keep the padding of a delimiter, where
+no other rule keeps the layout as written (a hazard named under Frontmatter, and
+the like). The YAML that is formatted is printed as Prettier prints YAML, with
+`key: value` for the colon of a key (rule 1). YAML nesting and block scalars use
+the shared positive minimum at tabWidth zero. Native hidden YAML is opaque and
+never enters this path.
 
 [fixture: railroad/frontmatter-yaml/abnf-padding]
 

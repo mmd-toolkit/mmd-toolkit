@@ -415,6 +415,14 @@ section の中でも、同じ period の `:` は 1 つの桁に置きます。
 全角文字を含む残りのテキストには Prettier の表示幅を使います。
 中にある指令も含め、period に書かれたテキストの幅を数えます。
 そのテキストが印字で表示されるためです。
+最初の `:` の前にある、行の規則が無視する `;` も、そのテキストの一部で、
+周りの空白を書かれたまま含めて、幅に数えます。
+行の規則が `;` を無視するには、行のその前に `style` と `:#` が要るので、
+period の前に別の文があります。
+`style:#x` を入れた説明ブロックがその例です。
+後ろの行の `:` は、period が行の頭にあるとしたときに最初の `:` が立つ桁に、
+文の字下げを加えて立ち、行は全体を保ちます。
+詳しくは [`;` を含む行](./compatibility.ja.md#-を含む行) を参照してください。
 `tabWidth: 0` でも設定した字下げを使います。
 
 [fixture: periods-and-events/events-on-later-lines]
@@ -424,6 +432,10 @@ section の中でも、同じ period の `:` は 1 つの桁に置きます。
 [fixture: periods-and-events/colon-alignment-wide-period]
 [fixture: periods-and-events/colon-alignment-zero-width]
 [fixture: periods-and-events/colon-alignment-written-period]
+[fixture: periods-and-events/colon-alignment-ignored-semicolon]
+[fixture: periods-and-events/colon-alignment-ignored-semicolon-touching-colon]
+[fixture: periods-and-events/colon-alignment-ignored-semicolon-touching-period]
+[fixture: periods-and-events/colon-alignment-ignored-semicolon-wide]
 
 最初の `:` が後ろの行にあるか、period との間に指令があるときは、
 通常の継続行の字下げである 1 段深い位置を使います。
@@ -1285,10 +1297,16 @@ Db の設定処理はこの字下げを捨てるので、section の中でも、
 [fixture: multi-line-values/description-tabs]
 [fixture: multi-line-values/description-zero-width]
 
-テキスト、改行、行末の空白とタブは残します。
+改行と内部の空行は保ちます。
+行末の空白は、テキストの最後の行のものを除いて保ちます。
+空白だけの行は空行にします。
+最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
+同じ行で閉じ括弧が続くときは空白 1 つで印字します。
 開始行のテキストはその行に残し、テキスト内の空行も空行のまま残します。
 
 [fixture: multi-line-values/description-line-ending-whitespace]
+[fixture: multi-line-values/block-trailing-whitespace]
+[fixture: multi-line-values/block-trailing-whitespace-closer-on-the-text-line]
 
 ブロック内の `#` コメントはテキストなので、同じ字下げを使います。
 `%%` のコメント行もテキストにそろえます。

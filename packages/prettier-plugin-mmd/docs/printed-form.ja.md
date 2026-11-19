@@ -66,6 +66,8 @@ Prettier の例は、言語を書いていないものは JavaScript である�
 | 名前の中のコロン                 | CSS のセレクター `a:hover` は `a:hover` のまま            | 両側とも詰める          | architecture 図の `a : R -- L : b`  | `a:R -- L:b`                  |
 | 2 つのものの間に置く、ほかの記号 | `x = a+b` を `x = a + b;` と印字する                      | 両側に空白 1 つずつ     | flowchart の `A-->B`                | `A --> B`                     |
 | 丸括弧と角括弧                   | `f( a )` を `f(a);` と印字する                            | 内側は詰める            | flowchart の `A( text )`            | `A(text)`                     |
+| 文を終える `;`                   | `a ;` を `a;` と印字する                                  | 前は詰める              | railroad 図の `r="a" ;`             | `r = "a";`                    |
+| 呼び出しの `(`                   | `f (a)` を `f(a);` と印字する                             | 前は詰める              | railroad 図の `terminal ("x")`      | `terminal("x")`               |
 | 名前と値の組を並べた波括弧       | `x = {a:1}` を `x = { a: 1 };` と印字する                 | 内側に空白 1 つ         | radar 図の `curve c{m: 60, s: 70}`  | `curve c{ m: 60, s: 70 }`     |
 | 値だけを並べた波括弧             | `x = [ 1, 2 ]` を `x = [1, 2];` と印字する                | 内側は詰める            | radar 図の `curve d{ 85, 90 }`      | `curve d{85, 90}`             |
 | 何も入れない波括弧               | `x = { }` を `x = {};` と印字する                         | 内側は詰める            | Gantt 図の `accDescr { }`           | `accDescr {}`                 |

@@ -789,6 +789,7 @@ where a statement starts and after the last unit of a statement.
 empty-description-blocks/touching-kept] [fixture:
 empty-description-blocks/blank-lines-inside] [fixture:
 empty-description-blocks/with-directive-or-comment-line-kept] [fixture:
+empty-description-blocks/directive-line-kept] [fixture:
 empty-description-blocks/between-two-statements]
 
 Input

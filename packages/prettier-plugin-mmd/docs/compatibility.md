@@ -198,6 +198,10 @@ too.
 | [state](./state.md#semicolons-at-the-end-of-a-style-statement)                                                                                  | `style A fill:red;`, the `;` that ends a `style` that has no `#`                                                                                                             | `style A fill: red`, the `;` dropped                                  | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 reads the `;` as a state of its own                                                                  | [fixture: state/semicolons-at-the-end-of-a-style-statement/style-text-terminators]                                                                          |
 | [state](./state.md#colors)                                                                                                                      | `style A fill:#ABC`, the color of a `style` that has no second `:`                                                                                                           | `style A fill: #abc`                                                  | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 draws the line as text, with `#ABC` as the description of a state                                    | [fixture: state/colors/style-read-as-description-kept]                                                                                                      |
 | [state](./state.md#whitespace-between-tokens)                                                                                                   | `style A fill:rgb(1,2,3)`, the commas of a `style` that has no second `:`                                                                                                    | `style A fill: rgb(1, 2, 3)`                                          | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 draws the line as text, with `rgb(1,2,3)` as the description of a state                              | [fixture: state/whitespace-between-tokens/style-color-function-commas-kept]                                                                                 |
+| [state](./state.md#arrow-spacing)                                                                                                               | `scale-->B` (likewise `classDef`, `class`, `note`, `stateDiagram`); `A:::state-->B` (likewise `scale`, `classDef`, `class`, `note`, `stateDiagram`)                          | `scale --> B`; `A:::state --> B`                                      | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 reject the other form                                                                      | [fixture: state/arrow-spacing/touching-before-keyword-kept] [fixture: state/arrow-spacing/compat-keyword-ids-transition]                                    |
+| [state](./state.md#arrow-spacing)                                                                                                               | `style-->B` and `A:::style-->B`                                                                                                                                              | `style --> B` and `A:::style --> B`                                   | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.7.0, 11.17.2, 12.0.0 and 12.3.0 reject the other form                                                    | [fixture: state/arrow-spacing/compat-keyword-ids-transition]                                                                                                |
+| [state](./state.md#arrow-spacing)                                                                                                               | `state-->B`                                                                                                                                                                  | `state --> B`                                                         | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 draw a different figure; 12.3.0 drops the two states and the transition from the Db        | [fixture: state/arrow-spacing/other-keyword-ids-touching-kept] [fixture: state/arrow-spacing/compat-keyword-ids-transition]                                 |
+| [state](./state.md#notes)                                                                                                                       | the paragraphs of a multiline note body at their written columns, with `  two` after a blank line                                                                            | the paragraph after the blank line four spaces in                     | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 draws other text, 11.7.0 to 12.3.0 other structure; 12.3.0 changes `notes[0].text` in the Db         | [fixture: state/notes/over-lines-empty-lines-kept]                                                                                                          |
 | [state](./state.md#keyword-case)                                                                                                                | `state "x" AS y`, then `note LEFT OF y: left`                                                                                                                                | `note left of y: left`                                                | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 to 12.3.0 draw different geometry; 12.3.0 also changes the note position in the Db                   | [fixture: state/keyword-case/accessibility-alias-direction-one-form]                                                                                        |
 | [state](./state.md#whitespace-between-tokens)                                                                                                   | `style A fill:#f00;;`                                                                                                                                                        | `style A fill: #f00;;`                                                | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 draws different structure and style                                                                  | [fixture: state/whitespace-between-tokens/class-ids-with-ignored-semicolon]                                                                                 |
 | [state](./state.md#aliases)                                                                                                                     | `state "d" as A :` followed by three spaces                                                                                                                                  | `state "d" as A :` with nothing after the `:`                         | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.17.2, 12.0.0 and 12.3.0 draw different structure                                                         | [fixture: state/aliases/second-description-blank-kept]                                                                                                      |
@@ -224,6 +228,7 @@ too.
 | [class](./class.md#member-bodies)                                                                                                               | `class A { }`                                                                                                                                                                | `class A {}`                                                          | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 and 11.7.0 reject the other form                                                                     | [fixture: class/member-bodies/empty-unified]                                                                                                                |
 | [class](./class.md#member-bodies)                                                                                                               | `class C:::c { }`                                                                                                                                                            | `class C:::c {}`                                                      | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 reject the other form                                                                      | [fixture: class/member-bodies/empty-unified]                                                                                                                |
 | [cynefin](./cynefin.md#header)                                                                                                                  | `%%{%%{wrap}%%init: {"label":"style:#keep"}}%% cynefin-beta:;complex 'Kept colon'`                                                                                           | the same input with `cynefin-beta;`                                   | [3](./printed-form.md#3-a-spelling)                                  | 12.0.0 and 12.3.0 reject the header without the colon                                                       | [fixture: cynefin/header/colon-semicolon-kept]                                                                                                              |
+| [cynefin](./cynefin.md#header)                                                                                                                  | `cynefin-beta:%%{x y`, a line break, and `complex "A"`                                                                                                                       | `cynefin-beta%%{x y`, a line break, and `complex "A"`                 | [3](./printed-form.md#3-a-spelling)                                  | 11.16.1, 11.17.2, 12.0.0 and 12.3.0 reject the header without the colon                                     | [fixture: cynefin/header/colon-unclosed-directive-kept]                                                                                                     |
 | [cynefin](./cynefin.md#retained-prefix)                                                                                                         | one space and LF before `---`, `title: IgnoredByLeadingLf`, `---`                                                                                                            | the same prefix without the leading space and LF                      | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.16.1, 11.17.2, 12.0.0 and 12.3.0 draw a title only for the other form; 12.3.0 changes Db `title`         | [fixture: cynefin/retained-prefix/prefix-leading-lf]                                                                                                        |
 | [cynefin](./cynefin.md#semicolons)                                                                                                              | `%%{%%{wrap}%%init: {"label":"style:#x"}}%% cynefin-beta ;complex "A"`                                                                                                       | the same input with `cynefin-beta;complex "A"`                        | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 12.0.0 and 12.3.0 reject the header without the space                                                       | [fixture: cynefin/semicolons/ignored-semicolon-after-header-keyword-kept]                                                                                   |
 | [block](./block.md#edges)                                                                                                                       | `A ---x B`, `A ---o B`                                                                                                                                                       | `A --x B`, `A --o B`                                                  | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 and 11.7.0 draw them differently                                                                     | [fixture: block/edges/arrow-length-kept-where-drawn-differently]                                                                                            |
@@ -236,6 +241,7 @@ too.
 | [C4](./c4.md#argument-spacing)                                                                                                                  | `Person("a"   ,"A")`                                                                                                                                                         | `Person("a", "A")`                                                    | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 draw a different figure                                                                    | [fixture: c4/trailing-whitespace/null-space-kept]                                                                                                           |
 | [C4](./c4.md#argument-spacing)                                                                                                                  | `Person(a,\t"A", "D")` (a tab after the comma)                                                                                                                               | `Person(a, "A", "D")`                                                 | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 draw different label text; 12.3.0 changes `label.text` in the Db                           | [test: c4: tab-before-quote]                                                                                                                                |
 | [C4](./c4.md#argument-spacing)                                                                                                                  | `Person(a,\u00a0"A", "D")` (a U+00A0 after the comma)                                                                                                                        | `Person(a, "A", "D")`                                                 | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 draw the label as `"A"`, with its quotes; 12.3.0 changes `label.text` in the Db            | [test: c4: nbsp-before-quote]                                                                                                                               |
+| [C4](./c4.md#description-blocks)                                                                                                                | `accDescr {`, `direction LR`, and `}` on separate lines                                                                                                                      | `accDescr: direction LR`                                              | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 to 12.3.0 reject the other form                                                                      | [fixture: c4/description-blocks/acc-block-direction-keep]                                                                                                   |
 | [block](./block.md#columns-and-space)                                                                                                           | `space:2`                                                                                                                                                                    | `space: 2`                                                            | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 reject `space: 2`                                                                          | [fixture: block/columns-and-space/space-width-touching]                                                                                                     |
 | [block](./block.md#styles)                                                                                                                      | `class A,B c1`                                                                                                                                                               | `class A, B c1`                                                       | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 draw different classes; 12.3.0 changes `B`'s `classes` in the Db                           | [fixture: block/styles/class-ids-as-written]                                                                                                                |
 | [sequence](./sequence.md#colons)                                                                                                                | `A->>B: ` (one whitespace character after the `:`)                                                                                                                           | `A->>B:`                                                              | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 rejects a `:` with nothing after it                                                                  | [fixture: sequence/colons/whitespace-only-text]                                                                                                             |
@@ -243,6 +249,7 @@ too.
 | [sequence](./sequence.md#arrow-spacing)                                                                                                         | `A () ->> () B`                                                                                                                                                              | `A() ->> ()B`                                                         | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 and 11.7.0 read `()` as part of a name                                                               | [fixture: sequence/arrow-spacing/parentheses-touching]                                                                                                      |
 | [sequence](./sequence.md#arrow-spacing)                                                                                                         | `A<<->>B` printed `A<<->> B`                                                                                                                                                 | `A <<->> B`                                                           | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 reads the `<<` as part of the name before it                                                         | [fixture: sequence/arrow-spacing/bidirectional-arrow-gap-before-kept]                                                                                       |
 | [sequence](./sequence.md#whitespace-between-tokens)                                                                                             | `participant A   @{ x }`, a data block without `:`, `,`, `;`, or `>`                                                                                                         | `participant A@{ x }`                                                 | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 and 11.7.0 read the block as a part of the name of the participant, with the whitespace              | [fixture: sequence/whitespace-between-tokens/data-block-name-gap-before-kept]                                                                               |
+| [sequence](./sequence.md#whitespace-between-tokens)                                                                                             | `participant A@{ x }   %% c`, a data block without `:`, `,`, `;`, or `>`, and no alias                                                                                       | `participant A@{ x } %% c`                                            | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 and 11.7.0 read the block and the gap as a part of the name                                          | [fixture: sequence/whitespace-between-tokens/data-block-name-comment-gap-kept]                                                                              |
 | [sequence](./sequence.md#colors)                                                                                                                | `rect rgb(191 ,223 ,255)`                                                                                                                                                    | `rect rgb(191, 223, 255)`                                             | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 12.3.0 changes `messages[0].message`                                                                        | [fixture: sequence/colors/function-padding-kept]                                                                                                            |
 | [sequence](./sequence.md#colors)                                                                                                                | `rect rgb( 1 ,2,3 )`                                                                                                                                                         | `rect rgb(1, 2, 3)`                                                   | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 draw another `fill` attribute                                                              | [fixture: sequence/colors/rect-leading-and-comma-padding-kept]                                                                                              |
 | [sequence](./sequence.md#colors)                                                                                                                | `rect rgb( 1,2,3)` and `rect rgb(1,2,3 )`                                                                                                                                    | `rect rgb(1, 2, 3)`                                                   | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 draw another `fill` attribute                                                              | [fixture: sequence/colors/rect-open-paren-padding-kept] [fixture: sequence/colors/rect-close-paren-padding-kept]                                            |
@@ -272,7 +279,11 @@ too.
 | [quadrant](./quadrant.md#whitespace-characters)                                                                                                 | `quadrant-1 a\u00a0b`                                                                                                                                                        | `  quadrant-1 a b`                                                    | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8, 11.7.0, 11.17.2, 12.0.0 and 12.3.0 draw different text                                              | [test: U+00A0 between the words of a text]                                                                                                                  |
 | [railroad](./railroad.md#semicolons)                                                                                                            | ABNF `style=(":"`, then a line break and `)%%{!#}%% ;`                                                                                                                       | `style=(":")%%{!#}%% ;`                                               | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.16.1 to 12.3.0 reject the other form                                                                     | [fixture: railroad/semicolons/abnf-style-group-newline]                                                                                                     |
 | [railroad](./railroad.md#semicolons)                                                                                                            | PEG `r<-("sty%%{wrap}%%le:"`, then a line break and `)%%{!#}%% ;`                                                                                                            | `r<-("sty%%{wrap}%%le:")%%{!#}%% ;`                                   | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.16.1 to 12.3.0 reject the other form                                                                     | [fixture: railroad/semicolons/peg-directive-split-style]                                                                                                    |
+| [railroad](./railroad.md#comments)                                                                                                              | ABNF `r="comment"; note`, then `;` on the next line                                                                                                                          | `r="comment"; note ;`                                                 | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.16.1 to 12.3.0 reject the other form                                                                     | [fixture: railroad/comments/abnf-before-terminator]                                                                                                         |
+| [railroad](./railroad.md#title)                                                                                                                 | `title`, a line break, and `r=terminal("x");`                                                                                                                                | `title r=terminal("x");`                                              | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.16.1 to 12.3.0 draw another figure; 12.3.0 changes the Db                                                | [fixture: railroad/title/ir-rule-on-next-line]                                                                                                              |
+| [railroad](./railroad.md#accessibility-lines)                                                                                                   | `accTitle:`, a line break, and `r=terminal("x");` (likewise `accDescr:`)                                                                                                     | `accTitle: r=terminal("x");`                                          | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.16.1 to 12.3.0 draw another figure; 12.3.0 changes the Db                                                | [fixture: railroad/accessibility-lines/ir-acc-title-before-rule]                                                                                            |
 | [radar](./radar.md#header)                                                                                                                      | `radar-beta%%{wrap}%%:axis North`                                                                                                                                            | `radar-beta%%{wrap}%%axis North`                                      | [3](./printed-form.md#3-a-spelling)                                  | 11.7.0, 11.17.2, 12.0.0, 12.3.0 reject the form without `:`                                                 | [fixture: radar/header/header-global-colon]                                                                                                                 |
+| [radar](./radar.md#header)                                                                                                                      | `radar-beta:%%{x y`, a line break, and `axis North`                                                                                                                          | `radar-beta%%{x y`, a line break, and `axis North`                    | [3](./printed-form.md#3-a-spelling)                                  | 11.7.0, 11.17.2, 12.0.0, 12.3.0 reject the form without `:`                                                 | [fixture: radar/header/colon-unclosed-directive-kept]                                                                                                       |
 | [radar](./radar.md#multi-line-statements)                                                                                                       | the entry lines of `curve c["style:#a"]` before `} title tail;`                                                                                                              | the entry lines joined as `curve c["style:#a"]{ 1 } title tail;`      | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.7.0, 11.17.2, 12.0.0, 12.3.0 draw different title text; 12.3.0 changes Db `.title`                       | [fixture: radar/multi-line-statements/semicolon-terminal-line]                                                                                              |
 | [radar](./radar.md#hidden-forms)                                                                                                                | body YAML with `not: [yaml` and closing `---` at column one                                                                                                                  | the interior and closing `---` indented two spaces                    | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.7.0, 11.17.2, 12.0.0, 12.3.0 reject the indented form                                                    | [fixture: radar/hidden-forms/yaml-body-opaque]                                                                                                              |
 | [radar](./radar.md#named-entries)                                                                                                               | `curve c{accTitle 1, accDescr 2}`                                                                                                                                            | `curve c{accTitle: 1, accDescr 2}`                                    | [3](./printed-form.md#3-a-spelling)                                  | 11.7.0 to 12.3.0 reject the other form                                                                      | [fixture: radar/named-entries/accessibility-identifiers]                                                                                                    |
@@ -282,6 +293,7 @@ too.
 | [timeline](./timeline.md#titles-and-sections)                                                                                                   | `title`, two spaces or a line break and an indentation, `# c`                                                                                                                | `title # c`                                                           | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 reads them as a title of whitespace and a comment                                                    | [fixture: timeline/titles-and-sections/title-hash-on-next-line-kept]                                                                                        |
 | [timeline](./timeline.md#titles-and-sections)                                                                                                   | `title` followed by two spaces, a tab and a space                                                                                                                            | `title` with nothing after it                                         | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 to 12.3.0 draw the other form differently                                                            | [fixture: timeline/titles-and-sections/title-blank-kept]                                                                                                    |
 | [timeline](./timeline.md#comments)                                                                                                              | `accDescr {a} %% c`                                                                                                                                                          | `accDescr: a %% c`                                                    | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 12.3.0 reads `a %% c` instead of `a` in the Db's `accDescr`                                                 | [fixture: timeline/comments/block-then-percent-comment-kept]                                                                                                |
+| [gantt](./gantt.md#lists)                                                                                                                       | `includes`, two spaces, and `%%{init: {}}%%`                                                                                                                                 | `includes`, one space, and the directive                              | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 to 12.3.0 reject the other form                                                                      | [fixture: gantt/lists/whitespace-only-then-directive]                                                                                                       |
 | [ER](./er.md#whitespace-between-tokens)                                                                                                         | `class-A a`                                                                                                                                                                  | `class -A a`                                                          | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 rejects the form with a space                                                                        | [fixture: er/whitespace-between-tokens/keyword-then-dash-touching-kept]                                                                                     |
 | [ER](./er.md#whitespace-between-tokens)                                                                                                         | `subgraph-x`, `end-x`                                                                                                                                                        | `subgraph -x`; `end` and `-x` on a line of its own                    | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 rejects the form with a space; 11.7.0 draws it differently                                           | [fixture: er/whitespace-between-tokens/subgraph-then-dash-touching-kept]                                                                                    |
 | [ER](./er.md#direction)                                                                                                                         | `DIRECTION lr`                                                                                                                                                               | `direction LR`                                                        | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 reads the line as entities                                                                           | [fixture: er/direction/case-kept]                                                                                                                           |
@@ -299,15 +311,18 @@ too.
 | [eventmodeling](./eventmodeling.md#header)                                                                                                      | `eventmodeling accDescr: Description`                                                                                                                                        | `accDescr: Description` on the next line                              | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.15.0 to 12.3.0 reject the other form                                                                     | [fixture: eventmodeling/header/accdescr-on-header-line-kept]                                                                                                |
 | [eventmodeling](./eventmodeling.md#accessibility-lines)                                                                                         | `accTitle`, a space, a tab, `:  A`, a tab, a space, `B`, two spaces                                                                                                          | `accTitle:  A`, a tab, a space, `B`, two spaces                       | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.15.0 to 12.3.0 draw different text; 12.3.0 changes Db `accTitle`                                         | [fixture: eventmodeling/accessibility-lines/accessibility-lines-exact]                                                                                      |
 | [eventmodeling](./eventmodeling.md#description-blocks)                                                                                          | `accDescr {`, a space, a tab, LF, `  }`                                                                                                                                      | `accDescr {}`                                                         | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.15.0 to 12.3.0 draw different text; 12.3.0 changes Db `accDescr`                                         | [fixture: eventmodeling/description-blocks/description-whitespace-literal-retained]                                                                         |
-| [eventmodeling](./eventmodeling.md#indentation)                                                                                                 | `title` after a line break, at column one                                                                                                                                    | `title` indented by two spaces                                        | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.15.0 to 12.3.0 reject the other form                                                                     | [fixture: eventmodeling/qualified-names/hidden-before-title-segment-keep-no-prefix-space]                                                                   |
+| [eventmodeling](./eventmodeling.md#indentation)                                                                                                 | `title` after a line break, at column one                                                                                                                                    | `title` indented by two spaces                                        | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.15.0 to 12.3.0 reject the other form                                                                     | [fixture: eventmodeling/qualified-names/hidden-before-title-segment-keep-no-prefix-space]                                                                   |
 | [eventmodeling](./eventmodeling.md#statements-one-per-line)                                                                                     | `accDescr {}  title Next` on one line                                                                                                                                        | `title Next` on a line of its own                                     | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.15.0 to 12.3.0 reject the other form                                                                     | [fixture: eventmodeling/statements-one-per-line/description-followed-by-common]                                                                             |
 | [eventmodeling](./eventmodeling.md#statements-one-per-line)                                                                                     | `{x} tf 02 evt Beta {y}` as one value                                                                                                                                        | `tf 02 evt Beta {y}` on a line of its own                             | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.15.0 to 12.3.0 draw a different diagram                                                                  | [fixture: eventmodeling/statements-one-per-line/do-not-manufacture-statement-from-greedy-data]                                                              |
 | [eventmodeling](./eventmodeling.md#declarations-and-notes)                                                                                      | `data`, a line break, `title {`                                                                                                                                              | `data title {` on one line                                            | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.15.0 to 12.3.0 reject the other form                                                                     | [fixture: eventmodeling/declarations-and-notes/data-name-title-keep-lf]                                                                                     |
 | [eventmodeling](./eventmodeling.md#gwt-clauses-and-items)                                                                                       | `given evt`, a line break, `title then cmd …`                                                                                                                                | one space in place of the line break                                  | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.15.0 to 12.3.0 reject the other form                                                                     | [fixture: eventmodeling/gwt-clauses-and-items/gwt-title-identifier-keep-lf]                                                                                 |
-| [eventmodeling](./eventmodeling.md#data-blocks)                                                                                                 | `}` at column one                                                                                                                                                            | `}` indented by two spaces                                            | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.15.0 to 12.3.0 reject the other form                                                                     | [fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]                                                                                             |
+| [eventmodeling](./eventmodeling.md#data-blocks)                                                                                                 | `}` at column one                                                                                                                                                            | `}` indented by two spaces                                            | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.15.0 to 12.3.0 reject the other form                                                                     | [fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]                                                                                             |
 | [eventmodeling](./eventmodeling.md#hidden-forms)                                                                                                | ` accDescr: D` with one leading space                                                                                                                                        | `accDescr: D` without it                                              | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.15.0 to 12.3.0 reject the other form                                                                     | [fixture: eventmodeling/hidden-forms/hidden-next-common-keep-consumed-lf-padding]                                                                           |
-| [eventmodeling](./eventmodeling.md#semicolons)                                                                                                  | `title` after a line break, at column one                                                                                                                                    | `title` indented by two spaces                                        | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.15.0 to 12.3.0 reject the other form                                                                     | [fixture: eventmodeling/semicolons/protected-gwt-title-hidden-gap-remains-zero]                                                                             |
+| [eventmodeling](./eventmodeling.md#semicolons)                                                                                                  | `title` after a line break, at column one                                                                                                                                    | `title` indented by two spaces                                        | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.15.0 to 12.3.0 reject the other form                                                                     | [fixture: eventmodeling/semicolons/protected-gwt-title-hidden-gap-remains-zero]                                                                             |
 | [eventmodeling](./eventmodeling.md#semicolons)                                                                                                  | ` accDescr: style:#x;` with one leading space                                                                                                                                | `accDescr: style:#x;` without it                                      | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.15.0 to 12.3.0 reject the other form                                                                     | [fixture: eventmodeling/semicolons/protected-metadata-prefix-is-value-whitespace]                                                                           |
+| [eventmodeling](./eventmodeling.md#data-blocks)                                                                                                 | a data body with a later line at column one, as `"quantity": 2` after `"sku": "SHIRT-M",` at column one                                                                      | the later line two spaces in                                          | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.15.0 to 12.3.0 draw different text and geometry; 12.3.0 changes the Db `data` value                      | [fixture: eventmodeling/data-blocks/body-later-zero-margin-kept] [fixture: eventmodeling/data-blocks/body-later-zero-margin-plain-kept]                     |
+| [eventmodeling](./eventmodeling.md#default-size-branches)                                                                                       | a text of 50000 units, a data body with its first line at column one and a comment line two spaces in                                                                        | the first body line two spaces in                                     | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 12.3.0 draws different text, structure and geometry; the Db `data` value differs                            | [fixture: eventmodeling/default-size-branches/size-at-limit-indented-comment]                                                                               |
+| [eventmodeling](./eventmodeling.md#default-size-branches)                                                                                       | the same with a text of 49999 units                                                                                                                                          | the first body line two spaces in                                     | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 12.3.0 draws different text, structure and geometry; the Db `data` value differs                            | [fixture: eventmodeling/default-size-branches/size-below-planned-crossing-indented-comment]                                                                 |
 | [treemap](./treemap.md#title)                                                                                                                   | `title T` at the start of its line                                                                                                                                           | `  title T` one step in                                               | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.8.1 rejects a title, `accTitle`, and `accDescr` that is indented                                         | [fixture: treemap/title/line-start-kept]                                                                                                                    |
 | [treemap](./treemap.md#semicolons)                                                                                                              | `classDef zz fill:red`, U+00A0, `;`                                                                                                                                          | `classDef zz fill:red;`                                               | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.8.1, 11.17.2, 12.0.0 and 12.3.0 draw different text                                                      | [test: treemap/semicolons/class-terminator-unicode-space-before-kept]                                                                                       |
 | [treemap](./treemap.md#directives)                                                                                                              | `"A" %%{x: w`, next line `  "B": 1`                                                                                                                                          | `"A"` indented two spaces; next line unchanged                        | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.8.1, 11.17.2, 12.0.0, 12.3.0 draw different structure and geometry; 12.3.0 changes Db nodes              | [fixture: treemap/directives/unclosed-directive-child-kept]                                                                                                 |
@@ -1292,14 +1307,47 @@ class/whitespace-between-tokens/style-words-directive-kept] [fixture:
 flowchart/whitespace-between-tokens/style-words-directive-kept]
 
 A statement stays as written where a style holds a line break or a U+2028 or
-U+2029, where the statement holds a comment or a directive, where a style is all
-whitespace, and where its line holds a `;` of its own (see
-[Lines that hold a `;`](#lines-that-hold-a-)).
+U+2029, where a comment or a directive stands inside the statement, before the
+end of its last style, where a style is all whitespace, and where its line holds
+a `;` of its own (see [Lines that hold a `;`](#lines-that-hold-a-)). A comment
+or a directive after the last style is no part of the statement, and in a
+flowchart, an agentflow, a class, a state, a block, and a usecase diagram the
+statement is formatted as usual: `style A fill:red %%{init: {}}%%` is printed
+`style A fill: red %%{init: {}}%%`, and so are `classDef` and, in a flowchart
+and an agentflow diagram, `linkStyle`. The same holds in a requirement diagram
+after a directive, and 11.7.0 and later reject a comment there. In an ER
+diagram, 11.7.0 and later reject a comment after the last style and a directive
+at the end of the text, and a directive before another line keeps the statement
+as written where whitespace stands before or after the directive, and formats it
+as usual where the directive touches the last style and no whitespace follows it
+on its line. A treemap formats the statement after a comment and keeps it as
+written after a directive, except for the whitespace at the end of the line (see
+[Whitespace at the end of a style](#whitespace-at-the-end-of-a-style)).
 
 [fixture: flowchart/whitespace-between-tokens/style-blank-style-kept] [fixture:
 flowchart/whitespace-between-tokens/style-colon-escaped-space-kept] [fixture:
 flowchart/whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
 flowchart/whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
+[fixture: flowchart/style-trailing-whitespace/removed-after-directive] [fixture:
+agentflow/single-space-gaps/style-comment-and-directive-after-last-style-formatted]
+[fixture:
+class/whitespace-between-tokens/style-comment-and-directive-after-last-style-formatted]
+[fixture:
+state/whitespace-between-tokens/style-comment-and-directive-after-last-style-formatted]
+[fixture:
+usecase/classes-and-styles/style-comment-and-directive-after-last-style-formatted]
+[fixture: requirement/directives/after-statement-at-end-of-line] [fixture:
+block/styles/style-comment-and-directive-after-last-style-formatted] [fixture:
+flowchart/style-trailing-whitespace/link-style-comment-and-directive-after-last-style-formatted]
+[fixture:
+agentflow/single-space-gaps/link-style-comment-and-directive-after-last-style-formatted]
+[fixture: treemap/styles/class-def-comment-after-last-style-formatted] [fixture:
+er/styles-and-classes/directive-before-next-line] [fixture:
+er/styles-and-classes/directive-touching-last-style] [fixture:
+flowchart/whitespace-between-tokens/class-def-comment-and-directive-after-last-style-formatted]
+[fixture: requirement/directives/class-def-after-statement-at-end-of-line]
+[fixture: treemap/styles/directive-line-kept] [fixture:
+flowchart/colors/colors-next-to-comments-and-directives]
 
 The tests compare the Db of the printed text with the margins of its styles
 restored from the Db of the written text (`styleDbForFormattingComparison` in
@@ -1363,10 +1411,11 @@ treeView, and of a card of a kanban board (not the id of a column, which the
 figure depends on), for the date format and the axis format of a Gantt chart,
 for the `accDescription` of a C4 diagram, for the last event of a line of a
 timeline and the space that a period and an event before a colon gain, for the
-description of a task of a user journey, and for the second description of a
-state alias. The runs of spaces and tabs inside a date format, an axis format,
-or the value of an `accTitle:` line stay as written before the directives as
-they do without them.
+description of a task of a user journey, except that a task whose description
+holds a directive stays as written (see [Task data](./journey.md#task-data)),
+and for the second description of a state alias. The runs of spaces and tabs
+inside a date format, an axis format, or the value of an `accTitle:` line stay
+as written before the directives as they do without them.
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped] [fixture:
 usecase/direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
@@ -2755,11 +2804,22 @@ A cynefin or a radar diagram reads `cynefin-beta:` and `radar-beta:` as the
 header without the colon. The examples write the header without the colon 3
 times in each, and with it never, so the colon is removed, and what follows it
 on the line goes to the next line as it does after a header without the colon.
-The colon stays where a `;` or the `---` of a hidden YAML block touches it.
+The colon stays where a `;`, the `---` of a hidden YAML block, or a directive
+that is not closed touches it.
 
 [fixture: cynefin/header/colon-removed] [fixture:
 cynefin/header/colon-semicolon-kept] [fixture: radar/header/colon-removed]
-[fixture: radar/header/colon-yaml-kept]
+[fixture: radar/header/colon-yaml-kept] [fixture:
+cynefin/header/colon-unclosed-directive-kept] [fixture:
+radar/header/colon-unclosed-directive-kept]
+
+A treemap header takes no colon. Each of 11.8.1, 11.17.2, 12.0.0 and 12.3.0
+rejects `treemap:` and `treemap-beta:`, and reads and draws the header without
+the colon. The examples write the header without the colon 8 times and with it
+never, so [rule 3](./printed-form.md#3-a-spelling) gives the header without it.
+
+[corpus fixture: treemap/header-colon] [corpus fixture:
+treemap/header-colon-beta]
 
 A gitGraph without a direction reads `gitGraph:` and `gitGraph` the same in
 every version that counts, with the same commits and branches and the same
@@ -3128,12 +3188,16 @@ block holds, or would not be read as the block is:
   railroad/description-blocks/ir-percent-comment-after-block] [fixture:
   railroad/description-blocks/peg-percent-comment-after-block]
 
-- The block has no text, or only a directive: it is printed `accDescr {}`, as
-  [Accessibility lines](./flowchart.md#accessibility-lines) says.
+- The block has no text: it is printed `accDescr {}`, as
+  [Accessibility lines](./flowchart.md#accessibility-lines) says. A block that
+  holds only a directive stays a block, and the formatter prints
+  `accDescr {%%{init: {}}%% }` as `accDescr { %%{init: {}}%%}`; a directive on a
+  line of its own keeps its lines.
 
   [fixture: flowchart/accessibility-lines/empty-block-tight] [fixture:
   flowchart/accessibility-lines/empty-block-spaced] [fixture:
-  flowchart/accessibility-lines/empty-block-directive-kept]
+  flowchart/accessibility-lines/empty-block-directive-kept] [fixture:
+  flowchart/accessibility-lines/empty-block-directive-line-kept]
 
 - The block is not closed.
 
@@ -3882,8 +3946,12 @@ between them, which mermaid.js removes before it reads the header:
 `ishikawa-beta-beta` has the header `ishikawa-beta` and the root `-beta`, and
 the header printed `ishikawa` with `-beta` on its line would be read as the
 header `ishikawa-beta` alone. So the root goes to a line of its own; where it
-stays on the line of the header, the header stays as written. A header of the
-other diagrams in another case (`sankey-BETA`, `XYCHART-BETA`) stays as written.
+stays on the line of the header, the header stays as written. The header of a
+sankey diagram with `-beta` in another case (`sankey-BETA`) stays as written.
+10.9.8 and 11.7.0 reject it, and 11.17.2, 12.0.0, and 12.3.0 read it as
+`sankey-beta`. The examples of the documentation write the header `sankey` and
+use no `sankey-beta` in any case, so [rule 3](./printed-form.md#3-a-spelling)
+gives no other form, and keeps it as written.
 
 [fixture: treemap/header/beta] [fixture: ishikawa/header/header-beta] [fixture:
 ishikawa/header/header-column] [fixture:
@@ -3899,6 +3967,20 @@ packet/header/header-beta] [fixture: packet/hidden-yaml/yaml-beta-header]
 xychart/header-and-orientation/beta-header-kept] [fixture:
 xychart/keyword-case/header-spelling-kept] [fixture:
 xychart/header-and-orientation/second-header-spelling-and-case-kept]
+
+The four headers of a railroad diagram, `railroad-beta`, `railroad-ebnf-beta`,
+`railroad-abnf-beta`, and `railroad-peg-beta`, stay as written. 11.16.1,
+11.17.2, 12.0.0, and 12.3.0, the versions that have the diagram type, read each
+name in this spelling only: they reject it without `-beta` (`railroad`,
+`railroad-ebnf`, `railroad-abnf`, `railroad-peg`), with `-beta` in another case
+(`-Beta` and `-BETA` after each name), and in capitals (`RAILROAD-BETA` and the
+three names like it). No version that has the diagram type reads the name
+without `-beta`, so [rule 3](./printed-form.md#3-a-spelling) does not print it,
+and the examples of the documentation write no other spelling.
+
+[corpus fixture: railroad/ir-header-upper] [corpus fixture:
+railroad/ebnf-header-upper] [corpus fixture: railroad/abnf-header-upper] [corpus
+fixture: railroad/peg-header-upper]
 
 `stateDiagram` and `stateDiagram-v2` stay as written for the same reason. The
 detector of the pinned mermaid.js draws both with the unified state diagram
@@ -4811,7 +4893,14 @@ In a state diagram, `scale`, `classDef`, `class`, `style`, `state`, `note`, and
 `stateDiagram`, in any case, are keywords only when whitespace follows them. A
 transition from an id spelled so keeps its arrow touching on both sides, as in
 `scale-->B`, and a description after such an id keeps its `:` touching it:
-`scale -->B` and `style :x` are rejected. See
+`scale -->B` is rejected by every version of mermaid.js that counts, and
+`style :x` by 11.7.0 and later versions. The rows of
+[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)
+name the versions for each word before an arrow; a description needs no row,
+since its `:` touches the id by
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) (see
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)) whatever the
+id is (see [Descriptions and labels](./state.md#descriptions-and-labels)). See
 [Arrow spacing](./state.md#arrow-spacing).
 
 [fixture: state/arrow-spacing/touching-before-keyword-kept] [fixture:
@@ -5256,10 +5345,13 @@ See [Task data](./gantt.md#task-data), [Settings](./gantt.md#settings),
   after the keyword of an `includes` or `excludes` statement whose list is
   whitespace only. mermaid.js needs a character of the data after the colon and
   of the list text after the whitespace that follows the keyword, so `a :` and
-  `includes ` are rejected, and one whitespace character, or two, stay.
+  `includes ` are rejected, and one whitespace character, or two, stay; so do
+  the two after the keyword of a list when a directive follows them, since
+  `includes`, one space, and `%%{init: {}}%%` is rejected too.
 
   [fixture: gantt/task-data/whitespace-only-data] [fixture:
-  gantt/lists/whitespace-only]
+  gantt/lists/whitespace-only] [fixture:
+  gantt/lists/whitespace-only-then-directive]
 
 - A U+FEFF between the items of a list of `includes` or `excludes`. mermaid.js
   lowers the case of the whole list text before it splits it, and the conversion
@@ -5878,21 +5970,106 @@ quadrant/lex-classdef-name-line-separator-comment-line] [corpus fixture:
 quadrant/db-classdef-name-starts-with-line-separator-comment-line]
 
 A line that mermaid.js reads this way runs over several lines of the source. The
-formatter prints it as written, from its first line to its end, with the
-statements that stand on it: it does not format the whitespace between them, and
-it does not indent the lines after the comment line. This is one rule for every
-statement, block opening, and header, but for a mindmap, which puts the comment
-line of a node on a line of its own at the level of the node (see
+formatter keeps the whitespace and the line breaks of such a line as written,
+from its first line to its end, with the statements that stand on it: it does
+not format the whitespace between them, and it does not indent the lines after
+the comment line. This is one rule for every statement, block opening, and
+header, but for a mindmap, which puts the comment line of a node on a line of
+its own at the level of the node (see
 [Line separators](./mindmap.md#line-separators)). A diagram comment that such a
 comment line cuts is printed as written as well (see
 [Line separators](./sequence.md#line-separators)). The same holds where the
 region lies inside a name, in an ER diagram and in a quadrant chart. In an ER
-diagram, the block of an entity on such a line is the one part that is not
-printed as written to its end: the line up to the `{` stays as written, as does
-what follows the `{` on its line in a nonempty block, and the attributes after
-it and the `}` stand as those of any entity, unless the `}` stands on a line
-that holds the start of such a comment line (see
+diagram, the block of an entity on such a line is the one part whose whitespace
+is not kept as written to its end: the line up to the `{` stays as written, as
+does what follows the `{` on its line in a nonempty block, and the attributes
+after it and the `}` stand as those of any entity, unless the `}` stands on a
+line that holds the start of such a comment line (see
 [ER](./er.md#multi-line-statements)).
+
+In an ER diagram, what else the formatter prints on a statement of such a line,
+as the colors of a style, the words of a relationship, and the quotes of a name
+that is one plain word, is stated in [ER](./er.md#attribute-spacing). A color
+before a comma on such a line is printed in lower case in a flowchart, a class
+diagram, and a state diagram as well, where the comma follows the color at once
+or after a space or a tab, but for the colors that
+[Colors that are drawn the same](#colors-that-are-drawn-the-same) keeps as
+written: the `classDef` of a class diagram and the `style` of a state diagram
+where no style after the first holds a `:`. `classDef k fill:#FFF,stroke:#ABC`
+in a class diagram and `style A fill:#F00,x` in a state diagram keep the color.
+
+[test: a color before a comma in a style statement that a comment line after
+U+2028 joins in a flowchart is printed in lower case] [test: a color before a
+comma after a space in a style statement that a comment line after U+2028 joins
+in a flowchart is printed in lower case] [test: a color before a comma in a
+style statement that a comment line after U+2028 joins in a class diagram is
+printed in lower case] [test: a color before a comma after a space in a style
+statement that a comment line after U+2028 joins in a class diagram is printed
+in lower case] [test: a color before a comma in a style statement that a comment
+line after U+2028 joins in a state diagram is printed in lower case] [test: a
+color before a comma after a space in a style statement that a comment line
+after U+2028 joins in a state diagram is printed in lower case] [test: a color
+before a comma in a style statement that a comment line after U+2028 joins in an
+ER diagram is printed in lower case] [test: a color before a comma after a space
+in a style statement that a comment line after U+2028 joins in an ER diagram is
+printed in lower case] [test: a color before a comma after a tab in a style
+statement that a comment line after U+2028 joins in a flowchart is printed in
+lower case] [test: a color before a comma after a tab in a style statement that
+a comment line after U+2028 joins in a class diagram is printed in lower case]
+[test: a color before a comma after a tab in a style statement that a comment
+line after U+2028 joins in a state diagram is printed in lower case] [test: a
+color before a comma after a tab in a style statement that a comment line after
+U+2028 joins in an ER diagram is printed in lower case] [test: a color before a
+comma after a tab in a style statement that a comment line after U+2028 joins,
+the comma followed by a property, in a flowchart is printed in lower case]
+[test: a color before a comma that a word without a colon follows in a style
+statement that a comment line after U+2028 joins in a flowchart is printed in
+lower case] [test: a color before a comma at once in a classDef statement that a
+comment line after U+2028 joins, the comma followed by a property, in a
+flowchart is printed in lower case] [test: a color before a comma after a space
+in a classDef statement that a comment line after U+2028 joins, the comma
+followed by a property, in a flowchart is printed in lower case] [test: a color
+before a comma after a tab in a classDef statement that a comment line after
+U+2028 joins, the comma followed by a property, in a flowchart is printed in
+lower case] [test: a color before a comma that a word without a colon follows in
+a classDef statement that a comment line after U+2028 joins in a flowchart is
+printed in lower case] [test: a color before a comma at once in a style
+statement that a comment line after U+2028 joins, the comma followed by a
+property, in a class diagram is printed in lower case] [test: a color before a
+comma after a space in a style statement that a comment line after U+2028 joins,
+the comma followed by a property, in a class diagram is printed in lower case]
+[test: a color before a comma after a tab in a style statement that a comment
+line after U+2028 joins, the comma followed by a property, in a class diagram is
+printed in lower case] [test: a color before a comma that a word without a colon
+follows in a style statement that a comment line after U+2028 joins in a class
+diagram is printed in lower case] [test: a color before a comma at once in a
+classDef statement that a comment line after U+2028 joins, the comma followed by
+a property, in a class diagram stays as written] [test: a color before a comma
+after a space in a classDef statement that a comment line after U+2028 joins,
+the comma followed by a property, in a class diagram stays as written] [test: a
+color before a comma after a tab in a classDef statement that a comment line
+after U+2028 joins, the comma followed by a property, in a class diagram stays
+as written] [test: a color before a comma that a word without a colon follows in
+a classDef statement that a comment line after U+2028 joins in a class diagram
+stays as written] [test: a color before a comma at once in a style statement
+that a comment line after U+2028 joins, the comma followed by a property, in a
+state diagram is printed in lower case] [test: a color before a comma after a
+space in a style statement that a comment line after U+2028 joins, the comma
+followed by a property, in a state diagram is printed in lower case] [test: a
+color before a comma after a tab in a style statement that a comment line after
+U+2028 joins, the comma followed by a property, in a state diagram is printed in
+lower case] [test: a color before a comma that a word without a colon follows in
+a style statement that a comment line after U+2028 joins in a state diagram
+stays as written] [test: a color before a comma at once in a classDef statement
+that a comment line after U+2028 joins, the comma followed by a property, in a
+state diagram is printed in lower case] [test: a color before a comma after a
+space in a classDef statement that a comment line after U+2028 joins, the comma
+followed by a property, in a state diagram is printed in lower case] [test: a
+color before a comma after a tab in a classDef statement that a comment line
+after U+2028 joins, the comma followed by a property, in a state diagram is
+printed in lower case] [test: a color before a comma that a word without a colon
+follows in a classDef statement that a comment line after U+2028 joins in a
+state diagram is printed in lower case]
 
 [test: a comment line after U+2028 inside the name of an ER entity with an
 attribute block over several lines] [test: an attribute block of an entity that
@@ -7320,8 +7497,12 @@ railroad/multiline-values/peg-columns] [fixture: railroad/predicates/peg-nested]
 
 Comment forms and contents remain written: all four dialects have `%%`, IR has C
 comments, EBNF has C and ISO comments, ABNF has semicolon line comments and PEG
-has hash line comments. LS/PS remain native line-comment content. A bare ABNF
-`;` is punctuation; its terminator must meet LF or EOF immediately. Every rule's
+has hash line comments. LS/PS remain native line-comment content. None of the 14
+railroad examples in the documentation of mermaid.js holds a comment, so
+[rule 3](./printed-form.md#3-a-spelling) gives no form for the marks and keeps
+them as written, and the text of a comment stays as written, since mermaid.js
+does not read it (see [Comments](./railroad.md#comments)). A bare ABNF `;` is
+punctuation; its terminator must meet LF or EOF immediately. Every rule's
 required visible `;` stays attached where safe. Ordinary IR rules retain
 semicolons inside values without freezing their layout; every other authored
 semicolon stays under shared segment protection, including crossing values. Each

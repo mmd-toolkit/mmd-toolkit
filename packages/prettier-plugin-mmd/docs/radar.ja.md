@@ -19,18 +19,29 @@
 mermaid.js は `radar-beta:` と `radar-beta` を同じ見出しとして読み、
 文書の例はコロンのない見出しを 3 回使い、ある形は使わないためです。
 （[ヘッダーの後のコロン](./compatibility.ja.md#ヘッダーの後のコロン)を参照）。
-コロンと語の間に隠れた形か大域的なディレクティブがあるときと、
-`;` か隠れた YAML ブロックの `---` がコロンに接するときは、コロンを残します。
+コロンと語の間に隠れた形か大域的なディレクティブがあるときと、`;`、
+隠れた YAML ブロックの `---`、閉じていないディレクティブがコロンに接するときは、
+コロンを残します。
 `radar-beta%%{wrap}%%:axis North` のコロンは残します。
 対象にする版の mermaid.js のすべてが、
 `radar-beta%%{wrap}%%axis North` を拒否するためです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+閉じていないディレクティブの前でも、コロンを残します。
+`radar-beta:%%{x y`、改行、`axis North` を書かれたまま残すのは、
+mermaid.js がディレクティブを後ろの改行ごと取り除き、
+見出しと `axis` を 1 つの語として読むことになり、
+対象にする版の mermaid.js のすべてが、そのテキストを拒否するためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 隠れた形、大域的な注釈類、セミコロンの保護区間では境界を保ちます。
 空の本文は空のままです。
 
-[fixture: radar/header/colon-removed] [fixture: radar/header/colon-yaml-kept]
+[fixture: radar/header/colon-removed]
+[fixture: radar/header/colon-unclosed-directive-kept]
+[fixture: radar/header/colon-yaml-kept]
 [fixture: radar/header/colon-directive-before-hidden-yaml-kept]
 [fixture: radar/header/joined-empty]
 
@@ -562,6 +573,13 @@ radar-beta
 
 1 行の説明ブロックは、
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+`%%` を含むテキストのブロックは波括弧を残します。
+対象にする版の mermaid.js のすべてが、
+`accDescr {a%%literal}` を `a%%literal` と読み、
+`accDescr: a%%literal` を `a` と読むからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 波括弧を残すブロックは、境界がわかるよう、
 キーワードと開始波括弧の間に空白を 1 つ置きます。
 空白だけの内部は、空白で囲む文字がないため `{}` にします。
@@ -569,13 +587,19 @@ radar-beta
 コメント・ディレクティブだけの内部を保ちます。
 通常の説明本文と独立したコメント行は文より1段内側に揃えます。
 Db で LF 後の字下げが取り除かれるためです。
-改行、内部の空行、行末空白を保ちます。
+改行と内部の空行は保ちます。
+行末の空白は、テキストの最後の行のものを除いて保ちます。
+空白だけの行は空行にします。
+最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
+同じ行で閉じ括弧が続くときは空白 1 つで印字します。
 ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
 別行の開始記号と閉じ記号は文にそろえます。
 最初の閉じ波括弧で値を終えます。
 
 [fixture: radar/description-blocks/block-touching-with-text-fixed]
 [fixture: radar/description-blocks/block-empty-fixed]
+[fixture: description-blocks/block-trailing-whitespace]
+[fixture: description-blocks/block-trailing-whitespace-closer-on-the-text-line]
 
 [fixture: radar/description-blocks/block-touching-fixed]
 
@@ -588,6 +612,7 @@ Db で LF 後の字下げが取り除かれるためです。
 [fixture: radar/description-blocks/block-global-only-fixed]
 
 [fixture: radar/description-blocks/block-global-opener-fixed]
+[fixture: radar/comments/value-percent-owned]
 
 [fixture: radar/description-blocks/block-comment-opener-fixed]
 
@@ -674,7 +699,18 @@ radar-beta
 ### Comments
 
 普通の独立コメントは本文 1 段、見出し前は第 1 列にそろえます。
-同じ行のコメントは行と接着を保ち、分離した空白は 1 個にします。
+同じ行のコメントは行を保ち、接していれば接したまま、
+空白とタブの連なりがあれば空白 1 つにします。
+規則 1 は、コメントの前の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[sequence](./sequence.ja.md#コメント)、[journey](./journey.ja.md#コメント)、
+[timeline](./timeline.ja.md#コメント)も、
+文の後ろのコメントを同じように印字します。
+ほかの規則が空白を書かれたまま残す所は別です。
+どの図の文書も、その所を、
+自分の節か [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
+で挙げています（Db が持つ空白、たとえば `section` と期間の後の空白と、
+mermaid.js の読みを変える空白です）。
 印、本文、末尾の空白を保ちます。
 図固有のコメントは物理 EOL で終わり、LS・PS は内容のままです。
 先に始まった文字列と説明がパーセントの文字を所有する場合もあります。
@@ -684,6 +720,7 @@ radar-beta
 [fixture: radar/comments/standalone-comments]
 
 [fixture: radar/comments/inline-comment-sides]
+[fixture: radar/comments/inline-gap-run-before-comment]
 
 [fixture: radar/comments/common-percent-stop]
 

@@ -813,6 +813,7 @@ mermaid.js は、どこにあってもトークンのないものとして読み
 [fixture: empty-description-blocks/touching-kept]
 [fixture: empty-description-blocks/blank-lines-inside]
 [fixture: empty-description-blocks/with-directive-or-comment-line-kept]
+[fixture: empty-description-blocks/directive-line-kept]
 [fixture: empty-description-blocks/between-two-statements]
 
 入力

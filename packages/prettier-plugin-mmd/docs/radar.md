@@ -18,15 +18,23 @@ and `radar-beta` as the same header, and the examples in its documentation write
 the header without the colon 3 times against none (see
 [The colon after a header](./compatibility.md#the-colon-after-a-header)). The
 colon stays where a hidden form or a global directive lies between it and the
-word, and where a `;` or the `---` of a hidden YAML block touches it. For
-`radar-beta%%{wrap}%%:axis North`, the colon stays, since every version of
-mermaid.js that counts rejects `radar-beta%%{wrap}%%axis North` (see
+word, and where a `;`, the `---` of a hidden YAML block, or a directive that is
+not closed touches it. For `radar-beta%%{wrap}%%:axis North`, the colon stays,
+since every version of mermaid.js that counts rejects
+`radar-beta%%{wrap}%%axis North` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The colon stays before an unclosed directive too: `radar-beta:%%{x y`, a line
+break, and `axis North` stay as written, since mermaid.js takes the directive
+out with the line break after it and would read the header and `axis` as one
+word, and every version of mermaid.js that counts rejects that text (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 Hidden forms, global trivia and protected semicolon segments keep their source
 boundaries instead. Empty bodies remain empty.
 
-[fixture: radar/header/colon-removed] [fixture: radar/header/colon-yaml-kept]
-[fixture: radar/header/colon-directive-before-hidden-yaml-kept] [fixture:
+[fixture: radar/header/colon-removed] [fixture:
+radar/header/colon-unclosed-directive-kept] [fixture:
+radar/header/colon-yaml-kept] [fixture:
+radar/header/colon-directive-before-hidden-yaml-kept] [fixture:
 radar/header/joined-empty]
 
 [fixture: radar/header/join-separated-empty-alternative]
@@ -542,18 +550,28 @@ radar-beta
 
 Description blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
+A block whose text holds `%%` keeps its braces: every version of mermaid.js that
+counts reads `accDescr {a%%literal}` as `a%%literal` and `accDescr: a%%literal`
+as `a` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 For blocks that keep their braces, separate the keyword and opening brace with
 one space so the block boundary is clear. Whitespace-only interiors become `{}`
 because no text needs surrounding space. Plain opener whitespace joins; real
 trivia keeps its break. Preserve comment/directive-only interiors. Ordinary
 description body and standalone comment lines align one level inside the
-statement: the Db removes indentation after LF. Keep line breaks, internal
-blanks and trailing whitespace; align a separate opener or closer with the
-statement. Directives and shared removed comment regions keep their complete
-source. The first closing brace still ends the value.
+statement: the Db removes indentation after LF. Keep line breaks and interior
+blank lines, and the whitespace at the end of each line of text except the last
+one; a line of whitespace only becomes an empty line. The whitespace at the end
+of the last line of text is dropped where the closer stands on a line of its
+own, and is printed as one space where the closer follows it on that line. Align
+a separate opener or closer with the statement. Directives and shared removed
+comment regions keep their complete source. The first closing brace still ends
+the value.
 
 [fixture: radar/description-blocks/block-touching-with-text-fixed] [fixture:
-radar/description-blocks/block-empty-fixed]
+radar/description-blocks/block-empty-fixed] [fixture:
+description-blocks/block-trailing-whitespace] [fixture:
+description-blocks/block-trailing-whitespace-closer-on-the-text-line]
 
 [fixture: radar/description-blocks/block-touching-fixed]
 
@@ -565,7 +583,8 @@ radar/description-blocks/block-empty-fixed]
 
 [fixture: radar/description-blocks/block-global-only-fixed]
 
-[fixture: radar/description-blocks/block-global-opener-fixed]
+[fixture: radar/description-blocks/block-global-opener-fixed] [fixture:
+radar/comments/value-percent-owned]
 
 [fixture: radar/description-blocks/block-comment-opener-fixed]
 
@@ -651,16 +670,26 @@ radar-beta
 ### Comments
 
 Align ordinary standalone comments one body step in, or column one before the
-header. Inline comments keep their line and touching side; separated gaps become
-one space. Preserve marks, content and trailing padding. Native comments end at
-physical EOL and keep LS/PS as content. Earlier strings/descriptions own
-enclosed percent text; removed common regions keep their complete source and
-continuation columns. These shared attachment rules prevent text from changing
-owner.
+header. Inline comments keep their line, touching where they touch, and a run of
+spaces and tabs before one becomes one space. Rule 1 names no mark before a
+comment, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [sequence](./sequence.md#comments),
+[journey](./journey.md#comments), and [timeline](./timeline.md#comments) print a
+comment after a statement in the same way, where no other rule keeps the
+whitespace as written; each of them names those cases in its own sections or in
+[A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
+(whitespace that the Db holds, as after a `section` or a period, and whitespace
+that changes what mermaid.js reads). Preserve marks, content and trailing
+padding. Native comments end at physical EOL and keep LS/PS as content. Earlier
+strings/descriptions own enclosed percent text; removed common regions keep
+their complete source and continuation columns. These shared attachment rules
+prevent text from changing owner.
 
 [fixture: radar/comments/standalone-comments]
 
-[fixture: radar/comments/inline-comment-sides]
+[fixture: radar/comments/inline-comment-sides] [fixture:
+radar/comments/inline-gap-run-before-comment]
 
 [fixture: radar/comments/common-percent-stop]
 

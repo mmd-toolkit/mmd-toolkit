@@ -744,12 +744,18 @@ block arrow がそれを書かれたまま使うからです。
 
 [fixture: styles/style-label-styles-kept]
 
-コメントやディレクティブがある文、空白だけのスタイルがある文、
-スタイルに改行があるか、行に保つ `;` がある文は、書かれたままにします。
+最後のスタイルの終わりより前にコメントやディレクティブがある文、
+空白だけのスタイルがある文、スタイルに改行があるか、行に保つ `;` がある文は、
+書かれたままにします。
+最後のスタイルの後ろのコメントやディレクティブは文の一部ではなく、
+文は普通に整形します。
+詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください。
 文の最後の空白は、
 flowchart の [スタイルの行末の空白](./flowchart.ja.md#スタイルの行末の空白)
 と同じに落とします。
 
+[fixture: styles/style-comment-and-directive-after-last-style-formatted]
 [fixture: styles/class-definition-spaces] [fixture: styles/style-spaces]
 [fixture: styles/class-spaces] [fixture: styles/style-commas-spaced]
 [fixture: styles/class-definition-commas-spaced]

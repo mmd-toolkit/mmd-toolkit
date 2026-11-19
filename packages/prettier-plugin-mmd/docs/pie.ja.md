@@ -303,7 +303,9 @@ pie
 1 行の説明ブロックは、
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
 波括弧を残すブロックは、
-flowchart の[複数行の値](./flowchart.ja.md#複数行の値)を再利用します。
+flowchart の[複数行の値](./flowchart.ja.md#複数行の値)と、
+sequence の[複数行の値](./sequence.ja.md#複数行の値)を再利用します。
+どちらも、ブロックの行を文の 1 段内側に置きます。
 説明の Db では LF 後の字下げが取り除かれるためです。
 通常の隙間では、接して書かれていても語と開き括弧の間に空白 1 つを置きます。
 保護対象の注釈類やセミコロンの配置では、その隙間を保ちます。
@@ -325,7 +327,11 @@ mermaid.js が拒否するためです（詳しくは
 を参照してください）。
 ほかの図種と同じく、通常の後続本文と独立したコメント行は、
 文より1段内側に揃えます。
-改行、空行、行末空白は保ちます。
+改行と内部の空行は保ちます。
+行末の空白は、テキストの最後の行のものを除いて保ちます。
+空白だけの行は空行にします。
+最後のテキスト行の行末の空白は、閉じ括弧が自分の行にあるときは落とし、
+同じ行で閉じ括弧が続くときは空白 1 つで印字します。
 ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
 別行の `}` は文の列です。
 注釈類のある内部は残します。
@@ -350,6 +356,8 @@ mermaid.js が拒否するためです（詳しくは
 [fixture: pie/description-blocks/opener-comment-only-kept]
 [fixture: pie/description-blocks/opener-comment-with-text-kept]
 [fixture: pie/description-blocks/opener-comment-break-kept]
+[fixture: description-blocks/block-trailing-whitespace]
+[fixture: description-blocks/block-trailing-whitespace-closer-on-the-text-line]
 
 入力（エスケープ表記）:
 `"pie\naccDescr {\n  first\n    second\n        }\n\"Data\":2"`

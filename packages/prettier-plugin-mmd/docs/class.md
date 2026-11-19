@@ -283,10 +283,10 @@ classDiagram
 
 ### Whitespace between tokens
 
-Within a line, a run of spaces and tabs between two tokens becomes one space,
-and tokens that touch keep touching, as in a flowchart, except for the cases
-named below: a string, a backquoted name, or the `call` keyword after what comes
-before it, the `[` of a label, and the `~` of a generic type.
+Within a line, where no rule below gives the gap another form (a string, an
+arrow, a colon, the name before the `(` of a callback, `:::`, and the like), a
+run of spaces and tabs between two tokens becomes one space, and tokens that
+touch keep touching, as in a flowchart.
 
 [fixture: whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/tabs-collapsed] [fixture:
@@ -360,16 +360,16 @@ level of the statements around it.
 whitespace-between-tokens/tabs-collapsed]
 
 A string, a backquoted name, or the `call` keyword that touches what comes
-before it is separated from it by one space in a `class`, `namespace`, `note`,
-`link`, `click`, or `cssClass` statement: `note"n"` is printed `note "n"`,
-`note for A"n"` is printed `note for A "n"`, `` class`C D` `` and
-``namespace`N M` {`` are printed with a space after the keyword, `link A"u""t"`
-is printed `link A "u" "t"`, `click B href"u""t"_self` is printed
-`click B href "u" "t" _self`, `cssClass"A,B"c` is printed `cssClass "A,B" c`,
-`click C call f()"t"` is printed `click C call f() "t"`, and
-`click C~T~call f()` is printed `click C~T~ call f()`. mermaid.js reads every
-spelling as the same statement, so nothing forces the form; its documentation
-writes a space before each string
+before it, and a word that touches the string before it, is separated from it by
+one space in a `class`, `namespace`, `note`, `link`, `click`, or `cssClass`
+statement: `note"n"` is printed `note "n"`, `note for A"n"` is printed
+`note for A "n"`, `` class`C D` `` and ``namespace`N M` {`` are printed with a
+space after the keyword, `link A"u""t"` is printed `link A "u" "t"`,
+`click B href"u""t"_self` is printed `click B href "u" "t" _self`,
+`cssClass"A,B"c` is printed `cssClass "A,B" c`, `click C call f()"t"` is printed
+`click C call f() "t"`, and `click C~T~call f()` is printed
+`click C~T~ call f()`. mermaid.js reads every spelling as the same statement, so
+nothing forces the form; its documentation writes a space before each string
 ([`note "…"` and `note for MyClass "…"`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L639-L640),
 [`link Shape "…" "…"` and `click Shape2 href "…" "…"`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L650-L652),
 [`cssClass "nodeId1,nodeId2" className`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L773)).
@@ -506,15 +506,20 @@ of the statements decides and the printer keeps it as written either way:
 [fixture: whitespace-between-tokens/class-def-backslash-space-kept] [fixture:
 whitespace-between-tokens/class-def-backslash-at-end-kept]
 
-A statement stays as written where it holds a comment or a directive, where a
-style is all whitespace, or where a style holds a line break or its line holds a
-kept `;`. `style A fill:#f00 %%{x}%% ,color:white` stays as written, since some
-of the versions of mermaid.js that count draw different styles for
+A statement stays as written where a comment or a directive stands inside it,
+before the end of its last style, where a style is all whitespace, or where a
+style holds a line break or its line holds a kept `;`. A comment or a directive
+after the last style is no part of the statement, which is formatted as usual
+(see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+`style A fill:#f00 %%{x}%% ,color:white` stays as written, since some of the
+versions of mermaid.js that count draw different styles for
 `style A fill: #f00 %%{x}%%, color: white` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: whitespace-between-tokens/style-comma-before-dropped] [fixture:
-whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
+whitespace-between-tokens/style-comment-and-directive-after-last-style-formatted]
+[fixture: whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
 whitespace-between-tokens/style-colon-and-comma-spaced]
 
 A U+2028 or U+2029 among the styles keeps the statement as written.

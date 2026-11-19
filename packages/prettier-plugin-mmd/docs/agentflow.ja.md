@@ -542,10 +542,15 @@ look が `handDrawn` のときは、mermaid.js が先頭の `stroke:` を読む�
 [fixture: single-space-gaps/style-colon-escaped-space-kept]
 [fixture: single-space-gaps/style-colon-escaped-space-run-dropped]
 
-ディレクティブやコメントがある文、空白だけのスタイルがある文、
-スタイルに改行か U+2028・U+2029 があるか、行に保つ `;` がある文は、
-書かれたままにします。
+最後のスタイルの終わりより前にディレクティブやコメントがある文、
+空白だけのスタイルがある文、スタイルに改行か U+2028・U+2029 があるか、
+行に保つ `;` がある文は、書かれたままにします。
+最後のスタイルの後ろのコメントやディレクティブは文の一部ではなく、
+文は普通に整形します。
+詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください。
 
+[fixture: single-space-gaps/style-comment-and-directive-after-last-style-formatted]
 [fixture: single-space-gaps/classdef-first-tab]
 [fixture: single-space-gaps/linkstyle-first-spaces]
 [fixture: single-space-gaps/style-directive-gap]
