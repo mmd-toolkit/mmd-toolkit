@@ -5630,6 +5630,151 @@ const eventmodelingCommentGapExamples: readonly (readonly [
     "eventmodeling\ntf 01 evt Alpha ->> 02\u2029%% c\ntf 02 evt Beta\n",
     "eventmodeling\ntf 01 evt Alpha ->> 02 %% c\ntf 02 evt Beta\n",
   ],
+  [
+    "U+000B before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u000b%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+000C before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\f%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+1680 before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u1680%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+2000 before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2000%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+2001 before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2001%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+2002 before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2002%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+2003 before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2003%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+2004 before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2004%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+2005 before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2005%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+2006 before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2006%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+2007 before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2007%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+2008 before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2008%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+2009 before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u2009%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+200A before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u200a%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+202F before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u202f%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+205F before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\u205f%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "U+FEFF before a comment after a statement of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha\ufeff%% c\n",
+    "eventmodeling\ntf 01 evt Alpha %% c\n",
+  ],
+  [
+    "a no-break space before a comment after an entity declaration of an eventmodeling diagram",
+    "eventmodeling\nentity Shop.Buy\u00a0%% c\n",
+    "eventmodeling\nentity Shop.Buy %% c\n",
+  ],
+  [
+    "U+3000 before a comment after an entity declaration of an eventmodeling diagram",
+    "eventmodeling\nentity Shop.Buy\u3000%% c\n",
+    "eventmodeling\nentity Shop.Buy %% c\n",
+  ],
+  [
+    "U+2028 before a comment after an entity declaration of an eventmodeling diagram",
+    "eventmodeling\nentity Shop.Buy\u2028%% c\n",
+    "eventmodeling\nentity Shop.Buy %% c\n",
+  ],
+  [
+    "U+2029 before a comment after an entity declaration of an eventmodeling diagram",
+    "eventmodeling\nentity Shop.Buy\u2029%% c\n",
+    "eventmodeling\nentity Shop.Buy %% c\n",
+  ],
+  [
+    "a no-break space before a comment after a clause keyword of an eventmodeling diagram",
+    "eventmodeling\ngwt 01\ngiven\u00a0%% c\nevt Added\nthen cmd Charge\n",
+    "eventmodeling\ngwt 01\n  given %% c\n    evt Added\n  then\n    cmd Charge\n",
+  ],
+  [
+    "U+3000 before a comment after a clause keyword of an eventmodeling diagram",
+    "eventmodeling\ngwt 01\ngiven\u3000%% c\nevt Added\nthen cmd Charge\n",
+    "eventmodeling\ngwt 01\n  given %% c\n    evt Added\n  then\n    cmd Charge\n",
+  ],
+  [
+    "U+2028 before a comment after a clause keyword of an eventmodeling diagram",
+    "eventmodeling\ngwt 01\ngiven\u2028%% c\nevt Added\nthen cmd Charge\n",
+    "eventmodeling\ngwt 01\n  given %% c\n    evt Added\n  then\n    cmd Charge\n",
+  ],
+  [
+    "U+2029 before a comment after a clause keyword of an eventmodeling diagram",
+    "eventmodeling\ngwt 01\ngiven\u2029%% c\nevt Added\nthen cmd Charge\n",
+    "eventmodeling\ngwt 01\n  given %% c\n    evt Added\n  then\n    cmd Charge\n",
+  ],
+  [
+    "a no-break space before a comment after the closing brace of a block of an eventmodeling diagram",
+    "eventmodeling\ndata D {\nx\n}\u00a0%% c\n",
+    "eventmodeling\ndata D {\n  x\n} %% c\n",
+  ],
+  [
+    "U+3000 before a comment after the closing brace of a block of an eventmodeling diagram",
+    "eventmodeling\ndata D {\nx\n}\u3000%% c\n",
+    "eventmodeling\ndata D {\n  x\n} %% c\n",
+  ],
+  [
+    "U+2028 before a comment after the closing brace of a block of an eventmodeling diagram",
+    "eventmodeling\ndata D {\nx\n}\u2028%% c\n",
+    "eventmodeling\ndata D {\n  x\n} %% c\n",
+  ],
+  [
+    "U+2029 before a comment after the closing brace of a block of an eventmodeling diagram",
+    "eventmodeling\ndata D {\nx\n}\u2029%% c\n",
+    "eventmodeling\ndata D {\n  x\n} %% c\n",
+  ],
 ]
 
 describe("the whitespace beside a comment of an eventmodeling diagram", () => {

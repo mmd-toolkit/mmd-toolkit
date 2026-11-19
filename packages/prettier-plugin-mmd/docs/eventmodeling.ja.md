@@ -895,6 +895,15 @@ title の前置空白、1 個の区切り、本文、末尾テキストを原文
 
 [fixture: eventmodeling/title/title-exact-padding-and-quotes]
 
+ヘッダー行とフレーム文の行の `title`、`accTitle:`、
+`accDescr:` のテキストの後の `%%` は、コメントではなく値のテキストです。
+`title T  %% c` は、空白 2 つも含めて書かれたまま残します。
+
+[fixture: eventmodeling/title/header-line-title-comment-mark-is-text]
+[fixture: eventmodeling/title/header-line-acctitle-comment-mark-is-text]
+[fixture: eventmodeling/title/header-line-accdescr-comment-mark-is-text]
+[fixture: eventmodeling/title/frame-line-titles-comment-mark-is-text]
+
 [fixture: eventmodeling/title/title-normalized-invisible-to-comparison-db]
 
 [fixture: eventmodeling/title/title-empty-remains]
@@ -1070,8 +1079,8 @@ tf 02 evt Beta
 普通の独立コメントは所属本文の段に揃え、GWT 項目間では項目の段にします。
 同じ印字行では、接するコメントは接したまま残し、
 前の空白とタブの連なりは空白 1 つにします。
-ただし、ヘッダー行の title と accTitle では、`%% c` がタイトルのテキストなので、
-そのままです（[Title](#title) を参照）。
+ただし、ヘッダー行とフレーム文の行の title、accTitle、accDescr では、
+`%% c` が値のテキストなので、そのままです（[Title](#title) を参照）。
 規則 1 は、コメントの前の印を挙げていないので、
 [規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
 [sequence](./sequence.ja.md#コメント)は、
@@ -1084,11 +1093,15 @@ tf 02 evt Beta
 自分の節か [文字の直後のコメント](./compatibility.ja.md#文字の直後のコメント)
 で挙げています（Db が持つ空白、たとえば `section` と期間の後の空白と、
 mermaid.js の読みを変える空白です）。
-コメントの前にあるノーブレークスペース、U+3000、U+2028、U+2029 も、
-フレーム文の後ろでは、コメントに文が続くときも、テキストが終わるときも、
-空白 1 つにします。
-ヘッダー行、GWT のヘッダー、GWT の項目、data の宣言、note の宣言、data の参照、
-行内の本体、ソースの参照の後ろでも、空白 1 つにします。
+フレーム文の後ろでテキストが終わるとき、コメントの前にある垂直タブ、
+フォームフィード、ノーブレークスペース、U+1680、U+2000 から U+200A、U+2028、
+U+2029、U+202F、U+205F、U+3000、U+FEFF も、空白 1 つにします。
+そこでは U+0085、U+180E、U+200B は拒否されます。
+コメントの前にあるノーブレークスペース、U+3000、U+2028、U+2029 は、
+コメントに文が続くときも、空白 1 つにします。
+ヘッダー行、GWT のヘッダー、GWT の項目、節のキーワード、data の宣言、
+note の宣言、entity の宣言、data の参照、行内の本体、ソースの参照、
+ブロックの閉じ括弧の後ろでも、空白 1 つにします。
 前に挙げた図は、この 4 つの文字をそう印字しません。
 sequence は、
 メッセージの後ろのノーブレークスペースと U+3000 を書かれたまま残します。
@@ -1096,7 +1109,7 @@ journey と timeline は、見出しの後ろのこの 2 つを空白 1 つで�
 U+2028 と U+2029 の前では、sequence、journey、timeline は、
 コメントに文が続くとき行を書かれたまま残し、
 テキストが終わるときはコメントを自分の行に置きます。
-そのため、この 4 つの文字の形を与える規則はなく、
+そのため、これらの文字の形を与える規則はなく、
 公開済みの版が印字する空白 1 つを、決めるまで残します。
 詳しくは
 [どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
@@ -1127,6 +1140,35 @@ data ブロック、note、`accDescr` ブロック、スラッシュのブロッ
 [test: U+2028 before a comment that a statement follows, after a statement of an eventmodeling diagram]
 [test: U+2029 before a comment that a statement follows, after a statement of an eventmodeling diagram]
 [test: U+3000 before a comment that a statement follows, after a statement of an eventmodeling diagram]
+[test: U+000B before a comment after a statement of an eventmodeling diagram]
+[test: U+000C before a comment after a statement of an eventmodeling diagram]
+[test: U+1680 before a comment after a statement of an eventmodeling diagram]
+[test: U+2000 before a comment after a statement of an eventmodeling diagram]
+[test: U+2001 before a comment after a statement of an eventmodeling diagram]
+[test: U+2002 before a comment after a statement of an eventmodeling diagram]
+[test: U+2003 before a comment after a statement of an eventmodeling diagram]
+[test: U+2004 before a comment after a statement of an eventmodeling diagram]
+[test: U+2005 before a comment after a statement of an eventmodeling diagram]
+[test: U+2006 before a comment after a statement of an eventmodeling diagram]
+[test: U+2007 before a comment after a statement of an eventmodeling diagram]
+[test: U+2008 before a comment after a statement of an eventmodeling diagram]
+[test: U+2009 before a comment after a statement of an eventmodeling diagram]
+[test: U+200A before a comment after a statement of an eventmodeling diagram]
+[test: U+202F before a comment after a statement of an eventmodeling diagram]
+[test: U+205F before a comment after a statement of an eventmodeling diagram]
+[test: U+FEFF before a comment after a statement of an eventmodeling diagram]
+[test: a no-break space before a comment after an entity declaration of an eventmodeling diagram]
+[test: U+3000 before a comment after an entity declaration of an eventmodeling diagram]
+[test: U+2028 before a comment after an entity declaration of an eventmodeling diagram]
+[test: U+2029 before a comment after an entity declaration of an eventmodeling diagram]
+[test: a no-break space before a comment after a clause keyword of an eventmodeling diagram]
+[test: U+3000 before a comment after a clause keyword of an eventmodeling diagram]
+[test: U+2028 before a comment after a clause keyword of an eventmodeling diagram]
+[test: U+2029 before a comment after a clause keyword of an eventmodeling diagram]
+[test: a no-break space before a comment after the closing brace of a block of an eventmodeling diagram]
+[test: U+3000 before a comment after the closing brace of a block of an eventmodeling diagram]
+[test: U+2028 before a comment after the closing brace of a block of an eventmodeling diagram]
+[test: U+2029 before a comment after the closing brace of a block of an eventmodeling diagram]
 [test: a no-break space before a comment after the header of an eventmodeling diagram]
 [test: U+3000 before a comment after the header of an eventmodeling diagram]
 [test: U+2028 before a comment after the header of an eventmodeling diagram]

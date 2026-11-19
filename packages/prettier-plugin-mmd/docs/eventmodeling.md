@@ -872,6 +872,15 @@ equal comparison Db would not justify rewriting the public EM_TITLE terminal.
 
 [fixture: eventmodeling/title/title-exact-padding-and-quotes]
 
+A `%%` that follows the text of a `title`, an `accTitle:`, or an `accDescr:` on
+the header line or on the line of a frame statement is text of the value, not a
+comment: `title T  %% c` stays as written, with its two spaces.
+
+[fixture: eventmodeling/title/header-line-title-comment-mark-is-text] [fixture:
+eventmodeling/title/header-line-acctitle-comment-mark-is-text] [fixture:
+eventmodeling/title/header-line-accdescr-comment-mark-is-text] [fixture:
+eventmodeling/title/frame-line-titles-comment-mark-is-text]
+
 [fixture: eventmodeling/title/title-normalized-invisible-to-comparison-db]
 
 [fixture: eventmodeling/title/title-empty-remains]
@@ -1043,8 +1052,9 @@ tf 02 evt Beta
 Align ordinary standalone comments with their owning body; between GWT items
 this is item depth. Within a printed line, a comment that touches stays
 touching, and a run of spaces and tabs before it becomes one space, except in
-the title and the accTitle of the header line, where `%% c` is text of the title
-(see [Title](#title)). Rule 1 names no mark before a comment, so
+the title, the accTitle, and the accDescr of the header line and of a frame
+statement, where `%% c` is text of the value (see [Title](#title)). Rule 1 names
+no mark before a comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#comments) after a message and
 [journey](./journey.md#comments) and [timeline](./timeline.md#comments) after
@@ -1052,18 +1062,21 @@ their header print a comment in the same way, where no other rule keeps the
 whitespace as written; each of them names those cases in its own sections or in
 [A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
 (whitespace that the Db holds, as after a `section` or a period, and whitespace
-that changes what mermaid.js reads). A no-break space, U+3000, U+2028, or U+2029
-before a comment also becomes one space after a frame statement, where a
-statement follows the comment and where the text ends, and after the header
-line, a GWT header, a GWT item, a data declaration, a note declaration, a data
-reference, an inline body, and a source reference. The printers above print
-these characters otherwise: sequence keeps a no-break space or U+3000 after a
-message as written, and journey and timeline print them after their header as
-one space; before U+2028 or U+2029, sequence, journey, and timeline keep the
-line as written where a statement follows the comment and put the comment on a
-line of its own where the text ends. So no rule gives the form of these four
-characters, and the form that the released version prints, one space, stays
-until it is decided (see
+that changes what mermaid.js reads). Before a comment after a frame statement at
+the end of the text, a vertical tab, a form feed, a no-break space, U+1680,
+U+2000 to U+200A, U+2028, U+2029, U+202F, U+205F, U+3000, and U+FEFF also become
+one space; U+0085, U+180E, and U+200B are rejected there. A no-break space,
+U+3000, U+2028, or U+2029 before a comment becomes one space also where a
+statement follows the comment, and after the header line, a GWT header, a GWT
+item, a clause keyword, a data declaration, a note declaration, an entity
+declaration, a data reference, an inline body, a source reference, and the
+closing brace of a block. The printers above print these four characters
+otherwise: sequence keeps a no-break space or U+3000 after a message as written,
+and journey and timeline print them after their header as one space; before
+U+2028 or U+2029, sequence, journey, and timeline keep the line as written where
+a statement follows the comment and put the comment on a line of its own where
+the text ends. So no rule gives the form of these characters, and the form that
+the released version prints, one space, stays until it is decided (see
 [Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 When units split into separate lines, attach intervening inline comments to the
 following unit, in the same direction as directives. Use this shared placement
@@ -1092,38 +1105,69 @@ follows, after a statement of an eventmodeling diagram] [test: U+2028 before a
 comment that a statement follows, after a statement of an eventmodeling diagram]
 [test: U+2029 before a comment that a statement follows, after a statement of an
 eventmodeling diagram] [test: U+3000 before a comment that a statement follows,
+after a statement of an eventmodeling diagram] [test: U+000B before a comment
+after a statement of an eventmodeling diagram] [test: U+000C before a comment
+after a statement of an eventmodeling diagram] [test: U+1680 before a comment
+after a statement of an eventmodeling diagram] [test: U+2000 before a comment
+after a statement of an eventmodeling diagram] [test: U+2001 before a comment
+after a statement of an eventmodeling diagram] [test: U+2002 before a comment
+after a statement of an eventmodeling diagram] [test: U+2003 before a comment
+after a statement of an eventmodeling diagram] [test: U+2004 before a comment
+after a statement of an eventmodeling diagram] [test: U+2005 before a comment
+after a statement of an eventmodeling diagram] [test: U+2006 before a comment
+after a statement of an eventmodeling diagram] [test: U+2007 before a comment
+after a statement of an eventmodeling diagram] [test: U+2008 before a comment
+after a statement of an eventmodeling diagram] [test: U+2009 before a comment
+after a statement of an eventmodeling diagram] [test: U+200A before a comment
+after a statement of an eventmodeling diagram] [test: U+202F before a comment
+after a statement of an eventmodeling diagram] [test: U+205F before a comment
+after a statement of an eventmodeling diagram] [test: U+FEFF before a comment
 after a statement of an eventmodeling diagram] [test: a no-break space before a
-comment after the header of an eventmodeling diagram] [test: U+3000 before a
-comment after the header of an eventmodeling diagram] [test: U+2028 before a
-comment after the header of an eventmodeling diagram] [test: U+2029 before a
-comment after the header of an eventmodeling diagram] [test: a no-break space
-before a comment after a GWT header of an eventmodeling diagram] [test: U+3000
-before a comment after a GWT header of an eventmodeling diagram] [test: U+2028
-before a comment after a GWT header of an eventmodeling diagram] [test: U+2029
-before a comment after a GWT header of an eventmodeling diagram] [test: a
-no-break space before a comment after a GWT item of an eventmodeling diagram]
-[test: U+3000 before a comment after a GWT item of an eventmodeling diagram]
-[test: U+2028 before a comment after a GWT item of an eventmodeling diagram]
-[test: U+2029 before a comment after a GWT item of an eventmodeling diagram]
-[test: a no-break space before a comment after a data declaration of an
-eventmodeling diagram] [test: U+3000 before a comment after a data declaration
-of an eventmodeling diagram] [test: U+2028 before a comment after a data
-declaration of an eventmodeling diagram] [test: U+2029 before a comment after a
-data declaration of an eventmodeling diagram] [test: a no-break space before a
-comment after a note declaration of an eventmodeling diagram] [test: U+3000
-before a comment after a note declaration of an eventmodeling diagram] [test:
-U+2028 before a comment after a note declaration of an eventmodeling diagram]
-[test: U+2029 before a comment after a note declaration of an eventmodeling
-diagram] [test: a no-break space before a comment after a data reference of an
-eventmodeling diagram] [test: U+3000 before a comment after a data reference of
-an eventmodeling diagram] [test: U+2028 before a comment after a data reference
-of an eventmodeling diagram] [test: U+2029 before a comment after a data
-reference of an eventmodeling diagram] [test: a no-break space before a comment
-after an inline body of an eventmodeling diagram] [test: U+3000 before a comment
-after an inline body of an eventmodeling diagram] [test: U+2028 before a comment
-after an inline body of an eventmodeling diagram] [test: U+2029 before a comment
-after an inline body of an eventmodeling diagram] [test: a no-break space before
-a comment after a source reference of an eventmodeling diagram] [test: U+3000
+comment after an entity declaration of an eventmodeling diagram] [test: U+3000
+before a comment after an entity declaration of an eventmodeling diagram] [test:
+U+2028 before a comment after an entity declaration of an eventmodeling diagram]
+[test: U+2029 before a comment after an entity declaration of an eventmodeling
+diagram] [test: a no-break space before a comment after a clause keyword of an
+eventmodeling diagram] [test: U+3000 before a comment after a clause keyword of
+an eventmodeling diagram] [test: U+2028 before a comment after a clause keyword
+of an eventmodeling diagram] [test: U+2029 before a comment after a clause
+keyword of an eventmodeling diagram] [test: a no-break space before a comment
+after the closing brace of a block of an eventmodeling diagram] [test: U+3000
+before a comment after the closing brace of a block of an eventmodeling diagram]
+[test: U+2028 before a comment after the closing brace of a block of an
+eventmodeling diagram] [test: U+2029 before a comment after the closing brace of
+a block of an eventmodeling diagram] [test: a no-break space before a comment
+after the header of an eventmodeling diagram] [test: U+3000 before a comment
+after the header of an eventmodeling diagram] [test: U+2028 before a comment
+after the header of an eventmodeling diagram] [test: U+2029 before a comment
+after the header of an eventmodeling diagram] [test: a no-break space before a
+comment after a GWT header of an eventmodeling diagram] [test: U+3000 before a
+comment after a GWT header of an eventmodeling diagram] [test: U+2028 before a
+comment after a GWT header of an eventmodeling diagram] [test: U+2029 before a
+comment after a GWT header of an eventmodeling diagram] [test: a no-break space
+before a comment after a GWT item of an eventmodeling diagram] [test: U+3000
+before a comment after a GWT item of an eventmodeling diagram] [test: U+2028
+before a comment after a GWT item of an eventmodeling diagram] [test: U+2029
+before a comment after a GWT item of an eventmodeling diagram] [test: a no-break
+space before a comment after a data declaration of an eventmodeling diagram]
+[test: U+3000 before a comment after a data declaration of an eventmodeling
+diagram] [test: U+2028 before a comment after a data declaration of an
+eventmodeling diagram] [test: U+2029 before a comment after a data declaration
+of an eventmodeling diagram] [test: a no-break space before a comment after a
+note declaration of an eventmodeling diagram] [test: U+3000 before a comment
+after a note declaration of an eventmodeling diagram] [test: U+2028 before a
+comment after a note declaration of an eventmodeling diagram] [test: U+2029
+before a comment after a note declaration of an eventmodeling diagram] [test: a
+no-break space before a comment after a data reference of an eventmodeling
+diagram] [test: U+3000 before a comment after a data reference of an
+eventmodeling diagram] [test: U+2028 before a comment after a data reference of
+an eventmodeling diagram] [test: U+2029 before a comment after a data reference
+of an eventmodeling diagram] [test: a no-break space before a comment after an
+inline body of an eventmodeling diagram] [test: U+3000 before a comment after an
+inline body of an eventmodeling diagram] [test: U+2028 before a comment after an
+inline body of an eventmodeling diagram] [test: U+2029 before a comment after an
+inline body of an eventmodeling diagram] [test: a no-break space before a
+comment after a source reference of an eventmodeling diagram] [test: U+3000
 before a comment after a source reference of an eventmodeling diagram] [test:
 U+2028 before a comment after a source reference of an eventmodeling diagram]
 [test: U+2029 before a comment after a source reference of an eventmodeling
