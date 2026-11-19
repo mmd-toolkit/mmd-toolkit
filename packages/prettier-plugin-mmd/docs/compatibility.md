@@ -1413,7 +1413,7 @@ to U+000D, U+0020, U+00A0, U+1680, U+2000 to U+200A, U+2028, U+2029, U+202F,
 U+205F, U+3000, and U+FEFF, the characters that `String.prototype.trim` removes
 (see [Notation](../../spec/docs/common.md#notation)). The title loses them
 because the Db of 12.3.0 is the same with and without them and the drawing is
-the same in every version that counts. This holds for a title in which no
+the same in every version that counts. That reason holds for a title in which no
 directive and no comment stands; beside one, a whitespace character that is no
 space or tab is printed as the tables below say. A U+2028 or a U+2029 that a
 title loses according to the tables below, at its end or before a directive, is
@@ -1584,7 +1584,8 @@ tab and no U+2028 or U+2029 before the first directive of such a title
 (`\u00a0%%{x}%%`) is left out by the Langium types and a quadrant chart and
 stays in the other types where nothing follows the directive. A U+2028 or a
 U+2029 touching the directive with nothing after it (`\u2028%%{x}%%`) is lost
-likewise where a statement follows the title directly or the text ends after it;
+likewise by the Langium types and a quadrant chart, and stays in the other
+types, where a statement follows the title directly or the text ends after it;
 the other forms of a title of directives only with a U+2028 or a U+2029 before
 the directive and nothing after it are not stated. Where text follows that
 directive, every type but a quadrant chart keeps the title as written, and a
