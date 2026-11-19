@@ -1966,7 +1966,7 @@ railroad 図の文字列と特殊シーケンスです。
 [test: runs before a comment that ends the title of a subgraph of a flowchart]
 [test: runs before a comment that ends the label of a relation of a class diagram]
 
-これらのテキストの先頭のディレクティブの後ろには、書かれたテキストでは空白、
+上の表のテキストの先頭のディレクティブの後ろには、書かれたテキストでは空白、
 何もなし、別のディレクティブのどれかが続き、
 ディレクティブから後ろの印字はテキストによって異なります。
 次の表は、同じに印字するテキストごとの印字を、列ごとに 1 つの形で示します。

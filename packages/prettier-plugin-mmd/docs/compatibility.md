@@ -1876,21 +1876,21 @@ diagram] [test: runs before a comment that ends the title of a subgraph of a
 flowchart] [test: runs before a comment that ends the label of a relation of a
 class diagram]
 
-A directive at the start of one of these texts is followed in the written text
-by whitespace, by nothing, or by another directive, and what is printed from the
-directive on depends on the text. The table below gives it for each group of
-texts that print alike, with one form in each column: a space, two spaces, a
-tab, a no-break space, a U+2028, nothing, two directives with a space between
-them, two directives that touch, and a directive that holds a line break or a
-`;`, each followed by a space. The text is `A  b`, and `+x  y` for a member of a
-class diagram; `\t`, `\u00a0`, `\u2028`, and `\n` stand for a tab, a no-break
-space, a U+2028, and a line break. A vertical tab, a form feed, and the other
-whitespace characters that are no space, tab, or line separator (U+1680, U+2000
-to U+200A, U+202F, U+205F, U+3000, and U+FEFF) are printed as the no-break space
-is, and a U+2029 as the U+2028 is. mermaid.js rejects a tab, a vertical tab, and
-a form feed after a directive at the start of the label of a quadrant, of an
-axis, or of the right end of an axis of a quadrant chart, and formatting reports
-a syntax error there.
+A directive at the start of one of the texts of the table above is followed in
+the written text by whitespace, by nothing, or by another directive, and what is
+printed from the directive on depends on the text. The table below gives it for
+each group of texts that print alike, with one form in each column: a space, two
+spaces, a tab, a no-break space, a U+2028, nothing, two directives with a space
+between them, two directives that touch, and a directive that holds a line break
+or a `;`, each followed by a space. The text is `A  b`, and `+x  y` for a member
+of a class diagram; `\t`, `\u00a0`, `\u2028`, and `\n` stand for a tab, a
+no-break space, a U+2028, and a line break. A vertical tab, a form feed, and the
+other whitespace characters that are no space, tab, or line separator (U+1680,
+U+2000 to U+200A, U+202F, U+205F, U+3000, and U+FEFF) are printed as the
+no-break space is, and a U+2029 as the U+2028 is. mermaid.js rejects a tab, a
+vertical tab, and a form feed after a directive at the start of the label of a
+quadrant, of an axis, or of the right end of an axis of a quadrant chart, and
+formatting reports a syntax error there.
 
 | Texts                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `%%{x}%% A  b` | `%%{x}%%  A  b` | `%%{x}%%\tA  b` | `%%{x}%%\u00a0A  b` | `%%{x}%%\u2028A  b` | `%%{x}%%A  b` | `%%{x}%% %%{y}%% A  b` | `%%{x}%%%%{y}%%A  b` | `%%{init: {\n}}%% A  b` | `%%{init: {a;b}}%% A  b` |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | --------------- | --------------- | ------------------- | ------------------- | ------------- | ---------------------- | -------------------- | ----------------------- | ------------------------ |
