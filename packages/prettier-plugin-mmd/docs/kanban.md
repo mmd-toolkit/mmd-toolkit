@@ -1035,7 +1035,10 @@ lines of multi-line values. This is the distinction of
 [mindmap](./mindmap.md#node-text), with the data block added, and with the id of
 a column kept. On a kept line the same holds. On the line of a card, the spaces
 and tabs after the last directive are left out, and the run of spaces and tabs
-before each directive is printed as one space (see
+before each directive is printed as one space, unless a directive of the line
+holds a line break or a `;` (see
+[Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
+and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)):
 `A[x]  %%{y}%%  ` is printed `A[x] %%{y}%%`, and `A[x] %%{y}%%  %%{z}%%  ` is
 printed `A[x] %%{y}%% %%{z}%%`. A whitespace character that is no space or tab

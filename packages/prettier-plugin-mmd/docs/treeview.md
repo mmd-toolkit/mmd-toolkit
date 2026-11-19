@@ -1706,7 +1706,10 @@ as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 The directives that end a title are printed with one space before each that has
 whitespace before it, and the whitespace after the last one is left out,
-whatever the whitespace at the end of the line (see
+whatever the whitespace at the end of the line, unless a directive of the line
+holds a line break, a `;`, a U+2028, or a U+2029 (see
+[Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
+and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped]
@@ -1806,7 +1809,10 @@ but not that of an `accTitle`, which the browser shows as a tooltip, and retain
 brace-looking line values and trivia boundaries. The common converter permits
 these equivalent outer gaps. Never borrow text from the next line. The
 directives that end the value are printed with one space before each that has
-whitespace before it, and the whitespace after the last one is left out (see
+whitespace before it, and the whitespace after the last one is left out, unless
+a directive of the line holds a line break, a `;`, a U+2028, or a U+2029 (see
+[Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
+and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:

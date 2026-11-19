@@ -737,9 +737,9 @@ of it: where it is, one space stands there, and where it touches, it keeps
 touching. The directives that end the text of a node or of a class are printed
 with one space before each that has spaces or tabs before it, and the spaces and
 tabs after the last one are left out, whatever the spaces and tabs at the end of
-the line, unless a directive of the line holds a line break or a `;` (see the
-section Directives that hold a line break or a semicolon of
-[compatibility.md](./compatibility.md), and
+the line, unless a directive of the line holds a line break or a `;` (see
+[Directives that hold a line break or a semicolon](./compatibility.md#directives-that-hold-a-line-break-or-a-semicolon)
+and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 mermaid.js rejects a directive that holds a U+2028 or a U+2029 everywhere in a
 mindmap but after a character of the text of a shape (`a[t %%{init: {`, a
