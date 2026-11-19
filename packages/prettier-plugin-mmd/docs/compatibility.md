@@ -2176,7 +2176,15 @@ after a directive at the start of a member line of a class diagram] [test: the
 other whitespace characters that are like a no-break space after a directive at
 the start of the label of a relation of a class diagram] [test: rejects a tab, a
 vertical tab, and a form feed after a directive at the start of the label of a
-quadrant of a quadrant chart, as mermaid.js does]
+quadrant of a quadrant chart, as mermaid.js does] [test: rejects a tab, a
+vertical tab, and a form feed after a directive at the start of the left label
+of the x axis of a quadrant chart, as mermaid.js does] [test: rejects a tab, a
+vertical tab, and a form feed after a directive at the start of the right label
+of the x axis of a quadrant chart, as mermaid.js does] [test: rejects a tab, a
+vertical tab, and a form feed after a directive at the start of the left label
+of the y axis of a quadrant chart, as mermaid.js does] [test: rejects a tab, a
+vertical tab, and a form feed after a directive at the start of the right label
+of the y axis of a quadrant chart, as mermaid.js does]
 
 The `title` of a Gantt chart, a user journey, and a timeline has no form for two
 directives with a space between them, which the table marks with a dash.

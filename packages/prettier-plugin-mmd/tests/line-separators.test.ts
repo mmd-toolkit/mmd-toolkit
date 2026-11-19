@@ -8391,6 +8391,34 @@ describe("the whitespace after a directive at the start of a text", () => {
       await expect(format(input)).rejects.toThrow("Unexpected token")
     }
   })
+
+  it("rejects a tab, a vertical tab, and a form feed after a directive at the start of the left label of the x axis of a quadrant chart, as mermaid.js does", async () => {
+    for (const character of ["\t", ...rejectedAfterAQuadrantLabelDirective]) {
+      const input = `quadrantChart\nx-axis %%{x}%%${character}A  b --> R\ny-axis B --> T\nA: [0.5, 0.5]\n`
+      await expect(format(input)).rejects.toThrow("Unexpected token")
+    }
+  })
+
+  it("rejects a tab, a vertical tab, and a form feed after a directive at the start of the right label of the x axis of a quadrant chart, as mermaid.js does", async () => {
+    for (const character of ["\t", ...rejectedAfterAQuadrantLabelDirective]) {
+      const input = `quadrantChart\nx-axis L --> %%{x}%%${character}A  b\ny-axis B --> T\nA: [0.5, 0.5]\n`
+      await expect(format(input)).rejects.toThrow("Unexpected token")
+    }
+  })
+
+  it("rejects a tab, a vertical tab, and a form feed after a directive at the start of the left label of the y axis of a quadrant chart, as mermaid.js does", async () => {
+    for (const character of ["\t", ...rejectedAfterAQuadrantLabelDirective]) {
+      const input = `quadrantChart\nx-axis L --> R\ny-axis %%{x}%%${character}A  b --> T\nA: [0.5, 0.5]\n`
+      await expect(format(input)).rejects.toThrow("Unexpected token")
+    }
+  })
+
+  it("rejects a tab, a vertical tab, and a form feed after a directive at the start of the right label of the y axis of a quadrant chart, as mermaid.js does", async () => {
+    for (const character of ["\t", ...rejectedAfterAQuadrantLabelDirective]) {
+      const input = `quadrantChart\nx-axis L --> R\ny-axis B --> %%{x}%%${character}A  b\nA: [0.5, 0.5]\n`
+      await expect(format(input)).rejects.toThrow("Unexpected token")
+    }
+  })
 })
 
 describe("the runs before a comment that ends an accDescr line or another text", () => {
