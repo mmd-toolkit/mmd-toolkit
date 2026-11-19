@@ -1436,14 +1436,48 @@ SVG と画素を比べてから、例外を残します。
 
 Gantt、user journey、timeline、sequence、Venn、C4 の図では、タイトル、
 Gantt 図の日付書式と軸の書式を、キーワードの後に空白を 1 つ置き、
-テキストの先頭と末尾の空白を除いて印字します。
+テキストの先頭と末尾の空白とタブを除いて印字します。
 C4 図の説明 `accDescription` も同じです。
 `title   Plan  ` は `title Plan` と印字し、
 `dateFormat   YYYY-MM-DD` は `dateFormat YYYY-MM-DD` と印字します。
 テキストの中の空白は書かれたままにし、
 空白とタブだけのテキストも書かれたままにします。
+テキストの先頭と末尾にある、改行しない空白や U+3000 など、
+空白とタブ以外の空白文字も書かれたままです。
+12.3.0 の Db がそれを持つからです。
+title、軸の書式、`accDescription`、
+別名を持つ state の 2 つ目の説明の両端にあると、
+対象にするどの版も別のテキストか形状を描きます。
+ただし、Gantt、user journey、timeline、sequence、C4 の title と、
+Gantt の軸の書式と、
+C4 の `accDescription` の先頭か末尾にあるフォームフィードは、
+あってもなくても同じに描かれ、それでも書かれたままです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+gantt の日付の書式の末尾と、timeline の行の最後の event の末尾にあると、
+12.3.0 の Db だけが違い、描画は対象にするどの版でも同じです。
+そこでも書かれたままです。
+pie、radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、
+treeView、info、railroad、quadrant の図の title は、末尾の空白文字を除き、
+先頭の空白文字も、quadrant 図を除いて除きます。
+quadrant 図は、U+2028 か U+2029 を含む間を書かれたままにするので、
+後ろにテキストが続く先頭の U+2028 と U+2029 を残します（下の最初の表の
+`\u2028T`、`\u2029T`、`\u2028%%{x}%% T`。
+[行区切り文字](./quadrant.ja.md#行区切り文字)を参照）。
+ディレクティブだけのタイトルは、
+ほかの型と同じに先頭のそれらを除きます（`\u2028%%{x}%%`）。
+ここでいう空白文字は、U+0009〜U+000D、U+0020、U+00A0、U+1680、U+2000〜U+200A、
+U+2028、U+2029、U+202F、U+205F、U+3000、U+FEFF で、
+`String.prototype.trim`
+が除く文字です（[表記](../../spec/docs/common.ja.md#表記)を参照）。
+それがあってもなくても 12.3.0 の Db が同じで、
+描画も対象にするどの版でも同じだからです。
+これは、ディレクティブもコメントもないタイトルに当てはまります。
+それらがあるタイトルでは、空白でもタブでもない空白文字を、
+下の表のとおりに印字します。
 timeline の行の最後の event と、別名を持つ state の 2 つ目の説明も、
-同じように末尾の空白を除きますが、先頭の空白は除きません。
+同じように末尾の空白とタブを除きますが、先頭の空白は除きません。
 その空白は timeline のコロンをそろえます。
 `2020 : e   ` は `2020 : e` と印字し、
 `state "d" as A : x   ` は `state "d" as A : x` と印字します。
@@ -1452,11 +1486,22 @@ timeline の period と、後ろに別のコロンが続く event は、末尾�
 `2004: a: b` は `2004 : a : b` と印字します。
 period が `title` か `section` の語のときは足しません。
 空白を足すと、その行が title や section になるためです。
-user journey のタスクの説明は、最初のコロンの前の空白を除きます。
+user journey のタスクの説明は、最初のコロンの前の空白とタブを除きます。
 `Make tea : 5: Me` は `Make tea: 5: Me` と印字します。
 説明をそろえてコロンの桁をそろえた節は、書かれたままにします。
+空白でもタブでもない文字がその中にあるときも、書かれたままにします（`Make tea`、
+改行しない空白、`: 5: Me`）。
 タイトルのテキストと、同じ行のその後のコメントの間に空白かタブがあれば、
 空白 1 つにし、コメントがテキストに接していれば接したままにします。
+空白でもタブでもなく、U+2028 でも U+2029 でもない空白文字（改行しない空白、
+U+3000、U+2003 など）は、
+pie 図を除く Langium の型では空白 1 つにして印字し（radar 図で `T\u3000%% c` は
+`T %% c`）、quadrant、Gantt、user journey、timeline、sequence、Venn、
+C4 の図では書かれたままにします。
+空白 1 つの形は、この 7 つの型のどれでも、
+対象にするどの版でも別のテキストか別の形状を描きます。
+ただしフォームフィードは、quadrant、Gantt、user journey、timeline、sequence、
+C4 の図では同じに描きます。
 テキストの後にディレクティブだけが続く場合は、
 それぞれの前に空白かタブがあるかないかを保ち、
 空白とタブの連続は空白 1 つにします。
@@ -6471,10 +6516,12 @@ mermaid.js は拒否します（既知の差異
 [データブロック](./kanban.ja.md#データブロック)に従います。
 データブロックの付着位置と内容、隣接するブロック、間のディレクティブも保ちます。
 YAML 整形は、保護条件付きのフロントマターだけです。
-`%%` だけの行の後と、文の行を終えるコメントの後の空行・コメントの隙間は、
+`%%` だけの行の後と、見出しの行か、形、アイコン、
+データブロックで終わる行を終えるコメントの後の、空行とコメントの隙間は、
 末尾も含め、`blank-line-after-header-or-comments` のもとで全体を保ちます。
-テキストのあるコメントだけの行の後では、空行の連なりは 1 行になり、
-ボードの末尾には残りません。
+テキストのあるコメントだけの行の後と、
+裸の id かクラスの行のコメントの後（そこでは `%%` はテキストです）では、
+空行の連なりは 1 行になり、ボードの末尾には残りません。
 素の mermaid.js が拒否する入力に素の Db はなく、
 コーパスは仕様の読み方を確かめます。
 
@@ -6483,6 +6530,18 @@ YAML 整形は、保護条件付きのフロントマターだけです。
 [fixture: kanban/blank-lines/div-between-comment-blank]
 [fixture: kanban/blank-lines/comment-blank-trailing]
 [test: a final comment with text and empty lines in a kanban board]
+[test: a comment after a shape and empty lines in a kanban board]
+[test: a comment after a shape and empty lines at the end of a kanban board]
+[test: a comment after an icon and empty lines in a kanban board]
+[test: a comment after a data block and empty lines in a kanban board]
+[test: a comment after the header and empty lines in a kanban board]
+[test: a comment after a shape of a column and empty lines in a kanban board]
+[test: a comment after a bare id of a card and empty lines in a kanban board]
+[test: a comment after a bare id of a card and empty lines at the end of a kanban board]
+[test: a comment after a bare id of a column and a line of spaces in a kanban board]
+[test: a comment after a bare id of a column and a line of spaces at the end of a kanban board]
+[test: a comment after a class of a card and empty lines in a kanban board]
+[test: a comment on a line of its own and empty lines at the end of a kanban board]
 
 共通の `style`・`classDef` の行規則で保持する行は、区間全体、空白、コメント、
 ディレクティブを保ちます。
@@ -6552,7 +6611,8 @@ direction の文字を結合すると、先頭列でも受理される入力を�
 [fixture: c4/description-blocks/block-directive-lines]
 [fixture: c4/accessibility-lines/acc-colon-comment]
 
-呼び出しの行か境界を閉じる `}` の行を終えるコメントの後は、
+呼び出しの行、見出しの行、境界を開く行、境界を閉じる `}` の行、
+`accDescr {` ブロックの `}` の行を終えるコメントの後は、
 復帰用の空白行と末尾の隙間も含めて全体を保ちます。
 単独のコメントの後と、`title`、`accTitle:`、`accDescr:`、
 `accDescription` の行を終えるコメントの後の隙間は、通常の空行と同じに扱います。

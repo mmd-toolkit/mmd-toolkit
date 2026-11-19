@@ -7194,6 +7194,77 @@ describe("the text of a C4 title that a directive follows", () => {
   })
 })
 
+/**
+ * A U+2028 or U+2029 at the end of the text of a C4 title and of its
+ * accessibility lines (docs/c4.md, Title and accDescription): a title keeps it
+ * and the spaces before it, and an `accTitle:` or `accDescr:` line leaves it out
+ * with the spaces beside it.
+ */
+const c4LineSeparatorEndExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "U+2028 and spaces after the last directive of a title",
+    "C4Context\ntitle T %%{x}%%\u2028  \n",
+    "C4Context\n  title T %%{x}%%\u2028  \n",
+  ],
+  [
+    "spaces and U+2028 at the end of a title",
+    "C4Context\ntitle T  \u2028\n",
+    "C4Context\n  title T  \u2028\n",
+  ],
+  [
+    "U+2029 at the end of a title",
+    "C4Context\ntitle T\u2029\n",
+    "C4Context\n  title T\u2029\n",
+  ],
+]
+
+describe("a U+2028 or U+2029 at the end of the text of a C4 title", () => {
+  it.each(c4LineSeparatorEndExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+describe("a U+2028 or U+2029 at the end of an accessibility line of a C4 diagram", () => {
+  it("U+2028 and spaces after the last directive of an accessibility line", async () => {
+    for (const line of ["accTitle:", "accDescr:"])
+      await expectKept(
+        `C4Context\n${line} T %%{x}%%\u2028  \n`,
+        `C4Context\n  ${line} T %%{x}%%\n`,
+      )
+  })
+
+  it("U+2028 at the end of an accessibility line", async () => {
+    for (const line of ["accTitle:", "accDescr:"])
+      await expectKept(
+        `C4Context\n${line} T\u2028\n`,
+        `C4Context\n  ${line} T\n`,
+      )
+  })
+
+  it("spaces and U+2028 at the end of an accessibility line", async () => {
+    for (const line of ["accTitle:", "accDescr:"])
+      await expectKept(
+        `C4Context\n${line} T  \u2028\n`,
+        `C4Context\n  ${line} T\n`,
+      )
+  })
+
+  it("U+2029 at the end of an accessibility line", async () => {
+    for (const line of ["accTitle:", "accDescr:"])
+      await expectKept(
+        `C4Context\n${line} T\u2029\n`,
+        `C4Context\n  ${line} T\n`,
+      )
+  })
+})
+
 /** The whitespace that is not spaces or tabs beside the directives that end an ishikawa literal (docs/ishikawa.md, Trailing whitespace). */
 const ishikawaDirectiveWhitespaceExamples: readonly (readonly [
   string,
@@ -7214,6 +7285,16 @@ const ishikawaDirectiveWhitespaceExamples: readonly (readonly [
     "U+3000 before the first directive of an ishikawa literal",
     "ishikawa\n  R\n    t\u3000%%{x}%%  \n",
     "ishikawa\n  R\n    t\u3000%%{x}%%\n",
+  ],
+  [
+    "a no-break space after the last directive of an ishikawa literal",
+    "ishikawa\n  R\n    t %%{x}%%\u00a0  \n",
+    "ishikawa\n  R\n    t %%{x}%%\u00a0\n",
+  ],
+  [
+    "a no-break space before the first directive of an ishikawa literal",
+    "ishikawa\n  R\n    t\u00a0%%{x}%%  \n",
+    "ishikawa\n  R\n    t\u00a0%%{x}%%\n",
   ],
 ]
 
@@ -7386,6 +7467,220 @@ const terminalCommentExamples: readonly (readonly [string, string, string])[] =
 describe("the gap after a final comment", () => {
   it.each(terminalCommentExamples)("keeps %s", async (_name, input, output) => {
     await expectKept(input, output)
+  })
+})
+
+/**
+ * What can follow the text of a final comment: the whitespace of the
+ * specification that is no space, tab, or line terminator (21 characters), and
+ * U+0085, U+180E, and U+200B, which are no whitespace there (docs/ishikawa.md and
+ * docs/c4.md, Final newline).
+ */
+const afterFinalCommentCharacters: readonly string[] = [
+  "\u000b",
+  "\u000c",
+  "\u00a0",
+  "\u1680",
+  "\u2000",
+  "\u2001",
+  "\u2002",
+  "\u2003",
+  "\u2004",
+  "\u2005",
+  "\u2006",
+  "\u2007",
+  "\u2008",
+  "\u2009",
+  "\u200a",
+  "\u2028",
+  "\u2029",
+  "\u202f",
+  "\u205f",
+  "\u3000",
+  "\ufeff",
+  "\u0085",
+  "\u180e",
+  "\u200b",
+]
+
+/**
+ * The empty lines after a diagram comment that ends a line of a kanban board:
+ * they stay where the comment ends the header or a line that ends in a shape, an
+ * icon, or a data block, and are one empty line, or none at the end of the board,
+ * after a bare id or a class, where `%%` is text (docs/compatibility.md, Kanban).
+ */
+const kanbanGapAfterCommentExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a comment after a shape and empty lines in a kanban board",
+    "kanban\n  S\n    A[x] %% c\n\n\n    B\n",
+    "kanban\n  S\n    A[x] %% c\n\n\n    B\n",
+  ],
+  [
+    "a comment after a shape and empty lines at the end of a kanban board",
+    "kanban\n  S\n    A[x] %% c\n\n\n",
+    "kanban\n  S\n    A[x] %% c\n\n\n",
+  ],
+  [
+    "a comment after an icon and empty lines in a kanban board",
+    "kanban\n  S\n    A[x]@{ icon: i } %% c\n\n\n    B\n",
+    "kanban\n  S\n    A[x]@{ icon: i } %% c\n\n\n    B\n",
+  ],
+  [
+    "a comment after a data block and empty lines in a kanban board",
+    "kanban\n  S\n    A[x]@{ ticket: T-1 } %% c\n\n\n    B\n",
+    "kanban\n  S\n    A[x]@{ ticket: T-1 } %% c\n\n\n    B\n",
+  ],
+  [
+    "a comment after the header and empty lines in a kanban board",
+    "kanban %% c\n\n\n  S\n",
+    "kanban %% c\n\n\n  S\n",
+  ],
+  [
+    "a comment after a shape of a column and empty lines in a kanban board",
+    "kanban\n  S[x] %% c\n\n\n    A\n",
+    "kanban\n  S[x] %% c\n\n\n    A\n",
+  ],
+  [
+    "a comment after a bare id of a card and empty lines in a kanban board",
+    "kanban\n  S\n    A %% c\n\n\n    B\n",
+    "kanban\n  S\n    A %% c\n\n    B\n",
+  ],
+  [
+    "a comment after a bare id of a card and empty lines at the end of a kanban board",
+    "kanban\n  S\n    A %% c\n\n\n",
+    "kanban\n  S\n    A %% c\n",
+  ],
+  [
+    "a comment after a bare id of a column and a line of spaces in a kanban board",
+    "kanban\n  S %% c\n   \n    A\n",
+    "kanban\n  S %% c\n\n    A\n",
+  ],
+  [
+    "a comment after a bare id of a column and a line of spaces at the end of a kanban board",
+    "kanban\n  S %% c\n   ",
+    "kanban\n  S %% c\n",
+  ],
+  [
+    "a comment after a class of a card and empty lines in a kanban board",
+    "kanban\n  S\n    A:::k %% c\n\n\n    B\n",
+    "kanban\n  S\n    A:::k %% c\n\n    B\n",
+  ],
+  [
+    "a comment on a line of its own and empty lines at the end of a kanban board",
+    "kanban\n  S\n%% c\n\n\n",
+    "kanban\n  S\n  %% c\n",
+  ],
+]
+
+describe("the empty lines after a diagram comment that ends a line of a kanban board", () => {
+  it.each(kanbanGapAfterCommentExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/** The empty lines after a comment that ends a line of a C4 diagram (docs/c4.md, Blank lines). */
+const c4GapAfterCommentExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a comment after the brace of an accDescr block and empty lines in a C4 diagram",
+    'C4Context\naccDescr {\nD\n} %% c\n\n\nPerson(a, "A")\n',
+    'C4Context\n  accDescr {\n    D\n  } %% c\n\n\n  Person(a, "A")\n',
+  ],
+  [
+    "a comment after the brace of an accDescr block and empty lines at the end of a C4 diagram",
+    "C4Context\naccDescr {\nD\n} %% c\n\n\n",
+    "C4Context\n  accDescr {\n    D\n  } %% c\n\n\n",
+  ],
+  [
+    "a comment after the header and empty lines in a C4 diagram",
+    'C4Context %% c\n\n\nPerson(a, "A")\n',
+    'C4Context %% c\n\n\n  Person(a, "A")\n',
+  ],
+  [
+    "a comment after the opening line of a boundary and empty lines in a C4 diagram",
+    'C4Context\nBoundary(b, "B") { %% c\n\n\nPerson(a, "A")\n}\n',
+    'C4Context\n  Boundary(b, "B") { %% c\n\n\n    Person(a, "A")\n  }\n',
+  ],
+  [
+    "a comment after an accDescr line and empty lines in a C4 diagram",
+    'C4Context\naccDescr: D %% c\n\n\nPerson(a, "A")\n',
+    'C4Context\n  accDescr: D %% c\n\n  Person(a, "A")\n',
+  ],
+]
+
+describe("the empty lines after a comment that ends a line of a C4 diagram", () => {
+  it.each(c4GapAfterCommentExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+describe("each character that follows the text of a final comment", () => {
+  it("a final comment with text and each whitespace character on a line of its own in an ishikawa diagram", async () => {
+    for (const character of ["  ", "\t", ...afterFinalCommentCharacters])
+      await expectKept(
+        `ishikawa\nR\n  A\n%% c${character}`,
+        `ishikawa\n  R\n    A\n    %% c${character}\n`,
+      )
+  })
+
+  it("a final comment with text and each whitespace character after a node in an ishikawa diagram", async () => {
+    for (const character of ["  ", "\t"])
+      await expectKept(
+        `ishikawa\nR\n  A %% c${character}`,
+        "ishikawa\n  R\n    A %% c\n",
+      )
+    for (const character of afterFinalCommentCharacters)
+      await expectKept(
+        `ishikawa\nR\n  A %% c${character}`,
+        `ishikawa\n  R\n    A %% c${character}\n`,
+      )
+  })
+
+  it("a final comment after a title or an accDescription line and each whitespace character in a C4 diagram", async () => {
+    for (const line of ["title", "accDescription"]) {
+      for (const character of ["  ", "\t"])
+        await expectKept(
+          `C4Context\n${line} T %% c${character}`,
+          `C4Context\n  ${line} T %% c\n`,
+        )
+      for (const character of afterFinalCommentCharacters)
+        await expectKept(
+          `C4Context\n${line} T %% c${character}`,
+          `C4Context\n  ${line} T %% c${character}\n`,
+        )
+    }
+  })
+
+  it("a final comment after an accTitle or an accDescr line and each whitespace character in a C4 diagram", async () => {
+    for (const line of ["accTitle:", "accDescr:"]) {
+      for (const character of [
+        "  ",
+        "\t",
+        ...afterFinalCommentCharacters.slice(0, 21),
+      ])
+        await expectKept(
+          `C4Context\n${line} T %% c${character}`,
+          `C4Context\n  ${line} T %% c\n`,
+        )
+      for (const character of afterFinalCommentCharacters.slice(21))
+        await expectKept(
+          `C4Context\n${line} T %% c${character}`,
+          `C4Context\n  ${line} T %% c${character}\n`,
+        )
+    }
   })
 })
 

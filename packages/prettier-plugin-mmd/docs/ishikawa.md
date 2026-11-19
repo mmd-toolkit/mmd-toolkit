@@ -533,19 +533,28 @@ ishikawa/trailing-whitespace/trailing-directive-gap-collapsed] [fixture:
 ishikawa/trailing-whitespace/trailing-directive-continuation] [fixture:
 ishikawa/inline-directives/directive-text-between-then-end-runs-kept]
 
-A no-break space or a U+3000 beside a directive stays: where one follows the
-last directive, the rule above does not apply, and the line stays as written. A
-run of spaces and tabs inside the comment that ends a literal is printed as one
-space too (`A %% c  d` is printed `A %% c d`), also before a no-break space
-(`A %% c`, two spaces, a no-break space, and `d` print `A %% c`, a space, the
-no-break space, and `d`).
+A no-break space or a U+3000 beside a directive stays, with the spaces and tabs
+after the last directive left out: `A %%{x}%%`, a U+3000, and two spaces are
+printed `A %%{x}%%` and the U+3000, and so are `A`, a no-break space, `%%{x}%%`,
+and two spaces (`A`, the no-break space, and `%%{x}%%`). A run of spaces and
+tabs inside the comment that ends a literal is printed as one space too where no
+directive stands before the comment (`A %% c  d` is printed `A %% c d`, and so
+is `A %% c`, two tabs, and `d`), also before a no-break space (`A %% c`, two
+spaces, a no-break space, and `d` print `A %% c`, a space, the no-break space,
+and `d`). After a directive the comment stays as written: `A %%{x}%%  %% c  d`
+and `A  b %%{x}%% %% c  d` are not changed, nor is the run before a no-break
+space or a run of tabs in it.
 
 [test: U+3000 after the last directive of an ishikawa literal] [test: U+3000
 between two directives of an ishikawa literal] [test: U+3000 before the first
+directive of an ishikawa literal] [test: a no-break space after the last
+directive of an ishikawa literal] [test: a no-break space before the first
 directive of an ishikawa literal] [test: ishikawa: comment-run-collapsed] [test:
-ishikawa: comment-run-before-nbsp-collapsed] [test: U+3000 between two
-directives of an ishikawa literal] [test: U+3000 before the first directive of
-an ishikawa literal]
+ishikawa: comment-run-before-nbsp-collapsed] [test: ishikawa:
+comment-tab-run-collapsed] [test: ishikawa: comment-run-after-directive-kept]
+[test: ishikawa: comment-run-after-text-and-directive-kept] [test: ishikawa:
+comment-run-before-nbsp-after-directive-kept] [test: ishikawa:
+comment-tab-run-after-directive-kept]
 
 Only exterior header-line padding is dropped under [Header](#header) and
 [Blank lines](#blank-lines); it is not a literal value.
@@ -979,18 +988,19 @@ ishikawa/final-newline/multiple-final-lf]
 Rejected bare headers gain no rescuing newline. A final line of `%%` alone keeps
 the gap after it as written, and one line break ends the text, which the printer
 adds where the gap does not end with one; after a final comment with text, what
-follows its text on its line stays: spaces, tabs, a no-break space, a U+3000,
-U+2028, and U+2029 on a line of its own, and on the line of a node every one of
-them but the spaces and tabs; the empty lines are dropped, and one line break
-ends the text. A directive that is not closed reaches the end of the text and
-takes the rest up to its last character that is no whitespace; U+2028, U+2029,
-U+0085, U+180E, and U+200B are no whitespace here. The whitespace after that
-character is dropped, on the line of a statement too: U+0009 to U+000D (the tab,
-the line breaks, the vertical tab, and the form feed), U+0020, U+00A0, U+1680,
-U+2000 to U+200A, U+202F, U+205F, U+3000, and U+FEFF, and with them the empty
-lines; one line break ends the text; nothing is added only where the text ends
-right after the character and it is no U+2028 or U+2029. Terminal literal
-padding is left out under Trailing whitespace.
+follows its text on its line stays: spaces, tabs, each whitespace character of
+the specification that is no space or tab (a no-break space, a U+3000, U+2028,
+and U+2029 among them), U+0085, U+180E, and U+200B on a line of its own, and on
+the line of a node every one of them but the spaces and tabs; the empty lines
+are dropped, and one line break ends the text. A directive that is not closed
+reaches the end of the text and takes the rest up to its last character that is
+no whitespace; U+2028, U+2029, U+0085, U+180E, and U+200B are no whitespace
+here. The whitespace after that character is dropped, on the line of a statement
+too: U+0009 to U+000D (the tab, the line breaks, the vertical tab, and the form
+feed), U+0020, U+00A0, U+1680, U+2000 to U+200A, U+202F, U+205F, U+3000, and
+U+FEFF, and with them the empty lines; one line break ends the text; nothing is
+added only where the text ends right after the character and it is no U+2028 or
+U+2029. Terminal literal padding is left out under Trailing whitespace.
 
 [fixture: ishikawa/final-newline/final-comment] [corpus fixture:
 ishikawa/directive-open-root-eof] [fixture:
@@ -1022,8 +1032,10 @@ line of its own in an ishikawa diagram] [test: a final comment with text and
 U+2028 on a line of its own in an ishikawa diagram] [test: a final comment with
 text and U+2029 on a line of its own in an ishikawa diagram] [test: a final
 comment with text and two spaces after a node in an ishikawa diagram] [test: a
-final comment with text and a no-break space after a node in an ishikawa
-diagram]
+final comment with text and each whitespace character on a line of its own in an
+ishikawa diagram] [test: a final comment with text and each whitespace character
+after a node in an ishikawa diagram] [test: a final comment with text and a
+no-break space after a node in an ishikawa diagram]
 
 Input (escaped):
 

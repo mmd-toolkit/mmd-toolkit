@@ -765,7 +765,6 @@ U+2000 から U+200A、U+2028、U+2029、U+202F、U+205F、U+3000、U+FEFF）も
 コメントが接していれば接したままです。
 `a[t]  %%{x}%%  %% c` は `a[t] %%{x}%% %% c` と印字し、
 `a[t] %%{x}%%%% c` は変えません。
-（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: node-text/directives-end-blanks-dropped] [fixture: directives/kept]
 [fixture: directives/between-nodes] [fixture: directives/before-the-header]

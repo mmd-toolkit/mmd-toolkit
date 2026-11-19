@@ -541,19 +541,31 @@ Mermaid がテキストの両端の空白を除くので、除いても Db と�
 [fixture: ishikawa/trailing-whitespace/trailing-directive-continuation]
 [fixture: ishikawa/inline-directives/directive-text-between-then-end-runs-kept]
 
-ディレクティブの隣の改行しない空白と U+3000 は残ります。
-最後のディレクティブの後にあるときは、上の規則は当てはまらず、
-行は書かれたまま残ります。
-リテラルを終えるコメントの中の空白とタブの連なりも、
-空白 1 つにして印字します（`A %% c  d` は `A %% c d` と印字します）。
+ディレクティブの隣の改行しない空白と U+3000 は残り、
+最後のディレクティブの後の空白とタブは除きます。
+`A %%{x}%%`、U+3000、空白 2 つは `A %%{x}%%` と U+3000 に、`A`、改行しない空白、
+`%%{x}%%`、空白 2 つも `A`、改行しない空白、`%%{x}%%` になります。
+リテラルを終えるコメントの中の空白とタブの連なりは、
+コメントの前にディレクティブがなければ空白 1 つにして印字します（`A %% c  d` は
+`A %% c d` と印字し、`A %% c`、タブ 2 つ、`d` も同じです）。
 改行しない空白の前でも同じです（`A %% c`、空白 2 つ、改行しない空白、`d` は、
 `A %% c`、空白 1 つ、改行しない空白、`d` と印字します）。
+ディレクティブの後のコメントは書かれたまま残ります。
+`A %%{x}%%  %% c  d` と `A  b %%{x}%% %% c  d` は変えず、
+改行しない空白の前の連なりとタブの連なりも変えません。
 
 [test: U+3000 after the last directive of an ishikawa literal]
 [test: U+3000 between two directives of an ishikawa literal]
 [test: U+3000 before the first directive of an ishikawa literal]
+[test: a no-break space after the last directive of an ishikawa literal]
+[test: a no-break space before the first directive of an ishikawa literal]
 [test: ishikawa: comment-run-collapsed]
 [test: ishikawa: comment-run-before-nbsp-collapsed]
+[test: ishikawa: comment-tab-run-collapsed]
+[test: ishikawa: comment-run-after-directive-kept]
+[test: ishikawa: comment-run-after-text-and-directive-kept]
+[test: ishikawa: comment-run-before-nbsp-after-directive-kept]
+[test: ishikawa: comment-tab-run-after-directive-kept]
 
 [ヘッダー](#header) と [空行](#blank-lines) の規則で除くのは、
 見出し行の外側の余白だけで、それはテキストの値ではありません。
@@ -1005,7 +1017,8 @@ ishikawa
 改行 1 つでテキストを終えます。
 隙間が改行で終わっていないときは、印字が改行を足します。
 最後のテキストつきのコメントは、テキストの後に同じ行で続くものを残します。
-コメントだけの行では、空白、タブ、U+00A0、U+3000、U+2028、U+2029 です。
+コメントだけの行では、空白、タブ、空白でもタブでもない仕様の空白文字（U+00A0、
+U+3000、U+2028、U+2029 を含みます）、U+0085、U+180E、U+200B です。
 節点の行では、空白とタブを除いたものです。
 空行は落とし、改行 1 つでテキストを終えます。
 閉じていないディレクティブはテキストの終わりまで届き、
@@ -1059,6 +1072,8 @@ U+00A0、U+1680、U+2000 から U+200A、U+202F、U+205F、U+3000、U+FEFF と�
 [test: a final comment with text and U+2028 on a line of its own in an ishikawa diagram]
 [test: a final comment with text and U+2029 on a line of its own in an ishikawa diagram]
 [test: a final comment with text and two spaces after a node in an ishikawa diagram]
+[test: a final comment with text and each whitespace character on a line of its own in an ishikawa diagram]
+[test: a final comment with text and each whitespace character after a node in an ishikawa diagram]
 [test: a final comment with text and a no-break space after a node in an ishikawa diagram]
 
 入力（エスケープ表記）:
