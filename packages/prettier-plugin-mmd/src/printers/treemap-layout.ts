@@ -10,6 +10,7 @@ import type {
 } from "@mmd-toolkit/ast"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import {
+  commonValueTextEnd,
   layoutCommonDescription,
   layoutCommonLine,
   relocatedWhitespaceStart,
@@ -115,9 +116,12 @@ export function treemapStatementRange(item: TreemapBodyItem): Range {
  * directive and a comment after it are printed on a line of their own, where
  * the whitespace between them is part of the run that the next line supplies,
  * as on any line after the title, so the run starts at the end of the title
- * (docs/treemap.md, Title). Not so where a directive stands right before the
- * whitespace, which `layoutCommonLine` leaves out, or where the value holds a
- * directive or a comment, which it prints as written.
+ * (docs/treemap.md, Title). The end of the title text is the one that
+ * `layoutCommonLine` prints (`commonValueTextEnd`). Not so where a directive
+ * stands right before the whitespace, which `layoutCommonLine` leaves out, or
+ * where the value holds a directive or a comment, which it prints as written.
+ * The decision cannot be read from the layout: it is atoms and rules, with no
+ * trace of what whitespace was trimmed.
  */
 export function treemapRelocatedWhitespaceStart(
   source: Source,
@@ -130,16 +134,11 @@ export function treemapRelocatedWhitespaceStart(
     statement.value !== null &&
     !valueHoldsTrivia(source, statement.value)
   ) {
-    let position = end
-    let separator = false
-    while (
-      position > statement.value.range[0] &&
-      isWhitespace(source.text[position - 1])
-    ) {
-      if (isLineSeparator(source.text[position - 1])) separator = true
-      position--
-    }
-    if (separator && findDirectiveEndingAt(source, position) === undefined)
+    const textEnd = commonValueTextEnd(source, statement.value.range[0], end)
+    if (
+      [...source.text.slice(textEnd, end)].some(isLineSeparator) &&
+      findDirectiveEndingAt(source, textEnd) === undefined
+    )
       return end
   }
   return relocatedWhitespaceStart(source, statement, end)

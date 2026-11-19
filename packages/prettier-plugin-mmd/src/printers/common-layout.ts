@@ -138,6 +138,21 @@ export function valueHoldsTrivia(source: Source, value: Node): boolean {
 }
 
 /**
+ * The end of the value of a common line without its trailing whitespace: where
+ * the printed text of the line ends, and where the whitespace that follows it,
+ * a U+2028 or U+2029 included, is a gap.
+ */
+export function commonValueTextEnd(
+  source: Source,
+  start: number,
+  end: number,
+): number {
+  let textEnd = end
+  while (textEnd > start && source.text[textEnd - 1].trim() === "") textEnd--
+  return textEnd
+}
+
+/**
  * Where the whitespace that the planned indentation of the next line supplies
  * starts, after a line that ends with `statement`. A `title` with no text ends
  * where its keyword ends, and the whitespace after it is no part of its range,
@@ -226,10 +241,8 @@ export function layoutCommonLine(
     // of the title to the oldest version that counts, which shows the title as
     // a tooltip: the whitespace before the `%%` stays (docs/pie.md,
     // Accessibility lines).
-    if (!titleReachesComment) {
-      while (valueStart < valueEnd && source.text[valueEnd - 1].trim() === "")
-        valueEnd--
-    }
+    if (!titleReachesComment)
+      valueEnd = commonValueTextEnd(source, valueStart, valueEnd)
   } else if (endsInDirectives) {
     while (valueStart < valueEnd && source.text[valueStart].trim() === "")
       valueStart++
