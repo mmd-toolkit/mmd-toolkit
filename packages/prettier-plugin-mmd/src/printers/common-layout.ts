@@ -126,13 +126,13 @@ function startsPlainComment(source: Source, offset: number): boolean {
 }
 
 /**
- * The diagram types whose `title` the oldest version that counts reads with a
+ * The diagram type whose `title` the oldest version that counts reads with a
  * lexer built with jison, which takes a whitespace character that is no space
  * or tab before a `%%` as a part of the title, where the later versions trim
- * it (docs/pie.md, Title). A gitGraph is not among them: that version rejects
- * its `title` either way.
+ * it (docs/pie.md, Title). That version rejects the `title` of a gitGraph
+ * (docs/gitgraph.md, Title and common values).
  */
-const diagramTypesWithJisonTitles: ReadonlySet<string> = new Set(["pie"])
+const diagramTypeWithJisonTitle = "pie"
 
 /**
  * Whether a whitespace character that is no space or tab stands between the
@@ -212,30 +212,36 @@ export function layoutCommonLine(
   const value = statement.value
   const hasTrivia =
     value !== null && findTriviaBetween(source, ...value.range).length > 0
+  const diagramType = source.root.diagramType
+  const commentStart =
+    value === null ? null : skipRemoved(source, value.range[1])
+  const commentFollows =
+    commentStart !== null && startsPlainComment(source, commentStart)
   // A `%%` right after the value of an `accTitle`, also after the directives
   // that mermaid.js removes first, is a part of the title to the oldest version
   // that counts, with the whitespace before it, so the line stays as written
   // (docs/pie.md, Accessibility lines).
-  const commentStart =
-    value === null ? null : skipRemoved(source, value.range[1])
-  // The oldest version that counts reads a `%%` and what follows as a part of
-  // an `accTitle` in a pie chart and a gitGraph, and takes the whitespace
-  // before it, so the whole line stays. For the `title` of a pie chart and the
-  // `accDescr` line of those two, only a whitespace character that is no space
-  // or tab before the `%%` is a part of the text there: the later versions trim
-  // it, and spaces and tabs are drawn the same (docs/pie.md, Title and
-  // Accessibility lines).
-  const diagramType = source.root.diagramType
-  const valueReachesComment =
+  const accTitleReachesComment =
+    commentFollows &&
+    isAccTitle(statement) &&
+    diagramTypesWithJisonAccessibilityLines.has(diagramType)
+  // For the `title` of a pie chart and the `accDescr` line of a pie chart and a
+  // gitGraph, that version draws only a whitespace character that is no space
+  // or tab before the `%%` as a part of the text, where the later versions trim
+  // it, so only that character stays; spaces and tabs are drawn the same, and
+  // a value with a directive inside it is printed as in the other diagrams
+  // (docs/pie.md, Title and Accessibility lines).
+  const gapReachesComment =
     value !== null &&
     commentStart !== null &&
-    startsPlainComment(source, commentStart) &&
-    (isAccTitle(statement)
-      ? diagramTypesWithJisonAccessibilityLines.has(diagramType)
-      : (isTitle
-          ? diagramTypesWithJisonTitles.has(diagramType)
-          : diagramTypesWithJisonAccessibilityLines.has(diagramType)) &&
-        holdsOtherWhitespaceBeforeComment(source, value.range[0], commentStart))
+    commentFollows &&
+    !hasTrivia &&
+    !isAccTitle(statement) &&
+    (isTitle
+      ? diagramType === diagramTypeWithJisonTitle
+      : diagramTypesWithJisonAccessibilityLines.has(diagramType)) &&
+    holdsOtherWhitespaceBeforeComment(source, value.range[0], commentStart)
+  const valueReachesComment = accTitleReachesComment || gapReachesComment
   const endsInDirectives =
     hasTrivia &&
     !valueReachesComment &&

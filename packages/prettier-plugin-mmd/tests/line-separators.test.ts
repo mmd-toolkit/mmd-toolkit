@@ -6949,6 +6949,66 @@ const valueBeforeCommentExamples: readonly (readonly [
     "gitGraph\n  accDescr: T\u3000%% c\n  commit\n",
   ],
   [
+    "U+2003 before a comment after the accDescr line of a pie chart",
+    'pie\naccDescr: T\u2003%% c\n"a": 1\n',
+    'pie\n  accDescr: T\u2003%% c\n  "a": 1\n',
+  ],
+  [
+    "U+2003 before a comment after the accDescr line of a gitGraph",
+    "gitGraph\naccDescr: T\u2003%% c\ncommit\n",
+    "gitGraph\n  accDescr: T\u2003%% c\n  commit\n",
+  ],
+  [
+    "a no-break space and spaces before a comment after the accDescr line of a pie chart",
+    'pie\naccDescr:    T  \u00a0  %% c\n"a": 1\n',
+    'pie\n  accDescr: T \u00a0 %% c\n  "a": 1\n',
+  ],
+  [
+    "a no-break space before a comment after the title of a pie chart, with CRLF line ends",
+    'pie\r\ntitle T\u00a0%% c\r\n"a": 1\r\n',
+    'pie\n  title T\u00a0%% c\n  "a": 1\n',
+  ],
+  [
+    "a no-break space before a comment after the last line of a pie chart, with no line break",
+    'pie\n"a": 1\ntitle T\u00a0%% c',
+    'pie\n  "a": 1\n  title T\u00a0%% c\n',
+  ],
+  [
+    "a no-break space before a comment after the accDescr line, with no line break at the end of a pie chart",
+    'pie\n"a": 1\naccDescr: T\u00a0%% c',
+    'pie\n  "a": 1\n  accDescr: T\u00a0%% c\n',
+  ],
+  [
+    "a no-break space before a directive and two spaces before a comment after the title of a pie chart",
+    'pie\ntitle T\u00a0%%{x}%%  %% c\n"a": 1\n',
+    'pie\n  title T\u00a0%%{x}%% %% c\n  "a": 1\n',
+  ],
+  [
+    "spaces before the text, a no-break space before a directive and two spaces before a comment after the title of a pie chart",
+    'pie\ntitle    T\u00a0%%{x}%%  %% c\n"a": 1\n',
+    'pie\n  title T\u00a0%%{x}%% %% c\n  "a": 1\n',
+  ],
+  [
+    "a no-break space before a directive and a tab before a comment after the title of a pie chart",
+    'pie\ntitle T\u00a0%%{x}%%\t%% c\n"a": 1\n',
+    'pie\n  title T\u00a0%%{x}%% %% c\n  "a": 1\n',
+  ],
+  [
+    "a no-break space before two directives and a comment after the title of a pie chart",
+    'pie\ntitle T\u00a0%%{x}%%  %%{y}%%  %% c\n"a": 1\n',
+    'pie\n  title T\u00a0%%{x}%% %%{y}%% %% c\n  "a": 1\n',
+  ],
+  [
+    "a no-break space before a directive and two spaces before a comment after the accDescr line of a pie chart",
+    'pie\naccDescr: T\u00a0%%{x}%%  %% c\n"a": 1\n',
+    'pie\n  accDescr: T\u00a0%%{x}%% %% c\n  "a": 1\n',
+  ],
+  [
+    "a no-break space before a directive and two spaces before a comment after the accDescr line of a gitGraph",
+    "gitGraph\naccDescr: T\u00a0%%{x}%%  %% c\ncommit\n",
+    "gitGraph\n  accDescr: T\u00a0%%{x}%% %% c\n  commit\n",
+  ],
+  [
     "a no-break space before a comment after the title of a radar chart",
     "radar-beta\ntitle T\u00a0%% c\naxis a, b\ncurve c{1, 2}\n",
     "radar-beta\n  title T %% c\n  axis a, b\n  curve c{1, 2}\n",
@@ -6999,6 +7059,62 @@ const valueBeforeCommentExamples: readonly (readonly [
     'railroad-abnf-beta\n  title T %% c\n  r = "a";\n',
   ],
 ]
+
+/**
+ * The whitespace characters that are no space or tab and no line terminator
+ * (docs/pie.md, Title): the characters that the oldest version that counts
+ * draws as a part of the text before a `%%`.
+ */
+const whitespaceBeforeComment: readonly string[] = [
+  "\u000b",
+  "\u000c",
+  "\u00a0",
+  "\u1680",
+  "\u2000",
+  "\u2001",
+  "\u2002",
+  "\u2003",
+  "\u2004",
+  "\u2005",
+  "\u2006",
+  "\u2007",
+  "\u2008",
+  "\u2009",
+  "\u200a",
+  "\u202f",
+  "\u205f",
+  "\u3000",
+  "\ufeff",
+]
+
+describe("each whitespace character that is no space or tab before a comment", () => {
+  it("a whitespace character that is no space or tab before a comment after the title of a pie chart", async () => {
+    for (const character of whitespaceBeforeComment) {
+      await expectKept(
+        `pie\ntitle T${character}%% c\n"a": 1\n`,
+        `pie\n  title T${character}%% c\n  "a": 1\n`,
+      )
+    }
+  })
+
+  it("a whitespace character that is no space or tab before a comment after the accDescr line of a pie chart", async () => {
+    for (const character of whitespaceBeforeComment) {
+      await expectKept(
+        `pie\naccDescr: T${character}%% c\n"a": 1\n`,
+        `pie\n  accDescr: T${character}%% c\n  "a": 1\n`,
+      )
+    }
+  })
+
+  it("a whitespace character that is no space or tab before a comment after the accDescr line of a gitGraph", async () => {
+    for (const character of whitespaceBeforeComment) {
+      await expectKept(
+        `gitGraph\naccDescr: T${character}%% c\ncommit\n`,
+        `gitGraph\n  accDescr: T${character}%% c\n  commit\n`,
+      )
+    }
+  })
+})
 
 describe("the whitespace before a comment after a title or an accDescr line", () => {
   it.each(valueBeforeCommentExamples)(
