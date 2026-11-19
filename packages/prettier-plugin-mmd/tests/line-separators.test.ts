@@ -6875,3 +6875,42 @@ describe("requirement color words with rejected tabs", () => {
     await expect(format(input)).rejects.toThrow("Unexpected character")
   })
 })
+
+/**
+ * Each example is the title of a Gantt chart with two directives between the
+ * keyword and the text, separated by whitespace, and a character that no
+ * fixture file holds: a U+2028 or U+2029 in the text, and a no-break space
+ * between the directives. The text with a line separator stays as written, and
+ * so does the whitespace around the no-break space, which is no space or tab
+ * (docs/compatibility.md, Texts after a keyword that are drawn the same).
+ */
+const titleAfterSeparatedDirectivesExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "gantt title: U+2028 in the text after directives that whitespace separates",
+    "gantt\ntitle %%{x}%% %%{y}%% A\u2028  b\nsection S\n",
+    "gantt\n  title %%{x}%%%%{y}%%A\u2028  b\n  section S\n",
+  ],
+  [
+    "gantt title: U+2029 in the text after directives that whitespace separates",
+    "gantt\ntitle %%{x}%% %%{y}%% A  \u2029b\nsection S\n",
+    "gantt\n  title %%{x}%%%%{y}%%A  \u2029b\n  section S\n",
+  ],
+  [
+    "gantt title: a no-break space between two directives",
+    "gantt\ntitle %%{x}%%\u00a0%%{y}%% A  b\nsection S\n",
+    "gantt\n  title %%{x}%%\u00a0%%{y}%% A  b\n  section S\n",
+  ],
+]
+
+describe("the title of a Gantt chart after directives that whitespace separates", () => {
+  it.each(titleAfterSeparatedDirectivesExamples)(
+    "prints %s the same twice",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})

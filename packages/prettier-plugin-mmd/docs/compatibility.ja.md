@@ -1674,6 +1674,59 @@ mermaid.js が描ける 36 個も同じでした。
 [fixture: gantt/task-data/description-padding-tightened]
 [fixture: gantt/task-data/colon-column-white-space-kept]
 
+キーワードとテキストの間にあるタイトルのディレクティブは、
+間を隔てる空白とタブがどうであれ、互いにもテキストにも接して印字します。
+mermaid.js はタイトルを読む前にディレクティブを除くので、
+その空白はタイトルの一部ではないためです。
+Gantt 図、ユーザージャーニー、タイムラインのタイトルの中の空白とタブの連なりは、
+ディレクティブが接していても、空白で隔てられていても、
+空白 1 つにして印字します。
+タイトルの後にコメントが続くとき、タイトルが `;` を含むとき、
+テキストが終わるときも同じです。
+`title %%{x}%% %%{y}%% A  b` は `title %%{x}%%%%{y}%%A b` と印字します。
+`title %%{x}%%%%{y}%% A  b` と `title %%{x}%% A  b` も同じ形です。
+単語の間にディレクティブがあるタイトルは連なりを書かれたままにします。
+空白とディレクティブだけのタイトルも同じです。
+2 つのディレクティブの間のノーブレークスペースは空白ではなくタイトルの文字で、
+タイトルの中の U+2028 と U+2029 は、そのタイトルを書かれたままにします。
+キーワードか最後のディレクティブとテキストの間の空白とタブのうち、
+キーワードが取る空白 1 つを超える分は、ディレクティブがテキストを終え、
+最後のディレクティブの後に空白が続くときも、続かないときと同じに除きます。
+`title   A b  %%{z}%%  ` は `title A b %%{z}%%` と印字します。
+Gantt 図、ユーザージャーニー、タイムライン、シーケンス図、Venn 図、C4 図で、
+C4 図の `accDescription` でも同じです。
+usecase 図では、
+`accTitle:` と `accDescr:` の行のテキストの前にあるディレクティブは、
+末尾のディレクティブの印字を変えません。
+`accTitle: %%{x}%% T  %%{y}%%  ` は `accTitle: %%{x}%% T %%{y}%%` と印字し、
+テキストの連なりは書かれたままにします。
+
+[fixture: gantt/titles-and-sections/title-directives-gap-runs-collapsed]
+[fixture: gantt/titles-and-sections/title-directives-gap-run-runs-collapsed]
+[fixture: gantt/titles-and-sections/title-directives-gap-tab-runs-collapsed]
+[fixture: gantt/titles-and-sections/title-three-directives-gap-runs-collapsed]
+[fixture: gantt/titles-and-sections/title-directives-gap-comment-runs-collapsed]
+[fixture: gantt/titles-and-sections/title-directives-gap-semicolon-runs-collapsed]
+[fixture: gantt/titles-and-sections/title-directives-gap-end-of-text-runs-collapsed]
+[fixture: gantt/titles-and-sections/title-directives-gap-inner-directive-runs-kept]
+[fixture: gantt/titles-and-sections/title-directives-gap-without-text-kept]
+[test: gantt title: a no-break space between two directives]
+[test: gantt title: U+2028 in the text after directives that whitespace separates]
+[test: gantt title: U+2029 in the text after directives that whitespace separates]
+[fixture: journey/titles-and-sections/title-directives-gap-runs-collapsed]
+[fixture: timeline/titles-and-sections/title-directives-gap-runs-collapsed]
+[fixture: gantt/titles-and-sections/title-padding-trailing-directive-blanks-dropped]
+[fixture: gantt/titles-and-sections/title-directive-padding-trailing-directive-blanks-dropped]
+[fixture: journey/titles-and-sections/title-padding-trailing-directive-blanks-dropped]
+[fixture: timeline/titles-and-sections/title-padding-trailing-directive-blanks-dropped]
+[fixture: sequence/title/title-padding-trailing-directive-blanks-dropped]
+[fixture: venn/title/title-padding-trailing-directive-blanks-dropped]
+[fixture: c4/title-and-accdescription/title-padding-trailing-directive-blanks-dropped]
+[fixture: c4/title-and-accdescription/description-padding-trailing-directive-blanks-dropped]
+[fixture: usecase/direction-and-accessibility/acctitle-directive-before-text-trailing-directive-blanks-dropped]
+[fixture: usecase/direction-and-accessibility/acctitle-directives-before-text-trailing-directive-blanks-dropped]
+[fixture: usecase/direction-and-accessibility/accdescr-directive-before-text-trailing-directive-blanks-dropped]
+
 テストは、印字したテキストの Db に、
 書かれたテキストの Db から各テキストの両端の空白を戻して比べます。
 `tests/keyword-text-margins.ts` の関数、

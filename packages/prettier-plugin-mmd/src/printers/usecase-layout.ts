@@ -44,6 +44,7 @@ import {
   classStatementRules,
   collectTextEndEdits,
   endsWithDirectives,
+  skipBlanksAndDirectives,
   trimmedTextEnd,
   styleUnitsCanCompact,
 } from "./statement-rules.ts"
@@ -483,16 +484,21 @@ function layoutUsecaseAccessibility(
     joinedBefore.add(valueRange[0])
     // The directives that end the value are printed as those that end a title
     // (docs/compatibility.md, Texts after a keyword that are drawn the same).
-    // The runs inside an `accTitle` stay.
-    if (endsWithDirectives(source, valueRange)) {
+    // The directives that precede the text are removed before it is read, so
+    // its end is looked for after them. The runs inside an `accTitle` stay, and
+    // so do those of a text that directives precede, which the collapse of the
+    // runs in the texts does not reach whatever stands at its end.
+    const textStart = skipBlanksAndDirectives(source, valueRange, isWhitespace)
+    if (endsWithDirectives(source, [textStart, valueRange[1]])) {
       replaceInAtoms(
         source,
         atoms,
         collectTextEndEdits(
           source,
-          valueRange[0],
+          textStart,
           valueRange[1],
-          statement.type === "UsecaseAccDescrStatement",
+          statement.type === "UsecaseAccDescrStatement" &&
+            textStart === valueRange[0],
         ),
       )
     }

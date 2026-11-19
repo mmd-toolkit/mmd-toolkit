@@ -625,19 +625,64 @@ export function trimTextAfterKeyword(
   const [from, to] = text
   const edits: TextEdit[] = []
   let offset = from
+  let skipsDirective = false
   for (;;) {
     const blanks = skipSpacesAndTabs(source, offset, to)
     if (blanks > offset)
       edits.push({ range: [offset, blanks], replacement: "" })
     if (blanks >= to) return
+    // The text starts after the spaces and tabs that are left out, so that the
+    // edits of its end and of its runs do not reach them.
+    offset = blanks
     const directive = findTriviaBetween(source, blanks, blanks + 1).find(
       (item) => item.type === "Directive" && item.range[0] === blanks,
     )
     if (directive === undefined) break
+    skipsDirective = true
     offset = directive.range[1]
   }
   appendItems(edits, collectTextEndEdits(source, offset, to, collapsesRuns))
+  // The value of a statement starts after the directive that touches its
+  // keyword, and holds the directives that follow it after a gap. The collapse
+  // of the runs in the texts does not reach a value that holds a directive, but
+  // it reaches the same text where those directives touch each other (the form
+  // that is printed), so the runs are printed as one space here, which makes
+  // the first printing the same as the second.
+  if (
+    collapsesRuns &&
+    skipsDirective &&
+    findDirectiveEndingAt(source, from) !== undefined
+  ) {
+    let textEnd = to
+    while (textEnd > offset && isSpaceOrTab(source.text[textEnd - 1])) textEnd--
+    appendItems(edits, collapseRunEdits(source, offset, textEnd))
+  }
   replaceInAtoms(source, atoms, edits)
+}
+
+/**
+ * Where the text of a line starts in `[from, to)`: after the whitespace and the
+ * directives that precede it, which mermaid.js removes before it reads the
+ * line. `to` where nothing else stands there. `isBlank` tells which characters
+ * are whitespace to the line.
+ */
+export function skipBlanksAndDirectives(
+  source: Source,
+  [from, to]: Range,
+  isBlank: (character: string) => boolean,
+): number {
+  let offset = from
+  for (;;) {
+    let position = offset
+    while (position < to && isBlank(source.text[position])) position++
+    if (position >= to) return to
+    const start = position
+    const directive = findTriviaBetween(source, start, start + 1).find(
+      (item) => item.type === "Directive" && item.range[0] === start,
+    )
+    if (directive === undefined) return start
+    offset = directive.range[1]
+  }
 }
 
 /**

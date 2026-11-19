@@ -1600,6 +1600,64 @@ texts differ. So the printer leaves the colons of a chart that holds
 gantt/task-data/description-padding-tightened] [fixture:
 gantt/task-data/colon-column-white-space-kept]
 
+The directives between the keyword and the text of a title are printed touching
+each other and the text, whatever spaces and tabs separate them: mermaid.js
+removes them before it reads the title, so that whitespace is no part of it. The
+runs of spaces and tabs inside the title of a Gantt chart, a user journey, and a
+timeline are printed as one space whether the directives touch or whitespace
+separates them, also where a comment follows the title, the title holds a `;`,
+or the text ends: `title %%{x}%% %%{y}%% A  b` is printed
+`title %%{x}%%%%{y}%%A b`, as `title %%{x}%%%%{y}%% A  b` and
+`title %%{x}%% A  b` are. A title that holds a directive between its words keeps
+its runs, as does a title of whitespace and directives only. A no-break space
+between two directives is a character of the title, not whitespace, and a U+2028
+or U+2029 in the title keeps the title as written. The spaces and tabs between
+the keyword, or the last directive, and the text that exceed the one space that
+the keyword takes are left out where directives end the text and whitespace
+follows the last of them, as they are where none does: `title   A b  %%{z}%%  `
+is printed `title A b %%{z}%%`, in Gantt, user journey, timeline, sequence,
+Venn, and C4 diagrams, and in the `accDescription` of a C4 diagram. In a usecase
+diagram, directives that precede the text of an `accTitle:` or `accDescr:` line
+do not change how those that end it are printed:
+`accTitle: %%{x}%% T  %%{y}%%  ` is printed `accTitle: %%{x}%% T %%{y}%%`, and
+the runs of the text stay.
+
+[fixture: gantt/titles-and-sections/title-directives-gap-runs-collapsed]
+[fixture: gantt/titles-and-sections/title-directives-gap-run-runs-collapsed]
+[fixture: gantt/titles-and-sections/title-directives-gap-tab-runs-collapsed]
+[fixture: gantt/titles-and-sections/title-three-directives-gap-runs-collapsed]
+[fixture: gantt/titles-and-sections/title-directives-gap-comment-runs-collapsed]
+[fixture:
+gantt/titles-and-sections/title-directives-gap-semicolon-runs-collapsed]
+[fixture:
+gantt/titles-and-sections/title-directives-gap-end-of-text-runs-collapsed]
+[fixture:
+gantt/titles-and-sections/title-directives-gap-inner-directive-runs-kept]
+[fixture: gantt/titles-and-sections/title-directives-gap-without-text-kept]
+[test: gantt title: a no-break space between two directives] [test: gantt title:
+U+2028 in the text after directives that whitespace separates] [test: gantt
+title: U+2029 in the text after directives that whitespace separates] [fixture:
+journey/titles-and-sections/title-directives-gap-runs-collapsed] [fixture:
+timeline/titles-and-sections/title-directives-gap-runs-collapsed] [fixture:
+gantt/titles-and-sections/title-padding-trailing-directive-blanks-dropped]
+[fixture:
+gantt/titles-and-sections/title-directive-padding-trailing-directive-blanks-dropped]
+[fixture:
+journey/titles-and-sections/title-padding-trailing-directive-blanks-dropped]
+[fixture:
+timeline/titles-and-sections/title-padding-trailing-directive-blanks-dropped]
+[fixture: sequence/title/title-padding-trailing-directive-blanks-dropped]
+[fixture: venn/title/title-padding-trailing-directive-blanks-dropped] [fixture:
+c4/title-and-accdescription/title-padding-trailing-directive-blanks-dropped]
+[fixture:
+c4/title-and-accdescription/description-padding-trailing-directive-blanks-dropped]
+[fixture:
+usecase/direction-and-accessibility/acctitle-directive-before-text-trailing-directive-blanks-dropped]
+[fixture:
+usecase/direction-and-accessibility/acctitle-directives-before-text-trailing-directive-blanks-dropped]
+[fixture:
+usecase/direction-and-accessibility/accdescr-directive-before-text-trailing-directive-blanks-dropped]
+
 The tests compare the Db of the printed text with the whitespace at the ends of
 its texts restored from the Db of the written text
 (`keywordTextDbForFormattingComparison` in `tests/keyword-text-margins.ts`): a
