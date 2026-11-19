@@ -1960,6 +1960,96 @@ railroad 図の文字列と特殊シーケンスです。
 [test: runs before a comment that ends the title of a subgraph of a flowchart]
 [test: runs before a comment that ends the label of a relation of a class diagram]
 
+これらのテキストの先頭のディレクティブは、その後ろの空白を除き、
+テキストの中の連なりは、
+ディレクティブがないときと同じに空白 1 つにして印字します（`title %%{x}%% A  b`
+は `title %%{x}%%A b` と印字します）。
+ishikawa のリテラルは、
+ディレクティブの後ろの空白を残します（`%%{x}%% A  b` は `%%{x}%% A b`
+と印字します）。
+次の表のテキストは、テキストの中の連なりを書かれたまま残し、
+ディレクティブの後ろの空白を除くのは sequence diagram の `title` だけです。
+テキストに接するディレクティブ（`title %%{x}%%A  b`）は、
+空白のない同じ場合です。
+mindmap のノード、kanban のカード、treeView のノード、class 図の関係のラベルは、
+ディレクティブがあってもなくても連なりを残します。
+
+| テキスト         | 図種                                                                                                                                                                                        | 書かれた形               | 印字                |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ | ------------------- |
+| `title`          | sequence diagram                                                                                                                                                                            | `title %%{x}%% A  b`     | `title %%{x}%%A  b` |
+| `title`          | Venn diagram、C4 diagram                                                                                                                                                                    | `title %%{x}%% A  b`     | 書かれたまま        |
+| `accDescr:` の行 | pie chart、gitGraph、radar chart、packet diagram、architecture diagram、cynefin diagram、treemap、Wardley map、treeView、info diagram、railroad diagram、ishikawa diagram、use case diagram | `accDescr: %%{x}%% A  b` | 書かれたまま        |
+| リンクのテキスト | Wardley map                                                                                                                                                                                 | `A -> B; %%{x}%% A  b`   | 書かれたまま        |
+
+[test: runs after a directive at the start of the text of a pie chart]
+[test: runs after a directive at the start of the text of a radar chart]
+[test: runs after a directive at the start of the text of a packet diagram]
+[test: runs after a directive at the start of the text of an architecture diagram]
+[test: runs after a directive at the start of the text of a gitGraph]
+[test: runs after a directive at the start of the text of a cynefin diagram]
+[test: runs after a directive at the start of the text of a treemap]
+[test: runs after a directive at the start of the text of a Wardley map]
+[test: runs after a directive at the start of the text of a treeView]
+[test: runs after a directive at the start of the text of an info diagram]
+[test: runs after a directive at the start of the text of a railroad diagram]
+[test: runs after a directive at the start of the text of a quadrant chart]
+[test: runs after a directive at the start of the text of a Gantt chart]
+[test: runs after a directive at the start of the text of a user journey]
+[test: runs after a directive at the start of the text of a timeline]
+[test: runs after a directive at the start of the text of a sequence diagram]
+[test: runs after a directive at the start of the text of a Venn diagram]
+[test: runs after a directive at the start of the text of a C4 diagram]
+[test: runs after a directive at the start of the text of an ishikawa literal]
+[test: runs after a directive at the start of the text of a mindmap node]
+[test: runs after a directive at the start of the text of a kanban card]
+[test: runs after a directive at the start of the text of a treeView node]
+[test: runs after a directive at the start of the accDescr line of a flowchart]
+[test: runs after a directive at the start of the accDescr line of a class diagram]
+[test: runs after a directive at the start of the accDescr line of a state diagram]
+[test: runs after a directive at the start of the accDescr line of an ER diagram]
+[test: runs after a directive at the start of the accDescr line of a Gantt chart]
+[test: runs after a directive at the start of the accDescr line of a user journey]
+[test: runs after a directive at the start of the accDescr line of a timeline]
+[test: runs after a directive at the start of the accDescr line of a sequence diagram]
+[test: runs after a directive at the start of the accDescr line of a requirement diagram]
+[test: runs after a directive at the start of the accDescr line of a pie chart]
+[test: runs after a directive at the start of the accDescr line of a gitGraph]
+[test: runs after a directive at the start of the accDescr line of a radar chart]
+[test: runs after a directive at the start of the accDescr line of a packet diagram]
+[test: runs after a directive at the start of the accDescr line of an architecture diagram]
+[test: runs after a directive at the start of the accDescr line of a cynefin diagram]
+[test: runs after a directive at the start of the accDescr line of a treemap]
+[test: runs after a directive at the start of the accDescr line of a Wardley map]
+[test: runs after a directive at the start of the accDescr line of a treeView]
+[test: runs after a directive at the start of the accDescr line of an info diagram]
+[test: runs after a directive at the start of the accDescr line of a railroad diagram]
+[test: runs after a directive at the start of the accDescr line of a quadrant chart]
+[test: runs after a directive at the start of the accDescr line of an XY chart]
+[test: runs after a directive at the start of the accDescr line of a C4 diagram]
+[test: runs after a directive at the start of the accDescr line of an agentflow diagram]
+[test: runs after a directive at the start of the accDescr line of an ishikawa diagram]
+[test: runs after a directive at the start of the accDescr line of a use case diagram]
+[test: runs after a directive at the start of a message of a sequence diagram]
+[test: runs after a directive at the start of a note of a sequence diagram]
+[test: runs after a directive at the start of the label of a loop of a sequence diagram]
+[test: runs after a directive at the start of the label of an alt and an else of a sequence diagram]
+[test: runs after a directive at the start of the label of an opt of a sequence diagram]
+[test: runs after a directive at the start of the label of a par and an and of a sequence diagram]
+[test: runs after a directive at the start of the label of a box of a sequence diagram]
+[test: runs after a directive at the start of the name after as of a participant of a sequence diagram]
+[test: runs after a directive at the start of the text field of a requirement diagram]
+[test: runs after a directive at the start of the type field of a requirement diagram]
+[test: runs after a directive at the start of the docRef field of a requirement diagram]
+[test: runs after a directive at the start of the link text of a Wardley map]
+[test: runs after a directive at the start of the title of a block diagram]
+[test: runs after a directive at the start of the label of a quadrant of a quadrant chart]
+[test: runs after a directive at the start of the label of an axis of a quadrant chart]
+[test: runs after a directive at the start of the right label of an axis of a quadrant chart]
+[test: runs after a directive at the start of a member of a class diagram]
+[test: runs after a directive at the start of a member line of a class diagram]
+[test: runs after a directive at the start of the title of a subgraph of a flowchart]
+[test: runs after a directive at the start of the label of a relation of a class diagram]
+
 mermaid.js は連なりを Db に残します。
 レンダラーは、これらのテキストを SVG の `text` 要素に入れ、
 その空白をブラウザーが詰めます。

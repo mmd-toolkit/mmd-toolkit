@@ -1669,11 +1669,12 @@ These stay as written:
 
 - A text over several lines, and a text with a comment, a directive, or a U+2028
   or U+2029 in it, whose lines and marks mermaid.js reads by their place; a
-  directive that stands only at the start or at the end of the text is no such
-  mark, and the text is printed as it is without it (see
+  directive that stands only at the end of the text is no such mark, and the
+  text is printed as it is without it (see
   [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same));
   nor is a comment that ends the text, for which the table after this list gives
-  what is printed.
+  what is printed, nor a directive at the start of the text, for which the next
+  table gives what is printed.
 
   [fixture: pie/directives-and-semicolons/global-value]
 
@@ -1870,6 +1871,96 @@ before a comment that ends the right label of an axis of a quadrant chart]
 before a comment that ends a member line of a class diagram] [test: runs before
 a comment that ends the title of a subgraph of a flowchart] [test: runs before a
 comment that ends the label of a relation of a class diagram]
+
+A directive at the start of one of these texts leaves the whitespace after it
+out and prints the runs inside the text as one space, as the text is printed
+without the directive (`title %%{x}%% A  b` is printed `title %%{x}%%A b`), but
+in an ishikawa literal, which keeps the whitespace after the directive
+(`%%{x}%% A  b` is printed `%%{x}%% A b`), and in the texts of the table, which
+keep the runs inside the text as written, while the whitespace after the
+directive is left out of the title of a sequence diagram only. A directive that
+touches the text (`title %%{x}%%A  b`) is the same case without the whitespace.
+The texts of a mindmap node, a kanban card, a treeView node, and the label of a
+relation of a class diagram keep their runs with or without a directive.
+
+| Text                | Diagram types                                                                                                                                                                               | Written                  | Printed             |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ | ------------------- |
+| a `title`           | sequence diagram                                                                                                                                                                            | `title %%{x}%% A  b`     | `title %%{x}%%A  b` |
+| a `title`           | Venn diagram, C4 diagram                                                                                                                                                                    | `title %%{x}%% A  b`     | as written          |
+| an `accDescr:` line | pie chart, gitGraph, radar chart, packet diagram, architecture diagram, cynefin diagram, treemap, Wardley map, treeView, info diagram, railroad diagram, ishikawa diagram, use case diagram | `accDescr: %%{x}%% A  b` | as written          |
+| a link text         | Wardley map                                                                                                                                                                                 | `A -> B; %%{x}%% A  b`   | as written          |
+
+[test: runs after a directive at the start of the text of a pie chart] [test:
+runs after a directive at the start of the text of a radar chart] [test: runs
+after a directive at the start of the text of a packet diagram] [test: runs
+after a directive at the start of the text of an architecture diagram] [test:
+runs after a directive at the start of the text of a gitGraph] [test: runs after
+a directive at the start of the text of a cynefin diagram] [test: runs after a
+directive at the start of the text of a treemap] [test: runs after a directive
+at the start of the text of a Wardley map] [test: runs after a directive at the
+start of the text of a treeView] [test: runs after a directive at the start of
+the text of an info diagram] [test: runs after a directive at the start of the
+text of a railroad diagram] [test: runs after a directive at the start of the
+text of a quadrant chart] [test: runs after a directive at the start of the text
+of a Gantt chart] [test: runs after a directive at the start of the text of a
+user journey] [test: runs after a directive at the start of the text of a
+timeline] [test: runs after a directive at the start of the text of a sequence
+diagram] [test: runs after a directive at the start of the text of a Venn
+diagram] [test: runs after a directive at the start of the text of a C4 diagram]
+[test: runs after a directive at the start of the text of an ishikawa literal]
+[test: runs after a directive at the start of the text of a mindmap node] [test:
+runs after a directive at the start of the text of a kanban card] [test: runs
+after a directive at the start of the text of a treeView node] [test: runs after
+a directive at the start of the accDescr line of a flowchart] [test: runs after
+a directive at the start of the accDescr line of a class diagram] [test: runs
+after a directive at the start of the accDescr line of a state diagram] [test:
+runs after a directive at the start of the accDescr line of an ER diagram]
+[test: runs after a directive at the start of the accDescr line of a Gantt
+chart] [test: runs after a directive at the start of the accDescr line of a user
+journey] [test: runs after a directive at the start of the accDescr line of a
+timeline] [test: runs after a directive at the start of the accDescr line of a
+sequence diagram] [test: runs after a directive at the start of the accDescr
+line of a requirement diagram] [test: runs after a directive at the start of the
+accDescr line of a pie chart] [test: runs after a directive at the start of the
+accDescr line of a gitGraph] [test: runs after a directive at the start of the
+accDescr line of a radar chart] [test: runs after a directive at the start of
+the accDescr line of a packet diagram] [test: runs after a directive at the
+start of the accDescr line of an architecture diagram] [test: runs after a
+directive at the start of the accDescr line of a cynefin diagram] [test: runs
+after a directive at the start of the accDescr line of a treemap] [test: runs
+after a directive at the start of the accDescr line of a Wardley map] [test:
+runs after a directive at the start of the accDescr line of a treeView] [test:
+runs after a directive at the start of the accDescr line of an info diagram]
+[test: runs after a directive at the start of the accDescr line of a railroad
+diagram] [test: runs after a directive at the start of the accDescr line of a
+quadrant chart] [test: runs after a directive at the start of the accDescr line
+of an XY chart] [test: runs after a directive at the start of the accDescr line
+of a C4 diagram] [test: runs after a directive at the start of the accDescr line
+of an agentflow diagram] [test: runs after a directive at the start of the
+accDescr line of an ishikawa diagram] [test: runs after a directive at the start
+of the accDescr line of a use case diagram] [test: runs after a directive at the
+start of a message of a sequence diagram] [test: runs after a directive at the
+start of a note of a sequence diagram] [test: runs after a directive at the
+start of the label of a loop of a sequence diagram] [test: runs after a
+directive at the start of the label of an alt and an else of a sequence diagram]
+[test: runs after a directive at the start of the label of an opt of a sequence
+diagram] [test: runs after a directive at the start of the label of a par and an
+and of a sequence diagram] [test: runs after a directive at the start of the
+label of a box of a sequence diagram] [test: runs after a directive at the start
+of the name after as of a participant of a sequence diagram] [test: runs after a
+directive at the start of the text field of a requirement diagram] [test: runs
+after a directive at the start of the type field of a requirement diagram]
+[test: runs after a directive at the start of the docRef field of a requirement
+diagram] [test: runs after a directive at the start of the link text of a
+Wardley map] [test: runs after a directive at the start of the title of a block
+diagram] [test: runs after a directive at the start of the label of a quadrant
+of a quadrant chart] [test: runs after a directive at the start of the label of
+an axis of a quadrant chart] [test: runs after a directive at the start of the
+right label of an axis of a quadrant chart] [test: runs after a directive at the
+start of a member of a class diagram] [test: runs after a directive at the start
+of a member line of a class diagram] [test: runs after a directive at the start
+of the title of a subgraph of a flowchart] [test: runs after a directive at the
+start of the label of a relation of a class diagram]
 
 mermaid.js keeps the runs in the Db. The renderers put these texts into `text`
 elements of the SVG, whose whitespace the browser collapses

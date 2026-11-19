@@ -7059,6 +7059,368 @@ const commentEndsOtherTextExamples: readonly {
   },
 ]
 
+/**
+ * A directive at the start of a text that mermaid.js draws without the runs of
+ * spaces and tabs inside it: what the printer makes of the text, as the table
+ * of docs/compatibility.md, Runs of whitespace in a text that are drawn the
+ * same, gives.
+ */
+const directiveAtTheStartExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "runs after a directive at the start of the text of a pie chart",
+    'pie\ntitle %%{x}%% A  b\n"a": 1\n',
+    'pie\n  title %%{x}%%A b\n  "a": 1\n',
+  ],
+  [
+    "runs after a directive at the start of the text of a radar chart",
+    "radar-beta\ntitle %%{x}%% A  b\naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  title %%{x}%%A b\n  axis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "runs after a directive at the start of the text of a packet diagram",
+    'packet-beta\ntitle %%{x}%% A  b\n0-7: "x"\n',
+    'packet-beta\n  title %%{x}%%A b\n  0-7: "x"\n',
+  ],
+  [
+    "runs after a directive at the start of the text of an architecture diagram",
+    "architecture-beta\ntitle %%{x}%% A  b\nservice a(server)[A]\n",
+    "architecture-beta\n  title %%{x}%%A b\n  service a(server)[A]\n",
+  ],
+  [
+    "runs after a directive at the start of the text of a gitGraph",
+    "gitGraph\ntitle %%{x}%% A  b\ncommit\n",
+    "gitGraph\n  title %%{x}%%A b\n  commit\n",
+  ],
+  [
+    "runs after a directive at the start of the text of a cynefin diagram",
+    "cynefin-beta\ntitle %%{x}%% A  b\n",
+    "cynefin-beta\n  title %%{x}%%A b\n",
+  ],
+  [
+    "runs after a directive at the start of the text of a treemap",
+    'treemap-beta\ntitle %%{x}%% A  b\n"A": 1\n',
+    'treemap\ntitle %%{x}%%A b\n  "A": 1\n',
+  ],
+  [
+    "runs after a directive at the start of the text of a Wardley map",
+    "wardley-beta\ntitle %%{x}%% A  b\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title %%{x}%%A b\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "runs after a directive at the start of the text of a treeView",
+    "treeView-beta\ntitle %%{x}%% A  b\nroot\n",
+    "treeView-beta\n  title %%{x}%%A b\n  root\n",
+  ],
+  [
+    "runs after a directive at the start of the text of an info diagram",
+    "info\ntitle %%{x}%% A  b\n",
+    "info\n  title %%{x}%%A b\n",
+  ],
+  [
+    "runs after a directive at the start of the text of a railroad diagram",
+    'railroad-abnf-beta\ntitle %%{x}%% A  b\nr="a";\n',
+    'railroad-abnf-beta\n  title %%{x}%%A b\n  r = "a";\n',
+  ],
+  [
+    "runs after a directive at the start of the text of a quadrant chart",
+    "quadrantChart\ntitle %%{x}%% A  b\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  title %%{x}%%A b\n  x-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "runs after a directive at the start of the text of a Gantt chart",
+    "gantt\ntitle %%{x}%% A  b\n",
+    "gantt\n  title %%{x}%%A b\n",
+  ],
+  [
+    "runs after a directive at the start of the text of a user journey",
+    "journey\ntitle %%{x}%% A  b\n",
+    "journey\n  title %%{x}%%A b\n",
+  ],
+  [
+    "runs after a directive at the start of the text of a timeline",
+    "timeline\ntitle %%{x}%% A  b\n",
+    "timeline\n  title %%{x}%%A b\n",
+  ],
+  [
+    "runs after a directive at the start of the text of a sequence diagram",
+    "sequenceDiagram\ntitle %%{x}%% A  b\nA->>B: x\n",
+    "sequenceDiagram\n  title %%{x}%%A  b\n  A ->> B: x\n",
+  ],
+  [
+    "runs after a directive at the start of the text of a Venn diagram",
+    "venn-beta\ntitle %%{x}%% A  b\nset A\n",
+    "venn-beta\n  title %%{x}%% A  b\n  set A\n",
+  ],
+  [
+    "runs after a directive at the start of the text of a C4 diagram",
+    'C4Context\ntitle %%{x}%% A  b\nPerson(a,"A")\n',
+    'C4Context\n  title %%{x}%% A  b\n  Person(a, "A")\n',
+  ],
+  [
+    "runs after a directive at the start of the text of an ishikawa literal",
+    "ishikawa\n  R\n    %%{x}%% A  b\n",
+    "ishikawa\n  R\n   %%{x}%% A b\n",
+  ],
+  [
+    "runs after a directive at the start of the text of a mindmap node",
+    "mindmap\n  root\n    %%{x}%% A  b\n",
+    "mindmap\n  root\n    %%{x}%% A  b\n",
+  ],
+  [
+    "runs after a directive at the start of the text of a kanban card",
+    "kanban\n  S\n    %%{x}%% A  b\n",
+    "kanban\n  S\n   %%{x}%% A  b\n",
+  ],
+  [
+    "runs after a directive at the start of the text of a treeView node",
+    "treeView-beta\nR\n  %%{x}%% A  b\n",
+    "treeView-beta\n  R\n   %%{x}%% A  b\n",
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of a flowchart",
+    "flowchart LR\naccDescr: %%{x}%% A  b\nA-->B\n",
+    "flowchart LR\n  accDescr: %%{x}%%A b\n  A --> B\n",
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of a class diagram",
+    "classDiagram\naccDescr: %%{x}%% A  b\nclass A\n",
+    "classDiagram\n  accDescr: %%{x}%%A b\n  class A\n",
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of a state diagram",
+    "stateDiagram-v2\naccDescr: %%{x}%% A  b\nA-->B\n",
+    "stateDiagram-v2\n  accDescr: %%{x}%%A b\n  A --> B\n",
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of an ER diagram",
+    "erDiagram\naccDescr: %%{x}%% A  b\nA ||--o{ B : has\n",
+    "erDiagram\n  accDescr: %%{x}%%A b\n  A ||--o{ B : has\n",
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of a Gantt chart",
+    "gantt\naccDescr: %%{x}%% A  b\nsection S\nt :2020-01-01, 1d\n",
+    "gantt\n  accDescr: %%{x}%%A b\n  section S\n    t : 2020-01-01, 1d\n",
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of a user journey",
+    "journey\naccDescr: %%{x}%% A  b\nsection S\nt: 5: Me\n",
+    "journey\n  accDescr: %%{x}%%A b\n  section S\n    t: 5: Me\n",
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of a timeline",
+    "timeline\naccDescr: %%{x}%% A  b\n2020 : e\n",
+    "timeline\n  accDescr: %%{x}%%A b\n  2020 : e\n",
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of a sequence diagram",
+    "sequenceDiagram\naccDescr: %%{x}%% A  b\nA->>B: x\n",
+    "sequenceDiagram\n  accDescr: %%{x}%%A b\n  A ->> B: x\n",
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of a requirement diagram",
+    "requirementDiagram\naccDescr: %%{x}%% A  b\n",
+    "requirementDiagram\n  accDescr: %%{x}%%A b\n",
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of a pie chart",
+    'pie\naccDescr: %%{x}%% A  b\n"a": 1\n',
+    'pie\n  accDescr: %%{x}%% A  b\n  "a": 1\n',
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of a gitGraph",
+    "gitGraph\naccDescr: %%{x}%% A  b\ncommit\n",
+    "gitGraph\n  accDescr: %%{x}%% A  b\n  commit\n",
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of a radar chart",
+    "radar-beta\naccDescr: %%{x}%% A  b\naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  accDescr: %%{x}%% A  b\n  axis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of a packet diagram",
+    'packet-beta\naccDescr: %%{x}%% A  b\n0-7: "x"\n',
+    'packet-beta\n  accDescr: %%{x}%% A  b\n  0-7: "x"\n',
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of an architecture diagram",
+    "architecture-beta\naccDescr: %%{x}%% A  b\nservice a(server)[A]\n",
+    "architecture-beta\n  accDescr: %%{x}%% A  b\n  service a(server)[A]\n",
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of a cynefin diagram",
+    "cynefin-beta\naccDescr: %%{x}%% A  b\n",
+    "cynefin-beta\n  accDescr: %%{x}%% A  b\n",
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of a treemap",
+    'treemap-beta\naccDescr: %%{x}%% A  b\n"A": 1\n',
+    'treemap\naccDescr: %%{x}%% A  b\n  "A": 1\n',
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of a Wardley map",
+    "wardley-beta\naccDescr: %%{x}%% A  b\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  accDescr: %%{x}%% A  b\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of a treeView",
+    "treeView-beta\naccDescr: %%{x}%% A  b\nroot\n",
+    "treeView-beta\n  accDescr: %%{x}%% A  b\n  root\n",
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of an info diagram",
+    "info\naccDescr: %%{x}%% A  b\n",
+    "info\n  accDescr: %%{x}%% A  b\n",
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of a railroad diagram",
+    'railroad-abnf-beta\naccDescr: %%{x}%% A  b\nr="a";\n',
+    'railroad-abnf-beta\n  accDescr: %%{x}%% A  b\n  r = "a";\n',
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of a quadrant chart",
+    "quadrantChart\naccDescr: %%{x}%% A  b\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  accDescr: %%{x}%%A b\n  x-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of an XY chart",
+    "xychart-beta\naccDescr: %%{x}%% A  b\nx-axis [a, b]\nbar [1, 2]\n",
+    "xychart-beta\n  accDescr: %%{x}%%A b\n  x-axis [a, b]\n  bar [1, 2]\n",
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of a C4 diagram",
+    'C4Context\naccDescr: %%{x}%% A  b\nPerson(a, "A")\n',
+    'C4Context\n  accDescr: %%{x}%%A b\n  Person(a, "A")\n',
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of an agentflow diagram",
+    "agentflow-beta TB\naccDescr: %%{x}%% A  b\nA\n",
+    "agentflow-beta TB\n  accDescr: %%{x}%%A b\n  A\n",
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of an ishikawa diagram",
+    "ishikawa\naccDescr: %%{x}%% A  b\n  R\n",
+    "ishikawa\n  accDescr: %%{x}%% A  b\n    R\n",
+  ],
+  [
+    "runs after a directive at the start of the accDescr line of a use case diagram",
+    "usecase-beta\naccDescr: %%{x}%% A  b\nactor A\n",
+    "usecase-beta\n  accDescr: %%{x}%% A  b\n  actor A\n",
+  ],
+  [
+    "runs after a directive at the start of a message of a sequence diagram",
+    "sequenceDiagram\nA->>B: %%{x}%% A  b\n",
+    "sequenceDiagram\n  A ->> B: %%{x}%%A b\n",
+  ],
+  [
+    "runs after a directive at the start of a note of a sequence diagram",
+    "sequenceDiagram\nA->>B: x\nNote over A: %%{x}%% A  b\n",
+    "sequenceDiagram\n  A ->> B: x\n  Note over A: %%{x}%%A b\n",
+  ],
+  [
+    "runs after a directive at the start of the label of a loop of a sequence diagram",
+    "sequenceDiagram\nloop %%{x}%% A  b\nA->>B: x\nend\n",
+    "sequenceDiagram\n  loop %%{x}%%A b\n    A ->> B: x\n  end\n",
+  ],
+  [
+    "runs after a directive at the start of the label of an alt and an else of a sequence diagram",
+    "sequenceDiagram\nalt %%{x}%% A  b\nA->>B: x\nelse C  d  %% c\nA->>B: y\nend\n",
+    "sequenceDiagram\n  alt %%{x}%%A b\n    A ->> B: x\n  else C d %% c\n    A ->> B: y\n  end\n",
+  ],
+  [
+    "runs after a directive at the start of the label of an opt of a sequence diagram",
+    "sequenceDiagram\nopt %%{x}%% A  b\nA->>B: x\nend\n",
+    "sequenceDiagram\n  opt %%{x}%%A b\n    A ->> B: x\n  end\n",
+  ],
+  [
+    "runs after a directive at the start of the label of a par and an and of a sequence diagram",
+    "sequenceDiagram\npar %%{x}%% A  b\nA->>B: x\nand C  d  %% c\nA->>B: y\nend\n",
+    "sequenceDiagram\n  par %%{x}%%A b\n    A ->> B: x\n  and C d %% c\n    A ->> B: y\n  end\n",
+  ],
+  [
+    "runs after a directive at the start of the label of a box of a sequence diagram",
+    "sequenceDiagram\nbox %%{x}%% A  b\nparticipant A\nend\nA->>A: x\n",
+    "sequenceDiagram\n  box %%{x}%%A b\n    participant A\n  end\n  A ->> A: x\n",
+  ],
+  [
+    "runs after a directive at the start of the name after as of a participant of a sequence diagram",
+    "sequenceDiagram\nparticipant A as %%{x}%% A  b\nA->>A: x\n",
+    "sequenceDiagram\n  participant A as %%{x}%%A b\n  A ->> A: x\n",
+  ],
+  [
+    "runs after a directive at the start of the text field of a requirement diagram",
+    "requirementDiagram\nrequirement r {\nid: 1\ntext: %%{x}%% A  b\nrisk: low\nverifymethod: test\n}\n",
+    "requirementDiagram\n  requirement r {\n    id: 1\n    text: %%{x}%%A b\n    risk: low\n    verifymethod: test\n  }\n",
+  ],
+  [
+    "runs after a directive at the start of the type field of a requirement diagram",
+    "requirementDiagram\nelement e {\ntype: %%{x}%% A  b\n}\n",
+    "requirementDiagram\n  element e {\n    type: %%{x}%%A b\n  }\n",
+  ],
+  [
+    "runs after a directive at the start of the docRef field of a requirement diagram",
+    "requirementDiagram\nelement e {\ntype: t\ndocRef: %%{x}%% A  b\n}\n",
+    "requirementDiagram\n  element e {\n    type: t\n    docRef: %%{x}%%A b\n  }\n",
+  ],
+  [
+    "runs after a directive at the start of the link text of a Wardley map",
+    "wardley-beta\ncomponent A [0.5, 0.5]\ncomponent B [0.4, 0.4]\nA -> B; %%{x}%% A  b\n",
+    "wardley-beta\n  component A [0.5, 0.5]\n  component B [0.4, 0.4]\n  A -> B; %%{x}%% A  b\n",
+  ],
+  [
+    "runs after a directive at the start of the title of a block diagram",
+    "block-beta\ntitle %%{x}%% A  b\ncolumns 1\na\n",
+    "block-beta\n  title %%{x}%%A b\n  columns 1\n  a\n",
+  ],
+  [
+    "runs after a directive at the start of the label of a quadrant of a quadrant chart",
+    "quadrantChart\nx-axis L --> R\ny-axis B --> T\nquadrant-1 %%{x}%% A  b\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  x-axis L --> R\n  y-axis B --> T\n  quadrant-1 %%{x}%%A b\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "runs after a directive at the start of the label of an axis of a quadrant chart",
+    "quadrantChart\nx-axis %%{x}%% A  b\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  x-axis %%{x}%%A b\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "runs after a directive at the start of the right label of an axis of a quadrant chart",
+    "quadrantChart\nx-axis L --> %%{x}%% A  b\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  x-axis L --> %%{x}%%A b\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+  [
+    "runs after a directive at the start of a member of a class diagram",
+    "classDiagram\nclass A {\n  %%{x}%% +x  y\n}\n",
+    "classDiagram\n  class A {\n    %%{x}%% +x y\n  }\n",
+  ],
+  [
+    "runs after a directive at the start of a member line of a class diagram",
+    "classDiagram\nA : %%{x}%% +x  y\n",
+    "classDiagram\n  A : %%{x}%%+x y\n",
+  ],
+  [
+    "runs after a directive at the start of the title of a subgraph of a flowchart",
+    "flowchart LR\nsubgraph %%{x}%% A  b\nA-->B\nend\n",
+    "flowchart LR\n  subgraph %%{x}%%A b\n    A --> B\n  end\n",
+  ],
+  [
+    "runs after a directive at the start of the label of a relation of a class diagram",
+    "classDiagram\nA --> B : %%{x}%% A  b\n",
+    "classDiagram\n  A --> B : %%{x}%%A  b\n",
+  ],
+]
+
+describe("the runs after a directive at the start of a text", () => {
+  it.each(directiveAtTheStartExamples)(
+    "prints %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
 describe("the runs before a comment that ends an accDescr line or another text", () => {
   it.each(commentEndsOtherTextExamples)("prints $name", async (example) => {
     await expectKept(example.input, example.output)
