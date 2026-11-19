@@ -4309,6 +4309,23 @@ const directiveHoldingKinds: readonly (readonly [
     ],
   ],
   [
+    "the accDescription of a C4 diagram with a directive that holds a line break or a semicolon",
+    7,
+    false,
+    'C4Context\naccDescription {line}\nPerson(a,"A")\n',
+    'C4Context\n  accDescription {line}\n  Person(a, "A")\n',
+    'C4Context\n  accDescription {line}\n  Person(a, "A")\n',
+    "",
+    [
+      "T %%{x}%%",
+      "T %%{x}%%",
+      "%%{x}%%  T  ",
+      "T  %%{x}%%  %% c  ",
+      "T  %%{x}%%%% c",
+      "%%{x}%%T  ",
+    ],
+  ],
+  [
     "a node of a mindmap after a shape, the directive alone with a directive that holds a line break or a semicolon",
     8,
     true,
@@ -4480,49 +4497,107 @@ const directiveHoldingKinds: readonly (readonly [
   ],
 ]
 
+/**
+ * The statement that follows the line of each text of the table above whose
+ * line is the last of the text, as written and as printed (an info diagram has
+ * none: mermaid.js rejects a `showInfo` after a title or an accessibility
+ * line).
+ */
+const statementAfterTheDirectiveHoldingLine: ReadonlyMap<
+  string,
+  readonly [string, string]
+> = new Map([
+  ["cynefin-beta\ntitle {line}\n", ['complex "a"\n', '  complex\n    "a"\n']],
+  [
+    "cynefin-beta\naccTitle: {line}\n",
+    ['complex "a"\n', '  complex\n    "a"\n'],
+  ],
+  [
+    "cynefin-beta\naccDescr: {line}\n",
+    ['complex "a"\n', '  complex\n    "a"\n'],
+  ],
+  ["gantt\naccTitle: {line}\n", ["section s\n", "  section s\n"]],
+  ["gantt\naccDescr: {line}\n", ["section s\n", "  section s\n"]],
+  ["journey\naccTitle: {line}\n", ["section s\n", "  section s\n"]],
+  ["journey\naccDescr: {line}\n", ["section s\n", "  section s\n"]],
+  ["timeline\naccTitle: {line}\n", ["section s\n", "  section s\n"]],
+  ["timeline\naccDescr: {line}\n", ["section s\n", "  section s\n"]],
+  ["timeline\n2020 : {line}\n", ["2021 : e\n", "  2021 : e\n"]],
+  ["gantt\ntitle {line}\n", ["section s\n", "  section s\n"]],
+  ["journey\ntitle {line}\n", ["section s\n", "  section s\n"]],
+  ["timeline\ntitle {line}\n", ["section s\n", "  section s\n"]],
+  ["gantt\ndateFormat {line}\n", ["section s\n", "  section s\n"]],
+  ["gantt\naxisFormat {line}\n", ["section s\n", "  section s\n"]],
+  ["mindmap\n  root\n    a[t] {line}\n", ["    b\n", "    b\n"]],
+  ["ishikawa\n  R\n    {line}\n", ["    S\n", "    S\n"]],
+  ["treeView-beta\nR\n  {line}\n", ["  S\n", "    S\n"]],
+  ["mindmap\n  root\n    {line}\n", ["    b\n", "    b\n"]],
+  ["kanban\n  S\n    {line}\n", ["    B[y]\n", "    B[y]\n"]],
+  ['stateDiagram-v2\nstate "d" as A : {line}\n', ["A --> B\n", "  A --> B\n"]],
+  ["kanban\n  S\n    A[x] {line}\n", ["    B[y]\n", "    B[y]\n"]],
+  ["mindmap\n  root\n    a {line}\n", ["    b\n", "    b\n"]],
+  ["journey\nsection s\n{line}\n", ["u: 5: Me\n", "    u: 5: Me\n"]],
+])
+
+/**
+ * Formats each form of a text of the table of docs/compatibility.md, Directives
+ * that hold a line break or a semicolon, as the table gives, with the statement
+ * after its line where it has one.
+ */
+async function expectDirectiveHoldingKind(
+  [
+    _name,
+    row,
+    alone,
+    input,
+    output,
+    outputAtTheStart,
+    suffix,
+    plain,
+  ]: (typeof directiveHoldingKinds)[number],
+  statement: readonly [string, string],
+): Promise<void> {
+  for (const [
+    index,
+    [form, directive, plainIndex],
+  ] of directiveHoldingColumns.entries()) {
+    const cell = directiveHoldingRows[row]?.[index]
+    if (cell === null || cell === undefined || cell === "rejected") continue
+    for (const held of directive.includes("\u2028")
+      ? [directive, directive.replace("\u2028", "\u2029")]
+      : [directive]) {
+      const written =
+        (alone ? form.replace("T  ", "") : form).replace("{d}", held) + suffix
+      const without = plain[plainIndex]?.replace("%%{x}%%", held) ?? ""
+      let printed = cell
+      if (cell === "written") printed = written
+      else if (cell === "without") printed = without
+      else if (cell === "trimmed")
+        printed = withoutSpacesAndTabsAtTheEnd(written)
+      else if (cell.startsWith("L:")) printed = cell.slice(2)
+      await expectKept(
+        input.replace("{line}", written) + statement[0],
+        (plainIndex === 2 ? outputAtTheStart : output).replace(
+          "{line}",
+          printed,
+        ) + statement[1],
+      )
+    }
+  }
+}
+
 describe("a directive that holds a line break or a semicolon", () => {
-  it.each(directiveHoldingKinds)(
-    "prints %s",
-    async (
-      _name,
-      row,
-      alone,
-      input,
-      output,
-      outputAtTheStart,
-      suffix,
-      plain,
-    ) => {
-      for (const [
-        index,
-        [form, directive, plainIndex],
-      ] of directiveHoldingColumns.entries()) {
-        const cell = directiveHoldingRows[row]?.[index]
-        if (cell === null || cell === undefined || cell === "rejected") continue
-        for (const held of directive.includes("\u2028")
-          ? [directive, directive.replace("\u2028", "\u2029")]
-          : [directive]) {
-          const written =
-            (alone ? form.replace("T  ", "") : form).replace("{d}", held) +
-            suffix
-          const without = plain[plainIndex]?.replace("%%{x}%%", held) ?? ""
-          let printed = cell
-          if (cell === "written") printed = written
-          else if (cell === "without") printed = without
-          else if (cell === "trimmed")
-            printed = withoutSpacesAndTabsAtTheEnd(written)
-          else if (cell.startsWith("L:")) printed = cell.slice(2)
-          await expectKept(
-            input.replace("{line}", written),
-            (plainIndex === 2 ? outputAtTheStart : output).replace(
-              "{line}",
-              printed,
-            ),
-          )
-        }
-      }
-    },
-  )
+  it.each(directiveHoldingKinds)("prints %s", async (...kind) => {
+    await expectDirectiveHoldingKind(kind, ["", ""])
+  })
+
+  it("a directive that holds a line break or a semicolon, with a statement after the line", async () => {
+    for (const kind of directiveHoldingKinds) {
+      const statement = statementAfterTheDirectiveHoldingLine.get(kind[3])
+      if (statement === undefined) continue
+      await expectDirectiveHoldingKind(kind, statement)
+    }
+  })
 })
 
 const directivePositionKinds: readonly (readonly [
@@ -4629,6 +4704,18 @@ const directivePositionKinds: readonly (readonly [
     ],
   ],
   [
+    "the accDescription of a C4 diagram with a directive that holds a line break or a semicolon, wherever the directive stands",
+    7,
+    'C4Context\naccDescription {line}\nPerson(a,"A")\n',
+    'C4Context\n  accDescription {line}\n  Person(a, "A")\n',
+    [
+      "T %%{x}%% %%{y}%%",
+      "T %%{y}%% %%{x}%%",
+      "T %%{x}%%",
+      "T %%{y}%% %%{x}%%",
+    ],
+  ],
+  [
     "the text of a mindmap node with a directive that holds a line break or a semicolon, wherever the directive stands",
     11,
     "mindmap\n  root\n    {line}\n",
@@ -4691,1099 +4778,290 @@ describe("a directive that holds a line break or a semicolon, wherever it stands
   )
 })
 
-/** A U+2028 or U+2029 before the directive of a title of a directive and a comment only, by what follows the title (docs/compatibility.md, Texts after a keyword that are drawn the same). */
-const lineSeparatorBeforeTheDirectiveInEachTypeExamples: readonly (readonly [
-  string,
-  string,
-  string,
-])[] = [
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a pie chart",
-    "pie\ntitle \u2028 %%{x}%%%% c\n",
-    "pie\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a pie chart",
-    'pie\ntitle \u2028 %%{x}%%%% c\n"a": 1\n',
-    'pie\n  title \u2028 %%{x}%%%% c\n"a": 1\n',
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of spaces after the title, in a pie chart",
-    "pie\ntitle \u2028 %%{x}%%%% c\n   \n",
-    "pie\n  title \u2028 %%{x}%%%% c\n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of a directive after the title, in a pie chart",
-    "pie\ntitle \u2028 %%{x}%%%% c\n%%{y}%%\n",
-    "pie\n  title\n  %%{x}%%%% c\n  %%{y}%%\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a comment line after the title, in a pie chart",
-    "pie\ntitle \u2028 %%{x}%%%% c\n%% z\n",
-    "pie\n  title\n  %%{x}%%%% c\n  %% z\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, an empty line after the title, in a pie chart",
-    "pie\ntitle \u2028 %%{x}%%%% c\n",
-    "pie\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, nothing after the title, in a pie chart",
-    "pie\ntitle \u2028 %%{x}%%  %% c  \n",
-    "pie\n  title\n  %%{x}%% %% c  \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a statement after the title, in a pie chart",
-    'pie\ntitle \u2028 %%{x}%%  %% c  \n"a": 1\n',
-    'pie\n  title \u2028 %%{x}%%  %% c  \n"a": 1\n',
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of spaces after the title, in a pie chart",
-    "pie\ntitle \u2028 %%{x}%%  %% c  \n   \n",
-    "pie\n  title \u2028 %%{x}%%  %% c  \n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of a directive after the title, in a pie chart",
-    "pie\ntitle \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-    "pie\n  title\n  %%{x}%% %% c  \n  %%{y}%%\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a pie chart",
-    "pie\ntitle \u2029 %%{x}%%%% c\n",
-    "pie\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a pie chart",
-    'pie\ntitle \u2029 %%{x}%%%% c\n"a": 1\n',
-    'pie\n  title \u2029 %%{x}%%%% c\n"a": 1\n',
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a radar chart",
-    "radar-beta\ntitle \u2028 %%{x}%%%% c\n",
-    "radar-beta\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a radar chart",
-    "radar-beta\ntitle \u2028 %%{x}%%%% c\naxis a, b\ncurve c{1, 2}\n",
-    "radar-beta\n  title \u2028 %%{x}%%%% c\naxis a, b\n  curve c{1, 2}\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of spaces after the title, in a radar chart",
-    "radar-beta\ntitle \u2028 %%{x}%%%% c\n   \n",
-    "radar-beta\n  title \u2028 %%{x}%%%% c\n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of a directive after the title, in a radar chart",
-    "radar-beta\ntitle \u2028 %%{x}%%%% c\n%%{y}%%\n",
-    "radar-beta\n  title\n  %%{x}%%%% c\n  %%{y}%%\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a comment line after the title, in a radar chart",
-    "radar-beta\ntitle \u2028 %%{x}%%%% c\n%% z\n",
-    "radar-beta\n  title\n  %%{x}%%%% c\n  %% z\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, an empty line after the title, in a radar chart",
-    "radar-beta\ntitle \u2028 %%{x}%%%% c\n",
-    "radar-beta\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, nothing after the title, in a radar chart",
-    "radar-beta\ntitle \u2028 %%{x}%%  %% c  \n",
-    "radar-beta\n  title\n  %%{x}%% %% c  \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a statement after the title, in a radar chart",
-    "radar-beta\ntitle \u2028 %%{x}%%  %% c  \naxis a, b\ncurve c{1, 2}\n",
-    "radar-beta\n  title \u2028 %%{x}%%  %% c  \naxis a, b\n  curve c{1, 2}\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of spaces after the title, in a radar chart",
-    "radar-beta\ntitle \u2028 %%{x}%%  %% c  \n   \n",
-    "radar-beta\n  title \u2028 %%{x}%%  %% c  \n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of a directive after the title, in a radar chart",
-    "radar-beta\ntitle \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-    "radar-beta\n  title\n  %%{x}%% %% c  \n  %%{y}%%\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a radar chart",
-    "radar-beta\ntitle \u2029 %%{x}%%%% c\n",
-    "radar-beta\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a radar chart",
-    "radar-beta\ntitle \u2029 %%{x}%%%% c\naxis a, b\ncurve c{1, 2}\n",
-    "radar-beta\n  title \u2029 %%{x}%%%% c\naxis a, b\n  curve c{1, 2}\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a packet diagram",
-    "packet-beta\ntitle \u2028 %%{x}%%%% c\n",
-    "packet-beta\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a packet diagram",
-    'packet-beta\ntitle \u2028 %%{x}%%%% c\n0-7: "x"\n',
-    'packet-beta\n  title \u2028 %%{x}%%%% c\n0-7: "x"\n',
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of spaces after the title, in a packet diagram",
-    "packet-beta\ntitle \u2028 %%{x}%%%% c\n   \n",
-    "packet-beta\n  title \u2028 %%{x}%%%% c\n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of a directive after the title, in a packet diagram",
-    "packet-beta\ntitle \u2028 %%{x}%%%% c\n%%{y}%%\n",
-    "packet-beta\n  title\n  %%{x}%%%% c\n  %%{y}%%\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a comment line after the title, in a packet diagram",
-    "packet-beta\ntitle \u2028 %%{x}%%%% c\n%% z\n",
-    "packet-beta\n  title\n  %%{x}%%%% c\n  %% z\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, an empty line after the title, in a packet diagram",
-    "packet-beta\ntitle \u2028 %%{x}%%%% c\n",
-    "packet-beta\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, nothing after the title, in a packet diagram",
-    "packet-beta\ntitle \u2028 %%{x}%%  %% c  \n",
-    "packet-beta\n  title\n  %%{x}%% %% c  \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a statement after the title, in a packet diagram",
-    'packet-beta\ntitle \u2028 %%{x}%%  %% c  \n0-7: "x"\n',
-    'packet-beta\n  title \u2028 %%{x}%%  %% c  \n0-7: "x"\n',
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of spaces after the title, in a packet diagram",
-    "packet-beta\ntitle \u2028 %%{x}%%  %% c  \n   \n",
-    "packet-beta\n  title \u2028 %%{x}%%  %% c  \n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of a directive after the title, in a packet diagram",
-    "packet-beta\ntitle \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-    "packet-beta\n  title\n  %%{x}%% %% c  \n  %%{y}%%\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a packet diagram",
-    "packet-beta\ntitle \u2029 %%{x}%%%% c\n",
-    "packet-beta\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a packet diagram",
-    'packet-beta\ntitle \u2029 %%{x}%%%% c\n0-7: "x"\n',
-    'packet-beta\n  title \u2029 %%{x}%%%% c\n0-7: "x"\n',
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in an architecture diagram",
-    "architecture-beta\ntitle \u2028 %%{x}%%%% c\n",
-    "architecture-beta\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in an architecture diagram",
-    "architecture-beta\ntitle \u2028 %%{x}%%%% c\nservice a(server)[A]\n",
-    "architecture-beta\n  title \u2028 %%{x}%%%% c\nservice a(server)[A]\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of spaces after the title, in an architecture diagram",
-    "architecture-beta\ntitle \u2028 %%{x}%%%% c\n   \n",
-    "architecture-beta\n  title \u2028 %%{x}%%%% c\n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of a directive after the title, in an architecture diagram",
-    "architecture-beta\ntitle \u2028 %%{x}%%%% c\n%%{y}%%\n",
-    "architecture-beta\n  title\n  %%{x}%%%% c\n  %%{y}%%\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a comment line after the title, in an architecture diagram",
-    "architecture-beta\ntitle \u2028 %%{x}%%%% c\n%% z\n",
-    "architecture-beta\n  title\n  %%{x}%%%% c\n  %% z\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, an empty line after the title, in an architecture diagram",
-    "architecture-beta\ntitle \u2028 %%{x}%%%% c\n",
-    "architecture-beta\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, nothing after the title, in an architecture diagram",
-    "architecture-beta\ntitle \u2028 %%{x}%%  %% c  \n",
-    "architecture-beta\n  title\n  %%{x}%% %% c  \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a statement after the title, in an architecture diagram",
-    "architecture-beta\ntitle \u2028 %%{x}%%  %% c  \nservice a(server)[A]\n",
-    "architecture-beta\n  title \u2028 %%{x}%%  %% c  \nservice a(server)[A]\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of spaces after the title, in an architecture diagram",
-    "architecture-beta\ntitle \u2028 %%{x}%%  %% c  \n   \n",
-    "architecture-beta\n  title \u2028 %%{x}%%  %% c  \n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of a directive after the title, in an architecture diagram",
-    "architecture-beta\ntitle \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-    "architecture-beta\n  title\n  %%{x}%% %% c  \n  %%{y}%%\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in an architecture diagram",
-    "architecture-beta\ntitle \u2029 %%{x}%%%% c\n",
-    "architecture-beta\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in an architecture diagram",
-    "architecture-beta\ntitle \u2029 %%{x}%%%% c\nservice a(server)[A]\n",
-    "architecture-beta\n  title \u2029 %%{x}%%%% c\nservice a(server)[A]\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a gitGraph",
-    "gitGraph\ntitle \u2028 %%{x}%%%% c\n",
-    "gitGraph\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a gitGraph",
-    "gitGraph\ntitle \u2028 %%{x}%%%% c\ncommit\n",
-    "gitGraph\n  title \u2028 %%{x}%%%% c\ncommit\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of spaces after the title, in a gitGraph",
-    "gitGraph\ntitle \u2028 %%{x}%%%% c\n   \n",
-    "gitGraph\n  title \u2028 %%{x}%%%% c\n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of a directive after the title, in a gitGraph",
-    "gitGraph\ntitle \u2028 %%{x}%%%% c\n%%{y}%%\n",
-    "gitGraph\n  title\n  %%{x}%%%% c\n  %%{y}%%\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a comment line after the title, in a gitGraph",
-    "gitGraph\ntitle \u2028 %%{x}%%%% c\n%% z\n",
-    "gitGraph\n  title\n  %%{x}%%%% c\n  %% z\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, an empty line after the title, in a gitGraph",
-    "gitGraph\ntitle \u2028 %%{x}%%%% c\n",
-    "gitGraph\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, nothing after the title, in a gitGraph",
-    "gitGraph\ntitle \u2028 %%{x}%%  %% c  \n",
-    "gitGraph\n  title\n  %%{x}%% %% c  \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a statement after the title, in a gitGraph",
-    "gitGraph\ntitle \u2028 %%{x}%%  %% c  \ncommit\n",
-    "gitGraph\n  title \u2028 %%{x}%%  %% c  \ncommit\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of spaces after the title, in a gitGraph",
-    "gitGraph\ntitle \u2028 %%{x}%%  %% c  \n   \n",
-    "gitGraph\n  title \u2028 %%{x}%%  %% c  \n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of a directive after the title, in a gitGraph",
-    "gitGraph\ntitle \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-    "gitGraph\n  title\n  %%{x}%% %% c  \n  %%{y}%%\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a gitGraph",
-    "gitGraph\ntitle \u2029 %%{x}%%%% c\n",
-    "gitGraph\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a gitGraph",
-    "gitGraph\ntitle \u2029 %%{x}%%%% c\ncommit\n",
-    "gitGraph\n  title \u2029 %%{x}%%%% c\ncommit\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a cynefin diagram",
-    "cynefin-beta\ntitle \u2028 %%{x}%%%% c\n",
-    "cynefin-beta\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a cynefin diagram",
-    'cynefin-beta\ntitle \u2028 %%{x}%%%% c\ncomplex "a"\n',
-    'cynefin-beta\n  title \u2028 %%{x}%%%% c\ncomplex "a"\n',
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of spaces after the title, in a cynefin diagram",
-    "cynefin-beta\ntitle \u2028 %%{x}%%%% c\n   \n",
-    "cynefin-beta\n  title \u2028 %%{x}%%%% c\n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of a directive after the title, in a cynefin diagram",
-    "cynefin-beta\ntitle \u2028 %%{x}%%%% c\n%%{y}%%\n",
-    "cynefin-beta\n  title\n  %%{x}%%%% c\n  %%{y}%%\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a comment line after the title, in a cynefin diagram",
-    "cynefin-beta\ntitle \u2028 %%{x}%%%% c\n%% z\n",
-    "cynefin-beta\n  title\n  %%{x}%%%% c\n  %% z\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, an empty line after the title, in a cynefin diagram",
-    "cynefin-beta\ntitle \u2028 %%{x}%%%% c\n",
-    "cynefin-beta\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, nothing after the title, in a cynefin diagram",
-    "cynefin-beta\ntitle \u2028 %%{x}%%  %% c  \n",
-    "cynefin-beta\n  title\n  %%{x}%% %% c  \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a statement after the title, in a cynefin diagram",
-    'cynefin-beta\ntitle \u2028 %%{x}%%  %% c  \ncomplex "a"\n',
-    'cynefin-beta\n  title \u2028 %%{x}%%  %% c  \ncomplex "a"\n',
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of spaces after the title, in a cynefin diagram",
-    "cynefin-beta\ntitle \u2028 %%{x}%%  %% c  \n   \n",
-    "cynefin-beta\n  title \u2028 %%{x}%%  %% c  \n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of a directive after the title, in a cynefin diagram",
-    "cynefin-beta\ntitle \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-    "cynefin-beta\n  title\n  %%{x}%% %% c  \n  %%{y}%%\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a cynefin diagram",
-    "cynefin-beta\ntitle \u2029 %%{x}%%%% c\n",
-    "cynefin-beta\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a cynefin diagram",
-    'cynefin-beta\ntitle \u2029 %%{x}%%%% c\ncomplex "a"\n',
-    'cynefin-beta\n  title \u2029 %%{x}%%%% c\ncomplex "a"\n',
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a treemap",
-    "treemap-beta\ntitle \u2028 %%{x}%%%% c\n",
-    "treemap\ntitle\n%%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a treemap",
-    'treemap-beta\ntitle \u2028 %%{x}%%%% c\n"A": 1\n',
-    'treemap\ntitle \u2028 %%{x}%%%% c\n"A": 1\n',
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of spaces after the title, in a treemap",
-    "treemap-beta\ntitle \u2028 %%{x}%%%% c\n   \n",
-    "treemap\ntitle \u2028 %%{x}%%%% c\n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of a directive after the title, in a treemap",
-    "treemap-beta\ntitle \u2028 %%{x}%%%% c\n%%{y}%%\n",
-    "treemap\ntitle\n%%{x}%%%% c\n%%{y}%%\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a comment line after the title, in a treemap",
-    "treemap-beta\ntitle \u2028 %%{x}%%%% c\n%% z\n",
-    "treemap\ntitle\n%%{x}%%%% c\n%% z\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, an empty line after the title, in a treemap",
-    "treemap-beta\ntitle \u2028 %%{x}%%%% c\n",
-    "treemap\ntitle\n%%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, nothing after the title, in a treemap",
-    "treemap-beta\ntitle \u2028 %%{x}%%  %% c  \n",
-    "treemap\ntitle\n%%{x}%% %% c  \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a statement after the title, in a treemap",
-    'treemap-beta\ntitle \u2028 %%{x}%%  %% c  \n"A": 1\n',
-    'treemap\ntitle \u2028 %%{x}%%  %% c  \n"A": 1\n',
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of spaces after the title, in a treemap",
-    "treemap-beta\ntitle \u2028 %%{x}%%  %% c  \n   \n",
-    "treemap\ntitle \u2028 %%{x}%%  %% c  \n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of a directive after the title, in a treemap",
-    "treemap-beta\ntitle \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-    "treemap\ntitle\n%%{x}%% %% c  \n%%{y}%%\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a treemap",
-    "treemap-beta\ntitle \u2029 %%{x}%%%% c\n",
-    "treemap\ntitle\n%%{x}%%%% c\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a treemap",
-    'treemap-beta\ntitle \u2029 %%{x}%%%% c\n"A": 1\n',
-    'treemap\ntitle \u2029 %%{x}%%%% c\n"A": 1\n',
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a Wardley map",
-    "wardley-beta\ntitle \u2028 %%{x}%%%% c\n",
-    "wardley-beta\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a Wardley map",
-    "wardley-beta\ntitle \u2028 %%{x}%%%% c\ncomponent A [0.5, 0.5]\n",
-    "wardley-beta\n  title \u2028 %%{x}%%%% c\ncomponent A [0.5, 0.5]\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of spaces after the title, in a Wardley map",
-    "wardley-beta\ntitle \u2028 %%{x}%%%% c\n   \n",
-    "wardley-beta\n  title \u2028 %%{x}%%%% c\n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of a directive after the title, in a Wardley map",
-    "wardley-beta\ntitle \u2028 %%{x}%%%% c\n%%{y}%%\n",
-    "wardley-beta\n  title\n  %%{x}%%%% c\n  %%{y}%%\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a comment line after the title, in a Wardley map",
-    "wardley-beta\ntitle \u2028 %%{x}%%%% c\n%% z\n",
-    "wardley-beta\n  title\n  %%{x}%%%% c\n  %% z\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, an empty line after the title, in a Wardley map",
-    "wardley-beta\ntitle \u2028 %%{x}%%%% c\n",
-    "wardley-beta\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, nothing after the title, in a Wardley map",
-    "wardley-beta\ntitle \u2028 %%{x}%%  %% c  \n",
-    "wardley-beta\n  title\n  %%{x}%% %% c  \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a statement after the title, in a Wardley map",
-    "wardley-beta\ntitle \u2028 %%{x}%%  %% c  \ncomponent A [0.5, 0.5]\n",
-    "wardley-beta\n  title \u2028 %%{x}%%  %% c  \ncomponent A [0.5, 0.5]\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of spaces after the title, in a Wardley map",
-    "wardley-beta\ntitle \u2028 %%{x}%%  %% c  \n   \n",
-    "wardley-beta\n  title \u2028 %%{x}%%  %% c  \n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of a directive after the title, in a Wardley map",
-    "wardley-beta\ntitle \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-    "wardley-beta\n  title\n  %%{x}%% %% c  \n  %%{y}%%\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a Wardley map",
-    "wardley-beta\ntitle \u2029 %%{x}%%%% c\n",
-    "wardley-beta\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a Wardley map",
-    "wardley-beta\ntitle \u2029 %%{x}%%%% c\ncomponent A [0.5, 0.5]\n",
-    "wardley-beta\n  title \u2029 %%{x}%%%% c\ncomponent A [0.5, 0.5]\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a treeView",
-    "treeView-beta\ntitle \u2028 %%{x}%%%% c\n",
-    "treeView-beta\n  title\n%%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a treeView",
-    "treeView-beta\ntitle \u2028 %%{x}%%%% c\nroot\n",
-    "treeView-beta\n  title \u2028 %%{x}%%%% c\nroot\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of spaces after the title, in a treeView",
-    "treeView-beta\ntitle \u2028 %%{x}%%%% c\n   \n",
-    "treeView-beta\n  title \u2028 %%{x}%%%% c\n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of a directive after the title, in a treeView",
-    "treeView-beta\ntitle \u2028 %%{x}%%%% c\n%%{y}%%\n",
-    "treeView-beta\n  title \u2028 %%{x}%%%% c\n%%{y}%%\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a comment line after the title, in a treeView",
-    "treeView-beta\ntitle \u2028 %%{x}%%%% c\n%% z\n",
-    "treeView-beta\n  title\n%%{x}%%%% c\n  %% z\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, an empty line after the title, in a treeView",
-    "treeView-beta\ntitle \u2028 %%{x}%%%% c\n",
-    "treeView-beta\n  title\n%%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, nothing after the title, in a treeView",
-    "treeView-beta\ntitle \u2028 %%{x}%%  %% c  \n",
-    "treeView-beta\n  title\n%%{x}%% %% c  \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a statement after the title, in a treeView",
-    "treeView-beta\ntitle \u2028 %%{x}%%  %% c  \nroot\n",
-    "treeView-beta\n  title \u2028 %%{x}%%  %% c  \nroot\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of spaces after the title, in a treeView",
-    "treeView-beta\ntitle \u2028 %%{x}%%  %% c  \n   \n",
-    "treeView-beta\n  title \u2028 %%{x}%%  %% c  \n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of a directive after the title, in a treeView",
-    "treeView-beta\ntitle \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-    "treeView-beta\n  title \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a treeView",
-    "treeView-beta\ntitle \u2029 %%{x}%%%% c\n",
-    "treeView-beta\n  title\n%%{x}%%%% c\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a treeView",
-    "treeView-beta\ntitle \u2029 %%{x}%%%% c\nroot\n",
-    "treeView-beta\n  title \u2029 %%{x}%%%% c\nroot\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in an info diagram",
-    "info\ntitle \u2028 %%{x}%%%% c\n",
-    "info\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in an info diagram",
-    "info\ntitle \u2028 %%{x}%%%% c\nshowInfo\n",
-    "info\n  title \u2028 %%{x}%%%% c\nshowInfo\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of spaces after the title, in an info diagram",
-    "info\ntitle \u2028 %%{x}%%%% c\n   \n",
-    "info\n  title \u2028 %%{x}%%%% c\n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of a directive after the title, in an info diagram",
-    "info\ntitle \u2028 %%{x}%%%% c\n%%{y}%%\n",
-    "info\n  title\n  %%{x}%%%% c\n  %%{y}%%\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a comment line after the title, in an info diagram",
-    "info\ntitle \u2028 %%{x}%%%% c\n%% z\n",
-    "info\n  title\n  %%{x}%%%% c\n  %% z\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, an empty line after the title, in an info diagram",
-    "info\ntitle \u2028 %%{x}%%%% c\n",
-    "info\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, nothing after the title, in an info diagram",
-    "info\ntitle \u2028 %%{x}%%  %% c  \n",
-    "info\n  title\n  %%{x}%% %% c  \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a statement after the title, in an info diagram",
-    "info\ntitle \u2028 %%{x}%%  %% c  \nshowInfo\n",
-    "info\n  title \u2028 %%{x}%%  %% c  \nshowInfo\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of spaces after the title, in an info diagram",
-    "info\ntitle \u2028 %%{x}%%  %% c  \n   \n",
-    "info\n  title \u2028 %%{x}%%  %% c  \n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of a directive after the title, in an info diagram",
-    "info\ntitle \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-    "info\n  title\n  %%{x}%% %% c  \n  %%{y}%%\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in an info diagram",
-    "info\ntitle \u2029 %%{x}%%%% c\n",
-    "info\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in an info diagram",
-    "info\ntitle \u2029 %%{x}%%%% c\nshowInfo\n",
-    "info\n  title \u2029 %%{x}%%%% c\nshowInfo\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a railroad diagram",
-    "railroad-abnf-beta\ntitle \u2028 %%{x}%%%% c\n",
-    "railroad-abnf-beta\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a railroad diagram",
-    'railroad-abnf-beta\ntitle \u2028 %%{x}%%%% c\nr="a";\n',
-    'railroad-abnf-beta\n  title \u2028 %%{x}%%%% c\nr="a";\n',
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of spaces after the title, in a railroad diagram",
-    "railroad-abnf-beta\ntitle \u2028 %%{x}%%%% c\n   \n",
-    "railroad-abnf-beta\n  title \u2028 %%{x}%%%% c\n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of a directive after the title, in a railroad diagram",
-    "railroad-abnf-beta\ntitle \u2028 %%{x}%%%% c\n%%{y}%%\n",
-    "railroad-abnf-beta\n  title\n  %%{x}%%%% c\n  %%{y}%%\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a comment line after the title, in a railroad diagram",
-    "railroad-abnf-beta\ntitle \u2028 %%{x}%%%% c\n%% z\n",
-    "railroad-abnf-beta\n  title\n  %%{x}%%%% c\n  %% z\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, an empty line after the title, in a railroad diagram",
-    "railroad-abnf-beta\ntitle \u2028 %%{x}%%%% c\n",
-    "railroad-abnf-beta\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, nothing after the title, in a railroad diagram",
-    "railroad-abnf-beta\ntitle \u2028 %%{x}%%  %% c  \n",
-    "railroad-abnf-beta\n  title\n  %%{x}%% %% c  \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a statement after the title, in a railroad diagram",
-    'railroad-abnf-beta\ntitle \u2028 %%{x}%%  %% c  \nr="a";\n',
-    'railroad-abnf-beta\n  title \u2028 %%{x}%%  %% c  \nr="a";\n',
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of spaces after the title, in a railroad diagram",
-    "railroad-abnf-beta\ntitle \u2028 %%{x}%%  %% c  \n   \n",
-    "railroad-abnf-beta\n  title \u2028 %%{x}%%  %% c  \n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of a directive after the title, in a railroad diagram",
-    "railroad-abnf-beta\ntitle \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-    "railroad-abnf-beta\n  title\n  %%{x}%% %% c  \n  %%{y}%%\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a railroad diagram",
-    "railroad-abnf-beta\ntitle \u2029 %%{x}%%%% c\n",
-    "railroad-abnf-beta\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a railroad diagram",
-    'railroad-abnf-beta\ntitle \u2029 %%{x}%%%% c\nr="a";\n',
-    'railroad-abnf-beta\n  title \u2029 %%{x}%%%% c\nr="a";\n',
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a quadrant chart",
-    "quadrantChart\ntitle \u2028 %%{x}%%%% c\n",
-    "quadrantChart\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a quadrant chart",
-    "quadrantChart\ntitle \u2028 %%{x}%%%% c\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
-    "quadrantChart\n  title \u2028 %%{x}%%%% c\nx-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of spaces after the title, in a quadrant chart",
-    "quadrantChart\ntitle \u2028 %%{x}%%%% c\n   \n",
-    "quadrantChart\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of a directive after the title, in a quadrant chart",
-    "quadrantChart\ntitle \u2028 %%{x}%%%% c\n%%{y}%%\n",
-    "quadrantChart\n  title \u2028 %%{x}%%%% c\n%%{y}%%\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a comment line after the title, in a quadrant chart",
-    "quadrantChart\ntitle \u2028 %%{x}%%%% c\n%% z\n",
-    "quadrantChart\n  title\n  %%{x}%%%% c\n  %% z\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, an empty line after the title, in a quadrant chart",
-    "quadrantChart\ntitle \u2028 %%{x}%%%% c\n",
-    "quadrantChart\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, nothing after the title, in a quadrant chart",
-    "quadrantChart\ntitle \u2028 %%{x}%%  %% c  \n",
-    "quadrantChart\n  title\n  %%{x}%% %% c  \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a statement after the title, in a quadrant chart",
-    "quadrantChart\ntitle \u2028 %%{x}%%  %% c  \nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
-    "quadrantChart\n  title \u2028 %%{x}%%  %% c  \nx-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of spaces after the title, in a quadrant chart",
-    "quadrantChart\ntitle \u2028 %%{x}%%  %% c  \n   \n",
-    "quadrantChart\n  title\n  %%{x}%% %% c  \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of a directive after the title, in a quadrant chart",
-    "quadrantChart\ntitle \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-    "quadrantChart\n  title \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a quadrant chart",
-    "quadrantChart\ntitle \u2029 %%{x}%%%% c\n",
-    "quadrantChart\n  title\n  %%{x}%%%% c\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a quadrant chart",
-    "quadrantChart\ntitle \u2029 %%{x}%%%% c\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
-    "quadrantChart\n  title \u2029 %%{x}%%%% c\nx-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a Gantt chart",
-    "gantt\ntitle \u2028 %%{x}%%%% c\n",
-    "gantt\n  title \u2028 %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a Gantt chart",
-    "gantt\ntitle \u2028 %%{x}%%%% c\nsection s\n",
-    "gantt\n  title \u2028 %%{x}%%%% c\nsection s\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of spaces after the title, in a Gantt chart",
-    "gantt\ntitle \u2028 %%{x}%%%% c\n   \n",
-    "gantt\n  title \u2028 %%{x}%%%% c\n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of a directive after the title, in a Gantt chart",
-    "gantt\ntitle \u2028 %%{x}%%%% c\n%%{y}%%\n",
-    "gantt\n  title \u2028 %%{x}%%%% c\n%%{y}%%\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a comment line after the title, in a Gantt chart",
-    "gantt\ntitle \u2028 %%{x}%%%% c\n%% z\n",
-    "gantt\n  title \u2028 %%{x}%%%% c\n  %% z\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, an empty line after the title, in a Gantt chart",
-    "gantt\ntitle \u2028 %%{x}%%%% c\n",
-    "gantt\n  title \u2028 %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, nothing after the title, in a Gantt chart",
-    "gantt\ntitle \u2028 %%{x}%%  %% c  \n",
-    "gantt\n  title \u2028 %%{x}%% %% c  \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a statement after the title, in a Gantt chart",
-    "gantt\ntitle \u2028 %%{x}%%  %% c  \nsection s\n",
-    "gantt\n  title \u2028 %%{x}%%  %% c  \nsection s\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of spaces after the title, in a Gantt chart",
-    "gantt\ntitle \u2028 %%{x}%%  %% c  \n   \n",
-    "gantt\n  title \u2028 %%{x}%%  %% c  \n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of a directive after the title, in a Gantt chart",
-    "gantt\ntitle \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-    "gantt\n  title \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a Gantt chart",
-    "gantt\ntitle \u2029 %%{x}%%%% c\n",
-    "gantt\n  title \u2029 %%{x}%%%% c\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a Gantt chart",
-    "gantt\ntitle \u2029 %%{x}%%%% c\nsection s\n",
-    "gantt\n  title \u2029 %%{x}%%%% c\nsection s\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a user journey",
-    "journey\ntitle \u2028 %%{x}%%%% c\n",
-    "journey\n  title \u2028 %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a user journey",
-    "journey\ntitle \u2028 %%{x}%%%% c\nsection s\n",
-    "journey\n  title \u2028 %%{x}%%%% c\nsection s\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of spaces after the title, in a user journey",
-    "journey\ntitle \u2028 %%{x}%%%% c\n   \n",
-    "journey\n  title \u2028 %%{x}%%%% c\n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of a directive after the title, in a user journey",
-    "journey\ntitle \u2028 %%{x}%%%% c\n%%{y}%%\n",
-    "journey\n  title \u2028 %%{x}%%%% c\n%%{y}%%\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a comment line after the title, in a user journey",
-    "journey\ntitle \u2028 %%{x}%%%% c\n%% z\n",
-    "journey\n  title \u2028 %%{x}%%%% c\n  %% z\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, an empty line after the title, in a user journey",
-    "journey\ntitle \u2028 %%{x}%%%% c\n",
-    "journey\n  title \u2028 %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, nothing after the title, in a user journey",
-    "journey\ntitle \u2028 %%{x}%%  %% c  \n",
-    "journey\n  title \u2028 %%{x}%% %% c  \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a statement after the title, in a user journey",
-    "journey\ntitle \u2028 %%{x}%%  %% c  \nsection s\n",
-    "journey\n  title \u2028 %%{x}%%  %% c  \nsection s\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of spaces after the title, in a user journey",
-    "journey\ntitle \u2028 %%{x}%%  %% c  \n   \n",
-    "journey\n  title \u2028 %%{x}%%  %% c  \n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of a directive after the title, in a user journey",
-    "journey\ntitle \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-    "journey\n  title \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a user journey",
-    "journey\ntitle \u2029 %%{x}%%%% c\n",
-    "journey\n  title \u2029 %%{x}%%%% c\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a user journey",
-    "journey\ntitle \u2029 %%{x}%%%% c\nsection s\n",
-    "journey\n  title \u2029 %%{x}%%%% c\nsection s\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a timeline",
-    "timeline\ntitle \u2028 %%{x}%%%% c\n",
-    "timeline\n  title \u2028 %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a timeline",
-    "timeline\ntitle \u2028 %%{x}%%%% c\nsection s\n",
-    "timeline\n  title \u2028 %%{x}%%%% c\nsection s\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of spaces after the title, in a timeline",
-    "timeline\ntitle \u2028 %%{x}%%%% c\n   \n",
-    "timeline\n  title \u2028 %%{x}%%%% c\n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of a directive after the title, in a timeline",
-    "timeline\ntitle \u2028 %%{x}%%%% c\n%%{y}%%\n",
-    "timeline\n  title \u2028 %%{x}%%%% c\n%%{y}%%\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a comment line after the title, in a timeline",
-    "timeline\ntitle \u2028 %%{x}%%%% c\n%% z\n",
-    "timeline\n  title \u2028 %%{x}%%%% c\n  %% z\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, an empty line after the title, in a timeline",
-    "timeline\ntitle \u2028 %%{x}%%%% c\n",
-    "timeline\n  title \u2028 %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, nothing after the title, in a timeline",
-    "timeline\ntitle \u2028 %%{x}%%  %% c  \n",
-    "timeline\n  title \u2028 %%{x}%% %% c  \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a statement after the title, in a timeline",
-    "timeline\ntitle \u2028 %%{x}%%  %% c  \nsection s\n",
-    "timeline\n  title \u2028 %%{x}%%  %% c  \nsection s\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of spaces after the title, in a timeline",
-    "timeline\ntitle \u2028 %%{x}%%  %% c  \n   \n",
-    "timeline\n  title \u2028 %%{x}%%  %% c  \n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of a directive after the title, in a timeline",
-    "timeline\ntitle \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-    "timeline\n  title \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a timeline",
-    "timeline\ntitle \u2029 %%{x}%%%% c\n",
-    "timeline\n  title \u2029 %%{x}%%%% c\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a timeline",
-    "timeline\ntitle \u2029 %%{x}%%%% c\nsection s\n",
-    "timeline\n  title \u2029 %%{x}%%%% c\nsection s\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a sequence diagram",
-    "sequenceDiagram\ntitle \u2028 %%{x}%%%% c\n",
-    "sequenceDiagram\n  title \u2028 %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a sequence diagram",
-    "sequenceDiagram\ntitle \u2028 %%{x}%%%% c\nA->>B: x\n",
-    "sequenceDiagram\n  title \u2028 %%{x}%%%% c\nA->>B: x\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of spaces after the title, in a sequence diagram",
-    "sequenceDiagram\ntitle \u2028 %%{x}%%%% c\n   \n",
-    "sequenceDiagram\n  title \u2028 %%{x}%%%% c\n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of a directive after the title, in a sequence diagram",
-    "sequenceDiagram\ntitle \u2028 %%{x}%%%% c\n%%{y}%%\n",
-    "sequenceDiagram\n  title \u2028 %%{x}%%%% c\n%%{y}%%\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a comment line after the title, in a sequence diagram",
-    "sequenceDiagram\ntitle \u2028 %%{x}%%%% c\n%% z\n",
-    "sequenceDiagram\n  title \u2028 %%{x}%%%% c\n  %% z\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, an empty line after the title, in a sequence diagram",
-    "sequenceDiagram\ntitle \u2028 %%{x}%%%% c\n",
-    "sequenceDiagram\n  title \u2028 %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, nothing after the title, in a sequence diagram",
-    "sequenceDiagram\ntitle \u2028 %%{x}%%  %% c  \n",
-    "sequenceDiagram\n  title \u2028 %%{x}%% %% c  \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a statement after the title, in a sequence diagram",
-    "sequenceDiagram\ntitle \u2028 %%{x}%%  %% c  \nA->>B: x\n",
-    "sequenceDiagram\n  title \u2028 %%{x}%%  %% c  \nA->>B: x\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of spaces after the title, in a sequence diagram",
-    "sequenceDiagram\ntitle \u2028 %%{x}%%  %% c  \n   \n",
-    "sequenceDiagram\n  title \u2028 %%{x}%%  %% c  \n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of a directive after the title, in a sequence diagram",
-    "sequenceDiagram\ntitle \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-    "sequenceDiagram\n  title \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a sequence diagram",
-    "sequenceDiagram\ntitle \u2029 %%{x}%%%% c\n",
-    "sequenceDiagram\n  title \u2029 %%{x}%%%% c\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a sequence diagram",
-    "sequenceDiagram\ntitle \u2029 %%{x}%%%% c\nA->>B: x\n",
-    "sequenceDiagram\n  title \u2029 %%{x}%%%% c\nA->>B: x\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a Venn diagram",
-    "venn-beta\ntitle \u2028 %%{x}%%%% c\n",
-    "venn-beta\n  title \u2028 %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a Venn diagram",
-    "venn-beta\ntitle \u2028 %%{x}%%%% c\nset A\n",
-    "venn-beta\n  title \u2028 %%{x}%%%% c\nset A\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of spaces after the title, in a Venn diagram",
-    "venn-beta\ntitle \u2028 %%{x}%%%% c\n   \n",
-    "venn-beta\n  title \u2028 %%{x}%%%% c\n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of a directive after the title, in a Venn diagram",
-    "venn-beta\ntitle \u2028 %%{x}%%%% c\n%%{y}%%\n",
-    "venn-beta\n  title \u2028 %%{x}%%%% c\n%%{y}%%\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a comment line after the title, in a Venn diagram",
-    "venn-beta\ntitle \u2028 %%{x}%%%% c\n%% z\n",
-    "venn-beta\n  title \u2028 %%{x}%%%% c\n  %% z\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, an empty line after the title, in a Venn diagram",
-    "venn-beta\ntitle \u2028 %%{x}%%%% c\n",
-    "venn-beta\n  title \u2028 %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, nothing after the title, in a Venn diagram",
-    "venn-beta\ntitle \u2028 %%{x}%%  %% c  \n",
-    "venn-beta\n  title \u2028 %%{x}%% %% c  \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a statement after the title, in a Venn diagram",
-    "venn-beta\ntitle \u2028 %%{x}%%  %% c  \nset A\n",
-    "venn-beta\n  title \u2028 %%{x}%%  %% c  \nset A\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of spaces after the title, in a Venn diagram",
-    "venn-beta\ntitle \u2028 %%{x}%%  %% c  \n   \n",
-    "venn-beta\n  title \u2028 %%{x}%%  %% c  \n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of a directive after the title, in a Venn diagram",
-    "venn-beta\ntitle \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-    "venn-beta\n  title \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a Venn diagram",
-    "venn-beta\ntitle \u2029 %%{x}%%%% c\n",
-    "venn-beta\n  title \u2029 %%{x}%%%% c\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a Venn diagram",
-    "venn-beta\ntitle \u2029 %%{x}%%%% c\nset A\n",
-    "venn-beta\n  title \u2029 %%{x}%%%% c\nset A\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a C4 diagram",
-    "C4Context\ntitle \u2028 %%{x}%%%% c\n",
-    "C4Context\n  title \u2028 %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a C4 diagram",
-    'C4Context\ntitle \u2028 %%{x}%%%% c\nPerson(a,"A")\n',
-    'C4Context\n  title \u2028 %%{x}%%%% c\nPerson(a,"A")\n',
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of spaces after the title, in a C4 diagram",
-    "C4Context\ntitle \u2028 %%{x}%%%% c\n   \n",
-    "C4Context\n  title \u2028 %%{x}%%%% c\n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a line of a directive after the title, in a C4 diagram",
-    "C4Context\ntitle \u2028 %%{x}%%%% c\n%%{y}%%\n",
-    "C4Context\n  title \u2028 %%{x}%%%% c\n%%{y}%%\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, a comment line after the title, in a C4 diagram",
-    "C4Context\ntitle \u2028 %%{x}%%%% c\n%% z\n",
-    "C4Context\n  title \u2028 %%{x}%%%% c\n%% z\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, the comment touching the directive, an empty line after the title, in a C4 diagram",
-    "C4Context\ntitle \u2028 %%{x}%%%% c\n",
-    "C4Context\n  title \u2028 %%{x}%%%% c\n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, nothing after the title, in a C4 diagram",
-    "C4Context\ntitle \u2028 %%{x}%%  %% c  \n",
-    "C4Context\n  title \u2028 %%{x}%%  %% c  \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a statement after the title, in a C4 diagram",
-    'C4Context\ntitle \u2028 %%{x}%%  %% c  \nPerson(a,"A")\n',
-    'C4Context\n  title \u2028 %%{x}%%  %% c  \nPerson(a,"A")\n',
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of spaces after the title, in a C4 diagram",
-    "C4Context\ntitle \u2028 %%{x}%%  %% c  \n   \n",
-    "C4Context\n  title \u2028 %%{x}%%  %% c  \n   \n",
-  ],
-  [
-    "U+2028 before the directive of a title of a directive and a comment only, spaces around the comment, a line of a directive after the title, in a C4 diagram",
-    "C4Context\ntitle \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-    "C4Context\n  title \u2028 %%{x}%%  %% c  \n%%{y}%%\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, nothing after the title, in a C4 diagram",
-    "C4Context\ntitle \u2029 %%{x}%%%% c\n",
-    "C4Context\n  title \u2029 %%{x}%%%% c\n",
-  ],
-  [
-    "U+2029 before the directive of a title of a directive and a comment only, the comment touching the directive, a statement after the title, in a C4 diagram",
-    'C4Context\ntitle \u2029 %%{x}%%%% c\nPerson(a,"A")\n',
-    'C4Context\n  title \u2029 %%{x}%%%% c\nPerson(a,"A")\n',
-  ],
-]
+/**
+ * The diagram types that have a title, each with the group that the table of
+ * docs/compatibility.md, Texts after a keyword that are drawn the same, gives
+ * it, and one statement.
+ */
+const titleStatementTypes = [
+  {
+    name: "a pie chart",
+    header: "pie",
+    printedHeader: "pie",
+    indent: "  ",
+    statement: '"a": 1',
+    group: "langium",
+  },
+  {
+    name: "a radar chart",
+    header: "radar-beta",
+    printedHeader: "radar-beta",
+    indent: "  ",
+    statement: "axis a, b\ncurve c{1, 2}",
+    group: "langium",
+  },
+  {
+    name: "a packet diagram",
+    header: "packet-beta",
+    printedHeader: "packet-beta",
+    indent: "  ",
+    statement: '0-7: "x"',
+    group: "langium",
+  },
+  {
+    name: "an architecture diagram",
+    header: "architecture-beta",
+    printedHeader: "architecture-beta",
+    indent: "  ",
+    statement: "service a(server)[A]",
+    group: "langium",
+  },
+  {
+    name: "a gitGraph",
+    header: "gitGraph",
+    printedHeader: "gitGraph",
+    indent: "  ",
+    statement: "commit",
+    group: "langium",
+  },
+  {
+    name: "a cynefin diagram",
+    header: "cynefin-beta",
+    printedHeader: "cynefin-beta",
+    indent: "  ",
+    statement: 'complex "a"',
+    group: "langium",
+  },
+  {
+    name: "a treemap",
+    header: "treemap-beta",
+    printedHeader: "treemap",
+    indent: "",
+    statement: '"A": 1',
+    group: "langium",
+  },
+  {
+    name: "a Wardley map",
+    header: "wardley-beta",
+    printedHeader: "wardley-beta",
+    indent: "  ",
+    statement: "component A [0.5, 0.5]",
+    group: "langium",
+  },
+  {
+    name: "a treeView",
+    header: "treeView-beta",
+    printedHeader: "treeView-beta",
+    indent: "  ",
+    statement: "root",
+    group: "treeView",
+  },
+  {
+    name: "an info diagram",
+    header: "info",
+    printedHeader: "info",
+    indent: "  ",
+    statement: "showInfo",
+    group: "langium",
+  },
+  {
+    name: "a railroad diagram",
+    header: "railroad-abnf-beta",
+    printedHeader: "railroad-abnf-beta",
+    indent: "  ",
+    statement: 'r="a";',
+    group: "langium",
+  },
+  {
+    name: "a quadrant chart",
+    header: "quadrantChart",
+    printedHeader: "quadrantChart",
+    indent: "  ",
+    statement: "x-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]",
+    group: "quadrant",
+  },
+  {
+    name: "a Gantt chart",
+    header: "gantt",
+    printedHeader: "gantt",
+    indent: "  ",
+    statement: "section s",
+    group: "other",
+  },
+  {
+    name: "a user journey",
+    header: "journey",
+    printedHeader: "journey",
+    indent: "  ",
+    statement: "section s",
+    group: "other",
+  },
+  {
+    name: "a timeline",
+    header: "timeline",
+    printedHeader: "timeline",
+    indent: "  ",
+    statement: "section s",
+    group: "other",
+  },
+  {
+    name: "a sequence diagram",
+    header: "sequenceDiagram",
+    printedHeader: "sequenceDiagram",
+    indent: "  ",
+    statement: "A->>B: x",
+    group: "other",
+  },
+  {
+    name: "a Venn diagram",
+    header: "venn-beta",
+    printedHeader: "venn-beta",
+    indent: "  ",
+    statement: "set A",
+    group: "other",
+  },
+  {
+    name: "a C4 diagram",
+    header: "C4Context",
+    printedHeader: "C4Context",
+    indent: "  ",
+    statement: 'Person(a,"A")',
+    group: "other",
+  },
+] as const
 
-describe("a U+2028 or U+2029 before the directive of a title of a directive and a comment only, in each type", () => {
-  it.each(lineSeparatorBeforeTheDirectiveInEachTypeExamples)(
-    "prints %s",
-    async (_name, input, output) => {
-      await expectKept(input, output)
+/**
+ * What a title of a directive and a comment only, with a U+2028 or a U+2029
+ * before the directive, prints by what follows the title: whether each group of
+ * types moves the directive and the comment to the next line, with the lines
+ * that follow (a `{statement}` stands for the statement of a type). The info
+ * diagram rejects a statement after an empty line, a line of spaces, or a line
+ * of a directive (docs/compatibility.md).
+ */
+const titleFollowRows = [
+  {
+    name: "U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: nothing, or an empty line",
+    follows: [{ text: "" }, { text: "\n" }],
+    moved: { langium: true, treeView: true, quadrant: true, other: false },
+    oneSpace: true,
+  },
+  {
+    name: "U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: an empty line, then a statement",
+    follows: [{ text: "\n{statement}\n", rejectedByInfo: true }],
+    moved: { langium: true, treeView: false, quadrant: false, other: false },
+    unstableInATreemap: true,
+  },
+  {
+    name: "U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a comment line",
+    follows: [{ text: "%% z\n" }],
+    moved: { langium: true, treeView: true, quadrant: true, other: false },
+    oneSpace: true,
+  },
+  {
+    name: "U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: one comment line or two, then a statement",
+    follows: [
+      { text: "%% z\n{statement}\n" },
+      { text: "%% z\n%% w\n{statement}\n" },
+    ],
+    moved: { langium: false, treeView: false, quadrant: false, other: false },
+  },
+  {
+    name: "U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a comment line, an empty line, then a statement",
+    follows: [{ text: "%% z\n\n{statement}\n", rejectedByInfo: true }],
+    moved: { langium: true, treeView: false, quadrant: false, other: false },
+    unstableInATreemap: true,
+  },
+  {
+    name: "U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of spaces",
+    follows: [{ text: "   \n" }],
+    moved: { langium: false, treeView: false, quadrant: true, other: false },
+  },
+  {
+    name: "U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of spaces, then a statement",
+    follows: [{ text: "   \n{statement}\n", rejectedByInfo: true }],
+    moved: { langium: false, treeView: false, quadrant: false, other: false },
+  },
+  {
+    name: "U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of a directive",
+    follows: [{ text: "%%{y}%%\n" }],
+    moved: { langium: true, treeView: false, quadrant: false, other: false },
+  },
+  {
+    name: "U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of a directive, then a statement",
+    follows: [{ text: "%%{y}%%\n{statement}\n", rejectedByInfo: true }],
+    moved: { langium: true, treeView: false, quadrant: false, other: false },
+    unstableInATreemap: true,
+  },
+  {
+    name: "U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of a directive after a space, alone or then a statement",
+    follows: [
+      { text: " %%{y}%%\n" },
+      { text: " %%{y}%%\n{statement}\n", rejectedByInfo: true },
+    ],
+    moved: { langium: false, treeView: false, quadrant: false, other: false },
+  },
+  {
+    name: "U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a statement",
+    follows: [{ text: "{statement}\n" }],
+    moved: { langium: false, treeView: false, quadrant: false, other: false },
+  },
+] as const
+
+describe("a U+2028 or U+2029 before the directive of a title of a directive and a comment only, by what follows the title", () => {
+  it.each(titleFollowRows.map((row) => [row.name, row] as const))(
+    "%s",
+    async (_name, row) => {
+      for (const type of titleStatementTypes) {
+        for (const character of ["\u2028", "\u2029"]) {
+          for (const touching of [true, false]) {
+            for (const follow of row.follows) {
+              const written = touching ? "%%{x}%%%% c" : "%%{x}%%  %% c  "
+              const input = `${type.header}\ntitle ${character} ${written}\n${follow.text.replace("{statement}", type.statement)}`
+              if (
+                type.name === "an info diagram" &&
+                "rejectedByInfo" in follow
+              ) {
+                await expect(formatMermaid(input)).rejects.toThrow(
+                  "Unexpected token",
+                )
+                continue
+              }
+              // A treemap prints these rows with spaces before the comment one
+              // way the first time and another the second time: no form is given.
+              if (
+                type.name === "a treemap" &&
+                !touching &&
+                "unstableInATreemap" in row
+              )
+                continue
+              const moved = row.moved[type.group]
+              // Where the comment stands after spaces, the types of the last
+              // group but a C4 diagram print one space before it where nothing,
+              // an empty line, or a comment line follows (docs/compatibility.md).
+              const oneSpace =
+                !touching &&
+                type.group === "other" &&
+                type.name !== "a C4 diagram" &&
+                "oneSpace" in row
+              const start = moved
+                ? `${type.printedHeader}\n${type.indent}title\n${type.group === "treeView" ? "" : type.indent}${touching ? "%%{x}%%%% c" : "%%{x}%% %% c  "}\n`
+                : `${type.printedHeader}\n${type.indent}title ${character} ${oneSpace ? "%%{x}%% %% c  " : written}\n`
+              const output = await formatMermaid(input)
+              expect(output.slice(0, start.length)).toBe(start)
+              expect(await formatMermaid(output)).toBe(output)
+              const dbBefore = dbOfText(input, defaultEmbedded())
+              expect(
+                dbForFormattingComparison(
+                  dbBefore,
+                  dbOfText(output, defaultEmbedded()),
+                  input,
+                  output,
+                ),
+              ).toEqual(dbBefore)
+            }
+          }
+        }
+      }
     },
   )
 })

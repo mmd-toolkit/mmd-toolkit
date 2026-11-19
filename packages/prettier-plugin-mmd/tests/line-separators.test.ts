@@ -6927,3 +6927,43 @@ describe("a directive that holds a line separator on a class line of a mindmap n
     }
   })
 })
+
+/**
+ * A directive that holds a U+2028 or a U+2029 is accepted inside the text of a
+ * shape of a mindmap node, after a character of the text, and the text stays as
+ * written (docs/mindmap.md, Directives).
+ */
+const mindmapShapes = [
+  ["[", "]"],
+  ["(", ")"],
+  ["((", "))"],
+  ["))", "(("],
+  [")", "("],
+  ["{{", "}}"],
+] as const
+
+describe("a directive that holds a line separator in the text of a shape of a mindmap node", () => {
+  it("a directive that holds a U+2028 in the text of a shape of a mindmap node", async () => {
+    for (const [open, close] of mindmapShapes) {
+      for (const inside of [
+        "t %%{init: {\u2028}}%% u",
+        "t %%{init: {\u2028}}%%  ",
+      ]) {
+        const text = `mindmap\n  root\n    a${open}${inside}${close}\n`
+        await expectKept(text, text)
+      }
+    }
+  })
+
+  it("a directive that holds a U+2029 in the text of a shape of a mindmap node", async () => {
+    for (const [open, close] of mindmapShapes) {
+      for (const inside of [
+        "t %%{init: {\u2029}}%% u",
+        "t %%{init: {\u2029}}%%  ",
+      ]) {
+        const text = `mindmap\n  root\n    a${open}${inside}${close}\n`
+        await expectKept(text, text)
+      }
+    }
+  })
+})

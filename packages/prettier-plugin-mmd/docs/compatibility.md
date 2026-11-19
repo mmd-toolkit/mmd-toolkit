@@ -1599,39 +1599,53 @@ before the directive of such a title (`title`, a space, a U+2028, a space, and
 `%%{x}%%%% c`), with the comment touching the directive or with spaces between
 them, keeps the title as written, and the line after it too, or moves the
 directive and the comment to a line of their own, by what follows the title: the
-table below gives it for each kind of line after the title, with the Langium
-types but a treeView, a treeView, a quadrant chart, and the other types (a Gantt
-chart, a user journey, a timeline, a sequence diagram, a Venn diagram, and a C4
-diagram) as columns. `moved` is `title` and, on the next line, the directive and
-the comment (`title` and the U+2028 and `%%{x}%%%% c` are printed `title` and
-`%%{x}%%%% c`), with one space between the directive and the comment where
-spaces stood there.
+table below gives it for the lines after the title that its first column names,
+with the Langium types but a treeView, a treeView, a quadrant chart, and the
+other types (a Gantt chart, a user journey, a timeline, a sequence diagram, a
+Venn diagram, and a C4 diagram) as columns. `moved` is `title` and, on the next
+line, the directive and the comment (`title` and the U+2028 and `%%{x}%%%% c`
+are printed `title` and `%%{x}%%%% c`), with one space between the directive and
+the comment where spaces stood there. A row without a statement is followed by
+the end of the text, and other sequences of lines are not given. The table is
+for a directive that holds no line break and no `;`. An info diagram rejects a
+statement after an empty line, a line of spaces, or a line of a directive
+(mermaid.js rejects it too), so the rows that put a statement there hold for the
+other Langium types. A treemap with spaces between the directive and the comment
+has no form in the second, the fifth, and the ninth row: the first pass and the
+second pass print the comment differently.
 
-| Follows the title                         | Langium types but a treeView | treeView   | quadrant chart | the other types |
-| ----------------------------------------- | ---------------------------- | ---------- | -------------- | --------------- |
-| a statement                               | as written                   | as written | as written     | as written      |
-| a line of spaces                          | as written                   | as written | moved          | as written      |
-| a line of a directive                     | moved                        | as written | as written     | as written      |
-| nothing, an empty line, or a comment line | moved                        | moved      | moved          | as written      |
+| Follows the title                                              | Langium types but a treeView | treeView   | quadrant chart | the other types |
+| -------------------------------------------------------------- | ---------------------------- | ---------- | -------------- | --------------- |
+| nothing, or an empty line                                      | moved                        | moved      | moved          | as written      |
+| an empty line, then a statement                                | moved                        | as written | as written     | as written      |
+| a comment line                                                 | moved                        | moved      | moved          | as written      |
+| one comment line or two, then a statement                      | as written                   | as written | as written     | as written      |
+| a comment line, an empty line, then a statement                | moved                        | as written | as written     | as written      |
+| a line of spaces                                               | as written                   | as written | moved          | as written      |
+| a line of spaces, then a statement                             | as written                   | as written | as written     | as written      |
+| a line of a directive                                          | moved                        | as written | as written     | as written      |
+| a line of a directive, then a statement                        | moved                        | as written | as written     | as written      |
+| a line of a directive after a space, alone or then a statement | as written                   | as written | as written     | as written      |
+| a statement                                                    | as written                   | as written | as written     | as written      |
 
 With spaces between the directive and the comment, a Gantt chart, a user
 journey, a timeline, a sequence diagram, and a Venn diagram print one space
-between them where nothing, an empty line, or a comment line follows the title,
-and a C4 diagram keeps the spaces; everything else is as in the table. A
-whitespace character that is no space or tab and no U+2028 or U+2029 before the
-directive of such a title is left out by the Langium types and a quadrant chart
-and stays in the other types (`\u00a0%%{x}%%%% c`). With spaces around the
-comment (`\u00a0%%{x}%%  %% c  `), the Langium types, a Venn diagram, and a C4
-diagram keep the title as written, a quadrant chart prints `%%{x}%%%% c`, and a
-Gantt chart, a user journey, a timeline, and a sequence diagram keep the
-character and the spaces before the comment and leave out the spaces after it. A
-tab between the directive and the comment is left out by a quadrant chart, a
-Gantt chart, a user journey, a timeline, and a sequence diagram, and stays in
-the other types, with the same drawing. A no-break space, U+3000, or U+2003
-between them is left out by a quadrant chart and stays in the other types: the
-eleven Langium types draw the same with and without it, and a Gantt chart, a
-user journey, a timeline, a sequence diagram, a Venn diagram, and a C4 diagram
-draw other text without it.
+between them where nothing, an empty line, or a comment line follows the title
+and the text ends (the first and the third row), and a C4 diagram keeps the
+spaces; everything else is as in the table. A whitespace character that is no
+space or tab and no U+2028 or U+2029 before the directive of such a title is
+left out by the Langium types and a quadrant chart and stays in the other types
+(`\u00a0%%{x}%%%% c`). With spaces around the comment (`\u00a0%%{x}%%  %% c  `),
+the Langium types, a Venn diagram, and a C4 diagram keep the title as written, a
+quadrant chart prints `%%{x}%%%% c`, and a Gantt chart, a user journey, a
+timeline, and a sequence diagram keep the character and the spaces before the
+comment and leave out the spaces after it. A tab between the directive and the
+comment is left out by a quadrant chart, a Gantt chart, a user journey, a
+timeline, and a sequence diagram, and stays in the other types, with the same
+drawing. A no-break space, U+3000, or U+2003 between them is left out by a
+quadrant chart and stays in the other types: the eleven Langium types draw the
+same with and without it, and a Gantt chart, a user journey, a timeline, a
+sequence diagram, a Venn diagram, and a C4 diagram draw other text without it.
 
 After the text, two directives and a comment (`T  %%{x}%%  %%{y}%%  %% c`) are
 printed with one space before each by the Langium types, and stay as written in
@@ -1858,491 +1872,57 @@ space or tab at both ends of a title, in the Langium types and a quadrant chart]
 [test: a whitespace character that is no space or tab before a comment after the
 text of a title, in each group]  
 [test: U+2028 before the directive of a title of a directive and a comment only
-in a pie chart] [test: U+2028 before the directive of a title of a directive and
-a comment only, the comment touching the directive, nothing after the title, in
-a pie chart] [test: U+2028 before the directive of a title of a directive and a
-comment only, the comment touching the directive, a statement after the title,
-in a pie chart] [test: U+2028 before the directive of a title of a directive and
-a comment only, the comment touching the directive, a line of spaces after the
-title, in a pie chart] [test: U+2028 before the directive of a title of a
-directive and a comment only, the comment touching the directive, a line of a
-directive after the title, in a pie chart] [test: U+2028 before the directive of
-a title of a directive and a comment only, the comment touching the directive, a
-comment line after the title, in a pie chart] [test: U+2028 before the directive
-of a title of a directive and a comment only, the comment touching the
-directive, an empty line after the title, in a pie chart] [test: U+2028 before
-the directive of a title of a directive and a comment only, spaces around the
-comment, nothing after the title, in a pie chart] [test: U+2028 before the
-directive of a title of a directive and a comment only, spaces around the
-comment, a statement after the title, in a pie chart] [test: U+2028 before the
-directive of a title of a directive and a comment only, spaces around the
-comment, a line of spaces after the title, in a pie chart] [test: U+2028 before
-the directive of a title of a directive and a comment only, spaces around the
-comment, a line of a directive after the title, in a pie chart] [test: U+2029
-before the directive of a title of a directive and a comment only, the comment
-touching the directive, nothing after the title, in a pie chart] [test: U+2029
-before the directive of a title of a directive and a comment only, the comment
-touching the directive, a statement after the title, in a pie chart] [test:
-U+2028 before the directive of a title of a directive and a comment only, the
-comment touching the directive, nothing after the title, in a radar chart]
-[test: U+2028 before the directive of a title of a directive and a comment only,
-the comment touching the directive, a statement after the title, in a radar
+in a pie chart] [test: U+2028 and U+2029 before the directive of a title of a
+directive and a comment only, by what follows the title: nothing, or an empty
+line] [test: U+2028 and U+2029 before the directive of a title of a directive
+and a comment only, by what follows the title: an empty line, then a statement]
+[test: U+2028 and U+2029 before the directive of a title of a directive and a
+comment only, by what follows the title: a comment line] [test: U+2028 and
+U+2029 before the directive of a title of a directive and a comment only, by
+what follows the title: one comment line or two, then a statement] [test: U+2028
+and U+2029 before the directive of a title of a directive and a comment only, by
+what follows the title: a comment line, an empty line, then a statement] [test:
+U+2028 and U+2029 before the directive of a title of a directive and a comment
+only, by what follows the title: a line of spaces] [test: U+2028 and U+2029
+before the directive of a title of a directive and a comment only, by what
+follows the title: a line of spaces, then a statement] [test: U+2028 and U+2029
+before the directive of a title of a directive and a comment only, by what
+follows the title: a line of a directive] [test: U+2028 and U+2029 before the
+directive of a title of a directive and a comment only, by what follows the
+title: a line of a directive, then a statement] [test: U+2028 and U+2029 before
+the directive of a title of a directive and a comment only, by what follows the
+title: a line of a directive after a space, alone or then a statement] [test:
+U+2028 and U+2029 before the directive of a title of a directive and a comment
+only, by what follows the title: a statement] [test: U+2029 before the directive
+of a title of a directive and a comment only in a pie chart] [test: U+2028
+before the directive of a title of a directive and a comment only in a quadrant
 chart] [test: U+2028 before the directive of a title of a directive and a
-comment only, the comment touching the directive, a line of spaces after the
-title, in a radar chart] [test: U+2028 before the directive of a title of a
-directive and a comment only, the comment touching the directive, a line of a
-directive after the title, in a radar chart] [test: U+2028 before the directive
-of a title of a directive and a comment only, the comment touching the
-directive, a comment line after the title, in a radar chart] [test: U+2028
-before the directive of a title of a directive and a comment only, the comment
-touching the directive, an empty line after the title, in a radar chart] [test:
-U+2028 before the directive of a title of a directive and a comment only, spaces
-around the comment, nothing after the title, in a radar chart] [test: U+2028
-before the directive of a title of a directive and a comment only, spaces around
-the comment, a statement after the title, in a radar chart] [test: U+2028 before
-the directive of a title of a directive and a comment only, spaces around the
-comment, a line of spaces after the title, in a radar chart] [test: U+2028
-before the directive of a title of a directive and a comment only, spaces around
-the comment, a line of a directive after the title, in a radar chart] [test:
-U+2029 before the directive of a title of a directive and a comment only, the
-comment touching the directive, nothing after the title, in a radar chart]
-[test: U+2029 before the directive of a title of a directive and a comment only,
-the comment touching the directive, a statement after the title, in a radar
-chart] [test: U+2028 before the directive of a title of a directive and a
-comment only, the comment touching the directive, nothing after the title, in a
-packet diagram] [test: U+2028 before the directive of a title of a directive and
-a comment only, the comment touching the directive, a statement after the title,
-in a packet diagram] [test: U+2028 before the directive of a title of a
-directive and a comment only, the comment touching the directive, a line of
-spaces after the title, in a packet diagram] [test: U+2028 before the directive
-of a title of a directive and a comment only, the comment touching the
-directive, a line of a directive after the title, in a packet diagram] [test:
-U+2028 before the directive of a title of a directive and a comment only, the
-comment touching the directive, a comment line after the title, in a packet
-diagram] [test: U+2028 before the directive of a title of a directive and a
-comment only, the comment touching the directive, an empty line after the title,
-in a packet diagram] [test: U+2028 before the directive of a title of a
-directive and a comment only, spaces around the comment, nothing after the
-title, in a packet diagram] [test: U+2028 before the directive of a title of a
-directive and a comment only, spaces around the comment, a statement after the
-title, in a packet diagram] [test: U+2028 before the directive of a title of a
-directive and a comment only, spaces around the comment, a line of spaces after
-the title, in a packet diagram] [test: U+2028 before the directive of a title of
-a directive and a comment only, spaces around the comment, a line of a directive
-after the title, in a packet diagram] [test: U+2029 before the directive of a
-title of a directive and a comment only, the comment touching the directive,
-nothing after the title, in a packet diagram] [test: U+2029 before the directive
-of a title of a directive and a comment only, the comment touching the
-directive, a statement after the title, in a packet diagram] [test: U+2028
-before the directive of a title of a directive and a comment only, the comment
-touching the directive, nothing after the title, in an architecture diagram]
-[test: U+2028 before the directive of a title of a directive and a comment only,
-the comment touching the directive, a statement after the title, in an
-architecture diagram] [test: U+2028 before the directive of a title of a
-directive and a comment only, the comment touching the directive, a line of
-spaces after the title, in an architecture diagram] [test: U+2028 before the
-directive of a title of a directive and a comment only, the comment touching the
-directive, a line of a directive after the title, in an architecture diagram]
-[test: U+2028 before the directive of a title of a directive and a comment only,
-the comment touching the directive, a comment line after the title, in an
-architecture diagram] [test: U+2028 before the directive of a title of a
-directive and a comment only, the comment touching the directive, an empty line
-after the title, in an architecture diagram] [test: U+2028 before the directive
-of a title of a directive and a comment only, spaces around the comment, nothing
-after the title, in an architecture diagram] [test: U+2028 before the directive
-of a title of a directive and a comment only, spaces around the comment, a
-statement after the title, in an architecture diagram] [test: U+2028 before the
-directive of a title of a directive and a comment only, spaces around the
-comment, a line of spaces after the title, in an architecture diagram] [test:
-U+2028 before the directive of a title of a directive and a comment only, spaces
-around the comment, a line of a directive after the title, in an architecture
-diagram] [test: U+2029 before the directive of a title of a directive and a
-comment only, the comment touching the directive, nothing after the title, in an
-architecture diagram] [test: U+2029 before the directive of a title of a
-directive and a comment only, the comment touching the directive, a statement
-after the title, in an architecture diagram] [test: U+2028 before the directive
-of a title of a directive and a comment only, the comment touching the
-directive, nothing after the title, in a gitGraph] [test: U+2028 before the
-directive of a title of a directive and a comment only, the comment touching the
-directive, a statement after the title, in a gitGraph] [test: U+2028 before the
-directive of a title of a directive and a comment only, the comment touching the
-directive, a line of spaces after the title, in a gitGraph] [test: U+2028 before
-the directive of a title of a directive and a comment only, the comment touching
-the directive, a line of a directive after the title, in a gitGraph] [test:
-U+2028 before the directive of a title of a directive and a comment only, the
-comment touching the directive, a comment line after the title, in a gitGraph]
-[test: U+2028 before the directive of a title of a directive and a comment only,
-the comment touching the directive, an empty line after the title, in a
-gitGraph] [test: U+2028 before the directive of a title of a directive and a
-comment only, spaces around the comment, nothing after the title, in a gitGraph]
-[test: U+2028 before the directive of a title of a directive and a comment only,
-spaces around the comment, a statement after the title, in a gitGraph] [test:
-U+2028 before the directive of a title of a directive and a comment only, spaces
-around the comment, a line of spaces after the title, in a gitGraph] [test:
-U+2028 before the directive of a title of a directive and a comment only, spaces
-around the comment, a line of a directive after the title, in a gitGraph] [test:
-U+2029 before the directive of a title of a directive and a comment only, the
-comment touching the directive, nothing after the title, in a gitGraph] [test:
-U+2029 before the directive of a title of a directive and a comment only, the
-comment touching the directive, a statement after the title, in a gitGraph]
-[test: U+2028 before the directive of a title of a directive and a comment only,
-the comment touching the directive, nothing after the title, in a cynefin
-diagram] [test: U+2028 before the directive of a title of a directive and a
-comment only, the comment touching the directive, a statement after the title,
-in a cynefin diagram] [test: U+2028 before the directive of a title of a
-directive and a comment only, the comment touching the directive, a line of
-spaces after the title, in a cynefin diagram] [test: U+2028 before the directive
-of a title of a directive and a comment only, the comment touching the
-directive, a line of a directive after the title, in a cynefin diagram] [test:
-U+2028 before the directive of a title of a directive and a comment only, the
-comment touching the directive, a comment line after the title, in a cynefin
-diagram] [test: U+2028 before the directive of a title of a directive and a
-comment only, the comment touching the directive, an empty line after the title,
-in a cynefin diagram] [test: U+2028 before the directive of a title of a
-directive and a comment only, spaces around the comment, nothing after the
-title, in a cynefin diagram] [test: U+2028 before the directive of a title of a
-directive and a comment only, spaces around the comment, a statement after the
-title, in a cynefin diagram] [test: U+2028 before the directive of a title of a
-directive and a comment only, spaces around the comment, a line of spaces after
-the title, in a cynefin diagram] [test: U+2028 before the directive of a title
-of a directive and a comment only, spaces around the comment, a line of a
-directive after the title, in a cynefin diagram] [test: U+2029 before the
-directive of a title of a directive and a comment only, the comment touching the
-directive, nothing after the title, in a cynefin diagram] [test: U+2029 before
-the directive of a title of a directive and a comment only, the comment touching
-the directive, a statement after the title, in a cynefin diagram] [test: U+2028
-before the directive of a title of a directive and a comment only, the comment
-touching the directive, nothing after the title, in a treemap] [test: U+2028
-before the directive of a title of a directive and a comment only, the comment
-touching the directive, a statement after the title, in a treemap] [test: U+2028
-before the directive of a title of a directive and a comment only, the comment
-touching the directive, a line of spaces after the title, in a treemap] [test:
-U+2028 before the directive of a title of a directive and a comment only, the
-comment touching the directive, a line of a directive after the title, in a
-treemap] [test: U+2028 before the directive of a title of a directive and a
-comment only, the comment touching the directive, a comment line after the
-title, in a treemap] [test: U+2028 before the directive of a title of a
-directive and a comment only, the comment touching the directive, an empty line
-after the title, in a treemap] [test: U+2028 before the directive of a title of
-a directive and a comment only, spaces around the comment, nothing after the
-title, in a treemap] [test: U+2028 before the directive of a title of a
-directive and a comment only, spaces around the comment, a statement after the
-title, in a treemap] [test: U+2028 before the directive of a title of a
-directive and a comment only, spaces around the comment, a line of spaces after
-the title, in a treemap] [test: U+2028 before the directive of a title of a
-directive and a comment only, spaces around the comment, a line of a directive
-after the title, in a treemap] [test: U+2029 before the directive of a title of
-a directive and a comment only, the comment touching the directive, nothing
-after the title, in a treemap] [test: U+2029 before the directive of a title of
-a directive and a comment only, the comment touching the directive, a statement
-after the title, in a treemap] [test: U+2028 before the directive of a title of
-a directive and a comment only, the comment touching the directive, nothing
-after the title, in a Wardley map] [test: U+2028 before the directive of a title
-of a directive and a comment only, the comment touching the directive, a
-statement after the title, in a Wardley map] [test: U+2028 before the directive
-of a title of a directive and a comment only, the comment touching the
-directive, a line of spaces after the title, in a Wardley map] [test: U+2028
-before the directive of a title of a directive and a comment only, the comment
-touching the directive, a line of a directive after the title, in a Wardley map]
-[test: U+2028 before the directive of a title of a directive and a comment only,
-the comment touching the directive, a comment line after the title, in a Wardley
-map] [test: U+2028 before the directive of a title of a directive and a comment
-only, the comment touching the directive, an empty line after the title, in a
-Wardley map] [test: U+2028 before the directive of a title of a directive and a
-comment only, spaces around the comment, nothing after the title, in a Wardley
-map] [test: U+2028 before the directive of a title of a directive and a comment
-only, spaces around the comment, a statement after the title, in a Wardley map]
-[test: U+2028 before the directive of a title of a directive and a comment only,
-spaces around the comment, a line of spaces after the title, in a Wardley map]
-[test: U+2028 before the directive of a title of a directive and a comment only,
-spaces around the comment, a line of a directive after the title, in a Wardley
-map] [test: U+2029 before the directive of a title of a directive and a comment
-only, the comment touching the directive, nothing after the title, in a Wardley
-map] [test: U+2029 before the directive of a title of a directive and a comment
-only, the comment touching the directive, a statement after the title, in a
-Wardley map] [test: U+2028 before the directive of a title of a directive and a
-comment only, the comment touching the directive, nothing after the title, in a
-treeView] [test: U+2028 before the directive of a title of a directive and a
-comment only, the comment touching the directive, a statement after the title,
-in a treeView] [test: U+2028 before the directive of a title of a directive and
-a comment only, the comment touching the directive, a line of spaces after the
-title, in a treeView] [test: U+2028 before the directive of a title of a
-directive and a comment only, the comment touching the directive, a line of a
-directive after the title, in a treeView] [test: U+2028 before the directive of
-a title of a directive and a comment only, the comment touching the directive, a
-comment line after the title, in a treeView] [test: U+2028 before the directive
-of a title of a directive and a comment only, the comment touching the
-directive, an empty line after the title, in a treeView] [test: U+2028 before
-the directive of a title of a directive and a comment only, spaces around the
-comment, nothing after the title, in a treeView] [test: U+2028 before the
-directive of a title of a directive and a comment only, spaces around the
-comment, a statement after the title, in a treeView] [test: U+2028 before the
-directive of a title of a directive and a comment only, spaces around the
-comment, a line of spaces after the title, in a treeView] [test: U+2028 before
-the directive of a title of a directive and a comment only, spaces around the
-comment, a line of a directive after the title, in a treeView] [test: U+2029
-before the directive of a title of a directive and a comment only, the comment
-touching the directive, nothing after the title, in a treeView] [test: U+2029
-before the directive of a title of a directive and a comment only, the comment
-touching the directive, a statement after the title, in a treeView] [test:
-U+2028 before the directive of a title of a directive and a comment only, the
-comment touching the directive, nothing after the title, in an info diagram]
-[test: U+2028 before the directive of a title of a directive and a comment only,
-the comment touching the directive, a statement after the title, in an info
-diagram] [test: U+2028 before the directive of a title of a directive and a
-comment only, the comment touching the directive, a line of spaces after the
-title, in an info diagram] [test: U+2028 before the directive of a title of a
-directive and a comment only, the comment touching the directive, a line of a
-directive after the title, in an info diagram] [test: U+2028 before the
-directive of a title of a directive and a comment only, the comment touching the
-directive, a comment line after the title, in an info diagram] [test: U+2028
-before the directive of a title of a directive and a comment only, the comment
-touching the directive, an empty line after the title, in an info diagram]
-[test: U+2028 before the directive of a title of a directive and a comment only,
-spaces around the comment, nothing after the title, in an info diagram] [test:
-U+2028 before the directive of a title of a directive and a comment only, spaces
-around the comment, a statement after the title, in an info diagram] [test:
-U+2028 before the directive of a title of a directive and a comment only, spaces
-around the comment, a line of spaces after the title, in an info diagram] [test:
-U+2028 before the directive of a title of a directive and a comment only, spaces
-around the comment, a line of a directive after the title, in an info diagram]
-[test: U+2029 before the directive of a title of a directive and a comment only,
-the comment touching the directive, nothing after the title, in an info diagram]
-[test: U+2029 before the directive of a title of a directive and a comment only,
-the comment touching the directive, a statement after the title, in an info
-diagram] [test: U+2028 before the directive of a title of a directive and a
-comment only, the comment touching the directive, nothing after the title, in a
-railroad diagram] [test: U+2028 before the directive of a title of a directive
-and a comment only, the comment touching the directive, a statement after the
-title, in a railroad diagram] [test: U+2028 before the directive of a title of a
-directive and a comment only, the comment touching the directive, a line of
-spaces after the title, in a railroad diagram] [test: U+2028 before the
-directive of a title of a directive and a comment only, the comment touching the
-directive, a line of a directive after the title, in a railroad diagram] [test:
-U+2028 before the directive of a title of a directive and a comment only, the
-comment touching the directive, a comment line after the title, in a railroad
-diagram] [test: U+2028 before the directive of a title of a directive and a
-comment only, the comment touching the directive, an empty line after the title,
-in a railroad diagram] [test: U+2028 before the directive of a title of a
-directive and a comment only, spaces around the comment, nothing after the
-title, in a railroad diagram] [test: U+2028 before the directive of a title of a
-directive and a comment only, spaces around the comment, a statement after the
-title, in a railroad diagram] [test: U+2028 before the directive of a title of a
-directive and a comment only, spaces around the comment, a line of spaces after
-the title, in a railroad diagram] [test: U+2028 before the directive of a title
-of a directive and a comment only, spaces around the comment, a line of a
-directive after the title, in a railroad diagram] [test: U+2029 before the
-directive of a title of a directive and a comment only, the comment touching the
-directive, nothing after the title, in a railroad diagram] [test: U+2029 before
-the directive of a title of a directive and a comment only, the comment touching
-the directive, a statement after the title, in a railroad diagram] [test: U+2028
-before the directive of a title of a directive and a comment only, the comment
-touching the directive, nothing after the title, in a quadrant chart] [test:
-U+2028 before the directive of a title of a directive and a comment only, the
-comment touching the directive, a statement after the title, in a quadrant
-chart] [test: U+2028 before the directive of a title of a directive and a
-comment only, the comment touching the directive, a line of spaces after the
-title, in a quadrant chart] [test: U+2028 before the directive of a title of a
-directive and a comment only, the comment touching the directive, a line of a
-directive after the title, in a quadrant chart] [test: U+2028 before the
-directive of a title of a directive and a comment only, the comment touching the
-directive, a comment line after the title, in a quadrant chart] [test: U+2028
-before the directive of a title of a directive and a comment only, the comment
-touching the directive, an empty line after the title, in a quadrant chart]
-[test: U+2028 before the directive of a title of a directive and a comment only,
-spaces around the comment, nothing after the title, in a quadrant chart] [test:
-U+2028 before the directive of a title of a directive and a comment only, spaces
-around the comment, a statement after the title, in a quadrant chart] [test:
-U+2028 before the directive of a title of a directive and a comment only, spaces
-around the comment, a line of spaces after the title, in a quadrant chart]
-[test: U+2028 before the directive of a title of a directive and a comment only,
-spaces around the comment, a line of a directive after the title, in a quadrant
-chart] [test: U+2029 before the directive of a title of a directive and a
-comment only, the comment touching the directive, nothing after the title, in a
-quadrant chart] [test: U+2029 before the directive of a title of a directive and
-a comment only, the comment touching the directive, a statement after the title,
-in a quadrant chart] [test: U+2028 before the directive of a title of a
-directive and a comment only, the comment touching the directive, nothing after
-the title, in a Gantt chart] [test: U+2028 before the directive of a title of a
-directive and a comment only, the comment touching the directive, a statement
-after the title, in a Gantt chart] [test: U+2028 before the directive of a title
-of a directive and a comment only, the comment touching the directive, a line of
-spaces after the title, in a Gantt chart] [test: U+2028 before the directive of
-a title of a directive and a comment only, the comment touching the directive, a
-line of a directive after the title, in a Gantt chart] [test: U+2028 before the
-directive of a title of a directive and a comment only, the comment touching the
-directive, a comment line after the title, in a Gantt chart] [test: U+2028
-before the directive of a title of a directive and a comment only, the comment
-touching the directive, an empty line after the title, in a Gantt chart] [test:
-U+2028 before the directive of a title of a directive and a comment only, spaces
-around the comment, nothing after the title, in a Gantt chart] [test: U+2028
-before the directive of a title of a directive and a comment only, spaces around
-the comment, a statement after the title, in a Gantt chart] [test: U+2028 before
-the directive of a title of a directive and a comment only, spaces around the
-comment, a line of spaces after the title, in a Gantt chart] [test: U+2028
-before the directive of a title of a directive and a comment only, spaces around
-the comment, a line of a directive after the title, in a Gantt chart] [test:
-U+2029 before the directive of a title of a directive and a comment only, the
-comment touching the directive, nothing after the title, in a Gantt chart]
-[test: U+2029 before the directive of a title of a directive and a comment only,
-the comment touching the directive, a statement after the title, in a Gantt
-chart] [test: U+2028 before the directive of a title of a directive and a
-comment only, the comment touching the directive, nothing after the title, in a
-user journey] [test: U+2028 before the directive of a title of a directive and a
-comment only, the comment touching the directive, a statement after the title,
-in a user journey] [test: U+2028 before the directive of a title of a directive
-and a comment only, the comment touching the directive, a line of spaces after
-the title, in a user journey] [test: U+2028 before the directive of a title of a
-directive and a comment only, the comment touching the directive, a line of a
-directive after the title, in a user journey] [test: U+2028 before the directive
-of a title of a directive and a comment only, the comment touching the
-directive, a comment line after the title, in a user journey] [test: U+2028
-before the directive of a title of a directive and a comment only, the comment
-touching the directive, an empty line after the title, in a user journey] [test:
-U+2028 before the directive of a title of a directive and a comment only, spaces
-around the comment, nothing after the title, in a user journey] [test: U+2028
-before the directive of a title of a directive and a comment only, spaces around
-the comment, a statement after the title, in a user journey] [test: U+2028
-before the directive of a title of a directive and a comment only, spaces around
-the comment, a line of spaces after the title, in a user journey] [test: U+2028
-before the directive of a title of a directive and a comment only, spaces around
-the comment, a line of a directive after the title, in a user journey] [test:
-U+2029 before the directive of a title of a directive and a comment only, the
-comment touching the directive, nothing after the title, in a user journey]
-[test: U+2029 before the directive of a title of a directive and a comment only,
-the comment touching the directive, a statement after the title, in a user
-journey] [test: U+2028 before the directive of a title of a directive and a
-comment only, the comment touching the directive, nothing after the title, in a
-timeline] [test: U+2028 before the directive of a title of a directive and a
-comment only, the comment touching the directive, a statement after the title,
-in a timeline] [test: U+2028 before the directive of a title of a directive and
-a comment only, the comment touching the directive, a line of spaces after the
-title, in a timeline] [test: U+2028 before the directive of a title of a
-directive and a comment only, the comment touching the directive, a line of a
-directive after the title, in a timeline] [test: U+2028 before the directive of
-a title of a directive and a comment only, the comment touching the directive, a
-comment line after the title, in a timeline] [test: U+2028 before the directive
-of a title of a directive and a comment only, the comment touching the
-directive, an empty line after the title, in a timeline] [test: U+2028 before
-the directive of a title of a directive and a comment only, spaces around the
-comment, nothing after the title, in a timeline] [test: U+2028 before the
-directive of a title of a directive and a comment only, spaces around the
-comment, a statement after the title, in a timeline] [test: U+2028 before the
-directive of a title of a directive and a comment only, spaces around the
-comment, a line of spaces after the title, in a timeline] [test: U+2028 before
-the directive of a title of a directive and a comment only, spaces around the
-comment, a line of a directive after the title, in a timeline] [test: U+2029
-before the directive of a title of a directive and a comment only, the comment
-touching the directive, nothing after the title, in a timeline] [test: U+2029
-before the directive of a title of a directive and a comment only, the comment
-touching the directive, a statement after the title, in a timeline] [test:
-U+2028 before the directive of a title of a directive and a comment only, the
-comment touching the directive, nothing after the title, in a sequence diagram]
-[test: U+2028 before the directive of a title of a directive and a comment only,
-the comment touching the directive, a statement after the title, in a sequence
-diagram] [test: U+2028 before the directive of a title of a directive and a
-comment only, the comment touching the directive, a line of spaces after the
-title, in a sequence diagram] [test: U+2028 before the directive of a title of a
-directive and a comment only, the comment touching the directive, a line of a
-directive after the title, in a sequence diagram] [test: U+2028 before the
-directive of a title of a directive and a comment only, the comment touching the
-directive, a comment line after the title, in a sequence diagram] [test: U+2028
-before the directive of a title of a directive and a comment only, the comment
-touching the directive, an empty line after the title, in a sequence diagram]
-[test: U+2028 before the directive of a title of a directive and a comment only,
-spaces around the comment, nothing after the title, in a sequence diagram]
-[test: U+2028 before the directive of a title of a directive and a comment only,
-spaces around the comment, a statement after the title, in a sequence diagram]
-[test: U+2028 before the directive of a title of a directive and a comment only,
-spaces around the comment, a line of spaces after the title, in a sequence
-diagram] [test: U+2028 before the directive of a title of a directive and a
-comment only, spaces around the comment, a line of a directive after the title,
-in a sequence diagram] [test: U+2029 before the directive of a title of a
-directive and a comment only, the comment touching the directive, nothing after
-the title, in a sequence diagram] [test: U+2029 before the directive of a title
-of a directive and a comment only, the comment touching the directive, a
-statement after the title, in a sequence diagram] [test: U+2028 before the
-directive of a title of a directive and a comment only, the comment touching the
-directive, nothing after the title, in a Venn diagram] [test: U+2028 before the
-directive of a title of a directive and a comment only, the comment touching the
-directive, a statement after the title, in a Venn diagram] [test: U+2028 before
-the directive of a title of a directive and a comment only, the comment touching
-the directive, a line of spaces after the title, in a Venn diagram] [test:
-U+2028 before the directive of a title of a directive and a comment only, the
-comment touching the directive, a line of a directive after the title, in a Venn
-diagram] [test: U+2028 before the directive of a title of a directive and a
-comment only, the comment touching the directive, a comment line after the
-title, in a Venn diagram] [test: U+2028 before the directive of a title of a
-directive and a comment only, the comment touching the directive, an empty line
-after the title, in a Venn diagram] [test: U+2028 before the directive of a
-title of a directive and a comment only, spaces around the comment, nothing
-after the title, in a Venn diagram] [test: U+2028 before the directive of a
-title of a directive and a comment only, spaces around the comment, a statement
-after the title, in a Venn diagram] [test: U+2028 before the directive of a
-title of a directive and a comment only, spaces around the comment, a line of
-spaces after the title, in a Venn diagram] [test: U+2028 before the directive of
-a title of a directive and a comment only, spaces around the comment, a line of
-a directive after the title, in a Venn diagram] [test: U+2029 before the
-directive of a title of a directive and a comment only, the comment touching the
-directive, nothing after the title, in a Venn diagram] [test: U+2029 before the
-directive of a title of a directive and a comment only, the comment touching the
-directive, a statement after the title, in a Venn diagram] [test: U+2028 before
-the directive of a title of a directive and a comment only, the comment touching
-the directive, nothing after the title, in a C4 diagram] [test: U+2028 before
-the directive of a title of a directive and a comment only, the comment touching
-the directive, a statement after the title, in a C4 diagram] [test: U+2028
-before the directive of a title of a directive and a comment only, the comment
-touching the directive, a line of spaces after the title, in a C4 diagram]
-[test: U+2028 before the directive of a title of a directive and a comment only,
-the comment touching the directive, a line of a directive after the title, in a
-C4 diagram] [test: U+2028 before the directive of a title of a directive and a
-comment only, the comment touching the directive, a comment line after the
-title, in a C4 diagram] [test: U+2028 before the directive of a title of a
-directive and a comment only, the comment touching the directive, an empty line
-after the title, in a C4 diagram] [test: U+2028 before the directive of a title
-of a directive and a comment only, spaces around the comment, nothing after the
-title, in a C4 diagram] [test: U+2028 before the directive of a title of a
-directive and a comment only, spaces around the comment, a statement after the
-title, in a C4 diagram] [test: U+2028 before the directive of a title of a
-directive and a comment only, spaces around the comment, a line of spaces after
-the title, in a C4 diagram] [test: U+2028 before the directive of a title of a
-directive and a comment only, spaces around the comment, a line of a directive
-after the title, in a C4 diagram] [test: U+2029 before the directive of a title
-of a directive and a comment only, the comment touching the directive, nothing
-after the title, in a C4 diagram] [test: U+2029 before the directive of a title
-of a directive and a comment only, the comment touching the directive, a
-statement after the title, in a C4 diagram]
-
-[test: U+2029 before the directive of a title of a directive and a comment only
-in a pie chart] [test: U+2028 before the directive of a title of a directive and
-a comment only in a quadrant chart] [test: U+2028 before the directive of a
-title of a directive and a comment only in a Gantt chart] [test: U+2028 before
-the directive of a title of a directive and a comment only in a Venn diagram]
-[test: U+2028 before the directive of a title of a directive and a comment only
-in a C4 diagram] [test: a whitespace character that is no space or tab before
-the directive of a title of a directive and a comment only, in each group]
-[test: a whitespace character that is no space or tab before the directive of a
-title of a directive and a comment only, with spaces around the comment, in each
-group] [test: an accessibility line of directives only stays as written in each
-type of the Langium grammar] [fixture:
-pie/accessibility-lines/acc-title-percent-gap-kept] [fixture:
-gitgraph/title-and-common-values/acc-title-percent-gap-kept] [test: U+2003
-before a directive that is not closed in a title, at the end of the text] [test:
-U+2003 before a directive that is not closed in a title, before a statement]
-[test: U+3000 before a directive that is not closed in a title, at the end of
-the text] [test: U+3000 before a directive that is not closed in a title, before
-a statement] [test: a directive that is not closed after a space in a title]
-[test: a directive that is not closed touching the text of a title] [test: a
-no-break space before a directive that is not closed in a title, at the end of
-the text] [test: a no-break space before a directive that is not closed in a
-title, before a statement] [test: a tab before a directive that is not closed in
-a title, at the end of the text] [test: a tab before a directive that is not
-closed in a title, before a statement] [test: two spaces before a directive that
-is not closed and text after it in a title, at the end of the text] [test: two
-spaces before a directive that is not closed and text after it in a title,
-before a statement] [test: two spaces before a directive that is not closed in a
-title, at the end of the text] [test: two spaces before a directive that is not
-closed in a title, before a statement]
+comment only in a Gantt chart] [test: U+2028 before the directive of a title of
+a directive and a comment only in a Venn diagram] [test: U+2028 before the
+directive of a title of a directive and a comment only in a C4 diagram] [test: a
+whitespace character that is no space or tab before the directive of a title of
+a directive and a comment only, in each group] [test: a whitespace character
+that is no space or tab before the directive of a title of a directive and a
+comment only, with spaces around the comment, in each group] [test: an
+accessibility line of directives only stays as written in each type of the
+Langium grammar] [fixture: pie/accessibility-lines/acc-title-percent-gap-kept]
+[fixture: gitgraph/title-and-common-values/acc-title-percent-gap-kept] [test:
+U+2003 before a directive that is not closed in a title, at the end of the text]
+[test: U+2003 before a directive that is not closed in a title, before a
+statement] [test: U+3000 before a directive that is not closed in a title, at
+the end of the text] [test: U+3000 before a directive that is not closed in a
+title, before a statement] [test: a directive that is not closed after a space
+in a title] [test: a directive that is not closed touching the text of a title]
+[test: a no-break space before a directive that is not closed in a title, at the
+end of the text] [test: a no-break space before a directive that is not closed
+in a title, before a statement] [test: a tab before a directive that is not
+closed in a title, at the end of the text] [test: a tab before a directive that
+is not closed in a title, before a statement] [test: two spaces before a
+directive that is not closed and text after it in a title, at the end of the
+text] [test: two spaces before a directive that is not closed and text after it
+in a title, before a statement] [test: two spaces before a directive that is not
+closed in a title, at the end of the text] [test: two spaces before a directive
+that is not closed in a title, before a statement]
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped] [test: a
 no-break space and U+3000 at both ends of the title of a gantt diagram] [test: a
@@ -2576,22 +2156,22 @@ before the exception stays.
 
 ### Directives that hold a line break or a semicolon
 
-A directive that holds a line break, a `;`, a U+2028, or a U+2029 or U+2029
-changes what is printed of the spaces around the directives of a line. The
-spaces and tabs after the last directive are left out, and the line is printed
-alike whether or not they follow it (see above), unless a directive of the line
-is one of these. The table gives what each text prints then. `T` stands for the
-text, `\n` for a line break in the directive, and `\u2028` for a U+2028 in it (a
-U+2029 in its place prints the same). The columns are the written forms: the
-first three have two spaces before the directive and nothing after it, the next
-four have two spaces before it and after it, the next three put the directive
-before the text, the next four have a comment after the directive, with two
-spaces between them and touching, and the last two put the directive before the
-text with no space between them. `as without it` is what the same form prints
-with a directive that holds none of them (`%%{x}%%`), as the sections above
-give; `spaces after it left out` is the written line without the spaces and tabs
-at its end; `rejected` is a text that mermaid.js rejects; a dash marks a form
-that this table does not give. A text that is the directive alone has the forms
+A directive that holds a line break, a `;`, a U+2028, or a U+2029 changes what
+is printed of the spaces around the directives of a line. The spaces and tabs
+after the last directive are left out, and the line is printed alike whether or
+not they follow it (see above), unless a directive of the line is one of these.
+The table gives what each text prints then. `T` stands for the text, `\n` for a
+line break in the directive, and `\u2028` for a U+2028 in it (a U+2029 in its
+place prints the same). The columns are the written forms: the first three have
+two spaces before the directive and nothing after it, the next four have two
+spaces before it and after it, the next three put the directive before the text,
+the next four have a comment after the directive, with two spaces between them
+and touching, and the last two put the directive before the text with no space
+between them. `as without it` is what the same form prints with a directive that
+holds none of them (`%%{x}%%`), as the sections above give;
+`spaces after it left out` is the written line without the spaces and tabs at
+its end; `rejected` is a text that mermaid.js rejects; a dash marks a form that
+this table does not give. A text that is the directive alone has the forms
 without `T` and the spaces before the directive.
 
 | Texts                                                                                                                                                                                         | `T  %%{init: {\n}}%%` | `T  %%{init: {a;b}}%%` | `T  %%{init: {\u2028}}%%` | `T  %%{init: {\n}}%%  ` | `T  %%{init: {a;b}}%%  ` | `T  %%{init: {a;\nb}}%%  ` | `T  %%{init: {\u2028}}%%  ` | `%%{init: {\n}}%%  T  `  | `%%{init: {a;b}}%%  T  ` | `%%{init: {a;\nb}}%%  T  ` | `T  %%{init: {\n}}%%  %% c  ` | `T  %%{init: {a;b}}%%  %% c  ` | `T  %%{init: {\n}}%%%% c` | `T  %%{init: {a;b}}%%%% c` | `%%{init: {a;b}}%%T  ` | `%%{init: {a;\nb}}%%T  ` |
@@ -2603,7 +2183,7 @@ without `T` and the spaces before the directive.
 | the `accTitle:` and `accDescr:` of a quadrant chart, a Gantt chart, a user journey, a timeline, a sequence diagram, and a C4 diagram; the last event of a line of a timeline                  | as without it         | as without it          | as written                | as without it           | as without it            | as without it              | spaces after it left out    | as without it            | as without it            | as without it              | as without it                 | as without it                  | as without it             | as without it              | as without it          | as without it            |
 | the `title` of a Gantt chart, a user journey, a timeline, and a sequence diagram; the date format and the axis format of a Gantt chart                                                        | as without it         | as without it          | as written                | as written              | as without it            | as written                 | spaces after it left out    | as written               | as without it            | as written                 | as written                    | as without it                  | as without it             | as without it              | as without it          | as written               |
 | the `title` of a Venn diagram                                                                                                                                                                 | as without it         | as without it          | as written                | as without it           | as without it            | as without it              | as written                  | as without it            | as without it            | as without it              | as without it                 | as without it                  | as without it             | as without it              | as without it          | as without it            |
-| the `title` of a C4 diagram                                                                                                                                                                   | as without it         | as without it          | as written                | as written              | as without it            | as written                 | as written                  | as without it            | as without it            | as without it              | as without it                 | as without it                  | as without it             | as without it              | as without it          | as without it            |
+| the `title` and the `accDescription` of a C4 diagram                                                                                                                                          | as without it         | as without it          | as written                | as written              | as without it            | as written                 | as written                  | as without it            | as without it            | as without it              | as without it                 | as without it                  | as without it             | as without it              | as without it          | as without it            |
 | the text of a node of a mindmap after a shape, with the directive alone                                                                                                                       | as without it         | as without it          | rejected                  | as without it           | as without it            | as without it              | rejected                    | as without it            | as without it            | as without it              | as without it                 | `%%{init: {a;b}}%% %% c`       | as without it             | as without it              | as without it          | as without it            |
 | the `accTitle:` and `accDescr:` of a use case diagram                                                                                                                                         | as without it         | as without it          | as written                | –                       | –                        | –                          | –                           | as without it            | as without it            | as without it              | as without it                 | as without it                  | as without it             | as without it              | as without it          | as without it            |
 | the text of a node of an ishikawa diagram and of a treeView                                                                                                                                   | as without it         | as without it          | as written                | –                       | –                        | –                          | –                           | as without it            | as without it            | as without it              | as without it                 | as without it                  | as without it             | as without it              | as without it          | as without it            |
@@ -2613,14 +2193,14 @@ without `T` and the spaces before the directive.
 | a card of a kanban board and a bare node of a mindmap, with the directive alone                                                                                                               | as without it         | as without it          | rejected                  | as written              | as written               | as written                 | rejected                    | as written               | as written               | as written                 | as without it                 | as without it                  | as without it             | as without it              | as without it          | as without it            |
 | the description of a task of a user journey, the text before the first colon                                                                                                                  | as without it         | as without it          | as without it             | as without it           | as without it            | as without it              | as without it               | as without it            | as without it            | as without it              | –                             | –                              | –                         | –                          | as without it          | as without it            |
 
-The directive that holds a line break, a `;`, a U+2028, or a U+2029 or U+2029
-may be any directive of the line, and a tab may stand in place of the spaces
-after it: `T  %%{y}%%  D  `, `T  D  %%{y}%%  `, and `T  D`, a tab, print as the
-fourth and the fifth columns give, and `T  %%{y}%%  D` as the first and the
-second, for every text of the table but the `accTitle:` and `accDescr:` lines of
-a use case diagram, the text of a node of an ishikawa diagram, of a treeView,
-and of a mindmap after a shape, the text of a card of a kanban board, the
-description of a task of a user journey, and the directive alone.
+The directive that holds a line break, a `;`, a U+2028, or a U+2029 may be any
+directive of the line, and a tab may stand in place of the spaces after it:
+`T  %%{y}%%  D  `, `T  D  %%{y}%%  `, and `T  D`, a tab, print as the fourth and
+the fifth columns give, and `T  %%{y}%%  D` as the first and the second, for
+every text of the table but the `accTitle:` and `accDescr:` lines of a use case
+diagram, the text of a node of an ishikawa diagram, of a treeView, and of a
+mindmap after a shape, the text of a card of a kanban board, the description of
+a task of a user journey, and the directive alone.
 
 [test: the title of a pie chart with a directive that holds a line break or a
 semicolon] [test: the accTitle: of a pie chart with a directive that holds a
@@ -2689,20 +2269,21 @@ the date format of a Gantt chart with a directive that holds a line break or a
 semicolon] [test: the axis format of a Gantt chart with a directive that holds a
 line break or a semicolon] [test: the title of a Venn diagram with a directive
 that holds a line break or a semicolon] [test: the title of a C4 diagram with a
-directive that holds a line break or a semicolon] [test: a node of a mindmap
-after a shape, the directive alone with a directive that holds a line break or a
-semicolon] [test: the accTitle: of a use case diagram with a directive that
-holds a line break or a semicolon] [test: the accDescr: of a use case diagram
-with a directive that holds a line break or a semicolon] [test: the text of an
-ishikawa literal with a directive that holds a line break or a semicolon] [test:
-the text of a treeView node with a directive that holds a line break or a
-semicolon] [test: the text of a mindmap node with a directive that holds a line
-break or a semicolon] [test: the text of a kanban card with a directive that
-holds a line break or a semicolon] [test: the second description of a state
-alias with a directive that holds a line break or a semicolon] [test: a card of
-a kanban board, the directive alone with a directive that holds a line break or
-a semicolon] [test: a bare node of a mindmap, the directive alone with a
-directive that holds a line break or a semicolon] [test: the title of a pie
+directive that holds a line break or a semicolon] [test: the accDescription of a
+C4 diagram with a directive that holds a line break or a semicolon] [test: a
+node of a mindmap after a shape, the directive alone with a directive that holds
+a line break or a semicolon] [test: the accTitle: of a use case diagram with a
+directive that holds a line break or a semicolon] [test: the accDescr: of a use
+case diagram with a directive that holds a line break or a semicolon] [test: the
+text of an ishikawa literal with a directive that holds a line break or a
+semicolon] [test: the text of a treeView node with a directive that holds a line
+break or a semicolon] [test: the text of a mindmap node with a directive that
+holds a line break or a semicolon] [test: the text of a kanban card with a
+directive that holds a line break or a semicolon] [test: the second description
+of a state alias with a directive that holds a line break or a semicolon] [test:
+a card of a kanban board, the directive alone with a directive that holds a line
+break or a semicolon] [test: a bare node of a mindmap, the directive alone with
+a directive that holds a line break or a semicolon] [test: the title of a pie
 chart with a directive that holds a line break or a semicolon, wherever the
 directive stands] [test: the title of a Wardley map with a directive that holds
 a line break or a semicolon, wherever the directive stands] [test: the accTitle:
@@ -2715,14 +2296,16 @@ chart with a directive that holds a line break or a semicolon, wherever the
 directive stands] [test: the title of a Venn diagram with a directive that holds
 a line break or a semicolon, wherever the directive stands] [test: the title of
 a C4 diagram with a directive that holds a line break or a semicolon, wherever
-the directive stands] [test: the text of a mindmap node with a directive that
-holds a line break or a semicolon, wherever the directive stands] [test: the
-second description of a state alias with a directive that holds a line break or
-a semicolon, wherever the directive stands] [test: a title whose last directive
-holds a line break, with spaces after it, in each type] [test: a card of a
-kanban board and a node of a mindmap whose last directive holds a line break,
-with spaces after it] [test: a title whose last directive holds a semicolon,
-with spaces after it, in each group]
+the directive stands] [test: the accDescription of a C4 diagram with a directive
+that holds a line break or a semicolon, wherever the directive stands] [test:
+the text of a mindmap node with a directive that holds a line break or a
+semicolon, wherever the directive stands] [test: the second description of a
+state alias with a directive that holds a line break or a semicolon, wherever
+the directive stands] [test: a title whose last directive holds a line break,
+with spaces after it, in each type] [test: a card of a kanban board and a node
+of a mindmap whose last directive holds a line break, with spaces after it]
+[test: a title whose last directive holds a semicolon, with spaces after it, in
+each group]
 
 ## Runs of whitespace in a text that are drawn the same
 
