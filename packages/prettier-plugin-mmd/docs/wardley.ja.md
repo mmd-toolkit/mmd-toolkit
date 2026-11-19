@@ -685,7 +685,8 @@ wardley-beta
 
 ### title
 
-共通の行の配置を、下の段落が述べるところを除いて使い、
+共通の行の配置を、
+下の段落と[セミコロン](#セミコロン)の節が述べるところを除いて使い、
 空でない値の前は空白 1 つにします。
 外端の通常の共通空白は除き、閉じない引用符も内部の文字として保ちます。
 ただし、値の中の空白とタブの連なりは空白 1 つにして印字します。
@@ -795,7 +796,8 @@ Wardley はそのような行を書かれたままにするからです。
 整形が投げる行は、そこでは述べません。
 
 `;` があってディレクティブのない題は、
-最後の `;` までを書かれたままにします（最後の `;` の後が空白とタブだけで、
+最後の `;` までを書かれたままにします（mermaid.js の行の規則が行に働かず、
+最後の `;` がコメントの外にあって、その後が空白とタブだけで、
 行に U+2028 も U+2029 もないとき）。
 最後の `;` の後の空白とタブは除きます（`title   T;` と `title A   B;`
 は変わらず、`title T;` の後ろの空白は除かれます）。
@@ -1623,6 +1625,19 @@ mermaid.js はテキストを読む前にディレクティブを除き、
 [test: a run of tabs inside the text of a title, spaces at the end, of a Wardley map]
 [test: a run of spaces inside a quoted string in a title, of a Wardley map]
 [test: a run of spaces beside a directive inside the text of a title, of a Wardley map]
+[test: text after the `;` that the line rule ignores in a title, runs before and after it, of a Wardley map]
+[test: text touching the `;` that the line rule ignores in a title, a run before it, of a Wardley map]
+[test: text and a run after the `;` that the line rule ignores in a title, spaces at the end, of a Wardley map]
+[test: two touching `;` that the line rule reads in a title, a run before them, of a Wardley map]
+[test: two `;` with spaces between them that the line rule reads in a title, a run before them, of a Wardley map]
+[test: text after the last of two `;` that the line rule reads in a title, runs around them, of a Wardley map]
+[test: text after the `;` that the line rule ignores after classDef in a title, of a Wardley map]
+[test: nothing after the `;` that the line rule ignores in a title, runs before it, of a Wardley map]
+[test: a run inside the stretch of the line rule, nothing after the `;` in a title, spaces at the end, of a Wardley map]
+[test: nothing after the last of two `;` that the line rule reads in a title, of a Wardley map]
+[test: a comment after the `;` that the line rule ignores in a title, of a Wardley map]
+[test: a `;` inside the comment at the end of a title, a run and spaces at the end, of a Wardley map]
+[test: nothing after the `;` that the line rule ignores in a title, spaces at the end, of a Wardley map]
 [test: U+2028 before a directive that a comment touches, a line follows, in a title of a Wardley map]
 [test: U+2028 before a directive that a comment touches, the text ends, in a title of a Wardley map]
 [test: U+2028 before a directive that a comment touches, an empty line follows, in a title of a Wardley map]
@@ -1942,8 +1957,8 @@ wardley-beta
 ### アクセシビリティ
 
 accTitle: Value と accDescr: Value は、下の段落と、
-[ディレクティブが前にある題](#title)が述べるところを除いて、
-共有の行配置を使います。
+[ディレクティブが前にある題](#title)と、
+[セミコロン](#セミコロン)の節が述べるところを除いて、共有の行配置を使います。
 空の代入も残します。
 `accDescr` の値の中の空白とタブの連なりは空白 1 つにして印字し、
 `accTitle` の連なりはブラウザがツールチップとして表示するので、
@@ -2032,7 +2047,8 @@ Wardley はそのような行を書かれたままにするからです。
 
 `;` があってディレクティブのない `accTitle:` や `accDescr:` の行は、
 最後の `;` までを書かれたままにします（コロンの前の隙間も同じです。
-最後の `;` の後が空白とタブだけで、行に U+2028 も U+2029 もないとき）。
+mermaid.js の行の規則が行に働かず、最後の `;` がコメントの外にあって、
+その後が空白とタブだけで、行に U+2028 も U+2029 もないとき）。
 最後の `;` の後の空白とタブは除きます（`accTitle : T;` と `accDescr:   A   B;`
 は変わりません）。
 `;` があってディレクティブのないほかの行は述べません。
@@ -2512,6 +2528,11 @@ Wardley はそのような行を書かれたままにするからです。
 [test: a run of spaces inside the text of an accDescr line, of a Wardley map]
 [test: a run of spaces inside the text of an accTitle line, of a Wardley map]
 [test: a run of spaces inside a quoted string in an accDescr line, of a Wardley map]
+[test: text after the `;` that the line rule ignores in an accDescr line, runs before and after it, of a Wardley map]
+[test: nothing after the `;` that the line rule ignores in an accDescr line, runs before it, of a Wardley map]
+[test: two touching `;` that the line rule reads in an accDescr line, a run before them, of a Wardley map]
+[test: text after the `;` that the line rule ignores in an accTitle line, of a Wardley map]
+[test: a `;` inside the comment at the end of an accTitle line, a gap before the colon, spaces at the end, of a Wardley map]
 [test: U+2028 before a directive that a comment touches, a line follows, in an accTitle line of a Wardley map]
 [test: U+2028 before a directive that a comment touches, the text ends, in an accTitle line of a Wardley map]
 [test: U+2028 before a directive that a comment follows after spaces, a line follows, in an accTitle line of a Wardley map]
