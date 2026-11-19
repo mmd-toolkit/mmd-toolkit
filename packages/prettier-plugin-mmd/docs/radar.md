@@ -490,9 +490,12 @@ Never take a value from the next physical line, including across comments or
 directives. Trivia-bearing values and protected segments keep their source gaps.
 A `;` after the text of a title or of an accessibility line stays: the text
 holds it, and the text with and without it differs in the Db of 12.3.0 and in
-the drawn text of every version that counts. Where two `;` follow, the line rule
-of mermaid.js ignores the last, and removing one makes it ignore another (see
-[A line that a `;` ends](./compatibility.md#a-line-that-a--ends)). The
+the drawn text of every version that counts. Where the line rule of mermaid.js
+applies to the line (see
+[Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)) and two `;`
+follow, it ignores the last, and removing one makes it ignore another (see
+[A line that a `;` ends](./compatibility.md#a-line-that-a--ends)); where it does
+not apply, as in `title T;;` alone on its line, the text holds both `;`. The
 directives that end a title are printed with one space before each that has
 spaces or tabs before it, and the spaces and tabs after the last one are left
 out, whatever the spaces and tabs at the end of the line (see
@@ -500,7 +503,8 @@ out, whatever the spaces and tabs at the end of the line (see
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
 radar/title/title-edge-trim] [fixture: radar/title/title-lone-semicolon-kept]
-[fixture: radar/title/title-directive-semicolon-kept]
+[fixture: radar/title/title-directive-semicolon-kept] [fixture:
+radar/title/title-two-semicolons-kept]
 
 [fixture: radar/title/title-empty]
 
@@ -535,9 +539,11 @@ tooltip. Braces after a colon remain line text. Trivia/hidden and semicolon
 protection take precedence. A `;` after the text of a title or of an
 accessibility line stays: the text holds it, and the text with and without it
 differs in the Db of 12.3.0 and in the drawn text of every version that counts.
-Where two `;` follow, the line rule of mermaid.js ignores the last, and removing
-one makes it ignore another (see
-[A line that a `;` ends](./compatibility.md#a-line-that-a--ends)). The
+Where the line rule of mermaid.js applies to the line (see
+[Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)) and two `;`
+follow, it ignores the last, and removing one makes it ignore another (see
+[A line that a `;` ends](./compatibility.md#a-line-that-a--ends)); where it does
+not apply, as in `title T;;` alone on its line, the text holds both `;`. The
 directives that end the value are printed with one space before each that has
 spaces or tabs before it, and the spaces and tabs after the last one are left
 out (see
