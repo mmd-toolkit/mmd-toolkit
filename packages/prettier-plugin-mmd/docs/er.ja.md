@@ -2320,7 +2320,16 @@ U+2028 や U+2029 の後ろにディレクティブとコメントしか続か�
 `direction` の後ろ、`accTitle` のコロンの後ろ、
 `style` や `classDef` の文のキーワードの後ろでは、隙間を書かれたままにします。
 この形は規則 2 が与えます。
-flowchart、class、state は、U+2028 や U+2029 を含む隙間をこれらの場所で書かれたまま残し（[flowchart](./flowchart.ja.md#ディレクティブ)、[class](./class.ja.md#トークンの間の空白)、[state](./state.ja.md#トークンの間の空白)）、sequence、journey、timeline は `accTitle` のコロンの後ろで書かれたまま残します（[sequence](./sequence.ja.md#トークンの間の空白)、[journey](./journey.ja.md#行区切り文字)、[timeline](./timeline.ja.md#行区切り文字)）。
+flowchart、class、state は、U+2028 や U+2029 を含む隙間を、
+これらの場所で書かれたまま残します。
+（[flowchart](./flowchart.ja.md#ディレクティブ)、
+[class](./class.ja.md#トークンの間の空白)、
+[state](./state.ja.md#トークンの間の空白)）。
+sequence、journey、timeline は、
+`accTitle` のコロンの後ろで書かれたまま残します。
+（[sequence](./sequence.ja.md#トークンの間の空白)、
+[journey](./journey.ja.md#行区切り文字)、
+[timeline](./timeline.ja.md#行区切り文字)）。
 ほかの場所は、ここでは述べません。
 
 [fixture: directives/kept] [fixture: directives/before-header]
