@@ -1664,8 +1664,8 @@ between the header and a direction]
 
 At the end of a title and at the end of the last event of a line, U+2028 and
 U+2029 are characters of the text and no spaces or tabs: the spaces after one
-are left out with the other whitespace at the end of the text, and the spaces
-before it stay.
+are left out with the other spaces and tabs at the end of the text, and the
+spaces before it stay.
 
 [test: U+2029 and spaces at the end of a timeline title] [test: U+2028 and
 spaces at the end of the last event of a line]

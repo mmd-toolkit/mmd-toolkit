@@ -1038,8 +1038,8 @@ whitespace at the start of the text, around the directive too, is left out:
 
 mermaid.js reads one whitespace character after the keyword, which may be a line
 break, and keeps everything after it in the title, the whitespace at its start
-and at its end included, and draws the title without the whitespace at its start
-and at its end (see
+and at its end included, and draws the title without the spaces and tabs at its
+start and at its end (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 So `title`, a line break, and `A->>B: x` is printed as `title A->>B: x`, which
 shows that the next line is the title: mermaid.js reads it so.

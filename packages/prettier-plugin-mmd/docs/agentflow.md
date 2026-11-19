@@ -1010,7 +1010,8 @@ is printed `A %% c;`) and stay where it holds none.
 [fixture:
 comments/comment-line-ending-ignored-semicolon-trailing-whitespace-kept]
 [fixture: comments/trailing-comment-semicolon-trailing-whitespace] [fixture:
-comments/trailing-comment-semicolon-trailing-whitespace-statements]
+comments/trailing-comment-semicolon-trailing-whitespace-statements] [fixture:
+comments/trailing-comment-semicolon-trailing-whitespace-header-and-lines]
 
 A harmless trailing-comment gap becomes one space. Agentflow recognizes real
 comments after semicolons and description closers; ordinary separator semicolons

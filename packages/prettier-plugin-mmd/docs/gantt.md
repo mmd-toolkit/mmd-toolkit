@@ -1886,7 +1886,8 @@ of accTitle] [test: U+2028 between a click id and its part]
 
 At the end of a title, a date format, or an axis format, U+2028 and U+2029 are
 characters of the text and no spaces or tabs: the spaces after one are left out
-with the other whitespace at the end of the text, and the spaces before it stay.
+with the other spaces and tabs at the end of the text, and the spaces before it
+stay.
 
 [test: U+2028 and spaces at the end of a title] [test: U+2029 and spaces at the
 end of a date format]

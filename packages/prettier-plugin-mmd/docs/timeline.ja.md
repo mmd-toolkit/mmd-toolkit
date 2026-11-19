@@ -1669,7 +1669,7 @@ period、event、title、section の名前、アクセシビリティのテキ�
 
 タイトルの末尾と行の最後の event の末尾では、
 U+2028 と U+2029 は空白やタブではなくテキストの文字なので、
-その後の空白はテキスト末尾のほかの空白と一緒に除き、前の空白は残します。
+その後の空白はテキスト末尾のほかの空白とタブと一緒に除き、前の空白は残します。
 
 [test: U+2029 and spaces at the end of a timeline title]
 [test: U+2028 and spaces at the end of the last event of a line]

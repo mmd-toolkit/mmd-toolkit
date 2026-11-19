@@ -1056,6 +1056,7 @@ agentflow-beta TB
 [fixture: comments/comment-line-ending-ignored-semicolon-trailing-whitespace-kept]
 [fixture: comments/trailing-comment-semicolon-trailing-whitespace]
 [fixture: comments/trailing-comment-semicolon-trailing-whitespace-statements]
+[fixture: comments/trailing-comment-semicolon-trailing-whitespace-header-and-lines]
 
 害のない末尾コメント前の隙間は空白1つにします。
 agentflowではセミコロンや説明の閉じ記号の後も実コメントです。
