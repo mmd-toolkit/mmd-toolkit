@@ -90,10 +90,15 @@ wardley-beta
 
 ### Statements one per line
 
-Put ordinary statements on separate lines and keep their required EOL. Add no
-semicolon: Wardley does not use semicolons as statement separators. Apparent
-statements inside values remain value text; the source tree already
-distinguishes them.
+Put ordinary statements on separate lines and keep their required EOL. Rule 1
+names no mark for the end of a statement, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [er](./er.md#statements-one-per-line),
+[gantt](./gantt.md#statements-one-per-line), and
+[journey](./journey.md#statements-one-per-line) print each statement on a line
+of its own. Add no semicolon: Wardley does not use semicolons as statement
+separators. Apparent statements inside values remain value text; the source tree
+already distinguishes them.
 
 [fixture: wardley/statements-one-per-line/statement-eol]
 
@@ -306,9 +311,14 @@ wardley-beta
 
 Keep every authored label offset, strategy and inertia decoration in grammar
 order. Separate decorations by one space and compact parenthesized interiors.
-Keep bare inertia and (inertia) distinct, along with build, buy, outsource and
-market. The inertia forms can share a Db, but converting them loses an authored
-node form; do not supply defaults.
+Prettier prints no space inside parentheses
+([rule 1](./printed-form.md#1-the-whitespace-beside-a-mark)). Of the 19 wardley
+examples in the documentation of mermaid.js, a label offset follows a space in
+each of its 2 uses and a strategy in parentheses in each of its 10, and none
+touches the text before it, so [rule 3](./printed-form.md#3-a-spelling) gives
+one space before a decoration. Keep bare inertia and (inertia) distinct, along
+with build, buy, outsource and market. The inertia forms can share a Db, but
+converting them loses an authored node form; do not supply defaults.
 
 [fixture: wardley/decorations/decorations-all]
 
@@ -633,9 +643,13 @@ wardley-beta
 ### Accessibility
 
 Use the shared accessibility line layout for accTitle: Value and accDescr:
-Value, retaining empty assignments. The directives that end the value are
-printed with one space before each that has whitespace before it, and the
-whitespace after the last one is left out (see
+Value, retaining empty assignments. The colon of `accTitle` and `accDescr` is
+the colon of a key (the title and the description of a diagram in
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)), so
+[rule 1](./printed-form.md#1-the-whitespace-beside-a-mark) gives the form
+`accTitle: text`: no whitespace before the colon and one space after it. The
+directives that end the value are printed with one space before each that has
+whitespace before it, and the whitespace after the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [test: wardley/accessibility/unicode-empty-description] [fixture:
@@ -666,6 +680,11 @@ line of text is dropped where the closer stands on a line of its own, and is
 printed as one space where the closer follows it on that line. Directives and
 shared removed comment regions keep their complete source, including in a block
 that contains only a directive, and trivia keeps its shared continuation layout.
+Rule 1 names no mark for a line inside a block, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [xychart](./xychart.md#empty-description-blocks) and
+[quadrant](./quadrant.md#empty-description-blocks) keep the contents and line
+breaks of a block with a directive or comment line.
 
 [fixture: wardley/accessibility/description-closer] [fixture:
 wardley/accessibility/description-comment-only] [fixture:
@@ -917,9 +936,14 @@ whitespace as written; each of them names those cases in its own sections or in
 [A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
 (whitespace that the Db holds, as after a `section` or a period, and whitespace
 that changes what mermaid.js reads). Preserve marks, text and trailing padding;
-pipeline comments use child depth. Enclosing strings, flows and link labels
-retain percent text. Common comment-region joins keep their source columns,
-preventing text from changing owner.
+pipeline comments use child depth. Rule 1 names no mark for the indentation of a
+comment line, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
+decides, as [journey](./journey.md#comments) and
+[timeline](./timeline.md#comments) stand a comment on a line of its own at the
+level of the statement after it, which in a pipeline is its child. Enclosing
+strings, flows and link labels retain percent text. Common comment-region joins
+keep their source columns, preventing text from changing owner.
 
 [test: wardley/comments/native-separators] [fixture:
 wardley/comments/comment-standalone]

@@ -92,6 +92,10 @@ wardley-beta
 ### 文を 1 行ずつにする
 
 普通の文は 1 行ずつにして、必須の EOL を保ちます。
+規則 1 は、文の終わりの印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[er](./er.ja.md#1-行に-1-文)、[gantt](./gantt.ja.md#1-行に-1-文)、
+[journey](./journey.ja.md#1-行に-1-文)も、各文を自分の行に印字します。
 Wardley のセミコロンは文の区切りではないので足しません。
 値の内部の見かけの文は、木が区別した値のテキストとして残します。
 
@@ -313,6 +317,13 @@ wardley-beta
 
 ラベルの位置のずれ、戦略、inertia は書かれたものを文法上の順に保ちます。
 装飾の外側は空白 1 つ、括弧の内側は詰めます。
+括弧の内側に空白を置かないのは、
+Prettier と同じです（[規則 1](./printed-form.ja.md#1-記号の横の空白)）。
+mermaid.js のドキュメントの wardley の例 19 件では、
+ラベルの位置のずれは 2 回すべて、
+括弧の中の戦略は 10 回すべてが空白の後に書かれ、
+前のテキストに接するものはありません。
+そのため、[規則 3](./printed-form.ja.md#3-綴り)が装飾の前に空白 1 つを与えます。
 括弧なしの `inertia` と `(inertia)`、`build`、`buy`、`outsource`、
 `market` を保ちます。
 inertia の両形は Db が同じでも、変更すると書かれたノード形を失います。
@@ -648,6 +659,10 @@ wardley-beta
 
 accTitle: Value と accDescr: Value は共有の行配置を使います。
 空の代入も残します。
+`accTitle` と `accDescr` のコロンはキーのコロンなので、
+[規則 1](./printed-form.ja.md#1-記号の横の空白)が `accTitle: text`
+の形を与えます。
+コロンの前に空白を置かず、後ろに空白を 1 つ置きます。
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
@@ -683,6 +698,11 @@ Db で LF 後の字下げが取り除かれるためです。
 ディレクティブと共有処理で取り除かれるコメント領域は、
 ディレクティブだけを含むブロックでも原文全体を保ちます。
 注釈は共有の継続行の配置を保ちます。
+規則 1 は、ブロックの中の行の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[xychart](./xychart.ja.md#空の説明ブロック) と
+[quadrant](./quadrant.ja.md#空の説明ブロック) も、
+ディレクティブかコメント行があるブロックの内容と改行を、そのまま残します。
 
 [fixture: wardley/accessibility/description-closer]
 [fixture: wardley/accessibility/description-comment-only]
@@ -941,6 +961,11 @@ wardley-beta
 で挙げています（Db が持つ空白、たとえば `section` と期間の後の空白と、
 mermaid.js の読みを変える空白です）。
 印、本文、末尾余白を保ち、pipeline 内では子文の段にします。
+規則 1 は、コメント行の字下げの印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+[journey](./journey.ja.md#コメント) と [timeline](./timeline.ja.md#コメント)
+も、自分の行にあるコメントを後ろの文の段に置きます。
+pipeline の中では、後ろの文は子文です。
 文字列、flow、link ラベルの `%` テキストはその値に残します。
 共通のコメント領域の結合は原文の列を保ち、所属先の変化を防ぎます。
 
