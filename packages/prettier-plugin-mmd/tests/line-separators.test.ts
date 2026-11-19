@@ -6875,3 +6875,136 @@ describe("requirement color words with rejected tabs", () => {
     await expect(format(input)).rejects.toThrow("Unexpected character")
   })
 })
+
+/**
+ * A whitespace character that is no space or tab between the text of a value
+ * and a comment: the oldest version that counts reads it as a part of the text
+ * of the title of a pie chart and of an accDescr line of a pie chart and a
+ * gitGraph, so it stays, while the other diagram types print one space
+ * (docs/pie.md, Title and Accessibility lines).
+ */
+const valueBeforeCommentExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a no-break space before a comment after the title of a pie chart",
+    'pie\ntitle T\u00a0%% c\n"a": 1\n',
+    'pie\n  title T\u00a0%% c\n  "a": 1\n',
+  ],
+  [
+    "U+3000 before a comment after the title of a pie chart",
+    'pie\ntitle T\u3000%% c\n"a": 1\n',
+    'pie\n  title T\u3000%% c\n  "a": 1\n',
+  ],
+  [
+    "U+2003 before a comment after the title of a pie chart",
+    'pie\ntitle T\u2003%% c\n"a": 1\n',
+    'pie\n  title T\u2003%% c\n  "a": 1\n',
+  ],
+  [
+    "spaces and a no-break space before a comment after the title of a pie chart",
+    'pie\ntitle T  \u00a0%% c\n"a": 1\n',
+    'pie\n  title T \u00a0%% c\n  "a": 1\n',
+  ],
+  [
+    "a no-break space before a directive and a comment after the title of a pie chart",
+    'pie\ntitle T\u00a0%%{x}%%%% c\n"a": 1\n',
+    'pie\n  title T\u00a0%%{x}%%%% c\n  "a": 1\n',
+  ],
+  [
+    "two spaces before a comment after the title of a pie chart",
+    'pie\ntitle T  %% c\n"a": 1\n',
+    'pie\n  title T %% c\n  "a": 1\n',
+  ],
+  [
+    "a no-break space at the end of the title of a pie chart",
+    'pie\ntitle T\u00a0\n"a": 1\n',
+    'pie\n  title T\n  "a": 1\n',
+  ],
+  [
+    "a no-break space before a comment after the accDescr line of a pie chart",
+    'pie\naccDescr: T\u00a0%% c\n"a": 1\n',
+    'pie\n  accDescr: T\u00a0%% c\n  "a": 1\n',
+  ],
+  [
+    "U+3000 before a comment after the accDescr line of a pie chart",
+    'pie\naccDescr: T\u3000%% c\n"a": 1\n',
+    'pie\n  accDescr: T\u3000%% c\n  "a": 1\n',
+  ],
+  [
+    "two spaces before a comment after the accDescr line of a pie chart",
+    'pie\naccDescr: T  %% c\n"a": 1\n',
+    'pie\n  accDescr: T %% c\n  "a": 1\n',
+  ],
+  [
+    "a no-break space before a comment after the accDescr line of a gitGraph",
+    "gitGraph\naccDescr: T\u00a0%% c\ncommit\n",
+    "gitGraph\n  accDescr: T\u00a0%% c\n  commit\n",
+  ],
+  [
+    "U+3000 before a comment after the accDescr line of a gitGraph",
+    "gitGraph\naccDescr: T\u3000%% c\ncommit\n",
+    "gitGraph\n  accDescr: T\u3000%% c\n  commit\n",
+  ],
+  [
+    "a no-break space before a comment after the title of a radar chart",
+    "radar-beta\ntitle T\u00a0%% c\naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  title T %% c\n  axis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "a no-break space before a comment after the title of a packet diagram",
+    'packet-beta\ntitle T\u00a0%% c\n0-7: "x"\n',
+    'packet-beta\n  title T %% c\n  0-7: "x"\n',
+  ],
+  [
+    "a no-break space before a comment after the title of an architecture diagram",
+    "architecture-beta\ntitle T\u00a0%% c\nservice a(server)[A]\n",
+    "architecture-beta\n  title T %% c\n  service a(server)[A]\n",
+  ],
+  [
+    "a no-break space before a comment after the title of a gitGraph",
+    "gitGraph\ntitle T\u00a0%% c\ncommit\n",
+    "gitGraph\n  title T %% c\n  commit\n",
+  ],
+  [
+    "a no-break space before a comment after the title of a cynefin diagram",
+    "cynefin-beta\ntitle T\u00a0%% c\n",
+    "cynefin-beta\n  title T %% c\n",
+  ],
+  [
+    "a no-break space before a comment after the title of a treemap",
+    'treemap-beta\ntitle T\u00a0%% c\n"A": 1\n',
+    'treemap\ntitle T %% c\n  "A": 1\n',
+  ],
+  [
+    "a no-break space before a comment after the title of a Wardley map",
+    "wardley-beta\ntitle T\u00a0%% c\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title T %% c\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a no-break space before a comment after the title of a treeView",
+    "treeView-beta\ntitle T\u00a0%% c\nroot\n",
+    "treeView-beta\n  title T %% c\n  root\n",
+  ],
+  [
+    "a no-break space before a comment after the title of an info diagram",
+    "info\ntitle T\u00a0%% c\n",
+    "info\n  title T %% c\n",
+  ],
+  [
+    "a no-break space before a comment after the title of a railroad diagram",
+    'railroad-abnf-beta\ntitle T\u00a0%% c\nr="a";\n',
+    'railroad-abnf-beta\n  title T %% c\n  r = "a";\n',
+  ],
+]
+
+describe("the whitespace before a comment after a title or an accDescr line", () => {
+  it.each(valueBeforeCommentExamples)(
+    "prints %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})

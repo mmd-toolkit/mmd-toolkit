@@ -193,16 +193,30 @@ spaces and tabs inside the value as one space (see
 and preserve quotes and backslashes, and all repeated assignments, including
 frontmatter fallback. Pie never joins the next physical line into a title: even
 across blank/comment/directive gaps, a following section is a separate
-statement. Protected trivia and semicolon groups take precedence. The directives
-that end a title are printed with one space before each that has whitespace
-before it, and the whitespace after the last one is left out, whatever the
-whitespace at the end of the line (see
+statement. Protected trivia and semicolon groups take precedence. A whitespace
+character that is no space or tab, a no-break space, U+3000, or U+2003, between
+the text and a `%%` comment stays where it is, with the spaces and tabs before
+it printed as one space: the oldest version that counts draws it as a part of
+the title, where the later versions trim it (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+`title T`, a no-break space, and `%% c` is not changed, and `title T`, two
+spaces, and `%% c` print `title T %% c`. The directives that end a title are
+printed with one space before each that has whitespace before it, and the
+whitespace after the last one is left out, whatever the whitespace at the end of
+the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
 pie/title/title-trim] [fixture: pie/title/title-empty] [fixture:
 pie/title/title-next-section] [fixture: pie/title/title-next-trivia] [fixture:
 pie/title/title-inner-text] [fixture: pie/title/empty-value-with-directive]
+[test: a no-break space before a comment after the title of a pie chart] [test:
+U+3000 before a comment after the title of a pie chart] [test: U+2003 before a
+comment after the title of a pie chart] [test: spaces and a no-break space
+before a comment after the title of a pie chart] [test: a no-break space before
+a directive and a comment after the title of a pie chart] [test: two spaces
+before a comment after the title of a pie chart] [test: a no-break space at the
+end of the title of a pie chart]
 
 Input (escaped): `"pie\ntitle\t   Sales  report  \n\"Sales\":8"`.
 
@@ -236,9 +250,12 @@ breaks too, and reads the next statement, after the blank lines and the comments
 and directives that mermaid.js removes first, as the value. That statement stays
 as written (`"A":1` is not printed `"A": 1`), as does the whitespace before a
 `%%` that follows an `accTitle` value, which that version reads as part of the
-title (`accTitle: Value   %% note`); a comment after the `}` of a description
-block keeps the block, since the text of the form with the colon would take the
-comment (see
+title (`accTitle: Value   %% note`), and so does a whitespace character that is
+no space or tab before a `%%` that follows an `accDescr` value, which that
+version draws as a part of the description (`accDescr: Value`, a no-break space,
+and `%% note`), while spaces and tabs there are printed as one space; a comment
+after the `}` of a description block keeps the block, since the text of the form
+with the colon would take the comment (see
 [Accessibility lines that the oldest version reads to the end](./compatibility.md#accessibility-lines-that-the-oldest-version-reads-to-the-end)).
 Hidden forms and protected textual groups retain their gaps. The directives that
 end the value are printed with one space before each that has whitespace before
@@ -259,7 +276,12 @@ pie/accessibility-lines/accessibility-next-trivia] [fixture:
 pie/accessibility-lines/accessibility-directive-edges] [fixture:
 pie/accessibility-lines/accessibility-inner-tab] [fixture:
 pie/accessibility-lines/acc-title-inner-spaces-kept] [fixture:
-pie/accessibility-lines/accessibility-only-global-trivia]
+pie/accessibility-lines/accessibility-only-global-trivia] [test: a no-break
+space before a comment after the accDescr line of a pie chart] [test: U+3000
+before a comment after the accDescr line of a pie chart] [test: two spaces
+before a comment after the accDescr line of a pie chart] [test: a no-break space
+before a comment after the accDescr line of a gitGraph] [test: U+3000 before a
+comment after the accDescr line of a gitGraph]
 
 Input (escaped):
 `"pie\naccTitle \t:   Title  words \t\naccDescr\t:  Description  text  \n\"Line\":1"`.
