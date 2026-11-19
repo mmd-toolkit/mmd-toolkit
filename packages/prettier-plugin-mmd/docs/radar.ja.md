@@ -521,16 +521,43 @@ mermaid.js の行の規則がその行に働くとき、`;` が 2 つ続くと�
 詳しくは [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)にあります。
 規則が働かないとき、たとえば `title T;;` だけの行では、
 テキストが両方の `;` を持ちます。
-題の終わりのディレクティブは、それぞれの前に空白かタブがあれば空白 1 つを置き、
+題にテキストがあり、そのテキストの前にも中にもディレクティブがなく、
+最後のディレクティブの後が空白とタブだけのときは、題の終わりのディレクティブを、
+それぞれの前に空白かタブがあれば空白 1 つを置き、
 行末の空白とタブの有無にかかわらず、
 最後のディレクティブの後の空白とタブを除いて印字します。
+互いに接して行末かコメントに接するディレクティブがあるとき、
+その前のテキストとの間にあるノーブレークスペースや U+3000 は、
+同じ連なりの残りとともに空白 1 つで印字します。
+最後のディレクティブの後に、ノーブレークスペース、U+3000、U+2028、
+U+2029 のどれかがあるときは、その前に空白やタブがあっても、
+行を書かれたままにします。
+中にディレクティブのある題と、ディレクティブだけの題も、書かれたままです。
+最後のディレクティブの後にコメントが続くときは、
+それぞれのディレクティブの前とコメントの前の空白とタブの連なりを、
+空白 1 つで印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: title/title-directives-end-blanks-dropped]
+[fixture: title/title-directives-end-tabs-dropped]
+[fixture: title/title-directives-in-the-text-kept]
+[fixture: title/title-directives-end-before-comment-line-and-empty-line]
+[fixture: title/title-directives-then-comment]
 [fixture: radar/title/title-edge-trim]
 [fixture: radar/title/title-lone-semicolon-kept]
 [fixture: radar/title/title-directive-semicolon-kept]
 [fixture: radar/title/title-two-semicolons-kept]
+[test: a no-break space after the last directive of a title of a radar chart]
+[test: U+3000 after the last directive of a title of a radar chart]
+[test: U+2028 after the last directive of a title of a radar chart]
+[test: U+2029 after the last directive of a title of a radar chart]
+[test: a space and a no-break space after the last directive of a title of a radar chart]
+[test: a no-break space after the last of two directives of a title of a radar chart]
+[test: a no-break space before the directive that ends a title of a radar chart]
+[test: U+3000 before the directive that ends a title of a radar chart]
+[test: a space, a no-break space, and a space before the directive that ends a title of a radar chart]
+[test: a no-break space before two directives that touch and end a title of a radar chart]
+[test: a no-break space before a directive that a comment touches in a title of a radar chart]
 
 [fixture: radar/title/title-empty]
 
@@ -573,16 +600,40 @@ mermaid.js の行の規則がその行に働くとき、`;` が 2 つ続くと�
 詳しくは [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)にあります。
 規則が働かないとき、たとえば `title T;;` だけの行では、
 テキストが両方の `;` を持ちます。
-値の終わりのディレクティブは、それぞれの前に空白かタブがあれば空白 1 つを置き、
+値にテキストがあり、そのテキストの前にも中にもディレクティブがなく、
+最後のディレクティブの後が空白とタブだけのときは、値の終わりのディレクティブを、
+それぞれの前に空白かタブがあれば空白 1 つを置き、
+行末の空白とタブの有無にかかわらず、
 最後のディレクティブの後の空白とタブを除いて印字します。
+互いに接して行末かコメントに接するディレクティブがあるとき、
+その前のテキストとの間にあるノーブレークスペースや U+3000 は、
+同じ連なりの残りとともに空白 1 つで印字します。
+最後のディレクティブの後に、ノーブレークスペース、U+3000、U+2028、
+U+2029 のどれかがあるときは、その前に空白やタブがあっても、
+行を書かれたままにします。
+中にディレクティブのある値と、ディレクティブだけの値も、書かれたままです。
+最後のディレクティブの後にコメントが続くときは、
+それぞれのディレクティブの前とコメントの前の空白とタブの連なりを、
+空白 1 つで印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
+[fixture: accessibility-lines/acc-directives-end-tabs-dropped]
+[fixture: accessibility-lines/acc-directives-in-the-text-kept]
+[fixture: accessibility-lines/acc-directives-then-comment]
 [fixture: radar/accessibility-lines/a11y-lines-fixed]
+[test: a no-break space after the last directive of an accTitle line of a radar chart]
+[test: a no-break space before the directive that ends an accTitle line of a radar chart]
+[test: a no-break space after the last directive of an accDescr line of a radar chart]
+[test: a no-break space before the directive that ends an accDescr line of a radar chart]
 
 [fixture: radar/accessibility-lines/a11y-empty-next]
 [fixture: radar/accessibility-lines/acctitle-lone-semicolon-kept]
+[fixture: radar/accessibility-lines/acctitle-directive-semicolon-kept]
+[fixture: radar/accessibility-lines/acctitle-two-semicolons-kept]
+[fixture: radar/accessibility-lines/accdescr-lone-semicolon-kept]
 [fixture: radar/accessibility-lines/accdescr-directive-semicolon-kept]
+[fixture: radar/accessibility-lines/accdescr-two-semicolons-kept]
 
 [fixture: radar/accessibility-lines/a11y-line-braces-fixed]
 

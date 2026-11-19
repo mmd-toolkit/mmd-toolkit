@@ -495,16 +495,39 @@ applies to the line (see
 [Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)) and two `;`
 follow, it ignores the last, and removing one makes it ignore another (see
 [A line that a `;` ends](./compatibility.md#a-line-that-a--ends)); where it does
-not apply, as in `title T;;` alone on its line, the text holds both `;`. The
-directives that end a title are printed with one space before each that has
-spaces or tabs before it, and the spaces and tabs after the last one are left
-out, whatever the spaces and tabs at the end of the line (see
+not apply, as in `title T;;` alone on its line, the text holds both `;`. Where a
+title has text, no directive before its text or inside it, and nothing but
+spaces and tabs after its last directive, the directives that end it are printed
+with one space before each that has spaces or tabs before it, and the spaces and
+tabs after the last one are left out, whatever the spaces and tabs at the end of
+the line. A no-break space or U+3000 between the text and directives that touch
+one another and then touch the end of the line or a comment is printed as one
+space with the rest of its run. Where a no-break space, U+3000, U+2028, or
+U+2029 follows the last directive, also after spaces or tabs, the line stays as
+written, and so does a title with a directive inside it and a title of
+directives only. Where a comment follows the last directive, a run of spaces and
+tabs before each directive and before the comment is printed as one space (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
-radar/title/title-edge-trim] [fixture: radar/title/title-lone-semicolon-kept]
-[fixture: radar/title/title-directive-semicolon-kept] [fixture:
-radar/title/title-two-semicolons-kept]
+title/title-directives-end-tabs-dropped] [fixture:
+title/title-directives-in-the-text-kept] [fixture:
+title/title-directives-end-before-comment-line-and-empty-line] [fixture:
+title/title-directives-then-comment] [fixture: radar/title/title-edge-trim]
+[fixture: radar/title/title-lone-semicolon-kept] [fixture:
+radar/title/title-directive-semicolon-kept] [fixture:
+radar/title/title-two-semicolons-kept] [test: a no-break space after the last
+directive of a title of a radar chart] [test: U+3000 after the last directive of
+a title of a radar chart] [test: U+2028 after the last directive of a title of a
+radar chart] [test: U+2029 after the last directive of a title of a radar chart]
+[test: a space and a no-break space after the last directive of a title of a
+radar chart] [test: a no-break space after the last of two directives of a title
+of a radar chart] [test: a no-break space before the directive that ends a title
+of a radar chart] [test: U+3000 before the directive that ends a title of a
+radar chart] [test: a space, a no-break space, and a space before the directive
+that ends a title of a radar chart] [test: a no-break space before two
+directives that touch and end a title of a radar chart] [test: a no-break space
+before a directive that a comment touches in a title of a radar chart]
 
 [fixture: radar/title/title-empty]
 
@@ -543,18 +566,38 @@ Where the line rule of mermaid.js applies to the line (see
 [Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)) and two `;`
 follow, it ignores the last, and removing one makes it ignore another (see
 [A line that a `;` ends](./compatibility.md#a-line-that-a--ends)); where it does
-not apply, as in `title T;;` alone on its line, the text holds both `;`. The
-directives that end the value are printed with one space before each that has
-spaces or tabs before it, and the spaces and tabs after the last one are left
-out (see
+not apply, as in `title T;;` alone on its line, the text holds both `;`. Where a
+value has text, no directive before its text or inside it, and nothing but
+spaces and tabs after its last directive, the directives that end it are printed
+with one space before each that has spaces or tabs before it, and the spaces and
+tabs after the last one are left out, whatever the spaces and tabs at the end of
+the line. A no-break space or U+3000 between the text and directives that touch
+one another and then touch the end of the line or a comment is printed as one
+space with the rest of its run. Where a no-break space, U+3000, U+2028, or
+U+2029 follows the last directive, also after spaces or tabs, the line stays as
+written, and so does a value with a directive inside it and a value of
+directives only. Where a comment follows the last directive, a run of spaces and
+tabs before each directive and before the comment is printed as one space (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
-radar/accessibility-lines/a11y-lines-fixed]
+accessibility-lines/acc-directives-end-tabs-dropped] [fixture:
+accessibility-lines/acc-directives-in-the-text-kept] [fixture:
+accessibility-lines/acc-directives-then-comment] [fixture:
+radar/accessibility-lines/a11y-lines-fixed] [test: a no-break space after the
+last directive of an accTitle line of a radar chart] [test: a no-break space
+before the directive that ends an accTitle line of a radar chart] [test: a
+no-break space after the last directive of an accDescr line of a radar chart]
+[test: a no-break space before the directive that ends an accDescr line of a
+radar chart]
 
 [fixture: radar/accessibility-lines/a11y-empty-next] [fixture:
 radar/accessibility-lines/acctitle-lone-semicolon-kept] [fixture:
-radar/accessibility-lines/accdescr-directive-semicolon-kept]
+radar/accessibility-lines/acctitle-directive-semicolon-kept] [fixture:
+radar/accessibility-lines/acctitle-two-semicolons-kept] [fixture:
+radar/accessibility-lines/accdescr-lone-semicolon-kept] [fixture:
+radar/accessibility-lines/accdescr-directive-semicolon-kept] [fixture:
+radar/accessibility-lines/accdescr-two-semicolons-kept]
 
 [fixture: radar/accessibility-lines/a11y-line-braces-fixed]
 
