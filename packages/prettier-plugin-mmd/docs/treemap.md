@@ -785,6 +785,36 @@ treemap/title/bare-title-directive-space-and-paragraph-separator] [test:
 treemap/title/bare-title-directive-spaces-and-line-separator] [test:
 treemap/title/bare-title-comment-after-line-separator-kept]
 
+A U+2028 or U+2029 after the text of a `title` or `accTitle:` line, or after the
+keyword where it has no text, with only whitespace before it, ends the line for
+the printer. A directive and a comment after it, with a blank line or a
+directive line after them, are printed on a line of their own with nothing
+between them, as an inline comment is on any line that a row follows (see
+[Comments](#comments)): `title`, a space, the character, a space, `%%{x}%%`, two
+spaces, `%% c`, a blank line, and `"A":1` print `title`, `%%{x}%%%% c`, a blank
+line, and `  "A": 1`, the same the second time. The line stays as written where
+a row or a comment line follows it, where a directive stands alone after the
+character, and where a directive stands before the character, or before the text
+of an `accTitle:` line; at the end of the text the gap is one space.
+
+[test: treemap/title/bare-title-line-separator-directive-comment-touch] [test:
+treemap/title/bare-title-paragraph-separator-tabs-directive-comment-touch]
+[test:
+treemap/title/bare-title-line-separator-directive-comment-touch-before-directive-line]
+[test: treemap/title/title-text-line-separator-directive-comment-touch] [test:
+treemap/title/title-directive-text-line-separator-directive-comment-touch]
+[test: treemap/title/acctitle-text-line-separator-directive-comment-touch]
+[test: treemap/title/acctitle-bare-line-separator-directive-comment-touch]
+[test:
+treemap/title/bare-title-line-separator-directive-comment-before-row-kept]
+[test:
+treemap/title/bare-title-line-separator-directive-comment-at-end-one-space]
+[test:
+treemap/title/bare-title-line-separator-directive-comment-before-comment-line-kept]
+[test: treemap/title/bare-title-line-separator-directive-only-kept] [test:
+treemap/title/bare-title-directive-before-line-separator-comment-kept] [test:
+treemap/title/acctitle-directive-text-line-separator-directive-comment-kept]
+
 A comment line after an empty title aligns with the next statement without
 becoming the title's value.
 

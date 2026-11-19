@@ -110,6 +110,13 @@ export function printTreemap(
       ]
     }),
   )
+
+  /** Whether the line is printed as written, a separator in it no break. */
+  function holdsKeptLine(line: (typeof lines)[number]): boolean {
+    const start = lineStartOf(source, line.range[0])
+    return kept.joined.has(start) || kept.verbatim.has(start)
+  }
+
   const relocatedWhitespace: Range[] = lines.map((line, index) => [
     index === 0
       ? keyword.range[1]
@@ -117,6 +124,7 @@ export function printTreemap(
           source,
           lines[index - 1].statements.at(-1)!,
           lines[index - 1].range[1],
+          !holdsKeptLine(lines[index - 1]),
         ),
     line.range[0],
   ])
