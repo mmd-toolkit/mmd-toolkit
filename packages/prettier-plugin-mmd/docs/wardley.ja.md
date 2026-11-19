@@ -693,8 +693,8 @@ wardley-beta
 テキストの中に U+2028 も U+2029 もないとき、題の終わりのディレクティブは、
 その前と後に何があるかで、次のように印字します。
 ただし、未決の行は除きます。
-未決の行とは、ディレクティブのほかに、`;`（ディレクティブの中のものも、
-コメントの中のものも）が行のどこかにある行、
+未決の行とは、ディレクティブのある行のうち、ディレクティブのほかに、
+`;`（ディレクティブの中のものも、コメントの中のものも）が行のどこかにある行、
 最初のディレクティブの中か後に U+2028 か U+2029 がある行、
 ディレクティブが改行を含む行、または次の文までの間の行に、
 コメントかディレクティブの中の `;` がある行です。
@@ -790,6 +790,28 @@ U+205F、U+3000、U+FEFF のどれかです。
 コメントの中の `;` も行を未決にします。
 Wardley はそのような行を書かれたままにするからです。
 整形が投げる行は、そこでは述べません。
+
+題のテキストが、キーワードの後の空白 1 つかタブ 1 つの後で、ディレクティブか、
+互いに接するディレクティブで始まり、行のそれ以外の部分にディレクティブ、
+コメント、`;`、幅のある空白、U+2028、U+2029 がないときは、
+ディレクティブとそれ以外のテキストの間の空白とタブを除き、
+行末の空白とタブも除きます（`title %%{x}%%  T  ` は `title %%{x}%%T` に、
+`title %%{x}%%%%{y}%%  T  ` は `title %%{x}%%%%{y}%%T` になります）。
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+sequence 図の[題](./sequence.ja.md#タイトル)も同じで、
+`title %%{init: {}}%% T` を `title %%{init: {}}%%T` と印字します。
+mermaid.js はテキストを読む前にディレクティブを除き、
+題をその先頭の空白なしで描くからです。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+ディレクティブがテキストの前にあるほかの題は述べません。
+ディレクティブがキーワードに接する題、
+最初のディレクティブの前に空白文字が 2 つ続く題、
+2 つのディレクティブの間に空白がある題、行のほかの所にディレクティブ、コメント、
+`;`、幅のある空白、U+2028、U+2029 がある題、
+テキストがディレクティブで始まる `accTitle:` と `accDescr:` の行です。
+そこでリリース済みの版が印字する形は、
+[どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
+のとおり、決めるまでそのままです。
 
 [fixture: title/title-directives-end-blanks-dropped]
 [fixture: title/title-directives-end-tabs-dropped]
@@ -1566,6 +1588,15 @@ Wardley はそのような行を書かれたままにするからです。
 [test: two U+2028 before a directive that a space and another directive follow in a title, of a Wardley map]
 [test: a U+2028 inside the directive that ends a title, spaces before it, a comment after two spaces, of a Wardley map]
 [test: a U+2028 inside the directive of a title of directives only, spaces before and after it, of a Wardley map]
+[test: a directive that starts the text of a title, two spaces and a text after it, spaces at the end, of a Wardley map]
+[test: a directive that starts the text of a title, a space and a text after it, of a Wardley map]
+[test: two directives that touch and start the text of a title, two spaces and a text after them, spaces at the end, of a Wardley map]
+[test: two directives that touch and start the text of a title, a tab and a text after them, of a Wardley map]
+[test: a directive that starts the text of a title, a text with a run of spaces inside it, spaces at the end, of a Wardley map]
+[test: a directive that starts the text of a title, a text with a tab inside it, a tab at the end, of a Wardley map]
+[test: two spaces before the directive that starts the text of a title, of a Wardley map]
+[test: two directives with spaces between them that start the text of a title, of a Wardley map]
+[test: a directive that starts the text of a title and a directive that ends it, of a Wardley map]
 [test: U+2028 before a directive that a comment touches, a line follows, in a title of a Wardley map]
 [test: U+2028 before a directive that a comment touches, the text ends, in a title of a Wardley map]
 [test: U+2028 before a directive that a comment touches, an empty line follows, in a title of a Wardley map]
@@ -1861,6 +1892,9 @@ Wardley はそのような行を書かれたままにするからです。
 [test: a comment after the last directive after two spaces, a comment line that holds a `;` and an empty line follow, a statement follows, in a title of a Wardley map]
 [test: a U+2028 before a directive that a comment follows after two spaces, a comment line that holds a `;` follows, a statement follows, in a title of a Wardley map]
 [test: a comment after the last directive after two spaces, a directive line that holds a `;` and an empty line follow, a statement follows, in a title of a Wardley map]
+[test: a directive that starts the text, two spaces and a text after it, spaces at the end, the text ends, in a title of a Wardley map]
+[test: two directives that touch and start the text, a text after them, spaces at the end, the text ends, in a title of a Wardley map]
+[test: a directive that starts the text, two spaces and a text after it, spaces at the end, a statement follows, in a title of a Wardley map]
 
 [fixture: wardley/title/title-empty]
 
@@ -2421,6 +2455,11 @@ Wardley はそのような行を書かれたままにするからです。
 [test: two U+2029 before a directive that a space and another directive follow in an accDescr line, of a Wardley map]
 [test: a U+2028 inside the directive that ends an accDescr line, spaces before it, a comment after two spaces, of a Wardley map]
 [test: a line break inside the directive that ends an accTitle line, a comment after two spaces, of a Wardley map]
+[test: a directive that starts the text of a title, tabs before and after it, of a Wardley map]
+[test: a directive that touches the keyword of a title, a space and a text after it, of a Wardley map]
+[test: a directive that touches the colon of an accTitle line, a space and a text after it, of a Wardley map]
+[test: a directive that starts the text of an accTitle line, two spaces and a text after it, spaces at the end, of a Wardley map]
+[test: a directive that starts the text of an accDescr line, two spaces and a text after it, spaces at the end, of a Wardley map]
 [test: U+2028 before a directive that a comment touches, a line follows, in an accTitle line of a Wardley map]
 [test: U+2028 before a directive that a comment touches, the text ends, in an accTitle line of a Wardley map]
 [test: U+2028 before a directive that a comment follows after spaces, a line follows, in an accTitle line of a Wardley map]

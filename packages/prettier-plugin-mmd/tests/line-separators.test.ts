@@ -12155,6 +12155,76 @@ const wardleyDirectiveEndExamples: readonly (readonly [
     "title  %%{x\u2028y}%%  ",
     "title  %%{x\u2028y}%%  ",
   ],
+  [
+    "a directive that starts the text of a title, two spaces and a text after it, spaces at the end, of a Wardley map",
+    "title %%{x}%%  T  ",
+    "title %%{x}%%T",
+  ],
+  [
+    "a directive that starts the text of a title, a space and a text after it, of a Wardley map",
+    "title %%{x}%% T",
+    "title %%{x}%%T",
+  ],
+  [
+    "a directive that starts the text of a title, tabs before and after it, of a Wardley map",
+    "title\t%%{x}%%\tT",
+    "title %%{x}%%T",
+  ],
+  [
+    "two directives that touch and start the text of a title, two spaces and a text after them, spaces at the end, of a Wardley map",
+    "title %%{x}%%%%{y}%%  T  ",
+    "title %%{x}%%%%{y}%%T",
+  ],
+  [
+    "two directives that touch and start the text of a title, a tab and a text after them, of a Wardley map",
+    "title %%{x}%%%%{y}%%\tT",
+    "title %%{x}%%%%{y}%%T",
+  ],
+  [
+    "a directive that starts the text of a title, a text with a run of spaces inside it, spaces at the end, of a Wardley map",
+    "title %%{x}%%  T  U  ",
+    "title %%{x}%%T U",
+  ],
+  [
+    "a directive that starts the text of a title, a text with a tab inside it, a tab at the end, of a Wardley map",
+    "title %%{x}%%  T\tU\t",
+    "title %%{x}%%T U",
+  ],
+  [
+    "a directive that touches the keyword of a title, a space and a text after it, of a Wardley map",
+    "title%%{x}%% T",
+    "title %%{x}%%T",
+  ],
+  [
+    "two spaces before the directive that starts the text of a title, of a Wardley map",
+    "title  %%{x}%% T",
+    "title  %%{x}%% T",
+  ],
+  [
+    "two directives with spaces between them that start the text of a title, of a Wardley map",
+    "title %%{x}%%  %%{y}%%  T  ",
+    "title %%{x}%%  %%{y}%%  T  ",
+  ],
+  [
+    "a directive that starts the text of a title and a directive that ends it, of a Wardley map",
+    "title %%{x}%% T %%{y}%%  ",
+    "title %%{x}%%T %%{y}%%",
+  ],
+  [
+    "a directive that touches the colon of an accTitle line, a space and a text after it, of a Wardley map",
+    "accTitle:%%{x}%% T",
+    "accTitle: %%{x}%%T",
+  ],
+  [
+    "a directive that starts the text of an accTitle line, two spaces and a text after it, spaces at the end, of a Wardley map",
+    "accTitle: %%{x}%%  T  ",
+    "accTitle: %%{x}%%  T  ",
+  ],
+  [
+    "a directive that starts the text of an accDescr line, two spaces and a text after it, spaces at the end, of a Wardley map",
+    "accDescr: %%{x}%%  T  ",
+    "accDescr: %%{x}%%  T  ",
+  ],
 ]
 
 describe("the directives that end the title or the value of an accessibility line of a Wardley map", () => {
@@ -14703,6 +14773,21 @@ const wardleyDirectiveCommentExamples: readonly (readonly [
     "a comment after the last directive after two spaces, a comment line that holds a `;` follows, in an accTitle line of a Wardley map",
     "wardley-beta\naccTitle: T  %%{x}%%  %% c\n%% e;\n\ncomponent A [0.5, 0.5]\n",
     "wardley-beta\n  accTitle: T %%{x}%% %% c\n  %% e;\n\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a directive that starts the text, two spaces and a text after it, spaces at the end, the text ends, in a title of a Wardley map",
+    "wardley-beta\ntitle %%{x}%%  T  \n",
+    "wardley-beta\n  title %%{x}%%T\n",
+  ],
+  [
+    "two directives that touch and start the text, a text after them, spaces at the end, the text ends, in a title of a Wardley map",
+    "wardley-beta\ntitle %%{x}%%%%{y}%%  T  \n",
+    "wardley-beta\n  title %%{x}%%%%{y}%%T\n",
+  ],
+  [
+    "a directive that starts the text, two spaces and a text after it, spaces at the end, a statement follows, in a title of a Wardley map",
+    "wardley-beta\ntitle %%{x}%%  T  \ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title %%{x}%%T\n  component A [0.5, 0.5]\n",
   ],
 ]
 
