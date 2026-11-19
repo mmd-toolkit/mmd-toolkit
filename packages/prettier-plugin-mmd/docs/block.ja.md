@@ -1607,14 +1607,19 @@ U+2028 や U+2029 は、文が続かず、
 U+2028 を残して `#f00` と印字します）。
 `style`、`classDef`、`class` の文は、文と U+2028 の間に何があっても（何もない、
 コメント、ディレクティブ、その両方。`style a fill:#F00 %% x`、
-`class a k %% x`）、行に `;` がなければ U+2028 や U+2029 を落とします。
+`classDef k fill:#F00%% x`、`class a k %%{x}%% %% x`）、
+行に `;` がなければ U+2028 や U+2029 を落とします。
 それ以外の文は、間に何もないか、ディレクティブだけがあるとき（`b`、
-`b-->c %%{x}%%`）は落とし、空白を挟んでコメントが続くとき、
-ディレクティブの後でも（`b %% x`、`b %%{x}%% %% x`、
-`columns 2 %% x`）は残します。
-コメントが文に接するときは、`b` と `b-->c` が落とし（`b%% x`）、
-ラベルのあるノード、幅、`space`、ブロックの矢印、
-`end` が残します（`b["x"]%% x`、`columns 2%% x`、`space%% x`）。
+`b-->c %%{x}%%`、`b-->c%%{x}%%`）は落とし、空白、空白の連なり、
+[空白文字](#空白文字)のどれかを挟んでコメントが続くとき（`b %% x`、`b`、タブ、
+`%% x`）は残します。
+ディレクティブの後でも、
+そのディレクティブにコメントが接するときも同じです（`b %%{x}%% %% x`、
+`b %%{x}%%%% x`、`columns 2 %% x`、`b:2 %% x`）。
+コメントが文に接するときは、`b` とエッジ（`b-->c`、
+`b:2-->c`）が落とし（`b%% x`）、ラベルか幅のあるノード、`columns`、`space`、
+ブロックの矢印、`end` が残します（`b["x"]%% x`、`b:2%% x`、`columns 2%% x`、
+`space%% x`）。
 複合ブロックの `end` も、ほかの文と同じ文です。
 `end;`、`end%% x`、`end %% x` のように U+2028 が残るとき、
 または文がコメント行の後に続くときは、複合ブロック全体を書かれたままにし、
@@ -1625,6 +1630,14 @@ U+2028 を残して `#f00` と印字します）。
 U+2028 や U+2029 を残し、通常どおり整形します（`block:G%% x`、U+2028、
 `%% c` は `block: G%% x`、U+2028、`%% c` になり、
 `block:G %% x` は `block: G %% x` になります）。
+コメント行にある 2 つ目の U+2028 や U+2029（`b`、U+2028、`%% c`、U+2028、
+`%% d`）は、次の改行までのコメントの一部なので、後ろに何が続いても（何もない、
+コメント、文のテキスト）書かれたまま残ります。
+1 つ目は、上の規則のとおり落とすか残し、
+落とすときはコメント行を行として独立させます（`b`、改行、`%% c`、U+2028、
+`%% d` になります。`b %% c`、U+2028、`%% d`、U+2028、`%% d` は変わりません）。
+コメントの前に 2 つ続く U+2028（`b`、U+2028、U+2028、`%% c`）は両方を落とし、
+改行が 1 つ残ります。
 文が続くときの色は、文がコメント行のすぐ後の行にあれば書かれたまま残り、空行、
 空白だけの行、ディレクティブの行が文のすぐ前にあれば小文字になります。
 flowchart、class、state、ER は、ブロック図が落とすどの行でも、
@@ -1891,6 +1904,40 @@ U+2028 と `%% c` を残して `style a fill:#f00;` になります）。
 [test: a semicolon, a vertical tab, and a comment after a color, to the end of the text, after a U+2028: the U+2028 stays and the color stays as written]
 [test: the head of a composite block and a comment that touches it, a statement follows the comment line, after a U+2028: the U+2028 stays and the head is formatted]
 [test: the head of a composite block and a comment after a space, a statement follows the comment line, after a U+2028: the U+2028 stays and the head is formatted]
+[test: a class definition and nothing, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a class definition and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a class definition and a directive after a space, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a class definition and a directive and a comment after a space, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a class statement and nothing, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a class statement and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a class statement and a directive after a space, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a class statement and a directive and a comment after a space, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node, a directive after a space and a comment that touches the directive, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an edge, a directive after a space and a comment that touches the directive, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an edge and a directive that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node with a width and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node with a width and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node with a width and a directive that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: an edge with a width and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node and a tab before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and a run of spaces before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and a no-break space before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and U+3000 before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and a vertical tab before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and a form feed before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and U+FEFF before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node, a comment line, and a second U+2028 and a comment, to the end of the text: the first U+2028 or U+2029 is dropped and the second stays]
+[test: a node, a comment line, and a second U+2028 and nothing, to the end of the text: the first U+2028 or U+2029 is dropped and the second stays]
+[test: a node, a comment line, and a second U+2028 and the text of a statement, to the end of the text: the first U+2028 or U+2029 is dropped and the second stays]
+[test: a node, a comment line, and a U+2029 inside it, to the end of the text: the first U+2028 or U+2029 is dropped and the second stays]
+[test: a node, a U+2029, a comment line, and a U+2028 inside it, to the end of the text: the first U+2028 or U+2029 is dropped and the second stays]
+[test: a node and a comment line that holds two more U+2028, to the end of the text: the first U+2028 or U+2029 is dropped and the second stays]
+[test: a style statement, a comment line, and a second U+2028 and a comment, to the end of the text: the first U+2028 or U+2029 is dropped and the second stays]
+[test: a node and a comment that touches it, a comment line that holds a U+2028, to the end of the text: the first U+2028 or U+2029 is dropped and the second stays]
+[test: a node and a comment after a space, a comment line that holds a U+2028, to the end of the text: the first U+2028 stays]
+[test: a node and a semicolon, a comment line, and a second U+2028 and a comment, to the end of the text: the first U+2028 stays]
+[test: a node and two U+2028 before a comment line, to the end of the text: both are dropped]
+[test: a style statement and two U+2028 before a comment line, to the end of the text: both are dropped]
 
 ### 空白文字
 

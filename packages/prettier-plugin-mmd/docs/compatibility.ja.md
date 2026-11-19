@@ -6271,7 +6271,7 @@ composite ブロックの開始行は、コロンの行に名前があるとき�
 [複数行の文](./block.ja.md#複数行の文)を参照してください。
 どの文でも、文が続かず、空白でない最後の行がコメントを含むとき、
 コメント行の前の U+2028 や U+2029 は落とし（前の行に `;` があるときと、`style`、
-`classDef`、`class` ではない文の後にコメントが続くときは別です。
+`classDef`、`class` ではない文の後に空白を挟んでコメントが続くときは別です。
 その節が文ごとに述べます）、コメント行は自分の行に置きます。
 [行区切り文字](./block.ja.md#行区切り文字)を参照してください。
 ブロック図では、そのような行の文について、
@@ -6319,6 +6319,20 @@ composite ブロックの開始行は、コロンの行に名前があるとき�
 [test: a node and a directive after a space, to the end of the text, after a U+2028: the U+2028 is dropped]
 [test: an edge and a directive after a space, to the end of the text, after a U+2028: the U+2028 is dropped]
 [test: a node, a directive, and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node, a directive after a space and a comment that touches the directive, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an edge, a directive after a space and a comment that touches the directive, to the end of the text, after a U+2028: the U+2028 stays]
+[test: an edge and a directive that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node with a width and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node with a width and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node with a width and a directive that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: an edge with a width and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a node and a tab before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and a run of spaces before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and a no-break space before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and U+3000 before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and a vertical tab before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and a form feed before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and U+FEFF before the comment, to the end of the text, after a U+2028: the U+2028 stays]
 
 行に載るものと行の終わりは、mermaid.js が取り除くものから決まります。
 図種ごとの文書には、その図種のことを書きます。

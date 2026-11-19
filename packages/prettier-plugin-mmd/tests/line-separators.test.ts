@@ -6283,6 +6283,176 @@ const blockLineSeparatorExamples: readonly (readonly [
     "block-beta\nblock:G %% x\u2028%% c\n  b\nend\n",
     "block-beta\n  block: G %% x\u2028%% c\n  b\n  end\n",
   ],
+  [
+    "a class definition and nothing, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\nclassDef k fill:#F00\u2028%% c\n",
+    "block-beta\n  a\n  classDef k fill: #f00\n  %% c\n",
+  ],
+  [
+    "a class definition and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\nclassDef k fill:#F00%% x\u2028%% c\n",
+    "block-beta\n  a\n  classDef k fill: #F00%% x\n  %% c\n",
+  ],
+  [
+    "a class definition and a directive after a space, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\nclassDef k fill:#F00 %%{x}%%\u2028%% c\n",
+    "block-beta\n  a\n  classDef k fill: #f00 %%{x}%%\n  %% c\n",
+  ],
+  [
+    "a class definition and a directive and a comment after a space, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\nclassDef k fill:#F00 %%{x}%% %% x\u2028%% c\n",
+    "block-beta\n  a\n  classDef k fill:#f00 %%{x}%% %% x\n  %% c\n",
+  ],
+  [
+    "a class statement and nothing, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\nclass a k\u2028%% c\n",
+    "block-beta\n  a\n  class a k\n  %% c\n",
+  ],
+  [
+    "a class statement and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\nclass a k%% x\u2028%% c\n",
+    "block-beta\n  a\n  class a k%% x\n  %% c\n",
+  ],
+  [
+    "a class statement and a directive after a space, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\nclass a k %%{x}%%\u2028%% c\n",
+    "block-beta\n  a\n  class a k %%{x}%%\n  %% c\n",
+  ],
+  [
+    "a class statement and a directive and a comment after a space, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\nclass a k %%{x}%% %% x\u2028%% c\n",
+    "block-beta\n  a\n  class a k %%{x}%% %% x\n  %% c\n",
+  ],
+  [
+    "a node, a directive after a space and a comment that touches the directive, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\nb %%{x}%%%% x\u2028%% c\n",
+    "block-beta\n  a\n  b %%{x}%%%% x\u2028%% c\n",
+  ],
+  [
+    "an edge, a directive after a space and a comment that touches the directive, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\nb-->c %%{x}%%%% x\u2028%% c\n",
+    "block-beta\n  a\n  b-->c %%{x}%%%% x\u2028%% c\n",
+  ],
+  [
+    "an edge and a directive that touches it, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\nb-->c%%{x}%%\u2028%% c\n",
+    "block-beta\n  a\n  b --> c%%{x}%%\n  %% c\n",
+  ],
+  [
+    "a node with a width and a comment after a space, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\nb:2 %% x\u2028%% c\n",
+    "block-beta\n  a\n  b:2 %% x\u2028%% c\n",
+  ],
+  [
+    "a node with a width and a comment that touches it, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\nb:2%% x\u2028%% c\n",
+    "block-beta\n  a\n  b:2%% x\u2028%% c\n",
+  ],
+  [
+    "a node with a width and a directive that touches it, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\nb:2%%{x}%%\u2028%% c\n",
+    "block-beta\n  a\n  b:2%%{x}%%\n  %% c\n",
+  ],
+  [
+    "an edge with a width and a comment that touches it, to the end of the text, after a U+2028: the U+2028 is dropped",
+    "block-beta\na\nb:2-->c%% x\u2028%% c\n",
+    "block-beta\n  a\n  b:2 --> c%% x\n  %% c\n",
+  ],
+  [
+    "a node and a tab before the comment, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\nb\t%% x\u2028%% c\n",
+    "block-beta\n  a\n  b\t%% x\u2028%% c\n",
+  ],
+  [
+    "a node and a run of spaces before the comment, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\nb  %% x\u2028%% c\n",
+    "block-beta\n  a\n  b  %% x\u2028%% c\n",
+  ],
+  [
+    "a node and a no-break space before the comment, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\nb\u00a0%% x\u2028%% c\n",
+    "block-beta\n  a\n  b\u00a0%% x\u2028%% c\n",
+  ],
+  [
+    "a node and U+3000 before the comment, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\nb\u3000%% x\u2028%% c\n",
+    "block-beta\n  a\n  b\u3000%% x\u2028%% c\n",
+  ],
+  [
+    "a node and a vertical tab before the comment, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\nb\u000b%% x\u2028%% c\n",
+    "block-beta\n  a\n  b\u000b%% x\u2028%% c\n",
+  ],
+  [
+    "a node and a form feed before the comment, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\nb\f%% x\u2028%% c\n",
+    "block-beta\n  a\n  b\f%% x\u2028%% c\n",
+  ],
+  [
+    "a node and U+FEFF before the comment, to the end of the text, after a U+2028: the U+2028 stays",
+    "block-beta\na\nb\ufeff%% x\u2028%% c\n",
+    "block-beta\n  a\n  b\ufeff%% x\u2028%% c\n",
+  ],
+  [
+    "a node, a comment line, and a second U+2028 and a comment, to the end of the text: the first U+2028 or U+2029 is dropped and the second stays",
+    "block-beta\na\nb\u2028%% c\u2028%% d\n",
+    "block-beta\n  a\n  b\n  %% c\u2028%% d\n",
+  ],
+  [
+    "a node, a comment line, and a second U+2028 and nothing, to the end of the text: the first U+2028 or U+2029 is dropped and the second stays",
+    "block-beta\na\nb\u2028%% c\u2028\n",
+    "block-beta\n  a\n  b\n  %% c\u2028\n",
+  ],
+  [
+    "a node, a comment line, and a second U+2028 and the text of a statement, to the end of the text: the first U+2028 or U+2029 is dropped and the second stays",
+    "block-beta\na\nb\u2028%% c\u2028b\n",
+    "block-beta\n  a\n  b\n  %% c\u2028b\n",
+  ],
+  [
+    "a node, a comment line, and a U+2029 inside it, to the end of the text: the first U+2028 or U+2029 is dropped and the second stays",
+    "block-beta\na\nb\u2028%% c\u2029%% d\n",
+    "block-beta\n  a\n  b\n  %% c\u2029%% d\n",
+  ],
+  [
+    "a node, a U+2029, a comment line, and a U+2028 inside it, to the end of the text: the first U+2028 or U+2029 is dropped and the second stays",
+    "block-beta\na\nb\u2029%% c\u2028%% d\n",
+    "block-beta\n  a\n  b\n  %% c\u2028%% d\n",
+  ],
+  [
+    "a node and a comment line that holds two more U+2028, to the end of the text: the first U+2028 or U+2029 is dropped and the second stays",
+    "block-beta\na\nb\u2028%% c\u2028%% d\u2028%% d\n",
+    "block-beta\n  a\n  b\n  %% c\u2028%% d\u2028%% d\n",
+  ],
+  [
+    "a style statement, a comment line, and a second U+2028 and a comment, to the end of the text: the first U+2028 or U+2029 is dropped and the second stays",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\u2028%% d\n",
+    "block-beta\n  a\n  style a fill: #f00\n  %% c\u2028%% d\n",
+  ],
+  [
+    "a node and a comment that touches it, a comment line that holds a U+2028, to the end of the text: the first U+2028 or U+2029 is dropped and the second stays",
+    "block-beta\na\nb%% c\u2028%% d\u2028%% d\n",
+    "block-beta\n  a\n  b%% c\n  %% d\u2028%% d\n",
+  ],
+  [
+    "a node and a comment after a space, a comment line that holds a U+2028, to the end of the text: the first U+2028 stays",
+    "block-beta\na\nb %% c\u2028%% d\u2028%% d\n",
+    "block-beta\n  a\n  b %% c\u2028%% d\u2028%% d\n",
+  ],
+  [
+    "a node and a semicolon, a comment line, and a second U+2028 and a comment, to the end of the text: the first U+2028 stays",
+    "block-beta\na\nb;\u2028%% c\u2028%% d\n",
+    "block-beta\n  a\n  b;\u2028%% c\u2028%% d\n",
+  ],
+  [
+    "a node and two U+2028 before a comment line, to the end of the text: both are dropped",
+    "block-beta\na\nb\u2028\u2028%% c\n",
+    "block-beta\n  a\n  b\n  %% c\n",
+  ],
+  [
+    "a style statement and two U+2028 before a comment line, to the end of the text: both are dropped",
+    "block-beta\na\nstyle a fill:#F00\u2028\u2028%% c\n",
+    "block-beta\n  a\n  style a fill: #f00\n  %% c\n",
+  ],
 ]
 
 /**

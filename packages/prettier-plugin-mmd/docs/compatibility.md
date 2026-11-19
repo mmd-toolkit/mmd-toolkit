@@ -6000,8 +6000,8 @@ the colon at once (see
 U+2028 or U+2029 before a comment line is dropped where no statement follows,
 the last line that is not blank holds a comment, and the line before it holds no
 `;`, and the comment line stands on a line of its own; a statement that is no
-`style`, `classDef`, or `class` keeps it where a comment follows the statement,
-as the same section states for each statement (see
+`style`, `classDef`, or `class` keeps it where a comment follows the statement
+after whitespace, as the same section states for each statement (see
 [Line separators](./block.md#line-separators)). What else the formatter prints
 on a statement of such a line in a block diagram, as the colors of a style, is
 stated there too.
@@ -6068,7 +6068,28 @@ U+2028: the U+2028 is dropped] [test: a node and a directive after a space, to
 the end of the text, after a U+2028: the U+2028 is dropped] [test: an edge and a
 directive after a space, to the end of the text, after a U+2028: the U+2028 is
 dropped] [test: a node, a directive, and a comment after a space, to the end of
-the text, after a U+2028: the U+2028 stays]
+the text, after a U+2028: the U+2028 stays] [test: a node, a directive after a
+space and a comment that touches the directive, to the end of the text, after a
+U+2028: the U+2028 stays] [test: an edge, a directive after a space and a
+comment that touches the directive, to the end of the text, after a U+2028: the
+U+2028 stays] [test: an edge and a directive that touches it, to the end of the
+text, after a U+2028: the U+2028 is dropped] [test: a node with a width and a
+comment after a space, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node with a width and a comment that touches it, to the end of the
+text, after a U+2028: the U+2028 stays] [test: a node with a width and a
+directive that touches it, to the end of the text, after a U+2028: the U+2028 is
+dropped] [test: an edge with a width and a comment that touches it, to the end
+of the text, after a U+2028: the U+2028 is dropped] [test: a node and a tab
+before the comment, to the end of the text, after a U+2028: the U+2028 stays]
+[test: a node and a run of spaces before the comment, to the end of the text,
+after a U+2028: the U+2028 stays] [test: a node and a no-break space before the
+comment, to the end of the text, after a U+2028: the U+2028 stays] [test: a node
+and U+3000 before the comment, to the end of the text, after a U+2028: the
+U+2028 stays] [test: a node and a vertical tab before the comment, to the end of
+the text, after a U+2028: the U+2028 stays] [test: a node and a form feed before
+the comment, to the end of the text, after a U+2028: the U+2028 stays] [test: a
+node and U+FEFF before the comment, to the end of the text, after a U+2028: the
+U+2028 stays]
 
 What the line holds, and where it ends, follow from what mermaid.js removes. The
 documents of the diagram types say what is theirs:

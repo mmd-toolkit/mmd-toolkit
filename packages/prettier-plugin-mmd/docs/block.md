@@ -1599,38 +1599,50 @@ inside a label, a directive, or a comment (`style a fill:#F00 %%{x;y}%%`, and
 `style a fill:#F00 %% x;`, U+2028, and `%% c` keep the U+2028 and print `#f00`).
 A `style`, a `classDef`, and a `class` statement lose the U+2028 or U+2029
 whatever stands between the statement and it: nothing, a comment, a directive,
-or both (`style a fill:#F00 %% x`, `class a k %% x`), unless a `;` stands in the
-line. Every other statement loses it where nothing, or only a directive, stands
-between (`b`, `b-->c %%{x}%%`), and keeps it where a comment follows after
-whitespace, also after a directive (`b %% x`, `b %%{x}%% %% x`,
-`columns 2 %% x`). Where the comment touches the statement, `b` and `b-->c` lose
-it (`b%% x`), and a node with a label, a width, `space`, a block arrow, and
-`end` keep it (`b["x"]%% x`, `columns 2%% x`, `space%% x`). The end of a
-composite block is a statement like the others: where it keeps the U+2028
-(`end;`, `end%% x`, `end %% x`, or a statement after the comment line), the
-whole composite stays as written, its head and its body unindented (`block:G`,
-`  b`, `end;`, U+2028, and `%% c`), and where it loses it (`end`, `end %%{x}%%`)
-the composite is formatted as usual. The head of a composite block always has a
+or both (`style a fill:#F00 %% x`, `classDef k fill:#F00%% x`,
+`class a k %%{x}%% %% x`), unless a `;` stands in the line. Every other
+statement loses it where nothing, or only a directive, stands between (`b`,
+`b-->c %%{x}%%`, `b-->c%%{x}%%`), and keeps it where a comment follows after
+whitespace, a space, a run of spaces, or one of the
+[whitespace characters](#whitespace-characters) (`b %% x`, and `b`, a tab, and
+`%% x`), also after a directive, which the comment may touch (`b %%{x}%% %% x`,
+`b %%{x}%%%% x`, `columns 2 %% x`, `b:2 %% x`). Where the comment touches the
+statement, `b` and an edge (`b-->c`, `b:2-->c`) lose it (`b%% x`), and a node
+with a label or a width, `columns`, `space`, a block arrow, and `end` keep it
+(`b["x"]%% x`, `b:2%% x`, `columns 2%% x`, `space%% x`). The end of a composite
+block is a statement like the others: where it keeps the U+2028 (`end;`,
+`end%% x`, `end %% x`, or a statement after the comment line), the whole
+composite stays as written, its head and its body unindented (`block:G`, `  b`,
+`end;`, U+2028, and `%% c`), and where it loses it (`end`, `end %%{x}%%`) the
+composite is formatted as usual. The head of a composite block always has a
 statement after it (`end` at least), so it keeps the U+2028 or U+2029 also with
 a comment before it, whether the comment touches the head or follows it after
 whitespace, and is formatted as usual (`block:G%% x`, U+2028, and `%% c` print
 `block: G%% x`, U+2028, and `%% c`, and `block:G %% x` prints `block: G %% x`).
-Where a statement follows, the color stays as written if the statement is on the
-line right after a comment line, and is in lower case if an empty line, a line
-of whitespace, or a directive line stands right before it. Flowchart, class,
-state, and ER keep the line as written in every row where block drops it (ER
-rejects the row of a whitespace-only line), and rule 2 gives their form, so
-block prints each of those rows against rule 2 and waits to be fixed by the
-rule. On such a line, a color before a comma on its line, also after a space, a
-tab, or a form feed, and the last color of the last line, where no `;` that the
-line rule ignores follows it, are in lower case; a color before a comma at the
-start of the line after the comment line stays as written (`#F00`, and `#abc`
-after it); a color that spaces, tabs, or form feeds and characters follow on its
-line is in lower case (`#F00 x`, U+2028, `%% c`, and ` y` print `#f00 x`); and a
-color that a `;` that the line rule ignores touches on a line after the comment
-line stays as written (`#F00`, and `#ABC;` after it; the `;` before the U+2028
-is stated below), also where any character but a space, a tab, or a form feed
-separates it from the `;`; for a vertical tab or a wide space, the
+A second U+2028 or U+2029 on the comment line (`b`, U+2028, `%% c`, U+2028, and
+`%% d`) is part of the comment, which runs to the next line feed, so it stays as
+written, whatever follows it on the line: nothing, a comment, or the text of a
+statement. The first one is dropped or stays as the rules above say, and where
+it is dropped the comment line stands on a line of its own (`b`, a line break,
+`%% c`, U+2028, and `%% d`; `b %% c`, U+2028, `%% d`, U+2028, and `%% d` are not
+changed). Two of them in a row before the comment (`b`, U+2028, U+2028, and
+`%% c`) are both dropped, and one line break remains. Where a statement follows,
+the color stays as written if the statement is on the line right after a comment
+line, and is in lower case if an empty line, a line of whitespace, or a
+directive line stands right before it. Flowchart, class, state, and ER keep the
+line as written in every row where block drops it (ER rejects the row of a
+whitespace-only line), and rule 2 gives their form, so block prints each of
+those rows against rule 2 and waits to be fixed by the rule. On such a line, a
+color before a comma on its line, also after a space, a tab, or a form feed, and
+the last color of the last line, where no `;` that the line rule ignores follows
+it, are in lower case; a color before a comma at the start of the line after the
+comment line stays as written (`#F00`, and `#abc` after it); a color that
+spaces, tabs, or form feeds and characters follow on its line is in lower case
+(`#F00 x`, U+2028, `%% c`, and ` y` print `#f00 x`); and a color that a `;` that
+the line rule ignores touches on a line after the comment line stays as written
+(`#F00`, and `#ABC;` after it; the `;` before the U+2028 is stated below), also
+where any character but a space, a tab, or a form feed separates it from the
+`;`; for a vertical tab or a wide space, the
 [Colors](./compatibility.md#colors-that-are-drawn-the-same) rule prints it in
 lower case, so that form is printed against the rule and waits to be fixed by
 it. Where the line before the U+2028 holds a `;`, the line is kept: the U+2028
@@ -2010,7 +2022,61 @@ U+2028: the U+2028 stays and the color stays as written] [test: the head of a
 composite block and a comment that touches it, a statement follows the comment
 line, after a U+2028: the U+2028 stays and the head is formatted] [test: the
 head of a composite block and a comment after a space, a statement follows the
-comment line, after a U+2028: the U+2028 stays and the head is formatted]
+comment line, after a U+2028: the U+2028 stays and the head is formatted] [test:
+a class definition and nothing, to the end of the text, after a U+2028: the
+U+2028 is dropped] [test: a class definition and a comment that touches it, to
+the end of the text, after a U+2028: the U+2028 is dropped] [test: a class
+definition and a directive after a space, to the end of the text, after a
+U+2028: the U+2028 is dropped] [test: a class definition and a directive and a
+comment after a space, to the end of the text, after a U+2028: the U+2028 is
+dropped] [test: a class statement and nothing, to the end of the text, after a
+U+2028: the U+2028 is dropped] [test: a class statement and a comment that
+touches it, to the end of the text, after a U+2028: the U+2028 is dropped]
+[test: a class statement and a directive after a space, to the end of the text,
+after a U+2028: the U+2028 is dropped] [test: a class statement and a directive
+and a comment after a space, to the end of the text, after a U+2028: the U+2028
+is dropped] [test: a node, a directive after a space and a comment that touches
+the directive, to the end of the text, after a U+2028: the U+2028 stays] [test:
+an edge, a directive after a space and a comment that touches the directive, to
+the end of the text, after a U+2028: the U+2028 stays] [test: an edge and a
+directive that touches it, to the end of the text, after a U+2028: the U+2028 is
+dropped] [test: a node with a width and a comment after a space, to the end of
+the text, after a U+2028: the U+2028 stays] [test: a node with a width and a
+comment that touches it, to the end of the text, after a U+2028: the U+2028
+stays] [test: a node with a width and a directive that touches it, to the end of
+the text, after a U+2028: the U+2028 is dropped] [test: an edge with a width and
+a comment that touches it, to the end of the text, after a U+2028: the U+2028 is
+dropped] [test: a node and a tab before the comment, to the end of the text,
+after a U+2028: the U+2028 stays] [test: a node and a run of spaces before the
+comment, to the end of the text, after a U+2028: the U+2028 stays] [test: a node
+and a no-break space before the comment, to the end of the text, after a U+2028:
+the U+2028 stays] [test: a node and U+3000 before the comment, to the end of the
+text, after a U+2028: the U+2028 stays] [test: a node and a vertical tab before
+the comment, to the end of the text, after a U+2028: the U+2028 stays] [test: a
+node and a form feed before the comment, to the end of the text, after a U+2028:
+the U+2028 stays] [test: a node and U+FEFF before the comment, to the end of the
+text, after a U+2028: the U+2028 stays] [test: a node, a comment line, and a
+second U+2028 and a comment, to the end of the text: the first U+2028 or U+2029
+is dropped and the second stays] [test: a node, a comment line, and a second
+U+2028 and nothing, to the end of the text: the first U+2028 or U+2029 is
+dropped and the second stays] [test: a node, a comment line, and a second U+2028
+and the text of a statement, to the end of the text: the first U+2028 or U+2029
+is dropped and the second stays] [test: a node, a comment line, and a U+2029
+inside it, to the end of the text: the first U+2028 or U+2029 is dropped and the
+second stays] [test: a node, a U+2029, a comment line, and a U+2028 inside it,
+to the end of the text: the first U+2028 or U+2029 is dropped and the second
+stays] [test: a node and a comment line that holds two more U+2028, to the end
+of the text: the first U+2028 or U+2029 is dropped and the second stays] [test:
+a style statement, a comment line, and a second U+2028 and a comment, to the end
+of the text: the first U+2028 or U+2029 is dropped and the second stays] [test:
+a node and a comment that touches it, a comment line that holds a U+2028, to the
+end of the text: the first U+2028 or U+2029 is dropped and the second stays]
+[test: a node and a comment after a space, a comment line that holds a U+2028,
+to the end of the text: the first U+2028 stays] [test: a node and a semicolon, a
+comment line, and a second U+2028 and a comment, to the end of the text: the
+first U+2028 stays] [test: a node and two U+2028 before a comment line, to the
+end of the text: both are dropped] [test: a style statement and two U+2028
+before a comment line, to the end of the text: both are dropped]
 
 ### Whitespace characters
 
