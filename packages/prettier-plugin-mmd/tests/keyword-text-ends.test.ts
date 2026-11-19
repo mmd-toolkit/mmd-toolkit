@@ -4779,9 +4779,18 @@ describe("a directive that holds a line break or a semicolon, wherever it stands
 })
 
 /**
+ * The statement right after a title that stays as written, as the printer
+ * writes it: its first line as written, the other lines indented.
+ */
+function statementAfterTheTitleLine(statement: string): string {
+  const [first, ...rest] = statement.split("\n")
+  return `${[first, ...rest.map((line) => `  ${line}`)].join("\n")}\n`
+}
+
+/**
  * The diagram types that have a title, each with the group that the table of
  * docs/compatibility.md, Texts after a keyword that are drawn the same, gives
- * it, and one statement.
+ * it, a statement, and what the type prints for the statement.
  */
 const titleStatementTypes = [
   {
@@ -4790,6 +4799,7 @@ const titleStatementTypes = [
     printedHeader: "pie",
     indent: "  ",
     statement: '"a": 1',
+    printedStatement: '  "a": 1\n',
     group: "langium",
   },
   {
@@ -4798,6 +4808,7 @@ const titleStatementTypes = [
     printedHeader: "radar-beta",
     indent: "  ",
     statement: "axis a, b\ncurve c{1, 2}",
+    printedStatement: "  axis a, b\n  curve c{1, 2}\n",
     group: "langium",
   },
   {
@@ -4806,6 +4817,7 @@ const titleStatementTypes = [
     printedHeader: "packet-beta",
     indent: "  ",
     statement: '0-7: "x"',
+    printedStatement: '  0-7: "x"\n',
     group: "langium",
   },
   {
@@ -4814,6 +4826,7 @@ const titleStatementTypes = [
     printedHeader: "architecture-beta",
     indent: "  ",
     statement: "service a(server)[A]",
+    printedStatement: "  service a(server)[A]\n",
     group: "langium",
   },
   {
@@ -4822,6 +4835,7 @@ const titleStatementTypes = [
     printedHeader: "gitGraph",
     indent: "  ",
     statement: "commit",
+    printedStatement: "  commit\n",
     group: "langium",
   },
   {
@@ -4830,6 +4844,7 @@ const titleStatementTypes = [
     printedHeader: "cynefin-beta",
     indent: "  ",
     statement: 'complex "a"',
+    printedStatement: '  complex\n    "a"\n',
     group: "langium",
   },
   {
@@ -4838,6 +4853,7 @@ const titleStatementTypes = [
     printedHeader: "treemap",
     indent: "",
     statement: '"A": 1',
+    printedStatement: '  "A": 1\n',
     group: "langium",
   },
   {
@@ -4846,6 +4862,7 @@ const titleStatementTypes = [
     printedHeader: "wardley-beta",
     indent: "  ",
     statement: "component A [0.5, 0.5]",
+    printedStatement: "  component A [0.5, 0.5]\n",
     group: "langium",
   },
   {
@@ -4854,6 +4871,7 @@ const titleStatementTypes = [
     printedHeader: "treeView-beta",
     indent: "  ",
     statement: "root",
+    printedStatement: "  root\n",
     group: "treeView",
   },
   {
@@ -4862,6 +4880,7 @@ const titleStatementTypes = [
     printedHeader: "info",
     indent: "  ",
     statement: "showInfo",
+    printedStatement: "  showInfo\n",
     group: "langium",
   },
   {
@@ -4870,6 +4889,7 @@ const titleStatementTypes = [
     printedHeader: "railroad-abnf-beta",
     indent: "  ",
     statement: 'r="a";',
+    printedStatement: '  r = "a";\n',
     group: "langium",
   },
   {
@@ -4878,6 +4898,7 @@ const titleStatementTypes = [
     printedHeader: "quadrantChart",
     indent: "  ",
     statement: "x-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]",
+    printedStatement: "  x-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
     group: "quadrant",
   },
   {
@@ -4886,6 +4907,7 @@ const titleStatementTypes = [
     printedHeader: "gantt",
     indent: "  ",
     statement: "section s",
+    printedStatement: "  section s\n",
     group: "other",
   },
   {
@@ -4894,6 +4916,7 @@ const titleStatementTypes = [
     printedHeader: "journey",
     indent: "  ",
     statement: "section s",
+    printedStatement: "  section s\n",
     group: "other",
   },
   {
@@ -4902,6 +4925,7 @@ const titleStatementTypes = [
     printedHeader: "timeline",
     indent: "  ",
     statement: "section s",
+    printedStatement: "  section s\n",
     group: "other",
   },
   {
@@ -4910,6 +4934,7 @@ const titleStatementTypes = [
     printedHeader: "sequenceDiagram",
     indent: "  ",
     statement: "A->>B: x",
+    printedStatement: "  A ->> B: x\n",
     group: "other",
   },
   {
@@ -4918,6 +4943,7 @@ const titleStatementTypes = [
     printedHeader: "venn-beta",
     indent: "  ",
     statement: "set A",
+    printedStatement: "  set A\n",
     group: "other",
   },
   {
@@ -4926,84 +4952,266 @@ const titleStatementTypes = [
     printedHeader: "C4Context",
     indent: "  ",
     statement: 'Person(a,"A")',
+    printedStatement: '  Person(a, "A")\n',
     group: "other",
   },
 ] as const
 
 /**
  * What a title of a directive and a comment only, with a U+2028 or a U+2029
- * before the directive, prints by what follows the title: whether each group of
- * types moves the directive and the comment to the next line, with the lines
- * that follow (a `{statement}` stands for the statement of a type). The info
+ * before the directive, prints by what follows the title (docs/compatibility.md).
+ * `moved` says whether each group of types moves the directive and the comment
+ * to the next line, which prints the text as if the U+2028 were a line break;
+ * `tail` is what follows the title line where the title stays as written, with
+ * `{S}` for the printed statement and `{S0}` for it without the indent of its
+ * first line (a `null` tail is given by `otherTail` and `c4Tail`). The info
  * diagram rejects a statement after an empty line, a line of spaces, or a line
- * of a directive (docs/compatibility.md).
+ * of a directive.
  */
 const titleFollowRows = [
   {
     name: "U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: nothing, or an empty line",
-    follows: [{ text: "" }, { text: "\n" }],
+    follows: [
+      {
+        text: "",
+        tail: "",
+        rejectedByInfo: false,
+        otherTail: null,
+        c4Tail: null,
+      },
+      {
+        text: "\n",
+        tail: "",
+        rejectedByInfo: false,
+        otherTail: null,
+        c4Tail: "\n",
+      },
+    ],
     moved: { langium: true, treeView: true, quadrant: true, other: false },
     oneSpace: true,
+    unstableInATreemap: false,
   },
   {
     name: "U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: an empty line, then a statement",
-    follows: [{ text: "\n{statement}\n", rejectedByInfo: true }],
+    follows: [
+      {
+        text: "\n{ST}\n",
+        tail: "\n{S}",
+        rejectedByInfo: true,
+        otherTail: null,
+        c4Tail: null,
+      },
+    ],
     moved: { langium: true, treeView: false, quadrant: false, other: false },
+    oneSpace: false,
     unstableInATreemap: true,
   },
   {
     name: "U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a comment line",
-    follows: [{ text: "%% z\n" }],
+    follows: [
+      {
+        text: "%% z\n",
+        tail: null,
+        rejectedByInfo: false,
+        otherTail: "  %% z\n",
+        c4Tail: "%% z\n",
+      },
+    ],
     moved: { langium: true, treeView: true, quadrant: true, other: false },
     oneSpace: true,
+    unstableInATreemap: false,
   },
   {
     name: "U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: one comment line or two, then a statement",
     follows: [
-      { text: "%% z\n{statement}\n" },
-      { text: "%% z\n%% w\n{statement}\n" },
+      {
+        text: "%% z\n{ST}\n",
+        tail: "%% z\n{S0}",
+        rejectedByInfo: false,
+        otherTail: null,
+        c4Tail: null,
+      },
+      {
+        text: "%% z\n%% w\n{ST}\n",
+        tail: "%% z\n%% w\n{S0}",
+        rejectedByInfo: false,
+        otherTail: null,
+        c4Tail: null,
+      },
     ],
     moved: { langium: false, treeView: false, quadrant: false, other: false },
+    oneSpace: false,
+    unstableInATreemap: false,
   },
   {
     name: "U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a comment line, an empty line, then a statement",
-    follows: [{ text: "%% z\n\n{statement}\n", rejectedByInfo: true }],
+    follows: [
+      {
+        text: "%% z\n\n{ST}\n",
+        tail: "%% z\n\n{S}",
+        rejectedByInfo: true,
+        otherTail: null,
+        c4Tail: null,
+      },
+    ],
     moved: { langium: true, treeView: false, quadrant: false, other: false },
+    oneSpace: false,
     unstableInATreemap: true,
   },
   {
     name: "U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of spaces",
-    follows: [{ text: "   \n" }],
+    follows: [
+      {
+        text: "   \n",
+        tail: "   \n",
+        rejectedByInfo: false,
+        otherTail: null,
+        c4Tail: null,
+      },
+    ],
     moved: { langium: false, treeView: false, quadrant: true, other: false },
+    oneSpace: false,
+    unstableInATreemap: false,
   },
   {
     name: "U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of spaces, then a statement",
-    follows: [{ text: "   \n{statement}\n", rejectedByInfo: true }],
+    follows: [
+      {
+        text: "   \n{ST}\n",
+        tail: "   \n{S}",
+        rejectedByInfo: true,
+        otherTail: null,
+        c4Tail: null,
+      },
+    ],
     moved: { langium: false, treeView: false, quadrant: false, other: false },
+    oneSpace: false,
+    unstableInATreemap: false,
   },
   {
     name: "U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of a directive",
-    follows: [{ text: "%%{y}%%\n" }],
+    follows: [
+      {
+        text: "%%{y}%%\n",
+        tail: "%%{y}%%\n",
+        rejectedByInfo: false,
+        otherTail: null,
+        c4Tail: null,
+      },
+    ],
     moved: { langium: true, treeView: false, quadrant: false, other: false },
+    oneSpace: false,
+    unstableInATreemap: false,
   },
   {
     name: "U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of a directive, then a statement",
-    follows: [{ text: "%%{y}%%\n{statement}\n", rejectedByInfo: true }],
+    follows: [
+      {
+        text: "%%{y}%%\n{ST}\n",
+        tail: "%%{y}%%\n{S}",
+        rejectedByInfo: true,
+        otherTail: null,
+        c4Tail: null,
+      },
+    ],
     moved: { langium: true, treeView: false, quadrant: false, other: false },
+    oneSpace: false,
     unstableInATreemap: true,
   },
   {
     name: "U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of a directive after a space, alone or then a statement",
     follows: [
-      { text: " %%{y}%%\n" },
-      { text: " %%{y}%%\n{statement}\n", rejectedByInfo: true },
+      {
+        text: " %%{y}%%\n",
+        tail: " %%{y}%%\n",
+        rejectedByInfo: false,
+        otherTail: null,
+        c4Tail: null,
+      },
+      {
+        text: " %%{y}%%\n{ST}\n",
+        tail: " %%{y}%%\n{S}",
+        rejectedByInfo: true,
+        otherTail: null,
+        c4Tail: null,
+      },
     ],
     moved: { langium: false, treeView: false, quadrant: false, other: false },
+    oneSpace: false,
+    unstableInATreemap: false,
+  },
+  {
+    name: "U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of a directive and a comment, with or without a space before it",
+    follows: [
+      {
+        text: "%%{y}%% %% d\n",
+        tail: null,
+        rejectedByInfo: false,
+        otherTail: "  %%{y}%% %% d\n",
+        c4Tail: "%%{y}%% %% d\n",
+      },
+      {
+        text: "%%{y}%%%% d\n",
+        tail: null,
+        rejectedByInfo: false,
+        otherTail: "  %%{y}%%%% d\n",
+        c4Tail: "%%{y}%%%% d\n",
+      },
+      {
+        text: " %%{y}%% %% d\n",
+        tail: null,
+        rejectedByInfo: false,
+        otherTail: "  %%{y}%% %% d\n",
+        c4Tail: " %%{y}%% %% d\n",
+      },
+    ],
+    moved: { langium: true, treeView: true, quadrant: true, other: false },
+    oneSpace: true,
+    unstableInATreemap: false,
+  },
+  {
+    name: "U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of a directive and a comment, then a statement",
+    follows: [
+      {
+        text: "%%{y}%% %% d\n{ST}\n",
+        tail: "%%{y}%% %% d\n{S0}",
+        rejectedByInfo: false,
+        otherTail: null,
+        c4Tail: null,
+      },
+      {
+        text: "%%{y}%%%% d\n{ST}\n",
+        tail: "%%{y}%%%% d\n{S0}",
+        rejectedByInfo: false,
+        otherTail: null,
+        c4Tail: null,
+      },
+      {
+        text: " %%{y}%% %% d\n{ST}\n",
+        tail: " %%{y}%% %% d\n{S0}",
+        rejectedByInfo: false,
+        otherTail: null,
+        c4Tail: null,
+      },
+    ],
+    moved: { langium: false, treeView: false, quadrant: false, other: false },
+    oneSpace: false,
+    unstableInATreemap: false,
   },
   {
     name: "U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a statement",
-    follows: [{ text: "{statement}\n" }],
+    follows: [
+      {
+        text: "{ST}\n",
+        tail: "{S0}",
+        rejectedByInfo: false,
+        otherTail: null,
+        c4Tail: null,
+      },
+    ],
     moved: { langium: false, treeView: false, quadrant: false, other: false },
+    oneSpace: false,
+    unstableInATreemap: false,
   },
 ] as const
 
@@ -5016,38 +5224,47 @@ describe("a U+2028 or U+2029 before the directive of a title of a directive and 
           for (const touching of [true, false]) {
             for (const follow of row.follows) {
               const written = touching ? "%%{x}%%%% c" : "%%{x}%%  %% c  "
-              const input = `${type.header}\ntitle ${character} ${written}\n${follow.text.replace("{statement}", type.statement)}`
-              if (
-                type.name === "an info diagram" &&
-                "rejectedByInfo" in follow
-              ) {
+              const input = `${type.header}\ntitle ${character} ${written}\n${follow.text.replace("{statement}", type.statement).replace("{ST}", type.statement)}`
+              if (type.name === "an info diagram" && follow.rejectedByInfo) {
                 await expect(formatMermaid(input)).rejects.toThrow(
                   "Unexpected token",
                 )
                 continue
               }
-              // A treemap prints these rows with spaces before the comment one
+              // A treemap with spaces before the comment prints these rows one
               // way the first time and another the second time: no form is given.
               if (
                 type.name === "a treemap" &&
                 !touching &&
-                "unstableInATreemap" in row
+                row.unstableInATreemap
               )
                 continue
-              const moved = row.moved[type.group]
-              // Where the comment stands after spaces, the types of the last
-              // group but a C4 diagram print one space before it where nothing,
-              // an empty line, or a comment line follows (docs/compatibility.md).
-              const oneSpace =
-                !touching &&
-                type.group === "other" &&
-                type.name !== "a C4 diagram" &&
-                "oneSpace" in row
-              const start = moved
-                ? `${type.printedHeader}\n${type.indent}title\n${type.group === "treeView" ? "" : type.indent}${touching ? "%%{x}%%%% c" : "%%{x}%% %% c  "}\n`
-                : `${type.printedHeader}\n${type.indent}title ${character} ${oneSpace ? "%%{x}%% %% c  " : written}\n`
+              const isC4 = type.name === "a C4 diagram"
+              let expected: string
+              if (row.moved[type.group]) {
+                // The moved form prints the text as if the U+2028 were a line break.
+                expected = await formatMermaid(
+                  input.replace(` ${character} `, "\n"),
+                )
+              } else {
+                const tail =
+                  (isC4 ? follow.c4Tail : null) ??
+                  follow.tail ??
+                  follow.otherTail ??
+                  (() => {
+                    throw new Error("no tail")
+                  })()
+                // Where the comment stands after spaces, the types of the last
+                // group but a C4 diagram print one space before it where the
+                // text ends after the line (docs/compatibility.md).
+                const oneSpace =
+                  !touching && type.group === "other" && !isC4 && row.oneSpace
+                expected = `${type.printedHeader}\n${type.indent}title ${character} ${oneSpace ? "%%{x}%% %% c  " : written}\n${tail
+                  .replace("{S0}", statementAfterTheTitleLine(type.statement))
+                  .replace("{S}", type.printedStatement)}`
+              }
               const output = await formatMermaid(input)
-              expect(output.slice(0, start.length)).toBe(start)
+              expect(output).toBe(expected)
               expect(await formatMermaid(output)).toBe(output)
               const dbBefore = dbOfText(input, defaultEmbedded())
               expect(
@@ -5064,6 +5281,39 @@ describe("a U+2028 or U+2029 before the directive of a title of a directive and 
       }
     },
   )
+
+  it("a directive that holds a U+2028 or a U+2029 after a U+2028 or a U+2029 before the directive of a title, with nothing or a statement after the title", async () => {
+    for (const type of titleStatementTypes) {
+      for (const [character, held] of [
+        ["\u2028", "\u2028"],
+        ["\u2029", "\u2029"],
+        ["\u2028", "\u2029"],
+      ] as const) {
+        for (const follow of ["", "{ST}\n"]) {
+          const written = `title ${character} %%{init: {${held}}}%%%% c`
+          const input = `${type.header}\n${written}\n${follow.replace("{ST}", type.statement)}`
+          // An info diagram rejects a statement after a title with a comment
+          // that holds a separator.
+          if (type.name === "an info diagram" && follow !== "") continue
+          const tail = follow === "" ? "" : type.printedStatement
+          const output = await formatMermaid(input)
+          expect(output).toBe(
+            `${type.printedHeader}\n${type.indent}${written}\n${tail}`,
+          )
+          expect(await formatMermaid(output)).toBe(output)
+          const dbBefore = dbOfText(input, defaultEmbedded())
+          expect(
+            dbForFormattingComparison(
+              dbBefore,
+              dbOfText(output, defaultEmbedded()),
+              input,
+              output,
+            ),
+          ).toEqual(dbBefore)
+        }
+      }
+    }
+  })
 })
 
 /** The text without the spaces and tabs at its end. */

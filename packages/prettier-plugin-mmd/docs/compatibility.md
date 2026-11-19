@@ -1597,55 +1597,71 @@ a C4 diagram; with spaces between the directive and the comment
 title as written, and the other types print `%%{x}%%%% c`. A U+2028 or a U+2029
 before the directive of such a title (`title`, a space, a U+2028, a space, and
 `%%{x}%%%% c`), with the comment touching the directive or with spaces between
-them, keeps the title as written, and the line after it too, or moves the
-directive and the comment to a line of their own, by what follows the title: the
-table below gives it for the lines after the title that its first column names,
-with the Langium types but a treeView, a treeView, a quadrant chart, and the
-other types (a Gantt chart, a user journey, a timeline, a sequence diagram, a
-Venn diagram, and a C4 diagram) as columns. `moved` is `title` and, on the next
-line, the directive and the comment (`title` and the U+2028 and `%%{x}%%%% c`
-are printed `title` and `%%{x}%%%% c`), with one space between the directive and
-the comment where spaces stood there. A row without a statement is followed by
-the end of the text, and other sequences of lines are not given. The table is
-for a directive that holds no line break and no `;`. An info diagram rejects a
-statement after an empty line, a line of spaces, or a line of a directive
-(mermaid.js rejects it too), so the rows that put a statement there hold for the
-other Langium types. A treemap with spaces between the directive and the comment
-has no form in the second, the fifth, and the ninth row: the first pass and the
-second pass print the comment differently.
+them, keeps the title as written or moves the directive and the comment to a
+line of their own, by what follows the title: the table below gives it for the
+lines after the title that its first column names, with the Langium types but a
+treeView, a treeView, a quadrant chart, and the other types (a Gantt chart, a
+user journey, a timeline, a sequence diagram, a Venn diagram, and a C4 diagram)
+as columns. `moved` prints the text as if the U+2028 were a line break after
+`title`: `title`, the U+2028, and `%%{x}%%%% c` are printed `title` and
+`%%{x}%%%% c` on the next line (a treeView prints the directive at the first
+column, as it prints a line of a directive there), with one space between the
+directive and the comment where spaces stood there, and the lines after it
+printed as usual. A row without a statement is followed by the end of the text,
+and other sequences of lines are not given. The table is for a directive that
+holds no line break, no `;`, no U+2028, and no U+2029; with a directive that
+holds a U+2028 or a U+2029 the title stays as written, with nothing or a
+statement after it. An info diagram rejects a statement after an empty line, a
+line of spaces, or a line of a directive (mermaid.js rejects it too), so the
+rows that put a statement there hold for the other Langium types. A treemap with
+spaces between the directive and the comment has no form in the second, the
+fifth, and the ninth row: the first pass and the second pass print the comment
+differently.
 
-| Follows the title                                              | Langium types but a treeView | treeView   | quadrant chart | the other types |
-| -------------------------------------------------------------- | ---------------------------- | ---------- | -------------- | --------------- |
-| nothing, or an empty line                                      | moved                        | moved      | moved          | as written      |
-| an empty line, then a statement                                | moved                        | as written | as written     | as written      |
-| a comment line                                                 | moved                        | moved      | moved          | as written      |
-| one comment line or two, then a statement                      | as written                   | as written | as written     | as written      |
-| a comment line, an empty line, then a statement                | moved                        | as written | as written     | as written      |
-| a line of spaces                                               | as written                   | as written | moved          | as written      |
-| a line of spaces, then a statement                             | as written                   | as written | as written     | as written      |
-| a line of a directive                                          | moved                        | as written | as written     | as written      |
-| a line of a directive, then a statement                        | moved                        | as written | as written     | as written      |
-| a line of a directive after a space, alone or then a statement | as written                   | as written | as written     | as written      |
-| a statement                                                    | as written                   | as written | as written     | as written      |
+| Follows the title                                                      | Langium types but a treeView | treeView   | quadrant chart | the other types |
+| ---------------------------------------------------------------------- | ---------------------------- | ---------- | -------------- | --------------- |
+| nothing, or an empty line                                              | moved                        | moved      | moved          | as written      |
+| an empty line, then a statement                                        | moved                        | as written | as written     | as written      |
+| a comment line                                                         | moved                        | moved      | moved          | as written      |
+| one comment line or two, then a statement                              | as written                   | as written | as written     | as written      |
+| a comment line, an empty line, then a statement                        | moved                        | as written | as written     | as written      |
+| a line of spaces                                                       | as written                   | as written | moved          | as written      |
+| a line of spaces, then a statement                                     | as written                   | as written | as written     | as written      |
+| a line of a directive                                                  | moved                        | as written | as written     | as written      |
+| a line of a directive, then a statement                                | moved                        | as written | as written     | as written      |
+| a line of a directive after a space, alone or then a statement         | as written                   | as written | as written     | as written      |
+| a line of a directive and a comment, with or without a space before it | moved                        | moved      | moved          | as written      |
+| a line of a directive and a comment, then a statement                  | as written                   | as written | as written     | as written      |
+| a statement                                                            | as written                   | as written | as written     | as written      |
+
+Where the title stays as written, the first line after it stays as written too:
+a statement, a comment line before a statement, a line of spaces, a line of a
+directive, and a line of a directive and a comment keep their written column,
+and a statement after a line of spaces, a line of a directive, or an empty line
+is printed as usual (the lines of a statement after its first are indented as
+usual). At the end of the text, a Gantt chart, a user journey, a timeline, a
+sequence diagram, and a Venn diagram drop an empty line and align a comment line
+and a line of a directive and a comment, and a C4 diagram keeps them as written.
 
 With spaces between the directive and the comment, a Gantt chart, a user
 journey, a timeline, a sequence diagram, and a Venn diagram print one space
 between them where nothing, an empty line, or a comment line follows the title
-and the text ends (the first and the third row), and a C4 diagram keeps the
-spaces; everything else is as in the table. A whitespace character that is no
-space or tab and no U+2028 or U+2029 before the directive of such a title is
-left out by the Langium types and a quadrant chart and stays in the other types
-(`\u00a0%%{x}%%%% c`). With spaces around the comment (`\u00a0%%{x}%%  %% c  `),
-the Langium types, a Venn diagram, and a C4 diagram keep the title as written, a
-quadrant chart prints `%%{x}%%%% c`, and a Gantt chart, a user journey, a
-timeline, and a sequence diagram keep the character and the spaces before the
-comment and leave out the spaces after it. A tab between the directive and the
-comment is left out by a quadrant chart, a Gantt chart, a user journey, a
-timeline, and a sequence diagram, and stays in the other types, with the same
-drawing. A no-break space, U+3000, or U+2003 between them is left out by a
-quadrant chart and stays in the other types: the eleven Langium types draw the
-same with and without it, and a Gantt chart, a user journey, a timeline, a
-sequence diagram, a Venn diagram, and a C4 diagram draw other text without it.
+and the text ends (the first, the third, and the eleventh row), and a C4 diagram
+keeps the spaces; everything else is as in the table. A whitespace character
+that is no space or tab and no U+2028 or U+2029 before the directive of such a
+title is left out by the Langium types and a quadrant chart and stays in the
+other types (`\u00a0%%{x}%%%% c`). With spaces around the comment
+(`\u00a0%%{x}%%  %% c  `), the Langium types, a Venn diagram, and a C4 diagram
+keep the title as written, a quadrant chart prints `%%{x}%%%% c`, and a Gantt
+chart, a user journey, a timeline, and a sequence diagram keep the character and
+the spaces before the comment and leave out the spaces after it. A tab between
+the directive and the comment is left out by a quadrant chart, a Gantt chart, a
+user journey, a timeline, and a sequence diagram, and stays in the other types,
+with the same drawing. A no-break space, U+3000, or U+2003 between them is left
+out by a quadrant chart and stays in the other types: the eleven Langium types
+draw the same with and without it, and a Gantt chart, a user journey, a
+timeline, a sequence diagram, a Venn diagram, and a C4 diagram draw other text
+without it.
 
 After the text, two directives and a comment (`T  %%{x}%%  %%{y}%%  %% c`) are
 printed with one space before each by the Langium types, and stay as written in
@@ -1893,36 +1909,43 @@ title: a line of a directive, then a statement] [test: U+2028 and U+2029 before
 the directive of a title of a directive and a comment only, by what follows the
 title: a line of a directive after a space, alone or then a statement] [test:
 U+2028 and U+2029 before the directive of a title of a directive and a comment
-only, by what follows the title: a statement] [test: U+2029 before the directive
-of a title of a directive and a comment only in a pie chart] [test: U+2028
-before the directive of a title of a directive and a comment only in a quadrant
-chart] [test: U+2028 before the directive of a title of a directive and a
-comment only in a Gantt chart] [test: U+2028 before the directive of a title of
-a directive and a comment only in a Venn diagram] [test: U+2028 before the
-directive of a title of a directive and a comment only in a C4 diagram] [test: a
-whitespace character that is no space or tab before the directive of a title of
-a directive and a comment only, in each group] [test: a whitespace character
-that is no space or tab before the directive of a title of a directive and a
-comment only, with spaces around the comment, in each group] [test: an
-accessibility line of directives only stays as written in each type of the
-Langium grammar] [fixture: pie/accessibility-lines/acc-title-percent-gap-kept]
-[fixture: gitgraph/title-and-common-values/acc-title-percent-gap-kept] [test:
-U+2003 before a directive that is not closed in a title, at the end of the text]
-[test: U+2003 before a directive that is not closed in a title, before a
-statement] [test: U+3000 before a directive that is not closed in a title, at
-the end of the text] [test: U+3000 before a directive that is not closed in a
-title, before a statement] [test: a directive that is not closed after a space
-in a title] [test: a directive that is not closed touching the text of a title]
-[test: a no-break space before a directive that is not closed in a title, at the
-end of the text] [test: a no-break space before a directive that is not closed
-in a title, before a statement] [test: a tab before a directive that is not
-closed in a title, at the end of the text] [test: a tab before a directive that
-is not closed in a title, before a statement] [test: two spaces before a
-directive that is not closed and text after it in a title, at the end of the
-text] [test: two spaces before a directive that is not closed and text after it
-in a title, before a statement] [test: two spaces before a directive that is not
-closed in a title, at the end of the text] [test: two spaces before a directive
-that is not closed in a title, before a statement]
+only, by what follows the title: a line of a directive and a comment, with or
+without a space before it] [test: U+2028 and U+2029 before the directive of a
+title of a directive and a comment only, by what follows the title: a line of a
+directive and a comment, then a statement] [test: a directive that holds a
+U+2028 or a U+2029 after a U+2028 or a U+2029 before the directive of a title,
+with nothing or a statement after the title] [test: U+2028 and U+2029 before the
+directive of a title of a directive and a comment only, by what follows the
+title: a statement] [test: U+2029 before the directive of a title of a directive
+and a comment only in a pie chart] [test: U+2028 before the directive of a title
+of a directive and a comment only in a quadrant chart] [test: U+2028 before the
+directive of a title of a directive and a comment only in a Gantt chart] [test:
+U+2028 before the directive of a title of a directive and a comment only in a
+Venn diagram] [test: U+2028 before the directive of a title of a directive and a
+comment only in a C4 diagram] [test: a whitespace character that is no space or
+tab before the directive of a title of a directive and a comment only, in each
+group] [test: a whitespace character that is no space or tab before the
+directive of a title of a directive and a comment only, with spaces around the
+comment, in each group] [test: an accessibility line of directives only stays as
+written in each type of the Langium grammar] [fixture:
+pie/accessibility-lines/acc-title-percent-gap-kept] [fixture:
+gitgraph/title-and-common-values/acc-title-percent-gap-kept] [test: U+2003
+before a directive that is not closed in a title, at the end of the text] [test:
+U+2003 before a directive that is not closed in a title, before a statement]
+[test: U+3000 before a directive that is not closed in a title, at the end of
+the text] [test: U+3000 before a directive that is not closed in a title, before
+a statement] [test: a directive that is not closed after a space in a title]
+[test: a directive that is not closed touching the text of a title] [test: a
+no-break space before a directive that is not closed in a title, at the end of
+the text] [test: a no-break space before a directive that is not closed in a
+title, before a statement] [test: a tab before a directive that is not closed in
+a title, at the end of the text] [test: a tab before a directive that is not
+closed in a title, before a statement] [test: two spaces before a directive that
+is not closed and text after it in a title, at the end of the text] [test: two
+spaces before a directive that is not closed and text after it in a title,
+before a statement] [test: two spaces before a directive that is not closed in a
+title, at the end of the text] [test: two spaces before a directive that is not
+closed in a title, before a statement]
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped] [test: a
 no-break space and U+3000 at both ends of the title of a gantt diagram] [test: a

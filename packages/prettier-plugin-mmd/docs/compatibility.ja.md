@@ -1517,8 +1517,8 @@ C4 の図では同じに描きます。
 空白とタブの連続は空白 1 つにします。
 最後のディレクティブの後の空白とタブは、
 ほかの行末の空白とタブと同じように除くので、その有無で印字は変わりません。
-ただし、行のディレクティブのどれかに改行、`;`、
-U+2028 があるときを除きます（詳しくは
+ただし、行のディレクティブのどれかに改行、`;`、U+2028、
+U+2029 があるときを除きます（詳しくは
 [改行かセミコロンを含むディレクティブ](#改行かセミコロンを含むディレクティブ)
 を参照）。
 ほかの図種の行末のディレクティブも同じです。
@@ -1680,41 +1680,58 @@ Langium の型、Venn、C4 は書かれたままにし、
 ほかの型は `%%{x}%%%% c` と印字します。
 そのようなタイトルのディレクティブの前の U+2028 か U+2029 は（`title`、空白、
 U+2028、空白、`%%{x}%%%% c`）、コメントがディレクティブに接していても、
-間に空白があっても、タイトルとその次の行を書かれたまま残すか、
+間に空白があっても、タイトルを書かれたまま残すか、
 ディレクティブとコメントを別の行に移すかが、
 タイトルの後に何が続くかで決まります。
 次の表は、第 1 列に挙げたタイトルの後の行について、
 Langium の型（treeView を除く）、treeView、quadrant、そのほかの型（Gantt、
 user journey、timeline、sequence、Venn、C4）の列で示します。
-「移す」は、`title` と、
-次の行のディレクティブとコメントです（`title` と U+2028 と `%%{x}%%%% c` は、
-`title` と `%%{x}%%%% c` と印字します）。
-そこに空白があったときは、ディレクティブとコメントの間を空白 1 つにします。
+「移す」は、
+`title` の後の U+2028 を改行と読んだテキストの印字です（`title` と U+2028 と
+`%%{x}%%%% c` は、`title` と、次の行の `%%{x}%%%% c` と印字し、
+treeView ではディレクティブを 1 桁目に置きます）。
+そこに空白があったときは、ディレクティブとコメントの間を空白 1 つにし、
+その後の行は通常どおりに印字します。
 文のない行は、その後でテキストが終わるものです。
 表にない行の並びは示しません。
-表は、改行も `;` も含まないディレクティブについてのものです。
+表は、
+改行も `;` も U+2028 も U+2029 も含まないディレクティブについてのものです。
+U+2028 か U+2029 を含むディレクティブがあるときは、
+後ろに何もないか文があるとき、タイトルは書かれたまま残ります。
 info は、空行、空白だけの行、
 ディレクティブの行の後の文を拒否する（mermaid.js も拒否する）ので、
 そこに文を置く行は、ほかの Langium の型について示します。
 treemap は、ディレクティブとコメントの間に空白があるとき、第 2 行、第 5 行、
 第 9 行で、1 回目と 2 回目でコメントの印字が違うので、印字した形がありません。
 
-| タイトルの後                                   | Langium の型（treeView を除く） | treeView     | quadrant     | そのほかの型 |
-| ---------------------------------------------- | ------------------------------- | ------------ | ------------ | ------------ |
-| 何もなし、または空行                           | 移す                            | 移す         | 移す         | 書かれたまま |
-| 空行、次に文                                   | 移す                            | 書かれたまま | 書かれたまま | 書かれたまま |
-| コメント行                                     | 移す                            | 移す         | 移す         | 書かれたまま |
-| コメント行が 1 つか 2 つ、次に文               | 書かれたまま                    | 書かれたまま | 書かれたまま | 書かれたまま |
-| コメント行、空行、次に文                       | 移す                            | 書かれたまま | 書かれたまま | 書かれたまま |
-| 空白だけの行                                   | 書かれたまま                    | 書かれたまま | 移す         | 書かれたまま |
-| 空白だけの行、次に文                           | 書かれたまま                    | 書かれたまま | 書かれたまま | 書かれたまま |
-| ディレクティブの行                             | 移す                            | 書かれたまま | 書かれたまま | 書かれたまま |
-| ディレクティブの行、次に文                     | 移す                            | 書かれたまま | 書かれたまま | 書かれたまま |
-| 空白の後のディレクティブの行（単独か、次に文） | 書かれたまま                    | 書かれたまま | 書かれたまま | 書かれたまま |
-| 文                                             | 書かれたまま                    | 書かれたまま | 書かれたまま | 書かれたまま |
+| タイトルの後                                               | Langium の型（treeView を除く） | treeView     | quadrant     | そのほかの型 |
+| ---------------------------------------------------------- | ------------------------------- | ------------ | ------------ | ------------ |
+| 何もなし、または空行                                       | 移す                            | 移す         | 移す         | 書かれたまま |
+| 空行、次に文                                               | 移す                            | 書かれたまま | 書かれたまま | 書かれたまま |
+| コメント行                                                 | 移す                            | 移す         | 移す         | 書かれたまま |
+| コメント行が 1 つか 2 つ、次に文                           | 書かれたまま                    | 書かれたまま | 書かれたまま | 書かれたまま |
+| コメント行、空行、次に文                                   | 移す                            | 書かれたまま | 書かれたまま | 書かれたまま |
+| 空白だけの行                                               | 書かれたまま                    | 書かれたまま | 移す         | 書かれたまま |
+| 空白だけの行、次に文                                       | 書かれたまま                    | 書かれたまま | 書かれたまま | 書かれたまま |
+| ディレクティブの行                                         | 移す                            | 書かれたまま | 書かれたまま | 書かれたまま |
+| ディレクティブの行、次に文                                 | 移す                            | 書かれたまま | 書かれたまま | 書かれたまま |
+| 空白の後のディレクティブの行（単独か、次に文）             | 書かれたまま                    | 書かれたまま | 書かれたまま | 書かれたまま |
+| ディレクティブとコメントの行（前に空白があってもなくても） | 移す                            | 移す         | 移す         | 書かれたまま |
+| ディレクティブとコメントの行、次に文                       | 書かれたまま                    | 書かれたまま | 書かれたまま | 書かれたまま |
+| 文                                                         | 書かれたまま                    | 書かれたまま | 書かれたまま | 書かれたまま |
+
+タイトルが書かれたまま残るとき、その次の行も書かれたまま残ります。
+文、文の前のコメント行、空白だけの行、ディレクティブの行、
+ディレクティブとコメントの行は、書かれた桁のままです。
+空白だけの行、ディレクティブの行、
+空行の後の文は通常どおりに印字します（文の 2
+行目からは通常どおりに字下げします）。
+テキストの終わりでは、Gantt、user journey、timeline、sequence、Venn は、
+空行を落とし、コメント行とディレクティブとコメントの行は桁を合わせ、
+C4 は書かれたまま残します。
 
 ディレクティブとコメントの間に空白があるときは、何もなし、空行、
-コメント行が続いてテキストが終わるとき（第 1 行と第 3 行）、Gantt、
+コメント行が続いてテキストが終わるとき（第 1 行、第 3 行、第 11 行）、Gantt、
 user journey、timeline、sequence、Venn はその間を空白 1 つにし、
 C4 は空白を残します。
 ほかは表のとおりです。
@@ -1979,6 +1996,9 @@ pie 図と gitGraph の `accTitle:` の行は、テキスト、ディレクテ�
 [test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of a directive]
 [test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of a directive, then a statement]
 [test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of a directive after a space, alone or then a statement]
+[test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of a directive and a comment, with or without a space before it]
+[test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a line of a directive and a comment, then a statement]
+[test: a directive that holds a U+2028 or a U+2029 after a U+2028 or a U+2029 before the directive of a title, with nothing or a statement after the title]
 [test: U+2028 and U+2029 before the directive of a title of a directive and a comment only, by what follows the title: a statement]
 [test: U+2029 before the directive of a title of a directive and a comment only in a pie chart]
 [test: U+2028 before the directive of a title of a directive and a comment only in a quadrant chart]
