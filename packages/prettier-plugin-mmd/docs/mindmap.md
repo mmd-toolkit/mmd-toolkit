@@ -735,24 +735,34 @@ A directive on a line of its own stands at the level of the line after it. A
 directive on the line of a node keeps whether whitespace is written on each side
 of it: where it is, one space stands there, and where it touches, it keeps
 touching. The directives that end the text of a node or of a class are printed
-with one space before each that has whitespace before it, and the whitespace
-after the last one is left out, whatever the whitespace at the end of the line,
-after a shape, and where nothing but whitespace and directives follows each
-directive of a bare node or of a class (see
+with one space before each that has whitespace before it (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-Where a directive of a bare node or of a class is followed by text, a no-break
-space, or a U+3000, the line stays as written, with the whitespace after its
-last directive: `a`, `%%{x}%%`, U+3000, and two spaces are not changed.
+After a shape or an icon, the whitespace after the last directive is left out,
+whatever it is. After a bare node, a class, or the root text, the spaces and
+tabs after the last directive are left out, and a no-break space, U+3000,
+U+2002, U+2003, U+2028, U+0085, or text keeps the line as written, the spaces
+after the directive included: `a`, `%%{x}%%`, U+3000, and two spaces are not
+changed, and neither is `a`, two spaces, `%%{x}%%`, two spaces, `%% c`, and two
+spaces. After a shape, a comment after the last directive stands after one
+space, with the run before the directive printed as one space too:
+`a[t]  %%{x}%%  %% c` is printed `a[t] %%{x}%% %% c`.
 
 [fixture: node-text/directives-end-blanks-dropped] [fixture: directives/kept]
 [fixture: directives/between-nodes] [fixture: directives/before-the-header]
 [fixture: directives/after-the-header-on-the-same-line] [fixture:
 directives/after-the-header-touching] [fixture: directives/after-a-shape] [test:
-U+3000 after the directive that follows a shape of a mindmap node] [test: U+3000
-between two directives of a bare mindmap node] [test: text between two
-directives of a bare mindmap node, with spaces at the end] [test: U+3000 and
-spaces after the directive of a mindmap node with a class] [test: U+3000 between
-two directives of a mindmap node with a class]
+U+2003 after the directive that follows a shape of a mindmap node] [test: a
+no-break space after the directive that follows an icon of a mindmap node]
+[test: U+2003 after the directive of a bare mindmap node] [test: U+2002 after
+the directive of a bare mindmap node] [test: U+2028 after the directive of a
+bare mindmap node] [test: a no-break space after the directive of the root text
+of a mindmap] [test: a comment and spaces after the directive of a bare mindmap
+node] [test: a comment and spaces after the directive that follows a shape of a
+mindmap node] [test: U+3000 after the directive that follows a shape of a
+mindmap node] [test: U+3000 between two directives of a bare mindmap node]
+[test: text between two directives of a bare mindmap node, with spaces at the
+end] [test: U+3000 and spaces after the directive of a mindmap node with a
+class] [test: U+3000 between two directives of a mindmap node with a class]
 
 A directive between two units stays where it is, and a directive inside a text
 is part of the text.

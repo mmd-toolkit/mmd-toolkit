@@ -1033,19 +1033,20 @@ column (`S   ` is the id `S   `, and so is the space before its shape), in a
 comment, and inside labels, icons, data blocks, directives, and the continuation
 lines of multi-line values. This is the distinction of
 [mindmap](./mindmap.md#node-text), with the data block added, and with the id of
-a column kept. On a kept line the same holds. The directives end the text of a
-card where nothing but spaces, tabs, and other directives follows each of them
-up to the end of the line. They are printed with one space before each that has
-spaces or tabs before it, and the spaces and tabs after the last one are left
-out; a no-break space or U+3000 before the first one stays (see
-[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-Where a directive is followed by anything else, text, a no-break space, or
-U+3000, none of the directives ends the text, and the line stays as written,
-with the spaces after its last directive and the run of spaces before its first
-one: `A[x]`, `%%{y}%%`, U+3000, `%%{z}%%`, and two spaces are not changed. On
-the line of a column, a directive keeps the line as written too (`A[x] %%{y}%%`
-and two spaces are not changed), and the figure depends on the whitespace of a
-bare id.
+a column kept. On a kept line the same holds. On the line of a card, the spaces
+and tabs after the last directive are left out, and the run of spaces and tabs
+before each directive is printed as one space (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)):
+`A[x]  %%{y}%%  ` is printed `A[x] %%{y}%%`, and `A[x] %%{y}%%  %%{z}%%  ` is
+printed `A[x] %%{y}%% %%{z}%%`. A no-break space, U+3000, U+2002, U+2003, or
+U+2028 after a directive, text after a directive of a card with a bare id, and a
+comment after the last directive keep the line as written, the spaces after the
+directive included: `A[x] %%{y}%%`, U+3000, and two spaces, `t %%{x}%% u` and
+two spaces, and `A[x] %%{y}%%`, two spaces, `%% c`, and two spaces are not
+changed. A no-break space or U+3000 before the first directive stays as it is,
+with the spaces after the last directive left out. On the line of a column, the
+line stays as written where it holds a directive: `A[x] %%{y}%%` and two spaces,
+`A %%{y}%%` and two spaces, and the same with a tab are not changed.
 
 [fixture: trailing-whitespace/directives-end-blanks-dropped] [test: a tab after
 the directive that ends the text of a card] [test: a tab before the directive
@@ -1054,13 +1055,17 @@ ends the text of a card] [test: a no-break space before the directive that ends
 the text of a card] [test: U+3000 before the directive that ends the text of a
 card] [test: a no-break space after the directive that ends the text of a card]
 [test: U+3000 after the directive that ends the text of a card] [test: tabs
-around the directive that ends the bare id of a card] [test: U+3000 before the
-first directive that ends the text of a card, with spaces after the last] [test:
-a no-break space between two directives that end the text of a card] [test:
-U+3000 between two directives that end the text of a card] [test: U+3000 after
-the last of two directives that end the text of a card] [test: U+3000 and spaces
-after the directive of a card] [test: text after the directive of a bare card,
-with spaces at the end] [test: text between two directives of a bare card, with
+around the directive that ends the bare id of a card] [test: U+2003 after the
+directive that ends the text of a card] [test: U+2002 after the directive that
+ends the text of a card] [test: U+2028 after the directive that ends the text of
+a card] [test: a comment and spaces after the directive of a card] [test: a tab
+after the directive on the line of a column] [test: U+3000 before the first
+directive that ends the text of a card, with spaces after the last] [test: a
+no-break space between two directives that end the text of a card] [test: U+3000
+between two directives that end the text of a card] [test: U+3000 after the last
+of two directives that end the text of a card] [test: U+3000 and spaces after
+the directive of a card] [test: text after the directive of a bare card, with
+spaces at the end] [test: text between two directives of a bare card, with
 spaces at the end] [test: two spaces before the first directive of a bare card
 whose text follows it] [test: spaces after the directive on the line of a column
 with a shape] [test: spaces after the directive on the line of a column with a
@@ -1361,15 +1366,19 @@ and U+FEFF, and with them the empty lines; one line break ends the text; nothing
 is added only where the text ends right after the character and it is no U+2028
 or U+2029. `%%{unfinished` and two spaces print `%%{unfinished` and a line
 break, and `%%{unfinished` and U+2028 print `%%{unfinished`, U+2028, and a line
-break. On the line of a statement, the whitespace after the directive stays up
-to the first line break instead: `S[x] %%{unfinished` and two spaces print as
+break. On the line of a column, the whitespace after the directive stays up to
+the first line break instead: `S[x] %%{unfinished` and two spaces print as
 written, with a line break after them, and `S[x] %%{unfinished` with nothing
-after it is not changed. After the comment of a statement, a last line of
-whitespace only that has no line break after it is left out (`S[x] %% c`, a line
-break, and a line of two spaces print `S[x] %% c` and a line break), while one
-that a line break follows stays. In Markdown, the indentation of the code fence
-or of its list item is the indentation of the host, and is not part of the
-indentation of the board.
+after it is not changed. On the line of a card, the spaces and tabs after the
+directive are dropped and any other whitespace character stays, and one line
+break ends the text: `A[x] %%{unfinished` and two spaces print
+`A[x] %%{unfinished` and a line break, and `A[x] %%{unfinished`, a no-break
+space, and nothing else print the no-break space after it and a line break.
+After the comment of a statement, a last line of whitespace only that has no
+line break after it is left out (`S[x] %% c`, a line break, and a line of two
+spaces print `S[x] %% c` and a line break), while one that a line break follows
+stays. In Markdown, the indentation of the code fence or of its list item is the
+indentation of the host, and is not part of the indentation of the board.
 
 [fixture: final-newline/accepted] [fixture: final-newline/no-final-lf] [fixture:
 final-newline/empty-board] [fixture: final-newline/open-directive-at-eof]
@@ -1392,31 +1401,45 @@ directive followed by U+0085] [test: an open directive followed by U+200B]
 by U+2003] [test: an open directive followed by U+1680] [test: an open directive
 followed by U+2000] [test: an open directive followed by U+200A] [test: an open
 directive followed by U+202F] [test: an open directive followed by U+205F]
-[test: an open directive after a statement and with nothing after it] [test: an
-open directive after a statement and followed by two spaces] [test: an open
-directive after a statement and followed by a tab] [test: an open directive
-after a statement and followed by a no-break space] [test: an open directive
-after a statement and followed by spaces and a line break] [test: an open
-directive after a statement and followed by empty lines] [test: an open
-directive after a statement and followed by a line break and spaces] [test: an
-open directive after a statement and followed by U+2028] [test: an open
-directive after a statement and followed by U+2028 and a space] [test: an open
-directive after a statement and followed by U+2029] [test: an open directive
-after a statement and followed by U+3000] [test: an open directive after a
-statement and followed by U+FEFF] [test: an open directive after a statement and
-followed by U+2003] [test: an open directive after a statement and followed by a
-vertical tab] [test: an open directive after a statement and followed by a form
-feed] [test: an open directive after a statement and followed by CR and LF]
-[test: an open directive after a statement and followed by U+0085] [test: an
-open directive after a statement and followed by U+180E] [test: an open
-directive after a statement and followed by U+200B] [test: a final line of %%
-alone, two empty lines, and a space in a kanban board] [test: a final line of %%
-alone and U+2029 in a kanban board] [test: a final comment with text and U+2029
-in a kanban board] [test: a final comment after a statement and a last line of
-two spaces without a line break in a kanban board] [test: a final comment after
-a statement and a last line of one space after a line break in a kanban board]
-[test: a final comment with text and empty lines in a kanban board] [fixture:
-blank-lines/comment-blank-trailing] [test: kanban: selected-terminal-separator]
+[test: an open directive on the line of a column and with nothing after it]
+[test: an open directive on the line of a column and followed by two spaces]
+[test: an open directive on the line of a column and followed by a tab] [test:
+an open directive on the line of a column and followed by a no-break space]
+[test: an open directive on the line of a column and followed by spaces and a
+line break] [test: an open directive on the line of a column and followed by
+empty lines] [test: an open directive on the line of a column and followed by a
+line break and spaces] [test: an open directive on the line of a column and
+followed by U+2028] [test: an open directive on the line of a column and
+followed by U+2028 and a space] [test: an open directive on the line of a card
+with nothing after it] [test: an open directive on the line of a card followed
+by two spaces] [test: an open directive on the line of a card followed by a tab]
+[test: an open directive on the line of a card followed by a no-break space]
+[test: an open directive on the line of a card followed by U+3000] [test: an
+open directive on the line of a card followed by U+2003] [test: an open
+directive on the line of a card followed by spaces and a line break] [test: an
+open directive on the line of a card followed by a line break and spaces] [test:
+an open directive on the line of a card followed by U+2028] [test: an open
+directive on the line of a card followed by U+0085] [test: an open directive on
+the line of a card with a bare id and followed by two spaces] [test: an open
+directive on the line of a column with a bare id and followed by two spaces]
+[test: an open directive on the line of a column and followed by U+2029] [test:
+an open directive on the line of a column and followed by U+3000] [test: an open
+directive on the line of a column and followed by U+FEFF] [test: an open
+directive on the line of a column and followed by U+2003] [test: an open
+directive on the line of a column and followed by a vertical tab] [test: an open
+directive on the line of a column and followed by a form feed] [test: an open
+directive on the line of a column and followed by CR and LF] [test: an open
+directive on the line of a column and followed by U+0085] [test: an open
+directive on the line of a column and followed by U+180E] [test: an open
+directive on the line of a column and followed by U+200B] [test: a final line of
+%% alone, two empty lines, and a space in a kanban board] [test: a final line of
+%% alone and U+2029 in a kanban board] [test: a final comment with text and
+U+2029 in a kanban board] [test: a final comment after a statement and a last
+line of two spaces without a line break in a kanban board] [test: a final
+comment after a statement and a last line of one space after a line break in a
+kanban board] [test: a final comment with text and empty lines in a kanban
+board] [fixture: blank-lines/comment-blank-trailing] [test: kanban:
+selected-terminal-separator]
 
 Input
 ([final-newline/empty-board-input.mmd](../tests/fixtures/kanban/final-newline/empty-board-input.mmd)):

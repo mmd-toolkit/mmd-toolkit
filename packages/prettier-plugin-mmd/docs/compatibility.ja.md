@@ -6549,8 +6549,10 @@ direction の文字を結合すると、先頭列でも受理される入力を�
 [fixture: c4/description-blocks/block-directive-lines]
 [fixture: c4/accessibility-lines/acc-colon-comment]
 
-文の行を終えるコメントの後は、復帰用の空白行と末尾の隙間も含めて全体を保ちます。
-単独のコメントの後の隙間は、通常の空行と同じに扱います。
+呼び出しの行か境界を閉じる `}` の行を終えるコメントの後は、
+復帰用の空白行と末尾の隙間も含めて全体を保ちます。
+単独のコメントの後と、`title`、`accTitle:`、`accDescr:`、
+`accDescription` の行を終えるコメントの後の隙間は、通常の空行と同じに扱います。
 コメントを移して `comment-takes-line-break` の差異を修復しません。
 すべてのセミコロンと Unicode の区間境界を保ちます。
 保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、

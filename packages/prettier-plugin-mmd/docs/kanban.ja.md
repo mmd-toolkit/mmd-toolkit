@@ -1103,22 +1103,37 @@ Db が保ち、図がその空白に依存する所では残します。
 これは [mindmap](./mindmap.ja.md#ノードのテキスト) の区別で、
 データブロックを加え、列の id は残します。
 保つ行でも同じです。
-カードのテキストをディレクティブが終えるのは、どのディレクティブの後ろにも、
-行末まで空白、タブ、ほかのディレクティブしかないときです。
-そのとき、ディレクティブはそれぞれの前に空白かタブがあれば空白 1 つを置き、
-最後のディレクティブの後の空白とタブは除きます。
-最初のディレクティブの前の U+00A0 と U+3000 は残します。
+カードの行では、最後のディレクティブの後の空白とタブを除き、
+各ディレクティブの前の空白とタブの連なりは空白 1 つにして印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-ディレクティブの後ろにテキスト、U+00A0、U+3000 のどれかがあるときは、
-どのディレクティブもテキストを終えず、行は書かれたまま残ります。
-最後のディレクティブの後の空白と、
-最初のディレクティブの前の空白の連なりも残ります。
-`A[x]`、`%%{y}%%`、U+3000、`%%{z}%%`、空白 2 つは、変えません。
-列の行にディレクティブがあるときも、行は書かれたまま残ります。
-`A[x] %%{y}%%` と空白 2 つは、変えません。
-列の裸の id の空白には、図が依存します。
+`A[x]  %%{y}%%  ` は `A[x] %%{y}%%` と、
+`A[x] %%{y}%%  %%{z}%%  ` は `A[x] %%{y}%% %%{z}%%` と印字します。
+ディレクティブの後の U+00A0、U+3000、U+2002、U+2003、U+2028、
+裸の id のカードのディレクティブの後のテキスト、
+最後のディレクティブの後のコメントがあるときは、ディレクティブの後の空白を含め、
+行は書かれたまま残ります。
+`A[x] %%{y}%%`、U+3000、空白 2 つ、`t %%{x}%% u` と空白 2 つ、`A[x] %%{y}%%`、
+空白 2 つ、`%% c`、空白 2 つは、変えません。
+最初のディレクティブの前の U+00A0 と U+3000 はそのまま残し、
+最後のディレクティブの後の空白は除きます。
+列の行は、ディレクティブがあれば書かれたまま残ります。
+`A[x] %%{y}%%` と空白 2 つ、`A %%{y}%%` と空白 2 つ、タブにした形は、
+変えません。
 
 [fixture: trailing-whitespace/directives-end-blanks-dropped]
+[test: a tab after the directive that ends the text of a card]
+[test: a tab before the directive that ends the text of a card]
+[test: spaces before and after the directive that ends the text of a card]
+[test: a no-break space before the directive that ends the text of a card]
+[test: U+3000 before the directive that ends the text of a card]
+[test: a no-break space after the directive that ends the text of a card]
+[test: U+3000 after the directive that ends the text of a card]
+[test: tabs around the directive that ends the bare id of a card]
+[test: U+2003 after the directive that ends the text of a card]
+[test: U+2002 after the directive that ends the text of a card]
+[test: U+2028 after the directive that ends the text of a card]
+[test: a comment and spaces after the directive of a card]
+[test: a tab after the directive on the line of a column]
 [test: U+3000 before the first directive that ends the text of a card, with spaces after the last]
 [test: a no-break space between two directives that end the text of a card]
 [test: U+3000 between two directives that end the text of a card]
@@ -1130,7 +1145,8 @@ Db が保ち、図がその空白に依存する所では残します。
 [test: spaces after the directive on the line of a column with a shape]
 [test: spaces after the directive on the line of a column with a bare id]
 [test: kanban: bare-trailing-trim] [test: kanban: closed-trailing-trim]
-[test: kanban: closed-whitespace-trim]
+[test: kanban: closed-whitespace-trim] [test: kanban: bare-trailing-trim]
+[test: kanban: closed-trailing-trim] [test: kanban: closed-whitespace-trim]
 [fixture: trailing-whitespace/class-trailing-trim]
 [fixture: trailing-whitespace/lex-after-quoted-spaces]
 [fixture: trailing-whitespace/kept-line-kept]
@@ -1447,10 +1463,14 @@ U+00A0、U+1680、U+2000 から U+200A、U+202F、U+205F、U+3000、U+FEFF と�
 その文字が U+2028 でも U+2029 でもないときだけです。
 `%%{unfinished` と空白 2 つは `%%{unfinished` と改行を、
 `%%{unfinished` と U+2028 は `%%{unfinished`、U+2028、改行を印字します。
-文の行にあるときは、ディレクティブの後の空白を最初の改行まで残し、
+列の行にあるときは、ディレクティブの後の空白を最初の改行まで残し、
 改行 1 つでテキストを終えます。
 `S[x] %%{unfinished` と空白 2 つは書かれたまま印字し、その後に改行が来ます。
 `S[x] %%{unfinished` の後に何もないときは変えません。
+カードの行にあるときは、ディレクティブの後の空白とタブを落とし、
+ほかの空白文字は残し、改行 1 つでテキストを終えます。
+`A[x] %%{unfinished` と空白 2 つは `A[x] %%{unfinished` と改行を印字し、
+`A[x] %%{unfinished` と U+00A0 は、U+00A0 とその後の改行を印字します。
 文の行のコメントの後で、改行が後ろにない最後の空白だけの行は落とします。
 `S[x] %% c`、改行、空白 2 つの行は、`S[x] %% c` と改行を印字し、
 後ろに改行がある空白だけの行は残します。
@@ -1489,25 +1509,37 @@ Markdown では、コードフェンスやリスト項目の字下げはホス�
 [test: an open directive followed by U+200A]
 [test: an open directive followed by U+202F]
 [test: an open directive followed by U+205F]
-[test: an open directive after a statement and with nothing after it]
-[test: an open directive after a statement and followed by two spaces]
-[test: an open directive after a statement and followed by a tab]
-[test: an open directive after a statement and followed by a no-break space]
-[test: an open directive after a statement and followed by spaces and a line break]
-[test: an open directive after a statement and followed by empty lines]
-[test: an open directive after a statement and followed by a line break and spaces]
-[test: an open directive after a statement and followed by U+2028]
-[test: an open directive after a statement and followed by U+2028 and a space]
-[test: an open directive after a statement and followed by U+2029]
-[test: an open directive after a statement and followed by U+3000]
-[test: an open directive after a statement and followed by U+FEFF]
-[test: an open directive after a statement and followed by U+2003]
-[test: an open directive after a statement and followed by a vertical tab]
-[test: an open directive after a statement and followed by a form feed]
-[test: an open directive after a statement and followed by CR and LF]
-[test: an open directive after a statement and followed by U+0085]
-[test: an open directive after a statement and followed by U+180E]
-[test: an open directive after a statement and followed by U+200B]
+[test: an open directive on the line of a column and with nothing after it]
+[test: an open directive on the line of a column and followed by two spaces]
+[test: an open directive on the line of a column and followed by a tab]
+[test: an open directive on the line of a column and followed by a no-break space]
+[test: an open directive on the line of a column and followed by spaces and a line break]
+[test: an open directive on the line of a column and followed by empty lines]
+[test: an open directive on the line of a column and followed by a line break and spaces]
+[test: an open directive on the line of a column and followed by U+2028]
+[test: an open directive on the line of a column and followed by U+2028 and a space]
+[test: an open directive on the line of a card with nothing after it]
+[test: an open directive on the line of a card followed by two spaces]
+[test: an open directive on the line of a card followed by a tab]
+[test: an open directive on the line of a card followed by a no-break space]
+[test: an open directive on the line of a card followed by U+3000]
+[test: an open directive on the line of a card followed by U+2003]
+[test: an open directive on the line of a card followed by spaces and a line break]
+[test: an open directive on the line of a card followed by a line break and spaces]
+[test: an open directive on the line of a card followed by U+2028]
+[test: an open directive on the line of a card followed by U+0085]
+[test: an open directive on the line of a card with a bare id and followed by two spaces]
+[test: an open directive on the line of a column with a bare id and followed by two spaces]
+[test: an open directive on the line of a column and followed by U+2029]
+[test: an open directive on the line of a column and followed by U+3000]
+[test: an open directive on the line of a column and followed by U+FEFF]
+[test: an open directive on the line of a column and followed by U+2003]
+[test: an open directive on the line of a column and followed by a vertical tab]
+[test: an open directive on the line of a column and followed by a form feed]
+[test: an open directive on the line of a column and followed by CR and LF]
+[test: an open directive on the line of a column and followed by U+0085]
+[test: an open directive on the line of a column and followed by U+180E]
+[test: an open directive on the line of a column and followed by U+200B]
 [test: a final line of %% alone, two empty lines, and a space in a kanban board]
 [test: a final line of %% alone and U+2029 in a kanban board]
 [test: a final comment with text and U+2029 in a kanban board]

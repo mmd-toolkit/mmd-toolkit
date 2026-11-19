@@ -6918,90 +6918,98 @@ const kanbanStatementOpenDirectiveTails: readonly (readonly [
   string,
   string,
 ])[] = [
-  ["an open directive after a statement and with nothing after it", "", ""],
   [
-    "an open directive after a statement and followed by two spaces",
+    "an open directive on the line of a column and with nothing after it",
+    "",
+    "",
+  ],
+  [
+    "an open directive on the line of a column and followed by two spaces",
     "  ",
     "  \n",
   ],
-  ["an open directive after a statement and followed by a tab", "\t", "\t\n"],
   [
-    "an open directive after a statement and followed by a no-break space",
+    "an open directive on the line of a column and followed by a tab",
+    "\t",
+    "\t\n",
+  ],
+  [
+    "an open directive on the line of a column and followed by a no-break space",
     "\u00a0",
     "\u00a0\n",
   ],
   [
-    "an open directive after a statement and followed by spaces and a line break",
+    "an open directive on the line of a column and followed by spaces and a line break",
     "  \n",
     "  \n",
   ],
   [
-    "an open directive after a statement and followed by empty lines",
+    "an open directive on the line of a column and followed by empty lines",
     "\n\n",
     "\n",
   ],
   [
-    "an open directive after a statement and followed by a line break and spaces",
+    "an open directive on the line of a column and followed by a line break and spaces",
     "\n  ",
     "\n",
   ],
   [
-    "an open directive after a statement and followed by U+2028",
+    "an open directive on the line of a column and followed by U+2028",
     "\u2028",
     "\u2028\n",
   ],
   [
-    "an open directive after a statement and followed by U+2028 and a space",
+    "an open directive on the line of a column and followed by U+2028 and a space",
     "\u2028 ",
     "\u2028 \n",
   ],
   [
-    "an open directive after a statement and followed by U+2029",
+    "an open directive on the line of a column and followed by U+2029",
     "\u2029",
     "\u2029\n",
   ],
   [
-    "an open directive after a statement and followed by U+3000",
+    "an open directive on the line of a column and followed by U+3000",
     "\u3000",
     "\u3000\n",
   ],
   [
-    "an open directive after a statement and followed by U+FEFF",
+    "an open directive on the line of a column and followed by U+FEFF",
     "\ufeff",
     "\ufeff\n",
   ],
   [
-    "an open directive after a statement and followed by U+2003",
+    "an open directive on the line of a column and followed by U+2003",
     "\u2003",
     "\u2003\n",
   ],
   [
-    "an open directive after a statement and followed by a vertical tab",
+    "an open directive on the line of a column and followed by a vertical tab",
     "\u000b",
     "\u000b\n",
   ],
   [
-    "an open directive after a statement and followed by a form feed",
+    "an open directive on the line of a column and followed by a form feed",
     "\u000c",
     "\u000c\n",
   ],
   [
-    "an open directive after a statement and followed by CR and LF",
+    "an open directive on the line of a column and followed by CR and LF",
     "\u000d\n",
     "\n",
   ],
   [
-    "an open directive after a statement and followed by U+0085",
+    "an open directive on the line of a column and followed by U+0085",
     "\u0085",
     "\u0085",
   ],
   [
-    "an open directive after a statement and followed by U+180E",
+    "an open directive on the line of a column and followed by U+180E",
     "\u180e",
     "\u180e",
   ],
   [
-    "an open directive after a statement and followed by U+200B",
+    "an open directive on the line of a column and followed by U+200B",
     "\u200b",
     "\u200b",
   ],
@@ -7402,6 +7410,288 @@ const kanbanCardDirectiveExamples: readonly (readonly [
 describe("the text of a kanban card that a directive ends", () => {
   it.each(kanbanCardDirectiveExamples)(
     "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/** What the printer does with an open directive and a closed directive on the line of a card or a column of a kanban board, with a directive in a mindmap node, and with a comment or a directive on the lines of a C4 diagram (docs/kanban.md, Trailing whitespace and Final newline; docs/mindmap.md, Directives; docs/c4.md, Blank lines, Final newline, and Title and accDescription). */
+const directiveAndCommentLineExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "an open directive on the line of a card with nothing after it",
+    "kanban\n  S\n    A[x] %%{unfinished",
+    "kanban\n  S\n    A[x] %%{unfinished",
+  ],
+  [
+    "an open directive on the line of a card followed by two spaces",
+    "kanban\n  S\n    A[x] %%{unfinished  ",
+    "kanban\n  S\n    A[x] %%{unfinished\n",
+  ],
+  [
+    "an open directive on the line of a card followed by a tab",
+    "kanban\n  S\n    A[x] %%{unfinished\u0009",
+    "kanban\n  S\n    A[x] %%{unfinished\n",
+  ],
+  [
+    "an open directive on the line of a card followed by a no-break space",
+    "kanban\n  S\n    A[x] %%{unfinished\u00a0",
+    "kanban\n  S\n    A[x] %%{unfinished\u00a0\n",
+  ],
+  [
+    "an open directive on the line of a card followed by U+3000",
+    "kanban\n  S\n    A[x] %%{unfinished\u3000",
+    "kanban\n  S\n    A[x] %%{unfinished\u3000\n",
+  ],
+  [
+    "an open directive on the line of a card followed by U+2003",
+    "kanban\n  S\n    A[x] %%{unfinished\u2003",
+    "kanban\n  S\n    A[x] %%{unfinished\u2003\n",
+  ],
+  [
+    "an open directive on the line of a card followed by spaces and a line break",
+    "kanban\n  S\n    A[x] %%{unfinished  \n",
+    "kanban\n  S\n    A[x] %%{unfinished\n",
+  ],
+  [
+    "an open directive on the line of a card followed by a line break and spaces",
+    "kanban\n  S\n    A[x] %%{unfinished\n  ",
+    "kanban\n  S\n    A[x] %%{unfinished\n",
+  ],
+  [
+    "an open directive on the line of a card followed by U+2028",
+    "kanban\n  S\n    A[x] %%{unfinished\u2028",
+    "kanban\n  S\n    A[x] %%{unfinished\u2028\n",
+  ],
+  [
+    "an open directive on the line of a card followed by U+0085",
+    "kanban\n  S\n    A[x] %%{unfinished\u0085",
+    "kanban\n  S\n    A[x] %%{unfinished\u0085",
+  ],
+  [
+    "an open directive on the line of a card with a bare id and followed by two spaces",
+    "kanban\n  S\n    A %%{unfinished  ",
+    "kanban\n  S\n    A %%{unfinished\n",
+  ],
+  [
+    "an open directive on the line of a column with a bare id and followed by two spaces",
+    "kanban\n  S %%{unfinished  ",
+    "kanban\n  S %%{unfinished  \n",
+  ],
+  [
+    "U+2003 after the directive that ends the text of a card",
+    "kanban\n  S\n    A[x] %%{x}%%\u2003\n",
+    "kanban\n  S\n    A[x] %%{x}%%\u2003\n",
+  ],
+  [
+    "U+2002 after the directive that ends the text of a card",
+    "kanban\n  S\n    A[x] %%{x}%%\u2002\n",
+    "kanban\n  S\n    A[x] %%{x}%%\u2002\n",
+  ],
+  [
+    "U+2028 after the directive that ends the text of a card",
+    "kanban\n  S\n    A[x] %%{x}%%\u2028\n",
+    "kanban\n  S\n    A[x] %%{x}%%\u2028\n",
+  ],
+  [
+    "a comment and spaces after the directive of a card",
+    "kanban\n  S\n    A[x] %%{x}%%  %% c  \n",
+    "kanban\n  S\n    A[x] %%{x}%%  %% c  \n",
+  ],
+  [
+    "a tab after the directive on the line of a column",
+    "kanban\n  A[x] %%{y}%%\u0009\n",
+    "kanban\n  A[x] %%{y}%%\u0009\n",
+  ],
+  [
+    "U+2003 after the directive that follows a shape of a mindmap node",
+    "mindmap\n  root\n    a[t] %%{x}%%\u2003  \n",
+    "mindmap\n  root\n    a[t] %%{x}%%\n",
+  ],
+  [
+    "a no-break space after the directive that follows an icon of a mindmap node",
+    "mindmap\n  root\n    a ::icon(z) %%{x}%%\u00a0  \n",
+    "mindmap\n  root\n    a ::icon(z) %%{x}%%\n",
+  ],
+  [
+    "U+2003 after the directive of a bare mindmap node",
+    "mindmap\n  root\n    a %%{x}%%\u2003  \n",
+    "mindmap\n  root\n    a %%{x}%%\u2003  \n",
+  ],
+  [
+    "U+2002 after the directive of a bare mindmap node",
+    "mindmap\n  root\n    a %%{x}%%\u2002  \n",
+    "mindmap\n  root\n    a %%{x}%%\u2002  \n",
+  ],
+  [
+    "U+2028 after the directive of a bare mindmap node",
+    "mindmap\n  root\n    a %%{x}%%\u2028  \n",
+    "mindmap\n  root\n    a %%{x}%%\u2028  \n",
+  ],
+  [
+    "a no-break space after the directive of the root text of a mindmap",
+    "mindmap\n  root %%{x}%%\u00a0  \n",
+    "mindmap\n  root %%{x}%%\u00a0  \n",
+  ],
+  [
+    "a comment and spaces after the directive of a bare mindmap node",
+    "mindmap\n  root\n    a  %%{x}%%  %% c  \n",
+    "mindmap\n  root\n    a  %%{x}%%  %% c  \n",
+  ],
+  [
+    "a comment and spaces after the directive that follows a shape of a mindmap node",
+    "mindmap\n  root\n    a[t]  %%{x}%%  %% c  \n",
+    "mindmap\n  root\n    a[t] %%{x}%% %% c  \n",
+  ],
+  [
+    "a final comment after a Rel and empty lines in a C4 diagram",
+    'C4Context\nPerson(a, "A")\nPerson(b, "B")\nRel(a, b, "x") %% c\n\n\n',
+    'C4Context\n  Person(a, "A")\n  Person(b, "B")\n  Rel(a, b, "x") %% c\n\n\n',
+  ],
+  [
+    "a final comment after a System and empty lines in a C4 diagram",
+    'C4Context\nSystem(s, "S") %% c\n\n\n',
+    'C4Context\n  System(s, "S") %% c\n\n\n',
+  ],
+  [
+    "a final comment after an UpdateElementStyle and empty lines in a C4 diagram",
+    'C4Context\nPerson(a, "A")\nUpdateElementStyle(a, "green") %% c\n\n\n',
+    'C4Context\n  Person(a, "A")\n  UpdateElementStyle(a, "green") %% c\n\n\n',
+  ],
+  [
+    "a final comment after an UpdateLayoutConfig and empty lines in a C4 diagram",
+    'C4Context\nPerson(a, "A")\nUpdateLayoutConfig($c4ShapeInRow="2") %% c\n\n\n',
+    'C4Context\n  Person(a, "A")\n  UpdateLayoutConfig($c4ShapeInRow = "2") %% c\n\n\n',
+  ],
+  [
+    "a final comment after the brace that closes a boundary and empty lines in a C4 diagram",
+    'C4Context\nBoundary(b, "B") {\nPerson(a, "A")\n} %% c\n\n\n',
+    'C4Context\n  Boundary(b, "B") {\n    Person(a, "A")\n  } %% c\n\n\n',
+  ],
+  [
+    "a comment after a title followed by empty lines and a statement in a C4 diagram",
+    'C4Context\ntitle T %% c\n\n\nPerson(a, "A")\n',
+    'C4Context\n  title T %% c\n\n  Person(a, "A")\n',
+  ],
+  [
+    "a final comment after a title and empty lines in a C4 diagram",
+    'C4Context\nPerson(a, "A")\ntitle T %% c\n\n\n',
+    'C4Context\n  Person(a, "A")\n  title T %% c\n',
+  ],
+  [
+    "a final comment after a title and two spaces in a C4 diagram",
+    'C4Context\nPerson(a, "A")\ntitle T %% c  ',
+    'C4Context\n  Person(a, "A")\n  title T %% c\n',
+  ],
+  [
+    "a final comment after a title and a no-break space in a C4 diagram",
+    'C4Context\nPerson(a, "A")\ntitle T %% c\u00a0',
+    'C4Context\n  Person(a, "A")\n  title T %% c\u00a0\n',
+  ],
+  [
+    "a final comment after an accTitle line and a no-break space in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccTitle: T %% c\u00a0',
+    'C4Context\n  Person(a, "A")\n  accTitle: T %% c\n',
+  ],
+  [
+    "a final comment after an accTitle line and U+0085 in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccTitle: T %% c\u0085',
+    'C4Context\n  Person(a, "A")\n  accTitle: T %% c\u0085\n',
+  ],
+  [
+    "a final comment after an accDescription line and two spaces in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccDescription T %% c  ',
+    'C4Context\n  Person(a, "A")\n  accDescription T %% c\n',
+  ],
+  [
+    "a final comment after an accDescr line and empty lines in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccDescr: T %% c\n\n\n',
+    'C4Context\n  Person(a, "A")\n  accDescr: T %% c\n',
+  ],
+  [
+    "two spaces after the last directive of a C4 title",
+    'C4Context\ntitle T  %%{x}%%  \nPerson(a, "A")\n',
+    'C4Context\n  title T %%{x}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "a comment after the last directive of a C4 title",
+    'C4Context\ntitle T  %%{x}%% %% c\nPerson(a, "A")\n',
+    'C4Context\n  title T  %%{x}%% %% c\n  Person(a, "A")\n',
+  ],
+  [
+    "spaces around a comment after the last directive of a C4 title",
+    'C4Context\ntitle T  %%{x}%%  %% c  \nPerson(a, "A")\n',
+    'C4Context\n  title T  %%{x}%%  %% c  \n  Person(a, "A")\n',
+  ],
+  [
+    "a no-break space after the last directive of a C4 title",
+    'C4Context\ntitle T  %%{x}%%\u00a0\nPerson(a, "A")\n',
+    'C4Context\n  title T  %%{x}%%\u00a0\n  Person(a, "A")\n',
+  ],
+  [
+    "U+0085 after the last directive of a C4 title",
+    'C4Context\ntitle T  %%{x}%%\u0085\nPerson(a, "A")\n',
+    'C4Context\n  title T  %%{x}%%\u0085\n  Person(a, "A")\n',
+  ],
+  [
+    "text after the last directive of a C4 title",
+    'C4Context\ntitle T  %%{x}%% B\nPerson(a, "A")\n',
+    'C4Context\n  title T  %%{x}%% B\n  Person(a, "A")\n',
+  ],
+  [
+    "two spaces after the last directive of a C4 accDescription",
+    'C4Context\naccDescription T  %%{x}%%  \nPerson(a, "A")\n',
+    'C4Context\n  accDescription T %%{x}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "a comment after the last directive of a C4 accDescription",
+    'C4Context\naccDescription T  %%{x}%% %% c\nPerson(a, "A")\n',
+    'C4Context\n  accDescription T  %%{x}%% %% c\n  Person(a, "A")\n',
+  ],
+  [
+    "a no-break space after the last directive of a C4 accDescription",
+    'C4Context\naccDescription T  %%{x}%%\u00a0\nPerson(a, "A")\n',
+    'C4Context\n  accDescription T  %%{x}%%\u00a0\n  Person(a, "A")\n',
+  ],
+  [
+    "two spaces after the last directive of a C4 accTitle line",
+    'C4Context\naccTitle: T  %%{x}%%  \nPerson(a, "A")\n',
+    'C4Context\n  accTitle: T %%{x}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "a comment after the last directive of a C4 accTitle line",
+    'C4Context\naccTitle: T  %%{x}%% %% c\nPerson(a, "A")\n',
+    'C4Context\n  accTitle: T  %%{x}%% %% c\n  Person(a, "A")\n',
+  ],
+  [
+    "a no-break space after the last directive of a C4 accTitle line",
+    'C4Context\naccTitle: T  %%{x}%%\u00a0\nPerson(a, "A")\n',
+    'C4Context\n  accTitle: T %%{x}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "two spaces after the last directive of a C4 accDescr line",
+    'C4Context\naccDescr: T  %%{x}%%  \nPerson(a, "A")\n',
+    'C4Context\n  accDescr: T %%{x}%%\n  Person(a, "A")\n',
+  ],
+  [
+    "a comment after the last directive of a C4 accDescr line",
+    'C4Context\naccDescr: T  %%{x}%% %% c\nPerson(a, "A")\n',
+    'C4Context\n  accDescr: T  %%{x}%% %% c\n  Person(a, "A")\n',
+  ],
+  [
+    "a no-break space after the last directive of a C4 accDescr line",
+    'C4Context\naccDescr: T  %%{x}%%\u00a0\nPerson(a, "A")\n',
+    'C4Context\n  accDescr: T %%{x}%%\n  Person(a, "A")\n',
+  ],
+]
+
+describe("the directives and comments on the lines of a kanban board, a mindmap, and a C4 diagram", () => {
+  it.each(directiveAndCommentLineExamples)(
+    "prints %s",
     async (_name, input, output) => {
       await expectKept(input, output)
     },

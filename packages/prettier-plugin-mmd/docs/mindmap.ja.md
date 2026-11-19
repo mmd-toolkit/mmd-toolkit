@@ -747,16 +747,18 @@ mindmap
 ノードの行にあるディレクティブは、両側に空白が書かれているかを残します。
 あれば空白 1 つを置き、接していれば接したままにします。
 ノードかクラスのテキストを終えるディレクティブは、
-それぞれの前に空白があれば空白 1 つを置き、
-最後のディレクティブの後の空白は除きます。
-行末の空白の有無で印字は変わりません。
-これは、形の後にあるときの話です。
-裸のノードやクラスでは、
-どのディレクティブの後ろにも空白とディレクティブしかないときの話です。
-裸のノードやクラスのディレクティブの後ろに、テキスト、U+00A0、
-U+3000 があるときは、行は書かれたまま残り、
-最後のディレクティブの後の空白も残ります。
+それぞれの前に空白があれば空白 1 つを置きます。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+形かアイコンの後では、最後のディレクティブの後の空白を、どの文字でも除きます。
+裸のノード、クラス、ルートのテキストの後では、
+最後のディレクティブの後の空白とタブを除き、U+00A0、U+3000、U+2002、U+2003、
+U+2028、U+0085、テキストがあるときは、ディレクティブの後の空白を含め、
+行は書かれたまま残ります。
 `a`、`%%{x}%%`、U+3000、空白 2 つは、変えません。
+形の後のコメントは、空白 1 つの後に置き、
+ディレクティブの前の連なりも空白 1 つにします。
+`a[t]  %%{x}%%  %% c` は `a[t] %%{x}%% %% c` と印字します。
+裸のノードの後のコメントは、行を書かれたまま残します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 
 [fixture: node-text/directives-end-blanks-dropped] [fixture: directives/kept]
@@ -764,6 +766,14 @@ U+3000 があるときは、行は書かれたまま残り、
 [fixture: directives/after-the-header-on-the-same-line]
 [fixture: directives/after-the-header-touching]
 [fixture: directives/after-a-shape]
+[test: U+2003 after the directive that follows a shape of a mindmap node]
+[test: a no-break space after the directive that follows an icon of a mindmap node]
+[test: U+2003 after the directive of a bare mindmap node]
+[test: U+2002 after the directive of a bare mindmap node]
+[test: U+2028 after the directive of a bare mindmap node]
+[test: a no-break space after the directive of the root text of a mindmap]
+[test: a comment and spaces after the directive of a bare mindmap node]
+[test: a comment and spaces after the directive that follows a shape of a mindmap node]
 [test: U+3000 after the directive that follows a shape of a mindmap node]
 [test: U+3000 between two directives of a bare mindmap node]
 [test: text between two directives of a bare mindmap node, with spaces at the end]

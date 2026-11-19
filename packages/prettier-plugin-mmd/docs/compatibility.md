@@ -6265,18 +6265,20 @@ preservation rules.
 c4/description-blocks/block-directive-lines] [fixture:
 c4/accessibility-lines/acc-colon-comment]
 
-A comment that ends the line of a statement retains its complete following gap,
-including whitespace-only recovery lines and the terminal gap; after a comment
-on a line of its own the gap is the ordinary one. The `comment-takes-line-break`
-divergence is not repaired by moving comments. C4 keeps every semicolon and
-Unicode segment boundary. A segment that holds a kept `;` is formatted as
-anywhere else, except where formatting could change which `;` the line rule
-ignores. The rule reads a segment from the first `:` after `style` or `classDef`
-to the last `#` before its last kept `;`, with no whitespace between the `:` and
-the `#` (see [Semicolons](./flowchart.md#semicolons)), so the gaps and the
-padding inside that stretch keep whether they hold whitespace, a run becoming
-one space, and the rest of the segment follows the ordinary rules of this
-diagram. Indentation and exterior trailing whitespace remain printer whitespace.
+A comment that ends the line of a call or of the `}` that closes a boundary
+retains its complete following gap, including whitespace-only recovery lines and
+the terminal gap; after a comment on a line of its own, and after the comment of
+a `title`, `accTitle:`, `accDescr:`, or `accDescription` line, the gap is the
+ordinary one. The `comment-takes-line-break` divergence is not repaired by
+moving comments. C4 keeps every semicolon and Unicode segment boundary. A
+segment that holds a kept `;` is formatted as anywhere else, except where
+formatting could change which `;` the line rule ignores. The rule reads a
+segment from the first `:` after `style` or `classDef` to the last `#` before
+its last kept `;`, with no whitespace between the `:` and the `#` (see
+[Semicolons](./flowchart.md#semicolons)), so the gaps and the padding inside
+that stretch keep whether they hold whitespace, a run becoming one space, and
+the rest of the segment follows the ordinary rules of this diagram. Indentation
+and exterior trailing whitespace remain printer whitespace.
 
 [fixture: c4/comments/comment-header] [fixture: c4/blank-lines/comment-recovery]
 [fixture: c4/blank-lines/comment-blank-after] [fixture:
