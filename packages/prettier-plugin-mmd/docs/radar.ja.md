@@ -510,7 +510,7 @@ radar-beta
 
 ### Title
 
-共有の共通行レイアウトを使います。
+共有の共通行レイアウトを、下の段落が述べるところを除いて使います。
 共通空白の外端を除き、非空の値の前は空白 1 つにします。
 `null` と空白だけの値は `title` にします。
 同じ意味の外端だけをそろえ、内部の綴り、引用符、見かけのキーワードを保ちます。
@@ -518,8 +518,6 @@ radar-beta
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 コメントやディレクティブを挟んでも、次の物理行から値を取りません。
 注釈類のある値と保護区間は原文の間隙を保ちます。
-ただし、テキストがディレクティブで始まる題とアクセシビリティの行は、
-この節の終わりの段落が述べるとおりです。
 題やアクセシビリティの行のテキストの後の `;` は残します。
 mermaid.js の行の規則がその行に働かないとき、
 たとえば `title T;` や `title T;;` だけの行では、テキストがその `;` を持ち、
@@ -633,12 +631,13 @@ U+205F、U+3000、U+FEFF のどれかです。
 のとおり、決めるまでそのままです。
 行に U+2028 も U+2029 もないとき、
 行そのもののコメントの中の `;` は行を変えないので、`;` がそこだけにある行は、
-後の行に `;` がある場合（条件の最後の場合）を除き、未決ではありません。
+題と次の文の間の行のコメントかディレクティブの中に `;` がある場合を除き、
+未決ではありません。
 整形が投げる行は、そこでは述べません。
 
 題のテキストが、キーワードの後の空白 1 つかタブ 1 つの後で、ディレクティブか、
 互いに接するディレクティブで始まり、行のそれ以外の部分にディレクティブ、
-コメント、`;`、幅のある空白、U+2028、U+2029 がないときは、
+コメント、`;`、幅のある空白、U+2028、U+2029 がなく、行が未決でないときは、
 ディレクティブとそれ以外のテキストの間の空白とタブを除き、
 行末の空白とタブも除きます（`title %%{x}%%  T  ` は `title %%{x}%%T` に、
 `title %%{x}%%%%{y}%%  T  ` は `title %%{x}%%%%{y}%%T` になります）。
@@ -1385,6 +1384,9 @@ mermaid.js はテキストを読む前にディレクティブを除き、
 [test: two spaces before the directive that starts the text of a title, of a radar chart]
 [test: two directives with spaces between them that start the text of a title, of a radar chart]
 [test: a directive that starts the text of a title and a directive that ends it, of a radar chart]
+[test: a U+2028 inside the directive that starts the text of a title, two spaces and a text after it, spaces at the end, of a radar chart]
+[test: a line break inside the directive that starts the text of a title, two spaces and a text after it, spaces at the end, of a radar chart]
+[test: a `;` inside the directive that starts the text of a title, two spaces and a text after it, spaces at the end, of a radar chart]
 [test: U+2028 before a directive that a comment touches, a line follows, in a title of a radar chart]
 [test: U+2028 before a directive that a comment touches, the text ends, in a title of a radar chart]
 [test: U+2028 before a directive that a comment touches, an empty line follows, in a title of a radar chart]
@@ -1677,6 +1679,7 @@ mermaid.js はテキストを読む前にディレクティブを除き、
 [test: a directive that starts the text, two spaces and a text after it, spaces at the end, the text ends, in a title of a radar chart]
 [test: two directives that touch and start the text, a text after them, spaces at the end, the text ends, in a title of a radar chart]
 [test: a directive that starts the text, two spaces and a text after it, spaces at the end, a statement follows, in a title of a radar chart]
+[test: a directive that starts the text, two spaces and a text after it, a statement whose label holds a `;` follows, in a title of a radar chart]
 
 [fixture: radar/title/title-empty]
 
@@ -1700,7 +1703,8 @@ radar-beta
 
 ### Accessibility lines
 
-共有の `accTitle: value` と `accDescr: value` を使います。
+共有の `accTitle: value` と `accDescr: value` を、下の段落と、
+[ディレクティブが前にある題](#title)が述べるところを除いて使います。
 コロンはキーワードに接着し、外端を除いた非空の値の前は空白 1 つです。
 空の値はコロンで終え、次行の値を結合しません。
 外側をそろえても内部の文字は書き換えません。
@@ -1796,7 +1800,8 @@ U+205F、U+3000、U+FEFF のどれかです。
 のとおり、決めるまでそのままです。
 行に U+2028 も U+2029 もないとき、
 行そのもののコメントの中の `;` は行を変えないので、`;` がそこだけにある行は、
-後の行に `;` がある場合（条件の最後の場合）を除き、未決ではありません。
+題と次の文の間の行のコメントかディレクティブの中に `;` がある場合を除き、
+未決ではありません。
 整形が投げる行は、そこでは述べません。
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]

@@ -11914,6 +11914,21 @@ const radarDirectiveEndExamples: readonly (readonly [
     "accDescr: %%{x}%%  T  ",
     "accDescr: %%{x}%%  T  ",
   ],
+  [
+    "a U+2028 inside the directive that starts the text of a title, two spaces and a text after it, spaces at the end, of a radar chart",
+    "title %%{x\u2028y}%%  T  ",
+    "title %%{x\u2028y}%%  T",
+  ],
+  [
+    "a line break inside the directive that starts the text of a title, two spaces and a text after it, spaces at the end, of a radar chart",
+    "title %%{x\ny}%%  T  ",
+    "title %%{x\ny}%%T",
+  ],
+  [
+    "a `;` inside the directive that starts the text of a title, two spaces and a text after it, spaces at the end, of a radar chart",
+    "title %%{x;y}%%  T  ",
+    "title %%{x;y}%%T",
+  ],
 ]
 
 describe("the directives that end the title or the value of an accessibility line of a radar chart", () => {
@@ -14377,6 +14392,11 @@ const radarDirectiveCommentExamples: readonly (readonly [
     "a directive that starts the text, two spaces and a text after it, spaces at the end, a statement follows, in a title of a radar chart",
     "radar-beta\ntitle %%{x}%%  T  \naxis a, b\ncurve c{1, 2}\n",
     "radar-beta\n  title %%{x}%%T\n  axis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "a directive that starts the text, two spaces and a text after it, a statement whose label holds a `;` follows, in a title of a radar chart",
+    "radar-beta\ntitle %%{x}%%  T  \naxis a[\u0022x;y\u0022]\n",
+    "radar-beta\n  title %%{x}%%T\n  axis a[\u0022x;y\u0022]\n",
   ],
 ]
 
