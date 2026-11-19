@@ -299,11 +299,17 @@ before its body. Tight tags distinguish the annotation from its value. Retain
 the presence or absence of a tag and all eight authored type words. A tag does
 not ask the formatter to parse its payload as JSON or another language; hidden
 forms and global trivia retain their boundaries. A comment inside a tag or right
-after it stays touching where it touches, and a run of spaces, tabs, no-break
-spaces, U+3000, U+2028, or U+2029 before it becomes one space, also right after
-the opening backtick. A run of any of these after a comment inside the tag
-becomes one space too, while the gaps between the parts of the tag itself stay
-tight, whichever of them they hold.
+after it stays touching where it touches, and a run of spaces and tabs before it
+becomes one space, also right after the opening backtick. A run of spaces and
+tabs after a comment inside the tag becomes one space too, while the gaps
+between the parts of the tag itself stay tight, whichever whitespace they hold
+(spaces, tabs, a no-break space, U+3000, U+2028, or U+2029). A no-break space,
+U+3000, U+2028, or U+2029 before a comment inside the tag, right after the
+opening backtick, and after a comment inside the tag also becomes one space, and
+no rule gives that form: no other diagram type has a type tag, and the printers
+that [Comments](#comments) cites print these characters before a comment
+differently. The released form stays until it is decided (see
+[Where none of these rules gives a form](./printed-form.md#4-where-none-of-these-rules-gives-a-form)).
 
 [fixture: eventmodeling/type-tags/inline-tag-parts]
 
@@ -1036,8 +1042,9 @@ tf 02 evt Beta
 
 Align ordinary standalone comments with their owning body; between GWT items
 this is item depth. Within a printed line, a comment that touches stays
-touching, and a run of spaces and tabs before it becomes one space. Rule 1 names
-no mark before a comment, so
+touching, and a run of spaces and tabs before it becomes one space, except in
+the title and the accTitle of the header line, where `%% c` is text of the title
+(see [Title](#title)). Rule 1 names no mark before a comment, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [sequence](./sequence.md#comments) after a message and
 [journey](./journey.md#comments) and [timeline](./timeline.md#comments) after
@@ -1046,8 +1053,10 @@ whitespace as written; each of them names those cases in its own sections or in
 [A comment right after a character](./compatibility.md#a-comment-right-after-a-character)
 (whitespace that the Db holds, as after a `section` or a period, and whitespace
 that changes what mermaid.js reads). A no-break space, U+3000, U+2028, or U+2029
-before a comment after a frame statement also becomes one space, where a
-statement follows the comment and where the text ends. The printers above print
+before a comment also becomes one space after a frame statement, where a
+statement follows the comment and where the text ends, and after the header
+line, a GWT header, a GWT item, a data declaration, a note declaration, a data
+reference, an inline body, and a source reference. The printers above print
 these characters otherwise: sequence keeps a no-break space or U+3000 after a
 message as written, and journey and timeline print them after their header as
 one space; before U+2028 or U+2029, sequence, journey, and timeline keep the
@@ -1084,17 +1093,51 @@ comment that a statement follows, after a statement of an eventmodeling diagram]
 [test: U+2029 before a comment that a statement follows, after a statement of an
 eventmodeling diagram] [test: U+3000 before a comment that a statement follows,
 after a statement of an eventmodeling diagram] [test: a no-break space before a
-comment after a message of a sequence diagram] [test: U+3000 before a comment
-after a message of a sequence diagram] [test: U+2028 before a comment that a
-statement follows, after a message of a sequence diagram] [test: U+2029 before a
-comment at the end of the text, after a message of a sequence diagram] [test: a
-no-break space before a comment after the header of a timeline] [test: U+2028
-before a comment that a statement follows, after the header of a timeline]
-[test: U+2029 before a comment at the end of the text, after the header of a
-timeline] [test: U+3000 before a comment after the header of a user journey]
-[test: U+2028 before a comment that a statement follows, after the header of a
-user journey] [test: U+2029 before a comment at the end of the text, after the
-header of a user journey]
+comment after the header of an eventmodeling diagram] [test: U+3000 before a
+comment after the header of an eventmodeling diagram] [test: U+2028 before a
+comment after the header of an eventmodeling diagram] [test: U+2029 before a
+comment after the header of an eventmodeling diagram] [test: a no-break space
+before a comment after a GWT header of an eventmodeling diagram] [test: U+3000
+before a comment after a GWT header of an eventmodeling diagram] [test: U+2028
+before a comment after a GWT header of an eventmodeling diagram] [test: U+2029
+before a comment after a GWT header of an eventmodeling diagram] [test: a
+no-break space before a comment after a GWT item of an eventmodeling diagram]
+[test: U+3000 before a comment after a GWT item of an eventmodeling diagram]
+[test: U+2028 before a comment after a GWT item of an eventmodeling diagram]
+[test: U+2029 before a comment after a GWT item of an eventmodeling diagram]
+[test: a no-break space before a comment after a data declaration of an
+eventmodeling diagram] [test: U+3000 before a comment after a data declaration
+of an eventmodeling diagram] [test: U+2028 before a comment after a data
+declaration of an eventmodeling diagram] [test: U+2029 before a comment after a
+data declaration of an eventmodeling diagram] [test: a no-break space before a
+comment after a note declaration of an eventmodeling diagram] [test: U+3000
+before a comment after a note declaration of an eventmodeling diagram] [test:
+U+2028 before a comment after a note declaration of an eventmodeling diagram]
+[test: U+2029 before a comment after a note declaration of an eventmodeling
+diagram] [test: a no-break space before a comment after a data reference of an
+eventmodeling diagram] [test: U+3000 before a comment after a data reference of
+an eventmodeling diagram] [test: U+2028 before a comment after a data reference
+of an eventmodeling diagram] [test: U+2029 before a comment after a data
+reference of an eventmodeling diagram] [test: a no-break space before a comment
+after an inline body of an eventmodeling diagram] [test: U+3000 before a comment
+after an inline body of an eventmodeling diagram] [test: U+2028 before a comment
+after an inline body of an eventmodeling diagram] [test: U+2029 before a comment
+after an inline body of an eventmodeling diagram] [test: a no-break space before
+a comment after a source reference of an eventmodeling diagram] [test: U+3000
+before a comment after a source reference of an eventmodeling diagram] [test:
+U+2028 before a comment after a source reference of an eventmodeling diagram]
+[test: U+2029 before a comment after a source reference of an eventmodeling
+diagram] [test: a no-break space before a comment after a message of a sequence
+diagram] [test: U+3000 before a comment after a message of a sequence diagram]
+[test: U+2028 before a comment that a statement follows, after a message of a
+sequence diagram] [test: U+2029 before a comment at the end of the text, after a
+message of a sequence diagram] [test: a no-break space before a comment after
+the header of a timeline] [test: U+2028 before a comment that a statement
+follows, after the header of a timeline] [test: U+2029 before a comment at the
+end of the text, after the header of a timeline] [test: U+3000 before a comment
+after the header of a user journey] [test: U+2028 before a comment that a
+statement follows, after the header of a user journey] [test: U+2029 before a
+comment at the end of the text, after the header of a user journey]
 
 [fixture: eventmodeling/comments/inline-comments-keep-contact]
 
@@ -1418,25 +1461,28 @@ decides, as [sequence](./sequence.md#multi-line-statements),
 [gantt](./gantt.md#multi-line-statements), and
 [journey](./journey.md#multi-line-statements) keep such a line break, where no
 other rule keeps the layout as written (a comment region that joins physical
-lines, a line that holds a `;`, and the like). Rule 1 names no mark for the
-indentation of a later line, so
+lines, a line that holds a `;`). Rule 1 names no mark for the indentation of a
+later line, so
 [rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)
 decides, as [flowchart](./flowchart.md#multi-line-statements),
 [sequence](./sequence.md#multi-line-statements), and
 [xychart](./xychart.md#multi-line-statements) stand the later lines of a
 statement and the comment or directive lines between them one level deeper than
 the statement, where no other rule keeps the layout as written (a comment region
-that joins physical lines, a line that holds a `;`, and the like). Only GWT's
-decided clause/item layout adds structural splits. Values, hidden forms,
-metadata and protected boundaries retain their contents, apart from the limited
-block-body margin in [Data blocks](#data-blocks). Avoiding width-dependent
-choices keeps those lexical boundaries explicit and never inserts a forbidden LF
-into inline data.
+that joins physical lines, a line that holds a `;`) and except for the `}` that
+closes a block whose `{` stands on a later line, which stands at the level of
+the statement, as the `}` of an entity block does in
+[ER](./er.md#attribute-blocks). Only GWT's decided clause/item layout adds
+structural splits. Values, hidden forms, metadata and protected boundaries
+retain their contents, apart from the limited block-body margin in
+[Data blocks](#data-blocks). Avoiding width-dependent choices keeps those
+lexical boundaries explicit and never inserts a forbidden LF into inline data.
 
 [fixture: eventmodeling/long-lines/long-structural-line-no-wrap] [fixture:
 eventmodeling/long-lines/break-next-to-comment] [fixture:
 eventmodeling/long-lines/break-next-to-directive] [fixture:
-eventmodeling/long-lines/break-next-to-percent-comment]
+eventmodeling/long-lines/break-next-to-percent-comment] [fixture:
+eventmodeling/comments/block-opener-on-a-later-line-after-a-comment-line]
 
 [fixture: eventmodeling/long-lines/safe-structural-wrapping-alternate]
 

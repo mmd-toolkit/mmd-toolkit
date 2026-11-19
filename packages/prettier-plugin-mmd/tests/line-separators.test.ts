@@ -5470,6 +5470,166 @@ const eventmodelingCommentGapExamples: readonly (readonly [
     "eventmodeling\ntf 01 evt Alpha\u3000%% c\ntf 02 evt Beta\n",
     "eventmodeling\ntf 01 evt Alpha %% c\ntf 02 evt Beta\n",
   ],
+  [
+    "a no-break space before a comment after the header of an eventmodeling diagram",
+    "eventmodeling\u00a0%% c\ntf 01 evt Alpha\n",
+    "eventmodeling %% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+3000 before a comment after the header of an eventmodeling diagram",
+    "eventmodeling\u3000%% c\ntf 01 evt Alpha\n",
+    "eventmodeling %% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2028 before a comment after the header of an eventmodeling diagram",
+    "eventmodeling\u2028%% c\ntf 01 evt Alpha\n",
+    "eventmodeling %% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "U+2029 before a comment after the header of an eventmodeling diagram",
+    "eventmodeling\u2029%% c\ntf 01 evt Alpha\n",
+    "eventmodeling %% c\ntf 01 evt Alpha\n",
+  ],
+  [
+    "a no-break space before a comment after a GWT header of an eventmodeling diagram",
+    "eventmodeling\ngwt 01\u00a0%% c\ngiven evt Added\nthen cmd Charge\n",
+    "eventmodeling\ngwt 01 %% c\n  given\n    evt Added\n  then\n    cmd Charge\n",
+  ],
+  [
+    "U+3000 before a comment after a GWT header of an eventmodeling diagram",
+    "eventmodeling\ngwt 01\u3000%% c\ngiven evt Added\nthen cmd Charge\n",
+    "eventmodeling\ngwt 01 %% c\n  given\n    evt Added\n  then\n    cmd Charge\n",
+  ],
+  [
+    "U+2028 before a comment after a GWT header of an eventmodeling diagram",
+    "eventmodeling\ngwt 01\u2028%% c\ngiven evt Added\nthen cmd Charge\n",
+    "eventmodeling\ngwt 01 %% c\n  given\n    evt Added\n  then\n    cmd Charge\n",
+  ],
+  [
+    "U+2029 before a comment after a GWT header of an eventmodeling diagram",
+    "eventmodeling\ngwt 01\u2029%% c\ngiven evt Added\nthen cmd Charge\n",
+    "eventmodeling\ngwt 01 %% c\n  given\n    evt Added\n  then\n    cmd Charge\n",
+  ],
+  [
+    "a no-break space before a comment after a GWT item of an eventmodeling diagram",
+    "eventmodeling\ngwt 01\ngiven evt Added\u00a0%% c\nthen cmd Charge\n",
+    "eventmodeling\ngwt 01\n  given\n    evt Added %% c\n  then\n    cmd Charge\n",
+  ],
+  [
+    "U+3000 before a comment after a GWT item of an eventmodeling diagram",
+    "eventmodeling\ngwt 01\ngiven evt Added\u3000%% c\nthen cmd Charge\n",
+    "eventmodeling\ngwt 01\n  given\n    evt Added %% c\n  then\n    cmd Charge\n",
+  ],
+  [
+    "U+2028 before a comment after a GWT item of an eventmodeling diagram",
+    "eventmodeling\ngwt 01\ngiven evt Added\u2028%% c\nthen cmd Charge\n",
+    "eventmodeling\ngwt 01\n  given\n    evt Added %% c\n  then\n    cmd Charge\n",
+  ],
+  [
+    "U+2029 before a comment after a GWT item of an eventmodeling diagram",
+    "eventmodeling\ngwt 01\ngiven evt Added\u2029%% c\nthen cmd Charge\n",
+    "eventmodeling\ngwt 01\n  given\n    evt Added %% c\n  then\n    cmd Charge\n",
+  ],
+  [
+    "a no-break space before a comment after a data declaration of an eventmodeling diagram",
+    "eventmodeling\ndata D\u00a0%% c\n{\nx\n}\n",
+    "eventmodeling\ndata D %% c\n  {\n    x\n}\n",
+  ],
+  [
+    "U+3000 before a comment after a data declaration of an eventmodeling diagram",
+    "eventmodeling\ndata D\u3000%% c\n{\nx\n}\n",
+    "eventmodeling\ndata D %% c\n  {\n    x\n}\n",
+  ],
+  [
+    "U+2028 before a comment after a data declaration of an eventmodeling diagram",
+    "eventmodeling\ndata D\u2028%% c\n{\nx\n}\n",
+    "eventmodeling\ndata D %% c\n  {\n    x\n}\n",
+  ],
+  [
+    "U+2029 before a comment after a data declaration of an eventmodeling diagram",
+    "eventmodeling\ndata D\u2029%% c\n{\nx\n}\n",
+    "eventmodeling\ndata D %% c\n  {\n    x\n}\n",
+  ],
+  [
+    "a no-break space before a comment after a note declaration of an eventmodeling diagram",
+    "eventmodeling\nnote 01\u00a0%% c\n{\nx\n}\n",
+    "eventmodeling\nnote 01 %% c\n  {\n    x\n}\n",
+  ],
+  [
+    "U+3000 before a comment after a note declaration of an eventmodeling diagram",
+    "eventmodeling\nnote 01\u3000%% c\n{\nx\n}\n",
+    "eventmodeling\nnote 01 %% c\n  {\n    x\n}\n",
+  ],
+  [
+    "U+2028 before a comment after a note declaration of an eventmodeling diagram",
+    "eventmodeling\nnote 01\u2028%% c\n{\nx\n}\n",
+    "eventmodeling\nnote 01 %% c\n  {\n    x\n}\n",
+  ],
+  [
+    "U+2029 before a comment after a note declaration of an eventmodeling diagram",
+    "eventmodeling\nnote 01\u2029%% c\n{\nx\n}\n",
+    "eventmodeling\nnote 01 %% c\n  {\n    x\n}\n",
+  ],
+  [
+    "a no-break space before a comment after a data reference of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha [[D]]\u00a0%% c\n",
+    "eventmodeling\ntf 01 evt Alpha [[D]] %% c\n",
+  ],
+  [
+    "U+3000 before a comment after a data reference of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha [[D]]\u3000%% c\n",
+    "eventmodeling\ntf 01 evt Alpha [[D]] %% c\n",
+  ],
+  [
+    "U+2028 before a comment after a data reference of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha [[D]]\u2028%% c\n",
+    "eventmodeling\ntf 01 evt Alpha [[D]] %% c\n",
+  ],
+  [
+    "U+2029 before a comment after a data reference of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha [[D]]\u2029%% c\n",
+    "eventmodeling\ntf 01 evt Alpha [[D]] %% c\n",
+  ],
+  [
+    "a no-break space before a comment after an inline body of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha {x}\u00a0%% c\n",
+    "eventmodeling\ntf 01 evt Alpha {x} %% c\n",
+  ],
+  [
+    "U+3000 before a comment after an inline body of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha {x}\u3000%% c\n",
+    "eventmodeling\ntf 01 evt Alpha {x} %% c\n",
+  ],
+  [
+    "U+2028 before a comment after an inline body of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha {x}\u2028%% c\n",
+    "eventmodeling\ntf 01 evt Alpha {x} %% c\n",
+  ],
+  [
+    "U+2029 before a comment after an inline body of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha {x}\u2029%% c\n",
+    "eventmodeling\ntf 01 evt Alpha {x} %% c\n",
+  ],
+  [
+    "a no-break space before a comment after a source reference of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha ->> 02\u00a0%% c\ntf 02 evt Beta\n",
+    "eventmodeling\ntf 01 evt Alpha ->> 02 %% c\ntf 02 evt Beta\n",
+  ],
+  [
+    "U+3000 before a comment after a source reference of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha ->> 02\u3000%% c\ntf 02 evt Beta\n",
+    "eventmodeling\ntf 01 evt Alpha ->> 02 %% c\ntf 02 evt Beta\n",
+  ],
+  [
+    "U+2028 before a comment after a source reference of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha ->> 02\u2028%% c\ntf 02 evt Beta\n",
+    "eventmodeling\ntf 01 evt Alpha ->> 02 %% c\ntf 02 evt Beta\n",
+  ],
+  [
+    "U+2029 before a comment after a source reference of an eventmodeling diagram",
+    "eventmodeling\ntf 01 evt Alpha ->> 02\u2029%% c\ntf 02 evt Beta\n",
+    "eventmodeling\ntf 01 evt Alpha ->> 02 %% c\ntf 02 evt Beta\n",
+  ],
 ]
 
 describe("the whitespace beside a comment of an eventmodeling diagram", () => {
