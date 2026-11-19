@@ -2784,6 +2784,35 @@ frontmatter limitation.
 
 [test: treeview/line-terminators-and-unicode/eol-output-cr]
 
+The body stays as written where drawing a branch would give one to a node that
+ends at a U+2028 or U+2029 that a comment follows. A node without a branch reads
+the character as the last character of its text, and a node with one reads it as
+whitespace before the comment, which the printer puts on a line of its own, so
+the second formatting would read the line differently from the first. A node
+that has a branch already, a body where no node gets one, and a node that the
+character does not end are formatted as before.
+
+[test:
+treeview/line-terminators-and-unicode/branch-added-name-line-separator-directive-comment]
+[test:
+treeview/line-terminators-and-unicode/branch-added-name-line-separator-comment]
+[test:
+treeview/line-terminators-and-unicode/branch-added-name-line-separator-touching]
+[test:
+treeview/line-terminators-and-unicode/branch-added-name-paragraph-separator-comment]
+[test:
+treeview/line-terminators-and-unicode/branch-added-class-line-separator-directive-comment]
+[test:
+treeview/line-terminators-and-unicode/branch-added-name-line-separator-comment-at-end]
+[test:
+treeview/line-terminators-and-unicode/prefixed-name-line-separator-directive-comment-own-line]
+[test:
+treeview/line-terminators-and-unicode/no-branch-added-name-line-separator-comment]
+[test:
+treeview/line-terminators-and-unicode/branch-added-without-line-separator-redrawn]
+[test:
+treeview/line-terminators-and-unicode/branch-added-name-line-separator-comment-row-follows]
+
 ### Source order
 
 Keep every authored node, name, annotation, common assignment and shared trivia

@@ -2790,6 +2790,26 @@ Unicode の空白は ASCII の字下げへ変えません。
 
 [test: treeview/line-terminators-and-unicode/eol-output-cr]
 
+分岐を描くと、U+2028 か U+2029 で終わり、
+コメントが続くノードに分岐が付く場合は、本体を書かれたままにします。
+分岐のないノードは、その文字をテキストの最後の文字として読みます。
+分岐のあるノードは、その文字をコメントの前の空白として読み、
+コメントを独立した行に置くので、
+2 回目の整形が 1 回目と違う読み方をするからです。
+すでに分岐があるノード、分岐が付かない本体、その文字で終わらないノードは、
+これまでどおりに整形します。
+
+[test: treeview/line-terminators-and-unicode/branch-added-name-line-separator-directive-comment]
+[test: treeview/line-terminators-and-unicode/branch-added-name-line-separator-comment]
+[test: treeview/line-terminators-and-unicode/branch-added-name-line-separator-touching]
+[test: treeview/line-terminators-and-unicode/branch-added-name-paragraph-separator-comment]
+[test: treeview/line-terminators-and-unicode/branch-added-class-line-separator-directive-comment]
+[test: treeview/line-terminators-and-unicode/branch-added-name-line-separator-comment-at-end]
+[test: treeview/line-terminators-and-unicode/prefixed-name-line-separator-directive-comment-own-line]
+[test: treeview/line-terminators-and-unicode/no-branch-added-name-line-separator-comment]
+[test: treeview/line-terminators-and-unicode/branch-added-without-line-separator-redrawn]
+[test: treeview/line-terminators-and-unicode/branch-added-name-line-separator-comment-row-follows]
+
 ### Source order
 
 ノード、名前、注釈、共通の代入と共有の付随要素は、重複、

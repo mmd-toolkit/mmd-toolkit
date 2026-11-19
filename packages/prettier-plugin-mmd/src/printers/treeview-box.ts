@@ -18,6 +18,7 @@ import type { Source } from "./source.ts"
 import {
   findFirstIndex,
   findStructuralToken,
+  isLineSeparator,
   isWhitespace,
   skipRemoved,
   textRead,
@@ -291,6 +292,21 @@ export function planTreeviewBox(
     )
       reasons.add("splitting a logical line exposes leading value whitespace")
     if (heads.get(node) === "" || original?.prefix !== null) continue
+    // A name or a description of a line without a branch holds the U+2028 or
+    // U+2029 at its end, as a character of the text. With a branch it does
+    // not: the character is whitespace before the comment, which the printer
+    // puts on a line of its own (docs/treeview.md, Branch prefixes).
+    const nodeEnd = node.annotations.reduce(
+      (end, annotation) => Math.max(end, annotation.range[1]),
+      node.name.range[1],
+    )
+    if (
+      isLineSeparator(source.text[nodeEnd - 1]) &&
+      source.joiningRegions.some((region) => region.start === nodeEnd)
+    )
+      reasons.add(
+        "adding a branch changes where a line separator ends the line",
+      )
     if (
       original !== undefined &&
       values.some((value) => {

@@ -643,4 +643,66 @@ export const treeviewCases: readonly TreeviewCase[] = [
     output: "treeView-beta\n  R ## d  \u2029\n",
     options: {},
   },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-line-separator-directive-comment",
+    input: "treeView-beta\n├── a\nb \u2028 %%{x}%%  %% c  \n\n└── c\n",
+    output: "treeView-beta\n├── a\nb \u2028 %%{x}%%  %% c  \n\n└── c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-line-separator-comment",
+    input: "treeView-beta\n├── a\nb \u2028 %% c\n\n└── c\n",
+    output: "treeView-beta\n├── a\nb \u2028 %% c\n\n└── c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-line-separator-touching",
+    input: "treeView-beta\n├── a\nb\u2028 %% c\n\n└── c\n",
+    output: "treeView-beta\n├── a\nb\u2028 %% c\n\n└── c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-paragraph-separator-comment",
+    input: "treeView-beta\n├── a\nb \u2029 %% c\n\n└── c\n",
+    output: "treeView-beta\n├── a\nb \u2029 %% c\n\n└── c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-class-line-separator-directive-comment",
+    input:
+      'treeView-beta\n├── a\n"parent" :::X   \u2028 %%{x}%%  %% c  \n\n└── c\n',
+    output:
+      'treeView-beta\n├── a\n"parent" :::X   \u2028 %%{x}%%  %% c  \n\n└── c\n',
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-line-separator-comment-at-end",
+    input: "treeView-beta\n├── a\nb \u2028 %% c  ",
+    output: "treeView-beta\n├── a\nb \u2028 %% c  ",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/prefixed-name-line-separator-directive-comment-own-line",
+    input: "treeView-beta\n├── a\n├── b \u2028 %%{x}%%  %% c  \n\n└── c\n",
+    output: "treeView-beta\n├── a\n├── b\n%%{x}%% %% c  \n\n└── c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/no-branch-added-name-line-separator-comment",
+    input: "treeView-beta\na\nb \u2028 %% c\n\n└── c\n",
+    output: "treeView-beta\na\nb \u2028 %% c\n\n└── c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-name-line-separator-comment-row-follows",
+    input: "treeView-beta\n├── a\nb \u2028 %% c\n└── c\n",
+    output: "treeView-beta\n├── a\nb \u2028 %% c\n└── c\n",
+    options: {},
+  },
+  {
+    name: "treeview/line-terminators-and-unicode/branch-added-without-line-separator-redrawn",
+    input: "treeView-beta\n├── a\nb\n└── c\n",
+    output: "treeView-beta\n├── a\n└── b\n    └── c\n",
+    options: {},
+  },
 ]
