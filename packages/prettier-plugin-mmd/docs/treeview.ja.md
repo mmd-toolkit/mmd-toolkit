@@ -1738,12 +1738,20 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 `null` と空白だけの値は引用符なしの `title` とします。
 テキストの中の空白とタブの連なりは、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
-題の終わりのディレクティブは、それぞれの前に空白かタブがあれば空白 1 つを置き、
+題をディレクティブが終えるのは、どのディレクティブの後ろにも、行末まで空白、
+タブ、ほかのディレクティブしかないときです。
+そのとき、ディレクティブはそれぞれの前に空白かタブがあれば空白 1 つを置き、
 行末の空白とタブの有無にかかわらず、
 最後のディレクティブの後の空白とタブを除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+ディレクティブの後ろにテキスト、U+00A0、U+3000 のどれかがあるときは、
+行は書かれたまま残り、`title` の後の隙間と、
+最後のディレクティブの後の空白も残ります。
 
 [fixture: title/title-directives-end-blanks-dropped]
+[test: treeview/title/directives-u3000-between-kept]
+[test: treeview/title/directive-u3000-trailing-spaces-kept]
+[test: treeview/title/directive-then-text-gap-kept]
 
 次の行から値を取らず、Db の等しい一定の外側の配置を選ぶためです。
 `titlex` と `title"node"` は AST の境界に従い、要約に出ない title も残します。
@@ -1846,11 +1854,18 @@ treeView-beta
 波括弧らしい行値と付随要素の境界を保ちます。
 共通の変換処理が許す同等の外側の隙間を選びます。
 次の行の文字を値に取りません。
-値の終わりのディレクティブは、それぞれの前に空白かタブがあれば空白 1 つを置き、
+値をディレクティブが終えるのは、どのディレクティブの後ろにも、行末まで空白、
+タブ、ほかのディレクティブしかないときです。
+そのとき、ディレクティブはそれぞれの前に空白かタブがあれば空白 1 つを置き、
 最後のディレクティブの後の空白とタブを除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+ディレクティブの後ろにテキスト、U+00A0、U+3000 のどれかがあるときは、
+行は書かれたまま残り、コロンの後の隙間と、
+最後のディレクティブの後の空白も残ります。
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
+[test: treeview/accessibility-lines/acctitle-directive-u3000-kept]
+[test: treeview/accessibility-lines/accdescr-directive-then-text-kept]
 [fixture: treeview/accessibility-lines/acctitle-padding]
 
 [fixture: treeview/accessibility-lines/accdescr-padding]

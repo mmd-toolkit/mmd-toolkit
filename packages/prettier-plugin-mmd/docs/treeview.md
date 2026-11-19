@@ -1743,12 +1743,19 @@ Keep common statements in their preamble and source order. Use shared
 null/whitespace-only values, printing a run of spaces and tabs inside the text
 as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
-The directives that end a title are printed with one space before each that has
-spaces or tabs before it, and the spaces and tabs after the last one are left
-out, whatever the spaces and tabs at the end of the line (see
+The directives end a title where nothing but spaces, tabs, and other directives
+follows each of them up to the end of the line. They are printed with one space
+before each that has spaces or tabs before it, and the spaces and tabs after the
+last one are left out, whether they are there or not (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+Where a directive is followed by anything else, text, a no-break space, or a
+U+3000, the line stays as written, the gap after `title` and the spaces after
+its last directive included.
 
-[fixture: title/title-directives-end-blanks-dropped]
+[fixture: title/title-directives-end-blanks-dropped] [test:
+treeview/title/directives-u3000-between-kept] [test:
+treeview/title/directive-u3000-trailing-spaces-kept] [test:
+treeview/title/directive-then-text-gap-kept]
 
 This chooses consistent Db-equivalent outer spacing without taking a next-line
 value. Follow AST boundaries for `titlex` and `title"node"`; title still stays
@@ -1844,12 +1851,18 @@ Print a run of spaces and tabs inside the value of an `accDescr` as one space
 but not that of an `accTitle`, which the browser shows as a tooltip, and retain
 brace-looking line values and trivia boundaries. The common converter permits
 these equivalent outer gaps. Never borrow text from the next line. The
-directives that end the value are printed with one space before each that has
-spaces or tabs before it, and the spaces and tabs after the last one are left
-out (see
+directives end the value where nothing but spaces, tabs, and other directives
+follows each of them up to the end of the line. They are printed with one space
+before each that has spaces or tabs before it, and the spaces and tabs after the
+last one are left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+Where a directive is followed by anything else, text, a no-break space, or a
+U+3000, the line stays as written, the gap after the colon and the spaces after
+its last directive included.
 
-[fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped] [test:
+treeview/accessibility-lines/acctitle-directive-u3000-kept] [test:
+treeview/accessibility-lines/accdescr-directive-then-text-kept] [fixture:
 treeview/accessibility-lines/acctitle-padding]
 
 [fixture: treeview/accessibility-lines/accdescr-padding]

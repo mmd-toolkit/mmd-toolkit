@@ -10,6 +10,36 @@ interface TreeviewCase {
 
 export const treeviewCases: readonly TreeviewCase[] = [
   {
+    name: "treeview/title/directives-u3000-between-kept",
+    input: "treeView-beta\ntitle t %%{x}%%\u3000%%{y}%%  \nR\n",
+    output: "treeView-beta\n  title t %%{x}%%\u3000%%{y}%%  \n  R\n",
+    options: {},
+  },
+  {
+    name: "treeview/title/directive-u3000-trailing-spaces-kept",
+    input: "treeView-beta\ntitle t %%{x}%%\u3000  \nR\n",
+    output: "treeView-beta\n  title t %%{x}%%\u3000  \n  R\n",
+    options: {},
+  },
+  {
+    name: "treeview/title/directive-then-text-gap-kept",
+    input: "treeView-beta\ntitle   t  %%{x}%% u  v %%{y}%%  \nR\n",
+    output: "treeView-beta\n  title   t  %%{x}%% u  v %%{y}%%  \n  R\n",
+    options: {},
+  },
+  {
+    name: "treeview/accessibility-lines/acctitle-directive-u3000-kept",
+    input: "treeView-beta\naccTitle:   t  v  %%{x}%%\u3000  \nR\n",
+    output: "treeView-beta\n  accTitle:   t  v  %%{x}%%\u3000  \n  R\n",
+    options: {},
+  },
+  {
+    name: "treeview/accessibility-lines/accdescr-directive-then-text-kept",
+    input: "treeView-beta\naccDescr:   t  v  %%{x}%% u  \nR\n",
+    output: "treeView-beta\n  accDescr:   t  v  %%{x}%% u  \n  R\n",
+    options: {},
+  },
+  {
     name: "treeview/final-newline/open-directive-u1680",
     input: 'treeView-beta\n"R"\n%%{unfinished\u1680',
     output: 'treeView-beta\n  "R"\n%%{unfinished\n',
