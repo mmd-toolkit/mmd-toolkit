@@ -6828,6 +6828,51 @@ const kanbanExamples: readonly (readonly [string, string, string, Options?])[] =
       "kanban\n  S[x]  %% c\n\n\u2028   A\n",
       "kanban\n  S[x]  %% c\n\n    A\n",
     ],
+    [
+      "kanban: ls-line-then-comment-line-header",
+      "kanban  %% c\n\u2028\n%% d\n  S[x]\n",
+      "kanban %% c\n  %% d\n  S[x]\n",
+    ],
+    [
+      "kanban: ls-line-then-comment-line",
+      "kanban\n  S[x]  %% c\n\u2028\n%% d\n  A\n",
+      "kanban\n  S[x] %% c\n\n  %% d\n  A\n",
+    ],
+    [
+      "kanban: ps-line-then-comment-line-card-shape",
+      "kanban\n  S[x]\n    A[y]  %% c\n\u2029\n%% d\n    B\n",
+      "kanban\n  S[x]\n    A[y] %% c\n\n    %% d\n    B\n",
+    ],
+    [
+      "kanban: ls-line-then-comment-line-icon",
+      "kanban\n  S[x]\n    A\n    ::icon(fa fa-book)  %% c\n\u2028\n%% d\n    B\n",
+      "kanban\n  S[x]\n    A\n    ::icon(fa fa-book) %% c\n\n    %% d\n    B\n",
+    ],
+    [
+      "kanban: ps-line-then-comment-line-data-block",
+      "kanban\n  S[x]\n    A@{ ticket: T }  %% c\n\u2029\n%% d\n    B\n",
+      "kanban\n  S[x]\n    A@{ ticket: T } %% c\n\n    %% d\n    B\n",
+    ],
+    [
+      "kanban: comment-line-then-ls-line-kept",
+      "kanban\n  S[x]  %% c\n%% d\n\u2028\n  A\n",
+      "kanban\n  S[x]  %% c\n%% d\n\u2028\n  A\n",
+    ],
+    [
+      "kanban: comment-line-then-ps-line-kept-data-block",
+      "kanban\n  S[x]\n    A@{ ticket: T }  %% c\n%% d\n\u2029\n    B\n",
+      "kanban\n  S[x]\n    A@{ ticket: T }  %% c\n%% d\n\u2029\n    B\n",
+    ],
+    [
+      "kanban: ls-in-comment-line-indentation",
+      "kanban\n  S[x]  %% c\n\u2028  %% d\n  A\n",
+      "kanban\n  S[x] %% c\n  %% d\n  A\n",
+    ],
+    [
+      "kanban: ps-before-comment-line-mark-card-shape",
+      "kanban\n  S[x]\n    A[y]  %% c\n  \u2029%% d\n    B\n",
+      "kanban\n  S[x]\n    A[y] %% c\n    %% d\n    B\n",
+    ],
   ]
 
 describe("kanban whitespace and line boundaries", () => {
@@ -8265,6 +8310,21 @@ const c4Examples: readonly (readonly [string, string, string])[] = [
     "c4: ls-indentation-after-comment-and-comment-line-kept",
     'C4Context\nPerson(a,"A")  %% c\n%% d\n\u2028Person(b,"B")\n',
     'C4Context\n  Person(a, "A")  %% c\n%% d\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: comment-line-after-comment-before-closer-kept",
+    'C4Context\nBoundary(b1,"B") {\nPerson(b,"B")  %% c\n%% d\n }\n',
+    'C4Context\n  Boundary(b1, "B") {\n    Person(b, "B")  %% c\n%% d\n  }\n',
+  ],
+  [
+    "c4: ls-in-description-block-kept",
+    'C4Context\naccDescr {\n  line one\n\u2028  line two\n}\nPerson(a,"A")\n',
+    'C4Context\n  accDescr {\n    line one\n    \u2028  line two\n  }\n  Person(a, "A")\n',
+  ],
+  [
+    "c4: ps-in-description-block-kept",
+    'C4Context\naccDescr {\nline one\n\u2029line two\n}\nPerson(a,"A")\n',
+    'C4Context\n  accDescr {\n    line one\n    \u2029line two\n  }\n  Person(a, "A")\n',
   ],
   [
     "c4: ls-indentation-no-comment",

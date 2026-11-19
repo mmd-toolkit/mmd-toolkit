@@ -681,12 +681,15 @@ whole as written: its empty lines and its comments, up to the indentation of the
 next statement, which the printer chooses (see [Indentation](#indentation)). A
 separator counts only where it ends the comment or stands before the last line
 feed of the gap; one after that line feed, in the indentation of the statement,
-does not make the gap a kept one (see [Comments](#comments)). A gap with only
-comment lines (`S`, `%% note`, an empty line, `A`) is formatted as usual, and
-the comment line is aligned (see [Comments](#comments)). A common comment after
-a directive containing a line feed, or after a native `%%` comment, is still
-removed before this decision and aligned as usual; a U+2028 or U+2029 inside
-that common comment is removed too and cannot make the gap stay as written.
+does not make the gap a kept one (see [Comments](#comments)). A comment line
+removes the whitespace before it, a line of a separator or an empty line
+included, so one of those that stands before a comment line does not keep the
+gap either (see [Comments](#comments)). A gap with only comment lines (`S`,
+`%% note`, an empty line, `A`) is formatted as usual, and the comment line is
+aligned (see [Comments](#comments)). A common comment after a directive
+containing a line feed, or after a native `%%` comment, is still removed before
+this decision and aligned as usual; a U+2028 or U+2029 inside that common
+comment is removed too and cannot make the gap stay as written.
 
 [test: kanban: comment-line-ls-taken] [test: kanban: ls-ends-comment-kept]
 [test: kanban: ls-own-line-after-comment-kept] [test: kanban:
@@ -785,7 +788,8 @@ its authored line, with eligible data-block margins following
 
 A diagram comment that is followed by an empty line, by another comment, or by a
 U+2028 or U+2029 that ends it or stands before the last line feed of the gap
-stays as written with the gap after it (see [Blank lines](#blank-lines)).
+stays as written with the gap after it (see [Blank lines](#blank-lines)), unless
+a comment line follows, which removes the whitespace before it.
 
 [fixture: comments/comments-align] [fixture:
 comments/bare-brace-comments-aligned] [fixture: comments/header-leading-comment]
@@ -798,7 +802,14 @@ line feed ends is one character of that indentation (see
 and `A` with the indentation of its place, and so do a comment after the header,
 after the shape of a card, after an icon, and after a data block. A separator
 that ends the comment, one on a line of its own after the comment, and an empty
-line after the comment keep the gap as written.
+line after the comment keep the gap as written, unless a comment line follows
+the last two, which removes the whitespace before it, the line of the separator
+or the empty line included: `S[x]  %% c`, a line feed, a U+2028, a line feed,
+`%% d`, and `  A` print `S[x] %% c`, an empty line, `%% d`, and `A`, the last
+two with the indentation of their place, and a separator in the indentation of
+the comment line, or before its `%%`, is dropped. A comment line before the
+separator line takes nothing with it: `S[x]  %% c`, `%% d`, a line of a U+2028,
+and `A` stay as written.
 
 [test: kanban: ls-indentation-after-comment] [test: kanban:
 ps-indentation-after-comment-tab] [test: kanban:
@@ -807,7 +818,15 @@ ls-indentation-after-comment-card-shape] [test: kanban:
 ls-indentation-after-comment-icon] [test: kanban:
 ls-indentation-after-comment-data-block] [test: kanban: ls-ends-comment-kept]
 [test: kanban: ls-own-line-after-comment-kept] [test: kanban:
-ls-indentation-after-comment-and-blank-line-kept]
+ls-indentation-after-comment-and-blank-line-kept] [test: kanban:
+ls-line-then-comment-line-header] [test: kanban: ls-line-then-comment-line]
+[test: kanban: ps-line-then-comment-line-card-shape] [test: kanban:
+ls-line-then-comment-line-icon] [test: kanban:
+ps-line-then-comment-line-data-block] [test: kanban:
+comment-line-then-ls-line-kept] [test: kanban:
+comment-line-then-ps-line-kept-data-block] [test: kanban:
+ls-in-comment-line-indentation] [test: kanban:
+ps-before-comment-line-mark-card-shape]
 
 A diagram comment after the header, a shape, an icon, or a data block stays on
 its line: it touches where it touches, and a run of spaces and tabs before it

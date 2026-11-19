@@ -734,6 +734,9 @@ U+2028 か U+2029 が続く隙間は、書かれたまま、全体を残しま�
 隙間の最後の改行より前にある区切りだけです。
 最後の改行より後の、文の字下げにある区切りは、
 隙間を書かれたまま残す理由になりません（[コメント](#コメント)を参照）。
+コメント行は、その前の空白を、区切りだけの行や空行も含めて取り除くので、
+コメント行の前にある区切りの行や空行も、
+隙間を書かれたまま残しません（[コメント](#コメント)を参照）。
 コメント行だけの隙間（`S`、`%% note`、空行、`A`）は通常どおり整形し、
 コメント行を揃えます（[コメント](#コメント)を参照）。
 改行を含むディレクティブの後や、図の `%%` コメントの後のコメント行も、
@@ -841,6 +844,7 @@ kanban
 空行、別のコメント、そのコメントを終える U+2028 か U+2029、
 隙間の最後の改行より前にある U+2028 か U+2029 が続く図のコメントは、
 後ろの隙間と一緒に書かれたまま残します（[空行](#空行)を参照）。
+ただし、コメント行が続くときは、コメント行がその前の空白を取り除くので別です。
 
 [fixture: comments/comments-align]
 [fixture: comments/bare-brace-comments-aligned]
@@ -855,6 +859,13 @@ kanban
 ヘッダー、カードの形、アイコン、データブロックの後のコメントも同じです。
 コメントを終える区切りがあるときと、コメントの後の行が区切りだけのときと、
 コメントの後に空行があるときは、隙間を書かれたまま残します。
+ただし、後の 2 つにコメント行が続くときは、コメント行がその前の空白を、
+区切りの行や空行も含めて取り除くので、残しません。
+`S[x]  %% c`、改行、U+2028、改行、`%% d`、`  A` は、`S[x] %% c`、空行、`%% d`、
+`A` を印字し、後の 2 つはその場所の字下げにします。
+コメント行の字下げにある区切りと、`%%` の直前の区切りは、落とします。
+区切りの行の前にあるコメント行は、何も取り除きません。
+`S[x]  %% c`、`%% d`、U+2028 だけの行、`A` は、書かれたまま残します。
 
 [test: kanban: ls-indentation-after-comment]
 [test: kanban: ps-indentation-after-comment-tab]
@@ -865,6 +876,15 @@ kanban
 [test: kanban: ls-ends-comment-kept]
 [test: kanban: ls-own-line-after-comment-kept]
 [test: kanban: ls-indentation-after-comment-and-blank-line-kept]
+[test: kanban: ls-line-then-comment-line-header]
+[test: kanban: ls-line-then-comment-line]
+[test: kanban: ps-line-then-comment-line-card-shape]
+[test: kanban: ls-line-then-comment-line-icon]
+[test: kanban: ps-line-then-comment-line-data-block]
+[test: kanban: comment-line-then-ls-line-kept]
+[test: kanban: comment-line-then-ps-line-kept-data-block]
+[test: kanban: ls-in-comment-line-indentation]
+[test: kanban: ps-before-comment-line-mark-card-shape]
 
 ヘッダー、形、アイコン、データブロックの後の図のコメントは、その行に残します。
 接していれば接したまま、空白とタブの連なりがあれば前に空白 1 つを置きます。
