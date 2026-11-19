@@ -1318,15 +1318,17 @@ decides: [c4](./c4.md#final-newline) and [ishikawa](./ishikawa.md#final-newline)
 keep the whole terminal gap after a final diagram comment as written and add no
 line break after it. The spaces at the end of a last bare id are part of the id
 and stay (`S   ` prints with its spaces, then the line break). When a directive
-that is not closed reaches the end of the text, it takes the rest, and the
-printer adds nothing after it. In Markdown, the indentation of the code fence or
-of its list item is the indentation of the host, and is not part of the
-indentation of the board.
+that is not closed reaches the end of the text, it takes the rest up to its last
+character that is not whitespace: where the text ends right after it, the
+printer adds nothing after it, and where whitespace follows it, the whitespace
+is dropped and one line break ends the text. In Markdown, the indentation of the
+code fence or of its list item is the indentation of the host, and is not part
+of the indentation of the board.
 
 [fixture: final-newline/accepted] [fixture: final-newline/no-final-lf] [fixture:
 final-newline/empty-board] [fixture: final-newline/open-directive-at-eof]
-[fixture: blank-lines/comment-blank-trailing] [test: kanban:
-selected-terminal-separator]
+[fixture: final-newline/open-directive-at-eof-trailing-blanks] [fixture:
+blank-lines/comment-blank-trailing] [test: kanban: selected-terminal-separator]
 
 Input
 ([final-newline/empty-board-input.mmd](../tests/fixtures/kanban/final-newline/empty-board-input.mmd)):

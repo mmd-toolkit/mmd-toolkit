@@ -1406,14 +1406,17 @@ kanban
 その後に改行を足しません。
 最後の裸の id の末尾の空白は id の一部なので残ります（`S   `
 は空白つきで印字し、その後に改行が来ます）。
-閉じていないディレクティブがテキストの終わりまで届くときは、残りを取るので、
-印字はその後ろに何も足しません。
+閉じていないディレクティブがテキストの終わりまで届くときは、
+空白でない最後の文字までの残りを取ります。
+テキストがその直後で終わるなら、印字はその後ろに何も足しません。
+後ろに空白が続くなら、空白を落とし、改行 1 つでテキストを終えます。
 Markdown では、コードフェンスやリスト項目の字下げはホストの字下げで、
 ボードの字下げには入りません。
 
 [fixture: final-newline/accepted] [fixture: final-newline/no-final-lf]
 [fixture: final-newline/empty-board]
 [fixture: final-newline/open-directive-at-eof]
+[fixture: final-newline/open-directive-at-eof-trailing-blanks]
 [fixture: blank-lines/comment-blank-trailing]
 [test: kanban: selected-terminal-separator]
 
