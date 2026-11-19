@@ -1588,12 +1588,15 @@ U+2028 と U+2029 は、ブロック図の単位の間の空白で、空白と�
 | ディレクティブを含むコメント行（`%% d%%{y}%%`）で、テキストの末尾                           | 落とす。その行を、普通の行と同じに自分の行に置く             | `#f00` |
 | コメント行、ディレクティブの行、文                                                          | 残す。文は離れて、文と同じ段に置く                           | `#f00` |
 | 空行、コメント行、文                                                                        | 残す。文はコメント行の次の行に、書かれたまま残る             | `#F00` |
+| `;` だけの行（`;b`、`%%{y}%%;` も）                                                         | 残す。その行はコメント行の次の行に、書かれたまま残る         | `#F00` |
+| 空行、`;` だけの行                                                                          | 残す。その行は離れて、文と同じ段に置く                       | `#f00` |
 
 U+2028 や U+2029 は、文が続かず、
 空白でない最後の行がコメントを含むとき（コメント行、
-ディレクティブを含むコメント行、
-ディレクティブとコメントが 1 行にある行）に落とし、文が続くとき、
+ディレクティブを含むコメント行、ディレクティブとコメントが 1 行にある行）、
+その前の行に `;` がないときに落とし、前の行に `;` があるとき、文が続くとき、
 または空白でない最後の行にディレクティブしかないときは残します。
+`;` だけの行、`;` と文字の行、ディレクティブと `;` の行は、ここでは文です。
 文が続くときの色は、文がコメント行のすぐ後の行にあれば書かれたまま残り、空行、
 空白だけの行、ディレクティブの行が文のすぐ前にあれば小文字になります。
 flowchart、class、state、ER は、ブロック図が落とすどの行でも、
@@ -1613,19 +1616,26 @@ U+2028、`%% c`、` y` は `#f00 x` になります）。
 空白、タブ、フォームフィード以外の文字がその `;` から離すときも同じです。
 [色](./compatibility.ja.md#同じに描かれる色)の規則はこれを小文字に印字するので、
 その形は規則に反して印字しており、規則による修正を待っています。
-`;` が U+2028 の直前の色に接するときは、U+2028 とコメント行は書かれたままで、
-コメント行の後に何が続いても同じです。
-色は、コメント行のすぐ後に文が続くときだけ、
+U+2028 の前の行に `;` があるときは、その行を書かれたままにします。
+U+2028 とコメント行は、コメント行の後に何が続いても残り、
+スタイルの空白も書かれたままです（`style a fill:red;`、U+2028、
+`%% c` は変わりません。色でない値の後の `stroke-width:2px;` も、
+空白や文字が `;` から離す色の後の `fill:#F00 ;`、`fill:#F00 x;` も同じです。
+`style a fill:red`、U+2028、`%% c` は `fill: red` になります）。
+その行の色は、コンマが続くときと、空白、タブ、
+フォームフィードと文字が続くときに、小文字にします。
+`;` が接する色は、コメント行のすぐ後に文が続くときだけ、
 `;` がないときと同じに書かれたまま残り、文が続かないとき、
-または空行かディレクティブの行が文のすぐ前にあるときは、小文字になります。
-`style a fill:#F00;`、U+2028、`%% c` は、
-U+2028 と `%% c` を残して `style a fill:#f00;` になります。
-`;` と U+2028 の間に空白、タブ、フォームフィードがあるときは、U+2028 は残り、
+または空行かディレクティブの行が文のすぐ前にあるときは、
+小文字になります（`style a fill:#F00;`、U+2028、`%% c` は、
+U+2028 と `%% c` を残して `style a fill:#f00;` になります）。
+`;` と U+2028 の間に空白、タブ、フォームフィードがあるときは、
 色は何が続いても小文字になります。
-ほかの文字（垂直タブ、ノーブレークスペース）があるときの色は、
+ほかの空白文字（垂直タブ、ノーブレークスペース）があるときの色は、
 `;` が接するときと同じです。
-2 つ目の `;` が 1 つ目に続くとき（直後でも、空白かタブを挟んでも。
-`style a fill:#F00;;`、`style a fill:#F00; ;`）は、
+1 つ目の `;` の後ろに、
+間に何があっても 2 つ目の `;` が続くとき（`style a fill:#F00;;`、
+`style a fill:#F00; ;`、`style a fill:#F00;x;`）は、
 何が続いても色は書かれたまま残ります。
 ブロック図では、mermaid.js は U+2028 を行の終わりとして、
 `%% c` をコメントとして読みます。
@@ -1748,6 +1758,27 @@ U+2028 と `%% c` を残して `style a fill:#f00;` になります。
 [test: a no-break space and a form feed before a comma in a class definition that a line break joins, the first decides: the color is as written]
 [test: a space and a vertical tab between a color and the semicolon in a class definition that a line break joins, the first decides: the color is in lower case]
 [test: a vertical tab and a space between a color and the semicolon in a class definition that a line break joins, the first decides: the color is as written]
+[test: a semicolon after a value that is no color, to the end of the text, after a style statement and a U+2028: the U+2028 and the line stay as written]
+[test: a semicolon after a width, to the end of the text, after a style statement and a U+2028: the U+2028 and the line stay as written]
+[test: a semicolon that a space separates from the color, to the end of the text, after a style statement and a U+2028: the U+2028 and the line stay as written]
+[test: a semicolon after a color and a character, to the end of the text, after a style statement and a U+2028: the U+2028 and the line stay as written]
+[test: a semicolon and a character after a value that is no color, to the end of the text, after a style statement and a U+2028: the U+2028 and the line stay as written]
+[test: a semicolon after a value that is no color, to the end of the text, after a class definition and a U+2029: the U+2029 and the line stay as written]
+[test: a semicolon after a value that is no color, a statement follows, after a style statement and a U+2028: the U+2028 and the line stay as written]
+[test: no semicolon after a value that is no color, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped and the colon gets a space]
+[test: a vertical tab between two semicolons after a color and a U+2028, to the end of the text, the color stays as written]
+[test: a no-break space between two semicolons after a color and a U+2028, to the end of the text, the color stays as written]
+[test: a form feed between two semicolons after a color and a U+2028, to the end of the text, the color stays as written]
+[test: a character between two semicolons after a color and a U+2028, to the end of the text, the color stays as written]
+[test: a comma between two semicolons after a color and a U+2028, to the end of the text, the color stays as written]
+[test: a character and spaces between two semicolons after a color and a U+2028, to the end of the text, the color stays as written]
+[test: three semicolons after a color and a U+2028, to the end of the text, the color stays as written]
+[test: a line that holds only a semicolon after the comment line, after a style statement and a U+2028: the U+2028 stays and the color is as written]
+[test: a line that holds a semicolon and a character after the comment line, after a style statement and a U+2028: the U+2028 stays and the color is as written]
+[test: a directive and a semicolon on a line after the comment line, after a style statement and a U+2028: the U+2028 stays and the color is as written]
+[test: an empty line and a line that holds only a semicolon after the comment line, after a style statement and a U+2028: the U+2028 stays and the color is in lower case]
+[test: a directive line and a line that holds only a semicolon after the comment line, after a style statement and a U+2028: the U+2028 stays and the color is in lower case]
+[test: a comment line and a line that holds only a semicolon after the comment line, after a style statement and a U+2028: the U+2028 stays and the color is as written]
 
 ### 空白文字
 

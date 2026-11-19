@@ -5818,6 +5818,111 @@ const blockLineSeparatorExamples: readonly (readonly [
     "block-beta\na\nclassDef c \nfill:#F00\u000b ;\n",
     "block-beta\n  a\n  classDef c \n    fill:#F00\u000b ;\n",
   ],
+  [
+    "a semicolon after a value that is no color, to the end of the text, after a style statement and a U+2028: the U+2028 and the line stay as written",
+    "block-beta\na\nstyle a fill:red;\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:red;\u2028%% c\n",
+  ],
+  [
+    "a semicolon after a width, to the end of the text, after a style statement and a U+2028: the U+2028 and the line stay as written",
+    "block-beta\na\nstyle a stroke-width:2px;\u2028%% c\n",
+    "block-beta\n  a\n  style a stroke-width:2px;\u2028%% c\n",
+  ],
+  [
+    "a semicolon that a space separates from the color, to the end of the text, after a style statement and a U+2028: the U+2028 and the line stay as written",
+    "block-beta\na\nstyle a fill:#F00 ;\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#f00 ;\u2028%% c\n",
+  ],
+  [
+    "a semicolon after a color and a character, to the end of the text, after a style statement and a U+2028: the U+2028 and the line stay as written",
+    "block-beta\na\nstyle a fill:#F00 x;\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#f00 x;\u2028%% c\n",
+  ],
+  [
+    "a semicolon and a character after a value that is no color, to the end of the text, after a style statement and a U+2028: the U+2028 and the line stay as written",
+    "block-beta\na\nstyle a fill:red;b\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:red;b\u2028%% c\n",
+  ],
+  [
+    "a semicolon after a value that is no color, to the end of the text, after a class definition and a U+2029: the U+2029 and the line stay as written",
+    "block-beta\na\nclassDef k fill:red;\u2029%% c\n",
+    "block-beta\n  a\n  classDef k fill:red;\u2029%% c\n",
+  ],
+  [
+    "a semicolon after a value that is no color, a statement follows, after a style statement and a U+2028: the U+2028 and the line stay as written",
+    "block-beta\na\nstyle a fill:red;\u2028%% c\nb\n",
+    "block-beta\n  a\n  style a fill:red;\u2028%% c\nb\n",
+  ],
+  [
+    "no semicolon after a value that is no color, to the end of the text, after a style statement and a U+2028: the U+2028 is dropped and the colon gets a space",
+    "block-beta\na\nstyle a fill:red\u2028%% c\n",
+    "block-beta\n  a\n  style a fill: red\n  %% c\n",
+  ],
+  [
+    "a vertical tab between two semicolons after a color and a U+2028, to the end of the text, the color stays as written",
+    "block-beta\na\nstyle a fill:#F00;\u000b;\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#F00;\u000b;\u2028%% c\n",
+  ],
+  [
+    "a no-break space between two semicolons after a color and a U+2028, to the end of the text, the color stays as written",
+    "block-beta\na\nstyle a fill:#F00;\u00a0;\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#F00;\u00a0;\u2028%% c\n",
+  ],
+  [
+    "a form feed between two semicolons after a color and a U+2028, to the end of the text, the color stays as written",
+    "block-beta\na\nstyle a fill:#F00;\f;\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#F00;\f;\u2028%% c\n",
+  ],
+  [
+    "a character between two semicolons after a color and a U+2028, to the end of the text, the color stays as written",
+    "block-beta\na\nstyle a fill:#F00;x;\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#F00;x;\u2028%% c\n",
+  ],
+  [
+    "a comma between two semicolons after a color and a U+2028, to the end of the text, the color stays as written",
+    "block-beta\na\nstyle a fill:#F00;,;\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#F00;,;\u2028%% c\n",
+  ],
+  [
+    "a character and spaces between two semicolons after a color and a U+2028, to the end of the text, the color stays as written",
+    "block-beta\na\nstyle a fill:#F00; x ;\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#F00; x ;\u2028%% c\n",
+  ],
+  [
+    "three semicolons after a color and a U+2028, to the end of the text, the color stays as written",
+    "block-beta\na\nstyle a fill:#F00;;;\u2028%% c\n",
+    "block-beta\n  a\n  style a fill:#F00;;;\u2028%% c\n",
+  ],
+  [
+    "a line that holds only a semicolon after the comment line, after a style statement and a U+2028: the U+2028 stays and the color is as written",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n;\n",
+    "block-beta\n  a\n  style a fill:#F00\u2028%% c\n;\n",
+  ],
+  [
+    "a line that holds a semicolon and a character after the comment line, after a style statement and a U+2028: the U+2028 stays and the color is as written",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n;b\n",
+    "block-beta\n  a\n  style a fill:#F00\u2028%% c\n;b\n",
+  ],
+  [
+    "a directive and a semicolon on a line after the comment line, after a style statement and a U+2028: the U+2028 stays and the color is as written",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n%%{y}%%;\n",
+    "block-beta\n  a\n  style a fill:#F00\u2028%% c\n%%{y}%%;\n",
+  ],
+  [
+    "an empty line and a line that holds only a semicolon after the comment line, after a style statement and a U+2028: the U+2028 stays and the color is in lower case",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n\n;\n",
+    "block-beta\n  a\n  style a fill:#f00\u2028%% c\n\n  ;\n",
+  ],
+  [
+    "a directive line and a line that holds only a semicolon after the comment line, after a style statement and a U+2028: the U+2028 stays and the color is in lower case",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n%%{y}%%\n;\n",
+    "block-beta\n  a\n  style a fill:#f00\u2028%% c\n%%{y}%%\n  ;\n",
+  ],
+  [
+    "a comment line and a line that holds only a semicolon after the comment line, after a style statement and a U+2028: the U+2028 stays and the color is as written",
+    "block-beta\na\nstyle a fill:#F00\u2028%% c\n%% d\n;\n",
+    "block-beta\n  a\n  style a fill:#F00\u2028%% c\n%% d\n;\n",
+  ],
 ]
 
 /**
