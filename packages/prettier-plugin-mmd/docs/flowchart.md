@@ -2327,7 +2327,8 @@ plain scalar stays too.
 
 [fixture: data-blocks/zero-and-shallow] [fixture: data-blocks/deep-nested-yaml]
 [fixture: data-blocks/closing-after-text] [fixture:
-data-blocks/closing-after-literal-text]
+data-blocks/closing-after-literal-text] [fixture:
+data-blocks/closing-after-folded-text]
 
 Move a block only when all these conditions hold; otherwise keep its columns as
 written:

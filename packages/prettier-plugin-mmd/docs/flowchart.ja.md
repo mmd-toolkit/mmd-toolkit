@@ -2401,6 +2401,7 @@ flowchart LR
 [fixture: data-blocks/zero-and-shallow] [fixture: data-blocks/deep-nested-yaml]
 [fixture: data-blocks/closing-after-text]
 [fixture: data-blocks/closing-after-literal-text]
+[fixture: data-blocks/closing-after-folded-text]
 
 次の条件をすべて満たす場合だけ動かし、満たさなければ書かれた桁を保ちます。
 
