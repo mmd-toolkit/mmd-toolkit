@@ -6877,6 +6877,251 @@ describe("requirement color words with rejected tabs", () => {
 })
 
 /**
+ * Each example is an `accTitle:` or `accDescr:` line of a usecase diagram, or
+ * an ishikawa literal, that ends with a directive that holds a line break or a
+ * `;` and is followed by a whitespace character that no fixture file holds.
+ * The usecase value is trimmed of every whitespace character, so each of them
+ * after the last directive is a blank that is dropped, and the line is printed
+ * as it is without it; the ishikawa literal drops spaces and tabs only, and
+ * U+0085 and U+200B are no whitespace (docs/usecase.md, Accessibility lines;
+ * docs/ishikawa.md, Trailing whitespace).
+ */
+const directiveEndsLineAfterWhitespaceExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "usecase accTitle: U+00A0 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u00a0\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+1680 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u1680\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2000 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2000\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2001 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2001\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2002 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2002\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2003 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2003\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2004 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2004\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2005 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2005\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2006 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2006\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2007 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2007\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2008 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2008\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+2009 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u2009\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+200A after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u200a\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+202F after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u202f\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+205F after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u205f\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+3000 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u3000\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+FEFF after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\ufeff\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+000B after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u000b\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+000C after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\f\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: a space and U+00A0 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%% \u00a0\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+00A0 and a space after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u00a0 \nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: a tab and U+00A0 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\t\u00a0\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+00A0 and U+3000 after a directive over lines",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u00a0\u3000\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accDescr: U+00A0 after a directive over lines",
+    "usecase-beta\naccDescr: T  b  %%{init: {\n}}%%\u00a0\nactor A\n",
+    "usecase-beta\n  accDescr: T b %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accDescr: U+3000 after a directive over lines",
+    "usecase-beta\naccDescr: T  b  %%{init: {\n}}%%\u3000\nactor A\n",
+    "usecase-beta\n  accDescr: T b %%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+00A0 after a directive with a `;`",
+    "usecase-beta\naccTitle: T  %%{init: {;}}%%\u00a0\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {;}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+00A0 after a directive over lines with a `;`",
+    "usecase-beta\naccTitle: T  %%{init: {\n;}}%%\u00a0\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n;}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accDescr: U+3000 after a directive with a `;`",
+    "usecase-beta\naccDescr: T  b  %%{init: {;}}%%\u3000\nactor A\n",
+    "usecase-beta\n  accDescr: T b %%{init: {;}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+00A0 after two directives over lines that touch each other",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%%%{init: {\n}}%%\u00a0\nactor A\n",
+    "usecase-beta\n  accTitle: T %%{init: {\n}}%%%%{init: {\n}}%%\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+0085 after a directive over lines is no blank",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u0085\nactor A\n",
+    "usecase-beta\n  accTitle: T  %%{init: {\n}}%%\u0085\n  actor A\n",
+  ],
+  [
+    "usecase accTitle: U+200B after a directive over lines is no blank",
+    "usecase-beta\naccTitle: T  %%{init: {\n}}%%\u200b\nactor A\n",
+    "usecase-beta\n  accTitle: T  %%{init: {\n}}%%\u200b\n  actor A\n",
+  ],
+  [
+    "ishikawa: U+00A0 after a directive over lines stays",
+    "ishikawa\nP\n  A  b %%{init: {\n}}%%\u00a0\n",
+    "ishikawa\n  P\n    A  b %%{init: {\n}}%%\u00a0\n",
+  ],
+]
+
+describe("a text that ends with a directive over lines or with a `;` and a whitespace character", () => {
+  it.each(directiveEndsLineAfterWhitespaceExamples)(
+    "prints %s the same twice",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/**
+ * Each example is a treeView node whose last directive holds a line break or a
+ * `;` and is followed by a character that no fixture file holds. The name and
+ * the description drop the spaces and tabs at their end only, so a no-break
+ * space or a line separator after the directive is text, and a directive that
+ * holds a U+2028 or U+2029 holds no line break (docs/treeview.md, Trailing
+ * whitespace).
+ */
+const treeviewDirectiveEndsLineExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "treeview: spaces and tabs after a directive over lines with a CRLF",
+    "treeView-beta\r\nR  %%{init: {\r\n}}%% \t\r\n",
+    "treeView-beta\n  R %%{init: {\n}}%%\n",
+  ],
+  [
+    "treeview: U+00A0 after a directive over lines stays",
+    "treeView-beta\nR  %%{init: {\n}}%%\u00a0\n",
+    "treeView-beta\n  R  %%{init: {\n}}%%\u00a0\n",
+  ],
+  [
+    "treeview: U+00A0 after a directive with a `;` stays",
+    "treeView-beta\nR  %%{init: {a;b}}%%\u00a0\n",
+    "treeView-beta\n  R  %%{init: {a;b}}%%\u00a0\n",
+  ],
+  [
+    "treeview: U+00A0 after a directive over lines stays after a description",
+    "treeView-beta\nR ## note  %%{init: {\n}}%%\u00a0\n",
+    "treeView-beta\n  R ## note  %%{init: {\n}}%%\u00a0\n",
+  ],
+  [
+    "treeview: U+2028 after a directive over lines stays",
+    "treeView-beta\nR  %%{init: {\n}}%%\u2028\n",
+    "treeView-beta\n  R  %%{init: {\n}}%%\u2028\n",
+  ],
+  [
+    "treeview: a directive that holds U+2028 is no directive over lines",
+    "treeView-beta\nR  %%{init: {\u2028}}%% \t\n",
+    "treeView-beta\n  R  %%{init: {\u2028}}%%\n",
+  ],
+  [
+    "treeview: a directive that holds U+2029 is no directive over lines",
+    "treeView-beta\nR  %%{init: {\u2029}}%% \t\n",
+    "treeView-beta\n  R  %%{init: {\u2029}}%%\n",
+  ],
+]
+
+describe("a treeView node that ends with a directive over lines or with a `;`", () => {
+  it.each(treeviewDirectiveEndsLineExamples)(
+    "prints %s the same twice",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/**
  * Each example is the title of a Gantt chart with two directives between the
  * keyword and the text, separated by whitespace, and a character that no
  * fixture file holds: a U+2028 or U+2029 in the text, and a no-break space

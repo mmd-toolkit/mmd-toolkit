@@ -2599,6 +2599,40 @@ the end of a title (see
 
 [fixture: trailing-whitespace/directives-end-blanks-dropped]
 
+A directive that holds a line break or a `;` ends a name or a description like
+any other: it may stand last, or touch the directives after it, with spaces and
+tabs after the last of them. `R  %%{init: {a;b}}%%` with a space and a tab after
+it is printed `R %%{init: {a;b}}%%`, as it is without them, since mermaid.js
+removes a directive before it reads the value, and the form with branch
+characters prints the same. A space or a tab that separates such a directive
+from a directive after it makes it part of the name or the description, whose
+spaces and tabs stay as written: `R  %%{init: {`, a line break, `}}%%`, a space,
+and `%%{x}%%` is printed with its two spaces, without the spaces and tabs after
+the last directive. A no-break space or a line separator after such a directive
+is a character of the text and stays as written, and a directive that holds a
+U+2028 or U+2029 holds no line break: the line stays as written, apart from the
+spaces and tabs at its end.
+
+[fixture: trailing-whitespace/directive-semicolon-end-blanks-dropped] [fixture:
+trailing-whitespace/directive-lines-end-blanks-dropped] [fixture:
+trailing-whitespace/directive-lines-semicolon-end-blanks-dropped] [fixture:
+trailing-whitespace/directive-lines-nested-end-blanks-dropped] [fixture:
+trailing-whitespace/description-directive-semicolon-end-blanks-dropped]
+[fixture: trailing-whitespace/description-directive-lines-end-blanks-dropped]
+[fixture: trailing-whitespace/directive-lines-touching-end-blanks-dropped]
+[fixture: trailing-whitespace/directives-lines-touching-end-blanks-dropped]
+[fixture:
+trailing-whitespace/directive-then-directive-semicolon-end-blanks-dropped]
+[fixture: trailing-whitespace/directive-lines-before-directive-runs-kept]
+[fixture: trailing-whitespace/box-directive-lines-end-blanks-dropped] [test:
+treeview: spaces and tabs after a directive over lines with a CRLF] [test:
+treeview: U+00A0 after a directive over lines stays] [test: treeview: U+00A0
+after a directive with a `;` stays] [test: treeview: U+00A0 after a directive
+over lines stays after a description] [test: treeview: U+2028 after a directive
+over lines stays] [test: treeview: a directive that holds U+2028 is no directive
+over lines] [test: treeview: a directive that holds U+2029 is no directive over
+lines]
+
 At the end of a name or a description, U+2028 and U+2029 are characters of the
 text and no spaces or tabs: the spaces after one are left out, and the spaces
 before it stay.

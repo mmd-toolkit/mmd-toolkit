@@ -43,7 +43,7 @@ import {
   addWordGapEdits,
   classStatementRules,
   collectTextEndEdits,
-  endsWithDirectives,
+  endsTheLineWithDirectives,
   skipBlanksAndDirectives,
   trimmedTextEnd,
   styleUnitsCanCompact,
@@ -487,9 +487,17 @@ function layoutUsecaseAccessibility(
     // The directives that precede the text are removed before it is read, so
     // its end is looked for after them. The runs inside an `accTitle` stay, and
     // so do those of a text that directives precede, which the collapse of the
-    // runs in the texts does not reach whatever stands at its end.
+    // runs in the texts does not reach whatever stands at its end. The value is
+    // trimmed of every whitespace character (see `trimmedLiteralRange`), so any
+    // of them after its last directive is a blank, as a space or a tab is.
     const textStart = skipBlanksAndDirectives(source, valueRange, isWhitespace)
-    if (endsWithDirectives(source, [textStart, valueRange[1]])) {
+    if (
+      endsTheLineWithDirectives(
+        source,
+        [textStart, valueRange[1]],
+        isWhitespace,
+      )
+    ) {
       replaceInAtoms(
         source,
         atoms,

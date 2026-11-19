@@ -15,7 +15,7 @@ import { keptAsWritten, replaceInAtoms } from "./layout.ts"
 import type { TextEdit } from "./layout.ts"
 import {
   collectTextEndEdits,
-  endsWithDirectives,
+  endsTheLineWithDirectives,
   trimmedTextEnd,
 } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
@@ -130,11 +130,12 @@ export function layoutIshikawaLine(
   const textEnd = trimmedTextEnd(source, start, line.range[1], isSpaceOrTab)
   let end = textEnd.end
   const atoms: Atom[] = []
-  if (endsWithDirectives(source, [start, end])) {
+  if (endsTheLineWithDirectives(source, [start, end])) {
     // The literal ends with directives, which are printed as at the end of a
     // line, with the whitespace before them as the same literal has when the
     // directives stand after it: one space each (docs/ishikawa.md, Trailing
-    // whitespace).
+    // whitespace). A directive that holds a line break or a `;` is one of
+    // them: the literal ends before it where no whitespace follows it.
     atoms.push({ start, end: line.range[1] })
     replaceInAtoms(
       source,
