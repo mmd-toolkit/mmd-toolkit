@@ -1476,20 +1476,20 @@ U+00A0、U+1680、U+2000 から U+200A、U+202F、U+205F、U+3000、U+FEFF と�
 その後に改行を足します。
 見出しの行か文の行のコメントの後で、改行が後ろになく、
 前に空行もない最後の空白だけの行（U+2028 と U+2029
-だけの行を除く）は落とします。
+を含む行を除く）は落とします。
 `S[x] %% c`、改行、空白 2 つの行は、`S[x] %% c` と改行を印字し、
 後ろに改行がある空白だけの行と、空行の後の空白だけの行は残します。
 空行の後の行には、後ろに改行を足します（`S[x] %% c`、改行、空行、
 空白 2 つの行は、`S[x] %% c`、空行、空白 2 つの行と、
 その後ろの改行を印字します）。
-U+2028 か U+2029 だけの最後の行は、見出しの行と、
+U+2028 か U+2029 を含む最後の行は、単独でも空白が添えてあっても、見出しの行と、
 列かカードの文のコメントの後では残り、
 後ろに改行がなければ足します（`S[x] %% c`、改行、U+2028 は、コメントと、
 U+2028 の行と、改行を印字します）。
 テキストのあるコメントの行の後では、空白だけの最後の行はどれも、
-U+2028 か U+2029 だけの行も、落とします（`S[x]`、改行、`%% c`、改行、U+2028 は、
+U+2028 か U+2029 を含む行も、落とします（`S[x]`、改行、`%% c`、改行、U+2028 は、
 `S[x]` と `%% c` に、それぞれ改行を付けて印字します）。
-`%%` だけの行の後では、U+2028 か U+2029 だけの最後の行を、
+`%%` だけの行の後では、U+2028 か U+2029 を含む最後の行を、
 その前の隙間と一緒に書かれたまま残し、後ろに改行がある最後の空白だけの行と、
 空行の後の最後の空白だけの行も同じです（隙間は全体を残します。
 [空行](#空行)を参照）。
@@ -1585,11 +1585,15 @@ Markdown では、コードフェンスやリスト項目の字下げはホス�
 [test: a final comment on the header line and a last line of a U+2029 without a line break in a kanban board]
 [test: a final comment after a card and a last line of a U+2028 without a line break in a kanban board]
 [test: a last line of a U+2028 after a line of %% alone in a kanban board]
+[test: a last line of a space and a U+2028 after a line of %% alone in a kanban board]
+[test: a last line of a U+2029 and a space after a line of %% alone in a kanban board]
+[test: a final comment after a statement and a last line of a space and a U+2028 without a line break in a kanban board]
 [test: a last line of one space without a line break after a line of %% alone in a kanban board]
 [test: a last line of one space after a line break, after a line of %% alone in a kanban board]
 [test: a last line of a U+2029 after a line of %% alone in a kanban board]
 [test: a last line of a U+2028 after a final comment on a line of its own in a kanban board]
 [test: a last line of a U+2029 after a final comment on a line of its own in a kanban board]
+[test: a last line of a space and a U+2028 after a final comment on a line of its own in a kanban board]
 [test: a last line of one space after an empty line and a line break after a final comment on a line of its own in a kanban board]
 [test: an open directive on the header line of a kanban board]
 [test: an open directive on the header line of a kanban board and empty lines]

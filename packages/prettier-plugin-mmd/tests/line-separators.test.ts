@@ -8175,6 +8175,26 @@ const lastLineAfterCommentExamples: readonly (readonly [
     "kanban\n  S\n%%\n\u2029\n",
   ],
   [
+    "a last line of a space and a U+2028 after a line of %% alone in a kanban board",
+    "kanban\n  S\n%%\n \u2028",
+    "kanban\n  S\n%%\n \u2028\n",
+  ],
+  [
+    "a last line of a U+2029 and a space after a line of %% alone in a kanban board",
+    "kanban\n  S\n%%\n\u2029 ",
+    "kanban\n  S\n%%\n\u2029 \n",
+  ],
+  [
+    "a final comment after a statement and a last line of a space and a U+2028 without a line break in a kanban board",
+    "kanban\n  S[x] %% c\n \u2028",
+    "kanban\n  S[x] %% c\n \u2028\n",
+  ],
+  [
+    "a final comment after a statement and a last line of a space and a U+2028 without a line break in a C4 diagram",
+    'C4Context\nPerson(a, "A") %% c\n \u2028',
+    'C4Context\n  Person(a, "A") %% c\n \u2028\n',
+  ],
+  [
     "a last line of a U+2028 after a line of %% alone in a kanban board",
     "kanban\n  S\n%%\n\u2028",
     "kanban\n  S\n%%\n\u2028\n",
@@ -8305,6 +8325,21 @@ const lastLineLeftOutAfterCommentExamples: readonly (readonly [
     "a last line of a U+2029 after a final comment on a line of its own in a kanban board",
     "kanban\n  S[x]\n%% c\n\u2029",
     "kanban\n  S[x]\n  %% c\n",
+  ],
+  [
+    "a last line of a space and a U+2028 after a final comment on a line of its own in a kanban board",
+    "kanban\n  S[x]\n%% c\n \u2028",
+    "kanban\n  S[x]\n  %% c\n",
+  ],
+  [
+    "a last line of a space and a U+2028 after a final comment on a line of its own in a C4 diagram",
+    'C4Context\nPerson(a, "A")\n%% c\n \u2028',
+    'C4Context\n  Person(a, "A")\n  %% c\n',
+  ],
+  [
+    "a last line of a space and a U+2028 after a final comment after a title in a C4 diagram",
+    'C4Context\nPerson(a, "A")\ntitle T %% c\n \u2028',
+    'C4Context\n  Person(a, "A")\n  title T %% c\n',
   ],
   [
     "a last line of one space after an empty line and a line break after a final comment on a line of its own in a C4 diagram",
