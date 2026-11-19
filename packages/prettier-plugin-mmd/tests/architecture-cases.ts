@@ -106,6 +106,36 @@ export const architectureCases: readonly ArchitectureCase[] = [
     options: {},
   },
   {
+    name: "architecture/description-blocks/keyword-u2028-directive-then-brace-on-line",
+    input: "architecture-beta\naccDescr\u2028%%{x}%% { D }\n",
+    output: "architecture-beta\n  accDescr\u2028%%{x}%% { D }\n",
+    options: {},
+  },
+  {
+    name: "architecture/description-blocks/keyword-u2029-directive-then-brace-on-line",
+    input: "architecture-beta\naccDescr\u2029%%{x}%% { D }\n",
+    output: "architecture-beta\n  accDescr\u2029%%{x}%% { D }\n",
+    options: {},
+  },
+  {
+    name: "architecture/description-blocks/keyword-space-u2028-directive-then-brace-on-line",
+    input: "architecture-beta\naccDescr \u2028%%{x}%% { D }\n",
+    output: "architecture-beta\n  accDescr \u2028%%{x}%% { D }\n",
+    options: {},
+  },
+  {
+    name: "architecture/description-blocks/keyword-u2028-directive-touching-brace-on-line",
+    input: "architecture-beta\naccDescr\u2028%%{x}%%{ D }\n",
+    output: "architecture-beta\n  accDescr\u2028%%{x}%%{ D }\n",
+    options: {},
+  },
+  {
+    name: "architecture/description-blocks/keyword-u2028-directive-then-spaces-and-brace-on-line",
+    input: "architecture-beta\naccDescr\u2028%%{x}%%  { D }\n",
+    output: "architecture-beta\n  accDescr\u2028%%{x}%%  { D }\n",
+    options: {},
+  },
+  {
     name: "architecture/description-blocks/keyword-u2028-before-directive-touching-comment",
     input: "architecture-beta\naccDescr\u2028%%{x}%%%% c\n{ D }\n",
     output: "architecture-beta\n  accDescr\n    %%{x}%%%% c\n  { D }\n",
