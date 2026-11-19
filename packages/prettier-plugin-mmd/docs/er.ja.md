@@ -481,18 +481,29 @@ ER の実体のブロックなど）は別です。
 [U+2028 または U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
 を参照してください。
 その行にあるディレクティブは、空白ごと書かれた位置に残ります。
-名前、役割、別名、ラベルの引用符は、
-普通の行なら 1 語のテキストの引用符を外す所でも、書かれたまま残ります。
+名前とラベルの引用符は、普通の行なら 1 語のテキストの引用符を外す所でも、
+書かれたまま残ります。
+別名の引用符も、普通の行と同じく残ります。
 関係のカーディナリティと線は、普通の行と同じく記号で印字し、
 その間の空白は書かれたままにします。
 `A only one to zero or more B` は `A || -- o{ B` と印字します。
-style や classDef の色は、[色](#色)と同じに印字します。
-コンマの前の色は小文字にし、空白の後に文字が続く色は書かれたままにします。
+style や classDef の色は、その行でコンマが色に続くとき（空白を挟んでもです）と、
+文の最後の行の最後の色について、[色](#色)と同じに印字します。
+そこでは色は小文字になります。
+色の後ろにその行でコメント領域が続くときは、色を書かれたまま残します。
+次の行がコンマで始まるときと、コメント行の後でテキストが終わるときも同じです。
+行の規則が無視する `;` が色に続くときと、空白の後に文字が続くときも同じです。
 
 [test: er/attribute-spacing/comment-region-continuation-kept]
 [test: a color before a comma in a style on a line that a comment line after U+2028 joins with the next line]
 [test: a color before a comma in a class definition on a line that a comment line after U+2029 joins with the next line]
 [test: the last color of a style that the line after a comment line after U+2028 goes on with]
+[test: a color before a comma that follows it after whitespace in a style on a line that a comment line after U+2028 joins with the next line]
+[test: a color before a comment line after U+2028 and a comma at the start of the next line in a style]
+[test: a color before a comment line after U+2028 and a comma on the next line, and the last color of that line at the end of the text, in a style]
+[test: the last color of a style before a comment line after U+2028 at the end of the text]
+[test: a color before the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
+[test: a color before the semicolon that the line rule ignores on the line after a comment line after U+2028 in a class definition]
 [test: whitespace between the statements of a line that a comment line after U+2028 joins with the next line]
 [test: ER the quotes of the names of a relationship on a line that a comment line after U+2028 joins]
 [test: ER the quotes of the label of a relationship on a line that a comment line after U+2028 joins]

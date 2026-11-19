@@ -504,13 +504,18 @@ that the section names (the comment line of a mindmap node, and the block of an
 ER entity, among them; see
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
 A directive on such a line stays where it is written, with its whitespace. The
-quotes of a name, a role, an alias, and a label stay as written, where a plain
-line prints them without when the text is one plain word. The cardinalities and
-the line of a relationship are printed as symbols, as on a plain line, with the
-whitespace between them as written: `A only one to zero or more B` is printed
-`A || -- o{ B`. The colors of a style or a class definition are printed as under
-[Colors](#colors): a color before a comma is in lower case, and one that
-characters follow after whitespace stays as written.
+quotes of a name and of a label stay as written, where a plain line prints them
+without when the text is one plain word, and the quotes of an alias stay, as
+they do on a plain line. The cardinalities and the line of a relationship are
+printed as symbols, as on a plain line, with the whitespace between them as
+written: `A only one to zero or more B` is printed `A || -- o{ B`. The colors of
+a style or a class definition are printed as under [Colors](#colors) where a
+comma follows the color on its line, also after whitespace, and for the last
+color of the last line of the statement: there a color is in lower case. A color
+stays as written where a comment region follows it on its line, also where a
+comma starts the line after it or the text ends after the comment line, where a
+`;` that the line rule ignores follows it, and where characters follow it after
+whitespace.
 
 [test: er/attribute-spacing/comment-region-continuation-kept] [test: ER the
 quotes of the names of a relationship on a line that a comment line after U+2028
@@ -524,8 +529,18 @@ U+2028 joins stays where it is written] [test: a color before a comma in a style
 on a line that a comment line after U+2028 joins with the next line] [test: a
 color before a comma in a class definition on a line that a comment line after
 U+2029 joins with the next line] [test: the last color of a style that the line
-after a comment line after U+2028 goes on with] [test: whitespace between the
-statements of a line that a comment line after U+2028 joins with the next line]
+after a comment line after U+2028 goes on with] [test: a color before a comma
+that follows it after whitespace in a style on a line that a comment line after
+U+2028 joins with the next line] [test: a color before a comment line after
+U+2028 and a comma at the start of the next line in a style] [test: a color
+before a comment line after U+2028 and a comma on the next line, and the last
+color of that line at the end of the text, in a style] [test: the last color of
+a style before a comment line after U+2028 at the end of the text] [test: a
+color before the semicolon that the line rule ignores in a class definition that
+whitespace and a line break join] [test: a color before the semicolon that the
+line rule ignores on the line after a comment line after U+2028 in a class
+definition] [test: whitespace between the statements of a line that a comment
+line after U+2028 joins with the next line]
 
 A directive between the parts of an attribute is placed as under
 [Directives](./flowchart.md#directives): mermaid.js removes a directive before

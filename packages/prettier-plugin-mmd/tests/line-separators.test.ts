@@ -2167,6 +2167,36 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "erDiagram\n  A\n  style A fill:#F00\u2028%% c\n x\n",
   ],
   [
+    "a color before a comma that follows it after whitespace in a style on a line that a comment line after U+2028 joins with the next line",
+    "erDiagram\nA\nstyle A fill:#F00 ,stroke:#ABC\u2028%% c\n x\n",
+    "erDiagram\n  A\n  style A fill:#f00 ,stroke:#ABC\u2028%% c\n x\n",
+  ],
+  [
+    "a color before a comment line after U+2028 and a comma at the start of the next line in a style",
+    "erDiagram\nA\nstyle A fill:#F00,stroke:#ABC\u2028%% c\n,x:1\n",
+    "erDiagram\n  A\n  style A fill:#f00,stroke:#ABC\u2028%% c\n,x:1\n",
+  ],
+  [
+    "a color before a comment line after U+2028 and a comma on the next line, and the last color of that line at the end of the text, in a style",
+    "erDiagram\nA\nstyle A fill:#F00\u2028%% c\n,stroke:#ABC\n",
+    "erDiagram\n  A\n  style A fill:#F00\u2028%% c\n,stroke:#abc\n",
+  ],
+  [
+    "the last color of a style before a comment line after U+2028 at the end of the text",
+    "erDiagram\nA\nstyle A fill:#F00\u2028%% c\n",
+    "erDiagram\n  A\n  style A fill:#F00\u2028%% c\n",
+  ],
+  [
+    "a color before the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nclassDef c \nfill:#ABC,stroke:#DEF;\n",
+    "erDiagram\n  classDef c \n    fill:#abc,stroke:#DEF;\n",
+  ],
+  [
+    "a color before the semicolon that the line rule ignores on the line after a comment line after U+2028 in a class definition",
+    "erDiagram\nclassDef c fill:#ABC\u2028%% c\n,stroke:#DEF;\n",
+    "erDiagram\n  classDef c fill:#ABC\u2028%% c\n,stroke:#DEF;\n",
+  ],
+  [
     "whitespace between the statements of a line that a comment line after U+2028 joins with the next line",
     "erDiagram\nA   ||--o{   B : x\u2028%% c\n Bar   {   int   id   }\n",
     "erDiagram\n  A   ||--o{   B : x\u2028%% c\n Bar   {   int   id   }\n",
