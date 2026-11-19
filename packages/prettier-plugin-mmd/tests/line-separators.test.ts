@@ -4667,6 +4667,84 @@ describe("the title of a diagram with a whitespace character that is no space or
   })
 })
 
+/**
+ * The title of a diagram that mermaid.js reads with a Langium grammar loses
+ * every whitespace character at its ends
+ * (docs/compatibility.md, Texts after a keyword that are drawn the same).
+ */
+const titleEndsDroppedExamples: readonly (readonly [string, string, string])[] =
+  [
+    [
+      "a no-break space and U+3000 at both ends of the title of a pie chart",
+      'pie\ntitle \u00a0\u3000T\u3000\u00a0\n"a": 1\n',
+      'pie\n  title T\n  "a": 1\n',
+    ],
+    [
+      "a no-break space and U+3000 at both ends of the title of a radar chart",
+      "radar-beta\ntitle \u00a0\u3000T\u3000\u00a0\naxis a, b\ncurve c{1, 2}\n",
+      "radar-beta\n  title T\n  axis a, b\n  curve c{1, 2}\n",
+    ],
+    [
+      "a no-break space and U+3000 at both ends of the title of a packet diagram",
+      'packet-beta\ntitle \u00a0\u3000T\u3000\u00a0\n0-7: "x"\n',
+      'packet-beta\n  title T\n  0-7: "x"\n',
+    ],
+    [
+      "a no-break space and U+3000 at both ends of the title of an architecture diagram",
+      "architecture-beta\ntitle \u00a0\u3000T\u3000\u00a0\nservice a(server)[A]\n",
+      "architecture-beta\n  title T\n  service a(server)[A]\n",
+    ],
+    [
+      "a no-break space and U+3000 at both ends of the title of a gitGraph",
+      "gitGraph\ntitle \u00a0\u3000T\u3000\u00a0\ncommit\n",
+      "gitGraph\n  title T\n  commit\n",
+    ],
+    [
+      "a no-break space and U+3000 at both ends of the title of a cynefin diagram",
+      "cynefin-beta\ntitle \u00a0\u3000T\u3000\u00a0\n",
+      "cynefin-beta\n  title T\n",
+    ],
+    [
+      "a no-break space and U+3000 at both ends of the title of a treemap",
+      'treemap-beta\ntitle \u00a0\u3000T\u3000\u00a0\n"A": 1\n',
+      'treemap\ntitle T\n  "A": 1\n',
+    ],
+    [
+      "a no-break space and U+3000 at both ends of the title of a Wardley map",
+      "wardley-beta\ntitle \u00a0\u3000T\u3000\u00a0\ncomponent A [0.5, 0.5]\n",
+      "wardley-beta\n  title T\n  component A [0.5, 0.5]\n",
+    ],
+    [
+      "a no-break space and U+3000 at both ends of the title of a treeView",
+      "treeView-beta\ntitle \u00a0\u3000T\u3000\u00a0\nroot\n",
+      "treeView-beta\n  title T\n  root\n",
+    ],
+    [
+      "a no-break space and U+3000 at both ends of the title of an info diagram",
+      "info\ntitle \u00a0\u3000T\u3000\u00a0\n",
+      "info\n  title T\n",
+    ],
+    [
+      "a no-break space and U+3000 at both ends of the title of a railroad diagram",
+      'railroad-abnf-beta\ntitle \u00a0\u3000T\u3000\u00a0\nr="a";\n',
+      'railroad-abnf-beta\n  title T\n  r = "a";\n',
+    ],
+    [
+      "a no-break space and U+3000 at both ends of the title of a quadrant chart",
+      "quadrantChart\ntitle \u00a0\u3000T\u3000\u00a0\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+      "quadrantChart\n  title T\n  x-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+    ],
+  ]
+
+describe("the title of a diagram that is read with a Langium grammar and has a whitespace character that is no space or tab at its ends", () => {
+  it.each(titleEndsDroppedExamples)(
+    "drops %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
 describe("a flowchart with a line separator", () => {
   it.each(flowchartExamples)("keeps %s", async (_name, input, output) => {
     await expectKept(input, output)

@@ -1375,23 +1375,28 @@ and C4 diagrams (the description `accDescription` of a C4 diagram too):
 printed `dateFormat YYYY-MM-DD`. The whitespace inside the text stays as
 written, and so does a text of spaces and tabs only. A no-break space, U+3000,
 or another whitespace character that is no space or tab at the start or at the
-end of the text stays too. The last event of a line of a timeline and the second
-description of a state with an alias lose the whitespace at their end in the
-same way, not the whitespace at their start, which aligns the colons of a
-timeline: `2020 : e   ` is printed `2020 : e`, and `state "d" as A : x   ` is
-printed `state "d" as A : x`. A period of a timeline, and an event that another
-colon follows, gain one space at their end where they end without whitespace,
-which stands before that colon: `2004: a: b` is printed `2004 : a : b`, except
-after the word `title` or `section` as the period, where a space would make the
-line a title or a section. The description of a task of a user journey loses the
-whitespace before its first colon (`Make tea : 5: Me` is printed
-`Make tea: 5: Me`), except in a section whose descriptions are padded to line
-the colons up. Where a comment follows the text on its line, one space separates
-it from the text. Where directives do, each keeps whether whitespace precedes
-it, a run becoming one space, and the whitespace after the last one is dropped
-like any whitespace at the end of the line, so the line is printed alike whether
-or not whitespace follows its last directive, as a directive at the end of a
-line is in the other diagrams (see [Directives](./flowchart.md#directives)):
+end of the text stays too. The title of a pie chart, a radar chart, a packet
+diagram, an architecture diagram, a gitGraph, a cynefin diagram, a treemap, a
+Wardley map, a treeView, an info diagram, a railroad diagram, and a quadrant
+chart loses every whitespace character at its start and at its end, a no-break
+space and U+3000 among them, since mermaid.js trims them all there. The last
+event of a line of a timeline and the second description of a state with an
+alias lose the whitespace at their end in the same way, not the whitespace at
+their start, which aligns the colons of a timeline: `2020 : e   ` is printed
+`2020 : e`, and `state "d" as A : x   ` is printed `state "d" as A : x`. A
+period of a timeline, and an event that another colon follows, gain one space at
+their end where they end without whitespace, which stands before that colon:
+`2004: a: b` is printed `2004 : a : b`, except after the word `title` or
+`section` as the period, where a space would make the line a title or a section.
+The description of a task of a user journey loses the whitespace before its
+first colon (`Make tea : 5: Me` is printed `Make tea: 5: Me`), except in a
+section whose descriptions are padded to line the colons up. Where a comment
+follows the text on its line, one space separates it from the text. Where
+directives do, each keeps whether whitespace precedes it, a run becoming one
+space, and the whitespace after the last one is dropped like any whitespace at
+the end of the line, so the line is printed alike whether or not whitespace
+follows its last directive, as a directive at the end of a line is in the other
+diagrams (see [Directives](./flowchart.md#directives)):
 `title T  %%{x}%%  %%{y}%%` and `title T  %%{x}%%  %%{y}%%  ` are both printed
 `title T %%{x}%% %%{y}%%`, `title T%%{x}%%%%{y}%%  ` is printed
 `title T%%{x}%%%%{y}%%`, and `state "d" as A : x  %%{x}%%  ` is printed
@@ -1421,7 +1426,19 @@ no-break space and U+3000 at both ends of the title of a user journey diagram]
 diagram] [test: a no-break space and U+3000 at both ends of the title of a
 sequence diagram] [test: a no-break space and U+3000 at both ends of the title
 of a Venn diagram] [test: a no-break space and U+3000 at both ends of the title
-of a C4 diagram] [fixture:
+of a C4 diagram] [test: a no-break space and U+3000 at both ends of the title of
+a pie chart] [test: a no-break space and U+3000 at both ends of the title of a
+radar chart] [test: a no-break space and U+3000 at both ends of the title of a
+packet diagram] [test: a no-break space and U+3000 at both ends of the title of
+an architecture diagram] [test: a no-break space and U+3000 at both ends of the
+title of a gitGraph] [test: a no-break space and U+3000 at both ends of the
+title of a cynefin diagram] [test: a no-break space and U+3000 at both ends of
+the title of a treemap] [test: a no-break space and U+3000 at both ends of the
+title of a Wardley map] [test: a no-break space and U+3000 at both ends of the
+title of a treeView] [test: a no-break space and U+3000 at both ends of the
+title of an info diagram] [test: a no-break space and U+3000 at both ends of the
+title of a railroad diagram] [test: a no-break space and U+3000 at both ends of
+the title of a quadrant chart] [fixture:
 usecase/direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
 [fixture: treeview/trailing-whitespace/directives-end-blanks-dropped] [fixture:
 gantt/settings/format-runs-kept-before-directives] [fixture:
@@ -6389,11 +6406,11 @@ agentflow/direction/zero-style-direction]
 The [Agentflow rules](./agentflow.md) reuse flowchart layout with distinct value
 boundaries. Required one-unit gaps after style/classDef/class/linkStyle, before
 class values, interpolation names and tooltips stay written: following
-whitespace is value text. First-style leading whitespace and label-comment
-padding remain characters. Names keep erased click/empty parts and the one
-whitespace character that ends reading name text as a click id. A trailing
-whitespace-only part drops when replacing its separator with LF makes it
-exterior whitespace.
+whitespace is value text. First-style leading whitespace and the padding before
+a label comment that the label goes on after remain characters. Names keep
+erased click/empty parts and the one whitespace character that ends reading name
+text as a click id. A trailing whitespace-only part drops when replacing its
+separator with LF makes it exterior whitespace.
 
 [fixture: agentflow/names-and-headings/empty-description-space-flow]
 

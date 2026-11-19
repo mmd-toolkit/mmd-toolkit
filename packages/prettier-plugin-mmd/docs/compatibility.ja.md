@@ -1441,6 +1441,10 @@ C4 図の説明 `accDescription` も同じです。
 空白とタブだけのテキストも書かれたままにします。
 テキストの先頭と末尾にある、改行しない空白や U+3000 など、
 空白とタブ以外の空白文字も書かれたままです。
+pie、radar、packet、architecture、gitGraph、cynefin、treemap、Wardley、
+treeView、info、railroad、quadrant の図の title は、
+先頭と末尾のあらゆる空白文字を、改行しない空白や U+3000 も含めて除きます。
+mermaid.js がこれらの title の両端の空白文字をすべて除いて読むからです。
 timeline の行の最後の event と、別名を持つ state の 2 つ目の説明も、
 同じように末尾の空白を除きますが、先頭の空白は除きません。
 その空白は timeline のコロンをそろえます。
@@ -1493,7 +1497,23 @@ a timeline diagram]
 a sequence diagram]
 [test: a no-break space and U+3000 at both ends of the title of
 a Venn diagram] [test: a no-break space and U+3000 at both ends of the title of
-a C4 diagram]
+a C4 diagram] [test: a no-break space and U+3000 at both ends of the title of
+a pie chart] [test: a no-break space and U+3000 at both ends of the title of
+a radar chart] [test: a no-break space and U+3000 at both ends of the title of
+a packet diagram]
+[test: a no-break space and U+3000 at both ends of the title of
+an architecture diagram]
+[test: a no-break space and U+3000 at both ends of the title of
+a gitGraph] [test: a no-break space and U+3000 at both ends of the title of
+a cynefin diagram]
+[test: a no-break space and U+3000 at both ends of the title of
+a treemap] [test: a no-break space and U+3000 at both ends of the title of
+a Wardley map] [test: a no-break space and U+3000 at both ends of the title of
+a treeView] [test: a no-break space and U+3000 at both ends of the title of
+an info diagram] [test: a no-break space and U+3000 at both ends of the title of
+a railroad diagram]
+[test: a no-break space and U+3000 at both ends of the title of
+a quadrant chart]
 [fixture: usecase/direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
 [fixture: treeview/trailing-whitespace/directives-end-blanks-dropped]
 [fixture: gantt/settings/format-runs-kept-before-directives]
@@ -6687,7 +6707,7 @@ agentflow本文は共有の意味を持つ字下げ幅を使い、
 値の境界を区別します。
 style/classDef/class/linkStyleの後、classの値、interpolate名、
 tooltipの前の必須の1単位は、その後の空白が値なので保ちます。
-最初のstyleの先頭空白とラベルコメント脇の空白も文字です。
+最初のstyleの先頭空白と、ラベルが続くときのラベルコメントの前の空白も文字です。
 名前の消されるclickと空の断片を保ちます。
 clickのIDとして名前を読むのを終える空白1文字も保ちます。
 区切りをLFへ変えると名前でなくなる、末尾の空白だけの断片は落とします。
