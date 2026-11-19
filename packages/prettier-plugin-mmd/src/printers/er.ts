@@ -33,6 +33,7 @@ import {
 import {
   classifyErStatement,
   findAttributeBraces,
+  endBeforeTriviaAfterSeparators,
   findDroppedSeparator,
   findEmptyBlockClosingGap,
   findSubgraphHeaderEnd,
@@ -266,7 +267,7 @@ function printedErEnd(source: Source, statement: ErStatement): number {
     statement.type === "ErStyleStatement" ||
     statement.type === "ErClassDefStatement"
   )
-    return endOfSeparatorsBeforeDirective(source, statement)
+    return endOfStyleStatement(source, statement)
   if (statement.type !== "ErSubgraphStatement") return from
   const lineEnd = lineEndOf(source, from)
   let end = from
@@ -282,6 +283,23 @@ function printedErEnd(source: Source, statement: ErStatement): number {
     if (isNameWhitespace(character)) end = position + 1
   }
   return end
+}
+
+/**
+ * Where the printed text of a `classDef` or `style` statement ends: after the
+ * U+2028 and U+2029 that the printer drops (see
+ * `endOfSeparatorsBeforeDirective`), or, where they stay, before the comment or
+ * the directive that follows them on the line (see
+ * `endBeforeTriviaAfterSeparators`).
+ */
+function endOfStyleStatement(
+  source: Source,
+  statement: ErStyleStatement | ErClassDefStatement,
+): number {
+  const dropped = endOfSeparatorsBeforeDirective(source, statement)
+  return dropped !== statement.range[1]
+    ? dropped
+    : endBeforeTriviaAfterSeparators(source, statement)
 }
 
 /**

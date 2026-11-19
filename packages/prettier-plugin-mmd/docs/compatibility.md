@@ -863,7 +863,12 @@ changes 127, and in none of those does the formatted text draw differently from
 the written text. The `style` and the `classDef` of an ER diagram, with runs of
 a U+2028, a U+2029, a no-break space, a space, and a tab at the end, before a
 `;`, a comment, a directive, and a statement, made 144 texts, and in none of
-them does the formatted text draw differently in a version that reads them.
+them did the formatted text draw other pixels in a version that reads them. The
+SVG that mermaid.js draws holds the character in the style attribute of the
+groups around the entity box where a comment or a directive follows it on the
+line of the style (`style A fill:red`, a U+2028, a U+2029, and `%% d`), and not
+in the text without it, so the formatter keeps the character there (see
+[Semicolons at the end of a style statement](./er.md#semicolons-at-the-end-of-a-style-statement)).
 
 ## Styles that are drawn the same
 

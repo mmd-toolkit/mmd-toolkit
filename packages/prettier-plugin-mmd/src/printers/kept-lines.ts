@@ -1023,27 +1023,18 @@ export function findSeparatorEndingStyle(
 
 /**
  * Whether what stands from `end` to the end of the line at `lineEnd` leaves no
- * text of the style: whitespace; comment lines that mermaid.js removes after a
- * U+2028 or U+2029 that starts them, with a directive before the comment or
- * not; or directives of which the first touches a U+2028 or U+2029, which
- * mermaid.js removes before it reads the style. A directive after whitespace
- * stays on the line of the style: the whitespace is text of the style.
+ * text of the style: whitespace only. A comment or a directive after the
+ * character stays where it is written, with the character: mermaid.js keeps
+ * the character in the text of the style, and the style attribute of the
+ * figure holds it, which no whitespace of CSS is (docs/er.md, Semicolons at the
+ * end of a style statement).
  */
 function leavesNoTextOfTheStyleAfter(
   source: Source,
   end: number,
   lineEnd: number,
 ): boolean {
-  const rest = source.text.slice(end, lineEnd)
-  if (rest.trim() === "") return true
-  if (textRead(source, end, lineEnd).trim() !== "") return false
-  if (
-    findTriviaBetween(source, end, lineEnd).some(
-      (item) => item.type === "Comment",
-    )
-  )
-    return [...rest].some(isLineSeparator)
-  return findDirectiveTouchingSeparator(source, end, lineEnd) >= 0
+  return source.text.slice(end, lineEnd).trim() === ""
 }
 
 /**
