@@ -667,7 +667,7 @@ mermaid.js はテキストを読む前にディレクティブを除き、
 [fixture: radar/title/title-lone-semicolon-kept]
 [fixture: radar/title/title-directive-semicolon-kept]
 [fixture: radar/title/title-two-semicolons-kept]
-[fixture: radar/semicolons/semicolon-selected-kept]
+[fixture: radar/semicolons/released-output-not-stated-semicolon-selected-kept]
 [fixture: radar/semicolons/title-single-ignored-semicolon-kept]
 [test: a no-break space after the last directive of a title of a radar chart]
 [test: U+3000 after the last directive of a title of a radar chart]
@@ -1723,7 +1723,7 @@ mermaid.js はテキストを読む前にディレクティブを除き、
 
 [fixture: radar/title/title-quote-raw]
 
-[fixture: radar/semicolons/semicolon-selected-kept]
+[fixture: radar/semicolons/released-output-not-stated-semicolon-selected-kept]
 
 入力（エスケープ表記）: `"radar-beta\ntitle\t  Topic  words\t \n"`
 
@@ -3008,6 +3008,8 @@ radar に普通のセミコロン区切りはありません。
 
 [fixture: radar/semicolons/semicolon-selected-kept]
 
+[fixture: radar/semicolons/released-output-not-stated-semicolon-selected-kept]
+
 [fixture: radar/semicolons/semicolon-header-protected]
 
 [fixture: radar/semicolons/semicolon-component-protected]
@@ -3016,7 +3018,7 @@ radar に普通のセミコロン区切りはありません。
 
 [fixture: radar/semicolons/semicolon-both-passes]
 
-[fixture: radar/semicolons/semicolon-global-rejoin]
+[fixture: radar/semicolons/released-output-not-stated-semicolon-global-rejoin]
 
 [fixture: radar/semicolons/semicolon-cross-value]
 
@@ -3024,15 +3026,13 @@ radar に普通のセミコロン区切りはありません。
 
 [test: radar/semicolons/semicolon-ls-segment]
 
-入力（エスケープ表記）:
-`"radar-beta\ntitle style:#red;;\naxis North[\"classDef:#blue;;\"]\n"`
+入力（エスケープ表記）: `"radar-beta\naxis North[\"classDef:#blue;;\"]\n"`
 
 出力
 ([semicolons/semicolon-selected-kept-output.mmd](../tests/fixtures/radar/semicolons/semicolon-selected-kept-output.mmd)):
 
 ```mmd
 radar-beta
-  title style:#red;;
   axis North["classDef:#blue;;"]
 ```
 

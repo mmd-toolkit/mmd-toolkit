@@ -628,7 +628,7 @@ title/title-directives-end-at-the-end-of-the-text] [fixture:
 radar/title/title-edge-trim] [fixture: radar/title/title-lone-semicolon-kept]
 [fixture: radar/title/title-directive-semicolon-kept] [fixture:
 radar/title/title-two-semicolons-kept] [fixture:
-radar/semicolons/semicolon-selected-kept] [fixture:
+radar/semicolons/released-output-not-stated-semicolon-selected-kept] [fixture:
 radar/semicolons/title-single-ignored-semicolon-kept] [test: a no-break space
 after the last directive of a title of a radar chart] [test: U+3000 after the
 last directive of a title of a radar chart] [test: U+2028 after the last
@@ -2234,7 +2234,7 @@ chart]
 
 [fixture: radar/title/title-quote-raw]
 
-[fixture: radar/semicolons/semicolon-selected-kept]
+[fixture: radar/semicolons/released-output-not-stated-semicolon-selected-kept]
 
 Input (escaped): `"radar-beta\ntitle\t  Topic  words\t \n"`.
 
@@ -3844,6 +3844,8 @@ separators.
 
 [fixture: radar/semicolons/semicolon-selected-kept]
 
+[fixture: radar/semicolons/released-output-not-stated-semicolon-selected-kept]
+
 [fixture: radar/semicolons/semicolon-header-protected]
 
 [fixture: radar/semicolons/semicolon-component-protected]
@@ -3852,7 +3854,7 @@ separators.
 
 [fixture: radar/semicolons/semicolon-both-passes]
 
-[fixture: radar/semicolons/semicolon-global-rejoin]
+[fixture: radar/semicolons/released-output-not-stated-semicolon-global-rejoin]
 
 [fixture: radar/semicolons/semicolon-cross-value]
 
@@ -3860,15 +3862,13 @@ separators.
 
 [test: radar/semicolons/semicolon-ls-segment]
 
-Input (escaped):
-`"radar-beta\ntitle style:#red;;\naxis North[\"classDef:#blue;;\"]\n"`.
+Input (escaped): `"radar-beta\naxis North[\"classDef:#blue;;\"]\n"`.
 
 Output
 ([semicolons/semicolon-selected-kept-output.mmd](../tests/fixtures/radar/semicolons/semicolon-selected-kept-output.mmd)):
 
 ```mmd
 radar-beta
-  title style:#red;;
   axis North["classDef:#blue;;"]
 ```
 
