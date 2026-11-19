@@ -5985,7 +5985,7 @@ as the colors of a style, the words of a relationship, and the quotes of a name
 that is one plain word, is stated in [ER](./er.md#attribute-spacing). A color
 before a comma on such a line is printed in lower case in a flowchart, a class
 diagram, and a state diagram as well, where the comma follows the color at once
-or after a space.
+or after a space or a tab.
 
 [test: a color before a comma in a style statement that a comment line after
 U+2028 joins in a flowchart is printed in lower case] [test: a color before a
@@ -6001,7 +6001,14 @@ after U+2028 joins in a state diagram is printed in lower case] [test: a color
 before a comma in a style statement that a comment line after U+2028 joins in an
 ER diagram is printed in lower case] [test: a color before a comma after a space
 in a style statement that a comment line after U+2028 joins in an ER diagram is
-printed in lower case]
+printed in lower case] [test: a color before a comma after a tab in a style
+statement that a comment line after U+2028 joins in a flowchart is printed in
+lower case] [test: a color before a comma after a tab in a style statement that
+a comment line after U+2028 joins in a class diagram is printed in lower case]
+[test: a color before a comma after a tab in a style statement that a comment
+line after U+2028 joins in a state diagram is printed in lower case] [test: a
+color before a comma after a tab in a style statement that a comment line after
+U+2028 joins in an ER diagram is printed in lower case]
 
 [test: a comment line after U+2028 inside the name of an ER entity with an
 attribute block over several lines] [test: an attribute block of an entity that

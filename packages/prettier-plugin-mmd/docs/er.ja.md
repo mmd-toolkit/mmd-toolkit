@@ -498,10 +498,13 @@ mermaid.js は前後の行を 1 行として読みます。
 色をその文字と接する語にするからです。
 詳しくは [同じに描かれる色](./compatibility.ja.md#同じに描かれる色)
 を参照してください。
-`;` が色に接するとき（`#ABC;`、`#ABC;;`、`#ABC; ;`）も書かれたまま残しますが、
+`;` が色に接するとき（`#ABC;`、`#ABC;;`、`#ABC; ;`）と、
+垂直タブとフォームフィードのほかの幅のある空白、U+2028、
+U+2029 が色を `;` から離すときも、書かれたまま残しますが、
 [色](#色)の規則はこれを小文字に印字するので、規則に反して印字しており、
 規則による修正を待っています。
-`;` が色から空白で離れているときは、[色](#色)と同じに印字します。
+空白、タブ、垂直タブ、フォームフィードが色を `;` から離すときは、
+[色](#色)と同じに印字します。
 スタイルの中の空白は書かれたままです（`style A fill:#F00,   stroke:#ABC`、
 U+2028、`%% c` は、コンマの後の連なりを残します）。
 
@@ -668,6 +671,7 @@ flowchart、sequence、class、state も 1 行に 1 つの文を印字します�
 行規則が `;` を取り除いた後の接し方を保ちます。
 subgraph の名前の前に U+2028 や U+2029 があるときも同じです。
 
+[test: an end; on a line of its own in a subgraph of an ER diagram]
 [fixture: statements-one-per-line/closing-end-ignored-semicolon-kept]
 [fixture: statements-one-per-line/closing-uppercase-end-ignored-semicolon-kept]
 [fixture: statements-one-per-line/class-ignored-semicolon-before-dash-kept]
@@ -2248,17 +2252,28 @@ ER が印字する形には先例がないので、規則 2 は何も決めず�
 詳しくは
 [どの決まりも形を決めない所](./printed-form.ja.md#4-どの決まりも形を決めない所)
 を参照してください。
-属性でも関係でも、その文字の前に空白がないとき、その文字は残り、
+関係では、その文字の前に空白もタブもないとき、その文字は残り、
 ディレクティブは空白 1 つの後ろに置いて、後ろの単位に接します。
+その文字の前にあるのが、ほかの空白文字（ノーブレークスペース、U+1680、
+U+2000 から U+200A、U+202F、U+205F、U+3000、U+FEFF）でも同じです。
+mermaid.js は、そこにある垂直タブとフォームフィードを拒否します。
+その文字の前に空白かタブがあるときは、隙間を書かれたまま残します。
 属性の `int`、U+2029、`%%{x}%%`、`a` は、`int`、U+2029、空白、
 `%%{x}%%a` に印字します。
-その文字の前に空白かタブがあるときは、隙間を書かれたまま残し、属性では、
-前にノーブレークスペースがあるときも書かれたままです。
-関係のラベルでは、U+2028 や U+2029 の後ろにディレクティブがあり、
+属性では、その文字の前に空白、タブ、垂直タブ、フォームフィード、
+ノーブレークスペースのどれかがあるとき、隙間を書かれたまま残し、
+ほかの空白文字があるときは、関係と同じに印字します。
+関係のラベルでは、
+テキストのすぐ後ろの U+2028 や U+2029 の後ろにディレクティブがあり、
 その後ろにテキストが続くとき、ディレクティブはそのテキストとともに次の行へ移り、
 U+2028 や U+2029 が前の行を終えます。
 `A ||--o{ B : y`、U+2028、`%%{x}%% z` は、`%%{x}%% z` が独立した行になります。
-ディレクティブだけが続くときは、行を書かれたままにします。
+U+2028 や U+2029 の前に空白かタブがあるときは、その文字が自分の行を始めます。
+`B : y`、空白、U+2028、`z` は、U+2028 と `z` が 2 行目になり、`B : y`、空白、
+U+2028、`%%{x}%%`、`z` は、U+2028 だけが 2 行目、
+`%%{x}%% z` が 3 行目になります。
+U+2028 や U+2029 の後ろにディレクティブとコメントしか続かないときは、
+行を書かれたままにします。
 
 [fixture: directives/kept] [fixture: directives/before-header]
 [fixture: directives/after-header-on-same-line]
@@ -2276,6 +2291,47 @@ U+2028 や U+2029 が前の行を終えます。
 [test: U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship, spaces after the directive]
 [test: U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship, spaces before the U+2028 and after the directive: the gap stays as written]
 [test: U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship, one space before the U+2028: the gap stays as written]
+[test: a space before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship]
+[test: U+1680 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship]
+[test: U+2000 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship]
+[test: U+2001 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship]
+[test: U+2002 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship]
+[test: U+2003 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship]
+[test: U+2004 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship]
+[test: U+2005 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship]
+[test: U+2006 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship]
+[test: U+2007 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship]
+[test: U+2008 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship]
+[test: U+2009 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship]
+[test: U+200A before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship]
+[test: U+202F before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship]
+[test: U+205F before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship]
+[test: U+FEFF before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship]
+[test: a space before a U+2029 and a directive in the gap between the type and the name of an ER attribute]
+[test: a tab before a U+2029 and a directive in the gap between the type and the name of an ER attribute]
+[test: a vertical tab before a U+2029 and a directive in the gap between the type and the name of an ER attribute]
+[test: a form feed before a U+2029 and a directive in the gap between the type and the name of an ER attribute]
+[test: U+1680 before a U+2029 and a directive in the gap between the type and the name of an ER attribute]
+[test: U+2000 before a U+2029 and a directive in the gap between the type and the name of an ER attribute]
+[test: U+2001 before a U+2029 and a directive in the gap between the type and the name of an ER attribute]
+[test: U+2002 before a U+2029 and a directive in the gap between the type and the name of an ER attribute]
+[test: U+2003 before a U+2029 and a directive in the gap between the type and the name of an ER attribute]
+[test: U+2004 before a U+2029 and a directive in the gap between the type and the name of an ER attribute]
+[test: U+2005 before a U+2029 and a directive in the gap between the type and the name of an ER attribute]
+[test: U+2006 before a U+2029 and a directive in the gap between the type and the name of an ER attribute]
+[test: U+2007 before a U+2029 and a directive in the gap between the type and the name of an ER attribute]
+[test: U+2008 before a U+2029 and a directive in the gap between the type and the name of an ER attribute]
+[test: U+2009 before a U+2029 and a directive in the gap between the type and the name of an ER attribute]
+[test: U+200A before a U+2029 and a directive in the gap between the type and the name of an ER attribute]
+[test: U+202F before a U+2029 and a directive in the gap between the type and the name of an ER attribute]
+[test: U+205F before a U+2029 and a directive in the gap between the type and the name of an ER attribute]
+[test: U+FEFF before a U+2029 and a directive in the gap between the type and the name of an ER attribute]
+[test: a space before a U+2028 and a directive in the label of an ER relationship, text after the directive]
+[test: a tab before a U+2028 and a directive in the label of an ER relationship, text after the directive]
+[test: a space before a U+2028 and text in the label of an ER relationship]
+[test: U+2028 and a directive and a comment in the label of an ER relationship: the line stays as written]
+[test: a vertical tab before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship]
+[test: a form feed before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship]
 [test: U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship, a no-break space before the U+2028]
 [test: U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship, U+3000 before the U+2028]
 [test: U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship, a tab before the U+2028: the gap stays as written]
@@ -2853,14 +2909,17 @@ mermaid.js が複数行にわたって読む文は、改行が、
 ノーブレークスペース、U+3000 の連なりと、コンマの前にある空白とタブの連なりを、
 最初の行でも、その後の行でも、空白 1 つに印字します。
 行末の連なりと、スタイルのコロンの周りと、スタイルのテキストの中の連なりと、
-コンマの前のノーブレークスペースや U+3000 は、書かれたまま残します。
+コンマの前のノーブレークスペース、U+3000、U+2028 は、書かれたまま残します。
 色は、コンマが色に続くとき（空白と改行を挟んでもです）と、
 `;` が続かない文の最後の色について、[色](#色)と同じに印字します。
 色に空白の後で文字が続くときは、[色](#色)と同じく書かれたまま残します。
-`;` が色に接するとき（`#ABC;`、`#ABC;;`、`#ABC; ;`）も書かれたまま残しますが、
+`;` が色に接するとき（`#ABC;`、`#ABC;;`、`#ABC; ;`）と、
+垂直タブとフォームフィードのほかの幅のある空白、U+2028、
+U+2029 が色を `;` から離すときも、書かれたまま残しますが、
 [色](#色)の規則はこれを小文字に印字するので、規則に反して印字しており、
 規則による修正を待っています。
-`;` が色から空白で離れているときは、[色](#色)と同じに印字します。
+空白、タブ、垂直タブ、フォームフィードが色を `;` から離すときは、
+[色](#色)と同じに印字します。
 
 [fixture: multi-line-statements/semicolon-joining-changes-kept]
 [fixture: multi-line-statements/style-comment-continuation]
@@ -2877,6 +2936,32 @@ mermaid.js が複数行にわたって読む文は、改行が、
 [test: a color that characters follow after whitespace in a class definition that whitespace and a line break join]
 [test: a run of spaces after a comma at the end of a line of a class definition that whitespace and a line break join stays as written]
 [test: a run of spaces at the end of a line before a comma on the next line of a class definition that whitespace and a line break join stays as written]
+[test: a tab between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
+[test: a vertical tab between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
+[test: a form feed between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
+[test: a no-break space between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
+[test: U+1680 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
+[test: U+2000 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
+[test: U+2001 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
+[test: U+2002 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
+[test: U+2003 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
+[test: U+2004 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
+[test: U+2005 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
+[test: U+2006 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
+[test: U+2007 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
+[test: U+2008 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
+[test: U+2009 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
+[test: U+200A between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
+[test: U+202F between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
+[test: U+205F between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
+[test: U+3000 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
+[test: U+FEFF between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
+[test: U+2028 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
+[test: U+2029 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join]
+[test: a no-break space between a color and the semicolon that the line rule ignores in a style statement that a comment line after U+2028 cuts]
+[test: a tab between a color and the semicolon that the line rule ignores in a style statement that a comment line after U+2028 cuts]
+[test: a tab before a comma in a class definition that whitespace and a line break join is printed as one space]
+[test: U+2028 before a comma in a class definition that whitespace and a line break join stays as written, with the color]
 [test: a color before a semicolon after whitespace in a style statement that a comment line after U+2028 cuts]
 [test: a color before a semicolon followed by a second semicolon in a style statement that a comment line after U+2028 cuts]
 [test: a color before a semicolon followed by a space and a second semicolon in a style statement that a comment line after U+2028 cuts]

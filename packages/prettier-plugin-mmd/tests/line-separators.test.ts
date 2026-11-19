@@ -3291,6 +3291,351 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "erDiagram\nA\nstyle A fill:#F00 ,\u2028%% c\n stroke:#ABC\n",
     "erDiagram\n  A\n  style A fill:#f00 ,\u2028%% c\n stroke:#abc\n",
   ],
+  [
+    "a space before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA \u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A \u2028%%{x}%%  ||--o{ B : y\n",
+  ],
+  [
+    "a space before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint \u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int \u2029  %%{x}%%  a\n  }\n",
+  ],
+  [
+    "a tab before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\t\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\t\u2029  %%{x}%%  a\n  }\n",
+  ],
+  [
+    "a vertical tab before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u000b\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u000b\u2029  %%{x}%%  a\n  }\n",
+  ],
+  [
+    "a form feed before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\f\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\f\u2029  %%{x}%%  a\n  }\n",
+  ],
+  [
+    "U+1680 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u1680\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u1680\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+1680 before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u1680\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u1680\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+2000 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u2000\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u2000\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+2000 before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u2000\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u2000\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+2001 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u2001\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u2001\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+2001 before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u2001\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u2001\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+2002 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u2002\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u2002\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+2002 before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u2002\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u2002\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+2003 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u2003\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u2003\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+2003 before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u2003\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u2003\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+2004 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u2004\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u2004\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+2004 before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u2004\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u2004\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+2005 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u2005\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u2005\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+2005 before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u2005\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u2005\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+2006 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u2006\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u2006\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+2006 before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u2006\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u2006\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+2007 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u2007\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u2007\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+2007 before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u2007\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u2007\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+2008 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u2008\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u2008\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+2008 before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u2008\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u2008\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+2009 before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u2009\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u2009\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+2009 before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u2009\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u2009\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+200A before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u200a\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u200a\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+200A before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u200a\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u200a\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+202F before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u202f\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u202f\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+202F before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u202f\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u202f\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+205F before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\u205f\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\u205f\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+205F before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\u205f\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\u205f\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "U+FEFF before a U+2028 and a directive in the gap between an entity and the cardinality of an ER relationship",
+    "erDiagram\nA\ufeff\u2028%%{x}%%  ||--o{ B : y\n",
+    "erDiagram\n  A\ufeff\u2028 %%{x}%%||--o{ B : y\n",
+  ],
+  [
+    "U+FEFF before a U+2029 and a directive in the gap between the type and the name of an ER attribute",
+    "erDiagram\nT {\nint\ufeff\u2029  %%{x}%%  a\n}\n",
+    "erDiagram\n  T {\n    int\ufeff\u2029 %%{x}%%a\n  }\n",
+  ],
+  [
+    "a space before a U+2028 and a directive in the label of an ER relationship, text after the directive",
+    "erDiagram\nA ||--o{ B : y \u2028%%{x}%% z\n",
+    "erDiagram\n  A ||--o{ B : y\n  \u2028\n  %%{x}%% z\n",
+  ],
+  [
+    "a tab before a U+2028 and a directive in the label of an ER relationship, text after the directive",
+    "erDiagram\nA ||--o{ B : y\t\u2028%%{x}%% z\n",
+    "erDiagram\n  A ||--o{ B : y\n  \u2028\n  %%{x}%% z\n",
+  ],
+  [
+    "a space before a U+2028 and text in the label of an ER relationship",
+    "erDiagram\nA ||--o{ B : y \u2028z\n",
+    "erDiagram\n  A ||--o{ B : y\n  \u2028z\n",
+  ],
+  [
+    "U+2028 and a directive and a comment in the label of an ER relationship: the line stays as written",
+    "erDiagram\nA ||--o{ B : y\u2028%%{x}%% %% c\n",
+    "erDiagram\n  A ||--o{ B : y\u2028%%{x}%% %% c\n",
+  ],
+  [
+    "a tab between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\t;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#def\t;\n",
+  ],
+  [
+    "a vertical tab between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u000b;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#def\u000b;\n",
+  ],
+  [
+    "a form feed between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\f;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#def\f;\n",
+  ],
+  [
+    "a no-break space between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u00a0;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u00a0;\n",
+  ],
+  [
+    "U+1680 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u1680;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u1680;\n",
+  ],
+  [
+    "U+2000 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u2000;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u2000;\n",
+  ],
+  [
+    "U+2001 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u2001;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u2001;\n",
+  ],
+  [
+    "U+2002 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u2002;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u2002;\n",
+  ],
+  [
+    "U+2003 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u2003;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u2003;\n",
+  ],
+  [
+    "U+2004 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u2004;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u2004;\n",
+  ],
+  [
+    "U+2005 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u2005;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u2005;\n",
+  ],
+  [
+    "U+2006 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u2006;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u2006;\n",
+  ],
+  [
+    "U+2007 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u2007;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u2007;\n",
+  ],
+  [
+    "U+2008 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u2008;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u2008;\n",
+  ],
+  [
+    "U+2009 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u2009;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u2009;\n",
+  ],
+  [
+    "U+200A between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u200a;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u200a;\n",
+  ],
+  [
+    "U+202F between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u202f;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u202f;\n",
+  ],
+  [
+    "U+205F between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u205f;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u205f;\n",
+  ],
+  [
+    "U+3000 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u3000;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\u3000;\n",
+  ],
+  [
+    "U+FEFF between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\ufeff;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#abc,stroke:#DEF\ufeff;\n",
+  ],
+  [
+    "U+2028 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u2028;\n",
+    "erDiagram\n  A\n  classDef c fill:#abc,stroke:#DEF\u2028;\n",
+  ],
+  [
+    "U+2029 between a color and the semicolon that the line rule ignores in a class definition that whitespace and a line break join",
+    "erDiagram\nA\nclassDef c \nfill:#ABC,stroke:#DEF\u2029;\n",
+    "erDiagram\n  A\n  classDef c fill:#abc,stroke:#DEF\u2029;\n",
+  ],
+  [
+    "a no-break space between a color and the semicolon that the line rule ignores in a style statement that a comment line after U+2028 cuts",
+    "erDiagram\nA\nstyle A fill:#F00\u2028%% c\n,stroke:#ABC\u00a0;\n",
+    "erDiagram\n  A\n  style A fill:#F00\u2028%% c\n,stroke:#ABC\u00a0;\n",
+  ],
+  [
+    "a tab between a color and the semicolon that the line rule ignores in a style statement that a comment line after U+2028 cuts",
+    "erDiagram\nA\nstyle A fill:#F00\u2028%% c\n,stroke:#ABC\t;\n",
+    "erDiagram\n  A\n  style A fill:#F00\u2028%% c\n,stroke:#abc\t;\n",
+  ],
+  [
+    "a tab before a comma in a class definition that whitespace and a line break join is printed as one space",
+    "erDiagram\nA\nclassDef c \nfill:#F00\t,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c \n    fill:#f00 ,stroke:#ABC;\n",
+  ],
+  [
+    "U+2028 before a comma in a class definition that whitespace and a line break join stays as written, with the color",
+    "erDiagram\nA\nclassDef c \nfill:#F00\u2028,stroke:#ABC;\n",
+    "erDiagram\n  A\n  classDef c fill:#F00\u2028,stroke:#ABC;\n",
+  ],
+  [
+    "a color before a comma after a tab in a style statement that a comment line after U+2028 joins in a flowchart is printed in lower case",
+    "flowchart TD\nA\nstyle A fill:#F00\t,\u2028%% c\n stroke:#ABC\n",
+    "flowchart TD\n  A\n  style A fill:#f00\t,\u2028%% c\n stroke:#abc\n",
+  ],
+  [
+    "a color before a comma after a tab in a style statement that a comment line after U+2028 joins in a class diagram is printed in lower case",
+    "classDiagram\nclass A\nstyle A fill:#F00\t,\u2028%% c\n stroke:#ABC\n",
+    "classDiagram\n  class A\n  style A fill:#f00\t,\u2028%% c\n stroke:#abc\n",
+  ],
+  [
+    "a color before a comma after a tab in a style statement that a comment line after U+2028 joins in a state diagram is printed in lower case",
+    "stateDiagram-v2\nstate A\nstyle A fill:#F00\t,\u2028%% c\n stroke:#ABC\n",
+    "stateDiagram-v2\n  state A\n  style A fill:#f00\t,\u2028%% c\n stroke:#abc\n",
+  ],
+  [
+    "a color before a comma after a tab in a style statement that a comment line after U+2028 joins in an ER diagram is printed in lower case",
+    "erDiagram\nA\nstyle A fill:#F00\t,\u2028%% c\n stroke:#ABC\n",
+    "erDiagram\n  A\n  style A fill:#f00\t,\u2028%% c\n stroke:#abc\n",
+  ],
 ]
 
 /**
