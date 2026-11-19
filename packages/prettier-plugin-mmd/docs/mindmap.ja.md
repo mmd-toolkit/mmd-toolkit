@@ -750,10 +750,15 @@ mindmap
 それぞれの前に空白かタブがあれば空白 1 つを置き、
 最後のディレクティブの後の空白とタブは除きます。
 行末の空白とタブの有無で印字は変わりません。
-ただし、行のディレクティブのどれかに改行、`;`、U+2028 があるときを除きます。
+ただし、行のディレクティブのどれかに改行か `;` があるときを除きます。
 （[compatibility.ja.md](./compatibility.ja.md)
 の「改行かセミコロンを含むディレクティブ」の節）。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+mermaid.js は、U+2028 か U+2029 を含むディレクティブを、
+mindmap ではクラスの行のほかでは拒否します。
+クラスの行では、ディレクティブの前後に何があっても（空白、タブ、U+00A0、
+コメント、別のディレクティブ、テキスト）、行を書かれたまま残します（`:::c`、
+空白 2 つ、`%%{init: {`、U+2028、`}}%%`、空白 2 つは変えません）。
 形かアイコンの後では、最後のディレクティブの後の、
 空白でもタブでもない空白文字（U+000B、U+000C、改行しない空白、U+1680、
 U+2000 から U+200A、U+2028、U+2029、U+202F、U+205F、U+3000、U+FEFF）も除き、
@@ -798,6 +803,8 @@ U+2000 から U+200A、U+2028、U+2029、U+202F、U+205F、U+3000、U+FEFF）も
 [test: a comment that touches the directive that follows a shape of a mindmap node]
 [test: a whitespace character that is no space or tab before the directive that follows a shape or an icon of a mindmap node]
 [test: a whitespace character that is no space or tab before the directive of a bare mindmap node and of the root text]
+[test: a directive that holds a U+2028 on a class line of a mindmap node]
+[test: a directive that holds a U+2029 on a class line of a mindmap node]
 
 2 つの単位の間のディレクティブは、その場に残します。
 テキストの中のディレクティブは、テキストの一部です。

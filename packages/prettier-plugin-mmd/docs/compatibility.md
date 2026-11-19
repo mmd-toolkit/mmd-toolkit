@@ -1434,8 +1434,8 @@ one space, and the spaces and tabs after the last one are dropped like any
 spaces and tabs at the end of the line, so the line is printed alike whether or
 not spaces and tabs follow its last directive, as a directive at the end of a
 line is in the other diagrams (see [Directives](./flowchart.md#directives)),
-unless a directive of the line holds a line break, a `;`, or a U+2028 (see the
-section Directives that hold a line break or a semicolon):
+unless a directive of the line holds a line break, a `;`, a U+2028, or a U+2029
+(see the section Directives that hold a line break or a semicolon):
 `title T  %%{x}%%  %%{y}%%` and `title T  %%{x}%%  %%{y}%%  ` are both printed
 `title T %%{x}%% %%{y}%%`, `title T%%{x}%%%%{y}%%  ` is printed
 `title T%%{x}%%%%{y}%%`, and `state "d" as A : x  %%{x}%%  ` is printed

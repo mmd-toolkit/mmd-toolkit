@@ -8134,11 +8134,198 @@ const lastLineAfterCommentExamples: readonly (readonly [
     'C4Context\nBoundary(b, "B") {\nPerson(a, "A")\n} %% c\n ',
     'C4Context\n  Boundary(b, "B") {\n    Person(a, "A")\n  } %% c\n',
   ],
+  [
+    "a final comment after a statement and a last line of a tab without a line break in a C4 diagram",
+    'C4Context\nPerson(a, "A") %% c\n\t',
+    'C4Context\n  Person(a, "A") %% c\n',
+  ],
+  [
+    "a final comment after a statement and a last line of a no-break space without a line break in a C4 diagram",
+    'C4Context\nPerson(a, "A") %% c\n\u00a0',
+    'C4Context\n  Person(a, "A") %% c\n',
+  ],
+  [
+    "a final comment after a statement and a last line of a tab without a line break in a kanban board",
+    "kanban\n  S[x] %% c\n\t",
+    "kanban\n  S[x] %% c\n",
+  ],
+  [
+    "a final comment after a statement and a last line of a no-break space without a line break in a kanban board",
+    "kanban\n  S[x] %% c\n\u00a0",
+    "kanban\n  S[x] %% c\n",
+  ],
+  [
+    "a final comment after a card and a last line of a U+2028 without a line break in a kanban board",
+    "kanban\n  S\n    A[y] %% c\n\u2028",
+    "kanban\n  S\n    A[y] %% c\n\u2028\n",
+  ],
+  [
+    "a last line of a U+2028 after a line of %% alone in a kanban board",
+    "kanban\n  S\n%%\n\u2028",
+    "kanban\n  S\n%%\n\u2028\n",
+  ],
+  [
+    "a final comment after the brace of an accDescr block and a last line of one space without a line break in a C4 diagram",
+    "C4Context\naccDescr {\nT\n} %% c\n ",
+    "C4Context\n  accDescr {\n    T\n  } %% c\n",
+  ],
+  [
+    "a final comment after the brace of an accDescr block and a last line of one space after a line break in a C4 diagram",
+    "C4Context\naccDescr {\nT\n} %% c\n \n",
+    "C4Context\n  accDescr {\n    T\n  } %% c\n \n",
+  ],
+  [
+    "a final comment after the brace of an accDescr block, an empty line, and a last line of one space in a C4 diagram",
+    "C4Context\naccDescr {\nT\n} %% c\n\n ",
+    "C4Context\n  accDescr {\n    T\n  } %% c\n\n \n",
+  ],
+  [
+    "a final comment after the brace of an accDescr block and a last line of a U+2028 without a line break in a C4 diagram",
+    "C4Context\naccDescr {\nT\n} %% c\n\u2028",
+    "C4Context\n  accDescr {\n    T\n  } %% c\n\u2028\n",
+  ],
+  [
+    "a final comment after the brace of an accDescr block and a last line of a U+2029 without a line break in a C4 diagram",
+    "C4Context\naccDescr {\nT\n} %% c\n\u2029",
+    "C4Context\n  accDescr {\n    T\n  } %% c\n\u2029\n",
+  ],
+  [
+    "a final comment on the header line and a last line of one space without a line break in a kanban board",
+    "kanban %% c\n ",
+    "kanban %% c\n",
+  ],
+  [
+    "a final comment on the header line and a last line of one space after a line break in a kanban board",
+    "kanban %% c\n \n",
+    "kanban %% c\n \n",
+  ],
+  [
+    "a final comment on the header line, an empty line, and a last line of one space in a kanban board",
+    "kanban %% c\n\n ",
+    "kanban %% c\n\n \n",
+  ],
+  [
+    "a final comment on the header line and a last line of a U+2028 without a line break in a kanban board",
+    "kanban %% c\n\u2028",
+    "kanban %% c\n\u2028\n",
+  ],
+  [
+    "a final comment on the header line and a last line of a U+2029 without a line break in a kanban board",
+    "kanban %% c\n\u2029",
+    "kanban %% c\n\u2029\n",
+  ],
 ]
 
 describe("the last line of whitespace only after a final comment", () => {
   it.each(lastLineAfterCommentExamples)(
     "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+/** A last line of only a U+2028 or a U+2029 that is left out after a final comment (docs/kanban.md and docs/c4.md, Final newline). */
+const lastLineLeftOutAfterCommentExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "a last line of a U+2028 after a final comment on a line of its own in a C4 diagram",
+    'C4Context\nPerson(a, "A")\n%% c\n\u2028',
+    'C4Context\n  Person(a, "A")\n  %% c\n',
+  ],
+  [
+    "a last line of a U+2029 after a final comment on a line of its own in a C4 diagram",
+    'C4Context\nPerson(a, "A")\n%% c\n\u2029',
+    'C4Context\n  Person(a, "A")\n  %% c\n',
+  ],
+  [
+    "a last line of a U+2028 after a final comment after a title in a C4 diagram",
+    'C4Context\nPerson(a, "A")\ntitle T %% c\n\u2028',
+    'C4Context\n  Person(a, "A")\n  title T %% c\n',
+  ],
+  [
+    "a last line of a U+2029 after a final comment after a title in a C4 diagram",
+    'C4Context\nPerson(a, "A")\ntitle T %% c\n\u2029',
+    'C4Context\n  Person(a, "A")\n  title T %% c\n',
+  ],
+  [
+    "a last line of a U+2028 after a final comment after an accTitle line in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccTitle: T %% c\n\u2028',
+    'C4Context\n  Person(a, "A")\n  accTitle: T %% c\n',
+  ],
+  [
+    "a last line of a U+2029 after a final comment after an accTitle line in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccTitle: T %% c\n\u2029',
+    'C4Context\n  Person(a, "A")\n  accTitle: T %% c\n',
+  ],
+  [
+    "a last line of a U+2028 after a final comment after an accDescr line in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccDescr: T %% c\n\u2028',
+    'C4Context\n  Person(a, "A")\n  accDescr: T %% c\n',
+  ],
+  [
+    "a last line of a U+2029 after a final comment after an accDescr line in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccDescr: T %% c\n\u2029',
+    'C4Context\n  Person(a, "A")\n  accDescr: T %% c\n',
+  ],
+  [
+    "a last line of a U+2028 after a final comment after an accDescription line in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccDescription T %% c\n\u2028',
+    'C4Context\n  Person(a, "A")\n  accDescription T %% c\n',
+  ],
+  [
+    "a last line of a U+2029 after a final comment after an accDescription line in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccDescription T %% c\n\u2029',
+    'C4Context\n  Person(a, "A")\n  accDescription T %% c\n',
+  ],
+  [
+    "a last line of a U+2028 after a final comment on a line of its own in a kanban board",
+    "kanban\n  S[x]\n%% c\n\u2028",
+    "kanban\n  S[x]\n  %% c\n",
+  ],
+  [
+    "a last line of a U+2029 after a final comment on a line of its own in a kanban board",
+    "kanban\n  S[x]\n%% c\n\u2029",
+    "kanban\n  S[x]\n  %% c\n",
+  ],
+  [
+    "a last line of one space after an empty line and a line break after a final comment on a line of its own in a C4 diagram",
+    'C4Context\nPerson(a, "A")\n%% c\n\n \n',
+    'C4Context\n  Person(a, "A")\n  %% c\n',
+  ],
+  [
+    "a last line of one space after an empty line and a line break after a final comment after a title in a C4 diagram",
+    'C4Context\nPerson(a, "A")\ntitle T %% c\n\n \n',
+    'C4Context\n  Person(a, "A")\n  title T %% c\n',
+  ],
+  [
+    "a last line of one space after an empty line and a line break after a final comment after an accTitle line in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccTitle: T %% c\n\n \n',
+    'C4Context\n  Person(a, "A")\n  accTitle: T %% c\n',
+  ],
+  [
+    "a last line of one space after an empty line and a line break after a final comment after an accDescr line in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccDescr: T %% c\n\n \n',
+    'C4Context\n  Person(a, "A")\n  accDescr: T %% c\n',
+  ],
+  [
+    "a last line of one space after an empty line and a line break after a final comment after an accDescription line in a C4 diagram",
+    'C4Context\nPerson(a, "A")\naccDescription T %% c\n\n \n',
+    'C4Context\n  Person(a, "A")\n  accDescription T %% c\n',
+  ],
+  [
+    "a last line of one space after an empty line and a line break after a final comment on a line of its own in a kanban board",
+    "kanban\n  S[x]\n%% c\n\n \n",
+    "kanban\n  S[x]\n  %% c\n",
+  ],
+]
+
+describe("the last line of only a U+2028 or a U+2029 after a final comment that leaves it out", () => {
+  it.each(lastLineLeftOutAfterCommentExamples)(
+    "leaves out %s",
     async (_name, input, output) => {
       await expectKept(input, output)
     },
@@ -8263,6 +8450,58 @@ describe("a whitespace character that is no space or tab before the first direct
         `ishikawa\n  R\n    A %%{x}%%${character}%%{y}%%  \n`,
         `ishikawa\n  R\n    A %%{x}%%${character}%%{y}%%\n`,
       )
+    }
+  })
+})
+
+/**
+ * A directive that holds a U+2028 or a U+2029 is rejected everywhere in a
+ * mindmap but on a class line, where the line stays as written (docs/mindmap.md,
+ * Directives).
+ */
+const mindmapClassLineForms = [
+  ":::c  {d}  ",
+  ":::c  {d}",
+  ":::c{d}",
+  ":::c{d}  ",
+  ":::c\t{d}\t",
+  ":::c  {d}\u00a0",
+  ":::c  {d}  %% c  ",
+  ":::c  {d}%% c",
+  ":::c  {d}  %%{y}%%  ",
+  ":::c  %%{y}%%  {d}  ",
+  ":::c  {d} d",
+] as const
+
+const mindmapClassLineContexts = [
+  "mindmap\n  root\n    a\n    {line}\n",
+  "mindmap\n  root\n    a\n    {line}\n    b\n",
+  "mindmap\n  root\n    a[t]\n    {line}\n",
+  "mindmap\n  root\n    a\n    ::icon(fa)\n    {line}\n",
+] as const
+
+describe("a directive that holds a line separator on a class line of a mindmap node", () => {
+  it("a directive that holds a U+2028 on a class line of a mindmap node", async () => {
+    for (const context of mindmapClassLineContexts) {
+      for (const form of mindmapClassLineForms) {
+        const text = context.replace(
+          "{line}",
+          form.replace("{d}", "%%{init: {\u2028}}%%"),
+        )
+        await expectKept(text, text)
+      }
+    }
+  })
+
+  it("a directive that holds a U+2029 on a class line of a mindmap node", async () => {
+    for (const context of mindmapClassLineContexts) {
+      for (const form of mindmapClassLineForms) {
+        const text = context.replace(
+          "{line}",
+          form.replace("{d}", "%%{init: {\u2029}}%%"),
+        )
+        await expectKept(text, text)
+      }
     }
   })
 })

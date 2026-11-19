@@ -1378,17 +1378,22 @@ break ends the text: `A[x] %%{unfinished` and two spaces print
 `A[x] %%{unfinished` and a line break, and `A[x] %%{unfinished`, a no-break
 space, and nothing else print the no-break space after it and a line break, and
 `A[x] %%{unfinished`, U+3000, and two spaces print them as written, with a line
-break after them. After the comment of a statement, a last line of whitespace
-only, but a U+2028 or a U+2029, that has no line break after it and no empty
-line before it is left out (`S[x] %% c`, a line break, and a line of two spaces
-print `S[x] %% c` and a line break), while one that a line break follows stays,
-and so does one after an empty line, with a line break added after it
-(`S[x] %% c`, a line break, an empty line, and a line of two spaces print
-`S[x] %% c`, the empty line, and the line of two spaces with a line break after
-it). A last line of only a U+2028 or a U+2029 stays in each of these places,
-with a line break added after it where none follows (`S[x] %% c`, a line break,
-and a U+2028 print the comment, the line of the U+2028, and a line break). On
-the header line, an open directive takes the rest as on a line of its own:
+break after them. After the comment of a statement or of the header line, a last
+line of whitespace only, but a U+2028 or a U+2029, that has no line break after
+it and no empty line before it is left out (`S[x] %% c`, a line break, and a
+line of two spaces print `S[x] %% c` and a line break), while one that a line
+break follows stays, and so does one after an empty line, with a line break
+added after it (`S[x] %% c`, a line break, an empty line, and a line of two
+spaces print `S[x] %% c`, the empty line, and the line of two spaces with a line
+break after it). A last line of only a U+2028 or a U+2029 stays after the
+comment of the header line and of a statement, a column or a card, with a line
+break added after it where none follows (`S[x] %% c`, a line break, and a U+2028
+print the comment, the line of the U+2028, and a line break). After a comment
+line with text, every last line of whitespace is left out, one of only a U+2028
+or a U+2029 too (`S[x]`, a line break, `%% c`, a line break, and a U+2028 print
+`S[x]` and `%% c`, each followed by a line break), and after a line of `%%`
+only, the gap that holds it stays as written (see [Blank lines](#blank-lines)).
+On the header line, an open directive takes the rest as on a line of its own:
 `kanban %%{unfinished` and two spaces print `kanban %%{unfinished` and a line
 break. In Markdown, the indentation of the code fence or of its list item is the
 indentation of the host, and is not part of the indentation of the board.
@@ -1455,10 +1460,26 @@ kanban board] [test: a final comment after a statement and a last line of a
 U+2029 without a line break in a kanban board] [test: a final comment after a
 statement, an empty line, and a last line of a U+2028 in a kanban board] [test:
 a final comment after a statement and a last line of one space after a line
-break in a kanban board] [test: a final comment with text and empty lines in a
-kanban board] [test: a final comment after a statement, an empty line, and a
-last line of one space in a kanban board] [test: a final comment after a
-statement, two empty lines, and a last line of two spaces in a kanban board]
+break in a kanban board] [test: a final comment after a statement and a last
+line of a tab without a line break in a kanban board] [test: a final comment
+after a statement and a last line of a no-break space without a line break in a
+kanban board] [test: a final comment with text and empty lines in a kanban
+board] [test: a final comment after a statement, an empty line, and a last line
+of one space in a kanban board] [test: a final comment after a statement, two
+empty lines, and a last line of two spaces in a kanban board] [test: a final
+comment on the header line and a last line of one space without a line break in
+a kanban board] [test: a final comment on the header line and a last line of one
+space after a line break in a kanban board] [test: a final comment on the header
+line, an empty line, and a last line of one space in a kanban board] [test: a
+final comment on the header line and a last line of a U+2028 without a line
+break in a kanban board] [test: a final comment on the header line and a last
+line of a U+2029 without a line break in a kanban board] [test: a final comment
+after a card and a last line of a U+2028 without a line break in a kanban board]
+[test: a last line of a U+2028 after a line of %% alone in a kanban board]
+[test: a last line of a U+2028 after a final comment on a line of its own in a
+kanban board] [test: a last line of a U+2029 after a final comment on a line of
+its own in a kanban board] [test: a last line of one space after an empty line
+and a line break after a final comment on a line of its own in a kanban board]
 [test: an open directive on the header line of a kanban board] [test: an open
 directive on the header line of a kanban board and empty lines] [fixture:
 blank-lines/comment-blank-trailing] [test: kanban: selected-terminal-separator]

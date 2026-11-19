@@ -1474,7 +1474,7 @@ U+00A0、U+1680、U+2000 から U+200A、U+202F、U+205F、U+3000、U+FEFF と�
 `A[x] %%{unfinished` と U+00A0 は、U+00A0 とその後の改行を印字し、
 `A[x] %%{unfinished`、U+3000、空白 2 つは、そのまま印字して、
 その後に改行を足します。
-文の行のコメントの後で、改行が後ろになく、
+見出しの行か文の行のコメントの後で、改行が後ろになく、
 前に空行もない最後の空白だけの行（U+2028 と U+2029
 だけの行を除く）は落とします。
 `S[x] %% c`、改行、空白 2 つの行は、`S[x] %% c` と改行を印字し、
@@ -1482,9 +1482,15 @@ U+00A0、U+1680、U+2000 から U+200A、U+202F、U+205F、U+3000、U+FEFF と�
 空行の後の行には、後ろに改行を足します（`S[x] %% c`、改行、空行、
 空白 2 つの行は、`S[x] %% c`、空行、空白 2 つの行と、
 その後ろの改行を印字します）。
-U+2028 か U+2029 だけの最後の行は、どの場合も残り、
+U+2028 か U+2029 だけの最後の行は、見出しの行と、
+列かカードの文のコメントの後では残り、
 後ろに改行がなければ足します（`S[x] %% c`、改行、U+2028 は、コメントと、
 U+2028 の行と、改行を印字します）。
+テキストのあるコメントの行の後では、空白だけの最後の行はどれも、
+U+2028 か U+2029 だけの行も、落とします（`S[x]`、改行、`%% c`、改行、U+2028 は、
+`S[x]` と `%% c` に、それぞれ改行を付けて印字します）。
+`%%` だけの行の後では、
+それを含む隙間を書かれたまま残します（[空行](#空行)を参照）。
 見出しの行の閉じていないディレクティブも、単独の行と同じにその後ろを取ります。
 `kanban %%{unfinished` と空白 2 つは `kanban %%{unfinished` と改行を印字します。
 Markdown では、コードフェンスやリスト項目の字下げはホストの字下げで、
@@ -1562,9 +1568,21 @@ Markdown では、コードフェンスやリスト項目の字下げはホス�
 [test: a final comment after a statement and a last line of a U+2029 without a line break in a kanban board]
 [test: a final comment after a statement, an empty line, and a last line of a U+2028 in a kanban board]
 [test: a final comment after a statement and a last line of one space after a line break in a kanban board]
+[test: a final comment after a statement and a last line of a tab without a line break in a kanban board]
+[test: a final comment after a statement and a last line of a no-break space without a line break in a kanban board]
 [test: a final comment with text and empty lines in a kanban board]
 [test: a final comment after a statement, an empty line, and a last line of one space in a kanban board]
 [test: a final comment after a statement, two empty lines, and a last line of two spaces in a kanban board]
+[test: a final comment on the header line and a last line of one space without a line break in a kanban board]
+[test: a final comment on the header line and a last line of one space after a line break in a kanban board]
+[test: a final comment on the header line, an empty line, and a last line of one space in a kanban board]
+[test: a final comment on the header line and a last line of a U+2028 without a line break in a kanban board]
+[test: a final comment on the header line and a last line of a U+2029 without a line break in a kanban board]
+[test: a final comment after a card and a last line of a U+2028 without a line break in a kanban board]
+[test: a last line of a U+2028 after a line of %% alone in a kanban board]
+[test: a last line of a U+2028 after a final comment on a line of its own in a kanban board]
+[test: a last line of a U+2029 after a final comment on a line of its own in a kanban board]
+[test: a last line of one space after an empty line and a line break after a final comment on a line of its own in a kanban board]
 [test: an open directive on the header line of a kanban board]
 [test: an open directive on the header line of a kanban board and empty lines]
 [fixture: blank-lines/comment-blank-trailing]

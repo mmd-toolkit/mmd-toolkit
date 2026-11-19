@@ -737,24 +737,29 @@ of it: where it is, one space stands there, and where it touches, it keeps
 touching. The directives that end the text of a node or of a class are printed
 with one space before each that has spaces or tabs before it, and the spaces and
 tabs after the last one are left out, whatever the spaces and tabs at the end of
-the line, unless a directive of the line holds a line break, a `;`, or a U+2028
-(see the section Directives that hold a line break or a semicolon of
+the line, unless a directive of the line holds a line break or a `;` (see the
+section Directives that hold a line break or a semicolon of
 [compatibility.md](./compatibility.md), and
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-After a shape or an icon, a whitespace character that is no space or tab
-(U+000B, U+000C, a no-break space, U+1680, U+2000 to U+200A, U+2028, U+2029,
-U+202F, U+205F, U+3000, or U+FEFF) after the last directive is left out too, and
-before the first directive it is printed as one space (`a[t]`, a no-break space,
-and `%%{x}%%` print `a[t] %%{x}%%`, and so do `::icon(fa)`, a U+2003, and
-`%%{x}%%`); after a bare node or the root text it stays, since mermaid.js draws
-other text without it. After a bare node, a class, or the root text, such a
-character after the last directive, and text after a directive, keep the line as
-written, the spaces after the directive included: `a`, `%%{x}%%`, U+3000, and
-two spaces are not changed, and neither is `a`, two spaces, `%%{x}%%`, two
-spaces, `%% c`, and two spaces. After a shape, a comment after the last
-directive stands after one space, with the run before the directive printed as
-one space too, and it stays touching where it touches: `a[t]  %%{x}%%  %% c` is
-printed `a[t] %%{x}%% %% c`, and `a[t] %%{x}%%%% c` is not changed.
+mermaid.js rejects a directive that holds a U+2028 or a U+2029 everywhere in a
+mindmap but on a class line, where the line stays as written, whatever stands
+before and after the directive (spaces, a tab, a no-break space, a comment,
+another directive, or text): `:::c`, two spaces, `%%{init: {`, a U+2028, `}}%%`,
+and two spaces are not changed. After a shape or an icon, a whitespace character
+that is no space or tab (U+000B, U+000C, a no-break space, U+1680, U+2000 to
+U+200A, U+2028, U+2029, U+202F, U+205F, U+3000, or U+FEFF) after the last
+directive is left out too, and before the first directive it is printed as one
+space (`a[t]`, a no-break space, and `%%{x}%%` print `a[t] %%{x}%%`, and so do
+`::icon(fa)`, a U+2003, and `%%{x}%%`); after a bare node or the root text it
+stays, since mermaid.js draws other text without it. After a bare node, a class,
+or the root text, such a character after the last directive, and text after a
+directive, keep the line as written, the spaces after the directive included:
+`a`, `%%{x}%%`, U+3000, and two spaces are not changed, and neither is `a`, two
+spaces, `%%{x}%%`, two spaces, `%% c`, and two spaces. After a shape, a comment
+after the last directive stands after one space, with the run before the
+directive printed as one space too, and it stays touching where it touches:
+`a[t]  %%{x}%%  %% c` is printed `a[t] %%{x}%% %% c`, and `a[t] %%{x}%%%% c` is
+not changed.
 
 [fixture: node-text/directives-end-blanks-dropped] [fixture: directives/kept]
 [fixture: directives/between-nodes] [fixture: directives/before-the-header]
@@ -780,7 +785,9 @@ mindmap node, a class, and the root text] [test: a comment that touches the
 directive that follows a shape of a mindmap node] [test: a whitespace character
 that is no space or tab before the directive that follows a shape or an icon of
 a mindmap node] [test: a whitespace character that is no space or tab before the
-directive of a bare mindmap node and of the root text]
+directive of a bare mindmap node and of the root text] [test: a directive that
+holds a U+2028 on a class line of a mindmap node] [test: a directive that holds
+a U+2029 on a class line of a mindmap node]
 
 A directive between two units stays where it is, and a directive inside a text
 is part of the text.
