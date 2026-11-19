@@ -331,9 +331,9 @@ timeline
 ### Periods and events
 
 A period and its events are printed as written, with the whitespace between
-their texts and their colons, except for the whitespace at the end of the last
-event of a line and for a space that is added before a colon: mermaid.js keeps
-both in the Db, but draws the same text without them (see
+their texts and their colons, except for the spaces and tabs at the end of the
+last event of a line and for a space that is added before a colon: mermaid.js
+keeps both in the Db, but draws the same text without them (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 The Db keeps the whitespace at the end of a period, which is the whitespace
 before its colon, and the whitespace at both ends of an event beyond the one
@@ -354,9 +354,9 @@ with the text `: x`. A directive between the text and the colon keeps the gap as
 written (see [Directives](#directives)). An event that a line break separates
 from the next colon ends its line too: in `2020 : e1  ` followed by a line
 `: e2`, the whitespace after `e1` is left out. The directives that end such an
-event are printed with one space before each that has whitespace before it, and
-the whitespace after the last one is left out: `2020 : e1   %%{x}%%  ` is
-printed `2020 : e1 %%{x}%%` (see
+event are printed with one space before each that has spaces or tabs before it,
+and the spaces and tabs after the last one are left out: `2020 : e1   %%{x}%%  `
+is printed `2020 : e1 %%{x}%%` (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: periods-and-events/event-trailing-directive-blanks-dropped] [fixture:
@@ -679,8 +679,8 @@ timeline
 ### Titles and sections
 
 A `title` is printed with one space after the keyword, as in a user journey, and
-the value without the whitespace at its start or at its end, which the Db keeps
-and which is drawn without (see
+the value without the spaces and tabs at its start or at its end, which the Db
+keeps and which are drawn without (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 `title   History  ` is printed `title History`, and a run of spaces and tabs
 inside it is printed as one space (see

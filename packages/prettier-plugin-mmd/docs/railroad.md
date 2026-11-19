@@ -1072,8 +1072,9 @@ out of the title. The two stand on lines of their own as every statement does
 builds in the pinned version and the figure of every version that counts change.
 The comparison Db of the tests omits body titles, which gives no permission to
 rewrite their contents. The directives that end a title are printed with one
-space before each that has whitespace before it, and the whitespace after the
-last one is left out, whatever the whitespace at the end of the line (see
+space before each that has spaces or tabs before it, and the spaces and tabs
+after the last one are left out, whatever the spaces and tabs at the end of the
+line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: railroad/title/ir-rule-on-next-line]
@@ -1187,7 +1188,8 @@ text of the title, and so it is for `accDescr`: the Db of the pinned version and
 the figure of every version that counts change (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The directives that end the value are printed with one space before each that
-has whitespace before it, and the whitespace after the last one is left out (see
+has spaces or tabs before it, and the spaces and tabs after the last one are
+left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: railroad/accessibility-lines/ir-acc-title-before-rule]

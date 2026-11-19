@@ -754,8 +754,8 @@ prints a run of spaces and tabs inside the text as one space (see
 without rewriting quote-looking text. Never take a value from the next physical
 line, across comments or directives. Trivia-bearing values retain their written
 boundaries. The directives that end a title are printed with one space before
-each that has whitespace before it, and the whitespace after the last one is
-left out, whatever the whitespace at the end of the line (see
+each that has spaces or tabs before it, and the spaces and tabs after the last
+one are left out, whatever the spaces and tabs at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
@@ -844,8 +844,8 @@ the keyword, one space before a trimmed nonempty value, and no space after an
 empty colon. Keep internal text; braces after a colon remain line text. These
 equivalent outer gaps follow the other diagrams. Trivia retains boundaries and
 no next-line value is joined. The directives that end the value are printed with
-one space before each that has whitespace before it, and the whitespace after
-the last one is left out (see
+one space before each that has spaces or tabs before it, and the spaces and tabs
+after the last one are left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]

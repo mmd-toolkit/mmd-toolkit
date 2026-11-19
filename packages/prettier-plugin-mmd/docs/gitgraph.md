@@ -466,9 +466,9 @@ Print `title` plus one space and a nonempty value trimmed only at its outer
 ends, with a run of spaces and tabs inside it printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same));
 empty/whitespace-only titles print bare `title`. The directives that end a title
-are printed with one space before each that has whitespace before it, and the
-whitespace after the last one is left out, whatever the whitespace at the end of
-the line (see
+are printed with one space before each that has spaces or tabs before it, and
+the spaces and tabs after the last one are left out, whatever the spaces and
+tabs at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title-and-common-values/title-directives-end-blanks-dropped]

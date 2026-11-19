@@ -1466,6 +1466,8 @@ treeView、info、railroad、quadrant の図の title は、
 先頭と末尾の改行しない空白と U+3000 を、空白とタブと同じように除きます。
 mermaid.js がこれらの title の両端のそれらを除いて読み、
 それがあってもなくても 12.3.0 の Db も描かれるテキストも同じだからです。
+これは、ディレクティブもコメントもないタイトルに当てはまります。
+それらがあるタイトルでは、下の段落のとおりに印字します。
 timeline の行の最後の event と、別名を持つ state の 2 つ目の説明も、
 同じように末尾の空白を除きますが、先頭の空白は除きません。
 その空白は timeline のコロンをそろえます。
@@ -1479,11 +1481,14 @@ period が `title` か `section` の語のときは足しません。
 user journey のタスクの説明は、最初のコロンの前の空白を除きます。
 `Make tea : 5: Me` は `Make tea: 5: Me` と印字します。
 説明をそろえてコロンの桁をそろえた節は、書かれたままにします。
-同じ行のテキストの後にコメントがある場合は、空白 1 つでテキストと隔てます。
-ディレクティブがある場合は、それぞれの前に空白があるかないかを保ち、
-空白の連続は空白 1 つにします。
-最後のディレクティブの後の空白は、ほかの行末の空白と同じように除くので、
-その空白の有無で印字は変わりません。
+タイトルのテキストと、同じ行のその後のコメントの間に空白かタブがあれば、
+空白 1 つにし、コメントがテキストに接していれば接したままにします。
+テキストの後にディレクティブが続き、
+最後のディレクティブの後が空白とタブだけの場合は、
+それぞれの前に空白かタブがあるかないかを保ち、
+空白とタブの連続は空白 1 つにします。
+最後のディレクティブの後の空白とタブは、
+ほかの行末の空白とタブと同じように除くので、その有無で印字は変わりません。
 ほかの図種の行末のディレクティブも同じです。
 （[ディレクティブ](./flowchart.md#directives)を参照してください）。
 `title T  %%{x}%%  %%{y}%%` も `title T  %%{x}%%  %%{y}%%  ` も
@@ -1491,7 +1496,8 @@ user journey のタスクの説明は、最初のコロンの前の空白を除�
 `title T%%{x}%%%%{y}%%  ` は `title T%%{x}%%%%{y}%%` と印字し、
 `state "d" as A : x  %%{x}%%  ` は `state "d" as A : x %%{x}%%` と印字します。
 mermaid.js はテキストを読む前にディレクティブを除くので、
-その周りの空白はテキストの末尾の空白になり、どのような空白でも同じに描きます。
+その周りの空白とタブはテキストの末尾の空白とタブになり、
+どのような空白とタブでも同じに描きます。
 これは、Gantt、user journey、timeline、sequence、Venn、C4、pie、radar、packet、
 architecture、gitGraph、cynefin、treemap、Wardley、treeView、info、
 railroad の図のタイトル、
@@ -1507,6 +1513,27 @@ user journey
 日付書式、軸の書式、`accTitle:` の行の値の中の空白とタブの連続は、
 ディレクティブの前でも、
 ディレクティブがない場合と同じように書かれたままにします。
+
+ノーブレークスペースと U+3000 は空白でもタブでもないので、上に書いた、
+ディレクティブの隣の空白とタブについての文は、
+タイトルでのそれらには当てはまりません。
+Gantt、user journey、timeline、sequence、Venn、C4 の図では、
+それらはどこにあってもテキストの文字で、そのまま残ります。
+`title T`、ノーブレークスペース、`%%{x}%%` は変えません。
+quadrant 図では、コメントの前にあるものは残し、ほかは空白と同じに読みます。
+一覧のほかの種類の図では、整形ツールは、
+ディレクティブの位置でそれらを読み分けます。
+行末にあって、互いに接し、
+行末かコメントにも接するディレクティブはテキストの外にあるので、
+テキストとその最初のディレクティブの間にあるそれらはテキストの末尾の空白で、
+その連なりの残りと一緒に空白 1 つで印字します。
+`title T`、U+00A0、`%%{x}%%` は `title T %%{x}%%` と印字します。
+後ろに空白とタブ以外の何かが続くディレクティブはテキストに属し、
+その前のディレクティブもそうです。
+そのテキストでは空白とタブだけが空白なので、
+そのようなディレクティブの隣のそれらは残り、
+最後のディレクティブの後にそれらがあるタイトルは、
+中の空白とタブも含めて書かれたまま残します。
 
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped]
 [test: a no-break space and U+3000 at both ends of the title of
@@ -1532,7 +1559,41 @@ a treemap] [test: a no-break space and U+3000 at both ends of the title of
 a Wardley map] [test: a no-break space and U+3000 at both ends of the title of
 a treeView] [test: a no-break space and U+3000 at both ends of the title of
 an info diagram] [test: a no-break space and U+3000 at both ends of the title of
-a railroad diagram]
+a railroad diagram] [test: a no-break space after the last directive of a title]
+[test: a no-break space between the text and a directive that ends a title]
+[test: a no-break space between the text and two directives that touch and end
+a title] [test: a no-break space between the text and a directive that a comment
+touches]
+[test: a no-break space between the text and a directive that is followed by a
+space and a directive]
+[test: a no-break space on both sides of a directive between two texts]
+[test: a no-break space before and after the last directive of a title]
+[test: U+3000 after the last directive of a title]
+[test: U+3000 between the text and a directive that ends a title]
+[test: a no-break space after the last directive of the title of a quadrant
+chart]
+[test: a no-break space between the text and a directive in the title of a
+quadrant chart]
+[test: a no-break space on both sides of the last directive in the title of a
+quadrant chart]
+[test: a no-break space before a comment in the title of a quadrant chart]
+[test: U+3000 after the last directive in the title of a quadrant chart]
+[test: a no-break space after the last directive of a title that a Jison
+grammar reads]
+[test: a no-break space between the text and the last directive of a title
+that a Jison grammar reads]
+[test: a no-break space between the text and a directive that a space follows
+in a title that a Jison grammar reads]
+[test: a no-break space before a directive that starts a title that a Jison
+grammar reads]
+[test: a no-break space after a directive that starts a title that a Jison
+grammar reads]
+[test: a no-break space before and after the last directive of a title that a
+Jison grammar reads]
+[test: U+3000 after the last directive of a title that a Jison grammar reads]
+[test: two spaces before a comment after the text of a title]
+[test: a tab before a comment after the text of a title]
+[test: a comment that touches the text of a title]
 [test: a no-break space and U+3000 at both ends of the title of
 a quadrant chart] [test: a no-break space at the end of
 the date format of a gantt diagram] [test: a no-break space at the end of
@@ -5592,7 +5653,7 @@ mermaid.js は、Gantt 図の一部の値の空白を持ち、一部の行を、
 - `tickInterval`、`todayMarker`、`section` の値の両端の空白。
   Db が持ち、図にも描かれるので、空白 2 つの `tickInterval  1week` は、
   目盛りが既定のものになり、`section  A` は `section A` とは別のセクションです。
-  `dateFormat`、`axisFormat`、`title` の両端の空白は除きます。
+  `dateFormat`、`axisFormat`、`title` の両端の空白とタブは除きます。
   タスクの説明のテキストとコロンの間の空白は、
   名前に桁そろえの空白があるセクション、
   または桁を共有するセクションどうしのコロンを、
@@ -5711,7 +5772,8 @@ mermaid.js は、journey の一部の値の空白を持ち、一部の行を、
   Db が持つので、空白 2 つの `section  S` や、桁をそろえた `Make tea  : 5` は、
   空白を落とした形とは別のものです。
   コロンをそろえる空白も残ります。
-  桁をそろえない節の説明のコロンの前の空白と、`title` の両端の空白は除きます。
+  桁をそろえない節の説明のコロンの前の空白と、
+  `title` の両端の空白とタブは除きます。
   （[同じに描かれるキーワードの後のテキスト](#同じに描かれるキーワードの後のテキスト)）。
 
   [fixture: journey/titles-and-sections/title-trailing-dropped-section-kept]
@@ -5843,8 +5905,9 @@ mindmap の Db は、ノードの字下げを level として読みます。
 
 mermaid.js は、timeline の period、event、section の名前の空白を保ち、
 いくつかの行を、置かれた場所で読みます。
-そのため、整形は、title の両端の空白と行の最後の event の末尾の空白を除き、
-コロンの前に空白を足し、それらを書かれたまま残します。
+そのため、整形は、title の両端の空白とタブと、
+行の最後の event の末尾の空白とタブを除き、コロンの前に空白を足し、
+それらを書かれたまま残します。
 [period と event](./timeline.ja.md#period-と-event)、
 [event の文](./timeline.ja.md#event-の文)、
 [1 行 1 文](./timeline.ja.md#1-行-1-文)を参照してください。
@@ -5858,7 +5921,7 @@ mermaid.js は、timeline の period、event、section の名前の空白を保�
   同じ行で後ろに別のコロンが続く event の末尾の空白も同じです。
   空白のないテキストの後のコロンには空白を 1 つ足します。
   period が `title` か `section` の語の場合を除きます。
-  行の最後の event の末尾の空白は除きます。
+  行の最後の event の末尾の空白とタブは除きます。
   改行で次のコロンと隔てられた event も含みます。
   （[同じに描かれるキーワードの後のテキスト](#同じに描かれるキーワードの後のテキスト)）。
 

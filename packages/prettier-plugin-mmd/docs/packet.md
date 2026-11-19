@@ -331,9 +331,9 @@ space (see
 Never take a value from the next physical line, even across
 blank/comment/directive gaps. Keep empty final assignments and frontmatter
 fallback; protected trivia/hidden boundaries take precedence. The directives
-that end a title are printed with one space before each that has whitespace
-before it, and the whitespace after the last one is left out, whatever the
-whitespace at the end of the line (see
+that end a title are printed with one space before each that has spaces or tabs
+before it, and the spaces and tabs after the last one are left out, whatever the
+spaces and tabs at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped] [fixture:
@@ -368,8 +368,8 @@ the value of an `accDescr` is printed as one space (see
 and that of an `accTitle` stays as written, since the browser shows it as a
 tooltip. Braces after the colon are line text. Never join a next-line value;
 hidden suffixes and protected groups keep their gaps. The directives that end
-the value are printed with one space before each that has whitespace before it,
-and the whitespace after the last one is left out (see
+the value are printed with one space before each that has spaces or tabs before
+it, and the spaces and tabs after the last one are left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:

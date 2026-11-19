@@ -439,9 +439,9 @@ one space before a nonempty value and retain its internal text. Empty or
 whitespace-only values print as bare title and never take text from the next
 line. This chooses a compact Db-equal edge without interpreting quotes as string
 delimiters. Preserve empty resets and trivia contact. The directives that end a
-title are printed with one space before each that has whitespace before it, and
-the whitespace after the last one is left out, whatever the whitespace at the
-end of the line (see
+title are printed with one space before each that has spaces or tabs before it,
+and the spaces and tabs after the last one are left out, whatever the spaces and
+tabs at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: title/title-directives-end-blanks-dropped]
@@ -493,8 +493,8 @@ adding one space before a nonempty value. Empty assignments end at the colon and
 never join the next line. Trim ordinary outer whitespace, retain internal text
 and trivia contact, and keep braces after a colon as line-value text. These
 compact common forms do not reinterpret authored values. The directives that end
-the value are printed with one space before each that has whitespace before it,
-and the whitespace after the last one is left out (see
+the value are printed with one space before each that has spaces or tabs before
+it, and the spaces and tabs after the last one are left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:

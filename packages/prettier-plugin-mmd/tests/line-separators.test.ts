@@ -4969,6 +4969,272 @@ describe("the title of a diagram that is read with a Langium grammar and has a w
   )
 })
 
+/**
+ * A no-break space and U+3000 beside a directive in a title. The printer
+ * reads only spaces and tabs as blanks around a directive that anything
+ * follows, and a directive that ends the line outside the text; a title that a
+ * Jison grammar reads keeps them wherever they stand
+ * (docs/compatibility.md, Texts after a keyword that are drawn the same).
+ */
+const langiumTitleDiagrams: readonly (readonly [string, string, string])[] = [
+  [
+    "a pie chart",
+    'pie\ntitle {title}\n"a": 1\n',
+    'pie\n  title {title}\n  "a": 1\n',
+  ],
+  [
+    "a radar chart",
+    "radar-beta\ntitle {title}\naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  title {title}\n  axis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "a packet diagram",
+    'packet-beta\ntitle {title}\n0-7: "x"\n',
+    'packet-beta\n  title {title}\n  0-7: "x"\n',
+  ],
+  [
+    "an architecture diagram",
+    "architecture-beta\ntitle {title}\nservice a(server)[A]\n",
+    "architecture-beta\n  title {title}\n  service a(server)[A]\n",
+  ],
+  [
+    "a gitGraph",
+    "gitGraph\ntitle {title}\ncommit\n",
+    "gitGraph\n  title {title}\n  commit\n",
+  ],
+  [
+    "a cynefin diagram",
+    "cynefin-beta\ntitle {title}\n",
+    "cynefin-beta\n  title {title}\n",
+  ],
+  [
+    "a treemap",
+    'treemap-beta\ntitle {title}\n"A": 1\n',
+    'treemap\ntitle {title}\n  "A": 1\n',
+  ],
+  [
+    "a Wardley map",
+    "wardley-beta\ntitle {title}\ncomponent A [0.5, 0.5]\n",
+    "wardley-beta\n  title {title}\n  component A [0.5, 0.5]\n",
+  ],
+  [
+    "a treeView",
+    "treeView-beta\ntitle {title}\nroot\n",
+    "treeView-beta\n  title {title}\n  root\n",
+  ],
+  ["an info diagram", "info\ntitle {title}\n", "info\n  title {title}\n"],
+  [
+    "a railroad diagram",
+    'railroad-abnf-beta\ntitle {title}\nr="a";\n',
+    'railroad-abnf-beta\n  title {title}\n  r = "a";\n',
+  ],
+]
+
+const langiumTitleCases: readonly (readonly [string, string, string])[] = [
+  [
+    "a no-break space after the last directive of a title",
+    "T%%{x}%%\u00a0",
+    "T%%{x}%%\u00a0",
+  ],
+  [
+    "a no-break space between the text and a directive that ends a title",
+    "T\u00a0%%{x}%%",
+    "T %%{x}%%",
+  ],
+  [
+    "a no-break space between the text and two directives that touch and end a title",
+    "T\u00a0%%{x}%%%%{y}%%",
+    "T %%{x}%%%%{y}%%",
+  ],
+  [
+    "a no-break space between the text and a directive that a comment touches",
+    "T\u00a0%%{x}%%%% c",
+    "T %%{x}%%%% c",
+  ],
+  [
+    "a no-break space between the text and a directive that is followed by a space and a directive",
+    "T\u00a0%%{x}%% %%{y}%%",
+    "T\u00a0%%{x}%% %%{y}%%",
+  ],
+  [
+    "a no-break space on both sides of a directive between two texts",
+    "T\u00a0%%{x}%%\u00a0U",
+    "T\u00a0%%{x}%%\u00a0U",
+  ],
+  [
+    "a no-break space before and after the last directive of a title",
+    "T \u00a0%%{x}%%\u00a0",
+    "T \u00a0%%{x}%%\u00a0",
+  ],
+  [
+    "U+3000 after the last directive of a title",
+    "T%%{x}%%\u3000",
+    "T%%{x}%%\u3000",
+  ],
+  [
+    "U+3000 between the text and a directive that ends a title",
+    "T\u3000%%{x}%%",
+    "T %%{x}%%",
+  ],
+]
+
+const quadrantTitleDiagram: readonly (readonly [string, string, string])[] = [
+  [
+    "a quadrant chart",
+    "quadrantChart\ntitle {title}\nx-axis L --> R\ny-axis B --> T\nA: [0.5, 0.5]\n",
+    "quadrantChart\n  title {title}\n  x-axis L --> R\n  y-axis B --> T\n  A: [0.5, 0.5]\n",
+  ],
+]
+
+const quadrantTitleCases: readonly (readonly [string, string, string])[] = [
+  [
+    "a no-break space after the last directive of the title of a quadrant chart",
+    "T%%{x}%%\u00a0",
+    "T%%{x}%%",
+  ],
+  [
+    "a no-break space between the text and a directive in the title of a quadrant chart",
+    "T\u00a0%%{x}%% ",
+    "T %%{x}%%",
+  ],
+  [
+    "a no-break space on both sides of the last directive in the title of a quadrant chart",
+    "T \u00a0%%{x}%%\u00a0",
+    "T %%{x}%%",
+  ],
+  [
+    "a no-break space before a comment in the title of a quadrant chart",
+    "T\u00a0%% c",
+    "T\u00a0%% c",
+  ],
+  [
+    "U+3000 after the last directive in the title of a quadrant chart",
+    "T%%{x}%%\u3000",
+    "T%%{x}%%",
+  ],
+]
+
+const jisonTitleDiagrams: readonly (readonly [string, string, string])[] = [
+  ["a Gantt chart", "gantt\ntitle {title}\n", "gantt\n  title {title}\n"],
+  ["a user journey", "journey\ntitle {title}\n", "journey\n  title {title}\n"],
+  ["a timeline", "timeline\ntitle {title}\n", "timeline\n  title {title}\n"],
+  [
+    "a sequence diagram",
+    "sequenceDiagram\ntitle {title}\nA->>B: x\n",
+    "sequenceDiagram\n  title {title}\n  A ->> B: x\n",
+  ],
+  [
+    "a Venn diagram",
+    "venn-beta\ntitle {title}\nset A\n",
+    "venn-beta\n  title {title}\n  set A\n",
+  ],
+  [
+    "a C4 diagram",
+    'C4Context\ntitle {title}\nPerson(a,"A")\n',
+    'C4Context\n  title {title}\n  Person(a, "A")\n',
+  ],
+]
+
+const jisonTitleCases: readonly (readonly [string, string, string])[] = [
+  [
+    "a no-break space after the last directive of a title that a Jison grammar reads",
+    "T%%{x}%%\u00a0",
+    "T%%{x}%%\u00a0",
+  ],
+  [
+    "a no-break space between the text and the last directive of a title that a Jison grammar reads",
+    "T\u00a0%%{x}%%",
+    "T\u00a0%%{x}%%",
+  ],
+  [
+    "a no-break space between the text and a directive that a space follows in a title that a Jison grammar reads",
+    "T\u00a0%%{x}%% ",
+    "T\u00a0%%{x}%%",
+  ],
+  [
+    "a no-break space before a directive that starts a title that a Jison grammar reads",
+    "\u00a0%%{x}%% T",
+    "\u00a0%%{x}%% T",
+  ],
+  [
+    "a no-break space after a directive that starts a title that a Jison grammar reads",
+    "%%{x}%%\u00a0T",
+    "%%{x}%%\u00a0T",
+  ],
+  [
+    "a no-break space before and after the last directive of a title that a Jison grammar reads",
+    "T \u00a0%%{x}%%\u00a0",
+    "T \u00a0%%{x}%%\u00a0",
+  ],
+  [
+    "U+3000 after the last directive of a title that a Jison grammar reads",
+    "T%%{x}%%\u3000",
+    "T%%{x}%%\u3000",
+  ],
+]
+
+const titleCommentCases: readonly (readonly [string, string, string])[] = [
+  [
+    "two spaces before a comment after the text of a title",
+    "T  %% c",
+    "T %% c",
+  ],
+  ["a tab before a comment after the text of a title", "T\t%% c", "T %% c"],
+  ["a comment that touches the text of a title", "T%% c", "T%% c"],
+]
+
+describe.each(langiumTitleDiagrams)(
+  "the title of %s with a no-break space or U+3000 beside a directive",
+  (_diagram, input, output) => {
+    it.each(langiumTitleCases)("prints %s", async (_case, title, printed) => {
+      await expectKept(
+        input.replace("{title}", title),
+        output.replace("{title}", printed),
+      )
+    })
+  },
+)
+
+describe.each(quadrantTitleDiagram)(
+  "the title of %s with a no-break space or U+3000 beside a directive",
+  (_diagram, input, output) => {
+    it.each(quadrantTitleCases)("prints %s", async (_case, title, printed) => {
+      await expectKept(
+        input.replace("{title}", title),
+        output.replace("{title}", printed),
+      )
+    })
+  },
+)
+
+describe.each(jisonTitleDiagrams)(
+  "the title of %s with a no-break space or U+3000 beside a directive",
+  (_diagram, input, output) => {
+    it.each(jisonTitleCases)("keeps %s", async (_case, title, printed) => {
+      await expectKept(
+        input.replace("{title}", title),
+        output.replace("{title}", printed),
+      )
+    })
+  },
+)
+
+describe.each([
+  ...langiumTitleDiagrams,
+  ...quadrantTitleDiagram,
+  ...jisonTitleDiagrams,
+])(
+  "the title of %s with a comment after its text",
+  (_diagram, input, output) => {
+    it.each(titleCommentCases)("prints %s", async (_case, title, printed) => {
+      await expectKept(
+        input.replace("{title}", title),
+        output.replace("{title}", printed),
+      )
+    })
+  },
+)
+
 /** Texts that every version of mermaid.js that counts rejects (docs/sequence.md, Line separators). */
 const rejectedSequenceExamples: readonly (readonly [string, string])[] = [
   [
