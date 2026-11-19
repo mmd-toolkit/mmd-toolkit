@@ -6350,6 +6350,76 @@ describe("style semicolons", () => {
       'treemap\n  classDef aa fill: coral\n  %% c\n  "x": 1\n  classDef bb fill: coral\n  %% d\n  "y": 2\n',
     ],
     [
+      "treemap a U+2029 before a comment stays after the U+2028 that ends a style",
+      'treemap\n"A": 1\nclassDef zz color:red\u2028\u2029 %% d;\n',
+      'treemap\n  "A": 1\n  classDef zz color:red\u2028\u2029 %% d;\n',
+    ],
+    [
+      "treemap a U+2028 before a comment stays after the U+2029 that ends a style",
+      'treemap\n"A": 1\nclassDef zz color:red\u2029\u2028 %% d;\n',
+      'treemap\n  "A": 1\n  classDef zz color:red\u2029\u2028 %% d;\n',
+    ],
+    [
+      "treemap a U+2028 before a comment stays after the U+2028 that ends a style",
+      'treemap\n"A": 1\nclassDef zz color:red\u2028\u2028 %% d;\n',
+      'treemap\n  "A": 1\n  classDef zz color:red\u2028\u2028 %% d;\n',
+    ],
+    [
+      "treemap a U+2029 before a comment stays after the U+2029 that ends a style",
+      'treemap\n"A": 1\nclassDef zz color:red\u2029\u2029 %% d;\n',
+      'treemap\n  "A": 1\n  classDef zz color:red\u2029\u2029 %% d;\n',
+    ],
+    [
+      "treemap a comment that touches the second U+2028 or U+2029 of a style stays",
+      'treemap\n"A": 1\nclassDef zz color:red\u2028\u2029%% d;\n',
+      'treemap\n  "A": 1\n  classDef zz color:red\u2028\u2029%% d;\n',
+    ],
+    [
+      "treemap a tab before the comment after two U+2028 or U+2029 of a style stays",
+      'treemap\n"A": 1\nclassDef zz color:red\u2028\u2029\t%% d;\n',
+      'treemap\n  "A": 1\n  classDef zz color:red\u2028\u2029\t%% d;\n',
+    ],
+    [
+      "treemap spaces before the comment after two U+2028 or U+2029 of a style stay",
+      'treemap\n"A": 1\nclassDef zz color:red\u2028\u2029   %% d;\n',
+      'treemap\n  "A": 1\n  classDef zz color:red\u2028\u2029   %% d;\n',
+    ],
+    [
+      "treemap spaces after the comment after two U+2028 or U+2029 of a style stay",
+      'treemap\n"A": 1\nclassDef zz color:red\u2028\u2029 %% d;  \n',
+      'treemap\n  "A": 1\n  classDef zz color:red\u2028\u2029 %% d;  \n',
+    ],
+    [
+      "treemap a space between the two U+2028 or U+2029 of a style stays",
+      'treemap\n"A": 1\nclassDef zz color:red\u2028 \u2029 %% d;\n',
+      'treemap\n  "A": 1\n  classDef zz color:red\u2028 \u2029 %% d;\n',
+    ],
+    [
+      "treemap a comment line after a comment after two U+2028 or U+2029 of a style",
+      'treemap\n"A": 1\nclassDef zz color:red\u2028\u2029 %% d;\n%% e\n',
+      'treemap\n  "A": 1\n  classDef zz color:red\u2028\u2029 %% d;\n  %% e\n',
+    ],
+    [
+      "treemap a directive line after a comment after two U+2028 or U+2029 of a style",
+      'treemap\n"A": 1\nclassDef zz color:red\u2028\u2029 %% d;\n%%{x}%%\n',
+      'treemap\n  "A": 1\n  classDef zz color:red\u2028\u2029 %% d;\n%%{x}%%\n',
+    ],
+    [
+      "treemap a row after a comment after two U+2028 or U+2029 of a style",
+      'treemap\n"A": 1\nclassDef zz color:red\u2028\u2029 %% d;\n"B": 2\n',
+      'treemap\n  "A": 1\n  classDef zz color:red\u2028\u2029 %% d;\n"B": 2\n',
+    ],
+    [
+      "treemap a classDef after a comment after two U+2028 or U+2029 of a style",
+      'treemap\n"A": 1\nclassDef zz color:red\u2028\u2029 %% d;\nclassDef yy color:blue\n',
+      'treemap\n  "A": 1\n  classDef zz color:red\u2028\u2029 %% d;\nclassDef yy color:blue\n',
+    ],
+    [
+      "treemap a directive and a comment line after two U+2028 or U+2029 of a style",
+      'treemap\n"A": 1\nclassDef zz color:red\u2028\u2029 %%{x}%%\n%% e\n',
+      'treemap\n  "A": 1\n  classDef zz color:red\u2028\u2029 %%{x}%%\n  %% e\n',
+    ],
+    [
       "ER directives before comments on the same line",
       "erDiagram\nA\nstyle A fill:coral\u2028;\n%%{init: {}}%% %% c\nx\nclassDef c fill:coral\u2029;\n%%{init: {}}%% %% d\ny\n",
       "erDiagram\n  A\n  style A fill: coral\n  %%{init: {}}%% %% c\n  x\n  classDef c fill: coral\n  %%{init: {}}%% %% d\n  y\n",

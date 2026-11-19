@@ -469,6 +469,38 @@ CSS が空白として読まない文字があるときは別です。
 [test: keeps a form feed beside a character that CSS does not read as whitespace at the end of the classDef of a treemap]
 [test: prints a form feed before a comment as one space]
 
+`classDef` のスタイルの末尾にある U+2028 や U+2029 は、
+CSS が空白として読まない文字がすべてそうであるように、スタイルの一部です。
+その後ろ、同じ行の `%%` コメントの前にもう 1 つ U+2028 か U+2029 があるとき、
+その文字はスタイルのテキストではありません。
+mermaid.js はコメント行を、その前の空白ごと取り除くからです。
+詳しくは [コメント行](../../spec/docs/common.ja.md#コメント行)
+を参照してください。
+その文字があってもなくても、対象にするすべての版で図は同じです。
+これは図を描いて確かめました。
+規則 1 は、そのような文字を持つ隙間の印を挙げていないので、
+[規則 2](./printed-form.ja.md#2-prettier-にない種類の隙間)が決めます。
+flowchart、class 図、agentflow は、この形の行を書かれたまま残します。
+flowchart が `style A fill:red`、U+2028、U+2029、空白、
+`%% d;` を書かれたまま残すのがその例です。
+そのためこの行も、コメントとその周りの空白を含めて、行の後ろに何が続いても、
+書かれたまま印字します。
+
+[test: treemap a U+2029 before a comment stays after the U+2028 that ends a style]
+[test: treemap a U+2028 before a comment stays after the U+2029 that ends a style]
+[test: treemap a U+2028 before a comment stays after the U+2028 that ends a style]
+[test: treemap a U+2029 before a comment stays after the U+2029 that ends a style]
+[test: treemap a comment that touches the second U+2028 or U+2029 of a style stays]
+[test: treemap a tab before the comment after two U+2028 or U+2029 of a style stays]
+[test: treemap spaces before the comment after two U+2028 or U+2029 of a style stay]
+[test: treemap spaces after the comment after two U+2028 or U+2029 of a style stay]
+[test: treemap a space between the two U+2028 or U+2029 of a style stays]
+[test: treemap a comment line after a comment after two U+2028 or U+2029 of a style]
+[test: treemap a directive line after a comment after two U+2028 or U+2029 of a style]
+[test: treemap a row after a comment after two U+2028 or U+2029 of a style]
+[test: treemap a classDef after a comment after two U+2028 or U+2029 of a style]
+[test: treemap a directive and a comment line after two U+2028 or U+2029 of a style]
+
 バックスラッシュでエスケープされた `,` はスタイルの一部です。
 文字列の引用符と `%` のテキストは書かれた値の一部で、文字列、コメント、
 `url(` の括弧の中の連続は保ちます。

@@ -453,6 +453,36 @@ whitespace] [test: keeps a form feed beside a character that CSS does not read
 as whitespace at the end of the classDef of a treemap] [test: prints a form feed
 before a comment as one space]
 
+A U+2028 or U+2029 at the end of the style of a `classDef` is part of the style,
+as every character that CSS does not read as whitespace is. A second U+2028 or
+U+2029 after it, before a `%%` comment on the same line, is no text of the
+style: mermaid.js removes the comment line with the whitespace before it
+([Comment lines](../../spec/docs/common.md#comment-lines)), and the figure is
+the same with that character and without it in every version that counts, which
+was checked by drawing the chart. Rule 1 names no mark for a gap that holds such
+a character, so
+[rule 2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) gives
+the form: a flowchart, a class diagram, and an agentflow diagram keep such a
+line as written, as a flowchart keeps `style A fill:red`, U+2028, U+2029, a
+space, and `%% d;`, so the line is printed as written, with the comment and the
+whitespace around it, whatever follows the line.
+
+[test: treemap a U+2029 before a comment stays after the U+2028 that ends a
+style] [test: treemap a U+2028 before a comment stays after the U+2029 that ends
+a style] [test: treemap a U+2028 before a comment stays after the U+2028 that
+ends a style] [test: treemap a U+2029 before a comment stays after the U+2029
+that ends a style] [test: treemap a comment that touches the second U+2028 or
+U+2029 of a style stays] [test: treemap a tab before the comment after two
+U+2028 or U+2029 of a style stays] [test: treemap spaces before the comment
+after two U+2028 or U+2029 of a style stay] [test: treemap spaces after the
+comment after two U+2028 or U+2029 of a style stay] [test: treemap a space
+between the two U+2028 or U+2029 of a style stays] [test: treemap a comment line
+after a comment after two U+2028 or U+2029 of a style] [test: treemap a
+directive line after a comment after two U+2028 or U+2029 of a style] [test:
+treemap a row after a comment after two U+2028 or U+2029 of a style] [test:
+treemap a classDef after a comment after two U+2028 or U+2029 of a style] [test:
+treemap a directive and a comment line after two U+2028 or U+2029 of a style]
+
 A `,` that a backslash escapes is part of its style, the quotes of a string and
 percent text are part of the value as written, and the runs inside a string, a
 comment, and the parentheses of `url(` stay.

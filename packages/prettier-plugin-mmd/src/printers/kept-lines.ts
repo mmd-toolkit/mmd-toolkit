@@ -1587,7 +1587,11 @@ const unusualStyleEndsBySource = new WeakMap<Source, ReadonlySet<number>>()
  * `styleEndCharactersKept` selects, also after a `;` that the line rule
  * ignores and after a directive. The statement holds the styles up to its
  * last token, and the printer leaves out the whitespace after it, which these
- * lines keep as written.
+ * lines keep as written. A comment line that mermaid.js removes takes the
+ * whitespace before it, which stands after the style too: the style of a
+ * treemap `classDef` holds a U+2028 or U+2029 at its end, so a second one
+ * before a comment starts the removed range right at the end of the statement
+ * (docs/treemap.md, Semicolons).
  */
 export function findLinesWithUnusualStyleEnd(
   source: Source,
@@ -1605,7 +1609,17 @@ export function findLinesWithUnusualStyleEnd(
     // reads the styles, and so does it with a directive, so the whitespace
     // after them is at the end of the last style too.
     while (end < source.text.length) {
-      end = skipRemoved(source, end)
+      const read = skipRemoved(source, end)
+      // The whitespace that starts a removed range is the whitespace before a
+      // removed comment line (`Source.removed`): it is after the style as well.
+      for (
+        let at = end;
+        at < read && isWhitespace(source.text.charAt(at));
+        at++
+      ) {
+        if (keeps?.(source.text.charAt(at)) === true) kept = true
+      }
+      end = read
       if (isAtLineEnd(source, end)) break
       const character = source.text.charAt(end)
       if (!isWhitespace(character)) break
