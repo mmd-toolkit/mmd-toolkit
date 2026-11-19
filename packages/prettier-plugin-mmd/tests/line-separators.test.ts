@@ -14138,6 +14138,21 @@ const radarDirectiveCommentExamples: readonly (readonly [
     "radar-beta\naccTitle : T %% a\u2028b\n",
     "radar-beta\n  accTitle: T %% a\u2028b\n",
   ],
+  [
+    "a `;` inside the comment after the last directive, two spaces before the comment, the text ends, in a title of a radar chart",
+    "radar-beta\ntitle T  %%{x}%%  %% c;\n",
+    "radar-beta\n  title T %%{x}%% %% c;\n",
+  ],
+  [
+    "a U+2028 between the text and a directive, a U+2028 between the directive and the comment, an empty line and a statement follow, in a title of a radar chart",
+    "radar-beta\ntitle T\u2028%%{x}%%\u2028%% c\n\naxis a, b\ncurve c{1, 2}\n",
+    "radar-beta\n  title T\n  %%{x}%%\n  %% c\n\n  axis a, b\n  curve c{1, 2}\n",
+  ],
+  [
+    "a U+2028 after the last directive of a title of directives only, two spaces before and after it, a comment follows, the text ends, in a title of a radar chart",
+    "radar-beta\ntitle  %%{x}%%  \u2028  %% c\n",
+    "radar-beta\n  title  %%{x}%%  \u2028 %% c\n",
+  ],
 ]
 
 describe("a comment after the directives that end the title or the value of an accessibility line of a radar chart, after a U+2028 or U+2029", () => {
